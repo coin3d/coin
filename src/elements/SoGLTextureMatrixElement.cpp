@@ -110,18 +110,6 @@ SoGLTextureMatrixElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the
-  SoGLTextureMatrixElement class.
-*/
-
-void
-SoGLTextureMatrixElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoGLTextureMatrixElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa SoGLTextureMatrixElement::createInstance(void)

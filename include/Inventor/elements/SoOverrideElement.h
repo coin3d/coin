@@ -44,7 +44,6 @@ public:
   virtual ~SoOverrideElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoOverrideElement(void);

@@ -123,16 +123,6 @@ SoShapeSimplifyAction::initClass(void)
 //$ END TEMPLATE InitActionSource
 }
 
-/*!
-  This static method cleans up static data for the SoShapeSimplifyAction
-  class.
-*/
-
-void
-SoShapeSimplifyAction::cleanClass(void)
-{
-}
-
 // *************************************************************************
 
 /*!

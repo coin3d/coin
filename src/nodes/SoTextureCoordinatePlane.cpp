@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoTextureCoordinatePlane.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #if !defined(COIN_EXCLUDE_SOTEXTURECOORDINATEELEMENT)
 #include <Inventor/elements/SoTextureCoordinateElement.h>
@@ -56,46 +56,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoTextureCoordinatePlane)
-SoType SoTextureCoordinatePlane::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoTextureCoordinatePlane node class.
-*/
-void *
-SoTextureCoordinatePlane::createInstance(void)
-{
-  return new SoTextureCoordinatePlane;
-}
-
-/*!
-  Returns the unique type identifier for the SoTextureCoordinatePlane class.
-*/
-SoType
-SoTextureCoordinatePlane::getClassTypeId(void)
-{
-  return SoTextureCoordinatePlane::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoTextureCoordinatePlane::getTypeId(void) const
-{
-  return SoTextureCoordinatePlane::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoTextureCoordinatePlane);
 
 /*!
   Constructor.
 */
 SoTextureCoordinatePlane::SoTextureCoordinatePlane()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoTextureCoordinatePlane)
-  // Make sure the class has been initialized.
-  assert(SoTextureCoordinatePlane::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoTextureCoordinatePlane);
 
   SO_NODE_ADD_FIELD(directionS, (1.0f, 0.0f, 0.0f));
   SO_NODE_ADD_FIELD(directionT, (0.0f, 1.0f, 0.0f));
@@ -116,26 +84,7 @@ SoTextureCoordinatePlane::~SoTextureCoordinatePlane()
 void
 SoTextureCoordinatePlane::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(TextureCoordinatePlane)
-  // Make sure we only initialize once.
-  assert(SoTextureCoordinatePlane::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoTextureCoordinatePlane::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "TextureCoordinatePlane",
-                       &SoTextureCoordinatePlane::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoTextureCoordinatePlane::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinatePlane);
 }
 
 /*!

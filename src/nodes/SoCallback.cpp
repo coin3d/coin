@@ -26,52 +26,20 @@
 */
 
 #include <Inventor/nodes/SoCallback.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 #include <Inventor/actions/SoActions.h> // SoCallback uses all of them.
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoCallback)
-SoType SoCallback::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoCallback node class.
-*/
-void *
-SoCallback::createInstance(void)
-{
-  return new SoCallback;
-}
-
-/*!
-  Returns the unique type identifier for the SoCallback class.
-*/
-SoType
-SoCallback::getClassTypeId(void)
-{
-  return SoCallback::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoCallback::getTypeId(void) const
-{
-  return SoCallback::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoCallback);
 
 /*!
   Constructor.
 */
 SoCallback::SoCallback()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoCallback)
-  // Make sure the class has been initialized.
-  assert(SoCallback::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoCallback);
 
   this->cbfunc = NULL;
 }
@@ -91,26 +59,7 @@ SoCallback::~SoCallback()
 void
 SoCallback::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(Callback)
-  // Make sure we only initialize once.
-  assert(SoCallback::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoCallback::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Callback",
-                       &SoCallback::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoCallback::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoCallback);
 }
 
 /*!

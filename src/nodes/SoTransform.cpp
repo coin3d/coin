@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoTransform.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -77,46 +77,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoTransform)
-SoType SoTransform::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoTransform node class.
-*/
-void *
-SoTransform::createInstance(void)
-{
-  return new SoTransform;
-}
-
-/*!
-  Returns the unique type identifier for the SoTransform class.
-*/
-SoType
-SoTransform::getClassTypeId(void)
-{
-  return SoTransform::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoTransform::getTypeId(void) const
-{
-  return SoTransform::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoTransform);
 
 /*!
   Constructor.
 */
 SoTransform::SoTransform()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoTransform)
-  // Make sure the class has been initialized.
-  assert(SoTransform::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoTransform);
 
   SO_NODE_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
   SO_NODE_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
@@ -141,26 +109,7 @@ SoTransform::~SoTransform()
 void
 SoTransform::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(Transform)
-  // Make sure we only initialize once.
-  assert(SoTransform::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoTransform::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Transform",
-                       &SoTransform::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoTransform::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoTransform);
 }
 
 /*!

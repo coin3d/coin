@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoBaseColor.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -47,46 +47,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoBaseColor)
-SoType SoBaseColor::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoBaseColor node class.
-*/
-void *
-SoBaseColor::createInstance(void)
-{
-  return new SoBaseColor;
-}
-
-/*!
-  Returns the unique type identifier for the SoBaseColor class.
-*/
-SoType
-SoBaseColor::getClassTypeId(void)
-{
-  return SoBaseColor::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoBaseColor::getTypeId(void) const
-{
-  return SoBaseColor::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoBaseColor);
 
 /*!
   Constructor.
 */
 SoBaseColor::SoBaseColor()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoBaseColor)
-  // Make sure the class has been initialized.
-  assert(SoBaseColor::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoBaseColor);
   
   SO_NODE_ADD_FIELD(rgb, (SbColor(0.8f, 0.8f, 0.8f)));
 }
@@ -106,30 +74,11 @@ SoBaseColor::~SoBaseColor()
 void
 SoBaseColor::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(BaseColor)
-  // Make sure we only initialize once.
-  assert(SoBaseColor::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoBaseColor::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "BaseColor",
-                       &SoBaseColor::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
+  SO_NODE_INTERNAL_INIT_CLASS(SoBaseColor);
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoGLDiffuseColorElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoBaseColor::cleanClass(void)
-{
 }
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)

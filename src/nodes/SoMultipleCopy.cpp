@@ -25,9 +25,9 @@
   FIXME: write class doc
 */
 
-#include <Inventor/SbName.h>
+
 #include <Inventor/nodes/SoMultipleCopy.h>
-#include <Inventor/nodes/SoSubNode.h>
+
 
 #if !defined(COIN_EXCLUDE_SOSTATE)
 #include <Inventor/misc/SoState.h>
@@ -60,46 +60,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoMultipleCopy)
-SoType SoMultipleCopy::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoMultipleCopy node class.
-*/
-void *
-SoMultipleCopy::createInstance(void)
-{
-  return new SoMultipleCopy;
-}
-
-/*!
-  Returns the unique type identifier for the SoMultipleCopy class.
-*/
-SoType
-SoMultipleCopy::getClassTypeId(void)
-{
-  return SoMultipleCopy::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoMultipleCopy::getTypeId(void) const
-{
-  return SoMultipleCopy::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoMultipleCopy);
 
 /*!
   Constructor.
 */
 SoMultipleCopy::SoMultipleCopy()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoMultipleCopy)
-  // Make sure the class has been initialized.
-  assert(SoMultipleCopy::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoMultipleCopy);
 
   SO_NODE_ADD_FIELD(matrix, (SbMatrix(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1)));
 }
@@ -119,26 +87,7 @@ SoMultipleCopy::~SoMultipleCopy()
 void
 SoMultipleCopy::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(MultipleCopy)
-  // Make sure we only initialize once.
-  assert(SoMultipleCopy::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoMultipleCopy::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "MultipleCopy",
-                       &SoMultipleCopy::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoMultipleCopy::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoMultipleCopy);
 }
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)

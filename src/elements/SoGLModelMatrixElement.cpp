@@ -115,18 +115,6 @@ SoGLModelMatrixElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the
-  SoGLModelMatrixElement class.
-*/
-
-void
-SoGLModelMatrixElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoGLModelMatrixElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoGLModelMatrixElement::createInstance(void)

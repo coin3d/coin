@@ -35,7 +35,6 @@ public:
   virtual ~SoPROTOElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoPROTOElement(void);

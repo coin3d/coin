@@ -77,19 +77,6 @@ SoSField::initClass(void)
 }
 
 /*!
-  Clean out any data allocated as static (common) data for single
-  value field classes.
-
-  This is used throughout Coin upon application exit to make it
-  somewhat easier to find any memory leaks. The method is only
-  present for debugging purposes.
-*/
-void
-SoSField::cleanClass(void)
-{
-}
-
-/*!
   FIXME: write function documentation
 */
 void

@@ -20,6 +20,7 @@
 #ifndef __SOWWWANCHOR_H__
 #define __SOWWWANCHOR_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoLocateHighlight.h>
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/fields/SoSFEnum.h>
@@ -38,24 +39,12 @@ typedef void SoWWWAnchorCB(const SbString & url, void * data,
 class SoWWWAnchor : public SoLocateHighlight {
   typedef SoLocateHighlight inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoWWWAnchor)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoWWWAnchor);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoWWWAnchor(void);
-protected:
-  virtual ~SoWWWAnchor();
-//$ END TEMPLATE NodeHeader
 
-public:
   enum Mapping {
     NONE, POINT
   };
@@ -75,6 +64,8 @@ public:
   static void setHighlightURLCallBack(SoWWWAnchorCB * f, void * userData);
 
 protected:
+  virtual ~SoWWWAnchor();
+
   virtual void redrawHighlighted(SoAction * act, SbBool isNowHighlighting);
 };
 

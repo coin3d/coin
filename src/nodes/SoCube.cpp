@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoCube.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/misc/SoState.h>
 
@@ -86,46 +86,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoCube)
-SoType SoCube::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoCube node class.
-*/
-void *
-SoCube::createInstance(void)
-{
-  return new SoCube;
-}
-
-/*!
-  Returns the unique type identifier for the SoCube class.
-*/
-SoType
-SoCube::getClassTypeId(void)
-{
-  return SoCube::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoCube::getTypeId(void) const
-{
-  return SoCube::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoCube);
 
 /*!
   Constructor.
 */
 SoCube::SoCube()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoCube)
-  // Make sure the class has been initialized.
-  assert(SoCube::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoCube);
 
     SO_NODE_ADD_FIELD(width,(2.0f));
     SO_NODE_ADD_FIELD(height,(2.0f));
@@ -147,26 +115,7 @@ SoCube::~SoCube()
 void
 SoCube::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(Cube)
-  // Make sure we only initialize once.
-  assert(SoCube::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoCube::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Cube",
-                       &SoCube::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoCube::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoCube);
 }
 
 //

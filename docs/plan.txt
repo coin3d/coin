@@ -136,10 +136,10 @@ MILESTONE 2
 Goal: Implement enough of the functionality missing from Coin to have
 it replace QvLib as the fundamental import/export/rendering library
 for Rational Reducer[4]. In addition, we add the ability to read data
-from any URLs, local files aswell as over the network. This means
+from any URLs, local files aswell as over the network. In summary,
 we'll have the necessary functionality at this milestone for a VRML
 viewer with all the basic features, only lacking some minor
-compatibility points with the ISO VRML 97 standard.
+non-critical compatibility points with the ISO VRML 97 standard.
 
 
 Additional features we need to supplant the functionality from
@@ -170,7 +170,7 @@ MILESTONE 3
 Goal: Make the Coin API be fully compatible with the SGI Open Inventor
 2.1 API. Make all Open Inventor functionality available, provide
 "shortcut" implementations on some of the most advanced features which
-will be postponed until milestone 3. All existing applications written
+will be postponed until milestone 4. All existing applications written
 for SGI Open Inventor 2.1 should be easily portable to Coin with no or
 minimum effort at this stage.
 
@@ -189,6 +189,10 @@ Additional development necessary versus milestone 2:
   fonts.
 
 * 100% completed NURBS support. 
+
+* implement support for automatic dynamic loading of user-extension
+  nodes, nodekits, etc (through dlopen() on UNIX systems and
+  LoadLibrary() (?) on MSWin)
 
 * make sure the APIs for bundles, caches, details and element classes
   cover the API calls offered by SGI Open Inventor 2.1 so even

@@ -91,15 +91,6 @@ SoSFTrigger::initClass(void)
 }
 
 /*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoSFTrigger::cleanClass(void)
-{
-}
-
-/*!
   FIXME: write function documentation
 */
 void

@@ -111,18 +111,6 @@ SoGLViewportRegionElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the
-  SoGLViewportRegionElement class.
-*/
-
-void
-SoGLViewportRegionElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoGLViewportRegionElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoGLViewportRegionElement::createInstance(void)

@@ -157,6 +157,7 @@ SoBase::initClass(void)
   SoBase::obj2name_dict = new SbDict;
 }
 
+#if 0 // FIXME: re-code to be run automatically upon exit. 19991106 mortene.
 /*!
   Clean up all commonly allocated resources before applcation exit. Only
   for debugging purposes.
@@ -172,6 +173,7 @@ SoBase::cleanClass(void)
   delete name2obj_dict;
   delete obj2name_dict;
 }
+#endif // re-code
 
 /*!
   Increase the reference count of the object. This might be necessary

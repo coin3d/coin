@@ -126,18 +126,6 @@ SoDiffuseColorElement::initClass()
 //$ END TEMPLATE InitElementSource
 }
 
-/*!
-  This static method cleans up static data for the
-  SoDiffuseColorElement class.
-*/
-
-void 
-SoDiffuseColorElement::cleanClass()
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoDiffuseColorElement)
-//$ END TEMPLATE CleanElementSource
-}
-
 //! FIXME: write doc.
 
 void 

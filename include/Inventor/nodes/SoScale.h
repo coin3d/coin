@@ -20,6 +20,7 @@
 #ifndef __SOSCALE_H__
 #define __SOSCALE_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/nodes/SoTransformation.h>
 
@@ -32,24 +33,12 @@
 class SoScale : public SoTransformation {
   typedef SoTransformation inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoScale)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoScale);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoScale(void);
-protected:
-  virtual ~SoScale();
-//$ END TEMPLATE NodeHeader
 
-public:
   SoSFVec3f scaleFactor;
 
 #if !defined(COIN_EXCLUDE_SOACTION)
@@ -73,6 +62,9 @@ public:
 #if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
+
+protected:
+  virtual ~SoScale();
 };
 
 #endif // !__SOSCALE_H__

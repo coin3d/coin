@@ -20,6 +20,7 @@
 #ifndef __SOVERTEXSHAPE_H__
 #define __SOVERTEXSHAPE_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/fields/SoSFNode.h>
 
@@ -38,23 +39,11 @@ class SoVertexShape : public SoShape
 {
   typedef SoShape inherited;
 
-//$ BEGIN TEMPLATE NodeAbstractHeader(SoVertexShape)
-private:
-  static SoType classTypeId;
+  SO_NODE_ABSTRACT_HEADER(SoVertexShape);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
 public:
   static void initClass(void);
-  static void cleanClass(void);
 
-protected:
-  SoVertexShape(void);
-  virtual ~SoVertexShape();
-//$ END TEMPLATE NodeAbstractHeader
-
-public:
   SoSFNode vertexProperty;
 
   virtual void notify(SoNotList * list);
@@ -65,6 +54,9 @@ public:
 #endif // !COIN_EXCLUDE_SOWRITEACTION
 
 protected:
+  SoVertexShape(void);
+  virtual ~SoVertexShape();
+
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual SbBool willUpdateNormalizeElement(SoState *) const;
   virtual SbBool shouldGLRender(SoGLRenderAction * action);

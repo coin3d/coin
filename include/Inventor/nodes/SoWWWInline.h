@@ -20,6 +20,7 @@
 #ifndef __SOWWWINLINE_H__
 #define __SOWWWINLINE_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/fields/SoSFVec3f.h>
@@ -43,24 +44,12 @@ typedef void SoWWWInlineFetchURLCB(const SbString & url, void * userData,
 class SoWWWInline : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoWWWInline)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoWWWInline);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoWWWInline(void);
-protected:
-  virtual ~SoWWWInline();
-//$ END TEMPLATE NodeHeader
 
-public:
   SoSFString name;
   SoSFVec3f bboxCenter;
   SoSFVec3f bboxSize;
@@ -126,6 +115,8 @@ public:
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
 protected:
+  virtual ~SoWWWInline();
+
   virtual void addBoundingBoxChild(SbVec3f center, SbVec3f size);
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
   virtual void copyContents(const SoFieldContainer * fromFC,

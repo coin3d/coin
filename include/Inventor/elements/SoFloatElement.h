@@ -38,12 +38,11 @@ public:
   virtual ~SoFloatElement(void);
   static  int getClassStackIndex(void);
 
-  static  void initClass(void);
-  static  void cleanClass(void);
+  static void initClass(void);
 
 protected:
-          SoFloatElement(void);
-  static  int classStackIndex;
+  SoFloatElement(void);
+  static int classStackIndex;
 //$ END TEMPLATE AbstractElementHeader
 
 public:

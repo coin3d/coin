@@ -20,6 +20,7 @@
 #ifndef __SOCLIPPLANE_H__
 #define __SOCLIPPLANE_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoSFPlane.h>
 #include <Inventor/fields/SoSFBool.h>
@@ -33,24 +34,12 @@
 class SoClipPlane : public SoNode {
   typedef SoNode inherited;
   
-//$ BEGIN TEMPLATE NodeHeader(SoClipPlane)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoClipPlane);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoClipPlane(void);
-protected:
-  virtual ~SoClipPlane();
-//$ END TEMPLATE NodeHeader
 
-public:
   SoSFPlane plane;
   SoSFBool on;
 
@@ -66,6 +55,9 @@ public:
 #if !defined(COIN_EXCLUDE_SOPICKACTION)
   virtual void pick(SoPickAction *action);
 #endif // !COIN_EXCLUDE_SOPICKACTION
+
+protected:
+  virtual ~SoClipPlane();
 };
 
 #endif // !__SOCLIPPLANE_H__

@@ -58,7 +58,6 @@ public:
 		       const char * const formatString, ...);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   virtual SoErrorCB * getHandler(void * & data) const;

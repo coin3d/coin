@@ -105,17 +105,6 @@ SoSwitchElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the SoSwitchElement class.
-*/
-
-void
-SoSwitchElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoSwitchElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoSwitchElement::createInstance(void)

@@ -112,18 +112,6 @@ SoGLSpecularColorElement::initClass()
 }
 
 /*!
-  This static method cleans up static data for the SoGLSpecularColorElement
-  class.
-*/
-
-void 
-SoGLSpecularColorElement::cleanClass()
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoGLSpecularColorElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoGLSpecularColorElement::createInstance(void)

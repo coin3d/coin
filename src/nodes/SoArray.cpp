@@ -25,8 +25,8 @@
   FIXME: write class doc
 */
 
-#include <Inventor/SbName.h>
-#include <Inventor/nodes/SoSubNode.h>
+
+
 #include <Inventor/nodes/SoArray.h>
 
 #if COIN_DEBUG
@@ -103,46 +103,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoArray)
-SoType SoArray::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoArray node class.
-*/
-void *
-SoArray::createInstance(void)
-{
-  return new SoArray;
-}
-
-/*!
-  Returns the unique type identifier for the SoArray class.
-*/
-SoType
-SoArray::getClassTypeId(void)
-{
-  return SoArray::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoArray::getTypeId(void) const
-{
-  return SoArray::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoArray);
 
 /*!
   Constructor.
 */
 SoArray::SoArray()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoArray)
-  // Make sure the class has been initialized.
-  assert(SoArray::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoArray);
 
   SO_NODE_ADD_FIELD(origin, (SoArray::FIRST));
   SO_NODE_ADD_FIELD(numElements1, (1));
@@ -174,26 +142,7 @@ SoArray::~SoArray()
 void
 SoArray::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(Array)
-  // Make sure we only initialize once.
-  assert(SoArray::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoArray::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Array",
-                       &SoArray::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoArray::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoArray);
 }
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)

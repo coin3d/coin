@@ -81,15 +81,6 @@ SoDebugError::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the SoDebugError class.
-*/
-
-void
-SoDebugError::cleanClass(void)
-{
-}
-
-/*!
   FIXME: write doc.
 */
 

@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoEnvironment.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -86,46 +86,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoEnvironment)
-SoType SoEnvironment::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoEnvironment node class.
-*/
-void *
-SoEnvironment::createInstance(void)
-{
-  return new SoEnvironment;
-}
-
-/*!
-  Returns the unique type identifier for the SoEnvironment class.
-*/
-SoType
-SoEnvironment::getClassTypeId(void)
-{
-  return SoEnvironment::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoEnvironment::getTypeId(void) const
-{
-  return SoEnvironment::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoEnvironment);
 
 /*!
   Constructor.
 */
 SoEnvironment::SoEnvironment()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoEnvironment)
-  // Make sure the class has been initialized.
-  assert(SoEnvironment::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoEnvironment);
   
   SO_NODE_ADD_FIELD(ambientIntensity, (0.2f));
   SO_NODE_ADD_FIELD(ambientColor, (1.0f, 1.0f, 1.0f));
@@ -156,31 +124,12 @@ SoEnvironment::~SoEnvironment()
 void
 SoEnvironment::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(Environment)
-  // Make sure we only initialize once.
-  assert(SoEnvironment::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoEnvironment::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Environment",
-                       &SoEnvironment::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
+  SO_NODE_INTERNAL_INIT_CLASS(SoEnvironment);
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoGLEnvironmentElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoEnvironment::cleanClass(void)
-{
 }
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)

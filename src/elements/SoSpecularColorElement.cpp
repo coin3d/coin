@@ -121,18 +121,6 @@ SoSpecularColorElement::initClass()
 }
 
 /*!
-  This static method cleans up static data for the SoSpecularColorElement
-  class.
-*/
-
-void 
-SoSpecularColorElement::cleanClass()
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoSpecularColorElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoSpecularColorElement::createInstance(void)

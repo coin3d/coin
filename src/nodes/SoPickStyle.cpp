@@ -27,8 +27,8 @@
 
 #include <Inventor/nodes/SoPickStyle.h>
 #include <Inventor/elements/SoPickStyleElement.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #if !defined(COIN_EXCLUDE_SOPICKACTION)
 #include <Inventor/actions/SoPickAction.h>
@@ -64,46 +64,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoPickStyle)
-SoType SoPickStyle::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoPickStyle node class.
-*/
-void *
-SoPickStyle::createInstance(void)
-{
-  return new SoPickStyle;
-}
-
-/*!
-  Returns the unique type identifier for the SoPickStyle class.
-*/
-SoType
-SoPickStyle::getClassTypeId(void)
-{
-  return SoPickStyle::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoPickStyle::getTypeId(void) const
-{
-  return SoPickStyle::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoPickStyle);
 
 /*!
   Constructor.
 */
 SoPickStyle::SoPickStyle()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoPickStyle)
-  // Make sure the class has been initialized.
-  assert(SoPickStyle::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoPickStyle);
   
   SO_NODE_ADD_FIELD(style, (SoPickStyle::SHAPE));
 
@@ -128,30 +96,11 @@ SoPickStyle::~SoPickStyle()
 void
 SoPickStyle::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(PickStyle)
-  // Make sure we only initialize once.
-  assert(SoPickStyle::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoPickStyle::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "PickStyle",
-                       &SoPickStyle::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
+  SO_NODE_INTERNAL_INIT_CLASS(SoPickStyle);
 
 #if !defined(COIN_EXCLUDE_SOPICKACTION)
   SO_ENABLE(SoPickAction, SoPickStyleElement);
 #endif // ! COIN_EXCLUDE_SOPICKACTION
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoPickStyle::cleanClass(void)
-{
 }
 
 

@@ -26,51 +26,19 @@
 */
 
 #include <Inventor/nodes/SoLinearProfile.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoLinearProfile)
-SoType SoLinearProfile::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoLinearProfile node class.
-*/
-void *
-SoLinearProfile::createInstance(void)
-{
-  return new SoLinearProfile;
-}
-
-/*!
-  Returns the unique type identifier for the SoLinearProfile class.
-*/
-SoType
-SoLinearProfile::getClassTypeId(void)
-{
-  return SoLinearProfile::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoLinearProfile::getTypeId(void) const
-{
-  return SoLinearProfile::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoLinearProfile);
 
 /*!
   Constructor.
 */
 SoLinearProfile::SoLinearProfile()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoLinearProfile)
-  // Make sure the class has been initialized.
-  assert(SoLinearProfile::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoLinearProfile);
 }
 
 /*!
@@ -88,26 +56,7 @@ SoLinearProfile::~SoLinearProfile()
 void
 SoLinearProfile::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(LinearProfile)
-  // Make sure we only initialize once.
-  assert(SoLinearProfile::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoLinearProfile::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "LinearProfile",
-                       &SoLinearProfile::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoLinearProfile::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoLinearProfile);
 }
 
 /*!

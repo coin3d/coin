@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoIndexedTriangleStripSet.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #include <Inventor/lists/SbPList.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -117,46 +117,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoIndexedTriangleStripSet)
-SoType SoIndexedTriangleStripSet::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoIndexedTriangleStripSet node class.
-*/
-void *
-SoIndexedTriangleStripSet::createInstance(void)
-{
-  return new SoIndexedTriangleStripSet;
-}
-
-/*!
-  Returns the unique type identifier for the SoIndexedTriangleStripSet class.
-*/
-SoType
-SoIndexedTriangleStripSet::getClassTypeId(void)
-{
-  return SoIndexedTriangleStripSet::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoIndexedTriangleStripSet::getTypeId(void) const
-{
-  return SoIndexedTriangleStripSet::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoIndexedTriangleStripSet);
 
 /*!
   Constructor.
 */
 SoIndexedTriangleStripSet::SoIndexedTriangleStripSet()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoIndexedTriangleStripSet)
-  // Make sure the class has been initialized.
-  assert(SoIndexedTriangleStripSet::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoIndexedTriangleStripSet);
 
   this->numTriangles = -1;
   this->numStrips = -1;
@@ -177,26 +145,7 @@ SoIndexedTriangleStripSet::~SoIndexedTriangleStripSet()
 void
 SoIndexedTriangleStripSet::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(IndexedTriangleStripSet)
-  // Make sure we only initialize once.
-  assert(SoIndexedTriangleStripSet::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoIndexedTriangleStripSet::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "IndexedTriangleStripSet",
-                       &SoIndexedTriangleStripSet::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoIndexedTriangleStripSet::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoIndexedTriangleStripSet);
 }
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)

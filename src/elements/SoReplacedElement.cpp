@@ -106,17 +106,6 @@ SoReplacedElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the SoReplacedElement class.
-*/
-
-void
-SoReplacedElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanAbstractElementSource(SoReplacedElement)
-//$ END TEMPLATE CleanAbstractElementSource
-}
-
-/*!
   The constructor.  Can't be used directly.  This is an abstract base class.
 */
 

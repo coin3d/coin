@@ -166,15 +166,6 @@ SoSFImage::initClass(void)
 //$ END TEMPLATE FieldInitClass
 }
 
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoSFImage::cleanClass(void)
-{
-}
-
 SbBool
 SoSFImage::readValue(SoInput * in)
 {

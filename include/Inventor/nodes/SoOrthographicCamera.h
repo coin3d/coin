@@ -20,6 +20,7 @@
 #ifndef __SOORTHOGRAPHICCAMERA_H__
 #define __SOORTHOGRAPHICCAMERA_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoCamera.h>
 
 #if defined(COIN_EXCLUDE_SOORTHOGRAPHICCAMERA)
@@ -31,30 +32,20 @@
 class SoOrthographicCamera : public SoCamera {
     typedef SoCamera inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoOrthographicCamera)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoOrthographicCamera);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoOrthographicCamera(void);
-protected:
-  virtual ~SoOrthographicCamera();
-//$ END TEMPLATE NodeHeader
 
-public:
   SoSFFloat height;
 
   virtual void scaleHeight(float scaleFactor);
   virtual SbViewVolume getViewVolume(float useAspectRatio = 0.0f) const;
 
 protected:
+  virtual ~SoOrthographicCamera();
+
   virtual void viewBoundingBox(const SbBox3f &box, float aspect, float slack);
 };
 

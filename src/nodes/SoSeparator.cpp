@@ -25,9 +25,9 @@
   FIXME: write class doc
 */
 
-#include <Inventor/SbName.h>
+
 #include <Inventor/misc/SoChildList.h>
-#include <Inventor/nodes/SoSubNode.h>
+
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
@@ -108,46 +108,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoSeparator)
-SoType SoSeparator::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoSeparator node class.
-*/
-void *
-SoSeparator::createInstance(void)
-{
-  return new SoSeparator;
-}
-
-/*!
-  Returns the unique type identifier for the SoSeparator class.
-*/
-SoType
-SoSeparator::getClassTypeId(void)
-{
-  return SoSeparator::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoSeparator::getTypeId(void) const
-{
-  return SoSeparator::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoSeparator);
 
 /*!
   Constructor.
 */
 SoSeparator::SoSeparator()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoSeparator)
-  // Make sure the class has been initialized.
-  assert(SoSeparator::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoSeparator);
 
   SO_NODE_ADD_FIELD(renderCaching, (SoSeparator::AUTO));
   SO_NODE_ADD_FIELD(boundingBoxCaching, (SoSeparator::AUTO));
@@ -182,17 +150,7 @@ SoSeparator::~SoSeparator()
 void
 SoSeparator::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(Separator)
-  // Make sure we only initialize once.
-  assert(SoSeparator::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoSeparator::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Separator",
-                       &SoSeparator::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
+  SO_NODE_INTERNAL_INIT_CLASS(SoSeparator);
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   SO_ENABLE(SoGetBoundingBoxAction, SoCacheElement);
@@ -201,15 +159,6 @@ SoSeparator::initClass(void)
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoCacheElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoSeparator::cleanClass(void)
-{
 }
 
 #if !defined(COIN_EXCLUDE_SOACTION)

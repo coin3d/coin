@@ -123,16 +123,6 @@ SoLineHighlightRenderAction::initClass(void)
 //$ END TEMPLATE InitActionSource
 }
 
-/*!
-  This static method cleans up the static data for the
-  SoLineHighlightRenderAction class.
-*/
-
-void
-SoLineHighlightRenderAction::cleanClass(void)
-{
-}
-
 // *************************************************************************
 
 /*!

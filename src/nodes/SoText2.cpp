@@ -48,8 +48,8 @@
 //         -- 19990418 mortene.
 
 #include <Inventor/nodes/SoText2.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -113,46 +113,14 @@ static const unsigned int NOT_AVAILABLE = UINT_MAX;
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoText2)
-SoType SoText2::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoText2 node class.
-*/
-void *
-SoText2::createInstance(void)
-{
-  return new SoText2;
-}
-
-/*!
-  Returns the unique type identifier for the SoText2 class.
-*/
-SoType
-SoText2::getClassTypeId(void)
-{
-  return SoText2::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoText2::getTypeId(void) const
-{
-  return SoText2::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoText2);
 
 /*!
   Constructor.
 */
 SoText2::SoText2()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoText2)
-  // Make sure the class has been initialized.
-  assert(SoText2::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoText2);
 
   SO_NODE_ADD_FIELD(string, (""));
   SO_NODE_ADD_FIELD(spacing, (1.0f));
@@ -179,26 +147,7 @@ SoText2::~SoText2()
 void
 SoText2::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(Text2)
-  // Make sure we only initialize once.
-  assert(SoText2::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoText2::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Text2",
-                       &SoText2::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoText2::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoText2);
 }
 
 

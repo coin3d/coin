@@ -41,7 +41,6 @@ public:
   virtual ~SoGLAmbientColorElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoGLAmbientColorElement(void);

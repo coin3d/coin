@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoAntiSquish.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 /*!
   \enum SoAntiSquish::Sizing
@@ -75,46 +75,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoAntiSquish)
-SoType SoAntiSquish::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoAntiSquish node class.
-*/
-void *
-SoAntiSquish::createInstance(void)
-{
-  return new SoAntiSquish;
-}
-
-/*!
-  Returns the unique type identifier for the SoAntiSquish class.
-*/
-SoType
-SoAntiSquish::getClassTypeId(void)
-{
-  return SoAntiSquish::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoAntiSquish::getTypeId(void) const
-{
-  return SoAntiSquish::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoAntiSquish);
 
 /*!
   Constructor.
 */
 SoAntiSquish::SoAntiSquish()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoAntiSquish)
-  // Make sure the class has been initialized.
-  assert(SoAntiSquish::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoAntiSquish);
 
   SO_NODE_ADD_FIELD(recalcAlways, (TRUE));
   SO_NODE_ADD_FIELD(sizing, (SoAntiSquish::AVERAGE_DIMENSION));
@@ -144,26 +112,7 @@ SoAntiSquish::~SoAntiSquish()
 void
 SoAntiSquish::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(AntiSquish)
-  // Make sure we only initialize once.
-  assert(SoAntiSquish::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoAntiSquish::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "AntiSquish",
-                       &SoAntiSquish::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoAntiSquish::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoAntiSquish);
 }
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)

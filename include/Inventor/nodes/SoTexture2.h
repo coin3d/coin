@@ -20,6 +20,7 @@
 #ifndef __SOTEXTURE2_H__
 #define __SOTEXTURE2_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFImage.h>
@@ -35,24 +36,12 @@
 class SoTexture2 : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoTexture2)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoTexture2);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoTexture2(void);
-protected:
-  virtual ~SoTexture2();
-//$ END TEMPLATE NodeHeader
 
-public:
 
   SbBool readImage();
   
@@ -90,6 +79,8 @@ public:
 			  unsigned char *& bytes);
 
 protected:
+  virtual ~SoTexture2();
+
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
   int getReadStatus(void);
   void setReadStatus(int s);

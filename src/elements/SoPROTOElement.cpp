@@ -113,17 +113,6 @@ SoPROTOElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the SoPROTOElement class.
-*/
-
-void
-SoPROTOElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoPROTOElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoPROTOElement::createInstance(void)

@@ -115,18 +115,6 @@ SoMaterialBindingElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the
-  SoMaterialBindingElement class.
-*/
-
-void
-SoMaterialBindingElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoMaterialBindingElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoMaterialBindingElement::createInstance(void)

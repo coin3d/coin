@@ -41,7 +41,6 @@ public:
   virtual ~SoTextureMatrixElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoTextureMatrixElement(void);

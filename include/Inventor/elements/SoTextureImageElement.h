@@ -45,7 +45,6 @@ public:
   virtual ~SoTextureImageElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoTextureImageElement(void);

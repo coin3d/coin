@@ -40,7 +40,6 @@ public:
   virtual ~SoFontSizeElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoFontSizeElement(void);

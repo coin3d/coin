@@ -111,17 +111,6 @@ SoUnitsElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the SoUnitsElement class.
-*/
-
-void
-SoUnitsElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoUnitsElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoUnitsElement::createInstance(void)

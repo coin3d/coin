@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoDirectionalLight.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 #include <Inventor/SbVec4f.h>
 #include <Inventor/SbColor4f.h>
 
@@ -59,46 +59,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoDirectionalLight)
-SoType SoDirectionalLight::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoDirectionalLight node class.
-*/
-void *
-SoDirectionalLight::createInstance(void)
-{
-  return new SoDirectionalLight;
-}
-
-/*!
-  Returns the unique type identifier for the SoDirectionalLight class.
-*/
-SoType
-SoDirectionalLight::getClassTypeId(void)
-{
-  return SoDirectionalLight::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoDirectionalLight::getTypeId(void) const
-{
-  return SoDirectionalLight::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoDirectionalLight);
 
 /*!
   Constructor.
 */
 SoDirectionalLight::SoDirectionalLight()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoDirectionalLight)
-  // Make sure the class has been initialized.
-  assert(SoDirectionalLight::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoDirectionalLight);
 
   SO_NODE_ADD_FIELD(on,(TRUE));
   SO_NODE_ADD_FIELD(intensity,(1.0f));
@@ -121,26 +89,7 @@ SoDirectionalLight::~SoDirectionalLight()
 void
 SoDirectionalLight::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(DirectionalLight)
-  // Make sure we only initialize once.
-  assert(SoDirectionalLight::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoDirectionalLight::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "DirectionalLight",
-                       &SoDirectionalLight::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoDirectionalLight::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoDirectionalLight);
 }
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)

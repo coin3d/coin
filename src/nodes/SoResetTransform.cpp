@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoResetTransform.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -68,46 +68,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoResetTransform)
-SoType SoResetTransform::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoResetTransform node class.
-*/
-void *
-SoResetTransform::createInstance(void)
-{
-  return new SoResetTransform;
-}
-
-/*!
-  Returns the unique type identifier for the SoResetTransform class.
-*/
-SoType
-SoResetTransform::getClassTypeId(void)
-{
-  return SoResetTransform::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoResetTransform::getTypeId(void) const
-{
-  return SoResetTransform::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoResetTransform);
 
 /*!
   Constructor.
 */
 SoResetTransform::SoResetTransform()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoResetTransform)
-  // Make sure the class has been initialized.
-  assert(SoResetTransform::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoResetTransform);
 
   SO_NODE_ADD_FIELD(whatToReset, (SoResetTransform::TRANSFORM));
 
@@ -131,26 +99,7 @@ SoResetTransform::~SoResetTransform()
 void
 SoResetTransform::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(ResetTransform)
-  // Make sure we only initialize once.
-  assert(SoResetTransform::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoResetTransform::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "ResetTransform",
-                       &SoResetTransform::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoResetTransform::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoResetTransform);
 }
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)

@@ -41,7 +41,6 @@ public:
   virtual ~SoViewportRegionElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoViewportRegionElement(void);

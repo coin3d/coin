@@ -20,6 +20,7 @@
 #ifndef __SOTEXTURECOORDINATE2_H__
 #define __SOTEXTURECOORDINATE2_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoMFVec2f.h>
 #include <Inventor/nodes/SoNode.h>
 
@@ -32,24 +33,12 @@
 class SoTextureCoordinate2 : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoTextureCoordinate2)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoTextureCoordinate2);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoTextureCoordinate2(void);
-protected:
-  virtual ~SoTextureCoordinate2();
-//$ END TEMPLATE NodeHeader
 
-public:
   SoMFVec2f point;
 
 #if !defined(COIN_EXCLUDE_SOACTION)
@@ -64,6 +53,9 @@ public:
 #if !defined(COIN_EXCLUDE_SOPICKACTION)
   virtual void pick(SoPickAction * action);
 #endif // !COIN_EXCLUDE_SOPICKACTION
+
+protected:
+  virtual ~SoTextureCoordinate2();
 };
 
 #endif // !__SOTEXTURECOORDINATE2_H__

@@ -20,6 +20,7 @@
 #ifndef __SOIMAGE_H__
 #define __SOIMAGE_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/fields/SoSFEnum.h>
@@ -35,24 +36,12 @@
 class SoImage : public SoShape {
   typedef SoShape inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoImage)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoImage);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoImage(void);
-protected:
-  virtual ~SoImage();
-//$ END TEMPLATE NodeHeader
 
-public:
   enum VertAlignment {
     BOTTOM,
     HALF,
@@ -83,6 +72,8 @@ public:
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
 protected:
+  virtual ~SoImage();
+
 #if !defined(COIN_EXCLUDE_SOACTION)
   virtual void generatePrimitives(SoAction * action);
 #endif // !COIN_EXCLUDE_SOACTION

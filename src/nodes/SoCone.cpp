@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoCone.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/misc/SoState.h>
 #include <assert.h>
@@ -100,36 +100,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoCone)
-SoType SoCone::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoCone node class.
-*/
-void *
-SoCone::createInstance(void)
-{
-  return new SoCone;
-}
-
-/*!
-  Returns the unique type identifier for the SoCone class.
-*/
-SoType
-SoCone::getClassTypeId(void)
-{
-  return SoCone::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoCone::getTypeId(void) const
-{
-  return SoCone::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoCone);
 
 
 // parameterized equation for a point on a line:
@@ -195,10 +166,7 @@ intersect_cone_line(const float bottomr,
 */
 SoCone::SoCone()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoCone)
-  // Make sure the class has been initialized.
-  assert(SoCone::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoCone);
 
   SO_NODE_ADD_FIELD(bottomRadius,(1.0f));
   SO_NODE_ADD_FIELD(height,(2.0f));
@@ -225,26 +193,7 @@ SoCone::~SoCone()
 void
 SoCone::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(Cone)
-  // Make sure we only initialize once.
-  assert(SoCone::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoCone::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Cone",
-                       &SoCone::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoCone::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoCone);
 }
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)

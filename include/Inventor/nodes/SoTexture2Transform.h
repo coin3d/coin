@@ -20,6 +20,7 @@
 #ifndef __SOTEXTURE2TRANSFORM_H__
 #define __SOTEXTURE2TRANSFORM_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoSFVec2f.h>
 #include <Inventor/fields/SoSFFloat.h>
@@ -35,24 +36,12 @@ class SbMatrix;
 class SoTexture2Transform : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoTexture2Transform)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoTexture2Transform);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoTexture2Transform(void);
-protected:
-  virtual ~SoTexture2Transform();
-//$ END TEMPLATE NodeHeader
 
-public:
   SoSFVec2f translation;
   SoSFFloat rotation;
   SoSFVec2f scaleFactor;
@@ -74,8 +63,10 @@ public:
   virtual void pick(SoPickAction * action);
 #endif // !COIN_EXCLUDE_SOPICKACTION
 
-private:
+protected:
+  virtual ~SoTexture2Transform();
 
+private:
   void calcMatrix(SbMatrix &mat);
 };
 

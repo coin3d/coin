@@ -25,8 +25,8 @@
   FIXME: write class doc
 */
 
-#include <Inventor/SbName.h>
-#include <Inventor/nodes/SoSubNode.h>
+
+
 #include <Inventor/nodes/SoBlinker.h>
 
 /*!
@@ -41,46 +41,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoBlinker)
-SoType SoBlinker::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoBlinker node class.
-*/
-void *
-SoBlinker::createInstance(void)
-{
-  return new SoBlinker;
-}
-
-/*!
-  Returns the unique type identifier for the SoBlinker class.
-*/
-SoType
-SoBlinker::getClassTypeId(void)
-{
-  return SoBlinker::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoBlinker::getTypeId(void) const
-{
-  return SoBlinker::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoBlinker);
 
 /*!
   Constructor.
 */
 SoBlinker::SoBlinker()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoBlinker)
-  // Make sure the class has been initialized.
-  assert(SoBlinker::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoBlinker);
 
   SO_NODE_ADD_FIELD(speed, (1));
   SO_NODE_ADD_FIELD(on, (TRUE));
@@ -101,26 +69,7 @@ SoBlinker::~SoBlinker()
 void
 SoBlinker::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(Blinker)
-  // Make sure we only initialize once.
-  assert(SoBlinker::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoBlinker::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Blinker",
-                       &SoBlinker::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoBlinker::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoBlinker);
 }
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)

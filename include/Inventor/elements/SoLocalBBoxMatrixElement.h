@@ -40,7 +40,6 @@ public:
   virtual ~SoLocalBBoxMatrixElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoLocalBBoxMatrixElement(void);

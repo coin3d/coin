@@ -20,6 +20,7 @@
 #ifndef __SOMULTIPLECOPY_H__
 #define __SOMULTIPLECOPY_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/fields/SoMFMatrix.h>
 
@@ -32,24 +33,12 @@
 class SoMultipleCopy : public SoGroup {
   typedef SoGroup inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoMultipleCopy)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoMultipleCopy);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoMultipleCopy(void);
-protected:
-  virtual ~SoMultipleCopy();
-//$ END TEMPLATE NodeHeader
 
-public:
   SoMFMatrix matrix;
 
   virtual SbBool affectsState(void) const;
@@ -81,6 +70,9 @@ public:
 #if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
+
+protected:
+  virtual ~SoMultipleCopy();
 };
 
 #endif // !__SOMULTIPLECOPY_H__

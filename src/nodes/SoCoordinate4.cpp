@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoCoordinate4.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -54,46 +54,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoCoordinate4)
-SoType SoCoordinate4::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoCoordinate4 node class.
-*/
-void *
-SoCoordinate4::createInstance(void)
-{
-  return new SoCoordinate4;
-}
-
-/*!
-  Returns the unique type identifier for the SoCoordinate4 class.
-*/
-SoType
-SoCoordinate4::getClassTypeId(void)
-{
-  return SoCoordinate4::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoCoordinate4::getTypeId(void) const
-{
-  return SoCoordinate4::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoCoordinate4);
 
 /*!
   Constructor.
 */
 SoCoordinate4::SoCoordinate4()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoCoordinate4)
-  // Make sure the class has been initialized.
-  assert(SoCoordinate4::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoCoordinate4);
 
   SO_NODE_ADD_FIELD(point, (SbVec4f(0.0f, 0.0f, 0.0f, 1.0f)));
 }
@@ -113,17 +81,7 @@ SoCoordinate4::~SoCoordinate4()
 void
 SoCoordinate4::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(Coordinate4)
-  // Make sure we only initialize once.
-  assert(SoCoordinate4::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoCoordinate4::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Coordinate4",
-                       &SoCoordinate4::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
+  SO_NODE_INTERNAL_INIT_CLASS(SoCoordinate4);
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   SO_ENABLE(SoGetBoundingBoxAction, SoCoordinateElement);
@@ -136,15 +94,6 @@ SoCoordinate4::initClass(void)
 #if !defined(COIN_EXCLUDE_SOPICKACTION)
   SO_ENABLE(SoPickAction, SoCoordinateElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoCoordinate4::cleanClass(void)
-{
 }
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)

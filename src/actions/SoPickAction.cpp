@@ -139,16 +139,6 @@ SoPickAction::initClass(void)
   ENABLE_ELEMENT(SoDecimationPercentageElement);
 }
 
-/*!
-  This static method is for cleaning up static data for the
-  SoPickAction class.
-*/
-
-void
-SoPickAction::cleanClass(void)
-{
-}
-
 // *************************************************************************
 
 /*!

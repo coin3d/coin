@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoShapeHints.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -115,46 +115,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoShapeHints)
-SoType SoShapeHints::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoShapeHints node class.
-*/
-void *
-SoShapeHints::createInstance(void)
-{
-  return new SoShapeHints;
-}
-
-/*!
-  Returns the unique type identifier for the SoShapeHints class.
-*/
-SoType
-SoShapeHints::getClassTypeId(void)
-{
-  return SoShapeHints::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoShapeHints::getTypeId(void) const
-{
-  return SoShapeHints::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoShapeHints);
 
 /*!
   Constructor.
 */
 SoShapeHints::SoShapeHints()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoShapeHints)
-  // Make sure the class has been initialized.
-  assert(SoShapeHints::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoShapeHints);
 
   SO_NODE_ADD_FIELD(vertexOrdering,(UNKNOWN_ORDERING));
   SO_NODE_ADD_FIELD(shapeType,(UNKNOWN_SHAPE_TYPE));
@@ -192,17 +160,7 @@ SoShapeHints::~SoShapeHints()
 void
 SoShapeHints::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(ShapeHints)
-  // Make sure we only initialize once.
-  assert(SoShapeHints::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoShapeHints::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "ShapeHints",
-                       &SoShapeHints::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
+  SO_NODE_INTERNAL_INIT_CLASS(SoShapeHints);
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   SO_ENABLE(SoGetBoundingBoxAction, SoShapeHintsElement);
@@ -218,15 +176,6 @@ SoShapeHints::initClass(void)
   SO_ENABLE(SoPickAction, SoShapeHintsElement);
   SO_ENABLE(SoPickAction, SoCreaseAngleElement);
 #endif // !COIN_EXCLUDE_SOPICKACTION
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoShapeHints::cleanClass(void)
-{
 }
 
 #if !defined(COIN_EXCLUDE_SOACTION)

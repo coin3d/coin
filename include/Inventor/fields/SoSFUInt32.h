@@ -40,7 +40,6 @@ public:
   virtual SoType getTypeId(void) const;
 
   static void initClass(void);
-  static void cleanClass(void);
 
   virtual void copyFrom(const SoField & field);
   const SoSFUInt32 & operator = (const SoSFUInt32 & field);

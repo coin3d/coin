@@ -26,42 +26,19 @@
 */
 
 #include <Inventor/nodes/SoTextureCoordinateFunction.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeAbstractSource(SoTextureCoordinateFunction)
-SoType SoTextureCoordinateFunction::classTypeId = SoType::badType();
-
-/*!
-  Returns the unique type identifier for the SoTextureCoordinateFunction class.
-*/
-SoType
-SoTextureCoordinateFunction::getClassTypeId(void)
-{
-  return SoTextureCoordinateFunction::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoTextureCoordinateFunction::getTypeId(void) const
-{
-  return SoTextureCoordinateFunction::classTypeId;
-}
-//$ END TEMPLATE NodeAbstractSource
+SO_NODE_ABSTRACT_SOURCE(SoTextureCoordinateFunction);
 
 /*!
   Constructor.
 */
 SoTextureCoordinateFunction::SoTextureCoordinateFunction()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoTextureCoordinateFunction)
-  // Make sure the class has been initialized.
-  assert(SoTextureCoordinateFunction::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoTextureCoordinateFunction);
 }
 
 /*!
@@ -79,24 +56,5 @@ SoTextureCoordinateFunction::~SoTextureCoordinateFunction()
 void
 SoTextureCoordinateFunction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeAbstractSource(TextureCoordinateFunction)
-  // Make sure we only initialize once.
-  assert(SoTextureCoordinateFunction::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoTextureCoordinateFunction::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "TextureCoordinateFunction",
-                       NULL,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeAbstractSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoTextureCoordinateFunction::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoTextureCoordinateFunction);
 }

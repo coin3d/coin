@@ -26,11 +26,11 @@
 */
 
 #include <Inventor/nodes/SoWWWInline.h>
-#include <Inventor/nodes/SoSubNode.h>
+
 
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SbColor.h>
-#include <Inventor/SbName.h>
+
 #include <Inventor/SoInput.h>
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
@@ -82,46 +82,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoWWWInline)
-SoType SoWWWInline::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoWWWInline node class.
-*/
-void *
-SoWWWInline::createInstance(void)
-{
-  return new SoWWWInline;
-}
-
-/*!
-  Returns the unique type identifier for the SoWWWInline class.
-*/
-SoType
-SoWWWInline::getClassTypeId(void)
-{
-  return SoWWWInline::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoWWWInline::getTypeId(void) const
-{
-  return SoWWWInline::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoWWWInline);
 
 /*!
   Constructor.
 */
 SoWWWInline::SoWWWInline()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoWWWInline)
-  // Make sure the class has been initialized.
-  assert(SoWWWInline::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoWWWInline);
 
   SO_NODE_ADD_FIELD(name, ("<Undefined file>"));
   SO_NODE_ADD_FIELD(bboxCenter, (0.0f, 0.0f, 0.0f));
@@ -144,28 +112,8 @@ SoWWWInline::~SoWWWInline()
 void
 SoWWWInline::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(WWWInline)
-  // Make sure we only initialize once.
-  assert(SoWWWInline::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoWWWInline::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "WWWInline",
-                       &SoWWWInline::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
+  SO_NODE_INTERNAL_INIT_CLASS(SoWWWInline);
 }
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoWWWInline::cleanClass(void)
-{
-}
-
 
 /*!
   FIXME: write function documentation

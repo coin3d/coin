@@ -20,6 +20,7 @@
 #ifndef __SOARRAY_H__
 #define __SOARRAY_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFShort.h>
@@ -34,24 +35,12 @@
 class SoArray : public SoGroup {
     typedef SoGroup inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoArray)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoArray);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoArray(void);
-protected:
-  virtual ~SoArray();
-//$ END TEMPLATE NodeHeader
 
-public:
   enum Origin {
     FIRST, CENTER, LAST
   };
@@ -93,6 +82,9 @@ public:
 #if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
+
+protected:
+  virtual ~SoArray();
 };
 
 #endif // !__SOARRAY_H__

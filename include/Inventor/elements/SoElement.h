@@ -144,12 +144,11 @@ public:
   virtual ~SoElement(void);
   static  int getClassStackIndex(void);
 
-  static  void initClass(void);
-  static  void cleanClass(void);
+  static void initClass(void);
 
 protected:
-          SoElement(void);
-  static  int classStackIndex;
+  SoElement(void);
+  static int classStackIndex;
 //$ END TEMPLATE AbstractElementHeader
 
 public:
@@ -166,7 +165,6 @@ public:
   virtual SoElement * copyMatchInfo(void) const = 0;
   
   static void initElements(void); // only for base class (SoElement)
-  static void cleanElements(void); // only for base class (SoElement)
 
   static int getNumStackIndices(void);
   static SoType getIdFromStackIndex(const int stackIndex);

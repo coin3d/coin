@@ -40,7 +40,6 @@ public:
   virtual ~SoGLLineWidthElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoGLLineWidthElement(void);

@@ -41,6 +41,7 @@
 //
 static SoGetMatrixAction *matrixAction = NULL;
 
+#if 0 // FIXME: re-code to be run automatically upon exit. 19991106 mortene.
 /*!
   Will be called at the end of your program to free static memory
   used by this class.
@@ -51,6 +52,7 @@ SoPickedPoint::cleanClass()
   delete matrixAction;
   matrixAction = NULL;
 }
+#endif // re-code
 
 /*!
   FIXME: write doc

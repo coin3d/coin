@@ -25,9 +25,9 @@
   FIXME: write class doc
 */
 
-#include <Inventor/SbName.h>
+
 #include <Inventor/nodes/SoExtSelection.h>
-#include <Inventor/nodes/SoSubNode.h>
+
 
 /*!
   \enum SoExtSelection::LassoType
@@ -79,46 +79,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoExtSelection)
-SoType SoExtSelection::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoExtSelection node class.
-*/
-void *
-SoExtSelection::createInstance(void)
-{
-  return new SoExtSelection;
-}
-
-/*!
-  Returns the unique type identifier for the SoExtSelection class.
-*/
-SoType
-SoExtSelection::getClassTypeId(void)
-{
-  return SoExtSelection::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoExtSelection::getTypeId(void) const
-{
-  return SoExtSelection::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoExtSelection);
 
 /*!
   Constructor.
 */
 SoExtSelection::SoExtSelection()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoExtSelection)
-  // Make sure the class has been initialized.
-  assert(SoExtSelection::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoExtSelection);
 
   SO_NODE_ADD_FIELD(lassoType, (SoExtSelection::NOLASSO));
   SO_NODE_ADD_FIELD(lassoPolicy, (SoExtSelection::FULL_BBOX));
@@ -150,26 +118,7 @@ SoExtSelection::~SoExtSelection()
 void
 SoExtSelection::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(ExtSelection)
-  // Make sure we only initialize once.
-  assert(SoExtSelection::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoExtSelection::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "ExtSelection",
-                       &SoExtSelection::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoExtSelection::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoExtSelection);
 }
 
 

@@ -136,17 +136,6 @@ SoShapeStyleElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the SoShapeStyleElement class.
-*/
-
-void
-SoShapeStyleElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoShapeStyleElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoShapeStyleElement::createInstance(void)

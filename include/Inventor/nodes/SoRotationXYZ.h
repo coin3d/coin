@@ -20,6 +20,7 @@
 #ifndef __SOROTATIONXYZ_H__
 #define __SOROTATIONXYZ_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoTransformation.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFFloat.h>
@@ -35,24 +36,12 @@
 class SoRotationXYZ : public SoTransformation {
   typedef SoTransformation inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoRotationXYZ)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoRotationXYZ);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoRotationXYZ(void);
-protected:
-  virtual ~SoRotationXYZ();
-//$ END TEMPLATE NodeHeader
 
-public:
   enum Axis {
     X, Y, Z
   };
@@ -83,6 +72,9 @@ public:
 #if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
+
+protected:
+  virtual ~SoRotationXYZ();
 
 private:
   SbBool getVector(SbVec3f & rotvec);

@@ -50,7 +50,6 @@ public:
   static void enableElement(const SoType type, const int stackIndex);
 
   static void initClass(void);
-  static void cleanClass(void);
 
   virtual ~SoSearchAction();
 //$ END TEMPLATE ActionHeader

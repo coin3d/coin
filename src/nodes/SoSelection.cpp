@@ -25,9 +25,9 @@
   FIXME: write class doc
 */
 
-#include <Inventor/SbName.h>
+
 #include <Inventor/nodes/SoSelection.h>
-#include <Inventor/nodes/SoSubNode.h>
+
 
 /*!
   \enum SoSelection::Policy
@@ -55,46 +55,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoSelection)
-SoType SoSelection::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoSelection node class.
-*/
-void *
-SoSelection::createInstance(void)
-{
-  return new SoSelection;
-}
-
-/*!
-  Returns the unique type identifier for the SoSelection class.
-*/
-SoType
-SoSelection::getClassTypeId(void)
-{
-  return SoSelection::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoSelection::getTypeId(void) const
-{
-  return SoSelection::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoSelection);
 
 /*!
   Constructor.
 */
 SoSelection::SoSelection()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoSelection)
-  // Make sure the class has been initialized.
-  assert(SoSelection::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoSelection);
 
   SO_NODE_ADD_FIELD(policy, (SoSelection::SHIFT));
 
@@ -119,26 +87,7 @@ SoSelection::~SoSelection()
 void
 SoSelection::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(Selection)
-  // Make sure we only initialize once.
-  assert(SoSelection::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoSelection::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Selection",
-                       &SoSelection::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoSelection::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoSelection);
 }
 
 

@@ -23,7 +23,6 @@
 class SoNodeKit {
 public:
   static void init(void);
-  static void clean(void);
 };
 
 #endif // !__SONODEKIT_H__

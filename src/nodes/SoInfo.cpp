@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoInfo.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 /*!
   \var SoSFString SoInfo::string
@@ -36,46 +36,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoInfo)
-SoType SoInfo::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoInfo node class.
-*/
-void *
-SoInfo::createInstance(void)
-{
-  return new SoInfo;
-}
-
-/*!
-  Returns the unique type identifier for the SoInfo class.
-*/
-SoType
-SoInfo::getClassTypeId(void)
-{
-  return SoInfo::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoInfo::getTypeId(void) const
-{
-  return SoInfo::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoInfo);
 
 /*!
   Constructor.
 */
 SoInfo::SoInfo()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoInfo)
-  // Make sure the class has been initialized.
-  assert(SoInfo::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoInfo);
 
   SO_NODE_ADD_FIELD(string, ("<Undefined info>"));
 }
@@ -95,24 +63,5 @@ SoInfo::~SoInfo()
 void
 SoInfo::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(Info)
-  // Make sure we only initialize once.
-  assert(SoInfo::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoInfo::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Info",
-                       &SoInfo::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoInfo::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoInfo);
 }

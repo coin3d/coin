@@ -113,18 +113,6 @@ SoGLPointSizeElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the
-  SoGLPointSizeElement class.
-*/
-
-void
-SoGLPointSizeElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoGLPointSizeElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoGLPointSizeElement::createInstance(void)

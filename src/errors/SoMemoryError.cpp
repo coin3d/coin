@@ -73,15 +73,6 @@ SoMemoryError::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the SoMemoryError class.
-*/
-
-void
-SoMemoryError::cleanClass(void)
-{
-}
-
-/*!
   FIXME: write doc.
 */
 

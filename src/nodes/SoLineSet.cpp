@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoLineSet.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
@@ -98,46 +98,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoLineSet)
-SoType SoLineSet::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoLineSet node class.
-*/
-void *
-SoLineSet::createInstance(void)
-{
-  return new SoLineSet;
-}
-
-/*!
-  Returns the unique type identifier for the SoLineSet class.
-*/
-SoType
-SoLineSet::getClassTypeId(void)
-{
-  return SoLineSet::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoLineSet::getTypeId(void) const
-{
-  return SoLineSet::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoLineSet);
 
 /*!
   Constructor.
 */
 SoLineSet::SoLineSet()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoLineSet)
-  // Make sure the class has been initialized.
-  assert(SoLineSet::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoLineSet);
 
   SO_NODE_ADD_FIELD(numVertices, (-1));
 }
@@ -157,26 +125,7 @@ SoLineSet::~SoLineSet()
 void
 SoLineSet::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(LineSet)
-  // Make sure we only initialize once.
-  assert(SoLineSet::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoLineSet::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "LineSet",
-                       &SoLineSet::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoLineSet::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoLineSet);
 }
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)

@@ -40,7 +40,6 @@ public:
   virtual ~SoShapeStyleElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoShapeStyleElement(void);

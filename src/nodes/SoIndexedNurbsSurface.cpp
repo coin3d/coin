@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoIndexedNurbsSurface.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 /*!
   \var SoSFInt32 SoIndexedNurbsSurface::numUControlPoints
@@ -73,46 +73,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoIndexedNurbsSurface)
-SoType SoIndexedNurbsSurface::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoIndexedNurbsSurface node class.
-*/
-void *
-SoIndexedNurbsSurface::createInstance(void)
-{
-  return new SoIndexedNurbsSurface;
-}
-
-/*!
-  Returns the unique type identifier for the SoIndexedNurbsSurface class.
-*/
-SoType
-SoIndexedNurbsSurface::getClassTypeId(void)
-{
-  return SoIndexedNurbsSurface::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoIndexedNurbsSurface::getTypeId(void) const
-{
-  return SoIndexedNurbsSurface::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoIndexedNurbsSurface);
 
 /*!
   Constructor.
 */
 SoIndexedNurbsSurface::SoIndexedNurbsSurface()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoIndexedNurbsSurface)
-  // Make sure the class has been initialized.
-  assert(SoIndexedNurbsSurface::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoIndexedNurbsSurface);
 
   SO_NODE_ADD_FIELD(numUControlPoints, (0));
   SO_NODE_ADD_FIELD(numVControlPoints, (0));
@@ -141,26 +109,7 @@ SoIndexedNurbsSurface::~SoIndexedNurbsSurface()
 void
 SoIndexedNurbsSurface::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(IndexedNurbsSurface)
-  // Make sure we only initialize once.
-  assert(SoIndexedNurbsSurface::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoIndexedNurbsSurface::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "IndexedNurbsSurface",
-                       &SoIndexedNurbsSurface::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoIndexedNurbsSurface::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoIndexedNurbsSurface);
 }
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)

@@ -114,18 +114,6 @@ SoGLShadeModelElement::initClass()
 }
 
 /*!
-  This static method cleans up static data for the
-  SoGLShadeModelElement class.
-*/
-
-void
-SoGLShadeModelElement::cleanClass()
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoGLShadeModelElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoGLShadeModelElement::createInstance(void)

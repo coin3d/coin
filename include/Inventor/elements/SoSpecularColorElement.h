@@ -42,7 +42,6 @@ public:
   virtual ~SoSpecularColorElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoSpecularColorElement(void);

@@ -20,6 +20,7 @@
 #ifndef __SODRAWSTYLE_H__
 #define __SODRAWSTYLE_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFFloat.h>
@@ -36,24 +37,12 @@
 class SoDrawStyle : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoDrawStyle)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoDrawStyle);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoDrawStyle(void);
-protected:
-  virtual ~SoDrawStyle();
-//$ END TEMPLATE NodeHeader
 
-public:
   enum Style {
     FILLED = SoDrawStyleElement::FILLED,
     LINES = SoDrawStyleElement::LINES,
@@ -77,6 +66,9 @@ public:
 #if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   virtual void callback(SoCallbackAction *action);
 #endif
+
+protected:
+  virtual ~SoDrawStyle();
 };
 
 #endif // !__SODRAWSTYLE_H__

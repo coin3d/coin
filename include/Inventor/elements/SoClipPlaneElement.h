@@ -43,7 +43,6 @@ public:
   virtual ~SoClipPlaneElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoClipPlaneElement(void);

@@ -136,18 +136,6 @@ SoModelMatrixElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the
-  SoModelMatrixElement class.
-*/
-
-void
-SoModelMatrixElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoModelMatrixElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa SoModelMatrixElement::createInstance(void)

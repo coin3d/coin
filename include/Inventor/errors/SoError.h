@@ -56,11 +56,9 @@ public:
 #endif // !COIN_EXCLUDE_SOENGINE
 
   static void initClass(void);
-  static void cleanClass(void);
 
   static void initClasses(void);
   static void initErrors(void);
-  static void cleanErrors(void);
 
 protected:
   virtual ~SoError() { }

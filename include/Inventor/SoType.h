@@ -67,7 +67,6 @@ public:
 				   const instantiationMethod method = NULL);
   
   static void init(void);
-  static void clean(void);
 
   static SoType fromKey(uint16_t key);
   static SoType badType(void);

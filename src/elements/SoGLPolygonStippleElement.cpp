@@ -203,18 +203,6 @@ SoGLPolygonStippleElement::initClass()
 }
 
 /*!
-  This static method cleans up static data for the
-  SoGLPolygonStippleElement class.
-*/
-
-void 
-SoGLPolygonStippleElement::cleanClass()
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoGLPolygonStippleElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoGLPolygonStippleElement::createInstance(void)

@@ -114,18 +114,6 @@ SoGLProjectionMatrixElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the
-  SoGLProjectionMatrixElement class.
-*/
-
-void
-SoGLProjectionMatrixElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoGLProjectionMatrixElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoGLProjectionMatrixElement::createInstance(void)

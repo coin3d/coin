@@ -111,18 +111,6 @@ SoGLCoordinateElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the
-  SoGLCoordinateElement class.
-*/
-
-void
-SoGLCoordinateElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoGLCoordinateElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoGLCoordinateElement::createInstance(void)

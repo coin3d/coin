@@ -106,18 +106,6 @@ SoDirectionalLightElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the
-  SoDirectionalLightElement class.
-*/
-
-void
-SoDirectionalLightElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoDirectionalLightElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoDirectionalLightElement::createInstance(void)

@@ -106,18 +106,6 @@ SoFocalDistanceElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the
-  SoFocalDistanceElement class.
-*/
-
-void
-SoFocalDistanceElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoFocalDistanceElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoFocalDistanceElement::createInstance(void)

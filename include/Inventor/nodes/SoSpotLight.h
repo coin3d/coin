@@ -20,6 +20,7 @@
 #ifndef __SOSPOTLIGHT_H__
 #define __SOSPOTLIGHT_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoLight.h>
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/fields/SoSFFloat.h>
@@ -33,24 +34,12 @@
 class SoSpotLight : public SoLight {
   typedef SoLight inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoSpotLight)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoSpotLight);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoSpotLight(void);
-protected:
-  virtual ~SoSpotLight();
-//$ END TEMPLATE NodeHeader
 
-public:
   SoSFVec3f location;
   SoSFVec3f direction;
   SoSFFloat dropOffRate;
@@ -59,6 +48,9 @@ public:
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction * action);
 #endif 
+
+protected:
+  virtual ~SoSpotLight();
 };
 
 #endif // !__SOSPOTLIGHT_H__

@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoRotation.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 #include <Inventor/SbVec3f.h>
 
 #if !defined(COIN_EXCLUDE_SOACTION)
@@ -54,46 +54,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoRotation)
-SoType SoRotation::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoRotation node class.
-*/
-void *
-SoRotation::createInstance(void)
-{
-  return new SoRotation;
-}
-
-/*!
-  Returns the unique type identifier for the SoRotation class.
-*/
-SoType
-SoRotation::getClassTypeId(void)
-{
-  return SoRotation::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoRotation::getTypeId(void) const
-{
-  return SoRotation::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoRotation);
 
 /*!
   Constructor.
 */
 SoRotation::SoRotation()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoRotation)
-  // Make sure the class has been initialized.
-  assert(SoRotation::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoRotation);
 
   SO_NODE_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
 }
@@ -113,26 +81,7 @@ SoRotation::~SoRotation()
 void
 SoRotation::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(Rotation)
-  // Make sure we only initialize once.
-  assert(SoRotation::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoRotation::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Rotation",
-                       &SoRotation::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoRotation::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoRotation);
 }
 
 #if !defined(COIN_EXCLUDE_SOACTION)

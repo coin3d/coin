@@ -40,7 +40,6 @@ public:
   virtual ~SoGLCoordinateElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoGLCoordinateElement(void);

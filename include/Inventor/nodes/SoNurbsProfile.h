@@ -20,6 +20,7 @@
 #ifndef __SONURBSPROFILE_H__
 #define __SONURBSPROFILE_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoProfile.h>
 #include <Inventor/fields/SoMFFloat.h>
 
@@ -32,24 +33,12 @@
 class SoNurbsProfile : public SoProfile {
   typedef SoProfile inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoNurbsProfile)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoNurbsProfile);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoNurbsProfile(void);
-protected:
-  virtual ~SoNurbsProfile();
-//$ END TEMPLATE NodeHeader
 
-public:
   SoMFFloat knotVector;
 
   virtual void getTrimCurve(SoState * state, int32_t & numPoints,
@@ -57,6 +46,9 @@ public:
 			    int32_t & numKnots, float *& knotVector);
   virtual void getVertices(SoState * state, int32_t & nVertices,
 			   SbVec2f *& vertices);
+
+protected:
+  virtual ~SoNurbsProfile();
 };
 
 #endif // !__SONURBSPROFILE_H__

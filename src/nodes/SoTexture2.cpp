@@ -26,9 +26,9 @@
 */
 
 #include <Inventor/nodes/SoTexture2.h>
-#include <Inventor/nodes/SoSubNode.h>
 
-#include <Inventor/SbName.h>
+
+
 #include <Inventor/SoInput.h>
 #include <Inventor/errors/SoDebugError.h>
 
@@ -104,46 +104,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoTexture2)
-SoType SoTexture2::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoTexture2 node class.
-*/
-void *
-SoTexture2::createInstance(void)
-{
-  return new SoTexture2;
-}
-
-/*!
-  Returns the unique type identifier for the SoTexture2 class.
-*/
-SoType
-SoTexture2::getClassTypeId(void)
-{
-  return SoTexture2::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoTexture2::getTypeId(void) const
-{
-  return SoTexture2::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoTexture2);
 
 /*!
   Constructor.
 */
 SoTexture2::SoTexture2()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoTexture2)
-  // Make sure the class has been initialized.
-  assert(SoTexture2::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoTexture2);
 
   SO_NODE_ADD_FIELD(filename,(""));
   SO_NODE_ADD_FIELD(image,(SbVec2s(0,0), 0, NULL));
@@ -186,31 +154,12 @@ SoTexture2::~SoTexture2()
 void
 SoTexture2::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(Texture2)
-  // Make sure we only initialize once.
-  assert(SoTexture2::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoTexture2::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Texture2",
-                       &SoTexture2::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
+  SO_NODE_INTERNAL_INIT_CLASS(SoTexture2);
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoGLTextureImageElement);
   SO_ENABLE(SoGLRenderAction, SoGLTextureEnabledElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoTexture2::cleanClass(void)
-{
 }
 
 

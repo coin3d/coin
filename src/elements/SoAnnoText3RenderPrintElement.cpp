@@ -112,18 +112,6 @@ SoAnnoText3RenderPrintElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the
-  SoAnnoText3RenderPrintElement class.
-*/
-
-void
-SoAnnoText3RenderPrintElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoAnnoText3RenderPrintElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoAnnoText3RenderPrintElement::createInstance()

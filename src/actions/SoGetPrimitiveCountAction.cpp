@@ -129,16 +129,6 @@ SoGetPrimitiveCountAction::initClass(void)
   methods->setDefault((void *)SoNode::getPrimitiveCountS);
 }
 
-/*!
-  This static method cleans up the static data for the
-  SoGetPrimitiveCount class.
-*/
-
-void
-SoGetPrimitiveCountAction::cleanClass(void)
-{
-}
-
 // *************************************************************************
 
 /*!

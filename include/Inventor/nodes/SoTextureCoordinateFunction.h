@@ -20,6 +20,7 @@
 #ifndef __SOTEXTURECOORDINATEFUNCTION_H__
 #define __SOTEXTURECOORDINATEFUNCTION_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 
 #if defined(COIN_EXCLUDE_SOTEXTURECOORDINATEFUNCTION)
@@ -31,21 +32,14 @@
 class SoTextureCoordinateFunction : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeAbstractHeader(SoTextureCoordinateFunction)
-private:
-  static SoType classTypeId;
+  SO_NODE_ABSTRACT_HEADER(SoTextureCoordinateFunction);
 
 public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-public:
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoTextureCoordinateFunction(void);
   virtual ~SoTextureCoordinateFunction();
-//$ END TEMPLATE NodeAbstractHeader
 };
 
 #endif // !__SOTEXTURECOORDINATEFUNCTION_H__

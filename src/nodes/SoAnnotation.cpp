@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoAnnotation.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -41,46 +41,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoAnnotation)
-SoType SoAnnotation::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoAnnotation node class.
-*/
-void *
-SoAnnotation::createInstance(void)
-{
-  return new SoAnnotation;
-}
-
-/*!
-  Returns the unique type identifier for the SoAnnotation class.
-*/
-SoType
-SoAnnotation::getClassTypeId(void)
-{
-  return SoAnnotation::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoAnnotation::getTypeId(void) const
-{
-  return SoAnnotation::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoAnnotation);
 
 /*!
   Constructor.
 */
 SoAnnotation::SoAnnotation()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoAnnotation)
-  // Make sure the class has been initialized.
-  assert(SoAnnotation::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoAnnotation);
 }
 
 /*!
@@ -98,26 +66,7 @@ SoAnnotation::~SoAnnotation()
 void
 SoAnnotation::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(Annotation)
-  // Make sure we only initialize once.
-  assert(SoAnnotation::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoAnnotation::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Annotation",
-                       &SoAnnotation::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoAnnotation::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoAnnotation);
 }
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)

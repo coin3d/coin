@@ -20,6 +20,7 @@
 #ifndef __SOTEXTURECOORDINATEDEFAULT_H__
 #define __SOTEXTURECOORDINATEDEFAULT_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoTextureCoordinateFunction.h>
 
 #if defined(COIN_EXCLUDE_SOTEXTURECOORDINATEDEFAULT)
@@ -31,24 +32,12 @@
 class SoTextureCoordinateDefault : public SoTextureCoordinateFunction {
   typedef SoTextureCoordinateFunction inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoTextureCoordinateDefault)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoTextureCoordinateDefault);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoTextureCoordinateDefault(void);
-protected:
-  virtual ~SoTextureCoordinateDefault();
-//$ END TEMPLATE NodeHeader
 
-public:
 
 #if !defined(COIN_EXCLUDE_SOACTION)
   virtual void doAction(SoAction *action);
@@ -63,6 +52,8 @@ public:
   virtual void pick(SoPickAction * action);
 #endif // !COIN_EXCLUDE_SOPICKACTION
 
+protected:
+  virtual ~SoTextureCoordinateDefault();
 };
 
 #endif // !__SOTEXTURECOORDINATEDEFAULT_H__

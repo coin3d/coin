@@ -40,7 +40,6 @@ public:
   virtual ~SoDecimationPercentageElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoDecimationPercentageElement(void);

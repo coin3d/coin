@@ -160,18 +160,6 @@ SoTextureImageElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the
-  SoTextureImageElement class.
-*/
-
-void
-SoTextureImageElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoTextureImageElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoTextureImageElement::createInstance(void)

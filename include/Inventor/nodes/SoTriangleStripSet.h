@@ -20,6 +20,7 @@
 #ifndef __SOTRIANGLESTRIPSET_H__
 #define __SOTRIANGLESTRIPSET_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNonIndexedShape.h>
 #include <Inventor/fields/SoMFInt32.h>
 
@@ -32,24 +33,12 @@
 class SoTriangleStripSet : public SoNonIndexedShape {
   typedef SoNonIndexedShape inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoTriangleStripSet)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoTriangleStripSet);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoTriangleStripSet(void);
-protected:
-  virtual ~SoTriangleStripSet();
-//$ END TEMPLATE NodeHeader
 
-public:
   enum Binding {
     OVERALL = 0,
     PER_STRIP,
@@ -69,6 +58,8 @@ public:
   virtual SbBool generateDefaultNormals(SoState * state, SoNormalBundle * nb);
 
 protected:
+  virtual ~SoTriangleStripSet();
+
 #if !defined(COIN_EXCLUDE_SOACTION)
   virtual void generatePrimitives(SoAction * action);
 #endif // !COIN_EXCLUDE_SOACTION

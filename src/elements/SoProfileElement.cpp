@@ -118,17 +118,6 @@ SoProfileElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the SoProofileElement class.
-*/
-
-void
-SoProfileElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoProfileElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoProfileElement::createInstance(void)

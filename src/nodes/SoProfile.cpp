@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoProfile.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #if !defined(COIN_EXCLUDE_SOACTION)
 #include <Inventor/actions/SoAction.h>
@@ -90,37 +90,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeAbstractSource(SoProfile)
-SoType SoProfile::classTypeId = SoType::badType();
-
-/*!
-  Returns the unique type identifier for the SoProfile class.
-*/
-SoType
-SoProfile::getClassTypeId(void)
-{
-  return SoProfile::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoProfile::getTypeId(void) const
-{
-  return SoProfile::classTypeId;
-}
-//$ END TEMPLATE NodeAbstractSource
+SO_NODE_ABSTRACT_SOURCE(SoProfile);
 
 /*!
   Constructor.
 */
 SoProfile::SoProfile()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoProfile)
-  // Make sure the class has been initialized.
-  assert(SoProfile::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoProfile);
 
   SO_NODE_ADD_FIELD(index, (0));
   SO_NODE_ADD_FIELD(linkage, (START_FIRST));
@@ -141,17 +118,7 @@ SoProfile::~SoProfile()
 void
 SoProfile::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeAbstractSource(Profile)
-  // Make sure we only initialize once.
-  assert(SoProfile::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoProfile::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Profile",
-                       NULL,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeAbstractSource
+  SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoProfile);
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   SO_ENABLE(SoGetBoundingBoxAction, SoProfileElement);
@@ -167,15 +134,6 @@ SoProfile::initClass(void)
   SO_ENABLE(SoPickAction, SoProfileElement);
   SO_ENABLE(SoPickAction, SoProfileCoordinateElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoProfile::cleanClass(void)
-{
 }
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)

@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoTextureCoordinateBinding.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -68,46 +68,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoTextureCoordinateBinding)
-SoType SoTextureCoordinateBinding::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoTextureCoordinateBinding node class.
-*/
-void *
-SoTextureCoordinateBinding::createInstance(void)
-{
-  return new SoTextureCoordinateBinding;
-}
-
-/*!
-  Returns the unique type identifier for the SoTextureCoordinateBinding class.
-*/
-SoType
-SoTextureCoordinateBinding::getClassTypeId(void)
-{
-  return SoTextureCoordinateBinding::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoTextureCoordinateBinding::getTypeId(void) const
-{
-  return SoTextureCoordinateBinding::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoTextureCoordinateBinding);
 
 /*!
   Constructor.
 */
 SoTextureCoordinateBinding::SoTextureCoordinateBinding()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoTextureCoordinateBinding)
-  // Make sure the class has been initialized.
-  assert(SoTextureCoordinateBinding::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoTextureCoordinateBinding);
   
   SO_NODE_ADD_FIELD(value, (SoTextureCoordinateBinding::PER_VERTEX_INDEXED));
 
@@ -131,17 +99,7 @@ SoTextureCoordinateBinding::~SoTextureCoordinateBinding()
 void
 SoTextureCoordinateBinding::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(TextureCoordinateBinding)
-  // Make sure we only initialize once.
-  assert(SoTextureCoordinateBinding::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoTextureCoordinateBinding::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "TextureCoordinateBinding",
-                       &SoTextureCoordinateBinding::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
+  SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinateBinding);
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoTextureCoordinateBindingElement);
@@ -152,15 +110,6 @@ SoTextureCoordinateBinding::initClass(void)
 #if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   SO_ENABLE(SoCallbackAction, SoTextureCoordinateBindingElement);
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoTextureCoordinateBinding::cleanClass(void)
-{
 }
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)

@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoDrawStyle.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -101,46 +101,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoDrawStyle)
-SoType SoDrawStyle::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoDrawStyle node class.
-*/
-void *
-SoDrawStyle::createInstance(void)
-{
-  return new SoDrawStyle;
-}
-
-/*!
-  Returns the unique type identifier for the SoDrawStyle class.
-*/
-SoType
-SoDrawStyle::getClassTypeId(void)
-{
-  return SoDrawStyle::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoDrawStyle::getTypeId(void) const
-{
-  return SoDrawStyle::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoDrawStyle);
 
 /*!
   Constructor.
 */
 SoDrawStyle::SoDrawStyle()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoDrawStyle)
-  // Make sure the class has been initialized.
-  assert(SoDrawStyle::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoDrawStyle);
   
   SO_NODE_ADD_FIELD(style, (SoDrawStyle::FILLED));
   SO_NODE_ADD_FIELD(pointSize, (0));
@@ -169,17 +137,7 @@ SoDrawStyle::~SoDrawStyle()
 void
 SoDrawStyle::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(DrawStyle)
-  // Make sure we only initialize once.
-  assert(SoDrawStyle::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoDrawStyle::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "DrawStyle",
-                       &SoDrawStyle::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
+  SO_NODE_INTERNAL_INIT_CLASS(SoDrawStyle);
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoGLDrawStyleElement);
@@ -189,15 +147,6 @@ SoDrawStyle::initClass(void)
   SO_ENABLE(SoGLRenderAction, SoGLPointSizeElement);
   SO_ENABLE(SoGLRenderAction, SoGLPolygonStippleElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoDrawStyle::cleanClass(void)
-{
 }
 
 /*!

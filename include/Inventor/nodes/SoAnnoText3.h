@@ -20,6 +20,7 @@
 #ifndef __SOANNOTEXT3_H__
 #define __SOANNOTEXT3_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/fields/SoMFString.h>
 #include <Inventor/fields/SoSFFloat.h>
@@ -35,24 +36,12 @@
 class SoAnnoText3 : public SoShape {
   typedef SoShape inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoAnnoText3)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoAnnoText3);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoAnnoText3(void);
-protected:
-  virtual ~SoAnnoText3();
-//$ END TEMPLATE NodeHeader
 
-public:
   enum Justification {
     LEFT = 1,
     RIGHT,
@@ -79,6 +68,8 @@ public:
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
 protected:
+  virtual ~SoAnnoText3();
+
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   virtual void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION

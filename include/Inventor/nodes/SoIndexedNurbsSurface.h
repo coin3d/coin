@@ -20,6 +20,7 @@
 #ifndef __SOINDEXEDNURBSSURFACE_H__
 #define __SOINDEXEDNURBSSURFACE_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/fields/SoMFInt32.h>
@@ -34,24 +35,12 @@
 class SoIndexedNurbsSurface : public SoShape {
     typedef SoShape inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoIndexedNurbsSurface)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoIndexedNurbsSurface);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoIndexedNurbsSurface(void);
-protected:
-  virtual ~SoIndexedNurbsSurface();
-//$ END TEMPLATE NodeHeader
 
-public:
   SoSFInt32 numUControlPoints;
   SoSFInt32 numVControlPoints;
   SoMFInt32 coordIndex;
@@ -77,6 +66,8 @@ public:
 #endif // !COIN_EXCLUDE_SOACTION
 
 protected:
+  virtual ~SoIndexedNurbsSurface();
+
 #if !defined(COIN_EXCLUDE_SOACTION)
   virtual void generatePrimitives(SoAction * action);
 #endif // !COIN_EXCLUDE_SOACTION

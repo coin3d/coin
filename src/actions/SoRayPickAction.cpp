@@ -176,16 +176,6 @@ SoRayPickAction::initClass(void)
   ENABLE_ELEMENT(SoViewportRegionElement);
 }
 
-/*!
-  This static method is for cleaning up static data for the SoRayPickAction
-  class.
-*/
-
-void
-SoRayPickAction::cleanClass(void)
-{
-}
-
 // *************************************************************************
 
 /*!

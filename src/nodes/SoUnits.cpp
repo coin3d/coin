@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoUnits.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -140,46 +140,14 @@ static const float factors[] = {
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoUnits)
-SoType SoUnits::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoUnits node class.
-*/
-void *
-SoUnits::createInstance(void)
-{
-  return new SoUnits;
-}
-
-/*!
-  Returns the unique type identifier for the SoUnits class.
-*/
-SoType
-SoUnits::getClassTypeId(void)
-{
-  return SoUnits::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoUnits::getTypeId(void) const
-{
-  return SoUnits::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoUnits);
 
 /*!
   Constructor.
 */
 SoUnits::SoUnits()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoUnits)
-  // Make sure the class has been initialized.
-  assert(SoUnits::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoUnits);
 
   SO_NODE_ADD_FIELD(units, (SoUnits::METERS));
 
@@ -215,17 +183,7 @@ SoUnits::~SoUnits()
 void
 SoUnits::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(Units)
-  // Make sure we only initialize once.
-  assert(SoUnits::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoUnits::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Units",
-                       &SoUnits::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
+  SO_NODE_INTERNAL_INIT_CLASS(SoUnits);
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   SO_ENABLE(SoGetBoundingBoxAction, SoUnitsElement);
@@ -233,15 +191,6 @@ SoUnits::initClass(void)
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoUnitsElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoUnits::cleanClass(void)
-{
 }
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)

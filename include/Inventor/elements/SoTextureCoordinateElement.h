@@ -52,7 +52,6 @@ public:
   virtual ~SoTextureCoordinateElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoTextureCoordinateElement(void);

@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoTextureCoordinateEnvironment.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #if !defined(COIN_EXCLUDE_SOTEXTURECOORDINATEELEMENT)
 #include <Inventor/elements/SoTextureCoordinateElement.h>
@@ -47,46 +47,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoTextureCoordinateEnvironment)
-SoType SoTextureCoordinateEnvironment::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoTextureCoordinateEnvironment node class.
-*/
-void *
-SoTextureCoordinateEnvironment::createInstance(void)
-{
-  return new SoTextureCoordinateEnvironment;
-}
-
-/*!
-  Returns the unique type identifier for the SoTextureCoordinateEnvironment class.
-*/
-SoType
-SoTextureCoordinateEnvironment::getClassTypeId(void)
-{
-  return SoTextureCoordinateEnvironment::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoTextureCoordinateEnvironment::getTypeId(void) const
-{
-  return SoTextureCoordinateEnvironment::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoTextureCoordinateEnvironment);
 
 /*!
   Constructor.
 */
 SoTextureCoordinateEnvironment::SoTextureCoordinateEnvironment()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoTextureCoordinateEnvironment)
-  // Make sure the class has been initialized.
-  assert(SoTextureCoordinateEnvironment::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoTextureCoordinateEnvironment);
 }
 
 /*!
@@ -104,26 +72,7 @@ SoTextureCoordinateEnvironment::~SoTextureCoordinateEnvironment()
 void
 SoTextureCoordinateEnvironment::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(TextureCoordinateEnvironment)
-  // Make sure we only initialize once.
-  assert(SoTextureCoordinateEnvironment::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoTextureCoordinateEnvironment::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "TextureCoordinateEnvironment",
-                       &SoTextureCoordinateEnvironment::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoTextureCoordinateEnvironment::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinateEnvironment);
 }
 
 /*!

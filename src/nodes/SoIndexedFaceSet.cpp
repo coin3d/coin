@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoIndexedFaceSet.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 #include <Inventor/lists/SbPList.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/caches/SoConvexDataCache.h>
@@ -112,46 +112,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoIndexedFaceSet)
-SoType SoIndexedFaceSet::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoIndexedFaceSet node class.
-*/
-void *
-SoIndexedFaceSet::createInstance(void)
-{
-  return new SoIndexedFaceSet;
-}
-
-/*!
-  Returns the unique type identifier for the SoIndexedFaceSet class.
-*/
-SoType
-SoIndexedFaceSet::getClassTypeId(void)
-{
-  return SoIndexedFaceSet::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoIndexedFaceSet::getTypeId(void) const
-{
-  return SoIndexedFaceSet::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoIndexedFaceSet);
 
 /*!
   Constructor.
 */
 SoIndexedFaceSet::SoIndexedFaceSet()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoIndexedFaceSet)
-  // Make sure the class has been initialized.
-  assert(SoIndexedFaceSet::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoIndexedFaceSet);
 
   this->numQuads = this->numTriangles = this->numPolygons = -1;
   this->convexCache = NULL;
@@ -174,26 +142,7 @@ SoIndexedFaceSet::~SoIndexedFaceSet()
 void
 SoIndexedFaceSet::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(IndexedFaceSet)
-  // Make sure we only initialize once.
-  assert(SoIndexedFaceSet::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoIndexedFaceSet::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "IndexedFaceSet",
-                       &SoIndexedFaceSet::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoIndexedFaceSet::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoIndexedFaceSet);
 }
 
 /*!

@@ -20,6 +20,7 @@
 #ifndef __SOROTOR_H__
 #define __SOROTOR_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoRotation.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFBool.h>
@@ -33,26 +34,17 @@
 class SoRotor : public SoRotation {
   typedef SoRotation inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoRotor)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoRotor);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoRotor(void);
-protected:
-  virtual ~SoRotor();
-//$ END TEMPLATE NodeHeader
 
-public:
   SoSFFloat speed;
   SoSFBool on;
+
+protected:
+  virtual ~SoRotor();
 };
 
 #endif // !__SOROTOR_H__

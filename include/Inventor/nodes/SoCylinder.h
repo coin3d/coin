@@ -20,6 +20,7 @@
 #ifndef __SOCYLINDER_H__
 #define __SOCYLINDER_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFBitMask.h>
@@ -33,24 +34,12 @@
 class SoCylinder : public SoShape {
   typedef SoShape inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoCylinder)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoCylinder);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoCylinder(void);
-protected:
-  virtual ~SoCylinder();
-//$ END TEMPLATE NodeHeader
 
-public:
   enum Part {
     SIDES = 1,
     TOP = 2,
@@ -80,6 +69,8 @@ public:
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
 protected:
+  virtual ~SoCylinder();
+
 #if !defined(COIN_EXCLUDE_SOACTION)
   virtual void generatePrimitives(SoAction * action);
 #endif // !COIN_EXCLUDE_SOACTION

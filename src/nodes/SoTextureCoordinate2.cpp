@@ -25,9 +25,9 @@
   FIXME: write class doc
 */
 
-#include <Inventor/SbName.h>
+
 #include <Inventor/nodes/SoTextureCoordinate2.h>
-#include <Inventor/nodes/SoSubNode.h>
+
 
 #if !defined(COIN_EXCLUDE_SOACTION)
 #include <Inventor/actions/SoAction.h>
@@ -54,46 +54,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoTextureCoordinate2)
-SoType SoTextureCoordinate2::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoTextureCoordinate2 node class.
-*/
-void *
-SoTextureCoordinate2::createInstance(void)
-{
-  return new SoTextureCoordinate2;
-}
-
-/*!
-  Returns the unique type identifier for the SoTextureCoordinate2 class.
-*/
-SoType
-SoTextureCoordinate2::getClassTypeId(void)
-{
-  return SoTextureCoordinate2::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoTextureCoordinate2::getTypeId(void) const
-{
-  return SoTextureCoordinate2::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoTextureCoordinate2);
 
 /*!
   Constructor.
 */
 SoTextureCoordinate2::SoTextureCoordinate2()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoTextureCoordinate2)
-  // Make sure the class has been initialized.
-  assert(SoTextureCoordinate2::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoTextureCoordinate2);
   SO_NODE_ADD_FIELD(point, (NULL));
 }
 
@@ -112,30 +80,11 @@ SoTextureCoordinate2::~SoTextureCoordinate2()
 void
 SoTextureCoordinate2::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(TextureCoordinate2)
-  // Make sure we only initialize once.
-  assert(SoTextureCoordinate2::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoTextureCoordinate2::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "TextureCoordinate2",
-                       &SoTextureCoordinate2::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
+  SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinate2);
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoGLTextureCoordinateElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoTextureCoordinate2::cleanClass(void)
-{
 }
 
 #if !defined(COIN_EXCLUDE_SOACTION)

@@ -120,18 +120,6 @@ SoLightAttenuationElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the
-  SoLightAttenuationElement class.
-*/
-
-void
-SoLightAttenuationElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoLightAttenuationElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoLightAttenationElement::createInstance(void)

@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoNurbsCurve.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -70,46 +70,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoNurbsCurve)
-SoType SoNurbsCurve::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoNurbsCurve node class.
-*/
-void *
-SoNurbsCurve::createInstance(void)
-{
-  return new SoNurbsCurve;
-}
-
-/*!
-  Returns the unique type identifier for the SoNurbsCurve class.
-*/
-SoType
-SoNurbsCurve::getClassTypeId(void)
-{
-  return SoNurbsCurve::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoNurbsCurve::getTypeId(void) const
-{
-  return SoNurbsCurve::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoNurbsCurve);
 
 /*!
   Constructor.
 */
 SoNurbsCurve::SoNurbsCurve()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoNurbsCurve)
-  // Make sure the class has been initialized.
-  assert(SoNurbsCurve::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoNurbsCurve);
 
   SO_NODE_ADD_FIELD(numControlPoints, (0));
   SO_NODE_ADD_FIELD(knotVector, (0));
@@ -135,26 +103,7 @@ SoNurbsCurve::~SoNurbsCurve()
 void
 SoNurbsCurve::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(NurbsCurve)
-  // Make sure we only initialize once.
-  assert(SoNurbsCurve::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoNurbsCurve::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "NurbsCurve",
-                       &SoNurbsCurve::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoNurbsCurve::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoNurbsCurve);
 }
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)

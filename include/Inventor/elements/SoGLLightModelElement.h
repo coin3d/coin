@@ -40,7 +40,6 @@ public:
   virtual ~SoGLLightModelElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoGLLightModelElement(void);

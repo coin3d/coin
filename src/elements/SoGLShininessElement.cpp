@@ -112,18 +112,6 @@ SoGLShininessElement::initClass()
 }
 
 /*!
-  This static method cleans up static data for the
-  SoGLShininessElement class.
-*/
-
-void 
-SoGLShininessElement::cleanClass()
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoGLShininessElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoGLShininessElement::createInstance(void)

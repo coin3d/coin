@@ -20,6 +20,7 @@
 #ifndef __SOTEXT3_H__
 #define __SOTEXT3_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/fields/SoMFString.h>
 #include <Inventor/fields/SoSFFloat.h>
@@ -35,24 +36,12 @@
 class SoText3 : public SoShape {
   typedef SoShape inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoText3)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoText3);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoText3(void);
-protected:
-  virtual ~SoText3();
-//$ END TEMPLATE NodeHeader
 
-public:
   enum Part {
     FRONT = 1,
     SIDES = 2,
@@ -84,6 +73,8 @@ public:
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
 protected:
+  virtual ~SoText3();
+
 #if !defined(COIN_EXCLUDE_SOACTION)
   virtual void generatePrimitives(SoAction *);
 #endif // !COIN_EXCLUDE_SOACTION

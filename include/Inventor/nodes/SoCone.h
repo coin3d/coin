@@ -20,6 +20,7 @@
 #ifndef __SOCONE_H__
 #define __SOCONE_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFBitMask.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/nodes/SoShape.h>
@@ -33,24 +34,12 @@
 class SoCone : public SoShape {
   typedef SoShape inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoCone)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoCone);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoCone(void);
-protected:
-  virtual ~SoCone();
-//$ END TEMPLATE NodeHeader
 
-public:
   enum Part {
     SIDES = 1,
     BOTTOM,
@@ -79,6 +68,8 @@ public:
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
 protected:
+  virtual ~SoCone();
+
 #if !defined(COIN_EXCLUDE_SOACTION)
   virtual void generatePrimitives(SoAction *action);
 #endif // !COIN_EXCLUDE_SOACTION

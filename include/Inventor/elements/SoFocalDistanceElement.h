@@ -40,7 +40,6 @@ public:
   virtual ~SoFocalDistanceElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoFocalDistanceElement(void);

@@ -134,18 +134,6 @@ SoCoordinateElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the
-  SoCoordinateElement class.
-*/
-
-void
-SoCoordinateElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoCoordinateElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoCoordinateElement::createInstance(void)

@@ -20,6 +20,7 @@
 #ifndef __SONORMALBINDING_H__
 #define __SONORMALBINDING_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/nodes/SoNode.h>
 
@@ -32,24 +33,12 @@
 class SoNormalBinding : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoNormalBinding)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoNormalBinding);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoNormalBinding(void);
-protected:
-  virtual ~SoNormalBinding();
-//$ END TEMPLATE NodeHeader
 
-public:
   // Definitions must match 100% with the enum in
   // SoNormalBindingElement. DEFAULT and NONE are obsolete, but
   // included for compatibility with old code using Open Inventor.
@@ -84,6 +73,8 @@ public:
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
 protected:
+  virtual ~SoNormalBinding();
+
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
 };
 

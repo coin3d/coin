@@ -231,9 +231,7 @@ public:
   static int getByName(const SbName & name, SoNodeList & list);
   
   static void initClass(void);
-  static void cleanClass(void);
   static void initClasses(void);
-  static void cleanClasses(void);
 
   static uint32_t getNextNodeId(void);
   static int getActionMethodIndex(const SoType type);

@@ -20,6 +20,7 @@
 #ifndef __SOBLINKER_H__
 #define __SOBLINKER_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFBool.h>
@@ -33,24 +34,12 @@
 class SoBlinker : public SoSwitch {
     typedef SoSwitch inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoBlinker)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoBlinker);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoBlinker(void);
-protected:
-  virtual ~SoBlinker();
-//$ END TEMPLATE NodeHeader
 
-public:
   SoSFFloat speed;
   SoSFBool on;
 
@@ -60,6 +49,9 @@ public:
 #if !defined(COIN_EXCLUDE_SOWRITEACTION)
   virtual void write(SoWriteAction * action);
 #endif // !COIN_EXCLUDE_SOWRITEACTION
+
+protected:
+  virtual ~SoBlinker();
 };
 
 #endif // !__SOBLINKER_H__

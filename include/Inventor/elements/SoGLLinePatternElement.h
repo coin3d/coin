@@ -40,7 +40,6 @@ public:
   virtual ~SoGLLinePatternElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoGLLinePatternElement(void);

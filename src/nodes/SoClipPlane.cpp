@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoClipPlane.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -58,46 +58,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoClipPlane)
-SoType SoClipPlane::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoClipPlane node class.
-*/
-void *
-SoClipPlane::createInstance(void)
-{
-  return new SoClipPlane;
-}
-
-/*!
-  Returns the unique type identifier for the SoClipPlane class.
-*/
-SoType
-SoClipPlane::getClassTypeId(void)
-{
-  return SoClipPlane::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoClipPlane::getTypeId(void) const
-{
-  return SoClipPlane::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoClipPlane);
 
 /*!
   Constructor.
 */
 SoClipPlane::SoClipPlane()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoClipPlane)
-  // Make sure the class has been initialized.
-  assert(SoClipPlane::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoClipPlane);
 
   SO_NODE_ADD_FIELD(plane, (SbPlane(SbVec3f(1.0f, 0.0f, 0.0f), 0.0f)));
   SO_NODE_ADD_FIELD(on, (TRUE));
@@ -118,17 +86,7 @@ SoClipPlane::~SoClipPlane()
 void
 SoClipPlane::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(ClipPlane)
-  // Make sure we only initialize once.
-  assert(SoClipPlane::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoClipPlane::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "ClipPlane",
-                       &SoClipPlane::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
+  SO_NODE_INTERNAL_INIT_CLASS(SoClipPlane);
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoGLClipPlaneElement);
@@ -139,15 +97,6 @@ SoClipPlane::initClass(void)
 #if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   SO_ENABLE(SoCallbackAction, SoClipPlaneElement);
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoClipPlane::cleanClass(void)
-{
 }
 
 #if !defined(COIN_EXCLUDE_SOACTION)

@@ -26,10 +26,10 @@
 */
 
 #include <Inventor/nodes/SoCylinder.h>
-#include <Inventor/nodes/SoSubNode.h>
+
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/misc/SoState.h>
-#include <Inventor/SbName.h>
+
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -102,46 +102,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoCylinder)
-SoType SoCylinder::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoCylinder node class.
-*/
-void *
-SoCylinder::createInstance(void)
-{
-  return new SoCylinder;
-}
-
-/*!
-  Returns the unique type identifier for the SoCylinder class.
-*/
-SoType
-SoCylinder::getClassTypeId(void)
-{
-  return SoCylinder::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoCylinder::getTypeId(void) const
-{
-  return SoCylinder::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoCylinder);
 
 /*!
   Constructor.
 */
 SoCylinder::SoCylinder()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoCylinder)
-  // Make sure the class has been initialized.
-  assert(SoCylinder::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoCylinder);
 
   SO_NODE_ADD_FIELD(radius, (1.0f));
   SO_NODE_ADD_FIELD(height, (2.0f));
@@ -169,26 +137,7 @@ SoCylinder::~SoCylinder()
 void
 SoCylinder::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(Cylinder)
-  // Make sure we only initialize once.
-  assert(SoCylinder::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoCylinder::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Cylinder",
-                       &SoCylinder::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoCylinder::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoCylinder);
 }
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)

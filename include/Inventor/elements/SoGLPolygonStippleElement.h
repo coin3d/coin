@@ -40,7 +40,6 @@ public:
   virtual ~SoGLPolygonStippleElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoGLPolygonStippleElement(void);

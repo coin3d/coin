@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoComplexity.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -93,46 +93,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoComplexity)
-SoType SoComplexity::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoComplexity node class.
-*/
-void *
-SoComplexity::createInstance(void)
-{
-  return new SoComplexity;
-}
-
-/*!
-  Returns the unique type identifier for the SoComplexity class.
-*/
-SoType
-SoComplexity::getClassTypeId(void)
-{
-  return SoComplexity::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoComplexity::getTypeId(void) const
-{
-  return SoComplexity::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoComplexity);
 
 /*!
   Constructor.
 */
 SoComplexity::SoComplexity(void)
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoComplexity)
-  // Make sure the class has been initialized.
-  assert(SoComplexity::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoComplexity);
   
   SO_NODE_ADD_FIELD(type, (SoComplexity::OBJECT_SPACE));
   SO_NODE_ADD_FIELD(value, (0.5f));
@@ -159,17 +127,7 @@ SoComplexity::~SoComplexity()
 void
 SoComplexity::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(Complexity)
-  // Make sure we only initialize once.
-  assert(SoComplexity::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoComplexity::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Complexity",
-                       &SoComplexity::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
+  SO_NODE_INTERNAL_INIT_CLASS(SoComplexity);
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   SO_ENABLE(SoGetBoundingBoxAction, SoComplexityElement);
@@ -197,15 +155,6 @@ SoComplexity::initClass(void)
   SO_ENABLE(SoPickAction, SoShapeStyleElement);
 #endif // !COIN_EXCLUDE_SOPICKACTION
 
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoComplexity::cleanClass(void)
-{
 }
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)

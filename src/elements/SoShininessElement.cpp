@@ -122,17 +122,6 @@ SoShininessElement::initClass()
 }
 
 /*!
-  This static method cleans up static data for the SoShininessElement class.
-*/
-
-void 
-SoShininessElement::cleanClass()
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoShininessElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoShininessElement::createInstance(void)

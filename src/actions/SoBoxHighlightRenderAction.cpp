@@ -122,16 +122,6 @@ SoBoxHighlightRenderAction::initClass(void)
 //$ END TEMPLATE InitActionSource
 }
 
-/*!
-  This method cleans up the static data for the SoBoxHightlightRenderAction
-  class.
-*/
-
-void
-SoBoxHighlightRenderAction::cleanClass(void)
-{
-}
-
 // *************************************************************************
 
 /*!

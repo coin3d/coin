@@ -20,6 +20,7 @@
 #ifndef __SOEVENTCALLBACK_H__
 #define __SOEVENTCALLBACK_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/lists/SbPList.h>
 #include <Inventor/lists/SoTypeList.h>
@@ -42,24 +43,12 @@ typedef void SoEventCallbackCB(void * userData, SoEventCallback * node);
 class SoEventCallback : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoEventCallback)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoEventCallback);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoEventCallback(void);
-protected:
-  virtual ~SoEventCallback();
-//$ END TEMPLATE NodeHeader
 
-public:
   void setPath(SoPath * path);
   const SoPath * getPath(void);
 
@@ -81,6 +70,8 @@ public:
 #endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 
 protected:
+  virtual ~SoEventCallback();
+
 #if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
   virtual void handleEvent(SoHandleEventAction * action);
 #endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION

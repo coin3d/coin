@@ -42,7 +42,6 @@ public:
   virtual ~SoAmbientColorElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoAmbientColorElement(void);

@@ -33,7 +33,7 @@
 //
 
 #include <Inventor/nodes/SoVertexProperty.h>
-#include <Inventor/nodes/SoSubNode.h>
+
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -133,46 +133,14 @@
 */
 
 
-//$ BEGIN TEMPLATE NodeSource(SoVertexProperty)
-SoType SoVertexProperty::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoVertexProperty node class.
-*/
-void *
-SoVertexProperty::createInstance(void)
-{
-  return new SoVertexProperty;
-}
-
-/*!
-  Returns the unique type identifier for the SoVertexProperty class.
-*/
-SoType
-SoVertexProperty::getClassTypeId(void)
-{
-  return SoVertexProperty::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoVertexProperty::getTypeId(void) const
-{
-  return SoVertexProperty::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoVertexProperty);
 
 /*!
   Constructor.
 */
 SoVertexProperty::SoVertexProperty()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoVertexProperty)
-  // Make sure the class has been initialized.
-  assert(SoVertexProperty::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoVertexProperty);
 
   SO_NODE_ADD_FIELD(vertex, (0));
   SO_NODE_ADD_FIELD(texCoord, (0));
@@ -215,17 +183,7 @@ SoVertexProperty::~SoVertexProperty()
 void
 SoVertexProperty::initClass()
 {
-//$ BEGIN TEMPLATE InitNodeSource(VertexProperty)
-  // Make sure we only initialize once.
-  assert(SoVertexProperty::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoVertexProperty::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "VertexProperty",
-                       &SoVertexProperty::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
+  SO_NODE_INTERNAL_INIT_CLASS(SoVertexProperty);
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   SO_ENABLE(SoGetBoundingBoxAction, SoCoordinateElement);
@@ -246,15 +204,6 @@ SoVertexProperty::initClass()
   SO_ENABLE(SoPickAction, SoNormalElement);
   SO_ENABLE(SoPickAction, SoTextureCoordinateElement);
 #endif // !COIN_EXCLUDE_SOPICKACTION
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoVertexProperty::cleanClass()
-{
 }
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)

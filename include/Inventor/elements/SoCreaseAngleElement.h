@@ -40,7 +40,6 @@ public:
   virtual ~SoCreaseAngleElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoCreaseAngleElement(void);

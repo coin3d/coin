@@ -20,6 +20,7 @@
 #ifndef __SOTRANSLATION_H__
 #define __SOTRANSLATION_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/nodes/SoTransformation.h>
 
@@ -32,24 +33,12 @@
 class SoTranslation : public SoTransformation {
   typedef SoTransformation inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoTranslation)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoTranslation);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoTranslation(void);
-protected:
-  virtual ~SoTranslation();
-//$ END TEMPLATE NodeHeader
 
-public:
   SoSFVec3f translation;
 
 #if !defined(COIN_EXCLUDE_SOACTION)
@@ -73,6 +62,9 @@ public:
 #if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
+
+protected:
+  virtual ~SoTranslation();
 };
 
 #endif // !__SOTRANSLATION_H__

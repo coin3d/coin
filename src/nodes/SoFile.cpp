@@ -27,13 +27,13 @@
 
 #include <Inventor/nodes/SoFile.h>
 
-#include <Inventor/SbName.h>
+
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/lists/SbStringList.h>
 #include <Inventor/misc/SoChildList.h>
-#include <Inventor/nodes/SoSubNode.h>
+
 
 /*!
   \var SoSFString SoFile::name
@@ -44,46 +44,14 @@ static const char UNDEFINED_FILE[] = "<Undefined file>";
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoFile)
-SoType SoFile::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoFile node class.
-*/
-void *
-SoFile::createInstance(void)
-{
-  return new SoFile;
-}
-
-/*!
-  Returns the unique type identifier for the SoFile class.
-*/
-SoType
-SoFile::getClassTypeId(void)
-{
-  return SoFile::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoFile::getTypeId(void) const
-{
-  return SoFile::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoFile);
 
 /*!
   Constructor.
 */
 SoFile::SoFile()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoFile)
-  // Make sure the class has been initialized.
-  assert(SoFile::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoFile);
 
   SO_NODE_ADD_FIELD(name, (UNDEFINED_FILE));
 
@@ -106,26 +74,7 @@ SoFile::~SoFile()
 void
 SoFile::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(File)
-  // Make sure we only initialize once.
-  assert(SoFile::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoFile::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "File",
-                       &SoFile::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoFile::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoFile);
 }
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)

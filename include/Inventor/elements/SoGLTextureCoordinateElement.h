@@ -42,7 +42,6 @@ public:
   virtual ~SoGLTextureCoordinateElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoGLTextureCoordinateElement(void);

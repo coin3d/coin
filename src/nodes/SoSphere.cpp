@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoSphere.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/misc/SoState.h>
 #if !defined(COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT)
@@ -67,46 +67,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoSphere)
-SoType SoSphere::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoSphere node class.
-*/
-void *
-SoSphere::createInstance(void)
-{
-  return new SoSphere;
-}
-
-/*!
-  Returns the unique type identifier for the SoSphere class.
-*/
-SoType
-SoSphere::getClassTypeId(void)
-{
-  return SoSphere::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoSphere::getTypeId(void) const
-{
-  return SoSphere::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoSphere);
 
 /*!
   Constructor.
 */
 SoSphere::SoSphere()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoSphere)
-  // Make sure the class has been initialized.
-  assert(SoSphere::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoSphere);
 
   SO_NODE_ADD_FIELD(radius, (1.0f));
 }
@@ -126,26 +94,7 @@ SoSphere::~SoSphere()
 void
 SoSphere::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(Sphere)
-  // Make sure we only initialize once.
-  assert(SoSphere::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoSphere::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Sphere",
-                       &SoSphere::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoSphere::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoSphere);
 }
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)

@@ -39,12 +39,11 @@ public:
   virtual ~SoReplacedElement(void);
   static  int getClassStackIndex(void);
 
-  static  void initClass(void);
-  static  void cleanClass(void);
+  static void initClass(void);
 
 protected:
-          SoReplacedElement(void);
-  static  int classStackIndex;
+  SoReplacedElement(void);
+  static int classStackIndex;
 //$ END TEMPLATE AbstractElementHeader
 
 public:

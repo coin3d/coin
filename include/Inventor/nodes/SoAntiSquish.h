@@ -20,6 +20,7 @@
 #ifndef __SOANTISQUISH_H__
 #define __SOANTISQUISH_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoTransformation.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFBool.h>
@@ -35,24 +36,12 @@
 class SoAntiSquish : public SoTransformation {
   typedef SoTransformation inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoAntiSquish)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoAntiSquish);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoAntiSquish(void);
-protected:
-  virtual ~SoAntiSquish();
-//$ END TEMPLATE NodeHeader
 
-public:
   enum Sizing {
     X, Y, Z, AVERAGE_DIMENSION, BIGGEST_DIMENSION, SMALLEST_DIMENSION,
     LONGEST_DIAGONAL
@@ -67,6 +56,8 @@ public:
 #endif // !COIN_EXCLUDE_SOACTION
 
 protected:
+  virtual ~SoAntiSquish();
+
 #if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   virtual void callback(SoCallbackAction * action);
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION

@@ -20,6 +20,7 @@
 #ifndef __SOLOCATEHIGHLIGHT_H__
 #define __SOLOCATEHIGHLIGHT_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFEnum.h>
@@ -33,24 +34,12 @@
 class SoLocateHighlight : public SoSeparator {
   typedef SoSeparator inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoLocateHighlight)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoLocateHighlight);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoLocateHighlight(void);
-protected:
-  virtual ~SoLocateHighlight();
-//$ END TEMPLATE NodeHeader
 
-public:
   enum Modes {
     AUTO, ON, OFF
   };
@@ -73,6 +62,8 @@ public:
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
 protected:
+  virtual ~SoLocateHighlight();
+
 #if !defined(COIN_EXCLUDE_SOACTION)
   virtual void redrawHighlighted(SoAction *act, SbBool  flag);
 #endif // !COIN_EXCLUDE_SOACTION

@@ -111,17 +111,6 @@ SoPickStyleElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the SoPickStyleElement class.
-*/
-
-void
-SoPickStyleElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoPickStyleElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoPickStyleElement::createInstance(void)

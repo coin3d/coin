@@ -40,7 +40,6 @@ public:
   virtual ~SoComplexityElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoComplexityElement(void);

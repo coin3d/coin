@@ -148,18 +148,6 @@ SoEnvironmentElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the
-  SoEnvironmentElement class.
-*/
-
-void
-SoEnvironmentElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoEnvironmentElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoEnvironmentElement::createInstance(void)

@@ -164,15 +164,6 @@ SoSFNode::initClass(void)
 }
 
 /*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoSFNode::cleanClass(void)
-{
-}
-
-/*!
   Constructor.
 */
 SoSFNode::SoSFNode(void)

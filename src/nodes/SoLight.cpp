@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoLight.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -53,37 +53,14 @@
 */
 
 
-//$ BEGIN TEMPLATE NodeAbstractSource(SoLight)
-SoType SoLight::classTypeId = SoType::badType();
-
-/*!
-  Returns the unique type identifier for the SoLight class.
-*/
-SoType
-SoLight::getClassTypeId(void)
-{
-  return SoLight::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoLight::getTypeId(void) const
-{
-  return SoLight::classTypeId;
-}
-//$ END TEMPLATE NodeAbstractSource
+SO_NODE_ABSTRACT_SOURCE(SoLight);
 
 /*!
   Constructor.
 */
 SoLight::SoLight()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoLight)
-  // Make sure the class has been initialized.
-  assert(SoLight::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoLight);
 
   SO_NODE_ADD_FIELD(on,(TRUE));
   SO_NODE_ADD_FIELD(intensity,(1.0f));
@@ -106,33 +83,13 @@ SoLight::~SoLight()
 void
 SoLight::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeAbstractSource(Light)
-  // Make sure we only initialize once.
-  assert(SoLight::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoLight::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Light",
-                       NULL,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeAbstractSource
+  SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoLight);
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoLightAttenuationElement);
   SO_ENABLE(SoGLRenderAction, SoGLLightIdElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 }
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoLight::cleanClass(void)
-{
-}
-
 
 #if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!

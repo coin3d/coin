@@ -37,7 +37,6 @@ public:
   static  void post(const char * const whatWasAllocated);
 
   static  void initClass(void);
-  static  void cleanClass(void);
 
 protected:
   virtual SoErrorCB * getHandler(void * & data) const;

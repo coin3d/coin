@@ -21,29 +21,23 @@
 #define __SOVRMLINTERPOLATOR_H__
 
 #include <Inventor/nodes/SoNode.h>
+#include <Inventor/nodes/SoSubNode.h>
+
 
 class SoVRMLInterpolator : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeAbstractHeader(SoVRMLInterpolator)
-private:
-  static SoType classTypeId;
+  SO_NODE_ABSTRACT_HEADER(SoVRMLInterpolator);
 
 public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-public:
   static void initClass(void);
-  static void cleanClass(void);
+
+  SbBool getOutputName(const SoVRMLInterpOutput * output,
+		       SbName & outputName) const;
 
 protected:
   SoVRMLInterpolator(void);
   virtual ~SoVRMLInterpolator();
-//$ END TEMPLATE NodeAbstractHeader
-
-public:
-  SbBool getOutputName(const SoVRMLInterpOutput * output,
-		       SbName & outputName) const;
 };
 
 #endif // !__SOVRMLINTERPOLATOR_H__

@@ -66,7 +66,6 @@ class SoDBHeaderCB;
 class SoDB {
 public:
   static void init(void);
-  static void clean(void);
 
   static const char * getVersion(void);
   static SbBool read(SoInput * in, SoPath *& path);

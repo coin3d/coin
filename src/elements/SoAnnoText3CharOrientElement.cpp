@@ -106,18 +106,6 @@ SoAnnoText3CharOrientElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the
-  SoAnnoText3CharOrientElement class.
-*/
-
-void
-SoAnnoText3CharOrientElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoAnnoText3CharOrientElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoAnnoText3CharOrientElement::createInstance()

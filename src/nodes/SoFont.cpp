@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoFont.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -64,46 +64,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoFont)
-SoType SoFont::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoFont node class.
-*/
-void *
-SoFont::createInstance(void)
-{
-  return new SoFont;
-}
-
-/*!
-  Returns the unique type identifier for the SoFont class.
-*/
-SoType
-SoFont::getClassTypeId(void)
-{
-  return SoFont::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoFont::getTypeId(void) const
-{
-  return SoFont::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoFont);
 
 /*!
   Constructor.
 */
 SoFont::SoFont()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoFont)
-  // Make sure the class has been initialized.
-  assert(SoFont::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoFont);
 
   SO_NODE_ADD_FIELD(name, ("defaultFont"));
   SO_NODE_ADD_FIELD(size, (10.0f));
@@ -124,17 +92,7 @@ SoFont::~SoFont()
 void
 SoFont::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(Font)
-  // Make sure we only initialize once.
-  assert(SoFont::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoFont::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Font",
-                       &SoFont::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
+  SO_NODE_INTERNAL_INIT_CLASS(SoFont);
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   SO_ENABLE(SoGetBoundingBoxAction, SoFontNameElement);
@@ -155,15 +113,6 @@ SoFont::initClass(void)
   SO_ENABLE(SoPickAction, SoFontNameElement);
   SO_ENABLE(SoPickAction, SoFontSizeElement);
 #endif // !COIN_EXCLUDE_SOPICKACTION
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoFont::cleanClass(void)
-{
 }
 
 #if !defined(COIN_EXCLUDE_SOACTION)

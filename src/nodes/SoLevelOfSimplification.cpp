@@ -25,9 +25,9 @@
   FIXME: write class doc
 */
 
-#include <Inventor/SbName.h>
+
 #include <Inventor/nodes/SoLevelOfSimplification.h>
-#include <Inventor/nodes/SoSubNode.h>
+
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -51,46 +51,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoLevelOfSimplification)
-SoType SoLevelOfSimplification::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoLevelOfSimplification node class.
-*/
-void *
-SoLevelOfSimplification::createInstance(void)
-{
-  return new SoLevelOfSimplification;
-}
-
-/*!
-  Returns the unique type identifier for the SoLevelOfSimplification class.
-*/
-SoType
-SoLevelOfSimplification::getClassTypeId(void)
-{
-  return SoLevelOfSimplification::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoLevelOfSimplification::getTypeId(void) const
-{
-  return SoLevelOfSimplification::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoLevelOfSimplification);
 
 /*!
   Constructor.
 */
 SoLevelOfSimplification::SoLevelOfSimplification()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoLevelOfSimplification)
-  // Make sure the class has been initialized.
-  assert(SoLevelOfSimplification::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoLevelOfSimplification);
 
   SO_NODE_ADD_FIELD(percentages, (0.0f));
   // FIXME: is this the correct way of making an empty multifield?
@@ -115,31 +83,12 @@ SoLevelOfSimplification::~SoLevelOfSimplification()
 void
 SoLevelOfSimplification::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(LevelOfSimplification)
-  // Make sure we only initialize once.
-  assert(SoLevelOfSimplification::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoLevelOfSimplification::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "LevelOfSimplification",
-                       &SoLevelOfSimplification::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
+  SO_NODE_INTERNAL_INIT_CLASS(SoLevelOfSimplification);
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   SO_ENABLE(SoGetBoundingBoxAction, SoDecimationTypeElement);
   SO_ENABLE(SoGetBoundingBoxAction, SoDecimationPercentageElement);
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoLevelOfSimplification::cleanClass(void)
-{
 }
 
 

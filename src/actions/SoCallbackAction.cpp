@@ -123,15 +123,6 @@ SoCallbackAction::initClass(void)
 //$ END TEMPLATE InitActionSource
 }
 
-/*!
-  This static method cleans up the static data for the SoCallbackAction class.
-*/
-
-void
-SoCallbackAction::cleanClass(void)
-{
-}
-
 // *************************************************************************
 
 /*!

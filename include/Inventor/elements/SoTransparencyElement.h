@@ -40,7 +40,6 @@ public:
   virtual ~SoTransparencyElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoTransparencyElement(void);

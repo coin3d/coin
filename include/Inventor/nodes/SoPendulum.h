@@ -20,6 +20,7 @@
 #ifndef __SOPENDULUM_H__
 #define __SOPENDULUM_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoRotation.h>
 #include <Inventor/fields/SoSFRotation.h>
 #include <Inventor/fields/SoSFFloat.h>
@@ -34,28 +35,19 @@
 class SoPendulum : public SoRotation {
   typedef SoRotation inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoPendulum)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoPendulum);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoPendulum(void);
-protected:
-  virtual ~SoPendulum();
-//$ END TEMPLATE NodeHeader
 
-public:
   SoSFRotation rotation0;
   SoSFRotation rotation1;
   SoSFFloat speed;
   SoSFBool on;
+
+protected:
+  virtual ~SoPendulum();
 };
 
 #endif // !__SOPENDULUM_H__

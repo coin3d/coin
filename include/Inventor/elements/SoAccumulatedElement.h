@@ -38,12 +38,11 @@ public:
   virtual ~SoAccumulatedElement(void);
   static  int getClassStackIndex(void);
 
-  static  void initClass(void);
-  static  void cleanClass(void);
+  static void initClass(void);
 
 protected:
-          SoAccumulatedElement(void);
-  static  int classStackIndex;
+  SoAccumulatedElement(void);
+  static int classStackIndex;
 //$ END TEMPLATE AbstractElementHeader
 
 public:

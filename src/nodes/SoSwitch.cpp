@@ -25,10 +25,10 @@
   FIXME: write class doc
 */
 
-#include <Inventor/SbName.h>
+
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/misc/SoChildList.h>
-#include <Inventor/nodes/SoSubNode.h>
+
 #include <Inventor/errors/SoDebugError.h>
 
 #if !defined(COIN_EXCLUDE_SOACTION)
@@ -60,46 +60,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoSwitch)
-SoType SoSwitch::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoSwitch node class.
-*/
-void *
-SoSwitch::createInstance(void)
-{
-  return new SoSwitch;
-}
-
-/*!
-  Returns the unique type identifier for the SoSwitch class.
-*/
-SoType
-SoSwitch::getClassTypeId(void)
-{
-  return SoSwitch::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoSwitch::getTypeId(void) const
-{
-  return SoSwitch::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoSwitch);
 
 /*!
   Constructor.
 */
 SoSwitch::SoSwitch()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoSwitch)
-  // Make sure the class has been initialized.
-  assert(SoSwitch::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoSwitch);
 
   SO_NODE_ADD_FIELD(whichChild, (SO_SWITCH_NONE));
 }
@@ -119,17 +87,7 @@ SoSwitch::~SoSwitch()
 void
 SoSwitch::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(Switch)
-  // Make sure we only initialize once.
-  assert(SoSwitch::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoSwitch::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Switch",
-                       &SoSwitch::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
+  SO_NODE_INTERNAL_INIT_CLASS(SoSwitch);
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   SO_ENABLE(SoGetBoundingBoxAction, SoSwitchElement);
@@ -146,15 +104,6 @@ SoSwitch::initClass(void)
 #if !defined(COIN_EXCLUDE_SOPICKACTION)
   SO_ENABLE(SoPickAction, SoSwitchElement);
 #endif // !COIN_EXCLUDE_SOPICKACTION
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoSwitch::cleanClass(void)
-{
 }
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)

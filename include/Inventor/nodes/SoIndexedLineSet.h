@@ -20,6 +20,7 @@
 #ifndef __SOINDEXEDLINESET_H__
 #define __SOINDEXEDLINESET_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoIndexedShape.h>
 
 #if defined(COIN_EXCLUDE_SOINDEXEDLINESET)
@@ -33,24 +34,12 @@
 class SoIndexedLineSet : public SoIndexedShape {
   typedef SoIndexedShape inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoIndexedLineSet)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoIndexedLineSet);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoIndexedLineSet(void);
-protected:
-  virtual ~SoIndexedLineSet();
-//$ END TEMPLATE NodeHeader
 
-public:
   enum Binding {
     OVERALL = 0,
     PER_SEGMENT,
@@ -73,6 +62,8 @@ public:
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
+protected:
+  virtual ~SoIndexedLineSet();
 
 private:
 #if !defined(COIN_EXCLUDE_SOACTION)

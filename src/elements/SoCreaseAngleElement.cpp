@@ -105,18 +105,6 @@ SoCreaseAngleElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the
-  SoCreaseAngleElement class.
-*/
-
-void
-SoCreaseAngleElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoCreaseAngleElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoCreaseAngleElement::createInstance(void)

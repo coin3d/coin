@@ -118,18 +118,6 @@ SoGLDiffuseColorElement::initClass()
 }
 
 /*!
-  This static method cleans up static data for the
-  SoGLDiffuseColorElement class.
-*/
-
-void 
-SoGLDiffuseColorElement::cleanClass()
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoGLDiffuseColorElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoGLDiffuseColorElement::createInstance(void)

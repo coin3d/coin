@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoFaceSet.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 #include <Inventor/misc/SoState.h>
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
@@ -89,46 +89,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoFaceSet)
-SoType SoFaceSet::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoFaceSet node class.
-*/
-void *
-SoFaceSet::createInstance(void)
-{
-  return new SoFaceSet;
-}
-
-/*!
-  Returns the unique type identifier for the SoFaceSet class.
-*/
-SoType
-SoFaceSet::getClassTypeId(void)
-{
-  return SoFaceSet::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoFaceSet::getTypeId(void) const
-{
-  return SoFaceSet::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoFaceSet);
 
 /*!
   Constructor.
 */
 SoFaceSet::SoFaceSet()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoFaceSet)
-  // Make sure the class has been initialized.
-  assert(SoFaceSet::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoFaceSet);
 
   SO_NODE_ADD_FIELD(numVertices, (-1));
 }
@@ -148,26 +116,7 @@ SoFaceSet::~SoFaceSet()
 void
 SoFaceSet::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(FaceSet)
-  // Make sure we only initialize once.
-  assert(SoFaceSet::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoFaceSet::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "FaceSet",
-                       &SoFaceSet::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoFaceSet::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoFaceSet);
 }
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)

@@ -133,14 +133,6 @@ SoWriteAction::initClass(void)
 //$ END TEMPLATE InitActionSource
 }
 
-/*!
-  This static method cleans up static data for the SoWriteAction class.
-*/
-void
-SoWriteAction::cleanClass(void)
-{
-}
-
 // *************************************************************************
 
 static int first = 1;

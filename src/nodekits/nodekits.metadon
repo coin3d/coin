@@ -1,10 +1,11 @@
 #
 # CONFIG "The Node Kits"
 # FLAGS
-# C - Source File Created [0.1]
+# I - Implemented [1.0]
+# D - Documented [0.2]
 #
 # HIERARCHY
-# c     SoNodeKit
+#       SoNodeKit
 #       SoBaseKit
 #               SoAppearanceKit
 #               SoCameraKit
@@ -15,5 +16,7 @@
 #                       SoShapeKit
 #                       SoWrapperKit
 #       SoNodeKitListPart
+#       SoNodeKitPath
+#       SoNodekitCatalog
 #
 ############################################################################

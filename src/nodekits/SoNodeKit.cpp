@@ -18,15 +18,31 @@
 \**************************************************************************/
 
 #include <Inventor/nodekits/SoNodeKit.h>
+#include <Inventor/nodekits/SoNodeKitListPart.h>
+#include <Inventor/nodekits/SoBaseKit.h>
+#include <Inventor/nodekits/SoAppearanceKit.h>
+#include <Inventor/nodekits/SoCameraKit.h>
+#include <Inventor/nodekits/SoInteractionKit.h>
+#include <Inventor/nodekits/SoLightKit.h>
+#include <Inventor/nodekits/SoSceneKit.h>
+#include <Inventor/nodekits/SoSeparatorKit.h>
+#include <Inventor/nodekits/SoShapeKit.h>
+#include <Inventor/nodekits/SoWrapperKit.h>
 
 void
 SoNodeKit::init(void)
 {
-  // FIXME: stub. 19990202 mortene.
-}
+  SoNodeKitListPart::initClass();
 
-void
-SoNodeKit::clean(void)
-{
-  // FIXME: stub. 19990202 mortene.
+  SoBaseKit::initClass();
+  SoAppearanceKit::initClass();
+  SoCameraKit::initClass();
+  SoInteractionKit::initClass();
+  SoLightKit::initClass();
+  SoSceneKit::initClass();
+  SoSeparatorKit::initClass();
+  SoShapeKit::initClass();
+  SoWrapperKit::initClass();
+
+  // FIXME: other stuff probably missing. 19991106 mortene.
 }

@@ -40,7 +40,6 @@ public:
   virtual ~SoGLPointSizeElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoGLPointSizeElement(void);

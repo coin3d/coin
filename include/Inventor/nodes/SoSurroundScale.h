@@ -20,6 +20,7 @@
 #ifndef __SOSURROUNDSCALE_H__
 #define __SOSURROUNDSCALE_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoTransformation.h>
 #include <Inventor/fields/SoSFInt32.h>
 
@@ -34,24 +35,12 @@ class SbMatrix;
 class SoSurroundScale : public SoTransformation {
   typedef SoTransformation inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoSurroundScale)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoSurroundScale);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoSurroundScale(void);
-protected:
-  virtual ~SoSurroundScale();
-//$ END TEMPLATE NodeHeader
 
-public:
   SoSFInt32 numNodesUpToContainer;
   SoSFInt32 numNodesUpToReset;
 
@@ -63,6 +52,8 @@ public:
   SbBool isDoingTranslations(void);
 
 protected:
+  virtual ~SoSurroundScale();
+
 #if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   virtual void callback(SoCallbackAction * action);
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION

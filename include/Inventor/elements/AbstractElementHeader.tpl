@@ -1,12 +1,11 @@
-//$ TEMPLATE AbstractElementHeader( className )
-//$ INSERT TEMPLATE AbstractElementClassTypeHeader( className )
+//$ TEMPLATE AbstractElementHeader(_classname_)
+//$ INSERT TEMPLATE AbstractElementClassTypeHeader(_classname_)
 public:
-  virtual ~className(void);
+  virtual ~_classname_(void);
   static  int getClassStackIndex(void);
 
-  static  void initClass(void);
-  static  void cleanClass(void);
+  static void initClass(void);
 
 protected:
-          className(void);
-  static  int classStackIndex;
+  _classname_(void);
+  static int classStackIndex;

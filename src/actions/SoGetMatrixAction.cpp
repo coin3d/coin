@@ -131,16 +131,6 @@ SoGetMatrixAction::initClass()
   //FIXME: enable other elements (check with Toolmaker p.13->) (kintel 1990616)
 }
 
-/*!
-  This static method cleans up all the static data for the
-  SoGetMatrixAction class.
-*/
-
-void
-SoGetMatrixAction::cleanClass()
-{
-}
-
 // *************************************************************************
 
 /*!

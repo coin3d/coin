@@ -115,18 +115,6 @@ SoNormalBindingElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the
-  SoNormalBindingElement class.
-*/
-
-void
-SoNormalBindingElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoNormalBindingElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoNormalBindingElement::createInstance(void)

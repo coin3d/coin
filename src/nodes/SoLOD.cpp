@@ -25,9 +25,9 @@
   FIXME: write class doc
 */
 
-#include <Inventor/SbName.h>
+
 #include <Inventor/nodes/SoLOD.h>
-#include <Inventor/nodes/SoSubNode.h>
+
 #include <Inventor/misc/SoChildList.h>
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
@@ -51,46 +51,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoLOD)
-SoType SoLOD::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoLOD node class.
-*/
-void *
-SoLOD::createInstance(void)
-{
-  return new SoLOD;
-}
-
-/*!
-  Returns the unique type identifier for the SoLOD class.
-*/
-SoType
-SoLOD::getClassTypeId(void)
-{
-  return SoLOD::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoLOD::getTypeId(void) const
-{
-  return SoLOD::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoLOD);
 
 /*!
   Constructor.
 */
 SoLOD::SoLOD()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoLOD)
-  // Make sure the class has been initialized.
-  assert(SoLOD::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoLOD);
 
   SO_NODE_ADD_FIELD(range, (0.0f));
   // FIXME: is this the correct way of making an empty multifield?
@@ -115,26 +83,7 @@ SoLOD::~SoLOD()
 void
 SoLOD::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(LOD)
-  // Make sure we only initialize once.
-  assert(SoLOD::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoLOD::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "LOD",
-                       &SoLOD::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoLOD::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoLOD);
 }
 
 

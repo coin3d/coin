@@ -127,17 +127,6 @@ SoOverrideElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the SoOverrideElement class.
-*/
-
-void
-SoOverrideElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoOverrideElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoOverrideElement::createInstance(void)

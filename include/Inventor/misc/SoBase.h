@@ -32,7 +32,6 @@ class SoBase {
 
 public:
   static void initClass(void);
-  static void cleanClass(void);
 
   void ref(void) const;
   void unref(void) const;

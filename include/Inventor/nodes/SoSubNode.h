@@ -21,35 +21,106 @@
 #define __SOSUBNODE_H__
 
 #include <Inventor/misc/SoBasic.h> // for SO__QUOTE() definition
+#include <Inventor/SbName.h>
+#include <Inventor/SoType.h>
 
-#define SO_NODE_HEADER(_nodeclass_) \
+
+#define SO_NODE_ABSTRACT_HEADER(_class_) \
 private: \
   static SoType classTypeId; \
 public: \
   static SoType getClassTypeId(void); \
   virtual SoType getTypeId(void) const; \
-  static void * createInstance(void);
 
 
-#define SO_NODE_SOURCE(_nodeclass_) \
-SoType _nodeclass_::classTypeId = SoType::badType(); \
-void * _nodeclass_::createInstance(void) { return new _nodeclass_; } \
-SoType _nodeclass_::getClassTypeId(void) { return _nodeclass_::classTypeId; } \
-SoType _nodeclass_::getTypeId(void) const { return _nodeclass_::classTypeId; }
+#define SO_NODE_HEADER(_class_) \
+  SO_NODE_ABSTRACT_HEADER(_class_) \
+  static void * createInstance(void); \
 
 
-#define SO_NODE_CONSTRUCTOR(_nodeclass_) \
-assert(_nodeclass_::classTypeId != SoType::badType());
+#define SO_NODE_ABSTRACT_SOURCE(_class_) \
+SoType _class_::classTypeId = SoType::badType(); \
+ \
+SoType \
+_class_::getClassTypeId(void) \
+{ \
+  return _class_::classTypeId; \
+} \
+ \
+SoType \
+_class_::getTypeId(void) const \
+{ \
+  return _class_::classTypeId; \
+} \
 
 
-#define SO_NODE_INIT_CLASS(_nodeclass_, _parentclass_, _parentname_) \
-assert(_nodeclass_::classTypeId == SoType::badType()); \
-assert(_parentclass_::getClassTypeId() != SoType::badType()); \
-_nodeclass_::classTypeId = \
-  SoType::createType(_parentclass_::getClassTypeId(), SO__QUOTE(_nodeclass_), \
-                     &_nodeclass_::createInstance, \
-                     _parentclass_::nextActionMethodIndex++);
 
+#define SO_NODE_SOURCE(_class_) \
+SO_NODE_ABSTRACT_SOURCE(_class_) \
+ \
+void * \
+_class_::createInstance(void) \
+{ \
+  return new _class_; \
+}
+
+
+
+#define SO_NODE_CONSTRUCTOR(_class_) \
+  do { \
+    /* Catch attempts to use a node class which has not been initialized. */ \
+    assert(_class_::classTypeId != SoType::badType()); \
+  } while (0)
+
+
+
+#define SO_NODE_INIT_CLASS(_class_, _parentclass_, _parentname_) \
+  do { \
+    /* Make sure we only initialize once. */ \
+    assert(_class_::classTypeId == SoType::badType()); \
+    /* It's safe to use a temp variable here without fear of namespace */ \
+    /* collisions, due to the fact that we're in the do-while local scope. */ \
+    SoType parenttype = SoType::fromName(_parentname_); \
+    /* Make sure superclass gets initialized before subclass. */ \
+    assert(parenttype != SoType::badType()); \
+ \
+    _class_::classTypeId = \
+      SoType::createType(parenttype, SO__QUOTE(_class_), \
+                         &_class_::createInstance, \
+                         SoNode::nextActionMethodIndex++); \
+  } while (0)
+
+
+#define SO_NODE_INTERNAL_INIT_CLASS(_class_) \
+  do { \
+    SO_NODE_INIT_CLASS(_class_, inherited, \
+                       &(inherited::getClassTypeId().getName().getString()[2])); \
+  } while (0)
+
+
+
+#define SO_NODE_INIT_ABSTRACT_CLASS(_class_, _parentclass_, _parentname_) \
+  do { \
+    /* Make sure we only initialize once. */ \
+    assert(_class_::classTypeId == SoType::badType()); \
+    /* It's safe to use a temp variable here without fear of namespace */ \
+    /* collisions, due to the fact that we're in the do-while local scope. */ \
+    SoType parenttype = SoType::fromName(_parentname_); \
+    /* Make sure superclass gets initialized before subclass. */ \
+    assert(parenttype != SoType::badType()); \
+ \
+    _class_::classTypeId = \
+      SoType::createType(parenttype, SO__QUOTE(_class_), \
+                         NULL, \
+                         SoNode::nextActionMethodIndex++); \
+  } while (0)
+
+
+#define SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(_class_) \
+  do { \
+    SO_NODE_INIT_ABSTRACT_CLASS(_class_, inherited, \
+                                &(inherited::getClassTypeId().getName().getString()[2])); \
+  } while (0)
 
 
 #define SO_NODE_ADD_FIELD(_fieldname_, _defaultval_) \
@@ -59,6 +130,7 @@ do { \
   this->_fieldname_.setContainer(this); \
   this->_fieldname_.setDefault(TRUE); \
 } while (0)
+
 
 #define SO_NODE_DEFINE_ENUM_VALUE(_enumname_, _enumval_) \
   this->fieldData.addEnumValue(SO__QUOTE(_enumname_), SO__QUOTE(_enumval_), \

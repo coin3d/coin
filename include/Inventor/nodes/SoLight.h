@@ -20,6 +20,7 @@
 #ifndef __SOLIGHT_H__
 #define __SOLIGHT_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFFloat.h>
@@ -34,23 +35,11 @@
 class SoLight : public SoNode {
   typedef SoNode inherited;
   
-//$ BEGIN TEMPLATE NodeAbstractHeader(SoLight)
-private:
-  static SoType classTypeId;
+  SO_NODE_ABSTRACT_HEADER(SoLight);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
 public:
   static void initClass(void);
-  static void cleanClass(void);
 
-protected:
-  SoLight(void);
-  virtual ~SoLight();
-//$ END TEMPLATE NodeAbstractHeader
-
-public:
   SoSFBool on;
   SoSFFloat intensity;
   SoSFColor color;
@@ -58,8 +47,10 @@ public:
 #if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   virtual void callback(SoCallbackAction * action);
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
-};
 
-// *************************************************************************
+protected:
+  SoLight(void);
+  virtual ~SoLight();
+};
 
 #endif // !__SOLIGHT_H__

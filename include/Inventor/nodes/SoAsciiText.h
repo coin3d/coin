@@ -20,6 +20,7 @@
 #ifndef __SOASCIITEXT_H__
 #define __SOASCIITEXT_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/fields/SoMFString.h>
 #include <Inventor/fields/SoSFFloat.h>
@@ -35,24 +36,12 @@
 class SoAsciiText : public SoShape {
   typedef SoShape inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoAsciiText)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoAsciiText);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoAsciiText(void);
-protected:
-  virtual ~SoAsciiText();
-//$ END TEMPLATE NodeHeader
 
-public:
   enum Justification {
     LEFT = 1,
     RIGHT,
@@ -75,6 +64,8 @@ public:
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
 protected:
+  virtual ~SoAsciiText();
+
 #if !defined(COIN_EXCLUDE_SOACTION)
   virtual void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
 #endif // !COIN_EXCLUDE_SOACTION

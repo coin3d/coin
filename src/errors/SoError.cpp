@@ -83,15 +83,6 @@ SoError::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the SoError class.
-*/
-
-void
-SoError::cleanClass(void)
-{
-}
-
-/*!
   This static method initializes all the SoError classes.
 */
 
@@ -102,19 +93,6 @@ SoError::initErrors(void)
   SoDebugError::initClass();
   SoMemoryError::initClass();
   SoReadError::initClass();
-}
-
-/*!
-  This static method cleans up after all the SoError classes.
-*/
-
-void
-SoError::cleanErrors(void)
-{
-  SoReadError::cleanClass();
-  SoMemoryError::cleanClass();
-  SoDebugError::cleanClass();
-  SoError::cleanClass();
 }
 
 /*!

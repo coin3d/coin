@@ -25,9 +25,9 @@
   FIXME: write class doc
 */
 
-#include <Inventor/SbName.h>
+
 #include <Inventor/nodes/SoMaterialBinding.h>
-#include <Inventor/nodes/SoSubNode.h>
+
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -96,46 +96,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoMaterialBinding)
-SoType SoMaterialBinding::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoMaterialBinding node class.
-*/
-void *
-SoMaterialBinding::createInstance(void)
-{
-  return new SoMaterialBinding;
-}
-
-/*!
-  Returns the unique type identifier for the SoMaterialBinding class.
-*/
-SoType
-SoMaterialBinding::getClassTypeId(void)
-{
-  return SoMaterialBinding::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoMaterialBinding::getTypeId(void) const
-{
-  return SoMaterialBinding::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoMaterialBinding);
 
 /*!
   Constructor.
 */
 SoMaterialBinding::SoMaterialBinding()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoMaterialBinding)
-  // Make sure the class has been initialized.
-  assert(SoMaterialBinding::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoMaterialBinding);
 
   SO_NODE_ADD_FIELD(value,(OVERALL));
 
@@ -168,17 +136,7 @@ SoMaterialBinding::~SoMaterialBinding()
 void
 SoMaterialBinding::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(MaterialBinding)
-  // Make sure we only initialize once.
-  assert(SoMaterialBinding::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoMaterialBinding::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "MaterialBinding",
-                       &SoMaterialBinding::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
+  SO_NODE_INTERNAL_INIT_CLASS(SoMaterialBinding);
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoMaterialBindingElement);
@@ -191,15 +149,6 @@ SoMaterialBinding::initClass(void)
 #if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   SO_ENABLE(SoCallbackAction, SoMaterialBindingElement);
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoMaterialBinding::cleanClass(void)
-{
 }
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)

@@ -20,6 +20,7 @@
 #ifndef __SOINDEXEDTRIANGLESTRIPSET_H__
 #define __SOINDEXEDTRIANGLESTRIPSET_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoIndexedShape.h>
 
 #if defined(COIN_EXCLUDE_SOINDEXEDTRIANGLESTRIPSET)
@@ -31,24 +32,12 @@
 class SoIndexedTriangleStripSet : public SoIndexedShape {
   typedef SoIndexedShape inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoIndexedTriangleStripSet)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoIndexedTriangleStripSet);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoIndexedTriangleStripSet(void);
-protected:
-  virtual ~SoIndexedTriangleStripSet();
-//$ END TEMPLATE NodeHeader
 
-public:
   enum Binding {
     OVERALL = 0, 
     PER_STRIP,
@@ -69,6 +58,8 @@ public:
   virtual SbBool generateDefaultNormals(SoState * state, SoNormalBundle * nb);
 
 protected:
+  virtual ~SoIndexedTriangleStripSet();
+
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual SbBool generateDefaultNormals(SoState * state, SoNormalCache * nc);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION

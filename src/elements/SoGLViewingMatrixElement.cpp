@@ -116,18 +116,6 @@ SoGLViewingMatrixElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the
-  SoGLViewingMatrixElement class.
-*/
-
-void
-SoGLViewingMatrixElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoGLViewingMatrixElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoGLViewingMatrixElement::createInstance(void)

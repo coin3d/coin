@@ -120,17 +120,6 @@ SoFontNameElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the SoFontNameElement class.
-*/
-
-void
-SoFontNameElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoFontNameElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoFontNameElement::createInstance(void)

@@ -40,7 +40,6 @@ public:
   virtual ~SoGLShininessElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoGLShininessElement(void);

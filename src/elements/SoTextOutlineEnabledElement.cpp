@@ -106,18 +106,6 @@ SoTextOutlineEnabledElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the
-  SoTextOutlineEnabledElement class.
-*/
-
-void
-SoTextOutlineEnabledElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoTextOutlineEnabledElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoTextOutlineEnabledElement::createInstance(void)

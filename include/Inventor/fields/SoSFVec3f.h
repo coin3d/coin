@@ -41,7 +41,6 @@ public:
   virtual SoType getTypeId(void) const;
 
   static void initClass(void);
-  static void cleanClass(void);
 
   virtual void copyFrom(const SoField & field);
   const SoSFVec3f & operator = (const SoSFVec3f & field);

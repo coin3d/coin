@@ -43,7 +43,6 @@ public:
   static void enableElement(const SoType type, const int stackIndex);
 
   static void initClass(void);
-  static void cleanClass(void);
 
   virtual ~SoGraphVerifyAction();
 //$ END TEMPLATE ActionHeader

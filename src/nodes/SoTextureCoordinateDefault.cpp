@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoTextureCoordinateDefault.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #if !defined(COIN_EXCLUDE_SOTEXTURECOORDINATEELEMENT)
 #include <Inventor/elements/SoTextureCoordinateElement.h>
@@ -43,46 +43,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoTextureCoordinateDefault)
-SoType SoTextureCoordinateDefault::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoTextureCoordinateDefault node class.
-*/
-void *
-SoTextureCoordinateDefault::createInstance(void)
-{
-  return new SoTextureCoordinateDefault;
-}
-
-/*!
-  Returns the unique type identifier for the SoTextureCoordinateDefault class.
-*/
-SoType
-SoTextureCoordinateDefault::getClassTypeId(void)
-{
-  return SoTextureCoordinateDefault::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoTextureCoordinateDefault::getTypeId(void) const
-{
-  return SoTextureCoordinateDefault::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoTextureCoordinateDefault);
 
 /*!
   Constructor.
 */
 SoTextureCoordinateDefault::SoTextureCoordinateDefault()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoTextureCoordinateDefault)
-  // Make sure the class has been initialized.
-  assert(SoTextureCoordinateDefault::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoTextureCoordinateDefault);
 }
 
 /*!
@@ -100,26 +68,7 @@ SoTextureCoordinateDefault::~SoTextureCoordinateDefault()
 void
 SoTextureCoordinateDefault::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(TextureCoordinateDefault)
-  // Make sure we only initialize once.
-  assert(SoTextureCoordinateDefault::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoTextureCoordinateDefault::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "TextureCoordinateDefault",
-                       &SoTextureCoordinateDefault::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoTextureCoordinateDefault::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinateDefault);
 }
 
 #if !defined(COIN_EXCLUDE_SOACTION)

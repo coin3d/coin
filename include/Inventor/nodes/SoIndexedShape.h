@@ -20,6 +20,7 @@
 #ifndef __SOINDEXEDSHAPE_H__
 #define __SOINDEXEDSHAPE_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoVertexShape.h>
 #include <Inventor/fields/SoMFInt32.h>
 
@@ -35,29 +36,20 @@ class SoCoordinateElement;
 class SoIndexedShape : public SoVertexShape {
   typedef SoVertexShape inherited;
 
-//$ BEGIN TEMPLATE NodeAbstractHeader(SoIndexedShape)
-private:
-  static SoType classTypeId;
+  SO_NODE_ABSTRACT_HEADER(SoIndexedShape);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
 public:
   static void initClass(void);
-  static void cleanClass(void);
 
-protected:
-  SoIndexedShape(void);
-  virtual ~SoIndexedShape();
-//$ END TEMPLATE NodeAbstractHeader
-
-public:
   SoMFInt32 coordIndex;
   SoMFInt32 materialIndex;
   SoMFInt32 normalIndex;
   SoMFInt32 textureCoordIndex;
 
 protected:
+  SoIndexedShape(void);
+  virtual ~SoIndexedShape();
+
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   virtual void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION

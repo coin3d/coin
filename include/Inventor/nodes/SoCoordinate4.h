@@ -20,6 +20,7 @@
 #ifndef __SOCOORDINATE4_H__
 #define __SOCOORDINATE4_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoMFVec4f.h>
 
@@ -32,24 +33,12 @@
 class SoCoordinate4 : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoCoordinate4)
-private:
-  static SoType classTypeId;
-
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
-public:
-  static void initClass(void);
-  static void cleanClass(void);
-
-  SoCoordinate4(void);
-protected:
-  virtual ~SoCoordinate4();
-//$ END TEMPLATE NodeHeader
+  SO_NODE_HEADER(SoCoordinate4);
  
 public:
+  static void initClass(void);
+  SoCoordinate4(void);
+
   SoMFVec4f point;
 
 #if !defined(COIN_EXCLUDE_SOACTION)
@@ -70,6 +59,9 @@ public:
 #if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
+
+protected:
+  virtual ~SoCoordinate4();
 };
 
 #endif // !__SOCOORDINATE4_H__

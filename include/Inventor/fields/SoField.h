@@ -98,8 +98,6 @@ public:
 
   static void initClass(void);
   static void initClasses(void);
-  static void cleanClass(void);
-  static void cleanClasses(void);
 
   void setIgnored(SbBool ig);
   SbBool isIgnored(void) const;

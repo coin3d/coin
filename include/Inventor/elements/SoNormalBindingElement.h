@@ -40,7 +40,6 @@ public:
   virtual ~SoNormalBindingElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoNormalBindingElement(void);

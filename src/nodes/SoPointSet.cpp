@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoPointSet.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 #include <Inventor/misc/SoState.h>
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 
@@ -89,46 +89,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoPointSet)
-SoType SoPointSet::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoPointSet node class.
-*/
-void *
-SoPointSet::createInstance(void)
-{
-  return new SoPointSet;
-}
-
-/*!
-  Returns the unique type identifier for the SoPointSet class.
-*/
-SoType
-SoPointSet::getClassTypeId(void)
-{
-  return SoPointSet::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoPointSet::getTypeId(void) const
-{
-  return SoPointSet::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoPointSet);
 
 /*!
   Constructor.
 */
 SoPointSet::SoPointSet()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoPointSet)
-  // Make sure the class has been initialized.
-  assert(SoPointSet::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoPointSet);
 
   SO_NODE_ADD_FIELD(numPoints, (-1));
 }
@@ -148,26 +116,7 @@ SoPointSet::~SoPointSet()
 void
 SoPointSet::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(PointSet)
-  // Make sure we only initialize once.
-  assert(SoPointSet::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoPointSet::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "PointSet",
-                       &SoPointSet::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoPointSet::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoPointSet);
 }
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)

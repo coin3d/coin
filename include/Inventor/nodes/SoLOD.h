@@ -20,6 +20,7 @@
 #ifndef __SOLOD_H__
 #define __SOLOD_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/fields/SoSFVec3f.h>
@@ -33,24 +34,12 @@
 class SoLOD : public SoGroup {
   typedef SoGroup inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoLOD)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoLOD);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoLOD(void);
-protected:
-  virtual ~SoLOD();
-//$ END TEMPLATE NodeHeader
 
-public:
   SoMFFloat range;
   SoSFVec3f center;
 
@@ -77,6 +66,8 @@ public:
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
 protected:
+  virtual ~SoLOD();
+
 #if !defined(COIN_EXCLUDE_SOACTION)
   virtual int whichToTraverse(SoAction *);
 #endif // !COIN_EXCLUDE_SOACTION

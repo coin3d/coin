@@ -42,7 +42,6 @@ public:
   virtual ~SoCoordinateElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoCoordinateElement(void);

@@ -39,7 +39,6 @@ public:
   static void post(const SoInput * const in, const char * const format, ...);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   virtual SoErrorCB * getHandler(void *& data) const;

@@ -106,15 +106,6 @@ SoMField::initClass(void)
 }
 
 /*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoMField::cleanClass(void)
-{
-}
-
-/*!
   Constructor.
 */
 SoMField::SoMField(void)

@@ -20,6 +20,7 @@
 #ifndef __SOLEVELOFDETAIL_H__
 #define __SOLEVELOFDETAIL_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/fields/SoMFFloat.h>
 
@@ -32,24 +33,12 @@
 class SoLevelOfDetail : public SoGroup {
   typedef SoGroup inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoLevelOfDetail)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoLevelOfDetail);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoLevelOfDetail(void);
-protected:
-  virtual ~SoLevelOfDetail();
-//$ END TEMPLATE NodeHeader
 
-public:
   SoMFFloat screenArea;
 
 #if !defined(COIN_EXCLUDE_SOACTION)
@@ -64,6 +53,9 @@ public:
 #if !defined(COIN_EXCLUDE_SORAYPICKACTION)
   virtual void rayPick(SoRayPickAction * action);
 #endif // !COIN_EXCLUDE_SORAYPICKACTION
+
+protected:
+  virtual ~SoLevelOfDetail();
 };
 
 #endif // !__SOLEVELOFDETAIL_H__

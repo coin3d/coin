@@ -26,9 +26,9 @@
 */
 
 #include <Inventor/nodes/SoEventCallback.h>
-#include <Inventor/nodes/SoSubNode.h>
+
 #include <Inventor/events/SoEvent.h>
-#include <Inventor/SbName.h>
+
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -39,46 +39,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoEventCallback)
-SoType SoEventCallback::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoEventCallback node class.
-*/
-void *
-SoEventCallback::createInstance(void)
-{
-  return new SoEventCallback;
-}
-
-/*!
-  Returns the unique type identifier for the SoEventCallback class.
-*/
-SoType
-SoEventCallback::getClassTypeId(void)
-{
-  return SoEventCallback::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoEventCallback::getTypeId(void) const
-{
-  return SoEventCallback::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoEventCallback);
 
 /*!
   Constructor.
 */
 SoEventCallback::SoEventCallback()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoEventCallback)
-  // Make sure the class has been initialized.
-  assert(SoEventCallback::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoEventCallback);
 
 #if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
   this->heaction = NULL;
@@ -100,26 +68,7 @@ SoEventCallback::~SoEventCallback()
 void
 SoEventCallback::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(EventCallback)
-  // Make sure we only initialize once.
-  assert(SoEventCallback::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoEventCallback::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "EventCallback",
-                       &SoEventCallback::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoEventCallback::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoEventCallback);
 }
 
 /*!

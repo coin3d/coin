@@ -46,7 +46,6 @@ public:
   virtual ~SoGLUpdateAreaElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoGLUpdateAreaElement(void);

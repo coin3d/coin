@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoPolygonOffset.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -79,46 +79,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoPolygonOffset)
-SoType SoPolygonOffset::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoPolygonOffset node class.
-*/
-void *
-SoPolygonOffset::createInstance(void)
-{
-  return new SoPolygonOffset;
-}
-
-/*!
-  Returns the unique type identifier for the SoPolygonOffset class.
-*/
-SoType
-SoPolygonOffset::getClassTypeId(void)
-{
-  return SoPolygonOffset::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoPolygonOffset::getTypeId(void) const
-{
-  return SoPolygonOffset::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoPolygonOffset);
 
 /*!
   Constructor.
 */
 SoPolygonOffset::SoPolygonOffset()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoPolygonOffset)
-  // Make sure the class has been initialized.
-  assert(SoPolygonOffset::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoPolygonOffset);
   
   SO_NODE_ADD_FIELD(factor, (1.0f));
   SO_NODE_ADD_FIELD(units, (1.0f));
@@ -146,30 +114,11 @@ SoPolygonOffset::~SoPolygonOffset()
 void
 SoPolygonOffset::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(PolygonOffset)
-  // Make sure we only initialize once.
-  assert(SoPolygonOffset::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoPolygonOffset::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "PolygonOffset",
-                       &SoPolygonOffset::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
+  SO_NODE_INTERNAL_INIT_CLASS(SoPolygonOffset);
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoGLPolygonOffsetElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoPolygonOffset::cleanClass(void)
-{
 }
 
 

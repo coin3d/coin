@@ -20,6 +20,7 @@
 #ifndef __SOTRANSFORM_H__
 #define __SOTRANSFORM_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFRotation.h>
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/nodes/SoTransformation.h>
@@ -34,24 +35,12 @@
 class SoTransform : public SoTransformation {
   typedef SoTransformation inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoTransform)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoTransform);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoTransform(void);
-protected:
-  virtual ~SoTransform();
-//$ END TEMPLATE NodeHeader
 
-public:
   SoSFVec3f translation;
   SoSFRotation rotation;
   SoSFVec3f scaleFactor;
@@ -90,6 +79,9 @@ public:
 #if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
+
+protected:
+  virtual ~SoTransform();
 };
 
 #endif // !__SOTRANSFORM_H__

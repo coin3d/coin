@@ -20,6 +20,7 @@
 #ifndef __SOLINEARPROFILE_H__
 #define __SOLINEARPROFILE_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoProfile.h>
 
 #if defined(COIN_EXCLUDE_SOLINEARPROFILE)
@@ -31,29 +32,20 @@
 class SoLinearProfile : public SoProfile {
   typedef SoProfile inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoLinearProfile)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoLinearProfile);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoLinearProfile(void);
-protected:
-  virtual ~SoLinearProfile();
-//$ END TEMPLATE NodeHeader
 
-public:
   virtual void getTrimCurve(SoState * state, int32_t & numPoints,
 			    float *& points, int & floatsPerVec,
 			    int32_t & numKnots, float *& knotVector);
   virtual void getVertices(SoState * state, int32_t & nVertices,
 			   SbVec2f *& vertices);
+
+protected:
+  virtual ~SoLinearProfile();
 };
 
 #endif // !__SOLINEARPROFILE_H__

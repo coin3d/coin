@@ -119,18 +119,6 @@ SoGLTextureEnabledElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the
-  SoGLTextureEnabledElement class.
-*/
-
-void
-SoGLTextureEnabledElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoGLTextureEnabledElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoGLTextureEnabledElement::createInstance(void)

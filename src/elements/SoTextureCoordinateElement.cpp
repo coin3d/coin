@@ -166,18 +166,6 @@ SoTextureCoordinateElement::initClass()
 }
 
 /*!
-  This static method cleans up static data for the
-  SoTextureCoordinateElement class.
-*/
-
-void
-SoTextureCoordinateElement::cleanClass()
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoTextureCoordinateElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoTextureCoordinateElement::createInstance(void)

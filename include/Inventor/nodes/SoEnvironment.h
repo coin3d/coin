@@ -20,6 +20,7 @@
 #ifndef __SOENVIRONMENT_H__
 #define __SOENVIRONMENT_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFColor.h>
@@ -37,24 +38,12 @@
 class SoEnvironment : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoEnvironment)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoEnvironment);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoEnvironment(void);
-protected:
-  virtual ~SoEnvironment();
-//$ END TEMPLATE NodeHeader
 
-public:
   enum FogType {
     NONE = SoEnvironmentElement::NONE, 
     HAZE = SoEnvironmentElement::HAZE, 
@@ -75,6 +64,9 @@ public:
   SoSFEnum fogType;
   SoSFColor fogColor;
   SoSFFloat fogVisibility;
+
+protected:
+  virtual ~SoEnvironment();
 };
 
 #endif // !__SOENVIRONMENT_H__

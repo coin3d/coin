@@ -113,18 +113,6 @@ SoGLTextureImageElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the
-  SoGLTextureImageElement class.
-*/
-
-void
-SoGLTextureImageElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoGLTextureImageElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoGLTextureImageElement::createInstance(void)

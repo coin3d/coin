@@ -52,7 +52,6 @@ public:
   virtual SoType getTypeId(void) const;
   static void * createInstance(void);
   static void initClass(void);
-  static void cleanClass(void);
 
 // construction // destruction
 public:

@@ -116,18 +116,6 @@ SoLightModelElement::initClass()
 }
 
 /*!
-  This static method cleans up static data for the SoLightModelElement
-  class.
-*/
-
-void 
-SoLightModelElement::cleanClass()
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoLightModelElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoLightModelElement::createInstance(void)

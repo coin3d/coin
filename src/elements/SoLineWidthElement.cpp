@@ -106,17 +106,6 @@ SoLineWidthElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the SoLineWidthElement class.
-*/
-
-void
-SoLineWidthElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoLineWidthElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoLineWidthElement::createInstance(void)

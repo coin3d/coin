@@ -22,6 +22,9 @@
 
 #include <Inventor/SbBasic.h>
 
+// FIXME: I vaguely remember seeing a check for "quote" functionality
+// in an Autoconf macro. If correct, fix up this code. 19991106 mortene.
+
 // SO__QUOTE()  - use the preprocessor to quote a string
 // SO__CONCAT() - use the preprocessor to concatenate two strings
 

@@ -20,6 +20,7 @@
 #ifndef __SOFONT_H__
 #define __SOFONT_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoSFName.h>
 #include <Inventor/fields/SoSFFloat.h>
@@ -33,24 +34,12 @@
 class SoFont : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoFont)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoFont);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoFont(void);
-protected:
-  virtual ~SoFont();
-//$ END TEMPLATE NodeHeader
 
-public:
   SoSFName name;
   SoSFFloat size;
 
@@ -72,6 +61,9 @@ public:
 #if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction *action);
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
+
+protected:
+  virtual ~SoFont();
 };
 
 #endif // !__SOFONT_H__

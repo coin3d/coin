@@ -40,7 +40,6 @@ public:
   virtual ~SoGLProjectionMatrixElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoGLProjectionMatrixElement(void);

@@ -105,17 +105,6 @@ SoPointSizeElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the SoPointSizeElement class.
-*/
-
-void
-SoPointSizeElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoPointSizeElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa SoPointSizeElement::createInstance(void)

@@ -20,6 +20,7 @@
 #ifndef __SOPICKSTYLE_H__
 #define __SOPICKSTYLE_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoSFEnum.h>
 
@@ -34,24 +35,12 @@
 class SoPickStyle : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoPickStyle)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoPickStyle);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoPickStyle(void);
-protected:
-  virtual ~SoPickStyle();
-//$ END TEMPLATE NodeHeader
 
-public:
   enum Style {
     SHAPE = SoPickStyleElement::SHAPE, 
     BOUNDING_BOX = SoPickStyleElement::BOUNDING_BOX, 
@@ -69,6 +58,9 @@ public:
 #if !defined(COIN_EXCLUDE_SOPICKACTION)
   virtual void pick(SoPickAction * action);
 #endif // !COIN_EXCLUDE_SOPICKACTION
+
+protected:
+  virtual ~SoPickStyle();
 };
 
 #endif // !__SOPICKSTYLE_H__

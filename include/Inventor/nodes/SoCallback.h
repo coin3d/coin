@@ -20,6 +20,7 @@
 #ifndef __SOCALLBACK_H__
 #define __SOCALLBACK_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 
 #if defined(COIN_EXCLUDE_SOCALLBACK)
@@ -33,24 +34,12 @@ typedef void SoCallbackCB(void *, SoAction *);
 class SoCallback : public SoNode {
     typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoCallback)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoCallback);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoCallback(void);
-protected:
-  virtual ~SoCallback();
-//$ END TEMPLATE NodeHeader
 
-public:
   void setCallback(SoCallbackCB * func, void * userdata = NULL);
 
 #if !defined(COIN_EXCLUDE_SOACTION)
@@ -85,6 +74,8 @@ public:
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
 protected:
+  virtual ~SoCallback();
+
   virtual void copyContents(const SoFieldContainer * fromFC,
 			    SbBool copyConnections);
 

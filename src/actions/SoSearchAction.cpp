@@ -148,16 +148,6 @@ SoSearchAction::initClass(void)
 //$ END TEMPLATE InitActionSource
 }
 
-/*!
-  This static method is for cleaning up static data for the
-  SoSearchAction class.
-*/
-
-void
-SoSearchAction::cleanClass(void)
-{
-}
-
 // *************************************************************************
 
 /*!

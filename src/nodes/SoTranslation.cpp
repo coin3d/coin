@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoTranslation.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #if !defined(COIN_EXCLUDE_SOACTION)
 #include <Inventor/actions/SoAction.h>
@@ -50,46 +50,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoTranslation)
-SoType SoTranslation::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoTranslation node class.
-*/
-void *
-SoTranslation::createInstance(void)
-{
-  return new SoTranslation;
-}
-
-/*!
-  Returns the unique type identifier for the SoTranslation class.
-*/
-SoType
-SoTranslation::getClassTypeId(void)
-{
-  return SoTranslation::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoTranslation::getTypeId(void) const
-{
-  return SoTranslation::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoTranslation);
 
 /*!
   Constructor.
 */
 SoTranslation::SoTranslation()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoTranslation)
-  // Make sure the class has been initialized.
-  assert(SoTranslation::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoTranslation);
 
   SO_NODE_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
 }
@@ -109,26 +77,7 @@ SoTranslation::~SoTranslation()
 void
 SoTranslation::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(Translation)
-  // Make sure we only initialize once.
-  assert(SoTranslation::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoTranslation::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Translation",
-                       &SoTranslation::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoTranslation::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoTranslation);
 }
 
 #if !defined(COIN_EXCLUDE_SOACTION)

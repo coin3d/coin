@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoMaterial.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -110,46 +110,14 @@ compareAppearance(SoMFColor * firstColor, int firstIdx,
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoMaterial)
-SoType SoMaterial::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoMaterial node class.
-*/
-void *
-SoMaterial::createInstance(void)
-{
-  return new SoMaterial;
-}
-
-/*!
-  Returns the unique type identifier for the SoMaterial class.
-*/
-SoType
-SoMaterial::getClassTypeId(void)
-{
-  return SoMaterial::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoMaterial::getTypeId(void) const
-{
-  return SoMaterial::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoMaterial);
 
 /*!
   Constructor.
 */
 SoMaterial::SoMaterial()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoMaterial)
-  // Make sure the class has been initialized.
-  assert(SoMaterial::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoMaterial);
 
   SO_NODE_ADD_FIELD(ambientColor,(0.2f, 0.2f, 0.2f));
   SO_NODE_ADD_FIELD(diffuseColor,(0.8f, 0.8f, 0.8f));
@@ -174,17 +142,7 @@ SoMaterial::~SoMaterial()
 void
 SoMaterial::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(Material)
-  // Make sure we only initialize once.
-  assert(SoMaterial::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoMaterial::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Material",
-                       &SoMaterial::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
+  SO_NODE_INTERNAL_INIT_CLASS(SoMaterial);
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoGLAmbientColorElement);
@@ -195,15 +153,6 @@ SoMaterial::initClass(void)
   SO_ENABLE(SoGLRenderAction, SoTransparencyElement);
   SO_ENABLE(SoGLRenderAction, SoGLPolygonStippleElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoMaterial::cleanClass(void)
-{
 }
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)

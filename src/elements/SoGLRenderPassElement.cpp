@@ -112,18 +112,6 @@ SoGLRenderPassElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the
-  SoGLRenderPassElement class.
-*/
-
-void
-SoGLRenderPassElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoGLRenderPassElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoGLRenderPassElement::createInstance(void)

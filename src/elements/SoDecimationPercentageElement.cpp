@@ -106,18 +106,6 @@ SoDecimationPercentageElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the
-  SoDecimationPercentageElement class.
-*/
-
-void
-SoDecimationPercentageElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoDecimationPercentageElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoDecimationPercentageElement::createInstance(void)

@@ -40,7 +40,6 @@ public:
   virtual ~SoShininessElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoShininessElement(void);

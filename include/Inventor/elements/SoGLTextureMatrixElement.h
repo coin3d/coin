@@ -40,7 +40,6 @@ public:
   virtual ~SoGLTextureMatrixElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoGLTextureMatrixElement(void);

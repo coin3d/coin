@@ -25,9 +25,9 @@
   FIXME: write class doc
 */
 
-#include <Inventor/SbName.h>
+
 #include <Inventor/nodes/SoPathSwitch.h>
-#include <Inventor/nodes/SoSubNode.h>
+
 
 /*!
   \var SoSFPath SoPathSwitch::path
@@ -36,46 +36,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoPathSwitch)
-SoType SoPathSwitch::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoPathSwitch node class.
-*/
-void *
-SoPathSwitch::createInstance(void)
-{
-  return new SoPathSwitch;
-}
-
-/*!
-  Returns the unique type identifier for the SoPathSwitch class.
-*/
-SoType
-SoPathSwitch::getClassTypeId(void)
-{
-  return SoPathSwitch::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoPathSwitch::getTypeId(void) const
-{
-  return SoPathSwitch::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoPathSwitch);
 
 /*!
   Constructor.
 */
 SoPathSwitch::SoPathSwitch()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoPathSwitch)
-  // Make sure the class has been initialized.
-  assert(SoPathSwitch::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoPathSwitch);
 
   SO_NODE_ADD_FIELD(path, (NULL));
 }
@@ -95,26 +63,7 @@ SoPathSwitch::~SoPathSwitch()
 void
 SoPathSwitch::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(PathSwitch)
-  // Make sure we only initialize once.
-  assert(SoPathSwitch::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoPathSwitch::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "PathSwitch",
-                       &SoPathSwitch::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoPathSwitch::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoPathSwitch);
 }
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)

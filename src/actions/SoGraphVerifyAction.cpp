@@ -110,16 +110,6 @@ SoGraphVerifyAction::initClass(void)
 {
 }
 
-/*!
-  This static method cleans up the static data for the
-  SoGraphVerifyAction class.
-*/
-
-void
-SoGraphVerifyAction::cleanClass(void)
-{
-}
-
 // *************************************************************************
 
 /*!

@@ -60,8 +60,6 @@ public:
   void setMaterialIndex(const int index);
   void setDetail(SoDetail * detail, SoNode * node);
 
-  static void cleanClass();
-
 private:
 
   SbVec3f point;

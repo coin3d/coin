@@ -20,6 +20,7 @@
 #ifndef __SOPOLYGONOFFSET_H__
 #define __SOPOLYGONOFFSET_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFBitMask.h>
@@ -36,24 +37,12 @@
 class SoPolygonOffset : public SoNode {
   typedef SoNode inherited;
   
-//$ BEGIN TEMPLATE NodeHeader(SoPolygonOffset)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoPolygonOffset);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoPolygonOffset(void);
-protected:
-  virtual ~SoPolygonOffset();
-//$ END TEMPLATE NodeHeader
 
-public:
   enum Style {
     FILLED = SoPolygonOffsetElement::FILLED, 
     LINES = SoPolygonOffsetElement::LINES, 
@@ -74,6 +63,9 @@ public:
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction * action);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+
+protected:
+  virtual ~SoPolygonOffset();
 };
 
 #endif // !__SOPOLYGONOFFSET_H__

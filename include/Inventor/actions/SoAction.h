@@ -75,7 +75,6 @@ class SoState;
 class SoAction {
 public:  
   static void initClass(void);
-  static void cleanClass(void);
 
   static  SoType getClassTypeId(void);
   virtual SoType getTypeId(void) const;
@@ -157,7 +156,6 @@ protected:
 
 private:
   static void initActions(void);
-  static void cleanActions(void);
 
   AppliedCode appliedCode;
   union {

@@ -139,18 +139,6 @@ SoGLShapeHintsElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the SoGLShapeHintsElement
-  class.
-*/
-
-void
-SoGLShapeHintsElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoGLShapeHintsElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoGLShapeHintsElement::createInstance(void)

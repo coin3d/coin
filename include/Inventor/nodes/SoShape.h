@@ -20,6 +20,7 @@
 #ifndef __SOSHAPE_H__
 #define __SOSHAPE_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbVec2s.h>
@@ -38,35 +39,21 @@ class SoTextureCoordinateElement;
 class SbVec2f;
 class SoMaterialBundle;
 
-// *************************************************************************
 
 class SoShape : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeAbstractHeader(SoShape)
-private:
-  static SoType classTypeId;
+  SO_NODE_ABSTRACT_HEADER(SoShape);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
 public:
   static void initClass(void);
-  static void cleanClass(void);
 
-protected:
-  SoShape(void);
-  virtual ~SoShape();
-//$ END TEMPLATE NodeAbstractHeader
-
-public:
   enum TriangleShape {
     TRIANGLE_STRIP,
     TRIANGLE_FAN,
     TRIANGLES,
     POLYGON
   };
-
 
   virtual SbBool affectsState(void) const;
 
@@ -97,6 +84,9 @@ public:
 
 
 protected:
+  SoShape(void);
+  virtual ~SoShape();
+
 #if !defined(COIN_EXCLUDE_SOACTION)
   virtual void generatePrimitives(SoAction * action) =  0;
 #endif // !COIN_EXCLUDE_SOACTION

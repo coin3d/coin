@@ -118,18 +118,6 @@ SoAmbientColorElement::initClass()
 //$ END TEMPLATE InitElementSource
 }
 
-/*!
-  This static method cleans up static data for the
-  SoAmbientColorElement class.
-*/
-
-void 
-SoAmbientColorElement::cleanClass()
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoAmbientColorElement)
-//$ END TEMPLATE CleanElementSource
-}
-
 //! FIXME: write doc.
 
 void 

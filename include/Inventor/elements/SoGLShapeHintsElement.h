@@ -40,7 +40,6 @@ public:
   virtual ~SoGLShapeHintsElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoGLShapeHintsElement(void);

@@ -43,6 +43,8 @@
 #include <Inventor/system/kosher.h>
 #include <Inventor/SoPickedPoint.h>
 
+#include <Inventor/nodekits/SoNodeKit.h>
+
 #include <Inventor/fields/SoField.h>
 #if !defined(COIN_EXCLUDE_SOSFTIME)
 #include <Inventor/fields/SoSFTime.h>
@@ -191,6 +193,8 @@ SoDB::init(void)
 #if !defined(COIN_EXCLUDE_SONODE)
   SoNode::initClass();
 #endif // !COIN_EXCLUDE_SONODE
+  // Nodekits must be initialized after nodes.
+  SoNodeKit::init();
 #if !defined(COIN_EXCLUDE_SOENGINE)
   SoEngine::initClass();
 #endif // !COIN_EXCLUDE_SOENGINE
@@ -247,6 +251,7 @@ SoDB::init(void)
   SoDB::isinitialized = TRUE;
 }
 
+#if 0 // FIXME: re-code to be run automatically upon exit. 19991106 mortene.
 /*!
   \internal
 
@@ -260,28 +265,14 @@ SoDB::init(void)
 void
 SoDB::clean(void)
 {
-#if !defined(COIN_EXCLUDE_SONODE)
-  SoNode::cleanClass();
-#endif // !COIN_EXCLUDE_SONODE
-#if !defined(COIN_EXCLUDE_SOACTION)
-  SoAction::cleanClass();
-#endif // !COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SOELEMENT)
-  SoElement::cleanClass();
-#endif // !(COIN_EXCLUDE_SOELEMENT
-  SoField::cleanClass();
-  SoFieldContainer::cleanClass();
-  SoBase::cleanClass();
-  SoInput::clean();
-  SoError::cleanErrors();
-  SoPickedPoint::cleanClass();
-  SoType::clean();
+  // FIXME: attach this to the ANSI C "on exit" hook. Ditto for the
+  // clean methods elsewhere. 19991106 mortene.
 
 #if !defined(COIN_EXCLUDE_SOTIMERSENSOR)
   delete SoDB::globaltimersensor; SoDB::globaltimersensor = NULL;
 #endif // !COIN_EXCLUDE_SOTIMERSENSOR
 }
-
+#endif // re-code
 
 /*!
   Returns a text string containing the name of the library and version

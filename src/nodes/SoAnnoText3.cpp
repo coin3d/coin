@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoAnnoText3.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 
 /*!
@@ -67,46 +67,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoAnnoText3)
-SoType SoAnnoText3::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoAnnoText3 node class.
-*/
-void *
-SoAnnoText3::createInstance(void)
-{
-  return new SoAnnoText3;
-}
-
-/*!
-  Returns the unique type identifier for the SoAnnoText3 class.
-*/
-SoType
-SoAnnoText3::getClassTypeId(void)
-{
-  return SoAnnoText3::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoAnnoText3::getTypeId(void) const
-{
-  return SoAnnoText3::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoAnnoText3);
 
 /*!
   Constructor.
 */
 SoAnnoText3::SoAnnoText3()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoAnnoText3)
-  // Make sure the class has been initialized.
-  assert(SoAnnoText3::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoAnnoText3);
 
   SO_NODE_ADD_FIELD(string, (""));
   SO_NODE_ADD_FIELD(spacing, (1.0f));
@@ -136,28 +104,9 @@ SoAnnoText3::~SoAnnoText3()
 void
 SoAnnoText3::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(AnnoText3)
-  // Make sure we only initialize once.
-  assert(SoAnnoText3::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoAnnoText3::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "AnnoText3",
-                       &SoAnnoText3::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
+  SO_NODE_INTERNAL_INIT_CLASS(SoAnnoText3);
 }
 
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoAnnoText3::cleanClass(void)
-{
-}
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!

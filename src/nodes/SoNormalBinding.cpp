@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoNormalBinding.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -91,46 +91,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoNormalBinding)
-SoType SoNormalBinding::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoNormalBinding node class.
-*/
-void *
-SoNormalBinding::createInstance(void)
-{
-  return new SoNormalBinding;
-}
-
-/*!
-  Returns the unique type identifier for the SoNormalBinding class.
-*/
-SoType
-SoNormalBinding::getClassTypeId(void)
-{
-  return SoNormalBinding::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoNormalBinding::getTypeId(void) const
-{
-  return SoNormalBinding::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoNormalBinding);
 
 /*!
   Constructor.
 */
 SoNormalBinding::SoNormalBinding()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoNormalBinding)
-  // Make sure the class has been initialized.
-  assert(SoNormalBinding::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoNormalBinding);
 
   SO_NODE_ADD_FIELD(value, (DEFAULT));
 
@@ -161,17 +129,7 @@ SoNormalBinding::~SoNormalBinding()
 void
 SoNormalBinding::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(NormalBinding)
-  // Make sure we only initialize once.
-  assert(SoNormalBinding::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoNormalBinding::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "NormalBinding",
-                       &SoNormalBinding::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
+  SO_NODE_INTERNAL_INIT_CLASS(SoNormalBinding);
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoNormalBindingElement);
@@ -184,15 +142,6 @@ SoNormalBinding::initClass(void)
 #if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   SO_ENABLE(SoCallbackAction, SoNormalBindingElement);
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoNormalBinding::cleanClass(void)
-{
 }
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)

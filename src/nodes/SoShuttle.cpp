@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoShuttle.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 /*!
   \var SoSFVec3f SoShuttle::translation0
@@ -48,46 +48,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoShuttle)
-SoType SoShuttle::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoShuttle node class.
-*/
-void *
-SoShuttle::createInstance(void)
-{
-  return new SoShuttle;
-}
-
-/*!
-  Returns the unique type identifier for the SoShuttle class.
-*/
-SoType
-SoShuttle::getClassTypeId(void)
-{
-  return SoShuttle::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoShuttle::getTypeId(void) const
-{
-  return SoShuttle::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoShuttle);
 
 /*!
   Constructor.
 */
 SoShuttle::SoShuttle()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoShuttle)
-  // Make sure the class has been initialized.
-  assert(SoShuttle::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoShuttle);
 
   SO_NODE_ADD_FIELD(translation0, (SbVec3f(0.0f, 0.0f, 0.0f)));
   SO_NODE_ADD_FIELD(translation1, (SbVec3f(0.0f, 0.0f, 0.0f)));
@@ -110,24 +78,5 @@ SoShuttle::~SoShuttle()
 void
 SoShuttle::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(Shuttle)
-  // Make sure we only initialize once.
-  assert(SoShuttle::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoShuttle::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Shuttle",
-                       &SoShuttle::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoShuttle::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoShuttle);
 }

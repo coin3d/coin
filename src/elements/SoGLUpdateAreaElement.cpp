@@ -118,18 +118,6 @@ SoGLUpdateAreaElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the
-  SoGLUpdateAreaElement class.
-*/
-
-void
-SoGLUpdateAreaElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoGLUpdateAreaElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoGLUpdateAreaElement::createInstance(void)

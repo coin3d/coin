@@ -91,16 +91,6 @@ SoFieldContainer::initClass(void)
 }
 
 /*! 
-  This static method cleans up after the SoFieldContainer class, and generally
-  undoes what SoFieldContainer::initClass() did. It is present for
-  debugging purposes only.
-*/
-void
-SoFieldContainer::cleanClass(void)
-{
-}
-
-/*! 
   This static method returns the SoType object associated with
   SoFieldContainer objects. 
 */

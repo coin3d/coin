@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoCoordinate3.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #if !defined(COIN_EXCLUDE_SOACTION)
 #include <Inventor/actions/SoAction.h>
@@ -58,46 +58,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoCoordinate3)
-SoType SoCoordinate3::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoCoordinate3 node class.
-*/
-void *
-SoCoordinate3::createInstance(void)
-{
-  return new SoCoordinate3;
-}
-
-/*!
-  Returns the unique type identifier for the SoCoordinate3 class.
-*/
-SoType
-SoCoordinate3::getClassTypeId(void)
-{
-  return SoCoordinate3::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoCoordinate3::getTypeId(void) const
-{
-  return SoCoordinate3::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoCoordinate3);
 
 /*!
   Constructor.
 */
 SoCoordinate3::SoCoordinate3()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoCoordinate3)
-  // Make sure the class has been initialized.
-  assert(SoCoordinate3::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoCoordinate3);
 
   SO_NODE_ADD_FIELD(point, (0.0f, 0.0f, 0.0f));
 }
@@ -117,17 +85,7 @@ SoCoordinate3::~SoCoordinate3()
 void
 SoCoordinate3::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(Coordinate3)
-  // Make sure we only initialize once.
-  assert(SoCoordinate3::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoCoordinate3::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Coordinate3",
-                       &SoCoordinate3::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
+  SO_NODE_INTERNAL_INIT_CLASS(SoCoordinate3);
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   SO_ENABLE(SoGetBoundingBoxAction, SoCoordinateElement);
@@ -140,15 +98,6 @@ SoCoordinate3::initClass(void)
 #if !defined(COIN_EXCLUDE_SOPICKACTION)
   SO_ENABLE(SoPickAction, SoCoordinateElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoCoordinate3::cleanClass(void)
-{
 }
 
 #if !defined(COIN_EXCLUDE_SOACTION)

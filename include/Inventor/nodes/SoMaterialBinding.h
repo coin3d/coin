@@ -20,6 +20,7 @@
 #ifndef __SOMATERIALBINDING_H__
 #define __SOMATERIALBINDING_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/nodes/SoNode.h>
 
@@ -32,24 +33,12 @@
 class SoMaterialBinding : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoMaterialBinding)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoMaterialBinding);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoMaterialBinding(void);
-protected:
-  virtual ~SoMaterialBinding();
-//$ END TEMPLATE NodeHeader
 
-public:
   // Definitions must match 100% with the enum in
   // SoMaterialBindingElement. NB: DEFAULT and NONE bindings are
   // obsolete, but we include them to be compatible with old Open
@@ -85,6 +74,8 @@ public:
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
 protected:
+  virtual ~SoMaterialBinding();
+
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
 };
 

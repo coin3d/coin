@@ -49,7 +49,6 @@ public:
   void get1(const int index, SbString & valueString);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoMField(void);

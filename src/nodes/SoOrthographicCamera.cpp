@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoOrthographicCamera.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 #include <Inventor/SbSphere.h>
 
 #include <math.h>
@@ -39,46 +39,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoOrthographicCamera)
-SoType SoOrthographicCamera::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoOrthographicCamera node class.
-*/
-void *
-SoOrthographicCamera::createInstance(void)
-{
-  return new SoOrthographicCamera;
-}
-
-/*!
-  Returns the unique type identifier for the SoOrthographicCamera class.
-*/
-SoType
-SoOrthographicCamera::getClassTypeId(void)
-{
-  return SoOrthographicCamera::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoOrthographicCamera::getTypeId(void) const
-{
-  return SoOrthographicCamera::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoOrthographicCamera);
 
 /*!
   Constructor.
 */
 SoOrthographicCamera::SoOrthographicCamera()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoOrthographicCamera)
-  // Make sure the class has been initialized.
-  assert(SoOrthographicCamera::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoOrthographicCamera);
 
   SO_NODE_ADD_FIELD(height, (2.0f));
 }
@@ -98,26 +66,7 @@ SoOrthographicCamera::~SoOrthographicCamera()
 void
 SoOrthographicCamera::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(OrthographicCamera)
-  // Make sure we only initialize once.
-  assert(SoOrthographicCamera::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoOrthographicCamera::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "OrthographicCamera",
-                       &SoOrthographicCamera::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoOrthographicCamera::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoOrthographicCamera);
 }
 
 /*!

@@ -115,18 +115,6 @@ SoViewportRegionElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the SoViewportRegionElement
-  class.
-*/
-
-void
-SoViewportRegionElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoViewportRegionElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoViewportRegionElement::createInstance(void)

@@ -20,6 +20,7 @@
 #ifndef __SOPROFILE_H__
 #define __SOPROFILE_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoMFInt32.h>
 #include <Inventor/fields/SoSFEnum.h>
@@ -31,28 +32,15 @@
 class SbVec2f;
 class SoState;
 
-// *************************************************************************
 
 class SoProfile : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeAbstractHeader(SoProfile)
-private:
-  static SoType classTypeId;
+  SO_NODE_ABSTRACT_HEADER(SoProfile);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
 public:
   static void initClass(void);
-  static void cleanClass(void);
 
-protected:
-  SoProfile(void);
-  virtual ~SoProfile();
-//$ END TEMPLATE NodeAbstractHeader
-
-public:
   enum Profile {
     START_FIRST, START_NEW, ADD_TO_CURRENT
   };
@@ -84,6 +72,10 @@ public:
 			    int32_t & numKnots, float *& knotVector) = 0;
   virtual void getVertices(SoState * state, int32_t & nVertices,
 			   SbVec2f *& vertices) = 0;
+
+protected:
+  SoProfile(void);
+  virtual ~SoProfile();
 };
 
 #endif // !__SOPROFILE_H__

@@ -20,6 +20,7 @@
 #ifndef __SOBASECOLOR_H__
 #define __SOBASECOLOR_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoMFColor.h>
 
@@ -32,24 +33,12 @@
 class SoBaseColor : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoBaseColor)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoBaseColor);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoBaseColor(void);
-protected:
-  virtual ~SoBaseColor();
-//$ END TEMPLATE NodeHeader
 
-public:
   SoMFColor rgb;
 
 #if !defined(COIN_EXCLUDE_SOACTION)
@@ -61,6 +50,9 @@ public:
 #if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   virtual void callback(SoCallbackAction * action);
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
+
+protected:
+  virtual ~SoBaseColor();
 };
 
 #endif // !__SOBASECOLOR_H__

@@ -20,6 +20,7 @@
 #ifndef __SOQUADMESH_H__
 #define __SOQUADMESH_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNonIndexedShape.h>
 #include <Inventor/fields/SoSFInt32.h>
 
@@ -32,24 +33,12 @@
 class SoQuadMesh : public SoNonIndexedShape {
   typedef SoNonIndexedShape inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoQuadMesh)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoQuadMesh);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoQuadMesh(void);
-protected:
-  virtual ~SoQuadMesh();
-//$ END TEMPLATE NodeHeader
 
-public:
   enum Binding {
     OVERALL = 0, 
     PER_ROW,
@@ -71,6 +60,8 @@ public:
   virtual SbBool generateDefaultNormals(SoState * state, SoNormalBundle * nb);
 
 protected:
+  virtual ~SoQuadMesh();
+
 #if !defined(COIN_EXCLUDE_SOACTION)
   virtual void generatePrimitives(SoAction * action);
 #endif // !COIN_EXCLUDE_SOACTION

@@ -112,18 +112,6 @@ SoTextureMatrixElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the
-  SoTextureMatrixElement class.
-*/
-
-void
-SoTextureMatrixElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoTextureMatrixElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoTextureMatrixElement::createInstance(void)

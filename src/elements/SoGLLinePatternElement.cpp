@@ -111,18 +111,6 @@ SoGLLinePatternElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the
-  SoGLLinePatternElement class.
-*/
-
-void
-SoGLLinePatternElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoGLLinePatternElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoGLLinePatternElement::createInstance(void)

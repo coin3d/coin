@@ -20,6 +20,7 @@
 #ifndef __SOLABEL_H__
 #define __SOLABEL_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoSFName.h>
 
@@ -32,25 +33,16 @@
 class SoLabel : public SoNode {
     typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoLabel)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoLabel);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoLabel(void);
+
+  SoSFName label;
+
 protected:
   virtual ~SoLabel();
-//$ END TEMPLATE NodeHeader
-
-public:
-  SoSFName label;
 };
 
 #endif // !__SOLABEL_H__

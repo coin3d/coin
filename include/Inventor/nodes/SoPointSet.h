@@ -20,6 +20,7 @@
 #ifndef __SOPOINTSET_H__
 #define __SOPOINTSET_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNonIndexedShape.h>
 #include <Inventor/fields/SoSFInt32.h>
 
@@ -32,24 +33,12 @@
 class SoPointSet : public SoNonIndexedShape {
   typedef SoNonIndexedShape inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoPointSet)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoPointSet);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoPointSet(void);
-protected:
-  virtual ~SoPointSet();
-//$ END TEMPLATE NodeHeader
 
-public:
   enum Binding {
     OVERALL = 0,
     PER_VERTEX
@@ -68,6 +57,8 @@ public:
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
 protected:
+  virtual ~SoPointSet();
+
 #if !defined(COIN_EXCLUDE_SOACTION)
   virtual void generatePrimitives(SoAction * action);
 #endif // !COIN_EXCLUDE_SOACTION

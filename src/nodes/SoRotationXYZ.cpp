@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoRotationXYZ.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbMatrix.h>
 
@@ -72,46 +72,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoRotationXYZ)
-SoType SoRotationXYZ::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoRotationXYZ node class.
-*/
-void *
-SoRotationXYZ::createInstance(void)
-{
-  return new SoRotationXYZ;
-}
-
-/*!
-  Returns the unique type identifier for the SoRotationXYZ class.
-*/
-SoType
-SoRotationXYZ::getClassTypeId(void)
-{
-  return SoRotationXYZ::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoRotationXYZ::getTypeId(void) const
-{
-  return SoRotationXYZ::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoRotationXYZ);
 
 /*!
   Constructor.
 */
 SoRotationXYZ::SoRotationXYZ()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoRotationXYZ)
-  // Make sure the class has been initialized.
-  assert(SoRotationXYZ::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoRotationXYZ);
 
   SO_NODE_ADD_FIELD(angle, (0.0f));
   SO_NODE_ADD_FIELD(axis, (SoRotationXYZ::X));
@@ -137,26 +105,7 @@ SoRotationXYZ::~SoRotationXYZ()
 void
 SoRotationXYZ::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(RotationXYZ)
-  // Make sure we only initialize once.
-  assert(SoRotationXYZ::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoRotationXYZ::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "RotationXYZ",
-                       &SoRotationXYZ::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoRotationXYZ::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoRotationXYZ);
 }
 
 #if !defined(COIN_EXCLUDE_SOACTION)

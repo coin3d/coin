@@ -20,6 +20,7 @@
 #ifndef __SOINDEXEDFACESET_H__
 #define __SOINDEXEDFACESET_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoIndexedShape.h>
 
 #if defined(COIN_EXCLUDE_SOINDEXEDFACESET)
@@ -35,24 +36,12 @@ class SoConvexDataCache;
 class SoIndexedFaceSet : public SoIndexedShape {
   typedef SoIndexedShape inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoIndexedFaceSet)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoIndexedFaceSet);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoIndexedFaceSet(void);
-protected:
-  virtual ~SoIndexedFaceSet();
-//$ END TEMPLATE NodeHeader
 
-public:
   enum Binding {
     OVERALL = 0, 
     PER_FACE, 
@@ -72,6 +61,8 @@ public:
   SbBool generateDefaultNormals(SoState *state, SoNormalBundle *nb);
 
 protected:
+  virtual ~SoIndexedFaceSet();
+
 #if !defined(COIN_EXCLUDE_SOACTION)
   virtual void generatePrimitives(SoAction *action);
 #endif // !COIN_EXCLUDE_SOACTION

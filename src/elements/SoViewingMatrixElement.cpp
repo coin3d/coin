@@ -115,18 +115,6 @@ SoViewingMatrixElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the SoViewingMatrixElement
-  class.
-*/
-
-void
-SoViewingMatrixElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoViewingMatrixElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   The constructor.  Can't be used directly.
 
   \sa void * SoViewingMatrixElement::createInstance(void)

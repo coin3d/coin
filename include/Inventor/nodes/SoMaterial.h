@@ -20,6 +20,7 @@
 #ifndef __SOMATERIAL_H__
 #define __SOMATERIAL_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoMFColor.h>
 #include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/fields/SoSFFloat.h>
@@ -34,24 +35,12 @@
 class SoMaterial : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoMaterial)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoMaterial);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoMaterial(void);
-protected:
-  virtual ~SoMaterial();
-//$ END TEMPLATE NodeHeader
 
-public:
   SoMFColor ambientColor; 
   SoMFColor diffuseColor; 
   SoMFColor specularColor; 
@@ -68,6 +57,9 @@ public:
 #if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   virtual void callback(SoCallbackAction * action);
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
+
+protected:
+  virtual ~SoMaterial();
 
 private:
   // -- FIXME: not in the OIV API. Remove? 19990611 mortene.

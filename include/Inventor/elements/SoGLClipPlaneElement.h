@@ -40,7 +40,6 @@ public:
   virtual ~SoGLClipPlaneElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoGLClipPlaneElement(void);

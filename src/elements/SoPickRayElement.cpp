@@ -111,17 +111,6 @@ SoPickRayElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the SoPickRayElement class.
-*/
-
-void
-SoPickRayElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoPickRayElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoPickRayElement::createInstance(void)

@@ -20,6 +20,7 @@
 #ifndef __SONURBSCURVE_H__
 #define __SONURBSCURVE_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/fields/SoMFFloat.h>
@@ -37,24 +38,12 @@
 class SoNurbsCurve : public SoShape {
     typedef SoShape inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoNurbsCurve)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoNurbsCurve);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoNurbsCurve(void);
-protected:
-  virtual ~SoNurbsCurve();
-//$ END TEMPLATE NodeHeader
 
-public:
   SoSFInt32 numControlPoints;
   SoMFFloat knotVector;
 
@@ -75,6 +64,8 @@ public:
 #endif // !COIN_EXCLUDE_SOACTION
 
 protected:
+  virtual ~SoNurbsCurve();
+
 #if !defined(COIN_EXCLUDE_SOACTION)
   virtual void generatePrimitives(SoAction * action);
 #endif // !COIN_EXCLUDE_SOACTION

@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoFontStyle.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -100,46 +100,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoFontStyle)
-SoType SoFontStyle::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoFontStyle node class.
-*/
-void *
-SoFontStyle::createInstance(void)
-{
-  return new SoFontStyle;
-}
-
-/*!
-  Returns the unique type identifier for the SoFontStyle class.
-*/
-SoType
-SoFontStyle::getClassTypeId(void)
-{
-  return SoFontStyle::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoFontStyle::getTypeId(void) const
-{
-  return SoFontStyle::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoFontStyle);
 
 /*!
   Constructor.
 */
 SoFontStyle::SoFontStyle()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoFontStyle)
-  // Make sure the class has been initialized.
-  assert(SoFontStyle::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoFontStyle);
 
   SO_NODE_ADD_FIELD(family, (SoFontStyle::SERIF));
   SO_NODE_ADD_FIELD(style, (SoFontStyle::NONE));
@@ -170,26 +138,7 @@ SoFontStyle::~SoFontStyle()
 void
 SoFontStyle::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(FontStyle)
-  // Make sure we only initialize once.
-  assert(SoFontStyle::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoFontStyle::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "FontStyle",
-                       &SoFontStyle::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoFontStyle::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoFontStyle);
 }
 
 /*!

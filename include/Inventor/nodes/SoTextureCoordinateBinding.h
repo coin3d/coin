@@ -20,6 +20,7 @@
 #ifndef __SOTEXTURECOORDINATEBINDING_H__
 #define __SOTEXTURECOORDINATEBINDING_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoSFEnum.h>
 #if !defined(COIN_EXCLUDE_SOTEXTURECOORDINATEBINDINGELEMENT)
@@ -35,24 +36,12 @@
 class SoTextureCoordinateBinding : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoTextureCoordinateBinding)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoTextureCoordinateBinding);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoTextureCoordinateBinding(void);
-protected:
-  virtual ~SoTextureCoordinateBinding();
-//$ END TEMPLATE NodeHeader
 
-public:
   enum Binding {
     PER_VERTEX = SoTextureCoordinateBindingElement::PER_VERTEX, 
     PER_VERTEX_INDEXED = SoTextureCoordinateBindingElement::PER_VERTEX_INDEXED
@@ -74,6 +63,8 @@ public:
 #endif // !COIN_EXCLUDE_SOPICKACTION
 
 protected:
+  virtual ~SoTextureCoordinateBinding();
+
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
 };
 

@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoLightModel.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -61,46 +61,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoLightModel)
-SoType SoLightModel::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoLightModel node class.
-*/
-void *
-SoLightModel::createInstance(void)
-{
-  return new SoLightModel;
-}
-
-/*!
-  Returns the unique type identifier for the SoLightModel class.
-*/
-SoType
-SoLightModel::getClassTypeId(void)
-{
-  return SoLightModel::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoLightModel::getTypeId(void) const
-{
-  return SoLightModel::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoLightModel);
 
 /*!
   Constructor.
 */
 SoLightModel::SoLightModel()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoLightModel)
-  // Make sure the class has been initialized.
-  assert(SoLightModel::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoLightModel);
   
   SO_NODE_ADD_FIELD(model, (SoLightModel::PHONG));
   SO_NODE_DEFINE_ENUM_VALUE(Model, BASE_COLOR);
@@ -123,30 +91,11 @@ SoLightModel::~SoLightModel()
 void
 SoLightModel::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(LightModel)
-  // Make sure we only initialize once.
-  assert(SoLightModel::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoLightModel::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "LightModel",
-                       &SoLightModel::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
+  SO_NODE_INTERNAL_INIT_CLASS(SoLightModel);
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoGLLightModelElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoLightModel::cleanClass(void)
-{
 }
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)

@@ -40,7 +40,6 @@ public:
   virtual ~SoLightModelElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoLightModelElement(void);

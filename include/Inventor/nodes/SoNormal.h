@@ -20,6 +20,7 @@
 #ifndef __SONORMAL_H__
 #define __SONORMAL_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoMFVec3f.h>
 #include <Inventor/nodes/SoNode.h>
 
@@ -34,24 +35,11 @@ class SbVec3f;
 class SoNormal : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoNormal)
-private:
-  static SoType classTypeId;
-
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
-public:
-  static void initClass(void);
-  static void cleanClass(void);
-
-  SoNormal(void);
-protected:
-  virtual ~SoNormal();
-//$ END TEMPLATE NodeHeader
+  SO_NODE_HEADER(SoNormal);
  
 public:
+  static void initClass(void);
+  SoNormal(void);
 
   // old stuff from VRMLView, but pretty smart, I think
 //   enum VectorType {
@@ -78,6 +66,9 @@ public:
 #if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
+
+protected:
+  virtual ~SoNormal();
 
 private:
 // VRMLView stuff, temporaryly disabled

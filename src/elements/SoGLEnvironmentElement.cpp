@@ -116,18 +116,6 @@ SoGLEnvironmentElement::initClass()
 }
 
 /*!
-  This static method cleans up static data for the
-  SoGLEnvironmentElement class.
-*/
-
-void
-SoGLEnvironmentElement::cleanClass()
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoGLEnvironmentElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoGLEnvironmentElement::createInstance(void)

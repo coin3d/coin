@@ -20,6 +20,7 @@
 #ifndef __SOSELECTION_H__
 #define __SOSELECTION_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/fields/SoSFEnum.h>
 
@@ -41,24 +42,12 @@ typedef SoPath * SoSelectionPickCB(void * data, const SoPickedPoint * pick);
 class SoSelection : public SoSeparator {
   typedef SoSeparator inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoSelection)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoSelection);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoSelection(void);
-protected:
-  virtual ~SoSelection();
-//$ END TEMPLATE NodeHeader
 
-public:
   enum Policy {
     SINGLE, TOGGLE, SHIFT
   };
@@ -99,6 +88,8 @@ public:
   void removeChangeCallback(SoSelectionClassCB * f, void * userData = NULL);
 
 protected:
+  virtual ~SoSelection();
+
   void invokeSelectionPolicy(SoPath * path, SbBool shiftDown);
   void performSingleSelection(SoPath * path);
   void performToggleSelection(SoPath * path);

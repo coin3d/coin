@@ -121,18 +121,6 @@ SoEmissiveColorElement::initClass()
 }
 
 /*!
-  This static method cleans up static data for the SoEmissiveColorElement
-  class.
-*/
-
-void 
-SoEmissiveColorElement::cleanClass()
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoEmissiveColorElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoEmissiveColorElement::createInstance(void)

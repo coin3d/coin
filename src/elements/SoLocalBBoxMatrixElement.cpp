@@ -110,18 +110,6 @@ SoLocalBBoxMatrixElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the
-  SoLocalBBoxMatrixElement class.
-*/
-
-void
-SoLocalBBoxMatrixElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoLocalBBoxMatrixElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoLocalBBoxMatrixElement::createInstance(void)

@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoQuadMesh.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/misc/SoState.h>
 
@@ -101,46 +101,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoQuadMesh)
-SoType SoQuadMesh::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoQuadMesh node class.
-*/
-void *
-SoQuadMesh::createInstance(void)
-{
-  return new SoQuadMesh;
-}
-
-/*!
-  Returns the unique type identifier for the SoQuadMesh class.
-*/
-SoType
-SoQuadMesh::getClassTypeId(void)
-{
-  return SoQuadMesh::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoQuadMesh::getTypeId(void) const
-{
-  return SoQuadMesh::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoQuadMesh);
 
 /*!
   Constructor.
 */
 SoQuadMesh::SoQuadMesh()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoQuadMesh)
-  // Make sure the class has been initialized.
-  assert(SoQuadMesh::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoQuadMesh);
 
   SO_NODE_ADD_FIELD(verticesPerColumn, (1));
   SO_NODE_ADD_FIELD(verticesPerRow, (1));
@@ -161,26 +129,7 @@ SoQuadMesh::~SoQuadMesh()
 void
 SoQuadMesh::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(QuadMesh)
-  // Make sure we only initialize once.
-  assert(SoQuadMesh::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoQuadMesh::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "QuadMesh",
-                       &SoQuadMesh::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoQuadMesh::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoQuadMesh);
 }
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)

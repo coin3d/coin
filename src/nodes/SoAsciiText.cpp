@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoAsciiText.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 /*!
   \enum SoAsciiText::Justification
@@ -67,46 +67,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoAsciiText)
-SoType SoAsciiText::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoAsciiText node class.
-*/
-void *
-SoAsciiText::createInstance(void)
-{
-  return new SoAsciiText;
-}
-
-/*!
-  Returns the unique type identifier for the SoAsciiText class.
-*/
-SoType
-SoAsciiText::getClassTypeId(void)
-{
-  return SoAsciiText::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoAsciiText::getTypeId(void) const
-{
-  return SoAsciiText::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoAsciiText);
 
 /*!
   Constructor.
 */
 SoAsciiText::SoAsciiText()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoAsciiText)
-  // Make sure the class has been initialized.
-  assert(SoAsciiText::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoAsciiText);
 
   SO_NODE_ADD_FIELD(string, (""));
   SO_NODE_ADD_FIELD(spacing, (1.0f));
@@ -134,26 +102,7 @@ SoAsciiText::~SoAsciiText()
 void
 SoAsciiText::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(AsciiText)
-  // Make sure we only initialize once.
-  assert(SoAsciiText::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoAsciiText::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "AsciiText",
-                       &SoAsciiText::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoAsciiText::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoAsciiText);
 }
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)

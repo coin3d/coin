@@ -20,6 +20,7 @@
 #ifndef __SOSPHERE_H__
 #define __SOSPHERE_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/fields/SoSFFloat.h>
 
@@ -32,24 +33,12 @@
 class SoSphere : public SoShape {
   typedef SoShape inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoSphere)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoSphere);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoSphere(void);
-protected:
-  virtual ~SoSphere();
-//$ END TEMPLATE NodeHeader
 
-public:
   SoSFFloat radius;
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
@@ -66,6 +55,8 @@ public:
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
 protected:
+  virtual ~SoSphere();
+
 #if !defined(COIN_EXCLUDE_SOACTION)
   virtual void generatePrimitives(SoAction * action);
 #endif // !COIN_EXCLUDE_SOACTION

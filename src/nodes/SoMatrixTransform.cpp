@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoMatrixTransform.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #if !defined(COIN_EXCLUDE_SOACTION)
 #include <Inventor/actions/SoAction.h>
@@ -60,46 +60,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoMatrixTransform)
-SoType SoMatrixTransform::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoMatrixTransform node class.
-*/
-void *
-SoMatrixTransform::createInstance(void)
-{
-  return new SoMatrixTransform;
-}
-
-/*!
-  Returns the unique type identifier for the SoMatrixTransform class.
-*/
-SoType
-SoMatrixTransform::getClassTypeId(void)
-{
-  return SoMatrixTransform::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoMatrixTransform::getTypeId(void) const
-{
-  return SoMatrixTransform::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoMatrixTransform);
 
 /*!
   Constructor.
 */
 SoMatrixTransform::SoMatrixTransform()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoMatrixTransform)
-  // Make sure the class has been initialized.
-  assert(SoMatrixTransform::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoMatrixTransform);
 
   SO_NODE_ADD_FIELD(matrix, (SbMatrix::identity()));
 }
@@ -119,26 +87,7 @@ SoMatrixTransform::~SoMatrixTransform()
 void
 SoMatrixTransform::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(MatrixTransform)
-  // Make sure we only initialize once.
-  assert(SoMatrixTransform::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoMatrixTransform::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "MatrixTransform",
-                       &SoMatrixTransform::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoMatrixTransform::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoMatrixTransform);
 }
 
 #if !defined(COIN_EXCLUDE_SOACTION)

@@ -106,17 +106,6 @@ SoFontSizeElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the SoFontSizeElement class.
-*/
-
-void
-SoFontSizeElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoFontSizeElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoFontSizeElement::createInstance(void)

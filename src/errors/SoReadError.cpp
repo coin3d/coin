@@ -75,15 +75,6 @@ SoReadError::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the SoReadError class.
-*/
-
-void
-SoReadError::cleanClass(void)
-{
-}
-
-/*!
   FIXME: write doc.
 */
 

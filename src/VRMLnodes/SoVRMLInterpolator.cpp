@@ -28,37 +28,14 @@
 #include <Inventor/VRMLnodes/SoVRMLInterpolator.h>
 #include <Inventor/SbName.h>
 
-//$ BEGIN TEMPLATE NodeAbstractSource(SoVRMLInterpolator)
-SoType SoVRMLInterpolator::classTypeId = SoType::badType();
-
-/*!
-  Returns the unique type identifier for the SoVRMLInterpolator class.
-*/
-SoType
-SoVRMLInterpolator::getClassTypeId(void)
-{
-  return SoVRMLInterpolator::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoVRMLInterpolator::getTypeId(void) const
-{
-  return SoVRMLInterpolator::classTypeId;
-}
-//$ END TEMPLATE NodeAbstractSource
+SO_NODE_ABSTRACT_SOURCE(SoVRMLInterpolator);
 
 /*!
   Constructor.
 */
 SoVRMLInterpolator::SoVRMLInterpolator(void)
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoVRMLInterpolator)
-  // Make sure the class has been initialized.
-  assert(SoVRMLInterpolator::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoVRMLInterpolator);
 }
 
 /*!
@@ -76,26 +53,7 @@ SoVRMLInterpolator::~SoVRMLInterpolator()
 void
 SoVRMLInterpolator::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeAbstractSource(VRMLInterpolator)
-  // Make sure we only initialize once.
-  assert(SoVRMLInterpolator::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoVRMLInterpolator::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "VRMLInterpolator",
-                       NULL,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeAbstractSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoVRMLInterpolator::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoVRMLInterpolator);
 }
 
 /*!

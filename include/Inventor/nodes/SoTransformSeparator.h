@@ -20,6 +20,7 @@
 #ifndef __SOTRANSFORMSEPARATOR_H__
 #define __SOTRANSFORMSEPARATOR_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoGroup.h>
 
 #if defined(COIN_EXCLUDE_SOTRANSFORMSEPARATOR)
@@ -31,24 +32,12 @@
 class SoTransformSeparator : public SoGroup {
   typedef SoGroup inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoTransformSeparator)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoTransformSeparator);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoTransformSeparator(void);
-protected:
-  virtual ~SoTransformSeparator();
-//$ END TEMPLATE NodeHeader
 
-public:
   SoTransformSeparator(int nChildren);
 
 #if !defined(COIN_EXCLUDE_SOACTION)
@@ -72,6 +61,9 @@ public:
 #if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
+
+protected:
+  virtual ~SoTransformSeparator();
 };
 
 #endif // !__SOTRANSFORMSEPARATOR_H__

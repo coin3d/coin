@@ -160,15 +160,6 @@ SoSFEngine::initClass(void)
 }
 
 /*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoSFEngine::cleanClass(void)
-{
-}
-
-/*!
   Constructor.
 */
 SoSFEngine::SoSFEngine(void)

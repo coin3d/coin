@@ -20,6 +20,7 @@
 #ifndef __SOSHUTTLE_H__
 #define __SOSHUTTLE_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoTranslation.h>
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/fields/SoSFFloat.h>
@@ -34,28 +35,19 @@
 class SoShuttle : public SoTranslation {
   typedef SoTranslation inherited;
   
-//$ BEGIN TEMPLATE NodeHeader(SoShuttle)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoShuttle);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoShuttle(void);
-protected:
-  virtual ~SoShuttle();
-//$ END TEMPLATE NodeHeader
 
-public:
   SoSFVec3f translation0;
   SoSFVec3f translation1;
   SoSFFloat speed;
   SoSFBool on;
+
+protected:
+  virtual ~SoShuttle();
 };
 
 #endif // !__SOSHUTTLE_H__

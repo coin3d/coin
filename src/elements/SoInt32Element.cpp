@@ -104,17 +104,6 @@ SoInt32Element::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the SoInt32Element class.
-*/
-
-void
-SoInt32Element::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanAbstractElementSource(SoInt32Element)
-//$ END TEMPLATE CleanAbstractElementSource
-}
-
-/*!
   The constructor initialized the int32_t to 0, and sets the class type
   identifier and stack index of the element.
 */

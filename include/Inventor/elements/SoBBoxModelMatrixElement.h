@@ -42,7 +42,6 @@ public:
   virtual ~SoBBoxModelMatrixElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoBBoxModelMatrixElement(void);

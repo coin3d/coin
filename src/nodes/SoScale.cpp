@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoScale.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #if !defined(COIN_EXCLUDE_SOACTION)
 #include <Inventor/actions/SoAction.h>
@@ -55,46 +55,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoScale)
-SoType SoScale::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoScale node class.
-*/
-void *
-SoScale::createInstance(void)
-{
-  return new SoScale;
-}
-
-/*!
-  Returns the unique type identifier for the SoScale class.
-*/
-SoType
-SoScale::getClassTypeId(void)
-{
-  return SoScale::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoScale::getTypeId(void) const
-{
-  return SoScale::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoScale);
 
 /*!
   Constructor.
 */
 SoScale::SoScale()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoScale)
-  // Make sure the class has been initialized.
-  assert(SoScale::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoScale);
 
   SO_NODE_ADD_FIELD(scaleFactor, (1.0f, 1.0f, 1.0f));
 }
@@ -114,26 +82,7 @@ SoScale::~SoScale()
 void
 SoScale::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(Scale)
-  // Make sure we only initialize once.
-  assert(SoScale::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoScale::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Scale",
-                       &SoScale::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoScale::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoScale);
 }
 
 #if !defined(COIN_EXCLUDE_SOACTION)

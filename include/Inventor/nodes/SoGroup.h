@@ -20,6 +20,7 @@
 #ifndef __SOGROUP_H__
 #define __SOGROUP_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 
 #if defined(COIN_EXCLUDE_SOGROUP)
@@ -31,24 +32,12 @@
 class SoGroup : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoGroup)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoGroup);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoGroup(void);
-protected:
-  virtual ~SoGroup();
-//$ END TEMPLATE NodeHeader
 
-public:
   SoGroup(int nchildren);
 
   void addChild(SoNode * const node);
@@ -99,6 +88,8 @@ public:
   virtual SbBool readChildren(SoInput * in);
 
 protected:
+  virtual ~SoGroup();
+
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
 
   SoChildList * children;

@@ -116,18 +116,6 @@ SoDrawStyleElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the
-  SoDrawStyleElement class.
-*/
-
-void
-SoDrawStyleElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoDrawStyleElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoDrawStyleElement::createInstance(void)

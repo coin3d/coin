@@ -20,6 +20,7 @@
 #ifndef __SOTEXTURECOORDINATEPLANE_H__
 #define __SOTEXTURECOORDINATEPLANE_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoTextureCoordinateFunction.h>
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/SbVec4f.h>
@@ -33,24 +34,12 @@
 class SoTextureCoordinatePlane : public SoTextureCoordinateFunction {
   typedef SoTextureCoordinateFunction inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoTextureCoordinatePlane)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoTextureCoordinatePlane);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoTextureCoordinatePlane(void);
-protected:
-  virtual ~SoTextureCoordinatePlane();
-//$ END TEMPLATE NodeHeader
 
-public:
   SoSFVec3f directionS;
   SoSFVec3f directionT;
 
@@ -66,6 +55,9 @@ public:
 #if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   void callback(SoCallbackAction * action);
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
+
+protected:
+  virtual ~SoTextureCoordinatePlane();
 
 private:
   static const SbVec4f &generate(void *userdata,

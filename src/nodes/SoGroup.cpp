@@ -28,7 +28,7 @@
 #include <Inventor/nodes/SoGroup.h>
 #include <assert.h>
 
-#include <Inventor/SbName.h>
+
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/misc/SoChildList.h>
@@ -66,46 +66,14 @@ static const char * const REFERENCE_KEYWORD  = "USE";
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoGroup)
-SoType SoGroup::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoGroup node class.
-*/
-void *
-SoGroup::createInstance(void)
-{
-  return new SoGroup;
-}
-
-/*!
-  Returns the unique type identifier for the SoGroup class.
-*/
-SoType
-SoGroup::getClassTypeId(void)
-{
-  return SoGroup::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoGroup::getTypeId(void) const
-{
-  return SoGroup::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoGroup);
 
 /*!
   Constructor.
 */
 SoGroup::SoGroup()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoGroup)
-  // Make sure the class has been initialized.
-  assert(SoGroup::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoGroup);
 
   this->children = new SoChildList(this);
 }
@@ -284,26 +252,7 @@ SoGroup::findChild(const SoNode * const node) const
 void
 SoGroup::initClass()
 {
-//$ BEGIN TEMPLATE InitNodeSource(Group)
-  // Make sure we only initialize once.
-  assert(SoGroup::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoGroup::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Group",
-                       &SoGroup::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoGroup::cleanClass()
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoGroup);
 }
 
 

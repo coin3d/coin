@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoPackedColor.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -47,46 +47,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoPackedColor)
-SoType SoPackedColor::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoPackedColor node class.
-*/
-void *
-SoPackedColor::createInstance(void)
-{
-  return new SoPackedColor;
-}
-
-/*!
-  Returns the unique type identifier for the SoPackedColor class.
-*/
-SoType
-SoPackedColor::getClassTypeId(void)
-{
-  return SoPackedColor::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoPackedColor::getTypeId(void) const
-{
-  return SoPackedColor::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoPackedColor);
 
 /*!
   Constructor.
 */
 SoPackedColor::SoPackedColor()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoPackedColor)
-  // Make sure the class has been initialized.
-  assert(SoPackedColor::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoPackedColor);
   
   SO_NODE_ADD_FIELD(orderedRGBA, (0xccccccff));
 }
@@ -106,30 +74,11 @@ SoPackedColor::~SoPackedColor()
 void
 SoPackedColor::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(PackedColor)
-  // Make sure we only initialize once.
-  assert(SoPackedColor::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoPackedColor::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "PackedColor",
-                       &SoPackedColor::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
+  SO_NODE_INTERNAL_INIT_CLASS(SoPackedColor);
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoGLDiffuseColorElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoPackedColor::cleanClass(void)
-{
 }
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)

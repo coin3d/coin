@@ -123,16 +123,6 @@ SoGlobalSimplifyAction::initClass(void)
 //$ END TEMPLATE InitActionSource
 }
 
-/*!
-  This static method cleans up the static data for the
-  SoGlobalSimplifyAction class.
-*/
-
-void
-SoGlobalSimplifyAction::cleanClass(void)
-{
-}
-
 // *************************************************************************
 
 /*!

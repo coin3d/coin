@@ -20,6 +20,7 @@
 #ifndef __SOCUBE_H__
 #define __SOCUBE_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/nodes/SoShape.h>
 
@@ -34,24 +35,12 @@ class SoIndexedFaceSet;
 class SoCube : public SoShape {
     typedef SoShape inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoCube)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoCube);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoCube(void);
-protected:
-  virtual ~SoCube();
-//$ END TEMPLATE NodeHeader
 
-public:
   SoSFFloat width;
   SoSFFloat height;
   SoSFFloat depth;
@@ -70,6 +59,8 @@ public:
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
 protected:
+  virtual ~SoCube();
+
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void generatePrimitives(SoAction * action);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION

@@ -119,17 +119,6 @@ SoNormalElement::initClass()
 }
 
 /*!
-  This static method cleans up static data for the SoNormalElement class.
-*/
-
-void
-SoNormalElement::cleanClass()
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoNormalElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoNormalElement::createInstance(void)

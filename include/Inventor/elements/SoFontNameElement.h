@@ -41,7 +41,6 @@ public:
   virtual ~SoFontNameElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoFontNameElement(void);

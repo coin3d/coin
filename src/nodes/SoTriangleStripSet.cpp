@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoTriangleStripSet.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #include <Inventor/misc/SoState.h>
 
@@ -94,46 +94,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoTriangleStripSet)
-SoType SoTriangleStripSet::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoTriangleStripSet node class.
-*/
-void *
-SoTriangleStripSet::createInstance(void)
-{
-  return new SoTriangleStripSet;
-}
-
-/*!
-  Returns the unique type identifier for the SoTriangleStripSet class.
-*/
-SoType
-SoTriangleStripSet::getClassTypeId(void)
-{
-  return SoTriangleStripSet::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoTriangleStripSet::getTypeId(void) const
-{
-  return SoTriangleStripSet::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoTriangleStripSet);
 
 /*!
   Constructor.
 */
 SoTriangleStripSet::SoTriangleStripSet()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoTriangleStripSet)
-  // Make sure the class has been initialized.
-  assert(SoTriangleStripSet::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoTriangleStripSet);
 
   SO_NODE_ADD_FIELD(numVertices, (-1));
 }
@@ -153,26 +121,7 @@ SoTriangleStripSet::~SoTriangleStripSet()
 void
 SoTriangleStripSet::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(TriangleStripSet)
-  // Make sure we only initialize once.
-  assert(SoTriangleStripSet::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoTriangleStripSet::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "TriangleStripSet",
-                       &SoTriangleStripSet::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoTriangleStripSet::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoTriangleStripSet);
 }
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)

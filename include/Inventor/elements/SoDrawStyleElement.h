@@ -40,7 +40,6 @@ public:
   virtual ~SoDrawStyleElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoDrawStyleElement(void);

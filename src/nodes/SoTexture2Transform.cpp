@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoTexture2Transform.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 #include <math.h>
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
@@ -58,46 +58,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoTexture2Transform)
-SoType SoTexture2Transform::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoTexture2Transform node class.
-*/
-void *
-SoTexture2Transform::createInstance(void)
-{
-  return new SoTexture2Transform;
-}
-
-/*!
-  Returns the unique type identifier for the SoTexture2Transform class.
-*/
-SoType
-SoTexture2Transform::getClassTypeId(void)
-{
-  return SoTexture2Transform::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoTexture2Transform::getTypeId(void) const
-{
-  return SoTexture2Transform::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoTexture2Transform);
 
 /*!
   Constructor.
 */
 SoTexture2Transform::SoTexture2Transform()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoTexture2Transform)
-  // Make sure the class has been initialized.
-  assert(SoTexture2Transform::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoTexture2Transform);
   
   SO_NODE_ADD_FIELD(translation, (0.0f, 0.0f));
   SO_NODE_ADD_FIELD(rotation, (0.0f));
@@ -120,30 +88,11 @@ SoTexture2Transform::~SoTexture2Transform()
 void
 SoTexture2Transform::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(Texture2Transform)
-  // Make sure we only initialize once.
-  assert(SoTexture2Transform::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoTexture2Transform::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Texture2Transform",
-                       &SoTexture2Transform::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
+  SO_NODE_INTERNAL_INIT_CLASS(SoTexture2Transform);
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoGLTextureMatrixElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoTexture2Transform::cleanClass(void)
-{
 }
 
 

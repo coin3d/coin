@@ -20,6 +20,7 @@
 #ifndef __SOTRANSFORMATION_H__
 #define __SOTRANSFORMATION_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 
 #if defined(COIN_EXCLUDE_SOTRANSFORMATION)
@@ -31,22 +32,14 @@
 class SoTransformation : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeAbstractHeader(SoTransformation)
-private:
-  static SoType classTypeId;
+  SO_NODE_ABSTRACT_HEADER(SoTransformation);
 
 public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-public:
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoTransformation(void);
   virtual ~SoTransformation();
-//$ END TEMPLATE NodeAbstractHeader
-
 };
 
 #endif // !__SOTRANSFORMATION_H__

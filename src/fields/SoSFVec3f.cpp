@@ -191,15 +191,6 @@ SoSFVec3f::initClass(void)
 //$ END TEMPLATE FieldInitClass
 }
 
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoSFVec3f::cleanClass(void)
-{
-}
-
 SbBool
 SoSFVec3f::readValue(SoInput * in)
 {

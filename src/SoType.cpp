@@ -94,6 +94,7 @@ SoType::init(void)
   SoType::typeDict.enter((unsigned long)SbName("BadType").getString(), 0);
 }
 
+#if 0 // FIXME: re-code to be run automatically upon exit. 19991106 mortene.
 /*!
   This function cleans up the type system.
 */
@@ -115,6 +116,8 @@ SoType::clean(void)
   
   SoType::typeDict.clear();
 }
+#endif // re-code
+
 
 /*!
   This method creates and registers a new class type.
@@ -163,11 +166,20 @@ SoType::overrideType(const SoType originalType,
 SoType
 SoType::fromName(const SbName name)
 {
+  // It should be possible to specify a name without the "So" prefix
+  // and get the correct type id.
+  SbString pref("So");
+  pref += name.getString();
+  SbName prefixedname(pref);
+
   void * temp = NULL;
-  if (SoType::typeDict.find((unsigned long)name.getString(), temp)) {
+  if (SoType::typeDict.find((unsigned long)name.getString(), temp) ||
+      SoType::typeDict.find((unsigned long)prefixedname.getString(), temp)) {
     const int index = (int)temp;
     assert(index >= 0 && index < SoType::typeList.getLength());
+#if 0 // OBSOLETE: this need not be valid, I believe. 19991107 mortene.
     assert(SoType::typeDataList[index]->name == name);
+#endif // OBSOLETE
     return SoType::typeList[index];
   }
   return SoType::badType();

@@ -5,7 +5,6 @@ public:
   virtual ~_classname_(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   _classname_(void);

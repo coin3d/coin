@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoNurbsProfile.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 /*!
   \var SoMFFloat SoNurbsProfile::knotVector
@@ -36,46 +36,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoNurbsProfile)
-SoType SoNurbsProfile::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoNurbsProfile node class.
-*/
-void *
-SoNurbsProfile::createInstance(void)
-{
-  return new SoNurbsProfile;
-}
-
-/*!
-  Returns the unique type identifier for the SoNurbsProfile class.
-*/
-SoType
-SoNurbsProfile::getClassTypeId(void)
-{
-  return SoNurbsProfile::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoNurbsProfile::getTypeId(void) const
-{
-  return SoNurbsProfile::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoNurbsProfile);
 
 /*!
   Constructor.
 */
 SoNurbsProfile::SoNurbsProfile()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoNurbsProfile)
-  // Make sure the class has been initialized.
-  assert(SoNurbsProfile::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoNurbsProfile);
 
   SO_NODE_ADD_FIELD(knotVector, (0.0f));
 }
@@ -95,26 +63,7 @@ SoNurbsProfile::~SoNurbsProfile()
 void
 SoNurbsProfile::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(NurbsProfile)
-  // Make sure we only initialize once.
-  assert(SoNurbsProfile::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoNurbsProfile::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "NurbsProfile",
-                       &SoNurbsProfile::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoNurbsProfile::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoNurbsProfile);
 }
 
 

@@ -181,20 +181,6 @@ SoGetBoundingBoxAction::initClass(void)
   ENABLE_ELEMENT(SoViewportRegionElement);
 }
 
-/*!
-  This static method cleans up all the static data for the
-  SoGetBoundingBoxAction class.
-*/
-
-void
-SoGetBoundingBoxAction::cleanClass(void)
-{
-  delete methods;
-  delete SoGetBoundingBoxAction::enabledElements;
-  methods = NULL;
-  SoGetBoundingBoxAction::enabledElements = NULL;  
-}
-
 // *************************************************************************
 
 /*!

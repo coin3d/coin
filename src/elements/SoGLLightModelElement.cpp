@@ -111,18 +111,6 @@ SoGLLightModelElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the
-  SoGLLightModelElement class.
-*/
-
-void
-SoGLLightModelElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoGLLightModelElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoGLLightModelElement::createInstance(void)

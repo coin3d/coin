@@ -105,18 +105,6 @@ SoBBoxModelMatrixElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the
-  SoBBoxModelMatrixElement class.
-*/
-
-void
-SoBBoxModelMatrixElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoBBoxModelMatrixElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoBBoxModelMatrixElement::createInstance()

@@ -20,6 +20,7 @@
 #ifndef __SOMATRIXTRANSFORM_H__
 #define __SOMATRIXTRANSFORM_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFMatrix.h>
 #include <Inventor/nodes/SoTransformation.h>
 
@@ -32,24 +33,12 @@
 class SoMatrixTransform : public SoTransformation {
   typedef SoTransformation inherited;
   
-//$ BEGIN TEMPLATE NodeHeader(SoMatrixTransform)
-private:
-  static SoType classTypeId;
-
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
-public:
-  static void initClass(void);
-  static void cleanClass(void);
-
-  SoMatrixTransform(void);
-protected:
-  virtual ~SoMatrixTransform();
-//$ END TEMPLATE NodeHeader
+  SO_NODE_HEADER(SoMatrixTransform);
   
 public:
+  static void initClass(void);
+  SoMatrixTransform(void);
+
   SoSFMatrix matrix;
 
 #if !defined(COIN_EXCLUDE_SOACTION)
@@ -73,6 +62,9 @@ public:
 #if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
+
+protected:
+  virtual ~SoMatrixTransform();
 };
 
 #endif // !__SOMATRIXTRANSFORM_H__

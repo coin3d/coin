@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoRotor.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 /*!
   \var SoSFFloat SoRotor::speed
@@ -40,46 +40,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoRotor)
-SoType SoRotor::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoRotor node class.
-*/
-void *
-SoRotor::createInstance(void)
-{
-  return new SoRotor;
-}
-
-/*!
-  Returns the unique type identifier for the SoRotor class.
-*/
-SoType
-SoRotor::getClassTypeId(void)
-{
-  return SoRotor::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoRotor::getTypeId(void) const
-{
-  return SoRotor::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoRotor);
 
 /*!
   Constructor.
 */
 SoRotor::SoRotor()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoRotor)
-  // Make sure the class has been initialized.
-  assert(SoRotor::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoRotor);
 
   SO_NODE_ADD_FIELD(speed, (1.0f));
   SO_NODE_ADD_FIELD(on, (TRUE));
@@ -100,24 +68,5 @@ SoRotor::~SoRotor()
 void
 SoRotor::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(Rotor)
-  // Make sure we only initialize once.
-  assert(SoRotor::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoRotor::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Rotor",
-                       &SoRotor::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoRotor::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoRotor);
 }

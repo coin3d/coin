@@ -118,18 +118,6 @@ SoGLTextureCoordinateElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the
-  SoGLTextureCoordinateElement class.
-*/
-
-void
-SoGLTextureCoordinateElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoGLTextureCoordinateElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoGLTextureCoordinateElement::createInstance(void)

@@ -232,16 +232,6 @@ SoGLRenderAction::initClass(void)
   ENABLE_ELEMENT(SoGLViewportRegionElement);
 }
 
-/*!
-  This static method cleans up the static data for the SoGLRenderAction
-  class.
-*/
-
-void
-SoGLRenderAction::cleanClass(void)
-{
-}
-
 // *************************************************************************
 
 /*!

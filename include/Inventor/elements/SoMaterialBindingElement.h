@@ -40,7 +40,6 @@ public:
   virtual ~SoMaterialBindingElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoMaterialBindingElement(void);

@@ -20,6 +20,7 @@
 #ifndef __SONONINDEXEDSHAPE_H__
 #define __SONONINDEXEDSHAPE_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoVertexShape.h>
 #include <Inventor/fields/SoSFInt32.h>
 
@@ -31,26 +32,17 @@
 class SoNonIndexedShape : public SoVertexShape {
   typedef SoVertexShape inherited;
 
-//$ BEGIN TEMPLATE NodeAbstractHeader(SoNonIndexedShape)
-private:
-  static SoType classTypeId;
+  SO_NODE_ABSTRACT_HEADER(SoNonIndexedShape);
 
 public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-public:
   static void initClass(void);
-  static void cleanClass(void);
+
+  SoSFInt32 startIndex;
 
 protected:
   SoNonIndexedShape(void);
   virtual ~SoNonIndexedShape();
-//$ END TEMPLATE NodeAbstractHeader
 
-public:
-  SoSFInt32 startIndex;
-
-protected:
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   void computeCoordBBox(SoAction * action, int numVertices,
 			SbBox3f & box, SbVec3f & center);

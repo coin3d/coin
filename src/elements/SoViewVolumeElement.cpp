@@ -111,17 +111,6 @@ SoViewVolumeElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the SoViewVolimeElement class.
-*/
-
-void
-SoViewVolumeElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoViewVolumeElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoViewVolumeElement::createInstance(void)

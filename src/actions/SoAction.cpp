@@ -135,19 +135,6 @@ SoAction::initClass()
   SoAction::initActions();
 }
 
-/*!
-  This static method should clean up after the SoAction class.  No clean-up
-  is implemented.
-*/
-
-void
-SoAction::cleanClass()
-{
-  // FIXME: delete enabledElements & methods?
-
-  SoAction::cleanActions();
-}
-
 // *************************************************************************
 
 /*!
@@ -219,69 +206,6 @@ SoAction::initActions()
 #if !defined(COIN_EXCLUDE_SOWRITEACTION)
   SoWriteAction::initClass();
 #endif // !COIN_EXCLUDE_SOWRITEACTION
-}
-
-/*!
-  This static method cleans up all the SoAction classes.
-*/
-
-void
-SoAction::cleanActions()
-{
-#if !defined(COIN_EXCLUDE_SOWRITEACTION)
-  SoWriteAction::cleanClass();
-#endif // !COIN_EXCLUDE_SOWRITEACTION
-#if !defined(COIN_EXCLUDE_SOTOVRML2ACTION)
-  SoToVRML2Action::cleanClass();
-#endif // !COIN_EXCLUDE_SOTOVRML2ACTION
-#if !defined(COIN_EXCLUDE_SOTOVRMLACTION)
-  SoToVRMLAction::cleanClass();
-#endif // !COIN_EXCLUDE_SOTOVRMLACTION
-#if !defined(COIN_EXCLUDE_SOSHAPESIMPLIFYACTION)
-  SoShapeSimplifyAction::cleanClass();
-#endif // !COIN_EXCLUDE_SOSHAPESIMPLIFYACTION
-#if !defined(COIN_EXCLUDE_SOREORGANIZEACTION)
-  SoReorganizeAction::cleanClass();
-#endif // !COIN_EXCLUDE_SOREORGANIZEACTION
-#if !defined(COIN_EXCLUDE_SOGLOBALSIMPLIFYACTION)
-  SoGlobalSimplifyAction::cleanClass();
-#endif // !COIN_EXCLUDE_SOGLOBALSIMPLIFYACTION
-#if !defined(COIN_EXCLUDE_SOSIMPLIFYACTION)
-  SoSimplifyAction::cleanClass();
-#endif // !COIN_EXCLUDE_SOSIMPLIFYACTION
-#if !defined(COIN_EXCLUDE_SOSEARCHACTION)
-  SoSearchAction::cleanClass();
-#endif // !COIN_EXCLUDE_SOSEARCHACTION
-#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
-  SoRayPickAction::cleanClass();
-#endif // !COIN_EXCLUDE_SORAYPICKACTION
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
-  SoPickAction::cleanClass();
-#endif // !COIN_EXCLUDE_SOPICKACTION
-#if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
-  SoHandleEventAction::cleanClass();
-#endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
-  SoGetPrimitiveCountAction::cleanClass();
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
-#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
-  SoGetMatrixAction::cleanClass();
-#endif // !COIN_EXCLUDE_SOGETMATRIXACTION
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
-  SoGetBoundingBoxAction::cleanClass();
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-#if !defined(COIN_EXCLUDE_SOLINEHIGHLIGHTRENDERACTION)
-  SoLineHighlightRenderAction::cleanClass();
-#endif // !COIN_EXCLUDE_SOLINEHIGHLIGHTRENDERACTION
-#if !defined(COIN_EXCLUDE_SOBOXHIGHLIGHTRENDERACTION)
-  SoBoxHighlightRenderAction::cleanClass();
-#endif // !COIN_EXCLUDE_SOBOXHIGHLIGHTRENDERACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
-  SoGLRenderAction::cleanClass();
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
-  SoCallbackAction::cleanClass();
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 }
 
 // *************************************************************************

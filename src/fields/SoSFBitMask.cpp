@@ -143,15 +143,6 @@ SoSFBitMask::initClass(void)
 }
 
 /*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoSFBitMask::cleanClass(void)
-{
-}
-
-/*!
   FIXME: write function documentation
 */
 SbBool

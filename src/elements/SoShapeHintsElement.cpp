@@ -106,17 +106,6 @@ SoShapeHintsElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the SoShapeHintsElement class.
-*/
-
-void
-SoShapeHintsElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoShapeHintsElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoShapeHintsElement::createInstance(void)

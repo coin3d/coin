@@ -27,8 +27,8 @@
 
 #include <Inventor/SoDB.h>
 #include <Inventor/nodes/SoPointLight.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 #include <Inventor/SbVec4f.h>
 #include <Inventor/SbColor4f.h>
 
@@ -57,46 +57,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoPointLight)
-SoType SoPointLight::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoPointLight node class.
-*/
-void *
-SoPointLight::createInstance(void)
-{
-  return new SoPointLight;
-}
-
-/*!
-  Returns the unique type identifier for the SoPointLight class.
-*/
-SoType
-SoPointLight::getClassTypeId(void)
-{
-  return SoPointLight::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoPointLight::getTypeId(void) const
-{
-  return SoPointLight::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoPointLight);
 
 /*!
   Constructor.
 */
 SoPointLight::SoPointLight()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoPointLight)
-  // Make sure the class has been initialized.
-  assert(SoPointLight::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoPointLight);
 
   SO_NODE_ADD_FIELD(location, (0.0f, 0.0f, 1.0f));
 }
@@ -116,26 +84,7 @@ SoPointLight::~SoPointLight()
 void
 SoPointLight::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(PointLight)
-  // Make sure we only initialize once.
-  assert(SoPointLight::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoPointLight::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "PointLight",
-                       &SoPointLight::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoPointLight::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoPointLight);
 }
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)

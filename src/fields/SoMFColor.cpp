@@ -270,16 +270,6 @@ SoMFColor::initClass(void)
 //$ END TEMPLATE FieldInitClass
 }
 
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoMFColor::cleanClass(void)
-{
-}
-
-
 // *************************************************************************
 
 SbBool

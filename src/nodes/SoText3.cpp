@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoText3.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 #include <Inventor/errors/SoDebugError.h>
 
 /*!
@@ -88,46 +88,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoText3)
-SoType SoText3::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoText3 node class.
-*/
-void *
-SoText3::createInstance(void)
-{
-  return new SoText3;
-}
-
-/*!
-  Returns the unique type identifier for the SoText3 class.
-*/
-SoType
-SoText3::getClassTypeId(void)
-{
-  return SoText3::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoText3::getTypeId(void) const
-{
-  return SoText3::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoText3);
 
 /*!
   Constructor.
 */
 SoText3::SoText3()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoText3)
-  // Make sure the class has been initialized.
-  assert(SoText3::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoText3);
 
   SO_NODE_ADD_FIELD(string, (""));
   SO_NODE_ADD_FIELD(spacing, (1.0f));
@@ -161,26 +129,7 @@ SoText3::~SoText3()
 void
 SoText3::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(Text3)
-  // Make sure we only initialize once.
-  assert(SoText3::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoText3::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Text3",
-                       &SoText3::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoText3::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoText3);
 }
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)

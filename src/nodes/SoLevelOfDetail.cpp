@@ -25,9 +25,9 @@
   FIXME: write class doc
 */
 
-#include <Inventor/SbName.h>
+
 #include <Inventor/nodes/SoLevelOfDetail.h>
-#include <Inventor/nodes/SoSubNode.h>
+
 
 /*!
   \var SoMFFloat SoLevelOfDetail::screenArea
@@ -36,46 +36,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoLevelOfDetail)
-SoType SoLevelOfDetail::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoLevelOfDetail node class.
-*/
-void *
-SoLevelOfDetail::createInstance(void)
-{
-  return new SoLevelOfDetail;
-}
-
-/*!
-  Returns the unique type identifier for the SoLevelOfDetail class.
-*/
-SoType
-SoLevelOfDetail::getClassTypeId(void)
-{
-  return SoLevelOfDetail::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoLevelOfDetail::getTypeId(void) const
-{
-  return SoLevelOfDetail::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoLevelOfDetail);
 
 /*!
   Constructor.
 */
 SoLevelOfDetail::SoLevelOfDetail()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoLevelOfDetail)
-  // Make sure the class has been initialized.
-  assert(SoLevelOfDetail::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoLevelOfDetail);
 
   SO_NODE_ADD_FIELD(screenArea, (0));
 }
@@ -95,26 +63,7 @@ SoLevelOfDetail::~SoLevelOfDetail()
 void
 SoLevelOfDetail::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(LevelOfDetail)
-  // Make sure we only initialize once.
-  assert(SoLevelOfDetail::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoLevelOfDetail::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "LevelOfDetail",
-                       &SoLevelOfDetail::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoLevelOfDetail::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoLevelOfDetail);
 }
 
 

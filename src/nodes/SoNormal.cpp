@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoNormal.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -50,46 +50,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoNormal)
-SoType SoNormal::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoNormal node class.
-*/
-void *
-SoNormal::createInstance(void)
-{
-  return new SoNormal;
-}
-
-/*!
-  Returns the unique type identifier for the SoNormal class.
-*/
-SoType
-SoNormal::getClassTypeId(void)
-{
-  return SoNormal::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoNormal::getTypeId(void) const
-{
-  return SoNormal::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoNormal);
 
 /*!
   Constructor.
 */
 SoNormal::SoNormal()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoNormal)
-  // Make sure the class has been initialized.
-  assert(SoNormal::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoNormal);
 
   SO_NODE_ADD_FIELD(vector, (NULL));
 }
@@ -109,17 +77,7 @@ SoNormal::~SoNormal()
 void
 SoNormal::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(Normal)
-  // Make sure we only initialize once.
-  assert(SoNormal::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoNormal::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Normal",
-                       &SoNormal::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
+  SO_NODE_INTERNAL_INIT_CLASS(SoNormal);
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoGLNormalElement);
@@ -128,15 +86,6 @@ SoNormal::initClass(void)
 #if !defined(COIN_EXCLUDE_SOPICKACTION)
   SO_ENABLE(SoPickAction, SoNormalElement);
 #endif // !COIN_EXCLUDE_SOPICKACTION
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoNormal::cleanClass(void)
-{
 }
 
 // FIXME: enable this for 10%++ performance gain (no need to enable

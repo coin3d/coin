@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoIndexedLineSet.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 
 #include <Inventor/caches/SoNormalCache.h>
@@ -127,46 +127,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoIndexedLineSet)
-SoType SoIndexedLineSet::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoIndexedLineSet node class.
-*/
-void *
-SoIndexedLineSet::createInstance(void)
-{
-  return new SoIndexedLineSet;
-}
-
-/*!
-  Returns the unique type identifier for the SoIndexedLineSet class.
-*/
-SoType
-SoIndexedLineSet::getClassTypeId(void)
-{
-  return SoIndexedLineSet::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoIndexedLineSet::getTypeId(void) const
-{
-  return SoIndexedLineSet::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoIndexedLineSet);
 
 /*!
   Constructor.
 */
 SoIndexedLineSet::SoIndexedLineSet()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoIndexedLineSet)
-  // Make sure the class has been initialized.
-  assert(SoIndexedLineSet::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoIndexedLineSet);
 }
 
 /*!
@@ -184,26 +152,7 @@ SoIndexedLineSet::~SoIndexedLineSet()
 void
 SoIndexedLineSet::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(IndexedLineSet)
-  // Make sure we only initialize once.
-  assert(SoIndexedLineSet::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoIndexedLineSet::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "IndexedLineSet",
-                       &SoIndexedLineSet::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoIndexedLineSet::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoIndexedLineSet);
 }
 
 /*!

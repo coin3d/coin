@@ -480,7 +480,6 @@ Keywords which should be sent to this method:
 
 (defun doxygen-class-doc ()
   (interactive)
-  (beginning-of-buffer)
   (let* ((fname (file-name-nondirectory buffer-file-name))
 	 (classname (substring fname 0 (- (length fname) 4))))
     (insert "/*!\n"

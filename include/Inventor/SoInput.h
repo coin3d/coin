@@ -93,7 +93,6 @@ public:
   static const SbStringList & getDirectories(void);
 
   static void init(void);
-  static void clean(void);
 
   static SbString getPathname(const char * const filename);
   static SbString getPathname(const SbString & s);

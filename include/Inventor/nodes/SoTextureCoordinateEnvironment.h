@@ -20,6 +20,7 @@
 #ifndef __SOTEXTURECOORDINATEENVIRONMENT_H__
 #define __SOTEXTURECOORDINATEENVIRONMENT_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoTextureCoordinateFunction.h>
 #include <Inventor/SbVec4f.h>
 
@@ -32,24 +33,12 @@
 class SoTextureCoordinateEnvironment : public SoTextureCoordinateFunction {
   typedef SoTextureCoordinateFunction inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoTextureCoordinateEnvironment)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoTextureCoordinateEnvironment);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoTextureCoordinateEnvironment(void);
-protected:
-  virtual ~SoTextureCoordinateEnvironment();
-//$ END TEMPLATE NodeHeader
 
-public:
 
 #if !defined(COIN_EXCLUDE_SOACTION)
   void doAction(SoAction * action);
@@ -63,6 +52,9 @@ public:
 #if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   void callback(SoCallbackAction * action);
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
+
+protected:
+  virtual ~SoTextureCoordinateEnvironment();
 
 private:
   static const SbVec4f &generate(void * userdata,

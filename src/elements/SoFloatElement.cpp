@@ -103,17 +103,6 @@ SoFloatElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the SoFloatElement class.
-*/
-
-void
-SoFloatElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanAbstractElementSource(SoFloatElement)
-//$ END TEMPLATE CleanAbstractElementSource
-}
-
-/*!
   The constructor initialized the float to 0.0, and sets the class type
   identifier and stack index.
 */

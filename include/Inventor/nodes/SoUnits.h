@@ -20,6 +20,7 @@
 #ifndef __SOUNITS_H__
 #define __SOUNITS_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoTransformation.h>
 #include <Inventor/fields/SoSFEnum.h>
 
@@ -32,24 +33,12 @@
 class SoUnits : public SoTransformation {
     typedef SoTransformation inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoUnits)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoUnits);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoUnits(void);
-protected:
-  virtual ~SoUnits();
-//$ END TEMPLATE NodeHeader
 
-public:
   // These have to match the order of the enum in SoUnitsElement
   // 100% or weird and hard to debug artifacts will show up.
   enum Units {
@@ -92,6 +81,9 @@ public:
 #if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
+
+protected:
+  virtual ~SoUnits();
 };
 
 #endif // !__SOUNITS_H__

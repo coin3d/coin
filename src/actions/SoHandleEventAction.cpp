@@ -143,15 +143,6 @@ SoHandleEventAction::initClass(void)
 
 }
 
-/*!
-  This static method cleans up the static data for the
-  SoHandleEventAction class.
-*/
-void
-SoHandleEventAction::cleanClass(void)
-{
-}
-
 // *************************************************************************
 
 /*!

@@ -1380,6 +1380,7 @@ SoInput::init(void)
   SoInput::addDirectoryFirst(".");
 }
 
+#if 0 // FIXME: re-code to be run automatically upon exit. 19991106 mortene.
 /*!
   \internal
   
@@ -1391,6 +1392,7 @@ SoInput::clean(void)
 {
   SoInput::clearDirectories();
 }
+#endif // re-code
 
 /*!
   Finds and returns the part of the given filename which is the

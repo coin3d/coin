@@ -20,6 +20,7 @@
 #ifndef __SOSEPARATOR_H__
 #define __SOSEPARATOR_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/nodes/SoGroup.h>
 
@@ -32,24 +33,12 @@
 class SoSeparator : public SoGroup {
   typedef SoGroup inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoSeparator)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoSeparator);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoSeparator(void);
-protected:
-  virtual ~SoSeparator();
-//$ END TEMPLATE NodeHeader
 
-public:
   enum CacheEnabled {
     OFF, ON, AUTO
   };
@@ -99,6 +88,8 @@ public:
   virtual void notify(SoNotList * list);
 
 protected:
+  virtual ~SoSeparator();
+
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual SbBool cullTest(SoGLRenderAction * action, int & cullResults);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION

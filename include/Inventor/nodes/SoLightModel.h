@@ -20,6 +20,7 @@
 #ifndef __SOLIGHTMODEL_H__
 #define __SOLIGHTMODEL_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/elements/SoLightModelElement.h>
@@ -33,24 +34,12 @@
 class SoLightModel : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoLightModel)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoLightModel);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoLightModel(void);
-protected:
-  virtual ~SoLightModel();
-//$ END TEMPLATE NodeHeader
 
-public:
   enum Model {
     BASE_COLOR = SoLightModelElement::BASE_COLOR,
     PHONG = SoLightModelElement::PHONG
@@ -67,6 +56,9 @@ public:
 #if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   virtual void callback(SoCallbackAction * action);
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
+
+protected:
+  virtual ~SoLightModel();
 };
 
 #endif // !__SOLIGHTMODEL_H__

@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoSurroundScale.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 /*!
   \var SoSFInt32 SoSurroundScale::numNodesUpToContainer
@@ -41,46 +41,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoSurroundScale)
-SoType SoSurroundScale::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoSurroundScale node class.
-*/
-void *
-SoSurroundScale::createInstance(void)
-{
-  return new SoSurroundScale;
-}
-
-/*!
-  Returns the unique type identifier for the SoSurroundScale class.
-*/
-SoType
-SoSurroundScale::getClassTypeId(void)
-{
-  return SoSurroundScale::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoSurroundScale::getTypeId(void) const
-{
-  return SoSurroundScale::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoSurroundScale);
 
 /*!
   Constructor.
 */
 SoSurroundScale::SoSurroundScale()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoSurroundScale)
-  // Make sure the class has been initialized.
-  assert(SoSurroundScale::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoSurroundScale);
 
   SO_NODE_ADD_FIELD(numNodesUpToContainer, (0));
   SO_NODE_ADD_FIELD(numNodesUpToReset, (0));
@@ -101,26 +69,7 @@ SoSurroundScale::~SoSurroundScale()
 void
 SoSurroundScale::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(SurroundScale)
-  // Make sure we only initialize once.
-  assert(SoSurroundScale::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoSurroundScale::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "SurroundScale",
-                       &SoSurroundScale::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoSurroundScale::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoSurroundScale);
 }
 
 

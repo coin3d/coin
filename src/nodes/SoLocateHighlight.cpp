@@ -25,9 +25,9 @@
   FIXME: write class doc
 */
 
-#include <Inventor/SbName.h>
+
 #include <Inventor/nodes/SoLocateHighlight.h>
-#include <Inventor/nodes/SoSubNode.h>
+
 
 /*!
   \enum SoLocateHighlight::Modes
@@ -75,46 +75,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoLocateHighlight)
-SoType SoLocateHighlight::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoLocateHighlight node class.
-*/
-void *
-SoLocateHighlight::createInstance(void)
-{
-  return new SoLocateHighlight;
-}
-
-/*!
-  Returns the unique type identifier for the SoLocateHighlight class.
-*/
-SoType
-SoLocateHighlight::getClassTypeId(void)
-{
-  return SoLocateHighlight::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoLocateHighlight::getTypeId(void) const
-{
-  return SoLocateHighlight::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoLocateHighlight);
 
 /*!
   Constructor.
 */
 SoLocateHighlight::SoLocateHighlight()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoLocateHighlight)
-  // Make sure the class has been initialized.
-  assert(SoLocateHighlight::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoLocateHighlight);
 
   SO_NODE_ADD_FIELD(color, (SbColor(0.3f, 0.3f, 0.3f)));
   SO_NODE_ADD_FIELD(style, (EMISSIVE));
@@ -145,26 +113,7 @@ SoLocateHighlight::~SoLocateHighlight()
 void
 SoLocateHighlight::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(LocateHighlight)
-  // Make sure we only initialize once.
-  assert(SoLocateHighlight::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoLocateHighlight::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "LocateHighlight",
-                       &SoLocateHighlight::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoLocateHighlight::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoLocateHighlight);
 }
 
 /*!

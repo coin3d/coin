@@ -123,16 +123,6 @@ SoToVRML2Action::initClass(void)
 //$ END TEMPLATE InitActionSource
 }
 
-/*!
-  This static method cleans up static data for the
-  SoToVRML2Action class.
-*/
-
-void
-SoToVRML2Action::cleanClass(void)
-{
-}
-
 // *************************************************************************
 
 /*!

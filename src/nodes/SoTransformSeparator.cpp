@@ -25,9 +25,9 @@
   FIXME: write class doc
 */
 
-#include <Inventor/SbName.h>
+
 #include <Inventor/nodes/SoTransformSeparator.h>
-#include <Inventor/nodes/SoSubNode.h>
+
 
 #if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
 #include <Inventor/actions/SoGetMatrixAction.h>
@@ -49,46 +49,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoTransformSeparator)
-SoType SoTransformSeparator::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoTransformSeparator node class.
-*/
-void *
-SoTransformSeparator::createInstance(void)
-{
-  return new SoTransformSeparator;
-}
-
-/*!
-  Returns the unique type identifier for the SoTransformSeparator class.
-*/
-SoType
-SoTransformSeparator::getClassTypeId(void)
-{
-  return SoTransformSeparator::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoTransformSeparator::getTypeId(void) const
-{
-  return SoTransformSeparator::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoTransformSeparator);
 
 /*!
   Constructor.
 */
 SoTransformSeparator::SoTransformSeparator()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoTransformSeparator)
-  // Make sure the class has been initialized.
-  assert(SoTransformSeparator::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoTransformSeparator);
 }
 
 /*!
@@ -106,26 +74,7 @@ SoTransformSeparator::~SoTransformSeparator()
 void
 SoTransformSeparator::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(TransformSeparator)
-  // Make sure we only initialize once.
-  assert(SoTransformSeparator::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoTransformSeparator::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "TransformSeparator",
-                       &SoTransformSeparator::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoTransformSeparator::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoTransformSeparator);
 }
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)

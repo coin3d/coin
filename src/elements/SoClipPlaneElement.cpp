@@ -135,18 +135,6 @@ SoClipPlaneElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the
-  SoClipPlaneElement class.
-*/
-
-void
-SoClipPlaneElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoClipPlaneElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoClipPlaneElement::createInstance()

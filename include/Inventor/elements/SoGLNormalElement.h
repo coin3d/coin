@@ -40,7 +40,6 @@ public:
   virtual ~SoGLNormalElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoGLNormalElement(void);

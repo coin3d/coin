@@ -112,18 +112,6 @@ SoGLPolygonOffsetElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the
-  SoGLPolygonOffsetElement class.
-*/
-
-void
-SoGLPolygonOffsetElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoGLPolygonOffsetElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoGLPolygonOffsetElement::createInstance(void)

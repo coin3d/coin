@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoAnnoText3Property.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -91,46 +91,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoAnnoText3Property)
-SoType SoAnnoText3Property::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoAnnoText3Property node class.
-*/
-void *
-SoAnnoText3Property::createInstance(void)
-{
-  return new SoAnnoText3Property;
-}
-
-/*!
-  Returns the unique type identifier for the SoAnnoText3Property class.
-*/
-SoType
-SoAnnoText3Property::getClassTypeId(void)
-{
-  return SoAnnoText3Property::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoAnnoText3Property::getTypeId(void) const
-{
-  return SoAnnoText3Property::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoAnnoText3Property);
 
 /*!
   Constructor.
 */
 SoAnnoText3Property::SoAnnoText3Property()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoAnnoText3Property)
-  // Make sure the class has been initialized.
-  assert(SoAnnoText3Property::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoAnnoText3Property);
   
   SO_NODE_ADD_FIELD(fontSizeHint, (FIT_VECTOR_TEXT));
   SO_NODE_ADD_FIELD(renderPrintType, (RENDER3D_PRINT_VECTOR));
@@ -161,17 +129,7 @@ SoAnnoText3Property::~SoAnnoText3Property()
 void
 SoAnnoText3Property::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(AnnoText3Property)
-  // Make sure we only initialize once.
-  assert(SoAnnoText3Property::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoAnnoText3Property::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "AnnoText3Property",
-                       &SoAnnoText3Property::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
+  SO_NODE_INTERNAL_INIT_CLASS(SoAnnoText3Property);
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoAnnoText3FontSizeHintElement);
@@ -182,15 +140,6 @@ SoAnnoText3Property::initClass(void)
   SO_ENABLE(SoGetBoundingBoxAction, SoAnnoText3FontSizeHintElement);
   SO_ENABLE(SoGetBoundingBoxAction, SoAnnoText3RenderPrintElement);
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoAnnoText3Property::cleanClass(void)
-{
 }
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)

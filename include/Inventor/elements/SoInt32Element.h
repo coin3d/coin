@@ -39,12 +39,11 @@ public:
   virtual ~SoInt32Element(void);
   static  int getClassStackIndex(void);
 
-  static  void initClass(void);
-  static  void cleanClass(void);
+  static void initClass(void);
 
 protected:
-          SoInt32Element(void);
-  static  int classStackIndex;
+  SoInt32Element(void);
+  static int classStackIndex;
 //$ END TEMPLATE AbstractElementHeader
 
 public: // constructor / destructor / etc.

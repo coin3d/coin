@@ -20,6 +20,7 @@
 #ifndef __SOFILE_H__
 #define __SOFILE_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoSFString.h>
 
@@ -34,24 +35,12 @@ class SoGroup;
 class SoFile : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoFile)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoFile);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoFile(void);
-protected:
-  virtual ~SoFile();
-//$ END TEMPLATE NodeHeader
 
-public:
   SoSFString name;
 
 #if !defined(COIN_EXCLUDE_SOACTION)
@@ -85,6 +74,8 @@ public:
 			    SbBool copyConnections);
 
 protected:
+  virtual ~SoFile();
+
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
 
 private:

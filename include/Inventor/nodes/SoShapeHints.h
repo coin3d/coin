@@ -20,6 +20,7 @@
 #ifndef __SOSHAPEHINTS_H__
 #define __SOSHAPEHINTS_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/nodes/SoNode.h>
@@ -33,24 +34,12 @@
 class SoShapeHints : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoShapeHints)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoShapeHints);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoShapeHints(void);
-protected:
-  virtual ~SoShapeHints();
-//$ END TEMPLATE NodeHeader
 
-public:
   // These must match 100% with the enum in SoShapeHintsElement.
   enum VertexOrdering {
     UNKNOWN_ORDERING,
@@ -91,6 +80,9 @@ public:
 #if !defined(COIN_EXCLUDE_SOPICKACTION)
   virtual void pick(SoPickAction * action);
 #endif // !COIN_EXCLUDE_SOPICKACTION
+
+protected:
+  virtual ~SoShapeHints();
 };
 
 #endif // !__SOSHAPEHINTS_H__

@@ -25,9 +25,9 @@
   FIXME: write class doc
 */
 
-#include <Inventor/SbName.h>
+
 #include <Inventor/nodes/SoSpotLight.h>
-#include <Inventor/nodes/SoSubNode.h>
+
 #include <math.h>
 #include <Inventor/SbColor4f.h>
 #include <Inventor/SbVec4f.h>
@@ -72,46 +72,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoSpotLight)
-SoType SoSpotLight::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoSpotLight node class.
-*/
-void *
-SoSpotLight::createInstance(void)
-{
-  return new SoSpotLight;
-}
-
-/*!
-  Returns the unique type identifier for the SoSpotLight class.
-*/
-SoType
-SoSpotLight::getClassTypeId(void)
-{
-  return SoSpotLight::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoSpotLight::getTypeId(void) const
-{
-  return SoSpotLight::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoSpotLight);
 
 /*!
   Constructor.
 */
 SoSpotLight::SoSpotLight()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoSpotLight)
-  // Make sure the class has been initialized.
-  assert(SoSpotLight::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoSpotLight);
 
   SO_NODE_ADD_FIELD(location, (SbVec3f(0.0f, 0.0f, 1.0f)));
   SO_NODE_ADD_FIELD(direction, (SbVec3f(0.0f, 0.0f, -1.0f)));
@@ -134,26 +102,7 @@ SoSpotLight::~SoSpotLight()
 void
 SoSpotLight::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(SpotLight)
-  // Make sure we only initialize once.
-  assert(SoSpotLight::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoSpotLight::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "SpotLight",
-                       &SoSpotLight::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoSpotLight::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoSpotLight);
 }
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)

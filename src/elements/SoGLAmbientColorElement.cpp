@@ -112,18 +112,6 @@ SoGLAmbientColorElement::initClass()
 }
 
 /*!
-  This static method cleans up static data for the
-  SoGLAmbientColorElement class.
-*/
-
-void 
-SoGLAmbientColorElement::cleanClass()
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoGLAmbientColorElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoGLAmbientColorElement::createInstance(void)

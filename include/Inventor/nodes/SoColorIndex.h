@@ -20,6 +20,7 @@
 #ifndef __SOCOLORINDEX_H__
 #define __SOCOLORINDEX_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoMFInt32.h>
 
@@ -32,29 +33,20 @@
 class SoColorIndex : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoColorIndex)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoColorIndex);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoColorIndex(void);
-protected:
-  virtual ~SoColorIndex();
-//$ END TEMPLATE NodeHeader
 
-public:
   SoMFInt32 index;
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction * action);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+
+protected:
+  virtual ~SoColorIndex();
 };
 
 #endif // !__SOCOLORINDEX_H__

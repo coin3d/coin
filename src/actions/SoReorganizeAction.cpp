@@ -122,16 +122,6 @@ SoReorganizeAction::initClass(void)
 //$ END TEMPLATE InitActionSource
 }
 
-/*!
-  This static method cleans up the static data for the
-  SoReorganizeAction class.
-*/
-
-void
-SoReorganizeAction::cleanClass(void)
-{
-}
-
 // *************************************************************************
 
 /*!

@@ -113,18 +113,6 @@ SoGLLineWidthElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the SoGLLineWidthElement
-  class.
-*/
-
-void
-SoGLLineWidthElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoGLLineWidthElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoGLLineWidthElement::createInstance(void)

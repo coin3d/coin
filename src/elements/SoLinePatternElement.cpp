@@ -106,18 +106,6 @@ SoLinePatternElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the
-  SoLinePatternElement class.
-*/
-
-void
-SoLinePatternElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoLinePatternElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Canæt be used directly.
 
   \sa void * SoLinePatternElement::createInstance(void)

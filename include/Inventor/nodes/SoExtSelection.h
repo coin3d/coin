@@ -20,6 +20,7 @@
 #ifndef __SOEXTSELECTION_H__
 #define __SOEXTSELECTION_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoSelection.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/SbColor.h>
@@ -33,24 +34,12 @@
 class SoExtSelection : public SoSelection {
   typedef SoSelection inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoExtSelection)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoExtSelection);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoExtSelection(void);
-protected:
-  virtual ~SoExtSelection();
-//$ END TEMPLATE NodeHeader
 
-public:
   enum LassoType {
     NOLASSO, LASSO, RECTANGLE
   };
@@ -75,6 +64,9 @@ public:
   unsigned short getOverlayLassoPattern(void);
   void animateOverlayLasso(SbBool flg = TRUE);
   SbBool isOverlayLassoAnimated(void);
+
+protected:
+  virtual ~SoExtSelection();
 };
 
 #endif // !__SOEXTSELECTION_H__

@@ -120,18 +120,6 @@ SoTransparencyElement::initClass()
 }
 
 /*!
-  This static method cleans up static data for the
-  SoTransparencyElement class.
-*/
-
-void 
-SoTransparencyElement::cleanClass()
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoTransparencyElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoTransparencyElement::createInstance(void)

@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoIndexedShape.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/nodes/SoVertexProperty.h>
@@ -78,37 +78,14 @@
 */
 
 
-//$ BEGIN TEMPLATE NodeAbstractSource(SoIndexedShape)
-SoType SoIndexedShape::classTypeId = SoType::badType();
-
-/*!
-  Returns the unique type identifier for the SoIndexedShape class.
-*/
-SoType
-SoIndexedShape::getClassTypeId(void)
-{
-  return SoIndexedShape::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoIndexedShape::getTypeId(void) const
-{
-  return SoIndexedShape::classTypeId;
-}
-//$ END TEMPLATE NodeAbstractSource
+SO_NODE_ABSTRACT_SOURCE(SoIndexedShape);
 
 /*!
   Constructor.
 */
 SoIndexedShape::SoIndexedShape()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoIndexedShape)
-  // Make sure the class has been initialized.
-  assert(SoIndexedShape::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoIndexedShape);
 
   SO_NODE_ADD_FIELD(coordIndex,(0));
   SO_NODE_ADD_FIELD(materialIndex,(-1));
@@ -131,26 +108,7 @@ SoIndexedShape::~SoIndexedShape()
 void 
 SoIndexedShape::initClass()
 {
-//$ BEGIN TEMPLATE InitNodeAbstractSource(IndexedShape)
-  // Make sure we only initialize once.
-  assert(SoIndexedShape::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoIndexedShape::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "IndexedShape",
-                       NULL,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeAbstractSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void 
-SoIndexedShape::cleanClass()
-{
+  SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoIndexedShape);
 }
 
 /*!

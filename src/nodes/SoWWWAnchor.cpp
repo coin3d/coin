@@ -25,9 +25,9 @@
   FIXME: write class doc
 */
 
-#include <Inventor/SbName.h>
+
 #include <Inventor/nodes/SoWWWAnchor.h>
-#include <Inventor/nodes/SoSubNode.h>
+
 
 /*!
   \enum SoWWWAnchor::Mapping
@@ -58,46 +58,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoWWWAnchor)
-SoType SoWWWAnchor::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoWWWAnchor node class.
-*/
-void *
-SoWWWAnchor::createInstance(void)
-{
-  return new SoWWWAnchor;
-}
-
-/*!
-  Returns the unique type identifier for the SoWWWAnchor class.
-*/
-SoType
-SoWWWAnchor::getClassTypeId(void)
-{
-  return SoWWWAnchor::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoWWWAnchor::getTypeId(void) const
-{
-  return SoWWWAnchor::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoWWWAnchor);
 
 /*!
   Constructor.
 */
 SoWWWAnchor::SoWWWAnchor()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoWWWAnchor)
-  // Make sure the class has been initialized.
-  assert(SoWWWAnchor::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoWWWAnchor);
 
   SO_NODE_ADD_FIELD(name, ("<Undefined URL>"));
   SO_NODE_ADD_FIELD(description, (""));
@@ -123,26 +91,7 @@ SoWWWAnchor::~SoWWWAnchor()
 void
 SoWWWAnchor::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(WWWAnchor)
-  // Make sure we only initialize once.
-  assert(SoWWWAnchor::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoWWWAnchor::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "WWWAnchor",
-                       &SoWWWAnchor::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoWWWAnchor::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoWWWAnchor);
 }
 
 

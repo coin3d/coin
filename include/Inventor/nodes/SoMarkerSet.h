@@ -20,6 +20,7 @@
 #ifndef __SOMARKERSET_H__
 #define __SOMARKERSET_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoPointSet.h>
 #include <Inventor/fields/SoMFInt32.h>
 
@@ -32,24 +33,12 @@
 class SoMarkerSet : public SoPointSet {
   typedef SoPointSet inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoMarkerSet)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoMarkerSet);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoMarkerSet(void);
-protected:
-  virtual ~SoMarkerSet();
-//$ END TEMPLATE NodeHeader
 
-public:
   enum MarkerType {
     CROSS_5_5, PLUS_5_5, MINUS_5_5, SLASH_5_5, BACKSLASH_5_5, BAR_5_5,
     STAR_5_5, Y_5_5, LIGHTNING_5_5, WELL_5_5,
@@ -105,6 +94,9 @@ public:
 			  const unsigned char *& bytes, SbBool & isLSBFirst);
   static SbBool removeMarker(int markerIndex);
   static SbBool isMarkerBitSet(int markerIndex, int bitNumber);
+
+protected:
+  virtual ~SoMarkerSet();
 };
 
 #endif // !__SOMARKERSET_H__

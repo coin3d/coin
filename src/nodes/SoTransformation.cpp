@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoTransformation.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -53,37 +53,14 @@
 #endif // !COIN_EXCLUDE_SOLOCALBBOXMATRIXELEMENT
 
 
-//$ BEGIN TEMPLATE NodeAbstractSource(SoTransformation)
-SoType SoTransformation::classTypeId = SoType::badType();
-
-/*!
-  Returns the unique type identifier for the SoTransformation class.
-*/
-SoType
-SoTransformation::getClassTypeId(void)
-{
-  return SoTransformation::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoTransformation::getTypeId(void) const
-{
-  return SoTransformation::classTypeId;
-}
-//$ END TEMPLATE NodeAbstractSource
+SO_NODE_ABSTRACT_SOURCE(SoTransformation);
 
 /*!
   Constructor.
 */
 SoTransformation::SoTransformation()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoTransformation)
-  // Make sure the class has been initialized.
-  assert(SoTransformation::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoTransformation);
 }
 
 /*!
@@ -102,17 +79,7 @@ SoTransformation::~SoTransformation()
 void
 SoTransformation::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeAbstractSource(Transformation)
-  // Make sure we only initialize once.
-  assert(SoTransformation::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoTransformation::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Transformation",
-                       NULL,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeAbstractSource
+  SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoTransformation);
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   SO_ENABLE(SoGetBoundingBoxAction, SoModelMatrixElement);
@@ -125,13 +92,4 @@ SoTransformation::initClass(void)
 #if !defined(COIN_EXCLUDE_SOPICKACTION)
   SO_ENABLE(SoPickAction, SoModelMatrixElement);
 #endif // !COIN_EXCLUDE_SOPICKACTION
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoTransformation::cleanClass(void)
-{
 }

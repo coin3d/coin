@@ -159,15 +159,6 @@ SoSFPath::initClass(void)
 }
 
 /*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoSFPath::cleanClass(void)
-{
-}
-
-/*!
   Constructor.
 */
 SoSFPath::SoSFPath(void)

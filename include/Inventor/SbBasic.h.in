@@ -55,6 +55,9 @@
   \defgroup nodes Nodes
 */
 /*!
+  \defgroup nodekits Node Kits
+*/
+/*!
   \defgroup lists List classes
 */
 /*!

@@ -20,6 +20,7 @@
 #ifndef __SOPACKEDCOLOR_H__
 #define __SOPACKEDCOLOR_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoMFUInt32.h>
 
@@ -32,24 +33,12 @@
 class SoPackedColor : public SoNode {
     typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoPackedColor)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoPackedColor);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoPackedColor(void);
-protected:
-  virtual ~SoPackedColor();
-//$ END TEMPLATE NodeHeader
 
-public:
   SoMFUInt32 orderedRGBA;
 
 #if !defined(COIN_EXCLUDE_SOACTION)
@@ -63,6 +52,9 @@ public:
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
   SbBool isTransparent(void);
+
+protected:
+  virtual ~SoPackedColor();
 };
 
 #endif // !__SOPACKEDCOLOR_H__

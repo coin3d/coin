@@ -40,7 +40,6 @@ public:
   virtual ~SoAnnoText3FontSizeHintElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoAnnoText3FontSizeHintElement(void);

@@ -20,6 +20,7 @@
 #ifndef __SOSWITCH_H__
 #define __SOSWITCH_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/nodes/SoGroup.h>
 
@@ -36,24 +37,12 @@
 class SoSwitch : public SoGroup {
   typedef SoGroup inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoSwitch)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoSwitch);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoSwitch(void);
-protected:
-  virtual ~SoSwitch();
-//$ END TEMPLATE NodeHeader
 
-public:
   SoSFInt32 whichChild;
 
   virtual SbBool affectsState(void) const;
@@ -90,6 +79,8 @@ public:
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
 protected:
+  virtual ~SoSwitch();
+
 #if !defined(COIN_EXCLUDE_SOACTION)
   void traverseChildren(SoAction * action);
 #endif // !COIN_EXCLUDE_SOACTION

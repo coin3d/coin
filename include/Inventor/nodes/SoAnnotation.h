@@ -20,6 +20,7 @@
 #ifndef __SOANNOTATION_H__
 #define __SOANNOTATION_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoSeparator.h>
 
 #if defined(COIN_EXCLUDE_SOANNOTATION)
@@ -31,30 +32,21 @@
 class SoAnnotation : public SoSeparator {
   typedef SoSeparator inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoAnnotation)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoAnnotation);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoAnnotation(void);
-protected:
-  virtual ~SoAnnotation();
-//$ END TEMPLATE NodeHeader
 
-public:
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction * action);
   virtual void GLRenderBelowPath(SoGLRenderAction * action);
   virtual void GLRenderInPath(SoGLRenderAction * action);
   virtual void GLRenderOffPath(SoGLRenderAction * action);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+
+protected:
+  virtual ~SoAnnotation();
 };
 
 #endif // !__SOANNOTATION_H__

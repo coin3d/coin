@@ -26,9 +26,9 @@
 */
 
 #include <Inventor/nodes/SoImage.h>
-#include <Inventor/nodes/SoSubNode.h>
 
-#include <Inventor/SbName.h>
+
+
 #include <Inventor/SoInput.h>
 
 /*!
@@ -93,46 +93,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoImage)
-SoType SoImage::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoImage node class.
-*/
-void *
-SoImage::createInstance(void)
-{
-  return new SoImage;
-}
-
-/*!
-  Returns the unique type identifier for the SoImage class.
-*/
-SoType
-SoImage::getClassTypeId(void)
-{
-  return SoImage::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoImage::getTypeId(void) const
-{
-  return SoImage::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoImage);
 
 /*!
   Constructor.
 */
 SoImage::SoImage()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoImage)
-  // Make sure the class has been initialized.
-  assert(SoImage::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoImage);
 
 
   SO_NODE_ADD_FIELD(width, (-1));
@@ -169,26 +137,7 @@ SoImage::~SoImage()
 void
 SoImage::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(Image)
-  // Make sure we only initialize once.
-  assert(SoImage::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoImage::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Image",
-                       &SoImage::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoImage::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoImage);
 }
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)

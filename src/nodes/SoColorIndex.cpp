@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoColorIndex.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 /*!
   \var SoMFInt32 SoColorIndex::index
@@ -36,46 +36,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoColorIndex)
-SoType SoColorIndex::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoColorIndex node class.
-*/
-void *
-SoColorIndex::createInstance(void)
-{
-  return new SoColorIndex;
-}
-
-/*!
-  Returns the unique type identifier for the SoColorIndex class.
-*/
-SoType
-SoColorIndex::getClassTypeId(void)
-{
-  return SoColorIndex::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoColorIndex::getTypeId(void) const
-{
-  return SoColorIndex::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoColorIndex);
 
 /*!
   Constructor.
 */
 SoColorIndex::SoColorIndex()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoColorIndex)
-  // Make sure the class has been initialized.
-  assert(SoColorIndex::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoColorIndex);
 
   SO_NODE_ADD_FIELD(index, (1));
 }
@@ -95,26 +63,7 @@ SoColorIndex::~SoColorIndex()
 void
 SoColorIndex::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(ColorIndex)
-  // Make sure we only initialize once.
-  assert(SoColorIndex::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoColorIndex::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "ColorIndex",
-                       &SoColorIndex::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoColorIndex::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoColorIndex);
 }
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)

@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoProfileCoordinate2.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -50,46 +50,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoProfileCoordinate2)
-SoType SoProfileCoordinate2::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoProfileCoordinate2 node class.
-*/
-void *
-SoProfileCoordinate2::createInstance(void)
-{
-  return new SoProfileCoordinate2;
-}
-
-/*!
-  Returns the unique type identifier for the SoProfileCoordinate2 class.
-*/
-SoType
-SoProfileCoordinate2::getClassTypeId(void)
-{
-  return SoProfileCoordinate2::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoProfileCoordinate2::getTypeId(void) const
-{
-  return SoProfileCoordinate2::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoProfileCoordinate2);
 
 /*!
   Constructor.
 */
 SoProfileCoordinate2::SoProfileCoordinate2()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoProfileCoordinate2)
-  // Make sure the class has been initialized.
-  assert(SoProfileCoordinate2::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoProfileCoordinate2);
   
   SO_NODE_ADD_FIELD(point, (0.0f, 0.0f));
 }
@@ -109,17 +77,7 @@ SoProfileCoordinate2::~SoProfileCoordinate2()
 void
 SoProfileCoordinate2::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(ProfileCoordinate2)
-  // Make sure we only initialize once.
-  assert(SoProfileCoordinate2::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoProfileCoordinate2::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "ProfileCoordinate2",
-                       &SoProfileCoordinate2::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
+  SO_NODE_INTERNAL_INIT_CLASS(SoProfileCoordinate2);
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   SO_ENABLE(SoGetBoundingBoxAction, SoProfileCoordinateElement);
@@ -130,15 +88,6 @@ SoProfileCoordinate2::initClass(void)
 #if !defined(COIN_EXCLUDE_SOPICKACTION)
   SO_ENABLE(SoPickAction, SoProfileCoordinateElement);
 #endif // !COIN_EXCLUDE_SOPICKACTION
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoProfileCoordinate2::cleanClass(void)
-{
 }
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)

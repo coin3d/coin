@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoPerspectiveCamera.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 #include <Inventor/SbSphere.h>
 #include <assert.h>
 #include <math.h> // for atan()
@@ -43,46 +43,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoPerspectiveCamera)
-SoType SoPerspectiveCamera::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoPerspectiveCamera node class.
-*/
-void *
-SoPerspectiveCamera::createInstance(void)
-{
-  return new SoPerspectiveCamera;
-}
-
-/*!
-  Returns the unique type identifier for the SoPerspectiveCamera class.
-*/
-SoType
-SoPerspectiveCamera::getClassTypeId(void)
-{
-  return SoPerspectiveCamera::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoPerspectiveCamera::getTypeId(void) const
-{
-  return SoPerspectiveCamera::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoPerspectiveCamera);
 
 /*!
   Constructor.
 */
 SoPerspectiveCamera::SoPerspectiveCamera()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoPerspectiveCamera)
-  // Make sure the class has been initialized.
-  assert(SoPerspectiveCamera::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoPerspectiveCamera);
 
   SO_NODE_ADD_FIELD(heightAngle, (SB_PI/4.0f));  // 45 degrees
 }
@@ -102,26 +70,7 @@ SoPerspectiveCamera::~SoPerspectiveCamera()
 void
 SoPerspectiveCamera::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(PerspectiveCamera)
-  // Make sure we only initialize once.
-  assert(SoPerspectiveCamera::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoPerspectiveCamera::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "PerspectiveCamera",
-                       &SoPerspectiveCamera::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoPerspectiveCamera::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoPerspectiveCamera);
 }
 
 /*!

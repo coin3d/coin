@@ -45,7 +45,6 @@ public:
   virtual ~SoLightElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoLightElement(void);

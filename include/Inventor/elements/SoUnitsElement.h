@@ -40,7 +40,6 @@ public:
   virtual ~SoUnitsElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoUnitsElement(void);

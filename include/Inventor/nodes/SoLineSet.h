@@ -20,6 +20,7 @@
 #ifndef __SOLINESET_H__
 #define __SOLINESET_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNonIndexedShape.h>
 #include <Inventor/fields/SoMFInt32.h>
 
@@ -32,24 +33,12 @@
 class SoLineSet : public SoNonIndexedShape {
   typedef SoNonIndexedShape inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoLineSet)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoLineSet);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoLineSet(void);
-protected:
-  virtual ~SoLineSet();
-//$ END TEMPLATE NodeHeader
 
-public:
   enum Binding {
     OVERALL = 0,
     PER_LINE,
@@ -71,6 +60,8 @@ public:
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
 protected:
+  virtual ~SoLineSet();
+
 #if !defined(COIN_EXCLUDE_SOACTION)
   virtual void generatePrimitives(SoAction * action);
   virtual void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);

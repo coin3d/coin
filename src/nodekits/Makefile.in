@@ -92,7 +92,7 @@ LIBS =
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 
-ALLSOURCES =  	SoNodeKit.cpp 	SoNodeKit.h
+ALLSOURCES =  	SoNodeKit.cpp SoNodeKit.h 	SoNodeKitPath.cpp SoNodeKitPath.h 	SoNodeKitListPart.cpp SoNodeKitListPart.h 	SoNodekitCatalog.cpp SoNodekitCatalog.h 	SoBaseKit.cpp SoBaseKit.h 	SoAppearanceKit.cpp SoAppearanceKit.h 	SoCameraKit.cpp SoCameraKit.h 	SoInteractionKit.cpp SoInteractionKit.h 	SoLightKit.cpp SoLightKit.h 	SoSceneKit.cpp SoSceneKit.h 	SoSeparatorKit.cpp SoSeparatorKit.h 	SoShapeKit.cpp SoShapeKit.h 	SoWrapperKit.cpp SoWrapperKit.h
 
 
 libnodekits_la_SOURCES = $(ALLSOURCES)
@@ -101,7 +101,7 @@ libnodekitsLINKHACK_la_SOURCES = $(ALLSOURCES)
 libnodekitsincdir = $(includedir)/Inventor/nodekits
 libnodekitsLINKHACKincdir = $(includedir)/Inventor/nodekits
 
-ALLINSTHEADERS =  	$(top_srcdir)/include/Inventor/nodekits/SoNodeKit.h
+ALLINSTHEADERS =  	$(top_srcdir)/include/Inventor/nodekits/SoSubKit.h 	$(top_srcdir)/include/Inventor/nodekits/SoNodeKit.h 	$(top_srcdir)/include/Inventor/nodekits/SoNodeKitListPart.h 	$(top_srcdir)/include/Inventor/nodekits/SoNodekitCatalog.h 	$(top_srcdir)/include/Inventor/nodekits/SoBaseKit.h 	$(top_srcdir)/include/Inventor/nodekits/SoAppearanceKit.h 	$(top_srcdir)/include/Inventor/nodekits/SoCameraKit.h 	$(top_srcdir)/include/Inventor/nodekits/SoInteractionKit.h 	$(top_srcdir)/include/Inventor/nodekits/SoLightKit.h 	$(top_srcdir)/include/Inventor/nodekits/SoSceneKit.h 	$(top_srcdir)/include/Inventor/nodekits/SoSeparatorKit.h 	$(top_srcdir)/include/Inventor/nodekits/SoShapeKit.h 	$(top_srcdir)/include/Inventor/nodekits/SoWrapperKit.h
 
 
 libnodekitsinc_HEADERS = $(ALLINSTHEADERS)
@@ -121,10 +121,16 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 libnodekitsLINKHACK_la_LDFLAGS = 
 libnodekitsLINKHACK_la_LIBADD = 
-libnodekitsLINKHACK_la_OBJECTS =  SoNodeKit.lo
+libnodekitsLINKHACK_la_OBJECTS =  SoNodeKit.lo SoNodeKitPath.lo \
+SoNodeKitListPart.lo SoNodekitCatalog.lo SoBaseKit.lo \
+SoAppearanceKit.lo SoCameraKit.lo SoInteractionKit.lo SoLightKit.lo \
+SoSceneKit.lo SoSeparatorKit.lo SoShapeKit.lo SoWrapperKit.lo
 libnodekits_la_LDFLAGS = 
 libnodekits_la_LIBADD = 
-libnodekits_la_OBJECTS =  SoNodeKit.lo
+libnodekits_la_OBJECTS =  SoNodeKit.lo SoNodeKitPath.lo \
+SoNodeKitListPart.lo SoNodekitCatalog.lo SoBaseKit.lo \
+SoAppearanceKit.lo SoCameraKit.lo SoInteractionKit.lo SoLightKit.lo \
+SoSceneKit.lo SoSeparatorKit.lo SoShapeKit.lo SoWrapperKit.lo
 CXXFLAGS = @CXXFLAGS@
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -144,7 +150,11 @@ DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 
 TAR = gtar
 GZIP_ENV = --best
-DEP_FILES =  .deps/SoNodeKit.P
+DEP_FILES =  .deps/SoAppearanceKit.P .deps/SoBaseKit.P \
+.deps/SoCameraKit.P .deps/SoInteractionKit.P .deps/SoLightKit.P \
+.deps/SoNodeKit.P .deps/SoNodeKitListPart.P .deps/SoNodeKitPath.P \
+.deps/SoNodekitCatalog.P .deps/SoSceneKit.P .deps/SoSeparatorKit.P \
+.deps/SoShapeKit.P .deps/SoWrapperKit.P
 SOURCES = $(libnodekitsLINKHACK_la_SOURCES) $(libnodekits_la_SOURCES)
 OBJECTS = $(libnodekitsLINKHACK_la_OBJECTS) $(libnodekits_la_OBJECTS)
 

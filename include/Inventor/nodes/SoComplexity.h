@@ -20,6 +20,7 @@
 #ifndef __SOCOMPLEXITY_H__
 #define __SOCOMPLEXITY_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFFloat.h>
@@ -34,24 +35,12 @@
 class SoComplexity : public SoNode {
     typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoComplexity)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoComplexity);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoComplexity(void);
-protected:
-  virtual ~SoComplexity();
-//$ END TEMPLATE NodeHeader
 
-public:
   enum Type {
     OBJECT_SPACE = SoComplexityTypeElement::OBJECT_SPACE,
     SCREEN_SPACE = SoComplexityTypeElement::SCREEN_SPACE,
@@ -80,6 +69,9 @@ public:
 #if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
+
+protected:
+  virtual ~SoComplexity();
 };
 
 #endif // !__SOCOMPLEXITY_H__

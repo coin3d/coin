@@ -110,17 +110,6 @@ SoGLNormalElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the SoGLNormalElement class.
-*/
-
-void
-SoGLNormalElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoGLNormalElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoGLNormalElement::createInstance(void)

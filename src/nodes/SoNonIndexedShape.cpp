@@ -26,9 +26,9 @@
 */
 
 #include <Inventor/nodes/SoNonIndexedShape.h>
-#include <Inventor/nodes/SoSubNode.h>
+
 #include <Inventor/nodes/SoVertexProperty.h>
-#include <Inventor/SbName.h>
+
 
 #if !defined(COIN_EXCLUDE_SOACTION)
 #include <Inventor/actions/SoAction.h>
@@ -44,37 +44,14 @@
 */
 
 
-//$ BEGIN TEMPLATE NodeAbstractSource(SoNonIndexedShape)
-SoType SoNonIndexedShape::classTypeId = SoType::badType();
-
-/*!
-  Returns the unique type identifier for the SoNonIndexedShape class.
-*/
-SoType
-SoNonIndexedShape::getClassTypeId(void)
-{
-  return SoNonIndexedShape::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoNonIndexedShape::getTypeId(void) const
-{
-  return SoNonIndexedShape::classTypeId;
-}
-//$ END TEMPLATE NodeAbstractSource
+SO_NODE_ABSTRACT_SOURCE(SoNonIndexedShape);
 
 /*!
   Constructor.
 */
 SoNonIndexedShape::SoNonIndexedShape()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoNonIndexedShape)
-  // Make sure the class has been initialized.
-  assert(SoNonIndexedShape::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoNonIndexedShape);
 
   SO_NODE_ADD_FIELD(startIndex, (0));
 }
@@ -94,26 +71,7 @@ SoNonIndexedShape::~SoNonIndexedShape()
 void 
 SoNonIndexedShape::initClass()
 {
-//$ BEGIN TEMPLATE InitNodeAbstractSource(NonIndexedShape)
-  // Make sure we only initialize once.
-  assert(SoNonIndexedShape::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoNonIndexedShape::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "NonIndexedShape",
-                       NULL,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeAbstractSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void 
-SoNonIndexedShape::cleanClass()
-{
+  SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoNonIndexedShape);
 }
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)

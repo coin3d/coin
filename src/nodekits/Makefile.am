@@ -16,8 +16,19 @@ INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 ## headers.
 
 ALLSOURCES = \
-	SoNodeKit.cpp \
-	SoNodeKit.h
+	SoNodeKit.cpp SoNodeKit.h \
+	SoNodeKitPath.cpp SoNodeKitPath.h \
+	SoNodeKitListPart.cpp SoNodeKitListPart.h \
+	SoNodekitCatalog.cpp SoNodekitCatalog.h \
+	SoBaseKit.cpp SoBaseKit.h \
+	SoAppearanceKit.cpp SoAppearanceKit.h \
+	SoCameraKit.cpp SoCameraKit.h \
+	SoInteractionKit.cpp SoInteractionKit.h \
+	SoLightKit.cpp SoLightKit.h \
+	SoSceneKit.cpp SoSceneKit.h \
+	SoSeparatorKit.cpp SoSeparatorKit.h \
+	SoShapeKit.cpp SoShapeKit.h \
+	SoWrapperKit.cpp SoWrapperKit.h
 
 libnodekits_la_SOURCES = $(ALLSOURCES)
 libnodekitsLINKHACK_la_SOURCES = $(ALLSOURCES)
@@ -28,7 +39,19 @@ libnodekitsincdir = $(includedir)/Inventor/nodekits
 libnodekitsLINKHACKincdir = $(includedir)/Inventor/nodekits
 
 ALLINSTHEADERS = \
-	$(top_srcdir)/include/Inventor/nodekits/SoNodeKit.h
+	$(top_srcdir)/include/Inventor/nodekits/SoSubKit.h \
+	$(top_srcdir)/include/Inventor/nodekits/SoNodeKit.h \
+	$(top_srcdir)/include/Inventor/nodekits/SoNodeKitListPart.h \
+	$(top_srcdir)/include/Inventor/nodekits/SoNodekitCatalog.h \
+	$(top_srcdir)/include/Inventor/nodekits/SoBaseKit.h \
+	$(top_srcdir)/include/Inventor/nodekits/SoAppearanceKit.h \
+	$(top_srcdir)/include/Inventor/nodekits/SoCameraKit.h \
+	$(top_srcdir)/include/Inventor/nodekits/SoInteractionKit.h \
+	$(top_srcdir)/include/Inventor/nodekits/SoLightKit.h \
+	$(top_srcdir)/include/Inventor/nodekits/SoSceneKit.h \
+	$(top_srcdir)/include/Inventor/nodekits/SoSeparatorKit.h \
+	$(top_srcdir)/include/Inventor/nodekits/SoShapeKit.h \
+	$(top_srcdir)/include/Inventor/nodekits/SoWrapperKit.h
 
 
 libnodekitsinc_HEADERS = $(ALLINSTHEADERS)

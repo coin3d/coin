@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoIndexedNurbsCurve.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 /*!
   \var SoSFInt32 SoIndexedNurbsCurve::numControlPoints
@@ -45,46 +45,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoIndexedNurbsCurve)
-SoType SoIndexedNurbsCurve::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoIndexedNurbsCurve node class.
-*/
-void *
-SoIndexedNurbsCurve::createInstance(void)
-{
-  return new SoIndexedNurbsCurve;
-}
-
-/*!
-  Returns the unique type identifier for the SoIndexedNurbsCurve class.
-*/
-SoType
-SoIndexedNurbsCurve::getClassTypeId(void)
-{
-  return SoIndexedNurbsCurve::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoIndexedNurbsCurve::getTypeId(void) const
-{
-  return SoIndexedNurbsCurve::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoIndexedNurbsCurve);
 
 /*!
   Constructor.
 */
 SoIndexedNurbsCurve::SoIndexedNurbsCurve()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoIndexedNurbsCurve)
-  // Make sure the class has been initialized.
-  assert(SoIndexedNurbsCurve::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoIndexedNurbsCurve);
 
   SO_NODE_ADD_FIELD(numControlPoints, (0));
   SO_NODE_ADD_FIELD(coordIndex, (0));
@@ -106,26 +74,7 @@ SoIndexedNurbsCurve::~SoIndexedNurbsCurve()
 void
 SoIndexedNurbsCurve::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(IndexedNurbsCurve)
-  // Make sure we only initialize once.
-  assert(SoIndexedNurbsCurve::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoIndexedNurbsCurve::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "IndexedNurbsCurve",
-                       &SoIndexedNurbsCurve::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoIndexedNurbsCurve::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoIndexedNurbsCurve);
 }
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)

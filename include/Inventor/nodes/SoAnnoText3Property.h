@@ -20,6 +20,7 @@
 #ifndef __SOANNOTEXT3PROPERTY_H__
 #define __SOANNOTEXT3PROPERTY_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 
 #if defined(COIN_EXCLUDE_SOANNOTEXT3PROPERTY)
@@ -34,24 +35,12 @@
 class SoAnnoText3Property : public SoNode {
     typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoAnnoText3Property)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoAnnoText3Property);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoAnnoText3Property(void);
-protected:
-  virtual ~SoAnnoText3Property();
-//$ END TEMPLATE NodeHeader
 
-public:
   enum RenderPrintType {
     RENDER3D_PRINT_VECTOR, RENDER3D_PRINT_RASTER, RENDER2D_PRINT_RASTER
   };
@@ -82,6 +71,9 @@ public:
 #if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
+
+protected:
+  virtual ~SoAnnoText3Property();
 };
 
 #endif // !__SOANNOTEXT3PROPERTY_H__

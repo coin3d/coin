@@ -42,7 +42,6 @@ public:
   virtual ~SoViewingMatrixElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoViewingMatrixElement(void);

@@ -20,6 +20,7 @@
 #ifndef __SOLEVELOFSIMPLIFICATION_H__
 #define __SOLEVELOFSIMPLIFICATION_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoLOD.h>
 #include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/fields/SoSFInt32.h>
@@ -33,24 +34,12 @@
 class SoLevelOfSimplification : public SoLOD {
   typedef SoLOD inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoLevelOfSimplification)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoLevelOfSimplification);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoLevelOfSimplification(void);
-protected:
-  virtual ~SoLevelOfSimplification();
-//$ END TEMPLATE NodeHeader
 
-public:
   SoMFFloat percentages;
   SoSFInt32 numTriangles;
 
@@ -59,6 +48,8 @@ public:
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
 protected:
+  virtual ~SoLevelOfSimplification();
+
 #if !defined(COIN_EXCLUDE_SOACTION)
   virtual int whichToTraverse(SoAction *);
 #endif // !COIN_EXCLUDE_SOACTION

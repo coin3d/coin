@@ -20,6 +20,7 @@
 #ifndef __SOINFO_H__
 #define __SOINFO_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/nodes/SoNode.h>
 
@@ -32,25 +33,16 @@
 class SoInfo : public SoNode {
     typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoInfo)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoInfo);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoInfo(void);
+
+  SoSFString string;
+
 protected:
   virtual ~SoInfo();
-//$ END TEMPLATE NodeHeader
-
-public:
-  SoSFString string;
 };
 
 #endif // !__SOINFO_H__

@@ -20,6 +20,7 @@
 #ifndef __SOFONTSTYLE_H__
 #define __SOFONTSTYLE_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoFont.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFBitMask.h>
@@ -33,24 +34,12 @@
 class SoFontStyle : public SoFont {
   typedef SoFont inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoFontStyle)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoFontStyle);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoFontStyle(void);
-protected:
-  virtual ~SoFontStyle();
-//$ END TEMPLATE NodeHeader
 
-public:
   enum Family {
     SERIF, SANS, TYPEWRITER
   };
@@ -82,6 +71,9 @@ public:
 #if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction *action);
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
+
+protected:
+  virtual ~SoFontStyle();
 };
 
 #endif // !__SOFONTSTYLE_H__

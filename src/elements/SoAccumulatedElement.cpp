@@ -107,18 +107,6 @@ SoAccumulatedElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the SoAccumulatedElement
-  class.
-*/
-
-void
-SoAccumulatedElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanAbstractElementSource(SoAccumulatedElement)
-//$ END TEMPLATE CleanAbstractElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.  This is an abstract base class.
 */
 
@@ -129,7 +117,7 @@ SoAccumulatedElement::SoAccumulatedElement()
 
   // FIXME: there's no init method which cleans out the nodeIds
   // SbPList, won't this result in a memory leak? Or is this taken
-  // care of through the use of setNodeId()? 990418 mortene.
+  // care of through the use of setNodeId()? 19990418 mortene.
 }
 
 /*!

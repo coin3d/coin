@@ -112,18 +112,6 @@ SoDecimationTypeElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the
-  SoDecimationTypeElement class.
-*/
-
-void
-SoDecimationTypeElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoDecimationTypeElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoDecimationTypeElement::createInstance(void)

@@ -42,7 +42,6 @@ public:
   virtual ~SoDiffuseColorElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoDiffuseColorElement(void);

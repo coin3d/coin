@@ -1,4 +1,4 @@
-//$ TEMPLATE Field(fieldname)
+//$ TEMPLATE Field(_fieldname_)
 private:
   static SoType classTypeId;
 
@@ -8,8 +8,7 @@ public:
   virtual SoType getTypeId(void) const;
 
   static void initClass(void);
-  static void cleanClass(void);
 
   virtual void copyFrom(const SoField & field);
-  const fieldname & operator = (const fieldname & field);
+  const _fieldname_ & operator = (const _fieldname_ & field);
   virtual SbBool isSame(const SoField & field) const;

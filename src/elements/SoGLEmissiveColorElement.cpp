@@ -112,18 +112,6 @@ SoGLEmissiveColorElement::initClass()
 }
 
 /*!
-  This static method cleans up static data for the SoGLEmissiveColorElement
-  class.
-*/
-
-void 
-SoGLEmissiveColorElement::cleanClass()
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoGLEmissiveColorElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoGLEmissiveColorElement::createInstance(void)

@@ -106,18 +106,6 @@ SoTextureQualityElement::initClass(void)
 }
 
 /*!
-  This static method cleans up static data for the
-  SoTextureQualityElement class.
-*/
-
-void
-SoTextureQualityElement::cleanClass(void)
-{
-//$ BEGIN TEMPLATE CleanElementSource(SoTextureQualityElement)
-//$ END TEMPLATE CleanElementSource
-}
-
-/*!
   A constructor.  Can't be used directly.
 
   \sa void * SoTextureQualityElement::createInstance(void)

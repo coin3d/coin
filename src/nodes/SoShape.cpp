@@ -25,8 +25,8 @@
   FIXME: write class doc
 */
 
-#include <Inventor/SbName.h>
-#include <Inventor/nodes/SoSubNode.h>
+
+
 #include <Inventor/misc/SoState.h>
 #include <Inventor/SbBox2f.h>
 #if COIN_DEBUG
@@ -134,37 +134,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeAbstractSource(SoShape)
-SoType SoShape::classTypeId = SoType::badType();
-
-/*!
-  Returns the unique type identifier for the SoShape class.
-*/
-SoType
-SoShape::getClassTypeId(void)
-{
-  return SoShape::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoShape::getTypeId(void) const
-{
-  return SoShape::classTypeId;
-}
-//$ END TEMPLATE NodeAbstractSource
+SO_NODE_ABSTRACT_SOURCE(SoShape);
 
 /*!
   Constructor.
 */
 SoShape::SoShape()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoShape)
-  // Make sure the class has been initialized.
-  assert(SoShape::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoShape);
 }
 
 /*!
@@ -182,26 +159,7 @@ SoShape::~SoShape()
 void
 SoShape::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeAbstractSource(Shape)
-  // Make sure we only initialize once.
-  assert(SoShape::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoShape::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Shape",
-                       NULL,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeAbstractSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoShape::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoShape);
 }
 
 

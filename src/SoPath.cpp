@@ -129,16 +129,6 @@ SoPath::initClass(void)
 }
 
 /*!
-  This method should clean up after the SoPath class.  Does nothing at the
-  moment.
-*/
-
-void
-SoPath::cleanClass(void)
-{
-}
-
-/*!
   The default constructor.  \a approxLength is used to indicate in advance the
   length of the path so there won't be any reallocations.
 */

@@ -20,6 +20,7 @@
 #ifndef __SOPATHSWITCH_H__
 #define __SOPATHSWITCH_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/fields/SoSFPath.h>
 
@@ -32,24 +33,12 @@
 class SoPathSwitch : public SoGroup {
   typedef SoGroup inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoPathSwitch)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoPathSwitch);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoPathSwitch(void);
-protected:
-  virtual ~SoPathSwitch();
-//$ END TEMPLATE NodeHeader
 
-public:
   SoSFPath path;
 
 #if !defined(COIN_EXCLUDE_SOACTION)
@@ -76,6 +65,9 @@ public:
 #if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
+
+protected:
+  virtual ~SoPathSwitch();
 };
 
 #endif // !__SOPATHSWITCH_H__

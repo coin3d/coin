@@ -23,7 +23,6 @@
 class SoInteraction {
 public:
   static void init(void);
-  static void clean(void);
 };
 
 #endif // !__SOINTERACTION_H__

@@ -20,6 +20,7 @@
 #ifndef __SOVERTEXPROPERTY_H__
 #define __SOVERTEXPROPERTY_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoMFUInt32.h>
 #include <Inventor/fields/SoMFVec3f.h>
@@ -34,24 +35,12 @@
 class SoVertexProperty : public SoNode {
   typedef SoNode inherited;
   
-//$ BEGIN TEMPLATE NodeHeader(SoVertexProperty)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoVertexProperty);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoVertexProperty(void);
-protected:
-  virtual ~SoVertexProperty();
-//$ END TEMPLATE NodeHeader
 
-public:
   // These must match 100% with the enum in SoMaterialBindingElement.
   enum Binding {
     OVERALL = 2,
@@ -88,6 +77,9 @@ public:
 #if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
+
+protected:
+  virtual ~SoVertexProperty();
 };
 
 #endif // !__SOVERTEXPROPERTY_H__

@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoCamera.h>
-#include <Inventor/SbName.h>
-#include <Inventor/nodes/SoSubNode.h>
+
+
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -136,37 +136,14 @@
 */
 
 
-//$ BEGIN TEMPLATE NodeAbstractSource(SoCamera)
-SoType SoCamera::classTypeId = SoType::badType();
-
-/*!
-  Returns the unique type identifier for the SoCamera class.
-*/
-SoType
-SoCamera::getClassTypeId(void)
-{
-  return SoCamera::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoCamera::getTypeId(void) const
-{
-  return SoCamera::classTypeId;
-}
-//$ END TEMPLATE NodeAbstractSource
+SO_NODE_ABSTRACT_SOURCE(SoCamera);
 
 /*!
   Constructor.
 */
 SoCamera::SoCamera()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoCamera)
-  // Make sure the class has been initialized.
-  assert(SoCamera::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoCamera);
 
   SO_NODE_ADD_FIELD(viewportMapping,(ADJUST_CAMERA));
   SO_NODE_ADD_FIELD(position,(0.0f, 0.0f, 1.0f));
@@ -200,17 +177,7 @@ SoCamera::~SoCamera()
 void
 SoCamera::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeAbstractSource(Camera)
-  // Make sure we only initialize once.
-  assert(SoCamera::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoCamera::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Camera",
-                       NULL,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeAbstractSource
+  SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoCamera);
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoFocalDistanceElement);
@@ -232,15 +199,6 @@ SoCamera::initClass(void)
   SO_ENABLE(SoRayPickAction, SoViewVolumeElement);
   SO_ENABLE(SoRayPickAction, SoViewingMatrixElement);
 #endif // !COIN_EXCLUDE_SORAYPICKACTION
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoCamera::cleanClass(void)
-{
 }
 
 /*!

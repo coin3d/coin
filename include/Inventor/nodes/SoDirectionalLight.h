@@ -20,6 +20,7 @@
 #ifndef __SODIRECTIONALLIGHT_H__
 #define __SODIRECTIONALLIGHT_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoLight.h>
 #include <Inventor/fields/SoSFVec3f.h>
 
@@ -32,29 +33,20 @@
 class SoDirectionalLight : public SoLight {
   typedef SoLight inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoDirectionalLight)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoDirectionalLight);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoDirectionalLight(void);
-protected:
-  virtual ~SoDirectionalLight();
-//$ END TEMPLATE NodeHeader
 
-public:
   SoSFVec3f direction;
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction * action);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+
+protected:
+  virtual ~SoDirectionalLight();
 };
 
 #endif // !__SODIRECTIONALLIGHT_H__

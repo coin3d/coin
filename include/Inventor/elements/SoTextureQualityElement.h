@@ -40,7 +40,6 @@ public:
   virtual ~SoTextureQualityElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoTextureQualityElement(void);

@@ -20,6 +20,7 @@
 #ifndef __SORESETTRANSFORM_H__
 #define __SORESETTRANSFORM_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoTransformation.h>
 #include <Inventor/fields/SoSFBitMask.h>
 
@@ -32,24 +33,12 @@
 class SoResetTransform : public SoTransformation {
   typedef SoTransformation inherited;
 
-//$ BEGIN TEMPLATE NodeHeader(SoResetTransform)
-private:
-  static SoType classTypeId;
+  SO_NODE_HEADER(SoResetTransform);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
 public:
   static void initClass(void);
-  static void cleanClass(void);
-
   SoResetTransform(void);
-protected:
-  virtual ~SoResetTransform();
-//$ END TEMPLATE NodeHeader
 
-public:
   // These must be bit flags.
   enum ResetType {
     TRANSFORM = 0x01,
@@ -79,6 +68,9 @@ public:
 #if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
+
+protected:
+  virtual ~SoResetTransform();
 };
 
 #endif // !__SORESETTRANSFORM_H__

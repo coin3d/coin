@@ -32,7 +32,6 @@ class SoFieldContainer : public SoBase {
 
 public:
   static void initClass(void);
-  static void cleanClass(void);
   static SoType getClassTypeId(void);
 
   void setToDefaults(void);

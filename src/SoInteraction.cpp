@@ -35,12 +35,3 @@ SoInteraction::init(void)
 {
   // FIXME: implement
 }
-
-/*!
-  FIXME: write doc
- */
-void
-SoInteraction::clean(void)
-{
-  // FIXME: implement
-}

@@ -26,9 +26,9 @@
 */
 
 #include <Inventor/nodes/SoVertexShape.h>
-#include <Inventor/SbName.h>
+
 #include <Inventor/caches/SoNormalCache.h>
-#include <Inventor/nodes/SoSubNode.h>
+
 #include <Inventor/misc/SoState.h>
 
 #if !defined(COIN_EXCLUDE_SOVERTEXPROPERTY)
@@ -61,37 +61,14 @@
 */
 
 
-//$ BEGIN TEMPLATE NodeAbstractSource(SoVertexShape)
-SoType SoVertexShape::classTypeId = SoType::badType();
-
-/*!
-  Returns the unique type identifier for the SoVertexShape class.
-*/
-SoType
-SoVertexShape::getClassTypeId(void)
-{
-  return SoVertexShape::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoVertexShape::getTypeId(void) const
-{
-  return SoVertexShape::classTypeId;
-}
-//$ END TEMPLATE NodeAbstractSource
+SO_NODE_ABSTRACT_SOURCE(SoVertexShape);
 
 /*!
   Constructor.
 */
 SoVertexShape::SoVertexShape()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoVertexShape)
-  // Make sure the class has been initialized.
-  assert(SoVertexShape::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoVertexShape);
   
   SO_NODE_ADD_FIELD(vertexProperty,(NULL));
 
@@ -114,26 +91,7 @@ SoVertexShape::~SoVertexShape()
 void 
 SoVertexShape::initClass()
 {
-//$ BEGIN TEMPLATE InitNodeAbstractSource(VertexShape)
-  // Make sure we only initialize once.
-  assert(SoVertexShape::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoVertexShape::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "VertexShape",
-                       NULL,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeAbstractSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void 
-SoVertexShape::cleanClass()
-{
+  SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoVertexShape);
 }
 
 /*!

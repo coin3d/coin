@@ -40,7 +40,6 @@ public:
   virtual ~SoGLViewportRegionElement(void);
 
   static void initClass(void);
-  static void cleanClass(void);
 
 protected:
   SoGLViewportRegionElement(void);

@@ -26,8 +26,8 @@
 */
 
 #include <Inventor/nodes/SoMarkerSet.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
+
+
 
 /*!
   \enum SoMarkerSet::MarkerType
@@ -403,46 +403,14 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource(SoMarkerSet)
-SoType SoMarkerSet::classTypeId = SoType::badType();
-
-/*!
-  Returns a new instance of the SoMarkerSet node class.
-*/
-void *
-SoMarkerSet::createInstance(void)
-{
-  return new SoMarkerSet;
-}
-
-/*!
-  Returns the unique type identifier for the SoMarkerSet class.
-*/
-SoType
-SoMarkerSet::getClassTypeId(void)
-{
-  return SoMarkerSet::classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoMarkerSet::getTypeId(void) const
-{
-  return SoMarkerSet::classTypeId;
-}
-//$ END TEMPLATE NodeSource
+SO_NODE_SOURCE(SoMarkerSet);
 
 /*!
   Constructor.
 */
 SoMarkerSet::SoMarkerSet()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoMarkerSet)
-  // Make sure the class has been initialized.
-  assert(SoMarkerSet::classTypeId != SoType::badType());
-//$ END TEMPLATE NodeConstructor
+  SO_NODE_CONSTRUCTOR(SoMarkerSet);
 
   SO_NODE_ADD_FIELD(markerIndex, (0));
 }
@@ -462,26 +430,7 @@ SoMarkerSet::~SoMarkerSet()
 void
 SoMarkerSet::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(MarkerSet)
-  // Make sure we only initialize once.
-  assert(SoMarkerSet::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoMarkerSet::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "MarkerSet",
-                       &SoMarkerSet::createInstance,
-                       SoNode::nextActionMethodIndex++);
-//$ END TEMPLATE InitNodeSource
-}
-
-/*!
-  Clean out all statically allocated resources.
-  This method is only useful for debugging purposes.
-*/
-void
-SoMarkerSet::cleanClass(void)
-{
+  SO_NODE_INTERNAL_INIT_CLASS(SoMarkerSet);
 }
 
 

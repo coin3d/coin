@@ -20,6 +20,7 @@
 #ifndef __SOCAMERA_H__
 #define __SOCAMERA_H__
 
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/SbViewVolume.h>
@@ -54,23 +55,11 @@ class SoPath;
 class SoCamera : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeAbstractHeader(SoCamera)
-private:
-  static SoType classTypeId;
+  SO_NODE_ABSTRACT_HEADER(SoCamera);
 
-public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
 public:
   static void initClass(void);
-  static void cleanClass(void);
 
-protected:
-  SoCamera(void);
-  virtual ~SoCamera();
-//$ END TEMPLATE NodeAbstractHeader
-
-public:
   enum ViewportMapping {
     CROP_VIEWPORT_FILL_FRAME,
     CROP_VIEWPORT_LINE_FRAME,
@@ -123,6 +112,9 @@ public:
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
 protected:
+  SoCamera(void);
+  virtual ~SoCamera();
+
   virtual void viewBoundingBox(const SbBox3f & box,
 			       float aspect, float slack) = 0;
   virtual void jitter(int numPasses, int curPass,
