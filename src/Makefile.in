@@ -68,6 +68,7 @@ AMDEP = @AMDEP@
 AMTAR = @AMTAR@
 AS = @AS@
 AWK = @AWK@
+BUILD_WITH_MSVC = @BUILD_WITH_MSVC@
 CC = @CC@
 COIN_DOC_HTML = @COIN_DOC_HTML@
 COIN_DOC_MAN = @COIN_DOC_MAN@
@@ -463,6 +464,8 @@ check: check-recursive
 installcheck-am:
 installcheck: installcheck-recursive
 install-exec-am: install-libLTLIBRARIES
+	@$(NORMAL_INSTALL)
+	$(MAKE) $(AM_MAKEFLAGS) install-exec-hook
 install-exec: install-exec-recursive
 
 install-data-am: install-libCoinincHEADERS
@@ -553,6 +556,27 @@ install-libCoinincHEADERS: $(libCoininc_HEADERS)
 	  if cmp -s $$d$$p $(DESTDIR)$(libCoinincdir)/$$f; then : ; else echo " Installing $(DESTDIR)$(libCoinincdir)/$$f"; \
 	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libCoinincdir)/$$f; fi; \
 	done
+
+#### Additional "native" Make rules #########################################
+
+coin@COIN_MAJOR_VERSION@.dll: $(libCoin_la_OBJECTS) $(libCoin_la_DEPENDENCIES)
+	@rm -f coin@COIN_MAJOR_VERSION@.dll && \
+	if @BUILD_WITH_MSVC@; then \
+	  echo "Linking DLL..."; \
+	  $(CC) /dll /out:coin@COIN_MAJOR_VERSION@.dll $(LDFLAGS) \
+	        `echo $(libCoin_la_OBJECTS) | sed 's%\.lo%.obj%g'` \
+	        $(libCoin_la_LIBADD) $(LIBS); \
+	else \
+	  touch coin@COIN_MAJOR_VERSION@.dll; \
+	fi
+
+install-exec-hook: coin@COIN_MAJOR_VERSION@.dll
+	@if test -s coin@COIN_MAJOR_VERSION@.dll; then \
+	  echo "Installing coin@COIN_MAJOR_VERSION@.dll"; \
+	  for i in coin@COIN_MAJOR_VERSION@.dll coin@COIN_MAJOR_VERSION@.lib; do \
+	    $(INSTALL_DATA) $$i $(DESTDIR)$(libdir)/$$i; \
+	  done \
+	fi
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

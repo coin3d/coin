@@ -833,12 +833,12 @@ esac
 # If the Microsoft Visual C++ cl.exe compiler is available, set us up for
 # compiling with it and to generate an MSWindows .dll file.
 
-sim_ac_macro_dir=${srcdir}/conf-macros
-coin_build_with_msvc=false
-if test -z "$CC" && test -z "$CXX" && $sim_ac_macro_dir/msvccc >/dev/null 2>&1; then
-  CC=$sim_ac_macro_dir/msvccc
-  CXX=$CC
-  coin_build_with_msvc=true
+BUILD_WITH_MSVC=false
+sim_ac_msvccc=$srcdir/conf-macros/msvccc
+if test -z "$CC" && test -z "$CXX" && $sim_ac_msvccc >/dev/null 2>&1; then
+  CC=$sim_ac_msvccc
+  CXX=$sim_ac_msvccc
+  BUILD_WITH_MSVC=true
 fi
 
 # **************************************************************************
@@ -7042,7 +7042,7 @@ LIBS=$sim_ac_uniqued_list
 # **************************************************************************
 # Remaining setup based on platform.
 
-if $coin_build_with_msvc; then
+if $BUILD_WITH_MSVC; then
   CPPFLAGS="-DCOIN_MAKE_DLL $CPPFLAGS"
 
   # We use a version suffix on the .dll-file, so several incompatible
@@ -7492,6 +7492,7 @@ s,@FFLAGS@,$FFLAGS,;t t
 s,@DEFS@,$DEFS,;t t
 s,@LDFLAGS@,$LDFLAGS,;t t
 s,@LIBS@,$LIBS,;t t
+s,@BUILD_WITH_MSVC@,$BUILD_WITH_MSVC,;t t
 s,@CXX@,$CXX,;t t
 s,@ac_ct_CXX@,$ac_ct_CXX,;t t
 s,@OBJEXT@,$OBJEXT,;t t

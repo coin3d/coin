@@ -5,13 +5,15 @@ AC_INIT(src/misc/SoDB.cpp)
 # If the Microsoft Visual C++ cl.exe compiler is available, set us up for
 # compiling with it and to generate an MSWindows .dll file.
 
-sim_ac_macro_dir=${srcdir}/conf-macros
-coin_build_with_msvc=false
-if test -z "$CC" && test -z "$CXX" && $sim_ac_macro_dir/msvccc >/dev/null 2>&1; then
-  CC=$sim_ac_macro_dir/msvccc
-  CXX=$CC
-  coin_build_with_msvc=true
+BUILD_WITH_MSVC=false
+sim_ac_msvccc=$srcdir/conf-macros/msvccc
+if test -z "$CC" && test -z "$CXX" && $sim_ac_msvccc >/dev/null 2>&1; then
+  CC=$sim_ac_msvccc
+  CXX=$sim_ac_msvccc
+  BUILD_WITH_MSVC=true
 fi
+AC_SUBST(BUILD_WITH_MSVC)
+
 
 # **************************************************************************
 #  Locate C++ compiler and set C++ as the default language to use
@@ -573,7 +575,7 @@ SIM_AC_UNIQIFY_LIST(LIBS, $LIBS)
 # **************************************************************************
 # Remaining setup based on platform.
 
-if $coin_build_with_msvc; then
+if $BUILD_WITH_MSVC; then
   CPPFLAGS="-DCOIN_MAKE_DLL $CPPFLAGS"
 
   # We use a version suffix on the .dll-file, so several incompatible
