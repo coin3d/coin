@@ -44,23 +44,23 @@ public:
   SoShaderProgramP(SoShaderProgram * ownerptr);
   ~SoShaderProgramP();
 
-  SoShaderProgram * owner;
-  SoNodeList        previousChildren;
-  SoGLShaderProgram glShaderProgram;
-
-  void GLRender(SoGLRenderAction *action);
-  void updateStateMatrixParameters(SoState *state);
+  void GLRender(SoGLRenderAction * action);
+  void updateStateMatrixParameters(void);
   SbBool doesContainStateMatrixParameters;
 
 private:
-  static void sensorCB(void *data, SoSensor *);
-  SoNodeSensor  *sensor;
+  SoShaderProgram * owner;
+  SoNodeList previousChildren;
+  SoGLShaderProgram glShaderProgram;
+
+  static void sensorCB(void * data, SoSensor *);
+  SoNodeSensor * sensor;
   SbBool shouldTraverseShaderObjects;
-  void updateProgramAndPreviousChildren();
-  void removeFromPreviousChildren(SoNode *shader);
+  void updateProgramAndPreviousChildren(void);
+  void removeFromPreviousChildren(SoNode * shader);
 };
 
-#define SELF this->pimpl
+#define PRIVATE(p) ((p)->pimpl)
 
 // *************************************************************************
 
@@ -84,40 +84,41 @@ SoShaderProgram::SoShaderProgram()
   SO_NODE_ADD_FIELD(shaderObject, (NULL));
   this->shaderObject.deleteValues(0, 1);
 
-  SELF = new SoShaderProgramP(this);
+  PRIVATE(this) = new SoShaderProgramP(this);
 }
 
 SoShaderProgram::~SoShaderProgram()
 {
-  delete SELF;
+  delete PRIVATE(this);
 }
 
-void SoShaderProgram::GLRender(SoGLRenderAction *action)
+void
+SoShaderProgram::GLRender(SoGLRenderAction * action)
 {
-  SELF->GLRender(action);
+  PRIVATE(this)->GLRender(action);
 }
 
-void SoShaderProgram::updateStateMatrixParameters(SoState *state)
+void
+SoShaderProgram::updateStateMatrixParameters(SoState * state)
 {
-  SELF->updateStateMatrixParameters(state);
+  PRIVATE(this)->updateStateMatrixParameters();
 }
 
-SbBool SoShaderProgram::containStateMatrixParameters() const
+SbBool
+SoShaderProgram::containStateMatrixParameters(void) const
 {
-  return SELF->doesContainStateMatrixParameters;
+  return PRIVATE(this)->doesContainStateMatrixParameters;
 }
 
-/* ***************************************************************************
- *
- * ***************************************************************************/
+// *************************************************************************
 
 SoShaderProgramP::SoShaderProgramP(SoShaderProgram * ownerptr)
 {
-  this->owner  = ownerptr;
+  this->owner = ownerptr;
   this->sensor = new SoNodeSensor(SoShaderProgramP::sensorCB, this);
   this->sensor->attach(ownerptr);
 
-  this->shouldTraverseShaderObjects      = TRUE;
+  this->shouldTraverseShaderObjects = TRUE;
   this->doesContainStateMatrixParameters = FALSE;
 }
 
@@ -138,27 +139,27 @@ void SoShaderProgramP::GLRender(SoGLRenderAction *action)
 
   SoGLShaderProgram* oldProgram = SoGLShaderProgramElement::get(state);
   if (oldProgram) oldProgram->disable(glctx);
-  
+
   SoGLShaderProgramElement::set(state, this->owner, &this->glShaderProgram);
 
   int cnt1 = this->owner->shaderObject.getNum();
   int cnt2 = this->owner->getNumChildren();
   int i;
-  
+
   // load shader objects
   if (this->shouldTraverseShaderObjects) {
     for (i=0; i<cnt1; i++) {
       SoNode *node = this->owner->shaderObject[i];
       if (node->isOfType(SoShaderObject::getClassTypeId())) {
-	removeFromPreviousChildren(node);
-	((SoShaderObject *)node)->GLRender(action);
+        removeFromPreviousChildren(node);
+        ((SoShaderObject *)node)->GLRender(action);
       }
     }
     for (i=0; i<cnt2; i++) {
       SoNode *node = this->owner->getChild(i);
       if (node->isOfType(SoShaderObject::getClassTypeId())) {
-	removeFromPreviousChildren(node);
-	((SoShaderObject *)node)->GLRender(action);
+        removeFromPreviousChildren(node);
+        ((SoShaderObject *)node)->GLRender(action);
       }
     }
     updateProgramAndPreviousChildren();
@@ -170,36 +171,37 @@ void SoShaderProgramP::GLRender(SoGLRenderAction *action)
   // update shader object parameters
   if (this->shouldTraverseShaderObjects) {
     SbBool flag = FALSE;
-    
+
     for (i=0; i<cnt1; i++) {
       SoShaderObject *node = (SoShaderObject *)this->owner->shaderObject[i];
       if (node->isOfType(SoShaderObject::getClassTypeId())) {
-	node->updateAllParameters();
-	if (node->containStateMatrixParameters()) flag = TRUE;
+        node->updateAllParameters();
+        if (node->containStateMatrixParameters()) flag = TRUE;
       }
     }
     for (i=0; i<cnt2; i++) {
       SoShaderObject *node = (SoShaderObject *)this->owner->getChild(i);
       if (node->isOfType(SoShaderObject::getClassTypeId())) {
-	node->updateAllParameters();
-	if (node->containStateMatrixParameters()) flag = TRUE;
+        node->updateAllParameters();
+        if (node->containStateMatrixParameters()) flag = TRUE;
       }
     }
     this->doesContainStateMatrixParameters = flag;
   }
   else if (this->doesContainStateMatrixParameters)
-    this->updateStateMatrixParameters(state);
-  
+    this->updateStateMatrixParameters();
+
   this->shouldTraverseShaderObjects = FALSE;
   SoGLTextureEnabledElement::set(state, TRUE);
 }
 
-void SoShaderProgramP::updateStateMatrixParameters(SoState*)
+void
+SoShaderProgramP::updateStateMatrixParameters(void)
 {
   int cnt1 = this->owner->shaderObject.getNum();
   int cnt2 = this->owner->getNumChildren();
   int i;
-  
+
   for (i=0; i<cnt1; i++) {
     SoNode *node = this->owner->shaderObject[i];
     if (node->isOfType(SoShaderObject::getClassTypeId())) {
@@ -213,10 +215,12 @@ void SoShaderProgramP::updateStateMatrixParameters(SoState*)
     }
   }
 }
-void SoShaderProgramP::updateProgramAndPreviousChildren()
+
+void
+SoShaderProgramP::updateProgramAndPreviousChildren(void)
 {
   int i, cnt1, cnt2 = this->previousChildren.getLength();
-  
+
   for (i=cnt2-1; i>=0; i--) {
     SoShaderObject *node = (SoShaderObject*)this->previousChildren[i];
     node->removeGLShaderFromGLProgram(&this->glShaderProgram);
@@ -232,16 +236,18 @@ void SoShaderProgramP::updateProgramAndPreviousChildren()
   this->previousChildren.truncate(this->previousChildren.getLength());
 }
 
-void SoShaderProgramP::removeFromPreviousChildren(SoNode *shader)
+void
+SoShaderProgramP::removeFromPreviousChildren(SoNode * shader)
 {
   if (this->previousChildren.getLength() == 0) return;
 
   int idx = this->previousChildren.find(shader);
-    
+
   if (idx >= 0) this->previousChildren.remove(idx);
 }
 
-void SoShaderProgramP::sensorCB(void *data, SoSensor*)
+void
+SoShaderProgramP::sensorCB(void * data, SoSensor *)
 {
   ((SoShaderProgramP *)data)->shouldTraverseShaderObjects = TRUE;
 }
