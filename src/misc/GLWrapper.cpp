@@ -324,6 +324,9 @@ const GLWrapper_t *
 GLWrapper(int contextid)
 {
 #ifdef HAVE_THREADS
+  if (!glwrapper_mutex) {
+    glwrapper_mutex = new SbMutex;
+  }
   glwrapper_mutex->lock(); // unlocked at the bottom of this function
 #endif // HAVE_THREADS
 
