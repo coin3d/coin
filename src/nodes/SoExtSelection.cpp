@@ -90,6 +90,7 @@
 #include <Inventor/SbMatrix.h>
 #include <Inventor/nodes/SoVertexShape.h> 
 #include <Inventor/C/glue/gl.h>
+#include <Inventor/C/glue/glp.h>
 
 #include <Inventor/SoOffscreenRenderer.h> 
 #include <Inventor/SbTesselator.h> 
@@ -198,7 +199,7 @@
   * Offcreenrendering comes out wrong if offscreenrenderer decides to
     render to multiple subscreens (due to size limitations). the
     'offscreencolorcounter' is increased for each pass on each
-    subscreen which leads to inconsistency on second
+    subscreen which leads to inconsistency on the second
     traversalpass. 2002-08-12 handegar.
 */
 
@@ -2406,7 +2407,9 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
       reduce the size of the offscreen to fit within the maximum offscreen limitations.
       (20020812 handegar)
     */
-    SbVec2s maxsize = renderer->getMaximumResolution();
+    SbVec2s maxsize;
+    cc_glglue_context_max_dimensions(&maxsize[0], &maxsize[1]);
+
     this->requestedsize = action->getViewportRegion().getViewportSizePixels();
     
     if(requestedsize[0] > maxsize[0] || requestedsize[1] > maxsize[1]){
