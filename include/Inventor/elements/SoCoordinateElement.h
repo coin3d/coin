@@ -62,10 +62,11 @@ protected:
   SbBool areCoords3D;
 
 private:
+  static void clean(void);
+
   SbVec3f dummy3D;
   SbVec4f dummy4D;
-  static SbVec3f initialdefaultcoords;
-
+  static SbVec3f * initialdefaultcoords;
 };
 
 #endif // !__SOCOORDINATEELEMENT_H__

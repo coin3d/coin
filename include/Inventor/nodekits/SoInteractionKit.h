@@ -108,7 +108,7 @@ private:
   int findSurrogateIndex(const SbName &partname) const;
   int findSurrogateInPath(const SoPath *path);
 
-  static SbList <SoNode*> defaultDraggerParts;
+  static SbList <SoNode*> * defaultdraggerparts;
   static void clean(void);
 
   SoFieldSensor *topSeparatorSensor;

@@ -70,7 +70,9 @@ protected:
   const SbVec3f * coords3;
   SbBool coordsAre2D;
 
-  static SbVec2f initdefaultcoords;
+private:
+  static void clean(void);
+  static SbVec2f * initdefaultcoords;
 };
 
 #endif // !__SOPROFILECOORDINATEELEMENT_H__

@@ -89,7 +89,7 @@ static const char NULL_KEYWORD[] = "NULL";
 SbDict * SoBase::name2obj_dict; // maps from char * to SbPList(SoBase)
 SbDict * SoBase::obj2name_dict; // maps from SoBase * to char *
 
-SbString SoBase::refwriteprefix = "+";
+SbString * SoBase::refwriteprefix = NULL;
 
 SoType SoBase::classTypeId = SoType::badType();
 
@@ -157,6 +157,7 @@ SoBase::initClass(void)
 
   SoBase::name2obj_dict = new SbDict;
   SoBase::obj2name_dict = new SbDict;
+  SoBase::refwriteprefix = new SbString("+");
 }
 
 /*
@@ -175,6 +176,8 @@ SoBase::cleanClass(void)
 
   delete SoBase::name2obj_dict; SoBase::name2obj_dict = NULL;
   delete SoBase::obj2name_dict; SoBase::obj2name_dict = NULL;
+
+  delete SoBase::refwriteprefix;
 #endif // COIN_DEBUG
 }
 
@@ -634,7 +637,7 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedType)
 void
 SoBase::setInstancePrefix(const SbString & c)
 {
-  SoBase::refwriteprefix = c;
+  (*SoBase::refwriteprefix) = c;
 }
 
 /*!
@@ -647,9 +650,9 @@ SoBase::setInstancePrefix(const SbString & c)
   versions" of the Coin library.
  */
 void
-SoBase::setTraceRefs(SbBool bTrace)
+SoBase::setTraceRefs(SbBool trace)
 {
-  SoBase::tracerefs = TRUE;
+  SoBase::tracerefs = trace;
 }
 
 /*!
@@ -711,7 +714,7 @@ SoBase::writeHeader(SoOutput * out, SbBool isGroup, SbBool isEngine) const
     out->write(USE_KEYWORD);
     if (!out->isBinary()) out->write(' ');
     SbString s = name.getString();
-    s += SoBase::refwriteprefix.getString();
+    s += SoBase::refwriteprefix->getString();
     s.addIntString(refid);
     out->write(s.getString());
   }
@@ -722,7 +725,7 @@ SoBase::writeHeader(SoOutput * out, SbBool isGroup, SbBool isEngine) const
 
       SbString s = name.getString();
       if (multiref) {
-        s += SoBase::refwriteprefix.getString();
+        s += SoBase::refwriteprefix->getString();
         s.addIntString(refid);
       }
       out->write(s.getString());
@@ -910,7 +913,7 @@ SoBase::readBaseInstance(SoInput * in, const SbName & className,
       // becomes "goldsphere").
       SbString instancename = refName.getString();
       const char * strp = instancename.getString();
-      const char * occ = strstr(strp, SoBase::refwriteprefix.getString());
+      const char * occ = strstr(strp, SoBase::refwriteprefix->getString());
 
       if (occ != strp) { // They will be equal if the name is only a refcount.
         if (occ) instancename = instancename.getSubString(0, occ - strp - 1);

@@ -100,14 +100,15 @@ public:
 
 private:
   static void updateRealTimeFieldCB(void * data, SoSensor * sensor);
+  static void clean(void);
 
-  static SbList<SoDB_HeaderInfo *> headerlist;
-  static SoSensorManager sensormanager;
+  static SbList<SoDB_HeaderInfo *> * headerlist;
+  static SoSensorManager * sensormanager;
   static SoTimerSensor * globaltimersensor;
-  static SbTime realtimeinterval;
-  static SbList<SbName> fieldnamelist;
-  static SbList<SoField *> fieldlist;
-  static SbDict converters;
+  static SbTime * realtimeinterval;
+  static SbList<SbName> * fieldnamelist;
+  static SbList<SoField *> * fieldlist;
+  static SbDict * converters;
   static int notificationcounter;
   static SbBool isinitialized;
 };

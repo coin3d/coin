@@ -31,14 +31,6 @@
 #include <assert.h>
 
 /*!
-  \fn SoLightAttenuationElement::defaultAttenuation
-
-  FIXME: write doc.
-*/
-
-const SbVec3f SoLightAttenuationElement::defaultAttenuation(0,0,1);
-
-/*!
   \fn SoLightAttenuationElement::lightAttenuation
 
   FIXME: write doc.
@@ -64,7 +56,7 @@ SoLightAttenuationElement::initClass(void)
 */
 
 SoLightAttenuationElement::SoLightAttenuationElement(void)
-  : lightAttenuation(defaultAttenuation)
+  : lightAttenuation(SbVec3f(0.0f, 0.0f, 1.0f))
 {
   setTypeId(SoLightAttenuationElement::classTypeId);
   setStackIndex(SoLightAttenuationElement::classStackIndex);
@@ -140,14 +132,13 @@ void
 SoLightAttenuationElement::init(SoState * state)
 {
   inherited::init(state);
-  this->lightAttenuation = defaultAttenuation;
+  this->lightAttenuation = this->getDefault();
 }
 
 //! FIXME: write doc.
 
-//$ EXPORT INLINE
 const SbVec3f &
 SoLightAttenuationElement::getDefault()
 {
-  return SoLightAttenuationElement::defaultAttenuation;
+  return SbVec3f(0.0f, 0.0f, 1.0f);
 }

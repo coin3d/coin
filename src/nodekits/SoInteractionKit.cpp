@@ -45,7 +45,7 @@
 #endif // COIN_DEBUG
 
 
-SbList <SoNode*> SoInteractionKit::defaultDraggerParts;
+SbList <SoNode*> * SoInteractionKit::defaultdraggerparts = NULL;
 
 //
 // atexit callback. To delete default dragger parts files.
@@ -53,10 +53,12 @@ SbList <SoNode*> SoInteractionKit::defaultDraggerParts;
 void
 SoInteractionKit::clean(void)
 {
-  int n = SoInteractionKit::defaultDraggerParts.getLength();
+  int n = SoInteractionKit::defaultdraggerparts->getLength();
   for (int i = 0; i < n; i++) {
-    SoInteractionKit::defaultDraggerParts[i]->unref();
+    (*SoInteractionKit::defaultdraggerparts)[i]->unref();
   }
+
+  delete SoInteractionKit::defaultdraggerparts;
 }
 
 void
@@ -130,6 +132,8 @@ SoInteractionKit::~SoInteractionKit()
 void
 SoInteractionKit::initClass(void)
 {
+  SoInteractionKit::defaultdraggerparts = new SbList <SoNode*>;
+
   SO_KIT_INTERNAL_INIT_CLASS(SoInteractionKit);
 }
 
@@ -311,8 +315,8 @@ SoInteractionKit::readDefaultParts(const char *fileName,
   }
   SoNode *node = (SoNode*)SoDB::readAll(&input);
   node->ref(); // this node is unref'ed at exit
-  SoInteractionKit::defaultDraggerParts.append(node);
-  if (SoInteractionKit::defaultDraggerParts.getLength() == 1) {
+  SoInteractionKit::defaultdraggerparts->append(node);
+  if (SoInteractionKit::defaultdraggerparts->getLength() == 1) {
     atexit(SoInteractionKit::clean);
   }
 }

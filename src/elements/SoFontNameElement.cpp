@@ -30,13 +30,8 @@
 
 #include <assert.h>
 
-/*!
-  \fn SoFontNameElement::defaultFontName
 
-  FIXME: write doc.
-*/
-
-const SbName SoFontNameElement::defaultFontName("defaultFont");
+SbName * SoFontNameElement::defaultfontname = NULL;
 
 /*!
   \fn SoFontNameElement::fontName
@@ -54,7 +49,23 @@ SO_ELEMENT_SOURCE(SoFontNameElement);
 void
 SoFontNameElement::initClass(void)
 {
+#if COIN_DEBUG
+  // Debugging for memory leaks will be easier if we can clean up the
+  // resource usage.
+  (void)atexit(SoFontNameElement::clean);
+#endif // COIN_DEBUG
+
   SO_ELEMENT_INIT_CLASS(SoFontNameElement, inherited);
+
+  SoFontNameElement::defaultfontname = new SbName("defaultFont");
+}
+
+void
+SoFontNameElement::clean(void)
+{
+#if COIN_DEBUG
+  delete SoFontNameElement::defaultfontname;
+#endif // COIN_DEBUG
 }
 
 /*!
@@ -64,7 +75,7 @@ SoFontNameElement::initClass(void)
 */
 
 SoFontNameElement::SoFontNameElement(void)
-  : fontName(defaultFontName)
+  : fontName(*defaultfontname)
 {
   setTypeId(SoFontNameElement::classTypeId);
   setStackIndex(SoFontNameElement::classStackIndex);
@@ -141,7 +152,7 @@ void
 SoFontNameElement::init(SoState * state)
 {
   inherited::init(state);
-  fontName = defaultFontName;
+  this->fontName = *SoFontNameElement::defaultfontname;
 }
 
 //! FIXME: write doc.
@@ -149,5 +160,5 @@ SoFontNameElement::init(SoState * state)
 const SbName
 SoFontNameElement::getDefault()
 {
-  return SoFontNameElement::defaultFontName;
+  return *SoFontNameElement::defaultfontname;
 }

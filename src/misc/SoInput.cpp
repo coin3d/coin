@@ -400,7 +400,7 @@ private:
   SbBool headerisread, eof;
 };
 
-SbStringList SoInput::dirsearchlist;
+SbStringList * SoInput::dirsearchlist = NULL;
 
 // *************************************************************************
 
@@ -1278,7 +1278,7 @@ void
 SoInput::addDirectoryIdx(const int idx, const char * dirName)
 {
   assert(idx > -2);
-  assert(idx <= SoInput::dirsearchlist.getLength());
+  assert(idx <= SoInput::dirsearchlist->getLength());
 
   // NB: note that it _should_ be possible to append/insert the same
   // directory name multiple times, as this is an easy way of
@@ -1287,8 +1287,8 @@ SoInput::addDirectoryIdx(const int idx, const char * dirName)
   // aspect of adding entries to the directory search list. --mortene
 
   SbString * ns = new SbString(dirName);
-  if (idx == -1) SoInput::dirsearchlist.append(ns);
-  else if (idx != -1) SoInput::dirsearchlist.insert(ns, idx);
+  if (idx == -1) SoInput::dirsearchlist->append(ns);
+  else if (idx != -1) SoInput::dirsearchlist->insert(ns, idx);
 }
 
 /*!
@@ -1322,7 +1322,7 @@ void
 SoInput::addEnvDirectoriesLast(const char * envVarName,
                                const char * separator)
 {
-  SoInput::addEnvDirectoriesIdx(SoInput::dirsearchlist.getLength(),
+  SoInput::addEnvDirectoriesIdx(SoInput::dirsearchlist->getLength(),
                                 envVarName,
                                 separator);
 }
@@ -1382,14 +1382,14 @@ SoInput::addEnvDirectoriesIdx(int startidx,
 void
 SoInput::removeDirectory(const char * dirName)
 {
-  int idx = SoInput::dirsearchlist.getLength() - 1;
+  int idx = SoInput::dirsearchlist->getLength() - 1;
   for (; idx >= 0; idx--) {
-    if (*(SoInput::dirsearchlist[idx]) == dirName) break;
+    if (*((*SoInput::dirsearchlist)[idx]) == dirName) break;
   }
 
   if (idx >=0) {
-    delete SoInput::dirsearchlist[idx]; // Dealloc SbString object
-    SoInput::dirsearchlist.remove(idx);
+    delete (*SoInput::dirsearchlist)[idx]; // Dealloc SbString object
+    SoInput::dirsearchlist->remove(idx);
   }
 #if COIN_DEBUG
   else {
@@ -1410,9 +1410,9 @@ SoInput::removeDirectory(const char * dirName)
 void
 SoInput::clearDirectories(void)
 {
-  while (SoInput::dirsearchlist.getLength() > 0) {
-    delete SoInput::dirsearchlist[0];
-    SoInput::dirsearchlist.remove(0);
+  while (SoInput::dirsearchlist->getLength() > 0) {
+    delete (*SoInput::dirsearchlist)[0];
+    SoInput::dirsearchlist->remove(0);
   }
 }
 
@@ -1424,7 +1424,7 @@ SoInput::clearDirectories(void)
 const SbStringList &
 SoInput::getDirectories(void)
 {
-  return SoInput::dirsearchlist;
+  return *SoInput::dirsearchlist;
 }
 
 /*!
@@ -1433,27 +1433,31 @@ SoInput::getDirectories(void)
 void
 SoInput::init(void)
 {
+#if COIN_DEBUG
+  // Debugging for memory leaks will be easier if we can clean up the
+  // resource usage.
+  (void)atexit(SoInput::clean);
+#endif // COIN_DEBUG
+
   // This will catch multiple initClass() calls (unless there's a
   // removeDirectories() in between them, which is unlikely to happen
   // inadvertently).
-  assert(SoInput::dirsearchlist.getLength() == 0);
+  assert(SoInput::dirsearchlist == NULL);
 
+  SoInput::dirsearchlist = new SbStringList;
   SoInput::addDirectoryFirst(".");
 }
 
-#if 0 // FIXME: re-code to be run automatically upon exit. 19991106 mortene.
-/*!
-  \internal
-
-  Clean out static variables in class (to aid in searching for memory
-  leaks).
-*/
+// Clean out static variables in class (to aid in searching for memory
+// leaks).
 void
 SoInput::clean(void)
 {
+#if COIN_DEBUG
   SoInput::clearDirectories();
+  delete SoInput::dirsearchlist;
+#endif // COIN_DEBUG
 }
-#endif // re-code
 
 /*!
   Finds and returns the part of the given filename which is the
@@ -2058,10 +2062,10 @@ void
 SoInput::setDirectories(SbStringList * dirs)
 {
   // Dealloc SbString objects
-  for (int i=0; i < SoInput::dirsearchlist.getLength(); i++)
-    delete SoInput::dirsearchlist[i];
+  for (int i=0; i < SoInput::dirsearchlist->getLength(); i++)
+    delete (*SoInput::dirsearchlist)[i];
 
-  SoInput::dirsearchlist = *dirs;
+  (*SoInput::dirsearchlist) = *dirs;
 }
 
 /*!

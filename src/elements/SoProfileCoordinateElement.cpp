@@ -31,13 +31,7 @@
 
 #include <assert.h>
 
-SbVec2f SoProfileCoordinateElement::initdefaultcoords(0.0f, 0.0f);
-
-/*!
-  \var SoProfileCoordinateElement::initdefaultcoords
-
-  FIXME: write doc.
-*/
+SbVec2f * SoProfileCoordinateElement::initdefaultcoords = NULL;
 
 /*!
   \var SoProfileCoordinateElement::numCoords
@@ -73,7 +67,23 @@ SO_ELEMENT_SOURCE(SoProfileCoordinateElement);
 void
 SoProfileCoordinateElement::initClass(void)
 {
+#if COIN_DEBUG
+  // Debugging for memory leaks will be easier if we can clean up the
+  // resource usage.
+  (void)atexit(SoProfileCoordinateElement::clean);
+#endif // COIN_DEBUG
+
   SO_ELEMENT_INIT_CLASS(SoProfileCoordinateElement, inherited);
+
+  SoProfileCoordinateElement::initdefaultcoords = new SbVec2f(0.0f, 0.0f);
+}
+
+void
+SoProfileCoordinateElement::clean(void)
+{
+#if COIN_DEBUG
+  delete SoProfileCoordinateElement::initdefaultcoords;
+#endif // COIN_DEBUG
 }
 
 /*!
@@ -84,7 +94,7 @@ SoProfileCoordinateElement::initClass(void)
 
 SoProfileCoordinateElement::SoProfileCoordinateElement(void)
   : numCoords(1),
-    coords2(& SoProfileCoordinateElement::initdefaultcoords),
+    coords2(SoProfileCoordinateElement::initdefaultcoords),
     coords3(NULL),
     coordsAre2D(TRUE)
 {
@@ -108,7 +118,7 @@ SoProfileCoordinateElement::init(SoState * state)
     inherited::init(state);
 
     this->numCoords = 1;
-    this->coords2 = & SoProfileCoordinateElement::initdefaultcoords;
+    this->coords2 = SoProfileCoordinateElement::initdefaultcoords;
     this->coords3 = NULL;
     this->coordsAre2D = TRUE;
 }

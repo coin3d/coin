@@ -29,7 +29,7 @@
   through SoXt::init()) before you use any of the other Coin
   classes.
 
-  TODO: more doc.
+  FIXME: more doc.
 */
 
 #include <Inventor/SoDB.h>
@@ -99,13 +99,13 @@ template class SbList<SoField *>;
 #endif // ! DONT_NEED_TEMPLATE_DEFINITION
 #endif // ! defined(NEED_TEMPLATE_DEFINITION)
 
-SbList<SoDB_HeaderInfo *> SoDB::headerlist;
-SoSensorManager SoDB::sensormanager;
-SbTime SoDB::realtimeinterval;
-SbList<SbName> SoDB::fieldnamelist;
-SbList<SoField *> SoDB::fieldlist;
+SbList<SoDB_HeaderInfo *> * SoDB::headerlist = NULL;
+SoSensorManager * SoDB::sensormanager = NULL;
+SbTime * SoDB::realtimeinterval = NULL;
+SbList<SbName> * SoDB::fieldnamelist = NULL;
+SbList<SoField *> * SoDB::fieldlist = NULL;
 SoTimerSensor * SoDB::globaltimersensor = NULL;
-SbDict SoDB::converters;
+SbDict * SoDB::converters = NULL;
 int SoDB::notificationcounter = 0;
 SbBool SoDB::isinitialized = FALSE;
 
@@ -149,6 +149,23 @@ SoDB::init(void)
   assert(sizeof(int) == sizeof(long));
 
 
+#if COIN_DEBUG
+  // Debugging for memory leaks will be easier if we can clean up the
+  // resource usage.
+  (void)atexit(SoDB::clean);
+#endif // COIN_DEBUG
+
+
+  // Allocate our static members.
+  SoDB::headerlist = new SbList<SoDB_HeaderInfo *>;
+  SoDB::sensormanager = new SoSensorManager;
+  SoDB::realtimeinterval = new SbTime;
+  SoDB::fieldnamelist = new SbList<SbName>;
+  SoDB::fieldlist = new SbList<SoField *>;
+  SoDB::converters = new SbDict;
+
+
+
   // NB! There's a few dependencies in the order of initialization of
   // components below.
 
@@ -171,7 +188,7 @@ SoDB::init(void)
   SoEngine::initClass();
   SoEvent::initClass();
 
-
+  
   // Register all valid file format headers.
   SoDB::registerHeader(SbString("#Inventor V2.1 ascii   "), FALSE, 2.1f,
                        NULL, NULL, NULL);
@@ -198,12 +215,12 @@ SoDB::init(void)
   SoDB::registerHeader(SbString("#VRML V1.0 ascii   "), FALSE, 2.1f,
                        NULL, NULL, NULL);
 
-  SoDB::realtimeinterval.setValue(1.0/12.0);
+  SoDB::realtimeinterval->setValue(1.0/12.0);
 
   SoDB::createGlobalField("realTime", SoSFTime::getClassTypeId());
   SoDB::globaltimersensor = new SoTimerSensor;
   SoDB::globaltimersensor->setFunction(SoDB::updateRealTimeFieldCB);
-  SoDB::globaltimersensor->setInterval(SoDB::realtimeinterval);
+  SoDB::globaltimersensor->setInterval(*SoDB::realtimeinterval);
   // FIXME: it would be better to not schedule unless something
   // actually attaches itself to the realtime field, or..? Is this at
   // all possible? 19990225 mortene.
@@ -215,26 +232,24 @@ SoDB::init(void)
   SoDB::isinitialized = TRUE;
 }
 
-#if 0 // FIXME: re-code to be run automatically upon exit. 19991106 mortene.
-/*!
-  \internal
-
-  This will clean up all memory and objects which has been allocated
-  as persistent data. This isn't really necessary in user application,
-  but is used for debugging purposes -- it makes it easier to find
-  memory leaks.
-
-  \sa init()
-*/
+// This will clean up all memory and objects which has been allocated
+// as persistent data. This isn't really necessary in user
+// application, but is used for debugging purposes -- it makes it
+// easier to find memory leaks.
 void
 SoDB::clean(void)
 {
-  // FIXME: attach this to the ANSI C "on exit" hook. Ditto for the
-  // clean methods elsewhere. 19991106 mortene.
+#if COIN_DEBUG
+  delete SoDB::globaltimersensor;
 
-  delete SoDB::globaltimersensor; SoDB::globaltimersensor = NULL;
+  delete SoDB::converters;
+  delete SoDB::fieldlist;
+  delete SoDB::fieldnamelist;
+  delete SoDB::realtimeinterval;
+  delete SoDB::sensormanager;
+  delete SoDB::headerlist;
+#endif // COIN_DEBUG
 }
-#endif // re-code
 
 /*!
   Returns a text string containing the name of the library and version
@@ -250,7 +265,7 @@ SoDB::getVersion(void)
 }
 
 /*!
-  TODO: doc
+  FIXME: doc
 */
 SbBool
 SoDB::read(SoInput * /* in */, SoPath *& /* path */)
@@ -432,7 +447,7 @@ SoDB::registerHeader(const SbString & headerString,
   SoDB_HeaderInfo * newheader = new SoDB_HeaderInfo(headerString, isBinary,
                                                    ivVersion, preCB, postCB,
                                                    userdata);
-  SoDB::headerlist.append(newheader);
+  SoDB::headerlist->append(newheader);
   return TRUE;
 }
 
@@ -468,7 +483,7 @@ SoDB::getHeaderData(const SbString & headerString, SbBool & isBinary,
 
   SbBool hit = FALSE;
   for (int i=0; (i < SoDB::getNumHeaders()) && !hit; i++) {
-    SoDB_HeaderInfo * hi = SoDB::headerlist[i];
+    SoDB_HeaderInfo * hi = (*SoDB::headerlist)[i];
     SbString & s = hi->headerstring;
     unsigned int reglen = s.getLength();
     assert(reglen > 0);
@@ -505,7 +520,7 @@ SoDB::getHeaderData(const SbString & headerString, SbBool & isBinary,
 int
 SoDB::getNumHeaders(void)
 {
-  return SoDB::headerlist.getLength();
+  return SoDB::headerlist->getLength();
 }
 
 /*!
@@ -517,13 +532,13 @@ SbString
 SoDB::getHeaderString(const int i)
 {
 #if COIN_DEBUG
-  if ((i < 0) || (i >= SoDB::headerlist.getLength())) {
+  if ((i < 0) || (i >= SoDB::headerlist->getLength())) {
     SoDebugError::post("SoDB::getHeaderString", "Index %d out of range.", i);
     return SbString("");
   }
 #endif // COIN_DEBUG
 
-  return SoDB::headerlist[i]->headerstring;
+  return (*SoDB::headerlist)[i]->headerstring;
 }
 
 /*!
@@ -552,8 +567,8 @@ SoDB::createGlobalField(const SbName & name, SoType type)
     }
 #endif // COIN_DEBUG
     f = (SoField *)type.createInstance();
-    SoDB::fieldlist.append(f);
-    SoDB::fieldnamelist.append(name);
+    SoDB::fieldlist->append(f);
+    SoDB::fieldnamelist->append(name);
     return f;
   }
 }
@@ -567,8 +582,8 @@ SoDB::createGlobalField(const SbName & name, SoType type)
 SoField *
 SoDB::getGlobalField(const SbName & name)
 {
-  int i = SoDB::fieldnamelist.find(name);
-  if (i != -1) return SoDB::fieldlist[i];
+  int i = SoDB::fieldnamelist->find(name);
+  if (i != -1) return (*SoDB::fieldlist)[i];
   return NULL;
 }
 
@@ -583,7 +598,7 @@ SoDB::getGlobalField(const SbName & name)
 void
 SoDB::renameGlobalField(const SbName & oldName, const SbName & newName)
 {
-  int idx = SoDB::fieldnamelist.find(oldName);
+  int idx = SoDB::fieldnamelist->find(oldName);
 #if COIN_DEBUG
   if (idx == -1) {
     SoDebugError::postWarning("SoDB::renameGlobalField",
@@ -594,17 +609,17 @@ SoDB::renameGlobalField(const SbName & oldName, const SbName & newName)
 #endif // COIN_DEBUG
 
   if (newName == "") { // Remove field.
-    delete SoDB::fieldlist[idx];
-    SoDB::fieldlist.remove(idx);
-    SoDB::fieldnamelist.remove(idx);
+    delete (*SoDB::fieldlist)[idx];
+    SoDB::fieldlist->remove(idx);
+    SoDB::fieldnamelist->remove(idx);
   }
   else {
     // Existing entry by same name? If so, remove it.
-    int nidx = SoDB::fieldnamelist.find(newName);
+    int nidx = SoDB::fieldnamelist->find(newName);
     if (nidx != -1) {
-      delete SoDB::fieldlist[nidx];
-      SoDB::fieldlist.remove(nidx);
-      SoDB::fieldnamelist.remove(nidx);
+      delete (*SoDB::fieldlist)[nidx];
+      SoDB::fieldlist->remove(nidx);
+      SoDB::fieldnamelist->remove(nidx);
     }
 
     ((SbName &)(SoDB::fieldnamelist[idx])) = newName;
@@ -650,7 +665,7 @@ SoDB::setRealTimeInterval(const SbTime & deltaT)
     if (isscheduled) SoDB::globaltimersensor->schedule();
   }
 
-  SoDB::realtimeinterval = deltaT;
+  (*SoDB::realtimeinterval) = deltaT;
 }
 
 /*!
@@ -662,7 +677,7 @@ SoDB::setRealTimeInterval(const SbTime & deltaT)
 const SbTime &
 SoDB::getRealTimeInterval(void)
 {
-  return SoDB::realtimeinterval;
+  return *SoDB::realtimeinterval;
 }
 
 /*!
@@ -698,7 +713,7 @@ SoDB::getDelaySensorTimeout(void)
 SoSensorManager *
 SoDB::getSensorManager(void)
 {
-  return &(SoDB::sensormanager);
+  return SoDB::sensormanager;
 }
 
 /*!
@@ -711,7 +726,7 @@ int
 SoDB::doSelect(int nfds, fd_set * readfds, fd_set * writefds,
                fd_set * exceptfds, struct timeval * userTimeOut)
 {
-  // TODO: need to do eventhandling for sensors etc. Check
+  // FIXME: need to do eventhandling for sensors etc. Check
   // SoSensorManager::doSelect(). Should we just call that method?
   // 19990425 mortene.
 
@@ -724,25 +739,25 @@ SoDB::doSelect(int nfds, fd_set * readfds, fd_set * writefds,
 }
 
 /*!
-  TODO: doc
+  FIXME: doc
  */
 void
 SoDB::addConverter(SoType fromType, SoType toType, SoType converterType)
 {
   unsigned long val=fromType.getKey() * 65536 + toType.getKey();
-  converters.enter(val, (void *)converterType.getKey());
+  converters->enter(val, (void *)converterType.getKey());
   //FIXME: Check output => warning? kintel
 }
 
 /*!
-  TODO: doc
+  FIXME: doc
  */
 SoFieldConverter *
 SoDB::createConverter(SoType fromType, SoType toType)
 {
   void * type;
   unsigned long val=fromType.getKey() * 65536 + toType.getKey();
-  if (converters.find(val, type)) {
+  if (converters->find(val, type)) {
     uint16_t key = (uint16_t)((uint32_t)type);
     SoFieldConverter * conv;
     if (SoType::fromKey(key)==SoConvertAll::getClassTypeId())
@@ -755,7 +770,7 @@ SoDB::createConverter(SoType fromType, SoType toType)
 }
 
 /*!
-  TODO: doc
+  FIXME: doc
  */
 SoVRMLGroup *
 SoDB::readAllVRML(SoInput * /* in */)
@@ -765,7 +780,7 @@ SoDB::readAllVRML(SoInput * /* in */)
 }
 
 /*!
-  TODO: doc
+  FIXME: doc
  */
 void
 SoDB::createRoute(SoNode * /* fromnode */, const char * /* eventout */,

@@ -75,11 +75,13 @@ public:
   static int getNumTypes(void);
 
 private:
+  static void clean(void);
+
   int16_t index;
 
-  static SoTypeList typeList;
-  static SbList<SoTypeData *> typeDataList;
-  static SbDict typeDict;
+  static SoTypeList * typelist;
+  static SbList<SoTypeData *> * typedatalist;
+  static SbDict * typedict;
 };
 
 /* inline methods ************************************************/

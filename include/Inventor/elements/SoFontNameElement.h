@@ -48,8 +48,10 @@ public:
 
 protected:
   SbName fontName;
-  static const SbName defaultFontName;
 
+private:
+  static void clean(void);
+  static SbName * defaultfontname;
 };
 
 #endif // !__SOFONTNAMEELEMENT_H__

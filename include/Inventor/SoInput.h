@@ -139,12 +139,13 @@ protected:
 private:
   friend class SoDB;
 
+  static void clean(void);
   void constructorsCommon(void);
 
   static void addDirectoryIdx(const int idx, const char * dirName);
   static void addEnvDirectoriesIdx(int startidx, const char * envVarName,
                                    const char * separator);
-  static SbStringList dirsearchlist;
+  static SbStringList * dirsearchlist;
 
   SbList<SoInput_FileInfo *> filestack;
   SoInput_FileInfo * getTopOfStack(void) const;

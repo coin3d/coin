@@ -70,7 +70,7 @@ public:
   static SbBool read(SoInput * in, SoBase *& base, SoType expectedType);
   static void setInstancePrefix(const SbString & c);
 
-  static void setTraceRefs(SbBool bTrace);
+  static void setTraceRefs(SbBool trace);
   static SbBool getTraceRefs(void);
 
 
@@ -127,7 +127,7 @@ private:
   static SbDict * name2obj_dict;
   static SbDict * obj2name_dict;
 
-  static SbString refwriteprefix;
+  static SbString * refwriteprefix;
 
   static SbBool tracerefs;
   static uint32_t writecounter;

@@ -373,7 +373,7 @@ SoFieldContainer::set(const char * fielddata, SoInput * in)
     // we can't do that anymore. mortene.
     return TRUE;
   }
-    
+
   SoInput * readbuf;
   if (in) {
     SoInput inbuf(in);
@@ -559,7 +559,7 @@ static SbDict * ptrsdict = NULL;
   Initialize a dictionary hash storing pointers for original
   fieldcontainer instances and their copies during scene graph copy
   operations.
-  
+
   This method is called from the start of SoNode::copy().
  */
 void
@@ -582,7 +582,7 @@ SoFieldContainer::addCopy(const SoFieldContainer * const orig,
   assert(ptrsdict);
   // FIXME: casting pointer to unsigned long is nasty. We badly need a
   // better hash class. 20000115 mortene.
-  ptrsdict->enter((unsigned long)orig, copy);
+  ptrsdict->enter((unsigned long)orig, (void *)copy);
 }
 
 
@@ -595,7 +595,8 @@ SoFieldContainer::checkCopy(const SoFieldContainer * const orig)
 {
   assert(ptrsdict);
   void * fccopy;
-  return ptrsdict->find((unsigned long)orig, fccopy) ? fccopy : NULL;
+  return (SoFieldContainer *)(ptrsdict->find((unsigned long)orig, fccopy) ?
+                              fccopy : NULL);
 }
 
 

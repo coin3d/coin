@@ -25,7 +25,7 @@
   \brief The SbDict class organizes a dictionary of keys and values.
 
   It uses hashing to quickly insert and find entries in the dictionary.
-  An entry consists of an unique key and a generic void pointer.
+  An entry consists of an unique key and a generic pointer.
 */
 
 //
@@ -34,8 +34,7 @@
 class SbDictEntry
 {
 private:
-  SbDictEntry(const unsigned long key,
-              void * const value) {
+  SbDictEntry(const unsigned long key, void * const value) {
     this->key = key;
     this->value = value;
   }
@@ -59,6 +58,14 @@ default_hashfunc(const unsigned long key)
 // *************************************************************************
 
 /*!
+  Default constructor.
+ */
+SbDict::SbDict(void)
+{
+  this->commonConstructor(251);
+}
+
+/*!
   Constructor with \a entries specifying the number of buckets
   in the hash list -- so it need to be larger than 0. For best
   performance during dictionary look-ups, \a entries should be a prime.
@@ -66,6 +73,13 @@ default_hashfunc(const unsigned long key)
 SbDict::SbDict(const int entries)
 {
   assert(entries > 0);
+  this->commonConstructor(entries);
+}
+
+// Execute common operations of the public constructors.
+void
+SbDict::commonConstructor(const int entries)
+{
   this->tablesize = entries;
   this->buckets = new SbDictEntry *[this->tablesize];
   this->hashfunc = default_hashfunc;
@@ -85,7 +99,7 @@ SbDict::SbDict(const SbDict & from)
 */
 SbDict::~SbDict()
 {
-  clear();
+  this->clear();
   delete [] buckets;
 }
 

@@ -32,7 +32,7 @@
 #include <assert.h>
 
 // static variables
-SbVec3f SoCoordinateElement::initialdefaultcoords(0.0f, 0.0f, 0.0f);
+SbVec3f * SoCoordinateElement::initialdefaultcoords = NULL;
 
 /*!
   \fn SoCoordinateElement::numCoords
@@ -68,7 +68,24 @@ SO_ELEMENT_SOURCE(SoCoordinateElement);
 void
 SoCoordinateElement::initClass(void)
 {
+#if COIN_DEBUG
+  // Debugging for memory leaks will be easier if we can clean up the
+  // resource usage.
+  (void)atexit(SoCoordinateElement::clean);
+#endif // COIN_DEBUG
+
   SO_ELEMENT_INIT_CLASS(SoCoordinateElement, inherited);
+
+  SoCoordinateElement::initialdefaultcoords = new SbVec3f(0.0f, 0.0f, 0.0f);
+}
+
+// Clean up internal resource usage.
+void
+SoCoordinateElement::clean(void)
+{
+#if COIN_DEBUG
+  delete SoCoordinateElement::initialdefaultcoords;
+#endif // COIN_DEBUG
 }
 
 /*!
@@ -79,7 +96,7 @@ SoCoordinateElement::initClass(void)
 
 SoCoordinateElement::SoCoordinateElement(void)
   : numCoords(1),
-    coords3D(& SoCoordinateElement::initialdefaultcoords),
+    coords3D(SoCoordinateElement::initialdefaultcoords),
     coords4D(NULL),
     areCoords3D(TRUE)
 {
@@ -102,7 +119,7 @@ SoCoordinateElement::init(SoState * state)
 {
   inherited::init(state);
   this->numCoords = 1;
-  this->coords3D = & SoCoordinateElement::initialdefaultcoords;
+  this->coords3D = SoCoordinateElement::initialdefaultcoords;
   this->coords4D = NULL;
   this->areCoords3D = TRUE;
 }

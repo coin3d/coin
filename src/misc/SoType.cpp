@@ -68,9 +68,9 @@ template class SbList<SoTypeData *>;
 #endif // ! DONT_NEED_TEMPLATE_DEFINITION
 #endif //NEED_TEMPLATE_DEFINITION
 
-SoTypeList SoType::typeList;
-SbList<SoTypeData *> SoType::typeDataList;
-SbDict SoType::typeDict(512); //increase if necessary
+SoTypeList * SoType::typelist = NULL;
+SbList<SoTypeData *> * SoType::typedatalist = NULL;
+SbDict * SoType::typedict = NULL;
 
 /*!
   \typedef SoType::instantiationMethod
@@ -86,40 +86,41 @@ SbDict SoType::typeDict(512); //increase if necessary
 void
 SoType::init(void)
 {
-  // If this assert fails, it is probably because SoType::init() has
-  // been called for a second time. --mortene
-  assert(SoType::typeList.getLength() == 0);
-  assert(SoType::typeDataList.getLength() == 0);
+#if COIN_DEBUG
+  // Debugging for memory leaks will be easier if we can clean up the
+  // resource usage.
+  (void)atexit(SoType::clean);
+#endif // COIN_DEBUG
 
-  SoType::typeList.append(SoType::badType()); // bad type at index 0
-  SoType::typeDataList.append(new SoTypeData(SbName("BadType")));
-  SoType::typeDict.enter((unsigned long)SbName("BadType").getString(), 0);
+  // If any of these assert fails, it is probably because
+  // SoType::init() has been called for a second time. --mortene
+  assert(SoType::typelist == NULL);
+  assert(SoType::typedatalist == NULL);
+
+  SoType::typelist = new SoTypeList;
+  SoType::typedatalist = new SbList<SoTypeData *>;
+  SoType::typedict = new SbDict;
+
+  SoType::typelist->append(SoType::badType()); // bad type at index 0
+  SoType::typedatalist->append(new SoTypeData(SbName("BadType")));
+  SoType::typedict->enter((unsigned long)SbName("BadType").getString(), 0);
 }
 
-#if 0 // FIXME: re-code to be run automatically upon exit. 19991106 mortene.
-/*!
-  This function cleans up the type system.
-*/
-
+// Clean up internal resource usage.
 void
 SoType::clean(void)
 {
-  // clear SoType::typeList
-  SoType::typeList.truncate(0);
-  SoType::typeList.fit();
+#if COIN_DEBUG
+  delete SoType::typelist;
 
-  // clean SoType::typeDataList (first delete structures)
-  const int num = SoType::typeDataList.getLength();
-  for (int i = 0; i < num; i++) {
-    delete SoType::typeDataList[ i ];
-  }
-  SoType::typeDataList.truncate(0);
-  SoType::typeDataList.fit();
+  // clean SoType::typedatalist (first delete structures)
+  const int num = SoType::typedatalist->getLength();
+  for (int i = 0; i < num; i++) delete (*SoType::typedatalist)[i];
+  delete SoType::typedatalist;
 
-  SoType::typeDict.clear();
+  delete SoType::typedict;
+#endif // COIN_DEBUG
 }
-#endif // re-code
-
 
 /*!
   This method creates and registers a new class type.
@@ -144,12 +145,11 @@ SoType::createType(const SoType parent, const SbName name,
 
   SoTypeData * typeData = new SoTypeData(name, TRUE, data, parent, method);
   SoType newType;
-  newType.index = SoType::typeList.getLength();
-  SoType::typeList.append(newType);
-  SoType::typeDataList.append(typeData);
+  newType.index = SoType::typelist->getLength();
+  SoType::typelist->append(newType);
+  SoType::typedatalist->append(typeData);
   // add to dictionary for fast lookup
-  SoType::typeDict.enter((unsigned long)name.getString(),
-                         (void *)newType.index);
+  SoType::typedict->enter((unsigned long)name.getString(), (void *)newType.index);
   return newType;
 }
 
@@ -165,7 +165,7 @@ const SoType
 SoType::overrideType(const SoType originalType,
                      const instantiationMethod method)
 {
-  SoType::typeDataList[(int)originalType.getKey()]->method = method;
+  (*SoType::typedatalist)[(int)originalType.getKey()]->method = method;
   return originalType;
 }
 
@@ -186,13 +186,13 @@ SoType::fromName(const SbName name)
   SbName noprefixname(tmp);
 
   void * temp = NULL;
-  if (SoType::typeDict.find((unsigned long)name.getString(), temp) ||
-      SoType::typeDict.find((unsigned long)noprefixname.getString(), temp)) {
+  if (SoType::typedict->find((unsigned long)name.getString(), temp) ||
+      SoType::typedict->find((unsigned long)noprefixname.getString(), temp)) {
     const int index = (int)temp;
-    assert(index >= 0 && index < SoType::typeList.getLength());
-    assert((SoType::typeDataList[index]->name == name) ||
-           (SoType::typeDataList[index]->name == noprefixname));
-    return SoType::typeList[index];
+    assert(index >= 0 && index < SoType::typelist->getLength());
+    assert(((*SoType::typedatalist)[index]->name == name) ||
+           ((*SoType::typedatalist)[index]->name == noprefixname));
+    return (*SoType::typelist)[index];
   }
   return SoType::badType();
 }
@@ -204,8 +204,8 @@ SoType::fromName(const SbName name)
 SoType
 SoType::fromKey(uint16_t key)
 {
-  assert(key < SoType::typeList.getLength());
-  return SoType::typeList[(int)key];
+  assert(key < SoType::typelist->getLength());
+  return (*SoType::typelist)[(int)key];
 }
 
 /*!
@@ -216,7 +216,7 @@ SoType::fromKey(uint16_t key)
 SbName
 SoType::getName(void) const
 {
-  return SoType::typeDataList[ (int)this->getKey() ]->name;
+  return (*SoType::typedatalist)[(int)this->getKey()]->name;
 }
 
 /*!
@@ -229,7 +229,7 @@ SoType::getName(void) const
 uint16_t
 SoType::getData(void) const
 {
-  return SoType::typeDataList[(int)this->getKey()]->data;
+  return (*SoType::typedatalist)[(int)this->getKey()]->data;
 }
 
 /*!
@@ -240,7 +240,7 @@ SoType::getData(void) const
 const SoType
 SoType::getParent(void) const
 {
-  return SoType::typeDataList[(int)this->getKey()]->parent;
+  return (*SoType::typedatalist)[(int)this->getKey()]->parent;
 }
 
 /*!
@@ -291,7 +291,7 @@ SoType::isDerivedFrom(const SoType parent) const
                            parent.getName().getString());
 #endif // debug
     if (type == parent) return TRUE;
-    type = SoType::typeDataList[(int)type.getKey()]->parent;
+    type = (*SoType::typedatalist)[(int)type.getKey()]->parent;
   } while (!type.isBad());
 
   return FALSE;
@@ -312,9 +312,9 @@ int
 SoType::getAllDerivedFrom(const SoType type, SoTypeList & list)
 {
   int counter = 0;
-  int n = SoType::typeList.getLength();
+  int n = SoType::typelist->getLength();
   for (int i = 0; i < n; i++) {
-    SoType chktype = SoType::typeList[i];
+    SoType chktype = (*SoType::typelist)[i];
     if (!chktype.isInternal() && chktype.isDerivedFrom(type)) {
       list.append(chktype);
       counter++;
@@ -331,7 +331,7 @@ SoType::getAllDerivedFrom(const SoType type, SoTypeList & list)
 SbBool
 SoType::canCreateInstance(void) const
 {
-  return (SoType::typeDataList[(int)this->getKey()]->method != NULL);
+  return ((*SoType::typedatalist)[(int)this->getKey()]->method != NULL);
 }
 
 /*!
@@ -344,7 +344,7 @@ void *
 SoType::createInstance(void) const
 {
   if (this->canCreateInstance()) {
-    return (*(SoType::typeDataList[(int)this->getKey()]->method))();
+    return (*((*SoType::typedatalist)[(int)this->getKey()]->method))();
   }
   else {
 #if COIN_DEBUG
@@ -365,13 +365,13 @@ SoType::createInstance(void) const
 int
 SoType::getNumTypes(void)
 {
-  return SoType::typeList.getLength();
+  return SoType::typelist->getLength();
 }
 
 /*!
   \fn int16_t SoType::getKey(void) const
 
-  This method returns the type's index in the internal typeList.
+  This method returns the type's index in the internal typelist.
 
 */
 
@@ -382,7 +382,7 @@ SoType::getNumTypes(void)
 void
 SoType::makeInternal(void)
 {
-  SoType::typeDataList[(int)this->getKey()]->isPublic = FALSE;
+  (*SoType::typedatalist)[(int)this->getKey()]->isPublic = FALSE;
 }
 
 /*!
@@ -392,7 +392,7 @@ SoType::makeInternal(void)
 SbBool
 SoType::isInternal(void) const
 {
-    return SoType::typeDataList[(int)this->getKey()]->isPublic == FALSE;
+  return (*SoType::typedatalist)[(int)this->getKey()]->isPublic == FALSE;
 }
 
 /*!
