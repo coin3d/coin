@@ -127,12 +127,14 @@
 #include <Inventor/elements/SoGLCoordinateElement.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <assert.h>
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 #include <Inventor/details/SoLineDetail.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
 #include <Inventor/SbColor4f.h>
+#include <Inventor/C/glue/glp.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -260,6 +262,14 @@ SoVRMLIndexedLineSet::GLRender(SoGLRenderAction * action)
   if (mbind == SoVRMLIndexedLineSetP::PER_VERTEX) {
     mbind = SoVRMLIndexedLineSetP::PER_VERTEX_INDEXED;
     mindices = cindices;
+  }
+
+  if (mbind != SoVRMLIndexedLineSetP::OVERALL) {
+    const cc_glglue * glue = sogl_glue_instance(state);
+    if (glue->nvidia_color_in_displaylist_bug) {
+      SoCacheElement::setInvalid(TRUE);
+      SoCacheElement::invalidate(state);
+    }
   }
 
   SbBool drawPoints =

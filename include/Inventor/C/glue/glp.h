@@ -638,6 +638,8 @@ struct cc_glglue {
   const char * versionstr;
   const char * vendorstr;
   SbBool vendor_is_SGI;
+  SbBool vendor_is_nvidia;
+  SbBool nvidia_color_in_displaylist_bug;
   const char * rendererstr;
   const char * extensionsstr;
   int maxtextureunits;
