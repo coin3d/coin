@@ -27,6 +27,18 @@
 #include <Inventor/SbString.h>
 #include <stdio.h>
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_ZLIB
+#include <zlib.h>
+#endif // HAVE_ZLIB
+
+#ifdef HAVE_BZIP2
+#include <bzlib.h>
+#endif // HAVE_BZIP2
+
 class SoInput_Reader {
 public:
   SoInput_Reader(void);
@@ -92,6 +104,8 @@ public:
   size_t bufpos;
 };
 
+#ifdef HAVE_ZLIB
+
 class SoInput_GZFileReader : public SoInput_Reader {
 public:
   SoInput_GZFileReader(const char * const filename, void * fp);
@@ -103,9 +117,14 @@ public:
   virtual const SbString & getFilename(void);
 
 public:
-  void * gzfp;
+  gzFile gzfp;
   SbString filename;
 };
+
+#endif // HAVE_ZLIB
+
+
+#ifdef HAVE_BZIP2
 
 class SoInput_BZFileReader : public SoInput_Reader {
 public:
@@ -118,8 +137,10 @@ public:
   virtual const SbString & getFilename(void);
 
 public:
-  void * bzfp;
+  BZFILE * bzfp;
   SbString filename;
 };
+
+#endif // HAVE_BZIP2
 
 #endif // COIN_SOINPUT_READER_H

@@ -25,18 +25,6 @@
 #include <string.h>
 #include <assert.h>
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
-
-#ifdef HAVE_ZLIB
-#include <zlib.h>
-#endif // HAVE_ZLIB
-
-#ifdef HAVE_BZIP2
-#include <bzlib.h>
-#endif // HAVE_BZIP2
-
 //
 // abstract class
 //
@@ -185,6 +173,7 @@ SoInput_MemBufferReader::readBuffer(char * buf, const size_t readlen)
 //
 // gzFile class
 //
+#ifdef HAVE_ZLIB
 
 SoInput_GZFileReader::SoInput_GZFileReader(const char * const filename, void * fp)
 {
@@ -194,10 +183,8 @@ SoInput_GZFileReader::SoInput_GZFileReader(const char * const filename, void * f
 
 SoInput_GZFileReader::~SoInput_GZFileReader()
 {
-#ifdef HAVE_ZLIB
   assert((gzFile) this->gzfp);
   gzclose(this->gzfp);
-#endif // HAVE_ZLIB
 }
 
 SoInput_Reader::ReaderType
@@ -209,12 +196,7 @@ SoInput_GZFileReader::getType(void) const
 int
 SoInput_GZFileReader::readBuffer(char * buf, const size_t readlen)
 {
-#ifdef HAVE_ZLIB
   return gzread((gzFile)this->gzfp, (void*) buf, readlen);
-#else // HAVE_ZLIB
-  assert(0 && "should never get here");
-  return 0;
-#endif // ! HAVE_ZLIB
 }
 
 const SbString &
@@ -223,10 +205,13 @@ SoInput_GZFileReader::getFilename(void)
   return this->filename;
 }
 
+#endif // HAVE_ZLIB
+
 
 //
 // bzFile class
 //
+#ifdef HAVE_BZIP2
 
 SoInput_BZFileReader::SoInput_BZFileReader(const char * const filename, void * fp)
 {
@@ -236,12 +221,10 @@ SoInput_BZFileReader::SoInput_BZFileReader(const char * const filename, void * f
 
 SoInput_BZFileReader::~SoInput_BZFileReader()
 {
-#ifdef HAVE_BZIP2
   if (this->bzfp) {
     int bzerror = BZ_OK;
     BZ2_bzReadClose(&bzerror, this->bzfp);
   }
-#endif // HAVE_BZIP2
 }
 
 SoInput_Reader::ReaderType
@@ -253,7 +236,6 @@ SoInput_BZFileReader::getType(void) const
 int
 SoInput_BZFileReader::readBuffer(char * buf, const size_t readlen)
 {
-#ifdef HAVE_BZIP2
   if (this->bzfp == NULL) return -1;
 
   int bzerror = BZ_OK;
@@ -265,10 +247,6 @@ SoInput_BZFileReader::readBuffer(char * buf, const size_t readlen)
     this->bzfp = NULL;
   }
   return ret;
-#else // HAVE_BZIP2
-  assert(0 && "should never get here");
-  return 0;
-#endif // ! HAVE_BZIP2
 }
 
 const SbString &
@@ -276,3 +254,7 @@ SoInput_BZFileReader::getFilename(void)
 {
   return this->filename;
 }
+
+#endif // HAVE_BZIP2
+
+
