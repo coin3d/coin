@@ -6,6 +6,12 @@
 //$ ELSE
 //$ DEFINE -integertype- 1
 //$ ENDIF
+//$ IF -elements- < 2 || -elements- > 4
+//$ ERROR "unimplemented dimension"
+//$ ENDIF
+//$ IF -elements- == 2
+//$ WARNING implemented dimension
+//$ ENDIF
 
 //$ INSERT TEMPLATE Copyright
 
@@ -32,20 +38,17 @@ void
 -type-
 -cc-class-_dot(const -cc-class- * v1, const -cc-class- * v2)
 {
-//$ IF -elements- == 2
-  return (*v1)[0]*(*v2)[0] + (*v1)[1]*(*v2)[1];
-//$ ELSIF -elements- == 3
-  return (*v1)[0]*(*v2)[0] + (*v1)[1]*(*v2)[1] + (*v1)[2]*(*v2)[2];
-//$ ELSIF -elements- == 4
-  return (*v1)[0]*(*v2)[0] + (*v1)[1]*(*v2)[1]
-       + (*v1)[2]*(*v2)[2] + (*v1)[3]*(*v2)[3];
-//$ ENDIF
+  return (*v1)[0]*(*v2)[0] + (*v1)[1]*(*v2)[1]; //$ IF -elements- == 2
+  return (*v1)[0]*(*v2)[0] + (*v1)[1]*(*v2)[1] + (*v1)[2]*(*v2)[2]; //$ IF -elements- == 3
+  return (*v1)[0]*(*v2)[0] + (*v1)[1]*(*v2)[1] + (*v1)[2]*(*v2)[2] + (*v1)[3]*(*v2)[3]; //$ IF -elements- == 4
 }
 
 SbBool
 -cc-class-_equals(const -cc-class- * v1, const -cc-class- * v2, const -type- tolerance)
 {
-  -type- xdist, ydist, zdist, wdist;
+  -type- xdist, ydist;
+  -type- zdist; //$ IF -elements- > 2
+  -type- wdist; //$ IF -elements- > 3
 #if COIN_DEBUG && 0
   if ( tolerance < (-type-) 0 )
     SoDebugError::postWarning("-cc-class-_equals", "tolerance should be >= 0");
@@ -53,20 +56,12 @@ SbBool
 
   xdist = (*v1)[0] - (*v2)[0];
   ydist = (*v1)[1] - (*v2)[1];
-//$ IF -elements- > 2
-  zdist = (*v1)[2] - (*v2)[2];
-//$ ENDIF
-//$ IF -elements- > 3
-  wdist = (*v1)[3] - (*v2)[2];
-//$ ENDIF
+  zdist = (*v1)[2] - (*v2)[2]; //$ IF -elements- > 2
+  wdist = (*v1)[3] - (*v2)[2]; //$ IF -elements- > 3
 
-//$ IF -elements- == 2
-  return ((xdist*xdist + ydist*ydist) <= tolerance);
-//$ ELSIF -elements- == 3
-  return ((xdist*xdist + ydist*ydist + zdist*zdist) <= tolerance);
-//$ ELSIF -elements- == 4
-  return ((xdist*xdist + ydist*ydist + zdist*zdist + wdist*wdist) <= tolerance);
-//$ ENDIF
+  return ((xdist*xdist + ydist*ydist) <= tolerance); //$ IF -elements- == 2
+  return ((xdist*xdist + ydist*ydist + zdist*zdist) <= tolerance); //$ IF -elements- == 3
+  return ((xdist*xdist + ydist*ydist + zdist*zdist + wdist*wdist) <= tolerance); //$ IF -elements- == 4
 }
 
 -type-
@@ -84,12 +79,8 @@ void
 {
   (*dst)[0] = -(*src)[0];
   (*dst)[1] = -(*src)[1];
-//$ IF -elements- > 2
-  (*dst)[2] = -(*src)[2];
-//$ ENDIF
-//$ IF -elements- > 3
-  (*dst)[3] = -(*src)[3];
-//$ ENDIF
+  (*dst)[2] = -(*src)[2]; //$ IF -elements- > 2
+  (*dst)[3] = -(*src)[3]; //$ IF -elements- > 3
 }
 
 -type-
@@ -97,27 +88,20 @@ void
 {
   -type- factor;
   factor = 1; /* FIXME */
+
   (*dst)[0] = (*src)[0] / factor;
   (*dst)[1] = (*src)[1] / factor;
-//$ IF -elements- > 2
-  (*dst)[2] = (*src)[2] / factor;
-//$ ENDIF
-//$ IF -elements- > 3
-  (*dst)[3] = (*src)[3] / factor;
-//$ ENDIF
+  (*dst)[2] = (*src)[2] / factor; //$ IF -elements- > 2
+  (*dst)[3] = (*src)[3] / factor; //$ IF -elements- > 3
   return factor;
 }
 
 int
 -cc-class-_cmp(const -cc-class- * v1, const -cc-class- * v2)
 {
-//$ ELSIF -elements- == 2
-  return ((*v1)[0] == (*v2)[0] && (*v1)[1] == (*v2)[1]);
-//$ ELSIF -elements- == 3
-  return ((*v1)[0] == (*v2)[0] && (*v1)[1] == (*v2)[1] && (*v1)[2] == (*v2)[2]);
-//$ ELSIF -elements- == 4
-  return ((*v1)[0] == (*v2)[0] && (*v1)[1] == (*v2)[1]
-       && (*v1)[2] == (*v2)[2] && (*v1)[3] == (*v2)[3]);
+  return ((*v1)[0] == (*v2)[0] && (*v1)[1] == (*v2)[1]); //$ IF -elements- == 2
+  return ((*v1)[0] == (*v2)[0] && (*v1)[1] == (*v2)[1] && (*v1)[2] == (*v2)[2]); //$ IF -elements- == 3
+  return ((*v1)[0] == (*v2)[0] && (*v1)[1] == (*v2)[1] && (*v1)[2] == (*v2)[2] && (*v1)[3] == (*v2)[3]); //$ IF -elements- == 4
 //$ ENDIF
 }
 
@@ -136,12 +120,8 @@ void
 {
   (*dst)[0] = (*v)[0] / d;
   (*dst)[1] = (*v)[1] / d;
-//$ IF -elements- > 2
-  (*dst)[2] = (*v)[2] / d;
-//$ ENDIF
-//$ IF -elements- > 3
-  (*dst)[3] = (*v)[3] / d;
-//$ ENDIF
+  (*dst)[2] = (*v)[2] / d; //$ IF -elements- > 2
+  (*dst)[3] = (*v)[3] / d; //$ IF -elements- > 3
 }
 
 void
@@ -149,12 +129,8 @@ void
 {
   (*dst)[0] = (*v1)[0] + (*v2)[0];
   (*dst)[1] = (*v1)[1] + (*v2)[1];
-//$ IF -elements- > 2
-  (*dst)[2] = (*v1)[2] + (*v2)[2];
-//$ ENDIF
-//$ IF -elements- > 3
-  (*dst)[3] = (*v1)[3] + (*v2)[3];
-//$ ENDIF
+  (*dst)[2] = (*v1)[2] + (*v2)[2]; //$ IF -elements- > 2
+  (*dst)[3] = (*v1)[3] + (*v2)[3]; //$ IF -elements- > 3
 }
 
 void
@@ -162,20 +138,64 @@ void
 {
   (*dst)[0] = (*v1)[0] - (*v2)[0];
   (*dst)[1] = (*v1)[1] - (*v2)[1];
-//$ IF -elements- > 2
-  (*dst)[2] = (*v1)[2] - (*v2)[2];
-//$ ENDIF
-//$ IF -elements- > 3
-  (*dst)[3] = (*v1)[3] - (*v2)[3];
-//$ ENDIF
+  (*dst)[2] = (*v1)[2] - (*v2)[2]; //$ IF -elements- > 2
+  (*dst)[3] = (*v1)[3] - (*v2)[3]; //$ IF -elements- > 3
 }
 
 /* ********************************************************************** */
 
 /*!
-  \class -class-name- Inventor/-class-name-.h
-  \brief The -class-name- class is yet to be documented.
+  \class -class-name- SbLinear.h Inventor/SbLinear.h
+  \brief The -class-name- class is a -elements- dimensional vector with
+//$ IF -integertype-
+  integer coordinates.
+//$ ELSE
+  floating point coordinates.
+//$ ENDIF
+  \ingroup base
 
-  This class acts mainly as a wrapper around the -cc-class- C type.
+  This vector class is used by many other classes in
+  Coin. It provides storage for a -elements- dimensional vector
+  aswell as simple arithmetic operations.
+
+  \sa SbVec2s, SbVec2f, SbVec2d, SbVec3s, SbVec3f, SbVec3d, SbVec4s, SbVec4f, SbVec4d.
+*/
+
+
+/*!
+  \fn -class-name-::-class-name-(void)
+
+  The default constructor does nothing. The vector coordinates will be
+  uninitialized until you do a setValue() call.
+*/
+
+/*!
+  \fn -class-name-::-class-name-(const -type- v[-elements-])
+
+  Constructs an -class-name- instance with initial values from \a v.
+*/
+
+/*!
+  \fn -class-name-::-class-name-(const -type- x, const -type- y, const -type- z)
+
+  Constructs an -class-name- instance with the initial vector endpoint set
+  to \a <x,y,z>.
+*/
+
+
+/*!
+  \fn -type- & -class-name-::operator[](const int i)
+
+  Index operator. Returns modifiable x, y or z coordinate of vector.
+
+  \sa getValue() and setValue().
+*/
+
+/*!
+  \fn -type- -class-name-::operator[](const int i) const
+
+  Index operator. Returns x, y or z coordinate of vector.
+
+  \sa getValue() and setValue().
 */
 

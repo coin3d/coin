@@ -15,9 +15,7 @@
 #include <stdio.h>
 
 #include <Inventor/SbBasic.h>
-//$ IF -integertype- && 0
-#include <Inventor/system/inttypes.h>
-//$ ENDIF
+#include <Inventor/system/inttypes.h> //$ IF -integertype- && 0
 #include <Inventor/C/base/vec-elements--letter-.h>
 //$ IF ! -integertype-
 //$ IF -elements- == 3
@@ -30,21 +28,19 @@ class SbPlane;
 class COIN_DLL_API -class-name- {
 public:
   -class-name-(void) {} // no initialization
+//$ IF -elements- == 2
   -class-name-(const -type- v[-elements-])
-//$ IF -elements- == 2
     { this->vec[0] = v[0]; this->vec[1] = v[1]; }
-//$ ELSIF -elements- == 3
-    { this->vec[0] = v[0]; this->vec[1] = v[1]; this->vec[2] = v[2]; }
-//$ ELSIF -elements- == 4
-    { this->vec[0] = v[0]; this->vec[1] = v[1]; this->vec[2] = v[2]; this->vec[3] = v[3]; }
-//$ ENDIF
-//$ IF -elements- == 2
   -class-name-(const -type- x, const -type- y)
     { this->vec[0] = x; this->vec[1] = y; }
 //$ ELSIF -elements- == 3
+  -class-name-(const -type- v[-elements-])
+    { this->vec[0] = v[0]; this->vec[1] = v[1]; this->vec[2] = v[2]; }
   -class-name-(const -type- x, const -type- y, const -type- z)
     { this->vec[0] = x; this->vec[1] = y; this->vec[2] = z; }
 //$ ELSIF -elements- == 4
+  -class-name-(const -type- v[-elements-])
+    { this->vec[0] = v[0]; this->vec[1] = v[1]; this->vec[2] = v[2]; this->vec[3] = v[3]; } //$ IF -elements- == 4
   -class-name-(const -type- x, const -type- y, const -type- z, const -type- w)
     { this->vec[0] = x; this->vec[1] = y; this->vec[2] = z; this->vec[3] = w; }
 //$ ENDIF
@@ -94,25 +90,21 @@ public:
 //$ ENDIF
   void negate(void)
     { -cc-class-_negate(&this->vec, &this->vec); }
-//$ IF ! -integertype-
-  -type- normalize(void)
-    { return -cc-class-_normalize(&this->vec, &this->vec); }
-//$ ENDIF
+  -type- normalize(void) //$ IF ! -integertype-
+    { return -cc-class-_normalize(&this->vec, &this->vec); } //$ IF ! -integertype-
+//$ IF -elements- == 2
   -class-name- & setValue(const -type- v[-elements-])
-//$ IF -elements- == 2
     { this->vec[0] = v[0]; this->vec[1] = v[1]; return *this; }
-//$ ELSIF -elements- == 3
-    { this->vec[0] = v[0]; this->vec[1] = v[1]; this->vec[2] = v[2]; return *this; }
-//$ ELSIF -elements- == 4
-    { this->vec[0] = v[0]; this->vec[1] = v[1]; this->vec[2] = v[2]; this->vec[3] = v[3]; return *this; }
-//$ ENDIF
-//$ IF -elements- == 2
   -class-name- & setValue(const -type- x, const -type- y)
     { this->vec[0] = x; this->vec[1] = y; return *this; }
 //$ ELSIF -elements- == 3
+  -class-name- & setValue(const -type- v[-elements-])
+    { this->vec[0] = v[0]; this->vec[1] = v[1]; this->vec[2] = v[2]; return *this; }
   -class-name- & setValue(const -type- x, const -type- y, const -type- z)
     { this->vec[0] = x; this->vec[1] = y; this->vec[2] = z; return *this; }
 //$ ELSIF -elements- == 4
+  -class-name- & setValue(const -type- v[-elements-])
+    { this->vec[0] = v[0]; this->vec[1] = v[1]; this->vec[2] = v[2]; this->vec[3] = v[3]; return *this; }
   -class-name- & setValue(const -type- x, const -type- y, const -type- z, const -type- w)
     { this->vec[0] = x; this->vec[1] = y; this->vec[2] = z; this->vec[3] = z; return *this; }
 //$ ENDIF
@@ -172,46 +164,33 @@ private:
 };
 
 //$ IF -integertype-
-inline
-COIN_DLL_API -class-name- operator * (const -class-name- & v, int d)
+inline -class-name- operator * (const -class-name- & v, int d)
   { -class-name- tmp; -cc-class-_mult_vec_int(&v.vec, d, &tmp.vec); return tmp; }
-inline
-COIN_DLL_API -class-name- operator * (const -class-name- & v, double d)
+inline -class-name- operator * (const -class-name- & v, double d)
   { -class-name- tmp; -cc-class-_mult_vec_dbl(&v.vec, d, &tmp.vec); return tmp; }
-inline
-COIN_DLL_API -class-name- operator * (int d, const -class-name- & v)
+inline -class-name- operator * (int d, const -class-name- & v)
   { -class-name- tmp; -cc-class-_mult_int_vec(d, &v.vec, &tmp.vec); return tmp; }
-inline
-COIN_DLL_API -class-name- operator * (double d, const -class-name- & v)
+inline -class-name- operator * (double d, const -class-name- & v)
   { -class-name- tmp; -cc-class-_mult_dbl_vec(d, &v.vec, &tmp.vec); return tmp; }
-inline
-COIN_DLL_API -class-name- operator / (const -class-name- & v, int d)
+inline -class-name- operator / (const -class-name- & v, int d)
   { -class-name- tmp; -cc-class-_div_vec_int(&v.vec, d, &tmp.vec); return tmp; }
-inline
-COIN_DLL_API -class-name- operator / (const -class-name- & v, double d)
+inline -class-name- operator / (const -class-name- & v, double d)
   { -class-name- tmp; -cc-class-_div_vec_dbl(&v.vec, d, &tmp.vec); return tmp; }
 //$ ELSE
-inline
-COIN_DLL_API -class-name- operator * (const -class-name- & v, const -type- d)
+inline -class-name- operator * (const -class-name- & v, const -type- d)
   { -class-name- tmp; -cc-class-_mult_vec_scalar(&v.vec, d, &tmp.vec); return tmp; }
-inline
-COIN_DLL_API -class-name- operator * (const -type- d, const -class-name- & v)
+inline -class-name- operator * (const -type- d, const -class-name- & v)
   { -class-name- tmp; -cc-class-_mult_scalar_vec(d, &v.vec, &tmp.vec); return tmp; }
-inline
-COIN_DLL_API -class-name- operator / (const -class-name- & v, const -type- d)
+inline -class-name- operator / (const -class-name- & v, const -type- d)
   { -class-name- tmp; -cc-class-_div_vec_scalar(&v.vec, d, &tmp.vec); return tmp; }
 //$ ENDIF
-inline
-COIN_DLL_API -class-name- operator + (const -class-name- & v1, const -class-name- & v2)
+inline -class-name- operator + (const -class-name- & v1, const -class-name- & v2)
   { -class-name- tmp; -cc-class-_add(&v1.vec, &v2.vec, &tmp.vec); return tmp; }
-inline
-COIN_DLL_API -class-name- operator - (const -class-name- & v1, const -class-name- & v2)
+inline -class-name- operator - (const -class-name- & v1, const -class-name- & v2)
   { -class-name- tmp; -cc-class-_sub(&v1.vec, &v2.vec, &tmp.vec); return tmp; }
-inline
-COIN_DLL_API int operator == (const -class-name- & v1, const -class-name- & v2)
+inline int operator == (const -class-name- & v1, const -class-name- & v2)
   { return -cc-class-_cmp(&v1.vec, &v2.vec) == 0; }
-inline
-COIN_DLL_API int operator != (const -class-name- & v1, const -class-name- & v2)
+inline int operator != (const -class-name- & v1, const -class-name- & v2)
   { return -cc-class-_cmp(&v1.vec, &v2.vec); }
 
 #endif // !-cpp-wrapper-
