@@ -185,10 +185,9 @@ void
 SoImage::computeBBox(SoAction * action,
                      SbBox3f & box, SbVec3f & center)
 {
-  // FIXME: pederb, 20000509
-  // need to invalidate the bbox-cache for this to work 100%,
-  // since bbox changes position each time modelmatrix has changed.
   SbVec3f v0, v1, v2, v3;
+  // this will cause a cache dependency on the view volume,
+  // model matrix and viewport.
   this->getQuad(action->getState(), v0, v1, v2, v3);
 
   box.makeEmpty();
@@ -550,9 +549,9 @@ SoImage::getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
     break;
   case SoImage::RIGHT:
     n0[0] -= nw;
-    n1[1] -= nw;
-    n2[2] -= nw;
-    n3[3] -= nw;
+    n1[0] -= nw;
+    n2[0] -= nw;
+    n3[0] -= nw;
     break;
   case SoImage::CENTER:
     break;
