@@ -50,18 +50,13 @@ extern "C" {
 #endif /* USE_PTHREAD */
 
 #ifdef USE_W32THREAD
+
 #include <windows.h>
+
 #undef CC_W32THREAD
 #define CC_W32THREAD(stmt) stmt
+
 #endif /* USE_W32THREAD */
-
-#ifdef _WIN32
-
-/* error reporting for Win32 */
-char * cc_internal_w32_getlasterrorstring(DWORD lasterror);
-void cc_internal_w32_freelasterrorstring(char *str);
-
-#endif /* WIN32 */
 
 
 struct cc_thread {

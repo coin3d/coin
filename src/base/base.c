@@ -25,11 +25,11 @@
 
 #include <stddef.h>
 
-#ifdef _WIN32 /* FIXME: use configure tests. 20011119 mortene. */
+#ifdef USE_W32THREAD
 #define HAVE_WINDOWS_H 1
 #define HAVE_WIN32_FORMATMESSAGE 1
 #define HAVE_WIN32_LOCALFREE 1
-#endif /* _WIN32 */
+#endif /* USE_W32THREAD */
 
 #if HAVE_WINDOWS_H
 #include <windows.h>
