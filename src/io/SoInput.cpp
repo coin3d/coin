@@ -719,8 +719,11 @@ SoInput::getNumBytesRead(void) const
 SbString
 SoInput::getHeader(void)
 {
-  if (this->checkHeader()) {
-    return this->getTopOfStack()->ivHeader();
+  checkHeader();
+  SoInput_FileInfo * fi = this->getTopOfStack();
+  
+  if (fi) {
+    return fi->ivHeader();
   }
   else {
     return SbString("");
