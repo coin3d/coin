@@ -882,9 +882,12 @@ SoDB::endNotify(void)
 }
 
 /*!
-  Turn on or off the realtime sensor. Be careful with turning it
-  off (defaut is on), as this may have unwanted side effects which are
-  difficult to predict.
+  Turn on or off the realtime sensor.
+
+  The most common use for turning the realtime sensor off is to
+  control the realTime global field from the user application. This is
+  for instance handy when you want to take screen snapshots at fixed
+  intervals.
 
   \sa setRealTimeInterval()
 */
