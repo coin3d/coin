@@ -274,6 +274,9 @@ SoIndexedTriangleStripSet::GLRender(SoGLRenderAction * action)
                        (int)nbind,
                        (int)mbind,
                        dotextures?1:0);
+  if (normalcacheused) {
+    this->readUnlockNormalCache();
+  }
 
   if (didpush) {
     state->pop();
@@ -645,6 +648,11 @@ SoIndexedTriangleStripSet::generatePrimitives(SoAction * action)
       nindices++;
     if (tindices) tindices++;
   }
+
+  if (normalcacheused) {
+    this->readUnlockNormalCache();
+  }
+
   if (this->vertexProperty.getValue()) {
     state->pop();
   }

@@ -445,8 +445,11 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
 
     if (!needNormals) nbind = OVERALL;
 
+    SoNormalCache * nc = NULL;
+
     if (needNormals && normals == NULL) {
-      normals = this->getNormalCache()->getNormals();
+      nc = this->generateAndReadLockNormalCache(state);
+      normals = nc->getNormals();
     }
 
     SoMaterialBundle mb(action);
@@ -470,53 +473,11 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
         ptr,
         end,
         needNormals);
+
+    if (nc) {
+      this->readUnlockNormalCache();
+    }
   }
-#if 0 // obsoleted 2000-12-18, skei
-
-  int matnr = 0;
-  int texnr = 0;
-  int mode = GL_POLYGON;
-  int newmode;
-  int n;
-
-  SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
-  const SbVec3f * currnormal = &dummynormal;
-  if (normals) currnormal = normals;
-  if (nbind == OVERALL && needNormals)
-    glNormal3fv((const GLfloat *)currnormal);
-
-  while (ptr < end) {
-    n = *ptr++;
-    if (n == 3) newmode = GL_TRIANGLES;
-    else if (n == 4) newmode = GL_QUADS;
-    else newmode = GL_POLYGON;
-    if (newmode != mode) {
-      if (mode != GL_POLYGON) glEnd();
-      mode = newmode;
-      glBegin((GLenum) mode);
-    }
-    else if (mode == GL_POLYGON) glBegin(GL_POLYGON);
-    if (nbind != OVERALL) {
-      currnormal = normals++;
-      glNormal3fv((const GLfloat *)currnormal);
-    }
-    if (mbind != OVERALL) mb.send(matnr++, TRUE);
-    if (doTextures) tb.send(texnr++, coords->get3(idx), *currnormal);
-    coords->send(idx++);
-    while (--n) {
-      if (nbind == PER_VERTEX) {
-        currnormal = normals++;
-        glNormal3fv((const GLfloat *)currnormal);
-      }
-      if (mbind == PER_VERTEX) mb.send(matnr++, TRUE);
-      if (doTextures) tb.send(texnr++, coords->get3(idx), *currnormal);
-      coords->send(idx++);
-    }
-    if (mode == GL_POLYGON) glEnd();
-  }
-  if (mode != GL_POLYGON) glEnd();
-
-#endif // obsoleted
 
   if (this->vertexProperty.getValue())
     state->pop();
@@ -633,12 +594,10 @@ SoFaceSet::generatePrimitives(SoAction *action)
   Binding mbind = this->findMaterialBinding(state);
   Binding nbind = this->findNormalBinding(state);
 
+  SoNormalCache * nc = NULL;
+
   if (needNormals && normals == NULL) {
-    SoNormalCache * nc = this->getNormalCache();
-    if (nc == NULL || !nc->isValid(state)) {
-      this->generateNormals(state);
-      nc = this->getNormalCache();
-    }
+    nc = this->generateAndReadLockNormalCache(state);
     normals = nc->getNormals();
   }
 
@@ -723,6 +682,11 @@ SoFaceSet::generatePrimitives(SoAction *action)
     faceDetail.incFaceIndex();
   }
   if (mode != POLYGON) this->endShape();
+
+  if (nc) {
+    this->readUnlockNormalCache();
+  }
+
   if (this->vertexProperty.getValue())
     state->pop();
 }
@@ -835,8 +799,11 @@ SoFaceSet::useConvexCache(SoAction * action)
     break;
   }
 
+  SoNormalCache * nc = NULL;
+
   if (needNormals && normals == NULL) {
-    normals = this->getNormalCache()->getNormals();
+    nc = this->generateAndReadLockNormalCache(state);
+    normals = nc->getNormals();
   }
   else if (!needNormals) {
     nbind = SoConvexDataCache::NONE;
@@ -900,5 +867,10 @@ SoFaceSet::useConvexCache(SoAction * action)
                       realnbind,
                       realmbind,
                       doTextures?1:0);
+
+  if (nc) {
+    this->readUnlockNormalCache();
+  }
+
   return TRUE;
 }

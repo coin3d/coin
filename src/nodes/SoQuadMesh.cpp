@@ -680,73 +680,29 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
   if ((nbind == PER_FACE) || (mbind == PER_FACE))
     SoGLShadeModelElement::forceSend(state, TRUE);
 
+  SoNormalCache * nc = NULL;
+
   if (needNormals && normals == NULL) {
-    normals = getNormalCache()->getNormals();
+    nc = this->generateAndReadLockNormalCache(state);
+    normals = nc->getNormals();
   }
 
   SoMaterialBundle mb(action);
   mb.sendFirst(); // make sure we have the correct material
 
   soquadmesh_ni_render_funcs[ (mbind << 3) | (nbind << 1) | doTextures ]
-    ( coords,
-      normals,
-      &mb,
-      &tb,
-      needNormals,
-      rowsize,
-      colsize,
-      start);
-
-
-#if 0 // obsoleted 2001-01-08, skei
-
-#define IDX(r,c) ((r)*rowsize+(c))
-
-  int midx = 0;
-  for (int i = 0; i < colsize-1; i++) {
-    int j = 0;
-    glBegin(GL_QUAD_STRIP);
-    if (nbind == PER_ROW) {
-      currnormal = normals++;
-      glNormal3fv((const GLfloat *)currnormal);
-    }
-    if (mbind == PER_ROW) mb.send(midx++,TRUE);
-
-    for (j = 0; j < rowsize; j++) {
-      curridx = IDX(i,j);
-      if (nbind == PER_VERTEX) {
-        currnormal = &normals[curridx];
-        glNormal3fv((const GLfloat *)currnormal);
-      }
-      else if (nbind == PER_FACE) {
-        currnormal = normals++;
-        glNormal3fv((const GLfloat *)currnormal);
-      }
-      if (mbind == PER_VERTEX) mb.send(curridx, TRUE);
-      else if (mbind == PER_FACE) mb.send(midx++, TRUE);
-
-      if (doTextures) {
-        tb.send(curridx, coords->get3(start + curridx),
-                *currnormal);
-      }
-      coords->send(start + curridx);
-      curridx = IDX(i+1,j);
-      if (nbind == PER_VERTEX) {
-        currnormal = &normals[curridx];
-        glNormal3fv((const GLfloat *)currnormal);
-      }
-      if (mbind == PER_VERTEX) mb.send(curridx, TRUE);
-      if (doTextures) {
-        tb.send(curridx, coords->get3(start + curridx),
-                *currnormal);
-      }
-      coords->send(start + curridx);
-    }
-    glEnd(); // end of strip/row
+    (coords,
+     normals,
+     &mb,
+     &tb,
+     needNormals,
+     rowsize,
+     colsize,
+     start);
+  
+  if (nc) {
+    this->readUnlockNormalCache();
   }
-#undef IDX
-
-#endif // obsoleted
 
   if (didpush) state->pop();
 }
@@ -850,12 +806,10 @@ SoQuadMesh::generatePrimitives(SoAction *action)
   Binding mbind = findMaterialBinding(action->getState());
   Binding nbind = findNormalBinding(action->getState());
 
+  SoNormalCache * nc = NULL;
+
   if (needNormals && normals == NULL) {
-    SoNormalCache * nc = this->getNormalCache();
-    if (nc == NULL || !nc->isValid(state)) {
-      this->generateNormals(state);
-      nc = this->getNormalCache();
-    }
+    nc = this->generateAndReadLockNormalCache(state);
     normals = nc->getNormals();
   }
 
@@ -952,6 +906,10 @@ SoQuadMesh::generatePrimitives(SoAction *action)
     faceDetail.incPartIndex();
   }
 #undef IDX
+
+  if (nc) {
+    this->readUnlockNormalCache();
+  }
 
   if (this->vertexProperty.getValue())
     state->pop();

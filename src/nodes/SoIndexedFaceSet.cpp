@@ -310,6 +310,10 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
                       (int)mbind,
                       doTextures?1:0);
 
+  if (normalCacheUsed) {
+    this->readUnlockNormalCache();
+  }
+
   if (this->vertexProperty.getValue()) {
     state->pop();
   }
@@ -540,10 +544,15 @@ SoIndexedFaceSet::generatePrimitives(SoAction *action)
   }
   if (mode != POLYGON) this->endShape();
 
+  if (normalCacheUsed) {
+    this->readUnlockNormalCache();
+  }
+
   if (this->vertexProperty.getValue()) {
     state->pop();
   }
 }
+
 #undef DO_VERTEX
 
 // doc from parent
@@ -668,8 +677,14 @@ SoIndexedFaceSet::useConvexCache(SoAction * action)
                               (SoConvexDataCache::Binding)mbind,
                               (SoConvexDataCache::Binding)nbind,
                               (SoConvexDataCache::Binding)tbind);
+
+  if (normalCacheUsed) {
+    this->readUnlockNormalCache();
+  }
+
   state->pop();
   SoCacheElement::setInvalid(storedinvalid);
+
   return TRUE;
 }
 

@@ -45,6 +45,14 @@
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoCreaseAngleElement.h>
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbRWMutex.h>
+#endif // COIN_THREADSAFE
+
 /*!
   \var SoSFNode SoVertexShape::vertexProperty
 
@@ -65,7 +73,16 @@
 #ifndef DOXYGEN_SKIP_THIS
 class SoVertexShapeP {
 public:
+  SoVertexShapeP(void) 
+#ifdef COIN_THREADSAFE
+    : normalcachemutex(SbRWMutex::READ_PRECEDENCE)
+#endif // COIN_THREADSAFE
+  { }
+
   SoNormalCache * normalcache;
+#ifdef COIN_THREADSAFE
+  SbRWMutex normalcachemutex;
+#endif // COIN_THREADSAFE
 };
 #endif // DOXYGEN_SKIP_THIS
 
@@ -143,39 +160,7 @@ SoVertexShape::generateDefaultNormals(SoState * /* state */,
 SbBool
 SoVertexShape::shouldGLRender(SoGLRenderAction * action)
 {
-  if (!SoShape::shouldGLRender(action)) return FALSE;
-
-  SoState * state = action->getState();
-
-  SbBool needNormals =
-    (SoLightModelElement::get(state) !=
-     SoLightModelElement::BASE_COLOR);
-
-  if (needNormals) {
-    const SoNormalElement * elem = SoNormalElement::getInstance(state);
-    const SoVertexProperty * vp =
-      (SoVertexProperty *) this->vertexProperty.getValue();
-    if (elem->getNum() == 0 &&
-        (!vp || vp->normal.getNum() <= 0)) {
-      if (THIS->normalcache == NULL ||
-          !THIS->normalcache->isValid(state)) {
-        generateNormals(state);
-      }
-#if 0 // OIV doesn't do this, so it's disabled in Coin also.
-      // how it's possible to generate correct normals when vertexordering
-      // is unknown is a big mystery to me. But I guess when vertexordering
-      // is unknown, it defaults to counterclockwise. pederb, 20000404
-
-      // if normals are automatically generated, and vertexordering
-      // is unknown, force two-sided lighting
-      if (SoShapeHintsElement::getVertexOrdering(state) ==
-          SoShapeHintsElement::UNKNOWN_ORDERING) {
-        SoGLShapeHintsElement::forceSend(state, TRUE);
-      }
-#endif // disabled code
-    }
-  }
-  return TRUE;
+  return SoShape::shouldGLRender(action);
 }
 
 /*!
@@ -187,6 +172,7 @@ SoVertexShape::setNormalCache(SoState * const state,
                               const int num,
                               const SbVec3f * normals)
 {
+  this->writeLockNormalCache();
   if (THIS->normalcache) THIS->normalcache->unref();
   // create new normal cache with no dependencies
   state->push();
@@ -198,6 +184,7 @@ SoVertexShape::setNormalCache(SoState * const state,
   (void) SoShapeHintsElement::getVertexOrdering(state);
   (void) SoCreaseAngleElement::get(state);
   state->pop();
+  this->writeUnlockNormalCache();
 }
 
 /*!
@@ -209,17 +196,34 @@ SoVertexShape::getNormalCache(void) const
   return THIS->normalcache;
 }
 
-/*!
-  Convenience method that can be used by subclasses to create a new
-  normal cache. It takes care of unrefing the old cache and pushing
-  and popping the state to create element dependencies. This method is
-  not part of the OIV API.
-*/
-void
-SoVertexShape::generateNormals(SoState * const state)
-{
-  SbBool storeinvalid = SoCacheElement::setInvalid(FALSE);
+/*!  
 
+  Convenience method that can be used by subclasses to return or
+  create a normal cache. If the current cache is not valid, it takes
+  care of unrefing the old cache and pushing and popping the state to
+  create element dependencies when creating the new cache.
+
+  When returning from this method, the normal cache will be
+  read locked, and the caller should call readUnlockNormalCache()
+  when the normals in the cache is no longer needed.
+
+  This method is specific to Coin and is not part of the OIV API.  
+
+  \since 2002-07-11 
+
+*/
+SoNormalCache *
+SoVertexShape::generateAndReadLockNormalCache(SoState * const state)
+{
+  this->readLockNormalCache();
+  if (THIS->normalcache && THIS->normalcache->isValid(state)) {
+    return THIS->normalcache;
+  }
+  this->readUnlockNormalCache();
+  this->writeLockNormalCache();
+  
+  SbBool storeinvalid = SoCacheElement::setInvalid(FALSE);
+  
   if (THIS->normalcache) THIS->normalcache->unref();
   state->push(); // need to push for cache dependencies
   THIS->normalcache = new SoNormalCache(state);
@@ -235,8 +239,11 @@ SoVertexShape::generateNormals(SoState * const state)
     }
   }
   state->pop(); // don't forget this pop
-
+  
   SoCacheElement::setInvalid(storeinvalid);
+  this->writeUnlockNormalCache();
+  this->readLockNormalCache();
+  return THIS->normalcache;
 }
 
 /*!
@@ -264,3 +271,60 @@ SoVertexShape::write(SoWriteAction * action)
 {
   inherited::write(action);
 }
+
+/*!
+
+  Read lock the normal cache. This method should be called before
+  fetching the normal cache (using getNormalCache()). When the cached
+  normals are no longer needed, readUnlockNormalCache() must be called.
+  
+  It is also possible to use generateAndReadLockNormalCache().
+
+  \since 2002-07-11
+
+  \sa readUnlockNormalCache()
+*/
+void 
+SoVertexShape::readLockNormalCache(void)
+{
+#ifdef COIN_THREADSAFE
+  THIS->normalcachemutex.readLock();
+#endif // COIN_THREADSAFE
+}
+
+/*!
+
+  Read unlock the normal cache. Should be called when the read-locked
+  cached normals are no longer needed.
+
+  \since 2002-07-11
+  
+  \sa readLockNormalCache()
+*/
+void 
+SoVertexShape::readUnlockNormalCache(void)
+{
+#ifdef COIN_THREADSAFE
+  THIS->normalcachemutex.readUnlock();
+#endif // COIN_THREADSAFE
+}
+
+// write lock normal cache
+void 
+SoVertexShape::writeLockNormalCache(void)
+{
+#ifdef COIN_THREADSAFE
+  THIS->normalcachemutex.writeLock();
+#endif // COIN_THREADSAFE
+}
+
+// write unlock normal cache
+void 
+SoVertexShape::writeUnlockNormalCache(void)
+{
+#ifdef COIN_THREADSAFE
+  THIS->normalcachemutex.writeUnlock();
+#endif // COIN_THREADSAFE
+}
+
+#undef THIS

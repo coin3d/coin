@@ -587,18 +587,20 @@ SoTriangleStripSet::GLRender(SoGLRenderAction * action)
 
   if (!needNormals) nbind = OVERALL;
 
+
+  SoNormalCache * nc = NULL;
   if (needNormals && normals == NULL) {
-    normals = getNormalCache()->getNormals();
-    assert(normals);
+    nc = this->generateAndReadLockNormalCache(state);
+    normals = nc->getNormals();
   }
 
   SoMaterialBundle mb(action);
   mb.sendFirst(); // make sure we have the correct material
 
-  int32_t idx = startIndex.getValue();
+  int32_t idx = this->startIndex.getValue();
   int32_t dummyarray[1];
-  const int32_t * ptr = numVertices.getValues(0);
-  const int32_t * end = ptr + numVertices.getNum();
+  const int32_t * ptr = this->numVertices.getValues(0);
+  const int32_t * end = ptr + this->numVertices.getNum();
   this->fixNumVerticesPointers(state, ptr, end, dummyarray);
   
   sotristripset_ni_render_funcs[ (mbind << 3) | (nbind << 1) | doTextures ]
@@ -614,53 +616,9 @@ SoTriangleStripSet::GLRender(SoGLRenderAction * action)
       end,
       needNormals);
   
-#if 0 // // obsoleted 2001-01-08, skei
-
-  int matnr = 0;
-  int texnr = 0;
-  int n;
-
-  SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
-  const SbVec3f * currnormal = &dummynormal;
-  if (normals) currnormal = normals;
-  if (nbind == OVERALL && needNormals)
-    glNormal3fv((const GLfloat *)currnormal);
-
-  while (ptr < end) {
-    n = *ptr++ - 2;
-    assert(n > 0);
-
-    glBegin(GL_TRIANGLE_STRIP);
-
-    if ((nbind == PER_VERTEX) || (nbind == PER_STRIP)) {
-      currnormal = normals++;
-      glNormal3fv((const GLfloat *)currnormal);
-    }
-    if ((mbind == PER_STRIP) || (mbind == PER_VERTEX)) mb.send(matnr++, TRUE);
-    if (doTextures) tb.send(texnr++, coords->get3(idx), *currnormal);
-    coords->send(idx++);
-
-    if (nbind == PER_VERTEX) {
-      currnormal = normals++;
-      glNormal3fv((const GLfloat *)currnormal);
-    }
-    if (mbind == PER_VERTEX) mb.send(matnr++, TRUE);
-    if (doTextures) tb.send(texnr++, coords->get3(idx), *currnormal);
-    coords->send(idx++);
-
-    while (n--) {
-      if (nbind >= PER_FACE) {
-        currnormal = normals++;
-        glNormal3fv((const GLfloat *)currnormal);
-      }
-      if (mbind >= PER_FACE) mb.send(matnr++, TRUE);
-      if (doTextures) tb.send(texnr++, coords->get3(idx), *currnormal);
-      coords->send(idx++);
-    }
-    glEnd();
+  if (nc) {
+    this->readUnlockNormalCache();
   }
-  
-#endif // obsoleted
   
   if (didpush)
     state->pop();
@@ -782,12 +740,10 @@ SoTriangleStripSet::generatePrimitives(SoAction *action)
   Binding mbind = this->findMaterialBinding(action->getState());
   Binding nbind = this->findNormalBinding(action->getState());
 
+  SoNormalCache * nc = NULL;
+
   if (needNormals && normals == NULL) {
-    SoNormalCache * nc = this->getNormalCache();
-    if (nc == NULL || !nc->isValid(state)) {
-      this->generateNormals(state);
-      nc = this->getNormalCache();
-    }
+    nc = this->generateAndReadLockNormalCache(state);
     normals = nc->getNormals();
   }
 
@@ -888,6 +844,11 @@ SoTriangleStripSet::generatePrimitives(SoAction *action)
     this->endShape();
     faceDetail.incPartIndex();
   }
+
+  if (nc) {
+    this->readUnlockNormalCache();
+  }
+
   if (this->vertexProperty.getValue())
     state->pop();
 }

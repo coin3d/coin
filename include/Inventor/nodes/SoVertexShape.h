@@ -66,13 +66,18 @@ protected:
                       const int num, const SbVec3f * normals);
   SoNormalCache * getNormalCache(void) const;
 
-  void generateNormals(SoState * const state);
+  SoNormalCache * generateAndReadLockNormalCache(SoState * const state);
   void getVertexData(SoState * state,
                      const SoCoordinateElement *& coords,
                      const SbVec3f *& normals,
                      const SbBool neednormals);
 
+  void readLockNormalCache(void);
+  void readUnlockNormalCache(void);
+
 private:
+  void writeLockNormalCache(void);
+  void writeUnlockNormalCache(void);
   SoVertexShapeP * pimpl;
 };
 
