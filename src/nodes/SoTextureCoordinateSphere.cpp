@@ -36,6 +36,8 @@
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SoFullPath.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/C/glue/gl.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -71,7 +73,7 @@ so_texcoordsphere_construct_data(void * closure)
 
 static void
 so_texcoordsphere_destruct_data(void * closure)
-{ 
+{
 }
 
 SO_NODE_SOURCE(SoTextureCoordinateSphere);
@@ -79,7 +81,7 @@ SO_NODE_SOURCE(SoTextureCoordinateSphere);
 class SoTextureCoordinateSphereP {
 
 public:
-  SoTextureCoordinateSphereP(SoTextureCoordinateSphere * texturenode) 
+  SoTextureCoordinateSphereP(SoTextureCoordinateSphere * texturenode)
     : master(texturenode) { }
 
   SbVec4f calculateTextureCoordinate(SbVec3f point, SbVec3f n);
@@ -91,7 +93,7 @@ public:
     assert(data && "Error retrieving thread data.");
 #else // COIN_THREADSAFE
     data = this->so_texcoord_single_data;
-#endif // ! COIN_THREADSAFE    
+#endif // ! COIN_THREADSAFE
     return data;
   }
 
@@ -100,7 +102,7 @@ public:
 #else // COIN_THREADSAFE
   so_texcoordsphere_data * so_texcoord_single_data;
 #endif // ! COIN_THREADSAFE
-  
+
 private:
   SoTextureCoordinateSphere * master;
 };
@@ -126,7 +128,7 @@ SoTextureCoordinateSphere::SoTextureCoordinateSphere(void)
 
 #ifdef COIN_THREADSAFE
   pimpl->so_texcoord_storage = new SbStorage(sizeof(so_texcoordsphere_data),
-                                             so_texcoordsphere_construct_data, 
+                                             so_texcoordsphere_construct_data,
                                              so_texcoordsphere_destruct_data);
 #else // COIN_THREADSAFE
   pimpl->so_texcoord_single_data = new so_texcoordsphere_data;
@@ -154,7 +156,7 @@ SoTextureCoordinateSphere::initClass(void)
 {
   // FIXME: This should actually be COIN_2_2_3 (20040122 handegar)
   SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinateSphere, SO_FROM_COIN_2_2);
-  
+
   SO_ENABLE(SoGLRenderAction, SoGLTextureCoordinateElement);
   SO_ENABLE(SoCallbackAction, SoTextureCoordinateElement);
   SO_ENABLE(SoPickAction, SoTextureCoordinateElement);
@@ -162,13 +164,13 @@ SoTextureCoordinateSphere::initClass(void)
 }
 
 const SbVec4f &
-textureCoordinateSphereCallback(void * userdata, 
-                          const SbVec3f & point, 
+textureCoordinateSphereCallback(void * userdata,
+                          const SbVec3f & point,
                           const SbVec3f & normal)
 {
-  
+
   SoTextureCoordinateSphereP * pimpl = (SoTextureCoordinateSphereP *) userdata;
-  so_texcoordsphere_data * data = pimpl->so_texcoord_get_data();  
+  so_texcoordsphere_data * data = pimpl->so_texcoord_get_data();
 
   SoState * state = data->currentstate;
   SoFullPath * path = (SoFullPath *) state->getAction()->getCurPath();
@@ -183,9 +185,9 @@ textureCoordinateSphereCallback(void * userdata,
   // Cast the node into a shape
   SoShape * shape = (SoShape *) node;
 
-  if (shape != data->currentshape) {  
-    data->boundingbox.makeEmpty();  
-    const SoBoundingBoxCache * bboxcache = shape->getBoundingBoxCache();    
+  if (shape != data->currentshape) {
+    data->boundingbox.makeEmpty();
+    const SoBoundingBoxCache * bboxcache = shape->getBoundingBoxCache();
     if (bboxcache && bboxcache->isValid(state)) {
       data->boundingbox = bboxcache->getProjectedBox();
       data->origo = data->boundingbox.getCenter();
@@ -201,7 +203,7 @@ textureCoordinateSphereCallback(void * userdata,
 
   data->texcoordreturn = ret;
   return data->texcoordreturn;
-  
+
 }
 
 SbVec4f
@@ -213,42 +215,46 @@ SoTextureCoordinateSphereP::calculateTextureCoordinate(SbVec3f point, SbVec3f n)
   // unavoidable as the callback cannot predict when the last vertex
   // will be received, and therefore be able to patch up the
   // transition. (20040127 handegar)
- 
+
   SbVec4f tc((float) (atan2(point[0], point[2]) * (1.0/(2.0*M_PI)) + 0.5),
              (float) (atan2(point[1], sqrt(point[0]*point[0] + point[2]*point[2])) * (1.0/M_PI) + 0.5),
              0.0f, 1.0f);
 
   return tc;
- 
+
 }
 
 
 // Documented in superclass.
 void
 SoTextureCoordinateSphere::doAction(SoAction * action)
-{  
+{
 }
 
 // Documented in superclass.
 void
 SoTextureCoordinateSphere::GLRender(SoGLRenderAction * action)
 {
-  
+
   so_texcoordsphere_data * data = pimpl->so_texcoord_get_data();
- 
-  data->currentstate = action->getState();    
-  data->currentshape = NULL;  
- 
+
+  data->currentstate = action->getState();
+  data->currentshape = NULL;
+
   int unit = SoTextureUnitElement::get(data->currentstate);
   if (unit == 0) {
-    SoTextureCoordinateElement::setFunction(data->currentstate, 
-                                            this, textureCoordinateSphereCallback, 
+    SoTextureCoordinateElement::setFunction(data->currentstate,
+                                            this, textureCoordinateSphereCallback,
                                             PRIVATE(this));
-  } 
+  }
   else {
-    SoMultiTextureCoordinateElement::setFunction(data->currentstate, this,
-                                                 unit, textureCoordinateSphereCallback,
-                                                 PRIVATE(this));
+    const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(action->getState()));
+    int maxunits = cc_glglue_max_texture_units(glue);
+    if (unit < maxunits) {        
+      SoMultiTextureCoordinateElement::setFunction(data->currentstate, this,
+                                                   unit, textureCoordinateSphereCallback,
+                                                   PRIVATE(this));
+    }
   }
 
 }
@@ -266,4 +272,3 @@ SoTextureCoordinateSphere::pick(SoPickAction * action)
 {
   SoTextureCoordinateSphere::doAction((SoAction *)action);
 }
-

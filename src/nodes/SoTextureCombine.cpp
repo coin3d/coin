@@ -239,6 +239,7 @@
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/elements/SoTextureCombineElement.h>
 #include <Inventor/elements/SoTextureUnitElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/glue/gl.h>
 
@@ -303,6 +304,7 @@ SoTextureCombine::SoTextureCombine(void)
   SO_NODE_SET_SF_ENUM_TYPE(alphaOperation, Operation);
 }
 
+
 /*!
   Destructor.
 */
@@ -325,19 +327,19 @@ SoTextureCombine::GLRender(SoGLRenderAction * action)
 {
   const cc_glglue * glue = cc_glglue_instance(action->getCacheContext());
 
-  SoTextureCombine::Operation rgbaop = 
+  SoTextureCombine::Operation rgbaop =
     (SoTextureCombine::Operation) this->rgbOperation.getValue();
-  
-  SoTextureCombine::Operation alphaop = 
+
+  SoTextureCombine::Operation alphaop =
     (SoTextureCombine::Operation) this->alphaOperation.getValue();
 
   SbBool supported = cc_glglue_glversion_matches_at_least(glue, 1, 3, 0);
-  
+
   if (!supported) {
     supported = cc_glglue_glext_supported(glue, "GL_ARB_texture_env_combine");
     if (supported && (alphaop == DOT3_RGB || alphaop == DOT3_RGBA ||
                       rgbaop == DOT3_RGB || rgbaop == DOT3_RGBA)) {
-      supported = 
+      supported =
         cc_glglue_glext_supported(glue, "GL_ARB_texture_env_dot3");
     }
   }
@@ -406,14 +408,21 @@ SoTextureCombine::doAction(SoAction * action)
   col[2] = tmp[2];
   col[3] = tmp[3];
 
-  SoTextureCombineElement::set(state, this, unit,
-                               (SoTextureCombineElement::Operation) this->rgbOperation.getValue(),
-                               (SoTextureCombineElement::Operation) this->alphaOperation.getValue(),
-                               rgbsource, alphasource,
-                               rgboperand, alphaoperand,
-                               col,
-                               this->rgbScale.getValue(),
-                               this->alphaScale.getValue());
+
+  const cc_glglue * glue = 
+    cc_glglue_instance(SoGLCacheContextElement::get(state));
+  int maxunits = cc_glglue_max_texture_units(glue);
+
+  if (unit < maxunits) {
+    SoTextureCombineElement::set(state, this, unit,
+                                 (SoTextureCombineElement::Operation) this->rgbOperation.getValue(),
+                                 (SoTextureCombineElement::Operation) this->alphaOperation.getValue(),
+                                 rgbsource, alphasource,
+                                 rgboperand, alphaoperand,
+                                 col,
+                                 this->rgbScale.getValue(),
+                                 this->alphaScale.getValue());
+  }
 }
 
 

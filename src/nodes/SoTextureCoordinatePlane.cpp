@@ -93,6 +93,7 @@
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoTextureUnitElement.h>
 
@@ -100,6 +101,7 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 #include <Inventor/system/gl.h>
+#include <Inventor/C/glue/gl.h>
 
 /*!
   \var SoSFVec3f SoTextureCoordinatePlane::directionS
@@ -175,6 +177,7 @@ SoTextureCoordinatePlane::GLRender(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
   int unit = SoTextureUnitElement::get(state);
+
   if (unit == 0) {
     SoTextureCoordinatePlane::doAction((SoAction *)action);
     SoGLTextureCoordinateElement::setTexGen(action->getState(),
@@ -185,13 +188,17 @@ SoTextureCoordinatePlane::GLRender(SoGLRenderAction * action)
                                             this);
   }
   else {
-    this->setupGencache();
-    SoGLMultiTextureCoordinateElement::setTexGen(action->getState(),
-                                                 this, unit,
-                                                 SoTextureCoordinatePlane::handleTexgen,
-                                                 this,
-                                                 SoTextureCoordinatePlane::generate,
-                                                 this);
+    const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
+    int maxunits = cc_glglue_max_texture_units(glue);
+    if (unit < maxunits) {        
+      this->setupGencache();
+      SoGLMultiTextureCoordinateElement::setTexGen(action->getState(),
+                                                   this, unit,
+                                                   SoTextureCoordinatePlane::handleTexgen,
+                                                   this,
+                                                   SoTextureCoordinatePlane::generate,
+                                                   this);
+    }
   }
 }
 

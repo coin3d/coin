@@ -94,10 +94,12 @@ Separator {
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoTextureUnitElement.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoPickAction.h>
+#include <Inventor/C/glue/gl.h>
 
 /*!
   \var SoMFVec2f SoTextureCoordinate2::point
@@ -160,15 +162,21 @@ SoTextureCoordinate2::GLRender(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
   int unit = SoTextureUnitElement::get(state);
+
   if (unit == 0) {
     SoGLTextureCoordinateElement::setTexGen(action->getState(), this, NULL);
     SoTextureCoordinate2::doAction((SoAction *)action);
   }
   else {
-    SoGLMultiTextureCoordinateElement::setTexGen(action->getState(), this, unit, NULL);
-    SoMultiTextureCoordinateElement::set2(action->getState(), this, unit,
-                                          point.getNum(),
-                                          point.getValues(0));
+    const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
+    int maxunits = cc_glglue_max_texture_units(glue);
+    
+    if (unit < maxunits) {
+      SoGLMultiTextureCoordinateElement::setTexGen(action->getState(), this, unit, NULL);
+      SoMultiTextureCoordinateElement::set2(action->getState(), this, unit,
+                                            point.getNum(),
+                                            point.getValues(0));
+    }
   }
 }
 

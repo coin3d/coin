@@ -36,6 +36,8 @@
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SoFullPath.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/C/glue/gl.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -275,11 +277,14 @@ SoTextureCoordinateCylinder::GLRender(SoGLRenderAction * action)
                                             PRIVATE(this));
   } 
   else {
-    SoMultiTextureCoordinateElement::setFunction(data->currentstate, this,
-                                                 unit, textureCoordinateCylinderCallback,
-                                                 PRIVATE(this));
+    const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(action->getState()));
+    int maxunits = cc_glglue_max_texture_units(glue);
+    if (unit < maxunits) {        
+      SoMultiTextureCoordinateElement::setFunction(data->currentstate, this,
+                                                   unit, textureCoordinateCylinderCallback,
+                                                   PRIVATE(this));
+    }
   }
-
 }
 
 // Documented in superclass.
