@@ -22,8 +22,8 @@
 
 #ifndef COIN_INTERNAL
  // The next two includes are for Open Inventor compatibility.
- #include <Inventor/lists/SbBasic.h>
- #include <Inventor/lists/SbLinear.h>
+ #include <Inventor/SbBasic.h>
+ #include <Inventor/SbLinear.h>
  // Here's the class definition of SbPList in Coin.
  #include <Inventor/lists/SbPList.h>
 #else // COIN_INTERNAL
