@@ -377,10 +377,10 @@ STUFF TO FIX IN COIN
   investigate their model.
 
 
-* The SoSphere should be tesselated better.
+* The SoSphere should be tessellated better.
   2002-02-19  Morten Eriksen  <mortene@sim.no>
 
-  It is now tesselated to quads, in a way that makes the visual
+  It is now tessellated to quads, in a way that makes the visual
   quality not as good as it should be.  SGI / TGS Inventor's SoSphere
   is (at least partly) triangulated, and looks better.
 
