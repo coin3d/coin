@@ -20,6 +20,9 @@
 /*!
   \class SoVRMLText SoVRMLText.h Inventor/VRMLnodes/SoVRMLText.h
   \brief The SoVRMLText class is used to represent text in a scene.
+  \ingroup VRMLnodes
+
+  FIXME: implement and document
 */
 
 /*!
@@ -117,6 +120,3 @@ void
 SoVRMLText::generatePrimitives(SoAction * action)
 {
 }
-
-
-

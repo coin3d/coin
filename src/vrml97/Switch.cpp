@@ -35,7 +35,7 @@
   specified in the choice field.  4.6.5, Grouping and children nodes
   (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.5),
   describes details on the types of nodes that are legal values for
-  choice.  
+  choice.
 
   The \e whichChoice field specifies the index of the child to
   traverse, with the first child having index 0. If whichChoice is

@@ -20,6 +20,121 @@
 /*!
   \class SoVRMLTransform SoVRMLTransform.h Inventor/VRMLnodes/SoVRMLTransform.h
   \brief The SoVRMLTransform class is a grouping node that defines a transformation for its children.
+  \ingroup VRMLnodes
+  
+  \WEB3DCOPYRIGHT
+
+  \verbatim
+  Transform {
+    eventIn      MFNode      addChildren
+    eventIn      MFNode      removeChildren
+    exposedField SFVec3f     center           0 0 0    # (-inf,inf)
+    exposedField MFNode      children         []
+    exposedField SFRotation  rotation         0 0 1 0  # [-1,1],(-inf,inf)
+    exposedField SFVec3f     scale            1 1 1    # (0,inf)
+    exposedField SFRotation  scaleOrientation 0 0 1 0  # [-1,1],(-inf,inf)
+    exposedField SFVec3f     translation      0 0 0    # (-inf,inf)
+    field        SFVec3f     bboxCenter       0 0 0    # (-inf,inf)
+    field        SFVec3f     bboxSize         -1 -1 -1 # (0,inf) or -1,-1,-1
+  }
+  \endverbatim
+
+  The Transform node is a grouping node that defines a coordinate
+  system for its children that is relative to the coordinate systems
+  of its ancestors.  See 4.4.4, Transformation hierarchy
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.4.4),
+  and 4.4.5, Standard units and coordinate system
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.4.5),
+  for a description of coordinate systems and transformations.
+
+  4.6.5, Grouping and children nodes
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.5),
+  provides a description of the children, addChildren, and removeChildren
+  fields and eventIns.
+   
+  The bboxCenter and bboxSize fields specify a bounding box that
+  encloses the children of the Transform node. This is a hint that may
+  be used for optimization purposes. The results are undefined if the
+  specified bounding box is smaller than the actual bounding box of
+  the children at any time. A default bboxSize value, (-1, -1, -1),
+  implies that the bounding box is not specified and, if needed, shall
+  be calculated by the browser. The bounding box shall be large enough
+  at all times to enclose the union of the group's children's bounding
+  boxes; it shall not include any transformations performed by the
+  group itself (i.e., the bounding box is defined in the local
+  coordinate system of the children). The results are undefined if the
+  specified bounding box is smaller than the true bounding box of the
+  group. A description of the bboxCenter and bboxSize fields is
+  provided in 4.6.4, Bounding boxes
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.4).
+
+  The translation, rotation, scale, scaleOrientation and center fields
+  define a geometric 3D transformation consisting of (in order):
+
+  - a (possibly) non-uniform scale about an arbitrary point;
+  - a rotation about an arbitrary point and axis;
+  - a translation.
+
+  The \e center field specifies a translation offset from the origin
+  of the local coordinate system (0,0,0). The \e rotation field
+  specifies a rotation of the coordinate system. The \e scale field
+  specifies a non-uniform scale of the coordinate system. scale values
+  shall be greater than zero. The \e scaleOrientation specifies a
+  rotation of the coordinate system before the scale (to specify
+  scales in arbitrary orientations). The scaleOrientation applies only
+  to the scale operation.  The \e translation field specifies a
+  translation to the coordinate system.
+
+  Given a 3-dimensional point
+  P and Transform node, P is transformed into point P' in its
+  parent's coordinate system by a series of intermediate
+  transformations. In matrix transformation notation, where C
+  (center), SR (scaleOrientation), T (translation), R (rotation), and
+  S (scale) are the equivalent transformation matrices,
+  
+  \verbatim
+  P' = T × C × R × SR × S × -SR × -C × P
+  \endverbatim
+
+  The following Transform node:
+
+  \verbatim
+  Transform {
+    center           C
+    rotation         R
+    scale            S
+    scaleOrientation SR
+    translation      T
+    children         [...]
+  }
+  \endverbatim
+
+  is equivalent to the nested sequence of:
+
+  \verbatim
+  Transform {
+    translation T
+    children Transform {
+      translation C
+      children Transform {
+        rotation R
+        children Transform {
+          rotation SR
+          children Transform {
+            scale S
+            children Transform {
+              rotation -SR
+              children Transform {
+                translation -C
+                children [...]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  \endverbatim
 
 */
 

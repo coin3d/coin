@@ -20,6 +20,26 @@
 /*!
   \class SoVRMLWorldInfo SoVRMLWorldInfo.h Inventor/VRMLnodes/SoVRMLWorldInfo.h
   \brief The SoVRMLWorldInfo class contains information about the VRML scene.
+  \ingroup VRMLnodes
+
+  \WEB3DCOPYRIGHT
+
+  \verbatim
+  WorldInfo {
+    field MFString info  []
+    field SFString title ""
+  }
+  \endverbatim
+ 
+  The WorldInfo node contains information about the world. This node
+  is strictly for documentation purposes and has no effect on the
+  visual appearance or behaviour of the world. The \e title field is
+  intended to store the name or title of the world so that browsers
+  can present this to the user (perhaps in the window border). Any
+  other information about the world can be stored in the \e info
+  field, such as author information, copyright, and usage
+  instructions.
+
 */
 
 /*!

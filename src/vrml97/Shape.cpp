@@ -21,7 +21,7 @@
   \class SoVRMLShape SoVRMLShape.h Inventor/VRMLnodes/SoVRMLShape.h
   \brief The SoVRMLShape class holds geometry and geometry appearance nodes.
   \ingroup VRMLnodes
-  
+
   \WEB3DCOPYRIGHT
 
   \verbatim
@@ -30,7 +30,7 @@
     exposedField SFNode geometry   NULL
   }
   \endverbatim
-  
+
   The Shape node has two fields, \e appearance and \e geometry, which
   are used to create rendered objects in the world. The \e appearance
   field contains an SoVRMLAppearance node that specifies the visual
@@ -105,6 +105,7 @@
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoLocalBBoxMatrixElement.h>
+#include <Inventor/elements/SoComplexityTypeElement.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
 #include <Inventor/caches/SoGLCacheList.h>
 #include <Inventor/elements/SoLightModelElement.h>
@@ -222,7 +223,6 @@ SoVRMLShape::doAction(SoAction * action)
 void
 SoVRMLShape::callback(SoCallbackAction * action)
 {
-
   SoVRMLShape::doAction((SoAction*) action);
 }
 
@@ -230,6 +230,18 @@ void
 SoVRMLShape::GLRender(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
+
+#if 0
+  if (SoComplexityTypeElement::get(state) ==
+      SoComplexityTypeElement::BOUNDING_BOX) {
+    SbBool validcache = THIS->bboxcache && THIS->bboxcache->isValid(state);
+    if (valid) {
+      // FIXME: bbox rendering code here...
+      return;
+    }
+  }
+#endif
+
   state->push();
 
   if ((this->appearance.getValue() == NULL) ||

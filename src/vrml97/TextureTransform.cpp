@@ -20,6 +20,66 @@
 /*!
   \class SoVRMLTextureTransform SoVRMLTextureTransform.h Inventor/VRMLnodes/SoVRMLTextureTransform.h
   \brief The SoVRMLTextureTransform class defines a transformation applied to texture coordinates.
+  \ingroup VRMLnodes
+
+  \WEB3DCOPYRIGHT
+
+  \verbatim
+  TextureTransform {
+    exposedField SFVec2f center      0 0     # (-inf, inf)
+    exposedField SFFloat rotation    0       # (-inf, inf)
+    exposedField SFVec2f scale       1 1     # (-inf, inf)
+    exposedField SFVec2f translation 0 0     # (-inf, inf)
+  }
+  \endverbatim
+
+  The TextureTransform node defines a 2D transformation that is
+  applied to texture coordinates (see SoVRMLTextureCoordinate).  This
+  node affects the way textures coordinates are applied to the
+  geometric surface. The transformation consists of (in order):
+
+  - a translation;
+  - a rotation about the centre point;
+  - a non-uniform scale about the centre point.
+
+  These parameters support changes to the size, orientation, and
+  position of textures on shapes. Note that these operations appear
+  reversed when viewed on the surface of geometry. For example, a
+  scale value of (2 2) will scale the texture coordinates and have the
+  net effect of shrinking the texture size by a factor of 2 (texture
+  coordinates are twice as large and thus cause the texture to
+  repeat). A translation of (0.5 0.0) translates the texture
+  coordinates +.5 units along the S-axis and has the net effect of
+  translating the texture -0.5 along the S-axis on the geometry's
+  surface.  A rotation of pi/2 of the texture coordinates results in a
+  -pi/2 rotation of the texture on the geometry.
+
+  The \e center field specifies a translation offset in texture
+  coordinate space about which the rotation and scale fields are
+  applied.  The \e scale field specifies a scaling factor in S and T
+  of the texture coordinates about the center point. scale values
+  shall be in the range (-pi, pi). The \e rotation field specifies a
+  rotation in radians of the texture coordinates about the center
+  point after the scale has been applied. A positive rotation value
+  makes the texture coordinates rotate counterclockwise about the
+  centre, thereby rotating the appearance of the texture itself
+  clockwise. The \e translation field specifies a translation of the
+  texture coordinates.  
+
+  In matrix transformation notation, where Tc is the untransformed
+  texture coordinate, Tc' is the transformed texture coordinate, C
+  (center), T (translation), R (rotation), and S (scale) are the
+  intermediate transformation matrices, 
+  
+  \verbatim
+  Tc' = -C × S × R × C × T × Tc
+  \endverbatim
+
+  Note that this transformation order is the reverse of the Transform
+  node transformation order since the texture coordinates, not the
+  texture, are being transformed (i.e., the texture coordinate
+  system).
+
 */
 
 /*!

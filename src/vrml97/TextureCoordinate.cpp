@@ -20,6 +20,49 @@
 /*!
   \class SoVRMLTextureCoordinate SoVRMLTextureCoordinate.h Inventor/VRMLnodes/SoVRMLTextureCoordinate.h
   \brief The SoVRMLTextureCoordinate class binds texture coordinates to vertex-based geometry.
+  \ingroup VRMLnodes
+
+  \WEB3DCOPYRIGHT
+
+  \verbatim  
+  TextureCoordinate {
+    exposedField MFVec2f point  []      # (-inf, inf)
+  }
+  \endverbatim
+
+  The TextureCoordinate node specifies a set of 2D texture coordinates
+  used by vertex-based geometry nodes (e.g., SoVRMLIndexedFaceSet and
+  SoVRMLElevationGrid) to map textures to vertices.  Textures are two
+  dimensional colour functions that, given an (s, t) coordinate,
+  return a colour value colour(s, t). Texture map values
+  (SoVRMLImageTexture, SoVRMLMovieTexture, and SoVRMLPixelTexture)
+  range from [0.0, 1.0] along the S-axis and T-axis. However,
+  TextureCoordinate values, specified by the point field, may be in
+  the range (-inf,inf). Texture coordinates identify a location (and
+  thus a colour value) in the texture map. The horizontal coordinate s
+  is specified first, followed by the vertical coordinate t.
+
+  If the texture map is repeated in a given direction (S-axis or
+  T-axis), a texture coordinate C (s or t) is mapped into a texture
+  map that has N pixels in the given direction as follows:
+
+  \verbatim
+  Texture map location = (C - floor(C)) × N 
+  \endverbatim
+
+  If the texture map is not repeated, the texture coordinates are
+  clamped to the 0.0 to 1.0 range as follows: 
+  
+  \verbatim
+  Texture map location = N, if C > 1.0, 
+                       = 0.0, if C < 0.0, 
+                       = C × N, if 0.0 <= C <= 1.0.
+  \endverbatim
+
+  Details on repeating textures are specific to texture map node types
+  described in SoVRMLImageTexture, SoVRMLMovieTexture, and
+  SoVRMLPixelTexture.
+  
 */
 
 /*!

@@ -20,6 +20,67 @@
 /*!
   \class SoVRMLVisibilitySensor SoVRMLVisibilitySensor.h Inventor/VRMLnodes/SoVRMLVisibilitySensor.h
   \brief The SoVRMLVisibilitySensor class will generate events based on visibility.
+  \ingroup VRMLnodes
+
+  \WEB3DCOPYRIGHT
+
+  \verbatim
+  VisibilitySensor {
+    exposedField SFVec3f center   0 0 0      # (-,)
+    exposedField SFBool  enabled  TRUE
+    exposedField SFVec3f size     0 0 0      # [0,)
+    eventOut     SFTime  enterTime
+    eventOut     SFTime  exitTime
+    eventOut     SFBool  isActive
+  }
+  \endverbatim
+
+  The VisibilitySensor node detects visibility changes of a
+  rectangular box as the user navigates the world. VisibilitySensor is
+  typically used to detect when the user can see a specific object or
+  region in the scene in order to activate or deactivate some
+  behaviour or animation. The purpose is often to attract the
+  attention of the user or to improve performance.
+
+  The \e enabled field enables and disables the VisibilitySensor node.
+  If enabled is set to FALSE, the VisibilitySensor node does not send
+  events. If enabled is TRUE, the VisibilitySensor node detects
+  changes to the visibility status of the box specified and sends
+  events through the isActive eventOut. A TRUE event is output to
+  isActive when any portion of the box impacts the rendered view. A
+  FALSE event is sent when the box has no effect on the view. Browsers
+  shall guarantee that, if isActive is FALSE, the box has absolutely
+  no effect on the rendered view. Browsers may err liberally when
+  isActive is TRUE. For example, the box may affect the rendering.
+
+  The exposed fields \e center and \e size specify the object space
+  location of the box centre and the extents of the box (i.e., width,
+  height, and depth). The VisibilitySensor node's box is affected by
+  hierarchical transformations of its parents. The components of the
+  size field shall be greater than or equal to zero.
+
+  The \e enterTime event is generated whenever the isActive TRUE event
+  is generated, and exitTime events are generated whenever isActive
+  FALSE events are generated. A VisibilitySensor read from a VRML file
+  shall generate isActive TRUE and enterTime events if the sensor is
+  enabled and the visibility box is visible. A VisibilitySensor
+  inserted into the transformation hierarchy shall generate isActive
+  TRUE and enterTime events if the sensor is enabled and the
+  visibility box is visible. A VisibilitySensor removed from the
+  transformation hierarchy shall generate isActive FALSE and exitTime
+  events if the sensor is enabled and the visibility box is visible.
+
+  Each VisibilitySensor node behaves independently of all other
+  VisibilitySensor nodes. Every enabled VisibilitySensor node that is
+  affected by the user's movement receives and sends events, possibly
+  resulting in multiple VisibilitySensor nodes receiving and sending
+  events simultaneously. Unlike TouchSensor nodes, there is no notion
+  of a VisibilitySensor node lower in the scene graph "grabbing"
+  events. Multiply instanced VisibilitySensor nodes (i.e., DEF/USE)
+  use the union of all the boxes defined by their instances. An
+  instanced VisibilitySensor node shall detect visibility changes for
+  all instances of the box and send events appropriately.
+  
 */
 
 /*!
@@ -137,4 +198,3 @@ SoVRMLVisibilitySensor::GLRender(SoGLRenderAction * action)
     this->isActive = FALSE;
   }
 }
-

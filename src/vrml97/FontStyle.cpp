@@ -22,9 +22,9 @@
   \class SoVRMLFontStyle SoVRMLFontStyle.h Inventor/VRMLnodes/SoVRMLFontStyle.h
   \brief The SoVRMLFontStyle class is used to define the current font.
   \ingroup VRMLnodes
-  
+
   FIXME: implement and document
-  
+
 */
 
 /*!
