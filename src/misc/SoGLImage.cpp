@@ -553,6 +553,10 @@ fast_image_resize3d(const unsigned char * src,
 
 class SoGLImageP {
 public:
+#ifdef COIN_THREADSAFE
+  static SbMutex * mutex;
+#endif // COIN_THREADSAFE
+
   static SoType classTypeId;
   static uint32_t current_glimageid;
   static uint32_t getNextGLImageId(void);
@@ -614,15 +618,15 @@ public:
   void unrefOldDL(SoState *state, const uint32_t maxage);
   SoGLImage *owner; // for debugging only
   uint32_t glimageid;
-#ifdef COIN_THREADSAFE
-  SbMutex mutex;
-#endif // COIN_THREADSAFE
   void init(void);
   static void contextCleanup(uint32_t context, void * closure);
 };
 
 SoType SoGLImageP::classTypeId STATIC_SOTYPE_INIT;
 uint32_t SoGLImageP::current_glimageid = 1;
+#ifdef COIN_THREADSAFE
+SbMutex * SoGLImageP::mutex;
+#endif // COIN_THREADSAFE
 
 #undef PRIVATE
 #define PRIVATE(p) ((p)->pimpl)
@@ -641,9 +645,12 @@ uint32_t SoGLImageP::current_glimageid = 1;
 // SoGLImage::getGLDisplayList() use a mutex so that several
 // threads can call this method safely.
 
+
+// we now share one mutex among all glimages to avoid allocating too
+// many mutexes.
 #ifdef COIN_THREADSAFE
-#define LOCK_DLISTS(_thisp_)  (_thisp_)->pimpl->mutex.lock()
-#define UNLOCK_DLISTS(_thisp_)  (_thisp_)->pimpl->mutex.unlock()
+#define LOCK_DLISTS(_thisp_)  SoGLImageP::mutex->lock()
+#define UNLOCK_DLISTS(_thisp_)  SoGLImageP::mutex->unlock()
 #else // COIN_THREADSAFE
 #define LOCK_DLISTS(_thisp_)
 #define UNLOCK_DLISTS(_thisp_)
@@ -718,6 +725,9 @@ SoGLImage::initClass(void)
   assert(SoGLImageP::classTypeId.isBad());
   SoGLImageP::classTypeId = SoType::createType(SoType::badType(),
                                                SbName("GLImage"));
+#ifdef COIN_THREADSAFE
+  SoGLImageP::mutex = new SbMutex;
+#endif // COIN_THREADSAFE
   cc_coin_atexit((coin_atexit_f*)SoGLImage::cleanupClass);
 }
 
@@ -727,6 +737,10 @@ SoGLImage::initClass(void)
 void
 SoGLImage::cleanupClass(void)
 {
+#ifdef COIN_THREADSAFE
+  delete SoGLImageP::mutex;
+  SoGLImageP::mutex = NULL;
+#endif // COIN_THREADSAFE
   SoGLImageP::classTypeId STATIC_SOTYPE_INIT;
 }
 
@@ -1968,7 +1982,7 @@ SoGLImageP::contextCleanup(uint32_t context, void * closure)
 {
   SoGLImageP * thisp = (SoGLImageP *) closure;
 #ifdef COIN_THREADSAFE
-  thisp->mutex.lock();
+  SoGLImageP::mutex->lock();
 #endif // COIN_THREADSAFE
   
   int n = thisp->dlists.getLength();
@@ -1983,7 +1997,7 @@ SoGLImageP::contextCleanup(uint32_t context, void * closure)
     else i++;
   }
 #ifdef COIN_THREADSAFE
-  thisp->mutex.unlock();
+  SoGLImageP::mutex->unlock();
 #endif // COIN_THREADSAFE
 }
 
