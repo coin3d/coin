@@ -92,17 +92,7 @@ SoAudioDevice::SoAudioDevice()
 
 SoAudioDevice::~SoAudioDevice()
 {
-  this->disable();
-
-  if (PRIVATE(this)->audioRenderAction != NULL)
-    delete PRIVATE(this)->audioRenderAction;
-
-#ifdef HAVE_SOUND
-  alcDestroyContext((ALCcontext *)PRIVATE(this)->context);
-
-  //Close device
-  alcCloseDevice(PRIVATE(this)->device);
-#endif // HAVE_SOUND
+  this->cleanup();
 
   delete PRIVATE(this);
 }
@@ -136,6 +126,27 @@ SbBool SoAudioDevice::init(const SbString &devicetype,
   PRIVATE(this)->initOK = TRUE;
 #endif // HAVE_SOUND
   return PRIVATE(this)->initOK;
+}
+
+void SoAudioDevice::cleanup()
+{
+  this->disable();
+
+  if (PRIVATE(this)->audioRenderAction != NULL)
+    delete PRIVATE(this)->audioRenderAction;
+  PRIVATE(this)->audioRenderAction = NULL;
+
+#ifdef HAVE_SOUND
+  if (PRIVATE(this)->context != NULL)
+    alcDestroyContext((ALCcontext *)PRIVATE(this)->context);
+  PRIVATE(this)->context = NULL;
+
+  //Close device
+  if (PRIVATE(this)->device != NULL)
+    alcCloseDevice(PRIVATE(this)->device);
+  PRIVATE(this)->device = NULL;
+#endif // HAVE_SOUND
+
 }
   
 SbBool SoAudioDevice::haveSound()

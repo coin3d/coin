@@ -37,6 +37,7 @@ public:
   SbBool enable();
   void disable();
   SbBool haveSound();
+  void cleanup();
   ~SoAudioDevice();
 
 private:
