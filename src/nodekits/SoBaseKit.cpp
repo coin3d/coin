@@ -67,8 +67,10 @@ SoBaseKit::SoBaseKit(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoBaseKit);
 
-  SO_KIT_ADD_CATALOG_ENTRY(this, SoBaseKit, TRUE, , , FALSE);
-  SO_KIT_ADD_CATALOG_LIST_ENTRY(callbackList, SoSeparator, TRUE, this, , SoCallback, TRUE);
+  // Note: we must use "" instead of , , to humour MS VisualC++ 6.
+
+  SO_KIT_ADD_CATALOG_ENTRY(this, SoBaseKit, TRUE, "", "", FALSE);
+  SO_KIT_ADD_CATALOG_LIST_ENTRY(callbackList, SoSeparator, TRUE, this, "", SoCallback, TRUE);
   SO_KIT_ADD_LIST_ITEM_TYPE(callbackList, SoEventCallback);
 
   SO_KIT_INIT_INSTANCE();

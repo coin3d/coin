@@ -41,9 +41,11 @@ SoCameraKit::SoCameraKit(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoCameraKit);
 
-  SO_KIT_ADD_CATALOG_ENTRY(transformGroup, SoTransformSeparator, TRUE, this, , FALSE);
-  SO_KIT_ADD_CATALOG_ENTRY(transform, SoTransform, TRUE, transformGroup, , TRUE);
-  SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(camera, SoCamera, SoPerspectiveCamera, FALSE, transformGroup, , TRUE);
+  // Note: we must use "" instead of , , to humour MS VisualC++ 6.
+
+  SO_KIT_ADD_CATALOG_ENTRY(transformGroup, SoTransformSeparator, TRUE, this, "", FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(transform, SoTransform, TRUE, transformGroup, "", TRUE);
+  SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(camera, SoCamera, SoPerspectiveCamera, FALSE, transformGroup, "", TRUE);
 
   SO_KIT_INIT_INSTANCE();
 }

@@ -40,8 +40,10 @@ SoWrapperKit::SoWrapperKit(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoWrapperKit);
 
-  SO_KIT_ADD_CATALOG_ENTRY(localTransform, SoTransform, TRUE, topSeparator, , TRUE);
-  SO_KIT_ADD_CATALOG_ENTRY(contents, SoSeparator, TRUE, topSeparator, , TRUE);
+  // Note: we must use "" instead of , , to humour MS VisualC++ 6.
+
+  SO_KIT_ADD_CATALOG_ENTRY(localTransform, SoTransform, TRUE, topSeparator, "", TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(contents, SoSeparator, TRUE, topSeparator, "", TRUE);
 
   SO_KIT_INIT_INSTANCE();
 }

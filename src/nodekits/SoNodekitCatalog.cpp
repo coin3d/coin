@@ -580,7 +580,8 @@ SoNodekitCatalog::clone(SoType type) const
 SbBool
 SoNodekitCatalog::addEntry(const SbName & name, SoType type,
                            SoType defaulttype, SbBool isdefaultnull,
-                           const SbName & parent, const SbName & rightsibling,
+                           const SbName & parentname,
+                           const SbName & rightsiblingname,
                            SbBool islist, SoType listcontainertype,
                            SoType listitemtype, SbBool ispublic)
 {
@@ -592,6 +593,16 @@ SoNodekitCatalog::addEntry(const SbName & name, SoType type,
   //
   // The list is in the same order which we would get by continually
   // appending elements through a prefix traversal of the tree.
+
+
+  // Note: this is a fix to make it possible to compile the
+  // SO_KIT_ADD_CATALOG_ENTRY() etc macros under MS VisualC++ with ""
+  // entries where you can specify blank , , entries under gcc.
+  SbName parent = parentname;
+  SbName rightsibling = rightsiblingname;
+  if (parent[0] == '\"' && parent[1] == '\"') parent = "";
+  if (rightsibling[0] == '\"' && rightsibling[1] == '\"') rightsibling = "";
+
 
 #if COIN_DEBUG // debug
   if (name == "") {
@@ -606,7 +617,8 @@ SoNodekitCatalog::addEntry(const SbName & name, SoType type,
   else if (rightsibling != "" &&
            this->getPartNumber(rightsibling) == SO_CATALOG_NAME_NOT_FOUND) {
     SoDebugError::post("SoNodekitCatalog::addEntry",
-                       "right sibling \"%s\" not found", name.getString());
+                       "right sibling \"%s\" not found",
+                       rightsibling.getString());
     return FALSE;
   }
   else if (parent != "" &&

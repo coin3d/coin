@@ -39,8 +39,10 @@ SoInteractionKit::SoInteractionKit(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoInteractionKit);
 
-  SO_KIT_ADD_CATALOG_ENTRY(topSeparator, SoSeparator, TRUE, this, , FALSE);
-  SO_KIT_ADD_CATALOG_ENTRY(geomSeparator, SoSeparator, TRUE, topSeparator, , FALSE);
+  // Note: we must use "" instead of , , to humour MS VisualC++ 6.
+
+  SO_KIT_ADD_CATALOG_ENTRY(topSeparator, SoSeparator, TRUE, this, "", FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(geomSeparator, SoSeparator, TRUE, topSeparator, "", FALSE);
 
   SO_KIT_INIT_INSTANCE();
 }
