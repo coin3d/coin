@@ -169,7 +169,7 @@ SoSFImage::initClass(void)
 SbBool
 SoSFImage::readValue(SoInput * in)
 {
-  assert(!in->isBinary() && "FIXME: not implemented");
+  assert(!in->isBinary() && "FIXME: binary read not implemented for SoSFImage yet");
 
   if (! in->read(this->imgdim[0]) ||
       ! in->read(this->imgdim[1]) ||
@@ -203,13 +203,13 @@ SoSFImage::readValue(SoInput * in)
 int
 SoSFImage::operator == (const SoSFImage & field) const
 {
-  if(this->imgdim[0] != field.imgdim[0]) return FALSE;
-  if(this->imgdim[1] != field.imgdim[1]) return FALSE;
-  if(this->bytedepth != field.bytedepth) return FALSE;
+  if (this->imgdim[0] != field.imgdim[0]) return FALSE;
+  if (this->imgdim[1] != field.imgdim[1]) return FALSE;
+  if (this->bytedepth != field.bytedepth) return FALSE;
 
   int bytesize = this->imgdim[0] * this->imgdim[1] * this->bytedepth;
-  for(int i=0; i < bytesize; i++) {
-    if(this->pixblock[i] != field.pixblock[i]) return FALSE;
+  for (int i=0; i < bytesize; i++) {
+    if (this->pixblock[i] != field.pixblock[i]) return FALSE;
   }
   return TRUE;
 }
@@ -270,31 +270,31 @@ SoSFImage::finishEditing(void)
 void
 SoSFImage::writeValue(SoOutput * out) const
 {
-  assert(!out->isBinary() && "FIXME: not implemented");
+  assert(!out->isBinary() && "FIXME: binary write not implemented for SoSFImage yet");
 
   out->write(this->imgdim[0]);
-  if(!out->isBinary()) out->write(' ');
+  if (!out->isBinary()) out->write(' ');
   out->write(this->imgdim[1]);
-  if(!out->isBinary()) out->write(' ');
+  if (!out->isBinary()) out->write(' ');
   out->write(this->bytedepth);
   // FIXME: ok on mac/win32? 19980910 mortene.
-  if(!out->isBinary()) out->write('\n');
+  if (!out->isBinary()) out->write('\n');
 
-  if(!out->isBinary()) out->indent();
+  if (!out->isBinary()) out->indent();
 
-  for(int i=0; i < this->imgdim[0] * this->imgdim[1]; i++) {
+  for (int i=0; i < this->imgdim[0] * this->imgdim[1]; i++) {
     uint32_t data = 0;
-    for(int j=0; j < this->bytedepth; j++) {
-      if(j) data <<= 8;
+    for (int j=0; j < this->bytedepth; j++) {
+      if (j) data <<= 8;
       data |= (uint32_t)(this->pixblock[i * this->bytedepth + j]);
     }
     out->write(data);
-    if(((i+1)%8 == 0) && (i+1 != this->imgdim[0] * this->imgdim[1])) {
+    if (((i+1)%8 == 0) && (i+1 != this->imgdim[0] * this->imgdim[1])) {
       out->write('\n'); // FIXME: ok on win32/mac? 19980910 mortene.
       out->indent();
     }
     else {
-      if(!out->isBinary()) out->write(' ');
+      if (!out->isBinary()) out->write(' ');
     }
   }
 }
