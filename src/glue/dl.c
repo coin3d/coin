@@ -32,6 +32,7 @@
 #include <dlfcn.h> /* Programming interface to libdl. */
 #endif /* HAVE_DLFCN_H */
 
+#include <stddef.h> /* NULL definition. */
 #include <malloc.h>
 #include <Inventor/C/glue/dl.h>
 
