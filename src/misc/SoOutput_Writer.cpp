@@ -23,6 +23,7 @@
 
 #include "SoOutput_Writer.h"
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/SbName.h>
 #include <string.h>
 #include <assert.h>
 
@@ -55,6 +56,27 @@ FILE *
 SoOutput_Writer::getFilePointer(void)
 {
   return NULL;
+}
+
+
+SoOutput_Writer * 
+SoOutput_Writer::createWriter(FILE * fp, 
+                              const SbBool shouldclose,
+                              const SbName & compmethod,
+                              const float level)
+{
+#ifdef HAVE_ZLIB
+  if (compmethod == "GZIP") {
+    return new SoOutput_GZFileWriter(fp, shouldclose, level);
+  }
+#endif // HAVE_ZLIB
+#ifdef HAVE_BZIP2
+  if (compmethod == "BZIP2") {
+    return new SoOutput_BZ2FileWriter(fp, shouldclose, level);
+  }
+#endif // HAVE_BZIP2
+  assert(compmethod == "NONE");
+  return new SoOutput_FileWriter(fp, shouldclose);
 }
 
 
@@ -171,7 +193,7 @@ SoOutput_MemBufferWriter::makeRoomInBuf(size_t bytes)
 // zlib writer
 //
 
-SoOutput_GZFileWriter::SoOutput_GZFileWriter(FILE * fp, const SbBool shouldclose)
+SoOutput_GZFileWriter::SoOutput_GZFileWriter(FILE * fp, const SbBool shouldclose, const float level)
 {
   this->gzfp = NULL;
 
@@ -179,7 +201,11 @@ SoOutput_GZFileWriter::SoOutput_GZFileWriter(FILE * fp, const SbBool shouldclose
   if (fd >= 0 && !shouldclose) fd = dup(fd);
 
   if (fd >= 0) {
-    this->gzfp = gzdopen(fd, "wb");
+    SbString mode = "wb";
+    // convert level from [0.0, 1.0] to [1, 9]
+    mode.addIntString((int) SbClamp((level * 8.0f) + 1.0f, 1.0f, 9.0f));
+
+    this->gzfp = gzdopen(fd, mode.getString());
     if (!this->gzfp) {
       SoDebugError::postWarning("SoOutput_GZFileWriter::SoOutput_GZFileWriter", 
                                 "Unable to open file for writing.");    
@@ -232,15 +258,15 @@ SoOutput_GZFileWriter::bytesInBuf(void)
 // bzip2 writer
 //
 
-SoOutput_BZ2FileWriter::SoOutput_BZ2FileWriter(FILE * fp, const SbBool shouldclose)
+SoOutput_BZ2FileWriter::SoOutput_BZ2FileWriter(FILE * fp, const SbBool shouldclose, const float level)
 {
   this->fp = shouldclose ? fp : NULL;
   this->writecounter = 0;
 
   int bzerror = BZ_OK;
-  // FIXME: add compression level parameter. Don't just use 5.
-  // pederb, 2003-05-09
-  this->bzfp = BZ2_bzWriteOpen(&bzerror, fp, 5, 0, 0);
+  int numblocks =  (int) SbClamp((level * 8.0f) + 1.0f, 1.0f, 9.0f);
+  
+  this->bzfp = BZ2_bzWriteOpen(&bzerror, fp, numblocks, 0, 0);
   if (this->bzfp && (bzerror != BZ_OK)) {
     SoDebugError::postWarning("SoOutput_BZ2FileWriter::SoOutput_BZF2ileWriter", 
                               "Unable to open file for writing.");    

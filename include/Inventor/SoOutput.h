@@ -54,6 +54,10 @@ public:
   virtual SbBool openFile(const char * const fileName);
   virtual void closeFile(void);
 
+  SbBool setCompression(const SbName & compmethod,
+                        const float level = 0.5f);
+  static const SbName * getAvailableCompressionMethods(unsigned int & num);
+
   virtual void setBuffer(void * bufPointer, size_t initSize,
                          SoOutputReallocCB * reallocFunc, int32_t offset = 0);
   virtual SbBool getBuffer(void * & bufPointer, size_t & nBytes) const;

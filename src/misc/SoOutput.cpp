@@ -49,6 +49,7 @@
 #include <Inventor/fields/SoFieldContainer.h>
 #include <Inventor/fields/SoField.h>
 #include "SoOutput_Writer.h"
+#include <Inventor/C/tidbitsp.h>
 
 #include <assert.h>
 #include <string.h>
@@ -137,6 +138,9 @@ public:
   SbList <SbDict*> defstack;
   SbList <SoOutputROUTEList *> routestack;
 
+  SbName compmethod;
+  float complevel;
+
   void pushRoutes(const SbBool copyprev) {
     const int oldidx = this->routestack.getLength() - 1;
     assert(oldidx >= 0);
@@ -193,7 +197,8 @@ public:
 
   SoOutput_Writer * getWriter(void) {
     if (this->writer == NULL) {
-      this->writer = new SoOutput_FileWriter(coin_get_stdout(), FALSE);
+      this->writer = SoOutput_Writer::createWriter(coin_get_stdout(), FALSE, 
+                                                   this->compmethod, this->complevel);
     }
     return this->writer;
   }
@@ -205,6 +210,30 @@ private:
   SoOutput_Writer * writer;
 
 };
+
+static SbList <SbName> * SoOutput_compmethods = NULL;
+
+static void
+SoOutput_compression_list_cleanup(void)
+{
+  delete SoOutput_compmethods;
+  SoOutput_compmethods = NULL;
+}
+
+static void
+SoOutput_compression_list_init(void)
+{
+  if (SoOutput_compmethods) return;
+
+  SoOutput_compmethods = new SbList <SbName>;
+#ifdef HAVE_ZLIB
+  SoOutput_compmethods->append(SbName("GZIP"));
+#endif // HAVE_ZLIB
+#ifdef HAVE_BZIP2
+  SoOutput_compmethods->append(SbName("BZIP2"));
+#endif // HAVE_BZIP2
+  coin_atexit((coin_atexit_f*) SoOutput_compression_list_cleanup, 0);
+}
 
 #define PRIVATE(obj) (obj->pimpl)
 
@@ -256,6 +285,9 @@ SoOutput::constructorCommon(void)
   PRIVATE(this)->nextreferenceid = 0;
   PRIVATE(this)->annotationbits = 0x00;
   PRIVATE(this)->routestack.append(NULL);
+
+  PRIVATE(this)->compmethod = SbName("NONE");
+  PRIVATE(this)->complevel = 0.0f;;
 }
 
 /*!
@@ -282,7 +314,9 @@ void
 SoOutput::setFilePointer(FILE * newFP)
 {
   this->reset();
-  PRIVATE(this)->setWriter(new SoOutput_FileWriter(newFP, FALSE));
+  PRIVATE(this)->setWriter(SoOutput_Writer::createWriter(newFP, FALSE, 
+                                                         PRIVATE(this)->compmethod,
+                                                         PRIVATE(this)->complevel));
 }
 
 /*!
@@ -319,7 +353,9 @@ SoOutput::openFile(const char * const fileName)
 
   FILE * newfile = fopen(fileName, "wb");
   if (newfile) {
-    PRIVATE(this)->setWriter(new SoOutput_FileWriter(newfile, TRUE));
+    PRIVATE(this)->setWriter(SoOutput_Writer::createWriter(newfile, TRUE,
+                                                           PRIVATE(this)->compmethod,
+                                                           PRIVATE(this)->complevel));
     PRIVATE(this)->usercalledopenfile = TRUE;
   }
   else {
@@ -343,6 +379,70 @@ SoOutput::closeFile(void)
     PRIVATE(this)->setWriter(NULL);
     PRIVATE(this)->usercalledopenfile = FALSE;
   }
+}
+
+/*!
+
+  Sets the compression method and level used when writing the file. \a
+  compmethod is the compression library/method to use when
+  compressing. \a level is the compression level, where 0.0 means no
+  compression and 1.0 means maximum compression.
+
+  Currently \e BZIP2, \e GZIP are the only compression methods
+  supported, and you have to compile Coin with zlib and bzip2-support
+  to enable them.
+
+  Supply \a compmethod = \e NONE or \e level = 0.0 if you want to
+  disable compression. The compression is disabled by default.
+
+  Please note that it's not possible to compress when writing to a
+  memory buffer.
+
+  This method will return \e TRUE if the compression method selected
+  is available. If it's not available, \e FALSE will be returned and
+  compression is disabled.
+  
+  \sa getAvailableCompressionMethods()
+  \since 2003-06-10
+ */
+SbBool
+SoOutput::setCompression(const SbName & compmethod,
+                         const float level = 0.5f)
+{
+  PRIVATE(this)->complevel = level;
+  PRIVATE(this)->compmethod = compmethod;
+  
+#ifdef HAVE_ZLIB
+  if (compmethod == "GZIP") return TRUE;
+#endif // HAVE_ZLIB
+
+#ifdef HAVE_BZIP2
+  if (compmethod == "BZIP2") return TRUE;
+#endif // HAVE_BZIP2
+
+  PRIVATE(this)->compmethod = SbName("NONE");
+  PRIVATE(this)->complevel = 0.0f;
+  
+  if (compmethod == "NONE" || level == 0.0f) return TRUE;  
+  SoDebugError::postWarning("SoOutput::setCompression",
+                            "Unsupported compression method: %s",
+                            compmethod.getString());
+  return FALSE;
+}
+
+/*!
+  Returns the array of available compression methods. The number
+  of elements in the array will be stored in \a num.
+
+  \sa setCompression()
+  \since 2003-06-10
+ */
+const SbName * 
+SoOutput::getAvailableCompressionMethods(unsigned int & num)
+{
+  SoOutput_compression_list_init();
+  num = SoOutput_compmethods->getLength();
+  return SoOutput_compmethods->getArrayPtr();
 }
 
 /*!

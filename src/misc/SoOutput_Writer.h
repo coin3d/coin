@@ -65,6 +65,12 @@ public:
   // must be overloaded to write numbytes bytes to buf. Should
   // return the number of bytes actually written.
   virtual size_t write(const char * buf, size_t numbytes, const SbBool binary) = 0;
+
+  static SoOutput_Writer * createWriter(FILE * fp, 
+                                        const SbBool shouldclose,
+                                        const SbName & compmethod,
+                                        const float level);
+
 };
 
 // class for stdio writing
@@ -111,7 +117,7 @@ public:
 // class for zlib writing
 class SoOutput_GZFileWriter : public SoOutput_Writer {
 public:
-  SoOutput_GZFileWriter(FILE * fp, const SbBool shouldclose);
+  SoOutput_GZFileWriter(FILE * fp, const SbBool shouldclose, const float level);
   virtual ~SoOutput_GZFileWriter();
 
   virtual size_t bytesInBuf(void);
@@ -127,7 +133,7 @@ public:
 // class for bzip2 writing
 class SoOutput_BZ2FileWriter : public SoOutput_Writer {
 public:
-  SoOutput_BZ2FileWriter(FILE * fp, const SbBool shouldclose);
+  SoOutput_BZ2FileWriter(FILE * fp, const SbBool shouldclose, const float level);
   virtual ~SoOutput_BZ2FileWriter();
 
   virtual size_t bytesInBuf(void);
