@@ -17,8 +17,24 @@
 
 static SbBool specmatch(const cc_font_specification * spec1, const cc_font_specification * spec2);
 
+struct cc_glyph2d {
+  int fontidx;    
+  int glyphidx;
+  float angle;
+  unsigned short width;
+  unsigned short height;
+  unsigned short bitmapwidth;
+  unsigned short bitmapheight;
+  short bitmapoffsetx;
+  short bitmapoffsety;
+  cc_font_specification * fontspec;
+  unsigned char * bitmap;
+};
+
+static cc_hash * fonthash = NULL;
+
 cc_glyph2d * 
-cc_glyph2d_getglyph(uint32_t character, const cc_font_specification * spec)
+cc_glyph2d_getglyph(uint32_t character, const cc_font_specification * spec, float angle)
 {
 
   void * val;
@@ -37,8 +53,10 @@ cc_glyph2d_getglyph(uint32_t character, const cc_font_specification * spec)
   /* Has the glyph been created before? */
   if (cc_hash_get(fonthash, (unsigned long) character, &val)) {    
     glyph = (cc_glyph2d *) val;
-    if (specmatch(spec, glyph->fontspec)) 
-      return glyph;           
+    if (angle == glyph->angle) {
+      if (specmatch(spec, glyph->fontspec)) 
+      return glyph;
+    }
   } 
   
   /* build a new glyph struct with bitmap */    
@@ -47,7 +65,6 @@ cc_glyph2d_getglyph(uint32_t character, const cc_font_specification * spec)
   /* FIXME: Must add family and style support (2Sep2003 handegar) */
   newspec = (cc_font_specification *) malloc(sizeof(cc_font_specification)); 
   assert(newspec);
-  newspec->angle = spec->angle;
   newspec->size = spec->size;
   newspec->name = cc_string_construct_new();
   cc_string_set_text(newspec->name, cc_string_get_text(spec->name));
@@ -64,13 +81,12 @@ cc_glyph2d_getglyph(uint32_t character, const cc_font_specification * spec)
   glyphidx = cc_flw_get_glyph(fontidx, character);
   assert(glyphidx >= 0);
 
-  if(spec->angle != 0)
-    cc_flw_set_font_rotation(fontidx, spec->angle);
-
+  if(angle != 0)
+    cc_flw_set_font_rotation(fontidx, angle);
   
   glyph->glyphidx = glyphidx;
   glyph->fontidx = fontidx;
-  glyph->fontspec->angle = spec->angle;
+  glyph->angle = angle;
 
   bm = cc_flw_get_bitmap(fontidx, glyphidx);
   assert(bm);
@@ -97,10 +113,9 @@ specmatch(const cc_font_specification * spec1, const cc_font_specification * spe
   assert(spec2);
 
   /*
-  // FIXME: Add compare for family and style ( 2Sep2003 handegar)
+  // FIXME: Add compare for family and style (20030902 handegar)
   */
   if ((!cc_string_compare(spec1->name, spec2->name)) &&
-      (spec1->angle == spec2->angle) &&
       (spec1->size == spec2->size)) {
     return TRUE;
   }
@@ -114,8 +129,6 @@ cc_glyph2d_getadvance(const cc_glyph2d * g, int * x, int * y)
   float advancex, advancey;
   cc_flw_get_advance(g->fontidx, g->glyphidx, &advancex, &advancey);
 
-  /*printf("advance [%f, %f]\n", advancex, advancey);*/
-
   *x = (int) advancex;
   *y = (int) advancey;
 }
@@ -125,8 +138,6 @@ cc_glyph2d_getkerning(const cc_glyph2d * left, const cc_glyph2d * right, int * x
 {
   float kx, ky;
   cc_flw_get_kerning(right->fontidx, left->glyphidx, right->glyphidx, &kx, &ky);
-
-  /*printf("kerning [%f, %f]\n", kx, ky);*/
 
   *x = (int) kx;
   *y = (int) ky;
