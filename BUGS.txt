@@ -1392,6 +1392,16 @@
       input. This is a bigger issue since we often have situations
       with mixed scene graphs and want to convert them to VRML2."
 
+    We've also had at least one external report from a user who found
+    this to be a real problem. From the problem report:
+
+      After some tests I've found that the problem seems to be that
+      VRML shapes instead of being copied through by the ToVRML2
+      action (they are obviously already VRML2), they are deleted
+      (ignored?). It looks like that src/actions/SoToVRML2Action.cpp
+      lacks one more callback to handle nodes already in VRML2 format.
+
+    This is a medium priority item.
 
     20030307 mortene.
 
@@ -3402,5 +3412,38 @@ Separator {
     This bug also exists for other projects using --setup.
 
     20040707 kintel
+
+=====================================================================
+
+124 SoText3 is rendered "inverted" with regard to vertex ordering.
+
+    Shapes in Coin are generally rendered with polygon vertices in
+    counterclockwise ordering, but SoText3 geometry seems to be
+    rendered in clockwise order, view the following file in a viewer:
+
+--------8<------------- [snip] --------------8<------------- [snip]
+#Inventor V2.1 ascii
+
+
+Separator {
+   ShapeHints {
+      vertexOrdering COUNTERCLOCKWISE
+      shapeType SOLID
+   }
+   Text3 {
+      string [ "Coin3D" ]
+      parts ALL
+   }
+}
+--------8<------------- [snip] --------------8<------------- [snip]
+
+    Specifying vertexOrdering==COUNTERCLOCKWISE and shapeType==SOLID
+    is often a major optimization measure for Coin standard shapes, as
+    it causes backface culling to happen. With SoText3, this will then
+    cull frontfaces instead, which is not good.
+
+    This is a medium priority issue.
+
+    20040709 mortene.
 
 =====================================================================
