@@ -85,7 +85,8 @@ SoTimerSensor::~SoTimerSensor(void)
 
   Without an explicitly set base time, the next trigger invocation
   after a trigger has happened will be on the current time plus the
-  interval time.
+  interval time.  Note that this will of course cause the timer to
+  drift.
 
   \sa getBaseTime()
  */
