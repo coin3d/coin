@@ -34,7 +34,11 @@
 #ifdef COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
+
 #include <Inventor/lists/SoTypeList.h>
+// MSVC++ needs 'SbName.h' and 'SbString.h' to compile
+#include <Inventor/SbName.h>
+#include <Inventor/SbString.h>
 
 #include <assert.h>
 #include <stdlib.h> // NULL
