@@ -12,6 +12,7 @@ RegularSources = \
 	base.c \
 	debug.c \
 	hash.c \
+	heap.c \
         list.c \
 	memalloc.c \
 	rbptree.c \

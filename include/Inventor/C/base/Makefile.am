@@ -4,6 +4,7 @@ baseinc_HEADERS = \
 	dict.h \
 	debug.h \
 	hash.h \
+	heap.h \
 	rbptree.h \
 	time.h \
 	string.h \
@@ -12,6 +13,7 @@ baseinc_HEADERS = \
 EXTRA_DIST = \
 	basep.h \
 	hashp.h \
+	heapp.h \
 	name.h \
 	string.h
 
