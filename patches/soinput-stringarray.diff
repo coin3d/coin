@@ -1,0 +1,111 @@
+Index: include/Inventor/SoInput.h
+===================================================================
+RCS file: /export/cvsroot/Coin/include/Inventor/SoInput.h,v
+retrieving revision 1.24
+diff -u -r1.24 SoInput.h
+--- include/Inventor/SoInput.h	23 Nov 2001 14:25:46 -0000	1.24
++++ include/Inventor/SoInput.h	13 Feb 2002 14:31:36 -0000
+@@ -70,6 +70,7 @@
+   virtual SbBool isValidBuffer(void);
+   virtual FILE * getCurFile(void) const;
+   virtual const char * getCurFileName(void) const;
++  void setStringArray(const char * strings[]);
+   virtual void setBuffer(void * bufpointer, size_t bufsize);
+   virtual size_t getNumBytesRead(void) const;
+   virtual SbString getHeader(void);
+Index: src/misc/SoInput.cpp
+===================================================================
+RCS file: /export/cvsroot/Coin/src/misc/SoInput.cpp,v
+retrieving revision 1.71
+diff -u -r1.71 SoInput.cpp
+--- src/misc/SoInput.cpp	22 Dec 2001 11:14:34 -0000	1.71
++++ src/misc/SoInput.cpp	13 Feb 2002 14:31:36 -0000
+@@ -147,19 +147,25 @@
+   // without hitting EOF. Check this->ivversion != 0.0f to see if the
+   // header parse actually succeeded.
+   SbBool readHeader(SoInput * input);
+-  SbBool isMemBuffer(void) {
++  void setManagedMemBuffer(SbBool managed) {
++    this->ismanagedmembuffer = managed;
++  }
++  SbBool isManagedMemBuffer(void) const {
++    return this->ismanagedmembuffer;
++  }
++  SbBool isMemBuffer(void) const {
+     return this->ismembuffer;
+   }
+-  SbBool isBinary(void) {
++  SbBool isBinary(void) const {
+     return this->isbinary;
+   }
+-  float ivVersion(void) {
++  float ivVersion(void) const {
+     return this->ivversion;
+   }
+-  SbBool isFileVRML1(void) {
++  SbBool isFileVRML1(void) const {
+     return this->vrml1file;
+   }
+-  SbBool isFileVRML2(void) {
++  SbBool isFileVRML2(void) const {
+     return this->vrml2file;
+   }
+   void setIvVersion(const float v) {
+@@ -246,6 +252,7 @@
+   int lastputback; // The last character put back into the stream.
+   char lastchar; // Last read character.
+   SbBool ismembuffer;
++  SbBool ismanagedmembuffer;
+   SbBool headerisread, eof;
+   SbBool vrml1file;
+   SbBool vrml2file;
+@@ -653,6 +660,35 @@
+ }
+ 
+ /*!
++  Sets up the input stream for reading from the strings pointed to by a
++  NULL-terminated array of string pointers.
++
++  This method was added to solve the compiler portability problem of 
++  compiling large, static string buffers.  Some compilers have fixed max-
++  lengths on this feature, just over 1KB, which obviously becomes a problem
++  real fast.  This method lets you specify the buffer as an array of
++  smaller string buffers, typically one string for each line in the
++  Inventor file.
++
++  \since 2002-02-10
++*/
++void
++SoInput::setStringArray(const char * strings[])
++{
++  size_t bufsize = 0;
++  for (int i = bufsize = 0; strings[i] != NULL; i++ )
++    bufsize += strlen(strings[i]);
++  char * buf = new char [bufsize + 1];
++  for (int j = bufsize = 0; strings[j] != NULL; j++ ) {
++    const int len = strlen(strings[j]);
++    memcpy(buf+bufsize, strings[j], len);
++    bufsize += len;
++  }
++  this->setBuffer(buf, bufsize);
++  this->filestack[0]->setManagedMemBuffer(TRUE);
++}
++
++/*!
+   Sets up the input stream for reading from a memory buffer. Closes all
+   open files in the file stack first.
+  */
+@@ -2423,11 +2459,12 @@
+   this->vrml2file = FALSE;
+   this->prefunc = NULL;
+   this->postfunc = NULL;
++  this->ismanagedmembuffer = FALSE;
+ }
+ 
+ SoInput_FileInfo::~SoInput_FileInfo()
+ {
+-  if (!this->ismembuffer) delete [] this->readbuf;
++  if (!this->ismembuffer || this->isManagedMemBuffer()) delete [] this->readbuf;
+ 
+   // Close files which are not a memory buffer nor the stdin and
+   // which we do have a filename for (if we don't have a filename,
