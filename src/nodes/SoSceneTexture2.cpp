@@ -376,7 +376,14 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
   if (this->glcontext == NULL) {
     this->glcontextsize = size;
     const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
+    // disabled until an pbuffer extension is available to create a
+    // render-to-texture pbuffer that has a non power of two size.
+    // pederb, 2003-12-05
+#if 0 
     if (!glue->has_nv_texture_rectangle && !glue->has_ext_texture_rectangle) {
+#else
+    if (1) {
+#endif
       this->glcontextsize[0] = (short) coin_geq_power_of_two(size[0]);
       this->glcontextsize[1] = (short) coin_geq_power_of_two(size[1]);
       
@@ -385,7 +392,7 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
         if (!didwarn) {
           SoDebugError::postWarning("SoSceneTexture2P::updatePBuffer",
                                     "Requested non power of two size, but your OpenGL "
-                                    "driver lacks support for such textures.");
+                                    "driver lacks support for such pbuffer textures.");
           didwarn = 1;
         }
       }
@@ -393,8 +400,8 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
     this->glrectangle = FALSE;
     if (!coin_is_power_of_two(this->glcontextsize[0]) ||
         !coin_is_power_of_two(this->glcontextsize[1])) {
-      // will only get here if GL_NV_texture_rectangle or
-      // GL_EXT_texture_rectangle is available
+      // we only get here if the OpenGL driver can handle non power of
+      // two textures/pbuffers.
       this->glrectangle = TRUE;
     }
 
