@@ -244,50 +244,39 @@ SoConcatenate::copyContents(const SoFieldContainer * from,
   inherited::copyContents(from, copyconnections);
 }
 
-// macro used to generate code for all mfield subclasses
-#define OUTPUT_FUNC(_fieldtype_, _funcname_) \
-static void _funcname_ (const int numconnections, const int inputstop, \
-                        const int numvalues, SoEngineOutput * output, SoMField ** input) \
+// Macro used to generate a function for the transfer of values from
+// an SoMField to another (of the same type).
+#define TRANSFER_FUNC(_fieldtype_) \
+static void _fieldtype_##_transfer(SoMField * output, int outidx, SoMField * input) \
 { \
-  assert(output->getConnectionType() == _fieldtype_::getClassTypeId()); \
-  for (int i = 0; i < numconnections; i++) { \
-    _fieldtype_ * out = (_fieldtype_*) (*output)[i]; \
-    if (!out->isReadOnly()) { \
-      int cnt = 0; \
-      out->setNum(numvalues); \
-      for (int j = 0; j <= inputstop; j++) { \
-        _fieldtype_ * in = (_fieldtype_ *) input[j]; \
-        assert(in != NULL); \
-        out->setValues(cnt, in->getNum(), in->getValues(0)); \
-        cnt += in->getNum(); \
-      } \
-    } \
-  } \
+  _fieldtype_ * in = (_fieldtype_ *) input; \
+  assert(in != NULL); \
+  ((_fieldtype_ *)output)->setValues(outidx, in->getNum(), in->getValues(0)); \
 }
 
-OUTPUT_FUNC(SoMFBitMask, somfbitmask_out);
-OUTPUT_FUNC(SoMFBool, somfbool_out);
-OUTPUT_FUNC(SoMFColor, somfcolor_out);
-OUTPUT_FUNC(SoMFEngine, somfengine_out);
-OUTPUT_FUNC(SoMFEnum, somfenum_out);
-OUTPUT_FUNC(SoMFFloat, somffloat_out);
-OUTPUT_FUNC(SoMFInt32, somfint32_out);
-OUTPUT_FUNC(SoMFMatrix, somfmatrix_out);
-OUTPUT_FUNC(SoMFName, somfname_out);
-OUTPUT_FUNC(SoMFNode, somfnode_out);
-OUTPUT_FUNC(SoMFPath, somfpath_out);
-OUTPUT_FUNC(SoMFPlane, somfplane_out);
-OUTPUT_FUNC(SoMFRotation, somfrotation_out);
-OUTPUT_FUNC(SoMFShort, somfshort_out);
-OUTPUT_FUNC(SoMFString, somfstring_out);
-OUTPUT_FUNC(SoMFTime, somftime_out);
-OUTPUT_FUNC(SoMFUInt32, somfuint32_out);
-OUTPUT_FUNC(SoMFUShort, somfushort_out);
-OUTPUT_FUNC(SoMFVec2f, somfvec2f_out);
-OUTPUT_FUNC(SoMFVec3f, somfvec3f_out);
-OUTPUT_FUNC(SoMFVec4f, somfvec4f_out);
-
-#undef OUTPUT_FUNC
+// Cover all known SoMField subclasses.
+TRANSFER_FUNC(SoMFBitMask);
+TRANSFER_FUNC(SoMFBool);
+TRANSFER_FUNC(SoMFColor);
+TRANSFER_FUNC(SoMFEngine);
+TRANSFER_FUNC(SoMFEnum);
+TRANSFER_FUNC(SoMFFloat);
+TRANSFER_FUNC(SoMFInt32);
+TRANSFER_FUNC(SoMFMatrix);
+TRANSFER_FUNC(SoMFName);
+TRANSFER_FUNC(SoMFNode);
+TRANSFER_FUNC(SoMFPath);
+TRANSFER_FUNC(SoMFPlane);
+TRANSFER_FUNC(SoMFRotation);
+TRANSFER_FUNC(SoMFShort);
+TRANSFER_FUNC(SoMFString);
+TRANSFER_FUNC(SoMFTime);
+TRANSFER_FUNC(SoMFUInt32);
+TRANSFER_FUNC(SoMFUShort);
+TRANSFER_FUNC(SoMFVec2f);
+TRANSFER_FUNC(SoMFVec3f);
+TRANSFER_FUNC(SoMFVec4f);
+#undef TRANSFER_FUNC
 
 // documented in superclass
 void
@@ -313,102 +302,95 @@ SoConcatenate::evaluate(void)
   
   const int numconnections = this->output->getNumConnections();
   const SoType type = this->output->getConnectionType();
-  
-  // FIXME: is it safe to use type.isOfType() instead of the ==
-  // operator?  pederb, 2001-09-26
-  if (type == SoMFBitMask::getClassTypeId()) {
-    somfbitmask_out(numconnections, inputstop, numvalues, this->output, this->input);
-  }
-  else if (type == SoMFBool::getClassTypeId()) {
-    somfbool_out(numconnections, inputstop, numvalues, this->output, this->input);
-  }
-  else if (type == SoMFColor::getClassTypeId()) {
-    somfcolor_out(numconnections, inputstop, numvalues, this->output, this->input);
-  }
-  else if (type == SoMFEngine::getClassTypeId()) {
-    somfengine_out(numconnections, inputstop, numvalues, this->output, this->input);
-  }
-  else if (type == SoMFEnum::getClassTypeId()) {
-    somfenum_out(numconnections, inputstop, numvalues, this->output, this->input);
-  }
-  else if (type == SoMFFloat::getClassTypeId()) {
-    somffloat_out(numconnections, inputstop, numvalues, this->output, this->input);
-  }
-  else if (type == SoMFInt32::getClassTypeId()) {
-    somfint32_out(numconnections, inputstop, numvalues, this->output, this->input);
-  }
-  else if (type == SoMFMatrix::getClassTypeId()) {
-    somfmatrix_out(numconnections, inputstop, numvalues, this->output, this->input);
-  }
-  else if (type == SoMFName::getClassTypeId()) {
-    somfname_out(numconnections, inputstop, numvalues, this->output, this->input);
-  }
-  else if (type == SoMFNode::getClassTypeId()) {
-    somfnode_out(numconnections, inputstop, numvalues, this->output, this->input);
-  }
-  else if (type == SoMFPath::getClassTypeId()) {
-    somfpath_out(numconnections, inputstop, numvalues, this->output, this->input);
-  }
-  else if (type == SoMFPlane::getClassTypeId()) {
-    somfplane_out(numconnections, inputstop, numvalues, this->output, this->input);
-  }
-  else if (type == SoMFRotation::getClassTypeId()) {
-    somfrotation_out(numconnections, inputstop, numvalues, this->output, this->input);
-  }
-  else if (type == SoMFShort::getClassTypeId()) {
-    somfshort_out(numconnections, inputstop, numvalues, this->output, this->input);
-  }
-  else if (type == SoMFString::getClassTypeId()) {
-    somfstring_out(numconnections, inputstop, numvalues, this->output, this->input);
-  }
-  else if (type == SoMFTime::getClassTypeId()) {
-    somftime_out(numconnections, inputstop, numvalues, this->output, this->input);
-  }
-  else if (type == SoMFUInt32::getClassTypeId()) {
-    somfuint32_out(numconnections, inputstop, numvalues, this->output, this->input);
-  }
-  else if (type == SoMFUShort::getClassTypeId()) {
-    somfushort_out(numconnections, inputstop, numvalues, this->output, this->input);
-  }
-  else if (type == SoMFVec2f::getClassTypeId()) {
-    somfvec2f_out(numconnections, inputstop, numvalues, this->output, this->input);
-  }
-  else if (type == SoMFVec3f::getClassTypeId()) {
-    somfvec3f_out(numconnections, inputstop, numvalues, this->output, this->input);
-  }
-  else if (type == SoMFVec4f::getClassTypeId()) {
-    somfvec4f_out(numconnections, inputstop, numvalues, this->output, this->input);
-  }  
-  else {     
-    // fallback, in case of new (user-defined) field types. Warn once
-    // in case we forget to add code for some field.
 
-#if COIN_DEBUG
-    static int first = 1;
-    if (first) {
-      first = 0;
-      SoDebugError::postWarning("SoConcatenate::evaluate",
-                                "Unknown field type: %s.\n  Using unoptimized method to copy values.",
-                                this->output->getConnectionType().getName().getString());
-  }
-#endif
+  for (int i = 0; i < numconnections; i++) {
+    SoMField * out = (SoMField *)(*this->output)[i];
+    if (!out->isReadOnly()) {
+      int cnt = 0;
+      out->setNum(numvalues);
+      for (int j = 0; j <= inputstop; j++) {
+        SoMField * in = (SoMField *)input[j];
 
-    SbString value;
-    for (i = 0; i < numconnections; i++) {
-      SoMField * out = (SoMField*) (*this->output)[i];
-      if (!out->isReadOnly()) {
-        int cnt = 0;
-        out->setNum(numvalues);
-        for (int j = 0; j <= inputstop; j++) {
-          SoMField * in = this->input[j];
+        if (type == SoMFBitMask::getClassTypeId()) {
+          // (Seems safer to use SoMFBitMask's own methods, and not
+          // from the superclass SoMFEnum, even though that may be
+          // valid.)
+          SoMFBitMask_transfer(out, cnt, in);
+        }
+        else if (type == SoMFBool::getClassTypeId()) {
+          SoMFBool_transfer(out, cnt, in);
+        }
+        else if (type == SoMFColor::getClassTypeId()) {
+          SoMFColor_transfer(out, cnt, in);
+        }
+        else if (type == SoMFEngine::getClassTypeId()) {
+          SoMFEngine_transfer(out, cnt, in);
+        }
+        else if (type == SoMFEnum::getClassTypeId()) {
+          SoMFEnum_transfer(out, cnt, in);
+        }
+        else if (type == SoMFFloat::getClassTypeId()) {
+          SoMFFloat_transfer(out, cnt, in);
+        }
+        else if (type == SoMFInt32::getClassTypeId()) {
+          SoMFInt32_transfer(out, cnt, in);
+        }
+        else if (type == SoMFMatrix::getClassTypeId()) {
+          SoMFMatrix_transfer(out, cnt, in);
+        }
+        else if (type == SoMFName::getClassTypeId()) {
+          SoMFName_transfer(out, cnt, in);
+        }
+        else if (type == SoMFNode::getClassTypeId()) {
+          SoMFNode_transfer(out, cnt, in);
+        }
+        else if (type == SoMFPath::getClassTypeId()) {
+          SoMFPath_transfer(out, cnt, in);
+        }
+        else if (type == SoMFPlane::getClassTypeId()) {
+          SoMFPlane_transfer(out, cnt, in);
+        }
+        else if (type == SoMFRotation::getClassTypeId()) {
+          SoMFRotation_transfer(out, cnt, in);
+        }
+        else if (type == SoMFShort::getClassTypeId()) {
+          SoMFShort_transfer(out, cnt, in);
+        }
+        else if (type == SoMFString::getClassTypeId()) {
+          SoMFString_transfer(out, cnt, in);
+        }
+        else if (type == SoMFTime::getClassTypeId()) {
+          SoMFTime_transfer(out, cnt, in);
+        }
+        else if (type == SoMFUInt32::getClassTypeId()) {
+          SoMFUInt32_transfer(out, cnt, in);
+        }
+        else if (type == SoMFUShort::getClassTypeId()) {
+          SoMFUShort_transfer(out, cnt, in);
+        }
+        else if (type == SoMFVec2f::getClassTypeId()) {
+          SoMFVec2f_transfer(out, cnt, in);
+        }
+        else if (type == SoMFVec3f::getClassTypeId()) {
+          SoMFVec3f_transfer(out, cnt, in);
+        }
+        else if (type == SoMFVec4f::getClassTypeId()) {
+          SoMFVec4f_transfer(out, cnt, in);
+        }  
+        else {
+          // Slower fallback (copying by going through string
+          // conversion and deconversion), in case of new
+          // (user-defined) field types.
           const int num = in->getNum();  
+          SbString strval;
           for (int k = 0; k < num; k++) {
-            in->get1(k, value);
-            out->set1(cnt, value.getString());
-            cnt++;
+            in->get1(k, strval);
+            out->set1(cnt + k, strval.getString());
           }
         }
+
+        cnt += in->getNum();
       }
-    } 
+    }
   }
 }
