@@ -84,12 +84,10 @@ extern "C" {
   struct cc_flw_bitmap * cc_flw_get_bitmap(unsigned int font, unsigned int glyph);
   struct cc_flw_vector_glyph * cc_flw_get_vector_glyph(unsigned int font, unsigned int glyph);
 
-  float * cc_flw_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph);
-  int * cc_flw_get_vector_glyph_faceidx(struct cc_flw_vector_glyph * vecglyph);
-  int * cc_flw_get_vector_glyph_edgeidx(struct cc_flw_vector_glyph * vecglyph);
+  const float * cc_flw_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph);
+  const int * cc_flw_get_vector_glyph_faceidx(struct cc_flw_vector_glyph * vecglyph);
+  const int * cc_flw_get_vector_glyph_edgeidx(struct cc_flw_vector_glyph * vecglyph);
 
-
-  
   SbBool cc_flw_debug(void);       
 
 #ifdef __cplusplus

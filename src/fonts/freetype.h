@@ -60,9 +60,9 @@ extern "C" {
   struct cc_flw_bitmap * cc_flwft_get_bitmap(void * font, unsigned int glyph);
   struct cc_flw_vector_glyph * cc_flwft_get_vector_glyph(void * font, unsigned int glyph);
 
-  float * cc_flwft_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph);
-  int * cc_flwft_get_vector_glyph_faceidx(struct cc_flw_vector_glyph * vecglyph);
-  int * cc_flwft_get_vector_glyph_edgeidx(struct cc_flw_vector_glyph * vecglyph);
+  const float * cc_flwft_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph);
+  const int * cc_flwft_get_vector_glyph_faceidx(struct cc_flw_vector_glyph * vecglyph);
+  const int * cc_flwft_get_vector_glyph_edgeidx(struct cc_flw_vector_glyph * vecglyph);
 
  
 #ifdef __cplusplus

@@ -15,9 +15,9 @@ extern "C" {
   cc_glyph3d * cc_glyph3d_getglyph(uint32_t character, 
                                    const cc_font_specification * spec);
   
-  float * cc_glyph3d_getcoords(const cc_glyph3d * g);
-  int * cc_glyph3d_getfaceindices(const cc_glyph3d * g);
-  int * cc_glyph3d_getedgeindices(const cc_glyph3d * g);
+  const float * cc_glyph3d_getcoords(const cc_glyph3d * g);
+  const int * cc_glyph3d_getfaceindices(const cc_glyph3d * g);
+  const int * cc_glyph3d_getedgeindices(const cc_glyph3d * g);
   int * cc_glyph3d_getnextcwedge(const cc_glyph3d * g, int edgeidx);
   int * cc_glyph3d_getnextccwedge(const cc_glyph3d * g, int edgeidx);
   float cc_glyph3d_getwidth(const cc_glyph3d * g);

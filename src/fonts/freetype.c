@@ -914,7 +914,7 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyph)
      returned to the user. This is done due to the fact that the
      tessellation callback solution needs a static working struct. */
   new_vector_glyph = (struct cc_flw_vector_glyph *) malloc(sizeof(struct cc_flw_vector_glyph));
-
+  
   flwft_buildVertexList(new_vector_glyph);
   flwft_buildFaceIndexList(new_vector_glyph);
   flwft_buildEdgeIndexList(new_vector_glyph);
@@ -1264,7 +1264,7 @@ flwft_buildVertexList(struct cc_flw_vector_glyph * newglyph)
 
 }
 
-float *
+const float *
 cc_flwft_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph)
 {   
   assert(vecglyph->vertices && "Vertices not initialized properly");
@@ -1292,7 +1292,7 @@ flwft_buildEdgeIndexList(struct cc_flw_vector_glyph * newglyph)
 
 }
 
-int *
+const int *
 cc_flwft_get_vector_glyph_edgeidx(struct cc_flw_vector_glyph * vecglyph)
 {
   assert(vecglyph->edgeindices && "Edge indices not initialized properly");
@@ -1318,7 +1318,7 @@ flwft_buildFaceIndexList(struct cc_flw_vector_glyph * newglyph)
 
 }
 
-int *
+const int *
 cc_flwft_get_vector_glyph_faceidx(struct cc_flw_vector_glyph * vecglyph)
 {  
   assert(vecglyph->faceindices && "Face indices not initialized properly");

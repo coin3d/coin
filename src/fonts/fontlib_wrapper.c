@@ -137,7 +137,7 @@ get_default_bitmap(unsigned int character)
     bm->bearingX = 0;
     bm->bearingY = fontsize;
     bm->rows = fontsize;
-    bm->width = 8;
+    bm->width = 7;
     bm->pitch = 1;
     return bm;
   }
@@ -811,7 +811,8 @@ cc_flw_get_vector_glyph(unsigned int font, unsigned int glyph)
   } 
   else if (win32api) {
     vector_glyph = cc_flww32_get_vector_glyph(fs->font, glyph);		               
-  } else {
+  } 
+  else {
     vector_glyph = NULL;
   }
   
@@ -820,7 +821,7 @@ cc_flw_get_vector_glyph(unsigned int font, unsigned int glyph)
     
 }
 
-float * 
+const float * 
 cc_flw_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph)
 {
   if (freetypelib)
@@ -837,7 +838,7 @@ cc_flw_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph)
   }
 }
 
-int * 
+const int * 
 cc_flw_get_vector_glyph_faceidx(struct cc_flw_vector_glyph * vecglyph)
 {
   if (freetypelib)
@@ -849,7 +850,7 @@ cc_flw_get_vector_glyph_faceidx(struct cc_flw_vector_glyph * vecglyph)
   }
 }
 
-int * 
+const int * 
 cc_flw_get_vector_glyph_edgeidx(struct cc_flw_vector_glyph * vecglyph)
 {
   if (freetypelib)
