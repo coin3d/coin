@@ -439,15 +439,7 @@ SoFieldContainer::get(SbString & fielddata, SoOutput * out)
     return;
   }
 
-  SoOutput * output;
-  if (out) {
-    SoOutput o(out);
-    output = &o;
-  }
-  else {
-    SoOutput o;
-    output = &o;
-  }
+  SoOutput * output = out ? new SoOutput(out) : new SoOutput();
 
   const size_t STARTSIZE = 256;
   void * buffer = malloc(STARTSIZE);
@@ -467,6 +459,8 @@ SoFieldContainer::get(SbString & fielddata, SoOutput * out)
     fielddata = "";
   }
   free(buffer);
+
+  delete output;
 }
 
 // Overridden from parent class.
