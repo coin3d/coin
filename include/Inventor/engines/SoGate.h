@@ -34,23 +34,24 @@ class SoGate : public SoEngine {
   SO_ENGINE_HEADER(SoGate);
 
 public:
+  SoGate(SoType input);
+
   SoSFBool enable;
   SoSFTrigger trigger;
   SoMField * input;
 
   SoEngineOutput * output;
 
-  SoGate(SoType inputType);
-
-  static void initClass();
+  static void initClass(void);
 
 protected:
+  virtual void inputChanged(SoField * which);
+
+private:
   SoGate(void);
   ~SoGate();
 
-private:
   virtual void evaluate();
-  virtual void inputChanged(SoField * which);
 };
 
 #endif // !COIN_SOGATE_H

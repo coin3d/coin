@@ -29,25 +29,27 @@
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/engines/SoEngineOutput.h>
 #include <Inventor/SbString.h>
+#include <coindefs.h>
 
 
 SO_ENGINE_SOURCE(SoGate);
 
+
 /*!
   Default constructor.
 */
-SoGate::SoGate(SoType inputType)
+SoGate::SoGate(SoType inputtype)
 {
   SO_ENGINE_CONSTRUCTOR(SoGate);
 
-  this->input=(SoMField *)inputType.createInstance();
+  this->input = (SoMField *)inputtype.createInstance();
   SO_ENGINE_ADD_INPUT(enable,(FALSE));
   SO_ENGINE_ADD_INPUT(trigger,());
 
   //Instead of SO_ENGINE_ADD_OUTPUT()
   this->output=new SoEngineOutput;
 #if 0 // obsoleted. FIXME: reimplement 20000309 pederb
-  this->output->setType(inputType);
+  this->output->setType(inputtype);
 #endif // obsolete
   this->output->setContainer(this);
 #if 0 // FIXME: old kintel code. reimplement. pederb, 20000309
@@ -62,9 +64,18 @@ SoGate::initClass()
   SO_ENGINE_INTERNAL_INIT_CLASS(SoGate);
 }
 
+
 //
 // private members
 //
+
+// dummy default constructor
+SoGate::SoGate(void)
+{
+  assert(FALSE && "default constructor shouldn't be used");
+  // FIXME: ..or used when reading engine from file? 20000324 mortene.
+}
+
 SoGate::~SoGate()
 {
   delete this->input;

@@ -98,6 +98,13 @@ SoSelectOne::initClass()
 //
 // private members
 //
+// dummy default constructor
+SoSelectOne::SoSelectOne(void)
+{
+  assert(FALSE && "default constructor shouldn't be used");
+  // FIXME: ..or used when reading engine from file? 20000324 mortene.
+}
+
 SoSelectOne::~SoSelectOne()
 {
   delete this->input;
