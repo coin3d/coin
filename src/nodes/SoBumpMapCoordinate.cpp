@@ -35,6 +35,16 @@
   Note that an SoBumpMapCoordinate node will \e replace the bump map
   coordinates already present in the state (if any).
 
+  Also note that since the indexed shape nodes have no
+  bumpMapCoordIndex field, the textureCoordIndex field will be used
+  for selecting bump map coordinate indices. You can set the bump map
+  coordinate binding using the SoTextureCoordinateBinding node. Bump
+  map coordinates must therefore have the same binding as the texture
+  coordinates for texture unit 0.
+
+  If you supply no bump map coordinates for a shape, the texture
+  coordinates for texture unit 0 will be used.
+
   \since Coin 2.2
 */
 
