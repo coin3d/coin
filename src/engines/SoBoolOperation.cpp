@@ -197,59 +197,60 @@ SoBoolOperation::evaluate(void)
   SO_ENGINE_OUTPUT(inverse,SoMFBool,setNum(numOut));
 
   for (int i = 0; i < numOut; i++) {
-    SbBool tmp_a = i < numA ? this->a[i] : this->a[numA-1];
-    SbBool tmp_b = i < numB ? this->b[i] : this->b[numB-1];
-    int tmp_op = i < numOp ? this->operation[i] : this->operation[numOp-1];
+    SbBool tmp_a = numA==0 ? FALSE : (i < numA ? this->a[i] : this->a[numA-1]);
+    SbBool tmp_b = numB==0 ? FALSE : (i < numB ? this->b[i] : this->b[numB-1]);
+    int tmp_op = numOp==0 ? SoBoolOperation::CLEAR :
+      (i < numOp ? this->operation[i] : this->operation[numOp-1]);
 
     SbBool val;
 
     switch (tmp_op) {
-    case CLEAR:
+    case SoBoolOperation::CLEAR:
       val = FALSE;
       break;
-    case SET:
+    case SoBoolOperation::SET:
       val = TRUE;
       break;
-    case A:
+    case SoBoolOperation::A:
       val = tmp_a;
       break;
-    case NOT_A:
+    case SoBoolOperation::NOT_A:
       val = !tmp_a;
       break;
-    case B:
+    case SoBoolOperation::B:
       val = tmp_b;
       break;
-    case NOT_B:
+    case SoBoolOperation::NOT_B:
       val = !tmp_b;
       break;
-    case A_OR_B:
+    case SoBoolOperation::A_OR_B:
       val = tmp_a || tmp_b;
       break;
-    case NOT_A_OR_B:
+    case SoBoolOperation::NOT_A_OR_B:
       val = !tmp_a || tmp_b;
       break;
-    case A_OR_NOT_B:
+    case SoBoolOperation::A_OR_NOT_B:
       val = tmp_a || !tmp_b;
       break;
-    case NOT_A_OR_NOT_B:
+    case SoBoolOperation::NOT_A_OR_NOT_B:
       val = !tmp_a || !tmp_b;
       break;
-    case A_AND_B:
+    case SoBoolOperation::A_AND_B:
       val = tmp_a && tmp_b;
       break;
-    case NOT_A_AND_B:
+    case SoBoolOperation::NOT_A_AND_B:
       val = !tmp_a && tmp_b;
       break;
-    case A_AND_NOT_B:
+    case SoBoolOperation::A_AND_NOT_B:
       val = tmp_a && !tmp_b;
       break;
-    case NOT_A_AND_NOT_B:
+    case SoBoolOperation::NOT_A_AND_NOT_B:
       val = !tmp_a && !tmp_b;
       break;
-    case A_EQUALS_B:
+    case SoBoolOperation::A_EQUALS_B:
       val = (tmp_a==tmp_b);
       break;
-    case A_NOT_EQUALS_B:
+    case SoBoolOperation::A_NOT_EQUALS_B:
       val = (tmp_a != tmp_b);
       break;
     default:
@@ -261,6 +262,9 @@ SoBoolOperation::evaluate(void)
       break;
     }
 
+    // FIXME: this seems extremely inefficient -- won't there be heaps
+    // of notifications if there are many values in (at least) one of
+    // the input fields? 20000915 mortene.
     SO_ENGINE_OUTPUT(output, SoMFBool, set1Value(i, val));
     SO_ENGINE_OUTPUT(inverse, SoMFBool, set1Value(i, !val));
   }
