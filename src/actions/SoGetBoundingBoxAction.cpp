@@ -18,44 +18,46 @@
 \**************************************************************************/
 
 /*!
-  \class SoGetBoundingBoxAction Inventor/actions/SoGetBoundingBoxAction.h
-  \brief The SoGetBoundingBoxAction class is an action for getting
-  bounding boxes.
+  \class SoGetBoundingBoxAction SoGetBoundingBoxAction.h Inventor/actions/SoGetBoundingBoxAction.h
+  \brief The SoGetBoundingBoxAction class calculates bounding boxes for nodes and subgraphs.
+  \ingroup actions
+
+  The use of bounding boxes is ubiquitous within the Coin library. It
+  is needed for the correct execution of and for performance
+  enhancements during rendering, picking, caching, culling, etc.
+
+  Apply this action to a path or scene graph root to calculate the
+  bounding box and the center point of the geometry contained within
+  the scene.
 */
 
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoSubActionP.h>
-#include <Inventor/lists/SoEnabledElementsList.h>
 
-#include <Inventor/elements/SoLocalBBoxMatrixElement.h>
 #include <Inventor/elements/SoBBoxModelMatrixElement.h>
+#include <Inventor/elements/SoLocalBBoxMatrixElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
-
-#include <Inventor/errors/SoDebugError.h>
-
+#include <Inventor/lists/SoEnabledElementsList.h>
+#include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoNode.h>
 
-#define FLAG_CENTER_SET    0x0001
-#define FLAG_CAMERA_SPACE  0x0002
-#define FLAG_RESET_BEFORE  0x0004
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
 
 // *************************************************************************
 
 /*!
-  \fn SoGetBoundingBoxAction::ResetType
-
-  FIXME: write doc.
+  \enum SoGetBoundingBoxAction::ResetType
+  \internal
 */
 
 
 SO_ACTION_SOURCE(SoGetBoundingBoxAction);
 
-/*!
-  This static method initializes all the static data for the
-  SoGetBoundingBoxAction class.
-*/
 
+// Overridden from parent class.
 void
 SoGetBoundingBoxAction::initClass(void)
 {
@@ -65,27 +67,27 @@ SoGetBoundingBoxAction::initClass(void)
 }
 
 /*!
-  A constructor.
-*/
+  Constructor.
 
-SoGetBoundingBoxAction::SoGetBoundingBoxAction(const SbViewportRegion &
-                                               viewportRegion)
-  : center(0,0,0),
-    vpRegion(viewportRegion),
-    resetPath(NULL),
-    flags(FLAG_RESET_BEFORE)
+  Some node types need to know the viewport region to calculate their
+  bounding box.
+*/
+SoGetBoundingBoxAction::SoGetBoundingBoxAction(const SbViewportRegion & vp)
+  : center(0, 0, 0),
+    vpregion(vp),
+    resetpath(NULL),
+    flags(SoGetBoundingBoxAction::RESET_BEFORE)
 {
   SO_ACTION_CONSTRUCTOR(SoGetBoundingBoxAction);
 
   SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::getBoundingBoxS);
 
-  methods->setUp(); // FIXME: not sure if this should be called here...
+  SoGetBoundingBoxAction::methods->setUp();
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
-
 SoGetBoundingBoxAction::~SoGetBoundingBoxAction()
 {
 }
@@ -93,29 +95,27 @@ SoGetBoundingBoxAction::~SoGetBoundingBoxAction()
 // *************************************************************************
 
 /*!
-  This method sets the viewport region.
+  Set a new viewport region with this method, if it has changed from
+  the oned passed in with the constructor.
 */
-
 void
-SoGetBoundingBoxAction::setViewportRegion(const SbViewportRegion &newRegion)
+SoGetBoundingBoxAction::setViewportRegion(const SbViewportRegion & newregion)
 {
-  this->vpRegion = newRegion;
+  this->vpregion = newregion;
 }
 
 /*!
-  This method returns the viewport region.
+  Returns the viewport region used by the action instance.
 */
-
 const SbViewportRegion &
 SoGetBoundingBoxAction::getViewportRegion(void) const
 {
-  return this->vpRegion;
+  return this->vpregion;
 }
 
 /*!
-  This method gets the bounding box.
+  Returns the projected bounding box after (or during) traversal.
 */
-
 SbBox3f
 SoGetBoundingBoxAction::getBoundingBox(void) const
 {
@@ -123,9 +123,9 @@ SoGetBoundingBoxAction::getBoundingBox(void) const
 }
 
 /*!
-  FIXME: write doc.
+  Returns the bounding box and transformation matrix to global
+  coordinates. Use after (or during) traversal.
 */
-
 SbXfBox3f &
 SoGetBoundingBoxAction::getXfBoundingBox(void)
 {
@@ -133,9 +133,8 @@ SoGetBoundingBoxAction::getXfBoundingBox(void)
 }
 
 /*!
-  This method returns the center.
+  Returns center point of scene after the action has been applied.
 */
-
 const SbVec3f &
 SoGetBoundingBoxAction::getCenter(void) const
 {
@@ -152,137 +151,106 @@ SoGetBoundingBoxAction::getCenter(void) const
 }
 
 /*!
-  This method sets wether the returned bounding box should be in the
-  camera space or not.
+  Sets whether the returned bounding box should be calculated in the
+  coordinate system of the camera space or not.
 */
-
 void
 SoGetBoundingBoxAction::setInCameraSpace(const SbBool on)
 {
-  if (on) {
-    this->flags |= FLAG_CAMERA_SPACE;
-  }
-  else {
-    this->flags &= ~FLAG_CAMERA_SPACE;
-  }
+  if (on) this->flags |= SoGetBoundingBoxAction::CAMERA_SPACE;
+  else this->flags &= ~SoGetBoundingBoxAction::CAMERA_SPACE;
 }
 
 /*!
-  This method returns wether the bounding box returned is to be in the
-  camera space or not.
+  Returns whether the bounding box returned is to be in camera space.
 */
-
 SbBool
 SoGetBoundingBoxAction::isInCameraSpace(void) const
 {
-  return (this->flags & FLAG_CAMERA_SPACE) != 0;
+  return (this->flags & SoGetBoundingBoxAction::CAMERA_SPACE) != 0;
 }
 
 /*!
-  This method forces the computed bounding box to be reset and the
-  transformation to be identity before or after the tail node of
-  \a path, depending on the \a resetBefore argument.  NULL can be
-  specified as the \a path argument to disable this behaviour.
+  Forces the computed bounding box to be reset and the transformation
+  to be identity before or after the tail node of \a path, depending
+  on the \a resetbefore argument.  \c NULL can be specified for the \a
+  path argument to disable this behavior.
 
-  \sa const SoPath * SoGetBoundingBoxAction::getResetPath() const
-  \sa SbBool SoGetBoundingBoxAction::isResetPath() const
-  \sa SbBool SoGetBoundingBoxAction::isResetBefore() const
-  \sa SoGetBoundingBoxAction::ResetType SoGetBoundingBoxAction::getWhatReset() const
+  \sa getResetPath(), isResetPath(), isResetBefore(), getWhatReset()
 */
 
 void
-SoGetBoundingBoxAction::setResetPath(const SoPath *path,
-                                     const SbBool resetBefore,
+SoGetBoundingBoxAction::setResetPath(const SoPath * path,
+                                     const SbBool resetbefore,
                                      const ResetType what)
 {
-  this->resetPath = path;
-  this->resetType = what;
-  if (resetBefore)
-    this->flags |= FLAG_RESET_BEFORE;
-  else
-    this->flags &= ~FLAG_RESET_BEFORE;
+  this->resetpath = path;
+  this->resettype = what;
+  if (resetbefore) this->flags |= SoGetBoundingBoxAction::RESET_BEFORE;
+  else this->flags &= ~SoGetBoundingBoxAction::RESET_BEFORE;
 }
 
 /*!
-  This method returns the reset path (or NULL).
+  Returns the reset path (or \c NULL).
 
-  \sa void SoGetBoundingBoxAction::setResetPath(const SoPath *path, const SbBool resetBefore, const ResetType what)
-  \sa SbBool SoGetBoundingBoxAction::isResetPath() const
-  \sa SbBool SoGetBoundingBoxAction::isResetBefore() const
-  \sa SoGetBoundingBoxAction::ResetType SoGetBoundingBoxAction::getWhatReset() const
+  \sa setResetPath(), isResetPath(), isResetBefore(), getWhatReset()
 */
-
 const SoPath *
-SoGetBoundingBoxAction::getResetPath() const
+SoGetBoundingBoxAction::getResetPath(void) const
 {
-  return this->resetPath;
+  return this->resetpath;
 }
 
 /*!
-  This method returns wether a reset path is set or not.
+  Returns whether a reset path is set or not.
 
-  \sa void SoGetBoundingBoxAction::setResetPath(const SoPath *path, const SbBool resetBefore, const ResetType what)
-  \sa const SoPath * SoGetBoundingBoxAction::getResetPath() const
-  \sa SbBool SoGetBoundingBoxAction::isResetBefore() const
-  \sa SoGetBoundingBoxAction::ResetType SoGetBoundingBoxAction::getWhatReset() const
+  \sa setResetPath(), getResetPath(), isResetBefore(), getWhatReset()
 */
-
 SbBool
-SoGetBoundingBoxAction::isResetPath() const
+SoGetBoundingBoxAction::isResetPath(void) const
 {
-  return this->resetPath != NULL;
+  return this->resetpath != NULL;
 }
 
 /*!
-  This method returns wether the bounding box and transformation is reset before
+  Returns whether the bounding box and transformation is reset before
   or after the tail node of the reset path.
 
-  \sa void SoGetBoundingBoxAction::setResetPath(const SoPath *path, const SbBool resetBefore, const ResetType what)
-  \sa const SoPath * SoGetBoundingBoxAction::getResetPath() const
-  \sa SbBool SoGetBoundingBoxAction::isResetPath() const
-  \sa SoGetBoundingBoxAction::ResetType SoGetBoundingBoxAction::getWhatReset() const
+  \sa setResetPath(), getResetPath(), isResetPath(), getWhatReset()
 */
-
 SbBool
-SoGetBoundingBoxAction::isResetBefore() const
+SoGetBoundingBoxAction::isResetBefore(void) const
 {
-  return (this->flags & FLAG_RESET_BEFORE) != 0;
+  return (this->flags & SoGetBoundingBoxAction::RESET_BEFORE) != 0;
 }
 
 /*!
-  This method returns what type of reset has been specified for the reset
-  path.
+  Returns what type of reset has been specified for the reset path.
 
-  \sa void SoGetBoundingBoxAction::setResetPath(const SoPath *path, const SbBool resetBefore, const ResetType what)
-  \sa const SoPath * SoGetBoundingBoxAction::getResetPath() const
-  \sa SbBool SoGetBoundingBoxAction::isResetPath() const
-  \sa SbBool SoGetBoundingBoxAction::isResetBefore() const
+  \sa setResetPath(), getResetPath(), isResetPath(), isResetBefore()
 */
-
 SoGetBoundingBoxAction::ResetType
-SoGetBoundingBoxAction::getWhatReset() const
+SoGetBoundingBoxAction::getWhatReset(void) const
 {
-  return this->resetType;
+  return this->resettype;
 }
 
-/* EXTENDER methods ***************************************************/
-
 /*!
-  FIXME: write doc.
+  \internal
+  Called before node traversal of each node (from SoNode action method).
 */
-
 void
-SoGetBoundingBoxAction::checkResetBefore()
+SoGetBoundingBoxAction::checkResetBefore(void)
 {
-  if (this->resetPath && this->isResetBefore()) {
-    const SoFullPath *curpath = (const SoFullPath*) this->getCurPath();
-    const SoFullPath *resetpath = (const SoFullPath*) this->resetPath;
+  if (this->resetpath && this->isResetBefore()) {
+    const SoFullPath * curpath = (const SoFullPath *) this->getCurPath();
+    const SoFullPath * resetpath = (const SoFullPath *) this->resetpath;
     if ((curpath->getTail() == resetpath->getTail()) &&
         curpath->containsPath(resetpath)) {
-      if (this->resetType & SoGetBoundingBoxAction::TRANSFORM) {
+      if (this->resettype & SoGetBoundingBoxAction::TRANSFORM) {
         SoBBoxModelMatrixElement::reset(this->getState(), curpath->getTail());
       }
-      if (this->resetType & SoGetBoundingBoxAction::BBOX) {
+      if (this->resettype & SoGetBoundingBoxAction::BBOX) {
         this->bbox.makeEmpty();
         this->bbox.setTransform(SbMatrix::identity());
         this->resetCenter();
@@ -292,21 +260,21 @@ SoGetBoundingBoxAction::checkResetBefore()
 }
 
 /*!
-  FIXME: write doc.
+  \internal
+  Called after node traversal of each node (from SoNode action method).
 */
-
 void
-SoGetBoundingBoxAction::checkResetAfter()
+SoGetBoundingBoxAction::checkResetAfter(void)
 {
-  if (this->resetPath && !this->isResetBefore()) {
-    const SoFullPath *curpath = (const SoFullPath*) this->getCurPath();
-    const SoFullPath *resetpath = (const SoFullPath*) this->resetPath;
+  if (this->resetpath && !this->isResetBefore()) {
+    const SoFullPath * curpath = (const SoFullPath *) this->getCurPath();
+    const SoFullPath * resetpath = (const SoFullPath *) this->resetpath;
     if ((curpath->getTail() == resetpath->getTail()) &&
         curpath->containsPath(resetpath)) {
-      if (this->resetType & SoGetBoundingBoxAction::TRANSFORM) {
+      if (this->resettype & SoGetBoundingBoxAction::TRANSFORM) {
         SoBBoxModelMatrixElement::reset(this->getState(), curpath->getTail());
       }
-      if (this->resetType & SoGetBoundingBoxAction::BBOX) {
+      if (this->resettype & SoGetBoundingBoxAction::BBOX) {
         this->bbox.makeEmpty();
         this->bbox.setTransform(SbMatrix::identity());
         this->resetCenter();
@@ -316,16 +284,17 @@ SoGetBoundingBoxAction::checkResetAfter()
 }
 
 /*!
-  FIXME: write doc.
+  Extend bounding box by the given \a box. Called from nodes during
+  traversal. Should not be used by application programmers, unless
+  you're extending Coin with your own node types.
 */
-
 void
-SoGetBoundingBoxAction::extendBy(const SbBox3f &box)
+SoGetBoundingBoxAction::extendBy(const SbBox3f & box)
 {
   if (box.isEmpty()) {
-#if COIN_DEBUG
+#if COIN_DEBUG && 1 // debug
     SoDebugError::postWarning("SoGetBoundingBoxAction::extendBy", "empty box");
-#endif // COIN_DEBUG
+#endif // debug
     return;
   }
 
@@ -334,10 +303,6 @@ SoGetBoundingBoxAction::extendBy(const SbBox3f &box)
   tbox.transform(SoLocalBBoxMatrixElement::get(this->state));
   if (this->isInCameraSpace()) {
     const SbMatrix & mat = SoViewingMatrixElement::get(this->state);
-#if 0 // debug
-    SoDebugError::postInfo("SoGetBoundingBoxAction::extendBy",
-                           "in camera space, sbbox3f");
-#endif // debug
     tbox.transform(mat);
   }
 
@@ -345,16 +310,17 @@ SoGetBoundingBoxAction::extendBy(const SbBox3f &box)
 }
 
 /*!
-  FIXME: write doc.
+  Extend bounding box by the given \a box. Called from nodes during
+  traversal. Should not be used by application programmers, unless
+  you're extending Coin with your own node types.
 */
-
 void
-SoGetBoundingBoxAction::extendBy(const SbXfBox3f &box)
+SoGetBoundingBoxAction::extendBy(const SbXfBox3f & box)
 {
   if (box.isEmpty()) {
-#if COIN_DEBUG
+#if COIN_DEBUG && 1 // debug
     SoDebugError::postWarning("SoGetBoundingBoxAction::extendBy", "empty box");
-#endif // COIN_DEBUG
+#endif // debug
     return;
   }
 
@@ -362,27 +328,23 @@ SoGetBoundingBoxAction::extendBy(const SbXfBox3f &box)
   lbox.transform(SoLocalBBoxMatrixElement::get(this->state));
   if (this->isInCameraSpace()) {
     const SbMatrix & mat = SoViewingMatrixElement::get(this->state);
-#if 0 // debug
-    SoDebugError::postInfo("SoGetBoundingBoxAction::extendBy",
-                           "in camera space, sbxfbox3f");
-#endif // debug
     lbox.transform(mat);
   }
   this->bbox.extendBy(lbox);
 }
 
 /*!
-  FIXME: write doc.
+  \internal
+  Set a new center point during traversal.
 */
-
 void
-SoGetBoundingBoxAction::setCenter(const SbVec3f &center,
-                                  const SbBool transformCenter)
+SoGetBoundingBoxAction::setCenter(const SbVec3f & center,
+                                  const SbBool transformcenter)
 {
   assert(!this->isCenterSet());
-  this->flags |= FLAG_CENTER_SET;
+  this->flags |= SoGetBoundingBoxAction::CENTER_SET;
 
-  if (transformCenter) {
+  if (transformcenter) {
     this->center = center;
     const SbMatrix & lmat = SoLocalBBoxMatrixElement::get(this->state);
     lmat.multVecMatrix(this->center, this->center);
@@ -395,47 +357,43 @@ SoGetBoundingBoxAction::setCenter(const SbVec3f &center,
     this->center = center;
   }
 
-#if 0 // debug
+#if COIN_DEBUG && 0 // debug
   SoDebugError::post("SoGetBoundingBoxAction::setCenter",
-                     "center: <%f, %f, %f>, transformCenter: %s, "
+                     "center: <%f, %f, %f>, transformcenter: %s, "
                      "this->center: <%f, %f, %f>",
                      center[0], center[1], center[2],
-                     transformCenter ? "TRUE" : "FALSE",
+                     transformcenter ? "TRUE" : "FALSE",
                      this->center[0], this->center[1], this->center[2]);
 #endif // debug
 }
 
 /*!
-  FIXME: write doc.
+  \internal 
+  Query about the center point during traversal.
 */
-
 SbBool
-SoGetBoundingBoxAction::isCenterSet() const
+SoGetBoundingBoxAction::isCenterSet(void) const
 {
-  return (this->flags & FLAG_CENTER_SET) != 0;
+  return (this->flags & SoGetBoundingBoxAction::CENTER_SET) != 0;
 }
 
 /*!
-  FIXME: write doc.
+  \internal
+  Reset the scene center point during traversal.
 */
-
 void
-SoGetBoundingBoxAction::resetCenter()
+SoGetBoundingBoxAction::resetCenter(void)
 {
-  this->flags &= ~FLAG_CENTER_SET;
+  this->flags &= ~SoGetBoundingBoxAction::CENTER_SET;
   // FIXME: check this->isInCameraSpace() and modify? Probably not, but
   // investigate. 19990513 mortene.
   this->center.setValue(0.0f, 0.0f, 0.0f);
 }
 
-/* protected methods ****************************************************/
-
-#include <Inventor/misc/SoState.h>
-
 /*!
-  FIXME: write doc.
+  Overloaded to reset center point and bounding box before traversal
+  starts.
 */
-
 void
 SoGetBoundingBoxAction::beginTraversal(SoNode * const node)
 {
@@ -448,11 +406,7 @@ SoGetBoundingBoxAction::beginTraversal(SoNode * const node)
   // SoAction class instead? 19990303 mortene.
 
   this->getState()->push();
-  SoViewportRegionElement::set(this->getState(), this->vpRegion);
+  SoViewportRegionElement::set(this->getState(), this->vpregion);
   inherited::beginTraversal(node);
   this->getState()->pop();
 }
-
-#undef FLAG_CENTER_SET
-#undef FLAG_CAMERA_SPACE
-#undef FLAG_RESET_BEFORE
