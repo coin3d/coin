@@ -56,7 +56,8 @@ void cc_recmutex_struct_clean(cc_recmutex * rwmutex);
 /* some internal locks are defined here */
 int cc_recmutex_internal_field_lock(void);
 int cc_recmutex_internal_field_unlock(void);
-
+int cc_recmutex_internal_notify_lock(void);
+int cc_recmutex_internal_notify_unlock(void);
 /* ********************************************************************** */
 
 #ifdef __cplusplus
