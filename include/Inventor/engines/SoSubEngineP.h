@@ -85,4 +85,39 @@ PRIVATE_SO_INTERPOLATE_DESTRUCTOR(_class_) \
 PRIVATE_SO_INTERPOLATE_EVALUATE(_class_, _type_, _valtype_, _interpexp_)
 
 
+#define SO_INTERNAL_ENGINE_SOURCE_DYNAMIC_IO(_class_) \
+PRIVATE_ENGINE_TYPESYSTEM_SOURCE(_class_); \
+unsigned int _class_::classinstances = 0; \
+SoFieldData * _class_::inputdata = NULL; \
+const SoFieldData ** _class_::parentinputdata = NULL; \
+SoEngineOutputData * _class_::outputdata = NULL; \
+const SoEngineOutputData ** _class_::parentoutputdata = NULL; \
+ \
+const SoFieldData ** _class_::getInputDataPtr(void) \
+{ \
+  assert(0 && "function not in use for _class_"); \
+  return NULL; \
+} \
+ \
+const SoFieldData * _class_::getFieldData(void) const \
+{ \
+  return this->dynamicinput; \
+} \
+ \
+const SoEngineOutputData ** _class_::getOutputDataPtr(void) \
+{ \
+  assert(0 && "function not in use for _class_"); \
+  return NULL; \
+} \
+ \
+const SoEngineOutputData * _class_::getOutputData(void) const \
+{ \
+  return this->dynamicoutput; \
+} \
+ \
+void * _class_::createInstance(void) \
+{ \
+  return new _class_; \
+}
+
 #endif // !COIN_SOSUBENGINEP_H

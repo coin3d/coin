@@ -51,7 +51,7 @@
 */
 /*!
   \var SoEngineOutput * SoSelectOne::output
-  (SoSField) This is the singlevalue field output containing the index'th 
+  (SoSField) This is the singlevalue field output containing the index'th
   value of SoSelectOne::input.
 
   The type of the field will of course match the type of the input field,
@@ -59,56 +59,12 @@
   be an SoSFFloat etc.
 */
 
-// Don't try to document the "internals" of SO_ENGINE_SOURCE.
-#ifndef DOXYGEN_SKIP_THIS
-
-/*** SO_ENGINE_SOURCE replacement start *************************************/
-
-// Can not use the standard SO_ENGINE_SOURCE macro, as SoSelectOne
-// engines doesn't keep a class-global set of inputs and outputs.
-
-PRIVATE_ENGINE_TYPESYSTEM_SOURCE(SoSelectOne);
-
-unsigned int SoSelectOne::classinstances = 0;
-SoFieldData * SoSelectOne::inputdata = NULL;
-const SoFieldData ** SoSelectOne::parentinputdata = NULL;
-SoEngineOutputData * SoSelectOne::outputdata = NULL;
-const SoEngineOutputData ** SoSelectOne::parentoutputdata = NULL;
-
-const SoFieldData ** SoSelectOne::getInputDataPtr(void)
-{
-  assert(0 && "function not in use for SoSelectOne");
-  return NULL;
-}
-
-const SoFieldData *
-SoSelectOne::getFieldData(void) const
-{
-  return this->dynamicinput;
-}
-
-const SoEngineOutputData **
-SoSelectOne::getOutputDataPtr(void)
-{
-  assert(0 && "function not in use for SoSelectOne");
-  return NULL;
-}
-
-const SoEngineOutputData *
-SoSelectOne::getOutputData(void) const
-{
-  return this->dynamicoutput;
-}
-
-void *
-SoSelectOne::createInstance(void)
-{
-  return new SoSelectOne;
-}
-
-/*** SO_ENGINE_SOURCE replacement end ***************************************/
-
-#endif // DOXYGEN_SKIP_THIS
+// Can't use the standard SO_ENGINE_SOURCE macro, as this engine
+// doesn't keep a class-global set of inputs and outputs: we need to
+// make an instance of SoFieldData and SoEngineOutputData for every
+// instance of the class, since the input and output fields are
+// dynamically allocated.
+SO_INTERNAL_ENGINE_SOURCE_DYNAMIC_IO(SoSelectOne);
 
 
 /*!
