@@ -1095,7 +1095,6 @@ void
 SoQuadMesh::GLRender(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
-
   SbBool didpush = FALSE;
 
   if (this->vertexProperty.getValue()) {
@@ -1115,18 +1114,13 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
   // send approx number of triangles for autocache handling
   sogl_autocache_update(state, (rowsize-1)*(colsize-1)*2);
 
-  if (rowsize < 2 || colsize < 2) {
-    if (this->vertexProperty.getValue()) state->pop();
-    return; // nothing to draw
-  }
   const SoCoordinateElement * tmp;
   const SbVec3f * normals;
   SbBool doTextures;
-  SoMaterialBundle mb(action);
 
+  SoMaterialBundle mb(action);
   SoTextureCoordinateBundle tb(action, TRUE, FALSE);
   doTextures = tb.needCoordinates();
-
   SbBool needNormals = !mb.isColorOnly() || tb.isFunction();
 
   SoVertexShape::getVertexData(action->getState(), tmp, normals,
@@ -1134,22 +1128,7 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
 
   const SoGLCoordinateElement * coords = (SoGLCoordinateElement *)tmp;
 
-  int start = this->startIndex.getValue();
-
-  if (coords->getNum() - start < rowsize * colsize) {
-    static uint32_t glrendererrors_quadmesh = 0;
-    if (glrendererrors_quadmesh < 1) {
-      SoDebugError::postWarning("SoQuadMesh::GLRender", "Illegal quadmesh "
-                                "dimension [%d %d] with %d coordinates available. "
-                                "Ignoring. This message will only be shown once, but "
-                                "there might be more errors.", 
-                                rowsize, colsize, coords->getNum() - start);
-    }
-
-    glrendererrors_quadmesh++;
-    return;
-  }
-
+  const int start = this->startIndex.getValue();
 
   Binding mbind = findMaterialBinding(action->getState());
   Binding nbind = findNormalBinding(action->getState());
@@ -1183,6 +1162,48 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
   SbBool pl = preciselighting &&
     coords->is3D() && (mbind != PER_VERTEX) && !tb.isFunction();
 
+  // Robustness test to make sure the start index is positive
+  if (start < 0) {
+    static uint32_t current_errors = 0;
+    if (current_errors < 1) {
+      SoDebugError::postWarning("SoQuadMesh::GLRender", "Erroneous "
+                                "startIndex: %d. Should be >= 0. This message will only "
+                                "be shown once, but there might be more errors", start);
+    }
+    current_errors++;
+    goto glrender_done;
+  }
+
+  // Robustness test to make sure rowsize and colsize are valid
+  if (rowsize < 2 || colsize  < 2) {
+    static uint32_t current_errors = 0;
+    if (current_errors < 1) {
+      SoDebugError::postWarning("SoQuadMesh::GLRender", "Erroneous quadmesh "
+                                "dimension [%d %d] with %d coordinates available. "
+                                "Must specify >= 2 rows and columns. "
+                                "Aborting rendering. This message will only be shown "
+                                "once, but there might be more errors.", 
+                                rowsize, colsize, coords->getNum() - start);
+    }
+    current_errors++;
+    goto glrender_done;
+  }
+
+  // Robustness test to make sure rowsize and colsize specify
+  // coordinates that really exist.
+  if (coords->getNum() - start < rowsize * colsize) {
+    static uint32_t current_errors = 0;
+    if (current_errors < 1) {
+      SoDebugError::postWarning("SoQuadMesh::GLRender", "Erroneous quadmesh "
+                                "dimension [%d %d] with %d coordinates available. "
+                                "Ignoring. This message will only be shown once, but "
+                                "there might be more errors.", 
+                                rowsize, colsize, coords->getNum() - start);
+    }
+    current_errors++;
+    goto glrender_done;
+  }
+
   soquadmesh_ni_render_funcs[ (mbind << 3) | (nbind << 1) | doTextures +
                               (pl ? 32 : 0)]
     (coords,
@@ -1193,6 +1214,8 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
      rowsize,
      colsize,
      start);
+
+ glrender_done:
 
   if (nc) {
     this->readUnlockNormalCache();
