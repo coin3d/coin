@@ -639,7 +639,7 @@ glglue_allow_newer_opengl(const cc_glglue * w)
   }
 
   if (force1_0) return FALSE;
-  if (w->glx.isdirect && !fullindirect) return FALSE;
+  if (!w->glx.isdirect && !fullindirect) return FALSE;
   return TRUE;
 }
 
