@@ -41,8 +41,10 @@
 #include <assert.h>
 
 /*!
-  \fn SoAccumulatedElement::nodeids
-  Used to store node ids.
+  \fn SoAccumulatedElement::nodeIds
+
+  Stores the internal list of node id values for nodes accumulated on
+  the stack for the element.
 */
 
 SO_ELEMENT_ABSTRACT_SOURCE(SoAccumulatedElement);
