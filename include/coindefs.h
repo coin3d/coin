@@ -119,5 +119,8 @@
 
 #endif /* !COIN_DEBUG */
 
+/* COIN_CT_ASSERT() - a macro for doing compile-time asserting */
+#define COIN_CT_ASSERT(expr) \
+  do { switch ( 0 ) { case 0: case (expr): break; } } while ( 0 )
 
 #endif /* !COIN_DEFS_H */

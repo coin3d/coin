@@ -286,17 +286,17 @@ SoDB::init(void)
   // include/Inventor/system/inttypes.h.in or the bitwidth define
   // configure tests need fixing. Keep these tests around.
 
-  assert(sizeof(uint8_t) == 1);
-  assert(sizeof(int8_t) == 1);
-  assert(sizeof(uint16_t) == 2);
-  assert(sizeof(int16_t) == 2);
-  assert(sizeof(uint32_t) == 4);
-  assert(sizeof(int32_t) == 4);
+  COIN_CT_ASSERT(sizeof(uint8_t) == 1);
+  COIN_CT_ASSERT(sizeof(int8_t) == 1);
+  COIN_CT_ASSERT(sizeof(uint16_t) == 2);
+  COIN_CT_ASSERT(sizeof(int16_t) == 2);
+  COIN_CT_ASSERT(sizeof(uint32_t) == 4);
+  COIN_CT_ASSERT(sizeof(int32_t) == 4);
 #ifdef HAVE_UINT64_T
-  assert(sizeof(uint64_t) == 8);
+  COIN_CT_ASSERT(sizeof(uint64_t) == 8);
 #endif // HAVE_UINT64_T
 #ifdef HAVE_INT64_T
-  assert(sizeof(int64_t) == 8);
+  COIN_CT_ASSERT(sizeof(int64_t) == 8);
 #endif // HAVE_INT64_T
 
 
@@ -348,7 +348,7 @@ SoDB::init(void)
   // SbDict keys. FIXME: remove this check when we are no longer
   // dependent on using native C types where we need to have a
   // particular bitwidth. 20020225 mortene.
-  assert(sizeof(unsigned long) >= sizeof(void *));
+  COIN_CT_ASSERT(sizeof(unsigned long) >= sizeof(void *));
 
   // Sanity check: if this breaks, the binary format import and export
   // routines will not work correctly. FIXME: the code should be fixed
