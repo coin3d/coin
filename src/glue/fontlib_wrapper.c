@@ -32,14 +32,12 @@
 #include <stddef.h>
 
 #include <Inventor/C/glue/fontlib_wrapper.h>
+#include <Inventor/C/glue/flwfreetype.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/base/string.h>
 #include "../misc/defaultfonts.h"
 
-#ifdef HAVE_FREETYPE
-#include <Inventor/C/glue/flwfreetype.h>
-#endif
 
 struct cc_glyphstruct {
   cc_FLWglyph glyph;
@@ -62,13 +60,15 @@ static struct cc_fontstruct **fonts;
 static int fontcnt;
 static int fontmax = 0;
 static SbBool wrapper_initialized = FALSE;
+
+/* This is the file-global flag that indicates whether or not we can
+   and will use the FreeType library. */
+static SbBool freetypelib = FALSE;
   
 #define NOGLYPH -1
 
-/*
-  BEGIN Internal functions
-*/
-
+/* ********************************************************************** */
+/* BEGIN Internal functions */
 
 static cc_FLWbitmap *
 get_default_bitmap(unsigned int character)
@@ -283,10 +283,8 @@ fontstruct_insert_glyph(int font, cc_FLWglyph glyph, int defaultglyph)
   return fs->glyphcnt++;
 }
 
-/*
-  END Internal functions
-*/
-
+/* END Internal functions */
+/* ********************************************************************** */
 
 SbBool
 cc_flw_debug(void)
@@ -314,21 +312,19 @@ cc_flw_initialize(void)
   for (i=0; i<fontmax; i++)
     fonts[i] = NULL;
 
-#ifdef HAVE_FREETYPE
-  if (cc_flw_debug()) { cc_debugerror_postinfo("cc_flw_initialize", "using FreeType library"); }
-
-  /* FIXME: return value just ignored. Should be handled (by disabling
-     all use of FreeType library if init fails). 20030316 mortene. */
-  (void)cc_flwft_initialize();
-#endif
+  freetypelib = cc_flwft_initialize();
+  if (cc_flw_debug()) {
+    cc_debugerror_postinfo("cc_flw_initialize",
+                           "FreeType library %s",
+                           freetypelib ? "can be used" : "can not be used");
+  }
 }
 
 void
 cc_flw_exit()
 {
-#ifdef HAVE_FREETYPE
-  cc_flwft_exit();
-#endif
+  if (freetypelib) { cc_flwft_exit(); }
+
   fontstruct_cleanup();
 }
 
@@ -347,32 +343,31 @@ cc_flw_create_font(const char * fontname, const int sizex, const int sizey)
   int i, idx;
   cc_string * createdfontname;
   
-  /* Don't create font if one has already been created for this
-     requestname and size. */
+  /* Don't create font if one has already been created for this name
+     and size. */
   i = cc_flw_get_font(fontname, sizex, sizey);
   if (i != -1) { return i; }
 
   font = NULL;
   
-#ifdef HAVE_FREETYPE
-  font = cc_flwft_get_font(fontname);
-#endif
+  if (freetypelib) { font = cc_flwft_get_font(fontname); }
 
   if (font) {
     fs = fontstruct_new(font);
     fontstruct_set_requestname(fs, fontname);
     fontstruct_set_size(fs, sizex, sizey);
-#ifdef HAVE_FREETYPE
-    cc_flwft_set_char_size(font, sizex, sizey);
-#endif
-#ifdef HAVE_FREETYPE
-    createdfontname = cc_flwft_get_font_name(font);
-    fontstruct_set_fontname(fs, cc_string_get_text(createdfontname));
-    cc_string_destruct(createdfontname);
-    cc_flwft_set_char_size(font, sizex, sizey);
-#else
-    fontstruct_set_fontname(fs, "unknown");
-#endif
+
+    if (freetypelib) {
+      cc_flwft_set_char_size(font, sizex, sizey);
+      createdfontname = cc_flwft_get_font_name(font);
+      fontstruct_set_fontname(fs, cc_string_get_text(createdfontname));
+      cc_string_destruct(createdfontname);
+      cc_flwft_set_char_size(font, sizex, sizey);
+    }
+    else {
+      fontstruct_set_fontname(fs, "unknown");
+    }
+
     idx = fontstruct_insert(fs);
 
     if (cc_flw_debug()) {
@@ -424,10 +419,11 @@ void
 cc_flw_done_font(int font)
 {
   assert (font >= 0 && font < fontcnt && fonts[font]);
-#ifdef HAVE_FREETYPE
-  if (!fonts[font]->defaultfont)
-    cc_flwft_done_font(fonts[font]->font);
-#endif
+
+  if (freetypelib) {
+    if (!fonts[font]->defaultfont) { cc_flwft_done_font(fonts[font]->font); }
+  }
+
   fontstruct_rmfont(font);
 }
 
@@ -435,28 +431,22 @@ int
 cc_flw_get_num_charmaps(int font)
 {
   assert (font >= 0 && font < fontcnt && fonts[font]);
-#ifdef HAVE_FREETYPE
-  if (!fonts[font]->defaultfont)
+
+  if (freetypelib && !fonts[font]->defaultfont)
     return cc_flwft_get_num_charmaps(fonts[font]->font);
-  else
-    return 0;
-#else
+
   return 0;
-#endif
 }
 
 cc_string *
 cc_flw_get_charmap_name(int font, int charmap)
 {
   assert (font >= 0 && font < fontcnt && fonts[font]);
-#ifdef HAVE_FREETYPE
-  if (!fonts[font]->defaultfont)
+
+  if (freetypelib && !fonts[font]->defaultfont)
     return cc_flwft_get_charmap_name(fonts[font]->font, charmap);
-  else
-    return NULL;
-#else
+
   return NULL;
-#endif
 }
 
 
@@ -471,14 +461,11 @@ int
 cc_flw_set_charmap(int font, int charmap)
 {
   assert (font >= 0 && font < fontcnt && fonts[font]);
-#ifdef HAVE_FREETYPE
-  if (!fonts[font]->defaultfont)
+
+  if (freetypelib && !fonts[font]->defaultfont)
     return cc_flwft_set_charmap(fonts[font]->font, charmap);
-  else
-    return -1;
-#else
+
   return -1;
-#endif
 }
 
 int
@@ -487,28 +474,22 @@ cc_flw_set_char_size(int font, int width, int height)
   assert (font >= 0 && font < fontcnt && fonts[font]);
   fonts[font]->sizex = width;
   fonts[font]->sizey = height;
-#ifdef HAVE_FREETYPE
-  if (!fonts[font]->defaultfont)
+
+  if (freetypelib && !fonts[font]->defaultfont)
     return cc_flwft_set_char_size(fonts[font]->font, width, height);
-  else
-    return -1;
-#else
+
   return -1;
-#endif
 }
 
 int
 cc_flw_set_font_rotation(int font, float angle)
 {
   assert (font >= 0 && font < fontcnt && fonts[font]);
-#ifdef HAVE_FREETYPE
-  if (!fonts[font]->defaultfont)
+
+  if (freetypelib && !fonts[font]->defaultfont)
     return cc_flwft_set_font_rotation(fonts[font]->font, angle);
-  else
-    return -1;
-#else
+
   return -1;
-#endif
 }
 
 int
@@ -521,9 +502,7 @@ cc_flw_get_glyph(int font, int charidx)
   glyph = 0;
   
   if ( !fonts[font]->defaultfont ) {
-#ifdef HAVE_FREETYPE
-    glyph = cc_flwft_get_glyph(fonts[font]->font, charidx);
-#endif
+    if (freetypelib) { glyph = cc_flwft_get_glyph(fonts[font]->font, charidx); }
     
     if (glyph > 0) {
       return fontstruct_insert_glyph(font, glyph, 0);
@@ -566,10 +545,11 @@ cc_flw_get_advance(int font, int glyph, float *x, float *y)
     *x = 8;
     *y = 0;
     return 0;
-  } else if (glyph<fs->glyphcnt && fs->glyphs[glyph].glyph != NOGLYPH) {
-#ifdef HAVE_FREETYPE
-    return cc_flwft_get_advance(fs->font, fs->glyphs[glyph].glyph, x, y);
-#endif
+  }
+  else if (glyph<fs->glyphcnt && fs->glyphs[glyph].glyph != NOGLYPH) {
+    if (freetypelib) {
+      return cc_flwft_get_advance(fs->font, fs->glyphs[glyph].glyph, x, y);
+    }
   }
   return -1;
 }
@@ -584,11 +564,13 @@ cc_flw_get_kerning(int font, int glyph1, int glyph2, float *x, float *y)
     *x = 0;
     *y = 0;
     return 0;
-  } else if (glyph1<fs->glyphcnt && fs->glyphs[glyph1].glyph != NOGLYPH
-             && glyph2<fs->glyphcnt && fs->glyphs[glyph2].glyph != NOGLYPH) {
-#ifdef HAVE_FREETYPE
-    return cc_flwft_get_kerning(fs->font, fs->glyphs[glyph1].glyph, fs->glyphs[glyph2].glyph, x, y);
-#endif
+  }
+  else if (glyph1<fs->glyphcnt && fs->glyphs[glyph1].glyph != NOGLYPH &&
+           glyph2<fs->glyphcnt && fs->glyphs[glyph2].glyph != NOGLYPH) {
+    if (freetypelib) {
+      return cc_flwft_get_kerning(fs->font, fs->glyphs[glyph1].glyph,
+                                  fs->glyphs[glyph2].glyph, x, y);
+    }
   }
   return -1;
 }
@@ -600,10 +582,11 @@ cc_flw_done_glyph(int font, int glyph)
   assert (font >= 0 && font < fontcnt && fonts[font]);
   fs = fonts[font];
   if (glyph<fs->glyphcnt && fs->glyphs[glyph].glyph != NOGLYPH) {
-#ifdef HAVE_FREETYPE
-    if (!fs->defaultfont)
+
+    if (freetypelib && !fs->defaultfont) {
       cc_flwft_done_glyph(fs->font, fs->glyphs[glyph].glyph);
-#endif
+    }
+
     fontstruct_rmglyph(fs, glyph);
   }
 }
@@ -620,13 +603,14 @@ cc_flw_get_bitmap(int font, int glyph)
   assert (font >= 0 && font < fontcnt && fonts[font]);
   fs = fonts[font];
   if (glyph<fs->glyphcnt && fs->glyphs[glyph].glyph != NOGLYPH) {
-    if (fs->glyphs[glyph].bitmap)
+    if (fs->glyphs[glyph].bitmap) {
       return fs->glyphs[glyph].bitmap;
-#ifdef HAVE_FREETYPE
-    if (!fs->defaultfont && !fs->glyphs[glyph].defaultglyph) {
+    }
+
+    if (freetypelib && !fs->defaultfont && !fs->glyphs[glyph].defaultglyph) {
       bm = cc_flwft_get_bitmap(fs->font, fs->glyphs[glyph].glyph);
-    };
-#endif
+    }
+
     if (!bm) {
       /* glyph handle == char value in default font. &255 to avoid index out of range. */
       bm = get_default_bitmap(fs->glyphs[glyph].glyph & 0xff);
