@@ -57,6 +57,10 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
+#ifdef COIN_THREADSAFE
+#include <Inventor/C/threads/recmutexp.h>
+#endif // COIN_THREADSAFE
+
 // FIXME: document these properly. 20000405 mortene.
 /*!
   \fn const SoEngineOutputData * SoNodeEngine::getOutputData(void) const
@@ -113,7 +117,16 @@ SoNodeEngine::destroy(void)
   // normally call SoNodeEngine::evaluate(), but we disable that feature
   // by setting SoEngineOutput::isEnabled() to FALSE before
   // decoupling.
+
+  // need to lock to avoid that evaluateWrapper() is called
+  // simultaneously from more than one thread
+#ifdef COIN_THREADSAFE
+  cc_recmutex_internal_field_lock();
+#endif // COIN_THREADSAFE
   this->evaluateWrapper();
+#ifdef COIN_THREADSAFE
+  cc_recmutex_internal_field_unlock();
+#endif // COIN_THREADSAFE
 
   // SoBase destroy().
   inherited::destroy();
