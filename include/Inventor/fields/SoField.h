@@ -138,8 +138,6 @@ public:
   SbBool getDirty(void) const;
   void setDirty(SbBool dirty);
 
-  SbBool checkISReference(SoInput * in, SbBool & readok);
-
 protected:
   SoField(void);
 

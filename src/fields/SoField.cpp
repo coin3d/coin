@@ -61,7 +61,6 @@
 #include <Inventor/lists/SoEngineList.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/sensors/SoDataSensor.h>
-#include <Inventor/misc/SoProto.h>
 
 // flags for this->statusbits
 #define FLAG_TYPEMASK       0x0007  // need 3 bits for values [0-5]
@@ -78,7 +77,6 @@
 
 static const char IGNOREDCHAR = '~';
 static const char CONNECTIONCHAR = '=';
-static const char IS_KEYWORD[] = "IS";
 /*
   This class is used to aid in "multiplexing" the pointer member of
   SoField. This is a way to achieve the goal of using minimum storage
@@ -1313,49 +1311,6 @@ SoField::copyConnection(const SoField * fromfield)
 }
 
 /*!
-  Checks if the next bytes in \a in is the IS keyword. Returns
-  \e TRUE if the IS keyword was found, \a readok will be set to
-  \e FALSE if some error occured while searching for the IS
-  keyword.
-
-  This method was not part of the Inventor v2.1 API, and is an
-  extension specific to Coin.
-
-  \since 2001-10-17
-*/
-SbBool
-SoField::checkISReference(SoInput * in, SbBool & readok)
-{
-  readok = TRUE;
-  SoProto * proto = in->getCurrentProto();
-  SbBool foundis = FALSE;
-  if (proto) {
-    char I;
-    readok = in->read(I);
-    if (readok) {
-      in->putBack(I);
-      if (I == 'I') {
-        SbName is;
-        readok = in->read(is, TRUE);
-        if (readok) {
-          if (is == SbName(IS_KEYWORD)) {
-            foundis = TRUE;
-            SbName iname;
-            readok = in->read(iname);
-            if (readok) {
-              proto->addISReference(this, iname);
-            }
-          }
-          else in->putBack(is.getString());
-        }
-      }
-    }
-  }
-  return foundis;
-}
-
-
-/*!
   Reads and sets the value of this field from the given SoInput
   instance.  Returns \c FALSE if the field value can not be parsed
   from the input.
@@ -1368,7 +1323,7 @@ SbBool
 SoField::read(SoInput * in, const SbName & name)
 {
   SbBool readok;
-  if (this->checkISReference(in, readok) || readok == FALSE) {
+  if (in->checkISReference(this->getContainer(), name, readok) || readok == FALSE) {
     if (!readok) {
       SoReadError::post(in, "Couldn't read value for field \"%s\"",
                         name.getString());

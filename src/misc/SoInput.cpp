@@ -120,6 +120,7 @@
 
 
 const unsigned int READBUFSIZE = 65536;
+static const char IS_KEYWORD[] = "IS";
 
 // *************************************************************************
 
@@ -306,7 +307,7 @@ SoInput::addRoute(const SbName & fromnode, const SbName & fromfield,
 
   \since 2001-10-15
 */
-void 
+void
 SoInput::addProto(SoProto * proto)
 {
   SoInput_FileInfo * info = this->getTopOfStack();
@@ -317,7 +318,18 @@ SoInput::addProto(SoProto * proto)
   }
 }
 
-void 
+/*
+  Pushed a Proto onto the Proto stack. The Proto stack is used during
+  VRML2 file parsing.
+
+  This method was not part of the Inventor v2.1 API, and is an
+  extension specific to Coin.
+
+  \since 2001-10-23 
+
+  \sa popProto()
+*/
+void
 SoInput::pushProto(SoProto * proto)
 {
   SoInput_FileInfo * info = this->getTopOfStack();
@@ -327,7 +339,17 @@ SoInput::pushProto(SoProto * proto)
   }
 }
 
-void 
+/*
+  Pops a Proto off the Proto stack.
+
+  This method was not part of the Inventor v2.1 API, and is an
+  extension specific to Coin.
+
+  \since 2001-10-23
+
+  \sa pushProto()
+*/
+void
 SoInput::popProto(void)
 {
   SoInput_FileInfo * info = this->getTopOfStack();
@@ -337,7 +359,17 @@ SoInput::popProto(void)
   }
 }
 
-SoProto * 
+/*
+  Returns the Proto at the top of the Proto stack.
+
+  This method was not part of the Inventor v2.1 API, and is an
+  extension specific to Coin.
+
+  \since 2001-10-23
+
+  \sa pushProto()
+*/
+SoProto *
 SoInput::getCurrentProto(void) const
 {
   SoInput_FileInfo * info = this->getTopOfStack();
@@ -346,6 +378,49 @@ SoInput::getCurrentProto(void) const
     return info->getCurrentProto();
   }
   return NULL;
+}
+
+/*
+  Checks if the next bytes in \a in is the IS keyword. Returns
+  \e TRUE if the IS keyword was found, \a readok will be set to
+  \e FALSE if some error occured while searching for the IS
+  keyword.
+
+  This method was not part of the Inventor v2.1 API, and is an
+  extension specific to Coin.
+
+  \since 2001-10-23
+*/
+SbBool 
+SoInput::checkISReference(SoFieldContainer * container, const SbName & fieldname, SbBool & readok)
+{
+  readok = TRUE;
+  SoProto * proto = this->getCurrentProto();
+  SbBool foundis = FALSE;
+  if (proto) {
+    char I;
+    readok = this->read(I);
+    if (readok) {
+      this->putBack(I);
+      if (I == 'I') {
+        SbName is;
+        readok = this->read(is, TRUE);
+        if (readok) {
+          if (is == SbName(IS_KEYWORD)) {
+            foundis = TRUE;
+            SbName iname;
+            readok = this->read(iname);
+            if (readok) {
+              assert(container->isOfType(SoNode::getClassTypeId()));
+              proto->addISReference((SoNode*) container, fieldname, iname);
+            }
+          }
+          else this->putBack(is.getString());
+        }
+      }
+    }
+  }
+  return foundis;
 }
 
 /*!
@@ -1186,17 +1261,17 @@ SoInput::findReference(const SbName & name) const
   }
   else {
     void * base;
-    
+
     if (this->refdict.find((unsigned long)name.getString(), base))
       return (SoBase *) base;
-    
+
     static int COIN_SOINPUT_SEARCH_GLOBAL_DICT = -1;
     if (COIN_SOINPUT_SEARCH_GLOBAL_DICT < 0) {
       const char * env = coin_getenv("COIN_SOINPUT_SEARCH_GLOBAL_DICT");
       if (env) COIN_SOINPUT_SEARCH_GLOBAL_DICT = atoi(env);
       else COIN_SOINPUT_SEARCH_GLOBAL_DICT = 0;
   }
-    
+
     if (COIN_SOINPUT_SEARCH_GLOBAL_DICT) {
       return SoBase::getNamedBase(name, SoNode::getClassTypeId());
     }

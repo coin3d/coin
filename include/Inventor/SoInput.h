@@ -38,6 +38,7 @@ class SbStringList;
 class SoInput_FileInfo;
 class SoProto;
 class SoField;
+class SoFieldContainer;
 
 class COIN_DLL_API SoInput {
 public:
@@ -49,10 +50,12 @@ public:
   void pushProto(SoProto * proto);
   SoProto * getCurrentProto(void) const;
   void popProto(void);
-  
+
   void addRoute(const SbName & fromnode, const SbName & fromfield,
                 const SbName & tonode, const SbName & tofield);
-
+  SbBool checkISReference(SoFieldContainer * container, const SbName & fieldname, 
+                          SbBool & readok);
+  
   virtual ~SoInput(void);
 
   virtual void setFilePointer(FILE * newFP);

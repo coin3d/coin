@@ -55,7 +55,6 @@
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoField.h>
 #include <Inventor/SbName.h>
-#include <Inventor/misc/SoProto.h>
 #include <coindefs.h> // COIN_STUB()
 #include <ctype.h>
 
@@ -432,6 +431,15 @@ SoFieldData::read(SoInput * in, SoFieldContainer * object,
       SbName fieldname;
       if (!in->read(fieldname, TRUE)) return TRUE; // Terminates loop on "}"
 
+      SbBool readok;
+      if (in->checkISReference(object, fieldname, readok)) {
+        continue; // skip to next field
+      }
+      if (!readok) {
+        SoReadError::post(in, "Error while searching for IS keyword for field \"%s\"",
+                          fieldname.getString());
+        return FALSE;
+      }
       // This should be caught in SoInput::read(SbName, SbBool).
       assert(fieldname != "");
 
@@ -739,7 +747,7 @@ SoFieldData::readFieldDescriptions(SoInput * in, SoFieldContainer * object,
         newfield->setFieldType(SoField::EVENTOUT_FIELD);        
       }
       SbBool readok;
-      (void) newfield->checkISReference(in, readok);
+      (void) in->checkISReference(object, fieldname.getString(), readok);
       if (!readok) {
         SoReadError::post(in, "Error while searching for IS keyword for field '%s'",
                           fieldname.getString());
@@ -757,27 +765,12 @@ SoFieldData::readFieldDescriptions(SoInput * in, SoFieldContainer * object,
       }
     }
 
-    SoProto * proto = in->getCurrentProto();
-    if (proto) {
-      READ_CHAR(c);
-      in->putBack(c);
-      if (c == 'I') {
-        SbName is;
-        if (!in->read(is, TRUE)) {
-          SoReadError::post(in, "Unable to search for IS keyword");
-          return FALSE;
-        }
-        if (is == IS) {
-          SbName iname;
-          if (!in->read(iname, TRUE)) {
-            SoReadError::post(in, "Unable to read IS reference field");
-            return FALSE;
-          }
-          proto->addISReference(newfield, iname);
-        }
-        else in->putBack(is.getString());
-      }
-    } 
+    SbBool readok;
+    (void) in->checkISReference(object, fieldname, readok);
+    if (!readok) {
+      SoReadError::post(in, "Unable to search for IS keyword");
+      return FALSE;
+    }
     if (!in->isBinary()) {
       READ_CHAR(c);
       if (c != VALUE_SEPARATOR_CHAR) in->putBack(c);
