@@ -1,4 +1,4 @@
-
+if BUILD_WITH_THREADS
 RegularSources = \
 	common.c \
 	thread.c \
@@ -14,10 +14,19 @@ RegularSources = \
 	fifo.c \
 	barrier.c \
 	threads-dummy.cpp
+else
+RegularSources = \
+	common.c \
+	storage.c \
+	threads-dummy.cpp
+endif
+
 LinkHackSources = \
 	all-threads-c.c \
 	threads-dummy.cpp
+
 PublicHeaders =
+
 PrivateHeaders = \
 	condvar_pthread.ic \
 	condvar_win32.ic \
@@ -27,7 +36,10 @@ PrivateHeaders = \
 	thread_pthread.ic \
 	thread_win32.ic \
 	wrappers.cpp
+
 ObsoleteHeaders =
+
+# **************************************************************************
 
 if BUILD_WITH_MSVC
 # win32 isn't able to link wrappers without including all dependencies
