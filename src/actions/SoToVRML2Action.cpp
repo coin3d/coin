@@ -1198,7 +1198,7 @@ SoToVRML2ActionP::soils_cb(void * closure, SoCallbackAction * action, const SoNo
     int32_t * dst = ils->coordIndex.startEditing();
 
     for (int i = 0; i < n; i++) {
-      int idx = src[i];
+      int32_t idx = src[i];
       if (idx >= 0) {
         dst[i] = bsp.addPoint(c[idx]);
       }
@@ -1227,7 +1227,7 @@ SoToVRML2ActionP::soils_cb(void * closure, SoCallbackAction * action, const SoNo
     // Color per segment, convert to per vertex
     SbList <int32_t> coordIdx;
     SbBSPTree bsp;
-    int colidx = 0;
+    int32_t colidx = 0;
     SoVRMLColor * color = (SoVRMLColor *)ils->color.getValue();
     int n = ils->coordIndex.getNum()-1;
     for (int i = 0; i < n; i++) {
@@ -1329,8 +1329,8 @@ SoToVRML2ActionP::solineset_cb(void * closure, SoCallbackAction * action, const 
   }
   
   int n = oldls->numVertices.getNum();
-  int curidx = 0;
-  SbList <int> l;
+  int32_t curidx = 0;
+  SbList <int32_t> l;
   for (int i = 0; i < n; i++) {
     for (int j = oldls->numVertices[i]-1; j >= 0; j--) {
       l.append(curidx++);
@@ -1344,7 +1344,7 @@ SoToVRML2ActionP::solineset_cb(void * closure, SoCallbackAction * action, const 
     // Color per segment, convert to per vertex
     SbList <int32_t> coordIdx;
     SbBSPTree bsp;
-    int colidx = 0;
+    int32_t colidx = 0;
     SoVRMLColor * color = (SoVRMLColor *)ils->color.getValue();
     int n = ils->coordIndex.getNum()-1;
     for (int i = 0; i < n; i++) {
@@ -1595,13 +1595,13 @@ SoToVRML2ActionP::sotoifs_cb(void * closure, SoCallbackAction * action, const So
   thisp->bsptree = new SbBSPTree;
   thisp->bsptreenormal = new SbBSPTree;
 
-  thisp->coordidx = new SbList <int>;
-  thisp->normalidx = new SbList <int>;
+  thisp->coordidx = new SbList <int32_t>;
+  thisp->normalidx = new SbList <int32_t>;
 
   if (action->getMaterialBinding() != SoMaterialBinding::OVERALL) {
     const SoLazyElement * colorElem = SoLazyElement::getInstance(action->getState());
     if (colorElem->getNumDiffuse() > 1) {
-      thisp->coloridx = new SbList <int>;
+      thisp->coloridx = new SbList <int32_t>;
     }
   }
 
@@ -1609,7 +1609,7 @@ SoToVRML2ActionP::sotoifs_cb(void * closure, SoCallbackAction * action, const So
       (SoTexture2 *) thisp->search_for_recent_node(action, SoTexture2::getClassTypeId());
   if (thisp->recentTex2) {
     thisp->bsptreetex = new SbBSPTree;
-    thisp->texidx = new SbList <int>;
+    thisp->texidx = new SbList <int32_t>;
   }
   
   thisp->do_post_primitives = TRUE;
@@ -1700,9 +1700,9 @@ SoToVRML2ActionP::post_primitives_cb(void * closure, SoCallbackAction * action, 
     }
 
     int n = thisp->coordidx->getLength();
-    const int * a = thisp->coordidx->getArrayPtr();
-    SbList <int> l;
-    int p = a[0];
+    const int32_t * a = thisp->coordidx->getArrayPtr();
+    SbList <int32_t> l;
+    int32_t p = a[0];
     for (int i = 0; i < n; i++) {
       if (a[i] == -1) {
         l.append(p);
