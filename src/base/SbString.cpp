@@ -179,6 +179,14 @@ SbString::findAll(const SbString & str, SbIntList & found) const
 */
 
 /*!
+  \fn int SbString::compareSubString(const char * text, int offset = 0) const
+
+  Uses \a text as a substring to be compared to the string, starting at
+  offset \a offset.  Return value is 0 upon success, and the failing
+  character comparison difference upon failure.
+*/
+
+/*!
   \fn SbString SbString::getSubString(int startidx, int endidx) const
 
   This method returns a new string which contains a substring defined by the
