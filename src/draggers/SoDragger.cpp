@@ -1262,15 +1262,19 @@ SoDragger::appendTranslation(const SbMatrix & matrix, const SbVec3f & translatio
 SbMatrix
 SoDragger::appendScale(const SbMatrix & matrix, const SbVec3f & scale, const SbVec3f & scalecenter, const SbMatrix * conversion)
 {
+  // Clamp the dragger values so that huge scaling in one go does not
+  // work, and negative scale values are made positive. The explicit
+  // casts are done to humour the HPUX aCC compiler, which will
+  // otherwise say ``Template deduction failed to find a match for the
+  // call to 'SbMax'''.  mortene.
   SbVec3f clampedscale;
-  // The explicit casts are done to humour the HPUX aCC compiler,
-  // which will otherwise say ``Template deduction failed to find a
-  // match for the call to 'SbMax'''.  mortene.
   clampedscale[0] = SbMax((float)scale[0], SoDragger::minscale);
   clampedscale[1] = SbMax((float)scale[1], SoDragger::minscale);
   clampedscale[2] = SbMax((float)scale[2], SoDragger::minscale);
 
   SbMatrix transform, tmp;
+  // Calculate the scaled matrix without doing any testing if the 
+  // scale of the resulting matrix is above SoDragger::minscale.
   transform.setTranslate(-scalecenter);
   tmp.setScale(clampedscale);
   transform.multRight(tmp);
@@ -1282,7 +1286,89 @@ SoDragger::appendScale(const SbMatrix & matrix, const SbVec3f & scale, const SbV
     transform.multLeft(conversion->inverse());
   }
   SbMatrix res = matrix;
-  return res.multLeft(transform);
+  res.multLeft(transform);
+
+  // Decompose the calculated matrix to be able to clamp the scale.
+  SbVec3f t, s;
+  SbRotation r, so;
+  res.getTransform(t, r, s, so);
+
+  // If the scale of the resulting matrix is smaller in x,y or z than
+  // SoDragger::minscale, then the scale value has to be corrected. If
+  // no correction is needed, the res matrix is returned without more
+  // calculations.
+  if (s[0] < SoDragger::minscale ||
+      s[1] < SoDragger::minscale ||
+      s[2] < SoDragger::minscale) {
+
+    // Clamp the values of the scale to be SoDragger::minscale or
+    // above.
+    int i;
+    for (i = 0; i < 3; i++) {
+      if (s[i] < SoDragger::minscale) {
+        s[i] = SoDragger::minscale;
+      }
+    }
+
+    // Set the new transform with the adjusted scale
+    transform.setTransform(t, r, s, so);
+    // Just returning this matrix does not work as expected.
+    // The dragger gets translated along the screen while trying
+    // to scale below SoDragger::minscale. This is why further
+    // processing is needed. We use the relationship between the
+    // matrices to calculate the required scale vector.
+    //
+    // The scale matrix is found by the following equality:
+    // 
+    // M = C^-1 * P^-1 * S * P * C * Mold
+    //
+    // By having the scale on one side and moving all other matrices
+    // to the other side, we end up with this equation:
+    //
+    // S = P * C * M * Mold^-1 * C^-1 * P^-1
+    // 
+    // Where S is the scale matrix which has a diagonal containing
+    // the required scale vector.
+
+    // Calculate the scale vector:
+    transform.multRight(matrix.inverse());
+    if (conversion) {
+      transform.multLeft(*conversion);
+      transform.multRight(conversion->inverse());
+    }
+    tmp.setTranslate(scalecenter);
+    transform.multLeft(tmp);
+    tmp.setTranslate(-scalecenter);
+    transform.multRight(tmp);
+
+    // SbMatrix does not have a getScale method, so just read the
+    // values directly out of the matrix. This matrix does not only
+    // contain scale. It might also have some other junk that we are
+    // not interested in, so just read the scale values and ignore the
+    // rest.
+    SbVec3f newscale;
+    newscale[0] = transform[0][0];
+    newscale[1] = transform[1][1];
+    newscale[2] = transform[2][2];
+
+    // Calling appendScale here might cause a neverending loop if the
+    // adjusted scale is just below SoDragger::minscale, so redo the
+    // calculation of the resulting matrix without recursion.
+    transform.setTranslate(-scalecenter);
+    tmp.setScale(newscale);
+    transform.multRight(tmp);
+    tmp.setTranslate(scalecenter);
+    transform.multRight(tmp);
+    
+    if (conversion) {
+      transform.multRight(*conversion);
+      transform.multLeft(conversion->inverse());
+    }
+    res = matrix;
+    res.multLeft(transform);
+  }
+
+  return res;
 }
 
 /*!
