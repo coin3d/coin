@@ -249,6 +249,8 @@ public:
   SbMutex mutex;
 #endif // COIN_THREADSAFE
   SbBool canrendertotexture;
+  unsigned char * offscreenbuffer;
+  int offscreenbuffersize;
 };
 
 // *************************************************************************
@@ -507,6 +509,8 @@ SoSceneTexture2P::SoSceneTexture2P(SoSceneTexture2 * api)
   this->glaction = NULL;
   this->glcontextsize.setValue(-1,-1);
   this->glrectangle = FALSE;
+  this->offscreenbuffer = NULL;
+  this->offscreenbuffersize = 0;
 
 #if defined(HAVE_AGL) || defined(HAVE_WGL)
   this->canrendertotexture = TRUE;
@@ -521,6 +525,7 @@ SoSceneTexture2P::~SoSceneTexture2P()
   if (this->glcontext != NULL) {
     cc_glglue_context_destruct(this->glcontext);
   }
+  delete[] this->offscreenbuffer;
   delete this->glaction;
 }
 
@@ -609,6 +614,20 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
     // Make sure that rendering to pBuffer is completed to avoid
     // flickering. DON'T REMOVE THIS. You have been warned.
     glFlush();
+
+    if (!this->canrendertotexture) {
+      SbVec2s size = this->glcontextsize;
+      int reqbytes = size[0]*size[1]*4;
+      if (reqbytes > this->offscreenbuffersize) {
+        delete[] this->offscreenbuffer;
+        this->offscreenbuffer = new unsigned char[reqbytes];
+        this->offscreenbuffersize = reqbytes;
+      }
+      glPixelStorei(GL_PACK_ALIGNMENT, 1);
+      glReadPixels(0, 0, size[0], size[1], GL_RGBA, GL_UNSIGNED_BYTE,
+                   this->offscreenbuffer);
+      glPixelStorei(GL_PACK_ALIGNMENT, 4);
+    }
     cc_glglue_context_reinstate_previous(this->glcontext);
   }
   if (!this->glimagevalid || (this->glimage == NULL)) {
@@ -637,11 +656,24 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
       break;
     }
     this->glimage->setFlags(flags);
-    // bind texture to pbuffer
-    this->glimage->setPBuffer(state, this->glcontext,
-                              translateWrap((SoSceneTexture2::Wrap)PUBLIC(this)->wrapS.getValue()),
-                              translateWrap((SoSceneTexture2::Wrap)PUBLIC(this)->wrapT.getValue()),
-                              quality);
+
+    if (this->canrendertotexture) {
+      // bind texture to pbuffer
+      this->glimage->setPBuffer(state, this->glcontext,
+                                translateWrap((SoSceneTexture2::Wrap)PUBLIC(this)->wrapS.getValue()),
+                                translateWrap((SoSceneTexture2::Wrap)PUBLIC(this)->wrapT.getValue()),
+                                quality);
+    }
+  }
+  if (!this->canrendertotexture) {
+    assert(this->glimage);
+    assert(this->offscreenbuffer);
+    this->glimage->setData(this->offscreenbuffer,
+                           this->glcontextsize,
+                           4,
+                           translateWrap((SoSceneTexture2::Wrap)PUBLIC(this)->wrapS.getValue()),
+                           translateWrap((SoSceneTexture2::Wrap)PUBLIC(this)->wrapT.getValue()),
+                           quality);
   }
   this->glimagevalid = TRUE;
   this->pbuffervalid = TRUE;
