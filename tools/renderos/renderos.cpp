@@ -45,10 +45,16 @@ void
 usage(const char * invname)
 {
 #if HAVE_GETOPT
-  fprintf(stderr, "\nUsage: %s [-h] [-x width] [-y height] <modelfile.iv> <snapshot.rgb>\n\n", invname);
+  fprintf(stderr, "\nUsage: %s [-h] [-x width] [-y height] [-c components] <modelfile.iv> <snapshot.rgb>\n\n", invname);
   fprintf(stderr, "\t-h:\tshow usage\n");
   fprintf(stderr, "\t-x:\tset width in pixels (default 640)\n");
   fprintf(stderr, "\t-y:\tset height in pixels (default 480)\n");
+  fprintf(stderr, "\t-c:\tset components in image\n");
+  fprintf(stderr, "\t\t\t1 = LUMINANCE\n");
+  fprintf(stderr, "\t\t\t2 = LUMINANCE with transparency\n");
+  fprintf(stderr, "\t\t\t3 = RGB\n");
+  fprintf(stderr, "\t\t\t4 = RGB with transparency\n");
+  fprintf(stderr, "\t\t(default is RGB)\n");
   fprintf(stderr, "\n");
 #else // !HAVE_GETOPT
   fprintf(stderr, "\nUsage: %s <modelfile.iv> <snapshot.rgb>\n\n", invname);
@@ -60,11 +66,12 @@ main(int argc, char ** argv)
 {
   int width = 640;
   int height = 480;
+  SoOffscreenRenderer::Components components = SoOffscreenRenderer::RGB;
 
 #if HAVE_GETOPT
   /* Parse command line. */
   int getoptchar;
-  while ((getoptchar = getopt(argc, argv, "?hx:y:")) != EOF) {
+  while ((getoptchar = getopt(argc, argv, "?hx:y:c:")) != EOF) {
     char c = (char)getoptchar;
     switch (c) {
     case '?':
@@ -77,6 +84,14 @@ main(int argc, char ** argv)
       break;
     case 'y':
       height = atoi(optarg);
+      break;
+    case 'c':
+      components = (SoOffscreenRenderer::Components)atoi(optarg);
+      if (components < 1 || components > 4) {
+        (void)fprintf(stderr, "Invalid number of components: %d\n",
+                      components);
+        exit(1);
+      }
       break;
     default:
       assert(FALSE);
@@ -129,7 +144,7 @@ main(int argc, char ** argv)
   camera->viewAll(root, vp);
 
   SoOffscreenRenderer osr(vp);
-//    osr.setComponents(SoOffscreenRenderer::RGB);
+  osr.setComponents(components);
   SbBool wasrendered = osr.render(root);
   root->unref();
 
