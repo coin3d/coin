@@ -112,11 +112,8 @@ SoEngineOutput::getForwardConnections(SoFieldList & fl) const
 void
 SoEngineOutput::enable(const SbBool flag)
 {
-  if (this->getContainer()) {
-    // FIXME: I think we need to notify connected fields
-    // here. 20000911 mortene.
-  }
   this->enabled = flag;
+  if (flag) this->touchSlaves(NULL, FALSE);
 }
 
 /*!
@@ -251,5 +248,27 @@ SoEngineOutput::doneWriting(void) const
   int n = this->slaves.getLength();
   for (int i = 0; i < n; i++) {
     this->slaves[i]->enableNotify(TRUE);
+  }
+}
+
+/*!
+  Notify the fields attached to this engine output that the output
+  value has changed.
+
+  If \a donotify is \c TRUE, propagate the notification to the
+  fields. Otherwise just mark the fields "dirty" for re-evalution.
+
+  Note that this method is not part of the original Open Inventor API.
+ */
+void
+SoEngineOutput::touchSlaves(SoNotList * nl, SbBool donotify)
+{
+  if (this->isEnabled()) {
+    int numconnections = this->getNumConnections();
+    for (int j = 0; j < numconnections; j++) {
+      SoField * field = (*this)[j];
+      if (donotify) field->notify(nl);
+      else field->setDirty(TRUE);
+    }
   }
 }

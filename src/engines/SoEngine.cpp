@@ -289,19 +289,11 @@ SoEngine::notify(SoNotList * nl)
   // internal variables, if necessary.
   this->inputChanged(nl->getLastField());
 
+  // Notify the slave fields connected to our engine outputs.
   const SoEngineOutputData * outputs = this->getOutputData();
   int numoutputs = outputs->getNumOutputs();
-  for (int i = 0; i < numoutputs; i++) {
-    SoEngineOutput * output = outputs->getOutput(this, i);
-    if (output->isEnabled()) {
-      int numconnections = output->getNumConnections();
-      for (int j = 0; j < numconnections; j++) {
-        SoField * field = (*output)[j];
-        if (this->isNotifyEnabled()) field->notify(nl);
-        else field->setDirty(TRUE);
-      }
-    }
-  }
+  for (int i = 0; i < numoutputs; i++)
+    outputs->getOutput(this, i)->touchSlaves(nl, this->isNotifyEnabled());
 
   this->stateflags.isnotifying = 0;
 }

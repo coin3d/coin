@@ -23,6 +23,8 @@
 #include <Inventor/SoType.h>
 #include <Inventor/lists/SoFieldList.h>
 
+class SoNotList;
+
 
 class COIN_DLL_EXPORT SoEngineOutput {
 public:
@@ -43,6 +45,8 @@ public:
 
   void prepareToWrite(void) const;
   void doneWriting(void) const;
+
+  void touchSlaves(SoNotList * nl, SbBool donotify);
 
 private:
   SbBool enabled;
