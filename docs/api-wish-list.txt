@@ -475,3 +475,9 @@ THE WISH LIST
   renderarea/viewer has input (event) focus and not.  FOCUS_IN and FOCUS_OUT
   would be the focus change event values.
 
+* SoMarkerSet scaling
+  2001-08-24  suggested by Coin-user Nigel Murry, write-up by <mortene@sim.no>
+  [upwards compatible extension]
+
+  Add functionality to the SoMarkerSet node to make it possible to
+  scale the marker bitmaps.
