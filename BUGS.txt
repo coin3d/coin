@@ -2662,40 +2662,6 @@ main(void)
 
 =====================================================================
 
-093 Crash upon faulty iv-file when using SoFile.
-
-    Loading the following into an examinerviewer results in a failed
-    assertion:
-
------8<------ [snip] ------------8<------ [snip] -------
-#Inventor V2.1 ascii
-
-File { name "csc.iv" }
------8<------ [snip] ------------8<------ [snip] -------
-
-    ...when csc.iv looks like this (notice the trailing extra
-    bracket):
-
------8<------ [snip] ------------8<------ [snip] -------
-#Inventor V2.1 ascii
-
-Separator { }
-}
------8<------ [snip] ------------8<------ [snip] -------
-
-    We need to be more robust than this.
-
-    Medium priority problem.
-
-    20031201 mortene.
-
-    UPDATE 20040510 mortene: this may also cause other problems. oso
-    stumbled into a hard to find bug in one of his iv-files for
-    View'EM that was due to our iv-importer not "following through" on
-    the input files and reading until a file pops off the stack.
-
-=====================================================================
-
 094 Negative scaling results in faulty bbox-calculations.
 
     Loading the model below into an examinerviewer demonstrates the
