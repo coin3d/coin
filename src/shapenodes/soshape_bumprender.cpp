@@ -395,9 +395,8 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
                                      eyepos[1],
                                      eyepos[2], 1);
 
-
-  cc_glglue_glActiveTexture(glue, GL_TEXTURE2);
   if (oldtexture2matrix != SbMatrix::identity()) {
+    cc_glglue_glActiveTexture(glue, GL_TEXTURE2);
     glMatrixMode(GL_TEXTURE);
     glLoadIdentity(); // load identity texture matrix
     glMatrixMode(GL_MODELVIEW);
@@ -454,6 +453,7 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
   glDisable(GL_VERTEX_PROGRAM_ARB);
   glDisable(GL_TEXTURE_CUBE_MAP); // unit 1
 
+
   // reenable texture units 1-n if enabled
   for (i = 1; i <= lastenabled; i++) {
     if (enabled[i]) {
@@ -461,21 +461,22 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
       glEnable(GL_TEXTURE_2D);
     }
   }
-
+  
   if (lastenabled >= 1 && enabled[1]) {
     // restore blend mode for texture unit 1
     SoGLMultiTextureImageElement::restore(state, 1);
   }
-
-  cc_glglue_glActiveTexture(glue, GL_TEXTURE2);
+ 
   if (oldtexture2matrix != SbMatrix::identity()) {
+    cc_glglue_glActiveTexture(glue, GL_TEXTURE2);
     glMatrixMode(GL_TEXTURE);
     glLoadMatrixf(oldtexture2matrix[0]);
     glMatrixMode(GL_MODELVIEW);
   }
 
+  cc_glglue_glActiveTexture(glue, GL_TEXTURE1);
+  glDisable(GL_TEXTURE_CUBE_MAP);
   if (oldtexture1matrix != SbMatrix::identity()) {
-    cc_glglue_glActiveTexture(glue, GL_TEXTURE1);
     glMatrixMode(GL_TEXTURE);
     glLoadMatrixf(oldtexture1matrix[0]);
     glMatrixMode(GL_MODELVIEW);
