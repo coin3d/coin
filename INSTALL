@@ -270,6 +270,20 @@ Configuration Options
   option should not be used for anyone that do not do development on the
   Coin library itself.
 
+--with-msvcrt=<crt>
+
+  This option sets which C library to link with for MS Visual C++ builds.
+  The options are (with aliases on the right):
+
+  * singlethread-static        [ /ml  | ml  | libc    ]
+    singlethread-static-debug  [ /mld | mld | libcd   ]
+    multithread-static         [ /mt  | mt  | libcmt  ]
+    multithread-static-debug   [ /mtd | mtd | libcmtd ]
+    multithread-dynamic        [ /md  | md  | msvcrt  ]
+    multithread-dynamic-debug  [ /mdd | mdd | msvcrtd ]
+
+  [*] default choice
+
 --with-doxygen=<PATH>
 
   With this option, you can specify where doxygen is installed, in case
