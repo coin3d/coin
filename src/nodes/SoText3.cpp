@@ -19,7 +19,7 @@
 
 /*!
   \class SoText3 SoText3.h Inventor/nodes/SoText3.h
-  \brief The SoText3 class ...
+  \brief The SoText3 class renders extruded 3D text.
   \ingroup nodes
 
   FIXME: write class doc

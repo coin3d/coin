@@ -85,7 +85,7 @@ public:
 
 protected:
   virtual ~SoSelection();
-  
+
   void invokeSelectionPolicy(SoPath *path, SbBool shiftDown);
   void performSingleSelection(SoPath *path);
   void performToggleSelection(SoPath *path);
@@ -117,9 +117,9 @@ protected: // unfortunately only protected in OIV
 private:
   void init();
   SoPath *searchNode(SoNode * node) const;
-  SoPath *getSelectionPath(SoHandleEventAction *action, 
+  SoPath *getSelectionPath(SoHandleEventAction *action,
                            SbBool &ignorepick, SbBool &haltaction);
-  
+
 };
 
 #endif // !COIN_SOSELECTION_H

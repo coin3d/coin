@@ -19,11 +19,20 @@
 
 /*!
   \class SoShape SoShape.h Inventor/nodes/SoShape.h
-  \brief The SoShape class ...
+  \brief The SoShape class is the superclass for geometry shapes.
   \ingroup nodes
 
-  FIXME: write class doc
+  The node types which have actual geometry to render inherits this
+  class. For convenince, the SoShape class contains various common
+  code used by the subclasses.
 */
+
+// Metadon doc:
+/*¡
+  FIXME: there're a bunch of FIXMEs scattered around in the source for
+  the SoShape class. They seem harmless, but they should be checked
+  and exterminated. 20000312 mortene.
+ */
 
 #include <Inventor/misc/SoState.h>
 #include <coindefs.h> // COIN_STUB()
@@ -61,10 +70,6 @@
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoGLTextureImageElement.h>
 
-#ifdef _WIN32
-#include <windows.h>
-#endif // !_WIN32
-
 #include <GL/gl.h>
 #include <string.h>
 
@@ -72,52 +77,21 @@
 
 /*!
   \enum SoShape::TriangleShape
-  FIXME: write documentation for enum
+  \internal
 */
-/*!
-  \var SoShape::TriangleShape SoShape::TRIANGLE_STRIP
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoShape::TriangleShape SoShape::TRIANGLE_FAN
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoShape::TriangleShape SoShape::TRIANGLES
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoShape::TriangleShape SoShape::POLYGON
-  FIXME: write documentation for enum definition
-*/
-
 
 /*!
   \fn void SoShape::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
-  FIXME: write doc
+  \internal
 */
 /*!
   \fn void SoShape::generatePrimitives(SoAction * action)
-  FIXME: write doc
+  \internal
 */
 
 // *************************************************************************
-SO_NODE_ABSTRACT_SOURCE(SoShape);
 
-/*!
-  Constructor.
-*/
-SoShape::SoShape()
-{
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoShape);
-}
-
-/*!
-  Destructor.
-*/
-SoShape::~SoShape()
-{
-}
+// Private class.
 
 class shapePrimitiveData {
 public:
@@ -139,20 +113,20 @@ public:
     delete this->tess;
   }
 
-  void beginShape(SoShape *shape, SoAction *action,
-                  SoShape::TriangleShape shapeType,
-                  SoDetail *detail) {
+  void beginShape(SoShape * shape, SoAction * action,
+                  SoShape::TriangleShape shapetype,
+                  SoDetail * detail) {
     this->shape = shape;
     this->action = action;
-    this->shapeType = shapeType;
-    // this is a trick. Only onw of these will be used, and the
+    this->shapetype = shapetype;
+    // this is a trick. Only one of these will be used, and the
     // other one is an illegal cast.
-    this->faceDetail = (SoFaceDetail*)detail;
-    this->lineDetail = (SoLineDetail*)detail;
+    this->faceDetail = (SoFaceDetail *)detail;
+    this->lineDetail = (SoLineDetail *)detail;
     this->counter = 0;
   }
   void endShape() {
-    if (this->shapeType == SoShape::POLYGON) {
+    if (this->shapetype == SoShape::POLYGON) {
       if (SoShapeHintsElement::getFaceType(action->getState()) ==
           SoShapeHintsElement::CONVEX) {
         for (int i = 1; i < counter-1; i++) {
@@ -174,7 +148,7 @@ public:
   }
 
   void shapeVertex(const SoPrimitiveVertex * const v) {
-    switch (shapeType) {
+    switch (shapetype) {
     case SoShape::TRIANGLE_STRIP:
       if (this->counter >= 3) {
         if (this->counter & 1) this->copyVertex(2, 0);
@@ -217,15 +191,15 @@ public:
     case SoShape::POLYGON:
       if (this->counter >= this->arraySize) {
         this->arraySize <<= 1;
-        SoPrimitiveVertex *newArray = new SoPrimitiveVertex[this->arraySize];
+        SoPrimitiveVertex * newArray = new SoPrimitiveVertex[this->arraySize];
         memcpy(newArray, this->vertsArray,
-               sizeof(SoPrimitiveVertex)*this->counter);
+               sizeof(SoPrimitiveVertex)* this->counter);
         delete [] this->vertsArray;
         this->vertsArray = newArray;
 
-        SoPointDetail *newparray = new SoPointDetail[this->arraySize];
+        SoPointDetail * newparray = new SoPointDetail[this->arraySize];
         memcpy(newparray, this->pointDetails,
-               sizeof(SoPointDetail)*this->counter);
+               sizeof(SoPointDetail)* this->counter);
         delete [] this->pointDetails;
         this->pointDetails = newparray;
 
@@ -295,16 +269,16 @@ public:
   }
 
 public:
-  SoShape::TriangleShape shapeType;
-  SoAction *action;
-  SoShape *shape;
-  SoPrimitiveVertex *vertsArray;
-  SoPointDetail *pointDetails;
-  SoFaceDetail *faceDetail;
-  SoLineDetail *lineDetail;
+  SoShape::TriangleShape shapetype;
+  SoAction * action;
+  SoShape * shape;
+  SoPrimitiveVertex * vertsArray;
+  SoPointDetail * pointDetails;
+  SoFaceDetail * faceDetail;
+  SoLineDetail * lineDetail;
   int arraySize;
   int counter;
-  SbTesselator *tess;
+  SbTesselator * tess;
   int faceCounter;
 
   void copyVertex(const int src, const int dest) {
@@ -317,9 +291,9 @@ public:
   void setVertex(const int idx, const SoPrimitiveVertex * const v) {
     this->vertsArray[idx] = *v;
     if (this->faceDetail) {
-      SoPointDetail *pd = (SoPointDetail*)v->getDetail();
+      SoPointDetail * pd = (SoPointDetail *)v->getDetail();
       assert(pd);
-      this->pointDetails[idx] = *pd;
+      this->pointDetails[idx] = * pd;
       this->vertsArray[idx].setDetail(&this->pointDetails[idx]);
     }
   }
@@ -351,13 +325,13 @@ public:
                                             &this->vertsArray[i1]);
   }
 
-  SoDetail *createPickDetail() {
-    switch(this->shapeType) {
+  SoDetail * createPickDetail() {
+    switch (this->shapetype) {
     case SoShape::TRIANGLE_STRIP:
     case SoShape::TRIANGLE_FAN:
     case SoShape::TRIANGLES:
       {
-        SoFaceDetail *detail = (SoFaceDetail*)this->faceDetail->copy();
+        SoFaceDetail * detail = (SoFaceDetail *)this->faceDetail->copy();
         detail->setNumPoints(3);
         detail->setPoint(0, &this->pointDetails[0]);
         detail->setPoint(1, &this->pointDetails[1]);
@@ -366,7 +340,7 @@ public:
       }
     case SoShape::POLYGON:
       {
-        SoFaceDetail *detail = (SoFaceDetail*)this->faceDetail->copy();
+        SoFaceDetail * detail = (SoFaceDetail *)this->faceDetail->copy();
         detail->setNumPoints(this->counter);
         for (int i = 0; i < this->counter; i++) {
           detail->setPoint(i, &this->pointDetails[i]);
@@ -376,7 +350,7 @@ public:
     case SoShape::QUADS:
     case SoShape::QUAD_STRIP:
       {
-        SoFaceDetail *detail = (SoFaceDetail*)this->faceDetail->copy();
+        SoFaceDetail * detail = (SoFaceDetail *)this->faceDetail->copy();
         detail->setNumPoints(4);
         detail->setPoint(0, &this->pointDetails[0]);
         detail->setPoint(1, &this->pointDetails[1]);
@@ -392,7 +366,7 @@ public:
     case SoShape::LINES:
     case SoShape::LINE_STRIP:
       {
-        SoLineDetail *detail = (SoLineDetail*)this->lineDetail->copy();
+        SoLineDetail * detail = (SoLineDetail *)this->lineDetail->copy();
         detail->setPoint0(&this->pointDetails[0]);
         detail->setPoint1(&this->pointDetails[1]);
         return detail;
@@ -403,34 +377,45 @@ public:
     }
   }
 
-  static void tess_callback(void *v0, void *v1, void *v2, void *data) {
-    shapePrimitiveData *thisp = (shapePrimitiveData*) data;
+  static void tess_callback(void * v0, void * v1, void * v2, void * data) {
+    shapePrimitiveData * thisp = (shapePrimitiveData *) data;
     thisp->shape->invokeTriangleCallbacks(thisp->action,
-                                          (SoPrimitiveVertex*)v0,
-                                          (SoPrimitiveVertex*)v1,
-                                          (SoPrimitiveVertex*)v2);
+                                          (SoPrimitiveVertex *)v0,
+                                          (SoPrimitiveVertex *)v1,
+                                          (SoPrimitiveVertex *)v2);
   }
 };
 
-static shapePrimitiveData *primData = NULL;
+// *************************************************************************
+
+static shapePrimitiveData * primData = NULL;
+
+SO_NODE_ABSTRACT_SOURCE(SoShape);
+
 
 /*!
-  Does initialization common for all objects of the
-  SoShape class. This includes setting up the
-  type system, among other things.
+  Constructor.
 */
+SoShape::SoShape(void)
+{
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoShape);
+}
+
+/*!
+  Destructor.
+*/
+SoShape::~SoShape()
+{
+}
+
+// Doc in parent.
 void
 SoShape::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoShape);
 }
 
-
-/*!
-  Calls the virtual function SoShape::computeBBox() to handle the
-  bounding box action. A SoShape subclass should usually reimplement
-  computeBBox().
-*/
+// Doc in parent.
 void
 SoShape::getBoundingBox(SoGetBoundingBoxAction * action)
 {
@@ -445,23 +430,21 @@ SoShape::getBoundingBox(SoGetBoundingBoxAction * action)
   action->setCenter(center, TRUE);
 }
 
-/*!
-  Renders the primitives generated by subclass. Should be
-  overloaded.
-*/
+// Doc in parent.
 void
-SoShape::GLRender(SoGLRenderAction * /* action */)
+SoShape::GLRender(SoGLRenderAction * action)
 {
 #if COIN_DEBUG
-  SoDebugError::postInfo("SoShape::GLRender",
-                         "method has not been overloaded in subclass '%s'",
-                         this->getTypeId().getName().getString());
+  SoDebugError::postWarning("SoShape::GLRender",
+                            "method has not been overloaded in subclass '%s'",
+                            this->getTypeId().getName().getString());
 #endif // COIN_DEBUG
+
+  // FIXME: should there be some fallback code here for rendering
+  // geometry primitives of subclasses? 20000311 mortene.
 }
 
-/*!
-  Calls generatePrimitives().
-*/
+// Doc in parent.
 void
 SoShape::callback(SoCallbackAction * action)
 {
@@ -473,10 +456,9 @@ SoShape::callback(SoCallbackAction * action)
 
 /*!
   Calculates picked point based on primitives generated by subclasses.
-  May be implemented by subclass.
 */
 void
-SoShape::rayPick(SoRayPickAction *action)
+SoShape::rayPick(SoRayPickAction * action)
 {
   if (this->shouldRayPick(action)) {
     this->computeObjectSpaceRay(action);
@@ -485,37 +467,36 @@ SoShape::rayPick(SoRayPickAction *action)
 }
 
 /*!
-  A convenience function that returns the size of a bounding box
-  projected onto the screen. Useful for SCREEN_SPACE complexity
+  A convenience function that returns the size of a \a boundingbox
+  projected onto the screen. Useful for \c SCREEN_SPACE complexity
   geometry.
 */
 void
-SoShape::getScreenSize(SoState * const state,
-                       const SbBox3f &boundingBox,
-                       SbVec2s &rectSize)
+SoShape::getScreenSize(SoState * const state, const SbBox3f & boundingbox,
+                       SbVec2s & rectsize)
 {
-  const SbViewVolume &vv = SoViewVolumeElement::get(state);
-  SbBox3f worldBox(boundingBox);
+  const SbViewVolume & vv = SoViewVolumeElement::get(state);
+  SbBox3f worldBox(boundingbox);
   worldBox.transform(SoModelMatrixElement::get(state));
   SbVec2f normSize = vv.projectBox(worldBox);
-  const SbViewportRegion &vr = SoViewportRegionElement::get(state);
+  const SbViewportRegion & vr = SoViewportRegionElement::get(state);
   SbVec2s pixelSize = vr.getViewportSizePixels();
 
   // make sure short doesn't overflow
-  rectSize[0] = (short) SbMin(32767.0f, (float(pixelSize[0])*normSize[0]));
-  rectSize[1] = (short) SbMin(32767.0f, (float(pixelSize[1])*normSize[1]));
+  rectsize[0] = (short) SbMin(32767.0f, (float(pixelSize[0])* normSize[0]));
+  rectsize[1] = (short) SbMin(32767.0f, (float(pixelSize[1])* normSize[1]));
 }
 
 /*!
   Returns the complexity value to be used by subclasses. Considers
-  complexity type. For OBJECT_SPACE complexity this will be a number
-  between 0 and 1. For SCREEN_SPACE complexity it is a number from 0
-  and up.
+  complexity type. For \c OBJECT_SPACE complexity this will be a
+  number between 0 and 1. For \c SCREEN_SPACE complexity it is a
+  number from 0 and up.
 */
 float
-SoShape::getComplexityValue(SoAction *action)
+SoShape::getComplexityValue(SoAction * action)
 {
-  SoState *state = action->getState();
+  SoState * state = action->getState();
   switch (SoComplexityTypeElement::get(state)) {
   case SoComplexityTypeElement::SCREEN_SPACE:
     {
@@ -533,7 +514,7 @@ SoShape::getComplexityValue(SoAction *action)
       return float(sqrt((float)SbMax(size[0], size[1]))) * 0.4f *
         SoComplexityElement::get(state);
 #else // first version
-      float numPixels = float(size[0])*float(size[1]);
+      float numPixels = float(size[0])* float(size[1]);
       return numPixels * 0.0001f * SoComplexityElement::get(state);
 #endif
     }
@@ -549,7 +530,7 @@ SoShape::getComplexityValue(SoAction *action)
 }
 
 /*!
-  FIXME: write function documentation
+  \internal
 */
 SbBool
 SoShape::shouldGLRender(SoGLRenderAction * action)
@@ -608,7 +589,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
     lm->evaluate();
   }
 
-  // only evaluate texture image if texturing is enabled 
+  // only evaluate texture image if texturing is enabled
   if (SoGLTextureEnabledElement::get(state)) {
     const SoGLTextureImageElement * ti = (SoGLTextureImageElement *)
       state->getConstElement(SoGLTextureImageElement::getClassStackIndex());
@@ -669,7 +650,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
 }
 
 /*!
-  FIXME: write function documentation
+  \internal
 */
 SbBool
 SoShape::shouldRayPick(SoRayPickAction * const action)
@@ -690,25 +671,25 @@ SoShape::shouldRayPick(SoRayPickAction * const action)
 }
 
 /*!
-  FIXME: write function documentation
+  \internal
 */
 void
-SoShape::beginSolidShape(SoGLRenderAction * /* action */)
+SoShape::beginSolidShape(SoGLRenderAction * action)
 {
   // FIXME: turn on backface culling
 }
 
 /*!
-  FIXME: write function documentation
+  \internal
 */
 void
-SoShape::endSolidShape(SoGLRenderAction * /* action */)
+SoShape::endSolidShape(SoGLRenderAction * action)
 {
   // FIXME: disable backface culling
 }
 
 /*!
-  FIXME: write function documentation
+  \internal
 */
 void
 SoShape::computeObjectSpaceRay(SoRayPickAction * const action)
@@ -717,91 +698,91 @@ SoShape::computeObjectSpaceRay(SoRayPickAction * const action)
 }
 
 /*!
-  FIXME: write function documentation
+  \internal
 */
 void
 SoShape::computeObjectSpaceRay(SoRayPickAction * const action,
-                               const SbMatrix &matrix)
+                               const SbMatrix & matrix)
 {
   action->setObjectSpace(matrix);
 }
 
 /*!
-  Will create triangle detail for a SoPickedPoint. This method will only be
-  called internally, when generatePrimitives() is used for picking
-  (SoShape::rayPick() is not overloaded).
+  Will create triangle detail for a SoPickedPoint. This method will
+  only be called internally, when generatePrimitives() is used for
+  picking (SoShape::rayPick() is not overloaded).
 
-  This method returns NULL in OIV, and subclasses will need to overload
-  this method to create details for a SoPickedPoint.
+  This method returns \c NULL in Open Inventor, and subclasses will
+  need to overload this method to create details for a SoPickedPoint.
 
-  This is not necessary with Coin. Of course, if you choose to overload
-  it, it will work in the same way as OIV.
+  This is not necessary with Coin. Of course, if you choose to
+  overload it, it will work in the same way as Open Inventor.
 
-  For this to work, you must supply a face or line detail when generating
-  primitives. If you supply NULL for the detail argument in SoShape::beginShape(),
-  you'll have to overload this method.
+  For this to work, you must supply a face or line detail when
+  generating primitives. If you supply \c NULL for the detail argument in
+  SoShape::beginShape(), you'll have to overload this method.
 */
 SoDetail *
-SoShape::createTriangleDetail(SoRayPickAction *action,
+SoShape::createTriangleDetail(SoRayPickAction * action,
                               const SoPrimitiveVertex * /*v1*/,
                               const SoPrimitiveVertex * /*v2*/,
                               const SoPrimitiveVertex * /*v3*/,
-                              SoPickedPoint *pp)
+                              SoPickedPoint * pp)
 {
   assert(primData);
   assert(primData->faceDetail);
   assert(primData->shape == this);
-  assert(primData->action == (SoAction*) action);
+  assert(primData->action == (SoAction *) action);
 
   return primData->createPickDetail();
 }
 
 /*!
-  Will create line detail for a SoPickedPoint. This method will only be
-  called internally, when generatePrimitives() is used for picking
+  Will create line detail for a SoPickedPoint. This method will only
+  be called internally, when generatePrimitives() is used for picking
   (SoShape::rayPick() is not overloaded).
 
-  This method returns NULL in OIV, and OIV shape subclasses will need to overload
-  this method to create details for a SoPickedPoint.
+  This method returns \c NULL in Open Inventor, and subclasses will
+  need to overload this method to create details for a SoPickedPoint.
 
-  This is not necessary with Coin. Of course, if you choose to overload
-  it, it will work in the same way as OIV..
+  This is not necessary with Coin. Of course, if you choose to
+  overload it, it will work in the same way as Open Inventor.
 
-  For this to work, you must supply a face or line detail when generating
-  primitives. If you supply NULL for the detail argument in SoShape::beginShape(),
-  you'll have to overload this method.
+  For this to work, you must supply a face or line detail when
+  generating primitives. If you supply \c NULL for the detail argument in
+  SoShape::beginShape(), you'll have to overload this method.
 */
 SoDetail *
-SoShape::createLineSegmentDetail(SoRayPickAction *action,
+SoShape::createLineSegmentDetail(SoRayPickAction * action,
                                  const SoPrimitiveVertex * /* v1 */,
                                  const SoPrimitiveVertex * /* v2 */,
-                                 SoPickedPoint *pp)
+                                 SoPickedPoint * pp)
 {
   assert(primData);
   assert(primData->lineDetail);
   assert(primData->shape == this);
-  assert(primData->action == (SoAction*) action);
+  assert(primData->action == (SoAction *) action);
 
   return primData->createPickDetail();
 }
 
 /*!
-  Will create point detail for a SoPickedPoint. This method will only be
-  called internally, when generatePrimitives() is used for picking
+  Will create point detail for a SoPickedPoint. This method will only
+  be called internally, when generatePrimitives() is used for picking
   (SoShape::rayPick() is not overloaded).
 
-  This method returns NULL in OIV, and OIV shape subclasses will need to overload
-  this method to create details for a SoPickedPoint.
+  This method returns \c NULL in Open Inventor, and subclasses will
+  need to overload this method to create details for a SoPickedPoint.
 
-  This is not necessary with Coin. Of course, if you choose to overload
-  it, it will work in the same way as OIV.
+  This is not necessary with Coin. Of course, if you choose to
+  overload it, it will work in the same way as Open Inventor.
 
-  For this to work, you must supply a point detail in the SoPrimitiveVertex
-  in generatePrimitives().
+  For this to work, you must supply a point detail in the
+  SoPrimitiveVertex in generatePrimitives().
 */
 SoDetail *
 SoShape::createPointDetail(SoRayPickAction * /* action */,
-                           const SoPrimitiveVertex *v,
+                           const SoPrimitiveVertex * v,
                            SoPickedPoint * /* pp */)
 {
   if (v->getDetail()) return v->getDetail()->copy();
@@ -809,7 +790,7 @@ SoShape::createPointDetail(SoRayPickAction * /* action */,
 }
 
 /*!
-  FIXME: write function documentation
+  \internal
 */
 void
 SoShape::invokeTriangleCallbacks(SoAction * const action,
@@ -818,7 +799,7 @@ SoShape::invokeTriangleCallbacks(SoAction * const action,
                                  const SoPrimitiveVertex * const v3)
 {
   if (action->getTypeId().isDerivedFrom(SoRayPickAction::getClassTypeId())) {
-    SoRayPickAction *ra = (SoRayPickAction*) action;
+    SoRayPickAction * ra = (SoRayPickAction *) action;
 
     SbVec3f intersection;
     SbVec3f barycentric;
@@ -836,20 +817,20 @@ SoShape::invokeTriangleCallbacks(SoAction * const action,
     }
   }
   else if (action->getTypeId().isDerivedFrom(SoCallbackAction::getClassTypeId())) {
-    SoCallbackAction *ca = (SoCallbackAction*) action;
+    SoCallbackAction * ca = (SoCallbackAction *) action;
     ca->invokeTriangleCallbacks(this, v1, v2, v3);
   }
   else if (action->getTypeId().isDerivedFrom(SoGetPrimitiveCountAction::getClassTypeId())) {
-    SoGetPrimitiveCountAction *ga = (SoGetPrimitiveCountAction*) action;
+    SoGetPrimitiveCountAction * ga = (SoGetPrimitiveCountAction *) action;
     ga->incNumTriangles();
   }
   else {
-    COIN_STUB();
+    COIN_STUB(); // FIXME
   }
 }
 
 /*!
-  FIXME: write function documentation
+  \internal
 */
 void
 SoShape::invokeLineSegmentCallbacks(SoAction * const action,
@@ -857,7 +838,7 @@ SoShape::invokeLineSegmentCallbacks(SoAction * const action,
                                     const SoPrimitiveVertex * const v2)
 {
   if (action->getTypeId().isDerivedFrom(SoRayPickAction::getClassTypeId())) {
-    SoRayPickAction *ra = (SoRayPickAction*) action;
+    SoRayPickAction * ra = (SoRayPickAction *) action;
 
     SbVec3f intersection;
     if (ra->intersect(v1->getPoint(), v2->getPoint(), intersection)) {
@@ -870,28 +851,28 @@ SoShape::invokeLineSegmentCallbacks(SoAction * const action,
     }
   }
   else if (action->getTypeId().isDerivedFrom(SoCallbackAction::getClassTypeId())) {
-    SoCallbackAction *ca = (SoCallbackAction*) action;
+    SoCallbackAction * ca = (SoCallbackAction *) action;
     ca->invokeLineSegmentCallbacks(this, v1, v2);
   }
   else if (action->getTypeId().isDerivedFrom(SoGetPrimitiveCountAction::getClassTypeId())) {
-    SoGetPrimitiveCountAction *ga = (SoGetPrimitiveCountAction*) action;
+    SoGetPrimitiveCountAction * ga = (SoGetPrimitiveCountAction *) action;
     ga->incNumLines();
   }
   else {
-    COIN_STUB();
+    COIN_STUB(); // FIXME
   }
 
 }
 
 /*!
-  FIXME: write function documentation
+  \internal
 */
 void
 SoShape::invokePointCallbacks(SoAction * const action,
                               const SoPrimitiveVertex * const v)
 {
   if (action->getTypeId().isDerivedFrom(SoRayPickAction::getClassTypeId())) {
-    SoRayPickAction *ra = (SoRayPickAction*) action;
+    SoRayPickAction * ra = (SoRayPickAction *) action;
 
     SbVec3f intersection = v->getPoint();
     if (ra->intersect(intersection)) {
@@ -904,38 +885,37 @@ SoShape::invokePointCallbacks(SoAction * const action,
     }
   }
   else if (action->getTypeId().isDerivedFrom(SoCallbackAction::getClassTypeId())) {
-    SoCallbackAction *ca = (SoCallbackAction*) action;
+    SoCallbackAction * ca = (SoCallbackAction *) action;
     ca->invokePointCallbacks(this, v);
   }
   else if (action->getTypeId().isDerivedFrom(SoGetPrimitiveCountAction::getClassTypeId())) {
-    SoGetPrimitiveCountAction *ga = (SoGetPrimitiveCountAction*) action;
+    SoGetPrimitiveCountAction * ga = (SoGetPrimitiveCountAction *) action;
     ga->incNumPoints();
   }
   else {
-    COIN_STUB();
+    COIN_STUB(); // FIXME
   }
 }
 
 /*!
-  This method is slightly different from its OIV counterpart, as this method
-  has an SoDetail as the last argument, and not an SoFaceDetail. This is
-  because we accept more TriangleShape types, and the detail might be
-  a SoFaceDetail or a SoLineDetail. There is no use sending in a
+  This method is slightly different from its counterpart from the
+  original Open Inventor library, as this method has an SoDetail as
+  the last argument, and not an SoFaceDetail. This is because we
+  accept more TriangleShape types, and the detail might be a
+  SoFaceDetail or a SoLineDetail. There is no use sending in a
   SoPointDetail, as nothing will be done with it.
 */
 void
-SoShape::beginShape(SoAction * const action, const TriangleShape shapeType,
+SoShape::beginShape(SoAction * const action, const TriangleShape shapetype,
                     SoDetail * const detail)
 {
-  if (primData == NULL) {
-    primData = new shapePrimitiveData();
-  }
-  primData->beginShape(this, action, shapeType, detail);
+  if (primData == NULL) primData = new shapePrimitiveData();
+  primData->beginShape(this, action, shapetype, detail);
 }
 
 
 /*!
-  FIXME: write function documentation
+  \internal
 */
 void
 SoShape::shapeVertex(const SoPrimitiveVertex * const v)
@@ -945,30 +925,30 @@ SoShape::shapeVertex(const SoPrimitiveVertex * const v)
 }
 
 /*!
-  FIXME: write function documentation
+  \internal
 */
 void
-SoShape::endShape()
+SoShape::endShape(void)
 {
   assert(primData);
   primData->endShape();
 }
 
 /*!
-  Convenience function which sets up a SoPrimitiveVertex, and sends
+  Convenience function which sets up an SoPrimitiveVertex, and sends
   it using the SoShape::shapeVertex() function.
 */
 void
 SoShape::generateVertex(SoPrimitiveVertex * const pv,
                         const SbVec3f & point,
-                        const SbBool useTexFunc,
+                        const SbBool usetexfunc,
                         const SoTextureCoordinateElement * const tce,
                         const float s,
                         const float t,
                         const SbVec3f & normal)
 {
   SbVec4f texCoord;
-  if (useTexFunc)
+  if (usetexfunc)
     texCoord = tce->get(point, normal);
   else
     texCoord.setValue(s, t, 0.0f, 1.0f);
@@ -980,49 +960,47 @@ SoShape::generateVertex(SoPrimitiveVertex * const pv,
 
 
 /*!
-  Should be overloaded by shapes that will set the ShadeModel
-  before rendering. SoGLShadeModelElement is a lazy GL element,
-  and it helps performance if nodes that will set the
-  shade model before rendering returns \e TRUE here.
-  Ordinary shape nodes will not have worry about this method
-  as the default method returns \e FALSE.
+  Should be overloaded by shapes that will set the ShadeModel before
+  rendering. SoGLShadeModelElement is a lazy GL element, and it helps
+  performance if nodes that will set the shade model before rendering
+  returns \c TRUE here.  Ordinary shape nodes will not have worry
+  about this method as the default method returns \c FALSE.
 
-  This method is not a part of the original OIV API.
-  Don't overload it if you intend to make a node that will work
-  on both Coin and Open Inventor.
+  This method is not a part of the original Open Inventor API.  Don't
+  overload it if you intend to make a node that will work with both
+  Coin and Open Inventor.
 */
 SbBool
-SoShape::willSetShadeModel() const
+SoShape::willSetShadeModel(void) const
 {
   return FALSE;
 }
 
 /*!
-  Should be overloaded by subclasses that will set
-  shape hints before rendering. The SoGLShapeHintsElement
-  is a lazy element, and it will help performance if all
-  nodes which will set the shape hints before rendering
-  returns \e TRUE here.
+  Should be overloaded by subclasses that will set shape hints before
+  rendering. The SoGLShapeHintsElement is a lazy element, and it will
+  help performance if all nodes which will set the shape hints before
+  rendering returns \c TRUE here.
 
-  This method is not a part of the original OIV API. Don't
-  overload it if you intend to make a shape node that will work
-  on both Coin and Open Inventor.
+  This method is not a part of the original Open Inventor API. Don't
+  overload it if you intend to make a shape node that will work with
+  both Coin and Open Inventor.
 */
 SbBool
-SoShape::willSetShapeHints() const
+SoShape::willSetShapeHints(void) const
 {
   return FALSE;
 }
 
 /*!
-  Should be overloaded by subclasses that handles normals in
-  a non-default way (not using the SoNormal node). The node is
-  then responsible of handling this element before rendering.
-  Default method returns FALSE.
+  Should be overloaded by subclasses that handles normals in a
+  non-default way (not using the SoNormal node). The node is then
+  responsible of handling this element before rendering.  Default
+  method returns \c FALSE.
 
-  This method is not a part of the original OIV API. Don't
-  overload it if you intend to make a shape node that will work
-  on both Coin and Open Inventor.
+  This method is not a part of the original Open Inventor API. Don't
+  overload it if you intend to make a shape node that will work with
+  both Coin and Open Inventor.
 */
 SbBool
 SoShape::willUpdateNormalizeElement(SoState *) const
@@ -1032,7 +1010,9 @@ SoShape::willUpdateNormalizeElement(SoState *) const
 
 
 /*!
-  FIXME: write doc
+  Overloaded from default setting in SoNode, as we know for certain
+  that no node classes derived from SoShape will affect the rendering
+  state.
  */
 SbBool
 SoShape::affectsState(void) const
@@ -1041,41 +1021,38 @@ SoShape::affectsState(void) const
   return FALSE;
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc in parent.
 void
-SoShape::getPrimitiveCount(SoGetPrimitiveCountAction *action)
+SoShape::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-  if (this->shouldPrimitiveCount(action)) {
-    this->generatePrimitives(action);
-  }
+  if (this->shouldPrimitiveCount(action)) this->generatePrimitives(action);
 }
 
 /*!
-  FIXME: write doc
+  \internal
  */
 float
-SoShape::getDecimatedComplexity(SoState * /* state */, float /* complexity */)
+SoShape::getDecimatedComplexity(SoState * state, float complexity)
 {
   COIN_STUB();
-  return 0.5f;
+  // FIXME: get real value from decimation state element. 20000312 mortene.
+  return 1.0f * complexity;
 }
 
 /*!
-  FIXME: write doc
+  \internal
  */
 void
-SoShape::GLRenderBoundingBox(SoGLRenderAction * /* action */)
+SoShape::GLRenderBoundingBox(SoGLRenderAction * action)
 {
-  COIN_STUB();
+  COIN_STUB(); // FIXME
 }
 
 /*!
-  FIXME: write doc
+  \internal
  */
 SbBool
-SoShape::shouldPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoShape::shouldPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   return TRUE; // FIXME: what to do here? pederb 1999-11-25
 }

@@ -19,10 +19,8 @@
 
 /*!
   \class SoCone SoCone.h Inventor/nodes/SoCone.h
-  \brief The SoCone class ...
+  \brief The SoCone class is for rendering cone shapes.
   \ingroup nodes
-
-  FIXME: write class doc
 */
 
 #include <Inventor/nodes/SoCone.h>
@@ -48,33 +46,21 @@
 
 /*!
   \enum SoCone::Part
-  FIXME: write documentation for enum
+  Enumerates the various parts of the cone, for setting inclusion or
+  exclusion from the shape.
 */
-/*!
-  \var SoCone::Part SoCone::SIDES
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoCone::Part SoCone::BOTTOM
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoCone::Part SoCone::ALL
-  FIXME: write documentation for enum definition
-*/
-
 
 /*!
   \var SoSFBitMask SoCone::parts
-  FIXME: write documentation for field
+  The parts to use for the cone shape. Defaults to SoCone::ALL.
 */
 /*!
   \var SoSFFloat SoCone::bottomRadius
-  FIXME: write documentation for field
+  Radius of the cone's bottom disc. Default value is 1.0.
 */
 /*!
   \var SoSFFloat SoCone::height
-  FIXME: write documentation for field
+  Height of cone. Default value is 2.0.
 */
 
 #define CONE_SIDE_NUMTRIS 40.0f
@@ -82,6 +68,31 @@
 // *************************************************************************
 
 SO_NODE_SOURCE(SoCone);
+
+/*!
+  Constructor.
+*/
+SoCone::SoCone(void)
+{
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoCone);
+
+  SO_NODE_ADD_FIELD(bottomRadius, (1.0f));
+  SO_NODE_ADD_FIELD(height, (2.0f));
+  SO_NODE_ADD_FIELD(parts, (ALL));
+
+  SO_NODE_DEFINE_ENUM_VALUE(Part, SIDES);
+  SO_NODE_DEFINE_ENUM_VALUE(Part, BOTTOM);
+  SO_NODE_DEFINE_ENUM_VALUE(Part, ALL);
+  SO_NODE_SET_SF_ENUM_TYPE(parts, Part);
+}
+
+/*!
+  Destructor.
+*/
+SoCone::~SoCone()
+{
+}
+
 
 //
 // this was actually much easier than I first though since the Cone
@@ -99,15 +110,15 @@ SO_NODE_SOURCE(SoCone);
 static int
 intersect_cone_line(const float br,
                     const float h,
-                    const SbLine &line,
-                    SbVec3f &enter,
-                    SbVec3f &exit)
+                    const SbLine & line,
+                    SbVec3f & enter,
+                    SbVec3f & exit)
 {
   float h2 = h * 0.5f;
   SbVec3f d = line.getDirection();
   SbVec3f p = line.getPosition();
 
-  float tmp = (br*br)/(h*h);
+  float tmp = (br * br)/(h * h);
 
   float a = d[0]*d[0] + d[2]*d[2] - d[1]*d[1]*tmp;
   float b = 2.0f*d[0]*p[0] + 2.0f*d[2]*p[2] + (2.0f*h2*d[1] - 2.0f*p[1]*d[1]) * tmp;
@@ -122,7 +133,7 @@ intersect_cone_line(const float br,
   float t0 = (-b - root) / (2.0f*a);
   float t1 = (-b + root) / (2.0f*a);
 
-  if (t1 < t0) SbSwap(t0,t1);
+  if (t1 < t0) SbSwap(t0, t1);
 
   enter = p + t0*d;
   exit = p + t1*d;
@@ -137,47 +148,16 @@ intersect_cone_line(const float br,
 }
 
 
-
-/*!
-  Constructor.
-*/
-SoCone::SoCone()
-{
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoCone);
-
-  SO_NODE_ADD_FIELD(bottomRadius,(1.0f));
-  SO_NODE_ADD_FIELD(height,(2.0f));
-  SO_NODE_ADD_FIELD(parts,(ALL));
-
-  SO_NODE_DEFINE_ENUM_VALUE(Part, SIDES);
-  SO_NODE_DEFINE_ENUM_VALUE(Part, BOTTOM);
-  SO_NODE_DEFINE_ENUM_VALUE(Part, ALL);
-  SO_NODE_SET_SF_ENUM_TYPE(parts, Part);
-}
-
-/*!
-  Destructor.
-*/
-SoCone::~SoCone()
-{
-}
-
-/*!
-  Does initialization common for all objects of the
-  SoCone class. This includes setting up the
-  type system, among other things.
-*/
+// Doc from parent.
 void
 SoCone::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoCone);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from parent.
 void
-SoCone::computeBBox(SoAction * /* action */, SbBox3f & box, SbVec3f & center)
+SoCone::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
   float r = this->bottomRadius.getValue();
   float h = this->height.getValue();
@@ -200,15 +180,13 @@ SoCone::computeBBox(SoAction * /* action */, SbBox3f & box, SbVec3f & center)
   }
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from parent.
 void
 SoCone::GLRender(SoGLRenderAction * action)
 {
   if (!shouldGLRender(action)) return;
 
-  SoState *state = action->getState();
+  SoState * state = action->getState();
 
   SoCone::Part p = (SoCone::Part) this->parts.getValue();
   unsigned int flags = SOGL_NEED_NORMALS | SOGL_NEED_TEXCOORDS;
@@ -224,7 +202,7 @@ SoCone::GLRender(SoGLRenderAction * action)
   SoMaterialBundle mb(action);
   mb.sendFirst();
 
-  const SoGLShapeHintsElement *sh = (SoGLShapeHintsElement*)
+  const SoGLShapeHintsElement * sh = (SoGLShapeHintsElement *)
     state->getConstElement(SoGLShapeHintsElement::getClassStackIndex());
 
   if (p == ALL) sh->forceSend(TRUE, TRUE);
@@ -241,23 +219,19 @@ SoCone::GLRender(SoGLRenderAction * action)
 
   sogl_render_cone(this->bottomRadius.getValue(),
                    this->height.getValue(),
-                   (int)(CONE_SIDE_NUMTRIS*complexity),
+                   (int)(CONE_SIDE_NUMTRIS * complexity),
                    &mb,
                    flags);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from parent.
 SbBool
 SoCone::willSetShapeHints(void) const
 {
   return TRUE;
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from parent.
 SbBool
 SoCone::willSetShadeModel(void) const
 {
@@ -267,7 +241,7 @@ SoCone::willSetShadeModel(void) const
 
 
 /*!
-  Add a part to the cone.
+  Add a \a part to the cone.
 
   \sa removePart(), hasPart()
 */
@@ -285,7 +259,7 @@ SoCone::addPart(SoCone::Part part)
 }
 
 /*!
-  Remove a part from the cone.
+  Remove a \a part from the cone.
 
   \sa addPart(), hasPart()
 */
@@ -303,7 +277,8 @@ SoCone::removePart(SoCone::Part part)
 }
 
 /*!
-  Returns \a TRUE if rendering of the given part is currently turned on.
+  Returns \c TRUE if rendering of the given \a part is currently
+  turned on.
 
   \sa addPart(), removePart()
 */
@@ -313,16 +288,14 @@ SoCone::hasPart(SoCone::Part part) const
   return (this->parts.getValue() & part) ? TRUE : FALSE;
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc from parent.
 void
-SoCone::rayPick(SoRayPickAction *action)
+SoCone::rayPick(SoRayPickAction * action)
 {
   if (!this->shouldRayPick(action)) return;
 
   action->setObjectSpace();
-  const SbLine &line = action->getLine();
+  const SbLine & line = action->getLine();
 
   int numisect = 0;
   SbVec3f isect[2];
@@ -336,9 +309,9 @@ SoCone::rayPick(SoRayPickAction *action)
 
     for (int i = 0; i < numisect; i++) {
       if (action->isBetweenPlanes(isect[i])) {
-        SoPickedPoint *pp = action->addIntersection(isect[i]);
+        SoPickedPoint * pp = action->addIntersection(isect[i]);
         if (pp) {
-          SoConeDetail *detail = new SoConeDetail;
+          SoConeDetail * detail = new SoConeDetail;
           detail->setPart((int)SoCone::SIDES);
           pp->setDetail(detail, this);
         }
@@ -347,16 +320,16 @@ SoCone::rayPick(SoRayPickAction *action)
   }
 
   if ((numisect < 2) && (this->parts.getValue() & SoCone::BOTTOM)) {
-    SbPlane bottom(SbVec3f(0,1,0), -this->height.getValue()*0.5f);
+    SbPlane bottom(SbVec3f(0, 1, 0), -this->height.getValue()* 0.5f);
     SbVec3f bpt;
     float r2 = this->bottomRadius.getValue();
     r2 *= r2;
     if (bottom.intersect(line, bpt)) {
-      if (((bpt[0]*bpt[0] + bpt[2]*bpt[2]) <= r2) &&
+      if (((bpt[0] * bpt[0] + bpt[2] * bpt[2]) <= r2) &&
           (action->isBetweenPlanes(bpt))) {
-        SoPickedPoint *pp = action->addIntersection(bpt);
+        SoPickedPoint * pp = action->addIntersection(bpt);
         if (pp) {
-          SoConeDetail *detail = new SoConeDetail();
+          SoConeDetail * detail = new SoConeDetail();
           detail->setPart((int)SoCone::BOTTOM);
           pp->setDetail(detail, this);
         }
@@ -365,17 +338,15 @@ SoCone::rayPick(SoRayPickAction *action)
   }
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc from parent.
 void
-SoCone::getPrimitiveCount(SoGetPrimitiveCountAction *action)
+SoCone::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   if (!this->shouldPrimitiveCount(action)) return;
 
   float complexity = this->getComplexityValue(action);
-  int numtris = (int)(complexity*CONE_SIDE_NUMTRIS);
-  
+  int numtris = (int)(complexity * CONE_SIDE_NUMTRIS);
+
   if (this->parts.getValue() & SoCone::BOTTOM) {
     action->addNumTriangles(numtris-2);
   }
@@ -384,11 +355,9 @@ SoCone::getPrimitiveCount(SoGetPrimitiveCountAction *action)
   }
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc from parent.
 void
-SoCone::generatePrimitives(SoAction *action)
+SoCone::generatePrimitives(SoAction * action)
 {
   SoCone::Part p = (SoCone::Part) this->parts.getValue();
   unsigned int flags = 0;
@@ -405,7 +374,7 @@ SoCone::generatePrimitives(SoAction *action)
 
   sogen_generate_cone(this->bottomRadius.getValue(),
                       this->height.getValue(),
-                      (int)(CONE_SIDE_NUMTRIS*complexity),
+                      (int)(CONE_SIDE_NUMTRIS * complexity),
                       flags,
                       this,
                       action);

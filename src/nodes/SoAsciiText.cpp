@@ -19,48 +19,47 @@
 
 /*!
   \class SoAsciiText SoAsciiText.h Inventor/nodes/SoAsciiText.h
-  \brief The SoAsciiText class ...
+  \brief The SoAsciiText class renders flat 3D text.
   \ingroup nodes
 
-  FIXME: write class doc
+  This class renders text using 3D geometry.
+
+  It is different from the SoText2 node in that it rotates, scales,
+  translates etc just like other geometry in the scene. It is
+  different from the SoText3 node in that it renders the text "flat",
+  i.e. does not extrude the fonts to have depth.
 */
+
+// Metadon doc:
+/*¡
+  FIXME: not implemented yet. 20000312 mortene.
+ */
 
 #include <Inventor/nodes/SoAsciiText.h>
 #include <coindefs.h> // COIN_STUB()
 
 /*!
   \enum SoAsciiText::Justification
-  FIXME: write documentation for enum
-*/
-/*!
-  \var SoAsciiText::Justification SoAsciiText::LEFT
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoAsciiText::Justification SoAsciiText::RIGHT
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoAsciiText::Justification SoAsciiText::CENTER
-  FIXME: write documentation for enum definition
+  Font justification values.
 */
 
 
 /*!
   \var SoMFString SoAsciiText::string
-  FIXME: write documentation for field
+  Lines of text to render. Default value is empty.
 */
 /*!
   \var SoSFFloat SoAsciiText::spacing
-  FIXME: write documentation for field
+  Spacing between each line. Defaults to 1.0.
 */
 /*!
   \var SoSFEnum SoAsciiText::justification
-  FIXME: write documentation for field
+  Justification value for layout of multiple lines. Default
+  SoAsciiText::LEFT.
 */
 /*!
   \var SoMFFloat SoAsciiText::width
-  FIXME: write documentation for field
+  Defines the unit width of each line.
 */
 
 
@@ -71,7 +70,7 @@ SO_NODE_SOURCE(SoAsciiText);
 /*!
   Constructor.
 */
-SoAsciiText::SoAsciiText()
+SoAsciiText::SoAsciiText(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoAsciiText);
 
@@ -93,59 +92,44 @@ SoAsciiText::~SoAsciiText()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoAsciiText class. This includes setting up the
-  type system, among other things.
-*/
+// Doc in parent.
 void
 SoAsciiText::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoAsciiText);
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc in parent.
 void
-SoAsciiText::GLRender(SoGLRenderAction * /* action */)
+SoAsciiText::GLRender(SoGLRenderAction * action)
 {
-  COIN_STUB();
+  COIN_STUB(); // FIXME
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc in parent.
 void
-SoAsciiText::rayPick(SoRayPickAction * /* action */)
+SoAsciiText::rayPick(SoRayPickAction * action)
 {
-  COIN_STUB();
+  COIN_STUB(); // FIXME
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc in parent.
 void
-SoAsciiText::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoAsciiText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-  COIN_STUB();
+  COIN_STUB(); // FIXME
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc in parent.
 void
-SoAsciiText::computeBBox(SoAction * /* action */,
-                         SbBox3f & /* box */, SbVec3f & /* center */)
+SoAsciiText::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
-  COIN_STUB();
+  COIN_STUB(); // FIXME
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc in parent.
 void
-SoAsciiText::generatePrimitives(SoAction *)
+SoAsciiText::generatePrimitives(SoAction * action)
 {
-  COIN_STUB();
+  COIN_STUB(); // FIXME
 }

@@ -19,69 +19,50 @@
 
 /*!
   \class SoCylinder SoCylinder.h Inventor/nodes/SoCylinder.h
-  \brief The SoCylinder class ...
+  \brief The SoCylinder class is for rendering cylinder shapes.
   \ingroup nodes
-
-  FIXME: write class doc
 */
 
 #include <Inventor/nodes/SoCylinder.h>
-
-#include <Inventor/SbCylinder.h>
-#include <Inventor/bundles/SoMaterialBundle.h>
-#include <Inventor/misc/SoState.h>
-
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/misc/SoGL.h>
-#include <Inventor/actions/SoRayPickAction.h>
-#include <Inventor/details/SoCylinderDetail.h>
+#include <Inventor/SbCylinder.h>
 #include <Inventor/SoPickedPoint.h>
-#include <Inventor/elements/SoGLShapeHintsElement.h>
-#include <Inventor/elements/SoGLShadeModelElement.h>
-#include <Inventor/elements/SoMaterialBindingElement.h>
-#include <Inventor/elements/SoComplexityTypeElement.h>
+#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
+#include <Inventor/actions/SoRayPickAction.h>
+#include <Inventor/bundles/SoMaterialBundle.h>
+#include <Inventor/details/SoCylinderDetail.h>
+#include <Inventor/elements/SoComplexityTypeElement.h>
+#include <Inventor/elements/SoGLShadeModelElement.h>
+#include <Inventor/elements/SoGLShapeHintsElement.h>
+#include <Inventor/elements/SoMaterialBindingElement.h>
+#include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoGenerate.h>
+#include <Inventor/misc/SoState.h>
 
 #define CYL_SIDE_NUMTRIS 40.0f
 
 /*!
   \enum SoCylinder::Part
-  FIXME: write documentation for enum
-*/
-/*!
-  \var SoCylinder::Part SoCylinder::SIDES
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoCylinder::Part SoCylinder::TOP
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoCylinder::Part SoCylinder::BOTTOM
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoCylinder::Part SoCylinder::ALL
-  FIXME: write documentation for enum definition
+  The parts of a cylinder shape.
 */
 
 
 /*!
   \var SoSFFloat SoCylinder::radius
-  FIXME: write documentation for field
+  Radius of cylinder. Default value 1.0.
 */
 /*!
   \var SoSFFloat SoCylinder::height
-  FIXME: write documentation for field
+  Height of cylinder. Default is 2.0.
 */
 /*!
   \var SoSFBitMask SoCylinder::parts
-  FIXME: write documentation for field
+  Which parts to use for rendering, picking, etc.  Defaults to
+  SoCylinder::ALL.
 */
 
 
@@ -92,7 +73,7 @@ SO_NODE_SOURCE(SoCylinder);
 /*!
   Constructor.
 */
-SoCylinder::SoCylinder()
+SoCylinder::SoCylinder(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoCylinder);
 
@@ -114,23 +95,16 @@ SoCylinder::~SoCylinder()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoCylinder class. This includes setting up the
-  type system, among other things.
-*/
+// Doc in parent.
 void
 SoCylinder::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoCylinder);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc in parent.
 void
-SoCylinder::computeBBox(SoAction * /* action */,
-                        SbBox3f & box, SbVec3f & center)
+SoCylinder::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
 
   float r = this->radius.getValue();
@@ -146,12 +120,12 @@ SoCylinder::computeBBox(SoAction * /* action */,
     box.setBounds(SbVec3f(-r, -h/2.0f, -r), SbVec3f(r, h/2.0f, r));
   }
   // ..not a "full" cylinder, but we've got the BOTTOM cap.
-  else if(this->parts.getValue() & SoCylinder::BOTTOM) {
+  else if (this->parts.getValue() & SoCylinder::BOTTOM) {
     center.setValue(0.0f, -h/2.0f, 0.0f);
     box.setBounds(SbVec3f(-r, -h/2.0f, -r), SbVec3f(r, -h/2.0f, r));
   }
   // ..not a "full" cylinder, but we've got the TOP cap.
-  else if(this->parts.getValue() & SoCylinder::TOP) {
+  else if (this->parts.getValue() & SoCylinder::TOP) {
     center.setValue(0.0f, h/2.0f, 0.0f);
     box.setBounds(SbVec3f(-r, h/2.0f, -r), SbVec3f(r, h/2.0f, r));
   }
@@ -162,15 +136,13 @@ SoCylinder::computeBBox(SoAction * /* action */,
   }
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc in parent.
 void
 SoCylinder::GLRender(SoGLRenderAction * action)
 {
   if (!shouldGLRender(action)) return;
 
-  SoState *state = action->getState();
+  SoState * state = action->getState();
 
   SoCylinder::Part p = (SoCylinder::Part) this->parts.getValue();
   SoMaterialBundle mb(action);
@@ -209,18 +181,14 @@ SoCylinder::GLRender(SoGLRenderAction * action)
                        flags);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc in parent.
 SbBool
 SoCylinder::willSetShadeModel(void) const
 {
   return TRUE;
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc in parent.
 SbBool
 SoCylinder::willSetShapeHints(void) const
 {
@@ -230,7 +198,7 @@ SoCylinder::willSetShapeHints(void) const
 
 
 /*!
-  Add a part to the cylinder.
+  Add a \a part to the cylinder.
 
   \sa removePart(), hasPart()
 */
@@ -248,7 +216,7 @@ SoCylinder::addPart(SoCylinder::Part part)
 }
 
 /*!
-  Remove a part from the cylinder.
+  Remove a \a part from the cylinder.
 
   \sa addPart(), hasPart()
 */
@@ -266,7 +234,8 @@ SoCylinder::removePart(SoCylinder::Part part)
 }
 
 /*!
-  Returns \a TRUE if rendering of the given part is currently turned on.
+  Returns \c TRUE if rendering of the given \a part is currently
+  turned on.
 
   \sa addPart(), removePart()
 */
@@ -276,16 +245,14 @@ SoCylinder::hasPart(SoCylinder::Part part) const
   return (this->parts.getValue() & part) ? TRUE : FALSE;
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc in parent.
 void
-SoCylinder::rayPick(SoRayPickAction *action)
+SoCylinder::rayPick(SoRayPickAction * action)
 {
   if (!shouldRayPick(action)) return;
 
   action->setObjectSpace();
-  const SbLine &line = action->getLine();
+  const SbLine & line = action->getLine();
   float r = this->radius.getValue();
   float h = this->height.getValue() * 0.5f;
 
@@ -309,7 +276,7 @@ SoCylinder::rayPick(SoRayPickAction *action)
     // FIXME: should a) make sure this is known to the GCC
     // maintainers, b) have an autoconf check to test for this exact
     // bug. 19991230 mortene.
-    SbCylinder cyl(SbLine(SbVec3f(0,0,0), SbVec3f(0,1,0)), r);
+    SbCylinder cyl(SbLine(SbVec3f(0, 0, 0), SbVec3f(0, 1, 0)), r);
 #else // GCC 2.95 work-around.
     SbVec3f v0(0.0f, 0.0f, 0.0f);
     SbVec3f v1(0.0f, 1.0f, 0.0f);
@@ -318,18 +285,18 @@ SoCylinder::rayPick(SoRayPickAction *action)
 #endif // GCC 2.95 work-around.
     if (cyl.intersect(line, enter, exit)) {
       if ((fabs(enter[1]) <= h) && action->isBetweenPlanes(enter)) {
-        SoPickedPoint *pp = action->addIntersection(enter);
+        SoPickedPoint * pp = action->addIntersection(enter);
         if (pp) {
-          SoCylinderDetail *detail = new SoCylinderDetail();
+          SoCylinderDetail * detail = new SoCylinderDetail();
           detail->setPart((int)SoCylinder::SIDES);
           pp->setDetail(detail, this);
           numPicked++;
         }
       }
       if ((fabs(exit[1]) <= h) && (enter != exit) && action->isBetweenPlanes(exit)) {
-        SoPickedPoint *pp = action->addIntersection(exit);
+        SoPickedPoint * pp = action->addIntersection(exit);
         if (pp) {
-          SoCylinderDetail *detail = new SoCylinderDetail();
+          SoCylinderDetail * detail = new SoCylinderDetail();
           detail->setPart((int)SoCylinder::SIDES);
           pp->setDetail(detail, this);
           numPicked++;
@@ -341,13 +308,13 @@ SoCylinder::rayPick(SoRayPickAction *action)
   float r2 = r * r;
 
   if ((numPicked < 2) && (this->parts.getValue() & SoCylinder::TOP)) {
-    SbPlane top(SbVec3f(0,1,0), h);
+    SbPlane top(SbVec3f(0, 1, 0), h);
     if (top.intersect(line, enter)) {
-      if (((enter[0]*enter[0] + enter[2]*enter[2]) <= r2) &&
+      if (((enter[0] * enter[0] + enter[2] * enter[2]) <= r2) &&
           (action->isBetweenPlanes(enter))) {
-        SoPickedPoint *pp = action->addIntersection(enter);
+        SoPickedPoint * pp = action->addIntersection(enter);
         if (pp) {
-          SoCylinderDetail *detail = new SoCylinderDetail();
+          SoCylinderDetail * detail = new SoCylinderDetail();
           detail->setPart((int)SoCylinder::TOP);
           pp->setDetail(detail, this);
           numPicked++;
@@ -357,13 +324,13 @@ SoCylinder::rayPick(SoRayPickAction *action)
   }
 
   if ((numPicked < 2) && (this->parts.getValue() & SoCylinder::BOTTOM)) {
-    SbPlane bottom(SbVec3f(0,1,0), -h);
+    SbPlane bottom(SbVec3f(0, 1, 0), -h);
     if (bottom.intersect(line, enter)) {
-      if (((enter[0]*enter[0] + enter[2]*enter[2]) <= r2) &&
+      if (((enter[0] * enter[0] + enter[2] * enter[2]) <= r2) &&
           (action->isBetweenPlanes(enter))) {
-        SoPickedPoint *pp = action->addIntersection(enter);
+        SoPickedPoint * pp = action->addIntersection(enter);
         if (pp) {
-          SoCylinderDetail *detail = new SoCylinderDetail();
+          SoCylinderDetail * detail = new SoCylinderDetail();
           detail->setPart((int)SoCylinder::BOTTOM);
           pp->setDetail(detail, this);
         }
@@ -372,16 +339,14 @@ SoCylinder::rayPick(SoRayPickAction *action)
   }
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc in parent.
 void
-SoCylinder::getPrimitiveCount(SoGetPrimitiveCountAction *action)
+SoCylinder::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   if (!this->shouldPrimitiveCount(action)) return;
 
   float complexity = this->getComplexityValue(action);
-  int numtris = (int)(complexity*CYL_SIDE_NUMTRIS);
+  int numtris = (int)(complexity * CYL_SIDE_NUMTRIS);
 
   if (this->parts.getValue() & SoCylinder::BOTTOM) {
     action->addNumTriangles(numtris-2);
@@ -390,15 +355,13 @@ SoCylinder::getPrimitiveCount(SoGetPrimitiveCountAction *action)
     action->addNumTriangles(numtris-2);
   }
   if (this->parts.getValue() & SoCylinder::SIDES) {
-    action->addNumTriangles(numtris*2);
+    action->addNumTriangles(numtris * 2);
   }
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc in parent.
 void
-SoCylinder::generatePrimitives(SoAction *action)
+SoCylinder::generatePrimitives(SoAction * action)
 {
   SoCylinder::Part p = (SoCylinder::Part) this->parts.getValue();
   unsigned int flags = 0;
@@ -416,7 +379,7 @@ SoCylinder::generatePrimitives(SoAction *action)
 
   sogen_generate_cylinder(this->radius.getValue(),
                           this->height.getValue(),
-                          (int)(CYL_SIDE_NUMTRIS*complexity),
+                          (int)(CYL_SIDE_NUMTRIS * complexity),
                           flags,
                           this,
                           action);

@@ -19,47 +19,45 @@
 
 /*!
   \class SoCube SoCube.h Inventor/nodes/SoCube.h
-  \brief The SoCube class ...
+  \brief The SoCube class is for rendering cubes.
   \ingroup nodes
 
-  FIXME: write class doc
+  Strictly speaking, as you can have different width, height and depth
+  values for the "cube", instances of this class renders \e boxes.
 */
 
 #include <Inventor/nodes/SoCube.h>
 
-
-#include <Inventor/misc/SoState.h>
-#include <Inventor/bundles/SoMaterialBundle.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/misc/SoGL.h>
-#include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/SoPickedPoint.h>
-#include <Inventor/details/SoCubeDetail.h>
-#include <Inventor/elements/SoMaterialBindingElement.h>
-#include <Inventor/elements/SoLightModelElement.h>
-#include <Inventor/elements/SoTextureCoordinateElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLShapeHintsElement.h>
-#include <Inventor/elements/SoGLShadeModelElement.h>
-#include <Inventor/elements/SoGLNormalizeElement.h>
+#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
+#include <Inventor/actions/SoRayPickAction.h>
+#include <Inventor/bundles/SoMaterialBundle.h>
+#include <Inventor/details/SoCubeDetail.h>
 #include <Inventor/elements/SoDrawStyleElement.h>
+#include <Inventor/elements/SoGLNormalizeElement.h>
+#include <Inventor/elements/SoGLShadeModelElement.h>
+#include <Inventor/elements/SoGLShapeHintsElement.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoLightModelElement.h>
+#include <Inventor/elements/SoMaterialBindingElement.h>
+#include <Inventor/elements/SoTextureCoordinateElement.h>
+#include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoGenerate.h>
-
-#include <assert.h>
+#include <Inventor/misc/SoState.h>
 
 
 /*!
   \var SoSFFloat SoCube::width
-  FIXME: write documentation for field
+  X axis dimension of cube, defaults to 2.0.
 */
 /*!
   \var SoSFFloat SoCube::height
-  FIXME: write documentation for field
+  Y axis dimension of cube, defaults to 2.0.
 */
 /*!
   \var SoSFFloat SoCube::depth
-  FIXME: write documentation for field
+  Z axis dimension of cube, defaults to 2.0.
 */
 
 
@@ -70,13 +68,13 @@ SO_NODE_SOURCE(SoCube);
 /*!
   Constructor.
 */
-SoCube::SoCube()
+SoCube::SoCube(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoCube);
 
-  SO_NODE_ADD_FIELD(width,(2.0f));
-  SO_NODE_ADD_FIELD(height,(2.0f));
-  SO_NODE_ADD_FIELD(depth,(2.0f));
+  SO_NODE_ADD_FIELD(width, (2.0f));
+  SO_NODE_ADD_FIELD(height, (2.0f));
+  SO_NODE_ADD_FIELD(depth, (2.0f));
 }
 
 /*!
@@ -86,20 +84,14 @@ SoCube::~SoCube()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoCube class. This includes setting up the
-  type system, among other things.
-*/
+// Doc in parent.
 void
 SoCube::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoCube);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc in parent.
 void
 SoCube::GLRender(SoGLRenderAction * action)
 {
@@ -157,9 +149,7 @@ SoCube::GLRender(SoGLRenderAction * action)
                    flags);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc in parent.
 void
 SoCube::generatePrimitives(SoAction * action)
 {
@@ -180,66 +170,53 @@ SoCube::generatePrimitives(SoAction * action)
                       action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc in parent.
 SbBool
 SoCube::willSetShadeModel(void) const
 {
   return TRUE;
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc in parent.
 SbBool
 SoCube::willSetShapeHints(void) const
 {
   return TRUE;
 }
 
-//!
+// Doc in parent.
 SbBool
 SoCube::willUpdateNormalizeElement(SoState *) const
 {
   return TRUE;
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc in parent.
 void
-SoCube::computeBBox(SoAction * /* action */, SbBox3f & box, SbVec3f & center)
+SoCube::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
   center.setValue(0.0f, 0.0f, 0.0f);
-  float w,h,d;
-  this->getHalfSize(w,h,d);
+  float w, h, d;
+  this->getHalfSize(w, h, d);
   box.setBounds(-w, -h, -d, w, h, d);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc in parent.
 void
-SoCube::rayPick(SoRayPickAction *action)
+SoCube::rayPick(SoRayPickAction * action)
 {
   if (!shouldRayPick(action)) return;
 
-  static int translation[6] = {2,3,5,4,1,0}; // translate into detail part-num
+  static int translation[6] = {2, 3, 5, 4, 1, 0}; // translate into detail part-num
   action->setObjectSpace();
-  const SbLine &line = action->getLine();
+  const SbLine & line = action->getLine();
   float size[3];
-  this->getHalfSize(size[0],size[1],size[2]);
-#if 0
-  fprintf(stderr,"obj line: %g %g %g, %g %g %g\n",
-          line.getPosition()[0], line.getPosition()[1], line.getPosition()[2],
-          line.getDirection()[0], line.getDirection()[1], line.getDirection()[2]);
-#endif
+  this->getHalfSize(size[0], size[1], size[2]);
   int cnt = 0;
   // test intersection with all six planes
   for (int i = 0; i < 3; i++) {
     for (float j = -1.0f; j <= 1.0f; j += 2.0f) {
-      SbVec3f norm(0,0,0);
+      SbVec3f norm(0, 0, 0);
       norm[i] = j;
       SbVec3f isect;
 
@@ -251,9 +228,9 @@ SoCube::rayPick(SoRayPickAction *action)
         if (isect[i1] >= -size[i1] && isect[i1] <= size[i1] &&
             isect[i2] >= -size[i2] && isect[i2] <= size[i2] &&
             action->isBetweenPlanes(isect)) {
-          SoPickedPoint *pp = action->addIntersection(isect);
+          SoPickedPoint * pp = action->addIntersection(isect);
           if (pp) {
-            SoCubeDetail *detail = new SoCubeDetail();
+            SoCubeDetail * detail = new SoCubeDetail();
             detail->setPart(translation[cnt]);
             pp->setDetail(detail, this);
           }
@@ -264,9 +241,7 @@ SoCube::rayPick(SoRayPickAction *action)
   }
 }
 
-/*!
-  \internal
-*/
+// Convenience function for finding half the size of the box.
 void
 SoCube::getHalfSize(float & w, float & h, float & d)
 {
@@ -278,11 +253,9 @@ SoCube::getHalfSize(float & w, float & h, float & d)
        depth.getValue() / 2.0f);
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc from parent.
 void
-SoCube::getPrimitiveCount(SoGetPrimitiveCountAction *action)
+SoCube::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   if (!this->shouldPrimitiveCount(action)) return;
 

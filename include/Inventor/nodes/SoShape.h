@@ -45,16 +45,9 @@ public:
   static void initClass(void);
 
   enum TriangleShape {
-    TRIANGLE_STRIP,
-    TRIANGLE_FAN,
-    TRIANGLES,
-    POLYGON,
-    QUADS,
-    // the following are not part of OIV-API
-    QUAD_STRIP,
-    POINTS,
-    LINES,
-    LINE_STRIP
+    TRIANGLE_STRIP, TRIANGLE_FAN, TRIANGLES, POLYGON,
+    // The rest of the enums are not part of the original Inventor API.
+    QUADS, QUAD_STRIP, POINTS, LINES, LINE_STRIP
   };
 
   virtual SbBool affectsState(void) const;
@@ -67,18 +60,15 @@ public:
                            SbVec3f & center) =  0;
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 
-  static void getScreenSize(SoState * const state,
-                            const SbBox3f & boundingBox,
-                            SbVec2s & rectSize);
+  static void getScreenSize(SoState * const state, const SbBox3f & boundingbox,
+                            SbVec2s & rectsize);
   static float getDecimatedComplexity(SoState * state, float complexity);
 
 protected:
-  friend class shapePrimitiveData;         // internal class
-  friend class so_generate_prim_private;   // a very private class
   SoShape(void);
   virtual ~SoShape();
 
-  float getComplexityValue(SoAction *action);
+  float getComplexityValue(SoAction * action);
   virtual void generatePrimitives(SoAction * action) =  0;
   virtual SbBool shouldGLRender(SoGLRenderAction * action);
   void beginSolidShape(SoGLRenderAction * action);
@@ -86,9 +76,9 @@ protected:
   void GLRenderBoundingBox(SoGLRenderAction * action);
   SbBool shouldPrimitiveCount(SoGetPrimitiveCountAction * action);
 
-  virtual SbBool willSetShadeModel() const;
-  virtual SbBool willSetShapeHints() const;
-  virtual SbBool willUpdateNormalizeElement(SoState *state) const;
+  virtual SbBool willSetShadeModel(void) const;
+  virtual SbBool willSetShapeHints(void) const;
+  virtual SbBool willUpdateNormalizeElement(SoState * state) const;
 
   SbBool shouldRayPick(SoRayPickAction * const action);
   void computeObjectSpaceRay(SoRayPickAction * const action);
@@ -116,10 +106,10 @@ protected:
                                   const SoPrimitiveVertex * const v2);
   void invokePointCallbacks(SoAction * const action,
                             const SoPrimitiveVertex * const v);
-  void beginShape(SoAction * const action, const TriangleShape shapeType,
+  void beginShape(SoAction * const action, const TriangleShape shapetype,
                   SoDetail * const detail = NULL);
   void shapeVertex(const SoPrimitiveVertex * const v);
-  void endShape();
+  void endShape(void);
 
   void generateVertex(SoPrimitiveVertex * const pv,
                       const SbVec3f & point,
@@ -128,6 +118,10 @@ protected:
                       const float s,
                       const float t,
                       const SbVec3f & normal);
+
+private:
+  friend class shapePrimitiveData;         // internal class
+  friend class so_generate_prim_private;   // a very private class
 };
 
 #endif // !COIN_SOSHAPE_H

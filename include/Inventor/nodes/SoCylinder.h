@@ -36,10 +36,10 @@ public:
   SoCylinder(void);
 
   enum Part {
-    SIDES = 1,
-    TOP = 2,
-    BOTTOM = 4,
-    ALL = 7
+    SIDES =  0x1,
+    TOP =    0x2,
+    BOTTOM = 0x4,
+    ALL =    SIDES|TOP|BOTTOM
   };
 
   SoSFFloat radius;
@@ -54,8 +54,8 @@ public:
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 
   virtual void GLRender(SoGLRenderAction * action);
-  virtual SbBool willSetShapeHints() const;
-  virtual SbBool willSetShadeModel() const;
+  virtual SbBool willSetShapeHints(void) const;
+  virtual SbBool willSetShadeModel(void) const;
 
 protected:
   virtual ~SoCylinder();

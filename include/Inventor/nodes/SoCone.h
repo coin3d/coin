@@ -53,13 +53,13 @@ public:
   virtual SbBool willSetShapeHints() const;
   virtual SbBool willSetShadeModel() const;
 
-  virtual void rayPick(SoRayPickAction *action);
-  virtual void getPrimitiveCount(SoGetPrimitiveCountAction *action);
+  virtual void rayPick(SoRayPickAction * action);
+  virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 
 protected:
   virtual ~SoCone();
 
-  virtual void generatePrimitives(SoAction *action);
+  virtual void generatePrimitives(SoAction * action);
   virtual void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
 };
 
