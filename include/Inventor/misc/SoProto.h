@@ -24,20 +24,26 @@
  *
 \**************************************************************************/
 
-// NB: This is work-in-progress, and the API might change from day to
-// day. Do not use this class unless you are prepared for this.
-// pederb, 2002-05-28
-
 #include <Inventor/nodes/SoNode.h>
 
+class SoProto;
 class SoInput;
 class SoProtoInstance;
+class SoProtoP;
+
+typedef SoProto * SoFetchExternProtoCB(SoInput * in,
+                                       const SbString * urls,
+                                       const int numurls,
+                                       void * closure);
 
 // We need to inherit SoNode to be able to insert the PROTO definition
 // into the scene graph.
 class COIN_DLL_API SoProto : public SoNode {
 public:
   SoProto(const SbBool externproto = FALSE);
+
+  static void setFetchExternProtoCallback(SoFetchExternProtoCB * cb,
+                                          void * closure);
 
   virtual SoType getTypeId(void) const;
   static SoType getClassTypeId(void);
@@ -77,7 +83,10 @@ private:
   SbBool readDefinition(SoInput * in);
 
   SbBool writeURLs(SoOutput * out);
-  class SoProtoP * pimpl;
+  SoProtoP * pimpl;
+  friend class SoProtoP;
+
+  SbBool setupExtern(SoInput * in, SoProto * externproto);
 
   SoNode * createInstanceRoot(SoProtoInstance * inst) const;
   void connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const;

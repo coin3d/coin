@@ -24,8 +24,8 @@
 /*!
   \class SoProto SoProto.h Inventor/misc/SoProto.h
   \brief The SoProto class handles PROTO definitions.
-  
-  FIXME: This is work in progress. Document later.
+
+  \internal
 */
 
 
@@ -50,6 +50,17 @@
 static SoType soproto_type;
 
 static SbList <SoProto*> * protolist;
+static SoFetchExternProtoCB * soproto_fetchextern_cb = NULL;
+static void * soproto_fetchextern_closure = NULL;
+
+static SoProto *
+soproto_fetchextern_default_cb(SoInput * in,
+                               const SbString * urls,
+                               const int numurls,
+                               void * closure)
+{
+  return NULL;
+}
 
 #ifndef DOXYGEN_SKIP_THIS
 
@@ -66,6 +77,7 @@ public:
   SbDict refdict;
   SbList <SbName> routelist;
   SoMFString * externurl;
+  SoNode * extprotonode;
 };
 
 #endif // DOXYGEN_SKIP_THIS
@@ -92,6 +104,8 @@ SoProto::initClass(void)
                                     SbName("SoProto"), NULL,
                                     SoNode::nextActionMethodIndex++);
   protolist = new SbList<SoProto*>;
+  // this will set a default callback
+  SoProto::setFetchExternProtoCallback(NULL, NULL);
 }
 
 #undef THIS
@@ -110,6 +124,7 @@ SoProto::SoProto(const SbBool externproto)
   THIS->fielddata = new SoFieldData;
   THIS->defroot = new SoGroup;
   THIS->defroot->ref();
+  THIS->extprotonode = NULL;
 
   protolist->insert(this, 0);
 }
@@ -126,6 +141,24 @@ SoProto::~SoProto()
   THIS->defroot->unref();
   delete THIS->externurl;
   delete THIS;
+
+  if (THIS->extprotonode) {
+    THIS->extprotonode->unref();
+  }
+}
+
+void 
+SoProto::setFetchExternProtoCallback(SoFetchExternProtoCB * cb,
+                                     void * closure)
+{
+  if (cb == NULL) {
+    soproto_fetchextern_cb = soproto_fetchextern_default_cb;
+    soproto_fetchextern_closure = NULL;    
+  }
+  else {
+    soproto_fetchextern_cb = cb;
+    soproto_fetchextern_closure = closure;
+  }
 }
 
 /*!
@@ -188,8 +221,18 @@ SoProto::readInstance(SoInput * in, unsigned short flags)
   else {
     ok = THIS->externurl->read(in, SbName("EXTERNPROTO URL"));
     if (ok) {
+      SoProto * proto = soproto_fetchextern_cb(in,
+                                               THIS->externurl->getValues(0),
+                                               THIS->externurl->getNum(),
+                                               soproto_fetchextern_closure);
+      if (proto == NULL) {
+        SoReadError::post(in, "Error reading EXTERNPROTO definition.");        
+        ok = FALSE;
+      }
+      else {
+        ok = this->setupExtern(in, proto);
+      }
     }
-    // FIXME: fetch URL data.
   }
   return ok;
 }
@@ -652,4 +695,11 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
     }
     sa.reset();
   }
+}
+
+SbBool
+SoProto::setupExtern(SoInput * in, SoProto * externproto)
+{
+  // FIXME: implement, pederb 2003-02-27
+  return FALSE;
 }
