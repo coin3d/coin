@@ -242,6 +242,49 @@ and explains the principles applied fairly well.
     Enabling this define may slow things down considerably, depending on
     how heavily the parts of Coin you use most are instrumented.
 
+6 How To Add / Modify A Class In Coin
+=====================================
+
+  * Implement the class.
+
+  * Write Doxygen documentation for the class. Remember to tag the doc
+    with \since YYYY-MM-DD, either for the class itself or for any
+    functions with a new or changed API.
+
+  * Update cross-references from other documentation if necessary.
+
+  * If new source files were introduced:
+
+        * Add them to the CVS repository.
+
+        * Add the header and any generated doc files for the class to
+          build/coin.spec.in (for RPM generation).
+
+        * Add the source files to docs/coin.doxygen.in (for
+          documentation generation).
+
+        * If we are a subtype of SoBase, update the correct files for
+          initializing the class (i.e. src/nodes/SoNode.cpp).
+
+        * Add the source files to the corresponding all.cpp file.
+
+        * Add the header file to the corresponding common include file
+          (i.e. include/Inventor/nodes/SoNodes.h)
+
+        * Add the source files to the Makefile.am file in the source
+          file directory (for building).
+
+        * If the class is public, add the header file to
+          src/Makefile.am or any of src/*/Makefile.am (for
+          installation).
+
+        * Remember to rerun bootstrap when changing any
+          Makefile.am. You need to have the correct versions of the
+          Autotools (Autoconf, Automake and Libtool -- see the
+          bootstrap script for which versions are needed), so it may
+          be easier to do this on our internal development
+          "repository" for the Autotools; nfs.trh.sim.no.
+
 =======================================================================
 XXX FIXME: complete doc. XXX
 
