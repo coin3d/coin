@@ -11,9 +11,6 @@ m4_define([COIN_ABI_CURRENT], [COIN_MAJOR])
 m4_define([COIN_ABI_REVISION], [m4_eval((COIN_MINOR*100)+COIN_MICRO)])
 m4_define([COIN_ABI_AGE], [0])
 
-
-ifndef([AS_TR_CPP], [define([AS_TR_CPP], defn([AC_TR_CPP]))])
-
 # **************************************************************************
 
 AC_INIT([Coin], [COIN_MAJOR.COIN_MINOR.COIN_MICRO])
