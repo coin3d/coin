@@ -1236,9 +1236,9 @@ AM_CONDITIONAL(BUILD_WITH_MSVC, $BUILD_WITH_MSVC)
 
 if $sim_ac_make_dsp; then
   SIM_AC_CONFIGURATION_SETTING([Coin build type], [msvc .dsp])
-  CC=$srcdir/cfg/m4/gendsp.sh
-  CXX=$srcdir/cfg/m4/gendsp.sh
-  CXXLD=$srcdir/cfg/m4/gendsp.sh
+  CC=$coin_src_dir/cfg/m4/gendsp.sh
+  CXX=$coin_src_dir/cfg/m4/gendsp.sh
+  CXXLD=$coin_src_dir/cfg/m4/gendsp.sh
   CPPFLAGS="$CPPFLAGS -Ddspfile=$coin_build_dir/coin$COIN_MAJOR_VERSION.dsp"
   LDFLAGS="$LDFLAGS -Wl,-Ddspfile=$coin_build_dir/coin$COIN_MAJOR_VERSION.dsp"
   # this can't be set up at the point the libtool script is generated
@@ -1433,7 +1433,7 @@ case "$host_os" in
     ;;
   cygwin*)
     case "$CXX" in
-    *wrapmsvc*)
+    *wrapmsvc* )
       ac_coin_untested_platform=false
       ac_coin_not_sim_platform=false
     ;;
@@ -1449,6 +1449,13 @@ case "$host_os" in
         ;;
     esac
     ;;
+esac
+
+case "$CXX" in
+*gendsp* )
+  ac_coin_untested_platform=false
+  ac_coin_not_sim_platform=false
+  ;;
 esac
 
 if $ac_coin_untested_platform; then
