@@ -311,6 +311,10 @@ STUFF TO FIX IN COIN
   symbols) for initing the loaded node for the first implementation?
   Supporting C++ name mangling can be tackled later...
 
+  Update 2002-02-12 mortene: this looks to be a decent resource on
+  name mangling for the MSVC++ compiler (and it includes some links to
+  G++ info aswell): <URL:http://www.kegel.com/mangle.html>.
+
 
 * Mac OS X framework setup
   2001-12-05  Lars J. Aas  <larsa@sim.no>
