@@ -138,21 +138,26 @@ if $BUILD_WITH_MSVC; then
 fi
 
 #  Initialize libtool
-AC_PROG_LIBTOOL
 
-case "$host_os" in
-  irix*)
-    if test x"${AR+set}" != x"set"; then
-      if test x"$CXX" = xCC; then
-        echo "modifying libtool"
-        mv libtool libtool.orig
-        sed -e 's/\\\$AR cru/CC -ar -o/' <libtool.orig >libtool
-        chmod 755 libtool
-        rm -f libtool.orig
-      fi
-    fi
-    ;;
-esac
+if $BUILD_WITH_MSVC; then
+  RANLIB=:
+else
+  AC_PROG_LIBTOOL
+fi
+
+# case "$host_os" in
+#   irix*)
+#     if test x"${AR+set}" != x"set"; then
+#       if test x"$CXX" = xCC; then
+#         echo "modifying libtool"
+#         mv libtool libtool.orig
+#         sed -e 's/\\\$AR cru/CC -ar -o/' <libtool.orig >libtool
+#         chmod 755 libtool
+#         rm -f libtool.orig
+#       fi
+#     fi
+#     ;;
+# esac
 
 #  These are used for constructing the coin-config file.
 COIN_EXTRA_CPPFLAGS=$CPPFLAGS
