@@ -41,22 +41,31 @@
 #endif /* SIMAGEWRAPPER_ASSUME_SIMAGE */
 
 
-/* This should work on Linux and IRIX platforms, at least. Probably
-   some other UNIX-based systems aswell. */
 #ifdef HAVE_DL_LIB
-#define LIBHANDLE_T void *
-#define OPEN_RUNTIME_BINDING(LIBNAME) dlopen(LIBNAME, RTLD_LAZY)
-#define CLOSE_RUNTIME_BINDING(RBHANDLE)  (void)dlclose(RBHANDLE)
-#define GET_RUNTIME_SYMBOL(RBHANDLE, FUNCNAME) dlsym(RBHANDLE, FUNCNAME)
-#endif  /* HAVE_DL_LIB */
 
-/* This should work on all MSWindows systems. */
-#ifdef HAVE_WINDLL_RUNTIME_BINDING
-#define LIBHANDLE_T HINSTANCE
-#define OPEN_RUNTIME_BINDING(LIBNAME) LoadLibrary(LIBNAME)
-#define CLOSE_RUNTIME_BINDING(RBHANDLE)  (void)FreeLibrary(RBHANDLE)
-#define GET_RUNTIME_SYMBOL(RBHANDLE, FUNCNAME) GetProcAddress(RBHANDLE, FUNCNAME)
-#endif  /* HAVE_WINDLL_RUNTIME_BINDING */
+  /* This should work on Linux and IRIX platforms, at least. Probably
+     some other UNIX-based systems aswell. */
+
+  #define LIBHANDLE_T void*
+  #define OPEN_RUNTIME_BINDING(LIBNAME) dlopen(LIBNAME, RTLD_LAZY)
+  #define CLOSE_RUNTIME_BINDING(RBHANDLE)  (void)dlclose(RBHANDLE)
+  #define GET_RUNTIME_SYMBOL(RBHANDLE, FUNCNAME) dlsym(RBHANDLE, FUNCNAME)
+
+#elif defined (HAVE_WINDLL_RUNTIME_BINDING)
+
+  /* This should work on all MSWindows systems. */
+
+  #define LIBHANDLE_T HINSTANCE
+  #define OPEN_RUNTIME_BINDING(LIBNAME) LoadLibrary(LIBNAME)
+  #define CLOSE_RUNTIME_BINDING(RBHANDLE)  (void)FreeLibrary(RBHANDLE)
+  #define GET_RUNTIME_SYMBOL(RBHANDLE, FUNCNAME) GetProcAddress(RBHANDLE, FUNCNAME)
+
+#else /* static binding */
+
+  /* To avoid compiler error on the LIBHANDLE_T type. */
+  #define LIBHANDLE_T void*
+
+#endif  /* static binding */
 
 /* FIXME: support HP-UX? (Doesn't have dlopen().) 20010626 mortene. */
 
