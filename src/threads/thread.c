@@ -102,7 +102,7 @@ DWORD WINAPI cc_w32thread_thread_proc(LPVOID lpParameter)
 }
 
 static int
-internal_init(cc_thread * thread_struct)
+internal_init(cc_thread * thread)
 {
   DWORD threadid_unused;
   

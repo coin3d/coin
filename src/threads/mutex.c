@@ -100,6 +100,25 @@ internal_unlock(cc_mutex * mutex)
 #ifdef USE_W32_MUTEX
 
 static int
+internal_struct_init(cc_mutex * mutex_struct)
+{
+  mutex_struct->w32thread.mutexhandle = CreateMutex(NULL, FALSE, NULL);
+  if (mutex_struct->w32thread.mutexhandle == NULL) {
+    if (COIN_DEBUG) {
+      DWORD err;
+      char *errstr;
+      err = GetLastError();
+      errstr = cc_internal_w32_getlasterrorstring(err);
+      cc_fprintf(stderr, "CreateMutex() error: %d, \"%s\"\n",
+        err, errstr);
+      cc_internal_w32_freelasterrorstring(errstr);
+    }
+    return CC_ERROR;
+  }
+  return CC_OK;
+}
+
+static int
 internal_struct_clean(cc_mutex * mutex_struct)
 {
   BOOL status = CloseHandle(mutex_struct->w32thread.mutexhandle);
@@ -119,7 +138,7 @@ internal_struct_clean(cc_mutex * mutex_struct)
 }
 
 static int 
-internal_mutex_lock(cc_mutex * mutex)
+internal_lock(cc_mutex * mutex)
 {
   DWORD status;
   status = WaitForSingleObject(mutex->w32thread.mutexhandle, INFINITE);
@@ -139,7 +158,7 @@ internal_mutex_lock(cc_mutex * mutex)
 }
 
 static int 
-internal_mutex_try_lock(cc_mutex * mutex)
+internal_try_lock(cc_mutex * mutex)
 {
   DWORD status;
   status = WaitForSingleObject(mutex->w32thread.mutexhandle, 0);
@@ -162,7 +181,7 @@ internal_mutex_try_lock(cc_mutex * mutex)
 }
 
 static int 
-internal_mutex_unlock(cc_mutex * mutex)
+internal_unlock(cc_mutex * mutex)
 {
   BOOL status = ReleaseMutex(mutex->w32thread.mutexhandle);
   if (status == FALSE) {
@@ -198,7 +217,7 @@ internal_struct_clean(cc_mutex * mutex_struct)
 }
 
 static int 
-internal_mutex_lock(cc_mutex * mutex)
+internal_lock(cc_mutex * mutex)
 {
   if (InterlockedIncrement(&(mutex->w32thread.lock_count)) == 0) {
     /* we were the first to lock */
@@ -212,7 +231,7 @@ internal_mutex_lock(cc_mutex * mutex)
 }
 
 static int 
-internal_mutex_try_lock(cc_mutex * mutex)
+internal_try_lock(cc_mutex * mutex)
 {
 #if 0
   BOOL status;
@@ -241,7 +260,7 @@ internal_mutex_try_lock(cc_mutex * mutex)
 }
 
 static int 
-internal_mutex_unlock(cc_mutex * mutex)
+internal_unlock(cc_mutex * mutex)
 {
   LeaveCriticalSection(&(mutex->w32thread.critical_section));
   if (InterlockedDecrement(&(mutex->w32thread.lock_count)) >= 0) {
