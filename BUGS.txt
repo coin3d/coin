@@ -1,33 +1,5 @@
 =====================================================================
 
-001 Writing draggers to file dumps the full set of parts. Reproduce
-    with this minimal example:
-
-    ---8<-------8<-------8<-------8<-------8<-------8<-------8<----
-    #include <Inventor/SoInteraction.h>
-    #include <Inventor/draggers/SoTranslate1Dragger.h>
-    #include <Inventor/actions/SoWriteAction.h>
-    
-    int
-    main(void)
-    {
-      SoInteraction::init();
-    
-      SoTranslate1Dragger * dragger = new SoTranslate1Dragger;
-      dragger->ref();
-    
-      SoWriteAction wa;
-      wa.apply(dragger);
-    
-      dragger->unref();
-      return 0;
-    }
-    ---8<-------8<-------8<-------8<-------8<-------8<-------8<----
-
-    <mortene@sim.no> 20020205.
-
-=====================================================================
-
 002 Trying to parse this file causes an assert failure / crash (which
     should _never_ happen, of course, no matter how wrong the file
     is):
