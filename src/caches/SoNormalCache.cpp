@@ -346,10 +346,19 @@ SoNormalCache::generatePerFace(const SbVec3f * const coords,
 
   SbVec3f tmpvec;
 
-  while (cind < endptr) {
+  while (cind + 4 < endptr) {
     int v0 = cind[0];
     int v1 = cind[1];
     int v2 = cind[2];
+
+    if (v0 < 0 || v1 < 0 || v2 < 0) {
+#if COIN_DEBUG
+      SoDebugError::postInfo("SoNormalCache::generatePerFace",
+                             "Polygon with less than three vertices detected. "
+                             "Aborting current shape.");
+#endif // COIN_DEBUG
+      break;
+    }
 
     if (cind[3] < 0) { // triangle
       if (!ccw)

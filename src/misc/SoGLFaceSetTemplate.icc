@@ -88,15 +88,18 @@
   if (materials);
 #endif
 
-  while (viptr < viendptr) {
+  while (viptr + 4 < viendptr) {
     v1 = *viptr++;
     v2 = *viptr++;
     v3 = *viptr++;
-#if 0
-    if (v1 < 0 || v2 < 0 || v3 < 0) return;
-#else
-    assert(v1 >= 0 && v2 >= 0 && v3 >= 0);
-#endif
+    if (v1 < 0 || v2 < 0 || v3 < 0) {
+#ifdef COIN_DEBUG
+      SoDebugError::postWarning("[faceset]::GLRender",
+                                "Polygon with less than three vertices detected. "
+                                "Rendering aborted for current shape.");
+#endif // COIN_DEBUG
+      break;
+    }
     v4 = *viptr++;
     if (v4  < 0) newmode = GL_TRIANGLES;
     else {

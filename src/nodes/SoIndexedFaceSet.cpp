@@ -456,11 +456,19 @@ SoIndexedFaceSet::generatePrimitives(SoAction *action)
   int matnr = 0;
   int normnr = 0;
 
-  while (viptr < viendptr) {
+  while (viptr + 4 < viendptr) {
     v1 = *viptr++;
     v2 = *viptr++;
     v3 = *viptr++;
-    assert(v1 >= 0 && v2 >= 0 && v3 >= 0);
+    if (v1 < 0 || v2 < 0 || v3 < 0) {
+#if COIN_DEBUG
+      SoDebugError::postInfo("SoIndexedFaceSet::generatePrimitives",
+                             "Polygon with less than three vertices detected. "
+                             "Aborting current shape.");
+#endif // COIN_DEBUG
+      
+      break;
+    } 
     v4 = *viptr++;
     if (v4  < 0) newmode = TRIANGLES;
     else {
