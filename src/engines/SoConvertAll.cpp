@@ -27,8 +27,8 @@
 #endif // COIN_DEBUG
 #include <assert.h>
 
-// FIXME: should perhaps use SbTime::formatDate() for So[SM]FTime ->
-// So[SM]FString conversion? 20000312 mortene.
+// FIXME: should perhaps use SbTime::parseDate() for So[SM]FString ->
+// So[SM]FTime conversion? 20000331 mortene.
 
 
 SbDict * SoConvertAll::converter_dict = NULL;
@@ -392,6 +392,54 @@ static void SoMFRotation_SoMFMatrix(SoField * from, SoField * to)
 }
 
 
+// Helper function for the So[SM]FTime -> So[SM]FString converters
+// below.
+static void time2string(const SbTime & t, SbString & s)
+{
+  // Value is less than a year, assume we're counting seconds.
+  if (t.getValue() < (60.0*60.0*24.0*365.0)) s.sprintf("%f", t.getValue());
+  // Value is more than a year, assume we're interested in the date
+  // and time.
+  else s = t.formatDate("%A %Y-%m-%d %H:%M:%S");
+}
+
+// Function for converting SoSFTime -> SoSFString.
+static void sftime_to_sfstring(SoField * from, SoField * to)
+{
+  SbString s;
+  time2string(((SoSFTime *)from)->getValue(), s);
+  ((SoSFString *)to)->setValue(s);
+}
+
+// Function for converting SoSFTime -> SoMFString.
+static void sftime_to_mfstring(SoField * from, SoField * to)
+{
+  SbString s;
+  time2string(((SoSFTime *)from)->getValue(), s);
+  ((SoMFString *)to)->setValue(s);
+}
+
+// Function for converting SoMFTime -> SoSFString.
+static void mftime_to_sfstring(SoField * from, SoField * to)
+{
+  SoMFTime * ff = (SoMFTime *)from;
+  if (ff->getNum() > 0) {
+    SbString s;
+    time2string((*ff)[0], s);
+    ((SoSFString *)to)->setValue(s);
+  }
+}
+
+// Function for converting SoMFTime -> SoMFString.
+static void mftime_to_mfstring(SoField * from, SoField * to)
+{
+  SoMFTime * ff = (SoMFTime *)from;
+  SbString s;
+  for (int i=0; i < ff->getNum(); i++) {
+    time2string((*ff)[i], s);
+    ((SoMFString *)to)->set1Value(i, s);
+  }
+}
 
 void
 SoConvertAll::register_converter(converter_func * f, SoType from, SoType to)
@@ -470,7 +518,6 @@ SoConvertAll::initClass(void)
   SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFPlane, SoSFString);
   SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFRotation, SoSFString);
   SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFShort, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFTime, SoSFString);
   SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFUInt32, SoSFString);
   SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFUShort, SoSFString);
   SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFVec2f, SoSFString);
@@ -489,7 +536,6 @@ SoConvertAll::initClass(void)
   SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFPlane, SoSFString);
   SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFRotation, SoSFString);
   SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFShort, SoSFString);
-  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFTime, SoSFString);
   SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFUInt32, SoSFString);
   SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFUShort, SoSFString);
   SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFVec2f, SoSFString);
@@ -508,7 +554,6 @@ SoConvertAll::initClass(void)
   SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFPlane, SoMFString);
   SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFRotation, SoMFString);
   SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFShort, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFTime, SoMFString);
   SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFUInt32, SoMFString);
   SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFUShort, SoMFString);
   SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFVec2f, SoMFString);
@@ -527,7 +572,6 @@ SoConvertAll::initClass(void)
   SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFPlane, SoMFString);
   SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFRotation, SoMFString);
   SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFShort, SoMFString);
-  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFTime, SoMFString);
   SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFUInt32, SoMFString);
   SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFUShort, SoMFString);
   SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFVec2f, SoMFString);
@@ -759,6 +803,11 @@ SoConvertAll::initClass(void)
   SOCONVERTALL_ADDCONVERTER(SoMFRotation_SoSFMatrix, SoMFRotation, SoSFMatrix);
   SOCONVERTALL_ADDCONVERTER(SoSFRotation_SoMFMatrix, SoSFRotation, SoMFMatrix);
   SOCONVERTALL_ADDCONVERTER(SoMFRotation_SoMFMatrix, SoMFRotation, SoMFMatrix);
+
+  SOCONVERTALL_ADDCONVERTER(sftime_to_sfstring, SoSFTime, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(sftime_to_mfstring, SoSFTime, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(mftime_to_sfstring, SoMFTime, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(mftime_to_mfstring, SoMFTime, SoMFString);
 
 #undef SOCONVERTALL_ADDCONVERTER
 }
