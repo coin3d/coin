@@ -38,9 +38,9 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#ifdef HAVE_THREADS
+#ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbTypedStorage.h>
-#endif // HAVE_THREADS
+#endif // COIN_THREADSAFE
 
 
 #if COIN_DEBUG
@@ -50,7 +50,7 @@
 SbBool SoCacheElement::invalidated = FALSE;
 
 
-#ifdef HAVE_THREADS
+#ifdef COIN_THREADSAFE
 SbTypedStorage <SbBool*> * invalidated_storage = NULL;
 
 static void
@@ -59,7 +59,7 @@ cacheelement_cleanup(void)
   delete invalidated_storage;
 }
 
-#endif // HAVE_THREADS
+#endif // COIN_THREADSAFE
 
 SO_ELEMENT_SOURCE(SoCacheElement);
 
@@ -72,11 +72,11 @@ SoCacheElement::initClass(void)
 {
   SO_ELEMENT_INIT_CLASS(SoCacheElement, inherited);
 
-#ifdef HAVE_THREADS
+#ifdef COIN_THREADSAFE
   invalidated_storage = new SbTypedStorage <SbBool*> (sizeof(SbBool));
   *(invalidated_storage->get()) = FALSE;
   coin_atexit((coin_atexit_f*) cacheelement_cleanup);
-#endif // HAVE_THREADS
+#endif // COIN_THREADSAFE
 }
 
 /*!
@@ -178,11 +178,11 @@ SoCacheElement::invalidate(SoState * const state)
                          "Invalidate all caches");
 #endif // debug
 
-#ifdef HAVE_THREADS
+#ifdef COIN_THREADSAFE
   *(invalidated_storage->get()) = TRUE;
-#else // HAVE_THREADS
+#else // COIN_THREADSAFE
   SoCacheElement::invalidated = TRUE;
-#endif // !HAVE_THREADS
+#endif // ! COIN_THREADSAFE
 
   SoCacheElement * elem = (SoCacheElement*)
     state->getElementNoPush(classStackIndex);
@@ -280,14 +280,14 @@ SoCacheElement::addCacheDependency(SoState * const state,
 SbBool
 SoCacheElement::setInvalid(const SbBool newvalue)
 {
-#ifdef HAVE_THREADS
+#ifdef COIN_THREADSAFE
   SbBool * ptr = invalidated_storage->get();
   SbBool oldval = *ptr;
   *ptr = newvalue;
-#else // HAVE_THREADS
+#else // COIN_THREADSAFE
   SbBool oldval = SoCacheElement::invalidated;
   SoCacheElement::invalidated = newvalue;
-#endif // ! HAVE_THREADS
+#endif // ! COIN_THREADSAFE
   return oldval;
 }
 

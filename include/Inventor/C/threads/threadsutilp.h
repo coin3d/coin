@@ -30,7 +30,7 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#ifdef HAVE_THREADS
+#ifdef COIN_THREADSAFE
 
 #include <Inventor/C/threads/mutex.h>
 #include <Inventor/C/threads/sync.h>
