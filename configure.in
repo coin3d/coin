@@ -151,17 +151,16 @@ SIM_CHECK_OPENGL([AC_DEFINE(HAVE_OPENGL)
 dnl *******************************************************************
 dnl ** Check if the Mesa offscreen rendering interface is available.
 dnl *******************************************************************
-if test x"$sim_ac_gl_is_mesa" = xyes; then
-  AC_CACHE_CHECK([whether Mesa offscreen rendering is available],
-    sim_cv_func_osmesacreatecontext_avail,
-    [AC_TRY_LINK([#include <GL/osmesa.h>],
-                 [(void)OSMesaCreateContext(OSMESA_RGB, 0L);],
-                 sim_cv_func_osmesacreatecontext_avail=yes,
-                 sim_cv_func_osmesacreatecontext_avail=no)])
 
-  if test x"$sim_cv_func_osmesacreatecontext_avail" = xyes; then
-    AC_DEFINE(HAVE_OSMESACREATECONTEXT)
-  fi
+AC_CACHE_CHECK([whether Mesa offscreen rendering is available],
+  sim_cv_func_osmesacreatecontext_avail,
+  [AC_TRY_LINK([#include <GL/osmesa.h>],
+               [(void)OSMesaCreateContext(OSMESA_RGB, 0L);],
+               sim_cv_func_osmesacreatecontext_avail=yes,
+               sim_cv_func_osmesacreatecontext_avail=no)])
+
+if test x"$sim_cv_func_osmesacreatecontext_avail" = xyes; then
+  AC_DEFINE(HAVE_OSMESACREATECONTEXT)
 fi
 
 

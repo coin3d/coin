@@ -850,48 +850,45 @@ else
 fi
 ])
 
-dnl ************************************************************************
-dnl Usage:
-dnl   SIM_CHECK_SIMAGE( ACTION-IF-FOUND, ACTION-IF-NOT-FOUND, ATTRIBUTE-LIST )
-dnl
-dnl Description:
-dnl   This macro locates the simage development system.  If it is found, the
-dnl   set of variables listed below are set up as described and made available
-dnl   to the configure script.
-dnl
-dnl ATTRIBUTE-LIST Options:
-dnl   [no]default              whether --with-simage is default or not
-dnl                            (default on)
-dnl   [no]searchprefix         whether $exec_prefix is to be searched
-dnl                            (default off)
-dnl
-dnl Autoconf Variables:
-dnl   $sim_ac_simage_avail     yes | no
-dnl   $sim_ac_simage_cppflags  (extra flags the compiler needs for simage)
-dnl   $sim_ac_simage_ldflags   (extra flags the linker needs for simage)
-dnl   $sim_ac_simage_libs      (link libraries the linker needs for simage)
-dnl   $CPPFLAGS                $CPPFLAGS $sim_ac_simage_cppflags
-dnl   $LDFLAGS                 $LDFLAGS $sim_ac_simage_ldflags
-dnl   $LIBS                    $sim_ac_simage_libs $LIBS
-dnl
-dnl Automake Conditionals:
-dnl   HAVE_LIBSIMAGE           (code disabled)
-dnl
-dnl Config.h Defines:
-dnl   HAVE_LIBSIMAGE           (code disabled)
-dnl   HAVE_SIMAGE_H            (code disabled)
-dnl
-dnl Authors:
-dnl   Morten Eriksen, <mortene@sim.no>
-dnl   Lars J. Aas, <larsa@sim.no>
-dnl
-dnl TODO:
-dnl * [mortene:20000122] make sure this work on MSWin (with Cygwin)
-dnl * [larsa:20000220] find a less strict AC_PREREQ setting
-dnl
+# Usage:
+#   SIM_CHECK_SIMAGE( ACTION-IF-FOUND, ACTION-IF-NOT-FOUND, ATTRIBUTE-LIST )
+#
+# Description:
+#   This macro locates the simage development system.  If it is found, the
+#   set of variables listed below are set up as described and made available
+#   to the configure script.
+#
+# ATTRIBUTE-LIST Options:
+#   [no]default              whether --with-simage is default or not
+#                            (default on)
+#   [no]searchprefix         whether $exec_prefix is to be searched
+#                            (default off)
+#
+# Autoconf Variables:
+#   $sim_ac_simage_avail     yes | no
+#   $sim_ac_simage_cppflags  (extra flags the compiler needs for simage)
+#   $sim_ac_simage_ldflags   (extra flags the linker needs for simage)
+#   $sim_ac_simage_libs      (link libraries the linker needs for simage)
+#   $CPPFLAGS                $CPPFLAGS $sim_ac_simage_cppflags
+#   $LDFLAGS                 $LDFLAGS $sim_ac_simage_ldflags
+#   $LIBS                    $sim_ac_simage_libs $LIBS
+#
+# Automake Conditionals:
+#   HAVE_LIBSIMAGE           (code disabled)
+#
+# Config.h Defines:
+#   HAVE_LIBSIMAGE           (code disabled)
+#   HAVE_SIMAGE_H            (code disabled)
+#
+# Authors:
+#   Morten Eriksen, <mortene@sim.no>
+#   Lars J. Aas, <larsa@sim.no>
+#
+# TODO:
+# * [mortene:20000122] make sure this work on MSWin (with Cygwin)
+# * [larsa:20000220] find a less strict AC_PREREQ setting
 
-AC_DEFUN(SIM_CHECK_SIMAGE,[
-dnl Autoconf is a developer tool, so don't bother to support older versions.
+AC_DEFUN([SIM_CHECK_SIMAGE], [
 AC_PREREQ([2.14.1])
 
 SIM_PARSE_MODIFIER_LIST([$3],[
@@ -949,18 +946,18 @@ if test "x$with_simage" != "xno"; then
     CPPFLAGS="$CPPFLAGS $sim_ac_simage_cppflags"
     LDFLAGS="$LDFLAGS $sim_ac_simage_ldflags"
     LIBS="$sim_ac_simage_libs $LIBS"
-dnl AM_CONDITIONAL(HAVE_LIBSIMAGE, true)
-dnl AC_DEFINE(HAVE_SIMAGE_H, 1,
-dnl   [Define this if you have simage.h])
-dnl AC_DEFINE(HAVE_LIBSIMAGE, 1,
-dnl   [Define this if you are going to use libsimage])
-    ifelse($1, , :, $1)
+#   AM_CONDITIONAL(HAVE_LIBSIMAGE, true)
+#   AC_DEFINE(HAVE_SIMAGE_H, 1,
+#     [Define this if you have simage.h])
+#   AC_DEFINE(HAVE_LIBSIMAGE, 1,
+#     [Define this if you are going to use libsimage])
+    $1
   else
-dnl AM_CONDITIONAL(HAVE_LIBSIMAGE, false)
-    ifelse($2, , :, $2)
+#   AM_CONDITIONAL(HAVE_LIBSIMAGE, false)
+    ifelse([$2], , :, [$2])
   fi
 else
-  ifelse($2, , :, $2)
+  ifelse([$2], , :, [$2])
 fi
 ])
 
@@ -1329,8 +1326,6 @@ else
 fi
 ])
 
-
-
 dnl Usage:
 dnl  SIM_CHECK_X_INTRINSIC([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 dnl
@@ -1371,37 +1366,67 @@ else
 fi
 ])
 
-dnl Usage:
-dnl  SIM_CHECK_OPENGL([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+dnl ************************************************************************
+dnl SIM_CHECK_LIBXPM( IF-FOUND, IF-NOT-FOUND )
 dnl
-dnl  Try to find an OpenGL development system, either a native
-dnl  implementation or the OpenGL-compatible Mesa libraries. If
-dnl  it is found, these shell variables are set:
-dnl
-dnl    $sim_ac_gl_cppflags (extra flags the compiler needs for OpenGL/Mesa)
-dnl    $sim_ac_gl_ldflags  (extra flags the linker needs for OpenGL/Mesa)
-dnl    $sim_ac_gl_libs     (link libraries the linker needs for OpenGL/Mesa)
-dnl
-dnl  The CPPFLAGS, LDFLAGS and LIBS flags will also be modified accordingly.
-dnl  In addition, the variable $sim_ac_gl_avail is set to "yes" if an
-dnl  OpenGL-compatible development system is found. If the OpenGL system
-dnl  found is the Mesa libraries, we will also set $sim_ac_gl_is_mesa to
-dnl  "yes".
-dnl
-dnl
-dnl Author: Morten Eriksen, <mortene@sim.no>.
-dnl
-dnl TODO:
-dnl    * [mortene:20000122] make sure this work on MSWin (with
-dnl      Cygwin installation)
-dnl
+dnl Authors:
+dnl   Lars J. Aas <larsa@sim.no>
+
+AC_DEFUN(SIM_CHECK_LIBXPM,
+[AC_PREREQ([2.14.1])
+
+sim_ac_xpm_avail=no
+sim_ac_xpm_libs="-lXpm"
+
+AC_CACHE_CHECK([whether libXpm is available],
+  sim_cv_lib_xpm_avail,
+  [sim_ac_save_libs=$LIBS
+  LIBS="$sim_ac_xpm_libs $LIBS"
+  AC_TRY_LINK([#include <X11/xpm.h>],
+              [(void)XpmLibraryVersion();],
+              sim_cv_lib_xpm_avail=yes,
+              sim_cv_lib_xpm_avail=no)
+  LIBS="$sim_ac_save_libs"
+  ])
+
+if test x"$sim_cv_lib_xpm_avail" = xyes; then
+  sim_ac_xpm_avail=yes
+  LIBS="$sim_ac_xpm_libs $LIBS"
+  ifelse([$1], , :, [$1])
+else
+  ifelse([$2], , :, [$2])
+fi
+])
+
+
+# Usage:
+#  SIM_CHECK_OPENGL([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#
+#  Try to find an OpenGL development system, either a native
+#  implementation or the OpenGL-compatible Mesa libraries. If
+#  it is found, these shell variables are set:
+#
+#    $sim_ac_gl_cppflags (extra flags the compiler needs for OpenGL/Mesa)
+#    $sim_ac_gl_ldflags  (extra flags the linker needs for OpenGL/Mesa)
+#    $sim_ac_gl_libs     (link libraries the linker needs for OpenGL/Mesa)
+#
+#  The CPPFLAGS, LDFLAGS and LIBS flags will also be modified accordingly.
+#  In addition, the variable $sim_ac_gl_avail is set to "yes" if an
+#  OpenGL-compatible development system is found.
+#
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+#
+# TODO:
+#    * [mortene:20000122] make sure this work on MSWin (with
+#      Cygwin installation)
+#
 
 AC_DEFUN(SIM_CHECK_OPENGL,[
 
 AC_ARG_WITH(opengl, AC_HELP_STRING([--with-opengl=DIR], [OpenGL/Mesa installation directory]), , [with_opengl=yes])
 
 sim_ac_gl_avail=no
-sim_ac_gl_is_mesa=no
 
 if test x"$with_opengl" != xno; then
   if test x"$with_opengl" != xyes; then
@@ -1443,25 +1468,12 @@ if test x"$with_opengl" != xno; then
     sim_ac_gl_libs="$sim_cv_lib_gl"
     LIBS="$sim_ac_gl_libs $sim_ac_save_libs"
     sim_ac_gl_avail=yes
-    AC_CACHE_CHECK([whether OpenGL libraries are the Mesa libraries],
-      sim_cv_lib_gl_ismesa,
-      # (The "choke me" to prevent compilation was suggested by Akim Demaille.)
-      [AC_TRY_LINK([#include <GL/gl.h>],
-                   [#ifndef MESA
-choke me
-#endif],
-                   sim_cv_lib_gl_ismesa=yes,
-                   sim_cv_lib_gl_ismesa=no)])
-    if test x"$sim_cv_lib_gl_ismesa" = xyes; then
-      sim_ac_gl_is_mesa=yes
-    fi
-
-    ifelse([$1], , :, [$1])
+    $1
   else
     CPPFLAGS=$sim_ac_save_cppflags
     LDFLAGS=$sim_ac_save_ldflags
     LIBS=$sim_ac_save_libs
-    ifelse([$2], , :, [$2])
+    $2
   fi
 fi
 ])
