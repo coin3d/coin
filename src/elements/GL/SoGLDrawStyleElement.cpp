@@ -39,27 +39,18 @@
 
 SO_ELEMENT_SOURCE(SoGLDrawStyleElement);
 
-/*!
-  This static method initializes static data for the
-  SoGLDrawStyleElement class.
-*/
-
+// doc in superclass
 void
 SoGLDrawStyleElement::initClass(void)
 {
   SO_ELEMENT_INIT_CLASS(SoGLDrawStyleElement, inherited);
 }
 
-/*!
-  The destructor.
-*/
-
 SoGLDrawStyleElement::~SoGLDrawStyleElement(void)
 {
 }
 
-//! FIXME: write doc.
-
+// doc in superclass
 void
 SoGLDrawStyleElement::init(SoState * state)
 {
@@ -67,8 +58,7 @@ SoGLDrawStyleElement::init(SoState * state)
   this->updategl();
 }
 
-//! FIXME: write doc.
-
+// doc in superclass
 void
 SoGLDrawStyleElement::push(SoState * state)
 {
@@ -81,8 +71,7 @@ SoGLDrawStyleElement::push(SoState * state)
   prev->capture(state);
 }
 
-//! FIXME: write doc.
-
+// doc in superclass
 void
 SoGLDrawStyleElement::pop(SoState * state,
                           const SoElement * prevTopElement)
@@ -91,8 +80,7 @@ SoGLDrawStyleElement::pop(SoState * state,
   if (this->data != prev->data) this->updategl();
 }
 
-//! FIXME: write doc.
-
+// doc in superclass
 void
 SoGLDrawStyleElement::setElt(int32_t style)
 {
@@ -101,8 +89,6 @@ SoGLDrawStyleElement::setElt(int32_t style)
     this->updategl();
   }
 }
-
-//! FIXME: write doc.
 
 void
 SoGLDrawStyleElement::updategl(void)

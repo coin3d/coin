@@ -85,6 +85,37 @@
   <img src="http://doc.coin3d.org/images/Coin/nodes/quadmesh.png">
   </center>
 
+  Here is another example, this time making a 2x2 grid, with a
+  texture:
+
+  \verbatim
+  #Inventor V2.1 ascii
+  
+  Separator {
+    Complexity { textureQuality 0.01 }
+    Texture2 { 
+      image 2 2 4 0xff0000ff 0x00ff00ff 0xffff00ff 0xff00ffff
+    }
+    Coordinate3 { 
+      point [
+        0 2 0,
+        1 2 0,
+        2 2 0,
+        0 1 0,
+        1 1 0,
+        2 1 0,
+        0 0 0,
+        1 0 0,
+        2 0 0
+      ]
+    }
+    QuadMesh {
+      verticesPerRow 3
+      verticesPerColumn 3
+    }
+  }
+  \endverbatim
+
 
   For SoQuadMesh, normals and materials can be bound PER_PART (per
   row), PER_FACE, PER_VERTEX and OVERALL. The default material binding

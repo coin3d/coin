@@ -197,14 +197,19 @@ SoSceneManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
 }
 
 /*!
-  Render method needed for thread safe rendering. Since only one
-  thread can use an SoGLRenderAction, this method enables you to
-  supply your own thread-specific SoGLRenderAction to be used for
-  rendering the scene. If \a initmatrices is \c TRUE, the OpenGL model
-  and projection matrices will be initialize to identity before
-  applying the action. If \a clearwindow is \c TRUE, clear the
-  rendering buffer before drawing. If \a clearzbuffer is \c TRUE,
-  clear the depth buffer values before rendering
+  Render method used for thread safe rendering.
+
+  Since only one thread can use an SoGLRenderAction, this method
+  enables you to supply your own thread-specific SoGLRenderAction to
+  be used for rendering the scene.
+
+  If \a initmatrices is \c TRUE, the OpenGL model and projection
+  matrices will be initialized to identity matrices before applying
+  the action.
+
+  If \a clearwindow is \c TRUE, clear the rendering buffer before
+  drawing. If \a clearzbuffer is \c TRUE, clear the depth buffer
+  values before rendering.
 
   \COIN_FUNCTION_EXTENSION
 
