@@ -86,9 +86,11 @@ SoInput_Reader::createReader(FILE * fp, const SbString & fullname)
 #ifdef HAVE_ZLIB
   if ((reader == NULL) && (header[0] == 0x1f) && (header[1] == 0x8b)) {
     int fd = fileno(fp);
+    // need to use dup() if we didn't open the file since gzdclose
+    // will close it
+    if (fd >= 0 && fullname.getLength() && fullname != "<stdin>") fd = dup(fd); 
     if (fd >= 0) {
-      // need to use dup(), since gzdclose() will close the original file
-      gzFile gzfp = gzdopen(dup(fd), "rb");
+      gzFile gzfp = gzdopen(fd, "rb");
       if (gzfp) {
         reader = new SoInput_GZFileReader(fullname.getString(), gzfp);
       }
