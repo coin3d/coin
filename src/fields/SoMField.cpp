@@ -555,3 +555,26 @@ SoMField::allocValues(int newnum)
   if (valchanged) this->valueChanged();
 }
 #endif // DOXYGEN_SKIP_THIS
+
+// Overloaded from SoField to set us up with the same number of values
+// as any master field we're connected to.
+//
+// Note that this does _not_ match the behavior of SGI/TGS Open
+// Inventor, but I believe that to be a bug on their part.
+//
+// 20000915 mortene.
+void
+SoMField::evaluateConnection(void) const
+{
+  SoField * master;
+  if (this->getConnectedField(master) &&
+      // We need to do this only if we're connected directly to the
+      // master field, as it should otherwise be handled by the
+      // converter engine between the fields.
+      master->getTypeId() == this->getTypeId()) {
+    // cast away const for setNum()
+    ((SoMField *)this)->setNum(((SoMField *)master)->getNum());
+  }
+
+  inherited::evaluateConnection();
+}
