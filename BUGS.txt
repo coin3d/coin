@@ -1269,3 +1269,73 @@
     20021016 mortene.
 
 =====================================================================
+
+042 Assert crash when copying a dragger.
+
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
+    #include <Inventor/SoDB.h>
+    #include <Inventor/SoInteraction.h>
+    #include <Inventor/nodes/SoSeparator.h>
+    #include <Inventor/draggers/SoTranslate1Dragger.h>
+    
+    int main(int argc, char *argv[])
+    {
+      SoDB::init();
+      SoInteraction::init();
+      
+      SoNode * src = new SoTranslate1Dragger;
+      src->ref();
+      SoNode * dst = src->copy();
+      dst->ref();
+      dst->unref();
+      src->unref();
+      
+      return 0;
+    }
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
+
+    This will cause an assert in SoBase (with Coin-2) because of a
+    dangling reference. Here's the back-trace:
+
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
+    #5  0x402c2121 in SoBase::assertAlive (this=0x807c7e0)
+        at /home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:466
+    #6  0x402c2149 in SoBase::ref (this=0x807c7e0)
+        at /home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:481
+    #7  0x40352aa4 in SoBaseList::append (this=0x807c6f8, ptr=0x807c7e0)
+        at /home/sigma/mortene/code/coin-head/src/lists/SoBaseList.cpp:94
+    #8  0x40353815 in SoNodeList::append (this=0x807c6f8, ptr=0x807c7e0)
+        at /home/sigma/mortene/code/coin-head/src/lists/SoNodeList.cpp:82
+    #9  0x402c5433 in SoChildList::append (this=0x807c6f8, node=0x807c7e0)
+        at /home/sigma/mortene/code/coin-head/src/misc/SoChildList.cpp:97
+    #10 0x403f19bc in SoGroup::addChild (this=0x807c638, node=0x807c7e0)
+        at /home/sigma/mortene/code/coin-head/src/nodes/SoGroup.cpp:238
+    #11 0x403f193b in SoGroup::copyContents (this=0x807c638, from=0x8076bb0, 
+        copyconnections=0)
+        at /home/sigma/mortene/code/coin-head/src/nodes/SoGroup.cpp:223
+    #12 0x40375266 in SoBaseKitP::copyParts (this=0x8077f70, srckit=0x8075dc8, 
+        partlist=@0xbffff990, copyconnections=0)
+        at /home/sigma/mortene/code/coin-head/src/nodekits/SoBaseKit.cpp:2414
+    #13 0x403727ef in SoBaseKit::copyContents (this=0x807a6f8, fromfc=0x8075dc8, 
+        copyconnections=0)
+        at /home/sigma/mortene/code/coin-head/src/nodekits/SoBaseKit.cpp:1599
+    #14 0x40377fd8 in SoInteractionKit::copyContents (this=0x807a6f8, 
+        fromFC=0x8075dc8, copyConnections=0)
+        at /home/sigma/mortene/code/coin-head/src/nodekits/SoInteractionKit.cpp:374
+    #15 0x4024ff99 in SoFieldContainer::findCopy (orig=0x8075dc8, 
+        copyconnections=0)
+        at /home/sigma/mortene/code/coin-head/src/fields/SoFieldContainer.cpp:756
+    #16 0x4040a179 in SoNode::copy (this=0x8075dc8, copyconnections=0)
+        at /home/sigma/mortene/code/coin-head/src/nodes/SoNode.cpp:363
+    #17 0x08048a45 in main (argc=1, argv=0xbffffb34) at copybug.cpp:13
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
+
+    This is a real ugly bug and should be considered high
+    priority.
+
+    Problem found by kintel, minimal code to reproduce it done by
+    pederb.
+
+    20021018 mortene.
+
+=====================================================================
