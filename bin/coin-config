@@ -17,10 +17,12 @@ usage="\
 Usage: $me [OPTIONS]
 Options:
   --alternate=<string>
+  --cflags
   --cppflags
   --cxxflags
   --ldflags
   --libs
+  --msvcrt
   --datadir
   --have-feature <featurename>
   --compile <sourcefile> [<sourcefile>]...
