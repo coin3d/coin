@@ -607,7 +607,17 @@ SoSceneManager::getAntialiasing(SbBool & smoothing, int & numpasses) const
 void
 SoSceneManager::setGLRenderAction(SoGLRenderAction * const action)
 {
-  if (this->deleteglaction) delete this->glaction;
+  if (this->deleteglaction) {
+    delete this->glaction;
+    this->glaction = NULL;
+  }
+
+  // If action change, we need to invalidate state to enable lazy GL
+  // elements to be evaluated correctly.
+  //
+  // Note that the SGI and TGS Inventor implementations doesn't do
+  // this -- which smells of a bug.
+  if (action && action != this->glaction) action->invalidateState();
   this->glaction = action;
   this->deleteglaction = FALSE;
 }
