@@ -52,6 +52,15 @@
 #include <Inventor/C/tidbitsp.h>
 #include <assert.h>
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbStorage.h>
+#include <Inventor/threads/SbMutex.h>
+#endif // COIN_THREADSAFE
+
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -100,6 +109,65 @@ SoFieldContainer::~SoFieldContainer()
 {
 }
 
+// Use a stack of dictionaries when copying nodes to allow recursive
+// copying.
+
+typedef struct {
+  SbList<SbDict*> * copiedinstancestack;
+  SbList<SbDict*> * contentscopiedstack;
+} sofieldcontainer_copydict;
+
+static void
+sofieldcontainer_construct_copydict(void * closure)
+{
+  sofieldcontainer_copydict * data = (sofieldcontainer_copydict*) closure;
+
+  data->copiedinstancestack = new SbList<SbDict *>;
+  data->contentscopiedstack = new SbList<SbDict *>;
+}
+
+static void
+sofieldcontainer_destruct_copydict(void * closure)
+{
+  sofieldcontainer_copydict * data = (sofieldcontainer_copydict*) closure;
+  delete data->copiedinstancestack;
+  delete data->contentscopiedstack;
+}
+
+// use thread local storage to store copydict in threadsafe version of
+// Coin
+#ifdef COIN_THREADSAFE
+static SbStorage * sofieldcontainer_copydictstorage;
+#else // COIN_THREADSAFE
+static sofieldcontainer_copydict * sofieldcontainer_staticcopydict;
+#endif // ! COIN_THREADSAFE
+
+static void 
+sofieldcontainer_copydict_cleanup(void)
+{
+#ifdef COIN_THREADSAFE
+  delete sofieldcontainer_copydictstorage; 
+#else // COIN_THREADSAFE
+  delete sofieldcontainer_staticcopydict;
+#endif // ! COIN_THREADSAFE
+}
+
+static sofieldcontainer_copydict *
+sofieldcontainer_get_copydict(void)
+{
+#ifdef COIN_THREADSAFE
+  return (sofieldcontainer_copydict*) sofieldcontainer_copydictstorage->get();
+#else // COIN_THREADSAFE
+  if (sofieldcontainer_staticcopydict == NULL) {
+    // FIXME: global mem leak, pederb 2004-03-11
+    sofieldcontainer_staticcopydict = new sofieldcontainer_copydict;
+    sofieldcontainer_construct_copydict((void*)sofieldcontainer_staticcopydict);
+  }
+  return sofieldcontainer_staticcopydict;
+#endif // !COIN_THREADSAFE
+}
+
+
 // Overridden from parent class.
 void
 SoFieldContainer::initClass(void)
@@ -114,6 +182,17 @@ SoFieldContainer::initClass(void)
 
   sofieldcontainer_userdata_dict = cc_hash_construct(64, 0.75f);
   coin_atexit((coin_atexit_f*) sofieldcontainer_userdata_cleanup, 0);
+
+#ifdef COIN_THREADSAFE
+  sofieldcontainer_copydictstorage = 
+    new SbStorage(sizeof(sofieldcontainer_copydict),
+                  sofieldcontainer_construct_copydict,
+                  sofieldcontainer_destruct_copydict);                 
+#else // COIN_THREADSAFE
+  sofieldcontainer_staticcopydict = new sofieldcontainer_copydict;
+  sofieldcontainer_construct_copydict((void*)sofieldcontainer_staticcopydict);
+#endif // !COIN_THREADSAFE
+  coin_atexit((coin_atexit_f*) sofieldcontainer_copydict_cleanup, 0);
 }
 
 // Overridden from parent class.
@@ -637,17 +716,6 @@ SoFieldContainer::copyThroughConnection(void) const
   return (SoFieldContainer *)this;
 }
 
-
-// Use a stack of dictionaries when copying nodes to allow recursive
-// copying.
-//
-// FIXME: this technique won't work properly in a multithreaded
-// environment. 20020104 mortene.
-
-static SbList<SbDict*> * copiedinstancestack = NULL;
-static SbList<SbDict*> * contentscopiedstack = NULL;
-
-
 /*!
   \COININTERNAL
 
@@ -660,19 +728,16 @@ static SbList<SbDict*> * contentscopiedstack = NULL;
 void
 SoFieldContainer::initCopyDict(void)
 {
-  if (copiedinstancestack == NULL) {
-    // FIXME: memory leaks -- free on exit. 20020104 mortene.
-    copiedinstancestack = new SbList<SbDict *>;
-    contentscopiedstack = new SbList<SbDict *>;
-  }
-   
+  sofieldcontainer_copydict * copydict =
+    sofieldcontainer_get_copydict();
+     
   // Create two new dictionaries and _insert_ them in slot 0 in their
   // corresponding parallel lists, so they are stacked atop of the
   // already existing copy dictionaries (if any).
 
   // Push on stack.
-  copiedinstancestack->insert(new SbDict, 0);
-  contentscopiedstack->insert(new SbDict, 0);
+  copydict->copiedinstancestack->insert(new SbDict, 0);
+  copydict->contentscopiedstack->insert(new SbDict, 0);
 }
 
 
@@ -685,8 +750,11 @@ void
 SoFieldContainer::addCopy(const SoFieldContainer * orig,
                           const SoFieldContainer * copy)
 {
-  assert(copiedinstancestack);
-  assert(contentscopiedstack);
+  // assert(copiedinstancestack);
+  // assert(contentscopiedstack);
+
+  sofieldcontainer_copydict * copydict =
+    sofieldcontainer_get_copydict();
 
   // ref() so that we can guarantee that the copy is not destructed
   // while we're copying. This fixes a nodekit/dragger copy problem
@@ -695,9 +763,9 @@ SoFieldContainer::addCopy(const SoFieldContainer * orig,
   // instances. We need to track down exactly what happens in the
   // draggers that triggers an assert when copied. pederb, 2003-06-30
   copy->ref();
-
-  SbDict * copiedinstances = (*copiedinstancestack)[0];
-  SbDict * contentscopied  = (*contentscopiedstack)[0];
+  
+  SbDict * copiedinstances = (*(copydict->copiedinstancestack))[0];
+  SbDict * contentscopied  = (*(copydict->contentscopiedstack))[0];
   
   assert(copiedinstances);
   assert(contentscopied);
@@ -718,8 +786,11 @@ SoFieldContainer::addCopy(const SoFieldContainer * orig,
 SoFieldContainer *
 SoFieldContainer::checkCopy(const SoFieldContainer * orig)
 {
-  assert(copiedinstancestack);
-  SbDict * copiedinstances = (*copiedinstancestack)[0];
+//   assert(copiedinstancestack);
+  sofieldcontainer_copydict * copydict =
+    sofieldcontainer_get_copydict();
+
+  SbDict * copiedinstances = (*(copydict->copiedinstancestack))[0];
   assert(copiedinstances);
 
   void * fccopy;
@@ -746,11 +817,13 @@ SoFieldContainer *
 SoFieldContainer::findCopy(const SoFieldContainer * orig,
                            const SbBool copyconnections)
 {
-  assert(copiedinstancestack);
-  assert(contentscopiedstack);
+  // assert(copiedinstancestack);
+  // assert(contentscopiedstack);
+  sofieldcontainer_copydict * copydict =
+    sofieldcontainer_get_copydict();
 
-  SbDict * copiedinstances = (*copiedinstancestack)[0];
-  SbDict * contentscopied  = (*contentscopiedstack)[0];
+  SbDict * copiedinstances = (*(copydict->copiedinstancestack))[0];
+  SbDict * contentscopied  = (*(copydict->contentscopiedstack))[0];
   
   assert(copiedinstances);
   assert(contentscopied);
@@ -837,11 +910,13 @@ fieldcontainer_unref_node(unsigned long key, void * value)
 void
 SoFieldContainer::copyDone(void)
 {
-  assert(copiedinstancestack);
-  assert(contentscopiedstack);
+//   assert(copiedinstancestack);
+//   assert(contentscopiedstack);
+  sofieldcontainer_copydict * copydict =
+    sofieldcontainer_get_copydict();
   
-  SbDict * copiedinstances = (*copiedinstancestack)[0];
-  SbDict * contentscopied  = (*contentscopiedstack)[0];
+  SbDict * copiedinstances = (*(copydict->copiedinstancestack))[0];
+  SbDict * contentscopied  = (*(copydict->contentscopiedstack))[0];
   
   assert(copiedinstances);
   assert(contentscopied);
@@ -853,8 +928,8 @@ SoFieldContainer::copyDone(void)
   delete contentscopied;
 
   // Pop off stack.
-  copiedinstancestack->remove(0);
-  contentscopiedstack->remove(0);
+  copydict->copiedinstancestack->remove(0);
+  copydict->contentscopiedstack->remove(0);
 }
 
 // Documented in superclass.
