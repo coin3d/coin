@@ -4561,3 +4561,22 @@ Separator {
     20050112 kyrah.
 
 =====================================================================
+
+188 Buggy VRML97 file causes crash.
+
+    The following VRML97 file with a simple error causes Coin to
+    crash:
+
+----8<----- [snip] --------------------8<----- [snip] ----------------
+#VRML V2.0 utf8
+
+Transform {
+   Inline { url "bridge.wrl" }
+}
+----8<----- [snip] --------------------8<----- [snip] ----------------
+
+    We need to be more robust.
+
+    20050310 mortene.
+
+=====================================================================
