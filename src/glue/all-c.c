@@ -27,3 +27,7 @@
 #include "gl_nsgl.c"
 
 #include "dl.c"
+
+#include "GLUWrapper.c"
+#include "simage_wrapper.c"
+#include "openal_wrapper.c"
