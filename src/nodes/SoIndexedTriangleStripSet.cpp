@@ -642,9 +642,9 @@ SoIndexedTriangleStripSet::generatePrimitives(SoAction * action)
     this->endShape();
     facedetail.incPartIndex();
 
-    if (mbind == PER_VERTEX_INDEXED || mbind == PER_TRIANGLE_INDEXED)
+    if (mbind == PER_VERTEX_INDEXED)
       mindices++;
-    if (nbind == PER_VERTEX_INDEXED || nbind == PER_TRIANGLE_INDEXED)
+    if (nbind == PER_VERTEX_INDEXED)
       nindices++;
     if (tindices) tindices++;
   }
