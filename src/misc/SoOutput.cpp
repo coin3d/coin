@@ -95,8 +95,6 @@ static const char EOLSTR[] = "\n";
 // 19990627 mortene.
 static const int HOSTWORDSIZE = 4;
 
-#ifndef DOXYGEN_SKIP_THIS
-
 // helper classes for storing ROUTEs
 class SoOutputROUTE {
 public:
@@ -189,10 +187,7 @@ public:
   }
 };
 
-#endif // DOXYGEN_SKIP_THIS
-
-#undef THIS
-#define THIS this->pimpl
+#define PRIVATE(obj) (obj->pimpl)
 
 /*!
   The default constructor makes an SoOutput instance which will write
@@ -203,8 +198,8 @@ public:
 SoOutput::SoOutput(void)
 {
   this->constructorCommon();
-  THIS->sobase2id = NULL;
-  THIS->defstack.append(NULL);
+  PRIVATE(this)->sobase2id = NULL;
+  PRIVATE(this)->defstack.append(NULL);
 }
 
 /*!
@@ -215,10 +210,10 @@ SoOutput::SoOutput(SoOutput * dictOut)
 {
   assert(dictOut != NULL);
   this->constructorCommon();
-  THIS->sobase2id = new SbDict(*(dictOut->pimpl->sobase2id));  
+  PRIVATE(this)->sobase2id = new SbDict(*(dictOut->pimpl->sobase2id));  
   
   SbDict * olddef = dictOut->pimpl->getCurrentDefNames(FALSE);
-  THIS->defstack.append(olddef ? new SbDict(*olddef) : NULL);
+  PRIVATE(this)->defstack.append(olddef ? new SbDict(*olddef) : NULL);
 }
 
 /*!
@@ -228,23 +223,23 @@ SoOutput::SoOutput(SoOutput * dictOut)
 void
 SoOutput::constructorCommon(void)
 {
-  THIS = new SoOutputP;
+  PRIVATE(this) = new SoOutputP;
 
-  THIS->fltprecision = "%.8g";
-  THIS->dblprecision = "%.16lg";
-  THIS->usersetfp = FALSE;
-  THIS->binarystream = FALSE;
-  THIS->disabledwriting = FALSE;
+  PRIVATE(this)->fltprecision = "%.8g";
+  PRIVATE(this)->dblprecision = "%.16lg";
+  PRIVATE(this)->usersetfp = FALSE;
+  PRIVATE(this)->binarystream = FALSE;
+  PRIVATE(this)->disabledwriting = FALSE;
   this->wroteHeader = FALSE;
-  THIS->memorybuffer = FALSE;
-  THIS->writecompact = FALSE;
-  THIS->filep = coin_get_stdout();
-  THIS->buffer = NULL;
-  THIS->headerstring = NULL;
-  THIS->indentlevel = 0;
-  THIS->nextreferenceid = 0;
-  THIS->annotationbits = 0x00;
-  THIS->routestack.append(NULL);
+  PRIVATE(this)->memorybuffer = FALSE;
+  PRIVATE(this)->writecompact = FALSE;
+  PRIVATE(this)->filep = coin_get_stdout();
+  PRIVATE(this)->buffer = NULL;
+  PRIVATE(this)->headerstring = NULL;
+  PRIVATE(this)->indentlevel = 0;
+  PRIVATE(this)->nextreferenceid = 0;
+  PRIVATE(this)->annotationbits = 0x00;
+  PRIVATE(this)->routestack.append(NULL);
 }
 
 /*!
@@ -253,8 +248,8 @@ SoOutput::constructorCommon(void)
 SoOutput::~SoOutput(void)
 {
   this->reset();
-  delete THIS->headerstring;
-  delete THIS;
+  delete PRIVATE(this)->headerstring;
+  delete PRIVATE(this);
 }
 
 /*!
@@ -271,7 +266,7 @@ void
 SoOutput::setFilePointer(FILE * newFP)
 {
   this->reset();
-  THIS->filep = newFP;
+  PRIVATE(this)->filep = newFP;
 }
 
 /*!
@@ -289,7 +284,7 @@ FILE *
 SoOutput::getFilePointer(void) const
 {
   if (this->isToBuffer()) return NULL;
-  else return THIS->filep;
+  else return PRIVATE(this)->filep;
 }
 
 /*!
@@ -308,7 +303,7 @@ SoOutput::openFile(const char * const fileName)
   FILE * newfile = fopen(fileName, "wb");
   if (newfile) {
     this->setFilePointer(newfile);
-    THIS->usersetfp = TRUE;
+    PRIVATE(this)->usersetfp = TRUE;
   }
   else {
     SoDebugError::postWarning("SoOutput::openFile",
@@ -316,7 +311,7 @@ SoOutput::openFile(const char * const fileName)
                               fileName);
   }
 
-  return THIS->usersetfp;
+  return PRIVATE(this)->usersetfp;
 }
 
 /*!
@@ -328,9 +323,9 @@ SoOutput::openFile(const char * const fileName)
 void
 SoOutput::closeFile(void)
 {
-  if (THIS->usersetfp) fclose(THIS->filep);
-  THIS->filep = NULL;
-  THIS->usersetfp = FALSE;
+  if (PRIVATE(this)->usersetfp) fclose(PRIVATE(this)->filep);
+  PRIVATE(this)->filep = NULL;
+  PRIVATE(this)->usersetfp = FALSE;
 }
 
 /*!
@@ -355,12 +350,12 @@ SoOutput::setBuffer(void * bufPointer, size_t initSize,
 {
   this->reset();
 
-  THIS->memorybuffer = TRUE;
-  THIS->buffer = bufPointer;
+  PRIVATE(this)->memorybuffer = TRUE;
+  PRIVATE(this)->buffer = bufPointer;
   assert(initSize > 0 && "invalid argument");
-  THIS->buffersize = initSize;
-  THIS->reallocfunc = reallocFunc;
-  THIS->startoffset = THIS->bufferoffset = offset;
+  PRIVATE(this)->buffersize = initSize;
+  PRIVATE(this)->reallocfunc = reallocFunc;
+  PRIVATE(this)->startoffset = PRIVATE(this)->bufferoffset = offset;
 }
 
 /*!
@@ -375,8 +370,8 @@ SbBool
 SoOutput::getBuffer(void *& bufPointer, size_t & nBytes) const
 {
   if (this->isToBuffer()) {
-    bufPointer = THIS->buffer;
-    nBytes = THIS->bufferoffset;
+    bufPointer = PRIVATE(this)->buffer;
+    nBytes = PRIVATE(this)->bufferoffset;
     return TRUE;
   }
 
@@ -391,7 +386,7 @@ SoOutput::getBuffer(void *& bufPointer, size_t & nBytes) const
 size_t
 SoOutput::getBufferSize(void) const
 {
-  return THIS->buffersize;
+  return PRIVATE(this)->buffersize;
 }
 
 /*!
@@ -402,7 +397,7 @@ void
 SoOutput::resetBuffer(void)
 {
   assert(this->isToBuffer());
-  THIS->bufferoffset = THIS->startoffset;
+  PRIVATE(this)->bufferoffset = PRIVATE(this)->startoffset;
 }
 
 /*!
@@ -415,7 +410,7 @@ SoOutput::resetBuffer(void)
 void
 SoOutput::setBinary(const SbBool flag)
 {
-  THIS->binarystream = flag;
+  PRIVATE(this)->binarystream = flag;
 }
 
 /*!
@@ -427,7 +422,7 @@ SoOutput::setBinary(const SbBool flag)
 SbBool
 SoOutput::isBinary(void) const
 {
-  return THIS->binarystream;
+  return PRIVATE(this)->binarystream;
 }
 
 /*!
@@ -438,8 +433,8 @@ SoOutput::isBinary(void) const
 void
 SoOutput::setHeaderString(const SbString & str)
 {
-  if (THIS->headerstring) *(THIS->headerstring) = str;
-  else THIS->headerstring = new SbString(str);
+  if (PRIVATE(this)->headerstring) *(PRIVATE(this)->headerstring) = str;
+  else PRIVATE(this)->headerstring = new SbString(str);
 }
 
 /*!
@@ -450,8 +445,8 @@ SoOutput::setHeaderString(const SbString & str)
 void
 SoOutput::resetHeaderString(void)
 {
-  delete THIS->headerstring;
-  THIS->headerstring = NULL;
+  delete PRIVATE(this)->headerstring;
+  PRIVATE(this)->headerstring = NULL;
 }
 
 /*!
@@ -487,8 +482,8 @@ SoOutput::setFloatPrecision(const int precision)
   const int fltnum = SbClamp(precision, 0, 8);
   const int dblnum = precision * 2;
   
-  THIS->fltprecision.sprintf("%%.%dg", fltnum);
-  THIS->dblprecision.sprintf("%%.%dlg", dblnum);
+  PRIVATE(this)->fltprecision.sprintf("%%.%dg", fltnum);
+  PRIVATE(this)->dblprecision.sprintf("%%.%dlg", dblnum);
 }
 
 /*!
@@ -503,7 +498,7 @@ SoOutput::setFloatPrecision(const int precision)
 void
 SoOutput::setStage(Stage stage)
 {
-  THIS->stage = stage;
+  PRIVATE(this)->stage = stage;
 }
 
 /*!
@@ -519,7 +514,7 @@ SoOutput::setStage(Stage stage)
 SoOutput::Stage
 SoOutput::getStage(void) const
 {
-  return THIS->stage;
+  return PRIVATE(this)->stage;
 }
 
 
@@ -706,7 +701,7 @@ SoOutput::write(const float f)
     SbBool changed = coin_locale_set_portable(&storedlocale);
 
     SbString s;
-    s.sprintf(THIS->fltprecision.getString(), f);
+    s.sprintf(PRIVATE(this)->fltprecision.getString(), f);
     this->writeBytesWithPadding(s.getString(), s.getLength());
 
     if (changed) { coin_locale_reset(&storedlocale); }
@@ -731,7 +726,7 @@ SoOutput::write(const double d)
     SbBool changed = coin_locale_set_portable(&storedlocale);
 
     SbString s;
-    s.sprintf(THIS->dblprecision.getString(), d);
+    s.sprintf(PRIVATE(this)->dblprecision.getString(), d);
     this->writeBytesWithPadding(s.getString(), s.getLength());
 
     if (changed) { coin_locale_reset(&storedlocale); }
@@ -750,7 +745,7 @@ SoOutput::write(const double d)
 void
 SoOutput::writeBinaryArray(const unsigned char * constc, const int length)
 {
-  if (THIS->disabledwriting) return;
+  if (PRIVATE(this)->disabledwriting) return;
 
   this->checkHeader();
 
@@ -759,25 +754,25 @@ SoOutput::writeBinaryArray(const unsigned char * constc, const int length)
     int writelen = this->isBinary() ? length : length + 1;
 
     if (this->makeRoomInBuf(writelen)) {
-      char * writeptr = &(((char *)(THIS->buffer))[THIS->bufferoffset]);
+      char * writeptr = &(((char *)(PRIVATE(this)->buffer))[PRIVATE(this)->bufferoffset]);
       (void)memcpy(writeptr, constc, length);
       writeptr += length;
-      THIS->bufferoffset += length;
+      PRIVATE(this)->bufferoffset += length;
       if (!this->isBinary()) *writeptr = '\0'; // Terminate.
     }
     else {
       SoDebugError::postWarning("SoOutput::writeBinaryArray",
                                 "Couldn't write any more bytes to the memory "
                                 "buffer.");
-      THIS->disabledwriting = TRUE;
+      PRIVATE(this)->disabledwriting = TRUE;
     }
   }
   else {
-    size_t wrote = fwrite(constc, 1, length, THIS->filep);
+    size_t wrote = fwrite(constc, 1, length, PRIVATE(this)->filep);
     if (wrote != (size_t)length) {
       SoDebugError::postWarning("SoOutput::writeBinaryArray",
                                 "Couldn't write to file.");
-      THIS->disabledwriting = TRUE;
+      PRIVATE(this)->disabledwriting = TRUE;
     }
   }
 }
@@ -835,7 +830,7 @@ SoOutput::writeBinaryArray(const double * const d, const int length)
 void
 SoOutput::incrementIndent(const int levels)
 {
-  THIS->indentlevel += levels;
+  PRIVATE(this)->indentlevel += levels;
 }
 
 /*!
@@ -846,12 +841,12 @@ SoOutput::incrementIndent(const int levels)
 void
 SoOutput::decrementIndent(const int levels)
 {
-  THIS->indentlevel -= levels;
+  PRIVATE(this)->indentlevel -= levels;
 #if COIN_DEBUG
-  if (THIS->indentlevel < 0) {
+  if (PRIVATE(this)->indentlevel < 0) {
     SoDebugError::postInfo("SoOutput::decrementIndent",
                            "indentation level < 0!");
-    THIS->indentlevel = 0;
+    PRIVATE(this)->indentlevel = 0;
   }
 #endif // COIN_DEBUG
 }
@@ -874,7 +869,7 @@ SoOutput::indent(void)
   }
 #endif // COIN_DEBUG
 
-  int i = THIS->indentlevel;
+  int i = PRIVATE(this)->indentlevel;
   while (i > 1) {
     this->write('\t');
     i -= 2;
@@ -890,28 +885,28 @@ void
 SoOutput::reset(void)
 {
   this->closeFile();
-  delete THIS->sobase2id; THIS->sobase2id = NULL;
+  delete PRIVATE(this)->sobase2id; PRIVATE(this)->sobase2id = NULL;
   
-  while (THIS->routestack.getLength()) {
-    delete THIS->routestack[0];
-    THIS->routestack.removeFast(0);
+  while (PRIVATE(this)->routestack.getLength()) {
+    delete PRIVATE(this)->routestack[0];
+    PRIVATE(this)->routestack.removeFast(0);
   }
-  THIS->routestack.append(NULL);
+  PRIVATE(this)->routestack.append(NULL);
 
-  THIS->protostack.truncate(0);
-  while (THIS->defstack.getLength()) {
-    delete THIS->defstack[0];
-    THIS->defstack.removeFast(0);
+  PRIVATE(this)->protostack.truncate(0);
+  while (PRIVATE(this)->defstack.getLength()) {
+    delete PRIVATE(this)->defstack[0];
+    PRIVATE(this)->defstack.removeFast(0);
   }
-  THIS->defstack.append(NULL);
+  PRIVATE(this)->defstack.append(NULL);
 
-  THIS->usersetfp = FALSE;
-  THIS->disabledwriting = FALSE;
+  PRIVATE(this)->usersetfp = FALSE;
+  PRIVATE(this)->disabledwriting = FALSE;
   this->wroteHeader = FALSE;
-  THIS->memorybuffer = FALSE;
-  THIS->filep = coin_get_stdout();
-  THIS->buffer = NULL;
-  THIS->indentlevel = 0;
+  PRIVATE(this)->memorybuffer = FALSE;
+  PRIVATE(this)->filep = coin_get_stdout();
+  PRIVATE(this)->buffer = NULL;
+  PRIVATE(this)->indentlevel = 0;
 }
 
 /*!
@@ -923,13 +918,13 @@ SoOutput::setCompact(SbBool flag)
   // FIXME: go through output code and make the output more
   // compact. 19990623 morten.
 #if COIN_DEBUG
-  if (!THIS->writecompact && flag) {
+  if (!PRIVATE(this)->writecompact && flag) {
     SoDebugError::postWarning("SoOutput::setCompact",
                               "compact export is not implemented in Coin yet");
   }
 #endif // COIN_DEBUG
 
-  THIS->writecompact = flag;
+  PRIVATE(this)->writecompact = flag;
 }
 
 /*!
@@ -942,7 +937,7 @@ SoOutput::setCompact(SbBool flag)
 SbBool
 SoOutput::isCompact(void) const
 {
-  return THIS->writecompact;
+  return PRIVATE(this)->writecompact;
 }
 
 /*!
@@ -955,14 +950,14 @@ SoOutput::setAnnotation(uint32_t bits)
   // FIXME: go through output code and insert annotations where applicable.
   // 19990623 morten.
 #if COIN_DEBUG
-  if (THIS->annotationbits != bits) {
+  if (PRIVATE(this)->annotationbits != bits) {
     SoDebugError::postWarning("SoOutput::setAnnotation",
                               "annotated export is not implemented in Coin "
                               "yet");
   }
 #endif // COIN_DEBUG
 
-  THIS->annotationbits = bits;
+  PRIVATE(this)->annotationbits = bits;
 }
 
 /*!
@@ -971,7 +966,7 @@ SoOutput::setAnnotation(uint32_t bits)
 uint32_t
 SoOutput::getAnnotation(void)
 {
-  return THIS->annotationbits;
+  return PRIVATE(this)->annotationbits;
 }
 
 /*!
@@ -987,11 +982,11 @@ SoOutput::getAnnotation(void)
 SbBool
 SoOutput::makeRoomInBuf(size_t bytes)
 {
-  if ((THIS->bufferoffset + bytes) > THIS->buffersize) {
-    if (THIS->reallocfunc) {
-      THIS->buffersize = SbMax(THIS->bufferoffset + bytes, 2 * THIS->buffersize);
-      THIS->buffer = THIS->reallocfunc(THIS->buffer, THIS->buffersize);
-      if (THIS->buffer) return TRUE;
+  if ((PRIVATE(this)->bufferoffset + bytes) > PRIVATE(this)->buffersize) {
+    if (PRIVATE(this)->reallocfunc) {
+      PRIVATE(this)->buffersize = SbMax(PRIVATE(this)->bufferoffset + bytes, 2 * PRIVATE(this)->buffersize);
+      PRIVATE(this)->buffer = PRIVATE(this)->reallocfunc(PRIVATE(this)->buffer, PRIVATE(this)->buffersize);
+      if (PRIVATE(this)->buffer) return TRUE;
     }
     return FALSE;
   }
@@ -1016,7 +1011,7 @@ SoOutput::writeBytesWithPadding(const char * const p, const size_t nr)
     if (padbytes[0] == 'X')
       for (int i=0; i < HOSTWORDSIZE; i++) padbytes[i] = '\0';
 
-    const int writeposition = this->bytesInBuf() - THIS->startoffset;
+    const int writeposition = this->bytesInBuf() - PRIVATE(this)->startoffset;
     int padsize = HOSTWORDSIZE - (writeposition % HOSTWORDSIZE);
     if (padsize == HOSTWORDSIZE) padsize = 0;
     this->writeBinaryArray(padbytes, padsize);
@@ -1037,7 +1032,7 @@ SoOutput::checkHeader(void)
     this->wroteHeader = TRUE;
 
     SbString h;
-    if (THIS->headerstring) h = *(THIS->headerstring);
+    if (PRIVATE(this)->headerstring) h = *(PRIVATE(this)->headerstring);
     else if (this->isBinary()) h = SoOutput::getDefaultBinaryHeader();
     else h = SoOutput::getDefaultASCIIHeader();
 
@@ -1059,7 +1054,7 @@ SoOutput::checkHeader(void)
 SbBool
 SoOutput::isToBuffer(void) const
 {
-  return THIS->memorybuffer;
+  return PRIVATE(this)->memorybuffer;
 }
 
 /*!
@@ -1071,8 +1066,8 @@ SoOutput::isToBuffer(void) const
 size_t
 SoOutput::bytesInBuf(void) const
 {
-  if (this->isToBuffer()) { return THIS->bufferoffset; }
-  else { return ftell(THIS->filep); }
+  if (this->isToBuffer()) { return PRIVATE(this)->bufferoffset; }
+  else { return ftell(PRIVATE(this)->filep); }
 }
 
 /*!
@@ -1081,11 +1076,11 @@ SoOutput::bytesInBuf(void) const
 int
 SoOutput::addReference(const SoBase * base)
 {
-  if (!THIS->sobase2id) THIS->sobase2id = new SbDict;
-  int id = THIS->nextreferenceid++;
+  if (!PRIVATE(this)->sobase2id) PRIVATE(this)->sobase2id = new SbDict;
+  int id = PRIVATE(this)->nextreferenceid++;
   // Ugly! Should be solved by making a decent templetized
   // SbDict-alike class.
-  THIS->sobase2id->enter((unsigned long)base, (void *)id);
+  PRIVATE(this)->sobase2id->enter((unsigned long)base, (void *)id);
   return id;
 }
 
@@ -1098,7 +1093,7 @@ SoOutput::findReference(const SoBase * base) const
   // Ugly! Should be solved by making a decent templetized
   // SbDict-alike class.
   void * id;
-  SbBool ok = THIS->sobase2id && THIS->sobase2id->find((unsigned long)base, id);
+  SbBool ok = PRIVATE(this)->sobase2id && PRIVATE(this)->sobase2id->find((unsigned long)base, id);
   // the extra intermediate "long" cast is needed by 64-bits IRIX CC
   return ok ? (int)((long)id) : -1;
 }
@@ -1109,8 +1104,8 @@ SoOutput::findReference(const SoBase * base) const
 void
 SoOutput::setReference(const SoBase * base, int refid)
 {
-  if (!THIS->sobase2id) THIS->sobase2id = new SbDict;
-  THIS->sobase2id->enter((unsigned long)base, (void *)refid);
+  if (!PRIVATE(this)->sobase2id) PRIVATE(this)->sobase2id = new SbDict;
+  PRIVATE(this)->sobase2id->enter((unsigned long)base, (void *)refid);
 }
 
 /*!
@@ -1121,7 +1116,7 @@ void
 SoOutput::addDEFNode(SbName name)
 {
   void * value = NULL;
-  SbDict * defnames = THIS->getCurrentDefNames(TRUE);
+  SbDict * defnames = PRIVATE(this)->getCurrentDefNames(TRUE);
   defnames->enter((unsigned long)name.getString(), value);
 }
 
@@ -1133,7 +1128,7 @@ SbBool
 SoOutput::lookupDEFNode(SbName name)
 {
   void * value;
-  SbDict * defnames = THIS->getCurrentDefNames(TRUE);
+  SbDict * defnames = PRIVATE(this)->getCurrentDefNames(TRUE);
   return defnames->find((unsigned long)name.getString(), value);
 }
 
@@ -1145,7 +1140,7 @@ SoOutput::lookupDEFNode(SbName name)
 void 
 SoOutput::removeDEFNode(SbName name)
 {
-  SbDict * defnames = THIS->getCurrentDefNames(FALSE);
+  SbDict * defnames = PRIVATE(this)->getCurrentDefNames(FALSE);
   assert(defnames);
 #ifndef NDEBUG
   SbBool ret = defnames->remove((unsigned long)name.getString());
@@ -1169,9 +1164,9 @@ SoOutput::pushProto(SoProto * proto)
   // adding new methods in SoOutput. For instance, is it possible to
   // add elements in the SoWriteAction state stack? pederb, 2002-06-12
 
-  THIS->pushRoutes(FALSE);
-  THIS->protostack.push(proto);
-  THIS->pushDefNames(FALSE);
+  PRIVATE(this)->pushRoutes(FALSE);
+  PRIVATE(this)->protostack.push(proto);
+  PRIVATE(this)->pushDefNames(FALSE);
 }
 
 /*!
@@ -1188,8 +1183,8 @@ SoOutput::getCurrentProto(void) const
   // adding new methods in SoOutput. For instance, is it possible to
   // add elements in the SoWriteAction state stack? pederb, 2002-06-12
 
-  if (THIS->protostack.getLength()) {
-    return THIS->protostack[THIS->protostack.getLength()-1];
+  if (PRIVATE(this)->protostack.getLength()) {
+    return PRIVATE(this)->protostack[PRIVATE(this)->protostack.getLength()-1];
   }
   return NULL;
 }
@@ -1208,10 +1203,10 @@ SoOutput::popProto(void)
   // adding new methods in SoOutput. For instance, is it possible to
   // add elements in the SoWriteAction state stack? pederb, 2002-06-12
 
-  assert(THIS->protostack.getLength());
-  THIS->protostack.pop();
-  THIS->popDefNames();
-  THIS->popRoutes();
+  assert(PRIVATE(this)->protostack.getLength());
+  PRIVATE(this)->protostack.pop();
+  PRIVATE(this)->popDefNames();
+  PRIVATE(this)->popRoutes();
 }
 
 /*!
@@ -1230,7 +1225,7 @@ SoOutput::addRoute(SoFieldContainer * from, const SbName & fromfield,
   // adding new methods in SoOutput. For instance, is it possible to
   // add elements in the SoWriteAction state stack? pederb, 2002-06-12
 
-  SoOutputROUTEList * list = THIS->getCurrentRoutes(TRUE);
+  SoOutputROUTEList * list = PRIVATE(this)->getCurrentRoutes(TRUE);
   assert(list);
   SoOutputROUTE r;
   r.from = from;
@@ -1254,7 +1249,7 @@ SoOutput::resolveRoutes(void)
   // adding new methods in SoOutput. For instance, is it possible to
   // add elements in the SoWriteAction state stack? pederb, 2002-06-12
 
-  SoOutputROUTEList * list = THIS->getCurrentRoutes(FALSE);
+  SoOutputROUTEList * list = PRIVATE(this)->getCurrentRoutes(FALSE);
   if (list && list->getLength()) {
     const int n = list->getLength();
     for (int i = 0; i < n; i++) {
@@ -1428,7 +1423,7 @@ SoOutput::padHeader(const SbString & inString)
 void 
 SoOutput::removeSoBase2IdRef(const SoBase * base)
 {
-  THIS->sobase2id->remove((unsigned long)base);
+  PRIVATE(this)->sobase2id->remove((unsigned long)base);
 }
 
 // FIXME: temporary workaround needed to test if we are currently
@@ -1441,5 +1436,6 @@ SoOutput_getHeaderString(const SoOutputP * pout)
   else return SoOutput::getDefaultASCIIHeader();
 }
 
-#undef THIS
+#undef PRIVATE
+
 
