@@ -94,7 +94,7 @@ public:
   static void endNotify(void);
 
   typedef SbBool ProgressCallbackType(const SbName & itemid, float fraction,
-                                      void * userdata);
+                                      SbBool interruptible, void * userdata);
   static void addProgressCallback(ProgressCallbackType * func, void * userdata);
   static void removeProgressCallback(ProgressCallbackType * func, void * userdata);
 

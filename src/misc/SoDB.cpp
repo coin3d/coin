@@ -1548,19 +1548,22 @@ SoDB::readAllWrapper(SoInput * in, const SoType & grouptype)
 /* *********************************************************************** */
 
 /*!
-  \typedef SbBool SoDB::ProgressCallbackType(const SbName & itemid, float fraction, void * userdata)
+  \typedef SbBool SoDB::ProgressCallbackType(const SbName & itemid, float fraction, SbBool interruptible, void * userdata)
 
   Client code progress callback function must be static functions of
   this type.
 
-  The return value is an abort flag indication from the client code,
-  the \a itemid argument is a unique text identifier which says what
+  The \a itemid argument is a unique text identifier which says what
   is being processed (use this for any GUI progress bar informational
   text), and \a fraction is a value in the range [0, 1] which
   indicates how far the process has got. If the task is successfully
   aborted, the callback will be invoked a last time with \a fraction
   set to -1.0.
 
+  The return value is an abort flag indication from the client
+  code. Note that the process that is being run can only be aborted if
+  the \a interruptible flag is set.
+  
   See SoDB::addProgressCallback() for full documentation of how the
   progress notification mechanism works.
 */
