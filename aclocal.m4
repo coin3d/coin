@@ -7902,7 +7902,7 @@ AC_CHECK_HEADERS([tlhelp32.h], [], [], [
 
 AC_DEFUN([SIM_AC_CHECK_FUNC__SPLITPATH], [
 AC_MSG_CHECKING([for _splitpath()])
-AC_COMPILE_IFELSE(
+AC_LINK_IFELSE(
 [AC_LANG_PROGRAM([
 #ifdef HAVE_WINDOWS_H
 #include <windows.h>
