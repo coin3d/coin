@@ -321,6 +321,7 @@ SoGLTextureCoordinateElement::initMulti(SoState * state) const
                                                                               PRIVATE(this)->multimax);
   if (PRIVATE(this)->multienabled && PRIVATE(this)->multimax >= 1) {
     PRIVATE(this)->multielem = SoGLMultiTextureCoordinateElement::getInstance(state);
+    PRIVATE(this)->multielem->initRender(PRIVATE(this)->multienabled, PRIVATE(this)->multimax);
   }
 }
 

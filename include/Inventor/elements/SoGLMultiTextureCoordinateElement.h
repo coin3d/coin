@@ -63,6 +63,8 @@ public:
     SoTexCoordTexgenCB * texgenCB;
     void * texgenData;
   };
+  
+  void initRender(const SbBool * enabled, const int maxenabled) const;
 
 protected:
   virtual void setElt(const int unit,

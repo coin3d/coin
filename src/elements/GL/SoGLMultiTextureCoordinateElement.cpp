@@ -46,6 +46,16 @@ class SoGLMultiTextureCoordinateElementP {
 public:
   SoGLMultiTextureCoordinateElement::GLUnitData unitdata[MAX_UNITS];
   const cc_glglue * glue;
+
+  // switch/case table for faster rendering.
+  enum SendLookup {
+    NONE,
+    FUNCTION,
+    TEXCOORD2,
+    TEXCOORD3,
+    TEXCOORD4
+  };
+  SendLookup sendlookup[MAX_UNITS];
 };
 
 #define PRIVATE(obj) obj->pimpl
@@ -214,16 +224,20 @@ SoGLMultiTextureCoordinateElement::send(const int unit, const int index) const
   const UnitData & ud = this->getUnitData(unit);
   GLenum glunit = (GLenum) (int(GL_TEXTURE0) + unit);
 
-  assert(ud.whatKind == SoTextureCoordinateElement::EXPLICIT);
-  assert(index < ud.numCoords);
-  switch (ud.coordsDimension) {
-  case 2:
+  switch (PRIVATE(this)->sendlookup[unit]) {
+  case SoGLMultiTextureCoordinateElementP::NONE:
+    break;
+  case SoGLMultiTextureCoordinateElementP::FUNCTION:
+    assert(0 && "should not happen");
+    break;
+  case SoGLMultiTextureCoordinateElementP::TEXCOORD2:
+    assert(index < ud.numCoords);
     cc_glglue_glMultiTexCoord2fv(PRIVATE(this)->glue, glunit, ud.coords2[index].getValue());
     break;
-  case 3:
+  case SoGLMultiTextureCoordinateElementP::TEXCOORD3:
     cc_glglue_glMultiTexCoord3fv(PRIVATE(this)->glue, glunit, ud.coords3[index].getValue());
     break;
-  case 4:
+  case SoGLMultiTextureCoordinateElementP::TEXCOORD4:
     cc_glglue_glMultiTexCoord4fv(PRIVATE(this)->glue, glunit, ud.coords4[index].getValue());
     break;
   default:
@@ -242,36 +256,28 @@ SoGLMultiTextureCoordinateElement::send(const int unit,
 {
   const UnitData & ud = this->getUnitData(unit);
   GLenum glunit = (GLenum) (int(GL_TEXTURE0) + unit);
-
-  if (ud.whatKind == SoTextureCoordinateElement::FUNCTION) {
+  
+  switch (PRIVATE(this)->sendlookup[unit]) {
+  case SoGLMultiTextureCoordinateElementP::NONE:
+    break;
+  case SoGLMultiTextureCoordinateElementP::FUNCTION:
     assert(ud.funcCB);
-    const SbVec4f & tc = ud.funcCB(ud.funcCBData, c, n);
-    cc_glglue_glMultiTexCoord4fv(PRIVATE(this)->glue, glunit, tc.getValue());
-  }
-  else {
-    assert(ud.whatKind == SoTextureCoordinateElement::EXPLICIT);
-    //
-    // FIXME: these tests are just here to avoid crashes when illegal
-    // files are rendered. Will remove later, when we implement a
-    // SoVerifyGraphAction or something. pederb, 20000218
-    //
-    if (index < 0) return;
-    if (index >= ud.numCoords) return;
-
-    switch (ud.coordsDimension) {
-    case 2:
-      cc_glglue_glMultiTexCoord2fv(PRIVATE(this)->glue, glunit, ud.coords2[index].getValue());
-      break;
-    case 3:
-      cc_glglue_glMultiTexCoord3fv(PRIVATE(this)->glue, glunit, ud.coords3[index].getValue());
-      break;
-    case 4:
-      cc_glglue_glMultiTexCoord4fv(PRIVATE(this)->glue, glunit, ud.coords4[index].getValue());
-      break;
-    default:
-      assert(0 && "should not happen");
-      break;
-    }
+    cc_glglue_glMultiTexCoord4fv(PRIVATE(this)->glue, glunit,
+                                 ud.funcCB(ud.funcCBData, c, n).getValue());
+    
+    break;
+  case SoGLMultiTextureCoordinateElementP::TEXCOORD2:
+    cc_glglue_glMultiTexCoord2fv(PRIVATE(this)->glue, glunit, ud.coords2[index].getValue());
+    break;
+  case SoGLMultiTextureCoordinateElementP::TEXCOORD3:
+    cc_glglue_glMultiTexCoord3fv(PRIVATE(this)->glue, glunit, ud.coords3[index].getValue());
+    break;
+  case SoGLMultiTextureCoordinateElementP::TEXCOORD4:
+    cc_glglue_glMultiTexCoord4fv(PRIVATE(this)->glue, glunit, ud.coords4[index].getValue());
+    break;
+  default:
+    assert(0 && "should not happen");
+    break;
   }
 }
 
@@ -330,6 +336,59 @@ SoGLMultiTextureCoordinateElement::doCallback(const int unit) const
     PRIVATE(this)->unitdata[unit].texgenCB(PRIVATE(this)->unitdata[unit].texgenData);
   }
 }
+
+/*!
+  Internal method that is called from SoGLTextureCoordinateElement to
+  set up optimized rendering.
+*/
+void
+SoGLMultiTextureCoordinateElement::initRender(const SbBool * enabled, const int maxenabled) const
+{
+  // need writeable instance
+  SoGLMultiTextureCoordinateElement * elem = ( SoGLMultiTextureCoordinateElement *) this;
+  for (int i = 1; i <= maxenabled; i++) {
+    PRIVATE(elem)->sendlookup[i] = SoGLMultiTextureCoordinateElementP::NONE;
+    // init the sendloopup variable
+    if (enabled[i]) {
+      const UnitData & ud = this->getUnitData(i);
+      switch (ud.whatKind) {
+      case SoTextureCoordinateElement::DEFAULT:
+        assert(0 && "should not happen");
+        break;
+      case SoTextureCoordinateElement::FUNCTION:
+        if (ud.funcCB) {
+          PRIVATE(elem)->sendlookup[i] = SoGLMultiTextureCoordinateElementP::FUNCTION;
+        }
+        break;
+      case SoTextureCoordinateElement::NONE:
+        break;
+      case SoTextureCoordinateElement::EXPLICIT:
+        {
+          switch (ud.coordsDimension) {
+          case 2:
+            PRIVATE(elem)->sendlookup[i] = SoGLMultiTextureCoordinateElementP::TEXCOORD2;
+            break;
+          case 3:
+            PRIVATE(elem)->sendlookup[i] = SoGLMultiTextureCoordinateElementP::TEXCOORD3;
+            break;
+          case 4:
+            PRIVATE(elem)->sendlookup[i] = SoGLMultiTextureCoordinateElementP::TEXCOORD4;
+            break;
+          default:
+            assert(0 && "should not happen");
+            break;
+          }
+        }
+        break;
+      default:
+        assert(0 && "should not happen");
+        break;
+      }
+    } 
+  }
+}
+
+
 
 #undef PRIVATE
 #undef MAX_UNITS
