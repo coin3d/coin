@@ -33,13 +33,13 @@
 
 */
 
-/*¡
-  There's a lot of methods in SoBase used to implement VRML support
-  which are missing.
+// FIXME: There's a lot of methods in SoBase used to implement VRML
+// support which are missing.
+//
+// UPDATE 20020217 mortene: is this FIXME still correct?
 
-  One more thing missing: detect cases where we should instantiate
-  SoUnknownEngine instead of SoUnknownNode.
-*/
+// FIXME: One more thing missing: detect cases where we should
+// instantiate SoUnknownEngine instead of SoUnknownNode.
 
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
@@ -64,7 +64,6 @@
 #endif // HAVE_CONFIG_H
 
 // Note: the following documentation for getTypeId() will also be
-
 // visible for subclasses, so keep it general.
 /*!
   \fn SoType SoBase::getTypeId(void) const
@@ -310,6 +309,9 @@ SoBase::ref(void) const
 {
   // Cast away constness.
   SoBase * base = (SoBase *)this;
+  // FIXME: a fairly limited number of bits has been reserved for this
+  // counter, so we should really try to detect overflows. (Ditto for
+  // underflows.) 20020217 mortene.
   base->objdata.referencecount++;
 
 #if COIN_DEBUG
@@ -616,7 +618,11 @@ SoBase::addWriteReference(SoOutput * out, SbBool isfromfield)
                          this->objdata.writerefcount + 1);
 #endif // debug
 
+  // FIXME: a fairly limited number of bits has been reserved for this
+  // counter, so we should really try to detect overflows. (Ditto for
+  // underflows.) 20020217 mortene.
   this->objdata.writerefcount++;
+
   if (this->objdata.writerefcount > 1) this->objdata.multirefs = TRUE;
   if (!isfromfield) this->objdata.ingraph = TRUE;
 }
@@ -1064,6 +1070,8 @@ SoBase::readBase(SoInput * in, SbName & classname, SoBase *& base)
 
   if (in->isFileVRML2()) {
     if (classname == EXTERNPROTO_KEYWORD) {
+      // FIXME: definitely needs to be fixed before releasing Coin
+      // v2. 20020204 mortene.
       SoReadError::post(in, "EXTERNPROTO is not yet supported");
       ret = FALSE;
     }
