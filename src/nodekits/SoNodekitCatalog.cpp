@@ -213,8 +213,15 @@ SoNodekitCatalog::isNullByDefault(int part) const
   return this->items[part]->isdefaultnull;
 }
 
+// Seems like there's a Doxygen bug (version 1.2.1, at least) as it
+// reports isNullByDefault(const SbName & name) as undocumented
+// without the explicit \fn.
+
 /*!
-  Returns \c TRUE if part \name is empty by default, otherwise \c FALSE.
+  \fn SbBool SoNodekitCatalog::isNullByDefault(const SbName & name)
+
+  Returns \c TRUE if part \a name is empty by default, otherwise \c
+  FALSE.
 */
 SbBool
 SoNodekitCatalog::isNullByDefault(const SbName & name) const

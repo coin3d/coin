@@ -48,13 +48,18 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+/*!
+  \var SoChildList * SoNodeKitListPart::children
+  \internal
+*/
+
 SO_NODE_SOURCE(SoNodeKitListPart);
 
 
 /*!
   Constructor.
 */
-SoNodeKitListPart::SoNodeKitListPart()
+SoNodeKitListPart::SoNodeKitListPart(void)
 {
   SO_NODE_CONSTRUCTOR(SoNodeKitListPart);
 
