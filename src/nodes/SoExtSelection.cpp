@@ -145,7 +145,7 @@
 
 /*!
   \enum SoExtSelection::LassoMode
-  Enum for specifying selection mode
+  Enum for specifying selection mode.
 */
 /*!
   \var SoExtSelection::LassoMode SoExtSelection::ALL_SHAPES
@@ -153,7 +153,7 @@
 */
 /*!
   \var SoExtSelection::LassoMode SoExtSelection::VISIBLE_SHAPES
-  All <i>visible</i> primitives inside the lasso/rectangle will be selected.
+  All \e visible primitives inside the lasso/rectangle will be selected.
 */
 
 
@@ -1064,11 +1064,10 @@ SoExtSelection::draw(SoGLRenderAction *action)
   glMatrixMode(GL_MODELVIEW);
   glPopMatrix();
 
-  // Due to a Mesa 3.4.2 bug
-  glColor3fv(currentColor);
-
   glPopAttrib();
 
+  // Due to a Mesa 3.4.2 bug
+  glColor3fv(currentColor);
 }
 
 // Documented in superclass.
