@@ -51,13 +51,20 @@
   parts of scenegraphs, should be very quick on successive runs for
   "static" parts of the scene.
 
-  Note: the algorithm used is not guaranteed to give an optimal bbox;
-  it always considers two bounding boxes and extends one of them to
-  contain the other. Since the boxes need not be parallel to the
-  principal axes the new box might not be a perfect fit for the box
-  not extended (it's coordinate system is changed, and to make a
-  perfect fit all objects contained within it would have to be
-  re-examined).
+  Note that the algorithm used is not guaranteed to always give an
+  exact bounding box: it combines bounding boxes in pairs and extends
+  one of them to contain the other. Since the boxes need not be
+  parallel to the principal axes the new box might not be a perfect
+  fit for the box not extended (it's coordinate system has been
+  changed).
+
+  Note also that what is returned from getBoundingBox() will be
+  projected so as to be oriented along the principal axes, which can
+  often cause it to become quite a lot larger than what it was before
+  projection. For client code to obtain the best bounding box that
+  Coin can calculate (and which will usually be exact), you need to
+  use the getXfBoundingBox() method after having applied the
+  SoGetBoundingBoxAction.
 
   \sa SoSeparator::boundingBoxCaching
 */
