@@ -1043,3 +1043,54 @@ SbViewVolume::print(FILE * fp) const
   fprintf( fp, "\n" );
 #endif // COIN_DEBUG
 }
+
+/*!
+  Returns the six planes defining the view volume in the following
+  order: left, bottom, right, top, near, far. Plane normals are
+  directed into the view volume.
+
+  This method is an extension for Coin, and is not available in the
+  original Open Inventor.
+*/
+void
+SbViewVolume::getViewVolumePlanes(SbPlane planes[6]) const
+{
+  SbVec3f far_ll;
+  SbVec3f far_lr;
+  SbVec3f far_ul;
+  SbVec3f far_ur;
+
+  float depth = this->nearplanedistance + this->nearfardistance;
+  SbVec3f near_ur = this->upperleftfrust + (this->lowerrightfrust-this->lowerleftfrust);
+
+  if (this->type == PERSPECTIVE) {
+    SbVec3f dir;
+    dir = this->lowerleftfrust - this->projectionpt;
+    dir.normalize();
+    far_ll = this->projectionpt + dir * depth / dir.dot(this->projectiondir);
+
+    dir = this->lowerrightfrust - this->projectionpt;
+    dir.normalize();
+    far_lr = this->projectionpt + dir * depth / dir.dot(this->projectiondir);
+
+    dir = this->upperleftfrust - this->projectionpt;
+    dir.normalize();
+    far_ul = this->projectionpt + dir * depth / dir.dot(this->projectiondir);
+
+    dir = near_ur - this->projectionpt;
+    dir.normalize();
+    far_ur = this->projectionpt + dir * depth / dir.dot(this->projectiondir);
+  }
+  else {
+    far_ll = this->lowerleftfrust + this->projectiondir * depth;
+    far_lr = this->lowerrightfrust + this->projectiondir * depth;
+    far_ul = this->upperleftfrust + this->projectiondir * depth;
+    far_ur = near_ur + this->projectiondir * depth;
+  }
+  planes[0] = SbPlane(this->upperleftfrust, this->lowerleftfrust, far_ll);  // left
+  planes[1] = SbPlane(this->lowerleftfrust, this->lowerrightfrust, far_lr); // bottom
+  planes[2] = SbPlane(this->lowerrightfrust, near_ur, far_ur); // right
+  planes[3] = SbPlane(near_ur, this->upperleftfrust, far_ul); // top
+  planes[4] = SbPlane(this->upperleftfrust, near_ur, this->lowerrightfrust); // near
+  planes[5] = SbPlane(far_ll, far_lr, far_ur); // far
+}

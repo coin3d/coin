@@ -110,6 +110,7 @@ sim_ac_simage_conf_cmd = @sim_ac_simage_conf_cmd@
 @HACKING_COMPACT_BUILD_FALSE@	SoComplexityTypeElement.cpp SoComplexityTypeElement.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoCoordinateElement.cpp SoCoordinateElement.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoCreaseAngleElement.cpp SoCreaseAngleElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoCullElement.cpp SoCullElement.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoDecimationPercentageElement.cpp SoDecimationPercentageElement.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoDecimationTypeElement.cpp SoDecimationTypeElement.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoDiffuseColorElement.cpp SoDiffuseColorElement.h \
@@ -339,7 +340,7 @@ libelements_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@SoComplexityElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoComplexityTypeElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoCoordinateElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoCreaseAngleElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoCreaseAngleElement.lo SoCullElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoDecimationPercentageElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoDecimationTypeElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoDiffuseColorElement.lo \
@@ -428,7 +429,7 @@ libelementsLINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@SoComplexityElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoComplexityTypeElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoCoordinateElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoCreaseAngleElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoCreaseAngleElement.lo SoCullElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoDecimationPercentageElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoDecimationTypeElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoDiffuseColorElement.lo \
@@ -533,7 +534,7 @@ $(DEPDIR)/SoAnnoText3RenderPrintElement.Plo \
 $(DEPDIR)/SoBBoxModelMatrixElement.Plo $(DEPDIR)/SoCacheElement.Plo \
 $(DEPDIR)/SoClipPlaneElement.Plo $(DEPDIR)/SoComplexityElement.Plo \
 $(DEPDIR)/SoComplexityTypeElement.Plo $(DEPDIR)/SoCoordinateElement.Plo \
-$(DEPDIR)/SoCreaseAngleElement.Plo \
+$(DEPDIR)/SoCreaseAngleElement.Plo $(DEPDIR)/SoCullElement.Plo \
 $(DEPDIR)/SoDecimationPercentageElement.Plo \
 $(DEPDIR)/SoDecimationTypeElement.Plo \
 $(DEPDIR)/SoDiffuseColorElement.Plo $(DEPDIR)/SoDrawStyleElement.Plo \
@@ -731,6 +732,7 @@ distdir: $(DISTFILES)
 @AMDEP@include $(DEPDIR)/SoComplexityTypeElement.Plo
 @AMDEP@include $(DEPDIR)/SoCoordinateElement.Plo
 @AMDEP@include $(DEPDIR)/SoCreaseAngleElement.Plo
+@AMDEP@include $(DEPDIR)/SoCullElement.Plo
 @AMDEP@include $(DEPDIR)/SoDecimationPercentageElement.Plo
 @AMDEP@include $(DEPDIR)/SoDecimationTypeElement.Plo
 @AMDEP@include $(DEPDIR)/SoDiffuseColorElement.Plo

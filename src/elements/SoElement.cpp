@@ -24,6 +24,7 @@
 */
 
 #include <Inventor/elements/SoElements.h>
+#include <Inventor/elements/SoCullElement.h> // internal element
 #include <Inventor/misc/SoState.h>
 #include <coindefs.h> // COIN_STUB()
 #include <Inventor/lists/SoTypeList.h>
@@ -186,6 +187,7 @@ SoElement::initElements(void)
   SoGLShadeModelElement::initClass();
   SoGLNormalizeElement::initClass();
   SoLazyElement::initClass();
+  SoCullElement::initClass();
 }
 
 /*!

@@ -56,6 +56,11 @@
 
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoLocalBBoxMatrixElement.h>
+#include <Inventor/elements/SoCullElement.h>
+
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
 
 // Maximum number of caches available for allocation for the
 // rendercaching (FIXME: which is not implemented yet.. 20000426 mortene).
@@ -287,18 +292,24 @@ SoSeparator::callback(SoCallbackAction * action)
 void
 SoSeparator::GLRender(SoGLRenderAction * action)
 {
-  action->getState()->push();
-  this->children->traverse(action);
-  action->getState()->pop();
+  SoState * state = action->getState();
+  if (!this->cullTest(state)) {
+    state->push();
+    this->children->traverse(action);
+    state->pop();
+  }
 }
 
 // Doc from superclass.
 void
 SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
 {
-  action->getState()->push();
-  this->children->traverse(action);
-  action->getState()->pop();
+  SoState * state = action->getState();
+  if (!this->cullTest(state)) {
+    state->push();
+    this->children->traverse(action);
+    state->pop();
+  }
 }
 
 // Doc from superclass.
@@ -421,7 +432,9 @@ SoSeparator::notify(SoNotList * nl)
 }
 
 /*!
-  \internal
+  This is an internal Open Inventor method. We've implemented
+  view frustum culling in a different manner. Let us know if
+  you need this function, and we'll consider implementing it.
 */
 SbBool
 SoSeparator::cullTest(SoGLRenderAction * action, int & cullresults)
@@ -439,4 +452,19 @@ SoSeparator::readInstance(SoInput * in, unsigned short flags)
 {
   // FIXME: anything missing here?
   return inherited::readInstance(in, flags);
+}
+
+/*!  
+  Internal method which do view frustum culling. For now, view
+  frustum culling is performed if the renderCulling field is AUTO or
+  ON, and the bounding box cache is valid. Returns TRUE if this
+  separator is outside view frustum, FALSE if inside.  
+*/
+SbBool 
+SoSeparator::cullTest(SoState * state)
+{
+  if (this->renderCulling.getValue() == SoSeparator::OFF) return FALSE;
+  if (!this->bboxcache || !this->bboxcache->isValid(state)) return FALSE;
+  if (SoCullElement::completelyInside(state)) return FALSE;
+  return SoCullElement::cullBox(state, this->bboxcache->getProjectedBox());
 }

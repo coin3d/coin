@@ -79,6 +79,7 @@ public:
   float getDepth(void) const;
 
   void print(FILE * fp) const;
+  void getViewVolumePlanes(SbPlane planes[6]) const;
 
 private:
   ProjectionType type;

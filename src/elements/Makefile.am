@@ -17,6 +17,7 @@ ALLSOURCES = \
 	SoComplexityTypeElement.cpp SoComplexityTypeElement.h \
 	SoCoordinateElement.cpp SoCoordinateElement.h \
 	SoCreaseAngleElement.cpp SoCreaseAngleElement.h \
+	SoCullElement.cpp SoCullElement.h \
 	SoDecimationPercentageElement.cpp SoDecimationPercentageElement.h \
 	SoDecimationTypeElement.cpp SoDecimationTypeElement.h \
 	SoDiffuseColorElement.cpp SoDiffuseColorElement.h \

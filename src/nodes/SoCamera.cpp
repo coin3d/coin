@@ -63,6 +63,7 @@
 #include <Inventor/elements/SoGLLineWidthElement.h>
 #include <Inventor/elements/SoGLShapeHintsElement.h>
 #include <Inventor/elements/SoGLPolygonStippleElement.h>
+#include <Inventor/elements/SoCullElement.h>
 #include <Inventor/misc/SoState.h>
 
 #ifdef _WIN32
@@ -154,6 +155,10 @@
   given bounding \a box with the given \a aspect ratio. Multiplies the
   exact dimensions with a \a slack factor to have some space between
   the rendered model and the borders of the rendering area.
+
+  If you define your own camera node class, be aware that this method
+  should \e not set the orientation field of the camera, only the
+  position, focal distance and near and far clipping planes.
 */
 
 
@@ -200,6 +205,7 @@ SoCamera::initClass(void)
   SO_ENABLE(SoGLRenderAction, SoGLProjectionMatrixElement);
   SO_ENABLE(SoGLRenderAction, SoViewVolumeElement);
   SO_ENABLE(SoGLRenderAction, SoGLViewingMatrixElement);
+  SO_ENABLE(SoGLRenderAction, SoCullElement);
 
   SO_ENABLE(SoGetBoundingBoxAction, SoFocalDistanceElement);
   SO_ENABLE(SoGetBoundingBoxAction, SoProjectionMatrixElement);
@@ -240,7 +246,8 @@ SoCamera::pointAt(const SbVec3f & targetpoint)
 
 /*!
   Position the camera so all geometry of the scene from \a sceneroot
-  is contained in the view volume of the camera.
+  is contained in the view volume of the camera, while keeping the
+  camera orientation constant.
 
   Finds the bounding box of the scene and calls
   SoCamera::viewBoundingBox().
@@ -296,6 +303,11 @@ void
 SoCamera::GLRender(SoGLRenderAction * action)
 {
   SoCamera::doAction(action);
+  SoState * state = action->getState();
+  const SbViewVolume &vv = SoViewVolumeElement::get(state);
+  SbPlane plane[6];
+  vv.getViewVolumePlanes(plane);
+  SoCullElement::addPlanes(state, plane, 6);
 }
 
 // Doc in superclass.

@@ -24,6 +24,7 @@
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/nodes/SoGroup.h>
 
+class SoState;
 
 class SoSeparator : public SoGroup {
   typedef SoGroup inherited;
@@ -68,6 +69,7 @@ public:
 protected:
   virtual ~SoSeparator();
 
+  virtual SbBool cullTest(SoState * state);
   virtual SbBool cullTest(SoGLRenderAction * action, int & cullresults);
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
 
