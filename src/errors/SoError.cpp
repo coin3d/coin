@@ -21,6 +21,15 @@
 
 #include <stdio.h>
 
+// FIXME: use configure tests (and check for <strstream> first,
+// BTW). 19991215 mortene.
+#ifdef _WIN32
+#include <strstrea.h>
+#else // ! _WIN32
+#include <strstream.h>
+#endif // ! _WIN32
+
+
 #if COIN_DEBUG
 // This is the method which prints out stub information. Used all over
 // the place where there is functionality missing. Prototyped for the
@@ -48,16 +57,20 @@ void coin_stub(const char *, unsigned int, const char *) { }
 
 /*!
   \class SoError Inventor/errors/SoError.h
-  \brief The SoError class is the base class for all the error handling classes.
+  \brief The SoError class is the base class for all the error
+  \brief handling classes.
 
-  The SoError class handles both error posting and error handling.  The
-  default handler only prints an error message, but can be overridden by
-  client applications.
-*/
+  The SoError class handles both error handling and posting.
 
-/*¡
-  Potensial buffer overflow errors, should be fixed - 19990610 larsa
-*/
+  The default handler just prints messages on the standard error
+  output channel, but this can be overridden by client applications.
+
+  Being able to override the default handler is useful when you want
+  to collect error messages upon e.g. model import for later
+  presentation of the messages to the user in any custom manner (like
+  for instance in a GUI messagebox).
+
+ */
 
 #include <Inventor/errors/SoErrors.h>
 
@@ -200,21 +213,21 @@ SoError::getDebugString(void) const
 
 /*!
   This method posts an error message.  The \a format argument and all the
-  trailing aguments follows the printf() standard.
+  trailing aguments follows the printf() form.
 */
 
 void
-SoError::post(const char * const format, // printf format
-              ...)
+SoError::post(const char * const format, ...)
 {
   va_list args;
   va_start(args, format);
-  char buffer[ 256 ]; // FIXME: buffer overrun alert. 19980906 mortene.
-  vsprintf(buffer, format, args);
-  SoError error;
-  error.setDebugString(buffer);
-  error.handleError();
+  ostrstream msg;
+  msg.vform(format, args);
   va_end(args);
+
+  SoError error;
+  error.setDebugString(msg.str());
+  error.handleError();
 }
 
 /*!
@@ -319,16 +332,16 @@ SoError::generateBaseString(SbString & string,
                             const SoBase * const base,
                             const char * const what)
 {
-  char buffer[120]; // FIXME: buffer overflow?  990610 larsa
-  sprintf(buffer, "%s named \"%s\" at address %p",
-      what, base->getName().getString(), base);
-  string = buffer;
+  ostrstream msg;
+  msg << what << " named \"" << base->getName().getString()
+      << "\" at address " << base;
+  string = msg.str();
 }
 
 /*!
   This static method is just a wraparound for the SoError::initErrors()
-  method.  It's here for OIV compatibility.  We like the name \a initErrors
-  better.
+  method.  It's here for OIV compatibility.  We like the name
+  \a initErrors() better.
 
   \sa void SoError::initErrors(void)
 */

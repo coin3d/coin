@@ -24,15 +24,19 @@
   FIXME: write doc.
 */
 
-/*¡
-  Potential buffer overflow errors detected, should be fixed - 990610 larsa
-*/
-
 #include <Inventor/errors/SoReadError.h>
 
 #include <Inventor/SbName.h>
 #include <Inventor/SoType.h>
 #include <Inventor/SoInput.h>
+
+// FIXME: use configure tests (and check for <strstream> first,
+// BTW). 19991215 mortene.
+#ifdef _WIN32
+#include <strstrea.h>
+#else // ! _WIN32
+#include <strstream.h>
+#endif // ! _WIN32
 
 #include <stdarg.h>
 #include <stdio.h>
@@ -132,18 +136,20 @@ SoReadError::getHandlerData(void)
 void
 SoReadError::post(const SoInput * const in, const char * const format, ...)
 {
-  SoReadError error;
-  error.setDebugString("Coin read error: ");
   va_list args;
   va_start(args, format);
-  char buffer[ 512 ]; // FIXME: possible overflow, 990610 larsa
-  vsprintf(buffer, format, args);
+  ostrstream msg;
+  msg.vform(format, args);
   va_end(args);
-  error.appendToDebugString(buffer);
-  error.appendToDebugString("\n");
+
   SbString s;
   in->getLocationString(s);
-  error.appendToDebugString(s.getString());
+
+  ostrstream buffer;
+  buffer << "Coin read error: " << msg << endl << s.getString();
+
+  SoReadError error;
+  error.setDebugString(buffer.str());
   error.handleError();
 }
 
