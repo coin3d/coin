@@ -56,6 +56,8 @@
 #include <Inventor/elements/SoComplexityTypeElement.h>
 #include <Inventor/elements/SoComplexityElement.h>
 #include <Inventor/elements/SoCreaseAngleElement.h>
+#include <Inventor/elements/SoGLTexture3EnabledElement.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/misc/SoGlyph.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/misc/SoNormalGenerator.h>
@@ -457,15 +459,28 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
 {
   int i, n = this->widths.getLength();
 
-  // FIXME: not in use (yet?). 20000525 mortene.
-  //  SbBool doTextures = SoGLTextureEnabledElement::get(state);
-  //  SbBool do3DTextures = SoGLTexture3EnabledElement::get(state);
-
   int firstprofile = -1;
   int32_t profnum;
   SbVec2f *profcoords;
   float nearz =  FLT_MAX;
   float farz  = -FLT_MAX;
+
+  SbBool do2Dtextures = FALSE;
+  SbBool do3Dtextures = FALSE;
+  if (SoGLTextureEnabledElement::get(state)) do2Dtextures = TRUE;
+  else if (SoGLTexture3EnabledElement::get(state)) do3Dtextures = TRUE;
+
+  // FIXME: implement proper support for 3D-texturing, and get rid of
+  // this. (20031010 handegar)
+  if (do3Dtextures) {
+    static SbBool first = TRUE;
+    if (first) {
+      first = FALSE;
+      SoDebugError::postWarning("SoText3::GLRender",
+                                "3D-textures not properly supported for this node type yet.");
+    }
+  }
+
 
   const SoNodeList & profilenodes = SoProfileElement::get(state);
   int numprofiles = profilenodes.getLength();
@@ -540,7 +555,7 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
         while (*ptr >= 0) {
           SbVec2f v0, v1, v2;
           float zval;
-          if (part == SoText3::FRONT) {
+          if (part == SoText3::FRONT) {         
             glNormal3f(0.0f, 0.0f, 1.0f);
             v0 = coords[*ptr++];
             v1 = coords[*ptr++];
@@ -554,9 +569,16 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
             v0 = coords[*ptr++];
             zval = farz;
           }
+          if(do2Dtextures)
+            glTexCoord2f(v0[0], v0[1]);           
           glVertex3f(v0[0] * fontspec->size + xpos, v0[1] * fontspec->size + ypos, zval);
+          if(do2Dtextures)
+            glTexCoord2f(v1[0], v1[1]);                       
           glVertex3f(v1[0] * fontspec->size + xpos, v1[1] * fontspec->size + ypos, zval);
+          if(do2Dtextures)
+            glTexCoord2f(v2[0], v2[1]);           
           glVertex3f(v2[0] * fontspec->size + xpos, v2[1] * fontspec->size + ypos, zval);
+
         }
 
         glEnd();
@@ -575,22 +597,12 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
 
             v0 = coords[*ptr++];
             v1 = coords[*ptr++];
-
             const int * ccw = (int *) cc_glyph3d_getnextccwedge(glyph, counter);
             const int * cw  = (int *) cc_glyph3d_getnextcwedge(glyph, counter);
             SbVec3f vleft(coords[*(ccw+1)][0], coords[*(ccw+1)][1], 0);
             SbVec3f vright(coords[*cw][0], coords[*cw][1], 0);
             counter++;
-           
-            v0[0] = v0[0] * fontspec->size + xpos;
-            v0[1] = v0[1] * fontspec->size + ypos;
-            v1[0] = v1[0] * fontspec->size + xpos;
-            v1[1] = v1[1] * fontspec->size + ypos;
-            vleft[0] = vleft[0] * fontspec->size + xpos;
-            vleft[1] = vleft[1] * fontspec->size + ypos;
-            vright[0] = vright[0] * fontspec->size + xpos;
-            vright[1] = vright[1] * fontspec->size + ypos;
-
+                      
             // create two 'normal' vectors pointing out from the edges
             SbVec3f normala(vleft[0] - v0[0], vleft[1] - v0[1], 0.0f);
             normala = normala.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
@@ -611,23 +623,46 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
                 normala.normalize();
               flatshading = TRUE;
             }
-
+          
             if (!flatshading) {
+              if(do2Dtextures)
+                glTexCoord2f(v1[0], v1[1]);   
               glNormal3fv(normala.getValue());
-              glVertex3f(v1[0], v1[1], 0.0f);          
+              glVertex3f(v1[0]*fontspec->size + xpos, v1[1]*fontspec->size, 0.0f);     
+
+              if(do2Dtextures)
+                glTexCoord2f(v0[0], v0[1]);   
               glNormal3fv(normalb.getValue());
-              glVertex3f(v0[0], v0[1], 0.0f);
+              glVertex3f(v0[0]*fontspec->size + xpos, v0[1]*fontspec->size + ypos, 0.0f);
+
+              if(do2Dtextures)
+                 glTexCoord2f(v0[0], v0[1]);   
               glNormal3fv(normalb.getValue());
-              glVertex3f(v0[0], v0[1], -1.0f);
+              glVertex3f(v0[0]*fontspec->size + xpos, v0[1]*fontspec->size + ypos, -1.0f);
+
+              if(do2Dtextures)
+                glTexCoord2f(v1[0], v1[1]);
               glNormal3fv(normala.getValue());
-              glVertex3f(v1[0], v1[1], -1.0f);
+              glVertex3f(v1[0]*fontspec->size + xpos, v1[1]*fontspec->size + ypos, -1.0f);
+
             }
             else {
               glNormal3fv(normala.getValue());
-              glVertex3f(v1[0], v1[1], 0.0f);          
-              glVertex3f(v0[0], v0[1], 0.0f);
-              glVertex3f(v0[0], v0[1], -1.0f);
-              glVertex3f(v1[0], v1[1], -1.0f);
+              if(do2Dtextures)
+                glTexCoord2f(v1[0], v1[1]);   
+              glVertex3f(v1[0]*fontspec->size + xpos, v1[1]*fontspec->size + ypos, 0.0f);          
+
+              if(do2Dtextures)
+                glTexCoord2f(v0[0], v0[1]); 
+              glVertex3f(v0[0]*fontspec->size + xpos, v0[1]*fontspec->size + ypos, 0.0f);
+
+              if(do2Dtextures)
+                glTexCoord2f(v0[0], v0[1]);
+              glVertex3f(v0[0]*fontspec->size + xpos, v0[1]*fontspec->size + ypos, -1.0f);
+
+              if(do2Dtextures)
+                glTexCoord2f(v1[0], v1[1]);   
+              glVertex3f(v1[0]*fontspec->size + xpos, v1[1]*fontspec->size + ypos, -1.0f);
             }
           }
           glEnd();
@@ -722,8 +757,7 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
             }
             
           }
-          
-    
+              
           normalgenerator->generate(SoCreaseAngleElement::get(state));
           const SbVec3f * normals = normalgenerator->getNormals();          
           const int size = vertexlist.getLength();
@@ -739,10 +773,15 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
 
           glBegin(GL_TRIANGLES);         
           for (int z = 0;z < size;z += 3) {
+
+            // FIXME: Add proper texturing for profile
+            // coords. (20031010 handegar)
+
             glNormal3fv(normals[z].getValue());
             glVertex3fv(SbVec3f(vertexlist[z][0] + xpos, 
                                 vertexlist[z][1] + ypos, 
                                 vertexlist[z][2]).getValue());
+
             glNormal3fv(normals[z+1].getValue());
             glVertex3fv(SbVec3f(vertexlist[z+1][0] + xpos, 
                                 vertexlist[z+1][1] + ypos, 
@@ -1197,7 +1236,6 @@ SoText3P::setUpGlyphs(SoState * state, const cc_font_specification * fontspec, S
       prevglyph = glyph;
 
     }
-
 
     // Italic font might cause last letter to be outside bbox. Add width if needed.
     if (advancex < cc_glyph3d_getwidth(prevglyph)) 
