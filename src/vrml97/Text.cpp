@@ -413,7 +413,7 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
         v0 = coords[*ptr++];
         v1 = coords[*ptr++];
         v2 = coords[*ptr++];
-
+        
         if (do2Dtextures) {
           glTexCoord2f(v0[0], v0[1]);
         }
@@ -934,10 +934,12 @@ SoVRMLTextP::setUpGlyphs(SoState * state, SoVRMLText * textnode)
       prevglyph = glyph;
           
     }
-    
-    // Italic font might cause last letter to be outside bbox. Add width if needed.
-    if (advancex < cc_glyph3d_getwidth(prevglyph)) 
-      stringwidth += (cc_glyph3d_getwidth(prevglyph) - advancex);
+
+    if (prevglyph != NULL) {
+      // Italic font might cause last letter to be outside bbox. Add width if needed.
+      if (advancex < cc_glyph3d_getwidth(prevglyph)) 
+        stringwidth += (cc_glyph3d_getwidth(prevglyph) - advancex);
+    }      
 
     this->glyphwidths.append(stringwidth);
   }

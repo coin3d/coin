@@ -582,9 +582,11 @@ SoAsciiTextP::setUpGlyphs(SoState * state, const cc_font_specification * fontspe
       prevglyph = glyph;
     }
 
-    // Italic font might cause last letter to be outside bbox. Add width if needed.
-    if (advancex < cc_glyph3d_getwidth(prevglyph)) 
-      stringwidth += (cc_glyph3d_getwidth(prevglyph) - advancex) * fontspec->size;
+    if (prevglyph != NULL) {
+      // Italic font might cause last letter to be outside bbox. Add width if needed.
+      if (advancex < cc_glyph3d_getwidth(prevglyph)) 
+        stringwidth += (cc_glyph3d_getwidth(prevglyph) - advancex) * fontspec->size;
+    }
 
     this->stringwidths.append(stringwidth);
   }

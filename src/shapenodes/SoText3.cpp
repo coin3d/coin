@@ -273,7 +273,7 @@ SoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 
   // check profiles and extend bounding box if necessary
   float profsize = 0;
-  float minz = 0.0f, maxz = 0.0f;
+  float minz = -1.0f, maxz = 0.0f;
   
   const SoNodeList profilenodes = SoProfileElement::get(state);
   int numprofiles = profilenodes.getLength();
@@ -626,7 +626,7 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
               if(do2Dtextures)
                 glTexCoord2f(v1[0], v1[1]);   
               glNormal3fv(normala.getValue());
-              glVertex3f(v1[0]*fontspec->size + xpos, v1[1]*fontspec->size, 0.0f);     
+              glVertex3f(v1[0]*fontspec->size + xpos, v1[1]*fontspec->size + ypos, 0.0f);     
 
               if(do2Dtextures)
                 glTexCoord2f(v0[0], v0[1]);   
@@ -1235,9 +1235,11 @@ SoText3P::setUpGlyphs(SoState * state, const cc_font_specification * fontspec, S
 
     }
 
-    // Italic font might cause last letter to be outside bbox. Add width if needed.
-    if (advancex < cc_glyph3d_getwidth(prevglyph)) 
-      stringwidth += (cc_glyph3d_getwidth(prevglyph) - advancex) * fontspec->size;
+    if (prevglyph != NULL) {
+      // Italic font might cause last letter to be outside bbox. Add width if needed.
+      if (advancex < cc_glyph3d_getwidth(prevglyph)) 
+        stringwidth += (cc_glyph3d_getwidth(prevglyph) - advancex) * fontspec->size;
+    }
 
     this->widths.append(stringwidth);
   }
