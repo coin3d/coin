@@ -407,8 +407,11 @@ SoTabPlaneDragger::reallyAdjustScaleTabSize(SoGLRenderAction *action)
       SbVec3f t;
       toworld.getTransform(t, r, scale, so);
     }
-    sizex /= scale[0];
-    sizey /= scale[1];
+
+    // Take absolute value to allow scales to be negative (which is a
+    // common trick when e.g. using a left-handed coordinate system).
+    sizex = (float)fabs(sizex / scale[0]);
+    sizey = (float)fabs(sizey / scale[1]);
   }
 
   if (sizex == this->prevsizex && this->prevsizey == sizey) return;
