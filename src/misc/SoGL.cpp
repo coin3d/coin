@@ -3885,7 +3885,6 @@ sogl_render_pointset_m1n1t1(const SoGLCoordinateElement * coords,
                             int32_t numpts,
                             int32_t idx)
 {
-  int matnr = 0;
   int texnr = 0;
   const SbVec3f currnormal(0.0f,0.0f,1.0f);
 
