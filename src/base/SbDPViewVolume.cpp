@@ -770,7 +770,7 @@ SbDPViewVolume::ortho(double left, double right,
 */
 void
 SbDPViewVolume::perspective(double fovy, double aspect,
-                          double nearval, double farval)
+                            double nearval, double farval)
 {
 #if COIN_DEBUG
   if (fovy<0.0f || fovy > M_PI) {
@@ -781,12 +781,14 @@ SbDPViewVolume::perspective(double fovy, double aspect,
     else if (fovy>M_PI) fovy=M_PI;
   }
 
+#if 0 // obsoleted 2003-02-03 pederb. A negative aspect ratio is ok
   if (aspect<0.0f) {
     SoDebugError::postWarning("SbDPViewVolume::perspective",
                               "Aspect ratio 'aspect' (%d) should be >=0.0f. "
                               "Clamping to 0.0f.",aspect);
     aspect=0.0f;
   }
+#endif // obsoleted
 
   if (nearval>farval) {
     SoDebugError::postWarning("SbDPViewVolume::perspective",
@@ -1134,6 +1136,48 @@ SbDPViewVolume::getViewVolumePlanes(SbPlane planes[6]) const
   planes[3] = SbPlane(f_near_ur, f_ulf, f_far_ul); // top
   planes[4] = SbPlane(f_ulf, f_near_ur, f_lrf); // near
   planes[5] = SbPlane(f_far_ll, f_far_lr, f_far_ur); // far
+
+  // check for inverted view volume (negative aspectRatio)
+  if (!planes[0].isInHalfSpace(f_lrf)) {
+    SbVec3f n;
+    float D;
+
+    n = planes[0].getNormal();
+    D = planes[0].getDistanceFromOrigin();    
+    planes[0] = SbPlane(-n, -D);
+
+    n = planes[2].getNormal();
+    D = planes[2].getDistanceFromOrigin();    
+    planes[2] = SbPlane(-n, -D);
+  }
+  if (!planes[1].isInHalfSpace(f_near_ur)) {
+    SbVec3f n;
+    float D;
+
+    n = planes[1].getNormal();
+    D = planes[1].getDistanceFromOrigin();    
+    planes[1] = SbPlane(-n, -D);
+
+    n = planes[3].getNormal();
+    D = planes[3].getDistanceFromOrigin();    
+    planes[3] = SbPlane(-n, -D);
+    
+  }
+
+  if (!planes[4].isInHalfSpace(f_far_ll)) {
+    SbVec3f n;
+    float D;
+
+    n = planes[4].getNormal();
+    D = planes[4].getDistanceFromOrigin();    
+    planes[4] = SbPlane(-n, -D);
+
+    n = planes[5].getNormal();
+    D = planes[5].getDistanceFromOrigin();    
+    planes[5] = SbPlane(-n, -D);
+    
+  }
+
 }
 
 /*!
