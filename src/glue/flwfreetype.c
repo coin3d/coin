@@ -21,23 +21,55 @@
  *
 \**************************************************************************/
 
-#include <string.h>
+#include <Inventor/C/glue/flwfreetype.h>
 #include <stdlib.h>
 #include <assert.h>
+
+#ifndef HAVE_FREETYPE
+
+// Dummy versions of all functions. Only cc_flwft_initialize() and
+// cc_flwft_exit() will be used from generic wrapper.
+
+SbBool cc_flwft_initialize(void) { return FALSE; }
+void cc_flwft_exit(void) { }
+
+void * cc_flwft_get_font(const char * fontname) { assert(FALSE); return NULL; }
+cc_string * cc_flwft_get_font_name(void * font) { assert(FALSE); return NULL; }
+cc_string * cc_flwft_get_font_style(void * font) { assert(FALSE); return NULL; }
+void cc_flwft_done_font(void * font) { assert(FALSE); }
+
+int cc_flwft_get_num_charmaps(void * font) { assert(FALSE); return 0; }
+cc_string * cc_flwft_get_charmap_name(void * font, int charmap) { assert(FALSE); return NULL; }
+int cc_flwft_set_charmap(void * font, int charmap) { assert(FALSE); return 0; }
+
+int cc_flwft_set_char_size(void * font, int width, int height) { assert(FALSE); return 0; }
+int cc_flwft_set_font_rotation(void * font, float angle) { assert(FALSE); return 0; }
+  
+cc_FLWglyph cc_flwft_get_glyph(void * font, unsigned int charidx) { assert(FALSE); return 0; }
+int cc_flwft_get_advance(void * font, cc_FLWglyph glyph, float *x, float *y) { assert(FALSE); return 0; }
+int cc_flwft_get_kerning(void * font, cc_FLWglyph glyph1, cc_FLWglyph glyph2, float *x, float *y) { assert(FALSE); return 0; }
+void cc_flwft_done_glyph(void * font, cc_FLWglyph glyph) { assert(FALSE); }
+  
+cc_FLWbitmap * cc_flwft_get_bitmap(void * font, cc_FLWglyph glyph) { assert(FALSE); return NULL; }
+int cc_flwft_get_outline(void * font, cc_FLWglyph glyph) { assert(FALSE); return 0; }
+
+#else // HAVE_FREETYPE
+
+#include <string.h>
 #include <math.h>
 #include <stdio.h>
 #include <stddef.h>
 
-#include <Inventor/C/tidbits.h>
-#include <Inventor/C/errors/debugerror.h>
-#include <Inventor/C/glue/flwfreetype.h>
-#include <Inventor/C/base/string.h>
 #include <ft2build.h>
 /* FIXME: FT build macros don't work for MSVC dsp builds. preng 2003-03-11
  * #include FT_FREETYPE_H
  * #include FT_GLYPH_H */
 #include <freetype/freetype.h>
 #include <freetype/ftglyph.h>
+
+#include <Inventor/C/tidbits.h>
+#include <Inventor/C/errors/debugerror.h>
+#include <Inventor/C/base/string.h>
 
 /* workaround for freetype < 2.1 */
 #if FREETYPE_MAJOR == 2 && FREETYPE_MINOR < 1
@@ -395,3 +427,5 @@ cc_flwft_get_outline(void * font, cc_FLWglyph glyph)
   if (cc_freetype_debug()) cc_debugerror_postinfo("cc_flwft_get_outline", "Function has not been implemented yet.\n");
   return 0;
 }
+
+#endif // HAVE_FREETYPE
