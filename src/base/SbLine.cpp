@@ -219,12 +219,33 @@ SbLine::getClosestPoints(const SbLine& line2,
 }
 
 /*!
-  Returns the point on the line which is closest to \a point.
+  Returns the point on the line which is closest to \a point:
+
+  \verbatim
+                      _
+               Q      D
+      SP x-----x------->
+          \    |
+           \   |
+            \  |
+             \ |
+              \|
+               x P
+  
+
+   P = argument point            _
+   SP = line starting point, and D = line direction of this line
+   Q = point to find and return from function
+
+  \endverbatim
+
+  The vector defined by \a point and the returned point will be normal
+  to the line.
 
   \sa getClosestPoints().
 */
 SbVec3f
-SbLine::getClosestPoint(const SbVec3f& point) const
+SbLine::getClosestPoint(const SbVec3f & point) const
 {
   //
   //             Q      D
