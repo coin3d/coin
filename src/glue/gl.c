@@ -2386,6 +2386,7 @@ cc_glglue_glGetBufferPointerv(const cc_glglue * glue,
 SbBool 
 cc_glglue_can_do_bumpmapping(const cc_glglue * glue)
 {
+  if (!glglue_allow_newer_opengl(glue)) return FALSE;
   return glue->can_do_bumpmapping;
 }
 
