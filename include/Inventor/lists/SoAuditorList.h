@@ -69,7 +69,7 @@ private:
   int find(const void *) const { return -1; }
   void insert(const void *, const int) { }
   void removeFast(const int) { }
-  void truncate(const int length, const int fit = 0) { }
+  void truncate(const int, const int = 0) { }
   void push(const void *) { }
   void * pop(void) { return NULL; }
   SbPList & operator=(const SbPList &) { return *this; }
