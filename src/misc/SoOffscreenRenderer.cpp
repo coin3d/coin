@@ -62,7 +62,7 @@ public:
 
   virtual void setBufferSize(const SbVec2s & size) {
     SbVec2s maxsize = SoOffscreenRenderer::getMaximumResolution();
-    
+
 #if COIN_DEBUG
     if (size[0] > maxsize[0]) {
       SoDebugError::postWarning("SoOffscreenMesaData::setBufferSize",
@@ -210,14 +210,36 @@ SoOffscreenRenderer::getScreenPixelsPerInch(void)
 SbVec2s
 SoOffscreenRenderer::getMaximumResolution(void)
 {
+#if HAVE_OSMESACREATECONTEXT
+  // Create and set up a dummy context to be able to use
+  // glGetIntegerv() below.
+  OSMesaContext tmpctx = OSMesaCreateContext(OSMESA_RGBA, NULL);
+
+  if (!tmpctx) {
+#if COIN_DEBUG
+    SoDebugError::postWarning("SoOffscreenRenderer::getMaximumResolution",
+                              "couldn't create context");
+#endif // COIN_DEBUG
+    return SbVec2s(1, 1);
+  }
+
+  const int dummydim = 16;
+  unsigned char buffer[4 * dummydim * dummydim];
+  OSMesaMakeCurrent(tmpctx, buffer, GL_UNSIGNED_BYTE, dummydim, dummydim);
+
   GLint dims[2];
   glGetIntegerv(GL_MAX_VIEWPORT_DIMS, dims);
+
+  OSMesaDestroyContext(tmpctx);
 
   // Avoid overflow.
   dims[0] = SbMin(dims[0], 32767);
   dims[1] = SbMin(dims[1], 32767);
 
   return SbVec2s((short)dims[0], (short)dims[1]);
+#endif // HAVE_OSMESACREATECONTEXT
+
+  return SbVec2s(1280, 1024);
 }
 
 /*!
