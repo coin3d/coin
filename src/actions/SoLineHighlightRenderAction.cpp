@@ -301,6 +301,7 @@ SoLineHighlightRenderActionP::drawBoxes(SoPath * pathtothis,
   SoOverrideElement::setDiffuseColorOverride(state, NULL, TRUE);
   SoOverrideElement::setLineWidthOverride(state, NULL, TRUE);
   SoOverrideElement::setLinePatternOverride(state, NULL, TRUE);
+  SoOverrideElement::setDrawStyleOverride(state, NULL, TRUE);
   SoTextureOverrideElement::setQualityOverride(state, TRUE);
 
   for (i = 0; i < pathlist->getLength(); i++) {
