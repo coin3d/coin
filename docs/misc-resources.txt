@@ -199,3 +199,6 @@ THE LINKS
   <URL:http://developer.kde.org/~sewardj>).
 
 * TrueType Fonts with very liberal licensing: <URL:http://fonts.tom7.com/>
+
+* Volume rendering publications / papers:
+  - <URL:http://www.sigchi.acm.org/pubs/contents/proceedings/volvis/353888/>
