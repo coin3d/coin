@@ -205,7 +205,7 @@ public:
   int currentsubscreen;
   SbBool mustusesubscreens;
   SbBool lastnodewasacamera;
-  SoCamera *visitedcamera;
+  SoCamera * visitedcamera;
 
 };
 
@@ -566,9 +566,9 @@ SoGLRenderAction::AbortCode
 SoOffscreenRendererP::subscreenAbortCallback(void *userData)
 {
 
-  SoOffscreenRendererP *thisp = (SoOffscreenRendererP *) userData;
-  const SoFullPath *path = (const SoFullPath*) thisp->renderaction->getCurPath();
-  SoNode *node = path->getTail();
+  SoOffscreenRendererP * thisp = (SoOffscreenRendererP *) userData;
+  const SoFullPath * path = (const SoFullPath*) thisp->renderaction->getCurPath();
+  SoNode * node = path->getTail();
 
   if(thisp->lastnodewasacamera){
     thisp->setSubscreenCameraPosition(thisp->currentsubscreen, thisp->visitedcamera);
@@ -1541,7 +1541,7 @@ SoOffscreenRendererP::pasteSubscreen(int renderpass)
   int subscreenposx = renderpass - subscreenposy*this->numsubscreens[0];
   
   int suboffset = 0;
-  int offset = subscreenposx*subscreensize[0]*depth + (numsubscreens[1]-subscreenposy-1) * (subscreensize[1]*subscreensize[0]*numsubscreens[0]) * depth;
+  int offset = (subscreenposx*subscreensize[0] + (numsubscreens[1]-subscreenposy-1)*(subscreensize[1]*subscreensize[0]*numsubscreens[0])) * depth;
   
   const int linelen = this->subscreensize[0]*depth;
   const int offsetinc = (this->numsubscreens[0]*this->subscreensize[0])*depth;

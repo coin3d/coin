@@ -344,7 +344,7 @@ SoOffscreenGLXData::getMaxDimensions(void)
 
 #if 1
   return SbVec2s(2048,2048);
-#else // Shrink offscreen capacities for testing and debugging (handegar)
+#else // Shrink the offscreen capacity for testing and debugging (handegar)
   return SbVec2s(640/2+3,480/7+11); 
 #endif
 }
