@@ -83,7 +83,7 @@ extern "C" {
   /* This define is set up in the simage_wrapper.c file, according to
      whether or not we link static at compile-time or dynamic at
      run-time to the simage library. */
-#ifndef SIMAGEWRAPPER_ASSUME_SIMAGE
+#if !defined(SIMAGEWRAPPER_ASSUME_SIMAGE)
   /* This wrapping of the enum and typedefs is necessary to avoid
      multiple definitions (they are copy'n'pasted from the simage.h
      header file). */
@@ -98,6 +98,10 @@ extern "C" {
   };
 
   typedef struct simage_parameters_s s_params;
+#endif
+
+  /* Streams implementation was added for simage v1.4. */
+#if !defined(SIMAGEWRAPPER_ASSUME_SIMAGE) || !defined(SIMAGE_VERSION_1_4)
   typedef struct simage_stream_s s_stream;
 #endif
 
