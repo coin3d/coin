@@ -115,6 +115,11 @@ SoOneShot::SoOneShot(void)
   SO_ENGINE_ADD_OUTPUT(isActive, SoSFBool);
   SO_ENGINE_ADD_OUTPUT(ramp, SoSFFloat);
 
+  SO_ENGINE_DEFINE_ENUM_VALUE(Flags, RETRIGGERABLE);
+  SO_ENGINE_DEFINE_ENUM_VALUE(Flags, HOLD_FINAL);
+  SO_ENGINE_SET_SF_ENUM_TYPE(flags, Flags);
+
+
   SoField * realtime = SoDB::getGlobalField("realTime");
   this->timeIn.connectFrom(realtime);
 
