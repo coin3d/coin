@@ -285,7 +285,7 @@ fontstruct_rmfont(int font)
 static struct cc_flw_font *
 flw_fontidx2fontptr(int fontidx)
 {
-  struct cc_flw_font * fs;
+  struct cc_flw_font * fs = NULL;
   int i, n;
 
   n = (int) cc_dynarray_length(fontarray);
@@ -458,10 +458,12 @@ cc_flw_ref_font(int fontid)
   n = (int) cc_dynarray_length(fontarray);
   for (i = 0; i < n; i++) {
     fs = (struct cc_flw_font *)cc_dynarray_get(fontarray, i);
-    if (fs->fontindex == fontid) break;
+    if (fs->fontindex == fontid) {
+      fs->refcount++;
+      break;
+    }
   }
   assert(i < n);
-  fs->refcount++;
   FLW_MUTEX_UNLOCK(flw_global_lock);
 }
 
@@ -476,22 +478,22 @@ cc_flw_unref_font(int fontid)
   n = (int) cc_dynarray_length(fontarray);
   for (i = 0; i < n; i++) {
     fs = (struct cc_flw_font *)cc_dynarray_get(fontarray, i);
-    if (fs->fontindex == fontid) break;
+    if (fs->fontindex == fontid) {
+      fs->refcount--;
+      if (fs->refcount == 0) {
+        /* fprintf(stderr,"unref font: %s\n", cc_string_get_text(fs->requestname)); */
+        if (win32api) {
+          if (!fs->defaultfont) { cc_flww32_done_font(fs->font); }
+        }
+        else if (freetypelib) {
+          if (!fs->defaultfont) { cc_flwft_done_font(fs->font); }
+        }
+        fontstruct_rmfont(fontid);
+      }
+      break;
+    }
   }
   assert(i < n);
-  fs->refcount--;
-  if (fs->refcount == 0) {
-    /* fprintf(stderr,"unref font: %s\n", cc_string_get_text(fs->requestname)); */
-    
-    if (win32api) {
-      if (!fs->defaultfont) { cc_flww32_done_font(fs->font); }
-    }
-    else if (freetypelib) {
-      if (!fs->defaultfont) { cc_flwft_done_font(fs->font); }
-    }
-    fontstruct_rmfont(fontid);
-  }
-
   FLW_MUTEX_UNLOCK(flw_global_lock);
 }
 
