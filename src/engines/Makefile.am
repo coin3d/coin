@@ -88,14 +88,13 @@ PrivateHeaders = \
 # Don't use the explicit rules, they will just confuse users on
 # systems without flex and/or bison. 20000606 mortene.
 
-#BUILT_SOURCES = $(top_srcdir)/src/engines/lex.so_eval.c $(top_srcdir)/src/engines/evaluator.tab.c
+#BUILT_SOURCES = $(srcdir)/lex.so_eval.c $(srcdir)/evaluator.tab.c
 
-#$(top_srcdir)/src/engines/lex.so_eval.c: $(top_srcdir)/src/engines/evaluator.l
-#	flex -o$(top_srcdir)/src/engines/lex.so_eval.c -L $(top_srcdir)/src/engines/evaluator.l
+#$(srcdir)/lex.so_eval.c: $(srcdir)/evaluator.l
+#	flex -o$(srcdir)/lex.so_eval.c -L $(srcdir)/evaluator.l
 
-#$(top_srcdir)/src/engines/evaluator_tab.c: $(top_srcdir)/src/engines/lex.so_eval.c $(top_srcdir)/src/engines/evaluator.y
-#	bison -p so_eval -o $(top_srcdir)/src/engines/evaluator_tab.c -l $(top_srcdir)/src/engines/evaluator.y
-
+#$(srcdir)/evaluator_tab.c: $(srcdir)/lex.so_eval.c $(srcdir)/evaluator.y
+#	bison -p so_eval -o $(srcdir)/evaluator_tab.c -l $(srcdir)/evaluator.y
 
 ##$ BEGIN TEMPLATE Make-Common(engines)
 
