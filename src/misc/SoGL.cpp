@@ -53,19 +53,6 @@
 #include <Inventor/system/gl.h>
 #include <GLUWrapper.h>
 
-#if GL_VERSION_1_1
-#elif GL_EXT_polygon_offset
-static int polygonOffsetEXT;
-#endif
-#if GL_VERSION_1_1
-#elif GL_EXT_texture_object
-static int textureObjectEXT;
-#endif
-#if GL_VERSION_1_1
-#elif GL_EXT_vertex_array
-static int vertexArrayEXT;
-#endif
-
 // generate a 3d circle in the x-z plane
 static void
 sogl_generate_3d_circle(SbVec3f *coords, const int num, const float radius, const float y)
