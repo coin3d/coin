@@ -45,8 +45,8 @@
 /*!
   \fn SoListenerPositionElement::position
 
-  The position of the listener. Can be set by the SoListener class or the
-  SoCamera class.
+  The position of the listener in world space. Can be set by the 
+  SoListener class or the SoCamera class.
 */
 
 SO_ELEMENT_SOURCE(SoListenerPositionElement);
