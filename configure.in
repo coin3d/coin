@@ -312,5 +312,5 @@ AC_OUTPUT(include/Makefile include/Inventor/Makefile \
 	src/errors/Makefile src/events/Makefile src/fields/Makefile \
 	src/misc/Makefile src/lists/Makefile src/nodekits/Makefile \
 	src/nodes/Makefile src/projectors/Makefile src/sensors/Makefile \
-	src/system/Makefile \
+	src/system/Makefile src/details/Makefile \
 	examples/Makefile examples/ivcat/Makefile)

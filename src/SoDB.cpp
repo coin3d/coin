@@ -73,6 +73,9 @@
 #if !defined(COIN_EXCLUDE_SOCONVERTALL)
 #include <Inventor/engines/SoConvertAll.h>
 #endif // !COIN_EXCLUDE_SOCONVERTALL
+#if !defined(COIN_EXCLUDE_SODETAIL)
+#include <Inventor/details/SoDetail.h>
+#endif // !COIN_EXCLUDE_SODETAIL
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -193,6 +196,10 @@ SoDB::init(void)
 #if !defined(COIN_EXCLUDE_SOEVENT)
   SoEvent::initClass();
 #endif // !COIN_EXCLUDE_SOEVENT
+#if !defined(COIN_EXCLUDE_SODETAIL)
+  SoDetail::initClass();
+#endif // !COIN_EXCLUDE_SODETAIL
+
 
   // Register all valid file format headers.
   SoDB::registerHeader(SbString("#Inventor V2.1 ascii   "), FALSE, 2.1f,

@@ -88,10 +88,10 @@ VERSION = @VERSION@
 lib_LTLIBRARIES = libCoin.la
 @HACKING_DYNAMIC_MODULES_TRUE@TESTLIBDIR = coindev
 @HACKING_DYNAMIC_MODULES_FALSE@TESTLIBDIR = 
-@HACKING_DYNAMIC_MODULES_TRUE@libCoin_la_LIBADD = -lcoindevLINKHACK 	-lVRMLnodesLINKHACK -lactionsLINKHACK -lcoinbaseLINKHACK 	-lbundlesLINKHACK -lcachesLINKHACK -lelementsLINKHACK 	-lenginesLINKHACK -lerrorsLINKHACK -leventsLINKHACK -lfieldsLINKHACK 	-lmiscLINKHACK -llistsLINKHACK -lnodekitsLINKHACK -lnodesLINKHACK 	-lprojectorsLINKHACK -lsensorsLINKHACK
-@HACKING_DYNAMIC_MODULES_FALSE@libCoin_la_LIBADD = 	VRMLnodes/libVRMLnodes.la actions/libactions.la base/libcoinbase.la 	bundles/libbundles.la caches/libcaches.la elements/libelements.la 	engines/libengines.la errors/liberrors.la events/libevents.la 	fields/libfields.la misc/libmisc.la lists/liblists.la 	nodekits/libnodekits.la nodes/libnodes.la projectors/libprojectors.la 	sensors/libsensors.la
+@HACKING_DYNAMIC_MODULES_TRUE@libCoin_la_LIBADD = -lcoindevLINKHACK 	-lVRMLnodesLINKHACK -lactionsLINKHACK -lcoinbaseLINKHACK 	-lbundlesLINKHACK -lcachesLINKHACK -lelementsLINKHACK 	-lenginesLINKHACK -lerrorsLINKHACK -leventsLINKHACK -lfieldsLINKHACK 	-lmiscLINKHACK -llistsLINKHACK -lnodekitsLINKHACK -lnodesLINKHACK 	-lprojectorsLINKHACK -lsensorsLINKHACK -ldetailsLINKHACK
+@HACKING_DYNAMIC_MODULES_FALSE@libCoin_la_LIBADD = 	VRMLnodes/libVRMLnodes.la actions/libactions.la base/libcoinbase.la 	bundles/libbundles.la caches/libcaches.la elements/libelements.la 	engines/libengines.la errors/liberrors.la events/libevents.la 	fields/libfields.la misc/libmisc.la lists/liblists.la 	nodekits/libnodekits.la nodes/libnodes.la projectors/libprojectors.la 	sensors/libsensors.la details/libdetails.la
 
-SUBDIRS = $(TESTLIBDIR) 	VRMLnodes actions base bundles caches elements engines errors events 	fields misc lists nodekits nodes projectors sensors system .
+SUBDIRS = $(TESTLIBDIR) 	VRMLnodes actions base bundles caches details elements engines errors 	events fields misc lists nodekits nodes projectors sensors system .
 
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
@@ -131,7 +131,8 @@ LIBS = @LIBS@
 @HACKING_DYNAMIC_MODULES_FALSE@nodekits/libnodekits.la \
 @HACKING_DYNAMIC_MODULES_FALSE@nodes/libnodes.la \
 @HACKING_DYNAMIC_MODULES_FALSE@projectors/libprojectors.la \
-@HACKING_DYNAMIC_MODULES_FALSE@sensors/libsensors.la
+@HACKING_DYNAMIC_MODULES_FALSE@sensors/libsensors.la \
+@HACKING_DYNAMIC_MODULES_FALSE@details/libdetails.la
 libCoin_la_OBJECTS =  SoDB.lo SoFullPath.lo SoImageInterface.lo \
 SoInput.lo SoInteraction.lo SoOutput.lo SoPath.lo SoPickedPoint.lo \
 SoPrimitiveVertex.lo SoSceneManager.lo SoType.lo
@@ -154,9 +155,9 @@ DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 
 TAR = gtar
 GZIP_ENV = --best
-DIST_SUBDIRS =  coindev VRMLnodes actions base bundles caches elements \
-engines errors events fields misc lists nodekits nodes projectors \
-sensors system .
+DIST_SUBDIRS =  coindev VRMLnodes actions base bundles caches details \
+elements engines errors events fields misc lists nodekits nodes \
+projectors sensors system .
 DEP_FILES =  .deps/SoDB.P .deps/SoFullPath.P .deps/SoImageInterface.P \
 .deps/SoInput.P .deps/SoInteraction.P .deps/SoOutput.P .deps/SoPath.P \
 .deps/SoPickedPoint.P .deps/SoPrimitiveVertex.P .deps/SoSceneManager.P \
