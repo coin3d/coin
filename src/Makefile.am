@@ -55,7 +55,7 @@ libCoin_la_LIBADD = -lcoindevLINKHACK \
 	-lbundlesLINKHACK -lcachesLINKHACK -ldetailsLINKHACK \
 	-ldraggersLINKHACK -lelementsLINKHACK -lenginesLINKHACK \
 	-lerrorsLINKHACK -leventsLINKHACK -lfieldsLINKHACK -llistsLINKHACK \
-	-lmiscLINKHACK -lnodekitsLINKHACK -lnodesLINKHACK \
+	-lmanipsLINKHACK -lmiscLINKHACK -lnodekitsLINKHACK -lnodesLINKHACK \
 	-lprojectorsLINKHACK -lsensorsLINKHACK
 else
 TESTLIBDIR = 
@@ -65,14 +65,15 @@ libCoin_la_LIBADD = \
 	engines/libengines.la errors/liberrors.la events/libevents.la \
 	fields/libfields.la misc/libmisc.la lists/liblists.la \
 	nodekits/libnodekits.la nodes/libnodes.la projectors/libprojectors.la \
-	sensors/libsensors.la details/libdetails.la draggers/libdraggers.la
+	sensors/libsensors.la details/libdetails.la draggers/libdraggers.la \
+	manips/libmanips.la
 endif
 
 
 SUBDIRS = $(TESTLIBDIR) \
 	VRMLnodes actions base bundles caches details draggers elements \
-	engines errors events fields misc lists nodekits nodes projectors \
-	sensors system .
+	engines errors events fields manips misc lists nodekits nodes \
+	projectors sensors system .
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 

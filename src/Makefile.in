@@ -107,10 +107,10 @@ LIBTOOL = @LIBTOOL@ --silent
 lib_LTLIBRARIES = libCoin.la
 @HACKING_DYNAMIC_MODULES_TRUE@TESTLIBDIR = coindev
 @HACKING_DYNAMIC_MODULES_FALSE@TESTLIBDIR = 
-@HACKING_DYNAMIC_MODULES_TRUE@libCoin_la_LIBADD = -lcoindevLINKHACK 	-lVRMLnodesLINKHACK -lactionsLINKHACK -lbaseLINKHACK 	-lbundlesLINKHACK -lcachesLINKHACK -ldetailsLINKHACK 	-ldraggersLINKHACK -lelementsLINKHACK -lenginesLINKHACK 	-lerrorsLINKHACK -leventsLINKHACK -lfieldsLINKHACK -llistsLINKHACK 	-lmiscLINKHACK -lnodekitsLINKHACK -lnodesLINKHACK 	-lprojectorsLINKHACK -lsensorsLINKHACK
-@HACKING_DYNAMIC_MODULES_FALSE@libCoin_la_LIBADD = 	VRMLnodes/libVRMLnodes.la actions/libactions.la base/libbase.la 	bundles/libbundles.la caches/libcaches.la elements/libelements.la 	engines/libengines.la errors/liberrors.la events/libevents.la 	fields/libfields.la misc/libmisc.la lists/liblists.la 	nodekits/libnodekits.la nodes/libnodes.la projectors/libprojectors.la 	sensors/libsensors.la details/libdetails.la draggers/libdraggers.la
+@HACKING_DYNAMIC_MODULES_TRUE@libCoin_la_LIBADD = -lcoindevLINKHACK 	-lVRMLnodesLINKHACK -lactionsLINKHACK -lbaseLINKHACK 	-lbundlesLINKHACK -lcachesLINKHACK -ldetailsLINKHACK 	-ldraggersLINKHACK -lelementsLINKHACK -lenginesLINKHACK 	-lerrorsLINKHACK -leventsLINKHACK -lfieldsLINKHACK -llistsLINKHACK 	-lmanipsLINKHACK -lmiscLINKHACK -lnodekitsLINKHACK -lnodesLINKHACK 	-lprojectorsLINKHACK -lsensorsLINKHACK
+@HACKING_DYNAMIC_MODULES_FALSE@libCoin_la_LIBADD = 	VRMLnodes/libVRMLnodes.la actions/libactions.la base/libbase.la 	bundles/libbundles.la caches/libcaches.la elements/libelements.la 	engines/libengines.la errors/liberrors.la events/libevents.la 	fields/libfields.la misc/libmisc.la lists/liblists.la 	nodekits/libnodekits.la nodes/libnodes.la projectors/libprojectors.la 	sensors/libsensors.la details/libdetails.la draggers/libdraggers.la 	manips/libmanips.la
 
-SUBDIRS = $(TESTLIBDIR) 	VRMLnodes actions base bundles caches details draggers elements 	engines errors events fields misc lists nodekits nodes projectors 	sensors system .
+SUBDIRS = $(TESTLIBDIR) 	VRMLnodes actions base bundles caches details draggers elements 	engines errors events fields manips misc lists nodekits nodes 	projectors sensors system .
 
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
@@ -154,7 +154,8 @@ X_PRE_LIBS = @X_PRE_LIBS@
 @HACKING_DYNAMIC_MODULES_FALSE@projectors/libprojectors.la \
 @HACKING_DYNAMIC_MODULES_FALSE@sensors/libsensors.la \
 @HACKING_DYNAMIC_MODULES_FALSE@details/libdetails.la \
-@HACKING_DYNAMIC_MODULES_FALSE@draggers/libdraggers.la
+@HACKING_DYNAMIC_MODULES_FALSE@draggers/libdraggers.la \
+@HACKING_DYNAMIC_MODULES_FALSE@manips/libmanips.la
 libCoin_la_OBJECTS =  snprintf.lo
 CFLAGS = @CFLAGS@
 COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -171,8 +172,8 @@ DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 TAR = gtar
 GZIP_ENV = --best
 DIST_SUBDIRS =  coindev VRMLnodes actions base bundles caches details \
-draggers elements engines errors events fields misc lists nodekits \
-nodes projectors sensors system .
+draggers elements engines errors events fields manips misc lists \
+nodekits nodes projectors sensors system .
 DEP_FILES =  .deps/snprintf.P
 SOURCES = $(libCoin_la_SOURCES)
 OBJECTS = $(libCoin_la_OBJECTS)

@@ -3902,6 +3902,7 @@ trap 'rm -fr `echo "
 	src/errors/Makefile
 	src/events/Makefile
 	src/fields/Makefile
+	src/manips/Makefile
 	src/misc/Makefile
 	src/lists/Makefile
 	src/nodekits/Makefile
@@ -4055,6 +4056,7 @@ CONFIG_FILES=\${CONFIG_FILES-"Makefile
 	src/errors/Makefile
 	src/events/Makefile
 	src/fields/Makefile
+	src/manips/Makefile
 	src/misc/Makefile
 	src/lists/Makefile
 	src/nodekits/Makefile

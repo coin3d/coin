@@ -26,11 +26,13 @@
 
 #include <Inventor/SoInteraction.h>
 #include <Inventor/draggers/SoDragger.h>
+#include <Inventor/manips/SoClipPlaneManip.h>
 #include <Inventor/nodekits/SoInteractionKit.h>
 #include <Inventor/nodes/SoAntiSquish.h>
 #include <Inventor/nodes/SoExtSelection.h>
 #include <Inventor/nodes/SoSelection.h>
 #include <Inventor/nodes/SoSurroundScale.h>
+
 
 /*!
   FIXME: write doc
@@ -47,6 +49,7 @@ SoInteraction::init(void)
 
   SoDragger::initClass();
 
-  // FIXME: add init()-calls for the manipulator classes
-  // here when they are added to Coin. 19991107 mortene.
+  SoClipPlaneManip::initClass();
+  // FIXME: add init()-calls for the rest of manipulator classes here
+  // when they are added to Coin. 20000107 mortene.
 }

@@ -3,6 +3,7 @@
 # C - Source File Created [0.1]
 #
 # HIERARCHY
+#       SoClipPlaneManip
 #       SoTransformManip
 #               SoCenterballManip
 #               SoHandleBoxManip

@@ -306,6 +306,7 @@ AC_OUTPUT([
 	src/errors/Makefile
 	src/events/Makefile
 	src/fields/Makefile
+	src/manips/Makefile
 	src/misc/Makefile
 	src/lists/Makefile
 	src/nodekits/Makefile
