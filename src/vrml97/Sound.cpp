@@ -612,9 +612,12 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
       return;
     }
 #ifndef __APPLE__
-    // FIXME: For some reason, this fails on Mac OS 10.2. Not only
-    // do I get a warning, but sound does not work. Might be related
-    // to thammer's fixme above? 20030110 kyrah
+    // FIXME: This fails on Mac OS 10.2. According to thammer, this is
+    // due to a bug in OpenAL/Mac (according to their spec, setting
+    // AL_MIN_GAIN to 0 should be allowed, but in their implementation,
+    // it results in an error). Since we are only setting the gain to its 
+    // default value anyways, it's no problem to just leave this disabled 
+    // in here until they have fixed it... 20030113 kyrah
     alSourcef(PRIVATE(this)->sourceId, AL_MIN_GAIN, 0.0f); // default
     if ((error = alGetError()) != AL_NO_ERROR) {
       SoDebugError::postWarning("SoVRMLSound::audioRender",
