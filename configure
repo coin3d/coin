@@ -15384,7 +15384,7 @@ fi
 
 enable_vrml97=false
 
-if test -d src/extensions/vrml97; then
+if test -d ${srcdir}/src/extensions/vrml97; then
   enable_vrml97=true
 
 cat >>confdefs.h <<\EOF
