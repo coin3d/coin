@@ -109,6 +109,7 @@ SbNameEntry::cleanup(void)
     }
   }
   delete[] SbNameEntry::nameTable;
+  CC_MUTEX_DESTRUCT(SbNameEntry::mutex);
 }
 
 
