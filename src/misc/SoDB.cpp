@@ -887,6 +887,17 @@ SoDB::doSelect(int nfds, void * readfds, void * writefds,
   fd_set * rds = (fd_set *)readfds;
   fd_set * wds = (fd_set *)writefds;
   fd_set * eds = (fd_set *)exceptfds;
+  // FIXME: the winsock select() call is most likely incorrectly used here.
+  // What should be done (on Win32) is, for sockets to get waitable event
+  // handles by using WSAEventSelect, and for filehandles to get the handle
+  // (_get_osfhandle(fd)), and then use MsgWaitForMultipleObjectsEx() for
+  // waiting.  For fds that aren't sockets or filehandles; complain.
+  // Considering sockets at all should be determined on whether LoadLibrary       // finds the wsock32.dll or not.
+  // Someone experienced in Win32-programming ought to check this out and
+  // do proper testing (write a test-case) - I just picked up this info
+  // from this discussion:
+  // http://archive.develooper.com/perl-loop@perl.org/msg00398.html
+  // 20011002 larsa.
   return select(nfds, rds, wds, eds, usertimeout);
 #endif // __BEOS__
 }
