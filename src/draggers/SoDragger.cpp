@@ -895,14 +895,38 @@ SoDragger::appendRotation(const SbMatrix & matrix, const SbRotation & rot, const
   transform.setTranslate(-rotcenter);
   tmp.setRotate(rot);
   transform.multRight(tmp);
-  tmp.setTranslate(-rotcenter);
+  tmp.setTranslate(rotcenter);
   transform.multRight(tmp);
   if (conversion) {
     transform.multRight(*conversion);
     transform.multLeft(conversion->inverse());
   }
+#if 1 // this code should be used
   SbMatrix res = matrix;
   return res.multLeft(transform);
+#else // just testing something, ignore (pederb, 20000225)
+  SbRotation r, so;
+  SbVec3f t, s;
+  matrix.getTransform(t, r, s, so);
+  SbMatrix rotmatrix;
+  r.getValue(rotmatrix);
+  rotmatrix.multLeft(transform);
+  
+  SbMatrix res;
+  res.setRotate(so.inverse());
+
+  tmp.setScale(s);
+  res.multRight(tmp);
+
+  tmp.setRotate(so);
+  res.multRight(tmp);
+
+  res.multRight(rotmatrix);
+  
+  tmp.setTranslate(t);
+  res.multRight(tmp);
+  return res;
+#endif // test code
 }
 
 /*!
