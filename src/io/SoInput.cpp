@@ -100,19 +100,21 @@
 #endif // HAVE_SYS_TYPES_H
 #include <ctype.h>
 
+#include <Inventor/C/glue/zlib.h>
+#include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
+#include <Inventor/SbName.h>
+#include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoReadError.h>
-#include <Inventor/lists/SbStringList.h>
 #include <Inventor/fields/SoField.h>
-#include <coindefs.h> // COIN_STUB(), COIN_OBSOLETED()
-#include <Inventor/SoDB.h>
-#include <Inventor/SbName.h>
-#include <Inventor/nodes/SoNode.h>
+#include <Inventor/lists/SbStringList.h>
 #include <Inventor/misc/SoProto.h>
-#include <Inventor/C/tidbits.h>
-#include <Inventor/C/tidbitsp.h>
-#include <Inventor/C/glue/zlib.h>
+#include <Inventor/nodes/SoNode.h>
+#include <Inventor/threads/SbStorage.h>
+#include <coindefs.h> // COIN_STUB(), COIN_OBSOLETED()
+
 #include "SoInput_FileInfo.h"
 
 // This (POSIX-compliant) macro is missing from the Win32 API header
@@ -130,9 +132,6 @@
 // *************************************************************************
 
 SbStringList * SoInput::dirsearchlist = NULL;
-
-#ifdef COIN_THREADSAFE
-#include <Inventor/threads/SbStorage.h>
 
 static SbStorage * soinput_tls = NULL;
 
@@ -160,7 +159,6 @@ soinput_destruct_tls_data(void * closure)
   }
   delete data->searchlist;
 }
-#endif // COIN_THREADSAFE
 
 // *************************************************************************
 
@@ -196,9 +194,7 @@ SoInput::constructorsCommon(void)
      .DLL. */
   this->setFilePointer(coin_get_stdin());
 
-#ifdef COIN_THREADSAFE
-  soinput_tls_data * data = (soinput_tls_data*)
-    soinput_tls->get();
+  soinput_tls_data * data = (soinput_tls_data *)soinput_tls->get();
   if (data->instancecount == 0) {
     const SbStringList & dir = *SoInput::dirsearchlist;
     for (int i = 0; i < dir.getLength(); i++) {
@@ -206,7 +202,6 @@ SoInput::constructorsCommon(void)
     }
   }
   data->instancecount++;
-#endif // COIN_THREADSAFE
 }
 
 /*!
@@ -215,9 +210,8 @@ SoInput::constructorsCommon(void)
 SoInput::~SoInput(void)
 {
   this->closeFile();
-#ifdef COIN_THREADSAFE
-  soinput_tls_data * data = (soinput_tls_data*)
-    soinput_tls->get();
+
+  soinput_tls_data * data = (soinput_tls_data *)soinput_tls->get();
   data->instancecount--;
   if (data->instancecount == 0) {
     for (int i = 0; i < data->searchlist->getLength(); i++) {
@@ -225,7 +219,6 @@ SoInput::~SoInput(void)
     }
     data->searchlist->truncate(0);
   }
-#endif // COIN_THREADSAFE
 }
 
 /*!
@@ -1512,15 +1505,11 @@ SoInput::addDirectoryIdx(const int idx, const char * dirName)
 {
   assert(idx > -2);
   SbStringList * dirs = SoInput::dirsearchlist;
-#ifdef COIN_THREADSAFE
+
   if (soinput_tls) {
-    soinput_tls_data * data = (soinput_tls_data*)
-      soinput_tls->get();
-    if (data->instancecount) {
-      dirs = data->searchlist;
-    }
+    soinput_tls_data * data = (soinput_tls_data *)soinput_tls->get();
+    if (data->instancecount) { dirs = data->searchlist; }
   }
-#endif // COIN_THREADSAFE
 
   assert(idx <= dirs->getLength());
   // NB: note that it _should_ be possible to append/insert the same
@@ -1633,15 +1622,11 @@ void
 SoInput::removeDirectory(const char * dirName)
 {
   SbStringList * dirs = SoInput::dirsearchlist;
-#ifdef COIN_THREADSAFE
+
   if (soinput_tls) {
-    soinput_tls_data * data = (soinput_tls_data*)
-      soinput_tls->get();
-    if (data->instancecount) {
-      dirs = data->searchlist;
-    }
+    soinput_tls_data * data = (soinput_tls_data *)soinput_tls->get();
+    if (data->instancecount) { dirs = data->searchlist; }
   }
-#endif // COIN_THREADSAFE
 
   // dirsearchlist might be null if user called SoDB::cleanup()
   if (dirs) {
@@ -1688,15 +1673,11 @@ SoInput::clearDirectories(void)
 const SbStringList &
 SoInput::getDirectories(void)
 {
-#ifdef COIN_THREADSAFE
   if (soinput_tls) {
-    soinput_tls_data * data = (soinput_tls_data*)
-      soinput_tls->get();
-    if (data->instancecount) {
-      return *data->searchlist;
-    }
+    soinput_tls_data * data = (soinput_tls_data *)soinput_tls->get();
+    if (data->instancecount) { return *data->searchlist; }
   }
-#endif // COIN_THREADSAFE
+
   return *SoInput::dirsearchlist;
 }
 
@@ -1706,11 +1687,10 @@ SoInput::getDirectories(void)
 void
 SoInput::init(void)
 {
-#if COIN_DEBUG
-  // Debugging for memory leaks will be easier if we can clean up the
-  // resource usage.
+  // Debugging for memory leaks will be easier if we also clean up the
+  // static / one-off resource usage.
   coin_atexit((coin_atexit_f *)SoInput::clean, 0);
-#endif // COIN_DEBUG
+
   // This will catch multiple initClass() calls (unless there's a
   // removeDirectories() in between them, which is unlikely to happen
   // inadvertently).
@@ -1718,11 +1698,10 @@ SoInput::init(void)
 
   SoInput::dirsearchlist = new SbStringList;
   SoInput::addDirectoryFirst(".");
-#ifdef COIN_THREADSAFE
+
   soinput_tls = new SbStorage(sizeof(soinput_tls_data),
                               soinput_construct_tls_data,
                               soinput_destruct_tls_data);
-#endif // COIN_THREADSAFE
 }
 
 // Clean out static variables in class (to aid in searching for memory
@@ -1730,14 +1709,11 @@ SoInput::init(void)
 void
 SoInput::clean(void)
 {
-#if COIN_DEBUG
   SoInput::clearDirectories();
   delete SoInput::dirsearchlist;
   SoInput::dirsearchlist = NULL;
-#ifdef COIN_THREADSAFE
+
   delete soinput_tls;
-#endif // COIN_THREADSAFE
-#endif // COIN_DEBUG
 }
 
 /*!
