@@ -63,6 +63,8 @@ SoBoolOperation::SoBoolOperation()
   SO_ENGINE_DEFINE_ENUM_VALUE(Operation, A_EQUALS_B);
   SO_ENGINE_DEFINE_ENUM_VALUE(Operation, A_NOT_EQUALS_B);
 
+  SO_ENGINE_SET_MF_ENUM_TYPE(operation, Operation);
+
   SO_ENGINE_ADD_OUTPUT(output, SoMFBool);
   SO_ENGINE_ADD_OUTPUT(inverse, SoMFBool);
 }
