@@ -92,6 +92,10 @@ TODO:
 
 *** SUPPORT ITEMS ***
 
+* [mortene:19991115] move WWW pages from public_www module into Coin
+  module and set up necessary mechanism on www.sim.no to extract and
+  publish pages automatically.
+
 * [mortene:19990807] make an overview list on the Coin WWW pages of
   what's implemented and what's not -- separate list into "vs OI 2.1"
   and "vs OI 2.5".
