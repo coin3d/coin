@@ -58,7 +58,7 @@
 
 // Fragment program for bumpmapping
 static const char * bumpspecfpprogram =
-"!!ARBfp1.0"
+"!!ARBfp1.0\n"
 "PARAM u0 = program.env[0];\n" // Specular color (3 floats)
 "PARAM u1 = program.env[1];\n" // Shininess color (1 float)
 "PARAM c0 = {2, 0.5, 0, 0};\n"
