@@ -484,22 +484,18 @@ SoAction::traverse(SoNode * const node)
   {
     int midx = SoNode::getActionMethodIndex(node->getTypeId());
     const SoActionMethod m = (*this->traversalMethods)[midx];
-    char buffer[256];
-    const char * mname = NULL;
+    SbString mname;
     if (m == SoNode::pickS) mname = "pickS";
     else if (m == SoNode::rayPickS) mname = "rayPickS";
     else if (m == SoNode::handleEventS) mname = "handleEventS";
-    else {
-      mname = buffer;
-      sprintf(buffer, "%p", m);
-    }
+    else mname.sprintf("%p", m);
 
     SoDebugError::postInfo("SoAction::traverse",
                            "%s %s actionmethodindex: %d (func: %s)",
                            node->getTypeId().getName().getString(),
                            this->getTypeId().getName().getString(),
                            midx,
-                           mname);
+                           mname.getString());
 
     SoDebugError::postInfo("SoAction::traverse",
                            "traversalMethods: %p", traversalMethods);

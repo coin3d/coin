@@ -147,7 +147,7 @@ SoTransformBoxDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 
   if (onoff) {
     int i;
-    char buf[512];
+    SbString str;
     inherited::setUpConnections(onoff, doitalways);
     SoDragger *child = (SoDragger*) this->getAnyPart("scaler", FALSE);
     child->setPartAsDefault("scaler", "transformBoxScalerScaler");
@@ -157,8 +157,8 @@ SoTransformBoxDragger::setUpConnections(SbBool onoff, SbBool doitalways)
     this->registerChildDragger(child);
 
     for (i = 1; i <= 3; i++) {
-      sprintf(buf,"rotator%d", i);
-      child = (SoDragger*)this->getAnyPart(buf, FALSE);
+      str.sprintf("rotator%d", i);
+      child = (SoDragger*)this->getAnyPart(str.getString(), FALSE);
       child->setPartAsDefault("rotator", "transformBoxRotatorRotator");
       child->setPartAsDefault("rotatorActive", "transformBoxRotatorRotatorActive");
       child->setPartAsDefault("feedback", "transformBoxRotatorFeedback");
@@ -167,8 +167,8 @@ SoTransformBoxDragger::setUpConnections(SbBool onoff, SbBool doitalways)
     }
 
     for (i = 1; i <= 6; i++) {
-      sprintf(buf, "translator%d", i);
-      child = (SoDragger*)this->getAnyPart(buf, FALSE);
+      str.sprintf("translator%d", i);
+      child = (SoDragger*)this->getAnyPart(str.getString(), FALSE);
       child->setPartAsDefault("translator", "transformBoxTranslatorTranslator");
       child->setPartAsDefault("translatorActive", "transformBoxTranslatorTranslatorActive");
       child->setPartAsDefault("xAxisFeedback", "transformBoxTranslatorXAxisFeedback");

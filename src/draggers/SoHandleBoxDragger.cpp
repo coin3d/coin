@@ -361,11 +361,11 @@ SoHandleBoxDragger::dragStart(void)
   this->whatnum = 0;
 
   int i;
-  char buf[512];
+  SbString str;
   if (!found) {
     for (i = 1; i <= 6; i++) {
-      sprintf(buf,"%s%d", translatorname, i);
-      if (pickpath->findNode(this->getNodeFieldNode(buf)) >= 0) break;
+      str.sprintf("%s%d", translatorname, i);
+      if (pickpath->findNode(this->getNodeFieldNode(str.getString())) >= 0) break;
     }
     if (i <= 6) {
       found = TRUE;
@@ -376,8 +376,8 @@ SoHandleBoxDragger::dragStart(void)
 
   if (!found) {
     for (i = 1; i <= 6; i++) {
-      sprintf(buf,"%s%d", extrudername, i);
-      if (pickpath->findNode(this->getNodeFieldNode(buf))>= 0) break;
+      str.sprintf("%s%d", extrudername, i);
+      if (pickpath->findNode(this->getNodeFieldNode(str.getString()))>= 0) break;
     }
     if (i <= 6) {
       found = TRUE;
@@ -387,8 +387,8 @@ SoHandleBoxDragger::dragStart(void)
   }
   if (!found) {
     for (i = 1; i <= 8; i++) {
-      sprintf(buf,"%s%d", uniformname, i);
-      if (pickpath->findNode(this->getNodeFieldNode(buf))>= 0) break;
+      str.sprintf("%s%d", uniformname, i);
+      if (pickpath->findNode(this->getNodeFieldNode(str.getString()))>= 0) break;
     }
     if (i <= 8) {
       found = TRUE;
@@ -538,20 +538,20 @@ SoHandleBoxDragger::setAllPartsActive(SbBool onoroff)
   int i;
   int val = onoroff ? 1 : 0;
   SoSwitch *sw;
-  char buf[512];
+  SbString str;
   for (i = 1; i <= 6; i++) {
-    sprintf(buf, "translator%dSwitch", i);
-    sw = SO_GET_ANY_PART(this, buf, SoSwitch);
+    str.sprintf("translator%dSwitch", i);
+    sw = SO_GET_ANY_PART(this, str.getString(), SoSwitch);
     SoInteractionKit::setSwitchValue(sw, val);
   }
   for (i = 1; i <= 6; i++) {
-    sprintf(buf, "extruder%dSwitch", i);
-    sw = SO_GET_ANY_PART(this, buf, SoSwitch);
+    str.sprintf("extruder%dSwitch", i);
+    sw = SO_GET_ANY_PART(this, str.getString(), SoSwitch);
     SoInteractionKit::setSwitchValue(sw, val);
   }
   for (i = 1; i <= 8; i++) {
-    sprintf(buf, "uniform%dSwitch", i);
-    sw = SO_GET_ANY_PART(this, buf, SoSwitch);
+    str.sprintf("uniform%dSwitch", i);
+    sw = SO_GET_ANY_PART(this, str.getString(), SoSwitch);
     SoInteractionKit::setSwitchValue(sw, val);
   }
   this->updateArrows();
@@ -571,38 +571,38 @@ void
 SoHandleBoxDragger::updateSwitches()
 {
   int i;
-  char buf[512];
+  SbString str;
   SoSwitch *sw;
 
   if (this->whatkind == WHATKIND_UNIFORM) {
     if (this->ctrlDown) {
       const int *ptr = uniform_ctrl_lookup[this->whatnum-1];
       for (i = 0; i < 6; i++) {
-        sprintf(buf, "extruder%dSwitch", ptr[i]);
-        sw = SO_GET_ANY_PART(this, buf, SoSwitch);
+        str.sprintf("extruder%dSwitch", ptr[i]);
+        sw = SO_GET_ANY_PART(this, str.getString(), SoSwitch);
         SoInteractionKit::setSwitchValue(sw, i < 3 ? 1 : 0);
       }
     }
     else {
       for (i = 1; i <= 6; i++) {
-        sprintf(buf, "extruder%dSwitch", i);
-        sw = SO_GET_ANY_PART(this, buf, SoSwitch);
+        str.sprintf("extruder%dSwitch", i);
+        sw = SO_GET_ANY_PART(this, str.getString(), SoSwitch);
         SoInteractionKit::setSwitchValue(sw, 1);
       }
     }
-    sprintf(buf, "uniform%dSwitch", this->whatnum);
-    sw = SO_GET_ANY_PART(this, buf, SoSwitch);
+    str.sprintf("uniform%dSwitch", this->whatnum);
+    sw = SO_GET_ANY_PART(this, str.getString(), SoSwitch);
     SoInteractionKit::setSwitchValue(sw, 1);
   }
   else if (this->whatkind == WHATKIND_EXTRUDER) {
     int othernum = ((this->whatnum-1) & ~1) + 1;
     if (othernum == this->whatnum) othernum++;
 
-    sprintf(buf, "extruder%dSwitch", this->whatnum);
-    sw = SO_GET_ANY_PART(this, buf, SoSwitch);
+    str.sprintf("extruder%dSwitch", this->whatnum);
+    sw = SO_GET_ANY_PART(this, str.getString(), SoSwitch);
     SoInteractionKit::setSwitchValue(sw, 1);
-    sprintf(buf, "extruder%dSwitch", othernum);
-    sw = SO_GET_ANY_PART(this, buf, SoSwitch);
+    str.sprintf("extruder%dSwitch", othernum);
+    sw = SO_GET_ANY_PART(this, str.getString(), SoSwitch);
     SoInteractionKit::setSwitchValue(sw, this->ctrlDown ? 0 : 1);
   }
   else {
@@ -615,7 +615,7 @@ void
 SoHandleBoxDragger::updateArrows()
 {
   int i;
-  char buf[512];
+  SbString str;
   SoSwitch *sw;
 
   if (this->constraintState >= CONSTRAINT_X) {
@@ -632,8 +632,8 @@ SoHandleBoxDragger::updateArrows()
       break;
     }
     for (i = 1; i <= 6; i++) {
-      sprintf(buf, "arrow%dSwitch", i);
-      sw = SO_GET_ANY_PART(this, buf, SoSwitch);
+      str.sprintf("arrow%dSwitch", i);
+      sw = SO_GET_ANY_PART(this, str.getString(), SoSwitch);
       if (i == onval || i == onval + 1) {
         SoInteractionKit::setSwitchValue(sw, 0);
       }
@@ -645,8 +645,8 @@ SoHandleBoxDragger::updateArrows()
   else if (this->whatkind == WHATKIND_TRANSLATOR) {
     int num = (this->whatnum-1) & ~1;
     for (i = 0; i < 6; i++) {
-      sprintf(buf, "arrow%dSwitch", i+1);
-      sw = SO_GET_ANY_PART(this, buf, SoSwitch);
+      str.sprintf("arrow%dSwitch", i+1);
+      sw = SO_GET_ANY_PART(this, str.getString(), SoSwitch);
       if (i == num || i == num+1) {
         SoInteractionKit::setSwitchValue(sw, SO_SWITCH_NONE);
       }
@@ -657,8 +657,8 @@ SoHandleBoxDragger::updateArrows()
   }
   else {
     for (i = 1; i <= 6; i++) {
-      sprintf(buf, "arrow%dSwitch", i);
-      sw = SO_GET_ANY_PART(this, buf, SoSwitch);
+      str.sprintf("arrow%dSwitch", i);
+      sw = SO_GET_ANY_PART(this, str.getString(), SoSwitch);
       SoInteractionKit::setSwitchValue(sw, SO_SWITCH_NONE);
     }
   }

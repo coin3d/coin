@@ -102,18 +102,15 @@ SoActionMethodList::addMethod(const SoType nodeType,
     if ((*this)[(int)type.getData()] == NULL) {
 #if 0 // debug
       {
-        char buffer[256];
-        const char * methodname = NULL;
+        SbString methodname;
         if (method == SoNode::pickS) methodname = "pickS";
         else if (method == SoNode::rayPickS) methodname = "rayPickS";
-        else {
-          methodname = buffer;
-          sprintf(buffer, "%p", method);
-        }
+        else methodname.sprintf("%p", method);
 
         SoDebugError::postInfo("SoActionMethodList::addMethod",
                                "(listp %p) ``%s'' overloaded with %s",
-                               this, type.getName().getString(), methodname);
+                               this, type.getName().getString(),
+                               methodname.getString());
       }
 #endif // debug
       (*this)[(int)type.getData()] = method;

@@ -284,11 +284,10 @@ SoOutput::resetBuffer(void)
 /*!
   Set whether or not to write the output as a binary stream.
 
-  FIXME: write doc on endianness, netformat etc -- best thing would
-  be to document the format completely in BNF. 19990627 mortene.
-
   \sa isBinary()
  */
+// FIXME: write doc on endianness, netformat etc -- best thing would
+// be to document the format completely in BNF. 19990627 mortene.
 void
 SoOutput::setBinary(const SbBool flag)
 {
@@ -479,10 +478,9 @@ void
 SoOutput::write(const int i)
 {
   if (!this->isBinary()) {
-    // FIXME: use buffer which can dynamically resize. 20000205 mortene.
-    char buffer[128];
-    sprintf(buffer, "%d", i);
-    this->writeBytesWithPadding(buffer, strlen(buffer));
+    SbString s;
+    s.sprintf("%d", i);
+    this->writeBytesWithPadding(s.getString(), s.getLength());
   }
   else {
     // FIXME: breaks on 64-bit architectures, which is pretty
@@ -501,10 +499,9 @@ void
 SoOutput::write(const unsigned int i)
 {
   if (!this->isBinary()) {
-    // FIXME: use buffer which can dynamically resize. 20000205 mortene.
-    char buffer[128];
-    sprintf(buffer, "0x%x", i);
-    this->writeBytesWithPadding(buffer, strlen(buffer));
+    SbString s;
+    s.sprintf("0x%x", i);
+    this->writeBytesWithPadding(s.getString(), s.getLength());
   }
   else {
     assert(sizeof(i) == sizeof(int32_t));
@@ -522,10 +519,9 @@ void
 SoOutput::write(const short s)
 {
   if (!this->isBinary()) {
-    // FIXME: use buffer which can dynamically resize. 20000205 mortene.
-    char buffer[128];
-    sprintf(buffer, "%hd", s);
-    this->writeBytesWithPadding(buffer, strlen(buffer));
+    SbString str;
+    str.sprintf("%hd", s);
+    this->writeBytesWithPadding(str.getString(), str.getLength());
   }
   else {
     this->write((const int)s);
@@ -541,10 +537,9 @@ void
 SoOutput::write(const unsigned short s)
 {
   if (!this->isBinary()) {
-    // FIXME: use buffer which can dynamically resize. 20000205 mortene.
-    char buffer[128];
-    sprintf(buffer, "0x%hx", s);
-    this->writeBytesWithPadding(buffer, strlen(buffer));
+    SbString str;
+    str.sprintf("0x%hx", s);
+    this->writeBytesWithPadding(str.getString(), str.getLength());
   }
   else {
     this->write((const unsigned int)s);
@@ -559,13 +554,9 @@ SoOutput::write(const float f)
 {
   if (!this->isBinary()) {
     // FIXME: precision stuff doesn't work. 19980910 mortene.
-    // FIXME: use buffer which can dynamically resize. 20000205 mortene.
-    char buffer[128];
-//     char formatstr[32];
-//     sprintf(formatstr, "%%.%df", this->precision);
-//     sprintf(buffer, formatstr, f);
-    sprintf(buffer, "%g", f);
-    this->writeBytesWithPadding(buffer, strlen(buffer));
+    SbString s;
+    s.sprintf("%g", f);
+    this->writeBytesWithPadding(s.getString(), s.getLength());
   }
   else {
     char buff[sizeof(f)];
@@ -582,10 +573,9 @@ SoOutput::write(const double d)
 {
   if (!this->isBinary()) {
     // FIXME: precision stuff not implemented. 19980910 mortene.
-    // FIXME: use buffer which can dynamically resize. 20000205 mortene.
-    char buffer[128];
-    sprintf(buffer, "%f", d);
-    this->writeBytesWithPadding(buffer, strlen(buffer));
+    SbString s;
+    s.sprintf("%f", d);
+    this->writeBytesWithPadding(s.getString(), s.getLength());
   }
   else {
     char buff[sizeof(d)];
