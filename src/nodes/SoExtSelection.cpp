@@ -144,7 +144,11 @@
 */
 /*!
   \var SoSFEnum SoExtSelection::lassoMode
+
   Field for lasso mode. Default value is ALL_SHAPES.
+
+  Set this field to VISIBLE_SHAPES to make only the primitives visible
+  from the current viewpoint be selected.
 */
 
 // *************************************************************************
@@ -1138,9 +1142,9 @@ SoExtSelectionP::preShapeCallback(void *data, SoCallbackAction *action, const So
   SoExtSelection * ext = (SoExtSelection *)data;
   assert(node->isOfType(SoShape::getClassTypeId()));
 
-  ext->pimpl->somefacesvisible = FALSE;
+  PRIVATE(ext)->somefacesvisible = FALSE;
   
-  return ext->pimpl->testShape(action, (const SoShape*) node);
+  return PRIVATE(ext)->testShape(action, (const SoShape*) node);
 }
 
 
@@ -1153,10 +1157,10 @@ SoExtSelectionP::postShapeCallback(void *data, SoCallbackAction *action, const S
   SbBool hit = FALSE;
   switch (ext->lassoPolicy.getValue()) {
   case SoExtSelection::FULL:
-    hit = ext->pimpl->primcbdata.allhit;
+    hit = PRIVATE(ext)->primcbdata.allhit;
     break;
   case SoExtSelection::PART:
-    hit = ext->pimpl->primcbdata.hit;
+    hit = PRIVATE(ext)->primcbdata.hit;
     break;
   default:
     break;
@@ -1164,20 +1168,20 @@ SoExtSelectionP::postShapeCallback(void *data, SoCallbackAction *action, const S
   
   if(hit){
 
-    if(!ext->pimpl->primcbdata.allshapes){ //VISIBLE_SHAPES
+    if(!PRIVATE(ext)->primcbdata.allshapes){ //VISIBLE_SHAPES
 
       if((ext->lassoPolicy.getValue() == SoExtSelection::FULL) &&
-         (!ext->pimpl->somefacesvisible))
+         (!PRIVATE(ext)->somefacesvisible))
         return SoCallbackAction::CONTINUE;
 
       // FIXME: This is a linear search. Storing paths should have be done using
       // something more sophisticated for better performance. (handegar)
       const SoPath * curpath = action->getCurPath();
-      if(ext->pimpl->visitedshapepaths->findPath(*curpath) < 0)
-        ext->pimpl->visitedshapepaths->append(curpath->copy());
+      if(PRIVATE(ext)->visitedshapepaths->findPath(*curpath) < 0)
+        PRIVATE(ext)->visitedshapepaths->append(curpath->copy());
 
     } else {
-      ext->pimpl->doSelect(action->getCurPath());
+      PRIVATE(ext)->doSelect(action->getCurPath());
     }
     
   }
@@ -1199,8 +1203,8 @@ SoExtSelectionP::cameraCB(void * data,
   const SbViewportRegion & vp = SoViewportRegionElement::get(state);
 
   SbBox2s rectbbox;
-  for (int i = 0; i < thisp->pimpl->coords.getLength(); i++) {
-    rectbbox.extendBy(thisp->pimpl->coords[i]);
+  for (int i = 0; i < PRIVATE(thisp)->coords.getLength(); i++) {
+    rectbbox.extendBy(PRIVATE(thisp)->coords[i]);
   }
 
   SbVec2s org = vp.getViewportOriginPixels();
