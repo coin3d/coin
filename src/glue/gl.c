@@ -1137,42 +1137,35 @@ glglue_resolve_symbols(cc_glglue * w)
 #ifdef GL_NV_register_combiners  
 
   if (cc_glglue_glext_supported(w, "GL_NV_register_combiners")) {
-    w->glCombinerParameterfvNV = (COIN_PFNGLCOMBINERPARAMETERFVNVPROC) PROC(glCombinerParameterfvNV);
-    w->glCombinerParameterivNV = (COIN_PFNGLCOMBINERPARAMETERIVNVPROC) PROC(glCombinerParameterivNV);
-    w->glCombinerParameterfNV = (COIN_PFNGLCOMBINERPARAMETERFNVPROC) PROC(glCombinerParameterfNV);
-    w->glCombinerParameteriNV = (COIN_PFNGLCOMBINERPARAMETERINVPROC) PROC(glCombinerParameteriNV);
-    w->glCombinerInputNV = (COIN_PFNGLCOMBINERINPUTNVPROC) PROC(glCombinerInputNV);
-    w->glCombinerOutputNV = (COIN_PFNGLCOMBINEROUTPUTNVPROC) PROC(glCombinerOutputNV);
-    w->glFinalCombinerInputNV = (COIN_PFNGLFINALCOMBINERINPUTNVPROC) PROC(glFinalCombinerInputNV);
-    w->glGetCombinerInputParameterfvNV = (COIN_PFNGLGETCOMBINERINPUTPARAMETERFVNVPROC) PROC(glGetCombinerInputParameterfvNV);
-    w->glGetCombinerInputParameterivNV = (COIN_PFNGLGETCOMBINERINPUTPARAMETERIVNVPROC) PROC(glGetCombinerInputParameterivNV);
-    w->glGetCombinerOutputParameterfvNV = (COIN_PFNGLGETCOMBINEROUTPUTPARAMETERFVNVPROC) PROC(glGetCombinerOutputParameterfvNV);
-    w->glGetCombinerOutputParameterivNV = (COIN_PFNGLGETCOMBINEROUTPUTPARAMETERIVNVPROC) PROC(glGetCombinerOutputParameterivNV);
-    w->glGetFinalCombinerInputParameterfvNV = (COIN_PFNGLGETFINALCOMBINERINPUTPARAMETERFVNVPROC) PROC(glGetFinalCombinerInputParameterfvNV);
-    w->glGetFinalCombinerInputParameterivNV = (COIN_PFNGLGETFINALCOMBINERINPUTPARAMETERIVNVPROC) PROC(glGetFinalCombinerInputParameterivNV);
 
-    if (!(w->glCombinerParameterfvNV &&
-          w->glCombinerParameterivNV &&
-          w->glCombinerParameterfNV &&
-          w->glCombinerParameteriNV &&
-          w->glCombinerInputNV &&
-          w->glCombinerOutputNV &&
-          w->glFinalCombinerInputNV &&
-          w->glGetCombinerInputParameterfvNV &&
-          w->glGetCombinerInputParameterivNV &&
-          w->glGetCombinerOutputParameterfvNV &&
-          w->glGetCombinerOutputParameterivNV &&
-          w->glGetFinalCombinerInputParameterfvNV &&
-          w->glGetFinalCombinerInputParameterivNV)) {      
-      cc_debugerror_postwarning("glglue_init","GL_NV_register_combiners found, but one or more of its "
-                                "functions could not be bound.");
-    }
-    else {
-      w->has_nv_register_combiners = TRUE;
-    }
-    
-  } 
-    
+#define BIND_FUNCTION_WITH_WARN(_func_, _type_) \
+   w->_func_ = (_type_)PROC(_func_); \
+   do { \
+     if (!w->_func_ && (COIN_DEBUG || coin_glglue_debug())) { \
+       cc_debugerror_postwarning("glglue_init", \
+                                 "GL_NV_register_combiners found, but %s " \
+                                 "function missing.", SO__QUOTE(_func_)); \
+       w->has_nv_register_combiners = FALSE; \
+     } \
+   } while (0)
+        
+    w->has_nv_register_combiners = TRUE;
+    BIND_FUNCTION_WITH_WARN(glCombinerParameterfvNV, COIN_PFNGLCOMBINERPARAMETERFVNVPROC);
+    BIND_FUNCTION_WITH_WARN(glCombinerParameterivNV, COIN_PFNGLCOMBINERPARAMETERIVNVPROC);
+    BIND_FUNCTION_WITH_WARN(glCombinerParameterfNV, COIN_PFNGLCOMBINERPARAMETERFNVPROC);
+    BIND_FUNCTION_WITH_WARN(glCombinerParameteriNV, COIN_PFNGLCOMBINERPARAMETERINVPROC);
+    BIND_FUNCTION_WITH_WARN(glCombinerInputNV, COIN_PFNGLCOMBINERINPUTNVPROC);
+    BIND_FUNCTION_WITH_WARN(glCombinerOutputNV, COIN_PFNGLCOMBINEROUTPUTNVPROC);
+    BIND_FUNCTION_WITH_WARN(glFinalCombinerInputNV, COIN_PFNGLFINALCOMBINERINPUTNVPROC);
+    BIND_FUNCTION_WITH_WARN(glGetCombinerInputParameterfvNV, COIN_PFNGLGETCOMBINERINPUTPARAMETERFVNVPROC);
+    BIND_FUNCTION_WITH_WARN(glGetCombinerInputParameterivNV, COIN_PFNGLGETCOMBINERINPUTPARAMETERIVNVPROC);
+    BIND_FUNCTION_WITH_WARN(glGetCombinerOutputParameterfvNV, COIN_PFNGLGETCOMBINEROUTPUTPARAMETERFVNVPROC);
+    BIND_FUNCTION_WITH_WARN(glGetCombinerOutputParameterivNV, COIN_PFNGLGETCOMBINEROUTPUTPARAMETERIVNVPROC);
+    BIND_FUNCTION_WITH_WARN(glGetFinalCombinerInputParameterfvNV, COIN_PFNGLGETFINALCOMBINERINPUTPARAMETERFVNVPROC);
+    BIND_FUNCTION_WITH_WARN(glGetFinalCombinerInputParameterivNV, COIN_PFNGLGETFINALCOMBINERINPUTPARAMETERIVNVPROC);
+   
+#undef BIND_FUNCTION_WITH_WARN
+  }     
 #endif /* GL_NV_register_combiners */
  
   
@@ -1224,7 +1217,7 @@ glglue_resolve_symbols(cc_glglue * w)
 #define BIND_FUNCTION_WITH_WARN(_func_, _type_) \
    w->_func_ = (_type_)PROC(_func_); \
    do { \
-     if (!w->_func_) { \
+     if (!w->_func_ && (COIN_DEBUG || coin_glglue_debug())) { \
        cc_debugerror_postwarning("glglue_init", \
                                  "GL_ARB_fragment_program found, but %s " \
                                  "function missing.", SO__QUOTE(_func_)); \
@@ -1232,7 +1225,7 @@ glglue_resolve_symbols(cc_glglue * w)
      } \
    } while (0)
  
-     w->has_arb_fragment_program = TRUE;
+    w->has_arb_fragment_program = TRUE;
     BIND_FUNCTION_WITH_WARN(glProgramStringARB, COIN_PFNGLPROGRAMSTRINGARBPROC);
     BIND_FUNCTION_WITH_WARN(glBindProgramARB, COIN_PFNGLBINDPROGRAMARBPROC);
     BIND_FUNCTION_WITH_WARN(glDeleteProgramsARB, COIN_PFNGLDELETEPROGRAMSARBPROC);
@@ -1329,7 +1322,7 @@ glglue_resolve_symbols(cc_glglue * w)
 #define BIND_FUNCTION_WITH_WARN(_func_, _type_) \
    w->_func_ = (_type_)PROC(_func_); \
    do { \
-     if (!w->_func_) { \
+     if (!w->_func_ && (COIN_DEBUG || coin_glglue_debug())) { \
        cc_debugerror_postwarning("glglue_init", \
                                  "GL_ARB_vertex_program found, but %s " \
                                  "function missing.", SO__QUOTE(_func_)); \
