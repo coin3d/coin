@@ -38,6 +38,9 @@
 #endif // HAVE_WINDOWS_H
 #include <GL/gl.h>
 
+
+static int biggest_cache_context_id = 0;
+
 SO_ELEMENT_SOURCE(SoGLCacheContextElement);
 
 typedef struct {
@@ -175,6 +178,10 @@ SoGLCacheContextElement::set(SoState * state, int context,
   elem->remote = remoterendering;
   elem->autocachebits = 0;
   elem->context = context;
+  if (context > biggest_cache_context_id) {
+    biggest_cache_context_id = context;
+  }
+
   if (remoterendering) elem->autocachebits = DO_AUTO_CACHE;
 
   int i = 0;
@@ -367,4 +374,20 @@ SoGLCacheContextElement::scheduleDelete(SoState * state, class SoGLDisplayList *
   else {
     scheduledeletelist->append(dl);
   }
+}
+
+/*!
+  Returns an unique cache context id. If you render the same scene graph
+  into two or different cache contexts, and you've not using display
+  list and texture object sharing among contexts, the cache context
+  id need to be unique for rendering to work.
+
+  This method is an extension versus the Open Inventor API.
+
+  \sa SoGLRenderAction::setCacheContext()
+*/
+uint32_t
+SoGLCacheContextElement::getUniqueCacheContext(void)
+{
+  return (uint32_t) ++biggest_cache_context_id;
 }

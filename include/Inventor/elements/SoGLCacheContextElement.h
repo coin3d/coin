@@ -52,6 +52,8 @@ public:
   static void setAutoCacheBits(SoState * state, int bits);
   static int resetAutoCacheBits(SoState * state);
   static SbBool getIsRemoteRendering(SoState * state);
+  
+  static uint32_t getUniqueCacheContext(void);
 
 private:
   friend class SoGLDisplayList;
