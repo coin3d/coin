@@ -1414,7 +1414,9 @@ if $sim_ac_build_library; then
   fi
 
   case "$sim_ac_framework:$sim_ac_make_dsp" in
-  false:false )
+  true:* | *:true )
+    ;;
+  * )
     SIM_AC_CONFIGURATION_SETTING([Install prefix], [$prefix])
     ;;
   esac
