@@ -23,6 +23,8 @@
 
 #include <Inventor/system/gl.h>
 #include <Inventor/C/glue/gl.h>
+#include <Inventor/C/tidbitsp.h>
+#include <Inventor/C/tidbits.h>
 #include <stdlib.h>
 #include <math.h>
 
@@ -32,8 +34,7 @@
 
 #include <Inventor/C/glue/glp.h>
 
-
-#define COIN_CUBEMAP_SIZE 32
+#define COIN_DEFAULT_CUBEMAP_SIZE 64
 
 /*
   Based on code from "Simple Bump Mapping Tutorial"
@@ -203,9 +204,20 @@ coin_apply_normalization_cube_map(const cc_glglue * glue)
 {
   if (glue->normalizationcubemap == 0) {
     GLuint * dst = (GLuint*) &glue->normalizationcubemap;
+    static int CUBEMAP_SIZE = -1;
+    if (CUBEMAP_SIZE < 0) {
+      const char * env = coin_getenv("COIN_NORMALIZATION_CUBEMAP_SIZE");
+      CUBEMAP_SIZE = COIN_DEFAULT_CUBEMAP_SIZE;
+      if (env) {
+        int size = atoi(env);
+        if (size >= 2 && coin_is_power_of_two((uint32_t) size)) {
+          CUBEMAP_SIZE = size; 
+        }
+      }
+    }
     cc_glglue_glGenTextures(glue, 1, dst);
     cc_glglue_glBindTexture(glue, GL_TEXTURE_CUBE_MAP, *dst);
-    coin_create_normalization_cube_map(COIN_CUBEMAP_SIZE);
+    coin_create_normalization_cube_map(CUBEMAP_SIZE);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -216,4 +228,4 @@ coin_apply_normalization_cube_map(const cc_glglue * glue)
                           glue->normalizationcubemap);
 }
 
-#undef COIN_CUBEMAP_SIZE
+#undef COIN_DEFAULT_CUBEMAP_SIZE
