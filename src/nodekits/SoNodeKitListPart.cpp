@@ -508,12 +508,12 @@ SoNodeKitListPart::syncInternalData(void)
   for (int i=0; i < this->childTypeNames.getNum(); i++) {
     this->allowedtypes.append(SoType::fromName(this->childTypeNames[i]));
   }
-  
+
   // Set up container node, if necessary.
   if (this->containerNode.getValue() == NULL) {
-    this->containerNode.setValue(new SoGroup);
+    this->containerNode.setValue(new SoGroup); // use containerTypeName???
     this->containerNode.setDefault(TRUE);
   }
-  
+
   // FIXME: lock typelist after import? 19991128 mortene.
 }

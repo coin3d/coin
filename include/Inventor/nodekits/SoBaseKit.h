@@ -29,7 +29,6 @@ class SoNodeKitPath;
 class SoNodekitCatalog;
 class SoPath;
 
-
 // Convenience macros. FIXME: not implemented yet.
 #define SO_GET_PART(kit, name, classname)
 #define SO_CHECK_PART(kit, name, classname)
@@ -82,7 +81,7 @@ public:
   SbBool forceChildDrivenWriteRefs(SoOutput * out);
 
   static SbBool isSearchingChildren(void);
-  static void setSearchingChildren(SbBool newval);
+  static void setSearchingChildren(const SbBool newval);
   static SoNode * typeCheck(const SbName & partname, const SoType & parttype,
                             SoNode * node);
 
@@ -108,9 +107,10 @@ protected:
                                               const SoPath * pathtoextend = NULL);
   virtual SbBool setAnyPart(const SbName & partname, SoNode * from,
                             SbBool anypart = TRUE);
-  void createNodekitPartsList(void);
+  void createNodekitPartsList(void); // not part of Coin
+  void createFieldList(void); // replaces above method
   virtual void createDefaultParts(void);
-  const SoNodekitParts * getNodekitPartsList(void) const;
+  const SoNodekitParts * getNodekitPartsList(void) const; // not part of Coin
 
   void catalogError(void);
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
@@ -119,12 +119,23 @@ protected:
   void countMyFields(SoOutput * out);
 
   SoChildList * children;
-  SoNodekitParts * nodekitPartsList;
   SbBool connectionsSetUp;
 
 private:
+  static SbBool findPart(const SbString & partName, SoBaseKit *& kit,
+                         int & partNum, SbBool & isList, int & listIdx,
+                         const SbBool makeIfNeeded, SoPath * path = NULL);
+
+  SbBool makePart(const int partNum);
+  SbBool setPart(const int partNum, SoNode * node);
+  int getRightSiblingIndex(const int partNum);
+
   static SoNodekitCatalog * classcatalog;
   static const SoNodekitCatalog ** parentcatalogptr;
+  static SbBool searchchildren;
+
+  int numCatalogEntries;
+  SoSFNode ** fieldList;
 };
 
 #endif // !__SOBASEKIT_H__

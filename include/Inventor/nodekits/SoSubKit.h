@@ -186,8 +186,9 @@ _class_::getClassNodekitCatalogPtr(void) \
 
 
 
-#define SO_KIT_INIT_INSTANCE()
-
+#define SO_KIT_INIT_INSTANCE() \
+    createFieldList(); \
+    createDefaultParts()
 
 
 #endif // !__SOSUBKIT_H__
