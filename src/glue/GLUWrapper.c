@@ -140,6 +140,9 @@ GLUWrapper_set_version(const GLubyte * versionstr)
     const char * env = coin_getenv("COIN_DEBUG_GLU_INFO");
     if (env) { COIN_DEBUG_GLU_INFO = atoi(env); }
     if (COIN_DEBUG_GLU_INFO) {
+      const char * extensions = (const char *)
+        GLU_instance->gluGetString(GLU_EXTENSIONS);
+
       cc_debugerror_postinfo("GLUWrapper_set_version",
                              "gluGetString(GLU_VERSION)=='%s' (=> %d.%d.%d)",
                              (const char *) GLU_instance->gluGetString(GLU_VERSION),
@@ -149,7 +152,7 @@ GLUWrapper_set_version(const GLubyte * versionstr)
 
       cc_debugerror_postinfo("GLUWrapper_set_version",
                              "gluGetString(GLU_EXTENSIONS)=='%s'",
-                             (const char *) GLU_instance->gluGetString(GLU_EXTENSIONS));
+                             extensions ? extensions : "<none>");
 
       cc_debugerror_postinfo("GLUWrapper_set_version",
                              "%susing embedded SuperGLU",
