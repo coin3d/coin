@@ -57,12 +57,12 @@ class SoFontLibP {
 public:
   static void * apimutex;
   static SbStringList * fontfiles;
-  static SbDict openfonts;
+  static SbDict * openfonts;
 };
 
 void * SoFontLibP::apimutex = NULL;
 SbStringList * SoFontLibP::fontfiles = NULL;
-SbDict SoFontLibP::openfonts;
+SbDict * SoFontLibP::openfonts;
 
 
 /*************************************************************************/
@@ -87,7 +87,7 @@ SoFontLib::initialize(void)
   if (SoFontLibP::apimutex == NULL) {
     // Construct & initialize static vars
     CC_MUTEX_CONSTRUCT(SoFontLibP::apimutex);
-    SoFontLibP::openfonts.clear();
+    SoFontLibP::openfonts = new SbDict;
   }
   CC_MUTEX_LOCK(SoFontLibP::apimutex);
 
@@ -159,13 +159,16 @@ SoFontLib::exit()
   delete SoFontLibP::fontfiles;
   // Clean up openfonts dict
   SbPList keys, values;
-  SoFontLibP::openfonts.makePList(keys, values);
+  SoFontLibP::openfonts->makePList(keys, values);
   for (i = 0; i < values.getLength(); i++) {
     delete (SbString*) values[i];
   }
   CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
   if (SoFontLibP::apimutex != NULL)
     CC_MUTEX_DESTRUCT(SoFontLibP::apimutex);
+
+  delete SoFontLibP::openfonts;
+  SoFontLibP::openfonts = NULL;
 }
 
 int
@@ -180,7 +183,7 @@ SoFontLib::createFont(const SbName &fontname, const SbName &stylename, const SbV
   fileidx = -1;
   int font = -1;
   // Check if we already know the requestname for this fontname
-  if (SoFontLibP::openfonts.find((unsigned long)fontname.getString(), (void *&)strptr)) {
+  if (SoFontLibP::openfonts->find((unsigned long)fontname.getString(), (void *&)strptr)) {
     path = *strptr;
     font = cc_flw_create_font( path.getString(), size[0], size[1] );
   } 
@@ -231,7 +234,7 @@ SoFontLib::createFont(const SbName &fontname, const SbName &stylename, const SbV
     // Add font to openfonts dict
     if (font >= 0) {
       SbString * newfont = new SbString(path);
-      SoFontLibP::openfonts.enter((unsigned long)fontname.getString(), (void *)newfont);
+      SoFontLibP::openfonts->enter((unsigned long)fontname.getString(), (void *)newfont);
     }
   }
   CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
@@ -245,7 +248,7 @@ SoFontLib::getFont(const SbName &fontname, const SbVec2s &size)
   CC_MUTEX_LOCK(SoFontLibP::apimutex);
   SbString * requestname;
   int font = -1;
-  if ( SoFontLibP::openfonts.find((unsigned long)fontname.getString(), (void *&)requestname) ) {
+  if ( SoFontLibP::openfonts->find((unsigned long)fontname.getString(), (void *&)requestname) ) {
     font = cc_flw_get_font( requestname->getString(), (int)size[0], (int)size[1]);
   }
   CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
