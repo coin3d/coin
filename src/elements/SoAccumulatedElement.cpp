@@ -26,9 +26,9 @@
   \brief The SoAccumulatedElement class is an abstract class for storing accumulated state.
   \ingroup elements
 
-  It stores node ids for all nodes accumulating the current
-  state. These ids are used to quickly determine when to invalidate
-  caches.
+  The element store node id values for all nodes accumulated during
+  traversal for the current state. These id values are used to
+  determine when to invalidate caches.
 */
 
 #include <Inventor/elements/SoAccumulatedElement.h>
@@ -38,11 +38,6 @@
 /*!
   \fn SoAccumulatedElement::nodeids
   Used to store node ids.
-*/
-
-/*!
-  \fn SoAccumulatedElement::checksum
-  Used to optimize the matches() method.
 */
 
 SO_ELEMENT_ABSTRACT_SOURCE(SoAccumulatedElement);
@@ -57,11 +52,9 @@ SoAccumulatedElement::initClass(void)
 /*!
   The destructor.
 */
-
 SoAccumulatedElement::~SoAccumulatedElement(void)
 {
 }
-
 
 void 
 SoAccumulatedElement::init(SoState * state)
@@ -83,17 +76,8 @@ SoAccumulatedElement::push(SoState * state)
 SbBool
 SoAccumulatedElement::matches(const SoElement * element) const
 {
-  const SoAccumulatedElement * elem =
-    (SoAccumulatedElement*) element;
-  if (elem->checksum != this->checksum) return FALSE;
-  const int n = this->nodeids.getLength();
-  if (n != elem->nodeids.getLength()) return FALSE;
-  const uint32_t * p0 = this->nodeids.getArrayPtr();
-  const uint32_t * p1 = elem->nodeids.getArrayPtr();
-  for (int i = 0; i < n; i++) {
-    if (p0[i] != p1[i]) return FALSE;
-  }
-  return TRUE;
+  const SoAccumulatedElement * elem = (const SoAccumulatedElement *)element;
+  return (elem->nodeids == this->nodeids);
 }
 
 /*!
@@ -103,7 +87,6 @@ void
 SoAccumulatedElement::clearNodeIds(void)
 {
   this->nodeids.truncate(0);
-  this->checksum = 0;
   // we do not depend on previous elements any more
   this->recursecapture = FALSE;
 }
@@ -114,9 +97,7 @@ SoAccumulatedElement::clearNodeIds(void)
 void
 SoAccumulatedElement::addNodeId(const SoNode * const node)
 {
-  uint32_t id = node->getNodeId();
-  this->checksum += id;
-  this->nodeids.append(id);
+  this->nodeids.append(node->getNodeId());
 }
 
 /*!
@@ -141,7 +122,6 @@ SoAccumulatedElement::copyMatchInfo(void) const
   for (int i = 0; i < n; i++) {
     element->nodeids.append(this->nodeids[i]);
   }
-  element->checksum = this->checksum;
   element->recursecapture = TRUE;
   return element;
 }
@@ -153,14 +133,7 @@ SoAccumulatedElement::copyMatchInfo(void) const
 void
 SoAccumulatedElement::copyNodeIds(const SoAccumulatedElement * copyfrom)
 {
-  this->checksum = 0;
-  this->nodeids.truncate(0);
-  const int n = copyfrom->nodeids.getLength();
-  for (int i = 0; i < n; i++) {
-    uint32_t id = copyfrom->nodeids[i];
-    this->checksum += id;
-    this->nodeids.append(id);
-  }
+  this->nodeids = copyfrom->nodeids;
   
   // this elements uses data from previous element in stack
   this->recursecapture = TRUE;

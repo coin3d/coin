@@ -53,7 +53,6 @@ protected:
   SbList <uint32_t> nodeids;
 
 private:
-  uint32_t checksum;
   SbBool recursecapture;
 };
 
