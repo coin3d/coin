@@ -446,8 +446,10 @@ SoGroup::removeAllChildren(void)
 void
 SoGroup::replaceChild(const int index, SoNode * const newchild)
 {
-  this->removeChild(index);
-  this->insertChild(newchild, index);
+  // Note: its imperative that we use set() here, and not a
+  // remove+insert pair of calls as that would puck up SoChildList
+  // auditing from SoPath instances.
+  this->children->set(index, newchild);
 }
 
 /*!
