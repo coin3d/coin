@@ -336,20 +336,21 @@ SbImage::readFile(const SbString & filename,
 
     if (SIMAGE_read_image) {
       simagedata = SIMAGE_read_image(finalname.getString(), &w, &h, &nc);
+#if COIN_DEBUG
+      if (!simagedata) {
+        char buffer[256];
+        SoDebugError::post("SbImage::readFile",
+                           "%s",
+                           SIMAGE_get_last_error(buffer, 255));
+      }
+#endif // COIN_DEBUG
     }
+
     if (simagedata) {
       this->setValue(SbVec2s((short)w, (short)h), nc, simagedata);
       free(simagedata);
       return TRUE;
     }
-#if COIN_DEBUG
-    else {
-      char buffer[256];
-      SoDebugError::post("SbImage::readFile",
-                         "%s",
-                         SIMAGE_get_last_error(buffer, 255));
-    }
-#endif // COIN_DEBUG
   }
 
   this->setValue(SbVec2s(0,0), 0, NULL);
