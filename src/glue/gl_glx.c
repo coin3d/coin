@@ -287,9 +287,6 @@ glxglue_getprocaddress(const char * fname)
       cc_dl_close(h);
     }
 
-    /* FIXME: use static binding if cc_dl_open() has no native method
-       to use? 20020906 mortene. */
-
     tried_bind_glXGetProcAddress = TRUE;
   }
 

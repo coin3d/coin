@@ -1594,13 +1594,16 @@ SIM_AC_CHECK_OPENGL(
 # the configure script aswell.
 SIM_AC_DYNLIB_EXT
 
+AC_DEFINE_UNQUOTED([DYNAMIC_LIBRARY_EXTENSION], ["$sim_ac_shlibext"],
+                   [define this to the dynamic library extension suffix on this system])
+
 sim_ac_opengl_dll_name=$sim_ac_ogl_lib
 if test "$sim_ac_ogl_lib" = "opengl32"; then :; else
   sim_ac_opengl_dll_name="lib${sim_ac_opengl_dll_name}"
 fi
 sim_ac_opengl_dll_name="${sim_ac_opengl_dll_name}${sim_ac_shlibext}"
 
-AC_DEFINE_UNQUOTED([OPENGL_SYSTEM_LIBRARY_NAME], [$sim_ac_opengl_dll_name],
+AC_DEFINE_UNQUOTED([OPENGL_SYSTEM_LIBRARY_NAME], ["$sim_ac_opengl_dll_name"],
                    [define this to the dynamic library name of OpenGL])
 
 # *******************************************************************
@@ -1846,7 +1849,7 @@ COIN_COMPILER="$CXX"
     COIN_COMPILER="wrapmsvc"
   fi
 
-  AC_DEFINE_UNQUOTED([COIN_SYSTEM_LIBRARY_NAME], [$sim_ac_coin_dll_name],
+  AC_DEFINE_UNQUOTED([COIN_SYSTEM_LIBRARY_NAME], ["$sim_ac_coin_dll_name"],
                      [define this to the dynamic library name of Coin])
 
   sim_ac_path_problem=true # until proven otherwise

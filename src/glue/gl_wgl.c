@@ -167,6 +167,11 @@ static COIN_PFNWGLGETEXTENSIONSSTRING wglglue_wglGetExtensionsString = NULL;
 
 /* ********************************************************************** */
 
+static cc_libhandle glhnd = NULL;
+static SbBool tried_fetching_handle = FALSE;
+
+/* ********************************************************************** */
+
 void *
 coin_wgl_getprocaddress(const char * fname)
 {
@@ -177,51 +182,29 @@ coin_wgl_getprocaddress(const char * fname)
      (1.1+) functions. */
 
   if (ptr == NULL) {
-    /* check for function in opengl32.dll.
-     *
-     * FIXME: Is it sufficient to just check opengl32.dll? pederb, 2002-07-12
-     *
-     * UPDATE 2002-07-12 kintel: I think not, as the function pointers
-     * that should be used are dependent upon 1) the current
-     * framebuffer configuration and 2) the ICD driver installed. You
-     * might be lucky though...
-     *
-     * UPDATE 2002-09-11 mortene: should at least replace
-     * "opengl32.dll" with the OpenGL library name found by the
-     * configure script.
-     */
+    if (!tried_fetching_handle) {
+      /* FIXME: never released -- one-off resource leak. 20041208 mortene.*/
+      glhnd = cc_dl_handle_with_gl_symbols();
+      tried_fetching_handle = TRUE;
 
-    /* If this worked like dlopen() on UNIX-like systems with libdl,
-     * we could just get the executable handle by passing NULL to
-     * GetModuleHandle(), and then get any symbol from that. That
-     * doesn't work, though, as GetProcAddress() will *only* resolve
-     * symbols from the specific DLL module handle.
-     */
-
-    /*
-     * UPDATE 20041115 mortene: find out if it is possible to fix all
-     * the above problems by grabbing a handle from
-     * cc_dl_handle_with_gl_symbols() instead.
-     */
-
-    HINSTANCE glhandle = GetModuleHandle("opengl32.dll");
-
-    if (!glhandle && coin_glglue_debug()) {
-      cc_debugerror_postwarning("coin_wgl_getprocaddress",
-                                "couldn't get hold of module handle for "
-                                "\"opengl32.dll\"");
+      if (!glhnd && coin_glglue_debug()) {
+        cc_debugerror_postwarning("coin_wgl_getprocaddress",
+                                  "couldn't get hold of any workable module "
+                                  "handle for picking up OpenGL symbols");
+      }
     }
 
-    if (glhandle) {
-      ptr = (void *)GetProcAddress(glhandle, fname);
+    if (glhnd) {
+      ptr = cc_dl_sym(glhnd, fname);
 
       if (ptr && coin_glglue_debug()) {
         cc_debugerror_postinfo("coin_wgl_getprocaddress",
                                "wglGetProcAddress() missed \"%s\", "
-                               "but found with GetProcAddress()", fname);
+                               "but found with cc_dl_sym()", fname);
       }
     }
   }
+
   return ptr;
 }
 

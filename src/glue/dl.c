@@ -472,15 +472,6 @@ cc_dl_open(const char * filename)
 
 #elif defined (HAVE_WINDLL_RUNTIME_BINDING)
 
-  /* FIXME: if filename==NULL, could we use Module32First() and
-     Module32Next() to cycle through the loaded modules, to "fake"
-     what happens on dlopen(NULL) on UNIX-systems?
-
-     That would still not work on NT4, which is missing the Tool Help
-     API. Check in a Win32-API related Usenet group if there is any
-     other way to resolve symbols in the current process
-     image. 20021015 mortene. */
-
   /* We don't want to call LoadLibrary(NULL) because this causes a
      crash on some Windows platforms (Crashes on Windows2000 has been
      reported). 20021101 thammer.
@@ -504,6 +495,12 @@ cc_dl_open(const char * filename)
       cc_string_sprintf(&funcstr, "LoadLibrary(\"%s\")", filename ? filename : "(null)");
       cc_win32_print_error("cc_dl_open", cc_string_get_text(&funcstr), GetLastError());
       cc_string_clean(&funcstr);
+    }
+  }
+  else {
+    h->nativehnd = GetModuleHandle(NULL);
+    if (cc_dl_debugging() && (h->nativehnd == NULL)) {
+      cc_win32_print_error("cc_dl_open", "GetModuleHandle(NULL)", GetLastError());
     }
   }
 
@@ -790,10 +787,13 @@ cc_libhandle
 cc_dl_coin_handle(void)
 {
 #ifndef COIN_SYSTEM_LIBRARY_NAME /* should usually be available in config.h */
-#define COIN_SYSTEM_LIBRARY_NAME libCoin.so
+#define COIN_SYSTEM_LIBRARY_NAME "libCoin.so"
+#endif
+#ifndef DYNAMIC_LIBRARY_EXTENSION /* should usually be available in config.h */
+#define DYNAMIC_LIBRARY_EXTENSION ".so"
 #endif
 
-  cc_libhandle hnd = cc_dl_open(SO__QUOTE(COIN_SYSTEM_LIBRARY_NAME));
+  cc_libhandle hnd = cc_dl_open(COIN_SYSTEM_LIBRARY_NAME);
   if (hnd) {
     /* for comparing with the known value, to make sure we e.g. don't
        get a different Coin DLL loaded from disk: */
@@ -801,7 +801,7 @@ cc_dl_coin_handle(void)
 
     if (func == NULL) {
       /* in case we're using the --enable-linkhack dev hack */
-      cc_libhandle gluehnd = cc_dl_open("libglueLINKHACK.so");
+      cc_libhandle gluehnd = cc_dl_open("libglueLINKHACK" DYNAMIC_LIBRARY_EXTENSION);
       if (gluehnd) {
         func = cc_dl_sym(gluehnd, "cc_dl_coin_handle");
         cc_dl_close(gluehnd);
@@ -826,7 +826,7 @@ cc_dl_coin_handle(void)
   else if (cc_dl_debugging()) {
     cc_debugerror_post("cc_dl_coin_handle",
                        "was not able to open Coin image as '%s'",
-                       SO__QUOTE(COIN_SYSTEM_LIBRARY_NAME));
+                       COIN_SYSTEM_LIBRARY_NAME);
   }
 
   /* In case of errors when checking if we got a valid image, make
@@ -843,10 +843,10 @@ cc_libhandle
 cc_dl_opengl_handle(void)
 {
 #ifndef OPENGL_SYSTEM_LIBRARY_NAME /* should usually be available in config.h */
-#define OPENGL_SYSTEM_LIBRARY_NAME libGL.so
+#define OPENGL_SYSTEM_LIBRARY_NAME "libGL.so"
 #endif
 
-  cc_libhandle hnd = cc_dl_open(SO__QUOTE(OPENGL_SYSTEM_LIBRARY_NAME));
+  cc_libhandle hnd = cc_dl_open(OPENGL_SYSTEM_LIBRARY_NAME);
   if (hnd) {
     /* for comparing with the known value, to make sure we e.g. don't
        get a different OpenGL DLL loaded from disk: */
@@ -870,7 +870,7 @@ cc_dl_opengl_handle(void)
   else if (cc_dl_debugging()) {
     cc_debugerror_post("cc_dl_opengl_handle",
                        "was not able to open OpenGL image as '%s'",
-                       SO__QUOTE(OPENGL_SYSTEM_LIBRARY_NAME));
+                       OPENGL_SYSTEM_LIBRARY_NAME);
   }
 
   /* In case of errors when checking if we got a valid image, make
@@ -884,11 +884,21 @@ cc_dl_opengl_handle(void)
    us" to Coin symbols or OpenGL symbols. (Like e.g. when running
    under the Pivy Coin-in-Python binding's interpreter.)
 
+   Another example is Windows platforms, where GetProcAddress() will
+   *only* resolve symbols from the specific DLL module handle, so
+   there it seems like we will have to use the OpenGL DLL handle
+   directly.
+
    Therefore, various handles are tried in sequence: first the process
-   handle, then the Coin handle, then a handle directly to
-   OpenGL. Testing is done in that succession because chances are
-   better at getting a valid handle for the process, than for Coin,
-   which again is more likely to be available than one for OpenGL.
+   handle (which usually works for UNIX- and UNIX-like systems), then
+   the Coin handle (which usually works for the special cases, as when
+   Coin is running within a dynamic language interpreter), then a
+   handle directly to OpenGL (which should work for Windows
+   platforms).
+
+   Testing is done in that succession because chances are better at
+   getting a valid handle for the process, than for Coin, which again
+   is more likely to be available than one for OpenGL.
 */
 cc_libhandle
 cc_dl_handle_with_gl_symbols(void)
