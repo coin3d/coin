@@ -48,31 +48,31 @@
   while (indices < end) {
     previ = *indices++;
 
-#if MBINDING==PER_LINE
+#if MBINDING==PER_LINE || MBINDING==PER_VERTEX
     materials->send(matnr++, TRUE);
-#elif MBINDING==PER_LINE_INDEXED
+#elif MBINDING==PER_LINE_INDEXED || MBINDING==PER_VERTEX_INDEXED
     materials->send(*matindices++, TRUE);
 #endif
 
-#if NBINDING==PER_LINE
+#if NBINDING==PER_LINE || NBINDING==PER_VERTEX
     currnormal = normals++;
     glNormal3fv((const GLfloat*) currnormal);
-#elif NBINDING==PER_LINE_INDEXED
+#elif NBINDING==PER_LINE_INDEXED || NBINDING==PER_VERTEX_INDEXED
     currnormal = &normals[*normindices++];
     glNormal3fv((const GLfloat*) currnormal);
 #endif
     i = *indices++;
     while (i >= 0) {
-#if MBINDING==PER_SEGMENT || MBINDING==PER_VERTEX
+#if MBINDING==PER_SEGMENT
       materials->send(matnr++, TRUE);
-#elif MBINDING==PER_SEGMENT_INDEXED || MBINDING==PER_VERTEX_INDEXED
+#elif MBINDING==PER_SEGMENT_INDEXED
       materials->send(*matindices++, TRUE);
 #endif
 
-#if NBINDING==PER_SEGMENT || NBINDING==PER_VERTEX
+#if NBINDING==PER_SEGMENT
       currnormal = normals++;
       glNormal3fv((const GLfloat*) currnormal);
-#elif NBINDING==PER_SEGMENT_INDEXED || NBINDING==PER_VERTEX_INDEXED
+#elif NBINDING==PER_SEGMENT_INDEXED
       currnormal = &normals[*normindices++];
       glNormal3fv((const GLfloat*)currnormal);
 #endif

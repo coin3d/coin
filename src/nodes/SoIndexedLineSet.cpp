@@ -459,12 +459,12 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
       lineDetail.setLineIndex(0);
       previ = *cindices++;
 
-      if (matPerPolyline) {
+      if (matPerPolyline || mbind >= PER_VERTEX) {
         if (matindices) vertex.setMaterialIndex(*matindices++);
         else vertex.setMaterialIndex(matnr++);
         pointDetail.setMaterialIndex(vertex.getMaterialIndex());
       }
-      if (normPerPolyline) {
+      if (normPerPolyline || nbind >= PER_VERTEX) {
         if (normindices) {
           pointDetail.setNormalIndex(*normindices);
           currnormal = &normals[*normindices++];
@@ -478,12 +478,12 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
 
       i = *cindices++;
       while (i >= 0) {
-        if (!matPerPolyline && mbind != OVERALL) {
+        if (mbind == PER_SEGMENT || mbind == PER_SEGMENT_INDEXED) {
           if (matindices) vertex.setMaterialIndex(*matindices++);
           else vertex.setMaterialIndex(matnr++);
           pointDetail.setMaterialIndex(vertex.getMaterialIndex());
         }
-        if (!normPerPolyline && nbind != OVERALL) {
+        if (nbind == PER_SEGMENT || nbind == PER_SEGMENT_INDEXED) {
           if (normindices) {
             pointDetail.setNormalIndex(*normindices);
             currnormal = &normals[*normindices++];
