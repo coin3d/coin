@@ -2062,7 +2062,10 @@ SoField::initClasses(void)
   SoSFInt32::initClass();
   SoSFUInt32::initClass();
   SoSFVec2f::initClass();
+  SoSFVec2s::initClass();
+  SoSFVec3d::initClass();
   SoSFVec3f::initClass();
+  SoSFVec3s::initClass();
   SoSFVec4f::initClass();
   SoSFMatrix::initClass();
   SoSFEnum::initClass();
@@ -2097,12 +2100,9 @@ SoField::initClasses(void)
   SoMFUInt32::initClass();
   SoMFUShort::initClass();
   SoMFVec2f::initClass();
+  SoMFVec3d::initClass();
   SoMFVec3f::initClass();
   SoMFVec4f::initClass();
-
-  // double precision
-  SoSFVec3d::initClass();
-  SoMFVec3d::initClass();
 
   // Create these obsoleted types for backwards compatibility. They
   // are typedef'ed to the types which obsoleted them, but this is
