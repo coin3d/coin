@@ -697,7 +697,7 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
         }
 
 	/* FIXME: in case of pbuffer we don't need the convertBuffer routine
-	 * as everything gets rendered the exact way as on the screen. 
+	 * as everything gets rendered the exact way as on the screen.
 	 * this should do the trick and is slightly more efficient:
 	 * this->pasteSubscreen(SbVec2s(x, y), this->internaldata->getBuffer());
 	 * 20031106 tamer.
@@ -723,13 +723,13 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
     else assert(FALSE && "impossible");
 
     this->internaldata->postRender();
-    
+
     SbVec2s dims = PUBLIC(this)->getViewportRegion().getViewportSizePixels();
     assert(dims[0] == this->internaldata->getBufferSize()[0]);
     assert(dims[1] == this->internaldata->getBufferSize()[1]);
-    
+
     /* FIXME: see FIXME above:
-     * memcpy(this->buffer, this->internaldata->getBuffer(), 
+     * memcpy(this->buffer, this->internaldata->getBuffer(),
      *        dims[0] * dims[1] * PUBLIC(this)->getComponents());
      * or something more efficient. e.g. by using other opengl extensions
      * like render-to-texture. 20031106 tamer.
@@ -1472,10 +1472,9 @@ SoOffscreenRendererP::getMaxTileSize(void)
 {
   // cache the values in static variables so that a new context is not
   // created every time render() is called in SoOffscreenRenderer
-  static unsigned int maxtilex = 0;
-  static unsigned int maxtiley = 0;  
-  if (maxtilex > 0) return SbVec2s((short)maxtilex, (short)maxtiley);
-  
+  static SbVec2s maxtile(0, 0);
+  if (maxtile[0] > 0) return maxtile;
+
   SbVec2s dims;
   unsigned int width = 128;
   unsigned int height = 128;
@@ -1484,10 +1483,10 @@ SoOffscreenRendererP::getMaxTileSize(void)
     SoDebugError::postInfo("SoOffscreenRendererP::getMaxTileSize",
                            "maxtilesize==[%u, %u]", width, height);
   }
-  
+
   static int forcedtilewidth = -1;
   static int forcedtileheight = -1;
-  
+
   // Makes it possible to override the default tilesizes. Should prove
   // useful for debugging problems on remote sites.
   const char * env;
@@ -1503,20 +1502,28 @@ SoOffscreenRendererP::getMaxTileSize(void)
   static unsigned int maxtilesize = 0;
   if (maxtilesize == 0) {
     env = coin_getenv("COIN_OFFSCREENRENDERER_MAX_TILESIZE");
-    maxtilesize = env ? atoi(env) : 1024;    
+
+    // If not set by the user (as it would usually not be), limit the
+    // maximum tilesize to 2048x2048 pixels. This is done to work
+    // around a problem with some OpenGL drivers: a huge value is
+    // returned for the maximum offscreen OpenGL canvas, where the
+    // driver obviously does not take into account the amount of
+    // memory needed to actually allocate such a large buffer.
+    //
+    // This problem has at least been observed with the MS Windows XP
+    // software OpenGL renderer, which reports a maximum viewport size
+    // of 16k x 16k pixels.
+    maxtilesize = env ? atoi(env) : 2048;
+
     // just in case
     if (maxtilesize > SHRT_MAX) maxtilesize = SHRT_MAX;
   }
-  
-  if (width < maxtilesize) dims[0] = width;
-  else dims[0] = maxtilesize;
-  
-  if (height < maxtilesize) dims[1] = height;
-  else dims[1] = maxtilesize;
-  
+
+  dims[0] = SbMin(width, maxtilesize);
+  dims[1] = SbMin(height, maxtilesize);
+
   // cache result for later calls
-  maxtilex = width;
-  maxtiley = height;
+  maxtile = dims;
 
   return dims;
 }
