@@ -299,6 +299,10 @@ getGLList(SoGLRenderAction * action, XFontStruct *& fontstruct)
     unsigned int base = NOT_AVAILABLE;
     if ((fontstruct = setFont(fontname, fontsize))) {
       base = glGenLists(256);
+      // FIXME: be robust -- don't just assert here! GL displaylists
+      // can be a scarce resource. 20020212 mortene.
+      assert(base != 0 && "could not reserve a displaylist resource");
+
 #ifdef HAVE_GLX
       glXUseXFont(fontstruct->fid, 0, 256, base);
 #endif // HAVE_GLX
