@@ -88,7 +88,19 @@
   rp.setPoint(mouseevent->getPosition());
   rp.apply(viewer->getSceneGraph());
   \endcode
+
+  Or if you do want the convenience of having the viewer set up a
+  camera for you implicitly, you can get hold of the root-node of the
+  "complete" scenegraph by simply doing
+
+  \code
+  SoNode * realroot = viewer->getSceneManager()->getSceneGraph();
+  \endcode
 */
+// FIXME: in the class doc, also mention how one can use
+// SoRayPickAction from within an SoHandleEventAction callback with
+// the getNodeAppliedTo() method etc.  Include a usage example code
+// snippet. 20010920 mortene.
 
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/actions/SoSubActionP.h>
@@ -263,7 +275,8 @@ SoRayPickAction::setNormalizedPoint(const SbVec2f & normpoint)
 }
 
 /*!
-  Sets the radius of the picking ray, in screen pixels.
+  Sets the radius of the picking ray, in screen pixels.  Default value
+  is 5.0.
 */
 void
 SoRayPickAction::setRadius(const float radiusinpixels)
@@ -324,6 +337,8 @@ SoRayPickAction::setRay(const SbVec3f & start, const SbVec3f & direction,
 /*!
   Lets you decide whether only the closest object or all the objects
   the ray intersects with should be picked.
+
+  Default value of the "pick all" flag is \c FALSE.
 */
 void
 SoRayPickAction::setPickAll(const SbBool flag)
@@ -380,8 +395,10 @@ SoRayPickAction::getPickedPointList(void) const
 }
 
 /*!
-  Returns the picked point with \a index in the list of picked
-  points.
+  Returns the picked point with \a index in the list of picked points.
+
+  Returns \c NULL if less than \a index + 1 points where picked during
+  the last raypick action.
 */
 SoPickedPoint *
 SoRayPickAction::getPickedPoint(const int index) const
