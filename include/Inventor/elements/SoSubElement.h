@@ -81,6 +81,14 @@ _class_::_class_(void) { this->setTypeId(_class_::classTypeId); \
 /*! \COININTERNAL */ \
 void * _class_::createInstance(void) { return (void *) new _class_; }
 
+/*
+  Specific to Coin. Added 2003-10-27. 
+*/
+#define SO_ELEMENT_CUSTOM_CONSTRUCTOR_SOURCE(_class_) \
+PRIVATE_SOELEMENT_VARIABLES(_class_) \
+/*! \COININTERNAL */ \
+void * _class_::createInstance(void) { return (void *) new _class_; }
+
 
 #define PRIVATE_SOELEMENT_INIT(_class_, _parent_, _instantiate_) \
   do { \
