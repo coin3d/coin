@@ -1062,16 +1062,8 @@ cc_flww32_get_vector_glyph_faceidx(struct cc_flw_vector_glyph * vecglyph)
 static int
 flww32_calcfontsize(float complexity)
 {
-
-  /* Clamp value to [0..1] just in case. */
-  if (complexity > 1.0f)
-    complexity = 1.0f;
-  else if (complexity < 0)
-    complexity = 0;
-
   /* Minimum 10, maximum 1210. Default 610 */
-  return 10 + ((int) (1200 * complexity));
-
+  return = 10 + ((int) (1200 * complexity));
 }
 
 #endif /* HAVE_WIN32_API */

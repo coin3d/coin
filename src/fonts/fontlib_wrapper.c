@@ -803,8 +803,20 @@ cc_flw_get_vector_glyph(unsigned int font, unsigned int glyph, float complexity)
 
   struct cc_flw_vector_glyph * vector_glyph = NULL;
   struct cc_flw_font * fs;
+  int temp;
 
   FLW_MUTEX_LOCK(flw_global_lock);
+
+  /* Reducing precision of the complexity variable. This is done to
+     prevent the user from flooding the memory with generated glyphs
+     which might be more or less identical */
+  if (complexity > 1.0f)  /* Clamp value to [0..1] just in case. */
+    complexity = 1.0f;
+  else if (complexity < 0)
+    complexity = 0;
+  temp = (int) (complexity * 10); 
+  complexity = ((float)temp) / 10;
+
 
   fs = flw_fontidx2fontptr(font);
 

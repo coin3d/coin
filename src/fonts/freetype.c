@@ -1317,16 +1317,8 @@ cc_flwft_get_vector_glyph_faceidx(struct cc_flw_vector_glyph * vecglyph)
 static int
 flwft_calctessellatorsteps(float complexity)
 {
-
-  /* Clamp value to [0..1] just in case. */
-  if (complexity > 1.0f)
-    complexity = 1.0f;
-  else if (complexity < 0)
-    complexity = 0;
-
   /* Default is 5 steps. Minimum is zero step, maximum is 10. */
   return (int)  (10 * complexity);
-
 }
 
 #endif /* HAVE_FREETYPE */
