@@ -1363,6 +1363,20 @@
 #define GLX_PBUFFER_BIT			0x00000004
 #endif /* GLX_PBUFFER_BIT */
 
+/* These are from the GLX pbuffer extension */
+
+#ifndef GLX_MAX_PBUFFER_WIDTH
+#define GLX_MAX_PBUFFER_WIDTH 0x8016
+#endif /* GLX_MAX_PBUFFER_WIDTH */
+
+#ifndef GLX_MAX_PBUFFER_HEIGHT
+#define GLX_MAX_PBUFFER_HEIGHT 0x8017
+#endif /* GLX_MAX_PBUFFER_HEIGHT */
+
+#ifndef GLX_MAX_PBUFFER_PIXELS
+#define GLX_MAX_PBUFFER_PIXELS 0x8018
+#endif /* GLX_MAX_PBUFFER_PIXELS */
+
 /*** GLX enums, end ***************************************************/
 /**********************************************************************/
 
