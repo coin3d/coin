@@ -43,6 +43,13 @@ typedef int SbBool;
 
 /* *********************************************************************** */
 
+/* Ye good olde min/max macros. No library would be complete without them. */
+
+#define cc_min(x, y) (((x) < (y)) ? (x) : (y))
+#define cc_max(x, y) (((x) > (y)) ? (x) : (y))
+
+/* *********************************************************************** */
+
 /* Include this to 1) be compatible with Open Inventor's SbBasic.h, 2)
  * provide a way for application programmers to get hold of the type
  * definitions without explicitly including inttypes.h.
