@@ -273,12 +273,6 @@ SoNode::initClasses(void)
 #if !defined(COIN_EXCLUDE_SOANNOTATION)
   SoAnnotation::initClass();
 #endif // COIN_EXCLUDE_SOANNOTATION
-#if !defined(COIN_EXCLUDE_SOSELECTION)
-  SoSelection::initClass();
-#endif // COIN_EXCLUDE_SOSELECTION
-#if !defined(COIN_EXCLUDE_SOEXTSELECTION)
-  SoExtSelection::initClass();
-#endif // COIN_EXCLUDE_SOEXTSELECTION
 #if !defined(COIN_EXCLUDE_SOLOCATEHIGHLIGHT)
   SoLocateHighlight::initClass();
 #endif // COIN_EXCLUDE_SOLOCATEHIGHLIGHT
@@ -315,9 +309,6 @@ SoNode::initClasses(void)
 #if !defined(COIN_EXCLUDE_SOTRANSFORMATION)
   SoTransformation::initClass();
 #endif // COIN_EXCLUDE_SOTRANSFORMATION
-#if !defined(COIN_EXCLUDE_SOANTISQUISH)
-  SoAntiSquish::initClass();
-#endif // COIN_EXCLUDE_SOANTISQUISH
 #if !defined(COIN_EXCLUDE_SOMATRIXTRANSFORM)
   SoMatrixTransform::initClass();
 #endif // COIN_EXCLUDE_SOMATRIXTRANSFORM
@@ -345,9 +336,6 @@ SoNode::initClasses(void)
 #if !defined(COIN_EXCLUDE_SOSHUTTLE)
   SoShuttle::initClass();
 #endif // COIN_EXCLUDE_SOSHUTTLE
-#if !defined(COIN_EXCLUDE_SOSURROUNDSCALE)
-  SoSurroundScale::initClass();
-#endif // COIN_EXCLUDE_SOSURROUNDSCALE
 #if !defined(COIN_EXCLUDE_SOTRANSFORM)
   SoTransform::initClass();
 #endif // COIN_EXCLUDE_SOTRANSFORM

@@ -193,8 +193,6 @@ SoDB::init(void)
 #if !defined(COIN_EXCLUDE_SONODE)
   SoNode::initClass();
 #endif // !COIN_EXCLUDE_SONODE
-  // Nodekits must be initialized after nodes.
-  SoNodeKit::init();
 #if !defined(COIN_EXCLUDE_SOENGINE)
   SoEngine::initClass();
 #endif // !COIN_EXCLUDE_SOENGINE

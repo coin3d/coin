@@ -25,7 +25,11 @@
  */
 
 #include <Inventor/SoInteraction.h>
-#include <assert.h>
+#include <Inventor/nodes/SoAntiSquish.h>
+#include <Inventor/nodes/SoSelection.h>
+#include <Inventor/nodes/SoExtSelection.h>
+#include <Inventor/nodes/SoSurroundScale.h>
+#include <Inventor/nodekits/SoInteractionKit.h>
 
 /*!
   FIXME: write doc
@@ -33,5 +37,13 @@
 void
 SoInteraction::init(void)
 {
-  // FIXME: implement
+  SoAntiSquish::initClass();
+  SoSelection::initClass();
+  SoExtSelection::initClass();
+  SoSurroundScale::initClass();
+
+  SoInteractionKit::initClass();
+
+  // FIXME: add init()-calls for the dragger and manipulator classes
+  // here when they are added to Coin. 19991107 mortene.
 }

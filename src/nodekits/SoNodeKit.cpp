@@ -17,18 +17,28 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoNodeKit SoNodeKit.h Inventor/nodekits/SoNodeKit.h
+  \brief The SoNodeKit class ...
+  \ingroup nodekits
+
+  FIXME: write class doc
+*/
+
 #include <Inventor/nodekits/SoNodeKit.h>
 #include <Inventor/nodekits/SoNodeKitListPart.h>
 #include <Inventor/nodekits/SoBaseKit.h>
 #include <Inventor/nodekits/SoAppearanceKit.h>
 #include <Inventor/nodekits/SoCameraKit.h>
-#include <Inventor/nodekits/SoInteractionKit.h>
 #include <Inventor/nodekits/SoLightKit.h>
 #include <Inventor/nodekits/SoSceneKit.h>
 #include <Inventor/nodekits/SoSeparatorKit.h>
 #include <Inventor/nodekits/SoShapeKit.h>
 #include <Inventor/nodekits/SoWrapperKit.h>
 
+/*!
+  FIXME: write function documentation
+*/
 void
 SoNodeKit::init(void)
 {
@@ -37,7 +47,6 @@ SoNodeKit::init(void)
   SoBaseKit::initClass();
   SoAppearanceKit::initClass();
   SoCameraKit::initClass();
-  SoInteractionKit::initClass();
   SoLightKit::initClass();
   SoSceneKit::initClass();
   SoSeparatorKit::initClass();

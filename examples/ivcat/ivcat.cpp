@@ -20,6 +20,8 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <Inventor/SoDB.h>
+#include <Inventor/SoInteraction.h>
+#include <Inventor/nodekits/SoNodeKit.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/actions/SoWriteAction.h>
@@ -94,6 +96,8 @@ main(int argc, char * argv[])
   }
 
   SoDB::init();
+  SoNodeKit::init();
+  SoInteraction::init();
 
   int i = optind;
   SoInput stdinp;
