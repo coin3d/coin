@@ -1,6 +1,10 @@
 ## Process this file with automake to generate Makefile.in.
 
+if HACKING_DYNAMIC_MODULES
+lib_LTLIBRARIES = libmiscLINKHACK.la
+else
 noinst_LTLIBRARIES = libmisc.la
+endif
 
 ## Remove any linklibraries detected by configure, as they are not
 ## needed in the submodules -- only in the toplevel libCoin build.
@@ -11,7 +15,7 @@ INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 ## All source files used when building this submodule, including all
 ## headers.
 
-libmisc_la_SOURCES = \
+ALLSOURCES = \
 	SoBase.cpp \
 	SoBase.h \
 	SoChildList.cpp \
@@ -29,11 +33,15 @@ libmisc_la_SOURCES = \
 	SoTessellator.cpp \
 	SoTessellator.h
 
+libmisc_la_SOURCES = $(ALLSOURCES)
+libmiscLINKHACK_la_SOURCES = $(ALLSOURCES)
+
 ## Installation information.
 
 libmiscincdir = $(includedir)/Inventor/misc
+libmiscLINKHACKincdir = $(includedir)/Inventor/misc
 
-libmiscinc_HEADERS = \
+ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/misc/SoAuditorList.h \
 	$(top_srcdir)/include/Inventor/misc/SoBase.h \
 	$(top_srcdir)/include/Inventor/misc/SoBasic.h \
@@ -41,6 +49,9 @@ libmiscinc_HEADERS = \
 	$(top_srcdir)/include/Inventor/misc/SoChildList.h \
 	$(top_srcdir)/include/Inventor/misc/SoNotification.h \
 	$(top_srcdir)/include/Inventor/misc/SoState.h
+
+libmiscinc_HEADERS = $(ALLINSTHEADERS)
+libmiscLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
 
 ## FIXME: this is a temporary workaround for a bug in Automake. The
 ## bug is fixed in the latest Automake CVS, but not in any "official"
@@ -62,4 +73,23 @@ uninstall-libmiscincHEADERS:
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  echo " rm -f $(DESTDIR)$(libmiscincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libmiscincdir)/$$f; \
+	done
+
+
+install-libmiscLINKHACKincHEADERS: $(libmiscLINKHACKinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libmiscLINKHACKincdir)
+	@list='$(libmiscLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libmiscLINKHACKincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libmiscLINKHACKincdir)/$$f; \
+	done
+
+uninstall-libmiscLINKHACKincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libmiscLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libmiscLINKHACKincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libmiscLINKHACKincdir)/$$f; \
 	done

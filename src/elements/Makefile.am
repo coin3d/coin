@@ -1,6 +1,10 @@
 ## Process this file with automake to generate Makefile.in.
 
+if HACKING_DYNAMIC_MODULES
+lib_LTLIBRARIES = libelementsLINKHACK.la
+else
 noinst_LTLIBRARIES = libelements.la
+endif
 
 ## Remove any linklibraries detected by configure, as they are not
 ## needed in the submodules -- only in the toplevel libCoin build.
@@ -11,7 +15,7 @@ INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 ## All source files used when building this submodule, including all
 ## headers.
 
-libelements_la_SOURCES = \
+ALLSOURCES = \
 	SoAccumulatedElement.cpp \
 	SoAccumulatedElement.h \
 	SoAmbientColorElement.cpp \
@@ -197,11 +201,15 @@ libelements_la_SOURCES = \
 	SoWindowElement.cpp \
 	SoWindowElement.h
 
+libelements_la_SOURCES = $(ALLSOURCES)
+libelementsLINKHACK_la_SOURCES = $(ALLSOURCES)
+
 ## Installation information.
 
 libelementsincdir = $(includedir)/Inventor/elements
+libelementsLINKHACKincdir = $(includedir)/Inventor/elements
 
-libelementsinc_HEADERS = \
+ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/elements/SoAccumulatedElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoAmbientColorElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoAnnoText3CharOrientElement.h \
@@ -296,6 +304,9 @@ libelementsinc_HEADERS = \
 	$(top_srcdir)/include/Inventor/elements/SoWindowElement.h
 
 
+libelementsinc_HEADERS = $(ALLINSTHEADERS)
+libelementsLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
+
 ## FIXME: this is a temporary workaround for a bug in Automake. The
 ## bug is fixed in the latest Automake CVS, but not in any "official"
 ## release (?). Last checked with Automake 1.4a. 19990912 mortene.
@@ -316,4 +327,23 @@ uninstall-libelementsincHEADERS:
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  echo " rm -f $(DESTDIR)$(libelementsincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libelementsincdir)/$$f; \
+	done
+
+
+install-libelementsLINKHACKincHEADERS: $(libelementsLINKHACKinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libelementsLINKHACKincdir)
+	@list='$(libelementsLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libelementsLINKHACKincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libelementsLINKHACKincdir)/$$f; \
+	done
+
+uninstall-libelementsLINKHACKincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libelementsLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libelementsLINKHACKincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libelementsLINKHACKincdir)/$$f; \
 	done

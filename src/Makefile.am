@@ -6,6 +6,24 @@ SUBDIRS = \
 
 lib_LTLIBRARIES = libCoin.la
 
+if HACKING_DYNAMIC_MODULES
+libCoin_la_LIBADD = \
+	-lVRMLnodesLINKHACK -lactionsLINKHACK -lbundlesLINKHACK \
+	-lcachesLINKHACK -lelementsLINKHACK -lenginesLINKHACK \
+	-lerrorsLINKHACK -leventsLINKHACK -lfieldsLINKHACK -lmiscLINKHACK \
+	-llistsLINKHACK -lnodekitsLINKHACK -lnodesLINKHACK \
+	-lprojectorsLINKHACK -lsensorsLINKHACK
+else
+libCoin_la_LIBADD = \
+	VRMLnodes/libVRMLnodes.la actions/libactions.la \
+	bundles/libbundles.la caches/libcaches.la elements/libelements.la \
+	engines/libengines.la errors/liberrors.la events/libevents.la \
+	fields/libfields.la misc/libmisc.la lists/liblists.la \
+	nodekits/libnodekits.la nodes/libnodes.la projectors/libprojectors.la \
+	sensors/libsensors.la
+endif
+
+
 INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 
 ## All source files from the base directory used when building the
@@ -80,14 +98,6 @@ libCoin_la_SOURCES = \
 	SoSceneManager.h \
 	SoType.cpp \
 	SoType.h
-
-libCoin_la_LIBADD = \
-	VRMLnodes/libVRMLnodes.la actions/libactions.la \
-	bundles/libbundles.la caches/libcaches.la elements/libelements.la \
-	engines/libengines.la errors/liberrors.la events/libevents.la \
-	fields/libfields.la misc/libmisc.la lists/liblists.la \
-	nodekits/libnodekits.la nodes/libnodes.la projectors/libprojectors.la \
-	sensors/libsensors.la
 
 ## Installation information.
 

@@ -89,13 +89,12 @@ SUBDIRS =  	VRMLnodes actions bundles caches elements engines errors events 	fie
 
 
 lib_LTLIBRARIES = libCoin.la
+@HACKING_DYNAMIC_MODULES_TRUE@libCoin_la_LIBADD = 	-lVRMLnodesLINKHACK -lactionsLINKHACK -lbundlesLINKHACK 	-lcachesLINKHACK -lelementsLINKHACK -lenginesLINKHACK 	-lerrorsLINKHACK -leventsLINKHACK -lfieldsLINKHACK -lmiscLINKHACK 	-llistsLINKHACK -lnodekitsLINKHACK -lnodesLINKHACK 	-lprojectorsLINKHACK -lsensorsLINKHACK
+@HACKING_DYNAMIC_MODULES_FALSE@libCoin_la_LIBADD = 	VRMLnodes/libVRMLnodes.la actions/libactions.la 	bundles/libbundles.la caches/libcaches.la elements/libelements.la 	engines/libengines.la errors/liberrors.la events/libevents.la 	fields/libfields.la misc/libmisc.la lists/liblists.la 	nodekits/libnodekits.la nodes/libnodes.la projectors/libprojectors.la 	sensors/libsensors.la
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 
 libCoin_la_SOURCES =  	SbBSPTree.cpp 	SbBSPTree.h 	SbBox2f.cpp 	SbBox2f.h 	SbBox2s.cpp 	SbBox2s.h 	SbBox3f.cpp 	SbBox3f.h 	SbColor.cpp 	SbColor.h 	SbColor4f.cpp 	SbColor4f.h 	SbCylinder.cpp 	SbCylinder.h 	SbDict.cpp 	SbDict.h 	SbLine.cpp 	SbLine.h 	SbMatrix.cpp 	SbMatrix.h 	SbName.cpp 	SbName.h 	SbPlane.cpp 	SbPlane.h 	SbRotation.cpp 	SbRotation.h 	SbSphere.cpp 	SbSphere.h 	SbString.cpp 	SbString.h 	SbTime.cpp 	SbTime.h 	SbVec2f.cpp 	SbVec2f.h 	SbVec2s.cpp 	SbVec2s.h 	SbVec3f.cpp 	SbVec3f.h 	SbVec4f.cpp 	SbVec4f.h 	SbViewVolume.cpp 	SbViewVolume.h 	SbViewportRegion.cpp 	SbViewportRegion.h 	SbXfBox3f.cpp 	SbXfBox3f.h 	SoDB.cpp 	SoDB.h 	SoFullPath.cpp 	SoFullPath.h 	SoImageInterface.cpp 	SoImageInterface.h 	SoInput.cpp 	SoInput.h 	SoInteraction.cpp 	SoInteraction.h 	SoOutput.cpp 	SoOutput.h 	SoPath.cpp 	SoPath.h 	SoPickedPoint.cpp 	SoPickedPoint.h 	SoPrimitiveVertex.cpp 	SoPrimitiveVertex.h 	SoSceneManager.cpp 	SoSceneManager.h 	SoType.cpp 	SoType.h
-
-
-libCoin_la_LIBADD =  	VRMLnodes/libVRMLnodes.la actions/libactions.la 	bundles/libbundles.la caches/libcaches.la elements/libelements.la 	engines/libengines.la errors/liberrors.la events/libevents.la 	fields/libfields.la misc/libmisc.la lists/liblists.la 	nodekits/libnodekits.la nodes/libnodes.la projectors/libprojectors.la 	sensors/libsensors.la
 
 
 libCoinincdir = $(includedir)/Inventor
@@ -115,12 +114,21 @@ DEFS = @DEFS@ -I. -I$(srcdir) -I.. -I../include/Inventor
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@
-libCoin_la_DEPENDENCIES =  VRMLnodes/libVRMLnodes.la \
-actions/libactions.la bundles/libbundles.la caches/libcaches.la \
-elements/libelements.la engines/libengines.la errors/liberrors.la \
-events/libevents.la fields/libfields.la misc/libmisc.la \
-lists/liblists.la nodekits/libnodekits.la nodes/libnodes.la \
-projectors/libprojectors.la sensors/libsensors.la
+@HACKING_DYNAMIC_MODULES_TRUE@libCoin_la_DEPENDENCIES = 
+@HACKING_DYNAMIC_MODULES_FALSE@libCoin_la_DEPENDENCIES =  \
+@HACKING_DYNAMIC_MODULES_FALSE@VRMLnodes/libVRMLnodes.la \
+@HACKING_DYNAMIC_MODULES_FALSE@actions/libactions.la \
+@HACKING_DYNAMIC_MODULES_FALSE@bundles/libbundles.la \
+@HACKING_DYNAMIC_MODULES_FALSE@caches/libcaches.la \
+@HACKING_DYNAMIC_MODULES_FALSE@elements/libelements.la \
+@HACKING_DYNAMIC_MODULES_FALSE@engines/libengines.la \
+@HACKING_DYNAMIC_MODULES_FALSE@errors/liberrors.la events/libevents.la \
+@HACKING_DYNAMIC_MODULES_FALSE@fields/libfields.la misc/libmisc.la \
+@HACKING_DYNAMIC_MODULES_FALSE@lists/liblists.la \
+@HACKING_DYNAMIC_MODULES_FALSE@nodekits/libnodekits.la \
+@HACKING_DYNAMIC_MODULES_FALSE@nodes/libnodes.la \
+@HACKING_DYNAMIC_MODULES_FALSE@projectors/libprojectors.la \
+@HACKING_DYNAMIC_MODULES_FALSE@sensors/libsensors.la
 libCoin_la_OBJECTS =  SbBSPTree.lo SbBox2f.lo SbBox2s.lo SbBox3f.lo \
 SbColor.lo SbColor4f.lo SbCylinder.lo SbDict.lo SbLine.lo SbMatrix.lo \
 SbName.lo SbPlane.lo SbRotation.lo SbSphere.lo SbString.lo SbTime.lo \

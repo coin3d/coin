@@ -85,28 +85,42 @@ RANLIB = @RANLIB@
 USE_SYMBOL_UNDERSCORE = @USE_SYMBOL_UNDERSCORE@
 VERSION = @VERSION@
 
-noinst_LTLIBRARIES = libsensors.la
+@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libsensorsLINKHACK.la
+@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libsensors.la
 
 LIBS = 
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 
-libsensors_la_SOURCES =  	SoAlarmSensor.cpp 	SoAlarmSensor.h 	SoDataSensor.cpp 	SoDataSensor.h 	SoDelayQueueSensor.cpp 	SoDelayQueueSensor.h 	SoFieldSensor.cpp 	SoFieldSensor.h 	SoIdleSensor.cpp 	SoIdleSensor.h 	SoNodeSensor.cpp 	SoNodeSensor.h 	SoOneShotSensor.cpp 	SoOneShotSensor.h 	SoPathSensor.cpp 	SoPathSensor.h 	SoSensor.cpp 	SoSensor.h 	SoSensorManager.cpp 	SoSensorManager.h 	SoTimerQueueSensor.cpp 	SoTimerQueueSensor.h 	SoTimerSensor.cpp 	SoTimerSensor.h
+ALLSOURCES =  	SoAlarmSensor.cpp 	SoAlarmSensor.h 	SoDataSensor.cpp 	SoDataSensor.h 	SoDelayQueueSensor.cpp 	SoDelayQueueSensor.h 	SoFieldSensor.cpp 	SoFieldSensor.h 	SoIdleSensor.cpp 	SoIdleSensor.h 	SoNodeSensor.cpp 	SoNodeSensor.h 	SoOneShotSensor.cpp 	SoOneShotSensor.h 	SoPathSensor.cpp 	SoPathSensor.h 	SoSensor.cpp 	SoSensor.h 	SoSensorManager.cpp 	SoSensorManager.h 	SoTimerQueueSensor.cpp 	SoTimerQueueSensor.h 	SoTimerSensor.cpp 	SoTimerSensor.h
 
+
+libsensors_la_SOURCES = $(ALLSOURCES)
+libsensorsLINKHACK_la_SOURCES = $(ALLSOURCES)
 
 libsensorsincdir = $(includedir)/Inventor/sensors
+libsensorsLINKHACKincdir = $(includedir)/Inventor/sensors
 
-libsensorsinc_HEADERS =  	$(top_srcdir)/include/Inventor/sensors/SoAlarmSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoDataSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoDelayQueueSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoFieldSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoIdleSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoNodeSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoOneShotSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoPathSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoSensorManager.h 	$(top_srcdir)/include/Inventor/sensors/SoTimerQueueSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoTimerSensor.h
+ALLINSTHEADERS =  	$(top_srcdir)/include/Inventor/sensors/SoAlarmSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoDataSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoDelayQueueSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoFieldSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoIdleSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoNodeSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoOneShotSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoPathSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoSensorManager.h 	$(top_srcdir)/include/Inventor/sensors/SoTimerQueueSensor.h 	$(top_srcdir)/include/Inventor/sensors/SoTimerSensor.h
 
+
+libsensorsinc_HEADERS = $(ALLINSTHEADERS)
+libsensorsLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
-LTLIBRARIES =  $(noinst_LTLIBRARIES)
+LTLIBRARIES =  $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
 
 DEFS = @DEFS@ -I. -I$(srcdir) -I../.. -I../../include/Inventor
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
+libsensorsLINKHACK_la_LDFLAGS = 
+libsensorsLINKHACK_la_LIBADD = 
+libsensorsLINKHACK_la_OBJECTS =  SoAlarmSensor.lo SoDataSensor.lo \
+SoDelayQueueSensor.lo SoFieldSensor.lo SoIdleSensor.lo SoNodeSensor.lo \
+SoOneShotSensor.lo SoPathSensor.lo SoSensor.lo SoSensorManager.lo \
+SoTimerQueueSensor.lo SoTimerSensor.lo
 libsensors_la_LDFLAGS = 
 libsensors_la_LIBADD = 
 libsensors_la_OBJECTS =  SoAlarmSensor.lo SoDataSensor.lo \
@@ -123,7 +137,7 @@ COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CF
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
-HEADERS =  $(libsensorsinc_HEADERS)
+HEADERS =  $(libsensorsLINKHACKinc_HEADERS) $(libsensorsinc_HEADERS)
 
 DIST_COMMON =  Makefile.am Makefile.in
 
@@ -137,8 +151,8 @@ DEP_FILES =  .deps/SoAlarmSensor.P .deps/SoDataSensor.P \
 .deps/SoNodeSensor.P .deps/SoOneShotSensor.P .deps/SoPathSensor.P \
 .deps/SoSensor.P .deps/SoSensorManager.P .deps/SoTimerQueueSensor.P \
 .deps/SoTimerSensor.P
-SOURCES = $(libsensors_la_SOURCES)
-OBJECTS = $(libsensors_la_OBJECTS)
+SOURCES = $(libsensorsLINKHACK_la_SOURCES) $(libsensors_la_SOURCES)
+OBJECTS = $(libsensorsLINKHACK_la_OBJECTS) $(libsensors_la_OBJECTS)
 
 all: all-redirect
 .SUFFIXES:
@@ -150,6 +164,31 @@ Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status $(BUILT_SOURCES)
 	cd $(top_builddir) \
 	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
+
+mostlyclean-libLTLIBRARIES:
+
+clean-libLTLIBRARIES:
+	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
+
+distclean-libLTLIBRARIES:
+
+maintainer-clean-libLTLIBRARIES:
+
+install-libLTLIBRARIES: $(lib_LTLIBRARIES)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libdir)
+	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+	  if test -f $$p; then \
+	    echo "$(LIBTOOL)  --mode=install $(INSTALL) $$p $(DESTDIR)$(libdir)/$$p"; \
+	    $(LIBTOOL)  --mode=install $(INSTALL) $$p $(DESTDIR)$(libdir)/$$p; \
+	  else :; fi; \
+	done
+
+uninstall-libLTLIBRARIES:
+	@$(NORMAL_UNINSTALL)
+	list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+	  $(LIBTOOL)  --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p; \
+	done
 
 mostlyclean-noinstLTLIBRARIES:
 
@@ -191,6 +230,9 @@ clean-libtool:
 distclean-libtool:
 
 maintainer-clean-libtool:
+
+libsensorsLINKHACK.la: $(libsensorsLINKHACK_la_OBJECTS) $(libsensorsLINKHACK_la_DEPENDENCIES)
+	$(CXXLINK) -rpath $(libdir) $(libsensorsLINKHACK_la_LDFLAGS) $(libsensorsLINKHACK_la_OBJECTS) $(libsensorsLINKHACK_la_LIBADD) $(LIBS)
 
 libsensors.la: $(libsensors_la_OBJECTS) $(libsensors_la_DEPENDENCIES)
 	$(CXXLINK)  $(libsensors_la_LDFLAGS) $(libsensors_la_OBJECTS) $(libsensors_la_LIBADD) $(LIBS)
@@ -307,23 +349,28 @@ check-am: all-am
 check: check-am
 installcheck-am:
 installcheck: installcheck-am
-install-exec-am:
+install-exec-am: install-libLTLIBRARIES
 install-exec: install-exec-am
 
-install-data-am: install-libsensorsincHEADERS
+install-data-am: install-libsensorsLINKHACKincHEADERS \
+		install-libsensorsincHEADERS
 install-data: install-data-am
 
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
 install: install-am
-uninstall-am: uninstall-libsensorsincHEADERS
+uninstall-am: uninstall-libLTLIBRARIES \
+		uninstall-libsensorsLINKHACKincHEADERS \
+		uninstall-libsensorsincHEADERS
 uninstall: uninstall-am
 all-am: Makefile $(LTLIBRARIES) $(HEADERS)
 all-redirect: all-am
 install-strip:
 	$(MAKE) $(AM_MAKEFLAGS) INSTALL_STRIP_FLAG=-s install
 installdirs:
-	$(mkinstalldirs)  $(DESTDIR)$(libsensorsincdir)
+	$(mkinstalldirs)  $(DESTDIR)$(libdir) \
+		$(DESTDIR)$(libsensorsLINKHACKincdir) \
+		$(DESTDIR)$(libsensorsincdir)
 
 
 mostlyclean-generic:
@@ -335,25 +382,28 @@ distclean-generic:
 	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
 
 maintainer-clean-generic:
-mostlyclean-am:  mostlyclean-noinstLTLIBRARIES mostlyclean-compile \
+mostlyclean-am:  mostlyclean-libLTLIBRARIES \
+		mostlyclean-noinstLTLIBRARIES mostlyclean-compile \
 		mostlyclean-libtool mostlyclean-tags mostlyclean-depend \
 		mostlyclean-generic
 
 mostlyclean: mostlyclean-am
 
-clean-am:  clean-noinstLTLIBRARIES clean-compile clean-libtool \
-		clean-tags clean-depend clean-generic mostlyclean-am
+clean-am:  clean-libLTLIBRARIES clean-noinstLTLIBRARIES clean-compile \
+		clean-libtool clean-tags clean-depend clean-generic \
+		mostlyclean-am
 
 clean: clean-am
 
-distclean-am:  distclean-noinstLTLIBRARIES distclean-compile \
-		distclean-libtool distclean-tags distclean-depend \
-		distclean-generic clean-am
+distclean-am:  distclean-libLTLIBRARIES distclean-noinstLTLIBRARIES \
+		distclean-compile distclean-libtool distclean-tags \
+		distclean-depend distclean-generic clean-am
 	-rm -f libtool
 
 distclean: distclean-am
 
-maintainer-clean-am:  maintainer-clean-noinstLTLIBRARIES \
+maintainer-clean-am:  maintainer-clean-libLTLIBRARIES \
+		maintainer-clean-noinstLTLIBRARIES \
 		maintainer-clean-compile maintainer-clean-libtool \
 		maintainer-clean-tags maintainer-clean-depend \
 		maintainer-clean-generic distclean-am
@@ -362,11 +412,16 @@ maintainer-clean-am:  maintainer-clean-noinstLTLIBRARIES \
 
 maintainer-clean: maintainer-clean-am
 
-.PHONY: mostlyclean-noinstLTLIBRARIES distclean-noinstLTLIBRARIES \
+.PHONY: mostlyclean-libLTLIBRARIES distclean-libLTLIBRARIES \
+clean-libLTLIBRARIES maintainer-clean-libLTLIBRARIES \
+uninstall-libLTLIBRARIES install-libLTLIBRARIES \
+mostlyclean-noinstLTLIBRARIES distclean-noinstLTLIBRARIES \
 clean-noinstLTLIBRARIES maintainer-clean-noinstLTLIBRARIES \
 mostlyclean-compile distclean-compile clean-compile \
 maintainer-clean-compile mostlyclean-libtool distclean-libtool \
-clean-libtool maintainer-clean-libtool uninstall-libsensorsincHEADERS \
+clean-libtool maintainer-clean-libtool \
+uninstall-libsensorsLINKHACKincHEADERS \
+install-libsensorsLINKHACKincHEADERS uninstall-libsensorsincHEADERS \
 install-libsensorsincHEADERS tags mostlyclean-tags distclean-tags \
 clean-tags maintainer-clean-tags distdir mostlyclean-depend \
 distclean-depend clean-depend maintainer-clean-depend info-am info \
@@ -393,6 +448,24 @@ uninstall-libsensorsincHEADERS:
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  echo " rm -f $(DESTDIR)$(libsensorsincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libsensorsincdir)/$$f; \
+	done
+
+install-libsensorsLINKHACKincHEADERS: $(libsensorsLINKHACKinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libsensorsLINKHACKincdir)
+	@list='$(libsensorsLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libsensorsLINKHACKincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libsensorsLINKHACKincdir)/$$f; \
+	done
+
+uninstall-libsensorsLINKHACKincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libsensorsLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libsensorsLINKHACKincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libsensorsLINKHACKincdir)/$$f; \
 	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

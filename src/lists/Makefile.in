@@ -85,28 +85,44 @@ RANLIB = @RANLIB@
 USE_SYMBOL_UNDERSCORE = @USE_SYMBOL_UNDERSCORE@
 VERSION = @VERSION@
 
-noinst_LTLIBRARIES = liblists.la
+@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = liblistsLINKHACK.la
+@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = liblists.la
 
 LIBS = 
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 
-liblists_la_SOURCES =  	SbIntList.cpp 	SbIntList.h 	SbList.cpp 	SbList.h 	SbPList.cpp 	SbPList.h 	SbStringList.cpp 	SbStringList.h 	SoActionMethodList.cpp 	SoActionMethodList.h 	SoAuditorList.cpp 	SoAuditorList.h 	SoBaseList.cpp 	SoBaseList.h 	SoCallbackList.cpp 	SoCallbackList.h 	SoDetailList.cpp 	SoDetailList.h 	SoEnabledElementsList.cpp 	SoEnabledElementsList.h 	SoEngineList.cpp 	SoEngineList.h 	SoEngineOutputList.cpp 	SoEngineOutputList.h 	SoFieldList.cpp 	SoFieldList.h 	SoNodeList.cpp 	SoNodeList.h 	SoPathList.cpp 	SoPathList.h 	SoPickedPointList.cpp 	SoPickedPointList.h 	SoTypeList.cpp 	SoTypeList.h 	SoVRMLInterpOutputList.cpp 	SoVRMLInterpOutputList.h
+ALLSOURCES =  	SbIntList.cpp 	SbIntList.h 	SbList.cpp 	SbList.h 	SbPList.cpp 	SbPList.h 	SbStringList.cpp 	SbStringList.h 	SoActionMethodList.cpp 	SoActionMethodList.h 	SoAuditorList.cpp 	SoAuditorList.h 	SoBaseList.cpp 	SoBaseList.h 	SoCallbackList.cpp 	SoCallbackList.h 	SoDetailList.cpp 	SoDetailList.h 	SoEnabledElementsList.cpp 	SoEnabledElementsList.h 	SoEngineList.cpp 	SoEngineList.h 	SoEngineOutputList.cpp 	SoEngineOutputList.h 	SoFieldList.cpp 	SoFieldList.h 	SoNodeList.cpp 	SoNodeList.h 	SoPathList.cpp 	SoPathList.h 	SoPickedPointList.cpp 	SoPickedPointList.h 	SoTypeList.cpp 	SoTypeList.h 	SoVRMLInterpOutputList.cpp 	SoVRMLInterpOutputList.h
 
+
+liblists_la_SOURCES = $(ALLSOURCES)
+liblistsLINKHACK_la_SOURCES = $(ALLSOURCES)
 
 liblistsincdir = $(includedir)/Inventor/lists
+liblistsLINKHACKincdir = $(includedir)/Inventor/lists
 
-liblistsinc_HEADERS =  	$(top_srcdir)/include/Inventor/lists/SbIntList.h 	$(top_srcdir)/include/Inventor/lists/SbList.h 	$(top_srcdir)/include/Inventor/lists/SbPList.h 	$(top_srcdir)/include/Inventor/lists/SbStringList.h 	$(top_srcdir)/include/Inventor/lists/SoActionMethodList.h 	$(top_srcdir)/include/Inventor/lists/SoAuditorList.h 	$(top_srcdir)/include/Inventor/lists/SoBaseList.h 	$(top_srcdir)/include/Inventor/lists/SoCallbackList.h 	$(top_srcdir)/include/Inventor/lists/SoDetailList.h 	$(top_srcdir)/include/Inventor/lists/SoEnabledElementsList.h 	$(top_srcdir)/include/Inventor/lists/SoEngineList.h 	$(top_srcdir)/include/Inventor/lists/SoEngineOutputList.h 	$(top_srcdir)/include/Inventor/lists/SoFieldList.h 	$(top_srcdir)/include/Inventor/lists/SoNodeList.h 	$(top_srcdir)/include/Inventor/lists/SoPathList.h 	$(top_srcdir)/include/Inventor/lists/SoPickedPointList.h 	$(top_srcdir)/include/Inventor/lists/SoTypeList.h 	$(top_srcdir)/include/Inventor/lists/SoVRMLInterpOutputList.h
+ALLINSTHEADERS =  	$(top_srcdir)/include/Inventor/lists/SbIntList.h 	$(top_srcdir)/include/Inventor/lists/SbList.h 	$(top_srcdir)/include/Inventor/lists/SbPList.h 	$(top_srcdir)/include/Inventor/lists/SbStringList.h 	$(top_srcdir)/include/Inventor/lists/SoActionMethodList.h 	$(top_srcdir)/include/Inventor/lists/SoAuditorList.h 	$(top_srcdir)/include/Inventor/lists/SoBaseList.h 	$(top_srcdir)/include/Inventor/lists/SoCallbackList.h 	$(top_srcdir)/include/Inventor/lists/SoDetailList.h 	$(top_srcdir)/include/Inventor/lists/SoEnabledElementsList.h 	$(top_srcdir)/include/Inventor/lists/SoEngineList.h 	$(top_srcdir)/include/Inventor/lists/SoEngineOutputList.h 	$(top_srcdir)/include/Inventor/lists/SoFieldList.h 	$(top_srcdir)/include/Inventor/lists/SoNodeList.h 	$(top_srcdir)/include/Inventor/lists/SoPathList.h 	$(top_srcdir)/include/Inventor/lists/SoPickedPointList.h 	$(top_srcdir)/include/Inventor/lists/SoTypeList.h 	$(top_srcdir)/include/Inventor/lists/SoVRMLInterpOutputList.h
 
+
+liblistsinc_HEADERS = $(ALLINSTHEADERS)
+liblistsLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
-LTLIBRARIES =  $(noinst_LTLIBRARIES)
+LTLIBRARIES =  $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
 
 DEFS = @DEFS@ -I. -I$(srcdir) -I../.. -I../../include/Inventor
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
+liblistsLINKHACK_la_LDFLAGS = 
+liblistsLINKHACK_la_LIBADD = 
+liblistsLINKHACK_la_OBJECTS =  SbIntList.lo SbList.lo SbPList.lo \
+SbStringList.lo SoActionMethodList.lo SoAuditorList.lo SoBaseList.lo \
+SoCallbackList.lo SoDetailList.lo SoEnabledElementsList.lo \
+SoEngineList.lo SoEngineOutputList.lo SoFieldList.lo SoNodeList.lo \
+SoPathList.lo SoPickedPointList.lo SoTypeList.lo \
+SoVRMLInterpOutputList.lo
 liblists_la_LDFLAGS = 
 liblists_la_LIBADD = 
 liblists_la_OBJECTS =  SbIntList.lo SbList.lo SbPList.lo SbStringList.lo \
@@ -124,7 +140,7 @@ COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CF
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
-HEADERS =  $(liblistsinc_HEADERS)
+HEADERS =  $(liblistsLINKHACKinc_HEADERS) $(liblistsinc_HEADERS)
 
 DIST_COMMON =  Makefile.am Makefile.in
 
@@ -140,8 +156,8 @@ DEP_FILES =  .deps/SbIntList.P .deps/SbList.P .deps/SbPList.P \
 .deps/SoEngineOutputList.P .deps/SoFieldList.P .deps/SoNodeList.P \
 .deps/SoPathList.P .deps/SoPickedPointList.P .deps/SoTypeList.P \
 .deps/SoVRMLInterpOutputList.P
-SOURCES = $(liblists_la_SOURCES)
-OBJECTS = $(liblists_la_OBJECTS)
+SOURCES = $(liblistsLINKHACK_la_SOURCES) $(liblists_la_SOURCES)
+OBJECTS = $(liblistsLINKHACK_la_OBJECTS) $(liblists_la_OBJECTS)
 
 all: all-redirect
 .SUFFIXES:
@@ -153,6 +169,31 @@ Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status $(BUILT_SOURCES)
 	cd $(top_builddir) \
 	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
+
+mostlyclean-libLTLIBRARIES:
+
+clean-libLTLIBRARIES:
+	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
+
+distclean-libLTLIBRARIES:
+
+maintainer-clean-libLTLIBRARIES:
+
+install-libLTLIBRARIES: $(lib_LTLIBRARIES)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libdir)
+	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+	  if test -f $$p; then \
+	    echo "$(LIBTOOL)  --mode=install $(INSTALL) $$p $(DESTDIR)$(libdir)/$$p"; \
+	    $(LIBTOOL)  --mode=install $(INSTALL) $$p $(DESTDIR)$(libdir)/$$p; \
+	  else :; fi; \
+	done
+
+uninstall-libLTLIBRARIES:
+	@$(NORMAL_UNINSTALL)
+	list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+	  $(LIBTOOL)  --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p; \
+	done
 
 mostlyclean-noinstLTLIBRARIES:
 
@@ -194,6 +235,9 @@ clean-libtool:
 distclean-libtool:
 
 maintainer-clean-libtool:
+
+liblistsLINKHACK.la: $(liblistsLINKHACK_la_OBJECTS) $(liblistsLINKHACK_la_DEPENDENCIES)
+	$(CXXLINK) -rpath $(libdir) $(liblistsLINKHACK_la_LDFLAGS) $(liblistsLINKHACK_la_OBJECTS) $(liblistsLINKHACK_la_LIBADD) $(LIBS)
 
 liblists.la: $(liblists_la_OBJECTS) $(liblists_la_DEPENDENCIES)
 	$(CXXLINK)  $(liblists_la_LDFLAGS) $(liblists_la_OBJECTS) $(liblists_la_LIBADD) $(LIBS)
@@ -310,23 +354,28 @@ check-am: all-am
 check: check-am
 installcheck-am:
 installcheck: installcheck-am
-install-exec-am:
+install-exec-am: install-libLTLIBRARIES
 install-exec: install-exec-am
 
-install-data-am: install-liblistsincHEADERS
+install-data-am: install-liblistsLINKHACKincHEADERS \
+		install-liblistsincHEADERS
 install-data: install-data-am
 
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
 install: install-am
-uninstall-am: uninstall-liblistsincHEADERS
+uninstall-am: uninstall-libLTLIBRARIES \
+		uninstall-liblistsLINKHACKincHEADERS \
+		uninstall-liblistsincHEADERS
 uninstall: uninstall-am
 all-am: Makefile $(LTLIBRARIES) $(HEADERS)
 all-redirect: all-am
 install-strip:
 	$(MAKE) $(AM_MAKEFLAGS) INSTALL_STRIP_FLAG=-s install
 installdirs:
-	$(mkinstalldirs)  $(DESTDIR)$(liblistsincdir)
+	$(mkinstalldirs)  $(DESTDIR)$(libdir) \
+		$(DESTDIR)$(liblistsLINKHACKincdir) \
+		$(DESTDIR)$(liblistsincdir)
 
 
 mostlyclean-generic:
@@ -338,25 +387,28 @@ distclean-generic:
 	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
 
 maintainer-clean-generic:
-mostlyclean-am:  mostlyclean-noinstLTLIBRARIES mostlyclean-compile \
+mostlyclean-am:  mostlyclean-libLTLIBRARIES \
+		mostlyclean-noinstLTLIBRARIES mostlyclean-compile \
 		mostlyclean-libtool mostlyclean-tags mostlyclean-depend \
 		mostlyclean-generic
 
 mostlyclean: mostlyclean-am
 
-clean-am:  clean-noinstLTLIBRARIES clean-compile clean-libtool \
-		clean-tags clean-depend clean-generic mostlyclean-am
+clean-am:  clean-libLTLIBRARIES clean-noinstLTLIBRARIES clean-compile \
+		clean-libtool clean-tags clean-depend clean-generic \
+		mostlyclean-am
 
 clean: clean-am
 
-distclean-am:  distclean-noinstLTLIBRARIES distclean-compile \
-		distclean-libtool distclean-tags distclean-depend \
-		distclean-generic clean-am
+distclean-am:  distclean-libLTLIBRARIES distclean-noinstLTLIBRARIES \
+		distclean-compile distclean-libtool distclean-tags \
+		distclean-depend distclean-generic clean-am
 	-rm -f libtool
 
 distclean: distclean-am
 
-maintainer-clean-am:  maintainer-clean-noinstLTLIBRARIES \
+maintainer-clean-am:  maintainer-clean-libLTLIBRARIES \
+		maintainer-clean-noinstLTLIBRARIES \
 		maintainer-clean-compile maintainer-clean-libtool \
 		maintainer-clean-tags maintainer-clean-depend \
 		maintainer-clean-generic distclean-am
@@ -365,19 +417,24 @@ maintainer-clean-am:  maintainer-clean-noinstLTLIBRARIES \
 
 maintainer-clean: maintainer-clean-am
 
-.PHONY: mostlyclean-noinstLTLIBRARIES distclean-noinstLTLIBRARIES \
+.PHONY: mostlyclean-libLTLIBRARIES distclean-libLTLIBRARIES \
+clean-libLTLIBRARIES maintainer-clean-libLTLIBRARIES \
+uninstall-libLTLIBRARIES install-libLTLIBRARIES \
+mostlyclean-noinstLTLIBRARIES distclean-noinstLTLIBRARIES \
 clean-noinstLTLIBRARIES maintainer-clean-noinstLTLIBRARIES \
 mostlyclean-compile distclean-compile clean-compile \
 maintainer-clean-compile mostlyclean-libtool distclean-libtool \
-clean-libtool maintainer-clean-libtool uninstall-liblistsincHEADERS \
-install-liblistsincHEADERS tags mostlyclean-tags distclean-tags \
-clean-tags maintainer-clean-tags distdir mostlyclean-depend \
-distclean-depend clean-depend maintainer-clean-depend info-am info \
-dvi-am dvi check check-am installcheck-am installcheck install-exec-am \
-install-exec install-data-am install-data install-am install \
-uninstall-am uninstall all-redirect all-am all installdirs \
-mostlyclean-generic distclean-generic clean-generic \
-maintainer-clean-generic clean mostlyclean distclean maintainer-clean
+clean-libtool maintainer-clean-libtool \
+uninstall-liblistsLINKHACKincHEADERS install-liblistsLINKHACKincHEADERS \
+uninstall-liblistsincHEADERS install-liblistsincHEADERS tags \
+mostlyclean-tags distclean-tags clean-tags maintainer-clean-tags \
+distdir mostlyclean-depend distclean-depend clean-depend \
+maintainer-clean-depend info-am info dvi-am dvi check check-am \
+installcheck-am installcheck install-exec-am install-exec \
+install-data-am install-data install-am install uninstall-am uninstall \
+all-redirect all-am all installdirs mostlyclean-generic \
+distclean-generic clean-generic maintainer-clean-generic clean \
+mostlyclean distclean maintainer-clean
 
 
 install-liblistsincHEADERS: $(liblistsinc_HEADERS)
@@ -396,6 +453,24 @@ uninstall-liblistsincHEADERS:
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  echo " rm -f $(DESTDIR)$(liblistsincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(liblistsincdir)/$$f; \
+	done
+
+install-liblistsLINKHACKincHEADERS: $(liblistsLINKHACKinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(liblistsLINKHACKincdir)
+	@list='$(liblistsLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(liblistsLINKHACKincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(liblistsLINKHACKincdir)/$$f; \
+	done
+
+uninstall-liblistsLINKHACKincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(liblistsLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(liblistsLINKHACKincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(liblistsLINKHACKincdir)/$$f; \
 	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

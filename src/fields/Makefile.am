@@ -1,6 +1,10 @@
 ## Process this file with automake to generate Makefile.in.
 
+if HACKING_DYNAMIC_MODULES
+lib_LTLIBRARIES = libfieldsLINKHACK.la
+else
 noinst_LTLIBRARIES = libfields.la
+endif
 
 ## Remove any linklibraries detected by configure, as they are not
 ## needed in the submodules -- only in the toplevel libCoin build.
@@ -11,7 +15,7 @@ INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 ## All source files used when building this submodule, including all
 ## headers.
 
-libfields_la_SOURCES = \
+ALLSOURCES = \
 	SoField.cpp \
 	SoField.h \
 	SoFieldContainer.cpp \
@@ -111,11 +115,15 @@ libfields_la_SOURCES = \
 	SoSField.cpp \
 	SoSField.h
 
+libfields_la_SOURCES = $(ALLSOURCES)
+libfieldsLINKHACK_la_SOURCES = $(ALLSOURCES)
+
 ## Installation information.
 
 libfieldsincdir = $(includedir)/Inventor/fields
+libfieldsLINKHACKincdir = $(includedir)/Inventor/fields
 
-libfieldsinc_HEADERS = \
+ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/fields/SoField.h \
 	$(top_srcdir)/include/Inventor/fields/SoFieldContainer.h \
 	$(top_srcdir)/include/Inventor/fields/SoFieldData.h \
@@ -167,6 +175,9 @@ libfieldsinc_HEADERS = \
 	$(top_srcdir)/include/Inventor/fields/SoSField.h
 
 
+libfieldsinc_HEADERS = $(ALLINSTHEADERS)
+libfieldsLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
+
 ## FIXME: this is a temporary workaround for a bug in Automake. The
 ## bug is fixed in the latest Automake CVS, but not in any "official"
 ## release (?). Last checked with Automake 1.4a. 19990912 mortene.
@@ -187,4 +198,23 @@ uninstall-libfieldsincHEADERS:
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  echo " rm -f $(DESTDIR)$(libfieldsincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libfieldsincdir)/$$f; \
+	done
+
+
+install-libfieldsLINKHACKincHEADERS: $(libfieldsLINKHACKinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libfieldsLINKHACKincdir)
+	@list='$(libfieldsLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libfieldsLINKHACKincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libfieldsLINKHACKincdir)/$$f; \
+	done
+
+uninstall-libfieldsLINKHACKincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libfieldsLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libfieldsLINKHACKincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libfieldsLINKHACKincdir)/$$f; \
 	done

@@ -85,28 +85,40 @@ RANLIB = @RANLIB@
 USE_SYMBOL_UNDERSCORE = @USE_SYMBOL_UNDERSCORE@
 VERSION = @VERSION@
 
-noinst_LTLIBRARIES = libcaches.la
+@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libcachesLINKHACK.la
+@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libcaches.la
 
 LIBS = 
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 
-libcaches_la_SOURCES =  	SoBoundingBoxCache.cpp 	SoBoundingBoxCache.h 	SoCache.cpp 	SoCache.h 	SoConvexDataCache.cpp 	SoConvexDataCache.h 	SoNormalCache.cpp 	SoNormalCache.h 	SoTextureCoordinateCache.cpp 	SoTextureCoordinateCache.h
+ALLSOURCES =  	SoBoundingBoxCache.cpp 	SoBoundingBoxCache.h 	SoCache.cpp 	SoCache.h 	SoConvexDataCache.cpp 	SoConvexDataCache.h 	SoNormalCache.cpp 	SoNormalCache.h 	SoTextureCoordinateCache.cpp 	SoTextureCoordinateCache.h
 
+
+libcaches_la_SOURCES = $(ALLSOURCES)
+libcachesLINKHACK_la_SOURCES = $(ALLSOURCES)
 
 libcachesincdir = $(includedir)/Inventor/caches
+libcachesLINKHACKincdir = $(includedir)/Inventor/caches
 
-libcachesinc_HEADERS =  	$(top_srcdir)/include/Inventor/caches/SoBoundingBoxCache.h 	$(top_srcdir)/include/Inventor/caches/SoCache.h 	$(top_srcdir)/include/Inventor/caches/SoConvexDataCache.h 	$(top_srcdir)/include/Inventor/caches/SoNormalCache.h 	$(top_srcdir)/include/Inventor/caches/SoTextureCoordinateCache.h
+ALLINSTHEADERS =  	$(top_srcdir)/include/Inventor/caches/SoBoundingBoxCache.h 	$(top_srcdir)/include/Inventor/caches/SoCache.h 	$(top_srcdir)/include/Inventor/caches/SoConvexDataCache.h 	$(top_srcdir)/include/Inventor/caches/SoNormalCache.h 	$(top_srcdir)/include/Inventor/caches/SoTextureCoordinateCache.h
 
+
+libcachesinc_HEADERS = $(ALLINSTHEADERS)
+libcachesLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
-LTLIBRARIES =  $(noinst_LTLIBRARIES)
+LTLIBRARIES =  $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
 
 DEFS = @DEFS@ -I. -I$(srcdir) -I../.. -I../../include/Inventor
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
+libcachesLINKHACK_la_LDFLAGS = 
+libcachesLINKHACK_la_LIBADD = 
+libcachesLINKHACK_la_OBJECTS =  SoBoundingBoxCache.lo SoCache.lo \
+SoConvexDataCache.lo SoNormalCache.lo SoTextureCoordinateCache.lo
 libcaches_la_LDFLAGS = 
 libcaches_la_LIBADD = 
 libcaches_la_OBJECTS =  SoBoundingBoxCache.lo SoCache.lo \
@@ -121,7 +133,7 @@ COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CF
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
-HEADERS =  $(libcachesinc_HEADERS)
+HEADERS =  $(libcachesLINKHACKinc_HEADERS) $(libcachesinc_HEADERS)
 
 DIST_COMMON =  Makefile.am Makefile.in
 
@@ -133,8 +145,8 @@ GZIP_ENV = --best
 DEP_FILES =  .deps/SoBoundingBoxCache.P .deps/SoCache.P \
 .deps/SoConvexDataCache.P .deps/SoNormalCache.P \
 .deps/SoTextureCoordinateCache.P
-SOURCES = $(libcaches_la_SOURCES)
-OBJECTS = $(libcaches_la_OBJECTS)
+SOURCES = $(libcachesLINKHACK_la_SOURCES) $(libcaches_la_SOURCES)
+OBJECTS = $(libcachesLINKHACK_la_OBJECTS) $(libcaches_la_OBJECTS)
 
 all: all-redirect
 .SUFFIXES:
@@ -146,6 +158,31 @@ Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status $(BUILT_SOURCES)
 	cd $(top_builddir) \
 	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
+
+mostlyclean-libLTLIBRARIES:
+
+clean-libLTLIBRARIES:
+	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
+
+distclean-libLTLIBRARIES:
+
+maintainer-clean-libLTLIBRARIES:
+
+install-libLTLIBRARIES: $(lib_LTLIBRARIES)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libdir)
+	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+	  if test -f $$p; then \
+	    echo "$(LIBTOOL)  --mode=install $(INSTALL) $$p $(DESTDIR)$(libdir)/$$p"; \
+	    $(LIBTOOL)  --mode=install $(INSTALL) $$p $(DESTDIR)$(libdir)/$$p; \
+	  else :; fi; \
+	done
+
+uninstall-libLTLIBRARIES:
+	@$(NORMAL_UNINSTALL)
+	list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+	  $(LIBTOOL)  --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p; \
+	done
 
 mostlyclean-noinstLTLIBRARIES:
 
@@ -187,6 +224,9 @@ clean-libtool:
 distclean-libtool:
 
 maintainer-clean-libtool:
+
+libcachesLINKHACK.la: $(libcachesLINKHACK_la_OBJECTS) $(libcachesLINKHACK_la_DEPENDENCIES)
+	$(CXXLINK) -rpath $(libdir) $(libcachesLINKHACK_la_LDFLAGS) $(libcachesLINKHACK_la_OBJECTS) $(libcachesLINKHACK_la_LIBADD) $(LIBS)
 
 libcaches.la: $(libcaches_la_OBJECTS) $(libcaches_la_DEPENDENCIES)
 	$(CXXLINK)  $(libcaches_la_LDFLAGS) $(libcaches_la_OBJECTS) $(libcaches_la_LIBADD) $(LIBS)
@@ -303,23 +343,28 @@ check-am: all-am
 check: check-am
 installcheck-am:
 installcheck: installcheck-am
-install-exec-am:
+install-exec-am: install-libLTLIBRARIES
 install-exec: install-exec-am
 
-install-data-am: install-libcachesincHEADERS
+install-data-am: install-libcachesLINKHACKincHEADERS \
+		install-libcachesincHEADERS
 install-data: install-data-am
 
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
 install: install-am
-uninstall-am: uninstall-libcachesincHEADERS
+uninstall-am: uninstall-libLTLIBRARIES \
+		uninstall-libcachesLINKHACKincHEADERS \
+		uninstall-libcachesincHEADERS
 uninstall: uninstall-am
 all-am: Makefile $(LTLIBRARIES) $(HEADERS)
 all-redirect: all-am
 install-strip:
 	$(MAKE) $(AM_MAKEFLAGS) INSTALL_STRIP_FLAG=-s install
 installdirs:
-	$(mkinstalldirs)  $(DESTDIR)$(libcachesincdir)
+	$(mkinstalldirs)  $(DESTDIR)$(libdir) \
+		$(DESTDIR)$(libcachesLINKHACKincdir) \
+		$(DESTDIR)$(libcachesincdir)
 
 
 mostlyclean-generic:
@@ -331,25 +376,28 @@ distclean-generic:
 	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
 
 maintainer-clean-generic:
-mostlyclean-am:  mostlyclean-noinstLTLIBRARIES mostlyclean-compile \
+mostlyclean-am:  mostlyclean-libLTLIBRARIES \
+		mostlyclean-noinstLTLIBRARIES mostlyclean-compile \
 		mostlyclean-libtool mostlyclean-tags mostlyclean-depend \
 		mostlyclean-generic
 
 mostlyclean: mostlyclean-am
 
-clean-am:  clean-noinstLTLIBRARIES clean-compile clean-libtool \
-		clean-tags clean-depend clean-generic mostlyclean-am
+clean-am:  clean-libLTLIBRARIES clean-noinstLTLIBRARIES clean-compile \
+		clean-libtool clean-tags clean-depend clean-generic \
+		mostlyclean-am
 
 clean: clean-am
 
-distclean-am:  distclean-noinstLTLIBRARIES distclean-compile \
-		distclean-libtool distclean-tags distclean-depend \
-		distclean-generic clean-am
+distclean-am:  distclean-libLTLIBRARIES distclean-noinstLTLIBRARIES \
+		distclean-compile distclean-libtool distclean-tags \
+		distclean-depend distclean-generic clean-am
 	-rm -f libtool
 
 distclean: distclean-am
 
-maintainer-clean-am:  maintainer-clean-noinstLTLIBRARIES \
+maintainer-clean-am:  maintainer-clean-libLTLIBRARIES \
+		maintainer-clean-noinstLTLIBRARIES \
 		maintainer-clean-compile maintainer-clean-libtool \
 		maintainer-clean-tags maintainer-clean-depend \
 		maintainer-clean-generic distclean-am
@@ -358,11 +406,16 @@ maintainer-clean-am:  maintainer-clean-noinstLTLIBRARIES \
 
 maintainer-clean: maintainer-clean-am
 
-.PHONY: mostlyclean-noinstLTLIBRARIES distclean-noinstLTLIBRARIES \
+.PHONY: mostlyclean-libLTLIBRARIES distclean-libLTLIBRARIES \
+clean-libLTLIBRARIES maintainer-clean-libLTLIBRARIES \
+uninstall-libLTLIBRARIES install-libLTLIBRARIES \
+mostlyclean-noinstLTLIBRARIES distclean-noinstLTLIBRARIES \
 clean-noinstLTLIBRARIES maintainer-clean-noinstLTLIBRARIES \
 mostlyclean-compile distclean-compile clean-compile \
 maintainer-clean-compile mostlyclean-libtool distclean-libtool \
-clean-libtool maintainer-clean-libtool uninstall-libcachesincHEADERS \
+clean-libtool maintainer-clean-libtool \
+uninstall-libcachesLINKHACKincHEADERS \
+install-libcachesLINKHACKincHEADERS uninstall-libcachesincHEADERS \
 install-libcachesincHEADERS tags mostlyclean-tags distclean-tags \
 clean-tags maintainer-clean-tags distdir mostlyclean-depend \
 distclean-depend clean-depend maintainer-clean-depend info-am info \
@@ -389,6 +442,24 @@ uninstall-libcachesincHEADERS:
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  echo " rm -f $(DESTDIR)$(libcachesincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libcachesincdir)/$$f; \
+	done
+
+install-libcachesLINKHACKincHEADERS: $(libcachesLINKHACKinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libcachesLINKHACKincdir)
+	@list='$(libcachesLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libcachesLINKHACKincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libcachesLINKHACKincdir)/$$f; \
+	done
+
+uninstall-libcachesLINKHACKincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libcachesLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libcachesLINKHACKincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libcachesLINKHACKincdir)/$$f; \
 	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

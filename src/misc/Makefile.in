@@ -85,28 +85,41 @@ RANLIB = @RANLIB@
 USE_SYMBOL_UNDERSCORE = @USE_SYMBOL_UNDERSCORE@
 VERSION = @VERSION@
 
-noinst_LTLIBRARIES = libmisc.la
+@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libmiscLINKHACK.la
+@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libmisc.la
 
 LIBS = 
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 
-libmisc_la_SOURCES =  	SoBase.cpp 	SoBase.h 	SoChildList.cpp 	SoChildList.h 	SoGL.cpp 	SoGL.h 	SoGLImage.cpp 	SoGLImage.h 	SoNormalGenerator.cpp 	SoNormalGenerator.h 	SoNotification.cpp 	SoNotification.h 	SoState.cpp 	SoState.h 	SoTessellator.cpp 	SoTessellator.h
+ALLSOURCES =  	SoBase.cpp 	SoBase.h 	SoChildList.cpp 	SoChildList.h 	SoGL.cpp 	SoGL.h 	SoGLImage.cpp 	SoGLImage.h 	SoNormalGenerator.cpp 	SoNormalGenerator.h 	SoNotification.cpp 	SoNotification.h 	SoState.cpp 	SoState.h 	SoTessellator.cpp 	SoTessellator.h
 
+
+libmisc_la_SOURCES = $(ALLSOURCES)
+libmiscLINKHACK_la_SOURCES = $(ALLSOURCES)
 
 libmiscincdir = $(includedir)/Inventor/misc
+libmiscLINKHACKincdir = $(includedir)/Inventor/misc
 
-libmiscinc_HEADERS =  	$(top_srcdir)/include/Inventor/misc/SoAuditorList.h 	$(top_srcdir)/include/Inventor/misc/SoBase.h 	$(top_srcdir)/include/Inventor/misc/SoBasic.h 	$(top_srcdir)/include/Inventor/misc/SoCallbackList.h 	$(top_srcdir)/include/Inventor/misc/SoChildList.h 	$(top_srcdir)/include/Inventor/misc/SoNotification.h 	$(top_srcdir)/include/Inventor/misc/SoState.h
+ALLINSTHEADERS =  	$(top_srcdir)/include/Inventor/misc/SoAuditorList.h 	$(top_srcdir)/include/Inventor/misc/SoBase.h 	$(top_srcdir)/include/Inventor/misc/SoBasic.h 	$(top_srcdir)/include/Inventor/misc/SoCallbackList.h 	$(top_srcdir)/include/Inventor/misc/SoChildList.h 	$(top_srcdir)/include/Inventor/misc/SoNotification.h 	$(top_srcdir)/include/Inventor/misc/SoState.h
 
+
+libmiscinc_HEADERS = $(ALLINSTHEADERS)
+libmiscLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
-LTLIBRARIES =  $(noinst_LTLIBRARIES)
+LTLIBRARIES =  $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
 
 DEFS = @DEFS@ -I. -I$(srcdir) -I../.. -I../../include/Inventor
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
+libmiscLINKHACK_la_LDFLAGS = 
+libmiscLINKHACK_la_LIBADD = 
+libmiscLINKHACK_la_OBJECTS =  SoBase.lo SoChildList.lo SoGL.lo \
+SoGLImage.lo SoNormalGenerator.lo SoNotification.lo SoState.lo \
+SoTessellator.lo
 libmisc_la_LDFLAGS = 
 libmisc_la_LIBADD = 
 libmisc_la_OBJECTS =  SoBase.lo SoChildList.lo SoGL.lo SoGLImage.lo \
@@ -121,7 +134,7 @@ COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CF
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
-HEADERS =  $(libmiscinc_HEADERS)
+HEADERS =  $(libmiscLINKHACKinc_HEADERS) $(libmiscinc_HEADERS)
 
 DIST_COMMON =  Makefile.am Makefile.in
 
@@ -133,8 +146,8 @@ GZIP_ENV = --best
 DEP_FILES =  .deps/SoBase.P .deps/SoChildList.P .deps/SoGL.P \
 .deps/SoGLImage.P .deps/SoNormalGenerator.P .deps/SoNotification.P \
 .deps/SoState.P .deps/SoTessellator.P
-SOURCES = $(libmisc_la_SOURCES)
-OBJECTS = $(libmisc_la_OBJECTS)
+SOURCES = $(libmiscLINKHACK_la_SOURCES) $(libmisc_la_SOURCES)
+OBJECTS = $(libmiscLINKHACK_la_OBJECTS) $(libmisc_la_OBJECTS)
 
 all: all-redirect
 .SUFFIXES:
@@ -146,6 +159,31 @@ Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status $(BUILT_SOURCES)
 	cd $(top_builddir) \
 	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
+
+mostlyclean-libLTLIBRARIES:
+
+clean-libLTLIBRARIES:
+	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
+
+distclean-libLTLIBRARIES:
+
+maintainer-clean-libLTLIBRARIES:
+
+install-libLTLIBRARIES: $(lib_LTLIBRARIES)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libdir)
+	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+	  if test -f $$p; then \
+	    echo "$(LIBTOOL)  --mode=install $(INSTALL) $$p $(DESTDIR)$(libdir)/$$p"; \
+	    $(LIBTOOL)  --mode=install $(INSTALL) $$p $(DESTDIR)$(libdir)/$$p; \
+	  else :; fi; \
+	done
+
+uninstall-libLTLIBRARIES:
+	@$(NORMAL_UNINSTALL)
+	list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+	  $(LIBTOOL)  --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p; \
+	done
 
 mostlyclean-noinstLTLIBRARIES:
 
@@ -187,6 +225,9 @@ clean-libtool:
 distclean-libtool:
 
 maintainer-clean-libtool:
+
+libmiscLINKHACK.la: $(libmiscLINKHACK_la_OBJECTS) $(libmiscLINKHACK_la_DEPENDENCIES)
+	$(CXXLINK) -rpath $(libdir) $(libmiscLINKHACK_la_LDFLAGS) $(libmiscLINKHACK_la_OBJECTS) $(libmiscLINKHACK_la_LIBADD) $(LIBS)
 
 libmisc.la: $(libmisc_la_OBJECTS) $(libmisc_la_DEPENDENCIES)
 	$(CXXLINK)  $(libmisc_la_LDFLAGS) $(libmisc_la_OBJECTS) $(libmisc_la_LIBADD) $(LIBS)
@@ -303,23 +344,28 @@ check-am: all-am
 check: check-am
 installcheck-am:
 installcheck: installcheck-am
-install-exec-am:
+install-exec-am: install-libLTLIBRARIES
 install-exec: install-exec-am
 
-install-data-am: install-libmiscincHEADERS
+install-data-am: install-libmiscLINKHACKincHEADERS \
+		install-libmiscincHEADERS
 install-data: install-data-am
 
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
 install: install-am
-uninstall-am: uninstall-libmiscincHEADERS
+uninstall-am: uninstall-libLTLIBRARIES \
+		uninstall-libmiscLINKHACKincHEADERS \
+		uninstall-libmiscincHEADERS
 uninstall: uninstall-am
 all-am: Makefile $(LTLIBRARIES) $(HEADERS)
 all-redirect: all-am
 install-strip:
 	$(MAKE) $(AM_MAKEFLAGS) INSTALL_STRIP_FLAG=-s install
 installdirs:
-	$(mkinstalldirs)  $(DESTDIR)$(libmiscincdir)
+	$(mkinstalldirs)  $(DESTDIR)$(libdir) \
+		$(DESTDIR)$(libmiscLINKHACKincdir) \
+		$(DESTDIR)$(libmiscincdir)
 
 
 mostlyclean-generic:
@@ -331,25 +377,28 @@ distclean-generic:
 	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
 
 maintainer-clean-generic:
-mostlyclean-am:  mostlyclean-noinstLTLIBRARIES mostlyclean-compile \
+mostlyclean-am:  mostlyclean-libLTLIBRARIES \
+		mostlyclean-noinstLTLIBRARIES mostlyclean-compile \
 		mostlyclean-libtool mostlyclean-tags mostlyclean-depend \
 		mostlyclean-generic
 
 mostlyclean: mostlyclean-am
 
-clean-am:  clean-noinstLTLIBRARIES clean-compile clean-libtool \
-		clean-tags clean-depend clean-generic mostlyclean-am
+clean-am:  clean-libLTLIBRARIES clean-noinstLTLIBRARIES clean-compile \
+		clean-libtool clean-tags clean-depend clean-generic \
+		mostlyclean-am
 
 clean: clean-am
 
-distclean-am:  distclean-noinstLTLIBRARIES distclean-compile \
-		distclean-libtool distclean-tags distclean-depend \
-		distclean-generic clean-am
+distclean-am:  distclean-libLTLIBRARIES distclean-noinstLTLIBRARIES \
+		distclean-compile distclean-libtool distclean-tags \
+		distclean-depend distclean-generic clean-am
 	-rm -f libtool
 
 distclean: distclean-am
 
-maintainer-clean-am:  maintainer-clean-noinstLTLIBRARIES \
+maintainer-clean-am:  maintainer-clean-libLTLIBRARIES \
+		maintainer-clean-noinstLTLIBRARIES \
 		maintainer-clean-compile maintainer-clean-libtool \
 		maintainer-clean-tags maintainer-clean-depend \
 		maintainer-clean-generic distclean-am
@@ -358,19 +407,24 @@ maintainer-clean-am:  maintainer-clean-noinstLTLIBRARIES \
 
 maintainer-clean: maintainer-clean-am
 
-.PHONY: mostlyclean-noinstLTLIBRARIES distclean-noinstLTLIBRARIES \
+.PHONY: mostlyclean-libLTLIBRARIES distclean-libLTLIBRARIES \
+clean-libLTLIBRARIES maintainer-clean-libLTLIBRARIES \
+uninstall-libLTLIBRARIES install-libLTLIBRARIES \
+mostlyclean-noinstLTLIBRARIES distclean-noinstLTLIBRARIES \
 clean-noinstLTLIBRARIES maintainer-clean-noinstLTLIBRARIES \
 mostlyclean-compile distclean-compile clean-compile \
 maintainer-clean-compile mostlyclean-libtool distclean-libtool \
-clean-libtool maintainer-clean-libtool uninstall-libmiscincHEADERS \
-install-libmiscincHEADERS tags mostlyclean-tags distclean-tags \
-clean-tags maintainer-clean-tags distdir mostlyclean-depend \
-distclean-depend clean-depend maintainer-clean-depend info-am info \
-dvi-am dvi check check-am installcheck-am installcheck install-exec-am \
-install-exec install-data-am install-data install-am install \
-uninstall-am uninstall all-redirect all-am all installdirs \
-mostlyclean-generic distclean-generic clean-generic \
-maintainer-clean-generic clean mostlyclean distclean maintainer-clean
+clean-libtool maintainer-clean-libtool \
+uninstall-libmiscLINKHACKincHEADERS install-libmiscLINKHACKincHEADERS \
+uninstall-libmiscincHEADERS install-libmiscincHEADERS tags \
+mostlyclean-tags distclean-tags clean-tags maintainer-clean-tags \
+distdir mostlyclean-depend distclean-depend clean-depend \
+maintainer-clean-depend info-am info dvi-am dvi check check-am \
+installcheck-am installcheck install-exec-am install-exec \
+install-data-am install-data install-am install uninstall-am uninstall \
+all-redirect all-am all installdirs mostlyclean-generic \
+distclean-generic clean-generic maintainer-clean-generic clean \
+mostlyclean distclean maintainer-clean
 
 
 install-libmiscincHEADERS: $(libmiscinc_HEADERS)
@@ -389,6 +443,24 @@ uninstall-libmiscincHEADERS:
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  echo " rm -f $(DESTDIR)$(libmiscincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libmiscincdir)/$$f; \
+	done
+
+install-libmiscLINKHACKincHEADERS: $(libmiscLINKHACKinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libmiscLINKHACKincdir)
+	@list='$(libmiscLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libmiscLINKHACKincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libmiscLINKHACKincdir)/$$f; \
+	done
+
+uninstall-libmiscLINKHACKincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libmiscLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libmiscLINKHACKincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libmiscLINKHACKincdir)/$$f; \
 	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

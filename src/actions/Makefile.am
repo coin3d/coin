@@ -1,7 +1,11 @@
 ## Process this file with automake to generate Makefile.in.
 ## 19990904 mortene.
 
+if HACKING_DYNAMIC_MODULES
+lib_LTLIBRARIES = libactionsLINKHACK.la
+else
 noinst_LTLIBRARIES = libactions.la
+endif
 
 ## Remove any linklibraries detected by configure, as they are not
 ## needed in the submodules -- only in the toplevel libCoin build.
@@ -12,7 +16,7 @@ INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 ## All source files used when building this submodule, including all
 ## headers.
 
-libactions_la_SOURCES = \
+ALLSOURCES = \
 	SoAction.cpp \
 	SoAction.h \
 	SoBoxHighlightRenderAction.cpp \
@@ -52,11 +56,15 @@ libactions_la_SOURCES = \
 	SoWriteAction.cpp \
 	SoWriteAction.h
 
+libactions_la_SOURCES = $(ALLSOURCES)
+libactionsLINKHACK_la_SOURCES = $(ALLSOURCES)
+
 ## Installation information.
 
 libactionsincdir = $(includedir)/Inventor/actions
+libactionsLINKHACKincdir = $(includedir)/Inventor/actions
 
-libactionsinc_HEADERS = \
+ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/actions/SoAction.h \
 	$(top_srcdir)/include/Inventor/actions/SoBoxHighlightRenderAction.h \
 	$(top_srcdir)/include/Inventor/actions/SoCallbackAction.h \
@@ -76,6 +84,10 @@ libactionsinc_HEADERS = \
 	$(top_srcdir)/include/Inventor/actions/SoToVRML2Action.h \
 	$(top_srcdir)/include/Inventor/actions/SoToVRMLAction.h \
 	$(top_srcdir)/include/Inventor/actions/SoWriteAction.h
+
+
+libactionsinc_HEADERS = $(ALLINSTHEADERS)
+libactionsLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
 
 
 ## FIXME: this is a temporary workaround for a bug in Automake. The
@@ -98,4 +110,23 @@ uninstall-libactionsincHEADERS:
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  echo " rm -f $(DESTDIR)$(libactionsincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libactionsincdir)/$$f; \
+	done
+
+
+install-libactionsLINKHACKincHEADERS: $(libactionsLINKHACKinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libactionsLINKHACKincdir)
+	@list='$(libactionsLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libactionsLINKHACKincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libactionsLINKHACKincdir)/$$f; \
+	done
+
+uninstall-libactionsLINKHACKincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libactionsLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libactionsLINKHACKincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libactionsLINKHACKincdir)/$$f; \
 	done

@@ -1,6 +1,10 @@
 ## Process this file with automake to generate Makefile.in.
 
+if HACKING_DYNAMIC_MODULES
+lib_LTLIBRARIES = libprojectorsLINKHACK.la
+else
 noinst_LTLIBRARIES = libprojectors.la
+endif
 
 ## Remove any linklibraries detected by configure, as they are not
 ## needed in the submodules -- only in the toplevel libCoin build.
@@ -11,7 +15,7 @@ INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 ## All source files used when building this submodule, including all
 ## headers.
 
-libprojectors_la_SOURCES = \
+ALLSOURCES = \
 	SbCylinderPlaneProjector.cpp \
 	SbCylinderPlaneProjector.h \
 	SbCylinderProjector.cpp \
@@ -35,11 +39,15 @@ libprojectors_la_SOURCES = \
 	SbSphereSheetProjector.cpp \
 	SbSphereSheetProjector.h
 
+libprojectors_la_SOURCES = $(ALLSOURCES)
+libprojectorsLINKHACK_la_SOURCES = $(ALLSOURCES)
+
 ## Installation information.
 
 libprojectorsincdir = $(includedir)/Inventor/projectors
+libprojectorsLINKHACKincdir = $(includedir)/Inventor/projectors
 
-libprojectorsinc_HEADERS = \
+ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/projectors/SbCylinderPlaneProjector.h \
 	$(top_srcdir)/include/Inventor/projectors/SbCylinderProjector.h \
 	$(top_srcdir)/include/Inventor/projectors/SbCylinderSectionProjector.h \
@@ -52,6 +60,9 @@ libprojectorsinc_HEADERS = \
 	$(top_srcdir)/include/Inventor/projectors/SbSphereSectionProjector.h \
 	$(top_srcdir)/include/Inventor/projectors/SbSphereSheetProjector.h
 
+
+libprojectorsinc_HEADERS = $(ALLINSTHEADERS)
+libprojectorsLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
 
 ## FIXME: this is a temporary workaround for a bug in Automake. The
 ## bug is fixed in the latest Automake CVS, but not in any "official"
@@ -73,4 +84,23 @@ uninstall-libprojectorsincHEADERS:
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  echo " rm -f $(DESTDIR)$(libprojectorsincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libprojectorsincdir)/$$f; \
+	done
+
+
+install-libprojectorsLINKHACKincHEADERS: $(libprojectorsLINKHACKinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libprojectorsLINKHACKincdir)
+	@list='$(libprojectorsLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libprojectorsLINKHACKincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libprojectorsLINKHACKincdir)/$$f; \
+	done
+
+uninstall-libprojectorsLINKHACKincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libprojectorsLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libprojectorsLINKHACKincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libprojectorsLINKHACKincdir)/$$f; \
 	done

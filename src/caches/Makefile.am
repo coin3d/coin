@@ -1,6 +1,10 @@
 ## Process this file with automake to generate Makefile.in.
 
+if HACKING_DYNAMIC_MODULES
+lib_LTLIBRARIES = libcachesLINKHACK.la
+else
 noinst_LTLIBRARIES = libcaches.la
+endif
 
 ## Remove any linklibraries detected by configure, as they are not
 ## needed in the submodules -- only in the toplevel libCoin build.
@@ -11,7 +15,7 @@ INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 ## All source files used when building this submodule, including all
 ## headers.
 
-libcaches_la_SOURCES = \
+ALLSOURCES = \
 	SoBoundingBoxCache.cpp \
 	SoBoundingBoxCache.h \
 	SoCache.cpp \
@@ -23,17 +27,23 @@ libcaches_la_SOURCES = \
 	SoTextureCoordinateCache.cpp \
 	SoTextureCoordinateCache.h
 
+libcaches_la_SOURCES = $(ALLSOURCES)
+libcachesLINKHACK_la_SOURCES = $(ALLSOURCES)
+
 ## Installation information.
 
 libcachesincdir = $(includedir)/Inventor/caches
+libcachesLINKHACKincdir = $(includedir)/Inventor/caches
 
-libcachesinc_HEADERS = \
+ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/caches/SoBoundingBoxCache.h \
 	$(top_srcdir)/include/Inventor/caches/SoCache.h \
 	$(top_srcdir)/include/Inventor/caches/SoConvexDataCache.h \
 	$(top_srcdir)/include/Inventor/caches/SoNormalCache.h \
 	$(top_srcdir)/include/Inventor/caches/SoTextureCoordinateCache.h
 
+libcachesinc_HEADERS = $(ALLINSTHEADERS)
+libcachesLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
 
 ## FIXME: this is a temporary workaround for a bug in Automake. The
 ## bug is fixed in the latest Automake CVS, but not in any "official"
@@ -55,4 +65,24 @@ uninstall-libcachesincHEADERS:
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  echo " rm -f $(DESTDIR)$(libcachesincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libcachesincdir)/$$f; \
+	done
+
+
+
+install-libcachesLINKHACKincHEADERS: $(libcachesLINKHACKinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libcachesLINKHACKincdir)
+	@list='$(libcachesLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libcachesLINKHACKincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libcachesLINKHACKincdir)/$$f; \
+	done
+
+uninstall-libcachesLINKHACKincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libcachesLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libcachesLINKHACKincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libcachesLINKHACKincdir)/$$f; \
 	done

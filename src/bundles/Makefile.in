@@ -85,28 +85,40 @@ RANLIB = @RANLIB@
 USE_SYMBOL_UNDERSCORE = @USE_SYMBOL_UNDERSCORE@
 VERSION = @VERSION@
 
-noinst_LTLIBRARIES = libbundles.la
+@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libbundlesLINKHACK.la
+@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libbundles.la
 
 LIBS = 
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 
-libbundles_la_SOURCES =  	SoBundle.cpp 	SoBundle.h 	SoMaterialBundle.cpp 	SoMaterialBundle.h 	SoTextureCoordinateBundle.cpp 	SoTextureCoordinateBundle.h
+ALLSOURCES =  	SoBundle.cpp 	SoBundle.h 	SoMaterialBundle.cpp 	SoMaterialBundle.h 	SoTextureCoordinateBundle.cpp 	SoTextureCoordinateBundle.h
 
+
+libbundles_la_SOURCES = $(ALLSOURCES)
+libbundlesLINKHACK_la_SOURCES = $(ALLSOURCES)
 
 libbundlesincdir = $(includedir)/Inventor/bundles
+libbundlesLINKHACKincdir = $(includedir)/Inventor/bundles
 
-libbundlesinc_HEADERS =  	$(top_srcdir)/include/Inventor/bundles/SoBundle.h 	$(top_srcdir)/include/Inventor/bundles/SoMaterialBundle.h 	$(top_srcdir)/include/Inventor/bundles/SoTextureCoordinateBundle.h
+ALLINSTHEADERS =  	$(top_srcdir)/include/Inventor/bundles/SoBundle.h 	$(top_srcdir)/include/Inventor/bundles/SoMaterialBundle.h 	$(top_srcdir)/include/Inventor/bundles/SoTextureCoordinateBundle.h
 
+
+libbundlesinc_HEADERS = $(ALLINSTHEADERS)
+libbundlesLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
-LTLIBRARIES =  $(noinst_LTLIBRARIES)
+LTLIBRARIES =  $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
 
 DEFS = @DEFS@ -I. -I$(srcdir) -I../.. -I../../include/Inventor
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
+libbundlesLINKHACK_la_LDFLAGS = 
+libbundlesLINKHACK_la_LIBADD = 
+libbundlesLINKHACK_la_OBJECTS =  SoBundle.lo SoMaterialBundle.lo \
+SoTextureCoordinateBundle.lo
 libbundles_la_LDFLAGS = 
 libbundles_la_LIBADD = 
 libbundles_la_OBJECTS =  SoBundle.lo SoMaterialBundle.lo \
@@ -121,7 +133,7 @@ COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CF
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
-HEADERS =  $(libbundlesinc_HEADERS)
+HEADERS =  $(libbundlesLINKHACKinc_HEADERS) $(libbundlesinc_HEADERS)
 
 DIST_COMMON =  Makefile.am Makefile.in
 
@@ -132,8 +144,8 @@ TAR = gtar
 GZIP_ENV = --best
 DEP_FILES =  .deps/SoBundle.P .deps/SoMaterialBundle.P \
 .deps/SoTextureCoordinateBundle.P
-SOURCES = $(libbundles_la_SOURCES)
-OBJECTS = $(libbundles_la_OBJECTS)
+SOURCES = $(libbundlesLINKHACK_la_SOURCES) $(libbundles_la_SOURCES)
+OBJECTS = $(libbundlesLINKHACK_la_OBJECTS) $(libbundles_la_OBJECTS)
 
 all: all-redirect
 .SUFFIXES:
@@ -145,6 +157,31 @@ Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status $(BUILT_SOURCES)
 	cd $(top_builddir) \
 	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
+
+mostlyclean-libLTLIBRARIES:
+
+clean-libLTLIBRARIES:
+	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
+
+distclean-libLTLIBRARIES:
+
+maintainer-clean-libLTLIBRARIES:
+
+install-libLTLIBRARIES: $(lib_LTLIBRARIES)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libdir)
+	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+	  if test -f $$p; then \
+	    echo "$(LIBTOOL)  --mode=install $(INSTALL) $$p $(DESTDIR)$(libdir)/$$p"; \
+	    $(LIBTOOL)  --mode=install $(INSTALL) $$p $(DESTDIR)$(libdir)/$$p; \
+	  else :; fi; \
+	done
+
+uninstall-libLTLIBRARIES:
+	@$(NORMAL_UNINSTALL)
+	list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+	  $(LIBTOOL)  --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p; \
+	done
 
 mostlyclean-noinstLTLIBRARIES:
 
@@ -186,6 +223,9 @@ clean-libtool:
 distclean-libtool:
 
 maintainer-clean-libtool:
+
+libbundlesLINKHACK.la: $(libbundlesLINKHACK_la_OBJECTS) $(libbundlesLINKHACK_la_DEPENDENCIES)
+	$(CXXLINK) -rpath $(libdir) $(libbundlesLINKHACK_la_LDFLAGS) $(libbundlesLINKHACK_la_OBJECTS) $(libbundlesLINKHACK_la_LIBADD) $(LIBS)
 
 libbundles.la: $(libbundles_la_OBJECTS) $(libbundles_la_DEPENDENCIES)
 	$(CXXLINK)  $(libbundles_la_LDFLAGS) $(libbundles_la_OBJECTS) $(libbundles_la_LIBADD) $(LIBS)
@@ -302,23 +342,28 @@ check-am: all-am
 check: check-am
 installcheck-am:
 installcheck: installcheck-am
-install-exec-am:
+install-exec-am: install-libLTLIBRARIES
 install-exec: install-exec-am
 
-install-data-am: install-libbundlesincHEADERS
+install-data-am: install-libbundlesLINKHACKincHEADERS \
+		install-libbundlesincHEADERS
 install-data: install-data-am
 
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
 install: install-am
-uninstall-am: uninstall-libbundlesincHEADERS
+uninstall-am: uninstall-libLTLIBRARIES \
+		uninstall-libbundlesLINKHACKincHEADERS \
+		uninstall-libbundlesincHEADERS
 uninstall: uninstall-am
 all-am: Makefile $(LTLIBRARIES) $(HEADERS)
 all-redirect: all-am
 install-strip:
 	$(MAKE) $(AM_MAKEFLAGS) INSTALL_STRIP_FLAG=-s install
 installdirs:
-	$(mkinstalldirs)  $(DESTDIR)$(libbundlesincdir)
+	$(mkinstalldirs)  $(DESTDIR)$(libdir) \
+		$(DESTDIR)$(libbundlesLINKHACKincdir) \
+		$(DESTDIR)$(libbundlesincdir)
 
 
 mostlyclean-generic:
@@ -330,25 +375,28 @@ distclean-generic:
 	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
 
 maintainer-clean-generic:
-mostlyclean-am:  mostlyclean-noinstLTLIBRARIES mostlyclean-compile \
+mostlyclean-am:  mostlyclean-libLTLIBRARIES \
+		mostlyclean-noinstLTLIBRARIES mostlyclean-compile \
 		mostlyclean-libtool mostlyclean-tags mostlyclean-depend \
 		mostlyclean-generic
 
 mostlyclean: mostlyclean-am
 
-clean-am:  clean-noinstLTLIBRARIES clean-compile clean-libtool \
-		clean-tags clean-depend clean-generic mostlyclean-am
+clean-am:  clean-libLTLIBRARIES clean-noinstLTLIBRARIES clean-compile \
+		clean-libtool clean-tags clean-depend clean-generic \
+		mostlyclean-am
 
 clean: clean-am
 
-distclean-am:  distclean-noinstLTLIBRARIES distclean-compile \
-		distclean-libtool distclean-tags distclean-depend \
-		distclean-generic clean-am
+distclean-am:  distclean-libLTLIBRARIES distclean-noinstLTLIBRARIES \
+		distclean-compile distclean-libtool distclean-tags \
+		distclean-depend distclean-generic clean-am
 	-rm -f libtool
 
 distclean: distclean-am
 
-maintainer-clean-am:  maintainer-clean-noinstLTLIBRARIES \
+maintainer-clean-am:  maintainer-clean-libLTLIBRARIES \
+		maintainer-clean-noinstLTLIBRARIES \
 		maintainer-clean-compile maintainer-clean-libtool \
 		maintainer-clean-tags maintainer-clean-depend \
 		maintainer-clean-generic distclean-am
@@ -357,11 +405,16 @@ maintainer-clean-am:  maintainer-clean-noinstLTLIBRARIES \
 
 maintainer-clean: maintainer-clean-am
 
-.PHONY: mostlyclean-noinstLTLIBRARIES distclean-noinstLTLIBRARIES \
+.PHONY: mostlyclean-libLTLIBRARIES distclean-libLTLIBRARIES \
+clean-libLTLIBRARIES maintainer-clean-libLTLIBRARIES \
+uninstall-libLTLIBRARIES install-libLTLIBRARIES \
+mostlyclean-noinstLTLIBRARIES distclean-noinstLTLIBRARIES \
 clean-noinstLTLIBRARIES maintainer-clean-noinstLTLIBRARIES \
 mostlyclean-compile distclean-compile clean-compile \
 maintainer-clean-compile mostlyclean-libtool distclean-libtool \
-clean-libtool maintainer-clean-libtool uninstall-libbundlesincHEADERS \
+clean-libtool maintainer-clean-libtool \
+uninstall-libbundlesLINKHACKincHEADERS \
+install-libbundlesLINKHACKincHEADERS uninstall-libbundlesincHEADERS \
 install-libbundlesincHEADERS tags mostlyclean-tags distclean-tags \
 clean-tags maintainer-clean-tags distdir mostlyclean-depend \
 distclean-depend clean-depend maintainer-clean-depend info-am info \
@@ -388,6 +441,24 @@ uninstall-libbundlesincHEADERS:
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  echo " rm -f $(DESTDIR)$(libbundlesincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libbundlesincdir)/$$f; \
+	done
+
+install-libbundlesLINKHACKincHEADERS: $(libbundlesLINKHACKinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libbundlesLINKHACKincdir)
+	@list='$(libbundlesLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbundlesLINKHACKincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbundlesLINKHACKincdir)/$$f; \
+	done
+
+uninstall-libbundlesLINKHACKincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libbundlesLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libbundlesLINKHACKincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libbundlesLINKHACKincdir)/$$f; \
 	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

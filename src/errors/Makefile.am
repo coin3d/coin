@@ -1,6 +1,10 @@
 ## Process this file with automake to generate Makefile.in.
 
+if HACKING_DYNAMIC_MODULES
+lib_LTLIBRARIES = liberrorsLINKHACK.la
+else
 noinst_LTLIBRARIES = liberrors.la
+endif
 
 ## Remove any linklibraries detected by configure, as they are not
 ## needed in the submodules -- only in the toplevel libCoin build.
@@ -11,7 +15,7 @@ INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 ## All source files used when building this submodule, including all
 ## headers.
 
-liberrors_la_SOURCES = \
+ALLSOURCES = \
 	SoDebugError.cpp \
 	SoDebugError.h \
 	SoError.cpp \
@@ -21,16 +25,23 @@ liberrors_la_SOURCES = \
 	SoReadError.cpp \
 	SoReadError.h
 
+liberrors_la_SOURCES = $(ALLSOURCES)
+liberrorsLINKHACK_la_SOURCES = $(ALLSOURCES)
+
 ## Installation information.
 
 liberrorsincdir = $(includedir)/Inventor/errors
+liberrorsLINKHACKincdir = $(includedir)/Inventor/errors
 
-liberrorsinc_HEADERS = \
+ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/errors/SoDebugError.h \
 	$(top_srcdir)/include/Inventor/errors/SoError.h \
 	$(top_srcdir)/include/Inventor/errors/SoMemoryError.h \
 	$(top_srcdir)/include/Inventor/errors/SoReadError.h
 
+
+liberrorsinc_HEADERS = $(ALLINSTHEADERS)
+liberrorsLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
 
 ## FIXME: this is a temporary workaround for a bug in Automake. The
 ## bug is fixed in the latest Automake CVS, but not in any "official"
@@ -52,4 +63,23 @@ uninstall-liberrorsincHEADERS:
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  echo " rm -f $(DESTDIR)$(liberrorsincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(liberrorsincdir)/$$f; \
+	done
+
+
+install-liberrorsLINKHACKincHEADERS: $(liberrorsLINKHACKinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(liberrorsLINKHACKincdir)
+	@list='$(liberrorsLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(liberrorsLINKHACKincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(liberrorsLINKHACKincdir)/$$f; \
+	done
+
+uninstall-liberrorsLINKHACKincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(liberrorsLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(liberrorsLINKHACKincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(liberrorsLINKHACKincdir)/$$f; \
 	done

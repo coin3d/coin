@@ -1,6 +1,10 @@
 ## Process this file with automake to generate Makefile.in.
 
+if HACKING_DYNAMIC_MODULES
+lib_LTLIBRARIES = libenginesLINKHACK.la
+else
 noinst_LTLIBRARIES = libengines.la
+endif
 
 ## Remove any linklibraries detected by configure, as they are not
 ## needed in the submodules -- only in the toplevel libCoin build.
@@ -11,7 +15,7 @@ INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 ## All source files used when building this submodule, including all
 ## headers.
 
-libengines_la_SOURCES = \
+ALLSOURCES = \
 	SoBoolOperation.cpp \
 	SoBoolOperation.h \
 	SoCalculator.cpp \
@@ -75,11 +79,15 @@ libengines_la_SOURCES = \
 	SoTriggerAny.cpp \
 	SoTriggerAny.h
 
+libengines_la_SOURCES = $(ALLSOURCES)
+libenginesLINKHACK_la_SOURCES = $(ALLSOURCES)
+
 ## Installation information.
 
 libenginesincdir = $(includedir)/Inventor/engines
+libenginesLINKHACKincdir = $(includedir)/Inventor/engines
 
-libenginesinc_HEADERS = \
+ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/engines/SoBoolOperation.h \
 	$(top_srcdir)/include/Inventor/engines/SoCalculator.h \
 	$(top_srcdir)/include/Inventor/engines/SoComposeMatrix.h \
@@ -114,6 +122,9 @@ libenginesinc_HEADERS = \
 	$(top_srcdir)/include/Inventor/engines/SoTriggerAny.h
 
 
+libenginesinc_HEADERS = $(ALLINSTHEADERS)
+libenginesLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
+
 ## FIXME: this is a temporary workaround for a bug in Automake. The
 ## bug is fixed in the latest Automake CVS, but not in any "official"
 ## release (?). Last checked with Automake 1.4a. 19990912 mortene.
@@ -134,4 +145,23 @@ uninstall-libenginesincHEADERS:
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  echo " rm -f $(DESTDIR)$(libenginesincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libenginesincdir)/$$f; \
+	done
+
+
+install-libenginesLINKHACKincHEADERS: $(libenginesLINKHACKinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libenginesLINKHACKincdir)
+	@list='$(libenginesLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libenginesLINKHACKincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libenginesLINKHACKincdir)/$$f; \
+	done
+
+uninstall-libenginesLINKHACKincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libenginesLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libenginesLINKHACKincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libenginesLINKHACKincdir)/$$f; \
 	done

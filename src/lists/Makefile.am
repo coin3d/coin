@@ -1,6 +1,10 @@
 ## Process this file with automake to generate Makefile.in.
 
+if HACKING_DYNAMIC_MODULES
+lib_LTLIBRARIES = liblistsLINKHACK.la
+else
 noinst_LTLIBRARIES = liblists.la
+endif
 
 ## Remove any linklibraries detected by configure, as they are not
 ## needed in the submodules -- only in the toplevel libCoin build.
@@ -11,7 +15,7 @@ INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 ## All source files used when building this submodule, including all
 ## headers.
 
-liblists_la_SOURCES = \
+ALLSOURCES = \
 	SbIntList.cpp \
 	SbIntList.h \
 	SbList.cpp \
@@ -49,11 +53,15 @@ liblists_la_SOURCES = \
 	SoVRMLInterpOutputList.cpp \
 	SoVRMLInterpOutputList.h
 
+liblists_la_SOURCES = $(ALLSOURCES)
+liblistsLINKHACK_la_SOURCES = $(ALLSOURCES)
+
 ## Installation information.
 
 liblistsincdir = $(includedir)/Inventor/lists
+liblistsLINKHACKincdir = $(includedir)/Inventor/lists
 
-liblistsinc_HEADERS = \
+ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/lists/SbIntList.h \
 	$(top_srcdir)/include/Inventor/lists/SbList.h \
 	$(top_srcdir)/include/Inventor/lists/SbPList.h \
@@ -73,6 +81,9 @@ liblistsinc_HEADERS = \
 	$(top_srcdir)/include/Inventor/lists/SoTypeList.h \
 	$(top_srcdir)/include/Inventor/lists/SoVRMLInterpOutputList.h
 
+
+liblistsinc_HEADERS = $(ALLINSTHEADERS)
+liblistsLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
 
 ## FIXME: this is a temporary workaround for a bug in Automake. The
 ## bug is fixed in the latest Automake CVS, but not in any "official"
@@ -94,4 +105,23 @@ uninstall-liblistsincHEADERS:
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  echo " rm -f $(DESTDIR)$(liblistsincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(liblistsincdir)/$$f; \
+	done
+
+
+install-liblistsLINKHACKincHEADERS: $(liblistsLINKHACKinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(liblistsLINKHACKincdir)
+	@list='$(liblistsLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(liblistsLINKHACKincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(liblistsLINKHACKincdir)/$$f; \
+	done
+
+uninstall-liblistsLINKHACKincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(liblistsLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(liblistsLINKHACKincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(liblistsLINKHACKincdir)/$$f; \
 	done

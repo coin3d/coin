@@ -85,28 +85,78 @@ RANLIB = @RANLIB@
 USE_SYMBOL_UNDERSCORE = @USE_SYMBOL_UNDERSCORE@
 VERSION = @VERSION@
 
-noinst_LTLIBRARIES = libelements.la
+@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libelementsLINKHACK.la
+@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libelements.la
 
 LIBS = 
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 
-libelements_la_SOURCES =  	SoAccumulatedElement.cpp 	SoAccumulatedElement.h 	SoAmbientColorElement.cpp 	SoAmbientColorElement.h 	SoAnnoText3CharOrientElement.cpp 	SoAnnoText3CharOrientElement.h 	SoAnnoText3FontSizeHintElement.cpp 	SoAnnoText3FontSizeHintElement.h 	SoAnnoText3RenderPrintElement.cpp 	SoAnnoText3RenderPrintElement.h 	SoBBoxModelMatrixElement.cpp 	SoBBoxModelMatrixElement.h 	SoCacheElement.cpp 	SoCacheElement.h 	SoClipPlaneElement.cpp 	SoClipPlaneElement.h 	SoColorPacker.cpp 	SoColorPacker.h 	SoComplexityElement.cpp 	SoComplexityElement.h 	SoComplexityTypeElement.cpp 	SoComplexityTypeElement.h 	SoCoordinateElement.cpp 	SoCoordinateElement.h 	SoCreaseAngleElement.cpp 	SoCreaseAngleElement.h 	SoDecimationPercentageElement.cpp 	SoDecimationPercentageElement.h 	SoDecimationTypeElement.cpp 	SoDecimationTypeElement.h 	SoDiffuseColorElement.cpp 	SoDiffuseColorElement.h 	SoDrawStyleElement.cpp 	SoDrawStyleElement.h 	SoElement.cpp 	SoElement.h 	SoEmissiveColorElement.cpp 	SoEmissiveColorElement.h 	SoEnvironmentElement.cpp 	SoEnvironmentElement.h 	SoFloatElement.cpp 	SoFloatElement.h 	SoFocalDistanceElement.cpp 	SoFocalDistanceElement.h 	SoFontNameElement.cpp 	SoFontNameElement.h 	SoFontSizeElement.cpp 	SoFontSizeElement.h 	SoGLAmbientColorElement.cpp 	SoGLAmbientColorElement.h 	SoGLClipPlaneElement.cpp 	SoGLClipPlaneElement.h 	SoGLCoordinateElement.cpp 	SoGLCoordinateElement.h 	SoGLDiffuseColorElement.cpp 	SoGLDiffuseColorElement.h 	SoGLDrawStyleElement.cpp 	SoGLDrawStyleElement.h 	SoGLEmissiveColorElement.cpp 	SoGLEmissiveColorElement.h 	SoGLEnvironmentElement.cpp 	SoGLEnvironmentElement.h 	SoGLLightIdElement.cpp 	SoGLLightIdElement.h 	SoGLLightModelElement.cpp 	SoGLLightModelElement.h 	SoGLLinePatternElement.cpp 	SoGLLinePatternElement.h 	SoGLLineWidthElement.cpp 	SoGLLineWidthElement.h 	SoGLModelMatrixElement.cpp 	SoGLModelMatrixElement.h 	SoGLNormalElement.cpp 	SoGLNormalElement.h 	SoGLNormalizeElement.cpp 	SoGLNormalizeElement.h 	SoGLPointSizeElement.cpp 	SoGLPointSizeElement.h 	SoGLPolygonOffsetElement.cpp 	SoGLPolygonOffsetElement.h 	SoGLPolygonStippleElement.cpp 	SoGLPolygonStippleElement.h 	SoGLProjectionMatrixElement.cpp 	SoGLProjectionMatrixElement.h 	SoGLRenderPassElement.cpp 	SoGLRenderPassElement.h 	SoGLShadeModelElement.cpp 	SoGLShadeModelElement.h 	SoGLShapeHintsElement.cpp 	SoGLShapeHintsElement.h 	SoGLShininessElement.cpp 	SoGLShininessElement.h 	SoGLSpecularColorElement.cpp 	SoGLSpecularColorElement.h 	SoGLTextureCoordinateElement.cpp 	SoGLTextureCoordinateElement.h 	SoGLTextureEnabledElement.cpp 	SoGLTextureEnabledElement.h 	SoGLTextureImageElement.cpp 	SoGLTextureImageElement.h 	SoGLTextureMatrixElement.cpp 	SoGLTextureMatrixElement.h 	SoGLUpdateAreaElement.cpp 	SoGLUpdateAreaElement.h 	SoGLViewingMatrixElement.cpp 	SoGLViewingMatrixElement.h 	SoGLViewportRegionElement.cpp 	SoGLViewportRegionElement.h 	SoInt32Element.cpp 	SoInt32Element.h 	SoLightAttenuationElement.cpp 	SoLightAttenuationElement.h 	SoLightElement.cpp 	SoLightElement.h 	SoLightModelElement.cpp 	SoLightModelElement.h 	SoLinePatternElement.cpp 	SoLinePatternElement.h 	SoLineWidthElement.cpp 	SoLineWidthElement.h 	SoLocalBBoxMatrixElement.cpp 	SoLocalBBoxMatrixElement.h 	SoMaterialBindingElement.cpp 	SoMaterialBindingElement.h 	SoModelMatrixElement.cpp 	SoModelMatrixElement.h 	SoNormalBindingElement.cpp 	SoNormalBindingElement.h 	SoNormalElement.cpp 	SoNormalElement.h 	SoOverrideElement.cpp 	SoOverrideElement.h 	SoPROTOElement.cpp 	SoPROTOElement.h 	SoPickRayElement.cpp 	SoPickRayElement.h 	SoPickStyleElement.cpp 	SoPickStyleElement.h 	SoPointSizeElement.cpp 	SoPointSizeElement.h 	SoPolygonOffsetElement.cpp 	SoPolygonOffsetElement.h 	SoProfileCoordinateElement.cpp 	SoProfileCoordinateElement.h 	SoProfileElement.cpp 	SoProfileElement.h 	SoProjectionMatrixElement.cpp 	SoProjectionMatrixElement.h 	SoReplacedElement.cpp 	SoReplacedElement.h 	SoShapeHintsElement.cpp 	SoShapeHintsElement.h 	SoShapeStyleElement.cpp 	SoShapeStyleElement.h 	SoShininessElement.cpp 	SoShininessElement.h 	SoSpecularColorElement.cpp 	SoSpecularColorElement.h 	SoSwitchElement.cpp 	SoSwitchElement.h 	SoTextOutlineEnabledElement.cpp 	SoTextOutlineEnabledElement.h 	SoTextureCoordinateBindingElement.cpp 	SoTextureCoordinateBindingElement.h 	SoTextureCoordinateElement.cpp 	SoTextureCoordinateElement.h 	SoTextureImageElement.cpp 	SoTextureImageElement.h 	SoTextureMatrixElement.cpp 	SoTextureMatrixElement.h 	SoTextureQualityElement.cpp 	SoTextureQualityElement.h 	SoTransparencyElement.cpp 	SoTransparencyElement.h 	SoUnitsElement.cpp 	SoUnitsElement.h 	SoViewVolumeElement.cpp 	SoViewVolumeElement.h 	SoViewingMatrixElement.cpp 	SoViewingMatrixElement.h 	SoViewportRegionElement.cpp 	SoViewportRegionElement.h 	SoWindowElement.cpp 	SoWindowElement.h
+ALLSOURCES =  	SoAccumulatedElement.cpp 	SoAccumulatedElement.h 	SoAmbientColorElement.cpp 	SoAmbientColorElement.h 	SoAnnoText3CharOrientElement.cpp 	SoAnnoText3CharOrientElement.h 	SoAnnoText3FontSizeHintElement.cpp 	SoAnnoText3FontSizeHintElement.h 	SoAnnoText3RenderPrintElement.cpp 	SoAnnoText3RenderPrintElement.h 	SoBBoxModelMatrixElement.cpp 	SoBBoxModelMatrixElement.h 	SoCacheElement.cpp 	SoCacheElement.h 	SoClipPlaneElement.cpp 	SoClipPlaneElement.h 	SoColorPacker.cpp 	SoColorPacker.h 	SoComplexityElement.cpp 	SoComplexityElement.h 	SoComplexityTypeElement.cpp 	SoComplexityTypeElement.h 	SoCoordinateElement.cpp 	SoCoordinateElement.h 	SoCreaseAngleElement.cpp 	SoCreaseAngleElement.h 	SoDecimationPercentageElement.cpp 	SoDecimationPercentageElement.h 	SoDecimationTypeElement.cpp 	SoDecimationTypeElement.h 	SoDiffuseColorElement.cpp 	SoDiffuseColorElement.h 	SoDrawStyleElement.cpp 	SoDrawStyleElement.h 	SoElement.cpp 	SoElement.h 	SoEmissiveColorElement.cpp 	SoEmissiveColorElement.h 	SoEnvironmentElement.cpp 	SoEnvironmentElement.h 	SoFloatElement.cpp 	SoFloatElement.h 	SoFocalDistanceElement.cpp 	SoFocalDistanceElement.h 	SoFontNameElement.cpp 	SoFontNameElement.h 	SoFontSizeElement.cpp 	SoFontSizeElement.h 	SoGLAmbientColorElement.cpp 	SoGLAmbientColorElement.h 	SoGLClipPlaneElement.cpp 	SoGLClipPlaneElement.h 	SoGLCoordinateElement.cpp 	SoGLCoordinateElement.h 	SoGLDiffuseColorElement.cpp 	SoGLDiffuseColorElement.h 	SoGLDrawStyleElement.cpp 	SoGLDrawStyleElement.h 	SoGLEmissiveColorElement.cpp 	SoGLEmissiveColorElement.h 	SoGLEnvironmentElement.cpp 	SoGLEnvironmentElement.h 	SoGLLightIdElement.cpp 	SoGLLightIdElement.h 	SoGLLightModelElement.cpp 	SoGLLightModelElement.h 	SoGLLinePatternElement.cpp 	SoGLLinePatternElement.h 	SoGLLineWidthElement.cpp 	SoGLLineWidthElement.h 	SoGLModelMatrixElement.cpp 	SoGLModelMatrixElement.h 	SoGLNormalElement.cpp 	SoGLNormalElement.h 	SoGLNormalizeElement.cpp 	SoGLNormalizeElement.h 	SoGLPointSizeElement.cpp 	SoGLPointSizeElement.h 	SoGLPolygonOffsetElement.cpp 	SoGLPolygonOffsetElement.h 	SoGLPolygonStippleElement.cpp 	SoGLPolygonStippleElement.h 	SoGLProjectionMatrixElement.cpp 	SoGLProjectionMatrixElement.h 	SoGLRenderPassElement.cpp 	SoGLRenderPassElement.h 	SoGLShadeModelElement.cpp 	SoGLShadeModelElement.h 	SoGLShapeHintsElement.cpp 	SoGLShapeHintsElement.h 	SoGLShininessElement.cpp 	SoGLShininessElement.h 	SoGLSpecularColorElement.cpp 	SoGLSpecularColorElement.h 	SoGLTextureCoordinateElement.cpp 	SoGLTextureCoordinateElement.h 	SoGLTextureEnabledElement.cpp 	SoGLTextureEnabledElement.h 	SoGLTextureImageElement.cpp 	SoGLTextureImageElement.h 	SoGLTextureMatrixElement.cpp 	SoGLTextureMatrixElement.h 	SoGLUpdateAreaElement.cpp 	SoGLUpdateAreaElement.h 	SoGLViewingMatrixElement.cpp 	SoGLViewingMatrixElement.h 	SoGLViewportRegionElement.cpp 	SoGLViewportRegionElement.h 	SoInt32Element.cpp 	SoInt32Element.h 	SoLightAttenuationElement.cpp 	SoLightAttenuationElement.h 	SoLightElement.cpp 	SoLightElement.h 	SoLightModelElement.cpp 	SoLightModelElement.h 	SoLinePatternElement.cpp 	SoLinePatternElement.h 	SoLineWidthElement.cpp 	SoLineWidthElement.h 	SoLocalBBoxMatrixElement.cpp 	SoLocalBBoxMatrixElement.h 	SoMaterialBindingElement.cpp 	SoMaterialBindingElement.h 	SoModelMatrixElement.cpp 	SoModelMatrixElement.h 	SoNormalBindingElement.cpp 	SoNormalBindingElement.h 	SoNormalElement.cpp 	SoNormalElement.h 	SoOverrideElement.cpp 	SoOverrideElement.h 	SoPROTOElement.cpp 	SoPROTOElement.h 	SoPickRayElement.cpp 	SoPickRayElement.h 	SoPickStyleElement.cpp 	SoPickStyleElement.h 	SoPointSizeElement.cpp 	SoPointSizeElement.h 	SoPolygonOffsetElement.cpp 	SoPolygonOffsetElement.h 	SoProfileCoordinateElement.cpp 	SoProfileCoordinateElement.h 	SoProfileElement.cpp 	SoProfileElement.h 	SoProjectionMatrixElement.cpp 	SoProjectionMatrixElement.h 	SoReplacedElement.cpp 	SoReplacedElement.h 	SoShapeHintsElement.cpp 	SoShapeHintsElement.h 	SoShapeStyleElement.cpp 	SoShapeStyleElement.h 	SoShininessElement.cpp 	SoShininessElement.h 	SoSpecularColorElement.cpp 	SoSpecularColorElement.h 	SoSwitchElement.cpp 	SoSwitchElement.h 	SoTextOutlineEnabledElement.cpp 	SoTextOutlineEnabledElement.h 	SoTextureCoordinateBindingElement.cpp 	SoTextureCoordinateBindingElement.h 	SoTextureCoordinateElement.cpp 	SoTextureCoordinateElement.h 	SoTextureImageElement.cpp 	SoTextureImageElement.h 	SoTextureMatrixElement.cpp 	SoTextureMatrixElement.h 	SoTextureQualityElement.cpp 	SoTextureQualityElement.h 	SoTransparencyElement.cpp 	SoTransparencyElement.h 	SoUnitsElement.cpp 	SoUnitsElement.h 	SoViewVolumeElement.cpp 	SoViewVolumeElement.h 	SoViewingMatrixElement.cpp 	SoViewingMatrixElement.h 	SoViewportRegionElement.cpp 	SoViewportRegionElement.h 	SoWindowElement.cpp 	SoWindowElement.h
 
+
+libelements_la_SOURCES = $(ALLSOURCES)
+libelementsLINKHACK_la_SOURCES = $(ALLSOURCES)
 
 libelementsincdir = $(includedir)/Inventor/elements
+libelementsLINKHACKincdir = $(includedir)/Inventor/elements
 
-libelementsinc_HEADERS =  	$(top_srcdir)/include/Inventor/elements/SoAccumulatedElement.h 	$(top_srcdir)/include/Inventor/elements/SoAmbientColorElement.h 	$(top_srcdir)/include/Inventor/elements/SoAnnoText3CharOrientElement.h 	$(top_srcdir)/include/Inventor/elements/SoAnnoText3FontSizeHintElement.h 	$(top_srcdir)/include/Inventor/elements/SoAnnoText3RenderPrintElement.h 	$(top_srcdir)/include/Inventor/elements/SoBBoxModelMatrixElement.h 	$(top_srcdir)/include/Inventor/elements/SoCacheElement.h 	$(top_srcdir)/include/Inventor/elements/SoClipPlaneElement.h 	$(top_srcdir)/include/Inventor/elements/SoColorPacker.h 	$(top_srcdir)/include/Inventor/elements/SoComplexityElement.h 	$(top_srcdir)/include/Inventor/elements/SoComplexityTypeElement.h 	$(top_srcdir)/include/Inventor/elements/SoCoordinateElement.h 	$(top_srcdir)/include/Inventor/elements/SoCreaseAngleElement.h 	$(top_srcdir)/include/Inventor/elements/SoDecimationPercentageElement.h 	$(top_srcdir)/include/Inventor/elements/SoDecimationTypeElement.h 	$(top_srcdir)/include/Inventor/elements/SoDiffuseColorElement.h 	$(top_srcdir)/include/Inventor/elements/SoDrawStyleElement.h 	$(top_srcdir)/include/Inventor/elements/SoElement.h 	$(top_srcdir)/include/Inventor/elements/SoEmissiveColorElement.h 	$(top_srcdir)/include/Inventor/elements/SoEnvironmentElement.h 	$(top_srcdir)/include/Inventor/elements/SoFloatElement.h 	$(top_srcdir)/include/Inventor/elements/SoFocalDistanceElement.h 	$(top_srcdir)/include/Inventor/elements/SoFontNameElement.h 	$(top_srcdir)/include/Inventor/elements/SoFontSizeElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLAmbientColorElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLClipPlaneElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLCoordinateElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLDiffuseColorElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLDrawStyleElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLEmissiveColorElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLEnvironmentElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLLightIdElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLLightModelElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLLinePatternElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLLineWidthElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLModelMatrixElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLNormalElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLNormalizeElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLPointSizeElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLPolygonOffsetElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLPolygonStippleElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLProjectionMatrixElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLRenderPassElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLShadeModelElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLShapeHintsElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLShininessElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLSpecularColorElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLTextureCoordinateElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLTextureEnabledElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLTextureImageElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLTextureMatrixElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLUpdateAreaElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLViewingMatrixElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLViewportRegionElement.h 	$(top_srcdir)/include/Inventor/elements/SoInt32Element.h 	$(top_srcdir)/include/Inventor/elements/SoLightAttenuationElement.h 	$(top_srcdir)/include/Inventor/elements/SoLightElement.h 	$(top_srcdir)/include/Inventor/elements/SoLightModelElement.h 	$(top_srcdir)/include/Inventor/elements/SoLinePatternElement.h 	$(top_srcdir)/include/Inventor/elements/SoLineWidthElement.h 	$(top_srcdir)/include/Inventor/elements/SoLocalBBoxMatrixElement.h 	$(top_srcdir)/include/Inventor/elements/SoMaterialBindingElement.h 	$(top_srcdir)/include/Inventor/elements/SoModelMatrixElement.h 	$(top_srcdir)/include/Inventor/elements/SoNormalBindingElement.h 	$(top_srcdir)/include/Inventor/elements/SoNormalElement.h 	$(top_srcdir)/include/Inventor/elements/SoOverrideElement.h 	$(top_srcdir)/include/Inventor/elements/SoPROTOElement.h 	$(top_srcdir)/include/Inventor/elements/SoPickRayElement.h 	$(top_srcdir)/include/Inventor/elements/SoPickStyleElement.h 	$(top_srcdir)/include/Inventor/elements/SoPointSizeElement.h 	$(top_srcdir)/include/Inventor/elements/SoPolygonOffsetElement.h 	$(top_srcdir)/include/Inventor/elements/SoProfileCoordinateElement.h 	$(top_srcdir)/include/Inventor/elements/SoProfileElement.h 	$(top_srcdir)/include/Inventor/elements/SoProjectionMatrixElement.h 	$(top_srcdir)/include/Inventor/elements/SoReplacedElement.h 	$(top_srcdir)/include/Inventor/elements/SoShapeHintsElement.h 	$(top_srcdir)/include/Inventor/elements/SoShapeStyleElement.h 	$(top_srcdir)/include/Inventor/elements/SoShininessElement.h 	$(top_srcdir)/include/Inventor/elements/SoSpecularColorElement.h 	$(top_srcdir)/include/Inventor/elements/SoSwitchElement.h 	$(top_srcdir)/include/Inventor/elements/SoTextOutlineEnabledElement.h 	$(top_srcdir)/include/Inventor/elements/SoTextureCoordinateBindingElement.h 	$(top_srcdir)/include/Inventor/elements/SoTextureCoordinateElement.h 	$(top_srcdir)/include/Inventor/elements/SoTextureImageElement.h 	$(top_srcdir)/include/Inventor/elements/SoTextureMatrixElement.h 	$(top_srcdir)/include/Inventor/elements/SoTextureQualityElement.h 	$(top_srcdir)/include/Inventor/elements/SoTransparencyElement.h 	$(top_srcdir)/include/Inventor/elements/SoUnitsElement.h 	$(top_srcdir)/include/Inventor/elements/SoViewVolumeElement.h 	$(top_srcdir)/include/Inventor/elements/SoViewingMatrixElement.h 	$(top_srcdir)/include/Inventor/elements/SoViewportRegionElement.h 	$(top_srcdir)/include/Inventor/elements/SoWindowElement.h
+ALLINSTHEADERS =  	$(top_srcdir)/include/Inventor/elements/SoAccumulatedElement.h 	$(top_srcdir)/include/Inventor/elements/SoAmbientColorElement.h 	$(top_srcdir)/include/Inventor/elements/SoAnnoText3CharOrientElement.h 	$(top_srcdir)/include/Inventor/elements/SoAnnoText3FontSizeHintElement.h 	$(top_srcdir)/include/Inventor/elements/SoAnnoText3RenderPrintElement.h 	$(top_srcdir)/include/Inventor/elements/SoBBoxModelMatrixElement.h 	$(top_srcdir)/include/Inventor/elements/SoCacheElement.h 	$(top_srcdir)/include/Inventor/elements/SoClipPlaneElement.h 	$(top_srcdir)/include/Inventor/elements/SoColorPacker.h 	$(top_srcdir)/include/Inventor/elements/SoComplexityElement.h 	$(top_srcdir)/include/Inventor/elements/SoComplexityTypeElement.h 	$(top_srcdir)/include/Inventor/elements/SoCoordinateElement.h 	$(top_srcdir)/include/Inventor/elements/SoCreaseAngleElement.h 	$(top_srcdir)/include/Inventor/elements/SoDecimationPercentageElement.h 	$(top_srcdir)/include/Inventor/elements/SoDecimationTypeElement.h 	$(top_srcdir)/include/Inventor/elements/SoDiffuseColorElement.h 	$(top_srcdir)/include/Inventor/elements/SoDrawStyleElement.h 	$(top_srcdir)/include/Inventor/elements/SoElement.h 	$(top_srcdir)/include/Inventor/elements/SoEmissiveColorElement.h 	$(top_srcdir)/include/Inventor/elements/SoEnvironmentElement.h 	$(top_srcdir)/include/Inventor/elements/SoFloatElement.h 	$(top_srcdir)/include/Inventor/elements/SoFocalDistanceElement.h 	$(top_srcdir)/include/Inventor/elements/SoFontNameElement.h 	$(top_srcdir)/include/Inventor/elements/SoFontSizeElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLAmbientColorElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLClipPlaneElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLCoordinateElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLDiffuseColorElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLDrawStyleElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLEmissiveColorElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLEnvironmentElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLLightIdElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLLightModelElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLLinePatternElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLLineWidthElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLModelMatrixElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLNormalElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLNormalizeElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLPointSizeElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLPolygonOffsetElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLPolygonStippleElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLProjectionMatrixElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLRenderPassElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLShadeModelElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLShapeHintsElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLShininessElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLSpecularColorElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLTextureCoordinateElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLTextureEnabledElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLTextureImageElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLTextureMatrixElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLUpdateAreaElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLViewingMatrixElement.h 	$(top_srcdir)/include/Inventor/elements/SoGLViewportRegionElement.h 	$(top_srcdir)/include/Inventor/elements/SoInt32Element.h 	$(top_srcdir)/include/Inventor/elements/SoLightAttenuationElement.h 	$(top_srcdir)/include/Inventor/elements/SoLightElement.h 	$(top_srcdir)/include/Inventor/elements/SoLightModelElement.h 	$(top_srcdir)/include/Inventor/elements/SoLinePatternElement.h 	$(top_srcdir)/include/Inventor/elements/SoLineWidthElement.h 	$(top_srcdir)/include/Inventor/elements/SoLocalBBoxMatrixElement.h 	$(top_srcdir)/include/Inventor/elements/SoMaterialBindingElement.h 	$(top_srcdir)/include/Inventor/elements/SoModelMatrixElement.h 	$(top_srcdir)/include/Inventor/elements/SoNormalBindingElement.h 	$(top_srcdir)/include/Inventor/elements/SoNormalElement.h 	$(top_srcdir)/include/Inventor/elements/SoOverrideElement.h 	$(top_srcdir)/include/Inventor/elements/SoPROTOElement.h 	$(top_srcdir)/include/Inventor/elements/SoPickRayElement.h 	$(top_srcdir)/include/Inventor/elements/SoPickStyleElement.h 	$(top_srcdir)/include/Inventor/elements/SoPointSizeElement.h 	$(top_srcdir)/include/Inventor/elements/SoPolygonOffsetElement.h 	$(top_srcdir)/include/Inventor/elements/SoProfileCoordinateElement.h 	$(top_srcdir)/include/Inventor/elements/SoProfileElement.h 	$(top_srcdir)/include/Inventor/elements/SoProjectionMatrixElement.h 	$(top_srcdir)/include/Inventor/elements/SoReplacedElement.h 	$(top_srcdir)/include/Inventor/elements/SoShapeHintsElement.h 	$(top_srcdir)/include/Inventor/elements/SoShapeStyleElement.h 	$(top_srcdir)/include/Inventor/elements/SoShininessElement.h 	$(top_srcdir)/include/Inventor/elements/SoSpecularColorElement.h 	$(top_srcdir)/include/Inventor/elements/SoSwitchElement.h 	$(top_srcdir)/include/Inventor/elements/SoTextOutlineEnabledElement.h 	$(top_srcdir)/include/Inventor/elements/SoTextureCoordinateBindingElement.h 	$(top_srcdir)/include/Inventor/elements/SoTextureCoordinateElement.h 	$(top_srcdir)/include/Inventor/elements/SoTextureImageElement.h 	$(top_srcdir)/include/Inventor/elements/SoTextureMatrixElement.h 	$(top_srcdir)/include/Inventor/elements/SoTextureQualityElement.h 	$(top_srcdir)/include/Inventor/elements/SoTransparencyElement.h 	$(top_srcdir)/include/Inventor/elements/SoUnitsElement.h 	$(top_srcdir)/include/Inventor/elements/SoViewVolumeElement.h 	$(top_srcdir)/include/Inventor/elements/SoViewingMatrixElement.h 	$(top_srcdir)/include/Inventor/elements/SoViewportRegionElement.h 	$(top_srcdir)/include/Inventor/elements/SoWindowElement.h
 
+
+libelementsinc_HEADERS = $(ALLINSTHEADERS)
+libelementsLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
-LTLIBRARIES =  $(noinst_LTLIBRARIES)
+LTLIBRARIES =  $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
 
 DEFS = @DEFS@ -I. -I$(srcdir) -I../.. -I../../include/Inventor
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
+libelementsLINKHACK_la_LDFLAGS = 
+libelementsLINKHACK_la_LIBADD = 
+libelementsLINKHACK_la_OBJECTS =  SoAccumulatedElement.lo \
+SoAmbientColorElement.lo SoAnnoText3CharOrientElement.lo \
+SoAnnoText3FontSizeHintElement.lo SoAnnoText3RenderPrintElement.lo \
+SoBBoxModelMatrixElement.lo SoCacheElement.lo SoClipPlaneElement.lo \
+SoColorPacker.lo SoComplexityElement.lo SoComplexityTypeElement.lo \
+SoCoordinateElement.lo SoCreaseAngleElement.lo \
+SoDecimationPercentageElement.lo SoDecimationTypeElement.lo \
+SoDiffuseColorElement.lo SoDrawStyleElement.lo SoElement.lo \
+SoEmissiveColorElement.lo SoEnvironmentElement.lo SoFloatElement.lo \
+SoFocalDistanceElement.lo SoFontNameElement.lo SoFontSizeElement.lo \
+SoGLAmbientColorElement.lo SoGLClipPlaneElement.lo \
+SoGLCoordinateElement.lo SoGLDiffuseColorElement.lo \
+SoGLDrawStyleElement.lo SoGLEmissiveColorElement.lo \
+SoGLEnvironmentElement.lo SoGLLightIdElement.lo \
+SoGLLightModelElement.lo SoGLLinePatternElement.lo \
+SoGLLineWidthElement.lo SoGLModelMatrixElement.lo SoGLNormalElement.lo \
+SoGLNormalizeElement.lo SoGLPointSizeElement.lo \
+SoGLPolygonOffsetElement.lo SoGLPolygonStippleElement.lo \
+SoGLProjectionMatrixElement.lo SoGLRenderPassElement.lo \
+SoGLShadeModelElement.lo SoGLShapeHintsElement.lo \
+SoGLShininessElement.lo SoGLSpecularColorElement.lo \
+SoGLTextureCoordinateElement.lo SoGLTextureEnabledElement.lo \
+SoGLTextureImageElement.lo SoGLTextureMatrixElement.lo \
+SoGLUpdateAreaElement.lo SoGLViewingMatrixElement.lo \
+SoGLViewportRegionElement.lo SoInt32Element.lo \
+SoLightAttenuationElement.lo SoLightElement.lo SoLightModelElement.lo \
+SoLinePatternElement.lo SoLineWidthElement.lo \
+SoLocalBBoxMatrixElement.lo SoMaterialBindingElement.lo \
+SoModelMatrixElement.lo SoNormalBindingElement.lo SoNormalElement.lo \
+SoOverrideElement.lo SoPROTOElement.lo SoPickRayElement.lo \
+SoPickStyleElement.lo SoPointSizeElement.lo SoPolygonOffsetElement.lo \
+SoProfileCoordinateElement.lo SoProfileElement.lo \
+SoProjectionMatrixElement.lo SoReplacedElement.lo \
+SoShapeHintsElement.lo SoShapeStyleElement.lo SoShininessElement.lo \
+SoSpecularColorElement.lo SoSwitchElement.lo \
+SoTextOutlineEnabledElement.lo SoTextureCoordinateBindingElement.lo \
+SoTextureCoordinateElement.lo SoTextureImageElement.lo \
+SoTextureMatrixElement.lo SoTextureQualityElement.lo \
+SoTransparencyElement.lo SoUnitsElement.lo SoViewVolumeElement.lo \
+SoViewingMatrixElement.lo SoViewportRegionElement.lo SoWindowElement.lo
 libelements_la_LDFLAGS = 
 libelements_la_LIBADD = 
 libelements_la_OBJECTS =  SoAccumulatedElement.lo \
@@ -159,7 +209,7 @@ COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CF
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
-HEADERS =  $(libelementsinc_HEADERS)
+HEADERS =  $(libelementsLINKHACKinc_HEADERS) $(libelementsinc_HEADERS)
 
 DIST_COMMON =  Makefile.am Makefile.in
 
@@ -215,8 +265,8 @@ DEP_FILES =  .deps/SoAccumulatedElement.P .deps/SoAmbientColorElement.P \
 .deps/SoTransparencyElement.P .deps/SoUnitsElement.P \
 .deps/SoViewVolumeElement.P .deps/SoViewingMatrixElement.P \
 .deps/SoViewportRegionElement.P .deps/SoWindowElement.P
-SOURCES = $(libelements_la_SOURCES)
-OBJECTS = $(libelements_la_OBJECTS)
+SOURCES = $(libelementsLINKHACK_la_SOURCES) $(libelements_la_SOURCES)
+OBJECTS = $(libelementsLINKHACK_la_OBJECTS) $(libelements_la_OBJECTS)
 
 all: all-redirect
 .SUFFIXES:
@@ -228,6 +278,31 @@ Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status $(BUILT_SOURCES)
 	cd $(top_builddir) \
 	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
+
+mostlyclean-libLTLIBRARIES:
+
+clean-libLTLIBRARIES:
+	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
+
+distclean-libLTLIBRARIES:
+
+maintainer-clean-libLTLIBRARIES:
+
+install-libLTLIBRARIES: $(lib_LTLIBRARIES)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libdir)
+	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+	  if test -f $$p; then \
+	    echo "$(LIBTOOL)  --mode=install $(INSTALL) $$p $(DESTDIR)$(libdir)/$$p"; \
+	    $(LIBTOOL)  --mode=install $(INSTALL) $$p $(DESTDIR)$(libdir)/$$p; \
+	  else :; fi; \
+	done
+
+uninstall-libLTLIBRARIES:
+	@$(NORMAL_UNINSTALL)
+	list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+	  $(LIBTOOL)  --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p; \
+	done
 
 mostlyclean-noinstLTLIBRARIES:
 
@@ -269,6 +344,9 @@ clean-libtool:
 distclean-libtool:
 
 maintainer-clean-libtool:
+
+libelementsLINKHACK.la: $(libelementsLINKHACK_la_OBJECTS) $(libelementsLINKHACK_la_DEPENDENCIES)
+	$(CXXLINK) -rpath $(libdir) $(libelementsLINKHACK_la_LDFLAGS) $(libelementsLINKHACK_la_OBJECTS) $(libelementsLINKHACK_la_LIBADD) $(LIBS)
 
 libelements.la: $(libelements_la_OBJECTS) $(libelements_la_DEPENDENCIES)
 	$(CXXLINK)  $(libelements_la_LDFLAGS) $(libelements_la_OBJECTS) $(libelements_la_LIBADD) $(LIBS)
@@ -385,23 +463,28 @@ check-am: all-am
 check: check-am
 installcheck-am:
 installcheck: installcheck-am
-install-exec-am:
+install-exec-am: install-libLTLIBRARIES
 install-exec: install-exec-am
 
-install-data-am: install-libelementsincHEADERS
+install-data-am: install-libelementsLINKHACKincHEADERS \
+		install-libelementsincHEADERS
 install-data: install-data-am
 
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
 install: install-am
-uninstall-am: uninstall-libelementsincHEADERS
+uninstall-am: uninstall-libLTLIBRARIES \
+		uninstall-libelementsLINKHACKincHEADERS \
+		uninstall-libelementsincHEADERS
 uninstall: uninstall-am
 all-am: Makefile $(LTLIBRARIES) $(HEADERS)
 all-redirect: all-am
 install-strip:
 	$(MAKE) $(AM_MAKEFLAGS) INSTALL_STRIP_FLAG=-s install
 installdirs:
-	$(mkinstalldirs)  $(DESTDIR)$(libelementsincdir)
+	$(mkinstalldirs)  $(DESTDIR)$(libdir) \
+		$(DESTDIR)$(libelementsLINKHACKincdir) \
+		$(DESTDIR)$(libelementsincdir)
 
 
 mostlyclean-generic:
@@ -413,25 +496,28 @@ distclean-generic:
 	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
 
 maintainer-clean-generic:
-mostlyclean-am:  mostlyclean-noinstLTLIBRARIES mostlyclean-compile \
+mostlyclean-am:  mostlyclean-libLTLIBRARIES \
+		mostlyclean-noinstLTLIBRARIES mostlyclean-compile \
 		mostlyclean-libtool mostlyclean-tags mostlyclean-depend \
 		mostlyclean-generic
 
 mostlyclean: mostlyclean-am
 
-clean-am:  clean-noinstLTLIBRARIES clean-compile clean-libtool \
-		clean-tags clean-depend clean-generic mostlyclean-am
+clean-am:  clean-libLTLIBRARIES clean-noinstLTLIBRARIES clean-compile \
+		clean-libtool clean-tags clean-depend clean-generic \
+		mostlyclean-am
 
 clean: clean-am
 
-distclean-am:  distclean-noinstLTLIBRARIES distclean-compile \
-		distclean-libtool distclean-tags distclean-depend \
-		distclean-generic clean-am
+distclean-am:  distclean-libLTLIBRARIES distclean-noinstLTLIBRARIES \
+		distclean-compile distclean-libtool distclean-tags \
+		distclean-depend distclean-generic clean-am
 	-rm -f libtool
 
 distclean: distclean-am
 
-maintainer-clean-am:  maintainer-clean-noinstLTLIBRARIES \
+maintainer-clean-am:  maintainer-clean-libLTLIBRARIES \
+		maintainer-clean-noinstLTLIBRARIES \
 		maintainer-clean-compile maintainer-clean-libtool \
 		maintainer-clean-tags maintainer-clean-depend \
 		maintainer-clean-generic distclean-am
@@ -440,11 +526,16 @@ maintainer-clean-am:  maintainer-clean-noinstLTLIBRARIES \
 
 maintainer-clean: maintainer-clean-am
 
-.PHONY: mostlyclean-noinstLTLIBRARIES distclean-noinstLTLIBRARIES \
+.PHONY: mostlyclean-libLTLIBRARIES distclean-libLTLIBRARIES \
+clean-libLTLIBRARIES maintainer-clean-libLTLIBRARIES \
+uninstall-libLTLIBRARIES install-libLTLIBRARIES \
+mostlyclean-noinstLTLIBRARIES distclean-noinstLTLIBRARIES \
 clean-noinstLTLIBRARIES maintainer-clean-noinstLTLIBRARIES \
 mostlyclean-compile distclean-compile clean-compile \
 maintainer-clean-compile mostlyclean-libtool distclean-libtool \
-clean-libtool maintainer-clean-libtool uninstall-libelementsincHEADERS \
+clean-libtool maintainer-clean-libtool \
+uninstall-libelementsLINKHACKincHEADERS \
+install-libelementsLINKHACKincHEADERS uninstall-libelementsincHEADERS \
 install-libelementsincHEADERS tags mostlyclean-tags distclean-tags \
 clean-tags maintainer-clean-tags distdir mostlyclean-depend \
 distclean-depend clean-depend maintainer-clean-depend info-am info \
@@ -471,6 +562,24 @@ uninstall-libelementsincHEADERS:
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  echo " rm -f $(DESTDIR)$(libelementsincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libelementsincdir)/$$f; \
+	done
+
+install-libelementsLINKHACKincHEADERS: $(libelementsLINKHACKinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libelementsLINKHACKincdir)
+	@list='$(libelementsLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libelementsLINKHACKincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libelementsLINKHACKincdir)/$$f; \
+	done
+
+uninstall-libelementsLINKHACKincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libelementsLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libelementsLINKHACKincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libelementsLINKHACKincdir)/$$f; \
 	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

@@ -1,6 +1,10 @@
 ## Process this file with automake to generate Makefile.in.
 
+if HACKING_DYNAMIC_MODULES
+lib_LTLIBRARIES = libnodesLINKHACK.la
+else
 noinst_LTLIBRARIES = libnodes.la
+endif
 
 ## Remove any linklibraries detected by configure, as they are not
 ## needed in the submodules -- only in the toplevel libCoin build.
@@ -11,7 +15,7 @@ INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 ## All source files used when building this submodule, including all
 ## headers.
 
-libnodes_la_SOURCES = \
+ALLSOURCES = \
 	SoAnnoText3.cpp \
 	SoAnnoText3.h \
 	SoAnnoText3Property.cpp \
@@ -221,11 +225,15 @@ libnodes_la_SOURCES = \
 	SoWWWInline.cpp \
 	SoWWWInline.h
 
+libnodes_la_SOURCES = $(ALLSOURCES)
+libnodesLINKHACK_la_SOURCES = $(ALLSOURCES)
+
 ## Installation information.
 
 libnodesincdir = $(includedir)/Inventor/nodes
+libnodesLINKHACKincdir = $(includedir)/Inventor/nodes
 
-libnodesinc_HEADERS = \
+ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/nodes/SoAnnoText3.h \
 	$(top_srcdir)/include/Inventor/nodes/SoAnnoText3Property.h \
 	$(top_srcdir)/include/Inventor/nodes/SoAnnotation.h \
@@ -332,6 +340,9 @@ libnodesinc_HEADERS = \
 	$(top_srcdir)/include/Inventor/nodes/SoWWWInline.h
 
 
+libnodesinc_HEADERS = $(ALLINSTHEADERS)
+libnodesLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
+
 ## FIXME: this is a temporary workaround for a bug in Automake. The
 ## bug is fixed in the latest Automake CVS, but not in any "official"
 ## release (?). Last checked with Automake 1.4a. 19990912 mortene.
@@ -352,4 +363,23 @@ uninstall-libnodesincHEADERS:
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  echo " rm -f $(DESTDIR)$(libnodesincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libnodesincdir)/$$f; \
+	done
+
+
+install-libnodesLINKHACKincHEADERS: $(libnodesLINKHACKinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libnodesLINKHACKincdir)
+	@list='$(libnodesLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libnodesLINKHACKincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libnodesLINKHACKincdir)/$$f; \
+	done
+
+uninstall-libnodesLINKHACKincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libnodesLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libnodesLINKHACKincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libnodesLINKHACKincdir)/$$f; \
 	done
