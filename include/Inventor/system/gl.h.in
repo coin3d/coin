@@ -1612,6 +1612,18 @@
 #define WGL_BACK_RIGHT_ARB                 0x2086
 #endif /* WGL_BACK_RIGHT_ARB */
 
+#ifndef WGL_MAX_PBUFFER_PIXELS_ARB
+#define WGL_MAX_PBUFFER_PIXELS_ARB 0x202E
+#endif /* WGL_MAX_PBUFFER_PIXELS_ARB */
+
+#ifndef WGL_MAX_PBUFFER_WIDTH_ARB
+#define WGL_MAX_PBUFFER_WIDTH_ARB 0x202F
+#endif /* WGL_MAX_PBUFFER_WIDTH_ARB */
+
+#ifndef WGL_MAX_PBUFFER_HEIGHT_ARB
+#define WGL_MAX_PBUFFER_HEIGHT_ARB 0x2030
+#endif /* WGL_MAX_PBUFFER_HEIGHT_ARB */
+
 /* Note: the above also exists in *_EXT variants. They have the same
    values. So we only bother with the *_ARB names, as they can be used
    in place of the *_EXT names. */
