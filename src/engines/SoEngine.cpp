@@ -41,6 +41,22 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+// FIXME: document these properly. 20000405 mortene.
+/*!
+  \fn void SoEngine::writeOutputTypes(SoOutput * out)
+  \internal
+*/
+/*!
+  \fn const SoEngineOutputData * SoEngine::getOutputData(void) const
+  \internal
+*/
+/*!
+  \fn void SoEngine::evaluate(void)
+  \internal
+*/
+
+
+
 SoType SoEngine::classTypeId = SoType::badType();
 
 /*!
