@@ -53,7 +53,7 @@
 #include <coindefs.h> // COIN_OBSOLETED()
 
 #include <stdlib.h>
-#include "../tidbits.h" // coin_getenv()
+#include "../tidbits.h" // coin_getenv(), coin_atexit()
 
 #include <Inventor/errors/SoDebugError.h>
 
@@ -202,7 +202,7 @@ void
 SoInteractionKit::initClass(void)
 {
   defaultdraggerparts = new SbList <SoNode*>;
-  atexit(interactionkit_cleanup);
+  coin_atexit(interactionkit_cleanup);
 
   SO_KIT_INTERNAL_INIT_CLASS(SoInteractionKit);
 }

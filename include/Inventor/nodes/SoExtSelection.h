@@ -32,6 +32,12 @@
 class SbColor;
 class SoPrimitiveVertex;
 
+// This shouldn't strictly be necessary, but the OSF1/cxx compiler
+// complains if this is left out, while using the "friend class
+// SoExtSelectionP" statement in the class definition.
+class SoExtSelectionP;
+
+
 typedef SbBool SoExtSelectionTriangleCB(void * userdata,
                                         SoCallbackAction * action,
                                         const SoPrimitiveVertex * v1,
@@ -48,6 +54,7 @@ typedef SbBool SoExtSelectionPointCB(void * userdata,
                                      const SoPrimitiveVertex * v1);
 
 typedef SoPath * SoLassoSelectionFilterCB(void * userdata, const SoPath * path);
+
 
 class COIN_DLL_API SoExtSelection : public SoSelection {
   typedef SoSelection inherited;

@@ -134,6 +134,7 @@
 #include <Inventor/sensors/SoTimerSensor.h>
 #include <Inventor/misc/SoProto.h>
 #include <Inventor/misc/SoProtoInstance.h>
+#include <../tidbits.h> // coin_atexit()
 #include <coindefs.h> // COIN_STUB()
 #include <stdlib.h>
 
@@ -381,7 +382,7 @@ SoDB::init(void)
   // Debugging for memory leaks will be easier if we can clean up the
   // resource usage. This needs to be done last in init(), so we get
   // called _before_ clean() methods in other classes.
-  (void)atexit(SoDB::clean);
+  coin_atexit(SoDB::clean);
 #endif // COIN_DEBUG
 }
 
@@ -425,7 +426,7 @@ SoDB::getVersion(void)
 {
   if (coin_versionstring == NULL) {
     coin_versionstring = new SbString;
-    atexit(cleanup_func);
+    coin_atexit(cleanup_func);
   }
   *coin_versionstring = "SIM Coin ";
   *coin_versionstring += COIN_VERSION;

@@ -39,6 +39,7 @@
 #include <Inventor/nodes/SoWWWInline.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 
+#include <../tidbits.h> // coin_atexit()
 #include <coindefs.h> // COIN_OBSOLETED()
 #include <Inventor/SbColor.h>
 
@@ -159,7 +160,7 @@ get_private_data(const SoWWWInline * thisp)
 {
   if (private_data_dict == NULL) {
     private_data_dict = new SbDict;
-    atexit(private_data_cleanup);
+    coin_atexit(private_data_cleanup);
   }
   void * pimpl;
   if (!private_data_dict->find((unsigned long) thisp, pimpl)) {
@@ -198,7 +199,7 @@ SoWWWInline::SoWWWInline()
   // systemloaders that hate static constructors in C++ libraries.
   if (SoWWWInline::bboxcolor == NULL) {
     SoWWWInline::bboxcolor = new SbColor(0.8f, 0.8f, 0.8f);
-    atexit(SoWWWInline::cleanup);
+    coin_atexit(SoWWWInline::cleanup);
   }
 }
 

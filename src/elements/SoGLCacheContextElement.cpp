@@ -32,6 +32,7 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SbName.h>
 #include <Inventor/misc/SoState.h>
+#include <../tidbits.h> // coin_atexit()
 #include "../misc/GLWrapper.h"
 #include <string.h>
 #include <stdlib.h>
@@ -70,7 +71,6 @@ static void soglcachecontext_cleanup(void)
   delete extsupportlist;
   delete scheduledeletelist;
 }
-
 
 //
 // check if OpenGL extension is supported.
@@ -114,7 +114,7 @@ SoGLCacheContextElement::initClass(void)
 
   extsupportlist = new SbList <so_glext_info *>;
   scheduledeletelist = new SbList <SoGLDisplayList*>;
-  (void)atexit(soglcachecontext_cleanup);
+  coin_atexit(soglcachecontext_cleanup);
 }
 
 /*!

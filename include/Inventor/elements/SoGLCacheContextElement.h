@@ -26,6 +26,12 @@
 
 #include <Inventor/elements/SoSubElement.h>
 
+// This shouldn't strictly be necessary, but the OSF1/cxx compiler
+// complains if this is left out, while using the "friend class
+// SoGLDisplayList" statement in the class definition.
+class SoGLDisplayList;
+
+
 class COIN_DLL_API SoGLCacheContextElement : public SoElement {
   typedef SoElement inherited;
 
@@ -62,7 +68,7 @@ public:
 
 private:
   friend class SoGLDisplayList;
-  static void scheduleDelete(SoState * state, class SoGLDisplayList * dl);
+  static void scheduleDelete(SoState * state, SoGLDisplayList * dl);
 
 private:
   int context;

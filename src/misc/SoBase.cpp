@@ -56,6 +56,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#include <../tidbits.h> // coin_atexit()
 #include <assert.h>
 #include <string.h>
 
@@ -264,7 +265,7 @@ SoBase::destroy(void)
 void
 SoBase::initClass(void)
 {
-  (void)atexit(SoBase::cleanClass);
+  coin_atexit(SoBase::cleanClass);
 
   // Avoid multiple attempts at initialization.
   assert(SoBase::classTypeId == SoType::badType());

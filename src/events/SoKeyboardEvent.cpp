@@ -38,7 +38,7 @@
 #include <Inventor/SbName.h>
 #include <Inventor/SbDict.h>
 #include <assert.h>
-#include <stdlib.h> // atexit
+#include <../tidbits.h> // coin_atexit()
 
 // Avoid problem with Microsoft Win32 API headers (yes, they actually
 // #define DELETE somewhere in their header files).
@@ -84,7 +84,7 @@ build_convert_dicts(void)
   int i;
   converttoprintable = new SbDict();
   converttoprintable_shift = new SbDict();
-  atexit(sokeyboardevent_cleanup);
+  coin_atexit(sokeyboardevent_cleanup);
 
 #undef ADD_KEY // just in case
 #define ADD_KEY(x,y) d->enter((unsigned long)(SoKeyboardEvent::x), (void*)y)

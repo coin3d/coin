@@ -292,6 +292,14 @@ SoCalculator::evaluate(void)
   }
 }
 
+// "extern C" wrapper and C-function typedefs are needed with the
+// OSF1/cxx compiler (probably a bug in the compiler, but it doesn't
+// seem to hurt to do this anyway).
+extern "C" {
+  typedef void(*C_func_read)(const char *, float *, void *);
+  typedef void(*C_func_write)(const char *, float *, int, void *);
+}
+
 // evaluates a single expression from/into fieldidx
 void
 SoCalculator::evaluateExpression(struct so_eval_node *node, const int fieldidx)
@@ -304,8 +312,8 @@ SoCalculator::evaluateExpression(struct so_eval_node *node, const int fieldidx)
   char outused[8]; /* oa-od and oA-oD */
 
   so_eval_cbdata cbdata;
-  cbdata.readfieldcb = SoCalculator::readfieldcb;
-  cbdata.writefieldcb = SoCalculator::writefieldcb;
+  cbdata.readfieldcb = (C_func_read)SoCalculator::readfieldcb;
+  cbdata.writefieldcb = (C_func_write)SoCalculator::writefieldcb;
   cbdata.userdata = this;
 
   for (i = 0; i < 16; i++) inused[i] = 0;

@@ -65,9 +65,9 @@
 #include <Inventor/elements/SoCullElement.h> // internal element
 #include <Inventor/elements/SoTextureScalePolicyElement.h> // future element
 #include <Inventor/misc/SoState.h>
-#include <stdlib.h>
 #include <Inventor/lists/SoTypeList.h>
-
+#include <../tidbits.h>
+#include <stdlib.h>
 #include <assert.h>
 
 
@@ -257,7 +257,7 @@ SoElement::initClass(void)
   SoElement::initElements();
 
   // cleanup at exit
-  atexit(SoElement::cleanup);
+  coin_atexit(SoElement::cleanup);
 }
 
 // atexit callback

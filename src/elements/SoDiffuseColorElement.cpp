@@ -31,6 +31,7 @@
 
 #include <Inventor/elements/SoDiffuseColorElement.h>
 #include <Inventor/SbColor.h>
+#include <../tidbits.h> // coin_atexit()
 #include <assert.h>
 #include <stdlib.h>
 
@@ -75,7 +76,7 @@ SoDiffuseColorElement::initClass(void)
   SO_ELEMENT_INIT_CLASS(SoDiffuseColorElement, inherited);
   defaultdiffusecolor = new SbColor;
   defaultdiffusecolor->setValue(0.8f, 0.8f, 0.8f);
-  (void)atexit(SoDiffuseColorElement_cleanup_func);
+  coin_atexit(SoDiffuseColorElement_cleanup_func);
 }
 
 //! FIXME: write doc.

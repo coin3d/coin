@@ -32,6 +32,7 @@
 #include <Inventor/elements/SoCullElement.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/nodes/SoShape.h>
+#include <../tidbits.h> // coin_atexit()
 #include <stdlib.h>
 
 #ifdef HAVE_CONFIG_H
@@ -122,7 +123,7 @@ bigtexture_begin_shape(SoState * state,
     bt_pvlist = new SbList <SoPrimitiveVertex*>;
     bt_regions = new bt_region[num];
     bt_numallocregions = num;
-    atexit(cleanup_bigtexture);
+    coin_atexit(cleanup_bigtexture);
   }
   if (num > bt_numallocregions) {
     delete[] bt_regions;

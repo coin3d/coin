@@ -37,7 +37,7 @@
 #include <string.h> /* strncasecmp() */
 #include <stdio.h>
 #include <ctype.h> /* tolower() */
-#include <stdlib.h>
+#include <stdlib.h> /* atexit() */
 #ifdef HAVE_WINDOWS_H
 #include <windows.h> /* GetEnvironmentVariable() */
 #endif /* HAVE_WINDOWS_H */
@@ -400,6 +400,20 @@ int
 coin_isascii(int c)
 {
   return (c >= 0x00) && (c < 0x80);
+}
+
+/**************************************************************************/
+
+// This little atexit() wrapper is used throughout the sourcecode to
+// make the OSF1/cxx compiler accept C++ functions as it's input
+// argument. Problem reported by Guy Barrand.
+
+typedef void(*atexit_func_type)(void);
+
+void
+coin_atexit(void * f)
+{
+  (void)atexit((atexit_func_type)f);
 }
 
 /**************************************************************************/

@@ -30,8 +30,8 @@
 */
 
 #include <Inventor/elements/SoEmissiveColorElement.h>
-
 #include <Inventor/SbColor.h>
+#include <../tidbits.h> // coin_atexit()
 #include <assert.h>
 #include <stdlib.h>
 
@@ -70,7 +70,7 @@ SoEmissiveColorElement::initClass()
   SO_ELEMENT_INIT_CLASS(SoEmissiveColorElement, inherited);
   defaultemissivecolor = new SbColor;
   defaultemissivecolor->setValue(0.0f, 0.0f, 0.0f);
-  (void)atexit(SoEmissiveColorElement_cleanup_func);
+  coin_atexit(SoEmissiveColorElement_cleanup_func);
 }
 
 /*!

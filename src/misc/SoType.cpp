@@ -71,6 +71,7 @@
 #include <Inventor/SbName.h>
 #include <Inventor/SbString.h>
 
+#include <../tidbits.h> // coin_atexit()
 #include <assert.h>
 #include <stdlib.h> // NULL
 #include <string.h> // strcmp()
@@ -129,7 +130,7 @@ SoType::init(void)
 #if COIN_DEBUG
   // Debugging for memory leaks will be easier if we can clean up the
   // resource usage.
-  (void)atexit(SoType::clean);
+  coin_atexit(SoType::clean);
 #endif // COIN_DEBUG
 
   // If any of these assert fails, it is probably because

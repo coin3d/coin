@@ -31,6 +31,7 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/SbPlane.h>
+#include <../tidbits.h> // coin_atexit()
 #include <stdlib.h>
 #include <assert.h>
 
@@ -63,7 +64,7 @@ trisort_begin_shape(SoState *)
   if (transparencybuffer == NULL) {
     transparencybuffer = new SbList <SoPrimitiveVertex>;
     sorted_triangle_list = new SbList <sorted_triangle>;
-    atexit(cleanup_transparencybuffer);
+    coin_atexit(cleanup_transparencybuffer);
   }
   transparencybuffer->truncate(0);
 }
@@ -80,7 +81,12 @@ trisort_triangle(SoState *,
   transparencybuffer->append(*v3);
 }
 
-// qsort callback
+// qsort() callback.
+//
+// "extern C" wrapper is needed with the OSF1/cxx compiler (probably a
+// bug in the compiler, but it doesn't seem to hurt to do this
+// anyway).
+extern "C" {
 static int
 compare_triangles(const void * ptr1, const void * ptr2)
 {
@@ -90,6 +96,7 @@ compare_triangles(const void * ptr1, const void * ptr2)
   if (tri1->dist > tri2->dist) return -1;
   if (tri1->dist == tri2->dist) return tri2->backface - tri1->backface;
   return 1;
+}
 }
 
 void

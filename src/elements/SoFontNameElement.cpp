@@ -30,8 +30,7 @@
 */
 
 #include <Inventor/elements/SoFontNameElement.h>
-
-
+#include <../tidbits.h> // coin_atexit()
 #include <assert.h>
 
 
@@ -56,7 +55,7 @@ SoFontNameElement::initClass(void)
 #if COIN_DEBUG
   // Debugging for memory leaks will be easier if we can clean up the
   // resource usage.
-  (void)atexit(SoFontNameElement::clean);
+  coin_atexit(SoFontNameElement::clean);
 #endif // COIN_DEBUG
 
   SO_ELEMENT_INIT_CLASS(SoFontNameElement, inherited);

@@ -189,6 +189,7 @@
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoSubField.h>
+#include <../tidbits.h> // coin_atexit()
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
@@ -309,7 +310,7 @@ SoMField::get1(const int index, SbString & valuestring)
   if (mfield_buffer_size < STARTSIZE) {
     mfield_buffer = malloc(STARTSIZE);
     mfield_buffer_size = STARTSIZE;
-    atexit(mfield_buffer_cleanup);
+    coin_atexit(mfield_buffer_cleanup);
   }
 
   out.setBuffer(mfield_buffer, mfield_buffer_size,

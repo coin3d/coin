@@ -32,7 +32,7 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbName.h>
-
+#include <../tidbits.h> // coin_atexit()
 #include <string.h>
 #include <stdlib.h>
 
@@ -300,7 +300,7 @@ SoGlyph::getGlyph(const char character, const SbName &font)
 
   if (activeGlyphs == NULL) {
     activeGlyphs = new SbList <coin_glyph_info>;
-    atexit(SoGlyph_cleanup);
+    coin_atexit(SoGlyph_cleanup);
   }
   int i, n = activeGlyphs->getLength();
   for (i = 0; i < n; i++) {

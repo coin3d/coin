@@ -70,6 +70,8 @@ uint32_t coin_ntoh_uint32(uint32_t value);
 
 int coin_isascii(int c);
 
+void coin_atexit(void *);
+
 /* ********************************************************************** */
 
 #ifdef __cplusplus

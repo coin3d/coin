@@ -30,6 +30,7 @@
 */
 
 #include <Inventor/elements/SoLightAttenuationElement.h>
+#include <../tidbits.h> // coin_atexit()
 #include <assert.h>
 #include <stdlib.h>
 
@@ -62,7 +63,7 @@ SoLightAttenuationElement::initClass(void)
   SO_ELEMENT_INIT_CLASS(SoLightAttenuationElement, inherited);
   defaultattenuation = new SbVec3f;
   defaultattenuation->setValue(0.0f, 0.0f, 1.0f);
-  (void)atexit(SoLightAttenuationElement_cleanup_func);
+  coin_atexit(SoLightAttenuationElement_cleanup_func);
 }
 
 /*!

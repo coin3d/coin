@@ -70,22 +70,22 @@
 */
 
 #ifndef GL_CLAMP_TO_EDGE
-#define GL_CLAMP_TO_EDGE         0x812F
+#define GL_CLAMP_TO_EDGE         ((GLenum)0x812F)
 #endif /* GL_CLAMP_TO_EDGE */
 
 #ifndef GL_CLAMP_TO_EDGE_EXT
-#define GL_CLAMP_TO_EDGE_EXT     0x812F
+#define GL_CLAMP_TO_EDGE_EXT     ((GLenum)0x812F)
 #endif /* GL_CLAMP_TO_EDGE_EXT */
 
 #ifndef GL_CLAMP_TO_EDGE_SGIS
-#define GL_CLAMP_TO_EDGE_SGIS    0x812F
+#define GL_CLAMP_TO_EDGE_SGIS    ((GLenum)0x812F)
 #endif /* GL_CLAMP_TO_EDGE_SGIS */
 
 #ifndef GL_TEXTURE_WRAP_R
-#define GL_TEXTURE_WRAP_R 0x8072
+#define GL_TEXTURE_WRAP_R ((GLenum)0x8072)
 #endif /* GL_TEXTURE_WRAP_R */
 
 #ifndef GL_TEXTURE_3D
-#define GL_TEXTURE_3D 0x806F
+#define GL_TEXTURE_3D ((GLenum)0x806F)
 #endif /* GL_TEXTURE_3D */
 #endif /* ! COIN_GL_H */

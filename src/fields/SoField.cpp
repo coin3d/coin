@@ -72,6 +72,7 @@
 #include <assert.h>
 #include <string.h>
 #include <coindefs.h> // COIN_STUB()
+#include <../tidbits.h> // coin_atexit()
 
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
@@ -1007,7 +1008,7 @@ SoField::get(SbString & valuestring)
   if (field_buffer_size < STARTSIZE) {
     field_buffer = malloc(STARTSIZE);
     field_buffer_size = STARTSIZE;
-    atexit(field_buffer_cleanup);
+    coin_atexit(field_buffer_cleanup);
   }
 
   out.setBuffer(field_buffer, field_buffer_size,

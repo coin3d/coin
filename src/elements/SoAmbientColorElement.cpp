@@ -31,6 +31,7 @@
 #include <Inventor/SbColor.h>
 #include <assert.h>
 #include <stdlib.h>
+#include <../tidbits.h> // coin_atexit()
 
 // Dynamically allocated to avoid problems on systems which doesn't
 // handle static constructors.
@@ -67,7 +68,7 @@ SoAmbientColorElement::initClass(void)
   SO_ELEMENT_INIT_CLASS(SoAmbientColorElement, inherited);
   defaultambientcolor = new SbColor;
   defaultambientcolor->setValue(0.2f, 0.2f, 0.2f);
-  (void)atexit(SoAmbientColorElement_cleanup_func);
+  coin_atexit(SoAmbientColorElement_cleanup_func);
 }
 
 //! FIXME: write doc.

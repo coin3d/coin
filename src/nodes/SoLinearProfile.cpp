@@ -34,11 +34,13 @@
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/elements/SoProfileCoordinateElement.h>
 #include <Inventor/lists/SbList.h>
+#include <../tidbits.h> // coin_atexit()
 #include <stdlib.h>
 
 static SbList <float> * coordListLinearProfile = NULL;
 
-static void cleanupLinearProfile(void)
+static void
+cleanupLinearProfile(void)
 {
   delete coordListLinearProfile;
 }
@@ -77,7 +79,7 @@ SoLinearProfile::getTrimCurve(SoState * state, int32_t & numpoints,
 {
   if (coordListLinearProfile == NULL) {
     coordListLinearProfile = new SbList <float>;
-    atexit(cleanupLinearProfile);
+    coin_atexit(cleanupLinearProfile);
   }
   numknots = 0;
   const SoProfileCoordinateElement * elem = (const SoProfileCoordinateElement*)
@@ -111,7 +113,7 @@ SoLinearProfile::getVertices(SoState * state, int32_t & numvertices,
 {
   if (coordListLinearProfile == NULL) {
     coordListLinearProfile = new SbList <float>;
-    atexit(cleanupLinearProfile);
+    coin_atexit(cleanupLinearProfile);
   }
   const SoProfileCoordinateElement * elem = (const SoProfileCoordinateElement*)
     SoProfileCoordinateElement::getInstance(state);

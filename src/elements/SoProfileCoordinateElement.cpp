@@ -30,9 +30,8 @@
 */
 
 #include <Inventor/elements/SoProfileCoordinateElement.h>
-
 #include <Inventor/nodes/SoNode.h>
-
+#include <../tidbits.h> // coin_atexit()
 #include <assert.h>
 
 SbVec2f * SoProfileCoordinateElement::initdefaultcoords = NULL;
@@ -63,7 +62,6 @@ SbVec2f * SoProfileCoordinateElement::initdefaultcoords = NULL;
 
 SO_ELEMENT_SOURCE(SoProfileCoordinateElement);
 
-
 // doc from parent
 void
 SoProfileCoordinateElement::initClass(void)
@@ -71,7 +69,7 @@ SoProfileCoordinateElement::initClass(void)
 #if COIN_DEBUG
   // Debugging for memory leaks will be easier if we can clean up the
   // resource usage.
-  (void)atexit(SoProfileCoordinateElement::clean);
+  coin_atexit(SoProfileCoordinateElement::clean);
 #endif // COIN_DEBUG
 
   SO_ELEMENT_INIT_CLASS(SoProfileCoordinateElement, inherited);

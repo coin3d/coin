@@ -30,9 +30,8 @@
 */
 
 #include <Inventor/elements/SoCoordinateElement.h>
-
 #include <Inventor/nodes/SoNode.h>
-
+#include <../tidbits.h> // coin_atexit()
 #include <assert.h>
 
 // static variables
@@ -75,7 +74,7 @@ SoCoordinateElement::initClass(void)
 #if COIN_DEBUG
   // Debugging for memory leaks will be easier if we can clean up the
   // resource usage.
-  (void)atexit(SoCoordinateElement::clean);
+  coin_atexit(SoCoordinateElement::clean);
 #endif // COIN_DEBUG
 
   SO_ELEMENT_INIT_CLASS(SoCoordinateElement, inherited);

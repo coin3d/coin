@@ -29,6 +29,7 @@
 #include "GLWrapper.h"
 #include <Inventor/SbDict.h>
 
+#include <../tidbits.h> // coin_atexit()
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
@@ -43,30 +44,30 @@
 #endif /* HAVE_DLFCN_H */
 
 /* Our own enum definitions */
-#define GL_PACK_SKIP_IMAGES               0x806B
-#define GL_PACK_SKIP_IMAGES_EXT           0x806B
-#define GL_PACK_IMAGE_HEIGHT              0x806C
-#define GL_PACK_IMAGE_HEIGHT_EXT          0x806C
-#define GL_UNPACK_SKIP_IMAGES             0x806D
-#define GL_UNPACK_SKIP_IMAGES_EXT         0x806D
-#define GL_UNPACK_IMAGE_HEIGHT            0x806E
-#define GL_UNPACK_IMAGE_HEIGHT_EXT        0x806E
-#define GL_TEXTURE_3D                     0x806F
-#define GL_TEXTURE_3D_EXT                 0x806F
-#define GL_PROXY_TEXTURE_3D               0x8070
-#define GL_PROXY_TEXTURE_3D_EXT           0x8070
-#define GL_TEXTURE_DEPTH                  0x8071
-#define GL_TEXTURE_DEPTH_EXT              0x8071
-#define GL_TEXTURE_WRAP_R                 0x8072
-#define GL_TEXTURE_WRAP_R_EXT             0x8072
-#define GL_MAX_3D_TEXTURE_SIZE            0x8073
-#define GL_MAX_3D_TEXTURE_SIZE_EXT        0x8073
-#define GL_CLAMP_TO_EDGE                  0x812F
-#define GL_CLAMP_TO_EDGE_SGIS             0x812F
+#define GL_PACK_SKIP_IMAGES               ((GLenum)0x806B)
+#define GL_PACK_SKIP_IMAGES_EXT           ((GLenum)0x806B)
+#define GL_PACK_IMAGE_HEIGHT              ((GLenum)0x806C)
+#define GL_PACK_IMAGE_HEIGHT_EXT          ((GLenum)0x806C)
+#define GL_UNPACK_SKIP_IMAGES             ((GLenum)0x806D)
+#define GL_UNPACK_SKIP_IMAGES_EXT         ((GLenum)0x806D)
+#define GL_UNPACK_IMAGE_HEIGHT            ((GLenum)0x806E)
+#define GL_UNPACK_IMAGE_HEIGHT_EXT        ((GLenum)0x806E)
+#define GL_TEXTURE_3D                     ((GLenum)0x806F)
+#define GL_TEXTURE_3D_EXT                 ((GLenum)0x806F)
+#define GL_PROXY_TEXTURE_3D               ((GLenum)0x8070)
+#define GL_PROXY_TEXTURE_3D_EXT           ((GLenum)0x8070)
+#define GL_TEXTURE_DEPTH                  ((GLenum)0x8071)
+#define GL_TEXTURE_DEPTH_EXT              ((GLenum)0x8071)
+#define GL_TEXTURE_WRAP_R                 ((GLenum)0x8072)
+#define GL_TEXTURE_WRAP_R_EXT             ((GLenum)0x8072)
+#define GL_MAX_3D_TEXTURE_SIZE            ((GLenum)0x8073)
+#define GL_MAX_3D_TEXTURE_SIZE_EXT        ((GLenum)0x8073)
+#define GL_CLAMP_TO_EDGE                  ((GLenum)0x812F)
+#define GL_CLAMP_TO_EDGE_SGIS             ((GLenum)0x812F)
 //  #define GL_TEXTURE_GEN_R
 //  #define GL_TEXTURE_GEN_Q
-#define GL_PROXY_TEXTURE_2D               0x8064
-#define GL_PROXY_TEXTURE_2D_EXT           0x8064
+#define GL_PROXY_TEXTURE_2D               ((GLenum)0x8064)
+#define GL_PROXY_TEXTURE_2D_EXT           ((GLenum)0x8064)
 
 /*
   Define the GETPROCADDRESS macro.
@@ -180,7 +181,6 @@ GLWrapper_cleanup(void)
   delete gldict;
 #endif
 }
-
 
 /*
   Set the OpenGL version variables in the given GLWrapper_t struct
@@ -360,7 +360,7 @@ const GLWrapper_t *
 GLWrapper(int contextid)
 {
   if (!gldict) {  /* First invocation, do initializations. */
-    (void)atexit(GLWrapper_cleanup);
+    coin_atexit(GLWrapper_cleanup);
 #ifdef COIN_INTERNAL
     gldict = new SbDict;
 #endif
@@ -416,15 +416,15 @@ GLWrapper(int contextid)
 #endif
 
     // Initialize everything to zero.
-    gi->COIN_GL_TEXTURE_3D = 0;
-    gi->COIN_GL_PROXY_TEXTURE_3D = 0;
-    gi->COIN_GL_TEXTURE_WRAP_R = 0;
-    gi->COIN_GL_TEXTURE_DEPTH = 0;
-    gi->COIN_GL_MAX_3D_TEXTURE_SIZE = 0;
-    gi->COIN_GL_PACK_IMAGE_HEIGHT = 0;
-    gi->COIN_GL_UNPACK_IMAGE_HEIGHT = 0;
-    gi->COIN_GL_PACK_SKIP_IMAGES = 0;
-    gi->COIN_GL_UNPACK_SKIP_IMAGES = 0;
+    gi->COIN_GL_TEXTURE_3D = (GLenum)0;
+    gi->COIN_GL_PROXY_TEXTURE_3D = (GLenum)0;
+    gi->COIN_GL_TEXTURE_WRAP_R = (GLenum)0;
+    gi->COIN_GL_TEXTURE_DEPTH = (GLenum)0;
+    gi->COIN_GL_MAX_3D_TEXTURE_SIZE = (GLenum)0;
+    gi->COIN_GL_PACK_IMAGE_HEIGHT = (GLenum)0;
+    gi->COIN_GL_UNPACK_IMAGE_HEIGHT = (GLenum)0;
+    gi->COIN_GL_PACK_SKIP_IMAGES = (GLenum)0;
+    gi->COIN_GL_UNPACK_SKIP_IMAGES = (GLenum)0;
     gi->glTexImage3D = NULL;
     gi->glCopyTexSubImage3D = NULL;
     gi->glTexSubImage3D = NULL;
@@ -433,7 +433,7 @@ GLWrapper(int contextid)
     gi->glGenTextures = NULL;
     gi->glTexSubImage2D = NULL;
 
-    gi->COIN_GL_CLAMP_TO_EDGE = 0;
+    gi->COIN_GL_CLAMP_TO_EDGE = (GLenum)0;
 
 #ifdef HAVE_GLX
     gi->glXGetCurrentDisplay = NULL;

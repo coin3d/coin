@@ -65,7 +65,7 @@
 #include <Inventor/SoType.h>
 #include <Inventor/SbName.h>
 #include <Inventor/lists/SbList.h>
-#include "../tidbits.h" // coin_getenv()
+#include "../tidbits.h" // coin_getenv(), coin_atexit()
 
 #include <stdarg.h>
 #include <stdio.h>
@@ -124,7 +124,7 @@ SoDebugError::initClass(void)
         ptr++;
       }
       breakpoints = new char*[num_breakpoints];
-      atexit(debug_break_cleanup);
+      coin_atexit(debug_break_cleanup);
       char * cpy = new char[strlen(env)+1];
       (void)strcpy(cpy, env);
       ptr = cpy;

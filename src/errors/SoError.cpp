@@ -47,10 +47,12 @@
 #include <Inventor/engines/SoEngine.h>
 #include <Inventor/SbName.h>
 
+#include <../tidbits.h> // coin_atexit()
 #include <stdarg.h>
 #include <stdlib.h>
 #include <assert.h>
 #include <stdio.h>
+
 #ifdef HAVE_UNISTD_H
 #include <unistd.h> // STDERR_FILENO
 #endif // HAVE_UNISTD_H

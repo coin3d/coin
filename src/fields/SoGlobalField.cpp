@@ -46,6 +46,7 @@
 #include <Inventor/fields/SoFieldData.h>
 #include <Inventor/lists/SoBaseList.h>
 #include <Inventor/SbName.h>
+#include <../tidbits.h> // coin_atexit()
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -114,7 +115,7 @@ SoGlobalField::initClass(void)
   SoGlobalField::allcontainers = new SoBaseList;
 
 #if COIN_DEBUG
-  (void)atexit(SoGlobalField::clean);
+  coin_atexit(SoGlobalField::clean);
 #endif // COIN_DEBUG
 }
 

@@ -37,6 +37,7 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbViewVolume.h>
+#include <../tidbits.h> // coin_atexit()
 #include <stdlib.h>
 
 #if HAVE_CONFIG_H
@@ -56,7 +57,8 @@
 static SbList <float> * coordListNurbsProfile = NULL;
 static SbList <float> * nurbsProfileTempList = NULL;
 
-static void cleanupNurbsProfile(void)
+static void
+cleanupNurbsProfile(void)
 {
   delete coordListNurbsProfile;
   delete nurbsProfileTempList;
@@ -102,7 +104,7 @@ SoNurbsProfile::getTrimCurve(SoState * state, int32_t & numpoints,
 {
   if (coordListNurbsProfile == NULL) {
     coordListNurbsProfile = new SbList <float>;
-    atexit(cleanupNurbsProfile);
+    coin_atexit(cleanupNurbsProfile);
   }
   numknots = this->knotVector.getNum();
   if (numknots) knotvector = (float *)(this->knotVector.getValues(0));
@@ -161,7 +163,7 @@ SoNurbsProfile::getVertices(SoState * state, int32_t & numvertices,
 
   if (coordListNurbsProfile == NULL) {
     coordListNurbsProfile = new SbList <float>;
-    atexit(cleanupNurbsProfile);
+    coin_atexit(cleanupNurbsProfile);
   }
   if (nurbsProfileTempList == NULL) {
     nurbsProfileTempList = new SbList <float>;

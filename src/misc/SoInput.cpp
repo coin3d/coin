@@ -89,6 +89,7 @@
 #include <Inventor/SbName.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/misc/SoProto.h>
+#include <../tidbits.h> // coin_atexit()
 #include <stdlib.h>
 #include <string.h>
 
@@ -1520,7 +1521,7 @@ SoInput::init(void)
 #if COIN_DEBUG
   // Debugging for memory leaks will be easier if we can clean up the
   // resource usage.
-  (void)atexit(SoInput::clean);
+  coin_atexit(SoInput::clean);
 #endif // COIN_DEBUG
 
   // This will catch multiple initClass() calls (unless there's a

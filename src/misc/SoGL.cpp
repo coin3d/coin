@@ -44,7 +44,7 @@
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/nodes/SoProfile.h>
 #include <Inventor/lists/SbList.h>
-
+#include <../tidbits.h> // coin_atexit()
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
@@ -1640,6 +1640,7 @@ static void nurbs_texcoord_cleanup(void)
   delete tmptexcoordlist;
 }
 
+
 void
 sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
                           void * nurbsrenderer,
@@ -1729,7 +1730,7 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
   if (numcoordindex && coordindex) {
     if (tmpcoordlist == NULL) {
       tmpcoordlist = new SbList <float>;
-      atexit(nurbs_coord_cleanup);
+      coin_atexit(nurbs_coord_cleanup);
     }
     tmpcoordlist->truncate(0);
     for (int i = 0; i < numcoordindex; i++) {
@@ -1823,7 +1824,7 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
       if (numtexcoordindex && texcoordindex) {
         if (tmptexcoordlist == NULL) {
           tmptexcoordlist = new SbList <float>;
-          atexit(nurbs_texcoord_cleanup);
+          coin_atexit(nurbs_texcoord_cleanup);
         }
         tmptexcoordlist->truncate(0);
         for (int i = 0; i < numtexcoordindex; i++) {
@@ -2000,7 +2001,7 @@ sogl_render_nurbs_curve(SoAction * action, SoShape * shape,
   if (numcoordindex && coordindex) {
     if (tmpcoordlist == NULL) {
       tmpcoordlist = new SbList <float>;
-      atexit(nurbs_coord_cleanup);
+      coin_atexit(nurbs_coord_cleanup);
     }
     tmpcoordlist->truncate(0);
     for (int i = 0; i < numcoordindex; i++) {

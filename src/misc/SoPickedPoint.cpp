@@ -40,7 +40,7 @@
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoTextureMatrixElement.h>
 #include <Inventor/details/SoDetail.h>
-#include <stdlib.h> // atexit
+#include <../tidbits.h> // coin_atexit()
 #include <assert.h>
 
 
@@ -54,7 +54,8 @@ static SoGetMatrixAction *matrixAction = NULL;
 //  Will be called at the end of program to free static memory
 //  used by this class.
 //
-static void clean_class()
+static
+void clean_class()
 {
   delete matrixAction;
   matrixAction = NULL;
@@ -371,7 +372,7 @@ SoPickedPoint::getMatrixAction() const
 {
   if (matrixAction == NULL) {
     matrixAction = new SoGetMatrixAction(this->viewport);
-    atexit(clean_class);
+    coin_atexit(clean_class);
   }
   else {
     matrixAction->setViewportRegion(this->viewport);

@@ -142,6 +142,7 @@ LevelOfDetail {
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/misc/SoChildList.h>
+#include <../tidbits.h> // coin_atexit()
 #include <stdlib.h>
 
 // FIXME: not safe in an multithreaded environment. 20020106 mortene.
@@ -258,7 +259,7 @@ SoLevelOfDetail::doAction(SoAction *action)
     // The viewport region will be replaced every time the action is
     // used, so we can just feed it a dummy here.
     bboxAction = new SoGetBoundingBoxAction(SbViewportRegion());
-    (void)atexit(SoLevelOfDetail_cleanup_func);
+    coin_atexit(SoLevelOfDetail_cleanup_func);
   }
 
   bboxAction->setViewportRegion(SoViewportRegionElement::get(state));

@@ -31,6 +31,7 @@
 
 #include <Inventor/elements/SoSpecularColorElement.h>
 #include <Inventor/SbColor.h>
+#include <../tidbits.h> // coin_atexit()
 #include <assert.h>
 #include <stdlib.h>
 
@@ -69,7 +70,7 @@ SoSpecularColorElement::initClass()
   SO_ELEMENT_INIT_CLASS(SoSpecularColorElement, inherited);
   defaultspecularcolor = new SbColor;
   defaultspecularcolor->setValue(0.0f, 0.0f, 0.0f);
-  (void)atexit(SoSpecularColorElement_cleanup_func);
+  coin_atexit(SoSpecularColorElement_cleanup_func);
 }
 
 /*!

@@ -89,6 +89,7 @@
 #include <Inventor/elements/SoTransparencyElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
+#include <../tidbits.h> // coin_atexit()
 #include <stdlib.h>
 
 /*!
@@ -157,11 +158,11 @@
 
 static SbColor * one_black_color = NULL;
 
-static void material_cleanup(void)
+static void
+material_cleanup(void)
 {
   delete one_black_color;
 }
-
 
 // *************************************************************************
 
@@ -372,7 +373,7 @@ SoMaterial::callback(SoCallbackAction * action)
     SoState * state = action->getState();
     if (one_black_color == NULL) {
       one_black_color = new SbColor(0.0f, 0.0f, 0.0f);
-      atexit(material_cleanup);
+      coin_atexit(material_cleanup);
     }
     static float one_shininess[1] = {0.0f};
 

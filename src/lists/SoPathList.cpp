@@ -34,6 +34,7 @@
 #include <Inventor/lists/SoPathList.h>
 #include <Inventor/SoPath.h>
 #include <Inventor/SoFullPath.h>
+#include <../tidbits.h> // coin_atexit()
 #include <assert.h>
 
 
@@ -124,6 +125,11 @@ SoPathList::findPath(const SoPath & path) const
 // Return a negative number if the path pointed to by v0 is considered
 // "less than" v1, a positive number if v0 is considered "larger than"
 // v1 and zero if they are equal.
+//
+// "extern C" wrapper is needed with the OSF1/cxx compiler (probably a
+// bug in the compiler, but it doesn't seem to hurt to do this
+// anyway).
+extern "C" {
 static int
 compare_paths(const void * v0, const void * v1)
 {
@@ -141,6 +147,7 @@ compare_paths(const void * v0, const void * v1)
   }
   // shortest path first
   return p0->getLength() - p1->getLength();
+}
 }
 
 /*!
