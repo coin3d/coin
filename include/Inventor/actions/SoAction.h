@@ -82,6 +82,7 @@ public:
   virtual void apply(SoNode * root);
   virtual void apply(SoPath * path);
   virtual void apply(const SoPathList & pathlist, SbBool obeysrules = FALSE);
+  void apply(SoAction * beingApplied);
   virtual void invalidateState(void);
 
   static void nullAction(SoAction * action, SoNode * node);

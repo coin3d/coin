@@ -679,6 +679,37 @@ SoAction::apply(const SoPathList & pathlist, SbBool obeysrules)
 }
 
 /*!
+  Applies this action object to the same as \a beingApplied is being
+  applied to.
+  
+  \since 2002-02-10
+*/
+void
+SoAction::apply(SoAction * beingApplied)
+{
+  assert(beingApplied != NULL);
+  switch ( beingApplied->getWhatAppliedTo() ) {
+  case NODE:
+    this->apply(beingApplied->getNodeAppliedTo());
+    break;
+  case PATH:
+    this->apply(beingApplied->getPathAppliedTo());
+    break;
+  case PATH_LIST:
+    do {
+      const SoPathList * pathlist = beingApplied->getOriginalPathListAppliedTo();
+      this->apply(*pathlist, FALSE);
+      // FIXME: any way to detect if arg should be TRUE? 2002-02-10 larsa
+    } while ( FALSE );
+    break;
+  default:
+    assert(0 && "unhandled appliedcode in beingApplied action");
+    break;
+  }
+}
+
+
+/*!
   Invalidates the state, forcing it to be recreated at the next
   apply() invocation.
 */
