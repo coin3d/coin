@@ -29,6 +29,8 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/elements/SoTextureImageElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLTextureCoordinateElement.h>
+
 #include <Inventor/nodes/SoVertexShape.h>
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/actions/SoPickAction.h>
@@ -39,8 +41,6 @@
 
 #include <GL/gl.h>
 #include <assert.h>
-
-
 
 #define FLAG_FUNCTION           0x01
 #define FLAG_NEEDCOORDS         0x02
@@ -95,7 +95,7 @@ SoTextureCoordinateBundle(SoAction * const action,
   SoVertexProperty *vp = (SoVertexProperty*)
     this->shapenode->vertexProperty.getValue();
   
-  if (vp && vp->texCoord.getNum() > 0) {
+  if (vp && vp->texCoord.getNum() > 0) {    
     // FIXME:
     // the SoVertexProperty node is a bad design idea, IMHO
     // Just push and place needed stuff on the element stack for now.
@@ -106,6 +106,10 @@ SoTextureCoordinateBundle(SoAction * const action,
     const SbVec2f *texcoords = vp->texCoord.getValues(0);
     this->state->push();
     this->flags |= FLAG_DIDPUSH;
+    if (forRendering) {
+      SoGLTextureCoordinateElement::setTexGen(this->state,
+                                              vp, NULL);
+    }
     SoTextureCoordinateElement::set2(this->state, vp,
                                      vp->texCoord.getNum(),
                                      vp->texCoord.getValues(0));
