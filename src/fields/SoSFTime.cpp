@@ -68,7 +68,7 @@ sosftime_read_value(SoInput * in, SbTime & t)
 {
   double val;
   if (!in->read(val)) {
-    SoReadError::post(in, "Premature end of file");
+    SoReadError::post(in, "unable to read floating point value");
     return FALSE;
   }
 

@@ -63,7 +63,7 @@ sofield_read_float_values(SoInput * in, float * val, int numvals)
   for (int i=0; i < numvals; i++) {
 
     if (!in->read(val[i])) {
-      SoReadError::post(in, "Premature end of file");
+      SoReadError::post(in, "unable to read floating point value");
       return FALSE;
     }
 
