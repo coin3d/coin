@@ -509,18 +509,11 @@ if $sim_ac_build_library; then
 # Instead of getenv() on most Win32 platforms (not Windows CE).
 
 AC_MSG_CHECKING([for GetEnvironmentVariable() function])
-AC_TRY_LINK([
-#ifdef HAVE_WINDOWS_H
-#include <windows.h>
-#endif
-], [
-  (void)GetEnvironmentVariable("FOOBAR", NULL, 0);
-], [
-  AC_MSG_RESULT([yes])
-  AC_DEFINE([HAVE_GETENVIRONMENTVARIABLE],1, [Define to use GetEnvironmentVariable() instead of getenv()])
-], [
-  AC_MSG_RESULT([no])
-])
+AC_TRY_LINK([#include <windows.h>],
+            [(void)GetEnvironmentVariable("FOOBAR", NULL, 0);],
+  [AC_MSG_RESULT([yes])
+  AC_DEFINE([HAVE_GETENVIRONMENTVARIABLE],1, [Define to use GetEnvironmentVariable() instead of getenv()])],
+  [AC_MSG_RESULT([no])])
 
 # *******************************************************************
 #
