@@ -341,7 +341,7 @@ fast_mipmap(SoState * state, int width, int height, const int nc,
             const unsigned char *data, GLenum format,
             const SbBool useglsubimage)
 {
-  const cc_glglue * glw = GLGLUE_FROM_STATE(state);
+  const cc_glglue * glw = sogl_glue_instance(state);
   int levels = compute_log(width);
   int level = compute_log(height);
   if (level > levels) levels = level;
@@ -385,7 +385,7 @@ fast_mipmap(SoState * state, int width, int height, int depth, const int nc,
             const unsigned char *data, GLenum format,
             const SbBool useglsubimage)
 {
-  const cc_glglue * glw = GLGLUE_FROM_STATE(state);
+  const cc_glglue * glw = sogl_glue_instance(state);
   int levels = compute_log(SbMax(SbMax(width, height), depth));
 
   int memreq = (SbMax(width>>1,1))*(SbMax(height>>1,1))*(SbMax(depth>>1,1))*nc;
@@ -425,10 +425,8 @@ fast_mipmap(SoState * state, int width, int height, int depth, const int nc,
   }
 }
 
-//
-// a low quality resize function. It is only used when neither simage
+// A low quality resize function. It is only used when neither simage
 // nor GLU is available.
-//
 static void
 fast_image_resize(const unsigned char * src,
                   unsigned char * dest,
@@ -455,6 +453,47 @@ fast_image_resize(const unsigned char * src,
       sx += dx;
     }
     sy += dy;
+  }
+}
+
+// A low quality resize function for 3D texture image buffers. It is
+// only used when neither simage nor GLU is available.
+static void
+fast_image_resize3d(const unsigned char * src,
+                    unsigned char * dest,
+                    int width, int height,
+                    int nc, int layers,
+                    int newwidth, int newheight,
+                    int newlayers)
+{
+  float sx, sy, sz, dx, dy, dz;
+  int src_bpr, dest_bpr, src_bpl, dest_bpl, xstop, ystop, zstop;
+  int x, y, z, offset, i;
+
+  dx = ((float)width)/((float)newwidth);
+  dy = ((float)height)/((float)newheight);
+  dz = ((float)layers)/((float)newlayers);
+  src_bpr = width * nc;
+  dest_bpr = newwidth * nc;
+  src_bpl = src_bpr * height;
+  dest_bpl = dest_bpr * newheight;
+  
+  zstop = newlayers * dest_bpl;
+  ystop = dest_bpl;
+  xstop = dest_bpr;
+  sz = 0.0f;
+  for (z = 0; z < zstop; z += dest_bpl) {
+    sy = 0.0f;
+    for (y = 0; y < ystop; y += dest_bpr) {
+      sx = 0.0f;
+      for (x = 0; x < xstop; x += nc) {
+        offset = ((int)sz)*src_bpl + ((int)sy)*src_bpr + ((int)sx)*nc;
+        for (i = 0; i < nc; i++) dest[x+y+z+i] = src[offset+i];
+        sx += dx;
+      }
+      sy += dy;
+    }
+    sz += dz;
   }
 }
 
@@ -717,7 +756,7 @@ SoGLImage::setData(const SbImage *image,
   // check for special case where glTexSubImage can be used.
   // faster for most drivers.
   if (createinstate) { // We need the state for cc_glglue
-    const cc_glglue * glw = GLGLUE_FROM_STATE(createinstate);
+    const cc_glglue * glw = sogl_glue_instance(createinstate);
     SoGLDisplayList *dl = NULL;
 
     SbBool copyok =
@@ -1205,14 +1244,12 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
         (void)memcpy(glimage_tmpimagebuffer, result, numbytes);
         simage_wrapper()->simage_free_image(result);
       }
-#if COIN_DEBUG
       else {
-        // FIXME: implement at least a dead-simple resize
-        // method. 20020503 mortene.
-        SoDebugError::postWarning("SoGLImageP::resizeImage",
-                                  "No 3D resize function found.");
+        // fall back to the internal low-quality resize function
+        fast_image_resize3d(bytes, glimage_tmpimagebuffer,
+                            xsize, ysize, numcomponents, zsize,
+                            newx, newy, newz);
       }
-#endif // COIN_DEBUG
     }
     imageptr = glimage_tmpimagebuffer;
   }
@@ -1311,7 +1348,7 @@ translate_wrap(SoState *state, const SoGLImage::Wrap wrap)
 {
   if (wrap == SoGLImage::REPEAT) return (GLenum) GL_REPEAT;
   if (wrap == SoGLImage::CLAMP_TO_EDGE) {
-    const cc_glglue * glw = GLGLUE_FROM_STATE(state);
+    const cc_glglue * glw = sogl_glue_instance(state);
     if (glw->hasTextureEdgeClamp) return GL_CLAMP_TO_EDGE;
   }
   return (GLenum) GL_CLAMP;
@@ -1326,7 +1363,7 @@ SoGLImageP::reallyCreateTexture(SoState *state,
                                 const SbBool mipmap,
                                 const int border)
 {
-  const cc_glglue * glw = GLGLUE_FROM_STATE(state);
+  const cc_glglue * glw = sogl_glue_instance(state);
   this->glsize = SbVec3s((short) w, (short) h, (short) d);
   this->glcomp = numComponents;
 
