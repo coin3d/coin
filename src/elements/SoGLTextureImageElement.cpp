@@ -309,6 +309,14 @@ SbBool
 SoGLTextureImageElement::isTextureSizeLegal(int xsize, int ysize, int zsize, 
                                             int bytespertexel)
 {
+  // FIXME: the technique we are using doesn't really match what is recommended at
+  //  http://www.opengl.org/developers/documentation/OGL_userguide/OpenGLonWin-13.html
+  // (see "Testing Whether Textures Fit: The Texture Proxy Mechanism").
+  // 20020701 mortene.
+
+  // FIXME: mipmaps must be handled specifically, which we are not
+  // doing. 20020701 mortene.
+
   const GLWrapper_t * glw = GLWRAPPER_FROM_STATE(this->state);
   if (zsize==0) { // 2D textures
     if (glw->has2DProxyTextures) {
