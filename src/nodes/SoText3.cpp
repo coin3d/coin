@@ -180,6 +180,9 @@ SoText3::SoText3(void)
 SoText3::~SoText3()
 {
   delete this->stringsensor;
+
+  // unref() glyphs before the list get destructed.
+  for (int j = 0; j < this->glyphs.getLength(); j++) this->glyphs[j]->unref();
 }
 
 // doc in parent
@@ -423,20 +426,19 @@ SoText3::createTriangleDetail(SoRayPickAction * action,
 void
 SoText3::setUpGlyphs(SoState * state)
 {
+  // Note that this code is duplicated in SoAsciiText::setUpGlyphs(),
+  // so migrate bugfixes and other improvements.
+
   if (!this->needsetup) return;
   this->needsetup = FALSE;
 
   // store old glyphs to avoid freeing glyphs too soon
   SbList <const SoGlyph *> oldglyphs;
-  int i;
-  int n = this->glyphs.getLength();
-  for (i = 0; i < n; i++) {
-    oldglyphs.append(this->glyphs[i]);
-  }
+  oldglyphs = this->glyphs;
   this->glyphs.truncate(0);
   this->widths.truncate(0);
 
-  for (i = 0; i < this->string.getNum(); i++) {
+  for (int i = 0; i < this->string.getNum(); i++) {
     const SbString & s = this->string[i];
     int strlen = s.getLength();
     const char * ptr = s.getString();
@@ -450,10 +452,7 @@ SoText3::setUpGlyphs(SoState * state)
   }
 
   // unref old glyphs
-  n = oldglyphs.getLength();
-  for (i = 0; i < n; i++) {
-    oldglyphs[i]->unref();
-  }
+  for (int j = 0; j < oldglyphs.getLength(); j++) oldglyphs[j]->unref();
 }
 
 // render text geometry
