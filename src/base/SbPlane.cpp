@@ -251,7 +251,14 @@ SbPlane::getDistanceFromOrigin(void) const
   return this->distance;
 }
 
-SbBool 
+/*!
+  Intersect this plane with \a pl, and return the resulting line in \a
+  line. Returns \e TRUE if an intersection line can be found, and \a
+  FALSE if the planes are parallel.
+
+  \since 1.1.0 
+*/
+SbBool
 SbPlane::intersect(const SbPlane & pl, SbLine & line)
 {
   // Based on code from Graphics Gems III, Plane-to-Plane Intersection
@@ -272,7 +279,7 @@ SbPlane::intersect(const SbPlane & pl, SbLine & line)
   const SbVec3f & pl2n = pl.normal;
   const float pl1w = - this->distance;
   const float pl2w = - pl.distance;
-  
+
   if (dir2[2] > dir2[1] && dir2[2] > dir2[0] && dir2[2] > FLT_EPSILON) {
     // then get a point on the XY plane
     invdet = 1.0f / xdir[2];
@@ -293,10 +300,10 @@ SbPlane::intersect(const SbPlane & pl, SbLine & line)
   }
   else // xdir is zero, then no point of intersection exists
     return FALSE;
-  
+
   xpt *= invdet;
   invdet = 1.0f / (float) sqrt(dir2[0] + dir2[1] + dir2[2]);
-  
+
   xdir *= invdet;
   line = SbLine(xpt, xpt+xdir);
   return TRUE;
