@@ -855,7 +855,7 @@ cc_flwft_get_bitmap_advance(void * font, int glyph, int *x, int *y)
 {
   FT_Error error;
   FT_Face face;
-  float tmp;
+  long tmp;
 
   assert(font);
   face = (FT_Face)font;
@@ -863,10 +863,9 @@ cc_flwft_get_bitmap_advance(void * font, int glyph, int *x, int *y)
   assert(error == 0 && "FT_Load_Glyph() unexpected failure, investigate");
 
   tmp = face->glyph->advance.x;
-  x[0] = (int) (tmp / 64.0f);
+  x[0] = (int) (tmp / 64);
   tmp = face->glyph->advance.y;
-  y[0] = (int) (tmp / 64.0f);
-
+  y[0] = (int) (tmp / 64);
 }
 
 void
@@ -874,7 +873,7 @@ cc_flwft_get_vector_advance(void * font, int glyph, float *x, float *y)
 {
   FT_Error error;
   FT_Face face;
-  int tmp;
+  float tmp;
 
   assert(font);
   face = (FT_Face)font;
@@ -907,10 +906,9 @@ cc_flwft_get_bitmap_kerning(void * font, int glyph1, int glyph2, int *x, int *y)
     *y = (int) (kerning.y / 64.0f);
   }
   else {
-    *x = 0.0;
-    *y = 0.0;
+    *x = 0;
+    *y = 0;
   }
-
 }
 
 
@@ -1537,11 +1535,8 @@ flwft_cleanupMallocList(void)
 static void
 flwft_buildVertexList(struct cc_flw_vector_glyph * newglyph)
 {
-
   int numcoords,i;
-  float * coords;
   float * coord;
-  float fontscalingx, fontscalingy;
 
   assert(flwft_tessellator.vertexlist && "Error fetching vector glyph coordinates");
   numcoords = cc_list_get_length(flwft_tessellator.vertexlist);
@@ -1557,7 +1552,6 @@ flwft_buildVertexList(struct cc_flw_vector_glyph * newglyph)
 
   cc_list_destruct(flwft_tessellator.vertexlist);
   flwft_tessellator.vertexlist = NULL;
-
 }
 
 const float *
@@ -1570,8 +1564,6 @@ cc_flwft_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph)
 static void
 flwft_buildEdgeIndexList(struct cc_flw_vector_glyph * newglyph)
 {
-
-  int * edgeidxlist;
   int i,len;
 
   assert(flwft_tessellator.edgeindexlist);
@@ -1584,7 +1576,6 @@ flwft_buildEdgeIndexList(struct cc_flw_vector_glyph * newglyph)
 
   cc_list_destruct(flwft_tessellator.edgeindexlist);
   flwft_tessellator.edgeindexlist = NULL;
-
 }
 
 const int *
@@ -1597,7 +1588,6 @@ cc_flwft_get_vector_glyph_edgeidx(struct cc_flw_vector_glyph * vecglyph)
 static void
 flwft_buildFaceIndexList(struct cc_flw_vector_glyph * newglyph)
 {
-  int * idxlist;
   int len,i;
 
   assert(flwft_tessellator.faceindexlist);
@@ -1610,7 +1600,6 @@ flwft_buildFaceIndexList(struct cc_flw_vector_glyph * newglyph)
    
   cc_list_destruct(flwft_tessellator.faceindexlist);
   flwft_tessellator.faceindexlist = NULL;
-
 }
 
 const int *
