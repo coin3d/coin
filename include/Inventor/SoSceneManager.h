@@ -46,6 +46,10 @@ public:
   virtual ~SoSceneManager();
   virtual void render(const SbBool clearwindow = TRUE,
                       const SbBool clearzbuffer = TRUE);
+  virtual void render(SoGLRenderAction * action,
+                      const SbBool initmatrices = TRUE,
+                      const SbBool clearwindow = TRUE,
+                      const SbBool clearzbuffer = TRUE);
   virtual SbBool processEvent(const SoEvent * const event);
   void reinitialize(void);
   void scheduleRedraw(void);

@@ -52,6 +52,11 @@
 #include <Inventor/system/gl.h>
 #include <assert.h>
 
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbMutex.h>
+#endif // COIN_THREADSAFE
+
+
 #ifndef DOXYGEN_SKIP_THIS
 
 // defines for the flags member
@@ -81,9 +86,21 @@ public:
   static SbBool touchtimer;
 
   uint32_t redrawpri;
-
-  GLbitfield clearmask;
   static void prerendercb(void * userdata, SoGLRenderAction * action);
+
+#ifdef COIN_THREADSAFE
+  SbMutex mutex;
+#endif // COIN_THREADSAFE
+  void lock(void) {
+#ifdef COIN_THREADSAFE
+    this->mutex.lock();
+#endif // COIN_THREADSAFE
+  }
+  void unlock(void) {
+#ifdef COIN_THREADSAFE
+    this->mutex.unlock();
+#endif // COIN_THREADSAFE
+  }
 };
 
 SbBool SoSceneManagerP::touchtimer = TRUE;
@@ -156,6 +173,27 @@ SoSceneManager::~SoSceneManager()
 void
 SoSceneManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
 {
+  this->render(THIS->glaction, TRUE, clearwindow, clearzbuffer);
+}
+
+/*!
+  Render method needed for thread safe rendering. Since only one
+  thread can use an SoGLRenderAction, this method enables you to
+  supply your own thread-specific SoGLRenderAction to be used for
+  rendering the scene. If \a initmatrices is \c TRUE, the OpenGL model
+  and projection matrices will be initialize to identity before
+  applying the action. If \a clearwindow is \c TRUE, clear the
+  rendering buffer before drawing. If \a clearzbuffer is \c TRUE,
+  clear the depth buffer values before rendering
+
+  \since 2002-10-19
+ */
+void
+SoSceneManager::render(SoGLRenderAction * action,
+                       const SbBool initmatrices,
+                       const SbBool clearwindow,
+                       const SbBool clearzbuffer)
+{
   GLbitfield mask = 0;
   if (clearwindow) mask |= GL_COLOR_BUFFER_BIT;
   if (clearzbuffer) mask |= GL_DEPTH_BUFFER_BIT;
@@ -170,18 +208,19 @@ SoSceneManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
     else {
       glClearIndex(THIS->backgroundindex);
     }
-    THIS->clearmask = mask;
     // Registering a callback is needed since the correct GL viewport
     // is set by SoGLRenderAction before rendering.  It might not be
     // correct when we get here.
     // This callback is removed again in the prerendercb function
-    THIS->glaction->addPreRenderCallback(THIS->prerendercb, THIS);
+    action->addPreRenderCallback(THIS->prerendercb, (void*) mask);
   }
 
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
+  if (initmatrices) {
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+  }
 
   // If there has been changes in the scene graph leading to a node
   // sensor detect and schedule before we've gotten around to serving
@@ -189,6 +228,7 @@ SoSceneManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
   // in the case of scenegraph modifications between a nodesensor
   // trigger and SoSceneManager::render() actually being called. It
   // will also help us avoid "double redraws" at expose events.
+  THIS->lock();
   if (THIS->rootsensor && THIS->rootsensor->isScheduled()) {
 #if COIN_DEBUG && 0 // debug
     SoDebugError::postInfo("SoSceneManager::render",
@@ -196,8 +236,9 @@ SoSceneManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
 #endif // debug
     THIS->rootsensor->unschedule();
   }
+  THIS->unlock();
   // Apply the SoGLRenderAction to the scenegraph root.
-  if (THIS->scene) THIS->glaction->apply(THIS->scene);
+  if (THIS->scene) action->apply(THIS->scene);
 }
 
 /*!
@@ -233,6 +274,7 @@ SoSceneManager::reinitialize(void)
 void
 SoSceneManager::scheduleRedraw(void)
 {
+  THIS->lock();
   if ((THIS->flags & FLAG_ACTIVE) && THIS->rendercb) {
     if (!THIS->redrawshot) {
       THIS->redrawshot =
@@ -247,6 +289,7 @@ SoSceneManager::scheduleRedraw(void)
 #endif // debug
     THIS->redrawshot->schedule();
   }
+  THIS->unlock();
 }
 
 /*!
@@ -749,6 +792,7 @@ SoSceneManagerP::prerendercb(void * userdata, SoGLRenderAction * action)
 {
   // remove callback again
   action->removePreRenderCallback(prerendercb, userdata);
+  GLbitfield mask = (GLbitfield) userdata;
 
 #if COIN_DEBUG && 0 // debug
   GLint view[4];
@@ -757,9 +801,9 @@ SoSceneManagerP::prerendercb(void * userdata, SoGLRenderAction * action)
                          "GL_VIEWPORT=<%d, %d, %d, %d>",
                          view[0], view[1], view[2], view[3]);
 #endif // debug
-
+  
   // clear the viewport
-  glClear(((SoSceneManagerP*)userdata)->clearmask);
+  glClear(mask);
 }
 
 #endif // DOXYGEN_SKIP_THIS
