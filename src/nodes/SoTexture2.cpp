@@ -103,6 +103,7 @@
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoTextureOverrideElement.h>
 #include <Inventor/elements/SoTextureScalePolicyElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/misc/SoGLBigImage.h>
 #include <Inventor/sensors/SoFieldSensor.h>
@@ -110,6 +111,14 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbImage.h>
 #include <assert.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbMutex.h>
+#endif // COIN_THREADSAFE
 
 /*!
   \enum SoTexture2::Model
@@ -230,12 +239,24 @@ public:
   SoGLImage * glimage;
   SbBool glimagevalid;
   SoFieldSensor * filenamesensor;
+#ifdef COIN_THREADSAFE
+  SbMutex mutex;
+#endif // COIN_THREADSAFE
 };
 #endif // DOXYGEN_SKIP_THIS
 
 
 #undef THIS
 #define THIS this->pimpl
+
+#ifdef COIN_THREADSAFE
+#define LOCK_GLIMAGE(_thisp_) (_thisp_)->pimpl->mutex.lock()
+#define UNLOCK_GLIMAGE(_thisp_) (_thisp_)->pimpl->mutex.unlock()
+#else // COIN_THREADSAFE
+#define LOCK_GLIMAGE(_thisp_)
+#define UNLOCK_GLIMAGE(_thisp_)
+#endif // COIN_THREADSAFE
+
 
 SO_NODE_SOURCE(SoTexture2);
 
@@ -340,6 +361,9 @@ SoTexture2::GLRender(SoGLRenderAction * action)
     return;
 
   float quality = SoTextureQualityElement::get(state);
+
+  LOCK_GLIMAGE(this);
+
   if (!THIS->glimagevalid) {
     int nc;
     SbVec2s size;
@@ -370,6 +394,8 @@ SoTexture2::GLRender(SoGLRenderAction * action)
       THIS->glimagevalid = TRUE;
     }
   }
+
+  UNLOCK_GLIMAGE(this);
 
   SoGLTextureImageElement::set(state, this,
                                THIS->glimagevalid ? THIS->glimage : NULL,
