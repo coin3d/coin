@@ -88,9 +88,7 @@ public:
   static SbBool cleancalled;
 };
 
-#undef PRIVATE
 #define PRIVATE(p) ((p)->pimpl)
-#undef PUBLIC
 #define PUBLIC(p) ((p)->master)
 
 SoAudioDevice *SoAudioDeviceP::singleton = NULL;
@@ -443,3 +441,6 @@ SoAudioDeviceP::clean()
   SoAudioDeviceP::singleton = NULL;
 #endif // _WIN32
 }
+
+#undef PRIVATE
+#undef PUBLIC

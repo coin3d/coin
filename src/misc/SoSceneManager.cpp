@@ -112,7 +112,6 @@ public:
 
 SbBool SoSceneManagerP::touchtimer = TRUE;
 
-#undef PRIVATE
 #define PRIVATE(p) (p->pimpl)
 
 // *************************************************************************
@@ -856,3 +855,5 @@ SoSceneManagerP::prerendercb(void * userdata, SoGLRenderAction * action)
   // clear the viewport
   glClear(mask);
 }
+
+#undef PRIVATE

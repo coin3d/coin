@@ -807,6 +807,6 @@ SoVectorizeAction::isLightingEnabled(void) const
 
 
 #undef PRIVATE
-
+#undef PUBLIC
 
 // *************************************************************************

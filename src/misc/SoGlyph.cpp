@@ -97,7 +97,6 @@ public:
   static SoGlyph * createSystemGlyph(const unsigned int character, SoState * state) {return NULL;};
 };
 
-#undef PRIVATE
 #define PRIVATE(p) ((p)->pimpl)
 
 /*!
@@ -586,3 +585,5 @@ SoGlyphP::createSystemGlyph(const char character, const SbName & font)
   // FIXME: implement me somebody, please
   return NULL;
 }
+
+#undef PRIVATE

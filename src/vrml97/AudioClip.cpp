@@ -277,9 +277,7 @@ int SoVRMLAudioClipP::defaultSampleRate = 44100;
 SbTime SoVRMLAudioClipP::defaultTimerInterval = 0.1f;
 SbBool SoVRMLAudioClipP::warnAboutMissingSimage = TRUE;
 
-#undef PRIVATE
 #define PRIVATE(p) ((p)->pimpl)
-#undef PUBLIC
 #define PUBLIC(p) ((p)->master)
 
 SO_NODE_SOURCE(SoVRMLAudioClip);
@@ -1080,3 +1078,6 @@ SoVRMLAudioClipP::closeFile()
     this->stream = NULL;
   }
 }
+
+#undef PRIVATE
+#undef PUBLIC
