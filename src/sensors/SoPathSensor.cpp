@@ -113,5 +113,6 @@ SoPathSensor::notify(SoNotList * l)
 void
 SoPathSensor::dyingReference(void)
 {
+  inherited::dyingReference();
   this->detach();
 }
