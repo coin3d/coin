@@ -70,14 +70,14 @@ SoUnknownNode::createInstance(void)
   return new SoUnknownNode;
 }
 
-#undef THIS
-#define THIS this->pimpl
+#undef PRIVATE
+#define PRIVATE(p) ((p)->pimpl)
 
 // Node implementation starts "proper".
 
 SoUnknownNode::SoUnknownNode(void)
 {
-  THIS = new SoUnknownNodeP;
+  PRIVATE(this) = new SoUnknownNodeP;
 
   /* Catch attempts to use a node class which has not been initialized. */
   assert(SoUnknownNode::classTypeId != SoType::badType());
@@ -85,8 +85,8 @@ SoUnknownNode::SoUnknownNode(void)
   this->classfielddata = new SoFieldData;
 
   this->isBuiltIn = FALSE;
-  THIS->privatechildren = NULL;
-  THIS->alternate = new SoChildList(this, 1);
+  PRIVATE(this)->privatechildren = NULL;
+  PRIVATE(this)->alternate = new SoChildList(this, 1);
 }
 
 SoUnknownNode::~SoUnknownNode()
@@ -95,9 +95,9 @@ SoUnknownNode::~SoUnknownNode()
     delete this->classfielddata->getField(this, i);
 
   delete this->classfielddata;
-  delete THIS->privatechildren;
-  delete THIS->alternate;
-  delete THIS;
+  delete PRIVATE(this)->privatechildren;
+  delete PRIVATE(this)->alternate;
+  delete PRIVATE(this);
 }
 
 // doc in super
@@ -127,7 +127,7 @@ SoUnknownNode::readInstance(SoInput * in, unsigned short flags)
 
   if (notbuiltin == FALSE) {
     SoReadError::post(in, "Node type ``%s'' not recognized.",
-                      THIS->classname.getString());
+                      PRIVATE(this)->classname.getString());
     return FALSE;
   }
 
@@ -142,8 +142,8 @@ SoUnknownNode::readInstance(SoInput * in, unsigned short flags)
         SoDebugError::postInfo("SoUnknownNode::readInstance",
                                "found alternate representation");
 #endif // debug
-        THIS->alternate->truncate(0);
-        THIS->alternate->append(f->getValue());
+        PRIVATE(this)->alternate->truncate(0);
+        PRIVATE(this)->alternate->append(f->getValue());
       }
       break;
     }
@@ -164,8 +164,8 @@ SoUnknownNode::readInstance(SoInput * in, unsigned short flags)
                            g->getNumChildren());
 #endif // debug
 
-    delete THIS->privatechildren;
-    THIS->privatechildren = new SoChildList(this, * g->getChildren());
+    delete PRIVATE(this)->privatechildren;
+    PRIVATE(this)->privatechildren = new SoChildList(this, * g->getChildren());
     g->unref();
   }
 
@@ -189,14 +189,14 @@ SoUnknownNode::readInstance(SoInput * in, unsigned short flags)
 void
 SoUnknownNode::setNodeClassName(const SbName & name)
 {
-  THIS->classname = name;
+  PRIVATE(this)->classname = name;
 }
 
 // Overridden from SoBase.
 const char *
 SoUnknownNode::getFileFormatName(void) const
 {
-  return THIS->classname.getString();
+  return PRIVATE(this)->classname.getString();
 }
 
 // Overridden from SoNode. SoChildList contains either 0 or 1
@@ -205,7 +205,7 @@ SoUnknownNode::getFileFormatName(void) const
 SoChildList *
 SoUnknownNode::getChildren(void) const
 {
-  return THIS->alternate;
+  return PRIVATE(this)->alternate;
 }
 
 // Write action method is overridden from SoNode to handle children.
@@ -218,15 +218,15 @@ SoUnknownNode::write(SoWriteAction * action)
     // Only increase number of writereferences to the top level node
     // in a tree which is used multiple times.
     if (!this->hasMultipleWriteRefs())
-      if (THIS->privatechildren) THIS->privatechildren->traverse(action);
+      if (PRIVATE(this)->privatechildren) PRIVATE(this)->privatechildren->traverse(action);
   }
   else if (out->getStage() == SoOutput::WRITE) {
-    if (this->writeHeader(out, THIS->privatechildren ? TRUE : FALSE, FALSE))
+    if (this->writeHeader(out, PRIVATE(this)->privatechildren ? TRUE : FALSE, FALSE))
       return;
     this->getFieldData()->write(out, this);
     if (out->isBinary())
-      if (THIS->privatechildren) out->write(THIS->privatechildren->getLength());
-    if (THIS->privatechildren) THIS->privatechildren->traverse(action);
+      if (PRIVATE(this)->privatechildren) out->write(PRIVATE(this)->privatechildren->getLength());
+    if (PRIVATE(this)->privatechildren) PRIVATE(this)->privatechildren->traverse(action);
     this->writeFooter(out);
   }
   else assert(0 && "unknown stage");
@@ -240,25 +240,100 @@ SoUnknownNode::search(SoSearchAction * action)
 {
   inherited::search(action);
   if (action->isFound()) return;
-  THIS->alternate->traverse(action);
+  PRIVATE(this)->alternate->traverse(action);
 }
 
 void
 SoUnknownNode::GLRender(SoGLRenderAction * action)
 {
-  THIS->alternate->traverse(action);
+  PRIVATE(this)->alternate->traverse(action);
 }
 
 void
 SoUnknownNode::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  THIS->alternate->traverse(action);
+  PRIVATE(this)->alternate->traverse(action);
 }
 
 void
 SoUnknownNode::pick(SoPickAction * action)
 {
-  THIS->alternate->traverse(action);
+  PRIVATE(this)->alternate->traverse(action);
 }
 
-#undef THIS
+SoNode * 
+SoUnknownNode::addToCopyDict(void) const
+{
+  // This function is copied from SoNode::addToCopyDict() and
+  // modified to handle the private children.
+
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoUnknownNode::addToCopyDict",
+                         "Name: %s", PRIVATE(this)->classname.getString());
+#endif // debug
+  
+  SoNode * cp = (SoNode *)SoFieldContainer::checkCopy(this);
+  if (!cp) {
+    cp = new SoUnknownNode;
+    SoFieldContainer::addCopy(this, cp);
+
+    if (PRIVATE(this)->privatechildren) {
+      for (int i = 0; i < PRIVATE(this)->privatechildren->getLength(); i++) {
+        (void) (*(PRIVATE(this)->privatechildren))[i]->addToCopyDict();
+      }
+    }
+  }
+  
+  return cp;
+}
+
+void 
+SoUnknownNode::copyContents(const SoFieldContainer * from,
+                            SbBool copyconnections)
+{
+  int i;
+  const SoUnknownNode * src = (const SoUnknownNode *) from;
+  this->setNodeClassName(PRIVATE(src)->classname);
+  
+  const SoFieldData * srcdata = src->getFieldData();
+  SoFieldData * dstdata = (SoFieldData*) this->getFieldData();
+  
+  for (i = 0; i < srcdata->getNumFields(); i++) {
+    const SoField * srcfield = srcdata->getField(src, i);
+    SoField * dstfield = (SoField*) srcfield->getTypeId().createInstance();
+    
+    // add new field to field data
+    dstfield->setContainer(this);
+    dstdata->addField(this, srcdata->getFieldName(i), dstfield);
+    // copy field contents
+    dstfield->copyFrom(*srcfield);
+    // copy flags
+    dstfield->setIgnored(srcfield->isIgnored());
+    dstfield->setDefault(srcfield->isDefault());
+    dstfield->enableNotify(srcfield->isNotifyEnabled());
+    // fix complex fields (node, engine, and path fields)
+    dstfield->fixCopy(copyconnections);
+    // handle connections
+    if (copyconnections && srcfield->isConnected()) {
+      dstfield->copyConnection(dstfield);
+    }
+  }
+  if (PRIVATE(src)->privatechildren == NULL) return;
+
+  if (PRIVATE(this)->privatechildren == NULL) {
+    PRIVATE(this)->privatechildren = new SoChildList(this);
+  }
+
+  // copy private children, which we added to the copy dict in
+  // addToCopyDict()
+  for (i = 0; i < PRIVATE(src)->privatechildren->getLength(); i++) {
+    SoNode * copy = (SoNode*) 
+      this->findCopy((*(PRIVATE(src)->privatechildren))[i],
+                     copyconnections);
+    assert(copy && "unexpected error");
+    PRIVATE(this)->privatechildren->append(copy);
+  }
+}
+
+#undef PRIVATE
+

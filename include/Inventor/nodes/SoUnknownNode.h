@@ -61,6 +61,9 @@ protected:
 
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
   virtual const char * getFileFormatName(void) const;
+  virtual SoNode * addToCopyDict(void) const;
+  virtual void copyContents(const SoFieldContainer * from,
+                            SbBool copyconnections);
 
 private:
   
