@@ -1697,6 +1697,7 @@ SoDragger::childFinishCB(void * data, SoDragger * child)
   SoDragger * thisp = (SoDragger *)data;
   THISP->finishCB.invokeCallbacks(thisp);
   thisp->setActiveChildDragger(NULL);
+  if (THISP->draggercache) THISP->draggercache->truncatePath();
 }
 
 /*!
