@@ -1063,7 +1063,7 @@ static int
 flww32_calcfontsize(float complexity)
 {
   /* Minimum 10, maximum 1210. Default 610 */
-  return = 10 + ((int) (1200 * complexity));
+  return 10 + ((int) (1200 * complexity));
 }
 
 #endif /* HAVE_WIN32_API */
