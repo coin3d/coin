@@ -35,7 +35,7 @@
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/elements/SoBBoxModelMatrixElement.h>
-
+#include <Inventor/misc/SoChildList.h>
 
 SO_NODE_SOURCE(SoTransformSeparator);
 
@@ -140,20 +140,12 @@ SoTransformSeparator::pick(SoPickAction *action)
 void
 SoTransformSeparator::getMatrix(SoGetMatrixAction *action)
 {
-  if (action->getCurPathCode() == SoAction::OFF_PATH) {
-    SbMatrix matrix, invmatrix;
-    matrix = action->getMatrix();
-    invmatrix = action->getInverse();
-    inherited::getMatrix(action);
-    // Note: don't use ..->getMatrix().setValue(...) here, as that
-    // won't work (for some weird reason) with certain compilers (like
-    // MSVC++ 6.0 and AIX xlc).
-    action->getMatrix() = matrix;
-    action->getInverse() = invmatrix;
-  }
-  else {
-    assert(action->getCurPathCode() == SoAction::IN_PATH);
-    inherited::getMatrix(action);
+  // will only need to traverse if IN_PATH. Other path codes will have
+  // no effect on the result.
+  int numindices;
+  const int * indices;
+  if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
+    this->children->traverseInPath(action, numindices, indices);
   }
 }
 
