@@ -108,7 +108,7 @@ SoActionMethodList::addMethod(const SoType nodeType,
 			       this, type.getName().getString(), methodname);
       }
 #endif // debug
-      (*this)[type.getData()] = method;
+      (*this)[(int)type.getData()] = method;
     }
   }
 }
@@ -137,7 +137,7 @@ SoActionMethodList::setUp(void)
 void
 SoActionMethodList::dump_list(void)
 {
-#if defined(COIN_DEBUG)
+#if 0 // debug
   for (int i=0; i < SoType::getNumTypes(); i++) {
     SoType t = SoType::fromKey(i);
     if (!t.isBad() && t.isDerivedFrom(SoNode::getClassTypeId())) {
@@ -160,5 +160,5 @@ SoActionMethodList::dump_list(void)
 			     this, t.getName().getString(), methodname);
     }
   }
-#endif // COIN_DEBUG
+#endif // debug
 }
