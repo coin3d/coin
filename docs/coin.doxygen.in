@@ -678,6 +678,79 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/sensors/SoSensorManager.h \
                          @path_tag@@coin_src_dir@/include/Inventor/sensors/SoTimerQueueSensor.h \
                          @path_tag@@coin_src_dir@/include/Inventor/sensors/SoTimerSensor.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRML.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLAnchor.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLAppearance.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLAudioClip.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLBackground.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLBillboard.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLBox.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLCollision.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLColor.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLColorInterpolator.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLCone.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLCoordinate.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLCoordinateInterpolator.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLCylinder.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLCylinderSensor.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLDirectionalLight.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLDragSensor.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLElevationGrid.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLExtrusion.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLFog.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLFontStyle.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLGeometry.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLGroup.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLImageTexture.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLIndexedFaceSet.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLIndexedLine.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLIndexedLineSet.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLIndexedShape.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLInline.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLInterpOutput.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLInterpOutputData.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLInterpolator.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLLOD.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLLight.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLMacros.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLMaterial.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLMovieTexture.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLNavigationInfo.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLNodes.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLNormal.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLNormalInterpolator.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLOrientationInterpolator.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLOutputData.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLParent.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLPixelTexture.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLPlaneSensor.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLPointLight.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLPointSet.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLPositionInterpolator.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLProximitySensor.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLScalarInterpolator.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLScript.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLSensor.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLShape.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLSound.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLSphere.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLSphereSensor.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLSpotLight.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLSubInterpolator.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLSwitch.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLText.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLTexture.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLTextureCoordinate.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLTextureTransform.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLTimeSensor.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLTouchSensor.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLTransform.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLVertexLine.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLVertexPoint.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLVertexShape.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLViewpoint.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLVisibilitySensor.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLWorldInfo.h \
                          @path_tag@@coin_src_dir@/src/actions/SoAction.cpp \
                          @path_tag@@coin_src_dir@/src/actions/SoBoxHighlightRenderAction.cpp \
                          @path_tag@@coin_src_dir@/src/actions/SoCallbackAction.cpp \
@@ -1038,7 +1111,80 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/sensors/SoSensor.cpp \
                          @path_tag@@coin_src_dir@/src/sensors/SoSensorManager.cpp \
                          @path_tag@@coin_src_dir@/src/sensors/SoTimerQueueSensor.cpp \
-                         @path_tag@@coin_src_dir@/src/sensors/SoTimerSensor.cpp
+                         @path_tag@@coin_src_dir@/src/sensors/SoTimerSensor.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/Anchor.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/Appearance.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/AudioClip.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/Background.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/Billboard.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/Box.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/Collision.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/Color.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/ColorInterpolator.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/Cone.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/Coordinate.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/CoordinateInterpolator.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/Cylinder.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/CylinderSensor.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/DirectionalLight.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/DragSensor.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/ElevationGrid.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/Extrusion.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/Fog.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/FontStyle.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/Geometry.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/Group.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/ImageTexture.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/IndexedFaceSet.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/IndexedLine.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/IndexedLineSet.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/IndexedShape.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/Init.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/Inline.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/Interpolator.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/LOD.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/Light.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/Makefile.am \
+                         @path_tag@@coin_src_dir@/src/vrml97/Makefile.am.bak \
+                         @path_tag@@coin_src_dir@/src/vrml97/Makefile.in \
+                         @path_tag@@coin_src_dir@/src/vrml97/Material.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/MovieTexture.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/NavigationInfo.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/Normal.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/NormalInterpolator.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/OrientationInterpolator.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/OutputData.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/Parent.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/PixelTexture.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/PlaneSensor.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/PointLight.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/PointSet.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/PositionInterpolator.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/ProximitySensor.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/ScalarInterpolator.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/Script.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/Sensor.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/Shape.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/Sound.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/Sphere.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/SphereSensor.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/SpotLight.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/SubInterpolator.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/Switch.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/Text.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/Texture.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/TextureCoordinate.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/TextureTransform.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/TimeSensor.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/TouchSensor.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/Transform.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/VertexLine.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/VertexPoint.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/VertexShape.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/Viewpoint.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/VisibilitySensor.cpp \
+                         @path_tag@@coin_src_dir@/src/vrml97/WorldInfo.cpp
+
 
 # If the value of the INPUT tag contains directories, you can use the 
 # FILE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp 
