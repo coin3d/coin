@@ -297,7 +297,7 @@ SoGLLazyElement::sendBackfaceCulling(const SbBool onoff) const
 {
   if (onoff) glEnable(GL_CULL_FACE);
   else glDisable(GL_CULL_FACE);
-  ((SoGLLazyElement*)this)->glstate.flatshading = onoff;
+  ((SoGLLazyElement*)this)->glstate.culling = onoff;
   ((SoGLLazyElement*)this)->cachebitmask |= CULLING_MASK;
 }
 
