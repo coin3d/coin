@@ -205,8 +205,6 @@ static cc_sched * imagetexture_scheduler = NULL;
 
 #endif // COIN_THREADSAFE
 
-#ifndef DOXYGEN_SKIP_THIS
-
 class SoVRMLImageTextureP {
 public:
   SoVRMLImageTextureP(SoVRMLImageTexture * master) : master(master) { }
@@ -253,8 +251,6 @@ public:
 #define LOCK_GLIMAGE(_thisp_)
 #define UNLOCK_GLIMAGE(_thisp_)
 #endif // COIN_THREADSAFE
-
-#endif // DOXYGEN_SKIP_THIS
 
 SO_NODE_SOURCE(SoVRMLImageTexture);
 
