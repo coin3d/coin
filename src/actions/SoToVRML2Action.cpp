@@ -654,8 +654,8 @@ SoToVRML2ActionP::insert_shape(SoCallbackAction * action, SoVRMLGeometry * geom)
     float diffuseGray = diffuse[0] * 77 + diffuse[1] * 150 + diffuse[2] * 29;
     if (ambientGray != 0 && diffuseGray != 0) {
       float ambientIntensity = ambientGray / diffuseGray;
-      if (mat->ambientIntensity.getValue() != ambientIntensity);
-      mat->ambientIntensity = ambientIntensity;
+      if (mat->ambientIntensity.getValue() != ambientIntensity)
+        mat->ambientIntensity = ambientIntensity;
     }
     
     if (mat->specularColor.getValue() != specular) mat->specularColor = specular;    
