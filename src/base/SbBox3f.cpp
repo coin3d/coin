@@ -234,13 +234,15 @@ void
 SbBox3f::setBounds(const float minx, const float miny, const float minz,
                    const float maxx, const float maxy, const float maxz)
 {
-#if COIN_DEBUG
   if (!(minx<=maxx && miny<=maxy && minz<= maxz)) {
+#if COIN_DEBUG
     SoDebugError::postWarning("SbBox3f::setBounds",
                               "The box is not valid.");
-    assert(0);
-  }
 #endif // COIN_DEBUG
+    assert(0);
+    this->makeEmpty();
+    return;
+  }
   this->min.setValue(minx, miny, minz);
   this->max.setValue(maxx, maxy, maxz);
 }
@@ -256,13 +258,15 @@ SbBox3f::setBounds(const float minx, const float miny, const float minz,
 void
 SbBox3f::setBounds(const SbVec3f & min, const SbVec3f & max)
 {
-#if COIN_DEBUG
   if (!(min[0]<=max[0] && min[1]<=max[1] && min[2]<=max[2])) {
+#if COIN_DEBUG
     SoDebugError::postWarning("SbBox3f::setBounds",
                               "The box is not valid.");
-    assert(0);
-  }
 #endif // COIN_DEBUG
+    assert(0);
+    this->makeEmpty();
+    return;
+  }
 
   this->min = min;
   this->max = max;
