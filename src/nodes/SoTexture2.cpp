@@ -166,11 +166,6 @@ SoTexture2::readInstance(SoInput * in, unsigned short flags)
 {
   SbBool readOK = inherited::readInstance(in, flags);
 
-  if (in->isBinary()) {
-    COIN_STUB();
-    return readOK;
-  }
-
   if (readOK && !filename.isDefault()) {
     if (!this->readImage()) {
       SoReadError::post(in, "Could not read texture file %s",

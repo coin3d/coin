@@ -139,7 +139,7 @@ SbBool
 SoImageInterface::resize(const SbVec2s newsize)
 {
   if (newsize != size) {
-#if 1 // debug
+#if 0 // debug
     SoDebugError::postInfo("SoImageInterface::resize",
                            "(%d): %d %d --> %d %d",
                            numComponents,

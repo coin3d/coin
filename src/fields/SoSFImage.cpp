@@ -57,6 +57,7 @@
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/SbName.h>
+#include <Inventor/errors/SoReadError.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -109,17 +110,23 @@ SoSFImage::initClass(void)
 SbBool
 SoSFImage::readValue(SoInput * in)
 {
-  assert(!in->isBinary() && "FIXME: binary read not implemented for SoSFImage yet");
-
-  if (! in->read(this->imgdim[0]) ||
-      ! in->read(this->imgdim[1]) ||
-      ! in->read(this->bytedepth))
+  if (!in->read(this->imgdim[0]) || !in->read(this->imgdim[1]) ||
+      !in->read(this->bytedepth)) {
+    SoReadError::post(in, "Premature end of file");
     return FALSE;
+  }
 
-  if (this->imgdim[0]<0 || this->imgdim[1]<0) return FALSE;
-  if ((this->bytedepth<1 || this->bytedepth>4) &&
-      (this->imgdim[0]>0 || this->imgdim[1]>0))
+  if (this->imgdim[0] <= 0 || this->imgdim[1] <= 0 ||
+      this->bytedepth < 1 || this->bytedepth > 4) {
+    SoReadError::post(in, "Invalid image specification %dx%dx%d",
+                      this->imgdim[0], this->imgdim[1], this->bytedepth);
     return FALSE;
+  }
+
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoSFImage::readValue", "image dimensions: %dx%dx%d",
+                         this->imgdim[0], this->imgdim[1], this->bytedepth);
+#endif // debug
 
   delete [] this->pixblock;
   this->pixblock =
@@ -128,12 +135,16 @@ SoSFImage::readValue(SoInput * in)
   int byte = 0;
   for (int i = 0; i < this->imgdim[0] * this->imgdim[1]; i++) {
     uint32_t l;
-    if (! in->read(l))
+    if (!in->read(l)) {
+      SoReadError::post(in, "Premature end of file");
       return FALSE;
-    for (int j = 0; j < this->bytedepth; j++)
+    }
+    for (int j = 0; j < this->bytedepth; j++) {
       this->pixblock[byte++] =
         (unsigned char) ((l >> (8 * (this->bytedepth-j-1))) & 0xFF);
+    }
   }
+
   return TRUE;
 }
 
@@ -173,9 +184,10 @@ void
 SoSFImage::setValue(const SbVec2s & size, const int nc,
                     const unsigned char * const bytes)
 {
-
-  unsigned char * newblock =
-    new unsigned char[size[0] * size[1] * nc];
+  int buffersize = size[0] * size[1] * nc;
+  // Must align buffer because the binary format has the data aligned.
+  buffersize = ((buffersize + 3) / 4) * 4;
+  unsigned char * newblock = new unsigned char[buffersize];
 
   delete[] this->pixblock;
   this->pixblock = newblock;
@@ -190,7 +202,7 @@ SoSFImage::setValue(const SbVec2s & size, const int nc,
 /*!
   FIXME: write function documentation
 */
-unsigned char*
+unsigned char *
 SoSFImage::startEditing(SbVec2s & size, int & nc)
 {
   size = this->imgdim;
@@ -210,14 +222,11 @@ SoSFImage::finishEditing(void)
 void
 SoSFImage::writeValue(SoOutput * out) const
 {
-  assert(!out->isBinary() && "FIXME: binary write not implemented for SoSFImage yet");
-
   out->write(this->imgdim[0]);
   if (!out->isBinary()) out->write(' ');
   out->write(this->imgdim[1]);
   if (!out->isBinary()) out->write(' ');
   out->write(this->bytedepth);
-  // FIXME: ok on mac/win32? 19980910 mortene.
   if (!out->isBinary()) out->write('\n');
 
   if (!out->isBinary()) out->indent();
@@ -229,12 +238,14 @@ SoSFImage::writeValue(SoOutput * out) const
       data |= (uint32_t)(this->pixblock[i * this->bytedepth + j]);
     }
     out->write(data);
-    if (((i+1)%8 == 0) && (i+1 != this->imgdim[0] * this->imgdim[1])) {
-      out->write('\n'); // FIXME: ok on win32/mac? 19980910 mortene.
-      out->indent();
-    }
-    else {
-      if (!out->isBinary()) out->write(' ');
+    if (!out->isBinary()) {
+      if (((i+1)%8 == 0) && (i+1 != this->imgdim[0] * this->imgdim[1])) {
+        out->write('\n');
+        out->indent();
+      }
+      else {
+        out->write(' ');
+      }
     }
   }
 }
