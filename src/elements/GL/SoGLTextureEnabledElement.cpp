@@ -32,12 +32,12 @@
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 
-
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
 #include <Inventor/system/gl.h>
+#include <assert.h>
 
 SO_ELEMENT_SOURCE(SoGLTextureEnabledElement);
 
@@ -56,7 +56,8 @@ SoGLTextureEnabledElement::~SoGLTextureEnabledElement(void)
 }
 
 /*!
-  Sets the state of this element.
+  Sets the state of this element. Used for enabling GL_TEXTURE_2D and 
+  disabling GL_TEXTURE_2D or GL_TEXTURE_RECTANGLE_EXT.
 */
 void
 SoGLTextureEnabledElement::set(SoState * const state,
@@ -67,13 +68,31 @@ SoGLTextureEnabledElement::set(SoState * const state,
   SoShapeStyleElement::setTextureEnabled(state, enabled);
 }
 
+/*!
+  Enables GL_TEXTURE_RECTANGLE_EXT/NV. GL_TEXTURE_2D will be
+  disabled if it's enabled earlier.
+
+  \since Coin 2.2
+*/
+void 
+SoGLTextureEnabledElement::enableRectangle(SoState * state, SoNode * node)
+{
+  SoInt32Element::set(classStackIndex, state, node, 2);
+  SoShapeStyleElement::setTextureEnabled(state, TRUE);
+}
+
+SoGLTextureEnabledElement::Mode 
+SoGLTextureEnabledElement::getMode(SoState * state)
+{
+  return (Mode) SoInt32Element::get(classStackIndex, state);
+}
 
 // doc from parent
 void
 SoGLTextureEnabledElement::init(SoState * state)
 {
   inherited::init(state);
-  this->updategl();
+  this->updategl(DISABLED, TEXTURE2D);
 }
 
 // Documented in superclass. Overridden to track GL state.
@@ -95,7 +114,7 @@ SoGLTextureEnabledElement::pop(SoState * state,
 {
   SoGLTextureEnabledElement * prev = (SoGLTextureEnabledElement*) prevTopElement;
   if (this->data != prev->data) {
-    this->updategl();
+    this->updategl((Mode) this->data, (Mode) prev->data);
   }
 }
 
@@ -132,18 +151,50 @@ void
 SoGLTextureEnabledElement::setElt(int32_t value)
 {
   if (this->data != value) {
+    this->updategl((Mode) value, (Mode)this->data);
     this->data = value;
-    this->updategl();
   }
 }
 
 
 //
-// updates GL state
+// updates GL state (obsoleted)
 //
 void
 SoGLTextureEnabledElement::updategl(void)
 {
+  assert(0 && "obsoleted");
   if (this->data) glEnable(GL_TEXTURE_2D);
   else glDisable(GL_TEXTURE_2D);
+}
+
+void 
+SoGLTextureEnabledElement::updategl(const Mode newvalue, const Mode oldvalue)
+{
+  switch (oldvalue) {
+  case DISABLED:
+    break;
+  case TEXTURE2D:
+    glDisable(GL_TEXTURE_2D);
+    break;
+  case RECTANGLE:
+    glDisable(GL_TEXTURE_RECTANGLE_EXT);
+    break;
+  default:
+    assert(0 && "should not happen");
+    break;
+  }
+  switch (newvalue) {
+  case DISABLED:
+    break;
+  case TEXTURE2D:
+    glEnable(GL_TEXTURE_2D);
+    break;
+  case RECTANGLE:
+    glEnable(GL_TEXTURE_RECTANGLE_EXT);
+    break;
+  default:
+    assert(0 && "should not happen");
+    break;
+  }
 }

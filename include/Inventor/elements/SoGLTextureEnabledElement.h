@@ -36,12 +36,18 @@ protected:
   virtual ~SoGLTextureEnabledElement();
 
 public:
+
+  enum Mode {
+    DISABLED,
+    TEXTURE2D,
+    RECTANGLE
+  };
   virtual void init(SoState * state);
 
   virtual void push(SoState * state);
   virtual void pop(SoState * state,
                    const SoElement * prevTopElement);
-
+  
   static void set(SoState * const state, SoNode * const node,
                   const SbBool enabled);
   static void set(SoState * const state, const SbBool enabled);
@@ -51,9 +57,12 @@ public:
 
   virtual void setElt(int32_t value);
 
+  static void enableRectangle(SoState * state, SoNode * node);
+  static Mode getMode(SoState * state);
+
 private:
   void updategl(void);
-
+  void updategl(const Mode newvalue, const Mode oldvalue);
 };
 
 #endif // !COIN_SOGLTEXTUREENABLEDELEMENT_H

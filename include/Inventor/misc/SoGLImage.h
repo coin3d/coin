@@ -113,6 +113,10 @@ public:
     FORCE_ALPHA_TEST_FALSE    = 0x0100,
 
     INVINCIBLE                = 0x0200, // never die of old age
+
+    // use GL_NV_texture_rectangle or GL_EXT_texture_rectangle
+    RECTANGLE                 = 0x0400,
+
     // use quality value to decide mipmap, filtering and scaling. This
     // is the default.
     USE_QUALITY_VALUE         = 0X8000

@@ -75,7 +75,7 @@ SoTextureEnabledElement::init(SoState * state)
 SbBool
 SoTextureEnabledElement::get(SoState * const state)
 {
-  return (SbBool) SoInt32Element::get(classStackIndex, state);
+  return (SbBool) SoInt32Element::get(classStackIndex, state) != 0;
 }
 
 /*!

@@ -148,6 +148,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/misc/SoGL.h>
+#include <Inventor/system/gl.h>
 #include <assert.h>
 #include <Inventor/C/glue/simage_wrapper.h>
 #include <stdio.h>
@@ -914,7 +915,8 @@ SoGLImage::setData(const SbImage *image,
       (!is3D && cc_glglue_has_texsubimage(glw));
 
     if (!usesubimage) copyok=FALSE;
-
+    if (PRIVATE(this)->flags & RECTANGLE) copyok = FALSE;
+    
     if (copyok) {
       dl->ref();
       PRIVATE(this)->unrefDLists(createinstate);
@@ -1511,9 +1513,12 @@ translate_wrap(SoState *state, const SoGLImage::Wrap wrap)
 void
 SoGLImageP::reallyBindPBuffer(SoState * state)
 {
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
+  GLenum target = this->flags & SoGLImage::RECTANGLE ?
+    GL_TEXTURE_RECTANGLE_EXT : GL_TEXTURE_2D;
+
+  glTexParameteri(target, GL_TEXTURE_WRAP_S,
                   translate_wrap(state, this->wraps));
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,
+  glTexParameteri(target, GL_TEXTURE_WRAP_T,
                   translate_wrap(state, this->wrapt));
 
   const cc_glglue * glue = sogl_glue_instance(state);
@@ -1523,9 +1528,9 @@ SoGLImageP::reallyBindPBuffer(SoState * state)
 #if 0 
   // disabled, we probably need to allocate space for the mipmaps in
   // the pbuffer pederb, 2003-11-27
-  if (this->shouldCreateMipmap() && cc_glglue_glext_supported(glue, "SGIS_generate_mipmap")) {
-    glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
-    glHint(GL_GENERATE_MIPMAP_HINT_SGIS, GL_NICEST);
+  if (this->shouldCreateMipmap() && cc_glglue_glext_supported(glue, "GL_SGIS_generate_mipmap")) {
+    glTexParameteri(target, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);
+    // glHint(GL_GENERATE_MIPMAP_HINT_SGIS, GL_NICEST);
     mipmap = TRUE;
   }
 #endif // disabled
@@ -1602,15 +1607,29 @@ SoGLImageP::reallyCreateTexture(SoState *state,
     }
   }
   else { // 2D textures
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
+    SbBool mipmapimage = mipmap;
+    SbBool mipmapfilter = mipmap; 
+
+    GLenum target = this->flags & SoGLImage::RECTANGLE ?
+      GL_TEXTURE_RECTANGLE_EXT : GL_TEXTURE_2D;
+
+    glTexParameteri(target, GL_TEXTURE_WRAP_S,
                     translate_wrap(state, this->wraps));
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,
+    glTexParameteri(target, GL_TEXTURE_WRAP_T,
                     translate_wrap(state, this->wrapt));
-
-    this->applyFilter(mipmap);
-
-    if (!mipmap) { // Create only level 0 texture.
-      glTexImage2D(GL_TEXTURE_2D, 0, numComponents, w, h,
+    
+    if (mipmap && (this->flags & SoGLImage::RECTANGLE)) {
+      mipmapimage = FALSE;
+      if (cc_glglue_glext_supported(glw, "GL_SGIS_generate_mipmap")) {
+        glTexParameteri(target, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);        
+      }
+      else mipmapfilter = FALSE;
+    }
+    this->applyFilter(mipmapfilter);
+    
+    if (!mipmapimage) {
+      // Create only level 0 texture. Mimpamps might be created by GL_SGIS_generate_mipmap
+      glTexImage2D(target, 0, numComponents, w, h,
                    border, glformat, GL_UNSIGNED_BYTE, texture);
     }
     else { // mipmaps
@@ -1732,8 +1751,10 @@ SoGLImageP::applyFilter(const SbBool ismipmap)
   const SbVec3s size = this->image ? this->image->getSize() : this->glsize;
 
   if (size[2] >= 1) target = GL_TEXTURE_3D;
-  else target = GL_TEXTURE_2D;
-
+  else {
+    target = this->flags & SoGLImage::RECTANGLE ?
+      GL_TEXTURE_RECTANGLE_EXT : GL_TEXTURE_2D;
+  }
   if (this->flags & SoGLImage::USE_QUALITY_VALUE) {
     if (this->quality < COIN_TEX2_LINEAR_LIMIT) {
       glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
