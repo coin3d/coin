@@ -34,9 +34,6 @@
 #endif /* HAVE_GLU */
 
 
-#define GLUW_MIN(x, y) ((x) < (y) ? (x) : (y))
-
-
 static GLUWrapper_t * GLU_instance = NULL;
 static void * GLU_libhandle = NULL;
 static int GLU_failed_to_load = 0;
@@ -57,17 +54,15 @@ GLUWrapper_cleanup(void)
 
 /* Set the GLU version variables in the global GLUWrapper_t. */
 static void
-GLUWrapper_set_version(void)
+GLUWrapper_set_version(const GLubyte * versionstr)
 {
   char buffer[256];
-  const GLubyte * versionstr;
   char * dotptr;
 
   GLU_instance->version.major = 0;
   GLU_instance->version.minor = 0;
   GLU_instance->version.release = 0;
 
-  versionstr = GLU_instance->gluGetString(GLU_W_VERSION);
 #if 0 /* debug */
 #if _WIN32
 #error fprintf() in an MSWindows DLL is bad.
@@ -79,22 +74,25 @@ GLUWrapper_set_version(void)
   buffer[255] = '\0'; /* strncpy() will not null-terminate if strlen > 255 */
   dotptr = strchr(buffer, '.');
   if (dotptr) {
+    char * spaceptr;
     char * start = buffer;
     *dotptr = '\0';
     GLU_instance->version.major = atoi(start);
     start = ++dotptr;
-    dotptr = GLUW_MIN(strchr(start, '.'), strchr(start, ' '));
+
+    dotptr = strchr(start, '.');
+    spaceptr = strchr(start, ' ');
+    if (!dotptr && spaceptr) dotptr = spaceptr;
+    if (dotptr && spaceptr && spaceptr < dotptr) dotptr = spaceptr;
     if (dotptr) {
       int terminate = *dotptr == ' ';
       *dotptr = '\0';
       GLU_instance->version.minor = atoi(start);
       if (!terminate) {
         start = ++dotptr;
-        dotptr = GLUW_MIN(strchr(start, '.'), strchr(start, ' '));
-        if (dotptr) {
-          *dotptr = '\0';
-          GLU_instance->version.release = atoi(start);
-        }
+        dotptr = strchr(start, ' ');
+        if (dotptr) *dotptr = '\0';
+        GLU_instance->version.release = atoi(start);
       }
     }
     else {
@@ -268,9 +266,39 @@ GLUWrapper(void)
     if (GLU_instance->gluGetString == NULL) /* Was missing in GLU v1.0. */
       GLU_instance->gluGetString = GLUWrapper_gluGetString;
 
+#if COIN_DEBUG && 0 // debug
+    /* Test code for the GLUWrapper_set_version() parsing. */
+    GLUWrapper_set_version("1.2");
+    (void)fprintf(stdout, "%d.%d.%d\n",
+                  GLU_instance->version.major,
+                  GLU_instance->version.minor,
+                  GLU_instance->version.release);
+    GLUWrapper_set_version("1.2 ");
+    (void)fprintf(stdout, "%d.%d.%d\n",
+                  GLU_instance->version.major,
+                  GLU_instance->version.minor,
+                  GLU_instance->version.release);
+    GLUWrapper_set_version("1.2.3");
+    (void)fprintf(stdout, "%d.%d.%d\n",
+                  GLU_instance->version.major,
+                  GLU_instance->version.minor,
+                  GLU_instance->version.release);
+    GLUWrapper_set_version("1.2.3 ");
+    (void)fprintf(stdout, "%d.%d.%d\n",
+                  GLU_instance->version.major,
+                  GLU_instance->version.minor,
+                  GLU_instance->version.release);
+    GLUWrapper_set_version("1.2.3 hepp");
+    (void)fprintf(stdout, "%d.%d.%d\n",
+                  GLU_instance->version.major,
+                  GLU_instance->version.minor,
+                  GLU_instance->version.release);
+    (void)fflush(stdout);
+#endif /* debug */
+
     /* Parse the version string once and expose the version numbers
        through the GLUWrapper API. */
-    GLUWrapper_set_version();
+    GLUWrapper_set_version(GLU_instance->gluGetString(GLU_W_VERSION));
   }
 
   return GLU_instance;
