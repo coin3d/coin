@@ -54,6 +54,9 @@ SoTextureCoordinateCache::generate(const SbBox3f &bbox,
                                    const SbVec3f *vertices,
                                    const int numvertices)
 {
+  // FIXME: Support 3D texture coordinates. This functionality
+  // is more or less a duplicate of that in SoTextureCoordinateBundle
+  // (kintel 20020203)
   float sizes[3];
   float minvalues[3];
   int   offsets[3];
