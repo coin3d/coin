@@ -486,7 +486,34 @@ SoVRMLInline::getBoundingBox(SoGetBoundingBoxAction * action)
     }
   }
   else {
-    SoVRMLInline::doAction((SoAction*)action);
+    int numindices;
+    const int * indices;
+    int lastchildindex;
+    
+    if (action->getPathCode(numindices, indices) == SoAction::IN_PATH)
+      lastchildindex = indices[numindices-1];
+    else
+      lastchildindex = this->getChildren()->getLength() - 1;
+  
+    assert(lastchildindex < this->getChildren()->getLength());
+    
+    // Initialize accumulation variables.
+    SbVec3f acccenter(0.0f, 0.0f, 0.0f);
+    int numcenters = 0;
+    
+    for (int i = 0; i <= lastchildindex; i++) {
+      this->getChildren()->traverse(action, i);
+      
+      // If center point is set, accumulate.
+      if (action->isCenterSet()) {
+        acccenter += action->getCenter();
+        numcenters++;
+        action->resetCenter();
+      }
+    }
+    
+    if (numcenters != 0)
+      action->setCenter(acccenter / float(numcenters), FALSE);
   }
 }
 
