@@ -33,7 +33,6 @@
 
   \code
       #include <Inventor/elements/SoGLClipPlaneElement.h>
-#include <Inventor/nodes/SoSubNodeP.h>
       // ...[snip]...
       int maxplanes = SoGLClipPlaneElement::getMaxGLPlanes();
   \endcode

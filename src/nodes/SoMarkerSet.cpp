@@ -17,16 +17,26 @@
  *
 \**************************************************************************/
 
-// TODO: Skei: Clean up everything.... it's quite messy at the moment... :-/
-// FIXME: change standard markers to use GL_UNPACK_ALIGNMENT 1, instead of 4, as it is now... skei 200009005
-
 /*!
   \class SoMarkerSet SoMarkerSet.h Inventor/nodes/SoMarkerSet.h
-  \brief The SoMarkerSet class ...
+  \brief The SoMarkerSet class displays a set of 2D bitmap markers in 3D.
   \ingroup nodes
 
-  FIXME: write class doc
+  This node uses the coordinates currently on the state (or in the
+  vertexProperty field) in order. The numPoints field specifies the
+  number of points in the set.
+
+  In addition to supplying the user with a set standard markers to
+  choose from, it is also possible to specify one's own bitmaps for
+  markers.
+
+  This node class is an extension versus the original SGI Inventor
+  v2.1 API.  In addition to being a Coin extension, it is also present
+  in TGS' Inventor implementation (with the same API).
 */
+
+// TODO: Skei: Clean up everything.... it's quite messy at the moment... :-/
+// FIXME: change standard markers to use GL_UNPACK_ALIGNMENT 1, instead of 4, as it is now... skei 200009005
 
 #include <Inventor/nodes/SoMarkerSet.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -65,372 +75,14 @@
 
 /*!
   \enum SoMarkerSet::MarkerType
-  Defines the different markers.
+  Defines the different standard markers.
 */
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::CROSS_5_5
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::PLUS_5_5
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::MINUS_5_5
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::SLASH_5_5
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::BACKSLASH_5_5
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::BAR_5_5
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::STAR_5_5
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::Y_5_5
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::LIGHTNING_5_5
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::WELL_5_5
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::CIRCLE_LINE_5_5
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::SQUARE_LINE_5_5
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::DIAMOND_LINE_5_5
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::TRIANGLE_LINE_5_5
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::RHOMBUS_LINE_5_5
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::HOURGLASS_LINE_5_5
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::SATELLITE_LINE_5_5
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::PINE_TREE_LINE_5_5
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::CAUTION_LINE_5_5
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::SHIP_LINE_5_5
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::CIRCLE_FILLED_5_5
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::SQUARE_FILLED_5_5
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::DIAMOND_FILLED_5_5
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::TRIANGLE_FILLED_5_5
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::RHOMBUS_FILLED_5_5
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::HOURGLASS_FILLED_5_5
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::SATELLITE_FILLED_5_5
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::PINE_TREE_FILLED_5_5
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::CAUTION_FILLED_5_5
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::SHIP_FILLED_5_5
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::CROSS_7_7
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::PLUS_7_7
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::MINUS_7_7
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::SLASH_7_7
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::BACKSLASH_7_7
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::BAR_7_7
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::STAR_7_7
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::Y_7_7
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::LIGHTNING_7_7
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::WELL_7_7
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::CIRCLE_LINE_7_7
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::SQUARE_LINE_7_7
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::DIAMOND_LINE_7_7
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::TRIANGLE_LINE_7_7
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::RHOMBUS_LINE_7_7
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::HOURGLASS_LINE_7_7
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::SATELLITE_LINE_7_7
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::PINE_TREE_LINE_7_7
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::CAUTION_LINE_7_7
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::SHIP_LINE_7_7
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::CIRCLE_FILLED_7_7
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::SQUARE_FILLED_7_7
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::DIAMOND_FILLED_7_7
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::TRIANGLE_FILLED_7_7
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::RHOMBUS_FILLED_7_7
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::HOURGLASS_FILLED_7_7
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::SATELLITE_FILLED_7_7
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::PINE_TREE_FILLED_7_7
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::CAUTION_FILLED_7_7
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::SHIP_FILLED_7_7
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::CROSS_9_9
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::PLUS_9_9
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::MINUS_9_9
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::SLASH_9_9
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::BACKSLASH_9_9
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::BAR_9_9
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::STAR_9_9
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::Y_9_9
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::LIGHTNING_9_9
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::WELL_9_9
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::CIRCLE_LINE_9_9
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::SQUARE_LINE_9_9
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::DIAMOND_LINE_9_9
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::TRIANGLE_LINE_9_9
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::RHOMBUS_LINE_9_9
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::HOURGLASS_LINE_9_9
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::SATELLITE_LINE_9_9
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::PINE_TREE_LINE_9_9
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::CAUTION_LINE_9_9
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::SHIP_LINE_9_9
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::CIRCLE_FILLED_9_9
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::SQUARE_FILLED_9_9
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::DIAMOND_FILLED_9_9
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::TRIANGLE_FILLED_9_9
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::RHOMBUS_FILLED_9_9
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::HOURGLASS_FILLED_9_9
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::SATELLITE_FILLED_9_9
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::PINE_TREE_FILLED_9_9
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::CAUTION_FILLED_9_9
-  Used to identify this marker
-*/
-/*!
-  \var SoMarkerSet::MarkerType SoMarkerSet::SHIP_FILLED_9_9
-  Used to identify this marker
-*/
+// FIXME: should have a png picture in the doc showing the various
+// marker graphics. 20010815 mortene.
 
 /*!
   \var SoMFInt32 SoMarkerSet::markerIndex
-  Can be used to select markers for each coordinate.
+  Contains the set of index markers to display.
 */
 
 // *************************************************************************
@@ -470,7 +122,8 @@ static void free_marker_images(void);
 
 // -----------------------------------------------------------------------
 
-static void free_marker_images(void)
+static void
+free_marker_images(void)
 {
   delete[] markerimages;
   if (markerlist->getLength() > SoMarkerSet::NUM_MARKERS) {
@@ -483,11 +136,7 @@ static void free_marker_images(void)
   delete markerlist;
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoMarkerSet class. This includes setting up the
-  type system, among other things.
-*/
+// doc in super
 void
 SoMarkerSet::initClass(void)
 {
@@ -1456,6 +1105,7 @@ convert_bitmaps(void)
   }
 }
 
+// doc in super
 void
 SoMarkerSet::GLRender(SoGLRenderAction * action)
 {
@@ -1645,7 +1295,11 @@ SoMarkerSet::addMarker(int markerIndex, const SbVec2s & size,
                        const unsigned char * bytes, SbBool isLSBFirst,
                        SbBool isUpToDown)
 {
-  // FIXME: implement the lsLSBFirst and isUpToDown. skei 20000905
+  // FIXME: implement support for isLSBFirst and isUpToDown. skei 20000905
+
+  // UPDATE: isn't the above FIXME completed now? From the code, it
+  // looks like it should be ok. 20010815 mortene.
+
   so_marker tempmarker;
   so_marker *temp;
 
@@ -1680,7 +1334,7 @@ SbBool
 SoMarkerSet::getMarker(int markerIndex, SbVec2s & size,
                        const unsigned char *& bytes, SbBool & isLSBFirst)
 {
-  // FIXME: handle lsLSBFirst. skei 20000905
+  // FIXME: handle isLSBFirst. skei 20000905
   if (markerIndex >= markerlist->getLength()) return FALSE;
   so_marker * temp = &(*markerlist)[markerIndex];
   size[0] = temp->width;
@@ -1704,11 +1358,13 @@ SoMarkerSet::removeMarker(int markerIndex)
 }
 
 /*!
-  Not supported in Coin. Should have been private in OIV.
+  Not supported in Coin. Should probably not have been part of the
+  public Open Inventor API.
 */
 SbBool
-SoMarkerSet::isMarkerBitSet(int /* markerIndex */, int /* bitNumber */)
+SoMarkerSet::isMarkerBitSet(int markerIndex, int bitNumber)
 {
+  // FIXME: seems simple enough to support.. 20010815 mortene.
   COIN_OBSOLETED();
   return FALSE;
 }

@@ -44,6 +44,11 @@
   scene graph at the proper place(s) to explicitly define how
   polygons, lines and/or points should be offset with regard to other
   primitives.
+
+
+  This node class is an extension versus the original SGI Inventor
+  v2.1 API.  In addition to being a Coin extension, it is also present
+  in TGS' Inventor implementation (with the same API).
 */
 
 #include <Inventor/nodes/SoPolygonOffset.h>

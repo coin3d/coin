@@ -26,6 +26,10 @@
   graph with the manipulator. Draggers are used to manipulate the
   node. When manipulation is finished, the node is put back into the
   graph, replacing the manipulator.
+
+  This manipulator is an extension versus the original SGI Inventor
+  v2.1 API.  In addition to being a Coin extension, it is also present
+  in TGS' Inventor implementation (with the same API).
 */
 
 
