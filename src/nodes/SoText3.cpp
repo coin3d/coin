@@ -57,6 +57,8 @@
 
 #include <coindefs.h> // COIN_OBSOLETED()
 
+#include <float.h> // FLT_MAX
+
 #if HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H

@@ -36,6 +36,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#include <float.h> // FLT_EPSILON
 
 //
 // fixme: add test to shrink normalArray.
