@@ -652,3 +652,14 @@ THE WISH LIST
   switch-type node instead of breaking compatibility in such a severe
   way (which would be bad for file format compatibility, among other
   reasons).
+
+
+* SoMouseButtonEvent::isDoubleClick()
+  2002-01-16  Lars J. Aas  <larsa@sim.no>
+  [probably upwards compatible]
+
+  Must be accompanied with some double-click preference/config setting
+  functions too.  Might even consider putting it on the SoButtonEvent
+  level.
+
+
