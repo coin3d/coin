@@ -23,18 +23,22 @@
 
 /*!
   \class SoPrimitiveVertex SoPrimitiveVertex.h Inventor/SoPrimitiveVertex.h
-  \brief The SoPrimitiveVertex class FIXME: doc
+  \brief The SoPrimitiveVertex class represents a single vertex of a generated primitive.
   \ingroup general
 
-  FIXME: document properly
+  Instances of SoPrimitiveVertex are constructed when generating
+  primitive data, primarily during an SoCallbackAction traversal.
+  Depending on the context the vertex could represent a single 3D
+  point, one of the two vertices in a line or one of the three
+  vertices in a triangle.
 */
 
 #include <Inventor/SoPrimitiveVertex.h>
 #include <stdlib.h>
 
 /*!
-  FIXME: write doc
- */
+  Default constructor, sets up a "void" instance.
+*/
 SoPrimitiveVertex::SoPrimitiveVertex(void)
   : point(0.0f, 0.0f, 0.0f),
     normal(0.0f, 0.0f, 1.0f),
@@ -45,10 +49,14 @@ SoPrimitiveVertex::SoPrimitiveVertex(void)
 }
 
 /*!
-  FIXME: write doc
- */
+  Copy operator.
+
+  When \a pv is copied into this instance, a \e shallow copy is
+  made. Ie, only the reference to the detail instance is copied (if
+  any), not the detail itself.
+*/
 SoPrimitiveVertex &
-SoPrimitiveVertex::operator =(const SoPrimitiveVertex & pv)
+SoPrimitiveVertex::operator=(const SoPrimitiveVertex & pv)
 {
   this->point = pv.point;
   this->normal = pv.normal;
@@ -59,23 +67,26 @@ SoPrimitiveVertex::operator =(const SoPrimitiveVertex & pv)
 }
 
 /*!
-  FIXME: write doc
- */
+  Copy constructor. Does a shallow copy.
+
+  \sa SoPrimitiveVertex::operator=()
+*/
 SoPrimitiveVertex::SoPrimitiveVertex(const SoPrimitiveVertex & pv)
 {
   *this = pv;
 }
 
 /*!
-  FIXME: write doc
- */
+  Destructor. The detail instance is owned by client code and will not
+  be destructed here.
+*/
 SoPrimitiveVertex::~SoPrimitiveVertex()
 {
 }
 
 /*!
-  FIXME: write doc
- */
+  Returns vertex coordinates, positioned in object space.
+*/
 const SbVec3f &
 SoPrimitiveVertex::getPoint(void) const
 {
@@ -83,8 +94,8 @@ SoPrimitiveVertex::getPoint(void) const
 }
 
 /*!
-  FIXME: write doc
- */
+  Returns normal vector, oriented in object space.
+*/
 const SbVec3f &
 SoPrimitiveVertex::getNormal(void) const
 {
@@ -92,8 +103,8 @@ SoPrimitiveVertex::getNormal(void) const
 }
 
 /*!
-  FIXME: write doc
- */
+  Returns texture coordinates for vertex, specified in object space.
+*/
 const SbVec4f &
 SoPrimitiveVertex::getTextureCoords(void) const
 {
@@ -101,8 +112,9 @@ SoPrimitiveVertex::getTextureCoords(void) const
 }
 
 /*!
-  FIXME: write doc
- */
+  Returns index of the vertex into the currently active material, if
+  any.
+*/
 int
 SoPrimitiveVertex::getMaterialIndex(void) const
 {
@@ -110,8 +122,10 @@ SoPrimitiveVertex::getMaterialIndex(void) const
 }
 
 /*!
-  FIXME: write doc
- */
+  Returns pointer to detail instance with more information about the
+  vertex. A detail instance may not be available, and if so \c NULL is
+  returned.
+*/
 const SoDetail *
 SoPrimitiveVertex::getDetail(void) const
 {
@@ -119,8 +133,9 @@ SoPrimitiveVertex::getDetail(void) const
 }
 
 /*!
-  FIXME: write doc
- */
+  Used internally from library client code setting up an
+  SoPrimitiveVertex instance.
+*/
 void
 SoPrimitiveVertex::setPoint(const SbVec3f & point)
 {
@@ -128,8 +143,9 @@ SoPrimitiveVertex::setPoint(const SbVec3f & point)
 }
 
 /*!
-  FIXME: write doc
- */
+  Used internally from library client code setting up an
+  SoPrimitiveVertex instance.
+*/
 void
 SoPrimitiveVertex::setNormal(const SbVec3f & normal)
 {
@@ -137,8 +153,9 @@ SoPrimitiveVertex::setNormal(const SbVec3f & normal)
 }
 
 /*!
-  FIXME: write doc
- */
+  Used internally from library client code setting up an
+  SoPrimitiveVertex instance.
+*/
 void
 SoPrimitiveVertex::setTextureCoords(const SbVec4f & texcoords)
 {
@@ -146,7 +163,11 @@ SoPrimitiveVertex::setTextureCoords(const SbVec4f & texcoords)
 }
 
 /*!
-  Covenience function. Will fill in 0 and 1 in the last two coords
+  Used internally from library client code setting up an
+  SoPrimitiveVertex instance.
+
+  Covenience function. Will fill in 0 and 1 in the last two texture
+  coords in the internal SbVec4f texture coordinate instance.
 */
 void
 SoPrimitiveVertex::setTextureCoords(const SbVec2f & texcoords)
@@ -167,8 +188,9 @@ SoPrimitiveVertex::setTextureCoords(const SbVec3f & texcoords)
 }
 
 /*!
-  FIXME: write doc
- */
+  Used internally from library client code setting up an
+  SoPrimitiveVertex instance.
+*/
 void
 SoPrimitiveVertex::setMaterialIndex(const int index)
 {
@@ -176,8 +198,13 @@ SoPrimitiveVertex::setMaterialIndex(const int index)
 }
 
 /*!
-  FIXME: write doc
- */
+  Used internally from library client code setting up an
+  SoPrimitiveVertex instance.
+
+  Note that it's the client's responsibility to do the deallocation of
+  the detail instance after the SoPrimitiveVertex instance has gone
+  out of scope.
+*/
 void
 SoPrimitiveVertex::setDetail(SoDetail * const detail)
 {
