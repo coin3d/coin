@@ -663,9 +663,7 @@ AM_CONDITIONAL(BUILD_WITH_MSVC, $BUILD_WITH_MSVC)
 if $sim_ac_build_library; then
   if $BUILD_WITH_MSVC; then
     if $COIN_STATIC; then
-      # forgot to include this case in SbBasic.h.in :(
-      CPPFLAGS="-DCOIN_NOT_DLL $CPPFLAGS"
-      # COIN_EXTRA_CPPFLAGS is set up further down
+      COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS -DCOIN_NOT_DLL"
     else
       CPPFLAGS="-DCOIN_MAKE_DLL $CPPFLAGS"
       COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS -DCOIN_DLL"
@@ -678,9 +676,6 @@ if $sim_ac_build_library; then
       SIM_AC_CONFIGURATION_SETTING([Coin build type], [static .lib])
       LIBFLAGS="-LIB"
       LIBFLAGS="$LIBFLAGS /OUT:coin$COIN_MAJOR_VERSION$SUFFIX.lib"
-      COIN_EXTRA_CPPFLAGS="-I$includedir -DCOIN_NOT_DLL"
-      COIN_EXTRA_LDFLAGS="-L$libdir"
-      COIN_EXTRA_LIBS=
     else
       LIBFLAGS="-DLL /INCREMENTAL:NO"
       case $enable_symbols in
