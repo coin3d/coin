@@ -52,12 +52,11 @@
 
   Normal vector of the plane defining the orientation of the sheet.
 */
+//   FIXME: planeDist is not used, probably not needed until sheet
+//   code is in place. 20000308 mortene.
 /*!
   \var SbSphereSheetProjector::planeDist
   \COININTERNAL
-
-  FIXME: not used, probably not needed until sheet code is in
-  place. 20000308 mortene.
 */
 /*!
   \var SbSphereSheetProjector::tolPlane
@@ -110,6 +109,59 @@ SbSphereSheetProjector::project(const SbVec2f & point)
   //
   // pederb, 19991210
   //
+
+  // UPDATE mortene 20020822: here's a complete, stand-alone example
+  // that can be used while taking care of the FIXME above. It
+  // projects a grid on top of the SbSphereSheetProjector and spits
+  // out an iv-file with an SoPointSet that shows off how the sheet
+  // will look:
+  //
+  //
+  // -----8<--- [snip] -----8<--- [snip] -----8<--- [snip] ---
+  // #include <stdio.h>
+  // #include <Inventor/SbLinear.h>
+  // #include <Inventor/projectors/SbSphereSheetProjector.h>
+  // #include <Inventor/SoDB.h>
+  //
+  // int
+  // main(void)
+  // {
+  //   SoDB::init();
+  //
+  //   const float START = 0.0f;
+  //   const float END = 1.0f;
+  //   const float STEPS = 50.0f;
+  //   const float STEPSIZE = ((END - START) / STEPS);
+  //
+  //   SbSphere s(SbVec3f(0, 0, 0), 0.8);
+  //   SbSphereSheetProjector ssp(s, /* orientToEye: */ TRUE);
+  //
+  //   SbViewVolume volume;
+  //   volume.ortho(-1, 1, -1, 1, -1, 1);
+  //   ssp.setViewVolume(volume);
+  //
+  //   (void)fprintf(stdout, "#Inventor V2.1 ascii\n\n"
+  //                 "Separator {\n"
+  //                 "  Coordinate3 {\n"
+  //                 "    point [\n");
+  //
+  //   for (float i=START; i <= END; i += STEPSIZE) {
+  //     for (float j=START; j <= END; j += STEPSIZE) {
+  //       SbVec3f v = ssp.project(SbVec2f(j, i));
+  //       (void)fprintf(stdout, "\t%f %f %f,\n", v[0], v[1], v[2]);
+  //     }
+  //   }
+  //
+  //   (void)fprintf(stdout, "      ]\n"
+  //                 "    }\n"
+  //                 "  DrawStyle { pointSize 2 }\n"
+  //                 "  PointSet { }\n"
+  //                 "}\n");
+  //
+  //   return 0;
+  // }
+  // -----8<--- [snip] -----8<--- [snip] -----8<--- [snip] ---
+
 
   SbLine projline = this->getWorkingLine(point);
   SbVec3f projpt;
