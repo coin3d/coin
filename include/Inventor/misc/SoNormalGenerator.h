@@ -47,6 +47,8 @@ public:
                 const int32_t * striplens = NULL,
                 const int numstrips = 0);
 
+  void generatePerStrip(const int32_t * striplens,
+                        const int numstrips);
   void generatePerFace(void);
   void generateOverall(void);
 

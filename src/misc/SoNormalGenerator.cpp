@@ -228,6 +228,30 @@ SoNormalGenerator::generate(const float creaseAngle,
 }
 
 /*!
+  Generates one normal per strip by averaging face normals.
+*/
+void 
+SoNormalGenerator::generatePerStrip(const int32_t * striplens,
+                                    const int numstrips)
+{
+  int cnt = 0;
+  for (int i = 0; i < numstrips; i++) {
+    int n = striplens[i] - 2;
+    SbVec3f acc(0.0f, 0.0f, 0.0f);
+    while (n > 0) {
+      acc += this->faceNormals[cnt++];
+      n--;
+    }
+    acc.normalize();
+    // use face normal array to store strip normals
+    this->faceNormals[i] = acc;
+  }
+  // strip normals can now be found in faceNormals array
+  this->faceNormals.truncate(numstrips, TRUE);
+  this->perVertex = FALSE; 
+}
+
+/*!
   Generates the normals per face. Use this when PER_FACE normal
   binding is needed. This method is not part of the OIV API.
 */
@@ -236,6 +260,7 @@ SoNormalGenerator::generatePerFace(void)
 {
   // face normals have already been generated. Just set flag.
   this->perVertex = FALSE;
+  this->faceNormals.fit();
 }
 
 /*!
