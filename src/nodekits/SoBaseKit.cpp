@@ -2328,6 +2328,15 @@ SoBaseKit::setPart(const int partnum, SoNode * node)
   SoChildList * childlist = parent->getChildren();
   assert(childlist != NULL);
 
+  // if parent is a node derived from SoGroup, use the SoGroup access
+  // functions to add/remove/insert children instead of SoChildList
+  // directly. This is needed for VRML group nodes to work properly
+  // inside node kits. pederb, 2004-06-23
+  SoGroup * parentgroup = NULL;
+  if (parent->isOfType(SoGroup::getClassTypeId())) {
+    parentgroup = (SoGroup*) parent;
+  }
+
   SoNode * oldnode = PRIVATE(this)->instancelist[partnum]->getValue();
   if (oldnode == node) return TRUE; // part is already inserted
 
@@ -2346,17 +2355,36 @@ SoBaseKit::setPart(const int partnum, SoNode * node)
   if (oldnode != NULL) { // part exists, replace
     int oldIdx = childlist->find(oldnode);
     assert(oldIdx >= 0);
-    if (node) childlist->set(oldIdx, node);
-    else childlist->remove(oldIdx);
+
+    if (parentgroup) {
+      if (node) parentgroup->replaceChild(oldIdx, node);
+      else parentgroup->removeChild(oldIdx);
+    }
+    else {
+      if (node) childlist->set(oldIdx, node);
+      else childlist->remove(oldIdx);
+    }
   }
   else if (node) { // find where to insert in parent childlist
     int rightSibling = this->getRightSiblingIndex(partnum);
     if (rightSibling >= 0) { // part has right sibling, insert before
       int idx = childlist->find(PRIVATE(this)->instancelist[rightSibling]->getValue());
       assert(idx >= 0);
-      childlist->insert(node, idx);
+      if (parentgroup) {
+        parentgroup->insertChild(node, idx);
+      }
+      else {
+        childlist->insert(node, idx);
+      }
     }
-    else childlist->append(node);
+    else {
+      if (parentgroup) {
+        parentgroup->addChild(node);
+      }
+      else {
+        childlist->append(node);
+      }
+    }
   }
 
   // set part field value
