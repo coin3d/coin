@@ -78,9 +78,6 @@ SO_NODE_SOURCE(SoIndexedTriangleStripSet);
 SoIndexedTriangleStripSet::SoIndexedTriangleStripSet(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoIndexedTriangleStripSet);
-
-  this->numtriangles = -1;
-  this->numstrips = -1;
 }
 
 /*!
@@ -324,42 +321,27 @@ SoIndexedTriangleStripSet::generateDefaultNormals(SoState * state,
 }
 
 // private
-int
-SoIndexedTriangleStripSet::getNumTriangles(void)
+void
+SoIndexedTriangleStripSet::countPrimitives(int & strips, int & tris)
 {
-  if (this->numtriangles == -1) {
-    const int32_t * ptr = coordIndex.getValues(0);
-    const int32_t * endptr = ptr + coordIndex.getNum();
-
-    if (endptr-ptr == 1 && ptr[0] == -1) {
-      this->numtriangles = 0;
-      this->numstrips = 0;
-      return 0;
-    }
-
-    int cnt = 0;
-    int stripcnt = 0;
-    int tmpcnt = 0;
-    while (ptr < endptr) {
-      if (*ptr++ >= 0) tmpcnt++;
-      else {
-        stripcnt++;
-        cnt += tmpcnt-2;
-        tmpcnt = 0;
-      }
-    }
-    this->numtriangles = cnt;
-    this->numstrips = stripcnt;
+  if (this->coordIndex.getNum() < 3) {
+    strips = 0;
+    tris = 0;
+    return;
   }
-  return this->numtriangles;
-}
 
-// private
-int
-SoIndexedTriangleStripSet::getNumStrips(void)
-{
-  (void)this->getNumTriangles();
-  return this->numstrips;
+  const int32_t * ptr = this->coordIndex.getValues(0);
+  const int32_t * endptr = ptr + this->coordIndex.getNum();
+
+  int tmpcnt = 0;
+  while (ptr < endptr) {
+    if (*ptr++ >= 0) tmpcnt++;
+    else {
+      strips++;
+      tris += tmpcnt - 2;
+      tmpcnt = 0;
+    }
+  }
 }
 
 // doc from superclass
@@ -368,14 +350,18 @@ SoIndexedTriangleStripSet::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   if (!this->shouldPrimitiveCount(action)) return;
 
+  // Note: default coordIndex setting is [ 0 ] so this check is
+  // absolutely necessary.
   int n = this->coordIndex.getNum();
-  if (n == 1 && this->coordIndex[0] == -1) return;
+  if (n < 3) return;
 
   if (action->canApproximateCount()) {
     action->addNumTriangles(n - 2); // assumes one strip
   }
   else {
-    action->addNumTriangles(this->getNumTriangles());
+    int tris, strips;
+    this->countPrimitives(strips, tris);
+    action->addNumTriangles(tris);
   }
 }
 

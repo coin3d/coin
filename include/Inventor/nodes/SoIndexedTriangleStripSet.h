@@ -55,14 +55,9 @@ protected:
   virtual void generatePrimitives(SoAction * action);
 
 private:
-  int getNumTriangles(void);
-  int getNumStrips(void);
-
+  void countPrimitives(int & strips, int & tris);
   Binding findMaterialBinding(SoState * const state) const;
   Binding findNormalBinding(SoState * const state) const;
-
-  int numtriangles;
-  int numstrips;
 };
 
 #endif // !COIN_SOINDEXEDTRIANGLESTRIPSET_H
