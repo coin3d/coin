@@ -4,14 +4,14 @@
 if BUILD_WITH_THREADS
 ThreadsDependentSources = \
 	base.c \
-	debug.c \
-	time.c
+	debug.c
 else
 ThreadsDependentSources =
 endif
 
 RegularSources = \
 	memalloc.c \
+	time.c \
 	SbBSPTree.cpp \
 	SbBox2s.cpp \
 	SbBox2f.cpp \
