@@ -48,7 +48,7 @@ public:
   void makePList(SbPList & keys, SbPList & values);
   SbBool remove(const unsigned long key);
 
-  void setHashingFunction(unsigned long (*func)(unsigned long key));
+  void setHashingFunction(unsigned long (*func)(const unsigned long key));
 
 private:
   cc_hash * hashtable;

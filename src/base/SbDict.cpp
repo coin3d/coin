@@ -208,7 +208,7 @@ SbDict::makePList(SbPList & keys, SbPList & values)
   This function is not part of the OIV API.
 */
 void
-SbDict::setHashingFunction(unsigned long (*func)(unsigned long key))
+SbDict::setHashingFunction(unsigned long (*func)(const unsigned long key))
 {
   cc_hash_set_hash_func(this->hashtable, func);
 }
