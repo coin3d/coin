@@ -26,6 +26,7 @@
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbString.h>
+#include <Inventor/C/errors/error.h>
 
 class SoType;
 class SoBase;
@@ -38,6 +39,9 @@ typedef void SoErrorCB(const class SoError * error, void * data);
 
 class COIN_DLL_API SoError {
 public:
+  SoError(void) { cc_error_init(&this->err); }
+  virtual ~SoError() { cc_error_clean(&this->err); }
+
   static void setHandlerCallback(SoErrorCB * const func, void * const data);
   static SoErrorCB * getHandlerCallback(void);
   static void * getHandlerData(void);
@@ -57,24 +61,28 @@ public:
   static void initClass(void);
   static void initClasses(void);
 
-  virtual ~SoError() { } // Kill g++ compiler warnings.
-
 protected:
   static void defaultHandlerCB(const SoError * error, void * userdata);
   virtual SoErrorCB * getHandler(void * & data) const;
+
   void setDebugString(const char * const str);
   void appendToDebugString(const char * const str);
 
   void handleError(void);
 
 private:
+  SoError(const cc_error * error);
   static void generateBaseString(SbString & str, const SoBase * const base,
                                  const char * const what);
+
+  static void callbackForwarder(const cc_error * err, void * data);
 
   static SoType classTypeId;
   static SoErrorCB * callback;
   static void * callbackData;
   SbString debugstring;
+
+  cc_error err;
 };
 
 #endif // !COIN_SOERROR_H

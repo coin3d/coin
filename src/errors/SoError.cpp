@@ -64,8 +64,23 @@
 
 
 SoType SoError::classTypeId;
-SoErrorCB * SoError::callback = SoError::defaultHandlerCB;
+SoErrorCB * SoError::callback = NULL; // make use of default cc_error handler
 void * SoError::callbackData = NULL;
+
+// "Converter" constructor.
+SoError::SoError(const cc_error * error)
+{
+  cc_error_copy(error, &this->err);
+}
+
+void
+SoError::callbackForwarder(const cc_error * error, void * data)
+{
+  SoError wrappederr(error);
+
+  assert(SoError::callback != NULL);
+  (*SoError::callback)(&wrappederr, SoError::callbackData);
+}
 
 
 /*!
@@ -147,6 +162,14 @@ SoError::isOfType(const SoType type) const
 void
 SoError::setHandlerCallback(SoErrorCB * const function, void * const data)
 {
+  if (SoError::callback == NULL) {
+    // The user is overriding the default handler, so set up a
+    // "converter" callback function that makes an SoError out of an
+    // cc_error and forwards control to the callback function given as
+    // an argument to setHandlerCallback().
+    cc_error_set_handler_callback(SoError::callbackForwarder, NULL);
+  }
+
   SoError::callback = function;
   SoError::callbackData = data;
 }
@@ -178,8 +201,11 @@ SoError::getHandlerData(void)
 const SbString &
 SoError::getDebugString(void) const
 {
+  // Cast away constness and fetch value from underlying cc_error instance.
+  ((SbString &)this->debugstring) = cc_string_get_text(cc_error_get_debug_string(&this->err));
   return this->debugstring;
 }
+
 
 /*!
   This method posts an error message.  The \a format string and the
@@ -190,13 +216,8 @@ SoError::post(const char * const format, ...)
 {
   va_list args;
   va_start(args, format);
-  SbString s;
-  s.vsprintf(format, args);
+  cc_error_post(format, &args);
   va_end(args);
-
-  SoError error;
-  error.setDebugString(s.getString());
-  error.handleError();
 }
 
 /*!
@@ -244,18 +265,7 @@ SoError::getString(const SoEngine * const engine)
 void
 SoError::defaultHandlerCB(const SoError * error, void * data)
 {
-  // It is not possible to "pass" C library data from the application
-  // to a MSWin .DLL, so this is necessary to get hold of the stderr
-  // FILE*. Just using fprintf(stderr, ...) or fprintf(stdout, ...)
-  // directly will result in a crash when Coin has been compiled as a
-  // .DLL.
-  static FILE * coin_stderr = NULL;
-  if (!coin_stderr) coin_stderr = fdopen(STDERR_FILENO, "w");
-
-  if (coin_stderr) {
-    (void)fprintf(coin_stderr, "%s\n", error->getDebugString().getString());
-    (void)fflush(coin_stderr);
-  }
+  cc_error_default_handler_cb(&error->err, data);
 }
 
 /*!
@@ -275,7 +285,7 @@ SoError::getHandler(void * & data) const
 void
 SoError::setDebugString(const char * const str)
 {
-  this->debugstring = str;
+  cc_error_set_debug_string(&this->err, str);
 }
 
 /*!
@@ -284,7 +294,7 @@ SoError::setDebugString(const char * const str)
 void
 SoError::appendToDebugString(const char * const str)
 {
-  this->debugstring += str;
+  cc_error_append_to_debug_string(&this->err, str);
 }
 
 /*!
@@ -295,10 +305,7 @@ SoError::appendToDebugString(const char * const str)
 void
 SoError::handleError(void)
 {
-  void * arg = NULL;
-  SoErrorCB * function = this->getHandler(arg);
-  assert(function);
-  (*function)(this, arg);
+  cc_error_handle(&this->err);
 }
 
 /*!
