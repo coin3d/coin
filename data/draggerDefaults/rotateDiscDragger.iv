@@ -10,6 +10,7 @@ DEF ROTATEDISC_CYLINDER Separator {
    DrawStyle { style LINES }
    Rotation { rotation 1 0 0  1.57 }
    Scale { scaleFactor 1.733 1 1.733 }
+   ShapeHints { vertexOrdering UNKNOWN_ORDERING }
    Cylinder { parts SIDES height 0.2 }
 }
 
