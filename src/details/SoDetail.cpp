@@ -22,7 +22,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoDetail SoDetail.h Inventor/classes/SoDetail.h
+  \class SoDetail SoDetail.h Inventor/details/SoDetail.h
   \brief The SoDetail class is the superclass for all classes storing
   detailed information about particular shapes.
   \ingroup details
