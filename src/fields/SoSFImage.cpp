@@ -19,16 +19,34 @@
 
 /*!
   \class SoSFImage SoSFImage.h Inventor/fields/SoSFImage.h
-  \brief The SoSFImage class ...
+  \brief The SoSFImage class is used to store pixel images.
   \ingroup fields
 
-  FIXME: write class doc
+  The SoSFImage class provides storage for inline 2D image
+  maps. Images in Coin are mainly used for texture mapping support.
+
+  SoSFImage instances can be exported and imported as any other field
+  class in Coin.
+
+  The components of an SoSFImage is: its image dimensions (width and
+  height), the number of bytes used for describing each pixel and an
+  associated pixel buffer. The size of the pixel buffer will be
+  width * height * bytesperpixel.
+
+  For texture maps, the bytes per pixel setting translates to: 1 byte
+  means a grayscale imagemap, 2 bytes is grayscale + translucency, 3
+  bytes is 8-bit red + 8-bit green + 8-bit blue (aka RGB) and 4 bytes
+  per pixel means 3 bytes for RGB + 1 byte translucency value.
+
+  FIXME: describe fileformat for this field, ASCII and
+  binary. 19991215 mortene.
+
 */
 
 /*¡
   Wouldn't it make it better for the code in SoSFImage if there existed
   an ``SbImage'' class? SbImage could probably also be used other places,
-  and could perhaps be a sole interface against the imagelib?
+  and could perhaps be the sole interface against the imagelib?
 
   Discuss with pederb.
 
