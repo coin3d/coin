@@ -141,9 +141,9 @@ SoSpotLightManip::setDragger(SoDragger * newdragger)
     }
     else {
       this->children->append(newdragger);
-      SoSpotLightManip::fieldSensorCB(this, NULL);
-      newdragger->addValueChangedCallback(SoSpotLightManip::valueChangedCB, this);
     }
+    SoSpotLightManip::fieldSensorCB(this, NULL);
+    newdragger->addValueChangedCallback(SoSpotLightManip::valueChangedCB, this);
   }
 }
 

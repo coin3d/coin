@@ -120,9 +120,9 @@ SoDirectionalLightManip::setDragger(SoDragger * newdragger)
     }
     else {
       this->children->append(newdragger);
-      SoDirectionalLightManip::fieldSensorCB(this, NULL);
-      newdragger->addValueChangedCallback(SoDirectionalLightManip::valueChangedCB, this);
     }
+    SoDirectionalLightManip::fieldSensorCB(this, NULL);
+    newdragger->addValueChangedCallback(SoDirectionalLightManip::valueChangedCB, this);
   }
 }
 

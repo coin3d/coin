@@ -146,9 +146,9 @@ SoTransformManip::setDragger(SoDragger * newdragger)
     }
     else {
       this->children->append(newdragger);
-      SoTransformManip::fieldSensorCB(this, NULL);
-      newdragger->addValueChangedCallback(SoTransformManip::valueChangedCB, this);
     }
+    SoTransformManip::fieldSensorCB(this, NULL);
+    newdragger->addValueChangedCallback(SoTransformManip::valueChangedCB, this);
   }
 }
 
@@ -369,11 +369,20 @@ SoTransformManip::getChildren(void) const
 void
 SoTransformManip::valueChangedCB(void * m, SoDragger * dragger)
 {
+  if (dragger == NULL) return;
+
   SoTransformManip * thisp = (SoTransformManip*)m;
 
   SbMatrix matrix = dragger->getMotionMatrix();
 
   SbVec3f t, s, c = thisp->center.getValue();
+
+  // get center from dragger if dragger has this field
+  SoField * field = dragger->getField("center");
+  if (field && field->isOfType(SoSFVec3f::getClassTypeId())) {
+    c = ((SoSFVec3f*)field)->getValue();
+  }
+  
   SbRotation r, so;
   matrix.getTransform(t, r, s, so, c);
 
@@ -390,9 +399,9 @@ SoTransformManip::valueChangedCB(void * m, SoDragger * dragger)
   if (thisp->scaleOrientation.getValue() != so) {
     thisp->scaleOrientation = so;
   }
-  //
-  // center will never be affected by motion matrix.
-  //
+  if (thisp->center.getValue() != c) {
+    thisp->center = c;
+  }
   thisp->attachSensors(TRUE);
 }
 
@@ -406,13 +415,24 @@ SoTransformManip::fieldSensorCB(void * m, SoSensor *)
   SoTransformManip *thisp = (SoTransformManip*)m;
   SoDragger *dragger = thisp->getDragger();
   if (dragger != NULL) {
+    SbBool wasenabled = dragger->enableValueChangedCallbacks(FALSE);
     SbMatrix matrix;
+    SbVec3f center = thisp->center.getValue();
+    // test for dragger center field, and set it if it exists
+    SoField * field = dragger->getField("center");
+    if (field && field->isOfType(SoSFVec3f::getClassTypeId())) {
+      ((SoSFVec3f*)field)->setValue(center);
+    }
     matrix.setTransform(thisp->translation.getValue(),
                         thisp->rotation.getValue(),
                         thisp->scaleFactor.getValue(),
                         thisp->scaleOrientation.getValue(),
-                        thisp->center.getValue());
+                        center);
     dragger->setMotionMatrix(matrix);
+    if (wasenabled) {
+      dragger->enableValueChangedCallbacks(TRUE);
+      dragger->valueChanged();
+    }
   }
 }
 
@@ -443,6 +463,9 @@ SoTransformManip::transferFieldValues(const SoTransform * from, SoTransform * to
   to->center = from->center;
 }
 
+/*!
+  Can be used by subclasses to attach/detach field sensors.
+*/
 void
 SoTransformManip::attachSensors(const SbBool onoff)
 {

@@ -43,7 +43,6 @@
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/SoNodeKitPath.h>
-#include <coindefs.h> // COIN_STUB
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -139,9 +138,9 @@ SoClipPlaneManip::setDragger(SoDragger * newdragger)
     }
     else {
       this->children->append(newdragger);
-      SoClipPlaneManip::fieldSensorCB(this, NULL);
-      newdragger->addValueChangedCallback(SoClipPlaneManip::valueChangedCB, this);
     }
+    SoClipPlaneManip::fieldSensorCB(this, NULL);
+    newdragger->addValueChangedCallback(SoClipPlaneManip::valueChangedCB, this);
   }
 }
 
