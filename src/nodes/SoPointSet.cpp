@@ -259,9 +259,7 @@ SoPointSet::generatePrimitives(SoAction *action)
   const SoCoordinateElement *coords;
   const SbVec3f * normals;
   SbBool doTextures;
-  SbBool needNormals =
-    (SoLightModelElement::get(state) !=
-     SoLightModelElement::BASE_COLOR);
+  SbBool needNormals = TRUE;
 
   SoVertexShape::getVertexData(action->getState(), coords, normals,
                                needNormals);
