@@ -32,7 +32,7 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
-#if HAVE_WINDOWS_H
+#ifdef HAVE_WINDOWS_H
 #include <windows.h> /* to pick up the APIENTRY define */
 #endif /* HAVE_WINDOWS_H */
 

@@ -137,6 +137,20 @@
   any of the other Coin classes.
 */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#include <stdlib.h>
+#include <assert.h>
+
+#ifdef HAVE_WINDOWS_H
+#include <windows.h>
+#endif // HAVE_WINDOWS_H
+#ifdef HAVE_UNISTD_H
+#include <unistd.h> // fd_set (?)
+#endif // HAVE_UNISTD_H
+
 #include <Inventor/SoDB.h>
 
 #include <Inventor/C/tidbits.h>
@@ -157,23 +171,10 @@
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/sensors/SoTimerSensor.h>
 #include <Inventor/annex/HardCopy/SoHardCopy.h>
-
-#include <coindefs.h> // COIN_STUB()
-#include <stdlib.h>
-
 #include <Inventor/errors/SoDebugError.h>
 
-#include <assert.h>
-#if HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
+#include <coindefs.h> // COIN_STUB()
 
-#if HAVE_WINDOWS_H
-#include <windows.h>
-#endif // HAVE_WINDOWS_H
-#if HAVE_UNISTD_H
-#include <unistd.h> // fd_set (?)
-#endif // HAVE_UNISTD_H
 
 #ifdef HAVE_VRML97
 #include <Inventor/VRMLnodes/SoVRML.h>

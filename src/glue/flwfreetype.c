@@ -75,10 +75,10 @@ struct cc_flw_bitmap * cc_flwft_get_bitmap(void * font, int glyph) { assert(FALS
 #include <stddef.h>
 
 #include <sys/stat.h>
-#if HAVE_UNISTD_H
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif /* HAVE_UNISTD_H */
-#if HAVE_SYS_TYPES_H
+#ifdef HAVE_SYS_TYPES_H
 /* According to Coin user Ralf Corsepius, at least SunOS4 needs to
    include sys/types.h before netinet/in.h. There have also been a
    problem report for FreeBSD which seems to indicate that the same

@@ -106,7 +106,7 @@
 #include <dl.h> /* Programming interface to libdld on HP-UX 10 & 11. */
 #endif /* HAVE_DLD_LIB */
 
-#if HAVE_WINDOWS_H
+#ifdef HAVE_WINDOWS_H
 #include <windows.h>
 #endif /* HAVE_WINDOWS_H */
 

@@ -88,7 +88,7 @@
 
 // FIXME: find fd_set definition properly through something configure
 // based.  19991214 mortene.  (Note: fd_set is in time.h under AIX?)
-#if HAVE_UNISTD_H
+#ifdef HAVE_UNISTD_H
 #include <unistd.h> // fd_set (?)
 #endif // HAVE_UNISTD_H
 

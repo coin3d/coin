@@ -32,7 +32,7 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
-#if HAVE_WINDOWS_H
+#ifdef HAVE_WINDOWS_H
 #include <windows.h>
 #endif /* HAVE_WINDOWS_H */
 

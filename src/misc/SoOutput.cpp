@@ -64,6 +64,13 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
+#include <assert.h>
+#include <string.h>
+
+#ifdef HAVE_WINDOWS_H
+#include <windows.h>
+#endif // HAVE_WINDOWS_H
+
 #include <Inventor/SoOutput.h>
 
 #include <Inventor/C/tidbits.h>
@@ -80,13 +87,6 @@
 #include <Inventor/C/tidbitsp.h>
 #include <Inventor/C/glue/zlib.h>
 #include <Inventor/C/glue/bzip2.h>
-
-#include <assert.h>
-#include <string.h>
-
-#if HAVE_WINDOWS_H
-#include <windows.h>
-#endif // HAVE_WINDOWS_H
 
 /*! \enum SoOutput::Stage
   Enumerates the possible stages of a write operation (writing needs to be
