@@ -53,6 +53,7 @@ hit by the problem:
    the .libs/so_locations file the linker is trying to make to an
    empty file (use ``touch'') on a local disk.
 
+
  3 If linking fails with something like
 
         171230:/usr/lib32/cmplrs/nm_elf: rld: Fatal Error: Cannot
@@ -65,6 +66,40 @@ hit by the problem:
 
         $ TOOLROOT=""
         $ export TOOLROOT
+
+
+ 4 If ``make install'' fails in the src/elements/ directory with either
+
+        [...]
+        mkdir -p -- /devlibs/FT_PD_irix-n32-R3/include/Inventor/elements
+        *** Termination code 138 (bu21)
+
+   (for SGI make) or
+
+        gmake[3]: *** [install-libelementsincHEADERS] Segmentation fault (core dumped)
+
+   (for GNU make), chances are you're running SGI IRIX 6.3, with
+   configure picking up the Korn Shell (/bin/ksh) for the build
+   process. ksh seems to have an internal limit which causes the
+   ``make'' tools to freak out when an envvar value has too many
+   characters. Since there are problems with other standard SGI IRIX
+   shells (see below), we advice you to install and use the GNU Bourne
+   Again Shell (bash).
+
+   Pre-compiled packages of bash are available from
+   <URL:http://freeware.sgi.com/>, or you can pick up the sourcecode
+   at <URL:ftp://ftp.gnu.org/gnu/bash>.
+
+   With bash in place, run configure with (assuming you installed bash
+   in /bin):
+
+        $ CONFIG_SHELL=/bin/bash <srcpath>/configure <your-options>
+
+
+ 5 An Autoconf bug seems to affect attempts to run configure with
+   either /bin/sh, /bin/csh or /bin/tcsh. The shell interpreter
+   complains with "missing }". The best solution seems to be to use
+   the GNU Bourne Again Shell. See above.
 
 
 The above is a complete list of the problems we are aware of on SGI
