@@ -407,16 +407,18 @@ AC_OUTPUT([
         examples/Makefile
         examples/advanced/Makefile
         examples/advanced/elements/Makefile
+        build/Makefile
         build/coin.dsp
         build/coin.mak
         build/coin_dll.dsp
         build/coin_dll.mak
         build/CoinSDK.iwz
+        build/SoCoinSDK.iwz.in
         ],
         [chmod a+x coin-config])
 
 if test x"$sim_ac_linking_style" = xmswin; then
-  for sim_ac_winfile in build/coin.dsp build/coin.mak build/coin_dll.dsp build/coin_dll.mak build/CoinSDK.iwz; do
+  for sim_ac_winfile in build/coin.dsp build/coin.mak build/coin_dll.dsp build/coin_dll.mak build/CoinSDK.iwz build/SoCoinSDK.iwz.in; do
     mv $sim_ac_winfile $sim_ac_winfile.bak
     echo "(Win)DOS-ifying $sim_ac_winfile"
     sed -e 's/$/

@@ -104,7 +104,7 @@ sim_ac_simage_conf_cmd = @sim_ac_simage_conf_cmd@
 @BUILD_TOOLS_TRUE@TOOLDIR = @BUILD_TOOLS_TRUE@tools
 @BUILD_TOOLS_FALSE@TOOLDIR = 
 
-SUBDIRS = include data src $(TOOLDIR) $(EXAMPLEDIR)
+SUBDIRS = include data build src $(TOOLDIR) $(EXAMPLEDIR)
 
 bin_SCRIPTS = coin-config
 BUILT_SOURCES = coin-config
@@ -132,7 +132,7 @@ install-sh ltconfig ltmain.sh missing mkinstalldirs
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 
 GZIP_ENV = --best
-DIST_SUBDIRS =  include data src tools examples
+DIST_SUBDIRS =  include data build src tools examples
 all: all-redirect
 .SUFFIXES:
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 

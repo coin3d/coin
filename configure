@@ -4927,8 +4927,9 @@ config_files="\\
     tools/ivcat/Makefile tools/ivhierarchy/Makefile
     tools/ivNodeKitStructure/Makefile tools/renderos/Makefile
     examples/Makefile examples/advanced/Makefile
-    examples/advanced/elements/Makefile build/coin.dsp build/coin.mak
-    build/coin_dll.dsp build/coin_dll.mak build/CoinSDK.iwz"
+    examples/advanced/elements/Makefile build/Makefile build/coin.dsp
+    build/coin.mak build/coin_dll.dsp build/coin_dll.mak build/CoinSDK.iwz
+    build/SoCoinSDK.iwz.in"
 config_headers="\\
     config.h include/Inventor/SbBasic.h"
 
@@ -5008,11 +5009,13 @@ do
   'examples/Makefile' ) CONFIG_FILES="\$CONFIG_FILES examples/Makefile" ;;
   'examples/advanced/Makefile' ) CONFIG_FILES="\$CONFIG_FILES examples/advanced/Makefile" ;;
   'examples/advanced/elements/Makefile' ) CONFIG_FILES="\$CONFIG_FILES examples/advanced/elements/Makefile" ;;
+  'build/Makefile' ) CONFIG_FILES="\$CONFIG_FILES build/Makefile" ;;
   'build/coin.dsp' ) CONFIG_FILES="\$CONFIG_FILES build/coin.dsp" ;;
   'build/coin.mak' ) CONFIG_FILES="\$CONFIG_FILES build/coin.mak" ;;
   'build/coin_dll.dsp' ) CONFIG_FILES="\$CONFIG_FILES build/coin_dll.dsp" ;;
   'build/coin_dll.mak' ) CONFIG_FILES="\$CONFIG_FILES build/coin_dll.mak" ;;
   'build/CoinSDK.iwz' ) CONFIG_FILES="\$CONFIG_FILES build/CoinSDK.iwz" ;;
+  'build/SoCoinSDK.iwz.in' ) CONFIG_FILES="\$CONFIG_FILES build/SoCoinSDK.iwz.in" ;;
   'config.h' ) CONFIG_HEADERS="\$CONFIG_HEADERS config.h" ;;
   'include/Inventor/SbBasic.h' ) CONFIG_HEADERS="\$CONFIG_HEADERS include/Inventor/SbBasic.h" ;;
   # This is an error.
@@ -5468,7 +5471,7 @@ test "$no_create" = yes || $SHELL $CONFIG_STATUS || exit 1
 
 
 if test x"$sim_ac_linking_style" = xmswin; then
-  for sim_ac_winfile in build/coin.dsp build/coin.mak build/coin_dll.dsp build/coin_dll.mak build/CoinSDK.iwz; do
+  for sim_ac_winfile in build/coin.dsp build/coin.mak build/coin_dll.dsp build/coin_dll.mak build/CoinSDK.iwz build/SoCoinSDK.iwz.in; do
     mv $sim_ac_winfile $sim_ac_winfile.bak
     echo "(Win)DOS-ifying $sim_ac_winfile"
     sed -e 's/$/
