@@ -870,7 +870,20 @@ versus the code "layout" (to make it more easily readable):
     work.  You will know who to ask if you don't understand the
     problem, and the date could indicate among other things the
     urgency of the problem.
- 
+
+    If you have postponed implementing something, which has to
+    be implemented before Coin is officially released again, put a
+    section like this in the code to assert that it won't be
+    forgotten:
+
+      #ifndef COIN_BETA_VERSION
+      #error implementation missing: something or other
+      #endif // !COIN_BETA_VERSION
+
+    Don't use this trick more than absolutely necessary.  The release
+    master will be pretty pissed off each time a planned release has
+    to be aborted.
+
  1) If blocks of code are commented out (obsoleted) to make place for
     new code, or because it has become superfluous, one should mark it
     like the example below if it is a large block of code, if the new
