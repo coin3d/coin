@@ -3,6 +3,10 @@
 Separator {
    Cube { }
 
+   Font {
+      name "Arial"
+   }
+
    Separator {
       BaseColor { rgb 1 1 1 }
       Translation { translation -1 -1 -1 }

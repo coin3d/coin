@@ -354,7 +354,7 @@ SbMatrix::inverse(void) const
 #if 1 // new optimized version
 
   // check for identity matrix
-  if (*this == SbMatrix::identity()) return SbMatrix::identity();
+  if (SbMatrixP::isIdentity(this->matrix)) { return SbMatrix::identity(); }
 
   SbMatrix result;
 

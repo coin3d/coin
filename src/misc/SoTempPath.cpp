@@ -26,7 +26,7 @@
   \brief The SoTempPath class is used to store temporary paths.
   \ingroup general
 
-  The path simple turns off auditing in the constructor, and leaves
+  The path simply turns off auditing in the constructor, and leaves
   the user with the responsibility of keeping the path valid.
 */
 

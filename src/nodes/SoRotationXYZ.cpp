@@ -167,7 +167,10 @@ SoRotationXYZ::getRotation(void) const
   return SbRotation(axis, this->angle.getValue());
 }
 
-// Doc from superclass.
+// Doc from superclass. Overrides the traversal method in this class for
+// the SoGetPrimitiveCountAction because the number of primitives can
+// be different depending on scene location (and thereby distance to
+// camera) if there are e.g. SoLOD nodes in the scene.
 void
 SoRotationXYZ::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {

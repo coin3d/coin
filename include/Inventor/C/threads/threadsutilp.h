@@ -65,7 +65,7 @@
 #define CC_GLOBAL_LOCK cc_mutex_global_lock()
 #define CC_GLOBAL_UNLOCK cc_mutex_global_unlock()
 
-#else /* HAVE_THREADS */
+#else /* ! COIN_THREADSAFE */
 
 #define CC_MUTEX_CONSTRUCT(_mymutex_)  do { } while (0)
 #define CC_MUTEX_DESTRUCT(_mymutex_)  do { } while (0)
@@ -76,6 +76,6 @@
 #define CC_GLOBAL_LOCK  do { } while (0)
 #define CC_GLOBAL_UNLOCK  do { } while (0)
 
-#endif /* ! HAVE_THREADS */
+#endif /* ! COIN_THREADSAFE */
 
 #endif /* CC_THREADUTILP_H */

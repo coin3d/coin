@@ -14,6 +14,13 @@ CODE AUDITING
 * Grep for "\since" in the sourcecode files, and replace all the
   YYYY-MM-DD date tags with a version number.
 
+* Grep for FIXMEs: at least do so for header files (to catch FIXMEs
+  concerning stuff in the public API), and preferably also for FIXMEs
+  in the implementation source code -- if you have some spare time to
+  look through them. Take care of as many FIXMEs as seems necessary
+  and possible within the time frame you have available for making the
+  release.
+
 * For new classes and methods, inspect the interface for correctness with
   regards to constness, access rights and similar things.
 
@@ -51,6 +58,11 @@ several times as new problems show up.
     Verify the enable-compact build:
 
     $ <srcdir>/Coin/configure --enable-compact && make
+
+    Verify build with CC set as a C++ compiler (for systems with a C++
+    compiler but without a C compiler (yes, they exist)):
+
+    $ <srcdir>/Coin/configure CC=<C++-compiler> && make
 
     - Linux Debian packaging check (from "make dist" tarball)
 

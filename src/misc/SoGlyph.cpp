@@ -22,8 +22,11 @@
 \**************************************************************************/
 
 /*!
-  \class SoGlyph include/Inventor/misc/SoGlyph.h
+  \class SoGlyph SoGlyph.h Inventor/misc/SoGlyph.h
   \brief The SoGlyph class is used to generate and reuse font glyph bitmaps and outlines.
+
+  <b>This class is now obsolete, and will be removed from a later
+  version of Coin.</b>
   
   SoGlyph is the public interface all text nodes (both built-in and
   extensions) should use to generate bitmaps and outlines for font

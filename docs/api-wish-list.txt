@@ -484,6 +484,7 @@ THE WISH LIST
   Should be simple enough, see quateuler.cpp in this directory for the
   code we need for the getAsEuler() method.
 
+  See also SmallChange's Rot2Heading engine.
 
 * SoTexture2::CLAMP_TO_EDGE
   2001-07-17 <pederb@sim.no>

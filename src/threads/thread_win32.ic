@@ -25,8 +25,8 @@
 
 #include <Inventor/C/glue/win32api.h>
 
-/* FIXME: could this be static? pederb, 2001-12-10 */
-DWORD WINAPI cc_w32thread_thread_proc(LPVOID lpParameter)
+static DWORD WINAPI
+cc_w32thread_thread_proc(LPVOID lpParameter)
 {
   cc_thread *thread = (cc_thread *)lpParameter;
   return (DWORD) thread->func(thread->closure);

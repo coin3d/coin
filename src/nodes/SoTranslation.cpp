@@ -120,7 +120,10 @@ SoTranslation::pick(SoPickAction * action)
   SoTranslation::doAction((SoAction *)action);
 }
 
-// Doc in superclass.
+// Doc in superclass. Overrides the traversal method in this class for
+// the SoGetPrimitiveCountAction because the number of primitives can
+// be different depending on scene location (and thereby distance to
+// camera) if there are e.g. SoLOD nodes in the scene.
 void
 SoTranslation::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {

@@ -257,6 +257,12 @@ SoGLLazyElement::sendGLImage(const uint32_t glimageid) const
             glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, blendcolor.getValue());
             break;
           case SoTextureImageElement::REPLACE:
+            // GL_REPLACE mode was introduced with OpenGL 1.1. It is
+            // considered the client code's responsibility to check
+            // that it can use this mode.
+            //
+            // FIXME: ..but we should do a sanity check anyway.
+            // 20030901 mortene.
             glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
             break;
           default:

@@ -27,7 +27,7 @@
   \page hardcopy_overview An overview of the hardcopy support.
 
   The main API for HardCopy support in Coin is the abstract class
-  SoVectorizAction. SoVectorizeAction will extract geometry from an
+  SoVectorizeAction. SoVectorizeAction will extract geometry from an
   Inventor scene graph, and project the geometry onto a specified
   page.  Since postscript and other vector based file formats do not
   support z-buffer or depth clipping, all geometry is rendered using a

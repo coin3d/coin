@@ -944,6 +944,22 @@ STUFF TO FIX IN COIN
     give huge gains in rendering performance.
 
 
+038 Duplicate API for TGS's SoBigImageRenderer extension.
+    2003-08-21  Morten Eriksen  <mortene@sim.no>
+
+    Our big-image offscreen rendering is done perfectly through the
+    standard SoOffscreenRenderer, so this would likely be a simple
+    matter of setting up the SoBigImageRenderer API and wrapping
+    SoOffscreenRenderer calls into its methods.
+
+
+039 Move tristripifying code into SoReorganizeAction.
+    2003-08-22  Morten Eriksen  <mortene@sim.no>
+
+    handegar has written a faceset->tristrips converter, this should
+    be made available through an SoReorganizeAction.
+
+
 
 OTHER COIN-RELATED STUFF TO FIX
 ===============================

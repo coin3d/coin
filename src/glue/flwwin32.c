@@ -39,6 +39,13 @@
   be the only callers).
 */
 
+/*
+  Resources:
+
+  - <URL:http://www.codeproject.com/gdi/> (contains many programming
+    examples for font queries, rendering and other handling)
+*/
+
 /* ************************************************************************* */
 
 #ifndef HAVE_WIN32_API
