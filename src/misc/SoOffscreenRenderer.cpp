@@ -1543,9 +1543,6 @@ SoOffscreenRendererP::setupSubscreens(SbVec2s totalsize)
 {
   this->maxres = SoOffscreenRendererP::getMaxTileSize();
 
-  assert((this->maxres[0] <= totalsize[0]) &&
-         (this->maxres[1] <= totalsize[1]));
-
   this->numsubscreens[0] = 0;
   this->numsubscreens[1] = 0;
 
