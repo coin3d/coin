@@ -511,7 +511,7 @@ find_font_file(const char * fontname, unsigned int pixelsize)
     FcResult result;
 
     /* parse the fontname string to create a fontconfig pattern instance */
-    if (!(font_pattern = cc_fcglue_FcNameParse(fontname))) {
+    if (!(font_pattern = cc_fcglue_FcNameParse((const unsigned char *) fontname))) {
       cc_debugerror_postinfo("find_font_file",
                              "fontname '%s' could not be parsed by fontconfig",
                              fontname);
@@ -566,7 +566,7 @@ find_font_file(const char * fontname, unsigned int pixelsize)
       cc_fcglue_FcPatternPrint(matched_pattern);
     }
     
-    foundfile = strdup(filename);
+    foundfile = strdup((const char *) filename);
   
     cc_fcglue_FcPatternDestroy(font_pattern);
     cc_fcglue_FcPatternDestroy(matched_pattern);

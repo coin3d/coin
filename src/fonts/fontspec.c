@@ -50,7 +50,7 @@ cc_fontspec_construct(cc_font_specification * spec,
 
     if ((tmpptr = strchr(tmpstr, ':'))) {
       char * tmpptrspace;
-      if ((tmpptrspace = strchr(tmpptr, ' '))) {
+      if ((tmpptrspace = (char *) strchr(tmpptr, ' '))) {
         *tmpptrspace = ':';
       }
     }
