@@ -187,7 +187,7 @@ SoSFImage::writeValue(SoOutput * out) const
       int padsize = ((buffersize + 3) / 4) * 4 - buffersize;
       if (padsize) {
         unsigned char pads[3] = {'\0','\0','\0'};
-        out->writeBinaryArray(this->pixblock, padsize);
+        out->writeBinaryArray(pads, padsize);
       }
     }
   }
