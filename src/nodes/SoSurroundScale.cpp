@@ -398,7 +398,15 @@ SoSurroundScale::updateMySurroundParams(SoAction * action,
   for (int i = start; i <= end; i++) {
     temppath.append(curpath->getNode(i));
   }
-  SoGetBoundingBoxAction bboxaction(SoViewportRegionElement::get(action->getState()));
+  SbViewportRegion vp(100, 100);
+  // need to test if SoViewportRegionElement is enabled since this
+  // element is not enabled for SoAudioRenderAction.
+
+  if (action->getState()->isElementEnabled(SoViewportRegionElement::getClassStackIndex())) {
+    vp = SoViewportRegionElement::get(action->getState());
+  }
+
+  SoGetBoundingBoxAction bboxaction(vp);
 
   // reset bbox when returning from surroundscale branch,
   // meaning we'll calculate the bbox of only the geometry
