@@ -457,7 +457,8 @@ SoInput::pushFile(const char * filename)
 {
   // FIXME: files on the stack should be automatically popped when we
   // reach their end-of-file marker, I think. That strategy is chock
-  // full of pitfalls, though. 19990623 mortene.
+  // full of pitfalls, though -- so be careful when
+  // implementing. 19990623 mortene.
 
   SbString fullname;
   FILE * fp = this->findFile(filename, fullname);

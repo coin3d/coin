@@ -519,6 +519,8 @@ SoFieldContainer::copyDone(void)
 SbBool
 SoFieldContainer::readInstance(SoInput * in, unsigned short flags)
 {
+  assert(!in->isBinary() && "FIXME: not implemented yet");
+
   // FIXME: proof-read code (it has just been moved verbatim over from
   // SoNode). 19990403 mortene.
 

@@ -122,12 +122,12 @@ SoFieldData::~SoFieldData()
   struct SoFieldEntry * tmpField;
   struct SoEnumEntry * tmpEnum;
 
-  for(int i=0; i<fields.getLength(); i++) {
+  for (int i=0; i<fields.getLength(); i++) {
     tmpField = (struct SoFieldEntry *)fields[i];
     delete tmpField;
   }
 
-  for(int j=0; j<enums.getLength(); j++) {
+  for (int j=0; j<enums.getLength(); j++) {
     tmpEnum = (SoEnumEntry *)enums[j];
     delete tmpEnum;
   }
@@ -145,7 +145,7 @@ SoFieldData::addField(SoFieldContainer * defObject, const char * fieldName,
   newField->ptr = (SoField *)field;
 
   // FIXME: unconst cast for SGI-compile, pederb 990616 
-  ((SoField*)field)->setContainer(defObject);
+  ((SoField *)field)->setContainer(defObject);
 
   this->fields.append(newField);
 }
@@ -209,26 +209,26 @@ SoFieldData::addEnumValue(const char * typeNameArg, const char * valNameArg,
   SbName typeName = stripWhite(typeNameArg);
   SbName valName = stripWhite(valNameArg);
   int i;
-  for(i=0; i<enums.getLength(); i++) {
+  for (i=0; i<enums.getLength(); i++) {
     e = (struct SoEnumEntry *) enums[i];
-    if(e->typeName == typeName)
+    if (e->typeName == typeName)
       break;
     else
       e = NULL;
   }
 
-  if(e == NULL) {
+  if (e == NULL) {
     e = new SoEnumEntry(typeName);
     enums.append(e);
   }
 
-  if(e->num == e->arraySize) {
+  if (e->num == e->arraySize) {
     e->arraySize += SoEnumEntry::growSize;
     int * ovals = e->vals;
     SbName * onames = e->names;
     e->vals = new int[e->arraySize];
     e->names = new SbName[e->arraySize];
-    for(i=0; i<e->num; i++) {
+    for (i=0; i<e->num; i++) {
       e->vals[i] = ovals[i];
       e->names[i] = onames[i];
     }
@@ -249,9 +249,9 @@ SoFieldData::getEnumData(const char * typeNameArg, int & num,
 {
   SbName typeName = stripWhite(typeNameArg);
   int i;
-  for(i=0; i<enums.getLength(); i++) {
+  for (i=0; i<enums.getLength(); i++) {
     struct SoEnumEntry * e = (struct SoEnumEntry *) enums[i];
-    if(e->typeName == typeName) {
+    if (e->typeName == typeName) {
       num = e->num;
       vals = e->vals;
       names = e->names;
@@ -270,20 +270,22 @@ SbBool
 SoFieldData::read(SoInput * in, SoFieldContainer * object,
 		  SbBool errorOnUnknownField, SbBool & notBuiltIn) const
 {
+  assert(!in->isBinary() && "FIXME: not implemented yet");
+
   // FIXME: use object and notBuiltIn somehow. 19990610 mortene.
 
   SbName fieldName;
 
-  if(fields.getLength() == 0) return TRUE; 
+  if (fields.getLength() == 0) return TRUE; 
 
   while (TRUE) {
-    if(!in->read(fieldName, TRUE) || !fieldName) return TRUE;
+    if (!in->read(fieldName, TRUE) || !fieldName) return TRUE;
 
     SbBool foundName;
-    if(!this->read(in, object, fieldName, foundName)) return FALSE;
+    if (!this->read(in, object, fieldName, foundName)) return FALSE;
 
-    if(!foundName) {
-      if(errorOnUnknownField) {
+    if (!foundName) {
+      if (errorOnUnknownField) {
 	SoReadError::post(in, "Unknown field \"%s\"", fieldName.getString());
 	return FALSE;
       }
@@ -302,17 +304,19 @@ SbBool
 SoFieldData::read(SoInput * in, SoFieldContainer * object,
 		  const SbName & fieldName, SbBool & foundName) const
 {
+  assert(!in->isBinary() && "FIXME: not implemented yet");
+
   // FIXME: use object somehow. 19990610 mortene.
 
   int i;
-  for(i = 0; i < fields.getLength(); i++) {
-    if(fieldName == getFieldName(i)) {
-      if(!getField(object, i)->read(in, fieldName)) return FALSE;
+  for (i = 0; i < fields.getLength(); i++) {
+    if (fieldName == getFieldName(i)) {
+      if (!getField(object, i)->read(in, fieldName)) return FALSE;
       break;
     }
   }
 
-  if(i == fields.getLength()) foundName = FALSE;
+  if (i == fields.getLength()) foundName = FALSE;
   else foundName = TRUE;
 
   return TRUE;
@@ -336,7 +340,7 @@ SoFieldData::copy(const SoFieldData * src)
   SoField * field, * srcf;
  
   int numf = src->getNumFields();
-  for(int i=0; i < numf; i++) {
+  for (int i=0; i < numf; i++) {
     // FIXME: need correct container. 19990610 mortene.
     srcf = src->getField(NULL, i);
 
@@ -391,21 +395,21 @@ SoFieldData::stripWhite(const char * name)
   int lastchar = -1;
   int lastwhite = -1;
   int i;
-  for(i=0; name[i]; i++) {
-    if(isspace(name[i]))
+  for (i=0; name[i]; i++) {
+    if (isspace(name[i]))
       lastwhite = i;
     else {
-      if(firstchar == -1) firstchar = i;
+      if (firstchar == -1) firstchar = i;
       lastchar = i;
     }
   }
 
-  if(lastchar > lastwhite)
+  if (lastchar > lastwhite)
     return SbName(&name[firstchar]);
 
   char buf[500];
   int b;
-  for(b=0, i=firstchar; i<=lastchar; i++, b++)
+  for (b=0, i=firstchar; i<=lastchar; i++, b++)
     buf[b] = name[i];
   buf[b] = 0;
   return SbName(buf);
@@ -414,14 +418,16 @@ SoFieldData::stripWhite(const char * name)
 SbBool
 SoFieldData::readFieldTypes(SoInput * in, SoFieldContainer * object)
 {
+  assert(!in->isBinary() && "FIXME: not implemented yet");
+
   SbBool gotChar;
   SbName fieldType, fieldName;
   char c;
 
-  if(! ((gotChar = in->read(c)) || c != OPEN_BRACE_CHAR))
+  if (! ((gotChar = in->read(c)) || c != OPEN_BRACE_CHAR))
     return FALSE;
 
-  if(in->read(c) && c == CLOSE_BRACE_CHAR)
+  if (in->read(c) && c == CLOSE_BRACE_CHAR)
     return TRUE;
 
   in->putBack(c);
@@ -437,10 +443,10 @@ SoFieldData::readFieldTypes(SoInput * in, SoFieldContainer * object)
 
   while (TRUE) {
 
-    if(!in->read(fieldType, TRUE) || ! in->read(fieldName, TRUE))
+    if (!in->read(fieldType, TRUE) || ! in->read(fieldName, TRUE))
       return FALSE;
 
-    if(! alreadyHasFields) {
+    if (! alreadyHasFields) {
       SoField * fld;
 
       // FIXME: use canCreateInstance() and isOfType() for extra
@@ -450,18 +456,18 @@ SoFieldData::readFieldTypes(SoInput * in, SoFieldContainer * object)
       this->addField(object, fieldName.getString(), fld);
     }
 
-    if(! in->read(c))
+    if (! in->read(c))
       return FALSE;
-    if(c == VALUE_SEPARATOR_CHAR) {
+    if (c == VALUE_SEPARATOR_CHAR) {
 
-      if(in->read(c)) {
-	if(c == CLOSE_BRACE_CHAR)
+      if (in->read(c)) {
+	if (c == CLOSE_BRACE_CHAR)
 	  return TRUE;
 	else
 	  in->putBack(c);
       }
     }
-    else if(c == CLOSE_BRACE_CHAR)
+    else if (c == CLOSE_BRACE_CHAR)
       return TRUE;
     else
       return FALSE;

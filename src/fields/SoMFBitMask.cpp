@@ -166,6 +166,8 @@ SoMFBitMask::read1Value(SoInput * in, int idx)
 void
 SoMFBitMask::write1Value(SoOutput * out, int idx) const
 {
+  assert(!out->isBinary() && "FIXME: not implemented");
+
   SbBool paran=FALSE;
   int out_vals_written = 0;
   

@@ -179,6 +179,8 @@ SoMField::get1(const int index, SbString & valueString)
 SbBool
 SoMField::readValue(SoInput * in)
 {
+  assert(!in->isBinary() && "FIXME: not implemented");
+
   char c;
   int curIndex = 0;
 
@@ -231,6 +233,8 @@ SoMField::readValue(SoInput * in)
 void
 SoMField::write(SoOutput * out, const SbName & name) const
 {
+  assert(!out->isBinary() && "FIXME: not implemented");
+
   if(this->getNum() == 0) return;
 
   // Must cast to avoid "'s.
@@ -251,6 +255,8 @@ SoMField::write(SoOutput * out, const SbName & name) const
 void
 SoMField::writeValue(SoOutput * out) const
 {
+  assert(!out->isBinary() && "FIXME: not implemented");
+
   SbBool indented = FALSE;
 
   const int num=this->getNum();

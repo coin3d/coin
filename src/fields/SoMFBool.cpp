@@ -292,6 +292,7 @@ SoMFBool::cleanClass(void)
 SbBool
 SoMFBool::read1Value(SoInput * in, int idx)
 {
+  assert(!in->isBinary() && "FIXME: not implemented");
   return in->read(values[idx]);
 }
 
@@ -301,7 +302,7 @@ SoMFBool::read1Value(SoInput * in, int idx)
 void
 SoMFBool::write1Value(SoOutput * out, int idx) const
 {
-  //FIXME: what about binary write? 19980913 mortene.
+  assert(!out->isBinary() && "FIXME: not implemented");
   out->write(this->values[idx] ? "TRUE" : "FALSE");
 }
 

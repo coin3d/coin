@@ -290,6 +290,8 @@ SoMFPlane::cleanClass(void)
 SbBool
 SoMFPlane::read1Value(SoInput * in, int idx)
 {
+  assert(!in->isBinary() && "FIXME: not implemented");
+
   float n[3];
   float d;
 
@@ -306,6 +308,8 @@ SoMFPlane::read1Value(SoInput * in, int idx)
 void
 SoMFPlane::write1Value(SoOutput * out, int idx) const
 {
+  assert(!out->isBinary() && "FIXME: not implemented");
+
   out->write(this->values[idx].getNormal()[0]);
   if(!out->isBinary()) out->write(' ');
   out->write(this->values[idx].getNormal()[1]);

@@ -27,9 +27,11 @@
 
 #include <Inventor/nodes/SoWWWInline.h>
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/SbName.h>
-#include <Inventor/SbColor.h>
+
 #include <Inventor/SbBox3f.h>
+#include <Inventor/SbColor.h>
+#include <Inventor/SbName.h>
+#include <Inventor/SoInput.h>
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -507,6 +509,7 @@ SbBool
 SoWWWInline::readInstance(SoInput * in, unsigned short flags)
 {
   assert(0 && "FIXME: not implemented");
+  assert(!in->isBinary() && "FIXME: not implemented yet");
   return FALSE;
 }
 

@@ -292,6 +292,8 @@ SoMFRotation::cleanClass(void)
 SbBool
 SoMFRotation::read1Value(SoInput * in, int idx)
 {
+  assert(!in->isBinary() && "FIXME: not implemented");
+
   float a[3];
   float r;
 
@@ -308,6 +310,8 @@ SoMFRotation::read1Value(SoInput * in, int idx)
 void
 SoMFRotation::write1Value(SoOutput * out, int idx) const
 {
+  assert(!out->isBinary() && "FIXME: not implemented");
+
   SbVec3f axis;
   float rotation;
 

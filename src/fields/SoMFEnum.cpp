@@ -319,6 +319,8 @@ SoMFEnum::read1Value(SoInput * in, int idx)
 void
 SoMFEnum::write1Value(SoOutput * out, int idx) const
 {
+  assert(!out->isBinary() && "FIXME: not implemented");
+
   if (this->isDefault()) {
     // FIXME: what happens here on binary write? 19980913 mortene.
     out->write("DEFAULT");

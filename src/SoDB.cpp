@@ -277,48 +277,67 @@ SoDB::read(SoInput * in, SoPath *& path)
 }
 
 /*!
-  TODO: doc
+  Instantiates and reads an object of type SoBase from \a in and returns
+  a pointer to it in \a base.
+
+  The reference count of the base object will initially be zero.
+
+  Return \a FALSE on error.
 */
 SbBool
 SoDB::read(SoInput * in, SoBase * & base)
 {
-  // FIXME: implement
-  assert(0);
-  return FALSE;
+  if (!in->isValidFile()) return FALSE;
+  return SoBase::read(in, base, SoBase::getClassTypeId());
 }
 
 /*!
-  TODO: doc
+  Instantiates and reads an object of type SoNode from \a in and returns
+  a pointer to it in \a base.
+
+  The reference count of the node will initially be zero.
+
+  Returns \a FALSE on error.
  */
 #if !defined(COIN_EXCLUDE_SONODE)
 SbBool
 SoDB::read(SoInput * in, SoNode *& rootNode)
 {
-  // FIXME: must add SoInput inputfile path to the directory
-  // searchlist so relative references works. 19980927 mortene.
-
-  if (!in->isValidFile()) return FALSE;
-
   SoBase * baseptr;
-  SbBool result = SoBase::read(in, baseptr, SoNode::getClassTypeId());
-  if (result) rootNode = (SoNode *)baseptr;
+  SbBool result = SoDB::read(in, baseptr);
+  if (result) {
+    if (baseptr->isOfType(SoNode::getClassTypeId())) {
+      rootNode = (SoNode *)baseptr;
+    }
+    else {
+      baseptr->ref();
+      baseptr->unref();
+      result = FALSE;
+    }
+  }
   return result;
 }
 #endif // !COIN_EXCLUDE_SONODE
 
 #if !defined(COIN_EXCLUDE_SOSEPARATOR)
 /*!
-  TODO: doc
+  Reads all graphs from \a in and returns them under an SoSeparator node. If
+  the file contains only a single graph under an SoSeparator node (which is
+  the most common way of constructing and exporting scene graphs), no extra
+  SoSeparator node will be made.
+
+  The reference count of the top separator will initially be zero.
+
+  Returns \a NULL on any error.
  */
 SoSeparator *
 SoDB::readAll(SoInput * in)
 {
-  // FIXME: must add SoInput inputfile path to the directory
-  // searchlist so relative references works. 19980927 mortene.
+  if (!in->isValidFile()) return NULL;
 
   // FIXME: read paths aswell. 19990403 mortene.
 
-  SoSeparator *root = NULL;
+  SoSeparator * root = NULL;
   SbBool result = FALSE;
 
   if (in->isValidFile()) {
@@ -327,10 +346,16 @@ SoDB::readAll(SoInput * in)
   }
   
   if (result && !in->eof()) {
-    char c;
-    in->read(c);
-    SoReadError::post(in, "Extra characters ('%c') found in input", c);
-    // FIXME: result = FALSE? 19990403 mortene.
+    if (in->isBinary()) {
+      SoReadError::post(in, "Extra characters found in input");
+    }
+    else {
+      char c;
+      in->read(c);
+      SoReadError::post(in, "Extra characters ('%c') found in input", c);
+    }
+
+    // FIXME: return NULL? 19990403 mortene.
   }
 
   if (!result) {
@@ -351,7 +376,10 @@ SoDB::readAll(SoInput * in)
       root = child;
     }
   }
+
+  // FIXME: this should really be done implicit in SoInput. 19990708 mortene.
   in->popFile();
+
   return root;
 }
 #endif // !COIN_EXCLUDE_SOSEPARATOR

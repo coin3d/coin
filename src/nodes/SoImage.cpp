@@ -27,7 +27,9 @@
 
 #include <Inventor/nodes/SoImage.h>
 #include <Inventor/nodes/SoSubNode.h>
+
 #include <Inventor/SbName.h>
+#include <Inventor/SoInput.h>
 
 /*!
   \enum SoImage::VertAlignment
@@ -251,6 +253,8 @@ SoImage::generatePrimitives(SoAction * action)
 SbBool
 SoImage::readInstance(SoInput * in, unsigned short flags)
 {
+  assert(!in->isBinary() && "FIXME: not implemented yet");
+
   assert(0 && "FIXME: not implemented");
   return FALSE;
 }

@@ -210,12 +210,14 @@ SoSFFloat::cleanClass(void)
 SbBool
 SoSFFloat::readValue(SoInput * in)
 {
+  assert(!in->isBinary() && "FIXME: not implemented");
   return in->read(value);
 }
 
 void
 SoSFFloat::writeValue(SoOutput * out) const
 {
+  assert(!out->isBinary() && "FIXME: not implemented");
   out->write(this->value);
 }
 

@@ -285,6 +285,8 @@ SoMFVec3f::cleanClass(void)
 SbBool
 SoMFVec3f::read1Value(SoInput * in, int index)
 {
+  assert(!in->isBinary() && "FIXME: not implemented");
+
   float val[3];
 
   SbBool result = in->read(val[0]) && in->read(val[1]) && in->read(val[2]);
@@ -298,6 +300,8 @@ SoMFVec3f::read1Value(SoInput * in, int index)
 void
 SoMFVec3f::write1Value(SoOutput * out, int idx) const
 {
+  assert(!out->isBinary() && "FIXME: not implemented");
+
   out->write(this->values[idx][0]);
   if(!out->isBinary()) out->write(' ');
   out->write(this->values[idx][1]);

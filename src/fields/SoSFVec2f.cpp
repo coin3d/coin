@@ -182,21 +182,18 @@ SoSFVec2f::cleanClass(void)
 {
 }
 
-/*!
-  FIXME: write function documentation
-*/
 SbBool
 SoSFVec2f::readValue(SoInput * in)
 {
+  assert(!in->isBinary() && "FIXME: not implemented");
   return (in->read(value[0]) && in->read(value[1]));
 }
 
-/*!
-  FIXME: write function documentation
-*/
 void
 SoSFVec2f::writeValue(SoOutput * out) const
 {
+  assert(!out->isBinary() && "FIXME: not implemented");
+
   out->write(this->value[0]);
   if(!out->isBinary()) out->write(' ');
   out->write(this->value[1]);

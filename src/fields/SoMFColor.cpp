@@ -287,6 +287,8 @@ SoMFColor::cleanClass(void)
 SbBool
 SoMFColor::read1Value(SoInput * in, int index)
 {
+  assert(!in->isBinary() && "FIXME: not implemented");
+
   float rgb[3];
   
   SbBool result = in->read(rgb[0]) && in->read(rgb[1]) && in->read(rgb[2]);
@@ -300,6 +302,8 @@ SoMFColor::read1Value(SoInput * in, int index)
 void
 SoMFColor::write1Value(SoOutput * out, int idx) const
 {
+  assert(!out->isBinary() && "FIXME: not implemented");
+
   out->write(this->values[idx][0]);
   if(!out->isBinary()) out->write(' ');
   out->write(this->values[idx][1]);

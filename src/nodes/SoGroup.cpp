@@ -148,13 +148,19 @@ SoGroup::getNumChildren() const
 SbBool
 SoGroup::readInstance(SoInput * in, unsigned short flags)
 {
+  assert(!in->isBinary() && "FIXME: not implemented yet");
+
   SbName typeString;
   // FIXME: cast-hack to compile. 19980915 mortene.
   SoFieldData * fdata = (SoFieldData *)this->getFieldData();
 
-  if(in->read(typeString, TRUE)) {
-    if(typeString == "fields") {
-      if(!fdata->readFieldTypes(in, this)) {
+  // FIXME: tmp disabled reading of not built in node types, as I need
+  // to find out how to do this properly for both ascii and binary
+  // formats (.iv and .wrl). 19990708 mortene.
+#if 0
+  if (in->read(typeString, TRUE)) {
+    if (typeString == "fields") {
+      if (!fdata->readFieldTypes(in, this)) {
 	SoReadError::post(in, "Bad field specifications for node");
 	return FALSE;
       }
@@ -163,9 +169,10 @@ SoGroup::readInstance(SoInput * in, unsigned short flags)
       in->putBack(typeString.getString());
     }
   }
+#endif
 
   SbBool notbuiltin;
-  return (fdata->read(in, this, FALSE, notbuiltin) && readChildren(in));
+  return (fdata->read(in, this, FALSE, notbuiltin) && this->readChildren(in));
 }
 
 /*!
@@ -174,25 +181,26 @@ SoGroup::readInstance(SoInput * in, unsigned short flags)
 SbBool
 SoGroup::readChildren(SoInput * in)
 {
+  assert(!in->isBinary() && "FIXME: not implemented yet");
+
   SoBase * child;
   SbBool ret = TRUE;
  
-  while(TRUE) {
+  while (TRUE) {
     child = NULL;
-    if (this->read(in, child, SoNode::getClassTypeId())) {
-      if (child == (SoBase *)-1); // ROUTE
-      else if (child != NULL) this->addChild((SoNode *)child);
+    if (SoBase::read(in, child, SoNode::getClassTypeId())) {
+      if (child != NULL) this->addChild((SoNode *)child);
       else break;
 
 #if 0 // FIXME: progress aware code tmp disabled. 19980923 mortene
-      if(!SoDB::progress(in)) {
+      if (!SoDB::progress(in)) {
 	ret = FALSE;
 	break;
       }
 #endif // disabled
     }
     else {
-      if(child && (child != (SoBase *)-1)) {
+      if (child && (child != (SoBase *)-1)) {
 	child->ref();
 	child->unref();
       }
@@ -212,7 +220,7 @@ SoGroup::copy(void)
 {
   SoGroup * newnode = (SoGroup *)SoNode::copy();
 
-  for(int i=0;i<getNumChildren();i++) {
+  for (int i=0;i<getNumChildren();i++) {
     SoNode * newchild = getChild(i)->copy();
     newnode->addChild(newchild);
   }
@@ -303,7 +311,7 @@ SoGroup::doAction(SoAction * action)
 {
   int numIndices;
   const int * indices;
-  switch(action->getPathCode(numIndices, indices)) {
+  switch (action->getPathCode(numIndices, indices)) {
   case SoAction::IN_PATH: 
     // FIXME: not necessary to traverse children which do not
     // affect state and is not in indices[] ?
@@ -481,9 +489,9 @@ SoGroup::getChildren() const
 void 
 SoGroup::removeChild(SoNode * const child)
 {
-  int idx = findChild(child);
+  int idx = this->findChild(child);
   if (idx >= 0) {
-    removeChild(idx);
+    this->removeChild(idx);
   }
   else {
     // FIXME: write some debug info
@@ -494,12 +502,12 @@ SoGroup::removeChild(SoNode * const child)
   FIXME: write function documentation
 */
 void 
-SoGroup::removeAllChildren()
+SoGroup::removeAllChildren(void)
 {
-  int n = getNumChildren();
+  int n = this->getNumChildren();
   while (n) {
     n--;
-    removeChild(n);
+    this->removeChild(n);
   }
 }
 
@@ -509,8 +517,8 @@ SoGroup::removeAllChildren()
 void 
 SoGroup::replaceChild(const int index, SoNode * const newChild)
 {
-  removeChild(index);
-  insertChild(newChild, index);
+  this->removeChild(index);
+  this->insertChild(newChild, index);
 }
 
 /*!
@@ -519,7 +527,7 @@ SoGroup::replaceChild(const int index, SoNode * const newChild)
 void 
 SoGroup::replaceChild(SoNode * const oldChild, SoNode * const newChild)
 {
-  replaceChild(findChild(oldChild), newChild);
+  this->replaceChild(findChild(oldChild), newChild);
 }
 
 

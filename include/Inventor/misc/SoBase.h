@@ -76,7 +76,8 @@ public:
 
 
 protected:
-  enum BaseFlags { IS_ENGINE, IS_GROUP };
+  // Bitflags.
+  enum BaseFlags { IS_ENGINE = 0x01, IS_GROUP = 0x02 };
 
   SoBase(void);
   virtual ~SoBase();

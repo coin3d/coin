@@ -27,7 +27,9 @@
 
 #include <Inventor/nodes/SoTexture2.h>
 #include <Inventor/nodes/SoSubNode.h>
+
 #include <Inventor/SbName.h>
+#include <Inventor/SoInput.h>
 #include <Inventor/errors/SoDebugError.h>
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
@@ -218,6 +220,8 @@ SoTexture2::cleanClass(void)
 SbBool
 SoTexture2::readInstance(SoInput * in, unsigned short flags)
 {
+  assert(!in->isBinary() && "FIXME: not implemented yet");
+
   SbBool readOK = inherited::readInstance(in, flags);
 
   if (readOK && ! filename.isDefault()) {
@@ -232,7 +236,7 @@ SoTexture2::readInstance(SoInput * in, unsigned short flags)
   FIXME: write function documentation
 */
 SbBool
-SoTexture2::readImage()
+SoTexture2::readImage(void)
 {
   //  assert(0 && "FIXME: not implemented yet");
 
@@ -320,7 +324,7 @@ SoTexture2::callback(SoCallbackAction * action)
  */
 SbBool
 SoTexture2::readImage(const SbString & fname, int & w, int & h, int & nc,
-	      unsigned char *& bytes)
+		      unsigned char *& bytes)
 {
   //  assert(0 && "FIXME: not implemented");
   return TRUE;

@@ -167,12 +167,11 @@ SoSFBitMask::findEnumValue(const SbName & name, int & val)
   return FALSE;
 }
 
-/*!
-  FIXME: write function documentation
-*/
 SbBool
 SoSFBitMask::readValue(SoInput * in)
 {
+  assert(!in->isBinary() && "FIXME: not implemented");
+
   char c;
   SbName n;
   int v;
@@ -243,6 +242,8 @@ SoSFBitMask::readValue(SoInput * in)
 void
 SoSFBitMask::writeValue(SoOutput * out) const
 {
+  assert(!out->isBinary() && "FIXME: not implemented");
+
   SbBool paran=FALSE;
   int out_vals_written = 0;
   

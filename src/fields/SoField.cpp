@@ -75,7 +75,7 @@ static const char EOLSTR[] = "\n";
   space for SoField classes in the default case (which is important,
   as fields are ubiquitous in Coin). The default case means no
   connections and only a field container given. If any connections are
-  made (either \e to or \e from), we allocate an SoConnectStorage and
+  made (either "to" or "from"), we allocate an SoConnectStorage and
   move the field container pointer into it, while swapping in the
   SoConnectStorage pointer where the field container pointer used to be.
 */
@@ -1131,7 +1131,7 @@ SoField::copyConnection(const SoField * fromfield)
 }
 
 /*!
-  Reads and set the value of this field from the given SoInput instance.
+  Reads and sets the value of this field from the given SoInput instance.
   Returns \a FALSE if the field value can not be parsed from the input.
 
   \sa set(), write()
@@ -1139,6 +1139,8 @@ SoField::copyConnection(const SoField * fromfield)
 SbBool
 SoField::read(SoInput * in, const SbName & name)
 {
+  assert(!in->isBinary() && "FIXME: not implemented yet");
+
   this->setDefault(FALSE);
   this->setDirty(FALSE);
 

@@ -204,21 +204,17 @@ SoSFShort::cleanClass(void)
 {
 }
 
-/*!
-  FIXME: write function documentation
-*/
 SbBool
 SoSFShort::readValue(SoInput * in)
 {
+  assert(!in->isBinary() && "FIXME: not implemented");
   return in->read(value);
 }
 
-/*!
-  FIXME: write function documentation
-*/
 void
 SoSFShort::writeValue(SoOutput * out) const
 {
+  assert(!out->isBinary() && "FIXME: not implemented");
   out->write(this->value);
 }
 

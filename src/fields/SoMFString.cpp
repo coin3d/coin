@@ -323,6 +323,7 @@ SoMFString::cleanClass(void)
 SbBool
 SoMFString::read1Value(SoInput * in, int idx)
 {
+  assert(!in->isBinary() && "FIXME: not implemented");
   SbBool ok = in->read(this->values[idx]);
 
 #if 0 // debug
@@ -340,6 +341,7 @@ SoMFString::read1Value(SoInput * in, int idx)
 void
 SoMFString::write1Value(SoOutput * out, int idx) const
 {
+  assert(!out->isBinary() && "FIXME: not implemented");
   out->write(this->values[idx]);
 }
 

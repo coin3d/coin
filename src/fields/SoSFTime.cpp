@@ -193,12 +193,11 @@ SoSFTime::cleanClass(void)
 {
 }
 
-/*!
-  FIXME: write function documentation
-*/
 SbBool
 SoSFTime::readValue(SoInput * in)
 {
+  assert(!in->isBinary() && "FIXME: not implemented");
+
   // FIXME: is this correct? (to read SbTime values as doubles?)
   // 19990530 mortene.
   double val;
@@ -207,12 +206,10 @@ SoSFTime::readValue(SoInput * in)
   return TRUE;
 }
 
-/*!
-  FIXME: write function documentation
-*/
 void
 SoSFTime::writeValue(SoOutput * out) const
 {
+  assert(!out->isBinary() && "FIXME: not implemented");
   out->write(this->value.getValue());
 }
 

@@ -182,21 +182,17 @@ SoSFString::cleanClass(void)
 {
 }
 
-/*!
-  FIXME: write function documentation
-*/
 SbBool
 SoSFString::readValue(SoInput * in)
 {
+  assert(!in->isBinary() && "FIXME: not implemented");
   return in->read(value);
 }
 
-/*!
-  FIXME: write function documentation
-*/
 void
 SoSFString::writeValue(SoOutput * out) const
 {
+  assert(!out->isBinary() && "FIXME: not implemented");
   out->write(this->getValue());
 }
 

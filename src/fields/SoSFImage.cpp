@@ -175,12 +175,11 @@ SoSFImage::cleanClass(void)
 {
 }
 
-/*!
-  FIXME: write function documentation
-*/
 SbBool
 SoSFImage::readValue(SoInput * in)
 {
+  assert(!in->isBinary() && "FIXME: not implemented");
+
   if (! in->read(this->imgdim[0]) ||
       ! in->read(this->imgdim[1]) ||
       ! in->read(this->bytedepth))
@@ -277,12 +276,11 @@ SoSFImage::finishEditing(void)
   this->valueChanged();
 }
 
-/*!
-  FIXME: write function documentation
-*/
 void
 SoSFImage::writeValue(SoOutput * out) const
 {
+  assert(!out->isBinary() && "FIXME: not implemented");
+
   out->write(this->imgdim[0]);
   if(!out->isBinary()) out->write(' ');
   out->write(this->imgdim[1]);

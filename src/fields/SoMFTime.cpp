@@ -286,8 +286,9 @@ SoMFTime::cleanClass(void)
 SbBool
 SoMFTime::read1Value(SoInput * in, int idx)
 {
-  double t;
+  assert(!in->isBinary() && "FIXME: not implemented");
 
+  double t;
   SbBool result = in->read(t);
 
   if(result) this->values[idx].setValue(t);
@@ -300,6 +301,7 @@ SoMFTime::read1Value(SoInput * in, int idx)
 void
 SoMFTime::write1Value(SoOutput * out, int idx) const
 {
+  assert(!out->isBinary() && "FIXME: not implemented");
   out->write(this->values[idx].getValue());
 }
 

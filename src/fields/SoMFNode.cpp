@@ -289,6 +289,8 @@ SoMFNode::cleanClass(void)
 SbBool
 SoMFNode::read1Value(SoInput * in, int index)
 {
+  assert(!in->isBinary() && "FIXME: not implemented");
+
   char c;
   if(!in->read(c)) return FALSE;
   else if(!SbName::isIdentStartChar(c)) return FALSE;

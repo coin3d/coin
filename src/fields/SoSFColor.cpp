@@ -192,24 +192,22 @@ SoSFColor::cleanClass(void)
 {
 }
 
-/*!
-  FIXME: write function documentation
-*/
 SbBool
 SoSFColor::readValue(SoInput * in)
 {
+  assert(!in->isBinary() && "FIXME: not implemented");
+
   if (in->read(value[0]) && in->read(value[1]) && in->read(value[2])) {
     return TRUE;
   }
   else return FALSE;
 }
 
-/*!
-  FIXME: write function documentation
-*/
 void
 SoSFColor::writeValue(SoOutput * out) const
 {
+  assert(!out->isBinary() && "FIXME: not implemented");
+
   out->write(this->value[0]);
   if(!out->isBinary()) out->write(' ');
   out->write(this->value[1]);

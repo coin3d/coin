@@ -188,12 +188,11 @@ SoSFPlane::cleanClass(void)
 {
 }
 
-/*!
-  FIXME: write function documentation
-*/
 SbBool
 SoSFPlane::readValue(SoInput * in)
 {
+  assert(!in->isBinary() && "FIXME: not implemented");
+
   SbVec3f normal;
   float offset;
   SbBool result = (in->read(normal[0]) && in->read(normal[1]) &&
@@ -203,12 +202,11 @@ SoSFPlane::readValue(SoInput * in)
   return result;
 }
 
-/*!
-  FIXME: write function documentation
-*/
 void
 SoSFPlane::writeValue(SoOutput * out) const
 {
+  assert(!out->isBinary() && "FIXME: not implemented");
+
   out->write(this->value.getNormal()[0]);
   if(!out->isBinary()) out->write(' ');
   out->write(this->value.getNormal()[1]);

@@ -246,12 +246,11 @@ SoSFEnum::findEnumName(int value, const SbName * & name) const
   return FALSE;
 }
 
-/*!
-  FIXME: write function documentation
-*/
 SbBool
 SoSFEnum::readValue(SoInput * in)
 {
+  assert(!in->isBinary() && "FIXME: not implemented");
+
   assert(this->enumValues != NULL);
 
   SbName n;
@@ -307,12 +306,11 @@ SoSFEnum::operator ==(const SoSFEnum & f) const
   return TRUE;
 }
 
-/*!
-  FIXME: write function documentation
-*/
 void
 SoSFEnum::writeValue(SoOutput * out) const
 {
+  assert(!out->isBinary() && "FIXME: not implemented");
+
   if (this->isDefault()) {
     // FIXME: what happens here on binary write? 19980913 mortene.
     out->write("DEFAULT");

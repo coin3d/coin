@@ -168,38 +168,18 @@ SoFile::readInstance(SoInput * in, unsigned short flags)
     SoReadError::post(in, "Undefined file name in SoFile"); 
     return TRUE;
   }
-#if 0 // this can't be correct (pederb, 990702)  
-  SoInput fieldfile;
-  if (fieldfile.openFile(this->name.getValue().getString())) {
-    // Copy include directory list.
-    const SbStringList & sl = in->getDirectories();
-    for (int i=0; i < sl.getLength(); i++)
-      SoInput::addDirectoryLast(sl[i]->getString());
 
-    // Attempt to read file.
-    SoSeparator * node = SoDB::readAll(&fieldfile);
-    // If successful, store subgraph for later traversals.
-    if (node) this->children->append((SoNode *)node);
-  }
-  else {
-    SoReadError::post(in, "Unable to open subfile: %s",
-		      this->name.getValue().getString());
-  }
-  return TRUE;
-
-#else 
-  // new code, SoDB::readAll() will pop the file after it
+  // SoDB::readAll() will pop the file after it
   // is loaded
 
   in->pushFile(name.getValue().getString());
-  SoSeparator *node = SoDB::readAll(in);
-  if (node) this->children->append((SoNode*)node);
+  SoSeparator * node = SoDB::readAll(in);
+  if (node) this->children->append((SoNode *)node);
   else {
     SoReadError::post(in, "Unable to open subfile: %s",
 		      this->name.getValue().getString());
   }
   return TRUE;
-#endif
 }
 
 /*!

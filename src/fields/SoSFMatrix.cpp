@@ -192,12 +192,11 @@ SoSFMatrix::cleanClass(void)
 {
 }
 
-/*!
-  FIXME: write function documentation
-*/
 SbBool
 SoSFMatrix::readValue(SoInput * in)
 {
+  assert(!in->isBinary() && "FIXME: not implemented");
+
   SbMat mat;
 
   SbBool result =
@@ -214,12 +213,11 @@ SoSFMatrix::readValue(SoInput * in)
   return result;
 }
 
-/*!
-  FIXME: write function documentation
-*/
 void
 SoSFMatrix::writeValue(SoOutput * out) const
 {
+  assert(!out->isBinary() && "FIXME: not implemented");
+
   for(int k=0; k < 4; k++) {
     out->write(this->getValue()[0][k]);
     if(!out->isBinary() && (k != 3)) out->write(' ');

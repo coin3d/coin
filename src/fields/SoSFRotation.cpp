@@ -192,12 +192,11 @@ SoSFRotation::cleanClass(void)
 {
 }
 
-/*!
-  FIXME: write function documentation
-*/
 SbBool
 SoSFRotation::readValue(SoInput * in)
 {
+  assert(!in->isBinary() && "FIXME: not implemented");
+
   SbVec3f axis;
   float angle;
   SbBool result = (in->read(axis[0]) && in->read(axis[1]) &&
@@ -207,12 +206,11 @@ SoSFRotation::readValue(SoInput * in)
   return result;
 }
 
-/*!
-  FIXME: write function documentation
-*/
 void
 SoSFRotation::writeValue(SoOutput * out) const
 {
+  assert(!out->isBinary() && "FIXME: not implemented");
+
   SbVec3f axis;
   float angle;
 

@@ -291,6 +291,7 @@ SoMFUShort::cleanClass(void)
 SbBool
 SoMFUShort::read1Value(SoInput * in, int index)
 {
+  assert(!in->isBinary() && "FIXME: not implemented");
   return in->read(values[index]);
 }
 
@@ -300,6 +301,7 @@ SoMFUShort::read1Value(SoInput * in, int index)
 void
 SoMFUShort::write1Value(SoOutput * out, int idx) const
 {
+  assert(!out->isBinary() && "FIXME: not implemented");
   out->write(this->values[idx]);
 }
 

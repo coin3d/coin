@@ -214,9 +214,6 @@ SoSFTrigger::~SoSFTrigger(void)
   // TODO: implement.
 }
 
-/*!
-  FIXME: write function documentation
-*/
 SbBool
 SoSFTrigger::readValue( SoInput * in )
 {
@@ -224,9 +221,6 @@ SoSFTrigger::readValue( SoInput * in )
   return FALSE;
 }
 
-/*!
-  FIXME: write function documentation
-*/
 void
 SoSFTrigger::writeValue( SoOutput * out ) const
 {

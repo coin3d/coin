@@ -593,10 +593,13 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedType)
 			     expectedType.getName().getString());
 #endif // COIN_DEBUG
       result = FALSE;
-      base->ref();
-      base->unref();
-      base = NULL;
     }
+  }
+
+  if (!result && base && (name != REFERENCE_KEYWORD)) {
+    base->ref();
+    base->unref();
+    base = NULL;
   }
 
   return result;
@@ -671,11 +674,6 @@ SoBase::hasMultipleWriteRefs(void) const
 SbBool
 SoBase::writeHeader(SoOutput * out, SbBool isGroup, SbBool isEngine) const
 {
-  // FIXME: doesn't handle groups. 19990629 mortene.
-//    assert(!isGroup);
-  // FIXME: doesn't handle engines. 19990629 mortene.
-  assert(!isEngine);
-
   if (!out->isBinary()) {
     out->write(END_OF_LINE);
     out->indent();
@@ -715,10 +713,9 @@ SoBase::writeHeader(SoOutput * out, SbBool isGroup, SbBool isEngine) const
 
     out->write(this->getFileFormatName());
     if (out->isBinary()) {
-      // Not too sure about the correctness of this bitflag integer..
       uint32_t flags = 0x0;
-      if (isGroup) flags |= 0x2;
-      if (isEngine) assert(0 && "FIXME: not implemented yet");
+      if (isGroup) flags |= SoBase::IS_GROUP;
+      if (isEngine) flags |= SoBase::IS_ENGINE;
       out->write(flags);
     }
     else {

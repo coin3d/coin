@@ -290,6 +290,8 @@ SoMFMatrix::cleanClass(void)
 SbBool
 SoMFMatrix::read1Value(SoInput * in, int idx)
 {
+  assert(!in->isBinary() && "FIXME: not implemented");
+
   // FIXME: this code has a lot in common with
   // SoSFMatrix::readValue(), could it be shared somehow? 19990324
   // mortene.
@@ -316,6 +318,8 @@ SoMFMatrix::read1Value(SoInput * in, int idx)
 void
 SoMFMatrix::write1Value(SoOutput * out, int idx) const
 {
+  assert(!out->isBinary() && "FIXME: not implemented");
+
   for(int i=0; i < 4; i++) {
     for(int j=0; j < 4; j++) {
       out->write(this->values[idx][i][j]);

@@ -190,21 +190,17 @@ SoSFName::cleanClass(void)
 {
 }
 
-/*!
-  FIXME: write function documentation
-*/
 SbBool
 SoSFName::readValue(SoInput * in)
 {
+  assert(!in->isBinary() && "FIXME: not implemented");
   return in->read(value);
 }
 
-/*!
-  FIXME: write function documentation
-*/
 void
 SoSFName::writeValue(SoOutput * out) const
 {
+  assert(!out->isBinary() && "FIXME: not implemented");
   out->write(this->value);
 }
 
