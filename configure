@@ -3598,6 +3598,11 @@ fi
   fi
   if test "$simage_dev" = no; then
     echo "configure: warning: libsimage development system not found -- no simage texture support" 1>&2
+  else
+    cat >> confdefs.h <<\EOF
+#define HAVE_LIBSIMAGE 1
+EOF
+
   fi
 fi
 

@@ -1,1 +1,19 @@
 /* config.h.in.  Generated automatically from configure.in by autoheader.  */
+
+/* Define if the X Window System is missing or not being used.  */
+#undef X_DISPLAY_MISSING
+
+#undef COIN_MAJOR_VERSION
+#undef COIN_MINOR_VERSION
+#undef COIN_MICRO_VERSION
+#undef COIN_VERSION
+
+/* Define if you have the simage library (-lsimage).  */
+#undef HAVE_LIBSIMAGE
+
+/* Name of package */
+#undef PACKAGE
+
+/* Version number of package */
+#undef VERSION
+

@@ -46,11 +46,12 @@ aclocal
 echo "Running autoheader"
 autoheader
 
-echo "Running automake"
-case $CC in
-    *xlc | *xlc\ * | *lcc | *lcc\ *) am_opt=--include-deps;;
-esac
-automake $am_opt
+echo
+echo "Running automake..."
+echo "(NB: if you're compiling without g++, you probably need to"
+echo "run automake with the --include-deps argument to avoid setting"
+echo "up dependency tracking. 19991006 mortene.)"
+automake
 
 echo "Running autoconf"
 autoconf
