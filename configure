@@ -27517,6 +27517,16 @@ fi
 
 fi
 
+# Bug in gzdopen() on Mac OS X -> use gzopen() instead...
+case $host_os in
+  darwin* ) ;;
+  * )
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_GZDOPEN 1
+_ACEOF
+
+esac
+
 # *******************************************************************
 
 # Check whether --enable-dl-libbzip2 or --disable-dl-libbzip2 was given.
