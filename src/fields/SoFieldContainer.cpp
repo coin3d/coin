@@ -320,11 +320,11 @@ SoFieldContainer::getFieldName(const SoField * const field,
   handle those cases:
 
   \code
-  node->enableNotify(FALSE);
+  SbBool autonotify = node->enableNotify(FALSE);
   // ...
   // Make modifications to fields of "node" here.
   // ...
-  node->enableNotify(TRUE);
+  node->enableNotify(autonotify);
   node->touch();
   \endcode
 
