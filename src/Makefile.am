@@ -5,15 +5,15 @@ lib_LTLIBRARIES = libCoin.la
 if HACKING_DYNAMIC_MODULES
 TESTLIBDIR = coindev
 libCoin_la_LIBADD = -lcoindevLINKHACK \
-	-lVRMLnodesLINKHACK -lactionsLINKHACK -lbundlesLINKHACK \
-	-lcachesLINKHACK -lelementsLINKHACK -lenginesLINKHACK \
-	-lerrorsLINKHACK -leventsLINKHACK -lfieldsLINKHACK -lmiscLINKHACK \
-	-llistsLINKHACK -lnodekitsLINKHACK -lnodesLINKHACK \
+	-lVRMLnodesLINKHACK -lactionsLINKHACK -lcoinbaseLINKHACK \
+	-lbundlesLINKHACK -lcachesLINKHACK -lelementsLINKHACK \
+	-lenginesLINKHACK -lerrorsLINKHACK -leventsLINKHACK -lfieldsLINKHACK \
+	-lmiscLINKHACK -llistsLINKHACK -lnodekitsLINKHACK -lnodesLINKHACK \
 	-lprojectorsLINKHACK -lsensorsLINKHACK
 else
 TESTLIBDIR = 
 libCoin_la_LIBADD = \
-	VRMLnodes/libVRMLnodes.la actions/libactions.la \
+	VRMLnodes/libVRMLnodes.la actions/libactions.la base/libcoinbase.la \
 	bundles/libbundles.la caches/libcaches.la elements/libelements.la \
 	engines/libengines.la errors/liberrors.la events/libevents.la \
 	fields/libfields.la misc/libmisc.la lists/liblists.la \
@@ -23,7 +23,7 @@ endif
 
 
 SUBDIRS = $(TESTLIBDIR) \
-	VRMLnodes actions bundles caches elements engines errors events \
+	VRMLnodes actions base bundles caches elements engines errors events \
 	fields misc lists nodekits nodes projectors sensors system .
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
@@ -32,56 +32,6 @@ INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 ## library, including all headers.
 
 libCoin_la_SOURCES = \
-	SbBSPTree.cpp \
-	SbBSPTree.h \
-	SbBox2f.cpp \
-	SbBox2f.h \
-	SbBox2s.cpp \
-	SbBox2s.h \
-	SbBox3f.cpp \
-	SbBox3f.h \
-	SbColor.cpp \
-	SbColor.h \
-	SbColor4f.cpp \
-	SbColor4f.h \
-	SbCylinder.cpp \
-	SbCylinder.h \
-	SbDict.cpp \
-	SbDict.h \
-	SbHeap.cpp \
-	SbHeap.h \
-	SbLine.cpp \
-	SbLine.h \
-	SbMatrix.cpp \
-	SbMatrix.h \
-	SbName.cpp \
-	SbName.h \
-	SbPlane.cpp \
-	SbPlane.h \
-	SbRotation.cpp \
-	SbRotation.h \
-	SbSphere.cpp \
-	SbSphere.h \
-	SbString.cpp \
-	SbString.h \
-	SbTesselator.cpp \
-	SbTesselator.h \
-	SbTime.cpp \
-	SbTime.h \
-	SbVec2f.cpp \
-	SbVec2f.h \
-	SbVec2s.cpp \
-	SbVec2s.h \
-	SbVec3f.cpp \
-	SbVec3f.h \
-	SbVec4f.cpp \
-	SbVec4f.h \
-	SbViewVolume.cpp \
-	SbViewVolume.h \
-	SbViewportRegion.cpp \
-	SbViewportRegion.h \
-	SbXfBox3f.cpp \
-	SbXfBox3f.h \
 	SoDB.cpp \
 	SoDB.h \
 	SoFullPath.cpp \
@@ -116,33 +66,6 @@ libCoin_la_LDFLAGS = \
 libCoininc_HEADERS = \
 	$(top_srcdir)/include/Inventor/soconfig.h \
 	$(top_srcdir)/include/Inventor/confdep.h \
-	$(top_srcdir)/include/Inventor/SbBox.h \
-	$(top_srcdir)/include/Inventor/SbLinear.h \
-	$(top_srcdir)/include/Inventor/SoLists.h \
-	$(top_srcdir)/include/Inventor/SbBox2f.h \
-	$(top_srcdir)/include/Inventor/SbBox2s.h \
-	$(top_srcdir)/include/Inventor/SbBox3f.h \
-	$(top_srcdir)/include/Inventor/SbColor.h \
-	$(top_srcdir)/include/Inventor/SbColor4f.h \
-	$(top_srcdir)/include/Inventor/SbCylinder.h \
-	$(top_srcdir)/include/Inventor/SbDict.h \
-	$(top_srcdir)/include/Inventor/SbHeap.h \
-	$(top_srcdir)/include/Inventor/SbLine.h \
-	$(top_srcdir)/include/Inventor/SbMatrix.h \
-	$(top_srcdir)/include/Inventor/SbName.h \
-	$(top_srcdir)/include/Inventor/SbPlane.h \
-	$(top_srcdir)/include/Inventor/SbRotation.h \
-	$(top_srcdir)/include/Inventor/SbSphere.h \
-	$(top_srcdir)/include/Inventor/SbString.h \
-	$(top_srcdir)/include/Inventor/SbTesselator.h \
-	$(top_srcdir)/include/Inventor/SbTime.h \
-	$(top_srcdir)/include/Inventor/SbVec2f.h \
-	$(top_srcdir)/include/Inventor/SbVec2s.h \
-	$(top_srcdir)/include/Inventor/SbVec3f.h \
-	$(top_srcdir)/include/Inventor/SbVec4f.h \
-	$(top_srcdir)/include/Inventor/SbViewVolume.h \
-	$(top_srcdir)/include/Inventor/SbViewportRegion.h \
-	$(top_srcdir)/include/Inventor/SbXfBox3f.h \
 	$(top_srcdir)/include/Inventor/SoDB.h \
 	$(top_srcdir)/include/Inventor/SoFullPath.h \
 	$(top_srcdir)/include/Inventor/SoImageInterface.h \

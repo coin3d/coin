@@ -300,7 +300,7 @@ dnl *******************************************************************
 
 AC_OUTPUT(include/Makefile include/Inventor/Makefile \
 	Makefile src/Makefile \
-	src/coindev/Makefile \
+	src/coindev/Makefile src/base/Makefile \
 	src/VRMLnodes/Makefile src/actions/Makefile src/bundles/Makefile \
 	src/caches/Makefile src/elements/Makefile src/engines/Makefile \
 	src/errors/Makefile src/events/Makefile src/fields/Makefile \

@@ -3707,7 +3707,7 @@ ac_given_INSTALL="$INSTALL"
 
 trap 'rm -fr `echo "include/Makefile include/Inventor/Makefile \
 	Makefile src/Makefile \
-	src/coindev/Makefile \
+	src/coindev/Makefile src/base/Makefile \
 	src/VRMLnodes/Makefile src/actions/Makefile src/bundles/Makefile \
 	src/caches/Makefile src/elements/Makefile src/engines/Makefile \
 	src/errors/Makefile src/events/Makefile src/fields/Makefile \
@@ -3841,7 +3841,7 @@ cat >> $CONFIG_STATUS <<EOF
 
 CONFIG_FILES=\${CONFIG_FILES-"include/Makefile include/Inventor/Makefile \
 	Makefile src/Makefile \
-	src/coindev/Makefile \
+	src/coindev/Makefile src/base/Makefile \
 	src/VRMLnodes/Makefile src/actions/Makefile src/bundles/Makefile \
 	src/caches/Makefile src/elements/Makefile src/engines/Makefile \
 	src/errors/Makefile src/events/Makefile src/fields/Makefile \

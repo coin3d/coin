@@ -3,18 +3,20 @@
 #
 #  metadon - meta documentation system
 #
-#  The file Metadon.conf is the stating point.  Source files can include
+#  The file Metadon.conf is the starting point.  Source files can include
 #  comments for the meta documentation by inserting /*¡ ... */ comments.
-#  Flags and weights in all the *.in files decides how the module progress
-#  is calculated.
+#  Flags and weights in all the *.metadon files decides how the module
+#  progress is calculated.
 #
 #  I might document this a bit better later...
 #
 #  Hacked in perl by Lars J. Aas <larsa@sim.no>, 1998-1999.
 #
 
-$coindir = '.';
-$docdir = @ARGV[0] || "/export/www/htdocs.private/coin";
+if (@ARGV != 2) { die "Usage: metadon <topsrcdir> <outputdir>\n" };
+
+$coindir = @ARGV[0];
+$docdir = @ARGV[1];
 
 $indentsize = 4;
 
@@ -26,8 +28,6 @@ $bgcolor = "#000000";
 $textcol = "#cccccc";
 
 ############################################################################
-
-die "Usage: metadon <outputdir>\n" if ! $docdir;
 
 %parent    = ();
 %comments  = ();
@@ -337,7 +337,7 @@ sub LoadConfig {
 
 ############################################################################
 # subroutine that sill open a file and extract information from it.
-# designed for files of the Config.in type.
+# designed for files of the *.metadon type.
 
 sub ReadConfig {
     local( $filename ) = ( @_ );

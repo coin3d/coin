@@ -88,15 +88,15 @@ VERSION = @VERSION@
 lib_LTLIBRARIES = libCoin.la
 @HACKING_DYNAMIC_MODULES_TRUE@TESTLIBDIR = coindev
 @HACKING_DYNAMIC_MODULES_FALSE@TESTLIBDIR = 
-@HACKING_DYNAMIC_MODULES_TRUE@libCoin_la_LIBADD = -lcoindevLINKHACK 	-lVRMLnodesLINKHACK -lactionsLINKHACK -lbundlesLINKHACK 	-lcachesLINKHACK -lelementsLINKHACK -lenginesLINKHACK 	-lerrorsLINKHACK -leventsLINKHACK -lfieldsLINKHACK -lmiscLINKHACK 	-llistsLINKHACK -lnodekitsLINKHACK -lnodesLINKHACK 	-lprojectorsLINKHACK -lsensorsLINKHACK
-@HACKING_DYNAMIC_MODULES_FALSE@libCoin_la_LIBADD = 	VRMLnodes/libVRMLnodes.la actions/libactions.la 	bundles/libbundles.la caches/libcaches.la elements/libelements.la 	engines/libengines.la errors/liberrors.la events/libevents.la 	fields/libfields.la misc/libmisc.la lists/liblists.la 	nodekits/libnodekits.la nodes/libnodes.la projectors/libprojectors.la 	sensors/libsensors.la
+@HACKING_DYNAMIC_MODULES_TRUE@libCoin_la_LIBADD = -lcoindevLINKHACK 	-lVRMLnodesLINKHACK -lactionsLINKHACK -lcoinbaseLINKHACK 	-lbundlesLINKHACK -lcachesLINKHACK -lelementsLINKHACK 	-lenginesLINKHACK -lerrorsLINKHACK -leventsLINKHACK -lfieldsLINKHACK 	-lmiscLINKHACK -llistsLINKHACK -lnodekitsLINKHACK -lnodesLINKHACK 	-lprojectorsLINKHACK -lsensorsLINKHACK
+@HACKING_DYNAMIC_MODULES_FALSE@libCoin_la_LIBADD = 	VRMLnodes/libVRMLnodes.la actions/libactions.la base/libcoinbase.la 	bundles/libbundles.la caches/libcaches.la elements/libelements.la 	engines/libengines.la errors/liberrors.la events/libevents.la 	fields/libfields.la misc/libmisc.la lists/liblists.la 	nodekits/libnodekits.la nodes/libnodes.la projectors/libprojectors.la 	sensors/libsensors.la
 
-SUBDIRS = $(TESTLIBDIR) 	VRMLnodes actions bundles caches elements engines errors events 	fields misc lists nodekits nodes projectors sensors system .
+SUBDIRS = $(TESTLIBDIR) 	VRMLnodes actions base bundles caches elements engines errors events 	fields misc lists nodekits nodes projectors sensors system .
 
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 
-libCoin_la_SOURCES =  	SbBSPTree.cpp 	SbBSPTree.h 	SbBox2f.cpp 	SbBox2f.h 	SbBox2s.cpp 	SbBox2s.h 	SbBox3f.cpp 	SbBox3f.h 	SbColor.cpp 	SbColor.h 	SbColor4f.cpp 	SbColor4f.h 	SbCylinder.cpp 	SbCylinder.h 	SbDict.cpp 	SbDict.h 	SbHeap.cpp 	SbHeap.h 	SbLine.cpp 	SbLine.h 	SbMatrix.cpp 	SbMatrix.h 	SbName.cpp 	SbName.h 	SbPlane.cpp 	SbPlane.h 	SbRotation.cpp 	SbRotation.h 	SbSphere.cpp 	SbSphere.h 	SbString.cpp 	SbString.h 	SbTesselator.cpp 	SbTesselator.h 	SbTime.cpp 	SbTime.h 	SbVec2f.cpp 	SbVec2f.h 	SbVec2s.cpp 	SbVec2s.h 	SbVec3f.cpp 	SbVec3f.h 	SbVec4f.cpp 	SbVec4f.h 	SbViewVolume.cpp 	SbViewVolume.h 	SbViewportRegion.cpp 	SbViewportRegion.h 	SbXfBox3f.cpp 	SbXfBox3f.h 	SoDB.cpp 	SoDB.h 	SoFullPath.cpp 	SoFullPath.h 	SoImageInterface.cpp 	SoImageInterface.h 	SoInput.cpp 	SoInput.h 	SoInteraction.cpp 	SoInteraction.h 	SoOutput.cpp 	SoOutput.h 	SoPath.cpp 	SoPath.h 	SoPickedPoint.cpp 	SoPickedPoint.h 	SoPrimitiveVertex.cpp 	SoPrimitiveVertex.h 	SoSceneManager.cpp 	SoSceneManager.h 	SoType.cpp 	SoType.h
+libCoin_la_SOURCES =  	SoDB.cpp 	SoDB.h 	SoFullPath.cpp 	SoFullPath.h 	SoImageInterface.cpp 	SoImageInterface.h 	SoInput.cpp 	SoInput.h 	SoInteraction.cpp 	SoInteraction.h 	SoOutput.cpp 	SoOutput.h 	SoPath.cpp 	SoPath.h 	SoPickedPoint.cpp 	SoPickedPoint.h 	SoPrimitiveVertex.cpp 	SoPrimitiveVertex.h 	SoSceneManager.cpp 	SoSceneManager.h 	SoType.cpp 	SoType.h
 
 
 libCoinincdir = $(includedir)/Inventor
@@ -104,7 +104,7 @@ libCoinincdir = $(includedir)/Inventor
 libCoin_la_LDFLAGS =          -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)         -release $(LT_RELEASE)
 
 
-libCoininc_HEADERS =  	$(top_srcdir)/include/Inventor/soconfig.h 	$(top_srcdir)/include/Inventor/confdep.h 	$(top_srcdir)/include/Inventor/SbBox.h 	$(top_srcdir)/include/Inventor/SbLinear.h 	$(top_srcdir)/include/Inventor/SoLists.h 	$(top_srcdir)/include/Inventor/SbBox2f.h 	$(top_srcdir)/include/Inventor/SbBox2s.h 	$(top_srcdir)/include/Inventor/SbBox3f.h 	$(top_srcdir)/include/Inventor/SbColor.h 	$(top_srcdir)/include/Inventor/SbColor4f.h 	$(top_srcdir)/include/Inventor/SbCylinder.h 	$(top_srcdir)/include/Inventor/SbDict.h 	$(top_srcdir)/include/Inventor/SbHeap.h 	$(top_srcdir)/include/Inventor/SbLine.h 	$(top_srcdir)/include/Inventor/SbMatrix.h 	$(top_srcdir)/include/Inventor/SbName.h 	$(top_srcdir)/include/Inventor/SbPlane.h 	$(top_srcdir)/include/Inventor/SbRotation.h 	$(top_srcdir)/include/Inventor/SbSphere.h 	$(top_srcdir)/include/Inventor/SbString.h 	$(top_srcdir)/include/Inventor/SbTesselator.h 	$(top_srcdir)/include/Inventor/SbTime.h 	$(top_srcdir)/include/Inventor/SbVec2f.h 	$(top_srcdir)/include/Inventor/SbVec2s.h 	$(top_srcdir)/include/Inventor/SbVec3f.h 	$(top_srcdir)/include/Inventor/SbVec4f.h 	$(top_srcdir)/include/Inventor/SbViewVolume.h 	$(top_srcdir)/include/Inventor/SbViewportRegion.h 	$(top_srcdir)/include/Inventor/SbXfBox3f.h 	$(top_srcdir)/include/Inventor/SoDB.h 	$(top_srcdir)/include/Inventor/SoFullPath.h 	$(top_srcdir)/include/Inventor/SoImageInterface.h 	$(top_srcdir)/include/Inventor/SoInput.h 	$(top_srcdir)/include/Inventor/SoInteraction.h 	$(top_srcdir)/include/Inventor/SoOutput.h 	$(top_srcdir)/include/Inventor/SoPath.h 	$(top_srcdir)/include/Inventor/SoPickedPoint.h 	$(top_srcdir)/include/Inventor/SoPrimitiveVertex.h 	$(top_srcdir)/include/Inventor/SoSceneManager.h 	$(top_srcdir)/include/Inventor/SoType.h
+libCoininc_HEADERS =  	$(top_srcdir)/include/Inventor/soconfig.h 	$(top_srcdir)/include/Inventor/confdep.h 	$(top_srcdir)/include/Inventor/SoDB.h 	$(top_srcdir)/include/Inventor/SoFullPath.h 	$(top_srcdir)/include/Inventor/SoImageInterface.h 	$(top_srcdir)/include/Inventor/SoInput.h 	$(top_srcdir)/include/Inventor/SoInteraction.h 	$(top_srcdir)/include/Inventor/SoOutput.h 	$(top_srcdir)/include/Inventor/SoPath.h 	$(top_srcdir)/include/Inventor/SoPickedPoint.h 	$(top_srcdir)/include/Inventor/SoPrimitiveVertex.h 	$(top_srcdir)/include/Inventor/SoSceneManager.h 	$(top_srcdir)/include/Inventor/SoType.h
 
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../config.h ../include/Inventor/SbBasic.h
@@ -120,6 +120,7 @@ LIBS = @LIBS@
 @HACKING_DYNAMIC_MODULES_FALSE@libCoin_la_DEPENDENCIES =  \
 @HACKING_DYNAMIC_MODULES_FALSE@VRMLnodes/libVRMLnodes.la \
 @HACKING_DYNAMIC_MODULES_FALSE@actions/libactions.la \
+@HACKING_DYNAMIC_MODULES_FALSE@base/libcoinbase.la \
 @HACKING_DYNAMIC_MODULES_FALSE@bundles/libbundles.la \
 @HACKING_DYNAMIC_MODULES_FALSE@caches/libcaches.la \
 @HACKING_DYNAMIC_MODULES_FALSE@elements/libelements.la \
@@ -131,13 +132,9 @@ LIBS = @LIBS@
 @HACKING_DYNAMIC_MODULES_FALSE@nodes/libnodes.la \
 @HACKING_DYNAMIC_MODULES_FALSE@projectors/libprojectors.la \
 @HACKING_DYNAMIC_MODULES_FALSE@sensors/libsensors.la
-libCoin_la_OBJECTS =  SbBSPTree.lo SbBox2f.lo SbBox2s.lo SbBox3f.lo \
-SbColor.lo SbColor4f.lo SbCylinder.lo SbDict.lo SbHeap.lo SbLine.lo \
-SbMatrix.lo SbName.lo SbPlane.lo SbRotation.lo SbSphere.lo SbString.lo \
-SbTesselator.lo SbTime.lo SbVec2f.lo SbVec2s.lo SbVec3f.lo SbVec4f.lo \
-SbViewVolume.lo SbViewportRegion.lo SbXfBox3f.lo SoDB.lo SoFullPath.lo \
-SoImageInterface.lo SoInput.lo SoInteraction.lo SoOutput.lo SoPath.lo \
-SoPickedPoint.lo SoPrimitiveVertex.lo SoSceneManager.lo SoType.lo
+libCoin_la_OBJECTS =  SoDB.lo SoFullPath.lo SoImageInterface.lo \
+SoInput.lo SoInteraction.lo SoOutput.lo SoPath.lo SoPickedPoint.lo \
+SoPrimitiveVertex.lo SoSceneManager.lo SoType.lo
 CXXFLAGS = @CXXFLAGS@
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -157,18 +154,11 @@ DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 
 TAR = gtar
 GZIP_ENV = --best
-DIST_SUBDIRS =  coindev VRMLnodes actions bundles caches elements \
+DIST_SUBDIRS =  coindev VRMLnodes actions base bundles caches elements \
 engines errors events fields misc lists nodekits nodes projectors \
 sensors system .
-DEP_FILES =  .deps/SbBSPTree.P .deps/SbBox2f.P .deps/SbBox2s.P \
-.deps/SbBox3f.P .deps/SbColor.P .deps/SbColor4f.P .deps/SbCylinder.P \
-.deps/SbDict.P .deps/SbHeap.P .deps/SbLine.P .deps/SbMatrix.P \
-.deps/SbName.P .deps/SbPlane.P .deps/SbRotation.P .deps/SbSphere.P \
-.deps/SbString.P .deps/SbTesselator.P .deps/SbTime.P .deps/SbVec2f.P \
-.deps/SbVec2s.P .deps/SbVec3f.P .deps/SbVec4f.P .deps/SbViewVolume.P \
-.deps/SbViewportRegion.P .deps/SbXfBox3f.P .deps/SoDB.P \
-.deps/SoFullPath.P .deps/SoImageInterface.P .deps/SoInput.P \
-.deps/SoInteraction.P .deps/SoOutput.P .deps/SoPath.P \
+DEP_FILES =  .deps/SoDB.P .deps/SoFullPath.P .deps/SoImageInterface.P \
+.deps/SoInput.P .deps/SoInteraction.P .deps/SoOutput.P .deps/SoPath.P \
 .deps/SoPickedPoint.P .deps/SoPrimitiveVertex.P .deps/SoSceneManager.P \
 .deps/SoType.P
 SOURCES = $(libCoin_la_SOURCES)
