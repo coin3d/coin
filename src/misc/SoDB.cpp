@@ -814,12 +814,27 @@ SoDBP::clean(void)
   "special" execution environments, though, like if the Coin library
   is used as e.g. a browser plug-in, or some other type of component
   which can be started, shut down and restarted multiple times.
- */
+
+  \since Coin 2.4
+  \since TGS Inventor 5.0
+*/
 void
-SoDB::cleanup(void)
+SoDB::finish(void)
 {
   coin_atexit_cleanup();
   SoDBP::isinitialized = FALSE;
+}
+
+/*!
+  This method was renamed from Coin version 2.4 onwards, to
+  SoDB::finish(). Consider this name for the method obsolete.
+
+  \since Coin 2.0
+*/
+void
+SoDB::cleanup(void)
+{
+  SoDB::finish();
 }
 
 /*!
