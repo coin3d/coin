@@ -19,10 +19,13 @@
 
 /*!
   \class SoRotation SoRotation.h Inventor/nodes/SoRotation.h
-  \brief The SoRotation class ...
+  \brief The SoRotation class specifies a rotation transformation.
   \ingroup nodes
 
-  FIXME: write class doc
+  Use nodes of this class type to re-orient geometry data within the
+  scene graph.
+
+  \sa SbRotation, SoRotationXYZ
 */
 
 #include <Inventor/nodes/SoRotation.h>
@@ -33,7 +36,10 @@
 
 /*!
   \var SoSFRotation SoRotation::rotation
-  FIXME: write documentation for field
+
+  Rotation specification. Defaults to no rotation at all. See the
+  SbRotation documentation for instructions on how to set the value of
+  this field.
 */
 
 // *************************************************************************
@@ -57,20 +63,14 @@ SoRotation::~SoRotation()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoRotation class. This includes setting up the
-  type system, among other things.
-*/
+// Doc from superclass.
 void
 SoRotation::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoRotation);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoRotation::doAction(SoAction * action)
 {
@@ -80,36 +80,28 @@ SoRotation::doAction(SoAction * action)
   }
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoRotation::callback(SoCallbackAction * action)
 {
   SoRotation::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoRotation::GLRender(SoGLRenderAction * action)
 {
   SoRotation::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoRotation::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoRotation::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoRotation::getMatrix(SoGetMatrixAction * action)
 {
@@ -124,18 +116,14 @@ SoRotation::getMatrix(SoGetMatrixAction * action)
   action->getInverse().multRight(m);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoRotation::pick(SoPickAction * action)
 {
   SoRotation::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
 SoRotation::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {

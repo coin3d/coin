@@ -19,32 +19,30 @@
 
 /*!
   \class SoTransformation SoTransformation.h Inventor/nodes/SoTransformation.h
-  \brief The SoTransformation class ...
+  \brief The SoTransformation class is the abstract base class for transformation nodes.
   \ingroup nodes
 
-  FIXME: write class doc
+  To position and orient geometry within the 3D world space, various
+  node types for transformations are used. These nodes all inherit the
+  SoTransformation base class.
 */
 
 
-
-
+#include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/actions/SoPickAction.h>
-
-#include <Inventor/elements/SoGLModelMatrixElement.h>
-#include <Inventor/elements/SoBBoxModelMatrixElement.h>
-#include <Inventor/elements/SoLocalBBoxMatrixElement.h>
-
-#include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
+#include <Inventor/actions/SoPickAction.h>
+#include <Inventor/elements/SoBBoxModelMatrixElement.h>
+#include <Inventor/elements/SoGLModelMatrixElement.h>
+#include <Inventor/elements/SoLocalBBoxMatrixElement.h>
 
 SO_NODE_ABSTRACT_SOURCE(SoTransformation);
 
 /*!
   Constructor.
 */
-SoTransformation::SoTransformation()
+SoTransformation::SoTransformation(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTransformation);
 }
@@ -56,12 +54,7 @@ SoTransformation::~SoTransformation()
 {
 }
 
-
-/*!
-  Does initialization common for all objects of the
-  SoTransformation class. This includes setting up the
-  type system, among other things.
-*/
+// Doc from superclass.
 void
 SoTransformation::initClass(void)
 {
