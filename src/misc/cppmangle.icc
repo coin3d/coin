@@ -2,18 +2,34 @@
 typedef SbString mangleFunc(const char *);
 
 /*
-  This function returns a string that corresponds to how gcc
+  This function returns a string that corresponds to how gcc 2.95.4
   mangles "static void <classname>::initClass(void)".
 */
 
 static
 SbString
-gcc_initClassMangling(const char * classname)
+gcc2_initClassMangling(const char * classname)
 {
   assert(classname != NULL);
   int len = strlen(classname);
   SbString mangling;
   mangling.sprintf("initClass__%d%s", len, classname);
+  return mangling;
+}
+
+/*
+  This function returns a string that corresponds to how gcc3
+  mangles "static void <classname>::initClass(void)".
+*/
+   
+static
+SbString
+gcc3_initClassMangling(const char * classname)
+{
+  assert(classname != NULL);
+  int len = strlen(classname);
+  SbString mangling;
+  mangling.sprintf("_ZN%d%s9initClassEv", len, classname);
   return mangling;
 }
 
@@ -28,25 +44,47 @@ SbString
 msvc6_initClassMangling(const char * classname)
 {
   assert(classname != NULL);
-  int len = strlen(classname);
   SbString mangling;
   mangling.sprintf("?initClass@%s@@SAXXZ", classname);
   return mangling;
 }
+
+static mangleFunc * manglefunctions[] = {
+  gcc2_initClassMangling,
+  gcc3_initClassMangling,
+  msvc6_initClassMangling,
+  (mangleFunc *) NULL
+};
 
 /*
   return the correct name mangling function, or NULL in case none seem
   appropriate
 */
 
+static
 mangleFunc *
 getManglingFunction(void)
 {
+  static SbBool initialized = FALSE;
   static mangleFunc * manglefunc = NULL;
-#ifdef _MSC_VER
-  manglefunc = msvc6_initClassMangling;
-#else
-  manglefunc = gcc_initClassMangling;
-#endif
+  if ( !initialized ) {
+    int i;
+    cc_libhandle handle = cc_dl_open(NULL);
+    if ( handle == NULL ) {
+      initialized = TRUE;
+      return NULL;
+    }
+    for ( i = 0; (manglefunctions[i] != NULL) && (manglefunc == NULL); i++ ) {
+      mangleFunc * attempt = manglefunctions[i];
+      SbString symbol(attempt("SoBase"));
+      if ( cc_dl_sym(handle, symbol.getString()) ) {
+        // SoDebugError::postInfo("getManglingFunction", "chose mangling scheme %d", i);
+        manglefunc = manglefunctions[i];
+      }
+    }
+    cc_dl_close(handle);
+    initialized = TRUE;
+  }
   return manglefunc;
 }
+
