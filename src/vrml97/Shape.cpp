@@ -105,6 +105,7 @@
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoLocalBBoxMatrixElement.h>
+#include <Inventor/elements/SoCullElement.h>
 #include <Inventor/elements/SoComplexityTypeElement.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
 #include <Inventor/caches/SoGLCacheList.h>
@@ -230,6 +231,14 @@ void
 SoVRMLShape::GLRender(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
+
+  // if we have a valid bbox cache, do a view volume cull test here.
+  if (THIS->bboxcache && 
+      THIS->bboxcache->isValid(state)) {
+    if (SoCullElement::cullTest(state, THIS->bboxcache->getProjectedBox())) {
+      return;
+    }
+  }
 
 #if 0
   if (SoComplexityTypeElement::get(state) ==
