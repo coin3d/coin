@@ -75,8 +75,13 @@ SoMFVec3f::write1Value(SoOutput * out, int idx) const
 
 
 /*!
-  Set \a num vector array elements from \a xyz, starting at index
-  \a start.
+  Set \a num vector array elements from the \a xyz array, reading from
+  index 0 in the given float-triplet vector array and storing values
+  from index \a start in this SoMFVec3f's array.
+
+  If \a start + \a num is larger than the current number of elements
+  in the SoMFVec3f field, this method will automatically expand the
+  field to accommodate all given float-vector element values.
 */
 void
 SoMFVec3f::setValues(const int start, const int num, const float xyz[][3])

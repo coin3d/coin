@@ -19,10 +19,13 @@
 
 /*!
   \class SoDrawStyle SoDrawStyle.h Inventor/nodes/SoDrawStyle.h
-  \brief The SoDrawStyle class ...
+  \brief The SoDrawStyle class specificies common rendering properties for shapes.
   \ingroup nodes
 
-  FIXME: write class doc
+  Use SoDrawStyle nodes to influence how shape nodes following them in
+  the scenegraph will be rendered.  This node type have fields to help
+  decide how certain aspects of point-based shapes, line-based shapes
+  and filled shape primitives are rendered.
 */
 
 
@@ -72,8 +75,16 @@
   vertex points if setting the SoDrawStyle::style to
   SoDrawStyle::POINTS.
 
+  The valid range of pointsize settings varies according to which
+  OpenGL implementation is used. For the purpose of not trying to set
+  illegal values, the application programmer should at run-time use
+  SoGLPointSizeElement::getValidRange() to find the valid range.
+
   Default value is 0.
 */
+// FIXME: default value 0? Weird -- shouldn't that mean that no points
+// were drawn? Test what SGI Inventor does in that case. 20010823 mortene.
+
 /*!
   \var SoSFFloat SoDrawStyle::lineWidth
 

@@ -33,10 +33,21 @@
   after traversing the node specified by the field \e
   numNodesUpToReset.
 
-  This node is (so far) only used by draggers to make it possible for
+  FIXME: insert a scenegraph diagram here which shows how a
+  SoSurroundScale can be set up to work. 20010823 mortene.
+
+  This node is internally used by draggers to make it possible for
   manipulators to have the dragger surround the geometry it is
-  modifying.
+  modifying, but it is also useful for application programmers who
+  want a particular piece of geometry (like a unit sized sphere or
+  cube) surround other geometry of unknown extent.
+
+  SoSurroundScale nodes in the scenegraph is often paired up with
+  SoAntiSquish nodes to get uniform scaling along all three principal
+  axes.
 */
+// FIXME: link to a simple example. The "plasmaball" Coin competition
+// entry can be simplified and used for this purpose. 20010823 mortene.
 
 #include <Inventor/nodes/SoSurroundScale.h>
 #include <Inventor/nodes/SoSubNodeP.h>

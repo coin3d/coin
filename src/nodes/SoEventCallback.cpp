@@ -19,11 +19,35 @@
 
 /*!
   \class SoEventCallback SoEventCallback.h Inventor/nodes/SoEventCallback.h
-  \brief The SoEventCallback class provides a method for handling events.
+  \brief The SoEventCallback class provides functionality for catching events.
   \ingroup nodes
 
-  Use SoEventCallback nodes for grabbing events during
-  SoHandleEventAction traversal.
+  Use SoEventCallback nodes in the scenegraph for catching user
+  interaction events with the scenegraph's render canvas.
+
+
+  This is how event handling works in Coin: when the user interacts
+  with the render canvas, for instance by using the mouse pointer or
+  by hitting the keyboard, the GUI interface toolkit (ie SoQt, SoWin,
+  SoXt, ...) will catch the event and translate it from a
+  windowsystem-specific event to a generic Coin event. (For the types
+  of generic Coin events, see the classes derived from SoEvent.)  This
+  event will then be wrapped inside a SoHandleEventAction and applied
+  to the scenegraph.  All this happens within the So[Qt|Xt|Win|...]
+  toolkit.
+
+  The SoHandleEventAction then traverses the scenegraph, delivering
+  the event to any node type which "is interested" in it.  The
+  SoEventCallback nodetype catches the action and forwards the event
+  to a callback function set up by the application programmer.
+
+  Be careful about which position in the scenegraph you insert
+  SoEventCallback nodes if you are also using any of the built-in Coin
+  library elements which are interested in user interaction events
+  (like for instance the dragger and manipulator classes and the
+  SoSelection nodes).  These Coin elements might catch the event for
+  themselves, short-circuiting the SoHandleEventAction traversal so
+  the event will never reach the SoEventCallback node(s) you insert.
 */
 
 #include <Inventor/nodes/SoEventCallback.h>
@@ -147,7 +171,7 @@ SoEventCallback::removeEventCallback(SoType eventtype, SoEventCallbackCB * f,
 
 /*!
   Returns the SoHandleEventAction instance currently traversing the
-  scene graph.
+  scene graph with the SoEvent-derived event object.
 */
 SoHandleEventAction *
 SoEventCallback::getAction(void) const
@@ -156,8 +180,12 @@ SoEventCallback::getAction(void) const
 }
 
 /*!
-  Returns a pointer to the event object which is currently being
-  processed.
+  Returns a pointer to the event object which is currently being sent
+  through the scenegraph.
+
+  If your application code handles the event, you probably want to
+  call SoEventCallback::setHandled() to notify the SoHandleEventAction
+  that it should stop traversing the scenegraph with the event.
 */
 const SoEvent *
 SoEventCallback::getEvent(void) const
@@ -167,6 +195,9 @@ SoEventCallback::getEvent(void) const
 
 /*!
   Returns the picked point for the current handle event traversal.
+
+  This is obviously only related to events which can be considered
+  "pick-style" events, like mousebutton presses.
 */
 const SoPickedPoint *
 SoEventCallback::getPickedPoint(void) const
@@ -181,12 +212,14 @@ SoEventCallback::getPickedPoint(void) const
 
   The rest of the callbacks registered with the node will still be
   called, but further SoEventCallback nodes in the scene will not be
-  used.
+  notified about the event, neither will any other Coin elements in
+  the scenegraph (like for instance SoDragger objects, SoSelection
+  nodes or manipulators).
 
   Since callbacks registered within the same SoEventCallback node will
   still be invoked after the event has been handled, it is likely that
-  you should use isHandled() to check for this condition from your
-  callback functions.
+  you should use SoEventCallback::isHandled() to check for this
+  condition from your callback functions.
 */
 void
 SoEventCallback::setHandled(void)

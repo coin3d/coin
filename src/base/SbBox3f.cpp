@@ -19,13 +19,13 @@
 
 /*!
   \class SbBox3f SbBox.h Inventor/SbBox.h
-  \brief The SbBox3f class is a 3 dimensional box with floating
-  point coordinates.
+  \brief The SbBox3f class is an abstraction for an axis aligned 3 dimensional box.
   \ingroup base
 
-  This box class is used by other classes in Coin for data exchange
-  and storage. It provides representation of the defining corners of a
-  box in 3D space.
+  This box abstraction class is used by other entities in the Coin
+  library for data exchange and storage. It provides a representation
+  of the defining corners of a box in 3D space, with the sides aligned
+  with the 3 principal axes.
 
   \sa SbBox2f, SbBox2s, SbXfBox3f
 */

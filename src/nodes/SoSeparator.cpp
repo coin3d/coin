@@ -113,9 +113,10 @@ int SoSeparator::numrendercaches = 2;
   beneficial to set this field to SoSeparator::OFF for the top-level
   separator node of this (sub)graph.
 
-  For now, render caching is in the beta stage. You can enable
-  render caching by setting the environment variable COIN_RENDER_CACHING to 1.
-  Separators will then be cached if the renderCaching field is set to ON.
+  For now, render caching is in the beta stage. You can enable render
+  caching by setting the environment variable COIN_RENDER_CACHING to
+  1.  Separators will then be cached if the renderCaching field is set
+  to ON.
 */
 
 /*!

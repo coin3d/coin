@@ -880,10 +880,8 @@ SoCamera::getBalanceAdjustment(void) const
   return this->balanceadjustment;
 }
 
-//
-// private methods that calculates a new orientation bases on
-// camera direction and camera up vector. Vectors must be unit length.
-//
+// Private method that calculates a new orientation based on camera
+// direction and camera up vector. Vectors must be unit length.
 void 
 SoCamera::lookAt(const SbVec3f & dir, const SbVec3f & up)
 {

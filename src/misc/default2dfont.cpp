@@ -17,6 +17,11 @@
  *
 \**************************************************************************/
 
+// Generated from 2d-font.xpm (by ???).
+
+// FIXME: add iso-latin-1 characters (and characters from other
+// character sets?). 20010823 mortene.
+
 unsigned char coin_default2dfont[][12] = {
   {  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, //
   {  0,  0, 12, 12,  0,  8, 12, 12, 12, 12, 12,  0 }, // !

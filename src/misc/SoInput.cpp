@@ -437,6 +437,9 @@ SoInput::getCurFileName(void) const
 void
 SoInput::setBuffer(void * bufpointer, size_t bufsize)
 {
+  // FIXME: shouldn't the first argument to this method rather have
+  // been a "const char *"? 20010821 mortene.
+
   this->closeFile();
   SoInput_FileInfo * newfile = new SoInput_FileInfo(bufpointer, bufsize);
   this->filestack.insert(newfile, 0);

@@ -22,9 +22,10 @@
   \brief The SoScale class is a node type for scaling scene graph geometry.
   \ingroup nodes
 
-  Use nodes of this type to apply scaling during e.g. rendering
-  traversal. Scale values are specified in a triple-value vector, with
-  one scale factor for each of the 3 axes.
+  Use nodes of this type to apply scaling operations during scenegraph
+  traversals for e.g. rendering. Scale values are specified in a
+  triple-value vector, with one scale factor for each of the 3
+  principal axes.
 */
 
 #include <Inventor/nodes/SoScale.h>
@@ -38,12 +39,22 @@
 /*!
   \var SoSFVec3f SoScale::scaleFactor
 
-  Specifies scale values along the 3 axes (i.e. scaling does not need
-  to be uniform). The most common use of scaling operations is to do
-  scaling along a single direction, in this case set the scale factor
-  values of the other two axes to 1.0.
+  Specifies scaling along the 3 axes.
 
-  The default value of this vector field is <1, 1, 1>.
+  To get a uniform scale applied to the affected shapes, set the
+  scaleFactor field to a vector with the same value for all
+  components.
+
+  A common error when doing non-uniform scaling in a single direction
+  is to set the value for the other two components of the scaleFactor
+  vector to 0. This is obviously wrong, they should be set to 1 to \e
+  not scale the shape(s) in the other two directions.
+
+  Be careful with setting scaleFactor component values to 0 or to
+  negative values.  Most shapes should handle those cases somehow, but
+  the results are undefined unless otherwise specified.
+
+  The default value of this vector field is [1.0, 1.0, 1.0].
 */
 
 // *************************************************************************
