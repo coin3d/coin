@@ -139,7 +139,7 @@ SoDragPointDragger::SoDragPointDragger(void)
   sw = SO_GET_ANY_PART(this, "zFeedbackSwitch", SoSwitch);
   SoInteractionKit::setSwitchValue(sw, SO_SWITCH_NONE);
 
-  this->currAxis = 0;
+  this->currAxis = 1;
   this->updateSwitchNodes();
 
   this->addStartCallback(SoDragPointDragger::startCB, this);
