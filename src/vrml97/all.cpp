@@ -59,7 +59,6 @@
 #include "Normal.cpp"
 #include "NormalInterpolator.cpp"
 #include "OrientationInterpolator.cpp"
-#include "OutputData.cpp"
 #include "Parent.cpp"
 #include "PixelTexture.cpp"
 #include "PlaneSensor.cpp"

@@ -759,7 +759,6 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLNormal.h \
                          @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLNormalInterpolator.h \
                          @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLOrientationInterpolator.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLOutputData.h \
                          @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLParent.h \
                          @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLPixelTexture.h \
                          @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLPlaneSensor.h \
