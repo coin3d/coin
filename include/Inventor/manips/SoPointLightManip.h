@@ -39,8 +39,8 @@ public:
   SoPointLightManip(void);
 
   SoDragger * getDragger(void);
-  SbBool replaceNode(SoPath * p);
-  SbBool replaceManip(SoPath * p, SoPointLight * newone) const;
+  SbBool replaceNode(SoPath * path);
+  SbBool replaceManip(SoPath * path, SoPointLight * newone) const;
 
   virtual void doAction(SoAction * action);
   virtual void callback(SoCallbackAction * action);
@@ -67,6 +67,11 @@ protected:
   SoFieldSensor * locationFieldSensor;
   SoFieldSensor * colorFieldSensor;
   SoChildList * children;
+
+private:
+
+  void attachSensors(const SbBool onoff);
+
 };
 
 #endif // !COIN_SOPOINTLIGHTMANIP_H
