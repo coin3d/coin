@@ -406,8 +406,7 @@ SoOutput::closeFile(void)
   \since 2003-06-10
  */
 SbBool
-SoOutput::setCompression(const SbName & compmethod,
-                         const float level = 0.5f)
+SoOutput::setCompression(const SbName & compmethod, const float level)
 {
   PRIVATE(this)->complevel = level;
   PRIVATE(this)->compmethod = compmethod;
