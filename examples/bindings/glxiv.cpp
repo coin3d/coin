@@ -1,3 +1,53 @@
+/**************************************************************************\
+ *
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 1998-2003 by Systems in Motion.  All rights reserved.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  ("GPL") version 2 as published by the Free Software Foundation.
+ *  See the file LICENSE.GPL at the root directory of this source
+ *  distribution for additional information about the GNU GPL.
+ *
+ *  For using Coin with software that can not be combined with the GNU
+ *  GPL, and for taking advantage of the additional benefits of our
+ *  support services, please contact Systems in Motion about acquiring
+ *  a Coin Professional Edition License.
+ *
+ *  See <URL:http://www.coin3d.org> for  more information.
+ *
+ *  Systems in Motion, Teknobyen, Abels Gate 5, 7030 Trondheim, NORWAY.
+ *  <URL:http://www.sim.no>.
+ *
+\**************************************************************************/
+
+// *************************************************************************
+
+// glxiv.cpp -- example demonstrating Coin (or Open Inventor) bound
+// directly into GLX/X11. Useful e.g. as a starting point if one wants
+// to make an X11 application that doesn't depend on SoXt.
+//
+
+// If you have Coin properly installed, you should be able to build by
+// simply doing:
+//
+// 	$ coin-config --build glxiv glxiv.cpp
+//
+
+// *************************************************************************
+
+// FIXME: note that there are some limitations to this example:
+//
+//  * The most important one is that events are not translated from
+//    native X11 events to Coin events (to be sent to the scene
+//    graph). This means that for instance draggers and manipulators in
+//    the scene graph will not respond to attempts at interaction.
+//
+//  * The sensor queue processing is just a hack. Don't use this
+//    in production code.
+//
+// 20031113 mortene.
+
 // *************************************************************************
 
 #include <stdlib.h>
@@ -8,57 +58,61 @@
 #include <GL/gl.h>
 #include <GL/glx.h>
 
+#include <Inventor/SoDB.h>
+#include <Inventor/SoInteraction.h>
+#include <Inventor/SoSceneManager.h>
+#include <Inventor/nodekits/SoNodeKit.h>
+#include <Inventor/nodes/SoDirectionalLight.h>
+#include <Inventor/nodes/SoPerspectiveCamera.h>
+#include <Inventor/nodes/SoRotor.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoText3.h>
+
 // *************************************************************************
 
 typedef struct {
   Display * display;
   Window window;
   GLXContext context;
+
+  SoSceneManager * scenemanager;
 } WindowData;
 
 // *************************************************************************
 
 static void
-draw_scene(WindowData * win)
+draw_scene(void * userdata, SoSceneManager * scenemanager)
 {
-  glClearColor(0.0, 0.0, 0.0, 0.0);
-  glClear(GL_COLOR_BUFFER_BIT);
+  // FIXME: should set near and far planes properly before
+  // rendering. 20031113 mortene.
 
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
+  scenemanager->render();
 
-  glBegin(GL_POLYGON);
-  glColor3f(1.0, 0.0, 0.0);
-  glVertex3f(0.0, 0.0, 0.0);
-
-  glColor3f(0.0, 1.0, 0.0);
-  glVertex3f(0.5, 0.0, 0.0);
-
-  glColor3f(0.0, 0.0, 1.0);
-  glVertex3f(0.5, 0.5, 0.0);
-  glEnd();
-
+  WindowData * win = (WindowData *)userdata;
   glXSwapBuffers(win->display, win->window);
 }
 
+// *************************************************************************
+
 static void
-make_window(WindowData * win,
-	    int x, int y, unsigned int width, unsigned int height)
+make_glx_window(WindowData * win,
+		int x, int y, unsigned int width, unsigned int height)
 {
   int attrib[] = {
     GLX_RGBA,
     GLX_RED_SIZE, 1,
     GLX_GREEN_SIZE, 1,
     GLX_BLUE_SIZE, 1,
+    GLX_DEPTH_SIZE, 1,
     GLX_DOUBLEBUFFER,
     None
   };
 
 
-  const int scrnum = DefaultScreen(win->dpy);
-  const Window rootwindow = RootWindow(win->dpy, scrnum);
+  const int scrnum = DefaultScreen(win->display);
+  const Window rootwindow = RootWindow(win->display, scrnum);
 
-  XVisualInfo * visinfo = glXChooseVisual(win->dpy, scrnum, attrib);
+  XVisualInfo * visinfo = glXChooseVisual(win->display, scrnum, attrib);
   if (!visinfo) {
     (void)fprintf(stderr, "Error: couldn't get an RGB, double-buffered visual.\n");
     exit(1);
@@ -67,11 +121,11 @@ make_window(WindowData * win,
   XSetWindowAttributes attr;
   attr.background_pixel = 0;
   attr.border_pixel = 0;
-  attr.colormap = XCreateColormap(win->dpy, rootwindow, visinfo->visual, AllocNone);
+  attr.colormap = XCreateColormap(win->display, rootwindow, visinfo->visual, AllocNone);
   attr.event_mask = StructureNotifyMask | ExposureMask | KeyPressMask;
   unsigned long mask = CWBackPixel | CWBorderPixel | CWColormap | CWEventMask;
 
-  win->window = XCreateWindow(win->dpy, rootwindow, 0, 0, width, height,
+  win->window = XCreateWindow(win->display, rootwindow, 0, 0, width, height,
 			      0, visinfo->depth, InputOutput,
 			      visinfo->visual, mask, &attr);
   
@@ -82,13 +136,13 @@ make_window(WindowData * win,
     sizehints.width  = width;
     sizehints.height = height;
     sizehints.flags = USSize | USPosition;
-    XSetNormalHints(win->dpy, win->window, &sizehints);
+    XSetNormalHints(win->display, win->window, &sizehints);
     const char * name = "Coin in GLX";
-    XSetStandardProperties(win->dpy, win->window, name, name,
+    XSetStandardProperties(win->display, win->window, name, name,
                            None, (char **)NULL, 0, &sizehints);
   }
 
-  win->context = glXCreateContext(win->dpy, visinfo, NULL, True);
+  win->context = glXCreateContext(win->display, visinfo, NULL, True);
   if (!win->context) {
     (void)fprintf(stderr, "Error: glXCreateContext() failed.\n");
     exit(1);
@@ -100,7 +154,7 @@ make_window(WindowData * win,
 // *************************************************************************
 
 static void
-event_loop(WindowData *win)
+event_loop(WindowData * win)
 {
   while (1) {
     static long mask = StructureNotifyMask | ExposureMask | KeyPressMask;
@@ -110,30 +164,75 @@ event_loop(WindowData *win)
         switch (event.type) {
 
         case Expose:
-          draw_scene(win);
+          draw_scene(win, win->scenemanager);
           break;
 
         case ConfigureNotify:
-          glViewport(0, 0,
-                     event.xconfigure.width, event.xconfigure.height);
+	  {
+	    const int w = event.xconfigure.width;
+	    const int h = event.xconfigure.height;
+
+	    win->scenemanager->setWindowSize(SbVec2s(w, h));
+	    win->scenemanager->setSize(SbVec2s(w, h));
+	    win->scenemanager->setViewportRegion(SbViewportRegion(w, h));
+	    win->scenemanager->scheduleRedraw();
+	  }
           break;
 
         case KeyPress:
           {
-            char buffer[10];
-            int r;
-            r = XLookupString(&event.xkey, buffer, sizeof(buffer),
-                              NULL, NULL);
-            if (buffer[0] == 27) {
-              /* escape */
-              return;
-            }
+            char buffer[1] = "";
+            (void)XLookupString(&event.xkey, buffer, sizeof(buffer), NULL, NULL);
+            if (buffer[0] == /* Esc: */ 27) { return; }
           }
 	  break;
         }
       }
     }
+
+    // FIXME: should do this properly á la SoXt, to avoid using ~100%
+    // CPU. 20031113 mortene.
+    SoDB::getSensorManager()->processTimerQueue();
+    SoDB::getSensorManager()->processDelayQueue(TRUE);
   }
+}
+
+// *************************************************************************
+
+static void
+make_coin_scenegraph(WindowData * win)
+{
+  SoSeparator * root = new SoSeparator;
+  root->ref();
+
+  SoPerspectiveCamera * camera = new SoPerspectiveCamera;
+  root->addChild(camera);
+
+  SoDirectionalLight * light = new SoDirectionalLight;
+  light->direction.setValue(-0.5, -0.5, 1);
+  root->addChild(light);
+
+  SoDirectionalLight * l = new SoDirectionalLight;
+  l->direction = - light->direction.getValue();
+  root->addChild(l);
+
+  SoRotor * rotor = new SoRotor;
+  rotor->rotation.setValue(SbVec3f(0, 1, 0), 0.1f);
+  rotor->speed = 0.2;
+  root->addChild(rotor);
+
+  SoText3 * text3 = new SoText3;
+  text3->string = "Coin 3D";
+  text3->justification = SoText3::CENTER;
+  text3->parts = SoText3::ALL;
+  root->addChild(text3);
+
+  win->scenemanager = new SoSceneManager;
+  win->scenemanager->setRenderCallback(draw_scene, win);
+  win->scenemanager->activate();
+  win->scenemanager->setSceneGraph(root);
+
+  camera->viewAll(root, win->scenemanager->getViewportRegion());
 }
 
 // *************************************************************************
@@ -141,23 +240,33 @@ event_loop(WindowData *win)
 int
 main(int argc, char *argv[])
 {
+  // Initialize Coin.
+  SoDB::init();
+  SoDB::setRealTimeInterval(1/120.0);
+  SoNodeKit::init();
+  SoInteraction::init();
+
   Display * dpy = XOpenDisplay(NULL);
   if (!dpy) {
     (void)fprintf(stderr, "Error: couldn't open default display.\n");
     exit(1);
   }
 
-  WindowData win = { dpy, NULL, NULL };
-  make_window(&win, 100, 100, 400, 400);
+  WindowData win = { dpy, 0, NULL, NULL };
+  make_glx_window(&win, 100, 100, 400, 400);
+  make_coin_scenegraph(&win);
 
-  XMapWindow(win.dpy, win.window);
-  glXMakeCurrent(win.dpy, win.window, win.context);
+  XMapWindow(win.display, win.window);
+  glXMakeCurrent(win.display, win.window, win.context);
+
+  glEnable(GL_DEPTH_TEST);
+  glEnable(GL_LIGHTING);
 
   event_loop(&win);
 
-  glXDestroyContext(win.dpy, win.context);
-  XDestroyWindow(win.dpy, win.window);
-  XCloseDisplay(win.dpy);
+  glXDestroyContext(win.display, win.context);
+  XDestroyWindow(win.display, win.window);
+  XCloseDisplay(win.display);
 
   return 0;
 }
