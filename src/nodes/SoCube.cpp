@@ -112,10 +112,6 @@ SoCube::GLRender(SoGLRenderAction * action)
     (SoTextureCoordinateElement::getType(state) ==
      SoTextureCoordinateElement::FUNCTION);
 
-  const SoTextureCoordinateElement * tce;
-  if (useTexFunc)
-    tce = SoTextureCoordinateElement::getInstance(state);
-
   SbBool sendNormals =
     (SoLightModelElement::get(state) !=
      SoLightModelElement::BASE_COLOR);
