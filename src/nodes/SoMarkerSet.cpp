@@ -1398,9 +1398,9 @@ SoMarkerSet::addMarker(int markerIndex, const SbVec2s & size,
   Returns data for marker at \a markerIndex in the \a size, \a bytes and
   \a isLSBFirst parameters.
 
-  \retval false No marker defined for given \a markerIndex, or markerIndex is 
+  \retval FALSE No marker defined for given \a markerIndex, or markerIndex is 
   NONE (not removable).
-  \retval true  OK.
+  \retval TRUE  OK.
 */
 SbBool
 SoMarkerSet::getMarker(int markerIndex, SbVec2s & size,
@@ -1420,9 +1420,9 @@ SoMarkerSet::getMarker(int markerIndex, SbVec2s & size,
 /*!
   Removes marker at \a markerIndex.
 
-  \retval false No marker defined for given \a markerIndex, or markerIndex is 
+  \retval FALSE No marker defined for given \a markerIndex, or markerIndex is 
   NONE (not removable).
-  \retval true  OK.
+  \retval TRUE  OK.
 */
 SbBool
 SoMarkerSet::removeMarker(int markerIndex)
