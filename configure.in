@@ -212,6 +212,8 @@ AM_MAINTAINER_MODE
 case "$host_os" in
   irix*)
     if test x"${AR+set}" != x"set"; then
+      # FIXME: should test that it is actually SGI IRIX Mipspro CC which
+      # is used for the build, and not for instance GNU g++. 20010110 mortene.
       AR="CC -ar"
       AR_FLAGS=
       export AR AR_FLAGS
