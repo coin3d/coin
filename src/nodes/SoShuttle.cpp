@@ -31,6 +31,8 @@
 
 #include <Inventor/nodes/SoShuttle.h>
 #include <Inventor/nodes/SoSubNodeP.h>
+#include <Inventor/SoOutput.h>
+#include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/engines/SoCalculator.h>
 #include <Inventor/engines/SoElapsedTime.h>
 #include <Inventor/engines/SoInterpolateVec3f.h>
@@ -110,7 +112,42 @@ SoShuttle::initClass(void)
 void
 SoShuttle::write(SoWriteAction * action)
 {
-  // Decouple connections to/from internal engine to avoid it being
+  SoOutput * out = action->getOutput();
+
+  // Decouple connections to/from internal engines to avoid them being
+  // written. (Only done at first pass.)
+  if (out->getStage() == SoOutput::COUNT_REFS)
+    this->deconnectInternalEngines();
+
+  inherited::write(action);
+
+  // Reenable all connections to/from internal engine. (Only done at
+  // last pass.)
+  if (out->getStage() == SoOutput::WRITE)
+    this->reconnectInternalEngines();
+}
+
+// Overloaded to decouple and reconnect engine around copy operation.
+SoNode *
+SoShuttle::copy(SbBool copyconnections) const
+{
+  // Decouple connections to/from internal engines to avoid them being
+  // copied.
+  ((SoShuttle *)this)->deconnectInternalEngines();
+
+  SoShuttle * cp = (SoShuttle *)inherited::copy(copyconnections);
+
+  // Reenable all connections to/from internal engines.
+  ((SoShuttle *)this)->reconnectInternalEngines();
+
+  return cp;
+}
+
+// Remove connections to and from internal engines.
+void
+SoShuttle::deconnectInternalEngines(void)
+{
+  // Decouple connections to/from internal engines to avoid them being
   // written.
   this->timer->on.disconnect(&this->on);
   this->timer->on = FALSE;
@@ -118,17 +155,17 @@ SoShuttle::write(SoWriteAction * action)
   this->interpolator->input0.disconnect(&this->translation0);
   this->interpolator->input1.disconnect(&this->translation1);
   this->translation.disconnect(&this->interpolator->output);
+}
 
-  inherited::write(action);
 
-  // Reenable all connections to/from internal engine.
+// Reset connections to and from internal engines.
+void
+SoShuttle::reconnectInternalEngines(void)
+{
+  // Reenable all connections to/from internal engines.
   this->timer->on.connectFrom(&this->on);
   this->calculator->b.connectFrom(&this->speed);
   this->interpolator->input0.connectFrom(&this->translation0);
   this->interpolator->input1.connectFrom(&this->translation1);
   this->translation.connectFrom(&this->interpolator->output);
-
-  // Make sure "on" field of the timer engine get synchronized with
-  // the "on" field of the shuttle.
-  this->on.touch();
 }

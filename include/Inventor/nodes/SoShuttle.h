@@ -50,6 +50,10 @@ protected:
   virtual ~SoShuttle();
 
 private:
+  virtual SoNode * copy(SbBool copyconnections = FALSE) const;
+  void deconnectInternalEngines(void);
+  void reconnectInternalEngines(void);
+
   SoInterpolateVec3f * interpolator;
   SoCalculator * calculator;
   SoElapsedTime * timer;
