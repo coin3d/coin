@@ -391,13 +391,16 @@ float
 SoLazyElement::getTransparency(SoState *state, int index)
 {
   SoLazyElement * elem = getInstance(state);
+
   if (elem->coinstate.packeddiffuse) {
     float transp;
     SbColor dummy;
-    dummy.setPackedValue(elem->coinstate.packedarray[index], transp);
+    const int numt = elem->coinstate.numdiffuse;
+    dummy.setPackedValue(elem->coinstate.packedarray[index < numt ? index : numt-1], transp);
     return transp;
   }
-  return elem->coinstate.transparray[index];
+  const int numt = elem->coinstate.numtransp; 
+  return elem->coinstate.transparray[index < numt ? index : numt-1];
 }
 
 // ! FIXME: write doc
