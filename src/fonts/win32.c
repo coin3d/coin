@@ -28,7 +28,10 @@
 #include <stdlib.h>
 #include <assert.h>
 
+#include "win32.h"
+
 #include <Inventor/C/glue/flwwin32.h>
+#include <Inventor/C/glue/GLUWrapper.h>
 
 /* ************************************************************************* */
 
@@ -73,8 +76,38 @@ void cc_flww32_get_kerning(void * font, int glyph1, int glyph2, float *x, float 
 void cc_flww32_done_glyph(void * font, int glyph) { assert(FALSE); }
   
 struct cc_flw_bitmap * cc_flww32_get_bitmap(void * font, int glyph) { assert(FALSE); return NULL; }
+struct cc_flw_vector_glyph * cc_flww32_get_vector_glyph(void * font, unsigned int glyph){ assert(FALSE); return NULL; }
+
+float * cc_flww32_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph) { assert(FALSE); return NULL; }
+int * cc_flww32_get_vector_glyph_faceidx(struct cc_flw_vector_glyph * vecglyph) { assert(FALSE); return NULL; }
+int * cc_flww32_get_vector_glyph_edgeidx(struct cc_flw_vector_glyph * vecglyph) { assert(FALSE); return NULL; }
+
 
 #else /* HAVE_WIN32_API */
+
+static coin_GLUtessellator * flww32_tesselator_object;
+static SbBool flww32_contour_open;
+static GLenum flww32_triangle_mode;
+static int flww32_triangle_fan_root_index;
+static int flww32_triangle_indices[3];
+static int flww32_triangle_index_counter;
+static SbBool flww32_triangle_strip_flipflop;
+static int flww32_vertex_counter;
+static int flww32_font3dsize = 200;
+static float flww32_vertex_scale;
+
+static void CALLBACK flww32_vertexCallback(GLvoid * vertex);
+static void CALLBACK flww32_beginCallback(GLenum which);
+static void CALLBACK flww32_endCallback(void);
+static void CALLBACK flww32_combineCallback(GLdouble coords[3], GLvoid * data, GLfloat weight[4], int **dataOut);
+static void CALLBACK flww32_errorCallback(GLenum error_code);
+static void flww32_addTessVertex(double * vertex);
+
+static void flww32_buildVertexList(struct cc_flw_vector_glyph * newglyph);
+static void flww32_buildFaceIndexList(struct cc_flw_vector_glyph * newglyph);
+static void flww32_buildEdgeIndexList(struct cc_flw_vector_glyph * newglyph);
+
+
 
 /* ************************************************************************* */
 
@@ -95,6 +128,15 @@ struct cc_flw_bitmap * cc_flww32_get_bitmap(void * font, int glyph) { assert(FAL
 #include "fontlib_wrapper.h"
 
 /* ************************************************************************* */
+
+struct cc_flww32_glyph_lists {
+  cc_list * vertexlist;
+  cc_list * faceindexlist;
+  cc_list * edgeindexlist;
+};
+
+static struct cc_flww32_glyph_lists * flww32_vector_glyph_lists;
+
 
 struct cc_flww32_globals_s {
   /* Offscreen device context for connecting to fonts. */
@@ -204,6 +246,13 @@ cc_flww32_initialize(void)
 
   cc_flww32_globals.font2glyphhash = cc_hash_construct(17, 0.75);
 
+  /* Setup temporary glyph-struct used during for tessellation */
+  flww32_vector_glyph_lists = (struct cc_flww32_glyph_lists *) malloc(sizeof(struct cc_flww32_glyph_lists));
+  flww32_vector_glyph_lists->vertexlist = NULL;
+  flww32_vector_glyph_lists->faceindexlist = NULL;
+  flww32_vector_glyph_lists->edgeindexlist = NULL;
+
+
   return TRUE;
 }
 
@@ -231,12 +280,13 @@ void *
 cc_flww32_get_font(const char * fontname, int sizex, int sizey)
 {
   cc_hash * glyphhash;
-  HFONT wfont = CreateFont(sizey,
+  HFONT wfont = CreateFont(-sizey,
                            /* FIXME: should we let width==0 instead of
                               sizex for better chance of getting a
                               match? 20030610 mortene. */
                            0, /* really sizex, but let Win32 choose to get correct aspect ratio */
-                           0, 0, /* escapement, orientation */
+                           0, /* escapement */
+						   0, /* orientation */
                            FW_DONTCARE, /* weight */
                            FALSE, FALSE, FALSE, /* italic, underline, strikeout */
                            /* FIXME: using DEFAULT_CHARSET is probably
@@ -256,6 +306,7 @@ cc_flww32_get_font(const char * fontname, int sizex, int sizey)
                            PROOF_QUALITY, /* output quality */
                            DEFAULT_PITCH, /* pitch and family */
                            fontname); /* typeface name */
+
 
   if (!wfont) {
     DWORD lasterr = GetLastError();
@@ -553,5 +604,411 @@ cc_flww32_get_bitmap(void * font, int glyph)
   
   return bm;
 }
+
+
+static void
+flww32_getVerticesFromPath(HDC hdc)
+{
+
+	double * vertex;
+    LPPOINT p_points = NULL;
+    LPBYTE p_types = NULL;
+	int numpoints, i, lastmoveto;
+
+    if (FlattenPath(hdc) == 0) {
+		cc_win32_print_error("getVerticesFromPath", "FlattenPath()", GetLastError());
+		assert(FALSE);
+	}
+
+
+    /* determine the number of endpoints in the path*/
+    numpoints = GetPath(hdc, NULL, NULL, 0);
+        
+    if (numpoints > 0) {
+		/* allocate memory for the point data and for the vertex types  */
+		p_points = (POINT *)malloc(numpoints * sizeof(POINT));
+        p_types = (BYTE *)malloc(numpoints * sizeof(BYTE));
+        
+        /* get the path's description */
+        GetPath(hdc, p_points, p_types, numpoints);
+                       
+        /* go through the endpoints */
+        for (i = 0; i < numpoints; i++) {
+            
+	
+            /* if this endpoint starts a new contour */
+            if (p_types[i] == PT_MOVETO) {
+
+				lastmoveto = i;	
+				if (flww32_contour_open)
+					GLUWrapper()->gluTessEndContour(flww32_tesselator_object);
+
+				GLUWrapper()->gluTessBeginContour(flww32_tesselator_object);
+				flww32_contour_open = TRUE;
+            }
+                
+					
+		    /* Close the figure ? */
+			if (p_types[i] & PT_CLOSEFIGURE) {
+				
+				vertex = (double *) malloc(3*sizeof(double));
+				vertex [0] = p_points[lastmoveto].x;
+				vertex [1] = p_points[lastmoveto].y;
+				vertex [2] = 0;
+				flww32_addTessVertex(vertex);
+
+			} else {
+
+				vertex = (double *) malloc(3*sizeof(double));
+				vertex [0] = p_points[i].x;
+				vertex [1] = p_points[i].y;
+				vertex [2] = 0;
+				flww32_addTessVertex(vertex);		
+
+			}
+
+        }
+       
+        if (p_points != NULL) free(p_points);
+	    if (p_types != NULL) free(p_types);
+	    
+    }
+    
+
+}
+
+cc_flw_vector_glyph *
+cc_flww32_get_vector_glyph(void * font, unsigned int glyph)
+{
+
+  HDC memdc;
+  HBITMAP membmp;
+  HDC screendc;
+  TCHAR string[1];
+  struct cc_flw_vector_glyph * new_vector_glyph;
+  char * fontname;
+
+
+  if (!GLUWrapper()->available) {
+    cc_debugerror_post("cc_flww32_get_vector_glyph","GLU library not available.");
+    return NULL;
+  }
+
+  if ((GLUWrapper()->gluNewTess == NULL) ||
+      (GLUWrapper()->gluTessCallback == NULL) ||
+      (GLUWrapper()->gluTessBeginPolygon == NULL) ||
+      (GLUWrapper()->gluTessEndContour == NULL) ||
+      (GLUWrapper()->gluTessEndPolygon == NULL) ||
+      (GLUWrapper()->gluDeleteTess == NULL) ||
+      (GLUWrapper()->gluTessVertex == NULL) ||
+      (GLUWrapper()->gluTessBeginContour == NULL)) {
+    cc_debugerror_post("cc_flww32_get_vector_glyph","Unable to binding GLU tessellation functions for 3D font support.");
+    return NULL;
+  }
+
+ 
+  /* 
+   Due to the way W32 handles the fonts, a new font object must be 
+   created if size is to be changed. 
+  */
+  /*
+   FIXME: the cc_flww32_done_glyph() should have been implemented 
+   and called here to prevent possible accumulation of glyphs. 
+   (20030912 handegar)
+  */
+  fontname = malloc(64*sizeof(char));
+  SelectObject(cc_flww32_globals.devctx, font);
+  GetTextFace(cc_flww32_globals.devctx, 64, fontname);
+  font = cc_flww32_get_font(fontname, flww32_font3dsize, flww32_font3dsize);
+  free(fontname);
+
+
+  memdc = CreateCompatibleDC(NULL);
+  screendc = GetDC(NULL);
+  membmp = CreateCompatibleBitmap(screendc, 300, 300);
+  SelectObject(memdc, membmp);
+  SelectObject(memdc, font);
+  
+  string[0] = glyph;
+  
+  SetBkMode(memdc, TRANSPARENT);
+  BeginPath(memdc);
+  if (!TextOut(memdc, 0, 0, string, 1)) {
+    cc_win32_print_error("cc_flww32_get_vector_glyph","TextOut()", GetLastError());
+    return NULL;
+  }
+  EndPath(memdc);
+
+  if (flww32_vector_glyph_lists->vertexlist == NULL)
+    flww32_vector_glyph_lists->vertexlist = cc_list_construct();
+  if (flww32_vector_glyph_lists->faceindexlist == NULL)
+    flww32_vector_glyph_lists->faceindexlist = cc_list_construct();
+  if (flww32_vector_glyph_lists->edgeindexlist == NULL)
+    flww32_vector_glyph_lists->edgeindexlist = cc_list_construct();
+  
+  flww32_tesselator_object = GLUWrapper()->gluNewTess(); /* static object pointer */
+  flww32_contour_open = FALSE; /* static flag indicating if contour shall be closed */ 
+  flww32_vertex_scale = 1.0f; /* static float indicating scaling of every vertice */
+  flww32_triangle_mode = 0;
+  flww32_triangle_index_counter = 0;
+  flww32_triangle_strip_flipflop = FALSE;
+  flww32_vertex_counter = 0;
+
+
+  GLUWrapper()->gluTessCallback(flww32_tesselator_object, GLU_TESS_VERTEX, (gluTessCallback_cb_t)flww32_vertexCallback);
+  GLUWrapper()->gluTessCallback(flww32_tesselator_object, GLU_TESS_BEGIN, (gluTessCallback_cb_t)flww32_beginCallback);
+  GLUWrapper()->gluTessCallback(flww32_tesselator_object, GLU_TESS_END, (gluTessCallback_cb_t)flww32_endCallback);
+  GLUWrapper()->gluTessCallback(flww32_tesselator_object, GLU_TESS_COMBINE, (gluTessCallback_cb_t)flww32_combineCallback);
+  GLUWrapper()->gluTessCallback(flww32_tesselator_object, GLU_TESS_ERROR, (gluTessCallback_cb_t)flww32_errorCallback);
+
+  GLUWrapper()->gluTessBeginPolygon(flww32_tesselator_object, NULL);
+  flww32_getVerticesFromPath(memdc);
+  if (flww32_contour_open)
+    GLUWrapper()->gluTessEndContour(flww32_tesselator_object);
+  GLUWrapper()->gluTessEndPolygon(flww32_tesselator_object);  
+
+  GLUWrapper()->gluDeleteTess(flww32_tesselator_object);
+  
+
+  cc_list_append(flww32_vector_glyph_lists->faceindexlist, (void *) -1);  
+  cc_list_append(flww32_vector_glyph_lists->edgeindexlist, (void *) -1);
+
+
+  /* Copy the static vector_glyph struct to a newly allocated struct
+     returned to the user. This is done due to the fact that the
+     tessellation callback solution needs a static working struct. */
+  new_vector_glyph = (struct cc_flw_vector_glyph *) malloc(sizeof(struct cc_flw_vector_glyph));
+
+  flww32_buildVertexList(new_vector_glyph);
+  flww32_buildFaceIndexList(new_vector_glyph);
+  flww32_buildEdgeIndexList(new_vector_glyph);
+  
+  return new_vector_glyph; 
+
+}
+
+
+static void
+flww32_addTessVertex(double * vertex)
+{
+
+  int * counter;
+  float * point;
+  point = malloc(sizeof(float)*2);
+  point[0] = flww32_vertex_scale * ((float) vertex[0]);
+  point[1] = flww32_vertex_scale * ((float) vertex[1]);
+  cc_list_append(flww32_vector_glyph_lists->vertexlist, point);
+  
+  counter = malloc(sizeof(int));
+  counter[0] = flww32_vertex_counter++;
+  GLUWrapper()->gluTessVertex(flww32_tesselator_object, vertex, counter);
+ 
+}
+
+
+
+static void CALLBACK
+flww32_vertexCallback(GLvoid * data)
+{
+
+  int index;
+  index = ((int *) data)[0];
+
+
+  if ((flww32_triangle_fan_root_index == -1) &&
+     (flww32_triangle_index_counter == 0)) {
+    flww32_triangle_fan_root_index = index;
+  }
+
+  if (flww32_triangle_mode == GL_TRIANGLE_FAN) {      
+    if (flww32_triangle_index_counter == 0) {
+      flww32_triangle_indices[0] = flww32_triangle_fan_root_index; 
+      flww32_triangle_indices[1] = index;
+      ++flww32_triangle_index_counter;
+    } 
+    else flww32_triangle_indices[flww32_triangle_index_counter++] = index;
+  }
+  else {
+    flww32_triangle_indices[flww32_triangle_index_counter++] = index; 
+  }
+  
+  assert(flww32_triangle_index_counter < 4);
+
+  if (flww32_triangle_index_counter == 3) {
+    
+    
+    if (flww32_triangle_mode == GL_TRIANGLE_STRIP) { 
+      if (flww32_triangle_strip_flipflop) {        
+        index = flww32_triangle_indices[1];
+        flww32_triangle_indices[1] = flww32_triangle_indices[2];
+        flww32_triangle_indices[2] = index;
+      }
+    }
+    
+
+    cc_list_append(flww32_vector_glyph_lists->faceindexlist, (void *) flww32_triangle_indices[0]);  
+    cc_list_append(flww32_vector_glyph_lists->faceindexlist, (void *) flww32_triangle_indices[1]);  
+    cc_list_append(flww32_vector_glyph_lists->faceindexlist, (void *) flww32_triangle_indices[2]);  
+    
+    cc_list_append(flww32_vector_glyph_lists->edgeindexlist, (void *) flww32_triangle_indices[0]);  
+    cc_list_append(flww32_vector_glyph_lists->edgeindexlist, (void *) flww32_triangle_indices[1]);  
+    cc_list_append(flww32_vector_glyph_lists->edgeindexlist, (void *) flww32_triangle_indices[2]);  
+    
+    if (flww32_triangle_mode == GL_TRIANGLE_FAN) {
+      flww32_triangle_indices[1] = flww32_triangle_indices[2];
+      flww32_triangle_index_counter = 2;
+    }
+
+    else if (flww32_triangle_mode == GL_TRIANGLE_STRIP) {
+
+      if (flww32_triangle_strip_flipflop) {        
+        index = flww32_triangle_indices[1];
+        flww32_triangle_indices[1] = flww32_triangle_indices[2];
+        flww32_triangle_indices[2] = index;
+      }
+
+      flww32_triangle_indices[0] = flww32_triangle_indices[1];
+      flww32_triangle_indices[1] = flww32_triangle_indices[2];
+      flww32_triangle_index_counter = 2;    
+      flww32_triangle_strip_flipflop = !flww32_triangle_strip_flipflop;
+
+    } else flww32_triangle_index_counter = 0;
+
+  } 
+
+}
+
+static void CALLBACK
+flww32_beginCallback(GLenum which)
+{
+  flww32_triangle_mode = which;
+  if (which == GL_TRIANGLE_FAN)
+    flww32_triangle_fan_root_index = -1;
+  else
+    flww32_triangle_fan_root_index = 0;
+  flww32_triangle_index_counter = 0;
+  flww32_triangle_strip_flipflop = FALSE;
+  
+}
+    
+static void CALLBACK 
+flww32_endCallback(void)
+{
+}
+
+static void CALLBACK 
+flww32_combineCallback(GLdouble coords[3], GLvoid * vertex_data, GLfloat weight[4], int **dataOut)
+{
+
+  int * ret;  
+  float * point;
+  point = malloc(sizeof(float)*2);
+  point[0] = flww32_vertex_scale * ((float) coords[0]);
+  point[1] = flww32_vertex_scale * ((float) coords[1]);
+
+  cc_list_append(flww32_vector_glyph_lists->vertexlist, point);
+
+  ret = malloc(sizeof(int));
+  ret[0] = flww32_vertex_counter++;
+  
+  *dataOut = ret;
+
+}
+
+static void CALLBACK 
+flww32_errorCallback(GLenum error_code)
+{
+  cc_debugerror_post("flww32_errorCallback","Error when tesselating glyph (GLU errorcode: %d):, investigate.", error_code); 
+}
+
+static void
+flww32_buildVertexList(struct cc_flw_vector_glyph * newglyph)
+{
+
+  int numcoords,i;
+  float * coord;
+
+  assert(flww32_vector_glyph_lists->vertexlist && "Error fetching vector glyph coordinates\n");
+  numcoords = cc_list_get_length(flww32_vector_glyph_lists->vertexlist);
+
+  newglyph->vertices = (float *) malloc(sizeof(float)*numcoords*2);
+
+  for (i=0;i<numcoords;++i) {
+    coord = (float *) cc_list_get(flww32_vector_glyph_lists->vertexlist,i);
+
+    /* Must flip and translate glyph due to the W32 coord system 
+	   which has a y-axis pointing downwards */
+    newglyph->vertices[i*2 + 0] = coord[0] / flww32_font3dsize;
+    newglyph->vertices[i*2 + 1] = (-coord[1] / flww32_font3dsize) + 1; 
+    free(coord);
+  }
+
+  cc_list_destruct(flww32_vector_glyph_lists->vertexlist);
+  flww32_vector_glyph_lists->vertexlist = NULL;
+
+}
+
+float *
+cc_flww32_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph)
+{   
+  assert(vecglyph->vertices && "Vertices not initialized properly");
+  return vecglyph->vertices;
+} 
+
+
+static void
+flww32_buildEdgeIndexList(struct cc_flw_vector_glyph * newglyph)
+{
+
+  int i,len;
+
+  assert(flww32_vector_glyph_lists->edgeindexlist);
+ 
+  len = cc_list_get_length(flww32_vector_glyph_lists->edgeindexlist);
+  newglyph->edgeindices = (int *) malloc(sizeof(int)*len);
+
+  for (i=0;i<len;++i) 
+    newglyph->edgeindices[i] = (int) cc_list_get(flww32_vector_glyph_lists->edgeindexlist, i);
+  
+  cc_list_destruct(flww32_vector_glyph_lists->edgeindexlist);
+  flww32_vector_glyph_lists->edgeindexlist = NULL;
+
+}
+
+int *
+cc_flww32_get_vector_glyph_edgeidx(struct cc_flw_vector_glyph * vecglyph)
+{
+  assert(vecglyph->edgeindices && "Edge indices not initialized properly");
+  return vecglyph->edgeindices;
+} 
+
+static void
+flww32_buildFaceIndexList(struct cc_flw_vector_glyph * newglyph)
+{
+  int len,i;
+
+  assert(flww32_vector_glyph_lists->faceindexlist);
+  
+  len = cc_list_get_length(flww32_vector_glyph_lists->faceindexlist);
+  newglyph->faceindices = (int *) malloc(sizeof(int)*len);
+
+  for (i=0;i<len;++i)
+    newglyph->faceindices[i] = (int) cc_list_get(flww32_vector_glyph_lists->faceindexlist, i);
+ 
+  cc_list_destruct(flww32_vector_glyph_lists->faceindexlist);
+  flww32_vector_glyph_lists->faceindexlist = NULL;
+
+}
+
+int *
+cc_flww32_get_vector_glyph_faceidx(struct cc_flw_vector_glyph * vecglyph)
+{  
+  assert(vecglyph->faceindices && "Face indices not initialized properly");
+  return vecglyph->faceindices;
+} 
+
+
+
+
 
 #endif /* HAVE_WIN32_API */

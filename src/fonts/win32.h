@@ -53,7 +53,12 @@ extern "C" {
   void cc_flww32_done_glyph(void * font, int glyph);
   
   struct cc_flw_bitmap * cc_flww32_get_bitmap(void * font, int glyph);
-  
+  struct cc_flw_vector_glyph * cc_flww32_get_vector_glyph(void * font, unsigned int glyph);
+
+  float * cc_flww32_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph);
+  int * cc_flww32_get_vector_glyph_faceidx(struct cc_flw_vector_glyph * vecglyph);
+  int * cc_flww32_get_vector_glyph_edgeidx(struct cc_flw_vector_glyph * vecglyph);
+
 #ifdef __cplusplus
 }
 #endif
