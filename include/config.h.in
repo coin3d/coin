@@ -133,6 +133,9 @@
 /* Define if you have the <stdint.h> header file. */
 #undef HAVE_STDINT_H
 
+/* Define to use BSD4.3 strncasecmp() */
+#undef HAVE_STRNCASECMP
+
 /* *EXPERIMENTAL* to use the GLU we've "appropriated" from SGI */
 #undef HAVE_SUPERGLU
 

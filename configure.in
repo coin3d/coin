@@ -522,6 +522,22 @@ AC_TRY_LINK([
   AC_MSG_RESULT([no])
 ])
 
+# *******************************************************************
+# Test for misc functions, typically not part of neither ISO C or POSIX.
+
+AC_MSG_CHECKING([for strncasecmp() function])
+AC_TRY_LINK([
+#include <string.h>
+], [
+  (void)strncasecmp(NULL, NULL, 0);
+], [
+  AC_MSG_RESULT([yes])
+  AC_DEFINE([HAVE_STRNCASECMP],, [Define to use BSD4.3 strncasecmp()])
+], [
+  AC_MSG_RESULT([no])
+])
+
+
 
 # *******************************************************************
 # * Test to see if dynamic linking through either the (Linux/IRIX/...)
