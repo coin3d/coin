@@ -142,23 +142,8 @@ echo "Running automake (generating the Makefile.in files)..."
 ( automake $AUTOMAKE_ADD 3>&1 1>&2 2>&3 | \
   grep -v 'not a standard library name' ) 3>&1 1>&2 2>&3
 
-if test -f configure.ac.patch; then
-  echo "Patching configure.ac with Automake-incompatible features..."
-  if patch -p0 --no-backup-if-mismatch <configure.ac.patch >/dev/null; then
-    :
-  else
-    echo >&2 "failed"
-    exit 1
-  fi
-fi
-
 echo "Running autoconf (generating the configure script)..."
 ( autoconf 3>&1 1>&2 2>&3 | grep -v AR_FLAGS) 3>&1 1>&2 2>&3
-
-if test -f configure.ac.patch; then
-  echo "Removing Automake-incompatibilities from configure.ac again..."
-  patch -R -p0 --no-backup-if-mismatch <configure.ac.patch >/dev/null
-fi
 
 echo "Done."
 
