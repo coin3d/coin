@@ -3446,7 +3446,7 @@ else
 fi
 rm -f conftest*
 
-      if test "x$simage_dev" = "xno"; then
+        if test "x$simage_dev" = "xno"; then
     _COINPREFIX=$prefix
     test "x$_COINPREFIX" = xNONE && _COINPREFIX=$ac_default_prefix
     _COINEPREFIX=$exec_prefix

@@ -20,6 +20,7 @@
 #ifndef __SOPRIMITIVEVERTEX_H__
 #define __SOPRIMITIVEVERTEX_H__
 
+#include <Inventor/SbVec2f.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbVec4f.h>
 
@@ -42,9 +43,11 @@ public:
   void setPoint(const SbVec3f & point);
   void setNormal(const SbVec3f & normal);
   void setTextureCoords(const SbVec4f & texcoords);
+  void setTextureCoords(const SbVec2f & texcoords);
 
   void setMaterialIndex(const int index);
   void setDetail(SoDetail * const detail);
+
 
 private:
   SbVec3f point;

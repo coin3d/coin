@@ -993,6 +993,8 @@ dnl  TODO:
 dnl    * [mortene:19991114] make this work with compilers other than gcc/g++
 dnl    * [mortene:19991114] find out how to get GCC's
 dnl      -Werror-implicit-function-declaration option to work as expected
+dnl    * [larsa:19991126] use -Wno-multichar under BeOS only (BeOS system
+dnl      header files emit lots of warnings due to multichar definitions)
 dnl
 
 

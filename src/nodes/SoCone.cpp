@@ -75,6 +75,9 @@
 #endif
 
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
+#include <Inventor/misc/SoGenerate.h>
+#include <Inventor/SoPrimitiveVertex.h>
+#include <Inventor/details/SoDetail.h>
 
 /*!
   \enum SoCone::Part
@@ -440,8 +443,26 @@ SoCone::getPrimitiveCount(SoGetPrimitiveCountAction *action)
   FIXME: write doc
 */
 void
-SoCone::generatePrimitives(SoAction * /*action*/)
+SoCone::generatePrimitives(SoAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoCone::Part p = (SoCone::Part) this->parts.getValue();
+  unsigned int flags = 0;
+  if (p & SoCone::SIDES) flags |= SOGEN_GENERATE_SIDE;
+  if (p & SoCone::BOTTOM) flags |= SOGEN_GENERATE_BOTTOM;
+
+  SoMaterialBindingElement::Binding bind =
+    SoMaterialBindingElement::get(action->getState());
+  if (bind == SoMaterialBindingElement::PER_PART ||
+      bind == SoMaterialBindingElement::PER_PART_INDEXED)
+    flags |= SOGL_MATERIAL_PER_PART;
+  
+  float complexity = this->getComplexityValue(action);
+  
+  sogen_generate_cone(this->bottomRadius.getValue(),
+                      this->height.getValue(),
+                      (int)(CONE_SIDE_NUMTRIS*complexity),
+                      flags,
+                      this,
+                      action);
 }
 #endif // !COIN_EXCLUDE_SOACTION

@@ -141,6 +141,15 @@ SoPrimitiveVertex::setTextureCoords(const SbVec4f & texcoords)
 }
 
 /*!
+  Covenience function. Will fill in 0 and 1 in the last two coords
+*/
+void 
+SoPrimitiveVertex::setTextureCoords(const SbVec2f & texcoords)
+{
+  this->textureCoords = SbVec4f(texcoords[0], texcoords[1], 0.0f, 1.0f);
+}
+
+/*!
   FIXME: write doc
  */
 void

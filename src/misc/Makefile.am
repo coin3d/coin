@@ -51,7 +51,8 @@ ALLSOURCES = \
 	SoSceneManager.cpp \
 	SoSceneManager.h \
 	SoType.cpp \
-	SoType.h
+	SoType.h \
+	SoGenerate.cpp
 
 
 libmisc_la_SOURCES = $(ALLSOURCES)

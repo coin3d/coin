@@ -71,6 +71,9 @@
 #endif // ! COIN_EXCLUDE_SOCOMPLEXITYELEMENT
 
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
+#include <Inventor/misc/SoGenerate.h>
+#include <Inventor/SoPrimitiveVertex.h>
+#include <Inventor/details/SoDetail.h>
 
 #include <math.h> // fabs()
 
@@ -428,8 +431,27 @@ SoCylinder::getPrimitiveCount(SoGetPrimitiveCountAction *action)
   FIXME: write doc
 */
 void
-SoCylinder::generatePrimitives(SoAction * /* action */)
+SoCylinder::generatePrimitives(SoAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoCylinder::Part p = (SoCylinder::Part) this->parts.getValue();
+  unsigned int flags = 0;
+  if (p & SoCylinder::SIDES) flags |= SOGEN_GENERATE_SIDE;
+  if (p & SoCylinder::BOTTOM) flags |= SOGEN_GENERATE_BOTTOM;
+  if (p & SoCylinder::TOP) flags |= SOGEN_GENERATE_TOP;
+  
+  SoMaterialBindingElement::Binding bind =
+    SoMaterialBindingElement::get(action->getState());
+  if (bind == SoMaterialBindingElement::PER_PART ||
+      bind == SoMaterialBindingElement::PER_PART_INDEXED)
+    flags |= SOGL_MATERIAL_PER_PART;
+  
+  float complexity = this->getComplexityValue(action);
+  
+  sogen_generate_cylinder(this->radius.getValue(),
+                          this->height.getValue(),
+                          (int)(CYL_SIDE_NUMTRIS*complexity),
+                          flags,
+                          this,
+                          action);
 }
 #endif // !COIN_EXCLUDE_SOACTION

@@ -69,6 +69,9 @@
 #endif // COIN_DEBUG
 
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
+#include <Inventor/misc/SoGenerate.h>
+#include <Inventor/SoPrimitiveVertex.h>
+#include <Inventor/details/SoDetail.h>
 
 /*!
   \var SoSFFloat SoSphere::radius
@@ -256,8 +259,15 @@ SoSphere::getPrimitiveCount(SoGetPrimitiveCountAction *action)
   FIXME: write doc
  */
 void
-SoSphere::generatePrimitives(SoAction * /* action */)
+SoSphere::generatePrimitives(SoAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  float complexity = this->getComplexityValue(action);
+
+  sogen_generate_sphere(this->radius.getValue(),
+                        (int)(SPHERE_NUM_SLICES * complexity),
+                        (int)(SPHERE_NUM_STACKS * complexity),
+                        this,
+                        action);
+
 }
 #endif // !COIN_EXCLUDE_SOACTION

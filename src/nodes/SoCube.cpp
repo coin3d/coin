@@ -69,8 +69,13 @@
 #endif // !COIN_EXCLUDE_SOGLNORMALIZEELEMENT
 
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
+#include <Inventor/misc/SoGenerate.h>
 
 #include <assert.h>
+
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
 
 /*!
   \var SoSFFloat SoCube::width
@@ -120,39 +125,6 @@ SoCube::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoCube);
 }
 
-//
-// the 12 triangles in the cube
-//
-static int vindices[] =
-{
-  0, 1, 3,
-  0, 3, 2,
-  1, 5, 7,
-  1, 7, 3,
-  5, 4, 6,
-  5, 6, 7,
-  4, 0, 2,
-  4, 2, 6,
-  4, 5, 1,
-  4, 1, 0,
-  2, 3, 7,
-  2, 7, 6
-};
-
-//
-// a cube needs 6 normals
-//
-static SbVec3f normals[] =
-{
-  SbVec3f(0.0f, 0.0f, 1.0f),
-  SbVec3f(-1.0f, 0.0f, 0.0f),
-  SbVec3f(0.0f, 0.0f, -1.0f),
-  SbVec3f(1.0f, 0.0f, 0.0f),
-  SbVec3f(0.0f, 1.0f, 0.0f),
-  SbVec3f(0.0f, -1.0f, 0.0f),
-};
-
-
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
@@ -162,9 +134,6 @@ SoCube::GLRender(SoGLRenderAction * action)
 {
   if (!this->shouldGLRender(action)) return;
   SoState * state = action->getState();
-
-  SbVec3f varray[8];
-  this->generateVertices(varray);
 
 #if !defined(COIN_EXCLUDE_SOMATERIALBINDINGELEMENT)
   SoMaterialBindingElement::Binding binding =
@@ -244,70 +213,21 @@ SoCube::GLRender(SoGLRenderAction * action)
 void
 SoCube::generatePrimitives(SoAction * action)
 {
-  SoPrimitiveVertex pv;
-  SoState * state = action->getState();
-  float w, h, d;
-  getHalfSize(w, h, d);
-
-#if !defined(COIN_EXCLUDE_SOTEXTURECOORDINATEELEMENT)
-  SbBool useTexFunc =
-     (SoTextureCoordinateElement::getType(state) ==
-      SoTextureCoordinateElement::FUNCTION);
-
-  const SoTextureCoordinateElement * tce = NULL;
-  SbVec4f texCoord;
-  if (useTexFunc)
-    tce = SoTextureCoordinateElement::getInstance(state);
-  else {
-    texCoord[2] = 0.0f;
-    texCoord[3] = 1.0f;
-  }
-#else // COIN_EXCLUDE_SOTEXTURECOORDINATEELEMENT
-  SbBool useTexFunc = FALSE;
-  const SoTextureCoordinateElement * tce = NULL;
-#endif // COIN_EXCLUDE_SOTEXTURECOORDINATEELEMENT
-
-#if !defined(COIN_EXCLUDE_SOMATERIALBINDINGELEMENT)
-  // FIXME: varibles not in use? 19990925 mortene.
-#if 0 // disabled
   SoMaterialBindingElement::Binding binding =
-    SoMaterialBindingElement::get(state);
-
+    SoMaterialBindingElement::get(action->getState());
+  
   SbBool materialPerPart =
     (binding == SoMaterialBindingElement::PER_PART ||
      binding == SoMaterialBindingElement::PER_PART_INDEXED);
-#endif // disabled
 
-#else // COIN_EXCLUDE_SOMATERIALBINDINGELEMENT
-
-  // FIXME: variable not in use? 19990925 mortene.
-#if 0 // disabled
-  SbBool materialPerPart = FALSE;
-#endif // disabled
-
-#endif // COIN_EXCLUDE_SOMATERIALBINDINGELEMENT
-
-  SbVec3f varray[8];
-  generateVertices(varray);
-  int * iptr = vindices;
-  SbVec3f * nptr = normals;
-
-  beginShape((SoGLRenderAction *)action, TRIANGLES);
-
-  for (int i = 0; i < 6; i++) {
-    generateVertex(&pv, varray[*iptr++], useTexFunc, tce,
-                   0.0f, 0.0f, *nptr);
-    generateVertex(&pv, varray[*iptr++], useTexFunc, tce,
-                   0.0f, 0.0f, *nptr);
-    generateVertex(&pv, varray[*iptr++], useTexFunc, tce,
-                   0.0f, 0.0f, *nptr);
-    generateVertex(&pv, varray[*iptr++], useTexFunc, tce,
-                   0.0f, 0.0f, *nptr);
-    generateVertex(&pv, varray[*iptr++], useTexFunc, tce,
-                   0.0f, 0.0f, *nptr);
-    nptr++;
-  }
-  endShape();
+  unsigned int flags = 0;
+  if (materialPerPart) flags |= SOGEN_MATERIAL_PER_PART;
+  sogen_generate_cube(this->width.getValue(),
+                      this->height.getValue(),
+                      this->depth.getValue(),
+                      flags,
+                      this,
+                      action);
 }
 
 /*!
@@ -399,20 +319,6 @@ SoCube::rayPick(SoRayPickAction *action)
     }
   }
 }
-
-/*!
-  FIXME: write function documentation
-*/
-SoDetail *
-SoCube::createTriangleDetail(SoRayPickAction * /* action */,
-                             const SoPrimitiveVertex * /* v1 */,
-                             const SoPrimitiveVertex * /* v2 */,
-                             const SoPrimitiveVertex * /* v3 */,
-                             SoPickedPoint * /* pp */)
-{
-  assert(0 && "FIXME: not implemented yet");
-  return NULL;
-}
 #endif // !COIN_EXCLUDE_SORAYPICKACTION
 
 /*!
@@ -427,21 +333,6 @@ SoCube::getHalfSize(float & w, float & h, float & d)
        height.getValue() / 2.0f);
   d = (depth.isIgnored() ? 1.0f :
        depth.getValue() / 2.0f);
-}
-
-/*!
-  \internal
-*/
-void
-SoCube::generateVertices(SbVec3f * const varray)
-{
-  float w, h, d;
-  getHalfSize(w, h, d);
-  for (int i = 0; i < 8; i++) {
-    varray[i].setValue((i & 1) ? -w : w,
-                       (i & 2) ? -h : h,
-                       (i & 4) ? -d : d);
-  }
 }
 
 #if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
