@@ -38,6 +38,7 @@ extern "C" {
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
+#include <stdarg.h>
 
 #ifndef HAVE_SNPRINTF
 #ifdef HAVE__SNPRINTF

@@ -62,7 +62,6 @@
 #if HAVE_UNISTD_H
 #include <unistd.h>
 #endif /* HAVE_UNISTD_H */
-#include <stdarg.h>
 
 /*
   This is a butt-ugly hack to emulate the vsnprintf() extension
