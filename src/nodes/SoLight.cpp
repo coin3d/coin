@@ -67,6 +67,7 @@
 #include <Inventor/elements/SoLightAttenuationElement.h>
 #include <Inventor/elements/SoLightElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoViewingMatrixElement.h>
 
 /*!
   \var SoSFBool SoLight::on
@@ -127,5 +128,7 @@ void
 SoLight::callback(SoCallbackAction * action)
 {
   SoState * state = action->getState();
-  SoLightElement::add(state, this, SoModelMatrixElement::get(state));
+  SoLightElement::add(state, this, (SoModelMatrixElement::get(state) * 
+                                    SoViewingMatrixElement::get(state)));
 }
+
