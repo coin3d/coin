@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -199,7 +199,8 @@ SoType::createType(const SoType parent, const SbName name,
 }
 
 /*!
-  This method makes a new class override an existing class.
+  This method makes a new class's instantiation method override
+  the instantiation method of an existing class.
 
   The new type should be a C++ subclass of the original class type, but
   this won't be checked though.
@@ -207,8 +208,106 @@ SoType::createType(const SoType parent, const SbName name,
   If \c NULL is passed as the second argument, the type will be
   considered uninstantiable -- it does not revert the configuration to
   the default setting as one might think.
-*/
 
+  Here's a \e complete code examples which shows how to fully override
+  a built-in Coin node class, so that a) your application-specific
+  extension class gets instantiated instead of the built-in class upon
+  scenegraph import, and b) it gets written out properly upon export:
+
+  \code
+  #include <Inventor/SoDB.h>
+  #include <Inventor/actions/SoWriteAction.h>
+  #include <Inventor/errors/SoDebugError.h>
+  #include <Inventor/nodes/SoSeparator.h>
+  #include <Inventor/nodes/SoWWWInline.h>
+
+  ////// MyWWWInline ////////////////////////////////////////////////////
+
+  class MyWWWInline : public SoWWWInline {
+    SO_NODE_HEADER(MyWWWInline);
+
+  public:
+    static void initClass(void);
+    MyWWWInline(void);
+
+  protected:
+    virtual ~MyWWWInline();
+    virtual SbBool readInstance(SoInput * in, unsigned short flags);
+    virtual const char * getFileFormatName(void) const;
+  };
+
+  SO_NODE_SOURCE(MyWWWInline);
+
+  MyWWWInline::MyWWWInline(void)
+  {
+    SO_NODE_CONSTRUCTOR(MyWWWInline);
+
+    // Fool the library to believe this is an internal class, so it gets
+    // written out in the same manner as the built-in classes, instead
+    // of as en extension class. There are slight differences, which you
+    // want to avoid when overriding a class like we do with MyWWWInline
+    // vs SoWWWInline here.
+    this->isBuiltIn = TRUE;
+  }
+
+  MyWWWInline::~MyWWWInline()
+  {
+  }
+
+  void
+  MyWWWInline::initClass(void)
+  {
+    SO_NODE_INIT_CLASS(MyWWWInline, SoWWWInline, "SoWWWInline");
+
+    // Override instantiation method, so we get MyWWWInline instead of
+    // SoWWWInline instances upon scenegraph import.
+    (void)SoType::overrideType(SoWWWInline::getClassTypeId(),
+                               MyWWWInline::createInstance);
+  }
+
+  // Override SoBase::getFileFormatName() to make node get written as
+  // "WWWInline" instead of "MyWWWInline".
+  const char *
+  MyWWWInline::getFileFormatName(void) const
+  {
+    return "WWWInline";
+  }
+
+  SbBool
+  MyWWWInline::readInstance(SoInput * in, unsigned short flags)
+  {
+    SoDebugError::postInfo("MyWWWInline::readInstance", "hepp");
+    return SoWWWInline::readInstance(in, flags);
+  }
+
+  ////// main() /////////////////////////////////////////////////////////
+
+  int
+  main(int argc, char ** argv)
+  {
+    SoDB::init();
+    MyWWWInline::initClass();
+
+    const char * ivscene =
+      "#Inventor V2.1 ascii\n\n"
+      "Separator {"
+      "  WWWInline { }"
+      "}";
+
+    SoInput in;
+    in.setBuffer((void *)ivscene, strlen(ivscene));
+    SoSeparator * root = SoDB::readAll(&in);
+    root->ref();
+
+    SoOutput out;
+    SoWriteAction wa(&out);
+    wa.apply(root);
+    root->unref();
+
+    return 0;
+  }
+  \endcode
+*/
 const SoType
 SoType::overrideType(const SoType originalType,
                      const instantiationMethod method)
