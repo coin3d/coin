@@ -20,10 +20,19 @@ PublicHeaders = \
 	../../include/Inventor/threads/SbRWMutex.h \
 	../../include/Inventor/threads/SbCondVar.h \
 	../../include/Inventor/threads/SbStorage.h \
-	../../include/Inventor/threads/SbTypedStorage.h
+	../../include/Inventor/threads/SbTypedStorage.h \
+	../../include/Inventor/threads/SbFifo.h
 #	../../include/Inventor/threads/SbBarrier.h
 PrivateHeaders = \
 	wrappers.cpp # for checking validity of inline C++ wrapper headers
+
+noinst_PROGRAMS = wrappers
+wrappers_SOURCES = wrappers.cpp
+if BUILD_WITH_MSVC
+wrappers_LDADD = threads.lst
+else
+wrappers_LDADD = libthreads.la
+endif
 
 ##$ BEGIN TEMPLATE Make-Common(threads)
 
