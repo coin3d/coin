@@ -220,8 +220,12 @@ SoIndexedTriangleStripSet::GLRender(SoGLRenderAction * action)
 
   Binding tbind = PER_VERTEX_INDEXED; // most common
   if (dotextures) {
-    if (SoTextureCoordinateBindingElement::get(state) ==
-        SoTextureCoordinateBindingElement::PER_VERTEX) {
+    if (tb.isFunction()) {
+      tbind = OVERALL;
+      tindices = NULL;
+    }
+    else if (SoTextureCoordinateBindingElement::get(state) ==
+             SoTextureCoordinateBindingElement::PER_VERTEX) {
       tbind = PER_VERTEX;
       tindices = NULL;
     }
@@ -441,8 +445,12 @@ SoIndexedTriangleStripSet::generatePrimitives(SoAction * action)
 
   Binding tbind = PER_VERTEX_INDEXED; // most common
   if (dotextures) {
-    if (SoTextureCoordinateBindingElement::get(state) ==
-        SoTextureCoordinateBindingElement::PER_VERTEX) {
+    if (tb.isFunction()) {
+      tbind = OVERALL;
+      tindices = NULL;
+    }
+    else if (SoTextureCoordinateBindingElement::get(state) ==
+             SoTextureCoordinateBindingElement::PER_VERTEX) {
       tbind = PER_VERTEX;
       tindices = NULL;
     }

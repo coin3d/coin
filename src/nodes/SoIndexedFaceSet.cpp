@@ -257,8 +257,12 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
 
   Binding tbind = NONE;
   if (doTextures) {
-    if (SoTextureCoordinateBindingElement::get(state) ==
-        SoTextureCoordinateBindingElement::PER_VERTEX) {
+    if (tb.isFunction()) {
+      tbind = NONE;
+      tindices = NULL;
+    }
+    else if (SoTextureCoordinateBindingElement::get(state) ==
+             SoTextureCoordinateBindingElement::PER_VERTEX) {
       tbind = PER_VERTEX;
       tindices = NULL;
     }
@@ -386,7 +390,11 @@ SoIndexedFaceSet::generatePrimitives(SoAction *action)
 
   Binding tbind = NONE;
   if (doTextures) {
-    if (SoTextureCoordinateBindingElement::get(state) ==
+    if (tb.isFunction()) {
+      tbind = NONE;
+      tindices = NULL;
+    }
+    else if (SoTextureCoordinateBindingElement::get(state) ==
         SoTextureCoordinateBindingElement::PER_VERTEX) {
       tbind = PER_VERTEX;
       tindices = NULL;
