@@ -89,10 +89,24 @@
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/SbColor.h>
 #include <Inventor/SbColor4f.h>
+#include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/elements/SoMaterialBindingElement.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
+
+
+static SbBool
+is_material_per_vertex(SoVRMLPointSet * ps, SoState * state)
+{
+  if (SoOverrideElement::getMaterialBindingOverride(state)) {
+    if (SoMaterialBindingElement::get(state) !=
+        SoMaterialBindingElement::OVERALL) return TRUE;
+    return FALSE;
+  }
+  return ps->color.getValue() != NULL;
+}
 
 SO_NODE_SOURCE(SoVRMLPointSet);
 
@@ -137,7 +151,7 @@ SoVRMLPointSet::GLRender(SoGLRenderAction * action)
 
   SoMaterialBundle mb(action);
 
-  SbBool matpervertex = this->color.getValue() != NULL;
+  SbBool matpervertex = is_material_per_vertex(this, state);
   if (!matpervertex) {
     const SbColor & col = SoLazyElement::getEmissive(state);
     SbColor4f c(col[0], col[1], col[2], 1.0f);
@@ -186,9 +200,11 @@ SoVRMLPointSet::generatePrimitives(SoAction * action)
   int matnr = 0;
   int idx = 0;
 
+  SbBool matpervertex = is_material_per_vertex(this, action->getState());
+
   this->beginShape(action, SoShape::POINTS);
   for (int i = 0; i < numpts; i++) {
-    if (colornode) {
+    if (matpervertex) {
       pointDetail.setMaterialIndex(matnr);
       vertex.setMaterialIndex(matnr++);
     }
