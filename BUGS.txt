@@ -3315,3 +3315,48 @@ Separator {
 
     20040722 larsa
 
+=====================================================================
+
+125 Dragger writing is incorrect.
+
+    When writing the SoCenterballDragger, all its parts are written,
+    even though they default values. Compare with SGI Inventor, which
+    just writes as "CenterballDragger { }", as expected.
+
+    This little test example demonstrates the bug:
+
+--------8<------------- [snip] --------------8<------------- [snip]
+#include <Inventor/SoDB.h>
+#include <Inventor/SoInteraction.h>
+#include <Inventor/nodekits/SoNodeKit.h>
+#include <Inventor/draggers/SoCenterballDragger.h>
+#include <Inventor/actions/SoWriteAction.h>
+
+int
+main(void)
+{
+  SoDB::init();
+  SoNodeKit::init();
+  SoInteraction::init();
+
+  SoCenterballDragger * d = new SoCenterballDragger;
+  d->ref();
+
+  SoWriteAction w;
+  w.apply(d);
+
+  d->unref();
+  return 0;
+}
+--------8<------------- [snip] --------------8<------------- [snip]
+
+    I only tested this for the SoCenterballDragger, but I would expect
+    the same problem to at least be present for other draggers, and it
+    is most likely a fundamental problem with write actions for
+    nodekits.
+
+    This is a medium priority bug.
+
+    20040724 mortene.
+
+=====================================================================
