@@ -45,6 +45,9 @@
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/SoType.h>
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
 #include <coindefs.h> // COIN_STUB()
 
 #ifndef DOXYGEN_SKIP_THIS // Don't document internal classes.
@@ -133,6 +136,25 @@ SoEngineOutputData::addOutput(const SoEngine *base, const char *name,
   char * vbase = (char *)base;
   char * voutput = (char *)output;
   this->outputlist.append(new SoOutputDataEntry(name, type, voutput-vbase));
+
+#if COIN_DEBUG
+  // FIXME: this is an ugly design flaw, which doesn't seem easily
+  // resolvable while still keeping compatibility. 20000915 mortene.
+  if (type.isDerivedFrom(SoType::fromName("SoSFEnum")) ||
+      type.isDerivedFrom(SoType::fromName("SoMFEnum"))) {
+    static SbBool warn = TRUE;
+    if (warn) {
+      warn = FALSE; // Warn only once.
+      SoDebugError::postWarning("SoEngineOutputData::addOutput",
+                                "Using as engine output a field which has "
+                                "enum type is not advisable, as it contains "
+                                "more state than just the value of the field "
+                                "(i.e. the name<->value hash mapping must "
+                                "also be considered in certain situations). "
+                                "This is a design flaw.");
+    }
+  }
+#endif // COIN_DEBUG
 }
 
 /*!
