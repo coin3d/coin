@@ -665,20 +665,22 @@ SIM_AC_COMPILE_DEBUG([
     CPPFLAGS="$CPPFLAGS -fno-builtin";    # no auto string.h-functions
     CXXFLAGS="$CXXFLAGS -fno-for-scope";  # disallow non-standard scoping of for()-variables
     CPPFLAGS="$CPPFLAGS -Wreturn-type";   # warn on missing return-value
-    if test x"COIN_BETA" = x""; then :; else
+    if test x"$COIN_BETA_VERSION" = x""; then :; else
       # don't let people get away with warnings, except for in
-      # source code releases.
+      # official source code releases.
       CPPFLAGS="$CPPFLAGS -Werror";
     fi
-  # FIXME: enable this code after releasing 2.0.0   20030226 larsa
-  # else
-  #   case $CXX in
-  #   *wrapmsvc* )
-  #     if test x"COIN_BETA" = x""; then :; else
-  #       CPPFLAGS="$CPPFLAGS /noBool /W2 /WX"
-  #     fi
-  #     ;;
-  #   esac
+    CPPFLAGS="$CPPFLAGS -Wchar-subscripts";
+    CPPFLAGS="$CPPFLAGS -Wparentheses";
+    CPPFLAGS="$CPPFLAGS -finline-functions";
+  else
+    case $CXX in
+    *wrapmsvc* )
+      if test x"$COIN_BETA_VERSION" = x""; then :; else
+        CPPFLAGS="$CPPFLAGS /noBool /W2 /WX"
+      fi
+      ;;
+    esac
   fi
   CPPFLAGS="$CPPFLAGS -DCOIN_DEBUG=1"
 ], [
@@ -1052,8 +1054,9 @@ AC_TRY_LINK([
 ])
 
 # *******************************************************************
-# * Handle the detection and inclusion of zlib
+# * Handle the detection and inclusion of compression libraries
 # *******************************************************************
+
 SIM_AC_HAVE_LIBZLIB_IFELSE([
   COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_libzlib_cppflags"
   COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_libzlib_ldflags"
@@ -1062,9 +1065,22 @@ SIM_AC_HAVE_LIBZLIB_IFELSE([
   LDFLAGS="$LDFLAGS $sim_ac_libzlib_ldflags"
   LIBS="$sim_ac_libzlib_libs $LIBS"
   SIM_AC_CONFIGURATION_SETTING([zlib support], [Yes, link-time binding])
-  AC_DEFINE([HAVE_ZLIB],1, [Define to use zlib])
+  AC_DEFINE([HAVE_ZLIB], 1, [Define to use zlib])
 ],[
   SIM_AC_CONFIGURATION_SETTING([zlib support], [No])
+])
+
+SIM_AC_HAVE_LIBBZIP2_IFELSE([
+  COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_libbzip2_cppflags"
+  COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_libbzip2_ldflags"
+  COIN_EXTRA_LIBS="$sim_ac_libbzip2_libs $COIN_EXTRA_LIBS"
+  CPPFLAGS="$CPPFLAGS $sim_ac_libbzip2_cppflags"
+  LDFLAGS="$LDFLAGS $sim_ac_libbzip2_ldflags"
+  LIBS="$sim_ac_libbzip2_libs $LIBS"
+  SIM_AC_CONFIGURATION_SETTING([bzip2 support], [Yes, link-time binding])
+  AC_DEFINE([HAVE_BZIP2], 1, [Define to use bzip2])
+],[
+  SIM_AC_CONFIGURATION_SETTING([bzip2 support], [No])
 ])
 
 # *******************************************************************
