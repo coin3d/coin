@@ -274,8 +274,7 @@ RegularSources = \
 	AudioTools.cpp
 
 LinkHackSources = \
-	all-misc-cpp.cpp \
-	all-misc-c.c
+	all-misc-cpp.cpp
 
 PublicHeaders = \
 	../../include/Inventor/misc/SoAuditorList.h \
@@ -390,8 +389,8 @@ am__misc_lst_SOURCES_DIST = SoBase.cpp SoChildList.cpp \
 	SoOffscreenRenderer.cpp SoOffscreenAGLData.cpp \
 	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoGenerate.cpp \
 	SoLockManager.cpp SoAudioDevice.cpp AudioTools.cpp \
-	all-misc-cpp.cpp all-misc-c.c
-am__objects_1 = all-misc-cpp.$(OBJEXT) all-misc-c.$(OBJEXT)
+	all-misc-cpp.cpp
+am__objects_1 = all-misc-cpp.$(OBJEXT)
 am__objects_2 = SoBase.$(OBJEXT) SoChildList.$(OBJEXT) \
 	SoContextHandler.$(OBJEXT) SoGL.$(OBJEXT) SoGLImage.$(OBJEXT) \
 	SoGLBigImage.$(OBJEXT) SoGlyph.$(OBJEXT) \
@@ -441,13 +440,13 @@ am__EXTRA_misc_lst_SOURCES_DIST = \
 	SoGLnonindexedTristripSetTemplate.icc SoGLqmeshTemplate.icc \
 	SoGLqmeshpreciselightingTemplate.icc SoOffscreenInternalData.h \
 	SoOffscreenAGLData.h SoOffscreenGLXData.h SoOffscreenWGLData.h \
-	cppmangle.icc all-misc-cpp.cpp all-misc-c.c SoBase.cpp \
-	SoChildList.cpp SoContextHandler.cpp SoGL.cpp SoGLImage.cpp \
-	SoGLBigImage.cpp SoGlyph.cpp SoNormalGenerator.cpp \
-	SoNotification.cpp SoNotRec.cpp SoState.cpp SoDB.cpp \
-	SoFullPath.cpp SoTempPath.cpp SoLightPath.cpp SoInteraction.cpp \
-	SoPath.cpp SoPick.cpp SoPickedPoint.cpp SoPrimitiveVertex.cpp \
-	SoProto.cpp SoProtoInstance.cpp SoSceneManager.cpp SoType.cpp \
+	cppmangle.icc all-misc-cpp.cpp SoBase.cpp SoChildList.cpp \
+	SoContextHandler.cpp SoGL.cpp SoGLImage.cpp SoGLBigImage.cpp \
+	SoGlyph.cpp SoNormalGenerator.cpp SoNotification.cpp \
+	SoNotRec.cpp SoState.cpp SoDB.cpp SoFullPath.cpp SoTempPath.cpp \
+	SoLightPath.cpp SoInteraction.cpp SoPath.cpp SoPick.cpp \
+	SoPickedPoint.cpp SoPrimitiveVertex.cpp SoProto.cpp \
+	SoProtoInstance.cpp SoSceneManager.cpp SoType.cpp \
 	SoOffscreenRenderer.cpp SoOffscreenAGLData.cpp \
 	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoGenerate.cpp \
 	SoLockManager.cpp SoAudioDevice.cpp AudioTools.cpp
@@ -466,8 +465,8 @@ am__libmisc_la_SOURCES_DIST = SoBase.cpp SoChildList.cpp \
 	SoOffscreenRenderer.cpp SoOffscreenAGLData.cpp \
 	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoGenerate.cpp \
 	SoLockManager.cpp SoAudioDevice.cpp AudioTools.cpp \
-	all-misc-cpp.cpp all-misc-c.c
-am__objects_6 = all-misc-cpp.lo all-misc-c.lo
+	all-misc-cpp.cpp
+am__objects_6 = all-misc-cpp.lo
 am__objects_7 = SoBase.lo SoChildList.lo SoContextHandler.lo SoGL.lo \
 	SoGLImage.lo SoGLBigImage.lo SoGlyph.lo SoNormalGenerator.lo \
 	SoNotification.lo SoNotRec.lo SoState.lo SoDB.lo SoFullPath.lo \
@@ -512,13 +511,13 @@ am__EXTRA_libmisc_la_SOURCES_DIST = \
 	SoGLnonindexedTristripSetTemplate.icc SoGLqmeshTemplate.icc \
 	SoGLqmeshpreciselightingTemplate.icc SoOffscreenInternalData.h \
 	SoOffscreenAGLData.h SoOffscreenGLXData.h SoOffscreenWGLData.h \
-	cppmangle.icc all-misc-cpp.cpp all-misc-c.c SoBase.cpp \
-	SoChildList.cpp SoContextHandler.cpp SoGL.cpp SoGLImage.cpp \
-	SoGLBigImage.cpp SoGlyph.cpp SoNormalGenerator.cpp \
-	SoNotification.cpp SoNotRec.cpp SoState.cpp SoDB.cpp \
-	SoFullPath.cpp SoTempPath.cpp SoLightPath.cpp SoInteraction.cpp \
-	SoPath.cpp SoPick.cpp SoPickedPoint.cpp SoPrimitiveVertex.cpp \
-	SoProto.cpp SoProtoInstance.cpp SoSceneManager.cpp SoType.cpp \
+	cppmangle.icc all-misc-cpp.cpp SoBase.cpp SoChildList.cpp \
+	SoContextHandler.cpp SoGL.cpp SoGLImage.cpp SoGLBigImage.cpp \
+	SoGlyph.cpp SoNormalGenerator.cpp SoNotification.cpp \
+	SoNotRec.cpp SoState.cpp SoDB.cpp SoFullPath.cpp SoTempPath.cpp \
+	SoLightPath.cpp SoInteraction.cpp SoPath.cpp SoPick.cpp \
+	SoPickedPoint.cpp SoPrimitiveVertex.cpp SoProto.cpp \
+	SoProtoInstance.cpp SoSceneManager.cpp SoType.cpp \
 	SoOffscreenRenderer.cpp SoOffscreenAGLData.cpp \
 	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoGenerate.cpp \
 	SoLockManager.cpp SoAudioDevice.cpp AudioTools.cpp
@@ -535,7 +534,7 @@ am__libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = SoBase.cpp SoChildList.cpp \
 	SoOffscreenRenderer.cpp SoOffscreenAGLData.cpp \
 	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoGenerate.cpp \
 	SoLockManager.cpp SoAudioDevice.cpp AudioTools.cpp \
-	all-misc-cpp.cpp all-misc-c.c
+	all-misc-cpp.cpp
 am_libmisc@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/misc/SoAuditorList.h \
@@ -569,13 +568,13 @@ am__EXTRA_libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoGLnonindexedTristripSetTemplate.icc SoGLqmeshTemplate.icc \
 	SoGLqmeshpreciselightingTemplate.icc SoOffscreenInternalData.h \
 	SoOffscreenAGLData.h SoOffscreenGLXData.h SoOffscreenWGLData.h \
-	cppmangle.icc all-misc-cpp.cpp all-misc-c.c SoBase.cpp \
-	SoChildList.cpp SoContextHandler.cpp SoGL.cpp SoGLImage.cpp \
-	SoGLBigImage.cpp SoGlyph.cpp SoNormalGenerator.cpp \
-	SoNotification.cpp SoNotRec.cpp SoState.cpp SoDB.cpp \
-	SoFullPath.cpp SoTempPath.cpp SoLightPath.cpp SoInteraction.cpp \
-	SoPath.cpp SoPick.cpp SoPickedPoint.cpp SoPrimitiveVertex.cpp \
-	SoProto.cpp SoProtoInstance.cpp SoSceneManager.cpp SoType.cpp \
+	cppmangle.icc all-misc-cpp.cpp SoBase.cpp SoChildList.cpp \
+	SoContextHandler.cpp SoGL.cpp SoGLImage.cpp SoGLBigImage.cpp \
+	SoGlyph.cpp SoNormalGenerator.cpp SoNotification.cpp \
+	SoNotRec.cpp SoState.cpp SoDB.cpp SoFullPath.cpp SoTempPath.cpp \
+	SoLightPath.cpp SoInteraction.cpp SoPath.cpp SoPick.cpp \
+	SoPickedPoint.cpp SoPrimitiveVertex.cpp SoProto.cpp \
+	SoProtoInstance.cpp SoSceneManager.cpp SoType.cpp \
 	SoOffscreenRenderer.cpp SoOffscreenAGLData.cpp \
 	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoGenerate.cpp \
 	SoLockManager.cpp SoAudioDevice.cpp AudioTools.cpp
@@ -633,17 +632,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoState.Plo ./$(DEPDIR)/SoState.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTempPath.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTempPath.Po ./$(DEPDIR)/SoType.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoType.Po ./$(DEPDIR)/all-misc-c.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/all-misc-c.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/all-misc-cpp.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoType.Po ./$(DEPDIR)/all-misc-cpp.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/all-misc-cpp.Po
-COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
-	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
-	$(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-CCLD = $(CC)
-LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -651,6 +641,13 @@ LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
 	$(AM_CXXFLAGS) $(CXXFLAGS)
 CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
+	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
+	$(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES = $(am__misc_lst_SOURCES_DIST) \
 	$(am__EXTRA_misc_lst_SOURCES_DIST) \
@@ -666,7 +663,7 @@ SOURCES = $(misc_lst_SOURCES) $(EXTRA_misc_lst_SOURCES) $(libmisc_la_SOURCES) $(
 all: all-am
 
 .SUFFIXES:
-.SUFFIXES: .c .cpp .lo .o .obj
+.SUFFIXES: .cpp .lo .o .obj
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
 	  $(AUTOMAKE) --gnu  src/misc/Makefile
@@ -787,46 +784,11 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTempPath.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoType.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoType.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-misc-c.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-misc-c.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-misc-cpp.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-misc-cpp.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
-
-.c.o:
-@am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" \
-@am__fastdepCC_TRUE@	  -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/$*.Tpo" "$(DEPDIR)/$*.Po"; \
-@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/$*.Tpo"; exit 1; \
-@am__fastdepCC_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(COMPILE) -c `test -f '$<' || echo '$(srcdir)/'`$<
-
-.c.obj:
-@am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" \
-@am__fastdepCC_TRUE@	  -c -o $@ `if test -f '$<'; then $(CYGPATH_W) '$<'; else $(CYGPATH_W) '$(srcdir)/$<'; fi`; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/$*.Tpo" "$(DEPDIR)/$*.Po"; \
-@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/$*.Tpo"; exit 1; \
-@am__fastdepCC_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(COMPILE) -c `if test -f '$<'; then $(CYGPATH_W) '$<'; else $(CYGPATH_W) '$(srcdir)/$<'; fi`
-
-.c.lo:
-@am__fastdepCC_TRUE@	if $(LTCOMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" \
-@am__fastdepCC_TRUE@	  -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/$*.Tpo" "$(DEPDIR)/$*.Plo"; \
-@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/$*.Tpo"; exit 1; \
-@am__fastdepCC_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	if $(CXXCOMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" \
