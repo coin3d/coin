@@ -39,6 +39,7 @@
 #include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoGLMultiTextureImageElement.h>
 #include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
+#include <Inventor/elements/SoGLMultiTextureMatrixElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -82,7 +83,7 @@ SoTextureUnit::initClass(void)
   SO_ENABLE(SoGLRenderAction, SoGLMultiTextureCoordinateElement);
   SO_ENABLE(SoGLRenderAction, SoGLMultiTextureImageElement);
   SO_ENABLE(SoGLRenderAction, SoGLMultiTextureEnabledElement);
-
+  SO_ENABLE(SoGLRenderAction, SoGLMultiTextureMatrixElement);
 }
 
 // Doc from superclass.

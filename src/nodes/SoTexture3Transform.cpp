@@ -47,6 +47,10 @@
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/elements/SoGLTextureMatrixElement.h>
 #include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/elements/SoGLMultiTextureMatrixElement.h>
+#include <Inventor/elements/SoTextureUnitElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/C/glue/gl.h>
 
 
 /*!
@@ -118,7 +122,31 @@ SoTexture3Transform::initClass(void)
 void
 SoTexture3Transform::GLRender(SoGLRenderAction * action)
 {
-  SoTexture3Transform::doAction(action);
+  SoState * state = action->getState();
+  int unit = SoTextureUnitElement::get(state); 
+  if (unit == 0) {
+    SoTexture3Transform::doAction(action);
+  }
+  else {
+    const cc_glglue * glue = 
+      cc_glglue_instance(SoGLCacheContextElement::get(state));
+    int maxunits = cc_glglue_max_texture_units(glue);
+
+    if (unit < maxunits) {
+      SbMatrix mat;
+      mat.setTransform(this->translation.getValue(),
+                       this->rotation.getValue(),
+                       this->scaleFactor.getValue(),
+                       this->scaleOrientation.getValue(),
+                       this->center.getValue());
+      SoMultiTextureMatrixElement::mult(state, this, unit, mat);
+    }
+    else {
+      // we already warned in SoTextureUnit. I think it's best to just
+      // ignore the texture here so that all textures for non-supported
+      // units will be ignored. pederb, 2003-11-11
+    }
+  }
 }
 
 // Documented in superclass.

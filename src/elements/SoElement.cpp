@@ -266,6 +266,7 @@
 #include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoGLMultiTextureImageElement.h>
 #include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
+#include <Inventor/elements/SoGLMultiTextureMatrixElement.h>
 
 #include <Inventor/elements/SoCullElement.h> // internal element
 #include <Inventor/elements/SoGLLazyElement.h> // internal element
@@ -449,9 +450,11 @@ SoElement::initElements(void)
   SoMultiTextureCoordinateElement::initClass();
   SoMultiTextureImageElement::initClass();
   SoMultiTextureEnabledElement::initClass();
+  SoMultiTextureMatrixElement::initClass();
   SoGLMultiTextureCoordinateElement::initClass();
   SoGLMultiTextureImageElement::initClass();
   SoGLMultiTextureEnabledElement::initClass();
+  SoGLMultiTextureMatrixElement::initClass();
 }
 
 // Note: the following documentation for initClass() will also be
