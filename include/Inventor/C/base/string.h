@@ -24,80 +24,62 @@
 
 #include <Inventor/SbBasic.h>
 
+#include <stdarg.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
 /* ********************************************************************** */
 
-cc_string * cc_string_construct(const char * string);
-cc_string * cc_string_construct_new(void);
-cc_string * cc_string_construct_substring(const char * string, unsigned int start, unsigned int end);
-cc_string * cc_string_clone(cc_string * string);
-void cc_string_destruct(cc_string * string);
-
-uint32_t cc_string_hash(cc_string * string);
-unsigned int cc_string_get_length(cc_string * string);
-unsigned int cc_string_clear(cc_string * string);
-const char * cc_string_get_string(cc_string * string);
-cc_string * cc_string_get_substring(cc_string * string);
-
-
-#if 0
-
-class COIN_DLL_API SbString {
-public:
-  SbString(void);
-  SbString(const char * str);
-  SbString(const char * str, int start, int end);
-  SbString(const SbString & str);
-  SbString(const int digits);
-  ~SbString();
-
-  uint32_t hash(void);
-  int getLength(void) const;
-  void makeEmpty(SbBool freeold = TRUE);
-  const char * getString(void) const;
-  SbString getSubString(int startidx, int endidx = -1) const;
-  void deleteSubString(int startidx, int endidx = -1);
-
-  void addIntString(const int value);
-
-  char operator [](int index) const;
-  SbString & operator = (const char * str);
-  SbString & operator = (const SbString & str);
-  SbString & operator += (const char * str);
-  SbString & operator += (const SbString & str);
-  int operator ! (void) const;
-  friend COIN_DLL_API int operator == (const SbString & str, const char * s);
-  friend COIN_DLL_API int operator == (const char * s, const SbString & str);
-  friend COIN_DLL_API int operator == (const SbString & str1, const SbString & str2);
-  friend COIN_DLL_API int operator != (const SbString & str, const char * s);
-  friend COIN_DLL_API int operator != (const char * s, const SbString & str);
-  friend COIN_DLL_API int operator != (const SbString & str1, const SbString & str2);
-  static uint32_t hash(const char * s);
-
-  SbString & operator += (const char c);
-  SbString & sprintf(const char * formatstr, ...);
-  SbString & vsprintf(const char * formatstr, va_list args);
-
-  void print(FILE * file = stdout) const;
-
-private:
-  char * sstring;
-  int storagesize;
-  char staticstorage[SB_STRING_STATIC_STORAGE_SIZE];
-  void expand(int additional);
+enum cc_string_constants {
+  CC_STRING_MIN_SIZE = 128 - sizeof(char *) + sizeof(int)
 };
 
-COIN_DLL_API int operator == (const SbString & str, const char * s);
-COIN_DLL_API int operator == (const char * s, const SbString & str);
-COIN_DLL_API int operator == (const SbString & str1, const SbString & str2);
-COIN_DLL_API int operator != (const SbString & str, const char * s);
-COIN_DLL_API int operator != (const char * s, const SbString & str);
-COIN_DLL_API int operator != (const SbString & str1, const SbString & str2);
+struct cc_string {
+  char * pointer;
+  int bufsize;
+  char buffer[CC_STRING_MIN_SIZE];
+};
 
-#endif
+typedef  struct cc_string  cc_string;
+
+/* ********************************************************************** */
+
+COIN_DLL_API cc_string * cc_string_construct(const char * text);
+COIN_DLL_API cc_string * cc_string_construct_new(void);
+COIN_DLL_API cc_string * cc_string_construct_subtext(const char * text, int start, int end);
+COIN_DLL_API cc_string * cc_string_clone(cc_string * string);
+COIN_DLL_API void cc_string_destruct(cc_string * string);
+
+COIN_DLL_API void cc_string_set_string(cc_string * string, const cc_string * string2);
+COIN_DLL_API void cc_string_set_text(cc_string * string, const char * text);
+COIN_DLL_API void cc_string_set_subtext(cc_string * string, const char * text, int start, int end);
+COIN_DLL_API void cc_string_set_integer(cc_string * string, int integer);
+
+COIN_DLL_API void cc_string_append_string(cc_string * string, const cc_string * string2);
+COIN_DLL_API void cc_string_append_text(cc_string * string, const char * text);
+COIN_DLL_API void cc_string_append_integer(cc_string * string, const int digits);
+COIN_DLL_API void cc_string_append_char(cc_string * string, const char c);
+
+COIN_DLL_API unsigned int cc_string_length(const cc_string * string);
+COIN_DLL_API int cc_string_is(const cc_string * string);
+COIN_DLL_API void cc_string_clear(cc_string * string);
+COIN_DLL_API void cc_string_clear_no_free(cc_string * string);
+COIN_DLL_API uint32_t cc_string_hash(const cc_string * string);
+COIN_DLL_API uint32_t cc_string_hash_text(const char * text);
+COIN_DLL_API const char * cc_string_get_text(const cc_string * string);
+COIN_DLL_API cc_string * cc_string_get_substring(cc_string * string, int start, int end);
+COIN_DLL_API void cc_string_remove_substring(cc_string * string, int start, int end);
+
+COIN_DLL_API int cc_string_compare(cc_string * lhs, const cc_string * rhs);
+COIN_DLL_API int cc_string_compare_text(const char * lhs, const char * rhs);
+
+COIN_DLL_API void cc_string_sprintf(cc_string * string, const char * formatstr, ...);
+COIN_DLL_API void cc_string_vsprintf(cc_string * string, const char * formatstr, va_list args);
+
+COIN_DLL_API void cc_string_struct_init(cc_string * string_struct);
+COIN_DLL_API void cc_string_struct_clean(cc_string * string_struct);
 
 /* ********************************************************************** */
 
