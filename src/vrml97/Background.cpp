@@ -52,7 +52,6 @@
   local coordinate system and are affected by the accumulated rotation
   of their ancestors as described below.  Background nodes are
   bindable nodes as described in 4.6.10, Bindable children nodes
-  FIXME
   (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.10>).
   There exists a Background stack, in which the top-most Background on
   the stack is the currently active Background. To move a Background
