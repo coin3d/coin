@@ -139,7 +139,7 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
       }
     }    
   } else {
-    /* No fontspec list for this character is found. Create one and
+    /* No glyphlist for this character is found. Create one and
        add it to the hashtable. */
     glyphlist = cc_list_construct();
     cc_hash_put(glyph3d_fonthash, (unsigned long) character, glyphlist);
@@ -364,8 +364,8 @@ glyph3d_specmatch(const cc_font_specification * spec1,
 
   if ((!cc_string_compare(spec1->name, spec2->name)) &&
       (!cc_string_compare(spec1->style, spec2->style)) &&
-      (spec1->complexity == spec2->complexity) &&
-      (spec1->size == spec2->size)) {
+      (spec1->complexity == spec2->complexity)) {
+    /* No need to compare size for 3D fonts */
     return TRUE;
   }
   else return FALSE;
