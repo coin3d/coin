@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -29,16 +29,7 @@
   FIXME: write doc.
 */
 
-#ifdef COIN_INTERNAL
-#define COIN_STOREDINTERNAL COIN_INTERNAL
-#undef COIN_INTERNAL
-#endif // COIN_INTERNAL
 #include <Inventor/elements/SoLightModelElement.h>
-#ifdef COIN_STOREDINTERNAL
-#define COIN_INTERNAL COIN_STOREDINTERNAL
-#undef COIN_STOREDINTERNAL
-#endif // COIN_STOREDINTERNAL
-
 #include <Inventor/elements/SoLazyElement.h>
 #include <assert.h>
 
