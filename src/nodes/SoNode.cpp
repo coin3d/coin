@@ -186,6 +186,7 @@
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/nodes/SoTextureScalePolicy.h> // possible part of public API in the future
 #include <Inventor/nodes/SoUnknownNode.h>
+#include <Inventor/nodes/SoSceneTexture2.h>
 #include <assert.h>
 #include <stdlib.h>
 
@@ -603,6 +604,8 @@ SoNode::initClasses(void)
 
   SoBumpMap::initClass();
   SoBumpMapCoordinate::initClass();
+
+  SoSceneTexture2::initClass();
 }
 
 /*!
