@@ -68,6 +68,9 @@ COIN_DLL_API uint32_t coin_geq_power_of_two(uint32_t x);
 
 COIN_DLL_API void coin_viewvolume_jitter(int numpasses, int curpass, const int * vpsize, float * jitter);
 
+typedef void coin_atexit_f(void);
+COIN_DLL_API void cc_coin_atexit(coin_atexit_f * fp);
+
 /* ********************************************************************** */
 
 #ifdef __cplusplus

@@ -1079,6 +1079,7 @@ coin_atexit_cleanup(void)
   }
   cc_list_destruct(atexit_list);
   atexit_list = NULL;
+  isexiting = FALSE;
   if (debug) { cc_debugerror_postinfo("coin_atexit_cleanup", "fini"); }
 }
 
@@ -1138,6 +1139,16 @@ coin_atexit_func(const char * name, coin_atexit_f * f, int32_t priority)
 
   cc_list_append(atexit_list, data);
 }
+
+/*
+ * Public version of the coin_atexit function which always sets the priority to -2.
+ */
+void
+cc_coin_atexit(coin_atexit_f * f)
+{
+  coin_atexit(f, -2);
+}
+
 
 /*
   Returns \c TRUE if we are currently iterating over the functions

@@ -29,6 +29,7 @@
 #endif
 
 #include <stdio.h>
+#include <Inventor/C/tidbits.h>
 #include <Inventor/C/basic.h>
 #include <Inventor/C/base/string.h>
 
@@ -48,8 +49,6 @@ FILE * coin_get_stdout(void);
 FILE * coin_get_stderr(void);
 
 /* ********************************************************************** */
-
-typedef void coin_atexit_f(void);
 
 #define coin_atexit(func, priority) \
         coin_atexit_func(SO__QUOTE(func), func, priority)
