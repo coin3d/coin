@@ -28,8 +28,17 @@
 
 #include <Inventor/nodes/SoSelection.h>
 #include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/lists/SoCallbackList.h>
 #include <Inventor/SoPath.h>
+#include <Inventor/events/SoButtonEvent.h>
+#include <Inventor/SoPickedPoint.h>
+#include <Inventor/events/SoMouseButtonEvent.h>
+
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 #include <coindefs.h> // COIN_STUB()
 
 /*!
@@ -67,14 +76,7 @@ SO_NODE_SOURCE(SoSelection);
 */
 SoSelection::SoSelection()
 {
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoSelection);
-
-  SO_NODE_ADD_FIELD(policy, (SoSelection::SHIFT));
-
-  SO_NODE_DEFINE_ENUM_VALUE(Policy, SINGLE);
-  SO_NODE_DEFINE_ENUM_VALUE(Policy, TOGGLE);
-  SO_NODE_DEFINE_ENUM_VALUE(Policy, SHIFT);
-  SO_NODE_SET_SF_ENUM_TYPE(policy, Policy);
+  this->init();
 }
 
 /*!
@@ -82,6 +84,12 @@ SoSelection::SoSelection()
 */
 SoSelection::~SoSelection()
 {
+  delete this->selCBList;
+  delete this->deselCBList;
+  delete this->startCBList;
+  delete this->finishCBList;
+  delete this->changeCBList;
+  if (this->mouseDownPickPath) this->mouseDownPickPath->unref();
 }
 
 /*!
@@ -103,19 +111,49 @@ SoSelection::initClass(void)
 SoSelection::SoSelection(const int nChildren)
   : inherited(nChildren)
 {
+  this->init();
+}
+
+//
+// common code for both constructors
+//
+void
+SoSelection::init(void)
+{
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoSelection);
+
+  SO_NODE_ADD_FIELD(policy, (SoSelection::SHIFT));
+
+  SO_NODE_DEFINE_ENUM_VALUE(Policy, SINGLE);
+  SO_NODE_DEFINE_ENUM_VALUE(Policy, TOGGLE);
+  SO_NODE_DEFINE_ENUM_VALUE(Policy, SHIFT);
+  SO_NODE_SET_SF_ENUM_TYPE(policy, Policy);
+
+  this->selCBList = new SoCallbackList;
+  this->deselCBList = new SoCallbackList;
+  this->startCBList = new SoCallbackList;
+  this->finishCBList = new SoCallbackList;
+  this->changeCBList = new SoCallbackList;
+  
+  this->pickCBFunc = NULL;
+  this->pickCBData = NULL;
+  this->callPickCBOnlyIfSelectable = FALSE;
+  
+  this->mouseDownPickPath = NULL;
+  this->pickMatching = TRUE;
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoSelection::select(const SoPath * const path)
+SoSelection::select(const SoPath * path)
 {
   SoPath *newpath = this->copyFromThis(path);
-  if (newpath) {
+  if (newpath && this->findPath(newpath) < 0) {
     newpath->ref();
     this->addPath(newpath);
-    newpath->unref();
+    newpath->unrefNoDelete();
   }
 }
 
@@ -123,13 +161,13 @@ SoSelection::select(const SoPath * const path)
   FIXME: write doc
  */
 void
-SoSelection::select(SoNode * const node)
+SoSelection::select(SoNode * node)
 {
   SoPath *path = this->searchNode(node);
-  if (path) {
+  if (path && this->findPath(path) < 0) {
     path->ref();
     this->addPath(path);
-    path->unref();
+    path->unrefNoDelete();
   }
 }
 
@@ -137,7 +175,7 @@ SoSelection::select(SoNode * const node)
   FIXME: write doc
  */
 void
-SoSelection::deselect(const SoPath * const path)
+SoSelection::deselect(const SoPath * path)
 {
   int idx = this->findPath(path);
   if (idx >= 0) this->removePath(idx);
@@ -156,7 +194,7 @@ SoSelection::deselect(const int which)
   FIXME: write doc
  */
 void
-SoSelection::deselect(SoNode * const node)
+SoSelection::deselect(SoNode * node)
 {
   SoPath *path = this->searchNode(node);
   if (path) {
@@ -170,11 +208,11 @@ SoSelection::deselect(SoNode * const node)
   FIXME: write doc
  */
 void
-SoSelection::toggle(const SoPath * const path)
+SoSelection::toggle(const SoPath * path)
 {
   int idx = this->findPath(path);
   if (idx >= 0) this->removePath(idx);
-  else this->select(path);
+  else this->select(path); // call select instead of addPath to copy path before adding
 }
 
 
@@ -182,7 +220,7 @@ SoSelection::toggle(const SoPath * const path)
   FIXME: write doc
  */
 void
-SoSelection::toggle(SoNode * const node)
+SoSelection::toggle(SoNode * node)
 {
   SoPath *path = this->searchNode(node);
   if (path) {
@@ -196,7 +234,7 @@ SoSelection::toggle(SoNode * const node)
   FIXME: write doc
  */
 SbBool
-SoSelection::isSelected(const SoPath * const path) const
+SoSelection::isSelected(const SoPath * path) const
 {
   return this->findPath(path) >= 0;
 }
@@ -205,7 +243,7 @@ SoSelection::isSelected(const SoPath * const path) const
   FIXME: write doc
  */
 SbBool
-SoSelection::isSelected(SoNode * const node) const
+SoSelection::isSelected(SoNode * node) const
 {
   SoPath *path = this->searchNode(node);
   if (path) {
@@ -393,50 +431,74 @@ SoSelection::removeChangeCallback(SoSelectionClassCB *f, void *userData)
 }
 /*!
   FIXME: write doc
- */
+*/
 void
-SoSelection::invokeSelectionPolicy(SoPath * const /* path */,
-                                   const SbBool /* shiftDown */)
+SoSelection::invokeSelectionPolicy(SoPath * path,
+                                   SbBool shiftdown)
 {
-  COIN_STUB();
+  SbBool toggle = this->policy.getValue() == SoSelection::TOGGLE ||
+    (this->policy.getValue() == SoSelection::SHIFT && shiftdown);
+  
+  if (toggle) 
+    this->performToggleSelection(path);
+  else
+    this->performSingleSelection(path);
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoSelection::performSingleSelection(SoPath * const /* path */)
-{
-  COIN_STUB();
+SoSelection::performSingleSelection(SoPath *path)
+{  
+  while (this->getNumSelected()) {
+    this->removePath(this->getNumSelected()-1);
+  }  
+  if (path) this->select(path);
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoSelection::performToggleSelection(SoPath * const /* path */)
+SoSelection::performToggleSelection(SoPath *path)
 {
-  COIN_STUB();
+  if (path) {
+    int idx = this->findPath(path);
+    if (idx >= 0) {
+      this->removePath(idx);
+    }
+    else if (path->findNode(this) >= 0) {
+      this->select(path);
+    }
+  }
 }
 
 /*!
   FIXME: write doc
  */
 SoPath *
-SoSelection::copyFromThis(const SoPath * const path) const
+SoSelection::copyFromThis(const SoPath * path) const
 {
+  SoPath *newpath = NULL;
+  path->ref();
   int i = path->findNode(this);
-  if (i >= 0) return path->copy(i);
-  return NULL;
+  if (i >= 0) {
+    newpath = path->copy(i);
+  }
+  path->unrefNoDelete();
+  return newpath;
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoSelection::addPath(SoPath * const path)
+SoSelection::addPath(SoPath *path)
 {
   this->selectionList.append(path);
+  this->selCBList->invokeCallbacks(path);
+  this->touch();
 }
 
 /*!
@@ -445,19 +507,22 @@ SoSelection::addPath(SoPath * const path)
 void
 SoSelection::removePath(const int which)
 {
+  SoPath *path = this->selectionList[which];
   this->selectionList.remove(which);
+  this->deselCBList->invokeCallbacks(path);
+  this->touch();
 }
 
 /*!
   FIXME: write doc
  */
 int
-SoSelection::findPath(const SoPath * const path) const
+SoSelection::findPath(const SoPath *path) const
 {
   int idx = -1;
 
   // make copy only if necessary
-  if (path->getHead() != (SoNode*)this) {
+  if (path->getHead() != (SoNode*)this) {   
     SoPath *newpath = this->copyFromThis(path);
     if (newpath) {
       newpath->ref();
@@ -474,16 +539,35 @@ SoSelection::findPath(const SoPath * const path) const
   FIXME: write doc
  */
 void
-SoSelection::handleEvent(SoHandleEventAction * /* action */)
+SoSelection::handleEvent(SoHandleEventAction *action)
 {
-  COIN_STUB();
+  const SoEvent *event = action->getEvent();
+  
+  SbBool haltaction = FALSE;
+  if (SO_MOUSE_PRESS_EVENT(event, BUTTON1)) {    
+    SbBool ignorepick = FALSE;
+    SoPath *selpath = this->getSelectionPath(action, ignorepick, haltaction);
+    if (!ignorepick) {
+      if (selpath) selpath->ref();
+      this->startCBList->invokeCallbacks(this);
+      this->invokeSelectionPolicy(selpath, event->wasShiftDown());
+      this->finishCBList->invokeCallbacks(this);
+      if (selpath) selpath->unref();
+    }
+  }
+  if (haltaction) {
+    action->isHandled();
+  }
+  else {
+    inherited::handleEvent(action);
+  }
 }
 
 //
 // uses search action to find path to node from this
 //
 SoPath *
-SoSelection::searchNode(SoNode * const node) const
+SoSelection::searchNode(SoNode * node) const
 {
   if (searchAction == NULL) {
     searchAction = new SoSearchAction;
@@ -492,4 +576,44 @@ SoSelection::searchNode(SoNode * const node) const
   searchAction->setNode(node);
   searchAction->apply((SoNode*)this);
   return searchAction->getPath();
+}
+
+SoPath *
+SoSelection::getSelectionPath(SoHandleEventAction *action, SbBool &ignorepick, 
+                              SbBool &haltaction)
+{
+  //
+  // handled like described in the man-pages for SoSelection
+  //
+
+  haltaction = FALSE;
+  ignorepick = FALSE;
+  const SoPickedPoint *pp = action->getPickedPoint();
+  SoPath *selectionpath = NULL;
+  if (pp) {
+    selectionpath = pp->getPath();
+    if (this->pickCBFunc && (!this->callPickCBOnlyIfSelectable || 
+                             selectionpath->findNode(this) >= 0)) {
+      selectionpath = this->pickCBFunc(this->pickCBData, pp);
+      if (selectionpath) {        
+        if (selectionpath->getLength() == 1 && 
+            selectionpath->getNode(0) == this) {
+          selectionpath = NULL;
+        }
+        else if (selectionpath->findNode(this) >= 0) {
+          haltaction = TRUE;
+        }
+        else { // path with this not in the path (most probably an empty path)
+          ignorepick = TRUE;
+        }
+      }
+      else { // pickCBFunc returned NULL
+        haltaction = TRUE;
+      }
+    }
+    else { // no pickCBFunc or not valid path
+      haltaction = TRUE;
+    }
+  }  
+  return selectionpath;
 }

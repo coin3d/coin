@@ -52,15 +52,15 @@ public:
 
   SoSelection(const int nChildren);
 
-  void select(const SoPath * const path);
-  void select(SoNode * const node);
-  void deselect(const SoPath * const path);
+  void select(const SoPath * path);
+  void select(SoNode *node);
+  void deselect(const SoPath * path);
   void deselect(const int which);
-  void deselect(SoNode * const node);
-  void toggle(const SoPath * const path);
-  void toggle(SoNode * const node);
-  SbBool isSelected(const SoPath * const path) const;
-  SbBool isSelected(SoNode * const node) const;
+  void deselect(SoNode * node);
+  void toggle(const SoPath * path);
+  void toggle(SoNode * node);
+  SbBool isSelected(const SoPath * path) const;
+  SbBool isSelected(SoNode * node) const;
   void deselectAll(void);
   int getNumSelected(void) const;
   const SoPathList * getList(void) const;
@@ -85,14 +85,14 @@ public:
 
 protected:
   virtual ~SoSelection();
-
-  void invokeSelectionPolicy(SoPath * const path, const SbBool shiftDown);
-  void performSingleSelection(SoPath * const path);
-  void performToggleSelection(SoPath * const path);
-  SoPath * copyFromThis(const SoPath * const path) const;
-  void addPath(SoPath * const path);
+  
+  void invokeSelectionPolicy(SoPath *path, SbBool shiftDown);
+  void performSingleSelection(SoPath *path);
+  void performToggleSelection(SoPath *path);
+  SoPath * copyFromThis(const SoPath * path) const;
+  void addPath(SoPath *path);
   void removePath(const int which);
-  int findPath(const SoPath * const path) const;
+  int findPath(const SoPath *path) const;
 
   virtual void handleEvent(SoHandleEventAction * action);
 
@@ -116,7 +116,10 @@ protected: // unfortunately only protected in OIV
 
 private:
   void init();
-  SoPath *searchNode(SoNode * const node) const;
+  SoPath *searchNode(SoNode * node) const;
+  SoPath *getSelectionPath(SoHandleEventAction *action, 
+                           SbBool &ignorepick, SbBool &haltaction);
+  
 };
 
 #endif // !COIN_SOSELECTION_H
