@@ -60,6 +60,11 @@ SoCache::SoCache(SoState * const state)
 SoCache::~SoCache()
 {
   delete [] this->elementflags;
+
+  int n = this->elements.getLength();
+  for (int i = 0; i < n; i++) {
+    delete this->elements[i];
+  }
 }
 
 /*!
