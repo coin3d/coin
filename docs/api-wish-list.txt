@@ -276,6 +276,17 @@ THE WISH LIST
     Many components are inherently 2D and would be hard to re-make in
     3D, though.
 
+  Update, pederb@sim.no 2001-05-02
+
+    The thought was that the look of the components should be 100%
+    configurable through geometry files. If you want to, you should be
+    able to create a PushButton that looks like a ball by supplying
+    the appropriate geometry file.
+
+    Also, I would like to be able to use the components as 2D GUI
+    components. It is very useful for creating an overlay GUI.  I
+    wouldn't want to have buttons that looks like a ball for a 2D GUI.
+
 * Less environment pollution
   2001-05-02  Lars J. Aas  <larsa@sim.no>
 
