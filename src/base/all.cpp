@@ -64,3 +64,4 @@
 #include "time.c"
 #endif
 
+#include "string.c"
