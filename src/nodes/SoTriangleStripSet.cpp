@@ -22,15 +22,17 @@
   \brief The SoTriangleStripSet class is used to render and control non-indexed triangle strips.
   \ingroup nodes
 
-  Triangle strips are specified using the numVertices field. Coordinates,
-  normals, materials and texture coordinates are fetched in order from
-  the current state or from the vertexProperty node if set. For
-  example, if numVertices is set to [3, 4, 5, 3], this node would
-  specify a tringle from coordinates 0, 1 and 2, a triangle strip from
-  coordinates 3, 4, 5 and 6, a triangle strip from coordinates 7, 8, 9, 10
-  and 11 and finally a triangle from coordinates 12, 13, 14.
+  Triangle strips are specified using the numVertices
+  field. Coordinates, normals, materials and texture coordinates are
+  fetched in order from the current state or from the vertexProperty
+  node if set. For example, if numVertices is set to [3, 4, 5, 3],
+  this node would specify a triangle from coordinates 0, 1 and 2, a
+  triangle strip from coordinates 3, 4, 5 and 6, a triangle strip from
+  coordinates 7, 8, 9, 10 and 11 and finally a triangle from
+  coordinates 12, 13, 14.
 
-  Strips are converted into triangles the way OpenGL does it, of course.
+  Strips are converted into triangles the way OpenGL does it, of
+  course.
 
   Binding PER_PART (per strip), PER_VERTEX, PER_FACE or OVERALL can be
   set for material, and normals. The default material binding is

@@ -154,12 +154,12 @@ SoMarkerSet::initClass(void)
     markerlist->append(temp);
   }
 }
-// Internal method which translates the current material binding
-// found on the state to a material binding for this node.
-// PER_PART, PER_FACE, PER_VERTEX and their indexed counterparts
-// are translated to PER_VERTEX binding. OVERALL means overall
-// binding for point set also, of course. The default material
-// binding is OVERALL.
+
+// Internal method which translates the current material binding found
+// on the state to a material binding for this node.  PER_PART,
+// PER_FACE, PER_VERTEX and their indexed counterparts are translated
+// to PER_VERTEX binding. OVERALL means overall binding for point set
+// also, of course. The default material binding is OVERALL.
 SoMarkerSet::Binding
 SoMarkerSet::findMaterialBinding(SoState * const state) const
 {
@@ -1097,9 +1097,7 @@ convert_bitmaps(void)
       markerimages[wpos+2] = 0;
       markerimages[wpos+3] = 0;
       wpos += 4;
-      //printf(",0x%x,0x%x",v1,v2);
     }
-    //printf("\n");
     rpos += (9*9);
   }
 }
@@ -1143,6 +1141,7 @@ SoMarkerSet::GLRender(SoGLRenderAction * action)
   int32_t idx = this->startIndex.getValue();
   int32_t numpts = this->numPoints.getValue();
   if (numpts < 0) numpts = coords->getNum() - idx;
+
   int matnr = 0;
 
   const SbMatrix & mat = SoModelMatrixElement::get(state);
@@ -1199,6 +1198,8 @@ SoMarkerSet::GLRender(SoGLRenderAction * action)
     }
     idx++;
   }
+  // FIXME: this looks wrong, shouldn't we rather reset the alignment
+  // value to what it was previously?  20010824 mortene.
   glPixelStorei(GL_UNPACK_ALIGNMENT, 4); // restore default value
   glMatrixMode(GL_PROJECTION);
   glPopMatrix();

@@ -145,6 +145,10 @@ public:
     sideDetail.setPart(SoCone::SIDES);
     bottomDetail.setPart(SoCone::BOTTOM);
 
+    // FIXME: the texture coordinate generation for cone sides is of
+    // sub-par quality. The textures comes out looking "skewed" and
+    // "compressed". 20010926 mortene.
+
     if (flags & SOGEN_GENERATE_SIDE) {
       vertex.setDetail(&sideDetail);
       vertex.setMaterialIndex(matnr);

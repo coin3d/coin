@@ -64,11 +64,13 @@ SoMaterialBundle::~SoMaterialBundle()
 }
 
 /*!
-  Currently not in use. It is only provided for OIV comliance.
+  Currently not in use. It is only provided for OIV compliance.
 */
 void
 SoMaterialBundle::setUpMultiple(void)
 {
+  // FIXME: does this represent an unimplemented feature, or is it an
+  // obsoleted method? Mark it properly.  20010903 mortene.
 }
 
 /*!
@@ -97,10 +99,9 @@ SoMaterialBundle::sendFirst(void)
   Sends material values with index \a index to GL. Will test
   whether the current index equals \a index before sending.
 
-  \a betweenBeginEnd should be \e TRUE if your program is
+  \a betweenBeginEnd should be \c TRUE if your program is
   between a glBegin() and glEnd() (it is illegal to change the
   polygon stipple between a glBegin() and glEnd()).
-
 */
 void
 SoMaterialBundle::send(const int index, const SbBool betweenBeginEnd)
@@ -112,8 +113,10 @@ SoMaterialBundle::send(const int index, const SbBool betweenBeginEnd)
 }
 
 /*!
-  Will send the material to GL even though \a index equals
-  the current index. Provided for OIV compabtibility
+  Will send the material to GL even though \a index equals the current
+  index.
+
+  Provided for compatibility with the SGI Open Inventor v2.1 API.
 */
 void
 SoMaterialBundle::forceSend(const int index)
@@ -123,7 +126,7 @@ SoMaterialBundle::forceSend(const int index)
 }
 
 /*!
-  Returns \e TRUE if the current light model is BASE_COLOR.
+  Returns \c TRUE if the current light model is BASE_COLOR.
 */
 SbBool
 SoMaterialBundle::isColorOnly(void) const

@@ -305,8 +305,14 @@ SoDB::init(void)
                        NULL, NULL, NULL);
   SoDB::registerHeader(SbString("#Inventor V2.1 binary  "), TRUE, 2.1f,
                        NULL, NULL, NULL);
+
+  // FIXME: wrong, not really supported yet.  20010925 mortene.
   SoDB::registerHeader(SbString("#VRML V2.0 utf8"), FALSE, 2.1f,
                        NULL, NULL, NULL);
+
+  // FIXME: there are nodes in TGS' later Inventor versions that we do
+  // not support, so it's not really correct to register 2.4 and 2.5
+  // headers.  20010925 mortene.
   SoDB::registerHeader(SbString("#Inventor V2.4 ascii   "), FALSE, 2.0f,
                        NULL, NULL, NULL);
   SoDB::registerHeader(SbString("#Inventor V2.4 binary  "), TRUE, 2.0f,
@@ -315,14 +321,21 @@ SoDB::init(void)
                        NULL, NULL, NULL);
   SoDB::registerHeader(SbString("#Inventor V2.5 binary  "), TRUE, 2.0f,
                        NULL, NULL, NULL);
+
   SoDB::registerHeader(SbString("#Inventor V2.0 ascii   "), FALSE, 2.0f,
                        NULL, NULL, NULL);
   SoDB::registerHeader(SbString("#Inventor V2.0 binary  "), TRUE, 2.0f,
                        NULL, NULL, NULL);
+
+  // FIXME: this is erroneous, we don't _really_ support v1.x Inventor
+  // files.  Should perhaps just remove the following lines, but do it
+  // as part of a larger renovation on the file-format support /
+  // versioning stuff.  20010925 mortene.
   SoDB::registerHeader(SbString("#Inventor V1.0 ascii   "), FALSE, 1.0f,
                        NULL, NULL, NULL);
   SoDB::registerHeader(SbString("#Inventor V1.0 binary  "), TRUE, 1.0f,
                        NULL, NULL, NULL);
+
   SoDB::registerHeader(SbString("#VRML V1.0 ascii   "), FALSE, 2.1f,
                        NULL, NULL, NULL);
 

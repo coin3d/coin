@@ -29,7 +29,7 @@
   Note that one common mistake when using a raypick action is that one
   tries to apply it to a scenegraph that does not contain a camera \e
   explicitly set up by the application programmer. Without a camera as
-  part of the traversal, the raypick action does not now which view
+  part of the traversal, the raypick action does not know which view
   volume to send the ray through.
 
   In this regard, be aware that the getSceneGraph() call in the
@@ -57,7 +57,7 @@
   rp.setPoint(mouseevent->getPosition());
   rp.apply(viewer->getSceneGraph());
   // BUG: results will not be what you expected, as no camera was
-  // part of the "user's" scenegraph
+  // part of the "user's scenegraph"
   \endcode
 
   While this is the correct way to do it:
@@ -67,9 +67,9 @@
   SoSeparator * root = new SoSeparator;
   root->ref();
 
-  // Need to set up our own camera in the "user" scenegraph, or else
-  // the raypick action will fail because the camera is "hidden" in
-  // the viewer-specific root of the scenegraph.
+  // Need to set up our own camera in the "user scenegraph", or else
+  // the raypick action will fail because the camera is hidden in the
+  // viewer-specific root of the scenegraph.
   SoPerspectiveCamera * pcam = new SoPerspectiveCamera;
   root->addChild(pcam);
 

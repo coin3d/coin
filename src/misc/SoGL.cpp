@@ -122,6 +122,10 @@ sogl_render_cone(const float radius,
 
   int matnr = 0;
 
+  // FIXME: the texture coordinate generation for cone sides is of
+  // sub-par quality. The textures comes out looking "skewed" and
+  // "compressed". 20010926 mortene.
+
   if (flags & SOGL_RENDER_SIDE) {
     glBegin(GL_TRIANGLES);
     i = 0;
