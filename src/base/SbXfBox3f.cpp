@@ -671,6 +671,13 @@ SbXfBox3f::calcInverse(void) const
       // not the inverse), and leave us with an identity transform.
       SbXfBox3f * thisp = (SbXfBox3f*) this; // cast away constness
       *thisp = SbXfBox3f(this->project());
+
+      // FIXME: this degenerate-transform fix looks like bad
+      // engineering. It's the caller who does something wrong when
+      // combining transforms into SbXfBox3f to make a non-inversible
+      // matrix. This will for instance happen when calculating bboxes
+      // for a scene with scale transforms with 0 components.
+      // 20010627 mortene.
     }
   }
 }
