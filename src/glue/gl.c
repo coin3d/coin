@@ -1895,11 +1895,9 @@ cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height)
     cc_glglue_context_destruct(ctx);
   }
 
-  if(size[0] < SHRT_MAX) *width = size[0];
-  else *width = SHRT_MAX;
-
-  if(size[1] < SHRT_MAX) *height = size[1];
-  else *height = SHRT_MAX;
+  
+  *width = (unsigned int) size[0];
+  *height = (unsigned int) size[1];
   
   if (coin_glglue_debug()) {
     cc_debugerror_postinfo("cc_glglue_context_max_dimensions",
