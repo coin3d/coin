@@ -23,10 +23,16 @@
 
 /*!
   \class SoTransformSeparator SoTransformSeparator.h Inventor/nodes/SoTransformSeparator.h
-  \brief The SoTransformSeparator class ...
+  \brief The SoTransformSeparator class is a group node preserving the current transformations.
   \ingroup nodes
 
-  FIXME: write class doc
+  This node works like the SoSeparator group node, except that it only
+  stores and restores the current model matrix transformation. Other
+  appearance settings, like materials, textures, cameras, lights, etc,
+  will affect the remaining parts of the scenegraph after traversal,
+  just like as for the SoGroup node.
+
+  \sa SoSeparator, SoGroup
 */
 
 
@@ -44,9 +50,19 @@
 SO_NODE_SOURCE(SoTransformSeparator);
 
 /*!
-  Constructor.
+  Default constructor.
 */
-SoTransformSeparator::SoTransformSeparator()
+SoTransformSeparator::SoTransformSeparator(void)
+{
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoTransformSeparator);
+}
+
+/*!
+  Specify the expected number of children this node will have, to make
+  it possible to do more efficient resource allocation.
+*/
+SoTransformSeparator::SoTransformSeparator(int nChildren)
+  : inherited(nChildren)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTransformSeparator);
 }
@@ -58,16 +74,14 @@ SoTransformSeparator::~SoTransformSeparator()
 {
 }
 
-// doc in super
+// Documented in superclass.
 void
 SoTransformSeparator::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoTransformSeparator);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Documented in superclass.
 void
 SoTransformSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
 {
@@ -81,18 +95,7 @@ SoTransformSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
                                       localMatrix);
 }
 
-/*!
-  FIXME: write doc
- */
-SoTransformSeparator::SoTransformSeparator(int nChildren)
-  : inherited(nChildren)
-{
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoTransformSeparator);
-}
-
-/*!
-  FIXME: write doc
- */
+// Documented in superclass.
 void
 SoTransformSeparator::doAction(SoAction *action)
 {
@@ -101,20 +104,16 @@ SoTransformSeparator::doAction(SoAction *action)
   SoModelMatrixElement::popMatrix(action->getState(), matrix);
 }
 
-/*!
-  FIXME: write doc
- */
+// Documented in superclass.
 void
-SoTransformSeparator::callback(SoCallbackAction *action)
+SoTransformSeparator::callback(SoCallbackAction * action)
 {
   SbMatrix matrix = SoModelMatrixElement::pushMatrix(action->getState());
   inherited::callback(action);
   SoModelMatrixElement::popMatrix(action->getState(), matrix);
 }
 
-/*!
-  FIXME: write doc
- */
+// Documented in superclass.
 void
 SoTransformSeparator::GLRender(SoGLRenderAction * action)
 {
@@ -123,24 +122,20 @@ SoTransformSeparator::GLRender(SoGLRenderAction * action)
   SoModelMatrixElement::popMatrix(action->getState(), matrix);
 }
 
-/*!
-  FIXME: write doc
- */
+// Documented in superclass.
 void
-SoTransformSeparator::pick(SoPickAction *action)
+SoTransformSeparator::pick(SoPickAction * action)
 {
   SbMatrix matrix = SoModelMatrixElement::pushMatrix(action->getState());
   inherited::pick(action);
   SoModelMatrixElement::popMatrix(action->getState(), matrix);
 }
 
-/*!
-  FIXME: write doc
- */
+// Documented in superclass.
 void
-SoTransformSeparator::getMatrix(SoGetMatrixAction *action)
+SoTransformSeparator::getMatrix(SoGetMatrixAction * action)
 {
-  // will only need to traverse if IN_PATH. Other path codes will have
+  // Will only need to traverse if IN_PATH. Other path codes will have
   // no effect on the result.
   int numindices;
   const int * indices;
@@ -149,11 +144,12 @@ SoTransformSeparator::getMatrix(SoGetMatrixAction *action)
   }
 }
 
-/*!
-  FIXME: write doc
- */
+// Documented in superclass.
 void
-SoTransformSeparator::getPrimitiveCount(SoGetPrimitiveCountAction *action)
+SoTransformSeparator::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-  SoTransformSeparator::doAction((SoAction*)action);
+  // FIXME: this looks mysterious -- doesn't we implicitly assume
+  // SoGroup::getPrimitiveCount() here? If so, that shouldn't be
+  // necessary. Ask pederb. 20020107 mortene.
+  SoTransformSeparator::doAction((SoAction *)action);
 }
