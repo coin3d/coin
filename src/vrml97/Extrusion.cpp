@@ -506,6 +506,10 @@ SoVRMLExtrusion::GLRender(SoGLRenderAction * action)
                       0,
                       doTextures?1:0);
   THIS->readUnlock();
+
+  // send approx number of triangles for autocache handling
+  sogl_autocache_update(state, THIS->idx.getLength() / 4);
+
 }
 
 // Doc in parent
