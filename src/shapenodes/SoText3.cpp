@@ -74,6 +74,9 @@
    } 
   \endverbatim
 
+  if SoText3::Part is set to SIDES or ALL and no profile is provided, a
+  flat, one unit long profile is created. 
+
   Beware that using a lot of SoText3 text characters in a scene will
   usually have severe impact on the rendering performance, as each and
   every character of the text contributes a lot of polygon primitives
