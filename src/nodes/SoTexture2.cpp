@@ -22,9 +22,15 @@
   \brief The SoTexture2 class is used to map a 2D texture onto geometry.
   \ingroup nodes
 
+  Shape nodes within the scope of SoTexture2 nodes in the scenegraph
+  (ie below the same SoSeparator and to the righthand side of the
+  SoTexture2) will have the texture applied according to each shape
+  type's individual characteristics.  See the documentation of the
+  various shape types (SoFaceSet, SoCube, SoSphere, etc etc) for
+  information about the specifics of how the textures will be applied.
 */
 
-#include <coindefs.h> // COIN_STUB()
+#include <coindefs.h> // COIN_OBSOLETED()
 #include <Inventor/SoInput.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoCallbackAction.h>
@@ -294,15 +300,14 @@ SoTexture2::callback(SoCallbackAction * action)
 }
 
 /*!
-  Not implemented in Coin; should probably have been private in OIV.
-  Let us know if you need this method and we'll implement it.
+  Not implemented in Coin; should probably not have been public in the
+  Open Inventor API.  We'll consider to implement it if requested.
 */
 SbBool
-SoTexture2::readImage(const SbString & /* fname */,
-                      int & /* w */, int & /* h */, int & /* nc */,
-                      unsigned char *& /* bytes */)
+SoTexture2::readImage(const SbString & fname, int & w, int & h, int & nc,
+                      unsigned char *& bytes)
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
   return FALSE;
 }
 
