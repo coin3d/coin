@@ -132,6 +132,12 @@ SoGetBoundingBoxAction::getXfBoundingBox(void)
 
 /*!
   Returns center point of scene after the action has been applied.
+
+  This might differ from the geometric center of the bounding box, as
+  shape nodes may "weight" the center point according to various
+  criteria (i.e. a faceset could for instance weight the center point
+  according to the area within its bounding box where there are more
+  polygons).
 */
 const SbVec3f &
 SoGetBoundingBoxAction::getCenter(void) const
