@@ -173,6 +173,9 @@ SoWriteAction::commonConstructor(SoOutput * out)
 */
 SoWriteAction::~SoWriteAction(void)
 {
+#if 0 // debug
+  SoDebugError::postInfo("SoWriteAction::~SoWriteAction", "%p", this);
+#endif // debug
   if (this->localoutputalloc) delete this->outobj;
 }
 
@@ -219,7 +222,10 @@ SoWriteAction::writeAllPROTO(void)
 void
 SoWriteAction::continueToApply(SoNode * node)
 {
-  this->traverse(node);
+  this->setTerminated(FALSE);
+  inherited::beginTraversal(node);
+  this->endTraversal(node);
+  this->setTerminated(TRUE);
 }
 
 /*!
