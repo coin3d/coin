@@ -20507,8 +20507,9 @@ int
 main ()
 {
 
-  char drive100;
-  char dir100;
+  char filename[100];
+  char drive[100];
+  char dir[100];
   _splitpath(filename, drive, dir, NULL, NULL);
 
   ;

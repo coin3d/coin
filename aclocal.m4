@@ -7827,8 +7827,9 @@ AC_COMPILE_IFELSE(
 #endif
 #include <stdlib.h>
 ], [
-  char drive[100];
-  char dir[100];
+  char filename[[100]];
+  char drive[[100]];
+  char dir[[100]];
   _splitpath(filename, drive, dir, NULL, NULL);
 ])], [
   AC_DEFINE([HAVE__SPLITPATH], 1, [define if the system has _splitpath()])
