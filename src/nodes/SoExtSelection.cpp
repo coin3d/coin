@@ -2407,12 +2407,12 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
       reduce the size of the offscreen to fit within the maximum offscreen limitations.
       (20020812 handegar)
     */
-    SbVec2s maxsize;
+    unsigned int maxsize[2];
     cc_glglue_context_max_dimensions(&maxsize[0], &maxsize[1]);
 
     this->requestedsize = action->getViewportRegion().getViewportSizePixels();
     
-    if(requestedsize[0] > maxsize[0] || requestedsize[1] > maxsize[1]){
+    if((unsigned int) requestedsize[0] > maxsize[0] || (unsigned int) requestedsize[1] > maxsize[1]){
       
       float max = SbMax(requestedsize[0],requestedsize[1]);
       float min = SbMin(maxsize[0],maxsize[1]);
