@@ -168,8 +168,17 @@
   KNOWN BUGS:
   ===========
 
-  
+  2002-08-02  Offscreen renderer is not affected by PerspectiveCamera nodes (possibly other
+              camera nodes as well) in the scenegraph, leading to incorrect selections in 
+              VISIBLE_SHAPE mode. Is this a bug in the offscreen renderer or SoExtSelection?? 
+              (handegar)
 
+  2002-08-02  Sometimes my GTK-lib (i think) gets corrupt (most likely because of a bug in Gimp 1.2).
+              This causes the 'glGetInteger' to fail causing incorrect 'maximumcolorcounter'
+              value. This often leads to infinite loop and crash when in VISIBLE_SHAPE mode. 
+              Other symptoms are 'GL_OUT_OF_MEMORY' error, Mozilla suddenly dies etc. A restart of 
+              X11 is needed. I am using the Mesa drivers. (handegar)
+ 
 */
 
 
@@ -686,6 +695,8 @@ SoExtSelection::SoExtSelection(void)
   PRIVATE(this)->drawcounter=0;
   PRIVATE(this)->visitedshapepaths = new SoPathList();
   PRIVATE(this)->somefacesvisible = FALSE;
+
+  
 }
 
 /*!
@@ -856,6 +867,7 @@ SoExtSelection::handleEvent(SoHandleEventAction * action)
   SoSeparator::handleEvent(action);
   if (action->isHandled()) return;
 
+
   const SoEvent * event = action->getEvent();
   const SbVec2s mousecoords = event->getPosition();
 
@@ -884,7 +896,10 @@ SoExtSelection::handleEvent(SoHandleEventAction * action)
       PRIVATE(this)->timersensor->unschedule();
       PRIVATE(this)->isDragging = FALSE;
       PRIVATE(this)->selectionstate = SoExtSelectionP::NONE;
-      PRIVATE(this)->performSelection(action);
+
+      if ((SbAbs(mousecoords[0] - PRIVATE(this)->previousmousecoords[0]) > 1) &&
+          (SbAbs(mousecoords[1] - PRIVATE(this)->previousmousecoords[1]) > 1))
+        PRIVATE(this)->performSelection(action);
     }
     // mouse move
     else if ((event->isOfType( SoLocation2Event::getClassTypeId()))) {
@@ -949,6 +964,7 @@ SoExtSelection::handleEvent(SoHandleEventAction * action)
     }
     break;
   }
+  
 }
 
 // internal method for drawing lasso
@@ -2074,10 +2090,10 @@ SoExtSelectionP::checkOffscreenRendererCapabilities()
   glGetIntegerv(GL_GREEN_BITS,&green);
   glGetIntegerv(GL_BLUE_BITS,&blue);
   glGetIntegerv(GL_ALPHA_BITS,&alpha);
-  
-  glGetBooleanv(GL_RGBA_MODE,&rgbmode);
+
   // FIXME: Here we have to give a better message to the client (handegar)
-  assert(rgbmode && "Offscreen renderer in non-RGB mode is not supported when using SoExtSelection");
+  //glGetBooleanv(GL_RGBA_MODE,&rgbmode);
+  //assert(rgbmode && "Offscreen renderer in non-RGB mode is not supported when using SoExtSelection");
   
   this->colorbitsred = red;
   this->colorbitsgreen = green;
@@ -2173,8 +2189,10 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
 
     // Is this actually a rectangle and not just a point or line?
     if(((p0[0] == p1[0]) && (p0[1] == p1[0])) ||
-       ((p0[0] == p1[0]) || (p0[1] == p1[1])))
+       ((p0[0] == p1[0]) || (p0[1] == p1[1]))){
+      master->touch();
       return;
+    }
 
     // convert the rectangle to a polygon
     this->coords.append(p0);
@@ -2227,9 +2245,11 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
 
     this->offscreenaction = action;
     this->offscreenheadnode = action->getCurPath()->getHead();
-    
+
     // Check OpenGL capabilities
-    checkOffscreenRendererCapabilities();
+    this->checkOffscreenRendererCapabilities();
+    this->maximumcolorcounter = 0xffffff;
+
     this->visibletrianglesbitarray = new unsigned char[((this->maximumcolorcounter) >> 3)+1];
  
     // --- Do this procedure several times if colorcounter overflows
@@ -2268,7 +2288,6 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
 
       // First render pass to offscreen buffer.
       this->renderer->render(cbnode);
-
 
       // This environment variable used for debuggin. If variable is
       // found, the content for the offscreen is stored to disk for
