@@ -1434,7 +1434,7 @@ if $sim_ac_build_library; then
   fi
   # Mac OS X 10.2 needs some additional tweaks (see also src/Makefile.am)
   if $sim_ac_macosx_10_2; then
-    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS -L/usr/lib/gcc/darwin/3.1/private/"
+    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS -Wl,-prebind"
   fi
 
   case "$sim_ac_framework:$sim_ac_make_dsp" in
