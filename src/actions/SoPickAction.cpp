@@ -76,12 +76,6 @@ SoPickAction::SoPickAction(const SbViewportRegion & viewportregion)
   : vpRegion(viewportregion), cullingenabled(TRUE)
 {
   SO_ACTION_CONSTRUCTOR(SoPickAction);
-
-  static int first = 1;
-  if (first) {
-    first = 0;
-    SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::pickS);
-  }
 }
 
 /*!

@@ -79,12 +79,6 @@ SoGetBoundingBoxAction::SoGetBoundingBoxAction(const SbViewportRegion & vp)
     flags(SoGetBoundingBoxAction::RESET_BEFORE)
 {
   SO_ACTION_CONSTRUCTOR(SoGetBoundingBoxAction);
-
-  static int first = 1;
-  if (first) {
-    first = 0;
-    SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::getBoundingBoxS);
-  }
 }
 
 /*!

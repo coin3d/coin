@@ -31,6 +31,7 @@
 #include <Inventor/lists/SoTypeList.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/actions/SoAction.h>
+#include <Inventor/nodes/SoNode.h>
 #include <assert.h>
 
 #ifndef DOXYGEN_SKIP_THIS
@@ -106,27 +107,33 @@ SoActionMethodList::setUp(void)
       SoType type = THIS->addedtypes[i];
       const SoActionMethod method = THIS->addedmethods[i];
       (*this)[(int)type.getData()] = method;
-
+      
       // also set this method for all nodes that inherits this node
       derivedtypes.truncate(0);
       int numderived = SoType::getAllDerivedFrom(THIS->addedtypes[i], derivedtypes);
       for (int j = 0; j < numderived; j++) {
         int idx = (int) derivedtypes[j].getData();
-        if (idx >= this->getLength() || (*this)[idx] == NULL) {
-          (*this)[idx] = method;
-        }
+        (*this)[idx] = method;
       }
     }
-
+    
+    // fill in nullAction for all nodetypes with method == NULL
+    derivedtypes.truncate(0);
+    (void) SoType::getAllDerivedFrom(SoNode::getClassTypeId(), derivedtypes);
+    
+    for (i = 0; i < this->getLength(); i++) {
+      if ((*this)[i] == NULL) (*this)[i] = SoAction::nullAction;
+    }
+    for (i = this->getLength(); i < derivedtypes.getLength(); i++) {
+      this->append((void*) SoAction::nullAction);
+    }
+    
     // fill in empty slots with parent method
     if (THIS->parent) {
       THIS->parent->setUp();
       n = THIS->parent->getLength();
       for (i = 0; i < n; i++) {
-        if ((*this)[i] == NULL) (*this)[i] = (*(THIS->parent))[i];
-
-        // just in case, fill in nullAction method if still empty
-        if ((*this)[i] == NULL) (*this)[i] = SoAction::nullAction;
+        if ((*this)[i] == SoAction::nullAction) (*this)[i] = (*(THIS->parent))[i];
       }
     }
   }

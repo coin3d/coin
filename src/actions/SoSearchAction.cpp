@@ -77,12 +77,6 @@ SoSearchAction::SoSearchAction(void)
     path(NULL) // paths(0)
 {
   SO_ACTION_CONSTRUCTOR(SoSearchAction);
-
-  static int first = 1;
-  if (first) {
-    first = 0;
-    SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::searchS);
-  }
 }
 
 /*!

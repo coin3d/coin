@@ -113,12 +113,6 @@ SoHandleEventAction::SoHandleEventAction(const SbViewportRegion & viewportregion
   THIS->pickaction = NULL;
 
   SO_ACTION_CONSTRUCTOR(SoHandleEventAction);
-
-  static int first = 1;
-  if (first) {
-    first = 0;
-    SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::handleEventS);
-  }
 }
 
 /*!

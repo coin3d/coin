@@ -345,12 +345,6 @@ SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportregion)
   THIS->abortcallback = NULL;
   THIS->cachecontext = 0;
   THIS->needglinit = TRUE;
-
-  static int first = 1;
-  if (first) {
-    first = 0;
-    SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::GLRenderS);
-  }
 }
 
 /*!

@@ -258,7 +258,7 @@ SoCallbackAction::initClass(void)
   SO_ENABLE(SoCallbackAction, SoTextureOverrideElement);
   SO_ENABLE(SoCallbackAction, SoLazyElement);
   SO_ENABLE(SoCallbackAction, SoCacheElement);
-  
+
   // view frustum culling is normally not used for this action, but
   // the application programmer can manually add any number of culling
   // planes to optimize callback action traversal. This is used by the
@@ -299,12 +299,6 @@ SoCallbackAction::commonConstructor(void)
   THIS->pretailcallback = NULL;
   THIS->posttailcallback = NULL;
   THIS->viewportset = FALSE;
-
-  static int first = 1;
-  if (first) {
-    first = 0;
-    SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::callbackS);
-  }
 }
 
 /*!

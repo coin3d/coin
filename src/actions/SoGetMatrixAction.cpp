@@ -69,12 +69,6 @@ SoGetMatrixAction::SoGetMatrixAction(const SbViewportRegion & region)
   : viewportregion(region)
 {
   SO_ACTION_CONSTRUCTOR(SoGetMatrixAction);
-
-  static int first = 1;
-  if (first) {
-    first = 0;
-    SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::getMatrixS);
-  }
 }
 
 /*!

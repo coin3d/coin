@@ -96,6 +96,8 @@ int SoNode::nextActionMethodIndex = 0;
 // Sun CC v4.0. (Bitpattern 0x0000 equals SoType::badType()).
 SoType SoNode::classTypeId;
 
+static void
+init_action_methods(void);
 
 // Overridden from parent.
 SoType
@@ -263,9 +265,12 @@ SoNode::initClass(void)
                        SoNode::nextActionMethodIndex++);
 
   SoNode::initClasses();
+  
+  // action methods must be initialized here, since both nodes and
+  // actions must be initialized before we can use
+  // SO_ACTION_ADD_METHOD
+  init_action_methods();
 }
-
-
 
 /*!
   Initialize all the node classes of Coin.
@@ -1017,3 +1022,31 @@ SoNode::readInstance(SoInput * in, unsigned short flags)
 
 #undef FLAG_TYPEMASK
 #undef FLAG_OVERRIDE
+
+// The following function should probably eventually be renamed/moved
+// to SoAction::initActionMethods(). We cannot initialize action
+// methods in SoAction::initClass() since nodes must be initialized
+// before we can set up action methods, and we cannot initialize nodes
+// before actions, since elements (which also depend on actions) are
+// enabled in nodes.
+static void
+init_action_methods(void)
+{
+  SoCallbackAction::addMethod(SoNode::getClassTypeId(), SoNode::callbackS);
+  SoGLRenderAction::addMethod(SoNode::getClassTypeId(), SoNode::GLRenderS);
+  SoGetBoundingBoxAction::addMethod(SoNode::getClassTypeId(), SoNode::getBoundingBoxS);
+  SoGetMatrixAction::addMethod(SoNode::getClassTypeId(), SoNode::getMatrixS);
+  SoGetPrimitiveCountAction::addMethod(SoNode::getClassTypeId(), SoNode::getPrimitiveCountS);
+  SoHandleEventAction::addMethod(SoNode::getClassTypeId(), SoNode::handleEventS);
+  SoPickAction::addMethod(SoNode::getClassTypeId(), SoNode::pickS);
+
+  // most methods for SoRayPickAction are inherited from SoPickAction
+  SoRayPickAction::addMethod(SoCamera::getClassTypeId(), SoNode::rayPickS);
+  SoRayPickAction::addMethod(SoSeparator::getClassTypeId(), SoNode::rayPickS);
+  SoRayPickAction::addMethod(SoLOD::getClassTypeId(), SoNode::rayPickS);
+  SoRayPickAction::addMethod(SoLevelOfDetail::getClassTypeId(), SoNode::rayPickS);
+  SoRayPickAction::addMethod(SoShape::getClassTypeId(), SoNode::rayPickS);
+
+  SoSearchAction::addMethod(SoNode::getClassTypeId(), SoNode::searchS);
+  SoWriteAction::addMethod(SoNode::getClassTypeId(), SoNode::writeS);
+}
