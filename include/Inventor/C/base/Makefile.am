@@ -11,6 +11,7 @@ baseinc_HEADERS = \
 
 EXTRA_DIST = \
 	basep.h \
+	hashp.h \
 	name.h \
 	string.h
 
