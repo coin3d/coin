@@ -19,15 +19,23 @@
 
 /*!
   \class SoFieldData Inventor/fields/SoFieldData.h
-  \brief The SoFieldData class is a container for a set of fields.
+  \brief The SoFieldData class is a container for a prototype set of fields.
   \ingroup fields
 
-  FIXME: more doc (what is stored, who uses it (one instance pr
-  container class), what for (keeping default values and enum values),
-  ...)
+  This class is instantiated once for each class of objects which use
+  fields, and which needs to be able to import and export them.
 
-  \sa SoField
-*/
+  Each field of a class is stored with the name it has been given
+  within its "owner" class and a pointer offset to the dynamic
+  instance of the field itself.
+
+  Enumeration sets are stored with (name value) pairs, to make it
+  possible to address, read and save enum type fields by name.
+
+  It is unlikely that application programmers should need to use any
+  of the methods of this class directly.
+
+  \sa SoField, SoFieldContainer */
 
 #include <Inventor/fields/SoFieldData.h>
 #include <Inventor/SbName.h>
@@ -45,6 +53,9 @@
 static const char OPEN_BRACE_CHAR = '[';
 static const char CLOSE_BRACE_CHAR = ']';
 static const char VALUE_SEPARATOR_CHAR = ',';
+
+
+/// Internal classes, start /////////////////////////////////////////////////
 
 class SoFieldEntry {
 public:
@@ -66,54 +77,30 @@ private:
 
 class SoEnumEntry {
 public:
-  SoEnumEntry(const SbName & name);
-  ~SoEnumEntry();
+  SoEnumEntry(const SbName & name) : nameoftype(name) { }
   // Copy constructors.
   SoEnumEntry(const SoEnumEntry * ee) { this->copy(ee); }
   SoEnumEntry(const SoEnumEntry & ee) { this->copy(&ee); }
 
-  static int growsize;
   SbName nameoftype;
-  int num;
-  int arraysize;
-  int * vals;
-  SbName * names;
+  SbList<SbName> names;
+  SbList<int> values;
 
 private:
   void copy(const SoEnumEntry * ee)
     {
       this->nameoftype = ee->nameoftype;
-      this->arraysize = ee->arraysize;
-      this->num = ee->num;
-
-      this->vals = new int[this->arraysize];
-      this->names = new SbName[this->arraysize];
-
-      for (int i=0; i < this->num; i++) {
-        this->vals[i] = ee->vals[i];
-        this->names[i] = ee->names[i];
-      }
+      this->names = ee->names;
+      this->values = ee->values;
     }
 };
 
-int SoEnumEntry::growsize = 6;
+/// Internal classes, end ///////////////////////////////////////////////////
 
-SoEnumEntry::SoEnumEntry(const SbName & name)
-  : nameoftype(name), num(0), arraysize(SoEnumEntry::growsize)
-{
-  this->vals = new int[this->arraysize];
-  this->names = new SbName[this->arraysize];
-}
-
-SoEnumEntry::~SoEnumEntry()
-{
-  delete[] this->vals;
-  delete[] this->names;
-}
 
 
 /*!
-  Constructor.
+  Default constructor.
  */
 SoFieldData::SoFieldData(void)
 {
@@ -128,9 +115,9 @@ SoFieldData::SoFieldData(const SoFieldData & fd)
 }
 
 /*!
-  Copy constructor by pointer values. Handles \c NULL pointers by
-  behaving like the default constructor.
- */
+  Copy constructor taking a pointer value as an argument. Handles \c
+  NULL pointers by behaving like the default constructor.
+*/
 SoFieldData::SoFieldData(const SoFieldData * fd)
 {
   if (fd) this->copy(fd);
@@ -142,7 +129,8 @@ SoFieldData::SoFieldData(const SoFieldData * fd)
  */
 SoFieldData::SoFieldData(int /* numfields */)
 {
-  COIN_STUB();
+  // Ignore the argument, I don't think there's any point in doing
+  // optimization here. 19991231 mortene.
 }
 
 /*!
@@ -150,23 +138,28 @@ SoFieldData::SoFieldData(int /* numfields */)
  */
 SoFieldData::~SoFieldData()
 {
-  struct SoFieldEntry * tmpField;
-  SoEnumEntry * tmpEnum;
+  this->freeResources();
+}
 
-  for (int i=0; i < this->fields.getLength(); i++) {
-    tmpField = (struct SoFieldEntry *)fields[i];
-    delete tmpField;
-  }
+// Empties internal lists, while deallocating the memory used for the
+// entries.
+void
+SoFieldData::freeResources(void)
+{
+  for (int i=0; i < this->fields.getLength(); i++) delete this->fields[i];
+  this->fields.truncate(0);
 
-  for (int j=0; j < this->enums.getLength(); j++) {
-    tmpEnum = (SoEnumEntry *)enums[j];
-    delete tmpEnum;
-  }
+  for (int j=0; j < this->enums.getLength(); j++) delete this->enums[j];
+  this->enums.truncate(0);
 }
 
 /*!
-  FIXME: write doc
- */
+  Add a new field to our internal list.
+
+  The \a name will be stored along with an pointer offset between \a
+  base and \a field, which will be valid for all instances of the
+  class type of \a base.
+*/
 void
 SoFieldData::addField(SoFieldContainer * base, const char * name,
                       const SoField * field)
@@ -177,10 +170,10 @@ SoFieldData::addField(SoFieldContainer * base, const char * name,
                          base->getTypeId().getName().getString(),
                          name);
 #endif // debug
+
   char * vbase = (char *)base;
   char * vfield = (char *)field;
-  struct SoFieldEntry * newfield = new SoFieldEntry(name, vfield - vbase);
-  this->fields.append(newfield);
+  this->fields.append(new SoFieldEntry(name, vfield - vbase));
 }
 
 /*!
@@ -209,11 +202,12 @@ SoFieldData::getNumFields(void) const
 const SbName &
 SoFieldData::getFieldName(int index) const
 {
-  return ((SoFieldEntry *)fields[index])->name;
+  return this->fields[index]->name;
 }
 
 /*!
-  FIXME: write doc
+  Returns a pointer to the field at \a index within the \a object
+  instance.
  */
 SoField *
 SoFieldData::getField(const SoFieldContainer * object, int index) const
@@ -224,79 +218,79 @@ SoFieldData::getField(const SoFieldContainer * object, int index) const
 }
 
 /*!
-  FIXME: write doc
+  Returns the internal index value of \a field in \a fc. If \a field
+  is not part of \a fc, return -1.
 */
 int
-SoFieldData::getIndex(const SoFieldContainer * /* fc */,
-                      const SoField * /* field */) const
+SoFieldData::getIndex(const SoFieldContainer * fc, const SoField * field) const
 {
-  COIN_STUB();
+  char * vbase = (char *)fc;
+  char * vfield = (char *)field;
+  int ptroffset = vfield - vbase;
+
+  for (int i=0; i < this->fields.getLength(); i++)
+    if (this->fields[i]->ptroffset == ptroffset) return i;
+
   return -1;
 }
 
 /*!
-  FIXME: write doc
+  Either adds a new enum set (with an initial member), or adds a new value
+  member to an existing enum set.
 */
 void
-SoFieldData::addEnumValue(const char * typeNameArg, const char * valNameArg,
-                          int val)
+SoFieldData::addEnumValue(const char * enumname, const char * valuename,
+                          int value)
 {
   SoEnumEntry * e = NULL;
-  SbName typeName = stripWhite(typeNameArg);
-  SbName valName = stripWhite(valNameArg);
-  int i;
-  for (i=0; i<enums.getLength(); i++) {
-    e = (SoEnumEntry *) enums[i];
-    if (e->nameoftype == typeName)
-      break;
-    else
-      e = NULL;
+
+  for (int i=0; !e && (i < this->enums.getLength()); i++) {
+    if (this->enums[i]->nameoftype == enumname) e = this->enums[i];
   }
 
   if (e == NULL) {
-    e = new SoEnumEntry(typeName);
-    enums.append(e);
+    e = new SoEnumEntry(enumname);
+    this->enums.append(e);
   }
 
-  if (e->num == e->arraysize) {
-    e->arraysize += SoEnumEntry::growsize;
-    int * ovals = e->vals;
-    SbName * onames = e->names;
-    e->vals = new int[e->arraysize];
-    e->names = new SbName[e->arraysize];
-    for (i=0; i<e->num; i++) {
-      e->vals[i] = ovals[i];
-      e->names[i] = onames[i];
-    }
-    delete[] ovals;
-    delete[] onames;
-  }
-  e->vals[e->num] = val;
-  e->names[e->num] = valName;
-  e->num++;
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoFieldData::addEnumValue",
+                         "enumname: %s, valuename: %s, value: %d",
+                         enumname, valuename, value);
+#endif // debug
+
+  assert(e->names.find(valuename) == -1);
+  e->names.append(valuename);
+  // Note that an enum can have several names mapping to the same
+  // value. 20000101 mortene.
+  e->values.append(value);
 }
 
 /*!
-  FIXME: write doc
+  Returns the \a names and \a values of enumeration entry with the \a
+  enumname. The number of (name value) pairs available in the
+  enumeration is returned in \a num.
 */
 void
-SoFieldData::getEnumData(const char * typeNameArg, int & num,
-                         const int *& vals, const SbName *& names)
+SoFieldData::getEnumData(const char * enumname, int & num,
+                         const int *& values, const SbName *& names)
 {
-  SbName typeName = stripWhite(typeNameArg);
-  int i;
-  for (i=0; i<enums.getLength(); i++) {
-    SoEnumEntry * e = (SoEnumEntry *) enums[i];
-    if (e->nameoftype == typeName) {
-      num = e->num;
-      vals = e->vals;
-      names = e->names;
+  num = 0;
+  values = NULL;
+  names = NULL;
+
+  for (int i=0; i < this->enums.getLength(); i++) {
+    SoEnumEntry * e = this->enums[i];
+    if (e->nameoftype == enumname) {
+      num = e->names.getLength();
+      if (num) {
+        assert(e->names.getLength() == e->values.getLength());
+        names = e->names.constArrayPointer();
+        values = e->values.constArrayPointer();
+      }
       return;
     }
   }
-  num = 0;
-  vals = NULL;
-  names = NULL;
 }
 
 /*!
@@ -407,24 +401,8 @@ SoFieldData::write(SoOutput * /* out */,
 void
 SoFieldData::copy(const SoFieldData * src)
 {
-#if 0 // OBSOLETED: we don't store copies of the actual fields. 19991230 mortene.
-  SoField * field, * srcf;
+  this->freeResources();
 
-  int numf = src->getNumFields();
-  for (int i=0; i < numf; i++) {
-    // FIXME: need correct container. 19990610 mortene.
-    srcf = src->getField(NULL, i);
-
-    field = (SoField *)(srcf->getTypeId().createInstance());
-    field->setDefault(srcf->isDefault());
-    field->copyFrom(*srcf);
-
-    // FIXME: need correct container. 19990610 mortene.
-    this->addField(NULL, src->getFieldName(i).getString(), field);
-  }
-#else // NEW CODE
-  // FIXME: dealloc entries in this->fields and this->enums
-  // before copy operation. 19991230 mortene.
   int i;
   for (i=0; i < src->fields.getLength(); i++) {
     this->fields.append(new SoFieldEntry(src->fields[i]));
@@ -432,7 +410,6 @@ SoFieldData::copy(const SoFieldData * src)
   for (i=0; i < src->enums.getLength(); i++) {
     this->enums.append(new SoEnumEntry(src->enums[i]));
   }
-#endif // NEW CODE
 }
 
 /*!
@@ -465,37 +442,6 @@ SoFieldData::writeFieldDescriptions(SoOutput * /* out */,
                                     const SoFieldContainer * /* object */) const
 {
   COIN_STUB();
-}
-
-/*!
-  \internal
-*/
-SbName
-SoFieldData::stripWhite(const char * name)
-{
-  int firstchar = -1;
-  int lastchar = -1;
-  int lastwhite = -1;
-  int i;
-  for (i=0; name[i]; i++) {
-    if (isspace(name[i]))
-      lastwhite = i;
-    else {
-      if (firstchar == -1) firstchar = i;
-      lastchar = i;
-    }
-  }
-
-  if (lastchar > lastwhite)
-    return SbName(&name[firstchar]);
-
-  // FIXME: this looks like it has the potential to overflow. 19991229 mortene.
-  char buf[500];
-  int b;
-  for (b=0, i=firstchar; i<=lastchar; i++, b++)
-    buf[b] = name[i];
-  buf[b] = 0;
-  return SbName(buf);
 }
 
 /*!

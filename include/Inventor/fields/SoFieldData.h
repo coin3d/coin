@@ -51,9 +51,9 @@ public:
   SoField * getField(const SoFieldContainer * object, int index) const;
   int getIndex(const SoFieldContainer * fc, const SoField * field) const;
 
-  void addEnumValue(const char * typeName, const char * valName, int val);
-  void getEnumData(const char * typeName, int & num,
-                   const int *& vals, const SbName *& names);
+  void addEnumValue(const char * enumname, const char * valuename, int value);
+  void getEnumData(const char * enumname,
+                   int & num, const int *& values, const SbName *& names);
 
   SbBool read(SoInput * in, SoFieldContainer * object,
               SbBool errorOnUnknownField, SbBool & notBuiltIn) const;
@@ -75,7 +75,7 @@ public:
 
 
 private:
-  static SbName stripWhite(const char * name);
+  void freeResources(void);
 
   SbList<SoFieldEntry *> fields;
   SbList<SoEnumEntry *> enums;

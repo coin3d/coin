@@ -171,17 +171,22 @@ _class_::createInstance(void) \
 
 
 #define SO_NODE_ADD_FIELD(_fieldname_, _defaultval_) \
-do { \
-  if (SO_NODE_IS_FIRST_INSTANCE()) classfielddata->addField(this, SO__QUOTE(_fieldname_), &this->_fieldname_);\
-  this->_fieldname_.setValue _defaultval_;\
-  this->_fieldname_.setContainer(this); \
-  this->_fieldname_.setDefault(TRUE); \
-} while (0)
+  do { \
+    if (SO_NODE_IS_FIRST_INSTANCE()) \
+      classfielddata->addField(this, SO__QUOTE(_fieldname_), \
+                               &this->_fieldname_);\
+    this->_fieldname_.setValue _defaultval_;\
+    this->_fieldname_.setContainer(this); \
+    this->_fieldname_.setDefault(TRUE); \
+  } while (0)
 
 
 #define SO_NODE_DEFINE_ENUM_VALUE(_enumname_, _enumval_) \
-  classfielddata->addEnumValue(SO__QUOTE(_enumname_), \
-                               SO__QUOTE(_enumval_), \
-                               _enumval_)
+  do { \
+    if (SO_NODE_IS_FIRST_INSTANCE()) \
+      classfielddata->addEnumValue(SO__QUOTE(_enumname_), \
+                                   SO__QUOTE(_enumval_), _enumval_); \
+  } while (0)
+
 
 #endif // !__SOSUBNODE_H__
