@@ -119,13 +119,52 @@ Section 01 -- Basic build instructions.
       This is probably because you tried to run the configure script
       from a DOS shell window. You need to use a Cygwin bash shell.
 
+   d) During ``make install'', you get the following error:
+
+        make[2]: Entering directory `/coin-builddir/debug'
+        /bin/bash ../cfg/mkinstalldirs /coin-installdir/bin
+        /usr/bin/install -c ../cfg/wrapmsvc.exe /coin-installdir/bin/wrapmsvc.exe
+        /usr/bin/install: cannot change ownership of `/coin-installdir/bin/wrapmsvc.exe': Invalid argument
+
+      This is a Cygwin installation problem on your local system,
+      which causes ``chmod'' to not work as expected due to erroneous
+      configuration of users and / or permissions.
+
+      You will have to figure out how to solve this one by yourself,
+      as we haven't been able to reproduce it. We'll include more
+      information here if we get further feedback from users with this
+      problem.
+
 
 ---
 [1] <URL:http://www.cygwin.com>
 
 
+Section 02 -- Known run-time problems
+=====================================
 
-Section 02 -- Tracing into Coin from the MSVC++ IDE.
+This section lists all our known run-time problems seen with the Coin
+library on the Microsoft Windows platform -- excluding what we know to
+be specific bugs in our code:
+
+  * We've had one report about the Radeon OpenGL driver crashing when
+    using 3D textures.
+
+    The problem was reproducible with the SoGuiExamples/nodes/texture3
+    example. The Coin-user reporting the problem could not assist us
+    with tracing into the problem, so we would like to get in touch
+    with someone with a Radeon card under MS Windows who could help us
+    find the source of the problem.
+
+    The OpenGL driver in question identifies as:
+
+        GL_VERSION == '1.3.3302 Win2000 Release'
+        GL_VENDOR == 'ATI Technologies Inc.'
+        GL_RENDERER == 'Radeon 7500 DDR x86/SSE2'
+
+
+
+Section 03 -- Tracing into Coin from the MSVC++ IDE.
 ====================================================
 
 We've had reports about problems getting symbol and source code
@@ -160,7 +199,7 @@ you on your way if you experience the same kind of problem:
     description.
 
 
-Section 03 -- Building non-default configurations.
+Section 04 -- Building non-default configurations.
 ==================================================
 
   FIXME: explain how to build release versions of the
@@ -173,7 +212,7 @@ Section 03 -- Building non-default configurations.
   versions of the Microsoft C libraries than the default one. 20011019 mortene.
 
 
-Section 04 -- Static versus dynamic libraries
+Section 05 -- Static versus dynamic libraries
 =============================================
 
   Note that MS Visual C++ and other MSWin compilers / linkers are a
@@ -190,7 +229,7 @@ Section 04 -- Static versus dynamic libraries
   configure script.
 
 
-Section 05 -- What is this ``configure'' thing?
+Section 06 -- What is this ``configure'' thing?
 ===============================================
 
   The configure script is a script that first determines what kind of
