@@ -143,7 +143,10 @@ cgglue_init(void)
          Autoconf check? 20000930 mortene. */
       const char * possiblelibnames[] = {
         NULL, /* is set below */
-        "CgGL", "libCgGL", "libCgGL.so", "libCgGL.dylib", 
+        "CgGL", "libCgGL", "libCgGL.so",
+
+        /* FIXME: not yet tested on Mac OS X. 20050125 mortene. */
+        "libCgGL.dylib", 
         NULL
       };
 
@@ -182,11 +185,7 @@ cgglue_init(void)
 
 #endif /* no linking */
 
-    if (!zi->available) {
-      cc_debugerror_post("cg glue",
-                         "Unable to load Cg DLL/shared library.");
-    }
-    else {
+    if (zi->available) {
       CGGLUE_REGISTER_FUNC(glue_cgCreateContext_t, cgCreateContext);
       CGGLUE_REGISTER_FUNC(glue_cgDestroyContext_t, cgDestroyContext);
       CGGLUE_REGISTER_FUNC(glue_cgIsContext_t, cgIsContext);
@@ -213,7 +212,6 @@ cgglue_init(void)
       CGGLUE_REGISTER_FUNC(glue_cgGLSetParameter3f_t, cgGLSetParameter3f);
       CGGLUE_REGISTER_FUNC(glue_cgGLSetParameter4f_t, cgGLSetParameter4f);
       CGGLUE_REGISTER_FUNC(glue_cgGLSetStateMatrixParameter_t, cgGLSetStateMatrixParameter);
-
     }
     /* Do this late, so we can detect recursive calls to this function. */
     cg_instance = zi;
