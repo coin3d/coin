@@ -28,7 +28,7 @@
 #undef SO_END_FACE_INDEX
 #define SO_END_FACE_INDEX -1
 
-class SoConvexDataCache;
+class SoVRMLIndexedFaceSetP;
 
 class COIN_DLL_API SoVRMLIndexedFaceSet : public SoVRMLIndexedShape
 {
@@ -71,10 +71,13 @@ private:
   Binding findNormalBinding(void) const;
 
   virtual void notify(SoNotList * list);
-
-  SbBool useConvexCache(SoAction * action);
-  SoConvexDataCache * convexCache;
-  int concavestatus;
-}; // class SoVRMLIndexedFaceSet
+  
+  SbBool useConvexCache(SoAction * action, 
+                        const SbVec3f * normals, 
+                        const int32_t * nindices, 
+                        const SbBool normalsfromcache);
+  
+  SoVRMLIndexedFaceSetP * pimpl;
+};
 
 #endif // ! COIN_SOVRMLINDEXEDFACESET_H

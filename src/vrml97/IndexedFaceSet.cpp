@@ -223,10 +223,56 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbRWMutex.h>
+#endif // COIN_THREADSAFE
+
 // for concavestatus
 #define STATUS_UNKNOWN 0
 #define STATUS_CONVEX  1
 #define STATUS_CONCAVE 2
+
+
+#ifndef DOXYGEN_SKIP_THIS
+class SoVRMLIndexedFaceSetP {
+public:
+  SoVRMLIndexedFaceSetP(void) 
+#ifdef COIN_THREADSAFE
+    : convexmutex(SbRWMutex::READ_PRECEDENCE)
+#endif // COIN_THREADSAFE 
+  { }
+  SoConvexDataCache * convexCache;
+  int concavestatus;
+#ifdef COIN_THREADSAFE
+  SbRWMutex convexmutex;
+#endif // COIN_THREADSAFE
+
+  void readLockConvexCache(void) {
+#ifdef COIN_THREADSAFE
+    this->convexmutex.readLock();
+#endif // COIN_THREADSAFE
+  }
+  void readUnlockConvexCache(void) {
+#ifdef COIN_THREADSAFE
+    this->convexmutex.readUnlock();
+#endif // COIN_THREADSAFE
+  }
+  void writeLockConvexCache(void) {
+#ifdef COIN_THREADSAFE
+    this->convexmutex.writeLock();
+#endif // COIN_THREADSAFE
+  }
+  void writeUnlockConvexCache(void) {
+#ifdef COIN_THREADSAFE
+    this->convexmutex.writeUnlock();
+#endif // COIN_THREADSAFE
+  }
+};
+#endif // DOXYGEN_SKIP_THIS
+
+#undef THIS
+#define THIS this->pimpl
+
 
 SO_NODE_SOURCE(SoVRMLIndexedFaceSet);
 
@@ -242,6 +288,10 @@ SoVRMLIndexedFaceSet::initClass(void) // static
 */
 SoVRMLIndexedFaceSet::SoVRMLIndexedFaceSet(void)
 {
+  THIS = new SoVRMLIndexedFaceSetP;
+  THIS->convexCache = NULL;
+  THIS->concavestatus = STATUS_UNKNOWN;
+
   SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLIndexedFaceSet);
 
   SO_VRMLNODE_ADD_FIELD(ccw, (TRUE));
@@ -249,8 +299,6 @@ SoVRMLIndexedFaceSet::SoVRMLIndexedFaceSet(void)
   SO_VRMLNODE_ADD_FIELD(convex, (TRUE));
   SO_VRMLNODE_ADD_FIELD(creaseAngle, (0.0f));
 
-  this->convexCache = NULL;
-  this->concavestatus = STATUS_UNKNOWN;
 }
 
 /*!
@@ -258,7 +306,8 @@ SoVRMLIndexedFaceSet::SoVRMLIndexedFaceSet(void)
 */
 SoVRMLIndexedFaceSet::~SoVRMLIndexedFaceSet() // virtual, protected
 {
-  if (this->convexCache) this->convexCache->unref();
+  if (THIS->convexCache) THIS->convexCache->unref();
+  delete THIS;
 }
 
 //
@@ -374,12 +423,12 @@ SoVRMLIndexedFaceSet::GLRender(SoGLRenderAction * action)
     }
   }
 
-  if (this->useConvexCache(action)) {
-    cindices = this->convexCache->getCoordIndices();
-    numindices = this->convexCache->getNumCoordIndices();
-    mindices = this->convexCache->getMaterialIndices();
-    nindices = this->convexCache->getNormalIndices();
-    tindices = this->convexCache->getTexIndices();
+  if (this->useConvexCache(action, normals, nindices, normalCacheUsed)) {
+    cindices = THIS->convexCache->getCoordIndices();
+    numindices = THIS->convexCache->getNumCoordIndices();
+    mindices = THIS->convexCache->getMaterialIndices();
+    nindices = THIS->convexCache->getNormalIndices();
+    tindices = THIS->convexCache->getTexIndices();
 
     if (mbind == PER_VERTEX) mbind = PER_VERTEX_INDEXED;
     else if (mbind == PER_FACE) mbind = PER_FACE_INDEXED;
@@ -549,12 +598,12 @@ SoVRMLIndexedFaceSet::generatePrimitives(SoAction * action)
     }
   }
 
-  if (this->useConvexCache(action)) {
-    cindices = this->convexCache->getCoordIndices();
-    numindices = this->convexCache->getNumCoordIndices();
-    mindices = this->convexCache->getMaterialIndices();
-    nindices = this->convexCache->getNormalIndices();
-    tindices = this->convexCache->getTexIndices();
+  if (this->useConvexCache(action, normals, nindices, normalCacheUsed)) {
+    cindices = THIS->convexCache->getCoordIndices();
+    numindices = THIS->convexCache->getNumCoordIndices();
+    mindices = THIS->convexCache->getMaterialIndices();
+    nindices = THIS->convexCache->getNormalIndices();
+    tindices = THIS->convexCache->getTexIndices();
 
     if (mbind == PER_VERTEX) mbind = PER_VERTEX_INDEXED;
     else if (mbind == PER_FACE) mbind = PER_FACE_INDEXED;
@@ -707,44 +756,51 @@ SoVRMLIndexedFaceSet::generateDefaultNormals(SoState * state,
 void
 SoVRMLIndexedFaceSet::notify(SoNotList * list)
 {
-  if (this->convexCache) this->convexCache->invalidate();
+  if (THIS->convexCache) THIS->convexCache->invalidate();
   SoField *f = list->getLastField();
-  if (f == &this->coordIndex) this->concavestatus = STATUS_UNKNOWN;
+  if (f == &this->coordIndex) THIS->concavestatus = STATUS_UNKNOWN;
   inherited::notify(list);
 }
 
 //
 // internal method which checks if convex cache needs to be
 // used or (re)created. Returns TRUE if convex cache must be
-// used. this->convexCache is then guaranteed to be != NULL.
+// used. THIS->convexCache is then guaranteed to be != NULL.
 //
 SbBool
-SoVRMLIndexedFaceSet::useConvexCache(SoAction * action)
+SoVRMLIndexedFaceSet::useConvexCache(SoAction * action, 
+                                     const SbVec3f * normals, 
+                                     const int32_t * nindices,
+                                     const SbBool normalsfromcache)
 {
   SoState * state = action->getState();
   if (this->convex.getValue())
     return FALSE;
 
-  if (this->concavestatus == STATUS_UNKNOWN) {
+  if (THIS->concavestatus == STATUS_UNKNOWN) {
     const int32_t * ptr = this->coordIndex.getValues(0);
     const int32_t * endptr = ptr + this->coordIndex.getNum();
     int cnt = 0;
-    this->concavestatus = STATUS_CONVEX;
+    THIS->concavestatus = STATUS_CONVEX;
     while (ptr < endptr) {
       if (*ptr++ >= 0) cnt++;
       else {
-        if (cnt > 3) { this->concavestatus = STATUS_CONCAVE; break; }
+        if (cnt > 3) { THIS->concavestatus = STATUS_CONCAVE; break; }
         cnt = 0;
       }
     }
   }
-  if (this->concavestatus == STATUS_CONVEX) return FALSE;
+  if (THIS->concavestatus == STATUS_CONVEX) return FALSE;
 
-  if (this->convexCache && this->convexCache->isValid(state))
+  THIS->readLockConvexCache();
+
+  if (THIS->convexCache && THIS->convexCache->isValid(state))
     return TRUE;
 
+  THIS->readUnlockConvexCache();
+  THIS->writeLockConvexCache();
 
-  if (this->convexCache) this->convexCache->unref();
+  if (THIS->convexCache) THIS->convexCache->unref();
   SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
 
   // need to send matrix if we have some weird transformation
@@ -756,30 +812,29 @@ SoVRMLIndexedFaceSet::useConvexCache(SoAction * action)
 
   // push to create cache dependencies
   state->push();
-  this->convexCache = new SoConvexDataCache(state);
-  this->convexCache->ref();
-  SoCacheElement::set(state, this->convexCache);
+  THIS->convexCache = new SoConvexDataCache(state);
+  THIS->convexCache->ref();
+  SoCacheElement::set(state, THIS->convexCache);
 
   SoVRMLVertexShape::doAction(action);
 
   const SoCoordinateElement * coords;
-  const SbVec3f * normals;
   const int32_t * cindices;
+  const SbVec3f * dummynormals;
   int32_t numindices;
-  const int32_t * nindices;
+  const int32_t * dummynindices;
   const int32_t * tindices;
   const int32_t * mindices;
-  SbBool normalCacheUsed;
-  SbBool sendNormals = TRUE;
+  SbBool dummy;
 
-  this->getVertexData(state, coords, normals, cindices,
-                      nindices, tindices, mindices, numindices,
-                      sendNormals, normalCacheUsed);
+  this->getVertexData(state, coords, dummynormals, cindices,
+                      dummynindices, tindices, mindices, numindices,
+                      FALSE, dummy);
 
   Binding mbind = this->findMaterialBinding();
   Binding nbind = this->findNormalBinding();
 
-  if (normalCacheUsed && nbind == PER_VERTEX) {
+  if (normalsfromcache && nbind == PER_VERTEX) {
     nbind = PER_VERTEX_INDEXED;
   }
 
@@ -801,17 +856,24 @@ SoVRMLIndexedFaceSet::useConvexCache(SoAction * action)
   if (mbind == PER_VERTEX_INDEXED && mindices == NULL) {
     mindices = cindices;
   }
-  this->convexCache->generate(coords, modelmatrix,
+  THIS->convexCache->generate(coords, modelmatrix,
                               cindices, numindices,
                               mindices, nindices, tindices,
                               (SoConvexDataCache::Binding)mbind,
                               (SoConvexDataCache::Binding)nbind,
                               (SoConvexDataCache::Binding)tbind);
+  
+  THIS->writeUnlockConvexCache();
+
   state->pop();
   SoCacheElement::setInvalid(storedinvalid);
 
-  if (normalCacheUsed) {
-    this->readUnlockNormalCache();
-  }
+  THIS->readLockConvexCache();
+
   return TRUE;
 }
+
+#undef THIS
+#undef STATUS_UNKNOWN
+#undef STATUS_CONVEX
+#undef STATUS_CONCAVE
