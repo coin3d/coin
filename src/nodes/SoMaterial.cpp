@@ -26,39 +26,51 @@
   \brief The SoMaterial class is a node type for setting up material values for scene geometry.
   \ingroup nodes
 
-  Subsequent geometry-type nodes in the scene graph will use values
-  from the material "pool" of the traversal state.
+  After traversing an SoMaterial node, subsequent shape nodes with
+  geometry in the scene graph will use values from the material "pool"
+  of the traversal state set up from nodes of this type.
 
   Note that values from a material node will \e replace the previous
-  values from in the traversal state.
+  values from in the traversal state, \e not accumulate.
 
-  VRML V1.0 has a special case, where the fields ambientColor,
-  diffuseColor and specularColor contains zero values, and
-  emissiveColor contains one or more values. The values in emissiveColor
-  should then be treated as precalculated lighting, and the other 
-  fields should be ignored.
+  FIXME: usage example here. 20020118 mortene.
+
+  FIXME: describe what happens if the number of values in the fields
+  is not consistent. 20020119 mortene.
+
+  FIXME: refere to the OpenGL color model. 20020119 mortene.
+
+  Note that nodes tagged as VRML V1.0 has a special case, where the
+  fields SoMaterial::ambientColor, SoMaterial::diffuseColor and
+  SoMaterial::specularColor contains zero values, and
+  SoMaterial::emissiveColor contains one or more values. The values in
+  SoMaterial::emissiveColor should then be treated as precalculated
+  lighting, and the other fields should be ignored.
 
   You can detect this case by checking the values of the material
   elements when the scene graph is traversed using an
   SoCallbackAction. SoDiffuseColorElement, SoAmbientColorElement, and
   SoSpecularColorElement will contain one value with a completely
-  black color (0.0f, 0.0f, 0.0f), SoShininessElement will contains one
-  value with the value 0.0f, and SoEmissiveColorElement will contain
-  one or more values. It is done like this to make rendering work
-  correctly on systems that do not test for this specific case.
+  black color (0.0f, 0.0f, 0.0f), SoShininessElement will contain one
+  value of 0.0f, and SoEmissiveColorElement will contain one or more
+  values. It is done like this to make rendering work correctly on
+  systems that do not test for this specific case.
 
   You should only check for this case when you're traversing a VRML
   V1.0 file scene graph, of course. See SoNode::getNodeType() for
-  information about VRML V1.0 versus Inventor.
+  information about how nodes can be tested for whether or not they
+  have been imported or otherwise set up as of VRML1 type versus
+  Inventor type.
 
-  When the scene graph is rendered using an SoGLRenderAction,
-  the elements will be set differently to optimize rendering.
-  The SoDiffuseColorElement will be set to the values in emissiveColor,
-  and the light model will be set to BASE_COLOR. 
+  When the scene graph is rendered using an SoGLRenderAction, the
+  elements will be set differently to optimize rendering.  The
+  SoDiffuseColorElement will be set to the values in
+  SoMaterial::emissiveColor, and the light model will be set to
+  SoLightModel::BASE_COLOR.
 
-  The transparency values will always be treated normally.
+  The SoMaterial::transparency values will always be treated normally.
 
-  \sa SoMaterialBinding, SoPackedColor
+  \sa SoMaterialBinding, SoBaseColor, SoPackedColor
 */
 
 #include <Inventor/nodes/SoMaterial.h>
@@ -82,15 +94,24 @@
 /*!
   \var SoMFColor SoMaterial::ambientColor
 
-  Ambient material part color values.
+  Ambient material part color values. Will by default contain a single
+  color value of [0.2, 0.2, 0.2] (ie dark gray).
 
-  The ambient part of the material is not influenced by the lights in
-  the scene, but which is always added to the geometry surfaces.
+  The ambient part of the material is not influenced by any
+  lightsources, and should be thought of conceptually as the constant,
+  but small contribution of light to a scene "seeping in" from
+  everywhere.
+
+  (Think of the ambient contribution in the context that there's
+  always photons fizzing around everywhere -- even in a black,
+  lightsource-less room, for instance).
 */
 /*!
   \var SoMFColor SoMaterial::diffuseColor
 
-  Diffuse material part color values.
+  Diffuse material part color values. This field is by default
+  initialized to contain a single color value of [0.8, 0.8, 0.8]
+  (light gray).
 
   The diffuse part is combined with the light emitted from the scene's
   light sources.
@@ -98,12 +119,17 @@
 /*!
   \var SoMFColor SoMaterial::specularColor
 
-  Specular material part color values.
+  Specular material part color values. Defaults to a single color
+  value of [0, 0, 0] (black).
 */
 /*!
   \var SoMFColor SoMaterial::emissiveColor
 
-  The color of the light "emitted" by the geometry surfaces.
+  The color of the light "emitted" by the subsequent geometry,
+  independent of lighting / shading.
+
+  Defaults to contain a single color value of [0, 0, 0] (black, ie no
+  contribution).
 */
 /*!
   \var SoMFFloat SoMaterial::shininess
@@ -111,6 +137,8 @@
   Shininess values. Decides how the light from light sources are
   distributed across the geometry surfaces. Valid range is from 0.0
   (which gives a dim appearance), to 1.0 (glossy-looking surfaces).
+
+  Defaults to contain a single value of 0.2.
 */
 /*!
   \var SoMFFloat SoMaterial::transparency
@@ -118,6 +146,8 @@
   Transparency values. Valid range is from 0.0 (completely opaque,
   which is the default) to 1.0 (completely transparent,
   i.e. invisible).
+
+  Defaults to contain a single value of 0.0.
 */
 
 // defines for materialtype
