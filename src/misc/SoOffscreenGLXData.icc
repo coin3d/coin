@@ -349,6 +349,8 @@ SoOffscreenGLXData::getMaxDimensions(void)
     // FIXME: clamp GLint to be within the size of SbVec2s. 20020809 mortene.
   */
 
+  assert(0);
+
 #if 1
   return SbVec2s(2048,2048);
 #else // Shrink the offscreen capacity for testing and debugging (handegar)
@@ -359,5 +361,5 @@ SoOffscreenGLXData::getMaxDimensions(void)
 SbVec2s
 SoOffscreenGLXData::getMax(void)
 {
-  return SoOffscreenGLXData::getMaxDimensions();
+  return SoOffscreenRenderer::getMaximumResolution();
 }
