@@ -369,6 +369,7 @@ SbViewVolume::narrow(float left, float bottom,
   SbDPViewVolume vv = this->dpvv.narrow(left, bottom, right, top);
   SbViewVolume ret;
   vv.copyValues(ret);
+  ret.dpvv = vv;
   return ret;
 }
 
@@ -388,6 +389,7 @@ SbViewVolume::narrow(const SbBox3f & box) const
   SbDPViewVolume vv = this->dpvv.narrow(box);
   SbViewVolume ret;
   vv.copyValues(ret);
+  ret.dpvv = vv;
   return ret;
 }
 
@@ -488,6 +490,7 @@ SbViewVolume::zNarrow(float nearval, float farval) const
   SbDPViewVolume dpnarrowed = this->dpvv.zNarrow(nearval, farval);
   SbViewVolume narrowed;
   dpnarrowed.copyValues(narrowed);
+  narrowed.dpvv = dpnarrowed;
   return narrowed;
 }
 
