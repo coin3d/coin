@@ -79,6 +79,17 @@ Section 01 -- Basic build instructions.
   mistake on our part, or you otherwise feel completely stuck, we will
   be happy to assist.
 
+  A note about what seems to be the most common problem: configure
+  reporting ``configure: error: no acceptable ld found in
+  $PATH''. This is because you have not installed Cygwin's
+  ``binutils'' package on your system. So install ``binutils'' and try
+  again.
+
+  (GNU GCC's ``ld'' isn't really needed for the build, since we use
+  100% native Microsoft Visual C++ tools, but there is a dependency on
+  it in the configure script. This is out of our control for now, but
+  we will likely investigate to see if we can get rid of it.)
+
 ---
 [1] <URL:http://www.cygwin.com>
 
