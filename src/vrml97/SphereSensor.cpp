@@ -165,7 +165,6 @@ SoVRMLSphereSensor::dragStart(void)
   this->sphereproj->setSphere(SbSphere(SbVec3f(0.0f, 0.0f, 0.0f), radius));
   this->sphereproj->setViewVolume(this->getViewVolume());
   this->sphereproj->setWorkingSpace(this->getLocalToWorldMatrix());
-  SbVec3f projpt = hitpt;
   this->getLocalToWorldMatrix().multVecMatrix(hitpt, this->prevworldhitpt);
   this->prevrotation = SbRotation::identity();
   this->rotation_changed = this->offset.getValue();
