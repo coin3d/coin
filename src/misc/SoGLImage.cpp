@@ -451,7 +451,7 @@ fast_mipmap(SoState * state, int width, int height, int depth, const int nc,
   }
   else {
     if (cc_glglue_has_3d_textures(glw)) {
-      cc_glglue_glTexImage3D(glw, GL_TEXTURE_3D, 0, nc, width, height, depth,
+      cc_glglue_glTexImage3D(glw, GL_TEXTURE_3D, 0, (GLenum) nc, width, height, depth,
                              0, format, GL_UNSIGNED_BYTE, data);
     }
   }
@@ -471,7 +471,7 @@ fast_mipmap(SoState * state, int width, int height, int depth, const int nc,
     }
     else {
       if (cc_glglue_has_3d_textures(glw)) {
-	cc_glglue_glTexImage3D(glw, GL_TEXTURE_3D, level, nc, width,
+	cc_glglue_glTexImage3D(glw, GL_TEXTURE_3D, level, (GLenum) nc, width,
                                height, depth, 0, format, GL_UNSIGNED_BYTE,
                                (void *) src);
       }
@@ -1491,7 +1491,7 @@ SoGLImageP::reallyCreateTexture(SoState *state,
 
     if (!mipmap) {
       if (cc_glglue_has_3d_textures(glw)) {
-        cc_glglue_glTexImage3D(glw, GL_TEXTURE_3D, 0, numComponents, w, h, d,
+        cc_glglue_glTexImage3D(glw, GL_TEXTURE_3D, 0, (GLenum) numComponents, w, h, d,
                                border, glformat, GL_UNSIGNED_BYTE, texture);
       }
     }
