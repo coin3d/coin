@@ -41,6 +41,13 @@
   optimizations. String comparisons for SbName objects are very
   efficient, for instance.
 
+
+  There is an aspect of using SbName instances that it is important to
+  be aware of: since strings are stored \e permanently, using SbName
+  instances in code where there is continually changing strings or the
+  continual addition of new unique strings will in the end swamp
+  memory resources. So where possible, use SbString instances instead.
+
   \sa SbString
 */
 
@@ -155,6 +162,9 @@ SbNameEntry::print_info(void)
 const char *
 SbNameEntry::findStringAddress(const char * s)
 {
+  // FIXME: the stringlen should be stored in the chunk before the
+  // actual string -- that could be an important optimization.
+  // 20030606 mortene.
   int len = strlen(s) + 1;
 
     // names > CHUNK_SIZE characters are truncated.
@@ -213,7 +223,6 @@ SbNameEntry::insert(const char * const str)
 /*!
   This is the default constructor.
 */
-
 SbName::SbName(void)
 {
   this->entry = SbNameEntry::insert("");
@@ -222,7 +231,6 @@ SbName::SbName(void)
 /*!
   Constructor. Adds the \a nameString string to the name table.
 */
-
 SbName::SbName(const char * nameString)
 {
   this->entry = SbNameEntry::insert(nameString);
@@ -231,7 +239,6 @@ SbName::SbName(const char * nameString)
 /*!
   Constructor. Adds \a str to the name table.
 */
-
 SbName::SbName(const SbString & str)
 {
   this->entry = SbNameEntry::insert(str.getString());
@@ -240,7 +247,6 @@ SbName::SbName(const SbString & str)
 /*!
   Copy constructor.
 */
-
 SbName::SbName(const SbName & name)
   : entry(name.entry)
 {
@@ -249,19 +255,23 @@ SbName::SbName(const SbName & name)
 /*!
   The destructor.
 */
-
 SbName::~SbName()
 {
-  // FIXME: no unref?  investigate if SbName can be used for
-  // user-settable names.  (in which case running servers should get
-  // swamped without ref counts) 19990611 larsa
+  // No unreferences of memory resources happens here, because strings
+  // will be stored permanently for the remaining life of the process.
+  //
+  // This is how the string mapping feature of SbName is *supposed* to
+  // work. The strings should be stored _permanently_, so the return
+  // value from SbName::getString() will be valid even after all its
+  // SbName-instances have been destructed.
 }
 
 /*!
   This method returns pointer to character array for the name.
 
   The returned memory pointer for the character string is guaranteed
-  to be valid for the remaining life time of the process.
+  to be valid for the remaining life time of the process, even after
+  all SbName instances referencing the string has been destructed.
 */
 const char *
 SbName::getString(void) const
@@ -272,12 +282,14 @@ SbName::getString(void) const
 /*!
   This method returns the number of characters in the name.
 */
-
 int
 SbName::getLength(void) const
 {
   // FIXME: shouldn't we cache this value for subsequent faster
   // execution? 20010909 mortene.
+  //
+  // UPDATE 20030606 mortene: this can easily be done by storing an
+  // extra value in the memory chunk right before the string itself.
   return strlen(this->entry->str);
 }
 
