@@ -280,13 +280,15 @@ if $sim_ac_enable_threads; then
       ExitThread(0);],
      [sim_ac_w32thread=true
       sim_ac_threads_api="Win32"
-      AC_DEFINE([USE_W32THREAD], , [define to use the Win32 threads API])])
+      AC_DEFINE([USE_W32THREAD], , [define to use the Win32 threads API])
+      AC_DEFINE([COIN_THREADID_TYPE], DWORD, [System dependant thread ID type])])
     AC_MSG_RESULT($sim_ac_w32thread)
   fi
 
   if ! $sim_ac_w32thread; then
     SIM_AC_CHECK_PTHREAD(
       [AC_DEFINE([USE_PTHREAD], , [define to use the POSIX threads API])
+       AC_DEFINE([COIN_THREADID_TYPE], pthread_t, [System dependant thread ID type])
        sim_ac_threads_api="POSIX"])
   fi
 fi

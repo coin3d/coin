@@ -181,6 +181,9 @@ typedef int SbBool;
 /* IN_PATH define in HPUX's sys/unistd.h conflicts with SoAction::IN_PATH */
 #undef COIN_UNDEF_IN_PATH_HACK
 
+/* System dependant thread ID type */
+#undef COIN_THREADID_TYPE
+
 #endif /* !COIN_VERSION */ /* Ends configure-generated defines. */
 
 
