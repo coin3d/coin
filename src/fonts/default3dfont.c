@@ -13427,6 +13427,7 @@ static const float coin_defaultfont_advance_values[] = {
   0.523f 
 };
   
+
 const float ** 
 coin_default3dfont_get_coords(void)
 {
@@ -13445,7 +13446,7 @@ coin_default3dfont_get_edgeidx(void)
   return coin_defaultfont_edgeidx; 
 }
 
-float
+const float
 coin_default3dfont_get_advance(int charidx)
 {
   charidx -= 33;
