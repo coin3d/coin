@@ -140,6 +140,7 @@
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoAudioRenderAction.h>
 #include <Inventor/elements/SoComplexityElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
@@ -412,7 +413,8 @@ SoLevelOfDetail::rayPick(SoRayPickAction *action)
 void
 SoLevelOfDetail::audioRender(SoAudioRenderAction * action)
 {
-  SoLevelOfDetail::doAction((SoAction*)action);
+  // let SoGroup traverse the children
+  inherited::audioRender(action);
 }
 
 void 
