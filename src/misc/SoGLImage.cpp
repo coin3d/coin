@@ -1160,7 +1160,7 @@ SoGLImageP::checkTransparency(void)
   }
   else {
     if (numcomponents == 2 || numcomponents == 4) {
-      int n = size[0] * size[1] * size[2];
+      int n = size[0] * size[1] * (size[2] ? size[2] : 1);
       int nc = numcomponents;
       unsigned char *ptr = (unsigned char *) bytes + nc - 1;
 
