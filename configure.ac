@@ -172,6 +172,8 @@ coin_src_dir=`cd "$srcdir"; pwd`
 coin_w32_build_dir=`cygpath -w "$coin_build_dir" 2>/dev/null || echo "$coin_build_dir"`
 coin_w32_src_dir=`cygpath -w "$coin_src_dir" 2>/dev/null || echo "$coin_src_dir"`
 
+SIM_AC_RELATIVE_SRC_DIR
+
 # *******************************************************************
 # set up configure options for "make distcheck" mode - we want to
 # ensure that all options that can be turned on works...
