@@ -29,6 +29,7 @@
 #include <Inventor/nodes/SoGroup.h>
 
 class SoState;
+class SoSeparatorP;
 
 class COIN_DLL_API SoSeparator : public SoGroup {
   typedef SoGroup inherited;
@@ -78,9 +79,7 @@ protected:
 private:
   void commonConstructor(void);
   SbBool cullTestNoPush(SoState * state);
-  
-  class SoBoundingBoxCache * bboxcache;
-  class SoGLCacheList * glcachelist;
+  SoSeparatorP * pimpl;
   static int numrendercaches;
 };
 

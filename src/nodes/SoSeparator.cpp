@@ -150,6 +150,18 @@ int SoSeparator::numrendercaches = 2;
   See documentation for SoSeparator::renderCulling.
 */
 
+#ifndef DOXYGEN_SKIP_THIS
+
+class SoSeparatorP {
+public:
+  class SoBoundingBoxCache * bboxcache;
+  class SoGLCacheList * glcachelist;
+};
+
+#endif // DOXYGEN_SKIP_THIS
+
+#undef THIS
+#define THIS this->pimpl
 
 // *************************************************************************
 
@@ -181,6 +193,8 @@ SoSeparator::SoSeparator(const int nchildren)
 void
 SoSeparator::commonConstructor(void)
 {
+  THIS = new SoSeparatorP;
+
   SO_NODE_INTERNAL_CONSTRUCTOR(SoSeparator);
 
   SO_NODE_ADD_FIELD(renderCaching, (SoSeparator::AUTO));
@@ -210,8 +224,8 @@ SoSeparator::commonConstructor(void)
     }
   }
 
-  this->bboxcache = NULL;
-  this->glcachelist = NULL;
+  THIS->bboxcache = NULL;
+  THIS->glcachelist = NULL;
 
 
   // This environment variable used for local stability / robustness /
@@ -235,8 +249,9 @@ SoSeparator::commonConstructor(void)
 */
 SoSeparator::~SoSeparator()
 {
-  if (this->bboxcache) this->bboxcache->unref();
-  delete this->glcachelist;
+  if (THIS->bboxcache) THIS->bboxcache->unref();
+  delete THIS->glcachelist;
+  delete THIS;
 }
 
 // Doc from superclass.
@@ -292,14 +307,14 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
     break;
   }
 
-  SbBool validcache = this->bboxcache && this->bboxcache->isValid(state);
+  SbBool validcache = THIS->bboxcache && THIS->bboxcache->isValid(state);
 
   if (iscaching && validcache) {
-    SoCacheElement::addCacheDependency(state, this->bboxcache);
-    childrenbbox = this->bboxcache->getBox();
-    childrencenterset = this->bboxcache->isCenterSet();
-    childrencenter = this->bboxcache->getCenter();
-    if (this->bboxcache->hasLinesOrPoints()) {
+    SoCacheElement::addCacheDependency(state, THIS->bboxcache);
+    childrenbbox = THIS->bboxcache->getBox();
+    childrencenterset = THIS->bboxcache->isCenterSet();
+    childrencenter = THIS->bboxcache->getCenter();
+    if (THIS->bboxcache->hasLinesOrPoints()) {
       SoBoundingBoxCache::setHasLinesOrPoints(state);
     }
   }
@@ -314,11 +329,11 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
 
     if (iscaching) {
       // if we get here, we know bbox cache is not created or is invalid
-      if (this->bboxcache) this->bboxcache->unref();
-      this->bboxcache = new SoBoundingBoxCache(state);
-      this->bboxcache->ref();
+      if (THIS->bboxcache) THIS->bboxcache->unref();
+      THIS->bboxcache = new SoBoundingBoxCache(state);
+      THIS->bboxcache->ref();
       // set active cache to record cache dependencies
-      SoCacheElement::set(state, this->bboxcache);
+      SoCacheElement::set(state, THIS->bboxcache);
     }
 
     SoLocalBBoxMatrixElement::makeIdentity(state);
@@ -332,7 +347,7 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
     action->getXfBoundingBox() = abox; // reset action bbox
 
     if (iscaching) {
-      this->bboxcache->set(childrenbbox, childrencenterset, childrencenter);
+      THIS->bboxcache->set(childrenbbox, childrencenterset, childrencenter);
     }
     state->pop();
     if (iscaching) SoCacheElement::setInvalid(storedinvalid);
@@ -412,8 +427,8 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
       return;
     }
 
-    if (!this->glcachelist) {
-      this->glcachelist = new SoGLCacheList(SoSeparator::getNumRenderCaches());
+    if (!THIS->glcachelist) {
+      THIS->glcachelist = new SoGLCacheList(SoSeparator::getNumRenderCaches());
     }
     else {
       SoMaterialBundle mb(action);
@@ -422,7 +437,7 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
       // update lazy elements
       state->lazyEvaluate();
 
-      if (this->glcachelist->call(action, GL_ALL_ATTRIB_BITS)) {
+      if (THIS->glcachelist->call(action, GL_ALL_ATTRIB_BITS)) {
 #if GLCACHE_DEBUG && 1 // debug
         SoDebugError::postInfo("SoSeparator::GLRenderBelowPath",
                                "Executing GL cache: %p", this);
@@ -435,7 +450,7 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
       SoDebugError::postInfo("SoSeparator::GLRenderBelowPath",
                              "Creating GL cache: %p", this);
 #endif // debug
-      createcache = this->glcachelist;
+      createcache = THIS->glcachelist;
     }
   }
 
@@ -563,9 +578,9 @@ void
 SoSeparator::rayPick(SoRayPickAction * action)
 {
   if (this->pickCulling.getValue() == OFF ||
-      !this->bboxcache || !this->bboxcache->isValid(action->getState()) ||
+      !THIS->bboxcache || !THIS->bboxcache->isValid(action->getState()) ||
       !action->hasWorldSpaceRay() ||
-      ray_intersect(action, this->bboxcache->getProjectedBox())) {
+      ray_intersect(action, THIS->bboxcache->getProjectedBox())) {
     SoSeparator::doAction(action);
   }
 }
@@ -652,13 +667,13 @@ SoSeparator::notify(SoNotList * nl)
 {
   inherited::notify(nl);
 
-  if (this->bboxcache) this->bboxcache->invalidate();
-  if (this->glcachelist) {
+  if (THIS->bboxcache) THIS->bboxcache->invalidate();
+  if (THIS->glcachelist) {
 #if GLCACHE_DEBUG && 0 // debug
     SoDebugError::postInfo("SoSeparator::notify",
                            "Invalidating GL cache: %p", this);
 #endif // debug
-    this->glcachelist->invalidateAll();
+    THIS->glcachelist->invalidateAll();
   }
 }
 
@@ -693,11 +708,11 @@ SbBool
 SoSeparator::cullTest(SoState * state)
 {
   if (this->renderCulling.getValue() == SoSeparator::OFF) return FALSE;
-  if (!this->bboxcache ||
-      !this->bboxcache->isValid(state) ||
-      this->bboxcache->getProjectedBox().isEmpty()) return FALSE;
+  if (!THIS->bboxcache ||
+      !THIS->bboxcache->isValid(state) ||
+      THIS->bboxcache->getProjectedBox().isEmpty()) return FALSE;
   if (SoCullElement::completelyInside(state)) return FALSE;
-  return SoCullElement::cullBox(state, this->bboxcache->getProjectedBox());
+  return SoCullElement::cullBox(state, THIS->bboxcache->getProjectedBox());
 }
 
 //
@@ -709,9 +724,11 @@ SbBool
 SoSeparator::cullTestNoPush(SoState * state)
 {
   if (this->renderCulling.getValue() == SoSeparator::OFF) return FALSE;
-  if (!this->bboxcache ||
-      !this->bboxcache->isValid(state) ||
-      this->bboxcache->getProjectedBox().isEmpty()) return FALSE;
+  if (!THIS->bboxcache ||
+      !THIS->bboxcache->isValid(state) ||
+      THIS->bboxcache->getProjectedBox().isEmpty()) return FALSE;
   if (SoCullElement::completelyInside(state)) return FALSE;
-  return SoCullElement::cullBox(state, this->bboxcache->getProjectedBox());
+  return SoCullElement::cullBox(state, THIS->bboxcache->getProjectedBox());
 }
+
+#undef THIS
