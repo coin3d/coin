@@ -445,6 +445,10 @@ SoFieldContainer::get(SbString & fielddata, SoOutput * out)
   void * buffer = malloc(STARTSIZE);
 
   output->setBuffer(buffer, STARTSIZE, realloc_buffer);
+
+  output->setStage(SoOutput::COUNT_REFS);
+  fields->write(output, this);
+  output->setStage(SoOutput::WRITE);
   fields->write(output, this);
 
   size_t size;

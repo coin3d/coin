@@ -546,6 +546,7 @@ SoFieldData::write(SoOutput * out, const SoFieldContainer * object) const
     return;
   }
   // Ok, we've passed the first write stage and is _really_ writing.
+  assert((out->getStage() == SoOutput::WRITE) && "unknown write stage");
   
   // FIXME: is this really the best place to write the flags +
   // numfields value? 20000102 mortene.
