@@ -1628,5 +1628,6 @@
     Update 20030424 kyrah: AFAIK, only the convenience library hack
     [http://sim.no/~kyrah/patches/20021217_libtool.patch] in ltmain.sh
     is necessary for Mac OS X - at least that was the only thing I had
-    to change for Coin-2. This is btw. a known libtool problem, but I
-    am not sure when it will be fixed (not in 1.4.2-7).
+    to change for Coin-2. This is a known libtool problem, and is
+    fixed in libtool-1.4.3 and libtool-1.5, according to Fink
+    developer Peter O'Gorman.
