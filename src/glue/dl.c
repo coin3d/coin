@@ -106,12 +106,22 @@
 #include <windows.h>
 #endif /* HAVE_WINDOWS_H */
 
+#ifdef HAVE_MACH_O_DYLD_H
+#include <mach-o/dyld.h>
+#include <mach-o/ldsyms.h>
+#endif // HAVE_MACH_O_DYLD_H
+
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/glue/dl.h>
 #include <Inventor/C/tidbits.h>
 #include <assert.h>
-#include <stddef.h> /* NULL definition. */
-#include <stdlib.h> /* atoi() */
+#include <stddef.h> // NULL definition. 
+#include <stdlib.h> // atoi() 
+#include <string.h> // strlen, strcpy
+#include <stdio.h>  // snprintf
+#include <libgen.h> // dirname
+#include <sys/param.h> // PATH_MAX
+#include <sys/stat.h>  // stat
 
 struct cc_libhandle_struct {
   void * nativehnd;
@@ -161,9 +171,110 @@ cc_dl_get_win32_err(DWORD * lasterr, cc_string * str)
 #endif /* HAVE_WINDLL_RUNTIME_BINDING */
 
 
+#if defined (HAVE_DYLD_RUNTIME_BINDING)
+
+// Returns a string containing the search directories for
+// dynamic libraries, separated by ':'. Needed since Mac OS X
+// wants to have a full path to the library when loading it.
+static const char * 
+cc_build_search_list()
+{
+  int image_count = _dyld_image_count();
+  int i;
+  size_t length;
+  char * res_path = NULL;
+  char * p = NULL;
+  char * path, * dyld_path, * default_path;
+  
+  // We first want to search for simage in the default 
+  // locations (specified by DYLD_LIBRARY_PATH, and the
+  // system's library path). If we do not find it there,
+  // we fall back to the simage library shipped with Coin.
+
+  dyld_path = getenv("DYLD_LIBRARY_PATH"); 
+  if (!dyld_path) dyld_path = "";
+  
+  default_path = getenv("DYLD_FALLBACK_LIBRARY_PATH");
+  if (!default_path) default_path = "/usr/local/lib:/lib:/usr/lib";
+
+  for (i = 0; i < image_count; i++) {
+    if (_dyld_get_image_header(i) == &_mh_dylib_header) {
+      p = _dyld_get_image_name(i);
+      if (strstr(p, "Inventor.framework")) {
+        // We get /path/to/Foo.framework/Versions/A/Libraries/foo.dylib
+        // but want /path/to/Foo.framework/Versions/A/Resources
+        char * path_to_version_dir = dirname(dirname(p));
+        size_t l = strlen(path_to_version_dir) + strlen("/Resources") + 1;
+        res_path = malloc(l);
+        snprintf(res_path, l, "%s%s", path_to_version_dir, "/Resources");
+      }
+      break;
+    }
+  }
+  
+  length = strlen(dyld_path) + strlen(default_path) + 
+           (res_path ? strlen(res_path) : 0) + 3;
+
+  path = malloc(length);
+  snprintf(path, length, "%s%s%s%s%s", 
+           dyld_path, dyld_path[0] ? ":" : "", default_path, 
+           res_path ? ":" : "" , res_path ? res_path : "");
+
+  free(res_path);
+  return path;
+}
+
+// Get the full path for the ith entry in the search list.
+
+static const char * 
+cc_get_full_path(int i, const char * file)
+{
+  // FIXME: how many entries should we support? 
+  // 64 is a random value. kyrah 20030306
+  #define MAX_NR_PATH_ENTRIES 64
+
+  static char fullpath[PATH_MAX];
+  static const char * list = 0;
+  static const char * path[MAX_NR_PATH_ENTRIES] = { 0 };
+  static int end_reached = 0;
+  
+  // Create list the first time around.
+  if (!list && !end_reached) list = cc_build_search_list();
+  
+  while (!path[i] && !end_reached) {
+    path[i] = strsep((char **) &list, ":");
+    if (path[i][0] == 0) path[i] = 0;
+    end_reached = list == 0;
+  }
+
+  if (path[i]) {
+    snprintf(fullpath, PATH_MAX, "%s/%s", path[i], file);
+    return fullpath;
+  }
+  return NULL;
+}
+
+// Try to determine full path for file.
+static const struct stat *
+cc_find_file(const char * file, const char ** fullpath)
+{
+  int i = 0;
+  static struct stat sbuf;
+  *fullpath = file;
+  do { if (0 == stat(*fullpath, &sbuf)) {
+         return &sbuf;
+    } 
+  } while ((*fullpath = cc_get_full_path(i++, file)));
+  return 0;
+}
+
+#endif // HAVE_DYLD_RUNTIME_BINDING
+
+
 cc_libhandle
 cc_dl_open(const char * filename)
 {
+
   cc_libhandle h = (cc_libhandle) malloc(sizeof(struct cc_libhandle_struct));
   /* if (!h), FIXME: exception handling. 20020906 mortene. */
   h->nativehnd = NULL;
@@ -205,6 +316,45 @@ cc_dl_open(const char * filename)
     if (e) {
       cc_debugerror_post("cc_dl_open", "dlopen(\"%s\") failed with: '%s'", filename, e);
     }
+  }
+
+#elif defined (HAVE_DYLD_RUNTIME_BINDING) 
+
+  NSLinkEditErrors c;
+  int e;
+  const char * file;
+  const char * errstr;
+
+  if (filename != NULL) {
+
+    // Note that we must use NSAddImage, since we want to load a
+    // shared library, instead of NSCreateObjectFileImageFromFile()
+    // and NSLinkModule(), which work only with loadable
+    // modules/bundles. See man 3 NSModule, man 3 NSObjectFileImage
+    // and http://fink.sourceforge.net/doc/porting/shared.php for
+    // details.
+ 
+    const struct stat * filestat;
+    const char * fullpath;
+    if (!(filestat = cc_find_file(filename, &fullpath))) return NULL;
+
+    if (cc_dl_debugging()) {
+      cc_debugerror_postinfo("cc_dlopen", "opening: %s", fullpath);
+    }
+
+    h->nativehnd = (void *) NSAddImage(fullpath, 
+                                       NSADDIMAGE_OPTION_RETURN_ON_ERROR);
+
+    if (cc_dl_debugging() && !h->nativehnd) {
+      NSLinkEditError(&c, &e, &file, &errstr);
+      cc_debugerror_post("cc_dlopen", "%s", errstr);
+    }
+
+  } else {
+
+    h->nativehnd = NULL;
+    return h;
+
   }
 
 #elif defined (HAVE_WINDLL_RUNTIME_BINDING)
@@ -281,11 +431,11 @@ cc_dl_open(const char * filename)
 void *
 cc_dl_sym(cc_libhandle handle, const char * symbolname)
 {
-  void * ptr = NULL;
-  if ((handle == NULL) || (handle->nativehnd == NULL)) return NULL;
+  void * ptr = NULL;  
 
 #ifdef HAVE_DL_LIB
 
+  if ((handle == NULL) || (handle->nativehnd == NULL)) return NULL;
   ptr = dlsym(handle->nativehnd, symbolname);
 
   if (cc_dl_debugging()) {
@@ -296,7 +446,55 @@ cc_dl_sym(cc_libhandle handle, const char * symbolname)
     }
   }
 
+#elif defined (HAVE_DYLD_RUNTIME_BINDING) 
+
+  // Note: The dlopen() version returns NULL here if handle or
+  // handle->nativehnd are NULL, but we do not need a handle for
+  // symbol lookup on Mac OS X - if we have one, it makes the lookup
+  // faster, but that's all, so we can get away with having no valid
+  // handle.
+
+  NSSymbol symbol = NULL;
+  char * mangledname;
+  NSLinkEditErrors c;
+  int e;
+  const char * file;
+  const char * errstr;
+
+  mangledname = malloc(strlen(symbolname) + 2);
+  strcpy(mangledname + 1, symbolname);
+  mangledname[0] = '_';
+
+  if (handle && handle->nativehnd) {
+    if (NSIsSymbolNameDefinedInImage(handle->nativehnd, mangledname))
+      symbol = NSLookupSymbolInImage(handle->nativehnd, mangledname,
+               NSLOOKUPSYMBOLINIMAGE_OPTION_BIND |
+               NSLOOKUPSYMBOLINIMAGE_OPTION_RETURN_ON_ERROR);
+  } 
+
+  // If we did not specifically load the library ourselves
+  // (handle->nativehandle being NULL), or if the symbol could not be
+  // found in the library, let's try if we can find it in any of the
+  // loaded libs.
+
+  if (!symbol && NSIsSymbolNameDefined(mangledname)) {
+    symbol = NSLookupAndBindSymbol(mangledname);
+  } 
+
+  if (cc_dl_debugging()) {
+    if (symbol == NULL) {
+      NSLinkEditError(&c, &e, &file, &errstr);
+      cc_debugerror_post("cc_dl_sym", "symbol %s not found: %s", 
+                         symbolname, errstr);
+    }
+  }
+
+  free (mangledname);
+  ptr = symbol ? NSAddressOfSymbol(symbol) : NULL;  
+  
 #elif defined (HAVE_WINDLL_RUNTIME_BINDING)
+
+  if ((handle == NULL) || (handle->nativehnd == NULL)) return NULL;
   ptr = GetProcAddress(handle->nativehnd, symbolname);
 
   if (cc_dl_debugging() && (ptr == NULL)) {
@@ -331,6 +529,15 @@ cc_dl_close(cc_libhandle handle)
                          cc_string_get_text(&handle->libname), e);
     }
   }
+
+#elif defined (HAVE_DYLD_RUNTIME_BINDING) 
+
+  // Do nothing.
+
+  // Unlike on ELF systems, you cannot unload unload Mach-O shared
+  // libraries. See man 3 NSModule, man 3 NSObjectFileImage and
+  // http://fink.sourceforge.net/doc/porting/shared.php for details.
+
 
 #elif defined (HAVE_WINDLL_RUNTIME_BINDING)
 
