@@ -35,14 +35,13 @@ class SoSceneKit : public SoBaseKit
   SO_KIT_CATALOG_ENTRY_HEADER(lightList);
   SO_KIT_CATALOG_ENTRY_HEADER(topSeparator);
 
+public:
+  static void initClass(void);
+  SoSceneKit(void);
+
   int getCameraNumber(void);
   void setCameraNumber(int camNum);
   virtual SbBool affectsState(void) const;
-
-public:
-  SoSceneKit(void);
-
-  static void initClass(void);
 
 protected:
   virtual ~SoSceneKit();
