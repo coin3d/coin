@@ -84,6 +84,39 @@ else
   exit 1
 fi
 
+# Remove gcc system directories includes from the include path
+if test -n "$compiler" && test -n "`$compiler --version | grep GCC`";
+then
+  sim_ac_save_cpp=$CPP
+  CPP="cpp"
+  case `uname -s` in
+    Darwin) CPP="cpp3"
+    ;;
+  esac
+  cpp_sys_dirs=`$CPP -v <<EOF 2>&1 | sed -n -e \
+  '/#include <...> search starts here:/,/End of search list./{
+    /#include <...> search starts here:/b
+    /End of search list./b
+    s/ /-I/
+    p
+  }'
+  EOF`
+  result=
+  for inc_path in $cppflags; do
+    additem=true
+    for sys_dir in $cpp_sys_dirs; do
+      if test x$inc_path = x$sys_dir; then
+        additem=false
+        break
+      fi
+    done
+    $additem && result="$result $inc_path"
+  done
+  cppflags=$result
+  CPP=$sim_ac_save_cpp
+fi
+
+
 while test $# -gt 0
 do
   case $1 in

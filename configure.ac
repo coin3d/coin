@@ -1212,6 +1212,12 @@ SIM_AC_UNIQIFY_OPTION_LIST(CPPFLAGS, $CPPFLAGS)
 SIM_AC_UNIQIFY_OPTION_LIST(LDFLAGS, $LDFLAGS)
 SIM_AC_UNIQIFY_OPTION_LIST(LIBS, $LIBS)
 
+# **************************************************************************
+# Remove gcc system directories includes from the CPPFLAGS.
+
+CPP_AC_SEARCH_ORDER_FILTER(CPPFLAGS, $CPPFLAGS)
+CPP_AC_SEARCH_ORDER_FILTER(SIMAGE_EXTRA_CPPFLAGS, $SIMAGE_EXTRA_CPPFLAGS)
+
 case $enable_static in
 yes | true)  COIN_STATIC=true ;;
 *)           COIN_STATIC=false ;;
