@@ -160,13 +160,6 @@ SoSceneManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
   // in the case of scenegraph modifications between a nodesensor
   // trigger and SoSceneManager::render() actually being called. It
   // will also help us avoid "double redraws" at expose events.
-#if 0 // debug
-  SoDebugError::postInfo("SoSceneManager::render",
-                         "rootsensor %p isScheduled: %d",
-                         this->rootsensor,
-                         this->rootsensor ?
-                         this->rootsensor->isScheduled() : -1);
-#endif // debug
   if (this->rootsensor && this->rootsensor->isScheduled()) {
 #if 0 // debug
     SoDebugError::postInfo("SoSceneManager::render",
@@ -174,37 +167,8 @@ SoSceneManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
 #endif // debug
     this->rootsensor->unschedule();
   }
-
-
-  // FIXME: this does the same thing for the actual redraw delay
-  // sensor as for the nodesensor above. I don't think this is
-  // necessary, though. If we never see the debug msg below during
-  // development, we can probably safely remove this snippet of
-  // code. 19990226 mortene.
-  if (this->redrawshot && this->redrawshot->isScheduled()) {
-#if 0 // debug
-    SoDebugError::postInfo("SoSceneManager::render",
-                           "redrawshot unschedule");
-#endif // debug
-    this->redrawshot->unschedule();
-  }
-
-#if 0 // debug
-  SoDebugError::postInfo("SoSceneManager::render",
-                         "applying the GLRenderAction "
-                         "to the scenegraph _now_");
-#endif // debug
-
-#if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoSceneManager::render", "before glrender->apply()");
-#endif // debug
-
   // Apply the SoGLRenderAction to the scenegraph root.
   if (this->scene) this->glaction->apply(this->scene);
-
-#if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoSceneManager::render", "after glrender->apply()");
-#endif // debug
 }
 
 /*!
