@@ -57,6 +57,36 @@ cc_dl_debugging(void)
   return (d > 0) ? 1 : 0;
 }
 
+#ifdef HAVE_WINDLL_RUNTIME_BINDING
+/* Returns the string and error code describing the cause of an
+   internal Win32 API error. */
+static void
+cc_dl_get_win32_err(DWORD * lasterr, cc_string * str)
+{
+  LPTSTR buffer;
+  BOOL result;
+
+  *lasterr = GetLastError();
+  result = FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
+                         FORMAT_MESSAGE_FROM_SYSTEM |
+                         FORMAT_MESSAGE_IGNORE_INSERTS,
+                         NULL,
+                         *lasterr,
+                         0,
+                         (LPTSTR)&buffer,
+                         0,
+                         NULL);
+
+  if (!result) {
+    cc_debugerror_post("cc_dl_get_Win32_err", "FormatMessage() failed!?");
+  }
+  else {
+    cc_string_set_text(str, buffer);
+    (void)LocalFree(buffer);
+  }
+}
+#endif /* HAVE_WINDLL_RUNTIME_BINDING */
+
 
 cc_libhandle
 cc_dl_open(const char * filename)
@@ -65,10 +95,11 @@ cc_dl_open(const char * filename)
   /* if (!h), FIXME: exception handling. 20020906 mortene. */
   h->nativehnd = NULL;
 
-  /* FIXME: support HP-UX shn_load()?
+  /* FIXME: support HP-UX shn_load()? (dlopen() is missing on older
+     HP-UX versions.)
 
-     Some versions of HP-UX have dlopen() (at least 10.x and
-     older). Although according to a discussion on the libtool
+     Some versions of HP-UX has dlopen() (from version 11 and
+     onwards?). Although according to a discussion on the libtool
      mailinglist it has been buggy in an official release, needing a
      patch to function properly. This is of course a good reason to
      try to use shn_load() *first*, then dlopen() on HP-UX.
@@ -105,9 +136,6 @@ cc_dl_open(const char * filename)
 
 #elif defined (HAVE_WINDLL_RUNTIME_BINDING)
 
-  /* FIXME: should probably do GetModuleHandle(filename) first, to see
-     if the module/library is already loaded. 20021015 mortene. */
-
   /* FIXME: if filename==NULL, could we use Module32First() and
      Module32Next() to cycle through the loaded modules, to "fake"
      what happens on dlopen(NULL) on UNIX-systems? That would still
@@ -115,10 +143,29 @@ cc_dl_open(const char * filename)
      Win32-API related Usenet group if there is any other way to
      resolve symbols in the current process image. 20021015 mortene. */
 
+  /* Don't use GetModuleHandle(): LoadLibrary() will *not* load a new
+     image if the module is already loaded, it will only inc the
+     reference count.
+
+     Also, GetModuleHandle() doesn't inc the reference count, so it is
+     dangerous in the sense that the module could be free'd from
+     somewhere else between us opening it, and until it is used for
+     resolving symbols.
+  */
+
   h->nativehnd = LoadLibrary(filename);
 
-  /* FIXME: If the return value is NULL, we should call GetLastError() to 
-     get extended error information and report this error. 20021015 thammer. */
+  if (cc_dl_debugging() && (h->nativehnd == NULL)) {
+    DWORD lasterr;
+    cc_string errstr;
+
+    cc_string_construct(&errstr);
+    cc_dl_get_win32_err(&lasterr, &errstr);
+    cc_debugerror_post("cc_dl_open", "LoadLibrary(\"%s\") failed with: '%s'",
+                       filename ? filename : "(null)",
+                       cc_string_get_text(&errstr));
+    cc_string_clean(&errstr);
+  }
 
 #endif
 
@@ -154,9 +201,21 @@ cc_dl_sym(cc_libhandle handle, const char * symbolname)
 
 #elif defined (HAVE_WINDLL_RUNTIME_BINDING)
   ptr = GetProcAddress(handle->nativehnd, symbolname);
-  /* FIXME: If the return value is NULL, we should call GetLastError() to 
-     get extended error information and report this error. 20021015 thammer. */
-#endif /* HAVE_DL_LIB */
+
+  if (cc_dl_debugging() && (ptr == NULL)) {
+    DWORD lasterr;
+    cc_string errstr;
+
+    cc_string_construct(&errstr);
+    cc_dl_get_win32_err(&lasterr, &errstr);
+    cc_debugerror_post("cc_dl_sym",
+                       "GetProcAddress(\"%s\", \"%s\") failed with: '%s'",
+                       cc_string_get_text(&handle->libname), symbolname,
+                       cc_string_get_text(&errstr));
+    cc_string_clean(&errstr);
+  }
+
+#endif
 
   return ptr;
 }
@@ -168,7 +227,7 @@ cc_dl_close(cc_libhandle handle)
 
   int result = dlclose(handle->nativehnd);
 
-  if (cc_dl_debugging() && (result != 0)) {
+  if (result != 0) {
     const char * e = dlerror();
     if (e) {
       cc_debugerror_post("cc_dl_close", "dlclose(\"%s\") failed with: '%s'",
@@ -177,10 +236,23 @@ cc_dl_close(cc_libhandle handle)
   }
 
 #elif defined (HAVE_WINDLL_RUNTIME_BINDING)
-  (void)FreeLibrary(handle->nativehnd);
-  /* FIXME: If the return value is NULL, we should call GetLastError() to 
-     get extended error information and report this error. 20021015 thammer. */
-#endif /* HAVE_DL_LIB */
+
+  BOOL result = FreeLibrary(handle->nativehnd);
+
+  if (!result) {
+    DWORD lasterr;
+    cc_string errstr;
+
+    cc_string_construct(&errstr);
+    cc_dl_get_win32_err(&lasterr, &errstr);
+    cc_debugerror_post("cc_dl_close",
+                       "FreeLibrary(\"%s\") failed with: '%s'",
+                       cc_string_get_text(&handle->libname),
+                       cc_string_get_text(&errstr));
+    cc_string_clean(&errstr);
+  }
+
+#endif
 
   cc_string_clean(&handle->libname);
   
