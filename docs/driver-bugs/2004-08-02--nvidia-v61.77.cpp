@@ -38,18 +38,6 @@
 
 #include <GL/glut.h>
 
-#ifndef GL_TEXTURE_3D
-#define GL_TEXTURE_3D 0x806F
-#endif
-
-static int winid;
-
-static float
-normrand(void)
-{
-  return (float)rand() / RAND_MAX;
-}
-
 static void
 send_triangle(void)
 {
@@ -94,14 +82,8 @@ expose_cb(void)
     }
 
     glBindTexture(GL_TEXTURE_2D,textures[0]);
-
-    int dim = 256;
-    int level = 0;
-    while (dim > 0) {
-      glTexImage2D(GL_TEXTURE_2D,level++,0x0003,dim,dim,
-		   0,GL_RGB,GL_UNSIGNED_BYTE,pixels);
-      dim >>= 1;
-    }
+    glTexImage2D(GL_TEXTURE_2D,0,0x0003,256,256,
+		 0,GL_RGB,GL_UNSIGNED_BYTE,pixels);
 
     // *********************************************************************
 
@@ -111,34 +93,14 @@ expose_cb(void)
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D,textures[0]);
 
-    glBegin(GL_TRIANGLES);
-    send_triangle();
-    glEnd();
-
-    glBindTexture(GL_TEXTURE_2D,textures[0]);
-    glBegin(GL_TRIANGLES);
-    send_triangle();
-    glEnd();
-
-    glColor4ub(0,0,255,255);
-    glBindTexture(GL_TEXTURE_2D,textures[0]);
+    glColor4f(0, 1, 0, 1);
 
     glBegin(GL_TRIANGLES);
-    glColor4ub(255,255,0,255);
-    send_triangle();
-    glEnd();
-
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D,textures[0]);
-
-    glColor4ub(255,0,255,255);
-
-    glBegin(GL_TRIANGLES);
-    const int nr = normrand() * 32;
+    const int nr = ((float)rand() / RAND_MAX) * 32;
     printf("nr==%d\n", nr);
     for (i=0; i < nr; i++) { send_triangle(); }
-    glColor4f(normrand(), normrand(), normrand(), 1);
-    for (i=0; i < 2; i++) { send_triangle(); }
+    glColor4f(1, 0, 0, 1);
+    send_triangle();
     glEnd();
 
     glEndList();
@@ -174,7 +136,7 @@ main(int argc, char ** argv)
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 
   glutInitWindowSize(892, 658);
-  winid = glutCreateWindow("hepp");
+  (void)glutCreateWindow("hepp");
   glutDisplayFunc(expose_cb);
 
   glutMainLoop();
