@@ -585,6 +585,11 @@ if test x"$sim_ac_gl_avail" = xyes; then
     AC_DEFINE([HAVE_GLX],, [define if you have GLX])
   fi
 
+  # Try to link against wgl*() calls.
+  sim_ac_save_libs=$LIBS
+  # Not directly needed by the wgl*() calls, but to create a
+  # context we need functions from this library.
+  LIBS="$LIBS -lgdi32"
   AC_CACHE_CHECK([whether WGL is available],
     sim_cv_func_wgl_avail,
     [AC_TRY_LINK([#include <windows.h>],
@@ -594,6 +599,8 @@ if test x"$sim_ac_gl_avail" = xyes; then
 
   if test x"$sim_cv_func_wgl_avail" = xyes; then
     AC_DEFINE([HAVE_WGL],, [define if you have WGL])
+  else
+    LIBS=$sim_ac_save_libs
   fi
 
 

@@ -812,7 +812,7 @@ fi
 test -n "$ac_init_help" && exit 0
 if $ac_init_version; then
   cat <<\EOF
-configure (Coin v0.9.99) 2.49e
+Coin v0.9.99 configure, by GNU Autoconf 2.49e
 
 Copyright 1992, 1993, 1994, 1995, 1996, 1998, 1999, 2000, 2001
 Free Software Foundation, Inc.
@@ -9688,13 +9688,18 @@ EOF
 
   fi
 
-  echo "$as_me:9691: checking whether WGL is available" >&5
+  # Try to link against wgl*() calls.
+  sim_ac_save_libs=$LIBS
+  # Not directly needed by the wgl*() calls, but to create a
+  # context we need functions from this library.
+  LIBS="$LIBS -lgdi32"
+  echo "$as_me:9696: checking whether WGL is available" >&5
 echo $ECHO_N "checking whether WGL is available... $ECHO_C" >&6
 if test "${sim_cv_func_wgl_avail+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   cat >conftest.$ac_ext <<_ACEOF
-#line 9697 "configure"
+#line 9702 "configure"
 #include "confdefs.h"
 #include <windows.h>
 int
@@ -9706,16 +9711,16 @@ main ()
 }
 _ACEOF
 rm -f conftest.$ac_objext conftest$ac_exeext
-if { (eval echo "$as_me:9709: \"$ac_link\"") >&5
+if { (eval echo "$as_me:9714: \"$ac_link\"") >&5
   (eval $ac_link) 2>&5
   ac_status=$?
-  echo "$as_me:9712: \$? = $ac_status" >&5
+  echo "$as_me:9717: \$? = $ac_status" >&5
   (exit $ac_status); } &&
          { ac_try='test -s conftest$ac_exeext'
-  { (eval echo "$as_me:9715: \"$ac_try\"") >&5
+  { (eval echo "$as_me:9720: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
-  echo "$as_me:9718: \$? = $ac_status" >&5
+  echo "$as_me:9723: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
   sim_cv_func_wgl_avail=yes
 else
@@ -9725,7 +9730,7 @@ sim_cv_func_wgl_avail=no
 fi
 rm -f conftest$ac_exeext conftest.$ac_ext
 fi
-echo "$as_me:9728: result: $sim_cv_func_wgl_avail" >&5
+echo "$as_me:9733: result: $sim_cv_func_wgl_avail" >&5
 echo "${ECHO_T}$sim_cv_func_wgl_avail" >&6
 
   if test x"$sim_cv_func_wgl_avail" = xyes; then
@@ -9734,6 +9739,8 @@ cat >>confdefs.h <<\EOF
 #define HAVE_WGL
 EOF
 
+  else
+    LIBS=$sim_ac_save_libs
   fi
 
   # *******************************************************************
@@ -9746,7 +9753,7 @@ if test "${enable_dl_glu+set}" = set; then
   case "${enableval}" in
       yes | true) enable_dl_glu=yes ;;
       no | false) enable_dl_glu=no ;;
-      *) { { echo "$as_me:9749: error: bad value \"${enableval}\" for --enable-dl-glu" >&5
+      *) { { echo "$as_me:9756: error: bad value \"${enableval}\" for --enable-dl-glu" >&5
 echo "$as_me: error: bad value \"${enableval}\" for --enable-dl-glu" >&2;}
    { (exit 1); exit 1; }; } ;;
     esac
@@ -9757,13 +9764,13 @@ fi;
   if test x"$sim_ac_dl_avail" = xyes -a x"$enable_dl_glu" = xyes; then
     # See if GLU is part of GL library (this is the case on BeOS, for
     # instance) before setting us up for runtime linking.
-    echo "$as_me:9760: checking if GLU is available as part of GL library" >&5
+    echo "$as_me:9767: checking if GLU is available as part of GL library" >&5
 echo $ECHO_N "checking if GLU is available as part of GL library... $ECHO_C" >&6
 if test "${sim_cv_glu_ready+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   cat >conftest.$ac_ext <<_ACEOF
-#line 9766 "configure"
+#line 9773 "configure"
 #include "confdefs.h"
 
 #if HAVE_WINDOWS_H
@@ -9783,16 +9790,16 @@ gluSphere(0L, 1.0, 1, 1);
 }
 _ACEOF
 rm -f conftest.$ac_objext conftest$ac_exeext
-if { (eval echo "$as_me:9786: \"$ac_link\"") >&5
+if { (eval echo "$as_me:9793: \"$ac_link\"") >&5
   (eval $ac_link) 2>&5
   ac_status=$?
-  echo "$as_me:9789: \$? = $ac_status" >&5
+  echo "$as_me:9796: \$? = $ac_status" >&5
   (exit $ac_status); } &&
          { ac_try='test -s conftest$ac_exeext'
-  { (eval echo "$as_me:9792: \"$ac_try\"") >&5
+  { (eval echo "$as_me:9799: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
-  echo "$as_me:9795: \$? = $ac_status" >&5
+  echo "$as_me:9802: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
   sim_cv_glu_ready=true
 else
@@ -9802,7 +9809,7 @@ sim_cv_glu_ready=false
 fi
 rm -f conftest$ac_exeext conftest.$ac_ext
 fi
-echo "$as_me:9805: result: $sim_cv_glu_ready" >&5
+echo "$as_me:9812: result: $sim_cv_glu_ready" >&5
 echo "${ECHO_T}$sim_cv_glu_ready" >&6
 if ${sim_cv_glu_ready}; then
 
@@ -9874,7 +9881,7 @@ if test x"$with_glu" != xno; then
   CPPFLAGS="$CPPFLAGS $sim_ac_glu_cppflags"
   LDFLAGS="$LDFLAGS $sim_ac_glu_ldflags"
 
-  echo "$as_me:9877: checking whether GLU is available" >&5
+  echo "$as_me:9884: checking whether GLU is available" >&5
 echo $ECHO_N "checking whether GLU is available... $ECHO_C" >&6
 if test "${sim_cv_lib_glu+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -9887,7 +9894,7 @@ else
       if test "x$sim_cv_lib_glu" = "xUNRESOLVED"; then
         LIBS="$sim_ac_glu_libcheck $sim_ac_save_libs"
         cat >conftest.$ac_ext <<_ACEOF
-#line 9890 "configure"
+#line 9897 "configure"
 #include "confdefs.h"
 
 #if HAVE_WINDOWS_H
@@ -9907,16 +9914,16 @@ gluSphere(0L, 1.0, 1, 1);
 }
 _ACEOF
 rm -f conftest.$ac_objext conftest$ac_exeext
-if { (eval echo "$as_me:9910: \"$ac_link\"") >&5
+if { (eval echo "$as_me:9917: \"$ac_link\"") >&5
   (eval $ac_link) 2>&5
   ac_status=$?
-  echo "$as_me:9913: \$? = $ac_status" >&5
+  echo "$as_me:9920: \$? = $ac_status" >&5
   (exit $ac_status); } &&
          { ac_try='test -s conftest$ac_exeext'
-  { (eval echo "$as_me:9916: \"$ac_try\"") >&5
+  { (eval echo "$as_me:9923: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
-  echo "$as_me:9919: \$? = $ac_status" >&5
+  echo "$as_me:9926: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
   sim_cv_lib_glu="$sim_ac_glu_libcheck"
 else
@@ -9928,7 +9935,7 @@ rm -f conftest$ac_exeext conftest.$ac_ext
     done
 
 fi
-echo "$as_me:9931: result: $sim_cv_lib_glu" >&5
+echo "$as_me:9938: result: $sim_cv_lib_glu" >&5
 echo "${ECHO_T}$sim_cv_lib_glu" >&6
 
   LIBS="$sim_ac_save_libs"
@@ -9975,11 +9982,11 @@ else # couldn't link with OpenGL
     # FIXME: should be able to handle systems where OpenGL is not available,
     # as it would be handy for making e.g. import/export-only versions of the
     # library. 20000123 mortene.
-    { { echo "$as_me:9978: error: needs an OpenGL-compatible development system installed to compile Coin" >&5
+    { { echo "$as_me:9985: error: needs an OpenGL-compatible development system installed to compile Coin" >&5
 echo "$as_me: error: needs an OpenGL-compatible development system installed to compile Coin" >&2;}
    { (exit 1); exit 1; }; }
   else
-    { echo "$as_me:9982: WARNING: needs an OpenGL-compatible development system installed to compile Coin" >&5
+    { echo "$as_me:9989: WARNING: needs an OpenGL-compatible development system installed to compile Coin" >&5
 echo "$as_me: WARNING: needs an OpenGL-compatible development system installed to compile Coin" >&2;}
   fi
 
@@ -9998,7 +10005,7 @@ if test "${enable_compact+set}" = set; then
   case "${enableval}" in
     yes | true)  enable_compact=yes ;;
     no | false)  enable_compact=no ;;
-    *) { { echo "$as_me:10001: error: bad value \"${enableval}\" for --enable-compact" >&5
+    *) { { echo "$as_me:10008: error: bad value \"${enableval}\" for --enable-compact" >&5
 echo "$as_me: error: bad value \"${enableval}\" for --enable-compact" >&2;}
    { (exit 1); exit 1; }; } ;;
   esac
@@ -10025,7 +10032,7 @@ if test "${enable_hacking+set}" = set; then
   case "${enableval}" in
     yes | true)  enable_hacking=yes ;;
     no | false)  enable_hacking=no ;;
-    *) { { echo "$as_me:10028: error: bad value \"${enableval}\" for --enable-hacking" >&5
+    *) { { echo "$as_me:10035: error: bad value \"${enableval}\" for --enable-hacking" >&5
 echo "$as_me: error: bad value \"${enableval}\" for --enable-hacking" >&2;}
    { (exit 1); exit 1; }; } ;;
   esac
@@ -10417,7 +10424,7 @@ DEFS=-DHAVE_CONFIG_H
 : ${CONFIG_STATUS=./config.status}
 ac_clean_files_save=$ac_clean_files
 ac_clean_files="$ac_clean_files $CONFIG_STATUS"
-{ echo "$as_me:10420: creating $CONFIG_STATUS" >&5
+{ echo "$as_me:10427: creating $CONFIG_STATUS" >&5
 echo "$as_me: creating $CONFIG_STATUS" >&6;}
 cat >$CONFIG_STATUS <<_ACEOF
 #! $SHELL
@@ -10604,7 +10611,7 @@ cat >>$CONFIG_STATUS <<\EOF
     echo "$ac_cs_version"; exit 0 ;;
   --he | --h)
     # Conflict between --help and --header
-    { { echo "$as_me:10607: error: ambiguous option: $1
+    { { echo "$as_me:10614: error: ambiguous option: $1
 Try \`$0 --help' for more information." >&5
 echo "$as_me: error: ambiguous option: $1
 Try \`$0 --help' for more information." >&2;}
@@ -10660,12 +10667,12 @@ Try \`$0 --help' for more information." >&2;}
   'include/Inventor/system/inttypes.h' ) CONFIG_HEADERS="$CONFIG_HEADERS include/Inventor/system/inttypes.h" ;;
 
   # This is an error.
-  -*) { { echo "$as_me:10663: error: unrecognized option: $1
+  -*) { { echo "$as_me:10670: error: unrecognized option: $1
 Try \`$0 --help' for more information." >&5
 echo "$as_me: error: unrecognized option: $1
 Try \`$0 --help' for more information." >&2;}
    { (exit 1); exit 1; }; } ;;
-  *) { { echo "$as_me:10668: error: invalid argument: $1" >&5
+  *) { { echo "$as_me:10675: error: invalid argument: $1" >&5
 echo "$as_me: error: invalid argument: $1" >&2;}
    { (exit 1); exit 1; }; };;
   esac
@@ -10972,7 +10979,7 @@ done; }
   esac
 
   if test x"$ac_file" != x-; then
-    { echo "$as_me:10975: creating $ac_file" >&5
+    { echo "$as_me:10982: creating $ac_file" >&5
 echo "$as_me: creating $ac_file" >&6;}
     rm -f "$ac_file"
   fi
@@ -10990,7 +10997,7 @@ echo "$as_me: creating $ac_file" >&6;}
       -) echo $tmp/stdin ;;
       [\\/$]* | ?:[\\/]*)
          # Absolute
-         test -f "$f" || { { echo "$as_me:10993: error: cannot find input file: $f" >&5
+         test -f "$f" || { { echo "$as_me:11000: error: cannot find input file: $f" >&5
 echo "$as_me: error: cannot find input file: $f" >&2;}
    { (exit 1); exit 1; }; }
          echo $f;;
@@ -11003,7 +11010,7 @@ echo "$as_me: error: cannot find input file: $f" >&2;}
            echo $srcdir/$f
          else
            # /dev/null tree
-           { { echo "$as_me:11006: error: cannot find input file: $f" >&5
+           { { echo "$as_me:11013: error: cannot find input file: $f" >&5
 echo "$as_me: error: cannot find input file: $f" >&2;}
    { (exit 1); exit 1; }; }
          fi;;
@@ -11064,7 +11071,7 @@ for ac_file in : $CONFIG_HEADERS; do test "x$ac_file" = x: && continue
   * )   ac_file_in=$ac_file.in ;;
   esac
 
-  test x"$ac_file" != x- && { echo "$as_me:11067: creating $ac_file" >&5
+  test x"$ac_file" != x- && { echo "$as_me:11074: creating $ac_file" >&5
 echo "$as_me: creating $ac_file" >&6;}
 
   # First look for the input files in the build tree, otherwise in the
@@ -11075,7 +11082,7 @@ echo "$as_me: creating $ac_file" >&6;}
       -) echo $tmp/stdin ;;
       [\\/$]* | ?:[\\/]*)
          # Absolute
-         test -f "$f" || { { echo "$as_me:11078: error: cannot find input file: $f" >&5
+         test -f "$f" || { { echo "$as_me:11085: error: cannot find input file: $f" >&5
 echo "$as_me: error: cannot find input file: $f" >&2;}
    { (exit 1); exit 1; }; }
          echo $f;;
@@ -11088,7 +11095,7 @@ echo "$as_me: error: cannot find input file: $f" >&2;}
            echo $srcdir/$f
          else
            # /dev/null tree
-           { { echo "$as_me:11091: error: cannot find input file: $f" >&5
+           { { echo "$as_me:11098: error: cannot find input file: $f" >&5
 echo "$as_me: error: cannot find input file: $f" >&2;}
    { (exit 1); exit 1; }; }
          fi;;
@@ -11205,7 +11212,7 @@ cat >>$CONFIG_STATUS <<\EOF
   rm -f $tmp/in
   if test x"$ac_file" != x-; then
     if cmp -s $ac_file $tmp/config.h 2>/dev/null; then
-      { echo "$as_me:11208: $ac_file is unchanged" >&5
+      { echo "$as_me:11215: $ac_file is unchanged" >&5
 echo "$as_me: $ac_file is unchanged" >&6;}
     else
       ac_dir=`$as_expr X"$ac_file" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
