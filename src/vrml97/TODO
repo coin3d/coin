@@ -13,12 +13,10 @@ Unsupported features
 - The MovieTexture node
 - The NavigationInfo node (should be supported by viewer mostly though).
 - PixelTexture SoCallbackAction support.
-- ProximitySensor
 - Script (currently only passthrough).
 - Radius in PointLight is not supported
 - Radius or beamWidth in SpotLight is not supported.
 - The Text node
-- ROUTE is not supported by SoWriteAction/SoOutput
 - Lights should affect all nodes in the current coordinate system,
   also nodes that precedes them in the children field.
 
