@@ -15,6 +15,7 @@ RegularSources = \
 	SoGLModelMatrixElement.cpp \
 	SoGLMultiTextureCoordinateElement.cpp \
 	SoGLMultiTextureEnabledElement.cpp \
+	SoGLMultiTextureMatrixElement.cpp \
 	SoGLMultiTextureImageElement.cpp \
 	SoGLNormalElement.cpp \
 	SoGLPointSizeElement.cpp \

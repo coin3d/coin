@@ -278,6 +278,7 @@ RegularSources = \
 	SoMaterialBindingElement.cpp \
 	SoMultiTextureCoordinateElement.cpp \
 	SoMultiTextureEnabledElement.cpp \
+	SoMultiTextureMatrixElement.cpp \
 	SoMultiTextureImageElement.cpp \
 	SoModelMatrixElement.cpp \
 	SoNormalBindingElement.cpp \
@@ -481,7 +482,8 @@ am__elements_lst_SOURCES_DIST = SoAccumulatedElement.cpp \
 	SoLineWidthElement.cpp SoLocalBBoxMatrixElement.cpp \
 	SoMaterialBindingElement.cpp \
 	SoMultiTextureCoordinateElement.cpp \
-	SoMultiTextureEnabledElement.cpp SoMultiTextureImageElement.cpp \
+	SoMultiTextureEnabledElement.cpp \
+	SoMultiTextureMatrixElement.cpp SoMultiTextureImageElement.cpp \
 	SoModelMatrixElement.cpp SoNormalBindingElement.cpp \
 	SoNormalElement.cpp SoOverrideElement.cpp SoPickRayElement.cpp \
 	SoPickStyleElement.cpp SoPointSizeElement.cpp \
@@ -528,6 +530,7 @@ am__objects_2 = SoAccumulatedElement.$(OBJEXT) \
 	SoMaterialBindingElement.$(OBJEXT) \
 	SoMultiTextureCoordinateElement.$(OBJEXT) \
 	SoMultiTextureEnabledElement.$(OBJEXT) \
+	SoMultiTextureMatrixElement.$(OBJEXT) \
 	SoMultiTextureImageElement.$(OBJEXT) \
 	SoModelMatrixElement.$(OBJEXT) SoNormalBindingElement.$(OBJEXT) \
 	SoNormalElement.$(OBJEXT) SoOverrideElement.$(OBJEXT) \
@@ -653,7 +656,8 @@ am__EXTRA_elements_lst_SOURCES_DIST = \
 	SoLineWidthElement.cpp SoLocalBBoxMatrixElement.cpp \
 	SoMaterialBindingElement.cpp \
 	SoMultiTextureCoordinateElement.cpp \
-	SoMultiTextureEnabledElement.cpp SoMultiTextureImageElement.cpp \
+	SoMultiTextureEnabledElement.cpp \
+	SoMultiTextureMatrixElement.cpp SoMultiTextureImageElement.cpp \
 	SoModelMatrixElement.cpp SoNormalBindingElement.cpp \
 	SoNormalElement.cpp SoOverrideElement.cpp SoPickRayElement.cpp \
 	SoPickStyleElement.cpp SoPointSizeElement.cpp \
@@ -698,7 +702,8 @@ am__libelements_la_SOURCES_DIST = SoAccumulatedElement.cpp \
 	SoLineWidthElement.cpp SoLocalBBoxMatrixElement.cpp \
 	SoMaterialBindingElement.cpp \
 	SoMultiTextureCoordinateElement.cpp \
-	SoMultiTextureEnabledElement.cpp SoMultiTextureImageElement.cpp \
+	SoMultiTextureEnabledElement.cpp \
+	SoMultiTextureMatrixElement.cpp SoMultiTextureImageElement.cpp \
 	SoModelMatrixElement.cpp SoNormalBindingElement.cpp \
 	SoNormalElement.cpp SoOverrideElement.cpp SoPickRayElement.cpp \
 	SoPickStyleElement.cpp SoPointSizeElement.cpp \
@@ -738,16 +743,16 @@ am__objects_7 = SoAccumulatedElement.lo SoAmbientColorElement.lo \
 	SoLightModelElement.lo SoLinePatternElement.lo \
 	SoLineWidthElement.lo SoLocalBBoxMatrixElement.lo \
 	SoMaterialBindingElement.lo SoMultiTextureCoordinateElement.lo \
-	SoMultiTextureEnabledElement.lo SoMultiTextureImageElement.lo \
-	SoModelMatrixElement.lo SoNormalBindingElement.lo \
-	SoNormalElement.lo SoOverrideElement.lo SoPickRayElement.lo \
-	SoPickStyleElement.lo SoPointSizeElement.lo \
-	SoPolygonOffsetElement.lo SoProfileCoordinateElement.lo \
-	SoProfileElement.lo SoProjectionMatrixElement.lo \
-	SoReplacedElement.lo SoShapeHintsElement.lo \
-	SoShapeStyleElement.lo SoShininessElement.lo \
-	SoSpecularColorElement.lo SoSwitchElement.lo \
-	SoTextOutlineEnabledElement.lo \
+	SoMultiTextureEnabledElement.lo SoMultiTextureMatrixElement.lo \
+	SoMultiTextureImageElement.lo SoModelMatrixElement.lo \
+	SoNormalBindingElement.lo SoNormalElement.lo \
+	SoOverrideElement.lo SoPickRayElement.lo SoPickStyleElement.lo \
+	SoPointSizeElement.lo SoPolygonOffsetElement.lo \
+	SoProfileCoordinateElement.lo SoProfileElement.lo \
+	SoProjectionMatrixElement.lo SoReplacedElement.lo \
+	SoShapeHintsElement.lo SoShapeStyleElement.lo \
+	SoShininessElement.lo SoSpecularColorElement.lo \
+	SoSwitchElement.lo SoTextOutlineEnabledElement.lo \
 	SoTextureCoordinateBindingElement.lo \
 	SoTextureCoordinateElement.lo SoTextureEnabledElement.lo \
 	SoTexture3EnabledElement.lo SoTextureImageElement.lo \
@@ -857,7 +862,8 @@ am__EXTRA_libelements_la_SOURCES_DIST = \
 	SoLineWidthElement.cpp SoLocalBBoxMatrixElement.cpp \
 	SoMaterialBindingElement.cpp \
 	SoMultiTextureCoordinateElement.cpp \
-	SoMultiTextureEnabledElement.cpp SoMultiTextureImageElement.cpp \
+	SoMultiTextureEnabledElement.cpp \
+	SoMultiTextureMatrixElement.cpp SoMultiTextureImageElement.cpp \
 	SoModelMatrixElement.cpp SoNormalBindingElement.cpp \
 	SoNormalElement.cpp SoOverrideElement.cpp SoPickRayElement.cpp \
 	SoPickStyleElement.cpp SoPointSizeElement.cpp \
@@ -901,7 +907,8 @@ am__libelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoLineWidthElement.cpp SoLocalBBoxMatrixElement.cpp \
 	SoMaterialBindingElement.cpp \
 	SoMultiTextureCoordinateElement.cpp \
-	SoMultiTextureEnabledElement.cpp SoMultiTextureImageElement.cpp \
+	SoMultiTextureEnabledElement.cpp \
+	SoMultiTextureMatrixElement.cpp SoMultiTextureImageElement.cpp \
 	SoModelMatrixElement.cpp SoNormalBindingElement.cpp \
 	SoNormalElement.cpp SoOverrideElement.cpp SoPickRayElement.cpp \
 	SoPickStyleElement.cpp SoPointSizeElement.cpp \
@@ -1019,7 +1026,8 @@ am__EXTRA_libelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoLineWidthElement.cpp SoLocalBBoxMatrixElement.cpp \
 	SoMaterialBindingElement.cpp \
 	SoMultiTextureCoordinateElement.cpp \
-	SoMultiTextureEnabledElement.cpp SoMultiTextureImageElement.cpp \
+	SoMultiTextureEnabledElement.cpp \
+	SoMultiTextureMatrixElement.cpp SoMultiTextureImageElement.cpp \
 	SoModelMatrixElement.cpp SoNormalBindingElement.cpp \
 	SoNormalElement.cpp SoOverrideElement.cpp SoPickRayElement.cpp \
 	SoPickStyleElement.cpp SoPointSizeElement.cpp \
@@ -1126,6 +1134,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoMultiTextureEnabledElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoMultiTextureImageElement.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoMultiTextureImageElement.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoMultiTextureMatrixElement.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoMultiTextureMatrixElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoNormalBindingElement.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoNormalBindingElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoNormalElement.Plo \
@@ -1373,6 +1383,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoMultiTextureEnabledElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoMultiTextureImageElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoMultiTextureImageElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoMultiTextureMatrixElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoMultiTextureMatrixElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoNormalBindingElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoNormalBindingElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoNormalElement.Plo@am__quote@

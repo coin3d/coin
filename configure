@@ -25281,8 +25281,29 @@ ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ex
 ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
 
+      ;;
+    esac
+  fi
 
-      # disable bool type
+else
+  DSUFFIX=
+  CPPFLAGS="$CPPFLAGS -DNDEBUG"
+  :
+fi
+
+
+
+:
+
+
+
+# Disable bool type with MSVC.
+#
+# "/noBool" should not be part of the SIM_AC_DETECT_COMMON_COMPILER_FLAGS
+# macro, because some projects will not compile properly with it.
+# (Like at least SoQt, since the Qt headers defines the bool type, which
+# will then cause a compiler error when q[whatever].h is included.)
+
 
 
 
@@ -25415,21 +25436,6 @@ ac_cpp='$CXXCPP $CPPFLAGS'
 ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
 ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-
-      ;;
-    esac
-  fi
-
-else
-  DSUFFIX=
-  CPPFLAGS="$CPPFLAGS -DNDEBUG"
-  :
-fi
-
-
-
-:
 
 
 

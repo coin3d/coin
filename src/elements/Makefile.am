@@ -39,6 +39,7 @@ RegularSources = \
 	SoMaterialBindingElement.cpp \
 	SoMultiTextureCoordinateElement.cpp \
 	SoMultiTextureEnabledElement.cpp \
+	SoMultiTextureMatrixElement.cpp \
 	SoMultiTextureImageElement.cpp \
 	SoModelMatrixElement.cpp \
 	SoNormalBindingElement.cpp \
