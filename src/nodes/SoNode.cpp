@@ -1051,11 +1051,12 @@ SoNode::writeS(SoAction * action, SoNode * node)
   assert(action->getTypeId().isDerivedFrom(SoWriteAction::getClassTypeId()));
   SoWriteAction * const writeAction = (SoWriteAction *)(action);
 
-
-
-  //  if (node->getNodeType() == PROTO_INSTANCE_ROOT) {
-  //  assert(0 && "FIXME: PROTO export not supported.");
-  // }
+  // Do not write Proto instance graphs. Just let the Proto instance
+  // class handle the writing.
+  SoProtoInstance * proto = SoProtoInstance::findProtoInstance(node);
+  if (proto) {
+    node = proto;
+  }
   node->write(writeAction);
 }
 
@@ -1072,17 +1073,13 @@ SoNode::write(SoWriteAction * action)
 {
   SoOutput * out = action->getOutput();
 
-  SoNode * node = this;
-  SoProtoInstance * proto = SoProtoInstance::findProtoInstance(this);
-  if (proto) node = proto;
-
   if (out->getStage() == SoOutput::COUNT_REFS) {
-    node->addWriteReference(out, FALSE);
+    this->addWriteReference(out, FALSE);
   }
   else if (out->getStage() == SoOutput::WRITE) {
-    if (node->writeHeader(out, FALSE, FALSE)) return;
-    node->getFieldData()->write(out, node);
-    node->writeFooter(out);
+    if (this->writeHeader(out, FALSE, FALSE)) return;
+    this->getFieldData()->write(out, this);
+    this->writeFooter(out);
   }
   else assert(0 && "unknown stage");
 }
@@ -1147,8 +1144,13 @@ SoNode::getNodeId(void) const
 void
 SoNode::writeInstance(SoOutput * out)
 {
+  SoNode * node = this;
+  SoProtoInstance * proto = SoProtoInstance::findProtoInstance(this);
+  if (proto) {
+    node = proto;
+  }
   SoWriteAction wa(out);
-  wa.continueToApply(this);
+  wa.continueToApply(node);
 }
 
 /*!
