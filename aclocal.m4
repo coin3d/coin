@@ -784,16 +784,19 @@ dnl Autoconf is a developer tool, so don't bother to support older versions.
 AC_PREREQ([2.13])
 save=$LIBS
 LIBS=
-AC_MSG_CHECKING(whether we must explicitly link with the math library)
-AC_TRY_LINK([#include <math.h>], [fmod(1.0f, 1.0f)], mathlib=no, mathlib=yes )
-AC_MSG_RESULT($mathlib)
+AC_CACHE_CHECK([whether we must explicitly link with the math library],
+  ac_cv_lib_EXPLICITMATH,
+  [AC_TRY_LINK([#include <math.h>],
+               [fmod(1.0f, 1.0f)],
+               ac_cv_lib_EXPLICITMATH=no,
+               ac_cv_lib_EXPLICITMATH=yes)])
 LIBS=$save
 
 MATHLIB=""
-if test $mathlib = yes; then
+if test $ac_cv_lib_EXPLICITMATH = yes; then
   MATHLIB="-lm"
 fi
-unset save mathlib
+unset save
 ])
 
 dnl  Let the user decide if compilation should be done in "debug mode".
