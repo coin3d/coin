@@ -21,9 +21,7 @@
 #define COIN_SOELEMENT_H
 
 #include <Inventor/SbBasic.h>
-
 #include <Inventor/SoType.h>
-#include <Inventor/elements/SoSubElement.h>
 #include <stdio.h>
 
 class SoNode;
@@ -31,21 +29,18 @@ class SoState;
 
 
 class SoElement {
-  SO_ELEMENT_ABSTRACT_HEADER(SoElement);
 public:
   static void initClass(void);
-protected:
-  virtual ~SoElement();
 
-public:
+  static SoType getClassTypeId(void);
+  static int getClassStackIndex(void);
   const SoType getTypeId(void) const;
   int getStackIndex(void) const;
 
   virtual void init(SoState * state);
 
   virtual void push(SoState * state);
-  virtual void pop(SoState * state,
-                    const SoElement * prevTopElement);
+  virtual void pop(SoState * state, const SoElement * prevTopElement);
 
   virtual SbBool matches(const SoElement * element) const = 0;
   virtual SoElement * copyMatchInfo(void) const = 0;
@@ -62,8 +57,11 @@ public:
   virtual void print(FILE * file = stdout) const;
 
 protected:
-  static SoElement * getElement(SoState * const state,
-                                const int stackIndex);
+  SoElement(void);
+  virtual ~SoElement();
+  static int classStackIndex;
+
+  static SoElement * getElement(SoState * const state, const int stackIndex);
   static const SoElement * getConstElement(SoState * const state,
                                            const int stackIndex);
 
@@ -83,6 +81,9 @@ protected:
 
   SoElement * next;
   SoElement * prev;
+
+private:
+  static SoType classTypeId;
 
   friend class SoState; // FIXME: bad design. 19990629 mortene.
 };

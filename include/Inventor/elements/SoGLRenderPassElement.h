@@ -20,7 +20,7 @@
 #ifndef COIN_SOGLRENDERPASSELEMENT_H
 #define COIN_SOGLRENDERPASSELEMENT_H
 
-#include <Inventor/elements/SoElement.h>
+#include <Inventor/elements/SoSubElement.h>
 
 
 class SoGLRenderPassElement : public SoElement {

@@ -20,7 +20,7 @@
 #ifndef COIN_SOVIEWPORTREGIONELEMENT_H
 #define COIN_SOVIEWPORTREGIONELEMENT_H
 
-#include <Inventor/elements/SoElement.h>
+#include <Inventor/elements/SoSubElement.h>
 #include <Inventor/SbViewportRegion.h>
 
 

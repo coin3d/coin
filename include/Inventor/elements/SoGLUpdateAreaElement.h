@@ -20,7 +20,7 @@
 #ifndef COIN_SOGLUPDATEAREAELEMENT_H
 #define COIN_SOGLUPDATEAREAELEMENT_H
 
-#include <Inventor/elements/SoElement.h>
+#include <Inventor/elements/SoSubElement.h>
 #include <Inventor/SbVec2f.h>
 
 

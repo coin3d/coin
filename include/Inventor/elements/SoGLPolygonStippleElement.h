@@ -20,7 +20,7 @@
 #ifndef COIN_SOGLPOLYGONSTIPPLEELEMENT_H
 #define COIN_SOGLPOLYGONSTIPPLEELEMENT_H
 
-#include <Inventor/elements/SoElement.h>
+#include <Inventor/elements/SoSubElement.h>
 
 
 class SoGLPolygonStippleElement : public SoElement {

@@ -26,6 +26,7 @@
   manages the state data as stacks of elements derived from SoElement.
 */
 
+#include <Inventor/SbName.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/lists/SoTypeList.h>
 #include <Inventor/elements/SoElement.h>

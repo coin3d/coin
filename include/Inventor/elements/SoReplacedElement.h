@@ -20,7 +20,7 @@
 #ifndef COIN_SOREPLACEDELEMENT_H
 #define COIN_SOREPLACEDELEMENT_H
 
-#include <Inventor/elements/SoElement.h>
+#include <Inventor/elements/SoSubElement.h>
 #include <Inventor/system/inttypes.h>
 
 

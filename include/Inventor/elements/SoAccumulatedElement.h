@@ -20,7 +20,7 @@
 #ifndef COIN_SOACCUMULATEDELEMENT_H
 #define COIN_SOACCUMULATEDELEMENT_H
 
-#include <Inventor/elements/SoElement.h>
+#include <Inventor/elements/SoSubElement.h>
 #include <Inventor/lists/SbPList.h>
 
 

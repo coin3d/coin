@@ -20,7 +20,7 @@
 #ifndef COIN_SOPICKRAYELEMENT_H
 #define COIN_SOPICKRAYELEMENT_H
 
-#include <Inventor/elements/SoElement.h>
+#include <Inventor/elements/SoSubElement.h>
 #include <Inventor/SbViewVolume.h>
 
 

@@ -20,7 +20,7 @@
 #ifndef COIN_SOSHAPESTYLEELEMENT_H
 #define COIN_SOSHAPESTYLEELEMENT_H
 
-#include <Inventor/elements/SoElement.h>
+#include <Inventor/elements/SoSubElement.h>
 
 
 class SoShapeStyleElement : public SoElement {

@@ -20,7 +20,7 @@
 #ifndef COIN_SOTEXTUREOVERRIDEELEMENT_H
 #define COIN_SOTEXTUREOVERRIDEELEMENT_H
 
-#include <Inventor/elements/SoElement.h>
+#include <Inventor/elements/SoSubElement.h>
 
 class SoTextureOverrideElement : public SoElement {
   typedef SoElement inherited;
@@ -31,25 +31,25 @@ public:
   static void initClass(void);
 protected:
   virtual ~SoTextureOverrideElement();
-  
+
   enum {
     TEXTURE_QUALITY = 0x1,
     TEXTURE_IMAGE   = 0x2
   };
-public:  
+public:
   virtual SbBool matches(const SoElement *element) const;
   virtual SoElement *copyMatchInfo() const;
-  
+
   virtual void init(SoState *state);
   virtual void push(SoState *state);
   static SbBool getQualityOverride(SoState *state);
   static SbBool getImageOverride(SoState *state);
-  
+
   static void setQualityOverride(SoState *state, const SbBool value);
   static void setImageOverride(SoState *state, const SbBool value);
-  
+
   virtual void print(FILE *fp) const;
-  
+
 private:
   uint32_t flags;
 };

@@ -20,7 +20,7 @@
 #ifndef COIN_SOWINDOWELEMENT_H
 #define COIN_SOWINDOWELEMENT_H
 
-#include <Inventor/elements/SoElement.h>
+#include <Inventor/elements/SoSubElement.h>
 
 // FIXME: ugly -- this pucks up system-independence within the base
 // Coin library. What is this element used for anyway? 19990808 mortene.

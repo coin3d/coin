@@ -20,7 +20,7 @@
 #ifndef COIN_SOGLNORMALIZEELEMENT_H
 #define COIN_SOGLNORMALIZEELEMENT_H
 
-#include <Inventor/elements/SoElement.h>
+#include <Inventor/elements/SoSubElement.h>
 
 
 class SoGLNormalizeElement : public SoElement {

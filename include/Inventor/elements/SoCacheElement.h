@@ -20,7 +20,7 @@
 #ifndef COIN_SOCACHEELEMENT_H
 #define COIN_SOCACHEELEMENT_H
 
-#include <Inventor/elements/SoElement.h>
+#include <Inventor/elements/SoSubElement.h>
 
 class SoCache;
 

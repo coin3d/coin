@@ -20,7 +20,7 @@
 #ifndef COIN_SOOVERRIDEELEMENT_H
 #define COIN_SOOVERRIDEELEMENT_H
 
-#include <Inventor/elements/SoElement.h>
+#include <Inventor/elements/SoSubElement.h>
 #include <Inventor/system/inttypes.h>
 
 class SoType; // lame doxygen "fix"

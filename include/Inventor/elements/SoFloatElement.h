@@ -20,7 +20,7 @@
 #ifndef COIN_SOFLOATELEMENT_H
 #define COIN_SOFLOATELEMENT_H
 
-#include <Inventor/elements/SoElement.h>
+#include <Inventor/elements/SoSubElement.h>
 
 
 class SoFloatElement : public SoElement {

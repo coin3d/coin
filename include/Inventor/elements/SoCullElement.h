@@ -20,7 +20,7 @@
 #ifndef COIN_SOCULLELEMENT_H
 #define COIN_SOCULLELEMENT_H
 
-#include <Inventor/elements/SoElement.h>
+#include <Inventor/elements/SoSubElement.h>
 #include <Inventor/SbPlane.h>
 
 class SbBox3f;

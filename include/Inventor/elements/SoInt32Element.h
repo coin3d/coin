@@ -20,7 +20,7 @@
 #ifndef COIN_SOINT32ELEMENT_H
 #define COIN_SOINT32ELEMENT_H
 
-#include <Inventor/elements/SoElement.h>
+#include <Inventor/elements/SoSubElement.h>
 #include <Inventor/system/inttypes.h>
 
 

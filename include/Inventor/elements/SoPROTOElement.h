@@ -20,7 +20,7 @@
 #ifndef COIN_SOPROTOELEMENT_H
 #define COIN_SOPROTOELEMENT_H
 
-#include <Inventor/elements/SoElement.h>
+#include <Inventor/elements/SoSubElement.h>
 
 class SoPROTOElement : public SoElement {
   typedef SoElement inherited;

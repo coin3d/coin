@@ -20,7 +20,7 @@
 #ifndef COIN_SOGLSHADEMODELELEMENT_H
 #define COIN_SOGLSHADEMODELELEMENT_H
 
-#include <Inventor/elements/SoElement.h>
+#include <Inventor/elements/SoSubElement.h>
 
 
 class SoGLShadeModelElement : public SoElement {
