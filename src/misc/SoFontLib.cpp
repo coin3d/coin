@@ -122,8 +122,12 @@ SoFontLib::initialize(void)
 void
 SoFontLib::exit()
 {
+  int i;
   CC_MUTEX_LOCK(SoFontLibP::apimutex);
   flwExit();
+  for (i = 0; i < SoFontLibP::fontfiles->getLength(); i++) {
+    delete (*SoFontLibP::fontfiles)[i];
+  }
   delete SoFontLibP::fontfiles;
   CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
   if (SoFontLibP::apimutex != NULL)
