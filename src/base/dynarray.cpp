@@ -80,7 +80,7 @@ cc_dynarray_find(const cc_dynarray * arr, void * item)
 }
 
 void
-cc_dynarray_insert(cc_dynarray * arr, void * item, int idx)
+cc_dynarray_insert(cc_dynarray * arr, void * item, unsigned int idx)
 {
   arr->plist.insert(item, idx);
 }
@@ -92,13 +92,13 @@ cc_dynarray_remove(cc_dynarray * arr, void * item)
 }
 
 void
-cc_dynarray_remove_idx(cc_dynarray * arr, int idx)
+cc_dynarray_remove_idx(cc_dynarray * arr, unsigned int idx)
 {
   arr->plist.remove(idx);
 }
 
 void
-cc_dynarray_removefast(cc_dynarray * arr, int idx)
+cc_dynarray_removefast(cc_dynarray * arr, unsigned int idx)
 {
   arr->plist.removeFast(idx);
 }

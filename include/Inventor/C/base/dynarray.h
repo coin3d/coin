@@ -51,7 +51,7 @@ extern "C" {
   unsigned int cc_dynarray_length(const cc_dynarray * arr);
 
   void cc_dynarray_append(cc_dynarray * arr, void * item);
-  void cc_dynarray_insert(cc_dynarray * arr, void * item, int idx);
+  void cc_dynarray_insert(cc_dynarray * arr, void * item, unsigned int idx);
 
   int cc_dynarray_find(const cc_dynarray * arr, void * item);
 
@@ -59,8 +59,8 @@ extern "C" {
   void cc_dynarray_set(cc_dynarray * arr, unsigned int idx, void * item);
 
   void cc_dynarray_remove(cc_dynarray * arr, void * item);
-  void cc_dynarray_remove_idx(cc_dynarray * arr, int idx);
-  void cc_dynarray_removefast(cc_dynarray * arr, int idx);
+  void cc_dynarray_remove_idx(cc_dynarray * arr, unsigned int idx);
+  void cc_dynarray_removefast(cc_dynarray * arr, unsigned int idx);
 
   void cc_dynarray_truncate(cc_dynarray * arr, unsigned int len);
   void cc_dynarray_fit(cc_dynarray * arr);
