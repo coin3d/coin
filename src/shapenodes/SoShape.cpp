@@ -631,7 +631,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
       
       
       SoGLLazyElement::getInstance(state)->reset(state, 
-                                                 SoLazyElement::DIFFUSE_MASK|
+                                                 SoLazyElement::DIFFUSE_MASK |
                                                  SoLazyElement::GLIMAGE_MASK);
       SoMaterialBundle mb(action);
       mb.sendFirst();      

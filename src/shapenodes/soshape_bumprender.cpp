@@ -110,6 +110,7 @@ static const char * directionallightvpprogram =
 
 // Vertex program for point lights
 static const char * pointlightvpprogram = 
+"!!ARBvp1.0\n"
 "TEMP R0;\n"
 "ATTRIB v26 = vertex.texcoord[2];\n"
 "ATTRIB v25 = vertex.texcoord[1];\n"
@@ -143,6 +144,7 @@ static const char * pointlightvpprogram =
 
 soshape_bumprender::soshape_bumprender(void)
 {
+  this->programsinitialized = FALSE;
 }
 
 soshape_bumprender::~soshape_bumprender()
@@ -342,14 +344,7 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
   
   cc_glglue_glDrawElements(glue, GL_TRIANGLES, n, GL_UNSIGNED_INT, 
                            (const GLvoid*) cache->getIndices());
-
-  // FIXME: A GL error is triggered here (INVALID_OPERATION) by the
-  // vertex and fragment program when converted heightmaps are used as
-  // normal maps. A removal of the 'delete [] dststore' line in the
-  // converting routine in nodes/SoBumpMap.cpp eliminates the problem
-  // (but I havent got a clue why...). Must investigate further!
-  // Regular normalmaps works perfectly though. (20040204 handegar)
-
+ 
   cc_glglue_glDisableClientState(glue, GL_TEXTURE_COORD_ARRAY);
   cc_glglue_glClientActiveTexture(glue, GL_TEXTURE1);
   cc_glglue_glDisableClientState(glue, GL_TEXTURE_COORD_ARRAY);
