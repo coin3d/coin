@@ -389,23 +389,23 @@ fast_mipmap(SoState * state, int width, int height, const int nc,
     glTexImage2D(GL_TEXTURE_2D, 0, nc, width, height, 0, format,
                  GL_UNSIGNED_BYTE, data);
   }
-  unsigned char *src = (unsigned char *) data;
+
   for (level = 1; level <= levels; level++) {
-    halve_image(width, height, nc, src, mipmap_buffer);
+    halve_image(width, height, nc, data, mipmap_buffer);
     if (width > 1) width >>= 1;
     if (height > 1) height >>= 1;
-    src = mipmap_buffer;
+
     if (useglsubimage) {
       if (cc_glglue_has_texsubimage(glw)) {
         cc_glglue_glTexSubImage2D(glw, GL_TEXTURE_2D, level, 0, 0,
                                   width, height, format,
-                                  GL_UNSIGNED_BYTE, (void*) src);
+                                  GL_UNSIGNED_BYTE, mipmap_buffer);
       }
     }
     else {
       glTexImage2D(GL_TEXTURE_2D, level, nc, width,
                    height, 0, format, GL_UNSIGNED_BYTE,
-                   (void *) src);
+                   mipmap_buffer);
     }
   }
 }
@@ -436,25 +436,25 @@ fast_mipmap(SoState * state, int width, int height, int depth, const int nc,
                              0, format, GL_UNSIGNED_BYTE, data);
     }
   }
-  unsigned char *src = (unsigned char *) data;
+
   for (int level = 1; level <= levels; level++) {
-    halve_image(width, height, depth, nc, src, mipmap_buffer);
+    halve_image(width, height, depth, nc, data, mipmap_buffer);
     if (width > 1) width >>= 1;
     if (height > 1) height >>= 1;
     if (depth > 1) depth >>= 1;
-    src = mipmap_buffer;
+
     if (useglsubimage) {
       if (cc_glglue_has_3d_textures(glw)) {
         cc_glglue_glTexSubImage3D(glw, GL_TEXTURE_3D, level, 0, 0, 0,
                                   width, height, depth, format,
-                                  GL_UNSIGNED_BYTE, (void*) src);
+                                  GL_UNSIGNED_BYTE, mipmap_buffer);
       }
     }
     else {
       if (cc_glglue_has_3d_textures(glw)) {
 	cc_glglue_glTexImage3D(glw, GL_TEXTURE_3D, level, nc, width,
                                height, depth, 0, format, GL_UNSIGNED_BYTE,
-                               (void *) src);
+                               mipmap_buffer);
       }
     }
   }
