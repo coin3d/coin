@@ -52,6 +52,7 @@
 #include <Inventor/elements/SoLocalBBoxMatrixElement.h>
 #endif // !COIN_EXCLUDE_SOLOCALBBOXMATRIXELEMENT
 
+#include <Inventor/actions/SoCallbackAction.h>
 
 SO_NODE_ABSTRACT_SOURCE(SoTransformation);
 
@@ -92,4 +93,6 @@ SoTransformation::initClass(void)
 #if !defined(COIN_EXCLUDE_SOPICKACTION)
   SO_ENABLE(SoPickAction, SoModelMatrixElement);
 #endif // !COIN_EXCLUDE_SOPICKACTION
+
+  SO_ENABLE(SoCallbackAction, SoModelMatrixElement);
 }
