@@ -27,7 +27,6 @@
  */
 
 #include <Inventor/C/base/rbptree.h>
-#include <Inventor/C/base/memalloc.h>
 #include <assert.h>
 #include <stddef.h>
 #include <stdlib.h>
@@ -46,7 +45,6 @@ struct cc_rbptree_node {
 };
 
 static cc_rbptree_node rbptree_sentinel;
-static cc_memalloc * rbptree_memallocator = NULL;
 
 /* 
  * left-rotate the subgrap under node 'x'.
@@ -83,7 +81,7 @@ rbptree_left_rotate(cc_rbptree * t, cc_rbptree_node * x)
 }
 
 /* 
- * right-rotate the subgrap under node 'x'.
+ * right-rotate the subgrap under node 'y'.
  */
 static void
 rbptree_right_rotate(cc_rbptree * t, cc_rbptree_node * y)
@@ -114,6 +112,39 @@ rbptree_right_rotate(cc_rbptree * t, cc_rbptree_node * y)
   }
   x->right = y;
   y->parent = x;
+}
+
+/*
+ * return the node with the minimum value.
+ */ 
+static cc_rbptree_node *
+rbptree_tree_minimum(cc_rbptree * t, cc_rbptree_node * x)
+{
+  /* page 248 */
+  cc_rbptree_node * nil = &rbptree_sentinel;
+  while (x->left != nil) {
+    x = x->left;
+  }
+  return x;
+}
+
+/* 
+ * return the node with the smallest pointer greater than x->pointer
+ */ 
+static cc_rbptree_node *
+rbptree_tree_successor(cc_rbptree * t, cc_rbptree_node * x)
+{
+  /* page 249 */
+  cc_rbptree_node *y, * nil = &rbptree_sentinel;
+  if (x->right != nil) {
+    return rbptree_tree_minimum(t, x->right);
+  }
+  y = x->parent;
+  while (y != nil && x == y->right) {
+    x = y;
+    y = y->parent;
+  }
+  return y;
 }
 
 /*
@@ -159,192 +190,13 @@ static cc_rbptree_node *
 rbptree_new_node(cc_rbptree * t)
 {
   cc_rbptree_node * x = (cc_rbptree_node*)
-    cc_memalloc_allocate(rbptree_memallocator);  
+    malloc(sizeof(cc_rbptree_node));
   
   x->left = &rbptree_sentinel;
   x->right = &rbptree_sentinel;
   x->parent = &rbptree_sentinel;
   return x;
 }
-
-static void
-rbptree_cleanup(void)
-{
-  assert(rbptree_memallocator);
-  cc_memalloc_destruct(rbptree_memallocator);
-  rbptree_memallocator = NULL;
-}
-
-/*!
- * Initialize \a t. This is needed before making any operations
- * on the tree.
- */
-void 
-cc_rbptree_init(cc_rbptree * t)
-{
-  /* FIXME: use a global lock to make sure two threads doesn't
-   * enter this init code at the same time. pederb, 2002-06-06
-   */ 
-  static int first = 1;
-  if (first) {
-    rbptree_memallocator = cc_memalloc_construct(sizeof(cc_rbptree_node));
-    atexit(rbptree_cleanup);
-    first = 0;
-    rbptree_sentinel.left = NULL;
-    rbptree_sentinel.right = NULL;
-    rbptree_sentinel.parent = NULL;
-    rbptree_sentinel.pointer = NULL;
-    rbptree_sentinel.color = RBPTREE_BLACK;
-  }
-  t->root = &rbptree_sentinel;
-}
-
-/*
- * recurively delete the x subgraph.
- */
-static void
-rbptree_recursive_clean(cc_rbptree_node * x)
-{
-  cc_rbptree_node * nil = &rbptree_sentinel;
-  assert(x != nil);
-
-  if (x->left != nil) rbptree_recursive_clean(x->left);
-  if (x->right != nil) rbptree_recursive_clean(x->right);
-  cc_memalloc_deallocate(rbptree_memallocator, (void*) x);
-}
-
-/*!
- * Delete all nodes in \t. After this call, the tree will
- * be reinitialized to an empty tree.
- */
-void 
-cc_rbptree_clean(cc_rbptree * t)
-{
-  if (t->root != &rbptree_sentinel) {
-    rbptree_recursive_clean(t->root);
-    t->root = &rbptree_sentinel;
-  }
-}
-
-/*!
- * Insert a new value \a p into \a t.
- */
-void
-cc_rbptree_insert(cc_rbptree * t, void * p, void * data)
-{
-  // page 268
-  cc_rbptree_node * x, * y;
-  
-  x = rbptree_new_node(t);
-  x->pointer = (char*) p;
-  x->data = data;
-
-  /* do normal bintree insert */
-  rbptree_bintree_insert(t, x);
-  x->color = RBPTREE_RED;
-
-  /* fix up the modified tree */
-  while (x != t->root && x->parent->color == RBPTREE_RED) {
-    if (x->parent == x->parent->parent->left) {
-      assert(x->parent != t->root);
-      y = x->parent->parent->right;
-      if (y->color == RBPTREE_RED) {
-        x->parent->color = RBPTREE_BLACK;
-        y->color = RBPTREE_BLACK;
-        x->parent->parent->color = RBPTREE_RED;
-        x = x->parent->parent;
-      }
-      else {
-        if (x == x->parent->right) {
-          x = x->parent;
-          rbptree_left_rotate(t, x);
-        }
-        x->parent->color = RBPTREE_BLACK;
-        x->parent->parent->color = RBPTREE_RED;
-        rbptree_right_rotate(t, x->parent->parent);
-      }
-    }
-    else {
-      assert(x->parent != t->root);
-      y = x->parent->parent->left;
-      if (y->color == RBPTREE_RED) {
-        x->parent->color = RBPTREE_BLACK;
-        y->color = RBPTREE_BLACK;
-        x->parent->parent->color = RBPTREE_RED;
-        x = x->parent->parent;
-      }
-      else {
-        if (x == x->parent->left) {
-          x = x->parent;
-          rbptree_right_rotate(t, x);
-        }
-        x->parent->color = RBPTREE_BLACK;
-        x->parent->parent->color = RBPTREE_RED;
-        rbptree_left_rotate(t, x->parent->parent);
-      }
-    }
-  }
-  t->root->color = RBPTREE_BLACK;
-}
-
-/*
- * binary search tree for the pointer value. Returns rbptree_sentinel
- * if pointer is not found.  
-*/
-static cc_rbptree_node *
-rbptree_find(cc_rbptree * t, void * pointer)
-{
-  /* page 248 */
-  cc_rbptree_node * x, * nil;
-  char * p = (char*) pointer;
-
-  x = t->root;
-  nil = &rbptree_sentinel;
-  
-  while (x != nil && x->pointer != p) {
-    if (p < x->pointer) {
-      x = x->left;
-    }
-    else {
-      x = x->right;
-    }
-  }
-  return x;
-}
-
-/*
- * return the node with the minimum value.
- */ 
-static cc_rbptree_node *
-rbptree_tree_minimum(cc_rbptree * t, cc_rbptree_node * x)
-{
-  /* page 248 */
-  cc_rbptree_node * nil = &rbptree_sentinel;
-  while (x->left != nil) {
-    x = x->left;
-  }
-  return x;
-}
-
-/* 
- * return the node with the smallest pointer greater than x->pointer
- */ 
-static cc_rbptree_node *
-rbptree_tree_successor(cc_rbptree * t, cc_rbptree_node * x)
-{
-  /* page 249 */
-  cc_rbptree_node *y, * nil = &rbptree_sentinel;
-  if (x->right != nil) {
-    return rbptree_tree_minimum(t, x->right);
-  }
-  y = x->parent;
-  while (y != nil && x == y->right) {
-    x = y;
-    y = y->parent;
-  }
-  return y;
-}
-
 
 /*
  * rebalance the tree after a node has been removed.
@@ -416,22 +268,18 @@ rbptree_delete_fixup(cc_rbptree * t, cc_rbptree_node * x)
   x->color = RBPTREE_BLACK;
 } 
 
-/*!
- * Remove the node with value \a p. Returns \e TRUE if \a p
- * is found and removed, \e FALSE otherwise.
- */
-SbBool 
-cc_rbptree_remove(cc_rbptree * t, void * p)
+
+/* 
+ * remove a node from the tree. the tree is rebalanced
+ * when necessary.
+ */  
+static void
+rbptree_remove_node(cc_rbptree * t, cc_rbptree_node * z)
 {
-  /* page 273 */
-  cc_rbptree_node * x, * z, * y, * nil;
-  
+  cc_rbptree_node * x, * y, * nil;
   nil = &rbptree_sentinel;
-  z = rbptree_find(t, p);
-  if (z == nil) {
-    return FALSE;
-  }
-  assert(z->pointer == (char*) p);
+
+  /* page 273 */
   if (z->left == nil || z->right == nil) {
     y = z;
   }
@@ -465,8 +313,221 @@ cc_rbptree_remove(cc_rbptree * t, void * p)
     rbptree_delete_fixup(t, x);
   }
   /* free memory for node */
-  cc_memalloc_deallocate(rbptree_memallocator, (void*) y);
+  free((void*) y);
+  t->counter--;
+}
+
+/*!
+ * Initialize \a t. This is needed before making any operations
+ * on the tree.
+ */
+void 
+cc_rbptree_init(cc_rbptree * t)
+{
+  /* FIXME: use a global lock to make sure two threads doesn't
+   * enter this init code at the same time. pederb, 2002-06-06
+   */ 
+  static int first = 1;
+  if (first) {
+    first = 0;
+    rbptree_sentinel.left = NULL;
+    rbptree_sentinel.right = NULL;
+    rbptree_sentinel.parent = NULL;
+    rbptree_sentinel.pointer = NULL;
+    rbptree_sentinel.color = RBPTREE_BLACK;
+  }
+  t->root = &rbptree_sentinel;
+  t->counter = 0;
+}
+
+/*
+ * recurively delete the x subgraph.
+ */
+static void
+rbptree_recursive_clean(cc_rbptree_node * x)
+{
+  cc_rbptree_node * nil = &rbptree_sentinel;
+  assert(x != nil);
+
+  if (x->left != nil) rbptree_recursive_clean(x->left);
+  if (x->right != nil) rbptree_recursive_clean(x->right);
+  free((void*) x);
+}
+
+/*!
+ * Delete all nodes in \t. After this call, the tree will
+ * be reinitialized to an empty tree.
+ */
+void 
+cc_rbptree_clean(cc_rbptree * t)
+{
+  if (t->root != &rbptree_sentinel) {
+    rbptree_recursive_clean(t->root);
+    t->root = &rbptree_sentinel;
+  }
+}
+
+
+
+/*!
+ * Insert a new value \a p into \a t.
+ */
+void
+cc_rbptree_insert(cc_rbptree * t, void * p, void * data)
+{
+  cc_rbptree_node * x, * y;
+
+  if (t->counter < 2) {
+    /* put value is an inline value */
+    t->inlinepointer[t->counter] = p;
+    t->inlinedata[t->counter] = data;
+    t->counter++;
+    return;
+  }
+  
+  /* page 268 */
+  x = rbptree_new_node(t);
+  x->pointer = (char*) p;
+  x->data = data;
+
+  /* do normal bintree insert */
+  rbptree_bintree_insert(t, x);
+  x->color = RBPTREE_RED;
+
+  /* fix up the modified tree */
+  while (x != t->root && x->parent->color == RBPTREE_RED) {
+    if (x->parent == x->parent->parent->left) {
+      assert(x->parent != t->root);
+      y = x->parent->parent->right;
+      if (y->color == RBPTREE_RED) {
+        x->parent->color = RBPTREE_BLACK;
+        y->color = RBPTREE_BLACK;
+        x->parent->parent->color = RBPTREE_RED;
+        x = x->parent->parent;
+      }
+      else {
+        if (x == x->parent->right) {
+          x = x->parent;
+          rbptree_left_rotate(t, x);
+        }
+        x->parent->color = RBPTREE_BLACK;
+        x->parent->parent->color = RBPTREE_RED;
+        rbptree_right_rotate(t, x->parent->parent);
+      }
+    }
+    else {
+      assert(x->parent != t->root);
+      y = x->parent->parent->left;
+      if (y->color == RBPTREE_RED) {
+        x->parent->color = RBPTREE_BLACK;
+        y->color = RBPTREE_BLACK;
+        x->parent->parent->color = RBPTREE_RED;
+        x = x->parent->parent;
+      }
+      else {
+        if (x == x->parent->left) {
+          x = x->parent;
+          rbptree_right_rotate(t, x);
+        }
+        x->parent->color = RBPTREE_BLACK;
+        x->parent->parent->color = RBPTREE_RED;
+        rbptree_left_rotate(t, x->parent->parent);
+      }
+    }
+  }
+  t->root->color = RBPTREE_BLACK;
+  t->counter++;
+}
+
+/*
+ * binary search tree for the pointer value. Returns rbptree_sentinel
+ * if pointer is not found.  
+*/
+static cc_rbptree_node *
+rbptree_find(cc_rbptree * t, void * pointer)
+{
+  /* page 248 */
+  cc_rbptree_node * x, * nil;
+  char * p = (char*) pointer;
+
+  x = t->root;
+  nil = &rbptree_sentinel;
+  
+  while (x != nil && x->pointer != p) {
+    if (p < x->pointer) {
+      x = x->left;
+    }
+    else {
+      x = x->right;
+    }
+  }
+  return x;
+}
+
+
+static void
+rbptree_remove_inline(cc_rbptree * t, const int idx)
+{
+  if (idx == 0) {
+    if (t->counter > 1) {
+      /* move slot 1 into slot 0 */
+      t->inlinepointer[0] = t->inlinepointer[1];
+      t->inlinedata[0] = t->inlinedata[1];
+    }
+  }  
+  /* test if some node should be moved into inline slot 1 */
+  if (t->counter > 2) {
+    /* copy root node data into slot 1 */
+    t->inlinepointer[1] = (void*) t->root->pointer;
+    t->inlinedata[1] = t->root->data;
+    
+    /* remove root node from tree. This will decrement t->counter */
+    rbptree_remove_node(t, t->root);
+  }
+  else { 
+    /* just decrement counter, no need to copy */
+    t->counter--;
+  }
+}
+
+/*!
+ * Remove the node with value \a p. Returns \e TRUE if \a p
+ * is found and removed, \e FALSE otherwise.
+ */
+SbBool 
+cc_rbptree_remove(cc_rbptree * t, void * p)
+{ 
+  uint32_t i, stop;
+  cc_rbptree_node *z, * nil;
+  nil = &rbptree_sentinel;
+
+  if (t->counter == 0) return FALSE;
+  if (t->inlinepointer[0] == p) {
+    rbptree_remove_inline(t, 0);
+    return TRUE;
+  }
+  if (t->counter > 1 && t->inlinepointer[1] == p) {
+    rbptree_remove_inline(t, 1);
+    return TRUE;
+  }
+
+  z = rbptree_find(t, p);
+  if (z == nil) {
+    return FALSE;
+  }
+  assert(z->pointer == (char*) p);
+  /* remove node from tree */
+  rbptree_remove_node(t, z);
   return TRUE;
+}
+
+/*!
+  Returns the total numbers of items in the tree
+*/
+uint32_t 
+cc_rbptree_size(const cc_rbptree * t)
+{
+  return t->counter;
 }
 
 static void
@@ -482,6 +543,12 @@ rbptree_rec_traverse(cc_rbptree_node * x, cc_rbptree_traversecb * func, void * c
 void 
 cc_rbptree_traverse(const cc_rbptree * t, cc_rbptree_traversecb * func, void * closure)
 {
+  if (t->counter > 0) {
+    func((void*) t->inlinepointer[0], t->inlinedata[0], closure);
+    if (t->counter > 1) {
+      func((void*) t->inlinepointer[1], t->inlinedata[1], closure);
+    }
+  }
   if (t->root != &rbptree_sentinel) {
     rbptree_rec_traverse(t->root, func, closure);
   }

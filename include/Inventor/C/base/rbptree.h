@@ -35,6 +35,11 @@ typedef struct cc_rbptree_node cc_rbptree_node;
 
 typedef struct cc_rbptree {
   cc_rbptree_node * root;
+  
+  /* store two items inline to avoid allocating memory for small tree */
+  void * inlinepointer[2];
+  void * inlinedata[2];
+  uint32_t counter;
 } cc_rbptree;
 
 void cc_rbptree_init(cc_rbptree * t);
@@ -42,16 +47,14 @@ void cc_rbptree_clean(cc_rbptree * t);
 
 void cc_rbptree_insert(cc_rbptree * t, void * p, void * data);
 SbBool cc_rbptree_remove(cc_rbptree * t, void * p);
-
-/* perhaps not really necessary */
-unsigned int cc_rbptree_size(const cc_rbptree * t);
-
-/* onl;y for debugging */
-void cc_rbptree_debug(const cc_rbptree * t);
+uint32_t cc_rbptree_size(const cc_rbptree * t);
 
 /* traverse all elements */
 typedef void cc_rbptree_traversecb(void * p, void * data, void * closure);
 void cc_rbptree_traverse(const cc_rbptree * t, cc_rbptree_traversecb * func, void * closure);
+
+/* onl;y for debugging */
+void cc_rbptree_debug(const cc_rbptree * t);
 
 #ifdef __cplusplus
 } /* extern "C" */
