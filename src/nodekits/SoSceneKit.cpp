@@ -34,6 +34,10 @@
 #include <Inventor/nodes/SoSwitch.h>
 #include <coindefs.h> // COIN_STUB
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 SO_KIT_SOURCE(SoSceneKit);
 
 
@@ -62,11 +66,7 @@ SoSceneKit::~SoSceneKit()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoSceneKit class. This includes setting up the
-  type system, among other things.
-*/
+// doc from parent
 void
 SoSceneKit::initClass(void)
 {
@@ -74,30 +74,37 @@ SoSceneKit::initClass(void)
 }
 
 /*!
-  FIXME: write function documentation
+  Returns the index of the current active camera in cameraList.
 */
 int
 SoSceneKit::getCameraNumber(void)
 {
-  COIN_STUB();
-  return -1;
+  SoSwitch *sw = (SoSwitch*)this->getContainerNode(SbName("cameraList"));
+  return sw->whichChild.getValue();
 }
 
 /*!
-  FIXME: write function documentation
+  Sets the current active camera in cameraList.
 */
 void
-SoSceneKit::setCameraNumber(int /*camNum*/)
+SoSceneKit::setCameraNumber(int camnum)
 {
-  COIN_STUB();
+  SoSwitch *sw = (SoSwitch*)this->getContainerNode(SbName("cameraList"));
+#if COIN_DEBUG && 1 // debug
+  if (camnum >= sw->getNumChildren()) {
+    SoDebugError::postInfo("SoSceneKit::setCameraNumber",
+                           "camera number %d is too large", camnum);
+    return;
+  }
+#endif // debug
+  sw->whichChild = camnum;
 }
 
 /*!
-  FIXME: write function documentation
+  Overloaded to return \e TRUE.
 */
 SbBool
 SoSceneKit::affectsState(void) const
 {
-  COIN_STUB();
-  return FALSE;
+  return TRUE;
 }
