@@ -40,6 +40,9 @@ public:
   void setEnums(const int num, const int * const values,
                 const SbName * const names);
 
+  int getNumEnums(void) const;
+  int getEnum(const int idx, SbName & name) const;
+
 protected:
   virtual SbBool findEnumValue(const SbName & name, int & value);
   virtual SbBool findEnumName(int value, const SbName * & name) const;

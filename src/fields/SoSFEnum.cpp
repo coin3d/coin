@@ -262,3 +262,32 @@ SoSFEnum::setValue(const SbName name)
 #endif // COIN_DEBUG
   }
 }
+
+/*!
+  Returns the number of enum names the SoSFEnum object understands.
+
+  \since 2001-01-22
+*/
+int
+SoSFEnum::getNumEnums(void) const
+{
+  return this->numEnums;
+}
+
+/*!
+  Returns the value of the Nth enum this SoSFEnum object understands,
+  and mutates \a name to contain the Nth enum's name.
+
+  \since 2001-01-22
+*/
+int
+SoSFEnum::getEnum(const int idx, SbName & name) const
+{
+  if ( COIN_DEBUG && (idx < 0 || idx >= this->numEnums) ) {
+    SoDebugError::post("SoSFEnum::getEnum", "idx (%d) out of range", idx);
+    return -1;
+  }
+  name = this->enumNames[idx];
+  return this->enumValues[idx];
+}
+
