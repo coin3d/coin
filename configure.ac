@@ -1307,6 +1307,7 @@ AC_CONFIG_FILES([
         src/details/Makefile
         src/draggers/Makefile
         src/elements/Makefile
+        src/elements/GL/Makefile
         src/engines/Makefile
         src/errors/Makefile
         src/events/Makefile
@@ -1324,7 +1325,6 @@ AC_CONFIG_FILES([
         src/threads/Makefile
         src/extensions/Makefile
         src/vrml97/Makefile
-        docs/coin.doxygen
 ])
 
 AC_OUTPUT

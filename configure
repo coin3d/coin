@@ -13908,12 +13908,6 @@ echo "$as_me: error: aborting" >&2;}
   fi
 fi
 
-  # we don't care about this - 20011204 larsa
-  # sim_ac_doxygen_our_version=1.2.1
-  # if test x"$sim_ac_doxygen_avail" != x"$sim_ac_doxygen_our_version"; then
-  #   AC_MSG_WARN(You are not using Doxygen version $sim_ac_doxygen_our_version)
-  # fi
-
   # Extract the first word of "perl", so it can be a program name with args.
 set dummy perl; ac_word=$2
 echo "$as_me:$LINENO: checking for $ac_word" >&5
@@ -20777,7 +20771,7 @@ fi
 
 # **************************************************************************
 
-ac_config_files="$ac_config_files Makefile bin/Makefile include/Makefile include/Inventor/Makefile include/Inventor/C/Makefile include/Inventor/C/base/Makefile include/Inventor/C/errors/Makefile include/Inventor/C/glue/Makefile include/Inventor/C/threads/Makefile include/Inventor/lock/Makefile include/Inventor/system/Makefile data/Makefile data/draggerDefaults/Makefile man/Makefile man/man1/Makefile man/man3/Makefile html/Makefile src/Makefile src/base/Makefile src/actions/Makefile src/bundles/Makefile src/caches/Makefile src/details/Makefile src/draggers/Makefile src/elements/Makefile src/engines/Makefile src/errors/Makefile src/events/Makefile src/fields/Makefile src/glue/Makefile src/manips/Makefile src/misc/Makefile src/lists/Makefile src/nodekits/Makefile src/nodes/Makefile src/projectors/Makefile src/3ds/Makefile src/sensors/Makefile src/upgraders/Makefile src/threads/Makefile src/extensions/Makefile src/vrml97/Makefile docs/coin.doxygen"
+ac_config_files="$ac_config_files Makefile bin/Makefile include/Makefile include/Inventor/Makefile include/Inventor/C/Makefile include/Inventor/C/base/Makefile include/Inventor/C/errors/Makefile include/Inventor/C/glue/Makefile include/Inventor/C/threads/Makefile include/Inventor/lock/Makefile include/Inventor/system/Makefile data/Makefile data/draggerDefaults/Makefile man/Makefile man/man1/Makefile man/man3/Makefile html/Makefile src/Makefile src/base/Makefile src/actions/Makefile src/bundles/Makefile src/caches/Makefile src/details/Makefile src/draggers/Makefile src/elements/Makefile src/elements/GL/Makefile src/engines/Makefile src/errors/Makefile src/events/Makefile src/fields/Makefile src/glue/Makefile src/manips/Makefile src/misc/Makefile src/lists/Makefile src/nodekits/Makefile src/nodes/Makefile src/projectors/Makefile src/3ds/Makefile src/sensors/Makefile src/upgraders/Makefile src/threads/Makefile src/extensions/Makefile src/vrml97/Makefile"
 
 
 cat >confcache <<\_ACEOF
@@ -21287,6 +21281,7 @@ do
   "src/details/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/details/Makefile" ;;
   "src/draggers/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/draggers/Makefile" ;;
   "src/elements/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/elements/Makefile" ;;
+  "src/elements/GL/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/elements/GL/Makefile" ;;
   "src/engines/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/engines/Makefile" ;;
   "src/errors/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/errors/Makefile" ;;
   "src/events/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/events/Makefile" ;;
@@ -21304,7 +21299,6 @@ do
   "src/threads/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/threads/Makefile" ;;
   "src/extensions/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/extensions/Makefile" ;;
   "src/vrml97/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/vrml97/Makefile" ;;
-  "docs/coin.doxygen" ) CONFIG_FILES="$CONFIG_FILES docs/coin.doxygen" ;;
   "default-1" ) CONFIG_COMMANDS="$CONFIG_COMMANDS default-1" ;;
   "include/config.h" ) CONFIG_HEADERS="$CONFIG_HEADERS include/config.h" ;;
   *) { { echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5
