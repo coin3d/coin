@@ -44,6 +44,7 @@
 #include <Inventor/elements/SoTextureCoordinateElement.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoGenerate.h>
+#include <Inventor/misc/SoPick.h>
 #include <Inventor/misc/SoState.h>
 
 /*!
@@ -174,65 +175,18 @@ SoCube::rayPick(SoRayPickAction * action)
 {
   if (!shouldRayPick(action)) return;
 
-  static int translation[6] = {2, 3, 5, 4, 1, 0}; // translate into detail part-num
-  static int textranslation[3][2] = {{2,1},{0,2},{0,1}}; // to get correct texcoords
-  action->setObjectSpace();
-  const SbLine & line = action->getLine();
-  float size[3];
-  this->getHalfSize(size[0], size[1], size[2]);
-  int cnt = 0;
-  // test intersection with all six planes
-  for (int i = 0; i < 3; i++) {
-    for (float j = -1.0f; j <= 1.0f; j += 2.0f) {
-      SbVec3f norm(0, 0, 0);
-      norm[i] = j;
-      SbVec3f isect;
+  SoMaterialBindingElement::Binding binding =
+    SoMaterialBindingElement::get(action->getState());
 
-      SbPlane plane(norm, size[i]);
-      if (plane.intersect(line, isect)) {
-        int i1 = (i+1) % 3;
-        int i2 = (i+2) % 3;
+  SbBool materialPerPart =
+    (binding == SoMaterialBindingElement::PER_PART ||
+     binding == SoMaterialBindingElement::PER_PART_INDEXED);
 
-        if (isect[i1] >= -size[i1] && isect[i1] <= size[i1] &&
-            isect[i2] >= -size[i2] && isect[i2] <= size[i2] &&
-            action->isBetweenPlanes(isect)) {
-          SoPickedPoint * pp = action->addIntersection(isect);
-          if (pp) {
-            SoCubeDetail * detail = new SoCubeDetail();
-            detail->setPart(translation[cnt]);
-            pp->setDetail(detail, this);
-            pp->setMaterialIndex(translation[cnt]);
-            pp->setObjectNormal(norm);
-            i1 = textranslation[i][0];
-            i2 = textranslation[i][1];
-            float s = isect[i1] + size[i1];
-            float t = isect[i2] + size[i2];
-            if (size[i1]) s /= (size[i1]*2.0f);
-            if (size[i2]) t /= (size[i2]*2.0f);
-            switch (i) {
-            default: // just to avoid warnings
-            case 0:
-              if (j < 0) t = 1.0f - t;
-              else s = 1.0f - s;
-              break;
-            case 1:
-              if (j < 0.0f) s = 1.0f - s;
-              else t = 1.0f - t;
-              break;
-            case 2:
-              if (j < 0.0f) {
-                s = 1.0f - s;
-                t = 1.0f - t;
-              }
-              break;
-            }
-            pp->setObjectTextureCoords(SbVec4f(s, t, 0.0f, 1.0f));
-          }
-        }
-      }
-      cnt++;
-    }
-  }
+  sopick_pick_cube(this->width.getValue(),
+                   this->height.getValue(),
+                   this->depth.getValue(),
+                   materialPerPart ? SOPICK_MATERIAL_PER_PART : 0,
+                   this, action);
 }
 
 // Convenience function for finding half the size of the box.

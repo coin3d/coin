@@ -37,7 +37,9 @@
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoGenerate.h>
+#include <Inventor/misc/SoPick.h>
 #include <Inventor/misc/SoState.h>
+
 #include <assert.h>
 #include <math.h>
 
@@ -93,60 +95,6 @@ SoCone::SoCone(void)
 */
 SoCone::~SoCone()
 {
-}
-
-
-//
-// this was actually much easier than I first though since the Cone
-// is aligned with the y-axis.
-//
-// A point on a SoCone can be expressed by:
-//
-// x^2 + z^2 = r^2, where r = ((h/2)-y)*br/h
-//
-// Substituting x, y and z with the parametric line equations, and we
-// can find zero, one or two solutions for t. We have to check the y-value
-// afterwards to see if it's between +/- (h/2)
-//
-
-static int
-intersect_cone_line(const float br,
-                    const float h,
-                    const SbLine & line,
-                    SbVec3f & enter,
-                    SbVec3f & exit)
-{
-  float h2 = h * 0.5f;
-  SbVec3f d = line.getDirection();
-  SbVec3f p = line.getPosition();
-
-  float tmp = (br * br)/(h * h);
-
-  float a = d[0]*d[0] + d[2]*d[2] - d[1]*d[1]*tmp;
-  float b = 2.0f*d[0]*p[0] + 2.0f*d[2]*p[2] + (2.0f*h2*d[1] - 2.0f*p[1]*d[1]) * tmp;
-  float c = p[0]*p[0] + p[2]*p[2] + (2.0f*p[1]*h2 - h2*h2 - p[1]*p[1])*tmp;
-
-  float root = b*b - 4.0f*a*c;
-
-  if (root < 0) return 0;
-
-  root = (float) sqrt(root);
-
-  float t0 = (-b - root) / (2.0f*a);
-  float t1 = (-b + root) / (2.0f*a);
-
-  if (t1 < t0) SbSwap(t0, t1);
-
-  enter = p + t0*d;
-  exit = p + t1*d;
-
-  int numisect = 0;
-  if (fabs(enter[1]) <= h2) numisect++;
-  if (fabs(exit[1]) <= h2 && t0 != t1) {
-    numisect++;
-    if (numisect == 1) enter = exit;
-  }
-  return numisect;
 }
 
 
@@ -277,70 +225,20 @@ SoCone::rayPick(SoRayPickAction * action)
 {
   if (!this->shouldRayPick(action)) return;
 
-  action->setObjectSpace();
-  const SbLine & line = action->getLine();
+  SoCone::Part p = (SoCone::Part) this->parts.getValue();
+  unsigned int flags = 0;
+  if (p & SoCone::SIDES) flags |= SOPICK_SIDES;
+  if (p & SoCone::BOTTOM) flags |= SOPICK_BOTTOM;
 
-  int numisect = 0;
-  SbVec3f isect[2];
-
-  float h = this->height.getValue();
-
-  if (this->parts.getValue() & SoCone::SIDES) {
-    numisect = intersect_cone_line(this->bottomRadius.getValue(),
-                                   h,
-                                   line,
-                                   isect[0],
-                                   isect[1]);
-
-    for (int i = 0; i < numisect; i++) {
-      if (action->isBetweenPlanes(isect[i])) {
-        SoPickedPoint * pp = action->addIntersection(isect[i]);
-        if (pp) {
-          // normalize the cone so that the apex is at (0,0,0)
-          SbVec3f npoint(isect[i][0], isect[i][1] - h*0.5f, isect[i][2]);
-          SbVec3f ptonaxis(0.0f, npoint[1], 0.0f);
-          
-          // calculate some vectors to help find the normal
-          // these calculations can be optimized, but who cares...
-          SbVec3f v0 = npoint-ptonaxis;
-          SbVec3f v1 = v0.cross(SbVec3f(0.0f, -1.0f, 0.0f));
-          v1.normalize();
-          SbVec3f n = npoint.cross(v1);
-          n.normalize();
-          pp->setObjectNormal(n);
-          pp->setObjectTextureCoords(SbVec4f((float) (atan2(npoint[0], npoint[2]) *
-                                                      (1.0 / (2.0 * M_PI)) + 0.5),
-                                             -npoint[1] / h, 0.0f, 1.0f));
-          SoConeDetail * detail = new SoConeDetail;
-          detail->setPart((int)SoCone::SIDES);
-          pp->setDetail(detail, this);
-        }
-      }
-    }
-  }
-
-  if ((numisect < 2) && (this->parts.getValue() & SoCone::BOTTOM)) {
-    SbPlane bottom(SbVec3f(0, 1, 0), -h * 0.5f);
-    SbVec3f bpt;
-    float r = this->bottomRadius.getValue();
-    float r2 = r * r;
-    if (bottom.intersect(line, bpt)) {
-      if (((bpt[0] * bpt[0] + bpt[2] * bpt[2]) <= r2) &&
-          (action->isBetweenPlanes(bpt))) {
-        SoPickedPoint * pp = action->addIntersection(bpt);
-        if (pp) {
-          pp->setObjectNormal(SbVec3f(0.0f, -1.0f, 0.0f));
-          pp->setObjectTextureCoords(SbVec4f(0.5f + bpt[0] / (2.0f * r),
-                                             0.5f + bpt[2] / (2.0f * r),
-                                             0.0f, 1.0f));
-
-          SoConeDetail * detail = new SoConeDetail();
-          detail->setPart((int)SoCone::BOTTOM);
-          pp->setDetail(detail, this);
-        }
-      }
-    }
-  }
+  SoMaterialBindingElement::Binding bind =
+    SoMaterialBindingElement::get(action->getState());
+  if (bind == SoMaterialBindingElement::PER_PART ||
+      bind == SoMaterialBindingElement::PER_PART_INDEXED)
+    flags |= SOPICK_MATERIAL_PER_PART;
+  
+  sopick_pick_cone(this->bottomRadius.getValue(),
+                   this->height.getValue(),
+                   flags, this, action);
 }
 
 // Doc from parent.

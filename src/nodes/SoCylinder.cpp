@@ -44,6 +44,7 @@
 #include <Inventor/elements/SoTextureCoordinateElement.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoGenerate.h>
+#include <Inventor/misc/SoPick.h>
 #include <Inventor/misc/SoState.h>
 #include <math.h>
 
@@ -229,146 +230,29 @@ SoCylinder::hasPart(SoCylinder::Part part) const
   return (this->parts.getValue() & part) ? TRUE : FALSE;
 }
 
-//
-// internal method used to set picked point attributes
-// when picking on the side of the cylinder
-//
-static void
-set_side_pp_data(SoPickedPoint * pp, const SbVec3f & isect,
-                 const float halfh)
-{
-  // the normal vector for a cylinder side is the intersection point,
-  // without the y-component, of course.
-  SbVec3f normal(isect[0], 0.0f, isect[2]);
-  normal.normalize();
-  pp->setObjectNormal(normal);
-
-  // just reverse the way texture coordinates are generated to find
-  // the picked point texture coordinate
-  SbVec4f texcoord;
-  texcoord.setValue((float) atan2(isect[0], isect[2]) *
-                    (1.0f / (2.0f * M_PI)) + 0.5f,
-                    (isect[1] + halfh) / (2.0f * halfh), 
-                    0.0f, 1.0f);
-  pp->setObjectTextureCoords(texcoord);
-}
-
 // Doc in parent.
 void
 SoCylinder::rayPick(SoRayPickAction * action)
 {
   if (!shouldRayPick(action)) return;
 
-  action->setObjectSpace();
-  const SbLine & line = action->getLine();
-  float r = this->radius.getValue();
-  float halfh = this->height.getValue() * 0.5f;
 
-  // FIXME: should be possible to simplify cylinder test, since this
-  // cylinder is aligned with the y-axis. 19991110 pederb.
+  unsigned int flags = 0;
+  SoCylinder::Part p = (SoCylinder::Part) this->parts.getValue();
+  if (p & SIDES) flags |= SOPICK_SIDES;
+  if (p & TOP) flags |= SOPICK_TOP;
+  if (p & BOTTOM) flags |= SOPICK_BOTTOM;
 
-  int numPicked = 0; // will never be > 2
-  SbVec3f enter, exit;
-
-  if (this->parts.getValue() & SoCylinder::SIDES) {
-#if 0
-    // The following line of code doesn't compile with GCC 2.95, as
-    // reported by Petter Reinholdtsen (pere@hungry.com) on
-    // coin-discuss.
-    //
-    // Update: it doesn't work with GCC 2.95.2 either, which is now
-    // the current official release of GCC. And I can't find any
-    // mention of a bug like this being fixed from the CVS ChangeLog,
-    // neither in the gcc/egcs head branch nor the release-2.95
-    // branch.  20000103 mortene.
-    //
-    // FIXME: should a) make sure this is known to the GCC
-    // maintainers, b) have an autoconf check to test for this exact
-    // bug. 19991230 mortene.
-    SbCylinder cyl(SbLine(SbVec3f(0.0f, 0.0f, 0.0f), SbVec3f(0.0f, 1.0f, 0.0f)), r);
-#else // GCC 2.95 work-around.
-    SbVec3f v0(0.0f, 0.0f, 0.0f);
-    SbVec3f v1(0.0f, 1.0f, 0.0f);
-    SbLine l(v0, v1);
-    SbCylinder cyl(l, r);
-#endif // GCC 2.95 work-around.
-    
-    if (cyl.intersect(line, enter, exit)) {
-      if ((fabs(enter[1]) <= halfh) && action->isBetweenPlanes(enter)) {
-        SoPickedPoint * pp = action->addIntersection(enter);
-        if (pp) {
-          set_side_pp_data(pp, enter, halfh);
-          SoCylinderDetail * detail = new SoCylinderDetail();
-          detail->setPart((int)SoCylinder::SIDES);
-          pp->setDetail(detail, this);
-          numPicked++;
-        }
-      }
-      if ((fabs(exit[1]) <= halfh) && (enter != exit) && action->isBetweenPlanes(exit)) {
-        SoPickedPoint * pp = action->addIntersection(exit);
-        if (pp) {
-          set_side_pp_data(pp, exit, halfh);
-          SoCylinderDetail * detail = new SoCylinderDetail();
-          detail->setPart((int)SoCylinder::SIDES);
-          pp->setDetail(detail, this);
-          numPicked++;
-        }
-      }
-    }
-  }
-
-  float r2 = r * r;
-
-  SbBool matperpart = FALSE;
-  switch (SoMaterialBindingElement::get(action->getState())) {
-  case SoMaterialBindingElement::PER_PART_INDEXED:
-  case SoMaterialBindingElement::PER_PART:
-    matperpart = TRUE;
-    break;
-  default:
-    break;
-  }
-
-  if ((numPicked < 2) && (this->parts.getValue() & SoCylinder::TOP)) {
-    SbPlane top(SbVec3f(0.0f, 1.0f, 0.0f), halfh);
-    if (top.intersect(line, enter)) {
-      if (((enter[0] * enter[0] + enter[2] * enter[2]) <= r2) &&
-          (action->isBetweenPlanes(enter))) {
-        SoPickedPoint * pp = action->addIntersection(enter);
-        if (pp) {
-          if (matperpart) pp->setMaterialIndex(1);
-          pp->setObjectNormal(SbVec3f(0.0f, 1.0f, 0.0f));
-          pp->setObjectTextureCoords(SbVec4f(0.5f + enter[0] / (2.0f * r),
-                                             0.5f - enter[2] / (2.0f * r),
-                                             0.0f, 1.0f));
-          SoCylinderDetail * detail = new SoCylinderDetail();
-          detail->setPart((int)SoCylinder::TOP);
-          pp->setDetail(detail, this);
-          numPicked++;
-        }
-      }
-    }
-  }
-
-  if ((numPicked < 2) && (this->parts.getValue() & SoCylinder::BOTTOM)) {
-    SbPlane bottom(SbVec3f(0, 1, 0), -halfh);
-    if (bottom.intersect(line, enter)) {
-      if (((enter[0] * enter[0] + enter[2] * enter[2]) <= r2) &&
-          (action->isBetweenPlanes(enter))) {
-        SoPickedPoint * pp = action->addIntersection(enter);
-        if (pp) {
-          if (matperpart) pp->setMaterialIndex(2);
-          pp->setObjectNormal(SbVec3f(0.0f, -1.0f, 0.0f));
-          pp->setObjectTextureCoords(SbVec4f(0.5f + enter[0] / (2.0f * r),
-                                             0.5f + enter[2] / (2.0f * r),
-                                             0.0f, 1.0f));
-          SoCylinderDetail * detail = new SoCylinderDetail();
-          detail->setPart((int)SoCylinder::BOTTOM);
-          pp->setDetail(detail, this);
-        }
-      }
-    }
-  }
+  SoMaterialBindingElement::Binding bind =
+    SoMaterialBindingElement::get(action->getState());
+  if (bind == SoMaterialBindingElement::PER_PART ||
+      bind == SoMaterialBindingElement::PER_PART_INDEXED)
+    flags |= SOPICK_MATERIAL_PER_PART;
+  
+  sopick_pick_cylinder(this->radius.getValue(),
+                       this->height.getValue(),
+                       flags,
+                       this, action);
 }
 
 // Doc in parent.

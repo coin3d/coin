@@ -19,6 +19,7 @@ RegularSources = \
 	SoInteraction.cpp \
 	SoOutput.cpp \
 	SoPath.cpp \
+	SoPick.cpp \
 	SoPickedPoint.cpp \
 	SoPrimitiveVertex.cpp \
 	SoSceneManager.cpp \
@@ -56,6 +57,7 @@ PrivateHeaders = \
 	../../include/Inventor/misc/SoGLBigImage.h \
 	../../include/Inventor/misc/SoGlyph.h \
 	../../include/Inventor/misc/SoGenerate.h \
+	../../include/Inventor/misc/SoPick.h \
 	GLUWrapper.h \
 	simage_wrapper.h \
 	SoGLFaceSetTemplate.cpp \

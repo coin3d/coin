@@ -138,6 +138,7 @@ RegularSources = \
 	SoInteraction.cpp \
 	SoOutput.cpp \
 	SoPath.cpp \
+	SoPick.cpp \
 	SoPickedPoint.cpp \
 	SoPrimitiveVertex.cpp \
 	SoSceneManager.cpp \
@@ -178,6 +179,7 @@ PrivateHeaders = \
 	../../include/Inventor/misc/SoGLBigImage.h \
 	../../include/Inventor/misc/SoGlyph.h \
 	../../include/Inventor/misc/SoGenerate.h \
+	../../include/Inventor/misc/SoPick.h \
 	GLUWrapper.h \
 	simage_wrapper.h \
 	SoGLFaceSetTemplate.cpp \
@@ -245,7 +247,7 @@ misc_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoInput.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoInteraction.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoOutput.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoPath.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoPath.$(OBJEXT) SoPick.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoPickedPoint.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoPrimitiveVertex.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoSceneManager.$(OBJEXT) \
@@ -274,7 +276,7 @@ libmisc_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoDB.lo SoFullPath.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTempPath.lo SoLightPath.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoInput.lo SoInteraction.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoOutput.lo SoPath.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoOutput.lo SoPath.lo SoPick.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoPickedPoint.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoPrimitiveVertex.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoSceneManager.lo SoType.lo \
@@ -297,7 +299,7 @@ libmisc@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoDB.lo SoFullPath.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTempPath.lo SoLightPath.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoInput.lo SoInteraction.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoOutput.lo SoPath.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoOutput.lo SoPath.lo SoPick.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoPickedPoint.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoPrimitiveVertex.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoSceneManager.lo SoType.lo \
@@ -355,6 +357,7 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoOffscreenRenderer.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoOutput.Plo $(DEPDIR)/SoOutput.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoPath.Plo $(DEPDIR)/SoPath.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoPick.Plo $(DEPDIR)/SoPick.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoPickedPoint.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoPickedPoint.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoPrimitiveVertex.Plo \
@@ -512,6 +515,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoOutput.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoPath.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoPath.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoPick.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoPick.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoPickedPoint.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoPickedPoint.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoPrimitiveVertex.Plo@am__quote@

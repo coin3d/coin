@@ -41,6 +41,7 @@
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/misc/SoGenerate.h>
+#include <Inventor/misc/SoPick.h>
 #include <Inventor/SoPickedPoint.h>
 #include <math.h>
 
@@ -129,39 +130,14 @@ SoSphere::computeBBox(SoAction * /* action */, SbBox3f & box, SbVec3f & center)
   center.setValue(0.0f, 0.0f, 0.0f);
 }
 
-// internal method used to add an intersection to the ray pick action,
-// and set the correct pp normal and texture coordinates
-static void
-try_add_intersection(SoRayPickAction * action, const SbVec3f & pt)
-{
-  if (action->isBetweenPlanes(pt)) {
-    SoPickedPoint * pp = action->addIntersection(pt);
-    if (pp) {
-      SbVec3f normal = pt;
-      normal.normalize();
-      pp->setObjectNormal(normal);
-      SbVec4f tc((float) (atan2(pt[0], pt[2]) * (1.0 / (2.0*M_PI)) + 0.5),
-                 (float) (atan2(pt[1], sqrt(pt[0]*pt[0] + pt[2]*pt[2])) * (1.0/M_PI) + 0.5),
-                 0.0f, 1.0f);
-      pp->setObjectTextureCoords(tc);
-    }
-  }
-}
-
 // doc from parent
 void
 SoSphere::rayPick(SoRayPickAction *action)
 {
   if (!shouldRayPick(action)) return;
 
-  action->setObjectSpace();
-  const SbLine &line = action->getLine();
-  SbSphere sphere(SbVec3f(0.0f, 0.0f, 0.0f), radius.getValue());
-  SbVec3f enter, exit;
-  if (sphere.intersect(line, enter, exit)) {
-    try_add_intersection(action, enter);
-    if (exit != enter) try_add_intersection(action, exit);
-  }
+  sopick_pick_sphere(this->radius.getValue(),
+                     action);
 }
 
 // doc from parent
