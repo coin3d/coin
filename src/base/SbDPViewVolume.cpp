@@ -252,13 +252,14 @@ SbDPViewVolume::getMatrices(SbDPMatrix& affine, SbDPMatrix& proj) const
 
   // the affine matrix is the inverse of the camera coordinate system
   affine = mat.inverse();
-  
+
   // rotate frustum points back to an axis-aligned view volume to
   // calculate parameters for the projection matrix
   SbVec3d nlrf, nllf, nulf;
-  affine.multVecMatrix(this->lrf, nlrf);
-  affine.multVecMatrix(this->llf, nllf);
-  affine.multVecMatrix(this->ulf, nulf);
+
+  affine.multDirMatrix(this->lrf, nlrf);
+  affine.multDirMatrix(this->llf, nllf);
+  affine.multDirMatrix(this->ulf, nulf);
 
   double rml = nlrf[0] - nllf[0];
   double rpl = nlrf[0] + nllf[0];
@@ -343,7 +344,7 @@ SbDPViewVolume::projectPointToLine(const SbVec2d& pt, SbDPLine& line) const
  */
 void
 SbDPViewVolume::projectPointToLine(const SbVec2d& pt,
-                                 SbVec3d& line0, SbVec3d& line1) const
+                                   SbVec3d & line0, SbVec3d & line1) const
 {
 #if 0 // OBSOLETED, pederb 19991215. More efficient version below
   SbVec3d scr_n(pt[0], pt[1], -1.0f);
@@ -377,7 +378,7 @@ SbDPViewVolume::projectPointToLine(const SbVec2d& pt,
   }
 #endif // COIN_DEBUG
 
-  line0 = this->llf + dx*pt[0] + dy*pt[1];
+  line0 = this->projPoint + this->llf + dx*pt[0] + dy*pt[1];
   SbVec3d dir;
   if (this->type == PERSPECTIVE) {
     dir = line0 - this->projPoint;
@@ -476,7 +477,6 @@ SbDPViewVolume::getPlanePoint(const double distFromEye,
       this->llf +
       (this->lrf - this->llf) * normPoint[0] +
       (this->ulf - this->llf) * normPoint[1];
-    dvec -= this->getProjectionPoint();
     dvec.normalize();
 
     // Distance to point.
@@ -539,7 +539,7 @@ SbDPViewVolume::getWorldToScreenScale(const SbVec3d& worldCenter,
 
     // Find projection plane point for the sphere tangent touch point,
     // which is then used to define the sphere tangent line.
-    SbVec3d ppp =
+    SbVec3d ppp = this->projPoint + 
       this->llf + center_scr[0] * rightvec + center_scr[1] * upvec;
     SbLine tl(to_sbvec3f(this->getProjectionPoint()), to_sbvec3f(ppp));
 
@@ -815,24 +815,9 @@ SbDPViewVolume::rotateCamera(const SbDPRotation& q)
   mat.setRotate(q);
 
   mat.multDirMatrix(this->projDir, this->projDir);
-
-  if(this->type == SbDPViewVolume::ORTHOGRAPHIC) {
-    mat.multVecMatrix(this->llf, this->llf);
-    mat.multVecMatrix(this->lrf, this->lrf);
-    mat.multVecMatrix(this->ulf, this->ulf);
-  }
-  // SbDPViewVolume::PERSPECTIVE
-  else {
-    mat.multVecMatrix(this->llf - this->projPoint,
-                      this->llf);
-    this->llf += this->projPoint;
-    mat.multVecMatrix(this->lrf - this->projPoint,
-                      this->lrf);
-    this->lrf += this->projPoint;
-    mat.multVecMatrix(this->ulf - this->projPoint,
-                      this->ulf);
-    this->ulf += this->projPoint;
-  }
+  mat.multDirMatrix(this->llf, this->llf);
+  mat.multDirMatrix(this->lrf, this->lrf);
+  mat.multDirMatrix(this->ulf, this->ulf);
 }
 
 /*!
@@ -841,12 +826,9 @@ SbDPViewVolume::rotateCamera(const SbDPRotation& q)
   \sa rotateCamera().
  */
 void
-SbDPViewVolume::translateCamera(const SbVec3d& v)
+SbDPViewVolume::translateCamera(const SbVec3d & v)
 {
   this->projPoint += v;
-  this->llf += v;
-  this->lrf += v;
-  this->ulf += v;
 }
 
 /*!
@@ -881,7 +863,7 @@ SbDPViewVolume::zNarrow(double nearval, double farval) const
   narrowed.nearToFar = this->nearDist + this->nearToFar * (1.0f - farval);
 
   SbVec3d dummy;
-  this->getPlaneRectangle(narrowed.nearDist-this->nearDist,
+  this->getPlaneRectangle(narrowed.nearDist - this->nearDist,
                           narrowed.llf,
                           narrowed.lrf,
                           narrowed.ulf,
@@ -1098,18 +1080,17 @@ SbDPViewVolume::getViewVolumePlanes(SbPlane planes[6]) const
   SbVec3d far_ul;
   SbVec3d far_ur;
 
-
   this->getPlaneRectangle(this->nearToFar, far_ll, far_lr, far_ul, far_ur);
   SbVec3d near_ur = this->ulf + (this->lrf-this->llf);
 
-  SbVec3f f_ulf = to_sbvec3f(this->ulf);
-  SbVec3f f_llf = to_sbvec3f(this->llf);
-  SbVec3f f_lrf = to_sbvec3f(this->lrf);
-  SbVec3f f_near_ur = to_sbvec3f(near_ur);
-  SbVec3f f_far_ll = to_sbvec3f(far_ll);
-  SbVec3f f_far_lr = to_sbvec3f(far_lr);
-  SbVec3f f_far_ul = to_sbvec3f(far_ul);
-  SbVec3f f_far_ur = to_sbvec3f(far_ur);
+  SbVec3f f_ulf = to_sbvec3f(this->ulf + this->projPoint);
+  SbVec3f f_llf = to_sbvec3f(this->llf + this->projPoint);
+  SbVec3f f_lrf = to_sbvec3f(this->lrf + this->projPoint);
+  SbVec3f f_near_ur = to_sbvec3f(near_ur + this->projPoint);
+  SbVec3f f_far_ll = to_sbvec3f(far_ll + this->projPoint);
+  SbVec3f f_far_lr = to_sbvec3f(far_lr + this->projPoint);
+  SbVec3f f_far_ul = to_sbvec3f(far_ul + this->projPoint);
+  SbVec3f f_far_ur = to_sbvec3f(far_ur + this->projPoint);
   
   planes[0] = SbPlane(f_ulf, f_llf, f_far_ll);  // left
   planes[1] = SbPlane(f_llf, f_lrf, f_far_lr); // bottom
@@ -1125,20 +1106,41 @@ SbDPViewVolume::getViewVolumePlanes(SbPlane planes[6]) const
 void
 SbDPViewVolume::transform(const SbDPMatrix & matrix)
 {
-  matrix.multDirMatrix(this->projDir, this->projDir);
+  SbVec3d oldprojpt = this->projPoint;
+  SbVec3d newprojpt;
+  SbVec3d newllf;
+  SbVec3d newlrf;
+  SbVec3d newulf;
+  matrix.multVecMatrix(oldprojpt, newprojpt);
 
-  if(this->type == SbDPViewVolume::ORTHOGRAPHIC) {
-    matrix.multVecMatrix(this->llf, this->llf);
-    matrix.multVecMatrix(this->lrf, this->lrf);
-    matrix.multVecMatrix(this->ulf, this->ulf);
-  }
-  // SbDPViewVolume::PERSPECTIVE
-  else {
-    matrix.multVecMatrix(this->llf, this->llf);
-    matrix.multVecMatrix(this->lrf, this->lrf);
-    matrix.multVecMatrix(this->ulf, this->ulf);
-    matrix.multVecMatrix(this->projPoint, this->projPoint);
-  }
+  // need to translate frustum point with the projection point before
+  // transforming, then translate back afterwards.
+  matrix.multVecMatrix(this->llf+oldprojpt, newllf);
+  newllf -= newprojpt;
+
+  matrix.multVecMatrix(this->lrf+oldprojpt, newlrf);
+  newlrf -= newprojpt;
+
+  matrix.multVecMatrix(this->ulf+oldprojpt, newulf);
+  newulf -= newprojpt;
+
+  // Construct and tranform nearpt and farpt to find the new near and
+  // far values.
+  SbVec3d nearpt;
+  SbVec3d farpt;
+  matrix.multVecMatrix(oldprojpt + this->nearDist * this->projDir, 
+                       nearpt);
+
+  double fardist = this->nearDist + this->nearToFar;
+  matrix.multVecMatrix(oldprojpt + fardist * this->projDir, farpt);
+
+  matrix.multDirMatrix(this->projDir, this->projDir);
+  this->projPoint = newprojpt;
+  this->llf = newllf;
+  this->ulf = newulf;
+  this->lrf = newlrf;
+  this->nearDist = (nearpt-newprojpt).length();
+  this->nearToFar = (farpt-newprojpt).length() - this->nearDist; 
 }
 
 /*!
@@ -1156,35 +1158,36 @@ SbDPViewVolume::getViewUp(void) const
 }
 
 //
-// Returns the four points defining the view volume rectangle at the specified distance
-// from the near plane, towards the far plane.
-//
+// Returns the four points defining the view volume rectangle at the
+// specified distance from the near plane, towards the far plane. The
+// points are returned in normalized view volume coordinates
+// (projPoint is not added).
 void
 SbDPViewVolume::getPlaneRectangle(const double distance, SbVec3d & lowerleft,
-                                SbVec3d & lowerright,
-                                SbVec3d & upperleft,
-                                SbVec3d & upperright) const
+                                  SbVec3d & lowerright,
+                                  SbVec3d & upperleft,
+                                  SbVec3d & upperright) const
 {
   SbVec3d near_ur = this->ulf + (this->lrf-this->llf);
 
   if (this->type == PERSPECTIVE) {
     double depth = this->nearDist + distance;
     SbVec3d dir;
-    dir = this->llf - this->projPoint;
+    dir = this->llf;
     dir.normalize();
-    lowerleft = this->projPoint + dir * depth / dir.dot(this->projDir);
+    lowerleft = dir * depth / dir.dot(this->projDir);
 
-    dir = this->lrf - this->projPoint;
+    dir = this->lrf;
     dir.normalize();
-    lowerright = this->projPoint + dir * depth / dir.dot(this->projDir);
+    lowerright = dir * depth / dir.dot(this->projDir);
 
-    dir = this->ulf - this->projPoint;
+    dir = this->ulf;
     dir.normalize();
-    upperleft = this->projPoint + dir * depth / dir.dot(this->projDir);
+    upperleft = dir * depth / dir.dot(this->projDir);
 
-    dir = near_ur - this->projPoint;
+    dir = near_ur;
     dir.normalize();
-    upperright = this->projPoint + dir * depth / dir.dot(this->projDir);
+    upperright = dir * depth / dir.dot(this->projDir);
   }
   else {
     lowerleft = this->llf + this->projDir * distance;
@@ -1202,7 +1205,7 @@ SbDPViewVolume::copyValues(SbViewVolume & vv)
   vv.projDir = to_sbvec3f(this->projDir);
   vv.nearDist = (float) this->nearDist;
   vv.nearToFar = (float) this->nearToFar;
-  vv.llf = to_sbvec3f(this->llf);
-  vv.lrf = to_sbvec3f(this->llf);
-  vv.ulf = to_sbvec3f(this->llf);
+  vv.llf = to_sbvec3f(this->llf + this->projPoint);
+  vv.lrf = to_sbvec3f(this->llf + this->projPoint);
+  vv.ulf = to_sbvec3f(this->llf + this->projPoint);
 }
