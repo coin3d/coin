@@ -1429,6 +1429,8 @@ elif $sim_ac_build_library; then
     # adjust for simage usage
     COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_simage_ldflags"
     COIN_EXTRA_LIBS="$sim_ac_simage_libs $COIN_EXTRA_LIBS"
+    # adjust for OpenAL usage
+    COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS $sim_ac_openal_libs"
     # adjust for the Think Different factor
     COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS -lobjc"
   fi
