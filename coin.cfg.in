@@ -10,4 +10,5 @@ libs="@COIN_EXTRA_LIBS@"
 msvcrt="@COIN_MSVC_LIBC@"
 datadir="@datadir@"
 compiler="@COIN_COMPILER@"
+objext="@OBJEXT@"
 have_vrml97=@HAVE_VRML97@
