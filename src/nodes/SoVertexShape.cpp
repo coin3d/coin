@@ -37,6 +37,8 @@
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoGLShapeHintsElement.h>
 
+#include <coindefs.h> // COIN_STUB()
+
 /*!
   \var SoSFNode SoVertexShape::vertexProperty
 
