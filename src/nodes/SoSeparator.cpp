@@ -40,7 +40,6 @@
 
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodes/SoSubNodeP.h>
-#include <coindefs.h> // COIN_STUB()
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
 #include <Inventor/caches/SoGLCacheList.h>
@@ -272,11 +271,24 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
   else {
     SbXfBox3f abox = action->getXfBoundingBox();
 
+    SbBool storedinvalid = FALSE;
+    if (iscaching) {
+      storedinvalid = SoCacheElement::setInvalid(FALSE);
+    }
     state->push();
+
+    if (iscaching) {
+      // if we get here, we know bbox cache is not created or is invalid
+      if (this->bboxcache) this->bboxcache->unref();
+      this->bboxcache = new SoBoundingBoxCache(state);
+      this->bboxcache->ref();
+      // set active cache to record cache dependencies
+      SoCacheElement::set(state, this->bboxcache);
+    }
+
     SoLocalBBoxMatrixElement::makeIdentity(state);
     action->getXfBoundingBox().makeEmpty();
     inherited::getBoundingBox(action);
-    state->pop();
 
     childrenbbox = action->getXfBoundingBox();
     childrencenterset = action->isCenterSet();
@@ -285,13 +297,10 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
     action->getXfBoundingBox() = abox; // reset action bbox
 
     if (iscaching) {
-      // FIXME: continuous new & delete during traversal is probably a
-      // performance killer.. fix. 19990422 mortene.
-      if (this->bboxcache) this->bboxcache->unref();
-      this->bboxcache = new SoBoundingBoxCache(state);
-      this->bboxcache->ref();
       this->bboxcache->set(childrenbbox, childrencenterset, childrencenter);
     }
+    state->pop();
+    if (iscaching) SoCacheElement::setInvalid(storedinvalid);
   }
 
   if (!childrenbbox.isEmpty()) {
@@ -602,10 +611,6 @@ SoSeparator::notify(SoNotList * nl)
 SbBool
 SoSeparator::cullTest(SoGLRenderAction * action, int & cullresults)
 {
-  // FIXME: not implemented, as support for render- and pickculling is
-  // missing. 20000426 mortene.
-
-  COIN_STUB();
   return FALSE;
 }
 
