@@ -46,7 +46,7 @@
 // Type-specific define to be able to do #ifdef tests on type.  (Note:
 // used to check the header file wrapper define, but that doesn't work
 // with --enable-compact build.)
-#define COIN_INTERNAL_PATH
+#define COIN_INTERNAL_SOMFPATH
 
 #include <Inventor/fields/SoMFPath.h>
 #include <Inventor/fields/SoSubFieldP.h>
@@ -60,11 +60,18 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-
+// These are the macros from SO_MFIELD_SOURCE_MALLOC we're
+// using. What's missing is the SO_MFIELD_VALUE_SOURCE macro, which we
+// need to implement "by hand" so reference counting and auditing
+// comes out correctly.
 SO_MFIELD_REQUIRED_SOURCE(SoMFPath);
 SO_MFIELD_CONSTRUCTOR_SOURCE(SoMFPath);
 SO_MFIELD_MALLOC_SOURCE(SoMFPath, SoPath *);
-
+// Note that we're using the MALLOC versions (which just does
+// bit-copying) of the macros, and not the the ALLOC versions (which
+// allocates with "new", so constructors are run). The reason for this
+// is that it's node/engine/path *pointers* that are simply bit-wise
+// copied.
 
 
 // Override from parent class.
@@ -152,9 +159,9 @@ SoMFPath::set1Value(const int idx, SoPath * newval)
 
   // Expand array if necessary.
   if (idx >= this->num) {
-#ifdef COIN_INTERNAL_PATH
+#ifdef COIN_INTERNAL_SOMFPATH
     for (int i = this->num; i <= idx; i++) this->pathheads.append(NULL);
-#endif // COIN_INTERNAL_PATH
+#endif // COIN_INTERNAL_SOMFPATH
     this->setNum(idx + 1);
   }
 
@@ -164,7 +171,7 @@ SoMFPath::set1Value(const int idx, SoPath * newval)
   if (oldptr) {
     oldptr->removeAuditor(this, SoNotRec::FIELD);
     oldptr->unref();
-#ifdef COIN_INTERNAL_PATH
+#ifdef COIN_INTERNAL_SOMFPATH
     SoNode * h = oldptr->getHead();
     // The path should be audited by us at all times. So don't use
     // SoMFPath to wrap SoTempPath or SoLightPath, for instance.
@@ -174,25 +181,25 @@ SoMFPath::set1Value(const int idx, SoPath * newval)
       h->removeAuditor(this, SoNotRec::FIELD);
       h->unref();
     }
-#endif // COIN_INTERNAL_PATH
+#endif // COIN_INTERNAL_SOMFPATH
   }
 
   if (newval) {
     newval->addAuditor(this, SoNotRec::FIELD);
     newval->ref();
-#ifdef COIN_INTERNAL_PATH
+#ifdef COIN_INTERNAL_SOMFPATH
     SoNode * h = newval->getHead();
     if (h) {
       h->addAuditor(this, SoNotRec::FIELD);
       h->ref();
     }
-#endif // COIN_INTERNAL_PATH
+#endif // COIN_INTERNAL_SOMFPATH
   }
 
   this->values[idx] = newval;
-#ifdef COIN_INTERNAL_PATH
+#ifdef COIN_INTERNAL_SOMFPATH
   this->pathheads[idx] = newval ? newval->getHead() : NULL;
-#endif // COIN_INTERNAL_PATH
+#endif // COIN_INTERNAL_SOMFPATH
 
   // Finally, send notification.
   (void)this->enableNotify(notificstate);
@@ -242,14 +249,14 @@ SoMFPath::deleteValues(int start, int num)
       n->removeAuditor(this, SoNotRec::FIELD);
       n->unref();
     }
-#ifdef COIN_INTERNAL_PATH
+#ifdef COIN_INTERNAL_SOMFPATH
     SoNode * h = this->pathheads[start];
     this->pathheads.remove(start);
     if (h) {
       h->removeAuditor(this, SoNotRec::FIELD);
       h->unref();
     }
-#endif // COIN_INTERNAL_PATH
+#endif // COIN_INTERNAL_SOMFPATH
   }
 
   inherited::deleteValues(start, num);
@@ -265,9 +272,9 @@ SoMFPath::insertSpace(int start, int num)
 
   inherited::insertSpace(start, num);
   for (int i=start; i < start+num; i++) {
-#ifdef COIN_INTERNAL_PATH
+#ifdef COIN_INTERNAL_SOMFPATH
     this->pathheads.insert(NULL, start);
-#endif // COIN_INTERNAL_PATH
+#endif // COIN_INTERNAL_SOMFPATH
     this->values[i] = NULL;
   }
 
@@ -352,31 +359,51 @@ SoMFPath::countWriteRefs(SoOutput * out) const
   }
 }
 
-// Override from parent to update our path pointer references. This is
-// necessary so 1) we're added as an auditor to the copied paths (they
-// have so far only been copied as pointer bits), and 2) so we
-// increase the reference count.
+// Override from parent to update our path pointer
+// references. This is necessary so we do the Right Thing with regard
+// to the copyconnections flag.
+//
+// Note that we have to unplug auditing and the reference counter
+// addition we made during the copy process.
+//
+// For reference for future debugging sessions, copying of this field
+// goes like this:
+//
+//    - copyFrom() is called (typically from SoFieldData::overlay())
+//    - copyFrom() calls operator=()
+//    - operator=() calls setValues()
+//    - we have a local copy (ie not from SoSubField.h) of setValues()
+//      that sets up auditing and references the array items
+//
+// <mortene@sim.no>
 void
 SoMFPath::fixCopy(SbBool copyconnections)
 {
+  // Disable temporarily, so we under no circumstances will send more
+  // than one notification about the changes.
+  SbBool notificstate = this->enableNotify(FALSE);
+
   for (int i=0; i < this->getNum(); i++) {
     SoPath * n = (*this)[i];
     if (n) {
-      // There's only been a bitwise copy of the pointer; no auditing
-      // has been set up, no increase in the reference count. So we do
-      // that by setting the value to NULL and then re-setting with
-      // setValue().
-      this->values[i] = NULL;
-#if defined(COIN_INTERNAL_NODE) || defined(COIN_INTERNAL_ENGINE)
+      // The set1Value() call below will automatically de-audit and
+      // un-ref the old pointer value node reference we have in the
+      // array, *before* re-inserting a copy.
+
+#if defined(COIN_INTERNAL_SOMFNODE) || defined(COIN_INTERNAL_SOMFENGINE)
       SoFieldContainer * fc = SoFieldContainer::findCopy(n, copyconnections);
       this->set1Value(i, (SoPath *)fc);
-#endif // COIN_INTERNAL_NODE || COIN_INTERNAL_ENGINE
+#endif // COIN_INTERNAL_SOMFNODE || COIN_INTERNAL_SOMFENGINE
 
-#ifdef COIN_INTERNAL_PATH
+#ifdef COIN_INTERNAL_SOMFPATH
       this->set1Value(i, n->copy());
-#endif // COIN_INTERNAL_PATH
+#endif // COIN_INTERNAL_SOMFPATH
     }
   }
+
+  // Finally, send notification.
+  (void)this->enableNotify(notificstate);
+  if (notificstate) this->valueChanged();
 }
 
 // Override from SoField to check path pointer.
@@ -388,12 +415,12 @@ SoMFPath::referencesCopy(void) const
   for (int i=0; i < this->getNum(); i++) {
     SoPath * item = (*this)[i];
     if (item) {
-#if defined(COIN_INTERNAL_NODE) || defined(COIN_INTERNAL_ENGINE)
+#if defined(COIN_INTERNAL_SOMFNODE) || defined(COIN_INTERNAL_SOMFENGINE)
       if (SoFieldContainer::checkCopy((SoFieldContainer *)item)) return TRUE;
-#endif // COIN_INTERNAL_NODE || COIN_INTERNAL_ENGINE
-#ifdef COIN_INTERNAL_PATH
+#endif // COIN_INTERNAL_SOMFNODE || COIN_INTERNAL_SOMFENGINE
+#ifdef COIN_INTERNAL_SOMFPATH
       if (item->getHead() && SoFieldContainer::checkCopy(item->getHead())) return TRUE;
-#endif // COIN_INTERNAL_PATH
+#endif // COIN_INTERNAL_SOMFPATH
     }
   }
 
@@ -401,7 +428,7 @@ SoMFPath::referencesCopy(void) const
 }
 
 // Kill the type-specific define.
-#undef COIN_INTERNAL_PATH
+#undef COIN_INTERNAL_SOMFPATH
 //$ END TEMPLATE MFNodeEnginePath
 
 
