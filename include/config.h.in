@@ -79,6 +79,9 @@
 /* define if you have the dl library */
 #undef HAVE_DL_LIB
 
+/* define if the Mac OS X dyld can be used for runtime binding */
+#undef HAVE_DYLD_RUNTIME_BINDING
+
 /* Define to use GetEnvironmentVariable() instead of getenv() */
 #undef HAVE_GETENVIRONMENTVARIABLE
 
@@ -126,6 +129,9 @@
 
 /* define if you have the simage library */
 #undef HAVE_LIBSIMAGE
+
+/* Define to 1 if you have the <mach-o/dyld.h> header file. */
+#undef HAVE_MACH_O_DYLD_H
 
 /* Define to 1 if you have the <memory.h> header file. */
 #undef HAVE_MEMORY_H
