@@ -33,7 +33,7 @@
 class SoLOD : public SoGroup {
   typedef SoGroup inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoLOD )
+//$ BEGIN TEMPLATE NodeHeader(SoLOD)
 private:
   static SoType classTypeId;
 

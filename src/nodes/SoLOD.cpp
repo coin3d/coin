@@ -143,7 +143,7 @@ SoLOD::cleanClass(void)
   FIXME: write doc
  */
 void
-SoLOD::doAction(SoAction * action)
+SoLOD::doAction(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -154,7 +154,7 @@ SoLOD::doAction(SoAction * action)
   FIXME: write doc
  */
 void
-SoLOD::callback(SoCallbackAction * action)
+SoLOD::callback(SoCallbackAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -215,7 +215,7 @@ SoLOD::GLRenderOffPath(SoGLRenderAction * action)
   FIXME: write doc
  */
 void
-SoLOD::rayPick(SoRayPickAction * action)
+SoLOD::rayPick(SoRayPickAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -239,7 +239,7 @@ SoLOD::getBoundingBox(SoGetBoundingBoxAction * action)
   FIXME: write doc
  */
 void
-SoLOD::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoLOD::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

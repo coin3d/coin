@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_IMAGE_INTERFACE_H_
-#define _SO_IMAGE_INTERFACE_H_
+#ifndef __SOIMAGEINTERFACE_H__
+#define __SOIMAGEINTERFACE_H__
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbString.h>
@@ -59,5 +59,4 @@ private:
   unsigned int didAlloc : 1;
 };
 
-#endif // _SO_IMAGE_INTERFACE_H_
-
+#endif // !__SOIMAGEINTERFACE_H__

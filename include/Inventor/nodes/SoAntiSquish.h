@@ -35,7 +35,7 @@
 class SoAntiSquish : public SoTransformation {
   typedef SoTransformation inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoAntiSquish )
+//$ BEGIN TEMPLATE NodeHeader(SoAntiSquish)
 private:
   static SoType classTypeId;
 

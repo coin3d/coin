@@ -34,7 +34,7 @@
 class SoShuttle : public SoTranslation {
   typedef SoTranslation inherited;
   
-//$ BEGIN TEMPLATE NodeHeader( SoShuttle )
+//$ BEGIN TEMPLATE NodeHeader(SoShuttle)
 private:
   static SoType classTypeId;
 

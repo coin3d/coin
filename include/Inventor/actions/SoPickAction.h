@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_PICK_ACTION_H_
-#define _SO_PICK_ACTION_H_
+#ifndef __SOPICKACTION_H__
+#define __SOPICKACTION_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOPICKACTION)
@@ -32,7 +32,7 @@ class SbViewportRegion;
 class SoPickAction : public SoAction {
   typedef SoAction inherited;
 
-//$ BEGIN TEMPLATE ActionHeader( SoPickAction )
+//$ BEGIN TEMPLATE ActionHeader(SoPickAction)
 private:
   static SoType classTypeId;
 
@@ -61,4 +61,4 @@ protected:
   SoPickAction(const SbViewportRegion & viewportRegion);
 };
 
-#endif // ! _SO_PICK_ACTION_H_
+#endif // !__SOPICKACTION_H__

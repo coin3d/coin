@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_TRANSPARENCY_ELEMENT_H_
-#define _SO_TRANSPARENCY_ELEMENT_H_
+#ifndef __SOTRANSPARENCYELEMENT_H__
+#define __SOTRANSPARENCYELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOTRANSPARENCYELEMENT)
@@ -30,7 +30,7 @@
 class SoTransparencyElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoTransparencyElement )
+//$ BEGIN TEMPLATE ElementHeader(SoTransparencyElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -63,4 +63,4 @@ protected:
 
 };
 
-#endif // ! _SO_TRANSPARENCY_ELEMENT_H_
+#endif // !__SOTRANSPARENCYELEMENT_H__

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_CALLBACK_ACTION_H_
-#define _SO_CALLBACK_ACTION_H_
+#ifndef __SOCALLBACKACTION_H__
+#define __SOCALLBACKACTION_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOCALLBACKACTION)
@@ -30,7 +30,7 @@
 class SoCallbackAction : public SoAction {
   typedef SoAction inherited;
 
-//$ BEGIN TEMPLATE ActionHeader( SoCallbackAction )
+//$ BEGIN TEMPLATE ActionHeader(SoCallbackAction)
 private:
   static SoType classTypeId;
 
@@ -58,4 +58,4 @@ public:
 
 };
 
-#endif // ! _SO_CALLBACK_ACTION_H_
+#endif // !__SOCALLBACKACTION_H__

@@ -243,7 +243,7 @@ SoMaterialBundle::reallySend(const int index, const SbBool isBetweenBeginEnd)
 // private method. Stores info and element pointers.
 //
 void 
-SoMaterialBundle::setupElements(const SbBool betweenBeginEnd)
+SoMaterialBundle::setupElements(const SbBool /* betweenBeginEnd */)
 {
   this->currIndex = -1; // set to an impossible value
   this->firstTime = FALSE;
@@ -298,8 +298,7 @@ SoMaterialBundle::setupElements(const SbBool betweenBeginEnd)
   FIXME: document (pederb)
 */
 void 
-SoMaterialBundle::setPacked(const uint32_t *packed,
-			    const int num)
+SoMaterialBundle::setPacked(const uint32_t * /* packed */, const int /* num */)
 {
 //   this->packedColors = packed;
 //   this->numPacked = num;

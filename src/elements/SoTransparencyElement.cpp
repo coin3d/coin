@@ -30,7 +30,7 @@
 #include <Inventor/SbName.h>
 #include <assert.h>
 
-const static float defaultValue = 0;
+static const float defaultValue = 0;
 
 /*!
   \fn SoTransparencyElement::numValues
@@ -44,7 +44,7 @@ const static float defaultValue = 0;
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoTransparencyElement )
+//$ BEGIN TEMPLATE ElementSource(SoTransparencyElement)
 
 /*!
   \var SoTransparencyElement::classTypeId
@@ -100,21 +100,21 @@ SoTransparencyElement::getClassStackIndex(void)
 void
 SoTransparencyElement::initClass()
 {
-//$ BEGIN TEMPLATE InitElementSource( SoTransparencyElement )
+//$ BEGIN TEMPLATE InitElementSource(SoTransparencyElement)
   assert(SoTransparencyElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoTransparencyElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoTransparencyElement",
-    &SoTransparencyElement::createInstance);
+  SoTransparencyElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoTransparencyElement",
+                       &SoTransparencyElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoTransparencyElement::classStackIndex =
-      createStackIndex( SoTransparencyElement::classTypeId );
-  } else {
-    SoTransparencyElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoTransparencyElement::classTypeId);
+  }
+  else {
+    SoTransparencyElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -127,14 +127,14 @@ SoTransparencyElement::initClass()
 void 
 SoTransparencyElement::cleanClass()
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoTransparencyElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoTransparencyElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoTransparencyElement::createInstance( void )
+  \sa void * SoTransparencyElement::createInstance(void)
 */
 
 SoTransparencyElement::SoTransparencyElement()
@@ -154,7 +154,7 @@ SoTransparencyElement::~SoTransparencyElement()
 //! FIXME: write doc.
 
 void 
-SoTransparencyElement::init(SoState * state)
+SoTransparencyElement::init(SoState * /* state */)
 {
   this->values = &defaultValue;
   this->numValues = 1;

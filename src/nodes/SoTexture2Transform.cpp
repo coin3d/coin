@@ -202,7 +202,7 @@ SoTexture2Transform::GLRender(SoGLRenderAction * action)
   FIXME: write doc
  */
 void
-SoTexture2Transform::doAction(SoAction * action)
+SoTexture2Transform::doAction(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -213,7 +213,7 @@ SoTexture2Transform::doAction(SoAction * action)
   FIXME: write doc
  */
 void
-SoTexture2Transform::callback(SoCallbackAction * action)
+SoTexture2Transform::callback(SoCallbackAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -224,7 +224,7 @@ SoTexture2Transform::callback(SoCallbackAction * action)
   FIXME: write doc
  */
 void
-SoTexture2Transform::getMatrix(SoGetMatrixAction * action)
+SoTexture2Transform::getMatrix(SoGetMatrixAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -235,7 +235,7 @@ SoTexture2Transform::getMatrix(SoGetMatrixAction * action)
   FIXME: write doc
  */
 void
-SoTexture2Transform::pick(SoPickAction * action)
+SoTexture2Transform::pick(SoPickAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

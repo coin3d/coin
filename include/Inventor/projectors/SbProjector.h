@@ -39,7 +39,7 @@ public:
 
 protected:
   SbProjector(void);
-  ~SbProjector();
+  virtual ~SbProjector() { }
 
   SbLine getWorkingLine(const SbVec2f & point) const; 
 

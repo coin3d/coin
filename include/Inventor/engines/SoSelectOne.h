@@ -45,8 +45,12 @@ public:
   static void initClass();
 
 private:
-  virtual ~SoSelectOne();
+  SoSelectOne(void);
+  ~SoSelectOne();
   virtual void evaluate();
+
+  // Avoid a g++/egcs warning.
+  friend class dummy;
 };
 
 #endif // !__SOSELECTONE_H__

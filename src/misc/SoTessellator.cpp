@@ -148,7 +148,7 @@ SoTessellator::addVertex(const SbVec3f &v,void *data)
 void
 SoTessellator::endPolygon()
 {
-  SoTessVertex *v,*tmpv,*stv;
+  SoTessVertex * v;
   int count;
 
   if (this->nverts > 3) {

@@ -34,7 +34,7 @@
 class SoPendulum : public SoRotation {
   typedef SoRotation inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoPendulum )
+//$ BEGIN TEMPLATE NodeHeader(SoPendulum)
 private:
   static SoType classTypeId;
 

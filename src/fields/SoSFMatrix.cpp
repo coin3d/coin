@@ -52,7 +52,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE SField( SoSFMatrix, const SbMatrix & )
+//$ BEGIN TEMPLATE SField(SoSFMatrix, const SbMatrix &)
 
 SoType SoSFMatrix::classTypeId = SoType::badType();
 
@@ -178,7 +178,7 @@ SoSFMatrix::operator == (const SoSFMatrix & field) const
 void
 SoSFMatrix::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass( SFMatrix )
+//$ BEGIN TEMPLATE FieldInitClass(SFMatrix)
   // Make sure we only initialize once.
   assert(SoSFMatrix::classTypeId == SoType::badType());
   // Make sure superclass has been initialized before subclass.

@@ -123,7 +123,7 @@ SoLevelOfDetail::cleanClass(void)
   FIXME: write doc
  */
 void
-SoLevelOfDetail::doAction(SoAction * action)
+SoLevelOfDetail::doAction(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -134,7 +134,7 @@ SoLevelOfDetail::doAction(SoAction * action)
   FIXME: write doc
  */
 void
-SoLevelOfDetail::callback(SoCallbackAction * action)
+SoLevelOfDetail::callback(SoCallbackAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -145,7 +145,7 @@ SoLevelOfDetail::callback(SoCallbackAction * action)
   FIXME: write doc
  */
 void
-SoLevelOfDetail::GLRender(SoGLRenderAction * action)
+SoLevelOfDetail::GLRender(SoGLRenderAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -156,7 +156,7 @@ SoLevelOfDetail::GLRender(SoGLRenderAction * action)
   FIXME: write doc
  */
 void
-SoLevelOfDetail::rayPick(SoRayPickAction * action)
+SoLevelOfDetail::rayPick(SoRayPickAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

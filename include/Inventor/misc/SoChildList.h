@@ -53,8 +53,6 @@ private:
   SoNode * parent;
   // should not ref() paths...
   SbPList auditors;
-
-  SoChildList(const SoChildList & list); // no copy constructor, thank you
 };
 
 //$ IMPORT INLINE ../../../src/misc/SoChildList.cpp

@@ -293,8 +293,6 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
   SoTextureCoordinateBundle tb(action, TRUE, FALSE); //FIXME
   doTextures = tb.needCoordinates();
   
-  int start = this->startIndex.getValue();
-  
   Binding mbind = findMaterialBinding(action->getState());
   Binding nbind = findNormalBinding(action->getState());
   
@@ -319,7 +317,7 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
 
   SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
   const SbVec3f * currnormal = &dummynormal;
-  if (normals) currnormal == normals;
+  if (normals) currnormal = normals;
   if (nbind == OVERALL && needNormals) 
     glNormal3fv((const GLfloat *)currnormal); 
 
@@ -428,7 +426,8 @@ SoFaceSet::generateDefaultNormals(SoState * state, SoNormalCache * nc)
   FIXME: write doc
  */
 SbBool
-SoFaceSet::generateDefaultNormals(SoState * state, SoNormalBundle * nb)
+SoFaceSet::generateDefaultNormals(SoState * /* state */,
+				  SoNormalBundle * /* nb */)
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;
@@ -440,7 +439,7 @@ SoFaceSet::generateDefaultNormals(SoState * state, SoNormalBundle * nb)
   FIXME: write doc
  */
 void
-SoFaceSet::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoFaceSet::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -451,7 +450,7 @@ SoFaceSet::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   FIXME: write doc
  */
 void
-SoFaceSet::generatePrimitives(SoAction * action)
+SoFaceSet::generatePrimitives(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -462,11 +461,11 @@ SoFaceSet::generatePrimitives(SoAction * action)
   FIXME: write doc
  */
 SoDetail *
-SoFaceSet::createTriangleDetail(SoRayPickAction * action,
-			 const SoPrimitiveVertex * v1,
-			 const SoPrimitiveVertex * v2,
-			 const SoPrimitiveVertex * v3,
-			 SoPickedPoint * pp)
+SoFaceSet::createTriangleDetail(SoRayPickAction * /* action */,
+				const SoPrimitiveVertex * /* v1 */,
+				const SoPrimitiveVertex * /* v2 */,
+				const SoPrimitiveVertex * /* v3 */,
+				SoPickedPoint * /* pp */)
 {
   assert(0 && "FIXME: not implemented");
   return NULL;

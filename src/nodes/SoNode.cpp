@@ -113,7 +113,7 @@ SoNode::~SoNode()
   FIXME: write function documentation
 */
 SoNode *
-SoNode::copy(SbBool copyConnections) const
+SoNode::copy(SbBool /* copyConnections */) const
 {
   SoNode * newnode = (SoNode *)(this->getTypeId().createInstance());
   assert(newnode != NULL);
@@ -859,7 +859,7 @@ SoNode::affectsState() const
   Returns the last node that was give \a name in SoBase::setName()
 */
 SoNode *
-SoNode::getByName(const SbName & name)
+SoNode::getByName(const SbName & /* name */)
 {
   // got to search through dictionary to find the last node with
   // 'name'
@@ -872,7 +872,7 @@ SoNode::getByName(const SbName & name)
   of nodes with the specified name.
 */
 int 
-SoNode::getByName(const SbName & name, SoNodeList & list)
+SoNode::getByName(const SbName & /* name */, SoNodeList & /* list */)
 {
   // FIXME
   assert(0);
@@ -967,7 +967,7 @@ SoNode::GLRenderS(SoAction * const action,
   or influences rendering state need to reimplement this.
 */
 void
-SoNode::GLRender(SoGLRenderAction * action)
+SoNode::GLRender(SoGLRenderAction * /* action */)
 {
 }
 
@@ -1020,7 +1020,7 @@ SoNode::callbackS(SoAction * const action,
   FIXME: write function documentation
 */
 void
-SoNode::callback(SoCallbackAction * action)
+SoNode::callback(SoCallbackAction * /* action */)
 {
 }
 #endif // COIN_EXCLUDE_SOCALLBACKACTION
@@ -1048,7 +1048,7 @@ SoNode::getMatrixS(SoAction * const action, SoNode * const node)
   It may be overloaded in subclasses (usually SoTransform subclasses)
 */
 void
-SoNode::getMatrix(SoGetMatrixAction * action)
+SoNode::getMatrix(SoGetMatrixAction * /* action */)
 {
   //FIXME: This should return identity as default (kintel 19990615)
 }
@@ -1074,7 +1074,7 @@ SoNode::handleEventS(SoAction * const action, SoNode * const node)
   FIXME: write function documentation
 */
 void
-SoNode::handleEvent(SoHandleEventAction * action)
+SoNode::handleEvent(SoHandleEventAction * /* action */)
 {
 }
 #endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
@@ -1099,7 +1099,7 @@ SoNode::pickS(SoAction * const action, SoNode * const node)
   FIXME: write function documentation
 */
 void
-SoNode::pick(SoPickAction * action)
+SoNode::pick(SoPickAction * /* action */)
 {
 }
 #endif // !COIN_EXCLUDE_SOPICKACTION
@@ -1124,7 +1124,7 @@ SoNode::rayPickS(SoAction * const action, SoNode * const node)
   FIXME: write function documentation
 */
 void
-SoNode::rayPick(SoRayPickAction * action)
+SoNode::rayPick(SoRayPickAction * /* action */)
 {
 }
 #endif // !COIN_EXCLUDE_SORAYPICKACTION
@@ -1303,7 +1303,8 @@ SoNode::addToCopyDict(void) const
   FIXME: write function documentation
 */
 void
-SoNode::copyContents(const SoFieldContainer * fromFC, SbBool copyConnections)
+SoNode::copyContents(const SoFieldContainer * /* fromFC */,
+		     SbBool /* copyConnections */)
 {
   assert(0 && "FIXME: not implemented");
 }

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_GL_NORMAL_ELEMENT_H_
-#define _SO_GL_NORMAL_ELEMENT_H_
+#ifndef __SOGLNORMALELEMENT_H__
+#define __SOGLNORMALELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOGLNORMALELEMENT)
@@ -30,7 +30,7 @@
 class SoGLNormalElement : public SoNormalElement {
   typedef SoNormalElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoGLNormalElement )
+//$ BEGIN TEMPLATE ElementHeader(SoGLNormalElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -53,4 +53,4 @@ public:
 
 };
 
-#endif // ! _SO_GL_NORMAL_ELEMENT_H_
+#endif // !__SOGLNORMALELEMENT_H__

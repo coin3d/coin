@@ -30,7 +30,7 @@
 class SoSFVec2f : public SoSField {
   typedef SoSField inherited;
 
-//$ BEGIN TEMPLATE SField( SoSFVec2f, SbVec2f, const SbVec2f & )
+//$ BEGIN TEMPLATE SField(SoSFVec2f, SbVec2f, const SbVec2f &)
 private:
   static SoType classTypeId;
 

@@ -35,8 +35,8 @@
   A constructor.
 */
 
-SoFullPath::SoFullPath( const int approxLength )
-  : SoPath( approxLength )
+SoFullPath::SoFullPath(const int approxLength)
+  : SoPath(approxLength)
 {
 }
 
@@ -44,7 +44,7 @@ SoFullPath::SoFullPath( const int approxLength )
   The destructor.
 */
 
-SoFullPath::~SoFullPath( void )
+SoFullPath::~SoFullPath(void)
 {
 }
 
@@ -54,9 +54,9 @@ SoFullPath::~SoFullPath( void )
 */
 
 void
-SoFullPath::pop( void )
+SoFullPath::pop(void)
 {
-  truncate( getFullLength() - 1 );
+  truncate(getFullLength() - 1);
 }
 
 /*!
@@ -65,7 +65,7 @@ SoFullPath::pop( void )
 */
 
 SoNode *
-SoFullPath::getTail( void ) const
+SoFullPath::getTail(void) const
 {
   return nodes[ getFullLength() - 1 ];
 }
@@ -76,7 +76,7 @@ SoFullPath::getTail( void ) const
 */
 
 SoNode *
-SoFullPath::getNodeFromTail( const int index ) const
+SoFullPath::getNodeFromTail(const int index) const
 {
   return nodes[ getFullLength() - 1 - index ];
 }
@@ -88,7 +88,7 @@ SoFullPath::getNodeFromTail( const int index ) const
 */
 
 int
-SoFullPath::getIndexFromTail( const int index ) const
+SoFullPath::getIndexFromTail(const int index) const
 {
   return indices[ getFullLength() - 1 - index ];
 }
@@ -98,7 +98,7 @@ SoFullPath::getIndexFromTail( const int index ) const
 */
 
 int
-SoFullPath::getLength( void ) const
+SoFullPath::getLength(void) const
 {
   return getFullLength();
 }

@@ -33,7 +33,7 @@
 class SoTexture2Transform : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoTexture2Transform )
+//$ BEGIN TEMPLATE NodeHeader(SoTexture2Transform)
 private:
   static SoType classTypeId;
 

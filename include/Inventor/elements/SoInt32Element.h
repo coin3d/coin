@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_INT32_ELEMENT_H_
-#define _SO_INT32_ELEMENT_H_
+#ifndef __SOINT32ELEMENT_H__
+#define __SOINT32ELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOINT32ELEMENT)
@@ -31,7 +31,7 @@
 class SoInt32Element : public SoElement {
   typedef SoElement inherited;
 
-//$ BEGIN TEMPLATE AbstractElementHeader( SoInt32Element )
+//$ BEGIN TEMPLATE AbstractElementHeader(SoInt32Element)
 public:
   static  SoType classTypeId;
   static  SoType getClassTypeId(void);
@@ -48,18 +48,18 @@ protected:
 //$ END TEMPLATE AbstractElementHeader
 
 public: // constructor / destructor / etc.
-  virtual void init( SoState * state );
+  virtual void init(SoState * state);
 
-  virtual SbBool matches( const SoElement * element ) const;
-  virtual SoElement * copyMatchInfo( void ) const;
+  virtual SbBool matches(const SoElement * element) const;
+  virtual SoElement * copyMatchInfo(void) const;
 
-  virtual void print( FILE * file ) const;
+  virtual void print(FILE * file) const;
 
-  static  void set( const int index, SoState * const state,
-                    SoNode * const node, const int32_t value );
-  static  void set( const int index, SoState * const state,
-                    const int32_t value );
-  static  int32_t get( const int index, SoState * const state );
+  static  void set(const int index, SoState * const state,
+                    SoNode * const node, const int32_t value);
+  static  void set(const int index, SoState * const state,
+                    const int32_t value);
+  static  int32_t get(const int index, SoState * const state);
   virtual void setElt(int32_t value);
 
 protected:
@@ -67,4 +67,4 @@ protected:
 
 };
 
-#endif // ! _SO_INT32_ELEMENT_H_
+#endif // !__SOINT32ELEMENT_H__

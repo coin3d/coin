@@ -29,7 +29,7 @@
 
 #include <assert.h>
 
-const static SbColor defaultColor(0.2, 0.2, 0.2);
+static const SbColor defaultColor(0.2, 0.2, 0.2);
 
 /*!
   \fn SoAmbientColorElement::numColors
@@ -43,7 +43,7 @@ const static SbColor defaultColor(0.2, 0.2, 0.2);
   This is an array of ambient colors.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoAmbientColorElement )
+//$ BEGIN TEMPLATE ElementSource(SoAmbientColorElement)
 
 /*!
   \var SoAmbientColorElement::classTypeId
@@ -99,21 +99,21 @@ SoAmbientColorElement::getClassStackIndex(void)
 void
 SoAmbientColorElement::initClass()
 {
-//$ BEGIN TEMPLATE InitElementSource( SoAmbientColorElement )
+//$ BEGIN TEMPLATE InitElementSource(SoAmbientColorElement)
   assert(SoAmbientColorElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoAmbientColorElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoAmbientColorElement",
-    &SoAmbientColorElement::createInstance);
+  SoAmbientColorElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoAmbientColorElement",
+                       &SoAmbientColorElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoAmbientColorElement::classStackIndex =
-      createStackIndex( SoAmbientColorElement::classTypeId );
-  } else {
-    SoAmbientColorElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoAmbientColorElement::classTypeId);
+  }
+  else {
+    SoAmbientColorElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -126,14 +126,14 @@ SoAmbientColorElement::initClass()
 void 
 SoAmbientColorElement::cleanClass()
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoAmbientColorElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoAmbientColorElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 //! FIXME: write doc.
 
 void 
-SoAmbientColorElement::init(SoState * state)
+SoAmbientColorElement::init(SoState * /* state */)
 {
   this->colors = &defaultColor;
   this->numColors = 1;

@@ -33,7 +33,7 @@
 class SoTextureCoordinatePlane : public SoTextureCoordinateFunction {
   typedef SoTextureCoordinateFunction inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoTextureCoordinatePlane )
+//$ BEGIN TEMPLATE NodeHeader(SoTextureCoordinatePlane)
 private:
   static SoType classTypeId;
 

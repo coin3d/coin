@@ -30,7 +30,7 @@
 
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource( SoProjectionMatrixElement )
+//$ BEGIN TEMPLATE ElementSource(SoProjectionMatrixElement)
 
 /*!
   \var SoProjectionMatrixElement::classTypeId
@@ -84,24 +84,23 @@ SoProjectionMatrixElement::getClassStackIndex(void)
 */
 
 void
-SoProjectionMatrixElement::initClass(
-    void )
+SoProjectionMatrixElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoProjectionMatrixElement )
+//$ BEGIN TEMPLATE InitElementSource(SoProjectionMatrixElement)
   assert(SoProjectionMatrixElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoProjectionMatrixElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoProjectionMatrixElement",
-    &SoProjectionMatrixElement::createInstance);
+  SoProjectionMatrixElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoProjectionMatrixElement",
+                       &SoProjectionMatrixElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoProjectionMatrixElement::classStackIndex =
-      createStackIndex( SoProjectionMatrixElement::classTypeId );
-  } else {
-    SoProjectionMatrixElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoProjectionMatrixElement::classTypeId);
+  }
+  else {
+    SoProjectionMatrixElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -112,33 +111,30 @@ SoProjectionMatrixElement::initClass(
 */
 
 void
-SoProjectionMatrixElement::cleanClass(
-    void )
+SoProjectionMatrixElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoProjectionMatrixElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoProjectionMatrixElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoProjectionMatrixElement::createInstance( void )
+  \sa void * SoProjectionMatrixElement::createInstance(void)
 */
 
-SoProjectionMatrixElement::SoProjectionMatrixElement(
-    void )
+SoProjectionMatrixElement::SoProjectionMatrixElement(void)
   : projectionMatrix()
 {
-    setTypeId( SoProjectionMatrixElement::classTypeId );
-    setStackIndex( SoProjectionMatrixElement::classStackIndex );
+    setTypeId(SoProjectionMatrixElement::classTypeId);
+    setStackIndex(SoProjectionMatrixElement::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoProjectionMatrixElement::~SoProjectionMatrixElement(
-    void )
+SoProjectionMatrixElement::~SoProjectionMatrixElement(void)
 {
 }
 

@@ -53,8 +53,10 @@ public:
 
   static void initClass();
 
+protected:
+  ~SoBoolOperation();
+
 private:
-  virtual ~SoBoolOperation();
   virtual void evaluate();
 };
 

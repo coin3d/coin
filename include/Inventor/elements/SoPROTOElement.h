@@ -17,15 +17,15 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_PROTO_ELEMENT_H_
-#define _SO_PROTO_ELEMENT_H_
+#ifndef __SOPROTOELEMENT_H__
+#define __SOPROTOELEMENT_H__
 
 #include <Inventor/elements/SoElement.h>
 
 class SoPROTOElement : public SoElement {
   typedef SoElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoPROTOElement )
+//$ BEGIN TEMPLATE ElementHeader(SoPROTOElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -43,20 +43,19 @@ protected:
 //$ END TEMPLATE ElementHeader
 
 public:
-  virtual void init( SoState * state );
+  virtual void init(SoState * state);
 
-  virtual void push( SoState * state );
-  virtual void pop( SoState * state,
-              const SoElement * prevTopElement );
+  virtual void push(SoState * state);
+  virtual void pop(SoState * state,
+              const SoElement * prevTopElement);
 
-  virtual SbBool matches( const SoElement * element ) const;
-  virtual SoElement * copyMatchInfo( void ) const;
+  virtual SbBool matches(const SoElement * element) const;
+  virtual SoElement * copyMatchInfo(void) const;
 
   // FIXME: quick hack. 19980810 mortene.
   class SoPROTO *nodeptr;
   // larsa: SoElement got dataNode member for this :(
   // - might fix this later
-
 };
 
-#endif // ! _SO_PROTO_ELEMENT_H_
+#endif // !__SOPROTOELEMENT_H__

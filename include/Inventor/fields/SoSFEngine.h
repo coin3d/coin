@@ -30,7 +30,7 @@ class SoEngine;
 
 class SoSFEngine : public SoSField {
   typedef SoSField inherited;
-//$ BEGIN TEMPLATE SField( SoSFEngine, SoEngine *, SoEngine * )
+//$ BEGIN TEMPLATE SField(SoSFEngine, SoEngine *, SoEngine *)
 private:
   static SoType classTypeId;
 

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_TO_VRML2_ACTION_H_
-#define _SO_TO_VRML2_ACTION_H_
+#ifndef __SOTOVRML2ACTION_H__
+#define __SOTOVRML2ACTION_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOTOVRML2ACTION)
@@ -30,7 +30,7 @@
 class SoToVRML2Action : public SoToVRMLAction {
   typedef SoToVRMLAction inherited;
 
-//$ BEGIN TEMPLATE ActionHeader( SoToVRML2Action )
+//$ BEGIN TEMPLATE ActionHeader(SoToVRML2Action)
 private:
   static SoType classTypeId;
 
@@ -57,8 +57,8 @@ public:
   SoToVRML2Action(void);
 
 protected:
-  virtual void beginTraversal( SoNode * node );
+  virtual void beginTraversal(SoNode * node);
 
 };
 
-#endif // ! _SO_TO_VRML2_ACTION_H_
+#endif // !__SOTOVRML2ACTION_H__

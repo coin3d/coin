@@ -41,7 +41,7 @@ typedef SoPath * SoSelectionPickCB(void * data, const SoPickedPoint * pick);
 class SoSelection : public SoSeparator {
   typedef SoSeparator inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoSelection )
+//$ BEGIN TEMPLATE NodeHeader(SoSelection)
 private:
   static SoType classTypeId;
 

@@ -17,7 +17,7 @@
  *
 \**************************************************************************/
 
-//$ BEGIN TEMPLATE InterpolateSource( SoInterpolateFloat, SoMFFloat, float, (0), (1), (val1-val0)*alpha.getValue()+val0 )
+//$ BEGIN TEMPLATE InterpolateSource(SoInterpolateFloat, SoMFFloat, float, (0), (1), (val1-val0)*alpha.getValue()+val0)
 
 #include <Inventor/engines/SoInterpolateFloat.h>
 #include <Inventor/lists/SoEngineOutputList.h>

@@ -186,7 +186,7 @@ SoMatrixTransform::getBoundingBox(SoGetBoundingBoxAction * action)
   FIXME: write doc
  */
 void
-SoMatrixTransform::callback(SoCallbackAction * action)
+SoMatrixTransform::callback(SoCallbackAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -197,7 +197,7 @@ SoMatrixTransform::callback(SoCallbackAction * action)
   FIXME: write doc
  */
 void
-SoMatrixTransform::getMatrix(SoGetMatrixAction * action)
+SoMatrixTransform::getMatrix(SoGetMatrixAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -208,7 +208,7 @@ SoMatrixTransform::getMatrix(SoGetMatrixAction * action)
   FIXME: write doc
  */
 void
-SoMatrixTransform::pick(SoPickAction * action)
+SoMatrixTransform::pick(SoPickAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -219,7 +219,7 @@ SoMatrixTransform::pick(SoPickAction * action)
   FIXME: write doc
  */
 void
-SoMatrixTransform::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoMatrixTransform::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

@@ -36,7 +36,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoAnnoText3FontSizeHintElement )
+//$ BEGIN TEMPLATE ElementSource(SoAnnoText3FontSizeHintElement)
 
 /*!
   \var SoAnnoText3FontSizeHintElement::classTypeId
@@ -90,24 +90,23 @@ SoAnnoText3FontSizeHintElement::getClassStackIndex(void)
 */
 
 void
-SoAnnoText3FontSizeHintElement::initClass(
-    void )
+SoAnnoText3FontSizeHintElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoAnnoText3FontSizeHintElement )
+//$ BEGIN TEMPLATE InitElementSource(SoAnnoText3FontSizeHintElement)
   assert(SoAnnoText3FontSizeHintElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoAnnoText3FontSizeHintElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoAnnoText3FontSizeHintElement",
-    &SoAnnoText3FontSizeHintElement::createInstance);
+  SoAnnoText3FontSizeHintElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoAnnoText3FontSizeHintElement",
+                       &SoAnnoText3FontSizeHintElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoAnnoText3FontSizeHintElement::classStackIndex =
-      createStackIndex( SoAnnoText3FontSizeHintElement::classTypeId );
-  } else {
-    SoAnnoText3FontSizeHintElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoAnnoText3FontSizeHintElement::classTypeId);
+  }
+  else {
+    SoAnnoText3FontSizeHintElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -118,10 +117,9 @@ SoAnnoText3FontSizeHintElement::initClass(
 */
 
 void
-SoAnnoText3FontSizeHintElement::cleanClass(
-    void )
+SoAnnoText3FontSizeHintElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoAnnoText3FontSizeHintElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoAnnoText3FontSizeHintElement)
 //$ END TEMPLATE CleanElementSource
 }
 
@@ -131,11 +129,10 @@ SoAnnoText3FontSizeHintElement::cleanClass(
   \sa void * SoAnnoText3FontSizeHintElement::createInstance()
 */
 
-SoAnnoText3FontSizeHintElement::SoAnnoText3FontSizeHintElement(
-    void )
+SoAnnoText3FontSizeHintElement::SoAnnoText3FontSizeHintElement(void)
 {
-    setTypeId( SoAnnoText3FontSizeHintElement::classTypeId );
-    setStackIndex( SoAnnoText3FontSizeHintElement::classStackIndex );
+    setTypeId(SoAnnoText3FontSizeHintElement::classTypeId);
+    setStackIndex(SoAnnoText3FontSizeHintElement::classStackIndex);
     this->data = getDefault();
 }
 
@@ -143,18 +140,17 @@ SoAnnoText3FontSizeHintElement::SoAnnoText3FontSizeHintElement(
   The destructor.
 */
 
-SoAnnoText3FontSizeHintElement::~SoAnnoText3FontSizeHintElement( // virtual protected
-    void )
+SoAnnoText3FontSizeHintElement::~SoAnnoText3FontSizeHintElement(// virtual protected
+    void)
 {
 }
 
 //! FIXME: write doc.
 
 void
-SoAnnoText3FontSizeHintElement::init(
-    SoState * state )
+SoAnnoText3FontSizeHintElement::init(SoState * state)
 {
-  inherited::init( state );
+  inherited::init(state);
   this->data = getDefault();
 }
 
@@ -165,7 +161,7 @@ void
 SoAnnoText3FontSizeHintElement::set(SoState * const state, SoNode * const node,
 				const FontSizeHint hint)
 { 
-  SoInt32Element::set( classStackIndex,state,node,hint );
+  SoInt32Element::set(classStackIndex,state,node,hint);
 }
 
 //! FIXME: write doc.
@@ -174,7 +170,7 @@ SoAnnoText3FontSizeHintElement::set(SoState * const state, SoNode * const node,
 void 
 SoAnnoText3FontSizeHintElement::set(SoState * const state, const FontSizeHint hint)
 { 
-  set( state, NULL, hint ); 
+  set(state, NULL, hint); 
 }
 
 //! FIXME: write doc.
@@ -184,7 +180,7 @@ SoAnnoText3FontSizeHintElement::FontSizeHint
 SoAnnoText3FontSizeHintElement::get(SoState * const state)
 { 
   return (SoAnnoText3FontSizeHintElement::FontSizeHint)
-    SoInt32Element::get( classStackIndex, state ); 
+    SoInt32Element::get(classStackIndex, state); 
 }
 
 //! FIXME: write doc.

@@ -100,7 +100,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource( SoCone )
+//$ BEGIN TEMPLATE NodeSource(SoCone)
 SoType SoCone::classTypeId = SoType::badType();
 
 /*!
@@ -136,7 +136,7 @@ SoCone::getTypeId(void) const
 */
 SoCone::SoCone()
 {
-//$ BEGIN TEMPLATE NodeConstructor( SoCone )
+//$ BEGIN TEMPLATE NodeConstructor(SoCone)
   // Make sure the class has been initialized.
   assert(SoCone::classTypeId != SoType::badType());
 //$ END TEMPLATE NodeConstructor
@@ -166,7 +166,7 @@ SoCone::~SoCone()
 void
 SoCone::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource( Cone )
+//$ BEGIN TEMPLATE InitNodeSource(Cone)
   // Make sure we only initialize once.
   assert(SoCone::classTypeId == SoType::badType());
   // Make sure superclass get initialized before subclass.
@@ -193,7 +193,7 @@ SoCone::cleanClass(void)
   FIXME: write function documentation
 */
 void
-SoCone::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
+SoCone::computeBBox(SoAction * /* action */, SbBox3f & box, SbVec3f & center)
 {
   float r = this->bottomRadius.getValue();
   float h = this->height.getValue();
@@ -357,7 +357,7 @@ SoCone::hasPart(SoCone::Part part) const
   FIXME: write doc
 */
 void
-SoCone::rayPick(SoRayPickAction *action)
+SoCone::rayPick(SoRayPickAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -368,7 +368,7 @@ SoCone::rayPick(SoRayPickAction *action)
   FIXME: write doc
 */
 void
-SoCone::getPrimitiveCount(SoGetPrimitiveCountAction *action)
+SoCone::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -379,7 +379,7 @@ SoCone::getPrimitiveCount(SoGetPrimitiveCountAction *action)
   FIXME: write doc
 */
 void
-SoCone::generatePrimitives(SoAction *action)
+SoCone::generatePrimitives(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

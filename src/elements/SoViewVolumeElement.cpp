@@ -36,7 +36,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoViewVolumeElement )
+//$ BEGIN TEMPLATE ElementSource(SoViewVolumeElement)
 
 /*!
   \var SoViewVolumeElement::classTypeId
@@ -89,24 +89,23 @@ SoViewVolumeElement::getClassStackIndex(void)
 */
 
 void
-SoViewVolumeElement::initClass(
-    void )
+SoViewVolumeElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoViewVolumeElement )
+//$ BEGIN TEMPLATE InitElementSource(SoViewVolumeElement)
   assert(SoViewVolumeElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoViewVolumeElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoViewVolumeElement",
-    &SoViewVolumeElement::createInstance);
+  SoViewVolumeElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoViewVolumeElement",
+                       &SoViewVolumeElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoViewVolumeElement::classStackIndex =
-      createStackIndex( SoViewVolumeElement::classTypeId );
-  } else {
-    SoViewVolumeElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoViewVolumeElement::classTypeId);
+  }
+  else {
+    SoViewVolumeElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -116,24 +115,22 @@ SoViewVolumeElement::initClass(
 */
 
 void
-SoViewVolumeElement::cleanClass(
-    void )
+SoViewVolumeElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoViewVolumeElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoViewVolumeElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoViewVolumeElement::createInstance( void )
+  \sa void * SoViewVolumeElement::createInstance(void)
 */
 
-SoViewVolumeElement::SoViewVolumeElement(
-    void )
+SoViewVolumeElement::SoViewVolumeElement(void)
 {
-  setTypeId( SoViewVolumeElement::classTypeId );
-  setStackIndex( SoViewVolumeElement::classStackIndex );
+  setTypeId(SoViewVolumeElement::classTypeId);
+  setStackIndex(SoViewVolumeElement::classStackIndex);
 
   SbViewVolume v;
   v.ortho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f);
@@ -144,8 +141,7 @@ SoViewVolumeElement::SoViewVolumeElement(
   The destructor.
 */
 
-SoViewVolumeElement::~SoViewVolumeElement(
-    void )
+SoViewVolumeElement::~SoViewVolumeElement(void)
 {
 }
 
@@ -157,7 +153,7 @@ SoViewVolumeElement::set(SoState * const state,
 			 const SbViewVolume & viewVolume)
 {
   SoViewVolumeElement * element = (SoViewVolumeElement *)
-    SoReplacedElement::getElement( state, classStackIndex, node);
+    SoReplacedElement::getElement(state, classStackIndex, node);
   element->viewVolume = viewVolume;
 }
 

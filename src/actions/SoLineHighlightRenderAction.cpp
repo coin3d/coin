@@ -29,7 +29,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource( SoLineHighlightRenderAction )
+//$ BEGIN TEMPLATE ActionSource(SoLineHighlightRenderAction)
 
 SoType SoLineHighlightRenderAction::classTypeId = SoType::badType();
 
@@ -102,10 +102,9 @@ SoLineHighlightRenderAction::enableElement(const SoType type, const int stackInd
 */
 
 void
-SoLineHighlightRenderAction::initClass(
-    void )
+SoLineHighlightRenderAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource( SoLineHighlightRenderAction )
+//$ BEGIN TEMPLATE InitActionSource(SoLineHighlightRenderAction)
   assert(SoLineHighlightRenderAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
@@ -123,8 +122,7 @@ SoLineHighlightRenderAction::initClass(
 */
 
 void
-SoLineHighlightRenderAction::cleanClass(
-    void )
+SoLineHighlightRenderAction::cleanClass(void)
 {
 }
 
@@ -154,8 +152,7 @@ SoLineHighlightRenderAction::SoLineHighlightRenderAction(const SbViewportRegion 
   The destructor.
 */
 
-SoLineHighlightRenderAction::~SoLineHighlightRenderAction(
-    void )
+SoLineHighlightRenderAction::~SoLineHighlightRenderAction(void)
 {
 }
 

@@ -148,7 +148,7 @@ SoLevelOfSimplification::cleanClass(void)
   FIXME: write doc
  */
 void
-SoLevelOfSimplification::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoLevelOfSimplification::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

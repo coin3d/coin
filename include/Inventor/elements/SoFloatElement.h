@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_FLOAT_ELEMENT_H_
-#define _SO_FLOAT_ELEMENT_H_
+#ifndef __SOFLOATELEMENT_H__
+#define __SOFLOATELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOFLOATELEMENT)
@@ -30,7 +30,7 @@
 class SoFloatElement : public SoElement {
   typedef SoElement inherited;
 
-//$ BEGIN TEMPLATE AbstractElementHeader( SoFloatElement )
+//$ BEGIN TEMPLATE AbstractElementHeader(SoFloatElement)
 public:
   static  SoType classTypeId;
   static  SoType getClassTypeId(void);
@@ -47,19 +47,19 @@ protected:
 //$ END TEMPLATE AbstractElementHeader
 
 public:
-  virtual void init( SoState * state );
+  virtual void init(SoState * state);
 
-  virtual SbBool matches( const SoElement * element ) const;
-  virtual SoElement * copyMatchInfo( void ) const;
+  virtual SbBool matches(const SoElement * element) const;
+  virtual SoElement * copyMatchInfo(void) const;
 
-  virtual void print( FILE * file ) const;
+  virtual void print(FILE * file) const;
 
-  static  void set( const int stackIndex, SoState * const state,
-                    SoNode * const node, const float value );
-  static  void set( const int stackIndex, SoState * const state,
-                    const float value );
+  static  void set(const int stackIndex, SoState * const state,
+                    SoNode * const node, const float value);
+  static  void set(const int stackIndex, SoState * const state,
+                    const float value);
  
-  static  float get( const int stackIndex, SoState * const state );
+  static  float get(const int stackIndex, SoState * const state);
 
   virtual void setElt(float value);
 
@@ -68,4 +68,4 @@ protected:
 
 };
 
-#endif // ! _SO_FLOAT_ELEMENT_H_
+#endif // !__SOFLOATELEMENT_H__

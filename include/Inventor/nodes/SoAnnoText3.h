@@ -35,7 +35,7 @@
 class SoAnnoText3 : public SoShape {
   typedef SoShape inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoAnnoText3 )
+//$ BEGIN TEMPLATE NodeHeader(SoAnnoText3)
 private:
   static SoType classTypeId;
 

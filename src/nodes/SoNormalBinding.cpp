@@ -200,7 +200,7 @@ SoNormalBinding::GLRender(SoGLRenderAction * action)
   FIXME: write doc
  */
 void
-SoNormalBinding::doAction(SoAction * action)
+SoNormalBinding::doAction(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -211,7 +211,7 @@ SoNormalBinding::doAction(SoAction * action)
   FIXME: write doc
  */
 void
-SoNormalBinding::callback(SoCallbackAction * action)
+SoNormalBinding::callback(SoCallbackAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -222,7 +222,7 @@ SoNormalBinding::callback(SoCallbackAction * action)
   FIXME: write doc
  */
 void
-SoNormalBinding::pick(SoPickAction * action)
+SoNormalBinding::pick(SoPickAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -233,7 +233,7 @@ SoNormalBinding::pick(SoPickAction * action)
   FIXME: write doc
  */
 void
-SoNormalBinding::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoNormalBinding::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

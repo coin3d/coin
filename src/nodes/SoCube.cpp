@@ -311,14 +311,23 @@ SoCube::generatePrimitives(SoAction * action)
 #endif // COIN_EXCLUDE_SOTEXTURECOORDINATEELEMENT
   
 #if !defined(COIN_EXCLUDE_SOMATERIALBINDINGELEMENT)
+  // FIXME: varibles not in use? 19990925 mortene.
+#if 0 // disabled
   SoMaterialBindingElement::Binding binding = 
     SoMaterialBindingElement::get(state);
   
   SbBool materialPerPart = 
     (binding == SoMaterialBindingElement::PER_PART ||
      binding == SoMaterialBindingElement::PER_PART_INDEXED);
+#endif // disabled
+
 #else // COIN_EXCLUDE_SOMATERIALBINDINGELEMENT
+
+  // FIXME: variable not in use? 19990925 mortene.
+#if 0 // disabled
   SbBool materialPerPart = FALSE;
+#endif // disabled
+
 #endif // COIN_EXCLUDE_SOMATERIALBINDINGELEMENT
   
   SbVec3f varray[8];
@@ -376,7 +385,7 @@ SoCube::willUpdateNormalizeElement(SoState *) const
   FIXME: write function documentation
 */
 void 
-SoCube::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
+SoCube::computeBBox(SoAction * /* action */, SbBox3f & box, SbVec3f & center)
 {
   center.setValue(0.0f, 0.0f, 0.0f);
   float w,h,d;
@@ -391,7 +400,7 @@ SoCube::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   FIXME: write function documentation
 */
 void 
-SoCube::rayPick(SoRayPickAction * action)
+SoCube::rayPick(SoRayPickAction * /* action */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -400,11 +409,11 @@ SoCube::rayPick(SoRayPickAction * action)
   FIXME: write function documentation
 */
 SoDetail *
-SoCube::createTriangleDetail(SoRayPickAction * action,
-			     const SoPrimitiveVertex * v1,
-			     const SoPrimitiveVertex * v2,
-			     const SoPrimitiveVertex * v3,
-			     SoPickedPoint * pp)
+SoCube::createTriangleDetail(SoRayPickAction * /* action */,
+			     const SoPrimitiveVertex * /* v1 */,
+			     const SoPrimitiveVertex * /* v2 */,
+			     const SoPrimitiveVertex * /* v3 */,
+			     SoPickedPoint * /* pp */)
 {
   assert(0 && "FIXME: not implemented yet");
   return NULL;
@@ -445,7 +454,7 @@ SoCube::generateVertices(SbVec3f * const varray)
   FIXME: write doc
 */
 void
-SoCube::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoCube::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

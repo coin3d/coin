@@ -42,7 +42,7 @@
 
 #define DIV255 0.0039215686f
 
-//$ BEGIN TEMPLATE ElementSource( SoGLDiffuseColorElement )
+//$ BEGIN TEMPLATE ElementSource(SoGLDiffuseColorElement)
 
 /*!
   \var SoGLDiffuseColorElement::classTypeId
@@ -98,21 +98,21 @@ SoGLDiffuseColorElement::getClassStackIndex(void)
 void
 SoGLDiffuseColorElement::initClass()
 {
-//$ BEGIN TEMPLATE InitElementSource( SoGLDiffuseColorElement )
+//$ BEGIN TEMPLATE InitElementSource(SoGLDiffuseColorElement)
   assert(SoGLDiffuseColorElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoGLDiffuseColorElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoGLDiffuseColorElement",
-    &SoGLDiffuseColorElement::createInstance);
+  SoGLDiffuseColorElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoGLDiffuseColorElement",
+                       &SoGLDiffuseColorElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoGLDiffuseColorElement::classStackIndex =
-      createStackIndex( SoGLDiffuseColorElement::classTypeId );
-  } else {
-    SoGLDiffuseColorElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoGLDiffuseColorElement::classTypeId);
+  }
+  else {
+    SoGLDiffuseColorElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -125,14 +125,14 @@ SoGLDiffuseColorElement::initClass()
 void 
 SoGLDiffuseColorElement::cleanClass()
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoGLDiffuseColorElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoGLDiffuseColorElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoGLDiffuseColorElement::createInstance( void )
+  \sa void * SoGLDiffuseColorElement::createInstance(void)
 */
 
 SoGLDiffuseColorElement::SoGLDiffuseColorElement()

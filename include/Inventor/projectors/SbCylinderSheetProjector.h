@@ -32,7 +32,6 @@ class SbCylinderSheetProjector : public SbCylinderProjector
 public:
   SbCylinderSheetProjector(SbBool orientToEye = TRUE);
   SbCylinderSheetProjector(const SbCylinder & cyl, SbBool orientToEye = TRUE);
-  ~SbCylinderSheetProjector();
 
   virtual SbProjector * copy(void) const;
   virtual SbVec3f project(const SbVec2f & point);

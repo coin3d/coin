@@ -52,7 +52,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource( SoClipPlane )
+//$ BEGIN TEMPLATE NodeSource(SoClipPlane)
 SoType SoClipPlane::classTypeId = SoType::badType();
 
 /*!
@@ -88,7 +88,7 @@ SoClipPlane::getTypeId(void) const
 */
 SoClipPlane::SoClipPlane()
 {
-//$ BEGIN TEMPLATE NodeConstructor( SoClipPlane )
+//$ BEGIN TEMPLATE NodeConstructor(SoClipPlane)
   // Make sure the class has been initialized.
   assert(SoClipPlane::classTypeId != SoType::badType());
 //$ END TEMPLATE NodeConstructor
@@ -112,7 +112,7 @@ SoClipPlane::~SoClipPlane()
 void
 SoClipPlane::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource( ClipPlane )
+//$ BEGIN TEMPLATE InitNodeSource(ClipPlane)
   // Make sure we only initialize once.
   assert(SoClipPlane::classTypeId == SoType::badType());
   // Make sure superclass get initialized before subclass.
@@ -157,7 +157,7 @@ SoClipPlane::doAction(SoAction *action)
   FIXME: write function documentation
 */
 void 
-SoClipPlane::GLRender(SoGLRenderAction *action)
+SoClipPlane::GLRender(SoGLRenderAction * action)
 {
   SoClipPlane::doAction(action);
 }
@@ -168,7 +168,7 @@ SoClipPlane::GLRender(SoGLRenderAction *action)
   FIXME: write doc
 */
 void
-SoClipPlane::callback(SoCallbackAction *action)
+SoClipPlane::callback(SoCallbackAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -179,7 +179,7 @@ SoClipPlane::callback(SoCallbackAction *action)
   FIXME: write doc
 */
 void
-SoClipPlane::pick(SoPickAction *action)
+SoClipPlane::pick(SoPickAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

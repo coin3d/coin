@@ -36,7 +36,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoDecimationTypeElement )
+//$ BEGIN TEMPLATE ElementSource(SoDecimationTypeElement)
 
 /*!
   \var SoDecimationTypeElement::classTypeId
@@ -90,24 +90,23 @@ SoDecimationTypeElement::getClassStackIndex(void)
 */
 
 void
-SoDecimationTypeElement::initClass(
-    void )
+SoDecimationTypeElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoDecimationTypeElement )
+//$ BEGIN TEMPLATE InitElementSource(SoDecimationTypeElement)
   assert(SoDecimationTypeElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoDecimationTypeElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoDecimationTypeElement",
-    &SoDecimationTypeElement::createInstance);
+  SoDecimationTypeElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoDecimationTypeElement",
+                       &SoDecimationTypeElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoDecimationTypeElement::classStackIndex =
-      createStackIndex( SoDecimationTypeElement::classTypeId );
-  } else {
-    SoDecimationTypeElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoDecimationTypeElement::classTypeId);
+  }
+  else {
+    SoDecimationTypeElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -118,24 +117,22 @@ SoDecimationTypeElement::initClass(
 */
 
 void
-SoDecimationTypeElement::cleanClass(
-    void )
+SoDecimationTypeElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoDecimationTypeElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoDecimationTypeElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoDecimationTypeElement::createInstance( void )
+  \sa void * SoDecimationTypeElement::createInstance(void)
 */
 
-SoDecimationTypeElement::SoDecimationTypeElement(
-    void )
+SoDecimationTypeElement::SoDecimationTypeElement(void)
 {
-    setTypeId( SoDecimationTypeElement::classTypeId );
-    setStackIndex( SoDecimationTypeElement::classStackIndex );
+    setTypeId(SoDecimationTypeElement::classTypeId);
+    setStackIndex(SoDecimationTypeElement::classStackIndex);
     this->data = getDefault();
 }
 
@@ -143,18 +140,16 @@ SoDecimationTypeElement::SoDecimationTypeElement(
   The destructor.
 */
 
-SoDecimationTypeElement::~SoDecimationTypeElement(
-    void )
+SoDecimationTypeElement::~SoDecimationTypeElement(void)
 {
 }
 
 //! FIXME: write doc.
 
 void
-SoDecimationTypeElement::set(
-    SoState * const state,
-    SoNode * const node,
-    const Type type )
+SoDecimationTypeElement::set(SoState * const state,
+			     SoNode * const node,
+			     const Type type)
 {
   assert((int)type >= (int)AUTOMATIC && (int)type <= (int)PERCENTAGE);
   SoInt32Element::set(classStackIndex, state, node, type);
@@ -163,16 +158,15 @@ SoDecimationTypeElement::set(
 //! FIXME: write doc.
 
 void
-SoDecimationTypeElement::init(
-    SoState * state )
+SoDecimationTypeElement::init(SoState * state)
 {
-    inherited::init( state );
+    inherited::init(state);
 }
 
 //! FIXME: write doc.
 
 void
-SoDecimationTypeElement::print(FILE *fp) const
+SoDecimationTypeElement::print(FILE * /* fp */) const
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -192,7 +186,7 @@ SoDecimationTypeElement::set(SoState * const state, const Type type)
 SoDecimationTypeElement::Type
 SoDecimationTypeElement::get(SoState * const state)
 { 
-  return (Type) SoInt32Element::get( classStackIndex, state ); 
+  return (Type) SoInt32Element::get(classStackIndex, state); 
 }
 
 //! FIXME: write doc.

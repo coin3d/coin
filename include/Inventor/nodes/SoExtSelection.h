@@ -33,7 +33,7 @@
 class SoExtSelection : public SoSelection {
   typedef SoSelection inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoExtSelection )
+//$ BEGIN TEMPLATE NodeHeader(SoExtSelection)
 private:
   static SoType classTypeId;
 

@@ -354,7 +354,7 @@ SoIndexedTriangleStripSet::GLRender(SoGLRenderAction * action)
     else glNormal3f(0.0f, 0.0f, 1.0f);
   }
   else if (normalCacheUsed && nbind == PER_VERTEX) {
-    nbind == PER_VERTEX_INDEXED;
+    nbind = PER_VERTEX_INDEXED;
   }  
   
   SoMaterialBundle mb(action);
@@ -513,7 +513,7 @@ SoIndexedTriangleStripSet::getNumStrips()
   FIXME: write doc
 */
 void
-SoIndexedTriangleStripSet::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoIndexedTriangleStripSet::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -523,7 +523,8 @@ SoIndexedTriangleStripSet::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   FIXME: write doc
 */
 SbBool
-SoIndexedTriangleStripSet::generateDefaultNormals(SoState * state, SoNormalBundle * nb)
+SoIndexedTriangleStripSet::generateDefaultNormals(SoState * /* state */,
+						  SoNormalBundle * /* nb */)
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;
@@ -534,7 +535,7 @@ SoIndexedTriangleStripSet::generateDefaultNormals(SoState * state, SoNormalBundl
   FIXME: write doc
 */
 void
-SoIndexedTriangleStripSet::generatePrimitives(SoAction * action)
+SoIndexedTriangleStripSet::generatePrimitives(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -545,11 +546,11 @@ SoIndexedTriangleStripSet::generatePrimitives(SoAction * action)
   FIXME: write doc
 */
 SoDetail *
-SoIndexedTriangleStripSet::createTriangleDetail(SoRayPickAction * action,
-						const SoPrimitiveVertex * v1,
-						const SoPrimitiveVertex * v2,
-						const SoPrimitiveVertex * v3,
-						SoPickedPoint * pp)
+SoIndexedTriangleStripSet::createTriangleDetail(SoRayPickAction * /* action */,
+						const SoPrimitiveVertex * /* v1 */,
+						const SoPrimitiveVertex * /* v2 */,
+						const SoPrimitiveVertex * /* v3 */,
+						SoPickedPoint * /* pp */)
 {
   assert(0 && "FIXME: not implemented");
   return NULL;

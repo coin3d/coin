@@ -51,7 +51,7 @@ class SoType; // lame doxygen "fix"
 class SoOverrideElement : public SoElement {
   typedef SoElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoOverrideElement )
+//$ BEGIN TEMPLATE ElementHeader(SoOverrideElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);

@@ -41,7 +41,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource( SoBlinker )
+//$ BEGIN TEMPLATE NodeSource(SoBlinker)
 SoType SoBlinker::classTypeId = SoType::badType();
 
 /*!
@@ -77,7 +77,7 @@ SoBlinker::getTypeId(void) const
 */
 SoBlinker::SoBlinker()
 {
-//$ BEGIN TEMPLATE NodeConstructor( SoBlinker )
+//$ BEGIN TEMPLATE NodeConstructor(SoBlinker)
   // Make sure the class has been initialized.
   assert(SoBlinker::classTypeId != SoType::badType());
 //$ END TEMPLATE NodeConstructor
@@ -101,7 +101,7 @@ SoBlinker::~SoBlinker()
 void
 SoBlinker::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource( Blinker )
+//$ BEGIN TEMPLATE InitNodeSource(Blinker)
   // Make sure we only initialize once.
   assert(SoBlinker::classTypeId == SoType::badType());
   // Make sure superclass get initialized before subclass.
@@ -128,7 +128,7 @@ SoBlinker::cleanClass(void)
   FIXME: write doc
 */
 void
-SoBlinker::getBoundingBox(SoGetBoundingBoxAction * action)
+SoBlinker::getBoundingBox(SoGetBoundingBoxAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -139,7 +139,7 @@ SoBlinker::getBoundingBox(SoGetBoundingBoxAction * action)
   FIXME: write doc
 */
 void
-SoBlinker::write(SoWriteAction * action)
+SoBlinker::write(SoWriteAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

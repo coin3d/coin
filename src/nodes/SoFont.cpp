@@ -190,7 +190,7 @@ SoFont::GLRender(SoGLRenderAction * action)
   FIXME: write doc
  */
 void
-SoFont::callback(SoCallbackAction * action)
+SoFont::callback(SoCallbackAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -201,7 +201,7 @@ SoFont::callback(SoCallbackAction * action)
   FIXME: write doc
  */
 void
-SoFont::pick(SoPickAction * action)
+SoFont::pick(SoPickAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -212,7 +212,7 @@ SoFont::pick(SoPickAction * action)
   FIXME: write doc
  */
 void
-SoFont::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoFont::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

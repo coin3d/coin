@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_PICK_STYLE_ELEMENT_H_
-#define _SO_PICK_STYLE_ELEMENT_H_
+#ifndef __SOPICKSTYLEELEMENT_H__
+#define __SOPICKSTYLEELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOPICKSTYLEELEMENT)
@@ -30,7 +30,7 @@
 class SoPickStyleElement : public SoInt32Element {
   typedef SoInt32Element inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoPickStyleElement )
+//$ BEGIN TEMPLATE ElementHeader(SoPickStyleElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -55,12 +55,11 @@ public:
   };
 
   virtual void init(SoState * state);
-  static  void set(SoState * const state, SoNode * const node,
-		   const int32_t style);
-  static  void set(SoState * const state, const Style style );
-  static  Style get(SoState * const state );
-  static  Style getDefault();
-  
+  static void set(SoState * const state, SoNode * const node,
+		  const int32_t style);
+  static void set(SoState * const state, const Style style);
+  static Style get(SoState * const state);
+  static Style getDefault();
 };
 
-#endif // ! _SO_PICK_STYLE_ELEMENT_H_
+#endif // !__SOPICKSTYLEELEMENT_H__

@@ -254,7 +254,7 @@ SoSphere::willUpdateNormalizeElement(SoState *) const
   FIXME: write function documentation
 */
 void
-SoSphere::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
+SoSphere::computeBBox(SoAction * /* action */, SbBox3f & box, SbVec3f & center)
 {
   float r = this->radius.getValue();
   box.setBounds(SbVec3f(-r, -r, -r), SbVec3f(r, r, r));
@@ -268,7 +268,7 @@ SoSphere::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   FIXME: write doc
  */
 void
-SoSphere::rayPick(SoRayPickAction * action)
+SoSphere::rayPick(SoRayPickAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -279,7 +279,7 @@ SoSphere::rayPick(SoRayPickAction * action)
   FIXME: write doc
  */
 void
-SoSphere::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoSphere::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -290,7 +290,7 @@ SoSphere::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   FIXME: write doc
  */
 void
-SoSphere::generatePrimitives(SoAction * action)
+SoSphere::generatePrimitives(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

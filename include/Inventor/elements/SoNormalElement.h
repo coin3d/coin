@@ -32,7 +32,7 @@
 class SoNormalElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoNormalElement )
+//$ BEGIN TEMPLATE ElementHeader(SoNormalElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);

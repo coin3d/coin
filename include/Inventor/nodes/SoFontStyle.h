@@ -33,7 +33,7 @@
 class SoFontStyle : public SoFont {
   typedef SoFont inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoFontStyle )
+//$ BEGIN TEMPLATE NodeHeader(SoFontStyle)
 private:
   static SoType classTypeId;
 

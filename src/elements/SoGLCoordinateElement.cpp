@@ -35,7 +35,7 @@
 #include <GL/gl.h>
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource( SoGLCoordinateElement )
+//$ BEGIN TEMPLATE ElementSource(SoGLCoordinateElement)
 
 /*!
   \var SoGLCoordinateElement::classTypeId
@@ -89,24 +89,23 @@ SoGLCoordinateElement::getClassStackIndex(void)
 */
 
 void
-SoGLCoordinateElement::initClass(
-    void )
+SoGLCoordinateElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoGLCoordinateElement )
+//$ BEGIN TEMPLATE InitElementSource(SoGLCoordinateElement)
   assert(SoGLCoordinateElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoGLCoordinateElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoGLCoordinateElement",
-    &SoGLCoordinateElement::createInstance);
+  SoGLCoordinateElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoGLCoordinateElement",
+                       &SoGLCoordinateElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoGLCoordinateElement::classStackIndex =
-      createStackIndex( SoGLCoordinateElement::classTypeId );
-  } else {
-    SoGLCoordinateElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoGLCoordinateElement::classTypeId);
+  }
+  else {
+    SoGLCoordinateElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -117,32 +116,29 @@ SoGLCoordinateElement::initClass(
 */
 
 void
-SoGLCoordinateElement::cleanClass(
-    void )
+SoGLCoordinateElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoGLCoordinateElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoGLCoordinateElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoGLCoordinateElement::createInstance( void )
+  \sa void * SoGLCoordinateElement::createInstance(void)
 */
 
-SoGLCoordinateElement::SoGLCoordinateElement(
-    void )
+SoGLCoordinateElement::SoGLCoordinateElement(void)
 {
-    setTypeId( SoGLCoordinateElement::classTypeId );
-    setStackIndex( SoGLCoordinateElement::classStackIndex );
+    setTypeId(SoGLCoordinateElement::classTypeId);
+    setStackIndex(SoGLCoordinateElement::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoGLCoordinateElement::~SoGLCoordinateElement(
-    void )
+SoGLCoordinateElement::~SoGLCoordinateElement(void)
 {
 }
 

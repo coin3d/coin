@@ -37,7 +37,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE MField( SoMFEngine, SoEngine *, SoEngine * )
+//$ BEGIN TEMPLATE MField(SoMFEngine, SoEngine *, SoEngine *)
 
 SoType SoMFEngine::classTypeId = SoType::badType();
 
@@ -257,7 +257,7 @@ SoMFEngine::copyValue(int to, int from)
 void
 SoMFEngine::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass( MFEngine )
+//$ BEGIN TEMPLATE FieldInitClass(MFEngine)
   // Make sure we only initialize once.
   assert(SoMFEngine::classTypeId == SoType::badType());
   // Make sure superclass has been initialized before subclass.
@@ -284,7 +284,7 @@ SoMFEngine::cleanClass(void)
   FIXME: write function documentation
 */
 SbBool
-SoMFEngine::read1Value(SoInput * in, int idx)
+SoMFEngine::read1Value(SoInput * /* in */, int /* idx */)
 {
   assert(0 && "FIXME: not implemented yet");
   return FALSE;
@@ -294,7 +294,7 @@ SoMFEngine::read1Value(SoInput * in, int idx)
   FIXME: write function documentation
 */
 void
-SoMFEngine::write1Value(SoOutput * out, int idx) const
+SoMFEngine::write1Value(SoOutput * /* out */, int /* idx */) const
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -303,7 +303,7 @@ SoMFEngine::write1Value(SoOutput * out, int idx) const
   FIXME: write function documentation
 */
 void
-SoMFEngine::fixCopy(SbBool copyConnections)
+SoMFEngine::fixCopy(SbBool /* copyConnections */)
 {
   assert(0 && "FIXME: not implemented yet");
 }

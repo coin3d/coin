@@ -35,7 +35,7 @@
 class SoRotationXYZ : public SoTransformation {
   typedef SoTransformation inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoRotationXYZ )
+//$ BEGIN TEMPLATE NodeHeader(SoRotationXYZ)
 private:
   static SoType classTypeId;
 

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_BOX_HIGHLIGHT_RENDER_ACTION_H_
-#define _SO_BOX_HIGHLIGHT_RENDER_ACTION_H_
+#ifndef __SOBOXHIGHLIGHTRENDERACTION_H__
+#define __SOBOXHIGHLIGHTRENDERACTION_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOBOXHIGHLIGHTRENDERACTION)
@@ -30,7 +30,7 @@
 class SoBoxHighlightRenderAction : public SoGLRenderAction {
   typedef SoGLRenderAction inherited;
 
-//$ BEGIN TEMPLATE ActionHeader( SoBoxHighlightRenderAction )
+//$ BEGIN TEMPLATE ActionHeader(SoBoxHighlightRenderAction)
 private:
   static SoType classTypeId;
 
@@ -59,4 +59,4 @@ public:
 
 };
 
-#endif // ! _SO_BOX_HIGHLIGHT_RENDER_ACTION_H_
+#endif // !__SOBOXHIGHLIGHTRENDERACTION_H__

@@ -243,7 +243,7 @@ SoNormalGenerator::getNumNormals() const
   Sets the number of generated normals.
 */
 void 
-SoNormalGenerator::setNumNormals(const int num)
+SoNormalGenerator::setNumNormals(const int /* num */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -273,7 +273,8 @@ SoNormalGenerator::getNormal(const int32_t i) const
   Sets the normal at index \a index to \a normal.
 */
 void 
-SoNormalGenerator::setNormal(const int32_t index, const SbVec3f &normal)
+SoNormalGenerator::setNormal(const int32_t /* index */,
+			     const SbVec3f & /* normal */)
 {
   assert(0 && "FIXME: not implemented");
 }

@@ -230,7 +230,7 @@ SoMultipleCopy::affectsState(void) const
   FIXME: write doc
  */
 void
-SoMultipleCopy::doAction(SoAction * action)
+SoMultipleCopy::doAction(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -241,7 +241,7 @@ SoMultipleCopy::doAction(SoAction * action)
   FIXME: write doc
  */
 void
-SoMultipleCopy::callback(SoCallbackAction * action)
+SoMultipleCopy::callback(SoCallbackAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -252,7 +252,7 @@ SoMultipleCopy::callback(SoCallbackAction * action)
   FIXME: write doc
  */
 void
-SoMultipleCopy::pick(SoPickAction * action)
+SoMultipleCopy::pick(SoPickAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -263,7 +263,7 @@ SoMultipleCopy::pick(SoPickAction * action)
   FIXME: write doc
  */
 void
-SoMultipleCopy::handleEvent(SoHandleEventAction * action)
+SoMultipleCopy::handleEvent(SoHandleEventAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -274,7 +274,7 @@ SoMultipleCopy::handleEvent(SoHandleEventAction * action)
   FIXME: write doc
  */
 void
-SoMultipleCopy::getMatrix(SoGetMatrixAction * action)
+SoMultipleCopy::getMatrix(SoGetMatrixAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -285,7 +285,7 @@ SoMultipleCopy::getMatrix(SoGetMatrixAction * action)
   FIXME: write doc
  */
 void
-SoMultipleCopy::search(SoSearchAction * action)
+SoMultipleCopy::search(SoSearchAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -296,7 +296,7 @@ SoMultipleCopy::search(SoSearchAction * action)
   FIXME: write doc
  */
 void
-SoMultipleCopy::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoMultipleCopy::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

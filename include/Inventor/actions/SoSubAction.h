@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_SUB_ACTION_H_
-#define _SO_SUB_ACTION_H_
+#ifndef __SOSUBACTION_H__
+#define __SOSUBACTION_H__
 
 #define SO_ACTION_ADD_METHOD(nodeClass, method)                               \
     addMethod(nodeClass::getClassTypeId(), method)
@@ -26,4 +26,4 @@
 #define SO_ACTION_CONSTRUCTOR(className)                                      \
     traversalMethods = methods
 
-#endif // ! _SO_SUB_ACTION_H_
+#endif // !__SOSUBACTION_H__

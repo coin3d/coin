@@ -33,7 +33,7 @@
 #include <GL/gl.h>
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource( SoGLDrawStyleElement )
+//$ BEGIN TEMPLATE ElementSource(SoGLDrawStyleElement)
 
 /*!
   \var SoGLDrawStyleElement::classTypeId
@@ -87,24 +87,23 @@ SoGLDrawStyleElement::getClassStackIndex(void)
 */
 
 void
-SoGLDrawStyleElement::initClass(
-    void )
+SoGLDrawStyleElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoGLDrawStyleElement )
+//$ BEGIN TEMPLATE InitElementSource(SoGLDrawStyleElement)
   assert(SoGLDrawStyleElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoGLDrawStyleElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoGLDrawStyleElement",
-    &SoGLDrawStyleElement::createInstance);
+  SoGLDrawStyleElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoGLDrawStyleElement",
+                       &SoGLDrawStyleElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoGLDrawStyleElement::classStackIndex =
-      createStackIndex( SoGLDrawStyleElement::classTypeId );
-  } else {
-    SoGLDrawStyleElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoGLDrawStyleElement::classTypeId);
+  }
+  else {
+    SoGLDrawStyleElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -115,40 +114,36 @@ SoGLDrawStyleElement::initClass(
 */
 
 void
-SoGLDrawStyleElement::cleanClass(
-    void )
+SoGLDrawStyleElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoGLDrawStyleElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoGLDrawStyleElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoGLDrawStyleElement::createInstance( void )
+  \sa void * SoGLDrawStyleElement::createInstance(void)
 */
 
-SoGLDrawStyleElement::SoGLDrawStyleElement(
-    void )
+SoGLDrawStyleElement::SoGLDrawStyleElement(void)
 {
-    setTypeId( SoGLDrawStyleElement::classTypeId );
-    setStackIndex( SoGLDrawStyleElement::classStackIndex );
+    setTypeId(SoGLDrawStyleElement::classTypeId);
+    setStackIndex(SoGLDrawStyleElement::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoGLDrawStyleElement::~SoGLDrawStyleElement(
-    void )
+SoGLDrawStyleElement::~SoGLDrawStyleElement(void)
 {
 }
 
 //! FIXME: write doc.
 
 void
-SoGLDrawStyleElement::init(
-    SoState * state )
+SoGLDrawStyleElement::init(SoState * state)
 {
   inherited::init(state);
   this->updategl();
@@ -157,8 +152,7 @@ SoGLDrawStyleElement::init(
 //! FIXME: write doc.
 
 void
-SoGLDrawStyleElement::push(
-    SoState * state )
+SoGLDrawStyleElement::push(SoState * state)
 {
   inherited::push(state);
   // copy data to avoid unessesary GL calls
@@ -169,7 +163,7 @@ SoGLDrawStyleElement::push(
 
 void
 SoGLDrawStyleElement::pop(SoState * state,
-			  const SoElement * prevTopElement )
+			  const SoElement * prevTopElement)
 {
   SoGLDrawStyleElement *prev = (SoGLDrawStyleElement*) prevTopElement;
   if (prev->data != this->data) prev->updategl();

@@ -31,7 +31,7 @@
 
 #include <assert.h>
 
-const static SbColor defaultColor(0.0f, 0.0f, 0.0f);
+static const SbColor defaultColor(0.0f, 0.0f, 0.0f);
 
 /*!
   \fn SoEmissiveColorElement::numColors
@@ -45,7 +45,7 @@ const static SbColor defaultColor(0.0f, 0.0f, 0.0f);
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoEmissiveColorElement )
+//$ BEGIN TEMPLATE ElementSource(SoEmissiveColorElement)
 
 /*!
   \var SoEmissiveColorElement::classTypeId
@@ -101,21 +101,21 @@ SoEmissiveColorElement::getClassStackIndex(void)
 void
 SoEmissiveColorElement::initClass()
 {
-//$ BEGIN TEMPLATE InitElementSource( SoEmissiveColorElement )
+//$ BEGIN TEMPLATE InitElementSource(SoEmissiveColorElement)
   assert(SoEmissiveColorElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoEmissiveColorElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoEmissiveColorElement",
-    &SoEmissiveColorElement::createInstance);
+  SoEmissiveColorElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoEmissiveColorElement",
+                       &SoEmissiveColorElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoEmissiveColorElement::classStackIndex =
-      createStackIndex( SoEmissiveColorElement::classTypeId );
-  } else {
-    SoEmissiveColorElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoEmissiveColorElement::classTypeId);
+  }
+  else {
+    SoEmissiveColorElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -128,14 +128,14 @@ SoEmissiveColorElement::initClass()
 void 
 SoEmissiveColorElement::cleanClass()
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoEmissiveColorElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoEmissiveColorElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoEmissiveColorElement::createInstance( void )
+  \sa void * SoEmissiveColorElement::createInstance(void)
 */
 
 SoEmissiveColorElement::SoEmissiveColorElement()
@@ -155,7 +155,7 @@ SoEmissiveColorElement::~SoEmissiveColorElement()
 //! FIXME: write doc.
 
 void 
-SoEmissiveColorElement::init(SoState * state)
+SoEmissiveColorElement::init(SoState * /* state */)
 {
   this->colors = &defaultColor;
   this->numColors = 1;

@@ -57,7 +57,7 @@ SbName::SbName(void)
 
 SbName::SbName(const char *nameString)
 { 
-  this->entry = SbNameEntry::insert( nameString ); 
+  this->entry = SbNameEntry::insert(nameString); 
 };
 
 /*!
@@ -66,15 +66,15 @@ SbName::SbName(const char *nameString)
 
 SbName::SbName(const SbString & str)
 {
-  this->entry = SbNameEntry::insert( str.getString() );
+  this->entry = SbNameEntry::insert(str.getString());
 }
 
 /*!
   Copy constructor.
 */
 
-SbName::SbName( const SbName & name )
-: entry( name.entry ) 
+SbName::SbName(const SbName & name)
+: entry(name.entry) 
 { 
 }
 
@@ -82,7 +82,7 @@ SbName::SbName( const SbName & name )
   The destructor.
 */
 
-SbName::~SbName( void )
+SbName::~SbName(void)
 {
 /*¡
   no unref?  investigate if SbName can be used for user-settable names.
@@ -96,7 +96,7 @@ SbName::~SbName( void )
 */
 
 const char * 
-SbName::getString( void ) const
+SbName::getString(void) const
 { 
   return entry->str; 
 }
@@ -108,35 +108,35 @@ SbName::getString( void ) const
 int 
 SbName::getLength(void) const
 { 
-  return strlen( entry->str ); 
+  return strlen(entry->str); 
 }
 
 /*!
   This method checks if the \a c character is a valid identifier start
   character for a name.
 
-  \sa SbBool SbName::isIdentChar( const char c )
+  \sa SbBool SbName::isIdentChar(const char c)
 
 */
 
 SbBool
-SbName::isIdentStartChar( const char c )
+SbName::isIdentStartChar(const char c)
 {
-    if ( isdigit( c ) ) return FALSE;
-    return isIdentChar( c );
+    if (isdigit( c) ) return FALSE;
+    return isIdentChar(c);
 }
 
 /*!
   This method checks if the \a c character is a valid character for a
   name.
 
-  \sa SbBool SbName::isIdentStartChar( const char c )
+  \sa SbBool SbName::isIdentStartChar(const char c)
 */
 
 SbBool
-SbName::isIdentChar( const char c )
+SbName::isIdentChar(const char c)
 {
-    if ( isalnum( c ) || c == '_' ) return TRUE;
+    if (isalnum( c) || c == '_' ) return TRUE;
     return FALSE;
 }
 
@@ -155,7 +155,7 @@ SbName::isIdentChar( const char c )
 */
 
 SbBool
-SbName::isBaseNameStartChar( const char c )
+SbName::isBaseNameStartChar(const char c)
 {
   if (c == '_' || (isascii(c) && isalpha(c))) return TRUE;
   return FALSE;
@@ -175,7 +175,7 @@ SbName::isBaseNameStartChar( const char c )
 */
 
 SbBool
-SbName::isBaseNameChar( const char c )
+SbName::isBaseNameChar(const char c)
 {
   const char invalid[] = "\"\'+.\\{}";
   if (c <= 0x20 || c >= 0x7f || strchr(invalid, c)) return FALSE;
@@ -199,9 +199,9 @@ SbName::operator ! (void) const
 */
 
 int 
-operator == ( const SbName & lhs, const char *rhs )
+operator == (const SbName & lhs, const char *rhs)
 { 
-  return lhs.entry->isEqual( rhs ); 
+  return lhs.entry->isEqual(rhs); 
 }
 
 /*!
@@ -210,9 +210,9 @@ operator == ( const SbName & lhs, const char *rhs )
 */
 
 int 
-operator == ( const char *lhs, const SbName & rhs )
+operator == (const char *lhs, const SbName & rhs)
 { 
-  return rhs.entry->isEqual( lhs ); 
+  return rhs.entry->isEqual(lhs); 
 }
 
 /*!
@@ -221,7 +221,7 @@ operator == ( const char *lhs, const SbName & rhs )
 */
 
 int 
-operator == ( const SbName & lhs, const SbName & rhs )
+operator == (const SbName & lhs, const SbName & rhs)
 { 
   return (lhs.entry == rhs.entry); 
 }
@@ -232,9 +232,9 @@ operator == ( const SbName & lhs, const SbName & rhs )
 */
 
 int
-operator != ( const SbName & lhs, const char *rhs )
+operator != (const SbName & lhs, const char *rhs)
 { 
-  return ! lhs.entry->isEqual( rhs ); 
+  return ! lhs.entry->isEqual(rhs); 
 }
 
 /*!
@@ -243,9 +243,9 @@ operator != ( const SbName & lhs, const char *rhs )
 */
 
 int 
-operator != ( const char *lhs, const SbName & rhs )
+operator != (const char *lhs, const SbName & rhs)
 { 
-  return ! rhs.entry->isEqual( lhs ); 
+  return ! rhs.entry->isEqual(lhs); 
 }
 
 /*!
@@ -254,7 +254,7 @@ operator != ( const char *lhs, const SbName & rhs )
 */
 
 int 
-operator != ( const SbName & lhs, const SbName & rhs )
+operator != (const SbName & lhs, const SbName & rhs)
 { 
   return lhs.entry != rhs.entry; 
 }
@@ -267,7 +267,7 @@ operator != ( const SbName & lhs, const SbName & rhs )
   \sa const char * SbName::getString(void)
 */
 
-SbName::operator const char * ( void ) const
+SbName::operator const char * (void) const
 { 
   return entry->str; 
 }
@@ -297,11 +297,11 @@ SbNameChunk * SbNameEntry::chunk;
 */
 
 void
-SbNameEntry::initClass( void )
+SbNameEntry::initClass(void)
 {
     nameTableSize = NAME_TABLE_SIZE;
     nameTable = new SbNameEntry * [ nameTableSize ];
-    for ( int i = 0; i < nameTableSize; i++ )
+    for (int i = 0; i < nameTableSize; i++)
         nameTable[i] = NULL;
     chunk = NULL;
 }
@@ -311,13 +311,12 @@ SbNameEntry::initClass( void )
 */
 
 void
-SbNameEntry::print_info(
-    void )
+SbNameEntry::print_info(void)
 {
-    for ( int i = 0; i < nameTableSize; i++) {
+    for (int i = 0; i < nameTableSize; i++) {
         SbNameEntry * entry = nameTable[ i ];
         int cnt = 0;
-        while ( entry != NULL ) {
+        while (entry != NULL) {
             entry = entry->next;
             cnt++;
         }
@@ -330,16 +329,15 @@ SbNameEntry::print_info(
 */
 
 const char *
-SbNameEntry::findStringAddress(
-    const char * s )
+SbNameEntry::findStringAddress(const char * s)
 {
-    int len = strlen( s ) + 1;
+    int len = strlen(s) + 1;
 
     // names > CHUNK_SIZE characters are truncated.
-    if ( len >= CHUNK_SIZE )
+    if (len >= CHUNK_SIZE)
       len=CHUNK_SIZE;
 
-    if ( chunk == NULL || chunk->bytesLeft < len ) {
+    if (chunk == NULL || chunk->bytesLeft < len) {
       SbNameChunk * newChunk = new SbNameChunk;
       
       newChunk->curByte = newChunk->mem;
@@ -363,25 +361,24 @@ SbNameEntry::findStringAddress(
 */
 
 const SbNameEntry *
-SbNameEntry::insert(
-    const char * const str )
+SbNameEntry::insert(const char * const str)
 {
-    if ( nameTableSize == 0 )
+    if (nameTableSize == 0)
         initClass();
   
-    unsigned long h = SbString::hash( str );
+    unsigned long h = SbString::hash(str);
     unsigned long i = h % nameTableSize;
     SbNameEntry * entry = nameTable[i];
     SbNameEntry * head = entry;
 
-    while ( entry != NULL ) {
-        if ( entry->hashValue == h && entry->isEqual( str ) )
+    while (entry != NULL) {
+        if (entry->hashValue == h && entry->isEqual( str) )
             break;
         entry = entry->next;
     }
   
-    if ( entry == NULL ) {
-        entry = new SbNameEntry( findStringAddress( str ), h, head );
+    if (entry == NULL) {
+        entry = new SbNameEntry(findStringAddress( str), h, head );
         nameTable[ i ] = entry;
     }
 
@@ -395,7 +392,7 @@ SbNameEntry::insert(
 */
 
 /*!
-  \fn SbBool SbNameEntry::isEqual( const char * const string ) const
+  \fn SbBool SbNameEntry::isEqual(const char * const string) const
 
   FIXME: write doc.
 */

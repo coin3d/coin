@@ -59,7 +59,7 @@ public: // yeah, yeah
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoClipPlaneElement )
+//$ BEGIN TEMPLATE ElementSource(SoClipPlaneElement)
 
 /*!
   \var SoClipPlaneElement::classTypeId
@@ -113,24 +113,23 @@ SoClipPlaneElement::getClassStackIndex(void)
 */
 
 void
-SoClipPlaneElement::initClass(
-    void )
+SoClipPlaneElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoClipPlaneElement )
+//$ BEGIN TEMPLATE InitElementSource(SoClipPlaneElement)
   assert(SoClipPlaneElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoClipPlaneElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoClipPlaneElement",
-    &SoClipPlaneElement::createInstance);
+  SoClipPlaneElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoClipPlaneElement",
+                       &SoClipPlaneElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoClipPlaneElement::classStackIndex =
-      createStackIndex( SoClipPlaneElement::classTypeId );
-  } else {
-    SoClipPlaneElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoClipPlaneElement::classTypeId);
+  }
+  else {
+    SoClipPlaneElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -141,10 +140,9 @@ SoClipPlaneElement::initClass(
 */
 
 void
-SoClipPlaneElement::cleanClass(
-    void )
+SoClipPlaneElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoClipPlaneElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoClipPlaneElement)
 //$ END TEMPLATE CleanElementSource
 }
 
@@ -155,11 +153,11 @@ SoClipPlaneElement::cleanClass(
 */
 
 SoClipPlaneElement::SoClipPlaneElement()
-  : startIndex( 0 )
+  : startIndex(0)
 {
   this->num = 0;
-  setTypeId( SoClipPlaneElement::classTypeId );
-  setStackIndex( SoClipPlaneElement::classStackIndex );
+  setTypeId(SoClipPlaneElement::classTypeId);
+  setStackIndex(SoClipPlaneElement::classStackIndex);
 }
 
 /*!
@@ -174,7 +172,7 @@ SoClipPlaneElement::~SoClipPlaneElement()
 
 void
 SoClipPlaneElement::add(SoState * const state,
-			SoNode * const node,
+			SoNode * const /* node */,
 			const SbPlane & plane)
 {
   SoClipPlaneElement *element = 
@@ -205,8 +203,8 @@ SoClipPlaneElement::getNum() const
 //! FIXME: write doc.
 
 const SbPlane &
-SoClipPlaneElement::get(const int index,
-			const SbBool inWorldSpace) const
+SoClipPlaneElement::get(const int /* index */,
+			const SbBool /* inWorldSpace */) const
 {
   static SbPlane dummy;
 
@@ -221,10 +219,10 @@ SoClipPlaneElement::get(const int index,
 //! FIXME: write doc.
 
 void
-SoClipPlaneElement::print(FILE * file) const
+SoClipPlaneElement::print(FILE * /* file */) const
 {
 //    fprintf(file, "SoClipPlaneElement[%p]: num = %d, start = %d\n", this,
-//  	  this->planes.getLength(), this->startIndex );
+//  	  this->planes.getLength(), this->startIndex);
 }
 
 /*!

@@ -175,7 +175,7 @@ SoTranslation::getBoundingBox(SoGetBoundingBoxAction * action)
   FIXME: write doc
  */
 void
-SoTranslation::callback(SoCallbackAction * action)
+SoTranslation::callback(SoCallbackAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -186,7 +186,7 @@ SoTranslation::callback(SoCallbackAction * action)
   FIXME: write doc
  */
 void
-SoTranslation::getMatrix(SoGetMatrixAction * action)
+SoTranslation::getMatrix(SoGetMatrixAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -197,7 +197,7 @@ SoTranslation::getMatrix(SoGetMatrixAction * action)
   FIXME: write doc
  */
 void
-SoTranslation::pick(SoPickAction * action)
+SoTranslation::pick(SoPickAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -208,7 +208,7 @@ SoTranslation::pick(SoPickAction * action)
   FIXME: write doc
  */
 void
-SoTranslation::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoTranslation::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

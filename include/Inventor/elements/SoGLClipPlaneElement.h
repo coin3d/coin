@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_GL_CLIP_PLANE_ELEMENT_H_
-#define _SO_GL_CLIP_PLANE_ELEMENT_H_
+#ifndef __SOGLCLIPPLANEELEMENT_H__
+#define __SOGLCLIPPLANEELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOGLCLIPPLANEELEMENT)
@@ -30,7 +30,7 @@
 class SoGLClipPlaneElement : public SoClipPlaneElement {
   typedef SoClipPlaneElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoGLClipPlaneElement )
+//$ BEGIN TEMPLATE ElementHeader(SoGLClipPlaneElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -50,7 +50,7 @@ protected:
 public:
   virtual void init(SoState * state);
   virtual void pop(SoState * state,
-		   const SoElement * prevTopElement );
+		   const SoElement * prevTopElement);
   static  int getMaxGLPlanes(void);
 
 protected:
@@ -62,4 +62,4 @@ private:
 
 };
 
-#endif // ! _SO_GL_CLIP_PLANE_ELEMENT_H_
+#endif // !__SOGLCLIPPLANEELEMENT_H__

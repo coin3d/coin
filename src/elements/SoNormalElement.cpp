@@ -44,7 +44,7 @@ static SbVec3f defaultNormal(0.0f, 0.0f, 1.0f);
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoNormalElement )
+//$ BEGIN TEMPLATE ElementSource(SoNormalElement)
 
 /*!
   \var SoNormalElement::classTypeId
@@ -99,21 +99,21 @@ SoNormalElement::getClassStackIndex(void)
 void
 SoNormalElement::initClass()
 {
-//$ BEGIN TEMPLATE InitElementSource( SoNormalElement )
+//$ BEGIN TEMPLATE InitElementSource(SoNormalElement)
   assert(SoNormalElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoNormalElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoNormalElement",
-    &SoNormalElement::createInstance);
+  SoNormalElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoNormalElement",
+                       &SoNormalElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoNormalElement::classStackIndex =
-      createStackIndex( SoNormalElement::classTypeId );
-  } else {
-    SoNormalElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoNormalElement::classTypeId);
+  }
+  else {
+    SoNormalElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -125,20 +125,20 @@ SoNormalElement::initClass()
 void
 SoNormalElement::cleanClass()
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoNormalElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoNormalElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoNormalElement::createInstance( void )
+  \sa void * SoNormalElement::createInstance(void)
 */
 
 SoNormalElement::SoNormalElement()
 {
-  setTypeId( SoNormalElement::classTypeId );
-  setStackIndex( SoNormalElement::classStackIndex );
+  setTypeId(SoNormalElement::classTypeId);
+  setStackIndex(SoNormalElement::classStackIndex);
 }
 
 /*!
@@ -178,7 +178,7 @@ SoNormalElement::getArrayPtr(SoState * const state)
 //! FIXME: write doc.
 
 void
-SoNormalElement::print(FILE * file) const
+SoNormalElement::print(FILE * /* file */) const
 {
   assert(0 && "FIXME: not implemented");
 }

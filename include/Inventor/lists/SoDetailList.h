@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_DETAIL_LIST_H_
-#define _SO_DETAIL_LIST_H_
+#ifndef __SODETAILLIST_H__
+#define __SODETAILLIST_H__
 
 #include <Inventor/lists/SbPList.h>
 
@@ -40,4 +40,4 @@ public:
   void set(const int i, SoDetail * const ptr);
 };
 
-#endif // ! _SO_DETAIL_LIST_H_
+#endif // !__SODETAILLIST_H__

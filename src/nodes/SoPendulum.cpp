@@ -85,7 +85,7 @@ SoPendulum::getTypeId(void) const
 */
 SoPendulum::SoPendulum()
 {
-//$ BEGIN TEMPLATE NodeConstructor(SoPendulum )
+//$ BEGIN TEMPLATE NodeConstructor(SoPendulum)
   // Make sure the class has been initialized.
   assert(SoPendulum::classTypeId != SoType::badType());
 //$ END TEMPLATE NodeConstructor
@@ -111,7 +111,7 @@ SoPendulum::~SoPendulum()
 void
 SoPendulum::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource(Pendulum )
+//$ BEGIN TEMPLATE InitNodeSource(Pendulum)
   // Make sure we only initialize once.
   assert(SoPendulum::classTypeId == SoType::badType());
   // Make sure superclass get initialized before subclass.

@@ -43,7 +43,7 @@ public:
   typedef void SoSceneManagerRenderCB(void * userData, SoSceneManager * mgr);
   
   SoSceneManager(void);
-  ~SoSceneManager();
+  virtual ~SoSceneManager();
   virtual void render(const SbBool clearWindow = TRUE, 
 		      const SbBool clearZbuffer = TRUE);
   virtual SbBool processEvent(const SoEvent * const event);

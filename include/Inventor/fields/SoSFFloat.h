@@ -29,7 +29,7 @@
 class SoSFFloat : public SoSField {
   typedef SoSField inherited;
   
-//$ BEGIN TEMPLATE SField( SoSFFloat, float, const float )
+//$ BEGIN TEMPLATE SField(SoSFFloat, float, const float)
 private:
   static SoType classTypeId;
 

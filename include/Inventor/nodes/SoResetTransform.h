@@ -32,7 +32,7 @@
 class SoResetTransform : public SoTransformation {
   typedef SoTransformation inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoResetTransform )
+//$ BEGIN TEMPLATE NodeHeader(SoResetTransform)
 private:
   static SoType classTypeId;
 

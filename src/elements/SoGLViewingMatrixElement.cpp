@@ -40,7 +40,7 @@
 
 #include <GL/gl.h>
 
-//$ BEGIN TEMPLATE ElementSource( SoGLViewingMatrixElement )
+//$ BEGIN TEMPLATE ElementSource(SoGLViewingMatrixElement)
 
 /*!
   \var SoGLViewingMatrixElement::classTypeId
@@ -94,24 +94,23 @@ SoGLViewingMatrixElement::getClassStackIndex(void)
 */
 
 void
-SoGLViewingMatrixElement::initClass(
-    void )
+SoGLViewingMatrixElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoGLViewingMatrixElement )
+//$ BEGIN TEMPLATE InitElementSource(SoGLViewingMatrixElement)
   assert(SoGLViewingMatrixElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoGLViewingMatrixElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoGLViewingMatrixElement",
-    &SoGLViewingMatrixElement::createInstance);
+  SoGLViewingMatrixElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoGLViewingMatrixElement",
+                       &SoGLViewingMatrixElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoGLViewingMatrixElement::classStackIndex =
-      createStackIndex( SoGLViewingMatrixElement::classTypeId );
-  } else {
-    SoGLViewingMatrixElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoGLViewingMatrixElement::classTypeId);
+  }
+  else {
+    SoGLViewingMatrixElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -122,33 +121,30 @@ SoGLViewingMatrixElement::initClass(
 */
 
 void
-SoGLViewingMatrixElement::cleanClass(
-    void )
+SoGLViewingMatrixElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoGLViewingMatrixElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoGLViewingMatrixElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoGLViewingMatrixElement::createInstance( void )
+  \sa void * SoGLViewingMatrixElement::createInstance(void)
 */
 
-SoGLViewingMatrixElement::SoGLViewingMatrixElement(
-    void )
-  : state( NULL )
+SoGLViewingMatrixElement::SoGLViewingMatrixElement(void)
+  : state(NULL)
 {
-    setTypeId( SoGLViewingMatrixElement::classTypeId );
-    setStackIndex( SoGLViewingMatrixElement::classStackIndex );
+    setTypeId(SoGLViewingMatrixElement::classTypeId);
+    setStackIndex(SoGLViewingMatrixElement::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoGLViewingMatrixElement::~SoGLViewingMatrixElement(
-    void )
+SoGLViewingMatrixElement::~SoGLViewingMatrixElement(void)
 {
 }
 
@@ -161,7 +157,7 @@ SoGLViewingMatrixElement::init(SoState * state)
   SoDebugError::postInfo("SoGLViewingMatrixElement::init",
 			 "");
 #endif // 0
-  inherited::init( state );
+  inherited::init(state);
   this->state = state;
   glLoadIdentity(); // maybe not strictly necessary?
 }

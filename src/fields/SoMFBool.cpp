@@ -48,7 +48,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE MField( SoMFBool, SbBool, SbBool )
+//$ BEGIN TEMPLATE MField(SoMFBool, SbBool, SbBool)
 
 SoType SoMFBool::classTypeId = SoType::badType();
 
@@ -268,7 +268,7 @@ SoMFBool::copyValue(int to, int from)
 void
 SoMFBool::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass( MFBool )
+//$ BEGIN TEMPLATE FieldInitClass(MFBool)
   // Make sure we only initialize once.
   assert(SoMFBool::classTypeId == SoType::badType());
   // Make sure superclass has been initialized before subclass.
@@ -296,7 +296,7 @@ SoMFBool::read1Value(SoInput * in, int idx)
 {
   SoSFBool sfbool;
   SbBool result;
-  if (result = sfbool.readValue(in)) this->set1Value(idx, sfbool.getValue());
+  if ((result = sfbool.readValue(in))) this->set1Value(idx, sfbool.getValue());
   return result;
 }
 

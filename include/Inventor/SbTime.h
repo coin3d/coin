@@ -64,7 +64,7 @@ public:
   unsigned long getMsecValue(void) const;
   SbString format(const char * const fmt = "%S.%i") const;
   SbString formatDate(const char * const fmt = "%A, %D %r") const;
-  SbBool parsedate( const char * const date );
+  SbBool parsedate(const char * const date);
   friend SbTime operator +(const SbTime& t0, const SbTime& t1);
   friend SbTime operator -(const SbTime& t0, const SbTime& t1);
   SbTime& operator +=(const SbTime& tm);

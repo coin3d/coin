@@ -29,7 +29,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource( SoCallbackAction )
+//$ BEGIN TEMPLATE ActionSource(SoCallbackAction)
 
 SoType SoCallbackAction::classTypeId = SoType::badType();
 
@@ -102,10 +102,9 @@ SoCallbackAction::enableElement(const SoType type, const int stackIndex)
 */
 
 void
-SoCallbackAction::initClass(
-    void )
+SoCallbackAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource( SoCallbackAction )
+//$ BEGIN TEMPLATE InitActionSource(SoCallbackAction)
   assert(SoCallbackAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
@@ -122,8 +121,7 @@ SoCallbackAction::initClass(
 */
 
 void
-SoCallbackAction::cleanClass(
-    void )
+SoCallbackAction::cleanClass(void)
 {
 }
 
@@ -133,8 +131,7 @@ SoCallbackAction::cleanClass(
   A constructor.
 */
 
-SoCallbackAction::SoCallbackAction(
-    void )
+SoCallbackAction::SoCallbackAction(void)
 {
 }
 
@@ -142,8 +139,7 @@ SoCallbackAction::SoCallbackAction(
   The destructor.
 */
 
-SoCallbackAction::~SoCallbackAction(
-    void )
+SoCallbackAction::~SoCallbackAction(void)
 {
 }
 

@@ -30,7 +30,7 @@
 
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource( SoFocalDistanceElement )
+//$ BEGIN TEMPLATE ElementSource(SoFocalDistanceElement)
 
 /*!
   \var SoFocalDistanceElement::classTypeId
@@ -84,24 +84,23 @@ SoFocalDistanceElement::getClassStackIndex(void)
 */
 
 void
-SoFocalDistanceElement::initClass(
-    void )
+SoFocalDistanceElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoFocalDistanceElement )
+//$ BEGIN TEMPLATE InitElementSource(SoFocalDistanceElement)
   assert(SoFocalDistanceElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoFocalDistanceElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoFocalDistanceElement",
-    &SoFocalDistanceElement::createInstance);
+  SoFocalDistanceElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoFocalDistanceElement",
+                       &SoFocalDistanceElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoFocalDistanceElement::classStackIndex =
-      createStackIndex( SoFocalDistanceElement::classTypeId );
-  } else {
-    SoFocalDistanceElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoFocalDistanceElement::classTypeId);
+  }
+  else {
+    SoFocalDistanceElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -112,24 +111,22 @@ SoFocalDistanceElement::initClass(
 */
 
 void
-SoFocalDistanceElement::cleanClass(
-    void )
+SoFocalDistanceElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoFocalDistanceElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoFocalDistanceElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoFocalDistanceElement::createInstance( void )
+  \sa void * SoFocalDistanceElement::createInstance(void)
 */
 
-SoFocalDistanceElement::SoFocalDistanceElement(
-    void )
+SoFocalDistanceElement::SoFocalDistanceElement(void)
 {
-    setTypeId( SoFocalDistanceElement::classTypeId );
-    setStackIndex( SoFocalDistanceElement::classStackIndex );
+    setTypeId(SoFocalDistanceElement::classTypeId);
+    setStackIndex(SoFocalDistanceElement::classStackIndex);
     this->data = getDefault();
 }
 
@@ -137,18 +134,17 @@ SoFocalDistanceElement::SoFocalDistanceElement(
   The destructor.
 */
 
-SoFocalDistanceElement::~SoFocalDistanceElement( // virtual protected
-    void )
+SoFocalDistanceElement::~SoFocalDistanceElement(// virtual protected
+    void)
 {
 }
 
 //! FIXME: write doc.
 
 void
-SoFocalDistanceElement::init(
-    SoState * state )
+SoFocalDistanceElement::init(SoState * state)
 {
-    inherited::init( state );
+    inherited::init(state);
     this->data = getDefault();
 }
 
@@ -158,7 +154,7 @@ void
 SoFocalDistanceElement::set(SoState * const state, SoNode * const node,
 			    const float distance)
 { 
-  SoFloatElement::set( classStackIndex, state, node, distance );
+  SoFloatElement::set(classStackIndex, state, node, distance);
 }
 
 //! FIXME: write doc.
@@ -166,7 +162,7 @@ SoFocalDistanceElement::set(SoState * const state, SoNode * const node,
 void 
 SoFocalDistanceElement::set(SoState * const state, const float distance)
 { 
-  set( state, NULL, distance ); 
+  set(state, NULL, distance); 
 }
 
 //! FIXME: write doc.
@@ -174,7 +170,7 @@ SoFocalDistanceElement::set(SoState * const state, const float distance)
 float 
 SoFocalDistanceElement::get(SoState * const state)
 { 
-  return SoFloatElement::get( classStackIndex, state ); 
+  return SoFloatElement::get(classStackIndex, state); 
 }
 
 //! FIXME: write doc.

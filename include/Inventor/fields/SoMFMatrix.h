@@ -30,7 +30,7 @@
 class SoMFMatrix : public SoMField {
   typedef SoMField inherited;
 
-//$ BEGIN TEMPLATE MField( SoMFMatrix, SbMatrix, const SbMatrix & )
+//$ BEGIN TEMPLATE MField(SoMFMatrix, SbMatrix, const SbMatrix &)
 private:
   static SoType classTypeId;
 

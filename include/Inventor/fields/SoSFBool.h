@@ -28,7 +28,7 @@
 
 class SoSFBool : public SoSField {
   typedef SoSField inherited;
-//$ BEGIN TEMPLATE SField( SoSFBool, SbBool, const SbBool )
+//$ BEGIN TEMPLATE SField(SoSFBool, SbBool, const SbBool)
 private:
   static SoType classTypeId;
 

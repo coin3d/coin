@@ -32,7 +32,7 @@
 class SoNormalBinding : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoNormalBinding )
+//$ BEGIN TEMPLATE NodeHeader(SoNormalBinding)
 private:
   static SoType classTypeId;
 

@@ -32,7 +32,7 @@
 class SoFaceSet : public SoNonIndexedShape {
   typedef SoNonIndexedShape inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoFaceSet )
+//$ BEGIN TEMPLATE NodeHeader(SoFaceSet)
 private:
   static SoType classTypeId;
 

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_GL_POLYGON_OFFSET_ELEMENT_H_
-#define _SO_GL_POLYGON_OFFSET_ELEMENT_H_
+#ifndef __SOGLPOLYGONOFFSETELEMENT_H__
+#define __SOGLPOLYGONOFFSETELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOGLPOLYGONOFFSETELEMENT)
@@ -30,7 +30,7 @@
 class SoGLPolygonOffsetElement : public SoPolygonOffsetElement {
   typedef SoPolygonOffsetElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoGLPolygonOffsetElement )
+//$ BEGIN TEMPLATE ElementHeader(SoGLPolygonOffsetElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -68,4 +68,4 @@ private:
 
 };
 
-#endif // ! _SO_GL_POLYGON_OFFSET_ELEMENT_H_
+#endif // !__SOGLPOLYGONOFFSETELEMENT_H__

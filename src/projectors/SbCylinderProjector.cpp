@@ -54,7 +54,7 @@
 /*!
   FIXME: write doc
 */
-SbCylinderProjector::SbCylinderProjector(SbBool orientToEye)
+SbCylinderProjector::SbCylinderProjector(SbBool /* orientToEye */)
 {
   // FIXME: not implemented.
   assert(0);
@@ -63,17 +63,8 @@ SbCylinderProjector::SbCylinderProjector(SbBool orientToEye)
 /*!
   FIXME: write doc
 */
-SbCylinderProjector::SbCylinderProjector(const SbCylinder & cyl,
-					 SbBool orientToEye)
-{
-  // FIXME: not implemented.
-  assert(0);
-}
-
-/*!
-  FIXME: write doc
-*/
-SbCylinderProjector::~SbCylinderProjector()
+SbCylinderProjector::SbCylinderProjector(const SbCylinder & /* cyl */,
+					 SbBool /* orientToEye */)
 {
   // FIXME: not implemented.
   assert(0);
@@ -83,8 +74,8 @@ SbCylinderProjector::~SbCylinderProjector()
   FIXME: write doc
 */
 SbVec3f
-SbCylinderProjector::projectAndGetRotation(const SbVec2f &point,
-					   SbRotation &rot)
+SbCylinderProjector::projectAndGetRotation(const SbVec2f &/* point */,
+					   SbRotation &/* rot */)
 {
   // FIXME: not implemented.
   assert(0);
@@ -96,7 +87,8 @@ SbCylinderProjector::projectAndGetRotation(const SbVec2f &point,
   FIXME: write doc
 */
 SbRotation
-SbCylinderProjector::getRotation(const SbVec3f &point1, const SbVec3f &point2)
+SbCylinderProjector::getRotation(const SbVec3f &/* point1 */,
+				 const SbVec3f &/* point2 */)
 {
   // FIXME: not implemented.
   assert(0);
@@ -108,7 +100,7 @@ SbCylinderProjector::getRotation(const SbVec3f &point1, const SbVec3f &point2)
   FIXME: write doc
 */
 void
-SbCylinderProjector::setCylinder(const SbCylinder &cyl)
+SbCylinderProjector::setCylinder(const SbCylinder &/* cyl */)
 {
   // FIXME: not implemented.
   assert(0);
@@ -130,7 +122,7 @@ SbCylinderProjector::getCylinder(void) const
   FIXME: write doc
 */
 void
-SbCylinderProjector::setOrientToEye(SbBool orientToEye)
+SbCylinderProjector::setOrientToEye(SbBool /* orientToEye */)
 {
   // FIXME: not implemented.
   assert(0);
@@ -151,7 +143,7 @@ SbCylinderProjector::isOrientToEye(void) const
   FIXME: write doc
 */
 void
-SbCylinderProjector::setFront(SbBool isFront)
+SbCylinderProjector::setFront(SbBool /* isFront */)
 {
   // FIXME: not implemented.
   assert(0);
@@ -172,7 +164,7 @@ SbCylinderProjector::isFront(void) const
   FIXME: write doc
 */
 SbBool
-SbCylinderProjector::isPointInFront(const SbVec3f &point) const
+SbCylinderProjector::isPointInFront(const SbVec3f &/* point */) const
 {
   // FIXME: not implemented.
   assert(0);
@@ -183,8 +175,8 @@ SbCylinderProjector::isPointInFront(const SbVec3f &point) const
   FIXME: write doc
 */
 SbBool
-SbCylinderProjector::intersectCylinderFront(const SbLine & line,
-					    SbVec3f & result)
+SbCylinderProjector::intersectCylinderFront(const SbLine & /* line */,
+					    SbVec3f & /* result */)
 {
   // FIXME: not implemented.
   assert(0);
@@ -195,7 +187,7 @@ SbCylinderProjector::intersectCylinderFront(const SbLine & line,
   FIXME: write doc
 */
 void
-SbCylinderProjector::setWorkingSpace(const SbMatrix & space)
+SbCylinderProjector::setWorkingSpace(const SbMatrix & /* space */)
 {
   // FIXME: not implemented.
   assert(0);

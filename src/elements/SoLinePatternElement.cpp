@@ -30,7 +30,7 @@
 
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource( SoLinePatternElement )
+//$ BEGIN TEMPLATE ElementSource(SoLinePatternElement)
 
 /*!
   \var SoLinePatternElement::classTypeId
@@ -84,24 +84,23 @@ SoLinePatternElement::getClassStackIndex(void)
 */
 
 void
-SoLinePatternElement::initClass(
-    void )
+SoLinePatternElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoLinePatternElement )
+//$ BEGIN TEMPLATE InitElementSource(SoLinePatternElement)
   assert(SoLinePatternElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoLinePatternElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoLinePatternElement",
-    &SoLinePatternElement::createInstance);
+  SoLinePatternElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoLinePatternElement",
+                       &SoLinePatternElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoLinePatternElement::classStackIndex =
-      createStackIndex( SoLinePatternElement::classTypeId );
-  } else {
-    SoLinePatternElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoLinePatternElement::classTypeId);
+  }
+  else {
+    SoLinePatternElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -112,24 +111,22 @@ SoLinePatternElement::initClass(
 */
 
 void
-SoLinePatternElement::cleanClass(
-    void )
+SoLinePatternElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoLinePatternElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoLinePatternElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Canæt be used directly.
 
-  \sa void * SoLinePatternElement::createInstance( void )
+  \sa void * SoLinePatternElement::createInstance(void)
 */
 
-SoLinePatternElement::SoLinePatternElement(
-    void )
+SoLinePatternElement::SoLinePatternElement(void)
 {
-    setTypeId( SoLinePatternElement::classTypeId );
-    setStackIndex( SoLinePatternElement::classStackIndex );
+    setTypeId(SoLinePatternElement::classTypeId);
+    setStackIndex(SoLinePatternElement::classStackIndex);
     this->data = getDefault();
 }
 
@@ -137,29 +134,26 @@ SoLinePatternElement::SoLinePatternElement(
   The destructor.
 */
 
-SoLinePatternElement::~SoLinePatternElement(
-    void )
+SoLinePatternElement::~SoLinePatternElement(void)
 {
 }
 
 //! FIXME: write doc.
 
 void
-SoLinePatternElement::set(
-    SoState * const state,
-    SoNode * const node,
-    const int32_t pattern )
+SoLinePatternElement::set(SoState * const state,
+			  SoNode * const node,
+			  const int32_t pattern)
 {
-    SoInt32Element::set( classStackIndex, state, node, pattern );
+    SoInt32Element::set(classStackIndex, state, node, pattern);
 }
 
 //! FIXME: write doc.
 
 void
-SoLinePatternElement::init(
-    SoState * state )
+SoLinePatternElement::init(SoState * state)
 {
-  inherited::init( state );
+  inherited::init(state);
 
   this->data = SoLinePatternElement::getDefault();
 }
@@ -179,7 +173,7 @@ SoLinePatternElement::set(SoState * const state, const int32_t pattern)
 int32_t 
 SoLinePatternElement::get(SoState * const state)
 { 
-  return SoInt32Element::get( classStackIndex, state ); 
+  return SoInt32Element::get(classStackIndex, state); 
 }
 
 //! FIXME: write doc.

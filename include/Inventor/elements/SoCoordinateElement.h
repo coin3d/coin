@@ -32,7 +32,7 @@
 class SoCoordinateElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoCoordinateElement )
+//$ BEGIN TEMPLATE ElementHeader(SoCoordinateElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);

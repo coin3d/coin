@@ -35,7 +35,7 @@ class SoCoordinateElement;
 class SoIndexedShape : public SoVertexShape {
   typedef SoVertexShape inherited;
 
-//$ BEGIN TEMPLATE NodeAbstractHeader( SoIndexedShape )
+//$ BEGIN TEMPLATE NodeAbstractHeader(SoIndexedShape)
 private:
   static SoType classTypeId;
 

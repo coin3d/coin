@@ -34,7 +34,7 @@
 class SoVertexProperty : public SoNode {
   typedef SoNode inherited;
   
-//$ BEGIN TEMPLATE NodeHeader( SoVertexProperty )
+//$ BEGIN TEMPLATE NodeHeader(SoVertexProperty)
 private:
   static SoType classTypeId;
 

@@ -32,7 +32,7 @@
 class SoPathSwitch : public SoGroup {
   typedef SoGroup inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoPathSwitch )
+//$ BEGIN TEMPLATE NodeHeader(SoPathSwitch)
 private:
   static SoType classTypeId;
 

@@ -30,7 +30,7 @@
 class SoSFUShort : public SoSField {
   typedef SoSField inherited;
 
-//$ BEGIN TEMPLATE SField( SoSFUShort, unsigned short, const unsigned short )
+//$ BEGIN TEMPLATE SField(SoSFUShort, unsigned short, const unsigned short)
 private:
   static SoType classTypeId;
 

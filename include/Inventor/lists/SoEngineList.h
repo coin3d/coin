@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_ENGINE_LIST_H_
-#define _SO_ENGINE_LIST_H_
+#ifndef __SOENGINELIST_H__
+#define __SOENGINELIST_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOENGINE)
@@ -41,4 +41,4 @@ public:
   SoEngineList &operator =(const SoEngineList &l);
 };
 
-#endif // ! _SO_ENGINE_LIST_H_
+#endif // !__SOENGINELIST_H__

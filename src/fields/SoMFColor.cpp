@@ -38,7 +38,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE MField( SoMFColor, SbColor, const SbColor & )
+//$ BEGIN TEMPLATE MField(SoMFColor, SbColor, const SbColor &)
 
 SoType SoMFColor::classTypeId = SoType::badType();
 
@@ -258,7 +258,7 @@ SoMFColor::copyValue(int to, int from)
 void
 SoMFColor::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass( MFColor )
+//$ BEGIN TEMPLATE FieldInitClass(MFColor)
   // Make sure we only initialize once.
   assert(SoMFColor::classTypeId == SoType::badType());
   // Make sure superclass has been initialized before subclass.
@@ -287,7 +287,8 @@ SoMFColor::read1Value(SoInput * in, int idx)
 {
   SoSFColor sfcolor;
   SbBool result;
-  if (result = sfcolor.readValue(in)) this->set1Value(idx, sfcolor.getValue());
+  if ((result = sfcolor.readValue(in)))
+    this->set1Value(idx, sfcolor.getValue());
   return result;
 }
 
@@ -316,7 +317,8 @@ SoMFColor::setValues(const int start, const int num, const float rgb[][3])
   FIXME: write function documentation
 */
 void
-SoMFColor::setHSVValues(const int start, const int num, const float hsv[][3])
+SoMFColor::setHSVValues(const int /* start */, const int /* num */,
+			const float /* hsv */[][3])
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -352,7 +354,7 @@ SoMFColor::setValue(const float rgb[3])
   FIXME: write function documentation
 */
 void
-SoMFColor::setHSVValue(const float h, const float s, const float v)
+SoMFColor::setHSVValue(const float /* h */, const float /* s */, const float /* v */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -361,7 +363,7 @@ SoMFColor::setHSVValue(const float h, const float s, const float v)
   FIXME: write function documentation
 */
 void
-SoMFColor::setHSVValue(const float hsv[3])
+SoMFColor::setHSVValue(const float /* hsv */[3])
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -397,7 +399,8 @@ SoMFColor::set1Value(const int idx, const float rgb[3])
   FIXME: write function documentation
 */
 void
-SoMFColor::set1HSVValue(const int idx, const float h, const float s, const float v)
+SoMFColor::set1HSVValue(const int /* idx */,
+			const float /* h */, const float /* s */, const float /* v */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -406,7 +409,7 @@ SoMFColor::set1HSVValue(const int idx, const float h, const float s, const float
   FIXME: write function documentation
 */
 void
-SoMFColor::set1HSVValue(const int idx, const float hsv[3])
+SoMFColor::set1HSVValue(const int /* idx */, const float /* hsv */[3])
 {
   assert(0 && "FIXME: not implemented yet");
 }

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_GET_PRIMITIVE_COUNT_ACTION_H_
-#define _SO_GET_PRIMITIVE_COUNT_ACTION_H_
+#ifndef __SOGETPRIMITIVECOUNTACTION_H__
+#define __SOGETPRIMITIVECOUNTACTION_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
@@ -30,7 +30,7 @@
 class SoGetPrimitiveCountAction : public SoAction {
   typedef SoAction inherited;
 
-//$ BEGIN TEMPLATE ActionHeader( SoGetPrimitiveCountAction )
+//$ BEGIN TEMPLATE ActionHeader(SoGetPrimitiveCountAction)
 private:
   static SoType classTypeId;
 
@@ -62,4 +62,4 @@ protected:
 private:
 };
 
-#endif // ! _SO_GET_PRIMITIVE_COUNT_ACTION_H_
+#endif // !__SOGETPRIMITIVECOUNTACTION_H__

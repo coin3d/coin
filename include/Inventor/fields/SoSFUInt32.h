@@ -30,7 +30,7 @@
 class SoSFUInt32 : public SoSField {
   typedef SoSField inherited;
 
-//$ BEGIN TEMPLATE SField( SoSFUInt32, uint32_t, const uint32_t )
+//$ BEGIN TEMPLATE SField(SoSFUInt32, uint32_t, const uint32_t)
 private:
   static SoType classTypeId;
 

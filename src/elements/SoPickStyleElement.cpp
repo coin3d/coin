@@ -36,7 +36,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoPickStyleElement )
+//$ BEGIN TEMPLATE ElementSource(SoPickStyleElement)
 
 /*!
   \var SoPickStyleElement::classTypeId
@@ -89,24 +89,23 @@ SoPickStyleElement::getClassStackIndex(void)
 */
 
 void
-SoPickStyleElement::initClass(
-    void )
+SoPickStyleElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoPickStyleElement )
+//$ BEGIN TEMPLATE InitElementSource(SoPickStyleElement)
   assert(SoPickStyleElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoPickStyleElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoPickStyleElement",
-    &SoPickStyleElement::createInstance);
+  SoPickStyleElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoPickStyleElement",
+                       &SoPickStyleElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoPickStyleElement::classStackIndex =
-      createStackIndex( SoPickStyleElement::classTypeId );
-  } else {
-    SoPickStyleElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoPickStyleElement::classTypeId);
+  }
+  else {
+    SoPickStyleElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -116,24 +115,22 @@ SoPickStyleElement::initClass(
 */
 
 void
-SoPickStyleElement::cleanClass(
-    void )
+SoPickStyleElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoPickStyleElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoPickStyleElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoPickStyleElement::createInstance( void )
+  \sa void * SoPickStyleElement::createInstance(void)
 */
 
-SoPickStyleElement::SoPickStyleElement(
-    void )
+SoPickStyleElement::SoPickStyleElement(void)
 {
-    setTypeId( SoPickStyleElement::classTypeId );
-    setStackIndex( SoPickStyleElement::classStackIndex );
+    setTypeId(SoPickStyleElement::classTypeId);
+    setStackIndex(SoPickStyleElement::classStackIndex);
     this->data = getDefault();
 }
 
@@ -141,8 +138,7 @@ SoPickStyleElement::SoPickStyleElement(
   The destructor.
 */
 
-SoPickStyleElement::~SoPickStyleElement(
-    void )
+SoPickStyleElement::~SoPickStyleElement(void)
 {
 }
 
@@ -160,10 +156,9 @@ SoPickStyleElement::set(SoState * const state,
 //! FIXME: write doc.
 
 void
-SoPickStyleElement::init(
-    SoState * state )
+SoPickStyleElement::init(SoState * state)
 {
-  inherited::init( state );
+  inherited::init(state);
   this->data = getDefault();
 }
 
@@ -182,7 +177,7 @@ SoPickStyleElement::set(SoState * const state, const Style style)
 SoPickStyleElement::Style 
 SoPickStyleElement::get(SoState * const state)
 { 
-  return (Style) SoInt32Element::get( classStackIndex, state ); 
+  return (Style) SoInt32Element::get(classStackIndex, state); 
 }
 
 //! FIXME: write doc.

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_NORMAL_GENERATOR_H_
-#define _SO_NORMAL_GENERATOR_H_
+#ifndef __SONORMALGENERATOR_H__
+#define __SONORMALGENERATOR_H__
 
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbBSPTree.h>
@@ -70,4 +70,4 @@ private:
   SbVec3f calcFaceNormal();
 };
 
-#endif // _SO_NORMAL_GENERATOR_H_
+#endif // !__SONORMALGENERATOR_H__

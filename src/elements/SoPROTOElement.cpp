@@ -38,7 +38,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoPROTOElement )
+//$ BEGIN TEMPLATE ElementSource(SoPROTOElement)
 
 /*!
   \var SoPROTOElement::classTypeId
@@ -91,24 +91,23 @@ SoPROTOElement::getClassStackIndex(void)
 */
 
 void
-SoPROTOElement::initClass(
-    void )
+SoPROTOElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoPROTOElement )
+//$ BEGIN TEMPLATE InitElementSource(SoPROTOElement)
   assert(SoPROTOElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoPROTOElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoPROTOElement",
-    &SoPROTOElement::createInstance);
+  SoPROTOElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoPROTOElement",
+                       &SoPROTOElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoPROTOElement::classStackIndex =
-      createStackIndex( SoPROTOElement::classTypeId );
-  } else {
-    SoPROTOElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoPROTOElement::classTypeId);
+  }
+  else {
+    SoPROTOElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -118,78 +117,70 @@ SoPROTOElement::initClass(
 */
 
 void
-SoPROTOElement::cleanClass(
-    void )
+SoPROTOElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoPROTOElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoPROTOElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoPROTOElement::createInstance( void )
+  \sa void * SoPROTOElement::createInstance(void)
 */
 
-SoPROTOElement::SoPROTOElement(
-    void )
+SoPROTOElement::SoPROTOElement(void)
 {
-    setTypeId( SoPROTOElement::classTypeId );
-    setStackIndex( SoPROTOElement::classStackIndex );
+    setTypeId(SoPROTOElement::classTypeId);
+    setStackIndex(SoPROTOElement::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoPROTOElement::~SoPROTOElement(
-    void )
+SoPROTOElement::~SoPROTOElement(void)
 {
 }
 
 //! FIXME: write doc.
 
 void
-SoPROTOElement::init(
-    SoState * state )
+SoPROTOElement::init(SoState * state)
 {
-    inherited::init( state );
+    inherited::init(state);
 }
 
 //! FIXME: write doc.
 
 void
-SoPROTOElement::push(
-    SoState * state )
+SoPROTOElement::push(SoState * state)
 {
-    inherited::push( state );
+    inherited::push(state);
 }
 
 //! FIXME: write doc.
 
 void
-SoPROTOElement::pop(
-    SoState * state,
-    const SoElement * prevTopElement )
+SoPROTOElement::pop(SoState * state, const SoElement * prevTopElement)
 {
-    inherited::pop( state, prevTopElement );
+    inherited::pop(state, prevTopElement);
 }
 
 //! FIXME: write doc.
 
 SbBool 
-SoPROTOElement::matches( const SoElement * element ) const
+SoPROTOElement::matches(const SoElement * /* element */) const
 {
   // FIXME
   assert(0 && "FIXME: not implemented");
-  element;
   return FALSE;
 }
 
 //! FIXME: write doc.
 
 SoElement *
-SoPROTOElement::copyMatchInfo( void ) const
+SoPROTOElement::copyMatchInfo(void) const
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;

@@ -35,7 +35,7 @@
 class SoImage : public SoShape {
   typedef SoShape inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoImage )
+//$ BEGIN TEMPLATE NodeHeader(SoImage)
 private:
   static SoType classTypeId;
 

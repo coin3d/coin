@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_GL_AMBIENT_COLOR_ELEMENT_H_
-#define _SO_GL_AMBIENT_COLOR_ELEMENT_H_
+#ifndef __SOGLAMBIENTCOLORELEMENT_H__
+#define __SOGLAMBIENTCOLORELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOGLAMBIENTCOLORELEMENT)
@@ -31,7 +31,7 @@
 class SoGLAmbientColorElement : public SoAmbientColorElement {
   typedef SoAmbientColorElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoGLAmbientColorElement )
+//$ BEGIN TEMPLATE ElementHeader(SoGLAmbientColorElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -64,4 +64,4 @@ private:
 
 };
 
-#endif // ! _SO_GL_AMBIENT_COLOR_ELEMENT_H_
+#endif // !__SOGLAMBIENTCOLORELEMENT_H__

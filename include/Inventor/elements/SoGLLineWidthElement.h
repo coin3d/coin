@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_GL_LINE_WIDTH_ELEMENT_H_
-#define _SO_GL_LINE_WIDTH_ELEMENT_H_
+#ifndef __SOGLLINEWIDTHELEMENT_H__
+#define __SOGLLINEWIDTHELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOGLLINEWIDTHELEMENT)
@@ -30,7 +30,7 @@
 class SoGLLineWidthElement : public SoLineWidthElement {
   typedef SoLineWidthElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoGLLineWidthElement )
+//$ BEGIN TEMPLATE ElementHeader(SoGLLineWidthElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -65,4 +65,4 @@ private:
 
 };
 
-#endif // ! _SO_GL_LINE_WIDTH_ELEMENT_H_
+#endif // !__SOGLLINEWIDTHELEMENT_H__

@@ -31,7 +31,7 @@
 class SoTextureMatrixElement : public SoAccumulatedElement {
   typedef SoAccumulatedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoTextureMatrixElement )
+//$ BEGIN TEMPLATE ElementHeader(SoTextureMatrixElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -49,35 +49,35 @@ protected:
 //$ END TEMPLATE ElementHeader
 
 public:
-  virtual void init( SoState * state );
+  virtual void init(SoState * state);
 
-  virtual void push( SoState * state );
-  virtual void pop( SoState * state, const SoElement * prevTopElement );
+  virtual void push(SoState * state);
+  virtual void pop(SoState * state, const SoElement * prevTopElement);
 
-  static  void makeIdentity( SoState * const state, SoNode * const node );
+  static  void makeIdentity(SoState * const state, SoNode * const node);
 
-  static  void mult( SoState * const state, SoNode * const node,
-              const SbMatrix & matrix );
+  static  void mult(SoState * const state, SoNode * const node,
+              const SbMatrix & matrix);
 
-  static  void translateBy( SoState * const state, SoNode * const node,
-              const SbVec3f & translation );
-  static  void rotateBy( SoState * const state, SoNode * const node,
-                const SbRotation & rotation );
-  static  void scaleBy( SoState * const state, SoNode * const node,
-               const SbVec3f & scaleFactor );
+  static  void translateBy(SoState * const state, SoNode * const node,
+              const SbVec3f & translation);
+  static  void rotateBy(SoState * const state, SoNode * const node,
+                const SbRotation & rotation);
+  static  void scaleBy(SoState * const state, SoNode * const node,
+               const SbVec3f & scaleFactor);
 
-  static  const SbMatrix & get( SoState * const state );
+  static  const SbMatrix & get(SoState * const state);
 
-  virtual void print( FILE * file ) const;
-  static  void emptyMatrix( SoState * const state );
+  virtual void print(FILE * file) const;
+  static  void emptyMatrix(SoState * const state);
 
 protected:
-  virtual void makeEltIdentity( void );
-  virtual void multElt( const SbMatrix & matrix );
-  virtual void translateEltBy( const SbVec3f & translation );
-  virtual void rotateEltBy( const SbRotation & rotation );
-  virtual void scaleEltBy( const SbVec3f & scaleFactor );
-  virtual const SbMatrix & getElt( void ) const;
+  virtual void makeEltIdentity(void);
+  virtual void multElt(const SbMatrix & matrix);
+  virtual void translateEltBy(const SbVec3f & translation);
+  virtual void rotateEltBy(const SbRotation & rotation);
+  virtual void scaleEltBy(const SbVec3f & scaleFactor);
+  virtual const SbMatrix & getElt(void) const;
 
   SbMatrix textureMatrix;
 

@@ -223,8 +223,7 @@ SoDB::init(void)
   SoDB::realtimeinterval.setValue(1.0/12.0);
 
 #if !defined(COIN_EXCLUDE_SOTIMERSENSOR)
-  SoField * f =
-    SoDB::createGlobalField("realTime", SoSFTime::getClassTypeId());
+  SoDB::createGlobalField("realTime", SoSFTime::getClassTypeId());
   SoDB::globaltimersensor = new SoTimerSensor;
   SoDB::globaltimersensor->setFunction(SoDB::updateRealTimeFieldCB);
   SoDB::globaltimersensor->setInterval(SoDB::realtimeinterval);
@@ -292,7 +291,7 @@ SoDB::getVersion(void)
   TODO: doc
 */
 SbBool
-SoDB::read(SoInput * in, SoPath *& path)
+SoDB::read(SoInput * /* in */, SoPath *& /* path */)
 {
   // TODO: implement.
   assert(0);
@@ -694,7 +693,7 @@ SoDB::renameGlobalField(const SbName & oldName, const SbName & newName)
   field.
 */
 void
-SoDB::updateRealTimeFieldCB(void * data, SoSensor * sensor)
+SoDB::updateRealTimeFieldCB(void * /* data */, SoSensor * /* sensor */)
 {
 #if !defined(COIN_EXCLUDE_SOSFTIME)
   SoField * f = SoDB::getGlobalField("realTime");
@@ -837,7 +836,7 @@ SoDB::createConverter(SoType fromType, SoType toType)
   TODO: doc
  */
 SoVRMLGroup *
-SoDB::readAllVRML(SoInput * in)
+SoDB::readAllVRML(SoInput * /* in */)
 {
   // FIXME: implement.
   assert(0);
@@ -848,8 +847,8 @@ SoDB::readAllVRML(SoInput * in)
   TODO: doc
  */
 void
-SoDB::createRoute(SoNode * fromnode, const char * eventout,
-		  SoNode * tonode, const char * eventin)
+SoDB::createRoute(SoNode * /* fromnode */, const char * /* eventout */,
+		  SoNode * /* tonode */, const char * /* eventin */)
 {
   // FIXME: implement.
   assert(0);

@@ -567,7 +567,7 @@ SoOutput::write(const double d)
   if (!this->isBinary()) {
     // FIXME: precision stuff not implemented. 19980910 mortene.
     char buffer[128];
-    sprintf(buffer, "%lf", d);
+    sprintf(buffer, "%f", d);
     this->writeBytesWithPadding(buffer, strlen(buffer));
   }
   else {
@@ -602,7 +602,7 @@ SoOutput::writeBinaryArray(const unsigned char * constc, const int length)
   }
   else {
     size_t wrote = fwrite(constc, 1, length, this->filep);
-    if (wrote != length) {
+    if (wrote != (size_t)length) {
       SoDebugError::postWarning("SoOutput::writeBinaryArray",
 				"Couldn't write to file.");
       this->disabledwriting = TRUE;

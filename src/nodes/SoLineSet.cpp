@@ -308,8 +308,6 @@ SoLineSet::GLRender(SoGLRenderAction * action)
   SoTextureCoordinateBundle tb(action, TRUE, FALSE); //FIXME
   doTextures = tb.needCoordinates();
   
-  int start = this->startIndex.getValue();
-  
   Binding mbind = findMaterialBinding(action->getState());
   Binding nbind = findNormalBinding(action->getState());
   
@@ -324,7 +322,7 @@ SoLineSet::GLRender(SoGLRenderAction * action)
 
   SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
   const SbVec3f * currnormal = &dummynormal;
-  if (normals) currnormal == normals;
+  if (normals) currnormal = normals;
   if (nbind == OVERALL && needNormals) 
     glNormal3fv((const GLfloat *)currnormal); 
 
@@ -414,7 +412,7 @@ SoLineSet::getBoundingBox(SoGetBoundingBoxAction * action)
   FIXME: write doc
  */
 void
-SoLineSet::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoLineSet::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -425,7 +423,7 @@ SoLineSet::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   FIXME: write doc
  */
 void
-SoLineSet::generatePrimitives(SoAction * action)
+SoLineSet::generatePrimitives(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -436,7 +434,10 @@ SoLineSet::generatePrimitives(SoAction * action)
   FIXME: write doc
  */
 SoDetail *
-SoLineSet::createLineSegmentDetail(SoRayPickAction * action, const SoPrimitiveVertex * v1, const SoPrimitiveVertex * v2, SoPickedPoint * pp)
+SoLineSet::createLineSegmentDetail(SoRayPickAction * /* action */,
+				   const SoPrimitiveVertex * /* v1 */,
+				   const SoPrimitiveVertex * /* v2 */,
+				   SoPickedPoint * /* pp */)
 {
   assert(0 && "FIXME: not implemented");
   return NULL;

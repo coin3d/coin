@@ -146,7 +146,7 @@ SoSelection::cleanClass(void)
 /*!
   FIXME: write doc
  */
-SoSelection::SoSelection(int nChildren)
+SoSelection::SoSelection(int /* nChildren */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -155,7 +155,7 @@ SoSelection::SoSelection(int nChildren)
   FIXME: write doc
  */
 void
-SoSelection::select(const SoPath * path)
+SoSelection::select(const SoPath * /* path */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -164,7 +164,7 @@ SoSelection::select(const SoPath * path)
   FIXME: write doc
  */
 void
-SoSelection::select(SoNode * node)
+SoSelection::select(SoNode * /* node */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -173,7 +173,7 @@ SoSelection::select(SoNode * node)
   FIXME: write doc
  */
 void
-SoSelection::deselect(const SoPath * path)
+SoSelection::deselect(const SoPath * /* path */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -182,7 +182,7 @@ SoSelection::deselect(const SoPath * path)
   FIXME: write doc
  */
 void
-SoSelection::deselect(int which)
+SoSelection::deselect(int /* which */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -191,7 +191,7 @@ SoSelection::deselect(int which)
   FIXME: write doc
  */
 void
-SoSelection::deselect(SoNode * node)
+SoSelection::deselect(SoNode * /* node */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -200,7 +200,7 @@ SoSelection::deselect(SoNode * node)
   FIXME: write doc
  */
 void
-SoSelection::toggle(const SoPath * path)
+SoSelection::toggle(const SoPath * /* path */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -209,7 +209,7 @@ SoSelection::toggle(const SoPath * path)
   FIXME: write doc
  */
 void
-SoSelection::toggle(SoNode * node)
+SoSelection::toggle(SoNode * /* node */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -218,7 +218,7 @@ SoSelection::toggle(SoNode * node)
   FIXME: write doc
  */
 SbBool
-SoSelection::isSelected(const SoPath * path) const
+SoSelection::isSelected(const SoPath * /* path */) const
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;
@@ -228,7 +228,7 @@ SoSelection::isSelected(const SoPath * path) const
   FIXME: write doc
  */
 SbBool
-SoSelection::isSelected(SoNode * node) const
+SoSelection::isSelected(SoNode * /* node */) const
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;
@@ -267,7 +267,7 @@ SoSelection::getList(void) const
   FIXME: write doc
  */
 SoPath *
-SoSelection::getPath(int index) const
+SoSelection::getPath(int /* index */) const
 {
   assert(0 && "FIXME: not implemented");
   return NULL;
@@ -277,7 +277,7 @@ SoSelection::getPath(int index) const
   FIXME: write doc
  */
 SoPath *
-SoSelection::operator[](int i) const
+SoSelection::operator[](int /* i */) const
 {
   assert(0 && "FIXME: not implemented");
   return NULL;
@@ -287,7 +287,7 @@ SoSelection::operator[](int i) const
   FIXME: write doc
  */
 void
-SoSelection::addSelectionCallback(SoSelectionPathCB * f, void * userData)
+SoSelection::addSelectionCallback(SoSelectionPathCB * /* f */, void * /* userData */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -296,7 +296,7 @@ SoSelection::addSelectionCallback(SoSelectionPathCB * f, void * userData)
   FIXME: write doc
  */
 void
-SoSelection::removeSelectionCallback(SoSelectionPathCB * f, void * userData)
+SoSelection::removeSelectionCallback(SoSelectionPathCB * /* f */, void * /* userData */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -305,7 +305,7 @@ SoSelection::removeSelectionCallback(SoSelectionPathCB * f, void * userData)
   FIXME: write doc
  */
 void
-SoSelection::addDeselectionCallback(SoSelectionPathCB * f, void * userData)
+SoSelection::addDeselectionCallback(SoSelectionPathCB * /* f */, void * /* userData */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -314,7 +314,7 @@ SoSelection::addDeselectionCallback(SoSelectionPathCB * f, void * userData)
   FIXME: write doc
  */
 void
-SoSelection::removeDeselectionCallback(SoSelectionPathCB * f, void * userData)
+SoSelection::removeDeselectionCallback(SoSelectionPathCB * /* f */, void * /* userData */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -323,7 +323,7 @@ SoSelection::removeDeselectionCallback(SoSelectionPathCB * f, void * userData)
   FIXME: write doc
  */
 void
-SoSelection::addStartCallback(SoSelectionClassCB * f, void * userData)
+SoSelection::addStartCallback(SoSelectionClassCB * /* f */, void * /* userData */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -332,7 +332,7 @@ SoSelection::addStartCallback(SoSelectionClassCB * f, void * userData)
   FIXME: write doc
  */
 void
-SoSelection::removeStartCallback(SoSelectionClassCB * f, void * userData)
+SoSelection::removeStartCallback(SoSelectionClassCB * /* f */, void * /* userData */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -341,7 +341,7 @@ SoSelection::removeStartCallback(SoSelectionClassCB * f, void * userData)
   FIXME: write doc
  */
 void
-SoSelection::addFinishCallback(SoSelectionClassCB * f, void * userData)
+SoSelection::addFinishCallback(SoSelectionClassCB * /* f */, void * /* userData */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -350,7 +350,7 @@ SoSelection::addFinishCallback(SoSelectionClassCB * f, void * userData)
   FIXME: write doc
  */
 void
-SoSelection::removeFinishCallback(SoSelectionClassCB * f, void * userData)
+SoSelection::removeFinishCallback(SoSelectionClassCB * /* f */, void * /* userData */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -359,8 +359,8 @@ SoSelection::removeFinishCallback(SoSelectionClassCB * f, void * userData)
   FIXME: write doc
  */
 void
-SoSelection::setPickFilterCallback(SoSelectionPickCB * f, void * userData,
-			  SbBool callOnlyIfSelectable)
+SoSelection::setPickFilterCallback(SoSelectionPickCB * /* f */, void * /* userData */,
+				   SbBool /* callOnlyIfSelectable */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -369,7 +369,7 @@ SoSelection::setPickFilterCallback(SoSelectionPickCB * f, void * userData,
   FIXME: write doc
  */
 void
-SoSelection::setPickMatching(SbBool pickTwice)
+SoSelection::setPickMatching(SbBool /* pickTwice */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -398,7 +398,7 @@ SoSelection::getPickMatching(void) const
   FIXME: write doc
  */
 void
-SoSelection::addChangeCallback(SoSelectionClassCB * f, void * userData)
+SoSelection::addChangeCallback(SoSelectionClassCB * /* f */, void * /* userData */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -407,7 +407,8 @@ SoSelection::addChangeCallback(SoSelectionClassCB * f, void * userData)
   FIXME: write doc
  */
 void
-SoSelection::removeChangeCallback(SoSelectionClassCB * f, void * userData)
+SoSelection::removeChangeCallback(SoSelectionClassCB * /* f */,
+				  void * /* userData */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -416,7 +417,7 @@ SoSelection::removeChangeCallback(SoSelectionClassCB * f, void * userData)
   FIXME: write doc
  */
 void
-SoSelection::invokeSelectionPolicy(SoPath * path, SbBool shiftDown)
+SoSelection::invokeSelectionPolicy(SoPath * /* path */, SbBool /* shiftDown */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -425,7 +426,7 @@ SoSelection::invokeSelectionPolicy(SoPath * path, SbBool shiftDown)
   FIXME: write doc
  */
 void
-SoSelection::performSingleSelection(SoPath * path)
+SoSelection::performSingleSelection(SoPath * /* path */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -434,7 +435,7 @@ SoSelection::performSingleSelection(SoPath * path)
   FIXME: write doc
  */
 void
-SoSelection::performToggleSelection(SoPath * path)
+SoSelection::performToggleSelection(SoPath * /* path */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -443,7 +444,7 @@ SoSelection::performToggleSelection(SoPath * path)
   FIXME: write doc
  */
 SoPath *
-SoSelection::copyFromThis(const SoPath * path) const
+SoSelection::copyFromThis(const SoPath * /* path */) const
 {
   assert(0 && "FIXME: not implemented");
   return NULL;
@@ -453,7 +454,7 @@ SoSelection::copyFromThis(const SoPath * path) const
   FIXME: write doc
  */
 void
-SoSelection::addPath(SoPath * path)
+SoSelection::addPath(SoPath * /* path */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -462,7 +463,7 @@ SoSelection::addPath(SoPath * path)
   FIXME: write doc
  */
 void
-SoSelection::removePath(int which)
+SoSelection::removePath(int /* which */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -471,7 +472,7 @@ SoSelection::removePath(int which)
   FIXME: write doc
  */
 int
-SoSelection::findPath(const SoPath * path) const
+SoSelection::findPath(const SoPath * /* path */) const
 {
   assert(0 && "FIXME: not implemented");
   return 0;
@@ -481,7 +482,7 @@ SoSelection::findPath(const SoPath * path) const
   FIXME: write doc
  */
 void
-SoSelection::handleEvent(SoHandleEventAction * action)
+SoSelection::handleEvent(SoHandleEventAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

@@ -35,7 +35,7 @@
 #include <GL/gl.h>
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource( SoGLViewportRegionElement )
+//$ BEGIN TEMPLATE ElementSource(SoGLViewportRegionElement)
 
 /*!
   \var SoGLViewportRegionElement::classTypeId
@@ -89,24 +89,23 @@ SoGLViewportRegionElement::getClassStackIndex(void)
 */
 
 void
-SoGLViewportRegionElement::initClass(
-    void )
+SoGLViewportRegionElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoGLViewportRegionElement )
+//$ BEGIN TEMPLATE InitElementSource(SoGLViewportRegionElement)
   assert(SoGLViewportRegionElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoGLViewportRegionElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoGLViewportRegionElement",
-    &SoGLViewportRegionElement::createInstance);
+  SoGLViewportRegionElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoGLViewportRegionElement",
+                       &SoGLViewportRegionElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoGLViewportRegionElement::classStackIndex =
-      createStackIndex( SoGLViewportRegionElement::classTypeId );
-  } else {
-    SoGLViewportRegionElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoGLViewportRegionElement::classTypeId);
+  }
+  else {
+    SoGLViewportRegionElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -117,23 +116,22 @@ SoGLViewportRegionElement::initClass(
 */
 
 void
-SoGLViewportRegionElement::cleanClass(
-    void )
+SoGLViewportRegionElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoGLViewportRegionElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoGLViewportRegionElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoGLViewportRegionElement::createInstance( void )
+  \sa void * SoGLViewportRegionElement::createInstance(void)
 */
 
 SoGLViewportRegionElement::SoGLViewportRegionElement()
 {
-  setTypeId( SoGLViewportRegionElement::classTypeId );
-  setStackIndex( SoGLViewportRegionElement::classStackIndex );
+  setTypeId(SoGLViewportRegionElement::classTypeId);
+  setStackIndex(SoGLViewportRegionElement::classStackIndex);
 }
 
 /*!

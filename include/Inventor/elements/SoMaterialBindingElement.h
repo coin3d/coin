@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_MATERIAL_BINDING_ELEMENT_H_
-#define _SO_MATERIAL_BINDING_ELEMENT_H_
+#ifndef __SOMATERIALBINDINGELEMENT_H__
+#define __SOMATERIALBINDINGELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOMATERIALBINDINGELEMENT)
@@ -30,7 +30,7 @@
 class SoMaterialBindingElement : public SoInt32Element {
   typedef SoInt32Element inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoMaterialBindingElement )
+//$ BEGIN TEMPLATE ElementHeader(SoMaterialBindingElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -71,4 +71,4 @@ public:
 
 };
 
-#endif // ! _SO_MATERIAL_BINDING_ELEMENT_H_
+#endif // !__SOMATERIALBINDINGELEMENT_H__

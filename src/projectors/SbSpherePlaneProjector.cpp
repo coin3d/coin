@@ -31,8 +31,8 @@
 /*!
   FIXME: write doc
 */
-SbSpherePlaneProjector::SbSpherePlaneProjector(float edgeTol,
-					       SbBool orientToEye)
+SbSpherePlaneProjector::SbSpherePlaneProjector(float /* edgeTol */,
+					       SbBool /* orientToEye */)
 {
   assert(0 && "FIXME: implementation missing");
 }
@@ -40,17 +40,9 @@ SbSpherePlaneProjector::SbSpherePlaneProjector(float edgeTol,
 /*!
   FIXME: write doc
 */
-SbSpherePlaneProjector::SbSpherePlaneProjector(const SbSphere & sph,
-					       float edgeTol,
-					       SbBool orientToEye)
-{
-  assert(0 && "FIXME: implementation missing");
-}
-
-/*!
-  FIXME: write doc
-*/
-SbSpherePlaneProjector::~SbSpherePlaneProjector()
+SbSpherePlaneProjector::SbSpherePlaneProjector(const SbSphere & /* sph */,
+					       float /* edgeTol */,
+					       SbBool /* orientToEye */)
 {
   assert(0 && "FIXME: implementation missing");
 }
@@ -69,7 +61,7 @@ SbSpherePlaneProjector::copy(void) const
   FIXME: write doc
 */
 SbVec3f
-SbSpherePlaneProjector::project(const SbVec2f & point)
+SbSpherePlaneProjector::project(const SbVec2f & /* point */)
 {
   assert(0 && "FIXME: implementation missing");
   return SbVec3f();
@@ -79,8 +71,8 @@ SbSpherePlaneProjector::project(const SbVec2f & point)
   FIXME: write doc
 */
 SbRotation
-SbSpherePlaneProjector::getRotation(const SbVec3f & point1,
-				    const SbVec3f & point2)
+SbSpherePlaneProjector::getRotation(const SbVec3f & /* point1 */,
+				    const SbVec3f & /* point2 */)
 {
   assert(0 && "FIXME: implementation missing");
   return SbRotation::identity();
@@ -90,8 +82,8 @@ SbSpherePlaneProjector::getRotation(const SbVec3f & point1,
   FIXME: write doc
 */
 SbRotation
-SbSpherePlaneProjector::getRotation(const SbVec3f & point1, SbBool tol1,
-				    const SbVec3f & point2, SbBool tol2)
+SbSpherePlaneProjector::getRotation(const SbVec3f & /* point1 */, SbBool /* tol1 */,
+				    const SbVec3f & /* point2 */, SbBool /* tol2 */)
 {
   assert(0 && "FIXME: implementation missing");
   return SbRotation::identity();

@@ -167,7 +167,8 @@ SoTransform::cleanClass(void)
   FIXME: write function documentation
 */
 void 
-SoTransform::pointAt(const SbVec3f & fromPoint, const SbVec3f & toPoint)
+SoTransform::pointAt(const SbVec3f & /* fromPoint */,
+		     const SbVec3f & /* toPoint */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -176,7 +177,8 @@ SoTransform::pointAt(const SbVec3f & fromPoint, const SbVec3f & toPoint)
   FIXME: write function documentation
 */
 void 
-SoTransform::getScaleSpaceMatrix(SbMatrix & mat, SbMatrix & inv) const
+SoTransform::getScaleSpaceMatrix(SbMatrix & /* mat */,
+				 SbMatrix & /* inv */) const
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -185,7 +187,8 @@ SoTransform::getScaleSpaceMatrix(SbMatrix & mat, SbMatrix & inv) const
   FIXME: write function documentation
 */
 void 
-SoTransform::getRotationSpaceMatrix(SbMatrix & mat, SbMatrix & inv) const
+SoTransform::getRotationSpaceMatrix(SbMatrix & /* mat */,
+				    SbMatrix & /* inv */) const
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -194,7 +197,8 @@ SoTransform::getRotationSpaceMatrix(SbMatrix & mat, SbMatrix & inv) const
   FIXME: write function documentation
 */
 void 
-SoTransform::getTranslationSpaceMatrix(SbMatrix & mat, SbMatrix & inv) const
+SoTransform::getTranslationSpaceMatrix(SbMatrix & /* mat */,
+				       SbMatrix & /* inv */) const
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -203,7 +207,7 @@ SoTransform::getTranslationSpaceMatrix(SbMatrix & mat, SbMatrix & inv) const
   FIXME: write function documentation
 */
 void 
-SoTransform::multLeft(const SbMatrix & mat)
+SoTransform::multLeft(const SbMatrix & /* mat */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -212,7 +216,7 @@ SoTransform::multLeft(const SbMatrix & mat)
   FIXME: write function documentation
 */
 void 
-SoTransform::multRight(const SbMatrix & mat)
+SoTransform::multRight(const SbMatrix & /* mat */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -221,7 +225,7 @@ SoTransform::multRight(const SbMatrix & mat)
   FIXME: write function documentation
 */
 void 
-SoTransform::combineLeft(SoTransformation * nodeOnRight)
+SoTransform::combineLeft(SoTransformation * /* nodeOnRight */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -230,7 +234,7 @@ SoTransform::combineLeft(SoTransformation * nodeOnRight)
   FIXME: write function documentation
 */
 void 
-SoTransform::combineRight(SoTransformation * nodeOnLeft)
+SoTransform::combineRight(SoTransformation * /* nodeOnLeft */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -239,7 +243,7 @@ SoTransform::combineRight(SoTransformation * nodeOnLeft)
   FIXME: write function documentation
 */
 void 
-SoTransform::setMatrix(const SbMatrix & mat)
+SoTransform::setMatrix(const SbMatrix & /* mat */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -248,7 +252,7 @@ SoTransform::setMatrix(const SbMatrix & mat)
   FIXME: write function documentation
 */
 void 
-SoTransform::recenter(const SbVec3f & newCenter)
+SoTransform::recenter(const SbVec3f & /* newCenter */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -373,7 +377,7 @@ SoTransform::pick(SoPickAction * action)
   FIXME: write doc
  */
 void
-SoTransform::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoTransform::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

@@ -30,7 +30,7 @@
 
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource( SoPointSizeElement )
+//$ BEGIN TEMPLATE ElementSource(SoPointSizeElement)
 
 /*!
   \var SoPointSizeElement::classTypeId
@@ -83,24 +83,23 @@ SoPointSizeElement::getClassStackIndex(void)
 */
 
 void
-SoPointSizeElement::initClass(
-    void )
+SoPointSizeElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoPointSizeElement )
+//$ BEGIN TEMPLATE InitElementSource(SoPointSizeElement)
   assert(SoPointSizeElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoPointSizeElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoPointSizeElement",
-    &SoPointSizeElement::createInstance);
+  SoPointSizeElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoPointSizeElement",
+                       &SoPointSizeElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoPointSizeElement::classStackIndex =
-      createStackIndex( SoPointSizeElement::classTypeId );
-  } else {
-    SoPointSizeElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoPointSizeElement::classTypeId);
+  }
+  else {
+    SoPointSizeElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -110,24 +109,22 @@ SoPointSizeElement::initClass(
 */
 
 void
-SoPointSizeElement::cleanClass(
-    void )
+SoPointSizeElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoPointSizeElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoPointSizeElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa SoPointSizeElement::createInstance( void )
+  \sa SoPointSizeElement::createInstance(void)
 */
 
-SoPointSizeElement::SoPointSizeElement(
-    void )
+SoPointSizeElement::SoPointSizeElement(void)
 {
-    setTypeId( SoPointSizeElement::classTypeId );
-    setStackIndex( SoPointSizeElement::classStackIndex );
+    setTypeId(SoPointSizeElement::classTypeId);
+    setStackIndex(SoPointSizeElement::classStackIndex);
     this->data = getDefault();
 }
 
@@ -135,18 +132,17 @@ SoPointSizeElement::SoPointSizeElement(
   The destructor.
 */
 
-SoPointSizeElement::~SoPointSizeElement( // virtual protected
-    void )
+SoPointSizeElement::~SoPointSizeElement(// virtual protected
+    void)
 {
 }
 
 //! FIXME: write doc.
 
 void
-SoPointSizeElement::init(
-    SoState * state )
+SoPointSizeElement::init(SoState * state)
 {
-  inherited::init( state );
+  inherited::init(state);
   this->data = getDefault();
 }
 
@@ -155,7 +151,7 @@ SoPointSizeElement::init(
 void 
 SoPointSizeElement::set(SoState * const state, 
 			SoNode * const node,
-			const float pointSize )
+			const float pointSize)
 { 
   SoFloatElement::set(classStackIndex,state, node, pointSize);
 }
@@ -163,7 +159,7 @@ SoPointSizeElement::set(SoState * const state,
 //! FIXME: write doc.
 
 void 
-SoPointSizeElement::set( SoState * const state, const float pointSize)
+SoPointSizeElement::set(SoState * const state, const float pointSize)
 { 
   set(state, NULL, pointSize); 
 }
@@ -171,9 +167,9 @@ SoPointSizeElement::set( SoState * const state, const float pointSize)
 //! FIXME: write doc.
 
 float 
-SoPointSizeElement::get( SoState * const state )
+SoPointSizeElement::get(SoState * const state)
 { 
-  return SoFloatElement::get( classStackIndex, state ); 
+  return SoFloatElement::get(classStackIndex, state); 
 }
 
 //! FIXME: write doc.

@@ -30,7 +30,7 @@
 
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource( SoTextOutlineEnabledElement )
+//$ BEGIN TEMPLATE ElementSource(SoTextOutlineEnabledElement)
 
 /*!
   \var SoTextOutlineEnabledElement::classTypeId
@@ -84,24 +84,23 @@ SoTextOutlineEnabledElement::getClassStackIndex(void)
 */
 
 void
-SoTextOutlineEnabledElement::initClass(
-    void )
+SoTextOutlineEnabledElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoTextOutlineEnabledElement )
+//$ BEGIN TEMPLATE InitElementSource(SoTextOutlineEnabledElement)
   assert(SoTextOutlineEnabledElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoTextOutlineEnabledElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoTextOutlineEnabledElement",
-    &SoTextOutlineEnabledElement::createInstance);
+  SoTextOutlineEnabledElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoTextOutlineEnabledElement",
+                       &SoTextOutlineEnabledElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoTextOutlineEnabledElement::classStackIndex =
-      createStackIndex( SoTextOutlineEnabledElement::classTypeId );
-  } else {
-    SoTextOutlineEnabledElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoTextOutlineEnabledElement::classTypeId);
+  }
+  else {
+    SoTextOutlineEnabledElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -112,24 +111,22 @@ SoTextOutlineEnabledElement::initClass(
 */
 
 void
-SoTextOutlineEnabledElement::cleanClass(
-    void )
+SoTextOutlineEnabledElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoTextOutlineEnabledElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoTextOutlineEnabledElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoTextOutlineEnabledElement::createInstance( void )
+  \sa void * SoTextOutlineEnabledElement::createInstance(void)
 */
 
-SoTextOutlineEnabledElement::SoTextOutlineEnabledElement(
-    void )
+SoTextOutlineEnabledElement::SoTextOutlineEnabledElement(void)
 {
-    setTypeId( SoTextOutlineEnabledElement::classTypeId );
-    setStackIndex( SoTextOutlineEnabledElement::classStackIndex );
+    setTypeId(SoTextOutlineEnabledElement::classTypeId);
+    setStackIndex(SoTextOutlineEnabledElement::classStackIndex);
     this->data = getDefault();
 }
 
@@ -137,20 +134,18 @@ SoTextOutlineEnabledElement::SoTextOutlineEnabledElement(
   The destructor.
 */
 
-SoTextOutlineEnabledElement::~SoTextOutlineEnabledElement(
-    void )
+SoTextOutlineEnabledElement::~SoTextOutlineEnabledElement(void)
 {
 }
 
 //! FIXME: write doc.
 
 void
-SoTextOutlineEnabledElement::set(
-    SoState * const state,
-    SoNode * const node,
-    const SbBool enabled )
+SoTextOutlineEnabledElement::set(SoState * const state,
+				 SoNode * const node,
+				 const SbBool enabled)
 {
-    SoInt32Element::set( classStackIndex, state, node, enabled );
+    SoInt32Element::set(classStackIndex, state, node, enabled);
 }
 
 /*!
@@ -158,10 +153,9 @@ SoTextOutlineEnabledElement::set(
 */
 
 void
-SoTextOutlineEnabledElement::set(
-  SoState * const state, const SbBool enabled )
+SoTextOutlineEnabledElement::set(SoState * const state, const SbBool enabled)
 {
-  set( state, NULL, enabled );
+  set(state, NULL, enabled);
 }
 
 /*!
@@ -169,9 +163,9 @@ SoTextOutlineEnabledElement::set(
 */
 
 SbBool
-SoTextOutlineEnabledElement::get( SoState * const state )
+SoTextOutlineEnabledElement::get(SoState * const state)
 {
-  return (SbBool) SoInt32Element::get( classStackIndex, state );
+  return (SbBool) SoInt32Element::get(classStackIndex, state);
 }
 
 /*!
@@ -179,7 +173,7 @@ SoTextOutlineEnabledElement::get( SoState * const state )
 */
 
 SbBool
-SoTextOutlineEnabledElement::getDefault( void )
+SoTextOutlineEnabledElement::getDefault(void)
 {
   return FALSE;
 }
@@ -187,28 +181,25 @@ SoTextOutlineEnabledElement::getDefault( void )
 //! FIXME: write doc.
 
 void
-SoTextOutlineEnabledElement::init(
-    SoState * state )
+SoTextOutlineEnabledElement::init(SoState * state)
 {
-    inherited::init( state );
+    inherited::init(state);
 }
 
 //! FIXME: write doc.
 
 void
-SoTextOutlineEnabledElement::push(
-    SoState * state )
+SoTextOutlineEnabledElement::push(SoState * state)
 {
-    inherited::push( state );
+    inherited::push(state);
 }
 
 //! FIXME: write doc.
 
 void
-SoTextOutlineEnabledElement::pop(
-    SoState * state,
-    const SoElement * prevTopElement )
+SoTextOutlineEnabledElement::pop(SoState * state,
+				 const SoElement * prevTopElement)
 {
-    inherited::pop( state, prevTopElement );
+    inherited::pop(state, prevTopElement);
 }
 

@@ -211,13 +211,13 @@ dnl *******************************************************************
 
 if test "x$ac_cv_prog_gxx" = "xyes"; then
   AC_ARG_ENABLE(warnings,
-    [  --enable-warnings       turn on warnings when compiling [default=no]],
+    [  --enable-warnings       turn on warnings when compiling [default=yes]],
     [case "${enableval}" in
       yes) enable_warnings=yes ;;
       no)  enable_warnings=no ;;
       *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-warnings) ;;
     esac],
-    enable_warnings=no)
+    enable_warnings=yes)
 
   if test "x$enable_warnings" = "xyes"; then
     CXXFLAGS="$CXXFLAGS -W -Wall"

@@ -49,7 +49,7 @@
 #include <Inventor/SbViewportRegion.h>
 #include <assert.h>
 
-//$ BEGIN TEMPLATE EventSource( SoEvent )
+//$ BEGIN TEMPLATE EventSource(SoEvent)
 /*!
   \var SoEvent::classTypeId
   Unique type identification for the SoEvent class type.

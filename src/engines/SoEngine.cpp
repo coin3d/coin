@@ -30,16 +30,16 @@
 SoType SoEngine::classTypeId;
 
 SoType
-SoEngine::getClassTypeId()
+SoEngine::getClassTypeId(void)
 {
   return SoEngine::classTypeId;
 }
 
 /*!
-  
+  FIXME: document. 19990925 mortene.
  */
 int
-SoEngine::getOutputs(SoEngineOutputList &list) const
+SoEngine::getOutputs(SoEngineOutputList & list) const
 {
   list.truncate(0);
   list.copy(*this->outputList);
@@ -47,42 +47,38 @@ SoEngine::getOutputs(SoEngineOutputList &list) const
 }
 
 SoEngineOutput *
-SoEngine::getOutput(const SbName &outputName) const
+SoEngine::getOutput(const SbName & /* outputName */) const
 {
-  // FIXME: implement.
-  assert(0);
+  assert(0 && "FIXME: not implemented yet");
   return NULL;
 }
 
 SbBool 
-SoEngine::getOutputName(const SoEngineOutput *output, SbName &outputName) const
+SoEngine::getOutputName(const SoEngineOutput * /* output */,
+			SbName & /* outputName */) const
 {
-  // FIXME: implement.
-  assert(0);
+  assert(0 && "FIXME: not implemented yet");
   return FALSE;
 }
 
 SoEngine *
-SoEngine::copy() const
+SoEngine::copy(void) const
 {
-  // FIXME: implement.
-  assert(0);
+  assert(0 && "FIXME: not implemented yet");
   return NULL;
 }
 
 SoEngine *
-SoEngine::getByName(const SbName &name)
+SoEngine::getByName(const SbName & /* name */)
 {
-  // FIXME: implement.
-  assert(0);
+  assert(0 && "FIXME: not implemented yet");
   return NULL;
 }
 
 int 
-SoEngine::getByName(const SbName &name, SoEngineList &list)
+SoEngine::getByName(const SbName & /* name */, SoEngineList & /* list */)
 {
-  // FIXME: implement.
-  assert(0);
+  assert(0 && "FIXME: not implemented yet");
   return -1;
 }
 
@@ -197,7 +193,7 @@ SoEngine::initEngines()
 }
 
 void
-SoEngine::inputChanged(SoField *which)
+SoEngine::inputChanged(SoField * /* which */)
 {
 }
 

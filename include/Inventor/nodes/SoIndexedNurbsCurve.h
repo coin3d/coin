@@ -34,7 +34,7 @@
 class SoIndexedNurbsCurve : public SoShape {
   typedef SoShape inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoIndexedNurbsCurve )
+//$ BEGIN TEMPLATE NodeHeader(SoIndexedNurbsCurve)
 private:
   static SoType classTypeId;
 

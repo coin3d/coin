@@ -63,7 +63,7 @@
 
 // This class should probably not use any templates...
 
-//$ BEGIN TEMPLATE AbstractElementSource( SoElement )
+//$ BEGIN TEMPLATE AbstractElementSource(SoElement)
 
 /*!
   \var SoElement::classTypeId
@@ -72,14 +72,14 @@
   SoElement.
 */
 
-SoType SoElement::classTypeId = SoType::badType();
+SoType SoElement::classTypeId = SoType::badType(); // static
 
 /*!
   This static method returns the SoType type for SoElement.
 */
 
 SoType
-SoElement::getClassTypeId(
+SoElement::getClassTypeId( // static
   void )
 {
   return SoElement::classTypeId;
@@ -92,14 +92,14 @@ SoElement::getClassTypeId(
   SoElement class.
 */
 
-int SoElement::classStackIndex;
+int SoElement::classStackIndex; // static
 
 /*!
   This static method returns the state stack index for the SoElement class.
 */
 
 int
-SoElement::getClassStackIndex(
+SoElement::getClassStackIndex( // static
   void )
 {
   return SoElement::classStackIndex;
@@ -111,8 +111,7 @@ SoElement::getClassStackIndex(
 */
 
 void
-SoElement::initElements(
-    void )
+SoElement::initElements(void)
 {
 #if !defined(COIN_EXCLUDE_SOACCUMULATEDELEMENT)
   SoAccumulatedElement::initClass();
@@ -391,8 +390,7 @@ SoElement::initElements(
 */
 
 void
-SoElement::cleanElements(
-    void )
+SoElement::cleanElements(void)
 {
 #if !defined(COIN_EXCLUDE_SOTRANSPARENCYELEMENT)
   SoTransparencyElement::cleanClass();
@@ -671,8 +669,7 @@ SoElement::cleanElements(
 */
 
 void
-SoElement::initClass(
-    void )
+SoElement::initClass(void)
 {
   SoElement::stackToType = new SoTypeList;
 
@@ -690,8 +687,7 @@ SoElement::initClass(
 */
 
 void
-SoElement::cleanClass(
-    void )
+SoElement::cleanClass(void)
 {
   SoElement::cleanElements();
   delete SoElement::stackToType;
@@ -702,8 +698,7 @@ SoElement::cleanClass(
   for the elements type identifier..
 */
 
-SoElement::SoElement(
-    void )
+SoElement::SoElement(void)
 {
   this->next = NULL;
   this->prev = NULL;
@@ -739,7 +734,7 @@ SoElement::init(SoState *)
 */
 
 void
-SoElement::push(SoState * state)
+SoElement::push(SoState * /* state */)
 {
   assert(this->next);
 }
@@ -750,8 +745,7 @@ SoElement::push(SoState * state)
 */
 
 void
-SoElement::pop(SoState * state,
-	       const SoElement *prevTopElement)
+SoElement::pop(SoState * /* state */, const SoElement * /* prevTopElement */)
 {
 }
 
@@ -763,7 +757,7 @@ SoElement::pop(SoState * state,
 void
 SoElement::print(FILE * file) const
 {
-    fprintf( file, "%s[%p]\n", getTypeId().getName().getString(), this );
+    fprintf(file, "%s[%p]\n", getTypeId().getName().getString(), this);
 }
 
 /*!
@@ -773,14 +767,14 @@ SoElement::print(FILE * file) const
 */
 
 SbBool
-SoElement::matches(const SoElement * element) const
+SoElement::matches(const SoElement * /* element */) const
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;
 }
 
 /*!
-  \fn virtual SoElement * SoElement::copyMatchInfo( void ) const = 0
+  \fn virtual SoElement * SoElement::copyMatchInfo(void) const = 0
 
   This function creates a copy of the element that contains enough information
   to enable the matches() function to work.  Used for caching.
@@ -804,7 +798,7 @@ SoElement::getNumStackIndices()
 SoType
 SoElement::getIdFromStackIndex(const int stackIndex)
 {
-  assert( SoElement::stackToType->getLength() >= stackIndex );
+  assert(SoElement::stackToType->getLength() >= stackIndex);
   return (*SoElement::stackToType)[ stackIndex ];
 }
 
@@ -858,8 +852,8 @@ const SoElement *
 SoElement::getConstElement(SoState * const state,
 			   const int stackIndex)
 {
-  const SoElement * element = state->getConstElement( stackIndex );
-  //    element->captureThis( state );
+  const SoElement * element = state->getConstElement(stackIndex);
+  //    element->captureThis(state);
   return element;
 }
 
@@ -870,7 +864,7 @@ SoElement::getConstElement(SoState * const state,
 */
 
 void
-SoElement::capture(SoState * const state ) const
+SoElement::capture(SoState * const state) const
 {
   if (state->isCacheOpen())
     captureThis(state);
@@ -881,7 +875,7 @@ SoElement::capture(SoState * const state ) const
 */
 
 void
-SoElement::captureThis(SoState * state) const
+SoElement::captureThis(SoState * /* state */) const
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -912,7 +906,7 @@ SoElement::getTypeId() const
 */
 
 int 
-SoElement::getStackIndex( void ) const
+SoElement::getStackIndex(void) const
 {
   return this->stackIndex;
 }

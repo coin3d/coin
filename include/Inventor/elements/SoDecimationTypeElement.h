@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_DECIMATION_TYPE_ELEMENT_H_
-#define _SO_DECIMATION_TYPE_ELEMENT_H_
+#ifndef __SODECIMATIONTYPEELEMENT_H__
+#define __SODECIMATIONTYPEELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SODECIMATIONTYPEELEMENT)
@@ -30,7 +30,7 @@
 class SoDecimationTypeElement : public SoInt32Element {
   typedef SoInt32Element inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoDecimationTypeElement )
+//$ BEGIN TEMPLATE ElementHeader(SoDecimationTypeElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -62,4 +62,4 @@ public:
 
 };
 
-#endif // ! _SO_DECIMATION_TYPE_ELEMENT_H_
+#endif // !__SODECIMATIONTYPEELEMENT_H__

@@ -30,8 +30,7 @@
 #endif // COIN_EXCLUDE_SOCOMPOSEVEC4F
 
 class SoComposeVec4f : public SoEngine {
-  typedef SoEngine inherited;
-  SO_ENGINE_HEADER(SoComposeVec4f);
+  SO_COMPOSE__HEADER(SoComposeVec4f);
 
 public:
   SoMFFloat x;
@@ -39,15 +38,7 @@ public:
   SoMFFloat z;
   SoMFFloat w;
 
-  SoEngineOutput vector; //SoMFVec4f
-
-  SoComposeVec4f();
-
-  static void initClass();
-
-private:
-  virtual ~SoComposeVec4f();
-  virtual void evaluate();
+  SoEngineOutput vector; // SoMFVec4f
 };
 
 #endif // !__SOCOMPOSEVEC4F_H__

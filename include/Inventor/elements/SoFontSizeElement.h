@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_FONT_SIZE_ELEMENT_H_
-#define _SO_FONT_SIZE_ELEMENT_H_
+#ifndef __SOFONTSIZEELEMENT_H__
+#define __SOFONTSIZEELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOFONTSIZEELEMENT)
@@ -30,7 +30,7 @@
 class SoFontSizeElement : public SoFloatElement {
   typedef SoFloatElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoFontSizeElement )
+//$ BEGIN TEMPLATE ElementHeader(SoFontSizeElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -48,14 +48,14 @@ protected:
 //$ END TEMPLATE ElementHeader
 
 public:
-  virtual void init( SoState * state );
+  virtual void init(SoState * state);
 
-  static void set( SoState * const state, SoNode * const node,
-		   const float fontSize );
-  static void set( SoState * const state, const float fontSize );
-  static float get( SoState * const state );
+  static void set(SoState * const state, SoNode * const node,
+		   const float fontSize);
+  static void set(SoState * const state, const float fontSize);
+  static float get(SoState * const state);
   static float getDefault();
 
 };
 
-#endif // ! _SO_FONT_SIZE_ELEMENT_H_
+#endif // !__SOFONTSIZEELEMENT_H__

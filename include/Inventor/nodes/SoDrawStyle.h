@@ -36,7 +36,7 @@
 class SoDrawStyle : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoDrawStyle )
+//$ BEGIN TEMPLATE NodeHeader(SoDrawStyle)
 private:
   static SoType classTypeId;
 

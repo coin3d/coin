@@ -35,7 +35,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE AbstractElementSource( SoFloatElement )
+//$ BEGIN TEMPLATE AbstractElementSource(SoFloatElement)
 
 /*!
   \var SoFloatElement::classTypeId
@@ -44,14 +44,14 @@
   SoFloatElement.
 */
 
-SoType SoFloatElement::classTypeId = SoType::badType();
+SoType SoFloatElement::classTypeId = SoType::badType(); // static
 
 /*!
   This static method returns the SoType type for SoFloatElement.
 */
 
 SoType
-SoFloatElement::getClassTypeId(
+SoFloatElement::getClassTypeId( // static
   void )
 {
   return SoFloatElement::classTypeId;
@@ -64,14 +64,14 @@ SoFloatElement::getClassTypeId(
   SoFloatElement class.
 */
 
-int SoFloatElement::classStackIndex;
+int SoFloatElement::classStackIndex; // static
 
 /*!
   This static method returns the state stack index for the SoFloatElement class.
 */
 
 int
-SoFloatElement::getClassStackIndex(
+SoFloatElement::getClassStackIndex( // static
   void )
 {
   return SoFloatElement::classStackIndex;
@@ -83,15 +83,13 @@ SoFloatElement::getClassStackIndex(
 */
 
 void
-SoFloatElement::initClass(
-    void )
+SoFloatElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitAbstractElementSource( SoFloatElement )
+//$ BEGIN TEMPLATE InitAbstractElementSource(SoFloatElement)
   assert(SoFloatElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoFloatElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
+  SoFloatElement::classTypeId = SoType::createType(inherited::getClassTypeId(),
     "SoFloatElement", NULL );
 
   if ( inherited::classStackIndex < 0 ) {
@@ -109,10 +107,9 @@ SoFloatElement::initClass(
 */
 
 void
-SoFloatElement::cleanClass(
-    void )
+SoFloatElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanAbstractElementSource( SoFloatElement )
+//$ BEGIN TEMPLATE CleanAbstractElementSource(SoFloatElement)
 //$ END TEMPLATE CleanAbstractElementSource
 }
 
@@ -121,33 +118,30 @@ SoFloatElement::cleanClass(
   identifier and stack index.
 */
 
-SoFloatElement::SoFloatElement(
-    void )
-  : data( 0.0f )
+SoFloatElement::SoFloatElement(void)
+  : data(0.0f)
 {
-    setTypeId( SoFloatElement::classTypeId );
-    setStackIndex( SoFloatElement::classStackIndex );
+    setTypeId(SoFloatElement::classTypeId);
+    setStackIndex(SoFloatElement::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoFloatElement::~SoFloatElement(
-    void )
+SoFloatElement::~SoFloatElement(void)
 {
 }
 
 //! FIXME: write doc.
 
 SbBool
-SoFloatElement::matches(
-    const SoElement * element ) const
+SoFloatElement::matches(const SoElement * element) const
 {
-    assert( element );
-    if ( getTypeId() != element->getTypeId() )
+    assert(element);
+    if (getTypeId() != element->getTypeId())
         return FALSE;
-    if ( this->data != ((SoFloatElement *)element)->data )
+    if (this->data != ((SoFloatElement *)element)->data)
         return FALSE;
     return TRUE;
 }
@@ -155,11 +149,10 @@ SoFloatElement::matches(
 //! FIXME: write doc.
 
 SoElement *
-SoFloatElement::copyMatchInfo(
-    void ) const
+SoFloatElement::copyMatchInfo(void) const
 {
 //    inherited::copyMatchInfo();
-    assert( getTypeId().canCreateInstance() );
+    assert(getTypeId().canCreateInstance());
     SoFloatElement * element = (SoFloatElement *) getTypeId().createInstance();
     element->data = this->data;
     // DEPRECATED 980807 pederb. copyMatchInfo() should only copy 
@@ -171,11 +164,10 @@ SoFloatElement::copyMatchInfo(
 //! FIXME: write doc.
 
 void
-SoFloatElement::print(
-    FILE * file ) const
+SoFloatElement::print(FILE * file) const
 {
-    fprintf( file, "%s[%p]: data = %f\n",
-        getTypeId().getName().getString(), this, this->data );
+    fprintf(file, "%s[%p]: data = %f\n",
+        getTypeId().getName().getString(), this, this->data);
 }
 
 //! FIXME: write doc.
@@ -183,14 +175,14 @@ SoFloatElement::print(
 void
 SoFloatElement::set(const int index,
 		    SoState * const state,
-		    SoNode * const node,
+		    SoNode * const /* node */,
 		    const float value)
 {
   SoFloatElement * element = (SoFloatElement *)
-    (getElement( state, index ));
+    (getElement(state, index));
 
   if (element) {
-    element->setElt( value );
+    element->setElt(value);
   }
 }
 
@@ -199,10 +191,10 @@ SoFloatElement::set(const int index,
 */
 
 void
-SoFloatElement::set(
-  const int stackIndex, SoState * const state, const float value )
+SoFloatElement::set(const int stackIndex, SoState * const state,
+		    const float value)
 {
-  set( stackIndex, state, NULL, value );
+  set(stackIndex, state, NULL, value);
 }
 
 //! FIXME: write doc.
@@ -212,7 +204,7 @@ SoFloatElement::get(const int index,
 		    SoState * const state)
 {
   SoFloatElement * element = (SoFloatElement *)
-    (getConstElement( state, index )); //, NULL );
+    (getConstElement(state, index)); //, NULL );
   if (element)
     return element->data;
   return 0.0f;

@@ -32,7 +32,7 @@
 class SoMatrixTransform : public SoTransformation {
   typedef SoTransformation inherited;
   
-//$ BEGIN TEMPLATE NodeHeader( SoMatrixTransform )
+//$ BEGIN TEMPLATE NodeHeader(SoMatrixTransform)
 private:
   static SoType classTypeId;
 

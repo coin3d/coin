@@ -31,7 +31,7 @@
 class SoTextureCoordinateFunction : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeAbstractHeader( SoTextureCoordinateFunction )
+//$ BEGIN TEMPLATE NodeAbstractHeader(SoTextureCoordinateFunction)
 private:
   static SoType classTypeId;
 

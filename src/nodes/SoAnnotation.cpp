@@ -41,7 +41,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource( SoAnnotation )
+//$ BEGIN TEMPLATE NodeSource(SoAnnotation)
 SoType SoAnnotation::classTypeId = SoType::badType();
 
 /*!
@@ -77,7 +77,7 @@ SoAnnotation::getTypeId(void) const
 */
 SoAnnotation::SoAnnotation()
 {
-//$ BEGIN TEMPLATE NodeConstructor( SoAnnotation )
+//$ BEGIN TEMPLATE NodeConstructor(SoAnnotation)
   // Make sure the class has been initialized.
   assert(SoAnnotation::classTypeId != SoType::badType());
 //$ END TEMPLATE NodeConstructor
@@ -98,7 +98,7 @@ SoAnnotation::~SoAnnotation()
 void
 SoAnnotation::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource( Annotation )
+//$ BEGIN TEMPLATE InitNodeSource(Annotation)
   // Make sure we only initialize once.
   assert(SoAnnotation::classTypeId == SoType::badType());
   // Make sure superclass get initialized before subclass.

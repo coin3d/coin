@@ -31,7 +31,7 @@
 class SoMFTime : public SoMField {
   typedef SoMField inherited;
 
-//$ BEGIN TEMPLATE MField( SoMFTime, SbTime, const SbTime & )
+//$ BEGIN TEMPLATE MField(SoMFTime, SbTime, const SbTime &)
 private:
   static SoType classTypeId;
 

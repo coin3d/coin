@@ -26,52 +26,115 @@
 #include <Inventor/SoType.h>
 #include <Inventor/errors/SoDebugError.h>
 
-#define SO_ENGINE_ABSTRACT_HEADER(className) \
-private: \
-  static SoType classTypeId; \
-public: \
-  static SoType getClassTypeId() {return className::classTypeId;} \
-  virtual SoType getTypeId() const {return className::getClassTypeId();}
+// FIXME: document macro for Doxygen. 19990925 mortene.
 
-#define SO_ENGINE_HEADER(className) \
-SO_ENGINE_ABSTRACT_HEADER(className) \
-public: \
-  static void *createInstance()
+#define SO_ENGINE_ABSTRACT_HEADER(__classname__) \
+  private: \
+    static SoType classTypeId; \
+  public: \
+    static SoType getClassTypeId(void) \
+      {return __classname__::classTypeId;} \
+    virtual SoType getTypeId(void) const \
+      {return __classname__::getClassTypeId();}
 
-#define SO_ENGINE_ABSTRACT_SOURCE(className) \
-SoType className::classTypeId;
 
-#define SO_ENGINE_SOURCE(className) \
-SO_ENGINE_ABSTRACT_SOURCE(className) \
-void *className::createInstance() \
-{ \
-  return new className; \
-} 
+// FIXME: document macro for Doxygen. 19990925 mortene.
 
-#define SO_ENGINE_CONSTRUCTOR(className)\
-this->outputList=new SoEngineOutputList;
+#define SO_ENGINE_HEADER(__classname__) \
+    SO_ENGINE_ABSTRACT_HEADER(__classname__) \
+  public: \
+    static void * createInstance(void)
 
-#define SO_ENGINE_ADD_INPUT(memberName,defaultValue)\
-this->memberName.setValue defaultValue;\
-this->memberName.setContainer(this);
 
-#define SO_ENGINE_ADD_OUTPUT(memberName,outputType)\
-this->memberName.setType(outputType::getClassTypeId());\
-this->memberName.setContainer(this);\
-this->outputList->append(&this->memberName);
+// FIXME: document macro for Doxygen. 19990925 mortene.
 
-#define SO_ENGINE_INIT_ABSTRACT_CLASS(className,parentClass,parentString)\
-classTypeId=SoType::createType(parentClass::getClassTypeId(),SO__QUOTE(className));
+#define SO_COMPOSE__HEADER(__classname__) \
+    typedef SoEngine inherited; \
+    SO_ENGINE_HEADER(__classname__); \
+  public: \
+    __classname__(void); \
+    static void initClass(void); \
+  protected: \
+    ~__classname__(); \
+  private: \
+    virtual void evaluate(void)
 
-#define SO_ENGINE_INIT_CLASS(className,parentClass,parentString)\
-classTypeId=SoType::createType(parentClass::getClassTypeId(),SO__QUOTE(className),&className::createInstance)
 
-#define SO_ENGINE_OUTPUT(outMember,outType,outValue)\
-{ \
-  if (outMember.isEnabled()) \
-    for (int _i=0;_i<outMember.getNumConnections();_i++) \
-      ((outType *)outMember[_i])->outValue; \
-}
+// FIXME: document macro for Doxygen. 19990925 mortene.
+
+#define SO_INTERPOLATE_HEADER(__classname__) \
+    typedef SoInterpolate inherited; \
+    SO_ENGINE_HEADER(__classname__); \
+  public: \
+    __classname__(void); \
+    static void initClass(void); \
+  protected: \
+    ~__classname__(); \
+  private: \
+    virtual void evaluate(void)
+
+
+// FIXME: document macro for Doxygen. 19990925 mortene.
+
+#define SO_ENGINE_ABSTRACT_SOURCE(__classname__) \
+  SoType __classname__::classTypeId;
+
+
+// FIXME: document macro for Doxygen. 19990925 mortene.
+
+#define SO_ENGINE_SOURCE(__classname__) \
+  SO_ENGINE_ABSTRACT_SOURCE(__classname__) \
+  void *__classname__::createInstance() \
+  { \
+    return new __classname__; \
+  } 
+
+
+// FIXME: document macro for Doxygen. 19990925 mortene.
+
+#define SO_ENGINE_CONSTRUCTOR(__classname__) \
+  this->outputList = new SoEngineOutputList;
+
+
+// FIXME: document macro for Doxygen. 19990925 mortene.
+
+#define SO_ENGINE_ADD_INPUT(__membername__,__defaultval__) \
+  this->__membername__.setValue __defaultval__; \
+  this->__membername__.setContainer(this);
+
+
+// FIXME: document macro for Doxygen. 19990925 mortene.
+
+#define SO_ENGINE_ADD_OUTPUT(__membername__,__outtype__) \
+  this->__membername__.setType(__outtype__::getClassTypeId()); \
+  this->__membername__.setContainer(this); \
+  this->outputList->append(&this->__membername__);
+
+
+// FIXME: document macro for Doxygen. 19990925 mortene.
+
+#define SO_ENGINE_INIT_ABSTRACT_CLASS(__classname__,__parent__,__parentname__) \
+  classTypeId = SoType::createType(__parent__::getClassTypeId(), \
+                                   SO__QUOTE(__classname__));
+
+
+// FIXME: document macro for Doxygen. 19990925 mortene.
+
+#define SO_ENGINE_INIT_CLASS(__classname__,__parent__,__parentname__) \
+  classTypeId = SoType::createType(__parent__::getClassTypeId(), \
+                                   SO__QUOTE(__classname__), \
+                                   &__classname__::createInstance)
+
+
+// FIXME: document macro for Doxygen. 19990925 mortene.
+
+#define SO_ENGINE_OUTPUT(__outmember__,__outtype__,__outval__) \
+  { \
+    if (__outmember__.isEnabled()) \
+      for (int _i=0;_i<__outmember__.getNumConnections();_i++) \
+        ((__outtype__ *)__outmember__[_i])->__outval__; \
+  }
+
 //FIXME: check read-only
 
 #endif // !__SOSUBENGINE_H__

@@ -243,7 +243,7 @@ SoComplexity::GLRender(SoGLRenderAction * action)
   FIXME: write doc
 */
 void
-SoComplexity::doAction(SoAction * action)
+SoComplexity::doAction(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -254,7 +254,7 @@ SoComplexity::doAction(SoAction * action)
   FIXME: write doc
 */
 void
-SoComplexity::callback(SoCallbackAction * action)
+SoComplexity::callback(SoCallbackAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -265,7 +265,7 @@ SoComplexity::callback(SoCallbackAction * action)
   FIXME: write doc
 */
 void
-SoComplexity::pick(SoPickAction * action)
+SoComplexity::pick(SoPickAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -276,7 +276,7 @@ SoComplexity::pick(SoPickAction * action)
   FIXME: write doc
 */
 void
-SoComplexity::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoComplexity::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

@@ -36,7 +36,7 @@
 #include <GL/gl.h>
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource( SoGLPolygonOffsetElement )
+//$ BEGIN TEMPLATE ElementSource(SoGLPolygonOffsetElement)
 
 /*!
   \var SoGLPolygonOffsetElement::classTypeId
@@ -90,24 +90,23 @@ SoGLPolygonOffsetElement::getClassStackIndex(void)
 */
 
 void
-SoGLPolygonOffsetElement::initClass(
-    void )
+SoGLPolygonOffsetElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoGLPolygonOffsetElement )
+//$ BEGIN TEMPLATE InitElementSource(SoGLPolygonOffsetElement)
   assert(SoGLPolygonOffsetElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoGLPolygonOffsetElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoGLPolygonOffsetElement",
-    &SoGLPolygonOffsetElement::createInstance);
+  SoGLPolygonOffsetElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoGLPolygonOffsetElement",
+                       &SoGLPolygonOffsetElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoGLPolygonOffsetElement::classStackIndex =
-      createStackIndex( SoGLPolygonOffsetElement::classTypeId );
-  } else {
-    SoGLPolygonOffsetElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoGLPolygonOffsetElement::classTypeId);
+  }
+  else {
+    SoGLPolygonOffsetElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -118,42 +117,38 @@ SoGLPolygonOffsetElement::initClass(
 */
 
 void
-SoGLPolygonOffsetElement::cleanClass(
-    void )
+SoGLPolygonOffsetElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoGLPolygonOffsetElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoGLPolygonOffsetElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoGLPolygonOffsetElement::createInstance( void )
+  \sa void * SoGLPolygonOffsetElement::createInstance(void)
 */
 
-SoGLPolygonOffsetElement::SoGLPolygonOffsetElement(
-    void )
+SoGLPolygonOffsetElement::SoGLPolygonOffsetElement(void)
 {
-  setTypeId( SoGLPolygonOffsetElement::classTypeId );
-  setStackIndex( SoGLPolygonOffsetElement::classStackIndex );
+  setTypeId(SoGLPolygonOffsetElement::classTypeId);
+  setStackIndex(SoGLPolygonOffsetElement::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoGLPolygonOffsetElement::~SoGLPolygonOffsetElement(
-    void )
+SoGLPolygonOffsetElement::~SoGLPolygonOffsetElement(void)
 {
 }
 
 //! FIXME: write doc.
 
 void
-SoGLPolygonOffsetElement::init(
-    SoState * state )
+SoGLPolygonOffsetElement::init(SoState * state)
 {
-  inherited::init( state );
+  inherited::init(state);
   this->currentActive = FALSE;
   this->currentStyle = FILLED;
   this->currentOffsetfactor = 1.0f;

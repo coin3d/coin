@@ -31,7 +31,7 @@
 class SoPerspectiveCamera : public SoCamera {
   typedef SoCamera inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoPerspectiveCamera )
+//$ BEGIN TEMPLATE NodeHeader(SoPerspectiveCamera)
 private:
   static SoType classTypeId;
 

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_FOCAL_DISTANCE_ELEMENT_H_
-#define _SO_FOCAL_DISTANCE_ELEMENT_H_
+#ifndef __SOFOCALDISTANCEELEMENT_H__
+#define __SOFOCALDISTANCEELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOFOCALDISTANCEELEMENT)
@@ -30,7 +30,7 @@
 class SoFocalDistanceElement : public SoFloatElement {
   typedef SoFloatElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoFocalDistanceElement )
+//$ BEGIN TEMPLATE ElementHeader(SoFocalDistanceElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -48,14 +48,14 @@ protected:
 //$ END TEMPLATE ElementHeader
 
 public:
-    virtual void init( SoState * state );
+    virtual void init(SoState * state);
 
-    static  void set( SoState * const state, SoNode * const node,
-		      const float distance );
-    static  void set( SoState * const state, const float distance );
-    static  float get( SoState * const state );
+    static  void set(SoState * const state, SoNode * const node,
+		      const float distance);
+    static  void set(SoState * const state, const float distance);
+    static  float get(SoState * const state);
     static  float getDefault();
 
 };
 
-#endif // ! _SO_FOCAL_DISTANCE_ELEMENT_H_
+#endif // !__SOFOCALDISTANCEELEMENT_H__

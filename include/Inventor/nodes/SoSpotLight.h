@@ -33,7 +33,7 @@
 class SoSpotLight : public SoLight {
   typedef SoLight inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoSpotLight )
+//$ BEGIN TEMPLATE NodeHeader(SoSpotLight)
 private:
   static SoType classTypeId;
 

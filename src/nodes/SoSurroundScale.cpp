@@ -138,7 +138,7 @@ SoSurroundScale::invalidate(void)
   FIXME: write doc
  */
 void
-SoSurroundScale::doAction(SoAction * action)
+SoSurroundScale::doAction(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -148,7 +148,7 @@ SoSurroundScale::doAction(SoAction * action)
   FIXME: write doc
  */
 void
-SoSurroundScale::setDoingTranslations(SbBool doEm)
+SoSurroundScale::setDoingTranslations(SbBool /* doEm */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -168,7 +168,7 @@ SoSurroundScale::isDoingTranslations(void)
   FIXME: write doc
  */
 void
-SoSurroundScale::callback(SoCallbackAction * action)
+SoSurroundScale::callback(SoCallbackAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -179,7 +179,7 @@ SoSurroundScale::callback(SoCallbackAction * action)
   FIXME: write doc
  */
 void
-SoSurroundScale::GLRender(SoGLRenderAction * action)
+SoSurroundScale::GLRender(SoGLRenderAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -190,7 +190,7 @@ SoSurroundScale::GLRender(SoGLRenderAction * action)
   FIXME: write doc
  */
 void
-SoSurroundScale::getBoundingBox(SoGetBoundingBoxAction * action)
+SoSurroundScale::getBoundingBox(SoGetBoundingBoxAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -201,7 +201,7 @@ SoSurroundScale::getBoundingBox(SoGetBoundingBoxAction * action)
   FIXME: write doc
  */
 void
-SoSurroundScale::getMatrix(SoGetMatrixAction * action)
+SoSurroundScale::getMatrix(SoGetMatrixAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -212,7 +212,7 @@ SoSurroundScale::getMatrix(SoGetMatrixAction * action)
   FIXME: write doc
  */
 void
-SoSurroundScale::pick(SoPickAction * action)
+SoSurroundScale::pick(SoPickAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -222,7 +222,8 @@ SoSurroundScale::pick(SoPickAction * action)
   FIXME: write doc
  */
 void
-SoSurroundScale::updateMySurroundParams(SoAction * action, const SbMatrix & inv)
+SoSurroundScale::updateMySurroundParams(SoAction * /* action */,
+					const SbMatrix & /* inv */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -231,7 +232,7 @@ SoSurroundScale::updateMySurroundParams(SoAction * action, const SbMatrix & inv)
   FIXME: write doc
  */
 void
-SoSurroundScale::setIgnoreInBbox(SbBool newVal)
+SoSurroundScale::setIgnoreInBbox(SbBool /* newVal */)
 {
   assert(0 && "FIXME: not implemented");
 }

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_GL_LINE_PATTERN_ELEMENT_H_
-#define _SO_GL_LINE_PATTERN_ELEMENT_H_
+#ifndef __SOGLLINEPATTERNELEMENT_H__
+#define __SOGLLINEPATTERNELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOGLLINEPATTERNELEMENT)
@@ -30,7 +30,7 @@
 class SoGLLinePatternElement : public SoLinePatternElement {
   typedef SoLinePatternElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoGLLinePatternElement )
+//$ BEGIN TEMPLATE ElementHeader(SoGLLinePatternElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -62,4 +62,4 @@ private:
 
 };
 
-#endif // ! _SO_GL_LINE_PATTERN_ELEMENT_H_
+#endif // !__SOGLLINEPATTERNELEMENT_H__

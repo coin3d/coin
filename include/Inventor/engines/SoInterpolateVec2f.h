@@ -25,26 +25,16 @@
 #error "Configuration settings disrespected -- do not include this file!"
 #endif // COIN_EXCLUDE_SOINTERPOLATEVEC2F
 
-//$ BEGIN TEMPLATE InterpolateHeader( SoInterpolateVec2f, SoMFVec2f )
+//$ BEGIN TEMPLATE InterpolateHeader(SoInterpolateVec2f, SoMFVec2f)
 #include <Inventor/engines/SoInterpolateAbs.h>
 #include <Inventor/fields/SoMFVec2f.h>
 
 class SoInterpolateVec2f : public SoInterpolate {
-  typedef SoInterpolate inherited;
-  SO_ENGINE_HEADER(SoInterpolateVec2f);
+  SO_INTERPOLATE_HEADER(SoInterpolateVec2f);
 
 public:
   SoMFVec2f input0;
   SoMFVec2f input1;
-
-  SoInterpolateVec2f();
-
-  static void initClass();
-
-private:
-  virtual ~SoInterpolateVec2f();
-  virtual void evaluate();
-
 };
 //$ END TEMPLATE InterpolateHeader
 

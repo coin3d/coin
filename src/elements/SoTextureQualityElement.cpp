@@ -30,7 +30,7 @@
 
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource( SoTextureQualityElement )
+//$ BEGIN TEMPLATE ElementSource(SoTextureQualityElement)
 
 /*!
   \var SoTextureQualityElement::classTypeId
@@ -84,24 +84,23 @@ SoTextureQualityElement::getClassStackIndex(void)
 */
 
 void
-SoTextureQualityElement::initClass(
-    void )
+SoTextureQualityElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoTextureQualityElement )
+//$ BEGIN TEMPLATE InitElementSource(SoTextureQualityElement)
   assert(SoTextureQualityElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoTextureQualityElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoTextureQualityElement",
-    &SoTextureQualityElement::createInstance);
+  SoTextureQualityElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoTextureQualityElement",
+                       &SoTextureQualityElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoTextureQualityElement::classStackIndex =
-      createStackIndex( SoTextureQualityElement::classTypeId );
-  } else {
-    SoTextureQualityElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoTextureQualityElement::classTypeId);
+  }
+  else {
+    SoTextureQualityElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -112,24 +111,22 @@ SoTextureQualityElement::initClass(
 */
 
 void
-SoTextureQualityElement::cleanClass(
-    void )
+SoTextureQualityElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoTextureQualityElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoTextureQualityElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoTextureQualityElement::createInstance( void )
+  \sa void * SoTextureQualityElement::createInstance(void)
 */
 
-SoTextureQualityElement::SoTextureQualityElement(
-    void )
+SoTextureQualityElement::SoTextureQualityElement(void)
 {
-    setTypeId( SoTextureQualityElement::classTypeId );
-    setStackIndex( SoTextureQualityElement::classStackIndex );
+    setTypeId(SoTextureQualityElement::classTypeId);
+    setStackIndex(SoTextureQualityElement::classStackIndex);
     this->data = getDefault();
 }
 
@@ -137,18 +134,17 @@ SoTextureQualityElement::SoTextureQualityElement(
   The destructor.
 */
 
-SoTextureQualityElement::~SoTextureQualityElement( // virtual protected
-    void )
+SoTextureQualityElement::~SoTextureQualityElement(// virtual protected
+    void)
 {
 }
 
 //! FIXME: write doc.
 
 void
-SoTextureQualityElement::init(
-    SoState * state )
+SoTextureQualityElement::init(SoState * state)
 {
-  inherited::init( state );
+  inherited::init(state);
 
   this->data = SoTextureQualityElement::getDefault();
 }
@@ -156,20 +152,18 @@ SoTextureQualityElement::init(
 //! FIXME: write doc.
 
 void
-SoTextureQualityElement::push(
-    SoState * state )
+SoTextureQualityElement::push(SoState * state)
 {
-    inherited::push( state );
+    inherited::push(state);
 }
 
 //! FIXME: write doc.
 
 void
-SoTextureQualityElement::pop(
-    SoState * state,
-    const SoElement * prevTopElement )
+SoTextureQualityElement::pop(SoState * state,
+			     const SoElement * prevTopElement)
 {
-    inherited::pop( state, prevTopElement );
+    inherited::pop(state, prevTopElement);
 }
 
 /*!
@@ -177,10 +171,10 @@ SoTextureQualityElement::pop(
 */
 
 void
-SoTextureQualityElement::set(
-  SoState * const state, SoNode * const node, const float quality )
+SoTextureQualityElement::set(SoState * const state, SoNode * const node,
+			     const float quality)
 {
-  SoFloatElement::set( classStackIndex, state, node, quality );
+  SoFloatElement::set(classStackIndex, state, node, quality);
 }
 
 /*!
@@ -188,10 +182,9 @@ SoTextureQualityElement::set(
 */
 
 void
-SoTextureQualityElement::set(
-  SoState * const state, const float quality )
+SoTextureQualityElement::set(SoState * const state, const float quality)
 {
-  set( state, NULL, quality );
+  set(state, NULL, quality);
 }
 
 
@@ -200,10 +193,9 @@ SoTextureQualityElement::set(
 */
 
 float
-SoTextureQualityElement::get(
-  SoState * const state )
+SoTextureQualityElement::get(SoState * const state)
 {
-  return SoFloatElement::get( classStackIndex, state );
+  return SoFloatElement::get(classStackIndex, state);
 }
 
 /*!
@@ -211,7 +203,7 @@ SoTextureQualityElement::get(
 */
 
 float
-SoTextureQualityElement::getDefault( void )
+SoTextureQualityElement::getDefault(void)
 {
   return 0.5f;
 }

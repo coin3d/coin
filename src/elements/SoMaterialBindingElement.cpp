@@ -39,7 +39,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoMaterialBindingElement )
+//$ BEGIN TEMPLATE ElementSource(SoMaterialBindingElement)
 
 /*!
   \var SoMaterialBindingElement::classTypeId
@@ -93,24 +93,23 @@ SoMaterialBindingElement::getClassStackIndex(void)
 */
 
 void
-SoMaterialBindingElement::initClass(
-    void )
+SoMaterialBindingElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoMaterialBindingElement )
+//$ BEGIN TEMPLATE InitElementSource(SoMaterialBindingElement)
   assert(SoMaterialBindingElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoMaterialBindingElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoMaterialBindingElement",
-    &SoMaterialBindingElement::createInstance);
+  SoMaterialBindingElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoMaterialBindingElement",
+                       &SoMaterialBindingElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoMaterialBindingElement::classStackIndex =
-      createStackIndex( SoMaterialBindingElement::classTypeId );
-  } else {
-    SoMaterialBindingElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoMaterialBindingElement::classTypeId);
+  }
+  else {
+    SoMaterialBindingElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -121,24 +120,22 @@ SoMaterialBindingElement::initClass(
 */
 
 void
-SoMaterialBindingElement::cleanClass(
-    void )
+SoMaterialBindingElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoMaterialBindingElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoMaterialBindingElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoMaterialBindingElement::createInstance( void )
+  \sa void * SoMaterialBindingElement::createInstance(void)
 */
 
-SoMaterialBindingElement::SoMaterialBindingElement(
-    void )
+SoMaterialBindingElement::SoMaterialBindingElement(void)
 {
-    setTypeId( SoMaterialBindingElement::classTypeId );
-    setStackIndex( SoMaterialBindingElement::classStackIndex );
+    setTypeId(SoMaterialBindingElement::classTypeId);
+    setStackIndex(SoMaterialBindingElement::classStackIndex);
     this->data = getDefault();
 }
 
@@ -146,8 +143,7 @@ SoMaterialBindingElement::SoMaterialBindingElement(
   The destructor.
 */
 
-SoMaterialBindingElement::~SoMaterialBindingElement(
-    void )
+SoMaterialBindingElement::~SoMaterialBindingElement(void)
 {
 }
 
@@ -172,8 +168,7 @@ SoMaterialBindingElement::set(SoState * const state,
 //! FIXME: write doc.
 
 void
-SoMaterialBindingElement::init(
-    SoState * state )
+SoMaterialBindingElement::init(SoState * state)
 {
   inherited::init(state);
   this->data = getDefault();

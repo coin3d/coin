@@ -40,7 +40,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoLightModelElement )
+//$ BEGIN TEMPLATE ElementSource(SoLightModelElement)
 
 /*!
   \var SoLightModelElement::classTypeId
@@ -96,21 +96,21 @@ SoLightModelElement::getClassStackIndex(void)
 void 
 SoLightModelElement::initClass()
 {
-//$ BEGIN TEMPLATE InitElementSource( SoLightModelElement )
+//$ BEGIN TEMPLATE InitElementSource(SoLightModelElement)
   assert(SoLightModelElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoLightModelElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoLightModelElement",
-    &SoLightModelElement::createInstance);
+  SoLightModelElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoLightModelElement",
+                       &SoLightModelElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoLightModelElement::classStackIndex =
-      createStackIndex( SoLightModelElement::classTypeId );
-  } else {
-    SoLightModelElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoLightModelElement::classTypeId);
+  }
+  else {
+    SoLightModelElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -123,14 +123,14 @@ SoLightModelElement::initClass()
 void 
 SoLightModelElement::cleanClass()
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoLightModelElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoLightModelElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoLightModelElement::createInstance( void )
+  \sa void * SoLightModelElement::createInstance(void)
 */
 
 SoLightModelElement::SoLightModelElement()
@@ -150,7 +150,7 @@ SoLightModelElement::~SoLightModelElement()
 //! FIXME: write doc.
 
 void 
-SoLightModelElement::init(SoState *state)
+SoLightModelElement::init(SoState * /* state */)
 {
   data = PHONG;
 }

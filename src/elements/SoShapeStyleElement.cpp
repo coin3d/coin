@@ -114,24 +114,23 @@ SoShapeStyleElement::getClassStackIndex(void)
 */
 
 void
-SoShapeStyleElement::initClass(
-    void)
+SoShapeStyleElement::initClass(void)
 {
 //$ BEGIN TEMPLATE InitElementSource(SoShapeStyleElement)
   assert(SoShapeStyleElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoShapeStyleElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoShapeStyleElement",
-    &SoShapeStyleElement::createInstance);
+  SoShapeStyleElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoShapeStyleElement",
+                       &SoShapeStyleElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoShapeStyleElement::classStackIndex =
       createStackIndex(SoShapeStyleElement::classTypeId);
-  } else {
-    SoShapeStyleElement::classStackIndex =
-      inherited::classStackIndex;
+  }
+  else {
+    SoShapeStyleElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -141,8 +140,7 @@ SoShapeStyleElement::initClass(
 */
 
 void
-SoShapeStyleElement::cleanClass(
-    void)
+SoShapeStyleElement::cleanClass(void)
 {
 //$ BEGIN TEMPLATE CleanElementSource(SoShapeStyleElement)
 //$ END TEMPLATE CleanElementSource
@@ -198,7 +196,7 @@ SoShapeStyleElement::pop(SoState * state, const SoElement * prevTopElement)
 //! FIXME: write doc.
 
 SbBool
-SoShapeStyleElement::matches(const SoElement * element) const
+SoShapeStyleElement::matches(const SoElement * /* element */) const
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;
@@ -349,7 +347,7 @@ SoShapeStyleElement::isScreenDoor(SoState * const state)
 //! FIXME: write doc.
 
 void
-SoShapeStyleElement::print(FILE * file) const
+SoShapeStyleElement::print(FILE * /* file */) const
 {
   assert(0 && "FIXME: not implemented");
 }

@@ -31,8 +31,8 @@
 /*!
   FIXME: write doc
 */
-SbCylinderPlaneProjector::SbCylinderPlaneProjector(float edgeTol,
-						   SbBool orientToEye)
+SbCylinderPlaneProjector::SbCylinderPlaneProjector(float /* edgeTol */,
+						   SbBool /* orientToEye */)
 {
   assert(0 && "FIXME: implementation missing");
 }
@@ -40,17 +40,9 @@ SbCylinderPlaneProjector::SbCylinderPlaneProjector(float edgeTol,
 /*!
   FIXME: write doc
 */
-SbCylinderPlaneProjector::SbCylinderPlaneProjector(const SbCylinder & cyl,
-						   float edgeTol,
-						   SbBool orientToEye)
-{
-  assert(0 && "FIXME: implementation missing");
-}
-
-/*!
-  FIXME: write doc
-*/
-SbCylinderPlaneProjector::~SbCylinderPlaneProjector()
+SbCylinderPlaneProjector::SbCylinderPlaneProjector(const SbCylinder & /* cyl */,
+						   float /* edgeTol */,
+						   SbBool /* orientToEye */)
 {
   assert(0 && "FIXME: implementation missing");
 }
@@ -69,7 +61,7 @@ SbCylinderPlaneProjector::copy(void) const
   FIXME: write doc
 */
 SbVec3f
-SbCylinderPlaneProjector::project(const SbVec2f & point)
+SbCylinderPlaneProjector::project(const SbVec2f & /* point */)
 {
   assert(0 && "FIXME: implementation missing");
   return SbVec3f();
@@ -79,8 +71,8 @@ SbCylinderPlaneProjector::project(const SbVec2f & point)
   FIXME: write doc
 */
 SbRotation
-SbCylinderPlaneProjector::getRotation(const SbVec3f & point1,
-				      const SbVec3f & point2)
+SbCylinderPlaneProjector::getRotation(const SbVec3f & /* point1 */,
+				      const SbVec3f & /* point2 */)
 {
   assert(0 && "FIXME: implementation missing");
   return SbRotation::identity();
@@ -90,8 +82,8 @@ SbCylinderPlaneProjector::getRotation(const SbVec3f & point1,
   FIXME: write doc
 */
 SbRotation
-SbCylinderPlaneProjector::getRotation(const SbVec3f & point1, SbBool tol1,
-				      const SbVec3f & point2, SbBool tol2)
+SbCylinderPlaneProjector::getRotation(const SbVec3f & /* point1 */, SbBool /* tol1 */,
+				      const SbVec3f & /* point2 */, SbBool /* tol2 */)
 {
   assert(0 && "FIXME: implementation missing");
   return SbRotation::identity();

@@ -32,7 +32,7 @@
 class SoDirectionalLight : public SoLight {
   typedef SoLight inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoDirectionalLight )
+//$ BEGIN TEMPLATE NodeHeader(SoDirectionalLight)
 private:
   static SoType classTypeId;
 
@@ -53,7 +53,7 @@ public:
   SoSFVec3f direction;
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
-  virtual void GLRender( SoGLRenderAction * action );
+  virtual void GLRender(SoGLRenderAction * action);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 };
 

@@ -60,7 +60,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoModelMatrixElement )
+//$ BEGIN TEMPLATE ElementSource(SoModelMatrixElement)
 
 /*!
   \var SoModelMatrixElement::classTypeId
@@ -114,24 +114,23 @@ SoModelMatrixElement::getClassStackIndex(void)
 */
 
 void
-SoModelMatrixElement::initClass(
-    void )
+SoModelMatrixElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoModelMatrixElement )
+//$ BEGIN TEMPLATE InitElementSource(SoModelMatrixElement)
   assert(SoModelMatrixElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoModelMatrixElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoModelMatrixElement",
-    &SoModelMatrixElement::createInstance);
+  SoModelMatrixElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoModelMatrixElement",
+                       &SoModelMatrixElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoModelMatrixElement::classStackIndex =
-      createStackIndex( SoModelMatrixElement::classTypeId );
-  } else {
-    SoModelMatrixElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoModelMatrixElement::classTypeId);
+  }
+  else {
+    SoModelMatrixElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -142,33 +141,30 @@ SoModelMatrixElement::initClass(
 */
 
 void
-SoModelMatrixElement::cleanClass(
-    void )
+SoModelMatrixElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoModelMatrixElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoModelMatrixElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa SoModelMatrixElement::createInstance( void )
+  \sa SoModelMatrixElement::createInstance(void)
 */
 
-SoModelMatrixElement::SoModelMatrixElement(
-    void )
-  : modelMatrix(), cullMatrix(), combinedMatrix(), flags( 0 )
+SoModelMatrixElement::SoModelMatrixElement(void)
+  : modelMatrix(), cullMatrix(), combinedMatrix(), flags(0)
 {
-  setTypeId( SoModelMatrixElement::classTypeId );
-  setStackIndex( SoModelMatrixElement::classStackIndex );
+  setTypeId(SoModelMatrixElement::classTypeId);
+  setStackIndex(SoModelMatrixElement::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoModelMatrixElement::~SoModelMatrixElement(
-    void )
+SoModelMatrixElement::~SoModelMatrixElement(void)
 {
 }
 
@@ -358,14 +354,14 @@ SoModelMatrixElement::get(SoState * const state,
 void
 SoModelMatrixElement::print(FILE * file) const
 {
-  fprintf( file, "SoModelMatrixElement[%p]\n", this );
+  fprintf(file, "SoModelMatrixElement[%p]\n", this);
 }
 
 //! FIXME: write doc.
 
 void
-SoModelMatrixElement::makeEltIdentity( // virtual, protected
-    void )
+SoModelMatrixElement::makeEltIdentity(// virtual, protected
+    void)
 {
   this->modelMatrix.makeIdentity();
   this->flags = FLG_IDENTITY;
@@ -374,8 +370,8 @@ SoModelMatrixElement::makeEltIdentity( // virtual, protected
 //! FIXME: write doc.
 
 void
-SoModelMatrixElement::setElt( // virtual, protected
-    const SbMatrix & matrix )
+SoModelMatrixElement::setElt(// virtual, protected
+    const SbMatrix & matrix)
 {
   this->modelMatrix = matrix;
   this->flags &= ~(FLG_IDENTITY|FLG_COMBINED);
@@ -384,8 +380,8 @@ SoModelMatrixElement::setElt( // virtual, protected
 //! FIXME: write doc.
 
 void
-SoModelMatrixElement::multElt( // virtual, protected
-    const SbMatrix & matrix )
+SoModelMatrixElement::multElt(// virtual, protected
+    const SbMatrix & matrix)
 {
   this->modelMatrix.multLeft(matrix);
   this->flags &= ~(FLG_IDENTITY|FLG_COMBINED);
@@ -394,8 +390,8 @@ SoModelMatrixElement::multElt( // virtual, protected
 //! FIXME: write doc.
 
 void
-SoModelMatrixElement::translateEltBy( // virtual, protected
-    const SbVec3f & translation )
+SoModelMatrixElement::translateEltBy(// virtual, protected
+    const SbVec3f & translation)
 {
   SbMatrix matrix = SbMatrix::identity();
   matrix.setTranslate(translation);
@@ -406,8 +402,8 @@ SoModelMatrixElement::translateEltBy( // virtual, protected
 //! FIXME: write doc.
 
 void
-SoModelMatrixElement::rotateEltBy( // virtual, protected
-    const SbRotation & rotation )
+SoModelMatrixElement::rotateEltBy(// virtual, protected
+    const SbRotation & rotation)
 {
   SbMatrix matrix = SbMatrix::identity();
   matrix.setRotate(rotation);
@@ -418,8 +414,8 @@ SoModelMatrixElement::rotateEltBy( // virtual, protected
 //! FIXME: write doc.
 
 void
-SoModelMatrixElement::scaleEltBy( // virtual, protected
-    const SbVec3f & scaleFactor )
+SoModelMatrixElement::scaleEltBy(// virtual, protected
+    const SbVec3f & scaleFactor)
 {
   SbMatrix matrix = SbMatrix::identity();
   matrix.setScale(scaleFactor);

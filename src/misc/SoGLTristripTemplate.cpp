@@ -68,7 +68,7 @@
   if (materials);
 #endif
   
-  while ( viptr < viendptr ) {
+  while (viptr < viendptr) {
     v1 = *viptr++;
     v2 = *viptr++;
     v3 = *viptr++;

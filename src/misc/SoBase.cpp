@@ -626,7 +626,7 @@ SoBase::setInstancePrefix(const SbString & c)
   FIXME: write doc
  */
 void
-SoBase::setTraceRefs(SbBool bTrace)
+SoBase::setTraceRefs(SbBool /* bTrace */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -800,8 +800,6 @@ SoBase::freeLists(unsigned long, void * value)
 SbBool
 SoBase::readReference(SoInput * in, SoBase *& base)
 {
-  SoBase * baseptr = NULL;
-
   SbName refName;
   if (!in->read(refName, FALSE)) {
     SoReadError::post(in, "Premature end of file after \"%s\"",
@@ -894,7 +892,7 @@ SoBase::readBaseInstance(SoInput * in, const SbName & className,
 {
   SbBool retval = TRUE;
 
-  if (base = SoBase::createInstance(in, className)) {
+  if ((base = SoBase::createInstance(in, className))) {
     if (!(!refName)) in->addReference(refName, base);
 
     unsigned short flags = 0;

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_CACHE_ELEMENT_H_
-#define _SO_CACHE_ELEMENT_H_
+#ifndef __SOCACHEELEMENT_H__
+#define __SOCACHEELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOCACHEELEMENT)
@@ -32,7 +32,7 @@ class SoCache;
 class SoCacheElement : public SoElement {
   typedef SoElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoCacheElement )
+//$ BEGIN TEMPLATE ElementHeader(SoCacheElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -50,26 +50,26 @@ protected:
 //$ END TEMPLATE ElementHeader
 
 public:
-  virtual void init( SoState * state );
+  virtual void init(SoState * state);
 
-  virtual void push( SoState * state );
-  virtual void pop( SoState * state,
-		    const SoElement * prevTopElement );
+  virtual void push(SoState * state);
+  virtual void pop(SoState * state,
+		    const SoElement * prevTopElement);
 
-  static  void set( SoState * const state, SoCache * const cache );
-  SoCache * getCache( void ) const;
-  static  SbBool anyOpen( SoState * const state );
-  static  void invalidate( SoState * const state );
-  virtual SbBool matches( const SoElement * element ) const;
-  virtual SoElement * copyMatchInfo( void ) const;
-  SoCacheElement * getNextCacheElement( void ) const;
+  static  void set(SoState * const state, SoCache * const cache);
+  SoCache * getCache(void) const;
+  static  SbBool anyOpen(SoState * const state);
+  static  void invalidate(SoState * const state);
+  virtual SbBool matches(const SoElement * element) const;
+  virtual SoElement * copyMatchInfo(void) const;
+  SoCacheElement * getNextCacheElement(void) const;
 
-  static  void addElement( SoState * const state,
-                           const SoElement * const element );
-  static  void addCacheDependency( SoState * const state,
-                                   SoCache * const cache );
-  static  SbBool setInvalid( const SbBool newValue );
-  static  SoCache * getCurrentCache( SoState * const state );
+  static  void addElement(SoState * const state,
+                           const SoElement * const element);
+  static  void addCacheDependency(SoState * const state,
+                                   SoCache * const cache);
+  static  SbBool setInvalid(const SbBool newValue);
+  static  SoCache * getCurrentCache(SoState * const state);
   
 private:
     SoCache * cache;
@@ -77,4 +77,4 @@ private:
 
 };
 
-#endif // ! _SO_CACHE_ELEMENT_H_
+#endif // !__SOCACHEELEMENT_H__

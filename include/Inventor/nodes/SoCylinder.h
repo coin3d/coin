@@ -33,7 +33,7 @@
 class SoCylinder : public SoShape {
   typedef SoShape inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoCylinder )
+//$ BEGIN TEMPLATE NodeHeader(SoCylinder)
 private:
   static SoType classTypeId;
 

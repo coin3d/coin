@@ -104,7 +104,6 @@ SoBaseList::insert(SoBase * const ptr, const int addBefore)
 void 
 SoBaseList::remove(const int which)
 {
-  const int n = this->getLength();
   //Check if get(which) exists.
   if (this->doRef) this->get(which)->unref();
   SbPList::remove(which);

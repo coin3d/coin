@@ -302,7 +302,7 @@ SoTexture2::GLRender(SoGLRenderAction * action)
   FIXME: write doc
  */
 void
-SoTexture2::doAction(SoAction * action)
+SoTexture2::doAction(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -313,7 +313,7 @@ SoTexture2::doAction(SoAction * action)
   FIXME: write doc
  */
 void
-SoTexture2::callback(SoCallbackAction * action)
+SoTexture2::callback(SoCallbackAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -323,8 +323,9 @@ SoTexture2::callback(SoCallbackAction * action)
   FIXME: write doc
  */
 SbBool
-SoTexture2::readImage(const SbString & fname, int & w, int & h, int & nc,
-		      unsigned char *& bytes)
+SoTexture2::readImage(const SbString & /* fname */,
+		      int & /* w */, int & /* h */, int & /* nc */,
+		      unsigned char *& /* bytes */)
 {
   //  assert(0 && "FIXME: not implemented");
   return TRUE;
@@ -344,7 +345,7 @@ SoTexture2::getReadStatus(void)
   FIXME: write doc
  */
 void
-SoTexture2::setReadStatus(int s)
+SoTexture2::setReadStatus(int /* s */)
 {
   assert(0 && "FIXME: not implemented");
 }

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_BASE_LIST_H_
-#define _SO_BASE_LIST_H_
+#ifndef __SOBASELIST_H__
+#define __SOBASELIST_H__
 
 class SoBase;
 
@@ -48,4 +48,4 @@ private:
 
 };
 
-#endif // ! _SO_BASE_LIST_H_
+#endif // !__SOBASELIST_H__

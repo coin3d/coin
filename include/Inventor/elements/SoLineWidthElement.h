@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_LINE_WIDTH_ELEMENT_H_
-#define _SO_LINE_WIDTH_ELEMENT_H_
+#ifndef __SOLINEWIDTHELEMENT_H__
+#define __SOLINEWIDTHELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOLINEWIDTHELEMENT)
@@ -30,7 +30,7 @@
 class SoLineWidthElement : public SoFloatElement {
   typedef SoFloatElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoLineWidthElement )
+//$ BEGIN TEMPLATE ElementHeader(SoLineWidthElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -48,14 +48,14 @@ protected:
 //$ END TEMPLATE ElementHeader
 
 public:
-  virtual void init( SoState * state );
+  virtual void init(SoState * state);
 
-  static  void set( SoState * const state, SoNode * const node,
-              const float lineWidth );
-  static  void set( SoState * const state, const float lineWidth );
-  static  float get( SoState * const state );
+  static  void set(SoState * const state, SoNode * const node,
+              const float lineWidth);
+  static  void set(SoState * const state, const float lineWidth);
+  static  float get(SoState * const state);
   static  float getDefault();
 
 };
 
-#endif // ! _SO_LINE_WIDTH_ELEMENT_H_
+#endif // !__SOLINEWIDTHELEMENT_H__

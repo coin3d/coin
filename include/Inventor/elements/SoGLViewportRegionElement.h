@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_GL_VIEWPORT_REGION_ELEMENT_H_
-#define _SO_GL_VIEWPORT_REGION_ELEMENT_H_
+#ifndef __SOGLVIEWPORTREGIONELEMENT_H__
+#define __SOGLVIEWPORTREGIONELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOGLVIEWPORTREGIONELEMENT)
@@ -30,7 +30,7 @@
 class SoGLViewportRegionElement : public SoViewportRegionElement {
   typedef SoViewportRegionElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoGLViewportRegionElement )
+//$ BEGIN TEMPLATE ElementHeader(SoGLViewportRegionElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -61,4 +61,4 @@ private:
   void updategl() const;
 };
 
-#endif // ! _SO_GL_VIEWPORT_REGION_ELEMENT_H_
+#endif // !__SOGLVIEWPORTREGIONELEMENT_H__

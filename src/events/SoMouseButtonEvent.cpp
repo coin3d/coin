@@ -68,7 +68,7 @@
 
 
 
-//$ BEGIN TEMPLATE EventSource( SoMouseButtonEvent )
+//$ BEGIN TEMPLATE EventSource(SoMouseButtonEvent)
 /*!
   \var SoMouseButtonEvent::classTypeId
   Unique type identification for the SoMouseButtonEvent class type.
@@ -105,7 +105,7 @@ SoMouseButtonEvent::getClassTypeId(void)
 void
 SoMouseButtonEvent::initClass(void)
 {
-//$ BEGIN TEMPLATE EventInitClass( MouseButtonEvent )
+//$ BEGIN TEMPLATE EventInitClass(MouseButtonEvent)
   // Make sure we only initialize once.
   assert(SoMouseButtonEvent::classTypeId == SoType::badType());
   // Make sure superclass get initialized before subclass.

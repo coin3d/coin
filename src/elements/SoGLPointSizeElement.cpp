@@ -37,7 +37,7 @@
 
 float SoGLPointSizeElement::sizerange[2] = {-1.0f, -1.0f};
 
-//$ BEGIN TEMPLATE ElementSource( SoGLPointSizeElement )
+//$ BEGIN TEMPLATE ElementSource(SoGLPointSizeElement)
 
 /*!
   \var SoGLPointSizeElement::classTypeId
@@ -91,24 +91,23 @@ SoGLPointSizeElement::getClassStackIndex(void)
 */
 
 void
-SoGLPointSizeElement::initClass(
-    void )
+SoGLPointSizeElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoGLPointSizeElement )
+//$ BEGIN TEMPLATE InitElementSource(SoGLPointSizeElement)
   assert(SoGLPointSizeElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoGLPointSizeElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoGLPointSizeElement",
-    &SoGLPointSizeElement::createInstance);
+  SoGLPointSizeElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoGLPointSizeElement",
+                       &SoGLPointSizeElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoGLPointSizeElement::classStackIndex =
-      createStackIndex( SoGLPointSizeElement::classTypeId );
-  } else {
-    SoGLPointSizeElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoGLPointSizeElement::classTypeId);
+  }
+  else {
+    SoGLPointSizeElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -119,31 +118,29 @@ SoGLPointSizeElement::initClass(
 */
 
 void
-SoGLPointSizeElement::cleanClass(
-    void )
+SoGLPointSizeElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoGLPointSizeElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoGLPointSizeElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoGLPointSizeElement::createInstance( void )
+  \sa void * SoGLPointSizeElement::createInstance(void)
 */
 
 SoGLPointSizeElement::SoGLPointSizeElement()
 {
-  setTypeId( SoGLPointSizeElement::classTypeId );
-  setStackIndex( SoGLPointSizeElement::classStackIndex );
+  setTypeId(SoGLPointSizeElement::classTypeId);
+  setStackIndex(SoGLPointSizeElement::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoGLPointSizeElement::~SoGLPointSizeElement(
-    void )
+SoGLPointSizeElement::~SoGLPointSizeElement(void)
 {
 }
 
@@ -152,7 +149,7 @@ SoGLPointSizeElement::~SoGLPointSizeElement(
 void
 SoGLPointSizeElement::init(SoState * state)
 {
-  inherited::init( state );
+  inherited::init(state);
   this->current = -1.0f;
 }
 

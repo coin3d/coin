@@ -39,7 +39,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE MField( SoMFTime, SbTime, const SbTime & )
+//$ BEGIN TEMPLATE MField(SoMFTime, SbTime, const SbTime &)
 
 SoType SoMFTime::classTypeId = SoType::badType();
 
@@ -259,7 +259,7 @@ SoMFTime::copyValue(int to, int from)
 void
 SoMFTime::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass( MFTime )
+//$ BEGIN TEMPLATE FieldInitClass(MFTime)
   // Make sure we only initialize once.
   assert(SoMFTime::classTypeId == SoType::badType());
   // Make sure superclass has been initialized before subclass.
@@ -287,7 +287,7 @@ SoMFTime::read1Value(SoInput * in, int idx)
 {
   SoSFTime sftime;
   SbBool result;
-  if (result = sftime.readValue(in)) this->set1Value(idx, sftime.getValue());
+  if ((result = sftime.readValue(in))) this->set1Value(idx, sftime.getValue());
   return result;
 }
 

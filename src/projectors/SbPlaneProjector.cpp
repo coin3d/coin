@@ -48,8 +48,8 @@
  */
 SbPlaneProjector::SbPlaneProjector(SbBool orient)
   : plane(SbVec3f(0.0f, 0.0f, 1.0f), SbVec3f(0.0f, 0.0f, 0.0f)),
-    lastPoint(0.0f, 0.0f, 0.0f),
-    orientToEye(orient)
+    orientToEye(orient),
+    lastPoint(0.0f, 0.0f, 0.0f)
 {
   // FIXME: orientToEye==TRUE not handled. 19990329 mortene.
 }
@@ -59,17 +59,10 @@ SbPlaneProjector::SbPlaneProjector(SbBool orient)
  */
 SbPlaneProjector::SbPlaneProjector(const SbPlane & plane, SbBool orient)
   : plane(plane),
-    lastPoint(0.0f, 0.0f, 0.0f),
-    orientToEye(orient)
+    orientToEye(orient),
+    lastPoint(0.0f, 0.0f, 0.0f)
 {
   // FIXME: orientToEye==TRUE not handled. 19990329 mortene.
-}
-
-/*!
-  Destructor.
- */
-SbPlaneProjector::~SbPlaneProjector(void)
-{
 }
 
 /*!

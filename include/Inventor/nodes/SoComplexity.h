@@ -34,7 +34,7 @@
 class SoComplexity : public SoNode {
     typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoComplexity )
+//$ BEGIN TEMPLATE NodeHeader(SoComplexity)
 private:
   static SoType classTypeId;
 

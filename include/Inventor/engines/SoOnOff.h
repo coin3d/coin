@@ -37,15 +37,17 @@ public:
   SoSFTrigger off;
   SoSFTrigger toggle;
 
-  SoEngineOutput isOn; //SoSFBool
-  SoEngineOutput isOff; //SoSFBool
+  SoEngineOutput isOn; // SoSFBool
+  SoEngineOutput isOff; // SoSFBool
 
   SoOnOff();
 
   static void initClass();
 
+protected:
+ ~SoOnOff();
+
 private:
-  virtual ~SoOnOff();
   virtual void evaluate();
   virtual void inputChanged(SoField * which);
 

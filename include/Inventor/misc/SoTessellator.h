@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_TESSELLATOR_H_
-#define _SO_TESSELLATOR_H_
+#ifndef __SOTESSELLATOR_H__
+#define __SOTESSELLATOR_H__
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbVec3f.h>
@@ -74,4 +74,4 @@ public:
 		   void *userdata);
 };
 
-#endif // _SO_TESSELLATOR_H_
+#endif // !__SOTESSELLATOR_H__

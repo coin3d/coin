@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_MATERIAL_BUNDLE_H_
-#define _SO_MATERIAL_BUNDLE_H_
+#ifndef __SOMATERIALBUNDLE_H__
+#define __SOMATERIALBUNDLE_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOMATERIALBUNDLE)
@@ -91,4 +91,4 @@ private:
   int currPacked;
 };
 
-#endif // ! _SO_MATERIAL_BUNDLE_H_
+#endif // !__SOMATERIALBUNDLE_H__

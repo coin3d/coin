@@ -29,7 +29,7 @@
 
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource( SoComplexityElement )
+//$ BEGIN TEMPLATE ElementSource(SoComplexityElement)
 
 /*!
   \var SoComplexityElement::classTypeId
@@ -83,24 +83,23 @@ SoComplexityElement::getClassStackIndex(void)
 */
 
 void
-SoComplexityElement::initClass(
-    void )
+SoComplexityElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoComplexityElement )
+//$ BEGIN TEMPLATE InitElementSource(SoComplexityElement)
   assert(SoComplexityElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoComplexityElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoComplexityElement",
-    &SoComplexityElement::createInstance);
+  SoComplexityElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoComplexityElement",
+                       &SoComplexityElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoComplexityElement::classStackIndex =
-      createStackIndex( SoComplexityElement::classTypeId );
-  } else {
-    SoComplexityElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoComplexityElement::classTypeId);
+  }
+  else {
+    SoComplexityElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -110,24 +109,22 @@ SoComplexityElement::initClass(
 */
 
 void
-SoComplexityElement::cleanClass(
-    void )
+SoComplexityElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoComplexityElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoComplexityElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoComplexityElement::createInstance( void )
+  \sa void * SoComplexityElement::createInstance(void)
 */
 
-SoComplexityElement::SoComplexityElement(
-    void )
+SoComplexityElement::SoComplexityElement(void)
 {
-    setTypeId( SoComplexityElement::classTypeId );
-    setStackIndex( SoComplexityElement::classStackIndex );
+    setTypeId(SoComplexityElement::classTypeId);
+    setStackIndex(SoComplexityElement::classStackIndex);
     this->data = getDefault();
 }
 
@@ -135,8 +132,8 @@ SoComplexityElement::SoComplexityElement(
   The destructor.
 */
 
-SoComplexityElement::~SoComplexityElement( // virtual protected
-    void )
+SoComplexityElement::~SoComplexityElement(// virtual protected
+    void)
 {
 }
 
@@ -174,7 +171,7 @@ SoComplexityElement::set(SoState * const state, const float complexity)
 float 
 SoComplexityElement::get(SoState * const state)
 { 
-  return SoFloatElement::get( classStackIndex, state ); 
+  return SoFloatElement::get(classStackIndex, state); 
 }
 
 //! FIXME: write doc.

@@ -37,7 +37,7 @@
 
 float SoGLLineWidthElement::sizerange[2] = {-1.0f, -1.0f};
 
-//$ BEGIN TEMPLATE ElementSource( SoGLLineWidthElement )
+//$ BEGIN TEMPLATE ElementSource(SoGLLineWidthElement)
 
 /*!
   \var SoGLLineWidthElement::classTypeId
@@ -91,24 +91,23 @@ SoGLLineWidthElement::getClassStackIndex(void)
 */
 
 void
-SoGLLineWidthElement::initClass(
-    void )
+SoGLLineWidthElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoGLLineWidthElement )
+//$ BEGIN TEMPLATE InitElementSource(SoGLLineWidthElement)
   assert(SoGLLineWidthElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoGLLineWidthElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoGLLineWidthElement",
-    &SoGLLineWidthElement::createInstance);
+  SoGLLineWidthElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoGLLineWidthElement",
+                       &SoGLLineWidthElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoGLLineWidthElement::classStackIndex =
-      createStackIndex( SoGLLineWidthElement::classTypeId );
-  } else {
-    SoGLLineWidthElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoGLLineWidthElement::classTypeId);
+  }
+  else {
+    SoGLLineWidthElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -119,39 +118,36 @@ SoGLLineWidthElement::initClass(
 */
 
 void
-SoGLLineWidthElement::cleanClass(
-    void )
+SoGLLineWidthElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoGLLineWidthElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoGLLineWidthElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoGLLineWidthElement::createInstance( void )
+  \sa void * SoGLLineWidthElement::createInstance(void)
 */
 
 SoGLLineWidthElement::SoGLLineWidthElement()
 {
-  setTypeId( SoGLLineWidthElement::classTypeId );
-  setStackIndex( SoGLLineWidthElement::classStackIndex );
+  setTypeId(SoGLLineWidthElement::classTypeId);
+  setStackIndex(SoGLLineWidthElement::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoGLLineWidthElement::~SoGLLineWidthElement(
-    void )
+SoGLLineWidthElement::~SoGLLineWidthElement(void)
 {
 }
 
 //! FIXME: write doc.
 
 void
-SoGLLineWidthElement::init(
-    SoState * state)
+SoGLLineWidthElement::init(SoState * state)
 {
   inherited::init(state);
   this->current = -1.0f;

@@ -47,7 +47,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource( SoBaseColor )
+//$ BEGIN TEMPLATE NodeSource(SoBaseColor)
 SoType SoBaseColor::classTypeId = SoType::badType();
 
 /*!
@@ -83,7 +83,7 @@ SoBaseColor::getTypeId(void) const
 */
 SoBaseColor::SoBaseColor()
 {
-//$ BEGIN TEMPLATE NodeConstructor( SoBaseColor )
+//$ BEGIN TEMPLATE NodeConstructor(SoBaseColor)
   // Make sure the class has been initialized.
   assert(SoBaseColor::classTypeId != SoType::badType());
 //$ END TEMPLATE NodeConstructor
@@ -106,7 +106,7 @@ SoBaseColor::~SoBaseColor()
 void
 SoBaseColor::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource( BaseColor )
+//$ BEGIN TEMPLATE InitNodeSource(BaseColor)
   // Make sure we only initialize once.
   assert(SoBaseColor::classTypeId == SoType::badType());
   // Make sure superclass get initialized before subclass.
@@ -139,7 +139,6 @@ SoBaseColor::cleanClass(void)
 void 
 SoBaseColor::GLRender(SoGLRenderAction * action)
 {
-  SoState * state = action->getState();
   if (!rgb.isIgnored()) {
     SoGLDiffuseColorElement::set(action->getState(),
 				 this,
@@ -154,7 +153,7 @@ SoBaseColor::GLRender(SoGLRenderAction * action)
   FIXME: write doc
 */
 void
-SoBaseColor::doAction(SoAction * action)
+SoBaseColor::doAction(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -165,7 +164,7 @@ SoBaseColor::doAction(SoAction * action)
   FIXME: write doc
 */
 void
-SoBaseColor::callback(SoCallbackAction * action)
+SoBaseColor::callback(SoCallbackAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

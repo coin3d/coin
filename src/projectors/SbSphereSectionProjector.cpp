@@ -54,7 +54,7 @@
 /*!
   FIXME: write doc
 */
-SbSphereSectionProjector::SbSphereSectionProjector(float edgeTol,
+SbSphereSectionProjector::SbSphereSectionProjector(float /* edgeTol */,
 						   SbBool orientToEye)
   : inherited(orientToEye)
 {
@@ -65,17 +65,9 @@ SbSphereSectionProjector::SbSphereSectionProjector(float edgeTol,
   FIXME: write doc
 */
 SbSphereSectionProjector::SbSphereSectionProjector(const SbSphere & sph,
-						   float edgeTol,
+						   float /* edgeTol */,
 						   SbBool orientToEye)
   : inherited(sph, orientToEye)
-{
-  assert(0 && "FIXME: implementation missing");
-}
-
-/*!
-  FIXME: write doc
-*/
-SbSphereSectionProjector::~SbSphereSectionProjector()
 {
   assert(0 && "FIXME: implementation missing");
 }
@@ -94,7 +86,7 @@ SbSphereSectionProjector::copy(void) const
   FIXME: write doc
 */
 SbVec3f
-SbSphereSectionProjector::project(const SbVec2f & point)
+SbSphereSectionProjector::project(const SbVec2f & /* point */)
 {
   assert(0 && "FIXME: implementation missing");
   return SbVec3f();
@@ -104,8 +96,8 @@ SbSphereSectionProjector::project(const SbVec2f & point)
   FIXME: write doc
 */
 SbRotation
-SbSphereSectionProjector::getRotation(const SbVec3f & point1,
-				      const SbVec3f & point2)
+SbSphereSectionProjector::getRotation(const SbVec3f & /* point1 */,
+				      const SbVec3f & /* point2 */)
 {
   assert(0 && "FIXME: implementation missing");
   return SbRotation::identity();
@@ -115,7 +107,7 @@ SbSphereSectionProjector::getRotation(const SbVec3f & point1,
   FIXME: write doc
 */
 void
-SbSphereSectionProjector::setTolerance(float edgeTol)
+SbSphereSectionProjector::setTolerance(float /* edgeTol */)
 {
   assert(0 && "FIXME: implementation missing");
 }
@@ -134,7 +126,7 @@ SbSphereSectionProjector::getTolerance(void) const
   FIXME: write doc
 */
 void
-SbSphereSectionProjector::setRadialFactor(float rad)
+SbSphereSectionProjector::setRadialFactor(float /* rad */)
 {
   assert(0 && "FIXME: implementation missing");
 }
@@ -153,7 +145,7 @@ SbSphereSectionProjector::getRadialFactor(void) const
   FIXME: write doc
 */
 SbBool
-SbSphereSectionProjector::isWithinTolerance(const SbVec3f & point)
+SbSphereSectionProjector::isWithinTolerance(const SbVec3f & /* point */)
 {
   assert(0 && "FIXME: implementation missing");
   return FALSE;

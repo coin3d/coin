@@ -30,7 +30,7 @@
 
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource( SoSwitchElement )
+//$ BEGIN TEMPLATE ElementSource(SoSwitchElement)
 
 /*!
   \var SoSwitchElement::classTypeId
@@ -83,24 +83,23 @@ SoSwitchElement::getClassStackIndex(void)
 */
 
 void
-SoSwitchElement::initClass(
-    void )
+SoSwitchElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoSwitchElement )
+//$ BEGIN TEMPLATE InitElementSource(SoSwitchElement)
   assert(SoSwitchElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoSwitchElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoSwitchElement",
-    &SoSwitchElement::createInstance);
+  SoSwitchElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoSwitchElement",
+                       &SoSwitchElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoSwitchElement::classStackIndex =
-      createStackIndex( SoSwitchElement::classTypeId );
-  } else {
-    SoSwitchElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoSwitchElement::classTypeId);
+  }
+  else {
+    SoSwitchElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -110,24 +109,22 @@ SoSwitchElement::initClass(
 */
 
 void
-SoSwitchElement::cleanClass(
-    void )
+SoSwitchElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoSwitchElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoSwitchElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoSwitchElement::createInstance( void )
+  \sa void * SoSwitchElement::createInstance(void)
 */
 
-SoSwitchElement::SoSwitchElement(
-    void )
+SoSwitchElement::SoSwitchElement(void)
 {
-    setTypeId( SoSwitchElement::classTypeId );
-    setStackIndex( SoSwitchElement::classStackIndex );
+    setTypeId(SoSwitchElement::classTypeId);
+    setStackIndex(SoSwitchElement::classStackIndex);
     this->data = getDefault();
 }
 
@@ -135,8 +132,7 @@ SoSwitchElement::SoSwitchElement(
   The destructor.
 */
 
-SoSwitchElement::~SoSwitchElement(
-    void )
+SoSwitchElement::~SoSwitchElement(void)
 {
 }
 
@@ -153,10 +149,9 @@ SoSwitchElement::set(SoState * const state,
 //! FIXME: write doc.
 
 void
-SoSwitchElement::init(
-    SoState * state )
+SoSwitchElement::init(SoState * state)
 {
-  inherited::init( state );
+  inherited::init(state);
   this->data = getDefault();
 }
 
@@ -175,7 +170,7 @@ SoSwitchElement::set(SoState * const state, const int32_t index)
 int32_t 
 SoSwitchElement::get(SoState * const state)
 { 
-  return SoInt32Element::get( classStackIndex, state ); 
+  return SoInt32Element::get(classStackIndex, state); 
 }
 
 //! FIXME: write doc.

@@ -38,7 +38,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE MField( SoMFString, SbString, const SbString & )
+//$ BEGIN TEMPLATE MField(SoMFString, SbString, const SbString &)
 
 SoType SoMFString::classTypeId = SoType::badType();
 
@@ -247,7 +247,7 @@ SoMFString::copyValue(int to, int from)
   this->valueChanged();
 }
 //$ END TEMPLATE MField
-//$ BEGIN TEMPLATE MFieldAlloc( SoMFString, SbString )
+//$ BEGIN TEMPLATE MFieldAlloc(SoMFString, SbString)
 /*!
   Allocate \a number value slots in this field.
 */
@@ -295,7 +295,7 @@ SoMFString::allocValues(int number)
 void
 SoMFString::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass( MFString )
+//$ BEGIN TEMPLATE FieldInitClass(MFString)
   // Make sure we only initialize once.
   assert(SoMFString::classTypeId == SoType::badType());
   // Make sure superclass has been initialized before subclass.
@@ -323,7 +323,8 @@ SoMFString::read1Value(SoInput * in, int idx)
 {
   SoSFString sfstring;
   SbBool result;
-  if (result = sfstring.readValue(in)) this->set1Value(idx, sfstring.getValue());
+  if ((result = sfstring.readValue(in)))
+    this->set1Value(idx, sfstring.getValue());
   return result;
 }
 
@@ -362,8 +363,8 @@ SoMFString::setValue(const char * const string)
   FIXME: write function documentation
 */
 void
-SoMFString::deleteText(const int fromLine, const int fromChar,
-			const int toLine, const int toChar)
+SoMFString::deleteText(const int /* fromLine */, const int /* fromChar */,
+			const int /* toLine */, const int /* toChar */)
 {
   assert(0 && "FIXME: not implemented yet");
 }

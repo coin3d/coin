@@ -157,7 +157,7 @@ SoIndexedShape::cleanClass()
   FIXME: write function documentation
 */
 void 
-SoIndexedShape::notify(SoNotList * list)
+SoIndexedShape::notify(SoNotList * /* list */)
 {
   // FIXME: implement what's necessary here (cache
   // destruction?). 19990405 mortene.
@@ -220,7 +220,7 @@ SoIndexedShape::computeBBox(SoAction * action, SbBox3f & box,
   FIXME: write function documentation
 */
 SbBool 
-SoIndexedShape::areTexCoordsIndexed(SoAction * action)
+SoIndexedShape::areTexCoordsIndexed(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented yet");
   return TRUE;
@@ -245,9 +245,10 @@ SoIndexedShape::getNumVerts(const int startCoord)
   FIXME: write function documentation
 */
 void 
-SoIndexedShape::setupIndices(const int numParts, const int numFaces,
-			     const SbBool needNormals, 
-			     const SbBool needTexCoords)
+SoIndexedShape::setupIndices(const int /* numParts */,
+			     const int /* numFaces */,
+			     const SbBool /* needNormals */, 
+			     const SbBool /* needTexCoords */)
 {
   assert(0 && "FIXME: not implemented yet");
 }

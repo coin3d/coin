@@ -32,7 +32,7 @@
 class SoSphere : public SoShape {
   typedef SoShape inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoSphere )
+//$ BEGIN TEMPLATE NodeHeader(SoSphere)
 private:
   static SoType classTypeId;
 

@@ -39,7 +39,7 @@
 #include <assert.h>
 
 
-//$ BEGIN TEMPLATE EventSource( SoLocation2Event )
+//$ BEGIN TEMPLATE EventSource(SoLocation2Event)
 /*!
   \var SoLocation2Event::classTypeId
   Unique type identification for the SoLocation2Event class type.
@@ -76,7 +76,7 @@ SoLocation2Event::getClassTypeId(void)
 void
 SoLocation2Event::initClass(void)
 {
-//$ BEGIN TEMPLATE EventInitClass( Location2Event )
+//$ BEGIN TEMPLATE EventInitClass(Location2Event)
   // Make sure we only initialize once.
   assert(SoLocation2Event::classTypeId == SoType::badType());
   // Make sure superclass get initialized before subclass.

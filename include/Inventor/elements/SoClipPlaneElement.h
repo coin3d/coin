@@ -33,7 +33,7 @@
 class SoClipPlaneElement : public SoAccumulatedElement {
   typedef SoAccumulatedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoClipPlaneElement )
+//$ BEGIN TEMPLATE ElementHeader(SoClipPlaneElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);

@@ -74,7 +74,7 @@ void * SoError::callbackData = NULL;
 */
 
 void
-SoError::initClass( void )
+SoError::initClass(void)
 {
   SoError::callback = defaultHandlerCB;
   SoError::callbackData = NULL;
@@ -87,7 +87,7 @@ SoError::initClass( void )
 */
 
 void
-SoError::cleanClass( void )
+SoError::cleanClass(void)
 {
 }
 
@@ -96,7 +96,7 @@ SoError::cleanClass( void )
 */
 
 void
-SoError::initErrors( void )
+SoError::initErrors(void)
 {
   SoError::initClass();
   SoDebugError::initClass();
@@ -109,7 +109,7 @@ SoError::initErrors( void )
 */
 
 void
-SoError::cleanErrors( void )
+SoError::cleanErrors(void)
 {
   SoReadError::cleanClass();
   SoMemoryError::cleanClass();
@@ -122,7 +122,7 @@ SoError::cleanErrors( void )
 */
 
 SoType
-SoError::getClassTypeId( void )
+SoError::getClassTypeId(void)
 {
   return SoError::classTypeId;
 }
@@ -133,7 +133,7 @@ SoError::getClassTypeId( void )
 */
 
 SoType
-SoError::getTypeId( void ) const
+SoError::getTypeId(void) const
 {
   return SoError::classTypeId;
 }
@@ -144,10 +144,10 @@ SoError::getTypeId( void ) const
 */
 
 SbBool
-SoError::isOfType(const SoType type ) const
+SoError::isOfType(const SoType type) const
 {
   const SoType myType = getTypeId();
-  return ( myType == type ) ? TRUE : myType.isDerivedFrom( type );
+  return (myType == type) ? TRUE : myType.isDerivedFrom( type );
 }
 
 /*!
@@ -155,9 +155,7 @@ SoError::isOfType(const SoType type ) const
 */
 
 void
-SoError::setHandlerCallback(
-    SoErrorCB * const function,
-    void * const data )
+SoError::setHandlerCallback(SoErrorCB * const function, void * const data)
 {
     SoError::callback = function;
     SoError::callbackData = data;
@@ -169,7 +167,7 @@ SoError::setHandlerCallback(
 
 //$ EXPORT INLINE
 SoErrorCB *
-SoError::getHandlerCallback( void )
+SoError::getHandlerCallback(void)
 {
     return SoError::callback;
 }
@@ -180,7 +178,7 @@ SoError::getHandlerCallback( void )
 
 //$ EXPORT INLINE
 void *
-SoError::getHandlerData( void )
+SoError::getHandlerData(void)
 {
     return SoError::callbackData;
 }
@@ -192,7 +190,7 @@ SoError::getHandlerData( void )
 
 //$ EXPORT INLINE
 const SbString &
-SoError::getDebugString( void ) const
+SoError::getDebugString(void) const
 {
   return debugString;
 }
@@ -203,18 +201,17 @@ SoError::getDebugString( void ) const
 */
 
 void
-SoError::post(
-  const char * const format, // printf format
-  ... )
+SoError::post(const char * const format, // printf format
+	      ...)
 {
   va_list args;
-  va_start( args, format );
+  va_start(args, format);
   char buffer[ 256 ]; // FIXME: buffer overrun alert. 19980906 mortene.
-  vsprintf( buffer, format, args );
+  vsprintf(buffer, format, args);
   SoError error;
-  error.setDebugString( buffer );
+  error.setDebugString(buffer);
   error.handleError();
-  va_end( args );
+  va_end(args);
 }
 
 /*!
@@ -222,11 +219,10 @@ SoError::post(
 */
 
 SbString
-SoError::getString(
-  const SoNode * const node )
+SoError::getString(const SoNode * const node)
 {
   SbString string;
-  generateBaseString( string, node, "node" );
+  generateBaseString(string, node, "node");
   return string;
 }
 
@@ -236,11 +232,10 @@ SoError::getString(
 
 #if !defined(COIN_EXCLUDE_SOPATH)
 SbString
-SoError::getString(
-  const SoPath * const path )
+SoError::getString(const SoPath * const path)
 {
   SbString string;
-  generateBaseString( string, path, "path" );
+  generateBaseString(string, path, "path");
   return string;
 }
 #endif // !COIN_EXCLUDE_SOPATH
@@ -251,11 +246,10 @@ SoError::getString(
 
 #if !defined(COIN_EXCLUDE_SOENGINE)
 SbString
-SoError::getString(
-  const SoEngine * const engine )
+SoError::getString(const SoEngine * const engine)
 {
   SbString string;
-  generateBaseString( string, engine, "engine" );
+  generateBaseString(string, engine, "engine");
   return string;
 }
 #endif // !COIN_EXCLUDE_SOENGINE
@@ -265,11 +259,9 @@ SoError::getString(
 */
 
 void
-SoError::defaultHandlerCB( // static, protected
-  const SoError * error,
-  void * data)
+SoError::defaultHandlerCB(const SoError * error, void * /* data */)
 {
-  fprintf( stderr, "%s\n", error->getDebugString().getString() );
+  fprintf(stderr, "%s\n", error->getDebugString().getString());
 }
 
 /*!
@@ -277,8 +269,7 @@ SoError::defaultHandlerCB( // static, protected
 */
 
 SoErrorCB *
-SoError::getHandler(
-  void * & data ) const
+SoError::getHandler(void * & data) const
 {
   data = SoError::callbackData;
   return SoError::callback;
@@ -290,8 +281,7 @@ SoError::getHandler(
 
 //$ EXPORT INLINE
 void
-SoError::setDebugString(
-  const char * const string )
+SoError::setDebugString(const char * const string)
 {
   debugString = string;
 }
@@ -302,8 +292,7 @@ SoError::setDebugString(
 
 //$ EXPORT INLINE
 void
-SoError::appendToDebugString(
-    const char * const string )
+SoError::appendToDebugString(const char * const string)
 {
     debugString += string;
 }
@@ -315,13 +304,12 @@ SoError::appendToDebugString(
 */
 
 void
-SoError::handleError(
-  void )
+SoError::handleError(void)
 {
   void * arg = NULL;
-  SoErrorCB * function = getHandler( arg );
+  SoErrorCB * function = getHandler(arg);
   assert(function);
-  (*function)( this, arg );
+  (*function)(this, arg);
 }
 
 /*!
@@ -330,14 +318,13 @@ SoError::handleError(
 */
 
 void
-SoError::generateBaseString(
-  SbString & string,
-  const SoBase * const base,
-  const char * const what )
+SoError::generateBaseString(SbString & string,
+			    const SoBase * const base,
+			    const char * const what)
 {
   char buffer[120]; // FIXME: buffer overflow?  990610 larsa
-  sprintf( buffer, "%s named \"%s\" at address %p",
-      what, base->getName().getString(), base );
+  sprintf(buffer, "%s named \"%s\" at address %p",
+      what, base->getName().getString(), base);
   string = buffer;
 }
 
@@ -346,12 +333,12 @@ SoError::generateBaseString(
   method.  It's here for OIV compatibility.  We like the name \a initErrors
   better.
 
-  \sa void SoError::initErrors( void )
+  \sa void SoError::initErrors(void)
 */
 
 //$ EXPORT INLINE
 void
-SoError::initClasses( void )
+SoError::initClasses(void)
 {
   initErrors();
 }

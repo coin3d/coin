@@ -404,7 +404,7 @@ SoTexHandler::UnrefTexture(SoGLImage *image)
 }
 
 void 
-SoTexHandler::RegisterModelFilename(const char *filename)
+SoTexHandler::RegisterModelFilename(const char * /* filename */)
 {
   // FIXME: "refix" without using any common/XPlatform.cpp
   // code. 19981024 mortene.

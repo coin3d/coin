@@ -31,7 +31,6 @@ class SbPlaneProjector : public SbProjector {
 public:
   SbPlaneProjector(SbBool orient = FALSE);
   SbPlaneProjector(const SbPlane & plane, SbBool orient = FALSE);
-  ~SbPlaneProjector();
   virtual SbProjector * copy(void) const;
 
   virtual SbVec3f project(const SbVec2f & point);

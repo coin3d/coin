@@ -37,7 +37,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE MField( SoMFVec3f, SbVec3f, const SbVec3f & )
+//$ BEGIN TEMPLATE MField(SoMFVec3f, SbVec3f, const SbVec3f &)
 
 SoType SoMFVec3f::classTypeId = SoType::badType();
 
@@ -257,7 +257,7 @@ SoMFVec3f::copyValue(int to, int from)
 void
 SoMFVec3f::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass( MFVec3f )
+//$ BEGIN TEMPLATE FieldInitClass(MFVec3f)
   // Make sure we only initialize once.
   assert(SoMFVec3f::classTypeId == SoType::badType());
   // Make sure superclass has been initialized before subclass.
@@ -285,7 +285,8 @@ SoMFVec3f::read1Value(SoInput * in, int idx)
 {
   SoSFVec3f sfvec3f;
   SbBool result;
-  if (result = sfvec3f.readValue(in)) this->set1Value(idx, sfvec3f.getValue());
+  if ((result = sfvec3f.readValue(in)))
+    this->set1Value(idx, sfvec3f.getValue());
   return result;
 }
 

@@ -150,7 +150,7 @@ SoTransformSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
 /*!
   FIXME: write doc
  */
-SoTransformSeparator::SoTransformSeparator(int nChildren)
+SoTransformSeparator::SoTransformSeparator(int /* nChildren */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -160,7 +160,7 @@ SoTransformSeparator::SoTransformSeparator(int nChildren)
   FIXME: write doc
  */
 void
-SoTransformSeparator::doAction(SoAction * action)
+SoTransformSeparator::doAction(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -171,7 +171,7 @@ SoTransformSeparator::doAction(SoAction * action)
   FIXME: write doc
  */
 void
-SoTransformSeparator::callback(SoCallbackAction * action)
+SoTransformSeparator::callback(SoCallbackAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -199,7 +199,7 @@ SoTransformSeparator::GLRender(SoGLRenderAction * action)
   FIXME: write doc
  */
 void
-SoTransformSeparator::pick(SoPickAction * action)
+SoTransformSeparator::pick(SoPickAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -210,7 +210,7 @@ SoTransformSeparator::pick(SoPickAction * action)
   FIXME: write doc
  */
 void
-SoTransformSeparator::getMatrix(SoGetMatrixAction * action)
+SoTransformSeparator::getMatrix(SoGetMatrixAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -221,7 +221,7 @@ SoTransformSeparator::getMatrix(SoGetMatrixAction * action)
   FIXME: write doc
  */
 void
-SoTransformSeparator::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoTransformSeparator::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_GL_RENDER_PASS_ELEMENT_H_
-#define _SO_GL_RENDER_PASS_ELEMENT_H_
+#ifndef __SOGLRENDERPASSELEMENT_H__
+#define __SOGLRENDERPASSELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOGLRENDERPASSELEMENT)
@@ -30,7 +30,7 @@
 class SoGLRenderPassElement : public SoElement {
   typedef SoElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoGLRenderPassElement )
+//$ BEGIN TEMPLATE ElementHeader(SoGLRenderPassElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -48,14 +48,14 @@ protected:
 //$ END TEMPLATE ElementHeader
 
 public:
-  virtual void init( SoState * state );
+  virtual void init(SoState * state);
 
-  virtual void push( SoState * state );
-  virtual void pop( SoState * state,
-		    const SoElement * prevTopElement );
+  virtual void push(SoState * state);
+  virtual void pop(SoState * state,
+		    const SoElement * prevTopElement);
 
-  virtual SbBool matches( const SoElement * element ) const;
-  virtual SoElement * copyMatchInfo( void ) const;
+  virtual SbBool matches(const SoElement * element) const;
+  virtual SoElement * copyMatchInfo(void) const;
 
   static void set(SoState * const state, const int pass);
   static int get(SoState * const state);
@@ -67,4 +67,4 @@ protected:
 
 };
 
-#endif // ! _SO_GL_RENDER_PASS_ELEMENT_H_
+#endif // !__SOGLRENDERPASSELEMENT_H__

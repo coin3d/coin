@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_LINE_HIGHLIGHT_RENDER_ACTION_H_
-#define _SO_LINE_HIGHLIGHT_RENDER_ACTION_H_
+#ifndef __SOLINEHIGHLIGHTRENDERACTION_H__
+#define __SOLINEHIGHLIGHTRENDERACTION_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOLINEHIGHLIGHTRENDERACTION)
@@ -30,7 +30,7 @@
 class SoLineHighlightRenderAction : public SoGLRenderAction {
   typedef SoGLRenderAction inherited;
 
-//$ BEGIN TEMPLATE ActionHeader( SoLineHighlightRenderAction )
+//$ BEGIN TEMPLATE ActionHeader(SoLineHighlightRenderAction)
 private:
   static SoType classTypeId;
 
@@ -59,4 +59,4 @@ public:
 
 };
 
-#endif // ! _SO_LINE_HIGHLIGHT_RENDER_ACTION_H_
+#endif // !__SOLINEHIGHLIGHTRENDERACTION_H__

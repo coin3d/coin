@@ -130,12 +130,13 @@ SoTextureCoordinateEnvironment::cleanClass(void)
   FIXME: write function documentation
 */
 const SbVec4f &
-SoTextureCoordinateEnvironment::generate(void * userdata,
-				   const SbVec3f & p,
-				   const SbVec3f & n)
+SoTextureCoordinateEnvironment::generate(void * /* userdata */,
+					 const SbVec3f & /* p */,
+					 const SbVec3f & /* n */)
 {
   assert(0 && "FIXME: not implemented yet");
-  return SbVec4f(0,0,0,1);
+  static SbVec4f s(0,0,0,1);
+  return s;
 }
 
 #if !defined(COIN_EXCLUDE_SOACTION)
@@ -188,7 +189,7 @@ SoTextureCoordinateEnvironment::pick(SoPickAction * action)
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 void 
-SoTextureCoordinateEnvironment::handleTexgen(void *data)
+SoTextureCoordinateEnvironment::handleTexgen(void * /* data */)
 {
 #if 0 // from red book
   glTexGenfv(GL_S, GL_SPHERE_MAP, 0);

@@ -30,7 +30,7 @@
 
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource( SoDecimationPercentageElement )
+//$ BEGIN TEMPLATE ElementSource(SoDecimationPercentageElement)
 
 /*!
   \var SoDecimationPercentageElement::classTypeId
@@ -84,24 +84,23 @@ SoDecimationPercentageElement::getClassStackIndex(void)
 */
 
 void
-SoDecimationPercentageElement::initClass(
-    void )
+SoDecimationPercentageElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoDecimationPercentageElement )
+//$ BEGIN TEMPLATE InitElementSource(SoDecimationPercentageElement)
   assert(SoDecimationPercentageElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoDecimationPercentageElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoDecimationPercentageElement",
-    &SoDecimationPercentageElement::createInstance);
+  SoDecimationPercentageElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoDecimationPercentageElement",
+                       &SoDecimationPercentageElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoDecimationPercentageElement::classStackIndex =
-      createStackIndex( SoDecimationPercentageElement::classTypeId );
-  } else {
-    SoDecimationPercentageElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoDecimationPercentageElement::classTypeId);
+  }
+  else {
+    SoDecimationPercentageElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -112,24 +111,22 @@ SoDecimationPercentageElement::initClass(
 */
 
 void
-SoDecimationPercentageElement::cleanClass(
-    void )
+SoDecimationPercentageElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoDecimationPercentageElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoDecimationPercentageElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoDecimationPercentageElement::createInstance( void )
+  \sa void * SoDecimationPercentageElement::createInstance(void)
 */
 
-SoDecimationPercentageElement::SoDecimationPercentageElement(
-    void )
+SoDecimationPercentageElement::SoDecimationPercentageElement(void)
 {
-    setTypeId( SoDecimationPercentageElement::classTypeId );
-    setStackIndex( SoDecimationPercentageElement::classStackIndex );
+    setTypeId(SoDecimationPercentageElement::classTypeId);
+    setStackIndex(SoDecimationPercentageElement::classStackIndex);
     this->data = getDefault();
 }
 
@@ -137,18 +134,17 @@ SoDecimationPercentageElement::SoDecimationPercentageElement(
   The destructor.
 */
 
-SoDecimationPercentageElement::~SoDecimationPercentageElement( // virtual protected
-    void )
+SoDecimationPercentageElement::~SoDecimationPercentageElement(// virtual protected
+    void)
 {
 }
 
 //! FIXME: write doc.
 
 void
-SoDecimationPercentageElement::init(
-    SoState * state )
+SoDecimationPercentageElement::init(SoState * state)
 {
-  inherited::init( state );
+  inherited::init(state);
   this->data = getDefault();
 }
 
@@ -159,7 +155,7 @@ void
 SoDecimationPercentageElement::set(SoState * const state, SoNode * const node,
 			  const float complexity)
 { 
-  SoFloatElement::set( classStackIndex,state,node, complexity );
+  SoFloatElement::set(classStackIndex,state,node, complexity);
 }
 
 //! FIXME: write doc.
@@ -168,7 +164,7 @@ SoDecimationPercentageElement::set(SoState * const state, SoNode * const node,
 void 
 SoDecimationPercentageElement::set(SoState * const state, const float complexity)
 { 
-  set( state, NULL, complexity ); 
+  set(state, NULL, complexity); 
 }
 
 //! FIXME: write doc.
@@ -177,7 +173,7 @@ SoDecimationPercentageElement::set(SoState * const state, const float complexity
 float 
 SoDecimationPercentageElement::get(SoState * const state)
 { 
-  return SoFloatElement::get( classStackIndex, state ); 
+  return SoFloatElement::get(classStackIndex, state); 
 }
 
 //! FIXME: write doc.

@@ -35,7 +35,7 @@
 #include <GL/gl.h>
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource( SoGLLinePatternElement )
+//$ BEGIN TEMPLATE ElementSource(SoGLLinePatternElement)
 
 /*!
   \var SoGLLinePatternElement::classTypeId
@@ -89,24 +89,23 @@ SoGLLinePatternElement::getClassStackIndex(void)
 */
 
 void
-SoGLLinePatternElement::initClass(
-    void )
+SoGLLinePatternElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoGLLinePatternElement )
+//$ BEGIN TEMPLATE InitElementSource(SoGLLinePatternElement)
   assert(SoGLLinePatternElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoGLLinePatternElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoGLLinePatternElement",
-    &SoGLLinePatternElement::createInstance);
+  SoGLLinePatternElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoGLLinePatternElement",
+                       &SoGLLinePatternElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoGLLinePatternElement::classStackIndex =
-      createStackIndex( SoGLLinePatternElement::classTypeId );
-  } else {
-    SoGLLinePatternElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoGLLinePatternElement::classTypeId);
+  }
+  else {
+    SoGLLinePatternElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -117,42 +116,38 @@ SoGLLinePatternElement::initClass(
 */
 
 void
-SoGLLinePatternElement::cleanClass(
-    void )
+SoGLLinePatternElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoGLLinePatternElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoGLLinePatternElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoGLLinePatternElement::createInstance( void )
+  \sa void * SoGLLinePatternElement::createInstance(void)
 */
 
-SoGLLinePatternElement::SoGLLinePatternElement(
-    void )
+SoGLLinePatternElement::SoGLLinePatternElement(void)
 {
-    setTypeId( SoGLLinePatternElement::classTypeId );
-    setStackIndex( SoGLLinePatternElement::classStackIndex );
+    setTypeId(SoGLLinePatternElement::classTypeId);
+    setStackIndex(SoGLLinePatternElement::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoGLLinePatternElement::~SoGLLinePatternElement(
-    void )
+SoGLLinePatternElement::~SoGLLinePatternElement(void)
 {
 }
 
 //! FIXME: write doc.
 
 void
-SoGLLinePatternElement::init(
-    SoState * state )
+SoGLLinePatternElement::init(SoState * state)
 {
-  inherited::init( state );
+  inherited::init(state);
   updategl();
 }
 
@@ -168,9 +163,8 @@ SoGLLinePatternElement::push(SoState * state)
 //! FIXME: write doc.
 
 void
-SoGLLinePatternElement::pop(
-    SoState * state,
-    const SoElement * prevTopElement )
+SoGLLinePatternElement::pop(SoState * state,
+			    const SoElement * prevTopElement)
 {
   SoGLLinePatternElement *prev = (SoGLLinePatternElement*) prevTopElement;
   if (prev->data != this->data) prev->updategl();

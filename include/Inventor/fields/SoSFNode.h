@@ -31,7 +31,7 @@ class SoNode;
 class SoSFNode : public SoSField {
   typedef SoSField inherited;
 
-//$ BEGIN TEMPLATE SField( SoSFNode, SoNode *, SoNode * )
+//$ BEGIN TEMPLATE SField(SoSFNode, SoNode *, SoNode *)
 private:
   static SoType classTypeId;
 

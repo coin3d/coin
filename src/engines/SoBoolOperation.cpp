@@ -41,9 +41,6 @@ SoBoolOperation::initClass()
   SO_ENGINE_INIT_CLASS(SoBoolOperation,SoEngine,"Engine");
 }
 
-//
-// private members
-//
 SoBoolOperation::~SoBoolOperation()
 {
 }

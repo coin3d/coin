@@ -32,7 +32,7 @@
 class SoTextureCoordinateEnvironment : public SoTextureCoordinateFunction {
   typedef SoTextureCoordinateFunction inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoTextureCoordinateEnvironment )
+//$ BEGIN TEMPLATE NodeHeader(SoTextureCoordinateEnvironment)
 private:
   static SoType classTypeId;
 

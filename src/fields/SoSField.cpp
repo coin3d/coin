@@ -93,7 +93,7 @@ SoSField::cleanClass(void)
   FIXME: write function documentation
 */
 void
-SoSField::convertTo(SoField * dest) const
+SoSField::convertTo(SoField * /* dest */) const
 {
   // Should never be called, all subclasses with conversion
   // functionality need to reimplement this method.

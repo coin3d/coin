@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_GL_VIEWING_MATRIX_ELEMENT_H_
-#define _SO_GL_VIEWING_MATRIX_ELEMENT_H_
+#ifndef __SOGLVIEWINGMATRIXELEMENT_H__
+#define __SOGLVIEWINGMATRIXELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOGLVIEWINGMATRIXELEMENT)
@@ -30,7 +30,7 @@
 class SoGLViewingMatrixElement : public SoViewingMatrixElement {
   typedef SoViewingMatrixElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoGLViewingMatrixElement )
+//$ BEGIN TEMPLATE ElementHeader(SoGLViewingMatrixElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -54,7 +54,7 @@ public:
   virtual void pop(SoState * state,
 		   const SoElement * prevTopElement);
 
-  static  uint32_t getNodeId( SoState * const state );
+  static  uint32_t getNodeId(SoState * const state);
   
 protected:
   virtual void setElt(const SbMatrix & matrix);
@@ -65,4 +65,4 @@ private:
 
 };
 
-#endif // ! _SO_GL_VIEWING_MATRIX_ELEMENT_H_
+#endif // !__SOGLVIEWINGMATRIXELEMENT_H__

@@ -53,7 +53,7 @@ int SoGLLightIdElement::maxGLSources = -1;
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoGLLightIdElement )
+//$ BEGIN TEMPLATE ElementSource(SoGLLightIdElement)
 
 /*!
   \var SoGLLightIdElement::classTypeId
@@ -107,24 +107,23 @@ SoGLLightIdElement::getClassStackIndex(void)
 */
 
 void
-SoGLLightIdElement::initClass(
-    void )
+SoGLLightIdElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoGLLightIdElement )
+//$ BEGIN TEMPLATE InitElementSource(SoGLLightIdElement)
   assert(SoGLLightIdElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoGLLightIdElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoGLLightIdElement",
-    &SoGLLightIdElement::createInstance);
+  SoGLLightIdElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoGLLightIdElement",
+                       &SoGLLightIdElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoGLLightIdElement::classStackIndex =
-      createStackIndex( SoGLLightIdElement::classTypeId );
-  } else {
-    SoGLLightIdElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoGLLightIdElement::classTypeId);
+  }
+  else {
+    SoGLLightIdElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -134,23 +133,22 @@ SoGLLightIdElement::initClass(
 */
 
 void
-SoGLLightIdElement::cleanClass(
-    void )
+SoGLLightIdElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoGLLightIdElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoGLLightIdElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoGLLightIdElement::createInstance( void )
+  \sa void * SoGLLightIdElement::createInstance(void)
 */
 
 SoGLLightIdElement::SoGLLightIdElement()
 {
-    setTypeId( SoGLLightIdElement::classTypeId );
-    setStackIndex( SoGLLightIdElement::classStackIndex );
+    setTypeId(SoGLLightIdElement::classTypeId);
+    setStackIndex(SoGLLightIdElement::classStackIndex);
     this->data = getDefault();
 }
 
@@ -158,8 +156,7 @@ SoGLLightIdElement::SoGLLightIdElement()
   The destructor.
 */
 
-SoGLLightIdElement::~SoGLLightIdElement(
-    void )
+SoGLLightIdElement::~SoGLLightIdElement(void)
 {
 }
 
@@ -200,7 +197,7 @@ SoGLLightIdElement::pop(SoState * state,
 
 int32_t
 SoGLLightIdElement::increment(SoState * const state,
-			      SoNode * const node)
+			      SoNode * const /* node */)
 {
   SoGLLightIdElement * element = (SoGLLightIdElement *) 
     getElement(state, getClassStackIndex());

@@ -34,7 +34,7 @@ class SoIndexedFaceSet;
 class SoCube : public SoShape {
     typedef SoShape inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoCube )
+//$ BEGIN TEMPLATE NodeHeader(SoCube)
 private:
   static SoType classTypeId;
 

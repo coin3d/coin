@@ -63,7 +63,7 @@ SbVec2f SoProfileCoordinateElement::initdefaultcoords(0.0f, 0.0f);
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoProfileCoordinateElement )
+//$ BEGIN TEMPLATE ElementSource(SoProfileCoordinateElement)
 
 /*!
   \var SoProfileCoordinateElement::classTypeId
@@ -117,24 +117,23 @@ SoProfileCoordinateElement::getClassStackIndex(void)
 */
 
 void
-SoProfileCoordinateElement::initClass(
-    void )
+SoProfileCoordinateElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoProfileCoordinateElement )
+//$ BEGIN TEMPLATE InitElementSource(SoProfileCoordinateElement)
   assert(SoProfileCoordinateElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoProfileCoordinateElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoProfileCoordinateElement",
-    &SoProfileCoordinateElement::createInstance);
+  SoProfileCoordinateElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoProfileCoordinateElement",
+                       &SoProfileCoordinateElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoProfileCoordinateElement::classStackIndex =
-      createStackIndex( SoProfileCoordinateElement::classTypeId );
-  } else {
-    SoProfileCoordinateElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoProfileCoordinateElement::classTypeId);
+  }
+  else {
+    SoProfileCoordinateElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -145,46 +144,42 @@ SoProfileCoordinateElement::initClass(
 */
 
 void
-SoProfileCoordinateElement::cleanClass(
-    void )
+SoProfileCoordinateElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoProfileCoordinateElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoProfileCoordinateElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoProfileCoordinateElement::createInstance( void )
+  \sa void * SoProfileCoordinateElement::createInstance(void)
 */
 
-SoProfileCoordinateElement::SoProfileCoordinateElement(
-    void )
-  : numCoords( 1 ),
-    coords2( & SoProfileCoordinateElement::initdefaultcoords ),
-    coords3( NULL ),
-    coordsAre2D( TRUE )
+SoProfileCoordinateElement::SoProfileCoordinateElement(void)
+  : numCoords(1),
+    coords2(& SoProfileCoordinateElement::initdefaultcoords),
+    coords3(NULL),
+    coordsAre2D(TRUE)
 {
-    setTypeId( SoProfileCoordinateElement::classTypeId );
-    setStackIndex( SoProfileCoordinateElement::classStackIndex );
+    setTypeId(SoProfileCoordinateElement::classTypeId);
+    setStackIndex(SoProfileCoordinateElement::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoProfileCoordinateElement::~SoProfileCoordinateElement(
-    void )
+SoProfileCoordinateElement::~SoProfileCoordinateElement(void)
 {
 }
 
 //! FIXME: write doc.
 
 void
-SoProfileCoordinateElement::init(
-    SoState * state )
+SoProfileCoordinateElement::init(SoState * state)
 {
-    inherited::init( state );
+    inherited::init(state);
 
     this->numCoords = 1;
     this->coords2 = & SoProfileCoordinateElement::initdefaultcoords;
@@ -195,16 +190,15 @@ SoProfileCoordinateElement::init(
 //! FIXME: write doc.
 
 void
-SoProfileCoordinateElement::set2(
-    SoState * const state,
-    SoNode * const node,
-    const int32_t numCoords,
-    const SbVec2f * const coords )
+SoProfileCoordinateElement::set2(SoState * const state,
+				 SoNode * const node,
+				 const int32_t numCoords,
+				 const SbVec2f * const coords)
 {
-  assert( numCoords >= 0 );
+  assert(numCoords >= 0);
   SoProfileCoordinateElement * element =
     (SoProfileCoordinateElement *)
-    (getElement( state, classStackIndex, NULL ));
+    (getElement(state, classStackIndex, NULL));
   element->numCoords = numCoords;
   element->coords2 = coords;
   element->coords3 = NULL;
@@ -216,16 +210,15 @@ SoProfileCoordinateElement::set2(
 //! FIXME: write doc.
 
 void
-SoProfileCoordinateElement::set3(
-    SoState * const state,
-    SoNode * const node,
-    const int32_t numCoords,
-    const SbVec3f * const coords )
+SoProfileCoordinateElement::set3(SoState * const state,
+				 SoNode * const node,
+				 const int32_t numCoords,
+				 const SbVec3f * const coords)
 {
-  assert( numCoords >= 0 );
+  assert(numCoords >= 0);
   SoProfileCoordinateElement * element =
     (SoProfileCoordinateElement *)
-    (getElement( state, classStackIndex, NULL ));
+    (getElement(state, classStackIndex, NULL));
   element->numCoords = numCoords;
   element->coords2 = NULL;
   element->coords3 = coords;
@@ -237,31 +230,28 @@ SoProfileCoordinateElement::set3(
 //! FIXME: write doc.
 
 void
-SoProfileCoordinateElement::print(
-    FILE * file ) const
+SoProfileCoordinateElement::print(FILE * file) const
 {
-    fprintf( file, "SoProfileCoordinateElement[%p]: %d coords at %p.\n", this,
+    fprintf(file, "SoProfileCoordinateElement[%p]: %d coords at %p.\n", this,
         this->numCoords,
-        this->coordsAre2D ? (void *) this->coords2 : (void *) this->coords3 );
+        this->coordsAre2D ? (void *) this->coords2 : (void *) this->coords3);
 }
 
 //! FIXME: write doc.
 
 void
-SoProfileCoordinateElement::push(
-    SoState * state )
+SoProfileCoordinateElement::push(SoState * state)
 {
-    inherited::push( state );
+    inherited::push(state);
 }
 
 //! FIXME: write doc.
 
 void
-SoProfileCoordinateElement::pop(
-    SoState * state,
-    const SoElement * prevTopElement )
+SoProfileCoordinateElement::pop(SoState * state,
+				const SoElement * prevTopElement)
 {
-    inherited::pop( state, prevTopElement );
+    inherited::pop(state, prevTopElement);
 }
 
 /*!
@@ -269,10 +259,10 @@ SoProfileCoordinateElement::pop(
 */
 
 const SoProfileCoordinateElement *
-SoProfileCoordinateElement::getInstance( SoState * const state )
+SoProfileCoordinateElement::getInstance(SoState * const state)
 {
   return (const SoProfileCoordinateElement *)
-        (getConstElement( state, classStackIndex ));
+        (getConstElement(state, classStackIndex));
 }
 
 /*!
@@ -280,7 +270,7 @@ SoProfileCoordinateElement::getInstance( SoState * const state )
 */
 
 int32_t
-SoProfileCoordinateElement::getNum( void ) const
+SoProfileCoordinateElement::getNum(void) const
 {
   return this->numCoords;
 }
@@ -290,10 +280,10 @@ SoProfileCoordinateElement::getNum( void ) const
 */
 
 const SbVec2f &
-SoProfileCoordinateElement::get2( const int index ) const
+SoProfileCoordinateElement::get2(const int index) const
 {
-  assert( index >= 0 && index < this->numCoords );
-  assert( this->coordsAre2D );
+  assert(index >= 0 && index < this->numCoords);
+  assert(this->coordsAre2D);
   return this->coords2[ index ];
 }
 
@@ -302,10 +292,10 @@ SoProfileCoordinateElement::get2( const int index ) const
 */
 
 const SbVec3f &
-SoProfileCoordinateElement::get3( const int index ) const
+SoProfileCoordinateElement::get3(const int index) const
 {
-  assert( index >= 0 && index < this->numCoords );
-  assert( ! this->coordsAre2D );
+  assert(index >= 0 && index < this->numCoords);
+  assert(! this->coordsAre2D);
   return this->coords3[ index ];
 }
 
@@ -314,7 +304,7 @@ SoProfileCoordinateElement::get3( const int index ) const
 */
 
 SbBool
-SoProfileCoordinateElement::is2D( void ) const
+SoProfileCoordinateElement::is2D(void) const
 {
   return this->coordsAre2D;
 }
@@ -324,9 +314,9 @@ SoProfileCoordinateElement::is2D( void ) const
 */
 
 SbVec2f
-SoProfileCoordinateElement::getDefault2( void )
+SoProfileCoordinateElement::getDefault2(void)
 {
-  return SbVec2f( 0.0f, 0.0f );
+  return SbVec2f(0.0f, 0.0f);
 }
 
 /*!
@@ -334,8 +324,8 @@ SoProfileCoordinateElement::getDefault2( void )
 */
 
 SbVec3f
-SoProfileCoordinateElement::getDefault3( void )
+SoProfileCoordinateElement::getDefault3(void)
 {
-  return SbVec3f( 0.0f, 0.0f, 1.0f );
+  return SbVec3f(0.0f, 0.0f, 1.0f);
 }
 

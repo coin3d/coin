@@ -90,8 +90,7 @@ SoCache::addElement(const SoElement * const elem)
   Adds dependencies from \a cache to this cache.
 */
 void 
-SoCache::addCacheDependency(const SoState *state,
-			    SoCache *cache)
+SoCache::addCacheDependency(const SoState * /* state */, SoCache * /* cache */)
 {
   assert(0);
 }
@@ -100,7 +99,7 @@ SoCache::addCacheDependency(const SoState *state,
   Return \e TRUE if this cache is valid, \e FALSE otherwise.
 */ 
 SbBool 
-SoCache::isValid(const SoState *state) const
+SoCache::isValid(const SoState * /* state */) const
 {
   if (this->invalidated) return FALSE;
   // FIXME:

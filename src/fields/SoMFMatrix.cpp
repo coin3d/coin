@@ -47,7 +47,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE MField( SoMFMatrix, SbMatrix, const SbMatrix & )
+//$ BEGIN TEMPLATE MField(SoMFMatrix, SbMatrix, const SbMatrix &)
 
 SoType SoMFMatrix::classTypeId = SoType::badType();
 
@@ -267,7 +267,7 @@ SoMFMatrix::copyValue(int to, int from)
 void
 SoMFMatrix::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass( MFMatrix )
+//$ BEGIN TEMPLATE FieldInitClass(MFMatrix)
   // Make sure we only initialize once.
   assert(SoMFMatrix::classTypeId == SoType::badType());
   // Make sure superclass has been initialized before subclass.
@@ -295,7 +295,8 @@ SoMFMatrix::read1Value(SoInput * in, int idx)
 {
   SoSFMatrix sfmatrix;
   SbBool result;
-  if (result = sfmatrix.readValue(in)) this->set1Value(idx, sfmatrix.getValue());
+  if ((result = sfmatrix.readValue(in)))
+    this->set1Value(idx, sfmatrix.getValue());
   return result;
 }
 

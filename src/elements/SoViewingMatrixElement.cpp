@@ -39,7 +39,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoViewingMatrixElement )
+//$ BEGIN TEMPLATE ElementSource(SoViewingMatrixElement)
 
 /*!
   \var SoViewingMatrixElement::classTypeId
@@ -93,24 +93,23 @@ SoViewingMatrixElement::getClassStackIndex(void)
 */
 
 void
-SoViewingMatrixElement::initClass(
-    void )
+SoViewingMatrixElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoViewingMatrixElement )
+//$ BEGIN TEMPLATE InitElementSource(SoViewingMatrixElement)
   assert(SoViewingMatrixElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoViewingMatrixElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoViewingMatrixElement",
-    &SoViewingMatrixElement::createInstance);
+  SoViewingMatrixElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoViewingMatrixElement",
+                       &SoViewingMatrixElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoViewingMatrixElement::classStackIndex =
-      createStackIndex( SoViewingMatrixElement::classTypeId );
-  } else {
-    SoViewingMatrixElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoViewingMatrixElement::classTypeId);
+  }
+  else {
+    SoViewingMatrixElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -121,33 +120,30 @@ SoViewingMatrixElement::initClass(
 */
 
 void
-SoViewingMatrixElement::cleanClass(
-    void )
+SoViewingMatrixElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoViewingMatrixElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoViewingMatrixElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   The constructor.  Can't be used directly.
 
-  \sa void * SoViewingMatrixElement::createInstance( void )
+  \sa void * SoViewingMatrixElement::createInstance(void)
 */
 
-SoViewingMatrixElement::SoViewingMatrixElement(
-    void )
+SoViewingMatrixElement::SoViewingMatrixElement(void)
   : viewingMatrix()
 {
-    setTypeId( SoViewingMatrixElement::classTypeId );
-    setStackIndex( SoViewingMatrixElement::classStackIndex );
+    setTypeId(SoViewingMatrixElement::classTypeId);
+    setStackIndex(SoViewingMatrixElement::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoViewingMatrixElement::~SoViewingMatrixElement(
-    void )
+SoViewingMatrixElement::~SoViewingMatrixElement(void)
 {
 }
 
@@ -169,7 +165,7 @@ const SbMatrix &
 SoViewingMatrixElement::get(SoState * const state)
 {
   SoViewingMatrixElement * element = (SoViewingMatrixElement *)
-    SoElement::getConstElement( state, classStackIndex);
+    SoElement::getConstElement(state, classStackIndex);
   return element->viewingMatrix;
 }
 
@@ -189,9 +185,8 @@ SoViewingMatrixElement::init(SoState * state)
 //! FIXME: write doc.
 
 void 
-SoViewingMatrixElement::print( FILE * file ) const
+SoViewingMatrixElement::print(FILE * /* file */) const
 {
-  file;
   assert(0 && "FIXME: not implemented");
 }
 

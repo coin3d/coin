@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_BUNDLE_H_
-#define _SO_BUNDLE_H_
+#ifndef __SOBUNDLE_H__
+#define __SOBUNDLE_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOBUNDLE)
@@ -36,4 +36,4 @@ protected:
   SoState *state;
 };
 
-#endif // ! _SO_BUNDLE_H_
+#endif // !__SOBUNDLE_H__

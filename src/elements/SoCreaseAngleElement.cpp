@@ -29,7 +29,7 @@
 
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource( SoCreaseAngleElement )
+//$ BEGIN TEMPLATE ElementSource(SoCreaseAngleElement)
 
 /*!
   \var SoCreaseAngleElement::classTypeId
@@ -83,24 +83,23 @@ SoCreaseAngleElement::getClassStackIndex(void)
 */
 
 void
-SoCreaseAngleElement::initClass(
-    void )
+SoCreaseAngleElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoCreaseAngleElement )
+//$ BEGIN TEMPLATE InitElementSource(SoCreaseAngleElement)
   assert(SoCreaseAngleElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoCreaseAngleElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoCreaseAngleElement",
-    &SoCreaseAngleElement::createInstance);
+  SoCreaseAngleElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoCreaseAngleElement",
+                       &SoCreaseAngleElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoCreaseAngleElement::classStackIndex =
-      createStackIndex( SoCreaseAngleElement::classTypeId );
-  } else {
-    SoCreaseAngleElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoCreaseAngleElement::classTypeId);
+  }
+  else {
+    SoCreaseAngleElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -111,24 +110,22 @@ SoCreaseAngleElement::initClass(
 */
 
 void
-SoCreaseAngleElement::cleanClass(
-    void )
+SoCreaseAngleElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoCreaseAngleElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoCreaseAngleElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoCreaseAngleElement::createInstance( void )
+  \sa void * SoCreaseAngleElement::createInstance(void)
 */
 
-SoCreaseAngleElement::SoCreaseAngleElement(
-    void )
+SoCreaseAngleElement::SoCreaseAngleElement(void)
 {
-    setTypeId( SoCreaseAngleElement::classTypeId );
-    setStackIndex( SoCreaseAngleElement::classStackIndex );
+    setTypeId(SoCreaseAngleElement::classTypeId);
+    setStackIndex(SoCreaseAngleElement::classStackIndex);
     this->data = getDefault();
 }
 
@@ -136,18 +133,17 @@ SoCreaseAngleElement::SoCreaseAngleElement(
   The destructor.
 */
 
-SoCreaseAngleElement::~SoCreaseAngleElement( // virtual protected
-    void )
+SoCreaseAngleElement::~SoCreaseAngleElement(// virtual protected
+    void)
 {
 }
 
 //! FIXME: write doc.
 
 void
-SoCreaseAngleElement::init(
-    SoState * state )
+SoCreaseAngleElement::init(SoState * state)
 {
-  inherited::init( state );
+  inherited::init(state);
   this->data = getDefault();
 }
 
@@ -158,7 +154,7 @@ void
 SoCreaseAngleElement::set(SoState * const state, SoNode * const node,
 			  const float complexity)
 { 
-  SoFloatElement::set( classStackIndex,state,node, complexity );
+  SoFloatElement::set(classStackIndex,state,node, complexity);
 }
 
 //! FIXME: write doc.
@@ -167,7 +163,7 @@ SoCreaseAngleElement::set(SoState * const state, SoNode * const node,
 void 
 SoCreaseAngleElement::set(SoState * const state, const float complexity)
 { 
-  set( state, NULL, complexity ); 
+  set(state, NULL, complexity); 
 }
 
 //! FIXME: write doc.
@@ -176,7 +172,7 @@ SoCreaseAngleElement::set(SoState * const state, const float complexity)
 float 
 SoCreaseAngleElement::get(SoState * const state)
 { 
-  return SoFloatElement::get( classStackIndex, state ); 
+  return SoFloatElement::get(classStackIndex, state); 
 }
 
 //! FIXME: write doc.

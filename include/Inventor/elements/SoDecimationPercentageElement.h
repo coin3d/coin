@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_DECIMATION_PERCENTAGE_ELEMENT_H_
-#define _SO_DECIMATION_PERCENTAGE_ELEMENT_H_
+#ifndef __SODECIMATIONPERCENTAGEELEMENT_H__
+#define __SODECIMATIONPERCENTAGEELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SODECIMATIONPERCENTAGEELEMENT)
@@ -30,7 +30,7 @@
 class SoDecimationPercentageElement : public SoFloatElement {
   typedef SoFloatElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoDecimationPercentageElement )
+//$ BEGIN TEMPLATE ElementHeader(SoDecimationPercentageElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -48,13 +48,13 @@ protected:
 //$ END TEMPLATE ElementHeader
 
 public:
-  virtual void init( SoState * state );
-  static void set( SoState * const state, SoNode * const node,
-		   const float complexity );
-  static void set( SoState * const state, const float complexity );
-  static float get( SoState * const state );
-  static float getDefault( void );
+  virtual void init(SoState * state);
+  static void set(SoState * const state, SoNode * const node,
+		   const float complexity);
+  static void set(SoState * const state, const float complexity);
+  static float get(SoState * const state);
+  static float getDefault(void);
 
 };
 
-#endif // ! _SO_DECIMATION_PERCENTAGE_ELEMENT_H_
+#endif // !__SODECIMATIONPERCENTAGEELEMENT_H__

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_GL_TEXTURE_ENABLED_ELEMENT_H_
-#define _SO_GL_TEXTURE_ENABLED_ELEMENT_H_
+#ifndef __SOGLTEXTUREENABLEDELEMENT_H__
+#define __SOGLTEXTUREENABLEDELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOGLTEXTUREENABLEDELEMENT)
@@ -30,7 +30,7 @@
 class SoGLTextureEnabledElement : public SoInt32Element {
   typedef SoInt32Element inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoGLTextureEnabledElement )
+//$ BEGIN TEMPLATE ElementHeader(SoGLTextureEnabledElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -68,4 +68,4 @@ private:
 
 };
 
-#endif // ! _SO_GL_TEXTURE_ENABLED_ELEMENT_H_
+#endif // !__SOGLTEXTUREENABLEDELEMENT_H__

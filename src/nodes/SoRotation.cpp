@@ -220,7 +220,7 @@ SoRotation::pick(SoPickAction * action)
   FIXME: write doc
  */
 void
-SoRotation::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoRotation::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

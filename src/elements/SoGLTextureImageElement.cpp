@@ -37,7 +37,7 @@
 #include <GL/gl.h>
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource( SoGLTextureImageElement )
+//$ BEGIN TEMPLATE ElementSource(SoGLTextureImageElement)
 
 /*!
   \var SoGLTextureImageElement::classTypeId
@@ -91,24 +91,23 @@ SoGLTextureImageElement::getClassStackIndex(void)
 */
 
 void
-SoGLTextureImageElement::initClass(
-    void )
+SoGLTextureImageElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoGLTextureImageElement )
+//$ BEGIN TEMPLATE InitElementSource(SoGLTextureImageElement)
   assert(SoGLTextureImageElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoGLTextureImageElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoGLTextureImageElement",
-    &SoGLTextureImageElement::createInstance);
+  SoGLTextureImageElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoGLTextureImageElement",
+                       &SoGLTextureImageElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoGLTextureImageElement::classStackIndex =
-      createStackIndex( SoGLTextureImageElement::classTypeId );
-  } else {
-    SoGLTextureImageElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoGLTextureImageElement::classTypeId);
+  }
+  else {
+    SoGLTextureImageElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -119,31 +118,29 @@ SoGLTextureImageElement::initClass(
 */
 
 void
-SoGLTextureImageElement::cleanClass(
-    void )
+SoGLTextureImageElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoGLTextureImageElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoGLTextureImageElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoGLTextureImageElement::createInstance( void )
+  \sa void * SoGLTextureImageElement::createInstance(void)
 */
 
 SoGLTextureImageElement::SoGLTextureImageElement()
 {
-  setTypeId( SoGLTextureImageElement::classTypeId );
-  setStackIndex( SoGLTextureImageElement::classStackIndex );
+  setTypeId(SoGLTextureImageElement::classTypeId);
+  setStackIndex(SoGLTextureImageElement::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoGLTextureImageElement::~SoGLTextureImageElement(
-    void )
+SoGLTextureImageElement::~SoGLTextureImageElement(void)
 {
 }
 

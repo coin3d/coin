@@ -35,7 +35,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE AbstractElementSource( SoInt32Element )
+//$ BEGIN TEMPLATE AbstractElementSource(SoInt32Element)
 
 /*!
   \var SoInt32Element::classTypeId
@@ -44,14 +44,14 @@
   SoInt32Element.
 */
 
-SoType SoInt32Element::classTypeId = SoType::badType();
+SoType SoInt32Element::classTypeId = SoType::badType(); // static
 
 /*!
   This static method returns the SoType type for SoInt32Element.
 */
 
 SoType
-SoInt32Element::getClassTypeId(
+SoInt32Element::getClassTypeId( // static
   void )
 {
   return SoInt32Element::classTypeId;
@@ -64,14 +64,14 @@ SoInt32Element::getClassTypeId(
   SoInt32Element class.
 */
 
-int SoInt32Element::classStackIndex;
+int SoInt32Element::classStackIndex; // static
 
 /*!
   This static method returns the state stack index for the SoInt32Element class.
 */
 
 int
-SoInt32Element::getClassStackIndex(
+SoInt32Element::getClassStackIndex( // static
   void )
 {
   return SoInt32Element::classStackIndex;
@@ -83,16 +83,15 @@ SoInt32Element::getClassStackIndex(
 */
 
 void
-SoInt32Element::initClass(
-    void )
+SoInt32Element::initClass(void)
 {
-//$ BEGIN TEMPLATE InitAbstractElementSource( SoInt32Element )
+//$ BEGIN TEMPLATE InitAbstractElementSource(SoInt32Element)
   assert(SoInt32Element::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoInt32Element::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoInt32Element", NULL );
+  SoInt32Element::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+		       "SoInt32Element", NULL );
 
   if ( inherited::classStackIndex < 0 ) {
     SoInt32Element::classStackIndex =
@@ -109,10 +108,9 @@ SoInt32Element::initClass(
 */
 
 void
-SoInt32Element::cleanClass(
-    void )
+SoInt32Element::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanAbstractElementSource( SoInt32Element )
+//$ BEGIN TEMPLATE CleanAbstractElementSource(SoInt32Element)
 //$ END TEMPLATE CleanAbstractElementSource
 }
 
@@ -121,33 +119,30 @@ SoInt32Element::cleanClass(
   identifier and stack index of the element.
 */
 
-SoInt32Element::SoInt32Element(
-    void )
-  : data( 0 )
+SoInt32Element::SoInt32Element(void)
+  : data(0)
 {
-  setTypeId( SoInt32Element::classTypeId );
-  setStackIndex( SoInt32Element::classStackIndex );
+  setTypeId(SoInt32Element::classTypeId);
+  setStackIndex(SoInt32Element::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoInt32Element::~SoInt32Element(
-    void )
+SoInt32Element::~SoInt32Element(void)
 {
 }
 
 //! FIXME: write doc.
 
 SbBool
-SoInt32Element::matches(
-    const SoElement * element ) const
+SoInt32Element::matches(const SoElement * element) const
 {
-    assert( element );
-    if ( getTypeId() != element->getTypeId() )
+    assert(element);
+    if (getTypeId() != element->getTypeId())
         return FALSE;
-    if ( ((const SoInt32Element *)element)->data != this->data )
+    if (((const SoInt32Element *)element)->data != this->data)
         return FALSE;
     return TRUE;
 }
@@ -155,10 +150,9 @@ SoInt32Element::matches(
 //! FIXME: write doc.
 
 SoElement *
-SoInt32Element::copyMatchInfo(
-    void ) const
+SoInt32Element::copyMatchInfo(void) const
 {
-    assert( getTypeId().canCreateInstance() );
+    assert(getTypeId().canCreateInstance());
     SoInt32Element * element =
         (SoInt32Element *)(getTypeId().createInstance());
     element->data = this->data;
@@ -172,11 +166,10 @@ SoInt32Element::copyMatchInfo(
 //! FIXME: write doc.
 
 void
-SoInt32Element::print(
-    FILE * file ) const
+SoInt32Element::print(FILE * file) const
 {
-    fprintf( file, "%s[%p]: data = %d\n", 
-        getTypeId().getName().getString(), this, this->data );
+    fprintf(file, "%s[%p]: data = %d\n", 
+        getTypeId().getName().getString(), this, this->data);
 }
 
 //! FIXME: write doc.
@@ -184,11 +177,11 @@ SoInt32Element::print(
 void
 SoInt32Element::set(const int index,
 		    SoState * const state,
-		    SoNode * const node,
+		    SoNode * const /* node */,
 		    const int32_t value)
 {
   SoInt32Element * element;
-  element = (SoInt32Element *) getElement( state, index );
+  element = (SoInt32Element *) getElement(state, index);
   if (element)
     element->setElt(value);
 }
@@ -198,10 +191,10 @@ SoInt32Element::set(const int index,
 */
 
 void
-SoInt32Element::set(
-  const int index, SoState * const state, const int32_t value )
+SoInt32Element::set(const int index, SoState * const state,
+		    const int32_t value)
 {
-  set( index, state, NULL, value );
+  set(index, state, NULL, value);
 }
 
 //! FIXME: write doc.
@@ -211,7 +204,7 @@ SoInt32Element::get(const int index,
 		    SoState * const state)
 {
   SoInt32Element * element;
-  element = (SoInt32Element *) getConstElement( state, index ); //, NULL );
+  element = (SoInt32Element *) getConstElement(state, index); //, NULL );
   if (element)
     return element->data;
   return 0;
@@ -228,10 +221,9 @@ SoInt32Element::setElt(int32_t value)
 //! FIXME: write doc.
 
 void
-SoInt32Element::init(
-    SoState * state )
+SoInt32Element::init(SoState * state)
 {
-  inherited::init( state );
+  inherited::init(state);
   this->data = 0;
 }
 

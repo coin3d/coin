@@ -102,8 +102,7 @@ SoGlobalSimplifyAction::enableElement(const SoType type, const int stackIndex)
 */
 
 void
-SoGlobalSimplifyAction::initClass(
-    void)
+SoGlobalSimplifyAction::initClass(void)
 {
 //$ BEGIN TEMPLATE InitActionSource(SoGlobalSimplifyAction)
   assert(SoGlobalSimplifyAction::getClassTypeId() == SoType::badType());

@@ -42,7 +42,7 @@ typedef void SoEventCallbackCB(void * userData, SoEventCallback * node);
 class SoEventCallback : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoEventCallback )
+//$ BEGIN TEMPLATE NodeHeader(SoEventCallback)
 private:
   static SoType classTypeId;
 
@@ -82,7 +82,7 @@ public:
 
 protected:
 #if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
-  virtual void handleEvent( SoHandleEventAction * action );
+  virtual void handleEvent(SoHandleEventAction * action);
 #endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 
 private:

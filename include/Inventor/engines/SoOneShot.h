@@ -52,8 +52,10 @@ public:
 
   static void initClass();
 
+protected:
+  ~SoOneShot();
+
 private:
-  virtual ~SoOneShot();
   virtual void evaluate();
   virtual void inputChanged(SoField * which);
 

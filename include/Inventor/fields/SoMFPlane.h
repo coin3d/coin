@@ -31,7 +31,7 @@
 class SoMFPlane : public SoMField {
   typedef SoMField inherited;
 
-//$ BEGIN TEMPLATE MField( SoMFPlane, SbPlane, const SbPlane & )
+//$ BEGIN TEMPLATE MField(SoMFPlane, SbPlane, const SbPlane &)
 private:
   static SoType classTypeId;
 

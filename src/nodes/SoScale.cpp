@@ -182,7 +182,7 @@ SoScale::getBoundingBox(SoGetBoundingBoxAction * action)
   FIXME: write doc
  */
 void
-SoScale::callback(SoCallbackAction * action)
+SoScale::callback(SoCallbackAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -193,7 +193,7 @@ SoScale::callback(SoCallbackAction * action)
   FIXME: write doc
  */
 void
-SoScale::getMatrix(SoGetMatrixAction * action)
+SoScale::getMatrix(SoGetMatrixAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -204,7 +204,7 @@ SoScale::getMatrix(SoGetMatrixAction * action)
   FIXME: write doc
  */
 void
-SoScale::pick(SoPickAction * action)
+SoScale::pick(SoPickAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -215,7 +215,7 @@ SoScale::pick(SoPickAction * action)
   FIXME: write doc
  */
 void
-SoScale::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoScale::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

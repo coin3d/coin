@@ -35,7 +35,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE MFieldRequired( SoMFBitMask )
+//$ BEGIN TEMPLATE MFieldRequired(SoMFBitMask)
 
 SoType SoMFBitMask::classTypeId = SoType::badType();
 
@@ -125,7 +125,7 @@ SoMFBitMask::operator = (const SoMFBitMask & field)
 void
 SoMFBitMask::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass( MFBitMask )
+//$ BEGIN TEMPLATE FieldInitClass(MFBitMask)
   // Make sure we only initialize once.
   assert(SoMFBitMask::classTypeId == SoType::badType());
   // Make sure superclass has been initialized before subclass.
@@ -154,7 +154,8 @@ SoMFBitMask::read1Value(SoInput * in, int idx)
   SoSFBitMask sfbitmask;
   sfbitmask.setEnums(this->numEnums, this->enumValues, this->enumNames);
   SbBool result;
-  if (result = sfbitmask.readValue(in)) this->set1Value(idx, sfbitmask.getValue());
+  if ((result = sfbitmask.readValue(in)))
+    this->set1Value(idx, sfbitmask.getValue());
   return result;
 }
 

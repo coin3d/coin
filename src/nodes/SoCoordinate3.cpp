@@ -206,7 +206,7 @@ SoCoordinate3::getBoundingBox(SoGetBoundingBoxAction * action)
   FIXME: write doc
 */
 void
-SoCoordinate3::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoCoordinate3::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

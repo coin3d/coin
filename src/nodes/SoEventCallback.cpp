@@ -126,7 +126,7 @@ SoEventCallback::cleanClass(void)
   FIXME: write function documentation
 */
 void
-SoEventCallback::setPath(SoPath * path)
+SoEventCallback::setPath(SoPath * /* path */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -158,8 +158,9 @@ SoEventCallback::addEventCallback(SoType eventType, SoEventCallbackCB * f,
   FIXME: write function documentation
 */
 void
-SoEventCallback::removeEventCallback(SoType eventType, SoEventCallbackCB * f,
-				     void * userData)
+SoEventCallback::removeEventCallback(SoType /* eventType */,
+				     SoEventCallbackCB * f,
+				     void * /* userData */)
 {
   int idx = this->callbacks.find((void *)f);
   if (idx != -1) {

@@ -33,7 +33,7 @@
 class SoBlinker : public SoSwitch {
     typedef SoSwitch inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoBlinker )
+//$ BEGIN TEMPLATE NodeHeader(SoBlinker)
 private:
   static SoType classTypeId;
 

@@ -30,7 +30,7 @@
 class SoSFImage : public SoSField {
   typedef SoSField inherited;
 
-//$ BEGIN TEMPLATE Field( SoSFImage )
+//$ BEGIN TEMPLATE Field(SoSFImage)
 private:
   static SoType classTypeId;
 
@@ -46,12 +46,12 @@ public:
   const SoSFImage & operator = (const SoSFImage & field);
   virtual SbBool isSame(const SoField & field) const;
 //$ END TEMPLATE Field
-//$ BEGIN TEMPLATE FieldConstructor( SoSFImage )
+//$ BEGIN TEMPLATE FieldConstructor(SoSFImage)
 public:
   SoSFImage(void);
   virtual ~SoSFImage(void);
 //$ END TEMPLATE FieldConstructor
-//$ BEGIN TEMPLATE SFieldRW(  )
+//$ BEGIN TEMPLATE SFieldRW()
 private:
   virtual SbBool readValue(SoInput * in);
   virtual void writeValue(SoOutput * out) const;

@@ -1089,7 +1089,7 @@ SoField::shouldWrite(void) const
   a negative number).
  */
 void
-SoField::connectionStatusChanged(int numConnections)
+SoField::connectionStatusChanged(int /* numConnections */)
 {
   // FIXME: not sure if this is correct or not. Looks like it could
   // have unwanted side effects (premature destruction). 19990711
@@ -1122,7 +1122,7 @@ SoField::isReadOnly(void) const
   FIXME: write doc
  */
 void
-SoField::fixCopy(SbBool copyConnections)
+SoField::fixCopy(SbBool /* copyConnections */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -1141,7 +1141,7 @@ SoField::referencesCopy(void) const
   FIXME: write doc
  */
 void
-SoField::copyConnection(const SoField * fromfield)
+SoField::copyConnection(const SoField * /* fromfield */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -1263,7 +1263,7 @@ SoField::write(SoOutput * out, const SbName & name) const
   FIXME: write doc
  */
 void
-SoField::countWriteRefs(SoOutput * out) const
+SoField::countWriteRefs(SoOutput * /* out */) const
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -1446,7 +1446,7 @@ SoField::reallocOutputBuf(void * buffer, size_t newsize)
   FIXME: write function documentation
 */
 SbBool
-SoField::readConnection(SoInput * in)
+SoField::readConnection(SoInput * /* in */)
 {
   assert(0 && "FIXME: not implemented yet");
   return FALSE;
@@ -1591,7 +1591,7 @@ SoField::notifyAuditors(SoNotList * list)
   FIXME: write function documentation
 */
 void
-SoField::setFieldType(int flagValue)
+SoField::setFieldType(int /* flagValue */)
 {
   assert(0 && "FIXME: not implemented yet");
 }

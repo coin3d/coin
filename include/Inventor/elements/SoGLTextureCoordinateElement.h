@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_GL_TEXTURE_COORDINATE_ELEMENT_H_
-#define _SO_GL_TEXTURE_COORDINATE_ELEMENT_H_
+#ifndef __SOGLTEXTURECOORDINATEELEMENT_H__
+#define __SOGLTEXTURECOORDINATEELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOGLTEXTURECOORDINATEELEMENT)
@@ -32,7 +32,7 @@ typedef void SoTexCoordTexgenCB(void * data);
 class SoGLTextureCoordinateElement : public SoTextureCoordinateElement {
   typedef SoTextureCoordinateElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoGLTextureCoordinateElement )
+//$ BEGIN TEMPLATE ElementHeader(SoGLTextureCoordinateElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -64,7 +64,7 @@ public:
   virtual CoordType getType() const;
 
   static const SoGLTextureCoordinateElement * 
-  getInstance(SoState * const state );
+  getInstance(SoState * const state);
   
   void send(const int index) const;
   void send(const int index, const SbVec3f &c, const SbVec3f &n) const;
@@ -80,4 +80,4 @@ private:
   void doCallback() const;
 };
 
-#endif // ! _SO_GL_TEXTURE_COORDINATE_ELEMENT_H_
+#endif // !__SOGLTEXTURECOORDINATEELEMENT_H__

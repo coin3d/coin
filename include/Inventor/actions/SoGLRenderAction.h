@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_GL_RENDER_ACTION_H_
-#define _SO_GL_RENDER_ACTION_H_
+#ifndef __SOGLRENDERACTION_H__
+#define __SOGLRENDERACTION_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOGLRENDERACTION)
@@ -39,7 +39,7 @@
 class SoGLRenderAction : public SoAction {
   typedef SoAction inherited;
 
-//$ BEGIN TEMPLATE ActionHeader( SoGLRenderAction )
+//$ BEGIN TEMPLATE ActionHeader(SoGLRenderAction)
 private:
   static SoType classTypeId;
 
@@ -141,4 +141,4 @@ private:
 
 };
 
-#endif // ! _SO_GL_RENDER_ACTION_H_
+#endif // !__SOGLRENDERACTION_H__

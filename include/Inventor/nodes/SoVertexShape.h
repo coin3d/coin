@@ -38,7 +38,7 @@ class SoVertexShape : public SoShape
 {
   typedef SoShape inherited;
 
-//$ BEGIN TEMPLATE NodeAbstractHeader( SoVertexShape )
+//$ BEGIN TEMPLATE NodeAbstractHeader(SoVertexShape)
 private:
   static SoType classTypeId;
 

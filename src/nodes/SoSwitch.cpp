@@ -292,6 +292,12 @@ SoSwitch::doAction(SoAction * action)
     checkAffects = TRUE;
     // otherwise normal behaviour
     break;
+
+    // FIXME: these where missing -- is this behaviour correct?
+    // 19990925 mortene.
+  case SoAction::NO_PATH:
+  case SoAction::BELOW_PATH:
+    break;
   }
   
   for (int i = startIdx; i <= endIdx; i++) {
@@ -325,7 +331,7 @@ SoSwitch::affectsState(void) const
   FIXME: write doc
  */
 void
-SoSwitch::callback(SoCallbackAction * action)
+SoSwitch::callback(SoCallbackAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -336,7 +342,7 @@ SoSwitch::callback(SoCallbackAction * action)
   FIXME: write doc
  */
 void
-SoSwitch::pick(SoPickAction * action)
+SoSwitch::pick(SoPickAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -347,7 +353,7 @@ SoSwitch::pick(SoPickAction * action)
   FIXME: write doc
  */
 void
-SoSwitch::handleEvent(SoHandleEventAction * action)
+SoSwitch::handleEvent(SoHandleEventAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -358,7 +364,7 @@ SoSwitch::handleEvent(SoHandleEventAction * action)
   FIXME: write doc
  */
 void
-SoSwitch::getMatrix(SoGetMatrixAction * action)
+SoSwitch::getMatrix(SoGetMatrixAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -369,7 +375,7 @@ SoSwitch::getMatrix(SoGetMatrixAction * action)
   FIXME: write doc
  */
 void
-SoSwitch::write(SoWriteAction * action)
+SoSwitch::write(SoWriteAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -380,7 +386,7 @@ SoSwitch::write(SoWriteAction * action)
   FIXME: write doc
  */
 void
-SoSwitch::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoSwitch::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -391,7 +397,7 @@ SoSwitch::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   FIXME: write doc
  */
 void
-SoSwitch::traverseChildren(SoAction * action)
+SoSwitch::traverseChildren(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

@@ -51,7 +51,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE SField( SoSFColor, const SbColor & )
+//$ BEGIN TEMPLATE SField(SoSFColor, const SbColor &)
 
 SoType SoSFColor::classTypeId = SoType::badType();
 
@@ -177,7 +177,7 @@ SoSFColor::operator == (const SoSFColor & field) const
 void
 SoSFColor::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass( SFColor )
+//$ BEGIN TEMPLATE FieldInitClass(SFColor)
   // Make sure we only initialize once.
   assert(SoSFColor::classTypeId == SoType::badType());
   // Make sure superclass has been initialized before subclass.

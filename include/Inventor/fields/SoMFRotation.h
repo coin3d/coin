@@ -31,7 +31,7 @@
 class SoMFRotation : public SoMField {
   typedef SoMField inherited;
 
-//$ BEGIN TEMPLATE MField( SoMFRotation, SbRotation, const SbRotation & )
+//$ BEGIN TEMPLATE MField(SoMFRotation, SbRotation, const SbRotation &)
 private:
   static SoType classTypeId;
 

@@ -119,7 +119,7 @@ SoTypeList::set(const int i, SoType type)
 */
 
 int
-SoTypeList::find(SoType typeId) const
+SoTypeList::find(SoType /* typeId */) const
 {
   assert(0 && "FIXME: not implemented yet");
   return 0;

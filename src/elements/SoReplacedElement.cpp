@@ -38,7 +38,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE AbstractElementSource( SoReplacedElement )
+//$ BEGIN TEMPLATE AbstractElementSource(SoReplacedElement)
 
 /*!
   \var SoReplacedElement::classTypeId
@@ -47,14 +47,14 @@
   SoReplacedElement.
 */
 
-SoType SoReplacedElement::classTypeId = SoType::badType();
+SoType SoReplacedElement::classTypeId = SoType::badType(); // static
 
 /*!
   This static method returns the SoType type for SoReplacedElement.
 */
 
 SoType
-SoReplacedElement::getClassTypeId(
+SoReplacedElement::getClassTypeId( // static
   void )
 {
   return SoReplacedElement::classTypeId;
@@ -67,14 +67,14 @@ SoReplacedElement::getClassTypeId(
   SoReplacedElement class.
 */
 
-int SoReplacedElement::classStackIndex;
+int SoReplacedElement::classStackIndex; // static
 
 /*!
   This static method returns the state stack index for the SoReplacedElement class.
 */
 
 int
-SoReplacedElement::getClassStackIndex(
+SoReplacedElement::getClassStackIndex( // static
   void )
 {
   return SoReplacedElement::classStackIndex;
@@ -86,15 +86,13 @@ SoReplacedElement::getClassStackIndex(
 */
 
 void
-SoReplacedElement::initClass(
-    void )
+SoReplacedElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitAbstractElementSource( SoReplacedElement )
+//$ BEGIN TEMPLATE InitAbstractElementSource(SoReplacedElement)
   assert(SoReplacedElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoReplacedElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
+  SoReplacedElement::classTypeId = SoType::createType(inherited::getClassTypeId(),
     "SoReplacedElement", NULL );
 
   if ( inherited::classStackIndex < 0 ) {
@@ -112,10 +110,9 @@ SoReplacedElement::initClass(
 */
 
 void
-SoReplacedElement::cleanClass(
-    void )
+SoReplacedElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanAbstractElementSource( SoReplacedElement )
+//$ BEGIN TEMPLATE CleanAbstractElementSource(SoReplacedElement)
 //$ END TEMPLATE CleanAbstractElementSource
 }
 
@@ -123,37 +120,33 @@ SoReplacedElement::cleanClass(
   The constructor.  Can't be used directly.  This is an abstract base class.
 */
 
-SoReplacedElement::SoReplacedElement(
-    void )
-  : nodeId( 0 )
+SoReplacedElement::SoReplacedElement(void)
+  : nodeId(0)
 {
-  setTypeId( SoReplacedElement::classTypeId );
-  setStackIndex( SoReplacedElement::classStackIndex );
+  setTypeId(SoReplacedElement::classTypeId);
+  setStackIndex(SoReplacedElement::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoReplacedElement::~SoReplacedElement(
-    void )
+SoReplacedElement::~SoReplacedElement(void)
 {
 }
 
 //! FIXME: write doc.
 
 void
-SoReplacedElement::init(
-    SoState * state )
+SoReplacedElement::init(SoState * state)
 {
-  inherited::init( state );
+  inherited::init(state);
 }
 
 //! FIXME: write doc.
 
 SbBool
-SoReplacedElement::matches(
-    const SoElement * element ) const
+SoReplacedElement::matches(const SoElement * element) const
 {
   if (((const SoReplacedElement *)(element))->nodeId ==
       this->nodeId)
@@ -164,10 +157,9 @@ SoReplacedElement::matches(
 //! FIXME: write doc.
 
 SoElement *
-SoReplacedElement::copyMatchInfo(
-    void ) const
+SoReplacedElement::copyMatchInfo(void) const
 {
-  assert( getTypeId().canCreateInstance() );
+  assert(getTypeId().canCreateInstance());
   SoReplacedElement * element =
     (SoReplacedElement *)(getTypeId().createInstance());
   element->nodeId = this->nodeId;
@@ -180,7 +172,7 @@ void
 SoReplacedElement::print(FILE * file) const
 {
   fprintf(file, "%s[%p]\n", getTypeId().getName().getString(),
-	  this );
+	  this);
 }
 
 /*!
@@ -197,7 +189,7 @@ SoReplacedElement::getElement(SoState * const state,
 			      SoNode * const node)
 {
   SoReplacedElement *elem = 
-    (SoReplacedElement*) SoElement::getElement( state, stackIndex );
+    (SoReplacedElement*) SoElement::getElement(state, stackIndex);
   if (node)
     elem->nodeId = node->getNodeId();
   else elem->nodeId = 0;
@@ -205,7 +197,7 @@ SoReplacedElement::getElement(SoState * const state,
 }
 
 /*!
-  \fn uint32_t SoReplacedElement::getNodeId( void ) const
+  \fn uint32_t SoReplacedElement::getNodeId(void) const
 
   This function returns the node identifier for the node that previously
   updated the SoReplacedElement.

@@ -32,7 +32,7 @@
 class SoPickStyle : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoPickStyle )
+//$ BEGIN TEMPLATE NodeHeader(SoPickStyle)
 private:
   static SoType classTypeId;
 

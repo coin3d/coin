@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_GL_SHININESS_COLOR_ELEMENT_H_
-#define _SO_GL_SHININESS_COLOR_ELEMENT_H_
+#ifndef __SOGLSHININESSELEMENT_H__
+#define __SOGLSHININESSELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOGLSHININESSELEMENT)
@@ -30,7 +30,7 @@
 class SoGLShininessElement : public SoShininessElement {
   typedef SoShininessElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoGLShininessElement )
+//$ BEGIN TEMPLATE ElementHeader(SoGLShininessElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -63,4 +63,4 @@ private:
 
 };
 
-#endif // ! _SO_GL_SHININESS_ELEMENT_H_
+#endif // !__SOGLSHININESSELEMENT_H__

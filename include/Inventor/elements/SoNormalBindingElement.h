@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_NORMAL_BINDING_ELEMENT_H_
-#define _SO_NORMAL_BINDING_ELEMENT_H_
+#ifndef __SONORMALBINDINGELEMENT_H__
+#define __SONORMALBINDINGELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SONORMALBINDINGELEMENT)
@@ -30,7 +30,7 @@
 class SoNormalBindingElement : public SoInt32Element {
   typedef SoInt32Element inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoNormalBindingElement )
+//$ BEGIN TEMPLATE ElementHeader(SoNormalBindingElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -70,4 +70,4 @@ public:
 
 };
 
-#endif // ! _SO_NORMAL_BINDING_ELEMENT_H_
+#endif // !__SONORMALBINDINGELEMENT_H__

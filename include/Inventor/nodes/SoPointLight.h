@@ -33,7 +33,7 @@
 class SoPointLight : public SoLight {
   typedef SoLight inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoPointLight )
+//$ BEGIN TEMPLATE NodeHeader(SoPointLight)
 private:
   static SoType classTypeId;
 
@@ -54,7 +54,7 @@ public:
   SoSFVec3f location;
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
-  virtual void GLRender( SoGLRenderAction * action );
+  virtual void GLRender(SoGLRenderAction * action);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 };
 

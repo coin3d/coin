@@ -51,7 +51,7 @@
 */
 
 
-//$ BEGIN TEMPLATE EventSource( SoSpaceballButtonEvent )
+//$ BEGIN TEMPLATE EventSource(SoSpaceballButtonEvent)
 /*!
   \var SoSpaceballButtonEvent::classTypeId
   Unique type identification for the SoSpaceballButtonEvent class type.
@@ -88,7 +88,7 @@ SoSpaceballButtonEvent::getClassTypeId(void)
 void
 SoSpaceballButtonEvent::initClass(void)
 {
-//$ BEGIN TEMPLATE EventInitClass( SpaceballButtonEvent )
+//$ BEGIN TEMPLATE EventInitClass(SpaceballButtonEvent)
   // Make sure we only initialize once.
   assert(SoSpaceballButtonEvent::classTypeId == SoType::badType());
   // Make sure superclass get initialized before subclass.

@@ -64,7 +64,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE SField( SoSFUInt32, const uint32_t )
+//$ BEGIN TEMPLATE SField(SoSFUInt32, const uint32_t)
 
 SoType SoSFUInt32::classTypeId = SoType::badType();
 
@@ -191,7 +191,7 @@ SoSFUInt32::operator == (const SoSFUInt32 & field) const
 void
 SoSFUInt32::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass( SFUInt32 )
+//$ BEGIN TEMPLATE FieldInitClass(SFUInt32)
   // Make sure we only initialize once.
   assert(SoSFUInt32::classTypeId == SoType::badType());
   // Make sure superclass has been initialized before subclass.

@@ -31,7 +31,7 @@
 class SoMFName : public SoMField {
   typedef SoMField inherited;
 
-//$ BEGIN TEMPLATE MField( SoMFName, SbName, SbName )
+//$ BEGIN TEMPLATE MField(SoMFName, SbName, SbName)
 private:
   static SoType classTypeId;
 

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_SHAPE_SIMPLIFY_ACTION_H_
-#define _SO_SHAPE_SIMPLIFY_ACTION_H_
+#ifndef __SOSHAPESIMPLIFYACTION_H__
+#define __SOSHAPESIMPLIFYACTION_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOSHAPESIMPLIFYACTION)
@@ -30,7 +30,7 @@
 class SoShapeSimplifyAction : public SoSimplifyAction {
   typedef SoSimplifyAction inherited;
 
-//$ BEGIN TEMPLATE ActionHeader( SoShapeSimplifyAction )
+//$ BEGIN TEMPLATE ActionHeader(SoShapeSimplifyAction)
 private:
   static SoType classTypeId;
 
@@ -57,8 +57,8 @@ public:
   SoShapeSimplifyAction(void);
 
 protected:
-  virtual void beginTraversal( SoNode * node );
+  virtual void beginTraversal(SoNode * node);
 
 };
 
-#endif // ! _SO_SHAPE_SIMPLIFY_ACTION_H_
+#endif // !__SOSHAPESIMPLIFYACTION_H__

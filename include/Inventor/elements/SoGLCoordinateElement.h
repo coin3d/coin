@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_GL_COORDINATE_ELEMENT_H_
-#define _SO_GL_COORDINATE_ELEMENT_H_
+#ifndef __SOGLCOORDINATEELEMENT_H__
+#define __SOGLCOORDINATEELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOGLCOORDINATEELEMENT)
@@ -30,7 +30,7 @@
 class SoGLCoordinateElement : public SoCoordinateElement {
   typedef SoCoordinateElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoGLCoordinateElement )
+//$ BEGIN TEMPLATE ElementHeader(SoGLCoordinateElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -54,4 +54,4 @@ public:
 
 };
 
-#endif // ! _SO_GL_COORDINATE_ELEMENT_H_
+#endif // !__SOGLCOORDINATEELEMENT_H__

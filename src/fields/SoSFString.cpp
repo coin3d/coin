@@ -38,7 +38,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE SField( SoSFString, const SbString & )
+//$ BEGIN TEMPLATE SField(SoSFString, const SbString &)
 
 SoType SoSFString::classTypeId = SoType::badType();
 
@@ -163,7 +163,7 @@ SoSFString::operator == (const SoSFString & field) const
 void
 SoSFString::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass( SFString )
+//$ BEGIN TEMPLATE FieldInitClass(SFString)
   // Make sure we only initialize once.
   assert(SoSFString::classTypeId == SoType::badType());
   // Make sure superclass has been initialized before subclass.

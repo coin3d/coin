@@ -38,7 +38,7 @@
   This is a SoMFNodeField.
 */
 
-//$ BEGIN TEMPLATE AbstractElementSource( SoAccumulatedElement )
+//$ BEGIN TEMPLATE AbstractElementSource(SoAccumulatedElement)
 
 /*!
   \var SoAccumulatedElement::classTypeId
@@ -47,14 +47,14 @@
   SoAccumulatedElement.
 */
 
-SoType SoAccumulatedElement::classTypeId = SoType::badType();
+SoType SoAccumulatedElement::classTypeId = SoType::badType(); // static
 
 /*!
   This static method returns the SoType type for SoAccumulatedElement.
 */
 
 SoType
-SoAccumulatedElement::getClassTypeId(
+SoAccumulatedElement::getClassTypeId( // static
   void )
 {
   return SoAccumulatedElement::classTypeId;
@@ -67,14 +67,14 @@ SoAccumulatedElement::getClassTypeId(
   SoAccumulatedElement class.
 */
 
-int SoAccumulatedElement::classStackIndex;
+int SoAccumulatedElement::classStackIndex; // static
 
 /*!
   This static method returns the state stack index for the SoAccumulatedElement class.
 */
 
 int
-SoAccumulatedElement::getClassStackIndex(
+SoAccumulatedElement::getClassStackIndex( // static
   void )
 {
   return SoAccumulatedElement::classStackIndex;
@@ -87,15 +87,13 @@ SoAccumulatedElement::getClassStackIndex(
 */
 
 void
-SoAccumulatedElement::initClass(
-    void )
+SoAccumulatedElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitAbstractElementSource( SoAccumulatedElement )
+//$ BEGIN TEMPLATE InitAbstractElementSource(SoAccumulatedElement)
   assert(SoAccumulatedElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoAccumulatedElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
+  SoAccumulatedElement::classTypeId = SoType::createType(inherited::getClassTypeId(),
     "SoAccumulatedElement", NULL );
 
   if ( inherited::classStackIndex < 0 ) {
@@ -114,10 +112,9 @@ SoAccumulatedElement::initClass(
 */
 
 void
-SoAccumulatedElement::cleanClass(
-    void )
+SoAccumulatedElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanAbstractElementSource( SoAccumulatedElement )
+//$ BEGIN TEMPLATE CleanAbstractElementSource(SoAccumulatedElement)
 //$ END TEMPLATE CleanAbstractElementSource
 }
 
@@ -127,8 +124,8 @@ SoAccumulatedElement::cleanClass(
 
 SoAccumulatedElement::SoAccumulatedElement()
 {
-  setTypeId( SoAccumulatedElement::classTypeId );
-  setStackIndex( SoAccumulatedElement::classStackIndex );
+  setTypeId(SoAccumulatedElement::classTypeId);
+  setStackIndex(SoAccumulatedElement::classStackIndex);
 
   // FIXME: there's no init method which cleans out the nodeIds
   // SbPList, won't this result in a memory leak? Or is this taken
@@ -139,15 +136,14 @@ SoAccumulatedElement::SoAccumulatedElement()
   The destructor.
 */
 
-SoAccumulatedElement::~SoAccumulatedElement(
-    void )
+SoAccumulatedElement::~SoAccumulatedElement(void)
 {
 }
 
 //! FIXME: write doc.
 
 SbBool
-SoAccumulatedElement::matches(const SoElement * element) const
+SoAccumulatedElement::matches(const SoElement * /* element */) const
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;
@@ -156,10 +152,9 @@ SoAccumulatedElement::matches(const SoElement * element) const
 //! FIXME: write doc.
 
 void
-SoAccumulatedElement::print(
-    FILE * file ) const
+SoAccumulatedElement::print(FILE * file) const
 {
-  fprintf( file, "SoAccumulatedElement(%p)\n", this );
+  fprintf(file, "SoAccumulatedElement(%p)\n", this);
 }
 
 //! FIXME: write doc.
@@ -199,7 +194,7 @@ SoAccumulatedElement::copyMatchInfo() const
 //! FIXME: write doc.
 
 void
-SoAccumulatedElement::captureThis(SoState * state) const
+SoAccumulatedElement::captureThis(SoState * /* state */) const
 {
   assert(0 && "FIXME: not implemented");
 }

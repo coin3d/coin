@@ -39,7 +39,7 @@ SbViewportRegion * SoViewportRegionElement::emptyViewportRegion;
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoViewportRegionElement )
+//$ BEGIN TEMPLATE ElementSource(SoViewportRegionElement)
 
 /*!
   \var SoViewportRegionElement::classTypeId
@@ -93,24 +93,23 @@ SoViewportRegionElement::getClassStackIndex(void)
 */
 
 void
-SoViewportRegionElement::initClass(
-    void )
+SoViewportRegionElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoViewportRegionElement )
+//$ BEGIN TEMPLATE InitElementSource(SoViewportRegionElement)
   assert(SoViewportRegionElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoViewportRegionElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoViewportRegionElement",
-    &SoViewportRegionElement::createInstance);
+  SoViewportRegionElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoViewportRegionElement",
+                       &SoViewportRegionElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoViewportRegionElement::classStackIndex =
-      createStackIndex( SoViewportRegionElement::classTypeId );
-  } else {
-    SoViewportRegionElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoViewportRegionElement::classTypeId);
+  }
+  else {
+    SoViewportRegionElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -121,33 +120,30 @@ SoViewportRegionElement::initClass(
 */
 
 void
-SoViewportRegionElement::cleanClass(
-    void )
+SoViewportRegionElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoViewportRegionElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoViewportRegionElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoViewportRegionElement::createInstance( void )
+  \sa void * SoViewportRegionElement::createInstance(void)
 */
 
-SoViewportRegionElement::SoViewportRegionElement(
-    void )
+SoViewportRegionElement::SoViewportRegionElement(void)
   : viewportRegion()
 {
-    setTypeId( SoViewportRegionElement::classTypeId );
-    setStackIndex( SoViewportRegionElement::classStackIndex );
+    setTypeId(SoViewportRegionElement::classTypeId);
+    setStackIndex(SoViewportRegionElement::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoViewportRegionElement::~SoViewportRegionElement(
-    void )
+SoViewportRegionElement::~SoViewportRegionElement(void)
 {
 }
 
@@ -211,9 +207,8 @@ SoViewportRegionElement::setElt(const SbViewportRegion & viewportRegion)
 //! FIXME: write doc.
 
 void
-SoViewportRegionElement::print(
-    FILE * file ) const
+SoViewportRegionElement::print(FILE * file) const
 {
-  fprintf( file, "SoViewportRegionElement[%p]\n", this );
+  fprintf(file, "SoViewportRegionElement[%p]\n", this);
 }
 

@@ -142,12 +142,13 @@ SoTextureCoordinatePlane::cleanClass(void)
   FIXME: write function documentation
 */
 const SbVec4f &
-SoTextureCoordinatePlane::generate(void * userdata,
-				   const SbVec3f & p,
-				   const SbVec3f & n)
+SoTextureCoordinatePlane::generate(void * /* userdata */,
+				   const SbVec3f & /* p */,
+				   const SbVec3f & /* n */)
 {
   assert(0 && "FIXME: not implemented yet");
-  return SbVec4f(0,0,0,1);
+  static SbVec4f s(0,0,0,1);
+  return s;
 }
 
 #if !defined(COIN_EXCLUDE_SOACTION)

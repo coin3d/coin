@@ -38,7 +38,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE SFieldRequired( SoSFPath )
+//$ BEGIN TEMPLATE SFieldRequired(SoSFPath)
 
 SoType SoSFPath::classTypeId = SoType::badType();
 
@@ -146,7 +146,7 @@ SoSFPath::operator == (const SoSFPath & field) const
 void
 SoSFPath::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass( SFPath )
+//$ BEGIN TEMPLATE FieldInitClass(SFPath)
   // Make sure we only initialize once.
   assert(SoSFPath::classTypeId == SoType::badType());
   // Make sure superclass has been initialized before subclass.
@@ -186,7 +186,7 @@ SoSFPath::~SoSFPath(void)
   FIXME: write function documentation
 */
 SbBool
-SoSFPath::readValue(SoInput * in)
+SoSFPath::readValue(SoInput * /* in */)
 {
   assert(0 && "FIXME: not implemented yet");
   return FALSE;
@@ -196,7 +196,7 @@ SoSFPath::readValue(SoInput * in)
   FIXME: write function documentation
 */
 void
-SoSFPath::notify(SoNotList * list)
+SoSFPath::notify(SoNotList * /* list */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -205,7 +205,7 @@ SoSFPath::notify(SoNotList * list)
   FIXME: write function documentation
 */
 void
-SoSFPath::fixCopy(SbBool copyConnections)
+SoSFPath::fixCopy(SbBool /* copyConnections */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -224,7 +224,7 @@ SoSFPath::referencesCopy(void) const
   FIXME: write function documentation
 */
 void
-SoSFPath::writeValue(SoOutput * out) const
+SoSFPath::writeValue(SoOutput * /* out */) const
 {
   assert(0 && "FIXME: not implemented yet");
 }

@@ -30,7 +30,7 @@
 class SoGLShadeModelElement : public SoElement {
   typedef SoElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoGLShadeModelElement )
+//$ BEGIN TEMPLATE ElementHeader(SoGLShadeModelElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);

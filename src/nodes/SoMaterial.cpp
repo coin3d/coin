@@ -282,7 +282,7 @@ SoMaterial::compareAppearanceVRML2(SoMaterial * otherMaterial)
   FIXME: write doc
  */
 void
-SoMaterial::doAction(SoAction * action)
+SoMaterial::doAction(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -293,7 +293,7 @@ SoMaterial::doAction(SoAction * action)
   FIXME: write doc
  */
 void
-SoMaterial::callback(SoCallbackAction * action)
+SoMaterial::callback(SoCallbackAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

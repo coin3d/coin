@@ -32,7 +32,7 @@
 class SoMultipleCopy : public SoGroup {
   typedef SoGroup inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoMultipleCopy )
+//$ BEGIN TEMPLATE NodeHeader(SoMultipleCopy)
 private:
   static SoType classTypeId;
 

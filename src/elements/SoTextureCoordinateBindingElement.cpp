@@ -36,7 +36,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoTextureCoordinateBindingElement )
+//$ BEGIN TEMPLATE ElementSource(SoTextureCoordinateBindingElement)
 
 /*!
   \var SoTextureCoordinateBindingElement::classTypeId
@@ -90,24 +90,23 @@ SoTextureCoordinateBindingElement::getClassStackIndex(void)
 */
 
 void
-SoTextureCoordinateBindingElement::initClass(
-    void )
+SoTextureCoordinateBindingElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoTextureCoordinateBindingElement )
+//$ BEGIN TEMPLATE InitElementSource(SoTextureCoordinateBindingElement)
   assert(SoTextureCoordinateBindingElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoTextureCoordinateBindingElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoTextureCoordinateBindingElement",
-    &SoTextureCoordinateBindingElement::createInstance);
+  SoTextureCoordinateBindingElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoTextureCoordinateBindingElement",
+                       &SoTextureCoordinateBindingElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoTextureCoordinateBindingElement::classStackIndex =
-      createStackIndex( SoTextureCoordinateBindingElement::classTypeId );
-  } else {
-    SoTextureCoordinateBindingElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoTextureCoordinateBindingElement::classTypeId);
+  }
+  else {
+    SoTextureCoordinateBindingElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -118,24 +117,22 @@ SoTextureCoordinateBindingElement::initClass(
 */
 
 void
-SoTextureCoordinateBindingElement::cleanClass(
-    void )
+SoTextureCoordinateBindingElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoTextureCoordinateBindingElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoTextureCoordinateBindingElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoTextureCoordinateBindingElement::createInstance( void )
+  \sa void * SoTextureCoordinateBindingElement::createInstance(void)
 */
 
-SoTextureCoordinateBindingElement::SoTextureCoordinateBindingElement(
-    void )
+SoTextureCoordinateBindingElement::SoTextureCoordinateBindingElement(void)
 {
-    setTypeId( SoTextureCoordinateBindingElement::classTypeId );
-    setStackIndex( SoTextureCoordinateBindingElement::classStackIndex );
+    setTypeId(SoTextureCoordinateBindingElement::classTypeId);
+    setStackIndex(SoTextureCoordinateBindingElement::classStackIndex);
     this->data = getDefault();
 }
 
@@ -143,8 +140,7 @@ SoTextureCoordinateBindingElement::SoTextureCoordinateBindingElement(
   The destructor.
 */
 
-SoTextureCoordinateBindingElement::~SoTextureCoordinateBindingElement(
-    void )
+SoTextureCoordinateBindingElement::~SoTextureCoordinateBindingElement(void)
 {
 }
 
@@ -162,7 +158,7 @@ SoTextureCoordinateBindingElement::set(SoState * const state,
 //! FIXME: write doc.
 
 void
-SoTextureCoordinateBindingElement::init(SoState * state )
+SoTextureCoordinateBindingElement::init(SoState * state)
 {
   inherited::init(state);
   this->data = SoTextureCoordinateBindingElement::getDefault();
@@ -175,7 +171,7 @@ void
 SoTextureCoordinateBindingElement::set(SoState * const state, 
 				       const Binding binding)
 { 
-  set( state, NULL, binding ); 
+  set(state, NULL, binding); 
 }
 
 //! FIXME: write doc.
@@ -184,7 +180,7 @@ SoTextureCoordinateBindingElement::set(SoState * const state,
 SoTextureCoordinateBindingElement::Binding 
 SoTextureCoordinateBindingElement::get(SoState * const state)
 { 
-  return (Binding)SoInt32Element::get( classStackIndex, state ); 
+  return (Binding)SoInt32Element::get(classStackIndex, state); 
 }
 
 //! FIXME: write doc.

@@ -54,7 +54,7 @@ class SoPath;
 class SoCamera : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeAbstractHeader( SoCamera )
+//$ BEGIN TEMPLATE NodeAbstractHeader(SoCamera)
 private:
   static SoType classTypeId;
 

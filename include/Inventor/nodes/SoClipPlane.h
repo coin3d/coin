@@ -33,7 +33,7 @@
 class SoClipPlane : public SoNode {
   typedef SoNode inherited;
   
-//$ BEGIN TEMPLATE NodeHeader( SoClipPlane )
+//$ BEGIN TEMPLATE NodeHeader(SoClipPlane)
 private:
   static SoType classTypeId;
 

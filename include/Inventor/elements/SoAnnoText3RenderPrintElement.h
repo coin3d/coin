@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_ANNO_TEXT3_RENDER_PRINT_ELEMENT_H_
-#define _SO_ANNO_TEXT3_RENDER_PRINT_ELEMENT_H_
+#ifndef __SOANNOTEXT3RENDERPRINTELEMENT_H__
+#define __SOANNOTEXT3RENDERPRINTELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOANNOTEXT3RENDERPRINTELEMENT)
@@ -30,7 +30,7 @@
 class SoAnnoText3RenderPrintElement : public SoInt32Element {
   typedef SoInt32Element inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoAnnoText3RenderPrintElement )
+//$ BEGIN TEMPLATE ElementHeader(SoAnnoText3RenderPrintElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -52,14 +52,13 @@ public:
     RENDER3D_PRINT_VECTOR, RENDER3D_PRINT_RASTER, RENDER2D_PRINT_RASTER
   };
   
-  virtual void init( SoState * state );
-  static void set( SoState * const state, const RenderPrintType hint );
-  static RenderPrintType get( SoState * const state );
-  static RenderPrintType getDefault( void );
+  virtual void init(SoState * state);
+  static void set(SoState * const state, const RenderPrintType hint);
+  static RenderPrintType get(SoState * const state);
+  static RenderPrintType getDefault(void);
 
   static void set(SoState * const state, SoNode * const node,
 		  const RenderPrintType type);
-
 };
 
-#endif // ! _SO_ANNO_TEXT3_RENDER_PRINT_ELEMENT_H_
+#endif // !__SOANNOTEXT3RENDERPRINTELEMENT_H__

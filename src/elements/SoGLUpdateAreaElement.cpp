@@ -42,7 +42,7 @@
   FIXME: write doc
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoGLUpdateAreaElement )
+//$ BEGIN TEMPLATE ElementSource(SoGLUpdateAreaElement)
 
 /*!
   \var SoGLUpdateAreaElement::classTypeId
@@ -96,24 +96,23 @@ SoGLUpdateAreaElement::getClassStackIndex(void)
 */
 
 void
-SoGLUpdateAreaElement::initClass(
-    void )
+SoGLUpdateAreaElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoGLUpdateAreaElement )
+//$ BEGIN TEMPLATE InitElementSource(SoGLUpdateAreaElement)
   assert(SoGLUpdateAreaElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoGLUpdateAreaElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoGLUpdateAreaElement",
-    &SoGLUpdateAreaElement::createInstance);
+  SoGLUpdateAreaElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoGLUpdateAreaElement",
+                       &SoGLUpdateAreaElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoGLUpdateAreaElement::classStackIndex =
-      createStackIndex( SoGLUpdateAreaElement::classTypeId );
-  } else {
-    SoGLUpdateAreaElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoGLUpdateAreaElement::classTypeId);
+  }
+  else {
+    SoGLUpdateAreaElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -124,24 +123,22 @@ SoGLUpdateAreaElement::initClass(
 */
 
 void
-SoGLUpdateAreaElement::cleanClass(
-    void )
+SoGLUpdateAreaElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoGLUpdateAreaElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoGLUpdateAreaElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoGLUpdateAreaElement::createInstance( void )
+  \sa void * SoGLUpdateAreaElement::createInstance(void)
 */
 
-SoGLUpdateAreaElement::SoGLUpdateAreaElement(
-    void )
+SoGLUpdateAreaElement::SoGLUpdateAreaElement(void)
 {
-    setTypeId( SoGLUpdateAreaElement::classTypeId );
-    setStackIndex( SoGLUpdateAreaElement::classStackIndex );
+    setTypeId(SoGLUpdateAreaElement::classTypeId);
+    setStackIndex(SoGLUpdateAreaElement::classStackIndex);
 }
 
 /*!
@@ -157,7 +154,7 @@ SoGLUpdateAreaElement::~SoGLUpdateAreaElement()
 void
 SoGLUpdateAreaElement::init(SoState * state)
 {
-  inherited::init( state );
+  inherited::init(state);
   origin = getDefaultOrigin();
   size = getDefaultSize();
 }
@@ -167,7 +164,7 @@ SoGLUpdateAreaElement::init(SoState * state)
 void
 SoGLUpdateAreaElement::push(SoState * state)
 {
-    inherited::push( state );
+    inherited::push(state);
 }
 
 //! FIXME: write doc.
@@ -176,13 +173,13 @@ void
 SoGLUpdateAreaElement::pop(SoState * state,
 			   const SoElement * prevTopElement)
 {
-    inherited::pop( state, prevTopElement );
+    inherited::pop(state, prevTopElement);
 }
 
 //! FIXME: write doc.
 
 SbBool
-SoGLUpdateAreaElement::matches(const SoElement * element) const
+SoGLUpdateAreaElement::matches(const SoElement * /* element */) const
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;
@@ -236,7 +233,7 @@ SoGLUpdateAreaElement::get(SoState * const state,
 */
 
 SbVec2f
-SoGLUpdateAreaElement::getDefaultOrigin( void )
+SoGLUpdateAreaElement::getDefaultOrigin(void)
 {
   return SbVec2f(0.0f, 0.0f);
 }
@@ -246,7 +243,7 @@ SoGLUpdateAreaElement::getDefaultOrigin( void )
 */
 
 SbVec2f
-SoGLUpdateAreaElement::getDefaultSize( void )
+SoGLUpdateAreaElement::getDefaultSize(void)
 {
   return SbVec2f(1.0f, 1.0f);
 }

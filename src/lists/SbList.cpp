@@ -22,14 +22,14 @@
   \brief The SbList class is a template container class for lists.
 */
 
-#if defined( __GNUC__ ) || defined( __BEOS__ ) || defined( WIN32 )
+#if defined(__GNUC__) || defined( __BEOS__ ) || defined( WIN32 )
 // IRIX/CC doesn't instanciate templates like this.
 
 // #define NO_SB_LIST_INLINE_KEYWORDS
 
 #include <Inventor/lists/SbList.h>
 
-#endif // defined( __GNUC__ ) || defined( __BEOS__ ) || defined( WIN32 )
+#endif // defined(__GNUC__) || defined( __BEOS__ ) || defined( WIN32 )
 
 /*!
   \var SbList::itemBuffer
@@ -51,7 +51,7 @@
 */
 
 /*!
-  \fn SbList::SbList( const int initSize = 0 )
+  \fn SbList::SbList(const int initSize = 0)
 
   A constructor (default).
 */
@@ -233,34 +233,34 @@
 */
 
 #if 0
-void main( void ) {
+void main(void) {
     SbIntList list1;
-    list1.append( 0 );
-    list1.append( 4 );
-    list1.append( 2 );
-    list1.append( 8 );
-    list1.append( 0 );
-    SbIntList list2( list1 );
+    list1.append(0);
+    list1.append(4);
+    list1.append(2);
+    list1.append(8);
+    list1.append(0);
+    SbIntList list2(list1);
     list1.print();
-    printf( "list1: 0: %d, 1: %d, 2: %d, 3: %d, 4: %d\n",
-        list1[0], list1[1], list1[2], list1[3], list1[4] );
+    printf("list1: 0: %d, 1: %d, 2: %d, 3: %d, 4: %d\n",
+        list1[0], list1[1], list1[2], list1[3], list1[4]);
     list2.print();
-    printf( "list1: 0: %d, 1: %d, 2: %d, 3: %d, 4: %d\n",
-        list2[0], list2[1], list2[2], list2[3], list2[4] );
-    if ( list1 == list2 )  printf( "  list1 == list2\n" );
-    else                   printf( "! list1 == list2\n" );
-    if ( list1 != list2 )  printf( "  list1 != list2\n" );
-    else                   printf( "! list1 != list2\n" );
-    list2.append( list1 );
+    printf("list1: 0: %d, 1: %d, 2: %d, 3: %d, 4: %d\n",
+        list2[0], list2[1], list2[2], list2[3], list2[4]);
+    if (list1 == list2)  printf( "  list1 == list2\n" );
+    else                   printf("! list1 == list2\n");
+    if (list1 != list2)  printf( "  list1 != list2\n" );
+    else                   printf("! list1 != list2\n");
+    list2.append(list1);
     list2.print();
-    printf( "list2: 0: %d, 1: %d, 2: %d, 3: %d, 4: %d",
-        list2[0], list2[1], list2[2], list2[3], list2[4] );
-    printf( " 5: %d, 6: %d, 7: %d, 8: %d, 9: %d\n",
-        list2[5], list2[6], list2[7], list2[8], list2[9] );
-    if ( list1 == list2 )  printf( "  list1 == list2\n" );
-    else                   printf( "! list1 == list2\n" );
-    if ( list1 != list2 )  printf( "  list1 != list2\n" );
-    else                   printf( "! list1 != list2\n" );
+    printf("list2: 0: %d, 1: %d, 2: %d, 3: %d, 4: %d",
+        list2[0], list2[1], list2[2], list2[3], list2[4]);
+    printf(" 5: %d, 6: %d, 7: %d, 8: %d, 9: %d\n",
+        list2[5], list2[6], list2[7], list2[8], list2[9]);
+    if (list1 == list2)  printf( "  list1 == list2\n" );
+    else                   printf("! list1 == list2\n");
+    if (list1 != list2)  printf( "  list1 != list2\n" );
+    else                   printf("! list1 != list2\n");
 }
 #endif
 

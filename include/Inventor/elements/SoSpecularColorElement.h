@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_SPECULAR_COLOR_ELEMENT_H_
-#define _SO_SPECULAR_COLOR_ELEMENT_H_
+#ifndef __SOSPECULARCOLORELEMENT_H__
+#define __SOSPECULARCOLORELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOSPECULARCOLORELEMENT)
@@ -32,7 +32,7 @@ class SbColor;
 class SoSpecularColorElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoSpecularColorElement )
+//$ BEGIN TEMPLATE ElementHeader(SoSpecularColorElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -66,4 +66,4 @@ protected:
 
 };
 
-#endif // ! _SO_SPECULAR_COLOR_ELEMENT_H_
+#endif // !__SOSPECULARCOLORELEMENT_H__

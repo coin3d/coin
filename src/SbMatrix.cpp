@@ -217,19 +217,15 @@ SbMatrix::setRotate(const SbRotation& q)
       this->matrix[0][3]=this->matrix[1][3]=this->matrix[2][3]=0.0f;
     this->matrix[3][3]=1.0f;
     
-    float u0_2 = u[0]*u[0];
-    float u1_2 = u[1]*u[1];
-    float u2_2 = u[2]*u[2];
-    
-    this->matrix[0][0]=u[0]*u[0]+cost*(1-u[0]*u[0]);
-    this->matrix[1][0]=u[0]*u[1]*(1-cost)-u[2]*sint;
-    this->matrix[2][0]=u[2]*u[0]*(1-cost)+u[1]*sint;
-    this->matrix[0][1]=u[0]*u[1]*(1-cost)+u[2]*sint;
-    this->matrix[1][1]=u[1]*u[1]+cost*(1-u[1]*u[1]);
-    this->matrix[2][1]=u[1]*u[2]*(1-cost)-u[0]*sint;
-    this->matrix[0][2]=u[2]*u[0]*(1-cost)-u[1]*sint;
-    this->matrix[1][2]=u[1]*u[2]*(1-cost)+u[0]*sint;
-    this->matrix[2][2]=u[2]*u[2]+cost*(1-u[2]*u[2]);
+    this->matrix[0][0] = u[0]*u[0]+cost*(1-u[0]*u[0]);
+    this->matrix[1][0] = u[0]*u[1]*(1-cost)-u[2]*sint;
+    this->matrix[2][0] = u[2]*u[0]*(1-cost)+u[1]*sint;
+    this->matrix[0][1] = u[0]*u[1]*(1-cost)+u[2]*sint;
+    this->matrix[1][1] = u[1]*u[1]+cost*(1-u[1]*u[1]);
+    this->matrix[2][1] = u[1]*u[2]*(1-cost)-u[0]*sint;
+    this->matrix[0][2] = u[2]*u[0]*(1-cost)-u[1]*sint;
+    this->matrix[1][2] = u[1]*u[2]*(1-cost)+u[0]*sint;
+    this->matrix[2][2] = u[2]*u[2]+cost*(1-u[2]*u[2]);
   }
 }
 
@@ -782,8 +778,8 @@ SbMatrix::setTransform(const SbVec3f& translation,
   \sa factor()
  */
 void
-SbMatrix::getTransform(SbVec3f& t, SbRotation& r, SbVec3f& s,
-		       SbRotation& so) const
+SbMatrix::getTransform(SbVec3f& /* t */, SbRotation& /* r */, SbVec3f& /* s */,
+		       SbRotation& /* so */) const
 {
   // TODO: not implemented.
   assert(0);
@@ -799,11 +795,11 @@ SbMatrix::getTransform(SbVec3f& t, SbRotation& r, SbVec3f& s,
   \sa factor()
  */
 void
-SbMatrix::getTransform(SbVec3f& translation,
-		       SbRotation& rotation,
-		       SbVec3f& scaleFactor,
-		       SbRotation& scaleOrientation,
-		       const SbVec3f& center) const
+SbMatrix::getTransform(SbVec3f& /* translation */,
+		       SbRotation& /* rotation */,
+		       SbVec3f& /* scaleFactor */,
+		       SbRotation& /* scaleOrientation */,
+		       const SbVec3f& /* center */) const
 {
   // TODO: not implemented.
   assert(0);
@@ -815,8 +811,8 @@ SbMatrix::getTransform(SbVec3f& translation,
   \sa getTransform()
  */
 SbBool
-SbMatrix::factor(SbMatrix& r, SbVec3f& s, SbMatrix& u, SbVec3f& t,
-		 SbMatrix& proj)
+SbMatrix::factor(SbMatrix& /* r */, SbVec3f& /* s */, SbMatrix& /* u */, SbVec3f& /* t */,
+		 SbMatrix& /* proj */)
 {
   // TODO: not implemented.
   assert(0);
@@ -848,46 +844,44 @@ SbMatrix::factor(SbMatrix& r, SbVec3f& s, SbMatrix& u, SbVec3f& t,
 
 
 const SbBool
-SbMatrix::LUDecomposition(
-    int index[4],
-    float & d )
+SbMatrix::LUDecomposition(int index[4], float & d)
 {
     int i;
-    for ( i = 0; i < 4; i++ ) index[i] = i;
+    for (i = 0; i < 4; i++) index[i] = i;
     d = 1.0f;
 
     const float MINIMUM_PIVOT = 1e-6f; // Inventor fix...
 
-    for ( int row = 1; row < 4; row++ ) {
+    for (int row = 1; row < 4; row++) {
         int swap_row = row;
         float max_pivot = 0.0f;
-        for ( int test_row = row; test_row < 4; test_row++ ) {
-            const float test_pivot = SbAbs( matrix[test_row][row] );
-            if ( test_pivot > max_pivot ) {
+        for (int test_row = row; test_row < 4; test_row++) {
+            const float test_pivot = SbAbs(matrix[test_row][row]);
+            if (test_pivot > max_pivot) {
                 swap_row = test_row;
                 max_pivot = test_pivot;
             }
         }
              
         // swap rows
-        if ( swap_row != row ) {
+        if (swap_row != row) {
             d = -d;
             index[row] = swap_row;
-            for ( i = 0; i < 4; i++ )
-                SbSwap( matrix[row][i], matrix[swap_row][i] );
+            for (i = 0; i < 4; i++)
+                SbSwap(matrix[row][i], matrix[swap_row][i]);
         }
 
         float pivot = matrix[row][row];
-        if ( matrix[row][row] == 0.0f ) {
+        if (matrix[row][row] == 0.0f) {
 //            return FALSE;
             // instead of returning FALSE on singulars...
             matrix[row][row] = pivot = MINIMUM_PIVOT;
         }
 
         // the factorization
-        for ( i = row + 1; i < 4; i++ ) {
+        for (i = row + 1; i < 4; i++) {
             const float factor = (matrix[i][row] /= pivot);
-            for ( int j = row + 1; j < 4; j++ )
+            for (int j = row + 1; j < 4; j++)
                 matrix[i][j] -= factor * matrix[row][j];
         }
     }
@@ -912,45 +906,43 @@ SbMatrix::LUDecomposition(
 */
 
 void
-SbMatrix::LUBackSubstitution(
-    int index[4],
-    float b[4] ) const
+SbMatrix::LUBackSubstitution(int index[4], float b[4]) const
 {
     int i;
 
     // permute b[] the way matrix[][] is permuted
-    for ( i = 0; i < 4; i++ )
-        if ( i != index[i] )
-            SbSwap( b[i], b[index[i]] );
+    for (i = 0; i < 4; i++)
+        if (i != index[i])
+            SbSwap(b[i], b[index[i]]);
 
     // forward substitution on L (Ly = b)
     float y[4];
-    for ( i = 0; i < 4; i++ ) {
+    for (i = 0; i < 4; i++) {
         float sum = 0.0f;
-        for ( int j = 0; j < i; j++ )
+        for (int j = 0; j < i; j++)
             sum += matrix[i][j] * y[j];
         y[i] = b[i] - sum;
     }
 
     // backwards substitution on U (Ux = y)
     float x[4];
-    for ( i = 3; i >= 0; i-- ) {
+    for (i = 3; i >= 0; i--) {
         float sum = 0.0f;
-        for ( int j = i + 1; j < 4; j++ )
+        for (int j = i + 1; j < 4; j++)
              sum += matrix[i][j] * x[j];
-        if ( matrix[i][i] != 0.0f )
-            x[i] = ( y[i] - sum ) / matrix[i][i];
+        if (matrix[i][i] != 0.0f)
+            x[i] = (y[i] - sum) / matrix[i][i];
         else
             x[i] = 0.0f;
     }
 
     // de-permute x[]?  doesn't look like it
-//    for ( i = 3; i >= 0; i-- )
-//        if ( i != index[i] )
-//            SbSwap( x[i], x[index[i]] );
+//    for (i = 3; i >= 0; i--)
+//        if (i != index[i])
+//            SbSwap(x[i], x[index[i]]);
 
     // copy x[] into b[] for "return to sender"
-    for ( i = 0; i < 4; i++ ) b[i] = x[i];
+    for (i = 0; i < 4; i++) b[i] = x[i];
 }
 
 /*!

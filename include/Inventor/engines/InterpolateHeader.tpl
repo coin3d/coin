@@ -1,21 +1,11 @@
-//$ TEMPLATE InterpolateHeader(className,inputType)
+//$ TEMPLATE InterpolateHeader(__classname__,__inputtype__)
 #include <Inventor/engines/SoInterpolateAbs.h>
-#include <Inventor/fields/inputType.h>
+#include <Inventor/fields/__inputtype__.h>
 
-class className : public SoInterpolate {
-  typedef SoInterpolate inherited;
-  SO_ENGINE_HEADER(className);
+class __classname__ : public SoInterpolate {
+  SO_INTERPOLATE_HEADER(__classname__);
 
 public:
-  inputType input0;
-  inputType input1;
-
-  className();
-
-  static void initClass();
-
-private:
-  virtual ~className();
-  virtual void evaluate();
-
+  __inputtype__ input0;
+  __inputtype__ input1;
 };

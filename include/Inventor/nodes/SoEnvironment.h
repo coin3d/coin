@@ -37,7 +37,7 @@
 class SoEnvironment : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoEnvironment )
+//$ BEGIN TEMPLATE NodeHeader(SoEnvironment)
 private:
   static SoType classTypeId;
 

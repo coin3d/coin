@@ -33,7 +33,7 @@
 class SoIndexedLineSet : public SoIndexedShape {
   typedef SoIndexedShape inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoIndexedLineSet )
+//$ BEGIN TEMPLATE NodeHeader(SoIndexedLineSet)
 private:
   static SoType classTypeId;
 

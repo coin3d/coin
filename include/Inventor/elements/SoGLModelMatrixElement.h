@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_GL_MODEL_MATRIX_ELEMENT_H_
-#define _SO_GL_MODEL_MATRIX_ELEMENT_H_
+#ifndef __SOGLMODELMATRIXELEMENT_H__
+#define __SOGLMODELMATRIXELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOGLMODELMATRIXELEMENT)
@@ -30,7 +30,7 @@
 class SoGLModelMatrixElement : public SoModelMatrixElement {
   typedef SoModelMatrixElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoGLModelMatrixElement )
+//$ BEGIN TEMPLATE ElementHeader(SoGLModelMatrixElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -71,4 +71,4 @@ private:
 
 };
 
-#endif // ! _SO_GL_MODEL_MATRIX_ELEMENT_H_
+#endif // !__SOGLMODELMATRIXELEMENT_H__

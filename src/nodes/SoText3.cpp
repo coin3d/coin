@@ -188,7 +188,8 @@ SoText3::cleanClass(void)
   FIXME: write function documentation
 */
 void
-SoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
+SoText3::computeBBox(SoAction * /* action */,
+		     SbBox3f & /* box */, SbVec3f & /* center */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -199,7 +200,8 @@ SoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   FIXME: write doc
  */
 SbBox3f
-SoText3::getCharacterBounds(SoState * state, int stringIndex, int charIndex)
+SoText3::getCharacterBounds(SoState * /* state */,
+			    int /* stringIndex */, int /* charIndex */)
 {
   assert(0 && "FIXME: not implemented");
   return SbBox3f();
@@ -210,7 +212,7 @@ SoText3::getCharacterBounds(SoState * state, int stringIndex, int charIndex)
   FIXME: write doc
  */
 void
-SoText3::GLRender(SoGLRenderAction * action)
+SoText3::GLRender(SoGLRenderAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -221,7 +223,7 @@ SoText3::GLRender(SoGLRenderAction * action)
   FIXME: write doc
  */
 void
-SoText3::rayPick(SoRayPickAction * action)
+SoText3::rayPick(SoRayPickAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -232,7 +234,7 @@ SoText3::rayPick(SoRayPickAction * action)
   FIXME: write doc
  */
 void
-SoText3::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoText3::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

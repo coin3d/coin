@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_GL_IMAGE_H_
-#define _SO_GL_IMAGE_H_
+#ifndef __SOGLIMAGE_H__
+#define __SOGLIMAGE_H__
 
 // FIXME: couldn't some of this code be used independently of OpenGL?
 // And shouldn't its inclusion be based on the presence of texture
@@ -85,4 +85,4 @@ private:
   int handle;
 };
 
-#endif // _SO_GL_IMAGE_H_
+#endif // !__SOGLIMAGE_H__

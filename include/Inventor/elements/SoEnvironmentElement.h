@@ -31,7 +31,7 @@
 class SoEnvironmentElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoEnvironmentElement )
+//$ BEGIN TEMPLATE ElementHeader(SoEnvironmentElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -57,7 +57,7 @@ public:
     SMOKE
   };
   
-  virtual void init( SoState * state );
+  virtual void init(SoState * state);
   
   static  void set(SoState * const state, SoNode * const node,
 		   const float ambientIntensity, const SbColor & ambientColor,
@@ -68,19 +68,19 @@ public:
 		   SbVec3f & attenuation, int32_t & fogType,
 		   SbColor & fogColor, float & fogVisibility);
 
-  static float getAmbientIntensity( SoState * const state );
-  static float getFogVisibility( SoState * const state );
-  static const SbVec3f & getLightAttenuation( SoState * const state );
-  static const SbColor & getAmbientColor( SoState * const state );
-  static const SbColor & getFogColor( SoState * const state );
-  static int32_t getFogType( SoState * const state );
+  static float getAmbientIntensity(SoState * const state);
+  static float getFogVisibility(SoState * const state);
+  static const SbVec3f & getLightAttenuation(SoState * const state);
+  static const SbColor & getAmbientColor(SoState * const state);
+  static const SbColor & getFogColor(SoState * const state);
+  static int32_t getFogType(SoState * const state);
   
   static void getDefault(float & ambientIntensity,
 			 SbColor & ambientColor, SbVec3f & attenuation,
 			 int32_t & fogType, SbColor & fogColor, 
 			 float & fogVisibility);
   
-  virtual void print( FILE * file ) const;
+  virtual void print(FILE * file) const;
 
 protected:
 

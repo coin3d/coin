@@ -36,7 +36,7 @@
 #include <GL/gl.h>
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource( SoGLSpecularColorElement )
+//$ BEGIN TEMPLATE ElementSource(SoGLSpecularColorElement)
 
 /*!
   \var SoGLSpecularColorElement::classTypeId
@@ -92,21 +92,21 @@ SoGLSpecularColorElement::getClassStackIndex(void)
 void
 SoGLSpecularColorElement::initClass()
 {
-//$ BEGIN TEMPLATE InitElementSource( SoGLSpecularColorElement )
+//$ BEGIN TEMPLATE InitElementSource(SoGLSpecularColorElement)
   assert(SoGLSpecularColorElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoGLSpecularColorElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoGLSpecularColorElement",
-    &SoGLSpecularColorElement::createInstance);
+  SoGLSpecularColorElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoGLSpecularColorElement",
+                       &SoGLSpecularColorElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoGLSpecularColorElement::classStackIndex =
-      createStackIndex( SoGLSpecularColorElement::classTypeId );
-  } else {
-    SoGLSpecularColorElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoGLSpecularColorElement::classTypeId);
+  }
+  else {
+    SoGLSpecularColorElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -119,14 +119,14 @@ SoGLSpecularColorElement::initClass()
 void 
 SoGLSpecularColorElement::cleanClass()
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoGLSpecularColorElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoGLSpecularColorElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoGLSpecularColorElement::createInstance( void )
+  \sa void * SoGLSpecularColorElement::createInstance(void)
 */
 
 SoGLSpecularColorElement::SoGLSpecularColorElement()

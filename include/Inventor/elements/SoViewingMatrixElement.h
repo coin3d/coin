@@ -32,7 +32,7 @@
 class SoViewingMatrixElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoViewingMatrixElement )
+//$ BEGIN TEMPLATE ElementHeader(SoViewingMatrixElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -53,7 +53,7 @@ public:
   virtual void init(SoState * state);
   static  void set(SoState * const state, SoNode * const node,
 		   const SbMatrix & ViewingMatrix);
-  static  const SbMatrix &get( SoState * const state );
+  static  const SbMatrix &get(SoState * const state);
   virtual void print(FILE * file) const;
 
 protected:

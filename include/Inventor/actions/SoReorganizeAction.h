@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_REORGANIZE_ACTION_H_
-#define _SO_REORGANIZE_ACTION_H_
+#ifndef __SOREORGANIZEACTION_H__
+#define __SOREORGANIZEACTION_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOREORGANIZEACTION)
@@ -30,7 +30,7 @@
 class SoReorganizeAction : public SoSimplifyAction {
   typedef SoSimplifyAction inherited;
 
-//$ BEGIN TEMPLATE ActionHeader( SoReorganizeAction )
+//$ BEGIN TEMPLATE ActionHeader(SoReorganizeAction)
 private:
   static SoType classTypeId;
 
@@ -57,8 +57,8 @@ public:
   SoReorganizeAction(void);
 
 protected:
-  virtual void beginTraversal( SoNode * node );
+  virtual void beginTraversal(SoNode * node);
 
 };
 
-#endif // ! _SO_REORGANIZE_ACTION_H_
+#endif // !__SOREORGANIZEACTION_H__

@@ -33,7 +33,7 @@
 class SoRotor : public SoRotation {
   typedef SoRotation inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoRotor )
+//$ BEGIN TEMPLATE NodeHeader(SoRotor)
 private:
   static SoType classTypeId;
 

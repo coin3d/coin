@@ -29,7 +29,7 @@
 class SoMFBitMask : public SoMFEnum {
   typedef SoMFEnum inherited;
 
-//$ BEGIN TEMPLATE MFieldDerived( SoMFBitMask, int )
+//$ BEGIN TEMPLATE MFieldDerived(SoMFBitMask, int)
 private:
   static SoType classTypeId;
 

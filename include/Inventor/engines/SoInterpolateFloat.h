@@ -25,26 +25,16 @@
 #error "Configuration settings disrespected -- do not include this file!"
 #endif // COIN_EXCLUDE_SOINTERPOLATEFLOAT
 
-//$ BEGIN TEMPLATE InterpolateHeader( SoInterpolateFloat, SoMFFloat )
+//$ BEGIN TEMPLATE InterpolateHeader(SoInterpolateFloat, SoMFFloat)
 #include <Inventor/engines/SoInterpolateAbs.h>
 #include <Inventor/fields/SoMFFloat.h>
 
 class SoInterpolateFloat : public SoInterpolate {
-  typedef SoInterpolate inherited;
-  SO_ENGINE_HEADER(SoInterpolateFloat);
+  SO_INTERPOLATE_HEADER(SoInterpolateFloat);
 
 public:
   SoMFFloat input0;
   SoMFFloat input1;
-
-  SoInterpolateFloat();
-
-  static void initClass();
-
-private:
-  virtual ~SoInterpolateFloat();
-  virtual void evaluate();
-
 };
 //$ END TEMPLATE InterpolateHeader
 

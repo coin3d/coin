@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_ACTIONS_H_
-#define _SO_ACTIONS_H_
+#ifndef __SOACTIONS_H__
+#define __SOACTIONS_H__
 
 #if !defined(COIN_EXCLUDE_SOACTION)
 #include <Inventor/actions/SoAction.h>
@@ -78,4 +78,4 @@
 #include <Inventor/actions/SoWriteAction.h>
 #endif // !COIN_EXCLUDE_SOWRITEACTION
 
-#endif // ! _SO_ACTIONS_H_
+#endif // !__SOACTIONS_H__

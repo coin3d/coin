@@ -490,7 +490,7 @@ SoMarkerSet::cleanClass(void)
   FIXME: write doc
  */
 void
-SoMarkerSet::GLRender(SoGLRenderAction * action)
+SoMarkerSet::GLRender(SoGLRenderAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -501,7 +501,7 @@ SoMarkerSet::GLRender(SoGLRenderAction * action)
   FIXME: write doc
  */
 void
-SoMarkerSet::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoMarkerSet::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -521,9 +521,9 @@ SoMarkerSet::getNumDefinedMarkers(void)
   FIXME: write doc
  */
 void
-SoMarkerSet::addMarker(int markerIndex, const SbVec2s & size,
-		       const unsigned char * bytes, SbBool isLSBFirst,
-		       SbBool isUpToDown)
+SoMarkerSet::addMarker(int /* markerIndex */, const SbVec2s & /* size */,
+		       const unsigned char * /* bytes */, SbBool /* isLSBFirst */,
+		       SbBool /* isUpToDown */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -532,18 +532,8 @@ SoMarkerSet::addMarker(int markerIndex, const SbVec2s & size,
   FIXME: write doc
  */
 SbBool
-SoMarkerSet::getMarker(int markerIndex, SbVec2s & size,
-		       const unsigned char *& bytes, SbBool & isLSBFirst)
-{
-  assert(0 && "FIXME: not implemented");
-  return FALSE;
-}
-
-/*!
-  FIXME: write doc
- */
-SbBool
-SoMarkerSet::removeMarker(int markerIndex)
+SoMarkerSet::getMarker(int /* markerIndex */, SbVec2s & /* size */,
+		       const unsigned char *& /* bytes */, SbBool & /* isLSBFirst */)
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;
@@ -553,7 +543,17 @@ SoMarkerSet::removeMarker(int markerIndex)
   FIXME: write doc
  */
 SbBool
-SoMarkerSet::isMarkerBitSet(int markerIndex, int bitNumber)
+SoMarkerSet::removeMarker(int /* markerIndex */)
+{
+  assert(0 && "FIXME: not implemented");
+  return FALSE;
+}
+
+/*!
+  FIXME: write doc
+ */
+SbBool
+SoMarkerSet::isMarkerBitSet(int /* markerIndex */, int /* bitNumber */)
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;

@@ -62,7 +62,7 @@ SoType SoFieldContainer::classTypeId = SoType::badType();
 */
 
 SoFieldContainer::SoFieldContainer(void)
-  : isBuiltIn(FALSE), donotify(TRUE), fieldData()
+  : fieldData(), isBuiltIn(FALSE), donotify(TRUE)
 {
 }
 
@@ -216,7 +216,7 @@ SoFieldContainer::get(SbString & fieldDataString)
   e.g. hide private fields. 
 */
 int
-SoFieldContainer::getFields(SoFieldList & list) const
+SoFieldContainer::getFields(SoFieldList & /* list */) const
 {
   assert(0 && "FIXME: not implemented");
   return 0;
@@ -226,7 +226,7 @@ SoFieldContainer::getFields(SoFieldList & list) const
   FIXME: write doc
  */
 int
-SoFieldContainer::getAllFields(SoFieldList & list) const
+SoFieldContainer::getAllFields(SoFieldList & /* list */) const
 {
   assert(0 && "FIXME: not implemented");
   return 0;
@@ -253,7 +253,7 @@ SoFieldContainer::getField(const SbName & fieldName) const
   or \a NULL if no such eventIn exists. 
 */
 SoField *
-SoFieldContainer::getEventIn(const SbName & fieldName) const
+SoFieldContainer::getEventIn(const SbName & /* fieldName */) const
 {
   assert(0 && "FIXME: not implemented");
   return NULL;
@@ -264,7 +264,7 @@ SoFieldContainer::getEventIn(const SbName & fieldName) const
   or \a NULL if no such eventOut exists. 
 */
 SoField *
-SoFieldContainer::getEventOut(const SbName & fieldName) const
+SoFieldContainer::getEventOut(const SbName & /* fieldName */) const
 {
   assert(0 && "FIXME: not implemented");
   return NULL;
@@ -326,8 +326,8 @@ SoFieldContainer::isNotifyEnabled(void) const
   FIXME: write doc
  */
 SbBool
-SoFieldContainer::set(const char * const fieldDataString,
-		      SoInput * const dictIn)
+SoFieldContainer::set(const char * const /* fieldDataString */,
+		      SoInput * const /* dictIn */)
 {
   const SoFieldData * const fields = this->getFieldData();
   assert(fields);
@@ -340,7 +340,8 @@ SoFieldContainer::set(const char * const fieldDataString,
   FIXME: write doc
  */
 void
-SoFieldContainer::get(SbString & fieldDataString, SoOutput * const dictOut)
+SoFieldContainer::get(SbString & /* fieldDataString */,
+		      SoOutput * const /* dictOut */)
 {
   const SoFieldData * const fields = this->getFieldData();
   assert(fields);
@@ -362,7 +363,8 @@ SoFieldContainer::notify(SoNotList * list)
   FIXME: write doc
  */
 SbBool
-SoFieldContainer::validateNewFieldValue(SoField * pField, void * newValue)
+SoFieldContainer::validateNewFieldValue(SoField * /* pField */,
+					void * /* newValue */)
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;
@@ -443,8 +445,8 @@ SoFieldContainer::getFieldData(void) const
   FIXME: write doc
  */
 void
-SoFieldContainer::copyContents(const SoFieldContainer * fromFC,
-			       SbBool copyConnections)
+SoFieldContainer::copyContents(const SoFieldContainer * /* fromFC */,
+			       SbBool /* copyConnections */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -475,8 +477,8 @@ SoFieldContainer::initCopyDict(void)
   FIXME: write doc
  */
 void
-SoFieldContainer::addCopy(const SoFieldContainer * const orig,
-			  const SoFieldContainer * const copy)
+SoFieldContainer::addCopy(const SoFieldContainer * const /* orig */,
+			  const SoFieldContainer * const /* copy */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -486,7 +488,7 @@ SoFieldContainer::addCopy(const SoFieldContainer * const orig,
   FIXME: write doc
  */
 SoFieldContainer *
-SoFieldContainer::checkCopy(const SoFieldContainer * const orig)
+SoFieldContainer::checkCopy(const SoFieldContainer * const /* orig */)
 {
   assert(0 && "FIXME: not implemented");
   return NULL;
@@ -497,8 +499,8 @@ SoFieldContainer::checkCopy(const SoFieldContainer * const orig)
   FIXME: write doc
  */
 SoFieldContainer *
-SoFieldContainer::findCopy(const SoFieldContainer * const orig,
-			   const SbBool copyConnections)
+SoFieldContainer::findCopy(const SoFieldContainer * const /* orig */,
+			   const SbBool /* copyConnections */)
 {
   assert(0 && "FIXME: not implemented");
   return NULL;
@@ -519,7 +521,7 @@ SoFieldContainer::copyDone(void)
   FIXME: write doc
  */
 SbBool
-SoFieldContainer::readInstance(SoInput * in, unsigned short flags)
+SoFieldContainer::readInstance(SoInput * in, unsigned short /* flags */)
 {
   // FIXME: proof-read code (it has just been moved verbatim over from
   // SoNode). 19990403 mortene.

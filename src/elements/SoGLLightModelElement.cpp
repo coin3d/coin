@@ -35,7 +35,7 @@
 #include <GL/gl.h>
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource( SoGLLightModelElement )
+//$ BEGIN TEMPLATE ElementSource(SoGLLightModelElement)
 
 /*!
   \var SoGLLightModelElement::classTypeId
@@ -89,24 +89,23 @@ SoGLLightModelElement::getClassStackIndex(void)
 */
 
 void
-SoGLLightModelElement::initClass(
-    void )
+SoGLLightModelElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoGLLightModelElement )
+//$ BEGIN TEMPLATE InitElementSource(SoGLLightModelElement)
   assert(SoGLLightModelElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoGLLightModelElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoGLLightModelElement",
-    &SoGLLightModelElement::createInstance);
+  SoGLLightModelElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoGLLightModelElement",
+                       &SoGLLightModelElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoGLLightModelElement::classStackIndex =
-      createStackIndex( SoGLLightModelElement::classTypeId );
-  } else {
-    SoGLLightModelElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoGLLightModelElement::classTypeId);
+  }
+  else {
+    SoGLLightModelElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -117,23 +116,22 @@ SoGLLightModelElement::initClass(
 */
 
 void
-SoGLLightModelElement::cleanClass(
-    void )
+SoGLLightModelElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoGLLightModelElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoGLLightModelElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoGLLightModelElement::createInstance( void )
+  \sa void * SoGLLightModelElement::createInstance(void)
 */
 
 SoGLLightModelElement::SoGLLightModelElement()
 {
-  setTypeId( SoGLLightModelElement::classTypeId );
-  setStackIndex( SoGLLightModelElement::classStackIndex );
+  setTypeId(SoGLLightModelElement::classTypeId);
+  setStackIndex(SoGLLightModelElement::classStackIndex);
 }
 
 /*!

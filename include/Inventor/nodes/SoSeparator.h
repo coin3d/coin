@@ -32,7 +32,7 @@
 class SoSeparator : public SoGroup {
   typedef SoGroup inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoSeparator )
+//$ BEGIN TEMPLATE NodeHeader(SoSeparator)
 private:
   static SoType classTypeId;
 

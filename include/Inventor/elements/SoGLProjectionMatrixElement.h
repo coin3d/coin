@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_GL_PROJECTION_MATRIX_ELEMENT_H_
-#define _SO_GL_PROJECTION_MATRIX_ELEMENT_H_
+#ifndef __SOGLPROJECTIONMATRIXELEMENT_H__
+#define __SOGLPROJECTIONMATRIXELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOGLPROJECTIONMATRIXELEMENT)
@@ -30,7 +30,7 @@
 class SoGLProjectionMatrixElement : public SoProjectionMatrixElement {
   typedef SoProjectionMatrixElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoGLProjectionMatrixElement )
+//$ BEGIN TEMPLATE ElementHeader(SoGLProjectionMatrixElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -59,4 +59,4 @@ private:
 
 };
 
-#endif // ! _SO_GL_PROJECTION_MATRIX_ELEMENT_H_
+#endif // !__SOGLPROJECTIONMATRIXELEMENT_H__

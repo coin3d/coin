@@ -17,15 +17,15 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_GRAPH_VERIFY_ACTION_H_
-#define _SO_GRAPH_VERIFY_ACTION_H_
+#ifndef __SOGRAPHVERIFYACTION_H__
+#define __SOGRAPHVERIFYACTION_H__
 
 #include <Inventor/actions/SoAction>
 
 class SoGraphVerifyAction : public SoAction {
   typedef SoAction inherited;
 
-//$ BEGIN TEMPLATE ActionHeader( SoGraphVerifyAction )
+//$ BEGIN TEMPLATE ActionHeader(SoGraphVerifyAction)
 private:
   static SoType classTypeId;
 
@@ -51,4 +51,4 @@ public:
 
 };
 
-#endif // ! _SO_GRAPH_VERIFY_ACTION_H_
+#endif // !__SOGRAPHVERIFYACTION_H__

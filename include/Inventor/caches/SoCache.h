@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_CACHE_H_
-#define _SO_CACHE_H_
+#ifndef __SOCACHE_H__
+#define __SOCACHE_H__
 
 class SoState;
 class SoElement;
@@ -53,4 +53,4 @@ private:
   int stateDepth;
 };
 
-#endif // ! _SO_CACHE_H_
+#endif // !__SOCACHE_H__

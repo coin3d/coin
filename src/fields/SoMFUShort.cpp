@@ -43,7 +43,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE MField( SoMFUShort, unsigned short, unsigned short )
+//$ BEGIN TEMPLATE MField(SoMFUShort, unsigned short, unsigned short)
 
 SoType SoMFUShort::classTypeId = SoType::badType();
 
@@ -263,7 +263,7 @@ SoMFUShort::copyValue(int to, int from)
 void
 SoMFUShort::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass( MFUShort )
+//$ BEGIN TEMPLATE FieldInitClass(MFUShort)
   // Make sure we only initialize once.
   assert(SoMFUShort::classTypeId == SoType::badType());
   // Make sure superclass has been initialized before subclass.
@@ -291,7 +291,8 @@ SoMFUShort::read1Value(SoInput * in, int idx)
 {
   SoSFUShort sfushort;
   SbBool result;
-  if (result = sfushort.readValue(in)) this->set1Value(idx, sfushort.getValue());
+  if ((result = sfushort.readValue(in)))
+    this->set1Value(idx, sfushort.getValue());
   return result;
 }
 

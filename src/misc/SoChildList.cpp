@@ -213,12 +213,3 @@ SoChildList::removePathAuditor(SoPath * const path)
   if (index >= 0)
     this->auditors.remove(index);
 }
-
-/*!
-  A constructor (copy).  Private to prevent usage.
-*/
-
-SoChildList::SoChildList(const SoChildList &)
-{
-  assert(0); // behaviour not defined.
-}

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_SWITCH_ELEMENT_H_
-#define _SO_SWITCH_ELEMENT_H_
+#ifndef __SOSWITCHELEMENT_H__
+#define __SOSWITCHELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOSWITCHELEMENT)
@@ -30,7 +30,7 @@
 class SoSwitchElement : public SoInt32Element {
   typedef SoInt32Element inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoSwitchElement )
+//$ BEGIN TEMPLATE ElementHeader(SoSwitchElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -48,14 +48,13 @@ protected:
 //$ END TEMPLATE ElementHeader
 
 public:
-  virtual void init( SoState * state );
+  virtual void init(SoState * state);
 
-  static  void set(SoState * const state, SoNode * const node,
-              const int32_t index);
-  static  void set(SoState * const state, const int32_t index);
-  static  int32_t get(SoState * const state);
-  static  int32_t getDefault();
-
+  static void set(SoState * const state, SoNode * const node,
+		  const int32_t index);
+  static void set(SoState * const state, const int32_t index);
+  static int32_t get(SoState * const state);
+  static int32_t getDefault();
 };
 
-#endif // ! _SO_SWITCH_ELEMENT_H_
+#endif // !__SOSWITCHELEMENT_H__

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_GL_DRAW_STYLE_ELEMENT_H_
-#define _SO_GL_DRAW_STYLE_ELEMENT_H_
+#ifndef __SOGLDRAWSTYLEELEMENT_H__
+#define __SOGLDRAWSTYLEELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOGLDRAWSTYLEELEMENT)
@@ -30,7 +30,7 @@
 class SoGLDrawStyleElement : public SoDrawStyleElement {
   typedef SoDrawStyleElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoGLDrawStyleElement )
+//$ BEGIN TEMPLATE ElementHeader(SoGLDrawStyleElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -62,4 +62,4 @@ private:
   
 };
 
-#endif // ! _SO_GL_DRAW_STYLE_ELEMENT_H_
+#endif // !__SOGLDRAWSTYLEELEMENT_H__

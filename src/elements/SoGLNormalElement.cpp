@@ -35,7 +35,7 @@
 #include <GL/gl.h>
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource( SoGLNormalElement )
+//$ BEGIN TEMPLATE ElementSource(SoGLNormalElement)
 
 /*!
   \var SoGLNormalElement::classTypeId
@@ -88,24 +88,23 @@ SoGLNormalElement::getClassStackIndex(void)
 */
 
 void
-SoGLNormalElement::initClass(
-    void )
+SoGLNormalElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoGLNormalElement )
+//$ BEGIN TEMPLATE InitElementSource(SoGLNormalElement)
   assert(SoGLNormalElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoGLNormalElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoGLNormalElement",
-    &SoGLNormalElement::createInstance);
+  SoGLNormalElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoGLNormalElement",
+                       &SoGLNormalElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoGLNormalElement::classStackIndex =
-      createStackIndex( SoGLNormalElement::classTypeId );
-  } else {
-    SoGLNormalElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoGLNormalElement::classTypeId);
+  }
+  else {
+    SoGLNormalElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -115,32 +114,29 @@ SoGLNormalElement::initClass(
 */
 
 void
-SoGLNormalElement::cleanClass(
-    void )
+SoGLNormalElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoGLNormalElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoGLNormalElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoGLNormalElement::createInstance( void )
+  \sa void * SoGLNormalElement::createInstance(void)
 */
 
-SoGLNormalElement::SoGLNormalElement(
-    void )
+SoGLNormalElement::SoGLNormalElement(void)
 {
-    setTypeId( SoGLNormalElement::classTypeId );
-    setStackIndex( SoGLNormalElement::classStackIndex );
+    setTypeId(SoGLNormalElement::classTypeId);
+    setStackIndex(SoGLNormalElement::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoGLNormalElement::~SoGLNormalElement(
-    void )
+SoGLNormalElement::~SoGLNormalElement(void)
 {
 }
 

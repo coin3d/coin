@@ -146,7 +146,7 @@ SoPickStyle::cleanClass(void)
   FIXME: write doc
  */
 void
-SoPickStyle::doAction(SoAction * action)
+SoPickStyle::doAction(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -157,7 +157,7 @@ SoPickStyle::doAction(SoAction * action)
   FIXME: write doc
  */
 void
-SoPickStyle::callback(SoCallbackAction * action)
+SoPickStyle::callback(SoCallbackAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -168,7 +168,7 @@ SoPickStyle::callback(SoCallbackAction * action)
   FIXME: write doc
  */
 void
-SoPickStyle::pick(SoPickAction * action)
+SoPickStyle::pick(SoPickAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SO_GL_NORMALIZE_ELEMENT_H__
-#define __SO_GL_NORMALIZE_ELEMENT_H__
+#ifndef __SOGLNORMALIZEELEMENT_H__
+#define __SOGLNORMALIZEELEMENT_H__
 
 #include <Inventor/elements/SoElement.h>
 
@@ -30,7 +30,7 @@
 class SoGLNormalizeElement : public SoElement {
   typedef SoElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoglnormalizeElement )
+//$ BEGIN TEMPLATE ElementHeader(SoGLNormalizeElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -73,4 +73,4 @@ private:
   void updategl(const SbBool normalize);
 };
 
-#endif // !__SO_GLNORMALIZE_ELEMENT_H__
+#endif // !__SOGLNORMALIZEELEMENT_H__

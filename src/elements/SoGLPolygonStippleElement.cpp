@@ -37,7 +37,7 @@
 
 unsigned char SoGLPolygonStippleElement::patterns[64 + 1][32 * 4];
 
-//$ BEGIN TEMPLATE ElementSource( SoGLPolygonStippleElement )
+//$ BEGIN TEMPLATE ElementSource(SoGLPolygonStippleElement)
 
 /*!
   \var SoGLPolygonStippleElement::classTypeId
@@ -158,7 +158,7 @@ static void create_matrix_bitmap(int intensity, uint32_t *bitmap,
   for (i = 0; i < 32; i++) bitmap[i] = 0;
   for (i = 0; i < size; i++) {
     for (j = 0; j < size; j++) {
-      if ( matrix[i*size+j] > (unsigned int) intensity) {
+      if (matrix[i*size+j] > (unsigned int) intensity) {
         set_bit(i*32+j, bitmap);
         cnt++;
       }
@@ -174,21 +174,21 @@ static void create_matrix_bitmap(int intensity, uint32_t *bitmap,
 void 
 SoGLPolygonStippleElement::initClass()
 {
-//$ BEGIN TEMPLATE InitElementSource( SoGLPolygonStippleElement )
+//$ BEGIN TEMPLATE InitElementSource(SoGLPolygonStippleElement)
   assert(SoGLPolygonStippleElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoGLPolygonStippleElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoGLPolygonStippleElement",
-    &SoGLPolygonStippleElement::createInstance);
+  SoGLPolygonStippleElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoGLPolygonStippleElement",
+                       &SoGLPolygonStippleElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoGLPolygonStippleElement::classStackIndex =
-      createStackIndex( SoGLPolygonStippleElement::classTypeId );
-  } else {
-    SoGLPolygonStippleElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoGLPolygonStippleElement::classTypeId);
+  }
+  else {
+    SoGLPolygonStippleElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 
@@ -210,14 +210,14 @@ SoGLPolygonStippleElement::initClass()
 void 
 SoGLPolygonStippleElement::cleanClass()
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoGLPolygonStippleElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoGLPolygonStippleElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoGLPolygonStippleElement::createInstance( void )
+  \sa void * SoGLPolygonStippleElement::createInstance(void)
 */
 
 SoGLPolygonStippleElement::SoGLPolygonStippleElement()
@@ -237,7 +237,7 @@ SoGLPolygonStippleElement::~SoGLPolygonStippleElement()
 //! FIXME: write doc.
 
 void 
-SoGLPolygonStippleElement::init(SoState *state)
+SoGLPolygonStippleElement::init(SoState * /* state */)
 {
   this->isEnabled = this->currentEnabled = FALSE;
   this->currentPattern = this->pattern = -1;
@@ -285,7 +285,7 @@ SoGLPolygonStippleElement::get(SoState * const state)
 //! FIXME: write doc.
 
 void 
-SoGLPolygonStippleElement::push(SoState *state)
+SoGLPolygonStippleElement::push(SoState * /* state */)
 {
   SoGLPolygonStippleElement *elem = (SoGLPolygonStippleElement*)
     this->next;
@@ -296,7 +296,8 @@ SoGLPolygonStippleElement::push(SoState *state)
 //! FIXME: write doc.
 
 void 
-SoGLPolygonStippleElement::pop(SoState *state, const SoElement *prevTopElement)
+SoGLPolygonStippleElement::pop(SoState * /* state */,
+			       const SoElement * prevTopElement)
 {
   SoGLPolygonStippleElement *prev = (SoGLPolygonStippleElement*)
     prevTopElement;

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_FULL_PATH_H_
-#define _SO_FULL_PATH_H_
+#ifndef __SOFULLPATH_H__
+#define __SOFULLPATH_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOFULLPATH)
@@ -32,16 +32,16 @@ class SoFullPath : public SoPath {
   friend class dummy; // avoiding warnings 19990205 mortene.
 
 private:
-  SoFullPath( const int approxLength );
-  virtual ~SoFullPath( void );
+  SoFullPath(const int approxLength);
+  virtual ~SoFullPath(void);
 
 public:
-  void pop( void );
-  SoNode * getTail( void ) const;
-  SoNode * getNodeFromTail( const int index ) const;
-  int getIndexFromTail( const int index ) const;
-  int getLength( void ) const;
+  void pop(void);
+  SoNode * getTail(void) const;
+  SoNode * getNodeFromTail(const int index) const;
+  int getIndexFromTail(const int index) const;
+  int getLength(void) const;
 
 };
 
-#endif // ! _SO_FULL_PATH_H_
+#endif // !__SOFULLPATH_H__

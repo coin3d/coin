@@ -62,13 +62,6 @@ SbProjector::SbProjector(void)
 }
 
 /*!
-  Destructor.
- */
-SbProjector::~SbProjector(void)
-{
-}
-
-/*!
   Set the viewing volume the projections will take place in.
 
   \sa getViewVolume().

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_GLOBAL_SIMPLIFY_ACTION_H_
-#define _SO_GLOBAL_SIMPLIFY_ACTION_H_
+#ifndef __SOGLOBALSIMPLIFYACTION_H__
+#define __SOGLOBALSIMPLIFYACTION_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOGLOBALSIMPLIFYACTION)
@@ -30,7 +30,7 @@
 class SoGlobalSimplifyAction : public SoSimplifyAction {
   typedef SoSimplifyAction inherited;
 
-//$ BEGIN TEMPLATE ActionHeader( SoGlobalSimplifyAction )
+//$ BEGIN TEMPLATE ActionHeader(SoGlobalSimplifyAction)
 private:
   static SoType classTypeId;
 
@@ -57,8 +57,8 @@ public:
   SoGlobalSimplifyAction(void);
 
 protected:
-  virtual void beginTraversal( SoNode * node );
+  virtual void beginTraversal(SoNode * node);
 
 };
 
-#endif // ! _SO_GLOBAL_SIMPLIFY_ACTION_H_
+#endif // !__SOGLOBALSIMPLIFYACTION_H__

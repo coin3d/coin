@@ -136,7 +136,7 @@ class SoNode;
 class SoState;
 
 class SoElement {
-//$ BEGIN TEMPLATE AbstractElementHeader( SoElement )
+//$ BEGIN TEMPLATE AbstractElementHeader(SoElement)
 public:
   static  SoType classTypeId;
   static  SoType getClassTypeId(void);

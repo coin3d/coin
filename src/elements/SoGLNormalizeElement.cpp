@@ -49,7 +49,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-//$ BEGIN TEMPLATE ElementSource( SoGLNormalizeElement )
+//$ BEGIN TEMPLATE ElementSource(SoGLNormalizeElement)
 
 /*!
   \var SoGLNormalizeElement::classTypeId
@@ -105,21 +105,21 @@ SoGLNormalizeElement::getClassStackIndex(void)
 void
 SoGLNormalizeElement::initClass()
 {
-//$ BEGIN TEMPLATE InitElementSource( SoGLNormalizeElement )
+//$ BEGIN TEMPLATE InitElementSource(SoGLNormalizeElement)
   assert(SoGLNormalizeElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoGLNormalizeElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoGLNormalizeElement",
-    &SoGLNormalizeElement::createInstance);
+  SoGLNormalizeElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoGLNormalizeElement",
+                       &SoGLNormalizeElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoGLNormalizeElement::classStackIndex =
-      createStackIndex( SoGLNormalizeElement::classTypeId );
-  } else {
-    SoGLNormalizeElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoGLNormalizeElement::classTypeId);
+  }
+  else {
+    SoGLNormalizeElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -132,20 +132,20 @@ SoGLNormalizeElement::initClass()
 void
 SoGLNormalizeElement::cleanClass()
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoGLNormalizeElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoGLNormalizeElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoGLNormalizeElement::createInstance( void )
+  \sa void * SoGLNormalizeElement::createInstance(void)
 */
 
 SoGLNormalizeElement::SoGLNormalizeElement()
 {
-  setTypeId( SoGLNormalizeElement::classTypeId );
-  setStackIndex( SoGLNormalizeElement::classStackIndex );
+  setTypeId(SoGLNormalizeElement::classTypeId);
+  setStackIndex(SoGLNormalizeElement::classStackIndex);
 }
 
 /*!
@@ -195,7 +195,7 @@ SoGLNormalizeElement::pop(SoState * state,
 //! FIXME: write doc.
 
 SbBool
-SoGLNormalizeElement::matches(const SoElement * element) const
+SoGLNormalizeElement::matches(const SoElement * /* element */) const
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;

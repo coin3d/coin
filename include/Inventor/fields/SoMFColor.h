@@ -31,7 +31,7 @@
 class SoMFColor : public SoMField {
     typedef SoMField inherited;
 
-//$ BEGIN TEMPLATE MField( SoMFColor, SbColor, const SbColor & )
+//$ BEGIN TEMPLATE MField(SoMFColor, SbColor, const SbColor &)
 private:
   static SoType classTypeId;
 

@@ -33,7 +33,7 @@
 
 #include <assert.h>
 
-const static float defaultValue = 0.2;
+static const float defaultValue = 0.2;
 
 /*!
   \fn SoShininessElement::numValues
@@ -47,7 +47,7 @@ const static float defaultValue = 0.2;
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoShininessElement )
+//$ BEGIN TEMPLATE ElementSource(SoShininessElement)
 
 /*!
   \var SoShininessElement::classTypeId
@@ -102,21 +102,21 @@ SoShininessElement::getClassStackIndex(void)
 void
 SoShininessElement::initClass()
 {
-//$ BEGIN TEMPLATE InitElementSource( SoShininessElement )
+//$ BEGIN TEMPLATE InitElementSource(SoShininessElement)
   assert(SoShininessElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoShininessElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoShininessElement",
-    &SoShininessElement::createInstance);
+  SoShininessElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoShininessElement",
+                       &SoShininessElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoShininessElement::classStackIndex =
-      createStackIndex( SoShininessElement::classTypeId );
-  } else {
-    SoShininessElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoShininessElement::classTypeId);
+  }
+  else {
+    SoShininessElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -128,14 +128,14 @@ SoShininessElement::initClass()
 void 
 SoShininessElement::cleanClass()
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoShininessElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoShininessElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoShininessElement::createInstance( void )
+  \sa void * SoShininessElement::createInstance(void)
 */
 
 SoShininessElement::SoShininessElement()
@@ -155,7 +155,7 @@ SoShininessElement::~SoShininessElement()
 //! FIXME: write doc.
 
 void 
-SoShininessElement::init(SoState * state)
+SoShininessElement::init(SoState * /* state */)
 {
   this->values = &defaultValue;
   this->numValues = 1;

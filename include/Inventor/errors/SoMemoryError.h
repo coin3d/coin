@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_MEMORY_ERROR_H_
-#define _SO_MEMORY_ERROR_H_
+#ifndef __SOMEMORYERROR_H__
+#define __SOMEMORYERROR_H__
 
 #include <Inventor/errors/SoError.h>
 
@@ -26,21 +26,21 @@ class SoMemoryError : public SoError {
   typedef SoError inherited;
 
 public:
-  static  void setHandlerCallback( SoErrorCB * const callback,
-              void * const data );
-  static  SoErrorCB * getHandlerCallback( void );
-  static  void * getHandlerData( void );
+  static  void setHandlerCallback(SoErrorCB * const callback,
+              void * const data);
+  static  SoErrorCB * getHandlerCallback(void);
+  static  void * getHandlerData(void);
 
-  static  SoType getClassTypeId( void );
-  virtual SoType getTypeId( void ) const;
+  static  SoType getClassTypeId(void);
+  virtual SoType getTypeId(void) const;
 
-  static  void post( const char * const whatWasAllocated );
+  static  void post(const char * const whatWasAllocated);
 
-  static  void initClass( void );
-  static  void cleanClass( void );
+  static  void initClass(void);
+  static  void cleanClass(void);
 
 protected:
-  virtual SoErrorCB * getHandler( void * & data ) const;
+  virtual SoErrorCB * getHandler(void * & data) const;
 
 private:
   static  SoType classTypeId;
@@ -49,4 +49,4 @@ private:
 
 };
 
-#endif // ! _SO_MEMORY_ERROR_H_
+#endif // !__SOMEMORYERROR_H__

@@ -63,7 +63,7 @@
 #define SOSH_TWOSIDE  0x02
 #define SOSH_CULL     0x04
 
-//$ BEGIN TEMPLATE ElementSource( SoGLShapeHintsElement )
+//$ BEGIN TEMPLATE ElementSource(SoGLShapeHintsElement)
 
 /*!
   \var SoGLShapeHintsElement::classTypeId
@@ -117,24 +117,23 @@ SoGLShapeHintsElement::getClassStackIndex(void)
 */
 
 void
-SoGLShapeHintsElement::initClass(
-    void )
+SoGLShapeHintsElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoGLShapeHintsElement )
+//$ BEGIN TEMPLATE InitElementSource(SoGLShapeHintsElement)
   assert(SoGLShapeHintsElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoGLShapeHintsElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoGLShapeHintsElement",
-    &SoGLShapeHintsElement::createInstance);
+  SoGLShapeHintsElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoGLShapeHintsElement",
+                       &SoGLShapeHintsElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoGLShapeHintsElement::classStackIndex =
-      createStackIndex( SoGLShapeHintsElement::classTypeId );
-  } else {
-    SoGLShapeHintsElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoGLShapeHintsElement::classTypeId);
+  }
+  else {
+    SoGLShapeHintsElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -145,31 +144,29 @@ SoGLShapeHintsElement::initClass(
 */
 
 void
-SoGLShapeHintsElement::cleanClass(
-    void )
+SoGLShapeHintsElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoGLShapeHintsElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoGLShapeHintsElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoGLShapeHintsElement::createInstance( void )
+  \sa void * SoGLShapeHintsElement::createInstance(void)
 */
 
 SoGLShapeHintsElement::SoGLShapeHintsElement()
 {
-    setTypeId( SoGLShapeHintsElement::classTypeId );
-    setStackIndex( SoGLShapeHintsElement::classStackIndex );
+    setTypeId(SoGLShapeHintsElement::classTypeId);
+    setStackIndex(SoGLShapeHintsElement::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoGLShapeHintsElement::~SoGLShapeHintsElement(
-    void )
+SoGLShapeHintsElement::~SoGLShapeHintsElement(void)
 {
 }
 

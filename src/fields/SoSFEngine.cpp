@@ -41,7 +41,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE SFieldRequired( SoSFEngine )
+//$ BEGIN TEMPLATE SFieldRequired(SoSFEngine)
 
 SoType SoSFEngine::classTypeId = SoType::badType();
 
@@ -147,7 +147,7 @@ SoSFEngine::operator == (const SoSFEngine & field) const
 void
 SoSFEngine::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass( SFEngine )
+//$ BEGIN TEMPLATE FieldInitClass(SFEngine)
   // Make sure we only initialize once.
   assert(SoSFEngine::classTypeId == SoType::badType());
   // Make sure superclass has been initialized before subclass.
@@ -187,7 +187,7 @@ SoSFEngine::~SoSFEngine(void)
   FIXME: write function documentation
 */
 SbBool
-SoSFEngine::readValue(SoInput * in)
+SoSFEngine::readValue(SoInput * /* in */)
 {
   assert(0 && "FIXME: not implemented yet");
   return FALSE;
@@ -197,7 +197,7 @@ SoSFEngine::readValue(SoInput * in)
   FIXME: write function documentation
 */
 void
-SoSFEngine::fixCopy(SbBool copyConnections)
+SoSFEngine::fixCopy(SbBool /* copyConnections */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -216,7 +216,7 @@ SoSFEngine::referencesCopy(void) const
   FIXME: write function documentation
 */
 void
-SoSFEngine::writeValue(SoOutput * out) const
+SoSFEngine::writeValue(SoOutput * /* out */) const
 {
   assert(0 && "FIXME: not implemented yet");
 }

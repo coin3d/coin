@@ -39,7 +39,7 @@
 #include <GL/gl.h>
 #include <math.h>
 
-//$ BEGIN TEMPLATE ElementSource( SoGLModelMatrixElement )
+//$ BEGIN TEMPLATE ElementSource(SoGLModelMatrixElement)
 
 /*!
   \var SoGLModelMatrixElement::classTypeId
@@ -93,24 +93,23 @@ SoGLModelMatrixElement::getClassStackIndex(void)
 */
 
 void
-SoGLModelMatrixElement::initClass(
-    void )
+SoGLModelMatrixElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoGLModelMatrixElement )
+//$ BEGIN TEMPLATE InitElementSource(SoGLModelMatrixElement)
   assert(SoGLModelMatrixElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoGLModelMatrixElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoGLModelMatrixElement",
-    &SoGLModelMatrixElement::createInstance);
+  SoGLModelMatrixElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoGLModelMatrixElement",
+                       &SoGLModelMatrixElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoGLModelMatrixElement::classStackIndex =
-      createStackIndex( SoGLModelMatrixElement::classTypeId );
-  } else {
-    SoGLModelMatrixElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoGLModelMatrixElement::classTypeId);
+  }
+  else {
+    SoGLModelMatrixElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -121,33 +120,30 @@ SoGLModelMatrixElement::initClass(
 */
 
 void
-SoGLModelMatrixElement::cleanClass(
-    void )
+SoGLModelMatrixElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoGLModelMatrixElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoGLModelMatrixElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoGLModelMatrixElement::createInstance( void )
+  \sa void * SoGLModelMatrixElement::createInstance(void)
 */
 
-SoGLModelMatrixElement::SoGLModelMatrixElement(
-    void )
-  : state( NULL ), viewEltNodeId( 0 )
+SoGLModelMatrixElement::SoGLModelMatrixElement(void)
+  : state(NULL), viewEltNodeId( 0 )
 {
-    setTypeId( SoGLModelMatrixElement::classTypeId );
-    setStackIndex( SoGLModelMatrixElement::classStackIndex );
+    setTypeId(SoGLModelMatrixElement::classTypeId);
+    setStackIndex(SoGLModelMatrixElement::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoGLModelMatrixElement::~SoGLModelMatrixElement(
-    void )
+SoGLModelMatrixElement::~SoGLModelMatrixElement(void)
 {
 }
 

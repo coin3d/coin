@@ -232,7 +232,7 @@ SoShape::getBoundingBox(SoGetBoundingBoxAction * action)
   overloaded.
 */
 void 
-SoShape::GLRender(SoGLRenderAction * action)
+SoShape::GLRender(SoGLRenderAction * /* action */)
 {
 #if COIN_DEBUG
   SoDebugError::postInfo("SoShape::GLRender",
@@ -259,7 +259,7 @@ SoShape::callback(SoCallbackAction * action)
   May be implemented by subclass.
 */
 void 
-SoShape::rayPick(SoRayPickAction * action)
+SoShape::rayPick(SoRayPickAction * /* action */)
 {
 }
 #endif // !COIN_EXCLUDE_SORAYPICKACTION
@@ -272,12 +272,11 @@ SoShape::rayPick(SoRayPickAction * action)
 void 
 SoShape::getScreenSize(SoState * const state,
 		       const SbBox3f &boundingBox,
-		       SbVec2s & rectSize)
+		       SbVec2s & /* rectSize */)
 {
   const SbMatrix &mat = SoModelMatrixElement::get(state);    
   const SbViewVolume &vv = SoViewVolumeElement::get(state);
   
-  SbVec3f screenPoint[8];
   SbVec3f tmp;
   SbBox2f bbox2;
   
@@ -443,7 +442,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
   FIXME: write function documentation
 */
 SbBool 
-SoShape::shouldRayPick(SoRayPickAction * const action)
+SoShape::shouldRayPick(SoRayPickAction * const /* action */)
 {
   return TRUE;
 }
@@ -454,7 +453,7 @@ SoShape::shouldRayPick(SoRayPickAction * const action)
   FIXME: write function documentation
 */
 void 
-SoShape::beginSolidShape(SoGLRenderAction * action)
+SoShape::beginSolidShape(SoGLRenderAction * /* action */)
 {
   // FIXME: turn on backface culling
 }
@@ -463,7 +462,7 @@ SoShape::beginSolidShape(SoGLRenderAction * action)
   FIXME: write function documentation
 */
 void 
-SoShape::endSolidShape(SoGLRenderAction * action)
+SoShape::endSolidShape(SoGLRenderAction * /* action */)
 {
   // FIXME: disable backface culling
 }
@@ -474,7 +473,7 @@ SoShape::endSolidShape(SoGLRenderAction * action)
   FIXME: write function documentation
 */
 void 
-SoShape::computeObjectSpaceRay(SoRayPickAction * const action)
+SoShape::computeObjectSpaceRay(SoRayPickAction * const /* action */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -483,8 +482,8 @@ SoShape::computeObjectSpaceRay(SoRayPickAction * const action)
   FIXME: write function documentation
 */
 void 
-SoShape::computeObjectSpaceRay(SoRayPickAction * const action,
-			       const SbMatrix & matrix)
+SoShape::computeObjectSpaceRay(SoRayPickAction * const /* action */,
+			       const SbMatrix & /* matrix */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -493,24 +492,11 @@ SoShape::computeObjectSpaceRay(SoRayPickAction * const action,
   FIXME: write function documentation
 */
 SoDetail *
-SoShape::createTriangleDetail(SoRayPickAction * action,
-			      const SoPrimitiveVertex * v1,
-			      const SoPrimitiveVertex * v2,
-			      const SoPrimitiveVertex * v3,
-			      SoPickedPoint * pp)
-{
-  assert(0 && "FIXME: not implemented yet");
-  return NULL;
-}
-
-/*!
-  FIXME: write function documentation
-*/
-SoDetail *
-SoShape::createLineSegmentDetail(SoRayPickAction * action,
-				 const SoPrimitiveVertex * v1,
-				 const SoPrimitiveVertex * v2,
-				 SoPickedPoint * pp)
+SoShape::createTriangleDetail(SoRayPickAction * /* action */,
+			      const SoPrimitiveVertex * /* v1 */,
+			      const SoPrimitiveVertex * /* v2 */,
+			      const SoPrimitiveVertex * /* v3 */,
+			      SoPickedPoint * /* pp */)
 {
   assert(0 && "FIXME: not implemented yet");
   return NULL;
@@ -520,9 +506,22 @@ SoShape::createLineSegmentDetail(SoRayPickAction * action,
   FIXME: write function documentation
 */
 SoDetail *
-SoShape::createPointDetail(SoRayPickAction * action,
-			   const SoPrimitiveVertex * v,
-			   SoPickedPoint * pp)
+SoShape::createLineSegmentDetail(SoRayPickAction * /* action */,
+				 const SoPrimitiveVertex * /* v1 */,
+				 const SoPrimitiveVertex * /* v2 */,
+				 SoPickedPoint * /* pp */)
+{
+  assert(0 && "FIXME: not implemented yet");
+  return NULL;
+}
+
+/*!
+  FIXME: write function documentation
+*/
+SoDetail *
+SoShape::createPointDetail(SoRayPickAction * /* action */,
+			   const SoPrimitiveVertex * /* v */,
+			   SoPickedPoint * /* pp */)
 {
   assert(0 && "FIXME: not implemented yet");
   return NULL;
@@ -534,10 +533,10 @@ SoShape::createPointDetail(SoRayPickAction * action,
   FIXME: write function documentation
 */
 void 
-SoShape::invokeTriangleCallbacks(SoAction * const action,
-				 const SoPrimitiveVertex * const v1,
-				 const SoPrimitiveVertex * const v2,
-				 const SoPrimitiveVertex * const v3)
+SoShape::invokeTriangleCallbacks(SoAction * const /* action */,
+				 const SoPrimitiveVertex * const /* v1 */,
+				 const SoPrimitiveVertex * const /* v2 */,
+				 const SoPrimitiveVertex * const /* v3 */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -546,9 +545,9 @@ SoShape::invokeTriangleCallbacks(SoAction * const action,
   FIXME: write function documentation
 */
 void 
-SoShape::invokeLineSegmentCallbacks(SoAction * const action,
-				    const SoPrimitiveVertex * const v1,
-				    const SoPrimitiveVertex * const v2)
+SoShape::invokeLineSegmentCallbacks(SoAction * const /* action */,
+				    const SoPrimitiveVertex * const /* v1 */,
+				    const SoPrimitiveVertex * const /* v2 */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -557,8 +556,8 @@ SoShape::invokeLineSegmentCallbacks(SoAction * const action,
   FIXME: write function documentation
 */
 void 
-SoShape::invokePointCallbacks(SoAction * const action,
-			      const SoPrimitiveVertex * const v)
+SoShape::invokePointCallbacks(SoAction * const /* action */,
+			      const SoPrimitiveVertex * const /* v */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -567,8 +566,8 @@ SoShape::invokePointCallbacks(SoAction * const action,
   FIXME: write function documentation
 */
 void 
-SoShape::beginShape(SoAction * const action, const TriangleShape shapeType,
-		    SoFaceDetail * const faceDetail)
+SoShape::beginShape(SoAction * const /* action */, const TriangleShape /* shapeType */,
+		    SoFaceDetail * const /* faceDetail */)
 {
 }
 
@@ -576,7 +575,7 @@ SoShape::beginShape(SoAction * const action, const TriangleShape shapeType,
   FIXME: write function documentation
 */
 void 
-SoShape::shapeVertex(const SoPrimitiveVertex * const v)
+SoShape::shapeVertex(const SoPrimitiveVertex * const /* v */)
 {
 }
 
@@ -685,7 +684,7 @@ SoShape::affectsState(void) const
   FIXME: write doc
  */
 void
-SoShape::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoShape::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -695,7 +694,7 @@ SoShape::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   FIXME: write doc
  */
 float
-SoShape::getDecimatedComplexity(SoState * state, float complexity)
+SoShape::getDecimatedComplexity(SoState * /* state */, float /* complexity */)
 {
   assert(0 && "FIXME: not implemented");
   return 0.5f;
@@ -706,7 +705,7 @@ SoShape::getDecimatedComplexity(SoState * state, float complexity)
   FIXME: write doc
  */
 void
-SoShape::GLRenderBoundingBox(SoGLRenderAction * action)
+SoShape::GLRenderBoundingBox(SoGLRenderAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -717,7 +716,7 @@ SoShape::GLRenderBoundingBox(SoGLRenderAction * action)
   FIXME: write doc
  */
 SbBool
-SoShape::shouldPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoShape::shouldPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;

@@ -50,13 +50,6 @@ SbLineProjector::SbLineProjector(void)
 }
 
 /*!
-  Destructor.
- */
-SbLineProjector::~SbLineProjector(void)
-{
-}
-
-/*!
   FIXME: write doc
 */
 SbVec3f

@@ -150,7 +150,7 @@ SoWWWAnchor::cleanClass(void)
   FIXME: write doc
  */
 void
-SoWWWAnchor::setFullURLName(const SbString & url)
+SoWWWAnchor::setFullURLName(const SbString & /* url */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -171,7 +171,7 @@ SoWWWAnchor::getFullURLName(void)
   FIXME: write doc
  */
 void
-SoWWWAnchor::handleEvent(SoHandleEventAction * action)
+SoWWWAnchor::handleEvent(SoHandleEventAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -181,7 +181,7 @@ SoWWWAnchor::handleEvent(SoHandleEventAction * action)
   FIXME: write doc
  */
 void
-SoWWWAnchor::setFetchURLCallBack(SoWWWAnchorCB * f, void * userData)
+SoWWWAnchor::setFetchURLCallBack(SoWWWAnchorCB * /* f */, void * /* userData */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -190,7 +190,7 @@ SoWWWAnchor::setFetchURLCallBack(SoWWWAnchorCB * f, void * userData)
   FIXME: write doc
  */
 void
-SoWWWAnchor::setHighlightURLCallBack(SoWWWAnchorCB * f, void * userData)
+SoWWWAnchor::setHighlightURLCallBack(SoWWWAnchorCB * /* f */, void * /* userData */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -199,7 +199,7 @@ SoWWWAnchor::setHighlightURLCallBack(SoWWWAnchorCB * f, void * userData)
   FIXME: write doc
  */
 void
-SoWWWAnchor::redrawHighlighted(SoAction * act, SbBool isNowHighlighting)
+SoWWWAnchor::redrawHighlighted(SoAction * /* act */, SbBool /* isNowHighlighting */)
 {
   assert(0 && "FIXME: not implemented");
 }

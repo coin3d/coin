@@ -37,7 +37,7 @@
 // static variables
 int SoGLClipPlaneElement::maxGLPlanes = -1;
 
-//$ BEGIN TEMPLATE ElementSource( SoGLClipPlaneElement )
+//$ BEGIN TEMPLATE ElementSource(SoGLClipPlaneElement)
 
 /*!
   \var SoGLClipPlaneElement::classTypeId
@@ -91,24 +91,23 @@ SoGLClipPlaneElement::getClassStackIndex(void)
 */
 
 void
-SoGLClipPlaneElement::initClass(
-    void )
+SoGLClipPlaneElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoGLClipPlaneElement )
+//$ BEGIN TEMPLATE InitElementSource(SoGLClipPlaneElement)
   assert(SoGLClipPlaneElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoGLClipPlaneElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoGLClipPlaneElement",
-    &SoGLClipPlaneElement::createInstance);
+  SoGLClipPlaneElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoGLClipPlaneElement",
+                       &SoGLClipPlaneElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoGLClipPlaneElement::classStackIndex =
-      createStackIndex( SoGLClipPlaneElement::classTypeId );
-  } else {
-    SoGLClipPlaneElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoGLClipPlaneElement::classTypeId);
+  }
+  else {
+    SoGLClipPlaneElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -119,31 +118,29 @@ SoGLClipPlaneElement::initClass(
 */
 
 void
-SoGLClipPlaneElement::cleanClass(
-    void )
+SoGLClipPlaneElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoGLClipPlaneElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoGLClipPlaneElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoGLClipPlaneElement::createInstance( void )
+  \sa void * SoGLClipPlaneElement::createInstance(void)
 */
 
 SoGLClipPlaneElement::SoGLClipPlaneElement()
 {
-    setTypeId( SoGLClipPlaneElement::classTypeId );
-    setStackIndex( SoGLClipPlaneElement::classStackIndex );
+    setTypeId(SoGLClipPlaneElement::classTypeId);
+    setStackIndex(SoGLClipPlaneElement::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoGLClipPlaneElement::~SoGLClipPlaneElement(
-    void )
+SoGLClipPlaneElement::~SoGLClipPlaneElement(void)
 {
 }
 
@@ -152,7 +149,7 @@ SoGLClipPlaneElement::~SoGLClipPlaneElement(
 void
 SoGLClipPlaneElement::init(SoState * state)
 {
-  inherited::init( state );
+  inherited::init(state);
 }
 
 //! FIXME: write doc.

@@ -34,7 +34,7 @@
 class SoArray : public SoGroup {
     typedef SoGroup inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoArray )
+//$ BEGIN TEMPLATE NodeHeader(SoArray)
 private:
   static SoType classTypeId;
 

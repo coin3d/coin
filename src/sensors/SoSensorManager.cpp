@@ -28,11 +28,11 @@
   queues of sensors..
 
   ..the sensor mechanism is crucial in Coin for (automatic redrawal upon
-  changes, )..
+  changes,)..
 
   ..should usually be considered as an internal class in the Coin
   system, only interesting for "normal users" when implementing new
-  windowsystem-specific libraries (like SoQt, ) ... which usually goes
+  windowsystem-specific libraries (like SoQt,) ... which usually goes
   like this: (register change callback -- drop in delay queue sensor
   of type XXX for redraw queueing -- call process*Queue when... --
   ...) ... confer the SoQt sourcecode to see a complete example of use
@@ -271,7 +271,7 @@ SoSensorManager::processTimerQueue(void)
   Trigger all delay queue entries in priority order.
  */
 void
-SoSensorManager::processDelayQueue(SbBool isIdle)
+SoSensorManager::processDelayQueue(SbBool /* isIdle */)
 {
   if (this->processingdelayqueue || this->delayqueue.getLength() == 0)
     return;
@@ -398,11 +398,12 @@ SoSensorManager::mergeTimerQueues(void)
 int
 SoSensorManager::mergeDelayQueues(void)
 {
-  int i=0, merged=this->delaywaitqueue.getLength();
+  int i=0;
+  int merged=this->delaywaitqueue.getLength();
   while (this->delaywaitqueue.getLength() > 0) {
     SoDelayQueueSensor * ds = this->delaywaitqueue[0];
     this->delaywaitqueue.remove(0);
-    int pri = ds->getPriority();
+    unsigned int pri = ds->getPriority();
 
     while (i < this->delayqueue.getLength() &&
 	   pri > this->delayqueue[i]->getPriority()) i++;
@@ -515,8 +516,8 @@ SoSensorManager::notifyChanged(void)
   to happen on the given file descriptors.
  */
 int
-SoSensorManager::doSelect(int nfds, fd_set * readfds, fd_set * writefds,
-			  fd_set * exceptfds, struct timeval * userTimeOut)
+SoSensorManager::doSelect(int /* nfds */, fd_set * /* readfds */, fd_set * /* writefds */,
+			  fd_set * /* exceptfds */, struct timeval * /* userTimeOut */)
 {
   // TODO: implement. See SoDB::doSelect() (which should probably only
   // be a wrapper around this call). 19990425 mortene.

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_FONT_NAME_ELEMENT_H_
-#define _SO_FONT_NAME_ELEMENT_H_
+#ifndef __SOFONTNAMEELEMENT_H__
+#define __SOFONTNAMEELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOFONTNAMEELEMENT)
@@ -31,7 +31,7 @@
 class SoFontNameElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoFontNameElement )
+//$ BEGIN TEMPLATE ElementHeader(SoFontNameElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -67,4 +67,4 @@ protected:
 
 };
 
-#endif // ! _SO_FONT_NAME_ELEMENT_H_
+#endif // !__SOFONTNAMEELEMENT_H__

@@ -33,7 +33,7 @@
 class SoLocateHighlight : public SoSeparator {
   typedef SoSeparator inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoLocateHighlight )
+//$ BEGIN TEMPLATE NodeHeader(SoLocateHighlight)
 private:
   static SoType classTypeId;
 
@@ -64,7 +64,7 @@ public:
   SoSFEnum mode;
 
 #if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
-  virtual void handleEvent( SoHandleEventAction * action );
+  virtual void handleEvent(SoHandleEventAction * action);
 #endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRenderBelowPath(SoGLRenderAction * action);

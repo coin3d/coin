@@ -31,7 +31,7 @@
 class SoLightAttenuationElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoLightAttenuationElement )
+//$ BEGIN TEMPLATE ElementHeader(SoLightAttenuationElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);

@@ -32,7 +32,7 @@ class SoNotList;
 class SoMFPath : public SoMField {
   typedef SoMField inherited;
 
-//$ BEGIN TEMPLATE MField( SoMFPath, SoPath *, SoPath * )
+//$ BEGIN TEMPLATE MField(SoMFPath, SoPath *, SoPath *)
 private:
   static SoType classTypeId;
 

@@ -133,8 +133,8 @@ SoIndexedNurbsCurve::cleanClass(void)
   FIXME: write function documentation
 */
 void
-SoIndexedNurbsCurve::computeBBox(SoAction * action,
-				 SbBox3f & box, SbVec3f & center)
+SoIndexedNurbsCurve::computeBBox(SoAction * /* action */,
+				 SbBox3f & /* box */, SbVec3f & /* center */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -146,7 +146,7 @@ SoIndexedNurbsCurve::computeBBox(SoAction * action,
   FIXME: write doc
 */
 void
-SoIndexedNurbsCurve::GLRender(SoGLRenderAction * action)
+SoIndexedNurbsCurve::GLRender(SoGLRenderAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 
@@ -161,7 +161,7 @@ SoIndexedNurbsCurve::GLRender(SoGLRenderAction * action)
   FIXME: write doc
 */
 void
-SoIndexedNurbsCurve::rayPick(SoRayPickAction * action)
+SoIndexedNurbsCurve::rayPick(SoRayPickAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -172,7 +172,7 @@ SoIndexedNurbsCurve::rayPick(SoRayPickAction * action)
   FIXME: write doc
 */
 void
-SoIndexedNurbsCurve::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoIndexedNurbsCurve::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -183,7 +183,7 @@ SoIndexedNurbsCurve::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   FIXME: write doc
 */
 void
-SoIndexedNurbsCurve::getBoundingBox(SoGetBoundingBoxAction * action)
+SoIndexedNurbsCurve::getBoundingBox(SoGetBoundingBoxAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -205,7 +205,7 @@ SoIndexedNurbsCurve::sendPrimitive(SoAction * ,  SoPrimitiveVertex *)
   FIXME: write doc
 */
 void
-SoIndexedNurbsCurve::generatePrimitives(SoAction * action)
+SoIndexedNurbsCurve::generatePrimitives(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

@@ -36,7 +36,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoPickRayElement )
+//$ BEGIN TEMPLATE ElementSource(SoPickRayElement)
 
 /*!
   \var SoPickRayElement::classTypeId
@@ -89,24 +89,23 @@ SoPickRayElement::getClassStackIndex(void)
 */
 
 void
-SoPickRayElement::initClass(
-    void )
+SoPickRayElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoPickRayElement )
+//$ BEGIN TEMPLATE InitElementSource(SoPickRayElement)
   assert(SoPickRayElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoPickRayElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoPickRayElement",
-    &SoPickRayElement::createInstance);
+  SoPickRayElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoPickRayElement",
+                       &SoPickRayElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoPickRayElement::classStackIndex =
-      createStackIndex( SoPickRayElement::classTypeId );
-  } else {
-    SoPickRayElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoPickRayElement::classTypeId);
+  }
+  else {
+    SoPickRayElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -116,50 +115,45 @@ SoPickRayElement::initClass(
 */
 
 void
-SoPickRayElement::cleanClass(
-    void )
+SoPickRayElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoPickRayElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoPickRayElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoPickRayElement::createInstance( void )
+  \sa void * SoPickRayElement::createInstance(void)
 */
 
-SoPickRayElement::SoPickRayElement(
-    void )
+SoPickRayElement::SoPickRayElement(void)
   : volume()
 {
-    setTypeId( SoPickRayElement::classTypeId );
-    setStackIndex( SoPickRayElement::classStackIndex );
+    setTypeId(SoPickRayElement::classTypeId);
+    setStackIndex(SoPickRayElement::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoPickRayElement::~SoPickRayElement(
-    void )
+SoPickRayElement::~SoPickRayElement(void)
 {
 }
 
 //! FIXME: write doc.
 
 void
-SoPickRayElement::init(
-    SoState * state )
+SoPickRayElement::init(SoState * state)
 {
-    inherited::init( state );
+    inherited::init(state);
 }
 
 //! FIXME: write doc.
 
 SbBool
-SoPickRayElement::matches(
-    const SoElement * element ) const
+SoPickRayElement::matches(const SoElement * /* element */) const
 {
   // should always return false; not part of cache consideration 
   return FALSE;
@@ -201,7 +195,7 @@ SoPickRayElement::get(SoState * const state)
 //! FIXME: write doc.
 
 void
-SoPickRayElement::print(FILE * file) const
+SoPickRayElement::print(FILE * /* file */) const
 {
   assert(0 && "FIXME: not imlemented");
 }

@@ -67,7 +67,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource( SoAnnoText3 )
+//$ BEGIN TEMPLATE NodeSource(SoAnnoText3)
 SoType SoAnnoText3::classTypeId = SoType::badType();
 
 /*!
@@ -103,7 +103,7 @@ SoAnnoText3::getTypeId(void) const
 */
 SoAnnoText3::SoAnnoText3()
 {
-//$ BEGIN TEMPLATE NodeConstructor( SoAnnoText3 )
+//$ BEGIN TEMPLATE NodeConstructor(SoAnnoText3)
   // Make sure the class has been initialized.
   assert(SoAnnoText3::classTypeId != SoType::badType());
 //$ END TEMPLATE NodeConstructor
@@ -136,7 +136,7 @@ SoAnnoText3::~SoAnnoText3()
 void
 SoAnnoText3::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource( AnnoText3 )
+//$ BEGIN TEMPLATE InitNodeSource(AnnoText3)
   // Make sure we only initialize once.
   assert(SoAnnoText3::classTypeId == SoType::badType());
   // Make sure superclass get initialized before subclass.
@@ -164,7 +164,8 @@ SoAnnoText3::cleanClass(void)
   FIXME: write doc
 */
 void
-SoAnnoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
+SoAnnoText3::computeBBox(SoAction * /* action */,
+			 SbBox3f & /* box */, SbVec3f & /* center */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -174,8 +175,8 @@ SoAnnoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   FIXME: write doc
 */
 SbBox3f
-SoAnnoText3::getCharacterBounds(SoState * state,
-				int stringIndex, int charIndex)
+SoAnnoText3::getCharacterBounds(SoState * /* state */,
+				int /* stringIndex */, int /* charIndex */)
 {
   assert(0 && "FIXME: not implemented");
   static SbBox3f b;
@@ -187,7 +188,7 @@ SoAnnoText3::getCharacterBounds(SoState * state,
   FIXME: write doc
 */
 void
-SoAnnoText3::GLRender(SoGLRenderAction * action)
+SoAnnoText3::GLRender(SoGLRenderAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -197,7 +198,7 @@ SoAnnoText3::GLRender(SoGLRenderAction * action)
   FIXME: write doc
 */
 void
-SoAnnoText3::rayPick(SoRayPickAction * action)
+SoAnnoText3::rayPick(SoRayPickAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -207,7 +208,7 @@ SoAnnoText3::rayPick(SoRayPickAction * action)
   FIXME: write doc
 */
 void
-SoAnnoText3::write(SoWriteAction * action)
+SoAnnoText3::write(SoWriteAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -217,7 +218,7 @@ SoAnnoText3::write(SoWriteAction * action)
   FIXME: write doc
 */
 void
-SoAnnoText3::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoAnnoText3::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

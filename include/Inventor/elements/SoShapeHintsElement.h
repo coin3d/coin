@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_SHAPE_HINTS_ELEMENT_H_
-#define _SO_SHAPE_HINTS_ELEMENT_H_
+#ifndef __SOSHAPEHINTSELEMENT_H__
+#define __SOSHAPEHINTSELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOSHAPEHINTSELEMENT)
@@ -30,7 +30,7 @@
 class SoShapeHintsElement : public SoElement {
   typedef SoElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoShapeHintsElement )
+//$ BEGIN TEMPLATE ElementHeader(SoShapeHintsElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -67,11 +67,11 @@ public:
     FACE_TYPE_AS_IS
   };
 
-  virtual void init( SoState * state );
-  virtual void push( SoState * state );
+  virtual void init(SoState * state);
+  virtual void push(SoState * state);
 
-  virtual SbBool matches( const SoElement * element ) const;
-  virtual SoElement *copyMatchInfo( void ) const;
+  virtual SbBool matches(const SoElement * element) const;
+  virtual SoElement *copyMatchInfo(void) const;
 
   static void set(SoState * const state, SoNode * const node,
 		  const VertexOrdering vertexOrdering,
@@ -90,7 +90,7 @@ public:
   static ShapeType getDefaultShapeType();
   static FaceType getDefaultFaceType();
 
-  virtual void print( FILE * file ) const;
+  virtual void print(FILE * file) const;
 
 protected:
   virtual void setElt(VertexOrdering vertexOrdering,
@@ -102,4 +102,4 @@ protected:
 
 };
 
-#endif // ! _SO_SHAPE_HINTS_ELEMENT_H_
+#endif // !__SOSHAPEHINTSELEMENT_H__

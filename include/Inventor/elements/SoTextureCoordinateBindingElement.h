@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_TEXTURE_COORDINATE_BINDING_ELEMENT_H_
-#define _SO_TEXTURE_COORDINATE_BINDING_ELEMENT_H_
+#ifndef __SOTEXTURECOORDINATEBINDINGELEMENT_H__
+#define __SOTEXTURECOORDINATEBINDINGELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOTEXTURECOORDINATEBINDINGELEMENT)
@@ -30,7 +30,7 @@
 class SoTextureCoordinateBindingElement : public SoInt32Element {
   typedef SoInt32Element inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoTextureCoordinateBindingElement )
+//$ BEGIN TEMPLATE ElementHeader(SoTextureCoordinateBindingElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -54,16 +54,15 @@ public:
     PER_VERTEX_INDEXED = 3
   };
   
-  virtual void init( SoState * state );
+  virtual void init(SoState * state);
 
-  static  void set( SoState * const state, SoNode * const node,
-              const Binding binding );
-  static  void set( SoState * const state, const Binding binding );
+  static void set(SoState * const state, SoNode * const node,
+		  const Binding binding);
+  static void set(SoState * const state, const Binding binding);
 
-  static  Binding get( SoState * const state );
+  static Binding get(SoState * const state);
 
-  static  Binding getDefault( void );
-
+  static Binding getDefault(void);
 };
 
-#endif // ! _SO_TEXTURE_COORDINATE_BINDING_ELEMENT_H_
+#endif // !__SOTEXTURECOORDINATEBINDINGELEMENT_H__

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_TEXTURE_QUALITY_ELEMENT_H_
-#define _SO_TEXTURE_QUALITY_ELEMENT_H_
+#ifndef __SOTEXTUREQUALITYELEMENT_H__
+#define __SOTEXTUREQUALITYELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOTEXTUREQUALITYELEMENT)
@@ -30,7 +30,7 @@
 class SoTextureQualityElement : public SoFloatElement {
   typedef SoFloatElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoTextureQualityElement )
+//$ BEGIN TEMPLATE ElementHeader(SoTextureQualityElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -48,17 +48,17 @@ protected:
 //$ END TEMPLATE ElementHeader
 
 public:
-  virtual void init( SoState * state );
+  virtual void init(SoState * state);
 
-  virtual void push( SoState * state );
-  virtual void pop( SoState * state, const SoElement * prevTopElement );
+  virtual void push(SoState * state);
+  virtual void pop(SoState * state, const SoElement * prevTopElement);
  
-  static void set( SoState * const state, SoNode * const node,
-		   const float quality );
-  static void set( SoState * const state, const float quality );
-  static float get( SoState * const state );
-  static float getDefault( void );
+  static void set(SoState * const state, SoNode * const node,
+		   const float quality);
+  static void set(SoState * const state, const float quality);
+  static float get(SoState * const state);
+  static float getDefault(void);
 
 };
 
-#endif // ! _SO_TEXTURE_QUALITY_ELEMENT_H_
+#endif // !__SOTEXTUREQUALITYELEMENT_H__

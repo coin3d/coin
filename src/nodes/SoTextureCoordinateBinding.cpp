@@ -168,7 +168,7 @@ SoTextureCoordinateBinding::GLRender(SoGLRenderAction * action)
   FIXME: write doc
  */
 void
-SoTextureCoordinateBinding::doAction(SoAction * action)
+SoTextureCoordinateBinding::doAction(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -179,7 +179,7 @@ SoTextureCoordinateBinding::doAction(SoAction * action)
   FIXME: write doc
  */
 void
-SoTextureCoordinateBinding::callback(SoCallbackAction * action)
+SoTextureCoordinateBinding::callback(SoCallbackAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -190,7 +190,7 @@ SoTextureCoordinateBinding::callback(SoCallbackAction * action)
   FIXME: write doc
  */
 void
-SoTextureCoordinateBinding::pick(SoPickAction * action)
+SoTextureCoordinateBinding::pick(SoPickAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

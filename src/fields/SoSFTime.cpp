@@ -52,7 +52,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE SField( SoSFTime, const SbTime & )
+//$ BEGIN TEMPLATE SField(SoSFTime, const SbTime &)
 
 SoType SoSFTime::classTypeId = SoType::badType();
 
@@ -179,7 +179,7 @@ SoSFTime::operator == (const SoSFTime & field) const
 void
 SoSFTime::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass( SFTime )
+//$ BEGIN TEMPLATE FieldInitClass(SFTime)
   // Make sure we only initialize once.
   assert(SoSFTime::classTypeId == SoType::badType());
   // Make sure superclass has been initialized before subclass.

@@ -59,7 +59,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE FieldId( SoSFEnum )
+//$ BEGIN TEMPLATE FieldId(SoSFEnum)
 
 SoType SoSFEnum::classTypeId = SoType::badType();
 
@@ -94,7 +94,7 @@ SoSFEnum::createInstance(void)
   return new SoSFEnum;
 }
 //$ END TEMPLATE FieldId
-//$ BEGIN TEMPLATE FieldEqSame( SoSFEnum )
+//$ BEGIN TEMPLATE FieldEqSame(SoSFEnum)
 /*!
   Copy all data from \a field into this object. \a field \e must
   be of the same type as the field we are copying into.
@@ -151,7 +151,7 @@ SoSFEnum::operator = (const SoSFEnum & field)
 void
 SoSFEnum::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass( SFEnum )
+//$ BEGIN TEMPLATE FieldInitClass(SFEnum)
   // Make sure we only initialize once.
   assert(SoSFEnum::classTypeId == SoType::badType());
   // Make sure superclass has been initialized before subclass.

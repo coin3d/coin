@@ -35,7 +35,7 @@
 #include <assert.h>
 
 
-//$ BEGIN TEMPLATE EventSource( SoMotion3Event )
+//$ BEGIN TEMPLATE EventSource(SoMotion3Event)
 /*!
   \var SoMotion3Event::classTypeId
   Unique type identification for the SoMotion3Event class type.
@@ -72,7 +72,7 @@ SoMotion3Event::getClassTypeId(void)
 void
 SoMotion3Event::initClass(void)
 {
-//$ BEGIN TEMPLATE EventInitClass( Motion3Event )
+//$ BEGIN TEMPLATE EventInitClass(Motion3Event)
   // Make sure we only initialize once.
   assert(SoMotion3Event::classTypeId == SoType::badType());
   // Make sure superclass get initialized before subclass.

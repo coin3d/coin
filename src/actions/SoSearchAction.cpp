@@ -54,7 +54,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource( SoSearchAction )
+//$ BEGIN TEMPLATE ActionSource(SoSearchAction)
 
 SoType SoSearchAction::classTypeId = SoType::badType();
 
@@ -127,10 +127,9 @@ SoSearchAction::enableElement(const SoType type, const int stackIndex)
 */
 
 void
-SoSearchAction::initClass(
-   void )
+SoSearchAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource( SoSearchAction )
+//$ BEGIN TEMPLATE InitActionSource(SoSearchAction)
   assert(SoSearchAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
@@ -153,8 +152,7 @@ SoSearchAction::initClass(
 */
 
 void
-SoSearchAction::cleanClass(
-    void )
+SoSearchAction::cleanClass(void)
 {
 }
 
@@ -164,21 +162,19 @@ SoSearchAction::cleanClass(
   The constructor.  Initializes all the internals with default values.
 */
 
-SoSearchAction::SoSearchAction(
-    void )
-  : lookFor( 0 ), interest( FIRST ), searchAll( FALSE ),
-    node( NULL ), type( SoType::badType() ), name( "" ),
-    path( NULL ) // paths(0)
+SoSearchAction::SoSearchAction(void)
+  : lookFor(0), interest( FIRST ), searchAll( FALSE ),
+    node(NULL), type( SoType::badType() ), name( "" ),
+    path(NULL) // paths(0)
 {
-  SO_ACTION_CONSTRUCTOR( SoSearchAction );
+  SO_ACTION_CONSTRUCTOR(SoSearchAction);
 }
 
 /*!
   The destructor.
 */
 
-SoSearchAction::~SoSearchAction(
-    void )
+SoSearchAction::~SoSearchAction(void)
 {
   reset(); // clears everything
 }
@@ -192,8 +188,7 @@ SoSearchAction::~SoSearchAction(
 */
 
 void
-SoSearchAction::setNode(
-  SoNode * const node )
+SoSearchAction::setNode(SoNode * const node)
 {
 #if 0 // debug
   SoDebugError::postInfo("SoSearchAction::setNode",
@@ -202,7 +197,7 @@ SoSearchAction::setNode(
 #endif // debug
 
   node->ref();
-  if ( this->node )
+  if (this->node)
     this->node->unref();
   this->node = node;
   this->lookFor |= NODE;
@@ -214,8 +209,7 @@ SoSearchAction::setNode(
 */
 
 SoNode *
-SoSearchAction::getNode(
-  void ) const
+SoSearchAction::getNode(void) const
 {
   return this->node;
 }
@@ -227,9 +221,7 @@ SoSearchAction::getNode(
 */
 
 void
-SoSearchAction::setType(
-  const SoType type,
-  const SbBool includeDerived )
+SoSearchAction::setType(const SoType type, const SbBool includeDerived)
 {
   this->type = type;
   this->includeDerived = includeDerived;
@@ -242,8 +234,7 @@ SoSearchAction::setType(
 */
 
 SoType
-SoSearchAction::getType(
-  SbBool & includeDerived ) const
+SoSearchAction::getType(SbBool & includeDerived) const
 {
   includeDerived = this->includeDerived;
   return this->type;
@@ -256,8 +247,7 @@ SoSearchAction::getType(
 */
 
 void
-SoSearchAction::setName(
-  const SbName name ) // was const SbName &, but SbName is 32 bits, so
+SoSearchAction::setName(const SbName name) // was const SbName &, but SbName is 32 bits, so
 {
   this->name = name;
   this->lookFor |= NAME;
@@ -269,8 +259,7 @@ SoSearchAction::setName(
 */
 
 SbName // was const SbName &
-SoSearchAction::getName(
-  void ) const
+SoSearchAction::getName(void) const
 {
   return this->name;
 }
@@ -284,8 +273,7 @@ SoSearchAction::getName(
 */
 
 void
-SoSearchAction::setFind(
-  const int what ) // was int
+SoSearchAction::setFind(const int what) // was int
 {
   // any sanity checking?
   this->lookFor = what;
@@ -296,8 +284,7 @@ SoSearchAction::setFind(
 */
 
 int
-SoSearchAction::getFind(
-  void ) const
+SoSearchAction::getFind(void) const
 {
   return this->lookFor;
 }
@@ -308,8 +295,7 @@ SoSearchAction::getFind(
 */
 
 void
-SoSearchAction::setInterest(
-  const Interest interest )
+SoSearchAction::setInterest(const Interest interest)
 {
   // any sanity checking?
   this->interest = interest;
@@ -321,8 +307,7 @@ SoSearchAction::setInterest(
 */
 
 SoSearchAction::Interest
-SoSearchAction::getInterest(
-  void ) const
+SoSearchAction::getInterest(void) const
 {
   return this->interest;
 }
@@ -334,8 +319,7 @@ SoSearchAction::getInterest(
 */
 
 void
-SoSearchAction::setSearchingAll(
-  const SbBool searchAll )
+SoSearchAction::setSearchingAll(const SbBool searchAll)
 {
   this->searchAll = searchAll;
 }
@@ -347,8 +331,7 @@ SoSearchAction::setSearchingAll(
 */
 
 SbBool
-SoSearchAction::isSearchingAll(
-  void ) const
+SoSearchAction::isSearchingAll(void) const
 {
   return this->searchAll;
 }
@@ -361,8 +344,7 @@ SoSearchAction::isSearchingAll(
 */
 
 SoPath *
-SoSearchAction::getPath(
-  void ) const
+SoSearchAction::getPath(void) const
 {
   return this->path;
 }
@@ -374,8 +356,7 @@ SoSearchAction::getPath(
 */
 
 SoPathList &
-SoSearchAction::getPaths(
-  void )
+SoSearchAction::getPaths(void)
 {
   return this->paths;
 }
@@ -386,24 +367,23 @@ SoSearchAction::getPaths(
 */
 
 void
-SoSearchAction::reset(
-    void )
+SoSearchAction::reset(void)
 {
   this->lookFor = 0;
   this->interest = FIRST;
   this->searchAll = FALSE;
   this->includeDerived = TRUE;
-  if ( this->node ) {
+  if (this->node) {
     this->node->unref();
     this->node = NULL;
   }
   this->type = SoType::badType();
-  this->name = SbName( "" );
-  if ( this->path ) {
+  this->name = SbName("");
+  if (this->path) {
     this->path->unref();
     this->path = NULL;
   }
-  this->paths.truncate( 0 );
+  this->paths.truncate(0);
 }
 
 // *************************************************************************
@@ -415,10 +395,9 @@ SoSearchAction::reset(
 */
 
 void
-SoSearchAction::setFound(
-  void )
+SoSearchAction::setFound(void)
 {
-  setTerminated( TRUE );
+  setTerminated(TRUE);
 }
 
 /*!
@@ -427,8 +406,7 @@ SoSearchAction::setFound(
 */
 
 SbBool
-SoSearchAction::isFound(
-  void ) const
+SoSearchAction::isFound(void) const
 {
   return hasTerminated();
 }
@@ -440,33 +418,32 @@ SoSearchAction::isFound(
 */
 
 void
-SoSearchAction::addPath(
-  SoPath * const path )
+SoSearchAction::addPath(SoPath * const path)
 {
-  assert( ! this->isFound() ); // shouldn't try to add path if found
+  assert(! this->isFound()); // shouldn't try to add path if found
 
-  switch ( this->interest ) {
+  switch (this->interest) {
   case FIRST:
-    assert( ! this->path ); // should be NULL
+    assert(! this->path); // should be NULL
     this->path = path;
     this->path->ref();
     setFound();
     break;
 
   case LAST:
-    if ( this->path )
+    if (this->path)
       this->path->unref(); // should delete it if possible
     this->path = path;
     this->path->ref();
     break;
 
   case ALL:
-    this->paths.append( path );
+    this->paths.append(path);
     break;
 
   default:
-    SoDebugError::post( "SoSearchAction::addPath()",
-      "this->interest is invalid (%d)", this->interest );
+    SoDebugError::post("SoSearchAction::addPath()",
+      "this->interest is invalid (%d)", this->interest);
     break;
   }
 }
@@ -478,16 +455,15 @@ SoSearchAction::addPath(
 */
 
 void
-SoSearchAction::beginTraversal(
-  SoNode * node )
+SoSearchAction::beginTraversal(SoNode * node)
 {
-  this->paths.truncate( 0 );
-  if ( this->path ) {
+  this->paths.truncate(0);
+  if (this->path) {
     this->path->unref();
     this->path = NULL;
   }
 
   // begin traversal at root node
-  this->traverse( node );
+  this->traverse(node);
 }
 

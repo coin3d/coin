@@ -43,7 +43,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoProfileElement )
+//$ BEGIN TEMPLATE ElementSource(SoProfileElement)
 
 /*!
   \var SoProfileElement::classTypeId
@@ -96,24 +96,23 @@ SoProfileElement::getClassStackIndex(void)
 */
 
 void
-SoProfileElement::initClass(
-    void )
+SoProfileElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoProfileElement )
+//$ BEGIN TEMPLATE InitElementSource(SoProfileElement)
   assert(SoProfileElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoProfileElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoProfileElement",
-    &SoProfileElement::createInstance);
+  SoProfileElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoProfileElement",
+                       &SoProfileElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoProfileElement::classStackIndex =
-      createStackIndex( SoProfileElement::classTypeId );
-  } else {
-    SoProfileElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoProfileElement::classTypeId);
+  }
+  else {
+    SoProfileElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -123,42 +122,38 @@ SoProfileElement::initClass(
 */
 
 void
-SoProfileElement::cleanClass(
-    void )
+SoProfileElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoProfileElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoProfileElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoProfileElement::createInstance( void )
+  \sa void * SoProfileElement::createInstance(void)
 */
 
-SoProfileElement::SoProfileElement(
-    void )
+SoProfileElement::SoProfileElement(void)
   : profiles()
 {
-    setTypeId( SoProfileElement::classTypeId );
-    setStackIndex( SoProfileElement::classStackIndex );
+    setTypeId(SoProfileElement::classTypeId);
+    setStackIndex(SoProfileElement::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoProfileElement::~SoProfileElement(
-    void )
+SoProfileElement::~SoProfileElement(void)
 {
 }
 
 //! FIXME: write doc.
 
 void
-SoProfileElement::add(
-    SoState * const state,
-    SoProfile * const profile )
+SoProfileElement::add(SoState * const state,
+		      SoProfile * const profile)
 {
   SoProfileElement * element = (SoProfileElement *)
     getElement(state, classStackIndex);
@@ -168,57 +163,51 @@ SoProfileElement::add(
 //! FIXME: write doc.
 
 const SoNodeList &
-SoProfileElement::get(
-    SoState * const state )
+SoProfileElement::get(SoState * const state)
 {
   const SoProfileElement * element = (const SoProfileElement *)
     getConstElement(state, classStackIndex);
   return element->profiles;
-} /// get()
-
-//! FIXME: write doc.
-
-void
-SoProfileElement::print(
-    FILE * file ) const
-{
-    fprintf( file, "SoProfileElement[%p]: num = %d\n", this,
-        this->profiles.getLength() );
 }
 
 //! FIXME: write doc.
 
 void
-SoProfileElement::init(
-    SoState * state )
+SoProfileElement::print(FILE * file) const
 {
-  inherited::init( state );
+    fprintf(file, "SoProfileElement[%p]: num = %d\n", this,
+        this->profiles.getLength());
+}
+
+//! FIXME: write doc.
+
+void
+SoProfileElement::init(SoState * state)
+{
+  inherited::init(state);
   this->profiles.truncate(0);
 }
 
 //! FIXME: write doc.
 
 void
-SoProfileElement::push(
-    SoState * state )
+SoProfileElement::push(SoState * state)
 {
-    inherited::push( state );
+    inherited::push(state);
 
     SoProfileElement * const element =
-        (SoProfileElement *)( this->next );
-    element->profiles.truncate( 0 );
+        (SoProfileElement *)(this->next);
+    element->profiles.truncate(0);
     const int numProfiles = this->profiles.getLength();
-    for ( int i = 0; i < numProfiles; i++ )
-        element->profiles.append( this->profiles[ i ] );
+    for (int i = 0; i < numProfiles; i++)
+        element->profiles.append(this->profiles[ i ]);
 }
 
 //! FIXME: write doc.
 
 void
-SoProfileElement::pop(
-    SoState * state,
-    const SoElement * prevTopElement )
+SoProfileElement::pop(SoState * state, const SoElement * prevTopElement)
 {
-    inherited::pop( state, prevTopElement );
+    inherited::pop(state, prevTopElement);
 }
 

@@ -33,7 +33,7 @@ typedef void SoCallbackCB(void *, SoAction *);
 class SoCallback : public SoNode {
     typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoCallback )
+//$ BEGIN TEMPLATE NodeHeader(SoCallback)
 private:
   static SoType classTypeId;
 

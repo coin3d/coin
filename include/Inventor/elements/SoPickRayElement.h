@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_PICK_RAY_ELEMENT_H_
-#define _SO_PICK_RAY_ELEMENT_H_
+#ifndef __SOPICKRAYELEMENT_H__
+#define __SOPICKRAYELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOPICKRAYELEMENT)
@@ -31,7 +31,7 @@
 class SoPickRayElement : public SoElement {
   typedef SoElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoPickRayElement )
+//$ BEGIN TEMPLATE ElementHeader(SoPickRayElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -57,11 +57,10 @@ public:
   static void set(SoState * const state, const SbViewVolume & volume);
   static const SbViewVolume &get(SoState * const state);
 
-  virtual void print( FILE * file ) const;
+  virtual void print(FILE * file) const;
 
 protected:
   SbViewVolume volume;
-
 };
 
-#endif // ! _SO_PICK_RAY_ELEMENT_H_
+#endif // !__SOPICKRAYELEMENT_H__

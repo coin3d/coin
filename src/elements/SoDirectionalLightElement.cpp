@@ -30,7 +30,7 @@
 
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource( SoDirectionalLightElement )
+//$ BEGIN TEMPLATE ElementSource(SoDirectionalLightElement)
 
 /*!
   \var SoDirectionalLightElement::classTypeId
@@ -84,24 +84,23 @@ SoDirectionalLightElement::getClassStackIndex(void)
 */
 
 void
-SoDirectionalLightElement::initClass(
-    void )
+SoDirectionalLightElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoDirectionalLightElement )
+//$ BEGIN TEMPLATE InitElementSource(SoDirectionalLightElement)
   assert(SoDirectionalLightElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoDirectionalLightElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoDirectionalLightElement",
-    &SoDirectionalLightElement::createInstance);
+  SoDirectionalLightElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoDirectionalLightElement",
+                       &SoDirectionalLightElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoDirectionalLightElement::classStackIndex =
-      createStackIndex( SoDirectionalLightElement::classTypeId );
-  } else {
-    SoDirectionalLightElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoDirectionalLightElement::classTypeId);
+  }
+  else {
+    SoDirectionalLightElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -112,68 +111,61 @@ SoDirectionalLightElement::initClass(
 */
 
 void
-SoDirectionalLightElement::cleanClass(
-    void )
+SoDirectionalLightElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoDirectionalLightElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoDirectionalLightElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoDirectionalLightElement::createInstance( void )
+  \sa void * SoDirectionalLightElement::createInstance(void)
 */
 
-SoDirectionalLightElement::SoDirectionalLightElement(
-    void )
+SoDirectionalLightElement::SoDirectionalLightElement(void)
 {
-    setTypeId( SoDirectionalLightElement::classTypeId );
-    setStackIndex( SoDirectionalLightElement::classStackIndex );
+    setTypeId(SoDirectionalLightElement::classTypeId);
+    setStackIndex(SoDirectionalLightElement::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoDirectionalLightElement::~SoDirectionalLightElement(
-    void )
+SoDirectionalLightElement::~SoDirectionalLightElement(void)
 {
 }
 
 //! FIXME: write doc.
 
 void
-SoDirectionalLightElement::init(
-    SoState * state )
+SoDirectionalLightElement::init(SoState * state)
 {
-    inherited::init( state );
+    inherited::init(state);
 }
 
 //! FIXME: write doc.
 
 void
-SoDirectionalLightElement::push(
-    SoState * state )
+SoDirectionalLightElement::push(SoState * state)
 {
-    inherited::push( state );
+    inherited::push(state);
 }
 
 //! FIXME: write doc.
 
 void
-SoDirectionalLightElement::pop(
-    SoState * state,
-    const SoElement * prevTopElement )
+SoDirectionalLightElement::pop(SoState * state,
+			       const SoElement * prevTopElement)
 {
-    inherited::pop( state, prevTopElement );
+    inherited::pop(state, prevTopElement);
 }
 
 //! FIXME: write doc.
 
 SbBool 
-SoDirectionalLightElement::matches(
-    const SoElement * element ) const
+SoDirectionalLightElement::matches(const SoElement * element) const
 {
   element;
   assert(0 && "FIXME: not implemented");
@@ -183,7 +175,7 @@ SoDirectionalLightElement::matches(
 //! FIXME: write doc.
 
 SoElement *
-SoDirectionalLightElement::copyMatchInfo( void ) const
+SoDirectionalLightElement::copyMatchInfo(void) const
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;

@@ -29,7 +29,7 @@
 class SoSFBitMask : public SoSFEnum {
   typedef SoSFEnum inherited;
 
-//$ BEGIN TEMPLATE SFieldDerived( SoSFBitMask, int )
+//$ BEGIN TEMPLATE SFieldDerived(SoSFBitMask, int)
 private:
   static SoType classTypeId;
 
@@ -48,7 +48,6 @@ private:
   virtual SbBool readValue(SoInput * in);
   virtual void writeValue(SoOutput * out) const;
 public:
-  /*! Copy value from \a newvalue into this field. */
   int operator = (const int newvalue)
     { this->setValue(newvalue); return this->value; }
 //$ END TEMPLATE SFieldDerived

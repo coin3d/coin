@@ -31,7 +31,7 @@
 class SoTransformSeparator : public SoGroup {
   typedef SoGroup inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoTransformSeparator )
+//$ BEGIN TEMPLATE NodeHeader(SoTransformSeparator)
 private:
   static SoType classTypeId;
 

@@ -34,7 +34,7 @@
 class SoMaterial : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoMaterial )
+//$ BEGIN TEMPLATE NodeHeader(SoMaterial)
 private:
   static SoType classTypeId;
 

@@ -33,7 +33,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource( SoGetPrimitiveCountAction )
+//$ BEGIN TEMPLATE ActionSource(SoGetPrimitiveCountAction)
 
 SoType SoGetPrimitiveCountAction::classTypeId = SoType::badType();
 
@@ -106,10 +106,9 @@ SoGetPrimitiveCountAction::enableElement(const SoType type, const int stackIndex
 */
 
 void
-SoGetPrimitiveCountAction::initClass(
-    void )
+SoGetPrimitiveCountAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource( SoGetPrimitiveCountAction )
+//$ BEGIN TEMPLATE InitActionSource(SoGetPrimitiveCountAction)
   assert(SoGetPrimitiveCountAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
@@ -129,8 +128,7 @@ SoGetPrimitiveCountAction::initClass(
 */
 
 void
-SoGetPrimitiveCountAction::cleanClass(
-    void )
+SoGetPrimitiveCountAction::cleanClass(void)
 {
 }
 
@@ -160,6 +158,6 @@ SoGetPrimitiveCountAction::~SoGetPrimitiveCountAction()
 void
 SoGetPrimitiveCountAction::beginTraversal(SoNode * node)
 {
-  this->traverse( node );
+  this->traverse(node);
 }
 

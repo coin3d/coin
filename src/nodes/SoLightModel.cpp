@@ -164,7 +164,7 @@ SoLightModel::GLRender(SoGLRenderAction * action)
   FIXME: write doc
  */
 void
-SoLightModel::doAction(SoAction * action)
+SoLightModel::doAction(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -175,7 +175,7 @@ SoLightModel::doAction(SoAction * action)
   FIXME: write doc
  */
 void
-SoLightModel::callback(SoCallbackAction * action)
+SoLightModel::callback(SoCallbackAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

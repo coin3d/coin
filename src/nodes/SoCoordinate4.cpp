@@ -143,7 +143,7 @@ SoCoordinate4::getBoundingBox(SoGetBoundingBoxAction * action)
   FIXME: write doc
 */
 void
-SoCoordinate4::doAction(SoAction * action)
+SoCoordinate4::doAction(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -154,7 +154,7 @@ SoCoordinate4::doAction(SoAction * action)
   FIXME: write doc
 */
 void
-SoCoordinate4::GLRender(SoGLRenderAction * action)
+SoCoordinate4::GLRender(SoGLRenderAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -165,7 +165,7 @@ SoCoordinate4::GLRender(SoGLRenderAction * action)
   FIXME: write doc
 */
 void
-SoCoordinate4::callback(SoCallbackAction * action)
+SoCoordinate4::callback(SoCallbackAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -176,7 +176,7 @@ SoCoordinate4::callback(SoCallbackAction * action)
   FIXME: write doc
 */
 void
-SoCoordinate4::pick(SoPickAction * action)
+SoCoordinate4::pick(SoPickAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -187,7 +187,7 @@ SoCoordinate4::pick(SoPickAction * action)
   FIXME: write doc
 */
 void
-SoCoordinate4::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoCoordinate4::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

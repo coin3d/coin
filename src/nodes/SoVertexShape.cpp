@@ -140,7 +140,7 @@ SoVertexShape::cleanClass()
   FIXME: write function documentation
 */
 void 
-SoVertexShape::notify(SoNotList * list)
+SoVertexShape::notify(SoNotList * /* list */)
 {
   // FIXME: cache(s) need invalidation. 19990327 mortene.
 }
@@ -169,8 +169,8 @@ SoVertexShape::generateDefaultNormals(SoState * ,
   you intend to create a node which can be used on both Coin and OIV.
 */
 SbBool
-SoVertexShape::generateDefaultNormals(SoState * state,
-				      SoNormalCache * nc)
+SoVertexShape::generateDefaultNormals(SoState * /* state */,
+				      SoNormalCache * /* nc */)
 {
   return FALSE;
 }
@@ -329,7 +329,7 @@ SoVertexShape::getGLData(SoState * state,
   FIXME: write doc
  */
 void
-SoVertexShape::write(SoWriteAction * writeAction)
+SoVertexShape::write(SoWriteAction * /* writeAction */)
 {
   assert(0 && "FIXME: not implemented");
 }

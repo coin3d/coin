@@ -29,22 +29,13 @@
 #endif // COIN_EXCLUDE_SODECOMPOSEROTATION
 
 class SoDecomposeRotation : public SoEngine {
-  typedef SoEngine inherited;
-  SO_ENGINE_HEADER(SoDecomposeRotation);
+  SO_COMPOSE__HEADER(SoDecomposeRotation);
 
 public:
   SoMFRotation rotation;
 
-  SoEngineOutput axis;  //SoMFVec3f
-  SoEngineOutput angle; //SoMFFloat
-
-  SoDecomposeRotation();
-
-  static void initClass();
-
-private:
-  virtual ~SoDecomposeRotation();
-  virtual void evaluate();
+  SoEngineOutput axis;  // SoMFVec3f
+  SoEngineOutput angle; // SoMFFloat
 };
 
 #endif // !__SODECOMPOSEROTATION_H__

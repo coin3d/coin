@@ -171,7 +171,7 @@ SoLocateHighlight::cleanClass(void)
   FIXME: write function documentation
 */
 void
-SoLocateHighlight::turnOffCurrentHighlight(SoGLRenderAction * action)
+SoLocateHighlight::turnOffCurrentHighlight(SoGLRenderAction * /* action */)
 {
   // FIXME: stub. 19990224 mortene.
 }
@@ -182,7 +182,7 @@ SoLocateHighlight::turnOffCurrentHighlight(SoGLRenderAction * action)
   FIXME: write doc
  */
 void
-SoLocateHighlight::handleEvent(SoHandleEventAction * action)
+SoLocateHighlight::handleEvent(SoHandleEventAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -193,7 +193,7 @@ SoLocateHighlight::handleEvent(SoHandleEventAction * action)
   FIXME: write doc
  */
 void
-SoLocateHighlight::GLRenderBelowPath(SoGLRenderAction * action)
+SoLocateHighlight::GLRenderBelowPath(SoGLRenderAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -202,7 +202,7 @@ SoLocateHighlight::GLRenderBelowPath(SoGLRenderAction * action)
   FIXME: write doc
  */
 void
-SoLocateHighlight::GLRenderInPath(SoGLRenderAction * action)
+SoLocateHighlight::GLRenderInPath(SoGLRenderAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -213,7 +213,7 @@ SoLocateHighlight::GLRenderInPath(SoGLRenderAction * action)
   FIXME: write doc
  */
 void
-SoLocateHighlight::redrawHighlighted(SoAction * act, SbBool  flag)
+SoLocateHighlight::redrawHighlighted(SoAction * /* act */, SbBool /* flag */)
 {
   assert(0 && "FIXME: not implemented");
 }

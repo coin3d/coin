@@ -26,7 +26,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource( SoGraphVerifyAction )
+//$ BEGIN TEMPLATE ActionSource(SoGraphVerifyAction)
 
 SoType SoGraphVerifyAction::classTypeId = SoType::badType();
 
@@ -120,8 +120,7 @@ SoGraphVerifyAction::cleanClass(void)
 */
 
 void
-SoGraphVerifyAction::~SoGraphVerifyAction(
-    void )
+SoGraphVerifyAction::~SoGraphVerifyAction(void)
 {
 }
 

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_GL_DIFFUSE_COLOR_ELEMENT_H_
-#define _SO_GL_DIFFUSE_COLOR_ELEMENT_H_
+#ifndef __SOGLDIFFUSECOLORELEMENT_H__
+#define __SOGLDIFFUSECOLORELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOGLDIFFUSECOLORELEMENT)
@@ -31,7 +31,7 @@
 class SoGLDiffuseColorElement : public SoDiffuseColorElement {
   typedef SoDiffuseColorElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoGLDiffuseColorElement )
+//$ BEGIN TEMPLATE ElementHeader(SoGLDiffuseColorElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -65,4 +65,4 @@ private:
 
 };
 
-#endif // ! _SO_GL_DIFFUSE_COLOR_ELEMENT_H_
+#endif // !__SOGLDIFFUSECOLORELEMENT_H__

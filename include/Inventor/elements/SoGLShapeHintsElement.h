@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_GL_SHAPE_HINTS_ELEMENT_H_
-#define _SO_GL_SHAPE_HINTS_ELEMENT_H_
+#ifndef __SOGLSHAPEHINTSELEMENT_H__
+#define __SOGLSHAPEHINTSELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT)
@@ -30,7 +30,7 @@
 class SoGLShapeHintsElement : public SoShapeHintsElement {
   typedef SoShapeHintsElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoGLShapeHintsElement )
+//$ BEGIN TEMPLATE ElementHeader(SoGLShapeHintsElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -71,4 +71,4 @@ private:
 
 };
 
-#endif // ! _SO_GL_SHAPE_HINTS_ELEMENT_H_
+#endif // !__SOGLSHAPEHINTSELEMENT_H__

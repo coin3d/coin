@@ -152,7 +152,7 @@ SoActionMethodList * SoGLRenderAction::methods;
 const SoEnabledElementsList &
 SoGLRenderAction::getEnabledElements(void) const
 {
-  return * enabledElements;
+  return *enabledElements;
 }
 
 /*!
@@ -183,8 +183,7 @@ SoGLRenderAction::enableElement(const SoType type, const int stackIndex)
 */
 
 void
-SoGLRenderAction::initClass(
-    void)
+SoGLRenderAction::initClass(void)
 {
 //$ BEGIN TEMPLATE InitActionSource(SoGLRenderAction)
   assert(SoGLRenderAction::getClassTypeId() == SoType::badType());
@@ -226,8 +225,7 @@ SoGLRenderAction::initClass(
 */
 
 void
-SoGLRenderAction::cleanClass(
-    void)
+SoGLRenderAction::cleanClass(void)
 {
 }
 

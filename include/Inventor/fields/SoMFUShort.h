@@ -30,7 +30,7 @@
 class SoMFUShort : public SoMField {
   typedef SoMField inherited;
 
-//$ BEGIN TEMPLATE MField( SoMFUShort, unsigned short, unsigned short )
+//$ BEGIN TEMPLATE MField(SoMFUShort, unsigned short, unsigned short)
 private:
   static SoType classTypeId;
 

@@ -83,14 +83,6 @@ SbSphereProjector::SbSphereProjector(const SbSphere & s, SbBool orientToEye)
 /*!
   FIXME: write doc
 */
-SbSphereProjector::~SbSphereProjector(void)
-{
-}
-
-
-/*!
-  FIXME: write doc
-*/
 SbVec3f
 SbSphereProjector::projectAndGetRotation(const SbVec2f & point,
 					 SbRotation & rot)
@@ -162,7 +154,7 @@ SbSphereProjector::isFront(void) const
   FIXME: write doc
 */
 SbBool
-SbSphereProjector::isPointInFront(const SbVec3f & point) const
+SbSphereProjector::isPointInFront(const SbVec3f & /* point */) const
 {
   // FIXME: implement.
   assert(0);
@@ -173,7 +165,8 @@ SbSphereProjector::isPointInFront(const SbVec3f & point) const
   FIXME: write doc
 */
 SbBool
-SbSphereProjector::intersectSphereFront(const SbLine & l, SbVec3f & result)
+SbSphereProjector::intersectSphereFront(const SbLine & /* l */,
+					SbVec3f & /* result */)
 {
   // FIXME: implement.
   assert(0);
@@ -184,7 +177,7 @@ SbSphereProjector::intersectSphereFront(const SbLine & l, SbVec3f & result)
   FIXME: write doc
  */
 void
-SbSphereProjector::setWorkingSpace(const SbMatrix & space)
+SbSphereProjector::setWorkingSpace(const SbMatrix & /* space */)
 {
   // FIXME: implement.
   assert(0);

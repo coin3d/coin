@@ -171,7 +171,7 @@ SoWWWInline::cleanClass(void)
   FIXME: write function documentation
 */
 void
-SoWWWInline::setFullURLName(const SbString & url)
+SoWWWInline::setFullURLName(const SbString & /* url */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -239,7 +239,7 @@ SoWWWInline::cancelURLDataRequest(void)
   FIXME: write function documentation
 */
 void
-SoWWWInline::setChildData(SoNode * urlData)
+SoWWWInline::setChildData(SoNode * /* urlData */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -258,7 +258,8 @@ SoWWWInline::getChildData(void) const
   FIXME: write function documentation
 */
 void
-SoWWWInline::setFetchURLCallBack(SoWWWInlineFetchURLCB * f, void * userData)
+SoWWWInline::setFetchURLCallBack(SoWWWInlineFetchURLCB * /* f */,
+				 void * /* userData */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -267,7 +268,7 @@ SoWWWInline::setFetchURLCallBack(SoWWWInlineFetchURLCB * f, void * userData)
   FIXME: write function documentation
 */
 void
-SoWWWInline::setBoundingBoxVisibility(BboxVisibility b)
+SoWWWInline::setBoundingBoxVisibility(BboxVisibility /* b */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -286,7 +287,7 @@ SoWWWInline::getBoundingBoxVisibility(void)
   FIXME: write function documentation
 */
 void
-SoWWWInline::setBoundingBoxColor(SbColor & c)
+SoWWWInline::setBoundingBoxColor(SbColor & /* c */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -306,7 +307,7 @@ SoWWWInline::getBoundingBoxColor(void)
   FIXME: write function documentation
 */
 void
-SoWWWInline::setReadAsSoFile(SbBool onOff)
+SoWWWInline::setReadAsSoFile(SbBool /* onOff */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -327,7 +328,7 @@ SoWWWInline::getReadAsSoFile(void)
   FIXME: write function documentation
 */
 void 
-SoWWWInline::GLRender(SoGLRenderAction * action)
+SoWWWInline::GLRender(SoGLRenderAction * /* action */)
 {
   // FIXME: quick hack implementation until someone does it 100%
   // correct. NB: loadsofstuff missing. 19990404 mortene.
@@ -415,7 +416,7 @@ SoWWWInline::getChildren(void) const
   FIXME: write doc
  */
 void
-SoWWWInline::doAction(SoAction * action)
+SoWWWInline::doAction(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -424,7 +425,7 @@ SoWWWInline::doAction(SoAction * action)
   FIXME: write doc
  */
 void
-SoWWWInline::doActionOnKidsOrBox(SoAction * action)
+SoWWWInline::doActionOnKidsOrBox(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -435,7 +436,7 @@ SoWWWInline::doActionOnKidsOrBox(SoAction * action)
   FIXME: write doc
  */
 void
-SoWWWInline::callback(SoCallbackAction * action)
+SoWWWInline::callback(SoCallbackAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -446,7 +447,7 @@ SoWWWInline::callback(SoCallbackAction * action)
   FIXME: write doc
  */
 void
-SoWWWInline::getMatrix(SoGetMatrixAction * action)
+SoWWWInline::getMatrix(SoGetMatrixAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -457,7 +458,7 @@ SoWWWInline::getMatrix(SoGetMatrixAction * action)
   FIXME: write doc
  */
 void
-SoWWWInline::handleEvent(SoHandleEventAction * action)
+SoWWWInline::handleEvent(SoHandleEventAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -468,7 +469,7 @@ SoWWWInline::handleEvent(SoHandleEventAction * action)
   FIXME: write doc
  */
 void
-SoWWWInline::search(SoSearchAction * action)
+SoWWWInline::search(SoSearchAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -479,7 +480,7 @@ SoWWWInline::search(SoSearchAction * action)
   FIXME: write doc
  */
 void
-SoWWWInline::pick(SoPickAction * action)
+SoWWWInline::pick(SoPickAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -490,7 +491,7 @@ SoWWWInline::pick(SoPickAction * action)
   FIXME: write doc
  */
 void
-SoWWWInline::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoWWWInline::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -500,7 +501,7 @@ SoWWWInline::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   FIXME: write doc
  */
 void
-SoWWWInline::addBoundingBoxChild(SbVec3f center, SbVec3f size)
+SoWWWInline::addBoundingBoxChild(SbVec3f /* center */, SbVec3f /* size */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -509,7 +510,7 @@ SoWWWInline::addBoundingBoxChild(SbVec3f center, SbVec3f size)
   FIXME: write doc
  */
 SbBool
-SoWWWInline::readInstance(SoInput * in, unsigned short flags)
+SoWWWInline::readInstance(SoInput * in, unsigned short /* flags */)
 {
   assert(0 && "FIXME: not implemented");
   assert(!in->isBinary() && "FIXME: not implemented yet");
@@ -520,8 +521,8 @@ SoWWWInline::readInstance(SoInput * in, unsigned short flags)
   FIXME: write doc
  */
 void
-SoWWWInline::copyContents(const SoFieldContainer * fromFC,
-			  SbBool copyConnections)
+SoWWWInline::copyContents(const SoFieldContainer * /* fromFC */,
+			  SbBool /* copyConnections */)
 {
   assert(0 && "FIXME: not implemented");
 }

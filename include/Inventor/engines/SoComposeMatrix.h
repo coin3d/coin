@@ -31,8 +31,7 @@
 #endif // COIN_EXCLUDE_SOCOMPOSEMATRIX
 
 class SoComposeMatrix : public SoEngine {
-  typedef SoEngine inherited;
-  SO_ENGINE_HEADER(SoComposeMatrix);
+  SO_COMPOSE__HEADER(SoComposeMatrix);
 
 public:
   SoMFVec3f translation;
@@ -41,15 +40,7 @@ public:
   SoMFRotation scaleOrientation;
   SoMFVec3f center;
 
-  SoEngineOutput matrix; //SoMFMatrix
-
-  SoComposeMatrix();
-
-  static void initClass();
-
-private:
-  virtual ~SoComposeMatrix();
-  virtual void evaluate();
+  SoEngineOutput matrix; // SoMFMatrix
 };
 
 #endif // !__SOCOMPOSEMATRIX_H__

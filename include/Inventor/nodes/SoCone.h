@@ -33,7 +33,7 @@
 class SoCone : public SoShape {
   typedef SoShape inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoCone )
+//$ BEGIN TEMPLATE NodeHeader(SoCone)
 private:
   static SoType classTypeId;
 

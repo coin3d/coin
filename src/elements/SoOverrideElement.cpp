@@ -35,7 +35,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoOverrideElement )
+//$ BEGIN TEMPLATE ElementSource(SoOverrideElement)
 
 /*!
   \var SoOverrideElement::classTypeId
@@ -91,21 +91,21 @@ SoOverrideElement::getClassStackIndex(void)
 void
 SoOverrideElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoOverrideElement )
+//$ BEGIN TEMPLATE InitElementSource(SoOverrideElement)
   assert(SoOverrideElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoOverrideElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoOverrideElement",
-    &SoOverrideElement::createInstance);
+  SoOverrideElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoOverrideElement",
+                       &SoOverrideElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoOverrideElement::classStackIndex =
-      createStackIndex( SoOverrideElement::classTypeId );
-  } else {
-    SoOverrideElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoOverrideElement::classTypeId);
+  }
+  else {
+    SoOverrideElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -117,7 +117,7 @@ SoOverrideElement::initClass(void)
 void
 SoOverrideElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoOverrideElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoOverrideElement)
 //$ END TEMPLATE CleanElementSource
 }
 
@@ -169,7 +169,7 @@ SoOverrideElement::pop(SoState * state, const SoElement * prevTopElement)
 //! FIXME: write doc.
 
 SbBool
-SoOverrideElement::matches(const SoElement * element) const
+SoOverrideElement::matches(const SoElement * /* element */) const
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;
@@ -187,15 +187,16 @@ SoOverrideElement::copyMatchInfo(void) const
 //! FIXME: write doc.
 
 void
-SoOverrideElement::print(FILE * file) const
+SoOverrideElement::print(FILE * /* file */) const
 {
 }
 
 //! FIXME: write doc.
 
 void
-SoOverrideElement::pFlag(FILE * const file, const char * const format,
-			 const int32_t flag) const
+SoOverrideElement::pFlag(FILE * const /* file */,
+			 const char * const /* format */,
+			 const int32_t /* flag */) const
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -417,7 +418,7 @@ SoOverrideElement::getPolygonOffsetOverride(SoState * const state)
 
 void
 SoOverrideElement::setAmbientColorOverride(SoState * const state,
-					   SoNode * const node,
+					   SoNode * const /* node */,
 					   const SbBool override)
 {
   SO_SET_OVERRIDE(AMBIENT_COLOR);
@@ -429,7 +430,7 @@ SoOverrideElement::setAmbientColorOverride(SoState * const state,
 
 void
 SoOverrideElement::setColorIndexOverride(SoState * const state,
-					 SoNode * const node,
+					 SoNode * const /* node */,
 					 const SbBool override)
 {
   SO_SET_OVERRIDE(COLOR_INDEX);
@@ -441,7 +442,7 @@ SoOverrideElement::setColorIndexOverride(SoState * const state,
 
 void
 SoOverrideElement::setComplexityOverride(SoState * const state,
-					 SoNode * const node,
+					 SoNode * const /* node */,
 					 const SbBool override)
 {
   SO_SET_OVERRIDE(COMPLEXITY);
@@ -453,7 +454,7 @@ SoOverrideElement::setComplexityOverride(SoState * const state,
 
 void
 SoOverrideElement::setComplexityTypeOverride(SoState * const state,
-					     SoNode * const node,
+					     SoNode * const /* node */,
 					     const SbBool override)
 {
   SO_SET_OVERRIDE(COMPLEXITY_TYPE);
@@ -465,7 +466,7 @@ SoOverrideElement::setComplexityTypeOverride(SoState * const state,
 
 void
 SoOverrideElement::setCreaseAngleOverride(SoState * const state,
-					  SoNode * const node,
+					  SoNode * const /* node */,
 					  const SbBool override)
 {
   SO_SET_OVERRIDE(CREASE_ANGLE);
@@ -474,9 +475,9 @@ SoOverrideElement::setCreaseAngleOverride(SoState * const state,
 //! FIXME: write doc.
 
 void
-SoOverrideElement::setDiffuseColorOverride(SoState * const state,
-					   SoNode * const node,
-					   const SbBool override)
+SoOverrideElement::setDiffuseColorOverride(SoState * const /* state */,
+					   SoNode * const /* node */,
+					   const SbBool /* override */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -487,7 +488,7 @@ SoOverrideElement::setDiffuseColorOverride(SoState * const state,
 
 void
 SoOverrideElement::setDrawStyleOverride(SoState * const state,
-					SoNode * const node,
+					SoNode * const /* node */,
 					const SbBool override)
 {
   SO_SET_OVERRIDE(DRAW_STYLE);
@@ -499,7 +500,7 @@ SoOverrideElement::setDrawStyleOverride(SoState * const state,
 
 void
 SoOverrideElement::setEmissiveColorOverride(SoState * const state,
-					    SoNode * const node,
+					    SoNode * const /* node */,
 					    const SbBool override)
 {
   SO_SET_OVERRIDE(EMISSIVE_COLOR);
@@ -511,7 +512,7 @@ SoOverrideElement::setEmissiveColorOverride(SoState * const state,
 
 void
 SoOverrideElement::setFontNameOverride(SoState * const state,
-				       SoNode * const node,
+				       SoNode * const /* node */,
 				       const SbBool override)
 {
   SO_SET_OVERRIDE(FONT_NAME);
@@ -523,7 +524,7 @@ SoOverrideElement::setFontNameOverride(SoState * const state,
 
 void
 SoOverrideElement::setFontSizeOverride(SoState * const state,
-				       SoNode * const node,
+				       SoNode * const /* node */,
 				       const SbBool override)
 {
   SO_SET_OVERRIDE(FONT_SIZE);
@@ -535,7 +536,7 @@ SoOverrideElement::setFontSizeOverride(SoState * const state,
 
 void
 SoOverrideElement::setLightModelOverride(SoState * const state,
-					 SoNode * const node,
+					 SoNode * const /* node */,
 					 const SbBool override)
 {
   SO_SET_OVERRIDE(LIGHT_MODEL);
@@ -547,7 +548,7 @@ SoOverrideElement::setLightModelOverride(SoState * const state,
 
 void
 SoOverrideElement::setLinePatternOverride(SoState * const state,
-					  SoNode * const node,
+					  SoNode * const /* node */,
 					  const SbBool override)
 {
   SO_SET_OVERRIDE(LINE_PATTERN);
@@ -559,7 +560,7 @@ SoOverrideElement::setLinePatternOverride(SoState * const state,
 
 void
 SoOverrideElement::setLineWidthOverride(SoState * const state,
-					SoNode * const node,
+					SoNode * const /* node */,
 					const SbBool override)
 {
   SO_SET_OVERRIDE(LINE_WIDTH);
@@ -568,9 +569,9 @@ SoOverrideElement::setLineWidthOverride(SoState * const state,
 //! FIXME: write doc.
 
 void
-SoOverrideElement::setMaterialBindingOverride(SoState * const state,
-					      SoNode * const node,
-					      const SbBool override)
+SoOverrideElement::setMaterialBindingOverride(SoState * const /* state */,
+					      SoNode * const /* node */,
+					      const SbBool /* override */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -581,7 +582,7 @@ SoOverrideElement::setMaterialBindingOverride(SoState * const state,
 
 void
 SoOverrideElement::setPickStyleOverride(SoState * const state,
-					SoNode * const node,
+					SoNode * const /* node */,
 					const SbBool override)
 {
   SO_SET_OVERRIDE(PICK_STYLE);
@@ -593,7 +594,7 @@ SoOverrideElement::setPickStyleOverride(SoState * const state,
 
 void
 SoOverrideElement::setPointSizeOverride(SoState * const state,
-					SoNode * const node,
+					SoNode * const /* node */,
 					const SbBool override)
 {
   SO_SET_OVERRIDE(POINT_SIZE);
@@ -605,7 +606,7 @@ SoOverrideElement::setPointSizeOverride(SoState * const state,
 
 void
 SoOverrideElement::setPolygonOffsetOverride(SoState * const state,
-					    SoNode * const node,
+					    SoNode * const /* node */,
 					    const SbBool override)
 {
   SO_SET_OVERRIDE(POLYGON_OFFSET);
@@ -617,7 +618,7 @@ SoOverrideElement::setPolygonOffsetOverride(SoState * const state,
 
 void
 SoOverrideElement::setShapeHintsOverride(SoState * const state,
-					 SoNode * const node,
+					 SoNode * const /* node */,
 					 const SbBool override)
 {
   SO_SET_OVERRIDE(SHAPE_HINTS);
@@ -629,7 +630,7 @@ SoOverrideElement::setShapeHintsOverride(SoState * const state,
 
 void
 SoOverrideElement::setShininessOverride(SoState * const state,
-					SoNode * const node,
+					SoNode * const /* node */,
 					const SbBool override)
 {
   SO_SET_OVERRIDE(SHININESS);
@@ -641,7 +642,7 @@ SoOverrideElement::setShininessOverride(SoState * const state,
 
 void
 SoOverrideElement::setSpecularColorOverride(SoState * const state,
-					    SoNode * const node,
+					    SoNode * const /* node */,
 					    const SbBool override)
 {
   SO_SET_OVERRIDE(SPECULAR_COLOR);
@@ -650,9 +651,9 @@ SoOverrideElement::setSpecularColorOverride(SoState * const state,
 //! FIXME: write doc.
 
 void
-SoOverrideElement::setTransparencyOverride(SoState * const state,
-					   SoNode * const node,
-					   const SbBool override)
+SoOverrideElement::setTransparencyOverride(SoState * const /* state */,
+					   SoNode * const /* node */,
+					   const SbBool /* override */)
 {
   assert(0 && "FIXME: not implemented");
 }

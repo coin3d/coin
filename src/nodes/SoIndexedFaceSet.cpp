@@ -340,7 +340,7 @@ SoIndexedFaceSet::findNormalBinding(SoState * const state) const
   FIXME: write function documentation
 */
 void 
-SoIndexedFaceSet::notify(SoNotList * list)
+SoIndexedFaceSet::notify(SoNotList * /* list */)
 {
   // FIXME: implement what's necessary here (cache
   // destruction?). 19990405 mortene.
@@ -406,7 +406,7 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
     else glNormal3f(0.0f, 0.0f, 1.0f);
   }
   else if (normalCacheUsed && nbind == PER_VERTEX) {
-    nbind == PER_VERTEX_INDEXED;
+    nbind = PER_VERTEX_INDEXED;
   }  
 
   Binding tbind = NONE;
@@ -476,7 +476,7 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
   FIXME: write function documentation
 */
 void 
-SoIndexedFaceSet::generatePrimitives(SoAction * action)
+SoIndexedFaceSet::generatePrimitives(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -487,11 +487,11 @@ SoIndexedFaceSet::generatePrimitives(SoAction * action)
   FIXME: write function documentation
 */
 SoDetail *
-SoIndexedFaceSet::createTriangleDetail(SoRayPickAction * action,
-				       const SoPrimitiveVertex * v1,
-				       const SoPrimitiveVertex * v2,
-				       const SoPrimitiveVertex * v3,
-				       SoPickedPoint * pp)
+SoIndexedFaceSet::createTriangleDetail(SoRayPickAction * /* action */,
+				       const SoPrimitiveVertex * /* v1 */,
+				       const SoPrimitiveVertex * /* v2 */,
+				       const SoPrimitiveVertex * /* v3 */,
+				       SoPickedPoint * /* pp */)
 {
   assert(0 && "FIXME: not implemented yet");
   return NULL;
@@ -504,7 +504,7 @@ SoIndexedFaceSet::createTriangleDetail(SoRayPickAction * action,
   FIXME: write doc
 */
 void
-SoIndexedFaceSet::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoIndexedFaceSet::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -514,7 +514,8 @@ SoIndexedFaceSet::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   FIXME: write doc
 */
 SbBool
-SoIndexedFaceSet::generateDefaultNormals(SoState * state, SoNormalBundle * nb)
+SoIndexedFaceSet::generateDefaultNormals(SoState * /* state */,
+					 SoNormalBundle * /* nb */)
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;

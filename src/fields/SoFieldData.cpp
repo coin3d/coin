@@ -97,7 +97,7 @@ SoFieldData::SoFieldData(void)
 /*!
   Constructor.
  */
-SoFieldData::SoFieldData(const SoFieldData & fd)
+SoFieldData::SoFieldData(const SoFieldData & /* fd */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -105,7 +105,7 @@ SoFieldData::SoFieldData(const SoFieldData & fd)
 /*!
   Constructor.
  */
-SoFieldData::SoFieldData(const SoFieldData * fd)
+SoFieldData::SoFieldData(const SoFieldData * /* fd */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -113,7 +113,7 @@ SoFieldData::SoFieldData(const SoFieldData * fd)
 /*!
   Constructor.
  */
-SoFieldData::SoFieldData(int numfields)
+SoFieldData::SoFieldData(int /* numfields */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -158,8 +158,9 @@ SoFieldData::addField(SoFieldContainer * defObject, const char * fieldName,
   FIXME: write doc
  */
 void
-SoFieldData::overlay(SoFieldContainer * to, const SoFieldContainer * from,
-		     SbBool copyConnections) const
+SoFieldData::overlay(SoFieldContainer * /* to */,
+		     const SoFieldContainer * /* from */,
+		     SbBool /* copyConnections */) const
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -186,7 +187,7 @@ SoFieldData::getFieldName(int index) const
   FIXME: write doc
  */
 SoField *
-SoFieldData::getField(const SoFieldContainer * object, int index) const
+SoFieldData::getField(const SoFieldContainer * /* object */, int index) const
 {
   // FIXME: why the SoFieldContainer argument? 19990610 mortene.
   return ((SoFieldEntry *)fields[index])->ptr;
@@ -196,7 +197,8 @@ SoFieldData::getField(const SoFieldContainer * object, int index) const
   FIXME: write doc
 */
 int
-SoFieldData::getIndex(const SoFieldContainer * fc, const SoField * field) const
+SoFieldData::getIndex(const SoFieldContainer * /* fc */,
+		      const SoField * /* field */) const
 {
   assert(0 && "FIXME: not implemented");
   return -1;
@@ -272,11 +274,11 @@ SoFieldData::getEnumData(const char * typeNameArg, int & num,
  */
 SbBool
 SoFieldData::read(SoInput * in, SoFieldContainer * object,
-		  SbBool errorOnUnknownField, SbBool & notBuiltIn) const
+		  SbBool errorOnUnknownField, SbBool & /* notBuiltIn */) const
 {
   // FIXME: use object and notBuiltIn somehow. 19990610 mortene.
 
-  unsigned int numfields;
+  int numfields;
   if (in->isBinary()) {
     if (!in->read(numfields)) {
       SoReadError::post(in, "premature EOF");
@@ -363,7 +365,8 @@ SoFieldData::read(SoInput * in, SoFieldContainer * object,
   FIXME: write doc
  */
 void
-SoFieldData::write(SoOutput * out, const SoFieldContainer * object) const
+SoFieldData::write(SoOutput * /* out */,
+		   const SoFieldContainer * /* object */) const
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -394,8 +397,8 @@ SoFieldData::copy(const SoFieldData * src)
   FIXME: write doc
  */
 SbBool
-SoFieldData::isSame(const SoFieldContainer * c1,
-		    const SoFieldContainer * c2) const
+SoFieldData::isSame(const SoFieldContainer * /* c1 */,
+		    const SoFieldContainer * /* c2 */) const
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;
@@ -405,8 +408,8 @@ SoFieldData::isSame(const SoFieldContainer * c1,
   FIXME: write doc
  */
 SbBool
-SoFieldData::readFieldDescriptions(SoInput * in, SoFieldContainer * object,
-				   int numDescriptionsExpected) const
+SoFieldData::readFieldDescriptions(SoInput * /* in */, SoFieldContainer * /* object */,
+				   int /* numDescriptionsExpected */) const
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;
@@ -416,8 +419,8 @@ SoFieldData::readFieldDescriptions(SoInput * in, SoFieldContainer * object,
   FIXME: write doc
  */
 void
-SoFieldData::writeFieldDescriptions(SoOutput * out,
-				    const SoFieldContainer * object) const
+SoFieldData::writeFieldDescriptions(SoOutput * /* out */,
+				    const SoFieldContainer * /* object */) const
 {
   assert(0 && "FIXME: not implemented");
 }

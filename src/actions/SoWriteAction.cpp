@@ -40,7 +40,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource( SoWriteAction )
+//$ BEGIN TEMPLATE ActionSource(SoWriteAction)
 
 SoType SoWriteAction::classTypeId = SoType::badType();
 
@@ -114,7 +114,7 @@ SoWriteAction::enableElement(const SoType type, const int stackIndex)
 void
 SoWriteAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource( SoWriteAction )
+//$ BEGIN TEMPLATE InitActionSource(SoWriteAction)
   assert(SoWriteAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
@@ -181,7 +181,7 @@ SoWriteAction::getOutput(void) const
   FIXME: write function documentation
 */
 void
-SoWriteAction::writePROTO(SoVRMLPROTODef * protoDef)
+SoWriteAction::writePROTO(SoVRMLPROTODef * /* protoDef */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -190,7 +190,7 @@ SoWriteAction::writePROTO(SoVRMLPROTODef * protoDef)
   FIXME: write function documentation
 */
 void
-SoWriteAction::writeEXTERNPROTO(SoVRMLEXTERNPROTODef * externprotoDef)
+SoWriteAction::writeEXTERNPROTO(SoVRMLEXTERNPROTODef * /* externprotoDef */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -218,7 +218,7 @@ SoWriteAction::continueToApply(SoNode * node)
   FIXME: write function documentation
 */
 void
-SoWriteAction::continueToApply(SoPath * path)
+SoWriteAction::continueToApply(SoPath * /* path */)
 {
   assert(0 && "FIXME: not implemented yet");
 }

@@ -291,7 +291,7 @@ SoVertexProperty::GLRender(SoGLRenderAction * action)
   FIXME: write doc
  */
 void
-SoVertexProperty::doAction(SoAction * action)
+SoVertexProperty::doAction(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -302,7 +302,7 @@ SoVertexProperty::doAction(SoAction * action)
   FIXME: write doc
  */
 void
-SoVertexProperty::callback(SoCallbackAction * action)
+SoVertexProperty::callback(SoCallbackAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -313,7 +313,7 @@ SoVertexProperty::callback(SoCallbackAction * action)
   FIXME: write doc
  */
 void
-SoVertexProperty::pick(SoPickAction * action)
+SoVertexProperty::pick(SoPickAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -324,7 +324,7 @@ SoVertexProperty::pick(SoPickAction * action)
   FIXME: write doc
  */
 void
-SoVertexProperty::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoVertexProperty::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_SHININESS_ELEMENT_H_
-#define _SO_SHININESS_ELEMENT_H_
+#ifndef __SOSHININESSELEMENT_H__
+#define __SOSHININESSELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOSHININESSELEMENT)
@@ -30,7 +30,7 @@
 class SoShininessElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoShininessElement )
+//$ BEGIN TEMPLATE ElementHeader(SoShininessElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -64,4 +64,4 @@ protected:
 
 };
 
-#endif // ! _SO_SHININESS_ELEMENT_H_
+#endif // !__SOSHININESSELEMENT_H__

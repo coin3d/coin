@@ -28,7 +28,7 @@
 #include <Inventor/VRMLnodes/SoVRMLInterpolator.h>
 #include <Inventor/SbName.h>
 
-//$ BEGIN TEMPLATE NodeAbstractSource( SoVRMLInterpolator )
+//$ BEGIN TEMPLATE NodeAbstractSource(SoVRMLInterpolator)
 SoType SoVRMLInterpolator::classTypeId = SoType::badType();
 
 /*!
@@ -55,7 +55,7 @@ SoVRMLInterpolator::getTypeId(void) const
 */
 SoVRMLInterpolator::SoVRMLInterpolator(void)
 {
-//$ BEGIN TEMPLATE NodeConstructor( SoVRMLInterpolator )
+//$ BEGIN TEMPLATE NodeConstructor(SoVRMLInterpolator)
   // Make sure the class has been initialized.
   assert(SoVRMLInterpolator::classTypeId != SoType::badType());
 //$ END TEMPLATE NodeConstructor
@@ -76,7 +76,7 @@ SoVRMLInterpolator::~SoVRMLInterpolator()
 void
 SoVRMLInterpolator::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeAbstractSource( VRMLInterpolator )
+//$ BEGIN TEMPLATE InitNodeAbstractSource(VRMLInterpolator)
   // Make sure we only initialize once.
   assert(SoVRMLInterpolator::classTypeId == SoType::badType());
   // Make sure superclass get initialized before subclass.

@@ -38,7 +38,7 @@ typedef void SoWWWAnchorCB(const SbString & url, void * data,
 class SoWWWAnchor : public SoLocateHighlight {
   typedef SoLocateHighlight inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoWWWAnchor )
+//$ BEGIN TEMPLATE NodeHeader(SoWWWAnchor)
 private:
   static SoType classTypeId;
 

@@ -41,7 +41,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE SFieldRequired( SoSFBitMask )
+//$ BEGIN TEMPLATE SFieldRequired(SoSFBitMask)
 
 SoType SoSFBitMask::classTypeId = SoType::badType();
 
@@ -130,7 +130,7 @@ SoSFBitMask::operator = (const SoSFBitMask & field)
 void
 SoSFBitMask::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass( SFBitMask )
+//$ BEGIN TEMPLATE FieldInitClass(SFBitMask)
   // Make sure we only initialize once.
   assert(SoSFBitMask::classTypeId == SoType::badType());
   // Make sure superclass has been initialized before subclass.

@@ -36,7 +36,7 @@
 #include <GL/gl.h>
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource( SoGLShininessElement )
+//$ BEGIN TEMPLATE ElementSource(SoGLShininessElement)
 
 /*!
   \var SoGLShininessElement::classTypeId
@@ -92,21 +92,21 @@ SoGLShininessElement::getClassStackIndex(void)
 void
 SoGLShininessElement::initClass()
 {
-//$ BEGIN TEMPLATE InitElementSource( SoGLShininessElement )
+//$ BEGIN TEMPLATE InitElementSource(SoGLShininessElement)
   assert(SoGLShininessElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoGLShininessElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoGLShininessElement",
-    &SoGLShininessElement::createInstance);
+  SoGLShininessElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoGLShininessElement",
+                       &SoGLShininessElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoGLShininessElement::classStackIndex =
-      createStackIndex( SoGLShininessElement::classTypeId );
-  } else {
-    SoGLShininessElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoGLShininessElement::classTypeId);
+  }
+  else {
+    SoGLShininessElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -119,14 +119,14 @@ SoGLShininessElement::initClass()
 void 
 SoGLShininessElement::cleanClass()
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoGLShininessElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoGLShininessElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoGLShininessElement::createInstance( void )
+  \sa void * SoGLShininessElement::createInstance(void)
 */
 
 SoGLShininessElement::SoGLShininessElement()

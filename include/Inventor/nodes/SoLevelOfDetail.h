@@ -32,7 +32,7 @@
 class SoLevelOfDetail : public SoGroup {
   typedef SoGroup inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoLevelOfDetail )
+//$ BEGIN TEMPLATE NodeHeader(SoLevelOfDetail)
 private:
   static SoType classTypeId;
 

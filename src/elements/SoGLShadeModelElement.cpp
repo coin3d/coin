@@ -38,7 +38,7 @@
 #include <GL/gl.h>
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource( SoGLShadeModelElement )
+//$ BEGIN TEMPLATE ElementSource(SoGLShadeModelElement)
 
 /*!
   \var SoGLShadeModelElement::classTypeId
@@ -94,21 +94,21 @@ SoGLShadeModelElement::getClassStackIndex(void)
 void
 SoGLShadeModelElement::initClass()
 {
-//$ BEGIN TEMPLATE InitElementSource( SoGLShadeModelElement )
+//$ BEGIN TEMPLATE InitElementSource(SoGLShadeModelElement)
   assert(SoGLShadeModelElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoGLShadeModelElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoGLShadeModelElement",
-    &SoGLShadeModelElement::createInstance);
+  SoGLShadeModelElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoGLShadeModelElement",
+                       &SoGLShadeModelElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoGLShadeModelElement::classStackIndex =
-      createStackIndex( SoGLShadeModelElement::classTypeId );
-  } else {
-    SoGLShadeModelElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoGLShadeModelElement::classTypeId);
+  }
+  else {
+    SoGLShadeModelElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -121,20 +121,20 @@ SoGLShadeModelElement::initClass()
 void
 SoGLShadeModelElement::cleanClass()
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoGLShadeModelElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoGLShadeModelElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoGLShadeModelElement::createInstance( void )
+  \sa void * SoGLShadeModelElement::createInstance(void)
 */
 
 SoGLShadeModelElement::SoGLShadeModelElement()
 {
-  setTypeId( SoGLShadeModelElement::classTypeId );
-  setStackIndex( SoGLShadeModelElement::classStackIndex );
+  setTypeId(SoGLShadeModelElement::classTypeId);
+  setStackIndex(SoGLShadeModelElement::classStackIndex);
 }
 
 /*!
@@ -179,7 +179,7 @@ SoGLShadeModelElement::pop(SoState * state,
 //! FIXME: write doc.
 
 SbBool
-SoGLShadeModelElement::matches(const SoElement * element) const
+SoGLShadeModelElement::matches(const SoElement * /* element */) const
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;

@@ -30,7 +30,7 @@
 class SoMFFloat : public SoMField {
   typedef SoMField inherited;
 
-//$ BEGIN TEMPLATE MField( SoMFFloat, float, float )
+//$ BEGIN TEMPLATE MField(SoMFFloat, float, float)
 private:
   static SoType classTypeId;
 

@@ -43,42 +43,48 @@ SoDB::addConverter(mfield::getClassTypeId(),sfield::getClassTypeId(), \
 else if (this->fromType==fromType_::getClassTypeId()) \
   SO_ENGINE_OUTPUT(this->output,fromType_,setValue(input_->getValue())); 
 
-//  #define SO_CONVERTALL_CONVERT_SCALAR(input_) \
-//  if (this->useInput==&input_) { \
-//    if (0); \
-//    SO_CONVERTALL_OUTPUT_SCALAR(input_,SoSFBool) \
-//    SO_CONVERTALL_OUTPUT_SCALAR(input_,SoSFFloat) \
-//    SO_CONVERTALL_OUTPUT_SCALAR(input_,SoSFInt32) \
-//    SO_CONVERTALL_OUTPUT_SCALAR(input_,SoSFShort) \
-//    SO_CONVERTALL_OUTPUT_SCALAR(input_,SoSFUInt32) \
-//    SO_CONVERTALL_OUTPUT_SCALAR(input_,SoSFUShort) \
-//    break; \
-//  }
+
+// OBSOLETED?? 19990925 mortene.
+#if 0
+
+#define SO_CONVERTALL_CONVERT_SCALAR(input_) \
+if (this->useInput==&input_) { \
+  if (0); \
+  SO_CONVERTALL_OUTPUT_SCALAR(input_,SoSFBool) \
+  SO_CONVERTALL_OUTPUT_SCALAR(input_,SoSFFloat) \
+  SO_CONVERTALL_OUTPUT_SCALAR(input_,SoSFInt32) \
+  SO_CONVERTALL_OUTPUT_SCALAR(input_,SoSFShort) \
+  SO_CONVERTALL_OUTPUT_SCALAR(input_,SoSFUInt32) \
+  SO_CONVERTALL_OUTPUT_SCALAR(input_,SoSFUShort) \
+  break; \
+}
 
 
-// #define SO_CONVERTALL_CONVERT_SCALAR(fromType_) \
-// if (this->fromType==fromType_::getClassTypeId) { \
-//   if (0); \
-//   SO_CONVERTALL_OUTPUT_SCALAR(fromType,SoSFBool) \
-//   SO_CONVERTALL_OUTPUT_SCALAR(fromType,SoSFFloat) \
-//   SO_CONVERTALL_OUTPUT_SCALAR(fromType,SoSFInt32) \
-//   SO_CONVERTALL_OUTPUT_SCALAR(fromType,SoSFShort) \
-//   SO_CONVERTALL_OUTPUT_SCALAR(fromType,SoSFUInt32) \
-//   SO_CONVERTALL_OUTPUT_SCALAR(fromType,SoSFUShort) \
-//   break; \
-// }
+#define SO_CONVERTALL_CONVERT_SCALAR(fromType_) \
+ if (this->fromType==fromType_::getClassTypeId) { \
+ if (0); \
+ SO_CONVERTALL_OUTPUT_SCALAR(fromType,SoSFBool) \
+ SO_CONVERTALL_OUTPUT_SCALAR(fromType,SoSFFloat) \
+ SO_CONVERTALL_OUTPUT_SCALAR(fromType,SoSFInt32) \
+ SO_CONVERTALL_OUTPUT_SCALAR(fromType,SoSFShort) \
+ SO_CONVERTALL_OUTPUT_SCALAR(fromType,SoSFUInt32) \
+ SO_CONVERTALL_OUTPUT_SCALAR(fromType,SoSFUShort) \
+ break; \
+ }
 
-// #define SO_CONVERTALL_OUTPUT_SCALAR(fromType_,toType_) \
-// else if (this->toType==toType::getClassTypeId()) \
-//   SO_ENGINE_OUTPUT(this->output,fromType_,setValue(((toType_ *)input)->getValue())); 
+#define SO_CONVERTALL_OUTPUT_SCALAR(fromType_,toType_) \
+ else if (this->toType==toType::getClassTypeId()) \
+ SO_ENGINE_OUTPUT(this->output,fromType_,setValue(((toType_ *)input)->getValue())); 
 
-// #define SO_CONVERTALL_OUTPUT_MSCALAR(type) \
-// if (this->toType.getKey()==type::getClassTypeId().getKey()) { \
-//   SO_ENGINE_OUTPUT(this->output,type,setNum(input->getNum())); \
-//   for (int i=0;i<input->getNum();i++) \
-//     SO_ENGINE_OUTPUT(this->output,type,setValue(input->get1Value(i))); \
-//   break; \
-// }
+#define SO_CONVERTALL_OUTPUT_MSCALAR(type) \
+ if (this->toType.getKey()==type::getClassTypeId().getKey()) { \
+ SO_ENGINE_OUTPUT(this->output,type,setNum(input->getNum())); \
+ for (int i=0;i<input->getNum();i++) \
+   SO_ENGINE_OUTPUT(this->output,type,setValue(input->get1Value(i))); \
+ break; \
+ }
+
+#endif // OBSOLETED??
 
 SO_ENGINE_ABSTRACT_SOURCE(SoConvertAll);
 
@@ -406,13 +412,13 @@ SoConvertAll::~SoConvertAll()
 }
 
 SoField *
-SoConvertAll::getInput(SoType type)
+SoConvertAll::getInput(SoType /* type */)
 {
   return input;
 }
 
 SoEngineOutput *
-SoConvertAll::getOutput(SoType type)
+SoConvertAll::getOutput(SoType /* type */)
 {
   return &output;
 }

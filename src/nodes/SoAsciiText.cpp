@@ -67,7 +67,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource( SoAsciiText )
+//$ BEGIN TEMPLATE NodeSource(SoAsciiText)
 SoType SoAsciiText::classTypeId = SoType::badType();
 
 /*!
@@ -103,7 +103,7 @@ SoAsciiText::getTypeId(void) const
 */
 SoAsciiText::SoAsciiText()
 {
-//$ BEGIN TEMPLATE NodeConstructor( SoAsciiText )
+//$ BEGIN TEMPLATE NodeConstructor(SoAsciiText)
   // Make sure the class has been initialized.
   assert(SoAsciiText::classTypeId != SoType::badType());
 //$ END TEMPLATE NodeConstructor
@@ -134,7 +134,7 @@ SoAsciiText::~SoAsciiText()
 void
 SoAsciiText::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource( AsciiText )
+//$ BEGIN TEMPLATE InitNodeSource(AsciiText)
   // Make sure we only initialize once.
   assert(SoAsciiText::classTypeId == SoType::badType());
   // Make sure superclass get initialized before subclass.
@@ -161,7 +161,7 @@ SoAsciiText::cleanClass(void)
   FIXME: write doc
 */
 void
-SoAsciiText::GLRender(SoGLRenderAction * action)
+SoAsciiText::GLRender(SoGLRenderAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -172,7 +172,7 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
   FIXME: write doc
 */
 void
-SoAsciiText::rayPick(SoRayPickAction * action)
+SoAsciiText::rayPick(SoRayPickAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -183,7 +183,7 @@ SoAsciiText::rayPick(SoRayPickAction * action)
   FIXME: write doc
 */
 void
-SoAsciiText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoAsciiText::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -194,7 +194,8 @@ SoAsciiText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   FIXME: write doc
 */
 void
-SoAsciiText::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
+SoAsciiText::computeBBox(SoAction * /* action */,
+			 SbBox3f & /* box */, SbVec3f & /* center */)
 {
   assert(0 && "FIXME: not implemented");
 }

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_SEARCH_ACTION_H_
-#define _SO_SEARCH_ACTION_H_
+#ifndef __SOSEARCHACTION_H__
+#define __SOSEARCHACTION_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOSEARCHACTION)
@@ -32,7 +32,7 @@
 class SoSearchAction : public SoAction {
   typedef SoAction inherited;
 
-//$ BEGIN TEMPLATE ActionHeader( SoSearchAction )
+//$ BEGIN TEMPLATE ActionHeader(SoSearchAction)
 private:
   static SoType classTypeId;
 
@@ -61,30 +61,30 @@ public:
   enum LookFor { NODE = 1, TYPE = 2, NAME = 4 };
   enum Interest { FIRST, LAST, ALL };
   
-  void setNode( SoNode * const node );
-  SoNode * getNode( void ) const;
-  void setType( const SoType type,
-                const SbBool includeDerived = TRUE );
-  SoType getType( SbBool & includeDerived ) const;
-  void setName( const SbName name );
-  SbName getName( void ) const;
-  void setFind( const int what );
-  int getFind( void ) const;
-  void setInterest( const Interest interest );
-  Interest getInterest( void ) const;
-  void setSearchingAll( const SbBool searchAll );
-  SbBool isSearchingAll( void ) const;
-  SoPath * getPath( void ) const;
-  SoPathList & getPaths( void );
-  void reset( void );
+  void setNode(SoNode * const node);
+  SoNode * getNode(void) const;
+  void setType(const SoType type,
+                const SbBool includeDerived = TRUE);
+  SoType getType(SbBool & includeDerived) const;
+  void setName(const SbName name);
+  SbName getName(void) const;
+  void setFind(const int what);
+  int getFind(void) const;
+  void setInterest(const Interest interest);
+  Interest getInterest(void) const;
+  void setSearchingAll(const SbBool searchAll);
+  SbBool isSearchingAll(void) const;
+  SoPath * getPath(void) const;
+  SoPathList & getPaths(void);
+  void reset(void);
 
   // extender
-  void setFound( void );
-  SbBool isFound( void ) const;
-  void addPath( SoPath * const path );
+  void setFound(void);
+  SbBool isFound(void) const;
+  void addPath(SoPath * const path);
 
 protected:
-  virtual void beginTraversal( SoNode * node );
+  virtual void beginTraversal(SoNode * node);
 
 private:
   int lookFor; // mask of LookFor flags
@@ -102,4 +102,4 @@ private:
 
 };
 
-#endif // ! _SO_SEARCH_ACTION_H_
+#endif // !__SOSEARCHACTION_H__

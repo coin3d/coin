@@ -32,7 +32,7 @@
 class SoMarkerSet : public SoPointSet {
   typedef SoPointSet inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoMarkerSet )
+//$ BEGIN TEMPLATE NodeHeader(SoMarkerSet)
 private:
   static SoType classTypeId;
 

@@ -35,7 +35,7 @@ class SoLight;
 class SoLightElement : public SoAccumulatedElement {
   typedef SoAccumulatedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoLightElement )
+//$ BEGIN TEMPLATE ElementHeader(SoLightElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -53,19 +53,19 @@ protected:
 //$ END TEMPLATE ElementHeader
 
 public:
-  virtual void init( SoState * state );
+  virtual void init(SoState * state);
 
-  virtual void push( SoState * state );
-  virtual void pop( SoState * state,
-              const SoElement * prevTopElement );
+  virtual void push(SoState * state);
+  virtual void pop(SoState * state,
+              const SoElement * prevTopElement);
 
-  static  void add( SoState * const state, SoLight * const light,
-              const SbMatrix & WCToVRCMatrix );
-  static  const SoNodeList & getLights( SoState * const state );
-  static  const SbMatrix & getMatrix( SoState * const state,
-              const int index );
+  static  void add(SoState * const state, SoLight * const light,
+              const SbMatrix & WCToVRCMatrix);
+  static  const SoNodeList & getLights(SoState * const state);
+  static  const SbMatrix & getMatrix(SoState * const state,
+              const int index);
 
-  virtual void print( FILE * file ) const;
+  virtual void print(FILE * file) const;
 
 protected:
   SoNodeList lights;

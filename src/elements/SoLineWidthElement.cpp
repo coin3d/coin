@@ -30,7 +30,7 @@
 
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource( SoLineWidthElement )
+//$ BEGIN TEMPLATE ElementSource(SoLineWidthElement)
 
 /*!
   \var SoLineWidthElement::classTypeId
@@ -84,24 +84,23 @@ SoLineWidthElement::getClassStackIndex(void)
 */
 
 void
-SoLineWidthElement::initClass(
-    void )
+SoLineWidthElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoLineWidthElement )
+//$ BEGIN TEMPLATE InitElementSource(SoLineWidthElement)
   assert(SoLineWidthElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoLineWidthElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoLineWidthElement",
-    &SoLineWidthElement::createInstance);
+  SoLineWidthElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoLineWidthElement",
+                       &SoLineWidthElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoLineWidthElement::classStackIndex =
-      createStackIndex( SoLineWidthElement::classTypeId );
-  } else {
-    SoLineWidthElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoLineWidthElement::classTypeId);
+  }
+  else {
+    SoLineWidthElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -111,24 +110,22 @@ SoLineWidthElement::initClass(
 */
 
 void
-SoLineWidthElement::cleanClass(
-    void )
+SoLineWidthElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoLineWidthElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoLineWidthElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoLineWidthElement::createInstance( void )
+  \sa void * SoLineWidthElement::createInstance(void)
 */
 
-SoLineWidthElement::SoLineWidthElement(
-    void )
+SoLineWidthElement::SoLineWidthElement(void)
 {
-    setTypeId( SoLineWidthElement::classTypeId );
-    setStackIndex( SoLineWidthElement::classStackIndex );
+    setTypeId(SoLineWidthElement::classTypeId);
+    setStackIndex(SoLineWidthElement::classStackIndex);
     this->data = getDefault();
 }
 
@@ -136,18 +133,17 @@ SoLineWidthElement::SoLineWidthElement(
   The destructor.
 */
 
-SoLineWidthElement::~SoLineWidthElement( // virtual protected
-    void )
+SoLineWidthElement::~SoLineWidthElement(// virtual protected
+    void)
 {
 }
 
 //! FIXME: write doc.
 
 void
-SoLineWidthElement::init(
-    SoState * state )
+SoLineWidthElement::init(SoState * state)
 {
-  inherited::init( state );
+  inherited::init(state);
   this->data = SoLineWidthElement::getDefault();
 }
 
@@ -167,7 +163,7 @@ SoLineWidthElement::set(SoState * const state, SoNode * const node,
 void 
 SoLineWidthElement::set(SoState * const state, const float lineWidth)
 { 
-  set( state, NULL, lineWidth ); 
+  set(state, NULL, lineWidth); 
 }
 
 //! FIXME: write doc.

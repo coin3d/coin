@@ -31,7 +31,6 @@ class SbLineProjector : public SbProjector {
 
 public:
   SbLineProjector(void);
-  ~SbLineProjector();
   virtual SbProjector * copy(void) const;
 
   virtual SbVec3f project(const SbVec2f & point);

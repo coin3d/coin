@@ -31,7 +31,6 @@ public:
   SbSphereSectionProjector(float edgeTol = 0.9f, SbBool orientToEye = TRUE);
   SbSphereSectionProjector(const SbSphere & sph, float edgeTol = 0.9f,
 			   SbBool orientToEye = TRUE);
-  ~SbSphereSectionProjector();
 
   virtual SbProjector * copy(void) const;
   virtual SbVec3f project(const SbVec2f & point);

@@ -39,7 +39,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoNormalBindingElement )
+//$ BEGIN TEMPLATE ElementSource(SoNormalBindingElement)
 
 /*!
   \var SoNormalBindingElement::classTypeId
@@ -93,24 +93,23 @@ SoNormalBindingElement::getClassStackIndex(void)
 */
 
 void
-SoNormalBindingElement::initClass(
-    void )
+SoNormalBindingElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoNormalBindingElement )
+//$ BEGIN TEMPLATE InitElementSource(SoNormalBindingElement)
   assert(SoNormalBindingElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoNormalBindingElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoNormalBindingElement",
-    &SoNormalBindingElement::createInstance);
+  SoNormalBindingElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoNormalBindingElement",
+                       &SoNormalBindingElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoNormalBindingElement::classStackIndex =
-      createStackIndex( SoNormalBindingElement::classTypeId );
-  } else {
-    SoNormalBindingElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoNormalBindingElement::classTypeId);
+  }
+  else {
+    SoNormalBindingElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -121,24 +120,22 @@ SoNormalBindingElement::initClass(
 */
 
 void
-SoNormalBindingElement::cleanClass(
-    void )
+SoNormalBindingElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoNormalBindingElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoNormalBindingElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoNormalBindingElement::createInstance( void )
+  \sa void * SoNormalBindingElement::createInstance(void)
 */
 
-SoNormalBindingElement::SoNormalBindingElement(
-    void )
+SoNormalBindingElement::SoNormalBindingElement(void)
 {
-    setTypeId( SoNormalBindingElement::classTypeId );
-    setStackIndex( SoNormalBindingElement::classStackIndex );
+    setTypeId(SoNormalBindingElement::classTypeId);
+    setStackIndex(SoNormalBindingElement::classStackIndex);
     this->data = getDefault();
 }
 
@@ -146,8 +143,7 @@ SoNormalBindingElement::SoNormalBindingElement(
   The destructor.
 */
 
-SoNormalBindingElement::~SoNormalBindingElement(
-    void )
+SoNormalBindingElement::~SoNormalBindingElement(void)
 {
 }
 
@@ -159,7 +155,7 @@ SoNormalBindingElement::set(SoState * const state,
 			    const Binding binding)
 {
   assert((int)binding >= OVERALL && (int)binding <= PER_VERTEX_INDEXED);
-  SoInt32Element::set( classStackIndex, state, node, binding );
+  SoInt32Element::set(classStackIndex, state, node, binding);
 
 #if !defined(COIN_EXCLUDE_SOGLSHADEMODELELEMENT)
   SoGLShadeModelElement::setNormal(state,
@@ -171,10 +167,9 @@ SoNormalBindingElement::set(SoState * const state,
 //! FIXME: write doc.
 
 void
-SoNormalBindingElement::init(
-    SoState * state )
+SoNormalBindingElement::init(SoState * state)
 {
-  inherited::init( state );
+  inherited::init(state);
   this->data = getDefault();
 }
 
@@ -184,7 +179,7 @@ SoNormalBindingElement::init(
 void 
 SoNormalBindingElement::set(SoState * const state, const Binding binding)
 { 
-  set( state, NULL, binding ); 
+  set(state, NULL, binding); 
 }
  
 //! FIXME: write doc.
@@ -193,7 +188,7 @@ SoNormalBindingElement::set(SoState * const state, const Binding binding)
 SoNormalBindingElement::Binding 
 SoNormalBindingElement::get(SoState * const state)
 { 
-  return (Binding) SoInt32Element::get( classStackIndex, state ); 
+  return (Binding) SoInt32Element::get(classStackIndex, state); 
 }
 
 //! FIXME: write doc.

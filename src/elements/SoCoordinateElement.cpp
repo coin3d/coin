@@ -58,7 +58,7 @@ SbVec3f SoCoordinateElement::initialdefaultcoords(0.0f, 0.0f, 0.0f);
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoCoordinateElement )
+//$ BEGIN TEMPLATE ElementSource(SoCoordinateElement)
 
 /*!
   \var SoCoordinateElement::classTypeId
@@ -112,24 +112,23 @@ SoCoordinateElement::getClassStackIndex(void)
 */
 
 void
-SoCoordinateElement::initClass(
-    void )
+SoCoordinateElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoCoordinateElement )
+//$ BEGIN TEMPLATE InitElementSource(SoCoordinateElement)
   assert(SoCoordinateElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoCoordinateElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoCoordinateElement",
-    &SoCoordinateElement::createInstance);
+  SoCoordinateElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoCoordinateElement",
+                       &SoCoordinateElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoCoordinateElement::classStackIndex =
-      createStackIndex( SoCoordinateElement::classTypeId );
-  } else {
-    SoCoordinateElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoCoordinateElement::classTypeId);
+  }
+  else {
+    SoCoordinateElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -140,36 +139,33 @@ SoCoordinateElement::initClass(
 */
 
 void
-SoCoordinateElement::cleanClass(
-    void )
+SoCoordinateElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoCoordinateElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoCoordinateElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoCoordinateElement::createInstance( void )
+  \sa void * SoCoordinateElement::createInstance(void)
 */
 
-SoCoordinateElement::SoCoordinateElement(
-    void )
+SoCoordinateElement::SoCoordinateElement(void)
   : numCoords(1),
     coords3D(& SoCoordinateElement::initialdefaultcoords),
     coords4D(NULL),
     areCoords3D(TRUE)
 {
-  setTypeId( SoCoordinateElement::classTypeId );
-  setStackIndex( SoCoordinateElement::classStackIndex );
+  setTypeId(SoCoordinateElement::classTypeId);
+  setStackIndex(SoCoordinateElement::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoCoordinateElement::~SoCoordinateElement(
-    void )
+SoCoordinateElement::~SoCoordinateElement(void)
 {
 }
 
@@ -280,17 +276,17 @@ SoCoordinateElement::get4(const int index) const
 //! FIXME: write doc.
 
 const SoCoordinateElement * 
-SoCoordinateElement::getInstance( SoState * const state )
+SoCoordinateElement::getInstance(SoState * const state)
 { 
   return (const SoCoordinateElement *)
-    (getConstElement( state, classStackIndex )); 
+    (getConstElement(state, classStackIndex)); 
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
 int32_t 
-SoCoordinateElement::getNum( void ) const
+SoCoordinateElement::getNum(void) const
 { 
   return this->numCoords; 
 }
@@ -325,7 +321,7 @@ SoCoordinateElement::getDefault4()
 //! FIXME: write doc.
 
 void
-SoCoordinateElement::print(FILE * file) const
+SoCoordinateElement::print(FILE * /* file */) const
 {
 }
 

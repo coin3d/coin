@@ -52,7 +52,7 @@
 */
 
 
-//$ BEGIN TEMPLATE EventSource( SoButtonEvent )
+//$ BEGIN TEMPLATE EventSource(SoButtonEvent)
 /*!
   \var SoButtonEvent::classTypeId
   Unique type identification for the SoButtonEvent class type.
@@ -89,7 +89,7 @@ SoButtonEvent::getClassTypeId(void)
 void
 SoButtonEvent::initClass(void)
 {
-//$ BEGIN TEMPLATE EventInitClass( ButtonEvent )
+//$ BEGIN TEMPLATE EventInitClass(ButtonEvent)
   // Make sure we only initialize once.
   assert(SoButtonEvent::classTypeId == SoType::badType());
   // Make sure superclass get initialized before subclass.

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_GL_POINT_SIZE_ELEMENT_H_
-#define _SO_GL_POINT_SIZE_ELEMENT_H_
+#ifndef __SOGLPOINTSIZEELEMENT_H__
+#define __SOGLPOINTSIZEELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOGLPOINTSIZEELEMENT)
@@ -30,7 +30,7 @@
 class SoGLPointSizeElement : public SoPointSizeElement {
   typedef SoPointSizeElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoGLPointSizeElement )
+//$ BEGIN TEMPLATE ElementHeader(SoGLPointSizeElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -48,7 +48,7 @@ protected:
 //$ END TEMPLATE ElementHeader
 
 public:
-  virtual void init( SoState * state );
+  virtual void init(SoState * state);
 
   virtual void push(SoState * state);
   virtual void pop(SoState * state,
@@ -66,4 +66,4 @@ private:
 
 };
 
-#endif // ! _SO_GL_POINT_SIZE_ELEMENT_H_
+#endif // !__SOGLPOINTSIZEELEMENT_H__

@@ -37,7 +37,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE MField( SoMFPath, SoPath *, SoPath * )
+//$ BEGIN TEMPLATE MField(SoMFPath, SoPath *, SoPath *)
 
 SoType SoMFPath::classTypeId = SoType::badType();
 
@@ -257,7 +257,7 @@ SoMFPath::copyValue(int to, int from)
 void
 SoMFPath::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass( MFPath )
+//$ BEGIN TEMPLATE FieldInitClass(MFPath)
   // Make sure we only initialize once.
   assert(SoMFPath::classTypeId == SoType::badType());
   // Make sure superclass has been initialized before subclass.
@@ -284,7 +284,7 @@ SoMFPath::cleanClass(void)
   FIXME: write function documentation
 */
 SbBool
-SoMFPath::read1Value(SoInput * in, int idx)
+SoMFPath::read1Value(SoInput * /* in */, int /* idx */)
 {
   assert(0 && "FIXME: not implemented yet");
   return FALSE;
@@ -294,7 +294,7 @@ SoMFPath::read1Value(SoInput * in, int idx)
   FIXME: write function documentation
 */
 void
-SoMFPath::write1Value(SoOutput * out, int idx) const
+SoMFPath::write1Value(SoOutput * /* out */, int /* idx */) const
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -303,7 +303,7 @@ SoMFPath::write1Value(SoOutput * out, int idx) const
   FIXME: write function documentation
 */
 void
-SoMFPath::notify(SoNotList * list)
+SoMFPath::notify(SoNotList * /* list */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -312,7 +312,7 @@ SoMFPath::notify(SoNotList * list)
   FIXME: write function documentation
 */
 void
-SoMFPath::fixCopy(SbBool copyConnections)
+SoMFPath::fixCopy(SbBool /* copyConnections */)
 {
   assert(0 && "FIXME: not implemented yet");
 }

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_GENERATE_NORMALS_ACTION_H_
-#define _SO_GENERATE_NORMALS_ACTION_H_
+#ifndef __SOGENERATENORMALSACTION_H__
+#define __SOGENERATENORMALSACTION_H__
 
 #include <Inventor/SbBasic.h>
 
@@ -30,7 +30,7 @@ class SoIndexedFaceSet;
 class SoGenerateNormalsAction /* : public SoAction */ {
   typedef SoAction inherited;
 
-// $ INSERT TEMPLATE ActionHeader( SoGenerateNormalsAction )
+// $ INSERT TEMPLATE ActionHeader(SoGenerateNormalsAction)
 //^- remove space when this action is fixed... - larsa
 
 public:
@@ -51,4 +51,4 @@ private:
   SbBool flipNormals;
 };
 
-#endif // ! _SO_GENERATE_NORMALS_ACTION_H_
+#endif // !__SOGENERATENORMALSACTION_H__

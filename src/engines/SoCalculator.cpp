@@ -84,6 +84,6 @@ SoCalculator::evaluate(void)
 }
 
 void
-SoCalculator::inputChanged(SoField * which)
+SoCalculator::inputChanged(SoField * /* which */)
 {
 }

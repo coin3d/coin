@@ -210,7 +210,7 @@ SoMaterialBinding::GLRender(SoGLRenderAction * action)
   FIXME: write doc
  */
 void
-SoMaterialBinding::doAction(SoAction * action)
+SoMaterialBinding::doAction(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -221,7 +221,7 @@ SoMaterialBinding::doAction(SoAction * action)
   FIXME: write doc
  */
 void
-SoMaterialBinding::callback(SoCallbackAction * action)
+SoMaterialBinding::callback(SoCallbackAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -232,7 +232,7 @@ SoMaterialBinding::callback(SoCallbackAction * action)
   FIXME: write doc
  */
 void
-SoMaterialBinding::pick(SoPickAction * action)
+SoMaterialBinding::pick(SoPickAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -243,7 +243,7 @@ SoMaterialBinding::pick(SoPickAction * action)
   FIXME: write doc
  */
 void
-SoMaterialBinding::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoMaterialBinding::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

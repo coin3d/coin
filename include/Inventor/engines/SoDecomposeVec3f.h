@@ -30,23 +30,14 @@
 #endif // COIN_EXCLUDE_SODECOMPOSEVEC3F
 
 class SoDecomposeVec3f : public SoEngine {
-  typedef SoEngine inherited;
-  SO_ENGINE_HEADER(SoDecomposeVec3f);
+  SO_COMPOSE__HEADER(SoDecomposeVec3f);
 
 public:
   SoMFVec3f vector;
 
-  SoEngineOutput x; //SoMFFloat
-  SoEngineOutput y; //SoMFFloat
-  SoEngineOutput z; //SoMFFloat
-
-  SoDecomposeVec3f();
-
-  static void initClass();
-
-private:
-  virtual ~SoDecomposeVec3f();
-  virtual void evaluate();
+  SoEngineOutput x; // SoMFFloat
+  SoEngineOutput y; // SoMFFloat
+  SoEngineOutput z; // SoMFFloat
 };
 
 #endif // !__SODECOMPOSEVEC3F_H__

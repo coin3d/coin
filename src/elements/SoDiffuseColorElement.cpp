@@ -31,7 +31,7 @@
 
 #include <assert.h>
 
-const static SbColor defaultColor(0.8, 0.8, 0.8);
+static const SbColor defaultColor(0.8, 0.8, 0.8);
 
 /*!
   \fn SoDiffuseColorElement::numColors
@@ -51,7 +51,7 @@ const static SbColor defaultColor(0.8, 0.8, 0.8);
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoDiffuseColorElement )
+//$ BEGIN TEMPLATE ElementSource(SoDiffuseColorElement)
 
 /*!
   \var SoDiffuseColorElement::classTypeId
@@ -107,21 +107,21 @@ SoDiffuseColorElement::getClassStackIndex(void)
 void
 SoDiffuseColorElement::initClass()
 {
-//$ BEGIN TEMPLATE InitElementSource( SoDiffuseColorElement )
+//$ BEGIN TEMPLATE InitElementSource(SoDiffuseColorElement)
   assert(SoDiffuseColorElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoDiffuseColorElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoDiffuseColorElement",
-    &SoDiffuseColorElement::createInstance);
+  SoDiffuseColorElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoDiffuseColorElement",
+                       &SoDiffuseColorElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoDiffuseColorElement::classStackIndex =
-      createStackIndex( SoDiffuseColorElement::classTypeId );
-  } else {
-    SoDiffuseColorElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoDiffuseColorElement::classTypeId);
+  }
+  else {
+    SoDiffuseColorElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -134,14 +134,14 @@ SoDiffuseColorElement::initClass()
 void 
 SoDiffuseColorElement::cleanClass()
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoDiffuseColorElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoDiffuseColorElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 //! FIXME: write doc.
 
 void 
-SoDiffuseColorElement::init(SoState * state)
+SoDiffuseColorElement::init(SoState * /* state */)
 {
   this->colors = &defaultColor;
   this->packedColors = NULL;
@@ -151,7 +151,7 @@ SoDiffuseColorElement::init(SoState * state)
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoDiffuseColorElement::createInstance( void )
+  \sa void * SoDiffuseColorElement::createInstance(void)
 */
 
 SoDiffuseColorElement::SoDiffuseColorElement()

@@ -61,14 +61,6 @@ SbCylinderSheetProjector::SbCylinderSheetProjector(const SbCylinder & cyl,
 /*!
   FIXME: write doc
 */
-SbCylinderSheetProjector::~SbCylinderSheetProjector()
-{
-  assert(0 && "FIXME: implementation missing");
-}
-
-/*!
-  FIXME: write doc
-*/
 SbProjector *
 SbCylinderSheetProjector::copy(void) const
 {
@@ -80,7 +72,7 @@ SbCylinderSheetProjector::copy(void) const
   FIXME: write doc
 */
 SbVec3f
-SbCylinderSheetProjector::project(const SbVec2f & point)
+SbCylinderSheetProjector::project(const SbVec2f & /* point */)
 {
   assert(0 && "FIXME: implementation missing");
   return SbVec3f();
@@ -90,8 +82,8 @@ SbCylinderSheetProjector::project(const SbVec2f & point)
   FIXME: write doc
 */
 SbRotation
-SbCylinderSheetProjector::getRotation(const SbVec3f & point1,
-				      const SbVec3f & point2)
+SbCylinderSheetProjector::getRotation(const SbVec3f & /* point1 */,
+				      const SbVec3f & /* point2 */)
 {
   assert(0 && "FIXME: implementation missing");
   return SbRotation::identity();

@@ -35,7 +35,7 @@
 class SoAsciiText : public SoShape {
   typedef SoShape inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoAsciiText )
+//$ BEGIN TEMPLATE NodeHeader(SoAsciiText)
 private:
   static SoType classTypeId;
 

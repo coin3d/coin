@@ -36,7 +36,7 @@
 class SoPolygonOffset : public SoNode {
   typedef SoNode inherited;
   
-//$ BEGIN TEMPLATE NodeHeader( SoPolygonOffset )
+//$ BEGIN TEMPLATE NodeHeader(SoPolygonOffset)
 private:
   static SoType classTypeId;
 

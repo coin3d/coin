@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_UNITS_ELEMENT_H_
-#define _SO_UNITS_ELEMENT_H_
+#ifndef __SOUNITSELEMENT_H__
+#define __SOUNITSELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOUNITSELEMENT)
@@ -30,7 +30,7 @@
 class SoUnitsElement : public SoInt32Element {
   typedef SoInt32Element inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoUnitsElement )
+//$ BEGIN TEMPLATE ElementHeader(SoUnitsElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -71,11 +71,11 @@ public:
   virtual void init(SoState * state);
 
   static  void set(SoState * const state, SoNode * const node,
-		   const Units units );
+		   const Units units);
   static  void set(SoState * const state, const Units units);
   static Units get(SoState * const state);
   static Units getDefault();
 
 };
 
-#endif // ! _SO_UNITS_ELEMENT_H_
+#endif // !__SOUNITSELEMENT_H__

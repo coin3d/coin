@@ -28,7 +28,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource( SoBoxHighlightRenderAction )
+//$ BEGIN TEMPLATE ActionSource(SoBoxHighlightRenderAction)
 
 SoType SoBoxHighlightRenderAction::classTypeId = SoType::badType();
 
@@ -101,10 +101,9 @@ SoBoxHighlightRenderAction::enableElement(const SoType type, const int stackInde
 */
 
 void
-SoBoxHighlightRenderAction::initClass(
-    void )
+SoBoxHighlightRenderAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource( SoBoxHighlightRenderAction )
+//$ BEGIN TEMPLATE InitActionSource(SoBoxHighlightRenderAction)
   assert(SoBoxHighlightRenderAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
@@ -122,8 +121,7 @@ SoBoxHighlightRenderAction::initClass(
 */
 
 void
-SoBoxHighlightRenderAction::cleanClass(
-    void )
+SoBoxHighlightRenderAction::cleanClass(void)
 {
 }
 
@@ -143,8 +141,7 @@ SoBoxHighlightRenderAction::SoBoxHighlightRenderAction(void)
   A constructor.
 */
 
-SoBoxHighlightRenderAction::SoBoxHighlightRenderAction(
-    const SbViewportRegion & viewportRegion)
+SoBoxHighlightRenderAction::SoBoxHighlightRenderAction(const SbViewportRegion & viewportRegion)
   : inherited(viewportRegion)
 {
   assert(0 && "FIXME: not implemented");
@@ -154,8 +151,7 @@ SoBoxHighlightRenderAction::SoBoxHighlightRenderAction(
   The destructor.
 */
 
-SoBoxHighlightRenderAction::~SoBoxHighlightRenderAction(
-    void )
+SoBoxHighlightRenderAction::~SoBoxHighlightRenderAction(void)
 {
   assert(0 && "FIXME: not implemented");
 }

@@ -60,7 +60,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoPolygonOffsetElement )
+//$ BEGIN TEMPLATE ElementSource(SoPolygonOffsetElement)
 
 /*!
   \var SoPolygonOffsetElement::classTypeId
@@ -114,24 +114,23 @@ SoPolygonOffsetElement::getClassStackIndex(void)
 */
 
 void
-SoPolygonOffsetElement::initClass(
-    void )
+SoPolygonOffsetElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoPolygonOffsetElement )
+//$ BEGIN TEMPLATE InitElementSource(SoPolygonOffsetElement)
   assert(SoPolygonOffsetElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoPolygonOffsetElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoPolygonOffsetElement",
-    &SoPolygonOffsetElement::createInstance);
+  SoPolygonOffsetElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoPolygonOffsetElement",
+                       &SoPolygonOffsetElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoPolygonOffsetElement::classStackIndex =
-      createStackIndex( SoPolygonOffsetElement::classTypeId );
-  } else {
-    SoPolygonOffsetElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoPolygonOffsetElement::classTypeId);
+  }
+  else {
+    SoPolygonOffsetElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -141,42 +140,38 @@ SoPolygonOffsetElement::initClass(
 */
 
 void
-SoPolygonOffsetElement::cleanClass(
-    void )
+SoPolygonOffsetElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoPolygonOffsetElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoPolygonOffsetElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoPolygonOffsetElement::createInstance( void )
+  \sa void * SoPolygonOffsetElement::createInstance(void)
 */
 
-SoPolygonOffsetElement::SoPolygonOffsetElement(
-    void )
+SoPolygonOffsetElement::SoPolygonOffsetElement(void)
 {
-    setTypeId( SoPolygonOffsetElement::classTypeId );
-    setStackIndex( SoPolygonOffsetElement::classStackIndex );
+    setTypeId(SoPolygonOffsetElement::classTypeId);
+    setStackIndex(SoPolygonOffsetElement::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoPolygonOffsetElement::~SoPolygonOffsetElement(
-    void )
+SoPolygonOffsetElement::~SoPolygonOffsetElement(void)
 {
 }
 
 //! FIXME: write doc.
 
 void
-SoPolygonOffsetElement::init(
-    SoState * state )
+SoPolygonOffsetElement::init(SoState * state)
 {
-  inherited::init( state );
+  inherited::init(state);
 
   SoPolygonOffsetElement::getDefault(this->offsetfactor,
 				     this->offsetunits,
@@ -187,17 +182,15 @@ SoPolygonOffsetElement::init(
 //! FIXME: write doc.
 
 void
-SoPolygonOffsetElement::push(
-    SoState * state )
+SoPolygonOffsetElement::push(SoState * state)
 {
-    inherited::push( state );
+    inherited::push(state);
 }
 
 //! FIXME: write doc.
 
 SbBool
-SoPolygonOffsetElement::matches(
-    const SoElement * element ) const
+SoPolygonOffsetElement::matches(const SoElement * /* element */) const
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;
@@ -206,8 +199,7 @@ SoPolygonOffsetElement::matches(
 //! FIXME: write doc.
 
 SoElement *
-SoPolygonOffsetElement::copyMatchInfo(
-    void ) const
+SoPolygonOffsetElement::copyMatchInfo(void) const
 {
   assert(0 && "FIXME: not implemented");
   return NULL;
@@ -216,9 +208,8 @@ SoPolygonOffsetElement::copyMatchInfo(
 //! FIXME: write doc.
 
 void
-SoPolygonOffsetElement::set(
-    SoState * state,
-    SoNode * node, float factor, float units, Style styles, SbBool on)
+SoPolygonOffsetElement::set(SoState * state, SoNode * /* node */,
+			    float factor, float units, Style styles, SbBool on)
 {
   SoPolygonOffsetElement *elem = (SoPolygonOffsetElement *)
     SoElement::getElement(state, classStackIndex);
@@ -231,9 +222,8 @@ SoPolygonOffsetElement::set(
 //! FIXME: write doc.
 
 void
-SoPolygonOffsetElement::get(
-    SoState * state,
-    float & factor, float & units, Style & styles, SbBool & on)
+SoPolygonOffsetElement::get(SoState * state, float & factor, float & units,
+			    Style & styles, SbBool & on)
 {
   const SoPolygonOffsetElement *elem = (SoPolygonOffsetElement *)
     SoElement::getConstElement(state, classStackIndex);

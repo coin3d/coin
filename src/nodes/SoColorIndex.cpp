@@ -36,7 +36,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource( SoColorIndex )
+//$ BEGIN TEMPLATE NodeSource(SoColorIndex)
 SoType SoColorIndex::classTypeId = SoType::badType();
 
 /*!
@@ -72,7 +72,7 @@ SoColorIndex::getTypeId(void) const
 */
 SoColorIndex::SoColorIndex()
 {
-//$ BEGIN TEMPLATE NodeConstructor( SoColorIndex )
+//$ BEGIN TEMPLATE NodeConstructor(SoColorIndex)
   // Make sure the class has been initialized.
   assert(SoColorIndex::classTypeId != SoType::badType());
 //$ END TEMPLATE NodeConstructor
@@ -95,7 +95,7 @@ SoColorIndex::~SoColorIndex()
 void
 SoColorIndex::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource( ColorIndex )
+//$ BEGIN TEMPLATE InitNodeSource(ColorIndex)
   // Make sure we only initialize once.
   assert(SoColorIndex::classTypeId == SoType::badType());
   // Make sure superclass get initialized before subclass.
@@ -122,7 +122,7 @@ SoColorIndex::cleanClass(void)
   FIXME: write doc
 */
 void
-SoColorIndex::GLRender(SoGLRenderAction * action)
+SoColorIndex::GLRender(SoGLRenderAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

@@ -31,7 +31,7 @@
 class SoViewportRegionElement : public SoElement {
   typedef SoElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoViewportRegionElement )
+//$ BEGIN TEMPLATE ElementHeader(SoViewportRegionElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -66,6 +66,6 @@ protected:
 private:
   static  SbViewportRegion *emptyViewportRegion;
 
-}; // SoViewportRegionElement
+};
 
 #endif // !__SOVIEWPORTREGIONELEMENT_H__

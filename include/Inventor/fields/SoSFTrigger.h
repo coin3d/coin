@@ -31,7 +31,7 @@ class SoNotList;
 class SoSFTrigger : public SoSField {
   typedef SoSField inherited;
 
-//$ BEGIN TEMPLATE Field( SoSFTrigger )
+//$ BEGIN TEMPLATE Field(SoSFTrigger)
 private:
   static SoType classTypeId;
 
@@ -47,12 +47,12 @@ public:
   const SoSFTrigger & operator = (const SoSFTrigger & field);
   virtual SbBool isSame(const SoField & field) const;
 //$ END TEMPLATE Field
-//$ BEGIN TEMPLATE FieldConstructor( SoSFTrigger )
+//$ BEGIN TEMPLATE FieldConstructor(SoSFTrigger)
 public:
   SoSFTrigger(void);
   virtual ~SoSFTrigger(void);
 //$ END TEMPLATE FieldConstructor
-//$ BEGIN TEMPLATE SFieldRW(  )
+//$ BEGIN TEMPLATE SFieldRW()
 private:
   virtual SbBool readValue(SoInput * in);
   virtual void writeValue(SoOutput * out) const;

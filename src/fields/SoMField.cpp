@@ -332,7 +332,7 @@ SoMField::setNum(const int num)
   FIXME: write function documentation
 */
 void
-SoMField::deleteValues(int start, int num)
+SoMField::deleteValues(int /* start */, int /* num */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -341,7 +341,7 @@ SoMField::deleteValues(int start, int num)
   FIXME: write function documentation
 */
 void
-SoMField::insertSpace(int start, int num)
+SoMField::insertSpace(int /* start */, int /* num */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -395,7 +395,7 @@ SoMField::allocValues(int number)
 }
 
 void
-SoMField::convertTo(SoField * dest) const
+SoMField::convertTo(SoField * /* dest */) const
 {
   // Should never be called, all subclasses with conversion
   // functionality need to reimplement this method.

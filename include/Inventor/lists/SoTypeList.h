@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_TYPE_LIST_H_
-#define _SO_TYPE_LIST_H_
+#ifndef __SOTYPELIST_H__
+#define __SOTYPELIST_H__
 
 #include <Inventor/lists/SbPList.h>
 
@@ -41,4 +41,4 @@ public:
   SoType get(const int i) const;
 };
 
-#endif // ! _SO_TYPE_LIST_H_
+#endif // !__SOTYPELIST_H__

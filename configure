@@ -39,7 +39,7 @@ ac_help="$ac_help
 ac_help="$ac_help
   --enable-profile        turn on inclusion of profiling code [default=no]"
 ac_help="$ac_help
-  --enable-warnings       turn on warnings when compiling [default=no]"
+  --enable-warnings       turn on warnings when compiling [default=yes]"
 ac_help="$ac_help
   --with-simage           use simage (if found) for texture import [default=yes]"
 
@@ -3023,11 +3023,11 @@ fi
 
 
     # Save the "AC_MSG_RESULT file descriptor" to FD 8.
-#    exec 8>&AC_FD_MSG
+    exec 8>&6
 
     # Temporarily turn off AC_MSG_RESULT so that the user gets pretty
     # messages.
-#    exec AC_FD_MSG>/dev/null
+    exec 6>/dev/null
 
     
 echo $ac_n "checking for library containing glAccum""... $ac_c" 1>&6
@@ -3281,7 +3281,7 @@ fi
 
 
     # Restore pretty messages.
-#    exec AC_FD_MSG>&8
+    exec 6>&8
 
     if test -n "$LIBS"; then
       mdl_cv_have_OpenGL=yes
@@ -3432,7 +3432,7 @@ if test "${enable_warnings+set}" = set; then
       *) { echo "configure: error: bad value \"${enableval}\" for --enable-warnings" 1>&2; exit 1; } ;;
     esac
 else
-  enable_warnings=no
+  enable_warnings=yes
 fi
 
 

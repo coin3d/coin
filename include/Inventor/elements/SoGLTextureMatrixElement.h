@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_GL_TEXTURE_MATRIX_ELEMENT_H_
-#define _SO_GL_TEXTURE_MATRIX_ELEMENT_H_
+#ifndef __SOGLTEXTUREMATRIXELEMENT_H__
+#define __SOGLTEXTUREMATRIXELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOGLTEXTUREMATRIXELEMENT)
@@ -30,7 +30,7 @@
 class SoGLTextureMatrixElement : public SoTextureMatrixElement {
   typedef SoTextureMatrixElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoGLTextureMatrixElement )
+//$ BEGIN TEMPLATE ElementHeader(SoGLTextureMatrixElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -48,24 +48,24 @@ protected:
 //$ END TEMPLATE ElementHeader
 
 public:
-  virtual void init( SoState * state );
+  virtual void init(SoState * state);
 
-  virtual void push( SoState * state );
-  virtual void pop( SoState * state,
-              const SoElement * prevTopElement );
+  virtual void push(SoState * state);
+  virtual void pop(SoState * state,
+              const SoElement * prevTopElement);
 
-  static  void setEltIdentity( void );
-  virtual void makeEltIdentity( void );
+  static  void setEltIdentity(void);
+  virtual void makeEltIdentity(void);
 
-  virtual void multElt( const SbMatrix & matrix );
+  virtual void multElt(const SbMatrix & matrix);
 
-  virtual void translateEltBy( const SbVec3f & translation );
-  virtual void rotateEltBy( const SbRotation & translation );
-  virtual void scaleEltBy( const SbVec3f & scaleFactor );
+  virtual void translateEltBy(const SbVec3f & translation);
+  virtual void rotateEltBy(const SbRotation & translation);
+  virtual void scaleEltBy(const SbVec3f & scaleFactor);
 
 private:
   void updategl() const;
 
 };
 
-#endif // ! _SO_GL_TEXTURE_MATRIX_ELEMENT_H_
+#endif // !__SOGLTEXTUREMATRIXELEMENT_H__

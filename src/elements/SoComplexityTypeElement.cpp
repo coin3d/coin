@@ -40,7 +40,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoComplexityTypeElement )
+//$ BEGIN TEMPLATE ElementSource(SoComplexityTypeElement)
 
 /*!
   \var SoComplexityTypeElement::classTypeId
@@ -94,24 +94,23 @@ SoComplexityTypeElement::getClassStackIndex(void)
 */
 
 void
-SoComplexityTypeElement::initClass(
-    void )
+SoComplexityTypeElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoComplexityTypeElement )
+//$ BEGIN TEMPLATE InitElementSource(SoComplexityTypeElement)
   assert(SoComplexityTypeElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoComplexityTypeElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoComplexityTypeElement",
-    &SoComplexityTypeElement::createInstance);
+  SoComplexityTypeElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoComplexityTypeElement",
+                       &SoComplexityTypeElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoComplexityTypeElement::classStackIndex =
-      createStackIndex( SoComplexityTypeElement::classTypeId );
-  } else {
-    SoComplexityTypeElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoComplexityTypeElement::classTypeId);
+  }
+  else {
+    SoComplexityTypeElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -122,24 +121,22 @@ SoComplexityTypeElement::initClass(
 */
 
 void
-SoComplexityTypeElement::cleanClass(
-    void )
+SoComplexityTypeElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoComplexityTypeElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoComplexityTypeElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoComplexityElement::createInstance( void )
+  \sa void * SoComplexityElement::createInstance(void)
 */
 
-SoComplexityTypeElement::SoComplexityTypeElement(
-    void )
+SoComplexityTypeElement::SoComplexityTypeElement(void)
 {
-    setTypeId( SoComplexityTypeElement::classTypeId );
-    setStackIndex( SoComplexityTypeElement::classStackIndex );
+    setTypeId(SoComplexityTypeElement::classTypeId);
+    setStackIndex(SoComplexityTypeElement::classStackIndex);
     this->data = getDefault();
 }
 
@@ -147,18 +144,16 @@ SoComplexityTypeElement::SoComplexityTypeElement(
   The destructor.
 */
 
-SoComplexityTypeElement::~SoComplexityTypeElement(
-    void )
+SoComplexityTypeElement::~SoComplexityTypeElement(void)
 {
 }
 
 //! FIXME: write doc.
 
 void
-SoComplexityTypeElement::set(
-    SoState * const state,
-    SoNode * const node,
-    const Type type )
+SoComplexityTypeElement::set(SoState * const state,
+			     SoNode * const node,
+			     const Type type)
 {
   assert(type == OBJECT_SPACE || type == SCREEN_SPACE || type == BOUNDING_BOX);
 

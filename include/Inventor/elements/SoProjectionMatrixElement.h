@@ -31,7 +31,7 @@
 class SoProjectionMatrixElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoProjectionMatrixElement )
+//$ BEGIN TEMPLATE ElementHeader(SoProjectionMatrixElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -49,7 +49,7 @@ protected:
 //$ END TEMPLATE ElementHeader
 
 public:
-  virtual void init( SoState * state );
+  virtual void init(SoState * state);
 
   static void set(SoState * const state, SoNode * const node,
 		  const SbMatrix & matrix);

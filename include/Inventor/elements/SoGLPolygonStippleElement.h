@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_GL_POLYGON_STIPPLE_ELEMENT_H_
-#define _SO_GL_POLYGON_STIPPLE_ELEMENT_H_
+#ifndef __SOGLPOLYGONSTIPPLEELEMENT_H__
+#define __SOGLPOLYGONSTIPPLEELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOGLPOLYGONSTIPPLEELEMENT)
@@ -30,7 +30,7 @@
 class SoGLPolygonStippleElement : public SoElement {
   typedef SoElement inherited;
   
-//$ BEGIN TEMPLATE ElementHeader( SoGLPolygonStippleElement )
+//$ BEGIN TEMPLATE ElementHeader(SoGLPolygonStippleElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -79,4 +79,4 @@ private:
 
 };
 
-#endif // ! _SO_GL_POLYGON_STIPPLE_ELEMENT_H_ 
+#endif // !__SOGLPOLYGONSTIPPLEELEMENT_H__

@@ -114,9 +114,9 @@ SoLinearProfile::cleanClass(void)
   FIXME: write doc
  */
 void
-SoLinearProfile::getTrimCurve(SoState * state, int32_t & numPoints,
-			      float *& points, int & floatsPerVec,
-			      int32_t & numKnots, float *& knotVector)
+SoLinearProfile::getTrimCurve(SoState * /* state */, int32_t & /* numPoints */,
+			      float *& /* points */, int & /* floatsPerVec */,
+			      int32_t & /* numKnots */, float *& /* knotVector */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -125,8 +125,8 @@ SoLinearProfile::getTrimCurve(SoState * state, int32_t & numPoints,
   FIXME: write doc
  */
 void
-SoLinearProfile::getVertices(SoState * state, int32_t & nVertices,
-			     SbVec2f *& vertices)
+SoLinearProfile::getVertices(SoState * /* state */, int32_t & /* nVertices */,
+			     SbVec2f *& /* vertices */)
 {
   assert(0 && "FIXME: not implemented");
 }

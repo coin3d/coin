@@ -29,7 +29,7 @@
 #include <Inventor/SbName.h>
 #include <Inventor/elements/SoLocalBBoxMatrixElement.h>
 
-//$ BEGIN TEMPLATE ElementSource( SoBBoxModelMatrixElement )
+//$ BEGIN TEMPLATE ElementSource(SoBBoxModelMatrixElement)
 
 /*!
   \var SoBBoxModelMatrixElement::classTypeId
@@ -83,24 +83,23 @@ SoBBoxModelMatrixElement::getClassStackIndex(void)
 */
 
 void
-SoBBoxModelMatrixElement::initClass(
-    void )
+SoBBoxModelMatrixElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoBBoxModelMatrixElement )
+//$ BEGIN TEMPLATE InitElementSource(SoBBoxModelMatrixElement)
   assert(SoBBoxModelMatrixElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoBBoxModelMatrixElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoBBoxModelMatrixElement",
-    &SoBBoxModelMatrixElement::createInstance);
+  SoBBoxModelMatrixElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoBBoxModelMatrixElement",
+                       &SoBBoxModelMatrixElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoBBoxModelMatrixElement::classStackIndex =
-      createStackIndex( SoBBoxModelMatrixElement::classTypeId );
-  } else {
-    SoBBoxModelMatrixElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoBBoxModelMatrixElement::classTypeId);
+  }
+  else {
+    SoBBoxModelMatrixElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -111,10 +110,9 @@ SoBBoxModelMatrixElement::initClass(
 */
 
 void
-SoBBoxModelMatrixElement::cleanClass(
-    void )
+SoBBoxModelMatrixElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoBBoxModelMatrixElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoBBoxModelMatrixElement)
 //$ END TEMPLATE CleanElementSource
 }
 
@@ -127,8 +125,8 @@ SoBBoxModelMatrixElement::cleanClass(
 SoBBoxModelMatrixElement::SoBBoxModelMatrixElement()
   : state(NULL)
 {
-  setTypeId( SoBBoxModelMatrixElement::classTypeId );
-  setStackIndex( SoBBoxModelMatrixElement::classStackIndex );
+  setTypeId(SoBBoxModelMatrixElement::classTypeId);
+  setStackIndex(SoBBoxModelMatrixElement::classStackIndex);
 }
 
 /*!
@@ -156,7 +154,7 @@ SoBBoxModelMatrixElement::push(SoState * state)
   inherited::push(state);
   
   SoBBoxModelMatrixElement * const element =
-    (SoBBoxModelMatrixElement *)( this->next );
+    (SoBBoxModelMatrixElement *)(this->next);
   element->state = this->state;
 }
 
@@ -166,8 +164,8 @@ SoBBoxModelMatrixElement::push(SoState * state)
 */
 
 void
-SoBBoxModelMatrixElement::reset(SoState * const state,
-				SoNode * const node)
+SoBBoxModelMatrixElement::reset(SoState * const /* state */,
+				SoNode * const /* node */)
 {
   assert(0 && "FIXME: not implemented");
 }

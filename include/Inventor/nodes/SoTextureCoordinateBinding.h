@@ -35,7 +35,7 @@
 class SoTextureCoordinateBinding : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoTextureCoordinateBinding )
+//$ BEGIN TEMPLATE NodeHeader(SoTextureCoordinateBinding)
 private:
   static SoType classTypeId;
 

@@ -47,8 +47,11 @@ public:
 
   static void initClass();
 
+protected:
+  SoGate(void);
+  ~SoGate();
+
 private:
-  virtual ~SoGate();
   virtual void evaluate();
   virtual void inputChanged(SoField * which);
 };

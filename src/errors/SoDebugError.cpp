@@ -72,12 +72,12 @@ void * SoDebugError::callbackData = NULL;
 */
 
 void
-SoDebugError::initClass( void )
+SoDebugError::initClass(void)
 {
   SoDebugError::callback = SoError::defaultHandlerCB;
   SoDebugError::callbackData = NULL;
   SoDebugError::classTypeId =
-    SoType::createType( SoError::getClassTypeId(), "SoDebugError" );
+    SoType::createType(SoError::getClassTypeId(), "SoDebugError");
 }
 
 /*!
@@ -85,7 +85,7 @@ SoDebugError::initClass( void )
 */
 
 void
-SoDebugError::cleanClass( void )
+SoDebugError::cleanClass(void)
 {
 }
 
@@ -94,9 +94,8 @@ SoDebugError::cleanClass( void )
 */
 
 void
-SoDebugError::setHandlerCallback(
-  SoErrorCB * const function,
-  void * const data )
+SoDebugError::setHandlerCallback(SoErrorCB * const function,
+				 void * const data)
 {
   SoDebugError::callback = function;
   SoDebugError::callbackData = data;
@@ -107,7 +106,7 @@ SoDebugError::setHandlerCallback(
 */
 
 SoErrorCB *
-SoDebugError::getHandlerCallback( void )
+SoDebugError::getHandlerCallback(void)
 {
   return SoDebugError::callback;
 }
@@ -117,7 +116,7 @@ SoDebugError::getHandlerCallback( void )
 */
 
 void *
-SoDebugError::getHandlerData( void )
+SoDebugError::getHandlerData(void)
 {
   return SoDebugError::callbackData;
 }
@@ -127,7 +126,7 @@ SoDebugError::getHandlerData( void )
 */
 
 SoType
-SoDebugError::getClassTypeId( void )
+SoDebugError::getClassTypeId(void)
 {
   return SoDebugError::classTypeId;
 }
@@ -137,7 +136,7 @@ SoDebugError::getClassTypeId( void )
 */
 
 SoType
-SoDebugError::getTypeId( void ) const
+SoDebugError::getTypeId(void) const
 {
   return SoDebugError::classTypeId;
 }
@@ -147,7 +146,7 @@ SoDebugError::getTypeId( void ) const
 */
 
 SoDebugError::Severity
-SoDebugError::getSeverity( void ) const
+SoDebugError::getSeverity(void) const
 {
   return this->severity;
 }
@@ -157,21 +156,20 @@ SoDebugError::getSeverity( void ) const
 */
 
 void
-SoDebugError::post(
-  const char * const methodName,
-  const char * const formatString,
-  ... )
+SoDebugError::post(const char * const methodName,
+		   const char * const formatString,
+		   ...)
 {
   va_list args;
-  va_start( args, formatString );
+  va_start(args, formatString);
   char buffer[ 512 ]; // FIXME: possible overflow, 990610 larsa
-  vsprintf( buffer, formatString, args );
-  va_end( args );
+  vsprintf(buffer, formatString, args);
+  va_end(args);
   char string[ 512 ]; // FIXME: possible overflow, 990610 larsa
-  sprintf( string, "Coin error in %s(): %s", methodName, buffer );
+  sprintf(string, "Coin error in %s(): %s", methodName, buffer);
   SoDebugError error;
   error.severity = ERROR;
-  error.setDebugString( string );
+  error.setDebugString(string);
   error.handleError();
 }
 
@@ -180,21 +178,20 @@ SoDebugError::post(
 */
 
 void
-SoDebugError::postWarning(
-  const char * const methodName,
-  const char * const formatString,
-  ... )
+SoDebugError::postWarning(const char * const methodName,
+			  const char * const formatString,
+			  ...)
 {
   va_list args;
-  va_start( args, formatString );
+  va_start(args, formatString);
   char buffer[ 512 ]; // FIXME: possible overflow?  990610 larsa
-  vsprintf( buffer, formatString, args );
-  va_end( args );
+  vsprintf(buffer, formatString, args);
+  va_end(args);
   char string[ 512 ]; // FIXME: possible overflow?  990610 larsa
-  sprintf( string, "Coin warning in %s(): %s", methodName, buffer );
+  sprintf(string, "Coin warning in %s(): %s", methodName, buffer);
   SoDebugError error;
   error.severity = WARNING;
-  error.setDebugString( string );
+  error.setDebugString(string);
   error.handleError();
 }
 
@@ -203,21 +200,20 @@ SoDebugError::postWarning(
 */
 
 void
-SoDebugError::postInfo(
-  const char * const methodName,
-  const char * const formatString,
-  ... )
+SoDebugError::postInfo(const char * const methodName,
+		       const char * const formatString,
+		       ...)
 {
   va_list args;
-  va_start( args, formatString );
+  va_start(args, formatString);
   char buffer[ 512 ]; // FIXME: possible overflow?  990610 larsa
-  vsprintf( buffer, formatString, args );
-  va_end( args );
+  vsprintf(buffer, formatString, args);
+  va_end(args);
   char string[ 512 ]; // FIXME: possible overflow?  990610 larsa
-  sprintf( string, "Coin info from %s(): %s", methodName, buffer );
+  sprintf(string, "Coin info from %s(): %s", methodName, buffer);
   SoDebugError error;
   error.severity = INFO;
-  error.setDebugString( string );
+  error.setDebugString(string);
   error.handleError();
 }
 
@@ -226,8 +222,7 @@ SoDebugError::postInfo(
 */
 
 SoErrorCB *
-SoDebugError::getHandler(
-  void * & data ) const
+SoDebugError::getHandler(void * & data) const
 {
   data = SoDebugError::callbackData;
   return SoDebugError::callback;

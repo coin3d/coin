@@ -48,7 +48,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE SField( SoSFName, const SbName )
+//$ BEGIN TEMPLATE SField(SoSFName, const SbName)
 
 SoType SoSFName::classTypeId = SoType::badType();
 
@@ -175,7 +175,7 @@ SoSFName::operator == (const SoSFName & field) const
 void
 SoSFName::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass( SFName )
+//$ BEGIN TEMPLATE FieldInitClass(SFName)
   // Make sure we only initialize once.
   assert(SoSFName::classTypeId == SoType::badType());
   // Make sure superclass has been initialized before subclass.

@@ -36,7 +36,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoGLRenderPassElement )
+//$ BEGIN TEMPLATE ElementSource(SoGLRenderPassElement)
 
 /*!
   \var SoGLRenderPassElement::classTypeId
@@ -90,24 +90,23 @@ SoGLRenderPassElement::getClassStackIndex(void)
 */
 
 void
-SoGLRenderPassElement::initClass(
-    void )
+SoGLRenderPassElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoGLRenderPassElement )
+//$ BEGIN TEMPLATE InitElementSource(SoGLRenderPassElement)
   assert(SoGLRenderPassElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoGLRenderPassElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoGLRenderPassElement",
-    &SoGLRenderPassElement::createInstance);
+  SoGLRenderPassElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoGLRenderPassElement",
+                       &SoGLRenderPassElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoGLRenderPassElement::classStackIndex =
-      createStackIndex( SoGLRenderPassElement::classTypeId );
-  } else {
-    SoGLRenderPassElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoGLRenderPassElement::classTypeId);
+  }
+  else {
+    SoGLRenderPassElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -118,70 +117,63 @@ SoGLRenderPassElement::initClass(
 */
 
 void
-SoGLRenderPassElement::cleanClass(
-    void )
+SoGLRenderPassElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoGLRenderPassElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoGLRenderPassElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoGLRenderPassElement::createInstance( void )
+  \sa void * SoGLRenderPassElement::createInstance(void)
 */
 
-SoGLRenderPassElement::SoGLRenderPassElement(
-					     void )
-  : passnr( 0 )
+SoGLRenderPassElement::SoGLRenderPassElement(void)
+  : passnr(0)
 {
-  setTypeId( SoGLRenderPassElement::classTypeId );
-  setStackIndex( SoGLRenderPassElement::classStackIndex );
+  setTypeId(SoGLRenderPassElement::classTypeId);
+  setStackIndex(SoGLRenderPassElement::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoGLRenderPassElement::~SoGLRenderPassElement(
-					      void )
+SoGLRenderPassElement::~SoGLRenderPassElement(void)
 {
 }
 
 //! FIXME: write doc.
 
 void
-SoGLRenderPassElement::init(
-			    SoState * state )
+SoGLRenderPassElement::init(SoState * state)
 {
-  inherited::init( state );
+  inherited::init(state);
   this->passnr = 0;
 }
 
 //! FIXME: write doc.
 
 void
-SoGLRenderPassElement::push(
-			    SoState * state )
+SoGLRenderPassElement::push(SoState * state)
 {
-  inherited::push( state );
+  inherited::push(state);
 }
 
 //! FIXME: write doc.
 
 void
-SoGLRenderPassElement::pop(
-			   SoState * state,
-			   const SoElement * prevTopElement )
+SoGLRenderPassElement::pop(SoState * state,
+			   const SoElement * prevTopElement)
 {
-  inherited::pop( state, prevTopElement );
+  inherited::pop(state, prevTopElement);
 }
 
 //! FIXME: write doc.
 
 SbBool
-SoGLRenderPassElement::matches(
-			       const SoElement * element ) const
+SoGLRenderPassElement::matches(const SoElement * /* element */) const
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;
@@ -190,8 +182,7 @@ SoGLRenderPassElement::matches(
 //! FIXME: write doc.
 
 SoElement *
-SoGLRenderPassElement::copyMatchInfo(
-				     void ) const
+SoGLRenderPassElement::copyMatchInfo(void) const
 {
   assert(0 && "FIXME: not implemented");
   return NULL;
@@ -200,9 +191,8 @@ SoGLRenderPassElement::copyMatchInfo(
 //! FIXME: write doc.
 
 void
-SoGLRenderPassElement::set(
-			   SoState * const state,
-			   const int pass )
+SoGLRenderPassElement::set(SoState * const state,
+			   const int pass)
 {
   SoGLRenderPassElement * element = (SoGLRenderPassElement *)
     getElement(state, classStackIndex);
@@ -212,8 +202,7 @@ SoGLRenderPassElement::set(
 //! FIXME: write doc.
 
 int
-SoGLRenderPassElement::get(
-			   SoState * const state )
+SoGLRenderPassElement::get(SoState * const state)
 {
   const SoGLRenderPassElement * element = (const SoGLRenderPassElement *)
     getConstElement(state, classStackIndex);
@@ -223,8 +212,7 @@ SoGLRenderPassElement::get(
 //! FIXME: write doc.
 
 void
-SoGLRenderPassElement::print(
-			     FILE * file ) const
+SoGLRenderPassElement::print(FILE * /* file */) const
 {
   assert(0 && "FIXME: not implemented");
 }

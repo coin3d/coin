@@ -39,6 +39,9 @@
 #include <GL/gl.h>
 #include <string.h>
 #include <math.h>
+
+// NOT IN USE?? 19990925 mortene.
+#if 0
 //
 // function used to check if an extension is supported
 // based on glut 3.3 function
@@ -72,6 +75,7 @@ extensionSupported(char *extension)
   }
   return 0;
 }
+#endif // NOT IN USE??
 
 static SbBool isInitialized = FALSE;
 static int maxTextureSize;
@@ -412,8 +416,8 @@ void
 sogl_render_sphere(const float radius,
 		   const int numstacks,
 		   const int numslices,
-		   SoMaterialBundle * const material,
-		   const unsigned int flags)
+		   SoMaterialBundle * const /* material */,
+		   const unsigned int /* flags */)
 {
   int stacks = numstacks;
   int slices = numslices;

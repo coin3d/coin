@@ -42,7 +42,7 @@
 #include <strstream.h>
 // *************************************************************************
 
-//$ BEGIN TEMPLATE MField( SoMFPlane, SbPlane, const SbPlane & )
+//$ BEGIN TEMPLATE MField(SoMFPlane, SbPlane, const SbPlane &)
 
 SoType SoMFPlane::classTypeId = SoType::badType();
 
@@ -262,7 +262,7 @@ SoMFPlane::copyValue(int to, int from)
 void
 SoMFPlane::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass( MFPlane )
+//$ BEGIN TEMPLATE FieldInitClass(MFPlane)
   // Make sure we only initialize once.
   assert(SoMFPlane::classTypeId == SoType::badType());
   // Make sure superclass has been initialized before subclass.
@@ -290,7 +290,8 @@ SoMFPlane::read1Value(SoInput * in, int idx)
 {
   SoSFPlane sfplane;
   SbBool result;
-  if (result = sfplane.readValue(in)) this->set1Value(idx, sfplane.getValue());
+  if ((result = sfplane.readValue(in)))
+    this->set1Value(idx, sfplane.getValue());
   return result;
 }
 

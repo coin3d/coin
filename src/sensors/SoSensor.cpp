@@ -157,7 +157,7 @@ SoSensor::trigger(void)
   FIXME: write doc
  */
 void
-SoSensor::setNextInQueue(SoSensor * next)
+SoSensor::setNextInQueue(SoSensor * /* next */)
 {
   assert(0 && "FIXME: not implemented");
 }

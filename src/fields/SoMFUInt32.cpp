@@ -48,7 +48,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE MField( SoMFUInt32, uint32_t, uint32_t )
+//$ BEGIN TEMPLATE MField(SoMFUInt32, uint32_t, uint32_t)
 
 SoType SoMFUInt32::classTypeId = SoType::badType();
 
@@ -268,7 +268,7 @@ SoMFUInt32::copyValue(int to, int from)
 void
 SoMFUInt32::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass( MFUInt32 )
+//$ BEGIN TEMPLATE FieldInitClass(MFUInt32)
   // Make sure we only initialize once.
   assert(SoMFUInt32::classTypeId == SoType::badType());
   // Make sure superclass has been initialized before subclass.
@@ -297,7 +297,8 @@ SoMFUInt32::read1Value(SoInput * in, int idx)
 {
   SoSFUInt32 sfuint32;
   SbBool result;
-  if (result = sfuint32.readValue(in)) this->set1Value(idx, sfuint32.getValue());
+  if ((result = sfuint32.readValue(in)))
+    this->set1Value(idx, sfuint32.getValue());
   return result;
 }
 

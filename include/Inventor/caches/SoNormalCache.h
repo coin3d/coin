@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_NORMAL_CACHE_H_
-#define _SO_NORMAL_CACHE_H_
+#ifndef __SONORMALCACHE_H__
+#define __SONORMALCACHE_H__
 
 #include <Inventor/caches/SoCache.h>
 #include <Inventor/system/inttypes.h>
@@ -98,4 +98,4 @@ private:
   void clearGenerator();
 };
 
-#endif // ! _SO_NORMAL_CACHE_H_
+#endif // !__SONORMALCACHE_H__

@@ -207,7 +207,7 @@ SoFile::getChildren() const
   FIXME: write doc
  */
 void
-SoFile::doAction(SoAction * action)
+SoFile::doAction(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -218,7 +218,7 @@ SoFile::doAction(SoAction * action)
   FIXME: write doc
  */
 void
-SoFile::callback(SoCallbackAction * action)
+SoFile::callback(SoCallbackAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -229,7 +229,7 @@ SoFile::callback(SoCallbackAction * action)
   FIXME: write doc
  */
 void
-SoFile::getMatrix(SoGetMatrixAction * action)
+SoFile::getMatrix(SoGetMatrixAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -240,7 +240,7 @@ SoFile::getMatrix(SoGetMatrixAction * action)
   FIXME: write doc
  */
 void
-SoFile::handleEvent(SoHandleEventAction * action)
+SoFile::handleEvent(SoHandleEventAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -251,7 +251,7 @@ SoFile::handleEvent(SoHandleEventAction * action)
   FIXME: write doc
  */
 void
-SoFile::pick(SoPickAction * action)
+SoFile::pick(SoPickAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -262,7 +262,7 @@ SoFile::pick(SoPickAction * action)
   FIXME: write doc
  */
 void
-SoFile::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoFile::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -272,7 +272,8 @@ SoFile::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   FIXME: write doc
  */
 void
-SoFile::copyContents(const SoFieldContainer * fromFC, SbBool copyConnections)
+SoFile::copyContents(const SoFieldContainer * /* fromFC */,
+		     SbBool /* copyConnections */)
 {
   assert(0 && "FIXME: not implemented");
 }

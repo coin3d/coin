@@ -38,7 +38,7 @@
 class SoProfileCoordinateElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoProfileCoordinateElement )
+//$ BEGIN TEMPLATE ElementHeader(SoProfileCoordinateElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -56,28 +56,28 @@ protected:
 //$ END TEMPLATE ElementHeader
 
 public:
-  virtual void init( SoState * state );
+  virtual void init(SoState * state);
 
-  virtual void push( SoState * state );
-  virtual void pop( SoState * state,
-		    const SoElement * prevTopElement );
+  virtual void push(SoState * state);
+  virtual void pop(SoState * state,
+		    const SoElement * prevTopElement);
 
-  static void set2( SoState * const state, SoNode * const node,
-		    const int32_t numCoords, const SbVec2f * const coords );
-  static void set3( SoState * const state, SoNode * const node,
-		    const int32_t numCoords, const SbVec3f * const coords );
+  static void set2(SoState * const state, SoNode * const node,
+		    const int32_t numCoords, const SbVec2f * const coords);
+  static void set3(SoState * const state, SoNode * const node,
+		    const int32_t numCoords, const SbVec3f * const coords);
   static const SoProfileCoordinateElement *
-             getInstance( SoState * const state );
-  int32_t getNum( void ) const;
-  const SbVec2f & get2( const int index ) const;
-  const SbVec3f & get3( const int index ) const;
+             getInstance(SoState * const state);
+  int32_t getNum(void) const;
+  const SbVec2f & get2(const int index) const;
+  const SbVec3f & get3(const int index) const;
 
-  SbBool is2D( void ) const;
+  SbBool is2D(void) const;
 
-  static SbVec2f getDefault2( void );
-  static SbVec3f getDefault3( void );
+  static SbVec2f getDefault2(void);
+  static SbVec3f getDefault3(void);
 
-  virtual void print( FILE * file ) const;
+  virtual void print(FILE * file) const;
 
 protected:
   int32_t numCoords;
@@ -86,7 +86,6 @@ protected:
   SbBool coordsAre2D;
 
   static SbVec2f initdefaultcoords;
-
 };
 
 #endif // !__SOPROFILECOORDINATEELEMENT_H__

@@ -36,7 +36,7 @@ class SoState;
 class SoProfile : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeAbstractHeader( SoProfile )
+//$ BEGIN TEMPLATE NodeAbstractHeader(SoProfile)
 private:
   static SoType classTypeId;
 

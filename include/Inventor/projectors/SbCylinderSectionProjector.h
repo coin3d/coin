@@ -33,7 +33,6 @@ public:
   SbCylinderSectionProjector(float edgeTol = 0.9f, SbBool orientToEye = TRUE);
   SbCylinderSectionProjector(const SbCylinder & cyl, float edgeTol = 0.9f,
 			     SbBool orientToEye = TRUE);
-  ~SbCylinderSectionProjector();
 
   virtual SbProjector * copy(void) const;
   virtual SbVec3f project(const SbVec2f & point);

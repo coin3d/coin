@@ -30,7 +30,7 @@
 /*!
   FIXME: write doc
  */
-SoPickedPoint::SoPickedPoint(const SoPickedPoint &pp)
+SoPickedPoint::SoPickedPoint(const SoPickedPoint & /* pp */)
 {
   // FIXME: implement.
   assert(0);
@@ -39,8 +39,9 @@ SoPickedPoint::SoPickedPoint(const SoPickedPoint &pp)
 /*!
   FIXME: write doc
  */
-SoPickedPoint::SoPickedPoint(const SoPath * const path, SoState * const state,
-			     const SbVec3f &objSpacePoint)
+SoPickedPoint::SoPickedPoint(const SoPath * const /* path */,
+			     SoState * const /* state */,
+			     const SbVec3f & /* objSpacePoint */)
 {
   // FIXME: implement.
   assert(0);
@@ -139,7 +140,7 @@ SoPickedPoint::isOnGeometry(void) const
   FIXME: write doc
  */
 const SoDetail *
-SoPickedPoint::getDetail(const SoNode * const node) const
+SoPickedPoint::getDetail(const SoNode * const /* node */) const
 {
   // FIXME: implement.
   assert(0);
@@ -150,7 +151,7 @@ SoPickedPoint::getDetail(const SoNode * const node) const
   FIXME: write doc
  */
 const SbMatrix
-SoPickedPoint::getObjectToWorld(const SoNode * const node) const
+SoPickedPoint::getObjectToWorld(const SoNode * const /* node */) const
 {
   // FIXME: implement.
   assert(0);
@@ -161,7 +162,7 @@ SoPickedPoint::getObjectToWorld(const SoNode * const node) const
   FIXME: write doc
  */
 const SbMatrix
-SoPickedPoint::getWorldToObject(const SoNode * const node) const
+SoPickedPoint::getWorldToObject(const SoNode * const /* node */) const
 {
   // FIXME: implement.
   assert(0);
@@ -172,7 +173,7 @@ SoPickedPoint::getWorldToObject(const SoNode * const node) const
   FIXME: write doc
  */
 const SbMatrix
-SoPickedPoint::getObjectToImage(const SoNode * const node) const
+SoPickedPoint::getObjectToImage(const SoNode * const /* node */) const
 {
   // FIXME: implement.
   assert(0);
@@ -183,7 +184,7 @@ SoPickedPoint::getObjectToImage(const SoNode * const node) const
   FIXME: write doc
  */
 const SbMatrix
-SoPickedPoint::getImageToObject(const SoNode * const node) const
+SoPickedPoint::getImageToObject(const SoNode * const /* node */) const
 {
   // FIXME: implement.
   assert(0);
@@ -194,7 +195,7 @@ SoPickedPoint::getImageToObject(const SoNode * const node) const
   FIXME: write doc
  */
 const SbVec3f
-SoPickedPoint::getObjectPoint(const SoNode * const node) const
+SoPickedPoint::getObjectPoint(const SoNode * const /* node */) const
 {
   // FIXME: implement.
   assert(0);
@@ -205,7 +206,7 @@ SoPickedPoint::getObjectPoint(const SoNode * const node) const
   FIXME: write doc
  */
 const SbVec3f
-SoPickedPoint::getObjectNormal(const SoNode * const node) const
+SoPickedPoint::getObjectNormal(const SoNode * const /* node */) const
 {
   // FIXME: implement.
   assert(0);
@@ -216,7 +217,7 @@ SoPickedPoint::getObjectNormal(const SoNode * const node) const
   FIXME: write doc
  */
 const SbVec4f
-SoPickedPoint::getObjectTextureCoords(const SoNode * const node) const
+SoPickedPoint::getObjectTextureCoords(const SoNode * const /* node */) const
 {
   // FIXME: implement.
   assert(0);
@@ -227,7 +228,7 @@ SoPickedPoint::getObjectTextureCoords(const SoNode * const node) const
   FIXME: write doc
  */
 void
-SoPickedPoint::setObjectNormal(const SbVec3f &normal)
+SoPickedPoint::setObjectNormal(const SbVec3f & /* normal */)
 {
   // FIXME: implement.
   assert(0);
@@ -237,7 +238,7 @@ SoPickedPoint::setObjectNormal(const SbVec3f &normal)
   FIXME: write doc
  */
 void
-SoPickedPoint::setObjectTextureCoords(const SbVec4f &texCoords)
+SoPickedPoint::setObjectTextureCoords(const SbVec4f & /* texCoords */)
 {
   // FIXME: implement.
   assert(0);
@@ -247,7 +248,7 @@ SoPickedPoint::setObjectTextureCoords(const SbVec4f &texCoords)
   FIXME: write doc
  */
 void
-SoPickedPoint::setMaterialIndex(const int index)
+SoPickedPoint::setMaterialIndex(const int /* index */)
 {
   // FIXME: implement.
   assert(0);
@@ -257,7 +258,7 @@ SoPickedPoint::setMaterialIndex(const int index)
   FIXME: write doc
  */
 void
-SoPickedPoint::setDetail(SoDetail *detail, SoNode *node)
+SoPickedPoint::setDetail(SoDetail * /* detail */, SoNode * /* node */)
 {
   // FIXME: implement.
   assert(0);

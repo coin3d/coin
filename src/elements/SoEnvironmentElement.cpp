@@ -72,7 +72,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoEnvironmentElement )
+//$ BEGIN TEMPLATE ElementSource(SoEnvironmentElement)
 
 /*!
   \var SoEnvironmentElement::classTypeId
@@ -126,24 +126,23 @@ SoEnvironmentElement::getClassStackIndex(void)
 */
 
 void
-SoEnvironmentElement::initClass(
-    void )
+SoEnvironmentElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoEnvironmentElement )
+//$ BEGIN TEMPLATE InitElementSource(SoEnvironmentElement)
   assert(SoEnvironmentElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoEnvironmentElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoEnvironmentElement",
-    &SoEnvironmentElement::createInstance);
+  SoEnvironmentElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoEnvironmentElement",
+                       &SoEnvironmentElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoEnvironmentElement::classStackIndex =
-      createStackIndex( SoEnvironmentElement::classTypeId );
-  } else {
-    SoEnvironmentElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoEnvironmentElement::classTypeId);
+  }
+  else {
+    SoEnvironmentElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -154,32 +153,29 @@ SoEnvironmentElement::initClass(
 */
 
 void
-SoEnvironmentElement::cleanClass(
-    void )
+SoEnvironmentElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoEnvironmentElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoEnvironmentElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoEnvironmentElement::createInstance( void )
+  \sa void * SoEnvironmentElement::createInstance(void)
 */
 
-SoEnvironmentElement::SoEnvironmentElement(
-    void )
+SoEnvironmentElement::SoEnvironmentElement(void)
 {
-  setTypeId( SoEnvironmentElement::classTypeId );
-  setStackIndex( SoEnvironmentElement::classStackIndex );
+  setTypeId(SoEnvironmentElement::classTypeId);
+  setStackIndex(SoEnvironmentElement::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoEnvironmentElement::~SoEnvironmentElement(
-    void )
+SoEnvironmentElement::~SoEnvironmentElement(void)
 {
 }
 
@@ -210,7 +206,7 @@ SoEnvironmentElement::get(SoState * const state,
 			  SbVec3f & attenuation,
 			  int32_t & fogType,
 			  SbColor & fogColor,
-			  float & fogVisibility )
+			  float & fogVisibility)
 {
   SoEnvironmentElement *element = (SoEnvironmentElement *)
     SoElement::getConstElement(state, classStackIndex);
@@ -233,17 +229,17 @@ SoEnvironmentElement::getDefault(float & ambientIntensity,
 				 float & fogVisibility)
 {
   ambientIntensity = 0.2f;
-  ambientColor = SbColor( 1.0f, 1.0f, 1.0f );
-  attenuation = SbVec3f( 0.0f, 0.0f, 1.0f );
+  ambientColor = SbColor(1.0f, 1.0f, 1.0f);
+  attenuation = SbVec3f(0.0f, 0.0f, 1.0f);
   fogType = NONE;
-  fogColor = SbColor( 1.0f, 1.0f, 1.0f );
+  fogColor = SbColor(1.0f, 1.0f, 1.0f);
   fogVisibility = 0.0f;
 }
 
 //! FIXME: write doc.
 
 float
-SoEnvironmentElement::getAmbientIntensity(SoState * const state )
+SoEnvironmentElement::getAmbientIntensity(SoState * const state)
 {
   SoEnvironmentElement * element = (SoEnvironmentElement *)
     SoElement::getConstElement(state, classStackIndex);
@@ -276,7 +272,7 @@ const SbColor &
 SoEnvironmentElement::getAmbientColor(SoState * const state)
 {
   SoEnvironmentElement * element = (SoEnvironmentElement *)
-    SoElement::getConstElement( state, classStackIndex);
+    SoElement::getConstElement(state, classStackIndex);
   return element->ambientColor;
 }
 

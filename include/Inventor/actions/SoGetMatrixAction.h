@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_GET_MATRIX_ACTION_H_
-#define _SO_GET_MATRIX_ACTION_H_
+#ifndef __SOGETMATRIXACTION_H__
+#define __SOGETMATRIXACTION_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOGETMATRIXACTION)
@@ -39,7 +39,7 @@
 class SoGetMatrixAction : public SoAction {
   typedef SoAction inherited;
 
-//$ BEGIN TEMPLATE ActionHeader( SoGetMatrixAction )
+//$ BEGIN TEMPLATE ActionHeader(SoGetMatrixAction)
 private:
   static SoType classTypeId;
 
@@ -92,4 +92,4 @@ private:
   SbViewportRegion viewportRegion;
 };
 
-#endif // ! _SO_GET_MATRIX_ACTION_H_
+#endif // !__SOGETMATRIXACTION_H__

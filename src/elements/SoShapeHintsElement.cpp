@@ -30,7 +30,7 @@
 
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource( SoShapeHintsElement )
+//$ BEGIN TEMPLATE ElementSource(SoShapeHintsElement)
 
 /*!
   \var SoShapeHintsElement::classTypeId
@@ -84,24 +84,23 @@ SoShapeHintsElement::getClassStackIndex(void)
 */
 
 void
-SoShapeHintsElement::initClass(
-    void )
+SoShapeHintsElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoShapeHintsElement )
+//$ BEGIN TEMPLATE InitElementSource(SoShapeHintsElement)
   assert(SoShapeHintsElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoShapeHintsElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoShapeHintsElement",
-    &SoShapeHintsElement::createInstance);
+  SoShapeHintsElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoShapeHintsElement",
+                       &SoShapeHintsElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoShapeHintsElement::classStackIndex =
-      createStackIndex( SoShapeHintsElement::classTypeId );
-  } else {
-    SoShapeHintsElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoShapeHintsElement::classTypeId);
+  }
+  else {
+    SoShapeHintsElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -111,43 +110,40 @@ SoShapeHintsElement::initClass(
 */
 
 void
-SoShapeHintsElement::cleanClass(
-    void )
+SoShapeHintsElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoShapeHintsElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoShapeHintsElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoShapeHintsElement::createInstance( void )
+  \sa void * SoShapeHintsElement::createInstance(void)
 */
 
-SoShapeHintsElement::SoShapeHintsElement(
-    void )
-  : vertexOrdering( UNKNOWN_ORDERING ),
-    shapeType( UNKNOWN_SHAPE_TYPE ), faceType( CONVEX )
+SoShapeHintsElement::SoShapeHintsElement(void)
+  : vertexOrdering(UNKNOWN_ORDERING),
+    shapeType(UNKNOWN_SHAPE_TYPE), faceType( CONVEX )
 {
-    setTypeId( SoShapeHintsElement::classTypeId );
-    setStackIndex( SoShapeHintsElement::classStackIndex );
+    setTypeId(SoShapeHintsElement::classTypeId);
+    setStackIndex(SoShapeHintsElement::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoShapeHintsElement::~SoShapeHintsElement(
-    void )
+SoShapeHintsElement::~SoShapeHintsElement(void)
 {
 }
 
 //! FIXME: write doc.
 
 void
-SoShapeHintsElement::init( SoState * state )
+SoShapeHintsElement::init(SoState * state)
 {
-  inherited::init( state );
+  inherited::init(state);
   this->vertexOrdering = getDefaultVertexOrdering();
   this->shapeType = getDefaultShapeType();
   this->faceType = getDefaultFaceType();
@@ -194,7 +190,7 @@ SoShapeHintsElement::copyMatchInfo() const
 
 void
 SoShapeHintsElement::set(SoState * const state,
-			 SoNode * const node,
+			 SoNode * const /* node */,
 			 const VertexOrdering vertexOrdering,
 			 const ShapeType shapeType,
 			 const FaceType faceType)
@@ -253,7 +249,7 @@ SoShapeHintsElement::getFaceType(SoState * const state)
 //! FIXME: write doc.
 
 void
-SoShapeHintsElement::print(FILE * file) const
+SoShapeHintsElement::print(FILE * /* file */) const
 {
 }
  
@@ -281,7 +277,7 @@ SoShapeHintsElement::setElt(VertexOrdering vertexOrdering,
 void SoShapeHintsElement::set(SoState * const state,
 			      const VertexOrdering vertexOrdering,
 			      const ShapeType shapeType, 
-			      const FaceType faceType )
+			      const FaceType faceType)
 { 
   set(state, NULL, vertexOrdering, shapeType, faceType); 
 }

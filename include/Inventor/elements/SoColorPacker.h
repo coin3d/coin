@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_COLOR_PACKER_H_
-#define _SO_COLOR_PACKER_H_
+#ifndef __SOCOLORPACKER_H__
+#define __SOCOLORPACKER_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOCOLORPACKER)
@@ -30,16 +30,16 @@
 
 class SoColorPacker { // this is not an element
 public:
-  SoColorPacker( void );
-  ~SoColorPacker( void );
+  SoColorPacker(void);
+  ~SoColorPacker(void);
 
-  uint32_t * getPackedColors( void );
-  const uint32_t * getPackedColors( void ) const;
-  SbBool diffuseMatch( const uint32_t nodeId ) const;
-  SbBool transpMatch( const uint32_t nodeId ) const;
-  void setNodeIds( const uint32_t diffNodeId, const uint32_t tNodeId );
-  int32_t getSize( void ) const;
-  void reallocate( const int32_t size );
+  uint32_t * getPackedColors(void);
+  const uint32_t * getPackedColors(void) const;
+  SbBool diffuseMatch(const uint32_t nodeId) const;
+  SbBool transpMatch(const uint32_t nodeId) const;
+  void setNodeIds(const uint32_t diffNodeId, const uint32_t tNodeId);
+  int32_t getSize(void) const;
+  void reallocate(const int32_t size);
   
 private:
   uint32_t transpNodeId;
@@ -49,4 +49,4 @@ private:
   
 };
 
-#endif // ! _SO_COLOR_PACKER_H_
+#endif // !__SOCOLORPACKER_H__

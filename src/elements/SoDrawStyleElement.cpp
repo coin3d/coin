@@ -40,7 +40,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoDrawStyleElement )
+//$ BEGIN TEMPLATE ElementSource(SoDrawStyleElement)
 
 /*!
   \var SoDrawStyleElement::classTypeId
@@ -94,24 +94,23 @@ SoDrawStyleElement::getClassStackIndex(void)
 */
 
 void
-SoDrawStyleElement::initClass(
-    void )
+SoDrawStyleElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoDrawStyleElement )
+//$ BEGIN TEMPLATE InitElementSource(SoDrawStyleElement)
   assert(SoDrawStyleElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoDrawStyleElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoDrawStyleElement",
-    &SoDrawStyleElement::createInstance);
+  SoDrawStyleElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoDrawStyleElement",
+                       &SoDrawStyleElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoDrawStyleElement::classStackIndex =
-      createStackIndex( SoDrawStyleElement::classTypeId );
-  } else {
-    SoDrawStyleElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoDrawStyleElement::classTypeId);
+  }
+  else {
+    SoDrawStyleElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -122,52 +121,47 @@ SoDrawStyleElement::initClass(
 */
 
 void
-SoDrawStyleElement::cleanClass(
-    void )
+SoDrawStyleElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoDrawStyleElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoDrawStyleElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoDrawStyleElement::createInstance( void )
+  \sa void * SoDrawStyleElement::createInstance(void)
 */
 
-SoDrawStyleElement::SoDrawStyleElement(
-    void )
+SoDrawStyleElement::SoDrawStyleElement(void)
 {
-  setTypeId( SoDrawStyleElement::classTypeId );
-  setStackIndex( SoDrawStyleElement::classStackIndex );
+  setTypeId(SoDrawStyleElement::classTypeId);
+  setStackIndex(SoDrawStyleElement::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoDrawStyleElement::~SoDrawStyleElement(
-    void )
+SoDrawStyleElement::~SoDrawStyleElement(void)
 {
 }
 
 //! FIXME: write doc.
 
 void
-SoDrawStyleElement::init(
-    SoState * state )
+SoDrawStyleElement::init(SoState * state)
 {
-  inherited::init( state );
+  inherited::init(state);
   this->data = getDefault();
 }
 
 //! FIXME: write doc.
 
 void
-SoDrawStyleElement::set(
-    SoState * const state,
-    SoNode * const node,
-    const Style style )
+SoDrawStyleElement::set(SoState * const state,
+			SoNode * const node,
+			const Style style)
 {
   SoInt32Element::set(classStackIndex, state, node, (int32_t)style);
 #if !defined(COIN_EXCLUDE_SOSHAPESTYLEELEMENT)

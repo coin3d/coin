@@ -75,7 +75,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource( SoAntiSquish )
+//$ BEGIN TEMPLATE NodeSource(SoAntiSquish)
 SoType SoAntiSquish::classTypeId = SoType::badType();
 
 /*!
@@ -111,7 +111,7 @@ SoAntiSquish::getTypeId(void) const
 */
 SoAntiSquish::SoAntiSquish()
 {
-//$ BEGIN TEMPLATE NodeConstructor( SoAntiSquish )
+//$ BEGIN TEMPLATE NodeConstructor(SoAntiSquish)
   // Make sure the class has been initialized.
   assert(SoAntiSquish::classTypeId != SoType::badType());
 //$ END TEMPLATE NodeConstructor
@@ -144,7 +144,7 @@ SoAntiSquish::~SoAntiSquish()
 void
 SoAntiSquish::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource( AntiSquish )
+//$ BEGIN TEMPLATE InitNodeSource(AntiSquish)
   // Make sure we only initialize once.
   assert(SoAntiSquish::classTypeId == SoType::badType());
   // Make sure superclass get initialized before subclass.
@@ -171,10 +171,9 @@ SoAntiSquish::cleanClass(void)
   FIXME: write function documentation
 */
 void 
-SoAntiSquish::getBoundingBox(SoGetBoundingBoxAction *action)
+SoAntiSquish::getBoundingBox(SoGetBoundingBoxAction * /* action */)
 {
-  // TODO: implement.
-  assert(0);
+  assert(0 && "FIXME: not implemented yet");
 }
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
@@ -192,7 +191,7 @@ SoAntiSquish::recalc(void)
   FIXME: write doc
 */
 void
-SoAntiSquish::doAction(SoAction * action)
+SoAntiSquish::doAction(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -203,7 +202,7 @@ SoAntiSquish::doAction(SoAction * action)
   FIXME: write doc
 */
 void
-SoAntiSquish::callback(SoCallbackAction * action)
+SoAntiSquish::callback(SoCallbackAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -214,7 +213,7 @@ SoAntiSquish::callback(SoCallbackAction * action)
   FIXME: write doc
 */
 void
-SoAntiSquish::GLRender(SoGLRenderAction * action)
+SoAntiSquish::GLRender(SoGLRenderAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -225,7 +224,7 @@ SoAntiSquish::GLRender(SoGLRenderAction * action)
   FIXME: write doc
 */
 void
-SoAntiSquish::getMatrix(SoGetMatrixAction * action)
+SoAntiSquish::getMatrix(SoGetMatrixAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -236,7 +235,7 @@ SoAntiSquish::getMatrix(SoGetMatrixAction * action)
   FIXME: write doc
 */
 void
-SoAntiSquish::pick(SoPickAction * action)
+SoAntiSquish::pick(SoPickAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -246,8 +245,9 @@ SoAntiSquish::pick(SoPickAction * action)
   FIXME: write doc
 */
 SbMatrix
-SoAntiSquish::getUnsquishingMatrix(SbMatrix squishedMatrix,
-				   SbBool doInverse, SbMatrix & inverseAnswer)
+SoAntiSquish::getUnsquishingMatrix(SbMatrix /* squishedMatrix */,
+				   SbBool /* doInverse */,
+				   SbMatrix & /* inverseAnswer */)
 {
   assert(0 && "FIXME: not implemented");
   return SbMatrix::identity();

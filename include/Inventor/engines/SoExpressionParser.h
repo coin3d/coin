@@ -27,11 +27,11 @@ class SoMFString;
 
 class SoExpressionParser {
 public:
-    SoExpressionParser( SoCalculator * valueContainer );
-    ~SoExpressionParser( void );
+    SoExpressionParser(SoCalculator * valueContainer);
+    ~SoExpressionParser(void);
 
-    void parse( void );
-    void evaluate( void );
+    void parse(void);
+    void evaluate(void);
 
 protected:
 

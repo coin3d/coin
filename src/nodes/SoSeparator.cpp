@@ -420,7 +420,7 @@ SoSeparator::getMatrix(SoGetMatrixAction * action)
 /*!
   FIXME: write function documentation
 */
-SoSeparator::SoSeparator(const int nChildren)
+SoSeparator::SoSeparator(const int /* nChildren */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -429,7 +429,7 @@ SoSeparator::SoSeparator(const int nChildren)
   FIXME: write function documentation
 */
 void 
-SoSeparator::setNumRenderCaches(const int howMany)
+SoSeparator::setNumRenderCaches(const int /* howMany */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -459,7 +459,7 @@ SoSeparator::affectsState(void) const
   FIXME: write doc
  */
 void
-SoSeparator::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoSeparator::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -480,7 +480,7 @@ SoSeparator::notify(SoNotList * list)
   FIXME: write doc
  */
 SbBool
-SoSeparator::cullTest(SoGLRenderAction * action, int & cullResults)
+SoSeparator::cullTest(SoGLRenderAction * /* action */, int & /* cullResults */)
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;

@@ -263,13 +263,13 @@ SoSceneManager::redraw(void)
 }
 
 void
-SoSceneManager::redrawshotTriggeredCB(void * data, SoSensor * sensor)
+SoSceneManager::redrawshotTriggeredCB(void * data, SoSensor * /* sensor */)
 {
   ((SoSceneManager *)data)->redraw();
 }
 
 void
-SoSceneManager::nodesensorCB(void * data, SoSensor * sensor)
+SoSceneManager::nodesensorCB(void * data, SoSensor * /* sensor */)
 {
 #if 0 // debug
   SoDebugError::postInfo("SoSceneManager::nodesensorCB",
@@ -420,7 +420,7 @@ SoSceneManager::getOrigin(void) const
   FIXME: write doc
  */
 void
-SoSceneManager::setViewportRegion(const SbViewportRegion & newRegion)
+SoSceneManager::setViewportRegion(const SbViewportRegion & /* newRegion */)
 {
   // FIXME: implement
   assert(0);
@@ -635,7 +635,7 @@ SoSceneManager::getDefaultRedrawPriority(void)
   FIXME: write doc
  */
 void 
-SoSceneManager::enableRealTimeUpdate(const SbBool flag)
+SoSceneManager::enableRealTimeUpdate(const SbBool /* flag */)
 {
   // FIXME: implement -- check SoDB::enableRealTimeUpdate()
   assert(0);

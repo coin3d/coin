@@ -84,7 +84,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoTextureImageElement )
+//$ BEGIN TEMPLATE ElementSource(SoTextureImageElement)
 
 /*!
   \var SoTextureImageElement::classTypeId
@@ -138,24 +138,23 @@ SoTextureImageElement::getClassStackIndex(void)
 */
 
 void
-SoTextureImageElement::initClass(
-    void )
+SoTextureImageElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoTextureImageElement )
+//$ BEGIN TEMPLATE InitElementSource(SoTextureImageElement)
   assert(SoTextureImageElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoTextureImageElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoTextureImageElement",
-    &SoTextureImageElement::createInstance);
+  SoTextureImageElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoTextureImageElement",
+                       &SoTextureImageElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoTextureImageElement::classStackIndex =
-      createStackIndex( SoTextureImageElement::classTypeId );
-  } else {
-    SoTextureImageElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoTextureImageElement::classTypeId);
+  }
+  else {
+    SoTextureImageElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -166,23 +165,22 @@ SoTextureImageElement::initClass(
 */
 
 void
-SoTextureImageElement::cleanClass(
-    void )
+SoTextureImageElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoTextureImageElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoTextureImageElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoTextureImageElement::createInstance( void )
+  \sa void * SoTextureImageElement::createInstance(void)
 */
 
 SoTextureImageElement::SoTextureImageElement()
 {
-  setTypeId( SoTextureImageElement::classTypeId );
-  setStackIndex( SoTextureImageElement::classStackIndex );
+  setTypeId(SoTextureImageElement::classTypeId);
+  setStackIndex(SoTextureImageElement::classStackIndex);
 }
 
 /*!
@@ -196,7 +194,7 @@ SoTextureImageElement::~SoTextureImageElement()
 //! FIXME: write doc.
 
 void
-SoTextureImageElement::init(SoState * state )
+SoTextureImageElement::init(SoState * state)
 {
   inherited::init(state);
   this->bytes = getDefault(this->size, this->numComponents); 
@@ -226,10 +224,11 @@ SoTextureImageElement::set(SoState * const state, SoNode * const node,
   FIXME: write doc.
 */
 
-void SoTextureImageElement::set(
-  SoState * const state, SoNode * const node, const SbVec2s & size,
-  const int numComponents, const unsigned char * bytes, const int wrapS,
-  const int wrapT, const int model, const SbColor & blendColor)
+void SoTextureImageElement::set(SoState * const state, SoNode * const node,
+				const SbVec2s & size, const int numComponents,
+				const unsigned char * bytes, const int wrapS,
+				const int wrapT, const int model,
+				const SbColor & blendColor)
 {
   SoTextureImageElement::set(state, node, size, numComponents, bytes,
                              (SoTextureImageElement::Wrap &)wrapS,
@@ -266,15 +265,15 @@ SoTextureImageElement::get(SoState * const state,
 */
 
 const unsigned char *
-SoTextureImageElement::get(
-  SoState * const state, SbVec2s & size, int & numComponents, int & wrapS,
-  int & wrapT, int & model, SbColor & blendColor)
+SoTextureImageElement::get(SoState * const state, SbVec2s & size,
+			   int & numComponents, int & wrapS,
+			   int & wrapT, int & model, SbColor & blendColor)
 {
   return SoTextureImageElement::get(state, size, numComponents,
-                                        (SoTextureImageElement::Wrap &)wrapS,
-                                        (SoTextureImageElement::Wrap &)wrapT,
-                                        (SoTextureImageElement::Model &)model,
-                                        blendColor); 
+				    (SoTextureImageElement::Wrap &)wrapS,
+				    (SoTextureImageElement::Wrap &)wrapT,
+				    (SoTextureImageElement::Model &)model,
+				    blendColor); 
 }
 
 //! FIXME: write doc.
@@ -286,9 +285,7 @@ SoTextureImageElement::containsTransparency(SoState * const state)
     SoElement::getConstElement(state, classStackIndex);
 
   // FIXME: should also check image data if components are 2 or 4?
-  return 
-    elem->numComponents == 2 ||
-    elem->numComponents == 4;
+  return elem->numComponents == 2 || elem->numComponents == 4;
 }
 
 //! FIXME: write doc.
@@ -308,7 +305,7 @@ void
 SoTextureImageElement::setElt(const SbVec2s &size, const int numComponents,
 			      const unsigned char *bytes, const Wrap wrapS, 
 			      const Wrap wrapT, const Model model, 
-			      const SbColor &blendColor )
+			      const SbColor &blendColor)
 {
   this->size = size;
   this->numComponents = numComponents;

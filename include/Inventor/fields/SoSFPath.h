@@ -31,7 +31,7 @@ class SoNotList;
 
 class SoSFPath : public SoSField {
   typedef SoSField inherited;
-//$ BEGIN TEMPLATE SField( SoSFPath, SoPath *, SoPath * )
+//$ BEGIN TEMPLATE SField(SoSFPath, SoPath *, SoPath *)
 private:
   static SoType classTypeId;
 

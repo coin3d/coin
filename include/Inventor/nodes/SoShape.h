@@ -43,7 +43,7 @@ class SoMaterialBundle;
 class SoShape : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeAbstractHeader( SoShape )
+//$ BEGIN TEMPLATE NodeAbstractHeader(SoShape)
 private:
   static SoType classTypeId;
 

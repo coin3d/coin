@@ -29,8 +29,6 @@ class SbSphereProjector : public SbProjector {
   typedef SbProjector inherited;
 
 public:
-  ~SbSphereProjector();
-
   SbVec3f projectAndGetRotation(const SbVec2f & point, SbRotation & rot);
   virtual SbRotation getRotation(const SbVec3f & point1,
 				 const SbVec3f & point2) = 0;

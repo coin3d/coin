@@ -32,7 +32,7 @@
 class SoProfileCoordinate2 : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoProfileCoordinate2 )
+//$ BEGIN TEMPLATE NodeHeader(SoProfileCoordinate2)
 private:
   static SoType classTypeId;
 

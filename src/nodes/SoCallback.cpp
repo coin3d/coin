@@ -32,7 +32,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource( SoCallback )
+//$ BEGIN TEMPLATE NodeSource(SoCallback)
 SoType SoCallback::classTypeId = SoType::badType();
 
 /*!
@@ -68,7 +68,7 @@ SoCallback::getTypeId(void) const
 */
 SoCallback::SoCallback()
 {
-//$ BEGIN TEMPLATE NodeConstructor( SoCallback )
+//$ BEGIN TEMPLATE NodeConstructor(SoCallback)
   // Make sure the class has been initialized.
   assert(SoCallback::classTypeId != SoType::badType());
 //$ END TEMPLATE NodeConstructor
@@ -91,7 +91,7 @@ SoCallback::~SoCallback()
 void
 SoCallback::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource( Callback )
+//$ BEGIN TEMPLATE InitNodeSource(Callback)
   // Make sure we only initialize once.
   assert(SoCallback::classTypeId == SoType::badType());
   // Make sure superclass get initialized before subclass.
@@ -240,8 +240,8 @@ SoCallback::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   FIXME: write doc
 */
 void
-SoCallback::copyContents(const SoFieldContainer * fromFC,
-			 SbBool copyConnections)
+SoCallback::copyContents(const SoFieldContainer * /* fromFC */,
+			 SbBool /* copyConnections */)
 {
   assert(0 && "FIXME: not implemented");
 }

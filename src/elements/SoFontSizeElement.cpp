@@ -30,7 +30,7 @@
 
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource( SoFontSizeElement )
+//$ BEGIN TEMPLATE ElementSource(SoFontSizeElement)
 
 /*!
   \var SoFontSizeElement::classTypeId
@@ -84,24 +84,23 @@ SoFontSizeElement::getClassStackIndex(void)
 */
 
 void
-SoFontSizeElement::initClass(
-    void )
+SoFontSizeElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoFontSizeElement )
+//$ BEGIN TEMPLATE InitElementSource(SoFontSizeElement)
   assert(SoFontSizeElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoFontSizeElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoFontSizeElement",
-    &SoFontSizeElement::createInstance);
+  SoFontSizeElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoFontSizeElement",
+                       &SoFontSizeElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoFontSizeElement::classStackIndex =
-      createStackIndex( SoFontSizeElement::classTypeId );
-  } else {
-    SoFontSizeElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoFontSizeElement::classTypeId);
+  }
+  else {
+    SoFontSizeElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -111,24 +110,22 @@ SoFontSizeElement::initClass(
 */
 
 void
-SoFontSizeElement::cleanClass(
-    void )
+SoFontSizeElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoFontSizeElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoFontSizeElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoFontSizeElement::createInstance( void )
+  \sa void * SoFontSizeElement::createInstance(void)
 */
 
-SoFontSizeElement::SoFontSizeElement(
-    void )
+SoFontSizeElement::SoFontSizeElement(void)
 {
-    setTypeId( SoFontSizeElement::classTypeId );
-    setStackIndex( SoFontSizeElement::classStackIndex );
+    setTypeId(SoFontSizeElement::classTypeId);
+    setStackIndex(SoFontSizeElement::classStackIndex);
     this->data = getDefault();
 }
 
@@ -136,18 +133,17 @@ SoFontSizeElement::SoFontSizeElement(
   The destructor.
 */
 
-SoFontSizeElement::~SoFontSizeElement( // virtual protected
-    void )
+SoFontSizeElement::~SoFontSizeElement(// virtual protected
+    void)
 {
 }
 
 //! FIXME: write doc.
 
 void
-SoFontSizeElement::init(
-    SoState * state )
+SoFontSizeElement::init(SoState * state)
 {
-  inherited::init( state );
+  inherited::init(state);
   this->data = getDefault();
 }
 
@@ -155,10 +151,10 @@ SoFontSizeElement::init(
 
 //$ EXPORT INLINE
 void 
-SoFontSizeElement::set( SoState * const state, SoNode * const node,
+SoFontSizeElement::set(SoState * const state, SoNode * const node,
 			const float fontSize)
 { 
-  SoFloatElement::set( classStackIndex, state, node, fontSize );
+  SoFloatElement::set(classStackIndex, state, node, fontSize);
 }
 
 //! FIXME: write doc.
@@ -167,7 +163,7 @@ SoFontSizeElement::set( SoState * const state, SoNode * const node,
 void 
 SoFontSizeElement::set(SoState * const state, const float fontSize)
 { 
-  set( state, NULL, fontSize ); 
+  set(state, NULL, fontSize); 
 }
 
 //! FIXME: write doc.
@@ -176,7 +172,7 @@ SoFontSizeElement::set(SoState * const state, const float fontSize)
 float 
 SoFontSizeElement::get(SoState * const state)
 { 
-  return SoFloatElement::get( classStackIndex, state ); 
+  return SoFloatElement::get(classStackIndex, state); 
 }
 
 //! FIXME: write doc.

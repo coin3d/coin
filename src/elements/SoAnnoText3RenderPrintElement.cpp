@@ -36,7 +36,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoAnnoText3RenderPrintElement )
+//$ BEGIN TEMPLATE ElementSource(SoAnnoText3RenderPrintElement)
 
 /*!
   \var SoAnnoText3RenderPrintElement::classTypeId
@@ -90,24 +90,23 @@ SoAnnoText3RenderPrintElement::getClassStackIndex(void)
 */
 
 void
-SoAnnoText3RenderPrintElement::initClass(
-    void )
+SoAnnoText3RenderPrintElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoAnnoText3RenderPrintElement )
+//$ BEGIN TEMPLATE InitElementSource(SoAnnoText3RenderPrintElement)
   assert(SoAnnoText3RenderPrintElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoAnnoText3RenderPrintElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoAnnoText3RenderPrintElement",
-    &SoAnnoText3RenderPrintElement::createInstance);
+  SoAnnoText3RenderPrintElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoAnnoText3RenderPrintElement",
+                       &SoAnnoText3RenderPrintElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoAnnoText3RenderPrintElement::classStackIndex =
-      createStackIndex( SoAnnoText3RenderPrintElement::classTypeId );
-  } else {
-    SoAnnoText3RenderPrintElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoAnnoText3RenderPrintElement::classTypeId);
+  }
+  else {
+    SoAnnoText3RenderPrintElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -118,10 +117,9 @@ SoAnnoText3RenderPrintElement::initClass(
 */
 
 void
-SoAnnoText3RenderPrintElement::cleanClass(
-    void )
+SoAnnoText3RenderPrintElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoAnnoText3RenderPrintElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoAnnoText3RenderPrintElement)
 //$ END TEMPLATE CleanElementSource
 }
 
@@ -131,11 +129,10 @@ SoAnnoText3RenderPrintElement::cleanClass(
   \sa void * SoAnnoText3RenderPrintElement::createInstance()
 */
 
-SoAnnoText3RenderPrintElement::SoAnnoText3RenderPrintElement(
-    void )
+SoAnnoText3RenderPrintElement::SoAnnoText3RenderPrintElement(void)
 {
-    setTypeId( SoAnnoText3RenderPrintElement::classTypeId );
-    setStackIndex( SoAnnoText3RenderPrintElement::classStackIndex );
+    setTypeId(SoAnnoText3RenderPrintElement::classTypeId);
+    setStackIndex(SoAnnoText3RenderPrintElement::classStackIndex);
     this->data = getDefault();
 }
 
@@ -143,18 +140,17 @@ SoAnnoText3RenderPrintElement::SoAnnoText3RenderPrintElement(
   The destructor.
 */
 
-SoAnnoText3RenderPrintElement::~SoAnnoText3RenderPrintElement( // virtual protected
-    void )
+SoAnnoText3RenderPrintElement::~SoAnnoText3RenderPrintElement(// virtual protected
+    void)
 {
 }
 
 //! FIXME: write doc.
 
 void
-SoAnnoText3RenderPrintElement::init(
-    SoState * state )
+SoAnnoText3RenderPrintElement::init(SoState * state)
 {
-  inherited::init( state );
+  inherited::init(state);
   this->data = getDefault();
 }
 
@@ -165,7 +161,7 @@ void
 SoAnnoText3RenderPrintElement::set(SoState * const state, SoNode * const node,
 				const RenderPrintType type)
 { 
-  SoInt32Element::set( classStackIndex,state,node,type );
+  SoInt32Element::set(classStackIndex,state,node,type);
 }
 
 //! FIXME: write doc.
@@ -175,7 +171,7 @@ void
 SoAnnoText3RenderPrintElement::set(SoState * const state,
 				   const RenderPrintType type)
 { 
-  set( state, NULL, type ); 
+  set(state, NULL, type); 
 }
 
 //! FIXME: write doc.
@@ -185,7 +181,7 @@ SoAnnoText3RenderPrintElement::RenderPrintType
 SoAnnoText3RenderPrintElement::get(SoState * const state)
 { 
   return (SoAnnoText3RenderPrintElement::RenderPrintType)
-    SoInt32Element::get( classStackIndex, state ); 
+    SoInt32Element::get(classStackIndex, state); 
 }
 
 //! FIXME: write doc.

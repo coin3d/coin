@@ -32,7 +32,7 @@
 class SoQuadMesh : public SoNonIndexedShape {
   typedef SoNonIndexedShape inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoQuadMesh )
+//$ BEGIN TEMPLATE NodeHeader(SoQuadMesh)
 private:
   static SoType classTypeId;
 

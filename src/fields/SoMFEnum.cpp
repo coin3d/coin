@@ -55,7 +55,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE MFieldRequired( SoMFEnum )
+//$ BEGIN TEMPLATE MFieldRequired(SoMFEnum)
 
 SoType SoMFEnum::classTypeId = SoType::badType();
 
@@ -134,7 +134,7 @@ SoMFEnum::operator = (const SoMFEnum & field)
   return *this;
 }
 //$ END TEMPLATE MFieldRequired
-//$ BEGIN TEMPLATE MFieldValue( SoMFEnum, int, int )
+//$ BEGIN TEMPLATE MFieldValue(SoMFEnum, int, int)
 
 /*!
   FIXME: write function documentation
@@ -259,7 +259,7 @@ SoMFEnum::copyValue(int to, int from)
 void
 SoMFEnum::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass( MFEnum )
+//$ BEGIN TEMPLATE FieldInitClass(MFEnum)
   // Make sure we only initialize once.
   assert(SoMFEnum::classTypeId == SoType::badType());
   // Make sure superclass has been initialized before subclass.
@@ -308,7 +308,8 @@ SoMFEnum::read1Value(SoInput * in, int idx)
   SoSFEnum sfenum;
   sfenum.setEnums(this->numEnums, this->enumValues, this->enumNames);
   SbBool result;
-  if (result = sfenum.readValue(in)) this->set1Value(idx, sfenum.getValue());
+  if ((result = sfenum.readValue(in)))
+    this->set1Value(idx, sfenum.getValue());
   return result;
 }
 

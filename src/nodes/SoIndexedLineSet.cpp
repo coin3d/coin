@@ -477,7 +477,7 @@ SoIndexedLineSet::getBoundingBox(SoGetBoundingBoxAction * action)
   FIXME: write doc
 */
 void
-SoIndexedLineSet::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoIndexedLineSet::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -488,7 +488,7 @@ SoIndexedLineSet::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   FIXME: write doc
 */
 void
-SoIndexedLineSet::generatePrimitives(SoAction * action)
+SoIndexedLineSet::generatePrimitives(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -499,10 +499,10 @@ SoIndexedLineSet::generatePrimitives(SoAction * action)
   FIXME: write doc
 */
 SoDetail *
-SoIndexedLineSet::createLineSegmentDetail(SoRayPickAction * action,
-					  const SoPrimitiveVertex * v1,
-					  const SoPrimitiveVertex * v2,
-					  SoPickedPoint * pp)
+SoIndexedLineSet::createLineSegmentDetail(SoRayPickAction * /* action */,
+					  const SoPrimitiveVertex * /* v1 */,
+					  const SoPrimitiveVertex * /* v2 */,
+					  SoPickedPoint * /* pp */)
 {
   assert(0 && "FIXME: not implemented");
   return NULL;

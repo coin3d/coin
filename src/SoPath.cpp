@@ -168,7 +168,7 @@ SoPath::SoPath(SoNode * const head)
 */
 
 SoPath::SoPath(const SoPath & rhs)
-  : nodes(rhs.getFullLength()), indices(rhs.getFullLength())
+  : inherited(), nodes(rhs.getFullLength()), indices(rhs.getFullLength())
 {
   operator = (rhs);
 }
@@ -185,7 +185,6 @@ SoPath::operator = (const SoPath & rhs)
   truncate(0);
   const int length = rhs.getLength();
   for (int i = 0; i < length; i++) {
-    SoNode * const node = (SoNode *) rhs.nodes[i];
     append((SoNode *) rhs.nodes[i], rhs.indices[i]);
   }
   return *this;
@@ -289,7 +288,7 @@ SoPath::append(SoNode * const node)
   const int kids = children->getLength();
   int kid;
   for (kid = 0; kid < kids; kid++) {
-    if ((*children)[kid] == node ) break;
+    if ((*children)[kid] == node) break;
   }
   assert(kid < kids);
   this->append(node, kid);
@@ -360,9 +359,7 @@ SoPath::append(const SoPath * const fromPath)
 */
 
 void
-SoPath::append(
-    SoNode * const node,
-    const int index)
+SoPath::append(SoNode * const node, const int index)
 {
     this->nodes.append(node);
     this->indices.append(index);
@@ -413,10 +410,10 @@ SoNode *
 SoPath::getNode(const int index) const
 {
 #if COIN_DEBUG
-  if ( index < 0 || index >= this->nodes.getLength() ) {
-    SoDebugError::postWarning( "SoPath::getNode( int )",
-      "index is out of bounds.\n" );
-    assert( 0 );
+  if (index < 0 || index >= this->nodes.getLength()) {
+    SoDebugError::postWarning("SoPath::getNode( int)",
+      "index is out of bounds.\n");
+    assert(0);
   }
 #endif // COIN_DEBUG
   return (SoNode *) this->nodes[ index ];
@@ -431,10 +428,10 @@ SoNode *
 SoPath::getNodeFromTail(const int index) const
 {
 #if COIN_DEBUG
-  if ( index < 0 || index >= this->nodes.getLength() ) {
-    SoDebugError::postWarning( "SoPath::getNodeFromTail()",
-      "index is out of bounds.\n" );
-    assert( 0 );
+  if (index < 0 || index >= this->nodes.getLength()) {
+    SoDebugError::postWarning("SoPath::getNodeFromTail()",
+      "index is out of bounds.\n");
+    assert(0);
   }
 #endif // COIN_DEBUG
   return (SoNode *) this->nodes[ this->nodes.getLength() - index - 1 ];
@@ -448,10 +445,10 @@ int
 SoPath::getIndex(const int index) const
 {
 #if COIN_DEBUG
-  if ( index < 0 || index >= this->indices.getLength() ) {
-    SoDebugError::postWarning( "SoPath::getIndex()",
-      "index is out of bounds.\n" );
-    assert( 0 );
+  if (index < 0 || index >= this->indices.getLength()) {
+    SoDebugError::postWarning("SoPath::getIndex()",
+      "index is out of bounds.\n");
+    assert(0);
   }
 #endif // COIN_DEBUG
   return this->indices[ index ];
@@ -466,10 +463,10 @@ int
 SoPath::getIndexFromTail(const int index) const
 {
 #if COIN_DEBUG
-  if ( index < 0 || index >= this->indices.getLength() ) {
-    SoDebugError::postWarning( "SoPath::getIndexFromTail()",
-      "index is out of bounds.\n" );
-    assert( 0 );
+  if (index < 0 || index >= this->indices.getLength()) {
+    SoDebugError::postWarning("SoPath::getIndexFromTail()",
+      "index is out of bounds.\n");
+    assert(0);
   }
 #endif // COIN_DEBUG
   return this->indices[ this->indices.getLength() - index - 1 ];
@@ -741,8 +738,8 @@ SoPath::removeIndex(SoNode * const parent, const int oldIndex)
 */
 
 void
-SoPath::replaceIndex(
-  SoNode * const parent, const int index, SoNode * const newChild)
+SoPath::replaceIndex(SoNode * const parent, const int index,
+		     SoNode * const newChild)
 {
   const int len = this->nodes.getLength();
   for (int i = 0; i < (len - 1); i++) {

@@ -121,7 +121,7 @@ static char converttoprintable_shift[] = {
   ' ', '\'', ',', '-', '.', '/', ';', '=', '[', '\\', ']', '~'
 };
 
-//$ BEGIN TEMPLATE EventSource( SoKeyboardEvent )
+//$ BEGIN TEMPLATE EventSource(SoKeyboardEvent)
 /*!
   \var SoKeyboardEvent::classTypeId
   Unique type identification for the SoKeyboardEvent class type.
@@ -158,7 +158,7 @@ SoKeyboardEvent::getClassTypeId(void)
 void
 SoKeyboardEvent::initClass(void)
 {
-//$ BEGIN TEMPLATE EventInitClass( KeyboardEvent )
+//$ BEGIN TEMPLATE EventInitClass(KeyboardEvent)
   // Make sure we only initialize once.
   assert(SoKeyboardEvent::classTypeId == SoType::badType());
   // Make sure superclass get initialized before subclass.

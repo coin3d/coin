@@ -42,14 +42,16 @@ public:
   SoSFBool pause;
   SoSFTrigger reset;
 
-  SoEngineOutput timeOut; //SoSFTime
+  SoEngineOutput timeOut; // SoSFTime
 
   SoElapsedTime();
 
   static void initClass();
 
+protected:
+  ~SoElapsedTime();
+
 private:
-  virtual ~SoElapsedTime();
   virtual void evaluate();
   virtual void inputChanged(SoField * which);
 

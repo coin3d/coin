@@ -142,7 +142,7 @@ SoDataSensor::getTriggerPathFlag(void) const
   FIXME: write doc
  */
 void
-SoDataSensor::notify(SoNotList * list)
+SoDataSensor::notify(SoNotList * /* list */)
 {
   assert(0 && "FIXME: not implemented");
 }

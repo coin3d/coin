@@ -41,7 +41,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE MField( SoMFNode, SoNode *, SoNode * )
+//$ BEGIN TEMPLATE MField(SoMFNode, SoNode *, SoNode *)
 
 SoType SoMFNode::classTypeId = SoType::badType();
 
@@ -261,7 +261,7 @@ SoMFNode::copyValue(int to, int from)
 void
 SoMFNode::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass( MFNode )
+//$ BEGIN TEMPLATE FieldInitClass(MFNode)
   // Make sure we only initialize once.
   assert(SoMFNode::classTypeId == SoType::badType());
   // Make sure superclass has been initialized before subclass.
@@ -317,7 +317,7 @@ SoMFNode::read1Value(SoInput * in, int index)
   FIXME: write function documentation
 */
 void
-SoMFNode::write1Value(SoOutput * out, int idx) const
+SoMFNode::write1Value(SoOutput * /* out */, int /* idx */) const
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -326,7 +326,7 @@ SoMFNode::write1Value(SoOutput * out, int idx) const
   FIXME: write function documentation
 */
 void
-SoMFNode::fixCopy(SbBool copyConnections)
+SoMFNode::fixCopy(SbBool /* copyConnections */)
 {
   assert(0 && "FIXME: not implemented yet");
 }

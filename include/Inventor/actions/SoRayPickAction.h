@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_RAY_PICK_ACTION_H_
-#define _SO_RAY_PICK_ACTION_H_
+#ifndef __SORAYPICKACTION_H__
+#define __SORAYPICKACTION_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SORAYPICKACTION)
@@ -37,7 +37,7 @@ class SoPickedPointList;
 class SoRayPickAction : public SoPickAction {
   typedef SoPickAction inherited;
 
-//$ BEGIN TEMPLATE ActionHeader( SoRayPickAction )
+//$ BEGIN TEMPLATE ActionHeader(SoRayPickAction)
 private:
   static SoType classTypeId;
 
@@ -76,4 +76,4 @@ public:
 
 };
 
-#endif // ! _SO_RAY_PICK_ACTION_H_
+#endif // !__SORAYPICKACTION_H__

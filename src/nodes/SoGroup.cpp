@@ -109,7 +109,7 @@ SoGroup::SoGroup()
 /*!
   FIXME: write function documentation
 */
-SoGroup::SoGroup(int nchildren)
+SoGroup::SoGroup(int /* nchildren */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -146,7 +146,7 @@ SoGroup::getNumChildren() const
   FIXME: write function documentation
 */
 SbBool
-SoGroup::readInstance(SoInput * in, unsigned short flags)
+SoGroup::readInstance(SoInput * in, unsigned short /* flags */)
 {
   SbName typeString;
   // FIXME: cast-hack to compile. 19980915 mortene.
@@ -194,7 +194,7 @@ SoGroup::readChildren(SoInput * in)
 
     for (unsigned int i=0; (i < numchildren) && ret; i++) {
       SoBase * child = NULL;
-      if (ret = SoBase::read(in, child, SoNode::getClassTypeId())) {
+      if ((ret = SoBase::read(in, child, SoNode::getClassTypeId()))) {
 	assert(child);
 	this->addChild((SoNode *)child);
       }
@@ -203,7 +203,7 @@ SoGroup::readChildren(SoInput * in)
   else {
     while (ret) {
       SoBase * child = NULL;
-      if (ret = SoBase::read(in, child, SoNode::getClassTypeId())) {
+      if ((ret = SoBase::read(in, child, SoNode::getClassTypeId()))) {
 	if (child != NULL) this->addChild((SoNode *)child);
 	else break;
       }
@@ -537,7 +537,7 @@ SoGroup::replaceChild(SoNode * const oldChild, SoNode * const newChild)
   FIXME: write doc
 */
 void
-SoGroup::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoGroup::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

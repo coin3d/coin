@@ -133,7 +133,7 @@
 */
 
 
-//$ BEGIN TEMPLATE NodeAbstractSource( SoCamera )
+//$ BEGIN TEMPLATE NodeAbstractSource(SoCamera)
 SoType SoCamera::classTypeId = SoType::badType();
 
 /*!
@@ -160,7 +160,7 @@ SoCamera::getTypeId(void) const
 */
 SoCamera::SoCamera()
 {
-//$ BEGIN TEMPLATE NodeConstructor( SoCamera )
+//$ BEGIN TEMPLATE NodeConstructor(SoCamera)
   // Make sure the class has been initialized.
   assert(SoCamera::classTypeId != SoType::badType());
 //$ END TEMPLATE NodeConstructor
@@ -197,7 +197,7 @@ SoCamera::~SoCamera()
 void
 SoCamera::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeAbstractSource( Camera )
+//$ BEGIN TEMPLATE InitNodeAbstractSource(Camera)
   // Make sure we only initialize once.
   assert(SoCamera::classTypeId == SoType::badType());
   // Make sure superclass get initialized before subclass.
@@ -288,7 +288,7 @@ SoCamera::viewAll(SoPath * const path,
   FIXME: write function documentation
 */
 SbViewportRegion 
-SoCamera::getViewportBounds(const SbViewportRegion &region) const
+SoCamera::getViewportBounds(const SbViewportRegion & /* region */) const
 {
   assert(0 && "FIXME: not implemented yet");
   return SbViewportRegion();
@@ -389,7 +389,7 @@ SoCamera::getBoundingBox(SoGetBoundingBoxAction *action)
   FIXME: write function documentation
 */
 void 
-SoCamera::handleEvent(SoHandleEventAction *action)
+SoCamera::handleEvent(SoHandleEventAction * /* action */)
 {
   // FIXME: anything to be done here? Perhaps something to get
   // SoHandleEventAction handling of ray picks correct? 19990214
@@ -401,9 +401,9 @@ SoCamera::handleEvent(SoHandleEventAction *action)
   FIXME: write function documentation
 */
 void 
-SoCamera::jitter(int numPasses, int curPass,
-		 const SbViewportRegion &vpReg,
-		 SbVec3f &jitterAmount) const
+SoCamera::jitter(int /* numPasses */, int /* curPass */,
+		 const SbViewportRegion & /* vpReg */,
+		 SbVec3f & /* jitterAmount */) const
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -413,7 +413,7 @@ SoCamera::jitter(int numPasses, int curPass,
   FIXME: write doc
 */
 void
-SoCamera::doAction(SoAction * action)
+SoCamera::doAction(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -424,7 +424,7 @@ SoCamera::doAction(SoAction * action)
   FIXME: write doc
 */
 void
-SoCamera::callback(SoCallbackAction * action)
+SoCamera::callback(SoCallbackAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -435,7 +435,7 @@ SoCamera::callback(SoCallbackAction * action)
   FIXME: write doc
 */
 void
-SoCamera::rayPick(SoRayPickAction * action)
+SoCamera::rayPick(SoRayPickAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -446,7 +446,7 @@ SoCamera::rayPick(SoRayPickAction * action)
   FIXME: write doc
 */
 void
-SoCamera::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoCamera::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

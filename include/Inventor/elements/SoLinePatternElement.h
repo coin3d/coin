@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_LINE_PATTERN_ELEMENT_H_
-#define _SO_LINE_PATTERN_ELEMENT_H_
+#ifndef __SOLINEPATTERNELEMENT_H__
+#define __SOLINEPATTERNELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOLINEPATTERNELEMENT)
@@ -30,7 +30,7 @@
 class SoLinePatternElement : public SoInt32Element {
   typedef SoInt32Element inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoLinePatternElement )
+//$ BEGIN TEMPLATE ElementHeader(SoLinePatternElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -53,14 +53,14 @@ public:
     CONTINUOUS = 0xFFFF
   };
 
-  virtual void init( SoState * state );
+  virtual void init(SoState * state);
 
   static  void set(SoState * const state, SoNode * const node,
-		   const int32_t pattern );
+		   const int32_t pattern);
   static  void set(SoState * const state, const int32_t pattern);
   static  int32_t get(SoState * const state);
   static  int32_t getDefault();
   
 };
 
-#endif // ! _SO_LINE_PATTERN_ELEMENT_H_
+#endif // !__SOLINEPATTERNELEMENT_H__

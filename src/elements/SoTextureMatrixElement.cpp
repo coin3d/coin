@@ -36,7 +36,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoTextureMatrixElement )
+//$ BEGIN TEMPLATE ElementSource(SoTextureMatrixElement)
 
 /*!
   \var SoTextureMatrixElement::classTypeId
@@ -90,24 +90,23 @@ SoTextureMatrixElement::getClassStackIndex(void)
 */
 
 void
-SoTextureMatrixElement::initClass(
-    void )
+SoTextureMatrixElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoTextureMatrixElement )
+//$ BEGIN TEMPLATE InitElementSource(SoTextureMatrixElement)
   assert(SoTextureMatrixElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoTextureMatrixElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoTextureMatrixElement",
-    &SoTextureMatrixElement::createInstance);
+  SoTextureMatrixElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoTextureMatrixElement",
+                       &SoTextureMatrixElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoTextureMatrixElement::classStackIndex =
-      createStackIndex( SoTextureMatrixElement::classTypeId );
-  } else {
-    SoTextureMatrixElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoTextureMatrixElement::classTypeId);
+  }
+  else {
+    SoTextureMatrixElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -118,42 +117,38 @@ SoTextureMatrixElement::initClass(
 */
 
 void
-SoTextureMatrixElement::cleanClass(
-    void )
+SoTextureMatrixElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoTextureMatrixElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoTextureMatrixElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoTextureMatrixElement::createInstance( void )
+  \sa void * SoTextureMatrixElement::createInstance(void)
 */
 
-SoTextureMatrixElement::SoTextureMatrixElement(
-    void )
+SoTextureMatrixElement::SoTextureMatrixElement(void)
   : textureMatrix()
 {
-    setTypeId( SoTextureMatrixElement::classTypeId );
-    setStackIndex( SoTextureMatrixElement::classStackIndex );
+    setTypeId(SoTextureMatrixElement::classTypeId);
+    setStackIndex(SoTextureMatrixElement::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoTextureMatrixElement::~SoTextureMatrixElement(
-    void )
+SoTextureMatrixElement::~SoTextureMatrixElement(void)
 {
 }
 
 //! FIXME: write doc.
 
 void
-SoTextureMatrixElement::makeIdentity(
-    SoState * const state,
-    SoNode * const node )
+SoTextureMatrixElement::makeIdentity(SoState * const state,
+				     SoNode * const node)
 {
   SoTextureMatrixElement *elem = (SoTextureMatrixElement*)
     SoElement::getElement(state, classStackIndex);
@@ -218,8 +213,7 @@ SoTextureMatrixElement::scaleBy(SoState * const state,
 //! FIXME: write doc.
 
 const SbMatrix &
-SoTextureMatrixElement::get(
-    SoState * const state )
+SoTextureMatrixElement::get(SoState * const state)
 {
   SoTextureMatrixElement *elem = (SoTextureMatrixElement*)
     SoElement::getConstElement(state, classStackIndex);
@@ -229,10 +223,9 @@ SoTextureMatrixElement::get(
 //! FIXME: write doc.
 
 void
-SoTextureMatrixElement::print(
-    FILE * file ) const
+SoTextureMatrixElement::print(FILE * file) const
 {
-    fprintf( file, "SoTextureMatrixElement[%p]\n", this );
+    fprintf(file, "SoTextureMatrixElement[%p]\n", this);
 }
 
 //! FIXME: write doc.
@@ -284,8 +277,7 @@ SoTextureMatrixElement::scaleEltBy(const SbVec3f & scaleFactor)
 //! FIXME: write doc.
 
 const SbMatrix &
-SoTextureMatrixElement::getElt(
-    void ) const
+SoTextureMatrixElement::getElt(void) const
 {
   return this->textureMatrix;
 }
@@ -293,34 +285,31 @@ SoTextureMatrixElement::getElt(
 //! FIXME: write doc.
 
 void
-SoTextureMatrixElement::init(
-    SoState * state )
+SoTextureMatrixElement::init(SoState * state)
 {
-    inherited::init( state );
+    inherited::init(state);
     this->textureMatrix.makeIdentity();
 }
 
 //! FIXME: write doc.
 
 void
-SoTextureMatrixElement::push(
-    SoState * state )
+SoTextureMatrixElement::push(SoState * state)
 {
-    inherited::push( state );
+    inherited::push(state);
 
     SoTextureMatrixElement * const element =
-        (SoTextureMatrixElement *)( this->next );
+        (SoTextureMatrixElement *)(this->next);
     element->textureMatrix = this->textureMatrix;
 }
 
 //! FIXME: write doc.
 
 void
-SoTextureMatrixElement::pop(
-    SoState * state,
-    const SoElement * prevTopElement )
+SoTextureMatrixElement::pop(SoState * state,
+			    const SoElement * prevTopElement)
 {
-    inherited::pop( state, prevTopElement );
+    inherited::pop(state, prevTopElement);
 }
 
 /*!
@@ -328,8 +317,7 @@ SoTextureMatrixElement::pop(
 */
 
 void
-SoTextureMatrixElement::emptyMatrix(
-  SoState * const state )
+SoTextureMatrixElement::emptyMatrix(SoState * const /* state */)
 {
   assert(0 && "FIXME: not implemented");
 }

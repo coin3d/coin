@@ -103,7 +103,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE NodeSource( SoArray )
+//$ BEGIN TEMPLATE NodeSource(SoArray)
 SoType SoArray::classTypeId = SoType::badType();
 
 /*!
@@ -139,7 +139,7 @@ SoArray::getTypeId(void) const
 */
 SoArray::SoArray()
 {
-//$ BEGIN TEMPLATE NodeConstructor( SoArray )
+//$ BEGIN TEMPLATE NodeConstructor(SoArray)
   // Make sure the class has been initialized.
   assert(SoArray::classTypeId != SoType::badType());
 //$ END TEMPLATE NodeConstructor
@@ -174,7 +174,7 @@ SoArray::~SoArray()
 void
 SoArray::initClass(void)
 {
-//$ BEGIN TEMPLATE InitNodeSource( Array )
+//$ BEGIN TEMPLATE InitNodeSource(Array)
   // Make sure we only initialize once.
   assert(SoArray::classTypeId == SoType::badType());
   // Make sure superclass get initialized before subclass.
@@ -458,7 +458,7 @@ SoArray::affectsState(void) const
   FIXME: write doc
 */
 void
-SoArray::doAction(SoAction * action)
+SoArray::doAction(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -469,7 +469,7 @@ SoArray::doAction(SoAction * action)
   FIXME: write doc
 */
 void
-SoArray::callback(SoCallbackAction * action)
+SoArray::callback(SoCallbackAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -480,7 +480,7 @@ SoArray::callback(SoCallbackAction * action)
   FIXME: write doc
 */
 void
-SoArray::pick(SoPickAction * action)
+SoArray::pick(SoPickAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -491,7 +491,7 @@ SoArray::pick(SoPickAction * action)
   FIXME: write doc
 */
 void
-SoArray::handleEvent(SoHandleEventAction * action)
+SoArray::handleEvent(SoHandleEventAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -502,7 +502,7 @@ SoArray::handleEvent(SoHandleEventAction * action)
   FIXME: write doc
 */
 void
-SoArray::getMatrix(SoGetMatrixAction * action)
+SoArray::getMatrix(SoGetMatrixAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -527,7 +527,7 @@ SoArray::search(SoSearchAction * action)
   FIXME: write doc
 */
 void
-SoArray::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoArray::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

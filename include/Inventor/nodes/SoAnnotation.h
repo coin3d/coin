@@ -31,7 +31,7 @@
 class SoAnnotation : public SoSeparator {
   typedef SoSeparator inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoAnnotation )
+//$ BEGIN TEMPLATE NodeHeader(SoAnnotation)
 private:
   static SoType classTypeId;
 

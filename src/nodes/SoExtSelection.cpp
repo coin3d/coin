@@ -177,7 +177,7 @@ SoExtSelection::cleanClass(void)
   FIXME: write doc
  */
 void
-SoExtSelection::useOverlay(SbBool flg)
+SoExtSelection::useOverlay(SbBool /* flg */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -206,7 +206,7 @@ SoExtSelection::getOverlaySceneGraph(void)
   FIXME: write doc
  */
 void
-SoExtSelection::setOverlayLassoColorIndex(int index)
+SoExtSelection::setOverlayLassoColorIndex(int /* index */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -225,7 +225,7 @@ SoExtSelection::getOverlayLassoColorIndex(void)
   FIXME: write doc
  */
 void
-SoExtSelection::setLassoColor(SbColor c)
+SoExtSelection::setLassoColor(SbColor /* c */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -245,7 +245,7 @@ SoExtSelection::getLassoColor(void)
   FIXME: write doc
  */
 void
-SoExtSelection::setLassoWidth(float width)
+SoExtSelection::setLassoWidth(float /* width */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -264,7 +264,7 @@ SoExtSelection::getLassoWidth(void)
   FIXME: write doc
  */
 void
-SoExtSelection::setOverlayLassoPattern(unsigned short pattern)
+SoExtSelection::setOverlayLassoPattern(unsigned short /* pattern */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -283,7 +283,7 @@ SoExtSelection::getOverlayLassoPattern(void)
   FIXME: write doc
  */
 void
-SoExtSelection::animateOverlayLasso(SbBool flg)
+SoExtSelection::animateOverlayLasso(SbBool /* flg */)
 {
   assert(0 && "FIXME: not implemented");
 }

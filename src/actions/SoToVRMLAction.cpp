@@ -29,7 +29,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource( SoToVRMLAction )
+//$ BEGIN TEMPLATE ActionSource(SoToVRMLAction)
 
 SoType SoToVRMLAction::classTypeId = SoType::badType();
 
@@ -102,10 +102,9 @@ SoToVRMLAction::enableElement(const SoType type, const int stackIndex)
 */
 
 void
-SoToVRMLAction::initClass(
-    void )
+SoToVRMLAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource( SoToVRMLAction )
+//$ BEGIN TEMPLATE InitActionSource(SoToVRMLAction)
   assert(SoToVRMLAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
@@ -123,8 +122,7 @@ SoToVRMLAction::initClass(
 */
 
 void
-SoToVRMLAction::cleanClass(
-    void )
+SoToVRMLAction::cleanClass(void)
 {
 }
 
@@ -143,8 +141,7 @@ SoToVRMLAction::SoToVRMLAction(void)
   The destructor.
 */
 
-SoToVRMLAction::~SoToVRMLAction(
-    void )
+SoToVRMLAction::~SoToVRMLAction(void)
 {
   // FIXME: implement.
 }
@@ -154,7 +151,7 @@ SoToVRMLAction::~SoToVRMLAction(
 */
 
 void
-SoToVRMLAction::beginTraversal( SoNode * node )
+SoToVRMLAction::beginTraversal(SoNode * /* node */)
 {
   assert(0 && "FIXME: not implemented");
 }

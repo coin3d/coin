@@ -122,7 +122,7 @@ SoPathSwitch::cleanClass(void)
   FIXME: write function documentation
 */
 void
-SoPathSwitch::getBoundingBox(SoGetBoundingBoxAction * action)
+SoPathSwitch::getBoundingBox(SoGetBoundingBoxAction * /* action */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -134,7 +134,7 @@ SoPathSwitch::getBoundingBox(SoGetBoundingBoxAction * action)
   FIXME: write doc
  */
 void
-SoPathSwitch::doAction(SoAction * action)
+SoPathSwitch::doAction(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -145,7 +145,7 @@ SoPathSwitch::doAction(SoAction * action)
   FIXME: write doc
  */
 void
-SoPathSwitch::GLRender(SoGLRenderAction * action)
+SoPathSwitch::GLRender(SoGLRenderAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -156,7 +156,7 @@ SoPathSwitch::GLRender(SoGLRenderAction * action)
   FIXME: write doc
  */
 void
-SoPathSwitch::pick(SoPickAction * action)
+SoPathSwitch::pick(SoPickAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -167,7 +167,7 @@ SoPathSwitch::pick(SoPickAction * action)
   FIXME: write doc
  */
 void
-SoPathSwitch::handleEvent(SoHandleEventAction * action)
+SoPathSwitch::handleEvent(SoHandleEventAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -178,7 +178,7 @@ SoPathSwitch::handleEvent(SoHandleEventAction * action)
   FIXME: write doc
  */
 void
-SoPathSwitch::getMatrix(SoGetMatrixAction * action)
+SoPathSwitch::getMatrix(SoGetMatrixAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -189,7 +189,7 @@ SoPathSwitch::getMatrix(SoGetMatrixAction * action)
   FIXME: write doc
  */
 void
-SoPathSwitch::search(SoSearchAction * action)
+SoPathSwitch::search(SoSearchAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -200,7 +200,7 @@ SoPathSwitch::search(SoSearchAction * action)
   FIXME: write doc
  */
 void
-SoPathSwitch::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoPathSwitch::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

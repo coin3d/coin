@@ -43,7 +43,7 @@ typedef void SoWWWInlineFetchURLCB(const SbString & url, void * userData,
 class SoWWWInline : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoWWWInline )
+//$ BEGIN TEMPLATE NodeHeader(SoWWWInline)
 private:
   static SoType classTypeId;
 

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_GL_UPDATE_AREA_ELEMENT_H_
-#define _SO_GL_UPDATE_AREA_ELEMENT_H_
+#ifndef __SOGLUPDATEAREAELEMENT_H__
+#define __SOGLUPDATEAREAELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOGLUPDATEAREAELEMENT)
@@ -36,7 +36,7 @@
 class SoGLUpdateAreaElement : public SoElement {
   typedef SoElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoGLUpdateAreaElement )
+//$ BEGIN TEMPLATE ElementHeader(SoGLUpdateAreaElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -58,7 +58,7 @@ public:
 
   virtual void push(SoState * state);
   virtual void pop(SoState * state,
-		   const SoElement * prevTopElement );
+		   const SoElement * prevTopElement);
 
   virtual SbBool matches(const SoElement * element) const;
   virtual SoElement * copyMatchInfo() const;
@@ -77,4 +77,4 @@ protected:
   SbVec2f size;
 };
 
-#endif // ! _SO_GL_UPDATE_AREA_ELEMENT_H_
+#endif // !__SOGLUPDATEAREAELEMENT_H__

@@ -196,7 +196,8 @@ SoImage::cleanClass(void)
   FIXME: write function documentation
 */
 void
-SoImage::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
+SoImage::computeBBox(SoAction * /* action */,
+		     SbBox3f & /* box */, SbVec3f & /* center */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -208,7 +209,7 @@ SoImage::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   FIXME: write doc
 */
 void
-SoImage::GLRender(SoGLRenderAction * action)
+SoImage::GLRender(SoGLRenderAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -219,7 +220,7 @@ SoImage::GLRender(SoGLRenderAction * action)
   FIXME: write doc
 */
 void
-SoImage::rayPick(SoRayPickAction * action)
+SoImage::rayPick(SoRayPickAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -230,7 +231,7 @@ SoImage::rayPick(SoRayPickAction * action)
   FIXME: write doc
 */
 void
-SoImage::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoImage::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -241,7 +242,7 @@ SoImage::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   FIXME: write doc
 */
 void
-SoImage::generatePrimitives(SoAction * action)
+SoImage::generatePrimitives(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -251,7 +252,7 @@ SoImage::generatePrimitives(SoAction * action)
   FIXME: write function documentation
 */
 SbBool
-SoImage::readInstance(SoInput * in, unsigned short flags)
+SoImage::readInstance(SoInput * in, unsigned short /* flags */)
 {
   assert(!in->isBinary() && "FIXME: not implemented yet");
 
@@ -273,7 +274,7 @@ SoImage::getReadStatus(void)
   FIXME: write function documentation
 */
 void
-SoImage::setReadStatus(SbBool flag)
+SoImage::setReadStatus(SbBool /* flag */)
 {
   assert(0 && "FIXME: not implemented");
 }

@@ -31,7 +31,7 @@
 class SoTransformation : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeAbstractHeader( SoTransformation )
+//$ BEGIN TEMPLATE NodeAbstractHeader(SoTransformation)
 private:
   static SoType classTypeId;
 

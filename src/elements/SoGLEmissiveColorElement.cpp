@@ -36,7 +36,7 @@
 #include <GL/gl.h>
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource( SoGLEmissiveColorElement )
+//$ BEGIN TEMPLATE ElementSource(SoGLEmissiveColorElement)
 
 /*!
   \var SoGLEmissiveColorElement::classTypeId
@@ -92,21 +92,21 @@ SoGLEmissiveColorElement::getClassStackIndex(void)
 void
 SoGLEmissiveColorElement::initClass()
 {
-//$ BEGIN TEMPLATE InitElementSource( SoGLEmissiveColorElement )
+//$ BEGIN TEMPLATE InitElementSource(SoGLEmissiveColorElement)
   assert(SoGLEmissiveColorElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoGLEmissiveColorElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoGLEmissiveColorElement",
-    &SoGLEmissiveColorElement::createInstance);
+  SoGLEmissiveColorElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoGLEmissiveColorElement",
+                       &SoGLEmissiveColorElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoGLEmissiveColorElement::classStackIndex =
-      createStackIndex( SoGLEmissiveColorElement::classTypeId );
-  } else {
-    SoGLEmissiveColorElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoGLEmissiveColorElement::classTypeId);
+  }
+  else {
+    SoGLEmissiveColorElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -119,14 +119,14 @@ SoGLEmissiveColorElement::initClass()
 void 
 SoGLEmissiveColorElement::cleanClass()
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoGLEmissiveColorElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoGLEmissiveColorElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoGLEmissiveColorElement::createInstance( void )
+  \sa void * SoGLEmissiveColorElement::createInstance(void)
 */
 
 SoGLEmissiveColorElement::SoGLEmissiveColorElement()

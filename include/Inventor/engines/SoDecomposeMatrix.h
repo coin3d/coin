@@ -29,25 +29,16 @@
 #endif // COIN_EXCLUDE_SODECOMPOSEMATRIX
 
 class SoDecomposeMatrix : public SoEngine {
-  typedef SoEngine inherited;
-  SO_ENGINE_HEADER(SoDecomposeMatrix);
+  SO_COMPOSE__HEADER(SoDecomposeMatrix);
 
 public:
   SoMFMatrix matrix;
 
-  SoEngineOutput translation; //SoMFVec3f
-  SoEngineOutput rotation; //SoMFRotation
-  SoEngineOutput scaleFactor; //SoMFVec3f
-  SoEngineOutput scaleOrientation; //SoMFRotation
-  SoEngineOutput center; //SoMFVec3f
-
-  SoDecomposeMatrix();
-
-  static void initClass();
-
-private:
-  virtual ~SoDecomposeMatrix();
-  virtual void evaluate();
+  SoEngineOutput translation; // SoMFVec3f
+  SoEngineOutput rotation; // SoMFRotation
+  SoEngineOutput scaleFactor; // SoMFVec3f
+  SoEngineOutput scaleOrientation; // SoMFRotation
+  SoEngineOutput center; // SoMFVec3f
 };
 
 #endif // !__SODECOMPOSEMATRIX_H__

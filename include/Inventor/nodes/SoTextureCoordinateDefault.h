@@ -31,7 +31,7 @@
 class SoTextureCoordinateDefault : public SoTextureCoordinateFunction {
   typedef SoTextureCoordinateFunction inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoTextureCoordinateDefault )
+//$ BEGIN TEMPLATE NodeHeader(SoTextureCoordinateDefault)
 private:
   static SoType classTypeId;
 
@@ -54,13 +54,13 @@ public:
   virtual void doAction(SoAction *action);
 #endif // !COIN_EXCLUDE_SOACTION
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
-  virtual void GLRender( SoGLRenderAction * action );
+  virtual void GLRender(SoGLRenderAction * action);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 #if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
-  virtual void callback( SoCallbackAction * action );
+  virtual void callback(SoCallbackAction * action);
 #endif // COIN_EXCLUDE_SOCALLBACKACTION
 #if !defined(COIN_EXCLUDE_SOPICKACTION)
-  virtual void pick( SoPickAction * action );
+  virtual void pick(SoPickAction * action);
 #endif // !COIN_EXCLUDE_SOPICKACTION
 
 };

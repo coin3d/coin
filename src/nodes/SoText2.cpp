@@ -241,7 +241,7 @@ setFont(SbName fontname, int fontsize)
 
   // First try with only the fontname setting, in case the user
   // specified a full X11 font string.
-  if (fstruc = tryFont(fontname.getString())) return fstruc;
+  if ((fstruc = tryFont(fontname.getString()))) return fstruc;
 
   // Try with the full fontname and size setting with non-italic style.
   SbString fs("*");
@@ -252,7 +252,7 @@ setFont(SbName fontname, int fontsize)
   fs += is;
   fs += "-*-*-*-*-*-*-*";
 
-  if (fstruc = tryFont(fs.getString())) return fstruc;
+  if ((fstruc = tryFont(fs.getString()))) return fstruc;
 
   // Try with the full fontname and size setting -- any style.
   fs = "*";
@@ -262,7 +262,7 @@ setFont(SbName fontname, int fontsize)
   fs += is;
   fs += "-*-*-*-*-*-*-*";
 
-  if (fstruc = tryFont(fs.getString())) return fstruc;
+  if ((fstruc = tryFont(fs.getString()))) return fstruc;
 
   // Can't seem to find a way to use the fontname, so lets try to get
   // _any_ non-italic font at the correct size.
@@ -271,7 +271,7 @@ setFont(SbName fontname, int fontsize)
   fs += is;
   fs += "-*-*-*-*-*-*-*";
 
-  if (fstruc = tryFont(fs.getString())) return fstruc;
+  if ((fstruc = tryFont(fs.getString()))) return fstruc;
 
   // That didn't work out either, so lets try settle for any font of
   // the correct size.
@@ -280,14 +280,14 @@ setFont(SbName fontname, int fontsize)
   fs += is;
   fs += "-*-*-*-*-*-*-*";
 
-  if (fstruc = tryFont(fs.getString())) return fstruc;
+  if ((fstruc = tryFont(fs.getString()))) return fstruc;
 
   // Last resort -- try to read _any_ font on the system. If this
   // doesn't work, something is seriously pucked up (either on the
   // user's system or in this code). --mortene
   fs = "-*-*-*-*-*-*-*-*-*-*-*-*-*-*";
 
-  if (fstruc = tryFont(fs.getString())) return fstruc;
+  if ((fstruc = tryFont(fs.getString()))) return fstruc;
 
 #if COIN_DEBUG
   SoDebugError::postWarning("setFont", "Couldn't load a font!");
@@ -322,7 +322,7 @@ getGLList(SoGLRenderAction * action, XFontStruct *& fontstruct)
   }
   else {
     unsigned int base = NOT_AVAILABLE;
-    if (fontstruct = setFont(fontname, fontsize)) {
+    if ((fontstruct = setFont(fontname, fontsize))) {
       base = glGenLists(256);
       glXUseXFont(fontstruct->fid, 0, 256, base);
     }
@@ -457,7 +457,7 @@ SoText2::GLRender(SoGLRenderAction * action)
   FIXME: write function documentation
 */
 void
-SoText2::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
+SoText2::computeBBox(SoAction * /* action */, SbBox3f & box, SbVec3f & center)
 {
   // FIXME: implement properly. 19990418 mortene.
   box.setBounds(SbVec3f(-1, -1, -0.1), SbVec3f(1, 1, 0.1));
@@ -471,7 +471,7 @@ SoText2::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   FIXME: write doc
  */
 void
-SoText2::rayPick(SoRayPickAction * action)
+SoText2::rayPick(SoRayPickAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -482,7 +482,7 @@ SoText2::rayPick(SoRayPickAction * action)
   FIXME: write doc
  */
 void
-SoText2::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoText2::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -493,7 +493,7 @@ SoText2::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   FIXME: write doc
  */
 void
-SoText2::generatePrimitives(SoAction * action)
+SoText2::generatePrimitives(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

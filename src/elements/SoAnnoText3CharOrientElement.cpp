@@ -30,7 +30,7 @@
 
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource( SoAnnoText3CharOrientElement )
+//$ BEGIN TEMPLATE ElementSource(SoAnnoText3CharOrientElement)
 
 /*!
   \var SoAnnoText3CharOrientElement::classTypeId
@@ -84,24 +84,23 @@ SoAnnoText3CharOrientElement::getClassStackIndex(void)
 */
 
 void
-SoAnnoText3CharOrientElement::initClass(
-    void )
+SoAnnoText3CharOrientElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoAnnoText3CharOrientElement )
+//$ BEGIN TEMPLATE InitElementSource(SoAnnoText3CharOrientElement)
   assert(SoAnnoText3CharOrientElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoAnnoText3CharOrientElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoAnnoText3CharOrientElement",
-    &SoAnnoText3CharOrientElement::createInstance);
+  SoAnnoText3CharOrientElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoAnnoText3CharOrientElement",
+                       &SoAnnoText3CharOrientElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoAnnoText3CharOrientElement::classStackIndex =
-      createStackIndex( SoAnnoText3CharOrientElement::classTypeId );
-  } else {
-    SoAnnoText3CharOrientElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoAnnoText3CharOrientElement::classTypeId);
+  }
+  else {
+    SoAnnoText3CharOrientElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -112,10 +111,9 @@ SoAnnoText3CharOrientElement::initClass(
 */
 
 void
-SoAnnoText3CharOrientElement::cleanClass(
-    void )
+SoAnnoText3CharOrientElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoAnnoText3CharOrientElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoAnnoText3CharOrientElement)
 //$ END TEMPLATE CleanElementSource
 }
 
@@ -125,29 +123,27 @@ SoAnnoText3CharOrientElement::cleanClass(
   \sa void * SoAnnoText3CharOrientElement::createInstance()
 */
 
-SoAnnoText3CharOrientElement::SoAnnoText3CharOrientElement(
-    void )
+SoAnnoText3CharOrientElement::SoAnnoText3CharOrientElement(void)
 {
-    setTypeId( SoAnnoText3CharOrientElement::classTypeId );
-    setStackIndex( SoAnnoText3CharOrientElement::classStackIndex );
+    setTypeId(SoAnnoText3CharOrientElement::classTypeId);
+    setStackIndex(SoAnnoText3CharOrientElement::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoAnnoText3CharOrientElement::~SoAnnoText3CharOrientElement( // virtual protected
-    void )
+SoAnnoText3CharOrientElement::~SoAnnoText3CharOrientElement(// virtual protected
+    void)
 {
 }
 
 //! FIXME: write doc.
 
 void
-SoAnnoText3CharOrientElement::init(
-    SoState * state )
+SoAnnoText3CharOrientElement::init(SoState * state)
 {
-  inherited::init( state );
+  inherited::init(state);
 }
 
 //! FIXME: write doc.
@@ -156,7 +152,7 @@ SoAnnoText3CharOrientElement::init(
 void 
 SoAnnoText3CharOrientElement::set(SoState * const state, SbBool isOriented)
 { 
-  inherited::set( classStackIndex, state, isOriented ); 
+  inherited::set(classStackIndex, state, isOriented); 
 }
 
 //! FIXME: write doc.

@@ -66,7 +66,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE SField( SoSFUShort, const unsigned short )
+//$ BEGIN TEMPLATE SField(SoSFUShort, const unsigned short)
 
 SoType SoSFUShort::classTypeId = SoType::badType();
 
@@ -193,7 +193,7 @@ SoSFUShort::operator == (const SoSFUShort & field) const
 void
 SoSFUShort::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass( SFUShort )
+//$ BEGIN TEMPLATE FieldInitClass(SFUShort)
   // Make sure we only initialize once.
   assert(SoSFUShort::classTypeId == SoType::badType());
   // Make sure superclass has been initialized before subclass.

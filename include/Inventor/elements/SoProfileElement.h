@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_PROFILE_ELEMENT_H_
-#define _SO_PROFILE_ELEMENT_H_
+#ifndef __SOPROFILEELEMENT_H__
+#define __SOPROFILEELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOPROFILEELEMENT)
@@ -33,7 +33,7 @@ class SoProfile;
 class SoProfileElement : public SoAccumulatedElement {
   typedef SoAccumulatedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoProfileElement )
+//$ BEGIN TEMPLATE ElementHeader(SoProfileElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -57,20 +57,20 @@ public:
     ADD_TO_CURRENT = 2
   };
 
-  virtual void init( SoState * state );
+  virtual void init(SoState * state);
 
-  virtual void push( SoState * state );
-  virtual void pop( SoState * state,
-              const SoElement * prevTopElement );
+  virtual void push(SoState * state);
+  virtual void pop(SoState * state,
+              const SoElement * prevTopElement);
 
-  static  void add( SoState * const state, SoProfile * const profile );
-  static  const SoNodeList & get( SoState * const state );
+  static  void add(SoState * const state, SoProfile * const profile);
+  static  const SoNodeList & get(SoState * const state);
 
-  virtual void print( FILE * file ) const;
+  virtual void print(FILE * file) const;
 
 protected:
   SoNodeList profiles;
 
 };
 
-#endif // ! _SO_PROFILE_ELEMENT_H_
+#endif // !__SOPROFILEELEMENT_H__

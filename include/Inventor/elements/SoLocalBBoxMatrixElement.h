@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_LOCAL_BOUNDING_BOX_MATRIX_ELEMENT_H_
-#define _SO_LOCAL_BOUNDING_BOX_MATRIX_ELEMENT_H_
+#ifndef __SOLOCALBBOXMATRIXELEMENT_H__
+#define __SOLOCALBBOXMATRIXELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOLOCALBBOXMATRIXELEMENT)
@@ -30,7 +30,7 @@
 class SoLocalBBoxMatrixElement : public SoElement {
   typedef SoElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoLocalBBoxMatrixElement )
+//$ BEGIN TEMPLATE ElementHeader(SoLocalBBoxMatrixElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -48,31 +48,31 @@ protected:
 //$ END TEMPLATE ElementHeader
 
 public:
-  virtual void init( SoState * state );
+  virtual void init(SoState * state);
 
-  virtual void push( SoState * state );
+  virtual void push(SoState * state);
 
-  static void makeIdentity( SoState * const state );
+  static void makeIdentity(SoState * const state);
 
-  static void set( SoState * const state, const SbMatrix & matrix );
+  static void set(SoState * const state, const SbMatrix & matrix);
 
-  static void mult( SoState * const state, const SbMatrix & matrix );
-  static void translateBy( SoState * const state,
-			   const SbVec3f & translation );
-  static void rotateBy( SoState * const state, const SbRotation & rotation );
-  static void scaleBy( SoState * const state, const SbVec3f & scaleFactor );
+  static void mult(SoState * const state, const SbMatrix & matrix);
+  static void translateBy(SoState * const state,
+			   const SbVec3f & translation);
+  static void rotateBy(SoState * const state, const SbRotation & rotation);
+  static void scaleBy(SoState * const state, const SbVec3f & scaleFactor);
 
-  static SbMatrix pushMatrix( SoState * const state );
-  static void popMatrix( SoState * const state, const SbMatrix & matrix );
+  static SbMatrix pushMatrix(SoState * const state);
+  static void popMatrix(SoState * const state, const SbMatrix & matrix);
 
-  static void resetAll( SoState * const state );
+  static void resetAll(SoState * const state);
 
-  static const SbMatrix & get( SoState * const state );
+  static const SbMatrix & get(SoState * const state);
 
-  virtual SbBool matches( const SoElement * element ) const;
-  virtual SoElement * copyMatchInfo( void ) const;
+  virtual SbBool matches(const SoElement * element) const;
+  virtual SoElement * copyMatchInfo(void) const;
 
-  virtual void print( FILE * file ) const;
+  virtual void print(FILE * file) const;
 
 protected:
   SbMatrix localMatrix;
@@ -82,4 +82,4 @@ private:
 
 };
 
-#endif // ! _SO_LOCAL_BOUNDING_BOX_MATRIX_ELEMENT_H_
+#endif // !__SOLOCALBBOXMATRIXELEMENT_H__

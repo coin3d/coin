@@ -187,7 +187,7 @@ SoProfile::getBoundingBox(SoGetBoundingBoxAction * action)
   FIXME: write doc
  */
 void
-SoProfile::doAction(SoAction * action)
+SoProfile::doAction(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -198,7 +198,7 @@ SoProfile::doAction(SoAction * action)
   FIXME: write doc
  */
 void
-SoProfile::callback(SoCallbackAction * action)
+SoProfile::callback(SoCallbackAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -209,7 +209,7 @@ SoProfile::callback(SoCallbackAction * action)
   FIXME: write doc
  */
 void
-SoProfile::GLRender(SoGLRenderAction * action)
+SoProfile::GLRender(SoGLRenderAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -220,7 +220,7 @@ SoProfile::GLRender(SoGLRenderAction * action)
   FIXME: write doc
  */
 void
-SoProfile::pick(SoPickAction * action)
+SoProfile::pick(SoPickAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -231,7 +231,7 @@ SoProfile::pick(SoPickAction * action)
   FIXME: write doc
  */
 void
-SoProfile::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoProfile::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

@@ -34,7 +34,7 @@ class SbMatrix;
 class SoSurroundScale : public SoTransformation {
   typedef SoTransformation inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoSurroundScale )
+//$ BEGIN TEMPLATE NodeHeader(SoSurroundScale)
 private:
   static SoType classTypeId;
 

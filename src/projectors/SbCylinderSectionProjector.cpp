@@ -51,7 +51,7 @@
 /*!
   FIXME: write doc
 */
-SbCylinderSectionProjector::SbCylinderSectionProjector(float edgeTol,
+SbCylinderSectionProjector::SbCylinderSectionProjector(float /* edgeTol */,
 						       SbBool orientToEye)
   : inherited(orientToEye)
 {
@@ -62,17 +62,9 @@ SbCylinderSectionProjector::SbCylinderSectionProjector(float edgeTol,
   FIXME: write doc
 */
 SbCylinderSectionProjector::SbCylinderSectionProjector(const SbCylinder & cyl,
-						       float edgeTol,
+						       float /* edgeTol */,
 						       SbBool orientToEye)
   : inherited(cyl, orientToEye)
-{
-  assert(0 && "FIXME: implementation missing");
-}
-
-/*!
-  FIXME: write doc
-*/
-SbCylinderSectionProjector::~SbCylinderSectionProjector()
 {
   assert(0 && "FIXME: implementation missing");
 }
@@ -91,7 +83,7 @@ SbCylinderSectionProjector::copy(void) const
   FIXME: write doc
 */
 SbVec3f
-SbCylinderSectionProjector::project(const SbVec2f & point)
+SbCylinderSectionProjector::project(const SbVec2f & /* point */)
 {
   assert(0 && "FIXME: implementation missing");
   return SbVec3f();
@@ -101,8 +93,8 @@ SbCylinderSectionProjector::project(const SbVec2f & point)
   FIXME: write doc
 */
 SbRotation
-SbCylinderSectionProjector::getRotation(const SbVec3f & point1,
-					const SbVec3f & point2)
+SbCylinderSectionProjector::getRotation(const SbVec3f & /* point1 */,
+					const SbVec3f & /* point2 */)
 {
   assert(0 && "FIXME: implementation missing");
   return SbRotation::identity();
@@ -112,7 +104,7 @@ SbCylinderSectionProjector::getRotation(const SbVec3f & point1,
   FIXME: write doc
 */
 void
-SbCylinderSectionProjector::setTolerance(float edgeTol)
+SbCylinderSectionProjector::setTolerance(float /* edgeTol */)
 {
   assert(0 && "FIXME: implementation missing");
 }
@@ -131,7 +123,7 @@ SbCylinderSectionProjector::getTolerance(void) const
   FIXME: write doc
 */
 SbBool
-SbCylinderSectionProjector::isWithinTolerance(const SbVec3f & point)
+SbCylinderSectionProjector::isWithinTolerance(const SbVec3f & /* point */)
 {
   assert(0 && "FIXME: implementation missing");
   return FALSE;

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_COMPLEXITY_ELEMENT_H_
-#define _SO_COMPLEXITY_ELEMENT_H_
+#ifndef __SOCOMPLEXITYELEMENT_H__
+#define __SOCOMPLEXITYELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOCOMPLEXITYELEMENT)
@@ -30,7 +30,7 @@
 class SoComplexityElement : public SoFloatElement {
   typedef SoFloatElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoComplexityElement )
+//$ BEGIN TEMPLATE ElementHeader(SoComplexityElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -48,16 +48,16 @@ protected:
 //$ END TEMPLATE ElementHeader
 
 public:
-  virtual void init( SoState * state );
+  virtual void init(SoState * state);
 
-  static  void set( SoState * const state, SoNode * const node,
+  static  void set(SoState * const state, SoNode * const node,
 	            const float complexity);
 
-  static  void set( SoState * const state, const float complexity );
-  static  float get( SoState * const state );
+  static  void set(SoState * const state, const float complexity);
+  static  float get(SoState * const state);
 
-  static  float getDefault( void );
+  static  float getDefault(void);
 
 };
 
-#endif // ! _SO_COMPLEXITY_ELEMENT_H_
+#endif // !__SOCOMPLEXITYELEMENT_H__

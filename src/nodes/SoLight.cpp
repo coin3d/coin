@@ -139,7 +139,7 @@ SoLight::cleanClass(void)
   FIXME: write doc
  */
 void
-SoLight::callback(SoCallbackAction * action)
+SoLight::callback(SoCallbackAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

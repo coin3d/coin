@@ -298,7 +298,7 @@ SoUnits::GLRender(SoGLRenderAction * action)
   FIXME: write doc
  */
 void
-SoUnits::doAction(SoAction * action)
+SoUnits::doAction(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -309,7 +309,7 @@ SoUnits::doAction(SoAction * action)
   FIXME: write doc
  */
 void
-SoUnits::callback(SoCallbackAction * action)
+SoUnits::callback(SoCallbackAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -320,7 +320,7 @@ SoUnits::callback(SoCallbackAction * action)
   FIXME: write doc
  */
 void
-SoUnits::getMatrix(SoGetMatrixAction * action)
+SoUnits::getMatrix(SoGetMatrixAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -331,7 +331,7 @@ SoUnits::getMatrix(SoGetMatrixAction * action)
   FIXME: write doc
  */
 void
-SoUnits::pick(SoPickAction * action)
+SoUnits::pick(SoPickAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -342,7 +342,7 @@ SoUnits::pick(SoPickAction * action)
   FIXME: write doc
  */
 void
-SoUnits::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoUnits::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

@@ -34,7 +34,7 @@ class SbVec3f;
 class SoNormal : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoNormal )
+//$ BEGIN TEMPLATE NodeHeader(SoNormal)
 private:
   static SoType classTypeId;
 

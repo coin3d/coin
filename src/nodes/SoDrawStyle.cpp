@@ -201,7 +201,7 @@ SoDrawStyle::cleanClass(void)
   FIXME: write function documentation
 */
 void 
-SoDrawStyle::doAction(SoAction * action)
+SoDrawStyle::doAction(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -236,7 +236,7 @@ SoDrawStyle::GLRender(SoGLRenderAction * action)
   FIXME: write doc
 */
 void
-SoDrawStyle::callback(SoCallbackAction * action)
+SoDrawStyle::callback(SoCallbackAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

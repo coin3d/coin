@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_POINT_SIZE_ELEMENT_H_
-#define _SO_POINT_SIZE_ELEMENT_H_
+#ifndef __SOPOINTSIZEELEMENT_H__
+#define __SOPOINTSIZEELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOPOINTSIZEELEMENT)
@@ -30,7 +30,7 @@
 class SoPointSizeElement : public SoFloatElement {
   typedef SoFloatElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoPointSizeElement )
+//$ BEGIN TEMPLATE ElementHeader(SoPointSizeElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -48,14 +48,13 @@ protected:
 //$ END TEMPLATE ElementHeader
 
 public:
-  virtual void init( SoState * state );
+  virtual void init(SoState * state);
 
   static  void set(SoState * const state, SoNode * const node,
 		   const float pointSize);
   static  void set(SoState * const state, const float pointSize);
   static  float get(SoState * const state);
   static  float getDefault();
-
 };
 
-#endif // ! _SO_POINT_SIZE_ELEMENT_H_
+#endif // !__SOPOINTSIZEELEMENT_H__

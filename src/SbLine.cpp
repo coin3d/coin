@@ -89,7 +89,7 @@ SbLine::setValue(const SbVec3f& p0, const SbVec3f& p1)
 */
 SbBool
 SbLine::getClosestPoints(const SbLine& line2,
-			 SbVec3f& ptOnThis, SbVec3f& ptOnLine2 ) const
+			 SbVec3f& ptOnThis, SbVec3f& ptOnLine2) const
 {
 #if COIN_DEBUG
   if(!(this->getDirection().length() != 0.0))
@@ -118,9 +118,9 @@ SbLine::getClosestPoints(const SbLine& line2,
   // we get two equations with two unknowns. By substituting for
   // Q1 we get a new equation with a single unknown, Q0:
   //
-  //                   (          (Q0 - P1)·D1     )
+  //                   (         (Q0 - P1)·D1    )
   //                   (P1 + D1 * ------------ - P0) · D0
-  //                   (              |D1|         )
+  //                   (             |D1|        )
   //   Q0 = P0 + D0 * ------------------------------------
   //                                |D0|
   //

@@ -17,7 +17,7 @@
  *
 \**************************************************************************/
 
-//$ BEGIN TEMPLATE InterpolateSource( SoInterpolateVec3f, SoMFVec3f, SbVec3f, (0,0,0), (0,0,0), (val1-val0)*alpha.getValue()+val0 )
+//$ BEGIN TEMPLATE InterpolateSource(SoInterpolateVec3f, SoMFVec3f, SbVec3f, (0,0,0), (0,0,0), (val1-val0)*alpha.getValue()+val0)
 
 #include <Inventor/engines/SoInterpolateVec3f.h>
 #include <Inventor/lists/SoEngineOutputList.h>

@@ -32,7 +32,7 @@
 class SoLabel : public SoNode {
     typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoLabel )
+//$ BEGIN TEMPLATE NodeHeader(SoLabel)
 private:
   static SoType classTypeId;
 

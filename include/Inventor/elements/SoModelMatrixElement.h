@@ -32,7 +32,7 @@
 class SoModelMatrixElement : public SoAccumulatedElement {
   typedef SoAccumulatedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoModelMatrixElement )
+//$ BEGIN TEMPLATE ElementHeader(SoModelMatrixElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);

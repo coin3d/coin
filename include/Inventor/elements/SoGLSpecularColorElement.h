@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_GL_SPECULAR_COLOR_ELEMENT_H_
-#define _SO_GL_SPECULAR_COLOR_ELEMENT_H_
+#ifndef __SOGLSPECULARCOLORELEMENT_H__
+#define __SOGLSPECULARCOLORELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOGLSPECULARCOLORELEMENT)
@@ -31,7 +31,7 @@
 class SoGLSpecularColorElement : public SoSpecularColorElement {
   typedef SoSpecularColorElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoGLSpecularColorElement )
+//$ BEGIN TEMPLATE ElementHeader(SoGLSpecularColorElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -64,4 +64,4 @@ private:
 
 };
 
-#endif // ! _SO_GL_SPECULAR_COLOR_ELEMENT_H_
+#endif // !__SOGLSPECULARCOLORELEMENT_H__

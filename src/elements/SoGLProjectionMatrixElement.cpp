@@ -38,7 +38,7 @@
 #include <GL/gl.h>
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource( SoGLProjectionMatrixElement )
+//$ BEGIN TEMPLATE ElementSource(SoGLProjectionMatrixElement)
 
 /*!
   \var SoGLProjectionMatrixElement::classTypeId
@@ -92,24 +92,23 @@ SoGLProjectionMatrixElement::getClassStackIndex(void)
 */
 
 void
-SoGLProjectionMatrixElement::initClass(
-    void )
+SoGLProjectionMatrixElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoGLProjectionMatrixElement )
+//$ BEGIN TEMPLATE InitElementSource(SoGLProjectionMatrixElement)
   assert(SoGLProjectionMatrixElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoGLProjectionMatrixElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoGLProjectionMatrixElement",
-    &SoGLProjectionMatrixElement::createInstance);
+  SoGLProjectionMatrixElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoGLProjectionMatrixElement",
+                       &SoGLProjectionMatrixElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoGLProjectionMatrixElement::classStackIndex =
-      createStackIndex( SoGLProjectionMatrixElement::classTypeId );
-  } else {
-    SoGLProjectionMatrixElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoGLProjectionMatrixElement::classTypeId);
+  }
+  else {
+    SoGLProjectionMatrixElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -120,32 +119,29 @@ SoGLProjectionMatrixElement::initClass(
 */
 
 void
-SoGLProjectionMatrixElement::cleanClass(
-    void )
+SoGLProjectionMatrixElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoGLProjectionMatrixElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoGLProjectionMatrixElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoGLProjectionMatrixElement::createInstance( void )
+  \sa void * SoGLProjectionMatrixElement::createInstance(void)
 */
 
-SoGLProjectionMatrixElement::SoGLProjectionMatrixElement(
-    void )
+SoGLProjectionMatrixElement::SoGLProjectionMatrixElement(void)
 {
-    setTypeId( SoGLProjectionMatrixElement::classTypeId );
-    setStackIndex( SoGLProjectionMatrixElement::classStackIndex );
+    setTypeId(SoGLProjectionMatrixElement::classTypeId);
+    setStackIndex(SoGLProjectionMatrixElement::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoGLProjectionMatrixElement::~SoGLProjectionMatrixElement(
-    void )
+SoGLProjectionMatrixElement::~SoGLProjectionMatrixElement(void)
 {
 }
 

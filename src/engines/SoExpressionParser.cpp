@@ -73,30 +73,26 @@ static const char * const keywords[] = {
 
 /**************************************************************************/
 
-SoExpressionParser::SoExpressionParser(
-    SoCalculator * valueContainer )
-  : values( valueContainer )
+SoExpressionParser::SoExpressionParser(SoCalculator * valueContainer)
+  : values(valueContainer)
 {
 }
 
-SoExpressionParser::~SoExpressionParser(
-    void )
-{
-}
-
-/**************************************************************************/
-
-void
-SoExpressionParser::parse(
-    void )
+SoExpressionParser::~SoExpressionParser(void)
 {
 }
 
 /**************************************************************************/
 
 void
-SoExpressionParser::evaluate(
-    void )
+SoExpressionParser::parse(void)
+{
+}
+
+/**************************************************************************/
+
+void
+SoExpressionParser::evaluate(void)
 {
 }
 

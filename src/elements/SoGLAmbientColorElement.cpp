@@ -36,7 +36,7 @@
 #include <GL/gl.h>
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource( SoGLAmbientColorElement )
+//$ BEGIN TEMPLATE ElementSource(SoGLAmbientColorElement)
 
 /*!
   \var SoGLAmbientColorElement::classTypeId
@@ -92,21 +92,21 @@ SoGLAmbientColorElement::getClassStackIndex(void)
 void
 SoGLAmbientColorElement::initClass()
 {
-//$ BEGIN TEMPLATE InitElementSource( SoGLAmbientColorElement )
+//$ BEGIN TEMPLATE InitElementSource(SoGLAmbientColorElement)
   assert(SoGLAmbientColorElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoGLAmbientColorElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoGLAmbientColorElement",
-    &SoGLAmbientColorElement::createInstance);
+  SoGLAmbientColorElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoGLAmbientColorElement",
+                       &SoGLAmbientColorElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoGLAmbientColorElement::classStackIndex =
-      createStackIndex( SoGLAmbientColorElement::classTypeId );
-  } else {
-    SoGLAmbientColorElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoGLAmbientColorElement::classTypeId);
+  }
+  else {
+    SoGLAmbientColorElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -119,14 +119,14 @@ SoGLAmbientColorElement::initClass()
 void 
 SoGLAmbientColorElement::cleanClass()
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoGLAmbientColorElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoGLAmbientColorElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoGLAmbientColorElement::createInstance( void )
+  \sa void * SoGLAmbientColorElement::createInstance(void)
 */
 
 SoGLAmbientColorElement::SoGLAmbientColorElement()

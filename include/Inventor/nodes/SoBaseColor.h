@@ -32,7 +32,7 @@
 class SoBaseColor : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoBaseColor )
+//$ BEGIN TEMPLATE NodeHeader(SoBaseColor)
 private:
   static SoType classTypeId;
 

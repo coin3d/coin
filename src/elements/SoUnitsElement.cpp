@@ -36,7 +36,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoUnitsElement )
+//$ BEGIN TEMPLATE ElementSource(SoUnitsElement)
 
 /*!
   \var SoUnitsElement::classTypeId
@@ -89,24 +89,23 @@ SoUnitsElement::getClassStackIndex(void)
 */
 
 void
-SoUnitsElement::initClass(
-    void )
+SoUnitsElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoUnitsElement )
+//$ BEGIN TEMPLATE InitElementSource(SoUnitsElement)
   assert(SoUnitsElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoUnitsElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoUnitsElement",
-    &SoUnitsElement::createInstance);
+  SoUnitsElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoUnitsElement",
+                       &SoUnitsElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoUnitsElement::classStackIndex =
-      createStackIndex( SoUnitsElement::classTypeId );
-  } else {
-    SoUnitsElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoUnitsElement::classTypeId);
+  }
+  else {
+    SoUnitsElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -116,24 +115,22 @@ SoUnitsElement::initClass(
 */
 
 void
-SoUnitsElement::cleanClass(
-    void )
+SoUnitsElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoUnitsElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoUnitsElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoUnitsElement::createInstance( void )
+  \sa void * SoUnitsElement::createInstance(void)
 */
 
-SoUnitsElement::SoUnitsElement(
-    void )
+SoUnitsElement::SoUnitsElement(void)
 {
-    setTypeId( SoUnitsElement::classTypeId );
-    setStackIndex( SoUnitsElement::classStackIndex );
+    setTypeId(SoUnitsElement::classTypeId);
+    setStackIndex(SoUnitsElement::classStackIndex);
     this->data = getDefault();
 }
 
@@ -141,18 +138,16 @@ SoUnitsElement::SoUnitsElement(
   The destructor.
 */
 
-SoUnitsElement::~SoUnitsElement(
-    void )
+SoUnitsElement::~SoUnitsElement(void)
 {
 }
 
 //! FIXME: write doc.
 
 void
-SoUnitsElement::set(
-    SoState * const state,
-    SoNode * const node,
-    const Units unit )
+SoUnitsElement::set(SoState * const state,
+		    SoNode * const node,
+		    const Units unit)
 {
   assert((int)unit >= (int)METERS && (int)unit <= (int)NAUTICAL_MILES);
   SoInt32Element::set(classStackIndex, state, node, unit);
@@ -161,10 +156,9 @@ SoUnitsElement::set(
 //! FIXME: write doc.
 
 void
-SoUnitsElement::init(
-    SoState * state )
+SoUnitsElement::init(SoState * state)
 {
-    inherited::init( state );
+    inherited::init(state);
 }
 
 //! FIXME: write doc.
@@ -182,7 +176,7 @@ SoUnitsElement::set(SoState * const state, const Units units)
 SoUnitsElement::Units 
 SoUnitsElement::get(SoState * const state)
 { 
-  return (Units) SoInt32Element::get( classStackIndex, state ); 
+  return (Units) SoInt32Element::get(classStackIndex, state); 
 }
 
 //! FIXME: write doc.

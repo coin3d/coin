@@ -90,7 +90,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoTextureCoordinateElement )
+//$ BEGIN TEMPLATE ElementSource(SoTextureCoordinateElement)
 
 /*!
   \var SoTextureCoordinateElement::classTypeId
@@ -146,21 +146,21 @@ SoTextureCoordinateElement::getClassStackIndex(void)
 void
 SoTextureCoordinateElement::initClass()
 {
-//$ BEGIN TEMPLATE InitElementSource( SoTextureCoordinateElement )
+//$ BEGIN TEMPLATE InitElementSource(SoTextureCoordinateElement)
   assert(SoTextureCoordinateElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoTextureCoordinateElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoTextureCoordinateElement",
-    &SoTextureCoordinateElement::createInstance);
+  SoTextureCoordinateElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoTextureCoordinateElement",
+                       &SoTextureCoordinateElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoTextureCoordinateElement::classStackIndex =
-      createStackIndex( SoTextureCoordinateElement::classTypeId );
-  } else {
-    SoTextureCoordinateElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoTextureCoordinateElement::classTypeId);
+  }
+  else {
+    SoTextureCoordinateElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -173,21 +173,21 @@ SoTextureCoordinateElement::initClass()
 void
 SoTextureCoordinateElement::cleanClass()
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoTextureCoordinateElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoTextureCoordinateElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoTextureCoordinateElement::createInstance( void )
+  \sa void * SoTextureCoordinateElement::createInstance(void)
 */
 
 SoTextureCoordinateElement::SoTextureCoordinateElement()
   : coordsAre2D(TRUE)
 {
-  setTypeId( SoTextureCoordinateElement::classTypeId );
-  setStackIndex( SoTextureCoordinateElement::classStackIndex );
+  setTypeId(SoTextureCoordinateElement::classTypeId);
+  setStackIndex(SoTextureCoordinateElement::classStackIndex);
 }
 
 /*!
@@ -205,7 +205,7 @@ SoTextureCoordinateElement::setDefault(SoState * const state,
 				       SoNode * const node)
 {
   SoTextureCoordinateElement * element = (SoTextureCoordinateElement *)
-    SoReplacedElement::getElement( state, classStackIndex, node);
+    SoReplacedElement::getElement(state, classStackIndex, node);
   element->whatKind = DEFAULT;
   element->numCoords = 0;
 }
@@ -219,7 +219,7 @@ SoTextureCoordinateElement::setFunction(SoState * const state,
 					void * const userdata)
 {
   SoTextureCoordinateElement * element = (SoTextureCoordinateElement *)
-   SoReplacedElement::getElement( state, classStackIndex, node);
+   SoReplacedElement::getElement(state, classStackIndex, node);
   element->funcCB = func;
   element->funcCBData = userdata;
   element->whatKind = FUNCTION;
@@ -237,7 +237,7 @@ SoTextureCoordinateElement::set2(SoState * const state,
 				 const SbVec2f * const coords)
 {
   SoTextureCoordinateElement * element = (SoTextureCoordinateElement *)
-    SoReplacedElement::getElement( state, classStackIndex, node );
+    SoReplacedElement::getElement(state, classStackIndex, node);
   element->coordsAre2D = TRUE;
   element->coords2 = coords;
   element->numCoords = numCoords;
@@ -254,7 +254,7 @@ SoTextureCoordinateElement::set4(SoState * const state,
 				 const SbVec4f * const coords)
 {
   SoTextureCoordinateElement * element = (SoTextureCoordinateElement *)
-    SoReplacedElement::getElement( state, classStackIndex, node);
+    SoReplacedElement::getElement(state, classStackIndex, node);
   element->coordsAre2D = FALSE;
   element->numCoords = numCoords;
   element->coords2 = NULL;
@@ -288,7 +288,7 @@ const SoTextureCoordinateElement *
 SoTextureCoordinateElement::getInstance(SoState * const state)
 {
   return (const SoTextureCoordinateElement *)
-    (getConstElement( state, classStackIndex ));
+    (getConstElement(state, classStackIndex));
 }
 
 /*!
@@ -313,8 +313,8 @@ SoTextureCoordinateElement::get(const SbVec3f & point,
 const SbVec2f &
 SoTextureCoordinateElement::get2(const int index) const
 {
-  assert( index >= 0 && index < this->numCoords );
-  assert( this->whatKind == EXPLICIT );
+  assert(index >= 0 && index < this->numCoords);
+  assert(this->whatKind == EXPLICIT);
   if (this->coordsAre2D)
     return this->coords2[index];
   else {
@@ -330,8 +330,8 @@ SoTextureCoordinateElement::get2(const int index) const
 const SbVec4f &
 SoTextureCoordinateElement::get4(const int index) const
 {
-  assert( index >= 0 && index < this->numCoords );
-  assert( this->whatKind == EXPLICIT );
+  assert(index >= 0 && index < this->numCoords);
+  assert(this->whatKind == EXPLICIT);
   if (!this->coordsAre2D) 
     return this->coords4[index];
   else {
@@ -352,7 +352,7 @@ SoTextureCoordinateElement::get4(const int index) const
   EXPLICIT means that discrete texture coordinates are stored, and should be
   fetched with get2() or get4().
 
-  FUNCTION means that get( point, normal ) must be used to generate texture
+  FUNCTION means that get(point, normal) must be used to generate texture
   coordinates.
 */
 
@@ -361,7 +361,7 @@ SoTextureCoordinateElement::getType(SoState * const state)
 {
   const SoTextureCoordinateElement * element =
     (const SoTextureCoordinateElement *)
-    (getConstElement( state, classStackIndex ));
+    (getConstElement(state, classStackIndex));
   return element->getType();
 }
 

@@ -247,7 +247,7 @@ void
 SbBox2f::getBounds(float& xmin, float& ymin, float& xmax, float& ymax) const
 {
   this->minpt.getValue(xmin,ymin);
-  this->maxpt.getValue(xmin,ymin);
+  this->maxpt.getValue(xmax,ymax);
 }
 
 /*!

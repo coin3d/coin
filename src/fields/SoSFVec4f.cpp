@@ -38,7 +38,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE SField( SoSFVec4f, const SbVec4f & )
+//$ BEGIN TEMPLATE SField(SoSFVec4f, const SbVec4f &)
 
 SoType SoSFVec4f::classTypeId = SoType::badType();
 
@@ -163,7 +163,7 @@ SoSFVec4f::operator == (const SoSFVec4f & field) const
 void
 SoSFVec4f::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass( SFVec4f )
+//$ BEGIN TEMPLATE FieldInitClass(SFVec4f)
   // Make sure we only initialize once.
   assert(SoSFVec4f::classTypeId == SoType::badType());
   // Make sure superclass has been initialized before subclass.

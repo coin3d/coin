@@ -45,7 +45,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE FieldId( SoSFImage )
+//$ BEGIN TEMPLATE FieldId(SoSFImage)
 
 SoType SoSFImage::classTypeId = SoType::badType();
 
@@ -80,7 +80,7 @@ SoSFImage::createInstance(void)
   return new SoSFImage;
 }
 //$ END TEMPLATE FieldId
-//$ BEGIN TEMPLATE FieldEqSame( SoSFImage )
+//$ BEGIN TEMPLATE FieldEqSame(SoSFImage)
 /*!
   Copy all data from \a field into this object. \a field \e must
   be of the same type as the field we are copying into.
@@ -154,7 +154,7 @@ SoSFImage::operator = (const SoSFImage & field)
 void
 SoSFImage::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass( SFImage )
+//$ BEGIN TEMPLATE FieldInitClass(SFImage)
   // Make sure we only initialize once.
   assert(SoSFImage::classTypeId == SoType::badType());
   // Make sure superclass has been initialized before subclass.

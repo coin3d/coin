@@ -445,7 +445,7 @@ SoQuadMesh::generateDefaultNormals(SoState * state, SoNormalCache * nc)
   FIXME: write doc
  */
 void
-SoQuadMesh::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoQuadMesh::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -455,7 +455,7 @@ SoQuadMesh::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   FIXME: write doc
  */
 SbBool
-SoQuadMesh::generateDefaultNormals(SoState * state, SoNormalBundle * nb)
+SoQuadMesh::generateDefaultNormals(SoState * /* state */, SoNormalBundle * /* nb */)
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;
@@ -466,7 +466,7 @@ SoQuadMesh::generateDefaultNormals(SoState * state, SoNormalBundle * nb)
   FIXME: write doc
  */
 void
-SoQuadMesh::generatePrimitives(SoAction * action)
+SoQuadMesh::generatePrimitives(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -477,11 +477,11 @@ SoQuadMesh::generatePrimitives(SoAction * action)
   FIXME: write doc
 */
 SoDetail *
-SoQuadMesh::createTriangleDetail(SoRayPickAction * action,
-					 const SoPrimitiveVertex * v1,
-					 const SoPrimitiveVertex * v2,
-					 const SoPrimitiveVertex * v3,
-					 SoPickedPoint * pp)
+SoQuadMesh::createTriangleDetail(SoRayPickAction * /* action */,
+				 const SoPrimitiveVertex * /* v1 */,
+				 const SoPrimitiveVertex * /* v2 */,
+				 const SoPrimitiveVertex * /* v3 */,
+				 SoPickedPoint * /* pp */)
 {
   assert(0 && "FIXME: not implemented");
   return NULL;

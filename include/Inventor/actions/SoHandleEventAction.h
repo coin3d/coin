@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_HANDLE_EVENT_ACTION_H_
-#define _SO_HANDLE_EVENT_ACTION_H_
+#ifndef __SOHANDLEEVENTACTION_H__
+#define __SOHANDLEEVENTACTION_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
@@ -35,7 +35,7 @@ class SoPickedPointList;
 class SoHandleEventAction : public SoAction {
   typedef SoAction inherited;
 
-//$ BEGIN TEMPLATE ActionHeader( SoHandleEventAction )
+//$ BEGIN TEMPLATE ActionHeader(SoHandleEventAction)
 private:
   static SoType classTypeId;
 
@@ -86,4 +86,4 @@ private:
 
 };
 
-#endif // ! _SO_HANDLE_EVENT_ACTION_H_
+#endif // !__SOHANDLEEVENTACTION_H__

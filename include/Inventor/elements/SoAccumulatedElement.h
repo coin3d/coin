@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_ACCUMULATED_ELEMENT_H_
-#define _SO_ACCUMULATED_ELEMENT_H_
+#ifndef __SOACCUMULATEDELEMENT_H__
+#define __SOACCUMULATEDELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOACCUMULATEDELEMENT)
@@ -30,7 +30,7 @@
 
 class SoAccumulatedElement : public SoElement {
   typedef SoElement inherited;
-//$ BEGIN TEMPLATE AbstractElementHeader( SoAccumulatedElement )
+//$ BEGIN TEMPLATE AbstractElementHeader(SoAccumulatedElement)
 public:
   static  SoType classTypeId;
   static  SoType getClassTypeId(void);
@@ -61,4 +61,4 @@ protected:
 
 };
 
-#endif // ! _SO_ACCUMULATED_ELEMENT_H_
+#endif // !__SOACCUMULATEDELEMENT_H__

@@ -53,7 +53,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE SField( SoSFRotation, const SbRotation & )
+//$ BEGIN TEMPLATE SField(SoSFRotation, const SbRotation &)
 
 SoType SoSFRotation::classTypeId = SoType::badType();
 
@@ -178,7 +178,7 @@ SoSFRotation::operator == (const SoSFRotation & field) const
 void
 SoSFRotation::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass( SFRotation )
+//$ BEGIN TEMPLATE FieldInitClass(SFRotation)
   // Make sure we only initialize once.
   assert(SoSFRotation::classTypeId == SoType::badType());
   // Make sure superclass has been initialized before subclass.

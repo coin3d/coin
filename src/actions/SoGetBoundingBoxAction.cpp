@@ -55,7 +55,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource( SoGetBoundingBoxAction )
+//$ BEGIN TEMPLATE ActionSource(SoGetBoundingBoxAction)
 
 SoType SoGetBoundingBoxAction::classTypeId = SoType::badType();
 
@@ -148,9 +148,9 @@ SoGetBoundingBoxAction::~SoGetBoundingBoxAction()
 */
 
 void
-SoGetBoundingBoxAction::initClass( void )
+SoGetBoundingBoxAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource( SoGetBoundingBoxAction )
+//$ BEGIN TEMPLATE InitActionSource(SoGetBoundingBoxAction)
   assert(SoGetBoundingBoxAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
@@ -172,7 +172,7 @@ SoGetBoundingBoxAction::initClass( void )
 */
 
 void
-SoGetBoundingBoxAction::cleanClass( void )
+SoGetBoundingBoxAction::cleanClass(void)
 {
   delete methods;
   delete SoGetBoundingBoxAction::enabledElements;

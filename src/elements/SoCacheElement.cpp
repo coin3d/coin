@@ -32,7 +32,7 @@
 // static variables
 SbBool SoCacheElement::invalidated;
 
-//$ BEGIN TEMPLATE ElementSource( SoCacheElement )
+//$ BEGIN TEMPLATE ElementSource(SoCacheElement)
 
 /*!
   \var SoCacheElement::classTypeId
@@ -85,24 +85,23 @@ SoCacheElement::getClassStackIndex(void)
 */
 
 void
-SoCacheElement::initClass(
-    void )
+SoCacheElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoCacheElement )
+//$ BEGIN TEMPLATE InitElementSource(SoCacheElement)
   assert(SoCacheElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoCacheElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoCacheElement",
-    &SoCacheElement::createInstance);
+  SoCacheElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoCacheElement",
+                       &SoCacheElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoCacheElement::classStackIndex =
-      createStackIndex( SoCacheElement::classTypeId );
-  } else {
-    SoCacheElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoCacheElement::classTypeId);
+  }
+  else {
+    SoCacheElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -112,10 +111,9 @@ SoCacheElement::initClass(
 */
 
 void
-SoCacheElement::cleanClass(
-    void )
+SoCacheElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoCacheElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoCacheElement)
 //$ END TEMPLATE CleanElementSource
 }
 
@@ -125,20 +123,18 @@ SoCacheElement::cleanClass(
   \sa void * SoCacheElement::createInstance()
 */
 
-SoCacheElement::SoCacheElement(
-    void )
-  : cache( NULL )
+SoCacheElement::SoCacheElement(void)
+  : cache(NULL)
 {
-    setTypeId( SoCacheElement::classTypeId );
-    setStackIndex( SoCacheElement::classStackIndex );
+    setTypeId(SoCacheElement::classTypeId);
+    setStackIndex(SoCacheElement::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoCacheElement::~SoCacheElement(
-    void )
+SoCacheElement::~SoCacheElement(void)
 {
 }
 
@@ -147,19 +143,17 @@ SoCacheElement::~SoCacheElement(
 */
 
 void
-SoCacheElement::init(
-    SoState * state )
+SoCacheElement::init(SoState * state)
 {
-    inherited::init( state );
+    inherited::init(state);
 }
 
 //! FIXME: write doc.
 
 void
-SoCacheElement::push(
-    SoState * state )
+SoCacheElement::push(SoState * state)
 {
-    inherited::push( state );
+    inherited::push(state);
 }
 
 /*!
@@ -167,22 +161,18 @@ SoCacheElement::push(
 */
 
 void
-SoCacheElement::pop(
-    SoState * state,
-    const SoElement * prevTopElement )
+SoCacheElement::pop(SoState * state, const SoElement * prevTopElement)
 {
-    inherited::pop( state, prevTopElement );
+    inherited::pop(state, prevTopElement);
     assert(0 && "FIXME: not implemented");
 }
 
 //! FIXME: write doc.
 
 void
-SoCacheElement::set(
-    SoState * const state,
-    SoCache * const cache )
+SoCacheElement::set(SoState * const /* state */, SoCache * const /* cache */)
 {
-    assert(0 && "FIXME: not implemented");
+  assert(0 && "FIXME: not implemented");
 }
 
 /*!
@@ -190,8 +180,7 @@ SoCacheElement::set(
 */
 
 SoCache *
-SoCacheElement::getCache(
-    void ) const
+SoCacheElement::getCache(void) const
 {
     return this->cache;
 }
@@ -201,8 +190,7 @@ SoCacheElement::getCache(
 */
 
 SbBool
-SoCacheElement::anyOpen(
-    SoState * const state )
+SoCacheElement::anyOpen(SoState * const /* state */)
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;
@@ -213,8 +201,7 @@ SoCacheElement::anyOpen(
 */
 
 void
-SoCacheElement::invalidate(
-    SoState * const state )
+SoCacheElement::invalidate(SoState * const /* state */)
 {
     assert(0 && "FIXME: not implemented");
 }
@@ -225,8 +212,7 @@ SoCacheElement::invalidate(
 */
 
 SbBool
-SoCacheElement::matches(
-    const SoElement * element ) const
+SoCacheElement::matches(const SoElement * /* element */) const
 {
     assert(0 && "FIXME: not implemented"); // print error message
     return FALSE;
@@ -236,12 +222,11 @@ SoCacheElement::matches(
   SoCacheElement objects should not be "copied" because you obviously don't
   cache them in the cache.
 
-  \sa SbBool SoCacheElement::matches( const SoElement * element ) const
+  \sa SbBool SoCacheElement::matches(const SoElement * element) const
 */
 
 SoElement *
-SoCacheElement::copyMatchInfo(
-    void ) const
+SoCacheElement::copyMatchInfo(void) const
 {
     assert(0 && "FIXME: not implemented"); // print error message
     return NULL;
@@ -252,8 +237,7 @@ SoCacheElement::copyMatchInfo(
 */
 
 SoCacheElement *
-SoCacheElement::getNextCacheElement(
-    void ) const
+SoCacheElement::getNextCacheElement(void) const
 {
     return (SoCacheElement *) this->next;
 }
@@ -264,9 +248,8 @@ SoCacheElement::getNextCacheElement(
 */
 
 void
-SoCacheElement::addElement(
-    SoState * const state,
-    const SoElement * const element )
+SoCacheElement::addElement(SoState * const /* state */,
+			   const SoElement * const /* element */)
 {
     assert(0 && "FIXME: not implemented");
 }
@@ -277,9 +260,8 @@ SoCacheElement::addElement(
 */
 
 void
-SoCacheElement::addCacheDependency(
-    SoState * const state,
-    SoCache * const cache )
+SoCacheElement::addCacheDependency(SoState * const /* state */,
+				   SoCache * const /* cache */)
 {
     assert(0 && "FIXME: not implemented");
 }
@@ -290,8 +272,7 @@ SoCacheElement::addCacheDependency(
 */
 
 SbBool
-SoCacheElement::setInvalid(
-    const SbBool newValue )
+SoCacheElement::setInvalid(const SbBool /* newValue */)
 {
     assert(0 && "FIXME: not implemented");
     return FALSE;
@@ -302,7 +283,7 @@ SoCacheElement::setInvalid(
 */
 
 SoCache *
-SoCacheElement::getCurrentCache( SoState * const state )
+SoCacheElement::getCurrentCache(SoState * const state)
 {
   return ((SoCacheElement *)(state->getElementNoPush(classStackIndex)))->cache;
 }

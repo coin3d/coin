@@ -19,7 +19,7 @@
 
 #include <Inventor/SbVec3f.h>
 
-//$ BEGIN TEMPLATE InterpolateSource( SoInterpolateRotation, SoMFRotation, SbRotation, (SbVec3f(0,0,1),0), (SbVec3f(0,0,1),0), SbRotation::slerp(val0,val1,alpha.getValue()) )
+//$ BEGIN TEMPLATE InterpolateSource(SoInterpolateRotation, SoMFRotation, SbRotation, (SbVec3f(0,0,1),0), (SbVec3f(0,0,1),0), SbRotation::slerp(val0,val1,alpha.getValue()))
 
 #include <Inventor/engines/SoInterpolateRotation.h>
 #include <Inventor/lists/SoEngineOutputList.h>

@@ -35,7 +35,7 @@ class SoConvexDataCache;
 class SoIndexedFaceSet : public SoIndexedShape {
   typedef SoIndexedShape inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoIndexedFaceSet )
+//$ BEGIN TEMPLATE NodeHeader(SoIndexedFaceSet)
 private:
   static SoType classTypeId;
 
@@ -63,7 +63,7 @@ public:
   };
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
-  virtual void GLRender( SoGLRenderAction * action );
+  virtual void GLRender(SoGLRenderAction * action);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 #if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);

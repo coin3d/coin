@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_ANNO_TEXT3_FONT_SIZE_HINT_ELEMENT_H_
-#define _SO_ANNO_TEXT3_FONT_SIZE_HINT_ELEMENT_H_
+#ifndef __SOANNOTEXT3FONTSIZEHINTELEMENT_H__
+#define __SOANNOTEXT3FONTSIZEHINTELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOANNOTEXT3FONTSIZEHINTELEMENT)
@@ -30,7 +30,7 @@
 class SoAnnoText3FontSizeHintElement : public SoInt32Element {
   typedef SoInt32Element inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoAnnoText3FontSizeHintElement )
+//$ BEGIN TEMPLATE ElementHeader(SoAnnoText3FontSizeHintElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -52,14 +52,14 @@ public:
     ANNOTATION, FIT_TEXT_VECTOR
   };
   
-  virtual void init( SoState * state );
-  static void set( SoState * const state, const FontSizeHint hint );
-  static FontSizeHint get( SoState * const state );
-  static FontSizeHint getDefault( void );
+  virtual void init(SoState * state);
+  static void set(SoState * const state, const FontSizeHint hint);
+  static FontSizeHint get(SoState * const state);
+  static FontSizeHint getDefault(void);
 
   static void set(SoState * const state, SoNode * const node,
 		  const FontSizeHint hint);
 
 };
 
-#endif // ! _SO_ANNO_TEXT3_FONT_SIZE_HINT_ELEMENT_H_
+#endif // !__SOANNOTEXT3FONTSIZEHINTELEMENT_H__

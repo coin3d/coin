@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_GL_LIGHT_MODEL_ELEMENT_H_
-#define _SO_GL_LIGHT_MODEL_ELEMENT_H_
+#ifndef __SOGLLIGHTMODELELEMENT_H__
+#define __SOGLLIGHTMODELELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOGLLIGHTMODELELEMENT)
@@ -30,7 +30,7 @@
 class SoGLLightModelElement : public SoLightModelElement {
   typedef SoLightModelElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoGLLightModelElement )
+//$ BEGIN TEMPLATE ElementHeader(SoGLLightModelElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -69,4 +69,4 @@ private:
 
 };
 
-#endif // ! _SO_GL_LIGHT_MODEL_ELEMENT_H_
+#endif // !__SOGLLIGHTMODELELEMENT_H__

@@ -32,7 +32,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE FieldId( SoSFTrigger )
+//$ BEGIN TEMPLATE FieldId(SoSFTrigger)
 
 SoType SoSFTrigger::classTypeId = SoType::badType();
 
@@ -78,7 +78,7 @@ SoSFTrigger::createInstance(void)
 void
 SoSFTrigger::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass( SFTrigger )
+//$ BEGIN TEMPLATE FieldInitClass(SFTrigger)
   // Make sure we only initialize once.
   assert(SoSFTrigger::classTypeId == SoType::badType());
   // Make sure superclass has been initialized before subclass.
@@ -103,7 +103,7 @@ SoSFTrigger::cleanClass(void)
   FIXME: write function documentation
 */
 void
-SoSFTrigger::copyFrom( const SoField & field )
+SoSFTrigger::copyFrom(const SoField & /* field */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -112,7 +112,7 @@ SoSFTrigger::copyFrom( const SoField & field )
   FIXME: write function documentation
 */
 SbBool
-SoSFTrigger::isSame( const SoField & field ) const
+SoSFTrigger::isSame(const SoField & /* field */) const
 {
   assert(0 && "FIXME: not implemented yet");
   return FALSE;
@@ -122,7 +122,7 @@ SoSFTrigger::isSame( const SoField & field ) const
   FIXME: write function documentation
 */
 const SoSFTrigger &
-SoSFTrigger::operator = ( const SoSFTrigger & field )
+SoSFTrigger::operator = (const SoSFTrigger & /* field */)
 {
   assert(0 && "FIXME: not implemented yet");
   return *this;
@@ -132,7 +132,7 @@ SoSFTrigger::operator = ( const SoSFTrigger & field )
   FIXME: write function documentation
 */
 void
-SoSFTrigger::setValue( void )
+SoSFTrigger::setValue(void)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -141,7 +141,7 @@ SoSFTrigger::setValue( void )
   FIXME: write function documentation
 */
 void
-SoSFTrigger::getValue( void ) const
+SoSFTrigger::getValue(void) const
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -150,7 +150,7 @@ SoSFTrigger::getValue( void ) const
   FIXME: write function documentation
 */
 void
-SoSFTrigger::touch( void )
+SoSFTrigger::touch(void)
 {
   this->startNotify();
 }
@@ -159,7 +159,7 @@ SoSFTrigger::touch( void )
   FIXME: write function documentation
 */
 int
-SoSFTrigger::operator == ( const SoSFTrigger & trigger ) const
+SoSFTrigger::operator == (const SoSFTrigger & /* trigger */) const
 {
   assert(0 && "FIXME: not implemented yet");
   return -1;
@@ -169,7 +169,7 @@ SoSFTrigger::operator == ( const SoSFTrigger & trigger ) const
   FIXME: write function documentation
 */
 int
-SoSFTrigger::operator != ( const SoSFTrigger & trigger ) const
+SoSFTrigger::operator != (const SoSFTrigger & /* trigger */) const
 {
   assert(0 && "FIXME: not implemented yet");
   return -1;
@@ -179,7 +179,7 @@ SoSFTrigger::operator != ( const SoSFTrigger & trigger ) const
   FIXME: write function documentation
 */
 void
-SoSFTrigger::startNotify( void )
+SoSFTrigger::startNotify(void)
 {
   SoNotList list;
 
@@ -190,7 +190,7 @@ SoSFTrigger::startNotify( void )
   FIXME: write function documentation
 */
 void
-SoSFTrigger::notify( SoNotList * list )
+SoSFTrigger::notify(SoNotList * list)
 {
   inherited::notify(list);
 
@@ -203,7 +203,7 @@ SoSFTrigger::notify( SoNotList * list )
 */
 SoSFTrigger::SoSFTrigger(void)
 {
-  // TODO: implement.
+  assert(0 && "FIXME: not implemented yet");
 }
 
 /*!
@@ -211,18 +211,18 @@ SoSFTrigger::SoSFTrigger(void)
 */
 SoSFTrigger::~SoSFTrigger(void)
 {
-  // TODO: implement.
+  assert(0 && "FIXME: not implemented yet");
 }
 
 SbBool
-SoSFTrigger::readValue( SoInput * in )
+SoSFTrigger::readValue(SoInput * /* in */)
 {
   assert(0 && "FIXME: not implemented yet");
   return FALSE;
 }
 
 void
-SoSFTrigger::writeValue( SoOutput * out ) const
+SoSFTrigger::writeValue(SoOutput * /* out */) const
 {
   assert(0 && "FIXME: not implemented yet");
 }

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_CREASE_ANGLE_ELEMENT_H_
-#define _SO_CREASE_ANGLE_ELEMENT_H_
+#ifndef __SOCREASEANGLEELEMENT_H__
+#define __SOCREASEANGLEELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOCREASEANGLEELEMENT)
@@ -30,7 +30,7 @@
 class SoCreaseAngleElement : public SoFloatElement {
   typedef SoFloatElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoCreaseAngleElement )
+//$ BEGIN TEMPLATE ElementHeader(SoCreaseAngleElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -48,14 +48,14 @@ protected:
 //$ END TEMPLATE ElementHeader
 
 public:
-  virtual void init( SoState * state );
+  virtual void init(SoState * state);
 
-  static  void set( SoState * const state, SoNode * const node,
-		    const float complexity );
-  static  void set( SoState * const state, const float complexity );
-  static  float get( SoState * const state );
-  static  float getDefault( void );
+  static  void set(SoState * const state, SoNode * const node,
+		    const float complexity);
+  static  void set(SoState * const state, const float complexity);
+  static  float get(SoState * const state);
+  static  float getDefault(void);
 
 };
 
-#endif // ! _SO_CREASE_ANGLE_ELEMENT_H_
+#endif // !__SOCREASEANGLEELEMENT_H__

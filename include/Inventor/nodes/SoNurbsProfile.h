@@ -32,7 +32,7 @@
 class SoNurbsProfile : public SoProfile {
   typedef SoProfile inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoNurbsProfile )
+//$ BEGIN TEMPLATE NodeHeader(SoNurbsProfile)
 private:
   static SoType classTypeId;
 

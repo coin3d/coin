@@ -34,7 +34,7 @@
 
 #include <GL/gl.h>
 
-//$ BEGIN TEMPLATE ElementSource( SoGLTextureMatrixElement )
+//$ BEGIN TEMPLATE ElementSource(SoGLTextureMatrixElement)
 
 /*!
   \var SoGLTextureMatrixElement::classTypeId
@@ -88,24 +88,23 @@ SoGLTextureMatrixElement::getClassStackIndex(void)
 */
 
 void
-SoGLTextureMatrixElement::initClass(
-    void )
+SoGLTextureMatrixElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoGLTextureMatrixElement )
+//$ BEGIN TEMPLATE InitElementSource(SoGLTextureMatrixElement)
   assert(SoGLTextureMatrixElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoGLTextureMatrixElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoGLTextureMatrixElement",
-    &SoGLTextureMatrixElement::createInstance);
+  SoGLTextureMatrixElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoGLTextureMatrixElement",
+                       &SoGLTextureMatrixElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoGLTextureMatrixElement::classStackIndex =
-      createStackIndex( SoGLTextureMatrixElement::classTypeId );
-  } else {
-    SoGLTextureMatrixElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoGLTextureMatrixElement::classTypeId);
+  }
+  else {
+    SoGLTextureMatrixElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -116,32 +115,29 @@ SoGLTextureMatrixElement::initClass(
 */
 
 void
-SoGLTextureMatrixElement::cleanClass(
-    void )
+SoGLTextureMatrixElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoGLTextureMatrixElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoGLTextureMatrixElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa SoGLTextureMatrixElement::createInstance( void )
+  \sa SoGLTextureMatrixElement::createInstance(void)
 */
 
-SoGLTextureMatrixElement::SoGLTextureMatrixElement(
-    void )
+SoGLTextureMatrixElement::SoGLTextureMatrixElement(void)
 {
-    setTypeId( SoGLTextureMatrixElement::classTypeId );
-    setStackIndex( SoGLTextureMatrixElement::classStackIndex );
+    setTypeId(SoGLTextureMatrixElement::classTypeId);
+    setStackIndex(SoGLTextureMatrixElement::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoGLTextureMatrixElement::~SoGLTextureMatrixElement(
-    void )
+SoGLTextureMatrixElement::~SoGLTextureMatrixElement(void)
 {
 }
 
@@ -150,7 +146,7 @@ SoGLTextureMatrixElement::~SoGLTextureMatrixElement(
 void
 SoGLTextureMatrixElement::init(SoState * state)
 {
-  inherited::init( state );
+  inherited::init(state);
 }
 
 //! FIXME: write doc.

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_BOUNDING_BOX_CACHE_H_
-#define _SO_BOUNDING_BOX_CACHE_H_
+#ifndef __SOBOUNDINGBOXCACHE_H__
+#define __SOBOUNDINGBOXCACHE_H__
 
 #include <Inventor/caches/SoCache.h>
 #include <Inventor/SbXfBox3f.h>
@@ -50,5 +50,4 @@ private:
   unsigned int linesOrPoints : 1;
 };
 
-#endif // ! _SO_BOUNDING_BOX_CACHE_H_
-
+#endif // !__SOBOUNDINGBOXCACHE_H__

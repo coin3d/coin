@@ -31,7 +31,7 @@
 class SoIndexedTriangleStripSet : public SoIndexedShape {
   typedef SoIndexedShape inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoIndexedTriangleStripSet )
+//$ BEGIN TEMPLATE NodeHeader(SoIndexedTriangleStripSet)
 private:
   static SoType classTypeId;
 

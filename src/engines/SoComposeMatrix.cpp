@@ -69,7 +69,6 @@ SoComposeMatrix::evaluate()
 
   int i;
   
-  float angleVal;
   for (i=0;i<numOut;i++) {
     const SbVec3f translationVal=
       i<numTranslation?translation[i]:translation[numTranslation-1];

@@ -30,7 +30,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource( SoRayPickAction )
+//$ BEGIN TEMPLATE ActionSource(SoRayPickAction)
 
 SoType SoRayPickAction::classTypeId = SoType::badType();
 
@@ -103,10 +103,9 @@ SoRayPickAction::enableElement(const SoType type, const int stackIndex)
 */
 
 void
-SoRayPickAction::initClass(
-    void )
+SoRayPickAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource( SoRayPickAction )
+//$ BEGIN TEMPLATE InitActionSource(SoRayPickAction)
   assert(SoRayPickAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
@@ -124,8 +123,7 @@ SoRayPickAction::initClass(
 */
 
 void
-SoRayPickAction::cleanClass(
-    void )
+SoRayPickAction::cleanClass(void)
 {
 }
 
@@ -145,8 +143,7 @@ SoRayPickAction::SoRayPickAction(const SbViewportRegion & viewportRegion)
   The destructor.
 */
 
-SoRayPickAction::~SoRayPickAction(
-    void )
+SoRayPickAction::~SoRayPickAction(void)
 {
 }
 

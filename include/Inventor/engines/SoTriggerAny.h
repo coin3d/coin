@@ -44,14 +44,16 @@ public:
   SoSFTrigger input8;
   SoSFTrigger input9;
 
-  SoEngineOutput output;  //SoSFTrigger
+  SoEngineOutput output;  // SoSFTrigger
 
   SoTriggerAny();
 
   static void initClass();
 
+protected:
+  ~SoTriggerAny();
+
 private:
-  virtual ~SoTriggerAny();
   virtual void evaluate();
 };
 

@@ -36,7 +36,7 @@
 class SoSwitch : public SoGroup {
   typedef SoGroup inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoSwitch )
+//$ BEGIN TEMPLATE NodeHeader(SoSwitch)
 private:
   static SoType classTypeId;
 

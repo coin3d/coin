@@ -44,7 +44,7 @@ const SbVec3f SoLightAttenuationElement::defaultAttenuation(0,0,1);
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoLightAttenuationElement )
+//$ BEGIN TEMPLATE ElementSource(SoLightAttenuationElement)
 
 /*!
   \var SoLightAttenuationElement::classTypeId
@@ -98,24 +98,23 @@ SoLightAttenuationElement::getClassStackIndex(void)
 */
 
 void
-SoLightAttenuationElement::initClass(
-    void )
+SoLightAttenuationElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoLightAttenuationElement )
+//$ BEGIN TEMPLATE InitElementSource(SoLightAttenuationElement)
   assert(SoLightAttenuationElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoLightAttenuationElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoLightAttenuationElement",
-    &SoLightAttenuationElement::createInstance);
+  SoLightAttenuationElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoLightAttenuationElement",
+                       &SoLightAttenuationElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoLightAttenuationElement::classStackIndex =
-      createStackIndex( SoLightAttenuationElement::classTypeId );
-  } else {
-    SoLightAttenuationElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoLightAttenuationElement::classTypeId);
+  }
+  else {
+    SoLightAttenuationElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -126,43 +125,39 @@ SoLightAttenuationElement::initClass(
 */
 
 void
-SoLightAttenuationElement::cleanClass(
-    void )
+SoLightAttenuationElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoLightAttenuationElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoLightAttenuationElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoLightAttenationElement::createInstance( void )
+  \sa void * SoLightAttenationElement::createInstance(void)
 */
 
-SoLightAttenuationElement::SoLightAttenuationElement(
-    void )
-  : lightAttenuation( defaultAttenuation )
+SoLightAttenuationElement::SoLightAttenuationElement(void)
+  : lightAttenuation(defaultAttenuation)
 {
-  setTypeId( SoLightAttenuationElement::classTypeId );
-  setStackIndex( SoLightAttenuationElement::classStackIndex );
+  setTypeId(SoLightAttenuationElement::classTypeId);
+  setStackIndex(SoLightAttenuationElement::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoLightAttenuationElement::~SoLightAttenuationElement(
-    void )
+SoLightAttenuationElement::~SoLightAttenuationElement(void)
 {
 }
 
 //! FIXME: write doc.
 
 void
-SoLightAttenuationElement::set(
-    SoState * const state,
-    SoNode * const node,
-    const SbVec3f & lightAttenuation )
+SoLightAttenuationElement::set(SoState * const state,
+			       SoNode * const node,
+			       const SbVec3f & lightAttenuation)
 {
   SoLightAttenuationElement * element = (SoLightAttenuationElement *)
     SoReplacedElement::getElement(state, classStackIndex, node);
@@ -182,8 +177,7 @@ SoLightAttenuationElement::get(SoState * const state)
 //! FIXME: write doc.
 
 SbBool
-SoLightAttenuationElement::matches(
-    SoElement * element ) const
+SoLightAttenuationElement::matches(SoElement * element) const
 {
   if (this->lightAttenuation !=
       ((SoLightAttenuationElement *)element)->lightAttenuation)
@@ -207,11 +201,11 @@ SoLightAttenuationElement::copyMatchInfo() const
 void
 SoLightAttenuationElement::print(FILE * file) const
 {
-  fprintf( file, "SoLightAttenuationElement[%p]: attenuation = ", this );
-  fprintf( file, "<%f, %f, %f>\n",
+  fprintf(file, "SoLightAttenuationElement[%p]: attenuation = ", this);
+  fprintf(file, "<%f, %f, %f>\n",
 	   this->lightAttenuation[0],
 	   this->lightAttenuation[1],
-	   this->lightAttenuation[2] );
+	   this->lightAttenuation[2]);
 }
 
 //! FIXME: write doc.

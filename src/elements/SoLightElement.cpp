@@ -48,7 +48,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoLightElement )
+//$ BEGIN TEMPLATE ElementSource(SoLightElement)
 
 /*!
   \var SoLightElement::classTypeId
@@ -101,24 +101,23 @@ SoLightElement::getClassStackIndex(void)
 */
 
 void
-SoLightElement::initClass(
-    void )
+SoLightElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoLightElement )
+//$ BEGIN TEMPLATE InitElementSource(SoLightElement)
   assert(SoLightElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoLightElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoLightElement",
-    &SoLightElement::createInstance);
+  SoLightElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoLightElement",
+                       &SoLightElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoLightElement::classStackIndex =
-      createStackIndex( SoLightElement::classTypeId );
-  } else {
-    SoLightElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoLightElement::classTypeId);
+  }
+  else {
+    SoLightElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -128,51 +127,45 @@ SoLightElement::initClass(
 */
 
 void
-SoLightElement::cleanClass(
-    void )
+SoLightElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoLightElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoLightElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoLightElement::createInstance( void )
+  \sa void * SoLightElement::createInstance(void)
 */
 
-SoLightElement::SoLightElement(
-    void )
-  : startIndex( -1 )
+SoLightElement::SoLightElement(void)
+  : startIndex(-1)
 {
-    setTypeId( SoLightElement::classTypeId );
-    setStackIndex( SoLightElement::classStackIndex );
+    setTypeId(SoLightElement::classTypeId);
+    setStackIndex(SoLightElement::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoLightElement::~SoLightElement(
-    void )
+SoLightElement::~SoLightElement(void)
 {
 }
 
 //! FIXME: write doc.
 
 void
-SoLightElement::add(
-    SoState * const state,
-    SoLight * const light,
-    const SbMatrix & WCToVRCMatrix )
+SoLightElement::add(SoState * const /* state */, SoLight * const /* light */,
+		    const SbMatrix & /* WCToVRCMatrix */)
 {
 }
 
 //! FIXME: write doc.
 
 const SoNodeList &
-SoLightElement::getLights(
-    SoState * const state )
+SoLightElement::getLights(SoState * const /* state */)
 {
   assert(0 && "FIXME: not implemented");
   static SoNodeList nl;
@@ -182,9 +175,7 @@ SoLightElement::getLights(
 //! FIXME: write doc.
 
 const SbMatrix &
-SoLightElement::getMatrix(
-    SoState * const state,
-    const int index )
+SoLightElement::getMatrix(SoState * const /* state */, const int /* index */)
 {
   assert(0 && "FIXME: not implemented");
   static SbMatrix m = SbMatrix::identity();
@@ -194,51 +185,46 @@ SoLightElement::getMatrix(
 //! FIXME: write doc.
 
 void
-SoLightElement::print(
-    FILE * file ) const
+SoLightElement::print(FILE * file) const
 {
-    fprintf( file, "SoLightElement[%p]: lights = %sdn", this,
-        this->lights.getLength() );
+  fprintf(file, "SoLightElement[%p]: lights = %dn",
+	  this, this->lights.getLength());
 }
 
 //! FIXME: write doc.
 
 void
-SoLightElement::init(
-    SoState * state )
+SoLightElement::init(SoState * state)
 {
-    inherited::init( state );
+    inherited::init(state);
 }
 
 //! FIXME: write doc.
 
 void
-SoLightElement::push(
-    SoState * state )
+SoLightElement::push(SoState * state)
 {
-    inherited::push( state );
+    inherited::push(state);
 
     SoLightElement * const element =
-        (SoLightElement *)( this->next );
-    element->lights.truncate( 0 );
+        (SoLightElement *)(this->next);
+    element->lights.truncate(0);
     const int numLights = this->lights.getLength();
     int i;
-    for ( i = 0; i < numLights; i++ )
-        element->lights.append( this->lights[ i ] );
-    element->WCToVRCMatrices.truncate( 0 );
+    for (i = 0; i < numLights; i++)
+        element->lights.append(this->lights[ i ]);
+    element->WCToVRCMatrices.truncate(0);
     const int numMatrices = WCToVRCMatrices.getLength();
-    for ( i = 0; i < numMatrices; i++ )
-        element->WCToVRCMatrices.append( this->WCToVRCMatrices[ i ] );
+    for (i = 0; i < numMatrices; i++)
+        element->WCToVRCMatrices.append(this->WCToVRCMatrices[ i ]);
     element->startIndex = this->startIndex;
 }
 
 //! FIXME: write doc.
 
 void
-SoLightElement::pop(
-    SoState * state,
-    const SoElement * prevTopElement )
+SoLightElement::pop(SoState * state, const SoElement * prevTopElement)
 {
-    inherited::pop( state, prevTopElement );
+    inherited::pop(state, prevTopElement);
 }
 

@@ -139,7 +139,6 @@ SoPackedColor::cleanClass(void)
 void 
 SoPackedColor::GLRender(SoGLRenderAction * action)
 {
-  SoState * state = action->getState();
   if (!orderedRGBA.isIgnored()) {
     SoDiffuseColorElement::set(action->getState(),
 			       this,
@@ -155,7 +154,7 @@ SoPackedColor::GLRender(SoGLRenderAction * action)
   FIXME: write doc
  */
 void
-SoPackedColor::doAction(SoAction * action)
+SoPackedColor::doAction(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -166,7 +165,7 @@ SoPackedColor::doAction(SoAction * action)
   FIXME: write doc
  */
 void
-SoPackedColor::callback(SoCallbackAction * action)
+SoPackedColor::callback(SoCallbackAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

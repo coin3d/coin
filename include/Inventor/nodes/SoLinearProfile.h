@@ -31,7 +31,7 @@
 class SoLinearProfile : public SoProfile {
   typedef SoProfile inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoLinearProfile )
+//$ BEGIN TEMPLATE NodeHeader(SoLinearProfile)
 private:
   static SoType classTypeId;
 

@@ -43,7 +43,7 @@
 #include <GL/gl.h>
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource( SoGLTextureEnabledElement )
+//$ BEGIN TEMPLATE ElementSource(SoGLTextureEnabledElement)
 
 /*!
   \var SoGLTextureEnabledElement::classTypeId
@@ -97,24 +97,23 @@ SoGLTextureEnabledElement::getClassStackIndex(void)
 */
 
 void
-SoGLTextureEnabledElement::initClass(
-    void )
+SoGLTextureEnabledElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoGLTextureEnabledElement )
+//$ BEGIN TEMPLATE InitElementSource(SoGLTextureEnabledElement)
   assert(SoGLTextureEnabledElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoGLTextureEnabledElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoGLTextureEnabledElement",
-    &SoGLTextureEnabledElement::createInstance);
+  SoGLTextureEnabledElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoGLTextureEnabledElement",
+                       &SoGLTextureEnabledElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoGLTextureEnabledElement::classStackIndex =
-      createStackIndex( SoGLTextureEnabledElement::classTypeId );
-  } else {
-    SoGLTextureEnabledElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoGLTextureEnabledElement::classTypeId);
+  }
+  else {
+    SoGLTextureEnabledElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -125,24 +124,22 @@ SoGLTextureEnabledElement::initClass(
 */
 
 void
-SoGLTextureEnabledElement::cleanClass(
-    void )
+SoGLTextureEnabledElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoGLTextureEnabledElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoGLTextureEnabledElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoGLTextureEnabledElement::createInstance( void )
+  \sa void * SoGLTextureEnabledElement::createInstance(void)
 */
 
-SoGLTextureEnabledElement::SoGLTextureEnabledElement(
-    void )
+SoGLTextureEnabledElement::SoGLTextureEnabledElement(void)
 {
-    setTypeId( SoGLTextureEnabledElement::classTypeId );
-    setStackIndex( SoGLTextureEnabledElement::classStackIndex );
+    setTypeId(SoGLTextureEnabledElement::classTypeId);
+    setStackIndex(SoGLTextureEnabledElement::classStackIndex);
     this->data = getDefault();
 }
 
@@ -150,8 +147,7 @@ SoGLTextureEnabledElement::SoGLTextureEnabledElement(
   The destructor.
 */
 
-SoGLTextureEnabledElement::~SoGLTextureEnabledElement(
-    void )
+SoGLTextureEnabledElement::~SoGLTextureEnabledElement(void)
 {
 }
 
@@ -213,7 +209,7 @@ SoGLTextureEnabledElement::set(SoState * const state, const SbBool enabled)
 SbBool 
 SoGLTextureEnabledElement::get(SoState * const state)
 { 
-  return (SbBool) SoInt32Element::get( classStackIndex, state ); 
+  return (SbBool) SoInt32Element::get(classStackIndex, state); 
 }
 
 //! FIXME: write doc.

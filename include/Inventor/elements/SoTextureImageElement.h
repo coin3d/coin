@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_TEXTURE_IMAGE_ELEMENT_H_
-#define _SO_TEXTURE_IMAGE_ELEMENT_H_
+#ifndef __SOTEXTUREIMAGEELEMENT_H__
+#define __SOTEXTUREIMAGEELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOTEXTUREIMAGEELEMENT)
@@ -35,7 +35,7 @@ class SoState;
 class SoTextureImageElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoTextureImageElement )
+//$ BEGIN TEMPLATE ElementHeader(SoTextureImageElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -113,4 +113,4 @@ protected:
 
 };
 
-#endif // ! _SO_TEXTURE_IMAGE_ELEMENT_H_
+#endif // !__SOTEXTUREIMAGEELEMENT_H__

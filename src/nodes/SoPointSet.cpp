@@ -260,7 +260,7 @@ SoPointSet::GLRender(SoGLRenderAction * action)
 
   SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
   const SbVec3f * currnormal = &dummynormal;
-  if (normals) currnormal == normals;
+  if (normals) currnormal = normals;
   if (nbind == OVERALL && needNormals) 
     glNormal3fv((const GLfloat *)currnormal); 
 
@@ -306,7 +306,7 @@ SoPointSet::generateDefaultNormals(SoState *, SoNormalCache * nc)
   FIXME: write doc
  */
 void
-SoPointSet::getBoundingBox(SoGetBoundingBoxAction * action)
+SoPointSet::getBoundingBox(SoGetBoundingBoxAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -317,7 +317,7 @@ SoPointSet::getBoundingBox(SoGetBoundingBoxAction * action)
   FIXME: write doc
  */
 void
-SoPointSet::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoPointSet::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -328,7 +328,7 @@ SoPointSet::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   FIXME: write doc
  */
 void
-SoPointSet::generatePrimitives(SoAction * action)
+SoPointSet::generatePrimitives(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -339,8 +339,9 @@ SoPointSet::generatePrimitives(SoAction * action)
   FIXME: write doc
  */
 SoDetail *
-SoPointSet::createPointDetail(SoRayPickAction * action,
-			      const SoPrimitiveVertex * v, SoPickedPoint * pp)
+SoPointSet::createPointDetail(SoRayPickAction * /* action */,
+			      const SoPrimitiveVertex * /* v */,
+			      SoPickedPoint * /* pp */)
 {
   assert(0 && "FIXME: not implemented");
   return NULL;

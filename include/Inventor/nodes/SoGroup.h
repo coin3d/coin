@@ -31,7 +31,7 @@
 class SoGroup : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoGroup )
+//$ BEGIN TEMPLATE NodeHeader(SoGroup)
 private:
   static SoType classTypeId;
 

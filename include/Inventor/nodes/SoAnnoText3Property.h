@@ -34,7 +34,7 @@
 class SoAnnoText3Property : public SoNode {
     typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoAnnoText3Property )
+//$ BEGIN TEMPLATE NodeHeader(SoAnnoText3Property)
 private:
   static SoType classTypeId;
 

@@ -31,7 +31,7 @@
 
 #include <assert.h>
 
-const static SbColor defaultColor(0,0,0);
+static const SbColor defaultColor(0,0,0);
 
 /*!
   \fn SoSpecularColorElement::numColors
@@ -45,7 +45,7 @@ const static SbColor defaultColor(0,0,0);
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoSpecularColorElement )
+//$ BEGIN TEMPLATE ElementSource(SoSpecularColorElement)
 
 /*!
   \var SoSpecularColorElement::classTypeId
@@ -101,21 +101,21 @@ SoSpecularColorElement::getClassStackIndex(void)
 void
 SoSpecularColorElement::initClass()
 {
-//$ BEGIN TEMPLATE InitElementSource( SoSpecularColorElement )
+//$ BEGIN TEMPLATE InitElementSource(SoSpecularColorElement)
   assert(SoSpecularColorElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoSpecularColorElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoSpecularColorElement",
-    &SoSpecularColorElement::createInstance);
+  SoSpecularColorElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoSpecularColorElement",
+                       &SoSpecularColorElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoSpecularColorElement::classStackIndex =
-      createStackIndex( SoSpecularColorElement::classTypeId );
-  } else {
-    SoSpecularColorElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoSpecularColorElement::classTypeId);
+  }
+  else {
+    SoSpecularColorElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -128,14 +128,14 @@ SoSpecularColorElement::initClass()
 void 
 SoSpecularColorElement::cleanClass()
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoSpecularColorElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoSpecularColorElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoSpecularColorElement::createInstance( void )
+  \sa void * SoSpecularColorElement::createInstance(void)
 */
 
 SoSpecularColorElement::SoSpecularColorElement()
@@ -155,7 +155,7 @@ SoSpecularColorElement::~SoSpecularColorElement()
 //! FIXME: write doc.
 
 void 
-SoSpecularColorElement::init(SoState * state)
+SoSpecularColorElement::init(SoState * /* state */)
 {
   this->colors = &defaultColor;
   this->numColors = 1;

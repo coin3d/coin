@@ -32,7 +32,7 @@ class SoNode;
 class SoMFNode : public SoMField {
   typedef SoMField inherited;
 
-//$ BEGIN TEMPLATE MField( SoMFNode, SoNode *, SoNode * )
+//$ BEGIN TEMPLATE MField(SoMFNode, SoNode *, SoNode *)
 private:
   static SoType classTypeId;
 

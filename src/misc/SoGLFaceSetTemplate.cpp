@@ -75,7 +75,7 @@
   if (materials);
 #endif
   
-  while ( viptr < viendptr ) {
+  while (viptr < viendptr) {
     v1 = *viptr++;
     v2 = *viptr++;
     v3 = *viptr++;
@@ -88,13 +88,13 @@
     if (v4  < 0) newmode = GL_TRIANGLES;
     else {
       v5 = *viptr++;
-      if ( v5 < 0 ) newmode = GL_QUADS;
+      if (v5 < 0) newmode = GL_QUADS;
       else newmode = GL_POLYGON;
     }
     if (newmode != mode) {
       if (mode != GL_POLYGON) glEnd();
       mode = newmode;
-      glBegin( (GLenum) mode );
+      glBegin((GLenum) mode);
     }
     else if (mode == GL_POLYGON) glBegin(GL_POLYGON);
     
@@ -199,7 +199,7 @@
 #endif
 	vertexlist->send(v5);
 	v1 = *viptr++;
-	while ( v1 >= 0) {
+	while (v1 >= 0) {
       /* vertex 6-n (polygon) *****************************************/
 #if MBINDING==PER_VERTEX
 	  materials->send(matnr++, TRUE);

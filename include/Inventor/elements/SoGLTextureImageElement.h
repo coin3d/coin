@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_GL_TEXTURE_IMAGE_ELEMENT_H_
-#define _SO_GL_TEXTURE_IMAGE_ELEMENT_H_
+#ifndef __SOGLTEXTUREIMAGEELEMENT_H__
+#define __SOGLTEXTUREIMAGEELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOGLTEXTUREIMAGEELEMENT)
@@ -32,7 +32,7 @@ class SoGLImage;
 class SoGLTextureImageElement : public SoTextureImageElement {
   typedef SoTextureImageElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoGLTextureImageElement )
+//$ BEGIN TEMPLATE ElementHeader(SoGLTextureImageElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -63,4 +63,4 @@ private:
 
 };
 
-#endif // ! _SO_GL_TEXTURE_IMAGE_ELEMENT_H_
+#endif // !__SOGLTEXTUREIMAGEELEMENT_H__

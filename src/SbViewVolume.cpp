@@ -307,7 +307,7 @@ SbViewVolume::getPlanePoint(const float distFromEye,
   TODO: not implemented
  */
 SbRotation
-SbViewVolume::getAlignRotation(SbBool rightAngleOnly) const
+SbViewVolume::getAlignRotation(SbBool /* rightAngleOnly */) const
 {
   // TODO: not implemented.
   assert(0);
@@ -487,7 +487,7 @@ SbViewVolume::narrow(float left, float bottom,
   TODO: not implemented
  */
 SbViewVolume
-SbViewVolume::narrow(const SbBox3f& box) const
+SbViewVolume::narrow(const SbBox3f& /* box */) const
 {
   //TODO: Check if legal box in debug-mode.
   // TODO: not implemented.

@@ -36,7 +36,7 @@
   FIXME: write doc.
 */
 
-const SbName SoFontNameElement::defaultFontName( "defaultFont" );
+const SbName SoFontNameElement::defaultFontName("defaultFont");
 
 /*!
   \fn SoFontNameElement::fontName
@@ -44,7 +44,7 @@ const SbName SoFontNameElement::defaultFontName( "defaultFont" );
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoFontNameElement )
+//$ BEGIN TEMPLATE ElementSource(SoFontNameElement)
 
 /*!
   \var SoFontNameElement::classTypeId
@@ -98,24 +98,23 @@ SoFontNameElement::getClassStackIndex(void)
 */
 
 void
-SoFontNameElement::initClass(
-    void )
+SoFontNameElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoFontNameElement )
+//$ BEGIN TEMPLATE InitElementSource(SoFontNameElement)
   assert(SoFontNameElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoFontNameElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoFontNameElement",
-    &SoFontNameElement::createInstance);
+  SoFontNameElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoFontNameElement",
+                       &SoFontNameElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoFontNameElement::classStackIndex =
-      createStackIndex( SoFontNameElement::classTypeId );
-  } else {
-    SoFontNameElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoFontNameElement::classTypeId);
+  }
+  else {
+    SoFontNameElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -125,25 +124,23 @@ SoFontNameElement::initClass(
 */
 
 void
-SoFontNameElement::cleanClass(
-    void )
+SoFontNameElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoFontNameElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoFontNameElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoFontNameElement::createInstance( void )
+  \sa void * SoFontNameElement::createInstance(void)
 */
 
-SoFontNameElement::SoFontNameElement(
-    void )
-  : fontName( defaultFontName )
+SoFontNameElement::SoFontNameElement(void)
+  : fontName(defaultFontName)
 {
-  setTypeId( SoFontNameElement::classTypeId );
-  setStackIndex( SoFontNameElement::classStackIndex );
+  setTypeId(SoFontNameElement::classTypeId);
+  setStackIndex(SoFontNameElement::classStackIndex);
 }
 
 /*!
@@ -169,21 +166,19 @@ SoFontNameElement::set(SoState * const state,
 //! FIXME: write doc.
 
 const SbName
-SoFontNameElement::get(
-    SoState * const state )
+SoFontNameElement::get(SoState * const state)
 {
   SoFontNameElement * element = (SoFontNameElement *)
-    SoElement::getConstElement( state, classStackIndex);
+    SoElement::getConstElement(state, classStackIndex);
   return element->fontName;
 }
 
 //! FIXME: write doc.
 
 SbBool
-SoFontNameElement::matches(
-    SoElement * element ) const
+SoFontNameElement::matches(SoElement * element) const
 {
-  if ( (SoElement *)this == element )
+  if ((SoElement *)this == element)
     return TRUE;
   if (element->getTypeId() != SoFontNameElement::getClassTypeId())
     return FALSE;
@@ -195,8 +190,7 @@ SoFontNameElement::matches(
 //! FIXME: write doc.
 
 SoElement *
-SoFontNameElement::copyMatchInfo(
-    void ) const
+SoFontNameElement::copyMatchInfo(void) const
 {
   SoFontNameElement * element = (SoFontNameElement *)
     (SoFontNameElement::getClassTypeId().createInstance());
@@ -210,15 +204,14 @@ SoFontNameElement::copyMatchInfo(
 void
 SoFontNameElement::print(FILE * file) const
 {
-  fprintf( file, "SoFontNameElement[%p]: font = %s\n", this,
-	   this->fontName.getString() );
+  fprintf(file, "SoFontNameElement[%p]: font = %s\n", this,
+	   this->fontName.getString());
 }
 
 //! FIXME: write doc.
 
 void
-SoFontNameElement::init(
-    SoState * state )
+SoFontNameElement::init(SoState * state)
 {
   inherited::init(state);
   fontName = defaultFontName;

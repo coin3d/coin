@@ -31,7 +31,7 @@
 class SoNonIndexedShape : public SoVertexShape {
   typedef SoVertexShape inherited;
 
-//$ BEGIN TEMPLATE NodeAbstractHeader( SoNonIndexedShape )
+//$ BEGIN TEMPLATE NodeAbstractHeader(SoNonIndexedShape)
 private:
   static SoType classTypeId;
 

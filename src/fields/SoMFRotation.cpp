@@ -49,7 +49,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE MField( SoMFRotation, SbRotation, const SbRotation & )
+//$ BEGIN TEMPLATE MField(SoMFRotation, SbRotation, const SbRotation &)
 
 SoType SoMFRotation::classTypeId = SoType::badType();
 
@@ -269,7 +269,7 @@ SoMFRotation::copyValue(int to, int from)
 void
 SoMFRotation::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass( MFRotation )
+//$ BEGIN TEMPLATE FieldInitClass(MFRotation)
   // Make sure we only initialize once.
   assert(SoMFRotation::classTypeId == SoType::badType());
   // Make sure superclass has been initialized before subclass.
@@ -297,7 +297,7 @@ SoMFRotation::read1Value(SoInput * in, int idx)
 {
   SoSFRotation sfrotation;
   SbBool result;
-  if (result = sfrotation.readValue(in))
+  if ((result = sfrotation.readValue(in)))
     this->set1Value(idx, sfrotation.getValue());
   return result;
 }
@@ -388,7 +388,6 @@ SoMFRotation::convertTo(SoField * dest) const
 #if !defined(COIN_EXCLUDE_SOSFSTRING)
   else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
     ostrstream ostr;
-    const SbRotation * rotation;
     SbVec3f vec;
     float rad;
     const int num=this->getNum();

@@ -37,8 +37,8 @@
 */
 
 SoColorPacker::SoColorPacker()
-  : transpNodeId( 0 ), diffuseNodeId( 0 ), packedColors( NULL ),
-    packedArraySize( 0 )
+  : transpNodeId(0), diffuseNodeId( 0 ), packedColors( NULL ),
+    packedArraySize(0)
 {
 }
 

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_TEXT_OUTLINE_ENABLED_ELEMENT_H_
-#define _SO_TEXT_OUTLINE_ENABLED_ELEMENT_H_
+#ifndef __SOTEXTOUTLINEENABLEDELEMENT_H__
+#define __SOTEXTOUTLINEENABLEDELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOTEXTOUTLINEENABLEDELEMENT)
@@ -30,7 +30,7 @@
 class SoTextOutlineEnabledElement : public SoInt32Element {
   typedef SoInt32Element inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoTextOutlineEnabledElement )
+//$ BEGIN TEMPLATE ElementHeader(SoTextOutlineEnabledElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -48,17 +48,16 @@ protected:
 //$ END TEMPLATE ElementHeader
 
 public:
-  virtual void init( SoState * state );
+  virtual void init(SoState * state);
 
-  virtual void push( SoState * state );
-  virtual void pop( SoState * state, const SoElement * prevTopElement );
+  virtual void push(SoState * state);
+  virtual void pop(SoState * state, const SoElement * prevTopElement);
 
-  static  void set( SoState * const state, SoNode * const node,
-              const SbBool enabled );
-  static  void set( SoState * const state, const SbBool enabled );
-  static  SbBool get( SoState * const state );
-  static  SbBool getDefault( void );
-
+  static void set(SoState * const state, SoNode * const node,
+		  const SbBool enabled);
+  static void set(SoState * const state, const SbBool enabled);
+  static SbBool get(SoState * const state);
+  static SbBool getDefault(void);
 };
 
-#endif // ! _SO_TEXT_OUTLINE_ENABLED_ELEMENT_H_
+#endif // !__SOTEXTOUTLINEENABLEDELEMENT_H__

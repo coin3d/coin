@@ -33,7 +33,7 @@
 class SoCalculator : public SoEngine {
   typedef SoEngine inherited;
 
-  SO_ENGINE_HEADER( SoCalculator );
+  SO_ENGINE_HEADER(SoCalculator);
   
 public:
   // inputs
@@ -47,12 +47,12 @@ public:
 
   SoCalculator(void);
 
-public:
   static void initClass(void);
 
 protected:
+  ~SoCalculator(void);
+
   virtual void inputChanged(SoField * which);
-  virtual ~SoCalculator(void);
 
 private:
   virtual void evaluate(void);

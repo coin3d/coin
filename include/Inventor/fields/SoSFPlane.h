@@ -30,7 +30,7 @@
 class SoSFPlane : public SoSField {
   typedef SoSField inherited;
 
-//$ BEGIN TEMPLATE SField( SoSFPlane, SbPlane, const SbPlane & )
+//$ BEGIN TEMPLATE SField(SoSFPlane, SbPlane, const SbPlane &)
 private:
   static SoType classTypeId;
 

@@ -32,7 +32,7 @@
 class SoViewVolumeElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoViewVolumeElement )
+//$ BEGIN TEMPLATE ElementHeader(SoViewVolumeElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);

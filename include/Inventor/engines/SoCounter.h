@@ -47,8 +47,10 @@ public:
 
   static void initClass();
 
+protected:
+  ~SoCounter();
+
 private:
-  virtual ~SoCounter();
   virtual void evaluate();
   virtual void inputChanged(SoField * which);
 

@@ -99,7 +99,7 @@ SoPathSensor::getAttachedPath(void) const
   FIXME: write doc
 */
 void
-SoPathSensor::notify(SoNotList * list)
+SoPathSensor::notify(SoNotList * /* list */)
 {
   assert(0 && "FIXME: not implemented");
 }

@@ -206,7 +206,7 @@ SoEnvironment::GLRender(SoGLRenderAction * action)
   FIXME: write doc
 */
 void
-SoEnvironment::callback(SoCallbackAction * action)
+SoEnvironment::callback(SoCallbackAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

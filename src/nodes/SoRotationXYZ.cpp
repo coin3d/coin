@@ -266,7 +266,7 @@ SoRotationXYZ::getRotation(void) const
   FIXME: write doc
  */
 void
-SoRotationXYZ::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoRotationXYZ::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

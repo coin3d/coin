@@ -54,7 +54,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource( SoWindowElement )
+//$ BEGIN TEMPLATE ElementSource(SoWindowElement)
 
 /*!
   \var SoWindowElement::classTypeId
@@ -107,24 +107,23 @@ SoWindowElement::getClassStackIndex(void)
 */
 
 void
-SoWindowElement::initClass(
-    void )
+SoWindowElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoWindowElement )
+//$ BEGIN TEMPLATE InitElementSource(SoWindowElement)
   assert(SoWindowElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoWindowElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoWindowElement",
-    &SoWindowElement::createInstance);
+  SoWindowElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoWindowElement",
+                       &SoWindowElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoWindowElement::classStackIndex =
-      createStackIndex( SoWindowElement::classTypeId );
-  } else {
-    SoWindowElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoWindowElement::classTypeId);
+  }
+  else {
+    SoWindowElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -134,70 +133,63 @@ SoWindowElement::initClass(
 */
 
 void
-SoWindowElement::cleanClass(
-    void )
+SoWindowElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoWindowElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoWindowElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoWindowElement::createInstance( void )
+  \sa void * SoWindowElement::createInstance(void)
 */
 
-SoWindowElement::SoWindowElement(
-    void )
+SoWindowElement::SoWindowElement(void)
   : // window(), context(),
-    display( NULL ), glRenderAction( NULL )
+  display(NULL), glRenderAction( NULL )
 {
-    setTypeId( SoWindowElement::classTypeId );
-    setStackIndex( SoWindowElement::classStackIndex );
+    setTypeId(SoWindowElement::classTypeId);
+    setStackIndex(SoWindowElement::classStackIndex);
 }
 
 /*!
   The destructor.
 */
 
-SoWindowElement::~SoWindowElement(
-    void )
+SoWindowElement::~SoWindowElement(void)
 {
 }
 
 //! FIXME: write doc.
 
 void
-SoWindowElement::init(
-    SoState * state )
+SoWindowElement::init(SoState * state)
 {
-    inherited::init( state );
+    inherited::init(state);
 }
 
 //! FIXME: write doc.
 
 void
-SoWindowElement::push(
-    SoState * state )
+SoWindowElement::push(SoState * state)
 {
-    inherited::push( state );
+    inherited::push(state);
 }
 
 //! FIXME: write doc.
 
 void
-SoWindowElement::pop(
-    SoState * state,
-    const SoElement * prevTopElement )
+SoWindowElement::pop(SoState * state,
+		     const SoElement * prevTopElement)
 {
-    inherited::pop( state, prevTopElement );
+    inherited::pop(state, prevTopElement);
 }
 
 //! FIXME: write doc.
 
 SbBool
-SoWindowElement::matches(
-    const SoElement * element ) const
+SoWindowElement::matches(const SoElement * /* element */) const
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;
@@ -206,8 +198,7 @@ SoWindowElement::matches(
 //! FIXME: write doc.
 
 SoElement *
-SoWindowElement::copyMatchInfo(
-     void ) const
+SoWindowElement::copyMatchInfo(void) const
 {
   assert(0 && "FIXME: not implemented");
   return NULL;
@@ -216,12 +207,11 @@ SoWindowElement::copyMatchInfo(
 //! FIXME: write doc.
 
 void
-SoWindowElement::set(
-    SoState * const state,
-    const Window & window,
-    const GLXContext & context,
-    Display * const display,
-    SoGLRenderAction * const action )
+SoWindowElement::set(SoState * const /* state */,
+		     const Window & /* window */,
+		     const GLXContext & /* context */,
+		     Display * const /* display */,
+		     SoGLRenderAction * const /* action */)
 {
     assert(0 && "FIXME: not implemented");
 }
@@ -229,12 +219,11 @@ SoWindowElement::set(
 //! FIXME: write doc.
 
 void
-SoWindowElement::get(
-    SoState * const state,
-    Window & window,
-    GLXContext & context,
-    Display * & display,
-    SoGLRenderAction * & action )
+SoWindowElement::get(SoState * const /* state */,
+		     Window & /* window */,
+		     GLXContext & /* context */,
+		     Display * & /* display */,
+		     SoGLRenderAction * & /* action */)
 {
     assert(0 && "FIXME: not implemented");
 }

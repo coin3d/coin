@@ -30,7 +30,7 @@
 class SoGLEnvironmentElement : public SoEnvironmentElement {
   typedef SoEnvironmentElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoGLEnvironmentElement )
+//$ BEGIN TEMPLATE ElementHeader(SoGLEnvironmentElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);

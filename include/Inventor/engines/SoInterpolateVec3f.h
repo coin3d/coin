@@ -30,21 +30,11 @@
 #include <Inventor/fields/SoMFVec3f.h>
 
 class SoInterpolateVec3f : public SoInterpolate {
-  typedef SoInterpolate inherited;
-  SO_ENGINE_HEADER(SoInterpolateVec3f);
+  SO_INTERPOLATE_HEADER(SoInterpolateVec3f);
 
 public:
   SoMFVec3f input0;
   SoMFVec3f input1;
-
-  SoInterpolateVec3f();
-
-  static void initClass();
-
-private:
-  virtual ~SoInterpolateVec3f();
-  virtual void evaluate();
-
 };
 //$ END TEMPLATE InterpolateHeader
 

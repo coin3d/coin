@@ -839,10 +839,10 @@ SoInput::read(SbName & n, SbBool validIdent)
       if (!this->read(s)) return FALSE;
 
       // Strip off any "{" or "}" characters.
-      int stripoff = 0, idx = s.getLength()-1;
+      int idx = s.getLength()-1;
       assert(idx >= 0);
       const char * cstr = s.getString();
-      assert(cstr && strlen(cstr) == s.getLength());
+      assert(cstr && strlen(cstr) == (size_t)s.getLength());
       while (((cstr[idx] == '{') || (cstr[idx] == '}')) && (idx > 0)) idx--;
     
       if (idx == s.getLength()-1) {
@@ -1146,7 +1146,7 @@ SoInput::putBack(const char * str)
  */
 void
 SoInput::addReference(const SbName & name, SoBase * base,
-		      SbBool addToGlobalDict)
+		      SbBool /* addToGlobalDict */)
 {
   this->refdict.enter((unsigned long)name.getString(), (void *) base);
   // FIXME: is this necessary? Looks suspicious. 19990626 mortene.
@@ -1486,8 +1486,9 @@ SoInput::setIVVersion(float version)
   FIXME: write doc
 */
 void
-SoInput::initFile(FILE * newFP, const char * fileName, SbString * fullName,
-		  SbBool openedHere, SbDict * refDict)
+SoInput::initFile(FILE * /* newFP */, const char * /* fileName */,
+		  SbString * /* fullName */,
+		  SbBool /* openedHere */, SbDict * /* refDict */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -1794,7 +1795,7 @@ SoInput::readChar(char * s, char charToRead)
   FIXME: write doc
  */
 SbBool
-SoInput::makeRoomInBuf(size_t nBytes)
+SoInput::makeRoomInBuf(size_t /* nBytes */)
 {
   // FIXME: implement
   assert(0);
@@ -1936,7 +1937,7 @@ SoInput::isFileVRML2(void)
   FIXME: write function documentation
 */
 void
-SoInput::resetFilePointer(FILE * fptr)
+SoInput::resetFilePointer(FILE * /* fptr */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -1945,7 +1946,7 @@ SoInput::resetFilePointer(FILE * fptr)
   FIXME: write doc
  */
 SbBool
-SoInput::isFileURL(const char * url)
+SoInput::isFileURL(const char * /* url */)
 {
   // FIXME: implement
   assert(0);
@@ -1956,7 +1957,7 @@ SoInput::isFileURL(const char * url)
   FIXME: write doc
  */
 char *
-SoInput::URLToFile(char * out_buf, const char * in_buf)
+SoInput::URLToFile(char * /* out_buf */, const char * /* in_buf */)
 {
   // FIXME: implement
   assert(0);
@@ -1967,7 +1968,7 @@ SoInput::URLToFile(char * out_buf, const char * in_buf)
   FIXME: write doc
  */
 SbBool
-SoInput::IsURL(const char * c_strng)
+SoInput::IsURL(const char * /* c_strng */)
 {
   // FIXME: implement
   assert(0);

@@ -29,7 +29,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource( SoShapeSimplifyAction )
+//$ BEGIN TEMPLATE ActionSource(SoShapeSimplifyAction)
 
 SoType SoShapeSimplifyAction::classTypeId = SoType::badType();
 
@@ -102,10 +102,9 @@ SoShapeSimplifyAction::enableElement(const SoType type, const int stackIndex)
 */
 
 void
-SoShapeSimplifyAction::initClass(
-    void )
+SoShapeSimplifyAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource( SoShapeSimplifyAction )
+//$ BEGIN TEMPLATE InitActionSource(SoShapeSimplifyAction)
   assert(SoShapeSimplifyAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
@@ -123,8 +122,7 @@ SoShapeSimplifyAction::initClass(
 */
 
 void
-SoShapeSimplifyAction::cleanClass(
-    void )
+SoShapeSimplifyAction::cleanClass(void)
 {
 }
 
@@ -143,8 +141,7 @@ SoShapeSimplifyAction::SoShapeSimplifyAction(void)
   The destructor.
 */
 
-SoShapeSimplifyAction::~SoShapeSimplifyAction(
-    void )
+SoShapeSimplifyAction::~SoShapeSimplifyAction(void)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -154,7 +151,7 @@ SoShapeSimplifyAction::~SoShapeSimplifyAction(
 */
 
 void
-SoShapeSimplifyAction::beginTraversal( SoNode * node )
+SoShapeSimplifyAction::beginTraversal(SoNode * /* node */)
 {
   assert(0 && "FIXME: not implemented");
 }

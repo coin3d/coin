@@ -196,7 +196,8 @@ SoCylinder::cleanClass(void)
   FIXME: write function documentation
 */
 void
-SoCylinder::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
+SoCylinder::computeBBox(SoAction * /* action */,
+			SbBox3f & box, SbVec3f & center)
 {
 
   float r = this->radius.getValue();
@@ -370,7 +371,7 @@ SoCylinder::hasPart(SoCylinder::Part part) const
   FIXME: write doc
 */
 void
-SoCylinder::rayPick(SoRayPickAction * action)
+SoCylinder::rayPick(SoRayPickAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -381,7 +382,7 @@ SoCylinder::rayPick(SoRayPickAction * action)
   FIXME: write doc
 */
 void
-SoCylinder::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+SoCylinder::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -392,7 +393,7 @@ SoCylinder::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   FIXME: write doc
 */
 void
-SoCylinder::generatePrimitives(SoAction * action)
+SoCylinder::generatePrimitives(SoAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }

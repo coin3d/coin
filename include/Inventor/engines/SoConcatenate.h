@@ -42,8 +42,12 @@ public:
   static void initClass();
 
 private:
-  virtual ~SoConcatenate();
+  SoConcatenate(void);
+  ~SoConcatenate();
   virtual void evaluate();
+
+  // Avoid a g++/egcs warning.
+  friend class dummy;
 };
 
 #endif // !__SOCONCATENATE_H__

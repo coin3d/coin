@@ -42,7 +42,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-//$ BEGIN TEMPLATE ElementSource( SoGLTextureCoordinateElement )
+//$ BEGIN TEMPLATE ElementSource(SoGLTextureCoordinateElement)
 
 /*!
   \var SoGLTextureCoordinateElement::classTypeId
@@ -96,24 +96,23 @@ SoGLTextureCoordinateElement::getClassStackIndex(void)
 */
 
 void
-SoGLTextureCoordinateElement::initClass(
-    void )
+SoGLTextureCoordinateElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource( SoGLTextureCoordinateElement )
+//$ BEGIN TEMPLATE InitElementSource(SoGLTextureCoordinateElement)
   assert(SoGLTextureCoordinateElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoGLTextureCoordinateElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoGLTextureCoordinateElement",
-    &SoGLTextureCoordinateElement::createInstance);
+  SoGLTextureCoordinateElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoGLTextureCoordinateElement",
+                       &SoGLTextureCoordinateElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoGLTextureCoordinateElement::classStackIndex =
-      createStackIndex( SoGLTextureCoordinateElement::classTypeId );
-  } else {
-    SoGLTextureCoordinateElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoGLTextureCoordinateElement::classTypeId);
+  }
+  else {
+    SoGLTextureCoordinateElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -124,23 +123,22 @@ SoGLTextureCoordinateElement::initClass(
 */
 
 void
-SoGLTextureCoordinateElement::cleanClass(
-    void )
+SoGLTextureCoordinateElement::cleanClass(void)
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoGLTextureCoordinateElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoGLTextureCoordinateElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoGLTextureCoordinateElement::createInstance( void )
+  \sa void * SoGLTextureCoordinateElement::createInstance(void)
 */
 
 SoGLTextureCoordinateElement::SoGLTextureCoordinateElement()
 {
-    setTypeId( SoGLTextureCoordinateElement::classTypeId );
-    setStackIndex( SoGLTextureCoordinateElement::classStackIndex );
+    setTypeId(SoGLTextureCoordinateElement::classTypeId);
+    setStackIndex(SoGLTextureCoordinateElement::classStackIndex);
 }
 
 /*!
@@ -237,10 +235,11 @@ SoGLTextureCoordinateElement::send(const int index) const
 
 void
 SoGLTextureCoordinateElement::send(const int index,
-				   const SbVec3f &c,
-				   const SbVec3f &n) const
+				   const SbVec3f & /* c */,
+				   const SbVec3f & /* n */) const
 {
-  if ((unsigned int)index >= this->numCoords) return;
+  if (index < 0) return;
+  if (index >= this->numCoords) return;
 
   // FIXME: handle texcoord functions
   assert(this->whatKind == EXPLICIT);

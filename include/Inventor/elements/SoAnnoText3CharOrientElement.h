@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_ANNO_TEXT3_CHAR_ORIENT_ELEMENT_H_
-#define _SO_ANNO_TEXT3_CHAR_ORIENT_ELEMENT_H_
+#ifndef __SOANNOTEXT3CHARORIENTELEMENT_H__
+#define __SOANNOTEXT3CHARORIENTELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOANNOTEXT3CHARORIENTELEMENT)
@@ -30,7 +30,7 @@
 class SoAnnoText3CharOrientElement : public SoInt32Element {
   typedef SoInt32Element inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoAnnoText3CharOrientElement )
+//$ BEGIN TEMPLATE ElementHeader(SoAnnoText3CharOrientElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -55,4 +55,4 @@ public:
 
 };
 
-#endif // ! _SO_ANNO_TEXT3_CHAR_ORIENT_ELEMENT_H_
+#endif // !__SOANNOTEXT3CHARORIENTELEMENT_H__

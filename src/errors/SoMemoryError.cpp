@@ -64,12 +64,12 @@ void * SoMemoryError::callbackData = NULL;
 */
 
 void
-SoMemoryError::initClass( void )
+SoMemoryError::initClass(void)
 {
   SoMemoryError::callback = SoError::defaultHandlerCB;
   SoMemoryError::callbackData = NULL;
   SoMemoryError::classTypeId =
-    SoType::createType( SoError::getClassTypeId(), "SoMemoryError" );
+    SoType::createType(SoError::getClassTypeId(), "SoMemoryError");
 }
 
 /*!
@@ -77,7 +77,7 @@ SoMemoryError::initClass( void )
 */
 
 void
-SoMemoryError::cleanClass( void )
+SoMemoryError::cleanClass(void)
 {
 }
 
@@ -86,7 +86,7 @@ SoMemoryError::cleanClass( void )
 */
 
 SoType
-SoMemoryError::getClassTypeId( void )
+SoMemoryError::getClassTypeId(void)
 {
   return SoMemoryError::classTypeId;
 }
@@ -96,7 +96,7 @@ SoMemoryError::getClassTypeId( void )
 */
 
 SoType
-SoMemoryError::getTypeId( void ) const
+SoMemoryError::getTypeId(void) const
 {
   return SoMemoryError::classTypeId;
 }
@@ -106,9 +106,8 @@ SoMemoryError::getTypeId( void ) const
 */
 
 void
-SoMemoryError::setHandlerCallback(
-  SoErrorCB * const function,
-  void * const data )
+SoMemoryError::setHandlerCallback(SoErrorCB * const function,
+				  void * const data)
 {
   SoMemoryError::callback = function;
   SoMemoryError::callbackData = data;
@@ -119,7 +118,7 @@ SoMemoryError::setHandlerCallback(
 */
 
 SoErrorCB *
-SoMemoryError::getHandlerCallback( void )
+SoMemoryError::getHandlerCallback(void)
 {
   return SoMemoryError::callback;
 }
@@ -129,7 +128,7 @@ SoMemoryError::getHandlerCallback( void )
 */
 
 void *
-SoMemoryError::getHandlerData( void )
+SoMemoryError::getHandlerData(void)
 {
   return SoMemoryError::callbackData;
 }
@@ -139,13 +138,12 @@ SoMemoryError::getHandlerData( void )
 */
 
 void
-SoMemoryError::post(
-  const char * const whatWasAllocated )
+SoMemoryError::post(const char * const whatWasAllocated)
 {
   char buffer[ 128 ]; // FIXME: possible overflow, 990610 larsa
-  sprintf( buffer, "ERROR allocating '%s'.", whatWasAllocated );
+  sprintf(buffer, "ERROR allocating '%s'.", whatWasAllocated);
   SoMemoryError error;
-  error.setDebugString( buffer );
+  error.setDebugString(buffer);
   error.handleError();
 }
 
@@ -153,9 +151,7 @@ SoMemoryError::post(
   FIXME: write doc.
 */
 
-SoErrorCB *
-SoMemoryError::getHandler(
-  void * & data ) const
+SoErrorCB * SoMemoryError::getHandler(void * & data) const
 {
   data = SoMemoryError::callbackData;
   return SoMemoryError::callback;

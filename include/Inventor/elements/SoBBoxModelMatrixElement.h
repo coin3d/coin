@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_BOUNDING_BOX_MODEL_MATRIX_ELEMENT_H_
-#define _SO_BOUNDING_BOX_MODEL_MATRIX_ELEMENT_H_
+#ifndef __SOBBOXMODELMATRIXELEMENT_H__
+#define __SOBBOXMODELMATRIXELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOBBOXMODELMATRIXELEMENT)
@@ -32,7 +32,7 @@ class SoLocalBBoxMatrixElement;
 class SoBBoxModelMatrixElement : public SoModelMatrixElement {
   typedef SoModelMatrixElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoBBoxModelMatrixElement )
+//$ BEGIN TEMPLATE ElementHeader(SoBBoxModelMatrixElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -56,12 +56,12 @@ public:
 
   static  void reset(SoState * const state, SoNode * const node);
   static  void pushMatrix(SoState * const state, SbMatrix & matrix,
-			  SbMatrix & localmatrix );
+			  SbMatrix & localmatrix);
   static  void popMatrix(SoState * const state, const SbMatrix & matrix,
 			 const SbMatrix & localmatrix);
 
 protected:
-  virtual void makeEltIdentity( void );
+  virtual void makeEltIdentity(void);
   virtual void setElt(const SbMatrix & matrix);
   virtual void multElt(const SbMatrix & matrix);
   virtual void translateEltBy(const SbVec3f & translation);
@@ -78,4 +78,4 @@ private:
   SoState *state;
 };
 
-#endif // ! _SO_BOUNDING_BOX_MODEL_MATRIX_ELEMENT_H_
+#endif // !__SOBBOXMODELMATRIXELEMENT_H__

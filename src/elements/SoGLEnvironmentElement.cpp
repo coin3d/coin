@@ -40,7 +40,7 @@
 #include <GL/gl.h>
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource( SoGLEnvironmentElement )
+//$ BEGIN TEMPLATE ElementSource(SoGLEnvironmentElement)
 
 /*!
   \var SoGLEnvironmentElement::classTypeId
@@ -96,21 +96,21 @@ SoGLEnvironmentElement::getClassStackIndex(void)
 void
 SoGLEnvironmentElement::initClass()
 {
-//$ BEGIN TEMPLATE InitElementSource( SoGLEnvironmentElement )
+//$ BEGIN TEMPLATE InitElementSource(SoGLEnvironmentElement)
   assert(SoGLEnvironmentElement::classTypeId == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoGLEnvironmentElement::classTypeId = SoType::createType(
-    inherited::getClassTypeId(),
-    "SoGLEnvironmentElement",
-    &SoGLEnvironmentElement::createInstance);
+  SoGLEnvironmentElement::classTypeId =
+    SoType::createType(inherited::getClassTypeId(),
+                       "SoGLEnvironmentElement",
+                       &SoGLEnvironmentElement::createInstance);
 
   if (inherited::classStackIndex < 0) {
     SoGLEnvironmentElement::classStackIndex =
-      createStackIndex( SoGLEnvironmentElement::classTypeId );
-  } else {
-    SoGLEnvironmentElement::classStackIndex =
-      inherited::classStackIndex;
+      createStackIndex(SoGLEnvironmentElement::classTypeId);
+  }
+  else {
+    SoGLEnvironmentElement::classStackIndex = inherited::classStackIndex;
   }
 //$ END TEMPLATE InitElementSource
 }
@@ -123,20 +123,20 @@ SoGLEnvironmentElement::initClass()
 void
 SoGLEnvironmentElement::cleanClass()
 {
-//$ BEGIN TEMPLATE CleanElementSource( SoGLEnvironmentElement )
+//$ BEGIN TEMPLATE CleanElementSource(SoGLEnvironmentElement)
 //$ END TEMPLATE CleanElementSource
 }
 
 /*!
   A constructor.  Can't be used directly.
 
-  \sa void * SoGLEnvironmentElement::createInstance( void )
+  \sa void * SoGLEnvironmentElement::createInstance(void)
 */
 
 SoGLEnvironmentElement::SoGLEnvironmentElement()
 {
-  setTypeId( SoGLEnvironmentElement::classTypeId );
-  setStackIndex( SoGLEnvironmentElement::classStackIndex );
+  setTypeId(SoGLEnvironmentElement::classTypeId);
+  setStackIndex(SoGLEnvironmentElement::classStackIndex);
 }
 
 /*!
@@ -169,7 +169,7 @@ SoGLEnvironmentElement::pop(SoState * state,
 //! FIXME: write doc.
 
 SbBool
-SoGLEnvironmentElement::matches(const SoElement * element) const
+SoGLEnvironmentElement::matches(const SoElement * /* element */) const
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;

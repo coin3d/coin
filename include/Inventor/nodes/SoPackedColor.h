@@ -32,7 +32,7 @@
 class SoPackedColor : public SoNode {
     typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoPackedColor )
+//$ BEGIN TEMPLATE NodeHeader(SoPackedColor)
 private:
   static SoType classTypeId;
 

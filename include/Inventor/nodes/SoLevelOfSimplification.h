@@ -33,7 +33,7 @@
 class SoLevelOfSimplification : public SoLOD {
   typedef SoLOD inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoLevelOfSimplification )
+//$ BEGIN TEMPLATE NodeHeader(SoLevelOfSimplification)
 private:
   static SoType classTypeId;
 

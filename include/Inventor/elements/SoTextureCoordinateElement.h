@@ -42,7 +42,7 @@ typedef const SbVec4f & SoTextureCoordinateFunctionCB(void * userdata,
 class SoTextureCoordinateElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoTextureCoordinateElement )
+//$ BEGIN TEMPLATE ElementHeader(SoTextureCoordinateElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -66,7 +66,7 @@ public:
     FUNCTION = 2
   };
 
-  virtual void init( SoState * state );
+  virtual void init(SoState * state);
 
   static void setDefault(SoState * const state, SoNode * const node);
   static void setFunction(SoState * const state, SoNode * const node,
@@ -74,7 +74,7 @@ public:
 			  void * const userdata);
 
   static void set2(SoState * const state, SoNode * const node,
-		   const int32_t numCoords, const SbVec2f * const coords );
+		   const int32_t numCoords, const SbVec2f * const coords);
   static void set4(SoState * const state, SoNode * const node,
 		   const int32_t numCoords, const SbVec4f * const coords);
 
@@ -91,8 +91,8 @@ public:
   int32_t getNum() const;
   SbBool is2D() const;
 
-  const SbVec2f &get2( const int index ) const;
-  const SbVec4f &get4( const int index ) const;
+  const SbVec2f &get2(const int index) const;
+  const SbVec4f &get4(const int index) const;
  
 protected:
   CoordType whatKind;
