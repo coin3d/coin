@@ -235,7 +235,7 @@ cc_glglue_glxversion_matches_at_least(const cc_glglue * w,
  * This doesn't really _fix_ anything, it is just meant as an aid to
  * smoke out platforms where we're getting unexpected enum values. */
 static void
-cc_glglue_sanity_check_enums(void)
+glglue_sanity_check_enums(void)
 {
   SbBool enumsok = TRUE;
 
@@ -367,6 +367,60 @@ glglue_resolve_dynamic(cc_glglue * w)
 #undef proc
 }
 
+/* Resolve requests for supported features. */
+static void
+glglue_init_feature_indicators(cc_glglue * w)
+{
+  w->has3DTextures = FALSE;
+  w->has3DProxyTextures = FALSE;
+
+  if (cc_glglue_glversion_matches_at_least(w,1,2,0)) {
+    w->has3DTextures = TRUE;
+    w->has3DProxyTextures = TRUE;
+  }
+  else if (cc_glglue_glversion_matches_at_least(w,1,1,0) &&
+           cc_glglue_glext_supported(w,"GL_EXT_texture3D")) {
+    w->has3DTextures = TRUE;
+    w->has3DProxyTextures = TRUE;
+  }
+
+
+  w->hasTextureEdgeClamp = FALSE;
+
+  if (cc_glglue_glversion_matches_at_least(w,1,2,0)) {
+    w->hasTextureEdgeClamp = TRUE;
+  }
+  else if (cc_glglue_glext_supported(w, "GL_SGIS_texture_edge_clamp")) {
+    w->hasTextureEdgeClamp = TRUE;
+  }
+  /* this test was for some reason disabled a while ago, which caused
+   * big problems for me.  _Never_ disable this test again, please!
+   * pederb, 2002-03-27 */
+  else if (cc_glglue_glext_supported(w, "GL_EXT_texture_edge_clamp")) {
+    w->hasTextureEdgeClamp = TRUE;
+  }
+
+
+  w->has2DProxyTextures = FALSE;
+
+  if (cc_glglue_glversion_matches_at_least(w,1,1,0)) {
+    w->has2DProxyTextures = TRUE;
+  }
+  else if (cc_glglue_glext_supported(w, "GL_EXT_texture")) {
+    w->has2DProxyTextures = TRUE;
+  }
+
+
+  w->hasMultitexture = FALSE;
+
+  if (cc_glglue_glversion_matches_at_least(w,1,3,0)) {
+    w->hasMultitexture = TRUE;
+  }
+  else if (cc_glglue_glext_supported(w, "GL_ARB_multitexture")) {
+    w->hasMultitexture = TRUE;
+  }
+}
+
 /* We're basically using the Singleton pattern to instantiate and
    return OpenGL-glue "object structs". We're constructing one
    instance for each OpenGL context, though.  */
@@ -431,14 +485,7 @@ cc_glglue_instance(int contextid)
     }
 
 
-    /* Initialize everything to zero. */
-
-    gi->has3DTextures = FALSE;
-    gi->has2DProxyTextures = FALSE;
-    gi->has3DProxyTextures = FALSE;
-    gi->hasTextureEdgeClamp = FALSE;
-    gi->hasMultitexture = FALSE;
-
+    /* Initialize function pointers to NULL pointers. */
     gi->glTexImage3D = NULL;
     gi->glCopyTexSubImage3D = NULL;
     gi->glTexSubImage3D = NULL;
@@ -448,52 +495,9 @@ cc_glglue_instance(int contextid)
     gi->glTexSubImage2D = NULL;
     gi->glActiveTexture = NULL;
     gi->glMultiTexCoord2f = NULL;
-
     gi->glXGetCurrentDisplay = NULL;
 
-    cc_glglue_sanity_check_enums();
-
-
-    /* Extension identificators and functions are resolved separately
-     * because of better readability in case of static binding.
-     *
-     * Resolve requests for supported features. */
-    if (cc_glglue_glversion_matches_at_least(gi,1,2,0)) {
-      gi->has3DTextures = TRUE;
-      gi->has3DProxyTextures = TRUE;
-    }
-    else if (cc_glglue_glversion_matches_at_least(gi,1,1,0) &&
-             cc_glglue_glext_supported(gi,"GL_EXT_texture3D")) {
-      gi->has3DTextures = TRUE;
-      gi->has3DProxyTextures = TRUE;
-    }
-
-    if (cc_glglue_glversion_matches_at_least(gi,1,2,0)) {
-      gi->hasTextureEdgeClamp = TRUE;
-    }
-    else if (cc_glglue_glext_supported(gi, "GL_SGIS_texture_edge_clamp")) {
-      gi->hasTextureEdgeClamp = TRUE;
-    }
-    /* this test was for some reason disabled a while ago, which
-     * caused big problems for me.  _Never_ disable this test again,
-     * please! pederb, 2002-03-27 */
-    else if (cc_glglue_glext_supported(gi, "GL_EXT_texture_edge_clamp")) {
-      gi->hasTextureEdgeClamp = TRUE;
-    }
-
-    if (cc_glglue_glversion_matches_at_least(gi,1,1,0)) {
-      gi->has2DProxyTextures = TRUE;
-    }
-    else if (cc_glglue_glext_supported(gi, "GL_EXT_texture")) {
-      gi->has2DProxyTextures = TRUE;
-    }
-
-    if (cc_glglue_glversion_matches_at_least(gi,1,3,0)) {
-      gi->hasMultitexture = TRUE;
-    }
-    else if (cc_glglue_glext_supported(gi, "GL_ARB_multitexture")) {
-      gi->hasMultitexture = TRUE;
-    }
+    glglue_sanity_check_enums();
 
     /* Resolve our functions */
 #ifdef COIN_OPENGL_DYNAMIC_BINDING
@@ -573,6 +577,9 @@ cc_glglue_instance(int contextid)
   else {
     gi = (cc_glglue *)ptr;
   }
+
+  /* Set up all the "has-this-and-that" feature flags. */
+  glglue_init_feature_indicators(gi);
 
   CC_SYNC_END(cc_glglue_instance);
   return gi;
