@@ -19,34 +19,38 @@
 
 /*!
   \class SoShuttle SoShuttle.h Inventor/nodes/SoShuttle.h
-  \brief The SoShuttle class ...
+  \brief The SoShuttle class is used to oscillate between two translations.
   \ingroup nodes
+  
+  A smooth transition between translation0 and translation1 is created using
+  a cosine function. In the beginning of the cycle, translation0 is 
+  used. Halfway through the cycle, the resulting translation equals
+  translation1, and at the end of the cycle, we're at translation0 again.
 
-  FIXME: write class doc
 */
 
 #include <Inventor/nodes/SoShuttle.h>
-
+#include <Inventor/engines/SoCalculator.h>
+#include <Inventor/engines/SoElapsedTime.h>
+#include <Inventor/engines/SoInterpolateVec3f.h>
 
 
 /*!
   \var SoSFVec3f SoShuttle::translation0
-  FIXME: write documentation for field
+  The first translation.
 */
 /*!
   \var SoSFVec3f SoShuttle::translation1
-  FIXME: write documentation for field
+  The second translation.
 */
 /*!
   \var SoSFFloat SoShuttle::speed
-  FIXME: write documentation for field
+  Number of cycles per second.
 */
 /*!
   \var SoSFBool SoShuttle::on
-  FIXME: write documentation for field
+  Toggles animation on or off.  
 */
-
-// *************************************************************************
 
 SO_NODE_SOURCE(SoShuttle);
 
@@ -61,6 +65,22 @@ SoShuttle::SoShuttle()
   SO_NODE_ADD_FIELD(translation1, (SbVec3f(0.0f, 0.0f, 0.0f)));
   SO_NODE_ADD_FIELD(speed, (1.0f));
   SO_NODE_ADD_FIELD(on, (TRUE));
+
+  this->interpolator = new SoInterpolateVec3f;
+  this->interpolator->ref();
+  this->calculator = new SoCalculator;
+  this->calculator->ref();
+  this->timer = new SoElapsedTime;
+  this->timer->ref();
+  
+  this->calculator->expression = "oa = (1.0 - cos(fmod(a*b*M_PI*2, M_PI*2))) * 0.5";
+  this->calculator->a.connectFrom(&this->timer->timeOut);
+  this->timer->on.connectFrom(&this->on);
+  this->calculator->b.connectFrom(&this->speed);
+  this->interpolator->input0.connectFrom(&this->translation0);
+  this->interpolator->input1.connectFrom(&this->translation1);
+  this->interpolator->alpha.connectFrom(&this->calculator->oa);
+  this->translation.connectFrom(&this->interpolator->output);
 }
 
 /*!
@@ -68,13 +88,12 @@ SoShuttle::SoShuttle()
 */
 SoShuttle::~SoShuttle()
 {
+  this->interpolator->unref();
+  this->calculator->unref();
+  this->timer->unref();
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoShuttle class. This includes setting up the
-  type system, among other things.
-*/
+// doc in parent
 void
 SoShuttle::initClass(void)
 {

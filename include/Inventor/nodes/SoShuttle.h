@@ -26,6 +26,9 @@
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFBool.h>
 
+class SoElapsedTime;
+class SoCalculator;
+class SoInterpolateVec3f;
 
 class SoShuttle : public SoTranslation {
   typedef SoTranslation inherited;
@@ -43,6 +46,11 @@ public:
 
 protected:
   virtual ~SoShuttle();
+
+private:
+  SoInterpolateVec3f *interpolator;
+  SoCalculator *calculator;
+  SoElapsedTime *timer;
 };
 
 #endif // !COIN_SOSHUTTLE_H
