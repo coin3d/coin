@@ -625,7 +625,8 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx)
       WGL_BIND_TO_TEXTURE_RGBA_ARB, 1,
       WGL_COLOR_BITS_ARB, 32,
       WGL_ALPHA_BITS_ARB, 8,
-      WGL_DEPTH_BITS_ARB, 24
+      WGL_DEPTH_BITS_ARB, 24,
+      0, 0
     };
 
     /* choose pixel format */
@@ -636,10 +637,10 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx)
       return FALSE;
     }
 
-    int pbufferflags[]={ 
+    const int pbufferflags[] = {
       WGL_TEXTURE_FORMAT_ARB, WGL_TEXTURE_RGBA_ARB,
       WGL_TEXTURE_TARGET_ARB, WGL_TEXTURE_2D_ARB,
-      0};
+      0, 0 };
         
     /* create the pbuffer */
     context->hpbuffer = wglglue_wglCreatePbuffer(context->memorydc, 
