@@ -116,6 +116,8 @@ SoChildList::insert(SoNode * const node, const int addbefore)
   node->addAuditor(this->parent, SoNotRec::PARENT);
   SoNodeList::insert(node, addbefore);
 
+  // FIXME: shouldn't we move this startNotify() call to the end of
+  // the function?  pederb, 2002-10-02
   this->parent->startNotify();
   for (int i=0; i < this->auditors.getLength(); i++)
     this->auditors[i]->insertIndex(this->parent, addbefore);
@@ -132,11 +134,16 @@ SoChildList::remove(const int index)
 {
   assert(index >= 0 && index < this->getLength());
   SoNodeList::operator[](index)->removeAuditor(this->parent, SoNotRec::PARENT);
-  SoNodeList::remove(index);
 
-  this->parent->startNotify();
+  // FIXME: we experienced memory corruption if the
+  // SoNodeList::remove(index) statement was placed here (before
+  // updating paths). It seems to be working ok now, but we should
+  // figure out exactly why we can't remove the node before updating
+  // the paths.  pederb, 2002-10-02
   for (int i=0; i < this->auditors.getLength(); i++)
     this->auditors[i]->removeIndex(this->parent, index);
+  SoNodeList::remove(index);
+  this->parent->startNotify();
 }
 
 // Documented in superclass. Overridden to handle notification.
@@ -152,6 +159,8 @@ SoChildList::truncate(const int length)
 
     SoNodeList::truncate(length);
 
+    // FIXME: shouldn't we move this startNotify() call to the end of
+    // the function?  pederb, 2002-10-02
     this->parent->startNotify();
     for (int k=0; k < this->auditors.getLength(); k++) {
       for (int j=length; j < n; j++) {
@@ -178,6 +187,10 @@ SoChildList::copy(const SoChildList & cl)
   // Note: we are not copying the path auditor list. This is the
   // correct behavior, so don't try to "fix" it.
 
+  // FIXME: actually I think we _should_ copy the auditor list, but it
+  // seems like this method is never used. We should copy it in case
+  // it is used in the future though. pederb, 2002-10-02
+
   this->parent->startNotify();
 }
 
@@ -201,6 +214,8 @@ SoChildList::set(const int index, SoNode * const node)
   SoBaseList::set(index, (SoBase *)node);
   node->addAuditor(this->parent, SoNotRec::PARENT);
 
+  // FIXME: shouldn't we move this startNotify() call to the end of
+  // the function?  pederb, 2002-10-02
   this->parent->startNotify();
   for (int i=0; i < this->auditors.getLength(); i++)
     this->auditors[i]->replaceIndex(this->parent, index, node);
