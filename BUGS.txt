@@ -3811,3 +3811,33 @@ main(int argc, char* argv[])
     20040902 mortene.
 
 =====================================================================
+
+138 SoExtSelection selection also catches the marker lines'
+    SoIndexedLineSet?
+
+    Something peculiar happens with the
+    SoGuiExamples/nodes/extselection example, visible when adding
+    debug output to SoExtSelection::doSelect():
+
+----8<----- [snip] --------------------8<----- [snip] ----------------
+#if COIN_DEBUG && 1 // debug
+  SoDebugError::postInfo("SoExtSelectionP::doSelect",
+                         "selected path with %s at tail",
+                         newpath->getTail()->getTypeId().getName().getString());
+#endif // debug
+----8<----- [snip] --------------------8<----- [snip] ----------------
+
+    ..added right after the if(newpath==NULL) check.
+
+    Make this change to SoExtSelection, re-build, fire up the
+    extselection example with a scene graph with just a simple
+    primitive, e.g. an SoSphere, switch to "FULL mode" (hit 'f'), then
+    select any part of the scene. doSelect() will then report that an
+    SoIndexedLineSet is selected, which is strange.
+
+    Should investigate, to find out what is really going on here, and
+    whether or not this is a bug.
+
+    20040903 mortene.
+
+=====================================================================
