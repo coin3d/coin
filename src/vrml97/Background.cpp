@@ -248,6 +248,7 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/SbRotation.h>
+#include <assert.h>
 
 #define PRIVATE(p) (p->pimpl)
 #define PUBLIC(p) (p->master)
@@ -276,6 +277,7 @@ public:
   SoVRMLBackground * master;
 
   SoSeparator * rootnode;
+  SoPerspectiveCamera * camera;
   SoChildList * children;
 
   SoFieldSensor * setbindsensor;
@@ -405,8 +407,8 @@ SoVRMLBackground::SoVRMLBackground(void)
   PRIVATE(this)->bottomurlsensor->setPriority(5);
   PRIVATE(this)->topurlsensor->setPriority(5);
 
-  PRIVATE(this)->geometrybuilt = FALSE;
-
+  PRIVATE(this)->geometrybuilt = FALSE;  
+  PRIVATE(this)->camera = NULL;
 }
 
 /*!
@@ -414,12 +416,10 @@ SoVRMLBackground::SoVRMLBackground(void)
 */
 SoVRMLBackground::~SoVRMLBackground()
 {
-  
   if (PRIVATE(this)->geometrybuilt) {
     PRIVATE(this)->rootnode->removeAllChildren();
     PRIVATE(this)->rootnode->unref();
   }
-
   delete PRIVATE(this)->backurlsensor;
   delete PRIVATE(this)->fronturlsensor;
   delete PRIVATE(this)->lefturlsensor;
@@ -447,7 +447,13 @@ SoVRMLBackground::GLRender(SoGLRenderAction * action)
 
   // push state since we're going to modify the model matrix
   state->push();
-  
+
+  const SbMatrix & tmp =
+    SoViewingMatrixElement::get(state);
+  assert(PRIVATE(this)->camera);
+  // rotate background camera so that it matches the current camera
+  PRIVATE(this)->camera->orientation = SbRotation(tmp.inverse());
+
   // set to identity before rendering subgraph
   SoModelMatrixElement::makeIdentity(state, this);  
 
@@ -485,6 +491,8 @@ SoVRMLBackgroundP::buildGeometry()
   // rendering the background
   SoPerspectiveCamera * cam = new SoPerspectiveCamera;
   this->rootnode->addChild(cam);
+  // just set camera pointer for easy lookup in GLRender()
+  this->camera = cam;
 
   SoLightModel * lightmodel = new SoLightModel;
   lightmodel->model.setValue(SoLightModel::BASE_COLOR);
@@ -748,7 +756,6 @@ SoVRMLBackgroundP::buildGeometry()
   angles.truncate(0);
  
   this->geometrybuilt = TRUE;
- 
 }
 
 
@@ -872,7 +879,6 @@ background_vrmltexturechangeCB(void * data, SoSensor * sensor)
   if (!pimpl->geometrybuilt)
     pimpl->buildGeometry();
 
-
   SoVRMLImageTexture * tex = new SoVRMLImageTexture;
   tex->ref();
   tex->repeatS.setValue(FALSE);
@@ -925,7 +931,6 @@ background_geometrychangeCB(void * data, SoSensor * sensor)
   pimpl->rootnode->removeAllChildren(); // Remove everything incase this was called earlier
   pimpl->rootnode->unref();
   pimpl->buildGeometry();
-
 }
 
 void
