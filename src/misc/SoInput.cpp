@@ -1395,6 +1395,9 @@ test_filename(const SbString & filename)
 
   If no file matching \a basename could be found in any of the
   directories, returns an empty string.  
+
+  This method is a Coin extension, not part of the original Inventor
+  API.
 */
 SbString 
 SoInput::searchForFile(const SbString & basename,
