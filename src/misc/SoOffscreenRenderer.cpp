@@ -412,6 +412,7 @@ static void getMaxCB(void *ptr, SoAction *action)
   GLint *size = (GLint *) ptr; 
   glGetIntegerv(GL_MAX_VIEWPORT_DIMS, size);
 
+  
   const char * vendor = (const char *)glGetString(GL_VENDOR);
   if (strcmp(vendor, "NVIDIA Corporation") == 0) {
 
@@ -422,7 +423,7 @@ static void getMaxCB(void *ptr, SoAction *action)
     // by desktop resolution, not the texturesize returned by
     // OpenGL. This is fixed temporarily by limiting max size to the
     // lowend resolution for desktop monitors. (20021023 handegar)
-
+    
     size[0] = 800;
     size[1] = 600;
     
@@ -689,7 +690,7 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
                          "[%d, %d, %d, %d]",
                          colbits[0], colbits[1], colbits[2], colbits[3]);
 #endif // debug
-
+  
   glEnable(GL_DEPTH_TEST);
   glClearColor(this->backgroundcolor[0],
                this->backgroundcolor[1],
@@ -721,15 +722,15 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
                                   "could not set up a current OpenGL context.");
         return FALSE;
       }
-    
+   
       this->renderaction->addPreRenderCallback(pre_render_cb, NULL);
 
-      if (base->isOfType(SoNode::getClassTypeId()))
+      if(base->isOfType(SoNode::getClassTypeId()))
         this->renderaction->apply((SoNode *)base);
       else if (base->isOfType(SoPath::getClassTypeId()))
         this->renderaction->apply((SoPath *)base);
       else assert(FALSE && "impossible");
-
+      
       this->internaldata->postRender();
       this->convertSubscreenBuffer();
       this->pasteSubscreen(this->currentsubscreen);
@@ -1649,14 +1650,14 @@ SoOffscreenRendererP::pasteSubscreen(int renderpass)
   }
 
   int lines = this->maxres[1];
+  
   if(subscreenposy == 0){
     if(this->lastsubscreensize[1] != 0){
       lines = this->lastsubscreensize[1];
       offset = (this->requestedsize[0]*(this->requestedsize[1] - lines) + subscreenposx*maxres[0])*depth;
-      suboffset = (this->maxres[1] - this->lastsubscreensize[1])*this->maxres[0]*depth;
     }
   }
-
+   
   // Do the pasting
   for(int j=0;j<lines;++j){ 
     memcpy((unsigned char *) this->buffer+offset,(unsigned char *) this->subscreen + suboffset, linelen);        
