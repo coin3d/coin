@@ -2233,7 +2233,6 @@ SoInput_FileInfo::readHeader(SoInput * soinput)
   else {
     if (this->header == SbString("#VRML V1.0 ascii")) {
       this->vrml1file = TRUE;
-      fprintf(stderr,"setting vrml1...\n");
     }
     if (this->prefunc) this->prefunc(this->userdata, soinput);
   }
