@@ -29,19 +29,15 @@
   FIXME: write doc.
 */
 
-#include <Inventor/elements/SoGLLightIdElement.h>
-
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif
+#include <assert.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
+#include <Inventor/elements/SoGLLightIdElement.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/system/gl.h>
-
-#include <assert.h>
 
 int SoGLLightIdElement::maxGLSources = -1;
 
@@ -122,7 +118,25 @@ SoGLLightIdElement::increment(SoState * const state,
     if (element->data >= SoGLLightIdElement::getMaxGLSources()) {
       element->data--;
 #if COIN_DEBUG
-      SoDebugError::postWarning("SoGLLightIdElement::increment", "no GL light available");
+      static SbBool warn = TRUE;
+
+      if (warn) { // warn only once
+        warn = FALSE;
+        SoDebugError::postWarning("SoGLLightIdElement::increment",
+                                  "Number of concurrent light sources in "
+                                  "scene exceeds %d, which is the maximum "
+                                  "number of concurrent light sources "
+                                  "supported by this OpenGL implementation. "
+                                  "Some light sources will be ignored.\n\n"
+                                  
+                                  "(Note to application "
+                                  "programmers: this error is often caused by "
+                                  "a missing SoState::pop() call in extension "
+                                  "shape nodes -- audit your GLRender() "
+                                  "method(s)).",
+
+                                  SoGLLightIdElement::getMaxGLSources());
+      }
 #endif
       return -1;
     }
@@ -135,9 +149,8 @@ SoGLLightIdElement::increment(SoState * const state,
 
 //! FIXME: write doc.
 
-//$ EXPORT INLINE
 int32_t
-SoGLLightIdElement::getMaxGLSources()
+SoGLLightIdElement::getMaxGLSources(void)
 {
   // FIXME: should also make a likewise method available as part of
   // the So*GLWidget classes. 20020802 mortene.
@@ -145,10 +158,13 @@ SoGLLightIdElement::getMaxGLSources()
   // FIXME: consider context. pederb, 20001012
   if (SoGLLightIdElement::maxGLSources == -1) {
     // NB: don't try to be clever and move this code to the
-    // initClass() method, as it won't work -- the GL variables may
-    // not have been initialized yet when it's called. --mortene
+    // initClass() method, as it won't work -- there will be no
+    // current GL context.
     GLint val;
     glGetIntegerv(GL_MAX_LIGHTS, &val);
+    assert(glGetError() == GL_NO_ERROR &&
+           "GL error when calling glGetInteger() -- no current GL context?");
+
     SoGLLightIdElement::maxGLSources = (int32_t)val;
   }
 
@@ -157,7 +173,6 @@ SoGLLightIdElement::getMaxGLSources()
 
 //! FIXME: write doc.
 
-//$ EXPORT INLINE
 int32_t
 SoGLLightIdElement::increment(SoState * const state)
 {
@@ -166,7 +181,6 @@ SoGLLightIdElement::increment(SoState * const state)
 
 //! FIXME: write doc.
 
-//$ EXPORT INLINE
 int32_t
 SoGLLightIdElement::get(SoState * const state)
 {
@@ -175,7 +189,6 @@ SoGLLightIdElement::get(SoState * const state)
 
 //! FIXME: write doc.
 
-//$ EXPORT INLINE
 int32_t
 SoGLLightIdElement::getDefault()
 {
