@@ -208,12 +208,12 @@ SoInput_MemBufferReader::readBuffer(char * buf, const size_t readlen)
 
 SoInput_GZMemBufferReader::SoInput_GZMemBufferReader(void * bufPointer, size_t bufSize)
 {
-  this->gzmfile = gzm_open((uint8_t *)bufPointer, bufSize);
+  this->gzmfile = cc_gzm_open((uint8_t *)bufPointer, bufSize);
 }
 
 SoInput_GZMemBufferReader::~SoInput_GZMemBufferReader()
 {
-  gzm_close(this->gzmfile);
+  cc_gzm_close(this->gzmfile);
 }
 
 SoInput_Reader::ReaderType
@@ -225,7 +225,7 @@ SoInput_GZMemBufferReader::getType(void) const
 int
 SoInput_GZMemBufferReader::readBuffer(char * buf, const size_t readlen)
 {
-  return gzm_read(this->gzmfile, buf, readlen);
+  return cc_gzm_read(this->gzmfile, buf, readlen);
 }
 
 //

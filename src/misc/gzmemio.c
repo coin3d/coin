@@ -59,7 +59,7 @@ typedef struct {
   unsigned char * buf;
   unsigned int buflen;
   unsigned int currpos;
-} gzm_file;
+} cc_gzm_file;
 
 typedef struct {
   z_stream stream;
@@ -75,33 +75,33 @@ typedef struct {
   int32_t startpos; /* start of compressed data in file (header skipped) */
 
   /* memory file */
-  gzm_file * memfile;
-} gzm_stream;
+  cc_gzm_file * memfile;
+} cc_gzm_stream;
 
-static int do_flush(gzm_stream * s, int flush);
-static int get_byte(gzm_stream * s);
-static void check_header(gzm_stream * s);
-static int destroy(gzm_stream * s);
-static void putInt32(gzm_file * file, uint32_t x);
-static uint32_t getInt32(gzm_stream * s);
+static int do_flush(cc_gzm_stream * s, int flush);
+static int get_byte(cc_gzm_stream * s);
+static void check_header(cc_gzm_stream * s);
+static int destroy(cc_gzm_stream * s);
+static void putInt32(cc_gzm_file * file, uint32_t x);
+static uint32_t getInt32(cc_gzm_stream * s);
 
-static int gzm_fseek(gzm_file * file, long offset, int whence);
-static int gzm_ftell(gzm_file * file);
-static size_t gzm_fread(void * ptr, size_t size, size_t nmemb, gzm_file * file);
-static int gzm_ferror(gzm_file * file);
+static int cc_gzm_fseek(cc_gzm_file * file, long offset, int whence);
+static int cc_gzm_ftell(cc_gzm_file * file);
+static size_t cc_gzm_fread(void * ptr, size_t size, size_t nmemb, cc_gzm_file * file);
+static int cc_gzm_ferror(cc_gzm_file * file);
 
 /* ===========================================================================
      Opens a gzip (.gz) mem buffer for reading or writing.
 */
 
-void * gzm_open(const uint8_t * buffer, uint32_t len)
+void * cc_gzm_open(const uint8_t * buffer, uint32_t len)
 {
   int err;
   int level = Z_DEFAULT_COMPRESSION; /* compression level */
   int strategy = Z_DEFAULT_STRATEGY; /* compression strategy */
-  gzm_stream * s;
+  cc_gzm_stream * s;
 
-  s = (gzm_stream *) Z_ALLOC(sizeof(gzm_stream));
+  s = (cc_gzm_stream *) Z_ALLOC(sizeof(cc_gzm_stream));
   if (!s) return NULL;
 
   s->stream.zalloc = (alloc_func)0;
@@ -135,7 +135,7 @@ void * gzm_open(const uint8_t * buffer, uint32_t len)
     }
   }
   else {
-    s->memfile = (gzm_file*) Z_ALLOC(sizeof(gzm_file));
+    s->memfile = (cc_gzm_file*) Z_ALLOC(sizeof(cc_gzm_file));
     s->memfile->buf = (uint8_t*) buffer;
     s->memfile->buflen = len;
     s->memfile->currpos = 0;
@@ -172,26 +172,26 @@ void * gzm_open(const uint8_t * buffer, uint32_t len)
   }
   else {
     check_header(s); /* skip the .gz header */
-    s->startpos = (gzm_ftell(s->memfile) - s->stream.avail_in);
+    s->startpos = (cc_gzm_ftell(s->memfile) - s->stream.avail_in);
   }
   return (void*) s;
 }
 
 /* ===========================================================================
-     Read a byte from a gzm_stream; update next_in and avail_in. Return EOF
+     Read a byte from a cc_gzm_stream; update next_in and avail_in. Return EOF
    for end of file.
    IN assertion: the stream s has been sucessfully opened for reading.
 */
 static int
-get_byte(gzm_stream * s)
+get_byte(cc_gzm_stream * s)
 {
   if (s->z_eof) return EOF;
   if (s->stream.avail_in == 0) {
     /* errno = 0; */
-    s->stream.avail_in = gzm_fread(s->inbuf, 1, Z_BUFSIZE, s->memfile);
+    s->stream.avail_in = cc_gzm_fread(s->inbuf, 1, Z_BUFSIZE, s->memfile);
     if (s->stream.avail_in == 0) {
       s->z_eof = 1;
-      if (gzm_ferror(s->memfile)) s->z_err = Z_ERRNO;
+      if (cc_gzm_ferror(s->memfile)) s->z_err = Z_ERRNO;
       return EOF;
     }
     s->stream.next_in = s->inbuf;
@@ -201,7 +201,7 @@ get_byte(gzm_stream * s)
 }
 
 /* ===========================================================================
-      Check the gzip header of a gzm_stream opened for reading. Set the stream
+      Check the gzip header of a cc_gzm_stream opened for reading. Set the stream
     mode to transparent if the gzip magic header is not present; set s->err
     to Z_DATA_ERROR if the magic header is present but the rest of the header
     is incorrect.
@@ -210,7 +210,7 @@ get_byte(gzm_stream * s)
        for concatenated .gz files.
 */
 static void
-check_header(gzm_stream * s)
+check_header(cc_gzm_stream * s)
 {
   int method; /* method byte */
   int flags;  /* flags byte */
@@ -259,10 +259,10 @@ check_header(gzm_stream * s)
 }
 
  /* ===========================================================================
- * Cleanup then free the given gzm_stream. Return a zlib error code.
+ * Cleanup then free the given cc_gzm_stream. Return a zlib error code.
    Try freeing in the reverse order of allocations.
  */
-static int destroy (gzm_stream * s)
+static int destroy (cc_gzm_stream * s)
 {
   int err = Z_OK;
 
@@ -298,9 +298,9 @@ static int destroy (gzm_stream * s)
    gzread returns the number of bytes actually read (0 for end of file).
 */
 int
-gzm_read (void * file, void * buf, uint32_t len)
+cc_gzm_read (void * file, void * buf, uint32_t len)
 {
-  gzm_stream *s = (gzm_stream*)file;
+  cc_gzm_stream *s = (cc_gzm_stream*)file;
   uint8_t *start = (uint8_t*)buf; /* starting point for crc computation */
   uint8_t * next_out; /* == stream.next_out but not forced far (for MSDOS) */
 
@@ -327,7 +327,7 @@ gzm_read (void * file, void * buf, uint32_t len)
         s->stream.avail_in  -= n;
       }
       if (s->stream.avail_out > 0) {
-        s->stream.avail_out -= gzm_fread(next_out, 1, s->stream.avail_out,
+        s->stream.avail_out -= cc_gzm_fread(next_out, 1, s->stream.avail_out,
                                          s->memfile);
       }
       len -= s->stream.avail_out;
@@ -339,10 +339,10 @@ gzm_read (void * file, void * buf, uint32_t len)
     if (s->stream.avail_in == 0 && !s->z_eof) {
 
       /* errno = 0; */
-      s->stream.avail_in = gzm_fread(s->inbuf, 1, Z_BUFSIZE, s->memfile);
+      s->stream.avail_in = cc_gzm_fread(s->inbuf, 1, Z_BUFSIZE, s->memfile);
       if (s->stream.avail_in == 0) {
         s->z_eof = 1;
-        if (gzm_ferror(s->memfile)) {
+        if (cc_gzm_ferror(s->memfile)) {
           s->z_err = Z_ERRNO;
           break;
         }
@@ -388,11 +388,11 @@ gzm_read (void * file, void * buf, uint32_t len)
    or -1 in case of end of file or error.
 */
 int
-gzm_getc(void * file)
+cc_gzm_getc(void * file)
 {
   unsigned char c;
 
-  return gzm_read(file, &c, 1) == 1 ? c : -1;
+  return cc_gzm_read(file, &c, 1) == 1 ? c : -1;
 }
 
 /* ===========================================================================
@@ -405,12 +405,12 @@ gzm_getc(void * file)
    The current implementation is not optimized at all.
 */
 char *
-gzm_gets(void * file, char * buf, int len)
+cc_gzm_gets(void * file, char * buf, int len)
 {
   char * b = buf;
   if (buf == NULL || len <= 0) return NULL;
 
-  while (--len > 0 && gzm_read(file, buf, 1) == 1 && *buf++ != '\n') ;
+  while (--len > 0 && cc_gzm_read(file, buf, 1) == 1 && *buf++ != '\n') ;
   *buf = '\0';
   return b == buf && len > 0 ? NULL : b;
 }
@@ -422,9 +422,9 @@ gzm_gets(void * file, char * buf, int len)
  * Update the compression level and strategy
  */
 int
-gzm_setparams(void * file, int level, int strategy)
+cc_gzm_setparams(void * file, int level, int strategy)
 {
-  gzm_stream *s = (gzm_stream*)file;
+  cc_gzm_stream *s = (cc_gzm_stream*)file;
 
   if (s == NULL || s->mode != 'w') return Z_STREAM_ERROR;
 
@@ -444,9 +444,9 @@ gzm_setparams(void * file, int level, int strategy)
    gzwrite returns the number of bytes actually written (0 in case of error).
 */
 int
-gzm_write(void * file, void * buf, unsigned int len)
+cc_gzm_write(void * file, void * buf, unsigned int len)
 {
-  gzm_stream *s = (gzm_stream*)file;
+  cc_gzm_stream *s = (cc_gzm_stream*)file;
 
   if (s == NULL || s->mode != 'w') return Z_STREAM_ERROR;
 
@@ -477,10 +477,10 @@ gzm_write(void * file, void * buf, unsigned int len)
    gzputc returns the value that was written, or -1 in case of error.
 */
 int
-gzm_putc(void * file, int c)
+cc_gzm_putc(void * file, int c)
 {
   unsigned char cc = (unsigned char) c; /* required for big endian systems */
-  return gzm_write(file, &cc, 1) == 1 ? (int)cc : -1;
+  return cc_gzm_write(file, &cc, 1) == 1 ? (int)cc : -1;
 }
 
 /* ===========================================================================
@@ -489,7 +489,7 @@ gzm_putc(void * file, int c)
       gzputs returns the number of characters written, or -1 in case of error.
 */
 int
-gzm_puts(void * file, const char * s)
+cc_gzm_puts(void * file, const char * s)
 {
   return gzwrite(file, (char*)s, (unsigned)strlen(s));
 }
@@ -503,7 +503,7 @@ static int do_flush (void * file, int flush)
 {
   uint32_t len;
   int done = 0;
-  gzm_stream *s = (gzm_stream*)file;
+  cc_gzm_stream *s = (cc_gzm_stream*)file;
 
   if (s == NULL || s->mode != 'w') return Z_STREAM_ERROR;
 
@@ -536,9 +536,9 @@ static int do_flush (void * file, int flush)
   return  s->z_err == Z_STREAM_END ? Z_OK : s->z_err;
 }
 
-int gzm_flush (void * file, int flush)
+int cc_gzm_flush (void * file, int flush)
 {
-  gzm_stream *s = (gzm_stream*)file;
+  cc_gzm_stream *s = (cc_gzm_stream*)file;
   int err = do_flush (file, flush);
 
   if (err) return err;
@@ -556,9 +556,9 @@ int gzm_flush (void * file, int flush)
    version of the library, gzseek can be extremely slow.
 */
 off_t
-gzm_seek(void * file, off_t offset, int whence)
+cc_gzm_seek(void * file, off_t offset, int whence)
 {
-  gzm_stream *s = (gzm_stream*)file;
+  cc_gzm_stream *s = (cc_gzm_stream*)file;
 
   if (s == NULL || whence == SEEK_END ||
       s->z_err == Z_ERRNO || s->z_err == Z_DATA_ERROR) {
@@ -603,7 +603,7 @@ gzm_seek(void * file, off_t offset, int whence)
     /* map to fseek */
     s->stream.avail_in = 0;
     s->stream.next_in = s->inbuf;
-    if (gzm_fseek(s->memfile, offset, SEEK_SET) < 0) return -1L;
+    if (cc_gzm_fseek(s->memfile, offset, SEEK_SET) < 0) return -1L;
 
     s->stream.total_in = s->stream.total_out = (uint32_t)offset;
     return offset;
@@ -634,9 +634,9 @@ gzm_seek(void * file, off_t offset, int whence)
 /* ===========================================================================
      Rewinds input file.
 */
-int gzm_rewind(void * file)
+int cc_gzm_rewind(void * file)
 {
-  gzm_stream *s = (gzm_stream*)file;
+  cc_gzm_stream *s = (cc_gzm_stream*)file;
 
   if (s == NULL || s->mode != 'r') return -1;
 
@@ -652,7 +652,7 @@ int gzm_rewind(void * file)
   }
 
   (void) inflateReset(&s->stream);
-  return gzm_fseek(s->memfile, s->startpos, SEEK_SET);
+  return cc_gzm_fseek(s->memfile, s->startpos, SEEK_SET);
 }
 
 /* ===========================================================================
@@ -660,18 +660,18 @@ int gzm_rewind(void * file)
    given compressed file. This position represents a number of bytes in the
    uncompressed data stream.
 */
-off_t gzm_tell(void * file)
+off_t cc_gzm_tell(void * file)
 {
-  return gzm_seek(file, 0L, SEEK_CUR);
+  return cc_gzm_seek(file, 0L, SEEK_CUR);
 }
 
 /* ===========================================================================
    Returns 1 when EOF has previously been detected reading the given
    input stream, otherwise zero.
 */
-int gzm_eof(void * file)
+int cc_gzm_eof(void * file)
 {
-  gzm_stream *s = (gzm_stream*)file;
+  cc_gzm_stream *s = (cc_gzm_stream*)file;
 
   return (s == NULL || s->mode != 'r') ? 0 : s->z_eof;
 }
@@ -681,22 +681,22 @@ int gzm_eof(void * file)
    Outputs a int32_t in LSB order to the given file
 */
 static void
-putInt32(gzm_file * file, uint32_t x)
+putInt32(cc_gzm_file * file, uint32_t x)
 {
   int n;
   for (n = 0; n < 4; n++) {
-    gzm_fputc((int)(x & 0xff), file);
+    cc_gzm_fputc((int)(x & 0xff), file);
     x >>= 8;
   }
 }
 #endif /* Z_NO_DEFLATE */
 
 /* ===========================================================================
-   Reads a int32_t in LSB order from the given gzm_stream. Sets z_err in case
+   Reads a int32_t in LSB order from the given cc_gzm_stream. Sets z_err in case
    of error.
 */
 static uint32_t
-getInt32(gzm_stream * s)
+getInt32(cc_gzm_stream * s)
 {
   uint32_t x = (uint32_t)get_byte(s);
   int c;
@@ -713,10 +713,10 @@ getInt32(gzm_stream * s)
    Flushes all pending output if necessary, closes the compressed file
    and deallocates all the (de)compression state.
 */
-int gzm_close(void * file)
+int cc_gzm_close(void * file)
 {
   int err;
-  gzm_stream *s = (gzm_stream*)file;
+  cc_gzm_stream *s = (cc_gzm_stream*)file;
 
   if (s == NULL) return Z_STREAM_ERROR;
 
@@ -725,19 +725,19 @@ int gzm_close(void * file)
     return Z_STREAM_ERROR;
 #else
     err = do_flush (file, Z_FINISH);
-    if (err != Z_OK) return destroy((gzm_stream*)file);
+    if (err != Z_OK) return destroy((cc_gzm_stream*)file);
 
     putInt32(s->file, s->crc);
     putInt32(s->file, s->stream.total_in);
 #endif
   }
-  return destroy((gzm_stream*)file);
+  return destroy((cc_gzm_stream*)file);
 }
 
 /* stdio layer */
 
 static int
-gzm_fseek(gzm_file * file, long offset, int whence)
+cc_gzm_fseek(cc_gzm_file * file, long offset, int whence)
 {
   switch (whence) {
   case SEEK_SET:
@@ -774,13 +774,13 @@ gzm_fseek(gzm_file * file, long offset, int whence)
 }
 
 static int
-gzm_ftell(gzm_file * file)
+cc_gzm_ftell(cc_gzm_file * file)
 {
   return file->currpos;
 }
 
 static size_t
-gzm_fread(void * ptr, size_t size, size_t nmemb, gzm_file * file)
+cc_gzm_fread(void * ptr, size_t size, size_t nmemb, cc_gzm_file * file)
 {
   uint32_t remain;
 
@@ -796,7 +796,7 @@ gzm_fread(void * ptr, size_t size, size_t nmemb, gzm_file * file)
 }
 
 static int
-gzm_ferror(gzm_file * file)
+cc_gzm_ferror(cc_gzm_file * file)
 {
   return 0;
 }

@@ -35,24 +35,24 @@
 extern "C" {
 #endif /* __cplusplus */
 
-  void * gzm_open(const uint8_t * buffer, uint32_t len);
-  int gzm_read (void * file, void * buf, uint32_t len);
-  int gzm_getc(void * file);
-  char * gzm_gets(void * file, char * buf, int len);
-  off_t gzm_seek(void * file, off_t offset, int whence);
-  int gzm_rewind(void * file);
-  off_t gzm_tell(void * file);
-  int gzm_eof(void * file);
-  int gzm_close(void * file);
-  
+  void * cc_gzm_open(const uint8_t * buffer, uint32_t len);
+  int cc_gzm_read (void * file, void * buf, uint32_t len);
+  int cc_gzm_getc(void * file);
+  char * cc_gzm_gets(void * file, char * buf, int len);
+  off_t cc_gzm_seek(void * file, off_t offset, int whence);
+  int cc_gzm_rewind(void * file);
+  off_t cc_gzm_tell(void * file);
+  int cc_gzm_eof(void * file);
+  int cc_gzm_close(void * file);
+
   /*
     the following functions are not implemented yet (writing to a
     buffer is not supported).
-    
-    int gzm_write(void * file, void * buf, unsigned int len);
-    int gzm_setparams(void * file, int level, int strategy);
-    int gzm_putc(void * file, int c);
-    int gzm_puts(void * file, const char * s);
+
+    int cc_gzm_write(void * file, void * buf, unsigned int len);
+    int cc_gzm_setparams(void * file, int level, int strategy);
+    int cc_gzm_putc(void * file, int c);
+    int cc_gzm_puts(void * file, const char * s);
   */
 
 #ifdef __cplusplus
