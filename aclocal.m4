@@ -5572,7 +5572,7 @@ AC_CACHE_CHECK(
   [whether snprintf() is available],
   sim_cv_func_snprintf,
   [AC_TRY_LINK([#include <stdio.h>],
-               [(void)snprintf(0L, 0, 0L);],
+               [char buf[128]; (void)snprintf(buf, 127, "%s", "tjo-bing");],
                [sim_cv_func_snprintf=yes],
                [sim_cv_func_snprintf=no])])
 
@@ -5584,9 +5584,21 @@ AC_CACHE_CHECK(
   sim_cv_func_vsnprintf,
   [AC_TRY_LINK([
 #include <stdio.h>
-#include <stdarg.h>], [
-  va_list args;
-  (void)vsnprintf(NULL, (size_t)0, NULL, args);],
+#include <stdarg.h>
+
+void
+hepp(int dummy, ...)
+{
+  va_list argptr;
+  char buf[128];
+
+  va_start(argptr, dummy);
+  (void)vsnprintf(buf, 127, "%s %s", argptr);
+  va_end(argptr);
+}
+], [
+  hepp(0, "tjo-bing", "hepp");
+],
                [sim_cv_func_vsnprintf=yes],
                [sim_cv_func_vsnprintf=no])])
 
@@ -5598,7 +5610,7 @@ if test x"$sim_ac_snprintf_avail" = x"no"; then
     [whether _snprintf() is available],
     sim_cv_func__snprintf,
     [AC_TRY_LINK([#include <stdio.h>],
-                 [(void)_snprintf(0L, 0, 0L);],
+                 [char buf[128]; (void)_snprintf(buf, 127, "%s", "tjo-bing");],
                  [sim_cv_func__snprintf=yes],
                  [sim_cv_func__snprintf=no])])
   sim_ac__snprintf_avail=$sim_cv_func__snprintf
@@ -5611,9 +5623,21 @@ if test x"$sim_ac_vsnprintf_avail" = xno; then
     sim_cv_func__vsnprintf,
     [AC_TRY_LINK([
 #include <stdio.h>
-#include <stdarg.h>], [
-  va_list args;
-  (void)_vsnprintf(NULL, (size_t)0, NULL, args);],
+#include <stdarg.h>
+
+void
+hepp(int dummy, ...)
+{
+  va_list argptr;
+  char buf[128];
+
+  va_start(argptr, dummy);
+  (void)_vsnprintf(buf, 127, "%s %s", argptr);
+  va_end(argptr);
+}
+], [
+  hepp(0, "tjo-bing", "hepp");
+],
                  [sim_cv_func__vsnprintf=yes],
                  [sim_cv_func__vsnprintf=no])])
   sim_ac__vsnprintf_avail=$sim_cv_func__vsnprintf

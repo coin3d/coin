@@ -15140,7 +15140,7 @@ else
 int
 main ()
 {
-(void)snprintf(0L, 0, 0L);
+char buf[128]; (void)snprintf(buf, 127, "%s", "tjo-bing");
   ;
   return 0;
 }
@@ -15182,6 +15182,18 @@ else
 
 #include <stdio.h>
 #include <stdarg.h>
+
+void
+hepp(int dummy, ...)
+{
+  va_list argptr;
+  char buf[128];
+
+  va_start(argptr, dummy);
+  (void)vsnprintf(buf, 127, "%s %s", argptr);
+  va_end(argptr);
+}
+
 #ifdef F77_DUMMY_MAIN
 #  ifdef __cplusplus
      extern "C"
@@ -15192,8 +15204,8 @@ int
 main ()
 {
 
-  va_list args;
-  (void)vsnprintf(NULL, (size_t)0, NULL, args);
+  hepp(0, "tjo-bing", "hepp");
+
   ;
   return 0;
 }
@@ -15243,7 +15255,7 @@ else
 int
 main ()
 {
-(void)_snprintf(0L, 0, 0L);
+char buf[128]; (void)_snprintf(buf, 127, "%s", "tjo-bing");
   ;
   return 0;
 }
@@ -15286,6 +15298,18 @@ else
 
 #include <stdio.h>
 #include <stdarg.h>
+
+void
+hepp(int dummy, ...)
+{
+  va_list argptr;
+  char buf[128];
+
+  va_start(argptr, dummy);
+  (void)_vsnprintf(buf, 127, "%s %s", argptr);
+  va_end(argptr);
+}
+
 #ifdef F77_DUMMY_MAIN
 #  ifdef __cplusplus
      extern "C"
@@ -15296,8 +15320,8 @@ int
 main ()
 {
 
-  va_list args;
-  (void)_vsnprintf(NULL, (size_t)0, NULL, args);
+  hepp(0, "tjo-bing", "hepp");
+
   ;
   return 0;
 }
