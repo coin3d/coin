@@ -218,7 +218,15 @@ GLUWrapper(void)
   gi->available = 1;
 
 #ifdef GLU_RUNTIME_LINKING
+
+#ifndef GLU_IS_PART_OF_GL
+
   {
+
+  // On Mac OS X, the glu* functions are part of the OpenGL framework,
+  // which at this point is already loaded, so no need to try and open
+  // the library here...
+
     /* FIXME: should we get the system shared library name from an
        Autoconf check? 20000930 mortene. */
     const char * possiblelibnames[] = {
@@ -232,7 +240,7 @@ GLUWrapper(void)
       NULL
     };
 
-    int idx = 0;
+    int idx = 0;   
     while (!GLU_libhandle && possiblelibnames[idx]) {
       GLU_libhandle = cc_dl_open(possiblelibnames[idx]);
       idx++;
@@ -243,7 +251,9 @@ GLUWrapper(void)
       GLU_failed_to_load = 1;
       goto wrapperexit;
     }
-  }
+  } 
+
+#endif // !GLU_IS_PART_OF_GL
 
   /* Define GLUWRAPPER_REGISTER_FUNC macro. Casting the type is
      necessary for this file to be compatible with C++ compilers. */
