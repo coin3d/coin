@@ -53,7 +53,7 @@ public:
   static SbTime max(void);
 #else // _WIN32
   static SbTime maxTime(void);
-#endif // !_WIN32
+#endif // _WIN32
   void setValue(const double sec);
   void setValue(const int32_t sec, const long usec);
   void setValue(const struct timeval * const tv);
@@ -63,7 +63,11 @@ public:
   void getValue(struct timeval * tv) const;
   unsigned long getMsecValue(void) const;
   SbString format(const char * const fmt = "%S.%i") const;
+#ifndef _WIN32
   SbString formatDate(const char * const fmt = "%A, %D %r") const;
+#else // _WIN32
+  SbString formatDate(const char * const fmt = "%#c") const;
+#endif // _WIN32
   SbBool parsedate(const char * const date);
   friend COIN_DLL_EXPORT SbTime operator +(const SbTime & t0, const SbTime & t1);
   friend COIN_DLL_EXPORT SbTime operator -(const SbTime & t0, const SbTime & t1);

@@ -397,8 +397,11 @@ SbTime::format(const char * const fmt) const
   your reference documentation for strftime() for information on the
   format modifiers available.
 
-  The SbTime values will be interpreted as time since 00:00:00 Jan 1st
-  1970.
+  Note that the formatting characters for strftime() is different on
+  UNIX systems and Microsoft Windows.
+
+  The value of SbTime will be interpreted as seconds since 00:00:00
+  1970-01-01.
 
   \sa format().
 */
@@ -899,7 +902,7 @@ SbTime::print(FILE * fp) const
 #if COIN_DEBUG
   struct timeval tm;
   this->getValue(&tm);
-  SbString str = this->formatDate("   %A %D %T %Z");
+  SbString str = this->formatDate();
   fprintf(fp, "%s", str.getString());
   fprintf(fp, ", secs: %ld, msecs: %ld\n", tm.tv_sec, tm.tv_usec);
 #endif // COIN_DEBUG
