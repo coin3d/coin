@@ -22,8 +22,15 @@
   \brief The SoComputeBoundingBox class is used to calculate a bounding box.
   \ingroup engines
 
-  FIXME: doc
+  This engine is simply a wrapper around the SoGetBoundingBoxAction,
+  for a convenient way of having automatic updating of some data in
+  the scene graph which is dependent on the bounding box of some other
+  part of the scene.
 */
+
+// FIXME: wouldn't it be better design to keep the SbViewportRegion of
+// the SoGetBoundingBoxAction (and other data of the action) as
+// inputs, so they are written and copied automatically? 20000922 mortene.
 
 #include <Inventor/engines/SoComputeBoundingBox.h>
 #include <Inventor/lists/SoEngineOutputList.h>
@@ -35,7 +42,35 @@
 SO_ENGINE_SOURCE(SoComputeBoundingBox);
 
 /*!
-  Default constructor.
+  \var SoSFNode SoComputeBoundingBox::node
+*/
+/*!
+  \var SoSFPath SoComputeBoundingBox::path
+*/
+/*!
+  \var SoEngineOutput SoComputeBoundingBox::min
+  (SoSFVec3f) Corner coordinates of the bounding box.
+*/
+/*!
+  \var SoEngineOutput SoComputeBoundingBox::max
+  (SoSFVec3f) Corner coordinates of the bounding box.
+*/
+/*!
+  \var SoEngineOutput SoComputeBoundingBox::boxCenter
+  (SoSFVec3f) Geometric center point of the bounding box.
+*/
+/*!
+  \var SoEngineOutput SoComputeBoundingBox::objectCenter
+
+  (SoSFVec3f) Object center point for the bounding box. See
+  SoGetBoundingBoxAction::getCenter() for an explanation for how this
+  can differ from the geometric center point of the bounding box.
+*/
+
+
+/*!
+  Default constructor. Sets up the internal SoGetBoundingBoxAction
+  instance.
 */
 SoComputeBoundingBox::SoComputeBoundingBox(void)
 {
@@ -60,6 +95,9 @@ SoComputeBoundingBox::initClass(void)
   SO_ENGINE_INTERNAL_INIT_CLASS(SoComputeBoundingBox);
 }
 
+/*!
+  Destructor. Deallocate the SoGetBoundingBoxAction instance.
+*/
 SoComputeBoundingBox::~SoComputeBoundingBox()
 {
   delete this->bboxaction;
@@ -70,17 +108,17 @@ void
 SoComputeBoundingBox::evaluate(void)
 {
 
-  SoPath *mypath = this->path.getValue();
+  SoPath * mypath = this->path.getValue();
   if (mypath) {
     this->bboxaction->apply(mypath);
   }
   else {
-    SoNode *mynode = this->node.getValue();
+    SoNode * mynode = this->node.getValue();
     if (mynode == NULL) return;
     this->bboxaction->apply(mynode);
   }
   SbBox3f box = this->bboxaction->getBoundingBox();
-  const SbVec3f &center = this->bboxaction->getCenter();
+  const SbVec3f & center = this->bboxaction->getCenter();
 
   SO_ENGINE_OUTPUT(min, SoSFVec3f, setValue(box.getMin()));
   SO_ENGINE_OUTPUT(max, SoSFVec3f, setValue(box.getMax()));
