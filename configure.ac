@@ -262,30 +262,32 @@ AM_CONDITIONAL(BUILD_WITH_SUPERGLU, $enable_superglu)
 # *******************************************************************
 
 AC_ARG_ENABLE([threads],
-  [AC_HELP_STRING([--disable-threads], [disable multithreading support])],
+  [AC_HELP_STRING([--enable-threads], [enable platform-independent multithreading abstraction classes])],
   [case $enableval in
   yes | true ) sim_ac_enable_threads=true ;;
   no | false ) sim_ac_enable_threads=false ;;
   *) AC_MSG_ERROR([invalid arg "$enableval" for --enable-threads option]) ;;
   esac],
-  [sim_ac_enable_threads=false])
+  [sim_ac_enable_threads=true])
 
-sim_ac_threads_api="none"
+HAVE_THREADS=0
 
 if $sim_ac_enable_threads; then
+
+  sim_ac_threads_api="none"
 
   # Make it possible to explicitly turn off Win32 threads, to for instance
   # use POSIX threads instead under Win32.
   AC_ARG_ENABLE([w32threads],
-    [AC_HELP_STRING([--disable-w32threads], [disable Win32 threads, even when available])],
+    [AC_HELP_STRING([--disable-w32threads], [never use Win32 threads, even when available])],
     [case $enableval in
     yes | true ) sim_ac_w32_enable_threads=true ;;
     no | false ) sim_ac_w32_enable_threads=false ;;
-    *) AC_MSG_ERROR([invalid arg "$enableval" for --enable-threads option]) ;;
+    *) AC_MSG_ERROR([invalid arg "$enableval" for --disable-w32threads option]) ;;
     esac],
     [sim_ac_w32_enable_threads=true])
 
-  sim_ac_w32thread=false
+  sim_ac_win32_threads_available=false
 
   # Check for platform-native Win32 thread API first.
   if $sim_ac_w32_enable_threads; then
@@ -295,35 +297,36 @@ if $sim_ac_enable_threads; then
      [HANDLE h = CreateThread(NULL, 0, NULL, NULL, 0, NULL);
       (void)SetThreadPriority(h, 0);
       ExitThread(0);],
-     [sim_ac_w32thread=true
-      sim_ac_threads_api="Win32"
+     [sim_ac_win32_threads_available=true
+      sim_ac_threads_api="native Win32"
       AC_DEFINE([USE_W32THREAD], , [define to use the Win32 threads API])
       AC_DEFINE([COIN_THREADID_TYPE], DWORD, [System dependant thread ID type])])
-    AC_MSG_RESULT($sim_ac_w32thread)
+      # (we just ignore failure, as we fall through to POSIX threads)
+    AC_MSG_RESULT($sim_ac_win32_threads_available)
   fi
 
-  if ! $sim_ac_w32thread; then
+  if ! $sim_ac_win32_threads_available; then
     SIM_AC_CHECK_PTHREAD([
       AC_DEFINE([USE_PTHREAD], , [define to use the POSIX threads API])
-      AC_DEFINE([COIN_THREADID_TYPE], pthread_t,
-        [System dependant thread ID type])
+      AC_DEFINE([COIN_THREADID_TYPE], pthread_t, [System dependent thread ID type])
       sim_ac_threads_api="POSIX"
       COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_pthread_cppflags"
       COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_pthread_ldflags"
       COIN_EXTRA_LIBS="$sim_ac_pthread_libs $COIN_EXTRA_LIBS"
     ])
   fi
-fi
 
-HAVE_THREADS=1
-if test "$sim_ac_threads_api" = "none"; then
-  HAVE_THREADS=0
-  sim_ac_threads_api="none  (enable with --enable-threads)"
+  if test "$sim_ac_threads_api" = "none"; then
+    AC_MSG_ERROR([Could not find any usable native thread-handling API/library/devkit!  (If you do not want to enable the platform-independent thread-handling classes in Coin, specify the "--disable-threads" option to the configure script.)])
+  fi
+
+  HAVE_THREADS=1
+  AC_DEFINE([HAVE_THREADS],, [to use the platform-independent thread-handling abstractions])
 else
-  AC_DEFINE([HAVE_THREADS],, [*EXPERIMENTAL* to use the threads extension])
+  sim_ac_threads_api="Disabled  (enable with --enable-threads)"
 fi
-AC_SUBST([HAVE_THREADS])
 
+AC_SUBST([HAVE_THREADS])
 SIM_AC_CONFIGURATION_SETTING([System threads API], [$sim_ac_threads_api])
 
 AM_CONDITIONAL([BUILD_WITH_THREADS], [$sim_ac_enable_threads])
@@ -332,24 +335,22 @@ AM_CONDITIONAL([BUILD_WITH_THREADS], [$sim_ac_enable_threads])
 # Thread safe library
 
 sim_ac_enable_threadsafe=false
+AC_ARG_ENABLE(
+  [threadsafe],
+  AC_HELP_STRING([--enable-threadsafe], [enable thread safe traversals]),
+  [case $enableval in
+     yes | true ) sim_ac_enable_threadsafe=true ;;
+     *) ;;
+   esac])
 
-if test "$sim_ac_threads_api" != "none"; then
-  AC_ARG_ENABLE(
-    [threadsafe],
-    AC_HELP_STRING([--enable-threadsafe], [enable thread safe library]), [
-    case $enableval in
-      yes) sim_ac_enable_threadsafe=true ;;
-      *) ;;
-    esac])
-fi
-
-sim_ac_coin_threadsafe=false
 if $sim_ac_enable_threadsafe; then
-  sim_ac_coin_threadsafe=true
-  AC_DEFINE([COIN_THREADSAFE], 1, [define to compile thread safe library])
-  SIM_AC_CONFIGURATION_SETTING([Thread safe], [Yes  (in development)])
+  if test "$HAVE_THREADS" = "0"; then
+    AC_MSG_ERROR([You can not enable thread safe action traversals while at the same time disabling the portable thread-handling abstractions. You must use "--enable-threadsafe" with "--enable-threads".])
+  fi
+  AC_DEFINE([COIN_THREADSAFE], 1, [define to compile with thread safe action traversal for the library])
+  SIM_AC_CONFIGURATION_SETTING([Thread safe traversals], [Yes  (in development)])
 else
-  SIM_AC_CONFIGURATION_SETTING([Thread safe], [No  (enable with --enable-threadsafe)])
+  SIM_AC_CONFIGURATION_SETTING([Thread safe traversals], [No  (enable with --enable-threadsafe)])
 fi
 
 # *******************************************************************
@@ -810,8 +811,8 @@ SIM_AC_CHECK_X11_READY([AC_DEFINE([HAVE_X11_AVAILABLE],1,
 # * Test for installation of Mesa or OpenGL development system.
 # *******************************************************************
 
-SIM_AC_CHECK_OPENGL([
-
+SIM_AC_CHECK_OPENGL(
+  [
   AC_DEFINE([HAVE_OPENGL],1, [define if you have OpenGL])
 
   COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_ogl_cppflags"
@@ -840,13 +841,10 @@ SIM_AC_CHECK_OPENGL([
         LDFLAGS="$LDFLAGS $sim_ac_agl_ldflags"
         COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_agl_ldflags"
       ], [
-        SIM_AC_CONFIGURATION_WARNING([
-Could not find or compile or link against any usable window-system
-OpenGL binding, neither GLX (OpenGL on X11), nor WGL (OpenGL on Win32)
-nor AGL (OpenGL on Mac OS). The SoOffscreenRenderer functionality
-will be disabled. Note: this might be a configure bug. Check the file
-config.log.])
-      ])])])
+        SIM_AC_CONFIGURATION_WARNING([Could not find or compile or link against any usable window-system OpenGL binding, neither GLX (OpenGL on X11), nor WGL (OpenGL on Win32) nor AGL (OpenGL on Mac OS). The SoOffscreenRenderer functionality will be disabled. Note: this might be a configure bug. Check the file config.log.])
+      ])
+    ])
+  ])
 
   if test x"$sim_cv_have_glx" = xtrue; then
     SIM_AC_HAVE_GLXGETPROCADDRESSARB_IFELSE([
@@ -898,18 +896,12 @@ config.log.])
   fi
   ], # OpenGL-linkage ok, end of block
   [ # Couldn't link with OpenGL:
-  # Don't stop the configure process if we seem to be configuring to build
-  # the documentation (I don't care to install an OpenGL development system
-  # on our webserver). 20000703 mortene.
-  if test x"$want_html" = xno -a x"$want_man" = xno; then
-    # FIXME: should be able to handle systems where OpenGL is not available,
-    # as it would be handy for making e.g. import/export-only versions of the
-    # library. 20000123 mortene.
     SIM_AC_ERROR([no-opengl])
-  else
-    SIM_AC_ERROR([no-opengl])
-  fi
-])
+    # FIXME: should perhaps be able to handle systems where OpenGL is not
+    # available,  as it would be handy for making e.g. import/export-only
+    # versions of the library. 20000123 mortene.
+  ]
+)
 
 # *******************************************************************
 # * Provide this nasty hack to help building Coin on platforms
