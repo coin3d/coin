@@ -83,6 +83,7 @@ public:
                              const SbName & tonodename, const SbName & tofieldname);
   
   void assertAlive(void) const;
+  static SbBool readRoute(SoInput * in);
 
 protected:
   // Note: these are bitflags.
@@ -104,8 +105,6 @@ protected:
 
 
 private:
-  static SbBool readRoute(SoInput * in);
-
   static SbBool readReference(SoInput * in, SoBase *& base);
   static SbBool readBase(SoInput * in, SbName & classname, SoBase *& base);
   static SbBool readBaseInstance(SoInput * in, const SbName & classname,

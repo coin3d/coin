@@ -1844,9 +1844,14 @@ SoBase::connectRoute(SoInput * in,
 }
 
 
-// Reads a (VRML97) ROUTE. We decided to also add support for routes
-// in Coin, as a generic feature, since we think it is nicer than
-// setting up field connections inside the nodes.
+/*!
+  \COININTERNAL
+  
+  Reads a (VRML97) ROUTE. We decided to also add support for routes in
+  Coin, as a generic feature, since we think it is nicer than setting
+  up field connections inside the nodes.
+
+*/
 SbBool
 SoBase::readRoute(SoInput * in)
 {
