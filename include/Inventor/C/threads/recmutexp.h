@@ -48,8 +48,14 @@ struct cc_recmutex {
 
 /* ********************************************************************** */
 
+void cc_recmutex_init(void);
+
 void cc_recmutex_struct_init(cc_recmutex * rwmutex);
 void cc_recmutex_struct_clean(cc_recmutex * rwmutex);
+
+/* some internal locks are defined here */
+int cc_recmutex_internal_field_lock(void);
+int cc_recmutex_internal_field_unlock(void);
 
 /* ********************************************************************** */
 

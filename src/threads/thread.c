@@ -24,6 +24,7 @@
 #include <Inventor/C/threads/thread.h>
 #include <Inventor/C/threads/threadp.h>
 #include <Inventor/C/threads/mutexp.h>
+#include <Inventor/C/threads/recmutexp.h>
 #include <Inventor/C/threads/syncp.h>
 #include <Inventor/C/errors/debugerror.h>
 
@@ -176,6 +177,7 @@ cc_thread_init(void)
   coin_atexit(win32_threadid_idx_cleanup, 0);
 #endif /* disabled */
 #endif /* USE_WIN32THREAD */ 
+  cc_recmutex_init();
 }
 
 /* ********************************************************************** */

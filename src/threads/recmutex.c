@@ -28,6 +28,7 @@
 #include <Inventor/C/threads/mutex.h>
 #include <Inventor/C/threads/thread.h>
 #include <Inventor/C/threads/condvar.h>
+#include <Inventor/C/tidbitsp.h>
 
 #include <stdlib.h>
 #include <assert.h>
@@ -137,5 +138,36 @@ cc_recmutex_unlock(cc_recmutex * recmutex)
   level = recmutex->level;
   cc_mutex_unlock(&recmutex->mutex);
   return level;
+}
+
+/*
+  internal functions
+*/
+
+static cc_recmutex * recmutex_field_lock;
+
+static void
+recmutex_cleanup(void)
+{
+  cc_recmutex_destruct(recmutex_field_lock);
+}
+
+void 
+cc_recmutex_init(void)
+{
+  recmutex_field_lock = cc_recmutex_construct();
+  coin_atexit((coin_atexit_f*) recmutex_cleanup, 0);
+}
+
+int 
+cc_recmutex_internal_field_lock(void)
+{
+  return cc_recmutex_lock(recmutex_field_lock);
+}
+
+int 
+cc_recmutex_internal_field_unlock(void)
+{
+  return cc_recmutex_unlock(recmutex_field_lock);
 }
 
