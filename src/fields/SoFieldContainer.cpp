@@ -751,7 +751,12 @@ SoFieldContainer::findCopy(const SoFieldContainer * orig,
       newinst->copyContents(protoinst, FALSE);
     }
     else {
-      cp = (SoFieldContainer *)orig->getTypeId().createInstance();
+      if (orig->isOfType(SoProto::getClassTypeId())) {
+        cp = (SoFieldContainer*) orig;
+      }
+      else {
+        cp = (SoFieldContainer *)orig->getTypeId().createInstance();
+      }
       assert(cp);
       SoFieldContainer::addCopy(orig, cp);
     }
