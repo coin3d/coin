@@ -54,10 +54,13 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/SbTime.h>
 
+#include <Inventor/nodes/SoCallback.h> 
 #include <Inventor/sensors/SoTimerSensor.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/nodes/SoCamera.h>
+#include <Inventor/details/SoFaceDetail.h> 
+#include <Inventor/lists/SoPathList.h> 
 
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SbBox2s.h>
@@ -72,9 +75,15 @@
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoCullElement.h>
+#include <Inventor/elements/SoPointSizeElement.h> 
 #include <Inventor/lists/SoCallbackList.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/SbMatrix.h>
+#include <Inventor/nodes/SoVertexShape.h> 
+
+#include <Inventor/SoOffscreenRenderer.h> 
+#include <Inventor/SbTesselator.h> 
+
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -82,6 +91,7 @@
 
 #include "../misc/GLWrapper.h"
 #include <float.h>
+#include <math.h>
 
 
 /*!
@@ -132,10 +142,23 @@
   \var SoSFEnum SoExtSelection::lassoPolicy
   Field for lasso policy. Default value is FULL_BBOX.
 */
+/*!
+  \var SoSFEnum SoExtSelection::lassoMode
+  Field for lasso mode. Default value is ALL_SHAPES.
+*/
 
 // *************************************************************************
 
 #ifndef DOXYGEN_SKIP_THIS
+
+// Debug defines... Used to force lower color resolution for testing purposes (handegar)
+//#define BITCOLOR3 1
+//#define BITCOLOR6 1
+//#define BITCOLOR9 1
+
+
+#define PRIVATE(p) (p->pimpl)
+#define PUBLIC(p) (p->master)
 
 class SoExtSelectionP {
 public:
@@ -170,13 +193,38 @@ public:
   SoExtSelection * master;
   SbViewportRegion curvp;
 
-  static void timercallback(void *data, SoSensor *sensor);
-  static SoCallbackAction::Response preShapeCallback(void *data,
-                                                     SoCallbackAction *action,
-                                                     const SoNode *node);
-  static SoCallbackAction::Response postShapeCallback(void *data,
-                                                      SoCallbackAction *action,
-                                                      const SoNode *node);
+  void addTriangleToOffscreenBuffer(SoCallbackAction * action,
+                                    const SoPrimitiveVertex * v1,
+                                    const SoPrimitiveVertex * v2,
+                                    const SoPrimitiveVertex * v3,
+                                    SbBool renderAsBlack);
+
+  void addLineToOffscreenBuffer(SoCallbackAction * action,
+                                const SoPrimitiveVertex * v1,
+                                const SoPrimitiveVertex * v2,
+                                SbBool renderAsBlack);
+
+  void addPointToOffscreenBuffer(SoCallbackAction * action,
+                                 const SoPrimitiveVertex * v1,
+                                 SbBool renderAsBlack);
+  
+  int scanOffscreenBuffer(SoNode * root);
+
+  void checkOffscreenRendererCapabilities();
+
+  static void offscreenRenderCallback(void * userdata, SoAction * action);
+
+  static void offscreenRenderLassoCallback(void * userdata, SoAction * action);
+
+  static void timercallback(void * data, SoSensor * sensor);
+  
+  static SoCallbackAction::Response preShapeCallback(void * data,
+                                                     SoCallbackAction * action,
+                                                     const SoNode * node);
+
+  static SoCallbackAction::Response postShapeCallback(void * data,
+                                                      SoCallbackAction * action,
+                                                      const SoNode * node);
 
   static SoCallbackAction::Response cameraCB(void * data,
                                              SoCallbackAction * action,
@@ -196,18 +244,22 @@ public:
                                             const SbBox2s & lassorect,
                                             const SbBool full);
 
-  static void triangleCB(void *userData,
-                         SoCallbackAction *action,
-                         const SoPrimitiveVertex *v1,
-                         const SoPrimitiveVertex *v2,
-                         const SoPrimitiveVertex *v3);
-  static void lineSegmentCB(void *userData,
-                            SoCallbackAction *action,
-                            const SoPrimitiveVertex *v1,
-                            const SoPrimitiveVertex *v2);
-  static void pointCB(void *userData,
-                      SoCallbackAction *action,
-                      const SoPrimitiveVertex *v);
+  static void offscreenLassoTesselatorCallback(void * v0, void * v1, void * v2, void * userdata);
+
+  static void triangleCB(void * userData,
+                         SoCallbackAction * action,
+                         const SoPrimitiveVertex * v1,
+                         const SoPrimitiveVertex * v2,
+                         const SoPrimitiveVertex * v3);
+
+  static void lineSegmentCB(void * userData,
+                            SoCallbackAction * action,
+                            const SoPrimitiveVertex * v1,
+                            const SoPrimitiveVertex * v2);
+
+  static void pointCB(void * userData,
+                      SoCallbackAction * action,
+                      const SoPrimitiveVertex * v);
 
   void performSelection(SoHandleEventAction * action);
 
@@ -226,10 +278,12 @@ public:
     SbBool abort;
     SbBool allhit;
     SbBool onlyrect;
+    SbBool allshapes;
   } primcbdata_t;
   primcbdata_t primcbdata;
 
   void doSelect(const SoPath * path);
+  void selectPaths();
   SoLassoSelectionFilterCB * filterCB;
   void * filterCBData;
 
@@ -242,6 +296,33 @@ public:
 
   SbBool callfiltercbonlyifselectable;
   SbBool wasshiftdown;
+
+  SoHandleEventAction *offscreenaction;
+  SbViewVolume offscreenviewvolume;
+  int offscreencolorcounter;
+  int offscreencolorcounterpasses;
+  int offscreenskipcounter;
+  SbBool offscreencolorcounteroverflow;
+  SoOffscreenRenderer * renderer;
+  SoOffscreenRenderer * lassorenderer;
+
+  SbBool lassostencilisdrawed;
+  SbBool applyonlyonselectedtriangles;
+
+  int colorbitsred;
+  int colorbitsgreen;
+  int colorbitsblue;
+  int colorbitsalpha;
+  int maximumcolorcounter;
+
+  unsigned char *visibletrianglesbitarray;
+
+  SoNode *offscreenheadnode;
+  int drawcallbackcounter;
+  int drawcounter;
+  SoPathList *visitedshapepaths;
+  SbBool somefacesvisible;
+
 };
 
 #endif // DOXYGEN_SKIP_THIS
@@ -497,8 +578,6 @@ poly_projbox_intersect(const SbList <SbVec2s> & poly,
   return FALSE;
 }
 
-#undef THIS
-#define THIS this->pimpl
 
 SO_NODE_SOURCE(SoExtSelection);
 
@@ -507,12 +586,13 @@ SO_NODE_SOURCE(SoExtSelection);
 */
 SoExtSelection::SoExtSelection(void)
 {
-  THIS = new SoExtSelectionP(this);
+  PRIVATE(this) = new SoExtSelectionP(this);
 
   SO_NODE_INTERNAL_CONSTRUCTOR(SoExtSelection);
 
   SO_NODE_ADD_FIELD(lassoType, (SoExtSelection::NOLASSO));
   SO_NODE_ADD_FIELD(lassoPolicy, (SoExtSelection::FULL_BBOX));
+  SO_NODE_ADD_FIELD(lassoMode, (SoExtSelection::ALL_SHAPES));
 
   SO_NODE_DEFINE_ENUM_VALUE(LassoType, NOLASSO);
   SO_NODE_DEFINE_ENUM_VALUE(LassoType, LASSO);
@@ -525,41 +605,66 @@ SoExtSelection::SoExtSelection(void)
   SO_NODE_DEFINE_ENUM_VALUE(LassoPolicy, PART);
   SO_NODE_SET_SF_ENUM_TYPE(lassoPolicy, LassoPolicy);
 
-  // setup timer
-  THIS->timersensor = new SoTimerSensor(&SoExtSelectionP::timercallback,
-                                        (void *)this);
-  THIS->timersensor->setBaseTime(SbTime(0.0));
-  THIS->timersensor->setInterval(SbTime(0.3));
+  SO_NODE_DEFINE_ENUM_VALUE(LassoMode, VISIBLE_SHAPES);
+  SO_NODE_DEFINE_ENUM_VALUE(LassoMode, ALL_SHAPES);
+  SO_NODE_SET_SF_ENUM_TYPE(lassoMode, LassoMode);
+ 
 
-  THIS->cbaction = new SoCallbackAction();
-  THIS->cbaction->addPreCallback(SoShape::getClassTypeId(), SoExtSelectionP::preShapeCallback,
-                                 (void *) this);
-  THIS->cbaction->addPostCallback(SoShape::getClassTypeId(), SoExtSelectionP::postShapeCallback,
+  // setup timer
+  PRIVATE(this)->timersensor = new SoTimerSensor(&SoExtSelectionP::timercallback,
+                                        (void *)this);
+  PRIVATE(this)->timersensor->setBaseTime(SbTime(0.0));
+  PRIVATE(this)->timersensor->setInterval(SbTime(0.3));
+
+
+
+  PRIVATE(this)->cbaction = new SoCallbackAction();
+  
+  PRIVATE(this)->cbaction->addPreCallback(SoShape::getClassTypeId(), 
+				 SoExtSelectionP::preShapeCallback,
+				 (void *) this);
+
+  PRIVATE(this)->cbaction->addPostCallback(SoShape::getClassTypeId(), 
+				  SoExtSelectionP::postShapeCallback,
                                   (void *) this);
-  THIS->cbaction->addTriangleCallback(SoShape::getClassTypeId(), SoExtSelectionP::triangleCB,
+
+  PRIVATE(this)->cbaction->addTriangleCallback(SoShape::getClassTypeId(), 
+				      SoExtSelectionP::triangleCB,
                                       (void*) this);
-  THIS->cbaction->addLineSegmentCallback(SoShape::getClassTypeId(), SoExtSelectionP::lineSegmentCB,
+
+  PRIVATE(this)->cbaction->addLineSegmentCallback(SoShape::getClassTypeId(), 
+					 SoExtSelectionP::lineSegmentCB,
                                          (void*) this);
-  THIS->cbaction->addPointCallback(SoShape::getClassTypeId(), SoExtSelectionP::pointCB,
+
+  PRIVATE(this)->cbaction->addPointCallback(SoShape::getClassTypeId(), 
+				   SoExtSelectionP::pointCB,
                                    (void*) this);
-  THIS->cbaction->addPostCallback(SoCamera::getClassTypeId(), SoExtSelectionP::cameraCB,
+
+  PRIVATE(this)->cbaction->addPostCallback(SoCamera::getClassTypeId(), 
+				  SoExtSelectionP::cameraCB,
                                   (void *) this);
+
 
   // some init (just to be sure?)
-  THIS->lassocolor = SbColor(1.0f, 1.0f, 1.0f);
-  THIS->lassowidth = 1.0f;
-  THIS->lassopatternanimate = TRUE;
-  THIS->lassopattern = 0xf0f0;
+  PRIVATE(this)->lassocolor = SbColor(1.0f, 1.0f, 1.0f);
+  PRIVATE(this)->lassowidth = 1.0f;
+  PRIVATE(this)->lassopatternanimate = TRUE;
+  PRIVATE(this)->lassopattern = 0xf0f0;
 
-  THIS->selectionstate = SoExtSelectionP::NONE;
-  THIS->isDragging = FALSE;
-  THIS->coords.truncate(0);
+  PRIVATE(this)->selectionstate = SoExtSelectionP::NONE;
+  PRIVATE(this)->isDragging = FALSE;
+  PRIVATE(this)->coords.truncate(0);
 
-  THIS->filterCB = NULL;
-  THIS->triangleFilterCB = NULL;
-  THIS->lineFilterCB = NULL;
-  THIS->pointFilterCB = NULL;
-  THIS->previousmousecoords = SbVec2s(32767, 32767);
+  PRIVATE(this)->filterCB = NULL;
+  PRIVATE(this)->triangleFilterCB = NULL;
+  PRIVATE(this)->lineFilterCB = NULL;
+  PRIVATE(this)->pointFilterCB = NULL;
+  PRIVATE(this)->previousmousecoords = SbVec2s(32767, 32767);
+
+  PRIVATE(this)->drawcallbackcounter=0;
+  PRIVATE(this)->drawcounter=0;
+  PRIVATE(this)->visitedshapepaths = new SoPathList();
+  PRIVATE(this)->somefacesvisible = FALSE;
 }
 
 /*!
@@ -567,10 +672,10 @@ SoExtSelection::SoExtSelection(void)
 */
 SoExtSelection::~SoExtSelection()
 {
-  if (THIS->timersensor->isScheduled()) THIS->timersensor->unschedule();
-  delete THIS->timersensor;
-  delete THIS->cbaction;
-  delete THIS;
+  if (PRIVATE(this)->timersensor->isScheduled()) PRIVATE(this)->timersensor->unschedule();
+  delete PRIVATE(this)->timersensor;
+  delete PRIVATE(this)->cbaction;
+  delete PRIVATE(this)->visibletrianglesbitarray;
 }
 
 // doc in parent
@@ -651,7 +756,7 @@ SoExtSelection::getOverlayLassoColorIndex(void)
 void
 SoExtSelection::setLassoColor(const SbColor & color)
 {
-  THIS->lassocolor = color;
+  PRIVATE(this)->lassocolor = color;
 }
 
 /*!
@@ -660,7 +765,7 @@ SoExtSelection::setLassoColor(const SbColor & color)
 const SbColor &
 SoExtSelection::getLassoColor(void)
 {
-  return THIS->lassocolor;
+  return PRIVATE(this)->lassocolor;
 }
 
 /*!
@@ -669,7 +774,7 @@ SoExtSelection::getLassoColor(void)
 void
 SoExtSelection::setLassoWidth(const float width)
 {
-  THIS->lassowidth = width;
+  PRIVATE(this)->lassowidth = width;
 }
 
 /*!
@@ -678,7 +783,7 @@ SoExtSelection::setLassoWidth(const float width)
 float
 SoExtSelection::getLassoWidth(void)
 {
-  return THIS->lassowidth;
+  return PRIVATE(this)->lassowidth;
 }
 
 /*!
@@ -687,7 +792,7 @@ SoExtSelection::getLassoWidth(void)
 void
 SoExtSelection::setOverlayLassoPattern(const unsigned short pattern)
 {
-  THIS->lassopattern = pattern;
+  PRIVATE(this)->lassopattern = pattern;
 }
 
 /*!
@@ -696,7 +801,7 @@ SoExtSelection::setOverlayLassoPattern(const unsigned short pattern)
 unsigned short
 SoExtSelection::getOverlayLassoPattern(void)
 {
-  return THIS->lassopattern;
+  return PRIVATE(this)->lassopattern;
 }
 
 /*!
@@ -706,7 +811,7 @@ SoExtSelection::getOverlayLassoPattern(void)
 void
 SoExtSelection::animateOverlayLasso(const SbBool animate)
 {
-  THIS->lassopatternanimate = animate;
+  PRIVATE(this)->lassopatternanimate = animate;
 }
 
 /*!
@@ -715,7 +820,7 @@ SoExtSelection::animateOverlayLasso(const SbBool animate)
 SbBool
 SoExtSelection::isOverlayLassoAnimated(void)
 {
-  return THIS->lassopatternanimate;
+  return PRIVATE(this)->lassopatternanimate;
 }
 
 // Documented in superclass.
@@ -731,7 +836,7 @@ SoExtSelection::handleEvent(SoHandleEventAction * action)
   SoSeparator::handleEvent(action);
   if (action->isHandled()) return;
 
-  const SoEvent *event = action->getEvent();
+  const SoEvent * event = action->getEvent();
   const SbVec2s mousecoords = event->getPosition();
 
   switch (this->lassoType.getValue()) {
@@ -747,25 +852,25 @@ SoExtSelection::handleEvent(SoHandleEventAction * action)
   case SoExtSelection::RECTANGLE:
     // mouse click
     if (SO_MOUSE_PRESS_EVENT(event,BUTTON1)) {
-      THIS->isDragging = TRUE;
-      THIS->selectionstate = SoExtSelectionP::RECTANGLE;
-      THIS->coords.truncate(0);
-      THIS->coords.append(mousecoords);
-      THIS->coords.append(mousecoords);
-      if (!THIS->timersensor->isScheduled()) THIS->timersensor->schedule();
+      PRIVATE(this)->isDragging = TRUE;
+      PRIVATE(this)->selectionstate = SoExtSelectionP::RECTANGLE;
+      PRIVATE(this)->coords.truncate(0);
+      PRIVATE(this)->coords.append(mousecoords);
+      PRIVATE(this)->coords.append(mousecoords);
+      if (!PRIVATE(this)->timersensor->isScheduled()) PRIVATE(this)->timersensor->schedule();
     }
     // mouse release
     else if (SO_MOUSE_RELEASE_EVENT(event,BUTTON1)) {
-      THIS->timersensor->unschedule();
-      THIS->isDragging = FALSE;
-      THIS->selectionstate = SoExtSelectionP::NONE;
-      THIS->performSelection(action);
+      PRIVATE(this)->timersensor->unschedule();
+      PRIVATE(this)->isDragging = FALSE;
+      PRIVATE(this)->selectionstate = SoExtSelectionP::NONE;
+      PRIVATE(this)->performSelection(action);
     }
     // mouse move
     else if ((event->isOfType( SoLocation2Event::getClassTypeId()))) {
-      if (THIS->isDragging == TRUE) {
-	assert(THIS->coords.getLength() >= 2);
-	THIS->coords[1] = mousecoords;
+      if (PRIVATE(this)->isDragging == TRUE) {
+	assert(PRIVATE(this)->coords.getLength() >= 2);
+	PRIVATE(this)->coords[1] = mousecoords;
 	this->touch();
       }
     }
@@ -777,49 +882,49 @@ SoExtSelection::handleEvent(SoHandleEventAction * action)
   case SoExtSelection::LASSO:
     // mouse click
     if (SO_MOUSE_PRESS_EVENT(event,BUTTON1)) {
-      if ((SbAbs(mousecoords[0] - THIS->previousmousecoords[0]) > 2) ||
-          (SbAbs(mousecoords[1] - THIS->previousmousecoords[1]) > 2)) {
-	if (THIS->selectionstate == SoExtSelectionP::NONE) {
-	  THIS->coords.truncate(0);
-	  THIS->coords.append(mousecoords);
-	  THIS->selectionstate = SoExtSelectionP::LASSO;
+      if ((SbAbs(mousecoords[0] - PRIVATE(this)->previousmousecoords[0]) > 2) ||
+          (SbAbs(mousecoords[1] - PRIVATE(this)->previousmousecoords[1]) > 2)) {
+	if (PRIVATE(this)->selectionstate == SoExtSelectionP::NONE) {
+	  PRIVATE(this)->coords.truncate(0);
+	  PRIVATE(this)->coords.append(mousecoords);
+	  PRIVATE(this)->selectionstate = SoExtSelectionP::LASSO;
 	}
-        THIS->previousmousecoords = mousecoords;
-	THIS->isDragging = TRUE;
-	THIS->coords.append(mousecoords);
-        if (!THIS->timersensor->isScheduled()) THIS->timersensor->schedule();
+        PRIVATE(this)->previousmousecoords = mousecoords;
+	PRIVATE(this)->isDragging = TRUE;
+	PRIVATE(this)->coords.append(mousecoords);
+        if (!PRIVATE(this)->timersensor->isScheduled()) PRIVATE(this)->timersensor->schedule();
 	this->touch();
       }
       else { // clicked twice on same coord (double click) -> end selection
-	if (THIS->timersensor->isScheduled()) THIS->timersensor->unschedule();
-        THIS->previousmousecoords = SbVec2s(32767, 32767);
-	if (THIS->selectionstate == SoExtSelectionP::LASSO) {
-          THIS->performSelection(action);
+	if (PRIVATE(this)->timersensor->isScheduled()) PRIVATE(this)->timersensor->unschedule();
+        PRIVATE(this)->previousmousecoords = SbVec2s(32767, 32767);
+	if (PRIVATE(this)->selectionstate == SoExtSelectionP::LASSO) {
+          PRIVATE(this)->performSelection(action);
 	}
-	THIS->isDragging = FALSE;
-	THIS->selectionstate = SoExtSelectionP::NONE;
-	THIS->coords.truncate(0);
+	PRIVATE(this)->isDragging = FALSE;
+	PRIVATE(this)->selectionstate = SoExtSelectionP::NONE;
+	PRIVATE(this)->coords.truncate(0);
       }
     }
     // mouse move
     else if ( ( event->isOfType( SoLocation2Event::getClassTypeId() ) ) ) {
-      if (THIS->isDragging == TRUE) {
-	assert(THIS->coords.getLength());
-	THIS->coords[THIS->coords.getLength()-1] = mousecoords;
+      if (PRIVATE(this)->isDragging == TRUE) {
+	assert(PRIVATE(this)->coords.getLength());
+	PRIVATE(this)->coords[PRIVATE(this)->coords.getLength()-1] = mousecoords;
 	this->touch();
       }
     }
     // end selection with right-click
     else if (SO_MOUSE_PRESS_EVENT(event,BUTTON2)) {
-      if (THIS->timersensor->isScheduled()) THIS->timersensor->unschedule();
-      if (THIS->selectionstate == SoExtSelectionP::LASSO) {
-        THIS->performSelection(action);
+      if (PRIVATE(this)->timersensor->isScheduled()) PRIVATE(this)->timersensor->unschedule();
+      if (PRIVATE(this)->selectionstate == SoExtSelectionP::LASSO) {
+        PRIVATE(this)->performSelection(action);
       }
-      THIS->isDragging = FALSE;
-      if (THIS->timersensor->isScheduled()) THIS->timersensor->unschedule();
-      THIS->selectionstate = SoExtSelectionP::NONE;
-      THIS->previousmousecoords = SbVec2s(32767, 32767);
-      THIS->coords.truncate(0);
+      PRIVATE(this)->isDragging = FALSE;
+      if (PRIVATE(this)->timersensor->isScheduled()) PRIVATE(this)->timersensor->unschedule();
+      PRIVATE(this)->selectionstate = SoExtSelectionP::NONE;
+      PRIVATE(this)->previousmousecoords = SbVec2s(32767, 32767);
+      PRIVATE(this)->coords.truncate(0);
     }
     break;
   }
@@ -860,19 +965,19 @@ SoExtSelection::draw(SoGLRenderAction *action)
   glDisable(GL_DEPTH_TEST);
 
   // line color & width
-  glColor3f(THIS->lassocolor[0],THIS->lassocolor[1],THIS->lassocolor[2]);
-  glLineWidth(THIS->lassowidth);
+  glColor3f(PRIVATE(this)->lassocolor[0],PRIVATE(this)->lassocolor[1],PRIVATE(this)->lassocolor[2]);
+  glLineWidth(PRIVATE(this)->lassowidth);
 
   // stipple pattern
   glEnable(GL_LINE_STIPPLE);
-  glLineStipple(1, THIS->lassopattern);
+  glLineStipple(1, PRIVATE(this)->lassopattern);
 
   // --- RECTANGLE ---
 
-  if (THIS->selectionstate == SoExtSelectionP::RECTANGLE) {
-    assert(THIS->coords.getLength() >= 2);
-    SbVec2s c1 = THIS->coords[0];
-    SbVec2s c2 = THIS->coords[1];
+  if (PRIVATE(this)->selectionstate == SoExtSelectionP::RECTANGLE) {
+    assert(PRIVATE(this)->coords.getLength() >= 2);
+    SbVec2s c1 = PRIVATE(this)->coords[0];
+    SbVec2s c2 = PRIVATE(this)->coords[1];
     glBegin(GL_LINE_LOOP);
     glVertex2s(c1[0], c1[1]);
     glVertex2s(c2[0], c1[1]);
@@ -883,10 +988,10 @@ SoExtSelection::draw(SoGLRenderAction *action)
 
   // --- LASSO ---
 
-  else if (THIS->selectionstate == SoExtSelectionP::LASSO) {
+  else if (PRIVATE(this)->selectionstate == SoExtSelectionP::LASSO) {
     glBegin(GL_LINE_LOOP);
-    for (int i = 0; i < THIS->coords.getLength(); i++) {
-      SbVec2s temp = THIS->coords[i];
+    for (int i = 0; i < PRIVATE(this)->coords.getLength(); i++) {
+      SbVec2s temp = PRIVATE(this)->coords[i];
       glVertex2s(temp[0],temp[1]);
     }
     glEnd();
@@ -907,7 +1012,7 @@ SoExtSelection::GLRenderBelowPath(SoGLRenderAction * action)
   // Overridden to render lasso.
 
   inherited::GLRenderBelowPath(action);
-  SoState *state = action->getState();
+  SoState * state = action->getState();
   state->push();
 
   if (action->isRenderingDelayedPaths()) {
@@ -919,7 +1024,7 @@ SoExtSelection::GLRenderBelowPath(SoGLRenderAction * action)
   }
   // render this path after all other (delayed)
   else {
-    if (THIS->selectionstate != SoExtSelectionP::NONE) {
+    if (PRIVATE(this)->selectionstate != SoExtSelectionP::NONE) {
       action->addDelayedPath(action->getCurPath()->copy());
     }
   }
@@ -946,9 +1051,9 @@ void
 SoExtSelection::setLassoFilterCallback(SoLassoSelectionFilterCB * f, void * userdata,
                                        const SbBool callonlyifselectable)
 {
-  THIS->filterCB = f;
-  THIS->filterCBData = userdata;
-  THIS->callfiltercbonlyifselectable = callonlyifselectable;
+  PRIVATE(this)->filterCB = f;
+  PRIVATE(this)->filterCBData = userdata;
+  PRIVATE(this)->callfiltercbonlyifselectable = callonlyifselectable;
 }
 
 /*!
@@ -962,8 +1067,8 @@ void
 SoExtSelection::setTriangleFilterCallback(SoExtSelectionTriangleCB * func,
                                           void * userdata)
 {
-  THIS->triangleFilterCB = func;
-  THIS->triangleFilterCBData = userdata;
+  PRIVATE(this)->triangleFilterCB = func;
+  PRIVATE(this)->triangleFilterCBData = userdata;
 }
 
 /*!
@@ -977,8 +1082,8 @@ void
 SoExtSelection::setLineSegmentFilterCallback(SoExtSelectionLineSegmentCB * func,
                                              void * userdata)
 {
-  THIS->lineFilterCB = func;
-  THIS->lineFilterCBData = userdata;
+  PRIVATE(this)->lineFilterCB = func;
+  PRIVATE(this)->lineFilterCBData = userdata;
 }
 
 /*!
@@ -992,8 +1097,8 @@ void
 SoExtSelection::setPointFilterCallback(SoExtSelectionPointCB * func,
                                        void * userdata)
 {
-  THIS->pointFilterCB = func;
-  THIS->pointFilterCBData = userdata;
+  PRIVATE(this)->pointFilterCB = func;
+  PRIVATE(this)->pointFilterCBData = userdata;
 }
 
 /*!
@@ -1006,10 +1111,8 @@ SoExtSelection::setPointFilterCallback(SoExtSelectionPointCB * func,
 SbBool
 SoExtSelection::wasShiftDown(void) const
 {
-  return THIS->wasshiftdown;
+  return PRIVATE(this)->wasshiftdown;
 }
-
-#undef THIS
 
 #ifndef DOXYGEN_SKIP_THIS
 
@@ -1017,7 +1120,7 @@ SoExtSelection::wasShiftDown(void) const
 void
 SoExtSelectionP::timercallback(void *data, SoSensor *sensor)
 {
-  SoExtSelection *ext = (SoExtSelection *)data;
+  SoExtSelection * ext = (SoExtSelection *)data;
   if (ext == NULL) return;
   if (ext->isOverlayLassoAnimated()) {
     int pat = ext->getOverlayLassoPattern();
@@ -1032,11 +1135,14 @@ SoExtSelectionP::timercallback(void *data, SoSensor *sensor)
 SoCallbackAction::Response
 SoExtSelectionP::preShapeCallback(void *data, SoCallbackAction *action, const SoNode *node)
 {
-  SoExtSelection * ext = (SoExtSelection*)data;
+  SoExtSelection * ext = (SoExtSelection *)data;
   assert(node->isOfType(SoShape::getClassTypeId()));
 
+  ext->pimpl->somefacesvisible = FALSE;
+  
   return ext->pimpl->testShape(action, (const SoShape*) node);
 }
+
 
 // callback that is called for a shape after all primitives have been processed
 SoCallbackAction::Response
@@ -1055,7 +1161,27 @@ SoExtSelectionP::postShapeCallback(void *data, SoCallbackAction *action, const S
   default:
     break;
   }
-  if (hit) ext->pimpl->doSelect(action->getCurPath());
+  
+  if(hit){
+
+    if(!ext->pimpl->primcbdata.allshapes){ //VISIBLE_SHAPES
+
+      if((ext->lassoPolicy.getValue() == SoExtSelection::FULL) &&
+         (!ext->pimpl->somefacesvisible))
+        return SoCallbackAction::CONTINUE;
+
+      // FIXME: This is a linear search. Storing paths should have be done using
+      // something more sophisticated for better performance. (handegar)
+      const SoPath * curpath = action->getCurPath();
+      if(ext->pimpl->visitedshapepaths->findPath(*curpath) < 0)
+        ext->pimpl->visitedshapepaths->append(curpath->copy());
+
+    } else {
+      ext->pimpl->doSelect(action->getCurPath());
+    }
+    
+  }
+
   return SoCallbackAction::CONTINUE;
 }
 
@@ -1112,7 +1238,7 @@ SoExtSelectionP::testShape(SoCallbackAction * action, const SoShape * shape)
                 SoProjectionMatrixElement::get(state));
 
   SbBool full = FALSE;
-  switch (this->master->lassoPolicy.getValue()) {
+  switch (PUBLIC(this)->lassoPolicy.getValue()) {
   case SoExtSelection::FULL_BBOX:
     full = TRUE;
   case SoExtSelection::PART_BBOX:
@@ -1159,7 +1285,7 @@ SoExtSelectionP::testBBox(SoCallbackAction * action,
 {
   SbBox3f bbox;
   SbVec3f center;
-  ((SoShape*)shape)->computeBBox(action, bbox, center);
+  ((SoShape *)shape)->computeBBox(action, bbox, center);
 
   SbVec3f mincorner = bbox.getMin();
   SbVec3f maxcorner = bbox.getMax();
@@ -1184,7 +1310,7 @@ SoExtSelectionP::testBBox(SoCallbackAction * action,
   if (lassorect.intersect(shapebbox)) { // quick reject
     int i;
     int hit = 0;
-    switch (this->master->lassoType.getValue()) {
+    switch (PUBLIC(this)->lassoType.getValue()) {
     case SoExtSelection::LASSO:
       if (full) {
         for (i = 0; i < 8; i++) {
@@ -1212,9 +1338,13 @@ SoExtSelectionP::testBBox(SoCallbackAction * action,
     default:
       break;
     }
-    if (hit) this->doSelect(action->getCurPath());
+
+    if(hit) 
+      this->doSelect(action->getCurPath());
+    
   }
   return SoCallbackAction::PRUNE; // we don't need do callbacks for primitives
+
 }
 
 // initialize some variables needed before receiving primitive callbacks.
@@ -1237,13 +1367,13 @@ SoExtSelectionP::testPrimitives(SoCallbackAction * action,
   this->primcbdata.vporg = SoViewportRegionElement::get(action->getState()).getViewportOriginPixels();
   this->primcbdata.vpsize = SoViewportRegionElement::get(action->getState()).getViewportSizePixels();
   this->primcbdata.abort = FALSE;
-  this->primcbdata.onlyrect =
-    this->master->lassoType.getValue() ==
-    SoExtSelection::LASSO;
+  this->primcbdata.onlyrect = (PUBLIC(this)->lassoType.getValue() == SoExtSelection::LASSO);
   // signal to callback action that we want to generate primitives for
   // this shape
   return SoCallbackAction::CONTINUE;
 }
+
+
 
 // triangle callback from SoCallbackAction
 void
@@ -1254,79 +1384,200 @@ SoExtSelectionP::triangleCB(void * userData,
                             const SoPrimitiveVertex * v3)
 {
   SoExtSelectionP * thisp = ((SoExtSelection*)userData)->pimpl;
-  if (thisp->primcbdata.abort) return;
+  
+  thisp->drawcallbackcounter++;
 
-  if (!thisp->triangleFilterCB && thisp->primcbdata.fulltest &&
-      !thisp->primcbdata.allhit) {
+  thisp->addTriangleToOffscreenBuffer(action, v1, v2, v3, TRUE);
+  
+  // Shall we skip a certain amount of triangles before we start processing?
+  if(thisp->offscreenskipcounter < (thisp->maximumcolorcounter*thisp->offscreencolorcounterpasses-1)){
+    ++thisp->offscreenskipcounter;
+    return;
+  }
+
+  // Increase draw counter. Used below.
+  thisp->drawcounter++;
+
+
+  if(thisp->primcbdata.abort) return;
+
+  if(!thisp->triangleFilterCB && thisp->primcbdata.fulltest &&
+     !thisp->primcbdata.allhit) {
     thisp->primcbdata.abort = TRUE;
     return;
   }
-  if (!thisp->triangleFilterCB && !thisp->primcbdata.fulltest &&
-      thisp->primcbdata.hit) {
+  if(!thisp->triangleFilterCB && !thisp->primcbdata.fulltest &&
+     thisp->primcbdata.hit) {
     thisp->primcbdata.abort = TRUE;
     return;
   }
+  
 
-  SbBool onlyrect = thisp->primcbdata.onlyrect;
+  SbVec2s p0 = project_pt(thisp->primcbdata.projmatrix, v1->getPoint(),
+                          thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
+  SbVec2s p1 = project_pt(thisp->primcbdata.projmatrix, v2->getPoint(),
+                          thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
+  SbVec2s p2 = project_pt(thisp->primcbdata.projmatrix, v3->getPoint(),
+                          thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
 
-  if (thisp->primcbdata.fulltest) { // entire triangle must be inside lasso
-    SbVec2s p0 = project_pt(thisp->primcbdata.projmatrix, v1->getPoint(),
-                            thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
-    if (!thisp->primcbdata.lassorect.intersect(p0) || (onlyrect || !point_in_poly(thisp->coords, p0))) {
+
+ 
+  if(thisp->primcbdata.fulltest) { // entire triangle must be inside lasso
+    
+    if(thisp->master->lassoType.getValue() == SoExtSelection::RECTANGLE){ // Rectangle check only
+      if (!thisp->primcbdata.lassorect.intersect(p0) || (!point_in_poly(thisp->coords, p0))) {
+        thisp->primcbdata.allhit = FALSE;
+        return;
+      }
+      if (!thisp->primcbdata.lassorect.intersect(p1) || (!point_in_poly(thisp->coords, p1))) {
+        thisp->primcbdata.allhit = FALSE;
+        return;
+      }
+      if (!thisp->primcbdata.lassorect.intersect(p2) || (!point_in_poly(thisp->coords, p2))) {
+        thisp->primcbdata.allhit = FALSE;
+        return;
+      }      
+    }
+    
+    if(poly_line_intersect(thisp->coords, p0, p1, FALSE)) {
+      thisp->primcbdata.allhit = FALSE;
+      return;
+    }
+    if(poly_line_intersect(thisp->coords, p1, p2, FALSE)) {
+      thisp->primcbdata.allhit = FALSE;
+      return;
+    }
+    if(poly_line_intersect(thisp->coords, p2, p0, FALSE)) {
       thisp->primcbdata.allhit = FALSE;
       return;
     }
     
-    SbVec2s p1 = project_pt(thisp->primcbdata.projmatrix, v2->getPoint(),
-                          thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
-    if (!thisp->primcbdata.lassorect.intersect(p1) || (onlyrect || !point_in_poly(thisp->coords, p1))) {
-      thisp->primcbdata.allhit = FALSE;
-      return;
-    }
-    SbVec2s p2 = project_pt(thisp->primcbdata.projmatrix, v3->getPoint(),
-                            thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
-    if (!thisp->primcbdata.lassorect.intersect(p2) || (onlyrect || !point_in_poly(thisp->coords, p2))) {
-      thisp->primcbdata.allhit = FALSE;
-      return;
-    }
 
-    if (poly_line_intersect(thisp->coords, p0, p1, FALSE)) {
-      thisp->primcbdata.allhit = FALSE;
-      return;
-    }
-    if (poly_line_intersect(thisp->coords, p1, p2, FALSE)) {
-      thisp->primcbdata.allhit = FALSE;
-      return;
-    }
-    if (poly_line_intersect(thisp->coords, p2, p0, FALSE)) {
-      thisp->primcbdata.allhit = FALSE;
-      return;
-    }
-  }
-  else { // some part of the triangle must be inside lasso
-    SbVec2s p0 = project_pt(thisp->primcbdata.projmatrix, v1->getPoint(),
-                            thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
-    SbVec2s p1 = project_pt(thisp->primcbdata.projmatrix, v2->getPoint(),
-                            thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
-    SbVec2s p2 = project_pt(thisp->primcbdata.projmatrix, v3->getPoint(),
-                            thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
+  } else { // some part of the triangle must be inside lasso
     if (!poly_tri_intersect(thisp->coords, p0, p1, p2)) {
       thisp->primcbdata.allhit = FALSE;
       return;
     }
   }
-  // triangle is hit/surrounded by the lasso
-  if (thisp->triangleFilterCB) {
-    if (thisp->triangleFilterCB(thisp->triangleFilterCBData,
-                                action, v1, v2, v3)) {
-      // select shape
+  
+  
+  
+  if(!thisp->applyonlyonselectedtriangles){ // --- First pass
+    
+    if(!thisp->primcbdata.allshapes){ // LassoMode==VISIBLE_SHAPES
+      
+      if(thisp->drawcounter > thisp->maximumcolorcounter)
+        thisp->offscreencolorcounteroverflow = TRUE;
+      
+      thisp->addTriangleToOffscreenBuffer(action, v1, v2, v3, thisp->offscreencolorcounteroverflow);
+
+    } else if (thisp->triangleFilterCB && thisp->primcbdata.allshapes) {
+      
+      // Present accepted triangle to 'user' through a callback. 
+      if (thisp->triangleFilterCB(thisp->triangleFilterCBData,
+				  action, v1, v2, v3)) {
+	// Select shape.
+	thisp->primcbdata.hit = TRUE;
+	thisp->primcbdata.allhit = TRUE;
+	thisp->primcbdata.abort = TRUE;
+      }
+      
+    } else {
       thisp->primcbdata.hit = TRUE;
-      thisp->primcbdata.allhit = TRUE;
-      thisp->primcbdata.abort = TRUE;
+    }  
+    
+  } else {  // --- Second pass. Feeding visible tris to client.
+    
+
+    if(thisp->drawcounter > thisp->maximumcolorcounter){
+      thisp->offscreencolorcounteroverflow = TRUE;
+      return;
     }
+    
+    int flag = 0x1 << (thisp->offscreencolorcounter & 0x07);
+    int index = thisp->offscreencolorcounter >> 3;
+    
+    if(thisp->visibletrianglesbitarray[index] & flag){
+
+      thisp->somefacesvisible = TRUE;
+      if(thisp->triangleFilterCB(thisp->triangleFilterCBData, action, v1, v2, v3)){
+	thisp->primcbdata.hit = TRUE;
+	thisp->primcbdata.allhit = TRUE;
+      }
+
+    }
+
+    ++thisp->offscreencolorcounter;
+    
   }
-  else thisp->primcbdata.hit = TRUE;
+  
 }
+
+
+
+void
+SoExtSelectionP::addTriangleToOffscreenBuffer(SoCallbackAction * action,
+					      const SoPrimitiveVertex * v1,
+					      const SoPrimitiveVertex * v2,
+					      const SoPrimitiveVertex * v3,
+					      SbBool renderAsBlack)
+{
+
+  if(primcbdata.allshapes)
+    return;
+
+  SoState * state = action->getState();
+  SbMatrix proj, affine;
+  const SbMatrix & mm = SoModelMatrixElement::get(state);
+  offscreenviewvolume.getMatrices(affine, proj);
+  affine.multLeft(mm);
+
+  glMatrixMode(GL_PROJECTION);
+  glLoadMatrixf((float *)proj);
+  glMatrixMode(GL_MODELVIEW);
+  glLoadMatrixf((float *)affine);
+
+  glDepthFunc(GL_LEQUAL);
+
+  // Check vertex ordrering
+  SoShapeHintsElement::VertexOrdering vertexorder;
+  SoShapeHintsElement::ShapeType shapetype;
+  SoShapeHintsElement::FaceType facetype; //Unused.
+  SoShapeHintsElement::get(state, vertexorder, shapetype, facetype);
+
+    
+  if(shapetype == SoShapeHintsElement::SOLID){
+    if(vertexorder == SoShapeHintsElement::CLOCKWISE){
+      glFrontFace(GL_CW);
+      glEnable(GL_CULL_FACE);
+    } else if(vertexorder == SoShapeHintsElement::COUNTERCLOCKWISE){
+      glFrontFace(GL_CCW);
+      glEnable(GL_CULL_FACE);
+    } else {
+      glDisable(GL_CULL_FACE);
+    }
+  } else {
+    glDisable(GL_CULL_FACE);
+  }
+  
+  glBegin(GL_TRIANGLES);    
+
+  if(!renderAsBlack){
+    glColor3ub((unsigned char) (this->offscreencolorcounter>>(8+8)),
+	       (unsigned char) (this->offscreencolorcounter>>(8)),
+	       (unsigned char) (this->offscreencolorcounter));
+    ++offscreencolorcounter;
+  } else {
+    glColor3f(0,0,0);
+  }
+
+  glVertex3fv(v1->getPoint().getValue());
+  glVertex3fv(v2->getPoint().getValue());
+  glVertex3fv(v3->getPoint().getValue());
+  glEnd();
+
+}
+
 
 // line segment callback from SoCallbackAction
 void
@@ -1336,7 +1587,21 @@ SoExtSelectionP::lineSegmentCB(void *userData,
                                const SoPrimitiveVertex * v2)
 {
   SoExtSelectionP * thisp = ((SoExtSelection*)userData)->pimpl;
-  if (thisp->primcbdata.abort) return;
+  thisp->drawcallbackcounter++;
+  thisp->addLineToOffscreenBuffer(action, v1, v2, TRUE);
+
+  // Shall we skip a certain amount of lines before we start processing?
+  if(thisp->offscreenskipcounter < (thisp->maximumcolorcounter*thisp->offscreencolorcounterpasses-1)){
+    ++thisp->offscreenskipcounter;
+    //thisp->addLineToOffscreenBuffer(action, v1, v2, TRUE);
+ 
+    return;
+  }
+
+  // Increase draw counter. Used below.
+  thisp->drawcounter++;
+
+  if(thisp->primcbdata.abort) return;
 
   if (!thisp->lineFilterCB && thisp->primcbdata.fulltest &&
       !thisp->primcbdata.allhit) {
@@ -1348,53 +1613,134 @@ SoExtSelectionP::lineSegmentCB(void *userData,
     thisp->primcbdata.abort = TRUE;
     return;
   }
-
+  
   SbBool onlyrect = thisp->primcbdata.onlyrect;
 
+  SbVec2s p0 = project_pt(thisp->primcbdata.projmatrix, v1->getPoint(),
+                          thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
+  
+  SbVec2s p1 = project_pt(thisp->primcbdata.projmatrix, v2->getPoint(),
+                          thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
+  
   if (thisp->primcbdata.fulltest) {
-    SbVec2s p0 = project_pt(thisp->primcbdata.projmatrix, v1->getPoint(),
-                            thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
-    if (!thisp->primcbdata.lassorect.intersect(p0) || (onlyrect || !point_in_poly(thisp->coords, p0))) {
-      thisp->primcbdata.allhit = FALSE;
-      return;
-    }
 
-    SbVec2s p1 = project_pt(thisp->primcbdata.projmatrix, v2->getPoint(),
-                            thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
-    if (!thisp->primcbdata.lassorect.intersect(p1) || (onlyrect || !point_in_poly(thisp->coords, p1))) {
-      thisp->primcbdata.allhit = FALSE;
-      return;
-    }
 
+    if(thisp->master->lassoType.getValue() == SoExtSelection::RECTANGLE){ // Rectangle check only  
+      if (!thisp->primcbdata.lassorect.intersect(p0) || (onlyrect || !point_in_poly(thisp->coords, p0))) {
+        thisp->primcbdata.allhit = FALSE;
+        return;
+      }
+      
+      if (!thisp->primcbdata.lassorect.intersect(p1) || (onlyrect || !point_in_poly(thisp->coords, p1))) {
+        thisp->primcbdata.allhit = FALSE;
+        return;
+      }
+    }
+    
     if (poly_line_intersect(thisp->coords, p0, p1, FALSE)) {
       thisp->primcbdata.allhit = FALSE;
       return;
     }
   }
   else {
-    SbVec2s p0 = project_pt(thisp->primcbdata.projmatrix, v1->getPoint(),
-                            thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
-    SbVec2s p1 = project_pt(thisp->primcbdata.projmatrix, v2->getPoint(),
-                            thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
     if (!poly_line_intersect(thisp->coords, p0, p1, TRUE)) {
       thisp->primcbdata.allhit = FALSE;
       return;
     }
   }
 
-  // line segment is hit/surrounded by the lasso
 
-  if (thisp->lineFilterCB) {
-    if (thisp->lineFilterCB(thisp->lineFilterCBData,
-                            action, v1, v2)) {
-      // select shape
-      thisp->primcbdata.hit = TRUE;
-      thisp->primcbdata.allhit = TRUE;
-      thisp->primcbdata.abort = TRUE;
+  if(!thisp->applyonlyonselectedtriangles){ // --- First pass
+
+    // line segment is hit/surrounded by the lasso
+    if(!thisp->primcbdata.allshapes){
+
+      if(thisp->drawcounter > thisp->maximumcolorcounter)
+        thisp->offscreencolorcounteroverflow = TRUE;
+      
+      thisp->addLineToOffscreenBuffer(action, v1, v2, thisp->offscreencolorcounteroverflow);
+      
+    } else if (thisp->lineFilterCB && thisp->primcbdata.allshapes) {
+
+      if (thisp->lineFilterCB(thisp->lineFilterCBData,
+                              action, v1, v2)) {
+        // select shape
+        thisp->primcbdata.hit = TRUE;
+        thisp->primcbdata.allhit = TRUE;
+        thisp->primcbdata.abort = TRUE;
+      }
     }
+    else thisp->primcbdata.hit = TRUE;
+
+  } else { // ---- Second pass
+    
+    if(thisp->drawcounter > thisp->maximumcolorcounter){
+      thisp->offscreencolorcounteroverflow = TRUE;
+      return;
+    }
+    
+    int flag = 0x1 << (thisp->offscreencolorcounter & 0x07);
+    int index = thisp->offscreencolorcounter >> 3;
+    
+    if(thisp->visibletrianglesbitarray[index] & flag){
+      
+      if(thisp->lineFilterCB(thisp->lineFilterCBData, action, v1, v2)){
+	thisp->primcbdata.hit = TRUE;
+	thisp->primcbdata.allhit = TRUE;
+      }
+    }
+    
+    ++thisp->offscreencolorcounter;
+    
   }
-  else thisp->primcbdata.hit = TRUE;
+
+
 }
+
+
+
+void
+SoExtSelectionP::addLineToOffscreenBuffer(SoCallbackAction * action,
+                                          const SoPrimitiveVertex * v1,
+                                          const SoPrimitiveVertex * v2,
+                                          SbBool renderAsBlack)
+{
+
+  if(primcbdata.allshapes)
+    return;
+
+  SoState * state = action->getState();
+  SbMatrix proj, affine;
+  const SbMatrix & mm = SoModelMatrixElement::get(state);
+  offscreenviewvolume.getMatrices(affine, proj);
+  affine.multLeft(mm);
+  
+  glMatrixMode(GL_PROJECTION);
+  glLoadMatrixf((float *)proj);
+  glMatrixMode(GL_MODELVIEW);
+  glLoadMatrixf((float *)affine);
+  
+  glDepthFunc(GL_LEQUAL);
+
+
+  glBegin(GL_LINES);    
+
+  if(!renderAsBlack){
+    glColor3ub((unsigned char) (this->offscreencolorcounter>>(8+8)),
+	       (unsigned char) (this->offscreencolorcounter>>(8)),
+	       (unsigned char) (this->offscreencolorcounter));
+    ++offscreencolorcounter;
+  } else {
+    glColor3f(0,0,0);
+  }
+
+  glVertex3fv(v1->getPoint().getValue());
+  glVertex3fv(v2->getPoint().getValue());
+  glEnd();
+
+}
+
+
 
 // line segment callback from SoCallbackAction
 void
@@ -1402,71 +1748,459 @@ SoExtSelectionP::pointCB(void *userData,
                          SoCallbackAction *action,
                          const SoPrimitiveVertex * v)
 {
-  SoExtSelectionP * thisp = ((SoExtSelection*)userData)->pimpl;
-  if (thisp->primcbdata.abort) return;
 
-  if (!thisp->pointFilterCB && thisp->primcbdata.fulltest &&
+  SoExtSelectionP * thisp = ((SoExtSelection*)userData)->pimpl;
+  thisp->drawcallbackcounter++;
+  
+  thisp->addPointToOffscreenBuffer(action, v, TRUE);
+  
+  // Shall we skip a certain amount of lines before we start processing?
+  if(thisp->offscreenskipcounter < (thisp->maximumcolorcounter*thisp->offscreencolorcounterpasses-1)){
+    ++thisp->offscreenskipcounter;
+    return;
+  }
+
+  // Increase draw counter. (Used below).
+  thisp->drawcounter++;
+  
+
+  if(thisp->primcbdata.abort){ 
+    return;
+  }  
+
+  if(!thisp->pointFilterCB && thisp->primcbdata.fulltest &&
       !thisp->primcbdata.allhit) {
     thisp->primcbdata.abort = TRUE;
     return;
   }
-  if (!thisp->pointFilterCB && !thisp->primcbdata.fulltest &&
+  if(!thisp->pointFilterCB && !thisp->primcbdata.fulltest &&
       thisp->primcbdata.hit) {
     thisp->primcbdata.abort = TRUE;
     return;
   }
-
-  SbBool onlyrect = thisp->primcbdata.onlyrect;
-
+  
+ 
   SbVec2s p = project_pt(thisp->primcbdata.projmatrix, v->getPoint(),
                          thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
-  if (!thisp->primcbdata.lassorect.intersect(p) || (onlyrect || !point_in_poly(thisp->coords, p))) {
+  
+  if(thisp->master->lassoType.getValue() == SoExtSelection::RECTANGLE){ // Rectangle check only  
+    
+    SbBool onlyrect = thisp->primcbdata.onlyrect;
+    if (!thisp->primcbdata.lassorect.intersect(p) || (onlyrect || !point_in_poly(thisp->coords, p))) {
+      thisp->primcbdata.allhit = FALSE;
+      return;
+    }
+    
+  } else if(!point_in_poly(thisp->coords, p)) {
     thisp->primcbdata.allhit = FALSE;
     return;
   }
-
-  // line segment is surrounded by the lasso
-
-  if (thisp->pointFilterCB) {
-    if (thisp->pointFilterCB(thisp->pointFilterCBData,
-                             action, v)) {
-      // select shape
-      thisp->primcbdata.hit = TRUE;
-      thisp->primcbdata.allhit = TRUE;
-      thisp->primcbdata.abort = TRUE;
+  
+  
+  if(!thisp->applyonlyonselectedtriangles){ // ---- First pass
+    
+    if(!thisp->primcbdata.allshapes){
+      
+      // Draw to offscreen
+      if(thisp->drawcounter > thisp->maximumcolorcounter)
+        thisp->offscreencolorcounteroverflow = TRUE;
+            
+      thisp->addPointToOffscreenBuffer(action, v, thisp->offscreencolorcounteroverflow);
+      
+    } else if (thisp->pointFilterCB && thisp->primcbdata.allshapes) {
+      
+      if (thisp->pointFilterCB(thisp->pointFilterCBData, action, v)) {
+        // select shape
+        thisp->primcbdata.hit = TRUE;
+        thisp->primcbdata.allhit = TRUE;
+        thisp->primcbdata.abort = TRUE;
+      }
     }
+    else thisp->primcbdata.hit = TRUE;
+    
+  } else { // ---- Second pass
+
+    if(thisp->drawcounter > thisp->maximumcolorcounter){
+      thisp->offscreencolorcounteroverflow = TRUE;
+      return;
+    }
+    
+    int flag = 0x1 << (thisp->offscreencolorcounter & 0x07);
+    int index = thisp->offscreencolorcounter >> 3;
+    
+    if(thisp->visibletrianglesbitarray[index] & flag){
+        
+      if(thisp->pointFilterCB(thisp->pointFilterCBData, action, v)){
+	thisp->primcbdata.hit = TRUE;
+	thisp->primcbdata.allhit = TRUE;
+      }
+    }
+    ++thisp->offscreencolorcounter;
+    
   }
-  else thisp->primcbdata.hit = TRUE;
+  
 }
+
+void
+SoExtSelectionP::addPointToOffscreenBuffer(SoCallbackAction * action,
+                                           const SoPrimitiveVertex * v1,
+                                           SbBool renderAsBlack)
+{
+
+  if(primcbdata.allshapes)
+    return;
+
+  SoState * state = action->getState();
+  SbMatrix proj, affine;
+  const SbMatrix & mm = SoModelMatrixElement::get(state);
+  offscreenviewvolume.getMatrices(affine, proj);
+  affine.multLeft(mm);
+  
+  glMatrixMode(GL_PROJECTION);
+  glLoadMatrixf((float *)proj);
+  glMatrixMode(GL_MODELVIEW);
+  glLoadMatrixf((float *)affine);
+
+  glDepthFunc(GL_LEQUAL);
+  glPointSize(SoPointSizeElement::get(action->getState()));
+
+
+  glBegin(GL_POINTS);    
+
+  if(!renderAsBlack){
+    glColor3ub((unsigned char) (this->offscreencolorcounter>>(8+8)),
+	       (unsigned char) (this->offscreencolorcounter>>(8)),
+	       (unsigned char) (this->offscreencolorcounter));
+    ++offscreencolorcounter;
+  } else {
+    glColor3f(0,0,0);
+  }
+
+  glVertex3fv(v1->getPoint().getValue());
+  glEnd();
+
+}
+
 
 // invoke selection policy on a shape
 void
 SoExtSelectionP::doSelect(const SoPath * path)
 {
   SoPath * newpath = (SoPath*) path;
-
+  
   if (this->filterCB && (!this->callfiltercbonlyifselectable ||
-                         path->findNode(this->master) >= 0)) {
+                         path->findNode(PUBLIC(this)) >= 0)) {
     newpath = this->filterCB(this->filterCBData, path);
   }
-  if (newpath == NULL) return;
-
-  if (newpath != path) newpath->ref();
-
-  this->master->invokeSelectionPolicy(newpath, TRUE);
-
-  if (newpath != path) newpath->unref();
+  if (newpath == NULL) 
+    return;
+  if (newpath != path) 
+    newpath->ref();
+  PUBLIC(this)->invokeSelectionPolicy(newpath, TRUE);
+  if (newpath != path) 
+    newpath->unref();
 }
+
+
+// Call a doSelect for all paths in pathlist
+void
+SoExtSelectionP::selectPaths()
+{
+ 
+  int length = this->visitedshapepaths->getLength();
+ 
+  for(int i=0;i<length;++i)
+    doSelect((*(this->visitedshapepaths))[i]);
+ 
+  this->visitedshapepaths->truncate(0);
+}
+
+void 
+SoExtSelectionP::offscreenLassoTesselatorCallback(void * v0, void * v1, void * v2, void * userdata)
+{
+
+  SoExtSelectionP * pimpl = (SoExtSelectionP *) userdata;
+
+  // Set flag indicating that a callback was executed.
+  pimpl->lassostencilisdrawed = TRUE;
+
+  SbVec3f *vec0 = (SbVec3f *) v0;
+  SbVec3f *vec1 = (SbVec3f *) v1;
+  SbVec3f *vec2 = (SbVec3f *) v2;
+
+  glBegin(GL_TRIANGLES);
+   glColor3f(1,1,1);
+   glVertex2f(vec0->getValue()[0],vec0->getValue()[1]);
+   glVertex2f(vec1->getValue()[0],vec1->getValue()[1]);
+   glVertex2f(vec2->getValue()[0],vec2->getValue()[1]); 
+  glEnd();
+
+}
+
+void 
+SoExtSelectionP::offscreenRenderLassoCallback(void * userdata, SoAction * action)
+{
+
+  SoExtSelectionP * pimpl = (SoExtSelectionP *) userdata;
+
+  
+  // Setup optimal screen-aspect according to lasso-size
+  SoHandleEventAction * eventAction = pimpl->offscreenaction;
+  pimpl->offscreenviewvolume = SoViewVolumeElement::get(eventAction->getState());
+  const SbViewportRegion & vp = SoViewportRegionElement::get(eventAction->getState());
+  
+  
+  //
+  // FIXME: This commented code is suppose to 'zoom' in the lasso-polygon like we 'zoom' in
+  // on the selected tris in 'offscreenRenderCallback'. But alas, it doesn't work yet... (handegar)
+  //
+  /*
+  SbBox2s rectbbox;
+  for(int i = 0; i < pimpl->coords.getLength(); i++)
+    rectbbox.extendBy(pimpl->coords[i]);
+  
+  SbVec2s org = vp.getViewportOriginPixels();
+  SbVec2s siz = vp.getViewportSizePixels();
+  float left = float(rectbbox.getMin()[0] - org[0]) / float(siz[0]);
+  float bottom = float(rectbbox.getMin()[1] - org[1]) / float(siz[1]);
+  
+  float right = float(rectbbox.getMax()[0] - org[0]) / float(siz[0]);
+  float top = float(rectbbox.getMax()[1] - org[1]) / float(siz[1]);
+  
+  // increment to avoid empty view volume
+  if (left == right) right += 0.001f;
+  if (top == bottom) top += 0.001f;
+  
+  // Reshape view volume
+  pimpl->offscreenviewvolume = pimpl->offscreenviewvolume.narrow(left, bottom, right, top);
+  */
+  
+  SbVec2s vpo = vp.getViewportOriginPixels();
+  SbVec2s vps = vp.getViewportSizePixels();
+  
+  glMatrixMode(GL_PROJECTION);
+  glOrtho(vpo[0], vpo[0]+vps[0]-1,
+	  vpo[1], vpo[0]+vps[1]-1,
+	  -1, 1);
+  
+  glPushAttrib(GL_LIGHTING_BIT|
+	       GL_FOG_BIT|
+	       GL_DEPTH_BUFFER_BIT|
+	       GL_TEXTURE_BIT|
+	       GL_LINE_BIT|
+	       GL_CURRENT_BIT);
+
+  glDisable(GL_LIGHTING);
+  glDisable(GL_TEXTURE_2D);
+  glDisable(GL_FOG);
+  glDisable(GL_BLEND);
+  glDisable(GL_DEPTH_TEST);
+  glDisable(GL_CULL_FACE);
+
+  // This flag will be set to TRUE if the tesselatorcallbacks was executed.
+  pimpl->lassostencilisdrawed = FALSE;
+
+  // Render all tris to offscreen buffer via a tesselator.
+  SbTesselator tesselator(pimpl->offscreenLassoTesselatorCallback,pimpl);
+  tesselator.beginPolygon();
+
+  int i;
+  SbList <SbVec3f> tmplist;
+  for(i = 0; i < pimpl->coords.getLength(); i++){
+    tmplist.append(SbVec3f((float) pimpl->coords[i][0],(float) pimpl->coords[i][1],0));
+  }
+  const SbVec3f * tmparray = tmplist.getArrayPtr();
+  for(i = 0; i < pimpl->coords.getLength(); i++)
+    tesselator.addVertex(tmparray[i],(void*)&tmparray[i]);
+  tesselator.endPolygon();
+ 
+ 
+  glPopAttrib();
+}
+
+void 
+SoExtSelectionP::offscreenRenderCallback(void * userdata, SoAction * action)
+{
+ 
+  SoExtSelectionP * pimpl = (SoExtSelectionP *) userdata;
+  
+  //
+  // FIXME: This commented code is used to zoom in the selection. Dont work yet when combined
+  // with lasso-stencil test, since the lasso-stencil is not 'zoomed'.
+  //
+  /*
+  // --- Setup optimal screen-aspect according to lasso-size
+  SoHandleEventAction * eventAction = pimpl->offscreenaction;
+  pimpl->offscreenviewvolume = SoViewVolumeElement::get(eventAction->getState());
+  const SbViewportRegion & vp = SoViewportRegionElement::get(eventAction->getState());
+  SbBox2s rectbbox;
+
+  for (int i = 0; i < pimpl->coords.getLength(); i++)
+    rectbbox.extendBy(pimpl->coords[i]);
+  
+  SbVec2s org = vp.getViewportOriginPixels();
+  SbVec2s siz = vp.getViewportSizePixels();
+  float left = float(rectbbox.getMin()[0] - org[0]) / float(siz[0]);
+  float bottom = float(rectbbox.getMin()[1] - org[1]) / float(siz[1]);
+
+  float right = float(rectbbox.getMax()[0] - org[0]) / float(siz[0]);
+  float top = float(rectbbox.getMax()[1] - org[1]) / float(siz[1]);
+  
+  // increment to avoid empty view volume
+  if (left == right) right += 0.001f;
+  if (top == bottom) top += 0.001f;
+
+  // Reshape view volume
+  pimpl->offscreenviewvolume = pimpl->offscreenviewvolume.narrow(left, bottom, right, top);
+  */
+
+
+  GLint depthFunc;
+  glGetIntegerv(GL_DEPTH_FUNC,&depthFunc);
+
+  glPushAttrib(GL_LIGHTING_BIT|
+	       GL_FOG_BIT|
+	       GL_DEPTH_BUFFER_BIT|
+	       GL_TEXTURE_BIT|
+	       GL_LINE_BIT|
+	       GL_CURRENT_BIT);
+
+  // Setup GL-state for offscreen context
+  glDisable(GL_LIGHTING);
+  glDisable(GL_TEXTURE_2D);
+  glDisable(GL_TEXTURE_3D);
+  glDisable(GL_FOG);
+  glDisable(GL_BLEND);
+  glEnable(GL_DEPTH_TEST);
+
+  // --- Render all tris to offscreen buffer.
+  pimpl->cbaction->apply(pimpl->offscreenheadnode);
+  pimpl->master->touch();
+
+  // Restore all OpenGL States
+  glPopAttrib();
+
+  glDepthFunc(depthFunc);
+
+}
+
+void
+SoExtSelectionP::checkOffscreenRendererCapabilities()
+{
+  
+  // Check color-channel bitresolution
+  GLint red = 0;
+  GLint green = 0;
+  GLint blue = 0;
+  GLint alpha = 0;
+  GLboolean rgbmode;
+  glGetIntegerv(GL_RED_BITS,&red);
+  glGetIntegerv(GL_GREEN_BITS,&green);
+  glGetIntegerv(GL_BLUE_BITS,&blue);
+  glGetIntegerv(GL_ALPHA_BITS,&alpha);
+  
+  glGetBooleanv(GL_RGBA_MODE,&rgbmode);
+  // FIXME: Here we have to give a better message to the client (handegar)
+  assert(rgbmode && "Offscreen renderer in non-RGB mode is not supported when using SoExtSelection");
+  
+  this->colorbitsred = red;
+  this->colorbitsgreen = green;
+  this->colorbitsblue = blue;
+  this->colorbitsalpha = alpha;
+
+  // This is debug/testing stuff, forcing lower colorresolution. VERY useful!
+#ifdef BITCOLOR9 
+  this->colorbitsred = 3;
+  this->colorbitsgreen = 3;
+  this->colorbitsblue = 3;
+#endif  
+#ifdef BITCOLOR3
+  this->colorbitsred = 1;
+  this->colorbitsgreen = 1;
+  this->colorbitsblue = 1;
+#endif  
+#ifdef BITCOLOR6
+  this->colorbitsred = 2;
+  this->colorbitsgreen = 2;
+  this->colorbitsblue = 2;
+#endif  
+
+
+  // Calculate maximum colorcounter from RGB bit depth.
+  this->maximumcolorcounter = ((int) pow(2,this->colorbitsred) - 1) << (this->colorbitsgreen + this->colorbitsblue);
+  this->maximumcolorcounter += ((int) pow(2,this->colorbitsgreen) - 1) << (this->colorbitsblue);
+  this->maximumcolorcounter += ((int) pow(2,this->colorbitsblue));
+  
+}
+
+SbBool
+SoExtSelectionP::scanOffscreenBuffer(SoNode *sceneRoot)
+{
+  
+  const SbViewportRegion vpr = renderer->getViewportRegion();
+
+  int offscreenSizeX = vpr.getViewportSizePixels()[0];
+  int offscreenSizeY = vpr.getViewportSizePixels()[1];
+
+  unsigned char * rgbBuffer = renderer->getBuffer();
+  unsigned char * stencilBuffer = lassorenderer->getBuffer();
+  int pixelValue = 0;
+  int index = 0;
+  int flag = 0;
+  SbBool hitflag = FALSE;
+
+
+  // Clear entire 'visibletrianglesbitarray' table
+  for(int i=0;i<((this->maximumcolorcounter >> 3)+1);i++)
+    this->visibletrianglesbitarray[i] = 0;
+  
+
+  for(int j=0; j < offscreenSizeY; ++j){
+    for(int i=0; i < offscreenSizeX*3; i+=3){
+      
+      // If needed, we consult the stencil buffer before fetching pixelvalue
+      if(this->lassostencilisdrawed){
+	if(stencilBuffer[j*offscreenSizeX*3 + i] == 0)
+	  continue;
+      }
+      
+      pixelValue = (rgbBuffer[j*offscreenSizeX*3 + i]<< (8+8));
+      pixelValue += (rgbBuffer[j*offscreenSizeX*3 + i + 1]<< (8));
+      pixelValue += (rgbBuffer[j*offscreenSizeX*3 + i + 2]);
+      
+      
+      if(pixelValue != 0){
+        
+	flag = 0x1 << (pixelValue & 0x07);
+	index = pixelValue >> 3;
+        
+	visibletrianglesbitarray[index] |= flag;
+  	hitflag = TRUE;
+      }
+
+    }
+  }
+
+  return(hitflag);
+}
+
 
 // start a selecting for the current lasso/rectangle
 void
 SoExtSelectionP::performSelection(SoHandleEventAction * action)
 {
-  if (this->master->lassoType.getValue() == SoExtSelection::RECTANGLE) {
+
+  if (PUBLIC(this)->lassoType.getValue() == SoExtSelection::RECTANGLE) {
     assert(this->coords.getLength() == 2);
     SbVec2s p0 = this->coords[0];
     SbVec2s p1 = this->coords[1];
     this->coords.truncate(0);
+
+    // Is this actually a rectangle and not just a point or line?
+    if(((p0[0] == p1[0]) && (p0[1] == p1[0])) ||
+       ((p0[0] == p1[0]) || (p0[1] == p1[1])))
+      return;
+
     // convert the rectangle to a polygon
     this->coords.append(p0);
     this->coords.append(SbVec2s(p1[0], p0[1]));
@@ -1478,20 +2212,131 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
   this->cbaction->setViewportRegion(this->curvp);
 
   this->wasshiftdown = action->getEvent()->wasShiftDown();
-  switch (this->master->policy.getValue()) {
+  switch (PUBLIC(this)->policy.getValue()) {
   case SoSelection::SINGLE:
-    this->master->deselectAll();
+    PUBLIC(this)->deselectAll();
     break;
   case SoSelection::SHIFT:
-    if (!this->wasshiftdown) this->master->deselectAll();
+    if (!this->wasshiftdown) PUBLIC(this)->deselectAll();
     break;
   default:
     break;
   }
-  this->master->startCBList->invokeCallbacks(this->master);
-  this->cbaction->apply(action->getCurPath()->getHead());
-  this->master->finishCBList->invokeCallbacks(this->master);
-  this->master->touch();
+  
+
+  if(PUBLIC(this)->lassoMode.getValue() == SoExtSelection::ALL_SHAPES) {
+
+    this->offscreencolorcounter = 1;
+    this->offscreenskipcounter = 0;
+    this->applyonlyonselectedtriangles = FALSE;
+    this->offscreencolorcounteroverflow = FALSE;
+    this->drawcallbackcounter = 0;
+    this->drawcounter = 0;
+
+    // Execute 'search' for triangles
+    primcbdata.allshapes = TRUE;
+    PUBLIC(this)->startCBList->invokeCallbacks(PUBLIC(this));
+    this->cbaction->apply(action->getCurPath()->getHead());
+    PUBLIC(this)->finishCBList->invokeCallbacks(PUBLIC(this));
+    PUBLIC(this)->touch();
+
+  } else {
+
+    //
+    // -- Search for visible triangles inside lasso
+    //
+
+    // Send signalt to client that tris are comming up
+    PUBLIC(this)->startCBList->invokeCallbacks(PUBLIC(this));
+
+    this->offscreenaction = action;
+    this->offscreenheadnode = action->getCurPath()->getHead();
+    
+    // Check OpenGL capabilities
+    checkOffscreenRendererCapabilities();
+    this->visibletrianglesbitarray = new unsigned char[((this->maximumcolorcounter) >> 3)+1];
+ 
+    // --- Do this procedure several times if colorcounter overflows
+    this->offscreencolorcounterpasses = 0;
+    this->renderer = new SoOffscreenRenderer(action->getViewportRegion());
+    this->lassorenderer = new SoOffscreenRenderer(action->getViewportRegion());
+
+
+    SoCallback * cbnode = new SoCallback;
+    cbnode->ref();
+    cbnode->setCallback(offscreenRenderCallback, this);
+
+ 
+    do { // --- Render and processing loop.
+
+      primcbdata.allshapes = FALSE;
+ 
+      this->offscreencolorcounter = 1;
+      this->offscreenskipcounter = 0;
+      this->applyonlyonselectedtriangles = FALSE;
+      this->offscreencolorcounteroverflow = FALSE;
+      this->drawcallbackcounter = 0;
+      this->drawcounter = 0;
+       
+
+      // Render a offscreen stencil buffer of lasso-shape if needed
+      if(PUBLIC(this)->lassoType.getValue() != SoExtSelection::NOLASSO){
+	// Only draw stencil buffer on the first pass
+	if(this->offscreencolorcounterpasses == 0){
+	  SoCallback * cbnode2 = new SoCallback;
+	  cbnode2->ref();
+	  cbnode2->setCallback(offscreenRenderLassoCallback, this);
+	  this->lassorenderer->render(cbnode2);
+	  cbnode2->unref();
+	}
+      }
+
+
+      // First render pass to offscreen buffer.
+      this->renderer->render(cbnode);
+
+
+      // Used to save offscreen to disk for debugging purposes. (handegar)
+      //this->renderer->writeToRGB("renderdump1.rgb");
+
+
+      // Scan buffer marking visible colors in the 'visibletrianglesbitarray' array.
+      if(scanOffscreenBuffer(action->getCurPath()->getHead()) != 0){
+        
+	// Render once more, but only selected triangles which are forwarded
+	// to client code through 'triangleFilterCB'.
+
+	this->offscreencolorcounteroverflow = FALSE;
+	this->offscreencolorcounter = 1;
+	this->offscreenskipcounter = 0;
+        this->drawcallbackcounter = 0;
+        this->drawcounter = 0;
+ 
+	this->applyonlyonselectedtriangles = TRUE;
+	this->cbaction->apply(action->getCurPath()->getHead());
+	PUBLIC(this)->touch();
+
+      } else {
+
+	this->offscreencolorcounteroverflow = FALSE;
+	this->offscreencolorcounter = 1;
+	this->offscreenskipcounter = 0;
+      }
+      ++this->offscreencolorcounterpasses;
+
+    } while(this->offscreencolorcounterpasses*this->maximumcolorcounter < this->drawcallbackcounter);
+
+    // Send signal to client that we are finished searching for tris
+    PUBLIC(this)->finishCBList->invokeCallbacks(PUBLIC(this));    
+    delete [] this->visibletrianglesbitarray;
+    delete this->renderer;
+    delete this->lassorenderer;
+    cbnode->unref();
+
+    selectPaths(); // Execute a 'doSelect' on all stored paths.
+   
+  }
+
 }
 
 #endif // DOXYGEN_SKIP_THIS
