@@ -58,7 +58,9 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbImage.h>
 #include <Inventor/C/glue/gl.h>
+#include <Inventor/C/glue/glp.h>
 #include <Inventor/misc/SoGLImage.h>
+#include <Inventor/C/tidbits.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -83,6 +85,7 @@ public:
   SoGLImage * glimage;
   SbBool pbuffervalid;
   SbBool glimagevalid;
+  SbBool glrectangle;
   void updatePBuffer(SoState * state, const float quality);
   SoGLRenderAction * glaction;
   static void prerendercb(void * userdata, SoGLRenderAction * action);
@@ -141,13 +144,13 @@ SoSceneTexture2::SoSceneTexture2(void)
   SO_NODE_ADD_FIELD(size, (256, 256));
   SO_NODE_ADD_FIELD(scene, (NULL));
 
-  SO_NODE_ADD_FIELD(wrapS, (SoTexture2::REPEAT));
-  SO_NODE_ADD_FIELD(wrapT, (SoTexture2::REPEAT));
+  SO_NODE_ADD_FIELD(wrapS, (SoSceneTexture2::REPEAT));
+  SO_NODE_ADD_FIELD(wrapT, (SoSceneTexture2::REPEAT));
   SO_NODE_ADD_FIELD(model, (MODULATE));
   SO_NODE_ADD_FIELD(blendColor, (0.0f, 0.0f, 0.0f));
 
-  SO_NODE_SET_SF_ENUM_TYPE(wrapS, SoTexture2::Wrap);
-  SO_NODE_SET_SF_ENUM_TYPE(wrapT, SoTexture2::Wrap);
+  SO_NODE_SET_SF_ENUM_TYPE(wrapS, SoSceneTexture2::Wrap);
+  SO_NODE_SET_SF_ENUM_TYPE(wrapT, SoSceneTexture2::Wrap);
 
   SO_NODE_DEFINE_ENUM_VALUE(Model, MODULATE);
   SO_NODE_DEFINE_ENUM_VALUE(Model, DECAL);
@@ -196,7 +199,7 @@ SoSceneTexture2::GLRender(SoGLRenderAction * action)
     if (!cc_glglue_glversion_matches_at_least(glue, 1, 1, 0)) {
       static int didwarn = 0;
       if (!didwarn) {
-        SoDebugError::postWarning("SoTexture2::GLRender",
+        SoDebugError::postWarning("SoSceneTexture2::GLRender",
                                   "Unable to use the GL_REPLACE texture model. "
                                   "Your OpenGL version is < 1.1. "
                                   "Using GL_MODULATE instead.");
@@ -217,9 +220,14 @@ SoSceneTexture2::GLRender(SoGLRenderAction * action)
                                  this->blendColor.getValue());
 
     SoGLTexture3EnabledElement::set(state, this, FALSE);
-    SoGLTextureEnabledElement::set(state,
-                                   PRIVATE(this)->glimage != NULL &&
-                                   quality > 0.0f);
+    if (PRIVATE(this)->glimage && PRIVATE(this)->glrectangle) {
+      SoGLTextureEnabledElement::enableRectangle(state, this);
+    }
+    else {
+      SoGLTextureEnabledElement::set(state,
+                                     PRIVATE(this)->glimage != NULL &&
+                                     quality > 0.0f);
+    }
     if (this->isOverride()) {
       SoTextureOverrideElement::setImageOverride(state, TRUE);
     }
@@ -329,6 +337,7 @@ SoSceneTexture2P::SoSceneTexture2P(SoSceneTexture2 * api)
   this->glimage = NULL;
   this->glaction = NULL;
   this->glcontextsize.setValue(-1,-1);
+  this->glrectangle = FALSE;
 }
 
 SoSceneTexture2P::~SoSceneTexture2P()
@@ -365,11 +374,34 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
   if (size == SbVec2s(0,0)) return; 
 
   if (this->glcontext == NULL) {
+    this->glcontextsize = size;
+    const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
+    if (!glue->has_nv_texture_rectangle && !glue->has_ext_texture_rectangle) {
+      this->glcontextsize[0] = (short) coin_geq_power_of_two(size[0]);
+      this->glcontextsize[1] = (short) coin_geq_power_of_two(size[1]);
+      
+      if (this->glcontextsize != size) {
+        static int didwarn = 0;
+        if (!didwarn) {
+          SoDebugError::postWarning("SoSceneTexture2P::updatePBuffer",
+                                    "Requested non power of two size, but your OpenGL "
+                                    "driver lacks support for such textures.");
+          didwarn = 1;
+        }
+      }
+    }
+    this->glrectangle = FALSE;
+    if (!coin_is_power_of_two(this->glcontextsize[0]) ||
+        !coin_is_power_of_two(this->glcontextsize[1])) {
+      // will only get here if GL_NV_texture_rectangle or
+      // GL_EXT_texture_rectangle is available
+      this->glrectangle = TRUE;
+    }
+
     // FIXME: make it possible to specify what kind of context you want
     // (RGB or RGBA, I guess). pederb, 2003-11-27
     this->glcontext = cc_glglue_context_create_offscreen(size[0], size[1]);
     // FIXME: test if we actually got a pbuffer. pederb, 2003-11-27
-    this->glcontextsize = size;
     
     if (this->glaction) delete this->glaction;
     this->glaction = new SoGLRenderAction(SbViewportRegion(size));
@@ -397,6 +429,9 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
       this->glimage = NULL;
     }
     this->glimage = new SoGLImage;
+    if (this->glrectangle) {
+      this->glimage->setFlags(this->glimage->getFlags() | SoGLImage::RECTANGLE);
+    }
     // bind texture to pbuffer
     this->glimage->setPBuffer(state, this->glcontext,
                               translateWrap((SoSceneTexture2::Wrap)PUBLIC(this)->wrapS.getValue()),
