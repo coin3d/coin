@@ -146,9 +146,11 @@ SoSF_Typename_::writeValue(SoOutput * out) const
       SoWriteAction wa(out);
       wa.continueToApply((SoNode *)base);
     }
-    else {
-      assert(base->isOfType(SoEngine::getClassTypeId()));
+    else if (base->isOfType(SoEngine::getClassTypeId())) {
       ((SoEngine *)base)->writeInstance(out);
+    }
+    else {
+      assert(0 && "strange internal error");
     }
   }
   else {
@@ -166,6 +168,7 @@ void
 SoSF_Typename_::countWriteRefs(SoOutput * out) const
 {
   inherited::countWriteRefs(out);
+
   So_Typename_ * n = this->getValue();
   // Set the "from field" flag as FALSE, is that flag is meant to be
   // used for references through field-to-field connections.
@@ -179,9 +182,14 @@ SoSF_Typename_::fixCopy(SbBool copyconnections)
   So_Typename_ * n = this->getValue();
   if (!n) return;
 
-  SoFieldContainer * fc = SoFieldContainer::findCopy(n, copyconnections);
-  this->setValue(NULL); // Fool the set-as-same-value detection.
-  this->setValue((So_Typename_ *)fc);
+  // There's only been a bitwise copy of the pointer; no auditing has
+  // been set up, no increase in the reference count. So we do that by
+  // hand.
+  n->addAuditor(this, SoNotRec::FIELD);
+  n->ref();
+
+  // Make sure copyContents() is run.
+  (void)SoFieldContainer::findCopy(n, copyconnections);
 }
 
 // Override from SoField to check _typename_ pointer.
