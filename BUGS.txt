@@ -3843,6 +3843,9 @@ main(int argc, char ** argv)
     (!) no Coin-related datastructures are passed between the
     plugins.
 
+    A similar problem would occur if an application loaded a dll using
+    coin, then unloaded it, and then loaded it again.
+
     I have observed this for the Vispo browser (IE) plugin.
 
     The correct fix is probably to only do the test in
