@@ -37,12 +37,6 @@ hit by the problem:
    empty file (use ``touch'') on a local disk.
 
 
- 3 We've also had one report of applications linking against the Coin
-   library not being able to resolve all symbols from Coin. We have
-   not been able to reproduce this problem yet, so no solution has
-   been constructed. We would be very grateful for any help provided
-   on this issue.
-
 The above is a complete list of the problems we are aware of on SGI
 IRIX platforms when trying to configure and build Coin. If you bump
 into any other problems, please let us know.
