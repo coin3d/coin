@@ -116,6 +116,7 @@
 #include <Inventor/elements/SoShininessElement.h>
 #include <Inventor/elements/SoTransparencyElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/tidbits.h>
 #include <stdlib.h>
 
@@ -360,6 +361,21 @@ SoMaterial::doAction(SoAction * action)
       SoLightModelElement::set(state, this, SoLightModelElement::PHONG); 
     }
 
+#if COIN_DEBUG
+    if (bitmask & SoLazyElement::SHININESS_MASK) {
+      static int didwarn = 0;
+      if (!didwarn && (this->shininess[0] < 0.0f || this->shininess[0] > 1.0f)) {
+        SoDebugError::postWarning("SoMaterial::GLRender",
+                                  "Shininess out of range [0-1]. "
+                                  "The shininess value will be clamped."
+                                  "This warning will be printed only once, but there might be more errors. "
+                                  "You should check and fix your code and/or Inventor exporter.");
+
+        didwarn = 1;
+      }
+    }
+#endif // COIN_DEBUG
+
     SoLazyElement::setMaterials(state, this, bitmask, 
                                 &THIS->colorpacker,
                                 diffuseptr, numdiffuse, 
@@ -371,7 +387,7 @@ SoMaterial::doAction(SoAction * action)
                                 bitmask & SoLazyElement::SPECULAR_MASK ?
                                 this->specularColor[0] : dummycolor,
                                 bitmask & SoLazyElement::SHININESS_MASK ?
-                                this->shininess[0] : dummyval,
+                                SbClamp(this->shininess[0], 0.0f, 1.0f) : dummyval,
                                 istransparent);
   }
 }

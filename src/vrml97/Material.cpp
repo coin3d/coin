@@ -116,6 +116,7 @@
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoGLLazyElement.h>
+#include <Inventor/errors/SoDebugError.h>
 
 #include <stdlib.h>
 
@@ -237,6 +238,20 @@ SoVRMLMaterial::doAction(SoAction * action)
 #undef TEST_OVERRIDE
 
   if (bitmask) {
+#if COIN_DEBUG
+    if (bitmask & SoLazyElement::SHININESS_MASK) {
+      static int didwarn = 0;
+      if (!didwarn && (this->shininess.getValue() < 0.0f || this->shininess.getValue() > 1.0f)) {
+        SoDebugError::postWarning("SoMaterial::GLRender",
+                                  "Shininess out of range [0-1]. "
+                                  "The shininess value will be clamped. "
+                                  "This warning will be printed only once, but there might be more errors. "
+                                  "You should check and fix your code and/or VRML exporter.");
+        didwarn = 1;
+      }
+    }
+#endif // COIN_DEBUG
+    
     SoLazyElement::setMaterials(state, this, bitmask,
                                 &THIS->colorpacker,
                                 &this->diffuseColor.getValue(), 1,
@@ -244,9 +259,8 @@ SoVRMLMaterial::doAction(SoAction * action)
                                 THIS->tmpambient,
                                 this->emissiveColor.getValue(),
                                 this->specularColor.getValue(),
-                                this->shininess.getValue(),
+                                SbClamp(this->shininess.getValue(), 0.0f, 1.0f),
                                 THIS->tmptransparency > 0.0f);
-    
   }
 }
 
