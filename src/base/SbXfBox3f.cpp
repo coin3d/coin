@@ -36,10 +36,7 @@
 
 #include <Inventor/SbXfBox3f.h>
 #include <float.h>
-
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 // this value is used to signal an invalid inverse matrix
 #define INVALID_TAG FLT_MAX
