@@ -27,8 +27,8 @@
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbString.h>
 #include <Inventor/C/errors/error.h>
+#include <Inventor/SoType.h>
 
-class SoType;
 class SoBase;
 class SoNode;
 class SoPath;
