@@ -29,11 +29,19 @@ class SoNodeKitPath;
 class SoNodekitCatalog;
 class SoPath;
 
-// Convenience macros. FIXME: not implemented yet.
-#define SO_GET_PART(kit, name, classname)
-#define SO_CHECK_PART(kit, name, classname)
-#define SO_GET_ANY_PART(kit, name, classname)
-#define SO_CHECK_ANY_PART(kit, name, classname)
+// Convenience macros. FIXME: document. 20000113 mortene.
+
+#define SO_GET_PART(_kit_, _name_, _classname_) \
+ ((_classname_ *)_kit_->getPart(_name_, TRUE))
+
+#define SO_CHECK_PART(_kit_, _name_, _classname_) \
+ ((_classname_ *)_kit_->getPart(_name_, FALSE))
+
+#define SO_GET_ANY_PART(_kit_, _name_, _classname_) \
+ ((_classname_ *)_kit_->getAnyPart(_name_, TRUE, FALSE, FALSE))
+
+#define SO_CHECK_ANY_PART(_kit_, _name_, _classname_) \
+ ((_classname_ *)_kit_->getAnyPart(_name_, FALSE, FALSE, FALSE))
 
 
 class SoBaseKit : public SoNode
