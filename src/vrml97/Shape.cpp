@@ -269,7 +269,7 @@ SoVRMLShape::GLRender(SoGLRenderAction * action)
     
     SbBool validcache = THIS->bboxcache && THIS->bboxcache->isValid(state);
     if (validcache) {
-      state->pop();
+      state->push();
       SbBox3f box = THIS->bboxcache->getProjectedBox();      
       SbVec3f center = (box.getMin() + box.getMax()) * 0.5f;
       SbVec3f size = box.getMax()  - box.getMin();
