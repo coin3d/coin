@@ -274,7 +274,6 @@ void
 SoAsciiText::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoAsciiText, SO_FROM_INVENTOR_2_1|SoNode::VRML1);
-  SO_ENABLE(SoGLRenderAction, SoTextOutlineEnabledElement);
 }
 
 // Doc in parent.
@@ -290,10 +289,10 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
   // FIXME: implement this feature. 20040820 mortene.
   static SbBool warned = FALSE;
   if (!warned) {
-    int stackidx = SoTextOutlineEnabledElement::getClassStackIndex();
-    const SoElement * outline = state->getConstElement(stackidx);
+    const int stackidx = SoTextOutlineEnabledElement::getClassStackIndex();
+    const SbBool outlinepresence = state->isElementEnabled(stackidx);
 
-    if (outline && SoTextOutlineEnabledElement::get(state)) {
+    if (outlinepresence && SoTextOutlineEnabledElement::get(state)) {
       SoDebugError::postWarning("SoAsciiText::GLRender",
                                 "Support for rendering SoAsciiText nodes in outline "
                                 "(i.e. heeding the SoTextOutlineEnabledElement) "

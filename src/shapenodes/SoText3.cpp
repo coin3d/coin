@@ -293,7 +293,6 @@ void
 SoText3::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoText3, SO_FROM_INVENTOR_2_1);
-  SO_ENABLE(SoGLRenderAction, SoTextOutlineEnabledElement);
 }
 
 // doc in parent
@@ -443,10 +442,10 @@ SoText3::GLRender(SoGLRenderAction * action)
   // FIXME: implement this feature. 20040820 mortene.
   static SbBool warned = FALSE;
   if (!warned) {
-    int stackidx = SoTextOutlineEnabledElement::getClassStackIndex();
-    const SoElement * outline = state->getConstElement(stackidx);
+    const int stackidx = SoTextOutlineEnabledElement::getClassStackIndex();
+    const SbBool outlinepresence = state->isElementEnabled(stackidx);
 
-    if (outline && SoTextOutlineEnabledElement::get(state)) {
+    if (outlinepresence && SoTextOutlineEnabledElement::get(state)) {
 #if COIN_DEBUG
       SoDebugError::postWarning("SoText3::GLRender",
                                 "Support for rendering SoText3 nodes in outline "
