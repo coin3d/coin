@@ -28,6 +28,7 @@
 
 #include <Inventor/nodes/SoLinearProfile.h>
 #include <Inventor/nodes/SoSubNodeP.h>
+#include <Inventor/elements/SoProfileCoordinateElement.h>
 #include <coindefs.h> // COIN_STUB()
 
 
@@ -63,7 +64,18 @@ SoLinearProfile::getTrimCurve(SoState * state, int32_t & numpoints,
                               float *& points, int & floatspervec,
                               int32_t & numknots, float *& knotvector)
 {
-  COIN_STUB(); // FIXME
+  numknots = 0;
+  const SoProfileCoordinateElement * elem = (const SoProfileCoordinateElement*) 
+    SoProfileCoordinateElement::getInstance(state);  
+  numpoints = elem->getNum();
+  if (numpoints) {
+    if (elem->is2D()) {
+      points = (float*) elem->getArrayPtr2();
+    }
+    else {
+      points = (float*) elem->getArrayPtr3();
+    }
+  }
 }
 
 // Doc from superclass.
@@ -71,5 +83,7 @@ void
 SoLinearProfile::getVertices(SoState * state, int32_t & numvertices,
                              SbVec2f *& vertices)
 {
-  COIN_STUB(); // FIXME
+  COIN_STUB();
+  numvertices = 0;
+  vertices = NULL;
 }
