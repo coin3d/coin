@@ -1051,6 +1051,8 @@ SoOutput::indent(void)
   }
 #endif // COIN_DEBUG
 
+  if (PRIVATE(this)->writecompact) return;
+
   static int oldstyle = -1;
   if (oldstyle == -1) {
     oldstyle = coin_getenv("COIN_OLDSTYLE_FORMATTING") ? 1 : 0;
