@@ -916,9 +916,9 @@ void
 SoVRMLExtrusionP::tess_callback(void * v0, void * v1, void * v2, void * data)
 {
   SoVRMLExtrusionP * thisp = (SoVRMLExtrusionP*) data;
-  thisp->idx.append((int) v0);
-  thisp->idx.append((int) v1);
-  thisp->idx.append((int) v2);
+  thisp->idx.append((int)((long)v0));
+  thisp->idx.append((int)((long)v1));
+  thisp->idx.append((int)((long)v2));
   thisp->idx.append(-1);
 }
 

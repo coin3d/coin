@@ -674,7 +674,10 @@ SoDB::read(SoInput * in, SoBase *& base)
 {
 #ifdef HAVE_3DS_IMPORT_CAPABILITIES
   if (is3dsFile(in)) {
-    return read3dsFile(in, (SoSeparator *&) base);
+    SoSeparator * b = (SoSeparator *)base;
+    SbBool ok = read3dsFile(in, b);
+    base = b;
+    return ok;
   }
 #endif // HAVE_3DS_IMPORT_CAPABILITIES
 
@@ -701,8 +704,12 @@ SoDB::read(SoInput * in, SoNode *& rootnode)
   SoBase * baseptr;
 
 #ifdef HAVE_3DS_IMPORT_CAPABILITIES
-  if (is3dsFile(in))
-    return read3dsFile(in,((SoSeparator*&)rootnode));
+  if (is3dsFile(in)) {
+    SoSeparator * b = (SoSeparator *)rootnode;
+    SbBool ok = read3dsFile(in, b);
+    base = b;
+    return ok;
+  }
 #endif // HAVE_3DS_IMPORT_CAPABILITIES
 
   if (!SoDB::read(in, baseptr)) return FALSE;
