@@ -93,7 +93,7 @@ install-libcollisionincHEADERS: $(libcollisioninc_HEADERS)
 	  src="$$d$$p"; dst="$(DESTDIR)$(libcollisionincdir)/$$f"; \
 	  if cmp -s "$$src" "$$dst"; then :; else \
 	    echo " $(INSTALL_HEADER) $$src $$dst"; \
-	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+	    $(INSTALL_HEADER) "$$src" "$$dst" || exit 1; \
 	  fi \
 	done
 	@list='$(ObsoletedHeaders)'; for f in $$list; do \
@@ -102,6 +102,7 @@ install-libcollisionincHEADERS: $(libcollisioninc_HEADERS)
 	    echo " rm -f $$file"; \
 	    rm -f "$$file"; \
 	  fi \
-	done
+	done; \
+	:
 
 ##$ END TEMPLATE Make-Common

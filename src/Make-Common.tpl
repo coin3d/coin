@@ -80,7 +80,7 @@ install-lib-xxx-incHEADERS: $(lib-xxx-inc_HEADERS)
 	  src="$$d$$p"; dst="$(DESTDIR)$(lib-xxx-incdir)/$$f"; \
 	  if cmp -s "$$src" "$$dst"; then :; else \
 	    echo " $(INSTALL_HEADER) $$src $$dst"; \
-	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+	    $(INSTALL_HEADER) "$$src" "$$dst" || exit 1; \
 	  fi \
 	done
 	@list='$(ObsoletedHeaders)'; for f in $$list; do \
@@ -89,5 +89,6 @@ install-lib-xxx-incHEADERS: $(lib-xxx-inc_HEADERS)
 	    echo " rm -f $$file"; \
 	    rm -f "$$file"; \
 	  fi \
-	done
+	done; \
+	:
 
