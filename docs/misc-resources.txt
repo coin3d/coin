@@ -243,3 +243,9 @@ THE LINKS
   <URL:http://www.uni-karlsruhe.de/~uli2/>. Available under a
   BSD-style license. Check it out to see if it's better designed than
   GLWrapper.
+
+* The Seismic Unix project
+  <URL:http://www.cwp.mines.edu/cwpcodes>
+  Tools for loading and processing seismic data, including support
+  for SEGY import.
+
