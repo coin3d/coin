@@ -61,6 +61,7 @@ DEF spotLightTranslatorPlaneTranslatorActive Separator {
 
 DEF SPOTLIGHT_CONEANGLE Separator {
    Rotation { rotation 1 0 0  1.57 }
+   ShapeHints { vertexOrdering UNKNOWN_ORDERING }
    Cone { parts SIDES  bottomRadius 2.0 }
 }
 

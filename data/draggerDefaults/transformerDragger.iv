@@ -38,6 +38,8 @@ DEF TRANSFORMER_SIDE_DATA Group {
    # All faces in the box are drawn invisible, with only the lines
    # showing.
    DrawStyle { style LINES }
+   # turn off backface culling
+   ShapeHints { vertexOrdering UNKNOWN_ORDERING }
 }
 
 DEF TRANSFORMER_TRANSLATOR_ACTIVE Group {
@@ -262,6 +264,7 @@ DEF transformerRotator6Active Separator {
 
 DEF transformerYCircleFeedback Separator {
    USE TRANSFORMER_FEEDBACK_MATERIAL
+   ShapeHints { vertexOrdering UNKNOWN_ORDERING }
    Cylinder { height 0.03  parts SIDES }
 }
 

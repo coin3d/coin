@@ -12,6 +12,7 @@ DEF TRACKBALL_USER_ACTIVE_MATERIAL Material { diffuseColor 0 0.8 0.1  emissiveCo
 # Common geometry definition for dragger band / ring around the ball.
 DEF TRACKBALL_BAND_MARKER Group {
    DrawStyle { style LINES }
+   ShapeHints { vertexOrdering UNKNOWN_ORDERING }
    Cylinder { parts SIDES  radius 1.05 height 0.1 }
 }
 
