@@ -178,8 +178,6 @@ soseparator_storage_destruct(void * data)
 }
 #endif // COIN_THREADSAFE
 
-#ifndef DOXYGEN_SKIP_THIS
-
 class SoSeparatorP {
 public:
   // lots of ifdefs here but it can't be helped...
@@ -235,12 +233,9 @@ SoSeparatorP::getGLCacheList(const SbBool createifnull)
 }
 #endif // !COIN_THREADSAFE
 
-#endif // DOXYGEN_SKIP_THIS
-
-#undef THIS
-#define THIS this->pimpl
-
 // *************************************************************************
+
+#define PRIVATE(obj) ((obj)->pimpl)
 
 SO_NODE_SOURCE(SoSeparator);
 
@@ -270,7 +265,7 @@ SoSeparator::SoSeparator(const int nchildren)
 void
 SoSeparator::commonConstructor(void)
 {
-  THIS = new SoSeparatorP;
+  PRIVATE(this) = new SoSeparatorP;
 
   SO_NODE_INTERNAL_CONSTRUCTOR(SoSeparator);
 
@@ -301,7 +296,7 @@ SoSeparator::commonConstructor(void)
     }
   }
 
-  THIS->bboxcache = NULL;
+  PRIVATE(this)->bboxcache = NULL;
 
   // This environment variable used for local stability / robustness /
   // correctness testing of the render caching. If set >= 1,
@@ -316,7 +311,7 @@ SoSeparator::commonConstructor(void)
     if (rand() > (RAND_MAX/2)) { this->renderCaching = SoSeparator::ON; }
   }
 
-  THIS->hassoundchild = SoSeparatorP::MAYBE;
+  PRIVATE(this)->hassoundchild = SoSeparatorP::MAYBE;
 }
 
 /*!
@@ -324,8 +319,8 @@ SoSeparator::commonConstructor(void)
 */
 SoSeparator::~SoSeparator()
 {
-  if (THIS->bboxcache) THIS->bboxcache->unref();
-  delete THIS;
+  if (PRIVATE(this)->bboxcache) PRIVATE(this)->bboxcache->unref();
+  delete PRIVATE(this);
 }
 
 // Doc from superclass.
@@ -381,14 +376,14 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
     break;
   }
 
-  SbBool validcache = iscaching && THIS->bboxcache && THIS->bboxcache->isValid(state);
+  SbBool validcache = iscaching && PRIVATE(this)->bboxcache && PRIVATE(this)->bboxcache->isValid(state);
 
   if (iscaching && validcache) {
-    SoCacheElement::addCacheDependency(state, THIS->bboxcache);
-    childrenbbox = THIS->bboxcache->getBox();
-    childrencenterset = THIS->bboxcache->isCenterSet();
-    childrencenter = THIS->bboxcache->getCenter();
-    if (THIS->bboxcache->hasLinesOrPoints()) {
+    SoCacheElement::addCacheDependency(state, PRIVATE(this)->bboxcache);
+    childrenbbox = PRIVATE(this)->bboxcache->getBox();
+    childrencenterset = PRIVATE(this)->bboxcache->isCenterSet();
+    childrencenter = PRIVATE(this)->bboxcache->getCenter();
+    if (PRIVATE(this)->bboxcache->hasLinesOrPoints()) {
       SoBoundingBoxCache::setHasLinesOrPoints(state);
     }
   }
@@ -403,11 +398,11 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
 
     if (iscaching) {
       // if we get here, we know bbox cache is not created or is invalid
-      if (THIS->bboxcache) THIS->bboxcache->unref();
-      THIS->bboxcache = new SoBoundingBoxCache(state);
-      THIS->bboxcache->ref();
+      if (PRIVATE(this)->bboxcache) PRIVATE(this)->bboxcache->unref();
+      PRIVATE(this)->bboxcache = new SoBoundingBoxCache(state);
+      PRIVATE(this)->bboxcache->ref();
       // set active cache to record cache dependencies
-      SoCacheElement::set(state, THIS->bboxcache);
+      SoCacheElement::set(state, PRIVATE(this)->bboxcache);
     }
 
     SoLocalBBoxMatrixElement::makeIdentity(state);
@@ -421,7 +416,7 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
     action->getXfBoundingBox() = abox; // reset action bbox
 
     if (iscaching) {
-      THIS->bboxcache->set(childrenbbox, childrencenterset, childrencenter);
+      PRIVATE(this)->bboxcache->set(childrenbbox, childrencenterset, childrencenter);
     }
     state->pop();
     if (iscaching) SoCacheElement::setInvalid(storedinvalid);
@@ -507,7 +502,7 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
         return;
       }
     }
-    SoGLCacheList * glcachelist = THIS->getGLCacheList(TRUE);
+    SoGLCacheList * glcachelist = PRIVATE(this)->getGLCacheList(TRUE);
     if (glcachelist->call(action)) {
 #if GLCACHE_DEBUG && 1 // debug
       SoDebugError::postInfo("SoSeparator::GLRenderBelowPath",
@@ -635,18 +630,18 @@ SoSeparator::audioRender(SoAudioRenderAction * action)
 {
   // Note: This function is similar to SoVRMLGroup::audioRender().
   /* FIXME: how should we handle termination of an action? We should
-     probably reset THIS->hassoundchild to MAYBE. Investigate
+     probably reset PRIVATE(this)->hassoundchild to MAYBE. Investigate
      2003-01-31 thammer. */
 
   int numindices;
   const int * indices;
   SoState * state = action->getState();
-  if (THIS->hassoundchild != SoSeparatorP::NO) {
+  if (PRIVATE(this)->hassoundchild != SoSeparatorP::NO) {
     if (action->getPathCode(numindices, indices) != SoAction::IN_PATH) {
       action->getState()->push();
       SoSoundElement::setSceneGraphHasSoundNode(state, this, FALSE);
       inherited::doAction(action);
-      THIS->hassoundchild = SoSoundElement::sceneGraphHasSoundNode(state) ? 
+      PRIVATE(this)->hassoundchild = SoSoundElement::sceneGraphHasSoundNode(state) ? 
         SoSeparatorP::YES : SoSeparatorP::NO;
       action->getState()->pop();
     } else {
@@ -669,9 +664,9 @@ void
 SoSeparator::rayPick(SoRayPickAction * action)
 {
   if (this->pickCulling.getValue() == OFF ||
-      !THIS->bboxcache || !THIS->bboxcache->isValid(action->getState()) ||
+      !PRIVATE(this)->bboxcache || !PRIVATE(this)->bboxcache->isValid(action->getState()) ||
       !action->hasWorldSpaceRay() ||
-      ray_intersect(action, THIS->bboxcache->getProjectedBox())) {
+      ray_intersect(action, PRIVATE(this)->bboxcache->getProjectedBox())) {
     SoSeparator::doAction(action);
   }
 }
@@ -758,8 +753,8 @@ SoSeparator::notify(SoNotList * nl)
 {
   inherited::notify(nl);
 
-  if (THIS->bboxcache) THIS->bboxcache->invalidate();
-  SoGLCacheList * glcachelist = THIS->getGLCacheList(FALSE);
+  if (PRIVATE(this)->bboxcache) PRIVATE(this)->bboxcache->invalidate();
+  SoGLCacheList * glcachelist = PRIVATE(this)->getGLCacheList(FALSE);
   if (glcachelist) {
 #if GLCACHE_DEBUG && 0 // debug
     SoDebugError::postInfo("SoSeparator::notify",
@@ -767,7 +762,7 @@ SoSeparator::notify(SoNotList * nl)
 #endif // debug
     glcachelist->invalidateAll();
   }
-  THIS->hassoundchild = SoSeparatorP::MAYBE;
+  PRIVATE(this)->hassoundchild = SoSeparatorP::MAYBE;
 }
 
 /*!
@@ -804,9 +799,9 @@ SoSeparator::cullTest(SoState * state)
   if (SoCullElement::completelyInside(state)) return FALSE;
   
   SbBool outside = FALSE;
-  if (THIS->bboxcache &&
-      THIS->bboxcache->isValid(state)) {
-    const SbBox3f & bbox = THIS->bboxcache->getProjectedBox();
+  if (PRIVATE(this)->bboxcache &&
+      PRIVATE(this)->bboxcache->isValid(state)) {
+    const SbBox3f & bbox = PRIVATE(this)->bboxcache->getProjectedBox();
     if (!bbox.isEmpty()) {
       outside = SoCullElement::cullBox(state, bbox);
     }
@@ -826,9 +821,9 @@ SoSeparator::cullTestNoPush(SoState * state)
   if (SoCullElement::completelyInside(state)) return FALSE;
 
   SbBool outside = FALSE;
-  if (THIS->bboxcache &&
-      THIS->bboxcache->isValid(state)) {
-    const SbBox3f & bbox = THIS->bboxcache->getProjectedBox();
+  if (PRIVATE(this)->bboxcache &&
+      PRIVATE(this)->bboxcache->isValid(state)) {
+    const SbBox3f & bbox = PRIVATE(this)->bboxcache->getProjectedBox();
     if (!bbox.isEmpty()) {
       outside = SoCullElement::cullTest(state, bbox);
     }
@@ -836,4 +831,5 @@ SoSeparator::cullTestNoPush(SoState * state)
   return outside;
 }
 
-#undef THIS
+#undef PRIVATE
+
