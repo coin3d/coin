@@ -21,7 +21,9 @@ Release 2.0.0
 =============
 
 Release 2.0.0 is a major release, meaning it is not compatible with
-Coin 1.x.
+Coin 1.x. It is compatible with client code written on top of Coin
+1.x, though, which means an upgrade of client source code to the new
+Coin should just be a matter of a recompile.
 
 See the file NEWS for the summary of changes, and the file ChangeLog for
 the detailed list.
