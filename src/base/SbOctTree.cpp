@@ -405,10 +405,8 @@ SbOctTreeNode::splitNode(const SbBox3f &nodesize,
     }
     return FALSE;
   }
-  else {
-    this->items.truncate(0, TRUE);
-    return TRUE;
-  }
+
+  this->items.truncate(0, TRUE);
   return TRUE;
 }
 
