@@ -91,5 +91,5 @@
 #include "SoWindowElement.cpp"
 #include "SoListenerPositionElement.cpp"
 #include "SoListenerOrientationElement.cpp"
-#include "SoListenerVelocityElement.cpp"
+#include "SoListenerDopplerElement.cpp"
 #include "SoListenerGainElement.cpp"
