@@ -3297,10 +3297,10 @@ if test "x$enable_exceptions" = "xno"; then
     unset _exception_flag
         
 
-echo $ac_n "checking whether $CXX accepts -Wno-exceptions""... $ac_c" 1>&6
-echo "configure:3302: checking whether $CXX accepts -Wno-exceptions" >&5
+echo $ac_n "checking whether $CXX accepts -fno-exceptions""... $ac_c" 1>&6
+echo "configure:3302: checking whether $CXX accepts -fno-exceptions" >&5
 _save_cxxflags=$CXXFLAGS
-CXXFLAGS="$CXXFLAGS -Wno-exceptions"
+CXXFLAGS="$CXXFLAGS -fno-exceptions"
 cat > conftest.$ac_ext <<EOF
 #line 3306 "configure"
 #include "confdefs.h"
@@ -3311,7 +3311,7 @@ int main() {
 EOF
 if { (eval echo configure:3313: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
   rm -rf conftest*
-  _accept_result=yes _exception_flag=-Wno-exceptions
+  _accept_result=yes _exception_flag=-fno-exceptions
 else
   echo "configure: failed program was:" >&5
   cat conftest.$ac_ext >&5
@@ -3326,10 +3326,10 @@ unset _accept_result _save_cxxflags
     if test "x$_exception_flag" = "x"; then
             
 
-echo $ac_n "checking whether $CXX accepts -Wno-handle-exceptions""... $ac_c" 1>&6
-echo "configure:3331: checking whether $CXX accepts -Wno-handle-exceptions" >&5
+echo $ac_n "checking whether $CXX accepts -fno-handle-exceptions""... $ac_c" 1>&6
+echo "configure:3331: checking whether $CXX accepts -fno-handle-exceptions" >&5
 _save_cxxflags=$CXXFLAGS
-CXXFLAGS="$CXXFLAGS -Wno-handle-exceptions"
+CXXFLAGS="$CXXFLAGS -fno-handle-exceptions"
 cat > conftest.$ac_ext <<EOF
 #line 3335 "configure"
 #include "confdefs.h"
@@ -3340,7 +3340,7 @@ int main() {
 EOF
 if { (eval echo configure:3342: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
   rm -rf conftest*
-  _accept_result=yes _exception_flag=-Wno-handle-exceptions
+  _accept_result=yes _exception_flag=-fno-handle-exceptions
 else
   echo "configure: failed program was:" >&5
   cat conftest.$ac_ext >&5

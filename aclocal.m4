@@ -932,10 +932,10 @@ if test "x$enable_exceptions" = "xno"; then
   if test "x$GXX" = "xyes"; then
     unset _exception_flag
     dnl This is for GCC >= 2.8
-    SIM_COMPILER_OPTION(-Wno-exceptions, _exception_flag=-Wno-exceptions)
+    SIM_COMPILER_OPTION(-fno-exceptions, _exception_flag=-fno-exceptions)
     if test "x$_exception_flag" = "x"; then
       dnl For GCC versions < 2.8
-      SIM_COMPILER_OPTION(-Wno-handle-exceptions, _exception_flag=-Wno-handle-exceptions)
+      SIM_COMPILER_OPTION(-fno-handle-exceptions, _exception_flag=-fno-handle-exceptions)
     fi
     if test "x$_exception_flag" = "x"; then
       AC_MSG_WARN(couldn't find a valid option for avoiding exception handling)
