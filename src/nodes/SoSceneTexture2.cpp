@@ -249,6 +249,7 @@ public:
   SoSceneTexture2 * api;
   void * glcontext;
   SbVec2s glcontextsize;
+  int contextid;
 
   SoGLImage * glimage;
   SbBool pbuffervalid;
@@ -526,6 +527,7 @@ SoSceneTexture2P::SoSceneTexture2P(SoSceneTexture2 * apiptr)
   this->offscreenbuffer = NULL;
   this->offscreenbuffersize = 0;
   this->canrendertotexture = FALSE;
+  this->contextid = -1;
 }
 
 SoSceneTexture2P::~SoSceneTexture2P()
@@ -556,8 +558,6 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
       this->glcontextsize.setValue(-1,-1);
       this->glcontext = NULL;
     }
-    delete this->glaction;
-    this->glaction = NULL;
     this->glimagevalid = FALSE;
   }
   if (size == SbVec2s(0,0)) return;
@@ -604,11 +604,17 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
     this->glcontext = cc_glglue_context_create_offscreen(this->glcontextsize[0],
                                                          this->glcontextsize[1]);
     this->canrendertotexture = cc_glglue_context_can_render_to_texture(this->glcontext);
-    if (this->glaction) delete this->glaction;
-    this->glaction = new SoGLRenderAction(SbViewportRegion(this->glcontextsize));
-    this->glaction->setCacheContext((int) SoGLCacheContextElement::getUniqueCacheContext());
-    this->glaction->addPreRenderCallback(SoSceneTexture2P::prerendercb, 
-                                         (void*) PUBLIC(this));
+
+    if (!this->glaction) {
+      this->contextid = (int) SoGLCacheContextElement::getUniqueCacheContext();
+      this->glaction = new SoGLRenderAction(SbViewportRegion(this->glcontextsize));
+      this->glaction->addPreRenderCallback(SoSceneTexture2P::prerendercb, 
+                                           (void*) PUBLIC(this));
+    } else {
+      this->glaction->setViewportRegion(SbViewportRegion(this->glcontextsize));
+    }
+
+    this->glaction->setCacheContext(this->contextid);    
     this->glimagevalid = FALSE;
   }
 
