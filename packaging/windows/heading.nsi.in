@@ -30,7 +30,7 @@ SetCompress auto
 SetOverwrite on
 
 SetOutPath $INSTDIR\bin
-File @win_prefix@\bin\coin1.dll
+File @win_prefix@\bin\coin2.dll
 
 SetOutPath $INSTDIR\html
 File coin-sdk.html
@@ -44,13 +44,13 @@ SetCompress auto
 SetOverwrite on
 
 SetOutPath $INSTDIR\bin
-File @win_prefix@\bin\coin1.dll
-File @win_prefix@\bin\coin1d.dll
-File @win_prefix@\bin\coin1d.pdb
+File @win_prefix@\bin\coin2.dll
+File @win_prefix@\bin\coin2d.dll
+File @win_prefix@\bin\coin2d.pdb
 
 SetOutPath $INSTDIR\lib
-File @win_prefix@\lib\coin1.lib
-File @win_prefix@\lib\coin1d.lib
-# File @win_prefix@\lib\coin1s.lib
-# File @win_prefix@\lib\coin1sd.lib
+File @win_prefix@\lib\coin2.lib
+File @win_prefix@\lib\coin2d.lib
+# File @win_prefix@\lib\coin2s.lib
+# File @win_prefix@\lib\coin2sd.lib
 
