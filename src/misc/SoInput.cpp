@@ -249,9 +249,14 @@ SoInput::~SoInput(void)
 }
 
 /*!
-  Uses the given file pointer as the input file. The input stack of files
-  will be emptied first. Closing a file passed in by it's file pointer is
-  the library user's responsibility.
+  Uses the given file pointer as the input file. The input stack of
+  files will be emptied first. Closing a file passed in by it's file
+  pointer is the library user's responsibility.
+
+  Important note: do \e not use this method when the Coin library has
+  been compiled as an MSWindows DLL, as passing FILE* instances back
+  or forth to DLLs is dangerous and will most likely cause a
+  crash. This is an intrinsic limitation for MSWindows DLLs.
 
   \sa openFile(), closeFile()
  */
@@ -395,6 +400,11 @@ SoInput::isValidBuffer(void)
 /*!
   Returns file pointer of the file on top of the input stack. If the
   "file" is actually a memory buffer, returns \c NULL.
+
+  Important note: do \e not use this method when the Coin library has
+  been compiled as an MSWindows DLL, as passing FILE* instances back
+  or forth to DLLs is dangerous and will most likely cause a
+  crash. This is an intrinsic limitation for MSWindows DLLs.
 
   \sa getCurFileName()
  */
@@ -1482,6 +1492,11 @@ SoInput::setIVVersion(float version)
 
 /*!
   FIXME: write doc
+
+  Important note: do \e not use this method when the Coin library has
+  been compiled as an MSWindows DLL, as passing FILE* instances back
+  or forth to DLLs is dangerous and will most likely cause a
+  crash. This is an intrinsic limitation for MSWindows DLLs.
 */
 void
 SoInput::initFile(FILE * /* newFP */, const char * /* fileName */,
@@ -1967,6 +1982,11 @@ SoInput::isFileVRML2(void)
 
 /*!
   FIXME: write function documentation
+
+  Important note: do \e not use this method when the Coin library has
+  been compiled as an MSWindows DLL, as passing FILE* instances back
+  or forth to DLLs is dangerous and will most likely cause a
+  crash. This is an intrinsic limitation for MSWindows DLLs.
 */
 void
 SoInput::resetFilePointer(FILE * /* fptr */)
@@ -2037,17 +2057,25 @@ SoInput::getTopOfStack(void) const
 }
 
 /*!
-  Scan through the include directories in order and try to find a file with
-  the given name in any one of them. If file is found, put the full name with
-  complete path from current directory of process into \a fullname, open
-  the file and return the file pointer.
+  Scan through the include directories in order and try to find a file
+  with the given name in any one of them. If file is found, put the
+  full name with complete path from current directory of process into
+  \a fullname, open the file and return the file pointer.
 
-  If the file could either not be found or not opened for reading, return
-  \c NULL.
+  If the file could either not be found or not opened for reading,
+  return \c NULL.
+
+  Important note: do \e not use this method when the Coin library has
+  been compiled as an MSWindows DLL, as passing FILE* instances back
+  or forth to DLLs is dangerous and will most likely cause a
+  crash. This is an intrinsic limitation for MSWindows DLLs.
  */
 FILE *
 SoInput::findFile(const char * basename, SbString & fullname)
 {
+  // FIXME: test this code on MSWindows. If it doesn't work,
+  // *fix*. 20010814 mortene.
+
 #define DEBUG_FILE_SEARCHING 0
 
   int baselen = strlen(basename);
