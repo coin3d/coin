@@ -44,7 +44,7 @@
 #else
 #ifdef HAVE_OPENGL_GL_H
 /* how Mac OS X organizes things - should we now stuff Coin header in
-   OpenInventor/?  (that *was* ironi) */
+   OpenInventor/?  (that *was* irony) */
 #include <OpenGL/gl.h>
 #else
 #error "don't know how to include gl.h header"
@@ -64,28 +64,83 @@
 #endif
 
 /*
-  MS Windows often has very old gl.h files, so we just define these
-  value here if not defined. Run-time checks are used to determine
-  which feature to use.
+  Some systems have very old gl.h files, and other systems include
+  extension enums which we want to use if we run-time detect the
+  extension function calls to be available, so we just define these
+  values here if not defined already.
+
+  (Note if you are inserting more of these: the enums below are sorted
+  alphabetically.)
 */
-
 #ifndef GL_CLAMP_TO_EDGE
-#define GL_CLAMP_TO_EDGE         ((GLenum)0x812F)
-#endif /* GL_CLAMP_TO_EDGE */
-
+#define GL_CLAMP_TO_EDGE                  ((GLenum)0x812F)
+#endif /* !GL_CLAMP_TO_EDGE */
 #ifndef GL_CLAMP_TO_EDGE_EXT
-#define GL_CLAMP_TO_EDGE_EXT     ((GLenum)0x812F)
-#endif /* GL_CLAMP_TO_EDGE_EXT */
-
+#define GL_CLAMP_TO_EDGE_EXT              ((GLenum)0x812F)
+#endif /* !GL_CLAMP_TO_EDGE_EXT */
 #ifndef GL_CLAMP_TO_EDGE_SGIS
-#define GL_CLAMP_TO_EDGE_SGIS    ((GLenum)0x812F)
-#endif /* GL_CLAMP_TO_EDGE_SGIS */
-
-#ifndef GL_TEXTURE_WRAP_R
-#define GL_TEXTURE_WRAP_R ((GLenum)0x8072)
-#endif /* GL_TEXTURE_WRAP_R */
-
+#define GL_CLAMP_TO_EDGE_SGIS             ((GLenum)0x812F)
+#endif /* !GL_CLAMP_TO_EDGE_SGIS */
+#ifndef GL_MAX_3D_TEXTURE_SIZE
+#define GL_MAX_3D_TEXTURE_SIZE            ((GLenum)0x8073)
+#endif /* !GL_MAX_3D_TEXTURE_SIZE */
+#ifndef GL_MAX_3D_TEXTURE_SIZE_EXT
+#define GL_MAX_3D_TEXTURE_SIZE_EXT        ((GLenum)0x8073)
+#endif /* !GL_MAX_3D_TEXTURE_SIZE_EXT */
+#ifndef GL_PACK_IMAGE_HEIGHT
+#define GL_PACK_IMAGE_HEIGHT              ((GLenum)0x806C)
+#endif /* !GL_PACK_IMAGE_HEIGHT */
+#ifndef GL_PACK_IMAGE_HEIGHT_EXT
+#define GL_PACK_IMAGE_HEIGHT_EXT          ((GLenum)0x806C)
+#endif /* !GL_PACK_IMAGE_HEIGHT_EXT */
+#ifndef GL_PACK_SKIP_IMAGES
+#define GL_PACK_SKIP_IMAGES               ((GLenum)0x806B)
+#endif /* !GL_PACK_SKIP_IMAGES */
+#ifndef GL_PACK_SKIP_IMAGES_EXT
+#define GL_PACK_SKIP_IMAGES_EXT           ((GLenum)0x806B)
+#endif /* !GL_PACK_SKIP_IMAGES_EXT */
+#ifndef GL_PROXY_TEXTURE_2D
+#define GL_PROXY_TEXTURE_2D               ((GLenum)0x8064)
+#endif /* !GL_PROXY_TEXTURE_2D */
+#ifndef GL_PROXY_TEXTURE_2D_EXT
+#define GL_PROXY_TEXTURE_2D_EXT           ((GLenum)0x8064)
+#endif /* !GL_PROXY_TEXTURE_2D_EXT */
+#ifndef GL_PROXY_TEXTURE_3D
+#define GL_PROXY_TEXTURE_3D               ((GLenum)0x8070)
+#endif /* !GL_PROXY_TEXTURE_3D */
+#ifndef GL_PROXY_TEXTURE_3D_EXT
+#define GL_PROXY_TEXTURE_3D_EXT           ((GLenum)0x8070)
+#endif /* !GL_PROXY_TEXTURE_3D_EXT */
 #ifndef GL_TEXTURE_3D
-#define GL_TEXTURE_3D ((GLenum)0x806F)
-#endif /* GL_TEXTURE_3D */
+#define GL_TEXTURE_3D                     ((GLenum)0x806F)
+#endif /* !GL_TEXTURE_3D */
+#ifndef GL_TEXTURE_3D_EXT
+#define GL_TEXTURE_3D_EXT                 ((GLenum)0x806F)
+#endif /* !GL_TEXTURE_3D_EXT */
+#ifndef GL_TEXTURE_DEPTH
+#define GL_TEXTURE_DEPTH                  ((GLenum)0x8071)
+#endif /* !GL_TEXTURE_DEPTH */
+#ifndef GL_TEXTURE_DEPTH_EXT
+#define GL_TEXTURE_DEPTH_EXT              ((GLenum)0x8071)
+#endif /* !GL_TEXTURE_DEPTH_EXT */
+#ifndef GL_TEXTURE_WRAP_R
+#define GL_TEXTURE_WRAP_R                 ((GLenum)0x8072)
+#endif /* !GL_TEXTURE_WRAP_R */
+#ifndef GL_TEXTURE_WRAP_R_EXT
+#define GL_TEXTURE_WRAP_R_EXT             ((GLenum)0x8072)
+#endif /* !GL_TEXTURE_WRAP_R_EXT */
+#ifndef GL_UNPACK_IMAGE_HEIGHT
+#define GL_UNPACK_IMAGE_HEIGHT            ((GLenum)0x806E)
+#endif /* !GL_UNPACK_IMAGE_HEIGHT */
+#ifndef GL_UNPACK_IMAGE_HEIGHT_EXT
+#define GL_UNPACK_IMAGE_HEIGHT_EXT        ((GLenum)0x806E)
+#endif /* !GL_UNPACK_IMAGE_HEIGHT_EXT */
+#ifndef GL_UNPACK_SKIP_IMAGES
+#define GL_UNPACK_SKIP_IMAGES             ((GLenum)0x806D)
+#endif /* !GL_UNPACK_SKIP_IMAGES */
+#ifndef GL_UNPACK_SKIP_IMAGES_EXT
+#define GL_UNPACK_SKIP_IMAGES_EXT         ((GLenum)0x806D)
+#endif /* !GL_UNPACK_SKIP_IMAGES_EXT */
+
+
 #endif /* ! COIN_GL_H */
