@@ -473,34 +473,135 @@ The main goal is of course to write good, bugfree, portable C++ code,
 in a way that clearly expresses the intent of what is attempted
 accomplished.
 
-Some specific remarks about portability: this is very far from being a
-trivial matter with C++, as not only is system portability difficult
-(due to differences in core libraries for various platforms), but
-_compiler_ portability is also a big issue with C++. The main reason
-behind this is that the ISO C++ standard evolved gradually and slowly,
-and many C++ compilers that are still around on much used platforms
-were written before the standard was complete. And even today, it is
-actually doubtful if any C++ compiler around implements the full
-standard, as it is so huge and complex.
+First, the larger issues:
 
-To keep everything as portable as possible, we basically use the C++
-language as more or less a "C with classes".
+   I. Some specific remarks about portability: this is very far from
+      being a trivial matter with C++, as not only is system
+      portability difficult (due to differences in core libraries for
+      various platforms), but _compiler_ portability is also a big
+      issue with C++. The main reason behind this is that the ISO C++
+      standard evolved gradually and slowly, and many C++ compilers
+      that are still around on much used platforms were written before
+      the standard was complete. And even today, it is actually
+      doubtful if any C++ compiler around implements the full
+      standard, as it is so huge and complex.
 
-For the full monty on C++ portability, please read the C++ portability
-guide written for the Mozilla browser project:
+      To keep everything as portable as possible, we basically use the
+      C++ language as more or less a "C with classes".
+
+      For the full monty on C++ portability, please read the C++
+      portability guide written for the Mozilla browser project:
 
         <URL:http://www.mozilla.org/hacking/portable-cpp.html>
 
-We consider this a must read for any internal resources writing
-production C++ code. One issue it's particularly easy to "sin" against
-is the following:
+      We consider this a must read for any internal resources writing
+      production C++ code. One issue it's particularly easy to "sin"
+      against is the following:
 
-  * Use the ``SbBool'' type instead of bool, and ``TRUE'' and
-    ``FALSE'' keywords instead of ``true'' and ``false''. Compilers
-    that do not support the ``bool'' type is still in widespread use
-    (SGI MIPSPro v7.30 is but one example), so we are using the more
-    portable ``SbBool'' instead to make sure our code build on those
-    systems.
+      Use the ``SbBool'' type instead of bool, and ``TRUE'' and
+      ``FALSE'' keywords instead of ``true'' and ``false''. Compilers
+      that do not support the ``bool'' type is still in widespread use
+      (SGI MIPSPro v7.30 is but one example), so we are using the more
+      portable ``SbBool'' instead to make sure our code build on those
+      systems.
+
+
+  II. There is one important "trick" to apply to C++ classes when they
+      are part of a library with a public API where binary
+      compatibility (ie a stable ABI[1]) between releases are
+      important -- as it is for the Coin library. The trick is to hide
+      all the private implementation data within an internal class,
+      only visible to the .cpp-file of the "real" class.
+
+      This is a common design pattern that goes under many different
+      names; the Bridge pattern (from «Design Patterns», Gamma et al),
+      the Cheshire Cat (from the character in Lewis Carroll's «Alice's
+      Adventures in Wonderland»), pimpl (short for "private
+      implementation") or the d-pointer (for "data-pointer"). For
+      consistency, it will be called "Cheshire Cat" from now on in
+      this explanation.
+
+      The main advantage of applying the Cheshire Cat is that one can
+      add new data members to the implementation of a class without
+      breaking it's ABI -- which avoids the need to hold back new
+      features, new functionality or even bugfixes to the next major
+      release of the library.
+
+      The general idea of the Cheshire Cat is as follows:
+
+      <APublicClass.h>:
+
+      ---8<------8<------8<------8<------8<------8<------8<------8<---
+
+      class APublicClass {
+        public:
+          // [public API here]
+
+        protected:
+          // [protected API here]
+
+        private:
+          class APublicClassP * pimpl; // contains internal implementation data
+      };
+
+      ---8<------8<------8<------8<------8<------8<------8<------8<---
+
+      ..where the "APublicClassP" (notice the trailing "P" for
+      "Private") declaration could be embedded in the APublicClass.cpp
+      file, for simplicity:
+
+      <APublicClass.cpp>:
+
+      ---8<------8<------8<------8<------8<------8<------8<------8<---
+
+      #include "APublicClass.h"
+
+      class APublicClassP {
+        public: // all data publicly available for "owner" APublicClass
+          int number1;
+          float number2;
+          // [etc]
+      };
+
+      // [then follows the implementation of APublicClass]
+
+      APublicClass::APublicClass()
+      {
+         // set up internal data class
+         this->pimpl = new APublicClassP;
+         // ...
+      }
+
+      APublicClass::~APublicClass()
+      {
+         // ...
+         delete this->pimpl;
+      }
+
+      // [for other code, all data are accessed through the "pimpl" pointer]
+        this->pimpl->number2 = obj->doSomeThing(this->pimpl->number1);
+      // ...
+
+      ---8<------8<------8<------8<------8<------8<------8<------8<---
+
+      If we then noticed that we need more data members for new
+      features or to fix bugs in APublicClass, we can just add those
+      to the internal class without breaking the ABI compatibility.
+
+      For a real example of how to use this pattern, see for instance
+      the declaration and implementation of the SoExtSelection node
+      class or the SoRayPickAction class (among many others), or any
+      class in the So* libraries (where the pattern has been used most
+      extensively).
+
+      There are basically just a few cases where the Cheshire Cat
+      should /not/ be applied: for very light-weight small classes, we
+      don't want the extra overhead it introduces in memory usage and
+      time to redirect all data request to the internal class. So the
+      Sb* base classes are for instance not using the pattern, and
+      neither is SoBase or SoField -- which both permeates library
+      usage at run-time, so we want to keep them as slim as possible.
+
 
 
 Enough about the larger issues, now for the mucky details that has
@@ -619,7 +720,18 @@ versus the code "layout" (to make it more easily readable):
     other identifier that starts with an underscore. That namespace is
     per the C and C++ specs fully reserved for the compiler.
 
- 6) Code formatting rules. The default is to use Kernighan and Ritchie style.
+ 6) Prefix with the "this" keyword for dynamic functions and member
+    variables, prefix with the classname for static functions and
+    variables.
+
+    The rationale for doing this extra typing is that it makes the
+    code immensely more easily readable when skimming it. If the
+    prefixes are missing, one has often to scroll back and forth to
+    find out if variables are input arguments to methods or stack
+    variables -- with "this->" or "ClassName::" prefixes there is
+    immediately no doubt where the variable comes from.
+
+ 7) Code formatting rules. The default is to use Kernighan and Ritchie style.
 
    a) Braces: keep opening braces on the end of the line, and closing
       braces at the start. Like this:
@@ -670,10 +782,17 @@ versus the code "layout" (to make it more easily readable):
         ...
       }
 
-
-      For C code, name functions with underscores between words, in
+      For C functions and C++ functions that doesn't belong to any
+      particular class, name them with underscores between words, in
       all lowercase.
 
+      NOTE: do *not* use Hungarian-style naming, ie prefixing names
+      with indicators about type. So don't for instance name classes
+      with a leading "c", or member variables with an "m", or integers
+      with an "i" and so on and so on. You're better off in the
+      readability-department by using the "this" prefix, as explained
+      above, and then the Hungarian naming style just obfuscates the
+      code.
 
    e) Pointer types and references: use a space on each side of the
       '*' and '&' operators, like this
