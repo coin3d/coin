@@ -77,6 +77,16 @@ SO_KIT_SOURCE(SoBaseKit);
 
 
 /*!
+  SoChildList * SoBaseKit::children
+  \internal
+*/
+/*!
+  SbBool SoBaseKit::connectionsSetUp
+  \internal
+*/
+
+
+/*!
   Constructor.
 */
 SoBaseKit::SoBaseKit(void)
@@ -1014,6 +1024,9 @@ SoBaseKit::getNodekitPartsList(void) const
   return NULL;
 }
 
+/*!
+  \internal
+*/
 const SbList<SoSFNode*> &
 SoBaseKit::getCatalogInstances(void) const
 {
@@ -1088,7 +1101,7 @@ SoBaseKit::readInstance(SoInput * in, unsigned short flags)
 //
 //
 // if path != NULL, kit-nodes will be appended to the path during the search
-// The actualt part is not added to the path. The head of the path should
+// The actual part is not added to the path. The head of the path should
 // be set to the kit-node performing the search.
 //
 SbBool
