@@ -437,7 +437,7 @@ SbOctTreeNode::splitNode(const SbBox3f & nodesize,
     int len = children[i]->items.getLength();
     if (len == n) cntnodes++;
   }
-  if (cntnodes == 8) {
+  if (cntnodes > 0) {
     for (i = 0; i < 8; i++) {
       delete children[i];
       children[i] = NULL;
