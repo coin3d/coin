@@ -226,6 +226,9 @@
 
     mortene 20020813.
 
+    UPDATE 20040706 mortene: we've had several external reports about
+    this, so consider this a high priority item.
+
 =====================================================================
 
 019 When using the CTRL key while doing scaling with
