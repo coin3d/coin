@@ -26,17 +26,20 @@
   Coin is an OpenGL based, retained mode 3D graphics rendering
   library. It is implemented in C++ and publicly released with the
   source code open for your perusal. The application programmer's
-  interface (API) is based on (and will eventually be fully compatible
-  with) the API of Open Inventor, the \e de \e facto standard 3D
-  graphics library for complex visualization applications.
+  interface (API) is fully compatible with SGI's Open Inventor, the \e
+  de \e facto standard 3D graphics API for complex visualization
+  applications.
 
   Systems in Motion is working on providing libraries for interfacing
   Coin with a wide range of windowing systems and GUI toolkits.
-  SoXt is for interfacing with Xt/Motif on X Windows.
-  SoQt is for interfacing with Trolltech's cross-platform Qt toolkit
-    (UNIX, Windows, Mac OS X).
-  SoWin is for interfacing with the Win32 API on Windows and Windows NT.
-  SoGtk is for interfacing with GTK+.
+  <ol>
+  <li>SoXt is for interfacing with Xt/Motif on X Windows.</li>
+  <li>SoQt is for interfacing with Trolltech's cross-platform Qt toolkit
+      (UNIX, Windows, Mac OS X).</li>
+  <li>SoWin is for interfacing with the Win32 API on Microsoft Windows
+      platforms.</li>
+  <li>SoGtk is for interfacing with GTK+.</li>
+  </ol>
 
   See <http://www.coin3d.org/> for more information about Coin and the
   GUI toolkit libraries.
@@ -44,8 +47,8 @@
   <b>IMPORTANT NOTE: the documentation for the Coin library is still a
   work-in-progress.</b> Although most classes have been documented
   properly, there are still "holes" in the documentation for certain
-  sets of classes.  Complete documentation for the Inventor API can be
-  found on the web-pages of Template Graphics Systems at <a
+  classes.  Complete documentation for the Inventor API can be found
+  on the web-pages of Template Graphics Systems at <a
   href="http://www.tgs.com/">http://www.tgs.com/</a>, just follow the
   links to the "Open Inventor C++" classes documentation.
 */
@@ -111,8 +114,6 @@
 #include <Inventor/fields/SoSFTime.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/sensors/SoTimerSensor.h>
-#include <Inventor/misc/SoProto.h>
-#include <Inventor/misc/SoProtoInstance.h>
 #include <coindefs.h> // COIN_STUB()
 #include <stdlib.h>
 
@@ -296,9 +297,6 @@ SoDB::init(void)
   SoEngine::initClass();
   SoEvent::initClass();
   SoSensor::initClass();
-
-  SoProto::initClass();
-  SoProtoInstance::initClass();
 
   // Register all valid file format headers.
   SoDB::registerHeader(SbString("#Inventor V2.1 ascii   "), FALSE, 2.1f,
@@ -905,17 +903,29 @@ SoDB::doSelect(int nfds, void * readfds, void * writefds,
   fd_set * rds = (fd_set *)readfds;
   fd_set * wds = (fd_set *)writefds;
   fd_set * eds = (fd_set *)exceptfds;
-  // FIXME: the winsock select() call is most likely incorrectly used here.
-  // What should be done (on Win32) is, for sockets to get waitable event
-  // handles by using WSAEventSelect, and for filehandles to get the handle
-  // (_get_osfhandle(fd)), and then use MsgWaitForMultipleObjectsEx() for
-  // waiting.  For fds that aren't sockets or filehandles; complain.
-  // Considering sockets at all should be determined on whether LoadLibrary       // finds the wsock32.dll or not.
-  // Someone experienced in Win32-programming ought to check this out and
-  // do proper testing (write a test-case) - I just picked up this info
-  // from this discussion:
+  // FIXME: the winsock select() call is most likely incorrectly used
+  // here.  What should be done (on Win32) is for sockets to get
+  // waitable event handles by using WSAEventSelect, and for
+  // filehandles to get the handle (_get_osfhandle(fd)), and then use
+  // MsgWaitForMultipleObjectsEx() for waiting.  For fds that aren't
+  // sockets or filehandles; complain.
+  //
+  // Considering sockets at all should be determined on whether
+  // LoadLibrary finds the wsock32.dll or not.
+  //
+  // Someone experienced in Win32-programming ought to check this out
+  // and do proper testing (write a test-case) - I just picked up this
+  // info from this discussion:
   // http://archive.develooper.com/perl-loop@perl.org/msg00398.html
+  // 
   // 20011002 larsa.
+
+  // FIXME update: I think the SoDB::doSelect() and
+  // SoSensorManager::doSelect() calls are pretty lousy design anyway,
+  // so perhaps we should just obsolete them.  The application
+  // programmer should rather set up a timer himself and periodically
+  // call into the sensor processing queues of Coin, like what is done
+  // by the So* libraries. 20011115 mortene.
   return select(nfds, rds, wds, eds, usertimeout);
 #endif // __BEOS__
 }
