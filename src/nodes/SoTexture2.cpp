@@ -555,3 +555,7 @@ SoTexture2::filenameSensorCB(void * data, SoSensor *)
     thisp->setReadStatus(0);
   }
 }
+
+#undef LOCK_GLIMAGE
+#undef UNLOCK_GLIMAGE
+
