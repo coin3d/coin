@@ -1,26 +1,77 @@
-You should be able to build the library if you have these components
-installed on your system:
+Section 01 -- Basic build instructions.
+=======================================
+
+  You should be able to build the library if you have these components
+  installed on your system:
 
         * Cygwin[1], latest release
         * Microsoft Visual C++ v6.x
 
-Configure and build the same way as you would on UNIX-based systems,
-i.e.
+  Configure and build the same way as you would on UNIX-based systems,
+  i.e.
 
         $ [srcdir]/configure
         $ make install
 
 
-Note that if you encounter any problems when trying to build on
-MSWindows, it is expected that you are able to do a minimum of
-troubleshooting yourself before contacting us.  (If this is not an
-option, please consider using the pre-built binary installation
-packages we provide. Follow the download link from
-<URL:http://www.coin3d.org>.)
+  Note that if you encounter any problems when trying to build on
+  MSWindows, it is expected that you are able to do a minimum of
+  troubleshooting yourself before contacting us.  (If this is not an
+  option, please consider using the pre-built binary installation
+  packages we provide. Follow the download link from
+  <URL:http://www.coin3d.org>.)
 
-If you are confident that configure and/or build fails due to a
-mistake on our part, or you otherwise feel completely stuck, we will
-be happy to assist.
+  If you are confident that configure and/or build fails due to a
+  mistake on our part, or you otherwise feel completely stuck, we will
+  be happy to assist.
 
 ---
 [1] <URL:http://www.cygwin.com>
+
+
+
+Section 02 -- Building non-default configurations.
+==================================================
+
+  FIXME: explain how to build release versions of the
+  libraries. 20011019 mortene.
+
+  FIXME: explain how to build static versions of the
+  libraries. 20011019 mortene.
+
+  FIXME: explain how to build the full library-chain on top of other
+  versions of the Microsoft C libraries than the default one. 20011019 mortene.
+
+
+
+Section 03 -- What is this ``configure'' thing?
+===============================================
+
+  The configure script is a script that first determines what kind of
+  system it's being run on, then tries to locate a compiler, and then
+  uses the compiler to probe the system for its capabilities.  For
+  instance, which optional utility libraries are available?  The
+  configure script tries to link with them - if it works, the library
+  is there.  If the link-test fails, then it's not.  Is the library
+  new enough so that it contains the function foo()?  Depending on
+  these tests, the configure script sets up a header-file called
+  "config.h" that contains #define settings for what the configure
+  script managed to find.  Then you include this file in your sources,
+  and wrap all the system-specific parts based on feature existence
+  instead of basing the compilation on which platform you are using.
+
+  The configure script also has the purpose of figuring out how the
+  compiler should be used when you build the library.  The result of
+  these tests are put into all the Makefile files that are generated
+  in the end from the Makefile.in templates.  That's basically it.
+  After having run configure, all system characteristics should be
+  figured out and the Makefiles should be set up so you only need to
+  type "make" to get everything built.
+
+  Another feature of this setup is to run the configure script from an
+  empty directory.  This will create an an empty directory structure
+  with makefiles that will compile the sources out of the source
+  directory while putting the object files in the newly created
+  directory structure.  Then you can keep your sources one place (even
+  on a read-only medium like CDROM), and build somewhere temporary,
+  and just scrap that directory after having run "make install".
