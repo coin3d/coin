@@ -67,6 +67,10 @@ TODO:
 * [mortene:1999????] Make a better dict class than SbDict. Something
   based on templates?
 
+* [mortene:19990930] SbString.h is incompatible with the std::string
+  STL definition? Look into this to see if it can be solved. (Reported
+  by Jason Fritz on coin-devsupport.)
+
 ===============================================================================
 DONE:
 =====
