@@ -6,4 +6,15 @@ New in Coin 1.0 final beta (2001-07-22):
   - SoMouseButtonEvent::BUTTON4, BUTTON5 for wheelmouse events
   - SoKeyboardEvent::DELETE is portable even for MS Windows
   - SoCamera::setStereoMode()
+  - SoCamera::pointAt(target, upvector);
+  - SbImage class
+  - SoImage node
+  - SoExtSelection node
+  - SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANLE_* transparency modes
+  - SoGLRenderAction::addPreRenderCallback()/removePreRenderCallback()
+  - SoCallbackAction::setViewportRegion()/getViewportRegion().
+  - SoInput::searchForFile()
+  - SoInput::isFileVRML1() / isFileVRML2() (soon)
+  - SoOffscreenRenderer::writeToFile() and friends
+  - SoFile::getFullName()
   - and more [to be mapped down later]
