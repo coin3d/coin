@@ -47,6 +47,7 @@
 #include <GLUWrapper.h>
 #include <Inventor/lists/SbList.h>
 
+
 // if textureQuality is equal or greater than this, use linear filtering
 #define LINEAR_LIMIT 0.2f
 // if textureQuality is equal or greater than this, create mipmap
@@ -202,10 +203,10 @@ SoGLImage::getGLDisplayList(SoState * state, const float quality)
 }
 
 /*!
-  Conveniece method which makes \a dl the current texture for
-  the current context, and sets the filtering values based on
-  \a quality. It will not enable mipmap filtering unless the
-  the texture object contains mipmap data.
+  Convenience method which makes \a dl the current texture for the
+  current context, and sets the filtering values based on \a
+  quality. It will not enable mipmap filtering unless the the texture
+  object contains mipmap data.
 
   \sa setData()
 */
