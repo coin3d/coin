@@ -2,7 +2,7 @@
 ## 19990904 mortene.
 
 RegularSources = \
-        flwfreetype.c \
+        flwfreetype.c flwwin32.c \
 	dl.c \
 	gl.c \
 	gl_wgl.c gl_agl.c gl_glx.c \
@@ -18,6 +18,7 @@ LinkHackSources = \
 PublicHeaders =
 PrivateHeaders = \
         ../../include/Inventor/C/glue/flwfreetype.h \
+        ../../include/Inventor/C/glue/flwwin32.h \
 	../../include/Inventor/C/glue/glp.h \
 	../../include/Inventor/C/glue/gl_wgl.h \
 	../../include/Inventor/C/glue/gl_glx.h \
