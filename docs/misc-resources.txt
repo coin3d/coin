@@ -207,6 +207,18 @@ THE LINKS
 
 * TrueType Fonts with liberal licensing (?): <URL:http://fonts.tom7.com/>
 
+  A list of PD fonts, from a posting on debian-legal:
+
+        http://bibliofile.mc.duke.edu/gww/fonts/Unicode.html
+        http://maltaesp.hypermart.net/fonts.htm
+        http://www.cs.stir.ac.uk/~kjt/software/nextstep/nextstep.html
+        http://super.groovy.tripod.com/b1.html
+        http://www.meirinsurance.co.il/meir_heb.html
+                (look under the Windows/PC section)
+        http://www.1001freefonts.com/fontfiles/afonts4.htm
+        http://lager.dyndns.org/GnuMICR/download/latest/
+                (GPL'd, see README)
+
 * Volume rendering publications / papers:
   - <URL:http://www.sigchi.acm.org/pubs/>
 
