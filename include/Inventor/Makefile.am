@@ -3,12 +3,6 @@ SUBDIRS = C MPEG VRMLnodes actions annex bundles caches collision details \
           draggers elements engines errors events fields lists lock manips \
           misc nodekits nodes projectors sensors system threads
 
-BUILT_SOURCES = \
-	SbBasic.h
-
-DISTCLEANFILES = \
-	SbBasic.h
-
 PublicHeaders = \
 	Sb.h \
 	SbBSPTree.h \
@@ -70,12 +64,8 @@ PublicHeaders = \
 	SoSceneManager.h \
 	SoType.h
 
-PrivateHeaders = \
-	SbBasic.h.in
+PrivateHeaders =
 ObsoleteHeaders =
-
-SbBasic.h: $(srcdir)/SbBasic.h.in
-	@( cd $(top_builddir); $(MAKE) built-sources )
 
 ##$ BEGIN TEMPLATE Make-Common(inventor, .)
 # **************************************************************************

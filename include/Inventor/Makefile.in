@@ -256,14 +256,6 @@ SUBDIRS = C MPEG VRMLnodes actions annex bundles caches collision details \
           misc nodekits nodes projectors sensors system threads
 
 
-BUILT_SOURCES = \
-	SbBasic.h
-
-
-DISTCLEANFILES = \
-	SbBasic.h
-
-
 PublicHeaders = \
 	Sb.h \
 	SbBSPTree.h \
@@ -326,9 +318,7 @@ PublicHeaders = \
 	SoType.h
 
 
-PrivateHeaders = \
-	SbBasic.h.in
-
+PrivateHeaders = 
 ObsoleteHeaders = 
 
 
@@ -366,8 +356,7 @@ RECURSIVE_TARGETS = info-recursive dvi-recursive pdf-recursive \
 	check-recursive installcheck-recursive
 DIST_COMMON = $(libinventorinc_HEADERS) Makefile.am Makefile.in
 DIST_SUBDIRS = $(SUBDIRS)
-all: $(BUILT_SOURCES)
-	$(MAKE) $(AM_MAKEFLAGS) all-recursive
+all: all-recursive
 
 .SUFFIXES:
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
@@ -564,15 +553,13 @@ distdir: $(DISTFILES)
 	  fi; \
 	done
 check-am: all-am
-check: $(BUILT_SOURCES)
-	$(MAKE) $(AM_MAKEFLAGS) check-recursive
+check: check-recursive
 all-am: Makefile $(HEADERS)
 installdirs: installdirs-recursive
 installdirs-am:
 	$(mkinstalldirs) $(DESTDIR)$(libinventorincdir)
 
-install: $(BUILT_SOURCES)
-	$(MAKE) $(AM_MAKEFLAGS) install-recursive
+install: install-recursive
 install-exec: install-exec-recursive
 install-data: install-data-recursive
 uninstall: uninstall-recursive
@@ -592,12 +579,10 @@ clean-generic:
 
 distclean-generic:
 	-rm -f Makefile $(CONFIG_CLEAN_FILES)
-	-test -z "$(DISTCLEANFILES)" || rm -f $(DISTCLEANFILES)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
-	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
 clean: clean-recursive
 
 clean-am: clean-generic clean-libtool mostlyclean-am
@@ -663,9 +648,6 @@ uninstall-info: uninstall-info-recursive
 	uninstall-info-recursive uninstall-libinventorincHEADERS \
 	uninstall-recursive
 
-
-SbBasic.h: $(srcdir)/SbBasic.h.in
-	@( cd $(top_builddir); $(MAKE) built-sources )
 
 install-libinventorincHEADERS: $(libinventorinc_HEADERS)
 	@$(NORMAL_INSTALL)
