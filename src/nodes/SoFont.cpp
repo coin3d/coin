@@ -30,21 +30,29 @@
   etc) will use the font specified from an SoFont node when
   visualizing text.
 
-  The mapping from \c SoFont::name to a font happens like this:
+  The mapping from SoFont::name to a font happens like this:
   
-  1. If the font name is on the built-in list of (font name, font file) pairs,
-     use the font file from the list. This list is defined in the \c SoFontLib.cpp
-     file.
-  2. Try using the font name directly as a font file name.
-  3. If all else fails, use the built-in default font.
+  <ol>
 
-  Font files are searched for in SoInput::getDirectories(), and in COIN_FONT_PATH
-  if that environment variable is defined. On Win32 systems the c:/WINDOWS/Fonts
-  directory will also be searched.
+  <li> If the font name is on the built-in list of (font name, font
+       file) pairs, use the font file from the list. FIXME: reproduce
+       list here. 20030316 mortene. </li>
+
+  <li> Try using the font name directly as a font file name. </li>
+
+  <li> If all else fails, use the built-in default font. </li>
+
+  </ol>
+
+  Font files are searched for in SoInput::getDirectories(), and in
+  COIN_FONT_PATH if that environment variable is defined. On Win32
+  systems the c:/WINDOWS/Fonts directory will also be searched. FIXME:
+  update this doc when the Windows PATH has been corrected to use
+  WINDIR or some such. 20030316 mortene.
 
   Currently, font files in the TrueType format (.ttf) are supported.
   
-  \sa SoFontStyle, SoFontLib, SoGlyph, SoText2, SoText3, SoAsciiText
+  \sa SoFontStyle, SoGlyph, SoText2, SoText3, SoAsciiText
 */
 
 #include <Inventor/nodes/SoFont.h>

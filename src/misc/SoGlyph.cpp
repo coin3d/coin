@@ -25,26 +25,30 @@
   \class SoGlyph include/Inventor/misc/SoGlyph.h
   \brief The SoGlyph class is used to generate and reuse font glyph bitmaps and outlines.
   
-  SoGlyph is the public interface all text nodes (both built-in and extensions) should
-  use to generate bitmaps and outlines for font glyphs. SoGlyph uses the private
-  class \c SoFontLib to provide bitmaps and outlines. It maintains an internal cache
-  of previously requested glyphs to avoid needless calls into the font library.
+  SoGlyph is the public interface all text nodes (both built-in and
+  extensions) should use to generate bitmaps and outlines for font
+  glyphs. It maintains an internal cache of previously requested
+  glyphs to avoid needless calls into the font library.
   
-  Primer: a \e glyph is the graphical representation of a given character of a given font
-  at a given size and orientation. It can be either a \e bitmap (pixel aligned with
-  the viewport) or an \e outline (polygonal representation) that can be transformed or
-  extruded like any other 3D geometry. Bitmaps are used by SoText2, while the other
-  text nodes uses outlines.
-  
-  FIXME: font support for outline glyphs.
+  Primer: a \e glyph is the graphical representation of a given
+  character of a given font at a given size and orientation. It can be
+  either a \e bitmap (pixel aligned with the viewport) or an \e
+  outline (polygonal representation) that can be transformed or
+  extruded like any other 3D geometry. Bitmaps are used by SoText2,
+  while the other text nodes uses outlines.
   
   \COIN_CLASS_EXTENSION
 
   \since Coin 2.0
 
-  \sa SoText2, SoText3, SoAsciiText, SoFontLib
+  \sa SoText2, SoText3, SoAsciiText
 */
 
+// SoGlyph uses the private SoFontLib class to provide bitmaps and
+// outlines.
+//
+// FIXME: font support for outline glyphs. 200303?? preng.
+  
 #include <Inventor/misc/SoGlyph.h>
 
 #include <Inventor/C/threads/threadsutilp.h>

@@ -66,9 +66,9 @@
   two separate SoText2 nodes, one for each font, since it will have to
   recalculate glyph bitmap ids and positions for each call to \c GLrender().
 
-  SoText2 uses the \c SoGlyph class to generate glyph bitmaps.
+  SoText2 uses the SoGlyph class to generate glyph bitmaps.
 
-  \sa SoFont, SoFontStyle, SoText3, SoAsciiText, SoGlyph, SoFontLib
+  \sa SoFont, SoFontStyle, SoText3, SoAsciiText, SoGlyph
 */
 
 #include <Inventor/nodes/SoText2.h>
@@ -142,8 +142,6 @@ static const unsigned int NOT_AVAILABLE = UINT_MAX;
   Decides how the horizontal layout of the text strings is done.
 */
 
-#ifndef DOXYGEN_SKIP_THIS
-
 class SoText2P {
 public:
   SoText2P(SoText2 * textnode) : textnode(textnode) {}
@@ -172,8 +170,6 @@ public:
   void dumpGlyphCache();
   void dumpBuffer(unsigned char * buffer, SbVec2s size, SbVec2s pos);
 };
-
-#endif // DOXYGEN_SKIP_THIS
 
 // *************************************************************************
 
@@ -477,8 +473,6 @@ SoText2::generatePrimitives(SoAction * action)
 // SoText2P methods below
 #undef THIS
 
-#ifndef DOXYGEN_SKIP_THIS
-
 void
 SoText2P::flushGlyphCache(const SbBool unrefglyphs)
 {
@@ -728,5 +722,3 @@ SoText2P::buildGlyphCache(SoState * state)
   }
   return 0;
 }
-
-#endif // DOXYGEN_SKIP_THIS
