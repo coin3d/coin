@@ -236,6 +236,19 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
   Binding mbind = this->findMaterialBinding(state);
   Binding nbind = this->findNormalBinding(state);
 
+  if (this->getNodeType() == SoNode::VRML1) {
+    // For VRML1, PER_VERTEX means per vertex in shape, not PER_VERTEX
+    // on the state.
+    if (mbind == PER_VERTEX) {
+      mbind = PER_VERTEX_INDEXED;
+      mindices = cindices;
+    }
+    if (nbind == PER_VERTEX) {
+      nbind = PER_VERTEX_INDEXED;
+      nindices = cindices;
+    }
+  }
+
   SoTextureCoordinateBundle tb(action, TRUE, FALSE);
   SbBool doTextures = tb.needCoordinates();
 
@@ -371,6 +384,19 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
   if (normals == NULL) {
     sendNormals = FALSE;
     nbind = OVERALL;
+  }
+
+  if (this->getNodeType() == SoNode::VRML1) {
+    // For VRML1, PER_VERTEX means per vertex in shape, not PER_VERTEX
+    // on the state.
+    if (mbind == PER_VERTEX) {
+      mbind = PER_VERTEX_INDEXED;
+      matindices = cindices;
+    }
+    if (nbind == PER_VERTEX) {
+      nbind = PER_VERTEX_INDEXED;
+      normindices = cindices;
+    }
   }
 
   SoTextureCoordinateBundle tb(action, FALSE, FALSE);

@@ -91,6 +91,7 @@
 #include <Inventor/elements/SoEmissiveColorElement.h>
 #include <Inventor/elements/SoShininessElement.h>
 #include <Inventor/elements/SoTransparencyElement.h>
+#include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/C/tidbits.h>
 #include <stdlib.h>
 
@@ -318,14 +319,30 @@ SoMaterial::doAction(SoAction * action)
 
   if (bitmask) {
     SbColor dummycolor(0.8f, 0.8f, 0.0f);
-    float dummyval = 0.2f;
+    float dummyval = 0.2f;    
+    const SbColor * diffuseptr = this->diffuseColor.getValues(0);
+    int numdiffuse = this->diffuseColor.getNum();
+
+    if (this->getMaterialType() == TYPE_VRML1_ONLYEMISSIVE) {
+      bitmask |= SoLazyElement::DIFFUSE_MASK;
+      bitmask &= ~SoLazyElement::EMISSIVE_MASK;
+      diffuseptr = this->emissiveColor.getValues(0);
+      numdiffuse = this->emissiveColor.getNum();
+      // if only emissive color, turn off lighting and render as diffuse.
+      // this is much faster
+      SoLightModelElement::set(state, this, SoLightModelElement::BASE_COLOR); 
+    }
+    else if (this->getNodeType() == SoNode::VRML1) {
+      SoLightModelElement::set(state, this, SoLightModelElement::PHONG); 
+    }
+
     SoLazyElement::setMaterials(state, this, bitmask, 
                                 &THIS->colorpacker,
-                                this->diffuseColor.getValues(0), this->diffuseColor.getNum(), 
+                                diffuseptr, numdiffuse, 
                                 this->transparency.getValues(0), this->transparency.getNum(),
                                 bitmask & SoLazyElement::AMBIENT_MASK ? 
                                 this->ambientColor[0] : dummycolor,
-                                bitmask & SoLazyElement::EMISSIVE_MASK ?
+                                bitmask & SoLazyElement::EMISSIVE_MASK ? 
                                 this->emissiveColor[0] : dummycolor,
                                 bitmask & SoLazyElement::SPECULAR_MASK ?
                                 this->specularColor[0] : dummycolor,
@@ -368,6 +385,9 @@ SoMaterial::getMaterialType(void)
           !this->specularColor.isIgnored() && this->specularColor.getNum() == 0 &&
           !this->emissiveColor.isIgnored() && this->emissiveColor.getNum()) {
         THIS->materialtype = TYPE_VRML1_ONLYEMISSIVE;
+      }
+      else if (this->emissiveColor.getNum() > this->diffuseColor.getNum()) {
+        THIS->materialtype = TYPE_VRML1_ONLYEMISSIVE;          
       }
       else {
         THIS->materialtype = TYPE_NORMAL;
