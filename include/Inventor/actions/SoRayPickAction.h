@@ -77,6 +77,8 @@ public:
   SbBool isBetweenPlanes(const SbVec3f & intersection) const;
   SoPickedPoint * addIntersection(const SbVec3f & objectspacepoint);
 
+  void reset(void);
+
 protected:
   virtual void beginTraversal(SoNode * node);
 

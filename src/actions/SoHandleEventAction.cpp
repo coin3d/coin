@@ -75,7 +75,6 @@ public:
   SbBool pickvalid;
   SbBool didpickall;
   SoRayPickAction * pickaction;
-  SoInfo * dummyinfo;
 private:
   SoHandleEventAction * owner;
 };
@@ -116,8 +115,6 @@ SoHandleEventAction::SoHandleEventAction(const SbViewportRegion & viewportregion
   THIS->pickvalid = FALSE;
   THIS->didpickall = FALSE;
   THIS->pickaction = NULL;
-  THIS->dummyinfo = new SoInfo;
-  THIS->dummyinfo->ref();
 
   SO_ACTION_CONSTRUCTOR(SoHandleEventAction);
 }
@@ -129,8 +126,6 @@ SoHandleEventAction::~SoHandleEventAction()
 {
   if (THIS->pickroot) THIS->pickroot->unref();
   delete THIS->pickaction;
-  THIS->dummyinfo->unref();
-
   delete THIS;
 }
 
@@ -328,9 +323,8 @@ SoHandleEventAction::beginTraversal(SoNode * node)
   }
   this->getState()->pop();
   
-  // just apply on an SoInfo node to clear the picked point list
-  // FIXME: add a reset() method to SoRayPickAction, pederb 2003-09-30
-  THIS->getPickAction()->apply(THIS->dummyinfo);
+  // clear the picked point list
+  THIS->getPickAction()->reset();
 }
 
 //////// Hidden private methods for //////////////////////////////////////

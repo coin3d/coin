@@ -935,6 +935,17 @@ SoRayPickAction::addIntersection(const SbVec3f & objectspacepoint)
   return pp;
 }
 
+/*!
+  Truncates the internal picked points list.
+
+  \since 2003-09-30
+*/
+void 
+SoRayPickAction::reset(void)
+{
+  THIS->cleanupPickedPoints();  
+}
+
 // Documented in superclass.
 void
 SoRayPickAction::beginTraversal(SoNode * node)
