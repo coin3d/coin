@@ -1472,6 +1472,10 @@ SoInput::addEnvDirectoriesIdx(int startidx,
     return;
   }
 
+  if (separator == NULL) {
+    // use default separators if NULL
+    separator = ":\t ";
+  }
   const char * end = p + strlen(p);
 
   while (p < end) {
