@@ -26,8 +26,10 @@
 */
 
 #include <Inventor/nodekits/SoBaseKit.h>
+#include <Inventor/SbString.h>
 
 SO_NODE_SOURCE(SoBaseKit);
+
 
 /*!
   Constructor.
@@ -53,4 +55,404 @@ void
 SoBaseKit::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoBaseKit);
+}
+
+
+/*!
+  FIXME: write function documentation
+*/
+const SoNodekitCatalog *
+SoBaseKit::getClassNodekitCatalog(void)
+{
+  assert(0 && "FIXME: not implemented yet");
+  return NULL;
+}
+
+/*!
+  FIXME: write function documentation
+*/
+const SoNodekitCatalog *
+SoBaseKit::getNodekitCatalog(void) const
+{
+  assert(0 && "FIXME: not implemented yet");
+  return NULL;
+}
+
+/*!
+  FIXME: write function documentation
+*/
+SoNode *
+SoBaseKit::getPart(const SbName & /*partname*/, SbBool /*makeifneeded*/)
+{
+  assert(0 && "FIXME: not implemented yet");
+  return NULL;
+}
+
+/*!
+  FIXME: write function documentation
+*/
+SbString
+SoBaseKit::getPartString(const SoBase * /*part*/)
+{
+  assert(0 && "FIXME: not implemented yet");
+  return SbString();
+}
+
+/*!
+  FIXME: write function documentation
+*/
+SoNodeKitPath *
+SoBaseKit::createPathToPart(const SbName & /*partname*/, SbBool /*makeifneeded*/, const SoPath * /*pathtoextend*/)
+{
+  assert(0 && "FIXME: not implemented yet");
+  return NULL;
+}
+
+/*!
+  FIXME: write function documentation
+*/
+SbBool
+SoBaseKit::setPart(const SbName & /*partname*/, SoNode * /*from*/)
+{
+  assert(0 && "FIXME: not implemented yet");
+  return FALSE;
+}
+
+/*!
+  FIXME: write function documentation
+*/
+SbBool
+SoBaseKit::set(char * /*namevaluepairliststring*/)
+{
+  assert(0 && "FIXME: not implemented yet");
+  return FALSE;
+}
+
+/*!
+  FIXME: write function documentation
+*/
+SbBool
+SoBaseKit::set(char * /*partnamestring*/, char * /*parameterstring*/)
+{
+  assert(0 && "FIXME: not implemented yet");
+  return FALSE;
+}
+
+/*!
+  FIXME: write function documentation
+*/
+void
+SoBaseKit::doAction(SoAction * /*action*/)
+{
+  assert(0 && "FIXME: not implemented yet");
+}
+
+/*!
+  FIXME: write function documentation
+*/
+void
+SoBaseKit::callback(SoCallbackAction * /*action*/)
+{
+  assert(0 && "FIXME: not implemented yet");
+}
+
+/*!
+  FIXME: write function documentation
+*/
+void
+SoBaseKit::GLRender(SoGLRenderAction * /*action*/)
+{
+  assert(0 && "FIXME: not implemented yet");
+}
+
+/*!
+  FIXME: write function documentation
+*/
+void
+SoBaseKit::getBoundingBox(SoGetBoundingBoxAction * /*action*/)
+{
+  assert(0 && "FIXME: not implemented yet");
+}
+
+/*!
+  FIXME: write function documentation
+*/
+void
+SoBaseKit::getMatrix(SoGetMatrixAction * /*action*/)
+{
+  assert(0 && "FIXME: not implemented yet");
+}
+
+/*!
+  FIXME: write function documentation
+*/
+void
+SoBaseKit::handleEvent(SoHandleEventAction * /*action*/)
+{
+  assert(0 && "FIXME: not implemented yet");
+}
+
+/*!
+  FIXME: write function documentation
+*/
+void
+SoBaseKit::rayPick(SoRayPickAction * /*action*/)
+{
+  assert(0 && "FIXME: not implemented yet");
+}
+
+/*!
+  FIXME: write function documentation
+*/
+void
+SoBaseKit::search(SoSearchAction * /*action*/)
+{
+  assert(0 && "FIXME: not implemented yet");
+}
+
+/*!
+  FIXME: write function documentation
+*/
+void
+SoBaseKit::write(SoWriteAction * /*action*/)
+{
+  assert(0 && "FIXME: not implemented yet");
+}
+
+/*!
+  FIXME: write function documentation
+*/
+void
+SoBaseKit::getPrimitiveCount(SoGetPrimitiveCountAction * /*action*/)
+{
+  assert(0 && "FIXME: not implemented yet");
+}
+
+/*!
+  FIXME: write function documentation
+*/
+SoChildList *
+SoBaseKit::getChildren(void) const
+{
+  assert(0 && "FIXME: not implemented yet");
+  return NULL;
+}
+
+/*!
+  FIXME: write function documentation
+*/
+void
+SoBaseKit::printDiagram(void)
+{
+  assert(0 && "FIXME: not implemented yet");
+}
+
+/*!
+  FIXME: write function documentation
+*/
+void
+SoBaseKit::printSubDiagram(const SbName & /*rootname*/, int /*level*/)
+{
+  assert(0 && "FIXME: not implemented yet");
+}
+
+/*!
+  FIXME: write function documentation
+*/
+void
+SoBaseKit::printTable(void)
+{
+  assert(0 && "FIXME: not implemented yet");
+}
+
+/*!
+  FIXME: write function documentation
+*/
+void
+SoBaseKit::addWriteReference(SoOutput * /*out*/, SbBool /*isfromfield*/)
+{
+  assert(0 && "FIXME: not implemented yet");
+}
+
+/*!
+  FIXME: write function documentation
+*/
+SbBool
+SoBaseKit::forceChildDrivenWriteRefs(SoOutput * /*out*/)
+{
+  assert(0 && "FIXME: not implemented yet");
+  return FALSE;
+}
+
+/*!
+  FIXME: write function documentation
+*/
+SbBool
+SoBaseKit::isSearchingChildren(void)
+{
+  assert(0 && "FIXME: not implemented yet");
+  return FALSE;
+}
+
+/*!
+  FIXME: write function documentation
+*/
+void
+SoBaseKit::setSearchingChildren(SbBool /*newval*/)
+{
+  assert(0 && "FIXME: not implemented yet");
+}
+
+/*!
+  FIXME: write function documentation
+*/
+SoNode *
+SoBaseKit::typeCheck(const SbName & /*partname*/, const SoType & /*parttype*/, SoNode * /*node*/)
+{
+  assert(0 && "FIXME: not implemented yet");
+  return NULL;
+}
+
+/*!
+  FIXME: write function documentation
+*/
+const SoNodekitCatalog **
+SoBaseKit::getClassNodekitCatalogPtr(void)
+{
+  assert(0 && "FIXME: not implemented yet");
+  return NULL;
+}
+
+/*!
+  FIXME: write function documentation
+*/
+SoNode *
+SoBaseKit::addToCopyDict(void) const
+{
+  assert(0 && "FIXME: not implemented yet");
+  return NULL;
+}
+
+/*!
+  FIXME: write function documentation
+*/
+void
+SoBaseKit::copyContents(const SoFieldContainer * /*fromfc*/, SbBool /*copyconnections*/)
+{
+  assert(0 && "FIXME: not implemented yet");
+}
+
+/*!
+  FIXME: write function documentation
+*/
+SoGroup *
+SoBaseKit::getContainerNode(const SbName & /*listname*/, SbBool /*makeifneeded*/)
+{
+  assert(0 && "FIXME: not implemented yet");
+  return NULL;
+}
+
+/*!
+  FIXME: write function documentation
+*/
+SoNode *
+SoBaseKit::getAnyPart(const SbName & /*partname*/, SbBool /*makeifneeded*/, SbBool /*leafcheck*/, SbBool /*publiccheck*/)
+{
+  assert(0 && "FIXME: not implemented yet");
+  return NULL;
+}
+
+/*!
+  FIXME: write function documentation
+*/
+SoNodeKitPath *
+SoBaseKit::createPathToAnyPart(const SbName & /*partname*/, SbBool /*makeifneeded*/, SbBool /*leafcheck*/, SbBool /*publiccheck*/, const SoPath * /*pathtoextend*/)
+{
+  assert(0 && "FIXME: not implemented yet");
+  return NULL;
+}
+
+/*!
+  FIXME: write function documentation
+*/
+SbBool
+SoBaseKit::setAnyPart(const SbName & /*partname*/, SoNode * /*from*/, SbBool /*anypart*/)
+{
+  assert(0 && "FIXME: not implemented yet");
+  return FALSE;
+}
+
+/*!
+  FIXME: write function documentation
+*/
+void
+SoBaseKit::createNodekitPartsList(void)
+{
+  assert(0 && "FIXME: not implemented yet");
+}
+
+/*!
+  FIXME: write function documentation
+*/
+void
+SoBaseKit::createDefaultParts(void)
+{
+  assert(0 && "FIXME: not implemented yet");
+}
+
+/*!
+  FIXME: write function documentation
+*/
+const SoNodekitParts *
+SoBaseKit::getNodekitPartsList(void) const
+{
+  assert(0 && "FIXME: not implemented yet");
+  return NULL;
+}
+
+/*!
+  FIXME: write function documentation
+*/
+void
+SoBaseKit::catalogError(void)
+{
+  assert(0 && "FIXME: not implemented yet");
+}
+
+/*!
+  FIXME: write function documentation
+*/
+SbBool
+SoBaseKit::setUpConnections(SbBool /*onoff*/, SbBool /*doitalways*/)
+{
+  assert(0 && "FIXME: not implemented yet");
+  return FALSE;
+}
+
+/*!
+  FIXME: write function documentation
+*/
+SbBool
+SoBaseKit::readInstance(SoInput * /*in*/, unsigned short /*flags*/)
+{
+  assert(0 && "FIXME: not implemented yet");
+  return FALSE;
+}
+
+/*!
+  FIXME: write function documentation
+*/
+void
+SoBaseKit::setDefaultOnNonWritingFields(void)
+{
+  assert(0 && "FIXME: not implemented yet");
+}
+
+/*!
+  FIXME: write function documentation
+*/
+void
+SoBaseKit::countMyFields(SoOutput * /*out*/)
+{
+  assert(0 && "FIXME: not implemented yet");
 }

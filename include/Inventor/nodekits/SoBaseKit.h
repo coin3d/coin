@@ -20,8 +20,22 @@
 #ifndef __SOBASEKIT_H__
 #define __SOBASEKIT_H__
 
-#include <Inventor/nodes/SoSubNode.h>
+#include <Inventor/nodekits/SoSubKit.h>
 #include <Inventor/nodes/SoNode.h>
+
+class SoGroup;
+class SoNodekitParts;
+class SoNodeKitPath;
+class SoNodekitCatalog;
+class SoPath;
+
+
+// Convenience macros. FIXME: not implemented yet.
+#define SO_GET_PART(kit, name, classname)
+#define SO_CHECK_PART(kit, name, classname)
+#define SO_GET_ANY_PART(kit, name, classname)
+#define SO_CHECK_ANY_PART(kit, name, classname)
+
 
 class SoBaseKit : public SoNode
 {
@@ -29,14 +43,84 @@ class SoBaseKit : public SoNode
 
   SO_NODE_HEADER(SoBaseKit);
 
+  SO_KIT_CATALOG_ENTRY_HEADER(callbackList);
+
 public:
   static void initClass(void);
   SoBaseKit(void);
 
-  // FIXME: lots of API-calls missing. 19991107 mortene.
+  static const SoNodekitCatalog * getClassNodekitCatalog(void);
+  virtual const SoNodekitCatalog * getNodekitCatalog(void) const;
+
+  virtual SoNode * getPart(const SbName & partname, SbBool makeifneeded);
+  SbString getPartString(const SoBase * part);
+  virtual SoNodeKitPath * createPathToPart(const SbName & partname,
+					   SbBool makeifneeded,
+					   const SoPath * pathtoextend = NULL);
+  virtual SbBool setPart(const SbName & partname, SoNode * from);
+  SbBool set(char * namevaluepairliststring);
+  SbBool set(char * partnamestring, char * parameterstring);
+
+  virtual void doAction(SoAction * action);
+  virtual void callback(SoCallbackAction * action);
+  virtual void GLRender(SoGLRenderAction * action);
+  virtual void getBoundingBox(SoGetBoundingBoxAction * action);
+  virtual void getMatrix(SoGetMatrixAction * action);
+  virtual void handleEvent(SoHandleEventAction * action);
+  virtual void rayPick(SoRayPickAction * action);
+  virtual void search(SoSearchAction * action);
+  virtual void write(SoWriteAction * action);
+  virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
+
+  virtual SoChildList * getChildren(void) const;
+
+  void printDiagram(void);
+  void printSubDiagram(const SbName & rootname, int level);
+  void printTable(void);
+
+  virtual void addWriteReference(SoOutput * out, SbBool isfromfield = FALSE);
+  SbBool forceChildDrivenWriteRefs(SoOutput * out);
+
+  static SbBool isSearchingChildren(void);
+  static void setSearchingChildren(SbBool newval);
+  static SoNode * typeCheck(const SbName & partname, const SoType & parttype,
+			    SoNode * node);
+
 
 protected:
   virtual ~SoBaseKit();
+
+  static const SoNodekitCatalog ** getClassNodekitCatalogPtr(void);
+
+  virtual SoNode * addToCopyDict(void) const;
+  virtual void copyContents(const SoFieldContainer * fromfc,
+			    SbBool copyconnections);
+
+  SoGroup * getContainerNode(const SbName & listname,
+			     SbBool makeifneeded = TRUE);
+  virtual SoNode * getAnyPart(const SbName & partname, SbBool makeifneeded,
+			      SbBool leafcheck = FALSE,
+			      SbBool publiccheck = FALSE);
+  virtual SoNodeKitPath * createPathToAnyPart(const SbName & partname,
+					      SbBool makeifneeded,
+					      SbBool leafcheck = FALSE,
+					      SbBool publiccheck = FALSE,
+					      const SoPath * pathtoextend = NULL);
+  virtual SbBool setAnyPart(const SbName & partname, SoNode * from,
+			    SbBool anypart = TRUE);
+  void createNodekitPartsList(void);
+  virtual void createDefaultParts(void);
+  const SoNodekitParts * getNodekitPartsList(void) const;
+
+  void catalogError(void);
+  virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
+  virtual SbBool readInstance(SoInput * in, unsigned short flags);
+  virtual void setDefaultOnNonWritingFields(void);
+  void countMyFields(SoOutput * out);
+
+  SoChildList * children;
+  SoNodekitParts * nodekitPartsList;
+  SbBool connectionsSetUp;
 };
 
 #endif // !__SOBASEKIT_H__
