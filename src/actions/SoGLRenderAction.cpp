@@ -31,6 +31,13 @@
   the current OpenGL context.
  */
 
+// *************************************************************************
+
+// FIXME: this doesn't seem to end up in the Doxygen-generated
+// documentation anywhere, with Doxygen version 1.2.18, at least.
+// Find out why. There are also many other typedefs like this in Coin,
+// which are not within the scope of a class declaration. 20040707 mortene.
+
 /*!
   \typedef void SoGLRenderPassCB(void * userdata)
 
@@ -43,6 +50,17 @@
 
   \sa setPassCallback()
  */
+
+// *************************************************************************
+
+#include <string.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#include <Inventor/actions/SoGLRenderAction.h>
+
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/glue/glp.h>
 #include <Inventor/C/glue/simage_wrapper.h>
@@ -50,45 +68,37 @@
 #include <Inventor/C/tidbitsp.h>
 #include <Inventor/SbColor.h>
 #include <Inventor/SbPlane.h>
-#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoSubActionP.h>
+#include <Inventor/caches/SoBoundingBoxCache.h>
+#include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoDecimationPercentageElement.h>
 #include <Inventor/elements/SoDecimationTypeElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoGLLightIdElement.h>
 #include <Inventor/elements/SoGLRenderPassElement.h>
 #include <Inventor/elements/SoGLUpdateAreaElement.h>
 #include <Inventor/elements/SoGLViewportRegionElement.h>
-#include <Inventor/elements/SoGLLazyElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
-#include <Inventor/elements/SoShapeStyleElement.h>
-#include <Inventor/elements/SoTextureOverrideElement.h>
-#include <Inventor/elements/SoViewVolumeElement.h>
-#include <Inventor/elements/SoGLCacheContextElement.h>
-#include <Inventor/elements/SoWindowElement.h>
-#include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/elements/SoCacheElement.h>
-#include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoProjectionMatrixElement.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoTextureEnabledElement.h>
+#include <Inventor/elements/SoTextureOverrideElement.h>
+#include <Inventor/elements/SoViewVolumeElement.h>
+#include <Inventor/elements/SoViewingMatrixElement.h>
+#include <Inventor/elements/SoWindowElement.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/lists/SoCallbackList.h>
+#include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/nodes/SoShapeHints.h>
-#include <Inventor/lists/SoCallbackList.h>
-#include <Inventor/lists/SoEnabledElementsList.h>
-#include <Inventor/caches/SoBoundingBoxCache.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
-#include <Inventor/system/gl.h>
-
-#include <string.h>
 
 // *************************************************************************
 

@@ -42,10 +42,10 @@
   the principles applied in the API, richly illustrated and with
   numerous, well documented code examples.
 
-  (The «The Inventor Mentor» is getting a bit old, but don't let that
-  put you off. We heartily recommend this book as it covers all the
-  principles, aswell as close to 100% of the API, in an excellent
-  manner.)
+  (The «Inventor Mentor» is getting a bit old, but don't let that put
+  you off. We heartily recommend this book as it covers all the basic
+  design principles, aswell as the major parts of the API, in an
+  excellent manner.)
 
   For overviews of various selected features of the Coin library, see
   the "Related pages" document from the link in the upper right corner
@@ -55,13 +55,12 @@
   Systems in Motion is working on providing libraries for interfacing
   Coin with a wide range of windowing systems and GUI toolkits.
   <ul>
-  <li><a href="http://doc.coin3d.org/SoXt">SoXt</a> is for interfacing with Xt/Motif on X Windows.</li>
   <li><a href="http://doc.coin3d.org/SoQt">SoQt</a> is for interfacing with Trolltech's cross-platform Qt toolkit
       (UNIX, Windows, Mac OS X).</li>
   <li><a href="http://doc.coin3d.org/SoWin">SoWin</a> is for interfacing with the Win32 API on Microsoft Windows
       platforms.</li>
-  <li><a href="http://doc.coin3d.org/SoGtk">SoGtk</a> is for interfacing with GTK+.</li>
   <li><a href="http://doc.coin3d.org/Sc21">Sc21</a> is for interfacing with Cocoa on Mac OS X.</li>
+  <li><a href="http://doc.coin3d.org/SoXt">SoXt</a> is for interfacing with Xt/Motif on X Windows.</li>
   </ul>
 
   See <http://www.coin3d.org/> for more information about Coin and the
@@ -69,9 +68,9 @@
 
   <b>IMPORTANT NOTE: the online documentation for the Coin library is
   a continuous work-in-progress.</b> Although the large majority of
-  classes have been documented properly, there are still some poorly
-  documented items. If you happen upon an undocumented or poorly
-  documented class and / or class method which you find hard to
+  classes have been documented properly, there might still be some
+  poorly documented items. If you happen upon an undocumented or
+  poorly documented class and / or class method which you find hard to
   understand, please give us a notice so we can rectify the situation.
 */
 
@@ -1744,6 +1743,10 @@ SoDB::isMultiThread(void)
 #endif // !COIN_THREADSAFE
 }
 
+// Note that the function names of the next four functions below are
+// all lowercase to be compatible with client code written on TGS
+// Inventor.
+
 /*!
 
   Places a read lock on the global SoDB mutex. This can be used to
@@ -1757,12 +1760,10 @@ SoDB::isMultiThread(void)
   All Coin actions has a read-lock on the global SoDB mutex while
   traversing the scene graph.
 
-  The function name needs to be lowercase-only to be compatible with
-  TGS Inventor.
-
   \sa SoDB::readunlock(), SoDB::writelock()
 
   \since Coin 2.3
+  \since TGS Inventor 3.0
 */
 void
 SoDB::readlock(void) 
@@ -1775,11 +1776,9 @@ SoDB::readlock(void)
 /*!
   Unlocks the read lock on the global SoDB mutex.
 
-  The function name needs to be lowercase-only to be compatible with
-  TGS Inventor.
-
   \sa SoDB::readlock()
   \since Coin 2.3
+  \since TGS Inventor 3.0
 */ 
 void 
 SoDB::readunlock(void)
@@ -1798,11 +1797,9 @@ SoDB::readunlock(void)
   SoDB::writeunlock(). If you fail to do this, you might experience
   that your application locks up.
 
-  The function name needs to be lowercase-only to be compatible with
-  TGS Inventor.
-
   \sa SoDB::readlock()
   \since Coin 2.3  
+  \since TGS Inventor 3.0
 */
 void 
 SoDB::writelock(void)
@@ -1815,11 +1812,9 @@ SoDB::writelock(void)
 /*!
   Unlocks the write lock on the global SoDB mutex.
 
-  The function name needs to be lowercase-only to be compatible with
-  TGS Inventor.
-
   \sa SoDB::writelock()
   \since Coin 2.3  
+  \since TGS Inventor 3.0
 */
 void 
 SoDB::writeunlock(void)

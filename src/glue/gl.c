@@ -2080,6 +2080,10 @@ cc_glglue_glGenTextures(const cc_glglue * w, GLsizei n, GLuint * textures)
 {
   assert(w->glGenTextures);
   w->glGenTextures(n, textures);
+
+#if 0 /* debug */
+  cc_debugerror_postinfo("cc_glglue_glGenTextures", "%p, size==%d, textures==%p", w, n, textures);
+#endif /* debug */
 }
 
 void
@@ -2087,6 +2091,10 @@ cc_glglue_glBindTexture(const cc_glglue * w, GLenum target, GLuint texture)
 {
   assert(w->glBindTexture);
   w->glBindTexture(target, texture);
+
+#if 0 /* debug */
+  cc_debugerror_postinfo("cc_glglue_glBindTexture", "%p, ..., %d", w, texture);
+#endif /* debug */
 }
 
 void
@@ -2094,6 +2102,10 @@ cc_glglue_glDeleteTextures(const cc_glglue * w, GLsizei n, const GLuint * textur
 {
   assert(w->glDeleteTextures);
   w->glDeleteTextures(n, textures);
+
+#if 0 /* debug */
+  cc_debugerror_postinfo("cc_glglue_glDeleteTextures", "%p, size==%d, textures==%p", w, n, textures);
+#endif /* debug */
 }
 
 /*!
@@ -3694,6 +3706,17 @@ cc_glglue_context_make_current(void * ctx)
 void
 cc_glglue_context_reinstate_previous(void * ctx)
 {
+  /* FIXME: I believe two cc_glglue_context_make_current() invocations
+     before invoking this function would make this function behave
+     erroneously, as previous contexts are not stacked (at least not
+     in the GLX implementation, which I have checked), but only the
+     last context is kept track of.
+
+     Probably needs to be fixed. Or at least we should detect and
+     assert, if this is not allowed for some reason.
+
+     20040621 mortene. */
+
 #ifdef HAVE_GLX
   glxglue_context_reinstate_previous(ctx);
 #elif defined(HAVE_AGL)
@@ -3842,7 +3865,10 @@ cc_glglue_context_can_render_to_texture(void * ctx)
 void
 cc_glglue_context_bind_pbuffer(void * ctx)
 {
-/* FIXME: Implement for GLX. kyrah 20031123. */
+  /* FIXME: Implement for GLX.  The problem is that in GLX, there is
+     no way to bind a PBuffer as a texture (i.e. there is no
+     equivalent to the aglTexImagePBuffer() and wglBindTexImageARB()
+     calls).  kyrah 20031123. */
 #if defined(HAVE_AGL)
   aglglue_context_bind_pbuffer(ctx);
 #elif defined(HAVE_WGL)

@@ -1,5 +1,3 @@
-// This is helper code for item #003 of the todo.txt file.
-//
 // Uses introspection to list out all nodes, with all fields and the
 // enum values of SoSFEnum, SoMFEnum, SoSFBitMask and SoMFBitMask type
 // fields.

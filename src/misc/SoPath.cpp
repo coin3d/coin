@@ -559,7 +559,8 @@ SoPath::findFork(const SoPath * const path) const
 }
 
 /*!
-  Returns the index of \a node if found in path, \c -1 otherwise.
+  Returns the index of \a node if found in the \e full path (possibly
+  also in the normally hidden parts), or \c -1 otherwise.
 
   Note that this method is not part of the original Open Inventor API.
 */
@@ -573,7 +574,8 @@ SoPath::findNode(const SoNode * const node) const
 }
 
 /*!
-  This method returns \c TRUE is \a node is contained in path, and \c
+  This method returns \c TRUE is \a node is contained somewhere in the
+  \e full path (possibly also in the normally hidden parts), and \c
   FALSE otherwise.
 */
 SbBool

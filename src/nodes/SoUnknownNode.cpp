@@ -177,8 +177,10 @@ SoUnknownNode::readInstance(SoInput * in, unsigned short flags)
   for (i=0; i < this->classfielddata->getNumFields(); i++) {
     const SoField * f = this->classfielddata->getField(this, i);
     if (f->isDefault()) {
-      SoReadError::post(in, "Field ``%s'' in extension node not given any value.",
-                        this->classfielddata->getFieldName(i).getString());
+      SoReadError::post(in, "Field ``%s'' in extension node ``%s'' not "
+                        "given any value.",
+                        this->classfielddata->getFieldName(i).getString(),
+                        PRIVATE(this)->classname.getString());
     }
   }
 

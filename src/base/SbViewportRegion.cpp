@@ -399,6 +399,7 @@ SbViewportRegion::getViewportOriginPixels(void) const
 {
   // Cast away constness. Ugly.
   SbViewportRegion * thisp = (SbViewportRegion *)this;
+  // FIXME: the tmp storage seems totally unnecessary? 20040213 mortene.
   thisp->vporigin_s.setValue(round2short(this->winsize[0] * this->vporigin[0]),
                              round2short(this->winsize[1] * this->vporigin[1]));
   return this->vporigin_s;
@@ -425,6 +426,7 @@ SbViewportRegion::getViewportSizePixels(void) const
 {
   // Cast away constness. Ugly.
   SbViewportRegion * thisp = (SbViewportRegion *)this;
+  // FIXME: the tmp storage seems totally unnecessary? 20040213 mortene.
   thisp->vpsize_s = SbVec2s(round2short(this->winsize[0] * this->vpsize[0]),
                             round2short(this->winsize[1] * this->vpsize[1]));
   return this->vpsize_s;

@@ -128,14 +128,42 @@
   one SoSelection node to not affect the others.
 */
 
+// *************************************************************************
 
 #include <Inventor/nodes/SoSelection.h>
+
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/lists/SoCallbackList.h>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
+
+// *************************************************************************
+
+// FIXME: this doesn't seem to end up in the Doxygen-generated
+// documentation anywhere, with Doxygen version 1.2.18, at least.
+// Find out why. There are also many other typedefs like this in Coin,
+// which are not within the scope of a class declaration. 20040707 mortene.
+
+/*!
+  \typedef SoPath * SoSelectionPickCB(void * data, const SoPickedPoint * pick)
+
+  Callback functions for the
+  SoSelection::setPickFilterCallbacksetPassCallback() method need to
+  be of this type.
+
+  See documentation of that method for more information.
+*/
+
+// FIXME: document these:
+//
+// typedef void SoSelectionPathCB(void * data, SoPath * path);
+// typedef void SoSelectionClassCB(void * data, SoSelection * sel);
+//
+// 20040707 mortene.
+
+// *************************************************************************
 
 /*!
   \enum SoSelection::Policy
@@ -214,6 +242,7 @@
   \COININTERNAL
 */
 
+// *************************************************************************
 
 // Used to search for nodes. Just use one static action to avoid
 // allocating a new action every time we need to search for a node.
@@ -229,6 +258,8 @@ soselection_cleanup(void)
 // *************************************************************************
 
 SO_NODE_SOURCE(SoSelection);
+
+// *************************************************************************
 
 /*!
   Default constructor.
@@ -585,7 +616,7 @@ SoSelection::removeFinishCallback(SoSelectionClassCB * f, void * userData)
   - An empty path or a path not containing the Selection node: the
     pick will be ignored.
 
-  if \a callOnlyIfSelectable is \e TRUE, the callback will only be
+  if \a callOnlyIfSelectable is \c TRUE, the callback will only be
   called if the Selection node is in the picked path.  
 */
 void
@@ -599,14 +630,17 @@ SoSelection::setPickFilterCallback(SoSelectionPickCB * f,
 }
 
 /*!  
-  When \a pickMatching is \e TRUE (the default), the mouse button
+  When \a pickmatchflag is \c TRUE (the default), the mouse button
   release pick must match the mouse button press pick before object is
   selected/deselected.
+
+  This flag should normally not be of interest to application
+  programmers.
 */
 void
-SoSelection::setPickMatching(const SbBool pickMatchingarg)
+SoSelection::setPickMatching(const SbBool pickmatchflag)
 {
-  this->pickMatching = pickMatchingarg;
+  this->pickMatching = pickmatchflag;
 }
 
 /*!

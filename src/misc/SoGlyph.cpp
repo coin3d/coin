@@ -640,7 +640,9 @@ SoGlyph::getKerning(const SoGlyph & rightglyph) const
   Antialiased bitmap graphics not yet supported.
 
   Note that this function may return \c NULL if the glyph has no
-  visible pixels (like the space character).
+  visible pixels (as for e.g. the space character).
+
+  The returned buffer should \e not be deallocated by the caller.
 */
 unsigned char *
 SoGlyph::getBitmap(SbVec2s & size, SbVec2s & pos, const SbBool antialiased) const

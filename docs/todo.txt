@@ -772,7 +772,7 @@ STUFF TO FIX IN COIN
        SGI Inventor does this through their "libFL" library.
 
      * Localization / internationalization: should probably be done by
-       handling Unicode charactersets -- just ASCII or iso-8859-[1|15]
+       handling Unicode charactersets -- just ASCII or iso-8859-[1-15]
        is not enough.
 
        (<URL:http://www.wikipedia.org> is a great place to go and read

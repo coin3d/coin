@@ -67,7 +67,38 @@
   it can easily be implemented by duplicating all faces in both the
   SoShapeHints::COUNTERCLOCKWISE and the SoShapeHints::CLOCKWISE
   order. Here is a simple usage example, showing the technique for a
-  single triangle face:
+  single polygon, using two SoFaceSet nodes for rendering the same
+  polygon from both sides:
+
+  \verbatim
+  #Inventor V2.1 ascii
+  
+  Separator {
+     Coordinate3 { point [ 0 0 0, 1 0 0, 1 1 0 ] }
+  
+     Separator {
+        Material { diffuseColor [ 1 1 0 ] }
+        ShapeHints {
+           vertexOrdering COUNTERCLOCKWISE
+           shapeType SOLID
+        }
+        FaceSet { numVertices [ 3 ] }
+     }
+  
+     Separator {
+        Material { diffuseColor [ 1 0 0 ] }
+        ShapeHints {
+           vertexOrdering CLOCKWISE
+           shapeType SOLID
+        }
+        FaceSet { numVertices [ 3 ] }
+     }
+  }
+  \endverbatim
+
+  The same effect can also be done in the following manner, using an
+  SoIndexedFaceSet to explicitly render the polygon coordinates in
+  both directions (clockwise and counterclockwise):
 
   \verbatim
   #Inventor V2.1 ascii
@@ -96,8 +127,8 @@
   SoShapeHints node with SoShapeHints::faceType set to
   SoShapeHints::UNKNOWN_FACE_TYPE in the scene graph before the
   SoIndexedFaceSet (or SoFaceSet) node. This needs to be done to force
-  the rendering code to tessellate the polygon properly to triangles
-  before sending it off to OpenGL. Without it, the polygon will be
+  the rendering code to tessellate the polygons properly to triangles
+  before sending it off to OpenGL. Without it, the polygons will be
   sent as-is to OpenGL, and the OpenGL implementation's tessellator is
   often not able to tessellate properly. Here is an example which
   usually fails without the SoShapeHints node (try commenting it out,

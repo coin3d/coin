@@ -41,7 +41,7 @@
   \code
 
   // First get hold of an SoPath through the scenegraph down to the
-  // node ("mynode") you want to query about it's current world space
+  // node ("mynode") you want to query about its current world space
   // transformation(s).
 
   SoSearchAction * searchaction = new SoSearchAction;

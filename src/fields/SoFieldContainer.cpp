@@ -242,9 +242,11 @@ SoFieldContainer::fieldsAreEqual(const SoFieldContainer * container) const
 
 
 /*!
-  This method copies the field values from container into this. The fields
-  are assumed to be of the same type. The \a copyconnections flag decides
-  whether the field connections are to be copied aswell.
+  \COININTERNAL
+
+  This method copies the field values from container into this. The
+  fields are assumed to be of the same type. The \a copyconnections
+  flag decides whether the field connections are to be copied aswell.
 */
 void
 SoFieldContainer::copyFieldValues(const SoFieldContainer * container,
@@ -649,12 +651,14 @@ SoFieldContainer::getFieldData(void) const
   node / engine / dragger / whatever subclasses which needs to account
   for internal data that are not handled automatically.
 
-  Note that for simply copying e.g. a node from application code, it
-  should be sufficient to do:
+  For copying nodes from application code, you should not invoke this
+  function directly, but rather call the SoNode::copy() function:
 
   \code
   SoNode * mynewnode = templatenode->copy();
   \endcode
+
+  The same also goes for engines.
 
 
   Make sure that when you override the copyContents() method in your

@@ -24,6 +24,11 @@
  *
 \**************************************************************************/
 
+// FIXME: do we really need two independent hash-implementations in
+// Coin? The cc_hash ADT should be sufficient. At least a C++ generic
+// hash implementation, like this, should be built on top of cc_hash
+// to avoid duplication of functionality. 20040707 mortene.
+
 #include <assert.h>
 #include <stddef.h> // NULL
 #include <string.h> // memset()

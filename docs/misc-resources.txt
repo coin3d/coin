@@ -159,6 +159,15 @@ THE LINKS
   Robust Shadow Volumes" by Everitt and Kilgard. A good paper and a
   demo.
 
+* A few more links related to shadow volumes, provided by a Coin user:
+
+  http://developer.nvidia.com/object/robust_shadow_volumes.html
+  http://developer.nvidia.com/object/inf_shadow_volumes.html
+
+  A demo using these techniques:
+
+  http://www.gizmosdk.com/GizmoSDK.html
+
 * A 3D model search engine (with lots of VRML models, at least):
   http://shape.cs.princeton.edu
 
@@ -240,6 +249,9 @@ THE LINKS
   in Coin).
 
   UPDATE 2003-04-20: now released, at <URL:http://www.gnome.org/fonts>.
+
+* TransGaming, involved in the Wine project, have made a TTF called
+  TGMarlett and released it under the BSD license.
 
 * OpenGL and ActiveX:
 

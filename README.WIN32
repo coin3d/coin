@@ -1,6 +1,7 @@
 FIXME: the one in Coin-2 seems more up-to-date.  inspect diffs, and
 whether it can be just copied over to this repository.
 
+
 Section 01 -- Basic build instructions.
 =======================================
 
@@ -17,7 +18,7 @@ Section 01 -- Basic build instructions.
         * Cygwin[1], latest release, with the packages needed to run a
           configure script[2]
 
-        * Microsoft Visual C++ v6.x
+        * Microsoft Visual C++ v6.x[3]
 
   First, make sure Microsoft Visual C++ is accessible from the Cygwin
   shell.  If you can run ``cl.exe'' from the bash command line on the
@@ -172,7 +173,15 @@ Section 01 -- Basic build instructions.
 [2] 'bash', 'binutils', and 'make' may not be part of the standard
     package set, but need to be present. Include 'cvs' if you want to
     stay in sync with the development source code of Coin, plus 'perl'
-    if you want to build a local copy of the API documentation.
+    and 'doxygen' if you want to build a local copy of the API
+    documentation.
+
+[3] The Microsoft Visual C++ build tools are now available for free:
+
+        http://msdn.microsoft.com/visualc/vctoolkit2003/
+
+    Note that this only includes the command-line tools. The MS Visual
+    Studio IDE tools are not available, it seems.
 
 
 Section 02 -- Known run-time problems
