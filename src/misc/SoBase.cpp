@@ -442,10 +442,31 @@ SoBase::ref(void) const
 {
   // Cast away constness.
   SoBase * base = (SoBase *)this;
-  // FIXME: a fairly limited number of bits has been reserved for this
-  // counter, so we should really try to detect overflows. (Ditto for
-  // underflows.) 20020217 mortene.
+
+#if COIN_DEBUG
+  int32_t currentrefcount = base->objdata.referencecount;
+#endif // COIN_DEBUG
+
   base->objdata.referencecount++;
+
+#if COIN_DEBUG
+  if (base->objdata.referencecount < currentrefcount) {
+    SoDebugError::post("SoBase::ref",
+                       "%p ('%s') - referencecount overflow!: %d -> %d",
+                       this, this->getTypeId().getName().getString(),
+                       currentrefcount, this->objdata.referencecount);
+
+    // The reference counter is contained within 27 bits of signed
+    // integer, which means it can go up to about ~67 million
+    // references. It's hard to imagine that this should be too small,
+    // so we don't bother to try to handle overflows any better than
+    // this.
+    //
+    // If we should ever revert this decision, look in Coin-1 for how
+    // to handle overflows graciously.
+    assert(FALSE && "reference count overflow");
+  }
+#endif // COIN_DEBUG
 
 #if COIN_DEBUG
   if (SoBase::tracerefs) {
