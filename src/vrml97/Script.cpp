@@ -21,7 +21,7 @@
   \class SoVRMLScript SoVRMLScript.h Inventor/VRMLnodes/SoVRMLScript.h
   \brief The SoVRMLScript class is used to control the scene using scripts.
   \ingroup VRMLnodes
-  
+
   \WEB3DCOPYRIGHT
 
   \verbatim
@@ -35,7 +35,7 @@
     eventOut     eventType eventName
   }
   \endverbatim
- 
+
   The Script node is used to program behaviour in a scene. Script nodes
   typically
 
@@ -64,9 +64,9 @@
   The script is able to receive and process events that are sent to
   it. Each event that can be received shall be declared in the Script
   node using the same syntax as is used in a prototype definition:
-  
+
   \verbatim
-  eventIn type name 
+  eventIn type name
   \endverbatim
 
   The type can be any of the standard VRML fields
@@ -75,12 +75,12 @@
 
   The Script node is able to generate events in response to the
   incoming events. Each event that may be generated shall be declared
-  in the Script node using the following syntax: 
+  in the Script node using the following syntax:
 
   \verbatim
   eventOut type name
   \endverbatim
-  
+
   With the exception of the url field, exposedFields are not allowed
   in Script nodes.
 
@@ -123,8 +123,10 @@
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/SbName.h>
 #include <Inventor/SoInput.h>
+#include <Inventor/SoOutput.h>
 #include <Inventor/misc/SoProto.h>
 #include <Inventor/errors/SoReadError.h>
+#include <Inventor/actions/SoWriteAction.h>
 #include <assert.h>
 
 SoType SoVRMLScript::classTypeId;
@@ -224,6 +226,59 @@ SoVRMLScript::handleEvent(SoHandleEventAction * action)
 void
 SoVRMLScript::write(SoWriteAction * action)
 {
+  SoOutput * out = action->getOutput();
+  if (out->getStage() == SoOutput::COUNT_REFS) {
+    inherited::write(action);
+  }
+  else if (out->getStage() == SoOutput::WRITE) {
+    if (this->writeHeader(out, FALSE, FALSE))
+      return;
+    const SbName URL("url");
+    const SbName DIRECTOUTPUT("directOutput");
+    const SbName MUSTEVALUATE("mustEvaluate");
+    const SoFieldData * fd = this->getFieldData();
+
+    SbString value;
+    for (int i = 0; i < fd->getNumFields(); i++) {
+      const SoField * f = fd->getField(this, i);
+      SbName fieldname = fd->getFieldName(i);
+      SbBool writevalue = FALSE;
+      if (fieldname != URL && fieldname != DIRECTOUTPUT &&
+          fieldname != MUSTEVALUATE) {
+        out->indent();
+        switch (f->getFieldType()) {
+        case SoField::NORMAL_FIELD:        
+          out->write("field ");
+          writevalue = TRUE;
+          break;
+        case SoField::EVENTIN_FIELD:
+          out->write("eventIn ");
+          break;
+        case SoField::EVENTOUT_FIELD:
+          out->write("eventOut ");
+          break;
+        case SoField::EXPOSED_FIELD:
+          out->write("exposedField ");
+          writevalue = TRUE;
+          break;
+        default:
+          break;
+        }
+        out->write(f->getTypeId().getName().getString());
+        out->write(' ');
+        out->write(fieldname.getString());
+        if (writevalue) {
+          ((SoField*)f)->get(value);
+          out->write(' ');
+          out->write(value.getString());
+        }
+        out->write("\n");
+      }
+    }
+    fd->write(out, this);
+    this->writeFooter(out);
+  }
+  else assert(0 && "unknown stage");
 }
 
 // Doc in parent
