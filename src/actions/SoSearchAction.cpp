@@ -196,6 +196,8 @@ SoSearchAction::getType(SbBool & chkderivedref) const
   The action will be configured to set the search "interest" to
   LookFor \c NAME, so there is no need to call
   SoSearchAction::setFind().
+
+  \sa SoNode::getByName()
 */
 void
 SoSearchAction::setName(const SbName namearg)
