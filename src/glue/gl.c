@@ -670,8 +670,7 @@ glglue_resolve_symbols(cc_glglue * w)
 #endif /* GL_SGI_color_table */
 
   w->supportsPalettedTextures =
-    cc_glglue_glext_supported(w, "GL_EXT_paletted_texture") ||
-    cc_glglue_glext_supported(w, "GL_SGI_texture_color_table");
+    cc_glglue_glext_supported(w, "GL_EXT_paletted_texture");
 
 #ifdef GL_EXT_paletted_texture
   /* Note that EXT_paletted_texture defines glColorTableEXT et al
@@ -688,6 +687,38 @@ glglue_resolve_symbols(cc_glglue * w)
   }
 #endif /* GL_EXT_paletted_texture */
 
+  /*
+    Using the SGI_texture_color_table extension has been temporarily
+    disabled, as it uses a different enum value for
+    glColorTable(<target>,...), and seems to only support 2D
+    textures. Quoting from the extension spec document:
+
+        Accepted by the <cap> parameter of Enable, Disable, and
+        IsEnabled, [...] and by the <target> parameter of
+        ColorTableSGI, CopyColorTableSGI, GetColorTableSGI,
+        ColorTableParameterfvSGI, ColorTableParameterivSGI,
+        GetColorTableParameterfvSGI, GetColorTableParameterivSGI:
+
+	TEXTURE_COLOR_TABLE_SGI		0x80BC
+
+        Accepted by the <target> parameter of ColorTableSGI,
+        GetColorTableParameterivSGI, and GetColorTableParameterfvSGI:
+
+	PROXY_TEXTURE_COLOR_TABLE_SGI	0x80BD
+
+    As paletted textures can only be supported through extensions, we
+    should probably implement support for using this one in addition
+    to EXT_paletted_texture.
+
+    Note: our O2 supports this extension, but not
+    EXT_paletted_texture, so it can be used for development.
+
+    20030129 mortene.
+   */
+#if 0
+  w->supportsPalettedTextures = w->supportsPalettedTextures ||
+    cc_glglue_glext_supported(w, "GL_SGI_texture_color_table");
+
 #ifdef GL_SGI_texture_color_table
   /* Note that SGI_texture_color_table defines glColorTableEXT et al
      "on it's own", i.e. it doesn't need the presence of
@@ -702,6 +733,7 @@ glglue_resolve_symbols(cc_glglue * w)
     w->glGetColorTableParameterfv = (COIN_PFNGLGETCOLORTABLEPARAMETERFVPROC)PROC(glGetColorTableParameterfvSGI);
   }
 #endif /* GL_SGI_texture_color_table */
+#endif /* disabled */
 
 
 #if defined(GL_VERSION_1_4)
@@ -925,14 +957,14 @@ cc_glglue_instance(int contextid)
     assert((wglGetCurrentContext() != NULL) && "must have a current GL context when instantiating cc_glglue");
 #endif /* HAVE_WGL */
 #ifdef HAVE_AGL
-    // NB! It would seem logical to assert on aglGetCurrentContext() != NULL 
-    // here, but that does not work, since aglGetCurrentContext() only 
-    // returns a value != NULL if the context has been set using 
-    // aglSetCurrentContext(). Therefore, GLUT or Cocoa application
-    // using Coin would not work anymore!
+    /* NB! It would seem logical to assert on aglGetCurrentContext()
+       != NULL here, but that does not work, since
+       aglGetCurrentContext() only returns a value != NULL if the
+       context has been set using aglSetCurrentContext(). Therefore,
+       GLUT or Cocoa application using Coin would not work anymore!
 
-    // FIXME: Find out how to check for valid OpenGL context on a lower
-    // level (i.e. CGL)  kyrah 20030122
+       FIXME: Find out how to check for valid OpenGL context on a
+       lower level (i.e. CGL) kyrah 20030122 */
 #endif /* HAVE_AGL */
 
     glglue_sanity_check_enums();
