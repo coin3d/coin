@@ -286,7 +286,7 @@ SbName::isIdentStartChar(const char c)
   //
   // FIXME: this needs to be fixed other places isdigit() is used,
   // aswell as for other is*() function. 20021124 mortene.
-  const unsigned char uc = (const unsigned char)c;
+  const unsigned char uc = (unsigned char)c;
 
   if (isdigit(uc)) return FALSE;
   return SbName::isIdentChar(c);

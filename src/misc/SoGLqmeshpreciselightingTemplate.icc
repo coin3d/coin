@@ -28,8 +28,10 @@
   int midx = 0;
 #endif
   SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
+#if NBINDING!=PER_VERTEX
   const SbVec3f * currnormal = &dummynormal;
   if (normals) currnormal = normals;
+#endif
 
 #if NBINDING==OVERALL
   if (needNormals) {
@@ -47,7 +49,7 @@
   SbVec4f sum234,sum134,sum124,sum123;
   SbVec4f vec1,vec2,vec3,vec4;
 #endif
-#if NBINDING==PER_VERTEX || MBINDING==PER_VERTEX || TEXTURES==TRUE
+#if NBINDING==PER_VERTEX || TEXTURES==TRUE
   float s1,s2,s3,s4;
   float w1,w2,w3,w4;
 #endif
@@ -92,7 +94,7 @@
 #else
       assert(FALSE && "4d coordinates handling unimplemented yet");
 #endif
-#if NBINDING==PER_VERTEX || MBINDING==PER_VERTEX || TEXTURES==TRUE
+#if NBINDING==PER_VERTEX || TEXTURES==TRUE
 #if COORDS==D3
       s1 = ((*c1) - cc).sqrLength();
       s2 = ((*c2) - cc).sqrLength();
@@ -114,10 +116,12 @@
       s3 = qmeshSqrLen(vec3);
       s4 = qmeshSqrLen(vec4);
 #endif
+#if NBINDING==PER_VERTEX || TEXTURES==TRUE
       w1 = qmeshGetWeight(s1/s4) * 0.5f;
-      w4 = 0.5f - w1;
       w2 = qmeshGetWeight(s2/s3) * 0.5f;
       w3 = 0.5f - w2;
+      w4 = 0.5f - w1;
+#endif
 #endif
 
 #if NBINDING==PER_VERTEX

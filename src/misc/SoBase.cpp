@@ -1396,7 +1396,7 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
   if (refcount == 0) {
     // Make ready for next inital write action pass by resetting data.
     thisp->objdata.ingraph = FALSE;
-    SbBool found = writerefs->remove((const unsigned long)this);
+    SbBool found = writerefs->remove((unsigned long)this);
     assert(found && "writeref hash in trouble");
 
     // Ouch. Does this to avoid having two subsequent write actions on
@@ -1519,7 +1519,7 @@ SoBase::readBase(SoInput * in, SbName & classname, SoBase *& base)
                          classname.getString());
 #endif // debug
 
-  SbBool ret = TRUE, flush = FALSE;
+  SbBool ret = TRUE;
   base = NULL;
 
   SbName refname;
@@ -1573,11 +1573,8 @@ SoBase::readBase(SoInput * in, SbName & classname, SoBase *& base)
     else {
       ret = SoBase::readBaseInstance(in, classname, refname, base);
 
-      if (!in->isBinary()) {
-        if (!ret) {
-          flush = TRUE;
-        }
-        else if (!(gotchar = in->read(c)) || c != CLOSE_BRACE) {
+      if (ret && !in->isBinary()) {
+        if (!(gotchar = in->read(c)) || c != CLOSE_BRACE) {
           if (gotchar)
             SoReadError::post(in, "Expected '%c'; got '%c'", CLOSE_BRACE, c);
           else
@@ -1587,14 +1584,6 @@ SoBase::readBase(SoInput * in, SbName & classname, SoBase *& base)
       }
     }
   }
-
-  // FIXME: this action seems completely bogus, as if something fails,
-  // all bets are off and we should simply terminate the import
-  // operation. (flushInput() continues to read and scans for a
-  // closing brace). Run with this code disabled for a while and axe
-  // it if nothing bad seems to come frome it. 20020531 mortene.
-
-  // if (!ret && flush) SoBase::flushInput(in);
 
   return ret;
 }
