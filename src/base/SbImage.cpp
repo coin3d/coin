@@ -59,6 +59,8 @@ typedef unsigned char * (*SIMAGE_read_image_t)(const char *, int *, int *, int *
 static SIMAGE_read_image_t SIMAGE_read_image;
 typedef const char * (*SIMAGE_get_last_error_t)(void);
 static SIMAGE_get_last_error_t SIMAGE_get_last_error;
+typedef void (*SIMAGE_free_image_t)(unsigned char *);
+static SIMAGE_free_image_t SIMAGE_free_image;
 
 static void SIMAGE_cleanup(void)
 {
@@ -295,9 +297,10 @@ SbImage::readFile(const SbString & filename,
 
 #if HAVE_LIBSIMAGE
     // Function symbol simage_read_image() from libsimage is already
-    // loaded.
+    // set up by the system loader.
     if (!SIMAGE_read_image) {
       SIMAGE_read_image = simage_read_image;
+      SIMAGE_free_image = simage_free_image;
       SIMAGE_get_last_error = simage_get_last_error;
     }
 #endif // HAVE_LIBSIMAGE
@@ -318,6 +321,8 @@ SbImage::readFile(const SbString & filename,
 
         SIMAGE_read_image =
           (SIMAGE_read_image_t)dlsym(SIMAGE_libhandle, "simage_read_image");
+        SIMAGE_free_image =
+          (SIMAGE_free_image_t)dlsym(SIMAGE_libhandle, "simage_free_image");
         SIMAGE_get_last_error =
           (SIMAGE_get_last_error_t)dlsym(SIMAGE_libhandle, "simage_get_last_error");
 
@@ -345,7 +350,7 @@ SbImage::readFile(const SbString & filename,
 
     if (simagedata) {
       this->setValue(SbVec2s((short)w, (short)h), nc, simagedata);
-      free(simagedata);
+      SIMAGE_free_image(simagedata);
       return TRUE;
     }
   }
