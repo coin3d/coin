@@ -57,8 +57,8 @@ public:
                                            SbBool makeifneeded,
                                            const SoPath * pathtoextend = NULL);
   virtual SbBool setPart(const SbName & partname, SoNode * from);
-  SbBool set(char * namevaluepairliststring);
-  SbBool set(char * partnamestring, char * parameterstring);
+  SbBool set(const char * namevaluepairliststring);
+  SbBool set(const char * partnamestring, const char * parameterstring);
 
   virtual void doAction(SoAction * action);
   virtual void callback(SoCallbackAction * action);

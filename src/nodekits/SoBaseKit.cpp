@@ -45,8 +45,10 @@
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/SoPath.h>
+#include <Inventor/SoInput.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <ctype.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -182,23 +184,87 @@ SoBaseKit::setPart(const SbName &partname, SoNode *from)
   return this->setAnyPart(partname, from, FALSE);
 }
 
-/*!
-  FIXME: write function documentation
-*/
-SbBool
-SoBaseKit::set(char * /*namevaluepairliststring*/)
+static const char *
+skip_space(const char *ptr)
 {
-  COIN_STUB();
-  return FALSE;
+  while (isspace(*ptr)) ptr++;
+  return ptr;
+}
+
+static int
+count_nonspace(const char *ptr)
+{
+  int cnt = 0;
+  while (ptr[cnt] && !isspace(ptr[cnt])) cnt++;
+  return cnt;
 }
 
 /*!
   FIXME: write function documentation
 */
 SbBool
-SoBaseKit::set(char * /*partnamestring*/, char * /*parameterstring*/)
+SoBaseKit::set(const char *namevaluepairliststring)
 {
-  COIN_STUB();
+  // FIXME: the parsing does seem to contain obvious bugs -- what if a
+  // "{" or a "}" is enclosed within a string, for instance?
+  // 20000107 mortene.
+
+  const char *currptr = namevaluepairliststring;
+  const char *startbracket = strchr(currptr, '{');
+  const char *endbracket = strchr(currptr, '}');
+
+  while (*currptr && startbracket && endbracket) {
+    currptr = skip_space(currptr);
+    SbString partname(currptr, 0, count_nonspace(currptr)-1);
+    SbString parameter(startbracket+1, 0, endbracket-startbracket-1);
+
+    if (!this->set(partname.getString(), parameter.getString())) {
+      return FALSE;
+    }
+    currptr = endbracket + 1;
+    startbracket = strchr(currptr, '{');
+    endbracket = strchr(currptr, '}');
+  }
+  return TRUE;
+}
+
+/*!
+  FIXME: write function documentation
+*/
+SbBool
+SoBaseKit::set(const char *partnamestring, const char * parameterstring)
+{
+  SbString partname(partnamestring);
+  int partNum;
+  SbBool isList;
+  int listIdx;
+  SoBaseKit *kit = this;
+  if (SoBaseKit::findPart(partname, kit, partNum, isList, listIdx, TRUE)) {
+    SoNode *node = kit->fieldList[partNum]->getValue();
+    assert(node != NULL); // makeifneeded was TRUE in findPart call
+    if (isList) {
+      assert(node->isOfType(SoNodeKitListPart::getClassTypeId()));
+      SoNodeKitListPart *list = (SoNodeKitListPart*) node;
+      if (listIdx < 0 || listIdx >= list->getNumChildren()) {
+#if COIN_DEBUG && 1 // debug
+        SoDebugError::postInfo("SoBaseKit::set",
+                               "index %d out of bounds for part: %s",
+                               listIdx, partnamestring);
+#endif // debug
+        return FALSE;
+      }
+      else {
+        node = list->getChild(listIdx);
+      }
+    }
+    if (node) {
+      SoInput memInput;
+      SbBool dummy;
+      memInput.setBuffer((void*)parameterstring, strlen(parameterstring));
+      const SoFieldData *fielddata = node->getFieldData();
+      return fielddata->read(&memInput, node, TRUE, dummy);
+    }
+  }
   return FALSE;
 }
 
@@ -208,9 +274,6 @@ SoBaseKit::set(char * /*partnamestring*/, char * /*parameterstring*/)
 void
 SoBaseKit::doAction(SoAction *action)
 {
-  SoState *state = action->getState();
-  state->push();
-
   int numIndices;
   const int * indices;
   switch (action->getPathCode(numIndices, indices)) {
@@ -235,7 +298,6 @@ SoBaseKit::doAction(SoAction *action)
     assert(0 && "Unknown path code");
     break;
   }
-  state->pop();
 }
 
 /*!
@@ -550,7 +612,7 @@ SoBaseKit::createPathToAnyPart(const SbName &partname, SbBool makeifneeded, SbBo
  // FIXME: implement path copy with tail test. pederb, 2000-01-05
   assert(pathtoextend == NULL);
 
-  SoPath *path = new SoPath();
+  SoPath *path = new SoPath(this);
   path->ref();
 
   SoBaseKit *kit = this;
@@ -634,6 +696,10 @@ SoBaseKit::createNodekitPartsList(void)
 void
 SoBaseKit::createFieldList(void)
 {
+  // FIXME:
+  // is there any way to make sure this code is only run once, and in
+  // the top level constructor. pederb, 2000-01-06
+  //
   const SoNodekitCatalog *catalog = this->getNodekitCatalog();
   // only do this if the catalog has been created
   if (catalog) {
@@ -655,6 +721,10 @@ SoBaseKit::createFieldList(void)
 void
 SoBaseKit::createDefaultParts(void)
 {
+  // FIXME:
+  // is there any way to make sure this code is only run once, and in
+  // the top level constructor. pederb, 2000-01-06
+  //
   const SoNodekitCatalog *catalog = this->getNodekitCatalog();
   // only do this if the catalog has been created
   if (catalog) {
@@ -671,7 +741,7 @@ SoBaseKit::createDefaultParts(void)
 
 /*!
   In Open Inventor, this method returns a pointer to a private class.
-  It will always return \c NULL in Coin. 
+  It will always return \c NULL in Coin.
 
   \sa createNodekitPartsList()
 */
@@ -713,7 +783,7 @@ SoBaseKit::readInstance(SoInput *in, unsigned short flags)
 {
   int i;
 
-  // store old part values too find which parts are read
+  // store old part values to find which parts are read
   SoNode **nodelist = new SoNode*[this->numCatalogEntries];
   for (i = 1; i < this->numCatalogEntries; i++) {
     nodelist[i] = this->fieldList[i]->getValue();
@@ -770,14 +840,14 @@ SoBaseKit::countMyFields(SoOutput * /*out*/)
 //
 //
 // if path != NULL, kit-nodes will be appended to the path during the search
+// The actualt part is not added to the path. The head of the path should
+// be set to the kit-node performing the search.
 //
 SbBool
 SoBaseKit::findPart(const SbString &partname, SoBaseKit *&kit, int &partNum,
                     SbBool &isList, int &listIdx, const SbBool makeIfNeeded,
                     SoPath *path)
 {
-  if (path) path->append(kit);
-
   // BNF:
   //
   // partname = singlename | compoundname
@@ -845,6 +915,7 @@ SoBaseKit::findPart(const SbString &partname, SoBaseKit *&kit, int &partNum,
     if (node == NULL) return FALSE;
     SbString newpartname = partname.getSubString(periodptr-stringptr+1);
     if (isList) {
+      if (path) path->append(node);
       SoChildList *children = node->getChildren();
       assert(children != NULL);
       if (listIdx < 0 || listIdx >= children->getLength()) {
@@ -865,6 +936,7 @@ SoBaseKit::findPart(const SbString &partname, SoBaseKit *&kit, int &partNum,
       assert(node->isOfType(SoBaseKit::getClassTypeId()));
       kit = (SoBaseKit*)node;
     }
+    path->append(kit);
     return SoBaseKit::findPart(newpartname, kit, partNum, isList,
                                listIdx, makeIfNeeded);
   }
