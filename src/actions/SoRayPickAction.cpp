@@ -46,7 +46,6 @@
 #include <Inventor/nodes/SoLevelOfDetail.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoShape.h>
-#include <coindefs.h> // COIN_STUB()
 #include <float.h>
 
 #if COIN_DEBUG
@@ -81,6 +80,7 @@ public:
   // Hidden private variables.
 
   SbViewVolume osvolume;
+  SbViewVolume wsvolume;
   SbLine osline;
   SbPlane nearplane;
   SbVec2s vppoint;
@@ -104,16 +104,17 @@ public:
   unsigned int flags;
 
   enum {
-    WS_RAY_SET =        0x0001, // ray set by ::setRay
-    WS_RAY_COMPUTED =   0x0002, // ray computed in ::computeWorldSpaceRay
+    WS_RAY_SET =        0x0001, // ray set by setRay()
+    WS_RAY_COMPUTED =   0x0002, // ray computed in computeWorldSpaceRay()
     PICK_ALL =          0x0004, // return all picked objects, or just closest
     NORM_POINT =        0x0008, // is normalized vppoint calculated
     CLIP_NEAR =         0x0010, // clip ray at near plane?
     CLIP_FAR =          0x0020, // clip ray at far plane?
-    EXTRA_MATRIX =      0x0040, // is extra matrix supplied in ::setObjectSpace
-    PPLIST_IS_SORTED =  0x0080  // did we sort pickedpointslist ?
+    EXTRA_MATRIX =      0x0040, // is extra matrix supplied in setObjectSpace()
+    PPLIST_IS_SORTED =  0x0080, // did we sort pickedpointslist ?
+    OSVOLUME_DIRTY =    0x0100  // did we calculate osvolume? 
   };
-
+  
 private:
   SoRayPickAction * owner;
 };
@@ -225,16 +226,22 @@ SoRayPickAction::setRay(const SbVec3f & start, const SbVec3f & direction,
   if (neardistance >= 0.0f) THIS->setFlag(SoRayPickActionP::CLIP_NEAR);
   else {
     THIS->clearFlag(SoRayPickActionP::CLIP_NEAR);
-    neardistance = 0.0f;
+    neardistance = 1.0f;
+    // make sure neardistance is smaller than fardistance
+    if (fardistance > 0.0f && neardistance >= fardistance) {
+      neardistance = fardistance * 0.01f;
+    }
   }
 
   if (fardistance >= 0.0f) THIS->setFlag(SoRayPickActionP::CLIP_FAR);
   else {
     THIS->clearFlag(SoRayPickActionP::CLIP_FAR);
-    fardistance = neardistance + 1.0f;
+    // just set to some value bigger than neardistance.
+    fardistance = neardistance + 10.0f;
   }
 
-  // FIXME: when do I calculate these?
+  // set these to some values. They will be set to better values
+  // in computeWorldSpaceRay() (when we know the view volume).
   THIS->rayradiusstart = 0.01f;
   THIS->rayradiusdelta = 0.0f;
 
@@ -250,6 +257,13 @@ SoRayPickAction::setRay(const SbVec3f & start, const SbVec3f & direction,
   THIS->nearplane = SbPlane(THIS->raydirection, D + THIS->raynear);
 
   THIS->setFlag(SoRayPickActionP::WS_RAY_SET);
+
+  // We use a real cone for picking, but keep pick view volume in sync to be 
+  // compatible with OIV
+  THIS->wsvolume.perspective(0.0, 1.0, neardistance, fardistance);
+  THIS->wsvolume.translateCamera(start);
+  THIS->wsvolume.rotateCamera(SbRotation(SbVec3f(0.0, 0.0, -1.0), direction));
+  THIS->setFlag(SoRayPickActionP::OSVOLUME_DIRTY);
 }
 
 /*!
@@ -283,11 +297,11 @@ SoRayPickAction::getPickedPointList(void) const
   if (!THIS->isFlagSet(SoRayPickActionP::PPLIST_IS_SORTED) && n > 1) {
     SoPickedPoint ** pparray = (SoPickedPoint**) THIS->pickedpointlist.getArrayPtr();
     float * darray = (float*) THIS->ppdistance.getArrayPtr();
-    
+
     int i, j, distance;
     SoPickedPoint * pptmp;
     float dtmp;
-    
+
     // shell sort algorithm (O(nlog(n))
     for (distance = 1; distance <= n/9; distance = 3*distance + 1);
     for (; distance > 0; distance /= 3) {
@@ -306,7 +320,7 @@ SoRayPickAction::getPickedPointList(void) const
     }
     THIS->setFlag(SoRayPickActionP::PPLIST_IS_SORTED);
   }
-  
+
   return THIS->pickedpointlist;
 }
 
@@ -330,13 +344,24 @@ SoRayPickAction::getPickedPoint(const int index) const
 void
 SoRayPickAction::computeWorldSpaceRay(void)
 {
-  if (!THIS->isFlagSet(SoRayPickActionP::WS_RAY_SET)) {
+  if (THIS->isFlagSet(SoRayPickActionP::WS_RAY_SET)) {
+    // set the ray radius to some very small value, since
+    // the user set the ray manually using setRay().
+    //
+    // FIXME: Wouldn't it be a nice new feature to be able to
+    // set the radius of the ray in setRay()? pederb, 2001-01-05
     const SbViewVolume & vv = SoViewVolumeElement::get(this->state);
+    THIS->rayradiusstart = SbMin(vv.getWidth(), vv.getHeight()) * FLT_EPSILON;
+    THIS->rayradiusdelta = 0.0f;
+  }
+  else {
+    const SbViewVolume & vv = SoViewVolumeElement::get(this->state);
+    const SbViewportRegion & vp = SoViewportRegionElement::get(this->state);
 
     if (!THIS->isFlagSet(SoRayPickActionP::NORM_POINT)) {
 
-      SbVec2s pt = THIS->vppoint - this->vpRegion.getViewportOriginPixels();
-      SbVec2s size = this->vpRegion.getViewportSizePixels();
+      SbVec2s pt = THIS->vppoint - vp.getViewportOriginPixels();
+      SbVec2s size = vp.getViewportSizePixels();
       THIS->normvppoint.setValue(float(pt[0]) / float(size[0]),
                                  float(pt[1]) / float(size[1]));
       THIS->setFlag(SoRayPickActionP::NORM_POINT);
@@ -360,7 +385,7 @@ SoRayPickAction::computeWorldSpaceRay(void)
     THIS->raynear = 0.0;
     THIS->rayfar = vv.getDepth();
 
-    SbVec2s vpsize = this->vpRegion.getViewportSizePixels();
+    SbVec2s vpsize = vp.getViewportSizePixels();
     THIS->rayradiusstart = (double(vv.getHeight()) / double(vpsize[1]))*
       double(THIS->radiusinpixels);
     THIS->rayradiusdelta = 0.0;
@@ -379,6 +404,18 @@ SoRayPickAction::computeWorldSpaceRay(void)
 
     THIS->nearplane = SbPlane(vv.getProjectionDirection(), THIS->raystart);
     THIS->setFlag(SoRayPickActionP::WS_RAY_COMPUTED);
+
+    // we pick on a real cone, but keep pick view volume in sync to be 
+    // compatible with OIV.
+    float normradius = float(THIS->radiusinpixels) / 
+      float(SbMin(vp.getViewportSizePixels()[0], vp.getViewportSizePixels()[1]));
+    
+    THIS->wsvolume = vv.narrow(THIS->normvppoint[0] - normradius,
+                               THIS->normvppoint[1] - normradius,
+                               THIS->normvppoint[0] + normradius,
+                               THIS->normvppoint[1] + normradius);
+    SoPickRayElement::set(state, THIS->wsvolume);
+    THIS->setFlag(SoRayPickActionP::OSVOLUME_DIRTY);
   }
 }
 
@@ -543,6 +580,8 @@ SoRayPickAction::intersect(const SbBox3f & box, SbVec3f & intersection,
 
   SbVec3f ptonray, ptonbox;
   float mindist = FLT_MAX;
+  
+  SbBool conepick = usefullviewvolume && !THIS->isFlagSet(SoRayPickActionP::WS_RAY_SET);
 
   for (int j = 0; j < 2; j++) {
     for (int i = 0; i < 3; i++) {
@@ -557,7 +596,7 @@ SoRayPickAction::intersect(const SbBox3f & box, SbVec3f & intersection,
 
         float d = bounds[0][i1] - isect[i1];
         if (d > 0.0f) {
-          if (usefullviewvolume && d < mindist) {
+          if (conepick && d < mindist) {
             mindist = d;
             ptonray = ptonbox = isect;
             ptonbox[i1] = bounds[0][i1];
@@ -566,7 +605,7 @@ SoRayPickAction::intersect(const SbBox3f & box, SbVec3f & intersection,
         }
         d = isect[i1] - bounds[1][i1];
         if (d > 0.0f) {
-          if (usefullviewvolume && d < mindist) {
+          if (conepick && d < mindist) {
             mindist = d;
             ptonray = ptonbox = isect;
             ptonbox[i1] = bounds[1][i1];
@@ -575,7 +614,7 @@ SoRayPickAction::intersect(const SbBox3f & box, SbVec3f & intersection,
         }
         d = bounds[0][i2] - isect[i2];
         if (d > 0.0f) {
-          if (usefullviewvolume && d < mindist) {
+          if (conepick && d < mindist) {
             mindist = d;
             ptonray = ptonbox = isect;
             ptonbox[i2] = bounds[0][i2];
@@ -584,7 +623,7 @@ SoRayPickAction::intersect(const SbBox3f & box, SbVec3f & intersection,
         }
         d = isect[i2] - bounds[1][i2];
         if (d > 0.0f) {
-          if (usefullviewvolume && d < mindist) {
+          if (conepick && d < mindist) {
             mindist = d;
             ptonray = ptonbox = isect;
             ptonbox[i2] = bounds[1][i2];
@@ -597,7 +636,7 @@ SoRayPickAction::intersect(const SbBox3f & box, SbVec3f & intersection,
       }
     }
   }
-  if (mindist != FLT_MAX && usefullviewvolume) {
+  if (mindist != FLT_MAX && conepick) {
 
     // transform ptonray and ptonbox to world space to test on ray cone
     SbVec3f wptonray, wptonbox;
@@ -615,7 +654,7 @@ SoRayPickAction::intersect(const SbBox3f & box, SbVec3f & intersection,
     if (radius >= distance) {
       intersection = ptonbox; // set intersection to the point on box closest to ray
       return TRUE;
-    }    
+    }
   }
   return FALSE;
 }
@@ -637,7 +676,19 @@ SoRayPickAction::intersect(const SbBox3f & box, const SbBool usefullviewvolume)
 const SbViewVolume &
 SoRayPickAction::getViewVolume(void)
 {
-  COIN_STUB();
+  if (THIS->isFlagSet(SoRayPickActionP::OSVOLUME_DIRTY)) {
+    // we pick on a real cone, but calculate pick view volume
+    // to be compatible with OIV.
+    THIS->osvolume = SoPickRayElement::get(this->getState());
+    if (THIS->isFlagSet(SoRayPickActionP::EXTRA_MATRIX)) {
+      SbMatrix m = THIS->world2obj * THIS->extramatrix;
+      THIS->osvolume.transform(m);
+    }
+    else {
+      THIS->osvolume.transform(THIS->world2obj);
+    }
+    THIS->clearFlag(SoRayPickActionP::OSVOLUME_DIRTY);
+  }
   return THIS->osvolume;
 }
 
@@ -671,7 +722,7 @@ SoRayPickAction::addIntersection(const SbVec3f & objectspacepoint)
   SbVec3f worldpoint;
   THIS->obj2world.multVecMatrix(objectspacepoint, worldpoint);
   float dist = THIS->nearplane.getDistance(worldpoint);
-  
+
   if (!THIS->isFlagSet(SoRayPickActionP::PICK_ALL) && THIS->pickedpointlist.getLength()) {
     // got to test if new candidate is closer than old one
     if (dist >= THIS->ppdistance[0]) return NULL; // farther
@@ -699,6 +750,10 @@ SoRayPickAction::beginTraversal(SoNode * node)
   THIS->cleanupPickedPoints();
   this->getState()->push();
   SoViewportRegionElement::set(this->getState(), this->vpRegion);
+
+  if (THIS->isFlagSet(SoRayPickActionP::WS_RAY_SET)) {
+    SoPickRayElement::set(state, THIS->wsvolume);
+  }
   inherited::beginTraversal(node);
   this->getState()->pop();
 }
@@ -766,8 +821,6 @@ SoRayPickActionP::calcObjectSpaceData(SoState * ownerstate)
   this->world2obj.multVecMatrix(this->raystart, start);
   this->world2obj.multDirMatrix(this->raydirection, dir);
   this->osline = SbLine(start, start + dir);
-
-  // FIXME: calc this->osvolume
 }
 
 void
