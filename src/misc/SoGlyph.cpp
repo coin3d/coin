@@ -251,9 +251,9 @@ SoGlyph::getGlyph(const char character, const SbName &font)
     glyph->setFaceIndices(dummyfaceidx);
     glyph->setEdgeIndices(dummyedgeidx);
 #else // ! COIN_NO_DEFAULT_3DFONT
-    assert(character >= 32 && character <= 126);
     glyph = new SoGlyph;
-    if (character == 32) {
+    if (character <= 32 || character >= 127) {
+      // treat all these characters as spaces
       static int spaceidx[] = { -1 };
       glyph->setCoords(NULL);
       glyph->setFaceIndices(spaceidx);
