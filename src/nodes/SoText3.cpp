@@ -54,6 +54,7 @@
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/nodes/SoProfile.h>
 #include <Inventor/nodes/SoNurbsProfile.h>
+#include <Inventor/SbLine.h>
 
 
 #ifdef _WIN32
@@ -461,28 +462,27 @@ SoText3::render(SoState * state, unsigned int part)
   // SbBool doTextures = SoGLTextureEnabledElement::get(state);
   int i, n = this->widths.getLength();
 
-  int firstprofile = 0;
+  int firstprofile = -1;
   int profnum;
   SbVec2f *profcoords;
-  float nearz = 0.0f;
-  float farz  = 1.0f;
+  float nearz =  FLT_MAX;
+  float farz  = -FLT_MAX;
 
   const SoNodeList profilenodes = SoProfileElement::get(state);
   int numprofiles = profilenodes.getLength();
-
   if ( numprofiles > 0) {
     assert(profilenodes[0]->getTypeId().isDerivedFrom(SoProfile::getClassTypeId()));
     // Find near/far z (for modifying position of front/back)
     for (int l=numprofiles-1; l>=0; l--) {
       SoProfile *pn = (SoProfile *)profilenodes[l];
       pn->getVertices(state, profnum, profcoords);
-
-      if (profcoords[profnum-1][0] > farz) farz = profcoords[profnum-1][0];
-      if (profcoords[0][0] < nearz) nearz = profcoords[0][0];
-
-      if (pn->linkage.getValue() == SoProfile::START_FIRST) {
-        firstprofile = l;
-        break;
+      if (profnum > 0) {
+        if (profcoords[profnum-1][0] > farz) farz = profcoords[profnum-1][0];
+        if (profcoords[0][0] < nearz) nearz = profcoords[0][0];
+        if (pn->linkage.getValue() == SoProfile::START_FIRST) {
+          if (firstprofile == -1) firstprofile = l;
+          break;
+        }
       }
     }
   }
@@ -495,7 +495,6 @@ SoText3::render(SoState * state, unsigned int part)
     else
       glNormal3f(0.0f, 0.0f, -1.0f);
   }
-
   int glyphidx = 0;
   float ypos = 0.0f;
 
@@ -566,13 +565,14 @@ SoText3::render(SoState * state, unsigned int part)
           while (*indices >= 0) {
             int i0 = *indices++;
             int i1 = *indices++;
-            SbVec2f va = coords[i0];
-            SbVec2f vb = coords[i1];
+            SbVec3f va(coords[i0][0], coords[i0][1], nearz);
+            SbVec3f vb(coords[i1][0], coords[i1][1], nearz);
             int *ccw = (int *)glyph->getNextCCWEdge(ind);
             int *cw  = (int *)glyph->getNextCWEdge(ind);
-            SbVec2f vc = coords[*(ccw+1)];
-            SbVec2f vd = coords[*cw];
+            SbVec3f vc(coords[*(ccw+1)][0], coords[*(ccw+1)][1], nearz);
+            SbVec3f vd(coords[*cw][0], coords[*cw][1], nearz);
             ind++;
+            
             va[0] = va[0] * size + xpos;
             va[1] = va[1] * size + ypos;
             vb[0] = vb[0] * size + xpos;
@@ -593,38 +593,73 @@ SoText3::render(SoState * state, unsigned int part)
 
             SoProfile *pn = (SoProfile *)profilenodes[firstprofile];
             pn->getVertices(state, profnum, profcoords);
-
-            SbVec2f edgea( va[0]+(profcoords[0][1]*tmp2[0]), va[1]+(profcoords[0][1]*tmp2[1]) );
-            SbVec2f edgeb( vb[0]+(profcoords[0][1]*tmp1[0]), vb[1]+(profcoords[0][1]*tmp1[1]) );
-            float edgez = profcoords[0][0];
-
-              // look through all profiles.
+            
+            SbVec3f edgea( va[0]+(profcoords[0][1]*tmp2[0]), va[1]+(profcoords[0][1]*tmp2[1]), -profcoords[0][0] );
+            SbVec3f edgeb( vb[0]+(profcoords[0][1]*tmp1[0]), vb[1]+(profcoords[0][1]*tmp1[1]), -profcoords[0][0] );
+            float edgez = -profcoords[0][0];  // -----
+            // look through all profiles.
+            int twisted = 0;
             for (int j=firstprofile; j<numprofiles; j++) {
               SoProfile *pn = (SoProfile *)profilenodes[j];
               pn->getVertices(state, profnum, profcoords);
               // iterate through all profile coords, drawing quads (and calculating normals)
               glBegin(GL_QUADS);
               for (int k=0; k<profnum; k++) {
-                vd[0] = va[0] + ((profcoords[k][1] * tmp2[0]));
-                vd[1] = va[1] + ((profcoords[k][1] * tmp2[1]));
-                vc[0] = vb[0] + ((profcoords[k][1] * tmp1[0]));
-                vc[1] = vb[1] + ((profcoords[k][1] * tmp1[1]));
-                // normal
-                SbVec3f normal( vd[0]-edgea[0], vd[1]-edgea[1], -profcoords[k][0] - edgez );
-                normal = normal.cross( SbVec3f( edgeb[0]-edgea[0], edgeb[1]-edgea[1], 0 ) );
-                if (normal.length() > 0) {
-                  normal.normalize();
-                  glNormal3f( normal[0], normal[1], normal[2] );
-                  // vertices
-                  glVertex3f(edgeb[0], edgeb[1], edgez);
-                  glVertex3f(edgea[0], edgea[1], edgez);
-                  glVertex3f(vd[0], vd[1], -profcoords[k][0] );
-                  glVertex3f(vc[0], vc[1], -profcoords[k][0] );
+                if (profcoords[k][0] != 0) {
+                  
+                  vd[0] = va[0] + ((profcoords[k][1] * tmp2[0]));
+                  vd[1] = va[1] + ((profcoords[k][1] * tmp2[1]));
+                  vd[2] = -profcoords[k][0];
+                  vc[0] = vb[0] + ((profcoords[k][1] * tmp1[0]));
+                  vc[1] = vb[1] + ((profcoords[k][1] * tmp1[1]));
+                  vc[2] = -profcoords[k][0];
+                  // normal
+                  SbVec3f normal( vd[0]-edgea[0], vd[1]-edgea[1], -profcoords[k][0] - edgez );
+                  normal = normal.cross( SbVec3f( edgeb[0]-edgea[0], edgeb[1]-edgea[1], 0 ) );
+                  // FIXME: check if 'valid' normals (resulting triangle instead if quad, etc), 20000926 skei.
+                  if (normal.length() > 0) {
+                    normal.normalize();
+                    //check if resulting quad-edges will cross
+                    SbVec3f edge1 = edgeb-edgea;
+                    SbVec3f edge2 = vc-vd;
+                    //leftedge.normalize();          // ok not to normalize those? skei
+                    //rightedge.normalize();
+                    if (edge1.dot(edge2) < 0) {
+                      SbLine leftline(edgeb,vc);
+                      SbLine rightline(edgea,vd);
+                      SbVec3f inter1,inter2;
+                      leftline.getClosestPoints(rightline,inter1,inter2);
+                      if (twisted == 0) {
+                        glNormal3f( normal[0], normal[1], normal[2] );
+                        glVertex3f(edgeb[0], edgeb[1], edgez);
+                        glVertex3f(edgea[0], edgea[1], edgez);
+                        glVertex3f(inter1[0],inter1[1],inter1[2]);
+                        glVertex3f(inter1[0],inter1[1],inter1[2]);
+                        twisted = 1;
+                      }
+                      else {
+                        glNormal3f( -normal[0], -normal[1], -normal[2] );
+                        glVertex3f(inter1[0],inter1[1],inter1[2]);
+                        glVertex3f(inter1[0],inter1[1],inter1[2]);
+                        glVertex3f(vd[0], vd[1], -profcoords[k][0] );
+                        glVertex3f(vc[0], vc[1], -profcoords[k][0] );
+                        twisted = 0;
+                      }
+                    }
+                    else {
+                      glNormal3f( normal[0], normal[1], normal[2] );
+                      // vertices
+                      glVertex3f(edgeb[0], edgeb[1], edgez);
+                      glVertex3f(edgea[0], edgea[1], edgez);
+                      glVertex3f(vd[0], vd[1], -profcoords[k][0] );
+                      glVertex3f(vc[0], vc[1], -profcoords[k][0] );
+                    }
+                  }
+                  edgeb = vc;
+                  edgea = vd;
+                  edgez = -profcoords[k][0];
                 }
-                edgeb = vc;
-                edgea = vd;
-                edgez = -profcoords[k][0];
-              }
+              }  
               glEnd();
             }
           }
