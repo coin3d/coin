@@ -39,9 +39,9 @@ AH_TOP([
 AC_CANONICAL_SYSTEM
 
 # For include/Inventor/system/inttypes.h.
-AC_DEFINE_UNQUOTED(COIN_CONFIGURE_BUILD, AC_TR_CPP([$build]), [Build system.])
-AC_DEFINE_UNQUOTED(COIN_CONFIGURE_HOST, AC_TR_CPP([$host]), [Build host system.])
-AC_DEFINE_UNQUOTED(COIN_CONFIGURE_TARGET, AC_TR_CPP([$target]), [Build target system.])
+AC_DEFINE_UNQUOTED(COIN_CONFIGURE_BUILD, SIM_AS_TR_CPP([$build]), [Build system.])
+AC_DEFINE_UNQUOTED(COIN_CONFIGURE_HOST, SIM_AS_TR_CPP([$host]), [Build host system.])
+AC_DEFINE_UNQUOTED(COIN_CONFIGURE_TARGET, SIM_AS_TR_CPP([$target]), [Build target system.])
 
 
 # If the Microsoft Visual C++ cl.exe compiler is available, set us up for
