@@ -28,16 +28,13 @@
   as methods on this class.
 */
 
+// Metadon doc:
 /*¡
-  These methods are still not implemented:
-  <UL>
-  <LI>SbMatrix::getTransform() (x2)</LI>
-  <LI>SbMatrix::factor()</LI>
-  </UL>
-*/
+  FIXME:
 
-/*¡
-  Optimizations are not done yet, so there's a <B>lot</B> of room for
+  The SbMatrix::factor() function has not been implemented yet.
+
+  Optimizations are not done yet, so there's a lot of room for
   improvements.
 */
 
