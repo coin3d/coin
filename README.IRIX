@@ -53,6 +53,19 @@ hit by the problem:
    the .libs/so_locations file the linker is trying to make to an
    empty file (use ``touch'') on a local disk.
 
+ 3 If linking fails with something like
+
+        171230:/usr/lib32/cmplrs/nm_elf: rld: Fatal Error: Cannot
+        Successfully map soname 'be.so' under any of the filenames
+        [...]
+
+   You've stumbled into an SGI MIPSPro version 7.30 compiler bug. It
+   can be worked around by setting the environment variable TOOLROOT
+   to the empty string "", like this (for Bourne Shell):
+
+        $ TOOLROOT=""
+        $ export TOOLROOT
+
 
 The above is a complete list of the problems we are aware of on SGI
 IRIX platforms when trying to configure and build Coin. If you bump
