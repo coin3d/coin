@@ -327,3 +327,28 @@
     mortene 20020806.
 
 =====================================================================
+
+016 Flawed initial interaction with SoSpotLightDragger.
+
+    If one clicks and holds down the left mouse button on the
+    cone-part that controls SoSpotLight::cutOffAngle (ie the
+    lamp-shade looking part drawn by lines) and make just a very tiny
+    movement, there will immediately be a major movement.
+
+    *After* the initial "jump", the part will behave correctly.
+
+    For convenience, here's the (trivial) scenegraph one can use to
+    reproduce the problem in any viewer component:
+
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+    #Inventor V2.1 ascii
+
+    SpotLightDragger { }
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+
+    This bug definitely looks like there's a variable initialization
+    missing, somewhere.
+
+    mortene 20020813.
+
+=====================================================================
