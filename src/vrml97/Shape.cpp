@@ -102,6 +102,7 @@
 #include <Inventor/VRMLnodes/SoVRMLMaterial.h>
 #include <Inventor/VRMLnodes/SoVRMLParent.h>
 #include <Inventor/nodes/SoSubNodeP.h>
+#include <Inventor/nodes/SoShape.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -115,7 +116,6 @@
 #include <Inventor/caches/SoBoundingBoxCache.h>
 #include <Inventor/caches/SoGLCacheList.h>
 #include <Inventor/elements/SoGLLazyElement.h>
-#include <Inventor/caches/SoBoundingBoxCache.h>
 #include <Inventor/caches/SoGLCacheList.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/elements/SoGLShapeHintsElement.h>
@@ -136,13 +136,11 @@
 
 class SoVRMLShapeP {
 public:
-  SoBoundingBoxCache * bboxcache;
   SoGLCacheList * cachelist;
   SoChildList * childlist;
   SbBool childlistvalid;
 #ifdef COIN_THREADSAFE
   SbMutex childlistmutex;
-  SbMutex bboxmutex;
 #endif // COIN_THREADSAFE
   void lockChildList(void) {
 #ifdef COIN_THREADSAFE
@@ -152,16 +150,6 @@ public:
   void unlockChildList(void) {
 #ifdef COIN_THREADSAFE
     this->childlistmutex.unlock();
-#endif // COIN_THREADSAFE
-  }
-  void lockBBox(void) {
-#ifdef COIN_THREADSAFE
-    this->bboxmutex.lock();
-#endif // COIN_THREADSAFE
-  }
-  void unlockBBox(void) {
-#ifdef COIN_THREADSAFE
-    this->bboxmutex.unlock();
 #endif // COIN_THREADSAFE
   }
 };
@@ -207,14 +195,12 @@ SoVRMLShape::SoVRMLShape(void)
   // handled by the fields that actually contain the node(s)
   PRIVATE(this)->childlist = new SoChildList(NULL);
   PRIVATE(this)->childlistvalid = FALSE;
-  PRIVATE(this)->bboxcache = NULL;
   PRIVATE(this)->cachelist = NULL;
 }
 
 SoVRMLShape::~SoVRMLShape()
 {
   delete PRIVATE(this)->childlist;
-  if (PRIVATE(this)->bboxcache) PRIVATE(this)->bboxcache->unref();
   delete PRIVATE(this)->cachelist;
   delete PRIVATE(this);
 }
@@ -271,53 +257,6 @@ void
 SoVRMLShape::GLRender(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
-
-  if (SoComplexityTypeElement::get(state) ==
-      SoComplexityTypeElement::BOUNDING_BOX) {
-    
-    SbBool validcache = PRIVATE(this)->bboxcache && PRIVATE(this)->bboxcache->isValid(state);
-    if (validcache) {
-      state->push();
-      SbBox3f box = PRIVATE(this)->bboxcache->getProjectedBox();      
-      SbVec3f center = (box.getMin() + box.getMax()) * 0.5f;
-      SbVec3f size = box.getMax()  - box.getMin();
-      
-      if (SoGLTextureEnabledElement::get(state)) {
-        SoGLTextureEnabledElement::set(state, FALSE);
-      }
-      SoGLShapeHintsElement::forceSend(state, TRUE, FALSE, FALSE);
-      SoGLLazyElement::sendLightModel(state, SoLazyElement::BASE_COLOR);
-  
-      SoVRMLAppearance * app = (SoVRMLAppearance*) this->appearance.getValue();
-      
-      SbColor color(0.8f, 0.8f, 0.8f);
-
-      if (app && app->material.getValue()) {
-        SoVRMLMaterial * mat = (SoVRMLMaterial*) app->material.getValue();
-        color = mat->diffuseColor.getValue();
-      }
-      SoGLLazyElement::sendPackedDiffuse(state, color.getPackedValue());
-
-      glPushMatrix();
-      glTranslatef(center[0], center[1], center[2]);
-      sogl_render_cube(size[0], size[1], size[2], NULL, 
-                       SOGL_NEED_NORMALS | SOGL_NEED_TEXCOORDS);
-      glPopMatrix();
-      state->pop();
-      return;
-    }
-  }
-
-  // if we have a valid bbox cache, do a view volume cull test here.
-  if (!state->isCacheOpen() && PRIVATE(this)->bboxcache &&
-      PRIVATE(this)->bboxcache->isValid(state)) {
-    if (!SoCullElement::completelyInside(state)) {
-      if (SoCullElement::cullTest(state, PRIVATE(this)->bboxcache->getProjectedBox())) {
-        return;
-      }
-    }
-  }
-
   state->push();
 
   if ((this->appearance.getValue() == NULL) ||
@@ -369,117 +308,22 @@ void
 SoVRMLShape::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoState * state = action->getState();
-
-  SbXfBox3f childrenbbox;
-  SbBool childrencenterset;
-  SbVec3f childrencenter;
-
-  // FIXME: AUTO is interpreted as ON for the boundingBoxCaching
-  // field, but we should trigger some heuristics based on scene graph
-  // "behavior" in the children subgraphs if the value is set to
-  // AUTO. 19990513 mortene.
-  SbBool iscaching = this->boundingBoxCaching.getValue() != OFF;
-
-  switch (action->getCurPathCode()) {
-  case SoAction::IN_PATH:
-    // can't cache if we're not traversing all children
-    iscaching = FALSE;
-    break;
-  case SoAction::OFF_PATH:
-    return; // no need to do any more work
-  case SoAction::BELOW_PATH:
-  case SoAction::NO_PATH:
-    // check if this is a normal traversal
-    if (action->isInCameraSpace() || action->isResetPath()) iscaching = FALSE;
-    break;
-  default:
-    iscaching = FALSE;
-    assert(0 && "unknown path code");
-    break;
-  }
-  
-  SbBool validcache = iscaching && PRIVATE(this)->bboxcache && PRIVATE(this)->bboxcache->isValid(state);
-
-  if (iscaching && validcache) {
-    SoCacheElement::addCacheDependency(state, PRIVATE(this)->bboxcache);
-    childrenbbox = PRIVATE(this)->bboxcache->getBox();
-    childrencenterset = PRIVATE(this)->bboxcache->isCenterSet();
-    childrencenter = PRIVATE(this)->bboxcache->getCenter();
-    if (PRIVATE(this)->bboxcache->hasLinesOrPoints()) {
-      SoBoundingBoxCache::setHasLinesOrPoints(state);
-    }
+  state->push();
+  int numindices;
+  const int * indices;
+  if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
+    this->getChildren()->traverseInPath(action, numindices, indices);
   }
   else {
-    SbXfBox3f abox = action->getXfBoundingBox();
-
-    SbBool storedinvalid = FALSE;
-    if (iscaching) {
-      storedinvalid = SoCacheElement::setInvalid(FALSE);
-    }
-    state->push();
-
-    if (iscaching) {
-      // if we get here, we know bbox cache is not created or is invalid
-      PRIVATE(this)->lockBBox();
-      if (PRIVATE(this)->bboxcache) PRIVATE(this)->bboxcache->unref();
-      PRIVATE(this)->bboxcache = new SoBoundingBoxCache(state);
-      PRIVATE(this)->bboxcache->ref();
-      PRIVATE(this)->unlockBBox();
-      // set active cache to record cache dependencies
-      SoCacheElement::set(state, PRIVATE(this)->bboxcache);
-    }
-
-    SoLocalBBoxMatrixElement::makeIdentity(state);
-    action->getXfBoundingBox().makeEmpty();
-
-    SoNode * shape = this->geometry.getValue();
-    if (shape) shape->getBoundingBox(action);
-
-    childrenbbox = action->getXfBoundingBox();
-    childrencenterset = action->isCenterSet();
-    if (childrencenterset) childrencenter = action->getCenter();
-
-    action->getXfBoundingBox() = abox; // reset action bbox
-
-    if (iscaching) {
-      PRIVATE(this)->bboxcache->set(childrenbbox, childrencenterset, childrencenter);
-    }
-    state->pop();
-    if (iscaching) SoCacheElement::setInvalid(storedinvalid);
+    this->getChildren()->traverse(action); // traverse all children
   }
-
-  if (!childrenbbox.isEmpty()) {
-    action->extendBy(childrenbbox);
-    if (childrencenterset) {
-      // FIXME: shouldn't this assert() hold up? Investigate. 19990422 mortene.
-#if 0 // disabled
-      assert(!action->isCenterSet());
-#else
-      action->resetCenter();
-#endif
-      action->setCenter(childrencenter, TRUE);
-    }
-  }
+  state->pop();
 }
-
-// compute object space ray and test for intersection
-static SbBool
-vrmlshape_ray_intersect(SoRayPickAction * action, const SbBox3f & box)
-{
-  if (box.isEmpty()) return FALSE;
-  action->setObjectSpace();
-  return action->intersect(box, TRUE);
-}
-
 
 void
 SoVRMLShape::rayPick(SoRayPickAction * action)
 {
-  if (!PRIVATE(this)->bboxcache || !PRIVATE(this)->bboxcache->isValid(action->getState()) ||
-      !action->hasWorldSpaceRay() ||
-      vrmlshape_ray_intersect(action, PRIVATE(this)->bboxcache->getProjectedBox())) {
-    SoVRMLShape::doAction(action);
-  }
+  SoVRMLShape::doAction(action);
 }
 
 // Doc in parent
@@ -534,9 +378,6 @@ SoVRMLShape::notify(SoNotList * list)
   if (f && f->getTypeId() == SoSFNode::getClassTypeId()) {
     PRIVATE(this)->childlistvalid = FALSE;
   }
-  PRIVATE(this)->lockBBox();
-  if (PRIVATE(this)->bboxcache) PRIVATE(this)->bboxcache->invalidate();
-  PRIVATE(this)->unlockBBox();
   inherited::notify(list);
 }
 
