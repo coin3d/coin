@@ -39,6 +39,10 @@ extern "C" {
 #endif /* __cplusplus */
 
 /* Duplicated enum names. */
+/* FIXME: move these to the Inventor/system/gl.h file and use
+   the proper names (and wrap all of them inside #ifndef GLU_*).
+   20011023 mortene.
+*/
 enum {
   /* gluGetString */
   GLU_W_VERSION = 100800,
