@@ -39,7 +39,7 @@ int coin_vsnprintf(char * dst, unsigned int n, const char * fmtstr, va_list args
 const char * coin_getenv(const char *);
 int coin_strncasecmp(const char *, const char *, int);
 
-int coin_host_is_bigendian(void);
+/* int coin_host_get_endianness(void); - internal, declared static */
 
 uint16_t coin_hton_uint16(uint16_t value);
 uint16_t coin_ntoh_uint16(uint16_t value);

@@ -347,64 +347,113 @@ coin_strncasecmp(const char * s1, const char * s2, int len)
 
 /**************************************************************************/
 
+enum CoinEndiannessValues {
+  COIN_HOST_IS_UNKNOWNENDIAN = -1,
+  COIN_HOST_IS_LITTLEENDIAN = 0,
+  COIN_HOST_IS_BIGENDIAN = 1
+};
+
+static
 int
-coin_host_is_bigendian(void)
+coin_host_get_endianness(void)
 {
   union temptype {
     uint32_t value;
-    char bytes[4];
+    uint8_t  bytes[4];
   } temp;
   temp.bytes[0] = 0x00;
   temp.bytes[1] = 0x01;
   temp.bytes[2] = 0x02;
   temp.bytes[3] = 0x03;
   switch ( temp.value ) {
-  case 0x00010203:
-    return 1;
-  case 0x03020100:
-    return 0;
-  default:
-    assert(0 && "system has unknown endianness");
-    exit(1);
+  case 0x03020100: return COIN_HOST_IS_LITTLEENDIAN;
+  case 0x00010203: return COIN_HOST_IS_BIGENDIAN;
+  /* might be more variations here for some obscure CPU architectures */
   }
-  return 0;
+  assert(0 && "system has unknown endianness");
+  return COIN_HOST_IS_UNKNOWNENDIAN; /* maybe just as well exit()? */
 }
 
-static int coin_bigendian = -1;
+static int coin_endianness = COIN_HOST_IS_UNKNOWNENDIAN;
 
 uint16_t
 coin_hton_uint16(uint16_t value)
 {
-  if ( coin_bigendian == -1 ) coin_bigendian = coin_host_is_bigendian();
-  if ( coin_bigendian ) return value;
-  return ((value << 8) & 0xff00) | ((value >> 8) & 0x00ff);
+  if ( coin_endianness == COIN_HOST_IS_UNKNOWNENDIAN )
+    coin_endianness = coin_host_get_endianness();
+  switch ( coin_endianness ) {
+  case COIN_HOST_IS_BIGENDIAN:
+    /* value = value */
+    break;
+  case COIN_HOST_IS_LITTLEENDIAN:
+    value = ((value << 8) & 0xff00) | ((value >> 8) & 0x00ff);
+    break;
+  default:
+    assert(0 && "system has unknown endianness");
+  }
+  return value;
 }
 
 uint16_t
 coin_ntoh_uint16(uint16_t value)
 {
-  if ( coin_bigendian == -1 ) coin_bigendian = coin_host_is_bigendian();
-  if ( coin_bigendian ) return value;
-  return ((value << 8) & 0xff00) | ((value >> 8) & 0x00ff);
+  if ( coin_endianness == COIN_HOST_IS_UNKNOWNENDIAN )
+    coin_endianness = coin_host_get_endianness();
+  switch ( coin_endianness ) {
+  case COIN_HOST_IS_BIGENDIAN:
+    /* value = value */
+    break;
+  case COIN_HOST_IS_LITTLEENDIAN:
+    value = ((value << 8) & 0xff00) | ((value >> 8) & 0x00ff);
+    break;
+  default:
+    assert(0 && "system has unknown endianness");
+  }
+  return value;
 }
-
-uint32_t
+  
+uint32_t  
 coin_hton_uint32(uint32_t value)
 {
-  if ( coin_bigendian == -1 ) coin_bigendian = coin_host_is_bigendian();
-  if ( coin_bigendian ) return value;
-  value = ((value >> 16) & 0x0000ffff) | ((value << 16) & 0xffff0000);
-  return  ((value >>  8) & 0x00ff00ff) | ((value <<  8) & 0xff00ff00);
-}
-
-uint32_t
+  if ( coin_endianness == COIN_HOST_IS_UNKNOWNENDIAN )
+    coin_endianness = coin_host_get_endianness();
+  switch ( coin_endianness ) {
+  case COIN_HOST_IS_BIGENDIAN:
+    /* value = value */
+    break;
+  case COIN_HOST_IS_LITTLEENDIAN:
+    value = ((value >> 16) & 0x0000ffff) | ((value << 16) & 0xffff0000);
+    value = ((value >>  8) & 0x00ff00ff) | ((value <<  8) & 0xff00ff00);
+    break;
+  default:
+    assert(0 && "system has unknown endianness");
+  }
+  return value;
+} 
+  
+uint32_t  
 coin_ntoh_uint32(uint32_t value)
 {
-  if ( coin_bigendian == -1 ) coin_bigendian = coin_host_is_bigendian();
-  if ( coin_bigendian ) return value;
-  value = ((value >> 16) & 0x0000ffff) | ((value << 16) & 0xffff0000);
-  return  ((value >>  8) & 0x00ff00ff) | ((value <<  8) & 0xff00ff00);
+  if ( coin_endianness == COIN_HOST_IS_UNKNOWNENDIAN )
+    coin_endianness = coin_host_get_endianness();
+  switch ( coin_endianness ) {
+  case COIN_HOST_IS_BIGENDIAN:
+    /* value = value */
+    break;
+  case COIN_HOST_IS_LITTLEENDIAN:
+    value = ((value >> 16) & 0x0000ffff) | ((value << 16) & 0xffff0000);
+    value = ((value >>  8) & 0x00ff00ff) | ((value <<  8) & 0xff00ff00);
+    break;
+  default:
+    assert(0 && "system has unknown endianness");
+  }
+  return value;
 }
+
+/*
+  FIXME: implement 64-bit versions of these, and enable them with an
+  appropriate config.h define.
+*/
 
 /**************************************************************************/
 
