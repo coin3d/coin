@@ -22,6 +22,88 @@
 \**************************************************************************/
 
 /*!
+  How to use OpenGL / GLX|WGL|AGL inside Coin
+  ===========================================
+
+  Creating portable OpenGL applications can be a complicated matter
+  since you have to have both compile-time and run-time tests for
+  OpenGL version, and what extensions are available. In addition, you
+  might not have an entry point to the (extension) function in
+  question on your build system.  The cc_glglue abstraction is here
+  to relieve the application programmer for that burden.
+
+  To use the cc_glglue interface, include Inventor/C/glue/gl.h.
+
+  The cc_glglue interface is part of the public API of Coin, but is
+  not documented on the public documentation pages at
+  http://doc.coin3d.org yet. The status for client application usage
+  is "unofficial, use at own risk, interface may change without
+  warning for major version number upgrade releases".
+
+  Coin programmer's responsibilities
+  ----------------------------------
+
+  o OpenGL calls that are part of OpenGL 1.0 can safely be used
+    without any kind of checking.
+
+  o Do _not_ use cc_glglue unless you are sure that you have a valid
+    OpenGL context. cc_glglue implicitly assumes that this is the case
+    for most of its functions. In short, only use OpenGL functions
+    inside an SoGLRenderAction.
+
+  o To get hold of a cc_glglue instance:
+      const cc_glglue * cc_glglue_instance(int contextid);
+    or
+      const cc_glglue * cc_glglue_instance_from_context_ptr(void * ctx);
+
+    See header file for more information about these.
+
+  o Always check that the capability you want to use is supported.
+    Queries for this is supported through the cc_glglue_has_*()
+    functions.
+
+  o cc_glglue has some functions for querying OpenGL/GLX version and
+    extension availability. Usually you shouldn't need to use these
+    unless you want to bypass cc_glglue or your function isn't
+    supported by cc_glglue (in which case you should add it).
+
+  o SoGLCacheContextElement also has some functions for querying
+    OpenGL version and extension availability. These are public, so
+    you can use them even in external code. However, use cc_glglue
+    internally for consistency.
+
+  What cc_glglue supplies
+  -----------------------
+
+  o cc_glglue supplies function pointer to OpenGL and GLX functions
+    used in Coin that are _not_ part of OpenGL 1.0 and GLX 1.1.  Note
+    that cc_glglue supplies OpenGL extension functions as if they were
+    standard functions (i.e. without the EXT suffix).
+
+  o In addition, the Inventor/system/gl.h file supplies OpenGL enums
+    that might not otherwise be present in your system's GL headers.
+
+  The following example accesses OpenGL 3D texturing. It works both on
+  OpenGL >= 1.2 and on OpenGL drivers with the GL_EXT_texture3D
+  extension.
+
+  ------ 8< --------- [snip] --------------------- 8< --------- [snip] -----
+
+  const cc_glglue * glw = cc_glglue_instance(SoGLCacheContextElement::get(state));
+  if (cc_glglue_has_3d_textures(glw)) {
+    cc_glglue_glTexImage3D(glw, GL_PROXY_TEXTURE_3D, 0, GL_RGBA, 
+                           64, 64, 64, 0,
+                           GL_RGBA, GL_UNSIGNED_BYTE,
+                           NULL);
+  }
+  else {
+    // Implement a proper fallback or error handling.
+  }
+
+  ------ 8< --------- [snip] --------------------- 8< --------- [snip] -----
+*/
+
+/*!
   For the library/API doc, here's the environment variables
   influencing the OpenGL binding:
 
