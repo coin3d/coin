@@ -44,7 +44,7 @@
   times in a scene and for different contexts. The API will stay the
   same though.
 
-  This class is an extension to the OIV API.  
+  This class is an extension to the OIV API.
 */
 
 /*!
@@ -76,7 +76,7 @@ SbImage::~SbImage(void)
   delete [] this->bytes;
 }
 
-/*!  
+/*!
   Sets the image to \a size and \a bytesperpixel. If \a bytes !=
   NULL, data is copied from \a bytes into this class' image data. If
   \a bytes == NULL, the image data is left uninitialized.
@@ -85,7 +85,7 @@ SbImage::~SbImage(void)
   means that if you set an image with size == (1,1) and bytesperpixel
   == 1, four bytes will be allocated to hold the data. This is mainly
   done to simplify the export code in SoSFImage and normally you'll
-  not have to worry about this feature.  
+  not have to worry about this feature.
 */
 void
 SbImage::setValue(const SbVec2s & size, const int bytesperpixel,
@@ -96,7 +96,7 @@ SbImage::setValue(const SbVec2s & size, const int bytesperpixel,
     if ((size == this->size) && (bytesperpixel == this->bpp)) {
       memcpy(this->bytes, bytes, int(size[0])*int(size[1])*bytesperpixel);
       return;
-    } 
+    }
     delete [] this->bytes;
     this->bytes = NULL;
   }
@@ -129,7 +129,7 @@ SbImage::getValue(SbVec2s & size, int & bytesperpixel) const
 }
 
 //
-// The TRY_FILE macro is used to immediately return from the 
+// The TRY_FILE macro is used to immediately return from the
 // search_for_file function when a file can be opened.
 //
 
@@ -181,10 +181,13 @@ search_for_file(const SbString & orgname,
       SbString dirname = *(dirlist[i]);
       int dirlen = dirname.getLength();
 
-      if (dirname[dirlen-1] != '/' && dirname[dirlen-1] != '\\' &&
+      if (dirlen > 0 &&
+          dirname[dirlen-1] != '/' &&
+          dirname[dirlen-1] != '\\' &&
           dirname[dirlen-1] != ':') {
         dirname += "/";
       }
+
       tmpstring.sprintf("%s%s", dirname.getString(),
                         fullname.getString());
       TRY_FILE(tmpstring);
@@ -198,10 +201,14 @@ search_for_file(const SbString & orgname,
   for (i = 0; i < numdirs; i++) {
     SbString dirname = *(dirlist[i]);
     int dirlen = dirname.getLength();
-    if (dirname[dirlen-1] != '/' && dirname[dirlen-1] != '\\' &&
+
+    if (dirlen > 0 &&
+        dirname[dirlen-1] != '/' &&
+        dirname[dirlen-1] != '\\' &&
         dirname[dirlen-1] != ':') {
       dirname += "/";
     }
+
     fullname.sprintf("%s%s", dirname.getString(),
                      basename.getString());
     TRY_FILE(fullname);
@@ -249,7 +256,7 @@ search_for_file(const SbString & orgname,
   file image data is copied into this class.
 
   If \a numdirectories > 0, this method will search for \a filename
-  in all directories in \a searchdirectories. 
+  in all directories in \a searchdirectories.
 */
 SbBool
 SbImage::readFile(const SbString & filename,
