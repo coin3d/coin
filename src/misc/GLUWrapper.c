@@ -25,13 +25,19 @@
 #include <stdio.h>
 #if HAVE_CONFIG_H
 #include <config.h>
-#endif /* HAVE_CONFIG_H */
+#else /* No config.h? Hmm. Assume the GLU library is available for linking. */
+#define GLUWRAPPER_ASSUME_GLU 1
+#endif /* !HAVE_CONFIG_H */
 #if HAVE_DLFCN_H
 #include <dlfcn.h>
 #endif /* HAVE_DLFCN_H */
 #if HAVE_GLU /* In case we're _not_ doing runtime linking. */
-#include <GL/glu.h>
+#define GLUWRAPPER_ASSUME_GLU 1
 #endif /* HAVE_GLU */
+
+#if GLUWRAPPER_ASSUME_GLU
+#include <GL/glu.h>
+#endif /* GLUWRAPPER_ASSUME_GLU */
 
 
 static GLUWrapper_t * GLU_instance = NULL;
@@ -163,7 +169,6 @@ GLUWrapper_gluBuild2DMipmaps(GLenum a, GLint b, GLsizei c, GLsizei d, GLenum e, 
   return 0;
 }
 
-
 /* Implemented by using the singleton pattern. */
 const GLUWrapper_t *
 GLUWrapper(void)
@@ -226,36 +231,42 @@ GLUWrapper(void)
 #error Unknown quoting.
 #endif
 
-#elif HAVE_GLU /* !GLU_RUNTIME_LINKING */
+#elif GLUWRAPPER_ASSUME_GLU /* !GLU_RUNTIME_LINKING */
 
     /* Define GLUWRAPPER_REGISTER_FUNC macro. */
 #define GLUWRAPPER_REGISTER_FUNC(_funcname_, _funcsig_) \
     GLU_instance->_funcname_ = (_funcsig_)_funcname_
 
-#else /* !HAVE_GLU */
+#else /* !GLUWRAPPER_ASSUME_GLU */
     GLU_instance->available = 0;
-#endif /* !HAVE_GLU */
+    /* Define GLUWRAPPER_REGISTER_FUNC macro. */
+#define GLUWRAPPER_REGISTER_FUNC(_funcname_, _funcsig_) \
+    GLU_instance->_funcname_ = NULL
 
-    if (GLU_instance->available) {
-      GLUWRAPPER_REGISTER_FUNC(gluBuild2DMipmaps, gluBuild2DMipmaps_t);
-      GLUWRAPPER_REGISTER_FUNC(gluScaleImage, gluScaleImage_t);
-      GLUWRAPPER_REGISTER_FUNC(gluGetString, gluGetString_t);
-      GLUWRAPPER_REGISTER_FUNC(gluNewNurbsRenderer, gluNewNurbsRenderer_t);
-      GLUWRAPPER_REGISTER_FUNC(gluDeleteNurbsRenderer, gluDeleteNurbsRenderer_t);
-      GLUWRAPPER_REGISTER_FUNC(gluNurbsProperty, gluNurbsProperty_t);
-      GLUWRAPPER_REGISTER_FUNC(gluLoadSamplingMatrices, gluLoadSamplingMatrices_t);
-      GLUWRAPPER_REGISTER_FUNC(gluBeginSurface, gluBeginSurface_t);
-      GLUWRAPPER_REGISTER_FUNC(gluEndSurface, gluEndSurface_t);
-      GLUWRAPPER_REGISTER_FUNC(gluNurbsSurface, gluNurbsSurface_t);
-      GLUWRAPPER_REGISTER_FUNC(gluBeginTrim, gluBeginTrim_t);
-      GLUWRAPPER_REGISTER_FUNC(gluEndTrim, gluEndTrim_t);
-      GLUWRAPPER_REGISTER_FUNC(gluBeginCurve, gluBeginCurve_t);
-      GLUWRAPPER_REGISTER_FUNC(gluEndCurve, gluEndCurve_t);
-      GLUWRAPPER_REGISTER_FUNC(gluNurbsCurve, gluNurbsCurve_t);
-      GLUWRAPPER_REGISTER_FUNC(gluPwlCurve, gluPwlCurve_t);
-      GLUWRAPPER_REGISTER_FUNC(gluNurbsCallback, gluNurbsCallback_t);
-      GLUWRAPPER_REGISTER_FUNC(gluNurbsCallbackData, gluNurbsCallbackData_t);
-    }
+#endif /* !GLUWRAPPER_ASSUME_GLU */
+
+    GLUWRAPPER_REGISTER_FUNC(gluBuild2DMipmaps, gluBuild2DMipmaps_t);
+    GLUWRAPPER_REGISTER_FUNC(gluScaleImage, gluScaleImage_t);
+    GLUWRAPPER_REGISTER_FUNC(gluGetString, gluGetString_t);
+    GLUWRAPPER_REGISTER_FUNC(gluNewNurbsRenderer, gluNewNurbsRenderer_t);
+    GLUWRAPPER_REGISTER_FUNC(gluDeleteNurbsRenderer, gluDeleteNurbsRenderer_t);
+    GLUWRAPPER_REGISTER_FUNC(gluNurbsProperty, gluNurbsProperty_t);
+    GLUWRAPPER_REGISTER_FUNC(gluLoadSamplingMatrices, gluLoadSamplingMatrices_t);
+    GLUWRAPPER_REGISTER_FUNC(gluBeginSurface, gluBeginSurface_t);
+    GLUWRAPPER_REGISTER_FUNC(gluEndSurface, gluEndSurface_t);
+    GLUWRAPPER_REGISTER_FUNC(gluNurbsSurface, gluNurbsSurface_t);
+    GLUWRAPPER_REGISTER_FUNC(gluBeginTrim, gluBeginTrim_t);
+    GLUWRAPPER_REGISTER_FUNC(gluEndTrim, gluEndTrim_t);
+    GLUWRAPPER_REGISTER_FUNC(gluBeginCurve, gluBeginCurve_t);
+    GLUWRAPPER_REGISTER_FUNC(gluEndCurve, gluEndCurve_t);
+    GLUWRAPPER_REGISTER_FUNC(gluNurbsCurve, gluNurbsCurve_t);
+    GLUWRAPPER_REGISTER_FUNC(gluPwlCurve, gluPwlCurve_t);
+    GLUWRAPPER_REGISTER_FUNC(gluNurbsCallback, gluNurbsCallback_t);
+#if GLU_VERSION_1_3 || GLU_RUNTIME_LINKING
+    GLUWRAPPER_REGISTER_FUNC(gluNurbsCallbackData, gluNurbsCallbackData_t);
+#else /* !gluNurbsCallbackData */
+    GLU_instance->gluNurbsCallbackData = NULL;
+#endif /* !gluNurbsCallbackData */
 
     /* "Backup" functions, makes it easier to be robust even when no
        GLU library can be loaded. */
