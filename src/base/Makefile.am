@@ -9,7 +9,6 @@ ThreadsDependentSources =
 endif
 
 RegularSources = \
-	base.c \
 	hash.c \
 	heap.c \
         list.c \
@@ -103,7 +102,6 @@ PrivateHeaders = \
 	../../include/Inventor/SbDPViewVolume.h \
 	../../include/Inventor/SbViewportRegion.h \
 	../../include/Inventor/SbXfBox3f.h \
-	../../include/Inventor/C/base/basep.h \
 	../../include/Inventor/C/base/hashp.h \
 	../../include/Inventor/C/base/heapp.h
 

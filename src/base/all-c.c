@@ -25,7 +25,6 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
-#include "base.c"
 #include "hash.c"
 #include "heap.c"
 #include "list.c"
