@@ -46,6 +46,7 @@ class COIN_DLL_API SoKeyboardEvent : public SoButtonEvent {
 public:
   enum Key {
     ANY = 0,
+    UNDEFINED = 1,
 
     LEFT_SHIFT = 0xffe1, RIGHT_SHIFT, LEFT_CONTROL, RIGHT_CONTROL,
     LEFT_ALT = 0xffe9, RIGHT_ALT,

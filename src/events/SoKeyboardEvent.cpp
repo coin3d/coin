@@ -167,9 +167,17 @@ SoKeyboardEvent::setKey(SoKeyboardEvent::Key key)
 /*!
   Returns the value of the key which was pressed or released.
 
+  Coin adds a new key value called UNDEFINED. This is needed to
+  support GUI toolkits where it's not possible to find exactly which
+  key is pressed, and/or to support non-US keyboards. The Open
+  Inventor design for this class is flawed, since it assumes everybody
+  uses a US keyboard. We recommend using getPrintableCharacter() to
+  find which key is pressed/released, at least for printable
+  non-alphanumerical characters.
+
   \sa getPrintableCharacter(), getState()
-  \sa wasShiftDown(), wasCtrlDown(), wasAltDown(), getPosition(), getTime()
- */
+  \sa wasShiftDown(), wasCtrlDown(), wasAltDown(), getPosition(), getTime() 
+*/
 SoKeyboardEvent::Key
 SoKeyboardEvent::getKey(void) const
 {
