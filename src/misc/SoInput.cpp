@@ -507,7 +507,7 @@ SoInput::readHex(uint32_t & l)
   // FIXME: this is a tremendously stupid function. Should obsolete it.
 
   // FIXME: no checking for array overwriting. Dangerous. 19990625 mortene.
-  char buffer[32];
+  char buffer[1024];
   char * bufptr = buffer;
 
   if (this->readChar(bufptr, '0')) {
@@ -1424,13 +1424,13 @@ SbBool
 SoInput::popFile(void)
 {
   if (this->filestack.getLength() == 0) return FALSE;
-  
+
   // apply post callback, even if we're not going to pop
   SoInput_FileInfo * topofstack = this->getTopOfStack();
   topofstack->applyPostCallback(this);
-  
+
   if (this->filestack.getLength() == 1) return FALSE;
- 
+
   if (topofstack->ivFilePointer()) {
     const char * filename = topofstack->ivFilename().getString();
     SbString path = SoInput::getPathname(filename);
@@ -1818,11 +1818,13 @@ SoInput::convertDoubleArray(char * from, double * to, int len)
 
   This method is an extension versus the Open Inventor API.
 */
-SbBool 
+SbBool
 SoInput::isFileVRML1(void)
 {
-  if (!this->checkHeader()) return FALSE;
-  return this->getTopOfStack()->isFileVRML1();
+  (void) this->checkHeader();
+  SoInput_FileInfo * fi = this->getTopOfStack();
+  if (fi) return fi->isFileVRML1();
+  return FALSE;
 }
 
 /*!
@@ -1966,7 +1968,7 @@ SoInput::findFile(const char * basename, SbString & fullname)
 SoInput_FileInfo::SoInput_FileInfo(const char * const filename, FILE * filepointer)
 {
   this->commonConstructor();
-  
+
   this->filename = filename;
   this->fp = filepointer;
   this->readbuf = new char[READBUFSIZE];
@@ -1977,7 +1979,7 @@ SoInput_FileInfo::SoInput_FileInfo(const char * const filename, FILE * filepoint
 SoInput_FileInfo::SoInput_FileInfo(void * bufPointer, size_t bufSize)
 {
   this->commonConstructor();
-  
+
   this->filename="<memory>";
   this->fp = NULL;
   this->readbuf = (char *)bufPointer;
@@ -1985,7 +1987,7 @@ SoInput_FileInfo::SoInput_FileInfo(void * bufPointer, size_t bufSize)
   this->ismembuffer=TRUE;
 }
 
-void 
+void
 SoInput_FileInfo::commonConstructor(void)
 {
   this->header = NULL;
@@ -2006,7 +2008,7 @@ SoInput_FileInfo::commonConstructor(void)
 SoInput_FileInfo::~SoInput_FileInfo()
 {
   if (!this->ismembuffer) delete [] this->readbuf;
-  
+
   // Close files which are not a memory buffer nor the stdin and
   // which we do have a filename for (if we don't have a filename,
   // the FILE ptr was just passed in through setFilePointer() and
@@ -2017,13 +2019,13 @@ SoInput_FileInfo::~SoInput_FileInfo()
     fclose(this->fp);
 }
 
-SbBool 
+SbBool
 SoInput_FileInfo::doBufferRead(void)
 {
   // Make sure that we really do need to read more bytes.
   assert(this->backbuffer.getLength() == 0);
   assert(this->readbufidx == this->readbuflen);
-  
+
   if (this->ismembuffer) {
     // Input memory buffers are statically sized entities, so no
     // further reading can be done.
@@ -2034,7 +2036,7 @@ SoInput_FileInfo::doBufferRead(void)
     this->eof = TRUE;
     return FALSE;
   }
-  
+
   int len = fread(this->readbuf, 1, READBUFSIZE, this->fp);
   if (len <= 0) {
     this->readbufidx = 0;
@@ -2045,20 +2047,20 @@ SoInput_FileInfo::doBufferRead(void)
 #endif // debug
     return FALSE;
   }
-  
+
   this->totalread += this->readbufidx;
   this->readbufidx = 0;
   this->readbuflen = len;
   return TRUE;
 }
 
-size_t 
+size_t
 SoInput_FileInfo::getNumBytesParsedSoFar(void) const
 {
   return this->totalread + this->readbufidx - this->backbuffer.getLength();
 }
 
-SbBool 
+SbBool
 SoInput_FileInfo::getChunkOfBytes(unsigned char * ptr, size_t length)
 {
   // Suck out any bytes from the backbuffer first.
@@ -2066,23 +2068,23 @@ SoInput_FileInfo::getChunkOfBytes(unsigned char * ptr, size_t length)
     *ptr++ = this->backbuffer.pop();
     length--;
   }
-  
+
   do {
     // Grab bytes from the buffer.
     while ((this->readbufidx < this->readbuflen) && (length > 0)) {
       *ptr++ = this->readbuf[this->readbufidx++];
       length--;
     }
-    
+
     // Fetch more bytes if necessary.
     if ((length > 0) && !this->eof) this->doBufferRead();
-    
+
   } while (length && !this->eof);
-  
+
   return !this->eof;
 }
 
-SbBool 
+SbBool
 SoInput_FileInfo::get(char & c)
 {
   if (this->backbuffer.getLength() > 0) {
@@ -2095,24 +2097,24 @@ SoInput_FileInfo::get(char & c)
       c = (char) EOF;
       return FALSE;
     }
-    
+
     c = this->readbuf[this->readbufidx++];
   }
   else {
     c = this->readbuf[this->readbufidx++];
   }
-  
+
   // NB: the line counting is not working 100% if we start putting
   // back and re-reading '\r\n' sequences.
   if ((c == '\r') || ((c == '\n') && (this->lastchar != '\r')))
     this->linenr++;
   this->lastchar = c;
   this->lastputback = -1;
-  
+
   return TRUE;
 }
 
-void 
+void
 SoInput_FileInfo::putBack(const char c)
 {
   // Decrease line count if we put back an end-of-line character.
@@ -2121,10 +2123,10 @@ SoInput_FileInfo::putBack(const char c)
   // we start putting back and re-reading multiple parts of '\r\n'
   // sequences.
   if (!this->isbinary && ((c == '\r') || (c == '\n'))) this->linenr--;
-  
+
   this->lastputback = (int)c;
   this->lastchar = -1;
-  
+
   if (this->readbufidx > 0 && this->backbuffer.getLength() == 0) {
     this->readbufidx--;
     // Make sure we write back the same character which was read..
@@ -2133,18 +2135,18 @@ SoInput_FileInfo::putBack(const char c)
   else {
     this->backbuffer.push(c);
   }
-  
+
   this->eof = FALSE;
 }
 
-void 
+void
 SoInput_FileInfo::putBack(const char * const str)
 {
   assert(!this->isbinary);
-  
+
   int n = strlen(str);
   if (!n) return;
-  
+
   // Decrease line count if we put back any end-of-line
   // characters. This should take care of Unix-, MSDOS/MSWin- and
   // MacOS-style generated files. What a mess.
@@ -2154,29 +2156,29 @@ SoInput_FileInfo::putBack(const char * const str)
       this->linenr--;
     this->lastputback = (int)str[i];
   }
-  
+
   this->lastchar = -1;
-  
+
   if (n <= this->readbufidx && this->backbuffer.getLength() == 0)
     this->readbufidx -= n;
   else
     for (int i = n - 1; i >= 0; i--) this->backbuffer.push(str[i]);
-  
+
   this->eof = FALSE;
 }
 
-SbBool 
+SbBool
 SoInput_FileInfo::skipWhiteSpace(void)
 {
   const char COMMENT_CHAR = '#';
-  
+
   while (TRUE) {
     char c;
     SbBool gotchar;
     while ((gotchar = this->get(c)) && isspace(c));
-    
+
     if (!gotchar) return FALSE;
-    
+
     if (c == COMMENT_CHAR) {
       while ((gotchar = this->get(c)) && (c != '\n') && (c != '\r'));
       if (!gotchar) return FALSE;
@@ -2190,7 +2192,7 @@ SoInput_FileInfo::skipWhiteSpace(void)
       this->putBack(c);
       break;
     }
-  }  
+  }
   return TRUE;
 }
 
@@ -2199,29 +2201,29 @@ SoInput_FileInfo::skipWhiteSpace(void)
 // header parse actually succeeded.
 
 // The SoInput parameter is used in the precallback
-SbBool 
+SbBool
 SoInput_FileInfo::readHeader(SoInput * soinput)
 {
   if (this->headerisread) return this->eof ? FALSE : TRUE;
   this->headerisread = TRUE;
-  
+
   this->header = "";
   this->ivversion = 0.0f;
   this->vrml1file = FALSE;
-  
+
   char c;
   if (!this->get(c)) return FALSE;
-  
+
   if (c != '#') {
     this->putBack(c);
     return TRUE;
   }
-  
+
   this->header += c;
-  
+
   while (this->get(c) && (c != '\n') && (c != '\r')) this->header += c;
   if (this->eof) return FALSE;
-  
+
   if (!SoDB::getHeaderData(this->header, this->isbinary, this->ivversion,
                            this->prefunc, this->postfunc, this->userdata,
                            TRUE)) {
@@ -2230,6 +2232,7 @@ SoInput_FileInfo::readHeader(SoInput * soinput)
   else {
     if (this->header == SbString("#VRML V1.0 ascii")) {
       this->vrml1file = TRUE;
+      fprintf(stderr,"setting vrml1...\n");
     }
     if (this->prefunc) this->prefunc(this->userdata, soinput);
   }
