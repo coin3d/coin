@@ -1,3 +1,13 @@
+This patch rewrites the SbString class to be a wrapper around a
+pure C implementation of the same functionality.
+
+Installing it changes the Coin ABI heavily - all dependencies
+has to be recompiled.
+
+This implementation seems to be quite bugfree now.
+
+  Lars J
+
 Index: include/Inventor/SbString.h
 ===================================================================
 RCS file: /export/cvsroot/Coin/include/Inventor/SbString.h,v
