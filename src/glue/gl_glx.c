@@ -159,25 +159,25 @@ static COIN_PFNGLXDESTROYPBUFFER glxglue_glXDestroyPbuffer;
 #endif /* GLX_RENDER_TYPE_SGIX */
 
 #ifdef GLX_DRAWABLE_TYPE_SGIX
-#if GLX_DRAWABLE_TYPE != GLX_DRAWABLE_TYPE
+#if GLX_DRAWABLE_TYPE != GLX_DRAWABLE_TYPE_SGIX
 #error dangerous enum mismatch
 #endif /* cmp */
 #endif /* GLX_DRAWABLE_TYPE_SGIX */
 
 #ifdef GLX_RGBA_TYPE_SGIX
-#if GLX_RGBA_TYPE != GLX_RGBA_TYPE
+#if GLX_RGBA_TYPE != GLX_RGBA_TYPE_SGIX
 #error dangerous enum mismatch
 #endif /* cmp */
 #endif /* GLX_RGBA_TYPE_SGIX */
 
 #ifdef GLX_RGBA_BIT_SGIX
-#if GLX_RGBA_BIT != GLX_RGBA_BIT
+#if GLX_RGBA_BIT != GLX_RGBA_BIT_SGIX
 #error dangerous enum mismatch
 #endif /* cmp */
 #endif /* GLX_RGBA_BIT_SGIX */
 
 #ifdef GLX_PBUFFER_BIT_SGIX
-#if GLX_PBUFFER_BIT != GLX_PBUFFER_BIT
+#if GLX_PBUFFER_BIT != GLX_PBUFFER_BIT_SGIX
 #error dangerous enum mismatch
 #endif /* cmp */
 #endif /* GLX_PBUFFER_BIT_SGIX */
