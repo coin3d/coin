@@ -10,7 +10,6 @@
 # even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.
 
-
 SHELL = @SHELL@
 
 srcdir = @srcdir@
@@ -58,9 +57,14 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
+
+@SET_MAKE@
 host_alias = @host_alias@
 host_triplet = @host@
+AMDEP = @AMDEP@
+AMTAR = @AMTAR@
 AS = @AS@
+AWK = @AWK@
 CC = @CC@
 COIN_BINARY_AGE = @COIN_BINARY_AGE@
 COIN_INTERFACE_AGE = @COIN_INTERFACE_AGE@
@@ -68,9 +72,11 @@ COIN_MAJOR_VERSION = @COIN_MAJOR_VERSION@
 COIN_MICRO_VERSION = @COIN_MICRO_VERSION@
 COIN_MINOR_VERSION = @COIN_MINOR_VERSION@
 COIN_VERSION = @COIN_VERSION@
+CPP = @CPP@
 CXX = @CXX@
+CXXCPP = @CXXCPP@
+DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
-LD = @LD@
 LN_S = @LN_S@
 LT_AGE = @LT_AGE@
 LT_CURRENT = @LT_CURRENT@
@@ -78,23 +84,177 @@ LT_RELEASE = @LT_RELEASE@
 LT_REVISION = @LT_REVISION@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
-NM = @NM@
+OBJDUMP = @OBJDUMP@
 PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
-USE_SYMBOL_UNDERSCORE = @USE_SYMBOL_UNDERSCORE@
 VERSION = @VERSION@
+install_sh = @install_sh@
 
-ALLSOURCES =  	SoField.cpp 	SoField.h 	SoFieldContainer.cpp 	SoFieldContainer.h 	SoFieldData.cpp 	SoFieldData.h 	SoMFBitMask.cpp 	SoMFBitMask.h 	SoMFBool.cpp 	SoMFBool.h 	SoMFColor.cpp 	SoMFColor.h 	SoMFEngine.cpp 	SoMFEngine.h 	SoMFEnum.cpp 	SoMFEnum.h 	SoMFFloat.cpp 	SoMFFloat.h 	SoMFInt32.cpp 	SoMFInt32.h 	SoMFMatrix.cpp 	SoMFMatrix.h 	SoMFName.cpp 	SoMFName.h 	SoMFNode.cpp 	SoMFNode.h 	SoMFPath.cpp 	SoMFPath.h 	SoMFPlane.cpp 	SoMFPlane.h 	SoMFRotation.cpp 	SoMFRotation.h 	SoMFShort.cpp 	SoMFShort.h 	SoMFString.cpp 	SoMFString.h 	SoMFTime.cpp 	SoMFTime.h 	SoMFUInt32.cpp 	SoMFUInt32.h 	SoMFUShort.cpp 	SoMFUShort.h 	SoMFVec2f.cpp 	SoMFVec2f.h 	SoMFVec3f.cpp 	SoMFVec3f.h 	SoMFVec4f.cpp 	SoMFVec4f.h 	SoMField.cpp 	SoMField.h 	SoSFBitMask.cpp 	SoSFBitMask.h 	SoSFBool.cpp 	SoSFBool.h 	SoSFColor.cpp 	SoSFColor.h 	SoSFEngine.cpp 	SoSFEngine.h 	SoSFEnum.cpp 	SoSFEnum.h 	SoSFFloat.cpp 	SoSFFloat.h 	SoSFImage.cpp 	SoSFImage.h 	SoSFInt32.cpp 	SoSFInt32.h 	SoSFMatrix.cpp 	SoSFMatrix.h 	SoSFName.cpp 	SoSFName.h 	SoSFNode.cpp 	SoSFNode.h 	SoSFPath.cpp 	SoSFPath.h 	SoSFPlane.cpp 	SoSFPlane.h 	SoSFRotation.cpp 	SoSFRotation.h 	SoSFShort.cpp 	SoSFShort.h 	SoSFString.cpp 	SoSFString.h 	SoSFTime.cpp 	SoSFTime.h 	SoSFTrigger.cpp 	SoSFTrigger.h 	SoSFUInt32.cpp 	SoSFUInt32.h 	SoSFUShort.cpp 	SoSFUShort.h 	SoSFVec2f.cpp 	SoSFVec2f.h 	SoSFVec3f.cpp 	SoSFVec3f.h 	SoSFVec4f.cpp 	SoSFVec4f.h 	SoSField.cpp 	SoSField.h
+
+ALLSOURCES = \
+	SoField.cpp \
+	SoField.h \
+	SoFieldContainer.cpp \
+	SoFieldContainer.h \
+	SoFieldData.cpp \
+	SoFieldData.h \
+	SoMFBitMask.cpp \
+	SoMFBitMask.h \
+	SoMFBool.cpp \
+	SoMFBool.h \
+	SoMFColor.cpp \
+	SoMFColor.h \
+	SoMFEngine.cpp \
+	SoMFEngine.h \
+	SoMFEnum.cpp \
+	SoMFEnum.h \
+	SoMFFloat.cpp \
+	SoMFFloat.h \
+	SoMFInt32.cpp \
+	SoMFInt32.h \
+	SoMFMatrix.cpp \
+	SoMFMatrix.h \
+	SoMFName.cpp \
+	SoMFName.h \
+	SoMFNode.cpp \
+	SoMFNode.h \
+	SoMFPath.cpp \
+	SoMFPath.h \
+	SoMFPlane.cpp \
+	SoMFPlane.h \
+	SoMFRotation.cpp \
+	SoMFRotation.h \
+	SoMFShort.cpp \
+	SoMFShort.h \
+	SoMFString.cpp \
+	SoMFString.h \
+	SoMFTime.cpp \
+	SoMFTime.h \
+	SoMFUInt32.cpp \
+	SoMFUInt32.h \
+	SoMFUShort.cpp \
+	SoMFUShort.h \
+	SoMFVec2f.cpp \
+	SoMFVec2f.h \
+	SoMFVec3f.cpp \
+	SoMFVec3f.h \
+	SoMFVec4f.cpp \
+	SoMFVec4f.h \
+	SoMField.cpp \
+	SoMField.h \
+	SoSFBitMask.cpp \
+	SoSFBitMask.h \
+	SoSFBool.cpp \
+	SoSFBool.h \
+	SoSFColor.cpp \
+	SoSFColor.h \
+	SoSFEngine.cpp \
+	SoSFEngine.h \
+	SoSFEnum.cpp \
+	SoSFEnum.h \
+	SoSFFloat.cpp \
+	SoSFFloat.h \
+	SoSFImage.cpp \
+	SoSFImage.h \
+	SoSFInt32.cpp \
+	SoSFInt32.h \
+	SoSFMatrix.cpp \
+	SoSFMatrix.h \
+	SoSFName.cpp \
+	SoSFName.h \
+	SoSFNode.cpp \
+	SoSFNode.h \
+	SoSFPath.cpp \
+	SoSFPath.h \
+	SoSFPlane.cpp \
+	SoSFPlane.h \
+	SoSFRotation.cpp \
+	SoSFRotation.h \
+	SoSFShort.cpp \
+	SoSFShort.h \
+	SoSFString.cpp \
+	SoSFString.h \
+	SoSFTime.cpp \
+	SoSFTime.h \
+	SoSFTrigger.cpp \
+	SoSFTrigger.h \
+	SoSFUInt32.cpp \
+	SoSFUInt32.h \
+	SoSFUShort.cpp \
+	SoSFUShort.h \
+	SoSFVec2f.cpp \
+	SoSFVec2f.h \
+	SoSFVec3f.cpp \
+	SoSFVec3f.h \
+	SoSFVec4f.cpp \
+	SoSFVec4f.h \
+	SoSField.cpp \
+	SoSField.h
 
 
-ALLINSTHEADERS =  	$(top_srcdir)/include/Inventor/fields/SoSubField.h 	$(top_srcdir)/include/Inventor/fields/SoFields.h 	$(top_srcdir)/include/Inventor/fields/SoField.h 	$(top_srcdir)/include/Inventor/fields/SoFieldContainer.h 	$(top_srcdir)/include/Inventor/fields/SoFieldData.h 	$(top_srcdir)/include/Inventor/fields/SoMFBitMask.h 	$(top_srcdir)/include/Inventor/fields/SoMFBool.h 	$(top_srcdir)/include/Inventor/fields/SoMFColor.h 	$(top_srcdir)/include/Inventor/fields/SoMFEngine.h 	$(top_srcdir)/include/Inventor/fields/SoMFEnum.h 	$(top_srcdir)/include/Inventor/fields/SoMFFloat.h 	$(top_srcdir)/include/Inventor/fields/SoMFInt32.h 	$(top_srcdir)/include/Inventor/fields/SoMFLong.h 	$(top_srcdir)/include/Inventor/fields/SoMFMatrix.h 	$(top_srcdir)/include/Inventor/fields/SoMFName.h 	$(top_srcdir)/include/Inventor/fields/SoMFNode.h 	$(top_srcdir)/include/Inventor/fields/SoMFPath.h 	$(top_srcdir)/include/Inventor/fields/SoMFPlane.h 	$(top_srcdir)/include/Inventor/fields/SoMFRotation.h 	$(top_srcdir)/include/Inventor/fields/SoMFShort.h 	$(top_srcdir)/include/Inventor/fields/SoMFString.h 	$(top_srcdir)/include/Inventor/fields/SoMFTime.h 	$(top_srcdir)/include/Inventor/fields/SoMFUInt32.h 	$(top_srcdir)/include/Inventor/fields/SoMFULong.h 	$(top_srcdir)/include/Inventor/fields/SoMFUShort.h 	$(top_srcdir)/include/Inventor/fields/SoMFVec2f.h 	$(top_srcdir)/include/Inventor/fields/SoMFVec3f.h 	$(top_srcdir)/include/Inventor/fields/SoMFVec4f.h 	$(top_srcdir)/include/Inventor/fields/SoMField.h 	$(top_srcdir)/include/Inventor/fields/SoSFBitMask.h 	$(top_srcdir)/include/Inventor/fields/SoSFBool.h 	$(top_srcdir)/include/Inventor/fields/SoSFColor.h 	$(top_srcdir)/include/Inventor/fields/SoSFEngine.h 	$(top_srcdir)/include/Inventor/fields/SoSFEnum.h 	$(top_srcdir)/include/Inventor/fields/SoSFFloat.h 	$(top_srcdir)/include/Inventor/fields/SoSFImage.h 	$(top_srcdir)/include/Inventor/fields/SoSFInt32.h 	$(top_srcdir)/include/Inventor/fields/SoSFLong.h 	$(top_srcdir)/include/Inventor/fields/SoSFMatrix.h 	$(top_srcdir)/include/Inventor/fields/SoSFName.h 	$(top_srcdir)/include/Inventor/fields/SoSFNode.h 	$(top_srcdir)/include/Inventor/fields/SoSFPath.h 	$(top_srcdir)/include/Inventor/fields/SoSFPlane.h 	$(top_srcdir)/include/Inventor/fields/SoSFRotation.h 	$(top_srcdir)/include/Inventor/fields/SoSFShort.h 	$(top_srcdir)/include/Inventor/fields/SoSFString.h 	$(top_srcdir)/include/Inventor/fields/SoSFTime.h 	$(top_srcdir)/include/Inventor/fields/SoSFTrigger.h 	$(top_srcdir)/include/Inventor/fields/SoSFUInt32.h 	$(top_srcdir)/include/Inventor/fields/SoSFULong.h 	$(top_srcdir)/include/Inventor/fields/SoSFUShort.h 	$(top_srcdir)/include/Inventor/fields/SoSFVec2f.h 	$(top_srcdir)/include/Inventor/fields/SoSFVec3f.h 	$(top_srcdir)/include/Inventor/fields/SoSFVec4f.h 	$(top_srcdir)/include/Inventor/fields/SoSField.h
+ALLINSTHEADERS = \
+	$(top_srcdir)/include/Inventor/fields/SoSubField.h \
+	$(top_srcdir)/include/Inventor/fields/SoFields.h \
+	$(top_srcdir)/include/Inventor/fields/SoField.h \
+	$(top_srcdir)/include/Inventor/fields/SoFieldContainer.h \
+	$(top_srcdir)/include/Inventor/fields/SoFieldData.h \
+	$(top_srcdir)/include/Inventor/fields/SoMFBitMask.h \
+	$(top_srcdir)/include/Inventor/fields/SoMFBool.h \
+	$(top_srcdir)/include/Inventor/fields/SoMFColor.h \
+	$(top_srcdir)/include/Inventor/fields/SoMFEngine.h \
+	$(top_srcdir)/include/Inventor/fields/SoMFEnum.h \
+	$(top_srcdir)/include/Inventor/fields/SoMFFloat.h \
+	$(top_srcdir)/include/Inventor/fields/SoMFInt32.h \
+	$(top_srcdir)/include/Inventor/fields/SoMFLong.h \
+	$(top_srcdir)/include/Inventor/fields/SoMFMatrix.h \
+	$(top_srcdir)/include/Inventor/fields/SoMFName.h \
+	$(top_srcdir)/include/Inventor/fields/SoMFNode.h \
+	$(top_srcdir)/include/Inventor/fields/SoMFPath.h \
+	$(top_srcdir)/include/Inventor/fields/SoMFPlane.h \
+	$(top_srcdir)/include/Inventor/fields/SoMFRotation.h \
+	$(top_srcdir)/include/Inventor/fields/SoMFShort.h \
+	$(top_srcdir)/include/Inventor/fields/SoMFString.h \
+	$(top_srcdir)/include/Inventor/fields/SoMFTime.h \
+	$(top_srcdir)/include/Inventor/fields/SoMFUInt32.h \
+	$(top_srcdir)/include/Inventor/fields/SoMFULong.h \
+	$(top_srcdir)/include/Inventor/fields/SoMFUShort.h \
+	$(top_srcdir)/include/Inventor/fields/SoMFVec2f.h \
+	$(top_srcdir)/include/Inventor/fields/SoMFVec3f.h \
+	$(top_srcdir)/include/Inventor/fields/SoMFVec4f.h \
+	$(top_srcdir)/include/Inventor/fields/SoMField.h \
+	$(top_srcdir)/include/Inventor/fields/SoSFBitMask.h \
+	$(top_srcdir)/include/Inventor/fields/SoSFBool.h \
+	$(top_srcdir)/include/Inventor/fields/SoSFColor.h \
+	$(top_srcdir)/include/Inventor/fields/SoSFEngine.h \
+	$(top_srcdir)/include/Inventor/fields/SoSFEnum.h \
+	$(top_srcdir)/include/Inventor/fields/SoSFFloat.h \
+	$(top_srcdir)/include/Inventor/fields/SoSFImage.h \
+	$(top_srcdir)/include/Inventor/fields/SoSFInt32.h \
+	$(top_srcdir)/include/Inventor/fields/SoSFLong.h \
+	$(top_srcdir)/include/Inventor/fields/SoSFMatrix.h \
+	$(top_srcdir)/include/Inventor/fields/SoSFName.h \
+	$(top_srcdir)/include/Inventor/fields/SoSFNode.h \
+	$(top_srcdir)/include/Inventor/fields/SoSFPath.h \
+	$(top_srcdir)/include/Inventor/fields/SoSFPlane.h \
+	$(top_srcdir)/include/Inventor/fields/SoSFRotation.h \
+	$(top_srcdir)/include/Inventor/fields/SoSFShort.h \
+	$(top_srcdir)/include/Inventor/fields/SoSFString.h \
+	$(top_srcdir)/include/Inventor/fields/SoSFTime.h \
+	$(top_srcdir)/include/Inventor/fields/SoSFTrigger.h \
+	$(top_srcdir)/include/Inventor/fields/SoSFUInt32.h \
+	$(top_srcdir)/include/Inventor/fields/SoSFULong.h \
+	$(top_srcdir)/include/Inventor/fields/SoSFUShort.h \
+	$(top_srcdir)/include/Inventor/fields/SoSFVec2f.h \
+	$(top_srcdir)/include/Inventor/fields/SoSFVec3f.h \
+	$(top_srcdir)/include/Inventor/fields/SoSFVec4f.h \
+	$(top_srcdir)/include/Inventor/fields/SoSField.h
 
 
 # Everything below is autogenerated from a macro, so don't modify
 # within the Makefile.am itself. 19991201 mortene.
 
-@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libfieldsLINKHACK.la
-@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libfields.la
+@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = @HACKING_DYNAMIC_MODULES_TRUE@libfieldsLINKHACK.la
+@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = @HACKING_DYNAMIC_MODULES_FALSE@libfields.la
 
 # This macro contains fixes to avoid the default flush of output from
 # the automake generated rules. 19991201 mortene. 
@@ -115,6 +275,7 @@ libfieldsLINKHACKincdir = $(includedir)/Inventor/fields
 
 libfieldsinc_HEADERS = $(ALLINSTHEADERS)
 libfieldsLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
+subdir = src/fields
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
@@ -128,22 +289,9 @@ X_CFLAGS = @X_CFLAGS@
 X_LIBS = @X_LIBS@
 X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
-libfieldsLINKHACK_la_LDFLAGS = 
-libfieldsLINKHACK_la_LIBADD = 
-libfieldsLINKHACK_la_OBJECTS =  SoField.lo SoFieldContainer.lo \
-SoFieldData.lo SoMFBitMask.lo SoMFBool.lo SoMFColor.lo SoMFEngine.lo \
-SoMFEnum.lo SoMFFloat.lo SoMFInt32.lo SoMFMatrix.lo SoMFName.lo \
-SoMFNode.lo SoMFPath.lo SoMFPlane.lo SoMFRotation.lo SoMFShort.lo \
-SoMFString.lo SoMFTime.lo SoMFUInt32.lo SoMFUShort.lo SoMFVec2f.lo \
-SoMFVec3f.lo SoMFVec4f.lo SoMField.lo SoSFBitMask.lo SoSFBool.lo \
-SoSFColor.lo SoSFEngine.lo SoSFEnum.lo SoSFFloat.lo SoSFImage.lo \
-SoSFInt32.lo SoSFMatrix.lo SoSFName.lo SoSFNode.lo SoSFPath.lo \
-SoSFPlane.lo SoSFRotation.lo SoSFShort.lo SoSFString.lo SoSFTime.lo \
-SoSFTrigger.lo SoSFUInt32.lo SoSFUShort.lo SoSFVec2f.lo SoSFVec3f.lo \
-SoSFVec4f.lo SoSField.lo
 libfields_la_LDFLAGS = 
 libfields_la_LIBADD = 
-libfields_la_OBJECTS =  SoField.lo SoFieldContainer.lo SoFieldData.lo \
+am_libfields_la_OBJECTS =  SoField.lo SoFieldContainer.lo SoFieldData.lo \
 SoMFBitMask.lo SoMFBool.lo SoMFColor.lo SoMFEngine.lo SoMFEnum.lo \
 SoMFFloat.lo SoMFInt32.lo SoMFMatrix.lo SoMFName.lo SoMFNode.lo \
 SoMFPath.lo SoMFPlane.lo SoMFRotation.lo SoMFShort.lo SoMFString.lo \
@@ -154,46 +302,69 @@ SoSFMatrix.lo SoSFName.lo SoSFNode.lo SoSFPath.lo SoSFPlane.lo \
 SoSFRotation.lo SoSFShort.lo SoSFString.lo SoSFTime.lo SoSFTrigger.lo \
 SoSFUInt32.lo SoSFUShort.lo SoSFVec2f.lo SoSFVec3f.lo SoSFVec4f.lo \
 SoSField.lo
-CXXFLAGS = @CXXFLAGS@
+libfields_la_OBJECTS =  $(am_libfields_la_OBJECTS)
+libfieldsLINKHACK_la_LDFLAGS = 
+libfieldsLINKHACK_la_LIBADD = 
+am_libfieldsLINKHACK_la_OBJECTS =  SoField.lo SoFieldContainer.lo \
+SoFieldData.lo SoMFBitMask.lo SoMFBool.lo SoMFColor.lo SoMFEngine.lo \
+SoMFEnum.lo SoMFFloat.lo SoMFInt32.lo SoMFMatrix.lo SoMFName.lo \
+SoMFNode.lo SoMFPath.lo SoMFPlane.lo SoMFRotation.lo SoMFShort.lo \
+SoMFString.lo SoMFTime.lo SoMFUInt32.lo SoMFUShort.lo SoMFVec2f.lo \
+SoMFVec3f.lo SoMFVec4f.lo SoMField.lo SoSFBitMask.lo SoSFBool.lo \
+SoSFColor.lo SoSFEngine.lo SoSFEnum.lo SoSFFloat.lo SoSFImage.lo \
+SoSFInt32.lo SoSFMatrix.lo SoSFName.lo SoSFNode.lo SoSFPath.lo \
+SoSFPlane.lo SoSFRotation.lo SoSFShort.lo SoSFString.lo SoSFTime.lo \
+SoSFTrigger.lo SoSFUInt32.lo SoSFUShort.lo SoSFVec2f.lo SoSFVec3f.lo \
+SoSFVec4f.lo SoSField.lo
+libfieldsLINKHACK_la_OBJECTS =  $(am_libfieldsLINKHACK_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
+CXXFLAGS = @CXXFLAGS@
 CXXLD = $(CXX)
-CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(LDFLAGS) -o $@
+CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 CFLAGS = @CFLAGS@
 COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
-LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
+LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+DIST_SOURCES =  $(libfields_la_SOURCES) $(libfieldsLINKHACK_la_SOURCES)
 HEADERS =  $(libfieldsLINKHACKinc_HEADERS) $(libfieldsinc_HEADERS)
 
-DIST_COMMON =  Makefile.am Makefile.in
+DIST_COMMON =  $(libfieldsLINKHACKinc_HEADERS) $(libfieldsinc_HEADERS) \
+Makefile.am Makefile.in
 
 
-DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
+DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 
-TAR = gtar
 GZIP_ENV = --best
-DEP_FILES =  .deps/SoField.P .deps/SoFieldContainer.P \
-.deps/SoFieldData.P .deps/SoMFBitMask.P .deps/SoMFBool.P \
-.deps/SoMFColor.P .deps/SoMFEngine.P .deps/SoMFEnum.P .deps/SoMFFloat.P \
-.deps/SoMFInt32.P .deps/SoMFMatrix.P .deps/SoMFName.P .deps/SoMFNode.P \
-.deps/SoMFPath.P .deps/SoMFPlane.P .deps/SoMFRotation.P \
-.deps/SoMFShort.P .deps/SoMFString.P .deps/SoMFTime.P \
-.deps/SoMFUInt32.P .deps/SoMFUShort.P .deps/SoMFVec2f.P \
-.deps/SoMFVec3f.P .deps/SoMFVec4f.P .deps/SoMField.P \
-.deps/SoSFBitMask.P .deps/SoSFBool.P .deps/SoSFColor.P \
-.deps/SoSFEngine.P .deps/SoSFEnum.P .deps/SoSFFloat.P .deps/SoSFImage.P \
-.deps/SoSFInt32.P .deps/SoSFMatrix.P .deps/SoSFName.P .deps/SoSFNode.P \
-.deps/SoSFPath.P .deps/SoSFPlane.P .deps/SoSFRotation.P \
-.deps/SoSFShort.P .deps/SoSFString.P .deps/SoSFTime.P \
-.deps/SoSFTrigger.P .deps/SoSFUInt32.P .deps/SoSFUShort.P \
-.deps/SoSFVec2f.P .deps/SoSFVec3f.P .deps/SoSFVec4f.P .deps/SoSField.P
-SOURCES = $(libfieldsLINKHACK_la_SOURCES) $(libfields_la_SOURCES)
-OBJECTS = $(libfieldsLINKHACK_la_OBJECTS) $(libfields_la_OBJECTS)
+depcomp = $(SHELL) $(top_srcdir)/depcomp
+DEP_FILES =  @AMDEP@ $(DEPDIR)/SoField.Plo \
+$(DEPDIR)/SoFieldContainer.Plo $(DEPDIR)/SoFieldData.Plo \
+$(DEPDIR)/SoMFBitMask.Plo $(DEPDIR)/SoMFBool.Plo \
+$(DEPDIR)/SoMFColor.Plo $(DEPDIR)/SoMFEngine.Plo $(DEPDIR)/SoMFEnum.Plo \
+$(DEPDIR)/SoMFFloat.Plo $(DEPDIR)/SoMFInt32.Plo \
+$(DEPDIR)/SoMFMatrix.Plo $(DEPDIR)/SoMFName.Plo $(DEPDIR)/SoMFNode.Plo \
+$(DEPDIR)/SoMFPath.Plo $(DEPDIR)/SoMFPlane.Plo \
+$(DEPDIR)/SoMFRotation.Plo $(DEPDIR)/SoMFShort.Plo \
+$(DEPDIR)/SoMFString.Plo $(DEPDIR)/SoMFTime.Plo \
+$(DEPDIR)/SoMFUInt32.Plo $(DEPDIR)/SoMFUShort.Plo \
+$(DEPDIR)/SoMFVec2f.Plo $(DEPDIR)/SoMFVec3f.Plo $(DEPDIR)/SoMFVec4f.Plo \
+$(DEPDIR)/SoMField.Plo $(DEPDIR)/SoSFBitMask.Plo $(DEPDIR)/SoSFBool.Plo \
+$(DEPDIR)/SoSFColor.Plo $(DEPDIR)/SoSFEngine.Plo $(DEPDIR)/SoSFEnum.Plo \
+$(DEPDIR)/SoSFFloat.Plo $(DEPDIR)/SoSFImage.Plo $(DEPDIR)/SoSFInt32.Plo \
+$(DEPDIR)/SoSFMatrix.Plo $(DEPDIR)/SoSFName.Plo $(DEPDIR)/SoSFNode.Plo \
+$(DEPDIR)/SoSFPath.Plo $(DEPDIR)/SoSFPlane.Plo \
+$(DEPDIR)/SoSFRotation.Plo $(DEPDIR)/SoSFShort.Plo \
+$(DEPDIR)/SoSFString.Plo $(DEPDIR)/SoSFTime.Plo \
+$(DEPDIR)/SoSFTrigger.Plo $(DEPDIR)/SoSFUInt32.Plo \
+$(DEPDIR)/SoSFUShort.Plo $(DEPDIR)/SoSFVec2f.Plo \
+$(DEPDIR)/SoSFVec3f.Plo $(DEPDIR)/SoSFVec4f.Plo $(DEPDIR)/SoSField.Plo
+SOURCES = $(libfields_la_SOURCES) $(libfieldsLINKHACK_la_SOURCES)
+OBJECTS = $(am_libfields_la_OBJECTS) $(am_libfieldsLINKHACK_la_OBJECTS)
 
 all: all-redirect
 .SUFFIXES:
-.SUFFIXES: .S .c .cpp .lo .o .s
+.SUFFIXES: .c .cpp .h .lo .o
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
 	cd $(top_srcdir) && $(AUTOMAKE) --gnu src/fields/Makefile
 
@@ -216,14 +387,15 @@ install-libLTLIBRARIES: $(lib_LTLIBRARIES)
 	$(mkinstalldirs) $(DESTDIR)$(libdir)
 	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
 	  if test -f $$p; then \
-	    echo "$(LIBTOOL)  --mode=install $(INSTALL) $$p $(DESTDIR)$(libdir)/$$p"; \
-	    $(LIBTOOL)  --mode=install $(INSTALL) $$p $(DESTDIR)$(libdir)/$$p; \
+	    echo " $(LIBTOOL)  --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$p $(DESTDIR)$(libdir)/$$p"; \
+	    $(LIBTOOL)  --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$p $(DESTDIR)$(libdir)/$$p; \
 	  else :; fi; \
 	done
 
 uninstall-libLTLIBRARIES:
 	@$(NORMAL_UNINSTALL)
-	list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+	  echo " $(LIBTOOL)  --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p"; \
 	  $(LIBTOOL)  --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p; \
 	done
 
@@ -236,12 +408,6 @@ distclean-noinstLTLIBRARIES:
 
 maintainer-clean-noinstLTLIBRARIES:
 
-.s.o:
-	$(COMPILE) -c $<
-
-.S.o:
-	$(COMPILE) -c $<
-
 mostlyclean-compile:
 	-rm -f *.o core *.core
 
@@ -252,12 +418,6 @@ distclean-compile:
 
 maintainer-clean-compile:
 
-.s.lo:
-	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
-
-.S.lo:
-	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
-
 mostlyclean-libtool:
 	-rm -f *.lo
 
@@ -267,30 +427,30 @@ clean-libtool:
 distclean-libtool:
 
 maintainer-clean-libtool:
-.cpp.o:
-	$(CXXCOMPILE) -c $<
-.cpp.lo:
-	$(LTCXXCOMPILE) -c $<
 
 tags: TAGS
 
-ID: $(HEADERS) $(SOURCES) $(LISP)
-	list='$(SOURCES) $(HEADERS)'; \
-	unique=`for i in $$list; do echo $$i; done | \
-	  awk '    { files[$$0] = 1; } \
+ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
+	list='$(SOURCES) $(HEADERS) $(TAGS_FILES)'; \
+	unique=`for i in $$list; do \
+	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
+	  done | \
+	  $(AWK) '    { files[$$0] = 1; } \
 	       END { for (i in files) print i; }'`; \
-	here=`pwd` && cd $(srcdir) \
-	  && mkid -f$$here/ID $$unique $(LISP)
+	mkid -f$$here/ID $$unique $(LISP)
 
-TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) $(LISP)
+TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
+		$(TAGS_FILES) $(LISP)
 	tags=; \
 	here=`pwd`; \
-	list='$(SOURCES) $(HEADERS)'; \
-	unique=`for i in $$list; do echo $$i; done | \
-	  awk '    { files[$$0] = 1; } \
+	list='$(SOURCES) $(HEADERS) $(TAGS_FILES)'; \
+	unique=`for i in $$list; do \
+	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
+	  done | \
+	  $(AWK) '    { files[$$0] = 1; } \
 	       END { for (i in files) print i; }'`; \
 	test -z "$(ETAGS_ARGS)$$unique$(LISP)$$tags" \
-	  || (cd $(srcdir) && etags $(ETAGS_ARGS) $$tags  $$unique $(LISP) -o $$here/TAGS)
+	  || etags $(ETAGS_ARGS) $$tags  $$unique $(LISP)
 
 mostlyclean-tags:
 
@@ -303,18 +463,12 @@ maintainer-clean-tags:
 
 distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
 
-subdir = src/fields
-
 distdir: $(DISTFILES)
-	here=`cd $(top_builddir) && pwd`; \
-	top_distdir=`cd $(top_distdir) && pwd`; \
-	distdir=`cd $(distdir) && pwd`; \
-	cd $(top_srcdir) \
-	  && $(AUTOMAKE) --include-deps --build-dir=$$here --srcdir-name=$(top_srcdir) --output-dir=$$top_distdir --gnu src/fields/Makefile
+	$(mkinstalldirs) $(distdir)/$(top_srcdir)/include/Inventor/fields
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
-	    cp -pr $$d/$$file $(distdir)/$$file; \
+	    cp -pR $$d/$$file $(distdir); \
 	  else \
 	    test -f $(distdir)/$$file \
 	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
@@ -322,56 +476,79 @@ distdir: $(DISTFILES)
 	  fi; \
 	done
 
-DEPS_MAGIC := $(shell mkdir .deps > /dev/null 2>&1 || :)
-
--include $(DEP_FILES)
+@AMDEP@include $(DEPDIR)/SoField.Plo
+@AMDEP@include $(DEPDIR)/SoFieldContainer.Plo
+@AMDEP@include $(DEPDIR)/SoFieldData.Plo
+@AMDEP@include $(DEPDIR)/SoMFBitMask.Plo
+@AMDEP@include $(DEPDIR)/SoMFBool.Plo
+@AMDEP@include $(DEPDIR)/SoMFColor.Plo
+@AMDEP@include $(DEPDIR)/SoMFEngine.Plo
+@AMDEP@include $(DEPDIR)/SoMFEnum.Plo
+@AMDEP@include $(DEPDIR)/SoMFFloat.Plo
+@AMDEP@include $(DEPDIR)/SoMFInt32.Plo
+@AMDEP@include $(DEPDIR)/SoMFMatrix.Plo
+@AMDEP@include $(DEPDIR)/SoMFName.Plo
+@AMDEP@include $(DEPDIR)/SoMFNode.Plo
+@AMDEP@include $(DEPDIR)/SoMFPath.Plo
+@AMDEP@include $(DEPDIR)/SoMFPlane.Plo
+@AMDEP@include $(DEPDIR)/SoMFRotation.Plo
+@AMDEP@include $(DEPDIR)/SoMFShort.Plo
+@AMDEP@include $(DEPDIR)/SoMFString.Plo
+@AMDEP@include $(DEPDIR)/SoMFTime.Plo
+@AMDEP@include $(DEPDIR)/SoMFUInt32.Plo
+@AMDEP@include $(DEPDIR)/SoMFUShort.Plo
+@AMDEP@include $(DEPDIR)/SoMFVec2f.Plo
+@AMDEP@include $(DEPDIR)/SoMFVec3f.Plo
+@AMDEP@include $(DEPDIR)/SoMFVec4f.Plo
+@AMDEP@include $(DEPDIR)/SoMField.Plo
+@AMDEP@include $(DEPDIR)/SoSFBitMask.Plo
+@AMDEP@include $(DEPDIR)/SoSFBool.Plo
+@AMDEP@include $(DEPDIR)/SoSFColor.Plo
+@AMDEP@include $(DEPDIR)/SoSFEngine.Plo
+@AMDEP@include $(DEPDIR)/SoSFEnum.Plo
+@AMDEP@include $(DEPDIR)/SoSFFloat.Plo
+@AMDEP@include $(DEPDIR)/SoSFImage.Plo
+@AMDEP@include $(DEPDIR)/SoSFInt32.Plo
+@AMDEP@include $(DEPDIR)/SoSFMatrix.Plo
+@AMDEP@include $(DEPDIR)/SoSFName.Plo
+@AMDEP@include $(DEPDIR)/SoSFNode.Plo
+@AMDEP@include $(DEPDIR)/SoSFPath.Plo
+@AMDEP@include $(DEPDIR)/SoSFPlane.Plo
+@AMDEP@include $(DEPDIR)/SoSFRotation.Plo
+@AMDEP@include $(DEPDIR)/SoSFShort.Plo
+@AMDEP@include $(DEPDIR)/SoSFString.Plo
+@AMDEP@include $(DEPDIR)/SoSFTime.Plo
+@AMDEP@include $(DEPDIR)/SoSFTrigger.Plo
+@AMDEP@include $(DEPDIR)/SoSFUInt32.Plo
+@AMDEP@include $(DEPDIR)/SoSFUShort.Plo
+@AMDEP@include $(DEPDIR)/SoSFVec2f.Plo
+@AMDEP@include $(DEPDIR)/SoSFVec3f.Plo
+@AMDEP@include $(DEPDIR)/SoSFVec4f.Plo
+@AMDEP@include $(DEPDIR)/SoSField.Plo
 
 mostlyclean-depend:
 
 clean-depend:
 
 distclean-depend:
-	-rm -rf .deps
+	-rm -rf $(DEPDIR)
 
 maintainer-clean-depend:
 
-%.o: %.c
-	@echo '$(COMPILE) -c $<'; \
-	$(COMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-cp .deps/$(*F).pp .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm .deps/$(*F).pp
+@AMDEP@CXXDEPMODE = @CXXDEPMODE@
 
-%.lo: %.c
-	@echo '$(LTCOMPILE) -c $<'; \
-	$(LTCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-sed -e 's/^\([^:]*\)\.o[ 	]*:/\1.lo \1.o :/' \
-	  < .deps/$(*F).pp > .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm -f .deps/$(*F).pp
+.cpp.o:
+@AMDEP@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
+@AMDEP@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(CXXCOMPILE) -c -o $@ $<
 
-%.o: %.cpp
-	@echo '$(CXXCOMPILE) -c $<'; \
-	$(CXXCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-cp .deps/$(*F).pp .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm .deps/$(*F).pp
+.cpp.lo:
+@AMDEP@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
+@AMDEP@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
+@AMDEP@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(LTCXXCOMPILE) -c -o $@ $<
 
-%.lo: %.cpp
-	@echo '$(LTCXXCOMPILE) -c $<'; \
-	$(LTCXXCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-sed -e 's/^\([^:]*\)\.o[ 	]*:/\1.lo \1.o :/' \
-	  < .deps/$(*F).pp > .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm -f .deps/$(*F).pp
 info-am:
 info: info-am
 dvi-am:
@@ -413,6 +590,7 @@ distclean-generic:
 	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
 
 maintainer-clean-generic:
+	-rm -f Makefile.in
 mostlyclean-am:  mostlyclean-libLTLIBRARIES \
 		mostlyclean-noinstLTLIBRARIES mostlyclean-compile \
 		mostlyclean-libtool mostlyclean-tags mostlyclean-depend \
@@ -458,8 +636,8 @@ clean-tags maintainer-clean-tags distdir mostlyclean-depend \
 distclean-depend clean-depend maintainer-clean-depend info-am info \
 dvi-am dvi check check-am installcheck-am installcheck install-exec-am \
 install-exec install-data-am install-data install-am install \
-uninstall-am uninstall all-redirect all-am all installdirs \
-mostlyclean-generic distclean-generic clean-generic \
+uninstall-am uninstall all-redirect all-am all install-strip \
+installdirs mostlyclean-generic distclean-generic clean-generic \
 maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 
 

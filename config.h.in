@@ -1,34 +1,52 @@
 /* config.h.in.  Generated automatically from configure.in by autoheader.  */
 
-/* Define if the X Window System is missing or not being used.  */
-#undef X_DISPLAY_MISSING
-
 #undef HAVE_LIBSIMAGE
 #undef COIN_MAJOR_VERSION
 #undef COIN_MINOR_VERSION
 #undef COIN_MICRO_VERSION
 #undef COIN_VERSION
 
-/* Define if you have the _snprintf function.  */
-#undef HAVE__SNPRINTF
-
-/* Define if you have the _vsnprintf function.  */
-#undef HAVE__VSNPRINTF
-
-/* Define if you have the snprintf function.  */
-#undef HAVE_SNPRINTF
-
-/* Define if you have the vsnprintf function.  */
-#undef HAVE_VSNPRINTF
-
-/* Define if you have the <io.h> header file.  */
+/* Define if you have the <io.h> header file. */
 #undef HAVE_IO_H
 
-/* Define if you have the <unistd.h> header file.  */
+/* Define if you have the `dnet' library (-ldnet). */
+#undef HAVE_LIBDNET
+
+/* Define if you have the `dnet_stub' library (-ldnet_stub). */
+#undef HAVE_LIBDNET_STUB
+
+/* Define if you have the `ICE' library (-lICE). */
+#undef HAVE_LIBICE
+
+/* Define if you have the `ipc' library (-lipc). */
+#undef HAVE_LIBIPC
+
+/* Define if you have the `nsl' library (-lnsl). */
+#undef HAVE_LIBNSL
+
+/* Define if you have the `posix' library (-lposix). */
+#undef HAVE_LIBPOSIX
+
+/* Define if you have the `simage' library (-lsimage). */
+#undef HAVE_LIBSIMAGE
+
+/* Define if you have the `socket' library (-lsocket). */
+#undef HAVE_LIBSOCKET
+
+/* Define if you have the `snprintf' function. */
+#undef HAVE_SNPRINTF
+
+/* Define if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
 
-/* Define if you have the simage library (-lsimage).  */
-#undef HAVE_LIBSIMAGE
+/* Define if you have the `vsnprintf' function. */
+#undef HAVE_VSNPRINTF
+
+/* Define if you have the `_snprintf' function. */
+#undef HAVE__SNPRINTF
+
+/* Define if you have the `_vsnprintf' function. */
+#undef HAVE__VSNPRINTF
 
 /* Name of package */
 #undef PACKAGE
@@ -36,3 +54,5 @@
 /* Version number of package */
 #undef VERSION
 
+/* Define if the X Window System is missing or not being used. */
+#undef X_DISPLAY_MISSING

@@ -10,7 +10,6 @@
 # even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.
 
-
 SHELL = @SHELL@
 
 srcdir = @srcdir@
@@ -58,9 +57,14 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
+
+@SET_MAKE@
 host_alias = @host_alias@
 host_triplet = @host@
+AMDEP = @AMDEP@
+AMTAR = @AMTAR@
 AS = @AS@
+AWK = @AWK@
 CC = @CC@
 COIN_BINARY_AGE = @COIN_BINARY_AGE@
 COIN_INTERFACE_AGE = @COIN_INTERFACE_AGE@
@@ -68,9 +72,11 @@ COIN_MAJOR_VERSION = @COIN_MAJOR_VERSION@
 COIN_MICRO_VERSION = @COIN_MICRO_VERSION@
 COIN_MINOR_VERSION = @COIN_MINOR_VERSION@
 COIN_VERSION = @COIN_VERSION@
+CPP = @CPP@
 CXX = @CXX@
+CXXCPP = @CXXCPP@
+DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
-LD = @LD@
 LN_S = @LN_S@
 LT_AGE = @LT_AGE@
 LT_CURRENT = @LT_CURRENT@
@@ -78,23 +84,235 @@ LT_RELEASE = @LT_RELEASE@
 LT_REVISION = @LT_REVISION@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
-NM = @NM@
+OBJDUMP = @OBJDUMP@
 PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
-USE_SYMBOL_UNDERSCORE = @USE_SYMBOL_UNDERSCORE@
 VERSION = @VERSION@
+install_sh = @install_sh@
 
-ALLSOURCES =  	SoAnnoText3.cpp SoAnnoText3.h 	SoAnnoText3Property.cpp SoAnnoText3Property.h 	SoAnnotation.cpp SoAnnotation.h 	SoAntiSquish.cpp SoAntiSquish.h 	SoArray.cpp SoArray.h 	SoAsciiText.cpp SoAsciiText.h 	SoBaseColor.cpp SoBaseColor.h 	SoBlinker.cpp SoBlinker.h 	SoCallback.cpp SoCallback.h 	SoCamera.cpp SoCamera.h 	SoClipPlane.cpp SoClipPlane.h 	SoColorIndex.cpp SoColorIndex.h 	SoComplexity.cpp SoComplexity.h 	SoCone.cpp SoCone.h 	SoCoordinate3.cpp SoCoordinate3.h 	SoCoordinate4.cpp SoCoordinate4.h 	SoCube.cpp SoCube.h 	SoCylinder.cpp SoCylinder.h 	SoDirectionalLight.cpp SoDirectionalLight.h 	SoDrawStyle.cpp SoDrawStyle.h 	SoEnvironment.cpp SoEnvironment.h 	SoEventCallback.cpp SoEventCallback.h 	SoExtSelection.cpp SoExtSelection.h 	SoFaceSet.cpp SoFaceSet.h 	SoFile.cpp SoFile.h 	SoFont.cpp SoFont.h 	SoFontStyle.cpp SoFontStyle.h 	SoGroup.cpp SoGroup.h 	SoImage.cpp SoImage.h 	SoIndexedFaceSet.cpp SoIndexedFaceSet.h 	SoIndexedLineSet.cpp SoIndexedLineSet.h 	SoIndexedNurbsCurve.cpp SoIndexedNurbsCurve.h 	SoIndexedNurbsSurface.cpp SoIndexedNurbsSurface.h 	SoIndexedShape.cpp SoIndexedShape.h 	SoIndexedTriangleStripSet.cpp SoIndexedTriangleStripSet.h 	SoInfo.cpp SoInfo.h 	SoLOD.cpp SoLOD.h 	SoLabel.cpp SoLabel.h 	SoLevelOfDetail.cpp SoLevelOfDetail.h 	SoLevelOfSimplification.cpp SoLevelOfSimplification.h 	SoLight.cpp SoLight.h 	SoLightModel.cpp SoLightModel.h 	SoLineSet.cpp SoLineSet.h 	SoLinearProfile.cpp SoLinearProfile.h 	SoLocateHighlight.cpp SoLocateHighlight.h 	SoMarkerSet.cpp SoMarkerSet.h 	SoMaterial.cpp SoMaterial.h 	SoMaterialBinding.cpp SoMaterialBinding.h 	SoMatrixTransform.cpp SoMatrixTransform.h 	SoMultipleCopy.cpp SoMultipleCopy.h 	SoNode.cpp SoNode.h 	SoNonIndexedShape.cpp SoNonIndexedShape.h 	SoNormal.cpp SoNormal.h 	SoNormalBinding.cpp SoNormalBinding.h 	SoNurbsCurve.cpp SoNurbsCurve.h 	SoNurbsProfile.cpp SoNurbsProfile.h 	SoNurbsSurface.cpp SoNurbsSurface.h 	SoOrthographicCamera.cpp SoOrthographicCamera.h 	SoPackedColor.cpp SoPackedColor.h 	SoPathSwitch.cpp SoPathSwitch.h 	SoPendulum.cpp SoPendulum.h 	SoPerspectiveCamera.cpp SoPerspectiveCamera.h 	SoPickStyle.cpp SoPickStyle.h 	SoPointLight.cpp SoPointLight.h 	SoPointSet.cpp SoPointSet.h 	SoPolygonOffset.cpp SoPolygonOffset.h 	SoProfile.cpp SoProfile.h 	SoProfileCoordinate2.cpp SoProfileCoordinate2.h 	SoProfileCoordinate3.cpp SoProfileCoordinate3.h 	SoQuadMesh.cpp SoQuadMesh.h 	SoResetTransform.cpp SoResetTransform.h 	SoRotation.cpp SoRotation.h 	SoRotationXYZ.cpp SoRotationXYZ.h 	SoRotor.cpp SoRotor.h 	SoScale.cpp SoScale.h 	SoSelection.cpp SoSelection.h 	SoSeparator.cpp SoSeparator.h 	SoShape.cpp SoShape.h 	SoShapeHints.cpp SoShapeHints.h 	SoShuttle.cpp SoShuttle.h 	SoSphere.cpp SoSphere.h 	SoSpotLight.cpp SoSpotLight.h 	SoSurroundScale.cpp SoSurroundScale.h 	SoSwitch.cpp SoSwitch.h 	SoText2.cpp SoText2.h 	SoText3.cpp SoText3.h 	SoTexture2.cpp SoTexture2.h 	SoTexture2Transform.cpp SoTexture2Transform.h 	SoTextureCoordinate2.cpp SoTextureCoordinate2.h 	SoTextureCoordinateBinding.cpp SoTextureCoordinateBinding.h 	SoTextureCoordinateDefault.cpp SoTextureCoordinateDefault.h 	SoTextureCoordinateEnvironment.cpp SoTextureCoordinateEnvironment.h 	SoTextureCoordinateFunction.cpp SoTextureCoordinateFunction.h 	SoTextureCoordinatePlane.cpp SoTextureCoordinatePlane.h 	SoTransform.cpp SoTransform.h 	SoTransformSeparator.cpp SoTransformSeparator.h 	SoTransformation.cpp SoTransformation.h 	SoTranslation.cpp SoTranslation.h 	SoTriangleStripSet.cpp SoTriangleStripSet.h 	SoUnits.cpp SoUnits.h 	SoUnknownNode.cpp SoUnknownNode.h 	SoVertexProperty.cpp SoVertexProperty.h 	SoVertexShape.cpp SoVertexShape.h 	SoWWWAnchor.cpp SoWWWAnchor.h 	SoWWWInline.cpp SoWWWInline.h
+
+ALLSOURCES = \
+	SoAnnoText3.cpp SoAnnoText3.h \
+	SoAnnoText3Property.cpp SoAnnoText3Property.h \
+	SoAnnotation.cpp SoAnnotation.h \
+	SoAntiSquish.cpp SoAntiSquish.h \
+	SoArray.cpp SoArray.h \
+	SoAsciiText.cpp SoAsciiText.h \
+	SoBaseColor.cpp SoBaseColor.h \
+	SoBlinker.cpp SoBlinker.h \
+	SoCallback.cpp SoCallback.h \
+	SoCamera.cpp SoCamera.h \
+	SoClipPlane.cpp SoClipPlane.h \
+	SoColorIndex.cpp SoColorIndex.h \
+	SoComplexity.cpp SoComplexity.h \
+	SoCone.cpp SoCone.h \
+	SoCoordinate3.cpp SoCoordinate3.h \
+	SoCoordinate4.cpp SoCoordinate4.h \
+	SoCube.cpp SoCube.h \
+	SoCylinder.cpp SoCylinder.h \
+	SoDirectionalLight.cpp SoDirectionalLight.h \
+	SoDrawStyle.cpp SoDrawStyle.h \
+	SoEnvironment.cpp SoEnvironment.h \
+	SoEventCallback.cpp SoEventCallback.h \
+	SoExtSelection.cpp SoExtSelection.h \
+	SoFaceSet.cpp SoFaceSet.h \
+	SoFile.cpp SoFile.h \
+	SoFont.cpp SoFont.h \
+	SoFontStyle.cpp SoFontStyle.h \
+	SoGroup.cpp SoGroup.h \
+	SoImage.cpp SoImage.h \
+	SoIndexedFaceSet.cpp SoIndexedFaceSet.h \
+	SoIndexedLineSet.cpp SoIndexedLineSet.h \
+	SoIndexedNurbsCurve.cpp SoIndexedNurbsCurve.h \
+	SoIndexedNurbsSurface.cpp SoIndexedNurbsSurface.h \
+	SoIndexedShape.cpp SoIndexedShape.h \
+	SoIndexedTriangleStripSet.cpp SoIndexedTriangleStripSet.h \
+	SoInfo.cpp SoInfo.h \
+	SoLOD.cpp SoLOD.h \
+	SoLabel.cpp SoLabel.h \
+	SoLevelOfDetail.cpp SoLevelOfDetail.h \
+	SoLevelOfSimplification.cpp SoLevelOfSimplification.h \
+	SoLight.cpp SoLight.h \
+	SoLightModel.cpp SoLightModel.h \
+	SoLineSet.cpp SoLineSet.h \
+	SoLinearProfile.cpp SoLinearProfile.h \
+	SoLocateHighlight.cpp SoLocateHighlight.h \
+	SoMarkerSet.cpp SoMarkerSet.h \
+	SoMaterial.cpp SoMaterial.h \
+	SoMaterialBinding.cpp SoMaterialBinding.h \
+	SoMatrixTransform.cpp SoMatrixTransform.h \
+	SoMultipleCopy.cpp SoMultipleCopy.h \
+	SoNode.cpp SoNode.h \
+	SoNonIndexedShape.cpp SoNonIndexedShape.h \
+	SoNormal.cpp SoNormal.h \
+	SoNormalBinding.cpp SoNormalBinding.h \
+	SoNurbsCurve.cpp SoNurbsCurve.h \
+	SoNurbsProfile.cpp SoNurbsProfile.h \
+	SoNurbsSurface.cpp SoNurbsSurface.h \
+	SoOrthographicCamera.cpp SoOrthographicCamera.h \
+	SoPackedColor.cpp SoPackedColor.h \
+	SoPathSwitch.cpp SoPathSwitch.h \
+	SoPendulum.cpp SoPendulum.h \
+	SoPerspectiveCamera.cpp SoPerspectiveCamera.h \
+	SoPickStyle.cpp SoPickStyle.h \
+	SoPointLight.cpp SoPointLight.h \
+	SoPointSet.cpp SoPointSet.h \
+	SoPolygonOffset.cpp SoPolygonOffset.h \
+	SoProfile.cpp SoProfile.h \
+	SoProfileCoordinate2.cpp SoProfileCoordinate2.h \
+	SoProfileCoordinate3.cpp SoProfileCoordinate3.h \
+	SoQuadMesh.cpp SoQuadMesh.h \
+	SoResetTransform.cpp SoResetTransform.h \
+	SoRotation.cpp SoRotation.h \
+	SoRotationXYZ.cpp SoRotationXYZ.h \
+	SoRotor.cpp SoRotor.h \
+	SoScale.cpp SoScale.h \
+	SoSelection.cpp SoSelection.h \
+	SoSeparator.cpp SoSeparator.h \
+	SoShape.cpp SoShape.h \
+	SoShapeHints.cpp SoShapeHints.h \
+	SoShuttle.cpp SoShuttle.h \
+	SoSphere.cpp SoSphere.h \
+	SoSpotLight.cpp SoSpotLight.h \
+	SoSurroundScale.cpp SoSurroundScale.h \
+	SoSwitch.cpp SoSwitch.h \
+	SoText2.cpp SoText2.h \
+	SoText3.cpp SoText3.h \
+	SoTexture2.cpp SoTexture2.h \
+	SoTexture2Transform.cpp SoTexture2Transform.h \
+	SoTextureCoordinate2.cpp SoTextureCoordinate2.h \
+	SoTextureCoordinateBinding.cpp SoTextureCoordinateBinding.h \
+	SoTextureCoordinateDefault.cpp SoTextureCoordinateDefault.h \
+	SoTextureCoordinateEnvironment.cpp SoTextureCoordinateEnvironment.h \
+	SoTextureCoordinateFunction.cpp SoTextureCoordinateFunction.h \
+	SoTextureCoordinatePlane.cpp SoTextureCoordinatePlane.h \
+	SoTransform.cpp SoTransform.h \
+	SoTransformSeparator.cpp SoTransformSeparator.h \
+	SoTransformation.cpp SoTransformation.h \
+	SoTranslation.cpp SoTranslation.h \
+	SoTriangleStripSet.cpp SoTriangleStripSet.h \
+	SoUnits.cpp SoUnits.h \
+	SoUnknownNode.cpp SoUnknownNode.h \
+	SoVertexProperty.cpp SoVertexProperty.h \
+	SoVertexShape.cpp SoVertexShape.h \
+	SoWWWAnchor.cpp SoWWWAnchor.h \
+	SoWWWInline.cpp SoWWWInline.h
 
 
-ALLINSTHEADERS =  	$(top_srcdir)/include/Inventor/nodes/SoSubNode.h 	$(top_srcdir)/include/Inventor/nodes/SoNodes.h 	$(top_srcdir)/include/Inventor/nodes/SoAnnoText3.h 	$(top_srcdir)/include/Inventor/nodes/SoAnnoText3Property.h 	$(top_srcdir)/include/Inventor/nodes/SoAnnotation.h 	$(top_srcdir)/include/Inventor/nodes/SoAntiSquish.h 	$(top_srcdir)/include/Inventor/nodes/SoArray.h 	$(top_srcdir)/include/Inventor/nodes/SoAsciiText.h 	$(top_srcdir)/include/Inventor/nodes/SoBaseColor.h 	$(top_srcdir)/include/Inventor/nodes/SoBlinker.h 	$(top_srcdir)/include/Inventor/nodes/SoCallback.h 	$(top_srcdir)/include/Inventor/nodes/SoCamera.h 	$(top_srcdir)/include/Inventor/nodes/SoClipPlane.h 	$(top_srcdir)/include/Inventor/nodes/SoColorIndex.h 	$(top_srcdir)/include/Inventor/nodes/SoComplexity.h 	$(top_srcdir)/include/Inventor/nodes/SoCone.h 	$(top_srcdir)/include/Inventor/nodes/SoCoordinate3.h 	$(top_srcdir)/include/Inventor/nodes/SoCoordinate4.h 	$(top_srcdir)/include/Inventor/nodes/SoCube.h 	$(top_srcdir)/include/Inventor/nodes/SoCylinder.h 	$(top_srcdir)/include/Inventor/nodes/SoDirectionalLight.h 	$(top_srcdir)/include/Inventor/nodes/SoDrawStyle.h 	$(top_srcdir)/include/Inventor/nodes/SoEnvironment.h 	$(top_srcdir)/include/Inventor/nodes/SoEventCallback.h 	$(top_srcdir)/include/Inventor/nodes/SoExtSelection.h 	$(top_srcdir)/include/Inventor/nodes/SoFaceSet.h 	$(top_srcdir)/include/Inventor/nodes/SoFile.h 	$(top_srcdir)/include/Inventor/nodes/SoFont.h 	$(top_srcdir)/include/Inventor/nodes/SoFontStyle.h 	$(top_srcdir)/include/Inventor/nodes/SoGroup.h 	$(top_srcdir)/include/Inventor/nodes/SoImage.h 	$(top_srcdir)/include/Inventor/nodes/SoIndexedFaceSet.h 	$(top_srcdir)/include/Inventor/nodes/SoIndexedLineSet.h 	$(top_srcdir)/include/Inventor/nodes/SoIndexedNurbsCurve.h 	$(top_srcdir)/include/Inventor/nodes/SoIndexedNurbsSurface.h 	$(top_srcdir)/include/Inventor/nodes/SoIndexedShape.h 	$(top_srcdir)/include/Inventor/nodes/SoIndexedTriangleStripSet.h 	$(top_srcdir)/include/Inventor/nodes/SoInfo.h 	$(top_srcdir)/include/Inventor/nodes/SoLOD.h 	$(top_srcdir)/include/Inventor/nodes/SoLabel.h 	$(top_srcdir)/include/Inventor/nodes/SoLevelOfDetail.h 	$(top_srcdir)/include/Inventor/nodes/SoLevelOfSimplification.h 	$(top_srcdir)/include/Inventor/nodes/SoLight.h 	$(top_srcdir)/include/Inventor/nodes/SoLightModel.h 	$(top_srcdir)/include/Inventor/nodes/SoLineSet.h 	$(top_srcdir)/include/Inventor/nodes/SoLinearProfile.h 	$(top_srcdir)/include/Inventor/nodes/SoLocateHighlight.h 	$(top_srcdir)/include/Inventor/nodes/SoMarkerSet.h 	$(top_srcdir)/include/Inventor/nodes/SoMaterial.h 	$(top_srcdir)/include/Inventor/nodes/SoMaterialBinding.h 	$(top_srcdir)/include/Inventor/nodes/SoMatrixTransform.h 	$(top_srcdir)/include/Inventor/nodes/SoMultipleCopy.h 	$(top_srcdir)/include/Inventor/nodes/SoNode.h 	$(top_srcdir)/include/Inventor/nodes/SoNonIndexedShape.h 	$(top_srcdir)/include/Inventor/nodes/SoNormal.h 	$(top_srcdir)/include/Inventor/nodes/SoNormalBinding.h 	$(top_srcdir)/include/Inventor/nodes/SoNurbsCurve.h 	$(top_srcdir)/include/Inventor/nodes/SoNurbsProfile.h 	$(top_srcdir)/include/Inventor/nodes/SoNurbsSurface.h 	$(top_srcdir)/include/Inventor/nodes/SoOrthographicCamera.h 	$(top_srcdir)/include/Inventor/nodes/SoPackedColor.h 	$(top_srcdir)/include/Inventor/nodes/SoPathSwitch.h 	$(top_srcdir)/include/Inventor/nodes/SoPendulum.h 	$(top_srcdir)/include/Inventor/nodes/SoPerspectiveCamera.h 	$(top_srcdir)/include/Inventor/nodes/SoPickStyle.h 	$(top_srcdir)/include/Inventor/nodes/SoPointLight.h 	$(top_srcdir)/include/Inventor/nodes/SoPointSet.h 	$(top_srcdir)/include/Inventor/nodes/SoPolygonOffset.h 	$(top_srcdir)/include/Inventor/nodes/SoProfile.h 	$(top_srcdir)/include/Inventor/nodes/SoProfileCoordinate2.h 	$(top_srcdir)/include/Inventor/nodes/SoProfileCoordinate3.h 	$(top_srcdir)/include/Inventor/nodes/SoQuadMesh.h 	$(top_srcdir)/include/Inventor/nodes/SoResetTransform.h 	$(top_srcdir)/include/Inventor/nodes/SoRotation.h 	$(top_srcdir)/include/Inventor/nodes/SoRotationXYZ.h 	$(top_srcdir)/include/Inventor/nodes/SoRotor.h 	$(top_srcdir)/include/Inventor/nodes/SoScale.h 	$(top_srcdir)/include/Inventor/nodes/SoSelection.h 	$(top_srcdir)/include/Inventor/nodes/SoSeparator.h 	$(top_srcdir)/include/Inventor/nodes/SoShape.h 	$(top_srcdir)/include/Inventor/nodes/SoShapeHints.h 	$(top_srcdir)/include/Inventor/nodes/SoShuttle.h 	$(top_srcdir)/include/Inventor/nodes/SoSphere.h 	$(top_srcdir)/include/Inventor/nodes/SoSpotLight.h 	$(top_srcdir)/include/Inventor/nodes/SoSurroundScale.h 	$(top_srcdir)/include/Inventor/nodes/SoSwitch.h 	$(top_srcdir)/include/Inventor/nodes/SoText2.h 	$(top_srcdir)/include/Inventor/nodes/SoText3.h 	$(top_srcdir)/include/Inventor/nodes/SoTexture2.h 	$(top_srcdir)/include/Inventor/nodes/SoTexture2Transform.h 	$(top_srcdir)/include/Inventor/nodes/SoTextureCoordinate2.h 	$(top_srcdir)/include/Inventor/nodes/SoTextureCoordinateBinding.h 	$(top_srcdir)/include/Inventor/nodes/SoTextureCoordinateDefault.h 	$(top_srcdir)/include/Inventor/nodes/SoTextureCoordinateEnvironment.h 	$(top_srcdir)/include/Inventor/nodes/SoTextureCoordinateFunction.h 	$(top_srcdir)/include/Inventor/nodes/SoTextureCoordinatePlane.h 	$(top_srcdir)/include/Inventor/nodes/SoTransform.h 	$(top_srcdir)/include/Inventor/nodes/SoTransformSeparator.h 	$(top_srcdir)/include/Inventor/nodes/SoTransformation.h 	$(top_srcdir)/include/Inventor/nodes/SoTranslation.h 	$(top_srcdir)/include/Inventor/nodes/SoTriangleStripSet.h 	$(top_srcdir)/include/Inventor/nodes/SoUnits.h 	$(top_srcdir)/include/Inventor/nodes/SoVertexProperty.h 	$(top_srcdir)/include/Inventor/nodes/SoVertexShape.h 	$(top_srcdir)/include/Inventor/nodes/SoWWWAnchor.h 	$(top_srcdir)/include/Inventor/nodes/SoWWWInline.h
+ALLINSTHEADERS = \
+	$(top_srcdir)/include/Inventor/nodes/SoSubNode.h \
+	$(top_srcdir)/include/Inventor/nodes/SoNodes.h \
+	$(top_srcdir)/include/Inventor/nodes/SoAnnoText3.h \
+	$(top_srcdir)/include/Inventor/nodes/SoAnnoText3Property.h \
+	$(top_srcdir)/include/Inventor/nodes/SoAnnotation.h \
+	$(top_srcdir)/include/Inventor/nodes/SoAntiSquish.h \
+	$(top_srcdir)/include/Inventor/nodes/SoArray.h \
+	$(top_srcdir)/include/Inventor/nodes/SoAsciiText.h \
+	$(top_srcdir)/include/Inventor/nodes/SoBaseColor.h \
+	$(top_srcdir)/include/Inventor/nodes/SoBlinker.h \
+	$(top_srcdir)/include/Inventor/nodes/SoCallback.h \
+	$(top_srcdir)/include/Inventor/nodes/SoCamera.h \
+	$(top_srcdir)/include/Inventor/nodes/SoClipPlane.h \
+	$(top_srcdir)/include/Inventor/nodes/SoColorIndex.h \
+	$(top_srcdir)/include/Inventor/nodes/SoComplexity.h \
+	$(top_srcdir)/include/Inventor/nodes/SoCone.h \
+	$(top_srcdir)/include/Inventor/nodes/SoCoordinate3.h \
+	$(top_srcdir)/include/Inventor/nodes/SoCoordinate4.h \
+	$(top_srcdir)/include/Inventor/nodes/SoCube.h \
+	$(top_srcdir)/include/Inventor/nodes/SoCylinder.h \
+	$(top_srcdir)/include/Inventor/nodes/SoDirectionalLight.h \
+	$(top_srcdir)/include/Inventor/nodes/SoDrawStyle.h \
+	$(top_srcdir)/include/Inventor/nodes/SoEnvironment.h \
+	$(top_srcdir)/include/Inventor/nodes/SoEventCallback.h \
+	$(top_srcdir)/include/Inventor/nodes/SoExtSelection.h \
+	$(top_srcdir)/include/Inventor/nodes/SoFaceSet.h \
+	$(top_srcdir)/include/Inventor/nodes/SoFile.h \
+	$(top_srcdir)/include/Inventor/nodes/SoFont.h \
+	$(top_srcdir)/include/Inventor/nodes/SoFontStyle.h \
+	$(top_srcdir)/include/Inventor/nodes/SoGroup.h \
+	$(top_srcdir)/include/Inventor/nodes/SoImage.h \
+	$(top_srcdir)/include/Inventor/nodes/SoIndexedFaceSet.h \
+	$(top_srcdir)/include/Inventor/nodes/SoIndexedLineSet.h \
+	$(top_srcdir)/include/Inventor/nodes/SoIndexedNurbsCurve.h \
+	$(top_srcdir)/include/Inventor/nodes/SoIndexedNurbsSurface.h \
+	$(top_srcdir)/include/Inventor/nodes/SoIndexedShape.h \
+	$(top_srcdir)/include/Inventor/nodes/SoIndexedTriangleStripSet.h \
+	$(top_srcdir)/include/Inventor/nodes/SoInfo.h \
+	$(top_srcdir)/include/Inventor/nodes/SoLOD.h \
+	$(top_srcdir)/include/Inventor/nodes/SoLabel.h \
+	$(top_srcdir)/include/Inventor/nodes/SoLevelOfDetail.h \
+	$(top_srcdir)/include/Inventor/nodes/SoLevelOfSimplification.h \
+	$(top_srcdir)/include/Inventor/nodes/SoLight.h \
+	$(top_srcdir)/include/Inventor/nodes/SoLightModel.h \
+	$(top_srcdir)/include/Inventor/nodes/SoLineSet.h \
+	$(top_srcdir)/include/Inventor/nodes/SoLinearProfile.h \
+	$(top_srcdir)/include/Inventor/nodes/SoLocateHighlight.h \
+	$(top_srcdir)/include/Inventor/nodes/SoMarkerSet.h \
+	$(top_srcdir)/include/Inventor/nodes/SoMaterial.h \
+	$(top_srcdir)/include/Inventor/nodes/SoMaterialBinding.h \
+	$(top_srcdir)/include/Inventor/nodes/SoMatrixTransform.h \
+	$(top_srcdir)/include/Inventor/nodes/SoMultipleCopy.h \
+	$(top_srcdir)/include/Inventor/nodes/SoNode.h \
+	$(top_srcdir)/include/Inventor/nodes/SoNonIndexedShape.h \
+	$(top_srcdir)/include/Inventor/nodes/SoNormal.h \
+	$(top_srcdir)/include/Inventor/nodes/SoNormalBinding.h \
+	$(top_srcdir)/include/Inventor/nodes/SoNurbsCurve.h \
+	$(top_srcdir)/include/Inventor/nodes/SoNurbsProfile.h \
+	$(top_srcdir)/include/Inventor/nodes/SoNurbsSurface.h \
+	$(top_srcdir)/include/Inventor/nodes/SoOrthographicCamera.h \
+	$(top_srcdir)/include/Inventor/nodes/SoPackedColor.h \
+	$(top_srcdir)/include/Inventor/nodes/SoPathSwitch.h \
+	$(top_srcdir)/include/Inventor/nodes/SoPendulum.h \
+	$(top_srcdir)/include/Inventor/nodes/SoPerspectiveCamera.h \
+	$(top_srcdir)/include/Inventor/nodes/SoPickStyle.h \
+	$(top_srcdir)/include/Inventor/nodes/SoPointLight.h \
+	$(top_srcdir)/include/Inventor/nodes/SoPointSet.h \
+	$(top_srcdir)/include/Inventor/nodes/SoPolygonOffset.h \
+	$(top_srcdir)/include/Inventor/nodes/SoProfile.h \
+	$(top_srcdir)/include/Inventor/nodes/SoProfileCoordinate2.h \
+	$(top_srcdir)/include/Inventor/nodes/SoProfileCoordinate3.h \
+	$(top_srcdir)/include/Inventor/nodes/SoQuadMesh.h \
+	$(top_srcdir)/include/Inventor/nodes/SoResetTransform.h \
+	$(top_srcdir)/include/Inventor/nodes/SoRotation.h \
+	$(top_srcdir)/include/Inventor/nodes/SoRotationXYZ.h \
+	$(top_srcdir)/include/Inventor/nodes/SoRotor.h \
+	$(top_srcdir)/include/Inventor/nodes/SoScale.h \
+	$(top_srcdir)/include/Inventor/nodes/SoSelection.h \
+	$(top_srcdir)/include/Inventor/nodes/SoSeparator.h \
+	$(top_srcdir)/include/Inventor/nodes/SoShape.h \
+	$(top_srcdir)/include/Inventor/nodes/SoShapeHints.h \
+	$(top_srcdir)/include/Inventor/nodes/SoShuttle.h \
+	$(top_srcdir)/include/Inventor/nodes/SoSphere.h \
+	$(top_srcdir)/include/Inventor/nodes/SoSpotLight.h \
+	$(top_srcdir)/include/Inventor/nodes/SoSurroundScale.h \
+	$(top_srcdir)/include/Inventor/nodes/SoSwitch.h \
+	$(top_srcdir)/include/Inventor/nodes/SoText2.h \
+	$(top_srcdir)/include/Inventor/nodes/SoText3.h \
+	$(top_srcdir)/include/Inventor/nodes/SoTexture2.h \
+	$(top_srcdir)/include/Inventor/nodes/SoTexture2Transform.h \
+	$(top_srcdir)/include/Inventor/nodes/SoTextureCoordinate2.h \
+	$(top_srcdir)/include/Inventor/nodes/SoTextureCoordinateBinding.h \
+	$(top_srcdir)/include/Inventor/nodes/SoTextureCoordinateDefault.h \
+	$(top_srcdir)/include/Inventor/nodes/SoTextureCoordinateEnvironment.h \
+	$(top_srcdir)/include/Inventor/nodes/SoTextureCoordinateFunction.h \
+	$(top_srcdir)/include/Inventor/nodes/SoTextureCoordinatePlane.h \
+	$(top_srcdir)/include/Inventor/nodes/SoTransform.h \
+	$(top_srcdir)/include/Inventor/nodes/SoTransformSeparator.h \
+	$(top_srcdir)/include/Inventor/nodes/SoTransformation.h \
+	$(top_srcdir)/include/Inventor/nodes/SoTranslation.h \
+	$(top_srcdir)/include/Inventor/nodes/SoTriangleStripSet.h \
+	$(top_srcdir)/include/Inventor/nodes/SoUnits.h \
+	$(top_srcdir)/include/Inventor/nodes/SoVertexProperty.h \
+	$(top_srcdir)/include/Inventor/nodes/SoVertexShape.h \
+	$(top_srcdir)/include/Inventor/nodes/SoWWWAnchor.h \
+	$(top_srcdir)/include/Inventor/nodes/SoWWWInline.h
 
 
 # Everything below is autogenerated from a macro, so don't modify
 # within the Makefile.am itself. 19991201 mortene.
 
-@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libnodesLINKHACK.la
-@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libnodes.la
+@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = @HACKING_DYNAMIC_MODULES_TRUE@libnodesLINKHACK.la
+@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = @HACKING_DYNAMIC_MODULES_FALSE@libnodes.la
 
 # This macro contains fixes to avoid the default flush of output from
 # the automake generated rules. 19991201 mortene. 
@@ -115,6 +333,7 @@ libnodesLINKHACKincdir = $(includedir)/Inventor/nodes
 
 libnodesinc_HEADERS = $(ALLINSTHEADERS)
 libnodesLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
+subdir = src/nodes
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
 CONFIG_CLEAN_FILES = 
@@ -128,40 +347,9 @@ X_CFLAGS = @X_CFLAGS@
 X_LIBS = @X_LIBS@
 X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
-libnodesLINKHACK_la_LDFLAGS = 
-libnodesLINKHACK_la_LIBADD = 
-libnodesLINKHACK_la_OBJECTS =  SoAnnoText3.lo SoAnnoText3Property.lo \
-SoAnnotation.lo SoAntiSquish.lo SoArray.lo SoAsciiText.lo \
-SoBaseColor.lo SoBlinker.lo SoCallback.lo SoCamera.lo SoClipPlane.lo \
-SoColorIndex.lo SoComplexity.lo SoCone.lo SoCoordinate3.lo \
-SoCoordinate4.lo SoCube.lo SoCylinder.lo SoDirectionalLight.lo \
-SoDrawStyle.lo SoEnvironment.lo SoEventCallback.lo SoExtSelection.lo \
-SoFaceSet.lo SoFile.lo SoFont.lo SoFontStyle.lo SoGroup.lo SoImage.lo \
-SoIndexedFaceSet.lo SoIndexedLineSet.lo SoIndexedNurbsCurve.lo \
-SoIndexedNurbsSurface.lo SoIndexedShape.lo SoIndexedTriangleStripSet.lo \
-SoInfo.lo SoLOD.lo SoLabel.lo SoLevelOfDetail.lo \
-SoLevelOfSimplification.lo SoLight.lo SoLightModel.lo SoLineSet.lo \
-SoLinearProfile.lo SoLocateHighlight.lo SoMarkerSet.lo SoMaterial.lo \
-SoMaterialBinding.lo SoMatrixTransform.lo SoMultipleCopy.lo SoNode.lo \
-SoNonIndexedShape.lo SoNormal.lo SoNormalBinding.lo SoNurbsCurve.lo \
-SoNurbsProfile.lo SoNurbsSurface.lo SoOrthographicCamera.lo \
-SoPackedColor.lo SoPathSwitch.lo SoPendulum.lo SoPerspectiveCamera.lo \
-SoPickStyle.lo SoPointLight.lo SoPointSet.lo SoPolygonOffset.lo \
-SoProfile.lo SoProfileCoordinate2.lo SoProfileCoordinate3.lo \
-SoQuadMesh.lo SoResetTransform.lo SoRotation.lo SoRotationXYZ.lo \
-SoRotor.lo SoScale.lo SoSelection.lo SoSeparator.lo SoShape.lo \
-SoShapeHints.lo SoShuttle.lo SoSphere.lo SoSpotLight.lo \
-SoSurroundScale.lo SoSwitch.lo SoText2.lo SoText3.lo SoTexture2.lo \
-SoTexture2Transform.lo SoTextureCoordinate2.lo \
-SoTextureCoordinateBinding.lo SoTextureCoordinateDefault.lo \
-SoTextureCoordinateEnvironment.lo SoTextureCoordinateFunction.lo \
-SoTextureCoordinatePlane.lo SoTransform.lo SoTransformSeparator.lo \
-SoTransformation.lo SoTranslation.lo SoTriangleStripSet.lo SoUnits.lo \
-SoUnknownNode.lo SoVertexProperty.lo SoVertexShape.lo SoWWWAnchor.lo \
-SoWWWInline.lo
 libnodes_la_LDFLAGS = 
 libnodes_la_LIBADD = 
-libnodes_la_OBJECTS =  SoAnnoText3.lo SoAnnoText3Property.lo \
+am_libnodes_la_OBJECTS =  SoAnnoText3.lo SoAnnoText3Property.lo \
 SoAnnotation.lo SoAntiSquish.lo SoArray.lo SoAsciiText.lo \
 SoBaseColor.lo SoBlinker.lo SoCallback.lo SoCamera.lo SoClipPlane.lo \
 SoColorIndex.lo SoComplexity.lo SoCone.lo SoCoordinate3.lo \
@@ -190,70 +378,119 @@ SoTextureCoordinatePlane.lo SoTransform.lo SoTransformSeparator.lo \
 SoTransformation.lo SoTranslation.lo SoTriangleStripSet.lo SoUnits.lo \
 SoUnknownNode.lo SoVertexProperty.lo SoVertexShape.lo SoWWWAnchor.lo \
 SoWWWInline.lo
-CXXFLAGS = @CXXFLAGS@
+libnodes_la_OBJECTS =  $(am_libnodes_la_OBJECTS)
+libnodesLINKHACK_la_LDFLAGS = 
+libnodesLINKHACK_la_LIBADD = 
+am_libnodesLINKHACK_la_OBJECTS =  SoAnnoText3.lo SoAnnoText3Property.lo \
+SoAnnotation.lo SoAntiSquish.lo SoArray.lo SoAsciiText.lo \
+SoBaseColor.lo SoBlinker.lo SoCallback.lo SoCamera.lo SoClipPlane.lo \
+SoColorIndex.lo SoComplexity.lo SoCone.lo SoCoordinate3.lo \
+SoCoordinate4.lo SoCube.lo SoCylinder.lo SoDirectionalLight.lo \
+SoDrawStyle.lo SoEnvironment.lo SoEventCallback.lo SoExtSelection.lo \
+SoFaceSet.lo SoFile.lo SoFont.lo SoFontStyle.lo SoGroup.lo SoImage.lo \
+SoIndexedFaceSet.lo SoIndexedLineSet.lo SoIndexedNurbsCurve.lo \
+SoIndexedNurbsSurface.lo SoIndexedShape.lo SoIndexedTriangleStripSet.lo \
+SoInfo.lo SoLOD.lo SoLabel.lo SoLevelOfDetail.lo \
+SoLevelOfSimplification.lo SoLight.lo SoLightModel.lo SoLineSet.lo \
+SoLinearProfile.lo SoLocateHighlight.lo SoMarkerSet.lo SoMaterial.lo \
+SoMaterialBinding.lo SoMatrixTransform.lo SoMultipleCopy.lo SoNode.lo \
+SoNonIndexedShape.lo SoNormal.lo SoNormalBinding.lo SoNurbsCurve.lo \
+SoNurbsProfile.lo SoNurbsSurface.lo SoOrthographicCamera.lo \
+SoPackedColor.lo SoPathSwitch.lo SoPendulum.lo SoPerspectiveCamera.lo \
+SoPickStyle.lo SoPointLight.lo SoPointSet.lo SoPolygonOffset.lo \
+SoProfile.lo SoProfileCoordinate2.lo SoProfileCoordinate3.lo \
+SoQuadMesh.lo SoResetTransform.lo SoRotation.lo SoRotationXYZ.lo \
+SoRotor.lo SoScale.lo SoSelection.lo SoSeparator.lo SoShape.lo \
+SoShapeHints.lo SoShuttle.lo SoSphere.lo SoSpotLight.lo \
+SoSurroundScale.lo SoSwitch.lo SoText2.lo SoText3.lo SoTexture2.lo \
+SoTexture2Transform.lo SoTextureCoordinate2.lo \
+SoTextureCoordinateBinding.lo SoTextureCoordinateDefault.lo \
+SoTextureCoordinateEnvironment.lo SoTextureCoordinateFunction.lo \
+SoTextureCoordinatePlane.lo SoTransform.lo SoTransformSeparator.lo \
+SoTransformation.lo SoTranslation.lo SoTriangleStripSet.lo SoUnits.lo \
+SoUnknownNode.lo SoVertexProperty.lo SoVertexShape.lo SoWWWAnchor.lo \
+SoWWWInline.lo
+libnodesLINKHACK_la_OBJECTS =  $(am_libnodesLINKHACK_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
+CXXFLAGS = @CXXFLAGS@
 CXXLD = $(CXX)
-CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(LDFLAGS) -o $@
+CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 CFLAGS = @CFLAGS@
 COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
-LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
+LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+DIST_SOURCES =  $(libnodes_la_SOURCES) $(libnodesLINKHACK_la_SOURCES)
 HEADERS =  $(libnodesLINKHACKinc_HEADERS) $(libnodesinc_HEADERS)
 
-DIST_COMMON =  Makefile.am Makefile.in
+DIST_COMMON =  $(libnodesLINKHACKinc_HEADERS) $(libnodesinc_HEADERS) \
+Makefile.am Makefile.in
 
 
-DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
+DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 
-TAR = gtar
 GZIP_ENV = --best
-DEP_FILES =  .deps/SoAnnoText3.P .deps/SoAnnoText3Property.P \
-.deps/SoAnnotation.P .deps/SoAntiSquish.P .deps/SoArray.P \
-.deps/SoAsciiText.P .deps/SoBaseColor.P .deps/SoBlinker.P \
-.deps/SoCallback.P .deps/SoCamera.P .deps/SoClipPlane.P \
-.deps/SoColorIndex.P .deps/SoComplexity.P .deps/SoCone.P \
-.deps/SoCoordinate3.P .deps/SoCoordinate4.P .deps/SoCube.P \
-.deps/SoCylinder.P .deps/SoDirectionalLight.P .deps/SoDrawStyle.P \
-.deps/SoEnvironment.P .deps/SoEventCallback.P .deps/SoExtSelection.P \
-.deps/SoFaceSet.P .deps/SoFile.P .deps/SoFont.P .deps/SoFontStyle.P \
-.deps/SoGroup.P .deps/SoImage.P .deps/SoIndexedFaceSet.P \
-.deps/SoIndexedLineSet.P .deps/SoIndexedNurbsCurve.P \
-.deps/SoIndexedNurbsSurface.P .deps/SoIndexedShape.P \
-.deps/SoIndexedTriangleStripSet.P .deps/SoInfo.P .deps/SoLOD.P \
-.deps/SoLabel.P .deps/SoLevelOfDetail.P .deps/SoLevelOfSimplification.P \
-.deps/SoLight.P .deps/SoLightModel.P .deps/SoLineSet.P \
-.deps/SoLinearProfile.P .deps/SoLocateHighlight.P .deps/SoMarkerSet.P \
-.deps/SoMaterial.P .deps/SoMaterialBinding.P .deps/SoMatrixTransform.P \
-.deps/SoMultipleCopy.P .deps/SoNode.P .deps/SoNonIndexedShape.P \
-.deps/SoNormal.P .deps/SoNormalBinding.P .deps/SoNurbsCurve.P \
-.deps/SoNurbsProfile.P .deps/SoNurbsSurface.P \
-.deps/SoOrthographicCamera.P .deps/SoPackedColor.P .deps/SoPathSwitch.P \
-.deps/SoPendulum.P .deps/SoPerspectiveCamera.P .deps/SoPickStyle.P \
-.deps/SoPointLight.P .deps/SoPointSet.P .deps/SoPolygonOffset.P \
-.deps/SoProfile.P .deps/SoProfileCoordinate2.P \
-.deps/SoProfileCoordinate3.P .deps/SoQuadMesh.P \
-.deps/SoResetTransform.P .deps/SoRotation.P .deps/SoRotationXYZ.P \
-.deps/SoRotor.P .deps/SoScale.P .deps/SoSelection.P .deps/SoSeparator.P \
-.deps/SoShape.P .deps/SoShapeHints.P .deps/SoShuttle.P .deps/SoSphere.P \
-.deps/SoSpotLight.P .deps/SoSurroundScale.P .deps/SoSwitch.P \
-.deps/SoText2.P .deps/SoText3.P .deps/SoTexture2.P \
-.deps/SoTexture2Transform.P .deps/SoTextureCoordinate2.P \
-.deps/SoTextureCoordinateBinding.P .deps/SoTextureCoordinateDefault.P \
-.deps/SoTextureCoordinateEnvironment.P \
-.deps/SoTextureCoordinateFunction.P .deps/SoTextureCoordinatePlane.P \
-.deps/SoTransform.P .deps/SoTransformSeparator.P \
-.deps/SoTransformation.P .deps/SoTranslation.P \
-.deps/SoTriangleStripSet.P .deps/SoUnits.P .deps/SoUnknownNode.P \
-.deps/SoVertexProperty.P .deps/SoVertexShape.P .deps/SoWWWAnchor.P \
-.deps/SoWWWInline.P
-SOURCES = $(libnodesLINKHACK_la_SOURCES) $(libnodes_la_SOURCES)
-OBJECTS = $(libnodesLINKHACK_la_OBJECTS) $(libnodes_la_OBJECTS)
+depcomp = $(SHELL) $(top_srcdir)/depcomp
+DEP_FILES =  @AMDEP@ $(DEPDIR)/SoAnnoText3.Plo \
+$(DEPDIR)/SoAnnoText3Property.Plo $(DEPDIR)/SoAnnotation.Plo \
+$(DEPDIR)/SoAntiSquish.Plo $(DEPDIR)/SoArray.Plo \
+$(DEPDIR)/SoAsciiText.Plo $(DEPDIR)/SoBaseColor.Plo \
+$(DEPDIR)/SoBlinker.Plo $(DEPDIR)/SoCallback.Plo $(DEPDIR)/SoCamera.Plo \
+$(DEPDIR)/SoClipPlane.Plo $(DEPDIR)/SoColorIndex.Plo \
+$(DEPDIR)/SoComplexity.Plo $(DEPDIR)/SoCone.Plo \
+$(DEPDIR)/SoCoordinate3.Plo $(DEPDIR)/SoCoordinate4.Plo \
+$(DEPDIR)/SoCube.Plo $(DEPDIR)/SoCylinder.Plo \
+$(DEPDIR)/SoDirectionalLight.Plo $(DEPDIR)/SoDrawStyle.Plo \
+$(DEPDIR)/SoEnvironment.Plo $(DEPDIR)/SoEventCallback.Plo \
+$(DEPDIR)/SoExtSelection.Plo $(DEPDIR)/SoFaceSet.Plo \
+$(DEPDIR)/SoFile.Plo $(DEPDIR)/SoFont.Plo $(DEPDIR)/SoFontStyle.Plo \
+$(DEPDIR)/SoGroup.Plo $(DEPDIR)/SoImage.Plo \
+$(DEPDIR)/SoIndexedFaceSet.Plo $(DEPDIR)/SoIndexedLineSet.Plo \
+$(DEPDIR)/SoIndexedNurbsCurve.Plo $(DEPDIR)/SoIndexedNurbsSurface.Plo \
+$(DEPDIR)/SoIndexedShape.Plo $(DEPDIR)/SoIndexedTriangleStripSet.Plo \
+$(DEPDIR)/SoInfo.Plo $(DEPDIR)/SoLOD.Plo $(DEPDIR)/SoLabel.Plo \
+$(DEPDIR)/SoLevelOfDetail.Plo $(DEPDIR)/SoLevelOfSimplification.Plo \
+$(DEPDIR)/SoLight.Plo $(DEPDIR)/SoLightModel.Plo \
+$(DEPDIR)/SoLineSet.Plo $(DEPDIR)/SoLinearProfile.Plo \
+$(DEPDIR)/SoLocateHighlight.Plo $(DEPDIR)/SoMarkerSet.Plo \
+$(DEPDIR)/SoMaterial.Plo $(DEPDIR)/SoMaterialBinding.Plo \
+$(DEPDIR)/SoMatrixTransform.Plo $(DEPDIR)/SoMultipleCopy.Plo \
+$(DEPDIR)/SoNode.Plo $(DEPDIR)/SoNonIndexedShape.Plo \
+$(DEPDIR)/SoNormal.Plo $(DEPDIR)/SoNormalBinding.Plo \
+$(DEPDIR)/SoNurbsCurve.Plo $(DEPDIR)/SoNurbsProfile.Plo \
+$(DEPDIR)/SoNurbsSurface.Plo $(DEPDIR)/SoOrthographicCamera.Plo \
+$(DEPDIR)/SoPackedColor.Plo $(DEPDIR)/SoPathSwitch.Plo \
+$(DEPDIR)/SoPendulum.Plo $(DEPDIR)/SoPerspectiveCamera.Plo \
+$(DEPDIR)/SoPickStyle.Plo $(DEPDIR)/SoPointLight.Plo \
+$(DEPDIR)/SoPointSet.Plo $(DEPDIR)/SoPolygonOffset.Plo \
+$(DEPDIR)/SoProfile.Plo $(DEPDIR)/SoProfileCoordinate2.Plo \
+$(DEPDIR)/SoProfileCoordinate3.Plo $(DEPDIR)/SoQuadMesh.Plo \
+$(DEPDIR)/SoResetTransform.Plo $(DEPDIR)/SoRotation.Plo \
+$(DEPDIR)/SoRotationXYZ.Plo $(DEPDIR)/SoRotor.Plo $(DEPDIR)/SoScale.Plo \
+$(DEPDIR)/SoSelection.Plo $(DEPDIR)/SoSeparator.Plo \
+$(DEPDIR)/SoShape.Plo $(DEPDIR)/SoShapeHints.Plo \
+$(DEPDIR)/SoShuttle.Plo $(DEPDIR)/SoSphere.Plo \
+$(DEPDIR)/SoSpotLight.Plo $(DEPDIR)/SoSurroundScale.Plo \
+$(DEPDIR)/SoSwitch.Plo $(DEPDIR)/SoText2.Plo $(DEPDIR)/SoText3.Plo \
+$(DEPDIR)/SoTexture2.Plo $(DEPDIR)/SoTexture2Transform.Plo \
+$(DEPDIR)/SoTextureCoordinate2.Plo \
+$(DEPDIR)/SoTextureCoordinateBinding.Plo \
+$(DEPDIR)/SoTextureCoordinateDefault.Plo \
+$(DEPDIR)/SoTextureCoordinateEnvironment.Plo \
+$(DEPDIR)/SoTextureCoordinateFunction.Plo \
+$(DEPDIR)/SoTextureCoordinatePlane.Plo $(DEPDIR)/SoTransform.Plo \
+$(DEPDIR)/SoTransformSeparator.Plo $(DEPDIR)/SoTransformation.Plo \
+$(DEPDIR)/SoTranslation.Plo $(DEPDIR)/SoTriangleStripSet.Plo \
+$(DEPDIR)/SoUnits.Plo $(DEPDIR)/SoUnknownNode.Plo \
+$(DEPDIR)/SoVertexProperty.Plo $(DEPDIR)/SoVertexShape.Plo \
+$(DEPDIR)/SoWWWAnchor.Plo $(DEPDIR)/SoWWWInline.Plo
+SOURCES = $(libnodes_la_SOURCES) $(libnodesLINKHACK_la_SOURCES)
+OBJECTS = $(am_libnodes_la_OBJECTS) $(am_libnodesLINKHACK_la_OBJECTS)
 
 all: all-redirect
 .SUFFIXES:
-.SUFFIXES: .S .c .cpp .lo .o .s
+.SUFFIXES: .c .cpp .h .lo .o
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
 	cd $(top_srcdir) && $(AUTOMAKE) --gnu src/nodes/Makefile
 
@@ -276,14 +513,15 @@ install-libLTLIBRARIES: $(lib_LTLIBRARIES)
 	$(mkinstalldirs) $(DESTDIR)$(libdir)
 	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
 	  if test -f $$p; then \
-	    echo "$(LIBTOOL)  --mode=install $(INSTALL) $$p $(DESTDIR)$(libdir)/$$p"; \
-	    $(LIBTOOL)  --mode=install $(INSTALL) $$p $(DESTDIR)$(libdir)/$$p; \
+	    echo " $(LIBTOOL)  --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$p $(DESTDIR)$(libdir)/$$p"; \
+	    $(LIBTOOL)  --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$p $(DESTDIR)$(libdir)/$$p; \
 	  else :; fi; \
 	done
 
 uninstall-libLTLIBRARIES:
 	@$(NORMAL_UNINSTALL)
-	list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+	  echo " $(LIBTOOL)  --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p"; \
 	  $(LIBTOOL)  --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p; \
 	done
 
@@ -296,12 +534,6 @@ distclean-noinstLTLIBRARIES:
 
 maintainer-clean-noinstLTLIBRARIES:
 
-.s.o:
-	$(COMPILE) -c $<
-
-.S.o:
-	$(COMPILE) -c $<
-
 mostlyclean-compile:
 	-rm -f *.o core *.core
 
@@ -312,12 +544,6 @@ distclean-compile:
 
 maintainer-clean-compile:
 
-.s.lo:
-	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
-
-.S.lo:
-	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
-
 mostlyclean-libtool:
 	-rm -f *.lo
 
@@ -327,30 +553,30 @@ clean-libtool:
 distclean-libtool:
 
 maintainer-clean-libtool:
-.cpp.o:
-	$(CXXCOMPILE) -c $<
-.cpp.lo:
-	$(LTCXXCOMPILE) -c $<
 
 tags: TAGS
 
-ID: $(HEADERS) $(SOURCES) $(LISP)
-	list='$(SOURCES) $(HEADERS)'; \
-	unique=`for i in $$list; do echo $$i; done | \
-	  awk '    { files[$$0] = 1; } \
+ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
+	list='$(SOURCES) $(HEADERS) $(TAGS_FILES)'; \
+	unique=`for i in $$list; do \
+	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
+	  done | \
+	  $(AWK) '    { files[$$0] = 1; } \
 	       END { for (i in files) print i; }'`; \
-	here=`pwd` && cd $(srcdir) \
-	  && mkid -f$$here/ID $$unique $(LISP)
+	mkid -f$$here/ID $$unique $(LISP)
 
-TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) $(LISP)
+TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
+		$(TAGS_FILES) $(LISP)
 	tags=; \
 	here=`pwd`; \
-	list='$(SOURCES) $(HEADERS)'; \
-	unique=`for i in $$list; do echo $$i; done | \
-	  awk '    { files[$$0] = 1; } \
+	list='$(SOURCES) $(HEADERS) $(TAGS_FILES)'; \
+	unique=`for i in $$list; do \
+	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
+	  done | \
+	  $(AWK) '    { files[$$0] = 1; } \
 	       END { for (i in files) print i; }'`; \
 	test -z "$(ETAGS_ARGS)$$unique$(LISP)$$tags" \
-	  || (cd $(srcdir) && etags $(ETAGS_ARGS) $$tags  $$unique $(LISP) -o $$here/TAGS)
+	  || etags $(ETAGS_ARGS) $$tags  $$unique $(LISP)
 
 mostlyclean-tags:
 
@@ -363,18 +589,12 @@ maintainer-clean-tags:
 
 distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
 
-subdir = src/nodes
-
 distdir: $(DISTFILES)
-	here=`cd $(top_builddir) && pwd`; \
-	top_distdir=`cd $(top_distdir) && pwd`; \
-	distdir=`cd $(distdir) && pwd`; \
-	cd $(top_srcdir) \
-	  && $(AUTOMAKE) --include-deps --build-dir=$$here --srcdir-name=$(top_srcdir) --output-dir=$$top_distdir --gnu src/nodes/Makefile
+	$(mkinstalldirs) $(distdir)/$(top_srcdir)/include/Inventor/nodes
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
-	    cp -pr $$d/$$file $(distdir)/$$file; \
+	    cp -pR $$d/$$file $(distdir); \
 	  else \
 	    test -f $(distdir)/$$file \
 	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
@@ -382,56 +602,135 @@ distdir: $(DISTFILES)
 	  fi; \
 	done
 
-DEPS_MAGIC := $(shell mkdir .deps > /dev/null 2>&1 || :)
-
--include $(DEP_FILES)
+@AMDEP@include $(DEPDIR)/SoAnnoText3.Plo
+@AMDEP@include $(DEPDIR)/SoAnnoText3Property.Plo
+@AMDEP@include $(DEPDIR)/SoAnnotation.Plo
+@AMDEP@include $(DEPDIR)/SoAntiSquish.Plo
+@AMDEP@include $(DEPDIR)/SoArray.Plo
+@AMDEP@include $(DEPDIR)/SoAsciiText.Plo
+@AMDEP@include $(DEPDIR)/SoBaseColor.Plo
+@AMDEP@include $(DEPDIR)/SoBlinker.Plo
+@AMDEP@include $(DEPDIR)/SoCallback.Plo
+@AMDEP@include $(DEPDIR)/SoCamera.Plo
+@AMDEP@include $(DEPDIR)/SoClipPlane.Plo
+@AMDEP@include $(DEPDIR)/SoColorIndex.Plo
+@AMDEP@include $(DEPDIR)/SoComplexity.Plo
+@AMDEP@include $(DEPDIR)/SoCone.Plo
+@AMDEP@include $(DEPDIR)/SoCoordinate3.Plo
+@AMDEP@include $(DEPDIR)/SoCoordinate4.Plo
+@AMDEP@include $(DEPDIR)/SoCube.Plo
+@AMDEP@include $(DEPDIR)/SoCylinder.Plo
+@AMDEP@include $(DEPDIR)/SoDirectionalLight.Plo
+@AMDEP@include $(DEPDIR)/SoDrawStyle.Plo
+@AMDEP@include $(DEPDIR)/SoEnvironment.Plo
+@AMDEP@include $(DEPDIR)/SoEventCallback.Plo
+@AMDEP@include $(DEPDIR)/SoExtSelection.Plo
+@AMDEP@include $(DEPDIR)/SoFaceSet.Plo
+@AMDEP@include $(DEPDIR)/SoFile.Plo
+@AMDEP@include $(DEPDIR)/SoFont.Plo
+@AMDEP@include $(DEPDIR)/SoFontStyle.Plo
+@AMDEP@include $(DEPDIR)/SoGroup.Plo
+@AMDEP@include $(DEPDIR)/SoImage.Plo
+@AMDEP@include $(DEPDIR)/SoIndexedFaceSet.Plo
+@AMDEP@include $(DEPDIR)/SoIndexedLineSet.Plo
+@AMDEP@include $(DEPDIR)/SoIndexedNurbsCurve.Plo
+@AMDEP@include $(DEPDIR)/SoIndexedNurbsSurface.Plo
+@AMDEP@include $(DEPDIR)/SoIndexedShape.Plo
+@AMDEP@include $(DEPDIR)/SoIndexedTriangleStripSet.Plo
+@AMDEP@include $(DEPDIR)/SoInfo.Plo
+@AMDEP@include $(DEPDIR)/SoLOD.Plo
+@AMDEP@include $(DEPDIR)/SoLabel.Plo
+@AMDEP@include $(DEPDIR)/SoLevelOfDetail.Plo
+@AMDEP@include $(DEPDIR)/SoLevelOfSimplification.Plo
+@AMDEP@include $(DEPDIR)/SoLight.Plo
+@AMDEP@include $(DEPDIR)/SoLightModel.Plo
+@AMDEP@include $(DEPDIR)/SoLineSet.Plo
+@AMDEP@include $(DEPDIR)/SoLinearProfile.Plo
+@AMDEP@include $(DEPDIR)/SoLocateHighlight.Plo
+@AMDEP@include $(DEPDIR)/SoMarkerSet.Plo
+@AMDEP@include $(DEPDIR)/SoMaterial.Plo
+@AMDEP@include $(DEPDIR)/SoMaterialBinding.Plo
+@AMDEP@include $(DEPDIR)/SoMatrixTransform.Plo
+@AMDEP@include $(DEPDIR)/SoMultipleCopy.Plo
+@AMDEP@include $(DEPDIR)/SoNode.Plo
+@AMDEP@include $(DEPDIR)/SoNonIndexedShape.Plo
+@AMDEP@include $(DEPDIR)/SoNormal.Plo
+@AMDEP@include $(DEPDIR)/SoNormalBinding.Plo
+@AMDEP@include $(DEPDIR)/SoNurbsCurve.Plo
+@AMDEP@include $(DEPDIR)/SoNurbsProfile.Plo
+@AMDEP@include $(DEPDIR)/SoNurbsSurface.Plo
+@AMDEP@include $(DEPDIR)/SoOrthographicCamera.Plo
+@AMDEP@include $(DEPDIR)/SoPackedColor.Plo
+@AMDEP@include $(DEPDIR)/SoPathSwitch.Plo
+@AMDEP@include $(DEPDIR)/SoPendulum.Plo
+@AMDEP@include $(DEPDIR)/SoPerspectiveCamera.Plo
+@AMDEP@include $(DEPDIR)/SoPickStyle.Plo
+@AMDEP@include $(DEPDIR)/SoPointLight.Plo
+@AMDEP@include $(DEPDIR)/SoPointSet.Plo
+@AMDEP@include $(DEPDIR)/SoPolygonOffset.Plo
+@AMDEP@include $(DEPDIR)/SoProfile.Plo
+@AMDEP@include $(DEPDIR)/SoProfileCoordinate2.Plo
+@AMDEP@include $(DEPDIR)/SoProfileCoordinate3.Plo
+@AMDEP@include $(DEPDIR)/SoQuadMesh.Plo
+@AMDEP@include $(DEPDIR)/SoResetTransform.Plo
+@AMDEP@include $(DEPDIR)/SoRotation.Plo
+@AMDEP@include $(DEPDIR)/SoRotationXYZ.Plo
+@AMDEP@include $(DEPDIR)/SoRotor.Plo
+@AMDEP@include $(DEPDIR)/SoScale.Plo
+@AMDEP@include $(DEPDIR)/SoSelection.Plo
+@AMDEP@include $(DEPDIR)/SoSeparator.Plo
+@AMDEP@include $(DEPDIR)/SoShape.Plo
+@AMDEP@include $(DEPDIR)/SoShapeHints.Plo
+@AMDEP@include $(DEPDIR)/SoShuttle.Plo
+@AMDEP@include $(DEPDIR)/SoSphere.Plo
+@AMDEP@include $(DEPDIR)/SoSpotLight.Plo
+@AMDEP@include $(DEPDIR)/SoSurroundScale.Plo
+@AMDEP@include $(DEPDIR)/SoSwitch.Plo
+@AMDEP@include $(DEPDIR)/SoText2.Plo
+@AMDEP@include $(DEPDIR)/SoText3.Plo
+@AMDEP@include $(DEPDIR)/SoTexture2.Plo
+@AMDEP@include $(DEPDIR)/SoTexture2Transform.Plo
+@AMDEP@include $(DEPDIR)/SoTextureCoordinate2.Plo
+@AMDEP@include $(DEPDIR)/SoTextureCoordinateBinding.Plo
+@AMDEP@include $(DEPDIR)/SoTextureCoordinateDefault.Plo
+@AMDEP@include $(DEPDIR)/SoTextureCoordinateEnvironment.Plo
+@AMDEP@include $(DEPDIR)/SoTextureCoordinateFunction.Plo
+@AMDEP@include $(DEPDIR)/SoTextureCoordinatePlane.Plo
+@AMDEP@include $(DEPDIR)/SoTransform.Plo
+@AMDEP@include $(DEPDIR)/SoTransformSeparator.Plo
+@AMDEP@include $(DEPDIR)/SoTransformation.Plo
+@AMDEP@include $(DEPDIR)/SoTranslation.Plo
+@AMDEP@include $(DEPDIR)/SoTriangleStripSet.Plo
+@AMDEP@include $(DEPDIR)/SoUnits.Plo
+@AMDEP@include $(DEPDIR)/SoUnknownNode.Plo
+@AMDEP@include $(DEPDIR)/SoVertexProperty.Plo
+@AMDEP@include $(DEPDIR)/SoVertexShape.Plo
+@AMDEP@include $(DEPDIR)/SoWWWAnchor.Plo
+@AMDEP@include $(DEPDIR)/SoWWWInline.Plo
 
 mostlyclean-depend:
 
 clean-depend:
 
 distclean-depend:
-	-rm -rf .deps
+	-rm -rf $(DEPDIR)
 
 maintainer-clean-depend:
 
-%.o: %.c
-	@echo '$(COMPILE) -c $<'; \
-	$(COMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-cp .deps/$(*F).pp .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm .deps/$(*F).pp
+@AMDEP@CXXDEPMODE = @CXXDEPMODE@
 
-%.lo: %.c
-	@echo '$(LTCOMPILE) -c $<'; \
-	$(LTCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-sed -e 's/^\([^:]*\)\.o[ 	]*:/\1.lo \1.o :/' \
-	  < .deps/$(*F).pp > .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm -f .deps/$(*F).pp
+.cpp.o:
+@AMDEP@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
+@AMDEP@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(CXXCOMPILE) -c -o $@ $<
 
-%.o: %.cpp
-	@echo '$(CXXCOMPILE) -c $<'; \
-	$(CXXCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-cp .deps/$(*F).pp .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm .deps/$(*F).pp
+.cpp.lo:
+@AMDEP@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
+@AMDEP@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
+@AMDEP@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(LTCXXCOMPILE) -c -o $@ $<
 
-%.lo: %.cpp
-	@echo '$(LTCXXCOMPILE) -c $<'; \
-	$(LTCXXCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
-	@-sed -e 's/^\([^:]*\)\.o[ 	]*:/\1.lo \1.o :/' \
-	  < .deps/$(*F).pp > .deps/$(*F).P; \
-	tr ' ' '\012' < .deps/$(*F).pp \
-	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
-	    >> .deps/$(*F).P; \
-	rm -f .deps/$(*F).pp
 info-am:
 info: info-am
 dvi-am:
@@ -473,6 +772,7 @@ distclean-generic:
 	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
 
 maintainer-clean-generic:
+	-rm -f Makefile.in
 mostlyclean-am:  mostlyclean-libLTLIBRARIES \
 		mostlyclean-noinstLTLIBRARIES mostlyclean-compile \
 		mostlyclean-libtool mostlyclean-tags mostlyclean-depend \
@@ -518,7 +818,7 @@ distdir mostlyclean-depend distclean-depend clean-depend \
 maintainer-clean-depend info-am info dvi-am dvi check check-am \
 installcheck-am installcheck install-exec-am install-exec \
 install-data-am install-data install-am install uninstall-am uninstall \
-all-redirect all-am all installdirs mostlyclean-generic \
+all-redirect all-am all install-strip installdirs mostlyclean-generic \
 distclean-generic clean-generic maintainer-clean-generic clean \
 mostlyclean distclean maintainer-clean
 

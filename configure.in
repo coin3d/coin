@@ -73,7 +73,7 @@ dnl  Turn off default maintainer make-rules -- use ./autogen.sh instead.
 AM_MAINTAINER_MODE
 
 dnl  Initialize libtool
-AM_PROG_LIBTOOL
+AC_PROG_LIBTOOL
 
 dnl  Yep, this is important in case we want to add code to make
 dnl  the API interface "Open Inventor strict", meaning the user must
@@ -235,13 +235,6 @@ dnl *******************************************************************
 dnl * Do we want to build the tools?
 dnl *******************************************************************
 
-TOOLMAKEFILES="
-	tools/Makefile
-	tools/ivcat/Makefile
-	tools/ivhierarchy/Makefile
-	tools/ivNodeKitStructure/Makefile
-"
-
 AC_ARG_WITH(tools,
   [  --with-tools            build Coin-based tools [default=yes]],
   [case "${withval}" in
@@ -252,7 +245,7 @@ AC_ARG_WITH(tools,
   [want_tools=yes])
 
 if test "x$want_tools" = "xno"; then
-  TOOLMAKEFILES=""
+  echo "FIXME: --without-tools doesn't work anymore. 20000112 mortene."
 fi
 
 AM_CONDITIONAL(BUILD_TOOLS, test "x$want_tools" = "xyes")
@@ -260,12 +253,6 @@ AM_CONDITIONAL(BUILD_TOOLS, test "x$want_tools" = "xyes")
 dnl *******************************************************************
 dnl * Do we want to build the example programs?
 dnl *******************************************************************
-
-EXAMPLEMAKEFILES="
-	examples/Makefile
-	examples/advanced/Makefile
-	examples/advanced/elements/Makefile
-"
 
 AC_ARG_WITH(examples,
   [  --with-examples         build Coin example programs [default=yes]],
@@ -277,7 +264,7 @@ AC_ARG_WITH(examples,
   [want_examples=yes])
 
 if test "x$want_examples" = "xno"; then
-  EXAMPLEMAKEFILES=""
+  echo "FIXME: --without-tools doesn't work anymore. 20000112 mortene."
 fi
 
 AM_CONDITIONAL(BUILD_EXAMPLES, test "x$want_examples" = "xyes")
@@ -314,10 +301,14 @@ AC_OUTPUT([
 	src/projectors/Makefile
 	src/sensors/Makefile
 	src/system/Makefile
-] \
-	${TOOLMAKEFILES} \
-	${EXAMPLEMAKEFILES} \
-)
+	tools/Makefile
+	tools/ivcat/Makefile
+	tools/ivhierarchy/Makefile
+	tools/ivNodeKitStructure/Makefile
+	examples/Makefile
+	examples/advanced/Makefile
+	examples/advanced/elements/Makefile
+])
 
 echo "Now, run 'make install' to build and install Coin."
 
