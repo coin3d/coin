@@ -22,5 +22,3 @@ lib-xxx-incdir = $(includedir)/Inventor/-xxx-
 
 lib-xxx-inc_HEADERS = $(ALLINSTHEADERS)
 
-
-##$ INSERT TEMPLATE Make-Install(lib-xxx-)

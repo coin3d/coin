@@ -106,13 +106,6 @@ sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 
 
 lib_LTLIBRARIES = libCoin.la
-#libCoin_la_LIBADD = \
-#	-lVRMLnodesLINKHACK -lactionsLINKHACK -lbaseLINKHACK \
-#	-lbundlesLINKHACK -lcachesLINKHACK -ldetailsLINKHACK \
-#	-ldraggersLINKHACK -lelementsLINKHACK -lenginesLINKHACK \
-#	-lerrorsLINKHACK -leventsLINKHACK -lfieldsLINKHACK -llistsLINKHACK \
-#	-lmanipsLINKHACK -lmiscLINKHACK -lnodekitsLINKHACK -lnodesLINKHACK \
-#	-lprojectorsLINKHACK -lsensorsLINKHACK
 @HACKING_DYNAMIC_MODULES_TRUE@libCoin_la_LIBADD = 
 @HACKING_DYNAMIC_MODULES_FALSE@libCoin_la_LIBADD = @HACKING_DYNAMIC_MODULES_FALSE@\
 @HACKING_DYNAMIC_MODULES_FALSE@	VRMLnodes/libVRMLnodes.la actions/libactions.la base/libbase.la \
@@ -301,6 +294,18 @@ maintainer-clean-libtool:
 
 libCoin.la: $(libCoin_la_OBJECTS) $(libCoin_la_DEPENDENCIES)
 	$(LINK) -rpath $(libdir) $(libCoin_la_LDFLAGS) $(libCoin_la_OBJECTS) $(libCoin_la_LIBADD) $(LIBS)
+
+install-libCoinincHEADERS: $(libCoininc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libCoinincdir)
+	@list='$(libCoininc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libCoinincdir)/$$f; then :; else \
+	    echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libCoinincdir)/$$f"; \
+	    $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libCoinincdir)/$$f; \
+	  fi; \
+	done
 
 uninstall-libCoinincHEADERS:
 	@$(NORMAL_UNINSTALL)
@@ -541,19 +546,6 @@ installdirs-am installdirs mostlyclean-generic distclean-generic \
 clean-generic maintainer-clean-generic clean mostlyclean distclean \
 maintainer-clean
 
-
-# Replaced the ordinary install to compare files and only install if
-# there's any changes. mortene.
-
-install-libCoinincHEADERS: $(libCoininc_HEADERS)
-	@$(NORMAL_INSTALL)
-	@$(mkinstalldirs) $(DESTDIR)$(libCoinincdir)
-	@list='$(libCoininc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libCoinincdir)/$$f; then : ; else echo " Installing $(DESTDIR)$(libCoinincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libCoinincdir)/$$f; fi; \
-	done
 
 #### Additional "native" Make rules #########################################
 

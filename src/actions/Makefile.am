@@ -62,19 +62,4 @@ libactionsincdir = $(includedir)/Inventor/actions
 
 libactionsinc_HEADERS = $(ALLINSTHEADERS)
 
-
-
-# Replaced the ordinary install to compare files and only install if
-# there's any changes. mortene.
-
-install-libactionsincHEADERS: $(libactionsinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	@$(mkinstalldirs) $(DESTDIR)$(libactionsincdir)
-	@list='$(libactionsinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libactionsincdir)/$$f; then : ; else echo " Installing $(DESTDIR)$(libactionsincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libactionsincdir)/$$f; fi; \
-	done
-
 ##$ END TEMPLATE Make-Common

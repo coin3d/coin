@@ -46,19 +46,4 @@ liberrorsincdir = $(includedir)/Inventor/errors
 
 liberrorsinc_HEADERS = $(ALLINSTHEADERS)
 
-
-
-# Replaced the ordinary install to compare files and only install if
-# there's any changes. mortene.
-
-install-liberrorsincHEADERS: $(liberrorsinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	@$(mkinstalldirs) $(DESTDIR)$(liberrorsincdir)
-	@list='$(liberrorsinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(liberrorsincdir)/$$f; then : ; else echo " Installing $(DESTDIR)$(liberrorsincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(liberrorsincdir)/$$f; fi; \
-	done
-
 ##$ END TEMPLATE Make-Common

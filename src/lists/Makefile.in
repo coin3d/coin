@@ -313,6 +313,18 @@ liblists.la: $(liblists_la_OBJECTS) $(liblists_la_DEPENDENCIES)
 liblistsLINKHACK.la: $(liblistsLINKHACK_la_OBJECTS) $(liblistsLINKHACK_la_DEPENDENCIES)
 	$(CXXLINK) -rpath $(libdir) $(liblistsLINKHACK_la_LDFLAGS) $(liblistsLINKHACK_la_OBJECTS) $(liblistsLINKHACK_la_LIBADD) $(LIBS)
 
+install-liblistsincHEADERS: $(liblistsinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(liblistsincdir)
+	@list='$(liblistsinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  if cmp -s $$d$$p $(DESTDIR)$(liblistsincdir)/$$f; then :; else \
+	    echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(liblistsincdir)/$$f"; \
+	    $(INSTALL_DATA) $$d$$p $(DESTDIR)$(liblistsincdir)/$$f; \
+	  fi; \
+	done
+
 uninstall-liblistsincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(liblistsinc_HEADERS)'; for p in $$list; do \
@@ -498,19 +510,6 @@ uninstall-am uninstall all-redirect all-am all install-strip \
 installdirs mostlyclean-generic distclean-generic clean-generic \
 maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 
-
-# Replaced the ordinary install to compare files and only install if
-# there's any changes. mortene.
-
-install-liblistsincHEADERS: $(liblistsinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	@$(mkinstalldirs) $(DESTDIR)$(liblistsincdir)
-	@list='$(liblistsinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(liblistsincdir)/$$f; then : ; else echo " Installing $(DESTDIR)$(liblistsincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(liblistsincdir)/$$f; fi; \
-	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

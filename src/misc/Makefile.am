@@ -76,19 +76,4 @@ libmiscincdir = $(includedir)/Inventor/misc
 
 libmiscinc_HEADERS = $(ALLINSTHEADERS)
 
-
-
-# Replaced the ordinary install to compare files and only install if
-# there's any changes. mortene.
-
-install-libmiscincHEADERS: $(libmiscinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	@$(mkinstalldirs) $(DESTDIR)$(libmiscincdir)
-	@list='$(libmiscinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libmiscincdir)/$$f; then : ; else echo " Installing $(DESTDIR)$(libmiscincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libmiscincdir)/$$f; fi; \
-	done
-
 ##$ END TEMPLATE Make-Common

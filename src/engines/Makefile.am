@@ -124,19 +124,4 @@ libenginesincdir = $(includedir)/Inventor/engines
 
 libenginesinc_HEADERS = $(ALLINSTHEADERS)
 
-
-
-# Replaced the ordinary install to compare files and only install if
-# there's any changes. mortene.
-
-install-libenginesincHEADERS: $(libenginesinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	@$(mkinstalldirs) $(DESTDIR)$(libenginesincdir)
-	@list='$(libenginesinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libenginesincdir)/$$f; then : ; else echo " Installing $(DESTDIR)$(libenginesincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libenginesincdir)/$$f; fi; \
-	done
-
 ##$ END TEMPLATE Make-Common

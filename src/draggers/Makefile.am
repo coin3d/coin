@@ -77,19 +77,4 @@ libdraggersincdir = $(includedir)/Inventor/draggers
 
 libdraggersinc_HEADERS = $(ALLINSTHEADERS)
 
-
-
-# Replaced the ordinary install to compare files and only install if
-# there's any changes. mortene.
-
-install-libdraggersincHEADERS: $(libdraggersinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	@$(mkinstalldirs) $(DESTDIR)$(libdraggersincdir)
-	@list='$(libdraggersinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libdraggersincdir)/$$f; then : ; else echo " Installing $(DESTDIR)$(libdraggersincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libdraggersincdir)/$$f; fi; \
-	done
-
 ##$ END TEMPLATE Make-Common

@@ -232,19 +232,4 @@ libelementsincdir = $(includedir)/Inventor/elements
 
 libelementsinc_HEADERS = $(ALLINSTHEADERS)
 
-
-
-# Replaced the ordinary install to compare files and only install if
-# there's any changes. mortene.
-
-install-libelementsincHEADERS: $(libelementsinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	@$(mkinstalldirs) $(DESTDIR)$(libelementsincdir)
-	@list='$(libelementsinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libelementsincdir)/$$f; then : ; else echo " Installing $(DESTDIR)$(libelementsincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libelementsincdir)/$$f; fi; \
-	done
-
 ##$ END TEMPLATE Make-Common

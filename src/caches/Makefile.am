@@ -47,19 +47,4 @@ libcachesincdir = $(includedir)/Inventor/caches
 
 libcachesinc_HEADERS = $(ALLINSTHEADERS)
 
-
-
-# Replaced the ordinary install to compare files and only install if
-# there's any changes. mortene.
-
-install-libcachesincHEADERS: $(libcachesinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	@$(mkinstalldirs) $(DESTDIR)$(libcachesincdir)
-	@list='$(libcachesinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libcachesincdir)/$$f; then : ; else echo " Installing $(DESTDIR)$(libcachesincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libcachesincdir)/$$f; fi; \
-	done
-
 ##$ END TEMPLATE Make-Common

@@ -245,19 +245,4 @@ libnodesincdir = $(includedir)/Inventor/nodes
 
 libnodesinc_HEADERS = $(ALLINSTHEADERS)
 
-
-
-# Replaced the ordinary install to compare files and only install if
-# there's any changes. mortene.
-
-install-libnodesincHEADERS: $(libnodesinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	@$(mkinstalldirs) $(DESTDIR)$(libnodesincdir)
-	@list='$(libnodesinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libnodesincdir)/$$f; then : ; else echo " Installing $(DESTDIR)$(libnodesincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libnodesincdir)/$$f; fi; \
-	done
-
 ##$ END TEMPLATE Make-Common

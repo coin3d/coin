@@ -295,6 +295,18 @@ libnodekits.la: $(libnodekits_la_OBJECTS) $(libnodekits_la_DEPENDENCIES)
 libnodekitsLINKHACK.la: $(libnodekitsLINKHACK_la_OBJECTS) $(libnodekitsLINKHACK_la_DEPENDENCIES)
 	$(CXXLINK) -rpath $(libdir) $(libnodekitsLINKHACK_la_LDFLAGS) $(libnodekitsLINKHACK_la_OBJECTS) $(libnodekitsLINKHACK_la_LIBADD) $(LIBS)
 
+install-libnodekitsincHEADERS: $(libnodekitsinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libnodekitsincdir)
+	@list='$(libnodekitsinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libnodekitsincdir)/$$f; then :; else \
+	    echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libnodekitsincdir)/$$f"; \
+	    $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libnodekitsincdir)/$$f; \
+	  fi; \
+	done
+
 uninstall-libnodekitsincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libnodekitsinc_HEADERS)'; for p in $$list; do \
@@ -474,19 +486,6 @@ uninstall-am uninstall all-redirect all-am all install-strip \
 installdirs mostlyclean-generic distclean-generic clean-generic \
 maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 
-
-# Replaced the ordinary install to compare files and only install if
-# there's any changes. mortene.
-
-install-libnodekitsincHEADERS: $(libnodekitsinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	@$(mkinstalldirs) $(DESTDIR)$(libnodekitsincdir)
-	@list='$(libnodekitsinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libnodekitsincdir)/$$f; then : ; else echo " Installing $(DESTDIR)$(libnodekitsincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libnodekitsincdir)/$$f; fi; \
-	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

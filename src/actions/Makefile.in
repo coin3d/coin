@@ -303,6 +303,18 @@ libactions.la: $(libactions_la_OBJECTS) $(libactions_la_DEPENDENCIES)
 libactionsLINKHACK.la: $(libactionsLINKHACK_la_OBJECTS) $(libactionsLINKHACK_la_DEPENDENCIES)
 	$(CXXLINK) -rpath $(libdir) $(libactionsLINKHACK_la_LDFLAGS) $(libactionsLINKHACK_la_OBJECTS) $(libactionsLINKHACK_la_LIBADD) $(LIBS)
 
+install-libactionsincHEADERS: $(libactionsinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libactionsincdir)
+	@list='$(libactionsinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libactionsincdir)/$$f; then :; else \
+	    echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libactionsincdir)/$$f"; \
+	    $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libactionsincdir)/$$f; \
+	  fi; \
+	done
+
 uninstall-libactionsincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libactionsinc_HEADERS)'; for p in $$list; do \
@@ -482,19 +494,6 @@ uninstall-am uninstall all-redirect all-am all install-strip \
 installdirs mostlyclean-generic distclean-generic clean-generic \
 maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 
-
-# Replaced the ordinary install to compare files and only install if
-# there's any changes. mortene.
-
-install-libactionsincHEADERS: $(libactionsinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	@$(mkinstalldirs) $(DESTDIR)$(libactionsincdir)
-	@list='$(libactionsinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libactionsincdir)/$$f; then : ; else echo " Installing $(DESTDIR)$(libactionsincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libactionsincdir)/$$f; fi; \
-	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

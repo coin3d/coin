@@ -265,6 +265,18 @@ liberrors.la: $(liberrors_la_OBJECTS) $(liberrors_la_DEPENDENCIES)
 liberrorsLINKHACK.la: $(liberrorsLINKHACK_la_OBJECTS) $(liberrorsLINKHACK_la_DEPENDENCIES)
 	$(CXXLINK) -rpath $(libdir) $(liberrorsLINKHACK_la_LDFLAGS) $(liberrorsLINKHACK_la_OBJECTS) $(liberrorsLINKHACK_la_LIBADD) $(LIBS)
 
+install-liberrorsincHEADERS: $(liberrorsinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(liberrorsincdir)
+	@list='$(liberrorsinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  if cmp -s $$d$$p $(DESTDIR)$(liberrorsincdir)/$$f; then :; else \
+	    echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(liberrorsincdir)/$$f"; \
+	    $(INSTALL_DATA) $$d$$p $(DESTDIR)$(liberrorsincdir)/$$f; \
+	  fi; \
+	done
+
 uninstall-liberrorsincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(liberrorsinc_HEADERS)'; for p in $$list; do \
@@ -435,19 +447,6 @@ uninstall-am uninstall all-redirect all-am all install-strip \
 installdirs mostlyclean-generic distclean-generic clean-generic \
 maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 
-
-# Replaced the ordinary install to compare files and only install if
-# there's any changes. mortene.
-
-install-liberrorsincHEADERS: $(liberrorsinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	@$(mkinstalldirs) $(DESTDIR)$(liberrorsincdir)
-	@list='$(liberrorsinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(liberrorsincdir)/$$f; then : ; else echo " Installing $(DESTDIR)$(liberrorsincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(liberrorsincdir)/$$f; fi; \
-	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

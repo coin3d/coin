@@ -71,19 +71,4 @@ liblistsincdir = $(includedir)/Inventor/lists
 
 liblistsinc_HEADERS = $(ALLINSTHEADERS)
 
-
-
-# Replaced the ordinary install to compare files and only install if
-# there's any changes. mortene.
-
-install-liblistsincHEADERS: $(liblistsinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	@$(mkinstalldirs) $(DESTDIR)$(liblistsincdir)
-	@list='$(liblistsinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(liblistsincdir)/$$f; then : ; else echo " Installing $(DESTDIR)$(liblistsincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(liblistsincdir)/$$f; fi; \
-	done
-
 ##$ END TEMPLATE Make-Common

@@ -4,13 +4,6 @@ lib_LTLIBRARIES = libCoin.la
 
 if HACKING_DYNAMIC_MODULES
 libCoin_la_LIBADD = 
-#libCoin_la_LIBADD = \
-#	-lVRMLnodesLINKHACK -lactionsLINKHACK -lbaseLINKHACK \
-#	-lbundlesLINKHACK -lcachesLINKHACK -ldetailsLINKHACK \
-#	-ldraggersLINKHACK -lelementsLINKHACK -lenginesLINKHACK \
-#	-lerrorsLINKHACK -leventsLINKHACK -lfieldsLINKHACK -llistsLINKHACK \
-#	-lmanipsLINKHACK -lmiscLINKHACK -lnodekitsLINKHACK -lnodesLINKHACK \
-#	-lprojectorsLINKHACK -lsensorsLINKHACK
 else
 libCoin_la_LIBADD = \
 	VRMLnodes/libVRMLnodes.la actions/libactions.la base/libbase.la \
@@ -87,25 +80,6 @@ libCoininc_HEADERS = \
 	$(top_srcdir)/include/Inventor/SbViewVolume.h \
 	$(top_srcdir)/include/Inventor/SbViewportRegion.h \
 	$(top_srcdir)/include/Inventor/SbXfBox3f.h
-
-
-##$ BEGIN TEMPLATE Make-Install(libCoin)
-
-# Replaced the ordinary install to compare files and only install if
-# there's any changes. mortene.
-
-install-libCoinincHEADERS: $(libCoininc_HEADERS)
-	@$(NORMAL_INSTALL)
-	@$(mkinstalldirs) $(DESTDIR)$(libCoinincdir)
-	@list='$(libCoininc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libCoinincdir)/$$f; then : ; else echo " Installing $(DESTDIR)$(libCoinincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libCoinincdir)/$$f; fi; \
-	done
-
-##$ END TEMPLATE Make-Install
-
 
 
 #### Additional "native" Make rules #########################################
