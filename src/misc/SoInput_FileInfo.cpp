@@ -341,15 +341,29 @@ SoInput_Reader *
 SoInput_FileInfo::getReader(FILE * fp, const SbString & fullname)
 {
   SoInput_Reader * reader = NULL;
+
+  unsigned char header[4];
+  long offset = ftell(fp);
+  int siz = fread(header, 1, 4, fp);
+  (void) fseek(fp, offset, SEEK_SET);
+
 #ifdef HAVE_BZIP2
-  int bzerror = BZ_OK;
-  BZFILE * bzfp = BZ2_bzReadOpen(&bzerror,  fp, 0, 0, NULL, 0);
-  if ((bzerror == BZ_OK) && (bzfp != NULL)) {
-    reader = new SoInput_BZFileReader(fullname.getString(), (void*) bzfp);
+  if (header[0] == 'B' && header[1] == 'Z') {
+    int bzerror = BZ_OK;
+    BZFILE * bzfp = BZ2_bzReadOpen(&bzerror,  fp, 0, 0, NULL, 0);
+    if ((bzerror == BZ_OK) && (bzfp != NULL)) {
+      fprintf(stderr,"bzreader\n");
+      reader = new SoInput_BZFileReader(fullname.getString(), (void*) bzfp);
+    }
+    else {
+      fprintf(stderr,"failed to open: %s, %d\n", 
+              fullname.getString(),
+              (int) ftell(fp));
+    }
   }
 #endif // HAVE_BZIP2
 #ifdef HAVE_ZLIB
-  if (reader == NULL) {
+  if ((reader == NULL) && (header[0] == 0x1f) && (header[1] == 0x8b)) {
     gzFile gzfp = gzopen(fullname.getString(), "rb");
     if (gzfp) {
       fclose(fp); // close original file handle
