@@ -24,18 +24,30 @@
  *
 \**************************************************************************/
 
-#include <Inventor/lists/SbList.h>
+#include <Inventor/lists/SbPList.h>
 
 class SbString;
 
-class COIN_DLL_API SbStringList : public SbList<SbString *> {
+class COIN_DLL_API SbStringList : public SbPList {
 public:
-  SbStringList(void) : SbList<SbString *>() { }
-  SbStringList(const int sizehint) : SbList<SbString *>(sizehint) { }
-  SbStringList(const SbStringList & l) : SbList<SbString *>(l) { }
+  SbStringList(void) { }
+  SbStringList(const int sizehint) : SbPList(sizehint) { }
 
-  SbString * get(const int index) const { return (*this)[index]; }
-  void set(const int index, SbString * const item) { (*this)[index] = item; }
+  void append(SbString * string) {
+    SbPList::append((void*)string);
+  }
+  int find(SbString * string) const {
+    return SbPList::find((void*) string);
+  }
+  void insert(SbString * string, int insertbefore) {
+    SbPList::insert((void*)string, insertbefore);
+  }
+  SbString *& operator[](const int idx) const {
+    return (SbString*&) ((*(const SbPList*)this)[idx]);
+  }
+  const SbString ** getArrayPtr(void) const {
+    return (const SbString**) SbPList::getArrayPtr();
+  }
 };
 
 #endif // !COIN_SBSTRINGLIST_H

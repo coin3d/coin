@@ -58,7 +58,7 @@ SoCallbackList::~SoCallbackList(void)
 void
 SoCallbackList::addCallback(SoCallbackListCB * f, void * userdata)
 {
-  this->funclist.append(f);
+  this->funclist.append((void*)f);
   this->datalist.append(userdata);
 }
 
@@ -120,11 +120,11 @@ SoCallbackList::getNumCallbacks(void) const
 void
 SoCallbackList::invokeCallbacks(void * callbackdata)
 {
-  SbList<SoCallbackListCB *> flcopy(this->funclist);
+  SbPList flcopy(this->funclist);
   SbPList dlcopy(this->datalist);
 
   for (int idx=0; idx < flcopy.getLength(); idx++) {
-    SoCallbackListCB * func = flcopy.operator[](idx);
+    SoCallbackListCB * func = (SoCallbackListCB*) flcopy[idx];
     func(dlcopy.operator[](idx), callbackdata);
   }
 }

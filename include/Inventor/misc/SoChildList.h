@@ -25,6 +25,7 @@
 \**************************************************************************/
 
 #include <Inventor/lists/SoNodeList.h>
+#include <Inventor/lists/SbList.h>
 
 class SoPath;
 class SoAction;

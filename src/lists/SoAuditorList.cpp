@@ -34,7 +34,6 @@
 #include <Inventor/fields/SoField.h>
 #include <Inventor/fields/SoFieldContainer.h>
 #include <Inventor/sensors/SoDataSensor.h>
-
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -168,7 +167,7 @@ SoAuditorList::notify(SoNotList * l)
     // FIXME: should perhaps use a more general mechanism to detect when
     // to ignore notification? (In SoFieldContainer::notify() -- based
     // on SoNotList::getTimeStamp()?) 20000304 mortene.
-    SbList <void *> notified(num);
+    SbPList notified(num);
     
     for (int i = 0; i < num; i++) {
       void * auditor = this->getObject(i);

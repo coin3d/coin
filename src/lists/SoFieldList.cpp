@@ -21,6 +21,8 @@
  *
 \**************************************************************************/
 
+#include <Inventor/lists/SoFieldList.h>
+
 /*!
   \class SoFieldList SoFieldList.h Inventor/lists/SoFieldList.h
   \brief The SoFieldList class is a container for pointers to SoField objects.
@@ -28,11 +30,6 @@
 
   \sa SbList
 */
-
-// SoFieldList was moved from being a subclass of SbPList to being a
-// subclass of SbList. This removed the need to do lots of ugly casts
-// in overridden methods, with the subsequent removal of most of the
-// code in this file. 20000228 mortene.
 
 /*!
   \fn SoFieldList::SoFieldList(void)
@@ -61,7 +58,30 @@
 /*!
   \fn void SoFieldList::set(const int index, SoField * item)
 
-  This method sets the element at \a index to \a item. Does the same
-  thing as SbList::operator[](). This method is only present for
-  compatibility with the original Inventor API.
+  Overridden from parent to accept an SoField pointer argument.
 */
+
+/*!
+  \fn void SoFieldList::append(SoField * field)
+
+  Overridden from parent to accept an SoField pointer argument.
+*/
+
+/*!
+  \fn void SoFieldList::insert(SoField * field, const int insertbefore)
+
+  Overridden from parent to accept an SoField pointer argument.
+*/
+  
+/*!
+  \fn SoField * SoFieldList::operator [](const int idx) const
+
+  Overridden from parent to return an SoField pointer.
+*/
+
+/*!
+  \fn SoField * SoFieldList::get(const int idx) const
+
+  Overridden from parent to return an SoField pointer.
+*/
+

@@ -21,6 +21,8 @@
  *
 \**************************************************************************/
 
+#include <Inventor/lists/SbVec3fList.h>
+
 /*!
   \class SbVec3fList SbVec3fList.h Inventor/lists/SbVec3fList.h
   \brief The SbVec3fList class is a container for arrays of SbVec3f pointers.
@@ -31,8 +33,8 @@
   values.
 
   Note also that all calls to append() and insert() will cause the
-  list to allocate a new SbVec3f object. These objects are not freed
-  automatically, but are the responsibility of the user.
+  list to allocate a new SbVec3f object. These objects are freed
+  when the list is destructed.
 
   \sa SbList
 */
@@ -46,38 +48,15 @@
 */
 
 /*!
-  \fn SbVec3fList::SbVec3fList(const int sizehint)
-
-  This constructor initializes the internal allocated size for the
-  list to \a sizehint. Note that the list will still initially contain
-  zero items.
-
-  \sa SbList::SbList(const int sizehint)
+  Destructor.
 */
 
-/*!
-  \fn SbVec3fList::SbVec3fList(const SbVec3fList & l)
-
-  Copy constructor.
-
-  \sa SbList::SbList(const SbList<Type> & l)
-*/
-
-/*!
-  \fn SbVec3f * SbVec3fList::get(const int index) const
-
-  This method returns the element at \a index. Does the same thing as
-  SbList::operator[](). This method is only present for compatibility
-  with the original Inventor API.
-*/
-
-/*!
-  \fn void SbVec3fList::set(const int index, SbVec3f * const item)
-
-  This method sets the element at \a index to \a item. Does the same
-  thing as SbList::operator[](). This method is only present for
-  compatibility with the original Inventor API.
-*/
+SbVec3fList::~SbVec3fList()
+{
+  for (int i = 0; i < this->getLength(); i++) {
+    delete (*this)[i];
+  }
+}
 
 /*!
   \fn void SbVec3fList::append(const SbVec3f * item)
@@ -85,7 +64,7 @@
   Overridden from parent to allocate a new SbVec3f instance when
   called.
 
-  \sa SbList::append()
+  \sa SbPList::append()
  */
 
 /*!
@@ -94,5 +73,15 @@
   Overridden from parent to allocate a new SbVec3f instance when
   called.
 
-  \sa SbList::insert()
+  \sa SbPList::insert()
  */
+
+/*!
+  \fn SbVec3f * SbVec3fList::operator[](const int idx) const
+
+  Overridden from parent to return an SbVec3f.
+*/
+
+
+
+

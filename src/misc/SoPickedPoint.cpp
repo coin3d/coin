@@ -120,10 +120,8 @@ SoPickedPoint::~SoPickedPoint()
   assert(this->path);
   this->path->unref();
 
-  int n = this->detailList.getLength();
-  for (int i = 0; i < n; i++) {
-    delete this->detailList[i];
-  }
+  // SoDetailList will delete all SoDetail instances, so we don't have
+  // to do that here
 }
 
 /*!
@@ -343,7 +341,7 @@ SoPickedPoint::setDetail(SoDetail *detail, SoNode *node)
   int idx = this->path->findNode(node);
   if (idx >= 0) {
     delete this->detailList[idx];
-    this->detailList[idx] = detail;
+    this->detailList.set(idx, detail);
   }
 }
 

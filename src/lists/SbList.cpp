@@ -161,7 +161,7 @@
   \fn void SbList<Type>::remove(const int index)
 
   Remove the item at \a index, moving all subsequent items downwards
-  on place in the list.
+  one place in the list.
 */
 
 /*!

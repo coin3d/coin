@@ -21,6 +21,8 @@
  *
 \**************************************************************************/
 
+#include <Inventor/lists/SoTypeList.h>
+
 /*!
   \class SoTypeList SoTypeList.h Inventor/lists/SoTypeList.h
   \brief The SoTypeList class is a container class for arrays of SoType objects.
@@ -28,11 +30,6 @@
 
   \sa SbList
 */
-
-// SoTypeList was moved from being a subclass of SbPList to being a
-// subclass of SbList. This removed the need to do lots of ugly casts
-// in overridden methods, with the subsequent removal of all code in
-// this file. 19991025 mortene.
 
 /*!
   \fn SoTypeList::SoTypeList(void)
@@ -59,9 +56,49 @@
 */
 
 /*!
-  \fn void SoTypeList::set(const int index, const SoType item)
-
-  This method sets the element at \a index to \a item. Does the same
-  thing as SbList::operator[](). This method is only present for
-  compatibility with the original Inventor API.
+  Overridden from parent to accept an SoType argument.
 */
+void 
+SoTypeList::append(const SoType type)
+{
+  SbPList::append((void*) type.getKey());
+}
+
+/*!
+  Overridden from parent to accept an SoType argument.
+*/
+int 
+SoTypeList::find(const SoType type) const
+{
+  return SbPList::find((void*) type.getKey());
+}
+
+/*!
+  Overridden from parent to accept an SoType argument.
+*/
+void 
+SoTypeList::insert(const SoType type, const int insertbefore)
+{
+  return SbPList::insert((void*) type.getKey(), insertbefore);
+}
+
+/*!
+  Overridden from parent to return an SoType instance..
+*/
+SoType 
+SoTypeList::operator[](const int idx) const
+{
+  return SoType::fromKey((int16_t) SbPList::operator[](idx)); 
+}
+
+/*!
+  This method sets the element at \a index to \a item. Overridden
+  to accept an SoType argument.
+*/
+void 
+SoTypeList::set(const int index, const SoType item)
+{
+  SbPList::set(index, (void*) item.getKey());
+}
+
+

@@ -24,17 +24,28 @@
  *
 \**************************************************************************/
 
-#include <Inventor/lists/SbList.h>
+#include <Inventor/lists/SbPList.h>
 
 class SoEngineOutput;
 
-class COIN_DLL_API SoEngineOutputList : public SbList<SoEngineOutput *> {
+class COIN_DLL_API SoEngineOutputList : public SbPList {
 public:
-  SoEngineOutputList(void) : SbList<SoEngineOutput *>() { }
-  SoEngineOutputList(const int sizehint) : SbList<SoEngineOutput *>(sizehint) { }
-  SoEngineOutputList(const SoEngineOutputList & l) : SbList<SoEngineOutput *>(l) { }
-
-  void set(const int index, SoEngineOutput * item) { (*this)[index] = item; }
+  SoEngineOutputList(void) : SbPList() { }
+  SoEngineOutputList(const int sizehint) : SbPList(sizehint) { }
+  SoEngineOutputList(const SoEngineOutputList & l) : SbPList(l) { }
+  
+  void append(SoEngineOutput * output) {
+    SbPList::append((void *) output);
+  }
+  void insert(SoEngineOutput * output, const int insertbefore) { 
+    SbPList::insert((void *) output, insertbefore); 
+  }
+  SoEngineOutput * operator [](const int idx) const {
+    return (SoEngineOutput*) SbPList::operator[](idx);
+  }
+  void set(const int idx, SoEngineOutput * item) {
+    SbPList::operator[](idx) = (void*) item;
+  }
 };
 
 #endif // !COIN_SOENGINEOUTPUTLIST_H

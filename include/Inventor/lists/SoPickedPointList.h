@@ -24,17 +24,30 @@
  *
 \**************************************************************************/
 
-#include <Inventor/lists/SbList.h>
+#include <Inventor/lists/SbPList.h>
 
 class SoPickedPoint;
 
-class COIN_DLL_API SoPickedPointList : public SbList<SoPickedPoint *> {
+class COIN_DLL_API SoPickedPointList : public SbPList {
 public:
-  SoPickedPointList(void) : SbList<SoPickedPoint *>() { }
-  SoPickedPointList(const int sizehint) : SbList<SoPickedPoint *>(sizehint) { }
-  SoPickedPointList(const SoPickedPointList & l) : SbList<SoPickedPoint *>(l) { }
+  SoPickedPointList(void) : SbPList() { }
+  SoPickedPointList(const int sizehint) : SbPList(sizehint) { }
+  SoPickedPointList(const SoPickedPointList & l);
+  ~SoPickedPointList() { this->truncate(0); }
+  
+  void append(SoPickedPoint * pp) { 
+    SbPList::append((void *) pp); 
+  }
+  void insert(SoPickedPoint * pp, const int insertbefore) { 
+    SbPList::insert((void *) pp, insertbefore); 
+  }
+  SoPickedPoint * operator[](const int idx) const {
+    return (SoPickedPoint*) SbPList::operator[](idx);
+  } 
 
-  void set(const int index, SoPickedPoint * item) { (*this)[index] = item; }
+  void truncate(const int start, const int fit = 0);
+  void set(const int idx, SoPickedPoint * pp);
+
 };
 
 #endif // !COIN_SOPICKEDPOINTLIST_H

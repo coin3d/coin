@@ -24,17 +24,33 @@
  *
 \**************************************************************************/
 
-#include <Inventor/lists/SbList.h>
+#include <Inventor/lists/SbPList.h>
 
 class SoDetail;
 
-class COIN_DLL_API SoDetailList : public SbList<SoDetail *> {
+class COIN_DLL_API SoDetailList : public SbPList {
 public:
-  SoDetailList(void) : SbList<SoDetail *>() { }
-  SoDetailList(const int sizehint) : SbList<SoDetail *>(sizehint) { }
-  SoDetailList(const SoDetailList & l) : SbList<SoDetail *>(l) { }
+  SoDetailList(void) : SbPList() { }
+  SoDetailList(const int sizehint) : SbPList (sizehint) { }
+  SoDetailList(const SoDetailList & l);
+  ~SoDetailList();
 
-  void set(const int index, SoDetail * item) { (*this)[index] = item; }
+  void append(SoDetail * detail) {
+    SbPList::append((void*) detail);
+  }
+  void insert(SoDetail * detail, const int insertbefore) {
+    SbPList::insert((void*) detail, insertbefore);
+  }
+  void truncate(const int length, const int fit = 0); 
+  void copy(const SoDetailList & l);
+  SoDetailList & operator=(const SoDetailList & l) {
+    this->copy(l);
+    return *this;
+  }
+  SoDetail * operator[](const int idx) const {
+    return (SoDetail*) ((*(const SbPList*)this)[idx]);
+  }
+  void set(const int index, SoDetail * item);
 };
 
 #endif // !COIN_SODETAILLIST_H

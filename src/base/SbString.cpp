@@ -38,6 +38,7 @@
 */
 
 #include <Inventor/SbString.h>
+#include <Inventor/lists/SbList.h>
 
 // FIXME: translate the find() and findAll() methods to C (will first
 // need a growable array in C to handle the second argument to
@@ -45,7 +46,7 @@
 
 // Helper function for find() and findAll().
 static void
-compute_prefix_function(SbIntList & pi, const SbString & str)
+compute_prefix_function(SbList <int> & pi, const SbString & str)
 {
   int len = str.getLength();
   pi.append(0);
@@ -53,7 +54,7 @@ compute_prefix_function(SbIntList & pi, const SbString & str)
 
   for (int q = 1; q < len; q++){
     while(k > 0 && (str.operator[](k) != str.operator[](q)))
-      k = pi.get(k);
+      k = pi[k];
     if (str.operator[](k) == str.operator[](q))
       k++;
     pi.append(k);
@@ -79,7 +80,7 @@ SbString::find(const SbString & str) const
   if (!lenthis) return -1;
   if (lenstr > lenthis) return -1;
 
-  SbIntList pi;
+  SbList<int> pi;
   compute_prefix_function(pi, str);
   int q = 0;
 
@@ -118,7 +119,7 @@ SbString::findAll(const SbString & str, SbIntList & found) const
   if (!lenthis) return FALSE;
   if (lenstr > lenthis) return FALSE;
 
-  SbIntList pi;
+  SbList<int> pi;
   compute_prefix_function(pi, str);
   int q = 0;
 

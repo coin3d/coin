@@ -24,16 +24,25 @@
  *
 \**************************************************************************/
 
-#include <Inventor/lists/SbList.h>
+#include <Inventor/lists/SbPList.h>
 
-class  COIN_DLL_API SbIntList : public SbList<int> {
+class  COIN_DLL_API SbIntList : public SbPList {
 public:
-  SbIntList(void) : SbList<int>() { }
-  SbIntList(const int sizehint) : SbList<int>(sizehint) { }
-  SbIntList(const SbIntList & l) : SbList<int>(l) { }
-
-  int get(const int index) const { return (*this)[index]; }
-  void set(const int index, const int item) { (*this)[index] = item; }
+  SbIntList(void) : SbPList () { }
+  SbIntList(const int sizehint) : SbPList(sizehint) { }
+  
+  void append(const int item) {
+    ((SbPList*)this)->append((void*) item);
+  }
+  int find(const int item) {
+    return ((SbPList*)this)->find((void*)item);
+  }
+  void insert(const int item, const int addbefore) {
+    ((SbPList*)this)->insert((void*)item, addbefore);
+  }
+  int & operator[](const int idx) const {
+    return (int&) ((*(const SbPList*)this)[idx]);
+  }
 };
 
 #endif // !COIN_SBINTLIST_H

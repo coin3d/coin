@@ -74,6 +74,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SoTypeList.h>
 #include <Inventor/misc/SoGL.h>
+#include <Inventor/lists/SbList.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

@@ -24,16 +24,20 @@
  *
 \**************************************************************************/
 
-#include <Inventor/lists/SbList.h>
+#include <Inventor/lists/SbPList.h>
 #include <Inventor/SoType.h>
 
-class COIN_DLL_API SoTypeList : public SbList<SoType> {
+class COIN_DLL_API SoTypeList : public SbPList {
 public:
-  SoTypeList(void) : SbList<SoType>() { }
-  SoTypeList(const int sizehint) : SbList<SoType>(sizehint) { }
-  SoTypeList(const SoTypeList & l) : SbList<SoType>(l) { }
+  SoTypeList(void) : SbPList() { }
+  SoTypeList(const int sizehint) : SbPList(sizehint) { }
+  SoTypeList(const SoTypeList & l) : SbPList(l) { }
 
-  void set(const int index, const SoType item) { (*this)[index] = item; }
+  void append(const SoType type);
+  int find(const SoType type) const;
+  void insert(const SoType type, const int insertbefore);
+  SoType operator[](const int idx) const;
+  void set(const int index, const SoType item);
 };
 
 #endif // !COIN_SOTYPELIST_H

@@ -24,17 +24,32 @@
  *
 \**************************************************************************/
 
-#include <Inventor/lists/SbList.h>
+#include <Inventor/lists/SbPList.h>
 
 class SoField;
 
-class COIN_DLL_API SoFieldList : public SbList<SoField *> {
+class COIN_DLL_API SoFieldList : public SbPList {
 public:
-  SoFieldList(void) : SbList<SoField *>() { }
-  SoFieldList(const int sizehint) : SbList<SoField *>(sizehint) { }
-  SoFieldList(const SoFieldList & l) : SbList<SoField *>(l) { }
+  SoFieldList(void) : SbPList() { }
+  SoFieldList(const int sizehint) : SbPList(sizehint) { }
+  SoFieldList(const SoFieldList & l) : SbPList(l) { }
+  
+  void append(SoField * field) { 
+    SbPList::append((void *) field); 
+  }
+  void insert(SoField * field, const int insertbefore) {
+    SbPList::insert((void *) field, insertbefore); 
+  }
 
-  void set(const int index, SoField * item) { (*this)[index] = item; }
+  SoField * operator [](const int idx) const {
+    return (SoField*) SbPList::operator[](idx);
+  }
+  void set(const int idx, SoField * field) {
+    SbPList::operator[](idx) = (void*) field;
+  }
+  SoField * get(const int idx) const {
+    return (SoField*) SbPList::get(idx);
+  }
 };
 
 #endif // !COIN_SOFIELDLIST_H

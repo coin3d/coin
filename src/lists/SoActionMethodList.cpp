@@ -136,7 +136,7 @@ SoActionMethodList::setUp(void)
       SoType type = THIS->addedtypes[i];
       const SoActionMethod method = THIS->addedmethods[i];
       (*this)[(int)type.getData()] = method;
-      
+
       // also set this method for all nodes that inherits this node
       derivedtypes.truncate(0);
       int numderived = SoType::getAllDerivedFrom(THIS->addedtypes[i], derivedtypes);
@@ -145,18 +145,18 @@ SoActionMethodList::setUp(void)
         (*this)[idx] = method;
       }
     }
-    
+
     // fill in nullAction for all nodetypes with method == NULL
     derivedtypes.truncate(0);
     (void) SoType::getAllDerivedFrom(SoNode::getClassTypeId(), derivedtypes);
-    
+
     for (i = 0; i < this->getLength(); i++) {
       if ((*this)[i] == NULL) (*this)[i] = SoAction::nullAction;
     }
     for (i = this->getLength(); i < derivedtypes.getLength(); i++) {
       this->append((void*) SoAction::nullAction);
     }
-    
+
     // fill in empty slots with parent method
     if (THIS->parent) {
       THIS->parent->setUp();

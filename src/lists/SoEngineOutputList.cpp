@@ -21,6 +21,8 @@
  *
 \**************************************************************************/
 
+#include <Inventor/lists/SoEngineOutputList.h>
+
 /*!
   \class SoEngineOutputList SoEngineOutputList.h Inventor/lists/SoEngineOutputList.h
   \brief The SoEngineOutputList class is a container for SoEngineOutput objects.
@@ -28,11 +30,6 @@
 
   \sa SbList
 */
-
-// SoEngineOutputList was moved from being a subclass of SbPList to
-// being a subclass of SbList. This removed the need to do lots of
-// ugly casts in overridden methods, with the subsequent removal of
-// most of the code in this file. 20000228 mortene.
 
 /*!
   \fn SoEngineOutputList::SoEngineOutputList(void)
@@ -46,22 +43,19 @@
   This constructor initializes the internal allocated size for the
   list to \a sizehint. Note that the list will still initially contain
   zero items.
-
-  \sa SbList::SbList(const int)
 */
 
 /*!
   \fn SoEngineOutputList::SoEngineOutputList(const SoEngineOutputList & l)
 
   Copy constructor.
-
-  \sa SbList::SbList(const SbList<Type> & l)
 */
+
+// void append(SoEngineOutput * output);
+// void insert(SoEngineOutput * output, const int insertbefore);
+// SoEngineOutput * operator [](const int idx) const
+
 
 /*!
   \fn void SoEngineOutputList::set(const int index, SoEngineOutput * item)
-
-  This method sets the element at \a index to \a item. Does the same
-  thing as SbList::operator[](). This method is only present for
-  compatibility with the original Inventor API.
 */

@@ -47,25 +47,27 @@
 */
 
 /*!
-  \fn SbIntList::SbIntList(const SbIntList & l)
+  \fn void SbIntList::append(const int item)
 
-  Copy constructor.
-
-  \sa SbList::SbList(const SbList<Type> & l)
+  Overridden from parent to accept an integer argument.
 */
 
 /*!
-  \fn int SbIntList::get(const int index) const
+  \fn int SbIntList::find(const int item)
 
-  This method returns the element at \a index. Does the same thing as
-  SbList::operator[](). This method is only present for compatibility
-  with the original Inventor API.
+  Overridden from parent to accept an integer argument.
 */
 
 /*!
-  \fn void SbIntList::set(const int index, const int item)
+  \fn void SbIntList::insert(const int item, const int addbefore)
 
-  This method sets the element at \a index to \a item. Does the same
-  thing as SbList::operator[](). This method is only present for
-  compatibility with the original Inventor API.
+  Overridden from parent to accept an integer argument.
 */
+
+/*!
+  \fn int & SbIntList::operator[](const int idx) const
+
+  Overridden from parent to return an integer.
+*/
+
+

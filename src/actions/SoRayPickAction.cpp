@@ -922,7 +922,6 @@ SoRayPickAction::addIntersection(const SbVec3f & objectspacepoint)
     // got to test if new candidate is closer than old one
     if (dist >= THIS->ppdistance[0]) return NULL; // farther
     // remove old point
-    delete THIS->pickedpointlist[0];
     THIS->pickedpointlist.truncate(0);
     THIS->ppdistance.truncate(0);
   }
@@ -976,12 +975,7 @@ SoRayPickActionP::isBetweenPlanesWS(const SbVec3f & intersection,
 void
 SoRayPickActionP::cleanupPickedPoints(void)
 {
-  int n = this->pickedpointlist.getLength();
-
-  for (int i = 0; i < n; i++) {
-    delete this->pickedpointlist[i];
-  }
-  this->pickedpointlist.truncate(0);
+  this->pickedpointlist.truncate(0); // this will delete all SoPickedPoint instances in the list
   this->ppdistance.truncate(0);
   this->clearFlag(PPLIST_IS_SORTED);
 }

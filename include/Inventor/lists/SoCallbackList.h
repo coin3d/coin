@@ -46,7 +46,7 @@ public:
   void invokeCallbacks(void * callbackdata);
 
 private:
-  SbList<SoCallbackListCB *> funclist;
+  SbPList funclist;
   SbPList datalist;
 };
 

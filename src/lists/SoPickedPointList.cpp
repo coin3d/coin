@@ -21,18 +21,22 @@
  *
 \**************************************************************************/
 
+#include <Inventor/lists/SoPickedPointList.h>
+#include <Inventor/SoPickedPoint.h>
+
 /*!
   \class SoPickedPointList SoPickedPointList.h Inventor/lists/SoPickedPointList.h
   \brief The SoPickedPointList class is a container for pointers to SoPickedPoint objects.
   \ingroup general
 
-  \sa SbList
-*/
+  This list class will delete the picked points when
+  destructed/truncated, or when a picked point in the list is replaced
+  by another picked point The caller is responsible for allocating the
+  picked points passed to the list, but should not deallocate them since
+  this will be handled by the list.
 
-// SoPickedPointList was moved from being a subclass of SbPList to
-// being a subclass of SbList. This removed the need to do lots of
-// ugly casts in overridden methods, with the subsequent removal of
-// all code in this file. 20000228 mortene.
+  \sa SbPList
+*/
 
 /*!
   \fn SoPickedPointList::SoPickedPointList(void)
@@ -53,15 +57,40 @@
 /*!
   \fn SoPickedPointList::SoPickedPointList(const SoPickedPointList & l)
 
-  Copy constructor.
+  Copy constructor. Will copy picked points, not just pointers.
 
   \sa SbList::SbList(const SbList<Type> & l)
 */
+SoPickedPointList::SoPickedPointList(const SoPickedPointList & l)
+  : SbPList(l.getLength())
+  
+{
+  for (int i = 0; i < l.getLength(); i++) {
+    this->append(l[i]->copy());
+  }
+}
 
 /*!
-  \fn void SoPickedPointList::set(const int index, SoPickedPoint * item)
-
-  This method sets the element at \a index to \a item. Does the same
-  thing as SbList::operator[](). This method is only present for
-  compatibility with the original Inventor API.
+  Overridden to delete truncated items.
 */
+void 
+SoPickedPointList::truncate(const int start, const int fit) 
+{
+  int oldlen = this->getLength();
+  
+  for (int i = start; i < oldlen; i++) {
+    delete (*this)[i];
+  }
+  SbPList::truncate(start, fit);
+}
+
+/*!
+  Overridden to destruct the replaced item.
+*/
+void 
+SoPickedPointList::set(const int idx, SoPickedPoint * pp)
+{
+  if (idx < this->getLength()) delete (*this)[idx];
+  SbPList::operator[](idx) = (void*) pp;
+}
+

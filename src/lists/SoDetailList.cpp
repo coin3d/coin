@@ -21,18 +21,22 @@
  *
 \**************************************************************************/
 
+#include <Inventor/lists/SoDetailList.h>
+#include <Inventor/details/SoDetail.h>
+
 /*!
   \class SoDetailList SoDetailList.h Inventor/lists/SoDetailList.h
   \brief The SoDetailList class is a container for pointers to SoDetail objects.
   \ingroup details
 
-  \sa SbList
+  This list class will delete the details when destructed/truncated,
+  or when a detail in the list is replaced by another detail. The
+  caller is responsible for allocating the details passed to the list,
+  but should not deallocate them since this will be handled by the
+  list.
+  
+  \sa SbPList
 */
-
-// SoDetailList was moved from being a subclass of SbPList to being a
-// subclass of SbList. This removed the need to do lots of ugly casts
-// in overridden methods, with the subsequent removal of all code in
-// this file. 20000228 mortene.
 
 /*!
   \fn SoDetailList::SoDetailList(void)
@@ -51,17 +55,55 @@
 */
 
 /*!
-  \fn SoDetailList::SoDetailList(const SoDetailList & l)
-
   Copy constructor.
-
-  \sa SbList::SbList(const SbList<Type> & l)
 */
+SoDetailList::SoDetailList(const SoDetailList & l)
+  : SbPList(l.getLength())
+{
+  this->copy(l);
+}
 
 /*!
-  \fn void SoDetailList::set(const int index, SoDetail * item)
-
-  This method sets the element at \a index to \a item. Does the same
-  thing as SbList::operator[](). This method is only present for
-  compatibility with the original Inventor API.
+  Destructor.
 */
+SoDetailList::~SoDetailList()
+{
+  this->truncate(0);
+}
+
+/*!
+  Overridden to delete truncated items.
+*/ 
+void 
+SoDetailList::truncate(const int length, const int fit) 
+{
+  int oldlen = this->getLength();
+  
+  for (int i = length; i < oldlen; i++) {
+    delete (*this)[i];
+  }
+  SbPList::truncate(length, fit);
+}
+
+/*!
+  Overridden to copy items, not just pointers.
+*/
+void 
+SoDetailList::copy(const SoDetailList & l)
+{
+  this->truncate(0);
+  for (int i = 0; i < l.getLength(); i++) {
+    this->append(l[i]->copy());
+  }
+}
+
+/*!
+  Overridden to delete old item.
+*/
+void
+SoDetailList::set(const int idx, SoDetail * detail) 
+{
+  if (idx < this->getLength()) delete (*this)[idx];
+  SbPList::operator[](idx) = (void*) detail;
+}
+

@@ -27,11 +27,15 @@
   \ingroup base
 
   Note that upon using the equality and inequality operators, the
-  strings themselves are not compared, only the pointer values.
+  strings themselves are not compared, only the pointer values.  
+  
+  This class do not allocate or deallocate strings. It's the callers
+  responsibility to allocate/deallocate the SbString instances.
 
-  \sa SbList
+  \sa SbPList
 */
 
+#include <Inventor/lists/SbStringList.h>
 
 /*!
   \fn SbStringList::SbStringList(void)
@@ -46,29 +50,32 @@
   list to \a sizehint. Note that the list will still initially contain
   zero items.
 
-  \sa SbList::SbList(const int sizehint)
+  \sa SPbList::SbList(const int sizehint)
+*/
+
+
+/*!
+  \fn int SbStringList::find(SbString * string) const
+
+  Overridden from parent to accept an SbString argument.
 */
 
 /*!
-  \fn SbStringList::SbStringList(const SbStringList & l)
+  \fn void SbStringList::insert(SbString * string, int insertbefore)
 
-  Copy constructor.
-
-  \sa SbList::SbList(const SbList<Type> & l)
+  Overridden from parent to accept an SbString argument.
 */
 
 /*!
-  \fn SbString * SbStringList::get(const int index) const
+  
+  \fn SbString *& SbStringList::operator[](const int idx) const
 
-  This method returns the element at \a index. Does the same thing as
-  SbList::operator[](). This method is only present for compatibility
-  with the original Inventor API.
-*/
+  Overridden from parent to return an SbString pointer.
+*/ 
 
 /*!
-  \fn void SbStringList::set(const int index, SbString * const item)
-
-  This method sets the element at \a index to \a item. Does the same
-  thing as SbList::operator[](). This method is only present for
-  compatibility with the original Inventor API.
+  \fn const SbString ** getArrayPtr(void) const 
+  
+  Overridden from parent to return an SbString pointer array.
 */
+
