@@ -245,26 +245,17 @@ static cc_dynarray * fontfiledirs = NULL;
 
 /* ************************************************************************* */
 
-static SbBool
-cc_freetype_debug(void)
-{
-  const char * env = coin_getenv("COIN_DEBUG_FREETYPE");
-  return env && (atoi(env) > 0);
-}
-
-/* ************************************************************************* */
-
 SbBool
 cc_flwft_initialize(void)
 {
   FT_Error error = FT_Init_FreeType(&library);
   if (error) {
-    if (cc_freetype_debug()) cc_debugerror_post("cc_flwft_initialize", "error %d", error);
+    if (cc_flw_debug()) cc_debugerror_post("cc_flwft_initialize", "error %d", error);
     library = NULL;
     return FALSE;
   }
 
-  if (cc_freetype_debug()) {
+  if (cc_flw_debug()) {
     FT_Int major, minor, patch;
     FT_Library_Version(library, &major, &minor, &patch);
     cc_debugerror_postinfo("cc_flwft_initialize",
@@ -380,7 +371,7 @@ find_font_file(const char * fontname)
   key = (unsigned long)cc_namemap_get_address(fontname);
   found = cc_hash_get(fontname2filename, key, &val);
   if (!found) {
-    if (cc_freetype_debug()) {
+    if (cc_flw_debug()) {
       cc_debugerror_postinfo("find_font_file",
                              "fontname '%s' not found in name hash",
                              fontname);
@@ -406,7 +397,7 @@ find_font_file(const char * fontname)
       cc_string_append_text(&str, (const char *)cc_dynarray_get(possiblefilenames, i));
 
       found = (stat(cc_string_get_text(&str), &buf) == 0) && !S_ISDIR(buf.st_mode);
-      if (cc_freetype_debug()) {
+      if (cc_flw_debug()) {
         cc_debugerror_postinfo("find_font_file", "'%s' %s",
                                cc_string_get_text(&str),
                                found ? "found!" : "NOT found");
@@ -434,7 +425,7 @@ cc_flwft_get_font(const char * fontname)
     FT_New_Face(library, fontfilename ? fontfilename : fontname, 0, &face);
 
   if (error) {
-    if (cc_freetype_debug()) {
+    if (cc_flw_debug()) {
       cc_debugerror_postwarning("cc_flwft_get_font",
                                 "error %d for fontname '%s' (filename '%s')",
                                 error, fontname,
@@ -443,7 +434,7 @@ cc_flwft_get_font(const char * fontname)
     return NULL;
   }
 
-  if (cc_freetype_debug()) {
+  if (cc_flw_debug()) {
     cc_debugerror_postinfo("cc_flwft_get_font",
                            "FT_New_Face(..., \"%s\" / \"%s\", ...) => "
                            "family \"%s\" and style \"%s\"",
@@ -471,7 +462,7 @@ cc_flwft_done_font(void * font)
   face = (FT_Face)font;
   error = FT_Done_Face(face);
   if (error) {
-    if (cc_freetype_debug()) cc_debugerror_postinfo("cc_flwft_done_font", "Error %d\n", error);
+    if (cc_flw_debug()) cc_debugerror_postinfo("cc_flwft_done_font", "Error %d\n", error);
   }
 }
 
@@ -517,7 +508,7 @@ cc_flwft_get_charmap_name(void * font, int charmap)
     case FT_ENCODING_APPLE_ROMAN: 
       name = "apple_roman"; break; 
     default:
-      if (cc_freetype_debug()) {
+      if (cc_flw_debug()) {
         cc_debugerror_postwarning("cc_flwft_get_charmap_name",
                                   "unknown encoding: 0x%x",
                                   face->charmaps[charmap]->encoding);
@@ -665,21 +656,21 @@ cc_flwft_get_bitmap(void * font, int glyph)
   face = (FT_Face)font;
   error = FT_Load_Glyph(face, glyph, FT_LOAD_DEFAULT);
   if (error) {
-    if (cc_freetype_debug()) cc_debugerror_post("cc_flwft_get_bitmap",
+    if (cc_flw_debug()) cc_debugerror_post("cc_flwft_get_bitmap",
                                                 "FT_Load_Glyph() => error %d",
                                                 error);
     return NULL;
   }
   error = FT_Get_Glyph(face->glyph, &g);
   if (error) {
-    if (cc_freetype_debug()) cc_debugerror_post("cc_flwft_get_bitmap",
+    if (cc_flw_debug()) cc_debugerror_post("cc_flwft_get_bitmap",
                                                 "FT_Get_Glyph() => error %d",
                                                 error);
     return NULL;
   }
   error = FT_Glyph_To_Bitmap(&g, ft_render_mode_mono, 0, 1);
   if (error) {
-    if (cc_freetype_debug()) cc_debugerror_post("cc_flwft_get_bitmap",
+    if (cc_flw_debug()) cc_debugerror_post("cc_flwft_get_bitmap",
                                                 "FT_Glyph_To_Bitmap() => error %d",
                                                 error);
     return NULL;
