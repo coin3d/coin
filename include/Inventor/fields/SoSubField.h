@@ -237,6 +237,7 @@ public: \
 
 #define SO_MFIELD_DERIVED_VALUE_HEADER(_class_, _valtype_, _valref_) \
   PRIVATE_MFIELD_IO_HEADER(); \
+public: \
   _valref_ operator=(_valref_ val) { this->setValue(val); return val; }
 
 
