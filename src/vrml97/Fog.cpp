@@ -98,6 +98,7 @@
   An eventIn that is used to bind this node (make the node active).
 */
 
+
 /*!
   \var SoSFBool SoVRMLFog::isBound
   An eventOut that is sent when the node is bound/unbound.
@@ -107,8 +108,45 @@
 #include <Inventor/VRMLnodes/SoVRMLFog.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/nodes/SoSubNodeP.h>
+#include <Inventor/sensors/SoFieldSensor.h>
+#include <Inventor/misc/SoState.h>
+#include <Inventor/elements/SoEnvironmentElement.h>
+#include <Inventor/elements/SoLightAttenuationElement.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+
+#define PRIVATE(p) (p->pimpl)
+#define PUBLIC(p) (p->master)
 
 SO_NODE_SOURCE(SoVRMLFog);
+
+static void fieldsensorCB(void * data, SoSensor * sensor);
+static void bindingchangeCB(void * data, SoSensor * sensor);
+
+
+class SoVRMLFogP {
+
+public:
+  SoVRMLFogP(SoVRMLFog * master) {
+    this->master = master;
+  };
+
+  SoVRMLFog * master;
+
+  SoFieldSensor * setbindsensor;
+  SoFieldSensor * isboundsensor;
+
+  SoFieldSensor * fogtypesensor;
+  SoFieldSensor * visibilitysensor;
+  SoFieldSensor * colorsensor;
+
+  SbColor fogColor;
+  float visibilityRange;
+  int fogType;
+
+};
+
+
 
 // Doc in parent
 void
@@ -127,9 +165,37 @@ SoVRMLFog::SoVRMLFog(void)
   SO_VRMLNODE_ADD_EXPOSED_FIELD(fogType, ("LINEAR"));
   SO_VRMLNODE_ADD_EXPOSED_FIELD(visibilityRange, (0.0f));
   SO_VRMLNODE_ADD_EXPOSED_FIELD(color, (1.0f, 1.0f, 1.0f));
-
+  
   SO_VRMLNODE_ADD_EVENT_IN(set_bind);
   SO_VRMLNODE_ADD_EVENT_OUT(isBound);
+
+  PRIVATE(this) = new SoVRMLFogP(this);
+
+  PRIVATE(this)->fogType = SoEnvironmentElement::HAZE; // 'HAZE' == Linear fog
+  PRIVATE(this)->fogColor = SbVec3f(1,1,1);
+  PRIVATE(this)->visibilityRange = 0;
+
+  // Binding sensors 
+  PRIVATE(this)->setbindsensor = new SoFieldSensor(bindingchangeCB, PRIVATE(this));
+  PRIVATE(this)->isboundsensor = new SoFieldSensor(bindingchangeCB, PRIVATE(this));
+  PRIVATE(this)->setbindsensor->attach(&this->set_bind);
+  PRIVATE(this)->isboundsensor->attach(&this->isBound);
+  PRIVATE(this)->setbindsensor->setPriority(0);
+  PRIVATE(this)->isboundsensor->setPriority(0);
+
+  // Field sensor
+  PRIVATE(this)->fogtypesensor = new SoFieldSensor(fieldsensorCB, PRIVATE(this));
+  PRIVATE(this)->fogtypesensor->attach(&this->fogType);
+  PRIVATE(this)->fogtypesensor->setPriority(0);
+
+  PRIVATE(this)->visibilitysensor = new SoFieldSensor(fieldsensorCB, PRIVATE(this));
+  PRIVATE(this)->visibilitysensor->attach(&this->visibilityRange);
+  PRIVATE(this)->visibilitysensor->setPriority(0);
+
+  PRIVATE(this)->colorsensor = new SoFieldSensor(fieldsensorCB, PRIVATE(this));
+  PRIVATE(this)->colorsensor->attach(&this->color);
+  PRIVATE(this)->colorsensor->setPriority(0);
+
 }
 
 /*!
@@ -143,5 +209,66 @@ SoVRMLFog::~SoVRMLFog()
 void
 SoVRMLFog::GLRender(SoGLRenderAction * action)
 {
-  // FIXME: implement.
+ 
+  SoState * state = action->getState();
+  SbColor ambColor = SoEnvironmentElement::getAmbientColor(state);
+  float ambIntensity = SoEnvironmentElement::getAmbientIntensity(state);
+  SbVec3f attenuation = SoLightAttenuationElement::get(state);
+ 
+  SoLightAttenuationElement::set(action->getState(), this,
+                                 attenuation);
+
+  SoEnvironmentElement::set(action->getState(),
+                            this,
+                            ambIntensity,
+                            ambColor,
+                            attenuation,
+                            PRIVATE(this)->fogType,
+                            PRIVATE(this)->fogColor,
+                            PRIVATE(this)->visibilityRange);
+
 }
+
+void
+fieldsensorCB(void * data, SoSensor * sensor)
+{
+  SoVRMLFogP * pimpl = (SoVRMLFogP *) data;
+ 
+  if (sensor == pimpl->colorsensor) {    
+    pimpl->fogColor = pimpl->master->color.getValue();
+  }
+  else if (sensor == pimpl->fogtypesensor) {    
+    if (!strcmp(pimpl->master->fogType.getValue().getString(), "LINEAR")) {
+      pimpl->fogType = SoEnvironmentElement::HAZE;
+    } 
+    else if (!strcmp(pimpl->master->fogType.getValue().getString(), "EXPONENTIAL")) {
+      pimpl->fogType = SoEnvironmentElement::SMOKE;
+    }    
+  }
+  else if (sensor == pimpl->visibilitysensor) {
+    pimpl->visibilityRange = pimpl->master->visibilityRange.getValue();    
+  }
+
+}
+
+
+void
+bindingchangeCB(void * data, SoSensor * sensor)
+{
+  SoVRMLFogP * pimpl = (SoVRMLFogP *) data;
+
+  // FIXME: Support for 'set_bind' and 'isBound' must be implemented.
+  // But first, a Coin viewer must support this kind of special node
+  // treatment (this applies to 'Background', 'NavigationInfo' and
+  // 'Viewport' nodes aswell) (11Aug2003 handegar)
+
+  if (sensor == pimpl->setbindsensor) {
+    SoDebugError::postWarning("bindingchangeCB", "'set_bind' event not implemented yet");
+  }
+  else if (sensor == pimpl->isboundsensor) {
+    SoDebugError::postWarning("bindingchangeCB", "'isBound' event not implemented yet");
+  }
+
+}
+
+
