@@ -5,13 +5,50 @@ ALLSOURCES = \
 	SoDragger.cpp SoDragger.h \
 	SoCenterballDragger.cpp SoCenterballDragger.h \
 	SoDirectionalLightDragger.cpp SoDirectionalLightDragger.h \
-	SoDragPointDragger.cpp SoDragPointDragger.h
+	SoDragPointDragger.cpp SoDragPointDragger.h \
+	SoHandleBoxDragger.cpp SoHandleBoxDragger.h \
+	SoJackDragger.cpp SoJackDragger.h \
+	SoPointLightDragger.cpp SoPointLightDragger.h \
+	SoRotateCylindricalDragger.cpp SoRotateCylindricalDragger.h \
+	SoRotateDiscDragger.cpp SoRotateDiscDragger.h \
+	SoRotateSphericalDragger.cpp SoRotateSphericalDragger.h \
+	SoScale1Dragger.cpp SoScale1Dragger.h \
+	SoScale2Dragger.cpp SoScale2Dragger.h \
+	SoScale2UniformDragger.cpp SoScale2UniformDragger.h \
+	SoScaleUniformDragger.cpp SoScaleUniformDragger.h \
+	SoSpotLightDragger.cpp SoSpotLightDragger.h \
+	SoTabBoxDragger.cpp SoTabBoxDragger.h \
+	SoTabPlaneDragger.cpp SoTabPlaneDragger.h \
+	SoTrackballDragger.cpp SoTrackballDragger.h \
+	SoTransformBoxDragger.cpp SoTransformBoxDragger.h \
+	SoTransformerDragger.cpp SoTransformerDragger.h \
+	SoTranslate1Dragger.cpp SoTranslate1Dragger.h \
+	SoTranslate2Dragger.cpp SoTranslate2Dragger.h
+
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/draggers/SoDragger.h \
 	$(top_srcdir)/include/Inventor/draggers/SoCenterballDragger.h \
 	$(top_srcdir)/include/Inventor/draggers/SoDirectionalLightDragger.h \
-	$(top_srcdir)/include/Inventor/draggers/SoDragPointDragger.h
+	$(top_srcdir)/include/Inventor/draggers/SoDragPointDragger.h \
+	$(top_srcdir)/include/Inventor/draggers/SoHandleBoxDragger.h \
+	$(top_srcdir)/include/Inventor/draggers/SoJackDragger.h \
+	$(top_srcdir)/include/Inventor/draggers/SoPointLightDragger.h \
+	$(top_srcdir)/include/Inventor/draggers/SoRotateCylindricalDragger.h \
+	$(top_srcdir)/include/Inventor/draggers/SoRotateDiscDragger.h \
+	$(top_srcdir)/include/Inventor/draggers/SoRotateSphericalDragger.h \
+	$(top_srcdir)/include/Inventor/draggers/SoScale1Dragger.h \
+	$(top_srcdir)/include/Inventor/draggers/SoScale2Dragger.h \
+	$(top_srcdir)/include/Inventor/draggers/SoScale2UniformDragger.h \
+	$(top_srcdir)/include/Inventor/draggers/SoScaleUniformDragger.h \
+	$(top_srcdir)/include/Inventor/draggers/SoSpotLightDragger.h \
+	$(top_srcdir)/include/Inventor/draggers/SoTabBoxDragger.h \
+	$(top_srcdir)/include/Inventor/draggers/SoTabPlaneDragger.h \
+	$(top_srcdir)/include/Inventor/draggers/SoTrackballDragger.h \
+	$(top_srcdir)/include/Inventor/draggers/SoTransformBoxDragger.h \
+	$(top_srcdir)/include/Inventor/draggers/SoTransformerDragger.h \
+	$(top_srcdir)/include/Inventor/draggers/SoTranslate1Dragger.h \
+	$(top_srcdir)/include/Inventor/draggers/SoTranslate2Dragger.h
 
 ##$ BEGIN TEMPLATE Make-Common(draggers)
 
