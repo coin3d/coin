@@ -568,29 +568,22 @@ SbRotation::slerp(const SbRotation & rot0, const SbRotation & rot1, float t)
     to.quat.negate();
   }
 
-  SbRotation result;
+  // fallback to linear interpolation, in case we run out of floating
+  // point precision
+  float scale0 = 1.0 - t;
+  float scale1 = t;
 
-  // Check if they are parallel, and if not, calculate the rotation
-  // scale factors.
-  if((1.0 - dot) > 0.0f) {
-#if 1 // Spherical interpolation (geometrically correct).
+  if ((1.0f - dot) > FLT_EPSILON) {
     float angle = (float)acos(dot);
     float sinangle = (float)sin(angle);
-    float scale0 = float(sin((1.0 - t) * angle)) / sinangle;
-    float scale1 = float(sin(t * angle)) / sinangle;
-#else // Linear interpolation (faster).
-    float scale0 = 1.0 - t;
-    float scale1 = t;
-#endif // Linear interpolation.
-
-    SbVec4f vec = (scale0 * from.quat) + (scale1 * to.quat);
-    result.setValue(vec[0], vec[1], vec[2], vec[3]);
+    if (sinangle > FLT_EPSILON) {
+      // calculate spherical interpolation
+      scale0 = float(sin((1.0 - t) * angle)) / sinangle;
+      scale1 = float(sin(t * angle)) / sinangle;
+    }
   }
-  else {
-    result = SbRotation::identity();
-  }
-
-  return result;
+  SbVec4f vec = (scale0 * from.quat) + (scale1 * to.quat);
+  return SbRotation(vec[0], vec[1], vec[2], vec[3]);
 }
 
 /*!
@@ -599,7 +592,7 @@ SbRotation::slerp(const SbRotation & rot0, const SbRotation & rot1, float t)
 SbRotation
 SbRotation::identity(void)
 {
-  return SbRotation(0, 0, 0, 1);
+  return SbRotation(0.0f, 0.0f, 0.0f, 1.0f);
 }
 
 /*!
