@@ -1304,7 +1304,7 @@ else
 fi
 
 if $enable_superglu; then
-  sim_include_glu_h="#include <superglu/include/superglu.h>"
+  sim_include_glu_h="/* #include <GL/glu.h> - not used, Coin linked with embedded SuperGLU */"
 else
   if test x"$ac_cv_header_GL_glu_h" = x"yes"; then
     sim_include_glu_h="#include <GL/glu.h>"
