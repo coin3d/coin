@@ -11,6 +11,7 @@ ThreadsDependentSources =
 endif
 
 RegularSources = \
+	memalloc.c \
 	SbBSPTree.cpp \
 	SbBox2f.cpp \
 	SbBox2s.cpp \
@@ -51,6 +52,7 @@ LinkHackSources = \
 	all.cpp
 PublicHeaders =
 PrivateHeaders = \
+	../../include/Inventor/C/memalloc.h \
 	../../include/Inventor/SbBSPTree.h \
 	../../include/Inventor/SbBox2f.h \
 	../../include/Inventor/SbBox2s.h \
