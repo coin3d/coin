@@ -323,13 +323,25 @@ SoMField::makeRoom(int newnum)
   Set the value at \a index to the value contained in \a valuestring.
   Returns \c TRUE if a valid value for this field can be extracted
   from \a valuestring, otherwise \c FALSE.
+
+  If \a index is larger than the current number of elements in the
+  field, this method will automatically expand the field to accomodate
+  the new value.
 */
 SbBool
 SoMField::set1(const int index, const char * const valuestring)
 {
+  int oldnum = this->num;
+  // make sure the array has room for the new item
+  if (index >= this->maxNum) this->allocValues(index+1);
+  else if (index >= this->num) this->num = index+1;
+  
   SoInput in;
   in.setBuffer((void *)valuestring, strlen(valuestring));
-  if (!this->read1Value(&in, index)) return FALSE;
+  if (!this->read1Value(&in, index)) {
+    this->num = oldnum; // restore old number of items in field
+    return FALSE;
+  }
   this->valueChanged();
   return TRUE;
 }
