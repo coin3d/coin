@@ -1166,9 +1166,16 @@ SoBaseKit::makePart(const int partnum)
   assert(this->fieldList[partnum]->getValue() == NULL);
 
   SoNode *node = (SoNode*)catalog->getDefaultType(partnum).createInstance();
-  if (catalog->isList(partnum) &&
-      (catalog->getListContainerType(partnum) != SoGroup::getClassTypeId())) {
-    ((SoNodeKitListPart*)node)->setContainerType(catalog->getListContainerType(partnum));
+  if (catalog->isList(partnum)) {
+    SoNodeKitListPart * list = (SoNodeKitListPart *) node;
+    if (catalog->getListContainerType(partnum) != SoGroup::getClassTypeId()) {
+      list->setContainerType(catalog->getListContainerType(partnum));
+    }
+    const SoTypeList & typelist = catalog->getListItemTypes(partnum);
+    for (int i = 0; i < typelist.getLength(); i++) {
+      list->addChildType(typelist[i]);
+    }
+    list->lockTypes();
   }
   return this->setPart(partnum, node);
 }
