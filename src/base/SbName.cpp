@@ -255,6 +255,10 @@ SbName::isIdentStartChar(const char c)
 SbBool
 SbName::isIdentChar(const char c)
 {
+  // FIXME: isalnum() takes the current locale into account. This can
+  // lead to "interesting" artifacts. We very likely need to audit and
+  // fix our isalnum() calls in the Coin sourcecode to behave in the
+  // exact manner that we expect them to. 20020319 mortene.
   return (isalnum(c) || c == '_');
 }
 
@@ -274,6 +278,10 @@ SbName::isIdentChar(const char c)
 SbBool
 SbName::isBaseNameStartChar(const char c)
 {
+  // FIXME: isalpha() takes the current locale into account. This can
+  // lead to "interesting" artifacts. We very likely need to audit and
+  // fix our isalpha() calls in the Coin sourcecode to behave in the
+  // exact manner that we expect them to. 20020319 mortene.
   if (c == '_' || (coin_isascii(c) && isalpha(c))) return TRUE;
   return FALSE;
 }

@@ -221,6 +221,14 @@ public:
     //   wherever they appear outside of quoted SFString or MFString
     //   fields. Any number of whitespace characters and comments may be
     //   used to separate the syntactic entities of a VRML file.
+    //
+    // FIXME: isspace() takes the current locale into account. Under
+    // MSWindows, this can lead to "interesting" artifacts, like a
+    // case with RR tracked down and fixed by <thammer@sim.no> where a
+    // character (was it ü?) with ASCII value > 127 made isspace()
+    // return non-nil on a German system. We very likely need to audit
+    // and fix our isspace() calls in the Coin sourcecode to behave in
+    // the exact manner that we expect them to. 20020319 mortene.
     return isspace(c) || (this->vrml2file && c == ',');
   }
 
@@ -436,6 +444,8 @@ SoInput::checkISReference(SoFieldContainer * container,
         switch (state) {
         case STATE_WAIT_I:
           if (c == 'I') state = STATE_EXPECT_S;
+          // FIXME: see note about isspace() in SoInput_FileInfo::isSpace().
+          // 20020319 mortene.
           else if (!isspace(c)) state = STATE_NOTFOUND;
           break;
         case STATE_EXPECT_S:
@@ -443,6 +453,8 @@ SoInput::checkISReference(SoFieldContainer * container,
           else state = STATE_NOTFOUND;
           break;
         case STATE_EXPECT_SPACE:
+          // FIXME: see note about isspace() in SoInput_FileInfo::isSpace().
+          // 20020319 mortene.
           if (isspace(c)) state = STATE_FOUND;
           else state = STATE_NOTFOUND;
           break;
