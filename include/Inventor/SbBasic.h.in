@@ -101,11 +101,24 @@ typedef int SbBool;
 #define SoEXTENDER
 #define SoINTERNAL
 
+/* Include this to 1) be compatible with Open Inventor's SbBasic.h, 2)
+ * provide a way for application programmers to get hold of the type
+ * definitions without explicitly including inttypes.h.
+ *
+ * The latter point is important because the inttypes.h file in
+ * Inventor is placed _below_ the Inventor/ directory in the header
+ * files hierarchy. This means it could easily conflict with the
+ * inttypes.h file installed as part of the C library on many systems
+ * (like Linux/glibc, for instance).
+ */
+#include <Inventor/system/inttypes.h>
+
 /* Internal note for Coin developers: in other sourcefiles in Coin, we
  * depend on math.h being included in SbBasic.h. It is done this way
  * to always make sure we have the M_* symbols available under MSWin
  * (see below). So don't remove the following line unless you know
- * very well what you are doing. */
+ * very well what you are doing.
+ */
 #include <math.h>
 
 /* Define misc values if they are not available from math.h. UNIX
@@ -185,7 +198,8 @@ typedef int SbBool;
 #ifndef HAVE_SINGLEPRECISION_MATH
 /* If singleprecision math functions are missing, define them to their
    doubleprecision counterparts. This is done to be consistent with
-   SbBasic.h in Open Inventor. */
+   SbBasic.h in Open Inventor (application programmers might rely on
+   the float-versions being set up from the Inventor SbBasic.h). */
 #define cosf cos
 #define sinf sin
 #define tanf tan
