@@ -291,6 +291,7 @@ aglglue_context_create_pbuffer(struct aglglue_contextdata * ctx)
      somewhere. Copied from gl_glx.c by kyrah 20031114, originally 
      mentioned by mortene 20030811. */
 
+  GLenum error;
   GLint attribs[] = { 
     AGL_RGBA, 
     AGL_RED_SIZE, 8, 
@@ -308,7 +309,7 @@ aglglue_context_create_pbuffer(struct aglglue_contextdata * ctx)
   }
 
   ctx->pixformat = aglChoosePixelFormat (NULL, 0, attribs);
-  GLenum error = aglGetError();
+  error = aglGetError();
   if (error != AGL_NO_ERROR) {
     cc_debugerror_post("aglglue_create_offscreen_context",
                        "Couldn't create AGL Pixelformat: %s", 
@@ -318,7 +319,7 @@ aglglue_context_create_pbuffer(struct aglglue_contextdata * ctx)
   
   if (ctx->pixformat) {
     ctx->aglcontext = aglCreateContext (ctx->pixformat, NULL);
-    GLenum error = aglGetError();
+    error = aglGetError();
     if (error != AGL_NO_ERROR) {
       cc_debugerror_post("aglglue_context_create_offscreen",
                          "Couldn't create AGL context: %s", 
@@ -401,6 +402,7 @@ SbBool
 aglglue_context_make_current(void * ctx)
 {
   struct aglglue_contextdata * context = (struct aglglue_contextdata *)ctx;
+  GLint vs;
 
   if (!context->aglpbuffer) {
     GLboolean r;
@@ -446,7 +448,7 @@ aglglue_context_make_current(void * ctx)
       }
     }
 
-     GLint vs = aglGetVirtualScreen (context->aglcontext);
+    vs = aglGetVirtualScreen (context->aglcontext);
     if (!aglglue_aglSetPBuffer (context->aglcontext, context->aglpbuffer, 0, 0, vs)) {
       GLenum error = aglGetError();
       if (error != AGL_NO_ERROR) {
@@ -518,15 +520,13 @@ aglglue_context_destruct(void * ctx)
 void 
 aglglue_context_bind_pbuffer(void * ctx)
 {
-
+  struct aglglue_contextdata * context = (struct aglglue_contextdata *)ctx;
   GLenum error = aglGetError();  
   if (error != AGL_NO_ERROR) {    
     cc_debugerror_post("aglglue_context_bind_pbuffer()"                       
                        "before binding pbuffer: %s",                        
                        (char *)aglErrorString(error)); 
   }
-
-  struct aglglue_contextdata * context = (struct aglglue_contextdata *)ctx;
   
   /* FIXME: I don't think this needs to be here. pederb, 2003-11-27 */ 
   /* aglglue_context_reinstate_previous(context); */
