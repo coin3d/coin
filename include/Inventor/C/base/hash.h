@@ -31,7 +31,7 @@ extern "C" {
 #include <stdlib.h>
 
   typedef struct cc_hash cc_hash;
-  typedef unsigned long cc_hash_func(unsigned long key);
+  typedef unsigned long cc_hash_func(const unsigned long key);
   typedef void cc_hash_apply_func(unsigned long key, void * val, void * closure);
 
   COIN_DLL_API cc_hash * cc_hash_construct(unsigned int size, float loadfactor);
