@@ -48,6 +48,7 @@ static const unsigned long SOENGINEOUTPUT_MAGICNUMBER = 0xdeadbeef;
   \sa setContainer()
 */
 SoEngineOutput::SoEngineOutput(void)
+  : notifyflags(1)
 {
   this->enabled = TRUE;
   this->container = NULL;
