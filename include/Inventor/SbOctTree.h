@@ -23,6 +23,7 @@
 #include <Inventor/SbVec3f.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SbBox3f.h>
+#include <stdio.h>
 
 class SbSphere;
 class SbOctTreeNode;
@@ -65,7 +66,8 @@ public:
 
   const SbBox3f & getBoundingBox(void) const;
   void clear(void);
-
+  void debugTree(FILE * fp);
+  
 private:
   friend class SbOctTreeNode;
   SbBox3f boundingbox;

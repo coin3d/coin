@@ -160,6 +160,8 @@ public:
                  const SbBox3f &nodesize,
                  const SbBool removeduplicates) const;
 
+  void debugTree(FILE *fp, const int indent);
+
 private:
 
   void splitBox(const SbBox3f & box, SbBox3f * destarray) const;
@@ -168,6 +170,19 @@ private:
   SbOctTreeNode * children[8];
   SbList <void*> items;
 };
+
+void 
+SbOctTreeNode::debugTree(FILE *fp, const int indent)
+{
+  int i;
+  for (i = 0; i < indent; i++) fprintf(fp," ");
+  fprintf(fp, "Node: %d\n", this->items.getLength());
+  if (this->children[0]) {
+    for (i =0 ; i < 8; i++) {
+      this->children[i]->debugTree(fp, indent+1);
+    }
+  }
+}
 
 static void
 add_to_array(SbList <void*> & array, void * ptr)
@@ -208,9 +223,11 @@ SbOctTreeNode::addItem(void * const item,
       }
     }
   }
-  else if (this->items.getLength() >= maxitems) { // node is full
-    if (splitNode(nodesize, itemfuncs)) {
-      addItem(item, itemfuncs, maxitems, nodesize); // try again
+  else if (this->items.getLength() >= maxitems) {
+    // avoid trying a split too often by using a modulo
+    if ((this->items.getLength() % (maxitems+1) == maxitems) &&
+        this->splitNode(nodesize, itemfuncs)) {
+      this->addItem(item, itemfuncs, maxitems, nodesize);
     }
     else {
       this->items.append(item);
@@ -415,17 +432,18 @@ SbOctTreeNode::splitNode(const SbBox3f & nodesize,
       }
     }
   }
+  int cntnodes = 0;
   for (i = 0; i < 8; i++) {
-    if (children[i]->items.getLength() == n) break;
+    int len = children[i]->items.getLength();
+    if (len == n) cntnodes++;
   }
-  if (i < 8) {
+  if (cntnodes == 8) {
     for (i = 0; i < 8; i++) {
       delete children[i];
       children[i] = NULL;
     }
     return FALSE;
   }
-
   this->items.truncate(0, TRUE);
   return TRUE;
 }
@@ -577,4 +595,11 @@ const SbBox3f &
 SbOctTree::getBoundingBox(void) const
 {
   return this->boundingbox;
+}
+
+void 
+SbOctTree::debugTree(FILE * fp)
+{
+  fprintf(fp, "Oct Tree:\n");
+  if (this->topnode) this->topnode->debugTree(fp, 1);
 }
