@@ -250,7 +250,11 @@ SoGLLazyElement::sendGLImage(const uint32_t glimageid) const
             glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
             glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, blendcolor.getValue());
             break;
+          default:
+            assert(0 && "unknown model");
+            break;
           }
+          
           dl->call(this->state);
           sentimageid = glimageid;
         }
@@ -397,6 +401,7 @@ SoGLLazyElement::init(SoState * state)
   this->glstate.flatshading = -1;
   this->glstate.glimageid = -1;
   this->glstate.alphatest = -1;
+  this->glstate.diffuse = 0xccccccff;
   this->packedpointer = NULL;
   this->transpmask = 0xff;
   this->colorpacker = NULL;
@@ -582,14 +587,16 @@ SoGLLazyElement::send(const SoState * state, uint32_t mask) const
         break;
       case BLENDING_CASE:
         if (this->coinstate.blending) {
-          if (!this->glstate.blending || 
+          if (this->glstate.blending != this->coinstate.blending || 
               this->coinstate.blend_sfactor != this->glstate.blend_sfactor ||
               this->coinstate.blend_dfactor != this->glstate.blend_dfactor) {
             this->enableBlending(this->coinstate.blend_sfactor, this->coinstate.blend_dfactor);
           }
         }
-        else if (this->glstate.blending) {
-          this->disableBlending();
+        else {
+          if (this->coinstate.blending != this->glstate.blending) {
+            this->disableBlending();
+          }
         }
         break;
       case TRANSPARENCY_CASE:
@@ -1092,16 +1099,16 @@ SoGLLazyElement::preCacheCall(SoState * state, GLState * prestate)
         }
         break;
       case BLENDING_CASE:
+        if (curr.blending != prestate->blending) {
+          GLLAZY_DEBUG("blending failed");
+          return FALSE;
+        }
         if (prestate->blending) {
           if (curr.blend_sfactor != prestate->blend_sfactor ||
               curr.blend_dfactor != prestate->blend_dfactor) {
             GLLAZY_DEBUG("blending failed");
             return FALSE;
           }
-        }
-        else if (curr.blending) {
-          GLLAZY_DEBUG("blending failed");
-          return FALSE;
         }
         break;
       case TRANSPARENCY_CASE:
