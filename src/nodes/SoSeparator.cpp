@@ -201,15 +201,17 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
     }
   }
 
-  action->extendBy(childrenbbox);
-  if (childrencenterset) {
-    // FIXME: shouldn't this assert() hold up? Investigate. 19990422 mortene.
+  if (!childrenbbox.isEmpty()) {
+    action->extendBy(childrenbbox);
+    if (childrencenterset) {
+      // FIXME: shouldn't this assert() hold up? Investigate. 19990422 mortene.
 #if 0 // disabled
-    assert(!action->isCenterSet());
+      assert(!action->isCenterSet());
 #else
-    action->resetCenter();
+      action->resetCenter();
 #endif
-    action->setCenter(childrencenter, TRUE);
+      action->setCenter(childrencenter, TRUE);
+    }
   }
 }
 

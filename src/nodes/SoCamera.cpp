@@ -219,7 +219,8 @@ SoCamera::viewAll(SoNode * const sceneRoot,
                          box.getMin()[0], box.getMin()[1], box.getMin()[2],
                          box.getMax()[0], box.getMax()[1], box.getMax()[2]);
 #endif // debug
-  this->viewBoundingBox(box, aspectRatio.getValue(), slack);
+  this->viewBoundingBox(box.isEmpty() ? SbBox3f(.0f,.0f,.0f,.0f,.0f,.0f) : box,
+                        aspectRatio.getValue(), slack);
 }
 
 /*!
@@ -233,7 +234,8 @@ SoCamera::viewAll(SoPath * const path,
   SoGetBoundingBoxAction action(vpRegion);
   action.apply(path);
   SbBox3f box = action.getBoundingBox();
-  this->viewBoundingBox(box, aspectRatio.getValue(), slack);
+  this->viewBoundingBox(box.isEmpty() ? SbBox3f(.0f,.0f,.0f,.0f,.0f,.0f) : box,
+                        aspectRatio.getValue(), slack);
 }
 
 /*!
@@ -303,7 +305,14 @@ SoCamera::doAction(SoAction *action)
   SoViewVolumeElement::set(state, this, vv);
 
   SbMatrix affine, proj;
-  vv.getMatrices(affine, proj);
+  if (vv.getDepth() == 0.0f || vv.getWidth() == 0.0f || vv.getHeight() == 0.0f) {
+    // Handle empty scenes.
+    affine = proj = SbMatrix::identity();
+  }
+  else {
+    vv.getMatrices(affine, proj);
+  }
+
   affine.multRight(SoModelMatrixElement::get(state).inverse());
   SoProjectionMatrixElement::set(state, this, proj);
   SoViewingMatrixElement::set(state, this, affine);
@@ -326,7 +335,15 @@ void
 SoCamera::rayPick(SoRayPickAction *action)
 {
   SoCamera::doAction(action);
-  action->computeWorldSpaceRay();
+
+  // We need to check for a non-empty view volume, as caused by scene
+  // graphs with no geometry in them.
+  SbViewVolume vv = this->getViewVolume(1.0f);
+  if (vv.getDepth() != 0.0f &&
+      vv.getWidth() != 0.0f &&
+      vv.getHeight() != 0.0f) {
+    action->computeWorldSpaceRay();
+  }
 }
 
 /*!

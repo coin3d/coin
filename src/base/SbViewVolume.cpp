@@ -101,6 +101,14 @@ SbViewVolume::getMatrices(SbMatrix& affine, SbMatrix& proj) const
 
   // Find rotation of camera "up vector".
   SbVec3f upvec = this->upperleftfrust - this->lowerleftfrust;
+#if COIN_DEBUG
+  if (upvec == SbVec3f(0.0f, 0.0f, 0.0f)) {
+    SoDebugError::postWarning("SbViewVolume::getMatrices",
+                              "empty frustum!");
+    proj = SbMatrix::identity();
+    return;
+  }
+#endif // COIN_DEBUG
   upvec.normalize();
   affine.multDirMatrix(upvec, upvec);
   SbRotation zrot(upvec, SbVec3f(0, 1, 0));
@@ -326,9 +334,17 @@ SbViewVolume::getWorldToScreenScale(const SbVec3f& worldCenter,
                                     float normRadius) const
 {
 #if COIN_DEBUG
-  if (normRadius<0.0f)
+  if (normRadius < 0.0f) {
     SoDebugError::postWarning("SbViewVolume::getWorldToScreenScale",
                               "normRadius (%f) should be >=0.0f.", normRadius);
+    return 1.0f;
+  }
+  if (this->getWidth() == 0.0f || this->getHeight() == 0.0f) {
+    SoDebugError::postWarning("SbViewVolume::getWorldToScreenScale",
+                              "invalid frustum <%f, %f>",
+                              this->getWidth(), this->getHeight());
+    return 1.0f;
+  }
 #endif // COIN_DEBUG
 
   if(this->getProjectionType() == SbViewVolume::ORTHOGRAPHIC) {
@@ -886,16 +902,32 @@ SbViewVolume::getDepth(void) const
   return this->nearfardistance;
 }
 
+/*!
+  Takes a point in normalized near plane coordinates and sets \a start
+  point in 3D and direction \a dir for a line from the near plane to
+  the far plane.
+
+  Note: this method is not part of the original Open Inventor API.
+ */
 void
 SbViewVolume::getNearFarRay(const SbVec2f &normPoint,
-                            SbVec3f &start,
-                            SbVec3f &dir) const
+                            SbVec3f &start, SbVec3f &dir) const
 {
+  // FIXME: pederb, why not use projectPointToLine()? 19991215 mortene.
+
   SbVec3f dx = this->lowerrightfrust - this->lowerleftfrust;
   SbVec3f dy = this->upperleftfrust - this->lowerleftfrust;
 
-
-
+#if COIN_DEBUG
+  if (dx.length() == 0.0f || dy.length() == 0.0f) {
+    SoDebugError::postWarning("SbViewVolume::getNearFarRay",
+                              "invalid frustum: <%f, %f, %f>",
+                              this->lowerrightfrust,
+                              this->lowerleftfrust,
+                              this->upperleftfrust);
+    return;
+  }
+#endif // COIN_DEBUG
 
   start = this->lowerleftfrust + dx*normPoint[0] + dy*normPoint[1];
   if (this->type == PERSPECTIVE) {
@@ -915,6 +947,15 @@ SbViewVolume::getOrthoProjection(const float left, const float right,
                                  const float bottom, const float top,
                                  const float nearval, const float farval)
 {
+#if COIN_DEBUG
+  if (left == right || bottom == top || nearval == farval) {
+    SoDebugError::postWarning("SbViewVolume::getOrthoProjection",
+                              "invalid frustum: <%f, %f> <%f, %f> <%f, %f>",
+                              left, right, bottom, top, nearval, farval);
+    return SbMatrix::identity();
+  }
+#endif // COIN_DEBUG
+
   SbMatrix proj;
 
   // Projection matrix. From the "OpenGL Programming Guide, release 1",
@@ -949,6 +990,15 @@ SbViewVolume::getPerspectiveProjection(const float left, const float right,
                                        const float bottom, const float top,
                                        const float nearval, const float farval)
 {
+#if COIN_DEBUG
+  if (left == right || bottom == top || nearval == farval) {
+    SoDebugError::postWarning("SbViewVolume::getPerspectiveProjection",
+                              "invalid frustum: <%f, %f> <%f, %f> <%f, %f>",
+                              left, right, bottom, top, nearval, farval);
+    return SbMatrix::identity();
+  }
+#endif // COIN_DEBUG
+
   SbMatrix proj;
 
   // Projection matrix. From the "OpenGL Programming Guide, release 1",

@@ -338,8 +338,20 @@ SoRayPickAction::computeWorldSpaceRay()
       this->setFlag(FLAG_NORM_POINT);
 
     }
+
+#if COIN_DEBUG
+    if (vv.getDepth() == 0.0f ||
+        vv.getWidth() == 0.0f ||
+        vv.getHeight() == 0.0f) {
+      SoDebugError::postWarning("SoRayPickAction::computeWorldSpaceRay",
+                                "invalid frustum: <%f, %f, %f>",
+                                vv.getWidth(), vv.getHeight(), vv.getDepth());
+      return;
+    }
+#endif // COIN_DEBUG
+
 #if 1
-    vv.getNearFarRay(normvpPoint, rayStart, rayDirection);
+    vv.getNearFarRay(this->normvpPoint, this->rayStart, this->rayDirection);
 #else
     SbLine line;
     vv.projectPointToLine(this->normvpPoint, line);
@@ -362,7 +374,7 @@ SoRayPickAction::computeWorldSpaceRay()
     this->wsLine = SbLine(this->rayStart,
                           this->rayStart + this->rayDirection);
 
-#if COIN_DEBUG
+#if COIN_DEBUG && 0
     SoDebugError::postInfo("SoRayPickAction::computeWorldSpaceRay",
                            "%f %f %f",
                            radiusInPixels,
@@ -553,7 +565,7 @@ SoRayPickAction::isBetweenPlanes(const SbVec3f &intersection) const
 SoPickedPoint *
 SoRayPickAction::addIntersection(const SbVec3f &objectSpacePoint)
 {
-#if COIN_DEBUG // debug
+#if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoRayPickAction::addIntersection",
                          "%g %g %g",
                          objectSpacePoint[0],

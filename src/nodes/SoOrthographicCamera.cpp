@@ -27,9 +27,10 @@
 
 #include <Inventor/nodes/SoOrthographicCamera.h>
 
-
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
 #include <Inventor/SbSphere.h>
-
 #include <math.h>
 
 /*!
@@ -106,6 +107,14 @@ void
 SoOrthographicCamera::viewBoundingBox(const SbBox3f & box,
                                       float aspect, float slack)
 {
+#if COIN_DEBUG
+  if (box.isEmpty()) {
+    SoDebugError::postWarning("SoOrthographicCamera::viewBoundingBox",
+                              "bounding box empty");
+    return;
+  }
+#endif // COIN_DEBUG
+
   // First, we want to move the camera in such a way that it is
   // pointing straight at the center of the scene bounding box -- but
   // without modifiying the rotation value (so we can't use

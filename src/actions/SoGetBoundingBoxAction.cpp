@@ -381,6 +381,13 @@ SoGetBoundingBoxAction::checkResetAfter()
 void
 SoGetBoundingBoxAction::extendBy(const SbBox3f &box)
 {
+  if (box.isEmpty()) {
+#if COIN_DEBUG
+    SoDebugError::postWarning("SoGetBoundingBoxAction::extendBy", "empty box");
+#endif // COIN_DEBUG
+    return;
+  }
+  
   // FIXME: maybe we should convert to an SbXfBox3f? 19990320 mortene.
   SbBox3f tbox = box;
   tbox.transform(SoLocalBBoxMatrixElement::get(this->state));
@@ -403,6 +410,13 @@ SoGetBoundingBoxAction::extendBy(const SbBox3f &box)
 void
 SoGetBoundingBoxAction::extendBy(const SbXfBox3f &box)
 {
+  if (box.isEmpty()) {
+#if COIN_DEBUG
+    SoDebugError::postWarning("SoGetBoundingBoxAction::extendBy", "empty box");
+#endif // COIN_DEBUG
+    return;
+  }
+
   SbXfBox3f lbox = box;
   lbox.transform(SoLocalBBoxMatrixElement::get(this->state));
   if (this->isInCameraSpace()) {
