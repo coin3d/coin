@@ -626,13 +626,13 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx)
       WGL_COLOR_BITS_ARB, 32,
       WGL_ALPHA_BITS_ARB, 8,
       WGL_DEPTH_BITS_ARB, 24,
-      0, 0 // FIXME: do I need both? pederb, 2003-11-28
+      0, 0 /* FIXME: do I need both? pederb, 2003-11-28 */
     };
 
     const int pbufferflags[] = {
       WGL_TEXTURE_FORMAT_ARB, WGL_TEXTURE_RGBA_ARB,
       WGL_TEXTURE_TARGET_ARB, WGL_TEXTURE_2D_ARB,
-      0, 0 // FIXME: do I need both? pederb, 2003-11-28
+      0, 0 /* FIXME: do I need both? pederb, 2003-11-28 */
     };
 
     /* choose pixel format */
