@@ -4331,3 +4331,31 @@ PointSet { }
     20041102 mortene.
 
 =====================================================================
+
+160 Mem-leak when using SoTransformBoxManip.
+
+    To reproduce, set the envvar COIN_DEBUG_TRACK_SOBASE_INSTANCES=1,
+    then run the examinerviewer example of SoGuiExamples on the
+    following iv-file, click and drag the box, then let go and exit
+    the app:
+
+----8<----- [snip] --------------------8<----- [snip] ----------------
+#Inventor V2.1 ascii
+
+TransformBoxManip { }
+----8<----- [snip] --------------------8<----- [snip] ----------------
+
+    As can be seen from the debug output on application exit, an
+    SoPath is not cleaned up.
+
+    The bug does not show up when the dragger has not been interacted
+    with. It also seems that this is /not/ a one-off mem-leak, as more
+    un-allocated SoPath-instances shows up in the dump at exit when
+    doing more interaction operations.
+
+    I haven't investigated further -- it could e.g. be that this is a
+    general bug with draggers.
+
+    20041102 mortene.
+
+=====================================================================
