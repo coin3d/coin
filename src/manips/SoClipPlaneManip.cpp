@@ -515,9 +515,9 @@ SoClipPlaneManip::valueChangedCB(void * m, SoDragger * dragger)
 
   SbRotation rot = SbRotation::identity();
   if (thisp->currAxis == 2)
-    rot.setValue(SbVec3f(1.0f, 0.0f, 0.0f), M_PI/2);
+    rot.setValue(SbVec3f(1.0f, 0.0f, 0.0f), float(M_PI/2));
   if (thisp->currAxis == 1) {
-    rot.setValue(SbVec3f(0.0f, 0.0f, 1.0f), M_PI/2);
+    rot.setValue(SbVec3f(0.0f, 0.0f, 1.0f), float(M_PI/2));
   }
   SbVec3f tt, s;
   SbRotation r, so;
