@@ -285,7 +285,6 @@ SoProto::writeInterface(SoOutput * out)
       assert(0 && "invalid field type");
       break;
     }
-    out->write("\n");
   }
   return TRUE;
 }
