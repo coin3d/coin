@@ -97,7 +97,7 @@ cc_barrier_enter(cc_barrier * barrier)
 */
 
 /*!
-  \fn SbBarrier::SbBarrier(int count)
+  \fn SbBarrier::SbBarrier(unsigned int count)
 
   Constructor.  The SbBarrier will be set for \c count number of
   threads.

@@ -261,7 +261,7 @@ cc_rwmutex_read_unlock(cc_rwmutex * rwmutex)
 */
 
 /*!
-  \fn SbRWMutex::SbRWMutex(void)
+  \fn SbRWMutex::SbRWMutex(Precedence policy)
 
   Constructor.
 */

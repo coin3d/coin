@@ -171,14 +171,14 @@ cc_condvar_wake_all(cc_condvar * condvar)
 */
 
 /*!
-  \fn SbBool SbCondVar::wait(void)
+  \fn SbBool SbCondVar::wait(SbMutex & mutex)
 
   This method blocks the calling thread until another thread calls
   wakeOne() or wakeAll() on the SbCondVar object.
 */
 
 /*!
-  \fn SbBool SbCondVar::timedWait(SbTime period)
+  \fn SbBool SbCondVar::timedWait(SbMutex & mutex, SbTime period)
 
   This method blocks the calling thread until another thread calls
   wakeOne() or wakeAll() on the object, but if this does not happen
