@@ -843,6 +843,10 @@ SoField::setContainer(SoFieldContainer * cont)
 
   if (oldcontainer) this->removeAuditor(oldcontainer, SoNotRec::CONTAINER);
   this->addAuditor(cont, SoNotRec::CONTAINER);
+
+  // The field should have been set to its default value before it is
+  // added to the container.
+  this->setDefault(TRUE);
 }
 
 /*!
@@ -864,14 +868,16 @@ SoField::getContainer(void) const
   must adhere to the ASCII format used in Coin data format files.
   Only the value should be specified, though - \e not the name of the field.
 
-  \a FALSE is returned if the stringencoded field value is invalid for the
-  field type and can't be parsed in any sensible way.
+  \c FALSE is returned if the stringencoded field value is invalid for
+  the field type and can't be parsed in any sensible way.
 
   \sa get()
- */
+*/
 SbBool
 SoField::set(const char * valueString)
 {
+  // FIXME: does this really work? Don't we need to account for the
+  // missing header identification line? 20000111 mortene.
   SoInput in;
   in.setBuffer((void *)valueString, strlen(valueString));
   if (!this->readValue(&in)) return FALSE;
