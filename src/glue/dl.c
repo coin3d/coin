@@ -182,26 +182,59 @@ cc_dl_get_win32_err(DWORD * lasterr, cc_string * str)
 /* Returns a string containing the search directories for
    dynamic libraries, separated by ':'. Needed since Mac OS X
    wants to have a full path to the library when loading it. */
+
 static const char * 
-cc_build_search_list()
+cc_build_search_list(const char * libname)
 {
   int image_count = _dyld_image_count();
   int i;
   size_t length;
   char * res_path = NULL;
   char * p = NULL;
-  char * path, * dyld_path, * default_path;
+  char * path, * framework_path, * dyld_path, * default_path;
+
   
-  /* We first want to search for simage in the default 
-     locations (specified by DYLD_LIBRARY_PATH, and the
-     system's library path). If we do not find it there,
-     we fall back to the simage library shipped with Coin. */
+  /* First, let's see if we have this library as Framework in
+     /Library/Frameworks/$libname.framework/$libname. 
+
+     Note that this will only work if the framework is installed in
+     /Library/Frameworks.  The more correct thing to do would maybe be
+     to search within the DYLD_FRAMEWORK_PATH, but then again, loading
+     frameworks at runtime is not something you are supposed to do in
+     general, even though it is technically possible. (The "Foo" file
+     in Foo.framework/Foo is nothing but a plain MH_DYLIB file, so we
+     can open it as if it was a *.dylib)
+
+     Actually, this is a hack created for OpenAL, since the source
+     distribution is major PITA to set up (at least for $Mac_user),
+     and the binary installer by Creative installs OpenAL as
+     framework. 
+
+     kyrah 20030311 */
+
+  const char * framework_prefix = "/Library/Frameworks/";
+  const char * framework_ext = ".framework";
+  length = strlen(framework_prefix) + strlen(framework_ext) +
+    strlen(libname) + 1;
+  framework_path = malloc(length);
+  snprintf(framework_path, length, "%s%s%s", framework_prefix,
+           libname, framework_ext);
+  
+
+  /* We also want to search in the default locations (specified by
+     DYLD_LIBRARY_PATH, and the system's library path). */
 
   dyld_path = getenv("DYLD_LIBRARY_PATH"); 
   if (!dyld_path) dyld_path = "";
   
   default_path = getenv("DYLD_FALLBACK_LIBRARY_PATH");
   if (!default_path) default_path = "/usr/local/lib:/lib:/usr/lib";
+
+
+  /* If we cannot find the library on the system, we might have a
+     fallback shipped with Coin / the Inventor.framework.  Get the
+     file system path to the actually loaded Inventor.framework, and
+     look for the library in its Resources folder. */
 
   for (i = 0; i < image_count; i++) {
     if (_dyld_get_image_header(i) == &_mh_dylib_header) {
@@ -218,14 +251,16 @@ cc_build_search_list()
     }
   }
   
-  length = strlen(dyld_path) + strlen(default_path) + 
-           (res_path ? strlen(res_path) : 0) + 3;
+  length = strlen(framework_path) + strlen(dyld_path) + strlen(default_path) + 
+           (res_path ? strlen(res_path) : 0) + 4;
 
   path = malloc(length);
-  snprintf(path, length, "%s%s%s%s%s", 
+  snprintf(path, length, "%s%s%s%s%s%s%s",
+           framework_path, ":",
            dyld_path, dyld_path[0] ? ":" : "", default_path, 
            res_path ? ":" : "" , res_path ? res_path : "");
 
+  free(framework_path);
   free(res_path);
   return path;
 }
@@ -245,32 +280,38 @@ cc_get_full_path(int i, const char * file)
   static int end_reached = 0;
   
   /* Create list the first time around. */
-  if (!list && !end_reached) list = cc_build_search_list();
+  if (!list && !end_reached) list = cc_build_search_list(file);
   
   while (!path[i] && !end_reached) {
     path[i] = strsep((char **) &list, ":");
     if (path[i][0] == 0) path[i] = 0;
-    end_reached = list == 0;
+    end_reached = (list == 0);
   }
 
   if (path[i]) {
     snprintf(fullpath, PATH_MAX, "%s/%s", path[i], file);
     return fullpath;
   }
+
   return NULL;
 }
 
 /* Try to determine full path for file. */
+
 static const struct stat *
 cc_find_file(const char * file, const char ** fullpath)
 {
   int i = 0;
   static struct stat sbuf;
+
   *fullpath = file;
-  do { if (0 == stat(*fullpath, &sbuf)) {
-         return &sbuf;
-    } 
-  } while ((*fullpath = cc_get_full_path(i++, file)));
+
+  while ((*fullpath = cc_get_full_path(i++, file))) {
+    if (stat(*fullpath, &sbuf) == 0) {
+      return &sbuf;
+    }   
+  }
+  
   return 0;
 }
 
@@ -320,7 +361,8 @@ cc_dl_open(const char * filename)
   if (cc_dl_debugging() && (h->nativehnd == NULL)) {
     const char * e = dlerror();
     if (e) {
-      cc_debugerror_post("cc_dl_open", "dlopen(\"%s\") failed with: '%s'", filename, e);
+      cc_debugerror_post("cc_dl_open", "dlopen(\"%s\") failed with: '%s'", 
+                         filename, e);
     }
   }
 
