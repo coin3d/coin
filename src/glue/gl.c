@@ -1882,10 +1882,9 @@ glglue_allow_newer_opengl(const cc_glglue * w)
   if (force1_0) return FALSE;
 
   if (!w->glx.isdirect && !fullindirect) {
-    /* We give out a warning when the full OpenGL feature set is not
-       used, in case the end user uses an application with a remote
-       display, and that was not expected by the application
-       programmer. */
+    /* We give out a warning, once, when the full OpenGL feature set is not
+       used, in case the end user uses an application with a remote display,
+       and that was not expected by the application programmer. */
     static int inform = -1;
     if (inform == -1) { inform = glglue_resolve_envvar(COIN_DONT_INFORM_INDIRECT_RENDERING); }
     if (inform == 0) {
@@ -1900,8 +1899,8 @@ glglue_allow_newer_opengl(const cc_glglue * w)
                              "set the environment variable %s=1.\n",
                              COIN_FULL_INDIRECT_RENDERING,
                              COIN_DONT_INFORM_INDIRECT_RENDERING);
+      inform = 1;
     }
-
     return FALSE;
   }
 
