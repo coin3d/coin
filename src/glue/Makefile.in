@@ -250,6 +250,7 @@ RegularSources = \
 	openal_wrapper.c \
         fontlib_wrapper.c \
 	win32api.c \
+	zlib.c \
 	glue-dummy.cpp
 
 
@@ -271,7 +272,8 @@ PrivateHeaders = \
 	../../include/Inventor/C/glue/simage_wrapper.h \
 	../../include/Inventor/C/glue/openal_wrapper.h \
         ../../include/Inventor/C/glue/fontlib_wrapper.h \
-        ../../include/Inventor/C/glue/win32api.h
+        ../../include/Inventor/C/glue/win32api.h \
+        ../../include/Inventor/C/glue/zlib.h
 
 
 
@@ -335,14 +337,14 @@ glue_lst_AR = $(AR) cru
 glue_lst_LIBADD =
 am__glue_lst_SOURCES_DIST = flwfreetype.c flwwin32.c dl.c gl.c gl_wgl.c \
 	gl_agl.c gl_glx.c GLUWrapper.c simage_wrapper.c \
-	openal_wrapper.c fontlib_wrapper.c win32api.c glue-dummy.cpp \
-	all-c.c
+	openal_wrapper.c fontlib_wrapper.c win32api.c zlib.c \
+	glue-dummy.cpp all-c.c
 am__objects_1 = all-c.$(OBJEXT) glue-dummy.$(OBJEXT)
 am__objects_2 = flwfreetype.$(OBJEXT) flwwin32.$(OBJEXT) dl.$(OBJEXT) \
 	gl.$(OBJEXT) gl_wgl.$(OBJEXT) gl_agl.$(OBJEXT) gl_glx.$(OBJEXT) \
 	GLUWrapper.$(OBJEXT) simage_wrapper.$(OBJEXT) \
 	openal_wrapper.$(OBJEXT) fontlib_wrapper.$(OBJEXT) \
-	win32api.$(OBJEXT) glue-dummy.$(OBJEXT)
+	win32api.$(OBJEXT) zlib.$(OBJEXT) glue-dummy.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_glue_lst_OBJECTS = $(am__objects_3)
@@ -357,10 +359,11 @@ am__EXTRA_glue_lst_SOURCES_DIST = \
 	../../include/Inventor/C/glue/simage_wrapper.h \
 	../../include/Inventor/C/glue/openal_wrapper.h \
 	../../include/Inventor/C/glue/fontlib_wrapper.h \
-	../../include/Inventor/C/glue/win32api.h all-c.c glue-dummy.cpp \
+	../../include/Inventor/C/glue/win32api.h \
+	../../include/Inventor/C/glue/zlib.h all-c.c glue-dummy.cpp \
 	flwfreetype.c flwwin32.c dl.c gl.c gl_wgl.c gl_agl.c gl_glx.c \
 	GLUWrapper.c simage_wrapper.c openal_wrapper.c \
-	fontlib_wrapper.c win32api.c
+	fontlib_wrapper.c win32api.c zlib.c
 glue_lst_OBJECTS = $(am_glue_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -368,12 +371,13 @@ libglue_la_LDFLAGS =
 libglue_la_LIBADD =
 am__libglue_la_SOURCES_DIST = flwfreetype.c flwwin32.c dl.c gl.c \
 	gl_wgl.c gl_agl.c gl_glx.c GLUWrapper.c simage_wrapper.c \
-	openal_wrapper.c fontlib_wrapper.c win32api.c glue-dummy.cpp \
-	all-c.c
+	openal_wrapper.c fontlib_wrapper.c win32api.c zlib.c \
+	glue-dummy.cpp all-c.c
 am__objects_6 = all-c.lo glue-dummy.lo
 am__objects_7 = flwfreetype.lo flwwin32.lo dl.lo gl.lo gl_wgl.lo \
 	gl_agl.lo gl_glx.lo GLUWrapper.lo simage_wrapper.lo \
-	openal_wrapper.lo fontlib_wrapper.lo win32api.lo glue-dummy.lo
+	openal_wrapper.lo fontlib_wrapper.lo win32api.lo zlib.lo \
+	glue-dummy.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libglue_la_OBJECTS = $(am__objects_8)
@@ -388,17 +392,18 @@ am__EXTRA_libglue_la_SOURCES_DIST = \
 	../../include/Inventor/C/glue/simage_wrapper.h \
 	../../include/Inventor/C/glue/openal_wrapper.h \
 	../../include/Inventor/C/glue/fontlib_wrapper.h \
-	../../include/Inventor/C/glue/win32api.h all-c.c glue-dummy.cpp \
+	../../include/Inventor/C/glue/win32api.h \
+	../../include/Inventor/C/glue/zlib.h all-c.c glue-dummy.cpp \
 	flwfreetype.c flwwin32.c dl.c gl.c gl_wgl.c gl_agl.c gl_glx.c \
 	GLUWrapper.c simage_wrapper.c openal_wrapper.c \
-	fontlib_wrapper.c win32api.c
+	fontlib_wrapper.c win32api.c zlib.c
 libglue_la_OBJECTS = $(am_libglue_la_OBJECTS)
 libglue@SUFFIX@LINKHACK_la_LDFLAGS =
 libglue@SUFFIX@LINKHACK_la_LIBADD =
 am__libglue@SUFFIX@LINKHACK_la_SOURCES_DIST = flwfreetype.c flwwin32.c \
 	dl.c gl.c gl_wgl.c gl_agl.c gl_glx.c GLUWrapper.c \
 	simage_wrapper.c openal_wrapper.c fontlib_wrapper.c win32api.c \
-	glue-dummy.cpp all-c.c
+	zlib.c glue-dummy.cpp all-c.c
 am_libglue@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libglue@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/C/glue/flwfreetype.h \
@@ -411,10 +416,11 @@ am__EXTRA_libglue@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/C/glue/simage_wrapper.h \
 	../../include/Inventor/C/glue/openal_wrapper.h \
 	../../include/Inventor/C/glue/fontlib_wrapper.h \
-	../../include/Inventor/C/glue/win32api.h all-c.c glue-dummy.cpp \
+	../../include/Inventor/C/glue/win32api.h \
+	../../include/Inventor/C/glue/zlib.h all-c.c glue-dummy.cpp \
 	flwfreetype.c flwwin32.c dl.c gl.c gl_wgl.c gl_agl.c gl_glx.c \
 	GLUWrapper.c simage_wrapper.c openal_wrapper.c \
-	fontlib_wrapper.c win32api.c
+	fontlib_wrapper.c win32api.c zlib.c
 libglue@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libglue@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -436,7 +442,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/openal_wrapper.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/simage_wrapper.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/simage_wrapper.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/win32api.Plo ./$(DEPDIR)/win32api.Po
+@AMDEP_TRUE@	./$(DEPDIR)/win32api.Plo ./$(DEPDIR)/win32api.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/zlib.Plo ./$(DEPDIR)/zlib.Po
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
@@ -551,6 +558,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/simage_wrapper.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/win32api.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/win32api.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/zlib.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/zlib.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
