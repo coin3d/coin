@@ -63,9 +63,10 @@ public:
     INVENTOR_2_0 = 0x008,
     INVENTOR_2_1 = 0x010,
     INVENTOR_2_5 = 0x020,
-    COIN_1_0     = 0x040,
-    COIN_2_0     = 0x080,
-    EXTENSION    = 0x100
+    INVENTOR_2_6 = 0x040,
+    COIN_1_0     = 0x080,
+    COIN_2_0     = 0x100,
+    EXTENSION    = 0x200
   };
 
   static uint32_t getCompatibilityTypes(const SoType & nodetype);
