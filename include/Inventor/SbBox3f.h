@@ -37,6 +37,8 @@ public:
 
   const SbVec3f & getMin(void) const;
   const SbVec3f & getMax(void) const;
+  SbVec3f & getMin(void);
+  SbVec3f & getMax(void);
 
   SbVec3f getCenter(void) const;
 

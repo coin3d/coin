@@ -106,6 +106,24 @@ SbBox3f::getMax(void) const
 }
 
 /*!
+  Returns a modifiable reference the minimum point.
+*/
+SbVec3f &
+SbBox3f::getMin(void)
+{
+  return min;
+}
+
+/*!
+  Returns a modifiable reference the maximum point.
+*/
+SbVec3f &
+SbBox3f::getMax(void)
+{
+  return max;
+}
+
+/*!
   Returns the center point of the box.
  */
 SbVec3f
