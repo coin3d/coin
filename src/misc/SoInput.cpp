@@ -125,7 +125,6 @@
 
 
 const unsigned int READBUFSIZE = 65536;
-static const char IS_KEYWORD[] = "IS";
 
 // *************************************************************************
 
