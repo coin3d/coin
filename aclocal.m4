@@ -398,29 +398,29 @@ AC_ARG_WITH([msvcrt],
     ;;
   multithread-static | mt | /mt | libcmt | libcmt\.lib )
     sim_ac_msvcrt=multithread-static
-    sim_ac_msvcrt_CFLAGS="/MT"
-    sim_ac_msvcrt_CXXFLAGS="/MT"
+    sim_ac_msvcrt_CFLAGS="/MT -D_MT -D_DLL"
+    sim_ac_msvcrt_CXXFLAGS="/MT -D_MT -D_DLL"
     sim_ac_msvcrt_LIBLDFLAGS="/LINK /NODEFAULTLIB:libc"
     sim_ac_msvcrt_LIBLIBS="-llibcmt"
     ;;
   multithread-static-debug | mtd | /mtd | libcmtd | libcmtd\.lib )
     sim_ac_msvcrt=multithread-static-debug
-    sim_ac_msvcrt_CFLAGS="/MTd"
-    sim_ac_msvcrt_CXXFLAGS="/MTd"
+    sim_ac_msvcrt_CFLAGS="/MTd -D_MT -D_DLL"
+    sim_ac_msvcrt_CXXFLAGS="/MTd -D_MT -D_DLL"
     sim_ac_msvcrt_LIBLDFLAGS="/NODEFAULTLIB:libc"
     sim_ac_msvcrt_LIBLIBS="-llibcmtd"
     ;;
   multithread-dynamic | md | /md | msvcrt | msvcrt\.lib )
     sim_ac_msvcrt=multithread-dynamic
-    sim_ac_msvcrt_CFLAGS=""
-    sim_ac_msvcrt_CXXFLAGS=""
+    sim_ac_msvcrt_CFLAGS="/MD -D_DLL"
+    sim_ac_msvcrt_CXXFLAGS="/MD -D_DLL"
     sim_ac_msvcrt_LIBLDFLAGS="/LINK /NODEFAULTLIB:libc"
     sim_ac_msvcrt_LIBLIBS="-lmsvcrt"
     ;;
   multithread-dynamic-debug | mdd | /mdd | msvcrtd | msvcrtd\.lib )
     sim_ac_msvcrt=multithread-dynamic-debug
-    sim_ac_msvcrt_CFLAGS="/MDd"
-    sim_ac_msvcrt_CXXFLAGS="/MDd"
+    sim_ac_msvcrt_CFLAGS="/MDd -D_DLL"
+    sim_ac_msvcrt_CXXFLAGS="/MDd -D_DLL"
     sim_ac_msvcrt_LIBLDFLAGS="/LINK /NODEFAULTLIB:libc"
     sim_ac_msvcrt_LIBLIBS="-lmsvcrtd"
     ;;
