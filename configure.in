@@ -217,7 +217,6 @@ AM_CONDITIONAL(BUILD_WITH_SUPERGLU, $enable_superglu)
 
 sim_ac_enable_threads=false
 if test -f ${srcdir}/src/extensions/threads/configure; then
-  AC_CONFIG_SUBDIRS([src/extensions/threads])
   sim_ac_enable_threads=true
   AC_DEFINE([HAVE_THREADS],, [*EXPERIMENTAL* to use the threads extension])
   HAVE_THREADS=1
@@ -991,6 +990,10 @@ AC_CONFIG_FILES([
         src/extensions/Makefile
         docs/coin.doxygen
 ])
+
+if $sim_ac_enable_threads; then
+  AC_CONFIG_SUBDIRS([src/extensions/threads])
+fi
 
 AC_OUTPUT
 
