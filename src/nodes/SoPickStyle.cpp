@@ -107,6 +107,9 @@ SoPickStyle::doAction(SoAction *action)
       && !SoOverrideElement::getPickStyleOverride(action->getState())) {
     SoPickStyleElement::set(action->getState(), this,
                             (int32_t) style.getValue());
+    if (this->isOverride()) {
+      SoOverrideElement::setPickStyleOverride(action->getState(), this, TRUE);
+    }
   }
 }
 

@@ -140,6 +140,10 @@ SoPolygonOffset::doAction(SoAction * action)
                               _units,
                               _styles,
                               _on);
+
+  if (this->isOverride()) {
+    SoOverrideElement::setPolygonOffsetOverride(state, this, TRUE);
+  }
 }
 
 /*!

@@ -166,6 +166,9 @@ SoMaterialBinding::doAction(SoAction *action)
     SoMaterialBindingElement::set(action->getState(),
                                   (SoMaterialBindingElement::Binding)
                                   value.getValue());
+    if (this->isOverride()) {
+      SoOverrideElement::setMaterialBindingOverride(action->getState(), this, TRUE);
+    }
   }
 }
 

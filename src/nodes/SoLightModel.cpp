@@ -110,6 +110,9 @@ SoLightModel::doAction(SoAction *action)
       && !SoOverrideElement::getLightModelOverride(action->getState())) {
     SoLightModelElement::set(action->getState(), this,
                              (SoLightModelElement::Model)model.getValue());
+    if (this->isOverride()) {
+      SoOverrideElement::setLightModelOverride(action->getState(), this, TRUE);
+    }
   }
 }
 

@@ -180,19 +180,34 @@ SoShapeHints::doAction(SoAction * action)
   SoShapeHintsElement::FaceType ft;
   SoShapeHintsElement::get(state, vo, st, ft);
 
-  if (!vertexOrdering.isIgnored() && !TEST_OVERRIDE(SHAPE_HINTS))
+  if (!vertexOrdering.isIgnored() && !TEST_OVERRIDE(SHAPE_HINTS)) {
     vo = (SoShapeHintsElement::VertexOrdering) vertexOrdering.getValue();
-  if (!shapeType.isIgnored() && !TEST_OVERRIDE(SHAPE_HINTS))
+    if (this->isOverride()) {
+      SoOverrideElement::setShapeHintsOverride(state, this, TRUE);
+    }
+  }
+  if (!shapeType.isIgnored() && !TEST_OVERRIDE(SHAPE_HINTS)) {
     st = (SoShapeHintsElement::ShapeType) shapeType.getValue();
-  if (!faceType.isIgnored() && !TEST_OVERRIDE(SHAPE_HINTS))
+    if (this->isOverride()) {
+      SoOverrideElement::setShapeHintsOverride(state, this, TRUE);
+    }
+  }
+  if (!faceType.isIgnored() && !TEST_OVERRIDE(SHAPE_HINTS)) {
     ft = (SoShapeHintsElement::FaceType) faceType.getValue();
-
+    if (this->isOverride()) {
+      SoOverrideElement::setShapeHintsOverride(state, this, TRUE);
+    }
+  }
   SoShapeHintsElement::set(action->getState(), this,
                            vo, st, ft);
 
-  if (!creaseAngle.isIgnored() && !TEST_OVERRIDE(CREASE_ANGLE))
+  if (!creaseAngle.isIgnored() && !TEST_OVERRIDE(CREASE_ANGLE)) {
     SoCreaseAngleElement::set(state, this,
                               creaseAngle.getValue());
+    if (this->isOverride()) {
+      SoOverrideElement::setCreaseAngleOverride(state, this, TRUE);
+    }
+  }
 #undef TEST_OVERRIDE
 }
 

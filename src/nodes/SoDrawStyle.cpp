@@ -145,15 +145,27 @@ SoDrawStyle::doAction(SoAction *action)
   if (!style.isIgnored() && !TEST_OVERRIDE(DRAW_STYLE)) {
     SoDrawStyleElement::set(state, this,
                             (SoDrawStyleElement::Style)style.getValue());
+    if (this->isOverride()) {
+      SoOverrideElement::setDrawStyleOverride(state, this, TRUE);
+    }
   }
   if (!linePattern.isIgnored() && !TEST_OVERRIDE(LINE_PATTERN)) {
     SoLinePatternElement::set(state, this, linePattern.getValue());
+    if (this->isOverride()) {
+      SoOverrideElement::setLinePatternOverride(state, this, TRUE);
+    }
   }
   if (!lineWidth.isIgnored() && !TEST_OVERRIDE(LINE_WIDTH)) {
     SoLineWidthElement::set(state, this, lineWidth.getValue());
+    if (this->isOverride()) {
+      SoOverrideElement::setLineWidthOverride(state, this, TRUE);
+    }
   }
   if (!pointSize.isIgnored() && !TEST_OVERRIDE(POINT_SIZE)) {
     SoPointSizeElement::set(state, this, pointSize.getValue());
+    if (this->isOverride()) {
+      SoOverrideElement::setPointSizeOverride(state, this, TRUE);
+    }
   }
 #undef TEST_OVERRIDE
 

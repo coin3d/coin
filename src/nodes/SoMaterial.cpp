@@ -195,36 +195,55 @@ SoMaterial::doAction(SoAction *action)
                                this,
                                ambientColor.getNum(),
                                ambientColor.getValues(0));
+    if (this->isOverride()) {
+      SoOverrideElement::setAmbientColorOverride(state, this, TRUE);
+    }
   }
   if (!diffuseColor.isIgnored() && !TEST_OVERRIDE(DIFFUSE_COLOR)) {
     SoDiffuseColorElement::set(action->getState(),
                                this,
                                diffuseColor.getNum(),
                                diffuseColor.getValues(0));
+    if (this->isOverride()) {
+      SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
+    }
   }
   if (!emissiveColor.isIgnored() && !TEST_OVERRIDE(EMISSIVE_COLOR)) {
     SoEmissiveColorElement::set(action->getState(),
                                 this,
                                 emissiveColor.getNum(),
                                 emissiveColor.getValues(0));
+    if (this->isOverride()) {
+      SoOverrideElement::setEmissiveColorOverride(state, this, TRUE);
+    }
+
   }
   if (!specularColor.isIgnored() && !TEST_OVERRIDE(SPECULAR_COLOR)) {
     SoSpecularColorElement::set(action->getState(),
                                 this,
                                 specularColor.getNum(),
                                 specularColor.getValues(0));
+    if (this->isOverride()) {
+      SoOverrideElement::setSpecularColorOverride(state, this, TRUE);
+    }
   }
   if (!shininess.isIgnored() && !TEST_OVERRIDE(SHININESS)) {
     SoShininessElement::set(action->getState(),
                             this,
                             shininess.getNum(),
                             shininess.getValues(0));
+    if (this->isOverride()) {
+      SoOverrideElement::setShininessOverride(state, this, TRUE);
+    }
   }
   if (!transparency.isIgnored() && !TEST_OVERRIDE(TRANSPARENCY)) {
     SoTransparencyElement::set(action->getState(),
                                this,
                                transparency.getNum(),
                                transparency.getValues(0));
+    if (this->isOverride()) {
+      SoOverrideElement::setTransparencyOverride(state, this, TRUE);
+    }
   }
 #undef TEST_OVERRIDE
 }

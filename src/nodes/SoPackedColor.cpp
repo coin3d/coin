@@ -36,6 +36,7 @@
 #include <Inventor/elements/SoDiffuseColorElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/elements/SoOverrideElement.h>
 
 /*!
   \var SoMFUInt32 SoPackedColor::orderedRGBA
@@ -100,6 +101,9 @@ SoPackedColor::doAction(SoAction *action)
                                this,
                                orderedRGBA.getNum(),
                                orderedRGBA.getValues(0));
+    if (this->isOverride()) {
+      SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
+    }
   }
 }
 

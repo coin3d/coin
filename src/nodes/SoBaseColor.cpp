@@ -38,6 +38,7 @@
 #include <Inventor/elements/SoDiffuseColorElement.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoPickAction.h>
+#include <Inventor/elements/SoOverrideElement.h>
 
 
 /*!
@@ -98,11 +99,16 @@ SoBaseColor::GLRender(SoGLRenderAction * action)
 void
 SoBaseColor::doAction(SoAction *action)
 {
-  if (!rgb.isIgnored()) {
-    SoDiffuseColorElement::set(action->getState(),
+  SoState *state = action->getState();
+
+  if (!rgb.isIgnored() && !SoOverrideElement::getDiffuseColorOverride(state)) {
+    SoDiffuseColorElement::set(state,
                                this,
                                rgb.getNum(),
                                rgb.getValues(0));
+    if (this->isOverride()) {
+      SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
+    }
   }
 }
 

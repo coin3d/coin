@@ -103,10 +103,18 @@ SoFont::doAction(SoAction * action)
   uint32_t flags = SoOverrideElement::getFlags(state);
 #define TEST_OVERRIDE(bit) ((SoOverrideElement::bit & flags) != 0)
 
-  if (!name.isIgnored() && !TEST_OVERRIDE(FONT_NAME))
+  if (!name.isIgnored() && !TEST_OVERRIDE(FONT_NAME)) {
     SoFontNameElement::set(state, this, this->name.getValue());
-  if (!size.isIgnored() && !TEST_OVERRIDE(FONT_SIZE))
+    if (this->isOverride()) {
+      SoOverrideElement::setFontNameOverride(state, this, TRUE);
+    }
+  }
+  if (!size.isIgnored() && !TEST_OVERRIDE(FONT_SIZE)) {
     SoFontSizeElement::set(state, this, this->size.getValue());
+    if (this->isOverride()) {
+      SoOverrideElement::setFontSizeOverride(state, this, TRUE);
+    }
+  }
 #undef TEST_OVERRIDE
 }
 

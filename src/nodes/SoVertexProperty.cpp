@@ -209,27 +209,26 @@ SoVertexProperty::getBoundingBox(SoGetBoundingBoxAction * action)
 void
 SoVertexProperty::GLRender(SoGLRenderAction * action)
 {
+  SoState *state = action->getState();
+  SbBool materialbindoverride = SoOverrideElement::getMaterialBindingOverride(state);
+
   if (texCoord.getNum() > 0) {
-    SoGLTextureCoordinateElement::setTexGen(action->getState(),
+    SoGLTextureCoordinateElement::setTexGen(state,
                                             this, NULL);
   }
 
-  SoVertexProperty::doAction((SoAction*)action);
-  SoState *state = action->getState();
-  if (!normalBinding.isIgnored()) {
-    Binding binding = (Binding)normalBinding.getValue();
+  SoVertexProperty::doAction(action);
+  if (!this->normalBinding.isIgnored()) {
+    Binding binding = (Binding)this->normalBinding.getValue();
     SoGLShadeModelElement::setNormal(state,
                                      binding == PER_VERTEX ||
                                      binding == PER_VERTEX_INDEXED);
   }
-  if (!materialBinding.isIgnored()
-      && !SoOverrideElement::getMaterialBindingOverride(state)) {
-    Binding binding = (Binding)materialBinding.getValue();
+  if (!materialbindoverride && !this->materialBinding.isIgnored()) {
+    Binding binding = (Binding) this->materialBinding.getValue();  
     SoGLShadeModelElement::setMaterial(state,
                                        binding == PER_VERTEX ||
                                        binding == PER_VERTEX_INDEXED);
-
-
   }
 }
 
@@ -240,34 +239,39 @@ void
 SoVertexProperty::doAction(SoAction *action)
 {
   SoState * state = action->getState();
-  if (vertex.getNum() > 0)
-    SoCoordinateElement::set3(state, this, vertex.getNum(),
-                              vertex.getValues(0));
+  if (this->vertex.getNum() > 0)
+    SoCoordinateElement::set3(state, this, this->vertex.getNum(),
+                              this->vertex.getValues(0));
 
-  if (texCoord.getNum() > 0) {
-    SoTextureCoordinateElement::set2(state, this, texCoord.getNum(),
-                                     texCoord.getValues(0));
+  if (this->texCoord.getNum() > 0) {
+    SoTextureCoordinateElement::set2(state, this, this->texCoord.getNum(),
+                                     this->texCoord.getValues(0));
   }
-  if (normal.getNum() > 0) {
-    SoNormalElement::set(state, this, normal.getNum(),
-                         normal.getValues(0));
+  if (this->normal.getNum() > 0) {
+    SoNormalElement::set(state, this, this->normal.getNum(),
+                         this->normal.getValues(0));
   }
-  if (!normalBinding.isIgnored()
-      ) {
+  if (!this->normalBinding.isIgnored()) {
     SoNormalBindingElement::set(state, this,
                                 (SoNormalBindingElement::Binding)
-                                normalBinding.getValue());
+                                this->normalBinding.getValue());
   }
-  if (orderedRGBA.getNum() > 0
+  if (this->orderedRGBA.getNum() > 0
       && !SoOverrideElement::getDiffuseColorOverride(state)) {
-    SoDiffuseColorElement::set(state, this, orderedRGBA.getNum(),
-                               orderedRGBA.getValues(0));
+    SoDiffuseColorElement::set(state, this, this->orderedRGBA.getNum(),
+                               this->orderedRGBA.getValues(0));
+    if (this->isOverride()) {
+      SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
+    }
   }
-  if (!materialBinding.isIgnored()
+  if (!this->materialBinding.isIgnored()
       && !SoOverrideElement::getMaterialBindingOverride(state)) {
     SoMaterialBindingElement::set(state, this,
                                   (SoMaterialBindingElement::Binding)
-                                  materialBinding.getValue());
+                                  this->materialBinding.getValue());
+    if (this->isOverride()) {
+      SoOverrideElement::setMaterialBindingOverride(state, this, TRUE);
+    }
   }
 }
 
