@@ -324,21 +324,11 @@ SoGetBoundingBoxAction::checkResetBefore(void)
 void
 SoGetBoundingBoxAction::checkResetAfter(void)
 {
-  if (this->resetpath && !this->isResetBefore()) {
-    const SoFullPath * curpath = (const SoFullPath *) this->getCurPath();
-    const SoFullPath * resetpath = (const SoFullPath *) this->resetpath;
-    if ((curpath->getTail() == resetpath->getTail()) &&
-        curpath->containsPath(resetpath)) {
-      if (this->resettype & SoGetBoundingBoxAction::TRANSFORM) {
-        SoBBoxModelMatrixElement::reset(this->getState(), curpath->getTail());
-      }
-      if (this->resettype & SoGetBoundingBoxAction::BBOX) {
-        this->bbox.makeEmpty();
-        this->bbox.setTransform(SbMatrix::identity());
-        this->resetCenter();
-      }
-    }
-  }
+  // FIXME: The content of the 'reset before' and 'resetAfter' methods
+  // was identical prior to this date. Remove one and replace with a
+  // 'checkReset' method for clarity?  
+  // rolvs 20030117
+  this->checkResetBefore(); 
 }
 
 /*!
@@ -437,6 +427,10 @@ SoGetBoundingBoxAction::isCenterSet(void) const
 void
 SoGetBoundingBoxAction::resetCenter(void)
 {
+#if COIN_DEBUG && 1
+  SoDebugError::postInfo("SoGetBoundingBoxAction::resetCenter", "dtdt" );
+#endif
+
   this->flags &= ~SoGetBoundingBoxAction::CENTER_SET;
   this->center.setValue(0.0f, 0.0f, 0.0f);
 }
