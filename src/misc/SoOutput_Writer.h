@@ -27,18 +27,6 @@
 #include <Inventor/SoOutput.h>
 #include <stdio.h>
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
-
-#ifdef HAVE_ZLIB
-#include <zlib.h>
-#endif // HAVE_ZLIB
-
-#ifdef HAVE_BZIP2
-#include <bzlib.h>
-#endif // HAVE_BZIP2
-
 class SoOutput_Writer {
 public:
   SoOutput_Writer(void);
@@ -66,7 +54,7 @@ public:
   // return the number of bytes actually written.
   virtual size_t write(const char * buf, size_t numbytes, const SbBool binary) = 0;
 
-  static SoOutput_Writer * createWriter(FILE * fp, 
+  static SoOutput_Writer * createWriter(FILE * fp,
                                         const SbBool shouldclose,
                                         const SbName & compmethod,
                                         const float level);
@@ -113,7 +101,6 @@ public:
   int32_t startoffset;
 };
 
-#ifdef HAVE_ZLIB
 // class for zlib writing
 class SoOutput_GZFileWriter : public SoOutput_Writer {
 public:
@@ -125,12 +112,9 @@ public:
   virtual size_t write(const char * buf, size_t numbytes, const SbBool binary);
 
 public:
-  gzFile gzfp;
+  void * gzfp;
 };
-#endif // HAVE_ZLIB
 
-#ifdef HAVE_BZIP2
-// class for bzip2 writing
 class SoOutput_BZ2FileWriter : public SoOutput_Writer {
 public:
   SoOutput_BZ2FileWriter(FILE * fp, const SbBool shouldclose, const float level);
@@ -141,11 +125,9 @@ public:
   virtual size_t write(const char * buf, size_t numbytes, const SbBool binary);
 
 public:
-  BZFILE * bzfp;
+  void * bzfp;
   FILE * fp;
   uint32_t writecounter;
 };
-#endif // HAVE_BZIP2
-
 
 #endif // COIN_SOOUTPUT_WRITER_H

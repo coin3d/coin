@@ -24,6 +24,7 @@
 #include "SoOutput_Writer.h"
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbName.h>
+#include <Inventor/C/glue/zlib.h>
 #include <string.h>
 #include <assert.h>
 
@@ -39,6 +40,8 @@
 #ifdef HAVE_IO_H
 #include <io.h> // Win32 dup()
 #endif // HAVE_IO_H
+
+#include <bzlib.h>
 
 //
 // abstract interface class
@@ -65,11 +68,17 @@ SoOutput_Writer::createWriter(FILE * fp,
                               const SbName & compmethod,
                               const float level)
 {
-#ifdef HAVE_ZLIB
   if (compmethod == "GZIP") {
-    return new SoOutput_GZFileWriter(fp, shouldclose, level);
+    if (cc_zlibglue_available()) {
+      return new SoOutput_GZFileWriter(fp, shouldclose, level);
+    }
+    else {
+      SoDebugError::postWarning("SoOutput_Writer::createWriter",
+                                "Requested zlib compression, but zlib is not available.");
+    }
+    // return default writer
+    return new SoOutput_FileWriter(fp, shouldclose);
   }
-#endif // HAVE_ZLIB
 #ifdef HAVE_BZIP2
   if (compmethod == "BZIP2") {
     return new SoOutput_BZ2FileWriter(fp, shouldclose, level);
@@ -187,8 +196,6 @@ SoOutput_MemBufferWriter::makeRoomInBuf(size_t bytes)
   return TRUE;
 }
 
-
-#ifdef HAVE_ZLIB
 //
 // zlib writer
 //
@@ -205,7 +212,7 @@ SoOutput_GZFileWriter::SoOutput_GZFileWriter(FILE * fp, const SbBool shouldclose
     // convert level from [0.0, 1.0] to [1, 9]
     mode.addIntString((int) SbClamp((level * 8.0f) + 1.0f, 1.0f, 9.0f));
 
-    this->gzfp = gzdopen(fd, mode.getString());
+    this->gzfp = cc_zlibglue_gzdopen(fd, mode.getString());
     if (!this->gzfp) {
       SoDebugError::postWarning("SoOutput_GZFileWriter::SoOutput_GZFileWriter", 
                                 "Unable to open file for writing.");    
@@ -221,7 +228,7 @@ SoOutput_GZFileWriter::SoOutput_GZFileWriter(FILE * fp, const SbBool shouldclose
 SoOutput_GZFileWriter::~SoOutput_GZFileWriter()
 {
   if (this->gzfp) {
-    gzclose(this->gzfp);
+    cc_zlibglue_gzclose(this->gzfp);
   }
 }
 
@@ -236,7 +243,7 @@ size_t
 SoOutput_GZFileWriter::write(const char * buf, size_t numbytes, const SbBool binary)
 {
   if (this->gzfp) {
-    return gzwrite(this->gzfp, (void*)buf, numbytes);
+    return cc_zlibglue_gzwrite(this->gzfp, (void*)buf, numbytes);
   }
   return 0;
 }
@@ -245,15 +252,11 @@ size_t
 SoOutput_GZFileWriter::bytesInBuf(void)
 {
   if (this->gzfp) {
-    return gztell(this->gzfp);
+    return cc_zlibglue_gztell(this->gzfp);
   }
   return 0;
 }
 
-#endif // HAVE_ZLIB
-
-
-#ifdef HAVE_BZIP2
 //
 // bzip2 writer
 //
@@ -322,6 +325,4 @@ SoOutput_BZ2FileWriter::bytesInBuf(void)
 {
   return this->writecounter;
 }
-
-#endif // HAVE_BZIP2
 

@@ -30,14 +30,13 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
-#ifdef HAVE_ZLIB
-
 #include "gzmemio.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <zlib.h>
+#include <zlib.h> // FIXME: remove this include. pederb, 2003-07-07
 #include <string.h>
 #include <assert.h>
+#include <Inventor/C/glue/zlib.h>
 
 #define Z_BUFSIZE 16384
 #define Z_NO_DEFLATE 1
@@ -123,8 +122,8 @@ void * cc_gzm_open(const uint8_t * buffer, uint32_t len)
 #ifdef Z_NO_DEFLATE
     err = Z_STREAM_ERROR;
 #else
-    err = deflateInit2(&(s->stream), level,
-                       Z_DEFLATED, -MAX_WBITS, DEF_MEM_LEVEL, strategy);
+    err = cc_zlibglue_deflateInit2(&(s->stream), level,
+                                   Z_DEFLATED, -MAX_WBITS, DEF_MEM_LEVEL, strategy);
     /* windowBits is passed < 0 to suppress zlib header */
 
     s->stream.next_out = s->outbuf = (uint8_t*)Z_ALLOC(Z_BUFSIZE);
@@ -142,7 +141,7 @@ void * cc_gzm_open(const uint8_t * buffer, uint32_t len)
 
     s->stream.next_in  = s->inbuf = (uint8_t*)Z_ALLOC(Z_BUFSIZE);
 
-    err = inflateInit2(&(s->stream), -MAX_WBITS);
+    err = cc_zlibglue_inflateInit2(&(s->stream), -MAX_WBITS);
     /* windowBits is passed < 0 to tell that there is no zlib header.
      * Note that in this case inflate *requires* an extra "dummy" byte
      * after the compressed stream in order to complete decompression and
@@ -279,7 +278,7 @@ static int destroy (cc_gzm_stream * s)
 #endif
     }
     else if (s->mode == 'r') {
-      err = inflateEnd(&(s->stream));
+      err = cc_zlibglue_inflateEnd(&(s->stream));
     }
   }
 
@@ -349,7 +348,7 @@ cc_gzm_read (void * file, void * buf, uint32_t len)
       }
       s->stream.next_in = s->inbuf;
     }
-    s->z_err = inflate(&(s->stream), Z_NO_FLUSH);
+    s->z_err = cc_zlibglue_inflate(&(s->stream), Z_NO_FLUSH);
 
     if (s->z_err == Z_STREAM_END) {
       /* Check CRC and original size */
@@ -369,7 +368,7 @@ cc_gzm_read (void * file, void * buf, uint32_t len)
           uint32_t total_in = s->stream.total_in;
           uint32_t total_out = s->stream.total_out;
 
-          inflateReset(&(s->stream));
+          cc_zlibglue_inflateReset(&(s->stream));
           s->stream.total_in = total_in;
           s->stream.total_out = total_out;
           s->crc = crc32(0L, NULL, 0);
@@ -464,7 +463,7 @@ cc_gzm_write(void * file, void * buf, unsigned int len)
       }
       s->stream.avail_out = Z_BUFSIZE;
     }
-    s->z_err = deflate(&(s->stream), Z_NO_FLUSH);
+    s->z_err = cc_zlibglue_deflate(&(s->stream), Z_NO_FLUSH);
     if (s->z_err != Z_OK) break;
   }
   s->crc = crc32(s->crc, (const uint8_t *)buf, len);
@@ -521,7 +520,7 @@ static int do_flush (void * file, int flush)
       s->stream.avail_out = Z_BUFSIZE;
     }
     if (done) break;
-    s->z_err = deflate(&(s->stream), flush);
+    s->z_err = cc_zlibglue_deflate(&(s->stream), flush);
 
     /* Ignore the second of two consecutive flushes: */
     if (len == 0 && s->z_err == Z_BUF_ERROR) s->z_err = Z_OK;
@@ -651,7 +650,7 @@ int cc_gzm_rewind(void * file)
     return 0;
   }
 
-  (void) inflateReset(&s->stream);
+  (void) cc_zlibglue_inflateReset(&s->stream);
   return cc_gzm_fseek(s->memfile, s->startpos, SEEK_SET);
 }
 
@@ -811,5 +810,3 @@ cc_gzm_ferror(cc_gzm_file * file)
 #undef Z_ORIG_NAME
 #undef Z_COMMENT
 #undef Z_RESERVED
-
-#endif /* HAVE_ZLIB */

@@ -28,7 +28,6 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
-#ifdef HAVE_ZLIB
 #include <Inventor/system/inttypes.h>
 
 #ifdef __cplusplus
@@ -58,7 +57,5 @@ extern "C" {
 #ifdef __cplusplus
 } /* extern "C" */
 #endif /* __cplusplus */
-
-#endif /* HAVE_ZLIB */
 
 #endif /* COIN_GZMEMIO_H */
