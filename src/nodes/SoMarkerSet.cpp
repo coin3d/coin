@@ -1592,22 +1592,23 @@ SoMarkerSet::getNumDefinedMarkers(void)
 /*!
   FIXME: write doc
  */
- 
+
   // FIXME: sloppy code... 20000906. skei
 
 static void swap_leftright(unsigned char *data, int width, int height)
 {
   unsigned char t;
-  
+
+  int y;
   int linewidth = (int)ceil(width / 8);
-  for (int y=0; y<height; y++) {
+  for (y=0; y<height; y++) {
     for (int x=0; x<floor(linewidth/2); x++) {
       int tmp = data[y*linewidth+x];
       data[ y*linewidth + x ] = data[ (y*linewidth) + (linewidth-x-1) ];
       data[ (y*linewidth) + (linewidth-x-1) ] = tmp;
     }
   }
-  for (int y=0; y<height; y++) {
+  for (y=0; y<height; y++) {
     for (int x=0; x<linewidth; x++) {
       t = 0;
       if ((data[y*linewidth+x] & 128) != 0) t += 1;
@@ -1622,7 +1623,7 @@ static void swap_leftright(unsigned char *data, int width, int height)
     }
   }
 }
- 
+
 static void swap_updown(unsigned char *data, int width, int height)
 {
   int linewidth = (int)ceil(width / 8);
@@ -1644,7 +1645,7 @@ SoMarkerSet::addMarker(int markerIndex, const SbVec2s & size,
   marker tempmarker;
   marker *temp;
 
-  SbBool appendnew = markerIndex >= markerlist->getLength() ? TRUE : FALSE; 
+  SbBool appendnew = markerIndex >= markerlist->getLength() ? TRUE : FALSE;
   temp = &tempmarker;
   if (appendnew) {
     tempmarker.width  = 0;
@@ -1677,7 +1678,7 @@ SoMarkerSet::getMarker(int markerIndex, SbVec2s & size,
                        const unsigned char *& bytes, SbBool & isLSBFirst)
 {
   if (markerIndex >= markerlist->getLength()) return FALSE;
-  marker * temp = &(*markerlist)[markerIndex];  
+  marker * temp = &(*markerlist)[markerIndex];
   size[0] = temp->width;
   size[1] = temp->height;
   bytes = temp->data;
