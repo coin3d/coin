@@ -24,11 +24,7 @@
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/fields/SoMFFloat.h>
-
-#ifndef _WIN32
-#include <GL/glu.h>
-#endif // ! _WIN32
-
+#include <GL/gl.h>
 
 class COIN_DLL_EXPORT SoNurbsSurface : public SoShape {
   typedef SoShape inherited;
@@ -58,17 +54,20 @@ protected:
 
   virtual void generatePrimitives(SoAction * action);
   virtual void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
-
+  SoDetail * createTriangleDetail(SoRayPickAction * action,
+                                  const SoPrimitiveVertex * v1,
+                                  const SoPrimitiveVertex * v2,
+                                  const SoPrimitiveVertex * v3,
+                                  SoPickedPoint * pp);
 private:
-#ifdef _WIN32
-  class GLUnurbs * nurbsRenderer;
-#else // !_WIN32
-  GLUnurbsObj * nurbsRenderer;
-#endif // ! _WIN32
-
-  SbBool rendererHasCallbacks;
+  void * nurbsrenderer;
   void doNurbs(SoAction * action, const SbBool glrender);
-
+  
+  static void tessBegin(GLenum type, void * data);
+  static void tessTexCoord(GLfloat * texcoord, void * data);
+  static void tessNormal(GLfloat * normal, void * data);
+  static void tessVertex(GLfloat * vertex, void * data);
+  static void tessEnd(void * data);
 };
 
 #endif // !COIN_SONURBSSURFACE_H
