@@ -1895,3 +1895,18 @@
     20030930 mortene.
 
 =====================================================================
+
+078 Perl "soft" dependency not properly handled.
+
+    The doxy4win.pl script is attempted run under MSWindows during
+    build, even when Perl is not installed on the system.
+
+    Should at least use a configure check for a working Perl
+    interpreter, and disable document generation if not present. (Or
+    perhaps try to solve this by removing the Perl dependency.)
+
+    This is a very minor problem.
+
+    20031009 mortene, reported by kintel.
+
+=====================================================================
