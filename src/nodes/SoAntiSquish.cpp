@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -135,7 +135,7 @@ SoAntiSquish::doAction(SoAction * action)
       this->getUnsquishingMatrix(SoModelMatrixElement::get(state),
                                  FALSE, this->inversematrix);
   }
-  SoModelMatrixElement::set(action->getState(), this, this->unsquishedmatrix);
+  SoModelMatrixElement::mult(action->getState(), this, this->unsquishedmatrix);
 }
 
 // Doc from superclass.
@@ -165,11 +165,10 @@ SoAntiSquish::getMatrix(SoGetMatrixAction * action)
                                                         this->inversematrix);
   }
 
-  // Note: don't use ..->getMatrix().setValue(...) here, as that won't
-  // work (for some weird reason) with certain compilers (like MSVC++
-  // 6.0 and AIX xlc).
-  action->getMatrix() = this->unsquishedmatrix;
-  action->getInverse() = this->inversematrix;
+  SbMatrix & m = action->getMatrix();
+  SbMatrix & i = action->getInverse();  
+  m.multLeft(this->unsquishedmatrix);
+  i.multRight(this->inversematrix);
 }
 
 // Doc from superclass.
@@ -250,6 +249,7 @@ SoAntiSquish::getUnsquishingMatrix(const SbMatrix & squishedmatrix,
   scale[0] = scale[1] = scale[2] = val;
   SbMatrix matrix;
   matrix.setTransform(t, r, scale, so);
+  matrix.multRight(squishedmatrix.inverse());
   if (calcinverse) getinverse = matrix.inverse();
   return matrix;
 }
