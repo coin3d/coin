@@ -29,7 +29,7 @@
 
 #include <Inventor/C/tidbits.h>
 
-#if HAVE_CONFIG_H
+#ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
@@ -58,7 +58,7 @@ coin_vsnprintf(char * dst, unsigned int n, const char * fmtstr, va_list args)
 
   /* Not all vsnprintf() implementations returns -1 upon failure (this
      is what vsnprintf() from GNU libc is documented to do).
-  
+
      At least with GNU libc 2.1.1, vsnprintf() does _not_ return -1
      (as documented in the snprintf(3) man-page) when we can't fit the
      constructed string within the given buffer, but rather the number
@@ -72,7 +72,7 @@ coin_vsnprintf(char * dst, unsigned int n, const char * fmtstr, va_list args)
   return length;
 }
 
-#elif defined HAVE__VSNPRINTF 
+#elif defined HAVE__VSNPRINTF
 
 int
 coin_vsnprintf(char * dst, unsigned int n, const char * fmtstr, va_list args)
@@ -378,8 +378,8 @@ coin_swap_16bit_word(uint8_t * block)
   tmp = block[1];
   block[1] = block[0];
   block[0] = tmp;
-} 
-  
+}
+
 uint16_t
 coin_hton_uint16(uint16_t value)
 {
@@ -403,7 +403,7 @@ coin_ntoh_uint16(uint16_t value)
 {
   return coin_ntoh_uint16(value);
 }
-  
+
 static void
 coin_swap_32bit_word(uint8_t * block)
 {
@@ -416,9 +416,9 @@ coin_swap_32bit_word(uint8_t * block)
   tmp = block[2];
   block[2] = block[1];
   block[1] = tmp;
-} 
-  
-uint32_t  
+}
+
+uint32_t
 coin_hton_uint32(uint32_t value)
 {
   if ( coin_endianness == COIN_HOST_IS_UNKNOWNENDIAN )
@@ -434,9 +434,9 @@ coin_hton_uint32(uint32_t value)
     assert(0 && "system has unknown endianness");
   }
   return value;
-} 
-  
-uint32_t  
+}
+
+uint32_t
 coin_ntoh_uint32(uint32_t value)
 {
   return coin_hton_uint32(value);
@@ -503,9 +503,9 @@ coin_is_power_of_two(unsigned int x)
 
 /*
   Calculate the view volume jitter vector when doing multipass
-  antialiasing rendering.  
+  antialiasing rendering.
 */
-void 
+void
 coin_viewvolume_jitter(int numpasses, int curpass, const int * vpsize, float * jitter)
 {
   // jitter values from OpenGL Programming Guide

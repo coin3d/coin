@@ -30,7 +30,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#if HAVE_CONFIG_H
+#ifdef HAVE_CONFIG_H
 #include <config.h>
 #else /* No config.h? Hmm. Assume the simage library is available for linking. */
 #define SIMAGEWRAPPER_ASSUME_SIMAGE 1
@@ -122,12 +122,12 @@ simage_wrapper_get_saver_description(void * handle)
   return NULL;
 }
 
-unsigned char * APIENTRY 
+unsigned char * APIENTRY
 simage_wrapper_resize3d(unsigned char * imagedata,
                         int width, int height,
                         int numcomponents,
                         int layers,
-                        int newwidth, 
+                        int newwidth,
                         int newheight,
                         int newlayers)
 {
@@ -147,21 +147,21 @@ simage_wrapper_s_params_get(s_params * params, ...)
 }
 
 s_stream * APIENTRY
-simage_wrapper_s_stream_open(const char * filename, 
+simage_wrapper_s_stream_open(const char * filename,
               s_params * params /* | NULL */)
 {
   return NULL;
 }
 
 s_stream * APIENTRY
-simage_wrapper_s_stream_create(const char * filename, 
+simage_wrapper_s_stream_create(const char * filename,
                 s_params * params /* | NULL */)
 {
   return NULL;
 }
 
 void * APIENTRY
-simage_wrapper_s_stream_get_buffer(s_stream * stream, 
+simage_wrapper_s_stream_get_buffer(s_stream * stream,
                     void * prealloc /* | NULL */,
                     int *size /* | NULL */,
                     s_params * params /* | NULL */)
@@ -170,7 +170,7 @@ simage_wrapper_s_stream_get_buffer(s_stream * stream,
 }
 
 int APIENTRY
-simage_wrapper_s_stream_put_buffer(s_stream * stream, void * buffer, 
+simage_wrapper_s_stream_put_buffer(s_stream * stream, void * buffer,
                     int size, s_params * params /* | NULL */)
 {
   return 0;
@@ -200,7 +200,7 @@ const simage_wrapper_t *
 simage_wrapper(void)
 {
   CC_SYNC_BEGIN(simage_wrapper);
-  
+
   /* FIXME: we're not thread-safe, due to the "get_last_error" design
      of simage. Should keep a single entry-lock here to work around
      this. 20020628 mortene. */
@@ -295,10 +295,10 @@ simage_wrapper(void)
       SIMAGEWRAPPER_REGISTER_FUNC(simage_resize, simage_resize_t);
       SIMAGEWRAPPER_REGISTER_FUNC(simage_free_image, simage_free_image_t);
       SIMAGEWRAPPER_REGISTER_FUNC(simage_next_power_of_two, simage_next_power_of_two_t);
-      
+
       /* Do this late, so we can detect recursive calls to this function. */
       simage_instance = si;
-      
+
       if (simage_wrapper_versionMatchesAtLeast(1,1,0)) {
 #if !defined(HAVE_LIBSIMAGE) || defined(SIMAGE_VERSION_1_1)
         SIMAGEWRAPPER_REGISTER_FUNC(simage_get_num_savers, simage_get_num_savers_t);
@@ -319,7 +319,7 @@ simage_wrapper(void)
         si->simage_get_saver_fullname = simage_wrapper_get_saver_fullname;
         si->simage_get_saver_description = simage_wrapper_get_saver_description;
       }
-      
+
       if (simage_wrapper_versionMatchesAtLeast(1,3,0)) {
 #if !defined(HAVE_LIBSIMAGE) || defined(SIMAGE_VERSION_1_3)
         SIMAGEWRAPPER_REGISTER_FUNC(simage_resize3d, simage_resize3d_t);

@@ -25,7 +25,7 @@
 #include <stdio.h>
 #include <assert.h>
 
-#if HAVE_CONFIG_H
+#ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
@@ -110,11 +110,11 @@ cc_error_handle(cc_error * me)
   assert(function != NULL);
 
 #ifdef HAVE_THREADS
-  if (!cc_error_mutex) { 
+  if (!cc_error_mutex) {
     /* extra locking to avoid that two threads create the mutex */
     cc_mutex_global_lock();
     if (cc_error_mutex == NULL) {
-      cc_error_mutex = cc_mutex_construct(); 
+      cc_error_mutex = cc_mutex_construct();
     }
     cc_mutex_global_unlock();
   }

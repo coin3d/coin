@@ -31,7 +31,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#if HAVE_CONFIG_H
+#ifdef HAVE_CONFIG_H
 #include <config.h>
 #else /* No config.h? Hmm. Assume the GLU library is available for linking. */
 #define GLUWRAPPER_ASSUME_GLU 1
