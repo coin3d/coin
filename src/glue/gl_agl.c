@@ -336,7 +336,7 @@ aglglue_context_create_pbuffer(struct aglglue_contextdata * ctx)
       GLenum error = aglGetError();
       if (error != AGL_NO_ERROR) {
         cc_debugerror_post("aglglue_context_create_offscreen",
-                           "Couldn't create AGL context: %s", 
+                           "Couldn't create AGL pBuffer: %s", 
                            (char *)aglErrorString(error));
         return FALSE;
       }
