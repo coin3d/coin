@@ -87,9 +87,6 @@ SoModelMatrixElement::~SoModelMatrixElement(void)
 SbBool
 SoModelMatrixElement::matches(const SoElement * element) const
 {
-  // FIXME: should invalidate cache on certain cull conditions.
-  // we are using a different culling scheme, so I don't know
-  // if this will ever apply to us... pederb, 20000608
   return inherited::matches(element);
 }
 

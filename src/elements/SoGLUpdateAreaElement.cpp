@@ -132,9 +132,9 @@ SoGLUpdateAreaElement::get(SoState * const state,
     inherited::getConstElement(state, SoGLUpdateAreaElement::classStackIndex);
   origin = e->origin;
   size = e->size;
-
-  // FIXME: keep a seperate flag instead? 990314 mortene.
-  if (origin == SbVec2f(0.0f, 0.0f) && size == SbVec2f(1.0f, 1.0f))
+  
+  if (origin == SoGLUpdateAreaElement::getDefaultOrigin() && 
+      size == SoGLUpdateAreaElement::getDefaultSize())
     return TRUE;
   else
     return FALSE;

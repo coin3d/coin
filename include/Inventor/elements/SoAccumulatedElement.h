@@ -35,9 +35,11 @@ protected:
 
 public:
   virtual SbBool matches(const SoElement * element) const;
-  virtual void print(FILE * file) const;
 
 protected:
+  void init(SoState * state);
+  void push(SoState * state);
+
   void clearNodeIds(void);
   void addNodeId(const SoNode * const node);
   void setNodeId(const SoNode * const node);
@@ -46,7 +48,10 @@ protected:
   virtual void captureThis(SoState * state) const;
 
   SbList <uint32_t> nodeids;
+
+private:
   uint32_t checksum;
+  SbBool recursecapture;
 };
 
 #endif // !COIN_SOACCUMULATEDELEMENT_H

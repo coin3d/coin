@@ -237,9 +237,8 @@ SoTextureImageElement::hasTransparency(void) const
 //! FIXME: write doc.
 
 const unsigned char *
-SoTextureImageElement::getDefault(SbVec2s &size, int &numComponents)
+SoTextureImageElement::getDefault(SbVec2s & size, int & numComponents)
 {
-  // FIXME: what is the default texture???
   size.setValue(0,0);
   numComponents = 0;
   return NULL;

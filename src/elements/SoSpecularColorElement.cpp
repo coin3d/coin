@@ -27,11 +27,16 @@
 #include <Inventor/elements/SoSpecularColorElement.h>
 #include <Inventor/SbColor.h>
 #include <assert.h>
+#include <stdlib.h>
 
 // Dynamically allocated to avoid problems on systems which doesn't
 // handle static constructors.
 static SbColor * defaultspecularcolor = NULL;
 
+static void cleanup_func(void)
+{
+  delete defaultspecularcolor;
+}
 
 /*!
   \fn SoSpecularColorElement::numColors
@@ -56,8 +61,9 @@ void
 SoSpecularColorElement::initClass()
 {
   SO_ELEMENT_INIT_CLASS(SoSpecularColorElement, inherited);
-  defaultspecularcolor = new SbColor; // FIXME: deallocate on exit. 20000406 mortene.
+  defaultspecularcolor = new SbColor;
   defaultspecularcolor->setValue(0.0f, 0.0f, 0.0f);
+  atexit(cleanup_func);
 }
 
 /*!
@@ -71,8 +77,9 @@ SoSpecularColorElement::~SoSpecularColorElement()
 //! FIXME: write doc.
 
 void
-SoSpecularColorElement::init(SoState * /* state */)
+SoSpecularColorElement::init(SoState * state)
 {
+  inherited::init(state);
   this->colors = defaultspecularcolor;
   this->numColors = 1;
 }

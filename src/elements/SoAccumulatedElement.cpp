@@ -57,6 +57,23 @@ SoAccumulatedElement::~SoAccumulatedElement(void)
 {
 }
 
+
+void 
+SoAccumulatedElement::init(SoState * state)
+{
+  inherited::init(state);
+  // this is FALSE until node id's are copied
+  this->recursecapture = FALSE;
+}
+
+void 
+SoAccumulatedElement::push(SoState * state)
+{
+  inherited::push(state);
+  // this is FALSE until node id's are copied
+  this->recursecapture = FALSE;
+}
+
 /*!
   Overloaded to compare node ids.
 */
@@ -76,13 +93,6 @@ SoAccumulatedElement::matches(const SoElement * element) const
   return TRUE;
 }
 
-// doc from parent
-void
-SoAccumulatedElement::print(FILE * file) const
-{
-  fprintf(file, "SoAccumulatedElement(%p)\n", this);
-}
-
 /*!
   Empty the list of node ids.
 */
@@ -91,6 +101,8 @@ SoAccumulatedElement::clearNodeIds(void)
 {
   this->nodeids.truncate(0);
   this->checksum = 0;
+  // we do not depend on previous elements any more
+  this->recursecapture = FALSE;
 }
 
 /*!
@@ -112,13 +124,15 @@ SoAccumulatedElement::setNodeId(const SoNode * const node)
 {
   this->clearNodeIds();
   this->addNodeId(node);
+  // we do not depend on previous elements any more
+  this->recursecapture = FALSE;
 }
 
 /*!
   Overloaded to copy node ids.
 */
 SoElement *
-SoAccumulatedElement::copyMatchInfo() const
+SoAccumulatedElement::copyMatchInfo(void) const
 {
   SoAccumulatedElement * element =
     (SoAccumulatedElement *) this->getTypeId().createInstance();
@@ -127,6 +141,7 @@ SoAccumulatedElement::copyMatchInfo() const
     element->nodeids.append(this->nodeids[i]);
   }
   element->checksum = this->checksum;
+  element->recursecapture = TRUE;
   return element;
 }
 
@@ -145,6 +160,9 @@ SoAccumulatedElement::copyNodeIds(const SoAccumulatedElement * copyfrom)
     this->checksum += id;
     this->nodeids.append(id);
   }
+  
+  // this elements uses data from previous element in stack
+  this->recursecapture = TRUE;
 }
 
 /*!
@@ -153,6 +171,17 @@ SoAccumulatedElement::copyNodeIds(const SoAccumulatedElement * copyfrom)
 void
 SoAccumulatedElement::captureThis(SoState * state) const
 {
-  // FIXME: not quite sure what is needed here. pederb, 20000608
   inherited::captureThis(state);
+
+  // we need to recurse if element has copied data from previous
+  // element in stack (or nextInStack as SGI was silly enough to call
+  // it). This is because the depth of this element might not cause
+  // cache to depend on this element, but the previous element(s)
+  // might have a depth that will trigger a dependency.
+  //                                              pederb, 2001-02-21
+  if (this->recursecapture) {
+    SoAccumulatedElement * elem = (SoAccumulatedElement*)
+      this->getNextInStack();
+    if (elem) elem->captureThis(state);
+  }
 }

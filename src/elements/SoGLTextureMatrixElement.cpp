@@ -140,11 +140,8 @@ SoGLTextureMatrixElement::scaleEltBy(const SbVec3f & scaleFactor)
 
 // updates GL state
 void
-SoGLTextureMatrixElement::updategl() const
+SoGLTextureMatrixElement::updategl(void) const
 {
-  // FIXME: matrix mode will always be MODELVIEW when we
-  // get here, right?
-  // pederb, 990503
   glMatrixMode(GL_TEXTURE);
   glLoadMatrixf(textureMatrix[0]);
   glMatrixMode(GL_MODELVIEW);

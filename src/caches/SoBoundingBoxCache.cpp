@@ -24,6 +24,7 @@
 */
 
 #include <Inventor/caches/SoBoundingBoxCache.h>
+#include <Inventor/elements/SoCacheElement.h>
 
 /*!
   Constructor with \a state being the current state.
@@ -101,24 +102,23 @@ SoBoundingBoxCache::getCenter() const
 /*!
   Sets the hasLinesOrPoints flag for all open bounding box caches.
 
-  Ignored for now, but still provided for Open Inventor compliance.
-
   \sa SoBoundingBoxCache::hasLinesOrPoints()
 */
 void
-SoBoundingBoxCache::setHasLinesOrPoints(SoState *state)
+SoBoundingBoxCache::setHasLinesOrPoints(SoState * state)
 {
-  // FIXME: as far as I can tell, the idea is that bounding boxes
-  // should be given a little bit of slack if they contain lines
-  // and/or points (as those primitives doesn't really have any
-  // volume). 20000424 mortene.
+  SoCacheElement * elem = (SoCacheElement*)
+    state->getElementNoPush(SoCacheElement::getClassStackIndex());
 
-  if (state) { }
+  while (elem) {
+    SoBoundingBoxCache * cache = (SoBoundingBoxCache*) elem->getCache();
+    if (cache) cache->linesOrPoints = TRUE;
+    elem = elem->getNextCacheElement();
+  }
 }
 
 /*!
   Return \c TRUE if the hasLinesOrPoints flag has been set.
-  Not used for the moment. Provided for OIV compliance.
 */
 SbBool
 SoBoundingBoxCache::hasLinesOrPoints() const

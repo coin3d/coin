@@ -173,6 +173,7 @@ SoCullElement::cullTest(SoState * state, const SbBox3f & box, const SbBool trans
 SbBool
 SoCullElement::completelyInside(SoState * state)
 {
+  // use SoState::getConstElement() to avoid cache dependency on this element
   const SoCullElement * elem = (const SoCullElement *)
     state->getConstElement(classStackIndex);
   unsigned int mask = 0x0001 << elem->numplanes;

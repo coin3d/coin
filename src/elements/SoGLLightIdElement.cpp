@@ -24,11 +24,6 @@
   FIXME: write doc.
 */
 
-
-//
-// FIXME: might be smart to make this element lazy?
-//
-
 #include <Inventor/elements/SoGLLightIdElement.h>
 
 #if COIN_DEBUG

@@ -99,7 +99,7 @@ SoGLDrawStyleElement::setElt(int32_t style)
 //! FIXME: write doc.
 
 void
-SoGLDrawStyleElement::updategl()
+SoGLDrawStyleElement::updategl(void)
 {
   switch ((Style)this->data) {
   case SoDrawStyleElement::FILLED:
@@ -115,7 +115,7 @@ SoGLDrawStyleElement::updategl()
     // handled in SoShape::shouldGLRender()
     break;
   default:
-    assert(0 && "FIXME: handle unsupported switch case");
+    assert(0 && "unsupported switch case");
     break;
   }
 }

@@ -162,7 +162,7 @@ SoGLEnvironmentElement::updategl(SoState * const state)
     glFogf(GL_FOG_DENSITY, 2.35f / farval);
     break;
   default:
-    assert(0 && "FIXME: unknown fog value");
+    assert(0 && "unknown fog type");
     break;
   }
 

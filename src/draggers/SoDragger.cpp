@@ -1179,7 +1179,6 @@ SoDragger::handleEvent(SoHandleEventAction * action)
 void
 SoDragger::transferMotion(SoDragger * child)
 {
-  // FIXME: maybe I should use the picked path to get partname instead?
   SbString partname = this->getPartString(child);
   SbMatrix childmatrix = child->getMotionMatrix();
   SbMatrix parttolocal, localtopart;

@@ -69,26 +69,14 @@ SoTextureCoordinateBundle(SoAction * const action,
   if (forRendering && !SoGLTextureEnabledElement::get(this->state))
     return;
   if (!forRendering) {
-
-    if (action->getTypeId().isDerivedFrom(SoPickAction::getClassTypeId())) {
-      // FIXME: this is a temporary fix. Since SoTextureImageElement is not
-      // enabled for SoPickAction or SoRayPickAction (I think it perhaps
-      // should be) it's not possible to detect if there's an active
-      // texture in the state; if texture coordinates are needed. Since it would
-      // be a _big_ waste of CPU-time to simply generate default texture
-      // coordinates even if a shape isn't textured (most shapes use
-      // SoShape::generatePrimitives() for picking), we should find a solution
-      // to this. For now, I just disable texture coordinates when picking.
-      // I haven't implemented proper support for calculating them when picking
-      // anyway.
-      // pederb, 20000218
-      return;
+    // test if element is enabled for this action.
+    int stackidx = SoTextureImageElement::getClassStackIndex();
+    if (this->state->isElementEnabled(stackidx)) {
+      SbVec2s dummysize;
+      int dummynum;
+      if (!SoTextureImageElement::getImage(this->state, dummysize, dummynum))
+        return;
     }
-
-    SbVec2s dummysize;
-    int dummynum;
-    if (!SoTextureImageElement::getImage(this->state, dummysize, dummynum))
-      return;
   }
 
   assert(action->getCurPathTail()->isOfType(SoVertexShape::getClassTypeId()));
@@ -98,13 +86,6 @@ SoTextureCoordinateBundle(SoAction * const action,
     this->shapenode->vertexProperty.getValue();
 
   if (vp && vp->texCoord.getNum() > 0) {
-    // FIXME:
-    // the SoVertexProperty node is a bad design idea, IMHO
-    // Just push and place needed stuff on the element stack for now.
-    // will probably optimize later.
-    // pederb, 20000218
-    //
-
     this->state->push();
     this->flags |= FLAG_DIDPUSH;
     if (forRendering) {
@@ -141,7 +122,7 @@ SoTextureCoordinateBundle(SoAction * const action,
     this->flags |= FLAG_FUNCTION;
     break;
   default:
-    assert(0 && "FIXME: unknown CoordType");
+    assert(0 && "unknown CoordType");
     break;
   }
 
@@ -150,10 +131,8 @@ SoTextureCoordinateBundle(SoAction * const action,
     this->glElt = (SoGLTextureCoordinateElement*) coordElt;
   }
   if ((this->flags & FLAG_DEFAULT) && !setUpDefault) {
-    //
     // FIXME: I couldn't be bothered to support this yet. It is for picking
-    // optimization only, pederb, 20000218
-    //
+    // optimization only, I think. pederb, 20000218
   }
 }
 

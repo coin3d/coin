@@ -26,9 +26,6 @@
 
 #include <data/draggerDefaults/rotateSphericalDragger.h>
 
-//
-// FIXME: investigate what to do with prevMotionMatrix and
-// prevWorldHitPoint, pederb 2000-01-27
 
 SO_KIT_SOURCE(SoRotateSphericalDragger);
 

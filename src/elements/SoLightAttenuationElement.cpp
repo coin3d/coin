@@ -26,10 +26,16 @@
 
 #include <Inventor/elements/SoLightAttenuationElement.h>
 #include <assert.h>
+#include <stdlib.h>
 
 // Dynamically allocated to avoid problems on systems which doesn't
 // handle static constructors.
 static SbVec3f * defaultattenuation = NULL;
+
+static void cleanup_func(void)
+{
+  delete defaultattenuation;
+}
 
 /*!
   \fn SoLightAttenuationElement::lightAttenuation
@@ -48,8 +54,9 @@ void
 SoLightAttenuationElement::initClass(void)
 {
   SO_ELEMENT_INIT_CLASS(SoLightAttenuationElement, inherited);
-  defaultattenuation = new SbVec3f; // FIXME: deallocate on exit. 20000406 mortene.
+  defaultattenuation = new SbVec3f;
   defaultattenuation->setValue(0.0f, 0.0f, 1.0f);
+  atexit(cleanup_func);
 }
 
 /*!

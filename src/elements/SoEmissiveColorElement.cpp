@@ -28,11 +28,16 @@
 
 #include <Inventor/SbColor.h>
 #include <assert.h>
+#include <stdlib.h>
 
 // Dynamically allocated to avoid problems on systems which doesn't
 // handle static constructors.
 static SbColor * defaultemissivecolor = NULL;
 
+static void cleanup_func(void)
+{
+  delete defaultemissivecolor;
+}
 
 /*!
   \fn SoEmissiveColorElement::numColors
@@ -57,8 +62,9 @@ void
 SoEmissiveColorElement::initClass()
 {
   SO_ELEMENT_INIT_CLASS(SoEmissiveColorElement, inherited);
-  defaultemissivecolor = new SbColor; // FIXME: deallocate on exit. 20000406 mortene.
+  defaultemissivecolor = new SbColor;
   defaultemissivecolor->setValue(0.0f, 0.0f, 0.0f);
+  atexit(cleanup_func);
 }
 
 /*!
@@ -72,8 +78,9 @@ SoEmissiveColorElement::~SoEmissiveColorElement()
 //! FIXME: write doc.
 
 void
-SoEmissiveColorElement::init(SoState * /* state */)
+SoEmissiveColorElement::init(SoState * state)
 {
+  inherited::init(state);
   this->colors = defaultemissivecolor;
   this->numColors = 1;
 }

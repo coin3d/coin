@@ -343,11 +343,9 @@ SbViewportRegion::getViewportSizePixels(void) const
 float
 SbViewportRegion::getViewportAspectRatio(void) const
 {
-  // FIXME: what if height == 0? 19981021 mortene.
-
-  return
-    ((float)(this->getViewportSizePixels()[0]))/
-    ((float)(this->getViewportSizePixels()[1]));
+  SbVec2s size = this->getViewportSizePixels();
+  if (size[1] == 0) return 1.0;
+  return float(size[0])/float(size[1]);
 }
 
 /*!
@@ -360,7 +358,8 @@ SbViewportRegion::getViewportAspectRatio(void) const
   if this causes the viewport origin to be moved below (0,0), the
   origin coordinates will be clamped.
 
-  \sa scaleHeight().  */
+  \sa scaleHeight().  
+*/
 void
 SbViewportRegion::scaleWidth(float ratio)
 {
@@ -373,16 +372,12 @@ SbViewportRegion::scaleWidth(float ratio)
   }
 #endif // COIN_DEBUG
 
-  // Yes, I know the error checking and correction in this method is
-  // pretty lousy, but this is the way SGI OI2.1 behaves.
-  //FIXME: Check this. 19980910 kintel.
-
   float oldw = this->vpsize[0];
   this->vpsize[0] *= ratio;
   this->vporigin[0] -= (this->vpsize[0] - oldw) / 2.0f;
 
-  if(this->vpsize[0] > 1.0f) this->vpsize[0] = 1.0f;
-  if(this->vporigin[0] < 0.0f) this->vporigin[0] = 0.0f;
+  if (this->vpsize[0] > 1.0f) this->vpsize[0] = 1.0f;
+  if (this->vporigin[0] < 0.0f) this->vporigin[0] = 0.0f;
 }
 
 /*!
@@ -407,10 +402,6 @@ SbViewportRegion::scaleHeight(float ratio)
     ratio=0.0f;
   }
 #endif // COIN_DEBUG
-
-  // Yes, I know the error checking and correction in this method is
-  // pretty lousy, but this is the way SGI OI2.1 behaves.
-  //FIXME: Check this. 19980910 kintel.
 
   float oldh = this->vpsize[1];
   this->vpsize[1] *= ratio;

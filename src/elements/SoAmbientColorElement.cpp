@@ -25,11 +25,17 @@
 #include <Inventor/elements/SoAmbientColorElement.h>
 #include <Inventor/SbColor.h>
 #include <assert.h>
+#include <stdlib.h>
 
 // Dynamically allocated to avoid problems on systems which doesn't
 // handle static constructors.
 static SbColor * defaultambientcolor = NULL;
 
+static void 
+cleanup_func(void)
+{
+  delete defaultambientcolor;
+}
 
 /*!
   \fn SoAmbientColorElement::numColors
@@ -54,15 +60,17 @@ void
 SoAmbientColorElement::initClass(void)
 {
   SO_ELEMENT_INIT_CLASS(SoAmbientColorElement, inherited);
-  defaultambientcolor = new SbColor; // FIXME: deallocate on exit. 20000406 mortene.
+  defaultambientcolor = new SbColor;
   defaultambientcolor->setValue(0.2f, 0.2f, 0.2f);
+  atexit(cleanup_func);
 }
 
 //! FIXME: write doc.
 
 void
-SoAmbientColorElement::init(SoState * /* state */)
+SoAmbientColorElement::init(SoState * state)
 {
+  inherited::init(state);
   this->colors = defaultambientcolor;
   this->numColors = 1;
 }

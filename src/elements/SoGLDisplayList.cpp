@@ -32,6 +32,9 @@
 // where this class is declared
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/caches/SoGLRenderCache.h>
+#include <Inventor/elements/SoCacheElement.h>
+
 #include <assert.h>
 #if HAVE_CONFIG_H
 #include <config.h>
@@ -174,8 +177,11 @@ SoGLDisplayList::call(SoState * state, int index)
 void
 SoGLDisplayList::addDependency(SoState * state)
 {
-  // FIXME: when GL cache is implemented, add nested dependency on this cache
-  // pederb, 20000310
+  if (state->isCacheOpen()) {
+    SoGLRenderCache * cache = (SoGLRenderCache*)
+      SoCacheElement::getCurrentCache(state);
+    if (cache) cache->addNestedCache(this);
+  }
 }
 
 /*!

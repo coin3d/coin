@@ -356,14 +356,6 @@ SbBox3f::hasVolume(void) const
 float
 SbBox3f::getVolume(void) const
 {
-  // NB: the volume will not be correct if the box has been
-  // rotated. This is (oddly enough) the way it works in Open
-  // Inventor (?). Should probably be fixed. --mortene
-
-  // FIXME: a better method has been implemented in
-  // SbXfBox3f::getVolume(). Tear out the necessary code from
-  // there. 19990316 mortene.
-
   if (this->hasVolume())
     return ((this->max[0]-this->min[0]) *
             (this->max[1]-this->min[1]) *

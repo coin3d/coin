@@ -78,10 +78,6 @@ void
 SoProjectionMatrixElement::setElt(SbMatrix const & matrix)
 {
   this->projectionMatrix = matrix;
-#if 0 // FIXME: there's still a bug here somewhere. 981029 mortene.
-  // DEBUG
-  this->projectionMatrix.print(stdout);
-#endif // 0
 }
 
 //! FIXME: write doc.

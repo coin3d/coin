@@ -27,11 +27,17 @@
 #include <Inventor/elements/SoDiffuseColorElement.h>
 #include <Inventor/SbColor.h>
 #include <assert.h>
+#include <stdlib.h>
 
 // Dynamically allocated to avoid problems on systems which doesn't
 // handle static constructors.
 static SbColor * defaultdiffusecolor = NULL;
 
+static void 
+cleanup_func(void)
+{
+  delete defaultdiffusecolor;
+}
 
 /*!
   \fn SoDiffuseColorElement::numColors
@@ -62,15 +68,17 @@ void
 SoDiffuseColorElement::initClass(void)
 {
   SO_ELEMENT_INIT_CLASS(SoDiffuseColorElement, inherited);
-  defaultdiffusecolor = new SbColor; // FIXME: deallocate on exit. 20000406 mortene.
+  defaultdiffusecolor = new SbColor;
   defaultdiffusecolor->setValue(0.8f, 0.8f, 0.8f);
+  atexit(cleanup_func);
 }
 
 //! FIXME: write doc.
 
 void
-SoDiffuseColorElement::init(SoState * /* state */)
+SoDiffuseColorElement::init(SoState * state)
 {
+  inherited::init(state);
   this->colors = defaultdiffusecolor;
   this->packedColors = NULL;
   this->numColors = 1;
