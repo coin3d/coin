@@ -467,7 +467,14 @@ SoFieldData::write(SoOutput * out, const SoFieldContainer * object) const
 
   if (out->isBinary()) {
     // FIXME: the uint16_t types should be uint8_t. 20000102 mortene.
-    uint16_t numfields = this->getNumFields();
+
+    // Check how many fields will be written.
+    uint16_t numfields = 0;
+    for (uint16_t j=0; j < this->getNumFields(); j++) {
+      const SoField * f = this->getField(object, j);
+      if (f->shouldWrite()) numfields++;
+    }
+
     uint16_t fieldflags = 0x00;
     // FIXME: take care of setting flags for SoUnknownEngines and
     // group SoUnknownNodes. 20000102 mortene.
