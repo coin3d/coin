@@ -48,8 +48,8 @@ EXTRA_DIST = \
 	README.WIN32 \
 	coin.cfg.in \
 	docs/coin.doxygen.in \
-	cfg/doxy4win.pl \
-	cfg/errors.txt \
+	cfg/m4/doxy4win.pl \
+	cfg/m4/errors.txt \
 	cfg/ltconfig \
 	cfg/m4/wrapmsvc.cpp \
 	cfg/m4/wrapmsvc.exe \
