@@ -51,10 +51,10 @@ private: \
   static SoFieldData * inputdata; \
   static const SoFieldData ** parentinputdata; \
   static SoEngineOutputData * outputdata; \
-  static const SoEngineOutputData ** parentoutputdata;
+  static const SoEngineOutputData ** parentoutputdata
 
 #define SO_ENGINE_HEADER(_classname_) \
-    SO_ENGINE_ABSTRACT_HEADER(_classname_) \
+    SO_ENGINE_ABSTRACT_HEADER(_classname_); \
   public: \
     static void * createInstance(void)
 
