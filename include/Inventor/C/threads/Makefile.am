@@ -8,7 +8,8 @@ threadsinc_HEADERS = \
 	rwmutex.h \
 	storage.h \
 	worker.h \
-	wpool.h
+	wpool.h \
+	sched.h
 #	barrier.h
 
 ## These headers are not installed - they are internal to Coin...
