@@ -28,6 +28,7 @@ ALLSOURCES = \
 	SoType.cpp SoType.h \
 	SoOffscreenRenderer.cpp SoOffscreenRenderer.h \
 	SoGenerate.cpp SoGenerate.h \
+	SoLockManager.cpp SoLockMgr.h \
 	default3dfont.cpp \
 	default2dfont.cpp
 endif

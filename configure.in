@@ -321,13 +321,12 @@ dnl *******************************************************************
 
 SIM_EXPAND_DIR_VARS
 
-dnl * To be able to generate include/Inventor/SbBasic.h
-test -d include           || mkdir include
-test -d include/Inventor  || mkdir include/Inventor
-
 AC_OUTPUT([
         coin-config
         Makefile
+        include/Makefile
+        include/Inventor/Makefile
+        include/Inventor/lock/Makefile
         data/Makefile
         data/draggerDefaults/Makefile
         src/Makefile

@@ -121,6 +121,7 @@ sim_ac_simage_conf_cmd = @sim_ac_simage_conf_cmd@
 @HACKING_COMPACT_BUILD_FALSE@	SoType.cpp SoType.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoOffscreenRenderer.cpp SoOffscreenRenderer.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoGenerate.cpp SoGenerate.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoLockManager.cpp SoLockMgr.h \
 @HACKING_COMPACT_BUILD_FALSE@	default3dfont.cpp \
 @HACKING_COMPACT_BUILD_FALSE@	default2dfont.cpp
 
@@ -180,7 +181,8 @@ libmisc_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@SoPickedPoint.lo SoPrimitiveVertex.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoSceneManager.lo SoType.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoOffscreenRenderer.lo SoGenerate.lo \
-@HACKING_COMPACT_BUILD_FALSE@default3dfont.lo default2dfont.lo
+@HACKING_COMPACT_BUILD_FALSE@SoLockManager.lo default3dfont.lo \
+@HACKING_COMPACT_BUILD_FALSE@default2dfont.lo
 @HACKING_COMPACT_BUILD_TRUE@am_libmisc_la_OBJECTS =  all.lo
 libmisc_la_OBJECTS =  $(am_libmisc_la_OBJECTS)
 libmiscLINKHACK_la_LDFLAGS = 
@@ -195,7 +197,8 @@ libmiscLINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@SoPickedPoint.lo SoPrimitiveVertex.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoSceneManager.lo SoType.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoOffscreenRenderer.lo SoGenerate.lo \
-@HACKING_COMPACT_BUILD_FALSE@default3dfont.lo default2dfont.lo
+@HACKING_COMPACT_BUILD_FALSE@SoLockManager.lo default3dfont.lo \
+@HACKING_COMPACT_BUILD_FALSE@default2dfont.lo
 @HACKING_COMPACT_BUILD_TRUE@am_libmiscLINKHACK_la_OBJECTS =  all.lo
 libmiscLINKHACK_la_OBJECTS =  $(am_libmiscLINKHACK_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -223,9 +226,9 @@ $(DEPDIR)/SoDB.Plo $(DEPDIR)/SoFullPath.Plo $(DEPDIR)/SoGL.Plo \
 $(DEPDIR)/SoGLImage.Plo $(DEPDIR)/SoGenerate.Plo $(DEPDIR)/SoGlyph.Plo \
 $(DEPDIR)/SoImageInterface.Plo $(DEPDIR)/SoInput.Plo \
 $(DEPDIR)/SoInteraction.Plo $(DEPDIR)/SoLightPath.Plo \
-$(DEPDIR)/SoNormalGenerator.Plo $(DEPDIR)/SoNotification.Plo \
-$(DEPDIR)/SoOffscreenRenderer.Plo $(DEPDIR)/SoOutput.Plo \
-$(DEPDIR)/SoPath.Plo $(DEPDIR)/SoPickedPoint.Plo \
+$(DEPDIR)/SoLockManager.Plo $(DEPDIR)/SoNormalGenerator.Plo \
+$(DEPDIR)/SoNotification.Plo $(DEPDIR)/SoOffscreenRenderer.Plo \
+$(DEPDIR)/SoOutput.Plo $(DEPDIR)/SoPath.Plo $(DEPDIR)/SoPickedPoint.Plo \
 $(DEPDIR)/SoPrimitiveVertex.Plo $(DEPDIR)/SoSceneManager.Plo \
 $(DEPDIR)/SoState.Plo $(DEPDIR)/SoTempPath.Plo $(DEPDIR)/SoType.Plo \
 $(DEPDIR)/all.Plo $(DEPDIR)/default2dfont.Plo \
@@ -373,6 +376,7 @@ distdir: $(DISTFILES)
 @AMDEP@include $(DEPDIR)/SoInput.Plo
 @AMDEP@include $(DEPDIR)/SoInteraction.Plo
 @AMDEP@include $(DEPDIR)/SoLightPath.Plo
+@AMDEP@include $(DEPDIR)/SoLockManager.Plo
 @AMDEP@include $(DEPDIR)/SoNormalGenerator.Plo
 @AMDEP@include $(DEPDIR)/SoNotification.Plo
 @AMDEP@include $(DEPDIR)/SoOffscreenRenderer.Plo

@@ -21,5 +21,6 @@
 #include "SoType.cpp"
 #include "SoOffscreenRenderer.cpp"
 #include "SoGenerate.cpp"
+#include "SoLockManager.cpp"
 #include "default3dfont.cpp"
 #include "default2dfont.cpp"

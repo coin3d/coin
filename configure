@@ -4497,9 +4497,6 @@ includedir="`eval echo $includedir`"
 libdir="`eval echo $libdir`"
 
 
-test -d include           || mkdir include
-test -d include/Inventor  || mkdir include/Inventor
-
 trap '' 1 2 15
 cat >confcache <<\EOF
 # This file is a shell script that caches the results of configure
@@ -4583,7 +4580,8 @@ cat >$CONFIG_STATUS <<EOF
 
 # Files that config.status was made for.
 config_files="\\
-    coin-config Makefile data/Makefile data/draggerDefaults/Makefile
+    coin-config Makefile include/Makefile include/Inventor/Makefile
+    include/Inventor/lock/Makefile data/Makefile data/draggerDefaults/Makefile
     src/Makefile src/base/Makefile src/VRMLnodes/Makefile src/actions/Makefile
     src/bundles/Makefile src/caches/Makefile src/details/Makefile
     src/draggers/Makefile src/elements/Makefile src/engines/Makefile
@@ -4640,6 +4638,9 @@ do
   # Handling of arguments.
   'coin-config' ) CONFIG_FILES="\$CONFIG_FILES coin-config" ;;
   'Makefile' ) CONFIG_FILES="\$CONFIG_FILES Makefile" ;;
+  'include/Makefile' ) CONFIG_FILES="\$CONFIG_FILES include/Makefile" ;;
+  'include/Inventor/Makefile' ) CONFIG_FILES="\$CONFIG_FILES include/Inventor/Makefile" ;;
+  'include/Inventor/lock/Makefile' ) CONFIG_FILES="\$CONFIG_FILES include/Inventor/lock/Makefile" ;;
   'data/Makefile' ) CONFIG_FILES="\$CONFIG_FILES data/Makefile" ;;
   'data/draggerDefaults/Makefile' ) CONFIG_FILES="\$CONFIG_FILES data/draggerDefaults/Makefile" ;;
   'src/Makefile' ) CONFIG_FILES="\$CONFIG_FILES src/Makefile" ;;

@@ -13,7 +13,7 @@ TOOLDIR =
 endif
 
 
-SUBDIRS = data src $(TOOLDIR) $(EXAMPLEDIR)
+SUBDIRS = include data src $(TOOLDIR) $(EXAMPLEDIR)
 
 bin_SCRIPTS = coin-config
 BUILT_SOURCES = coin-config
