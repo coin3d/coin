@@ -165,17 +165,80 @@ and explains the principles applied fairly well.
 
   All calls to SoDebugError::post*() have the first argument (the
   function name) compared to the $COIN_DEBUG_BREAK environment variable.
-  If they match, an assert will be thrown, and you can inspect the
-  stack backtrace if symbol information was built into the library.
-  This can be very useful, and is not limited to Coin usage - all client
+  If they match, an assert will fail, and you can then inspect the stack
+  backtrace (if symbol/debugging information was built into the library).
+  This can be very useful and is not limited to Coin usage - all client
   programs can take advantage of this functionality too.
 
   Example:
 
     $ env COIN_DEBUG_BREAK="SoAction::apply" ./mytestprogram
 
-  (using 'env var=val prog ...' is the most portable syntax for this kind
-  of thing, so that's why we use it instead of the Bourne shell method)
+  [using 'env var=val prog ...' is the most portable syntax for this kind
+  of thing, which is why the example uses it instead of the Bourne syntax]
+
+
+4 Misc Configurations
+=====================
+
+* cvs
+
+  The following lines can be useful to have in your ~/.cvsrc file:
+
+    cvs -q -z3
+    diff -u
+
+  Line 1 enables compression and a more quiet operation mode (e.g. no
+  listing about subdirs when there are no changes), and line 2 makes
+  sure all "cvs diff" commands uses the unified syntax.
+
+* emacs
+
+  To enable C++ mode for the template *.in source files, add this to
+  your ~/.emacs file:
+
+    (setq auto-mode-alist (cons '("\\.h\\.in\\'" . c++-mode) auto-mode-alist))
+    (setq auto-mode-alist (cons '("\\.cpp\\.in\\'" . c++-mode) auto-mode-alist))
+
+  Also, to make emacs insert spaces instead of tabulator characters when
+  indenting (we don't want any tabulators):
+
+    (let ((loadhook (lambda () (setq indent-tabs-mode nil))))
+      (add-hook 'find-file-hooks loadhook)
+      (add-hook 'find-file-not-found-hooks loadhook))
+
+
+5 The Build Environment
+=======================
+
+* Defines
+
+  HAVE_CONFIG_H
+
+    This define should always be defined, but if it isn't, then the
+    config.h header will not be included.  Lots of features will then be
+    disabled.  Lots of files will probably not even compile since we do
+    not test this case.  Anyways, this case is usually the case when
+    someone tries building the library without using the Autoconf setup.
+
+  COIN_INTERNAL
+
+    This is a define that is set when the Coin library is being compiled.
+    Setting it when compiling things outside the Coin library is a
+    mistake.
+
+  COIN_DEBUG
+
+    This define should be set to either 0 or 1.  It is therefore used
+    with the #if directive, not the #ifdef directive.
+
+  COIN_EXTRA_DEBUG
+
+    This define is ordinarily not used, but can be defined to enable some
+    extra sanity checks that may detect obvious, but otherwise hard to
+    detect bugs like specifying indexes out of an arrays range, etc.
+    Enabling this define may slow things down considerably, depending on
+    how heavily the parts of Coin you use most are instrumented.
 
 =======================================================================
 XXX FIXME: complete doc. XXX
