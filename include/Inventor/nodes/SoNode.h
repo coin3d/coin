@@ -41,6 +41,7 @@ class SoPickAction;
 class SoRayPickAction;
 class SoSearchAction;
 class SoWriteAction;
+class SbDict;
 
 class COIN_DLL_API SoNode : public SoFieldContainer {
   typedef SoFieldContainer inherited;
@@ -54,29 +55,19 @@ public:
   void setOverride(const SbBool state);
   SbBool isOverride(void) const;
 
-  // FIXME: augh! This is _not_ very clever. Nodes can belong to one
-  // set without that being exclusive: an INVENTOR node is more often
-  // than not an VRML1 node, and vice versa; a VRML1 node is always an
-  // INVENTOR node. Then there's the little thing with versioning:
-  // INVENTOR1, INVENTOR20, INVENTOR21, INVENTOR25, ..., COIN10,
-  // COIN20, COIN21, ..., VRML1, VRML97, ...
-  //
-  // In short, the enum below should contain values for a *bit*-flag.
-  //
-  // This is extremely important to get straigthened out to do correct
-  // export functionality, among other things -- so *please* somebody
-  // fix this before Coin version 2 release -- or it might be too late
-  // without breaking API compatibility. (And when fixing it, keep
-  // INVENTOR=0 and VRML1=1 for backward compatibility with Coin-1.)
-  //
-  // 20020515 mortene@sim.no.
   enum NodeType {
-    INVENTOR = 0,
-    VRML1,
-    VRML2,
-    PROTO_INSTANCE_ROOT
+    INVENTOR     = 0x00,
+    VRML1        = 0x01,
+    VRML2        = 0x02,
+    INVENTOR_1   = 0x04,
+    INVENTOR_2_0 = 0x08,
+    INVENTOR_2_1 = 0x10,
+    COIN_1_0     = 0x20,
+    COIN_2_0     = 0x40,
+    EXTENSION    = 0x80
   };
 
+  static uint32_t getCompatibilityTypes(const SoType & nodetype);
   void setNodeType(const NodeType type);
   NodeType getNodeType(void) const;
 
@@ -151,6 +142,8 @@ protected:
   static int getNextActionMethodIndex(void);
   static void incNextActionMethodIndex(void);
 
+  static void setCompatibilityTypes(const SoType & nodetype, const uint32_t bitmask);
+
   uint32_t uniqueId;
   static uint32_t nextUniqueId;
   static int nextActionMethodIndex;
@@ -161,7 +154,8 @@ private:
   void clearStateFlags(const unsigned int bits);
   void setStateFlags(const unsigned int bits);
   SbBool getState(const unsigned int bits) const;
-
+  static SbDict * compatibilitydict;
+  static void cleanupClass(void);
 };
 
 #endif // !COIN_SONODE_H

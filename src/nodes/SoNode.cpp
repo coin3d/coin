@@ -158,11 +158,13 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodes/SoNodes.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/nodes/SoUnknownNode.h>
 #include <Inventor/nodes/SoTextureScalePolicy.h> // possible part of public API in the future
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/SoInput.h>
 #include <assert.h>
+#include <stdlib.h>
 
 #if HAVE_CONFIG_H
 #include <config.h>
@@ -214,6 +216,7 @@ int SoNode::nextActionMethodIndex = 0;
 // Don't set value explicitly to SoType::badType(), to avoid a bug in
 // Sun CC v4.0. (Bitpattern 0x0000 equals SoType::badType()).
 SoType SoNode::classTypeId;
+SbDict * SoNode::compatibilitydict = NULL;
 
 static void
 init_action_methods(void);
@@ -407,6 +410,13 @@ SoNode::initClass(void)
   // actions must be initialized before we can use
   // SO_ACTION_ADD_METHOD
   init_action_methods();
+
+  // initialize the compatibility dict
+  SoNode::compatibilitydict = new SbDict;
+  atexit(SoNode::cleanupClass);
+
+  SoNode::setCompatibilityTypes(SoNode::getClassTypeId(),
+                                SO_FROM_INVENTOR_1);
 }
 
 /*!
@@ -1054,9 +1064,9 @@ SoNode::writeS(SoAction * action, SoNode * node)
   assert(action->getTypeId().isDerivedFrom(SoWriteAction::getClassTypeId()));
   SoWriteAction * const writeAction = (SoWriteAction *)(action);
 
-  if (node->getNodeType() == PROTO_INSTANCE_ROOT) {
-    assert(0 && "FIXME: PROTO export not supported.");
-  }
+  //  if (node->getNodeType() == PROTO_INSTANCE_ROOT) {
+  //  assert(0 && "FIXME: PROTO export not supported.");
+  // }
   node->write(writeAction);
 }
 
@@ -1072,6 +1082,7 @@ void
 SoNode::write(SoWriteAction * action)
 {
   SoOutput * out = action->getOutput();
+
   if (out->getStage() == SoOutput::COUNT_REFS) {
     this->addWriteReference(out, FALSE);
   }
@@ -1233,6 +1244,52 @@ SoNode::readInstance(SoInput * in, unsigned short flags)
     else if (in->isFileVRML2()) this->setNodeType(SoNode::VRML2);
   }
   return ret;
+}
+
+/*!
+  Get the node compatibility mask for node type \a nodetype.  The
+  return value will be a bit mask of SoNode::NodeType flags,
+  containing one or several flags.
+
+  \since 2002-05-24
+*/
+uint32_t 
+SoNode::getCompatibilityTypes(const SoType & nodetype)
+{
+  assert(SoNode::compatibilitydict);
+  assert(nodetype.isDerivedFrom(SoNode::getClassTypeId()));
+
+  void * tmp;
+  if (SoNode::compatibilitydict->find((unsigned long) nodetype.getKey(), tmp)) {
+    return (uint32_t) tmp;
+  }
+  return SoNode::EXTENSION;
+}
+
+/*!
+
+  Set the node compatibility mask for node type \a nodetype.  The mask
+  specifies for which file formats the node is supported.
+
+  
+  \sa getCompatibilityMode()
+  \since 2002-05-24 
+*/
+void 
+SoNode::setCompatibilityTypes(const SoType & nodetype, const uint32_t bitmask)
+{
+  assert(SoNode::compatibilitydict);
+  assert(nodetype.isDerivedFrom(SoNode::getClassTypeId()));
+  SoNode::compatibilitydict->enter((unsigned long) nodetype.getKey(), (void*) bitmask);
+}
+
+//
+// called by atexit()
+//
+void 
+SoNode::cleanupClass(void)
+{
+  delete SoNode::compatibilitydict;
 }
 
 // just undef flags here

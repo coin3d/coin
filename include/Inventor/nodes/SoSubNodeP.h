@@ -59,4 +59,14 @@
     PRIVATE_COMMON_INIT_CODE(_class_, &classname[2], NULL, inherited); \
   } while (0)
 
+
+#define SO_FROM_INVENTOR_1 \
+  (SoNode::INVENTOR_1|SoNode::INVENTOR_2_0|SoNode::INVENTOR_2_1)
+
+#define SO_FROM_INVENTOR_2_0 \
+  (SoNode::INVENTOR_2_0|SoNode::INVENTOR_2_1)
+
+#define SO_FROM_INVENTOR_2_1 \
+  (SoNode::INVENTOR_2_1)
+
 #endif // !COIN_SOSUBNODEP_H
