@@ -3782,3 +3782,19 @@ main(int argc, char* argv[])
     20040902 mortene.
 
 =====================================================================
+
+136 SoBoxHighlightRenderAction with SoExtSelection causes a crash bug
+    when SoExtSelection::lassoType==NOLASSO, or when
+    lassoPolicy==FULL.
+
+    To reproduce, load any model into the
+    SoGuiExamples/nodes/extselection example (a simple file with
+    e.g. just an SoSphere will do), then either hit 'f' (for FULL
+    lassoPolicy) or 'n' (for NOLASSO lassoType) and select any piece
+    of the sphere. This will result in a crash.
+
+    Medium priority issue.
+
+    20040902 mortene.
+
+=====================================================================
