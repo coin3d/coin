@@ -194,3 +194,17 @@ STUFF TO FIX IN COIN
 
   We should re-design and layer the old API / classes on top of our
   new and improved design.
+
+
+* Auto-generation of MSVC++ project files
+  2001-11-28  Morten Eriksen  <mortene@sim.no>
+
+  Many MSWin users who want to be able to re-compile Coin and SoWin
+  and / or SoQt from scratch to suit their own needs with regard to
+  compilation flags etc, would like to be able to do so by using
+  MSVC++ project files (.dsw or .dsp) instead of the configure-based
+  setup.
+
+  It would be possible for us to make the configure script generate
+  such files automatically, along with a valid MSWin config.h,
+  inttypes.h etc.
