@@ -131,14 +131,17 @@ public:
   float getCreaseAngle(void) const;
   int32_t getNumTextureCoordinates(void) const;
   const SbVec2f & getTextureCoordinate2(const int index) const;
+  const SbVec3f & getTextureCoordinate3(const int index) const;
   const SbVec4f & getTextureCoordinate4(const int index) const;
   SoTextureCoordinateBinding::Binding getTextureCoordinateBinding(void) const;
   const SbColor & getTextureBlendColor(void) const;
   const unsigned char * getTextureImage(SbVec2s & size, int & numcomps) const;
+  const unsigned char * getTextureImage(SbVec3s & size, int & numcomps) const;
   const SbMatrix & getTextureMatrix(void) const;
   SoTexture2::Model getTextureModel(void) const;
   SoTexture2::Wrap getTextureWrapS(void) const;
   SoTexture2::Wrap getTextureWrapT(void) const;
+  SoTexture2::Wrap getTextureWrapR(void) const;
   const SbMatrix & getModelMatrix(void) const;
   SoUnits::Units getUnits(void) const;
   float getFocalDistance(void) const;

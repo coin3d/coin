@@ -834,6 +834,18 @@ SoCallbackAction::getTextureCoordinate2(const int index) const
 }
 
 /*!
+  Returns SbVec3f texture coordinate at \a index from the texture
+  coordinate pool of the traversal state.
+
+  \since 2001-12-05
+*/
+const SbVec3f &
+SoCallbackAction::getTextureCoordinate3(const int index) const
+{
+  return SoTextureCoordinateElement::getInstance(this->state)->get3(index);
+}
+
+/*!
   Returns SbVec4f texture coordinate at \a index from the texture
   coordinate pool of the traversal state.
 */
@@ -872,6 +884,17 @@ SoCallbackAction::getTextureImage(SbVec2s & size, int & numcomps) const
 }
 
 /*!
+  Returns current 3D texture image settings.
+
+  \since 2001-12-05
+*/
+const unsigned char *
+SoCallbackAction::getTextureImage(SbVec3s & size, int & numcomps) const
+{
+  return SoTextureImageElement::getImage(state, size, numcomps);
+}
+
+/*!
   Returns current texture transformation matrix setting.
 */
 const SbMatrix &
@@ -905,6 +928,17 @@ SoTexture2::Wrap
 SoCallbackAction::getTextureWrapT(void) const
 {
   return (SoTexture2::Wrap) SoTextureImageElement::getWrapT(this->state);
+}
+
+/*!
+  Returns current texture wrapping setting for the \c R coordinate.
+
+  \since 2001-12-05
+*/
+SoTexture2::Wrap
+SoCallbackAction::getTextureWrapR(void) const
+{
+  return (SoTexture2::Wrap) SoTextureImageElement::getWrapR(this->state);
 }
 
 /*!
