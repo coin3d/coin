@@ -91,51 +91,6 @@
 
 =====================================================================
 
-006 SoText2 won't show with drawstyle == hidden line. Bug reported by
-    Jean Davy. Reproduce with this minimal, stand-alone example:
-
-    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
-    #include <Inventor/Qt/SoQt.h>
-    #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
-    #include <Inventor/nodes/SoCone.h>
-    #include <Inventor/nodes/SoSeparator.h>
-    #include <Inventor/nodes/SoText2.h>
-    
-    int
-    main(int argc, char* argv[])
-    {
-      QWidget * mainwin = SoQt::init(argv[0]);
-      SoSeparator * root = new SoSeparator;
-    
-      root->addChild(new SoCone);
-      SoText2 * text2d = new SoText2;
-      root->addChild(text2d);
-      text2d->string = "tjo-bing";
-    
-      SoQtExaminerViewer * viewer = new SoQtExaminerViewer(mainwin);
-      viewer->setSceneGraph(root);
-      viewer->setDrawStyle(SoQtExaminerViewer::STILL,
-                           SoQtExaminerViewer::VIEW_HIDDEN_LINE);
-    
-      SoQt::show(mainwin);
-      SoQt::mainLoop();
-    
-      return 0;
-    }
-    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
-
-    This is the cause of the bug, according to <pederb@sim.no>:
-
-      We use GL polygon offset to do hidden line rendering, and this
-      caused problems since the SoText2 characters are rendered twice
-      (for the first pass we just draw everything black, with an
-      z-buffer offset). SoText2 characters are drawn as bitmaps, which
-      are not affected by polygon offset.
-
-    <mortene@sim.no> 20020521.
-
-=====================================================================
-
 007 For the following stand-alone example, picking on the nurbscurve
     only partly works:
 
