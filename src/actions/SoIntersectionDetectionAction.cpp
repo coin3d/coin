@@ -12,7 +12,7 @@
 #include <Inventor/manips/SoPointLightManip.h>
 #include <Inventor/manips/SoSpotLightManip.h>
 
-#include <SoIntersectionDetectionAction.h>
+#include <Inventor/actions/SoIntersectionDetectionAction.h>
 
 // *************************************************************************
 
