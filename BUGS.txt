@@ -551,51 +551,6 @@
 
 =====================================================================
 
-034 The rendering performance when loading
-    Coin/data/draggerDefaults/transformerDragger.iv into an
-    examinerviewer seems disproportionately bad versus what one would
-    expect (it doesn't look like it contains all that much geometry).
-
-    Should investigate why this happens. (Do a profile run, perhaps?)
-
-    This is a high priority task, which is probably hard enough to
-    debug that it should be left to pederb.  ;-)
-
-    Found and reported on coin-discuss by Coin-user Martin Vogt.
-
-    A few interesting findings after some fiddling with the .iv-file
-    in question:
-
-        - SGI Inventor renders the geometry of the file with a lot
-          better performance than Coin-2
-
-        - turning off transparency in all materials doesn't help
-
-        - blanking out all materials in general doesn't help
-
-        - changing TRANSFORMER_ROTATOR_MARKER to be an SoLabel instead
-          of an SoSphere speeds up rendering *dramatically* (fps goes
-          from ~7 to ~50 on my home machine), even though from a quick
-          look I believe that only removes 18 spheres from the scene
-
-        - removing all SoIndexedFaceSet instances alone doesn't seem
-          to help much (fps stays about the same)
-
-        - removing all SoIndexedLineSet instances alone doesn't seem
-          to help much (fps stays about the same)
-
-        - removing all SoIndexedFaceSet and SoIndexedLineSet instances
-          *together* causes a jump in fps approximately equal to the
-          one when removing the spheres
-
-    20021007 mortene.
-    
-    UPDATE 20030204 pederb. With auto-caching Coin now renders this
-    file quite a lot faster than SGI Inventor (41 fps for Coin, 32 fps
-    for SGI Inventor :)
-
-=====================================================================
-
 036 This program will hit an assert if we interact with the
     SoTrackballDragger at the same time as it is removed from the
     scenegraph:
