@@ -372,6 +372,10 @@ SoCenterballDragger::kidStartCB(void * d , SoDragger * child)
 {
   SoCenterballDragger *thisp = (SoCenterballDragger*)d;
   thisp->setSwitches(child);
+
+  SoSurroundScale * scale = (SoSurroundScale*)
+    thisp->getPart("surroundScale", FALSE);
+  if (scale) scale->invalidate();
 }
 
 /*!
@@ -382,6 +386,10 @@ SoCenterballDragger::kidFinishCB(void * d, SoDragger * child)
 {
   SoCenterballDragger *thisp = (SoCenterballDragger*)d;
   thisp->setSwitches(NULL);
+
+  SoSurroundScale * scale = (SoSurroundScale*)
+    thisp->getPart("surroundScale", FALSE);
+  if (scale) scale->invalidate();
 }
 
 //
@@ -405,4 +413,32 @@ SoCenterballDragger::removeChildDragger(const char *childname)
   child->removeStartCallback(SoCenterballDragger::kidStartCB, this);
   child->removeFinishCallback(SoCenterballDragger::kidFinishCB, this);
   this->unregisterChildDragger(child);
+}
+
+void 
+SoCenterballDragger::getBoundingBox(SoGetBoundingBoxAction * action)
+{
+  SoSurroundScale * scale = (SoSurroundScale*)
+    this->getPart("surroundScale", FALSE);
+  if (scale) {
+    SbBool dotrans = scale->isDoingTranslations();
+    scale->setDoingTranslations(FALSE);
+    inherited::getBoundingBox(action);
+    scale->setDoingTranslations(dotrans);
+  }
+  else inherited::getBoundingBox(action);
+}
+
+void 
+SoCenterballDragger::getMatrix(SoGetMatrixAction * action)
+{
+  SoSurroundScale * scale = (SoSurroundScale*)
+    this->getPart("surroundScale", FALSE);
+  if (scale) {
+    SbBool dotrans = scale->isDoingTranslations();
+    scale->setDoingTranslations(FALSE);
+    inherited::getMatrix(action);
+    scale->setDoingTranslations(dotrans);
+  }
+  else inherited::getMatrix(action);
 }

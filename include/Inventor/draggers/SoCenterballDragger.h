@@ -75,6 +75,9 @@ protected:
   static void kidStartCB(void * f, SoDragger * d);
   static void kidFinishCB(void * f, SoDragger * d);
 
+  virtual void getBoundingBox(SoGetBoundingBoxAction * action);
+  virtual void getMatrix(SoGetMatrixAction * action);
+
   SoFieldSensor * rotFieldSensor;
   SoFieldSensor * centerFieldSensor;
 
