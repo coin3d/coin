@@ -238,7 +238,7 @@ SoGLBigImage::getGLDisplayList(SoState * state)
 // returns the number of bits set, and ets highbit to
 // the highest bit set.
 static int
-cnt_bits(unsigned long val, int & highbit)
+bi_cnt_bits(unsigned long val, int & highbit)
 {
   int cnt = 0;
   highbit = 0;
@@ -252,10 +252,10 @@ cnt_bits(unsigned long val, int & highbit)
 
 // returns the next power of two greater or equal to val
 static short
-next_power_of_two(short val)
+bi_next_power_of_two(short val)
 {
   int highbit;
-  if (cnt_bits((unsigned long) val, highbit) > 1) {
+  if (bi_cnt_bits((unsigned long) val, highbit) > 1) {
     return (short) (1<<highbit);
   }
   return val;
@@ -272,8 +272,8 @@ SoGLBigImage::initSubImages(SoState * state,
   THIS->reset(state);
 
   THIS->imagesize = subimagesize;
-  THIS->glimagesize[0] = next_power_of_two(THIS->imagesize[0]);
-  THIS->glimagesize[1] = next_power_of_two(THIS->imagesize[1]);
+  THIS->glimagesize[0] = bi_next_power_of_two(THIS->imagesize[0]);
+  THIS->glimagesize[1] = bi_next_power_of_two(THIS->imagesize[1]);
 
   if (THIS->glimagesize[0] > THIS->imagesize[0] && THIS->glimagesize[0] >= 256) {
     int diff = THIS->imagesize[0] - (THIS->glimagesize[0]>>1);
