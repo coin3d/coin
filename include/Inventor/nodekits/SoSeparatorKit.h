@@ -58,7 +58,11 @@ public:
 protected:
   virtual ~SoSeparatorKit();
   virtual void setDefaultOnNonWritingFields(void);
+  virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
 
+private:
+  class SoSeparatorKitP * pimpl;
+  friend class SoSeparatorKitP;
 };
 
 #endif // !COIN_SOSEPARATORKIT_H

@@ -34,16 +34,38 @@
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodes/SoTexture2Transform.h>
 #include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/sensors/SoFieldSensor.h>
+
+#ifndef DOXYGEN_SKIP_THIS
+
+class SoSeparatorKitP {
+public:
+  SoSeparatorKitP(SoSeparatorKit * kit) : kit(kit) {}
+
+  SoSeparatorKit * kit;
+  SoFieldSensor * fieldsensor;
+  SoSeparator * connectedseparator;
+
+  void connectFields(const SbBool onoff);
+  void attachSensor(const SbBool onoff);
+
+  static void sensorCB(void *, SoSensor *);
+
+};
+
+#endif // DOXYGEN_SKIP_THIS
 
 
 SO_KIT_SOURCE(SoSeparatorKit);
 
+#define THIS this->pimpl
 
 /*!
   Constructor.
 */
 SoSeparatorKit::SoSeparatorKit(void)
 {
+  THIS = new SoSeparatorKitP(this);
   SO_KIT_INTERNAL_CONSTRUCTOR(SoSeparatorKit);
 
   SO_KIT_ADD_FIELD(renderCaching, (SoSeparatorKit::AUTO));
@@ -71,7 +93,13 @@ SoSeparatorKit::SoSeparatorKit(void)
   SO_KIT_ADD_CATALOG_LIST_ENTRY(childList, SoSeparator, TRUE, topSeparator, "", SoShapeKit, TRUE);
   SO_KIT_ADD_LIST_ITEM_TYPE(childList, SoSeparatorKit);
 
+  THIS->connectedseparator = NULL;
+  THIS->fieldsensor = new SoFieldSensor(SoSeparatorKitP::sensorCB, THIS);
+  THIS->fieldsensor->setPriority(0);
+
   SO_KIT_INIT_INSTANCE();
+
+  this->setUpConnections(TRUE, TRUE);
 }
 
 /*!
@@ -79,6 +107,9 @@ SoSeparatorKit::SoSeparatorKit(void)
 */
 SoSeparatorKit::~SoSeparatorKit()
 {
+  THIS->connectFields(FALSE);
+  delete THIS->fieldsensor;
+  delete THIS;
 }
 
 /*!
@@ -92,9 +123,87 @@ SoSeparatorKit::initClass(void)
   SO_KIT_INTERNAL_INIT_CLASS(SoSeparatorKit);
 }
 
-void 
+void
 SoSeparatorKit::setDefaultOnNonWritingFields(void)
 {
   this->topSeparator.setDefault(TRUE);
   inherited::setDefaultOnNonWritingFields();
+}
+
+SbBool
+SoSeparatorKit::setUpConnections(SbBool onoff, SbBool doitalways)
+{
+  if (onoff == this->connectionsSetUp && !doitalways)
+    return onoff;
+
+  if (onoff) {
+    inherited::setUpConnections(onoff, FALSE);
+    THIS->connectFields(TRUE);
+    THIS->attachSensor(TRUE);
+  }
+  else {
+    THIS->attachSensor(FALSE);
+    THIS->connectFields(FALSE);
+    inherited::setUpConnections(onoff, FALSE);
+  }
+  return !(this->connectionsSetUp = onoff);
+}
+
+#undef THIS
+
+// methods for SoSeparatorKitP are below
+
+//
+// connect fields in topSeparator to the fields in this node.
+//
+void
+SoSeparatorKitP::connectFields(const SbBool onoff)
+{
+  if (this->connectedseparator) { // always disconnect
+    this->connectedseparator->renderCaching.disconnect();
+    this->connectedseparator->boundingBoxCaching.disconnect();
+    this->connectedseparator->renderCulling.disconnect();
+    this->connectedseparator->pickCulling.disconnect();
+    this->connectedseparator->unref();
+    this->connectedseparator = NULL;
+  }
+  if (onoff) {
+    SoSeparator * sep = (SoSeparator*) this->kit->topSeparator.getValue();
+    if (sep) {
+      this->connectedseparator = sep;
+      this->connectedseparator->ref(); // ref to make sure pointer is legal
+      sep->renderCaching.connectFrom(&this->kit->renderCaching);
+      sep->boundingBoxCaching.connectFrom(&this->kit->boundingBoxCaching);
+      sep->renderCulling.connectFrom(&this->kit->renderCulling);
+      sep->pickCulling.connectFrom(&this->kit->pickCulling);
+    }
+  }
+}
+
+//
+// attach sensor to topSeparator if onoff, detach otherwise
+//
+void
+SoSeparatorKitP::attachSensor(const SbBool onoff)
+{
+  if (onoff) {
+    if (this->fieldsensor->getAttachedField() != &this->kit->topSeparator) {
+      this->fieldsensor->attach(&this->kit->topSeparator);
+    }
+  }
+  else {
+    if (this->fieldsensor->getAttachedField()) this->fieldsensor->detach();
+  }
+}
+
+//
+// callback from field sensor connected to topSeparator
+//
+void
+SoSeparatorKitP::sensorCB(void * data, SoSensor *)
+{
+  SoSeparatorKitP * thisp = (SoSeparatorKitP*) data;
+  if (thisp->connectedseparator != thisp->kit->topSeparator.getValue()) {
+    thisp->connectFields(TRUE);
+  }
 }
