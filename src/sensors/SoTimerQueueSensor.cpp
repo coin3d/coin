@@ -95,14 +95,20 @@ SoTimerQueueSensor::getTriggerTime(void) const
 void
 SoTimerQueueSensor::setTriggerTime(const SbTime & time)
 {
-  this->triggertime = time;
-  // FIXME: reschedule? 19990425 mortene.
+  if (time != this->triggertime) {
+    this->triggertime = time;
+    if (this->isScheduled()) {
+      SoSensorManager * sm = SoDB::getSensorManager();
+      sm->removeTimerSensor(this);
+      sm->insertTimerSensor(this);
+    }
+  }
 }
 
 /*!
   Overloaded to clear scheduled flag before triggering.
 */
-void 
+void
 SoTimerQueueSensor::trigger(void)
 {
   this->scheduled = FALSE;
