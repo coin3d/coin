@@ -225,6 +225,9 @@ SoAsciiText::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
   this->setUpGlyphs(action->getState());
 
+  // FIXME: the below calculations are just very crude
+  // approximations. This is bugzilla #104. 20000707 mortene.
+
   float size = SoFontSizeElement::get(action->getState());
   int i, n = this->string.getNum();
   if (n == 0) {
