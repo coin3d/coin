@@ -103,7 +103,10 @@ SoDiffuseColorElement::set(SoState * const state, SoNode * const node,
 {
   SoDiffuseColorElement *elem = (SoDiffuseColorElement*)
     SoReplacedElement::getElement(state, classStackIndex, node);
-  elem->setElt(numColors, colors);
+  if (numColors > 0)
+    elem->setElt(numColors, colors);
+  else
+    elem->setElt(1, &defaultColor);
 }
 
 //! FIXME: write doc.

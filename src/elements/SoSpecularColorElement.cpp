@@ -31,7 +31,7 @@
 
 #include <assert.h>
 
-static const SbColor defaultColor(0,0,0);
+static const SbColor defaultColor(0.0f, 0.0f, 0.0f);
 
 /*!
   \fn SoSpecularColorElement::numColors
@@ -96,7 +96,10 @@ SoSpecularColorElement::set(SoState * const state, SoNode * const node,
 {
   SoSpecularColorElement *elem = (SoSpecularColorElement*)
     SoReplacedElement::getElement(state, classStackIndex, node);
-  elem->setElt(numColors, colors);
+  if (numColors > 0)
+    elem->setElt(numColors, colors);
+  else 
+    elem->setElt(1, &defaultColor);
 }
 
 //! FIXME: write doc.

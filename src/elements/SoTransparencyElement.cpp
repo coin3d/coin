@@ -30,7 +30,7 @@
 #include <Inventor/SbName.h>
 #include <assert.h>
 
-static const float defaultValue = 0;
+static const float defaultValue = 0.0f;
 
 /*!
   \fn SoTransparencyElement::numValues
@@ -95,8 +95,10 @@ SoTransparencyElement::set(SoState * const state, SoNode * const node,
 {
   SoTransparencyElement *elem = (SoTransparencyElement*)
     SoReplacedElement::getElement(state, classStackIndex, node);
-  elem->values = values;
-  elem->numValues = numValues;
+  if (numValues)
+    elem->setElt(numValues, values);
+  else
+    elem->setElt(1, &defaultValue);
 }
 
 //! FIXME: write doc.
@@ -135,3 +137,14 @@ SoTransparencyElement::getInstance(SoState *state)
   return (const SoTransparencyElement *)
     SoElement::getConstElement(state, classStackIndex);
 }
+
+/*!
+  Sets the value of this element. Can be overloaded by subclasses.
+*/
+void
+SoTransparencyElement::setElt(const int numValues, const float * const values)
+{
+  this->numValues = numValues;
+  this->values = values;
+}
+

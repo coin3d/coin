@@ -48,6 +48,7 @@ public:
   const float *getArrayPtr() const;
 
 protected:
+  virtual void setElt(const int numValues, const float * const values);
   int numValues;
   const float *values;
 
