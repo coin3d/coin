@@ -53,6 +53,7 @@
 #include <Inventor/lists/SoTypeList.h>
 #include <assert.h>
 #include <Inventor/engines/SoSubEngineP.h>
+#include <coindefs.h> // COIN_OBSOLETED
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -105,32 +106,14 @@ SoFieldConverter::initClasses(void)
   SoConvertAll::initClass();
 }
 
-/*!
-  Returns the master field we are connected to (i.e. the source field
-  of the conversion).
+/*!  
+  This method is obsoleted in Coin. It should probably have been
+  private in OIV.  
 */
 SoField *
 SoFieldConverter::getConnectedInput(void)
 {
-  // FIXME: I'm not at all sure I've understood the point of this
-  // method and that this implementation does the correct
-  // thing. 20000409 mortene.
-
-  // FIXME: should it perhaps return the field connected to the
-  // output? 20000412 mortene.
-
-  SoTypeList l;
-  (void)SoType::getAllDerivedFrom(SoField::getClassTypeId(), l);
-
-  SoField * gotyou = NULL;
-  for (int i=0; i < l.getLength(); i++) {
-    if ((gotyou = this->getInput(l[i])) != NULL) {
-      SoField * master;
-      if (gotyou->getConnectedField(master)) return master;
-      return NULL;
-    }
-  }
-
+  COIN_OBSOLETED();
   return NULL;
 }
 
