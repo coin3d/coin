@@ -40,18 +40,6 @@
 
 =====================================================================
 
-004 The ``buildings/Barcelona.iv'' model from the SGI Inventor archive
-    crashes on rendering in Coin, because we are less robust than SGI
-    / TGS Inventor in regard to faulty indices.
-
-    For a larger task: we should audit our rendering (and related)
-    code and fix all cases were we lack robustness for at least the
-    most common mistakes. See the docs/todo.txt item on this.
-
-    <mortene@sim.no> 20020521.
-
-=====================================================================
-
 005 Free memory read on connected SoSFEnum fields?
 
     This is an old problem which might have been fixed now, but we
@@ -241,24 +229,6 @@
     ball with LMB and voilently drag around a bit -- the yellow axis
     markers flips out completely and we'll quickly get an
     assert. Nasty.
-
-    mortene 20020624.
-
-=====================================================================
-
-010 The DirectionalLightDragger has a nasty "up-down" translation bug.
-    Load the simplest scene with it in an examinerviewer:
-
-    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
-    #Inventor V2.1 ascii
-
-    DirectionalLightDragger { }
-    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
-
-    Don't move the camera from it's default position before switching
-    to "scenegraph interact" mode (by e.g. 'ESC'), then click and drag
-    with LMB on the "up-marker" above the sphere -- the dragger
-    translates completely wrong.
 
     mortene 20020624.
 
