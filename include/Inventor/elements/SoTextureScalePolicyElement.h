@@ -24,9 +24,13 @@
  *
 \**************************************************************************/
 
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif // !COIN_INTERNAL
+
 #include <Inventor/elements/SoInt32Element.h>
 
-class COIN_DLL_API SoTextureScalePolicyElement : public SoInt32Element {
+class SoTextureScalePolicyElement : public SoInt32Element {
   typedef SoInt32Element inherited;
 
   SO_ELEMENT_HEADER(SoTextureScalePolicyElement);

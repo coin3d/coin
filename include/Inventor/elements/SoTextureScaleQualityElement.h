@@ -24,9 +24,13 @@
  *
 \**************************************************************************/
 
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif // !COIN_INTERNAL
+
 #include <Inventor/elements/SoFloatElement.h>
 
-class COIN_DLL_API SoTextureScaleQualityElement : public SoFloatElement {
+class SoTextureScaleQualityElement : public SoFloatElement {
   typedef SoFloatElement inherited;
 
   SO_ELEMENT_HEADER(SoTextureScaleQualityElement);
