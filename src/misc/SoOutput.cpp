@@ -1120,15 +1120,15 @@ SoOutput::removeDEFNode(SbName name)
 /*!
   \COININTERNAL
 
-  FIXME: try to find a better/nicer way to handle PROTO export without
-  adding new methods in SoOutput. For instance, is it possible to
-  add elements in the SoWriteAction state stack? pederb, 2002-06-12
-
   \since 2002-05-27
 */
 void 
 SoOutput::pushProto(SoProto * proto)
 {
+  // FIXME: try to find a better/nicer way to handle PROTO export without
+  // adding new methods in SoOutput. For instance, is it possible to
+  // add elements in the SoWriteAction state stack? pederb, 2002-06-12
+
   THIS->pushRoutes(FALSE);
   THIS->protostack.push(proto);
   THIS->pushDefNames(FALSE);
@@ -1137,15 +1137,15 @@ SoOutput::pushProto(SoProto * proto)
 /*!
   \COININTERNAL
 
-  FIXME: try to find a better/nicer way to handle PROTO export without
-  adding new methods in SoOutput. For instance, is it possible to
-  add elements in the SoWriteAction state stack? pederb, 2002-06-12
-
   \since 2002-05-27
 */
 SoProto * 
 SoOutput::getCurrentProto(void) const
 {
+  // FIXME: try to find a better/nicer way to handle PROTO export without
+  // adding new methods in SoOutput. For instance, is it possible to
+  // add elements in the SoWriteAction state stack? pederb, 2002-06-12
+
   if (THIS->protostack.getLength()) {
     return THIS->protostack[THIS->protostack.getLength()-1];
   }
@@ -1155,15 +1155,15 @@ SoOutput::getCurrentProto(void) const
 /*!
   \COININTERNAL
 
-  FIXME: try to find a better/nicer way to handle PROTO export without
-  adding new methods in SoOutput. For instance, is it possible to
-  add elements in the SoWriteAction state stack? pederb, 2002-06-12
-
   \since 2002-05-27
 */
 void 
 SoOutput::popProto(void)
 {
+  // FIXME: try to find a better/nicer way to handle PROTO export without
+  // adding new methods in SoOutput. For instance, is it possible to
+  // add elements in the SoWriteAction state stack? pederb, 2002-06-12
+
   assert(THIS->protostack.getLength());
   THIS->protostack.pop();
   THIS->popDefNames();
@@ -1173,10 +1173,6 @@ SoOutput::popProto(void)
 /*!
   \COININTERNAL
 
-  FIXME: try to find a better/nicer way to handle ROUTE export without
-  adding new methods in SoOutput. For instance, is it possible to
-  add elements in the SoWriteAction state stack? pederb, 2002-06-12
-
   \since 2002-06-12
 */
 
@@ -1184,6 +1180,10 @@ void
 SoOutput::addRoute(SoFieldContainer * from, const SbName & fromfield,
                    SoFieldContainer * to, const SbName & tofield)
 {
+  // FIXME: try to find a better/nicer way to handle ROUTE export without
+  // adding new methods in SoOutput. For instance, is it possible to
+  // add elements in the SoWriteAction state stack? pederb, 2002-06-12
+
   SoOutputROUTEList * list = THIS->getCurrentRoutes(TRUE);
   assert(list);
   SoOutputROUTE r;
@@ -1197,15 +1197,15 @@ SoOutput::addRoute(SoFieldContainer * from, const SbName & fromfield,
 /*!
   \COININTERNAL
 
-  FIXME: try to find a better/nicer way to handle ROUTE export without
-  adding new methods in SoOutput. For instance, is it possible to
-  add elements in the SoWriteAction state stack? pederb, 2002-06-12
-
   \since 2002-06-12 
 */
 void 
 SoOutput::resolveRoutes(void)
 {
+  // FIXME: try to find a better/nicer way to handle ROUTE export without
+  // adding new methods in SoOutput. For instance, is it possible to
+  // add elements in the SoWriteAction state stack? pederb, 2002-06-12
+
   SoOutputROUTEList * list = THIS->getCurrentRoutes(FALSE);
   if (list && list->getLength()) {
     const int n = list->getLength();
