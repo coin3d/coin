@@ -148,6 +148,10 @@ public:
   SbBool needsetup;
   SbBox3f maxglyphbbox;
 
+  cc_string * prevfontname; // Store important fontspecs so that changes can be detected
+  cc_string * prevfontstyle;
+  float prevfontsize;
+
 private:
   SoText3 * master;
 };
@@ -183,6 +187,9 @@ SoText3::SoText3(void)
 
   PRIVATE(this) = new SoText3P(this);
   PRIVATE(this)->needsetup = TRUE;
+  PRIVATE(this)->prevfontname = cc_string_construct_new();
+  PRIVATE(this)->prevfontstyle = cc_string_construct_new();
+  PRIVATE(this)->prevfontsize = -1;
 }
 
 SoText3::~SoText3()
@@ -354,7 +361,7 @@ SoText3::GLRender(SoGLRenderAction * action)
   SoMaterialBindingElement::Binding binding =
     SoMaterialBindingElement::get(state);
 
-  SbBool matperpart = binding != SoMaterialBindingElement::OVERALL;
+  SbBool matperpart = (binding != SoMaterialBindingElement::OVERALL);
 
   SoMaterialBundle mb(action);
   mb.sendFirst();
@@ -992,7 +999,6 @@ void
 SoText3::notify(SoNotList * list)
 {
   // Overridden to detect when the string field changes.
-
   SoField * f = list->getLastField();
   if (f == &this->string) PRIVATE(this)->needsetup = TRUE;
   inherited::notify(list);
@@ -1004,6 +1010,20 @@ SoText3P::setUpGlyphs(SoState * state, const cc_font_specification * fontspec, S
 {
   // Note that this code is duplicated in SoAsciiText::setUpGlyphs(),
   // so migrate bugfixes and other improvements.
+ 
+  // We have to force a new setup if style, size or font has
+  // changed. This must be done if boundingbox and text alignment
+  // shall stay correct
+  if (cc_string_compare(&fontspec->name, this->prevfontname) != 0 ||
+      cc_string_compare(&fontspec->style, this->prevfontstyle)) {
+    this->needsetup = TRUE; // Force new a setup
+    cc_string_set_text(this->prevfontname, cc_string_get_text(&fontspec->name));
+    cc_string_set_text(this->prevfontstyle, cc_string_get_text(&fontspec->style));
+  }
+  if(fontspec->size != this->prevfontsize) {
+    this->prevfontsize = fontspec->size;
+    this->needsetup = TRUE;
+  }
 
   if (!this->needsetup) return;
   this->needsetup = FALSE;
@@ -1041,4 +1061,10 @@ SoText3P::setUpGlyphs(SoState * state, const cc_font_specification * fontspec, S
     }
     this->widths.append(stringwidth);
   }
+
+  // Make sure boundingbox is updated if this method was called due to
+  // a fontspec change.
+  this->master->touch();
+
+
 }

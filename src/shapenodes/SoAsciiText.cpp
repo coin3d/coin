@@ -100,8 +100,11 @@ public:
   SbList <float> stringwidths;
   SbBool needsetup;
   cc_font_specification * fontspec;
-  float textsize;
   SbBox3f maxglyphbbox;
+
+  cc_string * prevfontname; // Store important fontspecs so that changes can be detected
+  cc_string * prevfontstyle;
+  float prevfontsize;
 
 };
 
@@ -132,8 +135,10 @@ SoAsciiText::SoAsciiText(void)
 
   PRIVATE(this) = new SoAsciiTextP(this);
   PRIVATE(this)->needsetup = TRUE;
-  PRIVATE(this)->textsize = 1.0f;
-  PRIVATE(this)->fontspec = NULL;
+
+  PRIVATE(this)->prevfontname = cc_string_construct_new();
+  PRIVATE(this)->prevfontstyle = cc_string_construct_new();
+  PRIVATE(this)->prevfontsize = -1;
 
 }
 
@@ -175,7 +180,6 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
   SoMaterialBundle mb(action);
   mb.sendFirst();
 
-  float size = SoFontSizeElement::get(state);
   SbBool do2Dtextures = FALSE;
   SbBool do3Dtextures = FALSE;
   if (SoGLTextureEnabledElement::get(state)) do2Dtextures = TRUE;
@@ -242,24 +246,24 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
         if (do2Dtextures) {
           glTexCoord2f(v0[0], v0[1]);
         }
-        glVertex3f(v0[0] * size + xpos, v0[1] * size + ypos, 0.0f);
+        glVertex3f(v0[0] * fontspec.size + xpos, v0[1] * fontspec.size + ypos, 0.0f);
         if (do2Dtextures) {
           glTexCoord2f(v1[0], v1[1]);
         }
-        glVertex3f(v1[0] * size + xpos, v1[1] * size + ypos, 0.0f);
+        glVertex3f(v1[0] * fontspec.size + xpos, v1[1] * fontspec.size + ypos, 0.0f);
         if (do2Dtextures) {
           glTexCoord2f(v2[0], v2[1]);
         }
-        glVertex3f(v2[0] * size + xpos, v2[1] * size + ypos, 0.0f);
+        glVertex3f(v2[0] * fontspec.size + xpos, v2[1] * fontspec.size + ypos, 0.0f);
       }
 
       // FIXME: next charpos should be based on 'advancement' and
       // 'kerning' from the font, not just glyph-width. (20030916
       // handegar)
-      xpos += width * PRIVATE(this)->textsize;
+      xpos += width * fontspec.size;
 
     }
-    ypos -= size * this->spacing.getValue();
+    ypos -= fontspec.size * this->spacing.getValue();
   }
   glEnd();
 }
@@ -335,16 +339,14 @@ SoAsciiText::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
     return; 
   }
 
-
-
   float maxy, miny;
   float minx, maxx;
   
   minx = 0;
   maxx = maxw;
 
-  miny = -PRIVATE(this)->textsize * this->spacing.getValue() * (n-1);
-  maxy = PRIVATE(this)->textsize;
+  miny = -fontspec.size * this->spacing.getValue() * (n-1);
+  maxy = fontspec.size;
 
   switch (this->justification.getValue()) {
   case SoAsciiText::LEFT:
@@ -364,7 +366,7 @@ SoAsciiText::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   box.setBounds(SbVec3f(minx, miny, 0.0f), SbVec3f(maxx, maxy, 0.0f));
 
   // Expanding bbox so that glyphs like 'j's and 'q's are completely inside.
-  box.extendBy(SbVec3f(0,PRIVATE(this)->maxglyphbbox.getMin()[1] - (n-1)*PRIVATE(this)->textsize, 0));  
+  box.extendBy(SbVec3f(0,PRIVATE(this)->maxglyphbbox.getMin()[1] - (n-1)*fontspec.size, 0));  
   box.extendBy(PRIVATE(this)->maxglyphbbox);
   center = box.getCenter();
 
@@ -500,12 +502,26 @@ SoAsciiTextP::setUpGlyphs(SoState * state, const cc_font_specification * fontspe
 
   // Note that this code is duplicated in SoText3::setUpGlyphs(), so
   // migrate bugfixes and other improvements.
-  
-  if (!this->needsetup) return;
 
+  // We have to force a new setup if style, size or font has
+  // changed. This must be done if boundingbox and text alignment
+  // shall stay correct
+  if (cc_string_compare(&fontspec->name, this->prevfontname) != 0 ||
+      cc_string_compare(&fontspec->style, this->prevfontstyle)) {
+    this->needsetup = TRUE; // Force new a setup
+    cc_string_set_text(this->prevfontname, cc_string_get_text(&fontspec->name));
+    cc_string_set_text(this->prevfontstyle, cc_string_get_text(&fontspec->style));
+  }
+  if(fontspec->size != this->prevfontsize) {
+    this->prevfontsize = fontspec->size;
+    this->needsetup = TRUE;
+  }
+
+  if (!this->needsetup) return;
   this->needsetup = FALSE;
-  this->textsize = SoFontSizeElement::get(state); 
+
   this->glyphwidths.truncate(0);
+  this->stringwidths.truncate(0);
 
   float kerningx = 0;
   float kerningy = 0;
@@ -538,7 +554,7 @@ SoAsciiTextP::setUpGlyphs(SoState * state, const cc_font_specification * fontspe
       if (glyphwidth == 0)
         glyphwidth = 1.0f / 3.0f;
 
-      stringwidth += glyphwidth * this->textsize;
+      stringwidth += glyphwidth * fontspec->size;
            
       if (strcharidx > 0) 
         cc_glyph3d_getkerning(prevglyph, glyph, &kerningx, &kerningy);          
@@ -551,7 +567,9 @@ SoAsciiTextP::setUpGlyphs(SoState * state, const cc_font_specification * fontspe
     this->stringwidths.append(stringwidth);
   }
 
-
+  // Make sure the boundingbox is updated if this method was called due to
+  // a fontspec change.
+  this->master->touch();
 
 }
 
