@@ -1,36 +1,40 @@
 # CONFIG "The List Classes"
 # factors: [work in progress / no work done]
 # FLAGS [0.8 0.6]
-# C = made 100% API conform with Open Inventor
 # I = implementation complete, or nearly so
-# R = made robust
-# D = fully documented for Doxygen generation of html/man
+# D = documented for Doxygen [0.5]
 #
 # VALUES
-# - = not applicable
-# ! = method inherited from parent
+# - = ignored
 # 
 # ************************************************************************
-# CIRD
-# ====
+# ID
+# ==
 # HIERARCHY
-# CIRD  SbPList
-#           SbIntList
-# CI        SbStringList
-#           SoActionMethodList
-# CI        SoBaseList
-# CI            SoEngineList
-# CI            SoNodeList
-# c             SoPathList
-# CI        SoDetailList
-# CI-D      SoEngineOutputList
-# CI-D      SoVRMLInterpOutputList
-# CI        SoFieldList
-# CI        SoPickedPointList
-#           SoRenderObjectList
-# CI        SoTypeList
-# CI    SoCallbackList
-#       SoEnabledElementsList
+# ID  SbPList
+#         SbVec3fList 
+#         SoAuditorList 
+#         SbIntList
+# I       SbStringList
+#         SoActionMethodList
+# I       SoBaseList
+# I           SoEngineList
+# I           SoNodeList
+#                 SoChildList
+#             SoPathList
+#             SoVRMLInterpList
+# I       SoDetailList
+# ID      SoEngineOutputList
+# ID      SoVRMLInterpOutputList
+# I       SoFieldList
+# I       SoPickedPointList
+#         SoRenderObjectList
+# I       SoTypeList
+#         SoVRMLEXTERNPROTOFieldList 
+#         SoVRMLPROTOFieldList 
+# I   SoCallbackList
+#     SoEnabledElementsList
+#     SoCompactPathList
 #
 ############################################################################
 #
