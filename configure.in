@@ -537,8 +537,16 @@ fi
 SIM_AC_CHECK_OPENGL([
   AC_DEFINE([HAVE_OPENGL],, [define if you have OpenGL])
   COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_gl_cppflags"
+  COIN_EXTRA_CFLAGS="$COIN_EXTRA_CFLAGS $sim_ac_gl_cflags"
+  COIN_EXTRA_CXXFLAGS="$COIN_EXTRA_CXXFLAGS $sim_ac_gl_cxxflags"
   COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_gl_ldflags"
-  COIN_EXTRA_LIBS="$sim_ac_gl_libs $COIN_EXTRA_LIBS"])
+  COIN_EXTRA_LIBS="$sim_ac_gl_libs $COIN_EXTRA_LIBS"
+  CPPFLAGS="$CPPFLAGS $sim_ac_gl_cppflags"
+  CFLAGS="$CFLAGS $sim_ac_gl_cflags"
+  CXXFLAGS="$CXXFLAGS $sim_ac_gl_cxxflags"
+  LDFLAGS="$LDFLAGS $sim_ac_gl_ldflags"
+  LIBS="$sim_ac_gl_libs $LIBS"
+])
 
 if test x"$sim_ac_gl_avail" = xyes; then
 
