@@ -47,10 +47,12 @@
 #define COIN_STUB_LINE 0
 #endif
 
-#if HAVE_VAR___PRETTY_FUNCTION__
+#if defined(HAVE_VAR___PRETTY_FUNCTION__)
 #define COIN_STUB_FUNC __PRETTY_FUNCTION__
-#elif HAVE_VAR___FUNCTION__
+#elif defined(HAVE_VAR___FUNCTION__)
 #define COIN_STUB_FUNC __FUNCTION__
+#elif defined(HAVE_VAR___func__)
+#define COIN_STUB_FUNC __func__
 #else
 #define COIN_STUB_FUNC ((const char *)0L)
 #endif
