@@ -75,9 +75,10 @@ SoGroup::SoGroup(void)
 /*!
   Constructor.
 
-  The \a nchildren argument is a hint to the group instance about how
-  many children it is expected will be managed by this node. This
-  makes it possible to do better resource allocation.
+  The argument should be the approximate number of children which is
+  expected to be inserted below this node. The number need not be
+  exact, as it is only used as a hint for better memory resource
+  allocation.
 */
 SoGroup::SoGroup(int nchildren)
 {

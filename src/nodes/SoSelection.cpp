@@ -200,9 +200,23 @@ static SoSearchAction * searchAction; // used to search for nodes
 SO_NODE_SOURCE(SoSelection);
 
 /*!
-  Constructor.
+  Default constructor.
 */
-SoSelection::SoSelection()
+SoSelection::SoSelection(void)
+{
+  this->init();
+}
+
+/*!
+  Constructor.
+
+  The argument should be the approximate number of children which is
+  expected to be inserted below this node. The number need not be
+  exact, as it is only used as a hint for better memory resource
+  allocation.
+*/
+SoSelection::SoSelection(const int nChildren)
+  : inherited(nChildren)
 {
   this->init();
 }
@@ -228,15 +242,6 @@ SoSelection::initClass(void)
 }
 
 
-
-/*!
-  Constructor which takes the expected number of children as argument.
-*/
-SoSelection::SoSelection(const int nChildren)
-  : inherited(nChildren)
-{
-  this->init();
-}
 
 //
 // common code for both constructors

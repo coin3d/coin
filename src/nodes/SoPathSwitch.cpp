@@ -42,9 +42,10 @@
 
 /*!
   \var SoSFPath SoPathSwitch::path
-  The path that must match the current action path. A NULL path will
-  never match. An empty path will always match. The path should go
-  up to (not including) the SoPathSwitch node, but need not go all
+
+  The path that must match the current action path. A \c NULL path
+  will never match. An empty path will always match. The path should
+  go up to (not including) the SoPathSwitch node, but need not go all
   the way back to the root node.
 */
 
@@ -93,8 +94,12 @@ is_matching_paths(const SoPath * currentpath, const SoPath * pathswitchpath)
 
 
 /*!
-  Specify the expected number of children this node will have, to make
-  it possible to do more efficient resource allocation.
+  Constructor.
+
+  The argument should be the approximate number of children which is
+  expected to be inserted below this node. The number need not be
+  exact, as it is only used as a hint for better memory resource
+  allocation.
 */
 SoPathSwitch::SoPathSwitch(int numchildren)
   : inherited(numchildren)

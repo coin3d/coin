@@ -23,10 +23,17 @@
 
 /*!
   \class SoSwitch SoSwitch.h Inventor/nodes/SoSwitch.h
-  \brief The SoSwitch class ...
+  \brief The SoSwitch class is a group node which selects one child subgraph for traversal.
   \ingroup nodes
 
-  FIXME: write class doc
+  Which child to traverse is controlled by the application programmer
+  by using the SoSwitch::whichChild field. In addition to picking out
+  a single child for traversal, it is also possible to flip all
+  children on or off for traversal.
+
+  This node is very useful for conditionally turning on or off parts
+  of the scenegraph based on the current application processing mode,
+  visualizing mode, or whatever else the application can do.
 */
 
 
@@ -86,9 +93,11 @@ SoSwitch::SoSwitch(void)
 }
 
 /*!
-  Constructor taking as an argument the approximate number of children
-  which will be inserted below this SoSwitch node instance. The number
-  need not be exact, as it is only used as a hint for better memory
+  Constructor.
+
+  The argument should be the approximate number of children which is
+  expected to be inserted below this node. The number need not be
+  exact, as it is only used as a hint for better memory resource
   allocation.
 */
 SoSwitch::SoSwitch(int numchildren)

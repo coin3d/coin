@@ -32,6 +32,8 @@
 
   SoSeparator nodes also provides options for traversal optimalization
   through the use of caching.
+
+  \sa SoTransformSeparator
 */
 
 #include <Inventor/nodes/SoSeparator.h>
@@ -165,9 +167,10 @@ SoSeparator::SoSeparator(void)
 /*!
   Constructor.
 
-  The \a nchildren argument is a hint to the separator group instance
-  about how many children it is expected will be managed by this
-  node. This makes it possible to do better resource allocation.
+  The argument should be the approximate number of children which is
+  expected to be inserted below this node. The number need not be
+  exact, as it is only used as a hint for better memory resource
+  allocation.
 */
 SoSeparator::SoSeparator(const int nchildren)
   : SoGroup(nchildren)

@@ -177,8 +177,12 @@ SoLevelOfDetail::SoLevelOfDetail(void)
 }
 
 /*!
-  Specify the expected number of children this node will have, to make
-  it possible to do more efficient resource allocation.
+  Constructor.
+
+  The argument should be the approximate number of children which is
+  expected to be inserted below this node. The number need not be
+  exact, as it is only used as a hint for better memory resource
+  allocation.
 */
 SoLevelOfDetail::SoLevelOfDetail(int numchildren)
   : inherited(numchildren)
