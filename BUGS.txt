@@ -1399,6 +1399,50 @@
     set up (instead of the single NULL child), and NULL child pointers
     should _probably_ not be allowed by SoMFNode.
 
+    (pederb checked with the VRML97 grammar, and according to that,
+    only SoSFNode fields are allowed to store NULL pointers.)
+
     20030228 mortene.
+
+=====================================================================
+
+060 SoToVRML2Action failing with VRML97 nodes.
+
+    Reported by kintel:
+
+      "SoToVRML2Action fails [with this file]:
+
+      ----8<---- [snip] ---------8<---- [snip] ---------8<----
+      #VRML V2.0 utf8
+      
+      Transform {
+        children Shape {
+          geometry IndexedFaceSet {
+            coord Coordinate { point [ 0 0 0, 1 0 0, 1 1 0 ] }
+            coordIndex [ 0, 1, 2, -1 ]
+          }
+        }
+      }
+      ----8<---- [snip] ---------8<---- [snip] ---------8<----
+
+      ...and outputs an empty file:
+
+      ----8<---- [snip] ---------8<---- [snip] ---------8<----
+      #VRML V2.0 utf8
+      
+      Group {
+        children
+              Group {
+              }
+      }
+      ----8<---- [snip] ---------8<---- [snip] ---------8<----
+
+      This is a special case as it is already a VRML2 file. However, I
+      guess the action will also fail given a mixed scene graph as
+      input. This is a bigger issue since we often have situations
+      with mixed scene graphs and want to convert them to VRML2."
+
+
+    20030307 mortene.
 
 =====================================================================
