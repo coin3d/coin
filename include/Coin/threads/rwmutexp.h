@@ -23,7 +23,7 @@
 \**************************************************************************/
 
 #ifndef COIN_INTERNAL
-#error You have tried to use one of Coin's private header files
+#error You have tried to use one of the private Coin header files
 #endif /* ! COIN_INTERNAL */
 
 #include <Coin/threads/common.h>

@@ -23,7 +23,7 @@
 \**************************************************************************/
 
 #include <Inventor/SbBasic.h>  /* COIN_DLL_API */
-#include <Coin/misc/time.h>  /* cc_time */
+#include <Coin/base/time.h>  /* cc_time */
 #include <Coin/threads/common.h>  /* cc_condvar */
 
 #ifdef __cplusplus
