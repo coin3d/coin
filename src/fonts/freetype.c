@@ -1453,7 +1453,7 @@ flwft_buildEdgeIndexList(struct cc_flw_vector_glyph * newglyph)
   newglyph->edgeindices = (int *) malloc(sizeof(int)*len);
   
   for (i=0;i<len;++i) 
-    newglyph->edgeindices[i] = (int) cc_list_get(flwft_tessellator.edgeindexlist, i);  
+    newglyph->edgeindices[i] = (int) ((intptr_t) cc_list_get(flwft_tessellator.edgeindexlist, i));
 
   cc_list_destruct(flwft_tessellator.edgeindexlist);
   flwft_tessellator.edgeindexlist = NULL;
@@ -1479,7 +1479,7 @@ flwft_buildFaceIndexList(struct cc_flw_vector_glyph * newglyph)
   newglyph->faceindices = (int *) malloc(sizeof(int)*len);
 
   for (i=0;i<len;++i) 
-    newglyph->faceindices[i] = (int) cc_list_get(flwft_tessellator.faceindexlist, i);
+    newglyph->faceindices[i] = (int) ((intptr_t) cc_list_get(flwft_tessellator.faceindexlist, i));
    
   cc_list_destruct(flwft_tessellator.faceindexlist);
   flwft_tessellator.faceindexlist = NULL;
