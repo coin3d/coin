@@ -1,5 +1,5 @@
 New in Coin v2.0.0a (so far):
-- NB: v2.0 is *far* ahead in the future
+- NB: v2.0 is in the future
 - NB: this is an unstable source repository we don't release Coin from
 * This Coin branch is now under the GPL license
 * Inventor/C/ include hierarchy for C ADTs in Coin
@@ -15,6 +15,7 @@ New in Coin v2.0.0a (so far):
 * added man-page coin-config.1
 * the usual bugfixes, optimizations, and documentation updates
 * more standard build setup for generated documentation
+* automatic generation of MS DevStudio project files for building Coin
 * debian package setup
 * verified support for Mac OS X / Darwin platforms
 * new SoTransparencyType node, with support for setting SoTransparencyType

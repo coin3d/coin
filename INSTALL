@@ -145,6 +145,12 @@ Configuration Options
   ground, and we expect you to be able to get through this without
   technical support if you decide to go for it.
 
+--enable-msvdsp
+
+  This option changes the make process from compiling the library to
+  building an MS DevStudio project and workspace file that you can later
+  use from the MSVC++ ID to build Coin with.
+
 --enable-shared --disable-shared
 --disable-static --enable-static
 
