@@ -27,7 +27,23 @@
 
 
 #include <Inventor/nodes/SoLevelOfDetail.h>
+#include <Inventor/actions/SoAction.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/elements/SoComplexityElement.h>
+#include <Inventor/elements/SoComplexityTypeElement.h>
+#include <Inventor/elements/SoViewportRegionElement.h>
+#include <Inventor/nodes/SoShape.h>
+#include <Inventor/SbVec2s.h>
+#include <Inventor/SbBox3f.h>
+#include <Inventor/misc/SoState.h>
+#include <Inventor/misc/SoChildList.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
+// FIXME: this node should have a cleanUp-func
+static SoGetBoundingBoxAction *bboxAction = NULL;
 
 /*!
   \var SoMFFloat SoLevelOfDetail::screenArea
@@ -72,9 +88,66 @@ SoLevelOfDetail::initClass(void)
   FIXME: write doc
  */
 void
-SoLevelOfDetail::doAction(SoAction * /* action */)
+SoLevelOfDetail::doAction(SoAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  switch (action->getCurPathCode()) {
+  case SoAction::IN_PATH:
+    inherited::doAction(action); // normal path traversal
+    return;
+  case SoAction::OFF_PATH:
+    return; // this is a separator node, return.
+  case SoAction::BELOW_PATH:
+  case SoAction::NO_PATH:
+    break; // go on
+  default:
+    assert(0 && "FIXME: unknown path code");
+    return;
+  }
+
+  // for some strange reason, gcc (egcs-2.91.66) won't accept the code 
+  // below inside a case (yes, I did use brackets). 
+  // That's the reason for the strange switch/case above. pederb 19991116
+
+  SoState * state = action->getState();
+  int n = this->getNumChildren();
+  if (n == 0) return;
+  float complexity = SoComplexityElement::get(state);
+  
+  if ((SoComplexityTypeElement::get(state) == 
+       SoComplexityTypeElement::BOUNDING_BOX) ||
+      complexity == 0.0f) {
+    state->push();
+    this->getChildren()->traverse(action, n-1);
+    state->pop();
+    return;
+  }
+  if (!bboxAction) {
+    SbViewportRegion dummy;
+    bboxAction = new SoGetBoundingBoxAction(dummy);
+  }
+  bboxAction->setViewportRegion(SoViewportRegionElement::get(state));
+  bboxAction->apply(this); // find bbox of all children
+  SbVec2s size;
+  SbBox3f bbox = bboxAction->getBoundingBox();
+  SoShape::getScreenSize(state, bbox, size);
+  
+  float area = float(size[0])*float(size[1])*complexity;
+    
+  // in case there are too few screenArea values
+  n = SbMin(n, this->screenArea.getNum()); 
+  
+  for (int i = 0; i < n; i++) {
+    if (area > this->screenArea[i]) {
+      state->push();
+      this->getChildren()->traverse(action, i);
+      state->pop();
+      return;
+    }
+  }
+  // if we get here, the last child should be traversed
+  state->push();
+  this->getChildren()->traverse(action, this->getNumChildren()-1);
+  state->pop();
 }
 #endif // !COIN_EXCLUDE_SOACTION
 
@@ -83,9 +156,9 @@ SoLevelOfDetail::doAction(SoAction * /* action */)
   FIXME: write doc
  */
 void
-SoLevelOfDetail::callback(SoCallbackAction * /* action */)
+SoLevelOfDetail::callback(SoCallbackAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoLevelOfDetail::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
@@ -94,9 +167,9 @@ SoLevelOfDetail::callback(SoCallbackAction * /* action */)
   FIXME: write doc
  */
 void
-SoLevelOfDetail::GLRender(SoGLRenderAction * /* action */)
+SoLevelOfDetail::GLRender(SoGLRenderAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoLevelOfDetail::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
@@ -105,8 +178,8 @@ SoLevelOfDetail::GLRender(SoGLRenderAction * /* action */)
   FIXME: write doc
  */
 void
-SoLevelOfDetail::rayPick(SoRayPickAction * /* action */)
+SoLevelOfDetail::rayPick(SoRayPickAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoLevelOfDetail::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SORAYPICKACTION
