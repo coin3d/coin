@@ -74,13 +74,13 @@
 
   When using \c SO_SWITCH_INHERIT, it is important to understand how
   the SoSwitch-node is affected by other SoSwitch-nodes. If you have
-  several switches in the scenegraph, the last switch with it's \c
+  several switches in the scenegraph, the last switch with its \c
   whichChild field set to anything but \c SO_SWITCH_INHERIT will be
-  used. The switch does not only inherit from it's parent switch node,
-  but also from it's siblings, located anywhere before it in the
+  used. The switch does not only inherit from its parent switch node,
+  but also from its siblings, located anywhere before it in the
   scenegraph. An example will help clarify this:
 
-  \verbatim
+  \code
   #Inventor V2.1 ascii
 
   Separator {
@@ -102,7 +102,7 @@
       }
     }
   }
-  \endverbatim
+  \endcode
 
   This results in a blue cube on the screen. The reason being that the
   value of the previous \c whichChild field was inherited by the final
