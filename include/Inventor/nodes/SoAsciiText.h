@@ -26,7 +26,11 @@
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoMFFloat.h>
+#include <Inventor/lists/SbList.h>
 
+class SoSensor;
+class SoFieldSensor;
+class SoGlyph;
 
 class SoAsciiText : public SoShape {
   typedef SoShape inherited;
@@ -49,7 +53,6 @@ public:
   SoMFFloat width;
 
   virtual void GLRender(SoGLRenderAction * action);
-  virtual void rayPick(SoRayPickAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 
 protected:
@@ -57,6 +60,23 @@ protected:
 
   virtual void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
   virtual void generatePrimitives(SoAction *);
+
+  virtual SbBool willSetShapeHints(void) const;
+  virtual SbBool willUpdateNormalizeElement(SoState *) const;
+  virtual SoDetail * createTriangleDetail(SoRayPickAction * action,
+                                          const SoPrimitiveVertex *v1,
+                                          const SoPrimitiveVertex *v2,
+                                          const SoPrimitiveVertex *v3,
+                                          SoPickedPoint * pp);
+private:
+  float getWidth(const int idx, const float fontsize);
+  SbList <const SoGlyph *> glyphs;
+  SbList <float> glyphwidths;
+  SoFieldSensor *stringsensor;
+  SbBool needsetup;
+  void setUpGlyphs(SoState *state);
+  static void fieldSensorCB(void *d, SoSensor *s);
 };
 
 #endif // !COIN_SOASCIITEXT_H
+
