@@ -50,9 +50,9 @@ demonstration purposes):
   $ cd $HOME
   $ mkdir code
   $ cd code
-  $ cvs -z3 -d :pserver:cvs@cvs.sim.no:/export/cvsroot checkout -P simage-1
+  $ cvs -z3 -d :pserver:cvs@cvs.sim.no:/export/cvsroot checkout -P simage
   [cvs doing its thing]
-  $ cvs -z3 -d :pserver:cvs@cvs.sim.no:/export/cvsroot checkout -P Coin-1
+  $ cvs -z3 -d :pserver:cvs@cvs.sim.no:/export/cvsroot checkout -P Coin
   [cvs doing its thing]
   $ cvs -z3 -d :pserver:cvs@cvs.sim.no:/export/cvsroot checkout -P SoXt
   [cvs doing its thing]
@@ -75,13 +75,13 @@ demonstration purposes):
   $ mkdir simage Coin SoXt
 
   $ cd $WORKDIR/compile/simage
-  $ $HOME/code/simage-1/configure --prefix=$WORKDIR/install
+  $ $HOME/code/simage/configure --prefix=$WORKDIR/install
   [configure running]
   $ make install
   [build should complete quickly]
 
   $ cd $WORKDIR/compile/Coin
-  $ $HOME/code/Coin-1/configure --prefix=$WORKDIR/install --enable-hacking
+  $ $HOME/code/Coin/configure --prefix=$WORKDIR/install --enable-hacking
   [configure running]
 
         Note the "--enable-hacking" option to configure. This is the
