@@ -1,0 +1,60 @@
+Index: include/Inventor/actions/SoAction.h
+===================================================================
+RCS file: /export/cvsroot/Coin/include/Inventor/actions/SoAction.h,v
+retrieving revision 1.32
+diff -u -r1.32 SoAction.h
+--- include/Inventor/actions/SoAction.h	23 Nov 2001 17:29:55 -0000	1.32
++++ include/Inventor/actions/SoAction.h	13 Feb 2002 14:32:39 -0000
+@@ -83,6 +83,7 @@
+   virtual void apply(SoNode * root);
+   virtual void apply(SoPath * path);
+   virtual void apply(const SoPathList & pathlist, SbBool obeysrules = FALSE);
++  void apply(SoAction * beingApplied);
+   virtual void invalidateState(void);
+ 
+   static void nullAction(SoAction * action, SoNode * node);
+Index: src/actions/SoAction.cpp
+===================================================================
+RCS file: /export/cvsroot/Coin/src/actions/SoAction.cpp,v
+retrieving revision 1.56
+diff -u -r1.56 SoAction.cpp
+--- src/actions/SoAction.cpp	30 Dec 2001 10:48:00 -0000	1.56
++++ src/actions/SoAction.cpp	13 Feb 2002 14:32:39 -0000
+@@ -485,6 +485,37 @@
+ }
+ 
+ /*!
++  Applies this action object to the same as \a beingApplied is being
++  applied to.
++  
++  \since 2002-02-10
++*/
++void
++SoAction::apply(SoAction * beingApplied)
++{
++  assert(beingApplied != NULL);
++  switch ( beingApplied->getWhatAppliedTo() ) {
++  case NODE:
++    this->apply(beingApplied->getNodeAppliedTo());
++    break;
++  case PATH:
++    this->apply(beingApplied->getPathAppliedTo());
++    break;
++  case PATH_LIST:
++    do {
++      const SoPathList * pathlist = beingApplied->getOriginalPathListAppliedTo();
++      this->apply(*pathlist, FALSE);
++      // FIXME: any way to detect if arg should be TRUE? 2002-02-10 larsa
++    } while ( FALSE );
++    break;
++  default:
++    assert(0 && "unhandled appliedcode in beingApplied action");
++    break;
++  }
++}
++
++
++/*!
+   Invalidates the state, forcing it to be recreated at the next
+   apply() invocation.
+ */
