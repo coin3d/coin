@@ -906,12 +906,12 @@ cc_dl_handle_with_gl_symbols(void)
     if (hnd) {
       void * glchk = cc_dl_sym(hnd, "glGetString");
       if (cc_dl_debugging()) {
-        cc_debugerror_post("cc_dl_handle_with_gl_symbols",
-                           "successfully found image handle for '%s', "
-                           "testing OpenGL symbol access: "
-                           "cc_dl_sym(..., \"glGetString\") == %p",
-                           cc_string_get_text(&hnd->libname),
-                           glchk);
+        cc_debugerror_postinfo("cc_dl_handle_with_gl_symbols",
+                               "successfully found image handle for '%s', "
+                               "testing OpenGL symbol access: "
+                               "cc_dl_sym(..., \"glGetString\") == %p",
+                               cc_string_get_text(&hnd->libname),
+                               glchk);
       }
       if (glchk) { return hnd; }
       cc_dl_close(hnd); /* OpenGL symbol not found, close again */
