@@ -22,17 +22,17 @@
 \**************************************************************************/
 
 // FIXME: in my not so humble opinion, this class is an ugly mess --
-// or at least it's interface.
+// or at least its interface.
 //
-// Some examples: there are 4* functions named "setData()" -- which
+// Some examples: there are *4* functions named "setData()" -- which
 // should throw up a huge red warning sign alone. Methods named
 // "setData()" and "setFlags()" (the latter which we also have in
 // SoGLImage) should make API designers cringe.  There's a whole bunch
-// of *public* methods marked as being *private* and *internal* -- another
-// warning sign. The setData() method that creates a 2D texture object
-// simply calls into the method that makes a 3D texture object, while
-// the obvious right thing to do would be to refactor common code to
-// private methods.
+// of *public* methods marked as being *private* and *internal* --
+// another warning sign. The setData() method that creates a 2D
+// texture object simply calls into the method that makes a 3D texture
+// object, while the obvious right thing to do would be to refactor
+// common code to private methods.
 //
 // Since this was made part of the public API of Coin 2, I guess we'll
 // have to support it until the end of time, or at least a couple of
@@ -43,6 +43,13 @@
 // use that instead.
 //
 // 20030312 mortene.
+
+// *************************************************************************
+
+// FIXME: Add TEX3 enviroment variables (or general TEX variables?)
+// (kintel 20011112)
+
+// *************************************************************************
 
 /*!
   \class SoGLImage include/Inventor/misc/SoGLImage.h
@@ -92,6 +99,8 @@
   \since Coin 2.0
 */
 
+// *************************************************************************
+
 /*!
   \enum SoGLImage::Wrap
 
@@ -116,8 +125,7 @@
 
 */
 
-// FIXME: Add TEX3 enviroment variables (or general TEX variables?)
-// (kintel 20011112)
+// *************************************************************************
 
 #include <Inventor/misc/SoGLImage.h>
 
@@ -151,6 +159,7 @@
 #include <Inventor/threads/SbMutex.h>
 #endif // COIN_THREADSAFE
 
+// *************************************************************************
 
 static float DEFAULT_LINEAR_LIMIT = 0.2f;
 static float DEFAULT_MIPMAP_LIMIT = 0.5f;
@@ -163,6 +172,8 @@ static float COIN_TEX2_LINEAR_MIPMAP_LIMIT = -1.0f;
 static float COIN_TEX2_SCALEUP_LIMIT = -1.0f;
 static int COIN_TEX2_USE_GLTEXSUBIMAGE = -1;
 static int COIN_ENABLE_CONFORMANT_GL_CLAMP = -1; 
+
+// *************************************************************************
 
 typedef struct {
   unsigned char * buffer;
@@ -265,6 +276,8 @@ glimage_get_buffer(const int buffersize, const SbBool mipmap)
     return buf->buffer;
   }
 }
+
+// *************************************************************************
 
 static int
 compute_log(int value)
@@ -551,9 +564,7 @@ fast_image_resize3d(const unsigned char * src,
   }
 }
 
-
-
-#ifndef DOXYGEN_SKIP_THIS
+// *************************************************************************
 
 class SoGLImageP {
 public:
@@ -626,7 +637,11 @@ public:
 SoType SoGLImageP::classTypeId;
 uint32_t SoGLImageP::current_glimageid = 1;
 
-#endif // DOXYGEN_SKIP_THIS
+#undef PRIVATE
+#define PRIVATE(p) ((p)->pimpl)
+
+// *************************************************************************
+
 
 // This class is not 100% threadsafe. It is threadsafe for rendering
 // only. It is assumed that setData() is called by only one thread at
@@ -647,18 +662,16 @@ uint32_t SoGLImageP::current_glimageid = 1;
 #define UNLOCK_DLISTS(_thisp_)
 #endif // !COIN_THREADSAFE
 
-#undef THIS
-// convenience define to access private data
-#define THIS this->pimpl
+// *************************************************************************
 
 /*!
   Constructor.
 */
 SoGLImage::SoGLImage(void)
 {
-  THIS = new SoGLImageP;
-  THIS->init(); // init members to default values
-  THIS->owner = this; // for debugging
+  PRIVATE(this) = new SoGLImageP;
+  PRIVATE(this)->init(); // init members to default values
+  PRIVATE(this)->owner = this; // for debugging
 
   // check environment variables
   if (COIN_TEX2_LINEAR_LIMIT < 0.0f) {
@@ -764,7 +777,7 @@ SoGLImage::setData(const SbImage *image,
                    SoState *createinstate)
 
 {
-  this->setData(image, wraps, wrapt, (Wrap)THIS->wrapr,
+  this->setData(image, wraps, wrapt, (Wrap)PRIVATE(this)->wrapr,
                 quality, border, createinstate);
 }
 
@@ -815,20 +828,20 @@ SoGLImage::setData(const SbImage *image,
                    SoState *createinstate)
 
 {
-  THIS->imageage = 0;
+  PRIVATE(this)->imageage = 0;
 
   if (image == NULL) {
-    THIS->unrefDLists(createinstate);
-    if (THIS->isregistered) SoGLImage::unregisterImage(this);
-    THIS->init(); // init to default values
+    PRIVATE(this)->unrefDLists(createinstate);
+    if (PRIVATE(this)->isregistered) SoGLImage::unregisterImage(this);
+    PRIVATE(this)->init(); // init to default values
     return;
   }
 
-  THIS->glimageid = SoGLImageP::getNextGLImageId(); // assign an unique id to this image
-  THIS->needtransparencytest = TRUE;
-  THIS->hastransparency = FALSE;
-  THIS->usealphatest = FALSE;
-  THIS->quality = quality;
+  PRIVATE(this)->glimageid = SoGLImageP::getNextGLImageId(); // assign an unique id to this image
+  PRIVATE(this)->needtransparencytest = TRUE;
+  PRIVATE(this)->hastransparency = FALSE;
+  PRIVATE(this)->usealphatest = FALSE;
+  PRIVATE(this)->quality = quality;
 
   // check for special case where glTexSubImage can be used.
   // faster for most drivers.
@@ -837,18 +850,18 @@ SoGLImage::setData(const SbImage *image,
     SoGLDisplayList *dl = NULL;
 
     SbBool copyok =
-      wraps == THIS->wraps &&
-      wrapt == THIS->wrapt &&
-      wrapr == THIS->wrapr &&
-      border == THIS->border &&
+      wraps == PRIVATE(this)->wraps &&
+      wrapt == PRIVATE(this)->wrapt &&
+      wrapr == PRIVATE(this)->wrapr &&
+      border == PRIVATE(this)->border &&
       border == 0 && // haven't tested with borders yet. Play it safe.
-      (dl = THIS->findDL(createinstate)) != NULL;
+      (dl = PRIVATE(this)->findDL(createinstate)) != NULL;
 
     SbVec3s size;
     int nc;
     const unsigned char * bytes = image->getValue(size, nc);
     if (copyok) {
-      if (bytes && size != THIS->glsize || nc != THIS->glcomp) copyok = FALSE;
+      if (bytes && size != PRIVATE(this)->glsize || nc != PRIVATE(this)->glcomp) copyok = FALSE;
     }
 
     SbBool is3D = (size[2]==0)?FALSE:TRUE;
@@ -860,9 +873,9 @@ SoGLImage::setData(const SbImage *image,
 
     if (copyok) {
       dl->ref();
-      THIS->unrefDLists(createinstate);
-      THIS->dlists.append(SoGLImageP::dldata(dl));
-      THIS->image = NULL; // data is temporary, and only for current context
+      PRIVATE(this)->unrefDLists(createinstate);
+      PRIVATE(this)->dlists.append(SoGLImageP::dldata(dl));
+      PRIVATE(this)->image = NULL; // data is temporary, and only for current context
       dl->call(createinstate);
       GLenum format;
       switch (nc) {
@@ -897,29 +910,29 @@ SoGLImage::setData(const SbImage *image,
       }
     }
     else {
-      THIS->image = image;
-      THIS->wraps = wraps;
-      THIS->wrapt = wrapt;
-      THIS->wrapr = wrapr;
-      THIS->border = border;
-      THIS->unrefDLists(createinstate);
+      PRIVATE(this)->image = image;
+      PRIVATE(this)->wraps = wraps;
+      PRIVATE(this)->wrapt = wrapt;
+      PRIVATE(this)->wrapr = wrapr;
+      PRIVATE(this)->border = border;
+      PRIVATE(this)->unrefDLists(createinstate);
       if (createinstate) {
-        THIS->dlists.append(SoGLImageP::dldata(THIS->createGLDisplayList(createinstate)));
-        THIS->image = NULL; // data is assumed to be temporary
+        PRIVATE(this)->dlists.append(SoGLImageP::dldata(PRIVATE(this)->createGLDisplayList(createinstate)));
+        PRIVATE(this)->image = NULL; // data is assumed to be temporary
       }
     }
   }
   else {
-    THIS->image = image;
-    THIS->wraps = wraps;
-    THIS->wrapt = wrapt;
-    THIS->wrapr = wrapr;
-    THIS->border = border;
-    THIS->unrefDLists(createinstate);
+    PRIVATE(this)->image = image;
+    PRIVATE(this)->wraps = wraps;
+    PRIVATE(this)->wrapt = wrapt;
+    PRIVATE(this)->wrapr = wrapr;
+    PRIVATE(this)->border = border;
+    PRIVATE(this)->unrefDLists(createinstate);
   }
 
-  if (THIS->image && !THIS->isregistered && !(this->getFlags() & INVINCIBLE)) {
-    THIS->isregistered = TRUE;
+  if (PRIVATE(this)->image && !PRIVATE(this)->isregistered && !(this->getFlags() & INVINCIBLE)) {
+    PRIVATE(this)->isregistered = TRUE;
     SoGLImage::registerImage(this);
   }
 }
@@ -939,8 +952,8 @@ SoGLImage::setData(const unsigned char *bytes,
                    const int border,
                    SoState *createinstate)
 {
-  THIS->dummyimage.setValuePtr(size, numcomponents, bytes);
-  this->setData(&THIS->dummyimage,
+  PRIVATE(this)->dummyimage.setValuePtr(size, numcomponents, bytes);
+  this->setData(&PRIVATE(this)->dummyimage,
                 wraps, wrapt, quality,
                 border, createinstate);
 }
@@ -961,8 +974,8 @@ SoGLImage::setData(const unsigned char *bytes,
                    const int border,
                    SoState *createinstate)
 {
-  THIS->dummyimage.setValuePtr(size, numcomponents, bytes);
-  this->setData(&THIS->dummyimage,
+  PRIVATE(this)->dummyimage.setValuePtr(size, numcomponents, bytes);
+  this->setData(&PRIVATE(this)->dummyimage,
                 wraps, wrapt, wrapr, quality,
                 border, createinstate);
 }
@@ -973,9 +986,9 @@ SoGLImage::setData(const unsigned char *bytes,
 */
 SoGLImage::~SoGLImage()
 {
-  if (THIS->isregistered) SoGLImage::unregisterImage(this);
-  THIS->unrefDLists(NULL);
-  delete THIS;
+  if (PRIVATE(this)->isregistered) SoGLImage::unregisterImage(this);
+  PRIVATE(this)->unrefDLists(NULL);
+  delete PRIVATE(this);
 }
 
 /*!
@@ -989,7 +1002,7 @@ SoGLImage::~SoGLImage()
 void
 SoGLImage::unref(SoState *state)
 {
-  THIS->unrefDLists(state);
+  PRIVATE(this)->unrefDLists(state);
   delete this;
 }
 
@@ -999,7 +1012,7 @@ SoGLImage::unref(SoState *state)
 void
 SoGLImage::setFlags(const uint32_t flags)
 {
-  THIS->flags = flags;
+  PRIVATE(this)->flags = flags;
 }
 
 /*!
@@ -1010,7 +1023,7 @@ SoGLImage::setFlags(const uint32_t flags)
 uint32_t
 SoGLImage::getFlags(void) const
 {
-  return THIS->flags;
+  return PRIVATE(this)->flags;
 }
 
 /*!
@@ -1019,7 +1032,7 @@ SoGLImage::getFlags(void) const
 const SbImage *
 SoGLImage::getImage(void) const
 {
-  return THIS->image;
+  return PRIVATE(this)->image;
 }
 
 /*!
@@ -1030,36 +1043,36 @@ SoGLDisplayList *
 SoGLImage::getGLDisplayList(SoState *state)
 {
   LOCK_DLISTS(this);
-  SoGLDisplayList *dl = THIS->findDL(state);
+  SoGLDisplayList *dl = PRIVATE(this)->findDL(state);
   UNLOCK_DLISTS(this);
 
   if (dl == NULL) {
-    dl = THIS->createGLDisplayList(state);
+    dl = PRIVATE(this)->createGLDisplayList(state);
     if (dl) {
       LOCK_DLISTS(this);
-      THIS->dlists.append(SoGLImageP::dldata(dl));
+      PRIVATE(this)->dlists.append(SoGLImageP::dldata(dl));
       UNLOCK_DLISTS(this);
     }
   }
-  if (dl && !dl->isMipMapTextureObject() && THIS->image) {
+  if (dl && !dl->isMipMapTextureObject() && PRIVATE(this)->image) {
     float quality = SoTextureQualityElement::get(state);
-    float oldquality = THIS->quality;
-    THIS->quality = quality;
-    if (THIS->shouldCreateMipmap()) {
+    float oldquality = PRIVATE(this)->quality;
+    PRIVATE(this)->quality = quality;
+    if (PRIVATE(this)->shouldCreateMipmap()) {
       LOCK_DLISTS(this);
       // recreate DL to get a mipmapped image
-      int n = THIS->dlists.getLength();
+      int n = PRIVATE(this)->dlists.getLength();
       for (int i = 0; i < n; i++) {
-        if (THIS->dlists[i].dlist == dl) {
+        if (PRIVATE(this)->dlists[i].dlist == dl) {
           dl->unref(state); // unref old DL
-          dl = THIS->createGLDisplayList(state);
-          THIS->dlists[i].dlist = dl;
+          dl = PRIVATE(this)->createGLDisplayList(state);
+          PRIVATE(this)->dlists[i].dlist = dl;
           break;
         }
       }
       UNLOCK_DLISTS(this);
     }
-    else THIS->quality = oldquality;
+    else PRIVATE(this)->quality = oldquality;
   }
   return dl;
 }
@@ -1071,13 +1084,13 @@ SoGLImage::getGLDisplayList(SoState *state)
 SbBool
 SoGLImage::hasTransparency(void) const
 {
-  if (THIS->flags & FORCE_TRANSPARENCY_TRUE) return TRUE;
-  if (THIS->flags & FORCE_TRANSPARENCY_FALSE) return FALSE;
+  if (PRIVATE(this)->flags & FORCE_TRANSPARENCY_TRUE) return TRUE;
+  if (PRIVATE(this)->flags & FORCE_TRANSPARENCY_FALSE) return FALSE;
 
-  if (THIS->needtransparencytest) {
+  if (PRIVATE(this)->needtransparencytest) {
     ((SoGLImage*)this)->pimpl->checkTransparency();
   }
-  return THIS->hastransparency;
+  return PRIVATE(this)->hastransparency;
 }
 
 /*!
@@ -1089,13 +1102,13 @@ SoGLImage::hasTransparency(void) const
 SbBool
 SoGLImage::useAlphaTest(void) const
 {
-  if (THIS->flags & FORCE_ALPHA_TEST_TRUE) return TRUE;
-  if (THIS->flags & FORCE_ALPHA_TEST_FALSE) return FALSE;
+  if (PRIVATE(this)->flags & FORCE_ALPHA_TEST_TRUE) return TRUE;
+  if (PRIVATE(this)->flags & FORCE_ALPHA_TEST_FALSE) return FALSE;
 
-  if (THIS->needtransparencytest) {
+  if (PRIVATE(this)->needtransparencytest) {
     ((SoGLImage*)this)->pimpl->checkTransparency();
   }
-  return THIS->usealphatest;
+  return PRIVATE(this)->usealphatest;
 }
 
 /*!
@@ -1104,7 +1117,7 @@ SoGLImage::useAlphaTest(void) const
 SoGLImage::Wrap
 SoGLImage::getWrapS(void) const
 {
-  return THIS->wraps;
+  return PRIVATE(this)->wraps;
 }
 
 /*!
@@ -1113,7 +1126,7 @@ SoGLImage::getWrapS(void) const
 SoGLImage::Wrap
 SoGLImage::getWrapT(void) const
 {
-  return THIS->wrapt;
+  return PRIVATE(this)->wrapt;
 }
 
 /*!
@@ -1122,7 +1135,7 @@ SoGLImage::getWrapT(void) const
 SoGLImage::Wrap
 SoGLImage::getWrapR(void) const
 {
-  return THIS->wrapr;
+  return PRIVATE(this)->wrapr;
 }
 
 /*!  
@@ -1132,7 +1145,7 @@ SoGLImage::getWrapR(void) const
 uint32_t 
 SoGLImage::getGLImageId(void) const
 {
-  return THIS->glimageid;
+  return PRIVATE(this)->glimageid;
 }
 
 /*!
@@ -1143,11 +1156,11 @@ SoGLImage::getGLImageId(void) const
 void
 SoGLImage::unrefOldDL(SoState *state, const uint32_t maxage)
 {
-  THIS->unrefOldDL(state, maxage);
+  PRIVATE(this)->unrefOldDL(state, maxage);
   this->incAge();
 }
 
-#ifndef DOXYGEN_SKIP_THIS
+// *************************************************************************
 
 void
 SoGLImageP::init(void)
@@ -1582,13 +1595,13 @@ SoGLImageP::tagDL(SoState *state)
 void
 SoGLImage::incAge(void) const
 {
-  THIS->imageage++;
+  PRIVATE(this)->imageage++;
 }
 
 void
 SoGLImage::resetAge(void) const
 {
-  THIS->imageage = 0;
+  PRIVATE(this)->imageage = 0;
 }
 
 void
@@ -1696,7 +1709,7 @@ SoGLImageP::getNextGLImageId(void)
   return current_glimageid++;
 }
 
-#endif // DOXYGEN_SKIP_THIS
+// *************************************************************************
 
 //
 // Texture resource management.
@@ -1774,14 +1787,14 @@ SoGLImage::endFrame(SoState *state)
 void
 SoGLImage::setEndFrameCallback(void (*cb)(void *), void *closure)
 {
-  THIS->endframecb = cb;
-  THIS->endframeclosure = closure;
+  PRIVATE(this)->endframecb = cb;
+  PRIVATE(this)->endframeclosure = closure;
 }
 
 int
 SoGLImage::getNumFramesSinceUsed(void) const
 {
-  return THIS->imageage;
+  return PRIVATE(this)->imageage;
 }
 
 /*!
@@ -1847,7 +1860,9 @@ SoGLImage::unregisterImage(SoGLImage *image)
   CC_MUTEX_UNLOCK(glimage_reglist_mutex);
 }
 
-#undef THIS
+// *************************************************************************
+
+#undef PRIVATE
 #undef LOCK_DLISTS
 #undef UNLOCK_DLISTS
 
