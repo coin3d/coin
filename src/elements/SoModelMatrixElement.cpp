@@ -163,10 +163,10 @@ SoModelMatrixElement::matches(const SoElement * element) const
 {
   const SoModelMatrixElement *elem = (const SoModelMatrixElement*)element;
   
-  if (this->flags & FLG_CULLMATRIX !=
-      elem->flags & FLG_CULLMATRIX) return FALSE;
-  if (this->flags & FLG_CULLMATRIX &&
-      this->cullMatrix != elem->cullMatrix) return FALSE;
+  if ((this->flags & FLG_CULLMATRIX) !=
+      (elem->flags & FLG_CULLMATRIX)) return FALSE;
+  if ((this->flags & FLG_CULLMATRIX) &&
+      (this->cullMatrix != elem->cullMatrix)) return FALSE;
   return SoAccumulatedElement::matches(element);
 }
 
