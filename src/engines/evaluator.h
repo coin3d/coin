@@ -1,3 +1,6 @@
+#ifndef COIN_EVALUATOR_H
+#define COIN_EVALUATOR_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,8 +24,10 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_EVALUATOR_H
-#define COIN_EVALUATOR_H
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif /* !COIN_INTERNAL */
+
 
 /*
  * expression parser/evaluator for SoCalculator expressions.
