@@ -216,7 +216,7 @@ glglue_cleanup(void)
   are made, make sure they are propagated over if necessary.
 */
 static void
-glglue_set_glVersion(cc_glglue * wrapper)
+glglue_set_glVersion(cc_glglue * w)
 {
   char buffer[256];
   char * dotptr;
@@ -224,24 +224,23 @@ glglue_set_glVersion(cc_glglue * wrapper)
   /* NB: if you are getting a crash here, it's because an attempt at
    * setting up a cc_glglue instance was made when there is no current
    * OpenGL context. */
-  const char * versionstr = (const char *)glGetString(GL_VERSION);
   if (coin_glglue_debug()) {
     cc_debugerror_postinfo("glglue_set_glVersion",
-                           "glGetString(GL_VERSION)=='%s'", versionstr);
+                           "glGetString(GL_VERSION)=='%s'", w->versionstr);
   }
 
-  wrapper->version.major = 0;
-  wrapper->version.minor = 0;
-  wrapper->version.release = 0;
+  w->version.major = 0;
+  w->version.minor = 0;
+  w->version.release = 0;
 
-  (void)strncpy(buffer, (const char *)versionstr, 255);
+  (void)strncpy(buffer, (const char *)w->versionstr, 255);
   buffer[255] = '\0'; /* strncpy() will not null-terminate if strlen > 255 */
   dotptr = strchr(buffer, '.');
   if (dotptr) {
     char * spaceptr;
     char * start = buffer;
     *dotptr = '\0';
-    wrapper->version.major = atoi(start);
+    w->version.major = atoi(start);
     start = ++dotptr;
 
     dotptr = strchr(start, '.');
@@ -251,25 +250,25 @@ glglue_set_glVersion(cc_glglue * wrapper)
     if (dotptr) {
       int terminate = *dotptr == ' ';
       *dotptr = '\0';
-      wrapper->version.minor = atoi(start);
+      w->version.minor = atoi(start);
       if (!terminate) {
         start = ++dotptr;
         dotptr = strchr(start, ' ');
         if (dotptr) *dotptr = '\0';
-        wrapper->version.release = atoi(start);
+        w->version.release = atoi(start);
       }
     }
     else {
-      wrapper->version.minor = atoi(start);
+      w->version.minor = atoi(start);
     }
   }
 
   if (coin_glglue_debug()) {
     cc_debugerror_postinfo("glglue_set_glVersion",
                            "parsed to major=='%d', minor=='%d', micro=='%d'",
-                           wrapper->version.major,
-                           wrapper->version.minor,
-                           wrapper->version.release);
+                           w->version.major,
+                           w->version.minor,
+                           w->version.release);
   }
 }
 
@@ -643,6 +642,11 @@ cc_glglue_instance(int contextid)
       glglue_self_handle = cc_dl_open(NULL);
       glglue_tried_open_self = TRUE;
     }
+
+    /* NB: if you are getting a crash here, it's because an attempt at
+     * setting up a cc_glglue instance was made when there is no
+     * current OpenGL context. */
+    gi->versionstr = (const char *)glGetString(GL_VERSION);
 
     glglue_set_glVersion(gi);
     glxglue_init(gi);

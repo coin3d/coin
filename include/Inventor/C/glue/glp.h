@@ -269,6 +269,7 @@ struct cc_glglue {
 
   COIN_PFNGLXGETCURRENTDISPLAYPROC glXGetCurrentDisplay;
 
+  const char * versionstr;
   const char * vendorstr;
   SbBool vendor_is_SGI;
   const char * rendererstr;
