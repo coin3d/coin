@@ -844,25 +844,27 @@ SoGLRenderAction::addTransPath(SoPath * path)
   SoNode * tail = ((SoFullPath*)path)->getTail();
   float dist;
 
-  // test if we can calculate bbox using SoShape::computeBBox. This is
-  // the common case, and quite a lot faster than using an
-  // SoGetBoundingBoxAction. We only do this if no cache is currently
-  // open, to avoid cache dependencies on model matrix and view
-  // volume, which would be very bad for cache performance.
-  if (!this->state->isCacheOpen() &&
-      tail->isOfType(SoShape::getClassTypeId())) { // common case
-    SbBox3f dummy;
+  // initialize bbox action
+  if (THIS->bboxaction == NULL) {
+    THIS->bboxaction =
+      new SoGetBoundingBoxAction(SoViewportRegionElement::get(this->state));
+  }
+  THIS->bboxaction->setViewportRegion(SoViewportRegionElement::get(this->state));
+  
+  // test if we can calculate bbox by applying an action on the node
+  // directly. This is the common case, and quite a lot faster than
+  // applying an action on the path.
+  if (tail->isOfType(SoShape::getClassTypeId())) { // common case
     SbVec3f center;
-    ((SoShape*)tail)->computeBBox(this, dummy, center);
+    SbBox3f dummy;
+    THIS->bboxaction->apply(tail);
+    center = THIS->bboxaction->getCenter();
+    // just use the current transformation matrix to move the center
+    // to the world coordinate system
     SoModelMatrixElement::get(this->state).multVecMatrix(center, center);
     dist = SoViewVolumeElement::get(this->state).getPlane(0.0f).getDistance(center);
   }
   else {
-    if (THIS->bboxaction == NULL) {
-      THIS->bboxaction =
-        new SoGetBoundingBoxAction(SoViewportRegionElement::get(this->state));
-    }
-    THIS->bboxaction->setViewportRegion(SoViewportRegionElement::get(this->state));
     THIS->bboxaction->apply(path);
     SbVec3f center = THIS->bboxaction->getBoundingBox().getCenter();
     dist = SoViewVolumeElement::get(this->state).getPlane(0.0f).getDistance(center);
