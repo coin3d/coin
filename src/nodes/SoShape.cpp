@@ -43,6 +43,7 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
+#include <Inventor/elements/SoPickStyleElement.h>
 
 // Lazy GL-elements not handled by SoMaterialBundle
 #include <Inventor/elements/SoGLPointSizeElement.h>
@@ -665,10 +666,21 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
   FIXME: write function documentation
 */
 SbBool
-SoShape::shouldRayPick(SoRayPickAction * const /* action */)
+SoShape::shouldRayPick(SoRayPickAction * const action)
 {
-  // FIXME: test bbox, create rayPick cache, or something?
-  return TRUE;
+  switch (SoPickStyleElement::get(action->getState())) {
+  case SoPickStyleElement::SHAPE:
+    return TRUE;
+  case SoPickStyleElement::BOUNDING_BOX:
+    // FIXME: test against bounding box instead, pederb, 2000-01-27
+    COIN_STUB();
+    return TRUE;
+  case SoPickStyleElement::UNPICKABLE:
+    return FALSE;
+  default:
+    assert(0 && "unknown pick style");
+    return TRUE;
+  }
 }
 
 /*!
