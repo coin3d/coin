@@ -1253,10 +1253,15 @@ SbBool
 SoOffscreenRenderer::isWriteSupported(const SbName & filetypeextension) const
 {
   if (!simage_wrapper()->versionMatchesAtLeast(1,1,0)) {
-#if COIN_DEBUG
-    SoDebugError::postInfo("SoOffscreenRenderer::isWriteSupported",
-                           "You need simage v1.1 for this functionality.");
-#endif // COIN_DEBUG
+    if (SoOffscreenRendererP::debug()) {
+      if (!simage_wrapper()->available) {    
+	SoDebugError::postInfo("SoOffscreenRenderer::isWriteSupported",
+			       "simage library not available.");
+      } else {
+	SoDebugError::postInfo("SoOffscreenRenderer::isWriteSupported",
+			       "You need simage v1.1 for this functionality.");
+      }
+    }
     return FALSE;
   }
   int ret = simage_wrapper()->simage_check_save_supported(filetypeextension.getString());
