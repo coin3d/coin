@@ -102,6 +102,7 @@
 
 #include <GL/gl.h>
 #include <string.h>
+#include <math.h>
 
 #if !defined(COIN_EXCLUDE_SOCOMPLEXITYTYPEELEMENT)
 #include <Inventor/elements/SoComplexityTypeElement.h>
