@@ -215,7 +215,16 @@
 */
 
 
-static SoSearchAction * searchAction; // used to search for nodes
+// Used to search for nodes. Just use one static action to avoid
+// allocating a new action every time we need to search for a node.
+static SoSearchAction * soselection_searchAction; 
+
+static void
+soselection_cleanup(void)
+{
+  delete soselection_searchAction;
+  soselection_searchAction = NULL;
+}
 
 // *************************************************************************
 
@@ -317,10 +326,10 @@ void
 SoSelection::select(SoNode * node)
 {
   SoPath * path = this->searchNode(node);
-  if (path && this->findPath(path) < 0) {
-    path->ref();
-    this->addPath(path);
-    path->unrefNoDelete();
+  if (path) {
+    // don't ref() the path. searchNode() will ref it before returning
+    if (this->findPath(path) < 0) this->addPath(path);
+    path->unref();
   }
 }
 
@@ -352,8 +361,8 @@ void
 SoSelection::deselect(SoNode * node)
 {
   SoPath * path = this->searchNode(node);
-  if (path) {
-    path->ref();
+  if (path) { 
+    // don't ref() the path. searchNode() will ref it before returning
     this->deselect(path);
     path->unref();
   }
@@ -381,7 +390,7 @@ SoSelection::toggle(SoNode * node)
 {
   SoPath * path = this->searchNode(node);
   if (path) {
-    path->ref();
+    // don't ref() the path. searchNode() will ref it before returning
     this->toggle(path);
     path->unref();
   }
@@ -403,13 +412,13 @@ SbBool
 SoSelection::isSelected(SoNode * node) const
 {
   SoPath * path = this->searchNode(node);
+  SbBool ret = FALSE;
   if (path) {
-    path->ref();
-    SbBool ret = this->isSelected(path);
+    // don't ref() the path. searchNode() will ref it before returning
+    ret = this->isSelected(path);
     path->unref();
-    return ret;
   }
-  return FALSE;
+  return ret;
 }
 
 /*!
@@ -835,19 +844,24 @@ SoSelection::handleEvent(SoHandleEventAction * action)
   }
 }
 
-//
-// uses search action to find path to node from this
-//
+// Uses a static search action to find path to node from this. If the
+// node is found, the returned path will be ref'ed. It's the caller's
+// responsibility to unref the returned path when != NULL.
 SoPath *
 SoSelection::searchNode(SoNode * node) const
 {
-  if (searchAction == NULL) {
-    searchAction = new SoSearchAction;
-    searchAction->setInterest(SoSearchAction::FIRST);
+  if (soselection_searchAction == NULL) {
+    soselection_searchAction = new SoSearchAction;
+    soselection_searchAction->setInterest(SoSearchAction::FIRST);
+    coin_atexit((coin_atexit_f*) soselection_cleanup, 0);
   }
-  searchAction->setNode(node);
-  searchAction->apply((SoNode *)this);
-  return searchAction->getPath();
+  soselection_searchAction->setNode(node);
+  soselection_searchAction->apply((SoNode *)this);
+  SoPath * path = soselection_searchAction->getPath();
+  if (path) path->ref();
+  // reset action before returning 
+  soselection_searchAction->reset();
+  return path;
 }
 
 //
