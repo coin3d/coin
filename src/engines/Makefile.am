@@ -31,6 +31,7 @@ ALLSOURCES = \
 	SoInterpolateVec4f.cpp SoInterpolateVec4f.h \
 	SoOnOff.cpp SoOnOff.h \
 	SoOneShot.cpp SoOneShot.h \
+        SoOutputData.cpp SoOutputData.h \
 	SoSelectOne.cpp SoSelectOne.h \
 	SoTriggerAny.cpp SoTriggerAny.h \
 	evaluator.c evaluator.h \
@@ -61,6 +62,7 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/engines/SoExpressionParser.h \
 	$(top_srcdir)/include/Inventor/engines/SoFieldConverter.h \
 	$(top_srcdir)/include/Inventor/engines/SoGate.h \
+	$(top_srcdir)/include/Inventor/engines/SoInterpolate.h \
 	$(top_srcdir)/include/Inventor/engines/SoInterpolateAbs.h \
 	$(top_srcdir)/include/Inventor/engines/SoInterpolateFloat.h \
 	$(top_srcdir)/include/Inventor/engines/SoInterpolateRotation.h \
@@ -69,6 +71,7 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/engines/SoInterpolateVec4f.h \
 	$(top_srcdir)/include/Inventor/engines/SoOnOff.h \
 	$(top_srcdir)/include/Inventor/engines/SoOneShot.h \
+	$(top_srcdir)/include/Inventor/engines/SoOutputData.h \
 	$(top_srcdir)/include/Inventor/engines/SoSelectOne.h \
 	$(top_srcdir)/include/Inventor/engines/SoTriggerAny.h
 

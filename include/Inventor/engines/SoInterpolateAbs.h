@@ -24,23 +24,92 @@
 #include <Inventor/engines/SoEngineOutput.h>
 #include <Inventor/fields/SoSFFloat.h>
 
-
 class SoInterpolate : public SoEngine {
   typedef SoEngine inherited;
   SO_ENGINE_ABSTRACT_HEADER(SoInterpolate);
 
 public:
   SoSFFloat alpha;
+  SoEngineOutput output; // SoMFFloat
 
-  SoEngineOutput output; //SoMFFloat
-
+protected:
   SoInterpolate();
   virtual ~SoInterpolate();
 
-  static void initClass();
-
-private:
-  virtual void evaluate() = 0;
+public:
+  static void initClass(void);
+  static void initClasses(void);
 };
+
+#define SO_INTERPOLATE_HEADER(_class_) \
+  SO_ENGINE_HEADER(_class_); \
+  public: \
+    _class_(); \
+    static void initClass(); \
+  protected: \
+    virtual ~_class_(); \
+  private: \
+    virtual void evaluate()
+
+
+//
+// Could this macro _be_ any uglier ((c) Chandler, Friends)
+//
+// Considering the number of lines of code needed to implement
+// the evaluate() method in each class, I'm amazed it is defined in
+// a macro and not simply implemented for each class. But, I guess
+// we'll have to supply this macro to keep the OIV compatibility,
+// so here it is. Check the interpolator classes for examples on
+// how to use it.
+//                                               pederb, 20000309
+//
+#define SO_INTERPOLATE_SOURCE(_class_, _type_, _valtype_, _default0_, _default1_, _interpexp_) \
+ \
+SO_ENGINE_SOURCE(_class_); \
+ \
+_class_::_class_(void) \
+{ \
+  SO_ENGINE_CONSTRUCTOR(_class_); \
+  SO_ENGINE_ADD_INPUT(alpha, (0.0f)); \
+  SO_ENGINE_ADD_INPUT(input0, _default0_); \
+  SO_ENGINE_ADD_INPUT(input1, _default1_); \
+  SO_ENGINE_ADD_OUTPUT(output, _type_); \
+  this->isBuiltIn = TRUE; \
+} \
+ \
+_class_::~_class_() \
+{ \
+} \
+ \
+void \
+_class_::evaluate(void) \
+{ \
+  int n0 = this->input0.getNum(); \
+  int n1 = this->input1.getNum(); \
+  float a = this->alpha.getValue(); \
+  for (int i = SbMax(n0, n1) - 1; i >= 0; i--) { \
+    _valtype_ v0 = this->input0[SbMin(i, n0-1)]; \
+    _valtype_ v1 = this->input1[SbMin(i, n1-1)]; \
+    SO_ENGINE_OUTPUT(output, _type_, set1Value(i, _interpexp_)); \
+  } \
+}
+
+#define SO_INTERPOLATE_INITCLASS(_class_, _classname_) \
+ \
+void \
+_class_::initClass(void) \
+{ \
+  SO_ENGINE_INIT_CLASS(_class_, SoInterpolate, "SoInterpolate"); \
+}
+
+#if defined(COIN_INTERNAL)
+#define SO_INTERPOLATE_INTERNAL_INIT_CLASS(_class_) \
+ \
+void \
+_class_::initClass(void) \
+{ \
+  SO_ENGINE_INTERNAL_INIT_CLASS(_class_); \
+}
+#endif // COIN_INTERNAL
 
 #endif // !COIN_SOINTERPOLATEABS_H

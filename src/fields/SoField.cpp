@@ -1636,7 +1636,7 @@ SoField::evaluateConnection(void) const
   }
   else if (this->isConnectedFromEngine()) {
     int idx = this->storage->getNumEngineConnections() - 1;
-    ((SoEngineOutput *)this->storage->getEngineConnection(idx))->getContainer()->startEvaluate();
+    ((SoEngineOutput *)this->storage->getEngineConnection(idx))->getContainer()->evaluateWrapper();
   }
   else if (this->isConnectedFromVRMLInterp()) {
     COIN_STUB();

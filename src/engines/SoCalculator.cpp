@@ -30,10 +30,16 @@
 /*!
   \class SoCalculator Inventor/engines/SoCalculator.h
   \brief General purpose calculator for floats and 3D float vectors.
+  \ingroup engines
+
+  FIXME: doc
 */
 
 SO_ENGINE_SOURCE(SoCalculator);
 
+/*!
+  Constructor.
+*/
 SoCalculator::SoCalculator(void)
 {
   SO_ENGINE_CONSTRUCTOR(SoCalculator);
@@ -66,6 +72,9 @@ SoCalculator::SoCalculator(void)
   SO_ENGINE_ADD_OUTPUT(oD, SoMFVec3f);
 }
 
+/*!
+  Destructor.
+*/
 SoCalculator::~SoCalculator(void)
 {
   for (int i = 0; i < this->evaluatorList.getLength(); i++) {
@@ -73,12 +82,14 @@ SoCalculator::~SoCalculator(void)
   }
 }
 
+// overloaded from parent
 void
 SoCalculator::initClass(void)
 {
   SO_ENGINE_INTERNAL_INIT_CLASS(SoCalculator);
 }
 
+// overloaded from parent
 void
 SoCalculator::evaluate(void)
 {
@@ -115,6 +126,7 @@ SoCalculator::evaluate(void)
   }
 }
 
+// evaluates a single expression
 void
 SoCalculator::evaluateExpression(struct so_eval_node *node)
 {
@@ -144,10 +156,20 @@ SoCalculator::evaluateExpression(struct so_eval_node *node)
       else {
         fieldname[0] = 'A' + (i-8);
       }
-      SoMField *field = (SoMField*)this->getFieldFake(fieldname);
+      SoMField *field = (SoMField*)this->getField(fieldname);
       maxnum = SbMax(maxnum, field->getNum());
     }
   }
+
+  if (outused[0]) { SO_ENGINE_OUTPUT(oa, SoMFFloat, setNum(maxnum)); }
+  if (outused[1]) { SO_ENGINE_OUTPUT(ob, SoMFFloat, setNum(maxnum)); }
+  if (outused[2]) { SO_ENGINE_OUTPUT(oc, SoMFFloat, setNum(maxnum)); }
+  if (outused[3]) { SO_ENGINE_OUTPUT(od, SoMFFloat, setNum(maxnum)); }
+
+  if (outused[4]) { SO_ENGINE_OUTPUT(oA, SoMFVec3f, setNum(maxnum)); }
+  if (outused[5]) { SO_ENGINE_OUTPUT(oB, SoMFVec3f, setNum(maxnum)); }
+  if (outused[6]) { SO_ENGINE_OUTPUT(oC, SoMFVec3f, setNum(maxnum)); }
+  if (outused[7]) { SO_ENGINE_OUTPUT(oD, SoMFVec3f, setNum(maxnum)); }
 
   for (i = 0; i < maxnum; i++) {
     // copy values from fields to temporary "registers" while evaluating
@@ -155,7 +177,7 @@ SoCalculator::evaluateExpression(struct so_eval_node *node)
     for (j = 0; j < 8; j++) {
       if (inused[j]) {
         fieldname[0] = 'a' + j;
-        SoMFFloat *field = (SoMFFloat*) this->getFieldFake(fieldname);
+        SoMFFloat *field = (SoMFFloat*) this->getField(fieldname);
         int num = field->getNum();
         if (num) a_h[j] = field->getValues(0)[SbMin(i, num-1)];
         else a_h[j] = 0.0f;
@@ -164,7 +186,7 @@ SoCalculator::evaluateExpression(struct so_eval_node *node)
     for (j = 0; j < 8; j++) {
       if (inused[j+8]) {
         fieldname[0] = 'A' + j;
-        SoMFVec3f *field = (SoMFVec3f*) this->getFieldFake(fieldname);
+        SoMFVec3f *field = (SoMFVec3f*) this->getField(fieldname);
         int num = field->getNum();
         if (num) A_H[j] = field->getValues(0)[SbMin(i, num-1)];
         else A_H[j] = SbVec3f(0.0f, 0.0f, 0.0f);
@@ -206,11 +228,11 @@ SoCalculator::findUsed(struct so_eval_node *node, char *inused, char *outused)
     // inspect lhs
     node = node->child1;
     if (node->regname[0] == 'o') { // only consider engine outputs
-      if (node->regname[1] >= 'A' && node->regname[1] <= 'D') {
+      if ((node->regname[1] >= 'A') && (node->regname[1] <= 'D')) {
         outused[node->regname[1]-'A'+4] = 1;
       }
       else {
-        assert(node->regname[1] >= 'a' && node->regname[1] <= 'd');
+        assert((node->regname[1] >= 'a') && (node->regname[1] <= 'd'));
         outused[node->regname[1]-'a'] = 1;
       }
     }
@@ -221,17 +243,18 @@ SoCalculator::findUsed(struct so_eval_node *node, char *inused, char *outused)
     if (node->child3) this->findUsed(node->child3, inused, outused);
   }
   if (node->id == ID_FLT_REG) {
-    if (node->regname[0] >= 'a' && node->regname[0] <= 'h') {
+    if ((node->regname[0] >= 'a') && (node->regname[0] <= 'h')) {
       inused[node->regname[0]-'a'] = 1;
     }
   }
   else if (node->id == ID_VEC_REG || node->id == ID_VEC_REG_COMP) {
-    if (node->regname[0] >= 'A' && node->regname[0] <= 'H') {
+    if ((node->regname[0] >= 'A') && (node->regname[0] <= 'H')) {
       inused[node->regname[0]-'A'+8] = 1;
     }
   }
 }
 
+// overloaded from parent
 void
 SoCalculator::inputChanged(SoField *which)
 {
@@ -244,6 +267,7 @@ SoCalculator::inputChanged(SoField *which)
   }
 }
 
+// callback from evaluator. Reads values from temporay registers
 void
 SoCalculator::readfieldcb(const char *fieldname, float *data, void *userdata)
 {
@@ -255,51 +279,52 @@ SoCalculator::readfieldcb(const char *fieldname, float *data, void *userdata)
     //
 
     // this will work if output was set in an earlier expression
-    if (fieldname[1] >= 'A' && fieldname[1] <= 'D') {
+    if ((fieldname[1] >= 'A') && (fieldname[1] <= 'D')) {
       int idx = fieldname[1] - 'A';
       data[0] = thisp->oA_oD[idx][0];
       data[1] = thisp->oA_oD[idx][1];
       data[2] = thisp->oA_oD[idx][2];
     }
     else {
-      assert(fieldname[1] >= 'a' && fieldname[1] <= 'd');
+      assert((fieldname[1] >= 'a') && (fieldname[1] <= 'd'));
       int idx = fieldname[1] - 'a';
       data[0] = thisp->oa_od[idx];
     }
   }
   else if (fieldname[0] == 't') {
-    if (fieldname[1] >= 'A' && fieldname[1] <= 'H') {
+    if ((fieldname[1] >= 'A') && (fieldname[1] <= 'H')) {
       int idx = fieldname[1] - 'A';
       data[0] = thisp->tA_tH[idx][0];
       data[1] = thisp->tA_tH[idx][1];
       data[2] = thisp->tA_tH[idx][2];
     }
     else {
-      assert(fieldname[1] >= 'a' && fieldname[1] <= 'h');
+      assert((fieldname[1] >= 'a') && (fieldname[1] <= 'h'));
       int idx = fieldname[1] - 'a';
       data[0] = thisp->ta_th[idx];
     }
   }
-  else if (fieldname[0] >= 'A' && fieldname[0] <= 'H') {
+  else if ((fieldname[0] >= 'A') && (fieldname[0] <= 'H')) {
     int idx = fieldname[0] - 'A';
     data[0] = thisp->A_H[idx][0];
     data[1] = thisp->A_H[idx][1];
     data[2] = thisp->A_H[idx][2];
   }
   else {
-    assert(fieldname[0] >= 'a' && fieldname[0] <= 'h');
+    assert((fieldname[0] >= 'a') && (fieldname[0] <= 'h'));
     int idx = fieldname[0] - 'a';
     data[0] = thisp->a_h[idx];
   }
 }
 
+// callback from evaluator. Writes values into temporary registers
 void
 SoCalculator::writefieldcb(const char *fieldname, float *data,
                            int comp, void *userdata)
 {
   SoCalculator *thisp = (SoCalculator*) userdata;
   if (fieldname[0] == 'o') {
-    if (fieldname[1] >= 'A' && fieldname[1] <= 'D') {
+    if ((fieldname[1] >= 'A') && (fieldname[1] <= 'D')) {
       int idx = fieldname[1] - 'A';
       if (comp >= 0) {
         thisp->oA_oD[idx][comp] = data[0];
@@ -311,13 +336,13 @@ SoCalculator::writefieldcb(const char *fieldname, float *data,
       }
     }
     else {
-      assert(fieldname[1] >= 'a' && fieldname[1] <= 'd');
+      assert((fieldname[1] >= 'a') && (fieldname[1] <= 'd'));
       int idx = fieldname[1] - 'a';
       thisp->oa_od[idx] = data[0];
     }
   }
   else if (fieldname[0] == 't') {
-    if (fieldname[1] >= 'A' && fieldname[1] <= 'H') {
+    if ((fieldname[1] >= 'A') && (fieldname[1] <= 'H')) {
       int idx = fieldname[1] - 'A';
       if (comp >= 0) {
         thisp->tA_tH[idx][comp] = data[0];
@@ -329,7 +354,7 @@ SoCalculator::writefieldcb(const char *fieldname, float *data,
       }
     }
     else {
-      assert(fieldname[1] >= 'a' && fieldname[1] <= 'h');
+      assert((fieldname[1] >= 'a') && (fieldname[1] <= 'h'));
       int idx = fieldname[1] - 'a';
       thisp->ta_th[idx] = data[0];
     }

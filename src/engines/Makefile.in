@@ -127,6 +127,7 @@ ALLSOURCES = \
 	SoInterpolateVec4f.cpp SoInterpolateVec4f.h \
 	SoOnOff.cpp SoOnOff.h \
 	SoOneShot.cpp SoOneShot.h \
+        SoOutputData.cpp SoOutputData.h \
 	SoSelectOne.cpp SoSelectOne.h \
 	SoTriggerAny.cpp SoTriggerAny.h \
 	evaluator.c evaluator.h \
@@ -157,6 +158,7 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/engines/SoExpressionParser.h \
 	$(top_srcdir)/include/Inventor/engines/SoFieldConverter.h \
 	$(top_srcdir)/include/Inventor/engines/SoGate.h \
+	$(top_srcdir)/include/Inventor/engines/SoInterpolate.h \
 	$(top_srcdir)/include/Inventor/engines/SoInterpolateAbs.h \
 	$(top_srcdir)/include/Inventor/engines/SoInterpolateFloat.h \
 	$(top_srcdir)/include/Inventor/engines/SoInterpolateRotation.h \
@@ -165,6 +167,7 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/engines/SoInterpolateVec4f.h \
 	$(top_srcdir)/include/Inventor/engines/SoOnOff.h \
 	$(top_srcdir)/include/Inventor/engines/SoOneShot.h \
+	$(top_srcdir)/include/Inventor/engines/SoOutputData.h \
 	$(top_srcdir)/include/Inventor/engines/SoSelectOne.h \
 	$(top_srcdir)/include/Inventor/engines/SoTriggerAny.h
 
@@ -211,8 +214,8 @@ SoDecomposeVec2f.lo SoDecomposeVec3f.lo SoDecomposeVec4f.lo \
 SoElapsedTime.lo SoEngine.lo SoEngineOutput.lo SoExpressionParser.lo \
 SoFieldConverter.lo SoGate.lo SoInterpolateAbs.lo SoInterpolateFloat.lo \
 SoInterpolateRotation.lo SoInterpolateVec2f.lo SoInterpolateVec3f.lo \
-SoInterpolateVec4f.lo SoOnOff.lo SoOneShot.lo SoSelectOne.lo \
-SoTriggerAny.lo evaluator.lo evaluator.tab.lo
+SoInterpolateVec4f.lo SoOnOff.lo SoOneShot.lo SoOutputData.lo \
+SoSelectOne.lo SoTriggerAny.lo evaluator.lo evaluator.tab.lo
 libengines_la_OBJECTS =  $(am_libengines_la_OBJECTS)
 libenginesLINKHACK_la_LDFLAGS = 
 libenginesLINKHACK_la_LIBADD = 
@@ -224,8 +227,8 @@ SoDecomposeVec2f.lo SoDecomposeVec3f.lo SoDecomposeVec4f.lo \
 SoElapsedTime.lo SoEngine.lo SoEngineOutput.lo SoExpressionParser.lo \
 SoFieldConverter.lo SoGate.lo SoInterpolateAbs.lo SoInterpolateFloat.lo \
 SoInterpolateRotation.lo SoInterpolateVec2f.lo SoInterpolateVec3f.lo \
-SoInterpolateVec4f.lo SoOnOff.lo SoOneShot.lo SoSelectOne.lo \
-SoTriggerAny.lo evaluator.lo evaluator.tab.lo
+SoInterpolateVec4f.lo SoOnOff.lo SoOneShot.lo SoOutputData.lo \
+SoSelectOne.lo SoTriggerAny.lo evaluator.lo evaluator.tab.lo
 libenginesLINKHACK_la_OBJECTS =  $(am_libenginesLINKHACK_la_OBJECTS)
 COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -262,7 +265,8 @@ $(DEPDIR)/SoFieldConverter.Plo $(DEPDIR)/SoGate.Plo \
 $(DEPDIR)/SoInterpolateAbs.Plo $(DEPDIR)/SoInterpolateFloat.Plo \
 $(DEPDIR)/SoInterpolateRotation.Plo $(DEPDIR)/SoInterpolateVec2f.Plo \
 $(DEPDIR)/SoInterpolateVec3f.Plo $(DEPDIR)/SoInterpolateVec4f.Plo \
-$(DEPDIR)/SoOnOff.Plo $(DEPDIR)/SoOneShot.Plo $(DEPDIR)/SoSelectOne.Plo \
+$(DEPDIR)/SoOnOff.Plo $(DEPDIR)/SoOneShot.Plo \
+$(DEPDIR)/SoOutputData.Plo $(DEPDIR)/SoSelectOne.Plo \
 $(DEPDIR)/SoTriggerAny.Plo $(DEPDIR)/evaluator.Plo \
 $(DEPDIR)/evaluator.tab.Plo
 SOURCES = $(libengines_la_SOURCES) $(libenginesLINKHACK_la_SOURCES)
@@ -425,6 +429,7 @@ distdir: $(DISTFILES)
 @AMDEP@include $(DEPDIR)/SoInterpolateVec4f.Plo
 @AMDEP@include $(DEPDIR)/SoOnOff.Plo
 @AMDEP@include $(DEPDIR)/SoOneShot.Plo
+@AMDEP@include $(DEPDIR)/SoOutputData.Plo
 @AMDEP@include $(DEPDIR)/SoSelectOne.Plo
 @AMDEP@include $(DEPDIR)/SoTriggerAny.Plo
 @AMDEP@include $(DEPDIR)/evaluator.Plo

@@ -17,53 +17,16 @@
  *
 \**************************************************************************/
 
-//$ BEGIN TEMPLATE InterpolateSource(SoInterpolateFloat, SoMFFloat, float, (0), (1), (val1-val0)*alpha.getValue()+val0)
+/*!
+  \class SoInterpolateFloat SoInterpolateFloat.h Inventor/engines/SoInterpolateFloat.h
+  \brief The SoInterpolateFloat class is used to interpolate two floating point values.
+  \ingroup engines
+
+  FIXME: doc
+*/
 
 #include <Inventor/engines/SoInterpolateFloat.h>
-#include <Inventor/lists/SoEngineOutputList.h>
 
-SO_ENGINE_SOURCE(SoInterpolateFloat);
-
-SoInterpolateFloat::SoInterpolateFloat()
-{
-  SO_ENGINE_CONSTRUCTOR(SoInterpolateFloat);
-
-  SO_ENGINE_ADD_INPUT(input0,(0));
-  SO_ENGINE_ADD_INPUT(input1,(1));
-
-  SO_ENGINE_ADD_OUTPUT(output,SoMFFloat);
-}
-
-void
-SoInterpolateFloat::initClass()
-{
-  SO_ENGINE_INTERNAL_INIT_CLASS(SoInterpolateFloat);
-}
-
-//
-// private members
-//
-SoInterpolateFloat::~SoInterpolateFloat()
-{
-}
-
-void
-SoInterpolateFloat::evaluate()
-{
-  int num0=input0.getNum();
-  int num1=input1.getNum();
-
-  int numOut=num0>num1?num0:num1;
-
-  SO_ENGINE_OUTPUT(output,SoMFFloat,setNum(numOut));
-
-  float val0,val1,outVal;
-  for (int i=0;i<numOut;i++) {
-    val0=i<num0?input0[i]:input0[num0-1];
-    val1=i<num1?input1[i]:input1[num1-1];
-
-    outVal=(val1-val0)*alpha.getValue()+val0;
-    SO_ENGINE_OUTPUT(output,SoMFFloat,set1Value(i,outVal));
-  }
-}
-//$ END TEMPLATE InterpolateSource
+SO_INTERPOLATE_SOURCE(SoInterpolateFloat, SoMFFloat, float, (0.0f), (1.0f),
+                      (v1-v0)*a+v0);
+SO_INTERPOLATE_INTERNAL_INIT_CLASS(SoInterpolateFloat);

@@ -17,53 +17,16 @@
  *
 \**************************************************************************/
 
-//$ BEGIN TEMPLATE InterpolateSource(SoInterpolateVec4f, SoMFVec4f, SbVec4f, (0,0,0,0), (0,0,0,0), (val1-val0)*alpha.getValue()+val0)
+/*!
+  \class SoInterpolateVec4f SoInterpolateVec4f.h Inventor/engines/SoInterpolateVec4f.h
+  \brief The SoInterpolateVec4f class is used to interpolate between two 4D vectors.
+  \ingroup engines
+
+  FIXME: doc
+*/
 
 #include <Inventor/engines/SoInterpolateVec4f.h>
-#include <Inventor/lists/SoEngineOutputList.h>
 
-SO_ENGINE_SOURCE(SoInterpolateVec4f);
-
-SoInterpolateVec4f::SoInterpolateVec4f()
-{
-  SO_ENGINE_CONSTRUCTOR(SoInterpolateVec4f);
-
-  SO_ENGINE_ADD_INPUT(input0,(0,0,0,0));
-  SO_ENGINE_ADD_INPUT(input1,(0,0,0,0));
-
-  SO_ENGINE_ADD_OUTPUT(output,SoMFVec4f);
-}
-
-void
-SoInterpolateVec4f::initClass()
-{
-  SO_ENGINE_INTERNAL_INIT_CLASS(SoInterpolateVec4f);
-}
-
-//
-// private members
-//
-SoInterpolateVec4f::~SoInterpolateVec4f()
-{
-}
-
-void
-SoInterpolateVec4f::evaluate()
-{
-  int num0=input0.getNum();
-  int num1=input1.getNum();
-
-  int numOut=num0>num1?num0:num1;
-
-  SO_ENGINE_OUTPUT(output,SoMFVec4f,setNum(numOut));
-
-  SbVec4f val0,val1,outVal;
-  for (int i=0;i<numOut;i++) {
-    val0=i<num0?input0[i]:input0[num0-1];
-    val1=i<num1?input1[i]:input1[num1-1];
-
-    outVal=(val1-val0)*alpha.getValue()+val0;
-    SO_ENGINE_OUTPUT(output,SoMFVec4f,set1Value(i,outVal));
-  }
-}
-//$ END TEMPLATE InterpolateSource
+SO_INTERPOLATE_SOURCE(SoInterpolateVec4f, SoMFVec4f, SbVec4f, (0.0f,0.0f,0.0f,0.0f),
+                      (0.0f,0.0f,0.0f,0.0f), (v1-v0)*a+v0);
+SO_INTERPOLATE_INTERNAL_INIT_CLASS(SoInterpolateVec4f);

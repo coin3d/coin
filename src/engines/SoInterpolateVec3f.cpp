@@ -17,53 +17,16 @@
  *
 \**************************************************************************/
 
-//$ BEGIN TEMPLATE InterpolateSource(SoInterpolateVec3f, SoMFVec3f, SbVec3f, (0,0,0), (0,0,0), (val1-val0)*alpha.getValue()+val0)
+/*!
+  \class SoInterpolateVec3f SoInterpolateVec3f.h Inventor/engines/SoInterpolateVec3f.h
+  \brief The SoInterpolateVec3f class is used to interpolate between two 3D vectors.
+  \ingroup engines
+
+  FIXME: doc
+*/
 
 #include <Inventor/engines/SoInterpolateVec3f.h>
-#include <Inventor/lists/SoEngineOutputList.h>
 
-SO_ENGINE_SOURCE(SoInterpolateVec3f);
-
-SoInterpolateVec3f::SoInterpolateVec3f()
-{
-  SO_ENGINE_CONSTRUCTOR(SoInterpolateVec3f);
-
-  SO_ENGINE_ADD_INPUT(input0,(0,0,0));
-  SO_ENGINE_ADD_INPUT(input1,(0,0,0));
-
-  SO_ENGINE_ADD_OUTPUT(output,SoMFVec3f);
-}
-
-void
-SoInterpolateVec3f::initClass()
-{
-  SO_ENGINE_INTERNAL_INIT_CLASS(SoInterpolateVec3f);
-}
-
-//
-// private members
-//
-SoInterpolateVec3f::~SoInterpolateVec3f()
-{
-}
-
-void
-SoInterpolateVec3f::evaluate()
-{
-  int num0=input0.getNum();
-  int num1=input1.getNum();
-
-  int numOut=num0>num1?num0:num1;
-
-  SO_ENGINE_OUTPUT(output,SoMFVec3f,setNum(numOut));
-
-  SbVec3f val0,val1,outVal;
-  for (int i=0;i<numOut;i++) {
-    val0=i<num0?input0[i]:input0[num0-1];
-    val1=i<num1?input1[i]:input1[num1-1];
-
-    outVal=(val1-val0)*alpha.getValue()+val0;
-    SO_ENGINE_OUTPUT(output,SoMFVec3f,set1Value(i,outVal));
-  }
-}
-//$ END TEMPLATE InterpolateSource
+SO_INTERPOLATE_SOURCE(SoInterpolateVec3f, SoMFVec3f, SbVec3f,
+                      (0.0f,0.0f,0.0f), (0.0f,0.0f,0.0f), (v1-v0)*a+v0);
+SO_INTERPOLATE_INTERNAL_INIT_CLASS(SoInterpolateVec3f);

@@ -41,6 +41,13 @@
   Some methods related to reading VRML 2 files are missing.
  */
 
+
+/* IMPORTANT NOTE:
+ * If you make any changes (bugfixes, improvements) in this class,
+ * remember to also check the SoEngineOutputData class, as it is
+ * heavily based on this class.
+ */
+
 #include <Inventor/nodes/SoUnknownNode.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>

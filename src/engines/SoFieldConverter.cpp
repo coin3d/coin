@@ -18,7 +18,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoFieldConverter SoFieldConverter.h Inventor/engines/SoFieldConverter.h 
+  \class SoFieldConverter SoFieldConverter.h Inventor/engines/SoFieldConverter.h
   \brief The SoFieldConverter class is the abstract base class for field converters.
   \ingroup engines
 

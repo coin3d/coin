@@ -25,35 +25,61 @@
 class SoEngineList;
 class SoEngineOutput;
 class SoEngineOutputList;
-
+class SoEngineOutputData;
 
 class SoEngine : public SoFieldContainer {
   typedef SoFieldContainer inherited;
 
 public:
+  void evaluateWrapper();
+
+protected:
+  SoEngine();
+  virtual ~SoEngine();
+  virtual void evaluate() = 0;
+
+protected:
+
+  virtual SbBool readInstance(SoInput *in, unsigned short flags);
+  virtual void inputChanged(SoField * which);
+
+  static const SoFieldData ** getInputDataPtr(void);
+  static const SoEngineOutputData ** getOutputDataPtr(void);
+
+  void writeOutputTypes(SoOutput *out);
+
+public:
   static SoType getClassTypeId(void);
   virtual int getOutputs(SoEngineOutputList & l) const;
 
-  SoEngineOutput * getOutput(const SbName & outputName) const;
-  SbBool getOutputName(const SoEngineOutput * output, SbName & outputName) const;
+  SoEngineOutput * getOutput(const SbName & outputname) const;
+  SbBool getOutputName(const SoEngineOutput * output, SbName & outputname) const;
   SoEngine * copy(void) const;
   static SoEngine * getByName(const SbName & name);
   static int getByName(const SbName & name, SoEngineList & list);
 
-  virtual void evaluate() = 0;
+  static void initClass(void);
+  static void initClasses(void);
 
-  static void initClass();
-  static void initEngines();
-  void startEvaluate();
-
-protected:
-  SoEngineOutputList * outputList;
-  virtual void inputChanged(SoField * which);
   virtual void notify(SoNotList * list);
+  virtual void writeInstance(SoOutput *out);
+  virtual SoFieldContainer * copyThroughConnection(void) const;
+  virtual const SoEngineOutputData *getOutputData(void) const = 0;
+  SbBool shouldCopy(void) const;
+  SbBool isNotifying(void) const;
 
 private:
   static SoType classTypeId;
+  struct {
+    unsigned int dirty : 1;
+    unsigned int isnotifying : 1;
+  } stateflags;
 
+  friend class SoEngineOutput;
 };
+
+#if !defined(COIN_INTERNAL)
+#include <Inventor/engines/SoEngineOutput.h>
+#endif // COIN_INTERNAL
 
 #endif // !COIN_SOENGINE_H

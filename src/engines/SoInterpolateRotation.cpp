@@ -17,56 +17,20 @@
  *
 \**************************************************************************/
 
-#include <Inventor/SbVec3f.h>
+/*!
+  \class SoInterpolateRotation SoInterpolateRotation.h Inventor/engines/SoInterpolateRotation.h
+  \brief The SoInterpolateRotation class is used to interpolate between two rotations.
+  \ingroup engines
 
-//$ BEGIN TEMPLATE InterpolateSource(SoInterpolateRotation, SoMFRotation, SbRotation, (SbVec3f(0,0,1),0), (SbVec3f(0,0,1),0), SbRotation::slerp(val0,val1,alpha.getValue()))
+  FIXME: doc
+*/
 
 #include <Inventor/engines/SoInterpolateRotation.h>
-#include <Inventor/lists/SoEngineOutputList.h>
-#include <Inventor/SoType.h>
+#include <Inventor/SbVec3f.h>
 
-SO_ENGINE_SOURCE(SoInterpolateRotation);
+SO_INTERPOLATE_SOURCE(SoInterpolateRotation, SoMFRotation, SbRotation,
+                      (SbVec3f(0.0f,0.0f,1.0f),0.0f),
+                      (SbVec3f(0.0f,0.0f,1.0f),0.0f),
+                      SbRotation::slerp(v0,v1,a));
 
-SoInterpolateRotation::SoInterpolateRotation()
-{
-  SO_ENGINE_CONSTRUCTOR(SoInterpolateRotation);
-
-  SO_ENGINE_ADD_INPUT(input0,(SbVec3f(0,0,1),0));
-  SO_ENGINE_ADD_INPUT(input1,(SbVec3f(0,0,1),0));
-
-  SO_ENGINE_ADD_OUTPUT(output,SoMFRotation);
-}
-
-void
-SoInterpolateRotation::initClass()
-{
-  SO_ENGINE_INTERNAL_INIT_CLASS(SoInterpolateRotation);
-}
-
-//
-// private members
-//
-SoInterpolateRotation::~SoInterpolateRotation()
-{
-}
-
-void
-SoInterpolateRotation::evaluate()
-{
-  int num0=input0.getNum();
-  int num1=input1.getNum();
-
-  int numOut=num0>num1?num0:num1;
-
-  SO_ENGINE_OUTPUT(output,SoMFRotation,setNum(numOut));
-
-  SbRotation val0,val1,outVal;
-  for (int i=0;i<numOut;i++) {
-    val0=i<num0?input0[i]:input0[num0-1];
-    val1=i<num1?input1[i]:input1[num1-1];
-
-    outVal=SbRotation::slerp(val0,val1,alpha.getValue());
-    SO_ENGINE_OUTPUT(output,SoMFRotation,set1Value(i,outVal));
-  }
-}
-//$ END TEMPLATE InterpolateSource
+SO_INTERPOLATE_INTERNAL_INIT_CLASS(SoInterpolateRotation);
