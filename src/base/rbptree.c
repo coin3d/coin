@@ -497,7 +497,6 @@ rbptree_remove_inline(cc_rbptree * t, const int idx)
 SbBool 
 cc_rbptree_remove(cc_rbptree * t, void * p)
 { 
-  uint32_t i, stop;
   cc_rbptree_node *z, * nil;
   nil = &rbptree_sentinel;
 
