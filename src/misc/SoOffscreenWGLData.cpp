@@ -71,16 +71,25 @@ SoOffscreenWGLData::setBufferSize(const SbVec2s & size)
   this->buffer =
     new unsigned char[this->buffersize[0] * this->buffersize[1] * 4];
   
-  if (this->context) cc_glglue_context_destruct(this->context);
-  this->context = cc_glglue_context_create_offscreen(size[0], size[1]);
+  // just delete the old context. Don't create a new one yet.
+  if (this->context) {
+    cc_glglue_context_destruct(this->context);
+    this->context = NULL;
+  }
 }
 
 SbBool 
 SoOffscreenWGLData::makeContextCurrent(uint32_t contextid) 
 {
   assert(this->buffer);
-  assert(this->context);
-  return cc_glglue_context_make_current(this->context);
+  
+  if (this->context == NULL) {
+    this->context = cc_glglue_context_create_offscreen(this->buffersize[0], this->buffersize[1]);
+  }
+  if (this->context) {
+    return cc_glglue_context_make_current(this->context);
+  }
+  return FALSE;
 }
 
 unsigned char * 
@@ -91,8 +100,10 @@ SoOffscreenWGLData::getBuffer(void)
 
 void
 SoOffscreenWGLData::unmakeContextCurrent(void)
-{    
-  cc_glglue_context_reinstate_previous(this->context);
+{
+  if (this->context) {
+    cc_glglue_context_reinstate_previous(this->context);
+  }
 }
 
 #endif // HAVE_WGL
