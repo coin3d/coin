@@ -20,6 +20,12 @@ TODO:
 
 *** BUILD ITEMS ***
 
+* [mortene:19991124] install the binaries under the tools/ directory
+  in $prefix/bin.
+        
+* [mortene:19991124] write documentation for the tools (ivcat,
+  ivhierarchy, ...)
+
 * [mortene:19991113] is it possible to get the make process to print
   out which dependency causes recompilation of a file? That would be a
   nice feature.
