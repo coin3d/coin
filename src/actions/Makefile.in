@@ -157,6 +157,7 @@ PublicHeaders = \
 	../../include/Inventor/actions/SoGetMatrixAction.h \
 	../../include/Inventor/actions/SoGetPrimitiveCountAction.h \
 	../../include/Inventor/actions/SoHandleEventAction.h \
+	../../include/Inventor/collision/SoIntersectionDetectionAction.h \
 	../../include/Inventor/actions/SoLineHighlightRenderAction.h \
 	../../include/Inventor/actions/SoPickAction.h \
 	../../include/Inventor/actions/SoRayPickAction.h \
@@ -168,8 +169,6 @@ PublicHeaders = \
 
 PrivateHeaders = \
 	../../include/Inventor/actions/SoSubActionP.h \
-	SoIntersectionDetectionAction.cpp \
-	../../include/Inventor/collision/SoIntersectionDetectionAction.h \
 	SbTri3f.icc SbTri3f.ih
 
 LinkHackSources = \
@@ -184,6 +183,7 @@ RegularSources = \
 	SoGetMatrixAction.cpp \
 	SoGetPrimitiveCountAction.cpp \
 	SoHandleEventAction.cpp \
+	SoIntersectionDetectionAction.cpp \
 	SoLineHighlightRenderAction.cpp \
 	SoPickAction.cpp \
 	SoRayPickAction.cpp \
@@ -200,29 +200,12 @@ RegularSources = \
 #
 # FIXME: it'd be easier to place a Makefile.am under include/Inventor/collision
 # and let that install the file. 20030324 mortene.
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@libcollisionincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/collision
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@libcollisionincdir = $(includedir)/Inventor/collision
+@BUILD_LIBRARY_TRUE@libcollisioninc_HEADERS = \
+@BUILD_LIBRARY_TRUE@	../../include/Inventor/collision/SoIntersectionDetectionAction.h
 
-# if BUILD_LIBRARY
-# if MAC_FRAMEWORK
-# libcollisionincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/collision
-# else
-# libcollisionincdir = $(includedir)/Inventor/collision
-# endif
-# libcollisioninc_HEADERS = \
-# 	../../include/Inventor/collision/SoIntersectionDetectionAction.h
-# 
-# install-libcollisionincHEADERS: $(libcollisioninc_HEADERS)
-# 	@$(NORMAL_INSTALL)
-# 	$(mkinstalldirs) $(DESTDIR)$(libcollisionincdir)
-# 	@list='$(libcollisioninc_HEADERS)'; for p in $$list; do \
-# 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-# 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-# 	  src="$$d$$p"; dst="$(DESTDIR)$(libcollisionincdir)/$$f"; \
-# 	  if cmp -s "$$src" "$$dst"; then :; else \
-# 	    echo " $(INSTALL_HEADER) $$src $$dst"; \
-# 	    $(INSTALL_HEADER) "$$src" "$$dst"; \
-# 	  fi \
-# 	done
-# endif
+
 
 # **************************************************************************
 # This template depends on the following variables having been set up before
@@ -294,6 +277,7 @@ actions_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoGetMatrixAction.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGetPrimitiveCountAction.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoHandleEventAction.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoIntersectionDetectionAction.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoLineHighlightRenderAction.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoPickAction.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoRayPickAction.$(OBJEXT) \
@@ -316,6 +300,7 @@ libactions_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoGetMatrixAction.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGetPrimitiveCountAction.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoHandleEventAction.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoIntersectionDetectionAction.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoLineHighlightRenderAction.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoPickAction.lo SoRayPickAction.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoSearchAction.lo \
@@ -337,6 +322,7 @@ libactions@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoGetMatrixAction.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGetPrimitiveCountAction.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoHandleEventAction.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoIntersectionDetectionAction.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoLineHighlightRenderAction.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoPickAction.lo SoRayPickAction.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoSearchAction.lo \
@@ -406,9 +392,10 @@ DIST_SOURCES = $(actions_lst_SOURCES) $(EXTRA_actions_lst_SOURCES) \
 	$(libactions_la_SOURCES) $(EXTRA_libactions_la_SOURCES) \
 	$(libactions@SUFFIX@LINKHACK_la_SOURCES) \
 	$(EXTRA_libactions@SUFFIX@LINKHACK_la_SOURCES)
-HEADERS = $(libactionsinc_HEADERS)
+HEADERS = $(libactionsinc_HEADERS) $(libcollisioninc_HEADERS)
 
-DIST_COMMON = $(libactionsinc_HEADERS) Makefile.am Makefile.in
+DIST_COMMON = $(libactionsinc_HEADERS) $(libcollisioninc_HEADERS) \
+	Makefile.am Makefile.in
 SOURCES = $(actions_lst_SOURCES) $(EXTRA_actions_lst_SOURCES) $(libactions_la_SOURCES) $(EXTRA_libactions_la_SOURCES) $(libactions@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_libactions@SUFFIX@LINKHACK_la_SOURCES)
 
 all: all-am
@@ -536,6 +523,23 @@ uninstall-libactionsincHEADERS:
 	  echo " rm -f $(DESTDIR)$(libactionsincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libactionsincdir)/$$f; \
 	done
+@BUILD_LIBRARY_FALSE@install-libcollisionincHEADERS: $(libcollisioninc_HEADERS)
+@BUILD_LIBRARY_FALSE@	@$(NORMAL_INSTALL)
+@BUILD_LIBRARY_FALSE@	$(mkinstalldirs) $(DESTDIR)$(libcollisionincdir)
+@BUILD_LIBRARY_FALSE@	@list='$(libcollisioninc_HEADERS)'; for p in $$list; do \
+@BUILD_LIBRARY_FALSE@	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+@BUILD_LIBRARY_FALSE@	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+@BUILD_LIBRARY_FALSE@	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libcollisionincdir)/$$f"; \
+@BUILD_LIBRARY_FALSE@	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libcollisionincdir)/$$f; \
+@BUILD_LIBRARY_FALSE@	done
+
+uninstall-libcollisionincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libcollisioninc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libcollisionincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libcollisionincdir)/$$f; \
+	done
 
 tags: TAGS
 
@@ -575,7 +579,7 @@ top_distdir = ../..
 distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
 
 distdir: $(DISTFILES)
-	$(mkinstalldirs) $(distdir)/../../include/Inventor/actions
+	$(mkinstalldirs) $(distdir)/../../include/Inventor/actions $(distdir)/../../include/Inventor/collision
 	@for file in $(DISTFILES); do \
 	  if test -f $$file; then d=.; else d=$(srcdir); fi; \
 	  dir=`echo "$$file" | sed -e 's,/[^/]*$$,,'`; \
@@ -596,7 +600,7 @@ check: check-am
 all-am: Makefile $(LIBRARIES) $(LTLIBRARIES) $(HEADERS)
 
 installdirs:
-	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(libactionsincdir)
+	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(libactionsincdir) $(DESTDIR)$(libcollisionincdir)
 
 install: install-am
 install-exec: install-exec-am
@@ -640,7 +644,8 @@ info: info-am
 
 info-am:
 
-install-data-am: install-libactionsincHEADERS
+install-data-am: install-libactionsincHEADERS \
+	install-libcollisionincHEADERS
 
 install-exec-am: install-libLTLIBRARIES
 
@@ -660,7 +665,7 @@ mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 	mostlyclean-libtool
 
 uninstall-am: uninstall-info-am uninstall-libLTLIBRARIES \
-	uninstall-libactionsincHEADERS
+	uninstall-libactionsincHEADERS uninstall-libcollisionincHEADERS
 
 .PHONY: GTAGS all all-am check check-am clean clean-generic \
 	clean-libLTLIBRARIES clean-libtool clean-noinstLIBRARIES \
@@ -669,13 +674,27 @@ uninstall-am: uninstall-info-am uninstall-libLTLIBRARIES \
 	distclean-tags distdir dvi dvi-am info info-am install \
 	install-am install-data install-data-am install-exec \
 	install-exec-am install-info install-info-am \
-	install-libLTLIBRARIES install-libactionsincHEADERS install-man \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
-	tags uninstall uninstall-am uninstall-info-am \
-	uninstall-libLTLIBRARIES uninstall-libactionsincHEADERS
+	install-libLTLIBRARIES install-libactionsincHEADERS \
+	install-libcollisionincHEADERS install-man install-strip \
+	installcheck installcheck-am installdirs maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-compile \
+	mostlyclean-generic mostlyclean-libtool tags uninstall \
+	uninstall-am uninstall-info-am uninstall-libLTLIBRARIES \
+	uninstall-libactionsincHEADERS uninstall-libcollisionincHEADERS
 
+
+@BUILD_LIBRARY_TRUE@install-libcollisionincHEADERS: $(libcollisioninc_HEADERS)
+@BUILD_LIBRARY_TRUE@	@$(NORMAL_INSTALL)
+@BUILD_LIBRARY_TRUE@	$(mkinstalldirs) $(DESTDIR)$(libcollisionincdir)
+@BUILD_LIBRARY_TRUE@	@list='$(libcollisioninc_HEADERS)'; for p in $$list; do \
+@BUILD_LIBRARY_TRUE@	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+@BUILD_LIBRARY_TRUE@	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+@BUILD_LIBRARY_TRUE@	  src="$$d$$p"; dst="$(DESTDIR)$(libcollisionincdir)/$$f"; \
+@BUILD_LIBRARY_TRUE@	  if cmp -s "$$src" "$$dst"; then :; else \
+@BUILD_LIBRARY_TRUE@	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+@BUILD_LIBRARY_TRUE@	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+@BUILD_LIBRARY_TRUE@	  fi \
+@BUILD_LIBRARY_TRUE@	done
 
 # this rule causes a make warning, so we remove it when it is not in use
 actions.lst: Makefile $(actions_lst_OBJECTS)
