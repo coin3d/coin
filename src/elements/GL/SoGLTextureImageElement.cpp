@@ -37,6 +37,8 @@
 #include <Inventor/misc/SoGL.h> // GL wrapper.
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/SbImage.h>
+#include <Inventor/C/tidbits.h>
+#include <stdlib.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -46,6 +48,10 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+// Can be used as a workaround for buggy PROXY texture handling (bug
+// in our code or in the OpenGL driver).
+static int COIN_MAXIMUM_TEXTURE2_SIZE = 0;
+static int COIN_MAXIMUM_TEXTURE3_SIZE = 0;
 
 SO_ELEMENT_SOURCE(SoGLTextureImageElement);
 
@@ -68,7 +74,6 @@ SoGLTextureImageElement::~SoGLTextureImageElement(void)
 {
 }
 
-
 // doc from parent
 void
 SoGLTextureImageElement::init(SoState * state)
@@ -76,6 +81,18 @@ SoGLTextureImageElement::init(SoState * state)
   inherited::init(state);
   this->glimage = NULL;
   this->state = state;
+
+  // check environment variables
+  if (COIN_MAXIMUM_TEXTURE2_SIZE == 0) {
+    const char * env = coin_getenv("COIN_MAXIMUM_TEXTURE2_SIZE");
+    if (env) COIN_MAXIMUM_TEXTURE2_SIZE = atoi(env);
+    else COIN_MAXIMUM_TEXTURE2_SIZE = -1;
+  }
+  if (COIN_MAXIMUM_TEXTURE3_SIZE == 0) {
+    const char * env = coin_getenv("COIN_MAXIMUM_TEXTURE3_SIZE");
+    if (env) COIN_MAXIMUM_TEXTURE3_SIZE = atoi(env);
+    else COIN_MAXIMUM_TEXTURE3_SIZE = -1;
+  }
 }
 
 
@@ -219,6 +236,11 @@ SoGLTextureImageElement::isTextureSizeLegal(int xsize, int ysize, int zsize,
 
   const cc_glglue * glw = sogl_glue_instance(this->state);
   if (zsize==0) { // 2D textures
+    if (COIN_MAXIMUM_TEXTURE2_SIZE > 0) {
+      if (xsize > COIN_MAXIMUM_TEXTURE2_SIZE) return FALSE;
+      if (ysize > COIN_MAXIMUM_TEXTURE2_SIZE) return FALSE;
+      return TRUE;
+    }
     if (cc_glglue_has_2d_proxy_textures(glw)) {
       GLint w;
       glTexImage2D(GL_PROXY_TEXTURE_2D, 0, bytespertexel,
@@ -239,6 +261,12 @@ SoGLTextureImageElement::isTextureSizeLegal(int xsize, int ysize, int zsize,
   }
   else { // 3D textures
     if (cc_glglue_has_3d_textures(glw)) {
+      if (COIN_MAXIMUM_TEXTURE3_SIZE > 0) {
+        if (xsize > COIN_MAXIMUM_TEXTURE3_SIZE) return FALSE;
+        if (ysize > COIN_MAXIMUM_TEXTURE3_SIZE) return FALSE;
+        if (zsize > COIN_MAXIMUM_TEXTURE3_SIZE) return FALSE;
+        return TRUE;
+      }
       cc_glglue_glTexImage3D(glw,
                              GL_PROXY_TEXTURE_3D, 0, (GLenum) bytespertexel,
                              xsize, ysize, zsize, 0,
