@@ -43,124 +43,9 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-// *************************************************************************
 
-//$ BEGIN TEMPLATE SField(SoSFColor, const SbColor &)
 
-SoType SoSFColor::classTypeId = SoType::badType();
-
-/*!
-  Virtual method which returns the type identifier for an object.
-
-  \sa getClassTypeId()
-*/
-SoType
-SoSFColor::getTypeId(void) const
-{
-  return SoSFColor::classTypeId;
-}
-
-/*!
-  Returns a unique type identifier for the SoSFColor class.
-
-  \sa getTypeId(), SoType
- */
-SoType
-SoSFColor::getClassTypeId(void)
-{
-  return SoSFColor::classTypeId;
-}
-
-/*!
-  Constructs and returns a new instance of the SoSFColor class.
-*/
-void *
-SoSFColor::createInstance(void)
-{
-  return new SoSFColor;
-}
-/*!
-  Copy all data from \a field into this object. \a field \e must
-  be of the same type as the field we are copying into.
-*/
-void
-SoSFColor::copyFrom(const SoField & field)
-{
-#if 0 // COIN_DEBUG
-  // Calling field.getTypeId() here fails when "this" is connected to "field"
-  // and "field" is destructed. The error message is "pure virtual method
-  // called" with egcs 1.0.2 under Linux. 19990713 mortene.
-  if (field.getTypeId() != this->getTypeId()) {
-    SoDebugError::postWarning("SoSFColor::copyFrom",
-                              "not of the same type: (this) '%s' (from) '%s'",
-                              this->getTypeId().getName().getString(),
-                              field.getTypeId().getName().getString());
-    return;
-  }
-#endif // COIN_DEBUG
-
-  this->operator=((const SoSFColor &)field);
-}
-
-/*!
-  Tests \a field against this field for equality. Returns \a FALSE if they
-  are not of the same type, or if they do not contain the same data.
-*/
-SbBool
-SoSFColor::isSame(const SoField & field) const
-{
-  if (field.getTypeId() != this->getTypeId()) return FALSE;
-  return this->operator==((const SoSFColor &) field);
-}
-
-/*!
-  Copy field value from \a field into this object.
-*/
-const SoSFColor &
-SoSFColor::operator = (const SoSFColor & field)
-{
-  this->setValue(field.getValue());
-  return *this;
-}
-
-/*!
-  Constructor.
-*/
-SoSFColor::SoSFColor(void)
-{
-  // Make sure we have initialized class.
-  assert(SoSFColor::classTypeId != SoType::badType());
-}
-
-/*!
-  Destructor.
-*/
-SoSFColor::~SoSFColor()
-{
-}
-
-/*!
-  Set this field's value.
-
-  \sa getValue()
-*/
-void
-SoSFColor::setValue(const SbColor & value)
-{
-  this->value = value;
-  // FIXME: how about doing a new vs old comparison here? 19990620 mortene.
-  this->valueChanged();
-}
-
-/*!
-  Returns \a TRUE if this field is equal to \a field.
-*/
-SbBool
-SoSFColor::operator == (const SoSFColor & field) const
-{
-  return (this->getValue() == field.getValue());
-}
-//$ END TEMPLATE SField
+SO_SFIELD_SOURCE(SoSFColor, SbColor, const SbColor &);
 
 
 /*!
@@ -171,16 +56,7 @@ SoSFColor::operator == (const SoSFColor & field) const
 void
 SoSFColor::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass(SFColor)
-  // Make sure we only initialize once.
-  assert(SoSFColor::classTypeId == SoType::badType());
-  // Make sure superclass has been initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoSFColor::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SFColor", &SoSFColor::createInstance);
-//$ END TEMPLATE FieldInitClass
+  SO_SFIELD_INIT_CLASS(SoSFColor, inherited);
 }
 
 SbBool

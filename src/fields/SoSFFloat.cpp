@@ -49,124 +49,10 @@
 #include <strstream.h>
 #endif // ! _WIN32
 
-// *************************************************************************
 
-//$ BEGIN TEMPLATE SField(SoSFFloat, const float)
 
-SoType SoSFFloat::classTypeId = SoType::badType();
+SO_SFIELD_SOURCE(SoSFFloat, float, const float);
 
-/*!
-  Virtual method which returns the type identifier for an object.
-
-  \sa getClassTypeId()
-*/
-SoType
-SoSFFloat::getTypeId(void) const
-{
-  return SoSFFloat::classTypeId;
-}
-
-/*!
-  Returns a unique type identifier for the SoSFFloat class.
-
-  \sa getTypeId(), SoType
- */
-SoType
-SoSFFloat::getClassTypeId(void)
-{
-  return SoSFFloat::classTypeId;
-}
-
-/*!
-  Constructs and returns a new instance of the SoSFFloat class.
-*/
-void *
-SoSFFloat::createInstance(void)
-{
-  return new SoSFFloat;
-}
-/*!
-  Copy all data from \a field into this object. \a field \e must
-  be of the same type as the field we are copying into.
-*/
-void
-SoSFFloat::copyFrom(const SoField & field)
-{
-#if 0 // COIN_DEBUG
-  // Calling field.getTypeId() here fails when "this" is connected to "field"
-  // and "field" is destructed. The error message is "pure virtual method
-  // called" with egcs 1.0.2 under Linux. 19990713 mortene.
-  if (field.getTypeId() != this->getTypeId()) {
-    SoDebugError::postWarning("SoSFFloat::copyFrom",
-                              "not of the same type: (this) '%s' (from) '%s'",
-                              this->getTypeId().getName().getString(),
-                              field.getTypeId().getName().getString());
-    return;
-  }
-#endif // COIN_DEBUG
-
-  this->operator=((const SoSFFloat &)field);
-}
-
-/*!
-  Tests \a field against this field for equality. Returns \a FALSE if they
-  are not of the same type, or if they do not contain the same data.
-*/
-SbBool
-SoSFFloat::isSame(const SoField & field) const
-{
-  if (field.getTypeId() != this->getTypeId()) return FALSE;
-  return this->operator==((const SoSFFloat &) field);
-}
-
-/*!
-  Copy field value from \a field into this object.
-*/
-const SoSFFloat &
-SoSFFloat::operator = (const SoSFFloat & field)
-{
-  this->setValue(field.getValue());
-  return *this;
-}
-
-/*!
-  Constructor.
-*/
-SoSFFloat::SoSFFloat(void)
-{
-  // Make sure we have initialized class.
-  assert(SoSFFloat::classTypeId != SoType::badType());
-}
-
-/*!
-  Destructor.
-*/
-SoSFFloat::~SoSFFloat()
-{
-}
-
-/*!
-  Set this field's value.
-
-  \sa getValue()
-*/
-void
-SoSFFloat::setValue(const float value)
-{
-  this->value = value;
-  // FIXME: how about doing a new vs old comparison here? 19990620 mortene.
-  this->valueChanged();
-}
-
-/*!
-  Returns \a TRUE if this field is equal to \a field.
-*/
-SbBool
-SoSFFloat::operator == (const SoSFFloat & field) const
-{
-  return (this->getValue() == field.getValue());
-}
-//$ END TEMPLATE SField
 
 /*!
   Does initialization common for all objects of the
@@ -176,16 +62,7 @@ SoSFFloat::operator == (const SoSFFloat & field) const
 void
 SoSFFloat::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass(SFFloat)
-  // Make sure we only initialize once.
-  assert(SoSFFloat::classTypeId == SoType::badType());
-  // Make sure superclass has been initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoSFFloat::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SFFloat", &SoSFFloat::createInstance);
-//$ END TEMPLATE FieldInitClass
+  SO_SFIELD_INIT_CLASS(SoSFFloat, inherited);
 }
 
 SbBool

@@ -36,86 +36,11 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-// *************************************************************************
 
-//$ BEGIN TEMPLATE SFieldRequired(SoSFEngine)
+// FIXME: can we use SO_SFIELD_SOURCE() instead? Depends on whether or
+// not we should do reference counting, I think. 19991227 mortene.
+SO_SFIELD_REQUIRED_SOURCE(SoSFEngine);
 
-SoType SoSFEngine::classTypeId = SoType::badType();
-
-/*!
-  Virtual method which returns the type identifier for an object.
-
-  \sa getClassTypeId()
-*/
-SoType
-SoSFEngine::getTypeId(void) const
-{
-  return SoSFEngine::classTypeId;
-}
-
-/*!
-  Returns a unique type identifier for the SoSFEngine class.
-
-  \sa getTypeId(), SoType
- */
-SoType
-SoSFEngine::getClassTypeId(void)
-{
-  return SoSFEngine::classTypeId;
-}
-
-/*!
-  Constructs and returns a new instance of the SoSFEngine class.
-*/
-void *
-SoSFEngine::createInstance(void)
-{
-  return new SoSFEngine;
-}
-/*!
-  Copy all data from \a field into this object. \a field \e must
-  be of the same type as the field we are copying into.
-*/
-void
-SoSFEngine::copyFrom(const SoField & field)
-{
-#if 0 // COIN_DEBUG
-  // Calling field.getTypeId() here fails when "this" is connected to "field"
-  // and "field" is destructed. The error message is "pure virtual method
-  // called" with egcs 1.0.2 under Linux. 19990713 mortene.
-  if (field.getTypeId() != this->getTypeId()) {
-    SoDebugError::postWarning("SoSFEngine::copyFrom",
-                              "not of the same type: (this) '%s' (from) '%s'",
-                              this->getTypeId().getName().getString(),
-                              field.getTypeId().getName().getString());
-    return;
-  }
-#endif // COIN_DEBUG
-
-  this->operator=((const SoSFEngine &)field);
-}
-
-/*!
-  Tests \a field against this field for equality. Returns \a FALSE if they
-  are not of the same type, or if they do not contain the same data.
-*/
-SbBool
-SoSFEngine::isSame(const SoField & field) const
-{
-  if (field.getTypeId() != this->getTypeId()) return FALSE;
-  return this->operator==((const SoSFEngine &) field);
-}
-
-/*!
-  Copy field value from \a field into this object.
-*/
-const SoSFEngine &
-SoSFEngine::operator = (const SoSFEngine & field)
-{
-  this->setValue(field.getValue());
-  return *this;
-}
-//$ END TEMPLATE SFieldRequired
 
 /*!
   FIXME: write function documentation
@@ -123,8 +48,12 @@ SoSFEngine::operator = (const SoSFEngine & field)
 void
 SoSFEngine::setValue(SoEngine * value)
 {
-    this->value = value;
-    valueChanged();
+  // FIXME: should we really ref/unref here? 19990630 mortene.
+
+  if (this->value) this->value->unref();
+  this->value = value;
+  if (this->value) this->value->ref();
+  this->valueChanged();
 }
 
 /*!
@@ -133,7 +62,7 @@ SoSFEngine::setValue(SoEngine * value)
 SbBool
 SoSFEngine::operator == (const SoSFEngine & field) const
 {
-    return (getValue() == field.getValue());
+  return (this->getValue() == field.getValue());
 }
 
 /*!
@@ -144,16 +73,7 @@ SoSFEngine::operator == (const SoSFEngine & field) const
 void
 SoSFEngine::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass(SFEngine)
-  // Make sure we only initialize once.
-  assert(SoSFEngine::classTypeId == SoType::badType());
-  // Make sure superclass has been initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoSFEngine::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SFEngine", &SoSFEngine::createInstance);
-//$ END TEMPLATE FieldInitClass
+  SO_SFIELD_INIT_CLASS(SoSFEngine, inherited);
 }
 
 /*!
@@ -169,6 +89,7 @@ SoSFEngine::SoSFEngine(void)
 */
 SoSFEngine::~SoSFEngine(void)
 {
+  this->setValue(NULL);
 }
 
 /*!

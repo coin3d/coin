@@ -20,6 +20,15 @@
 #ifndef __SOSUBFIELD_H__
 #define __SOSUBFIELD_H__
 
+#include <Inventor/misc/SoBasic.h> // for SO__QUOTE() definition
+
+
+/**************************************************************************
+ *
+ * Header macros for single-value fields.
+ *                                                                           
+ **************************************************************************/
+
 #define SO_SFIELD_CONSTRUCTOR_HEADER(_class_) \
 public: \
   _class_(void); \
@@ -78,6 +87,94 @@ public: \
   SO_SFIELD_CONSTRUCTOR_HEADER(_class_); \
   SO_SFIELD_REQUIRED_HEADER(_class_); \
   SO_SFIELD_DERIVED_VALUE_HEADER(_class_, _valtype_, _valref_)
+
+
+
+/**************************************************************************
+ *
+ * Source macros for single-value fields.
+ *                                                                           
+ **************************************************************************/
+
+#define SO_SFIELD_INIT_CLASS(_class_, _parent_) \
+  do { \
+    assert(_class_::classTypeId == SoType::badType()); \
+    assert(_parent_::getClassTypeId() != SoType::badType()); \
+    _class_::classTypeId = \
+      SoType::createType(_parent_::getClassTypeId(), \
+                         SO__QUOTE(_class_), &_class_::createInstance); \
+  } while (0)
+
+
+
+#define SO_SFIELD_CONSTRUCTOR_SOURCE(_class_) \
+_class_::_class_(void) { assert(_class_::classTypeId != SoType::badType()); } \
+_class_::~_class_() { }
+
+
+
+#define SO_SFIELD_VALUE_SOURCE(_class_, _valtype_, _valref_) \
+void \
+_class_::setValue(_valref_ value) { \
+  this->value = value; \
+  this->valueChanged(); \
+} \
+ \
+SbBool \
+_class_::operator==(const _class_ & field) const \
+{ \
+  return (this->getValue() == field.getValue()); \
+}
+
+
+#define PRIVATE_SFIELD_TYPE_SOURCE(_class_) \
+SoType _class_::classTypeId = SoType::badType(); \
+ \
+SoType _class_::getTypeId(void) const { return _class_::classTypeId; } \
+SoType _class_::getClassTypeId(void) { return _class_::classTypeId; } \
+void * _class_::createInstance(void) { return new _class_; }
+
+
+
+#define PRIVATE_SFIELD_EQUALITY_SOURCE(_class_) \
+void \
+_class_::copyFrom(const SoField & field) \
+{ \
+  this->operator=((const _class_ &)field); \
+} \
+ \
+SbBool \
+_class_::isSame(const SoField & field) const \
+{ \
+  if (field.getTypeId() != this->getTypeId()) return FALSE; \
+  return this->operator==((const _class_ &) field); \
+}
+
+
+
+#define SO_SFIELD_REQUIRED_SOURCE(_class_) \
+PRIVATE_SFIELD_TYPE_SOURCE(_class_); \
+PRIVATE_SFIELD_EQUALITY_SOURCE(_class_); \
+ \
+const _class_ & \
+_class_::operator=(const _class_ & field) \
+{ \
+  this->setValue(field.getValue()); \
+  return *this; \
+}
+
+
+
+#define SO_SFIELD_SOURCE(_class_, _valtype_, _valref_) \
+  SO_SFIELD_CONSTRUCTOR_SOURCE(_class_); \
+  SO_SFIELD_VALUE_SOURCE(_class_, _valtype_, _valref_); \
+  SO_SFIELD_REQUIRED_SOURCE(_class_)
+
+
+
+#define SO_SFIELD_DERIVED_SOURCE(_class_, _valtype_, _valref_) \
+  SO_SFIELD_CONSTRUCTOR_SOURCE(_class_); \
+  SO_SFIELD_REQUIRED_SOURCE(_class_)
 
 
 #endif // !__SOSUBFIELD_H__

@@ -48,126 +48,10 @@
 #include <strstream.h>
 #endif // ! _WIN32
 
-// *************************************************************************
 
-//$ BEGIN TEMPLATE SField(SoSFUInt32, const uint32_t)
 
-SoType SoSFUInt32::classTypeId = SoType::badType();
+SO_SFIELD_SOURCE(SoSFUInt32, uint32_t, const uint32_t);
 
-/*!
-  Virtual method which returns the type identifier for an object.
-
-  \sa getClassTypeId()
-*/
-SoType
-SoSFUInt32::getTypeId(void) const
-{
-  return SoSFUInt32::classTypeId;
-}
-
-/*!
-  Returns a unique type identifier for the SoSFUInt32 class.
-
-  \sa getTypeId(), SoType
- */
-SoType
-SoSFUInt32::getClassTypeId(void)
-{
-  return SoSFUInt32::classTypeId;
-}
-
-/*!
-  Constructs and returns a new instance of the SoSFUInt32 class.
-*/
-void *
-SoSFUInt32::createInstance(void)
-{
-  return new SoSFUInt32;
-}
-/*!
-  Copy all data from \a field into this object. \a field \e must
-  be of the same type as the field we are copying into.
-*/
-void
-SoSFUInt32::copyFrom(const SoField & field)
-{
-#if 0 // COIN_DEBUG
-  // Calling field.getTypeId() here fails when "this" is connected to "field"
-  // and "field" is destructed. The error message is "pure virtual method
-  // called" with egcs 1.0.2 under Linux. 19990713 mortene.
-  if (field.getTypeId() != this->getTypeId()) {
-    SoDebugError::postWarning("SoSFUInt32::copyFrom",
-                              "not of the same type: (this) '%s' (from) '%s'",
-                              this->getTypeId().getName().getString(),
-                              field.getTypeId().getName().getString());
-    return;
-  }
-#endif // COIN_DEBUG
-
-  this->operator=((const SoSFUInt32 &)field);
-}
-
-/*!
-  Tests \a field against this field for equality. Returns \a FALSE if they
-  are not of the same type, or if they do not contain the same data.
-*/
-SbBool
-SoSFUInt32::isSame(const SoField & field) const
-{
-  if (field.getTypeId() != this->getTypeId()) return FALSE;
-  return this->operator==((const SoSFUInt32 &) field);
-}
-
-/*!
-  Copy field value from \a field into this object.
-*/
-const SoSFUInt32 &
-SoSFUInt32::operator = (const SoSFUInt32 & field)
-{
-  this->setValue(field.getValue());
-  return *this;
-}
-
-/*!
-  Constructor.
-*/
-SoSFUInt32::SoSFUInt32(void)
-{
-  // Make sure we have initialized class.
-  assert(SoSFUInt32::classTypeId != SoType::badType());
-}
-
-/*!
-  Destructor.
-*/
-SoSFUInt32::~SoSFUInt32()
-{
-}
-
-/*!
-  Set this field's value.
-
-  \sa getValue()
-*/
-void
-SoSFUInt32::setValue(const uint32_t value)
-{
-  this->value = value;
-  // FIXME: how about doing a new vs old comparison here? 19990620 mortene.
-  this->valueChanged();
-}
-
-/*!
-  Returns \a TRUE if this field is equal to \a field.
-*/
-SbBool
-SoSFUInt32::operator == (const SoSFUInt32 & field) const
-{
-  return (this->getValue() == field.getValue());
-}
-//$ END TEMPLATE SField
-
-// *************************************************************************
 
 /*!
   Does initialization common for all objects of the
@@ -177,16 +61,7 @@ SoSFUInt32::operator == (const SoSFUInt32 & field) const
 void
 SoSFUInt32::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass(SFUInt32)
-  // Make sure we only initialize once.
-  assert(SoSFUInt32::classTypeId == SoType::badType());
-  // Make sure superclass has been initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoSFUInt32::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SFUInt32", &SoSFUInt32::createInstance);
-//$ END TEMPLATE FieldInitClass
+  SO_SFIELD_INIT_CLASS(SoSFUInt32, inherited);
 }
 
 SbBool

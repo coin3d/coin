@@ -35,107 +35,10 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-// *************************************************************************
 
-//$ BEGIN TEMPLATE SFieldRequired(SoSFPath)
 
-SoType SoSFPath::classTypeId = SoType::badType();
+SO_SFIELD_SOURCE(SoSFPath, SoPath *, SoPath *);
 
-/*!
-  Virtual method which returns the type identifier for an object.
-
-  \sa getClassTypeId()
-*/
-SoType
-SoSFPath::getTypeId(void) const
-{
-  return SoSFPath::classTypeId;
-}
-
-/*!
-  Returns a unique type identifier for the SoSFPath class.
-
-  \sa getTypeId(), SoType
- */
-SoType
-SoSFPath::getClassTypeId(void)
-{
-  return SoSFPath::classTypeId;
-}
-
-/*!
-  Constructs and returns a new instance of the SoSFPath class.
-*/
-void *
-SoSFPath::createInstance(void)
-{
-  return new SoSFPath;
-}
-/*!
-  Copy all data from \a field into this object. \a field \e must
-  be of the same type as the field we are copying into.
-*/
-void
-SoSFPath::copyFrom(const SoField & field)
-{
-#if 0 // COIN_DEBUG
-  // Calling field.getTypeId() here fails when "this" is connected to "field"
-  // and "field" is destructed. The error message is "pure virtual method
-  // called" with egcs 1.0.2 under Linux. 19990713 mortene.
-  if (field.getTypeId() != this->getTypeId()) {
-    SoDebugError::postWarning("SoSFPath::copyFrom",
-                              "not of the same type: (this) '%s' (from) '%s'",
-                              this->getTypeId().getName().getString(),
-                              field.getTypeId().getName().getString());
-    return;
-  }
-#endif // COIN_DEBUG
-
-  this->operator=((const SoSFPath &)field);
-}
-
-/*!
-  Tests \a field against this field for equality. Returns \a FALSE if they
-  are not of the same type, or if they do not contain the same data.
-*/
-SbBool
-SoSFPath::isSame(const SoField & field) const
-{
-  if (field.getTypeId() != this->getTypeId()) return FALSE;
-  return this->operator==((const SoSFPath &) field);
-}
-
-/*!
-  Copy field value from \a field into this object.
-*/
-const SoSFPath &
-SoSFPath::operator = (const SoSFPath & field)
-{
-  this->setValue(field.getValue());
-  return *this;
-}
-//$ END TEMPLATE SFieldRequired
-
-// *************************************************************************
-
-/*!
-  FIXME: write function documentation
-*/
-void
-SoSFPath::setValue(SoPath * value)
-{
-    this->value = value;
-    valueChanged();
-}
-
-/*!
-  FIXME: write function documentation
-*/
-SbBool
-SoSFPath::operator == (const SoSFPath & field) const
-{
-    return (getValue() == field.getValue());
-}
 
 /*!
   Does initialization common for all objects of the
@@ -145,31 +48,7 @@ SoSFPath::operator == (const SoSFPath & field) const
 void
 SoSFPath::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass(SFPath)
-  // Make sure we only initialize once.
-  assert(SoSFPath::classTypeId == SoType::badType());
-  // Make sure superclass has been initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoSFPath::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SFPath", &SoSFPath::createInstance);
-//$ END TEMPLATE FieldInitClass
-}
-
-/*!
-  Constructor.
-*/
-SoSFPath::SoSFPath(void)
-{
-  this->value = NULL;
-}
-
-/*!
-  Destructor.
-*/
-SoSFPath::~SoSFPath(void)
-{
+  SO_SFIELD_INIT_CLASS(SoSFPath, inherited);
 }
 
 /*!

@@ -50,124 +50,10 @@
 
 #include <iomanip.h>
 
-// *************************************************************************
 
-//$ BEGIN TEMPLATE SField(SoSFShort, const short)
 
-SoType SoSFShort::classTypeId = SoType::badType();
+SO_SFIELD_SOURCE(SoSFShort, short, const short);
 
-/*!
-  Virtual method which returns the type identifier for an object.
-
-  \sa getClassTypeId()
-*/
-SoType
-SoSFShort::getTypeId(void) const
-{
-  return SoSFShort::classTypeId;
-}
-
-/*!
-  Returns a unique type identifier for the SoSFShort class.
-
-  \sa getTypeId(), SoType
- */
-SoType
-SoSFShort::getClassTypeId(void)
-{
-  return SoSFShort::classTypeId;
-}
-
-/*!
-  Constructs and returns a new instance of the SoSFShort class.
-*/
-void *
-SoSFShort::createInstance(void)
-{
-  return new SoSFShort;
-}
-/*!
-  Copy all data from \a field into this object. \a field \e must
-  be of the same type as the field we are copying into.
-*/
-void
-SoSFShort::copyFrom(const SoField & field)
-{
-#if 0 // COIN_DEBUG
-  // Calling field.getTypeId() here fails when "this" is connected to "field"
-  // and "field" is destructed. The error message is "pure virtual method
-  // called" with egcs 1.0.2 under Linux. 19990713 mortene.
-  if (field.getTypeId() != this->getTypeId()) {
-    SoDebugError::postWarning("SoSFShort::copyFrom",
-                              "not of the same type: (this) '%s' (from) '%s'",
-                              this->getTypeId().getName().getString(),
-                              field.getTypeId().getName().getString());
-    return;
-  }
-#endif // COIN_DEBUG
-
-  this->operator=((const SoSFShort &)field);
-}
-
-/*!
-  Tests \a field against this field for equality. Returns \a FALSE if they
-  are not of the same type, or if they do not contain the same data.
-*/
-SbBool
-SoSFShort::isSame(const SoField & field) const
-{
-  if (field.getTypeId() != this->getTypeId()) return FALSE;
-  return this->operator==((const SoSFShort &) field);
-}
-
-/*!
-  Copy field value from \a field into this object.
-*/
-const SoSFShort &
-SoSFShort::operator = (const SoSFShort & field)
-{
-  this->setValue(field.getValue());
-  return *this;
-}
-
-/*!
-  Constructor.
-*/
-SoSFShort::SoSFShort(void)
-{
-  // Make sure we have initialized class.
-  assert(SoSFShort::classTypeId != SoType::badType());
-}
-
-/*!
-  Destructor.
-*/
-SoSFShort::~SoSFShort()
-{
-}
-
-/*!
-  Set this field's value.
-
-  \sa getValue()
-*/
-void
-SoSFShort::setValue(const short value)
-{
-  this->value = value;
-  // FIXME: how about doing a new vs old comparison here? 19990620 mortene.
-  this->valueChanged();
-}
-
-/*!
-  Returns \a TRUE if this field is equal to \a field.
-*/
-SbBool
-SoSFShort::operator == (const SoSFShort & field) const
-{
-  return (this->getValue() == field.getValue());
-}
-//$ END TEMPLATE SField
 
 /*!
   Does initialization common for all objects of the
@@ -177,16 +63,7 @@ SoSFShort::operator == (const SoSFShort & field) const
 void
 SoSFShort::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass(SFShort)
-  // Make sure we only initialize once.
-  assert(SoSFShort::classTypeId == SoType::badType());
-  // Make sure superclass has been initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoSFShort::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SFShort", &SoSFShort::createInstance);
-//$ END TEMPLATE FieldInitClass
+  SO_SFIELD_INIT_CLASS(SoSFShort, inherited);
 }
 
 SbBool

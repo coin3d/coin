@@ -38,88 +38,12 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-// *************************************************************************
 
-//$ BEGIN TEMPLATE SFieldRequired(SoSFNode)
 
-SoType SoSFNode::classTypeId = SoType::badType();
+// FIXME: can we use SO_SFIELD_SOURCE() instead? Depends on whether or
+// not we should do reference counting, I think. 19991227 mortene.
+SO_SFIELD_REQUIRED_SOURCE(SoSFNode);
 
-/*!
-  Virtual method which returns the type identifier for an object.
-
-  \sa getClassTypeId()
-*/
-SoType
-SoSFNode::getTypeId(void) const
-{
-  return SoSFNode::classTypeId;
-}
-
-/*!
-  Returns a unique type identifier for the SoSFNode class.
-
-  \sa getTypeId(), SoType
- */
-SoType
-SoSFNode::getClassTypeId(void)
-{
-  return SoSFNode::classTypeId;
-}
-
-/*!
-  Constructs and returns a new instance of the SoSFNode class.
-*/
-void *
-SoSFNode::createInstance(void)
-{
-  return new SoSFNode;
-}
-/*!
-  Copy all data from \a field into this object. \a field \e must
-  be of the same type as the field we are copying into.
-*/
-void
-SoSFNode::copyFrom(const SoField & field)
-{
-#if 0 // COIN_DEBUG
-  // Calling field.getTypeId() here fails when "this" is connected to "field"
-  // and "field" is destructed. The error message is "pure virtual method
-  // called" with egcs 1.0.2 under Linux. 19990713 mortene.
-  if (field.getTypeId() != this->getTypeId()) {
-    SoDebugError::postWarning("SoSFNode::copyFrom",
-                              "not of the same type: (this) '%s' (from) '%s'",
-                              this->getTypeId().getName().getString(),
-                              field.getTypeId().getName().getString());
-    return;
-  }
-#endif // COIN_DEBUG
-
-  this->operator=((const SoSFNode &)field);
-}
-
-/*!
-  Tests \a field against this field for equality. Returns \a FALSE if they
-  are not of the same type, or if they do not contain the same data.
-*/
-SbBool
-SoSFNode::isSame(const SoField & field) const
-{
-  if (field.getTypeId() != this->getTypeId()) return FALSE;
-  return this->operator==((const SoSFNode &) field);
-}
-
-/*!
-  Copy field value from \a field into this object.
-*/
-const SoSFNode &
-SoSFNode::operator = (const SoSFNode & field)
-{
-  this->setValue(field.getValue());
-  return *this;
-}
-//$ END TEMPLATE SFieldRequired
-
-// *************************************************************************
 
 /*!
   FIXME: write function documentation
@@ -141,7 +65,7 @@ SoSFNode::setValue(SoNode * newval)
 SbBool
 SoSFNode::operator == (const SoSFNode & field) const
 {
-    return (getValue() == field.getValue());
+  return (this->getValue() == field.getValue());
 }
 
 /*!
@@ -152,16 +76,7 @@ SoSFNode::operator == (const SoSFNode & field) const
 void
 SoSFNode::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass(SFNode)
-  // Make sure we only initialize once.
-  assert(SoSFNode::classTypeId == SoType::badType());
-  // Make sure superclass has been initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoSFNode::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SFNode", &SoSFNode::createInstance);
-//$ END TEMPLATE FieldInitClass
+  SO_SFIELD_INIT_CLASS(SoSFNode, inherited);
 }
 
 /*!
@@ -227,6 +142,7 @@ void
 SoSFNode::writeValue(SoOutput * out) const
 {
 #if 0 // OBSOLETED: ugly and error-prone. 19991113 mortene.
+
   // Note: make sure this code is in sync with the code in
   // SoNode::write(). Any changes here might need to be propagated to
   // that method.
@@ -251,7 +167,9 @@ SoSFNode::writeValue(SoOutput * out) const
     }
   }
   else assert(0 && "unknown stage");
+
 #else // new code
+
   SoNode * node = this->getValue();
   if (node) {
     SoWriteAction wa(out);
@@ -261,6 +179,7 @@ SoSFNode::writeValue(SoOutput * out) const
     // Yep, this'll work for both ASCII and binary formats.
     out->write("NULL");
   }
+
 #endif // new code
 }
 

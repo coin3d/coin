@@ -45,124 +45,10 @@
 #include <strstream.h>
 #endif // ! _WIN32
 
-// *************************************************************************
 
-//$ BEGIN TEMPLATE SField(SoSFRotation, const SbRotation &)
 
-SoType SoSFRotation::classTypeId = SoType::badType();
+SO_SFIELD_SOURCE(SoSFRotation, SbRotation, const SbRotation &);
 
-/*!
-  Virtual method which returns the type identifier for an object.
-
-  \sa getClassTypeId()
-*/
-SoType
-SoSFRotation::getTypeId(void) const
-{
-  return SoSFRotation::classTypeId;
-}
-
-/*!
-  Returns a unique type identifier for the SoSFRotation class.
-
-  \sa getTypeId(), SoType
- */
-SoType
-SoSFRotation::getClassTypeId(void)
-{
-  return SoSFRotation::classTypeId;
-}
-
-/*!
-  Constructs and returns a new instance of the SoSFRotation class.
-*/
-void *
-SoSFRotation::createInstance(void)
-{
-  return new SoSFRotation;
-}
-/*!
-  Copy all data from \a field into this object. \a field \e must
-  be of the same type as the field we are copying into.
-*/
-void
-SoSFRotation::copyFrom(const SoField & field)
-{
-#if 0 // COIN_DEBUG
-  // Calling field.getTypeId() here fails when "this" is connected to "field"
-  // and "field" is destructed. The error message is "pure virtual method
-  // called" with egcs 1.0.2 under Linux. 19990713 mortene.
-  if (field.getTypeId() != this->getTypeId()) {
-    SoDebugError::postWarning("SoSFRotation::copyFrom",
-                              "not of the same type: (this) '%s' (from) '%s'",
-                              this->getTypeId().getName().getString(),
-                              field.getTypeId().getName().getString());
-    return;
-  }
-#endif // COIN_DEBUG
-
-  this->operator=((const SoSFRotation &)field);
-}
-
-/*!
-  Tests \a field against this field for equality. Returns \a FALSE if they
-  are not of the same type, or if they do not contain the same data.
-*/
-SbBool
-SoSFRotation::isSame(const SoField & field) const
-{
-  if (field.getTypeId() != this->getTypeId()) return FALSE;
-  return this->operator==((const SoSFRotation &) field);
-}
-
-/*!
-  Copy field value from \a field into this object.
-*/
-const SoSFRotation &
-SoSFRotation::operator = (const SoSFRotation & field)
-{
-  this->setValue(field.getValue());
-  return *this;
-}
-
-/*!
-  Constructor.
-*/
-SoSFRotation::SoSFRotation(void)
-{
-  // Make sure we have initialized class.
-  assert(SoSFRotation::classTypeId != SoType::badType());
-}
-
-/*!
-  Destructor.
-*/
-SoSFRotation::~SoSFRotation()
-{
-}
-
-/*!
-  Set this field's value.
-
-  \sa getValue()
-*/
-void
-SoSFRotation::setValue(const SbRotation & value)
-{
-  this->value = value;
-  // FIXME: how about doing a new vs old comparison here? 19990620 mortene.
-  this->valueChanged();
-}
-
-/*!
-  Returns \a TRUE if this field is equal to \a field.
-*/
-SbBool
-SoSFRotation::operator == (const SoSFRotation & field) const
-{
-  return (this->getValue() == field.getValue());
-}
-//$ END TEMPLATE SField
 
 /*!
   Does initialization common for all objects of the
@@ -172,16 +58,7 @@ SoSFRotation::operator == (const SoSFRotation & field) const
 void
 SoSFRotation::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass(SFRotation)
-  // Make sure we only initialize once.
-  assert(SoSFRotation::classTypeId == SoType::badType());
-  // Make sure superclass has been initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoSFRotation::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SFRotation", &SoSFRotation::createInstance);
-//$ END TEMPLATE FieldInitClass
+  SO_SFIELD_INIT_CLASS(SoSFRotation, inherited);
 }
 
 SbBool

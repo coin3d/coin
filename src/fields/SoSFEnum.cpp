@@ -55,80 +55,11 @@
   FIXME: write var doc
 */
 
-// *************************************************************************
 
-//$ BEGIN TEMPLATE FieldId(SoSFEnum)
 
-SoType SoSFEnum::classTypeId = SoType::badType();
+PRIVATE_SFIELD_TYPE_SOURCE(SoSFEnum);
+PRIVATE_SFIELD_EQUALITY_SOURCE(SoSFEnum);
 
-/*!
-  Virtual method which returns the type identifier for an object.
-
-  \sa getClassTypeId()
-*/
-SoType
-SoSFEnum::getTypeId(void) const
-{
-  return SoSFEnum::classTypeId;
-}
-
-/*!
-  Returns a unique type identifier for the SoSFEnum class.
-
-  \sa getTypeId(), SoType
- */
-SoType
-SoSFEnum::getClassTypeId(void)
-{
-  return SoSFEnum::classTypeId;
-}
-
-/*!
-  Constructs and returns a new instance of the SoSFEnum class.
-*/
-void *
-SoSFEnum::createInstance(void)
-{
-  return new SoSFEnum;
-}
-//$ END TEMPLATE FieldId
-//$ BEGIN TEMPLATE FieldEqSame(SoSFEnum)
-/*!
-  Copy all data from \a field into this object. \a field \e must
-  be of the same type as the field we are copying into.
-*/
-void
-SoSFEnum::copyFrom(const SoField & field)
-{
-#if 0 // COIN_DEBUG
-  // Calling field.getTypeId() here fails when "this" is connected to "field"
-  // and "field" is destructed. The error message is "pure virtual method
-  // called" with egcs 1.0.2 under Linux. 19990713 mortene.
-  if (field.getTypeId() != this->getTypeId()) {
-    SoDebugError::postWarning("SoSFEnum::copyFrom",
-                              "not of the same type: (this) '%s' (from) '%s'",
-                              this->getTypeId().getName().getString(),
-                              field.getTypeId().getName().getString());
-    return;
-  }
-#endif // COIN_DEBUG
-
-  this->operator=((const SoSFEnum &)field);
-}
-
-/*!
-  Tests \a field against this field for equality. Returns \a FALSE if they
-  are not of the same type, or if they do not contain the same data.
-*/
-SbBool
-SoSFEnum::isSame(const SoField & field) const
-{
-  if (field.getTypeId() != this->getTypeId()) return FALSE;
-  return this->operator==((const SoSFEnum &) field);
-}
-//$ END TEMPLATE FieldEqSame
-
-// *************************************************************************
 
 /*!
   FIXME: write function documentation
@@ -149,16 +80,7 @@ SoSFEnum::operator = (const SoSFEnum & field)
 void
 SoSFEnum::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass(SFEnum)
-  // Make sure we only initialize once.
-  assert(SoSFEnum::classTypeId == SoType::badType());
-  // Make sure superclass has been initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoSFEnum::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SFEnum", &SoSFEnum::createInstance);
-//$ END TEMPLATE FieldInitClass
+  SO_SFIELD_INIT_CLASS(SoSFEnum, inherited);
 }
 
 /*!

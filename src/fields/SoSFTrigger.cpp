@@ -29,47 +29,21 @@
 #include <Inventor/SbName.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
-#include <Inventor/misc/SoBasic.h> // COIN_STUB()
 
-// *************************************************************************
 
-//$ BEGIN TEMPLATE FieldId(SoSFTrigger)
-
-SoType SoSFTrigger::classTypeId = SoType::badType();
-
-/*!
-  Virtual method which returns the type identifier for an object.
-
-  \sa getClassTypeId()
-*/
-SoType
-SoSFTrigger::getTypeId(void) const
+SO_SFIELD_CONSTRUCTOR_SOURCE(SoSFTrigger);
+// The following code is the internals of the
+// SO_SFIELD_REQUIRED_SOURCE macro, with a minor modification
+// (setValue() takes a void argument).
+PRIVATE_SFIELD_TYPE_SOURCE(SoSFTrigger);
+PRIVATE_SFIELD_EQUALITY_SOURCE(SoSFTrigger);
+const SoSFTrigger &
+SoSFTrigger::operator=(const SoSFTrigger & field)
 {
-  return SoSFTrigger::classTypeId;
+  this->setValue();
+  return *this;
 }
 
-/*!
-  Returns a unique type identifier for the SoSFTrigger class.
-
-  \sa getTypeId(), SoType
- */
-SoType
-SoSFTrigger::getClassTypeId(void)
-{
-  return SoSFTrigger::classTypeId;
-}
-
-/*!
-  Constructs and returns a new instance of the SoSFTrigger class.
-*/
-void *
-SoSFTrigger::createInstance(void)
-{
-  return new SoSFTrigger;
-}
-//$ END TEMPLATE FieldId
-
-// *************************************************************************
 
 /*!
   Does initialization common for all objects of the
@@ -79,45 +53,7 @@ SoSFTrigger::createInstance(void)
 void
 SoSFTrigger::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass(SFTrigger)
-  // Make sure we only initialize once.
-  assert(SoSFTrigger::classTypeId == SoType::badType());
-  // Make sure superclass has been initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoSFTrigger::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SFTrigger", &SoSFTrigger::createInstance);
-//$ END TEMPLATE FieldInitClass
-}
-
-/*!
-  FIXME: write function documentation
-*/
-void
-SoSFTrigger::copyFrom(const SoField & /* field */)
-{
-  COIN_STUB();
-}
-
-/*!
-  FIXME: write function documentation
-*/
-SbBool
-SoSFTrigger::isSame(const SoField & /* field */) const
-{
-  COIN_STUB();
-  return FALSE;
-}
-
-/*!
-  FIXME: write function documentation
-*/
-const SoSFTrigger &
-SoSFTrigger::operator = (const SoSFTrigger & /* field */)
-{
-  COIN_STUB();
-  return *this;
+  SO_SFIELD_INIT_CLASS(SoSFTrigger, inherited);
 }
 
 /*!
@@ -126,7 +62,7 @@ SoSFTrigger::operator = (const SoSFTrigger & /* field */)
 void
 SoSFTrigger::setValue(void)
 {
-  COIN_STUB();
+  this->touch();
 }
 
 /*!
@@ -135,7 +71,7 @@ SoSFTrigger::setValue(void)
 void
 SoSFTrigger::getValue(void) const
 {
-  COIN_STUB();
+  // Does nothing.
 }
 
 /*!
@@ -151,7 +87,7 @@ SoSFTrigger::touch(void)
   FIXME: write function documentation
 */
 int
-SoSFTrigger::operator == (const SoSFTrigger & /* trigger */) const
+SoSFTrigger::operator==(const SoSFTrigger & /* trigger */) const
 {
   COIN_STUB();
   return -1;
@@ -161,7 +97,7 @@ SoSFTrigger::operator == (const SoSFTrigger & /* trigger */) const
   FIXME: write function documentation
 */
 int
-SoSFTrigger::operator != (const SoSFTrigger & /* trigger */) const
+SoSFTrigger::operator!=(const SoSFTrigger & /* trigger */) const
 {
   COIN_STUB();
   return -1;
@@ -188,22 +124,6 @@ SoSFTrigger::notify(SoNotList * list)
 
   //FIXME: What here? kintel
   //  this->touch();
-}
-
-/*!
-  Constructor.
-*/
-SoSFTrigger::SoSFTrigger(void)
-{
-  COIN_STUB();
-}
-
-/*!
-  Destructor.
-*/
-SoSFTrigger::~SoSFTrigger(void)
-{
-  COIN_STUB();
 }
 
 SbBool

@@ -34,124 +34,10 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-// *************************************************************************
 
-//$ BEGIN TEMPLATE SField(SoSFString, const SbString &)
 
-SoType SoSFString::classTypeId = SoType::badType();
+SO_SFIELD_SOURCE(SoSFString, SbString, const SbString &);
 
-/*!
-  Virtual method which returns the type identifier for an object.
-
-  \sa getClassTypeId()
-*/
-SoType
-SoSFString::getTypeId(void) const
-{
-  return SoSFString::classTypeId;
-}
-
-/*!
-  Returns a unique type identifier for the SoSFString class.
-
-  \sa getTypeId(), SoType
- */
-SoType
-SoSFString::getClassTypeId(void)
-{
-  return SoSFString::classTypeId;
-}
-
-/*!
-  Constructs and returns a new instance of the SoSFString class.
-*/
-void *
-SoSFString::createInstance(void)
-{
-  return new SoSFString;
-}
-/*!
-  Copy all data from \a field into this object. \a field \e must
-  be of the same type as the field we are copying into.
-*/
-void
-SoSFString::copyFrom(const SoField & field)
-{
-#if 0 // COIN_DEBUG
-  // Calling field.getTypeId() here fails when "this" is connected to "field"
-  // and "field" is destructed. The error message is "pure virtual method
-  // called" with egcs 1.0.2 under Linux. 19990713 mortene.
-  if (field.getTypeId() != this->getTypeId()) {
-    SoDebugError::postWarning("SoSFString::copyFrom",
-                              "not of the same type: (this) '%s' (from) '%s'",
-                              this->getTypeId().getName().getString(),
-                              field.getTypeId().getName().getString());
-    return;
-  }
-#endif // COIN_DEBUG
-
-  this->operator=((const SoSFString &)field);
-}
-
-/*!
-  Tests \a field against this field for equality. Returns \a FALSE if they
-  are not of the same type, or if they do not contain the same data.
-*/
-SbBool
-SoSFString::isSame(const SoField & field) const
-{
-  if (field.getTypeId() != this->getTypeId()) return FALSE;
-  return this->operator==((const SoSFString &) field);
-}
-
-/*!
-  Copy field value from \a field into this object.
-*/
-const SoSFString &
-SoSFString::operator = (const SoSFString & field)
-{
-  this->setValue(field.getValue());
-  return *this;
-}
-
-/*!
-  Constructor.
-*/
-SoSFString::SoSFString(void)
-{
-  // Make sure we have initialized class.
-  assert(SoSFString::classTypeId != SoType::badType());
-}
-
-/*!
-  Destructor.
-*/
-SoSFString::~SoSFString()
-{
-}
-
-/*!
-  Set this field's value.
-
-  \sa getValue()
-*/
-void
-SoSFString::setValue(const SbString & value)
-{
-  this->value = value;
-  // FIXME: how about doing a new vs old comparison here? 19990620 mortene.
-  this->valueChanged();
-}
-
-/*!
-  Returns \a TRUE if this field is equal to \a field.
-*/
-SbBool
-SoSFString::operator == (const SoSFString & field) const
-{
-  return (this->getValue() == field.getValue());
-}
-//$ END TEMPLATE SField
 
 /*!
   Does initialization common for all objects of the
@@ -161,16 +47,7 @@ SoSFString::operator == (const SoSFString & field) const
 void
 SoSFString::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass(SFString)
-  // Make sure we only initialize once.
-  assert(SoSFString::classTypeId == SoType::badType());
-  // Make sure superclass has been initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoSFString::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SFString", &SoSFString::createInstance);
-//$ END TEMPLATE FieldInitClass
+  SO_SFIELD_INIT_CLASS(SoSFString, inherited);
 }
 
 SbBool

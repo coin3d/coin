@@ -44,126 +44,8 @@
 #include <strstream.h>
 #endif // ! _WIN32
 
-// *************************************************************************
 
-//$ BEGIN TEMPLATE SField(SoSFVec3f, const SbVec3f &)
-
-SoType SoSFVec3f::classTypeId = SoType::badType();
-
-/*!
-  Virtual method which returns the type identifier for an object.
-
-  \sa getClassTypeId()
-*/
-SoType
-SoSFVec3f::getTypeId(void) const
-{
-  return SoSFVec3f::classTypeId;
-}
-
-/*!
-  Returns a unique type identifier for the SoSFVec3f class.
-
-  \sa getTypeId(), SoType
- */
-SoType
-SoSFVec3f::getClassTypeId(void)
-{
-  return SoSFVec3f::classTypeId;
-}
-
-/*!
-  Constructs and returns a new instance of the SoSFVec3f class.
-*/
-void *
-SoSFVec3f::createInstance(void)
-{
-  return new SoSFVec3f;
-}
-/*!
-  Copy all data from \a field into this object. \a field \e must
-  be of the same type as the field we are copying into.
-*/
-void
-SoSFVec3f::copyFrom(const SoField & field)
-{
-#if 0 // COIN_DEBUG
-  // Calling field.getTypeId() here fails when "this" is connected to "field"
-  // and "field" is destructed. The error message is "pure virtual method
-  // called" with egcs 1.0.2 under Linux. 19990713 mortene.
-  if (field.getTypeId() != this->getTypeId()) {
-    SoDebugError::postWarning("SoSFVec3f::copyFrom",
-                              "not of the same type: (this) '%s' (from) '%s'",
-                              this->getTypeId().getName().getString(),
-                              field.getTypeId().getName().getString());
-    return;
-  }
-#endif // COIN_DEBUG
-
-  this->operator=((const SoSFVec3f &)field);
-}
-
-/*!
-  Tests \a field against this field for equality. Returns \a FALSE if they
-  are not of the same type, or if they do not contain the same data.
-*/
-SbBool
-SoSFVec3f::isSame(const SoField & field) const
-{
-  if (field.getTypeId() != this->getTypeId()) return FALSE;
-  return this->operator==((const SoSFVec3f &) field);
-}
-
-/*!
-  Copy field value from \a field into this object.
-*/
-const SoSFVec3f &
-SoSFVec3f::operator = (const SoSFVec3f & field)
-{
-  this->setValue(field.getValue());
-  return *this;
-}
-
-/*!
-  Constructor.
-*/
-SoSFVec3f::SoSFVec3f(void)
-{
-  // Make sure we have initialized class.
-  assert(SoSFVec3f::classTypeId != SoType::badType());
-}
-
-/*!
-  Destructor.
-*/
-SoSFVec3f::~SoSFVec3f()
-{
-}
-
-/*!
-  Set this field's value.
-
-  \sa getValue()
-*/
-void
-SoSFVec3f::setValue(const SbVec3f & value)
-{
-  this->value = value;
-  // FIXME: how about doing a new vs old comparison here? 19990620 mortene.
-  this->valueChanged();
-}
-
-/*!
-  Returns \a TRUE if this field is equal to \a field.
-*/
-SbBool
-SoSFVec3f::operator == (const SoSFVec3f & field) const
-{
-  return (this->getValue() == field.getValue());
-}
-//$ END TEMPLATE SField
-
-// *************************************************************************
+SO_SFIELD_SOURCE(SoSFVec3f, SbVec3f, const SbVec3f &);
 
 /*!
   Does initialization common for all objects of the
@@ -173,16 +55,7 @@ SoSFVec3f::operator == (const SoSFVec3f & field) const
 void
 SoSFVec3f::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass(SFVec3f)
-  // Make sure we only initialize once.
-  assert(SoSFVec3f::classTypeId == SoType::badType());
-  // Make sure superclass has been initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoSFVec3f::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SFVec3f", &SoSFVec3f::createInstance);
-//$ END TEMPLATE FieldInitClass
+  SO_SFIELD_INIT_CLASS(SoSFVec3f, inherited);
 }
 
 SbBool

@@ -73,7 +73,7 @@ SoSField::initClass(void)
   assert(inherited::getClassTypeId() != SoType::badType());
 
   SoSField::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "SField", NULL);
+    SoType::createType(inherited::getClassTypeId(), "SoSField", NULL);
 }
 
 /*!

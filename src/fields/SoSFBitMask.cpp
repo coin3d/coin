@@ -37,102 +37,10 @@
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 
-// *************************************************************************
 
-//$ BEGIN TEMPLATE SFieldRequired(SoSFBitMask)
 
-SoType SoSFBitMask::classTypeId = SoType::badType();
+SO_SFIELD_DERIVED_SOURCE(SoSFBitMask, not_used, not_used);
 
-/*!
-  Virtual method which returns the type identifier for an object.
-
-  \sa getClassTypeId()
-*/
-SoType
-SoSFBitMask::getTypeId(void) const
-{
-  return SoSFBitMask::classTypeId;
-}
-
-/*!
-  Returns a unique type identifier for the SoSFBitMask class.
-
-  \sa getTypeId(), SoType
- */
-SoType
-SoSFBitMask::getClassTypeId(void)
-{
-  return SoSFBitMask::classTypeId;
-}
-
-/*!
-  Constructs and returns a new instance of the SoSFBitMask class.
-*/
-void *
-SoSFBitMask::createInstance(void)
-{
-  return new SoSFBitMask;
-}
-/*!
-  Copy all data from \a field into this object. \a field \e must
-  be of the same type as the field we are copying into.
-*/
-void
-SoSFBitMask::copyFrom(const SoField & field)
-{
-#if 0 // COIN_DEBUG
-  // Calling field.getTypeId() here fails when "this" is connected to "field"
-  // and "field" is destructed. The error message is "pure virtual method
-  // called" with egcs 1.0.2 under Linux. 19990713 mortene.
-  if (field.getTypeId() != this->getTypeId()) {
-    SoDebugError::postWarning("SoSFBitMask::copyFrom",
-                              "not of the same type: (this) '%s' (from) '%s'",
-                              this->getTypeId().getName().getString(),
-                              field.getTypeId().getName().getString());
-    return;
-  }
-#endif // COIN_DEBUG
-
-  this->operator=((const SoSFBitMask &)field);
-}
-
-/*!
-  Tests \a field against this field for equality. Returns \a FALSE if they
-  are not of the same type, or if they do not contain the same data.
-*/
-SbBool
-SoSFBitMask::isSame(const SoField & field) const
-{
-  if (field.getTypeId() != this->getTypeId()) return FALSE;
-  return this->operator==((const SoSFBitMask &) field);
-}
-
-/*!
-  Copy field value from \a field into this object.
-*/
-const SoSFBitMask &
-SoSFBitMask::operator = (const SoSFBitMask & field)
-{
-  this->setValue(field.getValue());
-  return *this;
-}
-//$ END TEMPLATE SFieldRequired
-
-// *************************************************************************
-
-/*!
-  Constructor.
- */
-SoSFBitMask::SoSFBitMask(void)
-{
-}
-
-/*!
-  Destructor.
- */
-SoSFBitMask::~SoSFBitMask()
-{
-}
 
 /*!
   Does initialization common for all objects of the
@@ -142,16 +50,7 @@ SoSFBitMask::~SoSFBitMask()
 void
 SoSFBitMask::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass(SFBitMask)
-  // Make sure we only initialize once.
-  assert(SoSFBitMask::classTypeId == SoType::badType());
-  // Make sure superclass has been initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoSFBitMask::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SFBitMask", &SoSFBitMask::createInstance);
-//$ END TEMPLATE FieldInitClass
+  SO_SFIELD_INIT_CLASS(SoSFBitMask, inherited);
 }
 
 /*!
