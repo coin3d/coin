@@ -55,7 +55,7 @@
 #include <Inventor/elements/SoGLRenderPassElement.h>
 #include <Inventor/elements/SoGLUpdateAreaElement.h>
 #include <Inventor/elements/SoGLViewportRegionElement.h>
-#include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
@@ -330,7 +330,6 @@ public:
   void * abortcallbackdata;
   uint32_t cachecontext;
   int currentpass;
-  SbBool depthmaskenabled;
   SoPathList delayedpaths;
   SbBool delayedpathrender;
   SbBool transparencyrender;
@@ -340,7 +339,6 @@ public:
   SoGetBoundingBoxAction * bboxaction;
   SbVec2f updateorigin, updatesize;
   SbBool needglinit;
-  SoGLRenderAction::TransparencyType gltransptype;
   SbBool isrendering;
   SoCallbackList precblist;
 
@@ -349,11 +347,7 @@ public:
   SbBool isDirectRendering(const SoState * state) const;
 
 public:
-  void setupTransparency(const SoGLRenderAction::TransparencyType newtype);
-
-  void disableBlend(void);
-  void enableBlend(void);
-
+  void setupBlending(SoState * state, const SoGLRenderAction::TransparencyType newtype);
   void render(SoNode * node);
   void renderMulti(SoNode * node);
   void renderSingle(SoNode * node);
@@ -408,7 +402,6 @@ SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportregion)
   THIS->delayedpathrender = FALSE;
   THIS->transparencyrender = FALSE;
   THIS->isrendering = FALSE;
-  THIS->depthmaskenabled = TRUE;
   THIS->passupdate = FALSE;
   THIS->bboxaction = NULL;
   THIS->updateorigin.setValue(0.0f, 0.0f);
@@ -417,7 +410,6 @@ SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportregion)
   THIS->abortcallback = NULL;
   THIS->cachecontext = 0;
   THIS->needglinit = TRUE;
-  THIS->gltransptype = SoGLRenderAction::NONE;
 }
 
 /*!
@@ -668,9 +660,6 @@ SoGLRenderAction::beginTraversal(SoNode * node)
     glEnable(GL_COLOR_MATERIAL);
     glEnable(GL_NORMALIZE);
 
-    THIS->disableBlend();
-    THIS->gltransptype = SoGLRenderAction::NONE;
-
     if (THIS->smoothing) {
       glEnable(GL_POINT_SMOOTH);
       glEnable(GL_LINE_SMOOTH);
@@ -692,7 +681,6 @@ SoGLRenderAction::beginTraversal(SoNode * node)
   }
 
   THIS->render(node);
-
   // GL errors after rendering will be caught in SoNode::GLRenderS().
 }
 
@@ -712,79 +700,64 @@ SoGLRenderAction::endTraversal(SoNode * node)
 SbBool
 SoGLRenderAction::handleTransparency(SbBool istransparent)
 {
+  SoState * state = this->getState();
   SoGLRenderAction::TransparencyType transptype = 
     (SoGLRenderAction::TransparencyType)
-    SoShapeStyleElement::getTransparencyType(this->getState());
-  
-  if (transptype == SoGLRenderAction::SCREEN_DOOR) {
+    SoShapeStyleElement::getTransparencyType(state);
+
+  // check common cases first
+  if (!istransparent || transptype == SoGLRenderAction::NONE || transptype == SoGLRenderAction::SCREEN_DOOR) {
     if (THIS->smoothing) {
-      THIS->setupTransparency(transptype);
-      THIS->enableBlend();
+      SoLazyElement::enableBlending(state, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
-    else THIS->disableBlend();
+    else SoLazyElement::disableBlending(state);
     return FALSE;
   }
 
-  // check common case first
-  if (!istransparent || transptype == SoGLRenderAction::NONE) {
-    if (THIS->smoothing) {
-      // needed for line/point smoothing to work
-      THIS->setupTransparency(BLEND);
-      // enable blending but don't disable depth mask
-      SoLazyElement::setBlending(this->getState(), TRUE);
-      if (!THIS->depthmaskenabled) {
-        glDepthMask(GL_TRUE);
-        THIS->depthmaskenabled = TRUE;
-      }
-    }
-    else THIS->disableBlend();
-    return FALSE;
-  }
+  // below this point, shape is transparent, and we know that
+  // transparency type is not SCREEN_DOOR or NONE.
+
   // for the transparency render pass(es) we should always render when
-  // we get here. blending will be enabled.
+  // we get here.
   if (THIS->transparencyrender) {
-    THIS->setupTransparency(transptype);
+    THIS->setupBlending(state, transptype);
     return FALSE;
   }
-
   // check for special case when rendering delayed paths.  we don't
   // want to add these objects to the list of transparent objects, but
   // render right away.
   if (THIS->delayedpathrender) {
-    THIS->setupTransparency(transptype);
-    if (transptype != SoGLRenderAction::SCREEN_DOOR || THIS->smoothing) THIS->enableBlend();
-    else THIS->disableBlend();
-    return FALSE; // always render
+    THIS->setupBlending(state, transptype);
+    return FALSE;
   }
   switch (transptype) {
   case SoGLRenderAction::ADD:
+    SoLazyElement::enableBlending(state, GL_SRC_ALPHA, GL_ONE);
+    return FALSE;
   case SoGLRenderAction::BLEND:
-    THIS->setupTransparency(transptype);
-    THIS->enableBlend();
-    return FALSE; // render now
+    SoLazyElement::enableBlending(state, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    return FALSE;
   case SoGLRenderAction::DELAYED_ADD:
   case SoGLRenderAction::DELAYED_BLEND:
     this->addTransPath(this->getCurPath()->copy());
     SoCacheElement::setInvalid(TRUE);
-    if (this->getState()->isCacheOpen()) {
-      SoCacheElement::invalidate(this->getState());
+    if (state->isCacheOpen()) {
+      SoCacheElement::invalidate(state);
     }
-    return TRUE;
+    return TRUE; // delay render
   case SoGLRenderAction::SORTED_OBJECT_ADD:
   case SoGLRenderAction::SORTED_OBJECT_BLEND:
   case SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_ADD:
   case SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND:
     this->addTransPath(this->getCurPath()->copy());
     SoCacheElement::setInvalid(TRUE);
-    if (this->getState()->isCacheOpen()) {
-      SoCacheElement::invalidate(this->getState());
+    if (state->isCacheOpen()) {
+      SoCacheElement::invalidate(state);
     }
     return TRUE; // delay render
-  case SoGLRenderAction::NONE:
+  default:
     assert(0 && "should not get here");
     break;
-  default:
-    assert(0 && "unknown transparency mode.");
   }
   return FALSE;
 }
@@ -1039,34 +1012,6 @@ SoGLRenderAction::removePreRenderCallback(SoGLPreRenderCB * func, void * userdat
 // methods in SoGLRenderActionP
 #ifndef DOXYGEN_SKIP_THIS
 
-// Enable OpenGL blending.
-void
-SoGLRenderActionP::enableBlend(void)
-{
-  SoLazyElement::setBlending(this->action->getState(), TRUE);
-  if (!this->delayedpathrender &&
-      this->transparencytype != SoGLRenderAction::SCREEN_DOOR) {
-    if (this->depthmaskenabled) {
-      glDepthMask(GL_FALSE);
-      this->depthmaskenabled = FALSE;
-    }
-  }
-}
-
-// Disable OpenGL blending.
-void
-SoGLRenderActionP::disableBlend(void)
-{
-  SoLazyElement::setBlending(this->action->getState(), FALSE);
-  if (!this->delayedpathrender &&
-      this->transparencytype != SoGLRenderAction::SCREEN_DOOR) {
-    if (!this->depthmaskenabled) {
-      glDepthMask(GL_TRUE);
-      this->depthmaskenabled = TRUE;
-    }
-  }
-}
-
 // Private function which "unwinds" the real value of the "rendering"
 // variable.
 SbBool
@@ -1103,11 +1048,12 @@ SoGLRenderActionP::render(SoNode * node)
 
   SoShapeStyleElement::setTransparencyType(state,
                                            this->transparencytype);
-                                 
+
+  SoLazyElement::disableBlending(state);
+  
   SoViewportRegionElement::set(state, this->viewport);
   SoLazyElement::setTransparencyType(state,
                                      (int32_t)this->transparencytype);
-  SoLazyElement::setBlending(state, FALSE);
   SoLazyElement::setColorMaterial(state, TRUE);
 
   SoGLUpdateAreaElement::set(state,
@@ -1185,10 +1131,11 @@ SoGLRenderActionP::renderSingle(SoNode * node)
 
   if (this->transpobjpaths.getLength() && !this->action->hasTerminated()) {
     this->transparencyrender = TRUE;
+    // disable writing into the z-buffer when rendering transparent
+    // objects
+    glDepthMask(GL_FALSE);
     SoGLCacheContextElement::set(state, this->cachecontext,
                                  TRUE, !this->isDirectRendering(state));
-    this->enableBlend();
-
     // test if paths should be rendered back-to-front
     if (this->transparencytype == SoGLRenderAction::SORTED_OBJECT_BLEND ||
         this->transparencytype == SoGLRenderAction::SORTED_OBJECT_ADD ||
@@ -1203,11 +1150,10 @@ SoGLRenderActionP::renderSingle(SoNode * node)
     else {
       this->action->apply(this->transpobjpaths, TRUE);
     }
-    this->disableBlend();
+    // enable depth buffer writes again
+    glDepthMask(GL_TRUE);
     this->transparencyrender = FALSE;
   }
-
-  this->disableBlend();
 
   if (this->delayedpaths.getLength() && !this->action->hasTerminated()) {
     this->delayedpathrender = TRUE;
@@ -1222,31 +1168,24 @@ SoGLRenderActionP::renderSingle(SoNode * node)
 }
 
 void 
-SoGLRenderActionP::setupTransparency(const SoGLRenderAction::TransparencyType newtype)
+SoGLRenderActionP::setupBlending(SoState * state, const SoGLRenderAction::TransparencyType transptype)
 {
-  if (newtype != this->gltransptype) {
-    this->gltransptype = newtype;
-    switch(newtype) {
-    case SoGLRenderAction::BLEND:
-    case SoGLRenderAction::DELAYED_BLEND:
-    case SoGLRenderAction::SORTED_OBJECT_BLEND:
-    case SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND:
-      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-      break;
-    case SoGLRenderAction::ADD:
-    case SoGLRenderAction::DELAYED_ADD:
-    case SoGLRenderAction::SORTED_OBJECT_ADD:
-    case SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_ADD:
-      glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-      break;
-    case SoGLRenderAction::SCREEN_DOOR:
-      // needed for line smoothing to work properly
-      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-      break;
-    case SoGLRenderAction::NONE:
-      this->disableBlend();
-      break;
-    }
+  switch (transptype) {
+  case SoGLRenderAction::BLEND:
+  case SoGLRenderAction::DELAYED_BLEND:
+  case SoGLRenderAction::SORTED_OBJECT_BLEND:
+  case SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND:
+    SoLazyElement::enableBlending(state, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    break;
+  case SoGLRenderAction::ADD:
+  case SoGLRenderAction::DELAYED_ADD:
+  case SoGLRenderAction::SORTED_OBJECT_ADD:
+  case SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_ADD:
+    SoLazyElement::enableBlending(state, GL_SRC_ALPHA, GL_ONE);
+    break;
+  default:
+    assert(0 && "should not get here");
+    break;
   }
 }
 

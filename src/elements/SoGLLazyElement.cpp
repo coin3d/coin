@@ -358,11 +358,21 @@ SoGLLazyElement::sendTransparency(const int stipplenum) const
 }
 
 inline void
-SoGLLazyElement::sendBlending(const SbBool blend) const
+SoGLLazyElement::enableBlending(const int sfactor, const int dfactor) const
 {
-  if (blend) glEnable(GL_BLEND);
-  else glDisable(GL_BLEND);
-  ((SoGLLazyElement*)this)->glstate.blending = blend;
+  glEnable(GL_BLEND);
+  glBlendFunc((GLenum) sfactor, (GLenum) dfactor);
+  ((SoGLLazyElement*)this)->glstate.blending = TRUE;
+  ((SoGLLazyElement*)this)->glstate.blend_sfactor = sfactor;
+  ((SoGLLazyElement*)this)->glstate.blend_dfactor = dfactor;  
+  ((SoGLLazyElement*)this)->cachebitmask |= BLENDING_MASK;
+}
+
+inline void
+SoGLLazyElement::disableBlending(void) const
+{
+  glDisable(GL_BLEND);
+  ((SoGLLazyElement*)this)->glstate.blending = FALSE;
   ((SoGLLazyElement*)this)->cachebitmask |= BLENDING_MASK;
 }
 
@@ -378,6 +388,8 @@ SoGLLazyElement::init(SoState * state)
   this->glstate.shininess = -1.0f;
   this->glstate.lightmodel = -1;
   this->glstate.blending = -1;
+  this->glstate.blend_sfactor = -1;
+  this->glstate.blend_dfactor = -1;
   this->glstate.stipplenum = -1;
   this->glstate.vertexordering = -1;
   this->glstate.twoside = -1;
@@ -559,9 +571,17 @@ SoGLLazyElement::send(const SoState * state, uint32_t mask) const
         }
         break;
       case BLENDING_CASE:
-        if (this->coinstate.blending != this->glstate.blending) {
-          this->sendBlending(this->coinstate.blending);
+        if (this->coinstate.blending) {
+          if (!this->glstate.blending || 
+              this->coinstate.blend_sfactor != this->glstate.blend_sfactor ||
+              this->coinstate.blend_dfactor != this->glstate.blend_dfactor) {
+            this->enableBlending(this->coinstate.blend_sfactor, this->coinstate.blend_dfactor);
+          }
         }
+        else if (this->glstate.blending) {
+          this->disableBlending();
+        }
+        break;
       case TRANSPARENCY_CASE:
         stipplenum =
           this->coinstate.transptype == SoGLRenderAction::SCREEN_DOOR ?
@@ -652,6 +672,8 @@ SoGLLazyElement::reset(SoState * state,  uint32_t mask) const
         break;
       case BLENDING_CASE:
         elem->glstate.blending = -1;
+        elem->glstate.blend_sfactor = -1;
+        elem->glstate.blend_dfactor = -1;
         break;
       case TRANSPARENCY_CASE:
         elem->glstate.stipplenum = -1;
@@ -834,9 +856,15 @@ SoGLLazyElement::setColorMaterialElt(SbBool value)
 }
 
 void
-SoGLLazyElement::setBlendingElt(SbBool value)
+SoGLLazyElement::enableBlendingElt(int sfactor, int dfactor)
 {
-  inherited::setBlendingElt(value);
+  inherited::enableBlendingElt(sfactor, dfactor);
+}
+
+void
+SoGLLazyElement::disableBlendingElt(void)
+{
+  inherited::disableBlendingElt();
 }
 
 void
@@ -979,6 +1007,8 @@ SoGLLazyElement::postCacheCall(SoState * state, GLState * poststate)
         break;
       case BLENDING_CASE:
         elem->glstate.blending = poststate->blending;
+        elem->glstate.blend_sfactor = poststate->blend_sfactor;
+        elem->glstate.blend_dfactor = poststate->blend_dfactor;
         break;
       case TRANSPARENCY_CASE:
         elem->glstate.stipplenum = poststate->stipplenum;
@@ -1052,7 +1082,14 @@ SoGLLazyElement::preCacheCall(SoState * state, GLState * prestate)
         }
         break;
       case BLENDING_CASE:
-        if (curr.blending != prestate->blending) {
+        if (prestate->blending) {
+          if (curr.blend_sfactor != prestate->blend_sfactor ||
+              curr.blend_dfactor != prestate->blend_dfactor) {
+            GLLAZY_DEBUG("blending failed");
+            return FALSE;
+          }
+        }
+        else if (curr.blending) {
           GLLAZY_DEBUG("blending failed");
           return FALSE;
         }

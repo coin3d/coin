@@ -121,7 +121,8 @@ public:
   static void setSpecular(SoState *state, const SbColor * color);
   static void setShininess(SoState *state, float value);
   static void setColorMaterial(SoState *state, SbBool value);
-  static void setBlending(SoState *state,  SbBool value);
+  static void enableBlending(SoState *state,  int sfactor, int dfactor);
+  static void disableBlending(SoState * state);
   static void setLightModel(SoState *state, const int32_t model);
   static void setVertexOrdering(SoState * state, VertexOrdering ordering);
   static void setBackfaceCulling(SoState * state, SbBool onoff);
@@ -140,7 +141,7 @@ public:
   static const SbColor & getSpecular(SoState *);
   static float getShininess(SoState*);
   static SbBool getColorMaterial(SoState*);
-  static SbBool getBlending(SoState*);
+  static SbBool getBlending(SoState *, int & sfactor, int & dfactor);
   static int32_t getLightModel(SoState*);
   static SbBool getAlphaTest(SoState * state);
 
@@ -191,6 +192,8 @@ protected:
     SbColor emissive;
     float shininess;
     SbBool blending;
+    int blend_sfactor;
+    int blend_dfactor;
     int32_t lightmodel;
     SbBool packeddiffuse;
     int32_t numdiffuse;
@@ -233,7 +236,8 @@ protected:
   virtual void setSpecularElt(const SbColor* color);
   virtual void setShininessElt(float value);
   virtual void setColorMaterialElt(SbBool value);
-  virtual void setBlendingElt(SbBool value);
+  virtual void enableBlendingElt(int sfactor, int dfactor);
+  virtual void disableBlendingElt(void);
   virtual void setLightModelElt(SoState *state, int32_t model);
   virtual void setMaterialElt(SoNode * node, uint32_t bitmask, 
                               SoColorPacker * packer, 

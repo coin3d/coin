@@ -72,6 +72,8 @@ public:
     float shininess;
     int32_t lightmodel;
     int32_t blending;
+    int32_t blend_sfactor;
+    int32_t blend_dfactor;
     int32_t stipplenum;
     int32_t vertexordering;
     int32_t culling;
@@ -110,7 +112,8 @@ public:
   virtual void setSpecularElt(const SbColor* color);
   virtual void setShininessElt(float value);
   virtual void setColorMaterialElt(SbBool value);
-  virtual void setBlendingElt(SbBool value);
+  virtual void enableBlendingElt(int sfactor, int dfactor);
+  virtual void disableBlendingElt(void);
   virtual void setLightModelElt(SoState *state, int32_t model);
   virtual void setMaterialElt(SoNode * node, uint32_t bitmask,
                               SoColorPacker * packer,
@@ -146,7 +149,8 @@ private:
   void sendSpecular(const SbColor & specular) const;
   void sendShininess(const float shininess) const;
   void sendTransparency(const int stipplenum) const;
-  void sendBlending(const SbBool blend) const;
+  void enableBlending(const int sfactor, const int dfactor) const;
+  void disableBlending(void) const;
 
   void sendLightModel(const int32_t model) const;
   void sendFlatshading(const SbBool onoff) const;

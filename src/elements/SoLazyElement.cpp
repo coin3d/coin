@@ -119,6 +119,8 @@ SoLazyElement::init(SoState * state)
   this->coinstate.emissive = this->getDefaultEmissive();
   this->coinstate.shininess = this->getDefaultShininess();
   this->coinstate.blending = FALSE;
+  this->coinstate.blend_sfactor = 0;
+  this->coinstate.blend_dfactor = 0;
   this->coinstate.lightmodel = PHONG;
   this->coinstate.packeddiffuse = FALSE;
   this->coinstate.numdiffuse = 1;
@@ -323,12 +325,30 @@ SoLazyElement::setColorMaterial(SoState *state, SbBool value)
 // ! FIXME: write doc
 
 void
-SoLazyElement::setBlending(SoState *state,  SbBool value)
+SoLazyElement::enableBlending(SoState * state,  int sfactor, int dfactor)
 {
   SoLazyElement * elem = SoLazyElement::getInstance(state);
-  if (elem->coinstate.blending != value) {
+  if (!elem->coinstate.blending ||
+      elem->coinstate.blend_sfactor != sfactor ||
+      elem->coinstate.blend_dfactor != dfactor) {
     elem = getWInstance(state);
-    elem->setBlendingElt(value);
+    elem->enableBlendingElt(sfactor, dfactor);
+    if (state->isCacheOpen()) elem->lazyDidSet(BLENDING_MASK);
+  }
+  else if (state->isCacheOpen()) {
+    elem->lazyDidntSet(BLENDING_MASK);
+  }
+}
+
+// ! FIXME: write doc
+
+void
+SoLazyElement::disableBlending(SoState * state)
+{
+  SoLazyElement * elem = SoLazyElement::getInstance(state);
+  if (elem->coinstate.blending) {
+    elem = getWInstance(state);
+    elem->disableBlendingElt();
     if (state->isCacheOpen()) elem->lazyDidSet(BLENDING_MASK);
   }
   else if (state->isCacheOpen()) {
@@ -454,9 +474,11 @@ SoLazyElement::getColorMaterial(SoState * state)
 // ! FIXME: write doc
 
 SbBool
-SoLazyElement::getBlending(SoState * state)
+SoLazyElement::getBlending(SoState * state, int & sfactor, int & dfactor)
 {
   SoLazyElement * elem = getInstance(state);
+  sfactor = elem->coinstate.blend_sfactor;
+  dfactor = elem->coinstate.blend_dfactor;
   return elem->coinstate.blending;
 }
 
@@ -902,9 +924,17 @@ SoLazyElement::setColorMaterialElt(SbBool value)
 }
 
 void 
-SoLazyElement::setBlendingElt(SbBool value)
+SoLazyElement::enableBlendingElt(int sfactor, int dfactor)
 {
-  this->coinstate.blending = value;
+  this->coinstate.blending = TRUE;
+  this->coinstate.blend_sfactor = sfactor;
+  this->coinstate.blend_dfactor = dfactor;
+}
+
+void 
+SoLazyElement::disableBlendingElt(void)
+{
+  this->coinstate.blending = FALSE;
 }
 
 void 
