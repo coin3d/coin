@@ -1,3 +1,25 @@
+/**************************************************************************\
+ *
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 1998-2003 by Systems in Motion.  All rights reserved.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  ("GPL") version 2 as published by the Free Software Foundation.
+ *  See the file LICENSE.GPL at the root directory of this source
+ *  distribution for additional information about the GNU GPL.
+ *
+ *  For using Coin with software that can not be combined with the GNU
+ *  GPL, and for taking advantage of the additional benefits of our
+ *  support services, please contact Systems in Motion about acquiring
+ *  a Coin Professional Edition License.
+ *
+ *  See <URL:http://www.coin3d.org> for  more information.
+ *
+ *  Systems in Motion, Teknobyen, Abels Gate 5, 7030 Trondheim, NORWAY.
+ *  <URL:http://www.sim.no>.
+ *
+\**************************************************************************/
 
 // FIXME: Get rid of (typecast)0 hack. preng 20030225
 
@@ -5,18 +27,16 @@
 #include <config.h>
 #endif
 
-#include <Inventor/C/glue/fontlib_wrapper.h>
-
-#ifdef HAVE_FREETYPE
-#include <Inventor/C/glue/flwfreetype.h>
-#endif
-
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
-#ifdef __cplusplus
-extern "C" {
+#include <Inventor/C/glue/fontlib_wrapper.h>
+#include <Inventor/C/tidbits.h>
+#include <Inventor/C/errors/debugerror.h>
+
+#ifdef HAVE_FREETYPE
+#include <Inventor/C/glue/flwfreetype.h>
 #endif
 
 struct glyphstruct {
@@ -48,6 +68,13 @@ static int fontmax = 0;
 /*
   BEGIN Internal functions
 */
+
+static SbBool
+cc_fontlib_debug(void)
+{
+  const char * env = coin_getenv("COIN_DEBUG_FONTSUPPORT");
+  return env && (atoi(env) > 0);
+}
 
 FLWbitmap *
 get_default_bitmap(unsigned int character)
@@ -392,15 +419,22 @@ flwCreateFont(const char * fontname, char * outname, const int outnamelen, const
 int
 flwGetFont(const char * fontname, const int sizex, const int sizey)
 {
-  struct fontstruct * fs;
-  FLWfont font;
   int i;
-  for (i=0; i<fontcnt; i++)
+  for (i=0; i< fontcnt; i++) {
     if ((fonts[i]->defaultfont ||
          (fonts[i]->sizex == sizex && fonts[i]->sizey == sizey)) &&
         !strcmp(fontname, fonts[i]->fontname))
-      return i;
-  return -1;
+      break;
+  }
+
+  if (i == fontcnt) { i = -1; }
+
+  if (cc_fontlib_debug()) {
+    cc_debugerror_postinfo("flwGetFont", "'%s', size==<%d, %d> => idx %d",
+                           fontname, sizex, sizey, i);
+  }
+
+  return i;
 }
 
 void
@@ -620,7 +654,3 @@ flwDoneBitmap(FLWbitmap * bitmap)
     free(bitmap);
   }
 }
-
-#ifdef __cplusplus
-}
-#endif
