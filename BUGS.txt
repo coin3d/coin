@@ -838,9 +838,12 @@
 
 =====================================================================
 
-035 We have a report from an external Coin user that the translation
-    components of the transformation matrix of an SoJackManip will be
-    modified even when we only *rotate* the jack-manipulator.
+035 Possible SoJackManip misbehavior.
+
+    We have a report from an external Coin user (Julien de Siebenthal)
+    that the translation components of the transformation matrix of an
+    SoJackManip will be modified even when we only *rotate* the
+    jack-manipulator.
 
     Investigate if this is indeed the case by writing a minimal
     test-case.
