@@ -400,12 +400,12 @@ install-am install-am install-am install-am install-am install-am \
 install-am install-am install-am install-am install-am install-am \
 install-am install-am install-am install-am install-am install-am \
 install-am install-am install-am install-am install-binSCRIPTS \
+install-cfgdataDATA install-data install-data install-data install-data \
 install-data install-data install-data install-data install-data \
 install-data install-data install-data install-data install-data \
 install-data install-data install-data install-data install-data \
 install-data install-data install-data install-data install-data \
-install-data install-data install-data install-data install-data \
-install-data install-data install-data-am install-data-am \
+install-data install-data install-data install-data-am install-data-am \
 install-data-am install-data-am install-data-am install-data-am \
 install-data-am install-data-am install-data-am install-data-am \
 install-data-am install-data-am install-data-am install-data-am \
@@ -629,7 +629,8 @@ uninstall-am uninstall-am uninstall-am uninstall-am uninstall-am \
 uninstall-am uninstall-am uninstall-am uninstall-am uninstall-am \
 uninstall-am uninstall-am uninstall-am uninstall-am uninstall-am \
 uninstall-am uninstall-am uninstall-am uninstall-binSCRIPTS \
-uninstall-draggerdefdataDATA uninstall-libCoin@SUFFIX@incHEADERS \
+uninstall-cfgdataDATA uninstall-draggerdefdataDATA \
+uninstall-libCoin@SUFFIX@incHEADERS uninstall-libLTLIBRARIES \
 uninstall-libLTLIBRARIES uninstall-libLTLIBRARIES \
 uninstall-libLTLIBRARIES uninstall-libLTLIBRARIES \
 uninstall-libLTLIBRARIES uninstall-libLTLIBRARIES \
@@ -639,20 +640,19 @@ uninstall-libLTLIBRARIES uninstall-libLTLIBRARIES \
 uninstall-libLTLIBRARIES uninstall-libLTLIBRARIES \
 uninstall-libLTLIBRARIES uninstall-libLTLIBRARIES \
 uninstall-libLTLIBRARIES uninstall-libLTLIBRARIES \
-uninstall-libLTLIBRARIES uninstall-libLTLIBRARIES \
-uninstall-libVRMLnodesincHEADERS uninstall-libactionsincHEADERS \
-uninstall-libbaseincHEADERS uninstall-libbundlesincHEADERS \
-uninstall-libcachesincHEADERS uninstall-libdetailsincHEADERS \
-uninstall-libdraggersincHEADERS uninstall-libelementsincHEADERS \
-uninstall-libenginesincHEADERS uninstall-liberrorsincHEADERS \
-uninstall-libeventsincHEADERS uninstall-libfieldsincHEADERS \
-uninstall-liblistsincHEADERS uninstall-libmanipsincHEADERS \
-uninstall-libmiscincHEADERS uninstall-libnodekitsincHEADERS \
-uninstall-libnodesincHEADERS uninstall-libprojectorsincHEADERS \
-uninstall-libsensorsincHEADERS uninstall-lockincHEADERS \
-uninstall-m4dataDATA uninstall-recursive uninstall-recursive \
+uninstall-libLTLIBRARIES uninstall-libVRMLnodesincHEADERS \
+uninstall-libactionsincHEADERS uninstall-libbaseincHEADERS \
+uninstall-libbundlesincHEADERS uninstall-libcachesincHEADERS \
+uninstall-libdetailsincHEADERS uninstall-libdraggersincHEADERS \
+uninstall-libelementsincHEADERS uninstall-libenginesincHEADERS \
+uninstall-liberrorsincHEADERS uninstall-libeventsincHEADERS \
+uninstall-libfieldsincHEADERS uninstall-liblistsincHEADERS \
+uninstall-libmanipsincHEADERS uninstall-libmiscincHEADERS \
+uninstall-libnodekitsincHEADERS uninstall-libnodesincHEADERS \
+uninstall-libprojectorsincHEADERS uninstall-libsensorsincHEADERS \
+uninstall-lockincHEADERS uninstall-m4dataDATA uninstall-recursive \
 uninstall-recursive uninstall-recursive uninstall-recursive \
-uninstall-systemincHEADERS uninstall-thisincHEADERS
+uninstall-recursive uninstall-systemincHEADERS uninstall-thisincHEADERS
 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

@@ -331,26 +331,26 @@ dvi-recursive dvi-recursive info info info info info info-am info-am \
 info-am info-am info-am info-recursive info-recursive info-recursive \
 info-recursive install install install install install install-am \
 install-am install-am install-am install-am install-binSCRIPTS \
-install-data install-data install-data install-data install-data \
-install-data-am install-data-am install-data-am install-data-am \
-install-data-am install-data-recursive install-data-recursive \
-install-data-recursive install-data-recursive install-exec install-exec \
-install-exec install-exec install-exec install-exec-am install-exec-am \
-install-exec-am install-exec-am install-exec-am install-exec-recursive \
-install-exec-recursive install-exec-recursive install-exec-recursive \
-install-lockincHEADERS install-m4dataDATA install-recursive \
-install-recursive install-recursive install-recursive install-strip \
-install-strip install-strip install-strip install-strip \
-install-thisincHEADERS installcheck installcheck installcheck \
-installcheck installcheck installcheck-am installcheck-am \
-installcheck-am installcheck-am installcheck-am installcheck-recursive \
-installcheck-recursive installcheck-recursive installcheck-recursive \
-installdirs installdirs installdirs installdirs installdirs \
-installdirs-am installdirs-am installdirs-am installdirs-am \
+install-cfgdataDATA install-data install-data install-data install-data \
+install-data install-data-am install-data-am install-data-am \
+install-data-am install-data-am install-data-recursive \
+install-data-recursive install-data-recursive install-data-recursive \
+install-exec install-exec install-exec install-exec install-exec \
+install-exec-am install-exec-am install-exec-am install-exec-am \
+install-exec-am install-exec-recursive install-exec-recursive \
+install-exec-recursive install-exec-recursive install-lockincHEADERS \
+install-m4dataDATA install-recursive install-recursive \
+install-recursive install-recursive install-strip install-strip \
+install-strip install-strip install-strip install-thisincHEADERS \
+installcheck installcheck installcheck installcheck installcheck \
+installcheck-am installcheck-am installcheck-am installcheck-am \
+installcheck-am installcheck-recursive installcheck-recursive \
+installcheck-recursive installcheck-recursive installdirs installdirs \
+installdirs installdirs installdirs installdirs-am installdirs-am \
+installdirs-am installdirs-am installdirs-recursive \
 installdirs-recursive installdirs-recursive installdirs-recursive \
-installdirs-recursive maintainer-clean maintainer-clean \
-maintainer-clean maintainer-clean maintainer-clean \
-maintainer-clean-generic maintainer-clean-generic \
+maintainer-clean maintainer-clean maintainer-clean maintainer-clean \
+maintainer-clean maintainer-clean-generic maintainer-clean-generic \
 maintainer-clean-generic maintainer-clean-generic \
 maintainer-clean-generic maintainer-clean-hdr maintainer-clean-hdr \
 maintainer-clean-recursive maintainer-clean-recursive \
@@ -366,9 +366,9 @@ mostlyclean-tags mostlyclean-tags mostlyclean-tags tags tags tags tags \
 tags tags-recursive tags-recursive tags-recursive tags-recursive \
 uninstall uninstall uninstall uninstall uninstall uninstall-am \
 uninstall-am uninstall-am uninstall-am uninstall-am \
-uninstall-binSCRIPTS uninstall-lockincHEADERS uninstall-m4dataDATA \
-uninstall-recursive uninstall-recursive uninstall-recursive \
-uninstall-recursive uninstall-thisincHEADERS
+uninstall-binSCRIPTS uninstall-cfgdataDATA uninstall-lockincHEADERS \
+uninstall-m4dataDATA uninstall-recursive uninstall-recursive \
+uninstall-recursive uninstall-recursive uninstall-thisincHEADERS
 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

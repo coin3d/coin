@@ -1024,27 +1024,28 @@ install install install install install install install install install \
 install install-am install-am install-am install-am install-am \
 install-am install-am install-am install-am install-am install-am \
 install-am install-am install-am install-am install-binSCRIPTS \
+install-cfgdataDATA install-data install-data install-data install-data \
 install-data install-data install-data install-data install-data \
 install-data install-data install-data install-data install-data \
-install-data install-data install-data install-data install-data \
+install-data install-data-am install-data-am install-data-am \
 install-data-am install-data-am install-data-am install-data-am \
 install-data-am install-data-am install-data-am install-data-am \
 install-data-am install-data-am install-data-am install-data-am \
-install-data-am install-data-am install-data-am install-data-recursive \
 install-data-recursive install-data-recursive install-data-recursive \
-install-data-recursive install-draggerdefdataDATA install-exec \
+install-data-recursive install-data-recursive \
+install-draggerdefdataDATA install-exec install-exec install-exec \
 install-exec install-exec install-exec install-exec install-exec \
 install-exec install-exec install-exec install-exec install-exec \
-install-exec install-exec install-exec install-exec install-exec-am \
+install-exec install-exec install-exec-am install-exec-am \
 install-exec-am install-exec-am install-exec-am install-exec-am \
 install-exec-am install-exec-am install-exec-am install-exec-am \
 install-exec-am install-exec-am install-exec-am install-exec-am \
-install-exec-am install-exec-am install-exec-recursive \
+install-exec-am install-exec-recursive install-exec-recursive \
 install-exec-recursive install-exec-recursive install-exec-recursive \
-install-exec-recursive install-libCoin@SUFFIX@incHEADERS \
+install-libCoin@SUFFIX@incHEADERS install-libLTLIBRARIES \
 install-libLTLIBRARIES install-libLTLIBRARIES install-libLTLIBRARIES \
 install-libLTLIBRARIES install-libLTLIBRARIES install-libLTLIBRARIES \
-install-libLTLIBRARIES install-libLTLIBRARIES install-libLTLIBRARIES \
+install-libLTLIBRARIES install-libLTLIBRARIES \
 install-libVRMLnodesincHEADERS install-libactionsincHEADERS \
 install-libbaseincHEADERS install-libbundlesincHEADERS \
 install-libcachesincHEADERS install-libdetailsincHEADERS \
@@ -1147,7 +1148,7 @@ uninstall uninstall uninstall uninstall uninstall uninstall \
 uninstall-am uninstall-am uninstall-am uninstall-am uninstall-am \
 uninstall-am uninstall-am uninstall-am uninstall-am uninstall-am \
 uninstall-am uninstall-am uninstall-am uninstall-am uninstall-am \
-uninstall-binSCRIPTS uninstall-draggerdefdataDATA \
+uninstall-binSCRIPTS uninstall-cfgdataDATA uninstall-draggerdefdataDATA \
 uninstall-libCoin@SUFFIX@incHEADERS uninstall-libLTLIBRARIES \
 uninstall-libLTLIBRARIES uninstall-libLTLIBRARIES \
 uninstall-libLTLIBRARIES uninstall-libLTLIBRARIES \

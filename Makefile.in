@@ -116,21 +116,23 @@ EXTRA_DIST = cfg/m4/coin.m4
 
 m4datadir = $(datadir)/aclocal
 m4data_DATA = cfg/m4/coin.m4
+
+cfgdatadir = $(datadir)/Coin/conf
+cfgdata_DATA = coin-@CONFIG@.cfg
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = config.h ./include/Inventor/SbBasic.h
-CONFIG_CLEAN_FILES =  coin.cfg
+CONFIG_CLEAN_FILES = 
 SCRIPTS =  $(bin_SCRIPTS)
 
 DIST_SOURCES = 
-DATA =  $(m4data_DATA)
+DATA =  $(cfgdata_DATA) $(m4data_DATA)
 
 DIST_COMMON =  README ./stamp-h1.in AUTHORS COPYING ChangeLog INSTALL \
 Makefile.am Makefile.in NEWS THANKS TODO acconfig.h aclocal.m4 \
 cfg/config.guess cfg/config.sub cfg/install-sh cfg/ltmain.sh \
-cfg/missing cfg/mkinstalldirs coin.cfg.in config.h.in configure \
-configure.in
+cfg/missing cfg/mkinstalldirs config.h.in configure configure.in
 
 
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -185,8 +187,6 @@ distclean-hdr:
 	-rm -f config.h
 
 maintainer-clean-hdr:
-coin.cfg: $(top_builddir)/config.status coin.cfg.in
-	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
 install-binSCRIPTS: $(bin_SCRIPTS)
 	@$(NORMAL_INSTALL)
@@ -208,6 +208,24 @@ uninstall-binSCRIPTS:
 	  f="`echo $$p|sed '$(transform)'`"; \
 	  echo " rm -f $(DESTDIR)$(bindir)/$$f"; \
 	  rm -f $(DESTDIR)$(bindir)/$$f; \
+	done
+
+install-cfgdataDATA: $(cfgdata_DATA)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(cfgdatadir)
+	@list='$(cfgdata_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(cfgdatadir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(cfgdatadir)/$$f; \
+	done
+
+uninstall-cfgdataDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(cfgdata_DATA)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(cfgdatadir)/$$f"; \
+	  rm -f $(DESTDIR)$(cfgdatadir)/$$f; \
 	done
 
 install-m4dataDATA: $(m4data_DATA)
@@ -414,17 +432,16 @@ all-recursive-am: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
 install-exec-am: install-binSCRIPTS
-	@$(NORMAL_INSTALL)
-	$(MAKE) $(AM_MAKEFLAGS) install-exec-hook
 install-exec: install-exec-recursive
 
-install-data-am: install-m4dataDATA
+install-data-am: install-cfgdataDATA install-m4dataDATA
 install-data: install-data-recursive
 
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
 install: install-recursive
-uninstall-am: uninstall-binSCRIPTS uninstall-m4dataDATA
+uninstall-am: uninstall-binSCRIPTS uninstall-cfgdataDATA \
+		uninstall-m4dataDATA
 uninstall: uninstall-recursive
 all-am: Makefile $(SCRIPTS) $(DATA) config.h
 all-redirect: all-recursive-am
@@ -432,7 +449,8 @@ install-strip:
 	$(MAKE) $(AM_MAKEFLAGS) INSTALL_STRIP_FLAG=-s install
 installdirs: installdirs-recursive
 installdirs-am:
-	$(mkinstalldirs)  $(DESTDIR)$(bindir) $(DESTDIR)$(m4datadir)
+	$(mkinstalldirs)  $(DESTDIR)$(bindir) $(DESTDIR)$(cfgdatadir) \
+		$(DESTDIR)$(m4datadir)
 
 
 mostlyclean-generic:
@@ -472,25 +490,23 @@ check-am check-recursive clean clean-generic clean-hdr clean-recursive \
 clean-tags distclean distclean-generic distclean-hdr \
 distclean-recursive distclean-tags distdir dvi dvi-am dvi-recursive \
 info info-am info-recursive install install-am install-binSCRIPTS \
-install-data install-data-am install-data-recursive install-exec \
-install-exec-am install-exec-recursive install-m4dataDATA \
+install-cfgdataDATA install-data install-data-am install-data-recursive \
+install-exec install-exec-am install-exec-recursive install-m4dataDATA \
 install-recursive install-strip installcheck installcheck-am \
 installcheck-recursive installdirs installdirs-am installdirs-recursive \
 maintainer-clean maintainer-clean-generic maintainer-clean-hdr \
 maintainer-clean-recursive maintainer-clean-tags mostlyclean \
 mostlyclean-generic mostlyclean-hdr mostlyclean-recursive \
 mostlyclean-tags tags tags-recursive uninstall uninstall-am \
-uninstall-binSCRIPTS uninstall-m4dataDATA uninstall-recursive
+uninstall-binSCRIPTS uninstall-cfgdataDATA uninstall-m4dataDATA \
+uninstall-recursive
 
+
+coin-@CONFIG@.cfg: $(top_srcdir)/coin.cfg.in
+	@./config.status --file=$@:coin.cfg.in
 
 doxygen-doc:
 	@@sim_ac_doxygen_exe@ $(top_builddir)/docs/coin.doxygen
-
-install-exec-hook: coin.cfg
-	@target=coin-@CONFIG@.cfg; \
-	echo "Installing $$target"; \
-	$(mkinstalldirs) $(DESTDIR)$(datadir)/Coin/conf && \
-	  $(INSTALL_DATA) coin.cfg $(DESTDIR)$(datadir)/Coin/conf/$$target;
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -350,25 +350,25 @@ clean-tags distclean distclean distclean-generic distclean-generic \
 distclean-hdr distclean-recursive distclean-recursive distclean-tags \
 distclean-tags distdir distdir dvi dvi dvi-am dvi-am dvi-recursive \
 dvi-recursive info info info-am info-am info-recursive info-recursive \
-install install install-am install-am install-binSCRIPTS install-data \
-install-data install-data-am install-data-am install-data-recursive \
-install-data-recursive install-exec install-exec install-exec-am \
-install-exec-am install-exec-recursive install-exec-recursive \
-install-m4dataDATA install-recursive install-recursive install-strip \
-install-strip install-thisincHEADERS installcheck installcheck \
-installcheck-am installcheck-am installcheck-recursive \
-installcheck-recursive installdirs installdirs installdirs-am \
-installdirs-am installdirs-recursive installdirs-recursive \
-maintainer-clean maintainer-clean maintainer-clean-generic \
-maintainer-clean-generic maintainer-clean-hdr \
-maintainer-clean-recursive maintainer-clean-recursive \
-maintainer-clean-tags maintainer-clean-tags mostlyclean mostlyclean \
-mostlyclean-generic mostlyclean-generic mostlyclean-hdr \
-mostlyclean-recursive mostlyclean-recursive mostlyclean-tags \
-mostlyclean-tags tags tags tags-recursive tags-recursive uninstall \
-uninstall uninstall-am uninstall-am uninstall-binSCRIPTS \
-uninstall-m4dataDATA uninstall-recursive uninstall-recursive \
-uninstall-thisincHEADERS
+install install install-am install-am install-binSCRIPTS \
+install-cfgdataDATA install-data install-data install-data-am \
+install-data-am install-data-recursive install-data-recursive \
+install-exec install-exec install-exec-am install-exec-am \
+install-exec-recursive install-exec-recursive install-m4dataDATA \
+install-recursive install-recursive install-strip install-strip \
+install-thisincHEADERS installcheck installcheck installcheck-am \
+installcheck-am installcheck-recursive installcheck-recursive \
+installdirs installdirs installdirs-am installdirs-am \
+installdirs-recursive installdirs-recursive maintainer-clean \
+maintainer-clean maintainer-clean-generic maintainer-clean-generic \
+maintainer-clean-hdr maintainer-clean-recursive \
+maintainer-clean-recursive maintainer-clean-tags maintainer-clean-tags \
+mostlyclean mostlyclean mostlyclean-generic mostlyclean-generic \
+mostlyclean-hdr mostlyclean-recursive mostlyclean-recursive \
+mostlyclean-tags mostlyclean-tags tags tags tags-recursive \
+tags-recursive uninstall uninstall uninstall-am uninstall-am \
+uninstall-binSCRIPTS uninstall-cfgdataDATA uninstall-m4dataDATA \
+uninstall-recursive uninstall-recursive uninstall-thisincHEADERS
 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

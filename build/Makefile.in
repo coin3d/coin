@@ -337,91 +337,91 @@ install-am install-am install-am install-am install-am install-am \
 install-am install-am install-am install-am install-am install-am \
 install-am install-am install-am install-am install-am install-am \
 install-am install-am install-am install-am install-am install-am \
-install-am install-am install-binSCRIPTS install-data install-data \
+install-am install-am install-binSCRIPTS install-cfgdataDATA \
 install-data install-data install-data install-data install-data \
 install-data install-data install-data install-data install-data \
 install-data install-data install-data install-data install-data \
 install-data install-data install-data install-data install-data \
 install-data install-data install-data install-data install-data \
-install-data install-data-am install-data-am install-data-am \
+install-data install-data install-data install-data-am install-data-am \
 install-data-am install-data-am install-data-am install-data-am \
 install-data-am install-data-am install-data-am install-data-am \
 install-data-am install-data-am install-data-am install-data-am \
 install-data-am install-data-am install-data-am install-data-am \
 install-data-am install-data-am install-data-am install-data-am \
 install-data-am install-data-am install-data-am install-data-am \
-install-data-am install-data-recursive install-data-recursive \
+install-data-am install-data-am install-data-recursive \
 install-data-recursive install-data-recursive install-data-recursive \
-install-draggerdefdataDATA install-exec install-exec install-exec \
+install-data-recursive install-draggerdefdataDATA install-exec \
 install-exec install-exec install-exec install-exec install-exec \
 install-exec install-exec install-exec install-exec install-exec \
 install-exec install-exec install-exec install-exec install-exec \
 install-exec install-exec install-exec install-exec install-exec \
 install-exec install-exec install-exec install-exec install-exec \
+install-exec install-exec install-exec-am install-exec-am \
 install-exec-am install-exec-am install-exec-am install-exec-am \
 install-exec-am install-exec-am install-exec-am install-exec-am \
 install-exec-am install-exec-am install-exec-am install-exec-am \
 install-exec-am install-exec-am install-exec-am install-exec-am \
 install-exec-am install-exec-am install-exec-am install-exec-am \
 install-exec-am install-exec-am install-exec-am install-exec-am \
-install-exec-am install-exec-am install-exec-am install-exec-am \
+install-exec-am install-exec-am install-exec-recursive \
 install-exec-recursive install-exec-recursive install-exec-recursive \
-install-exec-recursive install-exec-recursive \
-install-libCoin@SUFFIX@incHEADERS install-libLTLIBRARIES \
+install-exec-recursive install-libCoin@SUFFIX@incHEADERS \
 install-libLTLIBRARIES install-libLTLIBRARIES install-libLTLIBRARIES \
 install-libLTLIBRARIES install-libLTLIBRARIES install-libLTLIBRARIES \
 install-libLTLIBRARIES install-libLTLIBRARIES install-libLTLIBRARIES \
 install-libLTLIBRARIES install-libLTLIBRARIES install-libLTLIBRARIES \
 install-libLTLIBRARIES install-libLTLIBRARIES install-libLTLIBRARIES \
 install-libLTLIBRARIES install-libLTLIBRARIES install-libLTLIBRARIES \
-install-libLTLIBRARIES install-libVRMLnodesincHEADERS \
-install-libactionsincHEADERS install-libbaseincHEADERS \
-install-libbundlesincHEADERS install-libcachesincHEADERS \
-install-libdetailsincHEADERS install-libdraggersincHEADERS \
-install-libelementsincHEADERS install-libenginesincHEADERS \
-install-liberrorsincHEADERS install-libeventsincHEADERS \
-install-libfieldsincHEADERS install-liblistsincHEADERS \
-install-libmanipsincHEADERS install-libmiscincHEADERS \
-install-libnodekitsincHEADERS install-libnodesincHEADERS \
-install-libprojectorsincHEADERS install-libsensorsincHEADERS \
-install-lockincHEADERS install-m4dataDATA install-recursive \
+install-libLTLIBRARIES install-libLTLIBRARIES \
+install-libVRMLnodesincHEADERS install-libactionsincHEADERS \
+install-libbaseincHEADERS install-libbundlesincHEADERS \
+install-libcachesincHEADERS install-libdetailsincHEADERS \
+install-libdraggersincHEADERS install-libelementsincHEADERS \
+install-libenginesincHEADERS install-liberrorsincHEADERS \
+install-libeventsincHEADERS install-libfieldsincHEADERS \
+install-liblistsincHEADERS install-libmanipsincHEADERS \
+install-libmiscincHEADERS install-libnodekitsincHEADERS \
+install-libnodesincHEADERS install-libprojectorsincHEADERS \
+install-libsensorsincHEADERS install-lockincHEADERS install-m4dataDATA \
 install-recursive install-recursive install-recursive install-recursive \
+install-recursive install-strip install-strip install-strip \
 install-strip install-strip install-strip install-strip install-strip \
 install-strip install-strip install-strip install-strip install-strip \
 install-strip install-strip install-strip install-strip install-strip \
 install-strip install-strip install-strip install-strip install-strip \
 install-strip install-strip install-strip install-strip install-strip \
-install-strip install-strip install-strip install-systemincHEADERS \
-install-thisincHEADERS installcheck installcheck installcheck \
+install-systemincHEADERS install-thisincHEADERS installcheck \
 installcheck installcheck installcheck installcheck installcheck \
 installcheck installcheck installcheck installcheck installcheck \
 installcheck installcheck installcheck installcheck installcheck \
 installcheck installcheck installcheck installcheck installcheck \
 installcheck installcheck installcheck installcheck installcheck \
+installcheck installcheck installcheck-am installcheck-am \
 installcheck-am installcheck-am installcheck-am installcheck-am \
 installcheck-am installcheck-am installcheck-am installcheck-am \
 installcheck-am installcheck-am installcheck-am installcheck-am \
 installcheck-am installcheck-am installcheck-am installcheck-am \
 installcheck-am installcheck-am installcheck-am installcheck-am \
 installcheck-am installcheck-am installcheck-am installcheck-am \
-installcheck-am installcheck-am installcheck-am installcheck-am \
+installcheck-am installcheck-am installcheck-recursive \
 installcheck-recursive installcheck-recursive installcheck-recursive \
-installcheck-recursive installcheck-recursive installdirs installdirs \
+installcheck-recursive installdirs installdirs installdirs installdirs \
 installdirs installdirs installdirs installdirs installdirs installdirs \
 installdirs installdirs installdirs installdirs installdirs installdirs \
 installdirs installdirs installdirs installdirs installdirs installdirs \
 installdirs installdirs installdirs installdirs installdirs installdirs \
-installdirs installdirs installdirs-am installdirs-am installdirs-am \
-installdirs-am installdirs-am installdirs-recursive \
+installdirs-am installdirs-am installdirs-am installdirs-am \
+installdirs-am installdirs-recursive installdirs-recursive \
 installdirs-recursive installdirs-recursive installdirs-recursive \
-installdirs-recursive maintainer-clean maintainer-clean \
 maintainer-clean maintainer-clean maintainer-clean maintainer-clean \
 maintainer-clean maintainer-clean maintainer-clean maintainer-clean \
 maintainer-clean maintainer-clean maintainer-clean maintainer-clean \
 maintainer-clean maintainer-clean maintainer-clean maintainer-clean \
 maintainer-clean maintainer-clean maintainer-clean maintainer-clean \
 maintainer-clean maintainer-clean maintainer-clean maintainer-clean \
-maintainer-clean maintainer-clean maintainer-clean-compile \
+maintainer-clean maintainer-clean maintainer-clean maintainer-clean \
 maintainer-clean-compile maintainer-clean-compile \
 maintainer-clean-compile maintainer-clean-compile \
 maintainer-clean-compile maintainer-clean-compile \
@@ -431,14 +431,14 @@ maintainer-clean-compile maintainer-clean-compile \
 maintainer-clean-compile maintainer-clean-compile \
 maintainer-clean-compile maintainer-clean-compile \
 maintainer-clean-compile maintainer-clean-compile \
-maintainer-clean-compile maintainer-clean-depend \
+maintainer-clean-compile maintainer-clean-compile \
 maintainer-clean-depend maintainer-clean-depend maintainer-clean-depend \
 maintainer-clean-depend maintainer-clean-depend maintainer-clean-depend \
 maintainer-clean-depend maintainer-clean-depend maintainer-clean-depend \
 maintainer-clean-depend maintainer-clean-depend maintainer-clean-depend \
 maintainer-clean-depend maintainer-clean-depend maintainer-clean-depend \
 maintainer-clean-depend maintainer-clean-depend maintainer-clean-depend \
-maintainer-clean-depend maintainer-clean-generic \
+maintainer-clean-depend maintainer-clean-depend \
 maintainer-clean-generic maintainer-clean-generic \
 maintainer-clean-generic maintainer-clean-generic \
 maintainer-clean-generic maintainer-clean-generic \
@@ -452,7 +452,8 @@ maintainer-clean-generic maintainer-clean-generic \
 maintainer-clean-generic maintainer-clean-generic \
 maintainer-clean-generic maintainer-clean-generic \
 maintainer-clean-generic maintainer-clean-generic \
-maintainer-clean-generic maintainer-clean-hdr maintainer-clean-hdr \
+maintainer-clean-generic maintainer-clean-generic maintainer-clean-hdr \
+maintainer-clean-hdr maintainer-clean-libLTLIBRARIES \
 maintainer-clean-libLTLIBRARIES maintainer-clean-libLTLIBRARIES \
 maintainer-clean-libLTLIBRARIES maintainer-clean-libLTLIBRARIES \
 maintainer-clean-libLTLIBRARIES maintainer-clean-libLTLIBRARIES \
@@ -462,7 +463,7 @@ maintainer-clean-libLTLIBRARIES maintainer-clean-libLTLIBRARIES \
 maintainer-clean-libLTLIBRARIES maintainer-clean-libLTLIBRARIES \
 maintainer-clean-libLTLIBRARIES maintainer-clean-libLTLIBRARIES \
 maintainer-clean-libLTLIBRARIES maintainer-clean-libLTLIBRARIES \
-maintainer-clean-libLTLIBRARIES maintainer-clean-libLTLIBRARIES \
+maintainer-clean-libLTLIBRARIES maintainer-clean-libtool \
 maintainer-clean-libtool maintainer-clean-libtool \
 maintainer-clean-libtool maintainer-clean-libtool \
 maintainer-clean-libtool maintainer-clean-libtool \
@@ -472,7 +473,7 @@ maintainer-clean-libtool maintainer-clean-libtool \
 maintainer-clean-libtool maintainer-clean-libtool \
 maintainer-clean-libtool maintainer-clean-libtool \
 maintainer-clean-libtool maintainer-clean-libtool \
-maintainer-clean-libtool maintainer-clean-libtool \
+maintainer-clean-libtool maintainer-clean-noinstLTLIBRARIES \
 maintainer-clean-noinstLTLIBRARIES maintainer-clean-noinstLTLIBRARIES \
 maintainer-clean-noinstLTLIBRARIES maintainer-clean-noinstLTLIBRARIES \
 maintainer-clean-noinstLTLIBRARIES maintainer-clean-noinstLTLIBRARIES \
@@ -482,9 +483,9 @@ maintainer-clean-noinstLTLIBRARIES maintainer-clean-noinstLTLIBRARIES \
 maintainer-clean-noinstLTLIBRARIES maintainer-clean-noinstLTLIBRARIES \
 maintainer-clean-noinstLTLIBRARIES maintainer-clean-noinstLTLIBRARIES \
 maintainer-clean-noinstLTLIBRARIES maintainer-clean-noinstLTLIBRARIES \
-maintainer-clean-noinstLTLIBRARIES maintainer-clean-recursive \
 maintainer-clean-recursive maintainer-clean-recursive \
 maintainer-clean-recursive maintainer-clean-recursive \
+maintainer-clean-recursive maintainer-clean-tags maintainer-clean-tags \
 maintainer-clean-tags maintainer-clean-tags maintainer-clean-tags \
 maintainer-clean-tags maintainer-clean-tags maintainer-clean-tags \
 maintainer-clean-tags maintainer-clean-tags maintainer-clean-tags \
@@ -493,25 +494,25 @@ maintainer-clean-tags maintainer-clean-tags maintainer-clean-tags \
 maintainer-clean-tags maintainer-clean-tags maintainer-clean-tags \
 maintainer-clean-tags maintainer-clean-tags maintainer-clean-tags \
 maintainer-clean-tags maintainer-clean-tags maintainer-clean-tags \
-maintainer-clean-tags maintainer-clean-tags maintainer-clean-tags \
+maintainer-clean-tags mostlyclean mostlyclean mostlyclean mostlyclean \
 mostlyclean mostlyclean mostlyclean mostlyclean mostlyclean mostlyclean \
 mostlyclean mostlyclean mostlyclean mostlyclean mostlyclean mostlyclean \
 mostlyclean mostlyclean mostlyclean mostlyclean mostlyclean mostlyclean \
 mostlyclean mostlyclean mostlyclean mostlyclean mostlyclean mostlyclean \
-mostlyclean mostlyclean mostlyclean mostlyclean mostlyclean-compile \
 mostlyclean-compile mostlyclean-compile mostlyclean-compile \
 mostlyclean-compile mostlyclean-compile mostlyclean-compile \
 mostlyclean-compile mostlyclean-compile mostlyclean-compile \
 mostlyclean-compile mostlyclean-compile mostlyclean-compile \
 mostlyclean-compile mostlyclean-compile mostlyclean-compile \
 mostlyclean-compile mostlyclean-compile mostlyclean-compile \
-mostlyclean-compile mostlyclean-depend mostlyclean-depend \
+mostlyclean-compile mostlyclean-compile mostlyclean-depend \
 mostlyclean-depend mostlyclean-depend mostlyclean-depend \
 mostlyclean-depend mostlyclean-depend mostlyclean-depend \
 mostlyclean-depend mostlyclean-depend mostlyclean-depend \
 mostlyclean-depend mostlyclean-depend mostlyclean-depend \
 mostlyclean-depend mostlyclean-depend mostlyclean-depend \
 mostlyclean-depend mostlyclean-depend mostlyclean-depend \
+mostlyclean-depend mostlyclean-generic mostlyclean-generic \
 mostlyclean-generic mostlyclean-generic mostlyclean-generic \
 mostlyclean-generic mostlyclean-generic mostlyclean-generic \
 mostlyclean-generic mostlyclean-generic mostlyclean-generic \
@@ -520,8 +521,7 @@ mostlyclean-generic mostlyclean-generic mostlyclean-generic \
 mostlyclean-generic mostlyclean-generic mostlyclean-generic \
 mostlyclean-generic mostlyclean-generic mostlyclean-generic \
 mostlyclean-generic mostlyclean-generic mostlyclean-generic \
-mostlyclean-generic mostlyclean-generic mostlyclean-generic \
-mostlyclean-generic mostlyclean-hdr mostlyclean-hdr \
+mostlyclean-generic mostlyclean-generic mostlyclean-hdr mostlyclean-hdr \
 mostlyclean-libLTLIBRARIES mostlyclean-libLTLIBRARIES \
 mostlyclean-libLTLIBRARIES mostlyclean-libLTLIBRARIES \
 mostlyclean-libLTLIBRARIES mostlyclean-libLTLIBRARIES \
@@ -569,7 +569,7 @@ uninstall-am uninstall-am uninstall-am uninstall-am uninstall-am \
 uninstall-am uninstall-am uninstall-am uninstall-am uninstall-am \
 uninstall-am uninstall-am uninstall-am uninstall-am uninstall-am \
 uninstall-am uninstall-am uninstall-am uninstall-am uninstall-am \
-uninstall-am uninstall-am uninstall-binSCRIPTS \
+uninstall-am uninstall-am uninstall-binSCRIPTS uninstall-cfgdataDATA \
 uninstall-draggerdefdataDATA uninstall-libCoin@SUFFIX@incHEADERS \
 uninstall-libLTLIBRARIES uninstall-libLTLIBRARIES \
 uninstall-libLTLIBRARIES uninstall-libLTLIBRARIES \

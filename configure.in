@@ -692,7 +692,6 @@ AC_OUTPUT([
         build/Makefile
         build/coin.spec
         docs/coin.doxygen
-        coin.cfg
 ])
 
 # *******************************************************************

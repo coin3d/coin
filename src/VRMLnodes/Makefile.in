@@ -471,11 +471,11 @@ info-am info-am info-am info-am info-recursive info-recursive \
 info-recursive info-recursive info-recursive install install install \
 install install install install install install install-am install-am \
 install-am install-am install-am install-am install-am install-am \
-install-am install-binSCRIPTS install-data install-data install-data \
+install-am install-binSCRIPTS install-cfgdataDATA install-data \
 install-data install-data install-data install-data install-data \
-install-data install-data-am install-data-am install-data-am \
+install-data install-data install-data install-data-am install-data-am \
 install-data-am install-data-am install-data-am install-data-am \
-install-data-am install-data-am install-data-recursive \
+install-data-am install-data-am install-data-am install-data-recursive \
 install-data-recursive install-data-recursive install-data-recursive \
 install-data-recursive install-draggerdefdataDATA install-exec \
 install-exec install-exec install-exec install-exec install-exec \
@@ -540,7 +540,7 @@ tags-recursive tags-recursive tags-recursive tags-recursive uninstall \
 uninstall uninstall uninstall uninstall uninstall uninstall uninstall \
 uninstall uninstall-am uninstall-am uninstall-am uninstall-am \
 uninstall-am uninstall-am uninstall-am uninstall-am uninstall-am \
-uninstall-binSCRIPTS uninstall-draggerdefdataDATA \
+uninstall-binSCRIPTS uninstall-cfgdataDATA uninstall-draggerdefdataDATA \
 uninstall-libCoin@SUFFIX@incHEADERS uninstall-libLTLIBRARIES \
 uninstall-libLTLIBRARIES uninstall-libLTLIBRARIES \
 uninstall-libVRMLnodesincHEADERS uninstall-libbaseincHEADERS \
