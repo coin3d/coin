@@ -49,61 +49,59 @@
   \since Coin 1.0
 */
 
-#include <Inventor/nodes/SoExtSelection.h>
-#include <Inventor/nodes/SoSubNodeP.h>
-#include <coindefs.h> // COIN_OBSOLETED()
+// *************************************************************************
 
-#include <Inventor/events/SoEvent.h>
+#include <float.h>
+#include <math.h>
+#include <limits.h>
+
+#include <Inventor/C/glue/gl.h>
+#include <Inventor/C/tidbits.h> // coin_getenv()
+#include <Inventor/SbBox2s.h>
+#include <Inventor/SbBox3f.h>
+#include <Inventor/SbMatrix.h>
+#include <Inventor/SbTesselator.h> 
+#include <Inventor/SbTime.h>
+#include <Inventor/SbVec2s.h>
+#include <Inventor/SbVec3f.h>
+#include <Inventor/SbViewVolume.h>
+#include <Inventor/SbViewportRegion.h>
+#include <Inventor/SoOffscreenRenderer.h> 
+#include <Inventor/SoPrimitiveVertex.h>
+#include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoHandleEventAction.h>
-#include <Inventor/events/SoMouseButtonEvent.h>
+#include <Inventor/caches/SoBoundingBoxCache.h>
+#include <Inventor/details/SoFaceDetail.h> 
+#include <Inventor/elements/SoCullElement.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoPointSizeElement.h> 
+#include <Inventor/elements/SoProjectionMatrixElement.h>
+#include <Inventor/elements/SoViewVolumeElement.h>
+#include <Inventor/elements/SoViewingMatrixElement.h>
+#include <Inventor/elements/SoViewportRegionElement.h>
+#include <Inventor/errors/SoDebugError.h> 
+#include <Inventor/events/SoEvent.h>
 #include <Inventor/events/SoKeyboardEvent.h>
 #include <Inventor/events/SoLocation2Event.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/misc/SoState.h>
-#include <Inventor/SbTime.h>
-
-#include <Inventor/nodes/SoCallback.h> 
-#include <Inventor/sensors/SoTimerSensor.h>
-#include <Inventor/actions/SoCallbackAction.h>
-#include <Inventor/nodes/SoShape.h>
-#include <Inventor/nodes/SoCamera.h>
-#include <Inventor/details/SoFaceDetail.h> 
-#include <Inventor/lists/SoPathList.h> 
-
-#include <Inventor/SbBox3f.h>
-#include <Inventor/SbBox2s.h>
-#include <Inventor/SbVec3f.h>
-#include <Inventor/SbVec2s.h>
-#include <Inventor/SbViewVolume.h>
-#include <Inventor/SbMatrix.h>
-#include <Inventor/SbViewportRegion.h>
-#include <Inventor/elements/SoViewportRegionElement.h>
-#include <Inventor/elements/SoProjectionMatrixElement.h>
-#include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/elements/SoViewingMatrixElement.h>
-#include <Inventor/elements/SoViewVolumeElement.h>
-#include <Inventor/elements/SoCullElement.h>
-#include <Inventor/elements/SoPointSizeElement.h> 
-#include <Inventor/errors/SoDebugError.h> 
+#include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/lists/SoCallbackList.h>
-#include <Inventor/SoPrimitiveVertex.h>
-#include <Inventor/SbMatrix.h>
+#include <Inventor/lists/SoPathList.h> 
+#include <Inventor/misc/SoState.h>
+#include <Inventor/nodes/SoCallback.h> 
+#include <Inventor/nodes/SoCamera.h>
+#include <Inventor/nodes/SoExtSelection.h>
+#include <Inventor/nodes/SoShape.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/nodes/SoVertexShape.h> 
-#include <Inventor/C/glue/gl.h>
-
-#include <Inventor/SoOffscreenRenderer.h> 
-#include <Inventor/SbTesselator.h> 
-#include <Inventor/caches/SoBoundingBoxCache.h>
-
+#include <Inventor/sensors/SoTimerSensor.h>
+#include <coindefs.h> // COIN_OBSOLETED()
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
 
-#include <Inventor/C/tidbits.h> // coin_getenv()
-#include <float.h>
-#include <math.h>
-
+// *************************************************************************
 
 /*!
   \enum SoExtSelection::LassoType
@@ -195,6 +193,12 @@
     etc. A restart of X11 is needed. I am using the Mesa
     drivers. 2002-08-02 handegar.
 
+    UPDATE 2004-10-27 mortene: I found a grave overflow error in the
+    calculation of maximumcolorcounter from the values returned fom
+    glGetInteger() -- could the problem mentioned above actually be
+    due to this? The explanation given above doesn't seem very
+    likely...
+
   * Offcreenrendering comes out wrong if offscreenrenderer decides to
     render to multiple subscreens (due to size limitations). the
     'offscreencolorcounter' is increased for each pass on each
@@ -203,10 +207,11 @@
 */
 
 
-// Debug defines... Used to force lower color resolution for testing purposes (handegar)
-//#define BITCOLOR3 1
-//#define BITCOLOR6 1
-//#define BITCOLOR9 1
+// Debug define. Used to force lower color resolution for testing
+// purposes. The number of available colors in the offscreen buffer
+// for visible shape testing will be 2^COLORBITS.
+//
+//#define COLORBITS 3
 
 #define PRIVATE(p) (p->pimpl)
 #define PUBLIC(p) (p->master)
@@ -244,6 +249,8 @@ public:
 
   SoExtSelection * master;
   SbViewportRegion curvp;
+
+  static SbBool debug(void);
 
   void addTriangleToOffscreenBuffer(SoCallbackAction * action,
                                     const SoPrimitiveVertex * v1,
@@ -354,7 +361,7 @@ public:
   SbViewVolume offscreenviewvolume;
   int offscreencolorcounter;
   int offscreencolorcounterpasses;
-  int offscreenskipcounter;
+  unsigned int offscreenskipcounter;
   SbBool offscreencolorcounteroverflow;
   SoOffscreenRenderer * renderer;
   SoOffscreenRenderer * lassorenderer;
@@ -362,23 +369,33 @@ public:
   SbBool lassostencilisdrawed;
   SbBool applyonlyonselectedtriangles;
 
-  int colorbitsred;
-  int colorbitsgreen;
-  int colorbitsblue;
-  int colorbitsalpha;
-  int maximumcolorcounter;
+  unsigned int maximumcolorcounter;
   SbBool has3DTextures;
 
   unsigned char *visibletrianglesbitarray;
 
   SoNode *offscreenheadnode;
-  int drawcallbackcounter;
-  int drawcounter;
+  unsigned int drawcallbackcounter;
+  unsigned int drawcounter;
   SoPathList *visitedshapepaths;
   SbBool somefacesvisible;
 
 };
 
+// *************************************************************************
+
+SbBool
+SoExtSelectionP::debug(void)
+{
+  static int dbg = -1;
+  if (dbg == -1) {
+    const char * env = coin_getenv("COIN_DEBUG_SOEXTSELECTION");
+    dbg = env && (atoi(env) > 0);
+  }
+  return dbg ? TRUE : FALSE;
+}
+
+// *************************************************************************
 
 //
 // Faster line segment intersection by Franklin Antonio, from Graphics
@@ -2210,17 +2227,6 @@ SoExtSelectionP::offscreenRenderCallback(void * userdata, SoAction * action)
 SbBool
 SoExtSelectionP::checkOffscreenRendererCapabilities()
 {
-  
-  // Check color-channel bitresolution
-  GLint red = 0;
-  GLint green = 0;
-  GLint blue = 0;
-  GLint alpha = 0;
-  glGetIntegerv(GL_RED_BITS,&red);
-  glGetIntegerv(GL_GREEN_BITS,&green);
-  glGetIntegerv(GL_BLUE_BITS,&blue);
-  glGetIntegerv(GL_ALPHA_BITS,&alpha);
-
   GLboolean rgbmode;
   glGetBooleanv(GL_RGBA_MODE, &rgbmode);
   if (!rgbmode) {
@@ -2231,33 +2237,30 @@ SoExtSelectionP::checkOffscreenRendererCapabilities()
     return FALSE;
   }
   
-  this->colorbitsred = red;
-  this->colorbitsgreen = green;
-  this->colorbitsblue = blue;
-  this->colorbitsalpha = alpha;
-
-  // This is debug/testing stuff, forcing lower colorresolution. VERY useful!
-#ifdef BITCOLOR9 
-  this->colorbitsred = 3;
-  this->colorbitsgreen = 3;
-  this->colorbitsblue = 3;
-#endif  
-#ifdef BITCOLOR3
-  this->colorbitsred = 1;
-  this->colorbitsgreen = 1;
-  this->colorbitsblue = 1;
-#endif  
-#ifdef BITCOLOR6
-  this->colorbitsred = 2;
-  this->colorbitsgreen = 2;
-  this->colorbitsblue = 2;
-#endif  
-
+  // Check color-channel bitresolution
+  GLint red, green, blue;
+  glGetIntegerv(GL_RED_BITS, &red);
+  glGetIntegerv(GL_GREEN_BITS, &green);
+  glGetIntegerv(GL_BLUE_BITS, &blue);
 
   // Calculate maximum colorcounter from RGB bit depth.
-  this->maximumcolorcounter = ((int) pow(2.0, this->colorbitsred) - 1) << (this->colorbitsgreen + this->colorbitsblue);
-  this->maximumcolorcounter += ((int) pow(2.0, this->colorbitsgreen) - 1) << (this->colorbitsblue);
-  this->maximumcolorcounter += ((int) pow(2.0, this->colorbitsblue));
+#ifndef COLORBITS
+  const double maxcols = pow(2, red + green + blue);
+#else // COLORBITS debug
+  // This is debug/testing stuff, forcing lower colorresolution. VERY
+  // useful for testing.
+  const double maxcols = pow(2, COLORBITS);
+#endif
+
+  this->maximumcolorcounter = (maxcols > UINT_MAX) ? UINT_MAX : (unsigned int)maxcols;
+
+  if (SoExtSelectionP::debug()) {
+    SoDebugError::postInfo("SoExtSelectionP::checkOffscreenRendererCapabilities",
+                           "GL_{color}_BITS==[%d, %d, %d] "
+                           "maximumcolorcounter==%d",
+                           red, green, blue,
+                           this->maximumcolorcounter);
+  }
 
   if (this->maximumcolorcounter < 2) {
     SoDebugError::post("SoExtSelectionP::checkOffscreenRendererCapabilities",
@@ -2288,7 +2291,7 @@ SoExtSelectionP::scanOffscreenBuffer(SoNode *sceneRoot)
   SbBool hitflag = FALSE;
 
   // Clear entire 'visibletrianglesbitarray' table
-  for(int i=0;i<((this->maximumcolorcounter >> 3)+1);i++)
+  for(unsigned int i=0;i<((this->maximumcolorcounter >> 3)+1);i++)
     this->visibletrianglesbitarray[i] = 0;
   
   SbBox2s rectbbox;
@@ -2408,9 +2411,10 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
 
     // Create offscreen renderer
     /*
-      FIXME: Due to the implementation of this node, offscreen rendering using
-      multiple subscreens will lead to erroneous results. Therefore we automatically
-      reduce the size of the offscreen to fit within the maximum offscreen limitations.
+      FIXME: Due to the implementation of this node, offscreen
+      rendering using multiple subscreens will lead to erroneous
+      results. Therefore we automatically reduce the size of the
+      offscreen to fit within the maximum offscreen limitations.
       (20020812 handegar)
     */
     unsigned int maxsize[2];
@@ -2469,15 +2473,20 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
       // First render pass to offscreen buffer.
       this->renderer->render(cbnode);
 
-      // This environment variable used for debuggin. If variable is
-      // found, the content for the offscreen is stored to disk for
-      // easy access.
-      const char * env = coin_getenv("COIN_EXTSELECTION_SAVE_OFFSCREENBUFFER");
-      if(env) this->renderer->writeToRGB(env);
+      // Debugging: if the envvar is set, the contents of the
+      // offscreen buffer are stored to disk for investigation.
+      static SbBool chkenv = FALSE;
+      static const char * dumpfilename = NULL;
+      if (chkenv == FALSE) {
+        dumpfilename = coin_getenv("COIN_EXTSELECTION_SAVE_OFFSCREENBUFFER");
+        chkenv = TRUE;
+      }
+      if (dumpfilename) { this->renderer->writeToRGB(dumpfilename); }
 
 
-      // Scan buffer marking visible colors in the 'visibletrianglesbitarray' array.
-      if(scanOffscreenBuffer(action->getCurPath()->getHead()) != 0){
+      // Scan buffer marking visible colors in the
+      // 'visibletrianglesbitarray' array.
+      if (this->scanOffscreenBuffer(action->getCurPath()->getHead()) != 0) {
         
         // Render once more, but only selected triangles which are forwarded
         // to client code through 'triangleFilterCB'.
