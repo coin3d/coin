@@ -247,7 +247,6 @@ public:
 #elif defined(HAVE_AGL)
     this->internaldata = new SoOffscreenAGLData();
 #endif // HAVE_AGL
-    this->forcepoweroftwo = -1;
   };
 
   ~SoOffscreenRendererP() {
@@ -291,8 +290,6 @@ public:
 
   SbBool lastnodewasacamera;
   SoCamera * visitedcamera;
-
-  int forcepoweroftwo;
 };
 
 // *************************************************************************
@@ -582,6 +579,9 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
   // For debugging purposes, it has been made possibly to use an
   // envvar to *force* tiled rendering even when it can be done in a
   // single chunk.
+  //
+  // (Note: don't use this envvar when using SoExtSelection nodes, for
+  // the reason noted below.)
   static int forcetiled = -1;
   if (forcetiled == -1) {
     const char * env = coin_getenv("COIN_FORCE_TILED_OFFSCREENRENDERING");
@@ -591,37 +591,14 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
                              "Forcing tiled rendering.");
     }
   }
-  SbBool tiledrendering =
+
+  // FIXME: tiled rendering should be decided on the exact same
+  // criteria as is used in SoExtSelection to decide which size to use
+  // for its offscreen-buffer, as that node fails in VISIBLE_SHAPE
+  // mode with tiled rendering. This is a weakness with SoExtSelection
+  // which should be improved upon, if possible. 20041028 mortene.
+  const SbBool tiledrendering =
     forcetiled || (fullsize[0] > tilesize[0]) || (fullsize[1] > tilesize[1]);
-
-  // work around a bug in the ATI drivers.
-
-  // FIXME: this code (which probably was just hiding a bug in our
-  // pbuffer allocation) can probably be removed now, as the
-  // underlying bug has been fixed, but check on freya that it will
-  // indeed give us non-power-of-two pbuffers first. 20040715 mortene.
-
-  if (!tiledrendering && (!coin_is_power_of_two(fullsize[0]) || !coin_is_power_of_two(fullsize[1]))) {
-    if (this->forcepoweroftwo < 0) {
-      this->forcepoweroftwo = 0;
-      // create a temporary context to test for ATI
-      void * ctx = cc_glglue_context_create_offscreen(32, 32);
-      if (ctx && cc_glglue_context_make_current(ctx)) {
-        const char * vendor = (const char *) glGetString(GL_VENDOR);
-        if (strcmp(vendor, "ATI Technologies Inc.") == 0) {
-          this->forcepoweroftwo = 1;
-        }
-        cc_glglue_context_reinstate_previous(ctx);
-      }
-      else {
-        SoDebugError::postInfo("SoOffscreenRendererP::renderFromBase",
-                               "Failed to create dummy");
-
-      }
-      cc_glglue_context_destruct(ctx);
-    }
-    tiledrendering = this->forcepoweroftwo != 0;
-  }
 
   this->internaldata->setBufferSize(tiledrendering ? tilesize : regionsize);
   if (!tiledrendering) { this->renderaction->setViewportRegion(this->viewport); }
