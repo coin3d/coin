@@ -41,12 +41,12 @@ THE WISH LIST
 
   [I would really like an SbVec2s field, 2000-12-07 pederb]
 
-* SbVec2i, SbVec2d, SbVec3d, SbVec4d
+* SbVec2i, SbVec2d, SbVec4d
   2000-12-07  Peder Blekken  <pederb@sim.no>
   [upwards compatible extension]
 
   It would be very useful to have these classes. SbVec2i for storing
-  2D integer vectors, SbVec2d, SbVec3d, SbVec4d for storing doubles.
+  2D integer vectors, SbVec2d, SbVec4d for storing doubles.
 
   The corresponding field classes should also be added.
 
@@ -507,7 +507,7 @@ THE WISH LIST
   Similarly, SbVec2f and SbVec2d would both be fixed to float and double,
   while SbVec2r could change, depending on the definition of SbReal.
 
-  See also item "SbVec2i, SbVec2d, SbVec3d, SbVec4d" earlier in this file.
+  See also item "SbVec2i, SbVec2d, SbVec4d" earlier in this file.
 
 * The SbBool typedef
   2001-09-05  Lars J. Aas  <larsa@sim.no>
@@ -661,5 +661,12 @@ THE WISH LIST
   Must be accompanied with some double-click preference/config setting
   functions too.  Might even consider putting it on the SoButtonEvent
   level.
+
+
+* SbBigNum type
+  2002-01-17  Lars J. Aas  <larsa@sim.no>
+  [upwards compatible extension]
+
+  ...with corresponding SbVec and field types.
 
 
