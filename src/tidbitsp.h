@@ -33,6 +33,8 @@ FILE * coin_get_stdout(void);
 FILE * coin_get_stderr(void);
 SbBool coin_is_file_valid(FILE * fp);
 
+void coin_atexit_cleanup(void);
+
 /* ********************************************************************** */
 
 #ifdef __cplusplus

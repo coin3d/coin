@@ -125,6 +125,7 @@
 #include <Inventor/SoDB.h>
 
 #include <Inventor/C/tidbits.h>
+#include <../tidbitsp.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/details/SoDetail.h>
@@ -551,6 +552,25 @@ SoDBP::clean(void)
 }
 
 /*!
+  Invoke this method as the last call of the application code, to
+  trigger a clean-up of all static resources used by the Coin library.
+
+  This is usually not necessary for stand-alone executable
+  applications, as the operating system will take care of cleaning up
+  after the process as it exits.
+
+  It may be necessary to invoke this method to avoid leaks for
+  "special" execution environments, though, like if the Coin library
+  is used as e.g. a browser plug-in, or some other type of component
+  which can be started, shut down and restarted multiple times.
+ */
+void
+SoDB::cleanup(void)
+{
+  coin_atexit_cleanup();
+}
+
+/*!
   Returns a text string containing the name of the library and version
   information.
 */
@@ -944,14 +964,16 @@ SoDB::createGlobalField(const SbName & name, SoType type)
   If there exist a global field with the given \a name, return a
   pointer to it. If there is no field with this name, return \c NULL.
 
-  Of particular interest is the \e realTime global field set up by the
+  Of particular interest is the \c realTime global field set up by the
   library on initialization. This field is used as a source field to
   all the autonomous animation objects within the library, like for
-  instance the SoTimeCounter engine or the SoRotor node. So if you
-  want to control the speed of "action" within a (partly) animating
-  scene, grab the global field named "realTime", call
-  SoDB::enableRealTimeSensor(FALSE), and control the realTime field
-  yourself.
+  instance the SoTimeCounter engine or the SoRotor node.
+
+  If you want to control the speed of "action" of a scene with
+  animating / moving components (for instance for doing fixed
+  frame-time snapshots for generating a movie), grab the global field
+  named "realTime" and use it in the manner depicted in the class
+  documentation of the SoOffscreenRenderer class.
 
   \sa createGlobalField(), renameGlobalField()
 */

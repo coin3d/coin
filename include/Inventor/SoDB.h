@@ -46,6 +46,7 @@ typedef void SoDBHeaderCB(void * data, SoInput * in);
 class COIN_DLL_API SoDB {
 public:
   static void init(void);
+  static void cleanup(void);
 
   static const char * getVersion(void);
   static SbBool read(SoInput * in, SoPath *& path);
