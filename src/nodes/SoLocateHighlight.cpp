@@ -131,9 +131,10 @@ SoLocateHighlight::turnOffCurrentHighlight(SoGLRenderAction * /* action */)
   FIXME: write doc
  */
 void
-SoLocateHighlight::handleEvent(SoHandleEventAction * /* action */)
+SoLocateHighlight::handleEvent(SoHandleEventAction *action)
 {
-  COIN_STUB();
+  // FIXME: implement (pederb)
+  inherited::handleEvent(action);
 }
 
 /*!
