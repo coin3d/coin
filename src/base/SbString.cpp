@@ -50,7 +50,8 @@
 
 SbString::SbString(void)
 {
-  this->sstring = this->staticStorage;
+  this->sstring = this->staticstorage;
+  this->storagesize = SB_STRING_STATIC_STORAGE_SIZE;
   this->sstring[0] = '\0';
 }
 
@@ -60,7 +61,8 @@ SbString::SbString(void)
 
 SbString::SbString(const SbString & str)
 {
-  this->sstring = this->staticStorage;
+  this->sstring = this->staticstorage;
+  this->storagesize = SB_STRING_STATIC_STORAGE_SIZE;
   *this = str.sstring;
 }
 
@@ -70,7 +72,8 @@ SbString::SbString(const SbString & str)
 
 SbString::SbString(const char * str)
 {
-  this->sstring = this->staticStorage;
+  this->sstring = this->staticstorage;
+  this->storagesize = SB_STRING_STATIC_STORAGE_SIZE;
   *this = str;
 }
 
@@ -117,16 +120,18 @@ SbString::SbString(const char * str, int start, int end)
   }
 #endif // COIN_DEBUG
 
-  int size=end-start+1;
+  int size = end - start + 1;
 
-  if (size<SB_STRING_STATIC_STORAGE_SIZE)
-    this->sstring=this->staticStorage;
+  if (size < SB_STRING_STATIC_STORAGE_SIZE) {
+    this->sstring = this->staticstorage;
+    this->storagesize = SB_STRING_STATIC_STORAGE_SIZE;
+  }
   else {
-    this->sstring=new char[size+1];
-    this->storageSize=size+1;
+    this->sstring = new char[size+1];
+    this->storagesize = size+1;
   }
 
-  strncpy(this->sstring, str+start, size);
+  (void)strncpy(this->sstring, str + start, size);
   this->sstring[size]='\0';
 }
 
@@ -170,67 +175,67 @@ SbString::addIntString(const int value)
 
 /*!
   This method returns a new string which contains a substring defined by the
-  given indices \a startChar and \a endChar (inclusive).
-  If \a endChar is -1, the substring from \a startChar to the end of the
+  given indices \a startidx and \a endChar (inclusive).
+  If \a endChar is -1, the substring from \a startidx to the end of the
   string is used.
 
-  This will return a string which is (\a endChar - \a startChar + 1) characters
+  This will return a string which is (\a endChar - \a startidx + 1) characters
   long, i.e. if this string is "foo/bar" and we call by
   SbString::getSubString(0, 3), the returned string will be "foo/".
 */
 
 SbString
-SbString::getSubString(int startChar, int endChar) const
+SbString::getSubString(int startidx, int endidx) const
 {
-  if (endChar == -1) endChar = this->getLength()-1;
+  if (endidx == -1) endidx = this->getLength()-1;
 
 #if COIN_DEBUG
-  if (endChar < 0 || endChar >= this->getLength()) {
+  if (endidx < 0 || endidx >= this->getLength()) {
     SoDebugError::postWarning("SbString::getSubString",
-                              "endChar index %d out of bounds.",
-                              endChar);
+                              "endidx index %d out of bounds.",
+                              endidx);
     return SbString("");
   }
-  if (startChar < 0 || startChar >= this->getLength()) {
+  if (startidx < 0 || startidx >= this->getLength()) {
     SoDebugError::postWarning("SbString::getSubString",
-                              "startChar index %d out of bounds.",
-                              startChar);
+                              "startidx index %d out of bounds.",
+                              startidx);
     return SbString("");
   }
-  if (startChar > endChar) {
+  if (startidx > endidx) {
     SoDebugError::postWarning("SbString::getSubString",
-                              "startChar idx %d larger than endChar idx %d.",
-                              startChar, endChar);
+                              "startidx idx %d larger than endidx idx %d.",
+                              startidx, endidx);
     return SbString("");
   }
 #endif // COIN_DEBUG
-  return SbString(this->sstring, startChar, endChar);
+  return SbString(this->sstring, startidx, endidx);
 }
 
 /*!
-  This method deletes the substring defined by \a startChar and \a endChar
-  (inclusive).  If \a endChar is -1, the substring from \a startChar to the
+  This method deletes the substring defined by \a startidx and \a endidx
+  (inclusive).  If \a endidx is -1, the substring from \a startidx to the
   end of the string is deleted.
 */
 
 void
-SbString::deleteSubString(int startChar, int endChar)
+SbString::deleteSubString(int startidx, int endidx)
 {
   int len = this->getLength();
-  if (endChar == -1) endChar = len - 1;
+  if (endidx == -1) endidx = len - 1;
 
 #if COIN_DEBUG
-  if (startChar < 0 || startChar >= len || endChar < 0 || endChar >= len ||
-      startChar > endChar) {
+  if (startidx < 0 || startidx >= len || endidx < 0 || endidx >= len ||
+      startidx > endidx) {
     SoDebugError::postWarning("SbString::deleteSubString",
                               "invalid arguments [%d, %d] for string ``%s''",
-                              startChar, endChar, this->sstring);
+                              startidx, endidx, this->sstring);
     return;
   }
 #endif // COIN_DEBUG
 
-  (void)memmove(this->sstring + startChar, this->sstring + endChar + 1,
-                strlen(this->sstring) - endChar);
+  (void)memmove(this->sstring + startidx, this->sstring + endidx + 1,
+                strlen(this->sstring) - endidx);
 }
 
 /*!
@@ -239,8 +244,7 @@ SbString::deleteSubString(int startChar, int endChar)
 
 SbString::~SbString()
 {
-  if (this->sstring != this->staticStorage)
-    delete[] this->sstring;
+  if (this->sstring != this->staticstorage) delete[] this->sstring;
 }
 
 /*!
@@ -279,7 +283,7 @@ SbString::hash(const char * s)
 */
 
 int
-SbString::getLength() const
+SbString::getLength(void) const
 {
   return strlen(this->sstring);
 }
@@ -289,24 +293,25 @@ SbString::getLength() const
 */
 
 const char *
-SbString::getString() const
+SbString::getString(void) const
 {
   return this->sstring;
 }
 
 /*!
   This method clears the string, making it an empty string ("").
-  If \a freeOld is \e TRUE (which is the default), the memory used by the
+  If \a freeold is \c TRUE (which is the default), the memory used by the
   old string is freed.  Otherwise, memory will be kept and reused when the
   string is manipulated later.
 */
 
 void
-SbString::makeEmpty(SbBool freeOld)
+SbString::makeEmpty(SbBool freeold)
 {
-  if (this->sstring != this->staticStorage) {
-    if (freeOld) delete[] this->sstring;
-    this->sstring = this->staticStorage;
+  if (this->sstring != this->staticstorage) {
+    if (freeold) delete[] this->sstring;
+    this->sstring = this->staticstorage;
+    this->storagesize = SB_STRING_STATIC_STORAGE_SIZE;
   }
   this->sstring[0] = '\0';
 }
@@ -336,33 +341,19 @@ SbString::operator [](int index) const
 SbString &
 SbString::operator =(const char * str)
 {
-  static char dummystring[1] = {0};
+  static char dummystring[] = "";
   if (str == NULL) str = dummystring; // handle NULL pointers
 
   int size = strlen(str) + 1;
-  if (str >= this->sstring && str < this->sstring +
-      (this->sstring != this->staticStorage ?
-       this->storageSize : SB_STRING_STATIC_STORAGE_SIZE)) {
 
-    this->deleteSubString(0, str-this->sstring);
+  // Detect if the str pointer is within our own string buffer.
+  if (str >= this->sstring && str < (this->sstring + this->storagesize)) {
+    this->deleteSubString(0, str - this->sstring);
     return *this;
   }
 
-  if (size < SB_STRING_STATIC_STORAGE_SIZE) {
-    if (this->sstring != this->staticStorage)
-      this->makeEmpty();
-  }
-
-  else if (this->sstring == this->staticStorage)
-    this->sstring = new char[size];
-
-  else if (size > this->storageSize) {
-    delete[] this->sstring;
-    this->sstring = new char[size];
-  }
-
-  strcpy(this->sstring, str);
-  this->storageSize = size;
+  if (size > this->storagesize) this->expand(size - strlen(this->sstring) - 1);
+  (void)strcpy(this->sstring, str);
   return *this;
 }
 
@@ -385,7 +376,7 @@ SbString::operator +=(const char * str)
 {
   if (str) {
     this->expand(strlen(str));
-    strcat(this->sstring, str);
+    (void)strcat(this->sstring, str);
   }
   return *this;
 }
@@ -397,7 +388,7 @@ SbString::operator +=(const char * str)
 SbString &
 SbString::operator +=(const SbString & str)
 {
-  (*this)+=str.getString();
+  (*this) += str.getString();
   return *this;
 }
 
@@ -418,8 +409,8 @@ SbString::operator +=(const char c)
 }
 
 /*!
-  This unary operator results in \e TRUE if the current string is empty ("")
-  or \e FALSE otherwise.
+  This unary operator results in \c TRUE if the current string is empty ("")
+  or \c FALSE otherwise.
 */
 
 int
@@ -488,24 +479,21 @@ operator != (const SbString & str1, const SbString & str2)
   return (str1 != str2.sstring);
 }
 
-// Increase internal buffer size.
+// Set the internal buffer size to the length of the current string
+// plus additional plus 1.
 void
-SbString::expand(int bySize)
+SbString::expand(int additional)
 {
-  int newSize = strlen(this->sstring) + bySize + 1;
+  int newsize = strlen(this->sstring) + additional + 1;
 
-  if (newSize >= SB_STRING_STATIC_STORAGE_SIZE &&
-      (this->sstring == this->staticStorage || newSize > this->storageSize)) {
+  if (newsize > this->storagesize) {
+    char * newstring = new char[newsize];
+    (void)strcpy(newstring, this->sstring);
 
-    char * newString = new char[newSize];
+    if (this->sstring != this->staticstorage) delete[] this->sstring;
 
-    strcpy(newString, this->sstring);
-
-    if (this->sstring != this->staticStorage)
-      delete[] this->sstring;
-
-    this->sstring = newString;
-    this->storageSize = newSize;
+    this->sstring = newstring;
+    this->storagesize = newsize;
   }
 }
 
@@ -521,10 +509,11 @@ SbString::expand(int bySize)
 SbString &
 SbString::sprintf(const char * formatstr, ...)
 {
-  va_list argptr;
-  va_start(argptr, formatstr);
-  this->vsprintf(formatstr, argptr);
-  va_end(argptr);
+  va_list args;
+  va_start(args, formatstr);
+  while (vsnprintf(this->sstring, this->storagesize, formatstr, args) == -1)
+    this->expand(1024); // increase linearly in 1Kb intervals
+  va_end(args);
   return *this;
 }
 
@@ -540,7 +529,7 @@ SbString::sprintf(const char * formatstr, ...)
 SbString &
 SbString::vsprintf(const char * formatstr, va_list args)
 {
-  while (vsnprintf(this->sstring, this->storageSize, formatstr, args) == -1)
+  while (vsnprintf(this->sstring, this->storagesize, formatstr, args) == -1)
     this->expand(1024); // increase linearly in 1Kb intervals
   return *this;
 }
@@ -555,6 +544,6 @@ void
 SbString::print(FILE * file) const
 {
 #if COIN_DEBUG
-  fprintf(file, "'%s'\n", this->getString());
+  (void)fprintf(file, "'%s'\n", this->getString());
 #endif // COIN_DEBUG
 }

@@ -27,7 +27,8 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-#define SB_STRING_STATIC_STORAGE_SIZE 32
+#define SB_STRING_STATIC_STORAGE_SIZE 128
+
 
 class SbString {
 public:
@@ -35,14 +36,14 @@ public:
   SbString(const char * str);
   SbString(const char * str, int start, int end);
   SbString(const SbString & str);
-  ~SbString(void);
+  ~SbString();
 
   uint32_t hash(void);
   int getLength(void) const;
-  void makeEmpty(SbBool freeOld = TRUE);
+  void makeEmpty(SbBool freeold = TRUE);
   const char * getString(void) const;
-  SbString getSubString(int startChar, int endChar = -1) const;
-  void deleteSubString(int startChar, int endChar = -1);
+  SbString getSubString(int startidx, int endidx = -1) const;
+  void deleteSubString(int startidx, int endidx = -1);
 
   void addIntString(const int value);
 
@@ -68,9 +69,9 @@ public:
 
 private:
   char * sstring;
-  int storageSize;
-  char staticStorage[ SB_STRING_STATIC_STORAGE_SIZE ];
-  void expand(int bySize);
+  int storagesize;
+  char staticstorage[SB_STRING_STATIC_STORAGE_SIZE];
+  void expand(int additional);
 };
 
 #endif // !COIN_SBSTRING_H
