@@ -33,7 +33,7 @@ public:
   static SoType getClassTypeId(void);
   virtual SoType getTypeId(void) const;
 
-  SoField * SoGlobalField::getGlobalField(void) const;
+  SoField * getGlobalField(void) const;
   virtual const SoFieldData * getFieldData(void) const;
 
   virtual void setName(const SbName & newname);
@@ -41,12 +41,23 @@ public:
   virtual void addWriteReference(SoOutput * out, SbBool isfromfield = FALSE);
   virtual void writeInstance(SoOutput * out);
 
+  static SoGlobalField * getGlobalFieldContainer(const SbName & name);
+  static void removeGlobalFieldContainer(SoGlobalField * fieldcontainer);
+  static SoBaseList * getGlobalFieldContainers(void);
+
 protected:
   ~SoGlobalField();
 
+  virtual SbBool readInstance(SoInput * in, unsigned short flags);
+
 private:
+  static void * createInstance(void);
+  static void clean(void);
+  static int getGlobalFieldIndex(const SbName & name);
+
   static SoType classTypeId;
   SoFieldData * classfielddata;
+  static SoBaseList * allcontainers;
 };
 
 #endif // !__SOGLOBALFIELD_H__

@@ -891,11 +891,12 @@ SoInput::read(SbName & n, SbBool validIdent)
       if (!this->read(s)) return FALSE;
 
       // Strip off any "{" or "}" characters.
-      int idx = s.getLength()-1;
-      assert(idx >= 0);
       const char * cstr = s.getString();
-      assert(cstr && strlen(cstr) == (size_t)s.getLength());
-      while (((cstr[idx] == '{') || (cstr[idx] == '}')) && (idx > 0)) idx--;
+      int idx = s.getLength()-1;
+      if (idx >= 0) {
+        assert(cstr && strlen(cstr) == (size_t)s.getLength());
+        while (((cstr[idx] == '{') || (cstr[idx] == '}')) && (idx > 0)) idx--;
+      }
 
       if (idx == s.getLength()-1) {
         // No trailing '{' or '}'.
@@ -970,7 +971,7 @@ READ_NUM(readReal, double, num, type)
 
 /*!
   Read integer from current file or buffer position and place it in \a i.
-  Returns \a FALSE if we hit end of file prematurely.
+  Returns \c FALSE if we hit end of file prematurely.
  */
 SbBool
 SoInput::read(int & i)

@@ -35,7 +35,6 @@ typedef struct fd_set fd_set;
 class SbName;
 class SbTime;
 class SoBase;
-class SoBaseList;
 class SoField;
 class SoFieldConverter;
 class SoInput;
@@ -105,13 +104,11 @@ public:
 private:
   static void clean(void);
   static void updateRealTimeFieldCB(void * data, SoSensor * sensor);
-  static int getGlobalFieldIndex(const SbName & name);
 
   static SbList<SoDB_HeaderInfo *> * headerlist;
   static SoSensorManager * sensormanager;
   static SoTimerSensor * globaltimersensor;
   static SbTime * realtimeinterval;
-  static SoBaseList * globalfieldcontainers;
   static SbDict * converters;
   static int notificationcounter;
   static SbBool isinitialized;

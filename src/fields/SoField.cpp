@@ -1173,6 +1173,8 @@ SoField::copyConnection(const SoField * fromfield)
   Reads and sets the value of this field from the given SoInput instance.
   Returns \c FALSE if the field value can not be parsed from the input.
 
+  This field has the \a name given as the second argument.
+
   \sa set(), write()
  */
 SbBool
@@ -1279,7 +1281,9 @@ SoField::write(SoOutput * out, const SbName & name) const
       out->write(IGNOREDCHAR);
     }
 
-    if (this->isConnected()) this->writeConnection(out);
+    SbName dummy;
+    SoFieldContainer * fc = this->resolveWriteConnection(dummy);
+    if (fc && fc->shouldWrite()) this->writeConnection(out);
 
     out->write('\n');
   }
@@ -1292,12 +1296,13 @@ SoField::write(SoOutput * out, const SbName & name) const
     unsigned int flags = 0;
     if (this->isIgnored()) flags |= SoField::IGNORED;
     SbName dummy;
-    if (this->resolveWriteConnection(dummy)) flags |= SoField::CONNECTED;
+    SoFieldContainer * fc = this->resolveWriteConnection(dummy);
+    if (fc && fc->shouldWrite()) flags |= SoField::CONNECTED;
     if (this->isDefault()) flags |= SoField::DEFAULT;
 
     out->write(flags);
 
-    if (this->isConnected()) this->writeConnection(out);
+    if (fc && fc->shouldWrite()) this->writeConnection(out);
   }
 }
 
@@ -1560,22 +1565,17 @@ SoField::writeConnection(SoOutput * out) const
     out->write(CONNECTIONCHAR);
   }
 
-#if 1 // OBSOLETED? use the more generic code below -- if it is correct.
-      // 20000130 mortene.
-  if (fc->isOfType(SoEngine::getClassTypeId())) {
-    COIN_STUB();
-  }
-  else {
-    // FIXME: is this the correct thing to do if fc is an
-    // SoVRMLInterpolator? 20000129 mortene.
+  if (fc->isOfType(SoNode::getClassTypeId())) {
     SoWriteAction wa(out);
     wa.continueToApply((SoNode *)fc);
   }
-#else // NEW CODE
-  // FIXME: ouch, this doesn't cut it. Look at the code in
-  // SoNode::write() to see what has to be done. 20000130 mortene.
-  fc->writeInstance(out);
-#endif // NEW CODE
+  else {
+    // Note: for this to work, classes inheriting SoFieldContainer
+    // which are _not_ also inheriting from SoNode must call
+    // SoBase::writeHeader() and SoBase::writeFooter().
+    fc->writeInstance(out);
+    // FIXME: does this work for engines? 20000131 mortene.
+  }
 
   if (!out->isBinary()) {
     out->indent();
@@ -1605,12 +1605,6 @@ SoField::resolveWriteConnection(SbName & mastername) const
     // FIXME: won't this fail with global fields? Check and
     // fix. 19990707 mortene.
     assert(fc);
-
-    // This will trigger if the field container is not in the
-    // graph. If this is the case, we just discard the write operation
-    // on the connection (but we'll still perform an evaluation to get
-    // the master's value).
-    if (!fc->shouldWrite()) return NULL;
 
     SbBool ok = fc->getFieldName(fieldmaster, mastername);
     assert(ok);

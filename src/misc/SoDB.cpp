@@ -107,7 +107,6 @@ SoTimerSensor * SoDB::globaltimersensor = NULL;
 SbDict * SoDB::converters = NULL;
 int SoDB::notificationcounter = 0;
 SbBool SoDB::isinitialized = FALSE;
-SoBaseList * SoDB::globalfieldcontainers = NULL;
 
 // *************************************************************************
 
@@ -208,9 +207,6 @@ SoDB::init(void)
 
   SoDB::realtimeinterval->setValue(1.0/12.0);
 
-  // Keep all SoGlobalField instances under this group node.
-  SoDB::globalfieldcontainers = new SoBaseList;
-
   SoDB::createGlobalField("realTime", SoSFTime::getClassTypeId());
 
   SoDB::globaltimersensor = new SoTimerSensor;
@@ -246,7 +242,6 @@ SoDB::clean(void)
   delete SoDB::globaltimersensor;
 
   delete SoDB::converters;
-  delete SoDB::globalfieldcontainers;
   delete SoDB::realtimeinterval;
   delete SoDB::sensormanager;
   delete SoDB::headerlist;
@@ -571,25 +566,11 @@ SoDB::createGlobalField(const SbName & name, SoType type)
   }
 #endif // COIN_DEBUG
 
-  SoField * newfield = (SoField *)type.createInstance();
   // (Deallocation of the field happens in the SoGlobalField
   // destructor.)
-
+  SoField * newfield = (SoField *)type.createInstance();
   SoGlobalField * gf = new SoGlobalField(name, newfield);
-  SoDB::globalfieldcontainers->append(gf);
-
   return newfield;
-}
-
-// Return index in list of global fields of the global field with the
-// given name. Returns -1 if no global field exists with this name.
-int
-SoDB::getGlobalFieldIndex(const SbName & name)
-{
-  int idx = SoDB::globalfieldcontainers->getLength() - 1;
-  while (idx >= 0 && (*SoDB::globalfieldcontainers)[idx]->getName() != name)
-    idx--;
-  return idx;
 }
 
 /*!
@@ -601,10 +582,8 @@ SoDB::getGlobalFieldIndex(const SbName & name)
 SoField *
 SoDB::getGlobalField(const SbName & name)
 {
-  int idx = SoDB::getGlobalFieldIndex(name);
-  if (idx == -1) return NULL;
-  SoGlobalField * gf = (SoGlobalField *)(*SoDB::globalfieldcontainers)[idx];
-  return gf->getGlobalField();
+  SoGlobalField * gf = SoGlobalField::getGlobalFieldContainer(name);
+  return gf ? gf->getGlobalField() : NULL;
 }
 
 /*!
@@ -617,10 +596,10 @@ SoDB::getGlobalField(const SbName & name)
 void
 SoDB::renameGlobalField(const SbName & from, const SbName & to)
 {
-  int idx = SoDB::getGlobalFieldIndex(from);
+  SoGlobalField * gf = SoGlobalField::getGlobalFieldContainer(from);
 
 #if COIN_DEBUG
-  if (idx == -1) {
+  if (gf == NULL) {
     SoDebugError::postWarning("SoDB::renameGlobalField",
                               "Couldn't find global field '%s' to rename.",
                               from.getString());
@@ -629,14 +608,12 @@ SoDB::renameGlobalField(const SbName & from, const SbName & to)
 #endif // COIN_DEBUG
 
   if (to == "") { // Remove field.
-    SoDB::globalfieldcontainers->remove(idx);
+    SoGlobalField::removeGlobalFieldContainer(gf);
   }
   else {
-    SoGlobalField * gf = (SoGlobalField *)(*SoDB::globalfieldcontainers)[idx];
-  
     // Existing entry by same name? If so, remove it.
-    int nidx = SoDB::getGlobalFieldIndex(to);
-    if (nidx != -1) SoDB::globalfieldcontainers->remove(nidx);
+    SoGlobalField * old = SoGlobalField::getGlobalFieldContainer(to);
+    if (old) SoGlobalField::removeGlobalFieldContainer(old);
 
     gf->setName(to);
   }
