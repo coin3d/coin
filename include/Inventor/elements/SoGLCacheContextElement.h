@@ -73,8 +73,11 @@ private:
 private:
   int context;
   SbBool twopass;
-  SbBool remote;
   int autocachebits;
+
+  enum { RENDERING_UNSET, RENDERING_SET_DIRECT, RENDERING_SET_INDIRECT };
+  int rendering;
+  SbBool isDirectRendering(SoState * state) const;
 };
 
 

@@ -97,10 +97,10 @@ SoGLCacheContextElement::~SoGLCacheContextElement()
 void
 SoGLCacheContextElement::init(SoState * state)
 {
-  // these values will be set int set(), but initialize them anyway
+  // these values will be set up in set(), but initialize them anyway
   this->context = 0;
   this->twopass = FALSE;
-  this->remote = FALSE;
+  this->rendering = RENDERING_UNSET;
   this->autocachebits = 0;
 }
 
@@ -113,7 +113,7 @@ SoGLCacheContextElement::matches(const SoElement * elt) const
   return
     this->context == elem->context &&
     this->twopass == elem->twopass &&
-    this->remote == elem->remote;
+    this->rendering == elem->rendering;
 }
 
 // doc from parent
@@ -124,7 +124,7 @@ SoGLCacheContextElement::copyMatchInfo(void) const
     this->getTypeId().createInstance();
   elem->context = this->context;
   elem->twopass = this->twopass;
-  elem->remote = this->remote;
+  elem->rendering = this->rendering;
   return elem;
 }
 
@@ -139,7 +139,7 @@ SoGLCacheContextElement::set(SoState * state, int context,
   SoGLCacheContextElement * elem = (SoGLCacheContextElement *)
     state->getElementNoPush(classStackIndex);
   elem->twopass = twopasstransparency;
-  elem->remote = remoterendering;
+  elem->rendering = remoterendering ? RENDERING_SET_INDIRECT : RENDERING_SET_DIRECT;
   elem->autocachebits = 0;
   elem->context = context;
   if (context > biggest_cache_context_id) {
@@ -280,6 +280,22 @@ SoGLCacheContextElement::setAutoCacheBits(SoState * state, int bits)
   elem->autocachebits = bits;
 }
 
+// Private function which "unwinds" the real value of the "rendering"
+// variable.
+SbBool
+SoGLCacheContextElement::isDirectRendering(SoState * state) const
+{
+  SbBool isdirect;
+  if (this->rendering == RENDERING_UNSET) {
+    const cc_glglue * w = sogl_glue_instance(state);
+    isdirect = cc_glglue_isdirect(w);
+  }
+  else {
+    isdirect = this->rendering == RENDERING_SET_DIRECT;
+  }
+  return isdirect;
+}
+
 /*!
   Not properly supported yet.
 */
@@ -289,19 +305,21 @@ SoGLCacheContextElement::resetAutoCacheBits(SoState * state)
   SoGLCacheContextElement *elem = (SoGLCacheContextElement *)
     state->getElementNoPush(classStackIndex);
   int ret = elem->autocachebits;
-  elem->autocachebits = elem->remote ? DO_AUTO_CACHE : 0;
+
+  elem->autocachebits = elem->isDirectRendering(state) ? 0 : DO_AUTO_CACHE;
+
   return ret;
 }
 
 /*!
-  Returns TRUE if rendering is remote.
+  Returns \c TRUE if rendering is indirect / remote.
 */
 SbBool
 SoGLCacheContextElement::getIsRemoteRendering(SoState * state)
 {
   const SoGLCacheContextElement *elem = (const SoGLCacheContextElement *)
     state->getConstElement(classStackIndex);
-  return elem->remote;
+  return !elem->isDirectRendering(state);
 }
 
 //
