@@ -125,9 +125,11 @@ SoProtoInstance::SoProtoInstance(SoProto * proto,
   Destructor.
 */
 SoProtoInstance::~SoProtoInstance()
-{
-  this->setRootNode(NULL);
+{ 
   delete THIS->rootsensor;
+  THIS->rootsensor = NULL;
+
+  this->setRootNode(NULL);
   const int n = THIS->fielddata->getNumFields();
   for (int i = 0; i < n; i++) {
     delete THIS->fielddata->getField(this, i);
@@ -179,11 +181,11 @@ SoProtoInstance::setRootNode(SoNode * root)
   CC_MUTEX_LOCK(protoinstance_mutex);
   if (THIS->root) {
     protoinstance_dict->remove((unsigned long) THIS->root);
-    THIS->rootsensor->detach();
+    if (THIS->rootsensor) THIS->rootsensor->detach();
   }
   THIS->root = root;
   if (root) {
-    THIS->rootsensor->attach(root);
+    if (THIS->rootsensor) THIS->rootsensor->attach(root);
     protoinstance_dict->enter((unsigned long) root, (void*) this);
   }
   CC_MUTEX_UNLOCK(protoinstance_mutex);

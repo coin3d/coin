@@ -279,7 +279,7 @@ SoSensorManager::insertDelaySensor(SoDelayQueueSensor * newentry)
     if (!THIS->timeoutsensor->isScheduled() &&
         THIS->delaysensortimeout != SbTime::zero()) {
       THIS->timeoutsensor->setTimeFromNow(THIS->delaysensortimeout);
-      THIS->timeoutsensor->schedule();
+      //THIS->timeoutsensor->schedule();
     }
 
     LOCK_DELAY_QUEUE(this);
@@ -575,7 +575,7 @@ SoSensorManager::processDelayQueue(SbBool isidle)
   // isn't currently scheduled, schedule it.
   if (THIS->delayqueue.getLength() && !THIS->timeoutsensor->isScheduled()) {
     THIS->timeoutsensor->setTimeFromNow(THIS->delaysensortimeout);
-    THIS->timeoutsensor->schedule();
+    //THIS->timeoutsensor->schedule();
   }
 }
 
@@ -741,7 +741,7 @@ SoSensorManager::setDelaySensorTimeout(const SbTime & t)
   }
   else if (THIS->delayqueue.getLength()) {
     THIS->timeoutsensor->setTimeFromNow(t);
-    THIS->timeoutsensor->schedule();
+    //THIS->timeoutsensor->schedule();
   }
 }
 

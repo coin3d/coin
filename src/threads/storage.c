@@ -43,14 +43,14 @@
 #include <Inventor/C/threads/storage.h>
 #include <Inventor/C/threads/storagep.h>
 
-/* FIXME: instead of doing all the HAVE_THREADS wrapping in the code
+/* FIXME: instead of doing all the COIN_THREADSAFE wrapping in the code
    of this file, perhaps it would be cleaner to make the cc_thread and
    cc_mutex interfaces *working*, dummy skeletons when no thread
    abstractions are available?  20040615 mortene. */
-#ifdef HAVE_THREADS
+#ifdef COIN_THREADSAFE
 #include <Inventor/C/threads/thread.h>
 #include <Inventor/C/threads/mutex.h>
-#endif /* HAVE_THREADS */
+#endif /* COIN_THREADSAFE */
 
 /* ********************************************************************** */
 
@@ -69,9 +69,9 @@ cc_storage_init(unsigned int size, void (*constructor)(void *),
   storage->constructor = constructor;
   storage->destructor = destructor;
   storage->dict = cc_hash_construct(8, 0.75f);
-#ifdef HAVE_THREADS
+#ifdef COIN_THREADSAFE
   storage->mutex = cc_mutex_construct();
-#endif /* HAVE_THREADS */
+#endif /* COIN_THREADSAFE */
 
   return storage;
 }
@@ -114,9 +114,9 @@ cc_storage_destruct(cc_storage * storage)
   cc_hash_apply(storage->dict, cc_storage_hash_destruct_cb, storage);
   cc_hash_destruct(storage->dict);
 
-#ifdef HAVE_THREADS
+#ifdef COIN_THREADSAFE
   cc_mutex_destruct(storage->mutex);
-#endif /* HAVE_THREADS */
+#endif /* COIN_THREADSAFE */
 
   free(storage);
 }
@@ -132,11 +132,11 @@ cc_storage_get(cc_storage * storage)
   void * val;
   unsigned long threadid = 0;
 
-#ifdef HAVE_THREADS
+#ifdef COIN_THREADSAFE
   threadid = cc_thread_id();
 
   cc_mutex_lock(storage->mutex);
-#endif /* HAVE_THREADS */
+#endif /* COIN_THREADSAFE */
 
   if (!cc_hash_get(storage->dict, threadid, &val)) {
     val = malloc(storage->size);
@@ -146,9 +146,9 @@ cc_storage_get(cc_storage * storage)
     (void) cc_hash_put(storage->dict, threadid, val);
   }
 
-#ifdef HAVE_THREADS
+#ifdef COIN_THREADSAFE
   cc_mutex_unlock(storage->mutex);
-#endif /* HAVE_THREADS */
+#endif /* COIN_THREADSAFE */
 
   return val;
 }
@@ -181,13 +181,13 @@ cc_storage_apply_to_all(cc_storage * storage,
   mydata.func = func;
   mydata.closure = closure;
 
-#ifdef HAVE_THREADS
+#ifdef COIN_THREADSAFE
   cc_mutex_lock(storage->mutex);
   cc_hash_apply(storage->dict, storage_hash_apply, &mydata);
   cc_mutex_unlock(storage->mutex);
-#else /* ! HAVE_THREADS */
+#else /* ! COIN_THREADSAFE */
   cc_hash_apply(storage->dict, storage_hash_apply, &mydata);
-#endif /* ! HAVE_THREADS */
+#endif /* ! COIN_THREADSAFE */
 
 }
 

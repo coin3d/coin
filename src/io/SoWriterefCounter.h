@@ -28,6 +28,9 @@ class SoWriterefCounterP;
 class SoOutput;
 class SoBase;
 class SbString;
+class SbDict;
+class SoFieldContainer;
+class SoProto;
 
 #ifndef COIN_INTERNAL
 #error this is a private header file
@@ -36,12 +39,12 @@ class SbString;
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbName.h>
 
+
 class SoWriterefCounter {
 public:
   static void initClass(void);
-  
+
   static void setInstancePrefix(const SbString & s);
-  
   static void create(SoOutput * out, SoOutput * copyfrom);
   static void destruct(SoOutput * out);
 
@@ -54,11 +57,11 @@ public:
   void setWriteref(const SoBase * base, const int ref);
   void removeWriteref(const SoBase * base);
   void decrementWriteref(const SoBase * base);
-  
+
   SbBool isInGraph(const SoBase * base) const;
   void setInGraph(const SoBase * base, const SbBool ingraph);
   void debugCleanup(void);
-  
+
   enum RefId {
     // Reference id if we don't need to add a suffix to the node name
     NOSUFFIX = -2,
@@ -70,6 +73,25 @@ public:
   int findReference(const SoBase * base) const;
   void setReference(const SoBase * base, int refid);
   void removeSoBase2IdRef(const SoBase * base);
+
+  void pushRoutes(const SbBool copyprev);
+  void popRoutes(void);
+  void resolveRoutes(void);
+  void addRoute(SoFieldContainer * from, const SbName & fromfield,
+                SoFieldContainer * to, const SbName & tofield);
+
+  void addDEFNode(SbName name);
+  SbBool lookupDEFNode(SbName name);
+  void removeDEFNode(SbName name);
+  void pushDefNames(const SbBool copyprev);
+  void popDefNames(void);
+  SbDict * getCurrentDefNames(const SbBool createifnull);
+
+  void pushProto(SoProto * proto);
+  SoProto * getCurrentProto(void) const;
+  void popProto(void);
+
+  void reset(void);
 
 protected:
   SoWriterefCounter(SoOutput * out, SoOutput * copyfrom);

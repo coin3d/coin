@@ -31,8 +31,27 @@
 #include <Inventor/nodes/SoNode.h>
 #include <assert.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/lists/SbList.h>
+#include <Inventor/misc/SoProto.h>
 
 
+// helper classes for storing ROUTEs
+class SoOutputROUTE {
+public:
+  SoFieldContainer * from, * to;
+  SbName fromfield, tofield;
+};
+
+class SoOutputROUTEList : public SbList<SoOutputROUTE> {
+public:
+  SoOutputROUTEList(void) : SbList<SoOutputROUTE>() { }
+  SoOutputROUTEList(const int sizehint) : SbList<SoOutputROUTE>(sizehint) { }
+  SoOutputROUTEList(const SoOutputROUTEList & l) : SbList<SoOutputROUTE>(l) { }
+
+  void set(const int index, SoOutputROUTE item) { (*this)[index] = item; }
+};
+
+// helper class for storing per-base data
 class SoWriterefCounterBaseData {
 public:
   SoWriterefCounterBaseData() {
@@ -44,6 +63,7 @@ public:
   SbBool ingraph;
 };
 
+// helper class for storing per-output data
 class SoWriterefCounterOutputData {
 public:
   SbDict writerefdict;
@@ -123,6 +143,9 @@ public:
   SoWriterefCounterOutputData * outputdata;
   SbDict * sobase2id;
   int nextreferenceid;
+  SbList <SbDict*> defstack;
+  SbList <SoOutputROUTEList *> routestack;
+  SbList <SoProto*> protostack;
 
   static void * mutex;
   static SbDict * outputdict;
@@ -138,6 +161,59 @@ public:
     mutex = NULL;
   }
 
+  void pushRoutes(const SbBool copyprev) {
+    const int oldidx = this->routestack.getLength() - 1;
+    assert(oldidx >= 0);
+    SoOutputROUTEList * newlist;
+    SoOutputROUTEList * oldlist = this->routestack[oldidx];
+    if (copyprev && oldlist && oldlist->getLength()) {
+      newlist = new SoOutputROUTEList(*oldlist);
+    }
+    else newlist = new SoOutputROUTEList;
+    this->routestack.push(newlist);
+  }
+  SoOutputROUTEList * getCurrentRoutes(const SbBool createifnull) {
+    const int n = this->routestack.getLength();
+    assert(n);
+    SoOutputROUTEList * list = this->routestack[n-1];
+    if (list == NULL && createifnull) {
+      list = new SoOutputROUTEList;
+      this->routestack[n-1] = list;
+    }
+    return list;
+  }
+
+  void popRoutes(void) {
+    const int idx = this->routestack.getLength()-1;
+    assert(idx >= 0);
+    delete this->routestack[idx];
+    this->routestack.remove(idx);
+  }
+
+  void pushDefNames(const SbBool copyprev) {
+    const int n = this->defstack.getLength();
+    assert(n);
+    SbDict * prev = this->defstack[n-1];
+    if (copyprev && prev) {
+      this->defstack.append(new SbDict(*prev));
+    }
+    else this->defstack.append(NULL);
+  }
+  void popDefNames(void) {
+    assert(this->defstack.getLength());
+    delete this->defstack[this->defstack.getLength()-1];
+    this->defstack.pop();
+  }
+  SbDict * getCurrentDefNames(const SbBool createifnull) {
+    const int idx = this->defstack.getLength() - 1;
+    assert(idx >= 0);
+    SbDict * dict = this->defstack[idx];
+    if (createifnull && dict == NULL) {
+      dict = new SbDict;
+      this->defstack[idx] = dict;
+    }
+    return dict;
+  }
 };
 
 
@@ -154,11 +230,21 @@ SbString *  SoWriterefCounterP::refwriteprefix;
 SoWriterefCounter::SoWriterefCounter(SoOutput * out, SoOutput * copyfrom)
 {
   SoWriterefCounterP * datafrom = NULL;
+  SoWriterefCounter * frominst = NULL;
   if (copyfrom) {
-    SoWriterefCounter * frominst = SoWriterefCounter::instance(copyfrom);
+    frominst = SoWriterefCounter::instance(copyfrom);
     datafrom = frominst->pimpl;
   }
   PRIVATE(this) = new SoWriterefCounterP(this, out, datafrom);
+
+  if (copyfrom) {
+    SbDict * olddef = frominst->getCurrentDefNames(FALSE);
+    PRIVATE(this)->defstack.append(olddef ? new SbDict(*olddef) : NULL);
+  }
+  else {
+    PRIVATE(this)->defstack.append(NULL);
+  }
+  PRIVATE(this)->routestack.append(NULL);
 }
 
 SoWriterefCounter::~SoWriterefCounter()
@@ -607,5 +693,173 @@ SoWriterefCounter::removeSoBase2IdRef(const SoBase * base)
   PRIVATE(this)->sobase2id->remove((unsigned long)base);
 }
 
+void 
+SoWriterefCounter::pushRoutes(const SbBool copyprev) 
+{
+  PRIVATE(this)->pushRoutes(copyprev);
+}
+
+void 
+SoWriterefCounter::popRoutes(void) 
+{
+  PRIVATE(this)->popRoutes();
+}
+
+void 
+SoWriterefCounter::pushDefNames(const SbBool copyprev) 
+{
+  PRIVATE(this)->pushDefNames(copyprev);
+}
+
+void 
+SoWriterefCounter::resolveRoutes(void)
+{
+  SoOutputROUTEList * list = PRIVATE(this)->getCurrentRoutes(FALSE);
+  if (list && list->getLength()) {
+    const int n = list->getLength();
+    for (int i = 0; i < n; i++) {
+      SoOutputROUTE r = (*list)[i];
+
+      SoFieldContainer * fromc = r.from;
+      SoFieldContainer * toc = r.to;
+
+      SbName fromname = r.fromfield;
+      SbName toname = r.tofield;
+
+      SoOutput * out = PRIVATE(this)->out;
+
+      out->indent();
+      out->write("ROUTE ");
+      out->write(this->getWriteName(fromc).getString());
+      out->write('.');
+      out->write(fromname.getString());
+      out->write(" TO ");
+      out->write(this->getWriteName(toc).getString());
+      out->write('.');
+      out->write(toname.getString());
+      out->write("\n");
+
+      // remove write references again
+      this->decrementWriteref(fromc);
+      this->decrementWriteref(toc);
+    }
+    list->truncate(0);
+  }
+}
+
+void 
+SoWriterefCounter::addRoute(SoFieldContainer * from, const SbName & fromfield,
+                            SoFieldContainer * to, const SbName & tofield)
+{
+  SoOutputROUTEList * list = PRIVATE(this)->getCurrentRoutes(TRUE);
+  assert(list);
+  SoOutputROUTE r;
+  r.from = from;
+  r.fromfield = fromfield;
+  r.to = to;
+  r.tofield = tofield;
+  list->append(r);
+}
+
+void 
+SoWriterefCounter::popDefNames(void) 
+{
+  PRIVATE(this)->popDefNames();
+}
+
+SbDict * 
+SoWriterefCounter::getCurrentDefNames(const SbBool createifnull) 
+{
+  return PRIVATE(this)->getCurrentDefNames(createifnull);
+}
+
+/*!
+  Adds \a name to the set of currently DEF'ed node names so far in the output
+  process.
+*/
+void
+SoWriterefCounter::addDEFNode(SbName name)
+{
+  void * value = NULL;
+  SbDict * defnames = PRIVATE(this)->getCurrentDefNames(TRUE);
+  defnames->enter((unsigned long)name.getString(), value);
+}
+
+/*!
+  Checks whether \a name is already DEF'ed at this point in the output process.
+  Returns TRUE if \a name is DEF'ed.
+*/
+SbBool
+SoWriterefCounter::lookupDEFNode(SbName name)
+{
+  void * value;
+  SbDict * defnames = PRIVATE(this)->getCurrentDefNames(TRUE);
+  return defnames->find((unsigned long)name.getString(), value);
+}
+
+/*!
+  Removes \a name from the set of DEF'ed node names. Used after the last
+  reference to a DEF'ed node if we want to reuse the DEF at a later point
+  in the file.
+*/
+void
+SoWriterefCounter::removeDEFNode(SbName name)
+{
+  SbDict * defnames = PRIVATE(this)->getCurrentDefNames(FALSE);
+  assert(defnames);
+#ifndef NDEBUG
+  SbBool ret = defnames->remove((unsigned long)name.getString());
+  assert(ret && "Tried to remove nonexisting DEFnode");
+#else
+  (void) defnames->remove((unsigned long)name.getString());
+#endif
+}
+
+
+void 
+SoWriterefCounter::pushProto(SoProto * proto)
+{
+  PRIVATE(this)->pushRoutes(FALSE);
+  PRIVATE(this)->protostack.push(proto);
+  PRIVATE(this)->pushDefNames(FALSE);
+}
+
+SoProto * 
+SoWriterefCounter::getCurrentProto(void) const
+{
+  if (PRIVATE(this)->protostack.getLength()) {
+    return PRIVATE(this)->protostack[PRIVATE(this)->protostack.getLength()-1];
+  }
+  return NULL;
+}
+
+void 
+SoWriterefCounter::popProto(void)
+{
+  assert(PRIVATE(this)->protostack.getLength());
+  PRIVATE(this)->protostack.pop();
+  PRIVATE(this)->popDefNames();
+  PRIVATE(this)->popRoutes();
+}
+
+//
+// called from SoOutput when a new file is opened for writing
+//
+void
+SoWriterefCounter::reset(void)
+{
+  while (PRIVATE(this)->routestack.getLength()) {
+    delete PRIVATE(this)->routestack[0];
+    PRIVATE(this)->routestack.removeFast(0);
+  }
+  PRIVATE(this)->routestack.append(NULL);
+
+  PRIVATE(this)->protostack.truncate(0);
+  while (PRIVATE(this)->defstack.getLength()) {
+    delete PRIVATE(this)->defstack[0];
+    PRIVATE(this)->defstack.removeFast(0);
+  }
+  PRIVATE(this)->defstack.append(NULL);
+}
 
 #undef PRIVATE

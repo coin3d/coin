@@ -400,14 +400,16 @@ SoBase::destroy(void)
   }
 #endif // COIN_DEBUG
 
+
   // Find all auditors that they need to cut off their link to this
   // object. I believe this is necessary only for sensors.
   SbList<SoDataSensor *> auditingsensors;
   cc_rbptree_traverse(&this->auditortree, (cc_rbptree_traversecb *)sobase_sensor_add_cb, &auditingsensors);
 
   // Notify sensors that we're dying.
-  for (int j = 0; j < auditingsensors.getLength(); j++)
+  for (int j = 0; j < auditingsensors.getLength(); j++) {
     auditingsensors[j]->dyingReference();
+  }
 
   // Link out instance name from the list of all SoBase instances.
   SbName n = this->getName();
@@ -924,12 +926,15 @@ SoBase::addAuditor(void * const auditor, const SoNotRec::Type type)
 /*!
   Remove an auditor from the list. \a auditor will then no longer be
   notified whenever any updates are made to this object.
-
+  
   \sa addAuditor()
 */
 void
 SoBase::removeAuditor(void * const auditor, const SoNotRec::Type type)
 {
+#if COIN_DEBUG
+  this->assertAlive();
+#endif // COIN_DEBUG
   cc_rbptree_remove(&this->auditortree, auditor);
 }
 

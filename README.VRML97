@@ -18,6 +18,8 @@ Investigate before release
 Not supported
 =============
 
+- Fan-in
+- Bindable nodes (SoVRMLViewpoint is supported in So@Gui@)
 - MovieTexture
 - Collision
 - Script (needs some callback so that an application can handle it).
