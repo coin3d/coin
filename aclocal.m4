@@ -3116,6 +3116,40 @@ fi
 ]) # SIM_AC_HAVE_GLX_IFELSE()
 
 
+# **************************************************************************
+# SIM_AC_HAVE_WGL_IFELSE( IF-FOUND, IF-NOT-FOUND )
+#
+# Check whether WGL is on the system.
+#
+# This macro has one important side-effect: the variable
+# sim_ac_wgl_libs will be set to the list of libraries
+# needed to link with wgl*() functions.
+
+AC_DEFUN([SIM_AC_HAVE_WGL_IFELSE], [
+sim_ac_save_libs=$LIBS
+sim_ac_wgl_libs="-lgdi32"
+LIBS="$LIBS $sim_ac_wgl_libs"
+
+AC_CACHE_CHECK(
+  [whether WGL is on the system],
+  sim_cv_have_wgl,
+  AC_TRY_LINK(
+    [
+#include <windows.h>
+#include <GL/gl.h>
+],
+    [(void)wglCreateContext(0L);],
+    [sim_cv_have_wgl=true],
+    [sim_cv_have_wgl=false]))
+
+LIBS=$sim_ac_save_libs
+if ${sim_cv_have_wgl=false}; then
+  ifelse([$1], , :, [$1])
+else
+  ifelse([$2], , :, [$2])
+fi
+]) # SIM_AC_HAVE_WGL_IFELSE()
+
 # Usage:
 #  SIM_AC_CHECK_PTHREAD([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 #

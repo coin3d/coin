@@ -63,7 +63,7 @@
 /* define if you have GLU */
 #undef HAVE_GLU
 
-/* define if you have GLX */
+/* define if you have GLX X11 OpenGL bindings */
 #undef HAVE_GLX
 
 /* define if preprocessor can quote arguments with the hash symbol */
@@ -138,7 +138,7 @@
 /* define if vsnprintf() is available */
 #undef HAVE_VSNPRINTF
 
-/* define if you have WGL */
+/* define if you have WGL Win32 OpenGL bindings */
 #undef HAVE_WGL
 
 /* define if the Win32 LoadLibrary method is available */

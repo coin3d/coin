@@ -612,35 +612,13 @@ if test x"$sim_ac_gl_avail" = xyes; then
   # ** Check what OpenGL->windowsystem bindings are available.
   # *******************************************************************
 
-  AC_CACHE_CHECK([whether GLX is available],
-    sim_cv_func_glx_avail,
-    [AC_TRY_LINK([#include <GL/glx.h>],
-                 [(void)glXChooseVisual(0L, 0, 0L);],
-                 sim_cv_func_glx_avail=yes,
-                 sim_cv_func_glx_avail=no)])
+  SIM_AC_HAVE_GLX_IFELSE( AC_DEFINE([HAVE_GLX],, [define if you have GLX X11 OpenGL bindings]) )
 
-  if test x"$sim_cv_func_glx_avail" = xyes; then
-    AC_DEFINE([HAVE_GLX],, [define if you have GLX])
-  fi
-
-  # Try to link against wgl*() calls.
-  sim_ac_save_libs=$LIBS
-  # Not directly needed by the wgl*() calls, but to create a
-  # context we need functions from this library.
-  LIBS="$LIBS -lgdi32"
-  AC_CACHE_CHECK([whether WGL is available],
-    sim_cv_func_wgl_avail,
-    [AC_TRY_LINK([#include <windows.h>],
-                 [(void)wglCreateContext(0L);],
-                 sim_cv_func_wgl_avail=yes,
-                 sim_cv_func_wgl_avail=no)])
-
-  if test x"$sim_cv_func_wgl_avail" = xyes; then
-    AC_DEFINE([HAVE_WGL],, [define if you have WGL])
-    COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS -lgdi32"
-  else
-    LIBS=$sim_ac_save_libs
-  fi
+  SIM_AC_HAVE_WGL_IFELSE(
+    AC_DEFINE([HAVE_WGL],, [define if you have WGL Win32 OpenGL bindings])
+    LIBS="$LIBS $sim_ac_wgl_libs"
+    COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS $sim_ac_wgl_libs"
+  )
 
 
   # *******************************************************************
