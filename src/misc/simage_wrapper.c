@@ -236,7 +236,7 @@ simage_wrapper(void)
            a better strategy. Perhaps it'd be a good idea to use an
            application programmer controlled environment variable?
            20010626 mortene. */
-        "simage1", "simage2", "simage3", "simage4", "simage5", "simage6",
+        "simage6", "simage5", "simage4", "simage3", "simage2", "simage1",
         /* FIXME: not checking for simageXd.dll names (ie debug
            versions of the library). 20010926 mortene. */
         NULL
