@@ -70,6 +70,7 @@
 #include <Inventor/sensors/SoSensorManager.h>
 #include <Inventor/sensors/SoDelayQueueSensor.h>
 #include <Inventor/sensors/SoTimerSensor.h>
+#include <Inventor/sensors/SoAlarmSensor.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SbTime.h>
 #include <Inventor/SbDict.h>
@@ -140,6 +141,7 @@ public:
   void * queueChangedCBData;
 
   SbTime delaysensortimeout;
+  SoAlarmSensor * timeoutsensor;
 
   uint32_t alive;
   static void assertAlive(SoSensorManagerP * that);
@@ -208,6 +210,14 @@ SoSensorManagerP::assertAlive(SoSensorManagerP * that)
 #undef THIS
 #define THIS this->pimpl
 
+// Callback called whenever the timeoutsensor triggers
+// beacuse the system hasn't been idle for a while.
+void timeoutsensor_cb(void * userdata, SoSensor *)
+{
+  SoSensorManager * thisp = (SoSensorManager *)userdata;
+  thisp->processDelayQueue(FALSE);
+}
+
 /*!
   Constructor.
  */
@@ -223,6 +233,7 @@ SoSensorManager::SoSensorManager(void)
   THIS->processingimmediatequeue = FALSE;
 
   THIS->delaysensortimeout.setValue(1.0/12.0);
+  THIS->timeoutsensor = new SoAlarmSensor(timeoutsensor_cb, this);
 }
 
 /*!
@@ -230,6 +241,8 @@ SoSensorManager::SoSensorManager(void)
  */
 SoSensorManager::~SoSensorManager()
 {
+  delete THIS->timeoutsensor;
+
   // FIXME: remove entries. 19990225 mortene.
   if(THIS->delayqueue.getLength() != 0) {}
   if(THIS->timerqueue.getLength() != 0) {}
@@ -257,6 +270,12 @@ SoSensorManager::insertDelaySensor(SoDelayQueueSensor * newentry)
     UNLOCK_IMMEDIATE_QUEUE(this);
   }
   else {
+    if (!THIS->timeoutsensor->isScheduled() &&
+        THIS->delaysensortimeout != SbTime::zero()) {
+      THIS->timeoutsensor->setTimeFromNow(THIS->delaysensortimeout);
+      THIS->timeoutsensor->schedule();
+    }
+
     LOCK_DELAY_QUEUE(this);
     SbList <SoDelayQueueSensor *> & delayqueue = THIS->delayqueue;
 
@@ -545,6 +564,13 @@ SoSensorManager::processDelayQueue(SbBool isidle)
   THIS->reinsertdict.applyToAll(reinsert_dict_cb, (void*) this);
   THIS->reinsertdict.clear();
   THIS->processingdelayqueue = FALSE;
+
+  // If we still have pending sensors and the timeoutsensor
+  // isn't currently scheduled, schedule it.
+  if (THIS->delayqueue.getLength() && !THIS->timeoutsensor->isScheduled()) {
+    THIS->timeoutsensor->setTimeFromNow(THIS->delaysensortimeout);
+    THIS->timeoutsensor->schedule();
+  }
 }
 
 /*!
@@ -684,6 +710,9 @@ SoSensorManager::isTimerSensorPending(SbTime & tm)
 
   The default value is 1/12 of a second.
 
+  Specifying a zero time will disable the timeout, opening for
+  potential delay queue starvation.
+
   \sa getDelaySensorTimeout(), SoDelayQueueSensor
 */
 void
@@ -692,7 +721,7 @@ SoSensorManager::setDelaySensorTimeout(const SbTime & t)
   SoSensorManagerP::assertAlive(THIS);
 
 #if COIN_DEBUG
-  if(t < SbTime(0.0)) {
+  if(t < SbTime::zero()) {
     SoDebugError::postWarning("SoDB::setDelaySensorTimeout",
                               "Tried to set negative interval.");
     return;
@@ -700,6 +729,14 @@ SoSensorManager::setDelaySensorTimeout(const SbTime & t)
 #endif // COIN_DEBUG
 
   THIS->delaysensortimeout = t;
+
+  if (t == SbTime::zero() && THIS->timeoutsensor->isScheduled()) {
+    THIS->timeoutsensor->unschedule();
+  }
+  else if (THIS->delayqueue.getLength()) {
+    THIS->timeoutsensor->setTimeFromNow(t);
+    THIS->timeoutsensor->schedule();
+  }
 }
 
 /*!
