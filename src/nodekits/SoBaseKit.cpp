@@ -636,20 +636,16 @@ SoBaseKit::SoBaseKit(void)
   //
   // SO_KIT_ADD_CATALOG_ENTRY(this, SoBaseKit, TRUE, "", "", FALSE);
 
-  if (SO_KIT_IS_FIRST_INSTANCE()) {
-    SoBaseKit::classcatalog->addEntry("this",
-                                      SoBaseKit::getClassTypeId(),
-                                      SoBaseKit::getClassTypeId(),
-                                      TRUE,
-                                      "",
-                                      "",
-                                      FALSE,
-                                      SoType::badType(),
-                                      SoType::badType(),
-                                      FALSE);
-    
-  }
-
+  SoBaseKit::classcatalog->addEntry("this",
+                                    SoBaseKit::getClassTypeId(),
+                                    SoBaseKit::getClassTypeId(),
+                                    TRUE,
+                                    "",
+                                    "",
+                                    FALSE,
+                                    SoType::badType(),
+                                    SoType::badType(),
+                                    FALSE); 
 
   SO_KIT_ADD_CATALOG_LIST_ENTRY(callbackList, SoSeparator, TRUE, this, "", SoCallback, TRUE);
   SO_KIT_ADD_LIST_ITEM_TYPE(callbackList, SoEventCallback);
