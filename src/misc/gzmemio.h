@@ -1,3 +1,6 @@
+#ifndef COIN_GZMEMIO_H
+#define COIN_GZMEMIO_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,5 +24,41 @@
  *
 \**************************************************************************/
 
-#include "gzmemio.c"
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif /* HAVE_CONFIG_H */
 
+#ifdef HAVE_ZLIB
+#include <Inventor/system/inttypes.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
+  void * gzm_open(const uint8_t * buffer, uint32_t len);
+  int gzm_read (void * file, void * buf, uint32_t len);
+  int gzm_getc(void * file);
+  char * gzm_gets(void * file, char * buf, int len);
+  off_t gzm_seek(void * file, off_t offset, int whence);
+  int gzm_rewind(void * file);
+  off_t gzm_tell(void * file);
+  int gzm_eof(void * file);
+  int gzm_close(void * file);
+  
+  /*
+    the following functions are not implemented yet (writing to a
+    buffer is not supported).
+    
+    int gzm_write(void * file, void * buf, unsigned int len);
+    int gzm_setparams(void * file, int level, int strategy);
+    int gzm_putc(void * file, int c);
+    int gzm_puts(void * file, const char * s);
+  */
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif /* __cplusplus */
+
+#endif /* HAVE_ZLIB */
+
+#endif /* COIN_GZMEMIO_H */
