@@ -58,17 +58,10 @@
 SbBool cc_flww32_initialize(void) { return FALSE; }
 void cc_flww32_exit(void) { }
 
-void * cc_flww32_get_font(const char * fontname, int sizex, int sizey) { assert(FALSE); return NULL; }
+void * cc_flww32_get_font(const char * fontname, int sizex, int sizey, float angle) { assert(FALSE); return NULL; }
 void cc_flww32_get_font_name(void * font, cc_string * str) { assert(FALSE); }
 void cc_flww32_done_font(void * font) { assert(FALSE); }
 
-int cc_flww32_get_num_charmaps(void * font) { assert(FALSE); return 0; }
-const char * cc_flww32_get_charmap_name(void * font, int charmap) { assert(FALSE); return NULL; }
-void cc_flww32_set_charmap(void * font, int charmap) { assert(FALSE); }
-
-void cc_flww32_set_char_size(void * font, int width, int height) { assert(FALSE); }
-void cc_flww32_set_font_rotation(void * font, float angle) { assert(FALSE); }
-  
 int cc_flww32_get_glyph(void * font, unsigned int charidx) { assert(FALSE); return 0; }
 void cc_flww32_get_bitmap_advance(void * font, int glyph, int *x, int *y) { assert(FALSE); }
 void cc_flww32_get_vector_advance(void * font, int glyph, float *x, float *y) { assert(FALSE); }
@@ -321,7 +314,7 @@ cc_flww32_kerninghash_deleteCB3(unsigned long key, void * val, void * closure)
    Returns NULL on error.
 */
 void *
-cc_flww32_get_font(const char * fontname, int sizex, int sizey)
+cc_flww32_get_font(const char * fontname, int sizex, int sizey, float angle)
 {
   
   int i;
@@ -331,7 +324,6 @@ cc_flww32_get_font(const char * fontname, int sizex, int sizey)
   cc_hash * fontkerninghash;
   float * kerningvalue;
   HFONT previousfont;
-
 
   /* FIXME: an idea about sizex / width specification for fonts: let
      sizex==0 indicate "don't care". Should update API and API doc
@@ -347,8 +339,8 @@ cc_flww32_get_font(const char * fontname, int sizex, int sizey)
                                       choosen resolution. */
                            0, /* really sizex, but let Win32 choose to
                                  get correct aspect ratio */
-                           0, /* escapement */
-                           0, /* orientation */
+                           (int) (10 * (angle * 180) / M_PI) , /* escapement */
+                           (int) (10 * (angle * 180) / M_PI) , /* orientation */
                            FW_DONTCARE, /* weight */
                            FALSE, FALSE, FALSE, /* italic, underline, strikeout */
                            /* FIXME: using DEFAULT_CHARSET is probably
@@ -369,7 +361,6 @@ cc_flww32_get_font(const char * fontname, int sizex, int sizey)
                            PROOF_QUALITY, /* output quality */
                            DEFAULT_PITCH, /* pitch and family */
                            fontname); /* typeface name */
-
 
   if (!wfont) {
     DWORD lasterr = GetLastError();
@@ -504,45 +495,6 @@ cc_flww32_done_font(void * font)
   assert(ok && "DeleteObject() failed, investigate");
 }
 
-/* Returns the number of character mappings available for the given
-   font. A character mapping can e.g. be "unicode" or "latin_1". */
-int
-cc_flww32_get_num_charmaps(void * font)
-{
-  /* FIXME: unimplemented. 20030515 mortene. */
-  return 0;
-}
-
-/* Returns the name of the character mapping given by the index
-   number. */
-const char *
-cc_flww32_get_charmap_name(void * font, int charmapidx)
-{
-  /* FIXME: unimplemented. 20030515 mortene. */
-  return "unknown";
-}
-
-/* Set the current character translation map. */
-void
-cc_flww32_set_charmap(void * font, int charmap)
-{
-  /* FIXME: unimplemented. 20030515 mortene. */
-}
-
-/* Set the character dimensions of the given font. */
-void
-cc_flww32_set_char_size(void * font, int width, int height)
-{
-  /* FIXME: unimplemented. 20030515 mortene. */
-}
-
-/* Set a transformation on the font characters that rotates them the
-   given angle. Angle specified in radians. */
-void
-cc_flww32_set_font_rotation(void * font, float angle)
-{
-  /* FIXME: unimplemented. 20030515 mortene. */
-}
 
 /* Returns the glyph index for the given character code. If the
    character code is undefined for this font, returns 0. */
@@ -576,7 +528,7 @@ cc_flww32_get_bitmap_advance(void * font, int glyph, int * x, int * y)
 #endif
 
   *x = glyphstruct->bitmap->advanceX;
-  *y = glyphstruct->bitmap->advanceY;
+  *y = - glyphstruct->bitmap->advanceY;
 }
 
 
@@ -960,7 +912,10 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
   fontname = cc_string_construct_new();
   cc_flww32_get_font_name(font, fontname);
   flww32_font3dsize = flww32_calcfontsize(complexity);
-  font = cc_flww32_get_font(cc_string_get_text(fontname), flww32_font3dsize, flww32_font3dsize);
+  font = cc_flww32_get_font(cc_string_get_text(fontname), 
+			    flww32_font3dsize, 
+			    flww32_font3dsize, 
+			    0.0f);
   cc_string_destruct(fontname);
 
 

@@ -36,16 +36,9 @@ extern "C" {
   SbBool cc_flww32_initialize(void);
   void cc_flww32_exit(void);
 
-  void * cc_flww32_get_font(const char * fontname, int sizex, int sizey);
+  void * cc_flww32_get_font(const char * fontname, int sizex, int sizey, float angle);
   void cc_flww32_get_font_name(void * font, cc_string * str);
   void cc_flww32_done_font(void * font);
-
-  int cc_flww32_get_num_charmaps(void * font);
-  const char * cc_flww32_get_charmap_name(void * font, int charmap);
-  void cc_flww32_set_charmap(void * font, int charmap);
-
-  void cc_flww32_set_char_size(void * font, int width, int height);
-  void cc_flww32_set_font_rotation(void * font, float angle);
   
   int cc_flww32_get_glyph(void * font, unsigned int charidx);
   void cc_flww32_get_bitmap_advance(void * font, int glyph, int * x, int * y);
