@@ -40,7 +40,7 @@
 
 #include <Inventor/fields/SoGlobalField.h>
 
-#include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SbName.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>

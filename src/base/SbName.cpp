@@ -37,6 +37,7 @@
 #include <Inventor/SbString.h>
 #include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>

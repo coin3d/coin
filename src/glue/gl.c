@@ -118,6 +118,7 @@
 #include <Inventor/C/base/hash.h>
 #include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 #include <Inventor/C/glue/gl_wgl.h>
 #include <Inventor/C/glue/gl_glx.h>
 #include <Inventor/C/glue/gl_nsgl.h>

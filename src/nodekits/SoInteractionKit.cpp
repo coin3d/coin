@@ -65,6 +65,7 @@
 #include <Inventor/nodekits/SoInteractionKit.h>
 
 #include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/actions/SoSearchAction.h>

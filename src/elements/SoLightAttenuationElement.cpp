@@ -31,7 +31,7 @@
 
 #include <Inventor/elements/SoLightAttenuationElement.h>
 
-#include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 #include <assert.h>
 #include <stdlib.h>
 

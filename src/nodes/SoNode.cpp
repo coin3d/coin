@@ -159,7 +159,7 @@
 
 #include <Inventor/nodes/SoNodes.h>
 
-#include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/actions/SoActions.h>

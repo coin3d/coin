@@ -31,7 +31,7 @@
 
 #include <Inventor/elements/SoProfileCoordinateElement.h>
 
-#include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 #include <Inventor/nodes/SoNode.h>
 #include <assert.h>
 

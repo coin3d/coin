@@ -75,7 +75,7 @@
 #include <Inventor/SbBox2f.h>
 #include <Inventor/SbClip.h>
 #include <Inventor/SbTime.h>
-#include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 
 // SoShape.cpp grew too big, so I had to move some code into
 // three new files. pederb, 2001-07-18

@@ -36,7 +36,7 @@
 
 #include <Inventor/events/SoKeyboardEvent.h>
 
-#include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SbDict.h>
 #include <Inventor/SbName.h>
 #include <assert.h>

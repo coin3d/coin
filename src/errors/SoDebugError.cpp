@@ -64,6 +64,7 @@
 
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SbName.h>
 #include <Inventor/SoType.h>
 #include <Inventor/lists/SbList.h>

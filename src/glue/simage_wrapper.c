@@ -40,7 +40,7 @@
 #include <Inventor/C/basic.h>
 #include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/glue/dl.h>
-#include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 #include <Inventor/C/errors/debugerror.h>
 
 #include <Inventor/C/glue/simage_wrapper.h>

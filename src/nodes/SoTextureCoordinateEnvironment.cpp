@@ -58,7 +58,7 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 #include <stdlib.h>
 
 #ifdef HAVE_CONFIG_H

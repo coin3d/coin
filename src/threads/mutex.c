@@ -26,7 +26,7 @@
 
 #include <Inventor/C/errors/debugerror.h>
 
-#include "Inventor/C/tidbits.h"
+#include <Inventor/C/tidbitsp.h>
 #include <stdlib.h>
 #include <assert.h>
 #include <stddef.h>

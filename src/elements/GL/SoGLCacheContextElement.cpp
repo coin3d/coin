@@ -30,7 +30,7 @@
 #include <Inventor/elements/SoGLCacheContextElement.h>
 
 #include <Inventor/C/threads/threadsutilp.h>
-#include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SbName.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/misc/SoGL.h>

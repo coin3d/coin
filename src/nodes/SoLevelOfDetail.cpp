@@ -151,7 +151,7 @@
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/misc/SoChildList.h>
-#include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 #include <stdlib.h>
 
 #ifdef HAVE_CONFIG_H

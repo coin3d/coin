@@ -36,7 +36,7 @@
 #include <Inventor/SoNodeKitPath.h>
 #include <Inventor/nodekits/SoBaseKit.h>
 #include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 #include <stdlib.h>
 
 #if COIN_DEBUG

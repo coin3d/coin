@@ -107,7 +107,7 @@
 #include <Inventor/sensors/SoOneShotSensor.h>
 #include <Inventor/SbImage.h>
 #include <Inventor/SoInput.h>
-#include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 #include <assert.h>
 #include <Inventor/C/glue/simage_wrapper.h>
 

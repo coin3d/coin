@@ -30,7 +30,7 @@
 
 #include <Inventor/elements/SoLazyElement.h>
 
-#include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/fields/SoMFColor.h>

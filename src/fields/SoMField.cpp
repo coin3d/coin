@@ -238,7 +238,7 @@
 #include <Inventor/fields/SoMField.h>
 
 #include <Inventor/C/threads/threadsutilp.h>
-#include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoDebugError.h>

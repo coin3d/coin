@@ -40,7 +40,7 @@
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoTextureMatrixElement.h>
 #include <Inventor/details/SoDetail.h>
-#include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 #include <assert.h>
 
 

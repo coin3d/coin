@@ -37,7 +37,7 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbViewVolume.h>
-#include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 #include <stdlib.h>
 
 #ifdef HAVE_CONFIG_H

@@ -43,6 +43,7 @@
 #include "../upgraders/SoUpgrader.h"
 #include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SbDict.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>

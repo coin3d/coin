@@ -46,7 +46,7 @@
 #include <Inventor/nodes/SoWWWInline.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 
-#include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 #include <coindefs.h> // COIN_OBSOLETED()
 #include <Inventor/SbColor.h>
 
