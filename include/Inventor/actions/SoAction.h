@@ -144,7 +144,6 @@ private:
   SbBool terminated;
   PathCode currentpathcode;
   int pathcodearray[1];
-  int nextinpathchildindex;
 };
 
 // Avoid problem with HPUX API headers (see near the start of this

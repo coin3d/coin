@@ -416,7 +416,6 @@ SoAction::traverse(SoNode * const node)
   //SoDebugError::postInfo("SoAction::traverse", "%p\n", node);
   assert(node != NULL);
   PathCode storedPathCode = this->currentpathcode; // save current path code
-  int storedIndex = this->nextinpathchildindex;
 
   //
   // TODO: write code for PathList
@@ -439,7 +438,6 @@ SoAction::traverse(SoNode * const node)
         else {
           assert(idx < this->applieddata.path->getFullLength());
           assert(node->getChildren());
-          this->nextinpathchildindex = this->applieddata.path->getIndex(idx);
         }
       }
       break;
@@ -486,7 +484,6 @@ SoAction::traverse(SoNode * const node)
     [SoNode::getActionMethodIndex(node->getTypeId())](this, node);
 
   this->currentpathcode = storedPathCode; // restore current path code
-  this->nextinpathchildindex = storedIndex;
 
   // FIXME: code to traverse VRML2 node fields.
 
