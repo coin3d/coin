@@ -50,6 +50,7 @@ public:
   virtual void handleEvent(SoHandleEventAction * action);
   virtual void pick(SoPickAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
+  virtual void audioRender(SoAudioRenderAction * action);
 
   SoGroup * copyChildren(void) const;
   virtual SoChildList * getChildren(void) const;

@@ -287,6 +287,13 @@ SoFile::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 
 // Doc from superclass.
 void
+SoFile::audioRender(SoAudioRenderAction * action)
+{
+  SoFile::doAction((SoAction *)action);
+}
+
+// Doc from superclass.
+void
 SoFile::copyContents(const SoFieldContainer * from, SbBool copyconnections)
 {
   this->children->truncate(0);

@@ -535,6 +535,13 @@ SoWWWInline::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   SoWWWInline::doAction((SoAction *)action);
 }
 
+// doc in super
+void
+SoWWWInline::audioRender(SoAudioRenderAction * action)
+{
+  SoWWWInline::doAction((SoAction *)action);
+}
+
 /*!
   Convenience method that extends the current bounding box to
   include the box specified by \a center and \a size.

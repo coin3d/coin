@@ -97,6 +97,7 @@ public:
   virtual void search(SoSearchAction * action);
   virtual void pick(SoPickAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
+  virtual void audioRender(SoAudioRenderAction * action);
 
 protected:
   virtual ~SoWWWInline();

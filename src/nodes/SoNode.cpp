@@ -1401,12 +1401,15 @@ init_action_methods(void)
                                  SoNode::audioRenderS);
   SoAudioRenderAction::addMethod(SoCamera::getClassTypeId(),       
                                  SoNode::audioRenderS);
-  SoAudioRenderAction::addMethod(SoGroup::getClassTypeId(),          
-                                 SoAudioRenderAction::callDoAction);
+  SoAudioRenderAction::addMethod(SoGroup::getClassTypeId(),
+                                 SoNode::audioRenderS);
   SoAudioRenderAction::addMethod(SoWWWInline::getClassTypeId(),         
-                                 SoAudioRenderAction::callDoAction);
+                                 SoNode::audioRenderS);
   SoAudioRenderAction::addMethod(SoFile::getClassTypeId(),           
-                                 SoAudioRenderAction::callDoAction);
+                                 SoNode::audioRenderS);
+  // just call doAction() for all transformation nodes. This will make
+  // sound nodes work even for extension nodes that implements the
+  // doAction() method
   SoAudioRenderAction::addMethod(SoTransformation::getClassTypeId(), 
                                  SoAudioRenderAction::callDoAction);
 }
