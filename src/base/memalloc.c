@@ -127,7 +127,7 @@ cc_memalloc_construct(const unsigned int unitsize)
   allocator->free = NULL;
   allocator->memnode = NULL;
 
-  cc_memalloc_set_strategy(NULL); /* will insert default handler */
+  cc_memalloc_set_strategy_cb(NULL); /* will insert default handler */
 
   return allocator;
 }
