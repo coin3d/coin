@@ -510,21 +510,20 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
 
   cc_glglue_glActiveTexture(glue, GL_TEXTURE0);
 
-  const SoPrimitiveVertexCache::Vertex * vptr = cache->getVertices();
   const int n = cache->getNumIndices();
   const SbVec3f * cmptr = this->cubemaplist.getArrayPtr();
   const SbVec3f * tptr = this->tangentlist.getArrayPtr();
 
-  cc_glglue_glVertexPointer(glue, 3, GL_FLOAT, sizeof(SoPrimitiveVertexCache::Vertex),
-                            (GLvoid*) &vptr->vertex);
+  cc_glglue_glVertexPointer(glue, 3, GL_FLOAT, 0,
+                            (GLvoid*) cache->getVertexArray());
   cc_glglue_glEnableClientState(glue, GL_VERTEX_ARRAY);
 
-  cc_glglue_glTexCoordPointer(glue, 2, GL_FLOAT, sizeof(SoPrimitiveVertexCache::Vertex),
-                              (GLvoid*) &vptr->bumpcoord);
+  cc_glglue_glTexCoordPointer(glue, 2, GL_FLOAT, 0,
+                              (GLvoid*) cache->getBumpCoordArray());
   cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
 
-  cc_glglue_glNormalPointer(glue, GL_FLOAT, sizeof(SoPrimitiveVertexCache::Vertex),
-                           (GLvoid*) &vptr->normal);
+  cc_glglue_glNormalPointer(glue, GL_FLOAT, 0,
+                           (GLvoid*) cache->getNormalArray());
   cc_glglue_glEnableClientState(glue, GL_NORMAL_ARRAY);
 
   cc_glglue_glClientActiveTexture(glue, GL_TEXTURE1);
@@ -662,17 +661,15 @@ soshape_bumprender::renderBump(SoState * state,
   glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_DOT3_RGB);
   glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_RGB, GL_PREVIOUS);
 
-  const SoPrimitiveVertexCache::Vertex * vptr =
-    cache->getVertices();
   const int n = cache->getNumIndices();
   const SbVec3f * cmptr = this->cubemaplist.getArrayPtr();
   const SbVec3f * tsptr = this->tangentlist.getArrayPtr();
 
-  cc_glglue_glVertexPointer(glue, 3, GL_FLOAT, sizeof(SoPrimitiveVertexCache::Vertex),
-                            (GLvoid*) &vptr->vertex);
+  cc_glglue_glVertexPointer(glue, 3, GL_FLOAT, 0,
+                            (GLvoid*) cache->getVertexArray());
   cc_glglue_glEnableClientState(glue, GL_VERTEX_ARRAY);
-  cc_glglue_glTexCoordPointer(glue, 2, GL_FLOAT, sizeof(SoPrimitiveVertexCache::Vertex),
-                              (GLvoid*) &vptr->bumpcoord);
+  cc_glglue_glTexCoordPointer(glue, 2, GL_FLOAT, 0,
+                              (GLvoid*) cache->getBumpCoordArray());
   cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
 
   cc_glglue_glClientActiveTexture(glue, GL_TEXTURE1);
@@ -682,8 +679,8 @@ soshape_bumprender::renderBump(SoState * state,
     cc_glglue_glEnableClientState(glue, GL_COLOR_ARRAY);
     cc_glglue_glTexCoordPointer(glue, 3, GL_FLOAT, 6*sizeof(float),
                                 (GLvoid*) tsptr);
-    cc_glglue_glNormalPointer(glue, GL_FLOAT, sizeof(SoPrimitiveVertexCache::Vertex),
-                              (GLvoid*) &vptr->normal);
+    cc_glglue_glNormalPointer(glue, GL_FLOAT, 0,
+                              (GLvoid*) cache->getNormalArray());
     cc_glglue_glEnableClientState(glue, GL_NORMAL_ARRAY);
   }
   else {
@@ -756,14 +753,8 @@ void
 soshape_bumprender::renderNormal(SoState * state, const SoPrimitiveVertexCache * cache)
 {
   const cc_glglue * glue = sogl_glue_instance(state);
-
-  const SoPrimitiveVertexCache::Vertex * vptr =
-    cache->getVertices();
-  const int n = cache->getNumIndices();
-
   int lastenabled = -1;
-  const SbBool * enabled =
-    SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
+  const SbBool * enabled = SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
 
   // only use vertex program if two texture units (or less) are used
   // (only two units supported in the vertex program)
@@ -778,69 +769,26 @@ soshape_bumprender::renderNormal(SoState * state, const SoPrimitiveVertexCache *
     glue->glBindProgramARB(GL_VERTEX_PROGRAM_ARB, normalrenderingvertexprogramid);   
   }
 
-  SbBool colorpervertex = cache->colorPerVertex();
-
-  cc_glglue_glVertexPointer(glue, 3, GL_FLOAT, sizeof(SoPrimitiveVertexCache::Vertex),
-                            (GLvoid*) &vptr->vertex);
-  cc_glglue_glEnableClientState(glue, GL_VERTEX_ARRAY);
+  int arrays = 
+    SoPrimitiveVertexCache::TEXCOORD|
+    SoPrimitiveVertexCache::COLOR;
+  cache->renderTriangles(state, arrays);
   
-  cc_glglue_glTexCoordPointer(glue, 4, GL_FLOAT, sizeof(SoPrimitiveVertexCache::Vertex),
-                              (GLvoid*) &vptr->texcoord0);
-  cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
-
-  if (colorpervertex) {
-    cc_glglue_glColorPointer(glue, 4, GL_UNSIGNED_BYTE,
-                             sizeof(SoPrimitiveVertexCache::Vertex),
-                             (GLvoid*) &vptr->rgba);
-    cc_glglue_glEnableClientState(glue, GL_COLOR_ARRAY);
-  }
-
-  int i;
-  for (i = 1; i <= lastenabled; i++) {
-    if (enabled[i]) {
-      cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0 + i);
-      cc_glglue_glTexCoordPointer(glue, 4, GL_FLOAT, 0,
-                                  (GLvoid*) cache->getMultiTextureCoordinateArray(i));
-      cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
-    }
-  }
-
-  
-  cc_glglue_glDrawElements(glue, GL_TRIANGLES, n, GL_UNSIGNED_INT,
-                           (const GLvoid*) cache->getIndices());
-
   if (use_vertex_program) {
     glDisable(GL_VERTEX_PROGRAM_ARB);
-  }
-
-  for (i = 1; i <= lastenabled; i++) {
-    if (enabled[i]) {
-      cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0 + i);
-      cc_glglue_glDisableClientState(glue, GL_TEXTURE_COORD_ARRAY);
-    }
-  }
-  if (lastenabled >= 1) {
-    // reset to default
-    cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0);
-  }
-
-  cc_glglue_glDisableClientState(glue, GL_VERTEX_ARRAY);
-  cc_glglue_glDisableClientState(glue, GL_TEXTURE_COORD_ARRAY);
-
-  if (colorpervertex) {
-    cc_glglue_glDisableClientState(glue, GL_COLOR_ARRAY);
   }
 }
 
 void
 soshape_bumprender::calcTangentSpace(const SoPrimitiveVertexCache * cache)
 {
-  const SoPrimitiveVertexCache::Vertex * vptr =
-    cache->getVertices();
   int i;
 
   const int numv = cache->getNumVertices();
   const int32_t * idxptr = cache->getIndices();
+  const SbVec3f * vertices = cache->getVertexArray();
+  const SbVec3f * normals = cache->getNormalArray();
+  const SbVec2f * bumpcoords = cache->getBumpCoordArray();
 
   this->tangentlist.truncate(0);
 
@@ -859,20 +807,17 @@ soshape_bumprender::calcTangentSpace(const SoPrimitiveVertexCache * cache)
     idx[0] = idxptr[i];
     idx[1] = idxptr[i+1];
     idx[2] = idxptr[i+2];
-    const SoPrimitiveVertexCache::Vertex & v0 = vptr[idx[0]];
-    const SoPrimitiveVertexCache::Vertex & v1 = vptr[idx[1]];
-    const SoPrimitiveVertexCache::Vertex & v2 = vptr[idx[2]];
 
-    SbVec3f side0 = v1.vertex - v0.vertex;
-    SbVec3f side1 = v2.vertex - v0.vertex;
+    SbVec3f side0 = vertices[idx[1]] - vertices[idx[0]];
+    SbVec3f side1 = vertices[idx[2]] - vertices[idx[0]];
 
-    float deltaT0 = v1.bumpcoord[1] - v0.bumpcoord[1];
-    float deltaT1 = v2.bumpcoord[1] - v0.bumpcoord[1];
+    float deltaT0 = bumpcoords[idx[1]][1] - bumpcoords[idx[0]][1];
+    float deltaT1 = bumpcoords[idx[2]][1] - bumpcoords[idx[0]][1];
     sTangent = deltaT1 * side0 - deltaT0 * side1;
     NORMALIZE(sTangent);
-
-    float deltaS0 = v1.bumpcoord[0] - v0.bumpcoord[0];
-    float deltaS1 = v2.bumpcoord[0] - v0.bumpcoord[0];
+    
+    float deltaS0 = bumpcoords[idx[1]][0] - bumpcoords[idx[0]][0];
+    float deltaS1 = bumpcoords[idx[2]][0] - bumpcoords[idx[0]][0];
     tTangent = deltaS1 * side0 - deltaS0 * side1;
     NORMALIZE(tTangent);
 
@@ -893,26 +838,25 @@ soshape_bumprender::calcTSBCoords(const SoPrimitiveVertexCache * cache, SoLight 
   SbVec3f thelightvec;
   SbVec3f tlightvec;
 
-  const SoPrimitiveVertexCache::Vertex * vptr =
-    cache->getVertices();
   const int numv = cache->getNumVertices();
+  const SbVec3f * vertices = cache->getVertexArray();
+  const SbVec3f * normals = cache->getNormalArray();
 
   this->cubemaplist.truncate(0);
   for (int i = 0; i < numv; i++) {
-    const SoPrimitiveVertexCache::Vertex & v = vptr[i];
     SbVec3f sTangent = this->tangentlist[i*2];
     SbVec3f tTangent = this->tangentlist[i*2+1];
-    thelightvec = this->getLightVec(v.vertex);
+    thelightvec = this->getLightVec(vertices[i]);
     tlightvec = thelightvec;
 #if 0 // FIXME: I don't think it's necessary to do this test. pederb, 2003-11-20
     SbVec3f tcross = tTangent.cross(sTangent);
-    if (tcross.dot(v.normal) < 0.0f) {
+    if (tcross.dot(normals[i]) < 0.0f) {
       tlightvec = -tlightvec;
     }
 #endif // disabled, probably not necessary
     this->cubemaplist.append(SbVec3f(sTangent.dot(tlightvec),
                                      tTangent.dot(tlightvec),
-                                     v.normal.dot(thelightvec)));
+                                     normals[i].dot(thelightvec)));
 
   }
 }

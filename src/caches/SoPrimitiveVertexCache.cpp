@@ -47,9 +47,23 @@
 
 class SoPrimitiveVertexCacheP {
 public:
-  SoPrimitiveVertexCacheP(void) : vertices(1024), indices(1024), vhash(1024) { }
+  SoPrimitiveVertexCacheP(void) 
+    : vertexlist(256), 
+      normallist(256),
+      texcoordlist(256),
+      bumpcoordlist(256),
+      rgbalist(256),
+      indices(1024), 
+      vhash(1024) { }
 
   SbList <SoPrimitiveVertexCache::Vertex> vertices;
+
+  SbList <SbVec3f> vertexlist;
+  SbList <SbVec3f> normallist;
+  SbList <SbVec4f> texcoordlist;
+  SbList <SbVec2f> bumpcoordlist;
+  SbList <uint8_t> rgbalist;
+
   SbList <int32_t> indices;
   SbList <int32_t> lineindices;
   SbList <int32_t> pointindices;
@@ -74,6 +88,18 @@ public:
   const SoMultiTextureCoordinateElement * multielem;
   SbList <SbVec4f> * multitexcoords;
   SoState * state;
+
+  void addVertex(const SoPrimitiveVertexCache::Vertex & v);
+  void enableArrays(const cc_glglue * glue,
+                    const SbBool color, const SbBool normal,
+                    const SbBool texture, const SbBool * enabled,
+                    const int lastenabled);
+  
+  void disableArrays(const cc_glglue * glue,
+                     const SbBool color, const SbBool normal,
+                     const SbBool texture, const SbBool * enabled,
+                     const int lastenabled);
+    
 };
 
 #endif // DOXYGEN_SKIP_THIS
@@ -152,6 +178,71 @@ SoPrimitiveVertexCache::~SoPrimitiveVertexCache()
   delete PRIVATE(this);
 }
 
+void 
+SoPrimitiveVertexCache::renderTriangles(SoState * state, const int arrays) const
+{
+  int lastenabled = -1;
+  const int n = this->getNumIndices();
+  if (n == 0) return;
+
+  const SbBool * enabled = NULL;
+  const SbBool normal = (arrays & NORMAL) != 0;
+  const SbBool texture = (arrays & TEXCOORD) != 0;
+  SbBool color = this->colorPerVertex() && ((arrays & COLOR) != 0);  
+  if (texture) {
+    enabled = SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
+  }
+  const cc_glglue * glue = sogl_glue_instance(state);
+
+  PRIVATE(this)->enableArrays(glue, color, normal, texture, enabled, lastenabled);
+  cc_glglue_glDrawElements(glue, GL_TRIANGLES, n, GL_UNSIGNED_INT,
+                           (const GLvoid*) this->getIndices());
+  PRIVATE(this)->disableArrays(glue, color, normal, texture, enabled, lastenabled);
+}
+
+void 
+SoPrimitiveVertexCache::renderLines(SoState * state, const int arrays) const
+{
+  int lastenabled = -1;
+  const int n = this->getNumLineIndices();
+  if (n == 0) return;
+  const SbBool * enabled = NULL;
+  const SbBool normal = (arrays & NORMAL) != 0;
+  const SbBool texture = (arrays & TEXCOORD) != 0;
+  SbBool color = this->colorPerVertex() && ((arrays & COLOR) != 0);  
+  if (texture) {
+    enabled = SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
+  }
+  const cc_glglue * glue = sogl_glue_instance(state);
+
+  PRIVATE(this)->enableArrays(glue, color, normal, texture, enabled, lastenabled);
+  cc_glglue_glDrawElements(glue, GL_LINES, n, GL_UNSIGNED_INT,
+                           (const GLvoid*) this->getLineIndices());
+  PRIVATE(this)->disableArrays(glue, color, normal, texture, enabled, lastenabled);
+}
+
+void 
+SoPrimitiveVertexCache::renderPoints(SoState * state, const int arrays) const
+{
+  int lastenabled = -1;
+  const int n = this->getNumPointIndices();
+  if (n == 0) return;
+  const SbBool * enabled = NULL;
+  const SbBool normal = (arrays & NORMAL) != 0;
+  const SbBool texture = (arrays & TEXCOORD) != 0;
+  SbBool color = this->colorPerVertex() && ((arrays & COLOR) != 0);  
+  if (texture) {
+    enabled = SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
+  }
+  const cc_glglue * glue = sogl_glue_instance(state);
+
+  PRIVATE(this)->enableArrays(glue, color, normal, texture, enabled, lastenabled);
+  cc_glglue_glDrawElements(glue, GL_POINTS, n, GL_UNSIGNED_INT,
+                           (const GLvoid*) this->getPointIndices());
+  PRIVATE(this)->disableArrays(glue, color, normal, texture, enabled, lastenabled);
+}
+
+
 void
 SoPrimitiveVertexCache::addTriangle(const SoPrimitiveVertex * v0,
                                     const SoPrimitiveVertex * v1,
@@ -162,7 +253,7 @@ SoPrimitiveVertexCache::addTriangle(const SoPrimitiveVertex * v0,
     // fetch SoMultiTextureCoordinateElement the first time we get here
     PRIVATE(this)->multielem = SoMultiTextureCoordinateElement::getInstance(PRIVATE(this)->state);
   }
-  const SoPrimitiveVertex *vp[3] = { v0,v1,v2 };
+  const SoPrimitiveVertex *vp[3] = { v0, v1, v2 };
 
   for (int i = 0; i < 3; i++) {
     Vertex v;
@@ -207,9 +298,9 @@ SoPrimitiveVertexCache::addTriangle(const SoPrimitiveVertex * v0,
     }
     int32_t idx;
     if (!PRIVATE(this)->vhash.get(v, idx)) {
-      idx = PRIVATE(this)->vertices.getLength();
+      idx = PRIVATE(this)->vertexlist.getLength();
       PRIVATE(this)->vhash.put(v, idx);
-      PRIVATE(this)->vertices.append(v);
+      PRIVATE(this)->addVertex(v);      
       PRIVATE(this)->indices.append(idx);
       
       // update texture coordinates for unit 1-n
@@ -283,9 +374,9 @@ SoPrimitiveVertexCache::addLine(const SoPrimitiveVertex * v0,
     }
     int32_t idx;
     if (!PRIVATE(this)->vhash.get(v, idx)) {
-      idx = PRIVATE(this)->vertices.getLength();
+      idx = PRIVATE(this)->vertexlist.getLength();
       PRIVATE(this)->vhash.put(v, idx);
-      PRIVATE(this)->vertices.append(v);
+      PRIVATE(this)->addVertex(v);
       PRIVATE(this)->lineindices.append(idx);
       
       // update texture coordinates for unit 1-n
@@ -352,9 +443,9 @@ SoPrimitiveVertexCache::addPoint(const SoPrimitiveVertex * v0)
 
   int32_t idx;
   if (!PRIVATE(this)->vhash.get(v, idx)) {
-    idx = PRIVATE(this)->vertices.getLength();
+    idx = PRIVATE(this)->vertexlist.getLength();
     PRIVATE(this)->vhash.put(v, idx);
-    PRIVATE(this)->vertices.append(v);
+    PRIVATE(this)->addVertex(v);
     PRIVATE(this)->pointindices.append(idx);
       
     // update texture coordinates for unit 1-n
@@ -379,7 +470,37 @@ SoPrimitiveVertexCache::addPoint(const SoPrimitiveVertex * v0)
 int
 SoPrimitiveVertexCache::getNumVertices(void) const
 {
-  return PRIVATE(this)->vertices.getLength();
+  return PRIVATE(this)->vertexlist.getLength();
+}
+
+const SbVec3f * 
+SoPrimitiveVertexCache::getVertexArray(void) const
+{
+  return PRIVATE(this)->vertexlist.getArrayPtr();
+}
+
+const SbVec3f * 
+SoPrimitiveVertexCache::getNormalArray(void) const
+{
+  return PRIVATE(this)->normallist.getArrayPtr();
+}
+
+const SbVec4f * 
+SoPrimitiveVertexCache::getTexCoordArray(void) const
+{
+  return PRIVATE(this)->texcoordlist.getArrayPtr();
+}
+
+const SbVec2f * 
+SoPrimitiveVertexCache::getBumpCoordArray(void) const
+{
+  return PRIVATE(this)->bumpcoordlist.getArrayPtr();
+}
+
+const uint8_t * 
+SoPrimitiveVertexCache::getColorArray(void) const
+{
+  return PRIVATE(this)->rgbalist.getArrayPtr();
 }
 
 int
@@ -388,22 +509,10 @@ SoPrimitiveVertexCache::getNumIndices(void) const
   return PRIVATE(this)->indices.getLength();
 }
 
-const SoPrimitiveVertexCache::Vertex *
-SoPrimitiveVertexCache::getVertices(void) const
-{
-  return PRIVATE(this)->vertices.getArrayPtr();
-}
-
 const int32_t *
 SoPrimitiveVertexCache::getIndices(void) const
 {
   return PRIVATE(this)->indices.getArrayPtr();
-}
-
-const SoPrimitiveVertexCache::Vertex &
-SoPrimitiveVertexCache::getVertex(const int idx) const
-{
-  return PRIVATE(this)->vertices[idx];
 }
 
 int
@@ -470,6 +579,88 @@ SoPrimitiveVertexCache::Vertex::operator==(const Vertex & v) const
 {
   return memcmp(this, &v, sizeof(Vertex)) == 0;
 }
+
+void 
+SoPrimitiveVertexCacheP::addVertex(const SoPrimitiveVertexCache::Vertex & v) 
+{
+  this->vertexlist.append(v.vertex);
+  this->normallist.append(v.normal);
+  this->texcoordlist.append(v.texcoord0);
+  this->bumpcoordlist.append(v.bumpcoord);
+  for (int c = 0; c < 4; c++) {
+    this->rgbalist.append(v.rgba[c]);
+  }
+}
+
+void 
+SoPrimitiveVertexCacheP::enableArrays(const cc_glglue * glue,
+                                      const SbBool color, const SbBool normal,
+                                      const SbBool texture, const SbBool * enabled,
+                                      const int lastenabled)
+{
+  int i;
+  cc_glglue_glVertexPointer(glue, 3, GL_FLOAT, 0,
+                            (GLvoid*) this->vertexlist.getArrayPtr());
+  cc_glglue_glEnableClientState(glue, GL_VERTEX_ARRAY);
+  
+  if (color) {
+    cc_glglue_glColorPointer(glue, 4, GL_UNSIGNED_BYTE, 0,
+                             (GLvoid*) this->rgbalist.getArrayPtr());
+    cc_glglue_glEnableClientState(glue, GL_COLOR_ARRAY);
+  }
+
+  if (texture) {
+    cc_glglue_glTexCoordPointer(glue, 4, GL_FLOAT, 0,
+                                (GLvoid*) this->texcoordlist.getArrayPtr());
+    cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
+    
+    for (i = 1; i <= lastenabled; i++) {
+      if (enabled[i]) {
+        cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0 + i);
+        cc_glglue_glTexCoordPointer(glue, 4, GL_FLOAT, 0,
+                                    (GLvoid*) this->multitexcoords[i].getArrayPtr());
+        cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
+      }
+    }
+  }
+  if (normal) {
+    cc_glglue_glNormalPointer(glue, GL_FLOAT, 0,
+                              (GLvoid*) this->normallist.getArrayPtr());
+    cc_glglue_glEnableClientState(glue, GL_NORMAL_ARRAY);
+  }
+}
+
+  
+void 
+SoPrimitiveVertexCacheP::disableArrays(const cc_glglue * glue,
+                                       const SbBool color, const SbBool normal,
+                                       const SbBool texture, const SbBool * enabled,
+                                       const int lastenabled)
+{
+  int i;
+  if (normal) {
+    cc_glglue_glDisableClientState(glue, GL_NORMAL_ARRAY);
+  }
+  if (texture) {
+    for (i = 1; i <= lastenabled; i++) {
+      if (enabled[i]) {
+        cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0 + i);
+        cc_glglue_glDisableClientState(glue, GL_TEXTURE_COORD_ARRAY);
+      }
+    }
+    if (lastenabled >= 1) {
+      // reset to default
+      cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0);
+    }
+    cc_glglue_glDisableClientState(glue, GL_TEXTURE_COORD_ARRAY);
+  }
+  if (color) {
+    cc_glglue_glDisableClientState(glue, GL_COLOR_ARRAY);
+  }
+  cc_glglue_glDisableClientState(glue, GL_VERTEX_ARRAY);
+}
+
+
 
 
 

@@ -42,6 +42,47 @@ public:
   SoPrimitiveVertexCache(SoState * state);
   ~SoPrimitiveVertexCache();
 
+  enum Arrays {
+    NORMAL = 0x01,
+    TEXCOORD = 0x02,
+    COLOR = 0x04,
+    ALL = (NORMAL|TEXCOORD|COLOR)
+  };
+  
+  void renderTriangles(SoState * state, const int arrays = ALL) const;
+  void renderLines(SoState * state, const int arrays = ALL) const;
+  void renderPoints(SoState * state, const int array = ALL) const;
+  
+  void addTriangle(const SoPrimitiveVertex * v0,
+                   const SoPrimitiveVertex * v1,
+                   const SoPrimitiveVertex * v2,
+                   const int * pointdetailidx = NULL);
+  void addLine(const SoPrimitiveVertex * v0,
+               const SoPrimitiveVertex * v1);
+  void addPoint(const SoPrimitiveVertex * v);
+
+  int getNumVertices(void) const;
+  const SbVec3f * getVertexArray(void) const;
+  const SbVec3f * getNormalArray(void) const;
+  const SbVec4f * getTexCoordArray(void) const;
+  const SbVec2f * getBumpCoordArray(void) const;
+  const uint8_t * getColorArray(void) const;
+
+  int getNumIndices(void) const;
+  const int32_t * getIndices(void) const;
+  int32_t getIndex(const int idx) const;
+
+  SbBool colorPerVertex(void) const;
+  const SbVec4f * getMultiTextureCoordinateArray(const int unit) const;
+
+  int getNumLineIndices(void) const;
+  int getNumPointIndices(void) const;
+  
+  const int32_t * getLineIndices(void) const;
+  const int32_t * getPointIndices(void) const;
+
+private:
+
   class Vertex {
   public:
     SbVec3f vertex;
@@ -56,35 +97,7 @@ public:
     int operator==(const Vertex & v) const;
   };
 
-  void addTriangle(const SoPrimitiveVertex * v0,
-                   const SoPrimitiveVertex * v1,
-                   const SoPrimitiveVertex * v2,
-                   const int * pointdetailidx = NULL);
-  void addLine(const SoPrimitiveVertex * v0,
-               const SoPrimitiveVertex * v1);
-  void addPoint(const SoPrimitiveVertex * v);
-
-  int getNumVertices(void) const;
-  int getNumIndices(void) const;
-  const Vertex * getVertices(void) const;
-  const int32_t * getIndices(void) const;
-  const Vertex & getVertex(const int idx) const;
-  int32_t getIndex(const int idx) const;
-
-  SbBool colorPerVertex(void) const;
-  const SbVec4f * getMultiTextureCoordinateArray(const int unit) const;
-
-  int getNumLineIndices(void) const;
-  int getNumPointIndices(void) const;
-  
-  const int32_t * getLineIndices(void) const;
-  const int32_t * getPointIndices(void) const;
-
-private:
   SoPrimitiveVertexCacheP * pimpl;
-
-  
-
 };
 
 #endif // COIN_SOPRIMITIVEVERTEXCACHE_H
