@@ -232,7 +232,9 @@ SoGate::readInstance(SoInput * in, unsigned short flagsarg)
                       this->getTypeId().getName().getString());
     return FALSE;
   }
-  SbName fieldname;
+  // need to use an SbString here, because SoInput::read( SbName & )
+  // reads in '"MyName"' as is instead of as 'MyName'.
+  SbString fieldname;
   if (!in->read(fieldname)) {
     SoReadError::post(in, "Couldn't read input type for engine.");
     return FALSE;
