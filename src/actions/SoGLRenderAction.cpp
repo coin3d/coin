@@ -577,7 +577,7 @@ SoGLRenderAction::handleTransparency(SbBool istransparent)
     }
     else {
       if (this->transparencytype != SCREEN_DOOR) this->enableBlend();
-      this->disableBlend();
+      else this->disableBlend();
     }
     return FALSE; // always render
   }
@@ -670,7 +670,7 @@ SoGLRenderAction::disableBlend(const SbBool force)
 {
   if (force || this->isblendenabled) {
     glDisable(GL_BLEND);
-    glDepthMask(GL_TRUE);
+    if (!this->delayedrender) glDepthMask(GL_TRUE);
     this->isblendenabled = FALSE;
   }
 }
@@ -681,7 +681,7 @@ SoGLRenderAction::enableBlend(const SbBool force)
 {
   if (force || !this->isblendenabled) {
     glEnable(GL_BLEND);
-    glDepthMask(GL_FALSE);
+    if (!this->delayedrender) glDepthMask(GL_FALSE);
     this->isblendenabled = TRUE;
   }
 }
