@@ -659,3 +659,35 @@
     
     20020923 larsa.
 
+=====================================================================
+
+029 SoSFEnum / SoMFEnum / SoSFBitMask / SoMFBitMask can't be used for
+    SoUnknownNode. The following will not import properly in Coin, but
+    rather elicit a read error message:
+
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+    #Inventor V2.1 ascii
+    
+    MarkerKit {
+       fields [ SFEnum outerShape ]
+       outerShape 0
+    }
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+
+    The error message is:
+
+        Coin read error: no mappings available for SoSFEnum field
+        outerShape
+
+    The reason for this problem is that the import code expects to use
+    an SoSFEnum field that has been set up with a full set of enum
+    values <-> names mappings. This is not the case for SoUnknownNode
+    fields.
+
+    What should be done about this is probably to be more "slack"
+    about allowing SoSFEnum et al to be used _without_ name mappings
+    (at least in certain contexts).
+
+    20020923 mortene.
+
+=====================================================================
