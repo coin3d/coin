@@ -27,10 +27,10 @@
   \ingroup draggers
 
   Use an instance of this dragger class in your scenegraph to let the
-  end-users of your application rotate geometry around any axis vector
-  in 3D.
+  end-users of your application rotate geometry around a pre-defined
+  axis vector in 3D.
 
-  For the dragger orientation and positing itself, use some kind of
+  For the dragger orientation and positioning itself, use some kind of
   transformation node in your scenegraph, as usual.
 */
 
@@ -205,10 +205,12 @@ SoRotateCylindricalDragger::valueChangedCB(void *, SoDragger * d)
 }
 
 /*!
-  Replace the default cylinder projection. You may want to do this if
-  you change the dragger geometry.
+  Replace the default cylinder projection strategy. You may want to do
+  this if you change the dragger geometry, for instance.
 
   The default cylinder projection is an SbCylinderPlaneProjector.
+
+  \sa SbCylinderSectionProjector, SbCylinderSheetProjector
 */
 void
 SoRotateCylindricalDragger::setProjector(SbCylinderProjector * p)
@@ -222,7 +224,7 @@ SoRotateCylindricalDragger::setProjector(SbCylinderProjector * p)
   dragger movements to 3D dragger re-orientation.
 
   \sa setProjector()
- */
+*/
 const SbCylinderProjector *
 SoRotateCylindricalDragger::getProjector(void) const
 {

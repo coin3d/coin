@@ -23,10 +23,16 @@
 
 /*!
   \class SoRotateSphericalDragger SoRotateSphericalDragger.h Inventor/draggers/SoRotateSphericalDragger.h
-  \brief The SoRotateSphericalDragger class is (FIXME: doc)
+  \brief The SoRotateSphericalDragger class is for rotating geometry in any direction.
   \ingroup draggers
 
-  FIXME: document class
+  Use an instance of this dragger class in your scenegraph to let the
+  end-users of your application rotate geometry freely in any
+  direction.
+
+  For the initial dragger orientation and the dragger geometry
+  positioning itself, use some kind of transformation node in your
+  scenegraph, as usual.
 */
 
 #include <Inventor/draggers/SoRotateSphericalDragger.h>
@@ -38,6 +44,37 @@
 
 #include <data/draggerDefaults/rotateSphericalDragger.h>
 
+/*!
+  \var SoSFRotation SoRotateSphericalDragger::rotation
+
+  This field is continuously updated to contain the rotation of the
+  current direction vector of the dragger.
+
+  The application programmer using this dragger in his scenegraph
+  should connect the relevant node fields in the scene to this field
+  to make them follow the dragger orientation.
+*/
+
+/*!
+  \var SoFieldSensor * SoRotateSphericalDragger::fieldSensor
+  \internal
+*/
+/*!
+  \var SbSphereProjector * SoRotateSphericalDragger::sphereProj
+  \internal
+*/
+/*!
+  \var SbBool SoRotateSphericalDragger::userProj
+  \internal
+*/
+/*!
+  \var SbMatrix SoRotateSphericalDragger::prevMotionMatrix
+  \internal
+*/
+/*!
+  \var SbVec3f SoRotateSphericalDragger::prevWorldHitPt
+  \internal
+*/
 
 SO_KIT_SOURCE(SoRotateSphericalDragger);
 
@@ -173,6 +210,14 @@ SoRotateSphericalDragger::valueChangedCB(void *, SoDragger * d)
   thisp->fieldSensor->attach(&thisp->rotation);
 }
 
+/*!
+  Replace the default sphere projection strategy. You may want to do
+  this if you change the dragger geometry, for instance.
+
+  The default projection is an SbSpherePlaneProjector.
+
+  \sa SbSphereSectionProjector, SbSphereSheetProjector
+*/
 void
 SoRotateSphericalDragger::setProjector(SbSphereProjector * p)
 {
@@ -181,14 +226,22 @@ SoRotateSphericalDragger::setProjector(SbSphereProjector * p)
   this->sphereProj = p;
 }
 
+/*!
+  Returns projector instance used for converting from user interaction
+  dragger movements to 3D dragger re-orientation.
+
+  \sa setProjector()
+*/
 const SbSphereProjector *
 SoRotateSphericalDragger::getProjector(void) const
 {
   return this->sphereProj;
 }
 
+// Doc in superclass.
 void
-SoRotateSphericalDragger::copyContents(const SoFieldContainer * fromfc, SbBool copyconnections)
+SoRotateSphericalDragger::copyContents(const SoFieldContainer * fromfc,
+                                       SbBool copyconnections)
 {
   inherited::copyContents(fromfc, copyconnections);
   assert(fromfc->isOfType(SoRotateSphericalDragger::getClassTypeId()));

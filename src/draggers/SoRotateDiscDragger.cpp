@@ -27,8 +27,8 @@
   \ingroup draggers
 
   Use an instance of this dragger class in your scenegraph to let the
-  end-users of your application rotate geometry around any axis vector
-  in 3D.
+  end-users of your application rotate geometry around a pre-defined
+  axis vector in 3D.
 
   The special feature of this dragger that sets it apart from the
   other draggers that provides rotation around an axis (like the
@@ -37,7 +37,7 @@
   the same direction as the camera. This is useful for interacting
   with for instance something like a "volume" knob.
 
-  For the dragger orientation and positing itself, use some kind of
+  For the dragger orientation and positioning itself, use some kind of
   transformation node in your scenegraph, as usual.
 */
 
