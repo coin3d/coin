@@ -3840,6 +3840,7 @@ main(int argc, char* argv[])
       m_pSel->removeChild( pNode );
       m_pSel->enableNotify( true );
 
+    20040831 larsa.
 
 =====================================================================
 
@@ -3854,5 +3855,20 @@ main(int argc, char* argv[])
     make sure the inactive views does not refresh their displays
     during interaction.
 
+    20040831 larsa.
+
+    UPDATE 20040831 mortene: This is a high priority item, as it
+    causes Coin to be unusable when using multiple views and
+    SoExtSelection together.
+
 =====================================================================
 
+134 SoExtSelection::setLineSegmentFilterCallback() bogus return
+
+    It has been reported a compatibility issue (vs TGS) / bug, where
+    this return SoVertexPrimitive with SoPointDetail instead of
+    SoLineDetail. Investigate.
+
+    20040831 mortene.
+
+=====================================================================
