@@ -507,6 +507,7 @@ SoGLRenderAction::endTraversal(SoNode *)
     this->delayedrender = FALSE;
     this->delayedpaths.truncate(0);
   }
+
   if (this->transpobjpaths.getLength() && this->sortrender) {
     this->sortrender = FALSE;
     this->transpobjpaths.truncate(0);
@@ -651,8 +652,12 @@ SoGLRenderAction::isRenderingDelayedPaths(void) const
 // Remember a path containing a transparent object for later
 // rendering.
 void
-SoGLRenderAction::addTransPath(SoPath *path)
+SoGLRenderAction::addTransPath(SoPath * path)
 {
+  // Do this first to increase the reference count (we want to avoid a
+  // zero refcount for the bboxaction apply()).
+  this->transpobjpaths.append(path);
+
   if (this->bboxaction == NULL) {
     this->bboxaction =
       new SoGetBoundingBoxAction(SoViewportRegionElement::get(this->state));
@@ -662,7 +667,6 @@ SoGLRenderAction::addTransPath(SoPath *path)
   SbVec3f center = this->bboxaction->getBoundingBox().getCenter();
   SoModelMatrixElement::get(this->state).multVecMatrix(center, center);
   float dist = SoViewVolumeElement::get(this->state).getPlane(0.0f).getDistance(center);
-  this->transpobjpaths.append(path);
   this->transpobjdistances.append(dist);
 }
 
