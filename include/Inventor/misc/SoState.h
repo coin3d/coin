@@ -60,6 +60,7 @@ private:
   int numStacks;
   int depth;
   SbBool cacheopen;
+  class sostate_pushstore * pushstore;
 };
 
 #endif // !COIN_SOSTATE_H

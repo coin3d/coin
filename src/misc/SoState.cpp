@@ -31,6 +31,22 @@
 #include <Inventor/lists/SoTypeList.h>
 #include <Inventor/elements/SoElement.h>
 
+#ifndef DOXYGEN_SKIP_THIS
+
+// Internal class used to store which elements are pushed for a depth.
+// This makes it possible to avoid searching through all elements
+// and testing depth in pop().
+class sostate_pushstore {
+public:
+  sostate_pushstore(void) {
+    this->next = this->prev = NULL;
+  }
+  SbList <int> elements;
+  sostate_pushstore * next;
+  sostate_pushstore * prev;
+};
+
+#endif // DOXYGEN_SKIP_THIS
 
 /*!
   The constructor.  The \a theAction argument is the action object the state
@@ -71,6 +87,7 @@ SoState::SoState(SoAction * const theAction,
       element->init(this); // called for first element in state stack
     }
   }
+  this->pushstore = new sostate_pushstore;
 }
 
 /*!
@@ -94,6 +111,14 @@ SoState::~SoState(void)
 
   delete[] this->initial;
   delete[] this->stack;
+
+  sostate_pushstore * item = this->pushstore;
+  while (item->prev) item = item->prev; // go to first item
+  while (item) {
+    sostate_pushstore * next = item->next;
+    delete item;
+    item = next;
+  }
 }
 
 /*!
@@ -104,7 +129,7 @@ SoState::~SoState(void)
 SoAction *
 SoState::getAction(void) const
 {
-  return action;
+  return this->action;
 }
 
 /*!
@@ -118,9 +143,6 @@ SoElement *
 SoState::getElement(const int stackIndex)
 {
   SoElement * element = this->stack[ stackIndex ];
-
-  // FIXME: should the assert() below be converted to a simple return
-  // statement upon element == NULL? 19990304 mortene.
   assert(element);
 
 #if 0 // debug
@@ -145,6 +167,7 @@ SoState::getElement(const int stackIndex)
     next->push(this);
     this->stack[ stackIndex ] = next;
     element = next;
+    this->pushstore->elements.append(stackIndex);
   }
   assert(element != NULL);
   return element;
@@ -175,6 +198,13 @@ SoState::getConstElement(const int stackIndex) const
 void
 SoState::push(void)
 {
+  if (this->pushstore->next == NULL) {
+    sostate_pushstore * store = new sostate_pushstore;
+    store->prev = this->pushstore;
+    this->pushstore->next = store;
+  }
+  this->pushstore = this->pushstore->next;
+  this->pushstore->elements.truncate(0);
   this->depth++;
 }
 
@@ -188,17 +218,20 @@ void
 SoState::pop(void)
 {
   this->depth--;
-  for (int i = 0; i < this->numStacks; i++) {
-    SoElement * element;
-    if ((element = this->stack[ i ]) != NULL) {
-      if (element->getDepth() > this->depth) { // rett test? tror det
-        SoElement * prev = element->nextdown;
-        assert(prev);
-        prev->pop(this, element);
-        this->stack[i] = prev;
-      }
+  int n = this->pushstore->elements.getLength();
+  if (n) {
+    const int * array = this->pushstore->elements.getArrayPtr();
+    for (int i = 0; i < n; i++) {
+      int idx = array[i];
+      SoElement * elem = this->stack[idx];
+      SoElement * prev = elem->nextdown;
+      assert(prev);
+      prev->pop(this, elem);
+      this->stack[idx] = prev;
     }
   }
+  this->pushstore->elements.truncate(0);
+  this->pushstore = this->pushstore->prev;
 }
 
 /*!
