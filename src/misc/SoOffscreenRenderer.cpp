@@ -33,7 +33,7 @@
   sending to a Postscript-capable printer).
 
   Currently offscreen rendering can be done with GLX (i.e. OpenGL on
-  X11) and WGL (i.e. OpenGL on Win32).
+  X11), WGL (i.e. OpenGL on Win32) and AGL (i.e. OpenGL on Mac OS X).
 
   Here's a dead simple usage example:
 
@@ -145,6 +145,130 @@ protected:
   // Note: should _really_ be overloaded by subclasses.
   virtual SbVec2s getMax(void) { return SbVec2s(32767, 32767); }
 };
+
+
+#ifdef HAVE_AGL
+#include <AGL/agl.h>  // should of course be included via config.h
+#include <Carbon/Carbon.h>  // for quickdraw functions
+
+// FIXME: The Apple Menu bar is not displayed correctly when using this.
+// kyrah 20020223
+
+class SoOffscreenAGLData : public SoOffscreenInternalData {
+public:
+  SoOffscreenAGLData(void)
+    : drawable(NULL), context(NULL), pixformat(NULL)
+  {
+    this->buffer = NULL;
+
+    // FIXME: not 100% sure which attributes are best, got to check
+    // kyrah 20020223
+
+    GLint attrib[] = {
+      AGL_OFFSCREEN,
+      AGL_RGBA,
+      AGL_NO_RECOVERY,
+      AGL_RED_SIZE, 8,
+      AGL_GREEN_SIZE, 8,
+      AGL_BLUE_SIZE, 8,
+      AGL_DEPTH_SIZE, 32,
+      AGL_STENCIL_SIZE, 1,
+      AGL_NONE
+    };
+
+    this->pixformat = aglChoosePixelFormat( NULL, 0, attrib );
+    if (!this->pixformat) {
+      SoDebugError::postWarning("SoOffscreenAGLData::SoOffscreenAGLData",
+                                "Couldn't get RGBA AGL pixelformat.");
+      return;
+    }
+
+    this->context = aglCreateContext( pixformat, NULL );
+    if (!this->context) {
+      SoDebugError::postWarning("SoOffscreenAGLData::SoOffscreenAGLData",
+                                "Couldn't create AGL context.");
+    }
+  }
+
+  virtual ~SoOffscreenAGLData() {
+    if (this->drawable) DisposeGWorld((GWorldPtr) drawable);
+    if (this->context) aglDestroyContext(context);
+    if (this->pixformat) aglDestroyPixelFormat(pixformat);
+    delete[] this->buffer;
+  }
+
+  virtual void setBufferSize(const SbVec2s & size) {
+    SoOffscreenInternalData::setBufferSize(size);
+
+    delete[] this->buffer;
+    this->buffer =
+      new unsigned char[this->buffersize[0] * this->buffersize[1] * 4];
+
+    SetRect(&bounds, 0, 0, size[0], size[1]);
+
+    QDErr e = NewGWorld(&drawable, 32, &bounds, NULL /* cTable */, 
+              NULL /*aGDevice */, 0);
+    if(e != noErr) {
+      SoDebugError::postWarning("SoOffscreenAGLData::SoOffscreenAGLData",
+                                "Error creating GWorld: %d", e);
+    }
+    if (!this->drawable) {
+      SoDebugError::postWarning("SoOffscreenAGLData::SoOffscreenAGLData",
+                                "Couldn't create AGL drawable.");
+    }
+    SetGWorld(drawable, NULL);
+  }
+
+  virtual SbBool makeContextCurrent(void) {
+    assert(this->buffer);
+    if (this->context && this->drawable) {
+      PixMapHandle pixmap = GetGWorldPixMap((GWorldPtr)drawable);
+      aglSetOffScreen(context, bounds.right-bounds.left, 
+                      bounds.bottom-bounds.top,
+                      GetPixRowBytes(pixmap), GetPixBaseAddr(pixmap));     
+      aglSetCurrentContext(context);
+      return TRUE;
+    }
+    return FALSE;
+  }
+
+  virtual unsigned char * getBuffer(void) {
+    return this->buffer;
+  }
+
+  virtual void postRender(void) {
+    SbVec2s size = this->getSize();
+
+    if (this->context && this->buffer) {
+      glPixelStorei(GL_PACK_ALIGNMENT, 1);
+      glReadPixels(0, 0, size[0], size[1], GL_RGBA, GL_UNSIGNED_BYTE,
+                   this->buffer);
+      glPixelStorei(GL_PACK_ALIGNMENT, 4);
+
+      // FIXME: GLX version saves old context and drawable, and restores 
+      // it after use, should i do that as well? kyrah 20020223
+    }
+  }
+
+  static SbVec2s getMaxDimensions(void) {
+    // FIXME: make sure we return the real limitations. 20020225 mortene.
+    return SbVec2s(32767, 32767);
+  }
+
+
+private:
+  virtual SbVec2s getMax(void) {
+    return SoOffscreenAGLData::getMaxDimensions();
+  }
+
+  unsigned char *buffer;
+  AGLDrawable drawable;
+  AGLContext context;
+  AGLPixelFormat pixformat;
+  Rect bounds;
+};
+
+#endif // HAVE_AGL
 
 
 #ifdef HAVE_GLX
@@ -577,7 +701,9 @@ SoOffscreenRenderer::SoOffscreenRenderer(const SbViewportRegion & viewportregion
   this->internaldata = new SoOffscreenGLXData();
 #elif defined(HAVE_WGL)
   this->internaldata = new SoOffscreenWGLData();
-#endif // HAVE_WGL
+#elif defined(HAVE_AGL)
+  this->internaldata = new SoOffscreenAGLData();
+#endif // HAVE_AGL
 
   this->renderaction->setCacheContext(SoGLCacheContextElement::getUniqueCacheContext());
   this->setViewportRegion(viewportregion);
@@ -601,7 +727,9 @@ SoOffscreenRenderer::SoOffscreenRenderer(SoGLRenderAction * action)
   this->internaldata = new SoOffscreenGLXData();
 #elif defined(HAVE_WGL)
   this->internaldata = new SoOffscreenWGLData();
-#endif // HAVE_WGL
+#elif defined(HAVE_AGL)
+  this->internaldata = new SoOffscreenAGLData();
+#endif // HAVE_AGL
   assert(action);
   this->setViewportRegion(action->getViewportRegion());
 }
@@ -636,7 +764,9 @@ SoOffscreenRenderer::getMaximumResolution(void)
   SoOffscreenGLXData::getMaxDimensions();
 #elif defined(HAVE_WGL)
   SoOffscreenWGLData::getMaxDimensions();
-#endif // HAVE_WGL
+#elif defined(HAVE_AGL)
+  SoOffscreenAGLData::getMaxDimensions();
+#endif // HAVE_AGL
   return SbVec2s(0, 0);
 }
 
