@@ -172,10 +172,8 @@ SoClipPlaneManip::getDragger(void)
   return NULL;
 }
 
-/*!
-  \internal
-  Overloaded to copy the dragger.
-*/
+// Documented in superclass. Overridden to copy the internal dragger
+// instance.
 void
 SoClipPlaneManip::copyContents(const SoFieldContainer * fromfc, SbBool copyconnections)
 {

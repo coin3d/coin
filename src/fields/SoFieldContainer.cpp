@@ -31,11 +31,10 @@
   classes, so they are all subclasses of SoFieldContainer.
 
   SoFieldContainer provides methods for reading, writing, comparing
-  for equality, copy operations, etc on fields.
+  for equality, doing copy operations, etc on fields.
 
   \sa SoField
-
- */
+*/
 
 
 #include <Inventor/fields/SoFieldContainer.h>
@@ -545,6 +544,10 @@ SoFieldContainer::getFieldData(void) const
   Makes a deep copy of all data of \a from into this instance, \e
   except external scenegraph references if \a copyconnections is \c
   FALSE.
+
+  This is the method that should be overridden by subclasses which
+  needs to account for internal data that are not handled
+  automatically.
 */
 void
 SoFieldContainer::copyContents(const SoFieldContainer * from,
@@ -679,7 +682,7 @@ SoFieldContainer::findCopy(const SoFieldContainer * orig,
   Clean up the dictionary hash.
 
   This method is called from the end of SoNode::copy().
- */
+*/
 void
 SoFieldContainer::copyDone(void)
 {

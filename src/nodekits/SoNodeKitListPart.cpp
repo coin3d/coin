@@ -542,10 +542,8 @@ SoNodeKitListPart::readInstance(SoInput * in, unsigned short flags)
   return FALSE;
 }
 
-/*!
-  Overload this method to set up internal data according to what
-  is contained within the copied field values.
-*/
+// Documented in superclass. Overrode this method to set up internal
+// data according to what is contained within the copied field values.
 void
 SoNodeKitListPart::copyContents(const SoFieldContainer * fromFC,
                                 SbBool copyConnections)

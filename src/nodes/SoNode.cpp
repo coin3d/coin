@@ -176,12 +176,30 @@ SoNode::~SoNode()
   fields within this node (and ditto for any children and children's
   children etc).
 
+
   Note that this function has been made virtual in Coin, which is not
-  the case in the original Open Inventor API.
+  the case in the original Open Inventor API. We may change this
+  method back into being non-virtual again for Coin version 2, as it
+  was made virtual more or less by mistake. So please don't write
+  application code that depends on SoNode::copy() being virtual.
+
+  The reason this method should not be virtual is because this is \e
+  not the function the application programmer should override if she
+  needs some special behavior during a copy operation (like copying
+  the value of internal data not exposed as fields).
+
+  For that purpose, override the copyContents() method. Your
+  overridden copyContents() method should then \e both copy internal
+  data aswell as calling the parent superclass' copyContents() method
+  for automatically handling of fields and other common data.
 */
 SoNode *
 SoNode::copy(SbBool copyconnections) const
 {
+  // FIXME: "de-virtualize" this method for Coin 2? See method
+  // documentation above. 20011220 mortene.
+
+
   SoFieldContainer::initCopyDict();
   (void)this->addToCopyDict();
   // Call findCopy() to have copyContents() run only once.

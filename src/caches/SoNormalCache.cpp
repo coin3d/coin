@@ -46,7 +46,7 @@
 #include <float.h> // FLT_EPSILON
 
 //
-// fixme: add test to shrink normalArray.
+// FIXME: add test to shrink normalArray.
 //
 
 #define NORMAL_EPSILON FLT_EPSILON

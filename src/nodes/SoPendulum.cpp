@@ -129,7 +129,11 @@ SoPendulum::write(SoWriteAction * action)
     this->reconnectInternalEngine();
 }
 
-// Overloaded to decouple and reconnect engine around copy operation.
+// FIXME: I _think_ we made a mistake when overriding SoNode::copy()
+// and making it virtual. See FIXME-comment above
+// SoBlinker::copy(). 20011220 mortene.
+
+// Overridden to decouple and reconnect engine around copy operation.
 SoNode *
 SoPendulum::copy(SbBool copyconnections) const
 {

@@ -371,7 +371,21 @@ SoEngine::writeOutputTypes(SoOutput * out)
 }
 
 /*!
-  Returns a copy of the engine. Input connections are shallow copied.
+  Make a duplicate of this engine and return a pointer to the
+  duplicate.
+
+  Connections are shallow copied, ie the node or engine instance at
+  the other end of the connection is \e not cloned. We just let the
+  connection reference from the cloned engine refer to the same
+  instance as the engine we've cloned ourselves from.
+
+  Note that this is \e not the function the application programmer
+  should override if she needs some special behavior during a copy
+  operation (like copying the value of internal data not exposed as
+  fields). For that purpose, override the copyContents() method. Your
+  overridden copyContents() method should then \e both copy internal
+  data aswell as calling the parent superclass' copyContents() method
+  for automatically handling of fields and other common data.
 */
 SoEngine *
 SoEngine::copy(void) const

@@ -401,9 +401,8 @@ SoWWWInline::getReadAsSoFile(void)
 }
 
 
-/*!
-  Overloaded to render children and/or bounding box.
-*/
+// Documented in superclass.  Overloaded to render children and/or
+// bounding box.
 void
 SoWWWInline::GLRender(SoGLRenderAction * action)
 {
@@ -587,9 +586,7 @@ SoWWWInline::addBoundingBoxChild(SbVec3f center, SbVec3f size)
   this->bboxSize = size;
 }
 
-/*!
-  Overloaded to fetch/read child data.
-*/
+// Documented in superclass. Overloaded to fetch/read child data.
 SbBool
 SoWWWInline::readInstance(SoInput * in, unsigned short flags)
 {
@@ -600,9 +597,7 @@ SoWWWInline::readInstance(SoInput * in, unsigned short flags)
   return ret;
 }
 
-/*!
-  Overloaded to copy children.
-*/
+// Documented in superclass. Overridden to copy children.
 void
 SoWWWInline::copyContents(const SoFieldContainer * fromfc,
                           SbBool copyconnections)

@@ -425,10 +425,8 @@ SoSpotLightManip::fieldSensorCB(void * m, SoSensor *)
   }
 }
 
-/*!
-  \internal
-  Overloaded to copy the dragger.
-*/
+// Documented in superclass. Overridden to copy the internal dragger
+// instance.
 void
 SoSpotLightManip::copyContents(const SoFieldContainer * fromfc, SbBool copyconnections)
 {

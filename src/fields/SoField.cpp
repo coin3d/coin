@@ -28,16 +28,36 @@
 
   Fields is the mechanism used throughout Coin for encapsulating basic
   data types to detect changes made to them, and to provide
-  conversion, import and export facilities. All public properties in
-  nodes are stored in fields, and so are the inputs and outputs of
-  engines.
+  conversion, import and export facilities.
+
+  Almost all public properties in nodes are stored in fields, and so
+  are the inputs and outputs of engines. So fields can be viewed as
+  the major mechanism for scenegraph nodes and engines to expose their
+  public API.
 
   Forcing data modification to go through a public function interface
   while hiding the data members makes it possible to automatically
-  detect and react upon changes in the user-specified data
-  structures. E.g. the default behavior when changing the value of a
-  field in a scene graph node is that there'll automatically be a
-  rendering update.
+  detect and react upon changes in the data structures set up by the
+  application programmer.
+
+  E.g. the default behavior when changing the value of a field in a
+  scenegraph node is that there'll automatically be a chain of
+  notifications -- from the field to the owner node, from that node to
+  it's parent node, etc all the way through to the top-most root node,
+  where the need for a rendering update will be signalled to the
+  application.
+
+  (This notification mechanism is the underlying feature that makes the
+  Coin library classify as a so-called \e data-driven scenegraph API.
+
+  The practical consequences of this is that rendering and many other
+  processing actions is default scheduled to \e only happen when
+  something has changed in the retained data structures, making the
+  Coin library under normal circumstances \e much less CPU intensive
+  than so-called "application-driven" scenegraph API, like for
+  instance SGI IRIS Performer, which are continuously re-rendering
+  even when nothing has changed in the data structures or with the
+  camera viewport.)
 
   Note: there are some field classes which has been obsoleted from the
   Open Inventor API. They are: SoSFLong, SoSFULong, SoMFLong and

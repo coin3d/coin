@@ -163,7 +163,15 @@ SoBlinker::notify(SoNotList * nl)
   inherited::notify(nl);
 }
 
-// Overloaded to decouple and reconnect engine around copy operation.
+// FIXME: I _think_ we made a mistake when overriding SoNode::copy()
+// and making it virtual. The special handling we need below could
+// just aswell have been done in an overridden copyContents() method,
+// which is the recommended mechanism for application programmers. But
+// now I think we'll have to support the "virtual-ity" of
+// SoNode::copy(), even though it's confusing to have 2 virtual
+// copy-methods (both copy() and copyContents()). 20011220 mortene.
+
+// Overridden to decouple and reconnect engine around copy operation.
 SoNode *
 SoBlinker::copy(SbBool copyconnections) const
 {

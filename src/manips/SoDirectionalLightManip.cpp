@@ -388,9 +388,8 @@ SoDirectionalLightManip::fieldSensorCB(void * m, SoSensor *)
   }
 }
 
-/*!
-  Overloaded to copy the dragger.
-*/
+// Documented in superclass. Overridden to copy the internal dragger
+// instance.
 void
 SoDirectionalLightManip::copyContents(const SoFieldContainer * fromfc,
                                       SbBool copyconnections)
