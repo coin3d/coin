@@ -212,7 +212,8 @@ SoSensorManagerP::assertAlive(SoSensorManagerP * that)
 
 // Callback called whenever the timeoutsensor triggers
 // beacuse the system hasn't been idle for a while.
-void timeoutsensor_cb(void * userdata, SoSensor *)
+static void 
+timeoutsensor_cb(void * userdata, SoSensor *)
 {
   SoSensorManager * thisp = (SoSensorManager *)userdata;
   thisp->processDelayQueue(FALSE);
