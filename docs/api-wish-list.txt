@@ -329,3 +329,13 @@ THE WISH LIST
     prefix to simulate a separate namespace. And besides, querying and
     setting the single COIN_OPTIONS environment variable would be a
     lot harder from within application /code/ -- think about it..
+
+* SbString::apply(int (*func)(int))
+  2001-05-07  Peder Blekken <pederb@sim.no>
+
+  It would be nice to be able to do operations on each character in 
+  the string, for instance toupper(), tolower() or some other 
+  user-defined method. This could be handled by invoking callbacks
+  for each character in the string, and setting the character to
+  the value returned from the callback function.
+
