@@ -37,7 +37,11 @@
 #include <assert.h>
 
 #include <Inventor/fields/SoSFString.h>
+#ifdef _WIN32
+#include <strstrea.h>
+#else
 #include <strstream.h>
+#endif
 
 // *************************************************************************
 

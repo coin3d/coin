@@ -18,7 +18,9 @@
 \**************************************************************************/
 
 #include <stdio.h>
+#ifndef _WIN32
 #include <unistd.h>
+#endif // !_WIN32
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInteraction.h>
 #include <Inventor/nodekits/SoNodeKit.h>
@@ -28,9 +30,11 @@
 #include <Inventor/nodes/SoSeparator.h>
 
 /* These two externs are for interfacing against getopt(). */
+
+#ifndef _WIN32
 extern int optind;
 extern char * optarg;
-
+#endif // _WIN32
 
 void
 usage(const char * argv_0)
@@ -63,7 +67,7 @@ main(int argc, char * argv[])
   const char * outname = NULL;
 
   /* Parse command line. */
-
+#ifndef _WIN32
   int getoptchar;
   while ((getoptchar = getopt(argc, argv, "bftho:")) != EOF) {
     char c = (char)getoptchar;
@@ -94,12 +98,16 @@ main(int argc, char * argv[])
       break;
     }
   }
-
+#endif // _WIN32
   SoDB::init();
   SoNodeKit::init();
   SoInteraction::init();
 
+#ifndef _WIN32
   int i = optind;
+#else
+  int i = 1;
+#endif
   SoInput stdinp;
   SoSeparator * root = NULL;
 
@@ -120,8 +128,8 @@ main(int argc, char * argv[])
       }
       else {
 	if (fileinp.openFile(argv[i])) {
-	  SoSeparator * tmproot = SoDB::readAll(&fileinp);
-	  if (tmproot)
+		SoSeparator * tmproot = SoDB::readAll(&fileinp);
+		if (tmproot)
 	    root->addChild(tmproot->getNumChildren() == 1 ?
 			   tmproot->getChild(0) : tmproot);
 	}
@@ -134,6 +142,7 @@ main(int argc, char * argv[])
 
   if (flattenfiles) {
     // FIXME: flatten SoFile nodes. 19991009 mortene.
+
     fprintf(stderr, "Warning: SoFile flattening not supported yet!\n");
   }
 

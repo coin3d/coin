@@ -237,8 +237,13 @@ SoMultipleCopy::getMatrix(SoGetMatrixAction *action)
     SoSwitchElement::set(action->getState(), i);
     action->mult(this->matrix[i]);
     inherited::getMatrix(action);
+#ifdef _WIN32 // fix for stupid m$ compiler
+    action->getMatrix() = oldMatrix;
+    action->getInverse() = oldInvMatrix;
+#else // normal code
     action->getMatrix().setValue(oldMatrix);
     action->getInverse().setValue(oldInvMatrix);
+#endif // end of normal code
   }
 }
 #endif // !COIN_EXCLUDE_SOGETMATRIXACTION

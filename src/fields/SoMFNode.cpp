@@ -329,6 +329,7 @@ SbBool
 SoMFNode::referencesCopy(void) const
 {
   assert(0 && "FIXME: not implemented yet");
+  return FALSE;
 }
 
 void

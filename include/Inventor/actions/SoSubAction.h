@@ -21,7 +21,7 @@
 #define __SOSUBACTION_H__
 
 #define SO_ACTION_ADD_METHOD(nodeClass, method)                               \
-    addMethod(nodeClass::getClassTypeId(), method)
+    addMethod(nodeClass::getClassTypeId(), (SoActionMethod)method)
 
 #define SO_ACTION_CONSTRUCTOR(className)                                      \
     traversalMethods = methods

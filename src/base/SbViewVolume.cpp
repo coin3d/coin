@@ -887,7 +887,7 @@ SbViewVolume::getDepth(void) const
 void 
 SbViewVolume::getNearFarRay(const SbVec2f &normPoint,
 			    SbVec3f &start,
-			    SbVec3f &dir)
+			    SbVec3f &dir) const
 {
   SbVec3f dx = this->lowerrightfrust - this->lowerleftfrust;
   SbVec3f dy = this->upperleftfrust - this->lowerleftfrust;

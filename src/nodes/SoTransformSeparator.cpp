@@ -169,8 +169,13 @@ SoTransformSeparator::getMatrix(SoGetMatrixAction *action)
     matrix = action->getMatrix();
     invmatrix = action->getInverse();
     inherited::getMatrix(action);
+#if _WIN32 // fix for stupid m$ compiler
+    action->getMatrix() = matrix;
+	action->getInverse() = invmatrix;
+#else // normal compilers use this code 
     action->getMatrix().setValue(matrix);
     action->getInverse().setValue(invmatrix);
+#endif // fix for vc6 compiler
   }
   else {
     assert(action->getCurPathCode() == SoAction::IN_PATH);

@@ -3,7 +3,7 @@
 #include <Inventor/SbPlane.h>
 #include <float.h>
 #include <stddef.h>
-
+#include <math.h>
 
 /*!
   \class SbOctTree SbOctTree.h Inventor/SbOctTree.h

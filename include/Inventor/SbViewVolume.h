@@ -80,7 +80,7 @@ public:
 
   void getNearFarRay(const SbVec2f &normPoint,
 		     SbVec3f &start,
-		     SbVec3f &dir);
+		     SbVec3f &dir) const;
 
   void print(ostream & file) const;
 

@@ -39,7 +39,13 @@
 #if !defined(COIN_EXCLUDE_SOSFSTRING)
 #include <Inventor/fields/SoSFString.h>
 #endif // !COIN_EXCLUDE_SOSFSTRING
+
+#ifdef _WIN32
+#include <strstrea.h>
+#else
 #include <strstream.h>
+#endif
+
 // *************************************************************************
 
 //$ BEGIN TEMPLATE MField(SoMFPlane, SbPlane, const SbPlane &)

@@ -25,7 +25,6 @@
 */
 
 #include <Inventor/elements/SoDirectionalLightElement.h>
-
 #include <Inventor/SoType.h>
 
 #include <assert.h>
