@@ -232,6 +232,7 @@ sharedstatedir = @sharedstatedir@
 sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
 sim_ac_dpkg_buildpackage_exe = @sim_ac_dpkg_buildpackage_exe@
 sim_ac_makensis_exe = @sim_ac_makensis_exe@
+sim_ac_packagemaker_app = @sim_ac_packagemaker_app@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 subdirs = @subdirs@
