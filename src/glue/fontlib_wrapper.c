@@ -316,8 +316,6 @@ cc_flw_initialize(void)
      all use of FreeType library if init fails). 20030316 mortene. */
   (void)cc_flwft_initialize();
 #endif
-  
-  cc_flw_create_font("defaultFont", 12, 12);
 }
 
 void
