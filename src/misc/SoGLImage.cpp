@@ -844,11 +844,10 @@ SoGLImage::setData(const SbImage *image,
       border == 0 && // haven't tested with borders yet. Play it safe.
       (dl = THIS->findDL(createinstate)) != NULL;
 
-    unsigned char *bytes = NULL;
     SbVec3s size;
     int nc;
+    const unsigned char * bytes = image->getValue(size, nc);
     if (copyok) {
-      bytes = image->getValue(size, nc);
       if (bytes && size != THIS->glsize || nc != THIS->glcomp) copyok = FALSE;
     }
 
