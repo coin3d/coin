@@ -101,8 +101,7 @@ SoTransparencyElement::getNum() const
 float
 SoTransparencyElement::get(const int index) const
 {
-  assert(index >= 0 && index <= this->numValues);
-  return this->values[index];
+  return this->values[SbClamp(index, 0, this->numValues-1)];
 }
 
 /*!
