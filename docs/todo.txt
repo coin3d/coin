@@ -414,6 +414,10 @@ STUFF TO FIX IN COIN
     programmers double-linking against Qt through SoQt and their
     app-code.)
 
+    UPDATE 2003-08-15 mortene: I have this implemented now, see the
+    StaticObjectInDLL class in SoDB.cpp. Not very well tested, so not
+    yet sent to TT for suggested inclusion in Qt.
+
 
 017 Move action-style code developed in other projects into proper actions.
     2002-07-05  Morten Eriksen  <mortene@sim.no>
@@ -531,6 +535,14 @@ STUFF TO FIX IN COIN
     where he integrates another library. This library is ok to use for
     kintel's application, but can not be integrated into Coin due to
     license and/or copyright issues.
+
+    UPDATE mortene 2003-08-15: the algorithm time has been reduced by
+    using BSP trees in a pre-processing step to sort first shape nodes
+    and then triangles before doing any tri-tri intersection
+    testing. There's one deficiency to fix: shape's intersecting on
+    themselves hasn't been optimized yet (which is just a matter of
+    some refactoring of the internal code to fix -- there was some
+    copy'n'paste in this area).
 
 
 025 Integrate QGL into SoQt.
@@ -810,12 +822,16 @@ STUFF TO FIX IN COIN
     The code for these methods has basically been written already, and
     is now contained within the Coin/src/misc/SoOffscreen* files. It
     should be moved out of there, and SoOffscreenRenderer,
-    SoExtSelection and the GLU nurbs tesselation wrapping should all
+    SoExtSelection and the GLU nurbs tessellation wrapping should all
     use the new methods.
 
     Note that setting up an offscreen GL context uses
     platform-dependent code, and is implemented for 3 different
     systems: GLX (X11), WGL (MSWin) and AGL (Mac OS X).
+
+    UPDATE 2003-08-15 mortene: SoOffscreenRenderer and the GLU nurbs
+    tessellation wrapping now uses the correct method, but
+    SoExtSelection still uses the SoOffscreenRenderer hack.
 
 
 031 Handle POSIX paths under MSWin.
@@ -827,6 +843,10 @@ STUFF TO FIX IN COIN
 
     This would presuppose that we implemented the SbFile / SbDirectory
     abstraction(s) mentioned in the api-wish-list.txt file first.
+
+    UPDATE 2003-08-15 mortene: the path conversion code in Cygwin
+    might be really simple, so perhaps it would be easier (and more
+    robust) to just duplicate the algorithms used.
 
 
 032 Port SGI's ''ivperf'' tool.
@@ -887,6 +907,41 @@ STUFF TO FIX IN COIN
     specific data in the SoWriteAction, not in SoBase. This would take
     API additions, so it can't be done until at least a minor
     increment of the version number is done.
+
+
+036 Write an "interior-geometry reducer" action.
+    2003-08-15  Morten Eriksen  <mortene@sim.no>
+
+    This is the old idea for RR, about "offline"/pre-processing
+    occlusion culling to remove interior parts of objects, which now
+    should be possible to do with Øystein's SoExtSelection code.
+
+    Refactor the "visible only" SoExtSelection code into an internal
+    Coin interface, then use that from both SoExtSelection and the new
+    action ("SoRemoveInteriorGeometry"?).
+
+    Removal of internal geometry will be done by moving a camera
+    around on the bounding sphere of the object, taking "snapshots" to
+    see what geometry is visible from at least one angle. After a run
+    over all angles, the remaining geometry that were not visible from
+    anywhere will be removed.
+
+    SoRemoveInteriorGeometry should have a setting to decide how
+    accurate the removal should be, to decide e.g. how many different
+    camera position to snapshot from, and what the offscreen buffer
+    resolution should be.
+
+
+037 Take advantage of NVidia's occlusion culling extension.
+    2003-08-15  Morten Eriksen  <mortene@sim.no>
+
+    We should at least simply insert code for this in the SoSeparator
+    node, so that it checks the screen area of its geometry's bounding
+    box before deciding whether to traverse below it or not.
+
+    Should also consider adding new node(s) (like TGS has done) for
+    more efficient front-to-back sorting before rendering, which could
+    give huge gains in rendering performance.
 
 
 
