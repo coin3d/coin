@@ -318,7 +318,6 @@
   Right view.
 */
 
-
 SO_NODE_ABSTRACT_SOURCE(SoCamera);
 
 /*!
@@ -346,7 +345,7 @@ SoCamera::SoCamera()
 
   this->stereomode = MONOSCOPIC;
   this->stereoadjustment = 0.1f;
-  this->balanceadjustment = 0.0f;
+  this->balanceadjustment = 1.0f;
 }
 
 /*!
@@ -543,11 +542,32 @@ SoCamera::GLRender(SoGLRenderAction * action)
       if (this->stereomode == LEFT_VIEW) offset = -offset;
       SbVec3f r = vv.getProjectionDirection().cross(vv.getViewUp());
       r.normalize();
-      r *= offset;
-      vv.translateCamera(-(r * (vv.getNearDist() / this->focalDistance.getValue())));
-      vv.getMatrices(dummy, proj);
-      copyvv.translateCamera(r);
-      copyvv.getMatrices(affine, dummy);
+
+      // get the current camera transformation/size
+      vv.getMatrices(affine, proj);
+      affine = affine.inverse();
+      float nearv, farv, left, right, top, bottom;
+      nearv = vv.getNearDist();
+      farv = nearv + vv.getDepth();
+      right = vv.getWidth() * 0.5f;
+      left = -right;
+      top = vv.getHeight() * 0.5f;
+      bottom = -top;
+
+      // create a skewed frustum
+      float focaldist = this->focalDistance.getValue() * this->balanceadjustment;
+      if (focaldist < nearv) focaldist = nearv;
+      left -= offset * nearv / focaldist;
+      right -= offset * nearv / focaldist;
+      vv.frustum(left,right,bottom,top,nearv,farv);
+      
+      // transform the skewed view volume to the same location as the original
+      vv.transform(affine);
+      // translate to account for left/right view
+      affine.setTranslate(r * offset);
+      vv.transform(affine);
+      // read out the stereo view volume
+      vv.getMatrices(affine, proj);
     }
     else {
       vv.getMatrices(affine, proj);
@@ -947,7 +967,8 @@ SoCamera::getStereoMode(void) const
 }
 
 /*!
-  Sets the stereo adjustment.
+  Sets the stereo adjustment. This is the distance between the left
+  and right "eye" when doing stereo rendering.
 */
 void
 SoCamera::setStereoAdjustment(float adjustment)
@@ -957,6 +978,8 @@ SoCamera::setStereoAdjustment(float adjustment)
 
 /*!
   Returns the stereo adjustment.
+
+  \sa setStereoAdjustment()
 */
 float
 SoCamera::getStereoAdjustment(void) const
@@ -965,7 +988,12 @@ SoCamera::getStereoAdjustment(void) const
 }
 
 /*!
-  Sets the stereo balance adjustment.
+  Sets the stereo balance adjustment. This is a factor that enables you to
+  move the zero parallax plane. Objects in front of the zero parallax plane
+  appears to be in front of the screen.
+
+  The default value is 1.0, and the zero parallax plane is then at the focal
+  point (see SoCamera::focalDistance).
 */
 void
 SoCamera::setBalanceAdjustment(float adjustment)
@@ -975,6 +1003,8 @@ SoCamera::setBalanceAdjustment(float adjustment)
 
 /*!
   Returns the stereo balance adjustment.
+
+  \sa setBalanceAdjustment()
 */
 float
 SoCamera::getBalanceAdjustment(void) const
