@@ -30,6 +30,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
+#include <limits.h>
 
 #include <windows.h>
 #include <winbase.h>
@@ -64,101 +66,101 @@ send_triangle(void)
 static void
 expose_cb(void)
 {
-  int i;
+  for (int loop = 0; loop < 2048; loop++) {
+    printf("loop==%d\n", loop);
 
-  glEnable(GL_DEPTH_TEST);
-  glDrawBuffer(GL_BACK);
-  glClearColor(0.000000,0.000000,0.000000,0.000000);
+    int i;
 
-  glColorMaterial(GL_FRONT_AND_BACK,GL_DIFFUSE);
-  glEnable(GL_COLOR_MATERIAL);
-  glEnable(GL_NORMALIZE);
-  glViewport(0,0,892,658);
-  glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-  glEnable(GL_LIGHT0);
-  glEnable(GL_TEXTURE_2D);
-  glEnable(GL_LIGHTING);
+    glEnable(GL_DEPTH_TEST);
+    glDrawBuffer(GL_BACK);
+    glClearColor(0.000000,0.000000,0.000000,0.000000);
 
-  GLuint textures[2];
-  glGenTextures(2,textures);
+    glColorMaterial(GL_FRONT_AND_BACK,GL_DIFFUSE);
+    glEnable(GL_COLOR_MATERIAL);
+    glEnable(GL_NORMALIZE);
+    glViewport(0,0,892,658);
+    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+    glEnable(GL_LIGHT0);
+    glEnable(GL_TEXTURE_2D);
+    glEnable(GL_LIGHTING);
 
-  glBindTexture(GL_TEXTURE_2D,textures[0]);
+    GLuint textures[1];
+    glGenTextures(1,textures);
 
-  static GLvoid * pixels = NULL;
-  if (!pixels) {
-    pixels = malloc(256*256*4);
-    (void)memset(pixels, 0x55, 256*256*4);
+    static GLvoid * pixels = NULL;
+    if (!pixels) {
+      pixels = malloc(256*256*4);
+      (void)memset(pixels, 0x55, 256*256*4);
+    }
+
+    glBindTexture(GL_TEXTURE_2D,textures[0]);
+
+    int dim = 256;
+    int level = 0;
+    while (dim > 0) {
+      glTexImage2D(GL_TEXTURE_2D,level++,0x0003,dim,dim,
+		   0,GL_RGB,GL_UNSIGNED_BYTE,pixels);
+      dim >>= 1;
+    }
+
+    // *********************************************************************
+
+    GLuint gllist = glGenLists(1);
+    glNewList(gllist,GL_COMPILE_AND_EXECUTE);
+
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D,textures[0]);
+
+    glBegin(GL_TRIANGLES);
+    send_triangle();
+    glEnd();
+
+    glBindTexture(GL_TEXTURE_2D,textures[0]);
+    glBegin(GL_TRIANGLES);
+    send_triangle();
+    glEnd();
+
+    glColor4ub(0,0,255,255);
+    glBindTexture(GL_TEXTURE_2D,textures[0]);
+
+    glBegin(GL_TRIANGLES);
+    glColor4ub(255,255,0,255);
+    send_triangle();
+    glEnd();
+
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D,textures[0]);
+
+    glColor4ub(255,0,255,255);
+
+    glBegin(GL_TRIANGLES);
+    const int nr = normrand() * 32;
+    printf("nr==%d\n", nr);
+    for (i=0; i < nr; i++) { send_triangle(); }
+    glColor4f(normrand(), normrand(), normrand(), 1);
+    for (i=0; i < 2; i++) { send_triangle(); }
+    glEnd();
+
+    glEndList();
+
+    // *********************************************************************
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+
+    glCallList(gllist);
+
+    glutSwapBuffers();
+
+#if 0 // enable this, and the crashes go away
+    glDeleteTextures(2, textures);
+    glDeleteLists(gllist, 1);
+#endif
+    printf("textures[0]==%d, gllist==%d\n", textures[0], gllist);
   }
-  glTexImage2D(GL_TEXTURE_2D,0,0x0003,2,2,0,GL_RGB,GL_UNSIGNED_BYTE,pixels);
-  glTexImage2D(GL_TEXTURE_2D,1,0x0003,1,1,0,GL_RGB,GL_UNSIGNED_BYTE,pixels);
-
-  glBindTexture(GL_TEXTURE_2D,textures[0]);
-  glDisable(GL_ALPHA_TEST);
-
-  glBegin(GL_TRIANGLES);
-  glColor4ub(255,255,0,255);
-  send_triangle();
-  glEnd();
-
-  glBindTexture(GL_TEXTURE_2D,textures[1]);
-
-  int dim = 256;
-  int level = 0;
-  while (dim > 0) {
-    glTexImage2D(GL_TEXTURE_2D,level++,0x0003,dim,dim,
-		 0,GL_RGB,GL_UNSIGNED_BYTE,pixels);
-    dim >>= 1;
-  }
-
-  // *************************************************************************
-
-  GLuint gllist = glGenLists(1);
-  glNewList(gllist,GL_COMPILE_AND_EXECUTE);
-
-  glEnable(GL_TEXTURE_2D);
-  glBindTexture(GL_TEXTURE_2D,textures[1]);
-
-  glBegin(GL_TRIANGLES);
-  send_triangle();
-  glEnd();
-
-  glBindTexture(GL_TEXTURE_2D,textures[1]);
-  glBegin(GL_TRIANGLES);
-  send_triangle();
-  glEnd();
-
-  glColor4ub(0,0,255,255);
-  glBindTexture(GL_TEXTURE_2D,textures[1]);
-
-  glBegin(GL_TRIANGLES);
-  glColor4ub(255,255,0,255);
-  send_triangle();
-  glEnd();
-
-  glEnable(GL_TEXTURE_2D);
-  glBindTexture(GL_TEXTURE_2D,textures[1]);
-
-  glColor4ub(255,0,255,255);
-
-  glBegin(GL_TRIANGLES);
-  for (i=0; i < 16; i++) { send_triangle(); }
-  glColor4f(normrand(), normrand(), normrand(), 1);
-  for (i=0; i < 2; i++) { send_triangle(); }
-  glEnd();
-
-  glEndList();
-
-  // *************************************************************************
-
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
-  glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-
-  glCallList(gllist);
-
-  glutSwapBuffers();
 }
 
 // *************************************************************************
@@ -166,6 +168,8 @@ expose_cb(void)
 int
 main(int argc, char ** argv)
 {
+  srand(atoi(argv[1]));
+
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 
