@@ -37,6 +37,17 @@ Section 01 -- Basic build instructions.
         $ [srcdir]/configure
         $ make install
 
+  To specify which C library Coin should be linked against, you should
+  use the --with-msvcrt=<crt> option.  You have the following choices
+  (short aliases on the right):
+
+    singlethread-static        [ /ml  | ml  | libc    ]   (default)
+    singlethread-static-debug  [ /mld | mld | libcd   ]
+    multithread-static         [ /mt  | mt  | libcmt  ]
+    multithread-static-debug   [ /mtd | mtd | libcmtd ]
+    multithread-dynamic        [ /md  | md  | msvcrt  ]
+    multithread-dynamic-debug  [ /mdd | mdd | msvcrtd ]
+
 
   Note that if you encounter any problems when trying to build on
   MSWindows, it is expected that you are able to do a minimum of
@@ -75,27 +86,33 @@ Section 03 -- What is this ``configure'' thing?
   system it's being run on, then tries to locate a compiler, and then
   uses the compiler to probe the system for its capabilities.  For
   instance, which optional utility libraries are available?  The
-  configure script tries to link with them - if it works, the library
-  is there.  If the link-test fails, then it's not.  Is the library
-  new enough so that it contains the function foo()?  Depending on
-  these tests, the configure script sets up a header-file called
-  "config.h" that contains #define settings for what the configure
-  script managed to find.  Then you include this file in your sources,
-  and wrap all the system-specific parts based on feature existence
-  instead of basing the compilation on which platform you are using.
+  configure script tries to link with all the potential libraries that
+  we might want to use.  If the linking works, the library is there.
+  If the link-test fails, then it's not.  Another thing that is often
+  probed is whether a library is new enough so that it contains some
+  function foo()?  Depending on these tests, the configure script sets
+  up a header-file called "config.h" that contains #define settings
+  for what the configure script managed to find.  This header is
+  included from all the sources that needs system-dependent code
+  blocks.  In this way you tune the library on individual features
+  instead of basing the compilation on which platform it is that is
+  being used.
 
   The configure script also has the purpose of figuring out how the
   compiler should be used when you build the library.  The result of
   these tests are put into all the Makefile files that are generated
-  in the end from the Makefile.in templates.  That's basically it.
-  After having run configure, all system characteristics should be
-  figured out and the Makefiles should be set up so you only need to
-  type "make" to get everything built.
+  at the end of the configure run.  The Makefile files are created
+  through keyword substitution in the Makefile.in templates you will
+  see in the source hierarchy.  After having run configure, all system
+  characteristics should be figured out and the Makefiles should be
+  set up so you only need to type "make" to get everything built.
 
   Another feature of this setup is to run the configure script from an
   empty directory.  This will create an an empty directory structure
   with makefiles that will compile the sources out of the source
   directory while putting the object files in the newly created
-  directory structure.  Then you can keep your sources one place (even
-  on a read-only medium like CDROM), and build somewhere temporary,
-  and just scrap that directory after having run "make install".
+  directory structure.  This means you can keep your sources in one
+  place (even on a read-only medium like a CDROM), and build the
+  library in some temporary location that can be scrapped after you
+  have built and installed the library.
+
