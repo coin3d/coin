@@ -31,6 +31,7 @@
 */
 
 #include <Inventor/details/SoNodeKitDetail.h>
+#include <Inventor/nodekits/SoBaseKit.h>
 
 SO_DETAIL_SOURCE(SoNodeKitDetail);
 
@@ -39,7 +40,7 @@ SO_DETAIL_SOURCE(SoNodeKitDetail);
   Constructor.
 */
 SoNodeKitDetail::SoNodeKitDetail(void)
-  : myNodeKit(NULL), myPart(NULL)
+  : myNodeKit(NULL), myPart(NULL), myPartName("")
 {
 }
 
@@ -48,8 +49,8 @@ SoNodeKitDetail::SoNodeKitDetail(void)
 */
 SoNodeKitDetail::~SoNodeKitDetail()
 {
-  // FIXME: unref() nodekit and node if they where ref'ed in the
-  // set*() methods. 19991109 mortene.
+  if (this->myNodeKit) myNodeKit->unref();
+  if (this->myPart) myPart->unref();
 }
 
 // Doc in superclass.
@@ -66,8 +67,14 @@ SoDetail *
 SoNodeKitDetail::copy(void) const
 {
   SoNodeKitDetail * copy = new SoNodeKitDetail();
-  *copy = *this;
-  // FIXME: ref() nodekit and node? 19991109 mortene.
+  copy->myNodeKit = this->myNodeKit;
+  copy->myPart = this->myPart;
+  copy->myPartName = this->myPartName;
+
+  // got to ref once more if set
+  if (this->myNodeKit) this->myNodeKit->ref();
+  if (this->myPart) this->myPart->ref();
+
   return copy;
 }
 
@@ -77,8 +84,9 @@ SoNodeKitDetail::copy(void) const
 void
 SoNodeKitDetail::setNodeKit(SoBaseKit * kit)
 {
+  if (this->myNodeKit) this->myNodeKit->unref();
   this->myNodeKit = kit;
-  // FIXME: ref() kit? 19991109 mortene.
+  if (kit) kit->ref();
 }
 
 /*!
@@ -97,8 +105,9 @@ SoNodeKitDetail::getNodeKit(void) const
 void
 SoNodeKitDetail::setPart(SoNode * part)
 {
+  if (this->myPart) this->myPart->unref();
   this->myPart = part;
-  // FIXME: ref() node? 19991109 mortene.
+  if (part) part->ref();
 }
 
 /*!

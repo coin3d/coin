@@ -45,6 +45,9 @@
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
+#include <Inventor/details/SoNodeKitDetail.h>
+#include <Inventor/SoPickedPoint.h>
+#include <Inventor/lists/SoPickedPointList.h>
 #include <stdlib.h>
 #include <limits.h>
 #include <ctype.h>
@@ -66,6 +69,7 @@ public:
   SbBool didcount;
 
 public:
+  void addKitDetail(SoFullPath * path, SoPickedPoint * pp);
   void createWriteData(void);
   void testParentWrite(void);
 
@@ -514,6 +518,16 @@ void
 SoBaseKit::rayPick(SoRayPickAction * action)
 {
   SoBaseKit::doAction((SoAction *)action);
+
+  const SoPickedPointList & pplist = action->getPickedPointList();
+  const int n = pplist.getLength();
+  for (int i = 0; i < n; i++) {
+    SoPickedPoint * pp = pplist[i];
+    SoFullPath * path = (SoFullPath*) pp->getPath();
+    if (path->containsNode(this) && pp->getDetail(this) == NULL) {
+      THIS->addKitDetail(path, pp);
+    }
+  }
 }
 
 /*!
@@ -1815,6 +1829,45 @@ SoBaseKitP::setParts(SbList <SoNode*> partlist, const SbBool leafparts)
         }
         this->kit->setPart(i, node);
       }
+    }
+  }
+}
+
+//
+// Adds a SoNodekitDetail to the picked point. path should 
+// contain this kit.
+//
+void 
+SoBaseKitP::addKitDetail(SoFullPath * path, SoPickedPoint * pp)
+{
+  const SoNodekitCatalog * catalog = this->kit->getNodekitCatalog();
+  
+  assert(path->findNode(this->kit) >= 0);
+  
+  const int n = path->getLength(); 
+  for (int i = path->findNode(this->kit) + 1; i < n; i++) {
+    SoNode * node = path->getNode(i);
+    int idx = this->kit->findNodeInThisKit(node, -1);
+    if (idx > 0 && catalog->isLeaf(idx)) {
+      SoNodeKitDetail * detail = new SoNodeKitDetail;
+      detail->setNodeKit(this->kit);
+      detail->setPart(node);
+      SbString partname(catalog->getName(idx));
+      // check if node is a SoNodeKitListPart, and if the
+      // path extends into the children. Supply index in partname
+      // if this is the case.
+      if (node->isOfType(SoNodeKitListPart::getClassTypeId()) &&
+          path->getLength() >= i + 2) {
+        SbString str;
+        str.sprintf("%s[%d]", 
+                    partname.getString(),
+                    path->getIndex(i+2));
+        partname = SbName(str.getString());
+      }
+      detail->setPartName(partname);
+      pp->setDetail(detail, this->kit);
+      // finished
+      break;
     }
   }
 }
