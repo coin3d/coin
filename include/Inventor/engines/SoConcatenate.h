@@ -30,21 +30,37 @@ class COIN_DLL_EXPORT SoConcatenate : public SoEngine {
 
   SO_ENGINE_HEADER(SoConcatenate);
 
+  enum { NUMINPUTS = 10 }; // Constant.
+
 public:
-  SoMField * input[10];
-
-  SoEngineOutput * output;
-
+  static void initClass(void);
   SoConcatenate(SoType inputType);
 
-  static void initClass();
+  SoMField * input[NUMINPUTS];
+
+  SoEngineOutput * output;
 
 private:
   SoConcatenate(void);
   ~SoConcatenate();
-  virtual void evaluate();
 
-  // Avoid a g++/egcs warning.
+  virtual void evaluate(void);
+
+  virtual SbBool readInstance(SoInput * in, unsigned short flags);
+  virtual void writeInstance(SoOutput * out);
+
+  SbBool initialize(const SoType inputfieldtype);
+
+  virtual void copyContents(const SoFieldContainer * from,
+                            SbBool copyconnections);
+
+  // SoConcatenate instances uses a dynamic set of inputs and outputs,
+  // as they are not common for all instances of the class (like for
+  // most of the other engines).
+  SoFieldData * dynamicinput;
+  SoEngineOutputData * dynamicoutput;
+
+  // Avoid a g++/egcs warning due to the private default constructor.
   friend class dummy;
 };
 

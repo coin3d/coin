@@ -81,10 +81,10 @@ SoType
 SoEngineOutput::getConnectionType(void) const
 {
   assert(this->getContainer() != NULL);
-  const SoEngineOutputData *outputs = this->getContainer()->getOutputData();
+  const SoEngineOutputData * outputs = this->getContainer()->getOutputData();
   assert(outputs);
   int idx = outputs->getIndex(this->getContainer(), this);
-  assert(idx >= 0);
+  assert(idx >= 0 && "an engine should have at least one output");
   return outputs->getType(idx);
 }
 

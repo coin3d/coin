@@ -12,7 +12,7 @@
 # ID
 # ==
 # HIERARCHY
-# iD  SoEngine
+# ID  SoEngine
 # ID      SoBoolOperation
 # Id      SoCalculator
 # Id      SoComposeVec2f
@@ -27,13 +27,13 @@
 # Id      SoComposeMatrix
 # Id      SoDecomposeMatrix
 #         SoComputeBoundingBox
-# Id      SoConcatenate
+# ID      SoConcatenate
 # Id      SoCounter
 # Id      SoElapsedTime
 # ID      SoEngineOutputData
 # id      SoFieldConverter
 # i           SoConvertAll
-# Id      SoGate
+# ID      SoGate
 # ID      SoInterpolate
 # ID          SoInterpolateFloat
 # ID          SoInterpolateRotation
@@ -42,7 +42,7 @@
 # ID          SoInterpolateVec4f
 # Id      SoOnOff
 # id      SoOneShot
-# Id      SoSelectOne
+# ID      SoSelectOne
 # ID      SoTimeCounter
 #         SoTransformVec3f
 # Id      SoTriggerAny
@@ -52,6 +52,9 @@
 #############################################################################
 #
 # COMMENTS
+#
+# SoEngine is missing a little bit of code needed to handle import
+# and export of SoUnknownEngine (which is still unimplemented).
 #
 # END COMMENTS
 #

@@ -102,9 +102,9 @@ SoSelectOne::initialize(const SoType inputfieldtype)
   SO_ENGINE_INTERNAL_CONSTRUCTOR(SoSelectOne);
   SO_ENGINE_ADD_INPUT(index, (0));
 
-  // Instead of SO_ENGINE_ADD_INPUT().
   if (inputfieldtype.isDerivedFrom(SoMField::getClassTypeId()) &&
       inputfieldtype.canCreateInstance()) {
+    // Instead of SO_ENGINE_ADD_INPUT().
     this->input = (SoMField *)inputfieldtype.createInstance();
     this->input->setNum(0);
     this->input->setContainer(this);
@@ -183,6 +183,9 @@ SoSelectOne::evaluate(void)
 SbBool
 SoSelectOne::readInstance(SoInput * in, unsigned short flags)
 {
+  // This code is identical to writeInstance() of SoGate and
+  // SoConcatenate, so migrate changes.
+
   SbName tmp;
   if (!in->read(tmp) || tmp != "type") {
     SoReadError::post(in, "\"type\" keyword is missing.");
@@ -207,6 +210,9 @@ SoSelectOne::readInstance(SoInput * in, unsigned short flags)
 void
 SoSelectOne::writeInstance(SoOutput * out)
 {
+  // This code is identical to writeInstance() of SoGate and
+  // SoConcatenate, so migrate changes.
+
   if (this->writeHeader(out, FALSE, TRUE)) return;
 
   SbBool binarywrite = out->isBinary();

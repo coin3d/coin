@@ -59,7 +59,7 @@
 /*!
   \var SoEngineOutput * SoGate::output
 
-  (SoMField) This is the field output containing with the values of
+  (SoMField) This is the field output containing the values of
   SoGate::input.
 
   The type of the field will of course match the type of the input
@@ -159,6 +159,8 @@ SoGate::evaluate(void)
   // Force update of slave fields.
   this->output->enable(TRUE);
 
+  // FIXME: this is an amazingly ineffective way of copying the
+  // values. 20000920 mortene.
   SbString valuestring;
   this->input->get(valuestring);
   SO_ENGINE_OUTPUT((*output), SoField, set(valuestring.getString()));
@@ -190,8 +192,8 @@ SoGate::inputChanged(SoField * which)
 SbBool
 SoGate::readInstance(SoInput * in, unsigned short flags)
 {
-  // This code is identical to SoSelectOne::readInstance(), so migrate
-  // changes.
+  // This code is identical to readInstance() of SoSelectOne and
+  // SoConcatenate, so migrate changes.
 
   SbName tmp;
   if (!in->read(tmp) || tmp != "type") {
@@ -219,8 +221,8 @@ SoGate::readInstance(SoInput * in, unsigned short flags)
 void
 SoGate::writeInstance(SoOutput * out)
 {
-  // This code is identical to SoSelectOne::writeInstance(), so
-  // migrate changes.
+  // This code is identical to writeInstance() of SoSelectOne and
+  // SoConcatenate, so migrate changes.
 
   if (this->writeHeader(out, FALSE, TRUE)) return;
 
