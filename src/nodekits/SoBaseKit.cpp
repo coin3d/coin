@@ -1597,7 +1597,7 @@ SoBaseKit::copyContents(const SoFieldContainer * fromfc,
   // copy parts, taking care of scene graph
   PRIVATE(this)->copyParts(srckit, partlist, copyconnections);
 
-  // remove all old children before setting parts again
+  // remove all old children before copying parts
   this->getChildren()->truncate(0);
 
   // reset part fields
@@ -2428,6 +2428,10 @@ SoBaseKitP::testParentWrite(void)
   }
 }
 
+// Copy parts into 'partlist'. All parts have already been copied, but
+// we need to update the parts that have a parent as a part, since the
+// part node has already been copied by the parent, and we need to use
+// that child node pointer, not the copied part.
 void
 SoBaseKitP::copyParts(const SoBaseKit * srckit, SbList <SoNode*> & partlist,
                       const SbBool copyconnections)
@@ -2445,7 +2449,12 @@ SoBaseKitP::copyParts(const SoBaseKit * srckit, SbList <SoNode*> & partlist,
     if (dstnode && catalog->getParentPartNumber(i) == 0) {
       SoNode * srcnode = srcfields[i]->getValue();
       assert(dstnode != srcnode);
-      dstnode->copyContents(srcnode, copyconnections);
+      assert(srcnode != NULL);
+      assert(srcnode->getTypeId() == dstnode->getTypeId());
+      srcnode->assertAlive();
+      dstnode->assertAlive();
+      // the node has been copied since we called
+      // SoNode::copyContents() . We just need to store the pointer
       dstnode->ref(); // ref before inserting into list
       if (partlist[i]) partlist[i]->unref();
       partlist[i] = dstnode;
