@@ -239,7 +239,7 @@ int SoDBP::notificationcounter = 0;
 
 #ifdef COIN_THREADSAFE
 // callback from SbStorage that initializes the counter to 0
-static void 
+static void
 sodb_clear_counter(void * ptr)
 {
   int * intptr = (int*) ptr;
@@ -392,17 +392,17 @@ SoDB::init(void)
 #if defined(HAVE_SOUND) && 0 // disabled 2002-01-29 pederb. Crashes under Linux
   SoAudioDevice * audioDevice;
   audioDevice = SoAudioDevice::instance();
-  env = coin_getenv("COIN_SOUND_DRIVER_NAME");      
+  env = coin_getenv("COIN_SOUND_DRIVER_NAME");
   (void) audioDevice->init("OpenAL", env ? env : "DirectSound3D");
   if (audioDevice->haveSound()) {
     env = coin_getenv("COIN_SOUND_BUFFER_LENGTH");
     int bufferlength = env ? atoi(env) : 44100;
-    env = coin_getenv("COIN_SOUND_NUM_BUFFERS");      
+    env = coin_getenv("COIN_SOUND_NUM_BUFFERS");
     int numbuffers = env ? atoi(env) : 5;
-    env = coin_getenv("COIN_SOUND_THREAD_SLEEP_TIME");      
+    env = coin_getenv("COIN_SOUND_THREAD_SLEEP_TIME");
     float threadsleeptime = env ? atof(env) : 0.250f;
     SoVRMLSound::setDefaultBufferingProperties(bufferlength, numbuffers, threadsleeptime);
-    env = coin_getenv("COIN_SOUND_INTRO_PAUSE");      
+    env = coin_getenv("COIN_SOUND_INTRO_PAUSE");
     float intropause = env ? atof(env) : 0.0f;
     SoVRMLAudioClip::setDefaultIntroPause(intropause);
   }
@@ -539,10 +539,10 @@ SoDBP::clean(void)
   for (int i = 0; i < SoDBP::headerlist->getLength(); i++)
     delete (*SoDBP::headerlist)[i];
   delete SoDBP::headerlist;
-  
+
 #ifdef COIN_THREADSAFE
   // we can't delete this here since it might be needed by some atexit
-  // functions 
+  // functions
   // delete sodb_notificationcounter_storage;
 #endif // COIN_THREADSAFE
 #endif // COIN_DEBUG
@@ -607,8 +607,9 @@ SbBool
 SoDB::read(SoInput * in, SoBase *& base)
 {
 #ifdef HAVE_3DS_IMPORT_CAPABILITIES
-  if (is3dsFile(in))
-    return read3dsFile(in,((SoSeparator*)base));
+  if (is3dsFile(in)) {
+    return read3dsFile(in, (SoSeparator *&) base);
+  }
 #endif // HAVE_3DS_IMPORT_CAPABILITIES
 
   // Header is only required when reading from a stream, if reading from
@@ -635,7 +636,7 @@ SoDB::read(SoInput * in, SoNode *& rootnode)
 
 #ifdef HAVE_3DS_IMPORT_CAPABILITIES
   if (is3dsFile(in))
-    return read3dsFile(in,((SoSeparator*)rootnode));
+    return read3dsFile(in,((SoSeparator*&)rootnode));
 #endif // HAVE_3DS_IMPORT_CAPABILITIES
 
   if (!SoDB::read(in, baseptr)) return FALSE;
@@ -1145,7 +1146,7 @@ SoDB::doSelect(int nfds, void * readfds, void * writefds,
   // and do proper testing (write a test-case) - I just picked up this
   // info from this discussion:
   // http://archive.develooper.com/perl-loop@perl.org/msg00398.html
-  // 
+  //
   // 20011002 larsa.
 
   // FIXME update: I think the SoDB::doSelect() and
@@ -1332,7 +1333,7 @@ SoDBP::listWin32ProcessModules(void)
     MODULEENTRY32 moduleentry;
     moduleentry.dwSize = sizeof(MODULEENTRY32);
     ok = funModule32First(tool32snap, &moduleentry);
-    assert(ok && "Module32First() failed"); 
+    assert(ok && "Module32First() failed");
 
     SoDebugError::postInfo("SoDBP::listWin32ProcessModules",
                            "MODULEENTRY32.szModule=='%s', .szExePath=='%s'",
@@ -1344,7 +1345,7 @@ SoDBP::listWin32ProcessModules(void)
                              moduleentry.szModule, moduleentry.szExePath);
     }
 
-    assert(GetLastError()==ERROR_NO_MORE_FILES && "Module32Next() failed"); 
+    assert(GetLastError()==ERROR_NO_MORE_FILES && "Module32Next() failed");
 
     ok = CloseHandle(tool32snap);
     assert(ok && "CloseHandle() failed");
