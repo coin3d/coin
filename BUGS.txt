@@ -2772,6 +2772,10 @@ diff -u -r1.6 SoGLnonindexedTristripSetTemplate.icc
       apply an SoGetBoundingBoxAction every time
       SoGLRenderAction::apply() is called, that would be pretty bad.
 
+
+    Note: when this bug has been fixed, remove the warning note on
+    So@Gui@Viewer::setAutoClipping() which mentions this problem.
+
 =====================================================================
 
 100 Wrong use of glGetError().
@@ -3477,166 +3481,6 @@ main(void)
 
 
      20040810 jornskaa
-
-=====================================================================
-
-130 Loading of ascii iv-file takes much longer time than loading
-    of binary iv-file on Windows.
-
-    Load the following file into examinerviewer, and create a binary
-    version of this file and load that into examinerviewer. The
-    timedifference in the loading is very big. The binary version
-    loads very fast, while the ascii version takes much longer time.
-
---------8<------------- [snip] --------------8<------------- [snip]
-begin 644 spheres.iv.gz
-M'XL("*?7'$$``W-P:&5R97,N:78`Q5U=CY[';;W7KWB17.^"P_F^#-J@-=`T
-M15/DMMA$*V<!916LY*!NX/]>#@^?U1I%$N/,`#$@OY*\+_W,/!SR\/!C?O[-
-M\Y\?G[]\>KG]5N_E]O#Y]T]/[V[O?O/XIX>7A_77?WEWNWWS_.&3_^9V^_SE
-MY>GYV]O/WC]^?/CN^>'[_WYY_/#T_*CW3W^^??OX_&A?>GQ_^]WWMV]^^Y^_
-M_,4_W__L1]_Z]<O3MT_/#Q]O[Q^^/-R>GF\?GCX^WOZ?K/_Y_G_]BS_8KQ\_
-MR>WV;T_?_N'+KS[9=^(O;K<_^I_^XU]__>__XG_S@__[5_8D+T_V__K+[?W3
-MAP_??7[\IT\?34RR90I^K1_\KY>'Y\\?/KW\T7[NR_K]QX<O3Y^>[3^G,:I]
-MY-J&?<Q4_>=_\Z<_/+X\V@^_/+Q_^N[S$E-O?TO0G=S7,>OZ+*)Y?<'^H429
-MI%E<DN:1UL]KR:RDW-;J7-`26#LGZ2[=I]37=K:D2Z*4FLAG2BWK$J@ME_50
-M&Z)&:_WV55)JG9.$[_;7IUI[GDE1Z3[GMD3,7-37-R:K"+/FI96MRMS1*'N(
-M4<OTY0UIZPNM3DI4NN\Y+:5L.KMK>U%.TMJ95ER&R[(_SMG8/2]-=&F"=%=T
-M2<*)6H<ON2+T.=?>TY+6NI*(*_S,_E#L^NSP%1.1[EL6-PRI%%H3)(V\UG?)
-MHM7SX*X?U(5U[O+:*U4M6[LNI@)]N&6?ZL^62V8-L<PQWRZ//7]'S4L>VI;$
-M.JI[2EH3;(NJK(?*FAK>)KF^<S;]H*,YY_U,4$X2MAPN/O-[OF#"5^>^`1-$
-MJC]-*U)^"N#XZ[AK8:[T4W!7T[Y0TBBV!C-&;7;:<E191\H\FQ]6-:/$BM+<
-M_:`G,Y)+I":E1=7JQS/UZ3X@-WZ!,OWMV.%R44DY44L2;$8N`H\DPHHR%+!@
-M@.W0)MC54?'>EJ2U84J>B%C>V]4E^J'L6*ZMEN'ZH.PS+1\I$HJ`G9J#A.`K
-M5DFPB:-D/%9B3[R=<`&2F&Y#V$-C7^T`@JDU]2WC0:J,M!ZFQ4XEY0]RP?LK
-M",DVEM<,WRX1LZCK>R8#1'N8"L"E.EPA5'2P>VX:<`M)Z\0T6M#T5=E.0T=Y
-M23*P3ZEWUU'MH[`;E=VO&=IR7]OI=R?%@WK#@P/^O].GV.#IBIM:J[[Q=IAI
-M)9\Z7#6S(R6=I-=VM8ZC-[2X2*4!0%^Z:4@PP^`9?N,6N+Q4=T60[LK);[K%
-MENH^)B?LV."]<1KPQM)TP)62ML6VJ+857IBD"\?1FJ"N4RD//).Y!GY]SEJ8
-M#19X+UI2[@#-+36HJ=`6H6"O7_>\#38FT#SQ,`!`LY&*8,&3N71[>[EK=[M7
-M>%26H``]NU7/ALYX[BD!X-EA<4?!.SZI#8BE)C!^G?97(@A9S2MGMZ+"&72/
-M6)<EGVG_R'2W=))A8^AG\AUR+R/K]&WLDT.#[-R::8!;O-'9C1HSN\'+H"[,
-M`6[P*;6_$269U*FUYV!F2LHNL2F]Y\>T\_"A.764S2WTM`+@:O&>^T)A3=XQ
-MZ[FVV7F>5Y=LX(7&BVVANW3?JT>U.^?OU%%>N]P"<33GUFJE'ZK/NJQ!,05U
-M?]/XY1UR[BM.&&\5G<;#9J"*A0WVT=J(_>)/WRE`Y8@XJSMY7]\*:NBGZC.Y
-M>H(ID<[G@T[!]!7'Z!M'P]NI]>)D>>+9Q`4F<J-.1EBGHK[UW5;<*53QK(D%
-M-ZP;->2RSMZ<B&KI$,3L0>W^^H=4F)BZH9RGV!L_=LZ4O$:V+(Y=FU-<1*N.
-M%TPS_N&DRY5.L!>IH'83&<\<)%W"!0=^W3DUCL8J,A.C-@>?)$PXR'XO$:.\
-M8:QIG5JOKX.(G6F+\CS'P]H)5@^-+7COFS&(:IGQ,$%8;R1C);*>S7<J;5">
-M=>K:\Y`DB>>^SQ'R.56HE`+"_-U\P]\NZ/E)B27-#N9+UA7HCSYYIFXQ61YH
-MP,C6O$$6N.E(%0EE`Q>TJ*3MHNC\10\^@6B6V@/6)<G72_(J:WTH<?`%^OKH
-MP#75'-42U:UMSFP(E4H0&`V2E$3S2V];0\R)0)&/56QU7M(U&Z`)ZVZ7),"E
-M5U$Z:3@QYH2L#M-FB)QV2$DZSOJ,YV,5U,E'B.H5F\8G/G-.\&VCQ6;1;]`V
-MR1_&(WQ;'5V>8*&`?V37SLJSOR+PDB`U[4\\:R0=%4M!&+!'QHU+),`E;!Y_
-MD$MM(&8*4@J-KU-)`E'F:*%:N=/FI0;XKD4"A-/V9:!LQI[J8C+HIQ+/4+DD
-M#SKI9VI!%I4$0977A#)P<%!Z2&>I2A11)<$VF<5C#Y^I07ABQ/<IC8T\!TZ?
-M!YV2:(MN]@V!186M*D)ON2W/(_OI+\\6QTN:#3"CA['B<U2I29R7"?.W8:;*
-M55,!+"1\\L5$Y7`-J(=,/,P;J*:8K0'"#.7W/9#4`/%@")HO&TG0=3,-KJ%U
-M@W>X#%4M[@0[S:Q85!&0PQE7"Z+8*DW#G/V->>$KD4Q!(:B&G@J_Y7,T%/]$
-MK"@D)[V.<KB9"91.'^:U,O!]=>3;AGWQ9RAPQ.YKI/#0I;>P4/XAO,DSS)*!
-MHY!DW$C'5A`\+8=?IRM0[<#%<4&N2@;Y[E9B21(^H`V#/R]13FBB$)Q+XN/:
-M`@Q;(@9IB54I"=T<E_/;*/809]IEE=VO/VW$H@IE2A/<*!EA+1VJJ-0IKJ0;
-MUDY*N+[2H*2\B]&T#%TR8Q5PJF3Z[65POFY:W)GR5A@`ULV=QU=TS#<Z]CI!
-ML1KO]8HX!AX#_#;;&N2,2^019KR]#2V?%W*%(]V2%2YO@J\SZT)7V(@.K]_/
-M%W#9R,'EXKM4T%YBH(-_A15V,Z$LP@P5[[):BF))"7Z4+['Y6IF(&@9RVQWP
-M1ZXK-4CB8]$)TKZ@V+S0_(:4$!2&G<]Q($%L$6G4+/-M.!459*T&AYK8;9K%
-MR>&2RE5'S2M4]B)<";J2UH([3]_E"&)0U[M17U,21.6Z1>FZ=N>W4+]T/IL7
-M]JD@$U?)2BL_O#_:\PTUSP5Q?V3"E07#RQ&O8I&T]MIQ]4:R60;X'YT7ET"[
-MT:HP=]7;SD3HG@/W[&^"1Y92<H/@.IF]32<UWB&;;OI6!\O%<E/IO@$<E`Q^
-ML0O/QMM+F[=P"KY=_"$6016O>N&(`5A>DEDZ!&HM/FB@/W&&>X+/HZE.LYLS
-M(C\TY=%I9A%@J"N&9$N0_*L3K@K8H/'U,*FA,L,V"/PBV[WHH>P%QJ)G--,+
-M1,G"A123;.#S5Z@"?:"Y)(><L;J-,`T;-=ZZ*MJRI%6NMP+V-'-`C0U?!0_3
-M0";8&^"=>@W@4Z-%;M!^SQQ!"^X5"&CP91`+IV"34,$Y"D\#O5:MPXC.N<%(
-M1.(*?'6;&Q"A0.%1P$E[T"HQFR`'-I,-.KXA$YV"AU4ZIRUM1NP!LC,5OKK!
-M0[[+<?E3DCR0&W-HPD)F:X&)SJEU<%.@@6A#Y;L,%0C@,DC?=^=M\EXZ5J+P
-ML@B/%5%D]?KZ*MW[E31*R-0?3G*C2<H2:CG!!B6^1#6/"(D\D95:Y]-.'7Q$
-M`P8JLN&0(S^'U*%NO+P.UVYF6`-Q\+93!W+'46&42<HLW9=5;;<*SL%*Y$J&
-M'X<7>'+;CZC".?4\>F0BU>0.ZVX/[;<:#X4B.MMSGHV7XN%Q1M)!^H:F'T()
-MOJ*8+M*BM&A'UCEX=A`TRIH4),CUQ$/R_`TRT()&.9JD/(2H5H9VUNHP7;#S
-MRK=9><7,79`)OF\[ENI,('(L.)*3\=JA&'+A'NW@6[(SZ%KYPV<!#1K6H\2!
-MM\2G2``Y24P<)$O.$#@G2:4YO"E?,]!PGNR<0X!R7R6*`';.\!FP?RS^B'SV
-M74BZV[,&IX*^U7J4@^@:E]>C8_9#9/5!!OTZ*9=(Y`@VZL(\G9VBLL2T]!_-
-M?<LI.MZ^.A.FY!7T!@_>Q1S*K+HK/I3O!;`[EH8^EQPW8!VC$J^2?;Y3XEB"
-M53!@S/V5[QS-GQ[*:*_(8SI38K@5A8)D;]&R)IBXF*-7@BU.D=>Q8GH5U^[4
-MQA^J`G%C$L&0!B%$ZL%=K-#=*<Y,Y3NZ#I;?'*H)DOLRFO>LEUS")_,#+X^E
-MQT^E[._.U1&XU817SU&[KUN:4*$!,T31,>VI_#^>PBU41"!LG<O=TBJ'C*I.
-M>&G:`"_'2CR/%9X*6DI<1(]YLSQX.52:>2?GRD7GT.HL:EC/3A9YKK?74AA@
-M]#WQK?3'BIE=QID2ZS>A\7[=]Z%:=#E5'K]:L0O:"&J4U^X,&8OI1E?LMY/&
-M2N6:W:-!AM/PY5#/A1QL`SG4F>*3I[V=,@\?C6KFCH]&S[1A.5#T^/&:2<_.
-M[9&#?6_G>O%69.T22[#>Y#Q3]WOG^L*.]:M9[#%\+M$U/]QL%<^^G6D;EE.=
-MS$ZRU"M;X3_/%Q?EF&^,)A`1&M_)U3'<L$WLD`30;;Y!O=8(CGBH<:J[>F%%
-M%)CY=#``]8W^AD.MOH>ZCW],Y^[D9.1<O[>_MD-MZ#`ND6:XP!0_#"K2HADE
-M3Z94_/R[X)1\>LIZG_RDP*01M4^D+MK64`)DGH)48LT""#=WZC&F9&.@A,*U
-MMQ@QQDZ4\/6T&-\06L5#V%/31>3@R),*L%AR6[?.C$26;P3]!NL9-"4_TS1-
-MCQI*"H/,#EZZ`\WB("^&<"?Z("NR!)+C(K&Z,4H@=0P)E&O"#S^B2F9$[>XE
-M2N,-J`8M;&[/4?_<(,U0F9*C*(@?G)5:S!MLJ$\1?C*3=L6`7(UVWT83Q!(5
-M@N9*\Y:NV_M3A_IY8AQ/HPN,7IM7KR&B&Z/T6KBL,L*\5'X(_@B.!)MO02E]
-M.XJJ7Q=08Y2:)+Z`*@=FC/0]ZY+3?2E1U]?=91E4H^E]0=3>2N1F^#O@-*XA
-M,TL5B&C0Z$5'W$0"F,V:3P^K%#-*0"_JV*AHOIY*XQQFNB(]Q[15+3[CS_`Z
-M#QJ3BYCSZC'BV^W-F".7&;6_K"@[+G[?6KK7B7L[&LU-)/`D;U`_'6FI1I_U
-MB*UJ?%*ZC:NH2T(5V$BY)0'J$&=S-IKR$HJ_KT&^&Q43E__3&1TANE%!%143
-M&04!ZWVR4*A['KEV='$,_H[)M%+M:1T=KU8:E<^)]0@EOW*Q+'S1AB&5.?C]
-MMC'\+?H`5*,`CA\YE'/')9/#J852^:=*!1>RQF`0V1APV_)UZP"FR6[T:):6
-M,>$V1@)OW.Y6,=0N7]W?@[U:L&??J5D13V[8/+,J*#(*&I45Y=GL>B$@N/N-
-MFY,.[=2=(UG7SX)*S=+YM$.D0J[K&@9_:'1>TS<!JQ([!?#L61[#+^2LW2<G
-M%]F`0E%DG5)4!\W$5XHAL5VNR_7X+N)3KF:9/46Y;L'@ZRQDKMQA8]0*(HEH
-M*')C")6^P;)YXR:8DJ\ZL<`O]#@K1:)F]!GG;V/N%P8%E:M*B-XHLU'R]OQI
-M)SL^WVS1JU:Q<9O@PFT3,0TMN,OA$Q"GE,K]<$7!?;`G=4/5HT>H9J>%=&RT
-M8)RR,-#NJ*9J$77M%-&<B9'<'->%0JOBJJBVL4"-GI>XX&G=4<U&IEGB$%ZQ
-M+L]W'(J1EE(*XLG>?:^JTO<>I:@"?U,X3ZN[7T'W%;%+V9AJ=8Z;S>JDD#9<
-MZ[MQ<=6\<K@M"'$VXEI[Y#E7LZ&1&J$[DT_1:*L6)R]5'S%D<..2DW.1C<RX
-M5^V*O`??96FRPLG'=36)O`'2/6CSZ\)2]]:JG'G&6.-B@6LB/%O$[;8*.>5`
-MV7G#K*,D.14-[I*O_>P#=R3."HJ=;B@^1>@LC!U=J-$UI$).;)9SU'I:3P'"
-M&/48*KPF)/6C_&H4V-?G<58/<!U^?F,6RF7LHI^X\Q4^.C0Z42]&CC2@=U_S
-MW3&+7W:FU'5O$IG=DR3+.-"2TF6D`FXWFDC+95[YL:BHX1-)IU)N=ZL5"K/$
-M)VJ+E6^)2JI15#7"KM,'1R>N&YX]KGC>"'-1,-1*=!/RMX9CQIEJC^7QY6R'
-;LI.>X8[9K"&J_ATL],.['][]'QN7TCBMC0``
-`
-end
---------8<------------- [snip] --------------8<------------- [snip]
-
-    This is what was reported on coin-discuss:
-
---------8<------------- [snip] --------------8<------------- [snip]
-    Coin seems to take much longer to load a large iv file comparing to SGI's
-    OpenInventor.  In one of the test file that I have, Coin took ~28 sec to
-    load while SGI only took 0.14 sec.  Is there a way to make that faster?
---------8<------------- [snip] --------------8<------------- [snip]
-
-    This bug is probably quite high priority to fix.
-
-    Bug reported by Winnie E. Wong. 
-
-    20040813 jornskaa
-
-    UPDATE 20040818 mortene: it is mentioned in the bug title, but
-    just to stress this: the problem only manifests itself on Windows
-    systems (tested by Wong on both "pure" native Win32, and on top of
-    the MKS NuTCracker suite). On UNIX systems (tested on hp-ux 10),
-    we seem to be as fast as SGI Inventor.
-
-    Another peculiarity with the above file: ivperf built on top of
-    Coin reports twice as many triangles as ivperf built on top of SGI
-    Inventor, according to Wong. Very peculiar, should be
-    investigated. jornskaa suggests this may be due to higher default
-    tessellation complexity in Coin's SoSphere-nodes.
-
-    (Note, split this last part out as a separate bug-item in this
-    list if the load-speed issue is solved first.)
-
-    UPDATE 20040830 jornskaa: it appears that the speed issue with loading
-    the iv-files only is a problem when attempting to load files with
-    
-        #Inventor V2.X ascii
-
-    headers, where X can be 0, 4 or 5. When changing
-    the header to
-
-        #Inventor V2.1 ascii
-    
-    the loading is again about just as fast as the binary version, indicating
-    something strange happens when the file header is anything other than 2.1.
-    This may be related to the fact that SoDB registers the 2.1 file header
-    before any other headers.
 
 =====================================================================
 
