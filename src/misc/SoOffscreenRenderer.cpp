@@ -1061,14 +1061,51 @@ flush_ascii85(FILE * fp,
 SbBool
 SoOffscreenRenderer::writeToPostScript(FILE * fp) const
 {
+  // just choose a page size of 8.5 x 11 inches (A4)
+  return this->writeToPostScript(fp, SbVec2f(8.5f, 11.0f));
+}
+
+/*!
+  Opens a file with the given name and writes the offscreen buffer in
+  Postscript format to the new file. If the file already exists, it
+  will be overwritten (if permitted by the filesystem).
+
+  Returns \c TRUE if all went ok, otherwise \c FALSE.
+*/
+SbBool
+SoOffscreenRenderer::writeToPostScript(const char * filename) const
+{
+  FILE * psfp = fopen(filename, "wb");
+  if (!psfp) {
+    SoDebugError::postWarning("SoOffscreenRenderer::writeToPostScript",
+                              "couldn't open file '%s'", filename);
+    return FALSE;
+  }
+  SbBool result = this->writeToPostScript(psfp);
+  (void)fclose(psfp);
+  return result;
+}
+
+/*!
+  Writes the buffer to a file in Postscript format, with \a printsize
+  dimensions.
+
+  Important note: do \e not use this method when the Coin library has
+  been compiled as an MSWindows DLL, as passing FILE* instances back
+  or forth to DLLs is dangerous and will most likely cause a
+  crash. This is an intrinsic limitation for MSWindows DLLs.
+*/
+SbBool
+SoOffscreenRenderer::writeToPostScript(FILE * fp,
+                                       const SbVec2f & printsize) const
+{
   if (this->internaldata) {
     const SbVec2s size = this->internaldata->getSize();
     const int nc = this->getComponents();
     const float defaultdpi = 72.0f; // we scale against this value 
     const float dpi = this->getScreenPixelsPerInch();
-    const SbVec2f inchsize(8.5f, 11.0f); // FIXME: ok to use this page size?
-    const SbVec2s pixelsize((short)(inchsize[0]*defaultdpi),
-                            (short)(inchsize[1]*defaultdpi));
+    const SbVec2s pixelsize((short)(printsize[0]*defaultdpi),
+                            (short)(printsize[1]*defaultdpi));
     
     const unsigned char * src = this->buffer;
     const int chan = nc <= 2 ? 1 : 3;
@@ -1101,8 +1138,8 @@ SoOffscreenRenderer::writeToPostScript(FILE * fp) const
     fprintf(fp, "/xpos_offset 0 image_scale mul def\n");
     fprintf(fp, "/ypos_offset 0 image_scale mul def\n");
     fprintf(fp, "/pix_buf_size %d def\n\n", size[0]*chan);
-    fprintf(fp, "/page_ht %g %g mul def\n", inchsize[1], defaultdpi);
-    fprintf(fp, "/page_wd %g %g mul def\n", inchsize[0], defaultdpi);
+    fprintf(fp, "/page_ht %g %g mul def\n", printsize[1], defaultdpi);
+    fprintf(fp, "/page_wd %g %g mul def\n", printsize[0], defaultdpi);
     fprintf(fp, "/image_xpos 0 def\n");
     fprintf(fp, "/image_ypos page_ht pos_ht image_scale mul sub def\n");
     fprintf(fp, "image_xpos xpos_offset add image_ypos ypos_offset add translate\n");
@@ -1157,47 +1194,8 @@ SoOffscreenRenderer::writeToPostScript(FILE * fp) const
     fprintf(fp, "%%%%Trailer\n");
     fprintf(fp, "\n");
     fprintf(fp, "%%%%EOF\n");
-
-    return TRUE;
+    return (SbBool) (ferror(fp) == 0);
   }
-  return FALSE;
-}
-
-/*!
-  Opens a file with the given name and writes the offscreen buffer in
-  Postscript format to the new file. If the file already exists, it
-  will be overwritten (if permitted by the filesystem).
-
-  Returns \c TRUE if all went ok, otherwise \c FALSE.
-*/
-SbBool
-SoOffscreenRenderer::writeToPostScript(const char * filename) const
-{
-  FILE * psfp = fopen(filename, "wb");
-  if (!psfp) {
-    SoDebugError::postWarning("SoOffscreenRenderer::writeToPostScript",
-                              "couldn't open file '%s'", filename);
-    return FALSE;
-  }
-  SbBool result = this->writeToPostScript(psfp);
-  (void)fclose(psfp);
-  return result;
-}
-
-/*!
-  Writes the buffer to a file in Postscript format, with \a printsize
-  dimensions.
-
-  Important note: do \e not use this method when the Coin library has
-  been compiled as an MSWindows DLL, as passing FILE* instances back
-  or forth to DLLs is dangerous and will most likely cause a
-  crash. This is an intrinsic limitation for MSWindows DLLs.
-*/
-SbBool
-SoOffscreenRenderer::writeToPostScript(FILE * fp,
-                                       const SbVec2f & printsize) const
-{
-  COIN_STUB();
   return FALSE;
 }
 
