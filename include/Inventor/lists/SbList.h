@@ -160,7 +160,7 @@ SbList<Type>::fit(void)
 
     if (this->itembuffer != this->builtinbuffer) delete [] this->itembuffer;
     this->itembuffer = newitembuffer;
-    this->itembuffersize = items;
+    this->itembuffersize = items > DEFAULTSIZE ? items : DEFAULTSIZE;
   }
 }
 
