@@ -198,10 +198,14 @@ _class_::createInstance(void) \
       /* No fields can be added or removed during this loop, as it */ \
       /* is a "closed" operation. (The fields are disabled for */ \
       /* notification while the loop runs). */ \
-      int numconnections = _engineout_.getNumConnections(); \
-      for (int i = 0; i < numconnections; i++) { \
-        _fieldtype_ * field = (_fieldtype_*) _engineout_[i]; \
-        if (!field->isReadOnly()) { field->_writeop_; } \
+      int SO_ENGINE_OUTPUT_numconnections = _engineout_.getNumConnections(); \
+      /* The reason we use the perverted variable names is to */ \
+      /* avoid the possibility of getting _extremely_ hard */ \
+      /* to find bugs when _writeop_ contains the same variable */ \
+      /* names we are using internally in the macro. */ \
+      for (int SO_ENGINE_OUTPUT_i = 0; SO_ENGINE_OUTPUT_i < SO_ENGINE_OUTPUT_numconnections; SO_ENGINE_OUTPUT_i++) { \
+        _fieldtype_ * SO_ENGINE_OUTPUT_field = (_fieldtype_*) _engineout_[SO_ENGINE_OUTPUT_i]; \
+        if (!SO_ENGINE_OUTPUT_field->isReadOnly()) { SO_ENGINE_OUTPUT_field->_writeop_; } \
       } \
     } \
   } while (0)
