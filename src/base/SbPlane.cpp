@@ -18,7 +18,7 @@
 \**************************************************************************/
 
 /*!
-  \class SbPlane SbLinear.h Inventor/SbLinear.h
+  \class SbPlane SbPlane.h Inventor/SbLinear.h
   \brief The SbPlane class represents a plane in 3D space.
   \ingroup base
 
