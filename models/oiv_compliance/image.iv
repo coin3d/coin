@@ -8,7 +8,7 @@ Separator {
    Cube { width 100  depth 100  height 100}
 
    Image {
-      filename "textures/simtex.gif" 
+      filename "myimage.rgb" 
       horAlignment LEFT
       vertAlignment BOTTOM
    }
@@ -19,8 +19,8 @@ Separator {
 
    Translation { translation +400 0 0 }
    Image {
-      filename "textures/simtex.gif" 
-      width 1
+      filename "myimage.rgb" 
+      width 100
       height 100
    }
 }
