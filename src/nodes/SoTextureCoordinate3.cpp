@@ -23,11 +23,23 @@
 
 /*!
   \class SoTextureCoordinate3 SoTextureCoordinate3.h Inventor/nodes/SoTextureCoordinate3.h
-  \brief The SoTextureCoordinate3 class ...
+  \brief The SoTextureCoordinate3 class contains a set of coordinates for the mapping of 2D textures.
   \ingroup nodes
 
-  FIXME: write class doc
+  When encountering nodes of this type during traversal, the
+  coordinates it contains will be put on the state stack. Some shape
+  nodes can then use these coordinates for explicit, detailed control
+  of how 3D textures are mapped.
 
+  (If 3D textures are used without any SoTextureCoordinate3 nodes in
+  the scenegraph leading up to a shape node, the shape types have
+  default fallbacks. So SoTextureCoordinate3 nodes are only necessary
+  to use if you are not satisfied with the default mapping.)
+
+  Note that an SoTextureCoordinate3 node will \e replace the
+  coordinates already present in the state (if any).
+
+  \sa SoTextureCoordinate2
   \since 2001-11-27
 */
 
@@ -39,7 +51,12 @@
 
 /*!
   \var SoMFVec3f SoTextureCoordinate3::point
-  FIXME: write documentation for field
+
+  The set of 3D texture coordinates. Default value of field is an
+  empty set.
+
+  Texture coordinates should be specified on normalized coordinates,
+  ie in the range [0, 1].
 */
 
 // *************************************************************************
@@ -49,7 +66,7 @@ SO_NODE_SOURCE(SoTextureCoordinate3);
 /*!
   Constructor.
 */
-SoTextureCoordinate3::SoTextureCoordinate3()
+SoTextureCoordinate3::SoTextureCoordinate3(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTextureCoordinate3);
   SO_NODE_ADD_FIELD(point, (NULL));
@@ -62,7 +79,7 @@ SoTextureCoordinate3::~SoTextureCoordinate3()
 {
 }
 
-// doc in super
+// Documented in superclass.
 void
 SoTextureCoordinate3::initClass(void)
 {
@@ -73,9 +90,7 @@ SoTextureCoordinate3::initClass(void)
   SO_ENABLE(SoCallbackAction, SoTextureCoordinateElement);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Documented in superclass.
 void
 SoTextureCoordinate3::doAction(SoAction * action)
 {
@@ -84,29 +99,22 @@ SoTextureCoordinate3::doAction(SoAction * action)
                                    point.getValues(0));
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Documented in superclass.
 void
 SoTextureCoordinate3::GLRender(SoGLRenderAction * action)
 {
-  SoGLTextureCoordinateElement::setTexGen(action->getState(),
-                                          this, NULL);
+  SoGLTextureCoordinateElement::setTexGen(action->getState(), this, NULL);
   SoTextureCoordinate3::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Documented in superclass.
 void
 SoTextureCoordinate3::callback(SoCallbackAction * action)
 {
   SoTextureCoordinate3::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Documented in superclass.
 void
 SoTextureCoordinate3::pick(SoPickAction * action)
 {

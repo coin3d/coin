@@ -322,9 +322,14 @@ SoSceneManager::getSceneGraph(void) const
 }
 
 /*!
-  Update window size. Typically used by the GUI renderarea instance
-  upon user interaction.
- */
+  Update window size of our SoGLRenderAction's viewport settings.
+
+  Note that this will \e only change the information about window
+  dimensions, the actual viewport size and origin (ie the rectangle
+  which redraws are confined to) will stay the same.
+
+  \sa setViewportRegion()
+*/
 void
 SoSceneManager::setWindowSize(const SbVec2s & newsize)
 {
@@ -344,7 +349,9 @@ SoSceneManager::setWindowSize(const SbVec2s & newsize)
 
 /*!
   Returns the current render action window size.
- */
+
+  \sa setWindowSize()
+*/
 const SbVec2s &
 SoSceneManager::getWindowSize(void) const
 {
@@ -354,7 +361,7 @@ SoSceneManager::getWindowSize(void) const
 /*!
   Set size of rendering area for the viewport within the current
   window.
- */
+*/
 void
 SoSceneManager::setSize(const SbVec2s & newsize)
 {
@@ -384,9 +391,11 @@ SoSceneManager::getSize(void) const
 }
 
 /*!
-  Set origin of render area of the viewport region within the
-  rendering window.
- */
+  Set \e only the origin of the viewport region within the rendering
+  window.
+
+  \sa setViewportRegion(), setWindowSize()
+*/
 void
 SoSceneManager::setOrigin(const SbVec2s & newOrigin)
 {
@@ -402,8 +411,10 @@ SoSceneManager::setOrigin(const SbVec2s & newOrigin)
 }
 
 /*!
-  Returns origin of rendering area.
- */
+  Returns origin of rendering area viewport.
+
+  \sa setOrigin()
+*/
 const SbVec2s &
 SoSceneManager::getOrigin(void) const
 {
@@ -411,8 +422,13 @@ SoSceneManager::getOrigin(void) const
 }
 
 /*!
-  Change viewport region.
- */
+  Update our SoGLRenderAction's viewport settings.
+
+  This will change \e both the information about window dimensions and
+  the actual viewport size and origin.
+
+  \sa setWindowSize()
+*/
 void
 SoSceneManager::setViewportRegion(const SbViewportRegion & newregion)
 {
@@ -423,7 +439,9 @@ SoSceneManager::setViewportRegion(const SbViewportRegion & newregion)
 /*!
   Returns current viewport region used by the renderaction and the
   event handling.
- */
+
+  \sa setViewportRegion()
+*/
 const SbViewportRegion &
 SoSceneManager::getViewportRegion(void) const
 {

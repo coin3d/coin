@@ -42,6 +42,11 @@
   the principles applied in the API, richly illustrated and with
   numerous, well documented code examples.
 
+  (The «The Inventor Mentor» is getting a bit old, but don't let that
+  put you off. We heartily recommend this book as it covers all the
+  principles, aswell as close to 100% of the API, in an excellent
+  manner.)
+
 
   Systems in Motion is working on providing libraries for interfacing
   Coin with a wide range of windowing systems and GUI toolkits.

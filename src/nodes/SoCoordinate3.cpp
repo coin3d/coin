@@ -27,7 +27,7 @@
   \ingroup nodes
 
   When encountering nodes of this type during traversal, the
-  coordinates it contains will be put on the statestack for later use
+  coordinates it contains will be put on the state stack for later use
   by shape nodes of types which needs coordinate sets (like SoFaceSet
   nodes or SoPointSet nodes).
 

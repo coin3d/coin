@@ -23,16 +23,22 @@
 
 /*!
   \class SbViewportRegion SbViewportRegion.h Inventor/SbViewportRegion.h
-  \brief The SbViewportRegion class is a mapping from normalized screen space coordinates to window coordinates.
+  \brief The SbViewportRegion class is a viewport within a full window.
   \ingroup base
 
-  The SbViewportRegion class contains information to represent
-  a subview within a desktop window. Available methods include inquiries
-  and manipulation in both normalized coordinates and pixel coordinates.
+  The SbViewportRegion class contains information to represent a
+  subview within a window. It stores information about the origin and
+  size of the subview, aswell as the size of the underlying "full"
+  window.
+
+  Available methods include inquiries and manipulation in both
+  normalized coordinates and pixel coordinates.
 
   \sa SbViewVolume
 */
-
+// FIXME: should do a simple illustration in the class documentation
+// of the "viewport-within-a-window" concept which this class
+// represents. 20020103 mortene.
 
 #include <assert.h>
 #include <Inventor/SbViewportRegion.h>
@@ -41,9 +47,10 @@
 #endif // COIN_DEBUG
 
 /*!
-  The default SbViewportRegion constructor initializes the viewport to a
-  (100, 100) window with 72 pixels per inch resolution.
- */
+  The default SbViewportRegion constructor initializes the viewport to
+  fully cover a [100, 100] size window with 72 pixels per inch
+  resolution.
+*/
 SbViewportRegion::SbViewportRegion(void)
   : winsize(100, 100),
     vporigin(0.0f, 0.0f),
@@ -53,9 +60,10 @@ SbViewportRegion::SbViewportRegion(void)
 }
 
 /*!
-  Construct and initialize an SbViewportRegion instance with the
-  given pixel value window dimensions.
- */
+  Construct and initialize an SbViewportRegion instance with the given
+  pixel value window dimensions. The viewport within this window will
+  be set to cover the window completely.
+*/
 SbViewportRegion::SbViewportRegion(short width, short height)
   : winsize(width, height),
     vporigin(0,0),
@@ -80,9 +88,10 @@ SbViewportRegion::SbViewportRegion(short width, short height)
 }
 
 /*!
-  Construct and initialize an SbViewportRegion instance with the
-  given pixel value window dimensions.
- */
+  Construct and initialize an SbViewportRegion instance with the given
+  pixel value window dimensions. The viewport within this window will
+  be set to cover the window completely.
+*/
 SbViewportRegion::SbViewportRegion(SbVec2s winsize)
   : winsize(winsize),
     vporigin(0,0),
@@ -108,17 +117,18 @@ SbViewportRegion::SbViewportRegion(SbVec2s winsize)
 
 /*!
   Copy constructor.
- */
-SbViewportRegion::SbViewportRegion(const SbViewportRegion& vpReg)
+*/
+SbViewportRegion::SbViewportRegion(const SbViewportRegion & vpReg)
 {
   *this = vpReg;
 }
 
 /*!
-  Set the viewport region window size in pixels.
+  Set the window size in pixels. The viewport rectangle dimensions
+  will stay intact.
 
-  \sa getWindowSize().
- */
+  \sa getWindowSize()
+*/
 void
 SbViewportRegion::setWindowSize(short width, short height)
 {
@@ -140,10 +150,8 @@ SbViewportRegion::setWindowSize(short width, short height)
 }
 
 /*!
-  Set the viewport region window size in pixels.
-
-  \sa getWindowSize().
- */
+  \overload
+*/
 void
 SbViewportRegion::setWindowSize(SbVec2s winsize)
 {
@@ -170,7 +178,7 @@ SbViewportRegion::setWindowSize(SbVec2s winsize)
   coordinates.
 
   \sa getViewportOrigin(), getViewportSize(), setViewportPixels().
- */
+*/
 void
 SbViewportRegion::setViewport(float left, float bottom,
                               float width, float height)
@@ -194,11 +202,8 @@ SbViewportRegion::setViewport(float left, float bottom,
 }
 
 /*!
-  Set up the origin and size of the viewport region in normalized
-  coordinates.
-
-  \sa getViewportOrigin(), getViewportSize(), setViewportPixels().
- */
+  \overload
+*/
 void
 SbViewportRegion::setViewport(SbVec2f origin, SbVec2f size)
 {
@@ -224,8 +229,8 @@ SbViewportRegion::setViewport(SbVec2f origin, SbVec2f size)
   Set up the origin and size of the viewport region in pixel
   coordinates.
 
-  \sa getViewportOriginPixels(), getViewportSizePixels(), setViewport().
- */
+  \sa getViewportOriginPixels(), getViewportSizePixels(), setViewport()
+*/
 void
 SbViewportRegion::setViewportPixels(short left, short bottom,
                                     short width, short height)
@@ -251,11 +256,8 @@ SbViewportRegion::setViewportPixels(short left, short bottom,
 }
 
 /*!
-  Set up the origin and size of the viewport region in pixel
-  coordinates.
-
-  \sa getViewportOriginPixels(), getViewportSizePixels(), setViewport().
- */
+  \overload
+*/
 void
 SbViewportRegion::setViewportPixels(SbVec2s origin, SbVec2s size)
 {
@@ -481,23 +483,23 @@ void
 SbViewportRegion::print(FILE * fp) const
 {
 #if COIN_DEBUG
-  fprintf( fp, "  winsize:     " );
+  (void)fprintf( fp, "  winsize:     " );
   this->getWindowSize().print(fp);
-  fprintf( fp, "\n" );
-  fprintf( fp, "  vporigin:    " );
+  (void)fprintf( fp, "\n" );
+  (void)fprintf( fp, "  vporigin:    " );
   this->getViewportOrigin().print(fp);
-  fprintf( fp, "\n" );
-  fprintf( fp, "  vporiginpix: " );
+  (void)fprintf( fp, "\n" );
+  (void)fprintf( fp, "  vporiginpix: " );
   this->getViewportOriginPixels().print(fp);
-  fprintf( fp, "\n" );
-  fprintf( fp, "  vpsize:      " );
+  (void)fprintf( fp, "\n" );
+  (void)fprintf( fp, "  vpsize:      " );
   this->getViewportSize().print(fp);
-  fprintf( fp, "\n" );
-  fprintf( fp, "  vpsizepix:   " );
+  (void)fprintf( fp, "\n" );
+  (void)fprintf( fp, "  vpsizepix:   " );
   this->getViewportSizePixels().print(fp);
-  fprintf( fp, "\n" );
-  fprintf( fp, "  aspectratio: %f\n", this->getViewportAspectRatio() );
-  fprintf( fp, "  ppi:         %f\n", this->getPixelsPerInch() );
-  fprintf( fp, "  ppp:         %f\n", this->getPixelsPerPoint() );
+  (void)fprintf( fp, "\n" );
+  (void)fprintf( fp, "  aspectratio: %f\n", this->getViewportAspectRatio() );
+  (void)fprintf( fp, "  ppi:         %f\n", this->getPixelsPerInch() );
+  (void)fprintf( fp, "  ppp:         %f\n", this->getPixelsPerPoint() );
 #endif // COIN_DEBUG
 }
