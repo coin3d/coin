@@ -73,11 +73,6 @@
 */
 
 
-// Syntax keywords for writing multiple references in .iv/.wrl files.
-#define DEFINITION_KEYWORD "DEF"
-#define REFERENCE_KEYWORD "USE"
-
-
 uint32_t SoNode::nextUniqueId = 0;
 int SoNode::nextActionMethodIndex = 0;
 // Don't set value explicitly to SoType::badType(), to avoid a bug in
