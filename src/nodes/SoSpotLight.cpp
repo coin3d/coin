@@ -115,7 +115,7 @@ SoSpotLight::initClass(void)
 void
 SoSpotLight::GLRender(SoGLRenderAction * action)
 {
-  if (!on.getValue()) return;
+  if (!this->on.getValue()) return;
 
   SoState * state = action->getState();
   int idx = SoGLLightIdElement::increment(state);
@@ -130,37 +130,28 @@ SoSpotLight::GLRender(SoGLRenderAction * action)
 
   GLenum light = (GLenum) (idx + GL_LIGHT0);
 
-  SbColor4f lightcolor(0.0f, 0.0f, 0.0f, 1.0f);
-  SbVec3f attenuation(0.0f, 0.0f, 1.0f);
-  lightcolor.setRGB(SoEnvironmentElement::getAmbientColor(state));
-  lightcolor *= SoEnvironmentElement::getAmbientIntensity(state);
-  attenuation = SoEnvironmentElement::getLightAttenuation(state);
+  SbVec3f attenuation = SoEnvironmentElement::getLightAttenuation(state);
 
-  glLightfv(light, GL_AMBIENT, lightcolor.getValue());
   glLightf(light, GL_QUADRATIC_ATTENUATION, attenuation[0]);
   glLightf(light, GL_LINEAR_ATTENUATION, attenuation[1]);
   glLightf(light, GL_CONSTANT_ATTENUATION, attenuation[2]);
 
-  lightcolor.setRGB(color.getValue());
-  if (!intensity.isIgnored()) lightcolor *= intensity.getValue();
+  SbColor4f lightcolor(0.0f, 0.0f, 0.0f, 1.0f);
+  lightcolor.setRGB(this->color.getValue());
+  lightcolor *= this->intensity.getValue();
 
   glLightfv(light, GL_DIFFUSE, lightcolor.getValue());
   glLightfv(light, GL_SPECULAR, lightcolor.getValue());
 
-  SbVec3f loc = location.getValue();
+  SbVec3f loc = this->location.getValue();
 
   // point (or spot) light when w = 1.0
   SbVec4f posvec(loc[0], loc[1], loc[2], 1.0f);
   glLightfv(light, GL_POSITION, posvec.getValue());
 
-  float cutOff = !cutOffAngle.isIgnored() ?
-    cutOffAngle.getValue() * float(M_PI)/180.0f :
-    float(M_PI)/4.0f;
-
-  float dropOff = !dropOffRate.isIgnored() ?
-    dropOffRate.getValue() * 128.0f :
-    0.0f;
-
-  glLightf(light, GL_SPOT_EXPONENT, dropOff);
-  glLightf(light, GL_SPOT_CUTOFF, cutOff);
+  float cutoff = this->cutOffAngle.getValue() * float(M_PI)/180.0f;
+  float dropoff = this->dropOffRate.getValue() * 128.0f;
+  
+  glLightf(light, GL_SPOT_EXPONENT, dropoff);
+  glLightf(light, GL_SPOT_CUTOFF, cutoff);
 }

@@ -111,13 +111,9 @@ SoDirectionalLight::GLRender(SoGLRenderAction * action)
   GLenum light = (GLenum) (idx + GL_LIGHT0);
 
   SbColor4f lightcolor(0.0f, 0.0f, 0.0f, 1.0f);
-  lightcolor.setRGB(SoEnvironmentElement::getAmbientColor(state));
-  lightcolor *= SoEnvironmentElement::getAmbientIntensity(state);
-  glLightfv(light, GL_AMBIENT, lightcolor.getValue());
-
   lightcolor.setRGB(this->color.getValue());
-  if (!this->intensity.isIgnored()) lightcolor *= this->intensity.getValue();
-
+  lightcolor *= this->intensity.getValue();
+  
   glLightfv(light, GL_DIFFUSE, lightcolor.getValue());
   glLightfv(light, GL_SPECULAR, lightcolor.getValue());
 
