@@ -132,8 +132,12 @@ STRIP_FROM_PATH        =
 # that is typed after a \internal command is included. If the tag is set 
 # to NO (the default) then the documentation will be excluded. 
 # Set it to YES to include the internal documentation.
+#
+# It is useful to let this be "YES", so we can add information about
+# e.g. functions that are about to be obsoleted below the \COININTERNAL
+# tag.  <mortene>.
 
-INTERNAL_DOCS          = NO
+INTERNAL_DOCS          = YES
 
 # Setting the STRIP_CODE_COMMENTS tag to YES (the default) will instruct 
 # doxygen to hide any special comment blocks from generated source code 
