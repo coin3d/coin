@@ -1388,28 +1388,6 @@ Now, for the list of known bugs in the core Coin library:
 
 =====================================================================
 
-065 libtool.m4 needs upgrading
-
-    http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=190223
-
-    The current version we use doesn't support MIPS shared libs.
-    The current version of libtool.m4 contains some Coin-specific
-    tweaks though (Mac OS X stuff amongst others) that we need to
-    inspect and check if are still needed before replacing libtool.m4
-
-    20030424 larsa. Reported through Steve Robbins by Ryan Murray.
-
-    Update 20030424 kyrah: AFAIK, only the convenience library hack
-    [http://sim.no/~kyrah/patches/20021217_libtool.patch] in ltmain.sh
-    is necessary for Mac OS X - at least that was the only thing I had
-    to change for Coin-2. This is a known libtool problem, and is
-    fixed in libtool-1.4.3 and libtool-1.5, according to Fink
-    developer Peter O'Gorman.
-
-    Update 20030709 larsa: libtool was upgraded a while ago.
-
-=====================================================================
-
 066 Viewer "view all" functionality not 100% correct.
 
     See the VRML1 file below containing 5 line segments as separate
