@@ -163,6 +163,7 @@
 #include <Inventor/nodes/SoTextureScalePolicy.h> // possible part of public API in the future
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/SoInput.h>
+#include <Inventor/misc/SoProtoInstance.h>
 #include <assert.h>
 #include <stdlib.h>
 
@@ -1085,15 +1086,27 @@ SoNode::write(SoWriteAction * action)
 {
   SoOutput * out = action->getOutput();
 
-  if (out->getStage() == SoOutput::COUNT_REFS) {
-    this->addWriteReference(out, FALSE);
+  SoProtoInstance * proto = SoProtoInstance::findProtoInstance(this);
+  if (proto) {
+    if (out->getStage() == SoOutput::COUNT_REFS) {
+      proto->addWriteReference(out, FALSE);
+    }
+    else if (out->getStage() == SoOutput::WRITE) {
+      proto->writeInstance(out);
+    }
+    else assert(0 && "unknown stage");
   }
-  else if (out->getStage() == SoOutput::WRITE) {
-    if (this->writeHeader(out, FALSE, FALSE)) return;
-    this->getFieldData()->write(out, this);
-    this->writeFooter(out);
+  else {
+    if (out->getStage() == SoOutput::COUNT_REFS) {
+      this->addWriteReference(out, FALSE);
+    }
+    else if (out->getStage() == SoOutput::WRITE) {
+      if (this->writeHeader(out, FALSE, FALSE)) return;
+      this->getFieldData()->write(out, this);
+      this->writeFooter(out);
+    }
+    else assert(0 && "unknown stage");
   }
-  else assert(0 && "unknown stage");
 }
 
 // Note that this documentation will also be used for all subclasses
