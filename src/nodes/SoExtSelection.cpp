@@ -84,6 +84,7 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoCullElement.h>
 #include <Inventor/elements/SoPointSizeElement.h> 
+#include <Inventor/errors/SoDebugError.h> 
 #include <Inventor/lists/SoCallbackList.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/SbMatrix.h>
@@ -240,7 +241,7 @@ public:
   
   int scanOffscreenBuffer(SoNode * root);
 
-  void checkOffscreenRendererCapabilities();
+  SbBool checkOffscreenRendererCapabilities();
 
   static void offscreenRenderCallback(void * userdata, SoAction * action);
 
@@ -2076,7 +2077,7 @@ SoExtSelectionP::offscreenRenderCallback(void * userdata, SoAction * action)
 
 }
 
-void
+SbBool
 SoExtSelectionP::checkOffscreenRendererCapabilities()
 {
   
@@ -2085,15 +2086,20 @@ SoExtSelectionP::checkOffscreenRendererCapabilities()
   GLint green = 0;
   GLint blue = 0;
   GLint alpha = 0;
-  GLboolean rgbmode;
   glGetIntegerv(GL_RED_BITS,&red);
   glGetIntegerv(GL_GREEN_BITS,&green);
   glGetIntegerv(GL_BLUE_BITS,&blue);
   glGetIntegerv(GL_ALPHA_BITS,&alpha);
 
-  // FIXME: Here we have to give a better message to the client (handegar)
-  //glGetBooleanv(GL_RGBA_MODE,&rgbmode);
-  //assert(rgbmode && "Offscreen renderer in non-RGB mode is not supported when using SoExtSelection");
+  GLboolean rgbmode;
+  glGetBooleanv(GL_RGBA_MODE, &rgbmode);
+  if (!rgbmode) {
+    SoDebugError::post("SoExtSelectionP::checkOffscreenRendererCapabilities",
+                       "Couldn't get an RGBA OpenGL context -- can not "
+                       "proceed with VISIBLE_SHAPES selection. Check your "
+                       "system for driver errors.");
+    return FALSE;
+  }
   
   this->colorbitsred = red;
   this->colorbitsgreen = green;
@@ -2122,6 +2128,16 @@ SoExtSelectionP::checkOffscreenRendererCapabilities()
   this->maximumcolorcounter = ((int) pow(2,this->colorbitsred) - 1) << (this->colorbitsgreen + this->colorbitsblue);
   this->maximumcolorcounter += ((int) pow(2,this->colorbitsgreen) - 1) << (this->colorbitsblue);
   this->maximumcolorcounter += ((int) pow(2,this->colorbitsblue));
+
+  if (this->maximumcolorcounter < 2) {
+    SoDebugError::post("SoExtSelectionP::checkOffscreenRendererCapabilities",
+                       "Couldn't get an RGBA OpenGL context with at least "
+                       "two colors -- can't proceed with VISIBLE_SHAPE "
+                       "selection (check your system for errors).");
+    return FALSE;
+  }
+
+  return TRUE;
 }
 
 SbBool
@@ -2246,7 +2262,11 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
     this->offscreenheadnode = action->getCurPath()->getHead();
 
     // Check OpenGL capabilities
-    this->checkOffscreenRendererCapabilities();
+    SbBool setupok = this->checkOffscreenRendererCapabilities();
+    // Ai, ai. OpenGL context can not be used with VISIBLE_SHAPE
+    // selection.  We'll spit out informative error messages within
+    // checkOffscreenRendererCapabilities().
+    if (!setupok) { return; }
 
     this->visibletrianglesbitarray = new unsigned char[((this->maximumcolorcounter) >> 3)+1];
  
