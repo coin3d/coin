@@ -3,4 +3,5 @@
 Makefile
 *.la
 *.lo
+*.lst
 ii_files
