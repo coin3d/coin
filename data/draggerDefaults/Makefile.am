@@ -23,6 +23,7 @@ BUILT_SOURCES = \
 	rotateCylindricalDragger.h \
 	rotateSphericalDragger.h \
 	rotateDiscDragger.h \
+	transformerDragger.h \
 	transformBoxDragger.h
 
 # This is necessary to include so the headers are actually built.
@@ -48,6 +49,7 @@ EXTRA_DIST = \
              data/draggerDefaults/rotateCylindricalDragger.iv \
              data/draggerDefaults/rotateSphericalDragger.iv \
              data/draggerDefaults/rotateDiscDragger.iv \
+             data/draggerDefaults/transformerDragger.iv \
              data/draggerDefaults/transformBoxDragger.iv
 
 
@@ -72,6 +74,7 @@ draggerdefdata_DATA =	translate1Dragger.iv \
 			rotateCylindricalDragger.iv \
 			rotateSphericalDragger.iv \
 			rotateDiscDragger.iv \
+			transformerDragger.iv \
 			transformBoxDragger.iv
 
 
@@ -131,6 +134,9 @@ rotateSphericalDragger.h: $(top_srcdir)/data/draggerDefaults/rotateSphericalDrag
 
 rotateDiscDragger.h: $(top_srcdir)/data/draggerDefaults/rotateDiscDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
 	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/rotateDiscDragger.iv > rotateDiscDragger.h
+
+transformerDragger.h: $(top_srcdir)/data/draggerDefaults/transformerDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
+	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/transformerDragger.iv > transformerDragger.h
 
 transformBoxDragger.h: $(top_srcdir)/data/draggerDefaults/transformBoxDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
 	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/transformBoxDragger.iv > transformBoxDragger.h

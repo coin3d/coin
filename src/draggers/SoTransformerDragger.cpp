@@ -38,6 +38,8 @@
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/lists/SoPathList.h>
 
+#include <data/draggerDefaults/transformerDragger.h>
+
 #include <coindefs.h> // COIN_STUB()
 
 
@@ -262,7 +264,9 @@ SoTransformerDragger::SoTransformerDragger(void)
 
 
   if (SO_KIT_IS_FIRST_INSTANCE()) {
-    SoInteractionKit::readDefaultParts("transformerDragger.iv", NULL, 0);
+    SoInteractionKit::readDefaultParts("transformerDragger.iv",
+                                       TRANSFORMERDRAGGER_draggergeometry,
+                                       sizeof(TRANSFORMERDRAGGER_draggergeometry));
   }
 
   SO_NODE_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
