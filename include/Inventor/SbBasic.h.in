@@ -308,9 +308,9 @@ inline Type SbSqr(const Type val) {
   correct define, as using "COIN_NOT_DLL" when "COIN_DLL" is correct
   will cause mysterious crashes.
  */
-// FIXME: use a feature check to see if this is a platform which can
-// recognize the __declspec keyword instead of the crap #if below.
-// 20011201 mortene.
+/* FIXME: use a feature check to see if this is a platform which can
+   recognize the __declspec keyword instead of the crap #if below.
+   20011201 mortene. */
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
 # ifdef COIN_INTERNAL
 #  ifdef COIN_MAKE_DLL
