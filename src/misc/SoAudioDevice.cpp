@@ -36,6 +36,9 @@
 #include <AL/alc.h>
 #endif // HAVE_SOUND
 
+typedef ALCenum (ALAPIENTRY * COIN_ALCMAKECONTEXTCURRENT)(void * handle);
+typedef ALCenum (ALAPIENTRY * COIN_ALCDESTROYCONTEXT)(void * handle);
+
 class SoAudioDeviceP {
 public:
   SoAudioDeviceP(SoAudioDevice * master) : master(master) {};
@@ -57,6 +60,9 @@ public:
 
   SbBool enabled;
   SbBool initOK;
+
+  COIN_ALCMAKECONTEXTCURRENT alcMakeContextCurrent;
+  COIN_ALCDESTROYCONTEXT alcDestroyContext;
 };
 
 #undef PRIVATE
@@ -87,6 +93,15 @@ SoAudioDevice::SoAudioDevice()
   PRIVATE(this)->enabled = FALSE;
   PRIVATE(this)->root = NULL;
   PRIVATE(this)->initOK = FALSE;
+
+  // This might seem like a weird thing to do, but there is a good
+  // reason for it: these two methods have a different signature for
+  // different versions of OpenAL. We could have fixed it by having
+  // the configure script detect the correct version and set up a
+  // #define or something, but it seems cleaner to just cast to a
+  // function pointer of a safe "common" type.
+  PRIVATE(this)->alcMakeContextCurrent = (COIN_ALCMAKECONTEXTCURRENT)alcMakeContextCurrent;
+  PRIVATE(this)->alcDestroyContext = (COIN_ALCDESTROYCONTEXT)alcDestroyContext;
 
   PRIVATE(this)->audioRenderAction = new SoAudioRenderAction();
 }
@@ -143,7 +158,7 @@ SbBool SoAudioDevice::init(const SbString &devicetype,
   }
 
   PRIVATE(this)->context = alcCreateContext(PRIVATE(this)->device,NULL);
-  alcMakeContextCurrent((ALCcontext *)PRIVATE(this)->context);
+  PRIVATE(this)->alcMakeContextCurrent(PRIVATE(this)->context);
 
   // Clear Error Code
   alGetError();
@@ -163,7 +178,7 @@ void SoAudioDevice::cleanup()
 
 #ifdef HAVE_SOUND
   if (PRIVATE(this)->context != NULL)
-    alcDestroyContext((ALCcontext *)PRIVATE(this)->context);
+    PRIVATE(this)->alcDestroyContext(PRIVATE(this)->context);
   PRIVATE(this)->context = NULL;
 
   //Close device
