@@ -124,6 +124,10 @@
 #endif // HAVE_CONFIG_H
 #include <Inventor/system/gl.h>
 
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbMutex.h>
+#endif // COIN_THREADSAFE
+
 #include <stddef.h>
 
 #ifndef DOXYGEN_SKIP_THIS
@@ -134,6 +138,9 @@ public:
   SoGLCacheList * cachelist;
   SoChildList * childlist;
   SbBool childlistvalid;
+#ifdef COIN_THREADSAFE
+  SbMutex bboxmutex;
+#endif // COIN_THREADSAFE
 };
 
 #endif // DOXYGEN_SKIP_THIS
@@ -156,6 +163,14 @@ SoVRMLShape::initClass(void) // static
 #define THIS this->pimpl
 #undef THISP
 #define THISP thisp->pimpl
+
+#ifdef COIN_THREADSAFE
+#define LOCK_BBOX(_thisp_) (_thisp_)->pimpl->bboxmutex.lock()
+#define UNLOCK_BBOX(_thisp_) (_thisp_)->pimpl->bboxmutex.unlock()
+#else // COIN_THREADSAFE
+#define LOCK_BBOX(_thisp_)
+#define UNLOCK_BBOX(_thisp_)
+#endif // COIN_THREADSAFE
 
 SoVRMLShape::SoVRMLShape(void)
 {
@@ -243,14 +258,19 @@ SoVRMLShape::GLRender(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
 
+  LOCK_BBOX(this);
+
   if (SoComplexityTypeElement::get(state) ==
       SoComplexityTypeElement::BOUNDING_BOX) {
+    
     SbBool validcache = THIS->bboxcache && THIS->bboxcache->isValid(state);
     if (validcache) {
       SbBox3f box = THIS->bboxcache->getProjectedBox();      
       SbVec3f center = (box.getMin() + box.getMax()) * 0.5f;
       SbVec3f size = box.getMax()  - box.getMin();
       
+      UNLOCK_BBOX(this);
+
       SoGLTextureEnabledElement::forceSend(state, FALSE);
       SoGLShapeHintsElement::forceSend(state, TRUE, FALSE, FALSE);
       SoGLLightModelElement::forceSend(state, SoLightModelElement::BASE_COLOR);
@@ -269,7 +289,8 @@ SoVRMLShape::GLRender(SoGLRenderAction * action)
 
       glPushMatrix();
       glTranslatef(center[0], center[1], center[2]);
-      sogl_render_cube(size[0], size[1], size[2], NULL, 0);
+      sogl_render_cube(size[0], size[1], size[2], NULL, 
+                       SOGL_NEED_NORMALS | SOGL_NEED_TEXCOORDS);
       glPopMatrix();
       return;
     }
@@ -278,11 +299,15 @@ SoVRMLShape::GLRender(SoGLRenderAction * action)
   // if we have a valid bbox cache, do a view volume cull test here.
   if (THIS->bboxcache &&
       THIS->bboxcache->isValid(state)) {
-    if (SoCullElement::cullTest(state, THIS->bboxcache->getProjectedBox())) {
-      return;
+    if (!SoCullElement::completelyInside(state)) {
+      if (SoCullElement::cullTest(state, THIS->bboxcache->getProjectedBox())) {
+        UNLOCK_BBOX(this);
+        return;
+      }
     }
   }
 
+  UNLOCK_BBOX(this);
 
   state->push();
 
@@ -363,6 +388,8 @@ SoVRMLShape::getBoundingBox(SoGetBoundingBoxAction * action)
     assert(0 && "unknown path code");
     break;
   }
+  
+  LOCK_BBOX(this);
 
   SbBool validcache = THIS->bboxcache && THIS->bboxcache->isValid(state);
 
@@ -412,6 +439,8 @@ SoVRMLShape::getBoundingBox(SoGetBoundingBoxAction * action)
     if (iscaching) SoCacheElement::setInvalid(storedinvalid);
   }
 
+  UNLOCK_BBOX(this);
+
   if (!childrenbbox.isEmpty()) {
     action->extendBy(childrenbbox);
     if (childrencenterset) {
@@ -439,10 +468,15 @@ vrmlshape_ray_intersect(SoRayPickAction * action, const SbBox3f & box)
 void
 SoVRMLShape::rayPick(SoRayPickAction * action)
 {
+  LOCK_BBOX(this);
   if (!THIS->bboxcache || !THIS->bboxcache->isValid(action->getState()) ||
       !action->hasWorldSpaceRay() ||
       vrmlshape_ray_intersect(action, THIS->bboxcache->getProjectedBox())) {
+    UNLOCK_BBOX(this);
     SoVRMLShape::doAction(action);
+  }
+  else {
+    UNLOCK_BBOX(this);
   }
 }
 

@@ -106,6 +106,10 @@
 
 #include <Inventor/system/gl.h>
 
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbMutex.h>
+#endif // COIN_THREADSAFE
+
 int SoVRMLGroup::numRenderCaches = 2;
 
 #ifndef DOXYGEN_SKIP_THIS
@@ -114,6 +118,9 @@ class SoVRMLGroupP {
 public:
   SoBoundingBoxCache * bboxcache;
   SoGLCacheList * glcachelist;
+#ifdef COIN_THREADSAFE
+  SbMutex bboxmutex;
+#endif // COIN_THREADSAFE
 };
 
 #endif // DOXYGEN_SKIP_THIS
@@ -132,6 +139,15 @@ SoVRMLGroup::initClass(void)
 
 #undef THIS
 #define THIS this->pimpl
+
+#ifdef COIN_THREADSAFE
+#define LOCK_BBOX(_thisp_) (_thisp_)->pimpl->bboxmutex.lock()
+#define UNLOCK_BBOX(_thisp_) (_thisp_)->pimpl->bboxmutex.unlock()
+#else // COIN_THREADSAFE
+#define LOCK_BBOX(_thisp_)
+#define UNLOCK_BBOX(_thisp_)
+#endif // COIN_THREADSAFE
+
 /*!
   Constructor.
 */
@@ -154,7 +170,6 @@ SoVRMLGroup::commonConstructor(void)
 {
   THIS = new SoVRMLGroupP;
   THIS->bboxcache = NULL;
-  THIS->glcachelist = NULL;
 
   SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLGroup);
 
@@ -174,6 +189,14 @@ SoVRMLGroup::commonConstructor(void)
   SO_NODE_SET_SF_ENUM_TYPE(boundingBoxCaching, CacheEnabled);
   SO_NODE_SET_SF_ENUM_TYPE(renderCulling, CacheEnabled);
   SO_NODE_SET_SF_ENUM_TYPE(pickCulling, CacheEnabled);
+
+  THIS->glcachelist = NULL;
+#ifdef COIN_THREADSAFE
+  // SoGLCacheList should be thread safe, but we need to create the
+  // instance in the constructor to avoid a race condition when
+  // creating the cache list
+  THIS->glcachelist = new SoGLCacheList;
+#endif // COIN_THREADSAFE
 }
 
 /*!
@@ -279,6 +302,8 @@ SoVRMLGroup::getBoundingBox(SoGetBoundingBoxAction * action)
     break;
   }
 
+  LOCK_BBOX(this);
+
   SbBool validcache = THIS->bboxcache && THIS->bboxcache->isValid(state);
 
   if (iscaching && validcache) {
@@ -310,6 +335,7 @@ SoVRMLGroup::getBoundingBox(SoGetBoundingBoxAction * action)
 
     SoLocalBBoxMatrixElement::makeIdentity(state);
     action->getXfBoundingBox().makeEmpty();
+    action->getXfBoundingBox().setTransform(SbMatrix::identity());
     inherited::getBoundingBox(action);
 
     childrenbbox = action->getXfBoundingBox();
@@ -324,6 +350,8 @@ SoVRMLGroup::getBoundingBox(SoGetBoundingBoxAction * action)
     state->pop();
     if (iscaching) SoCacheElement::setInvalid(storedinvalid);
   }
+
+  UNLOCK_BBOX(this);
 
   if (!childrenbbox.isEmpty()) {
     action->extendBy(childrenbbox);
@@ -573,16 +601,19 @@ SbBool
 SoVRMLGroup::cullTest(SoState * state)
 {
   if (this->renderCulling.getValue() == SoVRMLGroup::OFF) return FALSE;
-  if (!THIS->bboxcache ||
-      !THIS->bboxcache->isValid(state) ||
-      THIS->bboxcache->getProjectedBox().isEmpty()) return FALSE;
   if (SoCullElement::completelyInside(state)) return FALSE;
-
-  SbBox3f box = THIS->bboxcache->getProjectedBox();
-  SbVec3f minv = box.getMin();
-  SbVec3f maxv = box.getMax();
-
-  return SoCullElement::cullBox(state, THIS->bboxcache->getProjectedBox());
+  
+  SbBool outside = FALSE;
+  LOCK_BBOX(this);
+  if (THIS->bboxcache &&
+      THIS->bboxcache->isValid(state)) {
+    const SbBox3f & bbox = THIS->bboxcache->getProjectedBox();
+    if (!bbox.isEmpty()) {
+      outside = SoCullElement::cullBox(state, bbox);
+    }
+  }
+  UNLOCK_BBOX(this);
+  return outside;
 }
 
 //
@@ -592,11 +623,21 @@ SbBool
 SoVRMLGroup::cullTestNoPush(SoState * state)
 {
   if (this->renderCulling.getValue() == SoVRMLGroup::OFF) return FALSE;
-  if (!THIS->bboxcache ||
-      !THIS->bboxcache->isValid(state) ||
-      THIS->bboxcache->getProjectedBox().isEmpty()) return FALSE;
   if (SoCullElement::completelyInside(state)) return FALSE;
-  return SoCullElement::cullBox(state, THIS->bboxcache->getProjectedBox());
+
+  SbBool outside = FALSE;
+  LOCK_BBOX(this);
+  if (THIS->bboxcache &&
+      THIS->bboxcache->isValid(state)) {
+    const SbBox3f & bbox = THIS->bboxcache->getProjectedBox();
+    if (!bbox.isEmpty()) {
+      outside = SoCullElement::cullTest(state, bbox);
+    }
+  }
+  UNLOCK_BBOX(this);
+  return outside;
 }
 
 #undef THIS
+#undef LOCK_BBOX
+#undef UNLOCK_BBOX
