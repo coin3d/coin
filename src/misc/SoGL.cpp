@@ -78,8 +78,22 @@ sogl_glue_instance(const SoState * state)
 #if 0
   assert(action->isOfType(SoGLRenderAction::getClassTypeId()) &&
          "must have state from SoGLRenderAction to get hold of GL wrapper");
-#endif // disabled
   return cc_glglue_instance(action->getCacheContext());
+#else // disabled
+  if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
+    return cc_glglue_instance(action->getCacheContext());    
+  }
+  static int didwarn = 0;
+  if (!didwarn) {
+    didwarn = 1;
+    SoDebugError::postWarning("sogl_glue_instance",
+                              "Wrong action type detected. Please report this to <coin-support@sim.no>, "
+                              "and include information about your system (compiler, Linux version, etc.");
+  }
+  // just return some cc_glglue instance. It usually doesn't matter
+  // that much unless multiple contexts on multiple displays are used.
+  return cc_glglue_instance(1); 
+#endif // workaround version
 }
 
 
