@@ -199,8 +199,8 @@ SoTexture2::GLRender(SoGLRenderAction * action)
   
   if (!this->getImage()) return;
   
+  float quality = SoTextureQualityElement::get(state);
   if (this->imageData) {    
-    float quality = SoTextureQualityElement::get(state);
     SbBool clamps = this->wrapS.getValue() == SoTexture2::CLAMP;
     SbBool clampt = this->wrapT.getValue() == SoTexture2::CLAMP;
     
@@ -220,7 +220,7 @@ SoTexture2::GLRender(SoGLRenderAction * action)
                                (SoTextureImageElement::Model) model.getValue(),
                                this->blendColor.getValue());
   SoGLTextureEnabledElement::set(state,
-                                 this, this->glImage != NULL);
+                                 this, this->glImage != NULL && quality > 0.0f);
   
   if (this->isOverride()) {
     SoTextureOverrideElement::setImageOverride(state, TRUE);
