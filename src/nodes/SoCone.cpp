@@ -39,7 +39,6 @@
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/details/SoConeDetail.h>
-#include <Inventor/elements/SoGLShapeHintsElement.h>
 #include <Inventor/elements/SoGLShadeModelElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
@@ -213,12 +212,6 @@ SoCone::GLRender(SoGLRenderAction * action)
   SoMaterialBundle mb(action);
   mb.sendFirst();
 
-  const SoGLShapeHintsElement * sh = (SoGLShapeHintsElement *)
-    state->getConstElement(SoGLShapeHintsElement::getClassStackIndex());
-
-  if (p == ALL) sh->forceSend(TRUE, TRUE);
-  else sh->forceSend(TRUE, FALSE, TRUE);
-
   float complexity = this->getComplexityValue(action);
 
   const SoGLShadeModelElement * sm = (SoGLShadeModelElement *)
@@ -241,19 +234,10 @@ SoCone::GLRender(SoGLRenderAction * action)
 
 // Doc from parent.
 SbBool
-SoCone::willSetShapeHints(void) const
-{
-  return TRUE;
-}
-
-// Doc from parent.
-SbBool
 SoCone::willSetShadeModel(void) const
 {
   return TRUE;
 }
-
-
 
 /*!
   Add a \a part to the cone.
