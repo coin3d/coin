@@ -48,9 +48,9 @@
 #include <Inventor/C/glue/simage_wrapper.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/tidbitsp.h>
-#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/SbColor.h>
 #include <Inventor/SbPlane.h>
+#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoSubActionP.h>
 #include <Inventor/elements/SoDecimationPercentageElement.h>
@@ -72,16 +72,15 @@
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoProjectionMatrixElement.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoTextureEnabledElement.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/nodes/SoShapeHints.h>
 #include <Inventor/lists/SoCallbackList.h>
+#include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
 
 #ifdef HAVE_CONFIG_H
@@ -294,10 +293,10 @@
 
   To be able to render correct transparency independent of object
   order, one have to render multiple passes. The default number of
-  passes is 4. This number can be changed by calling
-  SoGLRenderAction::setSortedLayersNumPasses(int num) or specifying
-  the number using the environment variable \e
-  COIN_NUM_SORTED_LAYERS_PASSES or \e OIT_NUM_SORTED_LAYERS_PASSES.
+  passes is 4. This number can be specified using the
+  SoGLRenderAction::setSortedLayersNumPasses(int num) or by letting
+  the environment variable \e COIN_NUM_SORTED_LAYERS_PASSES or \e
+  OIT_NUM_SORTED_LAYERS_PASSES specify the number of passes.
 
   Please note that this transparency type occupy all four texture
   units on the NVIDIA card for all the rendering passes, except the
@@ -308,7 +307,7 @@
 
 // FIXME: 
 //  todo: - Add fragment_program support (thereby adding ATI support).
-//        - Add GL_[NV/HP]_occlusion_test support making the number of passes dynamic.
+//        - Add GL_[NV/HP]_occlusion_test support making the number of passes adaptive.
 //        - Maybe pbuffer support to eliminate the slow glCopyTexSubImage2D calls.
 //        - Support texturing in every pass (will probably need fragment programming).
 // (20031128 handegar)
@@ -1339,7 +1338,7 @@ SoGLRenderActionP::doSortedLayersBlendRendering(SoState * state, SoNode * node)
   glDisable(GL_BLEND);
 
   // The 'sortedlayersblendcounter' must be global so that it can be
-  // reached by 'setupNVRegisterCombiners()' at any time during the
+  // reached by 'setupNVRegisterCombiners()' at all times during the
   // scenegraph traversals.
   for(this->sortedlayersblendcounter=0; 
       this->sortedlayersblendcounter < this->sortedlayersblendpasses; 
