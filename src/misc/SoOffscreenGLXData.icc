@@ -127,9 +127,17 @@ SoOffscreenGLXData::SoOffscreenGLXData(void)
     return;
   }
 
+  // Note that the value of the last argument (which indicates whether
+  // or not we're asking for a DRI-capable context) is "False" on
+  // purpose, as the man pages for glXCreateContext() says:
+  //
+  //      [...] direct rendering contexts [...] may be unable to
+  //      render to GLX pixmaps [...]
+  //
+  // Rendering to a GLX pixmap is of course exactly what we want to be
+  // able to do.
   this->context = glXCreateContext(SoOffscreenGLXData::getDisplay(),
-                                   this->visinfo,
-                                   0, GL_FALSE);
+                                   this->visinfo, 0, False);
   if (!this->context) {
     SoDebugError::postWarning("SoOffscreenGLXData::SoOffscreenGLXData",
                               "Couldn't create GLX context.");
