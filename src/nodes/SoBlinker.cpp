@@ -164,7 +164,7 @@ SoNode *
 SoBlinker::copy(SbBool copyconnections) const
 {
   // Decouple connections to/from internal engine to avoid it being
-  // written.
+  // copied.
   ((SoBlinker *)this)->deconnectInternalEngine();
 
   SoBlinker * cp = (SoBlinker *)inherited::copy(copyconnections);
