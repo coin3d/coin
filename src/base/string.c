@@ -77,26 +77,27 @@ cc_string_remove_substring(cc_string * me, int start, int end)
   (void) memmove(me->pointer + start, me->pointer + end + 1, len - end);
 } /* cc_string_remove_substring() */
 
-/*!
-  \relates cc_string
-*/
+static void
+cc_string_grow_buffer(cc_string * me, int newsize)
+{
+  char * newbuf;
+
+  if (newsize <= me->bufsize) { return; }
+  newbuf = (char *) malloc(newsize);
+  assert(newbuf != NULL);
+  (void) strcpy(newbuf, me->pointer);
+  if ( me->pointer != me->buffer )
+    free(me->pointer);
+  me->pointer = newbuf;
+  me->bufsize = newsize;
+} /* cc_string_grow_buffer() */
 
 static void
-cc_string_expand_buffer(cc_string * me, int additional)
+cc_string_expand(cc_string * me, int additional)
 {
-  int newsize;
-  char * newbuf;
-  newsize = strlen(me->pointer) + additional + 1;
-  if ( newsize > me->bufsize ) {
-    newbuf = (char *) malloc(newsize);
-    assert(newbuf != NULL);
-    (void) strcpy(newbuf, me->pointer);
-    if ( me->pointer != me->buffer )
-      free(me->pointer);
-    me->pointer = newbuf;
-    me->bufsize = newsize;
-  }
-} /* cc_string_expand_buffer() */
+  int newsize = strlen(me->pointer) + additional + 1;
+  cc_string_grow_buffer(me, newsize);
+} /* cc_string_expand() */
 
 /* ********************************************************************** */
 
@@ -182,7 +183,7 @@ cc_string_set_text(cc_string * me, const char * text)
   }
   size = strlen(text) + 1;
   if ( size > me->bufsize )
-    cc_string_expand_buffer(me, size - strlen(me->pointer) - 1);
+    cc_string_grow_buffer(me, size);
   (void) strcpy(me->pointer, text);
 } /* cc_string_set_text() */
 
@@ -287,7 +288,7 @@ void
 cc_string_append_text(cc_string * me, const char * text)
 {
   if ( text ) {
-    cc_string_expand_buffer(me, strlen(text));
+    cc_string_expand(me, strlen(text));
     (void) strcat(me->pointer, text);
   }
 } /* cc_string_append_text() */
@@ -314,7 +315,7 @@ void
 cc_string_append_char(cc_string * me, const char c)
 {
   int pos;
-  cc_string_expand_buffer(me, 1);
+  cc_string_expand(me, 1);
   pos = strlen(me->pointer);
   me->pointer[pos] = c;
   me->pointer[pos+1] = '\0';
@@ -479,11 +480,14 @@ cc_string_vsprintf(cc_string * me, const char * formatstr, va_list args)
 {
   int length;
   SbBool expand;
+
   do {
     length = coin_vsnprintf(me->pointer, me->bufsize, formatstr, args);
     expand = (length == -1);
-    if ( expand )
-      cc_string_expand_buffer(me, 1024); /* increase linearly in 1Kb intervals */
+    if ( expand ) {
+      /* increase linearly in 1Kb intervals */
+      cc_string_grow_buffer(me, me->bufsize + 1024);
+    }
   } while ( expand );
 } /* cc_string_vsprintf() */
 
