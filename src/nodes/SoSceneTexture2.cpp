@@ -499,7 +499,7 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
     // render-to-texture pbuffer that has a non power of two size.
     // pederb, 2003-12-05
 #if 0 
-    if (!glue->has_nv_texture_rectangle && !glue->has_ext_texture_rectangle) {
+    if (!glue->has_ext_texture_rectangle) {
 #else
     if (1) {
 #endif
