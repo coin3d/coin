@@ -97,8 +97,6 @@ SoNode::SoNode(void)
 */
 SoNode::~SoNode()
 {
-  // FIXME: detach any node sensor(s) to avoid references to free'd
-  // memory? 19981027 mortene.
 }
 
 /*!

@@ -19,8 +19,7 @@
 
 /*!
   \class SoNodeSensor SoNodeSensor.h Inventor/sensors/SoNodeSensor.h
-  \brief The SoNodeSensor class detects changes to an attached SoNode
-  derived object.
+  \brief The SoNodeSensor class detects changes to an attached SoNode derived object.
   \ingroup sensors
 
   FIXME: doc (detects field changes, children changes in group nodes, ...)
@@ -29,22 +28,21 @@
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <Inventor/nodes/SoNode.h>
 #include <coindefs.h> // COIN_STUB()
-#include <assert.h>
 
 /*!
-  Constructor.
- */
+  Default constructor.
+*/
 SoNodeSensor::SoNodeSensor(void)
 {
   this->convict = NULL;
 }
 
 /*!
-  Constructor taking as parameters the sensor callback function and the
-  userdata which will be passed the callback.
+  Constructor taking as parameters the sensor callback function and
+  the userdata which will be passed the callback.
 
   \sa setFunction(), setData()
- */
+*/
 SoNodeSensor::SoNodeSensor(SoSensorCB *func, void *data)
   : inherited(func, data)
 {
@@ -60,16 +58,16 @@ SoNodeSensor::~SoNodeSensor(void)
 }
 
 /*!
-  Attach sensor to a node. Whenever any data in the node (or its children,
-  if it's an SoGroup or SoGroup derived node) changes, the sensor will
-  be triggered and call the callback function.
+  Attach sensor to a node. Whenever any data in the node (or its
+  children, if it's an SoGroup or SoGroup derived node) changes, the
+  sensor will be triggered and call the callback function.
 
   Attaching a node sensor to a node will \e not increase the node's
   reference count (and conversely, detach()'ing the node sensor will
   not decrease the reference count, either).
 
   \sa detach()
- */
+*/
 void
 SoNodeSensor::attach(SoNode * node)
 {
@@ -78,11 +76,11 @@ SoNodeSensor::attach(SoNode * node)
 }
 
 /*!
-  Detach sensor from node. As long as an SoNodeSensor is detached, it will
-  never call its callback function.
+  Detach sensor from node. As long as an SoNodeSensor is detached, it
+  will never call its callback function.
 
   \sa attach()
- */
+*/
 void
 SoNodeSensor::detach(void)
 {
@@ -94,18 +92,16 @@ SoNodeSensor::detach(void)
   Returns a pointer to the node connected to the sensor.
 
   \sa attach(), detach()
- */
+*/
 SoNode *
 SoNodeSensor::getAttachedNode(void) const
 {
   return this->convict;
 }
 
-/*!
-  \internal
-*/
+// Doc from superclass.
 void
 SoNodeSensor::dyingReference(void)
 {
-  COIN_STUB();
+  this->detach();
 }

@@ -111,5 +111,5 @@ SoPathSensor::notify(SoNotList * /* list */)
 void
 SoPathSensor::dyingReference(void)
 {
-  COIN_STUB();
+  this->detach();
 }

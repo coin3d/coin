@@ -68,7 +68,7 @@
 #include <Inventor/fields/SoFields.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/lists/SoVRMLInterpOutputList.h>
-#include <Inventor/sensors/SoFieldSensor.h>
+#include <Inventor/sensors/SoDataSensor.h>
 
 static const char IGNOREDCHAR = '~';
 static const char CONNECTIONCHAR = '=';
@@ -350,7 +350,7 @@ SoField::~SoField()
         break;
 
       case SoNotRec::SENSOR:
-        ((SoFieldSensor *)obj)->detach();
+        ((SoDataSensor *)obj)->dyingReference();
         break;
 
       default:

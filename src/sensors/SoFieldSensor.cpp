@@ -106,11 +106,9 @@ SoFieldSensor::trigger(void)
   inherited::trigger();
 }
 
-/*!
-  \internal
-*/
+// Doc from superclass.
 void
 SoFieldSensor::dyingReference(void)
 {
-  COIN_STUB();
+  this->detach();
 }

@@ -43,6 +43,7 @@
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/lists/SoBaseList.h>
 #include <Inventor/nodes/SoUnknownNode.h>
+#include <Inventor/sensors/SoDataSensor.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -117,14 +118,14 @@ SoBase::~SoBase()
 #if 0 // debug
   SoDebugError::postInfo("SoBase::~SoBase", "starting destructor: %p", this);
 #endif // debug
-
-  SbName n = this->getName();
-  if (n.getLength()) this->removeName(this, n.getString());
 }
 
 /*!
-  Commits suicide. Called when the reference count goes to zero.
- */
+  Cleans up all hanging references to and from this instance, and then
+  commits suicide.
+
+  Called automatically when the reference count goes to zero.
+*/
 void
 SoBase::destroy(void)
 {
@@ -135,6 +136,42 @@ SoBase::destroy(void)
                            this, this->getTypeId().getName().getString());
   }
 #endif // COIN_DEBUG
+
+  // Find all auditors that they need to cut off their link to this
+  // object. I believe this is necessary only for sensors.
+
+  SbList<SoDataSensor *> auditingsensors;
+
+  for (int i=0; i < this->auditors.getLength(); i++) {
+    void * auditor = this->auditors.getObject(i);
+
+    switch (this->auditors.getType(i)) {
+    case SoNotRec::SENSOR:
+      auditingsensors.append((SoDataSensor *)auditor);
+      break;
+
+    case SoNotRec::FIELD:
+    case SoNotRec::ENGINE:
+    case SoNotRec::INTERP:
+    case SoNotRec::CONTAINER:
+    case SoNotRec::PARENT:
+      // FIXME: should any of these get special treatment? 20000402 mortene.
+      break;
+
+    default:
+      assert(0 && "Unknown auditor type");
+    }
+  }
+
+  // Notify sensors that we're dying.
+  for (int j=0; j < auditingsensors.getLength(); j++)
+    auditingsensors[j]->dyingReference();
+
+  // Link out instance name from the list of all SoBase instances.
+  SbName n = this->getName();
+  if (n.getLength()) this->removeName(this, n.getString());
+
+  // Sjølmord.
   delete this;
 }
 
@@ -206,7 +243,7 @@ SoBase::ref(void) const
 /*!
   Decrease the reference count of an object. If the reference count
   reaches zero, the object will delete itself. Be careful when
-  explicitly calling this method, but beware that you usually need to
+  explicitly calling this method, beware that you usually need to
   match user level calls to ref() with calls to either unref() or
   unrefNoDelete() to avoid memory leaks.
 
