@@ -168,6 +168,13 @@ static const char * fontfilenames[] = {
     files. Where do these file names come from anyway? Just from
     peeking in $WINDIR/Fonts/? 20030606 mortene.
   */
+  /*
+    FIXME: under MSWin, we should use the GetFontFile() Win32 API
+    method to find file names from font names, see
+    <URL:http://www.codeproject.com/gdi/fontfile.asp> for an example.
+    20030901 mortene.
+   */
+
   "Arial", "arial.ttf", NULL,
   "Arial Bold", "arialbd.ttf", NULL,
   "Arial Bold Italic", "arialbi.ttf", NULL,
