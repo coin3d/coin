@@ -57,9 +57,9 @@
   begins. The last face may be (but does not have to be) followed by a
   "-1" index. If the greatest index in the coordIndex field is N, the
   Coordinate node shall contain N+1 coordinates (indexed as 0 to
-  N). Each face of the IndexedFaceSet shall have: 
-  
-  - at least three non-coincident vertices; 
+  N). Each face of the IndexedFaceSet shall have:
+
+  - at least three non-coincident vertices;
   - vertices that define a planar polygon;
   - vertices that define a non-self-intersecting polygon.
 
@@ -70,15 +70,15 @@
 
   Descriptions of the coord, normal, and texCoord fields are provided
   in the SoVRMLCoordinate, SoVRMLNormal, and SoVRMLTextureCoordinate nodes,
-  respectively.  
+  respectively.
 
   Details on lighting equations and the interaction
   between color field, normal field, textures, materials, and
-  geometries are provided in 4.14, Lighting model.  
+  geometries are provided in 4.14, Lighting model.
 
   If the color field is not NULL, it shall contain a Color node whose
   colours are applied to the vertices or faces of the IndexedFaceSet
-  as follows: 
+  as follows:
 
   - If colorPerVertex is FALSE, colours are applied to each face, as
     follows:
@@ -89,7 +89,7 @@
       If the greatest index in the colorIndex field is N, then there shall
       be N+1 colours in the Color node. The colorIndex field shall not
       contain any negative entries.
-   
+
     - If the colorIndex field is empty, then the colours in the Color
       node are applied to each face of the IndexedFaceSet in order. There shall
       be at least as many colours in the Color node as there are faces.
@@ -105,7 +105,7 @@
       shall contain end-of-face markers (-1) in exactly the same places
       as the coordIndex field.  If the greatest index in the colorIndex
       field is N, then there shall be N+1 colours in the Color node.
-   
+
     - If the colorIndex field is empty, then the coordIndex field is
       used to choose colours from the Color node. If the greatest index
       in the coordIndex field is N, then there shall be N+1 colours in
@@ -113,9 +113,9 @@
 
   If the color field is NULL, the geometry shall be rendered normally
   using the Material and texture defined in the Appearance node (see
-  4.14, Lighting model, for details 
-  http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.5).  
-  
+  4.14, Lighting model, for details
+  http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.5).
+
   If the normal field is not NULL, it shall contain a Normal node
   whose normals are applied to the vertices or faces of the
   IndexedFaceSet in a manner exactly equivalent to that described
@@ -124,8 +124,8 @@
   colorIndex). If the normal field is NULL, the browser shall
   automatically generate normals, using creaseAngle to determine if
   and how normals are smoothed across shared vertices (see 4.6.3.5,
-  Crease angle field). 
-  
+  Crease angle field).
+
   If the texCoord field is not NULL, it shall contain a
   TextureCoordinate node. The texture coordinates in that node are
   applied to the vertices of the IndexedFaceSet as follows: If the
@@ -138,7 +138,7 @@
   the coordIndex field. If the greatest index in the texCoordIndex
   field is N, then there shall be N+1 texture coordinates in the
   TextureCoordinate node.
- 
+
   If the texCoordIndex field is empty, then the coordIndex array is
   used to choose texture coordinates from the TextureCoordinate
   node. If the greatest index in the coordIndex field is N, then there
@@ -156,7 +156,7 @@
   default texture coordinates for a simple box shaped IndexedFaceSet
   with an X dimension twice as large as the Z dimension and four times
   as large as the Y dimension. Figure 6.11 illustrates the original
-  texture image used on the IndexedFaceSet used in Figure 6.10.  
+  texture image used on the IndexedFaceSet used in Figure 6.10.
 
   <center>
   <img src="http://www.web3d.org/technicalinfo/specifications/vrml97/Images/IFStexture.gif">
@@ -407,6 +407,10 @@ SoVRMLIndexedFaceSet::GLRender(SoGLRenderAction * action)
                       (int)nbind,
                       (int)mbind,
                       doTextures?1:0);
+
+  if (normalCacheUsed) {
+    this->readUnlockNormalCache();
+  }
 }
 
 // Doc in parent
@@ -656,6 +660,10 @@ SoVRMLIndexedFaceSet::generatePrimitives(SoAction * action)
     if (tindices) tindices++;
   }
   if (mode != POLYGON) this->endShape();
+
+  if (normalCacheUsed) {
+    this->readUnlockNormalCache();
+  }
   state->pop();
 }
 
@@ -664,7 +672,7 @@ SoVRMLIndexedFaceSet::generatePrimitives(SoAction * action)
 // Doc in parent
 SbBool
 SoVRMLIndexedFaceSet::generateDefaultNormals(SoState * state,
-                                         SoNormalCache * nc)
+                                             SoNormalCache * nc)
 {
   SoVRMLCoordinate * node = (SoVRMLCoordinate*) this->coord.getValue();
   if (node == NULL) return TRUE; // ok, empty ifs
@@ -801,5 +809,9 @@ SoVRMLIndexedFaceSet::useConvexCache(SoAction * action)
                               (SoConvexDataCache::Binding)tbind);
   state->pop();
   SoCacheElement::setInvalid(storedinvalid);
+
+  if (normalCacheUsed) {
+    this->readUnlockNormalCache();
+  }
   return TRUE;
 }

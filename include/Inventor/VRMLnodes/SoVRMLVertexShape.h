@@ -30,6 +30,7 @@ class SoNormalCache;
 class SoNormalBundle;
 class SoState;
 class SoCoordinateElement;
+class SoVRMLVertexShapeP;
 
 class COIN_DLL_API SoVRMLVertexShape : public SoVRMLGeometry
 {
@@ -76,16 +77,21 @@ protected:
   void setNormalCache(SoState * s, int numNormals, SbVec3f * normals);
   SoNormalCache * getNormalCache(void) const;
 
-  void generateNormals(SoState * const state);
+  SoNormalCache * generateAndReadLockNormalCache(SoState * const state);
   void getVertexData(SoState * state,
                      const SoCoordinateElement *& coords,
                      const SbVec3f *& normals,
                      const SbBool neednormals);
 
+  void readLockNormalCache(void);
+  void readUnlockNormalCache(void);
+
 private:
 
-  SoNormalCache * normalcache;
-
+  void writeLockNormalCache(void);
+  void writeUnlockNormalCache(void);
+  
+  SoVRMLVertexShapeP * pimpl;
 }; // class SoVRMLVertexShape
 
 #endif // ! COIN_SOVRMLVERTEXSHAPE_H

@@ -68,6 +68,33 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbRWMutex.h>
+#endif // COIN_THREADSAFE
+
+#ifndef DOXYGEN_SKIP_THIS
+class SoVRMLVertexShapeP {
+public:
+  SoVRMLVertexShapeP(void) 
+#ifdef COIN_THREADSAFE
+    : normalcachemutex(SbRWMutex::READ_PRECEDENCE)
+#endif // COIN_THREADSAFE
+  { }
+
+  SoNormalCache * normalcache;
+#ifdef COIN_THREADSAFE
+  SbRWMutex normalcachemutex;
+#endif // COIN_THREADSAFE
+};
+#endif // DOXYGEN_SKIP_THIS
+
+#undef THIS
+#define THIS this->pimpl
+
 SO_NODE_ABSTRACT_SOURCE(SoVRMLVertexShape);
 
 // Doc in parent
@@ -82,6 +109,9 @@ SoVRMLVertexShape::initClass(void)
 */
 SoVRMLVertexShape::SoVRMLVertexShape(void)
 {
+  THIS = new SoVRMLVertexShapeP;
+  THIS->normalcache = NULL;
+
   SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLVertexShape);
 
   SO_VRMLNODE_ADD_EXPOSED_FIELD(coord, (NULL));
@@ -90,8 +120,6 @@ SoVRMLVertexShape::SoVRMLVertexShape(void)
   SO_VRMLNODE_ADD_FIELD(color, (NULL));
   SO_VRMLNODE_ADD_FIELD(colorPerVertex, (TRUE));
   SO_VRMLNODE_ADD_FIELD(normalPerVertex, (TRUE));
-
-  this->normalcache = NULL;
 }
 
 /*!
@@ -99,7 +127,8 @@ SoVRMLVertexShape::SoVRMLVertexShape(void)
 */
 SoVRMLVertexShape::~SoVRMLVertexShape()
 {
-  if (this->normalcache) this->normalcache->unref();
+  if (THIS->normalcache) THIS->normalcache->unref();
+  delete THIS;
 }
 
 // Doc in parent
@@ -178,8 +207,8 @@ void
 SoVRMLVertexShape::notify(SoNotList * list)
 {
   SoField * f = list->getLastField();
-  if (f == &this->coord && this->normalcache) {
-    this->normalcache->invalidate();
+  if (f == &this->coord && THIS->normalcache) {
+    THIS->normalcache->invalidate();
   }
   inherited::notify(list);
 }
@@ -187,24 +216,7 @@ SoVRMLVertexShape::notify(SoNotList * list)
 SbBool
 SoVRMLVertexShape::shouldGLRender(SoGLRenderAction * action)
 {
-  if (!SoShape::shouldGLRender(action)) return FALSE;
-
-  SoState * state = action->getState();
-
-  SbBool needNormals =
-    (SoLightModelElement::get(state) !=
-     SoLightModelElement::BASE_COLOR);
-
-  if (needNormals) {
-    SoVRMLNormal * normal = (SoVRMLNormal*) this->normal.getValue();
-    if (!normal || normal->vector.getNum() == 0) {
-      if (this->normalcache == NULL ||
-          !this->normalcache->isValid(state)) {
-        this->generateNormals(state);
-      }
-    }
-  }
-  return TRUE;
+  return SoShape::shouldGLRender(action);
 }
 
 void
@@ -212,51 +224,73 @@ SoVRMLVertexShape::setNormalCache(SoState * state,
                                   int num,
                                   SbVec3f * normals)
 {
-  if (this->normalcache) this->normalcache->unref();
+  this->writeLockNormalCache();
+  if (THIS->normalcache) THIS->normalcache->unref();
   // create new normal cache with no dependencies
   state->push();
-  this->normalcache = new SoNormalCache(state);
-  this->normalcache->ref();
-  this->normalcache->set(num, normals);
+  THIS->normalcache = new SoNormalCache(state);
+  THIS->normalcache->ref();
+  THIS->normalcache->set(num, normals);
   // force element dependencies
   (void) SoCoordinateElement::getInstance(state);
   state->pop();
+  this->writeUnlockNormalCache();
 }
 
-/*!
-  Convenience method that can be used by subclasses to create a new
-  normal cache. It takes care of unrefing the old cache and pushing
-  and popping the state to create element dependencies. This method is
-  not part of the OIV API.
+/*!  
+
+  Convenience method that can be used by subclasses to return or
+  create a normal cache. If the current cache is not valid, it takes
+  care of unrefing the old cache and pushing and popping the state to
+  create element dependencies when creating the new cache.
+
+  When returning from this method, the normal cache will be
+  read locked, and the caller should call readUnlockNormalCache()
+  when the normals in the cache is no longer needed.
+
+  This method is specific to Coin and is not part of the OIV API.  
+
+  \since 2002-07-11 
+
 */
-void
-SoVRMLVertexShape::generateNormals(SoState * const state)
+SoNormalCache *
+SoVRMLVertexShape::generateAndReadLockNormalCache(SoState * const state)
 {
+  this->readLockNormalCache();
+  if (THIS->normalcache && THIS->normalcache->isValid(state)) {
+    return THIS->normalcache;
+  }
+  this->readUnlockNormalCache();
+  this->writeLockNormalCache();
+  
   SbBool storeinvalid = SoCacheElement::setInvalid(FALSE);
-
-  if (this->normalcache) this->normalcache->unref();
-
+  
+  if (THIS->normalcache) THIS->normalcache->unref();
   state->push(); // need to push for cache dependencies
-  this->normalcache = new SoNormalCache(state);
-  this->normalcache->ref();
-  SoCacheElement::set(state, this->normalcache);
-
+  THIS->normalcache = new SoNormalCache(state);
+  THIS->normalcache->ref();
+  SoCacheElement::set(state, THIS->normalcache);
+  //
   // See if the node supports the Coin-way of generating normals
-  if (!this->generateDefaultNormals(state, this->normalcache)) {
+  //
+  if (!generateDefaultNormals(state, THIS->normalcache)) {
     // FIXME: implement SoNormalBundle
-    if (this->generateDefaultNormals(state, (SoNormalBundle *)NULL)) {
+    if (generateDefaultNormals(state, (SoNormalBundle *)NULL)) {
       // FIXME: set generator in normal cache
     }
   }
   state->pop(); // don't forget this pop
-
+  
   SoCacheElement::setInvalid(storeinvalid);
+  this->writeUnlockNormalCache();
+  this->readLockNormalCache();
+  return THIS->normalcache;
 }
 
 SoNormalCache *
 SoVRMLVertexShape::getNormalCache(void) const
 {
-  return this->normalcache;
+  return THIS->normalcache;
 }
 
 /*!
@@ -278,3 +312,61 @@ SoVRMLVertexShape::getVertexData(SoState * state,
     normals = (node && node->vector.getNum()) ? node->vector.getValues(0) : NULL;
   }
 }
+
+/*!
+
+  Read lock the normal cache. This method should be called before
+  fetching the normal cache (using getNormalCache()). When the cached
+  normals are no longer needed, readUnlockNormalCache() must be called.
+  
+  It is also possible to use generateAndReadLockNormalCache().
+
+  \since 2002-07-11
+
+  \sa readUnlockNormalCache()
+*/
+void 
+SoVRMLVertexShape::readLockNormalCache(void)
+{
+#ifdef COIN_THREADSAFE
+  THIS->normalcachemutex.readLock();
+#endif // COIN_THREADSAFE
+}
+
+/*!
+
+  Read unlock the normal cache. Should be called when the read-locked
+  cached normals are no longer needed.
+
+  \since 2002-07-11
+  
+  \sa readLockNormalCache()
+*/
+void 
+SoVRMLVertexShape::readUnlockNormalCache(void)
+{
+#ifdef COIN_THREADSAFE
+  THIS->normalcachemutex.readUnlock();
+#endif // COIN_THREADSAFE
+}
+
+// write lock normal cache
+void 
+SoVRMLVertexShape::writeLockNormalCache(void)
+{
+#ifdef COIN_THREADSAFE
+  THIS->normalcachemutex.writeLock();
+#endif // COIN_THREADSAFE
+}
+
+// write unlock normal cache
+void 
+SoVRMLVertexShape::writeUnlockNormalCache(void)
+{
+#ifdef COIN_THREADSAFE
+  THIS->normalcachemutex.writeUnlock();
+#endif // COIN_THREADSAFE
+}
+
+#undef THIS
+

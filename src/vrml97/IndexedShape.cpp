@@ -108,15 +108,12 @@ SoVRMLIndexedShape::getVertexData(SoState * state,
   if (neednormals) {
     nindices = this->normalIndex.getValues(0);
     if (this->normalIndex.getNum() <= 0 || nindices[0] < 0) nindices = NULL;
-
+    
     normalcacheused = FALSE;
     if (normals == NULL) {
-      if (this->getNormalCache() == NULL ||
-          !this->getNormalCache()->isValid(state)) {
-          this->generateNormals(state);
-      }
-      normals = this->getNormalCache()->getNormals();
-      nindices = this->getNormalCache()->getIndices();
+      SoNormalCache * nc = this->generateAndReadLockNormalCache(state);
+      normals = nc->getNormals();
+      nindices = nc->getIndices();
       normalcacheused = TRUE;
     }
   }
@@ -128,8 +125,9 @@ void
 SoVRMLIndexedShape::notify(SoNotList * list)
 {
   SoField * f = list->getLastField();
-  if (f == &this->coordIndex && this->getNormalCache()) {
-    this->getNormalCache()->invalidate();
+  if (f == &this->coordIndex) {
+    SoNormalCache * nc = this->getNormalCache();
+    if (nc) nc->invalidate();
   }
   inherited::notify(list);
 }
