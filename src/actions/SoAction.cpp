@@ -796,9 +796,10 @@ SoAction::traverse(SoNode * const node)
 void
 SoAction::pushCurPath(const int childindex, SoNode * node)
 {
-  if (node) this->currentpath.append(node, childindex);
-  else this->currentpath.append(childindex);
-
+  if (node) this->currentpath.simpleAppend(node, childindex);
+  else {
+    this->currentpath.append(childindex);
+  }
   int curlen = this->currentpath.getFullLength();
 
   if (this->currentpathcode == IN_PATH) {
@@ -964,7 +965,7 @@ SoAction::usePathCode(int & numindices, const int * & indices)
 void
 SoAction::pushCurPath(void)
 {
-  this->currentpath.append((SoNode*) NULL, -1);
+  this->currentpath.simpleAppend((SoNode*) NULL, -1);
 }
 
 /*!
@@ -977,12 +978,12 @@ SoAction::pushCurPath(void)
 void
 SoAction::popPushCurPath(const int childindex, SoNode * node)
 {
-  this->currentpath.pop(); // pop off previous or NULL node
   if (node == NULL) {
+    this->currentpath.pop(); // pop off previous or NULL node
     this->currentpath.append(childindex);
   }
   else {
-    this->currentpath.append(node, childindex);
+    this->currentpath.replaceTail(node, childindex);
   }
 }
 

@@ -5,7 +5,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -29,6 +29,10 @@
 class COIN_DLL_API SoTempPath : public SoFullPath {
 public:
   SoTempPath(const int approxlength);
+  
+  // these two methods are used for optimized SoAction traversal
+  void simpleAppend(SoNode * const node, const int index);
+  void replaceTail(SoNode * const node, const int index);
 };
 
 #endif // !COIN_SOTEMPPATH_H
