@@ -319,7 +319,18 @@ SoIndexedShape::getVertexData(SoState * state,
       normals = nc->getNormals();
       nindices = nc->getIndices();
       normalCacheUsed = TRUE;
+     
+      // if no normals were generated, unlock normal cache before
+      // returning
+      if (normals == NULL) {
+        this->readUnlockNormalCache();
+        normalCacheUsed = FALSE;
+      }
     }
   }
   return TRUE;
 }
+
+
+
+
