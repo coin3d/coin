@@ -67,14 +67,14 @@ SoEventCallback::initClass(void)
 }
 
 /*!
-  Sets the path that must be picked before the registered 
-  callbacks are invoked. If \e NULL, callbacks will be 
-  invoked for every event that matches the callback 
-  event type.
+  Sets the path that must be picked before the registered callbacks
+  are invoked. If \c NULL, callbacks will be invoked for every event
+  that matches the callback event type.
+
   \sa getPath()
 */
 void
-SoEventCallback::setPath(SoPath *path)
+SoEventCallback::setPath(SoPath * path)
 {
   if (this->path) {
     this->path->unref();
@@ -88,6 +88,7 @@ SoEventCallback::setPath(SoPath *path)
 
 /*!
   Returns the path that must be picked before callbacks are invoked.
+
   \sa setPath()
 */
 const SoPath *
@@ -258,7 +259,7 @@ SoEventCallback::handleEvent(SoHandleEventAction * action)
 {
   // check if correct path is picked
   if (this->path) {
-    const SoPickedPoint *pp = action->getPickedPoint();
+    const SoPickedPoint * pp = action->getPickedPoint();
     if (pp && pp->getPath()->containsPath(this->path)) return;
   }
 
@@ -269,7 +270,7 @@ SoEventCallback::handleEvent(SoHandleEventAction * action)
   SoType eventtype = this->heaction->getEvent()->getTypeId();
   
   // Invoke callbacks.
-  for(int i = 0; i < this->callbacks.getLength(); i++) {
+  for (int i = 0; i < this->callbacks.getLength(); i++) {
     if (eventtype.isDerivedFrom(this->callbacks[i].eventtype)) {
       SoEventCallbackCB * cb = this->callbacks[i].func;
       cb(this->callbacks[i].userdata, this);

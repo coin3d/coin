@@ -80,7 +80,7 @@ private:
 
   SbList<CallbackInfo> callbacks;
   SoHandleEventAction * heaction;
-  SoPath *path;
+  SoPath * path;
 
 };
 

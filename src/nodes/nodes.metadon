@@ -97,7 +97,7 @@
 # IDT-G---!!              SoPointLight
 # IDT-G---C!      SoDrawStyle
 # IDT-G---C!      SoEnvironment
-# id-------!      SoEventCallback
+# ID-------!      SoEventCallback
 # idTBGMP-C       SoFile
 # IDTBG-P-C!      SoFont
 # IDTBG-P-C!              SoFontStyle
