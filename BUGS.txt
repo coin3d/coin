@@ -660,6 +660,10 @@
           one when removing the spheres
 
     20021007 mortene.
+    
+    UPDATE 20030204 pederb. With auto-caching Coin now renders this
+    file quite a lot faster than SGI Inventor (41 fps for Coin, 32 fps
+    for SGI Inventor :)
 
 =====================================================================
 
