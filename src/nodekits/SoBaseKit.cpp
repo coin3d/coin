@@ -681,17 +681,17 @@ SoNode *
 SoBaseKit::typeCheck(const SbName & /*partname*/, const SoType & parttype, SoNode * node)
 {
   if (node == NULL) {
-#if COIN_DEBUG && 1 // debug
+#if COIN_DEBUG
     SoDebugError::postInfo("SoBaseKit::typeCheck",
                            "node was NULL");
-#endif // debug
+#endif // COIN_DEBUG
     return NULL;
   }
   if (!node->isOfType(parttype)) {
-#if COIN_DEBUG && 1 // debug
+#if COIN_DEBUG
     SoDebugError::postInfo("SoBaseKit::typeCheck",
                            "wrong type: %s", node->getTypeId().getName().getString());
-#endif // debug
+#endif // COIN_DEBUG
     return NULL;
   }
   return node;
@@ -794,10 +794,30 @@ SoBaseKit::getAnyPart(const SbName & partname, SbBool makeifneeded, SbBool leafc
 }
 
 /*!
-  FIXME: write function documentation
+  Return path with nested SoNodeKit instances down in the catalog
+  hierarchy given by \a partname.
+
+  If the trailing part has not been made and \a makeifneeded is \c
+  TRUE, make an instance of the part type and insert into the catalog,
+  as done in setAnyPart().
+
+  If \a leafcheck is \c TRUE, ignore non-leaf catalog node entries. If
+  \a publiccheck is \c TRUE, ignore private catalog entries.
+
+  \a pathtoextend is a path through the nodekit instance catalog
+  hierarchy, where we should pick up and continue to create the path
+  from where \a pathtoextend terminates. If \a pathtoextend is \c
+  NULL, we simply start at the "this" toplevel node.
+
+  Returns \c NULL on failure, for any of the possible reasons
+  described above (part ends in non-leaf or private catalog entry,
+  part is not syntactically valid or refers to non-existing catalog
+  entries).
 */
 SoNodeKitPath *
-SoBaseKit::createPathToAnyPart(const SbName & partname, SbBool makeifneeded, SbBool /*leafcheck*/, SbBool /*publiccheck*/, const SoPath * pathtoextend)
+SoBaseKit::createPathToAnyPart(const SbName & partname, SbBool makeifneeded,
+                               SbBool leafcheck, SbBool publiccheck,
+                               const SoPath * pathtoextend)
 {
   // FIXME: leafcheck and publiccheck support, pederb 2000-01-07
 
@@ -1152,10 +1172,10 @@ SoBaseKit::findPart(const SbString & partname, SoBaseKit *& kit, int & partnum,
       }
       kit = orgkit; // return with an error in this kit
     }
-#if COIN_DEBUG && 1 // debug
+#if COIN_DEBUG
     SoDebugError::postWarning("SoBaseKit::findPart",
                               "part ``%s'' not found", firstpartname.getString());
-#endif // debug
+#endif // COIN_DEBUG
     return FALSE;
   }
 
