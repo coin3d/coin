@@ -146,7 +146,7 @@ SoGLEnvironmentElement::updategl(SoState * const state)
   switch (fogType) {
   case HAZE:
     glFogi(GL_FOG_MODE, GL_LINEAR);
-    glFogf(GL_FOG_START, nearval);
+    glFogf(GL_FOG_START, 0.0f);
     glFogf(GL_FOG_END, farval);
     break;
   case FOG:
