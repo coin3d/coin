@@ -2,5 +2,6 @@
 .deps
 Makefile
 libVRMLnodes.la
+libVRMLnodesLINKHACK.la
 SoVRMLInterpOutput.lo
 SoVRMLInterpolator.lo

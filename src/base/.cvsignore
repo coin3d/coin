@@ -2,6 +2,7 @@
 .deps
 Makefile
 libcoinbase.la
+libcoinbaseLINKHACK.la
 SbBSPTree.lo
 SbBox2f.lo
 SbBox2s.lo
@@ -10,6 +11,7 @@ SbColor.lo
 SbColor4f.lo
 SbCylinder.lo
 SbDict.lo
+SbHeap.lo
 SbLine.lo
 SbMatrix.lo
 SbName.lo
@@ -17,6 +19,7 @@ SbPlane.lo
 SbRotation.lo
 SbSphere.lo
 SbString.lo
+SbTesselator.lo
 SbTime.lo
 SbVec2f.lo
 SbVec2s.lo

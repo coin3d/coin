@@ -2,6 +2,7 @@
 .deps
 Makefile
 liblists.la
+liblistsLINKHACK.la
 SbIntList.lo
 SbList.lo
 SbPList.lo

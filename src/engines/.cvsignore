@@ -2,6 +2,7 @@
 .deps
 Makefile
 libengines.la
+libenginesLINKHACK.la
 SoBoolOperation.lo
 SoCalculator.lo
 SoComposeMatrix.lo

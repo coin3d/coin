@@ -1,4 +1,5 @@
 libsensors.la
+libsensorsLINKHACK.la
 .libs
 .deps
 Makefile

@@ -2,6 +2,7 @@
 .libs
 Makefile
 libelements.la
+libelementsLINKHACK.la
 SoAccumulatedElement.lo
 SoAmbientColorElement.lo
 SoAnnoText3CharOrientElement.lo

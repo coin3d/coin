@@ -2,4 +2,5 @@
 .deps
 Makefile
 libnodekits.la
+libnodekitsLINKHACK.la
 SoNodeKit.lo

@@ -2,6 +2,7 @@
 .deps
 Makefile
 libnodes.la
+libnodesLINKHACK.la
 SoAnnoText3.lo
 SoAnnoText3Property.lo
 SoAnnotation.lo

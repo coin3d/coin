@@ -2,6 +2,7 @@
 .deps
 Makefile
 libbundles.la
+libbundlesLINKHACK.la
 SoBundle.lo
 SoMaterialBundle.lo
 SoTextureCoordinateBundle.lo
