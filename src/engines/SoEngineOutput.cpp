@@ -19,10 +19,11 @@
 
 /*!
   \class SoEngineOutput SoEngine.h Inventor/engines/SoEngine.h
-  \brief The SoEngineOutput class is a representation of the output slots in an SoEngine.
+  \brief The SoEngineOutput class is the output slots in SoEngine instances.
+  \ingroup engines
 
-  SoEngineOutput has methods for convenient handling of the connections made
-  from SoEngine objects to SoField objects.
+  SoEngineOutput has methods for convenient handling of the
+  connections made from SoEngine objects to SoField objects.
 
   \sa SoEngine, SoField
  */
@@ -47,9 +48,9 @@ SoEngineOutput::getConnectionType(void) const
 }
 
 /*!
-  Adds all fields connected to this output to \a list.
-  Returns the number of fields added to the list.
-  
+  Adds all slave fields connected to this output to \a list.  Returns
+  the number of slaves.
+
   \sa addConnection()
   \sa removeConnection()
 */
@@ -66,13 +67,13 @@ SoEngineOutput::getForwardConnections(SoFieldList & list) const
 /*!
   Sets the enabled flag. If output is disabled, the fields connected
   to this output will not be changed when the engine is evaluated.
-  
+
   \sa isEnabled().
 */
 void
 SoEngineOutput::enable(const SbBool flag)
 {
-  if (this->container) { 
+  if (this->container) {
     // need to notify fields connected to this output
     this->container->stateflags.dirty = 0;
   }
@@ -81,7 +82,7 @@ SoEngineOutput::enable(const SbBool flag)
 
 /*!
   Returns status of the enabled flag.
-  
+
   \sa enable().
 */
 SbBool
@@ -92,6 +93,7 @@ SoEngineOutput::isEnabled(void) const
 
 /*!
   Returns the engine containing this output.
+
   \sa setContainer()
 */
 SoEngine*
@@ -101,9 +103,12 @@ SoEngineOutput::getContainer(void) const
 }
 
 /*!
-  Constructor.
+  Constructor. The SoEngineOutput will initially not be contained
+  within an SoEngine nor will it have any slave fields attached.
+
+  \sa setContainer()
 */
-SoEngineOutput::SoEngineOutput()
+SoEngineOutput::SoEngineOutput(void)
 {
   this->enabled = TRUE;
   this->container = NULL;
@@ -118,6 +123,7 @@ SoEngineOutput::~SoEngineOutput()
 
 /*!
   Sets the engine containing this output.
+
   \sa getContainer()
 */
 void
@@ -128,41 +134,42 @@ SoEngineOutput::setContainer(SoEngine * engine)
 
 /*!
   Adds \a f to the list of connections from this output.
-  \sa removeConnection()
-  \sa getForwardConnections()
+
+  \sa removeConnection(), getForwardConnections()
 */
 void
 SoEngineOutput::addConnection(SoField * f)
 {
-  int i = connections.find(f);
-  if (i < 0) connections.append(f);
+  int i = this->connections.find(f);
+  if (i < 0) this->connections.append(f);
 }
 
 /*!
   Removes \a f from the list of connections from this output.
-  \sa addConnection()
-  \sa getForwardConnections()
+
+  \sa addConnection(), getForwardConnections()
 */
 void
 SoEngineOutput::removeConnection(SoField * f)
 {
-  int i = connections.find(f);
-  if (i >= 0) connections.remove(i);
+  int i = this->connections.find(f);
+  if (i >= 0) this->connections.remove(i);
 }
 
 /*!
   Returns the number of fields in the list of connections.
-  \sa operator[]
-  \sa addConnection()
+
+  \sa operator[], addConnection()
 */
 int
-SoEngineOutput::getNumConnections() const
+SoEngineOutput::getNumConnections(void) const
 {
-  return connections.getLength();
+  return this->connections.getLength();
 }
 
 /*!
-  Returns the fields at index \a i in the list of connections.
+  Returns the field at index \a i in the list of connections.
+
   \sa getNumConnections()
 */
 SoField *
@@ -172,9 +179,10 @@ SoEngineOutput::operator[](int i) const
 }
 
 /*!
-  Disables notifications on fields connected to this output.
-  This is done before the engine is evaulated, since the fields we
-  are going to write into have already been notified.
+  Disables notifications on fields connected to this output.  This is
+  done before the engine is evaulated, since the fields we are going
+  to write into have already been notified.
+
   \sa doneWriting()
 */
 void
@@ -187,8 +195,9 @@ SoEngineOutput::prepareToWrite(void) const
 }
 
 /*!
-  Enables notification on fields connected to this output.
-  Use this method to restore the notification flags after evaluating.
+  Enables notification on fields connected to this output.  Use this
+  method to restore the notification flags after evaluating.
+
   \sa prepareToWrite()
 */
 void
