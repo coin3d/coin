@@ -49,6 +49,9 @@ public:
 
 protected:
   virtual ~SoTexture2Transform();
+
+private:
+  void makeMatrix(SbMatrix & mat);
 };
 
 
