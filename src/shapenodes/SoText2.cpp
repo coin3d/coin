@@ -241,7 +241,6 @@ void
 SoText2::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoText2, SO_FROM_INVENTOR_2_1);
-  cc_glyph2d_initialize();
 }
 
 
@@ -356,10 +355,10 @@ SoText2::GLRender(SoGLRenderAction * action)
         if (offvp) { glBitmap(0,0,0,0,offsetx,offsety,NULL); }
         if (buffer) { glBitmap(ix,iy,0,0,0,0,(const GLubyte *)buffer); }
 
-		// Select the longest if the font requires it.
-		if(charwidth < advancex)
-			charwidth = advancex;
-
+        // Select the longest if the font requires it.
+        if(charwidth < advancex)
+          charwidth = advancex;
+        
         if (charwidth != 0) xpos += (charwidth + kerningx) + 1;  // +1 so that TTFont letters dont get too close to each other...
         else xpos += (int) spacesize;
         
@@ -729,15 +728,14 @@ SoText2P::buildGlyphCache(SoState * state)
       SbVec2s kerning((short) kerningx, (short) kerningy);
       SbVec2s advance((short) advancex, (short) advancey);
 
-   	  if(glyphwidth < advancex)
-		  glyphwidth = advancex;
+      if(glyphwidth < advancex)
+        glyphwidth = advancex;
 
       SbVec2s pos = penpos + SbVec2s((short) bitmappos[0], (short) bitmappos[1]) + SbVec2s(0, (short) -bitmapsize[1]);
       this->bbox.extendBy(pos);
       this->bbox.extendBy(pos + SbVec2s(glyphwidth + kerning[0], bitmapsize[1]));
       this->positions[i].append(pos);
 
-		
       actuallength += (glyphwidth + kerningx + 1);
 
       penpos += kerning + SbVec2s(glyphwidth + 1, 0);
