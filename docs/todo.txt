@@ -560,6 +560,12 @@ STUFF TO FIX IN COIN
     has. Shouldn't take more than ~ 1 man-week to fix properly,
     including full configure/build integration.
 
+026 
+    an idea in the "wild, crazy and cool"
+    department; it would have been really nifty if would provide a
+    www-interface 
+
+
 
 
 OTHER COIN-RELATED STUFF TO FIX

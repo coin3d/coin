@@ -58,3 +58,12 @@ Common Lisp
     <URL:http://ww.telent.net/cliki/OpenGL%20Bindings>.
 
 ========================================================================
+
+Ruby
+====
+
+  * Ruby can interface to Python, and johng has used this to use Coin
+    from Ruby with success. That is only a quick hack, though, and not
+    a "proper" binding.
+
+========================================================================
