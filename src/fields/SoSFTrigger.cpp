@@ -87,7 +87,8 @@ SoSFTrigger::initClass(void)
 void
 SoSFTrigger::touch(void)
 {
-  this->startNotify();
+  // call SoField::startNotify() to notify our container
+  SoField::startNotify();
 }
 
 /*!
@@ -113,7 +114,11 @@ SoSFTrigger::operator!=(const SoSFTrigger & trigger) const
 void
 SoSFTrigger::startNotify(void)
 {
+  // if notification starts here, we should not notify out container
+  SoFieldContainer * oldcontainer = this->getContainer();
+  this->setContainer(NULL);
   inherited::startNotify();
+  this->setContainer(oldcontainer);
 }
 
 void

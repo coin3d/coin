@@ -157,8 +157,7 @@ private:
     FLAG_DONOTIFY = 0x0200,
     FLAG_ISDESTRUCTING = 0x0400,
     FLAG_ISEVALUATING = 0x0800,
-    FLAG_ISNOTIFIED = 0x1000,
-    FLAG_DONT_NOTIFY_CONTAINER = 0x2000
+    FLAG_ISNOTIFIED = 0x1000
   };
 
   void evaluateField(void) const;
