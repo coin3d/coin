@@ -133,7 +133,9 @@ glxglue_isdirect(cc_glglue * w)
 int
 glxglue_ext_supported(const cc_glglue * w, const char * extension)
 {
-  return coin_glglue_extension_available(w->glx.glxextensions, extension);
+  return
+    (w->glx.glxextensions != NULL) &&
+    coin_glglue_extension_available(w->glx.glxextensions, extension);
 }
 
 void
