@@ -1604,7 +1604,7 @@ if test x"$with_pthread" != xno; then
     [whether the pthread development system is available],
     sim_cv_lib_pthread_avail,
     [AC_TRY_LINK([#include <pthread.h>],
-                 [(void)pthread_create(0L, 0L, 0L);],
+                 [(void)pthread_create(0L, 0L, 0L, 0L);],
                  [sim_cv_lib_pthread_avail=yes],
                  [sim_cv_lib_pthread_avail=no])])
 

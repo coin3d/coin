@@ -3614,7 +3614,7 @@ else
 #include "confdefs.h"
 #include <pthread.h>
 int main() {
-(void)pthread_create(0L, 0L, 0L);
+(void)pthread_create(0L, 0L, 0L, 0L);
 ; return 0; }
 EOF
 if { (eval echo configure:3621: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
