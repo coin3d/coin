@@ -26,16 +26,20 @@
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbBox2f.h>
+#include <Inventor/SbVec2s.h>
+#include <Inventor/misc/SoState.h>
 
-class SbVec2f;
 class SbName;
+class SoGlyphP;
 
 class COIN_DLL_API SoGlyph {
 public:
 
-  static const SoGlyph *getGlyph(const char character, const SbName &font);
   void unref() const;
-
+  
+  // Methods related to polygon based text nodes (SoText3, SoAsciiText, SoVRMLText)
+  static const SoGlyph *getGlyph(const char character, const SbName &font);
+  
   const SbVec2f * getCoords(void) const;
   const int * getFaceIndices(void) const;
   const int * getEdgeIndices(void) const;
@@ -44,7 +48,16 @@ public:
 
   float getWidth(void) const;
   const SbBox2f & getBoundingBox(void) const;
-
+  
+  // Methods related to bitmap based text nodes (SoText2)
+  static const SoGlyph *getGlyph(SoState * state,
+                                 const unsigned int character, 
+                                 const SbVec2s & size,
+                                 const float angle);
+  SbVec2s getAdvance();
+  SbVec2s getKerning(const SoGlyph &rightglyph);
+  unsigned char * getBitmap(SbVec2s &size, SbVec2s &pos, const SbBool antialiased);
+  
 protected:
   SoGlyph();
   ~SoGlyph();
@@ -55,22 +68,9 @@ protected:
 
 private:
 
-  static SoGlyph *createSystemGlyph(const char character, const SbName & font);
   static void unrefGlyph(SoGlyph * glyph);
-
-  SbVec2f * coords;
-  SbBox2f bbox;
-  int * faceidx;
-  int * edgeidx;
-  int refcount;
-  float ymin, ymax;
-
-  struct {
-    unsigned int didalloccoords : 1;
-    unsigned int didallocfaceidx : 1;
-    unsigned int didallocedgeidx : 1;
-    unsigned int didcalcbbox : 1;
-  } flags;
+  
+  SoGlyphP * pimpl;
 };
 
 #endif // !COIN_SOGLYPH_H
