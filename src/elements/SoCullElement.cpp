@@ -90,12 +90,13 @@ SoCullElement::push(SoState * state)
   for (int i = 0; i < this->numplanes; i++) elem->plane[i] = this->plane[i];
 }
 
-/*!  
+/*!
   Sets the current view volume. In effect, this adds six planes to
   the list of culling planes.  If a view volume has already been
   set, the old view volume planes are overwritten by the new ones.
+  The view volume must be in the world coordinate systems.
 */
-void 
+void
 SoCullElement::setViewVolume(SoState * state, const SbViewVolume & vv)
 {
   SoCullElement * elem = (SoCullElement *)
@@ -108,16 +109,7 @@ SoCullElement::setViewVolume(SoState * state, const SbViewVolume & vv)
   }
   int i;
   SbPlane vvplane[6];
-  SbBool identity;
-  const SbMatrix & mm = SoModelMatrixElement::get(state, identity);
-  if (!identity) {
-    SbViewVolume copyvv = vv;
-    copyvv.transform(mm);
-    copyvv.getViewVolumePlanes(vvplane);
-  }
-  else {
-    vv.getViewVolumePlanes(vvplane);
-  }
+  vv.getViewVolumePlanes(vvplane);
   if (elem->vvindex >= 0) { // overwrite old view volume
     for (i = 0; i < 6; i++) {
       elem->plane[elem->vvindex+i] = vvplane[i];
@@ -219,7 +211,7 @@ SoCullElement::docull(SoState * state, const SbBox3f & box, const SbBool transfo
   // try to avoid a push if possible
   SoCullElement * elem = (SoCullElement *)
     state->getElementNoPush(classStackIndex);
-  
+
   int i, j;
   SbBool identity;
   SbVec3f min, max;

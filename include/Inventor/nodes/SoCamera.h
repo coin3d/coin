@@ -98,6 +98,10 @@ protected:
                       SbVec3f & jitteramount) const;
 
 private:
+  void getView(SoAction * action, SbViewVolume & resultvv, 
+               SbViewportRegion & resultvp,
+               const SbBool considermodelmatrix = TRUE); 
+
   void drawCroppedFrame(SoGLRenderAction * action,
                         const int viewportmapping,
                         const SbViewportRegion & oldvp,

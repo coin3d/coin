@@ -302,12 +302,27 @@ SoCamera::getViewportBounds(const SbViewportRegion & region) const
 void
 SoCamera::GLRender(SoGLRenderAction * action)
 {
-  SoCamera::doAction(action);
   SoState * state = action->getState();
-  const SbViewVolume & vv = SoViewVolumeElement::get(state);
-  if (vv.getDepth() != 0.0f && vv.getWidth() != 0.0f && vv.getHeight() != 0.0f) {
+
+  SbViewportRegion vp;
+  SbViewVolume vv;
+  this->getView(action, vv, vp);
+  SbMatrix affine, proj;
+  if (vv.getDepth() == 0.0f || vv.getWidth() == 0.0f || vv.getHeight() == 0.0f) {
+    // Handle empty scenes.
+    affine = proj = SbMatrix::identity();
+  }
+  else {
+    vv.getMatrices(affine, proj);
     SoCullElement::setViewVolume(state, vv);
   }
+
+  // FIXME: jitter camera, pederb, 20001004
+
+  SoViewVolumeElement::set(state, this, vv);
+  SoProjectionMatrixElement::set(state, this, proj);
+  SoViewingMatrixElement::set(state, this, affine);
+  SoFocalDistanceElement::set(state, this, this->focalDistance.getValue());
 }
 
 // Doc in superclass.
@@ -340,44 +355,10 @@ SoCamera::getBoundingBox(SoGetBoundingBoxAction * action)
 void
 SoCamera::handleEvent(SoHandleEventAction * action)
 {
-  SoState * state = action->getState();
-
-  SbViewportRegion vp = SoViewportRegionElement::get(state);
-  float aspectratio = vp.getViewportAspectRatio();
-  int vpm = this->viewportMapping.getValue();
-
-  SbViewVolume vv =
-    this->getViewVolume(vpm == ADJUST_CAMERA ? aspectratio : 0.0f);
-
-  SbBool adjustvp = FALSE;
-
-  switch (vpm) {
-  case CROP_VIEWPORT_FILL_FRAME:
-  case CROP_VIEWPORT_LINE_FRAME:
-  case CROP_VIEWPORT_NO_FRAME:
-    adjustvp = TRUE;
-    break;
-  case ADJUST_CAMERA:
-  case LEAVE_ALONE:
-    break;
-  default:
-    assert(0 && "unknown viewport mapping");
-    break;
-  }
-
-  if (adjustvp) {
-    float cameraratio = this->aspectRatio.getValue();
-    if (aspectratio != cameraratio) {
-      if (aspectratio < cameraratio) {
-        vp.scaleHeight(aspectratio/cameraratio);
-      }
-      else {
-        vp.scaleWidth(cameraratio/aspectratio);
-      }
-      SoViewportRegionElement::set(action->getState(), vp);
-    }
-  }
-  SoViewVolumeElement::set(state, this, vv);
+  SbViewportRegion vp;
+  SbViewVolume vv;
+  this->getView(action, vv, vp, FALSE);
+  SoViewVolumeElement::set(action->getState(), this, vv);
 }
 
 /*!
@@ -398,55 +379,9 @@ SoCamera::jitter(int numpasses, int curpass, const SbViewportRegion & vpreg,
 void
 SoCamera::doAction(SoAction * action)
 {
-  SoState * state = action->getState();
-
-  SbViewportRegion vp = SoViewportRegionElement::get(state);
-  float aspectratio = vp.getViewportAspectRatio();
-  int vpm = this->viewportMapping.getValue();
-
-  SbViewVolume vv =
-    this->getViewVolume(vpm == ADJUST_CAMERA ? aspectratio : 0.0f);
-  { // test for transformations before camera
-    SbBool isidentity;
-    const SbMatrix &mm = SoModelMatrixElement::get(state, isidentity);
-    if (!isidentity) vv.transform(mm);
-  }
-
-  SbBool adjustvp = FALSE;
-
-  switch (vpm) {
-  case CROP_VIEWPORT_FILL_FRAME:
-  case CROP_VIEWPORT_LINE_FRAME:
-  case CROP_VIEWPORT_NO_FRAME:
-    adjustvp = TRUE;
-    break;
-  case ADJUST_CAMERA:
-  case LEAVE_ALONE:
-    break;
-  default:
-    assert(0 && "unknown viewport mapping");
-    break;
-  }
-
-  if (adjustvp) {
-    float cameraratio = this->aspectRatio.getValue();
-    if (aspectratio != cameraratio) {
-      SbViewportRegion newvp = vp;
-
-      if (aspectratio < cameraratio) {
-        newvp.scaleHeight(aspectratio/cameraratio);
-      }
-      else {
-        newvp.scaleWidth(cameraratio/aspectratio);
-      }
-      if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
-        this->drawCroppedFrame((SoGLRenderAction*)action, vpm, vp, newvp);
-      }
-      SoViewportRegionElement::set(action->getState(), newvp);
-    }
-  }
-
-  SoViewVolumeElement::set(state, this, vv);
+  SbViewportRegion vp;
+  SbViewVolume vv;
+  this->getView(action, vv, vp);
 
   SbMatrix affine, proj;
   if (vv.getDepth() == 0.0f || vv.getWidth() == 0.0f || vv.getHeight() == 0.0f) {
@@ -456,7 +391,8 @@ SoCamera::doAction(SoAction * action)
   else {
     vv.getMatrices(affine, proj);
   }
-
+  SoState * state = action->getState();
+  SoViewVolumeElement::set(state, this, vv);
   SoProjectionMatrixElement::set(state, this, proj);
   SoViewingMatrixElement::set(state, this, affine);
   SoFocalDistanceElement::set(state, this, this->focalDistance.getValue());
@@ -500,6 +436,70 @@ SoCamera::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   SoCamera::doAction(action);
 }
 
+//
+// private method which calculates view volume, and calculates 
+// new viewport region if viewportMapping requires this. 
+// The state is updated with the new viewport, not with the
+// new view volume.
+//
+void 
+SoCamera::getView(SoAction * action, SbViewVolume & resultvv, SbViewportRegion & resultvp,
+                  const SbBool considermodelmatrix)
+{
+  SoState * state = action->getState();
+  
+  resultvp = SoViewportRegionElement::get(state);
+  float aspectratio = resultvp.getViewportAspectRatio();
+  int vpm = this->viewportMapping.getValue();
+
+  SbBool adjustvp = FALSE;
+
+  switch (vpm) {
+  case CROP_VIEWPORT_FILL_FRAME:
+  case CROP_VIEWPORT_LINE_FRAME:
+  case CROP_VIEWPORT_NO_FRAME:
+    resultvv = this->getViewVolume(0.0f);
+    adjustvp = TRUE;
+    break;
+  case ADJUST_CAMERA:
+    resultvv = this->getViewVolume(aspectratio);
+    if (aspectratio < 1.0f) resultvv.scale(1.0f / aspectratio);
+    break;
+  case LEAVE_ALONE:
+    resultvv = this->getViewVolume(0.0f);
+    break;
+  default:
+    assert(0 && "unknown viewport mapping");
+    break;
+  }
+  
+  if (considermodelmatrix) {
+    SbBool isidentity;
+    const SbMatrix &mm = SoModelMatrixElement::get(state, isidentity);
+    if (!isidentity) resultvv.transform(mm);
+  }
+  if (adjustvp) {
+    float cameraratio = this->aspectRatio.getValue();
+    if (aspectratio != cameraratio) {
+      SbViewportRegion oldvp = resultvp;
+      if (aspectratio < cameraratio) {
+        resultvp.scaleHeight(aspectratio/cameraratio);
+      }
+      else {
+        resultvp.scaleWidth(cameraratio/aspectratio);
+      }
+      // only draw if this is an SoGLRenderAction
+      if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
+        this->drawCroppedFrame((SoGLRenderAction*)action, vpm, oldvp, resultvp);
+      }
+      SoViewportRegionElement::set(action->getState(), resultvp);
+    }
+  }
+}
+
+//
+// private method that draws a cropped frame
+//
 void
 SoCamera::drawCroppedFrame(SoGLRenderAction *action,
                            const int viewportmapping,
@@ -613,3 +613,4 @@ SoCamera::drawCroppedFrame(SoGLRenderAction *action,
 
   state->pop();
 }
+
