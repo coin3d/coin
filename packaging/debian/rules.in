@@ -8,37 +8,89 @@
 source: clean
 	@echo "> make debian/$@";
 
-build: build-arch
+build: build-indep build-arch
 	@echo "> make debian/$@";
 
 # optional
 build-arch:
 	@echo "> make debian/$@"; \
-	$(SHELL) configure --prefix=/usr;
-	$(MAKE);
+	case "`pwd`" in \
+	  *-doc_*) \
+	    ;; \
+	  *) \
+	    $(SHELL) configure --prefix=/usr; \
+	    $(MAKE); \
+	    ;; \
+	esac;
 
 # optional
-# build-indep:
-# 	@echo "> make debian/$@";
+build-indep:
+	@echo "> make debian/$@";
+	case "`pwd`" in \
+	  *-doc_*) \
+	    ./configure --disable-build --with-html --with-man --prefix=`pwd`/debian/tmp/usr; \
+	    ;; \
+	esac;
 
-binary: binary-arch
+binary: binary-indep binary-arch
 	@echo "> make debian/$@";
 
 binary-arch:
 	@echo "> make debian/$@";
 	@installdir=debian/tmp; \
-	rm -rf $installdir; \
-	mkdir $$installdir; \
-	mkdir $$installdir/DEBIAN; \
-	cp debian/* $$installdir/DEBIAN/; \
-	$(MAKE) DESTDIR=`pwd`/$$installdir install;
-	dpkg-gencontrol;
-	echo >/dev/null dpkg-shlibdeps debian/tmp/usr/lib/libCoin.so;
-	dpkg-deb -b debian/tmp;
-	mv debian/tmp.deb coin1_1.0.0-1.deb;
+	test -f $$installdir || mkdir $$installdir; \
+	if test ! -d $$installdir/DEBIAN; then \
+	  mkdir $$installdir/DEBIAN; \
+	  cp debian/* $$installdir/DEBIAN/; \
+	fi; \
+	case "`pwd`" in \
+	  *-doc_*) \
+	    ;; \
+	  *-lib_*) \
+	    $(MAKE) DESTDIR=`pwd`/$$installdir install; \
+	    ( cd $$installdir/usr; rm -rf include share bin ); \
+	    dpkg-gencontrol -pcoin@COIN_MAJOR_VERSION@-lib \
+	    dpkg-deb -b $$installdir; \
+	    mv $$installdir.deb ../coin@COIN_MAJOR_VERSION@-lib_@VERSION@-1_$(DEB_BUILD_ARCH).deb; \
+	    ;; \
+	  *-dev_*) \
+	    $(MAKE) DESTDIR=`pwd`/$$installdir install; \
+	    ( cd $$installdir/usr; rm -rf lib ); \
+	    dpkg-gencontrol -pcoin@COIN_MAJOR_VERSION@-dev; \
+	    dpkg-deb -b $$installdir; \
+	    mv $$installdir.deb ../coin@COIN_MAJOR_VERSION@-dev_@VERSION@-1_$(DEB_BUILD_ARCH).deb; \
+	    ;; \
+	  *) \
+	    ;; \
+	esac;
 
 binary-indep:
 	@echo "> make debian/$@";
+	installdir=debian/tmp; \
+	test -f $$installdir || mkdir $$installdir; \
+	if test -d $$installdir/DEBIAN; then :; else \
+	  mkdir $$installdir/DEBIAN; \
+	  cp debian/* $$installdir/DEBIAN/; \
+	  :; \
+	fi; \
+	case "`pwd`" in \
+	  *-doc_*) \
+	    test -d $$installdir/usr/share/Coin/html || \
+	      mkdir -p $$installdir/usr/share/Coin/html; \
+	    test -d $$installdir/usr/man/man3 || \
+	      mkdir -p $$installdir/usr/man/man3; \
+	    $(MAKE) built-sources; \
+	    $(MAKE) doxygen-docs; \
+	    test -d $$installdir/usr/doc/coin@COIN_MAJOR_VERSION@ || \
+	      mkdir -p $$installdir/usr/doc/coin@COIN_MAJOR_VERSION@; \
+	    test -d $$installdir/usr/doc/coin@COIN_MAJOR_VERSION@/html && \
+	      rm -rf $$installdir/usr/doc/coin@COIN_MAJOR_VERSION@/html; \
+	    mv $$installdir/usr/share/Coin/html debian/tmp/usr/doc/coin@COIN_MAJOR_VERSION@/html; \
+	    dpkg-gencontrol -pcoin@COIN_MAJOR_VERSION@-doc; \
+	    dpkg-deb -b $$installdir; \
+	    mv $$installdir.deb ../coin@COIN_MAJOR_VERSION@-doc_@VERSION@-1_all.deb; \
+	    ;; \
+	esac;
 
 # optional
 # get-orig-source:
@@ -47,11 +99,11 @@ binary-indep:
 clean::
 	@echo "> make debian/$@";
 	@if test -f Makefile; then \
+	  echo " $(MAKE) distclean"; \
 	  $(MAKE) distclean; \
 	else \
 	  :; \
 	fi;
-	rm -rf debian/inst
-	rm -f debian/files
+	rm -rf debian/tmp debian/files
 
 .PHONY: build

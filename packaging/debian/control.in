@@ -1,16 +1,38 @@
 Source: coin@COIN_MAJOR_VERSION@
-Section: contrib/devel
-Priority: optional
 Maintainer: Lars J. Aas <larsa@coin3d.org>
+Section: libs
+Priority: optional
 Standards-Version: 3.5.6
 
-Package: coin@COIN_MAJOR_VERSION@
+Package: coin@COIN_MAJOR_VERSION@-lib
 Architecture: any
-Version: @PACKAGE_VERSION@-1
 Suggests: simage1
-
 Description: 3D graphics library compatible with Open Inventor
  Coin is a retain-mode 3D graphics library, based on OpenGL.
- It implements the API of Open Inventor V2.1.
+ It implements the Open Inventor 2.1 API.
  .
  For more information, see http://www.coin3d.org/
+
+Package: coin@COIN_MAJOR_VERSION@-dev
+Architecture: any
+Requires: coin@COIN_MAJOR_VERSION@-lib
+Suggests: simage1 coin@COIN_MAJOR_VERSION@-doc
+Description: 3D graphics library compatible with Open Inventor
+ Coin is a retain-mode 3D graphics library, based on OpenGL.
+ It implements the Open Inventor 2.1 API.  If you already have a development
+ setup for SGI Open Inventor or TGS Open Inventor on your computer, setting
+ up Coin from source is probably the best idea so you can avoid conflicts
+ caused by including the wrong header files.
+ .
+ For more information, see http://www.coin3d.org/
+
+Package: coin@COIN_MAJOR_VERSION@-doc
+Architecture: all
+Suggests: coin@COIN_MAJOR_VERSION@-dev
+Description: API documentation for coin@COIN_MAJOR_VERSION@-dev
+ This package contains API documentation for the Coin library
+ (the Open Inventor API) in HTML and man format.  The HTML documents are
+ also browsable on-line at http://doc.coin3d.org/.
+ .
+ For more information, see http://www.coin3d.org/
+

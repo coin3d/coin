@@ -558,21 +558,66 @@ install-exec-local: $(srcdir)/cfg/m4/wrapmsvc.exe
 
 # **************************************************************************
 
-debian-setup: distdir
-	debdir=Coin-$(VERSION)/debian; \
-	conf=./config.status; \
-	test -d $$debdir || mkdir $$debdir; \
+coin$(COIN_MAJOR_VERSION)_$(VERSION): distdir
+	cp -p -R Coin-$(VERSION) coin$(COIN_MAJOR_VERSION)_$(VERSION)
+
+coin$(COIN_MAJOR_VERSION)-lib_$(VERSION): distdir
+	cp -p -R Coin-$(VERSION) coin$(COIN_MAJOR_VERSION)-lib_$(VERSION)
+
+coin$(COIN_MAJOR_VERSION)-dev_$(VERSION): distdir
+	cp -p -R Coin-$(VERSION) coin$(COIN_MAJOR_VERSION)-dev_$(VERSION)
+
+coin$(COIN_MAJOR_VERSION)-doc_$(VERSION): distdir
+	cp -p -R Coin-$(VERSION) coin$(COIN_MAJOR_VERSION)-doc_$(VERSION)
+
+debian-control:
+	test -d $(DEBIAN_DIST_DIR)/debian || mkdir $(DEBIAN_DIST_DIR)/debian;
 	for f in packaging/debian/*.in; do \
 	  file=`echo $$f | sed 's/.*\///g; s/\.in$$//g'`; \
-	  $$conf --file=$$debdir/$$file:$$f; \
-	done; \
+	  ./config.status --file=$(DEBIAN_DIST_DIR)/debian/$$file:$$f; \
+	done;
 	for f in rules preinst prerm postinst postrm; do \
-	  if test -f $$debdir/$$f; then \
-	    echo " chmod +x $$debdir/$$f"; \
-	    chmod +x $$debdir/$$f; \
+	  if test -f $(DEBIAN_DIST_DIR)/debian/$$f; then \
+	    echo " chmod +x $(DEBIAN_DIST_DIR)/debian/$$f"; \
+	    chmod +x $(DEBIAN_DIST_DIR)/debian/$$f; \
 	  fi; \
 	done;
-#	echo "pkgversion=$(VERSION)" >$$debdir/substvars
+
+debian-src-control: coin$(COIN_MAJOR_VERSION)_$(VERSION)
+	distdir=coin$(COIN_MAJOR_VERSION)_$(VERSION); \
+	$(MAKE) DEBIAN_DIST_DIR=$$distdir debian-control; \
+	rm -f $distdir/debian/postinst;
+
+debian-lib-control: coin$(COIN_MAJOR_VERSION)_$(VERSION)
+	distdir=coin$(COIN_MAJOR_VERSION)-lib_$(VERSION); \
+	$(MAKE) DEBIAN_DIST_DIR=$$distdir debian-control; \
+	rm -f $distdir/debian/postinst;
+
+debian-dev-control: coin$(COIN_MAJOR_VERSION)-dev_$(VERSION)
+	distdir=coin$(COIN_MAJOR_VERSION)-dev_$(VERSION); \
+	$(MAKE) DEBIAN_DIST_DIR=$$distdir debian-control;
+
+debian-doc-control: coin$(COIN_MAJOR_VERSION)-doc_$(VERSION)
+	distdir=coin$(COIN_MAJOR_VERSION)-doc_$(VERSION); \
+	$(MAKE) DEBIAN_DIST_DIR=$$distdir debian-control; \
+	rm -f $distdir/debian/postinst;
+
+debian-src: coin$(COIN_MAJOR_VERSION)_$(VERSION) debian-src-control
+debian-lib: coin$(COIN_MAJOR_VERSION)-lib_$(VERSION) debian-lib-control
+debian-dev: coin$(COIN_MAJOR_VERSION)-dev_$(VERSION) debian-dev-control
+debian-doc: coin$(COIN_MAJOR_VERSION)-doc_$(VERSION) debian-doc-control
+
+debian-setup: debian-src debian-lib debian-dev debian-doc
+
+debian-packages: debian-setup
+	cd coin1_$(VERSION); \
+	dpkg-buildpackage -S -uc -us;
+	cd coin1-lib_$(VERSION); \
+	dpkg-buildpackage -b -uc;
+	cd coin1-dev_$(VERSION); \
+	dpkg-buildpackage -b -uc;
+	cd coin1-doc_$(VERSION); \
+	dpkg-buildpackage -b -uc;
 
 # EOF ######################################################################
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
