@@ -78,7 +78,7 @@ SoPickedPoint::SoPickedPoint(const SoPickedPoint &pp)
 
   int n = pp.detailList.getLength();
   for (int i = 0; i < n; i++) {
-    if (pp.detailList[i]) 
+    if (pp.detailList[i])
       this->detailList.append(pp.detailList[i]->copy());
     else
       this->detailList.append(NULL);
@@ -179,7 +179,7 @@ SoPickedPoint::getPath() const
 
 /*!
   Returns TRUE if this picked point is on the actual geometry of the
-  picked object, or FALSE if not (it might for instance be on the 
+  picked object, or FALSE if not (it might for instance be on the
   bounding box if picking was done on bounding boxes).
 */
 SbBool
@@ -195,7 +195,7 @@ SoPickedPoint::isOnGeometry() const
 const SoDetail *
 SoPickedPoint::getDetail(const SoNode * const node) const
 {
-  int idx = node ? this->path->findNode(node) : 
+  int idx = node ? this->path->findNode(node) :
     ((SoFullPath*)this->path)->getLength() - 1;
   return idx >= 0 ? this->detailList[idx] : NULL;
 }
@@ -281,7 +281,7 @@ SoPickedPoint::getObjectNormal(const SoNode * const node) const
 }
 
 /*!
-  Returns the object space (specified by \a node) texture coordinates. 
+  Returns the object space (specified by \a node) texture coordinates.
   If \a node equals NULL, the picked point object space will be used.
 */
 SbVec4f
@@ -335,7 +335,7 @@ SoPickedPoint::setDetail(SoDetail *detail, SoNode *node)
   int idx = this->path->findNode(node);
   if (idx >= 0) {
     delete this->detailList[idx];
-    this->detailList[idx] = detail;
+    this->detailList.set(idx, detail);
   }
 }
 
