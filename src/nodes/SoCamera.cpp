@@ -146,6 +146,40 @@
 
   Returns total view volume covered by the camera under the current
   settings.
+
+  This view volume is not adjusted to account for viewport mapping.
+  If you want the same view volume as used during rendering,
+  you should do something like this:
+
+  \verbatim
+
+  SbViewVolume vv;
+  float aspectratio = myviewport.getViewportAspectRatio();
+
+  switch (camera->viewportMapping.getValue()) {
+  case SoCamera::CROP_VIEWPORT_FILL_FRAME:
+  case SoCamera::CROP_VIEWPORT_LINE_FRAME:
+  case SoCamera::CROP_VIEWPORT_NO_FRAME:
+    vv = this->getViewVolume(0.0f);
+    break;
+  case SoCamera::ADJUST_CAMERA:
+    vv = this->getViewVolume(aspectratio);
+    if (aspectratio < 1.0f) vv.scale(1.0f / aspectratio);
+    break;
+  case SoCamera::LEAVE_ALONE:
+    vv = this->getViewVolume(0.0f);
+    break;
+  default:
+    assert(0 && "unknown viewport mapping");
+    break;
+  }
+
+  \endverbatim
+
+  Also, for the CROPPED viewport mappings, the viewport might
+  be changed if the viewport aspect ratio is not equal to the
+  camera aspect ratio. See SoCamera::getView() to see how this
+  is done.
 */
 
 /*!
