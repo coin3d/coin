@@ -1399,8 +1399,30 @@
     set up (instead of the single NULL child), and NULL child pointers
     should _probably_ not be allowed by SoMFNode.
 
-    (pederb checked with the VRML97 grammar, and according to that,
-    only SoSFNode fields are allowed to store NULL pointers.)
+    UPDATE: pederb checked with the VRML97 grammar, and according to
+    that, only SoSFNode fields are allowed to store NULL pointers.)
+
+    UPDATE: kintel also had a related bug report. This file:
+
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+    #VRML V2.0 utf8
+    
+    PROTO Object [ field MFNode children NULL ] {
+      Group {
+        children IS children
+      }
+    }
+    
+    Object { }
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+
+    ..causes the following assert: 
+
+        Coin-2/src/nodes/SoGroup.cpp:323: void SoGroup::getBoundingBox
+        (SoGetBoundingBoxAction *): Assertion `this->getNumChildren()
+        == this->getChildren()->getLength()' failed.
+
+    Which seems to be another manifestation of the exact same problem.
 
     20030228 mortene.
 
