@@ -27,10 +27,10 @@
   \ingroup nodes
 
   Currently only normal maps are supported. This means that the image
-  must have three components, where the red image component equals
-  the X normal component, green equals Y, and blue is Z. See 
-  http:// for a nice introduction about bump mapping and normal
-  maps.
+  must have three components, where the red image component equals the
+  X normal component, green equals Y, and blue is Z. See
+  http://www.paulsprojects.net/tutorials/simplebump/simplebump.html
+  for a nice introduction about bump mapping and normal maps.
   
   For bump mapping to work with extension nodes for Coin, the
   SoShape::generatePrimitives() method must be correctly implemented
