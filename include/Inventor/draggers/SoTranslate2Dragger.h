@@ -68,6 +68,9 @@ protected:
   SoFieldSensor * fieldSensor;
   SbVec3f worldRestartPt;
   SbPlaneProjector * planeProj;
+
+private:
+  int constraintState;
 };
 
 #endif // !COIN_SOTRANSLATE2DRAGGER_H

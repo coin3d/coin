@@ -20,10 +20,23 @@
 #include <Inventor/draggers/SoTranslate2Dragger.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
+#include <Inventor/projectors/SbPlaneProjector.h>
+#include <Inventor/sensors/SoFieldSensor.h>
+#include <Inventor/SbRotation.h>
+#include <Inventor/SbMatrix.h>
+#include <Inventor/SbVec3f.h>
+#include <Inventor/events/SoKeyboardEvent.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
+#define CONSTRAINT_OFF  0
+#define CONSTRAINT_WAIT 1
+#define CONSTRAINT_X    2
+#define CONSTRAINT_Y    3
 
 SO_KIT_SOURCE(SoTranslate2Dragger);
-
 
 void
 SoTranslate2Dragger::initClass(void)
@@ -45,56 +58,132 @@ SoTranslate2Dragger::SoTranslate2Dragger(void)
   SO_KIT_ADD_CATALOG_ENTRY(xAxisFeedback, SoSeparator, TRUE, axisFeedbackSwitch, yAxisFeedback, TRUE);
   SO_KIT_ADD_CATALOG_ENTRY(yAxisFeedback, SoSeparator, TRUE, axisFeedbackSwitch, "", TRUE);
 
+  if (SO_KIT_IS_FIRST_INSTANCE()) {
+    SoInteractionKit::readDefaultParts("translate2Dragger.iv", NULL, 0);
+  }
   SO_NODE_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
-
   SO_KIT_INIT_INSTANCE();
+
+  // initialize default parts
+  this->setPartAsDefault("translator", "translate2Translator");
+  this->setPartAsDefault("translatorActive", "translate2TranslatorActive");
+  this->setPartAsDefault("feedback", "translate2Feedback");
+  this->setPartAsDefault("feedbackActive", "translate2FeedbackActive");
+  this->setPartAsDefault("xAxisFeedback", "translate2XAxisFeedback");
+  this->setPartAsDefault("yAxisFeedback", "translate2YAxisFeedback");
+  
+  // initialize swich values
+  SoSwitch *sw;
+  sw = SO_GET_ANY_PART(this, "translatorSwitch", SoSwitch);
+  SoInteractionKit::setSwitchValue(sw, 0);
+  sw = SO_GET_ANY_PART(this, "feedbackSwitch", SoSwitch);
+  SoInteractionKit::setSwitchValue(sw, 0);
+  sw = SO_GET_ANY_PART(this, "axisFeedbackSwitch", SoSwitch);
+  SoInteractionKit::setSwitchValue(sw, SO_SWITCH_NONE);
+  
+  // setup projector
+  this->planeProj = new SbPlaneProjector();
+  this->addStartCallback(SoTranslate2Dragger::startCB);
+  this->addMotionCallback(SoTranslate2Dragger::motionCB);
+  this->addFinishCallback(SoTranslate2Dragger::finishCB);
+  this->addOtherEventCallback(SoTranslate2Dragger::metaKeyChangeCB);
+  this->addValueChangedCallback(SoTranslate2Dragger::valueChangedCB);
+  
+  this->fieldSensor = new SoFieldSensor(SoTranslate2Dragger::fieldSensorCB, this);
+  this->fieldSensor->setPriority(0);
+
+  this->constraintState = CONSTRAINT_OFF;
+ 
+  this->setUpConnections(TRUE, TRUE);
 }
 
 
 SoTranslate2Dragger::~SoTranslate2Dragger()
 {
-  COIN_STUB();
+  delete this->planeProj;
+  delete this->fieldSensor;
 }
 
 SbBool
 SoTranslate2Dragger::setUpConnections(SbBool onoff, SbBool doitalways)
 {
-  COIN_STUB();
-  return FALSE;
+  if (!doitalways && this->connectionsSetUp == onoff) return onoff;
+
+  SbBool oldval = this->connectionsSetUp;
+  
+  if (onoff) {
+    inherited::setUpConnections(onoff, doitalways);
+    
+    SoTranslate2Dragger::fieldSensorCB(this, NULL);
+    
+    if (this->fieldSensor->getAttachedField() != &this->translation) {
+      this->fieldSensor->attach(&this->translation);
+    }
+  }
+  else {
+    if (this->fieldSensor->getAttachedField() != NULL) {
+      this->fieldSensor->detach();
+    }
+    inherited::setUpConnections(onoff, doitalways);
+  }
+  this->connectionsSetUp = onoff;
+  return oldval;
 }
 
 void
-SoTranslate2Dragger::fieldSensorCB(void * f, SoSensor * s)
+SoTranslate2Dragger::fieldSensorCB(void * d, SoSensor * s)
 {
-  COIN_STUB();
+  assert(d);
+  SoTranslate2Dragger *thisp = (SoTranslate2Dragger*)d;
+  SbMatrix matrix = thisp->getMotionMatrix();
+  SbVec3f t = thisp->translation.getValue();
+  matrix[3][0] = t[0];
+  matrix[3][1] = t[1];
+  matrix[3][2] = t[2];
+  thisp->setMotionMatrix(matrix);
 }
 
 void
-SoTranslate2Dragger::valueChangedCB(void * f, SoDragger * d)
+SoTranslate2Dragger::valueChangedCB(void *, SoDragger * d)
 {
-  COIN_STUB();
+  SoTranslate2Dragger *thisp = (SoTranslate2Dragger*)d;
+  SbMatrix matrix = thisp->getMotionMatrix();
+
+  SbVec3f t;
+  t[0] = matrix[3][0];
+  t[1] = matrix[3][1];
+  t[2] = matrix[3][2];
+  
+  thisp->fieldSensor->detach();
+  if (thisp->translation.getValue() != t) {
+    thisp->translation = t;
+  }
+  thisp->fieldSensor->attach(&thisp->translation);
 }
 
 void
-SoTranslate2Dragger::startCB(void * f, SoDragger * d)
+SoTranslate2Dragger::startCB(void *, SoDragger * d)
 {
-  COIN_STUB();
+  SoTranslate2Dragger *thisp = (SoTranslate2Dragger*)d;
+  thisp->dragStart();
 }
 
 void
-SoTranslate2Dragger::motionCB(void * f, SoDragger * d)
+SoTranslate2Dragger::motionCB(void *, SoDragger * d)
 {
-  COIN_STUB();
+  SoTranslate2Dragger *thisp = (SoTranslate2Dragger*)d;
+  thisp->drag();
 }
 
 void
-SoTranslate2Dragger::finishCB(void * f, SoDragger * d)
+SoTranslate2Dragger::finishCB(void *, SoDragger * d)
 {
-  COIN_STUB();
+  SoTranslate2Dragger *thisp = (SoTranslate2Dragger*)d;
+  thisp->dragFinish();
 }
 
 void
-SoTranslate2Dragger::metaKeyChangeCB(void * f, SoDragger * d)
+SoTranslate2Dragger::metaKeyChangeCB(void *, SoDragger * )
 {
   COIN_STUB();
 }
@@ -102,17 +191,86 @@ SoTranslate2Dragger::metaKeyChangeCB(void * f, SoDragger * d)
 void
 SoTranslate2Dragger::dragStart(void)
 {
-  COIN_STUB();
+  SoSwitch *sw;
+  sw = SO_GET_ANY_PART(this, "translatorSwitch", SoSwitch);
+  SoInteractionKit::setSwitchValue(sw, 1);
+  sw = SO_GET_ANY_PART(this, "feedbackSwitch", SoSwitch);
+  SoInteractionKit::setSwitchValue(sw, 1);
+
+  SbVec3f hitPt = this->getLocalStartingPoint();
+  this->planeProj->setPlane(SbPlane(SbVec3f(0.0f, 0.0f, 1.0f), hitPt));
+  if (this->getEvent()->wasShiftDown()) {
+    this->getLocalToWorldMatrix().multVecMatrix(hitPt, this->worldRestartPt);
+    this->constraintState = CONSTRAINT_WAIT; 
+  }
 }
 
 void
 SoTranslate2Dragger::drag(void)
 {
-  COIN_STUB();
+  this->planeProj->setViewVolume(this->getViewVolume());
+  this->planeProj->setWorkingSpace(this->getLocalToWorldMatrix());
+
+  SbVec3f projPt = this->planeProj->project(this->getNormalizedLocaterPosition());
+
+  const SoEvent *event = this->getEvent();
+  if (event->wasShiftDown() && this->constraintState == CONSTRAINT_OFF) {
+    this->constraintState = CONSTRAINT_WAIT;
+    this->setStartLocaterPosition(event->getPosition());
+    this->getLocalToWorldMatrix().multVecMatrix(projPt, this->worldRestartPt);
+    this->saveStartParameters();
+    this->setStartingPoint(this->worldRestartPt);
+  }
+  else if (!event->wasShiftDown() && this->constraintState != CONSTRAINT_OFF) {
+    SoSwitch *sw = SO_GET_ANY_PART(this, "axisFeedbackSwitch", SoSwitch);
+    SoInteractionKit::setSwitchValue(sw, SO_SWITCH_NONE);
+    this->constraintState = CONSTRAINT_OFF;
+  }
+  
+  SbVec3f startPt = this->getLocalStartingPoint();
+  SbVec3f motion = projPt - startPt;  
+
+  switch(this->constraintState) {
+  case CONSTRAINT_OFF:
+    break;
+  case CONSTRAINT_WAIT:
+    if (this->isAdequateConstraintMotion()) {
+      if (fabs(motion[0]) >= fabs(motion[1])) {
+        this->constraintState = CONSTRAINT_X;
+        motion[1] = 0.0f;
+        SoSwitch *sw = SO_GET_ANY_PART(this, "axisFeedbackSwitch", SoSwitch);
+        SoInteractionKit::setSwitchValue(sw, 0);
+      }
+      else {
+        this->constraintState = CONSTRAINT_Y;
+        motion[0] = 0.0f;
+        SoSwitch *sw = SO_GET_ANY_PART(this, "axisFeedbackSwitch", SoSwitch);
+        SoInteractionKit::setSwitchValue(sw, 1);
+      }
+    }
+    else {
+      return;
+    }
+    break;
+  case CONSTRAINT_X:
+    motion[1] = 0.0f;
+    break;
+  case CONSTRAINT_Y:
+    motion[0] = 0.0f;
+    break;
+  }  
+  this->setMotionMatrix(this->appendTranslation(this->getStartMotionMatrix(), motion));
 }
 
 void
 SoTranslate2Dragger::dragFinish(void)
 {
-  COIN_STUB();
+  SoSwitch *sw;
+  sw = SO_GET_ANY_PART(this, "translatorSwitch", SoSwitch);
+  SoInteractionKit::setSwitchValue(sw, 0);
+  sw = SO_GET_ANY_PART(this, "feedbackSwitch", SoSwitch);
+  SoInteractionKit::setSwitchValue(sw, 0);
+  sw = SO_GET_ANY_PART(this, "axisFeedbackSwitch", SoSwitch);
+  SoInteractionKit::setSwitchValue(sw, SO_SWITCH_NONE);
+  this->constraintState = CONSTRAINT_OFF;
 }
