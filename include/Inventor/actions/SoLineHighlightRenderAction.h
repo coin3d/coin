@@ -23,9 +23,6 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/SbColor.h>
 
-class SoTempPath;
-class SoPathList;
-
 
 class COIN_DLL_EXPORT SoLineHighlightRenderAction : public SoGLRenderAction {
   typedef SoGLRenderAction inherited;
