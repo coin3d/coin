@@ -1009,14 +1009,16 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
   while (!sizeok) {
     sizeok = elem->isTextureSizeLegal(newx, newy, newz, numcomponents);
     if (!sizeok) {
-      int max = SbMax(newx, SbMax(newy, newz));
+      unsigned int max = SbMax(newx, SbMax(newy, newz));
       if (max==newz) newz >>= 1;
       else if (max==newy) newy >>= 1;
       else newx >>= 1;
     }
   }
 #if COIN_DEBUG
-  if (orgsize[0]!=newx || orgsize[1]!=newy || orgsize[2]!=newz) {
+  if ((unsigned int) orgsize[0] != newx || 
+      (unsigned int) orgsize[1] != newy || 
+      (unsigned int) orgsize[2] != newz) {
     if (newz)
       SoDebugError::postInfo("SoGLImageP::resizeImage",
                              "Too large 3D texture rescaled (%dx%dx%d)"
