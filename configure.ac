@@ -1008,45 +1008,45 @@ AC_SUBST([LIBFLAGS], [])
 # setup for <Inventor/system/gl.h>
 
 /* include windows.h? */
-if test x"$ac_cv_header_windows_h" = x"no"; then
-  sim_include_windows_h="/* #include <windows.h> - not needed on system */"
-else
+if test x"$ac_cv_header_windows_h" = x"yes"; then
   sim_include_windows_h="#include <windows.h>"
+else
+  sim_include_windows_h="/* #include <windows.h> - not needed on system */"
 fi
 
 /* how to include gl.h */
-if test x"$ac_cv_header_GL_gl_h" = x"no"; then
-  if test x"$ac_cv_header_OpenGL_gl_h" = x"no"; then
-    sim_include_gl_h="#error \"don't know how to include gl.h header\""
-  else
-    sim_include_gl_h="#include <OpenGL/gl.h>"
-  fi
-else
+if test x"$ac_cv_header_GL_gl_h" = x"yes"; then
   sim_include_gl_h="#include <GL/gl.h>"
+else
+  if test x"$ac_cv_header_OpenGL_gl_h" = x"yes"; then
+    sim_include_gl_h="#include <OpenGL/gl.h>"
+  else
+    sim_include_gl_h="#error \"don't know how to include gl.h header\""
+  fi
 fi
 
 if $enable_superglu; then
   sim_include_glu_h="#include <superglu/include/superglu.h>"
 else
-  if test x"$ac_cv_header_GL_glu_h" = x"no"; then
-    if test x"$ac_cv_header_OpenGL_glu_h" = x"no"; then
-      sim_include_glu_h="/* #include <GL/glu.h> - not found on system */"
-    else
-      sim_include_glu_h="#include <OpenGL/glu.h>"
-    fi
-  else
+  if test x"$ac_cv_header_GL_glu_h" = x"yes"; then
     sim_include_glu_h="#include <GL/glu.h>"
+  else
+    if test x"$ac_cv_header_OpenGL_glu_h" = x"yes"; then
+      sim_include_glu_h="#include <OpenGL/glu.h>"
+    else
+      sim_include_glu_h="/* #include <GL/glu.h> - not found on system */"
+    fi
   fi
 fi
 
-if test x"$ac_cv_header_GL_glext_h" = x"no"; then
-  if test x"$ac_cv_header_OpenGL_glext_h" = x"no"; then
-    sim_include_glext_h="/* #include <GL/glext.h> - not founc on system */"
-  else
-    sim_include_glext_h="#include <OpenGL/glext.h>"
-  fi
-else
+if test x"$ac_cv_header_GL_glext_h" = x"yes"; then
   sim_include_glext_h="#include <GL/glext.h>"
+else
+  if test x"$ac_cv_header_OpenGL_glext_h" = x"yes"; then
+    sim_include_glext_h="#include <OpenGL/glext.h>"
+  else
+    sim_include_glext_h="/* #include <GL/glext.h> - not found on system */"
+  fi
 fi
 
 AC_SUBST([SIM_INCLUDE_WINDOWS_H], [$sim_include_windows_h])
