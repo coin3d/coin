@@ -1642,19 +1642,16 @@ SoExtSelectionP::triangleCB(void * userData,
     int flag = 0x1 << (thisp->offscreencolorcounter & 0x07);
     int index = thisp->offscreencolorcounter >> 3;
     
-    if(thisp->visibletrianglesbitarray[index] & flag){
-
+    if (thisp->visibletrianglesbitarray[index] & flag){
       thisp->somefacesvisible = TRUE;
-      if(thisp->triangleFilterCB(thisp->triangleFilterCBData, action, v1, v2, v3)){
+      if (thisp->triangleFilterCB &&
+          thisp->triangleFilterCB(thisp->triangleFilterCBData, action, v1, v2, v3)){
         thisp->primcbdata.hit = TRUE;
         thisp->primcbdata.allhit = TRUE;
       }
-
     }
-
     ++thisp->offscreencolorcounter;
   }
- 
 }
 
 
