@@ -162,10 +162,32 @@
 */
 
 #include <Inventor/VRMLnodes/SoVRMLProximitySensor.h>
-#include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 
+#include <Inventor/VRMLnodes/SoVRMLMacros.h>
+#include <Inventor/actions/SoAction.h>
+#include <Inventor/elements/SoViewVolumeElement.h>
+#include <Inventor/elements/SoViewingMatrixElement.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/SoDB.h>
+#include <Inventor/SbBox3f.h>
+#include <Inventor/misc/SoState.h>
+
 SO_NODE_SOURCE(SoVRMLProximitySensor);
+
+//
+// returns the current time. First tries the realTime field, then
+// SbTime::getTimeOfDay() if field is not found.
+//
+static SbTime
+prox_get_current_time(void)
+{
+  SoField * realtime = SoDB::getGlobalField("realTime");
+  if (realtime && realtime->isOfType(SoSFTime::getClassTypeId())) {
+    return ((SoSFTime*)realtime)->getValue();
+  }
+  return SbTime::getTimeOfDay();
+}
 
 // Doc in parent
 void
@@ -190,6 +212,11 @@ SoVRMLProximitySensor::SoVRMLProximitySensor(void)
   SO_VRMLNODE_ADD_EVENT_OUT(orientation_changed);
   SO_VRMLNODE_ADD_EVENT_OUT(enterTime);
   SO_VRMLNODE_ADD_EVENT_OUT(exitTime);
+
+  // initialize eventOut values that we might read
+  this->isActive = FALSE;
+  this->position_changed = SbVec3f(0.0f, 0.0f, 0.0f);
+  this->orientation_changed = SbRotation();
 }
 
 /*!
@@ -210,6 +237,56 @@ SoVRMLProximitySensor::affectsState(void) const
 void
 SoVRMLProximitySensor::doAction(SoAction * action)
 {
+  if (!this->enabled.getValue()) return;
+
+  SbBool wasactive = this->isActive.getValue();
+  SbVec3f s = this->size.getValue() * 0.5f;
+  SbTime currtime = prox_get_current_time();
+
+  if (s[0] <= 0.0f || s[1] <= 0.0f || s[2] <= 0.0f) {
+    if (wasactive) {
+      this->isActive = FALSE;
+      this->exitTime = currtime;
+    }
+    return;
+  }
+
+  SoState * state = action->getState();
+  const SbViewVolume & vv = SoViewVolumeElement::get(state);
+  const SbMatrix & mm = SoModelMatrixElement::get(state);
+  const SbMatrix & vm = SoViewingMatrixElement::get(state);
+
+  // FIXME: if it's not possible to invert the matrix, move proximity
+  // area to world space and do the testing there.
+
+  SbVec3f viewer = vv.getProjectionPoint(); // world space
+  mm.inverse().multVecMatrix(viewer, viewer); // object space
+
+  SbVec3f c = this->center.getValue();
+  SbBox3f box(c[0]-s[0], c[1]-s[1], c[2]-s[2],
+              c[0]+s[0], c[1]+s[1], c[2]+s[2]);
+  SbBool inside = box.intersect(viewer);
+
+  SbRotation oldrot = this->orientation_changed.getValue();
+  SbVec3f oldpos = this->position_changed.getValue();
+
+  if (inside) {
+    if (!wasactive) {
+      this->isActive = TRUE;
+      this->enterTime = currtime;
+    }
+    SbRotation newrot(vm);
+    if (!wasactive || newrot != oldrot) {
+      this->orientation_changed = newrot;
+    }
+    if (!wasactive || viewer != oldpos) {
+      this->position_changed = viewer;
+    }
+  }
+  else if (!inside && wasactive) {
+    this->isActive = FALSE;
+    this->exitTime = currtime;
+  }  
 }
 
 // Doc in parent
@@ -223,21 +300,18 @@ SoVRMLProximitySensor::GLRender(SoGLRenderAction * action)
 void
 SoVRMLProximitySensor::callback(SoCallbackAction * action)
 {
-  SoVRMLProximitySensor::doAction((SoAction*) action);
 }
 
 // Doc in parent
 void
 SoVRMLProximitySensor::rayPick(SoRayPickAction * action)
 {
-  SoVRMLProximitySensor::doAction((SoAction*) action);
 }
 
 // Doc in parent
 void
 SoVRMLProximitySensor::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  SoVRMLProximitySensor::doAction((SoAction*) action);
 }
 
 // Doc in parent
@@ -245,14 +319,4 @@ void
 SoVRMLProximitySensor::notify(SoNotList * list)
 {
   inherited::notify(list);
-}
-
-/*!
-  Send events.
-*/
-void
-SoVRMLProximitySensor::updateState(SbVec3f & viewerpos,
-                                   SbVec3f & viewerorientation,
-                                   SbBool inside)
-{
 }

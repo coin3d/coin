@@ -58,8 +58,8 @@ protected:
   virtual ~SoVRMLProximitySensor();
 
   virtual void notify(SoNotList * list);
-  virtual void updateState(SbVec3f & viewerpos, SbVec3f & viewerorientation,
-                            SbBool inside);
-}; // class SoVRMLProximitySensor
+
+private:
+};
 
 #endif // ! COIN_SOVRMLPROXIMITYSENSOR_H
