@@ -333,6 +333,7 @@ _class_::setValuesPtr(void * ptr) \
 int \
 _class_::find(_valref_ value, SbBool addifnotfound) \
 { \
+  evaluate(); \
   for (int i=0; i < this->num; i++) if (this->values[i] == value) return i; \
  \
   if (addifnotfound) this->set1Value(this->num, value); \
