@@ -75,15 +75,11 @@ protected:
                                          const SoPrimitiveVertex * v3,
                                          SoPickedPoint * pp);
 
+  virtual void notify(SoNotList *list);
+  
 private:
-  SbList <const SoGlyph *> glyphs;
-  SbList <float> widths;
-  void setUpGlyphs(SoState * state);
-  SbBool needsetup;
-
-  SoFieldSensor * stringsensor;
-  static void fieldSensorCB(void * d, SoSensor * s);
-
+  class SoText3P * pimpl;
+  friend class SoText3P;
   void render(SoState * state, unsigned int part);
   void generate(SoAction * action, unsigned int part);
 };
