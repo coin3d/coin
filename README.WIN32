@@ -38,7 +38,7 @@
       CC=cl CXX=cl CFLAGS=/Tp /your_path_here/configure --prefix=your_install_path
       cd data
       make
-    [from here on, you can use build/coin.sdk instead of make]
+    [from here on, you can use build/coin.dsp instead of make]
       cd ..
       cd build
       nmake coin.mak CFG="coin - Win32 Debug"
