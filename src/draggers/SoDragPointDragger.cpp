@@ -35,6 +35,8 @@
 
 #include <coindefs.h> // COIN_STUB()
 
+#include <data/draggerDefaults/dragPointDragger.h>
+
 
 SO_KIT_SOURCE(SoDragPointDragger);
 
@@ -88,7 +90,9 @@ SoDragPointDragger::SoDragPointDragger(void)
   SO_KIT_ADD_CATALOG_ENTRY(zTranslatorSwitch, SoSwitch, FALSE, rotYSep, yzTranslatorSwitch, FALSE);
 
   if (SO_KIT_IS_FIRST_INSTANCE()) {
-    SoInteractionKit::readDefaultParts("dragPointDragger.iv", NULL, 0);
+    SoInteractionKit::readDefaultParts("dragPointDragger.iv",
+                                       draggergeometry,
+                                       sizeof(draggergeometry));
   }
 
   SO_NODE_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));

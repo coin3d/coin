@@ -5,17 +5,20 @@
 # D = fully documented for Doxygen generation of html/man [0.5]
 # G = default geometry file has been made [0.5]
 #
+# VALUES
+# - = not applicable
+#
 # ************************************************************************
 # IDG
 # ===
 # HIERARCHY
-# i    SoDragger
+# i -  SoDragger
 # I        SoCenterballDragger
 # I        SoDirectionalLightDragger
-# I        SoDragPointDragger
+# I G      SoDragPointDragger
 # I        SoHandleBoxDragger
 # I        SoJackDragger
-# I        SoPointLightDragger
+# I G      SoPointLightDragger
 # I        SoRotateCylindricalDragger
 # I        SoRotateDiscDragger
 # I        SoRotateSphericalDragger
@@ -30,6 +33,6 @@
 # I        SoTransformBoxDragger
 # i        SoTransformerDragger
 # I G      SoTranslate1Dragger
-# I        SoTranslate2Dragger
+# I G      SoTranslate2Dragger
 #
 ############################################################################
