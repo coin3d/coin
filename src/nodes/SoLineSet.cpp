@@ -724,7 +724,72 @@ SoLineSet::generatePrimitives(SoAction *action)
   int texnr = 0;
 
   if (nbind == PER_SEGMENT || mbind == PER_SEGMENT) {
-    assert(0);
+    this->beginShape(action, SoShape::LINES, &lineDetail);
+
+    while (ptr < end) {
+      lineDetail.setLineIndex(0);
+      int n = *ptr++;
+      if (n < 2) {
+        idx += n;
+        continue;
+      }
+      if (nbind == PER_LINE || nbind == PER_VERTEX) {
+        pointDetail.setNormalIndex(normnr);
+        currnormal = &normals[normnr++];
+        vertex.setNormal(*currnormal);
+      }
+      if (mbind == PER_LINE || mbind == PER_VERTEX) {
+        pointDetail.setMaterialIndex(matnr);
+        vertex.setMaterialIndex(matnr++);
+      }
+      if (doTextures) {
+        if (tb.isFunction())
+          vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal));
+        else {
+          pointDetail.setTextureCoordIndex(texnr);
+          vertex.setTextureCoords(tb.get(texnr++));
+        }
+      }
+      while (--n) {
+        if (nbind == PER_SEGMENT) {
+          pointDetail.setNormalIndex(normnr);
+          currnormal = &normals[normnr++];
+          vertex.setNormal(*currnormal);
+        }
+        if (mbind == PER_SEGMENT) {
+          pointDetail.setMaterialIndex(matnr);
+          vertex.setMaterialIndex(matnr++);
+        }
+        pointDetail.setCoordinateIndex(idx);
+        vertex.setPoint(coords->get3(idx++));
+        this->shapeVertex(&vertex);
+        
+        if (nbind == PER_VERTEX) {
+          pointDetail.setNormalIndex(normnr);
+          currnormal = &normals[normnr++];
+          vertex.setNormal(*currnormal);
+        }
+        if (mbind == PER_VERTEX) {
+          pointDetail.setMaterialIndex(matnr);
+          vertex.setMaterialIndex(matnr++);
+        }
+        if (doTextures) {
+          if (tb.isFunction())
+            vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal));
+          else {
+            pointDetail.setTextureCoordIndex(texnr);
+            vertex.setTextureCoords(tb.get(texnr++));
+          }
+        }
+        pointDetail.setCoordinateIndex(idx);
+        vertex.setPoint(coords->get3(idx));
+        this->shapeVertex(&vertex);
+        lineDetail.incLineIndex();
+      }
+      idx++; // next (poly)line should use the next index
+      lineDetail.incPartIndex();
+    }
+    this->endShape();
   }
   else {
     while (ptr < end) {

@@ -38,22 +38,23 @@
       idx += n;
       continue;
     }
-#if MBINDING==PER_LINE
+#if MBINDING==PER_LINE || MBINDING==PER_VERTEX
     mb->send(matnr++, TRUE);
 #endif
-#if NBINDING==PER_LINE
+#if NBINDING==PER_LINE || NBINDING==PER_VERTEX
     currnormal = normals++;
+    glNormal3fv((const GLfloat*)currnormal);
+#endif
+#if TEXTURES==TRUE
+    tb->send(texnr++, coords->get3(idx), *currnormal);
 #endif
     while (--n) {
-#if MBINDING==PER_SEGMENT || MBINDING==PER_VERTEX
+#if MBINDING==PER_SEGMENT
       mb->send(matnr++, TRUE);
 #endif
-#if NBINDING==PER_SEGMENT || NBINDING==PER_VERTEX
+#if NBINDING==PER_SEGMENT
       currnormal = normals++;
-#endif
       glNormal3fv((const GLfloat*)currnormal);
-#if TEXTURES==TRUE
-      tb->send(texnr++, coords->get3(idx), *currnormal);
 #endif
       coords->send(idx++);
 
