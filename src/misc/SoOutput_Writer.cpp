@@ -41,6 +41,9 @@
 #include <io.h> // Win32 dup()
 #endif // HAVE_IO_H
 
+// We don't want to include bzlib.h, so we just define the constants
+// we use here
+
 #ifndef BZ_OK
 #define BZ_OK 0
 #endif // BZ_OK
