@@ -320,11 +320,12 @@ searchForImage(const char * const orgname,
   strcpy(namebuf, orgname);
   TEST_FILE(namebuf);
 
+  char basename[MAXPATHLEN];
+
   // FIXME: implement platform-independent version
 #ifdef _WIN32
   strcpy(basename, orgname);
 #else // !_WIN32
-  char basename[MAXPATHLEN];
   const char *ptr =  strrchr(orgname, '/');
   if (ptr == NULL) ptr = orgname;
   else {
