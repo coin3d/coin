@@ -1,4 +1,13 @@
+msvc6
+
+	Directory for building Coin with Visual Studio 6.
+
+msvc7
+
+	Directory for building Coin with Visual Studio 7.
+
 coin.spec.in
 
         Template processed by configure script to generate an RPM
         specification file coin.spec.
+
