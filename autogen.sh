@@ -6,7 +6,7 @@
 
 # Author: Morten Eriksen, <mortene@sim.no>.
 
-# Makes it possible to run autogen.sh from location.
+# Makes it possible to run autogen.sh from any location.
 directory=`echo "$0" | sed -e 's/[^\/]*$//g'`;
 cd $directory
 if ! test -f ./autogen.sh; then
@@ -50,11 +50,8 @@ if test -z "`autoconf --version | grep \" $AUTOCONF_VER\" 2> /dev/null`"; then
     echo "You must have autoconf version $AUTOCONF_VER installed to"
     echo "generate configure information and Makefiles for $PROJECT."
     echo ""
-    echo "The Autoconf version we are using is a development version"
-    echo "\"frozen\" from the CVS repository at 2000-01-13, with a few"
-    echo "patches applied to fix bugs. You can get it here:"
-    echo ""
-    echo "   ftp://ftp.sim.no/pub/coin/autoconf-2.14.1-coin.tar.gz"
+    echo "(The Autoconf version we are using is the bleeding edge"
+    echo "from the CVS repository.)"
     echo ""
     DIE=true
 fi
@@ -64,10 +61,8 @@ if test -z "`automake --version | grep \" $AUTOMAKE_VER\" 2> /dev/null`"; then
     echo "You must have automake version $AUTOMAKE_VER installed to"
     echo "generate configure information and Makefiles for $PROJECT."
     echo ""
-    echo "The Automake version we are using is a development version"
-    echo "\"frozen\" from the CVS repository. You can get it here:"
-    echo ""
-    echo "   ftp://ftp.sim.no/pub/coin/automake-1.4a-coin.tar.gz"
+    echo "(The Automake version we are using is the bleeding edge"
+    echo "from the CVS repository.)"
     echo ""
     DIE=true
 fi
