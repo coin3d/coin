@@ -942,7 +942,7 @@ SoGLLazyElement::packColors(SoColorPacker * packer) const
 
   for (int i = 0; i < n; i++) {
     ptr[i] = diffuse[i].getPackedValue(transp[ti]);
-    if (ti < numtransp) ti++;
+    if (ti < numtransp-1) ti++;
   }
 
   packer->setNodeIds(this->coinstate.diffusenodeid,
