@@ -773,7 +773,11 @@ SoBase::writeFooter(SoOutput * out) const
 }
 
 /*!
-  Returns the class name this object should be written under.
+  Returns the class name this object should be written under.  Default
+  string returned is the name of the class from the type system.
+
+  User extensions nodes and engines override this method to return the
+  name of the extension (instead of "UnknownNode" or "UnknownEngine").
  */
 const char *
 SoBase::getFileFormatName(void) const
@@ -942,20 +946,33 @@ SoBase::readBaseInstance(SoInput * in, const SbName & className,
 SoBase *
 SoBase::createInstance(SoInput * in, const SbName & className)
 {
-  SoType insttype = SoType::fromName(className);
-  SoBase * instance = (SoBase *)insttype.createInstance();
+  SoType type = SoType::fromName(className);
 
-  if (!instance) {
+  SoBase * instance = NULL;
+
+  if (type == SoType::badType()) {
+
+    // FIXME: I think this code is plain wrong. There are flags to
+    // check to see if we have an SoUnknownEngine on our hands (or a
+    // group-type SoUnknownNode). 20000102 mortene.
+#if 0
     SbString unknownString;
     if (!in->read(unknownString) || unknownString != "fields") {
       // FIXME: check for unknown engine class aswell? 19991229 mortene.
       SoReadError::post(in, "Unknown class \"%s\"", className.getString());
       return NULL;
     }
-
+#endif
+    // Default to SoUnknownNode for now..
     SoUnknownNode * unknownnode = new SoUnknownNode;
     unknownnode->setNodeClassName(className);
     instance = unknownnode;
+  }
+  else if (!type.canCreateInstance()) {
+    SoReadError::post(in, "Class \"%s\" is abstract", className.getString());
+  }
+  else {
+    instance = (SoBase *)type.createInstance();
   }
 
   return instance;

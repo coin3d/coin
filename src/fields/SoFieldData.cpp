@@ -49,6 +49,7 @@
 #include <Inventor/fields/SoField.h>
 #include <Inventor/fields/SoFieldContainer.h>
 #include <Inventor/misc/SoBasic.h> // COIN_STUB()
+#include <Inventor/nodes/SoUnknownNode.h>
 #include <ctype.h>
 
 #if COIN_DEBUG
@@ -322,18 +323,31 @@ SoFieldData::read(SoInput * in, SoFieldContainer * object,
   notbuiltin = FALSE;
 
   if (in->isBinary()) {
-    int numfields;
-    if (!in->read(numfields)) {
+    uint32_t fieldsval;
+    if (!in->read(fieldsval)) {
       SoReadError::post(in, "Premature EOF");
       return FALSE;
     }
 
-    // FIXME: invalid check? (same field may be written several
-    // times?) 19990711 mortene.
-    if (numfields > this->fields.getLength()) {
-      SoReadError::post(in, "Invalid number of fields: %d", numfields);
-      return FALSE;
+    // FIXME: these should actually be uint8_t types. 20000102 mortene.
+    uint16_t numfields = fieldsval & 0xff;
+    uint16_t fieldflags = fieldsval >> 8;
+
+#if COIN_DEBUG && 0 // debug
+    SoDebugError::postInfo("SoFieldData::read", "0x%04x => 0x%04x 0x%04x",
+                           fieldsval, fieldflags, numfields);
+#endif // debug
+
+    // Unknown node type, must read field descriptions.
+    if (fieldflags & 0x40) {
+      if (!this->readFieldDescriptions(in, object, numfields)) return FALSE;
     }
+
+#if COIN_DEBUG    
+    if (numfields > this->fields.getLength())
+      SoDebugError::postWarning("SoFieldData::read",
+                                "Suspicious number of fields: %d", numfields);
+#endif // COIN_DEBUG
 
     if (numfields == 0) return TRUE;
 
@@ -349,10 +363,11 @@ SoFieldData::read(SoInput * in, SoFieldContainer * object,
                              "fieldname: '%s'", fieldname.getString());
 #endif // debug
       SbBool foundname;
-      if (!this->read(in, object, fieldname, foundname)) return FALSE;
-
-      // FIXME: handle case for binary format. 19990711 mortene.
-      assert(foundname && "FIXME: doesn't work in binary mode yet");
+      if (!this->read(in, object, fieldname, foundname)) {
+        if (!foundname) SoReadError::post(in, "Unknown field \"%s\"",
+                                          fieldname.getString());
+        return FALSE;
+      }
     }
   }
   else { // ASCII format.
@@ -424,13 +439,34 @@ SoFieldData::read(SoInput * in, SoFieldContainer * object,
 }
 
 /*!
-  FIXME: write doc
+  Write to \a out field names and field values for the fields of
+  \a object.
  */
 void
-SoFieldData::write(SoOutput * /* out */,
-                   const SoFieldContainer * /* object */) const
+SoFieldData::write(SoOutput * out, const SoFieldContainer * object) const
 {
-  COIN_STUB();
+  // FIXME: the uint16_t types should be uint8_t. 20000102 mortene.
+
+  uint16_t numfields = this->getNumFields();
+
+  // FIXME: is this really the best place to write the flags +
+  // numfields value? 20000102 mortene.
+  if (out->isBinary()) {
+    uint16_t fieldflags = 0x00;
+    // FIXME: take care of SoUnknownEngines and group
+    // SoUnknownNodes. 20000102 mortene.
+    if (object->getTypeId().isDerivedFrom(SoUnknownNode::getClassTypeId()))
+      fieldflags |= 0x40;
+
+    uint32_t w = fieldflags;
+    w <<= 8;
+    w |= numfields;
+
+    out->write(w);
+  }
+
+  for (uint16_t i=0; i < numfields; i++)
+    this->getField(object, i)->write(out, this->getFieldName(i));
 }
 
 /*!
@@ -470,10 +506,13 @@ SoFieldData::isSame(const SoFieldContainer * c1,
   Reads a set of field specifications from \a in for an unknown nodeclass type,
   in the form "[ FIELDCLASS FIELDNAME, FIELDCLASS FIELDNAME, ... ]".
 
+  \a numdescriptionsexpected is used for binary format import to know
+  how many descriptions should be present.
+
  */
 SbBool
 SoFieldData::readFieldDescriptions(SoInput * in, SoFieldContainer * object,
-                                   int /* numdescriptionsexpected */) const
+                                   int numdescriptionsexpected) const
 {
   // These two macros are convenient for reading with error detection.
 #define READ_CHAR(c) \
@@ -489,10 +528,49 @@ SoFieldData::readFieldDescriptions(SoInput * in, SoFieldContainer * object,
     }
 
 
+  // FIXME: unify code for binary and ASCII formats. 20000102 mortene.
+
   // Binary format.
   if (in->isBinary()) {
-    COIN_STUB();
-    return FALSE;
+    for (int j=0; j < numdescriptionsexpected; j++) {
+      SbName fieldtype;
+      READ_NAME(fieldtype);
+
+      SoType type = SoType::fromName(fieldtype.getString());
+      if ((type == SoType::badType()) ||
+          !type.isDerivedFrom(SoField::getClassTypeId())) {
+        SoReadError::post(in, "Unknown field type '%s'",
+                          fieldtype.getString());
+        return FALSE;
+      }
+      else if (!type.canCreateInstance()) {
+        SoReadError::post(in, "Abstract class type '%s'",
+                          fieldtype.getString());
+        return FALSE;
+      }
+
+      SbName fieldname;
+      READ_NAME(fieldname);
+
+#if COIN_DEBUG && 0 // debug
+      SoDebugError::postInfo("SoFieldData::readFieldDescriptions",
+                             "type: ``%s'', name: ``%s''",
+                             fieldtype.getString(), fieldname.getString());
+#endif // debug
+
+      SbBool found = FALSE;
+      for (int i=0; !found && (i < this->fields.getLength()); i++) {
+        if (this->fields[i]->name == fieldname) found = TRUE;
+      }
+      if (!found) {
+        // Cast away const -- ugly.
+        SoFieldData * thisp = (SoFieldData *)this;
+        SoField * newfield = (SoField *)type.createInstance();
+        newfield->setContainer(object);
+        newfield->setDefault(TRUE);
+        thisp->addField(object, fieldname.getString(), newfield);
+      }
+    }
   }
   // ASCII format.
   else {
@@ -508,12 +586,10 @@ SoFieldData::readFieldDescriptions(SoInput * in, SoFieldContainer * object,
       READ_NAME(fieldtype);
 
       SoType type = SoType::fromName(fieldtype.getString());
-      if (type == SoType::badType()) {
-        SoReadError::post(in, "Unknown field type '%s'", fieldtype.getString());
-        return FALSE;
-      }
-      else if (!type.isDerivedFrom(SoField::getClassTypeId())) {
-        SoReadError::post(in, "'%s' is not a field type", fieldtype.getString());
+      if ((type == SoType::badType()) ||
+          !type.isDerivedFrom(SoField::getClassTypeId())) {
+        SoReadError::post(in, "Unknown field type '%s'",
+                          fieldtype.getString());
         return FALSE;
       }
       else if (!type.canCreateInstance()) {
@@ -537,8 +613,10 @@ SoFieldData::readFieldDescriptions(SoInput * in, SoFieldContainer * object,
       if (!found) {
         // Cast away const -- ugly.
         SoFieldData * thisp = (SoFieldData *)this;
-        thisp->addField(object, fieldname.getString(),
-                        (const SoField *)type.createInstance());
+        SoField * newfield = (SoField *)type.createInstance();
+        newfield->setContainer(object);
+        newfield->setDefault(TRUE);
+        thisp->addField(object, fieldname.getString(), newfield);
       }
 
       READ_CHAR(c);

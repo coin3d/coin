@@ -393,16 +393,13 @@ SoFieldContainer::addWriteReference(SoOutput * out, SbBool isFromField)
 
 
 /*!
-  FIXME: write doc
+  Writes all the fields contained in this instance to the output stream
+  within \a out.
  */
 void
 SoFieldContainer::writeInstance(SoOutput * out)
 {
-  const SoFieldData * fd = this->getFieldData();
-  const int n = fd->getNumFields();
-  if (out->isBinary()) out->write(n);
-  for (int i=0; i < n; i++)
-    fd->getField(this, i)->write(out, fd->getFieldName(i));
+  this->getFieldData()->write(out, this);
 }
 
 /*!

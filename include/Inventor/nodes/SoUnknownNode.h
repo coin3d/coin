@@ -27,6 +27,8 @@
 class SoUnknownNode : public SoNode {
   typedef SoNode inherited;
 
+  // FIXME: needs dynamic SoFieldData instances to store the fields?
+  // 20000102 mortene.
   SO_NODE_HEADER(SoUnknownNode);
 
 public:
@@ -39,6 +41,7 @@ protected:
   virtual ~SoUnknownNode();
 
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
+  virtual const char * getFileFormatName(void) const;
 
 private:
   SbName classname;

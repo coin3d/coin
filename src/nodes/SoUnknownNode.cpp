@@ -25,6 +25,8 @@
 #include <Inventor/nodes/SoUnknownNode.h>
 
 
+// FIXME: needs dynamic SoFieldData instances to store the fields?
+// 20000102 mortene.
 SO_NODE_SOURCE(SoUnknownNode);
 
 
@@ -35,6 +37,7 @@ SoUnknownNode::SoUnknownNode(void)
 
 SoUnknownNode::~SoUnknownNode()
 {
+  // FIXME: release fields allocated by the import code? 20000102 mortene.
 }
 
 void
@@ -44,10 +47,11 @@ SoUnknownNode::initClass(void)
 }
 
 SbBool
-SoUnknownNode::readInstance(SoInput * /*in*/, unsigned short /*flags*/)
+SoUnknownNode::readInstance(SoInput * in, unsigned short flags)
 {
-  COIN_STUB();
-  return FALSE;
+  // FIXME: check "flags" argument to see if we should behave like a
+  // group node? 20000102 mortene.
+  return inherited::readInstance(in, flags);
 }
 
 // The name used for the nodes of this type in scene file.
@@ -55,4 +59,11 @@ void
 SoUnknownNode::setNodeClassName(const SbName & name)
 {
   this->classname = name;
+}
+
+// Overridden from SoBase.
+const char *
+SoUnknownNode::getFileFormatName(void) const
+{
+  return this->classname.getString();
 }
