@@ -18,14 +18,16 @@
 \**************************************************************************/
 
 /*!
-  \class SoEnabledElementsList Inventor/lists/SoEnabledElementsList.h
-  \brief The SoEnabledElementsList class is a container class for arrays of
-  SoType objects for element types that are enabled in actions.
+  \class SoEnabledElementsList SoEnabledElementsList.h Inventor/lists/SoEnabledElementsList.h
+  \brief The SoEnabledElementsList class is a container for type info for element types that are enabled in actions.
+  \ingroup actions
 
-  FIXME: write doc.
+  This class is probably not interesting for the application
+  programmer.
 */
 
 #include <Inventor/lists/SoEnabledElementsList.h>
+#include <Inventor/SbName.h>
 #include <Inventor/SoType.h>
 
 #if COIN_DEBUG
@@ -34,46 +36,40 @@
 
 #include <assert.h>
 
-int SoEnabledElementsList::counter;
+int SoEnabledElementsList::counter = 0;
 
 /*!
-  A constructor.
+  Constructor.
 */
-
-SoEnabledElementsList::SoEnabledElementsList(SoEnabledElementsList * const parentList)
-  : setUpCounter(counter), parent(parentList)
+SoEnabledElementsList::SoEnabledElementsList(SoEnabledElementsList * const parentlist)
+  : setupcounter(counter), parent(parentlist)
 {
 }
 
-#include <Inventor/SbName.h>
-
 /*!
-  This method returns the list of enabled elements.
+  Return the list of enabled elements.
 */
-
 const SoTypeList &
 SoEnabledElementsList::getElements(void) const
 {
-  if (! parent) // already merged. FIXME: can't do it like this
+  if (!parent) // already merged. FIXME: can't do it like this
     return elements;
 
-  // FIXME: use counter and setUpCounter to avoid unncessary merges
+  // FIXME: use counter and setupcounter to avoid unncessary merges
   // now we just set this->parent to NULL, but if parent changes,
   // this will not be correct.
-  SoEnabledElementsList * const list = (SoEnabledElementsList *)this;
-  list->merge(*this->parent);
-  list->parent = NULL;
+  SoEnabledElementsList * const eel = (SoEnabledElementsList *)this;
+  eel->merge(*this->parent);
+  eel->parent = NULL;
   return elements;
 }
 
 /*!
-  This method adds an element to the list of enabled elements if it's not
+  Add an \a elementtype to the list of enabled elements if it's not
   enabled already.
 */
-
 void
-SoEnabledElementsList::enable(const SoType elementType,
-                              const int stackIndex)
+SoEnabledElementsList::enable(const SoType elementtype, const int stackindex)
 {
 #if 0 // debug
   SoDebugError::postInfo("SoEnabledElementsList::enable",
@@ -81,35 +77,33 @@ SoEnabledElementsList::enable(const SoType elementType,
                          this, &(this->elements), elements.getLength());
 #endif // debug
 
-  while (stackIndex >= this->elements.getLength())
+  while (stackindex >= this->elements.getLength())
     this->elements.append(SoType::badType());
 
-  this->elements[stackIndex] = elementType;
+  this->elements[stackindex] = elementtype;
 }
 
 /*!
-  This method enables all the elements in \a list that is enabled in this
-  instance.
+  Enables all the elements from the \a eel list that is enabled in
+  this instance.
 */
-
 void
-SoEnabledElementsList::merge(const SoEnabledElementsList & list)
+SoEnabledElementsList::merge(const SoEnabledElementsList & eel)
 {
   SoType bad = SoType::badType();
-  const int num = list.elements.getLength();
+  const int num = eel.elements.getLength();
   for (int i = 0; i < num; i++) {
-    if (list.elements[i] != bad) this->enable(list.elements[i], i);
+    if (eel.elements[i] != bad) this->enable(eel.elements[i], i);
   }
 }
 
 /*!
-  This method returns the current setting of the global counter used to
-  determine when lists are out of date.  It is incremented whenever a new
+  Return the current setting of the global counter used to determine
+  when lists are out of date.  It is incremented whenever a new
   element is added to a list.
 */
-
 int
-SoEnabledElementsList::getCounter()
+SoEnabledElementsList::getCounter(void)
 {
-  return counter;
+  return SoEnabledElementsList::counter;
 }

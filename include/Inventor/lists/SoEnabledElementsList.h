@@ -22,18 +22,19 @@
 
 #include <Inventor/lists/SoTypeList.h>
 
+
 class SoEnabledElementsList {
 public:
-  SoEnabledElementsList(SoEnabledElementsList * const parentList);
+  SoEnabledElementsList(SoEnabledElementsList * const parentlist);
   const SoTypeList & getElements(void) const;
-  void enable(const SoType elementType, const int stackIndex);
-  void merge(const SoEnabledElementsList & list);
+  void enable(const SoType elementtype, const int stackindex);
+  void merge(const SoEnabledElementsList & eel);
 
   static int getCounter(void);
 
 private:
   static int counter;
-  int setUpCounter;
+  int setupcounter;
   SoTypeList elements;
   SoEnabledElementsList * parent;
 };
