@@ -607,14 +607,6 @@ typedef void sogl_render_ils_func ( const SoGLCoordinateElement * /*const*/ coor
 #define PER_VERTEX          5
 #define PER_VERTEX_INDEXED  6
 
-#define OVERALL             0
-#define PER_SEGMENT         1
-#define PER_SEGMENT_INDEXED 2
-#define PER_LINE            3
-#define PER_LINE_INDEXED    4
-#define PER_VERTEX          5
-#define PER_VERTEX_INDEXED  6
-
 #define MBINDING OVERALL
 #define NBINDING OVERALL
 #define TEXTURES FALSE
