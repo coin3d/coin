@@ -69,7 +69,7 @@ public:
 
 private:
   static int nameTableSize;
-  static SbNameEntry * * nameTable;
+  static SbNameEntry ** nameTable;
   static struct SbNameChunk * chunk;
   unsigned long hashValue;
   SbNameEntry * next;
@@ -84,78 +84,75 @@ SbNameChunk * SbNameEntry::chunk;
 void
 SbNameEntry::initClass(void)
 {
-    nameTableSize = NAME_TABLE_SIZE;
-    nameTable = new SbNameEntry * [ nameTableSize ];
-    for (int i = 0; i < nameTableSize; i++)
-        nameTable[i] = NULL;
-    chunk = NULL;
+  SbNameEntry::nameTableSize = NAME_TABLE_SIZE;
+  SbNameEntry::nameTable = new SbNameEntry * [ SbNameEntry::nameTableSize ];
+  for (int i = 0; i < SbNameEntry::nameTableSize; i++) { SbNameEntry::nameTable[i] = NULL; }
+  SbNameEntry::chunk = NULL;
 }
 
 void
 SbNameEntry::print_info(void)
 {
-    for (int i = 0; i < nameTableSize; i++) {
-        SbNameEntry * entry = nameTable[ i ];
-        int cnt = 0;
-        while (entry != NULL) {
-            entry = entry->next;
-            cnt++;
-        }
-        printf("name entry: %d, cnt: %d\n", i, cnt);
+  for (int i = 0; i < SbNameEntry::nameTableSize; i++) {
+    SbNameEntry * entry = SbNameEntry::nameTable[ i ];
+    int cnt = 0;
+    while (entry != NULL) {
+      entry = entry->next;
+      cnt++;
     }
+    printf("name entry: %d, cnt: %d\n", i, cnt);
+  }
 }
 
 const char *
 SbNameEntry::findStringAddress(const char * s)
 {
-    int len = strlen(s) + 1;
+  int len = strlen(s) + 1;
 
     // names > CHUNK_SIZE characters are truncated.
-    if (len >= CHUNK_SIZE)
-      len=CHUNK_SIZE;
+  if (len >= CHUNK_SIZE) { len = CHUNK_SIZE; }
 
-    if (chunk == NULL || chunk->bytesLeft < len) {
-      SbNameChunk * newChunk = new SbNameChunk;
+  if (chunk == NULL || chunk->bytesLeft < len) {
+    SbNameChunk * newChunk = new SbNameChunk;
 
-      newChunk->curByte = newChunk->mem;
-      newChunk->bytesLeft = CHUNK_SIZE;
-      newChunk->next = chunk;
+    newChunk->curByte = newChunk->mem;
+    newChunk->bytesLeft = CHUNK_SIZE;
+    newChunk->next = chunk;
 
-      chunk = newChunk;
-    }
+    chunk = newChunk;
+  }
 
-    strncpy(chunk->curByte, s, len);
-    s = chunk->curByte;
+  (void)strncpy(chunk->curByte, s, len);
+  s = chunk->curByte;
 
-    chunk->curByte += len;
-    chunk->bytesLeft -= len;
+  chunk->curByte += len;
+  chunk->bytesLeft -= len;
 
-    return s;
+  return s;
 }
 
 const SbNameEntry *
 SbNameEntry::insert(const char * const str)
 {
-    if (nameTableSize == 0)
-        initClass();
+  if (nameTableSize == 0) { initClass(); }
 
-    unsigned long h = SbString::hash(str);
-    unsigned long i = h % nameTableSize;
-    SbNameEntry * entry = nameTable[i];
-    SbNameEntry * head = entry;
+  unsigned long h = SbString::hash(str);
+  unsigned long i = h % nameTableSize;
+  SbNameEntry * entry = nameTable[i];
+  SbNameEntry * head = entry;
 
-    while (entry != NULL) {
-        if (entry->hashValue == h && entry->isEqual( str) )
-            break;
-        entry = entry->next;
-    }
+  while (entry != NULL) {
+    if (entry->hashValue == h && entry->isEqual( str) )
+      break;
+    entry = entry->next;
+  }
 
-    if (entry == NULL) {
-        entry = new SbNameEntry(findStringAddress( str), h, head );
-        nameTable[ i ] = entry;
-    }
+  if (entry == NULL) {
+    entry = new SbNameEntry(findStringAddress( str), h, head );
+    nameTable[ i ] = entry;
+  }
 
-    return entry;
+  return entry;
 }
 
 
@@ -174,7 +171,7 @@ SbName::SbName(void)
   Constructor. Adds the \a nameString string to the name table.
 */
 
-SbName::SbName(const char *nameString)
+SbName::SbName(const char * nameString)
 {
   this->entry = SbNameEntry::insert(nameString);
 }
@@ -193,7 +190,7 @@ SbName::SbName(const SbString & str)
 */
 
 SbName::SbName(const SbName & name)
-: entry(name.entry)
+  : entry(name.entry)
 {
 }
 
@@ -201,13 +198,11 @@ SbName::SbName(const SbName & name)
   The destructor.
 */
 
-SbName::~SbName(void)
+SbName::~SbName()
 {
-/*¡
-  no unref?  investigate if SbName can be used for user-settable names.
-  (in which case running servers sould get swamped without ref counts)
-  19990611 larsa
-*/
+  // FIXME: no unref?  investigate if SbName can be used for
+  // user-settable names.  (in which case running servers should get
+  // swamped without ref counts) 19990611 larsa
 }
 
 /*!
@@ -217,7 +212,7 @@ SbName::~SbName(void)
 const char *
 SbName::getString(void) const
 {
-  return entry->str;
+  return this->entry->str;
 }
 
 /*!
@@ -227,7 +222,9 @@ SbName::getString(void) const
 int
 SbName::getLength(void) const
 {
-  return strlen(entry->str);
+  // FIXME: shouldn't we cache this value for subsequent faster
+  // execution? 20010909 mortene.
+  return strlen(this->entry->str);
 }
 
 /*!
@@ -291,20 +288,21 @@ SbName::isBaseNameStartChar(const char c)
 SbBool
 SbName::isBaseNameChar(const char c)
 {
-  const char invalid[] = "\"\'+.\\{}";
+  static const char invalid[] = "\"\'+.\\{}";
   if (c <= 0x20 || c >= 0x7f || strchr(invalid, c)) return FALSE;
   return TRUE;
 }
 
 /*!
-  This unary operator results in FALSE if the SbName object is non-empty and
-  TRUE if the SbName object is empty.  An empty name contains the "" string.
+  This unary operator results in \c FALSE if the SbName object is
+  non-empty and \c TRUE if the SbName object is empty.  An empty name
+  contains a null-length string.
 */
 
 int
 SbName::operator ! (void) const
 {
-  return entry->isEmpty();
+  return this->entry->isEmpty();
 }
 
 /*!
@@ -383,5 +381,5 @@ operator != (const SbName & lhs, const SbName & rhs)
 
 SbName::operator const char * (void) const
 {
-  return entry->str;
+  return this->entry->str;
 }
