@@ -59,10 +59,6 @@ TODO:
 * [mortene:19990913] integrate the doxygen man- and html-generation
   into "make install".
 
-* [mortene:19990916] make ``make install'' avoid re-installing header
-  files which has not been modified (and other untouched files, for
-  that matter).
-
 * [mortene:19990917] clean up the .h-files before installation: remove
   "//$ BEGIN TEMPLATE" and "//$ END TEMPLATE". Remove
   "#if.*(COIN_EXCLUDE_.*)" blocks? Remove stuff between
@@ -142,6 +138,10 @@ DONE:
 
 
 *** BUILD ITEMS ***
+
+* [mortene:19990916][mortene:19991205] make ``make install'' avoid
+  re-installing header files which has not been modified (and other
+  untouched files, for that matter).
 
 * [mortene:19990926][mortene:19991205] fix code which generates
   warnings when configured with --disable-debug.

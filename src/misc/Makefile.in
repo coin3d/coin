@@ -493,19 +493,18 @@ libmisc.la: $(libmisc_la_OBJECTS) $(libmisc_la_DEPENDENCIES)
 
 install-libmiscincHEADERS: $(libmiscinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libmiscincdir)
+	@$(mkinstalldirs) $(DESTDIR)$(libmiscincdir)
 	@list='$(libmiscinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libmiscincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libmiscincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libmiscincdir)/$$f; then :; else echo "Installing $(libmiscincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libmiscincdir)/$$f; fi \
 	done
 
 uninstall-libmiscincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libmiscinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libmiscincdir)/$$f"; \
+	  echo "Uninstalling $(DESTDIR)$(libmiscincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libmiscincdir)/$$f; \
 	done
 
@@ -515,19 +514,18 @@ uninstall-libmiscincHEADERS:
 
 install-libmiscLINKHACKincHEADERS: $(libmiscLINKHACKinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libmiscLINKHACKincdir)
+	@$(mkinstalldirs) $(DESTDIR)$(libmiscLINKHACKincdir)
 	@list='$(libmiscLINKHACKinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libmiscLINKHACKincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libmiscLINKHACKincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libmiscLINKHACKincdir)/$$f; then :; else echo "Installing $(libmiscLINKHACKincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libmiscLINKHACKincdir)/$$f; fi \
 	done
 
 uninstall-libmiscLINKHACKincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libmiscLINKHACKinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libmiscLINKHACKincdir)/$$f"; \
+	  echo "Uninstalling $(DESTDIR)$(libmiscLINKHACKincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libmiscLINKHACKincdir)/$$f; \
 	done
 

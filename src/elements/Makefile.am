@@ -370,19 +370,18 @@ libelementsLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
 
 install-libelementsincHEADERS: $(libelementsinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libelementsincdir)
+	@$(mkinstalldirs) $(DESTDIR)$(libelementsincdir)
 	@list='$(libelementsinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libelementsincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libelementsincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libelementsincdir)/$$f; then :; else echo "Installing $(libelementsincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libelementsincdir)/$$f; fi \
 	done
 
 uninstall-libelementsincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libelementsinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libelementsincdir)/$$f"; \
+	  echo "Uninstalling $(DESTDIR)$(libelementsincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libelementsincdir)/$$f; \
 	done
 
@@ -393,19 +392,18 @@ uninstall-libelementsincHEADERS:
 
 install-libelementsLINKHACKincHEADERS: $(libelementsLINKHACKinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libelementsLINKHACKincdir)
+	@$(mkinstalldirs) $(DESTDIR)$(libelementsLINKHACKincdir)
 	@list='$(libelementsLINKHACKinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libelementsLINKHACKincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libelementsLINKHACKincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libelementsLINKHACKincdir)/$$f; then :; else echo "Installing $(libelementsLINKHACKincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libelementsLINKHACKincdir)/$$f; fi \
 	done
 
 uninstall-libelementsLINKHACKincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libelementsLINKHACKinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libelementsLINKHACKincdir)/$$f"; \
+	  echo "Uninstalling $(DESTDIR)$(libelementsLINKHACKincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libelementsLINKHACKincdir)/$$f; \
 	done
 

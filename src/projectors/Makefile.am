@@ -126,19 +126,18 @@ libprojectorsLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
 
 install-libprojectorsincHEADERS: $(libprojectorsinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libprojectorsincdir)
+	@$(mkinstalldirs) $(DESTDIR)$(libprojectorsincdir)
 	@list='$(libprojectorsinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libprojectorsincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libprojectorsincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libprojectorsincdir)/$$f; then :; else echo "Installing $(libprojectorsincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libprojectorsincdir)/$$f; fi \
 	done
 
 uninstall-libprojectorsincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libprojectorsinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libprojectorsincdir)/$$f"; \
+	  echo "Uninstalling $(DESTDIR)$(libprojectorsincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libprojectorsincdir)/$$f; \
 	done
 
@@ -149,19 +148,18 @@ uninstall-libprojectorsincHEADERS:
 
 install-libprojectorsLINKHACKincHEADERS: $(libprojectorsLINKHACKinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libprojectorsLINKHACKincdir)
+	@$(mkinstalldirs) $(DESTDIR)$(libprojectorsLINKHACKincdir)
 	@list='$(libprojectorsLINKHACKinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libprojectorsLINKHACKincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libprojectorsLINKHACKincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libprojectorsLINKHACKincdir)/$$f; then :; else echo "Installing $(libprojectorsLINKHACKincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libprojectorsLINKHACKincdir)/$$f; fi \
 	done
 
 uninstall-libprojectorsLINKHACKincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libprojectorsLINKHACKinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libprojectorsLINKHACKincdir)/$$f"; \
+	  echo "Uninstalling $(DESTDIR)$(libprojectorsLINKHACKincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libprojectorsLINKHACKincdir)/$$f; \
 	done
 

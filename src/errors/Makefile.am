@@ -104,19 +104,18 @@ liberrorsLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
 
 install-liberrorsincHEADERS: $(liberrorsinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(liberrorsincdir)
+	@$(mkinstalldirs) $(DESTDIR)$(liberrorsincdir)
 	@list='$(liberrorsinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(liberrorsincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(liberrorsincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(liberrorsincdir)/$$f; then :; else echo "Installing $(liberrorsincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(liberrorsincdir)/$$f; fi \
 	done
 
 uninstall-liberrorsincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(liberrorsinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(liberrorsincdir)/$$f"; \
+	  echo "Uninstalling $(DESTDIR)$(liberrorsincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(liberrorsincdir)/$$f; \
 	done
 
@@ -127,19 +126,18 @@ uninstall-liberrorsincHEADERS:
 
 install-liberrorsLINKHACKincHEADERS: $(liberrorsLINKHACKinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(liberrorsLINKHACKincdir)
+	@$(mkinstalldirs) $(DESTDIR)$(liberrorsLINKHACKincdir)
 	@list='$(liberrorsLINKHACKinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(liberrorsLINKHACKincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(liberrorsLINKHACKincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(liberrorsLINKHACKincdir)/$$f; then :; else echo "Installing $(liberrorsLINKHACKincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(liberrorsLINKHACKincdir)/$$f; fi \
 	done
 
 uninstall-liberrorsLINKHACKincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(liberrorsLINKHACKinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(liberrorsLINKHACKincdir)/$$f"; \
+	  echo "Uninstalling $(DESTDIR)$(liberrorsLINKHACKincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(liberrorsLINKHACKincdir)/$$f; \
 	done
 

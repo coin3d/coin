@@ -13,24 +13,27 @@ systeminc_HEADERS = \
 	$(top_srcdir)/include/Inventor/system/kosher.h
 
 
+##$ BEGIN TEMPLATE Make-Install(system)
+
 # FIXME: this is a temporary workaround for a bug in Automake. The
 # bug is fixed in the latest Automake CVS, but not in any "official"
 # release (?). Last checked with Automake 1.4a. 19990912 mortene.
 
 install-systemincHEADERS: $(systeminc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(systemincdir)
+	@$(mkinstalldirs) $(DESTDIR)$(systemincdir)
 	@list='$(systeminc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(systemincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(systemincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(systemincdir)/$$f; then :; else echo "Installing $(systemincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(systemincdir)/$$f; fi \
 	done
 
 uninstall-systemincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(systeminc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(systemincdir)/$$f"; \
+	  echo "Uninstalling $(DESTDIR)$(systemincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(systemincdir)/$$f; \
 	done
+
+##$ END TEMPLATE Make-Install

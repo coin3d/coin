@@ -490,19 +490,18 @@ libnodekits.la: $(libnodekits_la_OBJECTS) $(libnodekits_la_DEPENDENCIES)
 
 install-libnodekitsincHEADERS: $(libnodekitsinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libnodekitsincdir)
+	@$(mkinstalldirs) $(DESTDIR)$(libnodekitsincdir)
 	@list='$(libnodekitsinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libnodekitsincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libnodekitsincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libnodekitsincdir)/$$f; then :; else echo "Installing $(libnodekitsincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libnodekitsincdir)/$$f; fi \
 	done
 
 uninstall-libnodekitsincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libnodekitsinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libnodekitsincdir)/$$f"; \
+	  echo "Uninstalling $(DESTDIR)$(libnodekitsincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libnodekitsincdir)/$$f; \
 	done
 
@@ -512,19 +511,18 @@ uninstall-libnodekitsincHEADERS:
 
 install-libnodekitsLINKHACKincHEADERS: $(libnodekitsLINKHACKinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libnodekitsLINKHACKincdir)
+	@$(mkinstalldirs) $(DESTDIR)$(libnodekitsLINKHACKincdir)
 	@list='$(libnodekitsLINKHACKinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libnodekitsLINKHACKincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libnodekitsLINKHACKincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libnodekitsLINKHACKincdir)/$$f; then :; else echo "Installing $(libnodekitsLINKHACKincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libnodekitsLINKHACKincdir)/$$f; fi \
 	done
 
 uninstall-libnodekitsLINKHACKincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libnodekitsLINKHACKinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libnodekitsLINKHACKincdir)/$$f"; \
+	  echo "Uninstalling $(DESTDIR)$(libnodekitsLINKHACKincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libnodekitsLINKHACKincdir)/$$f; \
 	done
 

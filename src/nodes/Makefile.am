@@ -406,19 +406,18 @@ libnodesLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
 
 install-libnodesincHEADERS: $(libnodesinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libnodesincdir)
+	@$(mkinstalldirs) $(DESTDIR)$(libnodesincdir)
 	@list='$(libnodesinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libnodesincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libnodesincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libnodesincdir)/$$f; then :; else echo "Installing $(libnodesincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libnodesincdir)/$$f; fi \
 	done
 
 uninstall-libnodesincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libnodesinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libnodesincdir)/$$f"; \
+	  echo "Uninstalling $(DESTDIR)$(libnodesincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libnodesincdir)/$$f; \
 	done
 
@@ -429,19 +428,18 @@ uninstall-libnodesincHEADERS:
 
 install-libnodesLINKHACKincHEADERS: $(libnodesLINKHACKinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libnodesLINKHACKincdir)
+	@$(mkinstalldirs) $(DESTDIR)$(libnodesLINKHACKincdir)
 	@list='$(libnodesLINKHACKinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libnodesLINKHACKincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libnodesLINKHACKincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libnodesLINKHACKincdir)/$$f; then :; else echo "Installing $(libnodesLINKHACKincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libnodesLINKHACKincdir)/$$f; fi \
 	done
 
 uninstall-libnodesLINKHACKincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libnodesLINKHACKinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libnodesLINKHACKincdir)/$$f"; \
+	  echo "Uninstalling $(DESTDIR)$(libnodesLINKHACKincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libnodesLINKHACKincdir)/$$f; \
 	done
 

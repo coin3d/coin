@@ -143,19 +143,18 @@ libbaseLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
 
 install-libbaseincHEADERS: $(libbaseinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libbaseincdir)
+	@$(mkinstalldirs) $(DESTDIR)$(libbaseincdir)
 	@list='$(libbaseinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbaseincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbaseincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libbaseincdir)/$$f; then :; else echo "Installing $(libbaseincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbaseincdir)/$$f; fi \
 	done
 
 uninstall-libbaseincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libbaseinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libbaseincdir)/$$f"; \
+	  echo "Uninstalling $(DESTDIR)$(libbaseincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libbaseincdir)/$$f; \
 	done
 
@@ -166,19 +165,18 @@ uninstall-libbaseincHEADERS:
 
 install-libbaseLINKHACKincHEADERS: $(libbaseLINKHACKinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libbaseLINKHACKincdir)
+	@$(mkinstalldirs) $(DESTDIR)$(libbaseLINKHACKincdir)
 	@list='$(libbaseLINKHACKinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbaseLINKHACKincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbaseLINKHACKincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libbaseLINKHACKincdir)/$$f; then :; else echo "Installing $(libbaseLINKHACKincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbaseLINKHACKincdir)/$$f; fi \
 	done
 
 uninstall-libbaseLINKHACKincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libbaseLINKHACKinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libbaseLINKHACKincdir)/$$f"; \
+	  echo "Uninstalling $(DESTDIR)$(libbaseLINKHACKincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libbaseLINKHACKincdir)/$$f; \
 	done
 

@@ -138,7 +138,7 @@ libCoininc_HEADERS = \
 	$(top_srcdir)/include/Inventor/SbXfBox3f.h
 
 
-##$ BEGIN TEMPLATE Make-Install(Coin)
+##$ BEGIN TEMPLATE Make-Install(libCoin)
 
 # FIXME: this is a temporary workaround for a bug in Automake. The
 # bug is fixed in the latest Automake CVS, but not in any "official"
@@ -146,19 +146,18 @@ libCoininc_HEADERS = \
 
 install-libCoinincHEADERS: $(libCoininc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libCoinincdir)
+	@$(mkinstalldirs) $(DESTDIR)$(libCoinincdir)
 	@list='$(libCoininc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libCoinincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libCoinincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libCoinincdir)/$$f; then :; else echo "Installing $(libCoinincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libCoinincdir)/$$f; fi \
 	done
 
 uninstall-libCoinincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libCoininc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libCoinincdir)/$$f"; \
+	  echo "Uninstalling $(DESTDIR)$(libCoinincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libCoinincdir)/$$f; \
 	done
 

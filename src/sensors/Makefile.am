@@ -128,19 +128,18 @@ libsensorsLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
 
 install-libsensorsincHEADERS: $(libsensorsinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libsensorsincdir)
+	@$(mkinstalldirs) $(DESTDIR)$(libsensorsincdir)
 	@list='$(libsensorsinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libsensorsincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libsensorsincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libsensorsincdir)/$$f; then :; else echo "Installing $(libsensorsincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libsensorsincdir)/$$f; fi \
 	done
 
 uninstall-libsensorsincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libsensorsinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libsensorsincdir)/$$f"; \
+	  echo "Uninstalling $(DESTDIR)$(libsensorsincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libsensorsincdir)/$$f; \
 	done
 
@@ -151,19 +150,18 @@ uninstall-libsensorsincHEADERS:
 
 install-libsensorsLINKHACKincHEADERS: $(libsensorsLINKHACKinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libsensorsLINKHACKincdir)
+	@$(mkinstalldirs) $(DESTDIR)$(libsensorsLINKHACKincdir)
 	@list='$(libsensorsLINKHACKinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libsensorsLINKHACKincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libsensorsLINKHACKincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libsensorsLINKHACKincdir)/$$f; then :; else echo "Installing $(libsensorsLINKHACKincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libsensorsLINKHACKincdir)/$$f; fi \
 	done
 
 uninstall-libsensorsLINKHACKincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libsensorsLINKHACKinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libsensorsLINKHACKincdir)/$$f"; \
+	  echo "Uninstalling $(DESTDIR)$(libsensorsLINKHACKincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libsensorsLINKHACKincdir)/$$f; \
 	done
 

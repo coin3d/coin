@@ -100,19 +100,18 @@ libbundlesLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
 
 install-libbundlesincHEADERS: $(libbundlesinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libbundlesincdir)
+	@$(mkinstalldirs) $(DESTDIR)$(libbundlesincdir)
 	@list='$(libbundlesinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbundlesincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbundlesincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libbundlesincdir)/$$f; then :; else echo "Installing $(libbundlesincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbundlesincdir)/$$f; fi \
 	done
 
 uninstall-libbundlesincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libbundlesinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libbundlesincdir)/$$f"; \
+	  echo "Uninstalling $(DESTDIR)$(libbundlesincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libbundlesincdir)/$$f; \
 	done
 
@@ -123,19 +122,18 @@ uninstall-libbundlesincHEADERS:
 
 install-libbundlesLINKHACKincHEADERS: $(libbundlesLINKHACKinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libbundlesLINKHACKincdir)
+	@$(mkinstalldirs) $(DESTDIR)$(libbundlesLINKHACKincdir)
 	@list='$(libbundlesLINKHACKinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbundlesLINKHACKincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbundlesLINKHACKincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libbundlesLINKHACKincdir)/$$f; then :; else echo "Installing $(libbundlesLINKHACKincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbundlesLINKHACKincdir)/$$f; fi \
 	done
 
 uninstall-libbundlesLINKHACKincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libbundlesLINKHACKinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libbundlesLINKHACKincdir)/$$f"; \
+	  echo "Uninstalling $(DESTDIR)$(libbundlesLINKHACKincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libbundlesLINKHACKincdir)/$$f; \
 	done
 

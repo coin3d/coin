@@ -28,6 +28,6 @@ lib-xxx-LINKHACKincdir = $(includedir)/Inventor/-xxx-
 lib-xxx-inc_HEADERS = $(ALLINSTHEADERS)
 lib-xxx-LINKHACKinc_HEADERS = $(ALLINSTHEADERS)
 
-##$ INSERT TEMPLATE Make-Install(-xxx-)
-##$ INSERT TEMPLATE Make-Install(-xxx-LINKHACK)
+##$ INSERT TEMPLATE Make-Install(lib-xxx-)
+##$ INSERT TEMPLATE Make-Install(lib-xxx-LINKHACK)
 

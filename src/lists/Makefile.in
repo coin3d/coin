@@ -495,19 +495,18 @@ liblists.la: $(liblists_la_OBJECTS) $(liblists_la_DEPENDENCIES)
 
 install-liblistsincHEADERS: $(liblistsinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(liblistsincdir)
+	@$(mkinstalldirs) $(DESTDIR)$(liblistsincdir)
 	@list='$(liblistsinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(liblistsincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(liblistsincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(liblistsincdir)/$$f; then :; else echo "Installing $(liblistsincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(liblistsincdir)/$$f; fi \
 	done
 
 uninstall-liblistsincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(liblistsinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(liblistsincdir)/$$f"; \
+	  echo "Uninstalling $(DESTDIR)$(liblistsincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(liblistsincdir)/$$f; \
 	done
 
@@ -517,19 +516,18 @@ uninstall-liblistsincHEADERS:
 
 install-liblistsLINKHACKincHEADERS: $(liblistsLINKHACKinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(liblistsLINKHACKincdir)
+	@$(mkinstalldirs) $(DESTDIR)$(liblistsLINKHACKincdir)
 	@list='$(liblistsLINKHACKinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(liblistsLINKHACKincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(liblistsLINKHACKincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(liblistsLINKHACKincdir)/$$f; then :; else echo "Installing $(liblistsLINKHACKincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(liblistsLINKHACKincdir)/$$f; fi \
 	done
 
 uninstall-liblistsLINKHACKincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(liblistsLINKHACKinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(liblistsLINKHACKincdir)/$$f"; \
+	  echo "Uninstalling $(DESTDIR)$(liblistsLINKHACKincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(liblistsLINKHACKincdir)/$$f; \
 	done
 

@@ -514,19 +514,18 @@ libfields.la: $(libfields_la_OBJECTS) $(libfields_la_DEPENDENCIES)
 
 install-libfieldsincHEADERS: $(libfieldsinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libfieldsincdir)
+	@$(mkinstalldirs) $(DESTDIR)$(libfieldsincdir)
 	@list='$(libfieldsinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libfieldsincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libfieldsincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libfieldsincdir)/$$f; then :; else echo "Installing $(libfieldsincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libfieldsincdir)/$$f; fi \
 	done
 
 uninstall-libfieldsincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libfieldsinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libfieldsincdir)/$$f"; \
+	  echo "Uninstalling $(DESTDIR)$(libfieldsincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libfieldsincdir)/$$f; \
 	done
 
@@ -536,19 +535,18 @@ uninstall-libfieldsincHEADERS:
 
 install-libfieldsLINKHACKincHEADERS: $(libfieldsLINKHACKinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libfieldsLINKHACKincdir)
+	@$(mkinstalldirs) $(DESTDIR)$(libfieldsLINKHACKincdir)
 	@list='$(libfieldsLINKHACKinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libfieldsLINKHACKincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libfieldsLINKHACKincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libfieldsLINKHACKincdir)/$$f; then :; else echo "Installing $(libfieldsLINKHACKincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libfieldsLINKHACKincdir)/$$f; fi \
 	done
 
 uninstall-libfieldsLINKHACKincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libfieldsLINKHACKinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libfieldsLINKHACKincdir)/$$f"; \
+	  echo "Uninstalling $(DESTDIR)$(libfieldsLINKHACKincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libfieldsLINKHACKincdir)/$$f; \
 	done
 

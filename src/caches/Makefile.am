@@ -106,19 +106,18 @@ libcachesLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
 
 install-libcachesincHEADERS: $(libcachesinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libcachesincdir)
+	@$(mkinstalldirs) $(DESTDIR)$(libcachesincdir)
 	@list='$(libcachesinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libcachesincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libcachesincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libcachesincdir)/$$f; then :; else echo "Installing $(libcachesincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libcachesincdir)/$$f; fi \
 	done
 
 uninstall-libcachesincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libcachesinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libcachesincdir)/$$f"; \
+	  echo "Uninstalling $(DESTDIR)$(libcachesincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libcachesincdir)/$$f; \
 	done
 
@@ -129,19 +128,18 @@ uninstall-libcachesincHEADERS:
 
 install-libcachesLINKHACKincHEADERS: $(libcachesLINKHACKinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libcachesLINKHACKincdir)
+	@$(mkinstalldirs) $(DESTDIR)$(libcachesLINKHACKincdir)
 	@list='$(libcachesLINKHACKinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libcachesLINKHACKincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libcachesLINKHACKincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libcachesLINKHACKincdir)/$$f; then :; else echo "Installing $(libcachesLINKHACKincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libcachesLINKHACKincdir)/$$f; fi \
 	done
 
 uninstall-libcachesLINKHACKincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libcachesLINKHACKinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libcachesLINKHACKincdir)/$$f"; \
+	  echo "Uninstalling $(DESTDIR)$(libcachesLINKHACKincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libcachesLINKHACKincdir)/$$f; \
 	done
 

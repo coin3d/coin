@@ -486,19 +486,18 @@ libevents.la: $(libevents_la_OBJECTS) $(libevents_la_DEPENDENCIES)
 
 install-libeventsincHEADERS: $(libeventsinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libeventsincdir)
+	@$(mkinstalldirs) $(DESTDIR)$(libeventsincdir)
 	@list='$(libeventsinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libeventsincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libeventsincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libeventsincdir)/$$f; then :; else echo "Installing $(libeventsincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libeventsincdir)/$$f; fi \
 	done
 
 uninstall-libeventsincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libeventsinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libeventsincdir)/$$f"; \
+	  echo "Uninstalling $(DESTDIR)$(libeventsincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libeventsincdir)/$$f; \
 	done
 
@@ -508,19 +507,18 @@ uninstall-libeventsincHEADERS:
 
 install-libeventsLINKHACKincHEADERS: $(libeventsLINKHACKinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libeventsLINKHACKincdir)
+	@$(mkinstalldirs) $(DESTDIR)$(libeventsLINKHACKincdir)
 	@list='$(libeventsLINKHACKinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libeventsLINKHACKincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libeventsLINKHACKincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libeventsLINKHACKincdir)/$$f; then :; else echo "Installing $(libeventsLINKHACKincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libeventsLINKHACKincdir)/$$f; fi \
 	done
 
 uninstall-libeventsLINKHACKincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libeventsLINKHACKinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libeventsLINKHACKincdir)/$$f"; \
+	  echo "Uninstalling $(DESTDIR)$(libeventsLINKHACKincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libeventsLINKHACKincdir)/$$f; \
 	done
 

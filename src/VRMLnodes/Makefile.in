@@ -481,19 +481,18 @@ libVRMLnodes.la: $(libVRMLnodes_la_OBJECTS) $(libVRMLnodes_la_DEPENDENCIES)
 
 install-libVRMLnodesincHEADERS: $(libVRMLnodesinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libVRMLnodesincdir)
+	@$(mkinstalldirs) $(DESTDIR)$(libVRMLnodesincdir)
 	@list='$(libVRMLnodesinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libVRMLnodesincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libVRMLnodesincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libVRMLnodesincdir)/$$f; then :; else echo "Installing $(libVRMLnodesincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libVRMLnodesincdir)/$$f; fi \
 	done
 
 uninstall-libVRMLnodesincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libVRMLnodesinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libVRMLnodesincdir)/$$f"; \
+	  echo "Uninstalling $(DESTDIR)$(libVRMLnodesincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libVRMLnodesincdir)/$$f; \
 	done
 
@@ -503,19 +502,18 @@ uninstall-libVRMLnodesincHEADERS:
 
 install-libVRMLnodesLINKHACKincHEADERS: $(libVRMLnodesLINKHACKinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libVRMLnodesLINKHACKincdir)
+	@$(mkinstalldirs) $(DESTDIR)$(libVRMLnodesLINKHACKincdir)
 	@list='$(libVRMLnodesLINKHACKinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libVRMLnodesLINKHACKincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libVRMLnodesLINKHACKincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libVRMLnodesLINKHACKincdir)/$$f; then :; else echo "Installing $(libVRMLnodesLINKHACKincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libVRMLnodesLINKHACKincdir)/$$f; fi \
 	done
 
 uninstall-libVRMLnodesLINKHACKincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libVRMLnodesLINKHACKinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libVRMLnodesLINKHACKincdir)/$$f"; \
+	  echo "Uninstalling $(DESTDIR)$(libVRMLnodesLINKHACKincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libVRMLnodesLINKHACKincdir)/$$f; \
 	done
 

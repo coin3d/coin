@@ -150,19 +150,18 @@ libactionsLINKHACKinc_HEADERS = $(ALLINSTHEADERS)
 
 install-libactionsincHEADERS: $(libactionsinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libactionsincdir)
+	@$(mkinstalldirs) $(DESTDIR)$(libactionsincdir)
 	@list='$(libactionsinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libactionsincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libactionsincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libactionsincdir)/$$f; then :; else echo "Installing $(libactionsincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libactionsincdir)/$$f; fi \
 	done
 
 uninstall-libactionsincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libactionsinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libactionsincdir)/$$f"; \
+	  echo "Uninstalling $(DESTDIR)$(libactionsincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libactionsincdir)/$$f; \
 	done
 
@@ -173,19 +172,18 @@ uninstall-libactionsincHEADERS:
 
 install-libactionsLINKHACKincHEADERS: $(libactionsLINKHACKinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libactionsLINKHACKincdir)
+	@$(mkinstalldirs) $(DESTDIR)$(libactionsLINKHACKincdir)
 	@list='$(libactionsLINKHACKinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libactionsLINKHACKincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libactionsLINKHACKincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libactionsLINKHACKincdir)/$$f; then :; else echo "Installing $(libactionsLINKHACKincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libactionsLINKHACKincdir)/$$f; fi \
 	done
 
 uninstall-libactionsLINKHACKincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libactionsLINKHACKinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libactionsLINKHACKincdir)/$$f"; \
+	  echo "Uninstalling $(DESTDIR)$(libactionsLINKHACKincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libactionsLINKHACKincdir)/$$f; \
 	done
 
