@@ -116,17 +116,6 @@ SbMatrix::SbMatrix(const SbMat & matrix)
 }
 
 /*!
-  Constructs a matrix instance with the initial elements from the
-  \a matrix argument.
-*/
-
-SbMatrix::SbMatrix(SbMat & matrix)
-{
-  const SbMat * mat = (const SbMat *) &matrix;
-  this->setValue(*mat);
-}
-
-/*!
   Default destructor does nothing.
  */
 SbMatrix::~SbMatrix(void)
