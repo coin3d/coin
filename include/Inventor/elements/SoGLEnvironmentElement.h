@@ -37,9 +37,6 @@ public:
   virtual void pop(SoState * state,
                    const SoElement * prevTopElement);
 
-  virtual SbBool matches(const SoElement * element) const;
-  virtual SoElement * copyMatchInfo() const;
-
 protected:
 
   virtual void setElt(SoState * const state,

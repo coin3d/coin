@@ -25,8 +25,6 @@
 */
 
 #include <Inventor/elements/SoBBoxModelMatrixElement.h>
-
-#include <coindefs.h> // COIN_STUB()
 #include <Inventor/elements/SoLocalBBoxMatrixElement.h>
 
 SO_ELEMENT_SOURCE(SoBBoxModelMatrixElement);
@@ -65,7 +63,7 @@ void
 SoBBoxModelMatrixElement::push(SoState * state)
 {
   inherited::push(state);
-  
+
   SoBBoxModelMatrixElement * const prev =
     (SoBBoxModelMatrixElement *)this->getNextInStack();
   this->state = prev->state;

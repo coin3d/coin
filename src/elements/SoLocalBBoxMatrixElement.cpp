@@ -27,8 +27,6 @@
 #include <Inventor/elements/SoLocalBBoxMatrixElement.h>
 #include <Inventor/misc/SoState.h>
 
-#include <coindefs.h> // COIN_STUB()
-
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -87,8 +85,11 @@ SoLocalBBoxMatrixElement::push(SoState * state)
 SbBool
 SoLocalBBoxMatrixElement::matches(const SoElement * /* element */) const
 {
-  COIN_STUB();
-  return FALSE;
+#if COIN_DEBUG && 1 // debug
+  SoDebugError::postInfo("SoLocalBBoxMatrixElement::matches",
+                         "This method should never be called for this element.");
+#endif // debug
+  return TRUE;
 }
 
 //! FIXME: write doc.
@@ -96,7 +97,10 @@ SoLocalBBoxMatrixElement::matches(const SoElement * /* element */) const
 SoElement *
 SoLocalBBoxMatrixElement::copyMatchInfo(void) const
 {
-  COIN_STUB();
+#if COIN_DEBUG && 1 // debug
+  SoDebugError::postInfo("SoLocalBBoxMatrixElement::copyMatchInfo",
+                         "This method should never be called for this element.");
+#endif // debug
   return NULL;
 }
 
@@ -253,7 +257,7 @@ SoLocalBBoxMatrixElement::popMatrix(SoState * const state,
 void
 SoLocalBBoxMatrixElement::resetAll(SoState * const state)
 {
-  SoLocalBBoxMatrixElement * element = 
+  SoLocalBBoxMatrixElement * element =
     (SoLocalBBoxMatrixElement*) state->getElementNoPush(getClassStackIndex());
   while (element) {
     element->localMatrix.makeIdentity();
@@ -270,12 +274,4 @@ SoLocalBBoxMatrixElement::get(SoState * const state)
   element = (SoLocalBBoxMatrixElement *)
     getConstElement(state, getClassStackIndex());
   return element->localMatrix;
-}
-
-//! FIXME: write doc.
-
-void
-SoLocalBBoxMatrixElement::print(FILE * /* file */) const
-{
-  COIN_STUB();
 }

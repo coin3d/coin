@@ -60,9 +60,6 @@ public:
   static void setOverrides(SoState * const state, const SbBool value);
 
   static SbBool isScreenDoor(SoState * const state);
-
-  virtual void print(FILE * file) const;
-
   SbBool isTextureFunction(void) const;
 
 private:

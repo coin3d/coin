@@ -102,9 +102,9 @@ SoReplacedElement::print(FILE * file) const
 /*!
   This function returns the top element on the stack.
 
-  Originally, this function overrides SoElement::getElement() to set the
-  nodeId in the instance before returning it, but I don't think that is
-  necessary (should happen automatically) in push().
+  This function overrides SoElement::getElement() to set the nodeId in
+  the instance before returning it.  SoReplacedElement subclasses should
+  use this method to get writable instances.
 */
 
 SoElement *

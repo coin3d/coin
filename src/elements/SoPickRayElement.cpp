@@ -26,10 +26,6 @@
 
 #include <Inventor/elements/SoPickRayElement.h>
 
-#include <coindefs.h> // COIN_STUB()
-
-#include <assert.h>
-
 /*!
   \fn SoPickRayElement::volume
 
@@ -78,7 +74,6 @@ SoPickRayElement::matches(const SoElement * /* element */) const
 SoElement *
 SoPickRayElement::copyMatchInfo() const
 {
-  assert(getTypeId().canCreateInstance());
   SoPickRayElement *element =
     (SoPickRayElement *)(getTypeId().createInstance());
   // no use copying any data. matches() will always return false.
@@ -107,9 +102,3 @@ SoPickRayElement::get(SoState * const state)
 }
 
 //! FIXME: write doc.
-
-void
-SoPickRayElement::print(FILE * /* file */) const
-{
-  COIN_STUB();
-}

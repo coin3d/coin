@@ -239,14 +239,6 @@ SoShapeStyleElement::isScreenDoor(SoState * const state)
   return (elem->flags & FLAG_SCREENDOOR) != 0;
 }
 
-//! FIXME: write doc.
-
-void
-SoShapeStyleElement::print(FILE * /* file */) const
-{
-  COIN_STUB();
-}
-
 /*!
   FIXME: write doc.
 */
@@ -278,9 +270,8 @@ SoShapeStyleElement::needTexCoords() const
 }
 
 /*!
-  FIXME: write doc.
+  Not implemented in Coin. It is used by SoVertexProperty in SGI OIV.
 */
-
 int
 SoShapeStyleElement::getRenderCaseMask() const
 {

@@ -38,7 +38,6 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/fields/SoMFColor.h>
-#include <coindefs.h> // COIN_STUB()
 #include <assert.h>
 
 SO_ELEMENT_SOURCE(SoLazyElement);
@@ -92,30 +91,24 @@ SoLazyElement::push(SoState *state)
   this->transparencyType = prev->transparencyType;
 }
 
-// ! FIXME: write doc
 
+/*!
+  Will always return TRUE in Coin.
+*/
 SbBool
-SoLazyElement::matches(const SoElement *element) const
+SoLazyElement::matches(const SoElement * element) const
 {
-  assert(0 && "should not get here");
   return TRUE;
 }
 
-// ! FIXME: write doc
-
+/*!  
+  Just returns NULL in Coin. We don't care about matches() for this
+  element as it's just a wrapper class.  
+*/
 SoElement *
 SoLazyElement::copyMatchInfo(void) const
 {
-  assert(0 && "should not get here");
   return NULL;
-}
-
-// ! FIXME: write doc
-
-void
-SoLazyElement::print(FILE *fp) const
-{
-  COIN_STUB();
 }
 
 // ! FIXME: write doc

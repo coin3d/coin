@@ -57,8 +57,6 @@ public:
   virtual SbBool matches(const SoElement * element) const;
   virtual SoElement * copyMatchInfo(void) const;
 
-  virtual void print(FILE * file) const;
-
 protected:
   SbMatrix localMatrix;
 

@@ -25,9 +25,6 @@
 */
 
 #include <Inventor/elements/SoViewingMatrixElement.h>
-
-#include <coindefs.h> // COIN_STUB()
-
 #include <assert.h>
 
 /*!
@@ -90,14 +87,6 @@ SoViewingMatrixElement::init(SoState * state)
   SoDebugError::postInfo("SoViewingMatrixElement::init",
                          "matrix set to identity");
 #endif // debug
-}
-
-//! FIXME: write doc.
-
-void
-SoViewingMatrixElement::print(FILE * /* file */) const
-{
-  COIN_STUB();
 }
 
 //! FIXME: write doc.

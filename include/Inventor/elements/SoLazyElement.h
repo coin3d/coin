@@ -78,7 +78,6 @@ public:
   virtual void push(SoState *state);
   virtual SbBool matches(const SoElement *) const;
   virtual SoElement *copyMatchInfo(void) const;
-  virtual void print(FILE *fp) const;
 
   static void setDiffuse(SoState *state, SoNode *node, int32_t numcolors,
                          const SbColor *colors, SoColorPacker *packer);		

@@ -25,8 +25,6 @@
 */
 
 #include <Inventor/elements/SoNormalElement.h>
-
-#include <coindefs.h> // COIN_STUB()
 #include <assert.h>
 
 /*!
@@ -78,14 +76,6 @@ SoNormalElement::set(SoState * const state,
 //! FIXME: write doc.
 
 void
-SoNormalElement::print(FILE * /* file */) const
-{
-  COIN_STUB();
-}
-
-//! FIXME: write doc.
-
-void
 SoNormalElement::init(SoState *state)
 {
   inherited::init(state);
@@ -107,7 +97,7 @@ SoNormalElement::getInstance(SoState * const state)
 
 //$ EXPORT INLINE
 int32_t
-SoNormalElement::getNum() const
+SoNormalElement::getNum(void) const
 {
   return this->numNormals;
 }
@@ -126,14 +116,14 @@ SoNormalElement::get(const int index) const
   Returns a pointer to the normal array. This method is not part of the OIV API.
 */
 const SbVec3f *
-SoNormalElement::getArrayPtr() const
+SoNormalElement::getArrayPtr(void) const
 {
   return this->normals;
 }
 
 //$ EXPORT INLINE
 SbBool
-SoNormalElement::areNormalsUnitLength() const
+SoNormalElement::areNormalsUnitLength(void) const
 {
-  return unitLength;
+  return this->unitLength;
 }

@@ -38,7 +38,6 @@ public:
   static  void set(SoState * const state, SoNode * const node,
                    const SbMatrix & ViewingMatrix);
   static  const SbMatrix &get(SoState * const state);
-  virtual void print(FILE * file) const;
 
 protected:
   virtual void setElt(const SbMatrix &matrix);

@@ -43,8 +43,6 @@ public:
   static Type get(SoState * const state);
   static Type getDefault(void);
 
-  virtual void print(FILE *fp) const;
-
 };
 
 #endif // !COIN_SODECIMATIONTYPEELEMENT_H

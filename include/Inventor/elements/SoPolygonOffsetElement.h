@@ -44,9 +44,6 @@ public:
                   Style styles, SbBool on);
   static void get(SoState * state, float & factor, float & units,
                   Style & styles, SbBool & on);
-  virtual void push(SoState * state);
-  virtual SbBool matches(const SoElement * elt) const;
-  virtual SoElement * copyMatchInfo() const;
   static void getDefault(float & factor, float & units, Style & styles,
                          SbBool & on);
 

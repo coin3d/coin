@@ -25,9 +25,6 @@
 */
 
 #include <Inventor/elements/SoPolygonOffsetElement.h>
-
-#include <coindefs.h> // COIN_STUB()
-
 #include <assert.h>
 
 /*!
@@ -87,7 +84,6 @@ void
 SoPolygonOffsetElement::init(SoState * state)
 {
   inherited::init(state);
-
   SoPolygonOffsetElement::getDefault(this->offsetfactor,
                                      this->offsetunits,
                                      this->style,
@@ -97,41 +93,12 @@ SoPolygonOffsetElement::init(SoState * state)
 //! FIXME: write doc.
 
 void
-SoPolygonOffsetElement::push(SoState * state)
-{
-  inherited::push(state);
-}
-
-//! FIXME: write doc.
-
-SbBool
-SoPolygonOffsetElement::matches(const SoElement * /* element */) const
-{
-  COIN_STUB();
-  return FALSE;
-}
-
-//! FIXME: write doc.
-
-SoElement *
-SoPolygonOffsetElement::copyMatchInfo(void) const
-{
-  COIN_STUB();
-  return NULL;
-}
-
-//! FIXME: write doc.
-
-void
-SoPolygonOffsetElement::set(SoState * state, SoNode * /* node */,
+SoPolygonOffsetElement::set(SoState * state, SoNode * node,
                             float factor, float units, Style styles, SbBool on)
 {
   SoPolygonOffsetElement *elem = (SoPolygonOffsetElement *)
-    SoElement::getElement(state, classStackIndex);
+    SoReplacedElement::getElement(state, classStackIndex, node);
   elem->setElt(factor, units, styles, on);
-
-  // FIXME: what are we supposed to do with "node"? Pass on to
-  // SoReplacedElement? 990307 mortene.
 }
 
 //! FIXME: write doc.

@@ -27,7 +27,6 @@
 #include <Inventor/elements/SoCullElement.h> // internal element
 #include <Inventor/misc/SoState.h>
 #include <stdlib.h>
-#include <coindefs.h> // COIN_STUB()
 #include <Inventor/lists/SoTypeList.h>
 
 #include <assert.h>
@@ -240,7 +239,7 @@ SoElement::init(SoState *)
 {
 }
 
-/*!  
+/*!
   This method is called every time a new element is required in one of
   the stacks. This happens when a writable element is requested, using
   SoState::getElement() or indirectly SoElement::getElement(), and the
@@ -292,7 +291,6 @@ SoElement::print(FILE * file) const
 SbBool
 SoElement::matches(const SoElement * /* element */) const
 {
-  COIN_STUB();
   return FALSE;
 }
 
@@ -470,7 +468,7 @@ SoElement::createStackIndex(const SoType typeId)
   in push() to get the previous element. This method has a
   silly name (IMHO), but is kept to keep OIV compatibility.
 */
-SoElement * 
+SoElement *
 SoElement::getNextInStack(void) const
 {
   return this->nextdown;
@@ -479,9 +477,8 @@ SoElement::getNextInStack(void) const
 /*!
   Returns the next free element. The next element up in the stack.
 */
-SoElement * 
+SoElement *
 SoElement::getNextFree(void) const
 {
   return this->nextup;
 }
-

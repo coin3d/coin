@@ -26,10 +26,6 @@
 
 #include <Inventor/elements/SoGLRenderPassElement.h>
 
-#include <coindefs.h> // COIN_STUB()
-
-#include <assert.h>
-
 /*!
   \fn SoGLRenderPassElement::passnr
 
@@ -69,10 +65,9 @@ SoGLRenderPassElement::init(SoState * state)
 //! FIXME: write doc.
 
 SbBool
-SoGLRenderPassElement::matches(const SoElement * /* element */) const
+SoGLRenderPassElement::matches(const SoElement * element) const
 {
-  COIN_STUB();
-  return FALSE;
+  return this->passnr == ((SoGLRenderPassElement*)element)->passnr;
 }
 
 //! FIXME: write doc.
@@ -80,8 +75,9 @@ SoGLRenderPassElement::matches(const SoElement * /* element */) const
 SoElement *
 SoGLRenderPassElement::copyMatchInfo(void) const
 {
-  COIN_STUB();
-  return NULL;
+  SoGLRenderPassElement * elem = (SoGLRenderPassElement*) this->getTypeId().createInstance();
+  elem->passnr = this->passnr;
+  return elem;
 }
 
 //! FIXME: write doc.
@@ -103,12 +99,4 @@ SoGLRenderPassElement::get(SoState * const state)
   const SoGLRenderPassElement * element = (const SoGLRenderPassElement *)
     getConstElement(state, classStackIndex);
   return element->passnr;
-}
-
-//! FIXME: write doc.
-
-void
-SoGLRenderPassElement::print(FILE * /* file */) const
-{
-  COIN_STUB();
 }

@@ -41,21 +41,17 @@ public:
                   const int32_t numNormals, const SbVec3f * const normals,
                   const SbBool normalsAreUnitLength = FALSE);
 
-  static const SoNormalElement *getInstance(SoState * const state);
-  int32_t getNum() const;
+  static const SoNormalElement * getInstance(SoState * const state);
+  int32_t getNum(void) const;
   const SbVec3f & get(const int index) const;
-  const SbVec3f *getArrayPtr() const;
+  const SbVec3f *getArrayPtr(void) const;
 
-  SbBool areNormalsUnitLength() const;
-
-
-  virtual void print(FILE * file) const;
+  SbBool areNormalsUnitLength(void) const;
 
 protected:
   int32_t numNormals;
-  const SbVec3f *normals;
+  const SbVec3f * normals;
   SbBool unitLength;
-
 };
 
 #endif // !COIN_SONORMALELEMENT_H

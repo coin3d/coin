@@ -40,8 +40,6 @@ public:
   static void set(SoState * const state, const int pass);
   static int get(SoState * const state);
 
-  virtual void print(FILE * file) const;
-
 protected:
   int passnr;
 

@@ -25,9 +25,6 @@
 */
 
 #include <Inventor/elements/SoDecimationTypeElement.h>
-
-#include <coindefs.h> // COIN_STUB()
-
 #include <assert.h>
 
 /*!
@@ -75,14 +72,6 @@ SoDecimationTypeElement::init(SoState * state)
 {
     inherited::init(state);
     this->data = getDefault();
-}
-
-//! FIXME: write doc.
-
-void
-SoDecimationTypeElement::print(FILE * /* fp */) const
-{
-  COIN_STUB();
 }
 
 //! FIXME: write doc.

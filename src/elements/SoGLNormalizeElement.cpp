@@ -36,8 +36,6 @@
 
 #include <Inventor/elements/SoGLNormalizeElement.h>
 
-#include <coindefs.h> // COIN_STUB()
-
 #if HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
@@ -109,10 +107,12 @@ SoGLNormalizeElement::pop(SoState * state,
 //! FIXME: write doc.
 
 SbBool
-SoGLNormalizeElement::matches(const SoElement * /* element */) const
+SoGLNormalizeElement::matches(const SoElement * element) const
 {
-  COIN_STUB();
-  return FALSE;
+  const SoGLNormalizeElement * elem = (SoGLNormalizeElement*) element;
+  return 
+    this->unitNormals == elem->unitNormals &&
+    this->okMatrix == elem->okMatrix;
 }
 
 //! FIXME: write doc.
@@ -120,8 +120,10 @@ SoGLNormalizeElement::matches(const SoElement * /* element */) const
 SoElement *
 SoGLNormalizeElement::copyMatchInfo() const
 {
-  COIN_STUB();
-  return NULL;
+  SoGLNormalizeElement * elem = (SoGLNormalizeElement*) this->getTypeId().createInstance();
+  elem->unitNormals = this->unitNormals;
+  elem->okMatrix = this->okMatrix;
+  return elem;
 }
 
 /*!

@@ -26,10 +26,6 @@
 
 #include <Inventor/elements/SoGLUpdateAreaElement.h>
 
-#include <coindefs.h> // COIN_STUB()
-
-#include <assert.h>
-
 /*!
   \fn SoGLUpdateAreaElement::origin
 
@@ -69,8 +65,8 @@ void
 SoGLUpdateAreaElement::init(SoState * state)
 {
   inherited::init(state);
-  origin = getDefaultOrigin();
-  size = getDefaultSize();
+  this->origin = getDefaultOrigin();
+  this->size = getDefaultSize();
 }
 
 //! FIXME: write doc.
@@ -93,10 +89,12 @@ SoGLUpdateAreaElement::pop(SoState * state,
 //! FIXME: write doc.
 
 SbBool
-SoGLUpdateAreaElement::matches(const SoElement * /* element */) const
+SoGLUpdateAreaElement::matches(const SoElement * element) const
 {
-  COIN_STUB();
-  return FALSE;
+  const SoGLUpdateAreaElement * elem = (SoGLUpdateAreaElement*) element;
+  return 
+    this->origin == elem->origin &&
+    this->size == elem->size;
 }
 
 //! FIXME: write doc.
@@ -104,8 +102,10 @@ SoGLUpdateAreaElement::matches(const SoElement * /* element */) const
 SoElement *
 SoGLUpdateAreaElement::copyMatchInfo() const
 {
-  COIN_STUB();
-  return NULL;
+  SoGLUpdateAreaElement * elem = (SoGLUpdateAreaElement*) this->getTypeId().createInstance();
+  elem->origin = this->origin;
+  elem->size = this->size;
+  return elem;
 }
 
 //! FIXME: write doc.

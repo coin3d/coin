@@ -42,8 +42,6 @@ public:
   static void set(SoState * const state, const SbViewVolume & volume);
   static const SbViewVolume &get(SoState * const state);
 
-  virtual void print(FILE * file) const;
-
 protected:
   SbViewVolume volume;
 };

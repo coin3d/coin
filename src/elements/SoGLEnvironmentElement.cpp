@@ -26,8 +26,6 @@
 
 #include <Inventor/elements/SoGLEnvironmentElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
-
-#include <coindefs.h> // COIN_STUB()
 #include <Inventor/SbColor4f.h>
 
 #if HAVE_CONFIG_H
@@ -79,25 +77,6 @@ SoGLEnvironmentElement::pop(SoState * state,
   ((SoGLEnvironmentElement*)prevTopElement)->updategl(state);
   inherited::pop(state, prevTopElement);
 }
-
-//! FIXME: write doc.
-
-SbBool
-SoGLEnvironmentElement::matches(const SoElement * /* element */) const
-{
-  COIN_STUB();
-  return FALSE;
-}
-
-//! FIXME: write doc.
-
-SoElement *
-SoGLEnvironmentElement::copyMatchInfo() const
-{
-  COIN_STUB();
-  return NULL;
-}
-
 
 //! FIXME: doc
 void
