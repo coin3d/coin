@@ -111,7 +111,7 @@
   FIXME: should make it possible to fetch a single common define from
   include/Inventor/C/glue/dl.h (or dlp.h). 20020919 mortene.
 */
-#if defined(HAVE_DL_LIB) || defined(HAVE_WINDLL_RUNTIME_BINDING) || defined(__APPLE__)
+#if defined(HAVE_DL_LIB) || defined(HAVE_WINDLL_RUNTIME_BINDING) || defined(HAVE_DYLD_RUNTIME_BINDING)
 #define COIN_OPENGL_DYNAMIC_BINDING
 #endif /* dynamic binding */
 
@@ -204,7 +204,7 @@ cc_glglue_getprocaddress(const char * symname)
   ptr = glxglue_getprocaddress(symname);
   if (ptr) goto returnpoint;
 
-  ptr = coin_nsgl_getprocaddress(symname);
+  ptr = coin_agl_getprocaddress(symname);
   if (ptr) goto returnpoint;
 
   if (glglue_self_handle) {
