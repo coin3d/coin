@@ -512,7 +512,7 @@ SoText2::GLRender(SoGLRenderAction * action)
         xpos += 8;
       }
       // - instead of + because of OpenGL's "inverted" y coordinate...
-      ypos -= ( 12 * (int)this->spacing.getValue() );
+      ypos -= ( 12.0f * this->spacing.getValue() );
     }
 
     glPixelStorei(GL_UNPACK_ALIGNMENT,4);
