@@ -39,6 +39,26 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+/*!
+  \var SoMField * SoSelectOne::input
+  The multivalue input field which we will select a single value from
+  for our output.
+*/
+/*!
+  \var SoSFInt32 SoSelectOne::index
+  Index of the value from the input field which will be put on the
+  output.
+*/
+/*!
+  \var SoEngineOutput * SoSelectOne::output
+  (SoSField) This is the singlevalue field output containing the index'th 
+  value of SoSelectOne::input.
+
+  The type of the field will of course match the type of the input field,
+  i.e. if SoSelectOne::input is an SoMFFloat, SoSelectOne::output will
+  be an SoSFFloat etc.
+*/
+
 // Don't try to document the "internals" of SO_ENGINE_SOURCE.
 #ifndef DOXYGEN_SKIP_THIS
 
