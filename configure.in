@@ -15,15 +15,21 @@ SIM_AC_CVS_CHANGES([
 #   rm -f coin-config;
 # fi
 
+AC_CANONICAL_SYSTEM
+
+# For include/Inventor/system/inttypes.h.
+AC_DEFINE_UNQUOTED(COIN_CONFIGURE_BUILD, AC_TR_CPP([$build]), [Build system.])
+AC_DEFINE_UNQUOTED(COIN_CONFIGURE_HOST, AC_TR_CPP([$host]), [Build host system.])
+AC_DEFINE_UNQUOTED(COIN_CONFIGURE_TARGET, AC_TR_CPP([$target]), [Build target system.])
+
+
 # If the Microsoft Visual C++ cl.exe compiler is available, set us up for
 # compiling with it and to generate an MSWindows .dll file.
-
-AC_CANONICAL_SYSTEM
 
 SIM_AC_SETUP_MSVC_IFELSE([], [
   case $host in
   *-cygwin)
-#    AC_MSG_ERROR([You need Microsoft Visual C++ to build Coin on Cygwin])
+    AC_MSG_ERROR([You need Microsoft Visual C++ to build Coin on Cygwin])
     ;;
   esac
 ])
@@ -211,7 +217,7 @@ coin_build_dir=`pwd`
 AM_INIT_AUTOMAKE(Coin, $VERSION)
 
 #  Files to cram results from the configure tests into.
-AM_CONFIG_HEADER(config.h include/Inventor/SbBasic.h)
+AM_CONFIG_HEADER(config.h include/Inventor/SbBasic.h include/Inventor/system/inttypes.h)
 
 #  Default to not building a static library.
 #  Can be overridden by the user with --enable-static.
@@ -272,6 +278,7 @@ downgrading to an older version.])])
 ## See which way the compiler knows the name of the current function. ####
 SIM_AC_CHECK_VAR_FUNCTIONNAME
 
+
 ## Headers we might want to use. #########################################
 AC_CHECK_HEADERS([unistd.h sys/types.h sys/param.h io.h windows.h winsock2.h])
 
@@ -301,6 +308,9 @@ if $sim_cv_netinet_in_h; then
     [Define if you have the <netinet/in.h> header file.])
 fi
 
+# For Inventor/system/inttypes.h.in.  Note: this assumes
+# AC_CHECK_HEADERS(sys/types.h) has been done.
+SIM_AC_DEFINE_BYTESIZE_TYPES
 
 # Test for ntohl() etc.
 SIM_AC_BYTEORDER_CONVERSION(

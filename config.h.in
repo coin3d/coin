@@ -1,5 +1,26 @@
 /* config.h.in.  Generated automatically from configure.in by autoheader.  */
 
+/* Build system. */
+#undef COIN_CONFIGURE_BUILD
+
+/* Build host system. */
+#undef COIN_CONFIGURE_HOST
+
+/* Build target system. */
+#undef COIN_CONFIGURE_TARGET
+
+/* hepp */
+#undef COIN_INT16_T
+
+/* hepp */
+#undef COIN_INT32_T
+
+/* hepp */
+#undef COIN_INT64_T
+
+/* hepp */
+#undef COIN_INT8_T
+
 /* define this to the libCoin major version number */
 #undef COIN_MAJOR_VERSION
 
@@ -8,6 +29,18 @@
 
 /* define this to the libCoin minor version number */
 #undef COIN_MINOR_VERSION
+
+/* hepp */
+#undef COIN_UINT16_T
+
+/* hepp */
+#undef COIN_UINT32_T
+
+/* hepp */
+#undef COIN_UINT64_T
+
+/* hepp */
+#undef COIN_UINT8_T
 
 /* define this to the full libCoin major.minor.micro version number */
 #undef COIN_VERSION
@@ -33,6 +66,18 @@
 /* define if preprocessor can quote arguments with the hash symbol */
 #undef HAVE_HASH_QUOTING
 
+/* hola */
+#undef HAVE_INT16_T
+
+/* hola */
+#undef HAVE_INT32_T
+
+/* hola */
+#undef HAVE_INT64_T
+
+/* hola */
+#undef HAVE_INT8_T
+
 /* Define if you have the <io.h> header file. */
 #undef HAVE_IO_H
 
@@ -56,6 +101,18 @@
 
 /* Define if you have the <sys/types.h> header file. */
 #undef HAVE_SYS_TYPES_H
+
+/* hola */
+#undef HAVE_UINT16_T
+
+/* hola */
+#undef HAVE_UINT32_T
+
+/* hola */
+#undef HAVE_UINT64_T
+
+/* hola */
+#undef HAVE_UINT8_T
 
 /* Define if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
