@@ -50,22 +50,25 @@ public:
   SoProtoInstance(SoProto * proto,
                   const SoFieldData * deffielddata);
 
+  static SoProtoInstance * findProtoInstance(const SoNode * rootnode); 
   void setRootNode(SoNode * root);
   SoNode * getRootNode(void);
 
   SoProto * getPROTODefinition(void) const;
   SbName getProtoName(void) const;
+  virtual void writeInstance(SoOutput * out);
 
 protected:
   virtual ~SoProtoInstance();
 
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
-  virtual void writeInstance(SoOutput * out);
 
 private:
 
   static void sensorCB(void * data, SoSensor * sensor);
+  static void cleanupClass(void);
   void copyFieldData(const SoFieldData * src);
+
   class SoProtoInstanceP * pimpl;
 };
 

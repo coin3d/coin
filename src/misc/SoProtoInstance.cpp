@@ -27,7 +27,12 @@
 #include <Inventor/fields/SoField.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/sensors/SoNodeSensor.h>
+#include <Inventor/SbDict.h>
 #include <assert.h>
+
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
 
 #ifndef DOXYGEN_SKIP_THIS
 
@@ -54,6 +59,8 @@ public:
 
 PRIVATE_NODE_TYPESYSTEM_SOURCE(SoProtoInstance);
 
+static SbDict * protoinstance_dict;
+
 void
 SoProtoInstance::initClass(void)
 {
@@ -68,8 +75,15 @@ SoProtoInstance::initClass(void)
                        "ProtoInstance",
                        NULL,
                        SoNode::nextActionMethodIndex++);
+
+  protoinstance_dict = new SbDict;
 }
 
+void 
+SoProtoInstance::cleanupClass(void)
+{
+  
+}
 
 #undef THIS
 #define THIS this->pimpl
@@ -127,9 +141,15 @@ SoProtoInstance::readInstance(SoInput * in, unsigned short flags)
 void
 SoProtoInstance::setRootNode(SoNode * root)
 {
-  if (THIS->root) THIS->rootsensor->detach();
+  if (THIS->root) {
+    protoinstance_dict->remove((unsigned long) root);
+    THIS->rootsensor->detach();
+  }
   THIS->root = root;
-  if (root) THIS->rootsensor->attach(root);
+  if (root) {
+    THIS->rootsensor->attach(root);
+    protoinstance_dict->enter((unsigned long) root, (void*) this);
+  }
 }
 
 SoNode *
@@ -141,6 +161,20 @@ SoProtoInstance::getRootNode(void)
 void
 SoProtoInstance::writeInstance(SoOutput * out)
 {
+#if COIN_DEBUG && 1 // debug
+  SoDebugError::postInfo("SoProtoInstance::write",
+                         "Not implemented");
+#endif // debug  
+}
+
+SoProtoInstance * 
+SoProtoInstance::findProtoInstance(const SoNode * rootnode)
+{
+  void * tmp;
+  if (protoinstance_dict->find((unsigned long) rootnode, tmp)) {
+    return (SoProtoInstance*) tmp;
+  }
+  return NULL;
 }
 
 void
@@ -149,7 +183,7 @@ SoProtoInstance::copyFieldData(const SoFieldData * src)
   const int n = src->getNumFields();
   SoFieldContainer::initCopyDict();
   for (int i = 0; i < n; i++) {
-    SoField * f = src->getField(NULL, i);
+    SoField * f = src->getField(THIS->protodef, i);
     SoField * cp = (SoField*) f->getTypeId().createInstance();
     cp->setContainer(this);
     THIS->fielddata->addField(this, src->getFieldName(i), cp);
