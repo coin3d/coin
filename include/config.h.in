@@ -61,6 +61,9 @@
 /* define for runtime linking with GLU */
 #undef GLU_RUNTIME_LINKING
 
+/* define to use the 3ds import capabilities */
+#undef HAVE_3DS_IMPORT_CAPABILITIES
+
 /* define if you have AGL OpenGL bindings */
 #undef HAVE_AGL
 

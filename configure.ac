@@ -212,6 +212,32 @@ SIM_AC_MAC_CPP_ADJUSTMENTS
 # Enable/disable separate Coin modules
 
 # *******************************************************************
+# See if we should build with 3ds import capabilities.
+
+sim_ac_enable_3ds_import=false
+
+AC_ARG_ENABLE(
+  [3ds-import],
+  AC_HELP_STRING([--enable-3ds-import], [enable 3ds import capabilities]), [
+  case $enableval in
+    yes) sim_ac_enable_3ds_import=true ;;
+    *) ;;
+  esac])
+
+HAVE_3DS_IMPORT_CAPABILITIES=1
+
+if $sim_ac_enable_3ds_import ; then
+  AC_DEFINE([HAVE_3DS_IMPORT_CAPABILITIES],, [define to use the 3ds import capabilities])
+  SIM_AC_CONFIGURATION_SETTING([3ds import capabilities], [Yes (warning: experimental)])
+else
+  HAVE_3DS_IMPORT_CAPABILITIES=0
+  SIM_AC_CONFIGURATION_SETTING([3ds import capabilities], [No  (enable with --enable-3ds-import)])
+fi
+AC_SUBST(HAVE_3DS_IMPORT_CAPABILITIES)
+
+AM_CONDITIONAL([BUILD_3DS_CAPABILITIES], [$sim_ac_enable_3ds_import])
+
+# *******************************************************************
 # Search for the vrml97 extension
 
 sim_ac_enable_vrml97=false
@@ -588,10 +614,15 @@ AC_SUBST(SUFFIX)
 # * Check compiler features, bugs, etc.
 # *******************************************************************
 
+# FIXME: the extra strict warning settings for GCC below should be
+# placed in a macro, so they can be easily used from other src-code
+# modules aswell. 20021218 mortene.
+
 SIM_AC_COMPILE_DEBUG([
   if test x"$GCC" = x"yes"; then
     CPPFLAGS="$CPPFLAGS -fno-builtin";   # no auto string.h-functions
     CPPFLAGS="$CPPFLAGS -Wreturn-type";  # warn on missing return-value
+    CXXFLAGS="$CXXFLAGS -fno-for-scope"; # disallow non-standard scoping of for()-variables
   fi
   CPPFLAGS="$CPPFLAGS -DCOIN_DEBUG=1"
 ], [
@@ -986,7 +1017,7 @@ if test x"$enable_hacking" = x"yes"; then
   for dir in \
     base actions bundles caches details draggers elements engines \
     errors events fields glue manips misc lists nodekits nodes projectors \
-    sensors upgraders; \
+    sensors upgraders 3ds; \
   do
     HACKING_LIBDIRS="$HACKING_LIBDIRS -L${coin_build_dir}/src/$dir/.libs"
     EXTRA_LIBS="$EXTRA_LIBS -l$dir${SUFFIX}LINKHACK"                  
@@ -1218,6 +1249,7 @@ AC_CONFIG_FILES([
         src/nodekits/Makefile
         src/nodes/Makefile
         src/projectors/Makefile
+        src/3ds/Makefile
         src/sensors/Makefile
         src/upgraders/Makefile
         src/threads/Makefile

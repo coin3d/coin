@@ -1,0 +1,543 @@
+# Makefile.in generated automatically by automake 1.5 from Makefile.am.
+
+# Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
+# Free Software Foundation, Inc.
+# This Makefile.in is free software; the Free Software Foundation
+# gives unlimited permission to copy and/or distribute it,
+# with or without modifications, as long as this notice is preserved.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY, to the extent permitted by law; without
+# even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+@SET_MAKE@
+
+SHELL = @SHELL@
+
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+VPATH = @srcdir@
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+
+bindir = @bindir@
+sbindir = @sbindir@
+libexecdir = @libexecdir@
+datadir = @datadir@
+sysconfdir = @sysconfdir@
+sharedstatedir = @sharedstatedir@
+localstatedir = @localstatedir@
+libdir = @libdir@
+infodir = @infodir@
+mandir = @mandir@
+includedir = @includedir@
+oldincludedir = /usr/include
+pkgdatadir = $(datadir)/@PACKAGE@
+pkglibdir = $(libdir)/@PACKAGE@
+pkgincludedir = $(includedir)/@PACKAGE@
+top_builddir = ../..
+
+ACLOCAL = @ACLOCAL@
+AUTOCONF = @AUTOCONF@
+AUTOMAKE = @AUTOMAKE@
+AUTOHEADER = @AUTOHEADER@
+
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_SCRIPT = @INSTALL_SCRIPT@
+INSTALL_HEADER = $(INSTALL_DATA)
+transform = @program_transform_name@
+NORMAL_INSTALL = :
+PRE_INSTALL = :
+POST_INSTALL = :
+NORMAL_UNINSTALL = :
+PRE_UNINSTALL = :
+POST_UNINSTALL = :
+build_alias = @build_alias@
+build_triplet = @build@
+host_alias = @host_alias@
+host_triplet = @host@
+target_alias = @target_alias@
+target_triplet = @target@
+AMTAR = @AMTAR@
+AS = @AS@
+AWK = @AWK@
+BUILD_WITH_MSVC = @BUILD_WITH_MSVC@
+CC = @CC@
+COIN_BETA_VERSION = @COIN_BETA_VERSION@
+COIN_COMPILER = @COIN_COMPILER@
+COIN_DOC_HTML = @COIN_DOC_HTML@
+COIN_DOC_MAN = @COIN_DOC_MAN@
+COIN_EXTRA_CFLAGS = @COIN_EXTRA_CFLAGS@
+COIN_EXTRA_CPPFLAGS = @COIN_EXTRA_CPPFLAGS@
+COIN_EXTRA_CXXFLAGS = @COIN_EXTRA_CXXFLAGS@
+COIN_EXTRA_LDFLAGS = @COIN_EXTRA_LDFLAGS@
+COIN_EXTRA_LIBS = @COIN_EXTRA_LIBS@
+COIN_HACKING_LIBDIRS = @COIN_HACKING_LIBDIRS@
+COIN_MAJOR_VERSION = @COIN_MAJOR_VERSION@
+COIN_MICRO_VERSION = @COIN_MICRO_VERSION@
+COIN_MINOR_VERSION = @COIN_MINOR_VERSION@
+COIN_MSVC_LIBC = @COIN_MSVC_LIBC@
+COIN_VERSION = @COIN_VERSION@
+CONFIG = @CONFIG@
+CXX = @CXX@
+DEPDIR = @DEPDIR@
+DLLTOOL = @DLLTOOL@
+DSUFFIX = @DSUFFIX@
+ECHO = @ECHO@
+EXEEXT = @EXEEXT@
+HAVE_3DS_IMPORT_CAPABILITIES = @HAVE_3DS_IMPORT_CAPABILITIES@
+HAVE_SOUND = @HAVE_SOUND@
+HAVE_SUPERGLU = @HAVE_SUPERGLU@
+HAVE_THREADS = @HAVE_THREADS@
+HAVE_VRML97 = @HAVE_VRML97@
+INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
+LIBFLAGS = @LIBFLAGS@
+LIBTOOL = @LIBTOOL@
+LN_S = @LN_S@
+LT_AGE = @LT_AGE@
+LT_CURRENT = @LT_CURRENT@
+LT_REVISION = @LT_REVISION@
+MAC_FRAMEWORK = @MAC_FRAMEWORK@
+MAC_FRAMEWORK_NAME = @MAC_FRAMEWORK_NAME@
+MAC_FRAMEWORK_PREFIX = @MAC_FRAMEWORK_PREFIX@
+MAC_FRAMEWORK_VERSION = @MAC_FRAMEWORK_VERSION@
+MAINT = @MAINT@
+OBJDUMP = @OBJDUMP@
+OBJEXT = @OBJEXT@
+PACKAGE = @PACKAGE@
+RANLIB = @RANLIB@
+RFC822_DATE = @RFC822_DATE@
+SIM_INCLUDE_GLEXT_H = @SIM_INCLUDE_GLEXT_H@
+SIM_INCLUDE_GLU_H = @SIM_INCLUDE_GLU_H@
+SIM_INCLUDE_GL_H = @SIM_INCLUDE_GL_H@
+SIM_INCLUDE_WINDOWS_H = @SIM_INCLUDE_WINDOWS_H@
+STRIP = @STRIP@
+SUFFIX = @SUFFIX@
+SUPERGLUPREFIX = @SUPERGLUPREFIX@
+VERSION = @VERSION@
+X_CFLAGS = @X_CFLAGS@
+X_EXTRA_LIBS = @X_EXTRA_LIBS@
+X_LIBS = @X_LIBS@
+X_PRE_LIBS = @X_PRE_LIBS@
+am__include = @am__include@
+am__quote = @am__quote@
+coin_build_dir = @coin_build_dir@
+coin_configure_date = @coin_configure_date@
+coin_html_dir = @coin_html_dir@
+coin_man_dir = @coin_man_dir@
+coin_src_dir = @coin_src_dir@
+htmldir = @htmldir@
+install_sh = @install_sh@
+nop = @nop@
+path_tag = @path_tag@
+sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
+sim_ac_perl_exe = @sim_ac_perl_exe@
+sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
+
+@BUILD_3DS_CAPABILITIES_TRUE@RegularSources = \
+@BUILD_3DS_CAPABILITIES_TRUE@	3dsLoader.cpp \
+@BUILD_3DS_CAPABILITIES_TRUE@	SoStream.cpp
+
+@BUILD_3DS_CAPABILITIES_FALSE@RegularSources = 
+
+@BUILD_3DS_CAPABILITIES_TRUE@LinkHackSources = \
+@BUILD_3DS_CAPABILITIES_TRUE@	3dsLoader.cpp \
+@BUILD_3DS_CAPABILITIES_TRUE@	SoStream.cpp
+
+@BUILD_3DS_CAPABILITIES_FALSE@LinkHackSources = 
+
+@BUILD_3DS_CAPABILITIES_TRUE@PrivateHeaders = \
+@BUILD_3DS_CAPABILITIES_TRUE@	3dsLoader.h \
+@BUILD_3DS_CAPABILITIES_TRUE@	SoStream.h
+
+@BUILD_3DS_CAPABILITIES_FALSE@PrivateHeaders = 
+
+PublicHeaders = 
+
+
+# **************************************************************************
+# This template depends on the following variables having been set up before
+# its invokation.
+#
+# PublicHeaders    - header files that should be installed
+# PrivateHeaders   - source files that should be distributed, but not
+#                    installed - including source-included source files.
+# RegularSources   - source files compiled in this directory
+# LinkHackSources  - alternative source files used on -enable-compact compilation
+# ObsoletedHeaders - header files that should be removed upon installation
+
+# Everything below is autogenerated from a macro, so don't modify
+# within the Makefile.am itself. 19991201 mortene.
+@HACKING_COMPACT_BUILD_TRUE@BuildSources = $(LinkHackSources)
+@HACKING_COMPACT_BUILD_FALSE@BuildSources = $(RegularSources)
+
+@BUILD_WITH_MSVC_TRUE@noinst_LIBRARIES = 3ds.lst
+@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = lib3ds@SUFFIX@LINKHACK.la
+@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = lib3ds.la
+
+# Remove any linklibraries detected by configure, as they are not
+# needed in the submodules -- only in the toplevel libCoin build.
+LIBS = 
+
+INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/src/extensions
+
+lib3ds_la_SOURCES = $(BuildSources)
+EXTRA_lib3ds_la_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
+
+lib3ds@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
+EXTRA_lib3ds@SUFFIX@LINKHACK_la_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
+
+lib3dsincdir = $(includedir)/Inventor/3ds
+lib3dsinc_HEADERS = $(PublicHeaders)
+
+3ds_lst_SOURCES = $(BuildSources)
+EXTRA_3ds_lst_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
+subdir = src/3ds
+mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
+CONFIG_HEADER = $(top_builddir)/include/config.h
+CONFIG_CLEAN_FILES =
+LIBRARIES = $(noinst_LIBRARIES)
+
+3ds_lst_AR = $(AR) cru
+3ds_lst_LIBADD =
+@BUILD_3DS_CAPABILITIES_FALSE@@HACKING_COMPACT_BUILD_TRUE@am_3ds_lst_OBJECTS =
+@BUILD_3DS_CAPABILITIES_FALSE@@HACKING_COMPACT_BUILD_FALSE@am_3ds_lst_OBJECTS =
+@BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_TRUE@am_3ds_lst_OBJECTS = \
+@BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_TRUE@	3dsLoader.$(OBJEXT) \
+@BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_TRUE@	SoStream.$(OBJEXT)
+@BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_FALSE@am_3ds_lst_OBJECTS = \
+@BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_FALSE@	3dsLoader.$(OBJEXT) \
+@BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_FALSE@	SoStream.$(OBJEXT)
+3ds_lst_OBJECTS = $(am_3ds_lst_OBJECTS)
+LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
+
+lib3ds_la_LDFLAGS =
+lib3ds_la_LIBADD =
+@BUILD_3DS_CAPABILITIES_FALSE@@HACKING_COMPACT_BUILD_TRUE@am_lib3ds_la_OBJECTS =
+@BUILD_3DS_CAPABILITIES_FALSE@@HACKING_COMPACT_BUILD_FALSE@am_lib3ds_la_OBJECTS =
+@BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_TRUE@am_lib3ds_la_OBJECTS = \
+@BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_TRUE@	3dsLoader.lo \
+@BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_TRUE@	SoStream.lo
+@BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_FALSE@am_lib3ds_la_OBJECTS = \
+@BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_FALSE@	3dsLoader.lo \
+@BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_FALSE@	SoStream.lo
+lib3ds_la_OBJECTS = $(am_lib3ds_la_OBJECTS)
+lib3ds@SUFFIX@LINKHACK_la_LDFLAGS =
+lib3ds@SUFFIX@LINKHACK_la_LIBADD =
+@BUILD_3DS_CAPABILITIES_FALSE@@HACKING_COMPACT_BUILD_TRUE@am_lib3ds@SUFFIX@LINKHACK_la_OBJECTS =
+@BUILD_3DS_CAPABILITIES_FALSE@@HACKING_COMPACT_BUILD_FALSE@am_lib3ds@SUFFIX@LINKHACK_la_OBJECTS =
+@BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_TRUE@am_lib3ds@SUFFIX@LINKHACK_la_OBJECTS = \
+@BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_TRUE@	3dsLoader.lo \
+@BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_TRUE@	SoStream.lo
+@BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_FALSE@am_lib3ds@SUFFIX@LINKHACK_la_OBJECTS = \
+@BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_FALSE@	3dsLoader.lo \
+@BUILD_3DS_CAPABILITIES_TRUE@@HACKING_COMPACT_BUILD_FALSE@	SoStream.lo
+lib3ds@SUFFIX@LINKHACK_la_OBJECTS = \
+	$(am_lib3ds@SUFFIX@LINKHACK_la_OBJECTS)
+
+DEFS = @DEFS@
+DEFAULT_INCLUDES =  -I. -I$(srcdir) -I$(top_builddir)/include
+CPPFLAGS = @CPPFLAGS@
+LDFLAGS = @LDFLAGS@
+depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
+@AMDEP_TRUE@DEP_FILES = $(DEPDIR)/3dsLoader.Plo $(DEPDIR)/3dsLoader.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoStream.Plo $(DEPDIR)/SoStream.Po
+CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
+	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
+LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
+	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
+	$(AM_CXXFLAGS) $(CXXFLAGS)
+CXXLD = $(CXX)
+CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
+	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+CXXFLAGS = @CXXFLAGS@
+CFLAGS = @CFLAGS@
+COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
+	$(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+DIST_SOURCES = $(3ds_lst_SOURCES) $(EXTRA_3ds_lst_SOURCES) \
+	$(lib3ds_la_SOURCES) $(EXTRA_lib3ds_la_SOURCES) \
+	$(lib3ds@SUFFIX@LINKHACK_la_SOURCES) \
+	$(EXTRA_lib3ds@SUFFIX@LINKHACK_la_SOURCES)
+HEADERS = $(lib3dsinc_HEADERS)
+
+DIST_COMMON = $(lib3dsinc_HEADERS) Makefile.am Makefile.in
+SOURCES = $(3ds_lst_SOURCES) $(EXTRA_3ds_lst_SOURCES) $(lib3ds_la_SOURCES) $(EXTRA_lib3ds_la_SOURCES) $(lib3ds@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_lib3ds@SUFFIX@LINKHACK_la_SOURCES)
+
+all: all-am
+
+.SUFFIXES:
+.SUFFIXES: .cpp .lo .o .obj
+
+mostlyclean-libtool:
+	-rm -f *.lo
+
+clean-libtool:
+	-rm -rf .libs _libs
+
+distclean-libtool:
+	-rm -f libtool
+$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
+	cd $(top_srcdir) && \
+	  $(AUTOMAKE) --gnu  src/3ds/Makefile
+Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
+	cd $(top_builddir) && \
+	  CONFIG_HEADERS= CONFIG_LINKS= \
+	  CONFIG_FILES=$(subdir)/$@ $(SHELL) ./config.status
+
+AR = ar
+
+clean-noinstLIBRARIES:
+	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
+3ds.lst: $(3ds_lst_OBJECTS) $(3ds_lst_DEPENDENCIES) 
+	-rm -f 3ds.lst
+	$(3ds_lst_AR) 3ds.lst $(3ds_lst_OBJECTS) $(3ds_lst_LIBADD)
+	$(RANLIB) 3ds.lst
+install-libLTLIBRARIES: $(lib_LTLIBRARIES)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libdir)
+	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+	  if test -f $$p; then \
+	    echo " $(LIBTOOL) --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$p $(DESTDIR)$(libdir)/$$p"; \
+	    $(LIBTOOL) --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$p $(DESTDIR)$(libdir)/$$p; \
+	  else :; fi; \
+	done
+
+uninstall-libLTLIBRARIES:
+	@$(NORMAL_UNINSTALL)
+	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+	  echo " $(LIBTOOL) --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p"; \
+	  $(LIBTOOL) --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p; \
+	done
+
+clean-libLTLIBRARIES:
+	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
+
+clean-noinstLTLIBRARIES:
+	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
+lib3ds.la: $(lib3ds_la_OBJECTS) $(lib3ds_la_DEPENDENCIES) 
+	$(CXXLINK)  $(lib3ds_la_LDFLAGS) $(lib3ds_la_OBJECTS) $(lib3ds_la_LIBADD) $(LIBS)
+lib3ds@SUFFIX@LINKHACK.la: $(lib3ds@SUFFIX@LINKHACK_la_OBJECTS) $(lib3ds@SUFFIX@LINKHACK_la_DEPENDENCIES) 
+	$(CXXLINK) -rpath $(libdir) $(lib3ds@SUFFIX@LINKHACK_la_LDFLAGS) $(lib3ds@SUFFIX@LINKHACK_la_OBJECTS) $(lib3ds@SUFFIX@LINKHACK_la_LIBADD) $(LIBS)
+
+mostlyclean-compile:
+	-rm -f *.$(OBJEXT) core *.core
+
+distclean-compile:
+	-rm -f *.tab.c
+
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/3dsLoader.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/3dsLoader.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoStream.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoStream.Po@am__quote@
+
+distclean-depend:
+	-rm -rf $(DEPDIR)
+
+.cpp.o:
+@AMDEP_TRUE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(CXXCOMPILE) -c -o $@ `test -f $< || echo '$(srcdir)/'`$<
+
+.cpp.obj:
+@AMDEP_TRUE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(CXXCOMPILE) -c -o $@ `( test -f $< || echo -n '$(srcdir)/'; echo -n $< ) | xargs cygpath -w`
+
+.cpp.lo:
+@AMDEP_TRUE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(LTCXXCOMPILE) -c -o $@ `test -f $< || echo '$(srcdir)/'`$<
+CXXDEPMODE = @CXXDEPMODE@
+uninstall-info-am:
+
+uninstall-lib3dsincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(lib3dsinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(lib3dsincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(lib3dsincdir)/$$f; \
+	done
+
+tags: TAGS
+
+ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
+	list='$(SOURCES) $(HEADERS) $(TAGS_FILES)'; \
+	unique=`for i in $$list; do \
+	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
+	  done | \
+	  $(AWK) '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	mkid -fID $$unique $(LISP)
+
+TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
+		$(TAGS_FILES) $(LISP)
+	tags=; \
+	here=`pwd`; \
+	list='$(SOURCES) $(HEADERS) $(TAGS_FILES)'; \
+	unique=`for i in $$list; do \
+	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
+	  done | \
+	  $(AWK) '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	test -z "$(ETAGS_ARGS)$$unique$(LISP)$$tags" \
+	  || etags $(ETAGS_ARGS) $$tags  $$unique $(LISP)
+
+GTAGS:
+	here=`CDPATH=: && cd $(top_builddir) && pwd` \
+	  && cd $(top_srcdir) \
+	  && gtags -i $(GTAGS_ARGS) $$here
+
+distclean-tags:
+	-rm -f TAGS ID GTAGS GRTAGS GSYMS GPATH
+
+DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
+
+top_distdir = ../..
+distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
+
+distdir: $(DISTFILES)
+	@for file in $(DISTFILES); do \
+	  if test -f $$file; then d=.; else d=$(srcdir); fi; \
+	  dir=`echo "$$file" | sed -e 's,/[^/]*$$,,'`; \
+	  if test "$$dir" != "$$file" && test "$$dir" != "."; then \
+	    $(mkinstalldirs) "$(distdir)/$$dir"; \
+	  fi; \
+	  if test -d $$d/$$file; then \
+	    cp -pR $$d/$$file $(distdir) \
+	    || exit 1; \
+	  else \
+	    test -f $(distdir)/$$file \
+	    || cp -p $$d/$$file $(distdir)/$$file \
+	    || exit 1; \
+	  fi; \
+	done
+check-am: all-am
+check: check-am
+all-am: Makefile $(LIBRARIES) $(LTLIBRARIES) $(HEADERS)
+
+installdirs:
+	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(lib3dsincdir)
+
+install: install-am
+install-exec: install-exec-am
+install-data: install-data-am
+uninstall: uninstall-am
+
+install-am: all-am
+	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
+
+installcheck: installcheck-am
+install-strip:
+	$(MAKE) $(AM_MAKEFLAGS) INSTALL_PROGRAM="$(INSTALL_STRIP_PROGRAM)" \
+	  `test -z '$(STRIP)' || \
+	    echo "INSTALL_PROGRAM_ENV=STRIPPROG='$(STRIP)'"` install
+mostlyclean-generic:
+
+clean-generic:
+
+distclean-generic:
+	-rm -f Makefile $(CONFIG_CLEAN_FILES) stamp-h stamp-h[0-9]*
+
+maintainer-clean-generic:
+	@echo "This command is intended for maintainers to use"
+	@echo "it deletes files that may require special tools to rebuild."
+clean: clean-am
+
+clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
+	clean-noinstLIBRARIES clean-noinstLTLIBRARIES mostlyclean-am
+
+distclean: distclean-am
+
+distclean-am: clean-am distclean-compile distclean-depend \
+	distclean-generic distclean-libtool distclean-tags
+
+dvi: dvi-am
+
+dvi-am:
+
+info: info-am
+
+info-am:
+
+install-data-am: install-lib3dsincHEADERS
+
+install-exec-am: install-libLTLIBRARIES
+
+install-info: install-info-am
+
+install-man:
+
+installcheck-am:
+
+maintainer-clean: maintainer-clean-am
+
+maintainer-clean-am: distclean-am maintainer-clean-generic
+
+mostlyclean: mostlyclean-am
+
+mostlyclean-am: mostlyclean-compile mostlyclean-generic \
+	mostlyclean-libtool
+
+uninstall-am: uninstall-info-am uninstall-lib3dsincHEADERS \
+	uninstall-libLTLIBRARIES
+
+.PHONY: GTAGS all all-am check check-am clean clean-generic \
+	clean-libLTLIBRARIES clean-libtool clean-noinstLIBRARIES \
+	clean-noinstLTLIBRARIES distclean distclean-compile \
+	distclean-depend distclean-generic distclean-libtool \
+	distclean-tags distdir dvi dvi-am info info-am install \
+	install-am install-data install-data-am install-exec \
+	install-exec-am install-info install-info-am \
+	install-lib3dsincHEADERS install-libLTLIBRARIES install-man \
+	install-strip installcheck installcheck-am installdirs \
+	maintainer-clean maintainer-clean-generic mostlyclean \
+	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
+	tags uninstall uninstall-am uninstall-info-am \
+	uninstall-lib3dsincHEADERS uninstall-libLTLIBRARIES
+
+
+# this rule causes a make warning, so we remove it when it is not in use
+3ds.lst: Makefile $(3ds_lst_OBJECTS)
+	@echo "Linking 3ds.lst..."; \
+	rm -f $@; \
+	for i in $(3ds_lst_OBJECTS); do echo $$i >>$@; done
+
+install-lib3dsincHEADERS: $(lib3dsinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(lib3dsincdir)
+	@list='$(lib3dsinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(lib3dsincdir)/$$f"; \
+	  if cmp -s "$$src" "$$dst"; then :; else \
+	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+	  fi \
+	done
+	@list='$(ObsoletedHeaders)'; for f in $$list; do \
+	  file="$(DESTDIR)$(lib3dsincdir)/$$f"; \
+	  if test -x "$$file"; then \
+	    echo " rm -f $$file"; \
+	    rm -f "$$file"; \
+	  fi \
+	done
+# Tell versions [3.59,3.63) of GNU make to not export all variables.
+# Otherwise a system limit (for SysV at least) may be exceeded.
+.NOEXPORT:

@@ -176,6 +176,10 @@
 static SbStorage * sodb_notificationcounter_storage = NULL;
 #endif // COIN_THREADSAFE
 
+#ifdef HAVE_3DS_IMPORT_CAPABILITIES
+#include "../3ds/3dsLoader.h"
+#endif // HAVE_3DS_IMPORT_CAPABILITIES
+
 static SbString * coin_versionstring = NULL;
 
 // atexit callback
@@ -570,7 +574,7 @@ SoDB::read(SoInput * in, SoPath *& path)
 {
   path = NULL;
   SoBase * baseptr;
-  if (!SoDB::read(in, baseptr)) return FALSE;
+  if (!SoDB::read(in, baseptr))  return FALSE;
   if (!baseptr) return TRUE; // eof
 
   if (!baseptr->isOfType(SoPath::getClassTypeId())) {
@@ -597,6 +601,11 @@ SoDB::read(SoInput * in, SoPath *& path)
 SbBool
 SoDB::read(SoInput * in, SoBase *& base)
 {
+#ifdef HAVE_3DS_IMPORT_CAPABILITIES
+  if (is3dsFile(in))
+    return read3dsFile(in,((SoSeparator*)base));
+#endif // HAVE_3DS_IMPORT_CAPABILITIES
+
   // Header is only required when reading from a stream, if reading from
   // memory no header is required
   if (!in->isValidFile()) return FALSE;
@@ -618,6 +627,12 @@ SoDB::read(SoInput * in, SoNode *& rootnode)
 {
   rootnode = NULL;
   SoBase * baseptr;
+
+#ifdef HAVE_3DS_IMPORT_CAPABILITIES
+  if (is3dsFile(in))
+    return read3dsFile(in,((SoSeparator*)rootnode));
+#endif // HAVE_3DS_IMPORT_CAPABILITIES
+
   if (!SoDB::read(in, baseptr)) return FALSE;
   if (!baseptr) return TRUE; // eof
 
@@ -654,7 +669,7 @@ SoDB::read(SoInput * in, SoNode *& rootnode)
   SoInput in;
   if (!in.openFile(filename)) { exit(1); }
 
-  SoSeparator * root = SoDB::readAll(&input); 
+  SoSeparator * root = SoDB::readAll(&input);
   if (!root) { exit(1); }
 
   // root-node returned from SoDB::readAll() has initial zero
@@ -680,6 +695,16 @@ SoSeparator *
 SoDB::readAll(SoInput * in)
 {
   assert(SoDB::isInitialized() && "you forgot to initialize the Coin library");
+
+#ifdef HAVE_3DS_IMPORT_CAPABILITIES
+  if (is3dsFile(in)) {
+    SoSeparator * base = NULL;
+    if (read3dsFile(in, base)) {
+      return base;
+    }
+    return NULL;
+  }
+#endif // HAVE_3DS_IMPORT_CAPABILITIES
 
   if (!in->isValidFile()) {
     SoReadError::post(in, "Not a valid Inventor file.");
