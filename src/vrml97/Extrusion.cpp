@@ -42,9 +42,9 @@
     field   MFVec3f    spine            [ 0 0 0, 0 1 0 ] # (-inf,inf)
   }
   \endverbatim
-  
+
   \e Introduction
-  
+
   The Extrusion node specifies geometric shapes based on a two
   dimensional cross-section extruded along a three dimensional spine
   in the local coordinate system. The cross-section can be scaled and
@@ -53,12 +53,12 @@
 
   \li a 2D crossSection piecewise linear curve (described as a series
   of connected vertices);
- 
+
   \li a 3D spine piecewise linear curve (also described as a series
   of connected vertices);
- 
+
   \li a list of 2D scale parameters;
- 
+
   \li a list of 3D orientation parameters.
 
   \e Algorithmic \e description
@@ -74,7 +74,7 @@
   cross-sections are then connected, forming a quadrilateral polygon
   between each pair of vertices. This same procedure is then repeated
   for the rest of the spine points, resulting in a surface extrusion
-  along the spine.  
+  along the spine.
 
   The final orientation of each cross-section is computed by first
   orienting it relative to the spine segments on either side of point
@@ -85,7 +85,7 @@
   value. This rotation is performed relative to the SCP. For example,
   to impart twist in the cross- section, a rotation about the Y-axis
   (0 1 0) would be used. Other orientations are valid and rotate the
-  cross-section out of the SCP.  
+  cross-section out of the SCP.
 
   <center>
   <img src="http://www.web3d.org/technicalinfo/specifications/vrml97/Images/Extrusion.gif">
@@ -101,15 +101,15 @@
 
   Let n be the number of spines and let i be the index variable
   satisfying 0 <= i < n:
-  
+
   \li For all points other than the first or last: The Y-axis for
   spine[i] is found by normalizing the vector defined by (spine[i+1]
   - spine[i-1]).
- 
+
   \li If the spine curve is closed: The SCP for the first and last
   points is the same and is found using (spine[1] - spine[n-2])
   to compute the Y-axis.
- 
+
   \li If the spine curve is not closed: The Y-axis used for the
   first point is the vector from spine[0] to spine[1], and for the
   last it is the vector from spine[n-2] to spine[n-1].
@@ -129,16 +129,16 @@
   \verbatim
   Z = (spine[1] - spine[0]) × (spine[n-2] - spine[0])
   \endverbatim
-  
+
   \li If the spine curve is not closed: The Z-axis used for the first
   spine point is the same as the Z-axis for spine[1]. The Z- axis used for
   the last spine point is the same as the Z-axis for spine[n-2].
-  
+
   \li After determining the Z-axis, its dot product with the Z-axis of the
   previous spine point is computed. If this value is negative, the
   Z-axis is flipped (multiplied by -1). In most cases, this prevents
   small changes in the spine segment angles from flipping the
-  cross-section 180 degrees.  
+  cross-section 180 degrees.
 
   Once the Y- and Z-axes have been computed, the X-axis can be
   calculated as their cross-product.
@@ -150,14 +150,14 @@
   contain one value, it is applied at all spine points. The results
   are undefined if the number of scale or orientation values is
   greater than one but less than the number of spine points. The scale
-  values shall be positive.  
+  values shall be positive.
 
   If the three points used in computing the Z-axis are collinear, the
   cross-product is zero so the value from the previous point is used
   instead.  If the Z-axis of the first point is undefined (because the
   spine is not closed and the first two spine segments are collinear)
   then the Z-axis for the first spine point with a defined Z-axis is
-  used.  
+  used.
 
   If the entire spine is collinear, the SCP is computed by finding the
   rotation of a vector along the positive Y-axis (v1) to the vector
@@ -165,7 +165,7 @@
   this value.  If two points are coincident, they both have the same
   SCP. If each point has a different orientation value, then the
   surface is constructed by connecting edges of the cross-sections as
-  normal. This is useful in creating revolved surfaces.  
+  normal. This is useful in creating revolved surfaces.
 
   Note: combining coincident and non-coincident spine segments, as
   well as other combinations, can lead to interpenetrating surfaces
@@ -180,12 +180,12 @@
   of a circle and the spine is straight, the Extrusion is equivalent
   to a surface of revolution, where the scale parameters define the
   size of the cross-section along the spine.
- 
+
   \li Uniform extrusions: If the scale is (1, 1) and the spine is
   straight, the cross-section is extruded uniformly without twisting
   or scaling along the spine. The result is a cylindrical shape with a
   uniform cross section.
- 
+
   \li Bend/twist/taper objects: These shapes are the result of using
   all fields. The spine curve bends the extruded shape defined by the
   cross-section, the orientation parameters (given as rotations about
@@ -193,12 +193,12 @@
   taper it (by scaling about the spine).
 
   \e Other \e Fields
-  
+
   Extrusion has three parts: the sides, the beginCap (the
   surface at the initial end of the spine) and the endCap (the surface
   at the final end of the spine). The caps have an associated SFBool field
   that indicates whether each exists (TRUE) or doesn't exist (FALSE).
-  
+
   When the beginCap or endCap fields are specified as TRUE, planar cap
   surfaces will be generated regardless of whether the crossSection is
   a closed curve. If crossSection is not a closed curve, the caps are
@@ -220,7 +220,7 @@
   cross-section (X or Z) produces texture coordinates that range from
   0.0 to 1.0. The beginCap and endCap textures' S and T directions
   correspond to the X and Z directions in which the crossSection
-  coordinates are defined.  
+  coordinates are defined.
 
   The browser shall automatically generate normals for the Extrusion
   node,using the creaseAngle field to determine if and how normals are
@@ -230,28 +230,28 @@
   the SCP). By default, a beginCap with a counterclockwise ordering
   shall have a normal along the negative Y-axis. An endCap with a
   counterclockwise ordering shall have a normal along the positive
-  Y-axis.  
+  Y-axis.
 
   Each quadrilateral making up the sides of the extrusion are ordered
   from the bottom cross-section (the one at the earlier spine point)
   to the top.  So, one quadrilateral has the points:
-  
+
   \verbatim
-  spine[0](crossSection[0], crossSection[1]) 
-  spine[1](crossSection[1], crossSection[0]) 
+  spine[0](crossSection[0], crossSection[1])
+  spine[1](crossSection[1], crossSection[0])
   \endverbatim
 
   in that order. By default, normals for the sides are generated as
   described in 4.6.3, Shapes and geometry
   (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.3).
-  
+
   For instance, a circular crossSection with counter-clockwise
   ordering and the default spine form a cylinder. With solid TRUE and
   ccw TRUE, the cylinder is visible from the outside. Changing ccw to
   FALSE makes it visible from the inside.  The ccw, solid, convex, and
   creaseAngle fields are described in 4.6.3, Shapes and geometry
   (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.3).
-  
+
 */
 
 /*!
@@ -282,7 +282,7 @@
 /*!
   SoSFBool SoVRMLExtrusion::endCap
   Used to enable/disable end cap. Default value is TRUE.
-  
+
 */
 
 /*!
@@ -548,7 +548,7 @@ SoVRMLExtrusion::notify(SoNotList * list)
 
 
 // Doc in parent
-SoDetail * 
+SoDetail *
 SoVRMLExtrusion::createTriangleDetail(SoRayPickAction * action,
                                       const SoPrimitiveVertex * v1,
                                       const SoPrimitiveVertex * v2,
@@ -561,6 +561,75 @@ SoVRMLExtrusion::createTriangleDetail(SoRayPickAction * action,
 
 #undef THIS
 #ifndef DOXYGEN_SKIP_THIS
+
+
+static SbVec3f 
+calculate_y_axis(const SbVec3f * spine, const int i, 
+                 const int numspine, const SbBool closed)
+{
+  SbVec3f Y;
+  if (closed) {
+    if (i > 0) {
+      Y = spine[i+1] - spine[i-1];
+    }
+    else {
+      Y = spine[1] - spine[numspine-1];
+    }
+  }
+  else {
+    if (i == 0) Y = spine[1] - spine[0];
+    else if (i == numspine-1) Y = spine[numspine-1] - spine[numspine-2];
+    else Y = spine[i+1] - spine[i-1];
+  }
+  my_normalize(Y);
+  return Y;
+}
+
+static SbVec3f
+calculate_z_axis(const SbVec3f * spine, const int i,
+                 const int numspine, const SbBool closed)
+{
+  SbVec3f z0, z1;
+  
+  if (closed) {
+    if (i > 0) {
+      z0 = spine[i+1] - spine[i];
+      z1 = spine[i-1] - spine[i];
+    }
+    else {
+      z0 = spine[1] - spine[0];
+      z1 = spine[numspine-1] - spine[0];
+    }
+  }
+  else {
+    if (numspine == 2) return SbVec3f(0.0f, 0.0f, 0.0f);
+    else if (i == 0) {
+      z0 = spine[2] - spine[1];
+      z1 = spine[0] - spine[1];
+    }
+    else if (i == numspine-1) {
+      z0 = spine[numspine-1] - spine[numspine-2];
+      z1 = spine[numspine-3] - spine[numspine-2];
+    }
+    else {
+      z0 = spine[i+1] - spine[i];
+      z1 = spine[i-1] - spine[i];
+    }
+  }
+
+  my_normalize(z0);
+  my_normalize(z1);
+  
+  // test if spine segments are collinear. If they are, the cross
+  // product will not be reliable, and we should just use the previous
+  // Z-axis instead.
+  if (SbAbs(z0.dot(z1)) > 0.999f) {
+    return SbVec3f(0.0f, 0.0f, 0.0f);
+  }
+  SbVec3f tmp = z0.cross(z1);
+  tmp.normalize();
+  return tmp;
+}
 
 //
 // generates extruded coordinates
@@ -594,169 +663,60 @@ SoVRMLExtrusionP::generateCoords(void)
     numspine--;
   }
 
+  SbVec3f prevY(0.0f, 0.0f, 0.0f);
+  SbVec3f prevZ(0.0f, 0.0f, 0.0f);
+  const SbVec3f empty(0.0f, 0.0f, 0.0f);
+
+  SbBool colinear = FALSE;
   SbVec3f X, Y, Z;
-  SbVec3f prevX(1.0f, 0.0f, 0.0f);
-  SbVec3f prevY(0.0f, 1.0f, 0.0f);
-  SbVec3f prevZ(0.0f, 0.0f, 1.0f);
+
+  // find first non-collinear spine segments and calculate the first
+  // valid Y and Z axis
+  for (i = 0; i < numspine && (prevY == empty || prevZ == empty); i++) {
+    if (prevY == empty) {
+      Y = calculate_y_axis(spine, i, numspine, closed);
+      if (Y != empty) prevY = Y;
+    }
+    if (prevZ == empty) {
+      Z = calculate_z_axis(spine, i, numspine, closed);
+      if (Z != empty) prevZ = Z;
+    }
+  }
+  
+  if (prevY == empty) prevY = SbVec3f(0.0f, 1.0f, 0.0f);
+  if (prevZ == empty) { // all spine segments are colinear, calculate constant Z axis
+    prevZ = SbVec3f(0.0f, 0.0f, 1.0f);
+    if (prevY != SbVec3f(0.0f, 1.0f, 0.0f)) {
+      SbRotation rot(SbVec3f(0.0f, 1.0f, 0.0f), prevY);
+      rot.multVec(prevZ, prevZ);
+    }
+    colinear = TRUE;
+  }
 
   int numorient = this->master->orientation.getNum();
   const SbRotation * orient = this->master->orientation.getValues(0);
 
   int numscale = this->master->scale.getNum();
   const SbVec2f * scale = this->master->scale.getValues(0);
-
-  int reversecnt = 0;
-
+  
   // loop through all spines
   for (i = 0; i < numspine; i++) {
-    if (closed) {
-      if (i > 0)
-        Y = spine[i+1] - spine[i-1];
-      else
-        Y = spine[1] - spine[numspine-1];
-    }
-    else {
-      if (i == 0) Y = spine[1] - spine[0];
-      else if (i == numspine-1) Y = spine[numspine-1] - spine[numspine-2];
-      else Y = spine[i+1] - spine[i-1];
-    }
-
-    if (my_normalize(Y) <= FLT_EPSILON) {
-      if (prevY[1] < 0.0f)
-        Y = SbVec3f(0.0f, -1.0f, 0.0f);
-      else
-        Y = SbVec3f(0.0f, 1.0f, 0.0f);
-    }
-
-    SbVec3f z0, z1;
-
-    if (closed) {
-      if (i > 0) {
-        z0 = spine[i+1] - spine[i];
-        z1 = spine[i-1] - spine[i];
-      }
-      else {
-        z0 = spine[1] - spine[0];
-        z1 = spine[numspine-1] - spine[0];
-      }
-    }
-    else {
-      if (numspine == 2) {
-        z0 = SbVec3f(1.0f, 0.0f, 0.0f);
-        z1 = Y;
-        Z = z0.cross(z1);
-        if (my_normalize(Z) <= FLT_EPSILON) {
-          z0 = SbVec3f(0.0f, 1.0f, 0.0f);
-          z1 = Y;
-        }
-      }
-      else if (i == 0) {
-        z0 = spine[2] - spine[1];
-        z1 = spine[0] - spine[1];
-      }
-      else if (i == numspine-1) {
-        z0 = spine[numspine-1] - spine[numspine-2];
-        z1 = spine[numspine-3] - spine[numspine-2];
-      }
-      else {
-        z0 = spine[i+1] - spine[i];
-        z1 = spine[i-1] - spine[i];
-      }
-    }
-    
-    my_normalize(z0);
-    my_normalize(z1);
-
-    // test if spine segments are parallel. If they are, the cross
-    // product will not be reliable, and we should just use the
-    // previous Z-axis instead.
-    if (z0.dot(z1) < -0.999f) {
+    if (colinear) {
+      Y = prevY;
       Z = prevZ;
     }
     else {
-      Z = z0.cross(z1);
-    }
+      Y = calculate_y_axis(spine, i, numspine, closed);
+      if (Y == empty) Y = prevY;
+      Z = calculate_z_axis(spine, i, numspine, closed);
+      if (Z == empty) Z = prevZ;
 
-    if (my_normalize(Z) <= FLT_EPSILON || SbAbs(Y.dot(Z)) > 0.5f) {
-      Z = SbVec3f(0.0f, 0.0f, 0.0f);
-      
-      int bigy = 0;
-      float bigyval = Y[0];
-      if (SbAbs(Y[1]) > SbAbs(bigyval)) {
-        bigyval = Y[1];
-        bigy = 1;
-      }
-      if (SbAbs(Y[2]) > SbAbs(bigyval)) {
-        bigy = 2;
-        bigyval = Y[2];
-      }
-      Z[(bigy+1)%3] = bigyval > 0.0f ? 1.0f : -1.0f;
-
-      // make Z perpendicular to Y
-      X = Y.cross(Z);
-      my_normalize(X);
-      Z = X.cross(Y);
-      my_normalize(Z);
+      if (Z.dot(prevZ) < 0) Z = -Z;
     }
 
     X = Y.cross(Z);
     my_normalize(X);
-
-#if COIN_DEBUG && 0 // debug
-    SoDebugError::postInfo("SoVRMLExtrusionP::generateCoords",
-                           "\nPre Zdot: %g, Xdot: %g",
-                           Z.dot(prevZ), X.dot(prevX));
-#endif // debug
-
-    if (i > 0 && (Z.dot(prevZ) <= 0.5f || X.dot(prevX) <= 0.5f)) {
-      // if change is fairly large, try to find the most appropriate
-      // axis. This will minimize change from spine-point to
-      // spine-point
-      SbVec3f v[4];
-      v[0] = X;
-      v[1] = -X;
-      v[2] = Z;
-      v[3] = -Z;
-      
-      float maxdot = v[0].dot(prevZ);
-      int maxcnt = 0;
-      for (int cnt = 1; cnt < 4; cnt++) {
-        float dot = v[cnt].dot(prevZ);
-        if (dot > maxdot) {
-          maxdot = dot;
-          maxcnt = cnt;
-        }
-      }
-      Z = v[maxcnt];
-      X = Y.cross(Z);
-      my_normalize(X);
-    }
-
-#if COIN_DEBUG && 0 // debug
-    SoDebugError::postInfo("SoVRMLExtrusionP::generateCoords",
-                           "\nPost Zdot: %g, Xdot: %g",
-                           Z.dot(prevZ), X.dot(prevX));
-#endif // debug
-
-#if COIN_DEBUG && 0
-    SoDebugError::post("ext",
-                       "\nX: %g %g %g\n"
-                       "Y: %g %g %g\n"
-                       "Z: %g %g %g\n\n",
-                       X[0], X[1], X[2],
-                       Y[0], Y[1], Y[2],
-                       Z[0], Z[1], Z[2]);
-#endif // debug
-
-#if 0 // testing zAxis locking
-    Z = SbVec3f(0.0f, 0.0f, 1.0f);
-    X = Y.cross(Z);
-    X.normalize();
-    Z = X.cross(Y);
-    Z.normalize();
-#endif // debug
-
-    prevX = X;
+    
     prevY = Y;
     prevZ = Z;
 
@@ -779,20 +739,6 @@ SoVRMLExtrusionP::generateCoords(void)
     matrix[3][1] = spine[i][1];
     matrix[3][2] = spine[i][2];
     matrix[3][3] = 1.0f;
-
-    int cnt = 0;
-    if (X[0] < 0.0f) cnt++;
-    if (X[1] < 0.0f) cnt++;
-    if (X[2] < 0.0f) cnt++;
-    if (Y[0] < 0.0f) cnt++;
-    if (Y[1] < 0.0f) cnt++;
-    if (Y[2] < 0.0f) cnt++;
-    if (Z[0] < 0.0f) cnt++;
-    if (Z[1] < 0.0f) cnt++;
-    if (Z[2] < 0.0f) cnt++;
-
-    if (cnt & 1) reversecnt--;
-    else reversecnt++;
 
     if (numorient) {
       SbMatrix rmat;
@@ -824,20 +770,12 @@ SoVRMLExtrusionP::generateCoords(void)
   // this macro makes the code below more readable
 #define ADD_TRIANGLE(i0, j0, i1, j1, i2, j2) \
   do { \
-    if (reversecnt < 0) { \
-      this->idx.append((i2)*numcross+(j2)); \
-      this->idx.append((i1)*numcross+(j1)); \
-      this->idx.append((i0)*numcross+(j0)); \
-      this->idx.append(-1); \
-    } \
-    else { \
-      this->idx.append((i0)*numcross+(j0)); \
-      this->idx.append((i1)*numcross+(j1)); \
-      this->idx.append((i2)*numcross+(j2)); \
-      this->idx.append(-1); \
-    } \
+    this->idx.append((i0)*numcross+(j0)); \
+    this->idx.append((i1)*numcross+(j1)); \
+    this->idx.append((i2)*numcross+(j2)); \
+    this->idx.append(-1); \
   } while (0)
-  
+
   // create beginCap polygon
   if (this->master->beginCap.getValue() && !closed) {
     if (this->master->convex.getValue()) {
@@ -860,8 +798,8 @@ SoVRMLExtrusionP::generateCoords(void)
   if (this->master->endCap.getValue() && !closed) {
     if (this->master->convex.getValue()) {
       for (i = 1; i < numcross-1; i++) {
-        ADD_TRIANGLE(numspine-1, numcross-1, 
-                     numspine-1, numcross-1-i, 
+        ADD_TRIANGLE(numspine-1, numcross-1,
+                     numspine-1, numcross-1-i,
                      numspine-1, numcross-2-i);
       }
     }
