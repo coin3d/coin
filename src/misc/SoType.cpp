@@ -420,6 +420,19 @@ SoType::getNumTypes(void)
 }
 
 /*!
+  Returns a pointer to the method used to instantiate objects of the given
+  type.
+
+  \since 2002-01-22
+*/
+
+SoType::instantiationMethod
+SoType::getInstantiationMethod(void) const
+{
+  return (*SoType::typedatalist)[(int)this->getKey()]->method;
+}
+
+/*!
   \fn int16_t SoType::getKey(void) const
 
   This method returns the type's index in the internal typelist.

@@ -77,6 +77,8 @@ public:
 
   static int getNumTypes(void);
 
+  instantiationMethod getInstantiationMethod(void) const;
+
 private:
   static void clean(void);
 
