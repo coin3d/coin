@@ -151,30 +151,29 @@ SoBoxHighlightRenderActionP::drawNoShapeBox(const SoPath * path)
   
   SbXfBox3f & box = this->bboxaction->getXfBoundingBox();
   
-  if (box.isEmpty()) return;
-  
-  // set cube size
-  float x, y, z;
-  box.getSize(x, y, z);
-  this->bboxcube->width  = x;
-  this->bboxcube->height  = y;
-  this->bboxcube->depth = z;
-
-  SbMatrix transform = box.getTransform();
-
-  // get center (in the local bbox coordinate system)
-  SbVec3f center = box.SbBox3f::getCenter();
-
-  // if center != (0,0,0), move the cube
-  if (center != SbVec3f(0.0f, 0.0f, 0.0f)) {
-    SbMatrix t;
-    t.setTranslate(center);
-    transform.multLeft(t);
+  if (!box.isEmpty()) {
+    // set cube size
+    float x, y, z;
+    box.getSize(x, y, z);
+    this->bboxcube->width  = x;
+    this->bboxcube->height  = y;
+    this->bboxcube->depth = z;
+    
+    SbMatrix transform = box.getTransform();
+    
+    // get center (in the local bbox coordinate system)
+    SbVec3f center = box.SbBox3f::getCenter();
+    
+    // if center != (0,0,0), move the cube
+    if (center != SbVec3f(0.0f, 0.0f, 0.0f)) {
+      SbMatrix t;
+      t.setTranslate(center);
+      transform.multLeft(t);
+    }
+    this->bboxtransform->matrix = transform; 
+    
+    PUBLIC(this)->SoGLRenderAction::apply(this->bboxseparator);
   }
-  this->bboxtransform->matrix = transform; 
-  
-  PUBLIC(this)->SoGLRenderAction::apply(this->bboxseparator);
-
   // remove camera
   this->bboxseparator->removeChild(0);
 }
