@@ -258,8 +258,7 @@ SoEngineOutput::addConnection(SoField * f)
   }
 #endif // COIN_DEBUG
   this->slaves.append(f);
-
-  this->getContainer()->ref();
+  this->getFieldContainer()->ref();
 }
 
 /*!
@@ -284,8 +283,7 @@ SoEngineOutput::removeConnection(SoField * f)
   }
 #endif // COIN_DEBUG
   this->slaves.remove(i);
-
-  this->getContainer()->unref();
+  this->getFieldContainer()->unref();
 }
 
 /*!
