@@ -4,6 +4,8 @@ development could proceed.
 Changelog:
 	19991031 mortene	Created.
 
+
+Revision: $Id$
 ==========================================================================
 
 MILESTONE 1
@@ -20,7 +22,7 @@ export capabilities of Inventor models.
 State of library when milestone is met:
 
 * an SoQt interface library against Troll Tech's Qt[1] fully
-  implemented according to the functionality provided from the Open
+  implemented according to the functionality provided by the Open
   Inventor SoXt API, with the possible exception of missing support
   for the more esoteric input devices (spaceball), and complex
   rendering modes (overlay planes, stereo mode).
@@ -29,7 +31,7 @@ State of library when milestone is met:
   and MS Windows development with Coin on milestone 1.)
 
 * an SoBe interface library against the BeOS[2] GUI fully implemented
-  according to the functionality provided from the Open Inventor SoXt
+  according to the functionality provided by the Open Inventor SoXt
   API, with the possible exception of missing support for the more
   esoteric input devices (spaceball), and complex rendering modes
   (overlay planes, stereo mode).
@@ -124,7 +126,7 @@ State of library when milestone is met:
 * platform availability:
 	- supported: Linux, BeOS
 	- additional: MSWindows (with Troll Tech's Qt), most UNIX
-          platforms
+          platforms (ditto)
 
 
 
@@ -132,12 +134,12 @@ MILESTONE 2
 ===========
 
 Goal: Implement enough of the functionality missing from Coin to have
-it replace QvLib as the fundamental import/export/rendering library of
-Rational Reducer[4]. In addition, we add the ability to read data from
-any URLs, local files aswell as over the network. This means we'll
-have the necessary functionality at this milestone for a VRML viewer
-with all the basic features, but lacking some minor compatibility
-points with the ISO VRML 97 standard.
+it replace QvLib as the fundamental import/export/rendering library
+for Rational Reducer[4]. In addition, we add the ability to read data
+from any URLs, local files aswell as over the network. This means
+we'll have the necessary functionality at this milestone for a VRML
+viewer with all the basic features, only lacking some minor
+compatibility points with the ISO VRML 97 standard.
 
 
 Additional features we need to supplant the functionality from
@@ -145,7 +147,7 @@ milestone 1:
 
 * VRML 1 support in the form of VRML 1 node classes. These would
   likely be more-or-less duplicates of the standard Open Inventor
-  ones.
+  nodes.
 
 * VRML 2 / ISO VRML 97 support. This includes import, export and
   rendering. Support for playing sound and movies, and for parsing
@@ -185,6 +187,8 @@ Additional development necessary versus milestone 2:
 
 * proper 2D and 3D font support. Load truetype fonts aswell as bitmap
   fonts.
+
+* 100% completed NURBS support. 
 
 * make sure the APIs for bundles, caches, details and element classes
   cover the API calls offered by SGI Open Inventor 2.1 so even
