@@ -111,8 +111,16 @@ SoResetTransform::GLRender(SoGLRenderAction * action)
 void
 SoResetTransform::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  SoResetTransform::doAction(action);
-  
+  if (!this->whatToReset.isIgnored() &&
+      (this->whatToReset.getValue() & SoResetTransform::TRANSFORM)) {
+    SoState * state = action->getState();
+    // do this instead of calling SoResetTransform::doAction(action), so
+    // that SoLocalBBoxMatrixElement and SoBBoxModelMatrixElement can do
+    // the right thing.
+    SoModelMatrixElement::mult(state, 
+                               this, 
+                               SoModelMatrixElement::get(state).inverse());
+  }
   if (!this->whatToReset.isIgnored() &&
       (this->whatToReset.getValue() & SoResetTransform::BBOX)) {
     action->getXfBoundingBox().makeEmpty();
