@@ -721,10 +721,10 @@ STUFF TO FIX IN COIN
        See the Coin/docs/misc-resources.txt file for URLs to free font
        resources.
 
-     * Check the documentation on SoText2 / SoText3 / etc for TGS
-       Inventor: there's a list of the default font directories that
-       are searched, and which environment variables are heeded for
-       further directories to search.
+     * Check the documentation on SoFont / SoText2 / SoText3 / etc for
+       TGS Inventor: there's a list of the default font directories
+       that are searched, and which environment variables are heeded
+       for further directories to search.
 
        There's also some information about how font names in SoFont
        are mapped to actual, system-dependent font names.
