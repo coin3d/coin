@@ -208,6 +208,9 @@
 /* Define to use timeGetTime() */
 #undef HAVE_TIMEGETTIME
 
+/* Define to 1 if you have the <time.h> header file. */
+#undef HAVE_TIME_H
+
 /* Define to 1 if you have the <tlhelp32.h> header file. */
 #undef HAVE_TLHELP32_H
 

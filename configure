@@ -9336,7 +9336,8 @@ fi
 
 
 
-for ac_header in unistd.h sys/types.h inttypes.h stdint.h sys/param.h sys/time.h sys/timeb.h io.h windows.h winsock2.h tlhelp32.h
+
+for ac_header in unistd.h sys/types.h inttypes.h stdint.h sys/param.h sys/time.h sys/timeb.h time.h io.h windows.h winsock2.h tlhelp32.h
 do
 as_ac_Header=`echo "ac_cv_header_$ac_header" | $as_tr_sh`
 if eval "test \"\${$as_ac_Header+set}\" = set"; then
@@ -14116,7 +14117,20 @@ if $enable_debug; then
     CPPFLAGS="$CPPFLAGS -fno-builtin";    # no auto string.h-functions
     CXXFLAGS="$CXXFLAGS -fno-for-scope";  # disallow non-standard scoping of for()-variables
     CPPFLAGS="$CPPFLAGS -Wreturn-type";   # warn on missing return-value
-    CPPFLAGS="$CPPFLAGS -Werror";         # don't let the developer get away with warnings
+    if test x"b" = x""; then :; else
+      # don't let people get away with warnings, except for in
+      # source code releases.
+      CPPFLAGS="$CPPFLAGS -Werror";
+    fi
+  # FIXME: enable this code after releasing 2.0.0   20030226 larsa
+  # else
+  #   case $CXX in
+  #   *wrapmsvc* )
+  #     if test x"COIN_BETA" = x""; then :; else
+  #       CPPFLAGS="$CPPFLAGS /noBool /W2 /WX"
+  #     fi
+  #     ;;
+  #   esac
   fi
   CPPFLAGS="$CPPFLAGS -DCOIN_DEBUG=1"
 
@@ -20860,9 +20874,9 @@ fi
     ;;
   * )
     if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="Install prefix:$prefix"
+  sim_ac_configuration_settings="Installation prefix:$prefix"
 else
-  sim_ac_configuration_settings="$sim_ac_configuration_settings|Install prefix:$prefix"
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|Installation prefix:$prefix"
 fi
 
     ;;
@@ -20894,7 +20908,7 @@ else
 fi
 
 
-  for arg in $CPPFLAGS $DEFS $LDFLAGS $LIBS; do
+  for arg in -DHAVE_CONFIG_H $CPPFLAGS $LDFLAGS $LIBS; do
     case $arg in
     -L* )
       # libdir=`echo $arg | cut -c3-`

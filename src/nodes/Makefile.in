@@ -70,6 +70,8 @@ COIN_BETA_VERSION = @COIN_BETA_VERSION@
 COIN_COMPILER = @COIN_COMPILER@
 COIN_DOC_HTML = @COIN_DOC_HTML@
 COIN_DOC_MAN = @COIN_DOC_MAN@
+COIN_DSP_DEFS = @COIN_DSP_DEFS@
+COIN_DSP_INCS = @COIN_DSP_INCS@
 COIN_DSP_LIBS = @COIN_DSP_LIBS@
 COIN_EXTRA_CFLAGS = @COIN_EXTRA_CFLAGS@
 COIN_EXTRA_CPPFLAGS = @COIN_EXTRA_CPPFLAGS@
@@ -359,7 +361,7 @@ DISTCLEANFILES = \
 # needed in the submodules -- only in the toplevel libCoin build.
 LIBS = 
 
-INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/src/extensions
+DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include $(ExtraIncludeDirs)
 
 # header installation
 @MAC_FRAMEWORK_TRUE@libnodesincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/nodes
@@ -597,7 +599,6 @@ libnodes@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libnodes@SUFFIX@LINKHACK_la_OBJECTS)
 
 DEFS = @DEFS@
-DEFAULT_INCLUDES =  -I. -I$(srcdir) -I$(top_builddir)/include
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
