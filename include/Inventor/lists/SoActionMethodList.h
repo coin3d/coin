@@ -35,7 +35,6 @@ public:
   SoActionMethodList(SoActionMethodList * const parentlist);
 
   SoActionMethod & operator[](const int index);
-  const SoActionMethod operator[](const int index) const;
 
   void addMethod(const SoType node, const SoActionMethod method);
   void setUp(void);

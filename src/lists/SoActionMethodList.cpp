@@ -52,15 +52,6 @@ SoActionMethodList::operator[](const int index)
 }
 
 /*!
-  Overloaded from parent to cast from \c void *.
-*/
-const SoActionMethod
-SoActionMethodList::operator[](const int index) const
-{
-  return (const SoActionMethod)SbPList::operator[](index);
-}
-
-/*!
   Add a function pointer to a node type's action method.
 */
 void
