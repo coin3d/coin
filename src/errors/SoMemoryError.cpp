@@ -64,7 +64,7 @@ void * SoMemoryError::callbackData = NULL;
 */
 
 void
-SoMemoryError::initClass( void ) // static
+SoMemoryError::initClass( void )
 {
   SoMemoryError::callback = SoError::defaultHandlerCB;
   SoMemoryError::callbackData = NULL;
@@ -77,7 +77,7 @@ SoMemoryError::initClass( void ) // static
 */
 
 void
-SoMemoryError::cleanClass( void ) // static
+SoMemoryError::cleanClass( void )
 {
 }
 
@@ -86,7 +86,7 @@ SoMemoryError::cleanClass( void ) // static
 */
 
 SoType
-SoMemoryError::getClassTypeId( void )  // static
+SoMemoryError::getClassTypeId( void )
 {
   return SoMemoryError::classTypeId;
 }
@@ -96,7 +96,7 @@ SoMemoryError::getClassTypeId( void )  // static
 */
 
 SoType
-SoMemoryError::getTypeId( void ) const // virtual
+SoMemoryError::getTypeId( void ) const
 {
   return SoMemoryError::classTypeId;
 }
@@ -106,7 +106,7 @@ SoMemoryError::getTypeId( void ) const // virtual
 */
 
 void
-SoMemoryError::setHandlerCallback( // static
+SoMemoryError::setHandlerCallback(
   SoErrorCB * const function,
   void * const data )
 {
@@ -119,7 +119,7 @@ SoMemoryError::setHandlerCallback( // static
 */
 
 SoErrorCB *
-SoMemoryError::getHandlerCallback( void ) // static
+SoMemoryError::getHandlerCallback( void )
 {
   return SoMemoryError::callback;
 }
@@ -129,7 +129,7 @@ SoMemoryError::getHandlerCallback( void ) // static
 */
 
 void *
-SoMemoryError::getHandlerData( void ) // static
+SoMemoryError::getHandlerData( void )
 {
   return SoMemoryError::callbackData;
 }
@@ -139,7 +139,7 @@ SoMemoryError::getHandlerData( void ) // static
 */
 
 void
-SoMemoryError::post( // static
+SoMemoryError::post(
   const char * const whatWasAllocated )
 {
   char buffer[ 128 ]; // FIXME: possible overflow, 990610 larsa
@@ -154,7 +154,7 @@ SoMemoryError::post( // static
 */
 
 SoErrorCB *
-SoMemoryError::getHandler( // virtual
+SoMemoryError::getHandler(
   void * & data ) const
 {
   data = SoMemoryError::callbackData;

@@ -88,7 +88,7 @@ SoGLNormalElement::getClassStackIndex(void)
 */
 
 void
-SoGLNormalElement::initClass( // static
+SoGLNormalElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoGLNormalElement )
@@ -115,7 +115,7 @@ SoGLNormalElement::initClass( // static
 */
 
 void
-SoGLNormalElement::cleanClass( // static
+SoGLNormalElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLNormalElement )
@@ -128,7 +128,7 @@ SoGLNormalElement::cleanClass( // static
   \sa void * SoGLNormalElement::createInstance( void )
 */
 
-SoGLNormalElement::SoGLNormalElement( // protected
+SoGLNormalElement::SoGLNormalElement(
     void )
 {
     setTypeId( SoGLNormalElement::classTypeId );
@@ -139,7 +139,7 @@ SoGLNormalElement::SoGLNormalElement( // protected
   The destructor.
 */
 
-SoGLNormalElement::~SoGLNormalElement( // virtual
+SoGLNormalElement::~SoGLNormalElement(
     void )
 {
 }

@@ -44,14 +44,14 @@
   SoFloatElement.
 */
 
-SoType SoFloatElement::classTypeId = SoType::badType(); // static
+SoType SoFloatElement::classTypeId = SoType::badType();
 
 /*!
   This static method returns the SoType type for SoFloatElement.
 */
 
 SoType
-SoFloatElement::getClassTypeId( // static
+SoFloatElement::getClassTypeId(
   void )
 {
   return SoFloatElement::classTypeId;
@@ -64,14 +64,14 @@ SoFloatElement::getClassTypeId( // static
   SoFloatElement class.
 */
 
-int SoFloatElement::classStackIndex; // static
+int SoFloatElement::classStackIndex;
 
 /*!
   This static method returns the state stack index for the SoFloatElement class.
 */
 
 int
-SoFloatElement::getClassStackIndex( // static
+SoFloatElement::getClassStackIndex(
   void )
 {
   return SoFloatElement::classStackIndex;
@@ -83,7 +83,7 @@ SoFloatElement::getClassStackIndex( // static
 */
 
 void
-SoFloatElement::initClass( // static
+SoFloatElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitAbstractElementSource( SoFloatElement )
@@ -109,7 +109,7 @@ SoFloatElement::initClass( // static
 */
 
 void
-SoFloatElement::cleanClass( // static
+SoFloatElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanAbstractElementSource( SoFloatElement )
@@ -121,7 +121,7 @@ SoFloatElement::cleanClass( // static
   identifier and stack index.
 */
 
-SoFloatElement::SoFloatElement( // protected
+SoFloatElement::SoFloatElement(
     void )
   : data( 0.0f )
 {
@@ -133,7 +133,7 @@ SoFloatElement::SoFloatElement( // protected
   The destructor.
 */
 
-SoFloatElement::~SoFloatElement( // protected
+SoFloatElement::~SoFloatElement(
     void )
 {
 }

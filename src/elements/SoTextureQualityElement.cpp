@@ -84,7 +84,7 @@ SoTextureQualityElement::getClassStackIndex(void)
 */
 
 void
-SoTextureQualityElement::initClass( // static
+SoTextureQualityElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoTextureQualityElement )
@@ -112,7 +112,7 @@ SoTextureQualityElement::initClass( // static
 */
 
 void
-SoTextureQualityElement::cleanClass( // static
+SoTextureQualityElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoTextureQualityElement )
@@ -125,7 +125,7 @@ SoTextureQualityElement::cleanClass( // static
   \sa void * SoTextureQualityElement::createInstance( void )
 */
 
-SoTextureQualityElement::SoTextureQualityElement( // protected
+SoTextureQualityElement::SoTextureQualityElement(
     void )
 {
     setTypeId( SoTextureQualityElement::classTypeId );
@@ -145,7 +145,7 @@ SoTextureQualityElement::~SoTextureQualityElement( // virtual protected
 //! FIXME: write doc.
 
 void
-SoTextureQualityElement::init( // virtual
+SoTextureQualityElement::init(
     SoState * state )
 {
   inherited::init( state );
@@ -156,7 +156,7 @@ SoTextureQualityElement::init( // virtual
 //! FIXME: write doc.
 
 void
-SoTextureQualityElement::push( // virtual
+SoTextureQualityElement::push(
     SoState * state )
 {
     inherited::push( state );
@@ -165,7 +165,7 @@ SoTextureQualityElement::push( // virtual
 //! FIXME: write doc.
 
 void
-SoTextureQualityElement::pop( // virtual
+SoTextureQualityElement::pop(
     SoState * state,
     const SoElement * prevTopElement )
 {

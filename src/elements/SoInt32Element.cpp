@@ -44,14 +44,14 @@
   SoInt32Element.
 */
 
-SoType SoInt32Element::classTypeId = SoType::badType(); // static
+SoType SoInt32Element::classTypeId = SoType::badType();
 
 /*!
   This static method returns the SoType type for SoInt32Element.
 */
 
 SoType
-SoInt32Element::getClassTypeId( // static
+SoInt32Element::getClassTypeId(
   void )
 {
   return SoInt32Element::classTypeId;
@@ -64,14 +64,14 @@ SoInt32Element::getClassTypeId( // static
   SoInt32Element class.
 */
 
-int SoInt32Element::classStackIndex; // static
+int SoInt32Element::classStackIndex;
 
 /*!
   This static method returns the state stack index for the SoInt32Element class.
 */
 
 int
-SoInt32Element::getClassStackIndex( // static
+SoInt32Element::getClassStackIndex(
   void )
 {
   return SoInt32Element::classStackIndex;
@@ -83,7 +83,7 @@ SoInt32Element::getClassStackIndex( // static
 */
 
 void
-SoInt32Element::initClass( // static
+SoInt32Element::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitAbstractElementSource( SoInt32Element )
@@ -109,7 +109,7 @@ SoInt32Element::initClass( // static
 */
 
 void
-SoInt32Element::cleanClass( // static
+SoInt32Element::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanAbstractElementSource( SoInt32Element )
@@ -141,7 +141,7 @@ SoInt32Element::~SoInt32Element(
 //! FIXME: write doc.
 
 SbBool
-SoInt32Element::matches( // virtual
+SoInt32Element::matches(
     const SoElement * element ) const
 {
     assert( element );
@@ -155,7 +155,7 @@ SoInt32Element::matches( // virtual
 //! FIXME: write doc.
 
 SoElement *
-SoInt32Element::copyMatchInfo( // virtual
+SoInt32Element::copyMatchInfo(
     void ) const
 {
     assert( getTypeId().canCreateInstance() );
@@ -172,7 +172,7 @@ SoInt32Element::copyMatchInfo( // virtual
 //! FIXME: write doc.
 
 void
-SoInt32Element::print( // virtual
+SoInt32Element::print(
     FILE * file ) const
 {
     fprintf( file, "%s[%p]: data = %d\n", 
@@ -228,7 +228,7 @@ SoInt32Element::setElt(int32_t value)
 //! FIXME: write doc.
 
 void
-SoInt32Element::init( // virtual
+SoInt32Element::init(
     SoState * state )
 {
   inherited::init( state );

@@ -96,7 +96,7 @@ SoGLUpdateAreaElement::getClassStackIndex(void)
 */
 
 void
-SoGLUpdateAreaElement::initClass( // static
+SoGLUpdateAreaElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoGLUpdateAreaElement )
@@ -124,7 +124,7 @@ SoGLUpdateAreaElement::initClass( // static
 */
 
 void
-SoGLUpdateAreaElement::cleanClass( // static
+SoGLUpdateAreaElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLUpdateAreaElement )
@@ -137,7 +137,7 @@ SoGLUpdateAreaElement::cleanClass( // static
   \sa void * SoGLUpdateAreaElement::createInstance( void )
 */
 
-SoGLUpdateAreaElement::SoGLUpdateAreaElement( // protected
+SoGLUpdateAreaElement::SoGLUpdateAreaElement(
     void )
 {
     setTypeId( SoGLUpdateAreaElement::classTypeId );

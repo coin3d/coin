@@ -90,7 +90,7 @@ SoDecimationTypeElement::getClassStackIndex(void)
 */
 
 void
-SoDecimationTypeElement::initClass( // static
+SoDecimationTypeElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoDecimationTypeElement )
@@ -118,7 +118,7 @@ SoDecimationTypeElement::initClass( // static
 */
 
 void
-SoDecimationTypeElement::cleanClass( // static
+SoDecimationTypeElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoDecimationTypeElement )
@@ -151,7 +151,7 @@ SoDecimationTypeElement::~SoDecimationTypeElement(
 //! FIXME: write doc.
 
 void
-SoDecimationTypeElement::set( // static
+SoDecimationTypeElement::set(
     SoState * const state,
     SoNode * const node,
     const Type type )
@@ -163,7 +163,7 @@ SoDecimationTypeElement::set( // static
 //! FIXME: write doc.
 
 void
-SoDecimationTypeElement::init( // virtual
+SoDecimationTypeElement::init(
     SoState * state )
 {
     inherited::init( state );

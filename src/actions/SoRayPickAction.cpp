@@ -155,7 +155,7 @@ SoRayPickAction::~SoRayPickAction(
 */
 
 void
-SoRayPickAction::setPoint(const SbVec2s & viewportPoint)
+SoRayPickAction::setPoint(const SbVec2s & /* viewportPoint */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -166,7 +166,7 @@ SoRayPickAction::setPoint(const SbVec2s & viewportPoint)
 */
 
 void
-SoRayPickAction::setNormalizedPoint(const SbVec2f & normPoint)
+SoRayPickAction::setNormalizedPoint(const SbVec2f & /* normPoint */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -176,7 +176,7 @@ SoRayPickAction::setNormalizedPoint(const SbVec2f & normPoint)
 */
 
 void
-SoRayPickAction::setRadius(float radiusInPixels)
+SoRayPickAction::setRadius(float /* radiusInPixels */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -186,8 +186,9 @@ SoRayPickAction::setRadius(float radiusInPixels)
 */
 
 void
-SoRayPickAction::setRay(const SbVec3f & start, const SbVec3f & direction,
-			float nearDistance, float farDistance)
+SoRayPickAction::setRay(const SbVec3f & /* start */,
+			const SbVec3f & /* direction */,
+			float /* nearDistance */, float /* farDistance */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -198,7 +199,7 @@ SoRayPickAction::setRay(const SbVec3f & start, const SbVec3f & direction,
 */
 
 void
-SoRayPickAction::setPickAll(SbBool flag)
+SoRayPickAction::setPickAll(SbBool /* flag */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -233,7 +234,7 @@ SoRayPickAction::getPickedPointList(void) const
 */
 
 SoPickedPoint *
-SoRayPickAction::getPickedPoint(int index) const
+SoRayPickAction::getPickedPoint(int /* index */) const
 {
   assert(0 && "FIXME: not implemented");
   return NULL;

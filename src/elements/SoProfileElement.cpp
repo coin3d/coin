@@ -96,7 +96,7 @@ SoProfileElement::getClassStackIndex(void)
 */
 
 void
-SoProfileElement::initClass( // static
+SoProfileElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoProfileElement )
@@ -123,7 +123,7 @@ SoProfileElement::initClass( // static
 */
 
 void
-SoProfileElement::cleanClass( // static
+SoProfileElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoProfileElement )
@@ -156,7 +156,7 @@ SoProfileElement::~SoProfileElement(
 //! FIXME: write doc.
 
 void
-SoProfileElement::add( // static
+SoProfileElement::add(
     SoState * const state,
     SoProfile * const profile )
 {
@@ -168,7 +168,7 @@ SoProfileElement::add( // static
 //! FIXME: write doc.
 
 const SoNodeList &
-SoProfileElement::get( // static
+SoProfileElement::get(
     SoState * const state )
 {
   const SoProfileElement * element = (const SoProfileElement *)
@@ -179,7 +179,7 @@ SoProfileElement::get( // static
 //! FIXME: write doc.
 
 void
-SoProfileElement::print( // virtual
+SoProfileElement::print(
     FILE * file ) const
 {
     fprintf( file, "SoProfileElement[%p]: num = %d\n", this,

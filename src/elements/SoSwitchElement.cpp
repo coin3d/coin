@@ -83,7 +83,7 @@ SoSwitchElement::getClassStackIndex(void)
 */
 
 void
-SoSwitchElement::initClass( // static
+SoSwitchElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoSwitchElement )
@@ -110,7 +110,7 @@ SoSwitchElement::initClass( // static
 */
 
 void
-SoSwitchElement::cleanClass( // static
+SoSwitchElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoSwitchElement )
@@ -153,7 +153,7 @@ SoSwitchElement::set(SoState * const state,
 //! FIXME: write doc.
 
 void
-SoSwitchElement::init( // virtual
+SoSwitchElement::init(
     SoState * state )
 {
   inherited::init( state );

@@ -27,7 +27,7 @@
 */
 
 /*¡
-  potensial buffer overflow errors detected, should be fixed - 990610 larsa
+  Potensial buffer overflow errors, should be fixed - 990610 larsa
 */
 
 #include <Inventor/errors/SoErrors.h>
@@ -74,12 +74,12 @@ void * SoError::callbackData = NULL;
 */
 
 void
-SoError::initClass( void ) // static
+SoError::initClass( void )
 {
-    SoError::callback = defaultHandlerCB;
-    SoError::callbackData = NULL;
-    SoError::classTypeId =
-        SoType::createType( SoType::badType(), SbName( "SoError" ) );
+  SoError::callback = defaultHandlerCB;
+  SoError::callbackData = NULL;
+  SoError::classTypeId =
+    SoType::createType(SoType::badType(), SbName("SoError"));
 }
 
 /*!
@@ -87,7 +87,7 @@ SoError::initClass( void ) // static
 */
 
 void
-SoError::cleanClass( void ) // static
+SoError::cleanClass( void )
 {
 }
 
@@ -96,12 +96,12 @@ SoError::cleanClass( void ) // static
 */
 
 void
-SoError::initErrors( void ) // static
+SoError::initErrors( void )
 {
-    SoError::initClass();
-    SoDebugError::initClass();
-    SoMemoryError::initClass();
-    SoReadError::initClass();
+  SoError::initClass();
+  SoDebugError::initClass();
+  SoMemoryError::initClass();
+  SoReadError::initClass();
 }
 
 /*!
@@ -109,7 +109,7 @@ SoError::initErrors( void ) // static
 */
 
 void
-SoError::cleanErrors( void ) // static
+SoError::cleanErrors( void )
 {
   SoReadError::cleanClass();
   SoMemoryError::cleanClass();
@@ -122,7 +122,7 @@ SoError::cleanErrors( void ) // static
 */
 
 SoType
-SoError::getClassTypeId( void ) // static
+SoError::getClassTypeId( void )
 {
   return SoError::classTypeId;
 }
@@ -133,7 +133,7 @@ SoError::getClassTypeId( void ) // static
 */
 
 SoType
-SoError::getTypeId( void ) const // virtual
+SoError::getTypeId( void ) const
 {
   return SoError::classTypeId;
 }
@@ -144,8 +144,7 @@ SoError::getTypeId( void ) const // virtual
 */
 
 SbBool
-SoError::isOfType(
-  const SoType type ) const
+SoError::isOfType(const SoType type ) const
 {
   const SoType myType = getTypeId();
   return ( myType == type ) ? TRUE : myType.isDerivedFrom( type );
@@ -156,7 +155,7 @@ SoError::isOfType(
 */
 
 void
-SoError::setHandlerCallback( // static
+SoError::setHandlerCallback(
     SoErrorCB * const function,
     void * const data )
 {
@@ -170,7 +169,7 @@ SoError::setHandlerCallback( // static
 
 //$ EXPORT INLINE
 SoErrorCB *
-SoError::getHandlerCallback( void ) // static
+SoError::getHandlerCallback( void )
 {
     return SoError::callback;
 }
@@ -181,7 +180,7 @@ SoError::getHandlerCallback( void ) // static
 
 //$ EXPORT INLINE
 void *
-SoError::getHandlerData( void ) // static
+SoError::getHandlerData( void )
 {
     return SoError::callbackData;
 }
@@ -204,7 +203,7 @@ SoError::getDebugString( void ) const
 */
 
 void
-SoError::post( // static
+SoError::post(
   const char * const format, // printf format
   ... )
 {
@@ -223,7 +222,7 @@ SoError::post( // static
 */
 
 SbString
-SoError::getString( // static
+SoError::getString(
   const SoNode * const node )
 {
   SbString string;
@@ -237,7 +236,7 @@ SoError::getString( // static
 
 #if !defined(COIN_EXCLUDE_SOPATH)
 SbString
-SoError::getString( // static
+SoError::getString(
   const SoPath * const path )
 {
   SbString string;
@@ -252,7 +251,7 @@ SoError::getString( // static
 
 #if !defined(COIN_EXCLUDE_SOENGINE)
 SbString
-SoError::getString( // static
+SoError::getString(
   const SoEngine * const engine )
 {
   SbString string;
@@ -278,7 +277,7 @@ SoError::defaultHandlerCB( // static, protected
 */
 
 SoErrorCB *
-SoError::getHandler( // virtual
+SoError::getHandler(
   void * & data ) const
 {
   data = SoError::callbackData;
@@ -331,7 +330,7 @@ SoError::handleError(
 */
 
 void
-SoError::generateBaseString( // static
+SoError::generateBaseString(
   SbString & string,
   const SoBase * const base,
   const char * const what )

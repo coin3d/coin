@@ -93,7 +93,7 @@ SoViewingMatrixElement::getClassStackIndex(void)
 */
 
 void
-SoViewingMatrixElement::initClass( // static
+SoViewingMatrixElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoViewingMatrixElement )
@@ -121,7 +121,7 @@ SoViewingMatrixElement::initClass( // static
 */
 
 void
-SoViewingMatrixElement::cleanClass( // static
+SoViewingMatrixElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoViewingMatrixElement )

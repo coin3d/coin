@@ -107,7 +107,7 @@ SoAction::getClassTypeId()
 */
 
 SoType
-SoAction::getTypeId() const // virtual
+SoAction::getTypeId() const
 {
   return SoAction::classTypeId;
 }
@@ -294,8 +294,8 @@ SoAction::SoAction()
   : state(NULL), 
     traversalMethods(NULL),
     appliedCode(NODE),
-    currentPathCode(NO_PATH),
-    isTerminated(TRUE)
+    isTerminated(TRUE),
+    currentPathCode(NO_PATH)
 {
   appliedData.node = NULL;
 }
@@ -386,7 +386,7 @@ SoAction::apply(SoPath * path)
 */
 
 void
-SoAction::apply(const SoPathList & pathList, SbBool obeysRules)
+SoAction::apply(const SoPathList & pathList, SbBool /* obeysRules */)
 {
   // FIXME: temporary code until proper pathlist traversal is implemented
   assert(pathList.getLength() > 0);
@@ -658,7 +658,7 @@ SoAction::getCurPathCode() const
 */
 
 void
-SoAction::pushCurPath(const int childIndex)
+SoAction::pushCurPath(const int /* childIndex */)
 {
   assert(0 && "FIXME: Not implemented");
 }
@@ -668,7 +668,7 @@ SoAction::pushCurPath(const int childIndex)
 */
 
 void
-SoAction::popCurPath(const PathCode prevPathCode)
+SoAction::popCurPath(const PathCode /* prevPathCode */)
 {
   assert(0 && "FIXME: Not implemented");
 }
@@ -716,7 +716,7 @@ SoAction::pushCurPath()
 */
 
 void 
-SoAction::popPushCurPath(const int childIndex)
+SoAction::popPushCurPath(const int /* childIndex */)
 {
   assert(0 && "FIXME: not implemented"); 
 }
@@ -761,7 +761,7 @@ SoAction::beginTraversal(SoNode * node)
 */
 
 void
-SoAction::endTraversal(SoNode * node)
+SoAction::endTraversal(SoNode * /* node */)
 {
 }
 

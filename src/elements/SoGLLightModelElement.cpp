@@ -89,7 +89,7 @@ SoGLLightModelElement::getClassStackIndex(void)
 */
 
 void
-SoGLLightModelElement::initClass( // static
+SoGLLightModelElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoGLLightModelElement )
@@ -117,7 +117,7 @@ SoGLLightModelElement::initClass( // static
 */
 
 void
-SoGLLightModelElement::cleanClass( // static
+SoGLLightModelElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLLightModelElement )

@@ -84,7 +84,7 @@ SoShapeHintsElement::getClassStackIndex(void)
 */
 
 void
-SoShapeHintsElement::initClass( // static
+SoShapeHintsElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoShapeHintsElement )
@@ -111,7 +111,7 @@ SoShapeHintsElement::initClass( // static
 */
 
 void
-SoShapeHintsElement::cleanClass( // static
+SoShapeHintsElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoShapeHintsElement )
@@ -145,7 +145,7 @@ SoShapeHintsElement::~SoShapeHintsElement(
 //! FIXME: write doc.
 
 void
-SoShapeHintsElement::init( SoState * state ) // virtual
+SoShapeHintsElement::init( SoState * state )
 {
   inherited::init( state );
   this->vertexOrdering = getDefaultVertexOrdering();

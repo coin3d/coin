@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_ERRORS_H_
-#define _SO_ERRORS_H_
+#ifndef __SOERRORS_H__
+#define __SOERRORS_H__
 
 #include <Inventor/errors/SoError.h>
 
@@ -26,4 +26,4 @@
 #include <Inventor/errors/SoMemoryError.h>
 #include <Inventor/errors/SoReadError.h>
 
-#endif // ! _SO_ERRORS_H_
+#endif // !__SOERRORS_H__

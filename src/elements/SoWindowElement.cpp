@@ -107,7 +107,7 @@ SoWindowElement::getClassStackIndex(void)
 */
 
 void
-SoWindowElement::initClass( // static
+SoWindowElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoWindowElement )
@@ -134,7 +134,7 @@ SoWindowElement::initClass( // static
 */
 
 void
-SoWindowElement::cleanClass( // static
+SoWindowElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoWindowElement )
@@ -160,7 +160,7 @@ SoWindowElement::SoWindowElement(
   The destructor.
 */
 
-SoWindowElement::~SoWindowElement( // virtual
+SoWindowElement::~SoWindowElement(
     void )
 {
 }
@@ -168,7 +168,7 @@ SoWindowElement::~SoWindowElement( // virtual
 //! FIXME: write doc.
 
 void
-SoWindowElement::init( // virtual
+SoWindowElement::init(
     SoState * state )
 {
     inherited::init( state );
@@ -177,7 +177,7 @@ SoWindowElement::init( // virtual
 //! FIXME: write doc.
 
 void
-SoWindowElement::push( // virtual
+SoWindowElement::push(
     SoState * state )
 {
     inherited::push( state );
@@ -186,7 +186,7 @@ SoWindowElement::push( // virtual
 //! FIXME: write doc.
 
 void
-SoWindowElement::pop( // virtual
+SoWindowElement::pop(
     SoState * state,
     const SoElement * prevTopElement )
 {
@@ -196,7 +196,7 @@ SoWindowElement::pop( // virtual
 //! FIXME: write doc.
 
 SbBool
-SoWindowElement::matches( // virtual
+SoWindowElement::matches(
     const SoElement * element ) const
 {
   assert(0 && "FIXME: not implemented");
@@ -206,7 +206,7 @@ SoWindowElement::matches( // virtual
 //! FIXME: write doc.
 
 SoElement *
-SoWindowElement::copyMatchInfo( // virtual
+SoWindowElement::copyMatchInfo(
      void ) const
 {
   assert(0 && "FIXME: not implemented");
@@ -216,7 +216,7 @@ SoWindowElement::copyMatchInfo( // virtual
 //! FIXME: write doc.
 
 void
-SoWindowElement::set( // static
+SoWindowElement::set(
     SoState * const state,
     const Window & window,
     const GLXContext & context,
@@ -229,7 +229,7 @@ SoWindowElement::set( // static
 //! FIXME: write doc.
 
 void
-SoWindowElement::get( // static
+SoWindowElement::get(
     SoState * const state,
     Window & window,
     GLXContext & context,

@@ -83,7 +83,7 @@ SoCreaseAngleElement::getClassStackIndex(void)
 */
 
 void
-SoCreaseAngleElement::initClass( // static
+SoCreaseAngleElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoCreaseAngleElement )
@@ -111,7 +111,7 @@ SoCreaseAngleElement::initClass( // static
 */
 
 void
-SoCreaseAngleElement::cleanClass( // static
+SoCreaseAngleElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoCreaseAngleElement )
@@ -124,7 +124,7 @@ SoCreaseAngleElement::cleanClass( // static
   \sa void * SoCreaseAngleElement::createInstance( void )
 */
 
-SoCreaseAngleElement::SoCreaseAngleElement( // protected
+SoCreaseAngleElement::SoCreaseAngleElement(
     void )
 {
     setTypeId( SoCreaseAngleElement::classTypeId );
@@ -144,7 +144,7 @@ SoCreaseAngleElement::~SoCreaseAngleElement( // virtual protected
 //! FIXME: write doc.
 
 void
-SoCreaseAngleElement::init( // virtual
+SoCreaseAngleElement::init(
     SoState * state )
 {
   inherited::init( state );

@@ -997,16 +997,15 @@ sogl_render_lineset(const SoGLCoordinateElement * const coords,
 #if !defined(NO_FACESET_RENDER)
 
 
-typedef void sogl_render_faceset_func(
-    const SoGLCoordinateElement * const coords,
-    const int32_t *vertexindices,
-    int num_vertexindices,
-    const SbVec3f *normals,
-    const int32_t *normindices,
-    SoMaterialBundle *materials,
-    const int32_t *matindices,
-    const SoTextureCoordinateBundle * const texcoords,
-    const int32_t *texindices);
+typedef void sogl_render_faceset_func(const SoGLCoordinateElement * const coords,
+				      const int32_t *vertexindices,
+				      int num_vertexindices,
+				      const SbVec3f *normals,
+				      const int32_t *normindices,
+				      SoMaterialBundle *materials,
+				      const int32_t *matindices,
+				      const SoTextureCoordinateBundle * const texcoords,
+				      const int32_t *texindices);
 
 static sogl_render_faceset_func *render_funcs[74];
 

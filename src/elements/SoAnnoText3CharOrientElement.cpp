@@ -84,7 +84,7 @@ SoAnnoText3CharOrientElement::getClassStackIndex(void)
 */
 
 void
-SoAnnoText3CharOrientElement::initClass( // static
+SoAnnoText3CharOrientElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoAnnoText3CharOrientElement )
@@ -112,7 +112,7 @@ SoAnnoText3CharOrientElement::initClass( // static
 */
 
 void
-SoAnnoText3CharOrientElement::cleanClass( // static
+SoAnnoText3CharOrientElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoAnnoText3CharOrientElement )
@@ -125,7 +125,7 @@ SoAnnoText3CharOrientElement::cleanClass( // static
   \sa void * SoAnnoText3CharOrientElement::createInstance()
 */
 
-SoAnnoText3CharOrientElement::SoAnnoText3CharOrientElement( // protected
+SoAnnoText3CharOrientElement::SoAnnoText3CharOrientElement(
     void )
 {
     setTypeId( SoAnnoText3CharOrientElement::classTypeId );
@@ -144,7 +144,7 @@ SoAnnoText3CharOrientElement::~SoAnnoText3CharOrientElement( // virtual protecte
 //! FIXME: write doc.
 
 void
-SoAnnoText3CharOrientElement::init( // virtual
+SoAnnoText3CharOrientElement::init(
     SoState * state )
 {
   inherited::init( state );

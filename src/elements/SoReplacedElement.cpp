@@ -47,14 +47,14 @@
   SoReplacedElement.
 */
 
-SoType SoReplacedElement::classTypeId = SoType::badType(); // static
+SoType SoReplacedElement::classTypeId = SoType::badType();
 
 /*!
   This static method returns the SoType type for SoReplacedElement.
 */
 
 SoType
-SoReplacedElement::getClassTypeId( // static
+SoReplacedElement::getClassTypeId(
   void )
 {
   return SoReplacedElement::classTypeId;
@@ -67,14 +67,14 @@ SoReplacedElement::getClassTypeId( // static
   SoReplacedElement class.
 */
 
-int SoReplacedElement::classStackIndex; // static
+int SoReplacedElement::classStackIndex;
 
 /*!
   This static method returns the state stack index for the SoReplacedElement class.
 */
 
 int
-SoReplacedElement::getClassStackIndex( // static
+SoReplacedElement::getClassStackIndex(
   void )
 {
   return SoReplacedElement::classStackIndex;
@@ -86,7 +86,7 @@ SoReplacedElement::getClassStackIndex( // static
 */
 
 void
-SoReplacedElement::initClass( // static
+SoReplacedElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitAbstractElementSource( SoReplacedElement )
@@ -112,7 +112,7 @@ SoReplacedElement::initClass( // static
 */
 
 void
-SoReplacedElement::cleanClass( // static
+SoReplacedElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanAbstractElementSource( SoReplacedElement )
@@ -135,7 +135,7 @@ SoReplacedElement::SoReplacedElement(
   The destructor.
 */
 
-SoReplacedElement::~SoReplacedElement( // virtual
+SoReplacedElement::~SoReplacedElement(
     void )
 {
 }
@@ -143,7 +143,7 @@ SoReplacedElement::~SoReplacedElement( // virtual
 //! FIXME: write doc.
 
 void
-SoReplacedElement::init( // virtual
+SoReplacedElement::init(
     SoState * state )
 {
   inherited::init( state );
@@ -152,7 +152,7 @@ SoReplacedElement::init( // virtual
 //! FIXME: write doc.
 
 SbBool
-SoReplacedElement::matches( // virtual
+SoReplacedElement::matches(
     const SoElement * element ) const
 {
   if (((const SoReplacedElement *)(element))->nodeId ==
@@ -164,7 +164,7 @@ SoReplacedElement::matches( // virtual
 //! FIXME: write doc.
 
 SoElement *
-SoReplacedElement::copyMatchInfo( // virtual
+SoReplacedElement::copyMatchInfo(
     void ) const
 {
   assert( getTypeId().canCreateInstance() );

@@ -256,7 +256,7 @@ SoHandleEventAction::getGrabber(void) const
   nodes that tracks the cursor.
 */
 void
-SoHandleEventAction::setPickRoot(SoNode * node)
+SoHandleEventAction::setPickRoot(SoNode * /* node */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -276,7 +276,7 @@ SoHandleEventAction::getPickRoot(void) const
   This method sets the pick radius.
 */
 void
-SoHandleEventAction::setPickRadius(float radiusInPixels)
+SoHandleEventAction::setPickRadius(float /* radiusInPixels */)
 {
   assert(0 && "FIXME: not implemented");
 }

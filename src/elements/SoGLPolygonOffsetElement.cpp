@@ -90,7 +90,7 @@ SoGLPolygonOffsetElement::getClassStackIndex(void)
 */
 
 void
-SoGLPolygonOffsetElement::initClass( // static
+SoGLPolygonOffsetElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoGLPolygonOffsetElement )
@@ -118,7 +118,7 @@ SoGLPolygonOffsetElement::initClass( // static
 */
 
 void
-SoGLPolygonOffsetElement::cleanClass( // static
+SoGLPolygonOffsetElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLPolygonOffsetElement )
@@ -150,7 +150,7 @@ SoGLPolygonOffsetElement::~SoGLPolygonOffsetElement(
 //! FIXME: write doc.
 
 void
-SoGLPolygonOffsetElement::init( // virtual
+SoGLPolygonOffsetElement::init(
     SoState * state )
 {
   inherited::init( state );

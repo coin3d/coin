@@ -114,7 +114,7 @@ SoModelMatrixElement::getClassStackIndex(void)
 */
 
 void
-SoModelMatrixElement::initClass( // static
+SoModelMatrixElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoModelMatrixElement )
@@ -142,7 +142,7 @@ SoModelMatrixElement::initClass( // static
 */
 
 void
-SoModelMatrixElement::cleanClass( // static
+SoModelMatrixElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoModelMatrixElement )

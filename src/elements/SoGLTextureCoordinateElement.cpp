@@ -96,7 +96,7 @@ SoGLTextureCoordinateElement::getClassStackIndex(void)
 */
 
 void
-SoGLTextureCoordinateElement::initClass( // static
+SoGLTextureCoordinateElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoGLTextureCoordinateElement )
@@ -124,7 +124,7 @@ SoGLTextureCoordinateElement::initClass( // static
 */
 
 void
-SoGLTextureCoordinateElement::cleanClass( // static
+SoGLTextureCoordinateElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLTextureCoordinateElement )

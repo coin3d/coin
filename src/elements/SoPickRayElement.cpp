@@ -89,7 +89,7 @@ SoPickRayElement::getClassStackIndex(void)
 */
 
 void
-SoPickRayElement::initClass( // static
+SoPickRayElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoPickRayElement )
@@ -116,7 +116,7 @@ SoPickRayElement::initClass( // static
 */
 
 void
-SoPickRayElement::cleanClass( // static
+SoPickRayElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoPickRayElement )
@@ -141,7 +141,7 @@ SoPickRayElement::SoPickRayElement(
   The destructor.
 */
 
-SoPickRayElement::~SoPickRayElement( // virtual
+SoPickRayElement::~SoPickRayElement(
     void )
 {
 }
@@ -149,7 +149,7 @@ SoPickRayElement::~SoPickRayElement( // virtual
 //! FIXME: write doc.
 
 void
-SoPickRayElement::init( // virtual
+SoPickRayElement::init(
     SoState * state )
 {
     inherited::init( state );
@@ -158,7 +158,7 @@ SoPickRayElement::init( // virtual
 //! FIXME: write doc.
 
 SbBool
-SoPickRayElement::matches( // virtual
+SoPickRayElement::matches(
     const SoElement * element ) const
 {
   // should always return false; not part of cache consideration 

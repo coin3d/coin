@@ -113,7 +113,7 @@ SoClipPlaneElement::getClassStackIndex(void)
 */
 
 void
-SoClipPlaneElement::initClass( // static
+SoClipPlaneElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoClipPlaneElement )
@@ -141,7 +141,7 @@ SoClipPlaneElement::initClass( // static
 */
 
 void
-SoClipPlaneElement::cleanClass( // static
+SoClipPlaneElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoClipPlaneElement )

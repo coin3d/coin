@@ -90,7 +90,7 @@ SoAnnoText3FontSizeHintElement::getClassStackIndex(void)
 */
 
 void
-SoAnnoText3FontSizeHintElement::initClass( // static
+SoAnnoText3FontSizeHintElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoAnnoText3FontSizeHintElement )
@@ -118,7 +118,7 @@ SoAnnoText3FontSizeHintElement::initClass( // static
 */
 
 void
-SoAnnoText3FontSizeHintElement::cleanClass( // static
+SoAnnoText3FontSizeHintElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoAnnoText3FontSizeHintElement )
@@ -131,7 +131,7 @@ SoAnnoText3FontSizeHintElement::cleanClass( // static
   \sa void * SoAnnoText3FontSizeHintElement::createInstance()
 */
 
-SoAnnoText3FontSizeHintElement::SoAnnoText3FontSizeHintElement( // protected
+SoAnnoText3FontSizeHintElement::SoAnnoText3FontSizeHintElement(
     void )
 {
     setTypeId( SoAnnoText3FontSizeHintElement::classTypeId );
@@ -151,7 +151,7 @@ SoAnnoText3FontSizeHintElement::~SoAnnoText3FontSizeHintElement( // virtual prot
 //! FIXME: write doc.
 
 void
-SoAnnoText3FontSizeHintElement::init( // virtual
+SoAnnoText3FontSizeHintElement::init(
     SoState * state )
 {
   inherited::init( state );

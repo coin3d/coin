@@ -89,7 +89,7 @@ SoViewVolumeElement::getClassStackIndex(void)
 */
 
 void
-SoViewVolumeElement::initClass( // static
+SoViewVolumeElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoViewVolumeElement )
@@ -116,7 +116,7 @@ SoViewVolumeElement::initClass( // static
 */
 
 void
-SoViewVolumeElement::cleanClass( // static
+SoViewVolumeElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoViewVolumeElement )

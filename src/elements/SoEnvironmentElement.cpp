@@ -126,7 +126,7 @@ SoEnvironmentElement::getClassStackIndex(void)
 */
 
 void
-SoEnvironmentElement::initClass( // static
+SoEnvironmentElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoEnvironmentElement )
@@ -154,7 +154,7 @@ SoEnvironmentElement::initClass( // static
 */
 
 void
-SoEnvironmentElement::cleanClass( // static
+SoEnvironmentElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoEnvironmentElement )

@@ -89,7 +89,7 @@ SoPickStyleElement::getClassStackIndex(void)
 */
 
 void
-SoPickStyleElement::initClass( // static
+SoPickStyleElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoPickStyleElement )
@@ -116,7 +116,7 @@ SoPickStyleElement::initClass( // static
 */
 
 void
-SoPickStyleElement::cleanClass( // static
+SoPickStyleElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoPickStyleElement )
@@ -160,7 +160,7 @@ SoPickStyleElement::set(SoState * const state,
 //! FIXME: write doc.
 
 void
-SoPickStyleElement::init( // virtual
+SoPickStyleElement::init(
     SoState * state )
 {
   inherited::init( state );

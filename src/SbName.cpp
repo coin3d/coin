@@ -120,7 +120,7 @@ SbName::getLength(void) const
 */
 
 SbBool
-SbName::isIdentStartChar( const char c ) // static
+SbName::isIdentStartChar( const char c )
 {
     if ( isdigit( c ) ) return FALSE;
     return isIdentChar( c );
@@ -134,7 +134,7 @@ SbName::isIdentStartChar( const char c ) // static
 */
 
 SbBool
-SbName::isIdentChar( const char c ) // static
+SbName::isIdentChar( const char c )
 {
     if ( isalnum( c ) || c == '_' ) return TRUE;
     return FALSE;
@@ -155,7 +155,7 @@ SbName::isIdentChar( const char c ) // static
 */
 
 SbBool
-SbName::isBaseNameStartChar( const char c ) // static
+SbName::isBaseNameStartChar( const char c )
 {
   if (c == '_' || (isascii(c) && isalpha(c))) return TRUE;
   return FALSE;

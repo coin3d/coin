@@ -83,7 +83,7 @@ SoComplexityElement::getClassStackIndex(void)
 */
 
 void
-SoComplexityElement::initClass( // static
+SoComplexityElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoComplexityElement )
@@ -110,7 +110,7 @@ SoComplexityElement::initClass( // static
 */
 
 void
-SoComplexityElement::cleanClass( // static
+SoComplexityElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoComplexityElement )
@@ -123,7 +123,7 @@ SoComplexityElement::cleanClass( // static
   \sa void * SoComplexityElement::createInstance( void )
 */
 
-SoComplexityElement::SoComplexityElement( // protected
+SoComplexityElement::SoComplexityElement(
     void )
 {
     setTypeId( SoComplexityElement::classTypeId );

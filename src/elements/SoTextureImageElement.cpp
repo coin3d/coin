@@ -138,7 +138,7 @@ SoTextureImageElement::getClassStackIndex(void)
 */
 
 void
-SoTextureImageElement::initClass( // static
+SoTextureImageElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoTextureImageElement )
@@ -166,7 +166,7 @@ SoTextureImageElement::initClass( // static
 */
 
 void
-SoTextureImageElement::cleanClass( // static
+SoTextureImageElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoTextureImageElement )

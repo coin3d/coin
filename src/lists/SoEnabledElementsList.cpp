@@ -64,8 +64,7 @@ int SoEnabledElementsList::counter;
   A constructor.
 */
 
-SoEnabledElementsList::SoEnabledElementsList(
-  SoEnabledElementsList * const parentList)
+SoEnabledElementsList::SoEnabledElementsList(SoEnabledElementsList * const parentList)
   : setUpCounter(counter), parent(parentList)
 {
   // set default element as badType. badType in the element list

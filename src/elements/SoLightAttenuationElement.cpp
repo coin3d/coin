@@ -98,7 +98,7 @@ SoLightAttenuationElement::getClassStackIndex(void)
 */
 
 void
-SoLightAttenuationElement::initClass( // static
+SoLightAttenuationElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoLightAttenuationElement )
@@ -126,7 +126,7 @@ SoLightAttenuationElement::initClass( // static
 */
 
 void
-SoLightAttenuationElement::cleanClass( // static
+SoLightAttenuationElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoLightAttenuationElement )
@@ -159,7 +159,7 @@ SoLightAttenuationElement::~SoLightAttenuationElement(
 //! FIXME: write doc.
 
 void
-SoLightAttenuationElement::set( // static
+SoLightAttenuationElement::set(
     SoState * const state,
     SoNode * const node,
     const SbVec3f & lightAttenuation )
@@ -182,7 +182,7 @@ SoLightAttenuationElement::get(SoState * const state)
 //! FIXME: write doc.
 
 SbBool
-SoLightAttenuationElement::matches( // virtual
+SoLightAttenuationElement::matches(
     SoElement * element ) const
 {
   if (this->lightAttenuation !=

@@ -93,7 +93,7 @@ SoViewportRegionElement::getClassStackIndex(void)
 */
 
 void
-SoViewportRegionElement::initClass( // static
+SoViewportRegionElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoViewportRegionElement )
@@ -121,7 +121,7 @@ SoViewportRegionElement::initClass( // static
 */
 
 void
-SoViewportRegionElement::cleanClass( // static
+SoViewportRegionElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoViewportRegionElement )
@@ -146,7 +146,7 @@ SoViewportRegionElement::SoViewportRegionElement(
   The destructor.
 */
 
-SoViewportRegionElement::~SoViewportRegionElement( // virtual
+SoViewportRegionElement::~SoViewportRegionElement(
     void )
 {
 }
@@ -211,7 +211,7 @@ SoViewportRegionElement::setElt(const SbViewportRegion & viewportRegion)
 //! FIXME: write doc.
 
 void
-SoViewportRegionElement::print( // virtual
+SoViewportRegionElement::print(
     FILE * file ) const
 {
   fprintf( file, "SoViewportRegionElement[%p]\n", this );

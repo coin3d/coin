@@ -91,7 +91,7 @@ SoGLClipPlaneElement::getClassStackIndex(void)
 */
 
 void
-SoGLClipPlaneElement::initClass( // static
+SoGLClipPlaneElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoGLClipPlaneElement )
@@ -119,7 +119,7 @@ SoGLClipPlaneElement::initClass( // static
 */
 
 void
-SoGLClipPlaneElement::cleanClass( // static
+SoGLClipPlaneElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLClipPlaneElement )
@@ -142,7 +142,7 @@ SoGLClipPlaneElement::SoGLClipPlaneElement()
   The destructor.
 */
 
-SoGLClipPlaneElement::~SoGLClipPlaneElement( // virtual
+SoGLClipPlaneElement::~SoGLClipPlaneElement(
     void )
 {
 }

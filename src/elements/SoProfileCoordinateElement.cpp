@@ -117,7 +117,7 @@ SoProfileCoordinateElement::getClassStackIndex(void)
 */
 
 void
-SoProfileCoordinateElement::initClass( // static
+SoProfileCoordinateElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoProfileCoordinateElement )
@@ -145,7 +145,7 @@ SoProfileCoordinateElement::initClass( // static
 */
 
 void
-SoProfileCoordinateElement::cleanClass( // static
+SoProfileCoordinateElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoProfileCoordinateElement )
@@ -181,7 +181,7 @@ SoProfileCoordinateElement::~SoProfileCoordinateElement(
 //! FIXME: write doc.
 
 void
-SoProfileCoordinateElement::init( // virtual
+SoProfileCoordinateElement::init(
     SoState * state )
 {
     inherited::init( state );
@@ -195,7 +195,7 @@ SoProfileCoordinateElement::init( // virtual
 //! FIXME: write doc.
 
 void
-SoProfileCoordinateElement::set2( // static
+SoProfileCoordinateElement::set2(
     SoState * const state,
     SoNode * const node,
     const int32_t numCoords,
@@ -216,7 +216,7 @@ SoProfileCoordinateElement::set2( // static
 //! FIXME: write doc.
 
 void
-SoProfileCoordinateElement::set3( // static
+SoProfileCoordinateElement::set3(
     SoState * const state,
     SoNode * const node,
     const int32_t numCoords,
@@ -237,7 +237,7 @@ SoProfileCoordinateElement::set3( // static
 //! FIXME: write doc.
 
 void
-SoProfileCoordinateElement::print( // virtual
+SoProfileCoordinateElement::print(
     FILE * file ) const
 {
     fprintf( file, "SoProfileCoordinateElement[%p]: %d coords at %p.\n", this,
@@ -248,7 +248,7 @@ SoProfileCoordinateElement::print( // virtual
 //! FIXME: write doc.
 
 void
-SoProfileCoordinateElement::push( // virtual
+SoProfileCoordinateElement::push(
     SoState * state )
 {
     inherited::push( state );
@@ -257,7 +257,7 @@ SoProfileCoordinateElement::push( // virtual
 //! FIXME: write doc.
 
 void
-SoProfileCoordinateElement::pop( // virtual
+SoProfileCoordinateElement::pop(
     SoState * state,
     const SoElement * prevTopElement )
 {

@@ -89,7 +89,7 @@ SoUnitsElement::getClassStackIndex(void)
 */
 
 void
-SoUnitsElement::initClass( // static
+SoUnitsElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoUnitsElement )
@@ -116,7 +116,7 @@ SoUnitsElement::initClass( // static
 */
 
 void
-SoUnitsElement::cleanClass( // static
+SoUnitsElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoUnitsElement )
@@ -149,7 +149,7 @@ SoUnitsElement::~SoUnitsElement(
 //! FIXME: write doc.
 
 void
-SoUnitsElement::set( // static
+SoUnitsElement::set(
     SoState * const state,
     SoNode * const node,
     const Units unit )
@@ -161,7 +161,7 @@ SoUnitsElement::set( // static
 //! FIXME: write doc.
 
 void
-SoUnitsElement::init( // virtual
+SoUnitsElement::init(
     SoState * state )
 {
     inherited::init( state );

@@ -89,7 +89,7 @@ SoGLCoordinateElement::getClassStackIndex(void)
 */
 
 void
-SoGLCoordinateElement::initClass( // static
+SoGLCoordinateElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoGLCoordinateElement )
@@ -117,7 +117,7 @@ SoGLCoordinateElement::initClass( // static
 */
 
 void
-SoGLCoordinateElement::cleanClass( // static
+SoGLCoordinateElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLCoordinateElement )
@@ -130,7 +130,7 @@ SoGLCoordinateElement::cleanClass( // static
   \sa void * SoGLCoordinateElement::createInstance( void )
 */
 
-SoGLCoordinateElement::SoGLCoordinateElement( // protected
+SoGLCoordinateElement::SoGLCoordinateElement(
     void )
 {
     setTypeId( SoGLCoordinateElement::classTypeId );
@@ -141,7 +141,7 @@ SoGLCoordinateElement::SoGLCoordinateElement( // protected
   The destructor.
 */
 
-SoGLCoordinateElement::~SoGLCoordinateElement( // virtual
+SoGLCoordinateElement::~SoGLCoordinateElement(
     void )
 {
 }

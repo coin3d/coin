@@ -85,7 +85,7 @@ SoCacheElement::getClassStackIndex(void)
 */
 
 void
-SoCacheElement::initClass( // static
+SoCacheElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoCacheElement )
@@ -137,7 +137,7 @@ SoCacheElement::SoCacheElement(
   The destructor.
 */
 
-SoCacheElement::~SoCacheElement( // virtual
+SoCacheElement::~SoCacheElement(
     void )
 {
 }
@@ -147,7 +147,7 @@ SoCacheElement::~SoCacheElement( // virtual
 */
 
 void
-SoCacheElement::init( // virtual
+SoCacheElement::init(
     SoState * state )
 {
     inherited::init( state );
@@ -178,7 +178,7 @@ SoCacheElement::pop(
 //! FIXME: write doc.
 
 void
-SoCacheElement::set( // static
+SoCacheElement::set(
     SoState * const state,
     SoCache * const cache )
 {
@@ -201,7 +201,7 @@ SoCacheElement::getCache(
 */
 
 SbBool
-SoCacheElement::anyOpen( // static
+SoCacheElement::anyOpen(
     SoState * const state )
 {
   assert(0 && "FIXME: not implemented");
@@ -213,7 +213,7 @@ SoCacheElement::anyOpen( // static
 */
 
 void
-SoCacheElement::invalidate( // static
+SoCacheElement::invalidate(
     SoState * const state )
 {
     assert(0 && "FIXME: not implemented");
@@ -225,7 +225,7 @@ SoCacheElement::invalidate( // static
 */
 
 SbBool
-SoCacheElement::matches( // virtual
+SoCacheElement::matches(
     const SoElement * element ) const
 {
     assert(0 && "FIXME: not implemented"); // print error message
@@ -240,7 +240,7 @@ SoCacheElement::matches( // virtual
 */
 
 SoElement *
-SoCacheElement::copyMatchInfo( // virtual
+SoCacheElement::copyMatchInfo(
     void ) const
 {
     assert(0 && "FIXME: not implemented"); // print error message
@@ -264,7 +264,7 @@ SoCacheElement::getNextCacheElement(
 */
 
 void
-SoCacheElement::addElement( // static
+SoCacheElement::addElement(
     SoState * const state,
     const SoElement * const element )
 {
@@ -277,7 +277,7 @@ SoCacheElement::addElement( // static
 */
 
 void
-SoCacheElement::addCacheDependency( // static
+SoCacheElement::addCacheDependency(
     SoState * const state,
     SoCache * const cache )
 {
@@ -290,7 +290,7 @@ SoCacheElement::addCacheDependency( // static
 */
 
 SbBool
-SoCacheElement::setInvalid( // static
+SoCacheElement::setInvalid(
     const SbBool newValue )
 {
     assert(0 && "FIXME: not implemented");

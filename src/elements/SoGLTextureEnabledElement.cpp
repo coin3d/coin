@@ -97,7 +97,7 @@ SoGLTextureEnabledElement::getClassStackIndex(void)
 */
 
 void
-SoGLTextureEnabledElement::initClass( // static
+SoGLTextureEnabledElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoGLTextureEnabledElement )
@@ -125,7 +125,7 @@ SoGLTextureEnabledElement::initClass( // static
 */
 
 void
-SoGLTextureEnabledElement::cleanClass( // static
+SoGLTextureEnabledElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLTextureEnabledElement )

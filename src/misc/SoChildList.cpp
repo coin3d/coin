@@ -174,8 +174,7 @@ SoChildList::traverse(SoAction * const action,
 */
 
 void
-SoChildList::traverse(
-    SoAction * const action)
+SoChildList::traverse(SoAction * const action)
 {
     traverse(action, 0, getLength() - 1);
 }
@@ -185,9 +184,8 @@ SoChildList::traverse(
 */
 
 void
-SoChildList::traverse(
-    SoAction * const action,
-    const int index)
+SoChildList::traverse(SoAction * const action,
+		      const int index)
 {
     traverse(action, index, index);
 }

@@ -93,7 +93,7 @@ SoNormalBindingElement::getClassStackIndex(void)
 */
 
 void
-SoNormalBindingElement::initClass( // static
+SoNormalBindingElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoNormalBindingElement )
@@ -121,7 +121,7 @@ SoNormalBindingElement::initClass( // static
 */
 
 void
-SoNormalBindingElement::cleanClass( // static
+SoNormalBindingElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoNormalBindingElement )
@@ -171,7 +171,7 @@ SoNormalBindingElement::set(SoState * const state,
 //! FIXME: write doc.
 
 void
-SoNormalBindingElement::init( // virtual
+SoNormalBindingElement::init(
     SoState * state )
 {
   inherited::init( state );

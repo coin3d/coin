@@ -90,7 +90,7 @@ SoAnnoText3RenderPrintElement::getClassStackIndex(void)
 */
 
 void
-SoAnnoText3RenderPrintElement::initClass( // static
+SoAnnoText3RenderPrintElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoAnnoText3RenderPrintElement )
@@ -118,7 +118,7 @@ SoAnnoText3RenderPrintElement::initClass( // static
 */
 
 void
-SoAnnoText3RenderPrintElement::cleanClass( // static
+SoAnnoText3RenderPrintElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoAnnoText3RenderPrintElement )
@@ -131,7 +131,7 @@ SoAnnoText3RenderPrintElement::cleanClass( // static
   \sa void * SoAnnoText3RenderPrintElement::createInstance()
 */
 
-SoAnnoText3RenderPrintElement::SoAnnoText3RenderPrintElement( // protected
+SoAnnoText3RenderPrintElement::SoAnnoText3RenderPrintElement(
     void )
 {
     setTypeId( SoAnnoText3RenderPrintElement::classTypeId );
@@ -151,7 +151,7 @@ SoAnnoText3RenderPrintElement::~SoAnnoText3RenderPrintElement( // virtual protec
 //! FIXME: write doc.
 
 void
-SoAnnoText3RenderPrintElement::init( // virtual
+SoAnnoText3RenderPrintElement::init(
     SoState * state )
 {
   inherited::init( state );

@@ -98,7 +98,7 @@ SoFontNameElement::getClassStackIndex(void)
 */
 
 void
-SoFontNameElement::initClass( // static
+SoFontNameElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoFontNameElement )
@@ -125,7 +125,7 @@ SoFontNameElement::initClass( // static
 */
 
 void
-SoFontNameElement::cleanClass( // static
+SoFontNameElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoFontNameElement )
@@ -169,7 +169,7 @@ SoFontNameElement::set(SoState * const state,
 //! FIXME: write doc.
 
 const SbName
-SoFontNameElement::get( // static
+SoFontNameElement::get(
     SoState * const state )
 {
   SoFontNameElement * element = (SoFontNameElement *)
@@ -180,7 +180,7 @@ SoFontNameElement::get( // static
 //! FIXME: write doc.
 
 SbBool
-SoFontNameElement::matches( // virtual
+SoFontNameElement::matches(
     SoElement * element ) const
 {
   if ( (SoElement *)this == element )
@@ -195,7 +195,7 @@ SoFontNameElement::matches( // virtual
 //! FIXME: write doc.
 
 SoElement *
-SoFontNameElement::copyMatchInfo( // virtual
+SoFontNameElement::copyMatchInfo(
     void ) const
 {
   SoFontNameElement * element = (SoFontNameElement *)
@@ -217,7 +217,7 @@ SoFontNameElement::print(FILE * file) const
 //! FIXME: write doc.
 
 void
-SoFontNameElement::init( // virtual
+SoFontNameElement::init(
     SoState * state )
 {
   inherited::init(state);

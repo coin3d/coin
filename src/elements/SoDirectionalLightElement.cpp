@@ -84,7 +84,7 @@ SoDirectionalLightElement::getClassStackIndex(void)
 */
 
 void
-SoDirectionalLightElement::initClass( // static
+SoDirectionalLightElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoDirectionalLightElement )
@@ -112,7 +112,7 @@ SoDirectionalLightElement::initClass( // static
 */
 
 void
-SoDirectionalLightElement::cleanClass( // static
+SoDirectionalLightElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoDirectionalLightElement )
@@ -144,7 +144,7 @@ SoDirectionalLightElement::~SoDirectionalLightElement(
 //! FIXME: write doc.
 
 void
-SoDirectionalLightElement::init( // virtual
+SoDirectionalLightElement::init(
     SoState * state )
 {
     inherited::init( state );
@@ -153,7 +153,7 @@ SoDirectionalLightElement::init( // virtual
 //! FIXME: write doc.
 
 void
-SoDirectionalLightElement::push( // virtual
+SoDirectionalLightElement::push(
     SoState * state )
 {
     inherited::push( state );
@@ -162,7 +162,7 @@ SoDirectionalLightElement::push( // virtual
 //! FIXME: write doc.
 
 void
-SoDirectionalLightElement::pop( // virtual
+SoDirectionalLightElement::pop(
     SoState * state,
     const SoElement * prevTopElement )
 {

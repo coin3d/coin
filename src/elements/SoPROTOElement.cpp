@@ -91,7 +91,7 @@ SoPROTOElement::getClassStackIndex(void)
 */
 
 void
-SoPROTOElement::initClass( // static
+SoPROTOElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoPROTOElement )
@@ -118,7 +118,7 @@ SoPROTOElement::initClass( // static
 */
 
 void
-SoPROTOElement::cleanClass( // static
+SoPROTOElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoPROTOElement )
@@ -150,7 +150,7 @@ SoPROTOElement::~SoPROTOElement(
 //! FIXME: write doc.
 
 void
-SoPROTOElement::init( // virtual
+SoPROTOElement::init(
     SoState * state )
 {
     inherited::init( state );
@@ -159,7 +159,7 @@ SoPROTOElement::init( // virtual
 //! FIXME: write doc.
 
 void
-SoPROTOElement::push( // virtual
+SoPROTOElement::push(
     SoState * state )
 {
     inherited::push( state );
@@ -168,7 +168,7 @@ SoPROTOElement::push( // virtual
 //! FIXME: write doc.
 
 void
-SoPROTOElement::pop( // virtual
+SoPROTOElement::pop(
     SoState * state,
     const SoElement * prevTopElement )
 {

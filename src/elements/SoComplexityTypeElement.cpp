@@ -94,7 +94,7 @@ SoComplexityTypeElement::getClassStackIndex(void)
 */
 
 void
-SoComplexityTypeElement::initClass( // static
+SoComplexityTypeElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoComplexityTypeElement )
@@ -122,7 +122,7 @@ SoComplexityTypeElement::initClass( // static
 */
 
 void
-SoComplexityTypeElement::cleanClass( // static
+SoComplexityTypeElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoComplexityTypeElement )
@@ -155,7 +155,7 @@ SoComplexityTypeElement::~SoComplexityTypeElement(
 //! FIXME: write doc.
 
 void
-SoComplexityTypeElement::set( // static
+SoComplexityTypeElement::set(
     SoState * const state,
     SoNode * const node,
     const Type type )

@@ -91,7 +91,7 @@ SoGLLineWidthElement::getClassStackIndex(void)
 */
 
 void
-SoGLLineWidthElement::initClass( // static
+SoGLLineWidthElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoGLLineWidthElement )
@@ -119,7 +119,7 @@ SoGLLineWidthElement::initClass( // static
 */
 
 void
-SoGLLineWidthElement::cleanClass( // static
+SoGLLineWidthElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLLineWidthElement )
@@ -142,7 +142,7 @@ SoGLLineWidthElement::SoGLLineWidthElement()
   The destructor.
 */
 
-SoGLLineWidthElement::~SoGLLineWidthElement( // virtual
+SoGLLineWidthElement::~SoGLLineWidthElement(
     void )
 {
 }
@@ -150,7 +150,7 @@ SoGLLineWidthElement::~SoGLLineWidthElement( // virtual
 //! FIXME: write doc.
 
 void
-SoGLLineWidthElement::init( // virtual
+SoGLLineWidthElement::init(
     SoState * state)
 {
   inherited::init(state);

@@ -94,7 +94,7 @@ SoGLViewingMatrixElement::getClassStackIndex(void)
 */
 
 void
-SoGLViewingMatrixElement::initClass( // static
+SoGLViewingMatrixElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoGLViewingMatrixElement )
@@ -122,7 +122,7 @@ SoGLViewingMatrixElement::initClass( // static
 */
 
 void
-SoGLViewingMatrixElement::cleanClass( // static
+SoGLViewingMatrixElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLViewingMatrixElement )
@@ -135,7 +135,7 @@ SoGLViewingMatrixElement::cleanClass( // static
   \sa void * SoGLViewingMatrixElement::createInstance( void )
 */
 
-SoGLViewingMatrixElement::SoGLViewingMatrixElement( // protected
+SoGLViewingMatrixElement::SoGLViewingMatrixElement(
     void )
   : state( NULL )
 {
@@ -147,7 +147,7 @@ SoGLViewingMatrixElement::SoGLViewingMatrixElement( // protected
   The destructor.
 */
 
-SoGLViewingMatrixElement::~SoGLViewingMatrixElement( // virtual
+SoGLViewingMatrixElement::~SoGLViewingMatrixElement(
     void )
 {
 }

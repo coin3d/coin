@@ -177,7 +177,7 @@ SoSearchAction::SoSearchAction(
   The destructor.
 */
 
-SoSearchAction::~SoSearchAction( // virtual
+SoSearchAction::~SoSearchAction(
     void )
 {
   reset(); // clears everything
@@ -478,7 +478,7 @@ SoSearchAction::addPath(
 */
 
 void
-SoSearchAction::beginTraversal( // virtual
+SoSearchAction::beginTraversal(
   SoNode * node )
 {
   this->paths.truncate( 0 );

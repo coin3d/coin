@@ -91,7 +91,7 @@ SoGLPointSizeElement::getClassStackIndex(void)
 */
 
 void
-SoGLPointSizeElement::initClass( // static
+SoGLPointSizeElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoGLPointSizeElement )
@@ -119,7 +119,7 @@ SoGLPointSizeElement::initClass( // static
 */
 
 void
-SoGLPointSizeElement::cleanClass( // static
+SoGLPointSizeElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLPointSizeElement )
@@ -142,7 +142,7 @@ SoGLPointSizeElement::SoGLPointSizeElement()
   The destructor.
 */
 
-SoGLPointSizeElement::~SoGLPointSizeElement( // virtual
+SoGLPointSizeElement::~SoGLPointSizeElement(
     void )
 {
 }

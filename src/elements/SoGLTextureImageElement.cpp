@@ -91,7 +91,7 @@ SoGLTextureImageElement::getClassStackIndex(void)
 */
 
 void
-SoGLTextureImageElement::initClass( // static
+SoGLTextureImageElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoGLTextureImageElement )
@@ -119,7 +119,7 @@ SoGLTextureImageElement::initClass( // static
 */
 
 void
-SoGLTextureImageElement::cleanClass( // static
+SoGLTextureImageElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLTextureImageElement )
@@ -142,7 +142,7 @@ SoGLTextureImageElement::SoGLTextureImageElement()
   The destructor.
 */
 
-SoGLTextureImageElement::~SoGLTextureImageElement( // virtual
+SoGLTextureImageElement::~SoGLTextureImageElement(
     void )
 {
 }

@@ -28,7 +28,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource( SoReorganizeAction )
+//$ BEGIN TEMPLATE ActionSource(SoReorganizeAction)
 
 SoType SoReorganizeAction::classTypeId = SoType::badType();
 
@@ -101,10 +101,9 @@ SoReorganizeAction::enableElement(const SoType type, const int stackIndex)
 */
 
 void
-SoReorganizeAction::initClass(
-    void )
+SoReorganizeAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource( SoReorganizeAction )
+//$ BEGIN TEMPLATE InitActionSource(SoReorganizeAction)
   assert(SoReorganizeAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
@@ -122,8 +121,7 @@ SoReorganizeAction::initClass(
 */
 
 void
-SoReorganizeAction::cleanClass(
-    void )
+SoReorganizeAction::cleanClass(void)
 {
 }
 
@@ -142,8 +140,7 @@ SoReorganizeAction::SoReorganizeAction(void)
   The destructor.
 */
 
-SoReorganizeAction::~SoReorganizeAction(
-    void )
+SoReorganizeAction::~SoReorganizeAction(void)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -153,7 +150,7 @@ SoReorganizeAction::~SoReorganizeAction(
 */
 
 void
-SoReorganizeAction::beginTraversal( SoNode * node )
+SoReorganizeAction::beginTraversal(SoNode * /* node */)
 {
   assert(0 && "FIXME: not implemented");
 }

@@ -93,7 +93,7 @@ SoMaterialBindingElement::getClassStackIndex(void)
 */
 
 void
-SoMaterialBindingElement::initClass( // static
+SoMaterialBindingElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoMaterialBindingElement )
@@ -121,7 +121,7 @@ SoMaterialBindingElement::initClass( // static
 */
 
 void
-SoMaterialBindingElement::cleanClass( // static
+SoMaterialBindingElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoMaterialBindingElement )
@@ -172,7 +172,7 @@ SoMaterialBindingElement::set(SoState * const state,
 //! FIXME: write doc.
 
 void
-SoMaterialBindingElement::init( // virtual
+SoMaterialBindingElement::init(
     SoState * state )
 {
   inherited::init(state);

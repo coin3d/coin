@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_VIEWPORT_REGION_ELEMENT_H_
-#define _SO_VIEWPORT_REGION_ELEMENT_H_
+#ifndef __SOVIEWPORTREGIONELEMENT_H__
+#define __SOVIEWPORTREGIONELEMENT_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOVIEWPORTREGIONELEMENT)
@@ -68,4 +68,4 @@ private:
 
 }; // SoViewportRegionElement
 
-#endif // ! _SO_VIEWPORT_REGION_ELEMENT_H_
+#endif // !__SOVIEWPORTREGIONELEMENT_H__

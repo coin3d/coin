@@ -94,7 +94,7 @@ SoDrawStyleElement::getClassStackIndex(void)
 */
 
 void
-SoDrawStyleElement::initClass( // static
+SoDrawStyleElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoDrawStyleElement )
@@ -122,7 +122,7 @@ SoDrawStyleElement::initClass( // static
 */
 
 void
-SoDrawStyleElement::cleanClass( // static
+SoDrawStyleElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoDrawStyleElement )
@@ -135,7 +135,7 @@ SoDrawStyleElement::cleanClass( // static
   \sa void * SoDrawStyleElement::createInstance( void )
 */
 
-SoDrawStyleElement::SoDrawStyleElement( // protected
+SoDrawStyleElement::SoDrawStyleElement(
     void )
 {
   setTypeId( SoDrawStyleElement::classTypeId );
@@ -146,7 +146,7 @@ SoDrawStyleElement::SoDrawStyleElement( // protected
   The destructor.
 */
 
-SoDrawStyleElement::~SoDrawStyleElement( // virtual
+SoDrawStyleElement::~SoDrawStyleElement(
     void )
 {
 }
@@ -154,7 +154,7 @@ SoDrawStyleElement::~SoDrawStyleElement( // virtual
 //! FIXME: write doc.
 
 void
-SoDrawStyleElement::init( // virtual
+SoDrawStyleElement::init(
     SoState * state )
 {
   inherited::init( state );
@@ -164,7 +164,7 @@ SoDrawStyleElement::init( // virtual
 //! FIXME: write doc.
 
 void
-SoDrawStyleElement::set( // static
+SoDrawStyleElement::set(
     SoState * const state,
     SoNode * const node,
     const Style style )

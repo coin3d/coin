@@ -90,7 +90,7 @@ SoGLRenderPassElement::getClassStackIndex(void)
 */
 
 void
-SoGLRenderPassElement::initClass( // static
+SoGLRenderPassElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoGLRenderPassElement )
@@ -118,7 +118,7 @@ SoGLRenderPassElement::initClass( // static
 */
 
 void
-SoGLRenderPassElement::cleanClass( // static
+SoGLRenderPassElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLRenderPassElement )
@@ -131,7 +131,7 @@ SoGLRenderPassElement::cleanClass( // static
   \sa void * SoGLRenderPassElement::createInstance( void )
 */
 
-SoGLRenderPassElement::SoGLRenderPassElement( // protected
+SoGLRenderPassElement::SoGLRenderPassElement(
 					     void )
   : passnr( 0 )
 {
@@ -143,7 +143,7 @@ SoGLRenderPassElement::SoGLRenderPassElement( // protected
   The destructor.
 */
 
-SoGLRenderPassElement::~SoGLRenderPassElement( // virtual
+SoGLRenderPassElement::~SoGLRenderPassElement(
 					      void )
 {
 }
@@ -151,7 +151,7 @@ SoGLRenderPassElement::~SoGLRenderPassElement( // virtual
 //! FIXME: write doc.
 
 void
-SoGLRenderPassElement::init( // virtual
+SoGLRenderPassElement::init(
 			    SoState * state )
 {
   inherited::init( state );
@@ -161,7 +161,7 @@ SoGLRenderPassElement::init( // virtual
 //! FIXME: write doc.
 
 void
-SoGLRenderPassElement::push( // virtual
+SoGLRenderPassElement::push(
 			    SoState * state )
 {
   inherited::push( state );
@@ -170,7 +170,7 @@ SoGLRenderPassElement::push( // virtual
 //! FIXME: write doc.
 
 void
-SoGLRenderPassElement::pop( // virtual
+SoGLRenderPassElement::pop(
 			   SoState * state,
 			   const SoElement * prevTopElement )
 {
@@ -180,7 +180,7 @@ SoGLRenderPassElement::pop( // virtual
 //! FIXME: write doc.
 
 SbBool
-SoGLRenderPassElement::matches( // virtual
+SoGLRenderPassElement::matches(
 			       const SoElement * element ) const
 {
   assert(0 && "FIXME: not implemented");
@@ -190,7 +190,7 @@ SoGLRenderPassElement::matches( // virtual
 //! FIXME: write doc.
 
 SoElement *
-SoGLRenderPassElement::copyMatchInfo( // virtual
+SoGLRenderPassElement::copyMatchInfo(
 				     void ) const
 {
   assert(0 && "FIXME: not implemented");
@@ -200,7 +200,7 @@ SoGLRenderPassElement::copyMatchInfo( // virtual
 //! FIXME: write doc.
 
 void
-SoGLRenderPassElement::set( // static
+SoGLRenderPassElement::set(
 			   SoState * const state,
 			   const int pass )
 {
@@ -212,7 +212,7 @@ SoGLRenderPassElement::set( // static
 //! FIXME: write doc.
 
 int
-SoGLRenderPassElement::get( // static
+SoGLRenderPassElement::get(
 			   SoState * const state )
 {
   const SoGLRenderPassElement * element = (const SoGLRenderPassElement *)
@@ -223,7 +223,7 @@ SoGLRenderPassElement::get( // static
 //! FIXME: write doc.
 
 void
-SoGLRenderPassElement::print( // virtual
+SoGLRenderPassElement::print(
 			     FILE * file ) const
 {
   assert(0 && "FIXME: not implemented");

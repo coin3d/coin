@@ -84,7 +84,7 @@ SoFontSizeElement::getClassStackIndex(void)
 */
 
 void
-SoFontSizeElement::initClass( // static
+SoFontSizeElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoFontSizeElement )
@@ -111,7 +111,7 @@ SoFontSizeElement::initClass( // static
 */
 
 void
-SoFontSizeElement::cleanClass( // static
+SoFontSizeElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoFontSizeElement )
@@ -124,7 +124,7 @@ SoFontSizeElement::cleanClass( // static
   \sa void * SoFontSizeElement::createInstance( void )
 */
 
-SoFontSizeElement::SoFontSizeElement( // protected
+SoFontSizeElement::SoFontSizeElement(
     void )
 {
     setTypeId( SoFontSizeElement::classTypeId );
@@ -144,7 +144,7 @@ SoFontSizeElement::~SoFontSizeElement( // virtual protected
 //! FIXME: write doc.
 
 void
-SoFontSizeElement::init( // virtual
+SoFontSizeElement::init(
     SoState * state )
 {
   inherited::init( state );

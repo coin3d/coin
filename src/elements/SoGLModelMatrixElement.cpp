@@ -93,7 +93,7 @@ SoGLModelMatrixElement::getClassStackIndex(void)
 */
 
 void
-SoGLModelMatrixElement::initClass( // static
+SoGLModelMatrixElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoGLModelMatrixElement )
@@ -121,7 +121,7 @@ SoGLModelMatrixElement::initClass( // static
 */
 
 void
-SoGLModelMatrixElement::cleanClass( // static
+SoGLModelMatrixElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLModelMatrixElement )
@@ -134,7 +134,7 @@ SoGLModelMatrixElement::cleanClass( // static
   \sa void * SoGLModelMatrixElement::createInstance( void )
 */
 
-SoGLModelMatrixElement::SoGLModelMatrixElement( // protected
+SoGLModelMatrixElement::SoGLModelMatrixElement(
     void )
   : state( NULL ), viewEltNodeId( 0 )
 {
@@ -146,7 +146,7 @@ SoGLModelMatrixElement::SoGLModelMatrixElement( // protected
   The destructor.
 */
 
-SoGLModelMatrixElement::~SoGLModelMatrixElement( // virtual
+SoGLModelMatrixElement::~SoGLModelMatrixElement(
     void )
 {
 }

@@ -114,7 +114,7 @@ SoPolygonOffsetElement::getClassStackIndex(void)
 */
 
 void
-SoPolygonOffsetElement::initClass( // static
+SoPolygonOffsetElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoPolygonOffsetElement )
@@ -141,7 +141,7 @@ SoPolygonOffsetElement::initClass( // static
 */
 
 void
-SoPolygonOffsetElement::cleanClass( // static
+SoPolygonOffsetElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoPolygonOffsetElement )
@@ -154,7 +154,7 @@ SoPolygonOffsetElement::cleanClass( // static
   \sa void * SoPolygonOffsetElement::createInstance( void )
 */
 
-SoPolygonOffsetElement::SoPolygonOffsetElement( // protected
+SoPolygonOffsetElement::SoPolygonOffsetElement(
     void )
 {
     setTypeId( SoPolygonOffsetElement::classTypeId );
@@ -165,7 +165,7 @@ SoPolygonOffsetElement::SoPolygonOffsetElement( // protected
   The destructor.
 */
 
-SoPolygonOffsetElement::~SoPolygonOffsetElement( // virtual
+SoPolygonOffsetElement::~SoPolygonOffsetElement(
     void )
 {
 }
@@ -173,7 +173,7 @@ SoPolygonOffsetElement::~SoPolygonOffsetElement( // virtual
 //! FIXME: write doc.
 
 void
-SoPolygonOffsetElement::init( // virtual
+SoPolygonOffsetElement::init(
     SoState * state )
 {
   inherited::init( state );
@@ -187,7 +187,7 @@ SoPolygonOffsetElement::init( // virtual
 //! FIXME: write doc.
 
 void
-SoPolygonOffsetElement::push( // virtual
+SoPolygonOffsetElement::push(
     SoState * state )
 {
     inherited::push( state );
@@ -196,7 +196,7 @@ SoPolygonOffsetElement::push( // virtual
 //! FIXME: write doc.
 
 SbBool
-SoPolygonOffsetElement::matches( // virtual
+SoPolygonOffsetElement::matches(
     const SoElement * element ) const
 {
   assert(0 && "FIXME: not implemented");
@@ -206,7 +206,7 @@ SoPolygonOffsetElement::matches( // virtual
 //! FIXME: write doc.
 
 SoElement *
-SoPolygonOffsetElement::copyMatchInfo( // virtual
+SoPolygonOffsetElement::copyMatchInfo(
     void ) const
 {
   assert(0 && "FIXME: not implemented");
@@ -216,7 +216,7 @@ SoPolygonOffsetElement::copyMatchInfo( // virtual
 //! FIXME: write doc.
 
 void
-SoPolygonOffsetElement::set( // static
+SoPolygonOffsetElement::set(
     SoState * state,
     SoNode * node, float factor, float units, Style styles, SbBool on)
 {
@@ -231,7 +231,7 @@ SoPolygonOffsetElement::set( // static
 //! FIXME: write doc.
 
 void
-SoPolygonOffsetElement::get( // static
+SoPolygonOffsetElement::get(
     SoState * state,
     float & factor, float & units, Style & styles, SbBool & on)
 {

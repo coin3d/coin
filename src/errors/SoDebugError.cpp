@@ -72,7 +72,7 @@ void * SoDebugError::callbackData = NULL;
 */
 
 void
-SoDebugError::initClass( void ) // static
+SoDebugError::initClass( void )
 {
   SoDebugError::callback = SoError::defaultHandlerCB;
   SoDebugError::callbackData = NULL;
@@ -85,7 +85,7 @@ SoDebugError::initClass( void ) // static
 */
 
 void
-SoDebugError::cleanClass( void ) // static
+SoDebugError::cleanClass( void )
 {
 }
 
@@ -94,7 +94,7 @@ SoDebugError::cleanClass( void ) // static
 */
 
 void
-SoDebugError::setHandlerCallback( // static
+SoDebugError::setHandlerCallback(
   SoErrorCB * const function,
   void * const data )
 {
@@ -107,7 +107,7 @@ SoDebugError::setHandlerCallback( // static
 */
 
 SoErrorCB *
-SoDebugError::getHandlerCallback( void ) // static
+SoDebugError::getHandlerCallback( void )
 {
   return SoDebugError::callback;
 }
@@ -117,7 +117,7 @@ SoDebugError::getHandlerCallback( void ) // static
 */
 
 void *
-SoDebugError::getHandlerData( void ) // static
+SoDebugError::getHandlerData( void )
 {
   return SoDebugError::callbackData;
 }
@@ -127,7 +127,7 @@ SoDebugError::getHandlerData( void ) // static
 */
 
 SoType
-SoDebugError::getClassTypeId( void ) // static
+SoDebugError::getClassTypeId( void )
 {
   return SoDebugError::classTypeId;
 }
@@ -137,7 +137,7 @@ SoDebugError::getClassTypeId( void ) // static
 */
 
 SoType
-SoDebugError::getTypeId( void ) const // virtual
+SoDebugError::getTypeId( void ) const
 {
   return SoDebugError::classTypeId;
 }
@@ -157,7 +157,7 @@ SoDebugError::getSeverity( void ) const
 */
 
 void
-SoDebugError::post( // static
+SoDebugError::post(
   const char * const methodName,
   const char * const formatString,
   ... )
@@ -180,7 +180,7 @@ SoDebugError::post( // static
 */
 
 void
-SoDebugError::postWarning( // static
+SoDebugError::postWarning(
   const char * const methodName,
   const char * const formatString,
   ... )
@@ -203,7 +203,7 @@ SoDebugError::postWarning( // static
 */
 
 void
-SoDebugError::postInfo( // static
+SoDebugError::postInfo(
   const char * const methodName,
   const char * const formatString,
   ... )
@@ -226,7 +226,7 @@ SoDebugError::postInfo( // static
 */
 
 SoErrorCB *
-SoDebugError::getHandler( // virtual
+SoDebugError::getHandler(
   void * & data ) const
 {
   data = SoDebugError::callbackData;

@@ -29,7 +29,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource( SoGlobalSimplifyAction )
+//$ BEGIN TEMPLATE ActionSource(SoGlobalSimplifyAction)
 
 SoType SoGlobalSimplifyAction::classTypeId = SoType::badType();
 
@@ -103,9 +103,9 @@ SoGlobalSimplifyAction::enableElement(const SoType type, const int stackIndex)
 
 void
 SoGlobalSimplifyAction::initClass(
-    void )
+    void)
 {
-//$ BEGIN TEMPLATE InitActionSource( SoGlobalSimplifyAction )
+//$ BEGIN TEMPLATE InitActionSource(SoGlobalSimplifyAction)
   assert(SoGlobalSimplifyAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
@@ -123,8 +123,7 @@ SoGlobalSimplifyAction::initClass(
 */
 
 void
-SoGlobalSimplifyAction::cleanClass(
-    void )
+SoGlobalSimplifyAction::cleanClass(void)
 {
 }
 
@@ -143,8 +142,7 @@ SoGlobalSimplifyAction::SoGlobalSimplifyAction(void)
   The destructor.
 */
 
-SoGlobalSimplifyAction::~SoGlobalSimplifyAction(
-    void )
+SoGlobalSimplifyAction::~SoGlobalSimplifyAction(void)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -154,7 +152,7 @@ SoGlobalSimplifyAction::~SoGlobalSimplifyAction(
 */
 
 void
-SoGlobalSimplifyAction::beginTraversal( SoNode * node )
+SoGlobalSimplifyAction::beginTraversal(SoNode * /* node */)
 {
   assert(0 && "FIXME: not implemented");
 }

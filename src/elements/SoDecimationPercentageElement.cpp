@@ -84,7 +84,7 @@ SoDecimationPercentageElement::getClassStackIndex(void)
 */
 
 void
-SoDecimationPercentageElement::initClass( // static
+SoDecimationPercentageElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoDecimationPercentageElement )
@@ -112,7 +112,7 @@ SoDecimationPercentageElement::initClass( // static
 */
 
 void
-SoDecimationPercentageElement::cleanClass( // static
+SoDecimationPercentageElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoDecimationPercentageElement )
@@ -125,7 +125,7 @@ SoDecimationPercentageElement::cleanClass( // static
   \sa void * SoDecimationPercentageElement::createInstance( void )
 */
 
-SoDecimationPercentageElement::SoDecimationPercentageElement( // protected
+SoDecimationPercentageElement::SoDecimationPercentageElement(
     void )
 {
     setTypeId( SoDecimationPercentageElement::classTypeId );
@@ -145,7 +145,7 @@ SoDecimationPercentageElement::~SoDecimationPercentageElement( // virtual protec
 //! FIXME: write doc.
 
 void
-SoDecimationPercentageElement::init( // virtual
+SoDecimationPercentageElement::init(
     SoState * state )
 {
   inherited::init( state );

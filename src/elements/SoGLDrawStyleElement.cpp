@@ -87,7 +87,7 @@ SoGLDrawStyleElement::getClassStackIndex(void)
 */
 
 void
-SoGLDrawStyleElement::initClass( // static
+SoGLDrawStyleElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoGLDrawStyleElement )
@@ -115,7 +115,7 @@ SoGLDrawStyleElement::initClass( // static
 */
 
 void
-SoGLDrawStyleElement::cleanClass( // static
+SoGLDrawStyleElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLDrawStyleElement )
@@ -128,7 +128,7 @@ SoGLDrawStyleElement::cleanClass( // static
   \sa void * SoGLDrawStyleElement::createInstance( void )
 */
 
-SoGLDrawStyleElement::SoGLDrawStyleElement( // protected
+SoGLDrawStyleElement::SoGLDrawStyleElement(
     void )
 {
     setTypeId( SoGLDrawStyleElement::classTypeId );
@@ -139,7 +139,7 @@ SoGLDrawStyleElement::SoGLDrawStyleElement( // protected
   The destructor.
 */
 
-SoGLDrawStyleElement::~SoGLDrawStyleElement( // virtual
+SoGLDrawStyleElement::~SoGLDrawStyleElement(
     void )
 {
 }
@@ -147,7 +147,7 @@ SoGLDrawStyleElement::~SoGLDrawStyleElement( // virtual
 //! FIXME: write doc.
 
 void
-SoGLDrawStyleElement::init( // virtual
+SoGLDrawStyleElement::init(
     SoState * state )
 {
   inherited::init(state);
@@ -157,7 +157,7 @@ SoGLDrawStyleElement::init( // virtual
 //! FIXME: write doc.
 
 void
-SoGLDrawStyleElement::push( // virtual
+SoGLDrawStyleElement::push(
     SoState * state )
 {
   inherited::push(state);

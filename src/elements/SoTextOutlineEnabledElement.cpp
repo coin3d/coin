@@ -84,7 +84,7 @@ SoTextOutlineEnabledElement::getClassStackIndex(void)
 */
 
 void
-SoTextOutlineEnabledElement::initClass( // static
+SoTextOutlineEnabledElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoTextOutlineEnabledElement )
@@ -112,7 +112,7 @@ SoTextOutlineEnabledElement::initClass( // static
 */
 
 void
-SoTextOutlineEnabledElement::cleanClass( // static
+SoTextOutlineEnabledElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoTextOutlineEnabledElement )
@@ -145,7 +145,7 @@ SoTextOutlineEnabledElement::~SoTextOutlineEnabledElement(
 //! FIXME: write doc.
 
 void
-SoTextOutlineEnabledElement::set( // static
+SoTextOutlineEnabledElement::set(
     SoState * const state,
     SoNode * const node,
     const SbBool enabled )
@@ -187,7 +187,7 @@ SoTextOutlineEnabledElement::getDefault( void )
 //! FIXME: write doc.
 
 void
-SoTextOutlineEnabledElement::init( // virtual
+SoTextOutlineEnabledElement::init(
     SoState * state )
 {
     inherited::init( state );
@@ -196,7 +196,7 @@ SoTextOutlineEnabledElement::init( // virtual
 //! FIXME: write doc.
 
 void
-SoTextOutlineEnabledElement::push( // virtual
+SoTextOutlineEnabledElement::push(
     SoState * state )
 {
     inherited::push( state );
@@ -205,7 +205,7 @@ SoTextOutlineEnabledElement::push( // virtual
 //! FIXME: write doc.
 
 void
-SoTextOutlineEnabledElement::pop( // virtual
+SoTextOutlineEnabledElement::pop(
     SoState * state,
     const SoElement * prevTopElement )
 {

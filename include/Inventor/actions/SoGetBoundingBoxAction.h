@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_GET_BOUNDING_BOX_ACTION_H_
-#define _SO_GET_BOUNDING_BOX_ACTION_H_
+#ifndef __SOGETBOUNDINGBOXACTION_H__
+#define __SOGETBOUNDINGBOXACTION_H__
 
 #include <Inventor/confdep.h>
 #if defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
@@ -39,7 +39,7 @@
 class SoGetBoundingBoxAction : public SoAction {
   typedef SoAction inherited;
 
-//$ BEGIN TEMPLATE ActionHeader( SoGetBoundingBoxAction )
+//$ BEGIN TEMPLATE ActionHeader(SoGetBoundingBoxAction)
 private:
   static SoType classTypeId;
 
@@ -68,18 +68,18 @@ public:
     TRANSFORM, BBOX, ALL
   };
 
-  SoGetBoundingBoxAction(const SbViewportRegion &viewportRegion);
-  void setViewportRegion(const SbViewportRegion &newRegion);
-  const SbViewportRegion &getViewportRegion() const;
+  SoGetBoundingBoxAction(const SbViewportRegion & viewportRegion);
+  void setViewportRegion(const SbViewportRegion & newRegion);
+  const SbViewportRegion & getViewportRegion() const;
   SbBox3f getBoundingBox() const;
-  SbXfBox3f &getXfBoundingBox();
-  const SbVec3f &getCenter() const;
+  SbXfBox3f & getXfBoundingBox();
+  const SbVec3f & getCenter() const;
   void setInCameraSpace(const SbBool flag);
   SbBool isInCameraSpace() const;
-  void setResetPath(const SoPath *path, 
+  void setResetPath(const SoPath * path, 
 		    const SbBool resetBefore = TRUE, 
 		    const ResetType what = ALL);
-  const SoPath *getResetPath() const;
+  const SoPath * getResetPath() const;
   SbBool isResetPath() const;
   SbBool isResetBefore() const;
   ResetType getWhatReset() const;
@@ -88,10 +88,10 @@ public:
   void checkResetBefore(); // for OI compability
   void checkResetAfter();
   
-  void extendBy(const SbBox3f &box);
-  void extendBy(const SbXfBox3f &box);
+  void extendBy(const SbBox3f & box);
+  void extendBy(const SbXfBox3f & box);
 
-  void setCenter(const SbVec3f &center,
+  void setCenter(const SbVec3f & center,
 		 const SbBool transformCenter);
   SbBool isCenterSet() const;
   void resetCenter();
@@ -104,8 +104,8 @@ private:
   SbVec3f center;  
   SbViewportRegion vpRegion;
   ResetType resetType;
-  SoPath *resetPath;
+  SoPath * resetPath;
   unsigned int flags;
 };
 
-#endif // ! _SO_GET_BOUNDING_BOX_ACTION_H_
+#endif // !__SOGETBOUNDINGBOXACTION_H__

@@ -47,14 +47,14 @@
   SoAccumulatedElement.
 */
 
-SoType SoAccumulatedElement::classTypeId = SoType::badType(); // static
+SoType SoAccumulatedElement::classTypeId = SoType::badType();
 
 /*!
   This static method returns the SoType type for SoAccumulatedElement.
 */
 
 SoType
-SoAccumulatedElement::getClassTypeId( // static
+SoAccumulatedElement::getClassTypeId(
   void )
 {
   return SoAccumulatedElement::classTypeId;
@@ -67,14 +67,14 @@ SoAccumulatedElement::getClassTypeId( // static
   SoAccumulatedElement class.
 */
 
-int SoAccumulatedElement::classStackIndex; // static
+int SoAccumulatedElement::classStackIndex;
 
 /*!
   This static method returns the state stack index for the SoAccumulatedElement class.
 */
 
 int
-SoAccumulatedElement::getClassStackIndex( // static
+SoAccumulatedElement::getClassStackIndex(
   void )
 {
   return SoAccumulatedElement::classStackIndex;
@@ -87,7 +87,7 @@ SoAccumulatedElement::getClassStackIndex( // static
 */
 
 void
-SoAccumulatedElement::initClass( // static
+SoAccumulatedElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitAbstractElementSource( SoAccumulatedElement )
@@ -114,7 +114,7 @@ SoAccumulatedElement::initClass( // static
 */
 
 void
-SoAccumulatedElement::cleanClass( // static
+SoAccumulatedElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanAbstractElementSource( SoAccumulatedElement )
@@ -139,7 +139,7 @@ SoAccumulatedElement::SoAccumulatedElement()
   The destructor.
 */
 
-SoAccumulatedElement::~SoAccumulatedElement( // virtual
+SoAccumulatedElement::~SoAccumulatedElement(
     void )
 {
 }

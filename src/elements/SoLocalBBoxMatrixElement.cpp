@@ -88,7 +88,7 @@ SoLocalBBoxMatrixElement::getClassStackIndex(void)
 */
 
 void
-SoLocalBBoxMatrixElement::initClass( // static
+SoLocalBBoxMatrixElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoLocalBBoxMatrixElement )
@@ -116,7 +116,7 @@ SoLocalBBoxMatrixElement::initClass( // static
 */
 
 void
-SoLocalBBoxMatrixElement::cleanClass( // static
+SoLocalBBoxMatrixElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoLocalBBoxMatrixElement )
@@ -140,7 +140,7 @@ SoLocalBBoxMatrixElement::SoLocalBBoxMatrixElement()
   The destructor.
 */
 
-SoLocalBBoxMatrixElement::~SoLocalBBoxMatrixElement( // virtual
+SoLocalBBoxMatrixElement::~SoLocalBBoxMatrixElement(
     void )
 {
 }
@@ -148,7 +148,7 @@ SoLocalBBoxMatrixElement::~SoLocalBBoxMatrixElement( // virtual
 //! FIXME: write doc.
 
 void
-SoLocalBBoxMatrixElement::init( // virtual
+SoLocalBBoxMatrixElement::init(
     SoState * state )
 {
   inherited::init( state );
@@ -171,7 +171,7 @@ SoLocalBBoxMatrixElement::push(SoState * state)
 //! FIXME: write doc.
 
 SbBool
-SoLocalBBoxMatrixElement::matches( // virtual
+SoLocalBBoxMatrixElement::matches(
     const SoElement * element ) const
 {
   assert(0 && "FIXME: not implemented");
@@ -181,7 +181,7 @@ SoLocalBBoxMatrixElement::matches( // virtual
 //! FIXME: write doc.
 
 SoElement *
-SoLocalBBoxMatrixElement::copyMatchInfo( // virtual
+SoLocalBBoxMatrixElement::copyMatchInfo(
     void ) const
 {
   assert(0 && "FIXME: not implemented");
@@ -234,7 +234,7 @@ SoLocalBBoxMatrixElement::mult(SoState * const state,
 //! FIXME: write doc.
 
 void
-SoLocalBBoxMatrixElement::translateBy( // static
+SoLocalBBoxMatrixElement::translateBy(
     SoState * const state,
     const SbVec3f & translation )
 {
@@ -251,7 +251,7 @@ SoLocalBBoxMatrixElement::translateBy( // static
 //! FIXME: write doc.
 
 void
-SoLocalBBoxMatrixElement::rotateBy( // static
+SoLocalBBoxMatrixElement::rotateBy(
     SoState * const state,
     const SbRotation & rotation )
 {
@@ -268,7 +268,7 @@ SoLocalBBoxMatrixElement::rotateBy( // static
 //! FIXME: write doc.
 
 void
-SoLocalBBoxMatrixElement::scaleBy( // static
+SoLocalBBoxMatrixElement::scaleBy(
     SoState * const state,
     const SbVec3f & scaleFactor )
 {
@@ -307,7 +307,7 @@ SoLocalBBoxMatrixElement::popMatrix(SoState * const state,
 //! FIXME: write doc.
 
 void
-SoLocalBBoxMatrixElement::resetAll( // static
+SoLocalBBoxMatrixElement::resetAll(
     SoState * const state )
 {
   assert(0 && "FIXME: not implemented");

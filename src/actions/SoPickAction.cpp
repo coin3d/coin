@@ -102,8 +102,7 @@ SoPickAction::enableElement(const SoType type, const int stackIndex)
 */
 
 void
-SoPickAction::initClass(
-    void )
+SoPickAction::initClass(void)
 {
 //$ BEGIN TEMPLATE InitActionSource( SoPickAction )
   assert(SoPickAction::getClassTypeId() == SoType::badType());
@@ -123,8 +122,7 @@ SoPickAction::initClass(
 */
 
 void
-SoPickAction::cleanClass(
-    void )
+SoPickAction::cleanClass(void)
 {
 }
 
@@ -134,7 +132,7 @@ SoPickAction::cleanClass(
   A constructor.
 */
 
-SoPickAction::SoPickAction(const SbViewportRegion & viewportRegion)
+SoPickAction::SoPickAction(const SbViewportRegion & /* viewportRegion */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -143,8 +141,7 @@ SoPickAction::SoPickAction(const SbViewportRegion & viewportRegion)
   The destructor.
 */
 
-SoPickAction::~SoPickAction(
-    void )
+SoPickAction::~SoPickAction(void)
 {
 }
 

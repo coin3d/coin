@@ -112,7 +112,7 @@ SoCoordinateElement::getClassStackIndex(void)
 */
 
 void
-SoCoordinateElement::initClass( // static
+SoCoordinateElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoCoordinateElement )
@@ -140,7 +140,7 @@ SoCoordinateElement::initClass( // static
 */
 
 void
-SoCoordinateElement::cleanClass( // static
+SoCoordinateElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoCoordinateElement )
@@ -153,7 +153,7 @@ SoCoordinateElement::cleanClass( // static
   \sa void * SoCoordinateElement::createInstance( void )
 */
 
-SoCoordinateElement::SoCoordinateElement( // protected
+SoCoordinateElement::SoCoordinateElement(
     void )
   : numCoords(1),
     coords3D(& SoCoordinateElement::initialdefaultcoords),
@@ -168,7 +168,7 @@ SoCoordinateElement::SoCoordinateElement( // protected
   The destructor.
 */
 
-SoCoordinateElement::~SoCoordinateElement( // virtual
+SoCoordinateElement::~SoCoordinateElement(
     void )
 {
 }

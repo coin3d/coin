@@ -117,7 +117,7 @@ SoGLShapeHintsElement::getClassStackIndex(void)
 */
 
 void
-SoGLShapeHintsElement::initClass( // static
+SoGLShapeHintsElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoGLShapeHintsElement )
@@ -145,7 +145,7 @@ SoGLShapeHintsElement::initClass( // static
 */
 
 void
-SoGLShapeHintsElement::cleanClass( // static
+SoGLShapeHintsElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLShapeHintsElement )
@@ -168,7 +168,7 @@ SoGLShapeHintsElement::SoGLShapeHintsElement()
   The destructor.
 */
 
-SoGLShapeHintsElement::~SoGLShapeHintsElement( // virtual
+SoGLShapeHintsElement::~SoGLShapeHintsElement(
     void )
 {
 }

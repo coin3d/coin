@@ -84,7 +84,7 @@ SoLinePatternElement::getClassStackIndex(void)
 */
 
 void
-SoLinePatternElement::initClass( // static
+SoLinePatternElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoLinePatternElement )
@@ -112,7 +112,7 @@ SoLinePatternElement::initClass( // static
 */
 
 void
-SoLinePatternElement::cleanClass( // static
+SoLinePatternElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoLinePatternElement )
@@ -145,7 +145,7 @@ SoLinePatternElement::~SoLinePatternElement(
 //! FIXME: write doc.
 
 void
-SoLinePatternElement::set( // static
+SoLinePatternElement::set(
     SoState * const state,
     SoNode * const node,
     const int32_t pattern )
@@ -156,7 +156,7 @@ SoLinePatternElement::set( // static
 //! FIXME: write doc.
 
 void
-SoLinePatternElement::init( // virtual
+SoLinePatternElement::init(
     SoState * state )
 {
   inherited::init( state );

@@ -84,7 +84,7 @@ SoProjectionMatrixElement::getClassStackIndex(void)
 */
 
 void
-SoProjectionMatrixElement::initClass( // static
+SoProjectionMatrixElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoProjectionMatrixElement )
@@ -112,7 +112,7 @@ SoProjectionMatrixElement::initClass( // static
 */
 
 void
-SoProjectionMatrixElement::cleanClass( // static
+SoProjectionMatrixElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoProjectionMatrixElement )

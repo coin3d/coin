@@ -90,7 +90,7 @@ SoTextureMatrixElement::getClassStackIndex(void)
 */
 
 void
-SoTextureMatrixElement::initClass( // static
+SoTextureMatrixElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoTextureMatrixElement )
@@ -118,7 +118,7 @@ SoTextureMatrixElement::initClass( // static
 */
 
 void
-SoTextureMatrixElement::cleanClass( // static
+SoTextureMatrixElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoTextureMatrixElement )
@@ -151,7 +151,7 @@ SoTextureMatrixElement::~SoTextureMatrixElement(
 //! FIXME: write doc.
 
 void
-SoTextureMatrixElement::makeIdentity( // static
+SoTextureMatrixElement::makeIdentity(
     SoState * const state,
     SoNode * const node )
 {
@@ -218,7 +218,7 @@ SoTextureMatrixElement::scaleBy(SoState * const state,
 //! FIXME: write doc.
 
 const SbMatrix &
-SoTextureMatrixElement::get( // static
+SoTextureMatrixElement::get(
     SoState * const state )
 {
   SoTextureMatrixElement *elem = (SoTextureMatrixElement*)
@@ -229,7 +229,7 @@ SoTextureMatrixElement::get( // static
 //! FIXME: write doc.
 
 void
-SoTextureMatrixElement::print( // virtual
+SoTextureMatrixElement::print(
     FILE * file ) const
 {
     fprintf( file, "SoTextureMatrixElement[%p]\n", this );

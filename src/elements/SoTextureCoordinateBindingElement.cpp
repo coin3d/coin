@@ -90,7 +90,7 @@ SoTextureCoordinateBindingElement::getClassStackIndex(void)
 */
 
 void
-SoTextureCoordinateBindingElement::initClass( // static
+SoTextureCoordinateBindingElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoTextureCoordinateBindingElement )
@@ -118,7 +118,7 @@ SoTextureCoordinateBindingElement::initClass( // static
 */
 
 void
-SoTextureCoordinateBindingElement::cleanClass( // static
+SoTextureCoordinateBindingElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoTextureCoordinateBindingElement )

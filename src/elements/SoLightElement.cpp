@@ -101,7 +101,7 @@ SoLightElement::getClassStackIndex(void)
 */
 
 void
-SoLightElement::initClass( // static
+SoLightElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoLightElement )
@@ -128,7 +128,7 @@ SoLightElement::initClass( // static
 */
 
 void
-SoLightElement::cleanClass( // static
+SoLightElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoLightElement )
@@ -161,7 +161,7 @@ SoLightElement::~SoLightElement(
 //! FIXME: write doc.
 
 void
-SoLightElement::add( // static
+SoLightElement::add(
     SoState * const state,
     SoLight * const light,
     const SbMatrix & WCToVRCMatrix )
@@ -171,7 +171,7 @@ SoLightElement::add( // static
 //! FIXME: write doc.
 
 const SoNodeList &
-SoLightElement::getLights( // static
+SoLightElement::getLights(
     SoState * const state )
 {
   assert(0 && "FIXME: not implemented");
@@ -182,7 +182,7 @@ SoLightElement::getLights( // static
 //! FIXME: write doc.
 
 const SbMatrix &
-SoLightElement::getMatrix( // static
+SoLightElement::getMatrix(
     SoState * const state,
     const int index )
 {
@@ -194,7 +194,7 @@ SoLightElement::getMatrix( // static
 //! FIXME: write doc.
 
 void
-SoLightElement::print( // virtual
+SoLightElement::print(
     FILE * file ) const
 {
     fprintf( file, "SoLightElement[%p]: lights = %sdn", this,

@@ -84,7 +84,7 @@ SoLineWidthElement::getClassStackIndex(void)
 */
 
 void
-SoLineWidthElement::initClass( // static
+SoLineWidthElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoLineWidthElement )
@@ -111,7 +111,7 @@ SoLineWidthElement::initClass( // static
 */
 
 void
-SoLineWidthElement::cleanClass( // static
+SoLineWidthElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoLineWidthElement )
@@ -124,7 +124,7 @@ SoLineWidthElement::cleanClass( // static
   \sa void * SoLineWidthElement::createInstance( void )
 */
 
-SoLineWidthElement::SoLineWidthElement( // protected
+SoLineWidthElement::SoLineWidthElement(
     void )
 {
     setTypeId( SoLineWidthElement::classTypeId );
@@ -144,7 +144,7 @@ SoLineWidthElement::~SoLineWidthElement( // virtual protected
 //! FIXME: write doc.
 
 void
-SoLineWidthElement::init( // virtual
+SoLineWidthElement::init(
     SoState * state )
 {
   inherited::init( state );

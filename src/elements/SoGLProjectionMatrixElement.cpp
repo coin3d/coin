@@ -92,7 +92,7 @@ SoGLProjectionMatrixElement::getClassStackIndex(void)
 */
 
 void
-SoGLProjectionMatrixElement::initClass( // static
+SoGLProjectionMatrixElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoGLProjectionMatrixElement )
@@ -120,7 +120,7 @@ SoGLProjectionMatrixElement::initClass( // static
 */
 
 void
-SoGLProjectionMatrixElement::cleanClass( // static
+SoGLProjectionMatrixElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLProjectionMatrixElement )
@@ -133,7 +133,7 @@ SoGLProjectionMatrixElement::cleanClass( // static
   \sa void * SoGLProjectionMatrixElement::createInstance( void )
 */
 
-SoGLProjectionMatrixElement::SoGLProjectionMatrixElement( // protected
+SoGLProjectionMatrixElement::SoGLProjectionMatrixElement(
     void )
 {
     setTypeId( SoGLProjectionMatrixElement::classTypeId );
@@ -144,7 +144,7 @@ SoGLProjectionMatrixElement::SoGLProjectionMatrixElement( // protected
   The destructor.
 */
 
-SoGLProjectionMatrixElement::~SoGLProjectionMatrixElement( // virtual
+SoGLProjectionMatrixElement::~SoGLProjectionMatrixElement(
     void )
 {
 }

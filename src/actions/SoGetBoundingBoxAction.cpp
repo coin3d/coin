@@ -126,10 +126,10 @@ SoGetBoundingBoxAction::enableElement(const SoType type, const int stackIndex)
 
 SoGetBoundingBoxAction::SoGetBoundingBoxAction(const SbViewportRegion &
 					       viewportRegion)
-  : vpRegion(viewportRegion), 
-    center(0,0,0),
-    flags(FLAG_RESET_BEFORE),
-    resetPath(NULL)
+  : center(0,0,0),
+    vpRegion(viewportRegion), 
+    resetPath(NULL),
+    flags(FLAG_RESET_BEFORE)
 {
   SO_ACTION_CONSTRUCTOR(SoGetBoundingBoxAction);  
 }

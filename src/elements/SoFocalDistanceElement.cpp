@@ -84,7 +84,7 @@ SoFocalDistanceElement::getClassStackIndex(void)
 */
 
 void
-SoFocalDistanceElement::initClass( // static
+SoFocalDistanceElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoFocalDistanceElement )
@@ -112,7 +112,7 @@ SoFocalDistanceElement::initClass( // static
 */
 
 void
-SoFocalDistanceElement::cleanClass( // static
+SoFocalDistanceElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoFocalDistanceElement )
@@ -125,7 +125,7 @@ SoFocalDistanceElement::cleanClass( // static
   \sa void * SoFocalDistanceElement::createInstance( void )
 */
 
-SoFocalDistanceElement::SoFocalDistanceElement( // protected
+SoFocalDistanceElement::SoFocalDistanceElement(
     void )
 {
     setTypeId( SoFocalDistanceElement::classTypeId );
@@ -145,7 +145,7 @@ SoFocalDistanceElement::~SoFocalDistanceElement( // virtual protected
 //! FIXME: write doc.
 
 void
-SoFocalDistanceElement::init( // virtual
+SoFocalDistanceElement::init(
     SoState * state )
 {
     inherited::init( state );

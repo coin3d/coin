@@ -83,7 +83,7 @@ SoPointSizeElement::getClassStackIndex(void)
 */
 
 void
-SoPointSizeElement::initClass( // static
+SoPointSizeElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoPointSizeElement )
@@ -110,7 +110,7 @@ SoPointSizeElement::initClass( // static
 */
 
 void
-SoPointSizeElement::cleanClass( // static
+SoPointSizeElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoPointSizeElement )
@@ -123,7 +123,7 @@ SoPointSizeElement::cleanClass( // static
   \sa SoPointSizeElement::createInstance( void )
 */
 
-SoPointSizeElement::SoPointSizeElement( // protected
+SoPointSizeElement::SoPointSizeElement(
     void )
 {
     setTypeId( SoPointSizeElement::classTypeId );
@@ -143,7 +143,7 @@ SoPointSizeElement::~SoPointSizeElement( // virtual protected
 //! FIXME: write doc.
 
 void
-SoPointSizeElement::init( // virtual
+SoPointSizeElement::init(
     SoState * state )
 {
   inherited::init( state );

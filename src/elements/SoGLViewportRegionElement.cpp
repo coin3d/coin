@@ -89,7 +89,7 @@ SoGLViewportRegionElement::getClassStackIndex(void)
 */
 
 void
-SoGLViewportRegionElement::initClass( // static
+SoGLViewportRegionElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoGLViewportRegionElement )
@@ -117,7 +117,7 @@ SoGLViewportRegionElement::initClass( // static
 */
 
 void
-SoGLViewportRegionElement::cleanClass( // static
+SoGLViewportRegionElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLViewportRegionElement )

@@ -88,7 +88,7 @@ SoGLTextureMatrixElement::getClassStackIndex(void)
 */
 
 void
-SoGLTextureMatrixElement::initClass( // static
+SoGLTextureMatrixElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoGLTextureMatrixElement )
@@ -116,7 +116,7 @@ SoGLTextureMatrixElement::initClass( // static
 */
 
 void
-SoGLTextureMatrixElement::cleanClass( // static
+SoGLTextureMatrixElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLTextureMatrixElement )
@@ -129,7 +129,7 @@ SoGLTextureMatrixElement::cleanClass( // static
   \sa SoGLTextureMatrixElement::createInstance( void )
 */
 
-SoGLTextureMatrixElement::SoGLTextureMatrixElement( // protected
+SoGLTextureMatrixElement::SoGLTextureMatrixElement(
     void )
 {
     setTypeId( SoGLTextureMatrixElement::classTypeId );
@@ -140,7 +140,7 @@ SoGLTextureMatrixElement::SoGLTextureMatrixElement( // protected
   The destructor.
 */
 
-SoGLTextureMatrixElement::~SoGLTextureMatrixElement( // virtual
+SoGLTextureMatrixElement::~SoGLTextureMatrixElement(
     void )
 {
 }

@@ -28,16 +28,15 @@
 #else
 #define MINDEX FALSE
 #endif
-(
-   const SoGLCoordinateElement * const vertexlist,
-   const int32_t *vertexindices,
-   int numindices,
-   const SbVec3f *normals,
-   const int32_t *normalindices,
-   SoMaterialBundle *materials,
-   const int32_t *matindices,
-   const SoTextureCoordinateBundle * const texcoords,
-   const int32_t *texindices)
+(const SoGLCoordinateElement * const vertexlist,
+ const int32_t *vertexindices,
+ int numindices,
+ const SbVec3f *normals,
+ const int32_t *normalindices,
+ SoMaterialBundle *materials,
+ const int32_t *matindices,
+ const SoTextureCoordinateBundle * const texcoords,
+ const int32_t *texindices)
 {
   // to avoid compiler warnings
 #if NINDEX==FALSE

@@ -98,19 +98,19 @@
 */
 
 /*!
-  \fn typedef SoGLRenderAction::SoGLRenderAbortCB(void *userData)
+  \fn typedef SoGLRenderAction::SoGLRenderAbortCB(void * userData)
 
   FIXME: write doc.
 */
 
 /*!
-  \fn typedef SoGLRenderAction::SoGLRenderPassCB(void *userData)
+  \fn typedef SoGLRenderAction::SoGLRenderPassCB(void * userData)
 
   FIXME: write doc.
 */
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource( SoGLRenderAction )
+//$ BEGIN TEMPLATE ActionSource(SoGLRenderAction)
 
 SoType SoGLRenderAction::classTypeId = SoType::badType();
 
@@ -152,7 +152,7 @@ SoActionMethodList * SoGLRenderAction::methods;
 const SoEnabledElementsList &
 SoGLRenderAction::getEnabledElements(void) const
 {
-  return *enabledElements;
+  return * enabledElements;
 }
 
 /*!
@@ -184,9 +184,9 @@ SoGLRenderAction::enableElement(const SoType type, const int stackIndex)
 
 void
 SoGLRenderAction::initClass(
-    void )
+    void)
 {
-//$ BEGIN TEMPLATE InitActionSource( SoGLRenderAction )
+//$ BEGIN TEMPLATE InitActionSource(SoGLRenderAction)
   assert(SoGLRenderAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
@@ -227,7 +227,7 @@ SoGLRenderAction::initClass(
 
 void
 SoGLRenderAction::cleanClass(
-    void )
+    void)
 {
 }
 
@@ -237,7 +237,7 @@ SoGLRenderAction::cleanClass(
   A constructor.
 */
 
-SoGLRenderAction::SoGLRenderAction(const SbViewportRegion &viewportRegion)
+SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportRegion)
 {
   SO_ACTION_CONSTRUCTOR(SoGLRenderAction);  
 
@@ -296,9 +296,10 @@ SoGLRenderAction::getViewportRegion(void) const
 */
 
 void 
-SoGLRenderAction::setUpdateArea(const SbVec2f &origin, const SbVec2f &size)
+SoGLRenderAction::setUpdateArea(const SbVec2f & /* origin */,
+				const SbVec2f & /* size */)
 {
-  assert(0 && "FIXME: not implemented" );
+  assert(0 && "FIXME: not implemented");
 }
 
 /*!
@@ -306,7 +307,8 @@ SoGLRenderAction::setUpdateArea(const SbVec2f &origin, const SbVec2f &size)
 */
 
 void 
-SoGLRenderAction::getUpdateArea(SbVec2f &origin, SbVec2f &size) const
+SoGLRenderAction::getUpdateArea(SbVec2f & /* origin */,
+				SbVec2f & /* size */) const
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -424,7 +426,7 @@ SoGLRenderAction::isPassUpdate() const
 
 void 
 SoGLRenderAction::setPassCallback(SoGLRenderPassCB * const func, 
-				  void *const userData)
+				  void * const userData)
 {
   this->passCB = func;
   this->passCBdata = userData;
@@ -477,56 +479,56 @@ SoGLRenderAction::beginTraversal(SoNode * node)
   //
   if (this->firstRender) {
     this->firstRender = FALSE;
-    glDisable( GL_FOG );
-    glDisable( GL_TEXTURE_1D );
-    glDisable( GL_LINE_STIPPLE );
-    glDisable( GL_POLYGON_STIPPLE );
-    glDisable( GL_CULL_FACE );
-    glDisable( GL_ALPHA_TEST );
-    glDisable( GL_BLEND );
-    glDisable( GL_LOGIC_OP );
-    glDisable( GL_STENCIL_TEST );
-    glDisable( GL_CLIP_PLANE0 );
-    glDisable( GL_CLIP_PLANE1 );
-    glDisable( GL_CLIP_PLANE2 );
-    glDisable( GL_CLIP_PLANE3 );
-    glDisable( GL_CLIP_PLANE4 );
-    glDisable( GL_CLIP_PLANE5 );
-    glDisable( GL_LIGHT0 );
-    glDisable( GL_LIGHT1 );
-    glDisable( GL_LIGHT2 );
-    glDisable( GL_LIGHT3 );
-    glDisable( GL_LIGHT4 );
-    glDisable( GL_LIGHT5 );
-    glDisable( GL_LIGHT6 );
-    glDisable( GL_LIGHT7 );
-    glDisable( GL_TEXTURE_GEN_S );
-    glDisable( GL_TEXTURE_GEN_T );
-    glDisable( GL_TEXTURE_GEN_R );
-    glDisable( GL_TEXTURE_GEN_Q );
-    glDisable( GL_MAP1_VERTEX_3 );
-    glDisable( GL_MAP1_VERTEX_4 );
-    glDisable( GL_MAP1_COLOR_4 );
-    glDisable( GL_MAP1_INDEX );
-    glDisable( GL_MAP1_NORMAL );
-    glDisable( GL_MAP1_TEXTURE_COORD_1 );
-    glDisable( GL_MAP1_TEXTURE_COORD_2 );
-    glDisable( GL_MAP1_TEXTURE_COORD_3 );
-    glDisable( GL_MAP1_TEXTURE_COORD_4 );
-    glDisable( GL_MAP2_VERTEX_3 );
-    glDisable( GL_MAP2_VERTEX_4 );
-    glDisable( GL_MAP2_COLOR_4 );
-    glDisable( GL_MAP2_INDEX );
-    glDisable( GL_MAP2_NORMAL );
-    glDisable( GL_MAP2_TEXTURE_COORD_1 );
-    glDisable( GL_MAP2_TEXTURE_COORD_2 );
-    glDisable( GL_MAP2_TEXTURE_COORD_3 );
-    glDisable( GL_MAP2_TEXTURE_COORD_4 );
-    glDisable( GL_POINT_SMOOTH );
-    glDisable( GL_LINE_SMOOTH );
-    glDisable( GL_SCISSOR_TEST );
-    glDisable( GL_COLOR_MATERIAL );
-    glDisable( GL_AUTO_NORMAL );
+    glDisable(GL_FOG);
+    glDisable(GL_TEXTURE_1D);
+    glDisable(GL_LINE_STIPPLE);
+    glDisable(GL_POLYGON_STIPPLE);
+    glDisable(GL_CULL_FACE);
+    glDisable(GL_ALPHA_TEST);
+    glDisable(GL_BLEND);
+    glDisable(GL_LOGIC_OP);
+    glDisable(GL_STENCIL_TEST);
+    glDisable(GL_CLIP_PLANE0);
+    glDisable(GL_CLIP_PLANE1);
+    glDisable(GL_CLIP_PLANE2);
+    glDisable(GL_CLIP_PLANE3);
+    glDisable(GL_CLIP_PLANE4);
+    glDisable(GL_CLIP_PLANE5);
+    glDisable(GL_LIGHT0);
+    glDisable(GL_LIGHT1);
+    glDisable(GL_LIGHT2);
+    glDisable(GL_LIGHT3);
+    glDisable(GL_LIGHT4);
+    glDisable(GL_LIGHT5);
+    glDisable(GL_LIGHT6);
+    glDisable(GL_LIGHT7);
+    glDisable(GL_TEXTURE_GEN_S);
+    glDisable(GL_TEXTURE_GEN_T);
+    glDisable(GL_TEXTURE_GEN_R);
+    glDisable(GL_TEXTURE_GEN_Q);
+    glDisable(GL_MAP1_VERTEX_3);
+    glDisable(GL_MAP1_VERTEX_4);
+    glDisable(GL_MAP1_COLOR_4);
+    glDisable(GL_MAP1_INDEX);
+    glDisable(GL_MAP1_NORMAL);
+    glDisable(GL_MAP1_TEXTURE_COORD_1);
+    glDisable(GL_MAP1_TEXTURE_COORD_2);
+    glDisable(GL_MAP1_TEXTURE_COORD_3);
+    glDisable(GL_MAP1_TEXTURE_COORD_4);
+    glDisable(GL_MAP2_VERTEX_3);
+    glDisable(GL_MAP2_VERTEX_4);
+    glDisable(GL_MAP2_COLOR_4);
+    glDisable(GL_MAP2_INDEX);
+    glDisable(GL_MAP2_NORMAL);
+    glDisable(GL_MAP2_TEXTURE_COORD_1);
+    glDisable(GL_MAP2_TEXTURE_COORD_2);
+    glDisable(GL_MAP2_TEXTURE_COORD_3);
+    glDisable(GL_MAP2_TEXTURE_COORD_4);
+    glDisable(GL_POINT_SMOOTH);
+    glDisable(GL_LINE_SMOOTH);
+    glDisable(GL_SCISSOR_TEST);
+    glDisable(GL_COLOR_MATERIAL);
+    glDisable(GL_AUTO_NORMAL);
 
     // FIXME (pederb)
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -625,7 +627,7 @@ SoGLRenderAction::beginTraversal(SoNode * node)
       if (usedepthbuffer) glDisable(GL_DEPTH_TEST);
       this->delayedRender = TRUE;
 #if 0 // debug
-      fprintf(stderr,"rendering delayed paths: %d\n", 
+      fprintf(stderr, "rendering delayed paths: %d\n", 
 	      this->delayedPaths.getLength());
 #endif
       this->apply(this->delayedPaths, TRUE);
@@ -683,10 +685,10 @@ SoGLRenderAction::abortNow()
 
 #if !defined(COIN_EXCLUDE_SOPATH)
 void 
-SoGLRenderAction::addDelayedPath(SoPath *path)
+SoGLRenderAction::addDelayedPath(SoPath * path)
 {
   assert(!this->delayedRender);
-  SoPath *copy = path->copy();
+  SoPath * copy = path->copy();
   copy->ref();
   this->delayedPaths.append(copy);
 }

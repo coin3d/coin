@@ -72,14 +72,14 @@
   SoElement.
 */
 
-SoType SoElement::classTypeId = SoType::badType(); // static
+SoType SoElement::classTypeId = SoType::badType();
 
 /*!
   This static method returns the SoType type for SoElement.
 */
 
 SoType
-SoElement::getClassTypeId( // static
+SoElement::getClassTypeId(
   void )
 {
   return SoElement::classTypeId;
@@ -92,14 +92,14 @@ SoElement::getClassTypeId( // static
   SoElement class.
 */
 
-int SoElement::classStackIndex; // static
+int SoElement::classStackIndex;
 
 /*!
   This static method returns the state stack index for the SoElement class.
 */
 
 int
-SoElement::getClassStackIndex( // static
+SoElement::getClassStackIndex(
   void )
 {
   return SoElement::classStackIndex;
@@ -111,7 +111,7 @@ SoElement::getClassStackIndex( // static
 */
 
 void
-SoElement::initElements( // static
+SoElement::initElements(
     void )
 {
 #if !defined(COIN_EXCLUDE_SOACCUMULATEDELEMENT)
@@ -391,7 +391,7 @@ SoElement::initElements( // static
 */
 
 void
-SoElement::cleanElements( // static
+SoElement::cleanElements(
     void )
 {
 #if !defined(COIN_EXCLUDE_SOTRANSPARENCYELEMENT)
@@ -671,7 +671,7 @@ SoElement::cleanElements( // static
 */
 
 void
-SoElement::initClass( // static
+SoElement::initClass(
     void )
 {
   SoElement::stackToType = new SoTypeList;
@@ -690,7 +690,7 @@ SoElement::initClass( // static
 */
 
 void
-SoElement::cleanClass( // static
+SoElement::cleanClass(
     void )
 {
   SoElement::cleanElements();
@@ -702,7 +702,7 @@ SoElement::cleanClass( // static
   for the elements type identifier..
 */
 
-SoElement::SoElement( // protected
+SoElement::SoElement(
     void )
 {
   this->next = NULL;
@@ -934,7 +934,7 @@ SoElement::setStackIndex(const int stackIndex)
   FIXME: write doc.
 */
 
-int SoElement::nextStackIndex; // static
+int SoElement::nextStackIndex;
 
 /*!
   \fn SoElement::stackToType
@@ -942,7 +942,7 @@ int SoElement::nextStackIndex; // static
   FIXME: write doc.
 */
 
-SoTypeList * SoElement::stackToType; // static
+SoTypeList * SoElement::stackToType;
 
 /*!
   This method returns the value of a new available stack index.

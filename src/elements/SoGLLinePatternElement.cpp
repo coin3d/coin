@@ -89,7 +89,7 @@ SoGLLinePatternElement::getClassStackIndex(void)
 */
 
 void
-SoGLLinePatternElement::initClass( // static
+SoGLLinePatternElement::initClass(
     void )
 {
 //$ BEGIN TEMPLATE InitElementSource( SoGLLinePatternElement )
@@ -117,7 +117,7 @@ SoGLLinePatternElement::initClass( // static
 */
 
 void
-SoGLLinePatternElement::cleanClass( // static
+SoGLLinePatternElement::cleanClass(
     void )
 {
 //$ BEGIN TEMPLATE CleanElementSource( SoGLLinePatternElement )
@@ -130,7 +130,7 @@ SoGLLinePatternElement::cleanClass( // static
   \sa void * SoGLLinePatternElement::createInstance( void )
 */
 
-SoGLLinePatternElement::SoGLLinePatternElement( // protected
+SoGLLinePatternElement::SoGLLinePatternElement(
     void )
 {
     setTypeId( SoGLLinePatternElement::classTypeId );
@@ -141,7 +141,7 @@ SoGLLinePatternElement::SoGLLinePatternElement( // protected
   The destructor.
 */
 
-SoGLLinePatternElement::~SoGLLinePatternElement( // virtual
+SoGLLinePatternElement::~SoGLLinePatternElement(
     void )
 {
 }
@@ -149,7 +149,7 @@ SoGLLinePatternElement::~SoGLLinePatternElement( // virtual
 //! FIXME: write doc.
 
 void
-SoGLLinePatternElement::init( // virtual
+SoGLLinePatternElement::init(
     SoState * state )
 {
   inherited::init( state );
@@ -168,7 +168,7 @@ SoGLLinePatternElement::push(SoState * state)
 //! FIXME: write doc.
 
 void
-SoGLLinePatternElement::pop( // virtual
+SoGLLinePatternElement::pop(
     SoState * state,
     const SoElement * prevTopElement )
 {
