@@ -1518,7 +1518,7 @@ if test x"$enable_hacking" = x"yes"; then
     base actions bundles caches details draggers elements \
     elements/GL:glelements engines errors events fields fonts glue io \
     manips misc lists nodekits nodes shapenodes projectors \
-    sensors upgraders hardcopy collision 3ds:format3ds; \
+    sensors upgraders hardcopy collision mpeg 3ds:format3ds; \
   do
     case $dir in
     *:* )
@@ -1794,6 +1794,7 @@ AC_CONFIG_FILES([
         include/Inventor/C/errors/Makefile
         include/Inventor/C/glue/Makefile
         include/Inventor/C/threads/Makefile
+        include/Inventor/MPEG/Makefile
         include/Inventor/VRMLnodes/Makefile
         include/Inventor/actions/Makefile
         include/Inventor/annex/Makefile
@@ -1855,6 +1856,7 @@ AC_CONFIG_FILES([
         src/extensions/Makefile
         src/vrml97/Makefile
         src/hardcopy/Makefile
+        src/mpeg/Makefile
 ])
 
 AC_OUTPUT

@@ -1,5 +1,5 @@
 
-SUBDIRS = C VRMLnodes actions annex bundles caches collision details \
+SUBDIRS = C MPEG VRMLnodes actions annex bundles caches collision details \
           draggers elements engines errors events fields lists lock manips \
           misc nodekits nodes projectors sensors system threads
 
