@@ -174,6 +174,24 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
+// *************************************************************************
+
+/* The configure script should protect against more than one of
+   HAVE_WGL, HAVE_GLX and HAVE_AGL being defined at the same time, but
+   we set up this little trip-wire in addition, just in case someone
+   is either fiddling manually with config.h, or in case a change is
+   made which breaks this protection in the configure script. */
+
+#if defined(HAVE_WGL) && (defined(HAVE_GLX) || defined(HAVE_AGL))
+#error More than one of HAVE_WGL, HAVE_AGL and HAVE_GLX set simultaneously!
+#endif /* HAVE_GLX || HAVE_AGL */
+
+#if defined(HAVE_AGL) && (defined(HAVE_GLX) || defined(HAVE_WGL))
+#error More than one of HAVE_WGL, HAVE_AGL and HAVE_GLX set simultaneously!
+#endif /* HAVE_GLX || HAVE_WGL */
+
+// *************************************************************************
+
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
