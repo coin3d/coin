@@ -368,11 +368,15 @@ SoVRMLBillboard::performRotation(SoState * state) const
   }
   else { // ORTHOGRAPHIC
     toviewer = - vv.getProjectionDirection();
-    imm.multDirMatrix(toviewer, toviewer);
   }
 
   (void) toviewer.normalize();
 
+  // Used to get components from modelmatrix
+  SbVec3f translation, scale;
+  SbRotation rotation, scaleorientation;
+  // Used to set modelmatrix with translation, scale and the new rotation
+  SbMatrix mm2;
   SbVec3f rotaxis = this->axisOfRotation.getValue();
 
   if (rotaxis == SbVec3f(0.0f, 0.0f, 0.0f)) {
@@ -381,20 +385,17 @@ SoVRMLBillboard::performRotation(SoState * state) const
     //    billboard-to-viewer vector and pointing towards the viewer's position.
     // 3. Rotate the Y-axis of the billboard to be parallel and oriented in the
     //    same direction as the Y-axis of the viewer.
-    rot.setValue(SbVec3f(0.f, 0.0f, 1.0f), toviewer);
+    rot.setValue(SbVec3f(0.0f, 0.0f, 1.0f), toviewer);
     SbVec3f viewup = vv.getViewUp();
-    imm.multDirMatrix(viewup, viewup);
 
     SbVec3f yaxis(0.0f, 1.0f, 0.0f);
     rot.multVec(yaxis, yaxis);
     SbRotation rot2(yaxis, viewup);
-
-    SbVec3f axis;
-    float angle;
-    rot.getValue(axis, angle);
-    rot2.getValue(axis, angle);
     rot = rot * rot2;
-    SoModelMatrixElement::rotateBy(state, (SoNode*) this, rot);
+
+    mm.getTransform(translation, rotation, scale, scaleorientation);
+    mm2.setTransform(translation, rot, scale);
+    SoModelMatrixElement::set(state, (SoNode*) this, mm2);
   }
   else {
     // 1. Compute the vector from the Billboard node's origin to the viewer's
@@ -413,6 +414,8 @@ SoVRMLBillboard::performRotation(SoState * state) const
     float angle = (float) acos(SbClamp(vecinplane.dot(zaxis), -1.0f, 1.0f));
     rot.setValue(rotaxis, n[2] < 0.0f ? angle : - angle);
 
-    SoModelMatrixElement::rotateBy(state, (SoNode*) this, rot);
+    mm.getTransform(translation, rotation, scale, scaleorientation);
+    mm2.setTransform(translation, rot, scale);
+    SoModelMatrixElement::set(state, (SoNode*) this, mm2);
   }
 }
