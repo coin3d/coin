@@ -113,7 +113,7 @@ int
 vsnprintf(char * target, size_t n, const char * formatstr, va_list args)
 {
   int len = vfprintf(nullfileptr(), formatstr, args);
-  if ((unsigned int)len+1 > n) return -1;
+  if (((size_t)(len+1)) > n) return -1;
   (void)vsprintf(target, formatstr, args);
   return len;
 }
