@@ -601,17 +601,19 @@ glxglue_contextdata_init(unsigned int width, unsigned int height)
 }
 
 static void
-glxglue_contextdata_cleanup(struct glxglue_contextdata * c)
+glxglue_contextdata_cleanup(struct glxglue_contextdata * ctx)
 {
-  if (c->glxcontext) glXDestroyContext(glxglue_get_display(), c->glxcontext);
-  if (c->glxpixmap) {
-    if (c->pbuffer) { glxglue_glXDestroyPbuffer(glxglue_get_display(), c->glxpixmap); }
-    else { glXDestroyGLXPixmap(glxglue_get_display(), c->glxpixmap); }
-  }
-  if (c->pixmap) XFreePixmap(glxglue_get_display(), c->pixmap);
-  if (c->visinfo) XFree(c->visinfo);
+  if (ctx == NULL) { return; }
 
-  free(c);
+  if (ctx->glxcontext) glXDestroyContext(glxglue_get_display(), ctx->glxcontext);
+  if (ctx->glxpixmap) {
+    if (ctx->pbuffer) { glxglue_glXDestroyPbuffer(glxglue_get_display(), ctx->glxpixmap); }
+    else { glXDestroyGLXPixmap(glxglue_get_display(), ctx->glxpixmap); }
+  }
+  if (ctx->pixmap) XFreePixmap(glxglue_get_display(), ctx->pixmap);
+  if (ctx->visinfo) XFree(ctx->visinfo);
+
+  free(ctx);
 }
 
 static SbBool
@@ -632,7 +634,6 @@ glxglue_context_create_software(struct glxglue_contextdata * context)
   if (context->glxcontext == NULL) {
     cc_debugerror_postwarning("glxglue_context_create_software",
                               "Couldn't create GLX context.");
-    glxglue_contextdata_cleanup(context);
     return FALSE;
   }
   
@@ -649,7 +650,6 @@ glxglue_context_create_software(struct glxglue_contextdata * context)
     cc_debugerror_postwarning("glxglue_context_create_software",
                               "Couldn't create %dx%dx%d X11 Pixmap.",
                               context->width, context->height, context->visinfo->depth);
-    glxglue_contextdata_cleanup(context);
     return FALSE;
   }
   
@@ -658,7 +658,6 @@ glxglue_context_create_software(struct glxglue_contextdata * context)
   if (context->glxpixmap == 0) {
     cc_debugerror_postwarning("glxglue_context_create_software",
                               "Couldn't create GLX Pixmap.");
-    glxglue_contextdata_cleanup(context);
     return FALSE;
   }
 
@@ -761,7 +760,6 @@ glxglue_context_create_pbuffer(struct glxglue_contextdata * context)
   if (context->glxcontext == NULL) {
     cc_debugerror_postwarning("glxglue_context_create_pbuffer",
                               "Couldn't create GLX context.");
-    glxglue_contextdata_cleanup(context);
     return FALSE;
   }
   
