@@ -30,46 +30,46 @@
 # IDTBG--R-!              SoCone
 # IDTBG--R-!              SoCube
 # IDTBG--R-!              SoCylinder
-#   -------!              SoVertexShape
-#   -B-----!                      SoNonIndexedShape
-#   TBG----!                              SoFaceSet
-#   TBG----!                              SoLineSet
-#   TBG----!                              SoPointSet
+# ID-------!              SoVertexShape
+# ID-B-----!                      SoNonIndexedShape
+# IDTBG----!                              SoFaceSet
+# IDTBG----!                              SoLineSet
+# I TBG----!                              SoPointSet
 #   T! ----!                                      SoMarkerSet
-#   tBG----!                              SoQuadMesh
-#   TBG----!                              SoTriangleStripSet
-#   -B-----!                      SoIndexedShape
-#   T!G----!                              SoIndexedFaceSet
-#   T!G----!                              SoIndexedLineSet
-#   T!G----!                              SoIndexedTriangleStripSet
-#   T  -- -!              SoImage
-#      -- -!              SoIndexedNurbsCurve
-#      -- -!              SoIndexedNurbsSurface
-#    Bg-- -!              SoNurbsCurve
-#    Bg-- -!              SoNurbsSurface
-#   TBG--R-!              SoSphere
+# I tBG----!                              SoQuadMesh
+# I TBG----!                              SoTriangleStripSet
+# I -B-----!                      SoIndexedShape
+# I T!G----!                              SoIndexedFaceSet
+# I T!G----!                              SoIndexedLineSet
+# I T!G----!                              SoIndexedTriangleStripSet
+# I T  -- -!              SoImage
+# I  BG--R-!              SoIndexedNurbsCurve
+# I  BG--R-!              SoIndexedNurbsSurface
+# I  BG--R-!              SoNurbsCurve
+# I  BG--R-!              SoNurbsSurface
+# I TBG--R-!              SoSphere
 #   TbG-- -!              SoText2
 # IDTBG--R-!              SoText3
 #    B -P--!      SoAnnoText3Property
 # ID-BGMP-CS      SoGroup
-# ID-BGM--C!              SoSeparator
-#   T!G! --                       SoAnnotation
-#   -!   --                       SoSelection
+# ID-BGM--CS              SoSeparator
+#   T!G!---!                      SoAnnotation
+# I -!!!!-!!                      SoSelection
 #   -!   --                               SoExtSelection
-# IDT!G!!--                       SoLocateHighlight
+# IDT!G!!-!!                      SoLocateHighlight
 #    !   --                               SoWWWAnchor
 #        --                       SoRenderList
 #        --                               SoOctreeOrdering
 #        --                               SoValueOrdering
-#   Tbgmp-c               SoArray
-#   TBGMP-C               SoSwitch
-#   T !!!-!                       SoBlinker
-#   TbG!-RC               SoLOD
+# I TBGMP-CS              SoArray
+# I TBGMP-CS              SoSwitch
+# I TB!!!-!S                      SoBlinker
+# I TBG!-RC!              SoLOD
 #    ! !-!!                       SoLevelOfSimplification
-#   T! !-RC               SoLevelOfDetail
-#   Tbg p-c               SoMultipleCopy
+# I T!G!-RC!              SoLevelOfDetail
+# I TBG P-CS              SoMultipleCopy
 #        -                SoPathSwitch
-#   TBGMP-C               SoTransformSeparator
+#   TBGMP-C!              SoTransformSeparator
 # ID-B-----!      SoTransformation
 # IDTBGMP-C!              SoAntiSquish
 # IDTBGMP-C!              SoMatrixTransform
@@ -117,15 +117,15 @@
 # ID-BG-P-C!      SoProfileCoordinate2
 # ID-BG-P-C!      SoProfileCoordinate3
 # IDTBG-P-C!      SoShapeHints
-#   T-G---C!      SoTexture2
-#   T-GMP-C!      SoTexture2Transform
-#   --G-P-C!      SoTextureCoordinate2
-#   T-G-P-C!      SoTextureCoordinateBinding
-#   ----P-C!      SoTextureCoordinateFunction
-#   T-g-p-C!              SoTextureCoordinateDefault
-#   T-G-p-c!              SoTextureCoordinateEnvironment
-#   T-G-p-c!              SoTextureCoordinatePlane
-#    BG-P-C       SoVertexProperty
+# I T-G---C!      SoTexture2
+# I T-GMP-C!      SoTexture2Transform
+# I --G-P-C!      SoTextureCoordinate2
+# I T-G-P-C!      SoTextureCoordinateBinding
+# I ----P-C!      SoTextureCoordinateFunction
+# I T-G-P-C!              SoTextureCoordinateDefault
+# I T-G-P-C!              SoTextureCoordinateEnvironment
+# I T-G-P-C!              SoTextureCoordinatePlane
+# I  BG-P-C       SoVertexProperty
 #    B   -        SoWWWInline
 # I--BG-P--S      SoUnknownNode
 #
