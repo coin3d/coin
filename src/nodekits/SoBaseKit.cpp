@@ -45,6 +45,8 @@
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/SoPath.h>
+#include <Inventor/SoFullPath.h>
+#include <Inventor/SoNodeKitPath.h>
 #include <Inventor/SoInput.h>
 #include <stdlib.h>
 #include <limits.h>
@@ -163,30 +165,69 @@ SoBaseKit::getPart(const SbName & partname, SbBool makeifneeded)
 SbString
 SoBaseKit::getPartString(const SoBase *part)
 {
-#if 0 // under development
-  SoFullPath *path = NULL;
-  SoSearchAction sa;
-  if (part->isOfType(SoPath::getClassTypeId())) {
-    path = (SoFullPath*)part;
+  const SoNodekitCatalog *catalog = this->getNodekitCatalog();
+  if (part->isOfType(SoNode::getClassTypeId())) {
+    int idx = this->findNodeInThisKit((SoNode*)part);
+    if (idx >= 0) {
+      return SbString(catalog->getName(idx).getString());
+    }
+    return SbString();
   }
-  else {
-    assert(part->isOfType(SoNode::getClassTypeId()));
-    SbBool oldSearch = SoBaseKit::isSearchingChildren();
-    SoBaseKit::setSearchingChildren(TRUE);
-    sa.setNode((SoNode*)part);
-    sa.setInterest(SoSearchAction::FIRST);
-    sa.setSearchingAll(FALSE);
-    sa.apply(this);
-    path = (SoFullPath*) sa.getPath();
-    SoBaseKit::setSearchingChildren(oldSearch);
+  else if (part->isOfType(SoPath::getClassTypeId())) {
+    SoFullPath *path = (SoFullPath*)part;
+    int pathidx = path->findNode(this);
+    if (pathidx < 0) return SbString();
+    SoBaseKit *kit = this;
+    SbString partname;
+    int parentnum = 0;
+    SoNode *tail = path->getTail();
+    SoNode *node = kit;
+    while (node != tail) {
+      node = path->getNode(++pathidx);
+      int partnum = kit->findNodeInThisKit(node, parentnum);
+      if (partnum < 0) {
+#if COIN_DEBUG && 1 // debug
+        SoDebugError::postInfo("SoBaseKit::getPartString",
+                               "Illegal path");
+#endif // debug
+        return SbString();
+      }
+      // FIXME: not quite sure if this test is sufficient, pederb 2000-02-01
+      if (catalog->isLeaf(partnum)) {
+        if (partname != "") partname += '.';
+        partname += catalog->getName(partnum).getString();
+      }
+      if (node->isOfType(SoNodeKitListPart::getClassTypeId())) {
+        // no sense in using SoNodeKitListPart as a non-leaf node, right?
+        assert(catalog->isLeaf(partnum));
+        SoNodeKitListPart *list = (SoNodeKitListPart*)node;
+        pathidx += 2; // // skip container node
+        if (pathidx >= path->getLength()) {
+#if COIN_DEBUG && 1 // debug
+          SoDebugError::postInfo("SoBaseKit::getPartString",
+                                 "Path too short");
+#endif // debug
+          return SbString();
+        }
+        node = path->getNode(pathidx); 
+        int childidx = list->findChild(node); 
+        assert(childidx >= 0);
+        partname += '[';
+        partname.addIntString(childidx);
+        partname += ']'; 
+      }
+      if (node->isOfType(SoBaseKit::getClassTypeId())) {
+        kit = (SoBaseKit*) node;
+        catalog = kit->getNodekitCatalog();
+        parentnum = 0;
+      }
+      else {
+        // search more in this kit
+        parentnum = partnum;
+      }
+    }
+    return partname;
   }
-
-  if (path) {
-    int n = path->getLength();
-    path->unref();
-  }
-#endif
-  COIN_STUB();
   return SbString();
 }
 
@@ -701,25 +742,25 @@ SoBaseKit::createPathToAnyPart(const SbName &partname, SbBool makeifneeded, SbBo
 {
   // FIXME: leafcheck and publiccheck support, pederb 2000-01-07
 
-  SoPath *path;
+  SoFullPath *path;
   if (pathtoextend) {
-    path = pathtoextend->copy();
+    path = (SoFullPath*)pathtoextend->copy();
     // pop off nodes beyond this kit node
     if (path->containsNode(this)) while (path->getTail() != this && path->getLength()) path->pop();
-    if (path->getLength()) {
+    else if (path->getLength()) {
       SoNode *node = path->getTail();
-      if (node->getChildren()->find(this) < 0) {
+      if (!node->getChildren() || node->getChildren()->find(this) < 0) {
 #if COIN_DEBUG && 1 // debug
         SoDebugError::postInfo("SoBaseKit::createPathToAnyPart",
-                               "pathtoextend is illegal");
+                                 "pathtoextend is illegal");
 #endif // debug
         return NULL;
       }
+      path->append(this); // this should be safe now
     }
-    path->append(this); // this should be safe now
   }
   else {
-    path= new SoPath(this);
+    path = (SoFullPath*)new SoPath(this);
   }
   path->ref();
 
@@ -749,6 +790,7 @@ SoBaseKit::createPathToAnyPart(const SbName &partname, SbBool makeifneeded, SbBo
           path->append(list->getChild(listIdx));
         }
       }
+      path->unrefNoDelete();
       return (SoNodeKitPath*)path;
     }
   }
@@ -1036,6 +1078,26 @@ SoBaseKit::findPart(const SbString &partname, SoBaseKit *&kit, int &partNum,
     kit->makePart(partNum);
   }
 
+  if (path) {
+    const SoNodekitCatalog *catalog = kit->getNodekitCatalog();
+    SbList <SoNode*> nodestopart;
+    int parent = catalog->getParentPartNumber(partNum);
+    while (parent > 0) {
+      SoNode *node = kit->fieldList[parent]->getValue();
+      if (node == NULL) {
+        assert(makeIfNeeded == FALSE);
+        break;
+      }
+      nodestopart.push(node);
+      parent = catalog->getParentPartNumber(parent);
+    }
+    assert(parent == 0 || !makeIfNeeded);
+    while (nodestopart.getLength()) {
+      SoNode *node = nodestopart.pop();
+      path->append(node);
+    }
+  }
+
   if (periodptr == NULL) {
     // singlename or singlelistname found, do not recurse any more
     return TRUE; // all info has been found, just return TRUE
@@ -1157,4 +1219,24 @@ SoBaseKit::getRightSiblingIndex(const int partNum)
     sibling = catalog->getRightSiblingPartNumber(sibling);
   }
   return sibling;
+}
+
+//
+// Searches the field list to find of a node is in this kit.
+// Returns catalog index, -1 if not found
+//
+// parentnum is checked if >= 0
+//
+int 
+SoBaseKit::findNodeInThisKit(SoNode *node, const int parentnum) const
+{
+  const SoNodekitCatalog *catalog = this->getNodekitCatalog();
+  if (node == (SoNode*)this) return 0;
+  int n = this->numCatalogEntries;
+  for (int i = 1; i < n; i++) {
+    if (this->fieldList[i]->getValue() == node &&
+        (parentnum < 0 || catalog->getParentPartNumber(i) == parentnum))
+      return i;
+  }
+  return -1;
 }
