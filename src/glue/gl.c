@@ -344,7 +344,7 @@ cc_glglue_getprocaddress(const char * symname)
   ptr = glxglue_getprocaddress(symname);
   if (ptr) goto returnpoint;
 
-  ptr = coin_agl_getprocaddress(symname);
+  ptr = aglglue_getprocaddress(symname);
   if (ptr) goto returnpoint;
 
   if (glglue_self_handle) {
