@@ -249,3 +249,13 @@ THE WISH LIST
   bottom or centre of something. We could also consider adding this field 
   in SoAsciiText and SoText3.
 
+* 3D GUI Components
+  2001-01-05  Peder Blekken <pederb@sim.no>
+
+  It would be very useful to have a set of classes to build simple 3D
+  GUIs. A nice approach might be to do something similar to how
+  draggers are created, as nodekits, with default geometry that can be
+  replaced by supplying your own geometry files.
+
+  Examples of useful components: PushButton, ScrollBar, ComboBox,
+  RadioButton, LineEdit, Menu?...
