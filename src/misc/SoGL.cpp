@@ -283,6 +283,11 @@ sogl_render_cone(const float radius,
     }
     glEnd();
   }
+  if (SoComplexityTypeElement::get(state) ==
+      SoComplexityTypeElement::OBJECT_SPACE) {
+    // encourage auto caching for object space
+    SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DO_AUTO_CACHE);
+  }
 }
 
 void
@@ -447,6 +452,11 @@ sogl_render_cylinder(const float radius,
       glVertex3fv((const GLfloat*)&coords[i]);
     }
     glEnd();
+  }
+  if (SoComplexityTypeElement::get(state) ==
+      SoComplexityTypeElement::OBJECT_SPACE) {
+    // encourage auto caching for object space
+    SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DO_AUTO_CACHE);
   }
 }
 
@@ -693,6 +703,12 @@ sogl_render_sphere(const float radius,
     glVertex3fv((const GLfloat*)&coords[j+1]);
   }
   glEnd(); // GL_TRIANGLES
+
+  if (SoComplexityTypeElement::get(state) ==
+      SoComplexityTypeElement::OBJECT_SPACE) {
+    // encourage auto caching for object space
+    SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DO_AUTO_CACHE);
+  }
 }
 
 //
@@ -810,6 +826,9 @@ sogl_render_cube(const float width,
     }
   }
   glEnd();
+
+  // always encourage auto caching for cubes
+  SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DO_AUTO_CACHE);
 }
 
 // **************************************************************************
