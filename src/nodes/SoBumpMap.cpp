@@ -28,14 +28,15 @@
 
   Currently only normal maps are supported. This means that the image
   must have three components, where the red image component equals
-  the X normal component, gree equals Y, and blue is Z. See 
+  the X normal component, green equals Y, and blue is Z. See 
   http:// for a nice introduction about bump mapping and normal
   maps.
   
-  For bump mapping to work in Coin, the generatePrimitives() method
-  must be correctly implemented for the shape. This is needed since
-  tangent space coordinates needs to be calculated for each vertex in
-  the shape.
+  For bump mapping to work with extension nodes for Coin, the
+  SoShape::generatePrimitives() method must be correctly implemented
+  for the shape. This is needed since tangent space coordinates needs
+  to be calculated for each vertex in the shape. All shape nodes which
+  are a standard part of Coin meets this criteria.
 
   \since Coin 2.2
 */
