@@ -340,8 +340,8 @@ public:
   }
 
   unsigned int character;
-  SbName font;
   float size;
+  SbName font;
   SoGlyph *glyph;
 };
 
