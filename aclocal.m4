@@ -1276,12 +1276,10 @@ if test x"$enable_warnings" = x"yes"; then
         #       of the Coin macros).
         # 1375: Non-virtual destructors in base classes.
         # 3201: Unused argument to a function.
-        # 3303: "Meaningless type qualifier on return type" (happens with the
-        #       SoField macros in Coin because of use of const in the macros).
         # 1110: "Statement is not reachable" (the Lex/Flex generated code in
         #       Coin/src/engines has lots of shitty code which needs this).
 
-        sim_ac_bogus_warnings="-woff 3115,3262,1174,1209,1355,1375,3201,3303,1110"
+        sim_ac_bogus_warnings="-woff 3115,3262,1174,1209,1355,1375,3201,1110"
         SIM_AC_CC_COMPILER_OPTION($sim_ac_bogus_warnings,
                                   CPPFLAGS="$CPPFLAGS $sim_ac_bogus_warnings")
       fi
