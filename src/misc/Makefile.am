@@ -4,6 +4,7 @@ RegularSources = \
 	SoContextHandler.cpp \
 	SoGL.cpp \
 	SoGLImage.cpp \
+	SoGLCubeMapImage.cpp \
 	SoGLBigImage.cpp \
 	SoGlyph.cpp \
 	SoNormalGenerator.cpp \

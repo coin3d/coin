@@ -7,6 +7,7 @@ PublicHeaders = \
 	SoChildList.h \
 	SoContextHandler.h \
 	SoGLImage.h \
+	SoGLCubeMapImage.h \
 	SoGLBigImage.h \
 	SoNormalGenerator.h \
 	SoNotification.h \

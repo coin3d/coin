@@ -529,7 +529,8 @@ DIST_SOURCES = $(am__shaders_lst_SOURCES_DIST) \
 	$(am__EXTRA_libshaders@SUFFIX@LINKHACK_la_SOURCES_DIST)
 HEADERS = $(libshadersinc_HEADERS)
 
-DIST_COMMON = $(libshadersinc_HEADERS) Makefile.am Makefile.in
+DIST_COMMON = $(libshadersinc_HEADERS) ChangeLog Makefile.am \
+	Makefile.in
 SOURCES = $(shaders_lst_SOURCES) $(EXTRA_shaders_lst_SOURCES) $(libshaders_la_SOURCES) $(EXTRA_libshaders_la_SOURCES) $(libshaders@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_libshaders@SUFFIX@LINKHACK_la_SOURCES)
 
 all: all-am
