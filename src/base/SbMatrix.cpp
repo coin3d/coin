@@ -903,7 +903,7 @@ SbMatrix::factor(SbMatrix & r, SbVec3f & s, SbMatrix & u, SbVec3f & t,
 */
 
 
-const SbBool
+SbBool
 SbMatrix::LUDecomposition(int index[4], float & d)
 {
     int i;
