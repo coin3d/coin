@@ -773,7 +773,7 @@ SoOutput::write(const SbString & s)
   else {
     SbString ws("\"");
     for (int i=0;i<s.getLength();i++) {
-      if (s[i] == '"' || s[i] == '\\') ws += "\\";
+      if (s[i] == '"') ws += "\\";
       ws += s[i];
     }
     ws += "\"";
