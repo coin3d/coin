@@ -35,4 +35,12 @@ THE LINKS
   Uses shadow mapping hardware and alpha test. Can be implemented in
   OpenGL using Nvidia extensions for GeForce3.
 
+* GL2PS. A Postscript rendering library.
+  2001-06-11 Peder Blekken <pederb@sim.no>
+
+  http://www.geuz.org/gl2ps/
+
+  A library for rendering high quality postscript from any OpenGL
+  application. Released under LGPL.
+
 
