@@ -27,6 +27,10 @@
   \ingroup elements
 
   FIXME: write doc.
+
+  \COIN_CLASS_EXTENSION
+
+  \since Coin 2.2
 */
 
 #include <Inventor/elements/SoMultiTextureImageElement.h>
