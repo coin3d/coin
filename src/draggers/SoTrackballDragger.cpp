@@ -485,29 +485,34 @@ SoTrackballDragger::dragStart(void)
   }
 
   SbVec3f axis(0.0f, 1.0f, 0.0f);
-  if (!THIS->whatkind && pickpath->findNode(this->getNodeFieldNode("rotator")) >= 0) {
+  if (!THIS->whatkind && (pickpath->findNode(this->getNodeFieldNode("rotator")) >= 0 ||
+                          this->getSurrogatePartPickedName() == "rotator")) {
     THIS->whatkind = WHATKIND_ROTATOR;
     this->setAllPartsActive(TRUE);
   }
-  if (!THIS->whatkind && pickpath->findNode(this->getNodeFieldNode("XRotator")) >= 0) {
+  if (!THIS->whatkind && (pickpath->findNode(this->getNodeFieldNode("XRotator")) >= 0 ||
+                          this->getSurrogatePartPickedName() == "XRotator")) {
     THIS->whatkind = WHATKIND_XROTATOR;
     sw = SO_GET_ANY_PART(this, "XRotatorSwitch", SoSwitch);
     SoInteractionKit::setSwitchValue(sw, 1);
     axis.setValue(1.0f, 0.0f, 0.0f);
   }
-  if (!THIS->whatkind && pickpath->findNode(this->getNodeFieldNode("YRotator")) >= 0) {
+  if (!THIS->whatkind && (pickpath->findNode(this->getNodeFieldNode("YRotator")) >= 0 ||
+                          this->getSurrogatePartPickedName() == "YRotator")) {
     THIS->whatkind = WHATKIND_YROTATOR;
     sw = SO_GET_ANY_PART(this, "YRotatorSwitch", SoSwitch);
     SoInteractionKit::setSwitchValue(sw, 1);
     axis.setValue(0.0f, 1.0f, 0.0f);
   }
-  if (!THIS->whatkind && pickpath->findNode(this->getNodeFieldNode("ZRotator")) >= 0) {
+  if (!THIS->whatkind && (pickpath->findNode(this->getNodeFieldNode("ZRotator")) >= 0 ||
+                          this->getSurrogatePartPickedName() == "ZRotator")) {
     THIS->whatkind = WHATKIND_ZROTATOR;
     sw = SO_GET_ANY_PART(this, "ZRotatorSwitch", SoSwitch);
     SoInteractionKit::setSwitchValue(sw, 1);
     axis.setValue(0.0f, 0.0f, 1.0f);
   }
-  if (!THIS->whatkind && pickpath->findNode(this->getNodeFieldNode("userRotator")) >= 0) {
+  if (!THIS->whatkind && (pickpath->findNode(this->getNodeFieldNode("userRotator")) >= 0 ||
+                          this->getSurrogatePartPickedName() == "userRotation")) {
     THIS->whatkind = WHATKIND_USERROTATOR;
     sw = SO_GET_ANY_PART(this, "userRotatorSwitch", SoSwitch);
     SoInteractionKit::setSwitchValue(sw, 1);

@@ -1104,7 +1104,8 @@ SoTransformerDragger::dragStart(void)
   if (!found) {
     for (i = 1; i <= 6; i++) {
       str.sprintf("translator%d", i);
-      if (pickpath->findNode(this->getNodeFieldNode(str.getString())) >= 0) break;
+      if (pickpath->findNode(this->getNodeFieldNode(str.getString())) >= 0 ||
+          this->getSurrogatePartPickedName() == str.getString()) break;
     }
     if (i <= 6) {
       found = TRUE;
@@ -1120,7 +1121,8 @@ SoTransformerDragger::dragStart(void)
   if (!found) {
     for (i = 1; i <= 6; i++) {
       str.sprintf("rotator%d", i);
-      if (pickpath->findNode(this->getNodeFieldNode(str.getString()))>= 0) break;
+      if (pickpath->findNode(this->getNodeFieldNode(str.getString()))>= 0 ||
+          this->getSurrogatePartPickedName() == str.getString()) break;
     }
     if (i <= 6) {
       found = TRUE;
@@ -1135,7 +1137,8 @@ SoTransformerDragger::dragStart(void)
   if (!found) {
     for (i = 1; i <= 8; i++) {
       str.sprintf("scale%d", i);
-      if (pickpath->findNode(this->getNodeFieldNode(str.getString()))>= 0) break;
+      if (pickpath->findNode(this->getNodeFieldNode(str.getString()))>= 0 ||
+          this->getSurrogatePartPickedName() == str.getString()) break;
     }
     if (i <= 8) {
       found = TRUE;

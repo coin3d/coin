@@ -635,7 +635,8 @@ SoHandleBoxDragger::dragStart(void)
   if (!found) {
     for (i = 1; i <= 6; i++) {
       str.sprintf("%s%d", translatorname, i);
-      if (pickpath->findNode(this->getNodeFieldNode(str.getString())) >= 0) break;
+      if (pickpath->findNode(this->getNodeFieldNode(str.getString())) >= 0||
+          this->getSurrogatePartPickedName() == str.getString()) break;
     }
     if (i <= 6) {
       found = TRUE;
@@ -647,7 +648,8 @@ SoHandleBoxDragger::dragStart(void)
   if (!found) {
     for (i = 1; i <= 6; i++) {
       str.sprintf("%s%d", extrudername, i);
-      if (pickpath->findNode(this->getNodeFieldNode(str.getString()))>= 0) break;
+      if (pickpath->findNode(this->getNodeFieldNode(str.getString()))>= 0 ||
+          this->getSurrogatePartPickedName() == str.getString()) break;
     }
     if (i <= 6) {
       found = TRUE;
@@ -658,7 +660,8 @@ SoHandleBoxDragger::dragStart(void)
   if (!found) {
     for (i = 1; i <= 8; i++) {
       str.sprintf("%s%d", uniformname, i);
-      if (pickpath->findNode(this->getNodeFieldNode(str.getString()))>= 0) break;
+      if (pickpath->findNode(this->getNodeFieldNode(str.getString()))>= 0 ||
+          this->getSurrogatePartPickedName() == str.getString()) break;
     }
     if (i <= 8) {
       found = TRUE;

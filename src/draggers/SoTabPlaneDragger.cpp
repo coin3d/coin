@@ -505,7 +505,8 @@ SoTabPlaneDragger::dragStart(void)
   if (!found) {
     for (i = 0; i < 4; i++) {
       str.sprintf("edgeScaleTab%d", i);
-      if (pickpath->findNode(this->getNodeFieldNode(str.getString())) >= 0) break;
+      if (pickpath->findNode(this->getNodeFieldNode(str.getString())) >= 0 ||
+          this->getSurrogatePartPickedName() == str.getString()) break;
     }
     if (i < 4) {
       found = TRUE;
@@ -517,7 +518,8 @@ SoTabPlaneDragger::dragStart(void)
   if (!found) {
     for (i = 0; i < 4; i++) {
       str.sprintf("cornerScaleTab%d", i);
-      if (pickpath->findNode(this->getNodeFieldNode(str.getString())) >= 0) break;
+      if (pickpath->findNode(this->getNodeFieldNode(str.getString())) >= 0 ||
+          this->getSurrogatePartPickedName() == str.getString()) break;
     }
     if (i < 4) {
       found = TRUE;
@@ -526,7 +528,8 @@ SoTabPlaneDragger::dragStart(void)
     }
   }
   if (!found) {
-    assert(pickpath->findNode(this->getNodeFieldNode("translator")) >= 0);
+    assert(pickpath->findNode(this->getNodeFieldNode("translator")) >= 0 ||
+           this->getSurrogatePartPickedName() == "translator");
     found = TRUE;
     this->whatkind = WHATKIND_TRANSLATE;
   }
