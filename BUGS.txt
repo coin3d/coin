@@ -579,3 +579,10 @@
     20020911 mortene.
 
 =====================================================================
+
+026 Bounding box calculation: the bbox for the Barcelona.iv model is
+    _very_ sub-optimal. (SGI Inventor seems to make a perfect fit.)
+
+    20020915 mortene.
+
+=====================================================================
