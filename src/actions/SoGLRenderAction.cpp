@@ -414,7 +414,8 @@ public:
   SbBool delayedpathrender;
   SbBool transparencyrender;
   SoPathList transpobjpaths;
-  SbList<float> transpobjdistances;
+  SoPathList sorttranspobjpaths;
+  SbList<float> sorttranspobjdistances;
 
   SoGetBoundingBoxAction * bboxaction;
   SbVec2f updateorigin, updatesize;
@@ -459,6 +460,8 @@ public:
   void renderMulti(SoNode * node);
   void renderSingle(SoNode * node);
 
+  // For transparent paths that need to be sorted
+  void addSortTransPath(SoPath * path);
 };
 
 #endif // DOXYGEN_SKIP_THIS
@@ -948,7 +951,7 @@ SoGLRenderAction::handleTransparency(SbBool istransparent)
   case SoGLRenderAction::SORTED_OBJECT_BLEND:
   case SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_ADD:
   case SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND:
-    this->addTransPath(this->getCurPath()->copy());
+    THIS->addSortTransPath(this->getCurPath()->copy());
     SoCacheElement::setInvalid(TRUE);
     if (thestate->isCacheOpen()) {
       SoCacheElement::invalidate(thestate);
@@ -1071,49 +1074,13 @@ SoGLRenderAction::isRenderingDelayedPaths(void) const
 
 // Remember a path containing a transparent object for later
 // rendering. We know path == this->getCurPath() when we get here.
+// This method is only used to add paths that are to be rendered after
+// all transparent paths that need sorting have been rendered, so no
+// need to calculate distances. Just add to list.
 void
 SoGLRenderAction::addTransPath(SoPath * path)
 {
   THIS->transpobjpaths.append(path);
-
-  // if we're not going to sort the paths we don't need to calculate
-  // distance
-  if (THIS->transparencytype == DELAYED_BLEND ||
-      THIS->transparencytype == DELAYED_ADD) return;
-
-  SoNode * tail = ((SoFullPath*)path)->getTail();
-  float dist;
-
-  // test if we can find the bbox using SoShape::getBoundingBoxCache()
-  // or SoShape::computeBBox. This is the common case, and quite a lot
-  // faster than using an SoGetBoundingBoxAction.
-  if (tail->isOfType(SoShape::getClassTypeId())) { // common case
-    SoShape * tailshape = (SoShape*) tail;
-    const SoBoundingBoxCache * bboxcache = tailshape->getBoundingBoxCache();
-    SbVec3f center;
-    
-    if (bboxcache && bboxcache->isValid(this->state)) {
-      if (bboxcache->isCenterSet()) center = bboxcache->getCenter();
-      center = bboxcache->getProjectedBox().getCenter();
-    }
-    else {
-      SbBox3f dummy;
-      tailshape->computeBBox(this, dummy, center);
-    }
-    SoModelMatrixElement::get(this->state).multVecMatrix(center, center);
-    dist = SoViewVolumeElement::get(this->state).getPlane(0.0f).getDistance(center);
-  }
-  else {
-    if (THIS->bboxaction == NULL) {
-      THIS->bboxaction =
-        new SoGetBoundingBoxAction(SoViewportRegionElement::get(this->state));
-    }
-    THIS->bboxaction->setViewportRegion(SoViewportRegionElement::get(this->state));
-    THIS->bboxaction->apply(path);
-    SbVec3f center = THIS->bboxaction->getBoundingBox().getCenter();
-    dist = SoViewVolumeElement::get(this->state).getPlane(0.0f).getDistance(center);
-  }
-  THIS->transpobjdistances.append(dist);
 }
 
 // Documented in superclass. Overridden to reinitialize GL state on
@@ -1130,10 +1097,10 @@ void
 SoGLRenderAction::doPathSort(void)
 {
   // need to cast to SbPList to avoid ref/unref problems
-  SbPList * plist = (SbPList *)&THIS->transpobjpaths;
-  float * darray = (float *)THIS->transpobjdistances.getArrayPtr();
+  SbPList * plist = (SbPList *)&THIS->sorttranspobjpaths;
+  float * darray = (float *)THIS->sorttranspobjdistances.getArrayPtr();
 
-  int i, j, distance, n = THIS->transpobjdistances.getLength();
+  int i, j, distance, n = THIS->sorttranspobjdistances.getLength();
   void * ptmp;
   float dtmp;
 
@@ -1201,6 +1168,49 @@ SoGLRenderAction::removePreRenderCallback(SoGLPreRenderCB * func, void * userdat
 // methods in SoGLRenderActionP
 #ifndef DOXYGEN_SKIP_THIS
 
+
+// Private function to save transparent paths that need to be sorted.
+// The transparent paths that don't need to be sorted are rendered 
+// after the sorted ones.
+void
+SoGLRenderActionP::addSortTransPath(SoPath * path) 
+{
+  this->sorttranspobjpaths.append(path);
+
+  SoNode * tail = ((SoFullPath*)path)->getTail();
+  float dist;
+
+  // test if we can find the bbox using SoShape::getBoundingBoxCache()
+  // or SoShape::computeBBox. This is the common case, and quite a lot
+  // faster than using an SoGetBoundingBoxAction.
+  if (tail->isOfType(SoShape::getClassTypeId())) { // common case
+    SoShape * tailshape = (SoShape*) tail;
+    const SoBoundingBoxCache * bboxcache = tailshape->getBoundingBoxCache();
+    SbVec3f center;
+    
+    if (bboxcache && bboxcache->isValid(action->state)) {
+      if (bboxcache->isCenterSet()) center = bboxcache->getCenter();
+      center = bboxcache->getProjectedBox().getCenter();
+    }
+    else {
+      SbBox3f dummy;
+      tailshape->computeBBox(action, dummy, center);
+    }
+    SoModelMatrixElement::get(action->state).multVecMatrix(center, center);
+    dist = SoViewVolumeElement::get(action->state).getPlane(0.0f).getDistance(center);
+  }
+  else {
+    if (this->bboxaction == NULL) {
+      this->bboxaction =
+        new SoGetBoundingBoxAction(SoViewportRegionElement::get(action->state));
+    }
+    this->bboxaction->setViewportRegion(SoViewportRegionElement::get(action->state));
+    this->bboxaction->apply(path);
+    SbVec3f center = this->bboxaction->getBoundingBox().getCenter();
+    dist = SoViewVolumeElement::get(action->state).getPlane(0.0f).getDistance(center);
+  }
+  this->sorttranspobjdistances.append(dist);
+}
 
 // Private function which "unwinds" the real value of the "rendering"
 // variable.
@@ -1313,13 +1323,13 @@ SoGLRenderActionP::renderSingle(SoNode * node)
   assert(this->transparencyrender == FALSE);
 
   // Truncate just in case
+  this->sorttranspobjpaths.truncate(0);
   this->transpobjpaths.truncate(0);
-  this->transpobjdistances.truncate(0);
+  this->sorttranspobjdistances.truncate(0);
   this->delayedpaths.truncate(0);
 
   // Do order independent transparency rendering
   if (this->transparencytype == SoGLRenderAction::SORTED_LAYERS_BLEND) {
-
     GLint depthbits, alphabits;
     glGetIntegerv(GL_DEPTH_BITS, &depthbits);
     glGetIntegerv(GL_ALPHA_BITS, &alphabits);
@@ -1351,28 +1361,29 @@ SoGLRenderActionP::renderSingle(SoNode * node)
   
   this->action->beginTraversal(node);
 
-  if (this->transpobjpaths.getLength() && !this->action->hasTerminated()) {
+  if ((this->transpobjpaths.getLength() || this->sorttranspobjpaths.getLength()) && 
+      !this->action->hasTerminated()) {
+
     this->transparencyrender = TRUE;
     // disable writing into the z-buffer when rendering transparent
     // objects
     glDepthMask(GL_FALSE);
     SoGLCacheContextElement::set(state, this->cachecontext,
                                  TRUE, !this->isDirectRendering(state));
-       
-    // test if paths should be rendered back-to-front
-    if (this->transparencytype == SoGLRenderAction::SORTED_OBJECT_BLEND ||
-        this->transparencytype == SoGLRenderAction::SORTED_OBJECT_ADD ||
-        this->transparencytype == SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND ||
-        this->transparencytype == SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_ADD) {
-      this->action->doPathSort();
-      int n = this->transpobjpaths.getLength();
-      for (int i  = 0; i < n; i++) {
-        this->action->apply(this->transpobjpaths[i]);
-      }
+
+
+    // All paths in the sorttranspobjpaths should be sorted
+    // back-to-front and rendered
+    this->action->doPathSort();
+    for (int i  = 0; i < this->sorttranspobjpaths.getLength(); i++) {
+      this->action->apply(this->sorttranspobjpaths[i]);
     }
-    else {
-      this->action->apply(this->transpobjpaths, TRUE);
+
+    // Render all transparent paths that should not be sorted
+    for (int i  = 0; i < this->transpobjpaths.getLength(); i++) {
+      this->action->apply(this->transpobjpaths[i]);
     }
+
     // enable depth buffer writes again
     glDepthMask(GL_TRUE);
     this->transparencyrender = FALSE;
@@ -1385,8 +1396,9 @@ SoGLRenderActionP::renderSingle(SoNode * node)
   }
 
   // truncate lists to unref paths.
+  this->sorttranspobjpaths.truncate(0);
   this->transpobjpaths.truncate(0);
-  this->transpobjdistances.truncate(0);
+  this->sorttranspobjdistances.truncate(0);
   this->delayedpaths.truncate(0);
 
 }
