@@ -329,7 +329,7 @@ envlist_append(struct envvar_data * item)
   item->next = NULL;
   if (envlist_head == NULL) {
     envlist_head = item;
-    evnlist_tail = item;
+    envlist_tail = item;
     (void)atexit(envlist_cleanup);
   }
   else {
