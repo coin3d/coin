@@ -1,5 +1,5 @@
---- configure.in	Tue Nov 20 16:12:58 2001
-+++ configure.in	Tue Nov 20 16:13:06 2001
+--- configure.ac	Tue Nov 20 16:12:58 2001
++++ configure.ac	Tue Nov 20 16:13:06 2001
 @@ -1007,7 +1007,7 @@
          src/sensors/Makefile
          src/threads/Makefile
