@@ -388,12 +388,16 @@ SoLevelOfDetail::getBoundingBox(SoGetBoundingBoxAction * action)
     }
   }
   else {
+    // used to restore the bounding box after we have traversed children
+    SbXfBox3f abox = action->getXfBoundingBox();
 
     SbBool storedinvalid = FALSE;
+    
+    // always push since we update SoLocalBBoxMatrixElement
+    state->push();
+
     if (iscaching) {
       storedinvalid = SoCacheElement::setInvalid(FALSE);
-
-      state->push(); // push to create cache dependencies
 
       // if we get here, we know bbox cache is not created or is invalid
       if (THIS->bboxcache) THIS->bboxcache->unref();
@@ -403,19 +407,25 @@ SoLevelOfDetail::getBoundingBox(SoGetBoundingBoxAction * action)
       SoCacheElement::set(state, THIS->bboxcache);
     }
 
+    // the bounding box cache should be in the local coordinate system
     SoLocalBBoxMatrixElement::makeIdentity(state);
     action->getXfBoundingBox().makeEmpty();
+    action->getXfBoundingBox().setTransform(SbMatrix::identity());
+
     inherited::getBoundingBox(action);
 
     childrenbbox = action->getXfBoundingBox();
     childrencenterset = action->isCenterSet();
     if (childrencenterset) childrencenter = action->getCenter();
 
+    action->getXfBoundingBox() = abox; // reset action bbox
+
     if (iscaching) {
       THIS->bboxcache->set(childrenbbox, childrencenterset, childrencenter);
     }
+    state->pop(); // we pushed before calculating the cache
+
     if (iscaching) {
-      state->pop(); // we pushed before opening the cache
       SoCacheElement::setInvalid(storedinvalid);
     }
   }
