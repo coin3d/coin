@@ -175,20 +175,31 @@ SoGroup::readChildren(SoInput * in)
     }
   }
   else {
+#if 0 // new code
     SbBool done = FALSE;
-    while (ret) {
+    while (!done) {
       SoBase * child = NULL;
-      if ((ret = SoBase::read(in, child, SoNode::getClassTypeId()))) {
-	if (child != NULL) this->addChild((SoNode *)child);
-	else {
-	  if (!in->eof()) {
-	    SoReadError::post(in, "``NULL'' keyword misplaced");
-	    ret = FALSE;
-	  }
-	  done = TRUE;
+      if ((ret = SoBase::read(in, child, SoNode::getClassTypeId())) && child) {
+	this->addChild((SoNode *)child);
+      }
+      else {
+	if (ret && !child && !in->eof()) {
+	  SoReadError::post(in, "``NULL'' keyword misplaced");
+	  ret = FALSE;
 	}
+	done = TRUE;
       }
     }
+#else // old code
+    while (ret) {
+      SoBase * child = NULL;
+      
+      if ((ret = SoBase::read(in, child, SoNode::getClassTypeId()))) {
+	if (child != NULL) this->addChild((SoNode *)child);
+	else break;
+      }
+    }
+#endif
   }
  
   return ret;

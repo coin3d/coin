@@ -137,14 +137,16 @@ public:
       if (len <= 0) {
 	this->readbufIndex = 0;
 	this->readbufLen = 0;
+#if 0 // debug
+	SoDebugError::postInfo("doBufferRead", "eof!");
+#endif // debug
 	return FALSE;
       }
-      else {
-	this->totalread += this->readbufIndex;
-	this->readbufIndex = 0;
-	this->readbufLen = len;
-	return TRUE;
-      }
+
+      this->totalread += this->readbufIndex;
+      this->readbufIndex = 0;
+      this->readbufLen = len;
+      return TRUE;
     }
 
   SbBool eof(void)
@@ -838,7 +840,7 @@ SoInput::read(SbString & s)
   Returns \a FALSE on encountering end of file before a full name has
   been read -- if \a validIdent is also \a FALSE. If \a validIdent is
   passed as \a TRUE, the return value will be \a FALSE if no valid name
-  was found, but \e not on end of file.
+  was found, but \e not necessarily on end of file.
 */
 SbBool
 SoInput::read(SbName & n, SbBool validIdent)
@@ -912,7 +914,16 @@ SoInput::read(SbName & n, SbBool validIdent)
       *b = '\0';
       s += buf;
       n = SbName(s);
+#if 0 // debug
+      SoDebugError::postInfo("SoInput::read",
+			     "string read: ``%s''", s.getString());
+#endif // debug
+
+#if 0 // OBSOLETED, 19991116 mortene.
       if (b == buf) return FALSE;
+#else
+      if (s.getLength() == 0) return FALSE;
+#endif
     }
   }
 

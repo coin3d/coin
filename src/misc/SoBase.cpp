@@ -570,17 +570,27 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedType)
   base = NULL;
 
   SbName name;
+#if 0 // debug
+  SoDebugError::postInfo("SoBase::read",
+			 "find base name");
+#endif // debug
   SbBool result = in->read(name, TRUE);
-  if (!result) return TRUE; // EOF, return TRUE with base==NULL
-  if (name == "NULL") return TRUE; // happens with So[S|M]FNode field values
+  if (!result) {
+#if 0 // debug
+    SoDebugError::postInfo("SoBase::read", "hit EOF");
+//      exit(0);
+#endif // debug
+    return TRUE; // EOF, return TRUE with base==NULL
+  }
 
 #if COIN_DEBUG && 1 // debug
   SoDebugError::postInfo("SoBase::read", "name: '%s'",
 			 name.getString());
 #endif // debug
 
+  if (name == "NULL") return TRUE; // happens with So[S|M]FNode field values
   // FIXME: DEF/USE doesn't work with binary files yet. 19990711 mortene.
-  if (name == REFERENCE_KEYWORD) result = SoBase::readReference(in, base);
+  else if (name == REFERENCE_KEYWORD) result = SoBase::readReference(in, base);
   else result = SoBase::readBase(in, name, base);
 
   // Check type correctness.
