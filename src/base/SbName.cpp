@@ -72,6 +72,8 @@ public:
 
   const char * str;
 
+  static void cleanup(void);
+
 private:
   static int nameTableSize;
   static SbNameEntry ** nameTable;
@@ -84,6 +86,28 @@ int SbNameEntry::nameTableSize;
 SbNameEntry * * SbNameEntry::nameTable;
 SbNameChunk * SbNameEntry::chunk;
 
+void 
+SbNameEntry::cleanup(void)
+{
+  SbNameChunk * chunk = SbNameEntry::chunk;
+  while (chunk) {
+    SbNameChunk * next = chunk->next;
+    delete chunk;
+    chunk = next;
+  }
+  
+  for (int i = 0; i < SbNameEntry::nameTableSize; i++) {
+    SbNameEntry * entry = SbNameEntry::nameTable[i];
+    while (entry) {
+      SbNameEntry * next = entry->next;
+      delete entry;
+      entry = next;
+    }
+  }
+  delete[] SbNameEntry::nameTable;
+}
+
+
 // This static method initializes static data for the SbNameEntry
 // class.
 void
@@ -93,6 +117,8 @@ SbNameEntry::initClass(void)
   SbNameEntry::nameTable = new SbNameEntry * [ SbNameEntry::nameTableSize ];
   for (int i = 0; i < SbNameEntry::nameTableSize; i++) { SbNameEntry::nameTable[i] = NULL; }
   SbNameEntry::chunk = NULL;
+
+  coin_atexit((coin_atexit_f*) SbNameEntry::cleanup);
 }
 
 void
