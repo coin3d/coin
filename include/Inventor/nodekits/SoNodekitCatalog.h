@@ -88,7 +88,17 @@ public:
   void printCheck(void) const;
 
 private:
+  SbBool reallyAddEntry(class CatalogItem * newitem);
+
+  int getPartNumber(const SbList<class CatalogItem *> & l,
+                    const SbName & name) const;
+  void addListItemType(const SbList<class CatalogItem *> & l,
+                       int part, SoType type);
+  SbBool addListItemType(const SbList<class CatalogItem *> & l,
+                         const SbName & name, SoType type);
+
   SbList<class CatalogItem *> items;
+  SbList<class CatalogItem *> delayeditems;
 };
 
 #endif // !__SONODEKITCATALOG_H__
