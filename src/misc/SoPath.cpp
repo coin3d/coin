@@ -146,7 +146,7 @@ SoPath::append(const int childindex)
 {
 #if COIN_DEBUG
   if (this->nodes.getLength() == 0) {
-    SoDebugError::post("SoPath::append(int child)",
+    SoDebugError::post("SoPath::append",
                        "SoPath was empty.\n");
     return;
   }
@@ -231,7 +231,7 @@ SoPath::append(const SoPath * const frompath)
 
 #if COIN_DEBUG
   if (tailchildren == NULL) {
-    SoDebugError::post("SoPath::append(SoPath)",
+    SoDebugError::post("SoPath::append",
                        "The tail of this SoPath has no children node ('%s').\n",
                        tail->getTypeId().getName().getString());
     return;
@@ -255,7 +255,7 @@ SoPath::append(const SoPath * const frompath)
   }
 
 #if COIN_DEBUG
-  SoDebugError::post("SoPath::append(SoPath *)", "Could not join paths.\n");
+  SoDebugError::post("SoPath::append", "Could not join paths.\n");
 #endif // COIN_DEBUG
   return;
 }
@@ -300,7 +300,7 @@ SoPath::getTail(void) const
 {
   if (this->getLength() == 0) {
 #if COIN_DEBUG
-    SoDebugError::postWarning("SoPath::getTail()", "empty path!");
+    SoDebugError::postWarning("SoPath::getTail", "empty path!");
 #endif // COIN_DEBUG
     return NULL;
   }
@@ -333,7 +333,7 @@ SoPath::getNodeFromTail(const int index) const
 {
 #if COIN_DEBUG
   if (index < 0 || index >= this->getLength()) {
-    SoDebugError::post("SoPath::getNodeFromTail()",
+    SoDebugError::post("SoPath::getNodeFromTail",
                        "index %d is out of bounds.", index);
     return NULL;
   }
@@ -367,7 +367,7 @@ SoPath::getIndexFromTail(const int index) const
 {
 #if COIN_DEBUG
   if (index < 0 || index >= this->getLength()) {
-    SoDebugError::post("SoPath::getIndexFromTail()",
+    SoDebugError::post("SoPath::getIndexFromTail",
                        "index %d is out of bounds.", index);
     return -1;
   }
@@ -416,7 +416,7 @@ SoPath::truncate(const int length, const SbBool /*donotify*/)
 {
 #if COIN_DEBUG
   if (length < 0 || length > this->nodes.getLength()) {
-    SoDebugError::post("SoPath::truncate()", "invalid length %d", length);
+    SoDebugError::post("SoPath::truncate", "invalid length %d", length);
     return;
   }
 #endif // COIN_DEBUG
@@ -742,7 +742,7 @@ SoPath::write(SoWriteAction * action)
 
     SoWriteAction wa(out);
     wa.continueToApply(this->getHead());
-    
+
     int nrindices = this->indices.getLength();
     if (!out->isBinary()) out->indent();
     out->write(nrindices - 1);
@@ -831,7 +831,7 @@ SoPath::readInstance(SoInput * in, unsigned short flags)
     SoReadError::post(in, "Couldn't read number of indices");
     return FALSE;
   }
-  
+
   for (int i=0; i < nrindices; i++) {
     int index;
     if (!in->read(index)) {
@@ -847,7 +847,7 @@ SoPath::readInstance(SoInput * in, unsigned short flags)
 
     this->append(index);
   }
-  
+
   return TRUE;
 }
 
