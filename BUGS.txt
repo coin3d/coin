@@ -3770,6 +3770,14 @@ incremented during the copy, but never decremented :(
     Note that this breaks ABI-compatibility, so it is only relevant
     for Coin 3.
 
+    UPDATE 20041210 mortene: GLU tessellation can do polygons with
+    holes, and we should probably use that for the implementation of
+    this feature.
+
+    UPDATE 20041213 kintel: The MS Windows implementation of GLU
+    is known to be buggy (it crashes AFAIR) wrt. tesselating polygons
+    with holes.
+
     20041010 mortene.
 
 =====================================================================
@@ -4520,18 +4528,6 @@ diff -u -b -r1.27 SoIndexedFaceSet.h
     ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
 
     20041116 larsa.
-
-=====================================================================
-
-171 SoShapeHints winding type
-
-    TGS extension.
-
-    20041116 larsa.
-
-    UPDATE 20041210 mortene: GLU tessellation can do polygons with
-    holes, and we should probably use that for the implementation of
-    this feature.
 
 =====================================================================
 
