@@ -207,6 +207,8 @@ _class_::createInstance(void) \
         _fieldtype_ * SO_ENGINE_OUTPUT_field = (_fieldtype_*) _engineout_[SO_ENGINE_OUTPUT_i]; \
         if (!SO_ENGINE_OUTPUT_field->isReadOnly()) { SO_ENGINE_OUTPUT_field->_writeop_; } \
       } \
+      /* paranoid assertion */ \
+      assert(_engineout_.getNumConnections() == SO_ENGINE_OUTPUT_numconnections); \
     } \
   } while (0)
 
