@@ -655,6 +655,8 @@ cc_glglue_glext_supported(const cc_glglue * wrapper, const char * extension)
 #define GL_NV_texture_shader 1
 #define GL_ARB_depth_texture 1
 #define GL_ARB_shadow 1
+#define GL_EXT_texture_rectangle 1
+#define GL_ARB_fragment_program 1
 
 
 #else /* static binding */
@@ -1076,9 +1078,10 @@ glglue_resolve_symbols(cc_glglue * w)
   w->glGetCombinerOutputParameterivNV = NULL;
   w->glGetFinalCombinerInputParameterfvNV = NULL;
   w->glGetFinalCombinerInputParameterivNV = NULL;
+  w->has_nv_register_combiners = FALSE;
 
 #ifdef GL_NV_register_combiners  
-  w->has_nv_register_combiners = FALSE;
+
   if (cc_glglue_glext_supported(w, "GL_NV_register_combiners")) {
     w->glCombinerParameterfvNV = (COIN_PFNGLCOMBINERPARAMETERFVNVPROC) PROC(glCombinerParameterfvNV);
     w->glCombinerParameterivNV = (COIN_PFNGLCOMBINERPARAMETERIVNVPROC) PROC(glCombinerParameterivNV);
@@ -1117,39 +1120,94 @@ glglue_resolve_symbols(cc_glglue * w)
   } 
     
 #endif /* GL_NV_register_combiners */
+ 
+
+  /* GL_NV_texture_rectangle */
+  w->has_nv_texture_rectangle = cc_glglue_glext_supported(w, "GL_NV_texture_rectangle");
+  
+  /* GL_EXT_texture_rectangle */
+  w->has_ext_texture_rectangle = cc_glglue_glext_supported(w, "GL_EXT_texture_rectangle"); 
+
+  /* GL_NV_texture_shader */
+  w->has_nv_texture_shader = cc_glglue_glext_supported(w, "GL_NV_texture_shader");
+
+  /* GL_ARB_shadow */
+  w->has_arb_shadow = cc_glglue_glext_supported(w, "GL_ARB_shadow");
+
+  /* GL_ARB_depth_texture */
+  w->has_arb_depth_texture = cc_glglue_glext_supported(w, "GL_ARB_depth_texture");
   
 
-#ifdef GL_NV_texture_rectangle 
-  if (cc_glglue_glext_supported(w, "GL_NV_texture_rectangle")) 
-    w->has_nv_texture_rectangle = TRUE;
-  else
-    w->has_nv_texture_rectangle = FALSE;
-#endif /* GL_NV_texture_rectangle */
-
-
-#ifdef GL_NV_texture_shader
- if (cc_glglue_glext_supported(w, "GL_NV_texture_shader")) 
-   w->has_nv_texture_shader = TRUE;
- else
-   w->has_nv_texture_shader = FALSE;
-#endif /* GL_NV_texture_shader */
-
-
-#ifdef GL_ARB_shadow
- if (cc_glglue_glext_supported(w, "GL_ARB_shadow")) 
-   w->has_arb_shadow = TRUE;
- else
-   w->has_arb_shadow = FALSE;
-#endif /* GL_ARB_shadow */
-
-
-#ifdef GL_ARB_depth_texture
- if (cc_glglue_glext_supported(w, "GL_ARB_depth_texture")) 
-   w->has_arb_depth_texture = TRUE;
- else
-   w->has_arb_depth_texture = FALSE;
-#endif /* GL_ARB_depth_texture */
-
+  /* GL_ARB_fragment_program */
+  w->glProgramStringARB = NULL;
+  w->glBindProgramARB = NULL;
+  w->glDeleteProgramsARB = NULL;
+  w->glGenProgramsARB = NULL;
+  w->glProgramEnvParameter4dARB = NULL;
+  w->glProgramEnvParameter4dvARB = NULL;
+  w->glProgramEnvParameter4fARB = NULL;
+  w->glProgramEnvParameter4fvARB = NULL;
+  w->glProgramLocalParameter4dARB = NULL;
+  w->glProgramLocalParameter4dvARB = NULL;
+  w->glProgramLocalParameter4fARB = NULL;
+  w->glProgramLocalParameter4fvARB = NULL;
+  w->glGetProgramEnvParameterdvARB = NULL;
+  w->glGetProgramEnvParameterfvARB = NULL;
+  w->glGetProgramLocalParameterdvARB = NULL;
+  w->glGetProgramLocalParameterfvARB = NULL;
+  w->glGetProgramivARB = NULL;
+  w->glGetProgramStringARB = NULL;
+  w->glIsProgramARB = NULL;
+  w->has_arb_fragment_program = FALSE;
+  
+#ifdef GL_ARB_fragment_program
+  if (cc_glglue_glext_supported(w, "GL_ARB_fragment_program")) {
+   
+   w->glProgramStringARB = (COIN_PFNGLPROGRAMSTRINGARBPROC) PROC(glProgramStringARB);
+   w->glBindProgramARB = (COIN_PFNGLBINDPROGRAMARBPROC) PROC(glBindProgramARB);
+   w->glDeleteProgramsARB = (COIN_PFNGLDELETEPROGRAMSARBPROC) PROC(glDeleteProgramsARB);
+   w->glGenProgramsARB = (COIN_PFNGLGENPROGRAMSARBPROC) PROC(glGenProgramsARB);
+   w->glProgramEnvParameter4dARB = (COIN_PFNGLPROGRAMENVPARAMETER4DARBPROC) PROC(glProgramEnvParameter4dARB); 
+   w->glProgramEnvParameter4dvARB = (COIN_PFNGLPROGRAMENVPARAMETER4DVARBPROC) PROC(glProgramEnvParameter4dvARB);
+   w->glProgramEnvParameter4fARB = (COIN_PFNGLPROGRAMENVPARAMETER4FARBPROC) PROC(glProgramEnvParameter4fARB);
+   w->glProgramEnvParameter4fvARB = (COIN_PFNGLPROGRAMENVPARAMETER4FVARBPROC) PROC(glProgramEnvParameter4fvARB);
+   w->glProgramLocalParameter4dARB = (COIN_PFNGLPROGRAMLOCALPARAMETER4DARBPROC) PROC(glProgramLocalParameter4dARB);
+   w->glProgramLocalParameter4dvARB = (COIN_PFNGLPROGRAMLOCALPARAMETER4DVARBPROC) PROC(glProgramLocalParameter4dvARB);
+   w->glProgramLocalParameter4fARB = (COIN_PFNGLPROGRAMLOCALPARAMETER4FARBPROC) PROC(glProgramLocalParameter4fARB);
+   w->glProgramLocalParameter4fvARB = (COIN_PFNGLPROGRAMLOCALPARAMETER4FVARBPROC) PROC(glProgramLocalParameter4fvARB);
+   w->glGetProgramEnvParameterdvARB = (COIN_PFNGLGETPROGRAMENVPARAMETERDVARBPROC) PROC(glGetProgramEnvParameterdvARB);
+   w->glGetProgramEnvParameterfvARB = (COIN_PFNGLGETPROGRAMENVPARAMETERFVARBPROC) PROC(glGetProgramEnvParameterfvARB);
+   w->glGetProgramLocalParameterdvARB = (COIN_PFNGLGETPROGRAMLOCALPARAMETERDVARBPROC) PROC(glGetProgramLocalParameterdvARB);
+   w->glGetProgramLocalParameterfvARB = (COIN_PFNGLGETPROGRAMLOCALPARAMETERFVARBPROC) PROC(glGetProgramLocalParameterfvARB);
+   w->glGetProgramivARB = (COIN_PFNGLGETPROGRAMIVARBPROC) PROC(glGetProgramivARB);
+   w->glGetProgramStringARB = (COIN_PFNGLGETPROGRAMSTRINGARBPROC) PROC(glGetProgramStringARB);
+   w->glIsProgramARB = (COIN_PFNGLISPROGRAMARBPROC) PROC(glIsProgramARB);
+ 
+   if (!(w->glProgramStringARB &&
+         w->glBindProgramARB &&
+         w->glDeleteProgramsARB &&
+         w->glGenProgramsARB &&
+         w->glProgramEnvParameter4dARB &&
+         w->glProgramEnvParameter4dvARB &&
+         w->glProgramEnvParameter4fARB &&
+         w->glProgramEnvParameter4fvARB &&
+         w->glProgramLocalParameter4dARB &&
+         w->glProgramLocalParameter4dvARB &&
+         w->glProgramLocalParameter4fARB &&
+         w->glProgramLocalParameter4fvARB &&
+         w->glGetProgramEnvParameterdvARB &&
+         w->glGetProgramEnvParameterfvARB &&
+         w->glGetProgramLocalParameterdvARB &&
+         w->glGetProgramLocalParameterfvARB &&
+         w->glGetProgramivARB &&
+         w->glGetProgramStringARB &&
+         w->glIsProgramARB)) {
+     cc_debugerror_postwarning("glglue_init","GL_ARB_fragment_program found, but one or more of its "
+                               "functions could not be bound."); 
+   } else    
+     w->has_arb_fragment_program = TRUE;
+ } 
+#endif /* GL_ARB_fragment_program */
 
 
   w->glVertexArrayRangeNV = NULL;
@@ -2667,6 +2725,13 @@ cc_glglue_has_nv_texture_rectangle(const cc_glglue * glue)
   return glue->has_nv_texture_rectangle;
 }
 
+/* GL_EXT_texture_rectangle */
+SbBool 
+cc_glglue_has_ext_texture_rectangle(const cc_glglue * glue)
+{
+  return glue->has_ext_texture_rectangle;
+}
+
 /* GL_NV_texture_shader */
 SbBool
 cc_glglue_has_nv_texture_shader(const cc_glglue * glue)
@@ -2686,6 +2751,13 @@ SbBool
 cc_glglue_has_arb_depth_texture(const cc_glglue * glue)
 {
   return glue->has_arb_depth_texture;
+}
+
+/* GL_ARB_fragment_program */
+SbBool
+cc_glglue_has_arb_fragment_program(const cc_glglue * glue)
+{
+  return glue->has_arb_fragment_program;
 }
 
 
