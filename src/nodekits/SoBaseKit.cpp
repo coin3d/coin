@@ -69,10 +69,7 @@
 #include <string.h>
 #include <../tidbits.h> // coin_isspace()
 #include <coindefs.h> // COIN_OBSOLETED()
-
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 #ifndef DOXYGEN_SKIP_THIS
 
