@@ -4139,7 +4139,118 @@ Transform {
 
 =====================================================================
 
-155 SoFont does not support styles under Windows.
+155 Writing of nodekits breaks, after being referenced in an earlier
+    write through fieldconnections alone.
+
+    This bug reported by Gerhard Reitmayr:
+
+    ----8<----- [snip] --------------------8<----- [snip] ----------------
+    I found the following problem in the CVS coin version (working on
+    windows with VC 7):
+
+    writing out a nodekit fails after a writeaction was applied to a
+    node or field that was connected from it through a field
+    connection.
+
+    the WriteReference count of the nodekit is only increased through
+    the connections pointing away from it's fields but never decreased
+    because it was not part of the scene graph traversed (only the
+    dependency graph) and therefore writeHeader is not called.
+
+    if a later writeaction traverses the nodekit, it uses the writeref
+    count to determine whether to set up an internal fielddata
+    structure for writing it out.  this fails always, because the
+    write ref count is then larger then 1!
+
+    this bug is also triggered by using get method on a field that is
+    connected from a field of a nodekit ! after using get, the nodekit
+    will not be written out correctly anymore. This is due to the use
+    of the same functions within get.
+
+    the attached sample demonstrates this. It writes out a kit, then a
+    dependend node and then the kit again.
+
+    I was not sure how to resolve this correctly. It appeared to me
+    that clearing the dictionary for write refs at some point is a
+    solution, but I certainly have not the necessary overview.
+
+#include <Inventor/SoInput.h>
+#include <Inventor/SoOutput.h>
+#include <Inventor/actions/SoWriteAction.h>
+
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodekits/SoNodeKit.h>
+
+const char * text[] = { 
+"#Inventor V2.1 ascii\n",
+"Separator {\n",
+"    DEF KIT SeparatorKit {\n",
+"        transform Transform { translation 0 1 0 }\n",
+"    }\n",
+"    DEF SEP Separator {\n",
+"           renderCaching = USE KIT.renderCaching\n",
+"    }\n",
+"}", 
+NULL 
+};
+
+int main(int argc, char ** argv)
+{
+  SoDB::init();
+  SoNodeKit::init();
+  
+  SoInput in; 
+  in.setStringArray(text);
+  SoSeparator * root = SoDB::readAll(&in);
+  root->ref();
+   
+  SoNode * sep = SoNode::getByName("SEP");
+  SoNode * kit = SoNode::getByName("KIT");
+
+  SoOutput out;
+   
+  SoWriteAction wa(&out);
+
+  // first print out the node kit, just to see how it looks like
+  wa.apply( kit );
+  out.reset();
+
+  // write out the node with fields connected from fields in the node kit
+  // increases the writeref of the nodekit, but never decreases it again !!
+  wa.apply( sep );
+  out.reset();
+
+  // write out the nodekit again. a test in the write implementation will
+  // keep it from building the necessary fielddata structure to write out 
+  // its parts and fields !
+  wa.apply( kit );
+  out.reset();
+   
+  root->unref();
+  
+  return 0;
+}
+    ----8<----- [snip] --------------------8<----- [snip] ----------------
+
+=====================================================================
+
+156 Setting a node that is not of SoVertexProperty type in
+    the SoVertexShape::vertexProperty field causes assert failure.
+
+    Should be robust. The assert seen was:
+
+> SoIndexedShape.cpp:133: virtual void
+> SoIndexedShape::computeBBox(SoAction*, SbBox3f&, SbVec3f&): Assertion `!vp
+> || vp->getTypeId().isDerivedFrom(SoVertexProperty::getClassTypeId())'
+> failed.
+
+    ..but there could be more of these. Audit, fix, test.
+
+    20041028 mortene.
+
+=====================================================================
+
+157 SoFont does not support styles under Windows.
 
     When adding a style to a fontname, the fallback font is used
     instead (Arial). This wrl file recreates the problem:
@@ -4154,5 +4265,15 @@ Text2 { string "test" }
     (This works fine when using FreeType on Linux.)
 
     20041102 handegar
+
+    UPDATE 20041102 mortene: note that it works as expected when
+    removing the ":Bold"-suffix, which indicates that the string we
+    pass to Win32's CreateFont() is wrong. Most likely it needs to be
+    broken up properly, and we should probably pass the information
+    about "bold" weighting as one of the other arguments to the
+    CreateFont() call, and not as part of the font name.
+
+    When taking care of this bug, please also check how "italics" and
+    other styles works (or not works).
 
 =====================================================================
