@@ -197,7 +197,6 @@ SoTexture2::readInstance(SoInput * in, unsigned short flags)
 static SoGLImage::Wrap
 translateWrap(const SoTexture2::Wrap wrap)
 {
-  // FIXME: add support for OpenGL 1.2 CLAMP_TO_EDGE in SoTexture2
   if (wrap == SoTexture2::REPEAT) return SoGLImage::REPEAT;
   return SoGLImage::CLAMP;
 }
@@ -249,6 +248,7 @@ SoTexture2::GLRender(SoGLRenderAction * action)
                                (SoTextureImageElement::Model) model.getValue(),
                                this->blendColor.getValue());
 
+  SoGLTexture3EnabledElement::set(state, this, FALSE);
   SoGLTextureEnabledElement::set(state,
                                  this, this->glimagevalid &&
                                  quality > 0.0f);

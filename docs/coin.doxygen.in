@@ -503,6 +503,8 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/SbBasic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoText2.h \
                          @path_tag@@coin_src_dir@/src/nodes/SoTexture2.cpp \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTexture2.h \
+                         @path_tag@@coin_src_dir@/src/nodes/SoTexture3.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTexture3.h \
                          @path_tag@@coin_src_dir@/src/nodes/SoTexture2Transform.cpp \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTexture2Transform.h \
                          @path_tag@@coin_src_dir@/src/nodes/SoTexture3Transform.cpp \

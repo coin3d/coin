@@ -105,6 +105,7 @@
 #include "SoText2.cpp"
 #include "SoText3.cpp"
 #include "SoTexture2.cpp"
+#include "SoTexture3.cpp"
 #include "SoTexture2Transform.cpp"
 #include "SoTexture3Transform.cpp"
 #include "SoTextureCoordinate2.cpp"

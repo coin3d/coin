@@ -393,6 +393,7 @@ SoNode::initClasses(void)
   SoProfileCoordinate3::initClass();
   SoShapeHints::initClass();
   SoTexture2::initClass();
+  SoTexture3::initClass();
   SoTexture2Transform::initClass();
   SoTexture3Transform::initClass();
   SoTextureCoordinate2::initClass();

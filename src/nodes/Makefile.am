@@ -86,6 +86,7 @@ RegularSources = \
 	SoText2.cpp \
 	SoText3.cpp \
 	SoTexture2.cpp \
+	SoTexture3.cpp \
 	SoTexture2Transform.cpp \
 	SoTexture3Transform.cpp \
 	SoTextureCoordinate2.cpp \
@@ -200,6 +201,7 @@ PublicHeaders = \
 	../../include/Inventor/nodes/SoText2.h \
 	../../include/Inventor/nodes/SoText3.h \
 	../../include/Inventor/nodes/SoTexture2.h \
+	../../include/Inventor/nodes/SoTexture3.h \
 	../../include/Inventor/nodes/SoTexture2Transform.h \
 	../../include/Inventor/nodes/SoTexture3Transform.h \
 	../../include/Inventor/nodes/SoTextureCoordinate2.h \
