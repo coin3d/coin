@@ -134,6 +134,67 @@ simage_wrapper_resize3d(unsigned char * imagedata,
   return NULL;
 }
 
+void APIENTRY
+simage_wrapper_s_params_set(s_params * params, ...)
+{
+  return;
+}
+
+int APIENTRY
+simage_wrapper_s_params_get(s_params * params, ...)
+{
+  return 0;
+}
+
+s_stream * APIENTRY
+simage_wrapper_s_stream_open(const char * filename, 
+              s_params * params /* | NULL */)
+{
+  return NULL;
+}
+
+s_stream * APIENTRY
+simage_wrapper_s_stream_create(const char * filename, 
+                s_params * params /* | NULL */)
+{
+  return NULL;
+}
+
+void * APIENTRY
+simage_wrapper_s_stream_get_buffer(s_stream * stream, 
+                    void * prealloc /* | NULL */,
+                    int *size /* | NULL */,
+                    s_params * params /* | NULL */)
+{
+  return NULL;
+}
+
+int APIENTRY
+simage_wrapper_s_stream_put_buffer(s_stream * stream, void * buffer, 
+                    int size, s_params * params /* | NULL */)
+{
+  return 0;
+}
+
+void APIENTRY
+simage_wrapper_s_stream_close(s_stream * stream)
+{
+  return;
+}
+
+void APIENTRY
+simage_wrapper_s_stream_destroy(s_stream * stream)
+{
+  return;
+}
+
+s_params * APIENTRY
+simage_wrapper_s_stream_params(s_stream * stream)
+{
+  return NULL;
+}
+
+
 /* Implemented by using the singleton pattern. */
 const simage_wrapper_t *
 simage_wrapper(void)
@@ -265,6 +326,29 @@ simage_wrapper(void)
 #endif
       }
       else si->simage_resize3d = NULL;
+
+      if (simage_wrapper_versionMatchesAtLeast(1,4,0)) {
+#if !defined(HAVE_LIBSIMAGE) || defined(SIMAGE_VERSION_1_4)
+        SIMAGEWRAPPER_REGISTER_FUNC(simage_resize3d, simage_resize3d_t);
+
+        SIMAGEWRAPPER_REGISTER_FUNC(s_params_set, s_params_set_t);
+        SIMAGEWRAPPER_REGISTER_FUNC(s_params_get, s_params_get_t);
+        SIMAGEWRAPPER_REGISTER_FUNC(s_stream_open, s_stream_open_t);
+        SIMAGEWRAPPER_REGISTER_FUNC(s_stream_get_buffer, s_stream_get_buffer_t);
+        SIMAGEWRAPPER_REGISTER_FUNC(s_stream_close, s_stream_close_t);
+        SIMAGEWRAPPER_REGISTER_FUNC(s_stream_destroy, s_stream_destroy_t);
+        SIMAGEWRAPPER_REGISTER_FUNC(s_stream_params, s_stream_params_t);
+#endif
+      }
+      else {
+        si->s_params_set = simage_wrapper_s_params_set;
+        si->s_params_get = simage_wrapper_s_params_get;
+        si->s_stream_open = simage_wrapper_s_stream_open;
+        si->s_stream_get_buffer = simage_wrapper_s_stream_get_buffer;
+        si->s_stream_close = simage_wrapper_s_stream_close;
+        si->s_stream_destroy = simage_wrapper_s_stream_destroy;
+        si->s_stream_params = simage_wrapper_s_stream_params;
+      }
     }
   }
   CC_SYNC_END(simage_wrapper);

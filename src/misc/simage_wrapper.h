@@ -77,6 +77,21 @@ extern "C" {
   typedef const char * (APIENTRY *simage_get_saver_fullname_t)(void * handle);
   typedef const char * (APIENTRY *simage_get_saver_description_t)(void * handle);
 
+  typedef struct simage_parameters_s s_params;
+  typedef void (APIENTRY *s_params_set_t)(s_params * params, ...);
+  typedef int (APIENTRY *s_params_get_t)(s_params * params, ...);
+
+  typedef struct simage_stream_s s_stream;
+  typedef s_stream * (APIENTRY *s_stream_open_t)(const char * filename, 
+                                          s_params * params /* | NULL */);
+  typedef void * (APIENTRY *s_stream_get_buffer_t)(s_stream * stream, 
+                                           void * prealloc /* | NULL */,
+                                           int *size /* | NULL */,
+                                           s_params * params /* | NULL */);
+  typedef void (APIENTRY *s_stream_close_t)(s_stream * stream);
+  typedef void (APIENTRY *s_stream_destroy_t)(s_stream * stream);
+  typedef s_params * (APIENTRY *s_stream_params_t)(s_stream * stream);
+
   typedef struct {
     /* Is the simage library at all available? */
     int available;
@@ -103,7 +118,18 @@ extern "C" {
     simage_get_saver_extensions_t simage_get_saver_extensions;
     simage_get_saver_fullname_t simage_get_saver_fullname;
     simage_get_saver_description_t simage_get_saver_description;
+
+    s_params_set_t s_params_set;
+    s_params_get_t s_params_get;
+
     simage_resize3d_t simage_resize3d;
+
+    s_stream_open_t s_stream_open;
+    s_stream_get_buffer_t s_stream_get_buffer;
+    s_stream_close_t s_stream_close;
+    s_stream_destroy_t s_stream_destroy;
+    s_stream_params_t s_stream_params;
+
   } simage_wrapper_t;
 
   const simage_wrapper_t * simage_wrapper(void);
