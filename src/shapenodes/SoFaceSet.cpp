@@ -697,8 +697,10 @@ SoFaceSet::generatePrimitives(SoAction *action)
       vertex.setMaterialIndex(matnr++);
     }
     if (doTextures) {
-      if (tb.isFunction())
+      if (tb.isFunction()) {
         vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal));
+        if (tb.needIndices()) pointDetail.setTextureCoordIndex(texnr++);
+      }
       else {
         pointDetail.setTextureCoordIndex(texnr);
         vertex.setTextureCoords(tb.get(texnr++));
@@ -719,8 +721,10 @@ SoFaceSet::generatePrimitives(SoAction *action)
         vertex.setMaterialIndex(matnr++);
       }
       if (doTextures) {
-        if (tb.isFunction())
+        if (tb.isFunction()) {
           vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal));
+          if (tb.needIndices()) pointDetail.setTextureCoordIndex(texnr++);
+        }
         else {
           pointDetail.setTextureCoordIndex(texnr);
           vertex.setTextureCoords(tb.get(texnr++));

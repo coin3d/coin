@@ -252,7 +252,7 @@ SoIndexedTriangleStripSet::GLRender(SoGLRenderAction * action)
   dotextures = tb.needCoordinates();
 
   if (dotextures) {
-    if (tb.isFunction()) {
+    if (tb.isFunction() && !tb.needIndices()) {
       tindices = NULL;
     }
     else if (SoTextureCoordinateBindingElement::get(state) ==
@@ -462,7 +462,7 @@ SoIndexedTriangleStripSet::generatePrimitives(SoAction * action)
   dotextures = tb.needCoordinates();
 
   if (dotextures) {
-    if (tb.isFunction()) {
+    if (tb.isFunction() && !tb.needIndices()) {
       tindices = NULL;
     }
     else if (SoTextureCoordinateBindingElement::get(state) ==
@@ -546,6 +546,7 @@ SoIndexedTriangleStripSet::generatePrimitives(SoAction * action)
     if (dotextures) {
       if (tb.isFunction()) {
         vertex.setTextureCoords(tb.get(coords->get3(v1), *currnormal));
+        if (tb.needIndices()) pointdetail.setTextureCoordIndex(tindices ? *tindices++ : texidx++);
       }
       else {
         pointdetail.setTextureCoordIndex(tindices ? *tindices : texidx);
@@ -579,6 +580,7 @@ SoIndexedTriangleStripSet::generatePrimitives(SoAction * action)
     if (dotextures) {
       if (tb.isFunction()) {
         vertex.setTextureCoords(tb.get(coords->get3(v2), *currnormal));
+        if (tb.needIndices()) pointdetail.setTextureCoordIndex(tindices ? *tindices++ : texidx++);
       }
       else {
         pointdetail.setTextureCoordIndex(tindices?*tindices:texidx);
@@ -612,6 +614,7 @@ SoIndexedTriangleStripSet::generatePrimitives(SoAction * action)
     if (dotextures) {
       if (tb.isFunction()) {
         vertex.setTextureCoords(tb.get(coords->get3(v3), *currnormal));
+        if (tb.needIndices()) pointdetail.setTextureCoordIndex(tindices ? *tindices++ : texidx++);
       }
       else {
         pointdetail.setTextureCoordIndex(tindices?*tindices:texidx);
@@ -647,6 +650,7 @@ SoIndexedTriangleStripSet::generatePrimitives(SoAction * action)
       if (dotextures) {
         if (tb.isFunction()) {
           vertex.setTextureCoords(tb.get(coords->get3(v1), *currnormal));
+          if (tb.needIndices()) pointdetail.setTextureCoordIndex(tindices ? *tindices++ : texidx++);
         }
         else {
           pointdetail.setTextureCoordIndex(tindices?*tindices:texidx);

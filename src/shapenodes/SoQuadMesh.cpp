@@ -1347,8 +1347,10 @@ SoQuadMesh::generatePrimitives(SoAction *action)
         vertex.setMaterialIndex(midx++);
       }
       if (doTextures) {
-        if (tb.isFunction())
+        if (tb.isFunction()) {
           vertex.setTextureCoords(tb.get(coords->get3(start+curridx), *currnormal));
+          if (tb.needIndices()) pointDetail.setTextureCoordIndex(curridx);
+        }
         else {
           pointDetail.setTextureCoordIndex(curridx);
           vertex.setTextureCoords(tb.get(curridx));
@@ -1369,8 +1371,10 @@ SoQuadMesh::generatePrimitives(SoAction *action)
         vertex.setMaterialIndex(curridx);
       }
       if (doTextures) {
-        if (tb.isFunction())
+        if (tb.isFunction()) {
           vertex.setTextureCoords(tb.get(coords->get3(start+curridx), *currnormal));
+          if (tb.needIndices()) pointDetail.setTextureCoordIndex(curridx);
+        }
         else {
           pointDetail.setTextureCoordIndex(curridx);
           vertex.setTextureCoords(tb.get(curridx));

@@ -481,7 +481,7 @@ SoVRMLIndexedFaceSet::GLRender(SoGLRenderAction * action)
 
   Binding tbind = NONE;
   if (doTextures) {
-    if (tb.isFunction()) {
+    if (tb.isFunction() && !tb.needIndices()) {
       tbind = NONE;
       tindices = NULL;
     }
@@ -595,12 +595,13 @@ SoVRMLIndexedFaceSet::generateDefaultNormals(SoState * s,
     currnormal = &normals[*nindices++];     \
     vertex.setNormal(*currnormal);          \
   }                                         \
-  if (tbind != NONE) {                      \
+  if (tb.isFunction()) {               \
+    vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal)); \
+    if (tb.needIndices()) pointDetail.setTextureCoordIndex(tindices ? *tindices++ : texidx++); \
+  }                                         \
+  else if (tbind != NONE) {                      \
     pointDetail.setTextureCoordIndex(tindices ? *tindices : texidx); \
     vertex.setTextureCoords(tb.get(tindices ? *tindices++ : texidx++)); \
-  }                                         \
-  else if (tb.isFunction()) {               \
-    vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal)); \
   }                                         \
   vertex.setPoint(coords->get3(idx));        \
   pointDetail.setCoordinateIndex(idx);      \
@@ -663,7 +664,7 @@ SoVRMLIndexedFaceSet::generatePrimitives(SoAction * action)
 
   Binding tbind = NONE;
   if (doTextures) {
-    if (tb.isFunction()) {
+    if (tb.isFunction() && !tb.needIndices()) {
       tbind = NONE;
       tindices = NULL;
     }
@@ -748,12 +749,13 @@ SoVRMLIndexedFaceSet::generatePrimitives(SoAction * action)
       vertex.setNormal(*currnormal);
     }
 
-    if (tbind != NONE) {
+    if (tb.isFunction()) {
+      vertex.setTextureCoords(tb.get(coords->get3(v1), *currnormal));
+      if (tb.needIndices()) pointDetail.setTextureCoordIndex(tindices ? *tindices++ : texidx++);
+    }
+    else if (tbind != NONE) {
       pointDetail.setTextureCoordIndex(tindices ? *tindices : texidx);
       vertex.setTextureCoords(tb.get(tindices ? *tindices++ : texidx++));
-    }
-    else if (tb.isFunction()) {
-      vertex.setTextureCoords(tb.get(coords->get3(v1), *currnormal));
     }
     pointDetail.setCoordinateIndex(v1);
     vertex.setPoint(coords->get3(v1));
