@@ -1051,6 +1051,21 @@ AC_TRY_LINK([
   AC_MSG_RESULT([no])
 ])
 
+# *******************************************************************
+# * Handle the detection and inclusion of zlib
+# *******************************************************************
+SIM_AC_HAVE_LIBZLIB_IFELSE([
+  COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_libzlib_cppflags"
+  COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_libzlib_ldflags"
+  COIN_EXTRA_LIBS="$sim_ac_libzlib_libs $COIN_EXTRA_LIBS"
+  CPPFLAGS="$CPPFLAGS $sim_ac_libzlib_cppflags"
+  LDFLAGS="$LDFLAGS $sim_ac_libzlib_ldflags"
+  LIBS="$sim_ac_libzlib_libs $LIBS"
+  SIM_AC_CONFIGURATION_SETTING([zlib support], [Yes, link-time binding])
+  AC_DEFINE([HAVE_ZLIB],1, [Define to use zlib])
+],[
+  SIM_AC_CONFIGURATION_SETTING([zlib support], [No])
+])
 
 # *******************************************************************
 # * Handle the detection and inclusion of X11 libraries.

@@ -280,6 +280,9 @@
 /* define if it is possible to build against X11 */
 #undef HAVE_X11_AVAILABLE
 
+/* Define to use zlib */
+#undef HAVE_ZLIB
+
 /* Define to use Win32 _ftime() */
 #undef HAVE__FTIME
 
