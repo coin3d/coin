@@ -217,8 +217,14 @@ SoOutput::closeFile(void)
   memory. If \a reallocFunc returns \a NULL, further writing is
   disabled.
 
+  Important note: remember that the resultant memory buffer after
+  write operations have completed may reside somewhere else in memory
+  than on \a bufPointer if \a reallocFunc is set. It is a good idea to
+  make it a habit to always use getBuffer() to retrieve the memory
+  buffer pointer after write operations.
+
   \sa getBuffer(), getBufferSize(), resetBuffer()
- */
+*/
 void
 SoOutput::setBuffer(void * bufPointer, size_t initSize,
                     SoOutputReallocCB * reallocFunc, int32_t offset)
@@ -593,9 +599,15 @@ SoOutput::writeBinaryArray(const unsigned char * constc, const int length)
   this->checkHeader();
 
   if (this->isToBuffer()) {
-    if (this->makeRoomInBuf(length)) {
-      memcpy(&(((char *)(this->buffer))[this->bufferoffset]), constc, length);
+    // Needs a \0 at the end if we're writing in ASCII.
+    int writelen = this->isBinary() ? length : length + 1;
+
+    if (this->makeRoomInBuf(writelen)) {
+      char * writeptr = &(((char *)(this->buffer))[this->bufferoffset]);
+      (void)memcpy(writeptr, constc, length);
+      writeptr += length;
       this->bufferoffset += length;
+      if (!this->isBinary()) *writeptr = '\0'; // Terminate.
     }
     else {
       SoDebugError::postWarning("SoOutput::writeBinaryArray",
@@ -863,6 +875,8 @@ SoOutput::checkHeader(void)
     if (this->isBinary()) h = this->padHeader(h);
     h += EOLSTR;
     if (!this->isBinary()) h += EOLSTR;
+    // Note: SoField::get() and SoFieldContainer::get() depends on the
+    // fact that the header identification line ends in "\n\n".
 
     // Write as char * to avoid the addition of any "s.
     this->writeBinaryArray((const unsigned char *)h.getString(),
