@@ -121,21 +121,21 @@ SoToVRML2Action::initClass(void)
   \fn void SoToVRML2Action::reuseAppearanceNodes(SbBool appearance)
 
   Set the flag deciding if appearance nodes should be reused if possible.
-  The default is TRUE.
+  The default is FALSE.
 */
 
 /*!
   \fn SbBool SoToVRML2Action::doReuseAppearanceNodes(void) const
 
   Get the flag deciding if appearance nodes should be reused if possible.
-  The default is TRUE.
+  The default is FALSE.
 */
 
 /*!
   \fn void SoToVRML2Action::reusePropertyNodes(SbBool property)
 
   Set the flag deciding if property nodes should be reused if possible.
-  The default is TRUE.
+  The default is FALSE.
 */
 
 /*!
