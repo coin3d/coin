@@ -441,22 +441,25 @@ find_font_file(const char * fontname)
   cc_dynarray * possiblefilenames;
   void * val;
   const char * foundfile = NULL;
-  SbBool found;
+  SbBool found_in_hash;
   unsigned long key;
 
   key = (unsigned long)cc_namemap_get_address(fontname);
-  found = cc_hash_get(fontname2filename, key, &val);
-  if (!found) {
+  found_in_hash = cc_hash_get(fontname2filename, key, &val);
+  if (!found_in_hash) {
+    char * c = NULL;
     if (cc_flw_debug()) {
       cc_debugerror_postinfo("find_font_file",
                              "fontname '%s' not found in name hash",
                              fontname);
     }
-    return NULL;
+    /* If name ends in ".ttf", we interpret it as filename. */
+    c = strrchr(fontname, '.');
+    if (!(c && strlen(c) == 4 && strstr(c, ".ttf"))) return NULL;
   }
 
   possiblefilenames = (cc_dynarray *)val;
-  n = cc_dynarray_length(possiblefilenames);
+  n = found_in_hash ? cc_dynarray_length(possiblefilenames) : 1;
 
   cc_string_construct(&str);
   for (i = 0; i < n; i++) {
@@ -470,7 +473,11 @@ find_font_file(const char * fontname)
 
       cc_string_set_text(&str, (const char *)cc_dynarray_get(fontfiledirs, j));
       cc_string_append_char(&str, '/');
-      cc_string_append_text(&str, (const char *)cc_dynarray_get(possiblefilenames, i));
+      if (found_in_hash) {
+        cc_string_append_text(&str, (const char *)cc_dynarray_get(possiblefilenames, i));
+      } else {
+        cc_string_append_text(&str, fontname);
+      }
 
       found = (stat(cc_string_get_text(&str), &buf) == 0) && !S_ISDIR(buf.st_mode);
       if (cc_flw_debug()) {
