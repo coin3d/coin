@@ -206,6 +206,11 @@ SoFont::doAction(SoAction * action)
   SoState * state = action->getState();
   uint32_t flags = SoOverrideElement::getFlags(state);
   
+
+  // FIXME: should *not* convert to the translated TTF name here! It's
+  // plain wrong (and it makes us incompatible with SGI
+  // Inventor). 20030317 mortene.
+
   SoFontP * pimpl = THIS;
   const char * this_name = this->name.getValue().getString();
   const float this_size = this->size.getValue();
