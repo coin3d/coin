@@ -27,6 +27,8 @@
   surfaces when doing 3D visualization, we recommend finding a good
   book on the subject.
 */
+// FIXME: recommend the book pederb bought about the subject? If so,
+// also add to class doc for SoNurbsSurface (and others?). 20010909 mortene.
 
 #include <Inventor/nodes/SoNurbsCurve.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -211,10 +213,11 @@ SoNurbsCurve::getBoundingBox(SoGetBoundingBoxAction * action)
 }
 
 /*!
-  Not implemented in Coin. Should probably have been private in OIV.
+  Not implemented in Coin, as this method should probably have been
+  private in the SGI Open Inventor API.
 */
 void
-SoNurbsCurve::sendPrimitive(SoAction *,  SoPrimitiveVertex *)
+SoNurbsCurve::sendPrimitive(SoAction * a, SoPrimitiveVertex * p)
 {
   COIN_OBSOLETED();
 }
@@ -230,10 +233,10 @@ SoNurbsCurve::generatePrimitives(SoAction * action)
   Overloaded to return NULL.
 */
 SoDetail *
-SoNurbsCurve::createLineSegmentDetail(SoRayPickAction * /* action */,
-                                      const SoPrimitiveVertex * /* v1 */,
-                                      const SoPrimitiveVertex * /* v2 */,
-                                      SoPickedPoint * /* pp */)
+SoNurbsCurve::createLineSegmentDetail(SoRayPickAction * action,
+                                      const SoPrimitiveVertex * v1,
+                                      const SoPrimitiveVertex * v2,
+                                      SoPickedPoint * pp)
 {
   return NULL;
 }

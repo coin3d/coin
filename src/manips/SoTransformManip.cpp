@@ -173,9 +173,19 @@ SoTransformManip::getDragger(void)
 }
 
 /*!
-  Replaces the node specified by \a path with this manipulator.
-  The manipulator will copy the field data from the node, to make
-  it affect the state in the same way as the node.
+  Replaces a node at the tail end of \a path with this manipulator.
+  The node must be an instance of a node class derived from
+  SoTransform.
+
+  The manipulator will when inserted automatically copy the field data
+  from the node, to make it initially affect the state in the same way
+  as the node.
+
+  Returns \c TRUE if successful, and \c FALSE if the given node could
+  not be replaced with the manipulator.  The operation will for
+  instance fail if the tail node of the given path is not of
+  SoTransform type, or for any other condition where it is not
+  possible to replace the node with this manipulator.
 */
 SbBool
 SoTransformManip::replaceNode(SoPath * path)
@@ -194,9 +204,9 @@ SoTransformManip::replaceNode(SoPath * path)
   if (tail->isOfType(SoBaseKit::getClassTypeId())) {
     SoBaseKit *kit = (SoBaseKit*) ((SoNodeKitPath*)path)->getTail();
     SbString partname = kit->getPartString(path);
-    if (partname != "") {
+    if (partname != "") {  // FIXME: isn't this an assert condition? 20010909 mortene.
       SoTransform *oldpart = (SoTransform*) kit->getPart(partname, TRUE);
-      if (oldpart != NULL) {
+      if (oldpart != NULL) {  // FIXME: isn't this an assert condition? 20010909 mortene.
         this->attachSensors(FALSE);
         this->transferFieldValues(oldpart, this);
         this->attachSensors(TRUE);
@@ -209,14 +219,25 @@ SoTransformManip::replaceNode(SoPath * path)
       }
     }
   }
+
+  // This will happen if the path contains nothing but the single
+  // SoTransform node (ie, the node is root, head and tail of the
+  // path).
   if (fullpath->getLength() < 2) {
 #if COIN_DEBUG
-    SoDebugError::post("SoTransformManip::replaceNode",
-                       "Path is too short");
+    SoDebugError::post("SoTransformManip::replaceNode", "Path is too short");
 #endif // COIN_DEBUG
     return FALSE;
   }
+
   SoNode *parent = fullpath->getNodeFromTail(1);
+  // This could at least happen if the parent of the SoTransform is an
+  // user-extension node that is "SoGroup-like", but does not actually
+  // inherit SoGroup.  Would be an immensely silly thing to do, but
+  // it's good to be robust. :-}
+  //
+  // FIXME: are there any other conditions where this could hit?
+  // Please elaborate in a code comment.  20010909 mortene.
   if (!parent->isOfType(SoGroup::getClassTypeId())) {
 #if COIN_DEBUG
     SoDebugError::post("SoTransformManip::replaceNode",
@@ -231,6 +252,12 @@ SoTransformManip::replaceNode(SoPath * path)
   this->attachSensors(TRUE);
   SoTransformManip::fieldSensorCB(this, NULL);
 
+  // FIXME: this looks too simple -- what if there's more than one
+  // parent SoGroup for the SoTransform we're replacing.  Looks to me
+  // like that could trigger a serious bug.
+  //
+  // (Should we allow and handle that case, or just detect and return
+  // FALSE?)  20010909 mortene.
   ((SoGroup*)parent)->replaceChild(fulltail, this);
   this->unrefNoDelete();
   return TRUE;
