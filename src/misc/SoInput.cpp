@@ -1574,8 +1574,10 @@ SoInput::checkHeader(SbBool bValidateBufferHeader)
 #endif // COIN_DEBUG
     return FALSE;
   }
-  if (fi->isEndOfFile()) {
-    this->popFile(); // auto pop on EOF
+
+  // Auto pop on EOF if there's more than one file in the stack.
+  if ((this->filestack.getLength() > 1) && fi->isEndOfFile()) {
+    this->popFile();
     fi = this->getTopOfStack();
     if (!fi) return FALSE;
   }
