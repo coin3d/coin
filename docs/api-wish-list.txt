@@ -158,6 +158,9 @@ THE WISH LIST
   Update, mortene 2003-09-12:
     We now have a C hash ADT. (But it is not generic.)
 
+  Update, larsa 2003-11-04:
+    Inventor/misc/SbHash.h
+
 
 * SoGestureEvent
   2001-04-29  Lars J. Aas  <larsa@sim.no>
