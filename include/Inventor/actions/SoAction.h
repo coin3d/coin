@@ -22,7 +22,7 @@
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/SoType.h>
-#include <Inventor/SoPath.h>
+#include <Inventor/misc/SoTempPath.h>
 #include <Inventor/lists/SoActionMethodList.h>
 
 // Avoid problem with HPUX 10.20 C library API headers, which defines
@@ -147,7 +147,7 @@ private:
     } pathListData;
   } appliedData;
 
-  SoPath currentPath;
+  SoTempPath currentPath;
   SbBool isTerminated;
   PathCode currentPathCode;
   int dummyArray[1];

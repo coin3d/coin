@@ -183,6 +183,7 @@ SoAction::SoAction()
   : state(NULL),
     traversalMethods(NULL),
     appliedCode(NODE),
+    currentPath(8),
     isTerminated(FALSE),
     currentPathCode(NO_PATH)
 {
@@ -467,14 +468,6 @@ SoAction::traverse(SoNode * const node)
     break;
   }
 
-
-#if 0 // debug
-
-  if (this->currentPathCode)
-    fprintf(stderr, "path code: %d\n", this->currentPathCode);
-
-#endif
-
   // This is a pretty good indicator on whether or not we remembered
   // to use the SO_ACTION_CONSTRUCTOR() macro in the constructor of
   // the SoAction subclass.
@@ -710,7 +703,7 @@ SoAction::switchToPathTraversal(SoPath *path)
   AppliedData oldData = this->appliedData;
   AppliedCode oldCode = this->appliedCode;
   PathCode oldPathCode = this->currentPathCode;
-  SoPath oldPath = this->currentPath;
+  SoTempPath oldPath = this->currentPath;
 
   this->appliedCode = SoAction::PATH;
   this->appliedData.path = path;
@@ -731,7 +724,7 @@ SoAction::switchToNodeTraversal(SoNode *node)
   AppliedData oldData = this->appliedData;
   AppliedCode oldCode = this->appliedCode;
   PathCode oldPathCode = this->currentPathCode;
-  SoPath oldPath = this->currentPath;
+  SoTempPath oldPath = this->currentPath;
 
   this->appliedCode = SoAction::NODE;
   this->appliedData.node = node;
