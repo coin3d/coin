@@ -396,6 +396,10 @@ STUFF TO FIX IN COIN
       <URL:http://developer.nvidia.com/view.asp?IO=Interactive_Order_Transparency>
       <URL:http://developer.nvidia.com/view.asp?IO=order_independent_transparency>
 
+    UPDATE 2003-09-11 mortene: TGS Inventor's API for this is their
+    new SoGLRenderAction::SORTED_LAYERS_BLEND enum. IMO, we should
+    just duplicate their API.
+
 
 016 Detect multiple instances of the Coin library within the same run-time application space.
     2002-06-18  Morten Eriksen  <mortene@sim.no>
