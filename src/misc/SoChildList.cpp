@@ -30,10 +30,13 @@
 #include <Inventor/actions/SoAction.h>
 #endif // !COIN_EXCLUDE_SOACTION
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 /*!
   A constructor.
 */
-
 SoChildList::SoChildList(SoNode * const parent)
   : SoNodeList()
 {
@@ -43,9 +46,7 @@ SoChildList::SoChildList(SoNode * const parent)
 /*!
   A constructor.
 */
-
-SoChildList::SoChildList(SoNode * const parent,
-                         const int size)
+SoChildList::SoChildList(SoNode * const parent, const int size)
   : SoNodeList(size)
 {
   this->parent = parent;
@@ -54,103 +55,92 @@ SoChildList::SoChildList(SoNode * const parent,
 /*!
   A constructor.
 */
-
-SoChildList::SoChildList(SoNode * const parent,
-                         const SoChildList & list)
+SoChildList::SoChildList(SoNode * const parent, const SoChildList & list)
   : SoNodeList(0)
 {
   this->parent = parent;
-  copy(list);
+  this->copy(list);
 }
 
 /*!
   The destructor.
 */
-
 SoChildList::~SoChildList()
 {
-  truncate(0);
+  this->truncate(0);
 }
 
 /*!
   FIXME: write doc.
 */
-
 void
 SoChildList::append(SoNode * const node)
 {
   SoNodeList::append(node);
-  parent->startNotify();
+  this->parent->startNotify();
 //    node->ref();
 }
 
 /*!
   FIXME: write doc.
 */
-
 void
-SoChildList::insert(SoNode * const node,
-                    const int addBefore)
+SoChildList::insert(SoNode * const node, const int addBefore)
 {
   SoNodeList::insert(node, addBefore);
-  parent->startNotify();
+  this->parent->startNotify();
 //    ptr->ref();
 }
 
 /*!
   FIXME: write doc.
 */
-
 void
 SoChildList::remove(const int index)
 {
 //    if ((*this)[which] != NULL) (*this)[which]->unref();
   SoNodeList::remove(index);
-  parent->startNotify();
+  this->parent->startNotify();
 }
 
 /*!
   FIXME: write doc.
 */
-
 void
 SoChildList::truncate(const int length)
 {
 //   for (int i = length; i < getLength(); i++) {
 //     if ((*this)[i] != NULL) (*this)[i]->unref();
 //   }
-  if (length!=this->getLength()) {
+  if (length != this->getLength()) {
     SoNodeList::truncate(length);
-    parent->startNotify();
+    this->parent->startNotify();
   }
 }
 
 /*!
   FIXME: write doc.
 */
-
 void
 SoChildList::copy(const SoChildList & list)
 {
-  truncate(0);
+  this->truncate(0);
   const int max = list.getLength();
   for (int i = 0; i < max; i++) {
-    append((SoNode *) list.get(i));
+    this->append((SoNode *) list.get(i));
   }
   this->auditors = list.auditors;
-  parent->startNotify();
+  this->parent->startNotify();
 }
 
 /*!
   FIXME: write doc.
 */
-
 void
-SoChildList::set(const int index,
-                 SoNode * const node)
+SoChildList::set(const int index, SoNode * const node)
 {
   SoBaseList::set(index, (SoBase *)node);
-  parent->startNotify();
+  this->parent->startNotify();
 //    node->ref();
 }
 
@@ -158,11 +148,8 @@ SoChildList::set(const int index,
 /*!
   FIXME: write doc.
 */
-
 void
-SoChildList::traverse(SoAction * const action,
-                      const int first,
-                      const int last)
+SoChildList::traverse(SoAction * const action, const int first, const int last)
 {
   for (int i = first; i <= last && !action->hasTerminated(); i++) {
     action->traverse((SoNode *)this->get(i));
@@ -172,22 +159,19 @@ SoChildList::traverse(SoAction * const action,
 /*!
   FIXME: write doc.
 */
-
 void
 SoChildList::traverse(SoAction * const action)
 {
-    traverse(action, 0, getLength() - 1);
+  this->traverse(action, 0, this->getLength() - 1);
 }
 
 /*!
   FIXME: write doc.
 */
-
 void
-SoChildList::traverse(SoAction * const action,
-                      const int index)
+SoChildList::traverse(SoAction * const action, const int index)
 {
-    traverse(action, index, index);
+  this->traverse(action, index, index);
 }
 
 #endif // !COIN_EXCLUDE_SOACTION
@@ -195,7 +179,6 @@ SoChildList::traverse(SoAction * const action,
 /*!
   FIXME: write doc.
 */
-
 void
 SoChildList::addPathAuditor(SoPath * const path)
 {
@@ -205,11 +188,9 @@ SoChildList::addPathAuditor(SoPath * const path)
 /*!
   FIXME: write doc.
 */
-
 void
 SoChildList::removePathAuditor(SoPath * const path)
 {
   const int index = this->auditors.find(path);
-  if (index >= 0)
-    this->auditors.remove(index);
+  if (index >= 0) this->auditors.remove(index);
 }
