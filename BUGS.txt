@@ -592,6 +592,15 @@
 
     20020826 mortene.
 
+    UPDATE 20021209 mortene: kristian investigated, and found that it
+    is indeed something fundamentally impossible with making a perfect
+    fit around the geometry with the current strategy of combining
+    SbXfBox3f instances. (To get a perfect fit, we'd need a "memory"
+    of all boxes used for combining into larger ones.) Seems hard to
+    fix without breaking or extending the API in non-trivial ways.
+    This should be explained in the documentation of
+    SoGetBoundingBoxAction.
+
 =====================================================================
 
 024 This scenegraph causes a nasty bounding box calculation error:
