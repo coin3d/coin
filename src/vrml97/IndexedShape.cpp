@@ -166,9 +166,6 @@ SoVRMLIndexedShape::computeBBox(SoAction * action, SbBox3f & box,
                          "index @ %d: %d is out of bounds [%d, %d]",
                          (ptr - coordIndex.getValues(0)) / sizeof(*ptr),
                          idx, numCoords ? 0 : -1, numCoords - 1);
-#if COIN_DEBUG
-      assert(FALSE && "idx out of bounds");
-#endif // COIN_DEBUG
       continue;
     }
 
