@@ -1,53 +1,73 @@
+This file contains information about building and using Coin on Mac OS X.
 
-*********************************************************************
+Building Coin
+=============
 
-                * IMPORTANT NOTE *
-
-At this point, the unstable Coin branch does not support Mac OS X. 
-If you want to use Coin on the Mac, use the stable branch (Coin-1). 
-
-*********************************************************************
-
-
-
-This file contains information about building Coin on Mac OS X.
+Building Coin should be straightforward: ./configure && make && sudo
+make install.  See the file INSTALL for details. If any of these
+stages fails, it's a bug in Coin. Please let us know about this, and
+we will be glad to fix it.
 
 
-Mac OS 10.0.x compatibility
-==========================
+Using Coin
+==========
 
-First of all, please note that we do not support Mac OS X versions < 10.1 
-Things will probably work just fine on 10.0.x as well if you are building 
-Coin from the source yourself, but we do not make any guarantees. Our 
-precompiled binary packages of Coin/Mac will not work on 10.0.x. In any
-case, MacOS 10.1 was such a great step in performance and stability that
-I strongly encourage you to upgrade from 10.0.x anyway (which should be
-considered more like a "public beta", really). 
+If you want to use Coin on the Mac, you need a user interface binding. 
+At the moment you have two basic options for this:
+                                                                                
+  1. Use Qt/Mac. This requires Trolltech's Qt toolkit. You can get a            
+     free evaluation version of Qt/Mac from [0]. After downloading and 
+     installing Qt, you can download and build SoQt.
+     Note that using Qt/X11 on Mac OS X is not yet supported, but we are
+     planning to add this in the near future.
+                           
+  2. Create your own OpenGL canvas, and use this for rendering. This            
+     is not the easiest way to do, since it involves quite some
+     programmatic overhead. The "Coin in a Cocoanut Shell" application 
+     (distributed with the Coin/Mac binary SDK, and available from our 
+     ftp server[1]) is an example of how to do this using Objective-C. You 
+     can also use e.g. the GL utility toolkit ("GLUT"), like is done in 
+     the glutiv.cpp example (see [2]).
+                                         
+We are currently working on a Mac native user interface binding based on 
+Cocoa ("SoMac"), but that is still at an early stage.  
 
-If you build Coin on a MacOS 10.1 system and want to use the library on
-10.0.x, you will have to use the -flat_namespace linker switch. (Modify
-the LDFLAGS environment variable to do that.) Do not do this unless you
-are sure you what you are doing and have read (and fully understood)
-Apple's Release Note concerning two-level namespace executables[0].
+
+Mac OS X version specific notes
+==============================
+
+Mac OS 10.0.x
+--------------
+
+Mac OS 10.0.x is not supported. Mac OS 10.0.x contained several grave
+problems and should be considered more like a "public beta". If you
+are still using 10.0.x, I strongly suggest you upgrade to >= 10.1 --
+there have been huge steps forward in performance and stability. 
+
+Coin will probably work on Mac OS 10.0.x, though, if you build it
+yourself. Note that if you build Coin on a MacOS 10.1 system and want
+to use the library on 10.0.x, you will have to use the -flat_namespace
+linker switch. (Modify the LDFLAGS environment variable to do that.)
+Do not do this unless you are sure you what you are doing and have
+read (and fully understood) Apple's Release Note concerning two-level
+namespace executables[3].
 
 
-Mac OS 10.2
-===========
+Switching from Mac OS 10.1 to Mac OS 10.2
+-----------------------------------------
 
-If you are upgrading to Mac OS 10.2, you must recompile your Coin
-library. This is due to the fact that the developer tools for Mac OS
-10.2 are based on gcc.3.1, as opposed to gcc-2.95 in 10.1. These two
-compilers are not ABI compatible - meaning that you have to rebuild 
-_all_ your C++ libraries.
+If you are upgrading from Mac OS 10.1 to 10.2, you must recompile your
+Coin library. This is due to the fact that the developer tools for Mac
+OS 10.2 are based on gcc.3.1, as opposed to gcc-2.95 in 10.1. These
+two compilers are not ABI compatible - meaning that you have to
+rebuild _all_ your C++ libraries.
 
-If you decide to build Coin from the source code, please cvs update
-or download the latest snapshot (after 20020915). Note that there are 
-several bugs in the developer tools that came with the original Mac 
-OS 10.2 CDs, so you should install the update provided by Apple 
-("August2002DevToolsUpdate") first.
+Note that there are several bugs in the developer tools that came with
+the original Mac OS 10.2 CDs, so you should install the most current
+version of the developer tools (available on the ADC website).
 
 A precompiled binary for the Coin framework on Mac OS 10.2 can be found
-on our ftp server[1].
+on our ftp server[4].
 
 
 The Inventor framework
@@ -57,7 +77,7 @@ By default, Coin will be set up as MacOS X framework. Frameworks are a
 central concept to Mac OS X, packing a dynamic shared library with the
 necessary resources for this library, like header files, images, and
 documentation. You can link against a framework by using the "-framework" 
-compiler option. Please refer to the Apple developer documentation [2] for 
+compiler option. Please refer to the Apple developer documentation [5] for 
 more information about frameworks.
 
 Since Coin is an OpenInventor implementation, the framework is named
@@ -92,28 +112,11 @@ Project Builder IDE support
 
 You can use the Inventor.framework like any of Apple's frameworks in
 Project Builder by just drag+and+dropping it into your target settings.
-Please note that you will (of course) also need the OpenGL framework,
-and (if you are using GLUT) the GLUT framework. 
+Please note that you will (of course) also need several other frameworks,
+at least the OpenGL framework and (depending on your application) 
+Carbon/Cocoa/GLUT.
 
 (Mac OS 10.2 users: See also the problem note on  __Znwm below.)
-
-
-SoMac?
-=======
-
-We are planning to implement a "SoMac" library with bindings between
-Cocoa and the Coin library in the long run, but this is just in the
-planning phase.
-
-At the moment, your best option is probably to control your own
-OpenGL-canvas, like done in the glutiv.cpp example found on the
-<URL:http://www.coin3d.org> website. A simple example on how to use 
-Coin from the Cocoa environment is provided here[3].
-
-You can also try and use SoQt (which depends on Qt/Mac, released
-recently by Trolltech), but please note that this is still under
-development, so you might stumble into some bugs every once in a 
-while.
 
 
 Common problems (and solutions)
@@ -135,13 +138,27 @@ having any spaces in the path leading to Coin.
 o "Undefined symbol: __Znwm"
   --------------------------
 
-If you try to build a project using Coin in Project Builder, you might
-get an error message about __Znwm being undefined. Mac OS 10.2 comes 
-with two version of libstc++, so you must tell it which ones to use - 
+If you build a project using Coin in Project Builder, you might get a 
+run time error message about __Znwm being undefined. Mac OS 10.2 comes 
+with two version of libstdc++, so you must tell it which ones to use - 
 namely the same one used for building Coin. Adding the following to the
 linker commandline solves the problem: 
 
     "-L/usr/lib/gcc/darwin/default/private/"
+
+If you do not have a /usr/lib/gcc/darwin/default/private/ directory on 
+your machine, then you probably have a buggy version of the Apple
+developer tools. The suite shipped with Mac OS 10.2 contained several
+bugs, so please update by installing the "August2002DevToolsUpdate" from 
+the ADC website.
+
+Note that it does not suffice to install any later version of the 
+developer tools. You have to install the developer tools in the
+following order:                                     
+                                                                                
+1. Install July Dev tools
+2. Install August Dev Tools update 
+3. Install any later version that you want
 
 For those who are unfamiliar with Project Builder's settings, a short
 instruction follows:
@@ -160,37 +177,30 @@ instruction follows:
 
 That should be it.
 
-If you have any problems when trying to configure and build Coin on
-MacOS X, please let us know. 
 
+o "I installed qt from fink, but SoQt configure doesn't find it"
+   -------------------------------------------------------------
 
-o There is no uninstaller
-  -----------------------
+That's because SoQt is looking for Qt/Mac -- the Mac OS X native
+version of the Qt toolkit. What you install using fink is *not*
+Qt/Mac but Qt/X11, i.e. the version of Qt that was created for X11.
+We do not yet support the X11 version of Qt, but we are planning to do
+so in the near future.
+                                 
 
-Mac OS X does not come with a native uninstaller utility (strange
-enough), but the OS X Gnu project has created a Cocoa appplication
-that you can get here[4]. We haven't tried it, though, so your milage
-may vary...
+If you have any further problems when trying to configure and build Coin 
+on Mac OS X, please let us know. 
 
-The short and simple way is to just delete the installed files by
-typing the following into a Terminal window:
-
-  sudo rm -r /Library/Framework/Inventor.framework
-  [now you will be asked for your Administrator password]
-  sudo rm -r /Library/Receipts/Coin-1.0.3.pkg
-  sudo rm -r /usr/local/share/Coin
-  sudo rm /usr/local/bin/coin-config
-  sudo rm /usr/local/man/man1/coin-config.1
-
-
-========================================================================
 
 References:
-[0] http://developer.apple.com/techpubs/macosx/ReleaseNotes/TwoLevelNamespaces.html
-[1] ftp://ftp.coin3d.org/pub/coin/bin/macosx/Coin-1.0.2_Mac-OS-10.2.sit
-[2] http://developer.apple.com/techpubs/macosx/Essentials/SystemOverview/Frameworks 
-[3] ftp://ftp.sim.no/pub/coin/bin/macosx/coin-in-a-cocoa-nutshell.sit
-[4] http://www.osxgnu.org/info/pkgdelete.html
+
+[0] http://www.trolltech.com/forms/noncommevalform.html 
+[1] ftp://ftp.sim.no/pub/coin/bin/macosx/coin-in-a-cocoa-nutshell.sit
+[2] http://source.coin3d.org/Coin/examples/bindings/glutiv.cpp
+[3] http://developer.apple.com/techpubs/macosx/ReleaseNotes/TwoLevelNamespaces.html
+[4] ftp://ftp.coin3d.org/pub/coin/bin/macosx/Coin-2.0.0.dmg.gz
+[5] http://developer.apple.com/techpubs/macosx/Essentials/SystemOverview/Frameworks 
 
 --
+Karin Kosina (vka kyrah)
 kyrah@sim.no
