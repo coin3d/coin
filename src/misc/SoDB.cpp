@@ -142,26 +142,22 @@ SoDB::init(void)
 {
   if (SoDB::isInitialized()) return;
 
-  // Sanity check: if anything here breaks, Inventor/system/inttypes.h
-  // needs fixing. Keep these tests around.
+  // Sanity check: if anything here breaks, either
+  // include/Inventor/system/inttypes.h.in or the bitwidth define
+  // configure tests need fixing. Keep these tests around.
 
-#if 0
-  // TMP OBSOLETED asserts for 1.0 release. We should be 99% ok, I can
-  // only think of possibilities for problems in the binary .iv import
-  // and export code. 20010308 mortene.
+  assert(sizeof(uint8_t) == 1);
+  assert(sizeof(int8_t) == 1);
   assert(sizeof(uint16_t) == 2);
   assert(sizeof(int16_t) == 2);
   assert(sizeof(uint32_t) == 4);
   assert(sizeof(int32_t) == 4);
-#else
-  if (sizeof(uint16_t) != 2 ||
-      sizeof(int16_t) != 2 ||
-      sizeof(uint32_t) != 4 ||
-      sizeof(uint32_t) != 4) {
-    SoDebugError::postWarning("SoDB::init",
-                              "fixed bitwidth types are not correct");
-  }
-#endif
+#ifdef HAVE_UINT64_T
+  assert(sizeof(uint64_t) == 8);
+#endif // HAVE_UINT64_T
+#ifdef HAVE_INT64_T
+  assert(sizeof(int64_t) == 8);
+#endif // HAVE_INT64_T
 
 
   // Sanity check: if the int type is not equal to 32 bits everything
@@ -886,9 +882,9 @@ SoDB::addConverter(SoType from, SoType to, SoType converter)
 SoType
 SoDB::getConverter(SoType from, SoType to)
 {
-  void * key;
   uint32_t val = (((uint32_t)from.getKey()) << 16) + to.getKey();
   // FIXME: ugly, need a better dict/hash class. 20000216 mortene.
+  void * key;
   if (!SoDB::converters->find(val, key)) return SoType::badType();
   return SoType::fromKey((uint16_t)((uint32_t)key));
 }
