@@ -31,9 +31,14 @@
 (-> (-> shuttle 'on) 'setvalue 0)
 (-> (-> shuttle 'on) 'setvalue 1)
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;; Confirmed and potential bugs. ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; FIXME: setting translation field manually freezes the animation,
+;; see Bugzilla #197.  20000912 mortene.
+
 ;; from parent class SoTranslation
-;; FIXME: setting this manually freezes the animation, see Bugzilla #197.
-;; 20000912 mortene.
 (-> (-> shuttle 'translation) 'setvalue '#(1 0 0))
 
 
