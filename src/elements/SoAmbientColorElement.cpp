@@ -23,12 +23,13 @@
 */
 
 #include <Inventor/elements/SoAmbientColorElement.h>
-
 #include <Inventor/SbColor.h>
-
 #include <assert.h>
 
-static const SbColor defaultColor(0.2f, 0.2f, 0.2f);
+// Dynamically allocated to avoid problems on systems which doesn't
+// handle static constructors.
+static SbColor * defaultcolor = NULL;
+
 
 /*!
   \fn SoAmbientColorElement::numColors
@@ -50,9 +51,11 @@ SO_ELEMENT_SOURCE(SoAmbientColorElement);
 */
 
 void
-SoAmbientColorElement::initClass()
+SoAmbientColorElement::initClass(void)
 {
   SO_ELEMENT_INIT_CLASS(SoAmbientColorElement, inherited);
+  defaultcolor = new SbColor; // FIXME: deallocate on exit. 20000406 mortene.
+  defaultcolor->setValue(0.2f, 0.2f, 0.2f);
 }
 
 //! FIXME: write doc.
@@ -60,7 +63,7 @@ SoAmbientColorElement::initClass()
 void
 SoAmbientColorElement::init(SoState * /* state */)
 {
-  this->colors = &defaultColor;
+  this->colors = defaultcolor;
   this->numColors = 1;
 }
 
@@ -72,8 +75,8 @@ SoAmbientColorElement::init(SoState * /* state */)
 
 SoAmbientColorElement::SoAmbientColorElement()
 {
-  setTypeId(SoAmbientColorElement::classTypeId);
-  setStackIndex(SoAmbientColorElement::classStackIndex);
+  this->setTypeId(SoAmbientColorElement::classTypeId);
+  this->setStackIndex(SoAmbientColorElement::classStackIndex);
 }
 
 /*!
@@ -96,7 +99,7 @@ SoAmbientColorElement::set(SoState * const state, SoNode * const node,
   if (numColors > 0)
     elem->setElt(numColors, colors);
   else
-    elem->setElt(1, &defaultColor);
+    elem->setElt(1, defaultcolor);
 }
 
 //! FIXME: write doc.

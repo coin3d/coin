@@ -25,12 +25,13 @@
 */
 
 #include <Inventor/elements/SoSpecularColorElement.h>
-
 #include <Inventor/SbColor.h>
-
 #include <assert.h>
 
-static const SbColor defaultColor(0.0f, 0.0f, 0.0f);
+// Dynamically allocated to avoid problems on systems which doesn't
+// handle static constructors.
+static SbColor * defaultcolor = NULL;
+
 
 /*!
   \fn SoSpecularColorElement::numColors
@@ -55,6 +56,8 @@ void
 SoSpecularColorElement::initClass()
 {
   SO_ELEMENT_INIT_CLASS(SoSpecularColorElement, inherited);
+  defaultcolor = new SbColor; // FIXME: deallocate on exit. 20000406 mortene.
+  defaultcolor->setValue(0.0f, 0.0f, 0.0f);
 }
 
 /*!
@@ -65,8 +68,8 @@ SoSpecularColorElement::initClass()
 
 SoSpecularColorElement::SoSpecularColorElement()
 {
-  setTypeId(classTypeId);
-  setStackIndex(classStackIndex);
+  this->setTypeId(classTypeId);
+  this->setStackIndex(classStackIndex);
 }
 
 /*!
@@ -82,7 +85,7 @@ SoSpecularColorElement::~SoSpecularColorElement()
 void
 SoSpecularColorElement::init(SoState * /* state */)
 {
-  this->colors = &defaultColor;
+  this->colors = defaultcolor;
   this->numColors = 1;
 }
 
@@ -97,8 +100,8 @@ SoSpecularColorElement::set(SoState * const state, SoNode * const node,
     SoReplacedElement::getElement(state, classStackIndex, node);
   if (numColors > 0)
     elem->setElt(numColors, colors);
-  else 
-    elem->setElt(1, &defaultColor);
+  else
+    elem->setElt(1, defaultcolor);
 }
 
 //! FIXME: write doc.

@@ -27,20 +27,15 @@
 #include <Inventor/elements/SoNormalElement.h>
 
 #include <coindefs.h> // COIN_STUB()
-
 #include <assert.h>
-
-static SbVec3f defaultNormal(0.0f, 0.0f, 1.0f);
 
 /*!
   \fn SoNormalElement::numNormals
-
   FIXME: write doc.
 */
 
 /*!
   \fn SoNormalElement::normals
-
   FIXME: write doc.
 */
 
@@ -64,8 +59,8 @@ SoNormalElement::initClass()
 
 SoNormalElement::SoNormalElement()
 {
-  setTypeId(SoNormalElement::classTypeId);
-  setStackIndex(SoNormalElement::classStackIndex);
+  this->setTypeId(SoNormalElement::classTypeId);
+  this->setStackIndex(SoNormalElement::classStackIndex);
 }
 
 /*!

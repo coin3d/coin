@@ -903,7 +903,7 @@ SoDragger::appendRotation(const SbMatrix & matrix, const SbRotation & rot, const
   SbMatrix rotmatrix;
   r.getValue(rotmatrix);
   rotmatrix.multLeft(transform);
-  
+
   SbMatrix res;
   res.setRotate(so.inverse());
 
@@ -914,7 +914,7 @@ SoDragger::appendRotation(const SbMatrix & matrix, const SbRotation & rot, const
   res.multRight(tmp);
 
   res.multRight(rotmatrix);
-  
+
   tmp.setTranslate(t);
   res.multRight(tmp);
   return res;

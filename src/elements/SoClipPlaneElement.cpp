@@ -129,14 +129,18 @@ const SbPlane &
 SoClipPlaneElement::get(const int index,
                         const SbBool inWorldSpace) const
 {
-  static SbPlane staticPlane;
+  // Dynamically allocated to avoid problems on systems which doesn't
+  // handle static constructors. (Yes, I know we only use the
+  // operator=() in this method, but better safe than sorry -- if the
+  // code changes, we've got a hard to find bug on our hands).
+  static SbPlane * staticplane = new SbPlane; // FIXME: should deallocate on exit. 20000406 mortene.
 
   assert(index >= 0 && index < this->planes.getLength());
   const so_plane_data &data = this->planes[index];
-  if (inWorldSpace) staticPlane = data.wcPlane;
-  else staticPlane = data.plane;
+  if (inWorldSpace) *staticplane = data.wcPlane;
+  else *staticplane = data.plane;
 
-  return staticPlane;
+  return *staticplane;
 }
 
 //! FIXME: write doc.

@@ -99,10 +99,13 @@ SoTextureCoordinateEnvironment::generate(void *userdata,
   // in case an empty normal was supplied
   if (fabs(m) <= FLT_EPSILON) m = 1.0f;
 
-  static SbVec4f texcoords(0,0,0,1); // needed to return a reference
-  texcoords[0] = r[0] / m + 0.5f;
-  texcoords[1] = r[1] / m + 0.5f;
-  return texcoords;
+  // Dynamically allocated to avoid problems on systems which doesn't
+  // handle static constructors.
+  static SbVec4f * texcoords = new SbVec4f(0,0,0,1); // FIXME: deallocate on exit. 20000406 mortene.
+
+  (*texcoords)[0] = r[0] / m + 0.5f;
+  (*texcoords)[1] = r[1] / m + 0.5f;
+  return *texcoords;
 }
 
 /*!

@@ -419,7 +419,9 @@ search_for_image(const char * const orgname, const SbStringList & dirlist)
 #undef TRY_FILE_DEBUG
 #undef TRY_FILE
 
-static SbList <so_image_data*> loadedFiles;
+// Dynamically allocated to avoid problems on systems which doesn't
+// handle static constructors.
+static SbList<so_image_data *> * loadedfiles = NULL;
 
 /*!
   Should be called by a image holder to enable reusage of images.
@@ -430,18 +432,21 @@ SoImageInterface *
 SoImageInterface::findOrCreateImage(const char * const filename,
                                     const SbStringList & dirlist)
 {
-  int n = loadedFiles.getLength();
+ // FIXME: deallocate on exit. 20000406 mortene.
+  if (loadedfiles) loadedfiles = new SbList<so_image_data *>;
+
+  int n = loadedfiles->getLength();
   for (int i = 0; i < n; i++) {
-    if (loadedFiles[i]->image->filename == filename) {
-      loadedFiles[i]->image->ref();
-      return loadedFiles[i]->image;
+    if ((*loadedfiles)[i]->image->filename == filename) {
+      (*loadedfiles)[i]->image->ref();
+      return (*loadedfiles)[i]->image;
     }
   }
 
   SbString fullname = search_for_image(filename, dirlist);
   if (fullname.getLength()) {
     SoImageInterface *image = new SoImageInterface(fullname.getString());
-    loadedFiles.append(new so_image_data(filename, image));
+    loadedfiles->append(new so_image_data(filename, image));
     image->ref();
     return image;
   }
@@ -451,15 +456,17 @@ SoImageInterface::findOrCreateImage(const char * const filename,
 void
 SoImageInterface::unrefImage(SoImageInterface * const image)
 {
-  int i, n = loadedFiles.getLength();
+  assert(loadedfiles != NULL);
+
+  int i, n = loadedfiles->getLength();
   for (i = 0; i < n; i++) {
-    if (loadedFiles[i]->image == image) break;
+    if ((*loadedfiles)[i]->image == image) break;
   }
   assert(i < n);
   if (image->refCount == 1) {
     delete image;
-    delete loadedFiles[i];
-    loadedFiles.removeFast(i);
+    delete (*loadedfiles)[i];
+    loadedfiles->removeFast(i);
   }
   else image->refCount--;
 }

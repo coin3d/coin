@@ -34,6 +34,10 @@
 #include <GL/gl.h>
 #include <assert.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 SO_ELEMENT_SOURCE(SoGLViewportRegionElement);
 
 /*!
@@ -120,10 +124,11 @@ SoGLViewportRegionElement::updategl() const
     SbVec2s origin = this->viewportRegion.getViewportOriginPixels();
     SbVec2s size = this->viewportRegion.getViewportSizePixels();
     glViewport(origin[0], origin[1], size[0], size[1]);
+
+#if COIN_DEBUG && 0 // debug
+    SoDebugError::postInfo("SoGLViewportRegionElement::updategl",
+                           "glViewport: %d %d %d %d\n",
+                           origin[0], origin[1], size[0], size[1]);
+#endif // debug
   }
-#if 0 // too much debug output.. 981021 mortene.
-  SoDebugError::postInfo("SoGLViewportRegionElement::updategl",
-                         "glViewport: %d %d %d %d\n",
-                         origin[0], origin[1], size[0], size[1]);
-#endif // 0
 }

@@ -25,12 +25,13 @@
 */
 
 #include <Inventor/elements/SoDiffuseColorElement.h>
-
 #include <Inventor/SbColor.h>
-
 #include <assert.h>
 
-static const SbColor defaultColor(0.8f, 0.8f, 0.8f);
+// Dynamically allocated to avoid problems on systems which doesn't
+// handle static constructors.
+static SbColor * defaultcolor = NULL;
+
 
 /*!
   \fn SoDiffuseColorElement::numColors
@@ -58,9 +59,11 @@ SO_ELEMENT_SOURCE(SoDiffuseColorElement);
 */
 
 void
-SoDiffuseColorElement::initClass()
+SoDiffuseColorElement::initClass(void)
 {
   SO_ELEMENT_INIT_CLASS(SoDiffuseColorElement, inherited);
+  defaultcolor = new SbColor; // FIXME: deallocate on exit. 20000406 mortene.
+  defaultcolor->setValue(0.8f, 0.8f, 0.8f);
 }
 
 //! FIXME: write doc.
@@ -68,7 +71,7 @@ SoDiffuseColorElement::initClass()
 void
 SoDiffuseColorElement::init(SoState * /* state */)
 {
-  this->colors = &defaultColor;
+  this->colors = defaultcolor;
   this->packedColors = NULL;
   this->numColors = 1;
 }
@@ -81,8 +84,8 @@ SoDiffuseColorElement::init(SoState * /* state */)
 
 SoDiffuseColorElement::SoDiffuseColorElement()
 {
-  setTypeId(SoDiffuseColorElement::classTypeId);
-  setStackIndex(SoDiffuseColorElement::classStackIndex);
+  this->setTypeId(SoDiffuseColorElement::classTypeId);
+  this->setStackIndex(SoDiffuseColorElement::classStackIndex);
 }
 
 /*!
@@ -105,7 +108,7 @@ SoDiffuseColorElement::set(SoState * const state, SoNode * const node,
   if (numColors > 0)
     elem->setElt(numColors, colors);
   else
-    elem->setElt(1, &defaultColor);
+    elem->setElt(1, defaultcolor);
 }
 
 //! FIXME: write doc.
@@ -191,7 +194,7 @@ SoDiffuseColorElement::get(const int index) const
   return this->colors[index];
 }
 
-SbBool 
+SbBool
 SoDiffuseColorElement::hasPackedTransparency(void) const
 {
   return this->packedTransparency;

@@ -252,7 +252,8 @@ setFont(SbName fontname, int fontsize)
 static unsigned int
 getGLList(SoGLRenderAction * action, XFontStruct *& fontstruct)
 {
-  static SbDict fontdict;
+  // (Don't use a static constructor.)
+  static SbDict * fontdict = new SbDict; // FIXME: should deallocate on exit. 20000406 mortene.
 
   SoState * state = action->getState();
   SbName fontname = SoFontNameElement::get(state);
@@ -266,7 +267,7 @@ getGLList(SoGLRenderAction * action, XFontStruct *& fontstruct)
   uint32_t fontkey = fontid.hash();
 
   void * fontptrs;
-  if (fontdict.find(fontkey, fontptrs)) {
+  if (fontdict->find(fontkey, fontptrs)) {
     void ** ptrs = (void **)fontptrs;
     fontstruct = (XFontStruct *)(ptrs[1]);
     return (unsigned int)(ptrs[0]);
@@ -281,7 +282,7 @@ getGLList(SoGLRenderAction * action, XFontStruct *& fontstruct)
     void ** ptrs = new void*[2];
     ptrs[0] = (void *)base;
     ptrs[1] = (void *)fontstruct;
-    fontdict.enter(fontkey, (void *)ptrs);
+    fontdict->enter(fontkey, (void *)ptrs);
 
     return base;
   }

@@ -348,6 +348,11 @@ SoSceneManager::getSceneGraph(void) const
 void
 SoSceneManager::setWindowSize(const SbVec2s & newsize)
 {
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoSceneManager::setWindowSize",
+                         "(%d, %d)", newsize[0], newsize[1]);
+#endif // debug
+
   SbViewportRegion region = this->glaction->getViewportRegion();
   region.setWindowSize(newsize[0], newsize[1]);
   this->glaction->setViewportRegion(region);
@@ -373,6 +378,11 @@ SoSceneManager::getWindowSize(void) const
 void
 SoSceneManager::setSize(const SbVec2s & newsize)
 {
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoSceneManager::setSize",
+                         "(%d, %d)", newsize[0], newsize[1]);
+#endif // debug
+
   SbViewportRegion region = this->glaction->getViewportRegion();
   SbVec2s origin = region.getViewportOriginPixels();
   region.setViewportPixels(origin, newsize);

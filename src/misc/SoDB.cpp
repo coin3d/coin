@@ -250,10 +250,13 @@ SoDB::clean(void)
 const char *
 SoDB::getVersion(void)
 {
-  static SbString s;
-  s = "SIM Coin ";
-  s += COIN_VERSION;
-  return s.getString();
+  // Dynamically allocated to avoid problems on systems which doesn't
+  // handle static constructors.
+  static SbString * s = new SbString; // FIXME: should deallocate on exit. 20000406 mortene.
+  
+  *s = "SIM Coin ";
+  *s += COIN_VERSION;
+  return s->getString();
 }
 
 /*!

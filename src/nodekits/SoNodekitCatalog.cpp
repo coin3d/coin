@@ -110,8 +110,8 @@ SoNodekitCatalog::getName(int part) const
   if (part < 0 || part >= this->getNumEntries()) {
     SoDebugError::post("SoNodekitCatalog::getName",
                        "invalid part number, %d", part);
-    static SbName name;
-    return name;
+    static SbName * name = new SbName; // (Avoid static constructor.)
+    return *name;
   }
 #endif // debug
 
@@ -288,8 +288,8 @@ SoNodekitCatalog::getParentName(int part) const
   if (part < 0 || part >= this->getNumEntries()) {
     SoDebugError::post("SoNodekitCatalog::getParentName",
                        "invalid part number, %d", part);
-    static SbName name;
-    return name;
+    static SbName * name = new SbName; // (Avoid static constructor.)
+    return *name;
   }
 #endif // debug
   return this->items[part]->parentname;
@@ -309,8 +309,8 @@ SoNodekitCatalog::getParentName(const SbName & name) const
   if (part == SO_CATALOG_NAME_NOT_FOUND) {
     SoDebugError::post("SoNodekitCatalog::getParentName",
                        "invalid part name, \"%s\"", name.getString());
-    static SbName name;
-    return name;
+    static SbName * name = new SbName; // (Avoid static constructor.)
+    return *name;
   }
 #endif // debug
   return this->getParentName(part);
@@ -368,8 +368,8 @@ SoNodekitCatalog::getRightSiblingName(int part) const
   if (part < 0 || part >= this->getNumEntries()) {
     SoDebugError::post("SoNodekitCatalog::getRightSiblingName",
                        "invalid part number, %d", part);
-    static SbName name;
-    return name;
+    static SbName * name = new SbName; // (Avoid static constructor.)
+    return *name;
   }
 #endif // debug
   return this->items[part]->siblingname;
@@ -389,8 +389,8 @@ SoNodekitCatalog::getRightSiblingName(const SbName & name) const
   if (part == SO_CATALOG_NAME_NOT_FOUND) {
     SoDebugError::post("SoNodekitCatalog::getRightSiblingName",
                        "invalid part name, \"%s\"", name.getString());
-    static SbName name;
-    return name;
+    static SbName * name = new SbName; // (Avoid static constructor.)
+    return *name;
   }
 #endif // debug
   return this->getRightSiblingName(part);
@@ -529,14 +529,14 @@ SoNodekitCatalog::getListItemTypes(int part) const
   if (part < 0 || part >= this->getNumEntries()) {
     SoDebugError::post("SoNodekitCatalog::getListItemTypes",
                        "invalid part number, %d", part);
-    static SoTypeList l;
-    return l;
+    static SoTypeList * l = new SoTypeList; // (Avoid static constructor.)
+    return *l;
   }
   else if (!this->items[part]->islist) {
     SoDebugError::post("SoNodekitCatalog::getListItemTypes",
                        "part %d is not a list container", part);
-    static SoTypeList l;
-    return l;
+    static SoTypeList * l = new SoTypeList; // (Avoid static constructor.)
+    return *l;
   }
 #endif // debug
   return this->items[part]->itemtypeslist;
@@ -556,8 +556,8 @@ SoNodekitCatalog::getListItemTypes(const SbName & name) const
   if (part == SO_CATALOG_NAME_NOT_FOUND) {
     SoDebugError::post("SoNodekitCatalog::getListItemTypes",
                        "invalid part name, \"%s\"", name.getString());
-    static SoTypeList l;
-    return l;
+    static SoTypeList * l = new SoTypeList; // (Avoid static constructor.)
+    return *l;
   }
 #endif // debug
   return this->getListItemTypes(part);

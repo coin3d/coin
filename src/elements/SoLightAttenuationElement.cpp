@@ -25,9 +25,11 @@
 */
 
 #include <Inventor/elements/SoLightAttenuationElement.h>
-
-
 #include <assert.h>
+
+// Dynamically allocated to avoid problems on systems which doesn't
+// handle static constructors.
+static SbVec3f * defaultattenuation = NULL;
 
 /*!
   \fn SoLightAttenuationElement::lightAttenuation
@@ -46,6 +48,8 @@ void
 SoLightAttenuationElement::initClass(void)
 {
   SO_ELEMENT_INIT_CLASS(SoLightAttenuationElement, inherited);
+  defaultattenuation = new SbVec3f; // FIXME: deallocate on exit. 20000406 mortene.
+  defaultattenuation->setValue(0.0f, 0.0f, 1.0f);
 }
 
 /*!
@@ -55,10 +59,9 @@ SoLightAttenuationElement::initClass(void)
 */
 
 SoLightAttenuationElement::SoLightAttenuationElement(void)
-  : lightAttenuation(SbVec3f(0.0f, 0.0f, 1.0f))
 {
-  setTypeId(SoLightAttenuationElement::classTypeId);
-  setStackIndex(SoLightAttenuationElement::classStackIndex);
+  this->setTypeId(SoLightAttenuationElement::classTypeId);
+  this->setStackIndex(SoLightAttenuationElement::classStackIndex);
 }
 
 /*!
@@ -131,14 +134,13 @@ void
 SoLightAttenuationElement::init(SoState * state)
 {
   inherited::init(state);
-  this->lightAttenuation = this->getDefault();
+  this->lightAttenuation = SoLightAttenuationElement::getDefault();
 }
 
 //! FIXME: write doc.
 
 const SbVec3f &
-SoLightAttenuationElement::getDefault()
+SoLightAttenuationElement::getDefault(void)
 {
-  static SbVec3f v(0.0f, 0.0f, 1.0f);
-  return v;
+  return *defaultattenuation;
 }

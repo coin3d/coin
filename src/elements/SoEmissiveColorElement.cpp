@@ -27,10 +27,12 @@
 #include <Inventor/elements/SoEmissiveColorElement.h>
 
 #include <Inventor/SbColor.h>
-
 #include <assert.h>
 
-static const SbColor defaultColor(0.0f, 0.0f, 0.0f);
+// Dynamically allocated to avoid problems on systems which doesn't
+// handle static constructors.
+static SbColor * defaultcolor = NULL;
+
 
 /*!
   \fn SoEmissiveColorElement::numColors
@@ -55,6 +57,8 @@ void
 SoEmissiveColorElement::initClass()
 {
   SO_ELEMENT_INIT_CLASS(SoEmissiveColorElement, inherited);
+  defaultcolor = new SbColor; // FIXME: deallocate on exit. 20000406 mortene.
+  defaultcolor->setValue(0.0f, 0.0f, 0.0f);
 }
 
 /*!
@@ -65,8 +69,8 @@ SoEmissiveColorElement::initClass()
 
 SoEmissiveColorElement::SoEmissiveColorElement()
 {
-  setTypeId(classTypeId);
-  setStackIndex(classStackIndex);
+  this->setTypeId(classTypeId);
+  this->setStackIndex(classStackIndex);
 }
 
 /*!
@@ -82,7 +86,7 @@ SoEmissiveColorElement::~SoEmissiveColorElement()
 void
 SoEmissiveColorElement::init(SoState * /* state */)
 {
-  this->colors = &defaultColor;
+  this->colors = defaultcolor;
   this->numColors = 1;
 }
 
@@ -97,8 +101,8 @@ SoEmissiveColorElement::set(SoState * const state, SoNode * const node,
     SoReplacedElement::getElement(state, classStackIndex, node);
   if (numColors > 0)
     elem->setElt(numColors, colors);
-  else 
-    elem->setElt(1, &defaultColor);
+  else
+    elem->setElt(1, defaultcolor);
 }
 
 //! FIXME: write doc.

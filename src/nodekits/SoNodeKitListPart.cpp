@@ -146,9 +146,11 @@ SoNodeKitListPart::getChildTypes(void) const
 {
   if (this->allowedtypes.getLength()) return this->allowedtypes;
 
-  static SoTypeList deflist;
-  if (deflist.getLength() == 0) deflist.append(SoNode::getClassTypeId());
-  return deflist;
+  // Dynamically allocated to avoid problems on systems which doesn't
+  // handle static constructors.
+  static SoTypeList * deflist = new SoTypeList; // FIXME: should deallocate on exit. 20000406 mortene.
+  if (deflist->getLength() == 0) deflist->append(SoNode::getClassTypeId());
+  return *deflist;
 }
 
 /*!
