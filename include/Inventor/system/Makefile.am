@@ -7,7 +7,8 @@ DISTCLEANFILES = \
 	inttypes.h
 
 EXTRA_DIST = \
-	inttypes.h.in
+	inttypes.h.in \
+	gl.h
 
 inttypes.h: $(srcdir)/inttypes.h.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
