@@ -290,7 +290,7 @@
   above, except GeForce4 MX). These extensions are \c
   GL_NV_texture_shader, \c GL_NV_texture_rectangle, \c
   GL_NV_register_combiners, \c GL_ARB_shadow and \c
-  GL_ARB_depth_texture. A rendering context with > 24 bits depth
+  GL_ARB_depth_texture. A rendering context with >= 24 bits depth
   buffer and 8 bits alpha channel must also be present.
 
   The detection of whether or not the SORTED_LAYERS_BLEND mode can be
@@ -300,11 +300,14 @@
   will be used as the transparency type instead.
 
   To be able to render correct transparency independent of object
-  order, one have to render in multiple passes. The default number of
-  passes is 4. This number can be specified using the
-  SoGLRenderAction::setSortedLayersNumPasses() or by letting the
-  environment variable \c COIN_NUM_SORTED_LAYERS_PASSES or \c
-  OIV_NUM_SORTED_LAYERS_PASSES specify the number of passes.
+  order, one have to render in multiple passes. This technique is
+  based on depth-peeling which strips away depth layers with each
+  successive pass. The number of passes is therefore an indication on
+  how deep into the scene transparent surfaces will be rendered with
+  transparency. The default number of passes is '4'. This number can be
+  specified using the SoGLRenderAction::setSortedLayersNumPasses() or
+  by letting the environment variable \c COIN_NUM_SORTED_LAYERS_PASSES
+  or \c OIV_NUM_SORTED_LAYERS_PASSES specify the number of passes.
 
   Please note that this transparency type occupy all four texture
   units on the NVIDIA card for all the rendering passes, except the
@@ -315,15 +318,14 @@
   \since TGS Inventor 4.0
 */
 
-// FIXME: document what happens if the number of passes with the above
-// mode is made != 4. 20031202 mortene.
-
 // FIXME: 
 //  todo: - Add fragment_program support (thereby adding ATI support).
 //        - Add GL_[NV/HP]_occlusion_test support making the number of passes adaptive.
 //        - Maybe pbuffer support to eliminate the slow glCopyTexSubImage2D calls.
 //        - Support texturing in every pass (will probably need fragment programming).
 //        - Support EXT_texture_rectangle instead of NV_texture_rectangle if available.
+//        - Investigate if the TGS method using only EXT_texture_env_combine is a feasible 
+//          method (especially when it comes to speed and number of required texture units).
 // (20031128 handegar)
 //
 
@@ -1573,7 +1575,6 @@ SoGLRenderActionP::renderOneBlendLayer(SoState * state,
   // Do the rendering
   this->action->beginTraversal(node);
  
-
   if(peel) { // Clean up
       cc_glglue_glActiveTexture(glue, GL_TEXTURE3);
       glDisable(GL_TEXTURE_RECTANGLE_NV);  
