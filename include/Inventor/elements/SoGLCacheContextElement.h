@@ -73,6 +73,11 @@ public:
                                      SoScheduleDeleteCB * cb,
                                      void * closure);
 
+  static void incNumShapes(SoState * state);
+  static int getNumShapes(SoState * state);
+  static void incNumSeparators(SoState * state);
+  static int getNumSeparators(SoState * state);
+
 private:
   friend class SoGLDisplayList;
   static void scheduleDelete(SoState * state, SoGLDisplayList * dl);
@@ -82,6 +87,8 @@ private:
   int context;
   SbBool twopass;
   int autocachebits;
+  int numshapes;
+  int numseparators;
 
   enum { RENDERING_UNSET, RENDERING_SET_DIRECT, RENDERING_SET_INDIRECT };
   int rendering;

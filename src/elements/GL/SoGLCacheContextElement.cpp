@@ -183,6 +183,8 @@ SoGLCacheContextElement::init(SoState * state)
   this->twopass = FALSE;
   this->rendering = RENDERING_UNSET;
   this->autocachebits = 0;
+  this->numshapes = 0;
+  this->numseparators = 0;
 }
 
 // doc from parent
@@ -333,7 +335,7 @@ SoGLCacheContextElement::areMipMapsFast(SoState * state)
 }
 
 /*!
-  Not properly supported yet.
+  Update auto cache bits.
 */
 void
 SoGLCacheContextElement::shouldAutoCache(SoState * state, int bits)
@@ -344,7 +346,63 @@ SoGLCacheContextElement::shouldAutoCache(SoState * state, int bits)
 }
 
 /*!
-  Not properly supported yet.
+  Increment the number of shapes in a open cache.
+
+  \since Coin 3.0
+ */
+void 
+SoGLCacheContextElement::incNumShapes(SoState * state)
+{
+  SoGLCacheContextElement * elem = (SoGLCacheContextElement*)
+    state->getElementNoPush(classStackIndex);
+  
+  elem->numshapes++;
+}
+
+/*!
+  Returns the number of shapes in an open cache.
+  
+  \since Coin 3.0
+*/
+int 
+SoGLCacheContextElement::getNumShapes(SoState * state)
+{
+  SoGLCacheContextElement * elem = (SoGLCacheContextElement*)
+    state->getElementNoPush(classStackIndex);
+  
+  return elem->numshapes;
+}
+
+/*!
+  Increment the number of separators in an open cache.
+
+  \since Coin 3.0
+ */
+void 
+SoGLCacheContextElement::incNumSeparators(SoState * state)
+{
+  SoGLCacheContextElement * elem = (SoGLCacheContextElement*)
+    state->getElementNoPush(classStackIndex);
+  
+  elem->numseparators++;
+}
+
+/*!
+  Returns the number of separators in an open cache.
+  
+  \since Coin 3.0
+*/
+int 
+SoGLCacheContextElement::getNumSeparators(SoState * state)
+{
+  SoGLCacheContextElement * elem = (SoGLCacheContextElement*)
+    state->getElementNoPush(classStackIndex);
+  
+  return elem->numseparators;
+}
+
+/*!
+  Sets the auto cache bits.
 */
 void
 SoGLCacheContextElement::setAutoCacheBits(SoState * state, int bits)
@@ -352,7 +410,7 @@ SoGLCacheContextElement::setAutoCacheBits(SoState * state, int bits)
   SoGLCacheContextElement * elem = (SoGLCacheContextElement*)
     state->getElementNoPush(classStackIndex);
 
-  elem->autocachebits = bits;
+  elem->autocachebits = bits;  
 }
 
 // Private function which "unwinds" the real value of the "rendering"
@@ -382,6 +440,8 @@ SoGLCacheContextElement::resetAutoCacheBits(SoState * state)
   int ret = elem->autocachebits;
 
   elem->autocachebits = elem->isDirectRendering(state) ? 0 : DO_AUTO_CACHE;
+  elem->numshapes = 0;
+  elem->numseparators = 0;
 
   return ret;
 }
