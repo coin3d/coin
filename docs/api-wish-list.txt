@@ -861,3 +861,16 @@ THE WISH LIST
   This should hopefully go in before the 2.0 release.
 
 
+* SoViewportEvent
+  2003-02-11  Lars J. Aas  <larsa@sim.no>
+
+  If you have scene graphs that have fields that are adjusted in relation
+  to the viewport size, the way to detect viewport changes now is to get the
+  viewport information from the SoGLRenderAction action since it's the first
+  action that happens after the viewport is changed.  Updating fields at that
+  time is already too late - the notification mechanism will trigger another
+  redraw so you get two redraws when you resize the viewport.  By first
+  sending a "viewport" event through the scene, fields can be updated in
+  advance and the render pass won't trigger a second one.
+
+
