@@ -19,24 +19,28 @@
 
 /*!
   \class SoNurbsCurve SoNurbsCurve.h Inventor/nodes/SoNurbsCurve.h
-  \brief The SoNurbsCurve class ...
+  \brief The SoNurbsCurve class is a node for representing smooth curves.
   \ingroup nodes
 
-  FIXME: write class doc
+  Explaining NURBS is beyond the scope of this documentation. If you
+  are unfamiliar with the principles of representing smooth curves and
+  surfaces when doing 3D visualization, we recommend finding a good
+  book on the subject.
 */
 
 #include <Inventor/nodes/SoNurbsCurve.h>
 #include <Inventor/nodes/SoSubNodeP.h>
-#include <coindefs.h> // COIN_STUB()
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/bundles/SoMaterialBundle.h>
+#include <Inventor/caches/SoBoundingBoxCache.h>
+#include <Inventor/elements/SoGLCoordinateElement.h>
+#include <coindefs.h> // COIN_STUB()
 #ifdef _WIN32
 #include <windows.h>
 #endif // !_WIN32
 #include <GL/gl.h>
 #include <GL/glu.h>
-
-#include <Inventor/elements/SoGLCoordinateElement.h>
-#include <Inventor/bundles/SoMaterialBundle.h>
 
 /*!
   \var SoSFInt32 SoNurbsCurve::numControlPoints
@@ -54,14 +58,14 @@ SO_NODE_SOURCE(SoNurbsCurve);
 /*!
   Constructor.
 */
-SoNurbsCurve::SoNurbsCurve()
+SoNurbsCurve::SoNurbsCurve(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoNurbsCurve);
 
   SO_NODE_ADD_FIELD(numControlPoints, (0));
   SO_NODE_ADD_FIELD(knotVector, (0));
 
-  this->nurbsRenderer = NULL;
+  this->nurbsrenderer = NULL;
 }
 
 /*!
@@ -69,25 +73,17 @@ SoNurbsCurve::SoNurbsCurve()
 */
 SoNurbsCurve::~SoNurbsCurve()
 {
-  if (this->nurbsRenderer) {
-    gluDeleteNurbsRenderer(this->nurbsRenderer);
-  }
+  if (this->nurbsrenderer) gluDeleteNurbsRenderer(this->nurbsrenderer);
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoNurbsCurve class. This includes setting up the
-  type system, among other things.
-*/
+// Doc from parent class.
 void
 SoNurbsCurve::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoNurbsCurve);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from parent class.
 void
 SoNurbsCurve::GLRender(SoGLRenderAction * action)
 {
@@ -96,15 +92,11 @@ SoNurbsCurve::GLRender(SoGLRenderAction * action)
   //
 
 
+  if (!this->shouldGLRender(action)) return;
+
+  if (this->nurbsrenderer == NULL) this->nurbsrenderer = gluNewNurbsRenderer();
+
   SoState * state = action->getState();
-
-  if (!this->shouldGLRender(action)) {
-    return;
-  }
-
-  if (this->nurbsRenderer == NULL) {
-    this->nurbsRenderer = gluNewNurbsRenderer();
-  }
 
   const SoCoordinateElement * coords =
     SoCoordinateElement::getInstance(state);
@@ -119,7 +111,7 @@ SoNurbsCurve::GLRender(SoGLRenderAction * action)
 
   int dim = coords->is3D() ? 3 : 4;
 
-  const SoCoordinateElement *coordelem =
+  const SoCoordinateElement * coordelem =
     SoCoordinateElement::getInstance(state);
 
   GLfloat * ptr = coords->is3D() ?
@@ -127,8 +119,8 @@ SoNurbsCurve::GLRender(SoGLRenderAction * action)
     (GLfloat *)coordelem->getArrayPtr4();
 
 
-  gluBeginCurve(this->nurbsRenderer);
-  gluNurbsCurve(this->nurbsRenderer,
+  gluBeginCurve(this->nurbsrenderer);
+  gluNurbsCurve(this->nurbsrenderer,
                 this->knotVector.getNum(),
                 (GLfloat *)this->knotVector.getValues(0),
                 dim,
@@ -136,19 +128,18 @@ SoNurbsCurve::GLRender(SoGLRenderAction * action)
                 this->knotVector.getNum() - this->numControlPoints.getValue(),
                 (GLenum)(dim == 3 ? GL_MAP1_VERTEX_3 : GL_MAP1_VERTEX_4));
 
-  gluEndCurve(this->nurbsRenderer);
+  gluEndCurve(this->nurbsrenderer);
   glDisable(GL_AUTO_NORMAL);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from parent class.
 void
 SoNurbsCurve::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
   // FIXME: this is just a quick approximation
+
   SoState * state = action->getState();
-  const SoCoordinateElement *coordelem =
+  const SoCoordinateElement * coordelem =
     SoCoordinateElement::getInstance(state);
 
 
@@ -166,39 +157,36 @@ SoNurbsCurve::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   else {
     const SbVec4f * coords = coordelem->getArrayPtr4();
     assert(coords);
-    for (int i = 0; i< num; i++) {
+    for (int i = 0; i < num; i++) {
       SbVec4f tmp = coords[i];
+      // FIXME: shouldn't we "normalize" with the fourth element of
+      // each coordinate vector? 20000424 mortene.
       box.extendBy(SbVec3f(tmp[0], tmp[1], tmp[2]));
     }
   }
   center = box.getCenter();
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from parent class.
 void
-SoNurbsCurve::rayPick(SoRayPickAction * /* action */)
+SoNurbsCurve::rayPick(SoRayPickAction * action)
 {
   COIN_STUB();
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from parent class.
 void
-SoNurbsCurve::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoNurbsCurve::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   COIN_STUB();
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from parent class.
 void
-SoNurbsCurve::getBoundingBox(SoGetBoundingBoxAction * /* action */)
+SoNurbsCurve::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  COIN_STUB();
+  inherited::getBoundingBox(action);
+  SoBoundingBoxCache::setHasLinesOrPoints(action->getState());
 }
 
 /*!
@@ -210,11 +198,9 @@ SoNurbsCurve::sendPrimitive(SoAction *,  SoPrimitiveVertex *)
   COIN_STUB();
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from parent class.
 void
-SoNurbsCurve::generatePrimitives(SoAction * /* action */)
+SoNurbsCurve::generatePrimitives(SoAction * action)
 {
   COIN_STUB();
 }

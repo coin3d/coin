@@ -31,7 +31,7 @@
 
 
 class SoNurbsCurve : public SoShape {
-    typedef SoShape inherited;
+  typedef SoShape inherited;
 
   SO_NODE_HEADER(SoNurbsCurve);
 
@@ -56,9 +56,9 @@ protected:
 
 private:
 #ifdef _WIN32
-  class GLUnurbs * nurbsRenderer;
+  class GLUnurbs * nurbsrenderer;
 #else // !_WIN32
-  GLUnurbsObj * nurbsRenderer;
+  GLUnurbsObj * nurbsrenderer;
 #endif // !_WIN32
 };
 
