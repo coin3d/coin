@@ -1915,51 +1915,6 @@
 
 =====================================================================
 
-080 TransparencyType node does not sort shapes as expected.
-
-    To reproduce, load the scene graph below into a viewer, and change
-    the camera position so the cube is in front of the cone.
-
-    --------------8<----------- [snip] ------------------8<--------
-    #Inventor V2.1 ascii
-
-    Complexity { textureQuality 0.1 } # set low to avoid smoothing
-    ShapeHints {
-      shapeType SOLID
-      vertexOrdering COUNTERCLOCKWISE
-    }
-    TransparencyType { value SORTED_OBJECT_SORTED_TRIANGLE_BLEND }
-    Texture2 {
-       image 2 2 4
-
-       0xffffffff 0x00ff0088   # white   green
-       0xff0000ff 0xffff00ff   #  red    yellow
-    }
-
-    Cube { }
-
-    Translation { translation 0 0 5 }
-    Cone { }
-
-    --------------8<----------- [snip] ------------------8<--------
-
-    This is a serious error, and a high priority item.
-
-    20031013 mortene.
-
-    It's quite easy to fix. If you set up your viewer to use some
-    kind of sorting transparency type (e.g. SORTED_OBJECT_BLEND),
-    everything works as expected.
-
-    We just need a flag in SoGLRenderAction that should be set to
-    TRUE for shapes that need to be sorted, so that when the viewer
-    transparency is set to SCREEN_DOOR, the shapes are still sorted
-    (not just delayed) when rendering.
-
-    20031014 pederb
-
-=====================================================================
-
 081 Empty SoText2-node makes bbox-calculations come up wrong.
 
     I assume that an SoText2 with an empty string-field should exhibit
