@@ -297,6 +297,9 @@ SoConvexDataCache::generate(const SoCoordinateElement * const coords,
                             (void*)&tessdata.vertexInfo[i]);
     }
   }
+  
+  // if last coordIndex != -1, terminate polygon
+  if (numv > 0 && vind[numv-1] != -1) tessellator.endPolygon();
 
   delete [] tessdata.vertexInfo;
 
