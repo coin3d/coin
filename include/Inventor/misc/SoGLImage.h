@@ -22,7 +22,6 @@
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbVec2s.h>
-#include <Inventor/lists/SbList.h>
 
 class SoGLDisplayList;
 class SoState;
@@ -60,27 +59,10 @@ public:
   Wrap getWrapT(void) const;
 
 private:
-  friend class my_dummy_class; // avoid warnings because of private destructor
   ~SoGLImage();
-  SoGLDisplayList * createGLDisplayList(SoState * state, const float quality);
-  void checkTransparency(void);
-  void unrefDLists(SoState * state);
-  void reallyCreateTexture(SoState * state,
-                           const unsigned char * const texture,
-                           const int numComponents,
-                           const int w, const int h,
-                           const SbBool dlist,
-                           const SbBool mipmap,
-                           const int border);
-  const unsigned char * bytes;
-  SbVec2s size;
-  int numcomponents;
-  unsigned int flags;
-  Wrap wraps;
-  Wrap wrapt;
-  int border;
-  SbList <SoGLDisplayList*> dlists;
-  static int translateWrap(const Wrap wrap);
+
+  class SoGLImageP * pimpl;
+  friend class SoGLImageP;
 };
 
 #endif // !COIN_SOGLIMAGE_H

@@ -39,7 +39,7 @@
   will always be scaled up if textureQuality is greater or equal to this value.
   Default value is 0.7. If textureQuality is lower than this value, and the width
   or height is larger than 256 pixels, the texture is only scaled up if it's relatively
-  close to the next power of two size. This could save a lot of texture memory. 
+  close to the next power of two size. This could save a lot of texture memory.
 
   \li COIN_TEX2_BUILD_MIPMAP_FAST: If this environment variable is set to 1, an
   internal and optimized function will be used to create mipmaps. Otherwise
@@ -176,18 +176,55 @@ fast_mipmap(int width, int height, const int nc,
 }
 
 
+#ifndef DOXYGEN_SKIP_THIS
+
+class SoGLImageP {
+public:
+
+  SoGLDisplayList * createGLDisplayList(SoState * state, const float quality);
+  void checkTransparency(void);
+  void unrefDLists(SoState * state);
+  void reallyCreateTexture(SoState * state,
+                           const unsigned char * const texture,
+                           const int numComponents,
+                           const int w, const int h,
+                           const SbBool dlist,
+                           const SbBool mipmap,
+                           const int border);
+  const unsigned char * bytes;
+  SbVec2s size;
+  int numcomponents;
+  unsigned int flags;
+  SoGLImage::Wrap wraps;
+  SoGLImage::Wrap wrapt;
+  int border;
+  SbList <SoGLDisplayList*> dlists;
+};
+
+#endif // DOXYGEN_SKIP_THIS
+
+#ifdef THIS
+#define COIN_THIS_DEFINE_SAVED THIS
+#undef THIS
+#endif // THIS
+
+// convenience define to access private data
+#define THIS this->pimpl
+
 /*!
   Constructor.
 */
 SoGLImage::SoGLImage(void)
-  : bytes(NULL),
-    size(0,0),
-    numcomponents(0),
-    flags(0),
-    wraps(CLAMP),
-    wrapt(CLAMP),
-    border(0)
 {
+  THIS = new SoGLImageP;
+  THIS->bytes = NULL;
+  THIS->size.setValue(0,0);
+  THIS->numcomponents = 0;
+  THIS->flags = 0;
+  THIS->wraps = SoGLImage::CLAMP;
+  THIS->wrapt = SoGLImage::CLAMP;
+  THIS->border = 0;
+
   // check environment variables
   if (COIN_TEX2_LINEAR_LIMIT < 0.0f) {
     char * env = getenv("COIN_TEX2_LINEAR_LIMIT");
@@ -267,18 +304,18 @@ SoGLImage::setData(const unsigned char * bytes,
                    SoState * createinstate)
 
 {
-  this->bytes = bytes;
-  this->size = size;
-  this->numcomponents = nc;
-  this->flags = 0;
-  this->wraps = wraps;
-  this->wrapt = wrapt;
-  if (nc == 2 || nc == 4) this->flags |= FLAG_NEEDTRANSPARENCYTEST;
-  this->border = border;
-  this->unrefDLists(createinstate);
+  THIS->bytes = bytes;
+  THIS->size = size;
+  THIS->numcomponents = nc;
+  THIS->flags = 0;
+  THIS->wraps = wraps;
+  THIS->wrapt = wrapt;
+  if (nc == 2 || nc == 4) THIS->flags |= FLAG_NEEDTRANSPARENCYTEST;
+  THIS->border = border;
+  THIS->unrefDLists(createinstate);
   if (createinstate) {
-    this->dlists.append(this->createGLDisplayList(createinstate, quality));
-    this->bytes = NULL; // data is assumed to be temporary
+    THIS->dlists.append(THIS->createGLDisplayList(createinstate, quality));
+    THIS->bytes = NULL; // data is assumed to be temporary
   }
 }
 
@@ -287,7 +324,8 @@ SoGLImage::setData(const unsigned char * bytes,
 */
 SoGLImage::~SoGLImage()
 {
-  this->unrefDLists(NULL);
+  THIS->unrefDLists(NULL);
+  delete THIS;
 }
 
 /*!
@@ -301,7 +339,7 @@ SoGLImage::~SoGLImage()
 void
 SoGLImage::unref(SoState * state)
 {
-  this->unrefDLists(state);
+  THIS->unrefDLists(state);
   delete this;
 }
 
@@ -312,7 +350,7 @@ SoGLImage::unref(SoState * state)
 const unsigned char *
 SoGLImage::getDataPtr(void) const
 {
-  return this->bytes;
+  return THIS->bytes;
 }
 
 /*!
@@ -321,7 +359,7 @@ SoGLImage::getDataPtr(void) const
 SbVec2s
 SoGLImage::getSize(void) const
 {
-  return this->size;
+  return THIS->size;
 }
 
 /*!
@@ -330,7 +368,7 @@ SoGLImage::getSize(void) const
 int
 SoGLImage::getNumComponents(void) const
 {
-  return this->numcomponents;
+  return THIS->numcomponents;
 }
 
 /*!
@@ -343,15 +381,15 @@ SoGLDisplayList *
 SoGLImage::getGLDisplayList(SoState * state, const float quality)
 {
   int currcontext = SoGLCacheContextElement::get(state);
-  int i, n = this->dlists.getLength();
+  int i, n = THIS->dlists.getLength();
   SoGLDisplayList * dl = NULL;
   for (i = 0; i < n; i++) {
-    dl = this->dlists[i];
+    dl = THIS->dlists[i];
     if (dl->getContext() == currcontext) break;
   }
   if (i == n) {
-    dl = this->createGLDisplayList(state, quality);
-    if (dl) this->dlists.append(dl);
+    dl = THIS->createGLDisplayList(state, quality);
+    if (dl) THIS->dlists.append(dl);
   }
   return dl;
 }
@@ -393,10 +431,10 @@ SoGLImage::apply(SoState * state, SoGLDisplayList * dl, const float quality)
 SbBool
 SoGLImage::hasTransparency(void) const
 {
-  if (this->flags & FLAG_NEEDTRANSPARENCYTEST) {
-    ((SoGLImage*)this)->checkTransparency();
+  if (THIS->flags & FLAG_NEEDTRANSPARENCYTEST) {
+    ((SoGLImage*)this)->pimpl->checkTransparency();
   }
-  return (this->flags & FLAG_TRANSPARENCY) != 0;
+  return (THIS->flags & FLAG_TRANSPARENCY) != 0;
 }
 
 /*!
@@ -408,10 +446,10 @@ SoGLImage::hasTransparency(void) const
 SbBool
 SoGLImage::needAlphaTest(void) const
 {
-  if (this->flags & FLAG_NEEDTRANSPARENCYTEST) {
-    ((SoGLImage*)this)->checkTransparency();
+  if (THIS->flags & FLAG_NEEDTRANSPARENCYTEST) {
+    ((SoGLImage*)this)->pimpl->checkTransparency();
   }
-  return (this->flags & FLAG_ALPHATEST) != 0;
+  return (THIS->flags & FLAG_ALPHATEST) != 0;
 }
 
 /*!
@@ -420,7 +458,7 @@ SoGLImage::needAlphaTest(void) const
 SoGLImage::Wrap
 SoGLImage::getWrapS(void) const
 {
-  return this->wraps;
+  return THIS->wraps;
 }
 
 /*!
@@ -429,7 +467,7 @@ SoGLImage::getWrapS(void) const
 SoGLImage::Wrap
 SoGLImage::getWrapT(void) const
 {
-  return this->wrapt;
+  return THIS->wrapt;
 }
 
 // returns the number of bits set, and ets highbit to
@@ -472,7 +510,7 @@ void cleanup_tmpimage(void)
 // performs an resize if the size is not a power of two.
 //
 SoGLDisplayList *
-SoGLImage::createGLDisplayList(SoState * state, const float quality)
+SoGLImageP::createGLDisplayList(SoState * state, const float quality)
 {
   if (!this->bytes) return NULL;
 
@@ -555,7 +593,7 @@ SoGLImage::createGLDisplayList(SoState * state, const float quality)
 
 // test image data for transparency
 void
-SoGLImage::checkTransparency(void)
+SoGLImageP::checkTransparency(void)
 {
   if (this->bytes == NULL) {
     if (this->numcomponents == 2 || this->numcomponents == 4) {
@@ -617,13 +655,13 @@ translate_wrap(SoState * state, const SoGLImage::Wrap wrap)
 }
 
 void
-SoGLImage::reallyCreateTexture(SoState * state,
-                               const unsigned char * const texture,
-                               const int numComponents,
-                               const int w, const int h,
-                               const SbBool dlist,
-                               const SbBool mipmap,
-                               const int border)
+SoGLImageP::reallyCreateTexture(SoState * state,
+                                const unsigned char * const texture,
+                                const int numComponents,
+                                const int w, const int h,
+                                const SbBool dlist,
+                                const SbBool mipmap,
+                                const int border)
 {
   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
@@ -679,7 +717,7 @@ SoGLImage::reallyCreateTexture(SoState * state,
 // unref all dlists stored in image
 //
 void
-SoGLImage::unrefDLists(SoState * state)
+SoGLImageP::unrefDLists(SoState * state)
 {
   int n = this->dlists.getLength();
   for (int i = 0; i < n; i++) {
@@ -687,3 +725,9 @@ SoGLImage::unrefDLists(SoState * state)
   }
   this->dlists.truncate(0);
 }
+
+#undef THIS
+#ifdef COIN_THIS_DEFINE_SAVED
+#define THIS COIN_THIS_DEFINE_SAVED
+#undef COIN_THIS_DEFINE_SAVED
+#endif // COIN_THIS_DEFINE_SAVED
