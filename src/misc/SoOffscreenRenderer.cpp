@@ -1405,9 +1405,27 @@ SbVec2s
 SoOffscreenRendererP::getMaxTileSize(void)
 {
 
-  SbVec2s dims(128,128);
-  cc_glglue_context_max_dimensions(&dims[0], &dims[1]);
-  return dims;
+
+  unsigned int width = 128;
+  unsigned int height = 128;
+  cc_glglue_context_max_dimensions(&width, &height);
+  
+  static int forcedtilewidth = -1;
+  static int forcedtileheight = -1;
+  
+  // Makes it possible to override the default tilesizes. Should prove
+  // useful for debugging problems on remote sites.
+  const char * env;
+  if (forcedtilewidth == -1) {
+    env = coin_getenv("COIN_OFFSCREENRENDERER_TILEWIDTH");
+    forcedtilewidth = env ? atoi(env) : 0;
+    env = coin_getenv("COIN_OFFSCREENRENDERER_TILEHEIGHT");
+    forcedtileheight = env ? atoi(env) : 0;
+  }
+  if (forcedtilewidth != 0) { width = forcedtilewidth; }
+  if (forcedtileheight != 0) { height = forcedtileheight; }
+
+  return SbVec2s((short) width, (short) height);  
 
 }
 
