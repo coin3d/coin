@@ -111,6 +111,7 @@
 #include <Inventor/actions/SoSearchAction.h>
 
 #include <Inventor/nodes/SoNodes.h>
+#include <Inventor/nodekits/SoBaseKit.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoNormalElement.h>
 #include <Inventor/elements/SoSwitchElement.h>
@@ -557,13 +558,20 @@ SoToVRML2ActionP::search_for_recent_node(SoAction * action, const SoType & type)
   this->searchaction.setSearchingAll(FALSE);
   this->searchaction.setType(type);
   this->searchaction.setInterest(SoSearchAction::LAST);
+
+  SbBool old = SoBaseKit::isSearchingChildren();
+  SoBaseKit::setSearchingChildren(TRUE);
+
   this->searchaction.apply((SoPath *)action->getCurPath());
+  
   SoNode * tail = NULL;
   SoFullPath * path = (SoFullPath*) this->searchaction.getPath();
   if (path) {
     tail = path->getTail();
   }
   this->searchaction.reset();
+  SoBaseKit::setSearchingChildren(old);
+
   return tail;
 }
 

@@ -49,6 +49,7 @@
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/nodes/SoNodes.h>
+#include <Inventor/nodekits/SoBaseKit.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/SbBSPTree.h>
@@ -466,6 +467,10 @@ SoToVRMLActionP::search_for_node(SoNode * root, const SbName & name, const SoTyp
   this->searchaction.setType(type);
   this->searchaction.setInterest(SoSearchAction::LAST);
   this->searchaction.setFind(SoSearchAction::TYPE|SoSearchAction::NAME);
+
+  SbBool old = SoBaseKit::isSearchingChildren();
+  SoBaseKit::setSearchingChildren(TRUE);
+
   this->searchaction.apply(root);
   SoNode * tail = NULL;
   SoFullPath * path = (SoFullPath*) this->searchaction.getPath();
@@ -473,6 +478,7 @@ SoToVRMLActionP::search_for_node(SoNode * root, const SbName & name, const SoTyp
     tail = path->getTail();
   }
   this->searchaction.reset();
+  SoBaseKit::setSearchingChildren(old);
   return tail;
 }
 
