@@ -384,7 +384,9 @@ envlist_append(struct envvar_data * item)
 
   Note: do not deallocate the returned string -- they are supposed to
   be permanently available to all callers. Deallocating the resources
-  is the responsibility of the application exit cleanup code.
+  is the responsibility of the application exit cleanup code (i.e. the
+  internal library cleanup code -- application programmers won't need
+  to care about it).
 */
 const char *
 coin_getenv(const char * envname)

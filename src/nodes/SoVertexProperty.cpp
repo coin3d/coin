@@ -28,7 +28,7 @@
 
   Instead of reading data from the current state stack of the
   scenegraph traversal, nodes inheriting SoVertexShape can be set up
-  with an SoVertexProprty node in the SoVertexShape::vertexProperty
+  with an SoVertexProperty node in the SoVertexShape::vertexProperty
   field. Coordinates, normals, texture coordinates and material /
   color information will then be fetched from the vertexshape's
   SoVertexProperty node instead of from the state stack.

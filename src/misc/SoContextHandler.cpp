@@ -25,7 +25,9 @@
   \class SoContextHandler SoContextHandler.h Inventor/misc/SoContextHandler.h
   \brief The SoContextHandler class is for now to be treated as an internal class.
   \ingroup general
- */
+
+  \since Coin 2.0
+*/
 
 // FIXME: should be documented and be part of the Doxygen API doc,
 // since it's a public class (and possibly useful

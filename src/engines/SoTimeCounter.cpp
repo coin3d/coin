@@ -38,33 +38,40 @@
 
 /*!
   \var SoSFShort SoTimeCounter::min
-  Minimum counter value.
+
+  Minimum counter value. Default value is 0.
 */
 
 /*!
   \var SoSFShort SoTimeCounter::max
-  Maximum counter value.
+
+  Maximum counter value. Default value is 1.
 */
 
 /*!
   \var SoSFShort SoTimeCounter::step
-  Counter step size.
+
+  Counter step size. Default value is 1.
 */
 
 /*!
   \var SoSFBool SoTimeCounter::on
-  Set to \c FALSE to pause the counter.
+
+  Set to \c FALSE to pause the counter. Default value is \c TRUE.
 */
 
 /*!
   \var SoSFFloat SoTimeCounter::frequency
+
   Number of complete cycles from the min value to the max value per
-  second.
+  second. Default value is 1.0.
 */
 
 /*!
   \var SoMFFloat SoTimeCounter::duty
-  Used to weight step times. Supply one weight value per step.
+
+  Used to weight step times. Supply one weight value per step. Default
+  array is a single value of 1.0.
 */
 
 /*!
@@ -91,17 +98,21 @@
   (SoSFTrigger) Triggers every cycle start.
 */
 
+// *************************************************************************
+
 #include <Inventor/engines/SoTimeCounter.h>
-#include <Inventor/lists/SoEngineOutputList.h>
+
 #include <Inventor/SoDB.h>
 #include <Inventor/engines/SoSubEngineP.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/lists/SoEngineOutputList.h>
 #include <coindefs.h>
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
+// *************************************************************************
 
 SO_ENGINE_SOURCE(SoTimeCounter);
+
+// *************************************************************************
 
 /*!
   Default constructor.
@@ -144,13 +155,14 @@ SoTimeCounter::initClass(void)
   SO_ENGINE_INTERNAL_INIT_CLASS(SoTimeCounter);
 }
 
-
 /*!
   Destructor.
  */
 SoTimeCounter::~SoTimeCounter()
 {
 }
+
+// *************************************************************************
 
 // Documented in superclass. Overridden to not write connection to
 // realTime global field.

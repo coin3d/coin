@@ -101,7 +101,16 @@
   Materials are fetched from index 0 and onwards, incrementing the
   index into the material pool by 1 for each new part in the order
   defined by the particular shape type.
+
+  If too few colors are supplied versus the number of parts of the
+  subsequent shapes in the scene graph, the coloring will cycle
+  through the available colors.
 */
+// Note: the last paragraph above is supported by what is written in
+// Chapter 5 of the «Inventor Mentor», section "Binding Nodes", middle
+// of page 128 on the paper-copy of the book, the 10th printing.
+// <mortene>
+
 /*!
   \var SoMaterialBinding::Binding SoMaterialBinding::PER_PART_INDEXED
 

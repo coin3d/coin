@@ -66,6 +66,11 @@ SoFieldSensor::~SoFieldSensor(void)
   Attach sensor to a field. Whenever the field's value changes, the
   sensor will be triggered and call the callback function.
 
+  A field sensor can be attached to only a single field at a
+  time. When this method is invoked multiple times, each subsequent
+  call will replace the field the sensor is monitoring with the new \a
+  field.
+
   \sa detach()
  */
 void

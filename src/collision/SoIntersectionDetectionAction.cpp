@@ -291,11 +291,12 @@ SoIntersectionDetectionAction::~SoIntersectionDetectionAction(void)
   delete PRIVATE(this);
 }
 
-// FIXME: is the "epsilon is not supported yet" statement below false?
-// 20030326 mortene.
-
 /*!
   Sets the global intersection detection distance epsilon value.
+
+  This makes primitives within the epsilon distance be considered to
+  intersect each other.
+
   This will affect all intersection detection action objects in use that
   don't have a locally set value.
 
@@ -306,10 +307,7 @@ SoIntersectionDetectionAction::~SoIntersectionDetectionAction(void)
   decide intersections. Increasing the epsilon value can therefore
   cause serious slow-downs in the running time of the intersections
   checks.
-
-  Epsilon is not supported yet.
 */
-
 void
 SoIntersectionDetectionAction::setIntersectionEpsilon(float epsilon) // static
 {

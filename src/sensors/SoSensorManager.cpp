@@ -154,6 +154,11 @@ public:
 #endif // COIN_THREADSAFE
 };
 
+// The reason this is useful to keep around is that it is good for
+// catching errors in the order we bring down the internal "services"
+// of the Coin library, and the order we free up resources. If a
+// sensor is lingering around after the SoSensorManager has been
+// deallocated, for instance, we should expect this to hit.
 void
 SoSensorManagerP::assertAlive(SoSensorManagerP * that)
 {

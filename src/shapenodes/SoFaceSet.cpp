@@ -568,6 +568,8 @@ SoFaceSet::generateDefaultNormals(SoState * state, SoNormalCache * nc)
     assert(num >= 3);
     gen->beginPolygon();
     while (num--) {
+      // FIXME: need to check if idx gets out of bounds to be
+      // robust. 20040623 mortene.
       gen->polygonVertex(coords->get3(idx++));
     }
     gen->endPolygon();

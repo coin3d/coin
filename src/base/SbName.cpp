@@ -218,9 +218,10 @@ SbName::isBaseNameStartChar(const char c)
   rules of Open Inventor and VRML files.
 
   Legal characters to use for an SoBase object name is any character
-  from the ASCII character set between character 33 (hex 0x21) and 126
-  (hex 0x7e), \e except single and double apostrophes, the plus sign
-  and punctuation, backslash and the curly braces.
+  from the ASCII character set from and including character 33 (hex
+  0x21) to and including 126 (hex 0x7e), \e except single and double
+  apostrophes, the plus sign and punctuation, backslash and the curly
+  braces.
 
   This method is not part of the original Open Inventor API.
 

@@ -115,6 +115,14 @@ private:
 
 // Avoid problem with Microsoft Win32 API headers (see above). Define
 // DELETE back to its value in the MSVC header file.
+//
+// FIXME: we shouldn't uncritically trust this value to come from the
+// MSVC headers, but rather check in the block at the top to see that
+// it matches the value we believe it does. Alternatively, we could
+// just don't bother to set it back -- it seems quite unlikely that
+// this would break any client code, but if so, it would be a simple
+// fix on the client side to get around it -- just rearrange
+// headers. 20040629 mortene.
 #ifdef SOKEYBOARDEVENT_UNDEF_DELETE
 #define DELETE (0x00010000L)
 #undef SOKEYBOARDEVENT_UNDEF_DELETE

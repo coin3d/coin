@@ -27,20 +27,19 @@
   \ingroup sensors
 
   Delay queue sensors are invoked upon various events \e not related
-  to time occurs. See documentation of subclasses to see which types
-  of events can be surveilled by the builtin sensor types.
+  to time occurrences. See documentation of subclasses to see which
+  types of events can be surveilled by the builtin sensor types.
 
   The priority values can be used to queue events by their importance,
   so the sensors are triggered in the sequence you want.
 */
 
-#include <Inventor/sensors/SoDelayQueueSensor.h>
-#include <Inventor/SoDB.h>
 #include <assert.h>
 
-#if COIN_DEBUG
+#include <Inventor/sensors/SoDelayQueueSensor.h>
+#include <Inventor/SoDB.h>
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
+
 
 /*!
   \var SbBool SoDelayQueueSensor::scheduled

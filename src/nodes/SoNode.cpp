@@ -705,6 +705,8 @@ SoNode::getNodeType(void) const
 
 /*!
   Returns the last node that was registered under \a name.
+
+  \sa SoBase::setName()
 */
 SoNode *
 SoNode::getByName(const SbName & name)
@@ -717,6 +719,8 @@ SoNode::getByName(const SbName & name)
 /*!
   Finds all nodes with \a name and appends them to the \a l nodelist.
   Returns the number of nodes with the specified name.
+
+  \sa SoBase::setName()
 */
 int
 SoNode::getByName(const SbName & name, SoNodeList & l)
