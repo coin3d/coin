@@ -301,8 +301,10 @@ install-libdetailsincHEADERS: $(libdetailsinc_HEADERS)
 	@list='$(libdetailsinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libdetailsincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libdetailsincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libdetailsincdir)/$$f; then :; else \
+	    echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libdetailsincdir)/$$f"; \
+	    $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libdetailsincdir)/$$f; \
+	  fi; \
 	done
 
 uninstall-libdetailsincHEADERS:

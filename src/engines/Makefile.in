@@ -404,8 +404,10 @@ install-libenginesincHEADERS: $(libenginesinc_HEADERS)
 	@list='$(libenginesinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libenginesincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libenginesincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libenginesincdir)/$$f; then :; else \
+	    echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libenginesincdir)/$$f"; \
+	    $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libenginesincdir)/$$f; \
+	  fi; \
 	done
 
 uninstall-libenginesincHEADERS:

@@ -334,8 +334,10 @@ install-libmiscincHEADERS: $(libmiscinc_HEADERS)
 	@list='$(libmiscinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libmiscincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libmiscincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libmiscincdir)/$$f; then :; else \
+	    echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libmiscincdir)/$$f"; \
+	    $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libmiscincdir)/$$f; \
+	  fi; \
 	done
 
 uninstall-libmiscincHEADERS:

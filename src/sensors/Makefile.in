@@ -299,8 +299,10 @@ install-libsensorsincHEADERS: $(libsensorsinc_HEADERS)
 	@list='$(libsensorsinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libsensorsincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libsensorsincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libsensorsincdir)/$$f; then :; else \
+	    echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libsensorsincdir)/$$f"; \
+	    $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libsensorsincdir)/$$f; \
+	  fi; \
 	done
 
 uninstall-libsensorsincHEADERS:

@@ -302,8 +302,10 @@ install-libnodekitsincHEADERS: $(libnodekitsinc_HEADERS)
 	@list='$(libnodekitsinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libnodekitsincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libnodekitsincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libnodekitsincdir)/$$f; then :; else \
+	    echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libnodekitsincdir)/$$f"; \
+	    $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libnodekitsincdir)/$$f; \
+	  fi; \
 	done
 
 uninstall-libnodekitsincHEADERS:

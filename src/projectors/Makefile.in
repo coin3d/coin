@@ -317,8 +317,10 @@ install-libprojectorsincHEADERS: $(libprojectorsinc_HEADERS)
 	@list='$(libprojectorsinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libprojectorsincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libprojectorsincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libprojectorsincdir)/$$f; then :; else \
+	    echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libprojectorsincdir)/$$f"; \
+	    $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libprojectorsincdir)/$$f; \
+	  fi; \
 	done
 
 uninstall-libprojectorsincHEADERS:

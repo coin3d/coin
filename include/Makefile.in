@@ -144,8 +144,10 @@ install-thisincHEADERS: $(thisinc_HEADERS)
 	@list='$(thisinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(thisincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(thisincdir)/$$f; \
+	  if cmp -s $$d$$p $(DESTDIR)$(thisincdir)/$$f; then :; else \
+	    echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(thisincdir)/$$f"; \
+	    $(INSTALL_DATA) $$d$$p $(DESTDIR)$(thisincdir)/$$f; \
+	  fi; \
 	done
 
 uninstall-thisincHEADERS:
