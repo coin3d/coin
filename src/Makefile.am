@@ -2,7 +2,7 @@
 # Process this file with automake to generate Makefile.in.
 
 if BUILD_VRML97
-VRML97DIR = vrml97
+VRML97DIR = extensions/vrml97/src
 VRML97LIBADD = $(VRML97DIR)/libvrml97.la
 VRML97LSTADD = $(VRML97DIR)/vrml97.lst
 else
