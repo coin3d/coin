@@ -37,9 +37,11 @@ public:
   static SoProtoInstance * findProtoInstance(SoNode * protoinstanceroot);
 
   static void initClass(void);
-  
+
   SoProtoInstance * createProtoInstance(void);
-  void addISReference(SoField * f, const SbName & interfacename);
+  void addISReference(SoNode * container,
+                      const SbName & fieldname,
+                      const SbName & interfacename);
 
   void addReference(const SbName & name, SoBase * base);
   void removeReference(const SbName & name);
@@ -64,7 +66,7 @@ private:
 
   class SoProtoP * pimpl;
   SoNode * createInstanceRoot(SoProtoInstance * inst) const;
-  void connectIsRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const;
+  void connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const;
 };
 
 #endif // COIN_SOPROTO_H

@@ -23,11 +23,17 @@
 #include <Inventor/SoInput.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/lists/SbList.h>
+#include <Inventor/lists/SoNodeList.h>
 #include <Inventor/SbDict.h>
 #include <Inventor/fields/SoField.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/misc/SoChildList.h>
+#include <Inventor/engines/SoNodeEngine.h>
+
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
 
 static SoType soproto_type;
 
@@ -42,7 +48,8 @@ public:
   SoFieldData * fielddata;
   SoGroup * defroot;
   SbName name;
-  SbList <SoField*> isfieldlist;
+  SbList <SoNode*> isnodelist; // FIXME: consider using SoNodeList 
+  SbList <SbName> isfieldlist;
   SbList <SbName> isnamelist;
   SbDict refdict;
   SbList <SbName> routelist;
@@ -81,7 +88,7 @@ SoProto::SoProto(void)
   THIS->fielddata = new SoFieldData;
   THIS->defroot = new SoGroup;
   THIS->defroot->ref();
-  
+
   protolist->insert(this, 0);
 }
 
@@ -169,10 +176,19 @@ SoProto::writeInstance(SoOutput * out)
 {
 }
 
-void
-SoProto::addISReference(SoField * f, const SbName & interfacename)
+void 
+SoProto::addISReference(SoNode * container, 
+                        const SbName & fieldname, 
+                        const SbName & interfacename)
 {
-  THIS->isfieldlist.append(f);
+  assert(container->isOfType(SoNode::getClassTypeId()));
+
+  fprintf(stderr,"Add IS Ref: %s %s %s\n",
+          container->getTypeId().getName().getString(),
+          fieldname.getString(), interfacename.getString());
+
+  THIS->isnodelist.append(container);
+  THIS->isfieldlist.append(fieldname);
   THIS->isnamelist.append(interfacename);
 }
 
@@ -294,44 +310,81 @@ SoProto::createInstanceRoot(SoProtoInstance * inst) const
   SoNode * cpy;
   cpy = root->copy(FALSE);
   cpy->ref();
-  this->connectIsRefs(inst, root, cpy);
+  this->connectISRefs(inst, root, cpy);
   cpy->unrefNoDelete();
   return cpy;
 }
 
 void
-SoProto::connectIsRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
+SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
 {
   const int n = THIS->isfieldlist.getLength();
 
   SoSearchAction sa;
   for (int i = 0; i < n; i++) {
-    SoField * f = THIS->isfieldlist[i];
-    sa.setNode((SoNode*) f->getContainer());
-    sa.setInterest(SoSearchAction::ALL);
-    sa.apply(src);
-    SoPathList & pl = sa.getPaths();
-    assert(pl.getLength());
-    for (int j = 0; j < pl.getLength(); j++) {
-      SoFullPath * path = (SoFullPath*) pl[j];
-      SoNode * node = dst;
-      SoNode * tst = src; // for debugging
-      for (int k = 1; k < path->getLength(); k++) {
-        int idx = path->getIndex(k);
-
-        assert(tst->getChildren()->getLength() ==
-               node->getChildren()->getLength());
-        
-        node = (*(node->getChildren()))[idx];
-        tst = ((*tst->getChildren()))[idx];
+    SoNode * node = THIS->isnodelist[i];
+    
+    SbName fieldname = THIS->isfieldlist[i];
+    SoField * dstfield = node->getField(fieldname);
+    if (!dstfield) {
+      if (node->isOfType(SoNodeEngine::getClassTypeId()) &&
+          ((SoNodeEngine*)node)->getOutput(fieldname)) {
+#if COIN_DEBUG && 1 // debug
+        SoDebugError::postInfo("SoProto::connectISRefs",
+                               "FIXME: implement eventOut (SoEngineOutput) alias support");
+#endif // debug
+        continue;
       }
-      SbName fieldname;
-      SbBool ok = path->getTail()->getFieldName(f, fieldname);
-      SoField * dstfield = node->getField(fieldname);
-      assert(dstfield);
-      SoField * srcfield = inst->getField(THIS->isnamelist[i]);
-      assert(srcfield);
+#if COIN_DEBUG
+      SoDebugError::postWarning("SoProto::connectISRefs",
+                                "Destionation field '%s' is not found in node type '%s'. "
+                                "Unable to resolve IS reference.",
+                                fieldname.getString(), node->getTypeId().getName().getString());
+#endif // COIN_DEBUG
+      continue; // try next field
+    }
+
+    SbName iname = THIS->isnamelist[i];
+#if 0
+    fprintf(stderr,"Resolve IS Ref: %s %s %s\n",
+            node->getTypeId().getName().getString(),
+            fieldname.getString(), iname.getString());
+#endif
+    sa.setNode(node);
+    sa.setInterest(SoSearchAction::FIRST);
+    sa.setSearchingAll(TRUE);
+    sa.apply(src);
+    SoFullPath * path = (SoFullPath*) sa.getPath();
+    assert(path);
+    node = dst;
+    
+    // browse path to find the correct (copied) node.
+    for (int k = 1; k < path->getLength(); k++) {
+      int idx = path->getIndex(k);
+      node = (*(node->getChildren()))[idx];
+    }
+    dstfield = node->getField(fieldname);
+    assert(dstfield);
+    SoField * srcfield = inst->getField(iname);
+    if (srcfield) {
       dstfield->connectFrom(srcfield);
+    }
+    else {
+      SoEngineOutput * output = NULL;
+      if (inst->isOfType(SoNodeEngine::getClassTypeId())) {
+        output = ((SoNodeEngine*) inst)->getOutput(iname);
+      }
+      if (output) {
+        dstfield->connectFrom(output);
+      }
+#if COIN_DEBUG
+      else {
+        SoDebugError::postWarning("SoProto::connectISRefs",
+                                  "Source field or engine output '%s' is not found in node type '%s'. "
+                                  "Unable to resolve IS reference.",
+                                  iname.getString(), node->getTypeId().getName().getString());
+      }
+#endif // COIN_DEBUG
     }
     sa.reset();
   }
