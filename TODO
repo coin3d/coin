@@ -37,6 +37,10 @@ Todo
   only the .la files?) into .so shared libraries to avoid long linking
   times (could be a brilliant hack if it is possible)
 
+* [mortene:19990917] clean up the .h-files before installation. Remove
+  "//$ BEGIN TEMPLATE" and "//$ END TEMPLATE". Remove
+  "#if.*(COIN_EXCLUDE_.*)" blocks?
+
 ===============================================================================
 Done
 ====
