@@ -468,12 +468,41 @@ operator !=(const SbBox3f & b1, const SbBox3f & b2)
 /*!
   Check if the box is outside the view volume defined by the \a mvp
   matrix. Sets \a cullbits according to which planes we're inside or
-  outside.
- */
+  outside. Bit 0 (0x1) is cleared when box is completely inside
+  left and right clipping planes. Bit 1 (0x2) is cleared when
+  box is inside top and bottom clipping planes. Bit 2 (0x4) is
+  cleared when box is inside near and far clipping planes.
+
+  Returns TRUE if box is completely outside one of the clipping
+  planes. FALSE otherwise.
+*/
 SbBool
 SbBox3f::outside(const SbMatrix & mvp, int & cullbits) const
 {
-  COIN_STUB();
+  // FIXME: this functions is untested (code written by
+  // pederb). 20000615 mortene.
+
+  int i;
+  SbVec3f tmp;
+  SbVec3f clip[8];
+  for (i = 0; i < 8; i++) {
+    tmp[0] = i & 4 ? this->min[0] : this->max[0];
+    tmp[1] = i & 2 ? this->min[1] : this->max[1];
+    tmp[2] = i & 1 ? this->min[2] : this->max[2];
+    mvp.multVecMatrix(tmp, clip[i]);
+  }
+  for (int j = 0; j < 3; j++) {
+    if (cullbits & (1<<j)) {
+      int inside = 0;
+      int outside = 0;
+      for (i = 0; i < 8; i++) {
+        if (SbAbs(clip[i][j]) <= 1.0f) inside++;
+        else outside++;
+      }
+      if (outside == 8) return TRUE;
+      if (inside == 8) cullbits ^= (1<<j);
+    }
+  }
   return FALSE;
 }
 
