@@ -579,10 +579,23 @@ SoBaseKit::setSearchingChildren(const SbBool newval)
   FIXME: write function documentation
 */
 SoNode *
-SoBaseKit::typeCheck(const SbName & /*partname*/, const SoType & /*parttype*/, SoNode * /*node*/)
+SoBaseKit::typeCheck(const SbName & /*partname*/, const SoType & parttype, SoNode *node)
 {
-  COIN_STUB();
-  return NULL;
+  if (node == NULL) {
+#if COIN_DEBUG && 1 // debug
+    SoDebugError::postInfo("SoBaseKit::typeCheck",
+                           "node was NULL");
+#endif // debug
+    return NULL;
+  }
+  if (!node->isOfType(parttype)) {
+#if COIN_DEBUG && 1 // debug
+    SoDebugError::postInfo("SoBaseKit::typeCheck",
+                           "wrong type: %s", node->getTypeId().getName().getString());
+#endif // debug
+    return NULL;
+  }
+  return node;
 }
 
 /*!
@@ -983,7 +996,8 @@ SoBaseKit::findPart(const SbString &partname, SoBaseKit *&kit, int &partNum,
   const char *periodptr = strchr(stringptr, '.'); // find first period
   const char *startbracket = strchr(stringptr, '[');
 
-  if (startbracket > periodptr) startbracket = NULL; // will handle later
+  if (periodptr && (startbracket > periodptr))
+    startbracket = NULL; // will handle later
 
   isList = FALSE; // set to FALSE first
   SbString firstpartname;
