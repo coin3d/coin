@@ -141,9 +141,9 @@ SoCounter::inputChanged(SoField *which)
   }
   else if (which == &this->max) {
     if (this->max.getValue() < this->min.getValue()) {
-      short tmp = this->max.getValue();
-      this->max.setValue(this->min.getValue());
-      this->min.setValue(tmp);
+      this->min.setValue(this->max.getValue());
+      this->value = this->max.getValue();
+      this->numSteps = 0;
     }
     if (this->max.getValue() < this->value) {
       this->value = this->min.getValue();
@@ -152,9 +152,8 @@ SoCounter::inputChanged(SoField *which)
   }
   else if (which == &this->min) {
     if (this->max.getValue() < this->min.getValue()) {
-      short tmp = this->max.getValue();
       this->max.setValue(this->min.getValue());
-      this->min.setValue(tmp);
+      this->numSteps = 0;
     }
     this->value = this->min.getValue() + this->step.getValue() * this->numSteps;
     if (this->value > this->max.getValue()) {

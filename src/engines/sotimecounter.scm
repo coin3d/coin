@@ -49,15 +49,6 @@
 (-> (-> timecounter 'step) 'setValue -1)
 
 
-;; FIXME: setting the min and max values in the "wrong" order (so
-;; min>max) is not handled properly. Should this work? 20000907 mortene.
-(begin
-  (-> (-> timecounter 'min) 'setValue 0)
-  (-> (-> timecounter 'max) 'setValue 10)
-  (-> (-> timecounter 'min) 'setValue 20)
-  (-> (-> timecounter 'max) 'setValue 0))
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;; False alarms (ex-possible bugs) and ex-bugs ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -74,6 +65,16 @@
 ;; stops.
 (-> (-> timecounter 'on) 'setValue 0) ; off
 (-> (-> timecounter 'on) 'setValue 1) ; on
+
+
+;; Setting the min and max values in the "wrong" order (so min>max) is
+;; now handled by "clamping" min against max and vice versa.
+(begin
+  (-> (-> timecounter 'min) 'setValue 20)
+  (-> (-> timecounter 'max) 'setValue 40)
+  (-> (-> timecounter 'max) 'setValue 10)
+  (-> (-> timecounter 'min) 'setValue 0))
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
