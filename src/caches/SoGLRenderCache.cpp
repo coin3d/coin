@@ -27,13 +27,18 @@
   \ingroup caches
 */
 
-#include <Inventor/caches/SoGLRenderCache.h>
-#include <Inventor/elements/SoGLCacheContextElement.h>
-#include <Inventor/elements/SoCacheElement.h>
-#include <Inventor/lists/SbList.h>
+// *************************************************************************
+
 #include <assert.h>
 
-#ifndef DOXYGEN_SKIP_THIS
+#include <Inventor/caches/SoGLRenderCache.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoGLDisplayList.h>
+#include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/lists/SbList.h>
+
+// *************************************************************************
+
 class SoGLRenderCacheP {
 public:
   SoGLDisplayList * displaylist;
@@ -42,10 +47,11 @@ public:
   SoGLLazyElement::GLState prestate;
   SoGLLazyElement::GLState poststate;
 };
-#endif // DOXYGEN_SKIP_THIS
 
 #undef THIS
 #define THIS this->pimpl
+
+// *************************************************************************
 
 /*!
   Constructor with \a state being the current state.

@@ -21,40 +21,44 @@
  *
 \**************************************************************************/
 
+#include <assert.h>
+
 #include "soshape_bumprender.h"
-#include <Inventor/misc/SoState.h>
-#include <Inventor/elements/SoBumpMapElement.h>
-#include <Inventor/elements/SoGLCacheContextElement.h>
-#include <Inventor/details/SoPointDetail.h>
+
 #include <Inventor/C/glue/gl.h>
+#include <Inventor/SbMatrix.h>
+#include <Inventor/caches/SoPrimitiveVertexCache.h>
+#include <Inventor/details/SoPointDetail.h>
+#include <Inventor/elements/SoBumpMapElement.h>
+#include <Inventor/elements/SoBumpMapMatrixElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoGLDisplayList.h>
+#include <Inventor/elements/SoGLMultiTextureImageElement.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoMultiTextureCoordinateElement.h>
+#include <Inventor/elements/SoMultiTextureEnabledElement.h>
+#include <Inventor/elements/SoMultiTextureMatrixElement.h>
+#include <Inventor/elements/SoProjectionMatrixElement.h>
+#include <Inventor/elements/SoTextureMatrixElement.h>
+#include <Inventor/elements/SoViewVolumeElement.h>
+#include <Inventor/elements/SoViewingMatrixElement.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/misc/SoGL.h>
+#include <Inventor/misc/SoGLImage.h>
+#include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoDirectionalLight.h>
 #include <Inventor/nodes/SoPointLight.h>
 #include <Inventor/nodes/SoSpotLight.h>
-#include <Inventor/misc/SoGL.h>
-#include <Inventor/misc/SoGLImage.h>
-#include <Inventor/SbMatrix.h>
-#include <Inventor/caches/SoPrimitiveVertexCache.h>
-#include <Inventor/elements/SoMultiTextureEnabledElement.h>
-#include <Inventor/elements/SoMultiTextureCoordinateElement.h>
-#include <Inventor/elements/SoGLMultiTextureImageElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoBumpMapMatrixElement.h>
-#include <Inventor/elements/SoTextureMatrixElement.h>
-#include <Inventor/elements/SoMultiTextureMatrixElement.h>
-#include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/elements/SoViewingMatrixElement.h>
-#include <Inventor/elements/SoProjectionMatrixElement.h>
-#include <Inventor/elements/SoViewVolumeElement.h>
-#include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/elements/SoGLCacheContextElement.h>
-#include <Inventor/errors/SoDebugError.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
 #include <Inventor/C/glue/glp.h>
-#include <assert.h>
+
+// *************************************************************************
 
 // Fragment program for bumpmapping
 static const char * bumpspecfpprogram =
@@ -207,6 +211,7 @@ static const char * normalrenderingvpprogram =
 " MOV result.color, v19;\n"
 "END\n";
 
+// *************************************************************************
 
 struct soshape_bumprender_spec_programidx {
   const cc_glglue * glue;
@@ -221,6 +226,8 @@ struct soshape_bumprender_diffuse_programidx {
   GLuint dirlight;
   GLuint normalrendering;
 };
+
+// *************************************************************************
 
 static void
 soshape_bumprender_diffuseprogramdeletion(unsigned long key, void * value)

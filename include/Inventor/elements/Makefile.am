@@ -34,6 +34,7 @@ PublicHeaders = \
 	SoGLClipPlaneElement.h \
 	SoGLColorIndexElement.h \
 	SoGLCoordinateElement.h \
+	SoGLDisplayList.h \
 	SoGLDrawStyleElement.h \
 	SoGLEnvironmentElement.h \
 	SoGLLazyElement.h \

@@ -25,12 +25,15 @@
   \class SoGLMultiTextureImageElement Inventor/elements/SoGLMultiTextureImageElement.h
   \brief The SoGLMultiTextureImageElement is used to control the current GL texture for texture units.
   \ingroup elements
-
 */
 
+// *************************************************************************
+
 #include <Inventor/elements/SoGLMultiTextureImageElement.h>
+
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoGLDisplayList.h>
 #include <Inventor/elements/SoTextureImageElement.h>
 #include <Inventor/elements/SoTextureCombineElement.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -47,6 +50,8 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/system/gl.h>
 #include <Inventor/C/glue/gl.h>
+
+// *************************************************************************
 
 #define MAX_UNITS 16
 #define PRIVATE(obj) obj->pimpl

@@ -34,18 +34,22 @@
   and the texture will be stored in a display list instead.
 */
 
-// where this class is declared
-#include <Inventor/elements/SoGLCacheContextElement.h>
+// *************************************************************************
 
-#include <Inventor/caches/SoGLRenderCache.h>
-#include <Inventor/elements/SoCacheElement.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/misc/SoState.h>
-#include <Inventor/C/glue/gl.h>
+#include <Inventor/elements/SoGLDisplayList.h>
 
 #include <string.h>
 #include <assert.h>
+
+#include <Inventor/C/glue/gl.h>
+#include <Inventor/caches/SoGLRenderCache.h>
+#include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoGLTexture3EnabledElement.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/misc/SoState.h>
+
+// *************************************************************************
 
 /*!
   Constructor.

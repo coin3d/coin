@@ -30,26 +30,36 @@
   (hopefully) work in the same way as the Inventor class though.
 */
 
+// FIXME: is the above class doc comment still correct? Or do we have
+// an implementation of this class in the same manner as the other
+// Inventors now? 20040702 mortene.
+
+// *************************************************************************
+
 #include <Inventor/elements/SoGLLazyElement.h>
-#include <Inventor/elements/SoShapeStyleElement.h>
-#include <Inventor/elements/SoGLTextureImageElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
-#include <Inventor/misc/SoState.h>
-#include <Inventor/actions/SoGLRenderAction.h>
+
+#include <assert.h>
+
 #include <Inventor/C/glue/gl.h>
-#include <Inventor/misc/SoGLImage.h>
 #include <Inventor/SbImage.h>
+#include <Inventor/SoFullPath.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoGLDisplayList.h>
+#include <Inventor/elements/SoGLTexture3EnabledElement.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLTextureImageElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoTextureCombineElement.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/SoFullPath.h>
-#include <Inventor/nodes/SoNode.h>
-
-#include <Inventor/bundles/SoMaterialBundle.h>
-#include <coindefs.h> // COIN_OBSOLETED
-#include <assert.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/misc/SoGLImage.h>
+#include <Inventor/misc/SoState.h>
+#include <Inventor/nodes/SoNode.h>
+#include <coindefs.h> // COIN_OBSOLETED
+
+// *************************************************************************
 
 #define FLAG_FORCE_DIFFUSE      0x0001
 #define FLAG_DIFFUSE_DEPENDENCY 0x0002

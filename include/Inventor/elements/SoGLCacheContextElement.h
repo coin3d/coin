@@ -33,6 +33,8 @@ class SoGLDisplayList;
 
 typedef void SoScheduleDeleteCB(void * closure, uint32_t contextid);
 
+// *************************************************************************
+
 class COIN_DLL_API SoGLCacheContextElement : public SoElement {
   typedef SoElement inherited;
 
@@ -85,49 +87,12 @@ private:
   SbBool isDirectRendering(SoState * state) const;
 };
 
+// *************************************************************************
 
-// FIXME: keep separate classes in separate header files for
-// consistency and clean design -- so split the following into it's
-// own SoGLDisplayList.h file (unless there are compelling reasons
-// _not_ to do this that have escaped my attention).  20010912 mortene.
-
-// implementation in Coin/src/elements/SoGLDisplayList.cpp
-class COIN_DLL_API SoGLDisplayList {
-  friend class SoGLCacheContextElement;
-  ~SoGLDisplayList();
-public:
-  enum Type {
-    DISPLAY_LIST,
-    TEXTURE_OBJECT
-  };
-  SoGLDisplayList(SoState * state, Type type, int allocnum = 1,
-                  SbBool mipmaptexobj = FALSE);
-  void ref(void);
-  void unref(SoState * state = NULL);
-
-  void open(SoState *state, int index = 0);
-  void close(SoState *state);
-
-  void call(SoState * state, int index = 0);
-  void addDependency(SoState * state);
-
-  SbBool isMipMapTextureObject(void) const;
-  Type getType(void) const;
-  int getNumAllocated(void) const;
-  // this returns GLuint in Inventor, but we try to avoid including
-  // gl.h in the header files so we just return unsigned int.
-  unsigned int getFirstIndex(void) const;
-  int getContext(void) const;
-
-private:
-  Type type;
-  int numalloc;
-  unsigned int firstindex;
-  int context;
-  int refcount;
-  SbBool mipmap;
-
-  void bindTexture(SoState *state);
-};
+// For compatibility with client code originally written with SGI/TGS
+// Inventor:
+#ifndef COIN_INTERNAL
+#include <Inventor/elements/SoGLDisplayList.h>
+#endif // ! COIN_INTERNAL
 
 #endif // !COIN_SOGLCACHECONTEXTELEMENT_H

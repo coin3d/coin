@@ -27,22 +27,31 @@
   \ingroup elements
 */
 
+// *************************************************************************
+
 #include <Inventor/elements/SoGLCacheContextElement.h>
+
+#include <stdlib.h>
+#include <string.h>
 
 #include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/tidbitsp.h>
 #include <Inventor/SbName.h>
+#include <Inventor/elements/SoGLDisplayList.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoState.h>
-#include <Inventor/misc/SoState.h>
 #include <Inventor/system/gl.h>
-#include <stdlib.h>
-#include <string.h>
+
+// *************************************************************************
 
 static int biggest_cache_context_id = 0;
 
+// *************************************************************************
+
 SO_ELEMENT_SOURCE(SoGLCacheContextElement);
+
+// *************************************************************************
 
 typedef struct {
   SbName extname;
@@ -83,6 +92,8 @@ static void soglcachecontext_cleanup(void)
   delete scheduledeletecblist;
   CC_MUTEX_DESTRUCT(glcache_mutex);
 }
+
+// *************************************************************************
 
 // doc from parent
 void
