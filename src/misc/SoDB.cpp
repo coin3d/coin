@@ -1980,6 +1980,47 @@ SoDBP::listWin32ProcessModules(void)
 
 #ifdef HAVE_WIN32_API
 
+// FIXME: this check should be possible to turn off with an envvar, as
+// it is sometimes not an indication of a problem to have multiple
+// Coin instances in the same process -- for instance if Coin is part
+// of a browser plug-in (or several plug-ins).  20041021 mortene.
+//
+// UPDATE 20041108 mortene: an idea for improvement, from kyrah: if
+// each built Coin library had a unique key / ID, we could incorporate
+// that into the check. That would be an improvement, as most errors
+// of "multiple-instance-inclusion" is very likely that a debug build
+// and a release build of Coin is loaded at the same time, typically
+// because e.g. SoWin or SoQt was linked against coin2d.dll, while the
+// app links against coin2.dll.
+
+// FIXME: a problem recognized by kintel with the approach below:
+//
+// ----8<---- [snip] ------------8<---- [snip] ------------8<---- [snip] -
+// Just some more input on the multiple instances problem:
+// 
+// Part of Vispo is an IE plugin based on Coin/SoQt.  Coin, Qt, SoQt
+// etc. are built statically and linked with the plugin into one
+// ActiveX DLL (the plugin).
+// 
+// So, no matter how many browser windows are opened, there is only
+// one Coin instance since the DLL will be reused between the Windows
+// (I don't know all the details here though). In this case is that
+// Coin will be init()'ed once each time the plugin is run (->
+// multiple times).  This is another issue that is probably best
+// handled in app space at this point.
+// 
+// Anyway, the following happens:
+// 
+// IE is free to unload the DLL at any point in time. When this DLL is
+// reloaded at some later point in time, Coin's check for multiple
+// instances will trigger.
+// ----8<---- [snip] ------------8<---- [snip] ------------8<---- [snip] -
+//
+// This can likely be fixed by doing adding a destructor to the
+// StaticObjectInDLL class, with a ReleaseMutex() call. kintel tried
+// that, but reported that MS Internet Explorer would crash on the
+// ReleaseMutex() call.  20041022 mortene.
+
 class StaticObjectInDLL {
 public:
   StaticObjectInDLL(void)
