@@ -99,7 +99,7 @@ protected:
 private:
   void commonConstructor(void);
   SoVRMLSwitchP * pimpl;
-  friend SoVRMLSwitchP;
+  friend class SoVRMLSwitchP;
 }; // class SoVRMLSwitch
 
 #endif // ! COIN_SOVRMLSWITCH_H

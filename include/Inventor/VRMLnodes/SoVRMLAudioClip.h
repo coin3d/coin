@@ -93,7 +93,7 @@ protected:
 
 private:
   SoVRMLAudioClipP *pimpl;
-  friend SoVRMLAudioClipP;
+  friend class SoVRMLAudioClipP;
 };
 
 #endif // ! COIN_SOVRMLAUDIOCLIP_H

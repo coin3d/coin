@@ -68,7 +68,7 @@ protected:
 
 private:
   SoSwitchP *pimpl;
-  friend SoSwitchP;
+  friend class SoSwitchP;
 
   void commonConstructor(void);
 };

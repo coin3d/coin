@@ -59,7 +59,7 @@ private:
   void commonConstructor(void);
 
   SoLevelOfDetailP * pimpl;
-  friend SoLevelOfDetailP;
+  friend class SoLevelOfDetailP;
 };
 
 #endif // !COIN_SOLEVELOFDETAIL_H

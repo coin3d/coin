@@ -97,7 +97,7 @@ protected:
 private:
   void commonConstructor(void);
   SoVRMLLODP * pimpl;
-  friend SoVRMLLODP;
+  friend class SoVRMLLODP;
 }; // class SoVRMLLOD
 
 #endif // ! COIN_SOVRMLLOD_H

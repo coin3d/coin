@@ -57,7 +57,7 @@ protected:
 
 private:
   SoListenerP *pimpl;
-  friend SoListenerP;
+  friend class SoListenerP;
 };
 
 #endif // COIN_SOLISTENER_H

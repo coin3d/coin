@@ -76,7 +76,7 @@ protected:
 
 private:
   SoVRMLSoundP *pimpl;
-  friend SoVRMLSoundP;
+  friend class SoVRMLSoundP;
 };
 
 #endif // ! COIN_SOVRMLSOUND_H

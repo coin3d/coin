@@ -135,7 +135,7 @@ private:
   float balanceadjustment;
 private:
   SoCameraP *pimpl;
-  friend SoCameraP;
+  friend class SoCameraP;
 };
 
 #endif // !COIN_SOCAMERA_H
