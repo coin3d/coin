@@ -985,7 +985,7 @@ SIM_AC_HAVE_FREETYPE_IFELSE([
   COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_freetype_cppflags"
   COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_freetype_ldflags"
   COIN_EXTRA_LIBS="$sim_ac_freetype_libs $COIN_EXTRA_LIBS"
-  SIM_AC_CONFIGURATION_SETTING([FreeType support], [$sim_ac_freetype_path])
+  SIM_AC_CONFIGURATION_SETTING([FreeType support], [Yes, link-time binding])
 ], [
   if $sim_ac_freetype_desired; then
     AC_MSG_WARN(freetype development system not found);
