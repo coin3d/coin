@@ -159,10 +159,7 @@ SoCoordinateElement::get3(const int index) const
   else {
     // hack around const
     SoCoordinateElement *elem = (SoCoordinateElement*)this;
-    const SbVec4f &vec = this->coords4D[index];
-    elem->dummy3D[0] = vec[0];
-    elem->dummy3D[1] = vec[1];
-    elem->dummy3D[2] = vec[2];
+    this->coords4D[index].getReal(elem->dummy3D);
     return this->dummy3D;
   }
 }
