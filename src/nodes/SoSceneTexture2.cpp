@@ -599,7 +599,8 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
 
     if (this->glaction) delete this->glaction;
     this->glaction = new SoGLRenderAction(SbViewportRegion(this->glcontextsize));
-    this->glaction->addPreRenderCallback(SoSceneTexture2P::prerendercb, (void*) this);
+    this->glaction->addPreRenderCallback(SoSceneTexture2P::prerendercb, 
+                                         (void*) PUBLIC(this));
     this->glimagevalid = FALSE;
   }
 
