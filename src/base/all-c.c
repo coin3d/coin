@@ -21,35 +21,14 @@
  *
 \**************************************************************************/
 
-#include "SbBSPTree.cpp"
-#include "SbBox2f.cpp"
-#include "SbBox2s.cpp"
-#include "SbBox3f.cpp"
-#include "SbClip.cpp"
-#include "SbColor.cpp"
-#include "SbColor4f.cpp"
-#include "SbCylinder.cpp"
-#include "SbDict.cpp"
-#include "SbHeap.cpp"
-#include "SbImage.cpp"
-#include "SbLine.cpp"
-#include "SbMatrix.cpp"
-#include "SbName.cpp"
-#include "SbOctTree.cpp"
-#include "SbPlane.cpp"
-#include "SbRotation.cpp"
-#include "SbSphere.cpp"
-#include "SbString.cpp"
-#include "SbTesselator.cpp"
-#include "SbTime.cpp"
-#include "SbVec2s.cpp"
-#include "SbVec2f.cpp"
-#include "SbVec2d.cpp"
-#include "SbVec3s.cpp"
-#include "SbVec3f.cpp"
-#include "SbVec3d.cpp"
-#include "SbVec4f.cpp"
-#include "SbVec4d.cpp"
-#include "SbViewVolume.cpp"
-#include "SbViewportRegion.cpp"
-#include "SbXfBox3f.cpp"
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif /* HAVE_CONFIG_H */
+
+#ifdef HAVE_THREADS
+#include "base.c"
+#include "debug.c"
+#include "time.c"
+#endif
+
+#include "string.c"
