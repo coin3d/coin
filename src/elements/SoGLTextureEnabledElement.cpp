@@ -31,6 +31,8 @@
   if you implement your own shape and need to disable texturing while
   rendering, use the forceSend() method to change the GL state without
   changing the state of the element.
+
+  \sa SoGLTexture3EnabledElement
 */
 
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
