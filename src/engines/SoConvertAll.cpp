@@ -804,6 +804,13 @@ SoConvertAll::getOutput(SoType /* type */)
 void
 SoConvertAll::evaluate(void)
 {
-  for (int i = 0 ; i < this->output.getNumConnections(); i++)
-    this->convertvalue(this->input, this->output[i]);
+  // we cannot use the SO_ENGINE_OUTPUT macro, but this code should
+  // do the same thing.
+  if (this->output.isEnabled()) {
+    for (int i = 0 ; i < this->output.getNumConnections(); i++) {
+      SoField * f = this->output[i];
+      if (!f->isReadOnly())
+        this->convertvalue(this->input, f);
+    }
+  }
 }
