@@ -102,6 +102,10 @@
 #include <dlfcn.h> /* Programming interface to libdl. */
 #endif /* HAVE_DLFCN_H */
 
+#ifdef HAVE_DLD_LIB
+#include <dl.h> /* Programming interface to libdld on HP-UX 10 & 11. */
+#endif /* HAVE_DLD_LIB */
+
 #if HAVE_WINDOWS_H
 #include <windows.h>
 #endif /* HAVE_WINDOWS_H */
@@ -117,7 +121,8 @@
 #include <assert.h>
 #include <stddef.h> /* NULL definition. */
 #include <stdlib.h> /* atoi() */
-#include <string.h> /* strlen(), strcpy() */
+#include <errno.h>
+#include <string.h> /* strlen(), strcpy(), strerror() */
 #include <stdio.h>  /* snprintf() */
 #ifdef HAVE_LIBGEN_H
 #include <libgen.h> /* dirname() */
@@ -326,20 +331,6 @@ cc_dl_open(const char * filename)
   /* if (!h), FIXME: exception handling. 20020906 mortene. */
   h->nativehnd = NULL;
 
-  /* FIXME: support HP-UX shn_load()? (dlopen() is missing on older
-     HP-UX versions.)
-
-     Some versions of HP-UX has dlopen() (from version 11 and
-     onwards?). Although according to a discussion on the libtool
-     mailinglist it has been buggy in an official release, needing a
-     patch to function properly. This is of course a good reason to
-     try to use shn_load() *first*, then dlopen() on HP-UX.
-
-     Note also that it looks like dlopen() might reside in a library
-     "svld" instead of "dl".
-
-     20010626 mortene. */
-
 #ifdef HAVE_DL_LIB
 
   h->nativehnd = dlopen(filename, RTLD_LAZY);
@@ -450,6 +441,62 @@ cc_dl_open(const char * filename)
     cc_string_clean(&errstr);
   }
 
+#elif defined (HAVE_DLD_LIB)
+
+  /* FIXME: there is a good reason to try to use shn_load() *first*,
+     then dlopen() on HP-UX: according to a discussion on the libtool
+     mailinglist, dlopen() for HP-UX was buggy in an official release,
+     needing a patch to function properly. This would take some
+     changes to the configure checks (we cut off further checking if
+     libdl is found), and any code that depends on _either_
+     HAVE_DL_LIB _or_ HAVE_DLD_LIB being defined, but not both at the
+     same time.  20010626 mortene. */
+
+  /* This define not available on older versions. */
+#ifndef DYNAMIC_PATH
+#define DYNAMIC_PATH 0
+#endif /* DYNAMIC_PATH */
+
+  /* Handle attempt to look at running executable image and already
+     loaded dynamic libraries. */
+
+  if (filename == NULL) {
+    shl_t exehnd = (shl_t)0;
+    void * dummy;
+    int ret = shl_findsym(&exehnd, "main", TYPE_UNDEFINED, &dummy);
+    if (ret != -1) {
+      h->nativehnd = exehnd;
+    }
+    else {
+      const char * e = strerror(errno);
+      cc_debugerror_post("cc_dl_open",
+                         "shl_findsym(&NULL, \"main\", ...) failed with: '%s'",
+                         e);
+    }
+  }
+  else {
+    h->nativehnd = shl_load(filename, BIND_IMMEDIATE|BIND_NONFATAL|DYNAMIC_PATH, 0L);
+
+    /*
+      If a special debugging environment variable is found, we'll spit
+      out the error message, which could prove useful for remote
+      debugging.
+
+      Note that if shl_load() fails for any reason than not being able
+      to find the dynamic link-library given by "filename" on disk, we
+      detect it and report an error, whether we're running in debug
+      mode or release mode. ENOENT means "the specified library does
+      not exist" -- all other errors should be warned about no matter
+      what.
+    */
+
+    if ((h->nativehnd == NULL) && (cc_dl_debugging() || (errno != ENOENT))) {
+      const char * e = strerror(errno);
+      cc_debugerror_post("cc_dl_open", "shl_load(\"%s\") failed with: '%s'",
+                         filename ? filename : "(null)", e);
+    }
+  }
+
 #endif
 
   if (h->nativehnd == NULL) {
@@ -467,7 +514,7 @@ cc_dl_open(const char * filename)
       assert(retval > 0 && "GetModuleFileName() failed");
       libpath[sizeof(libpath) - 1] = 0;
       cc_debugerror_postinfo("cc_dl_open", "Opened library '%s'", libpath);
-#elif defined (HAVE_DL_LIB)
+#elif defined (HAVE_DL_LIB) || defined (HAVE_DLD_LIB)
       cc_debugerror_postinfo("cc_dl_open", "Opening library '%s'", cc_string_get_text(&h->libname));
 #endif
     }
@@ -563,6 +610,18 @@ cc_dl_sym(cc_libhandle handle, const char * symbolname)
     cc_string_clean(&errstr);
   }
 
+#elif defined (HAVE_DLD_LIB)
+
+  {
+    int retval = shl_findsym((shl_t *)(&handle->nativehnd), symbolname, TYPE_UNDEFINED, &ptr);
+
+    if (cc_dl_debugging() && (retval == -1)) {
+      const char * e = strerror(errno);
+      cc_debugerror_post("cc_dl_sym", "shl_findsym(\"%s\", \"%s\", ...) failed with: '%s'",
+                         cc_string_get_text(&handle->libname), symbolname, e);
+    }
+  }
+
 #endif
 
   return ptr;
@@ -607,6 +666,22 @@ cc_dl_close(cc_libhandle handle)
                        cc_string_get_text(&errstr));
     cc_string_clean(&errstr);
   }
+
+#elif defined (HAVE_DLD_LIB)
+
+  /* FIXME: lib unloading disabled, as on HP-UX PA32, no reference
+     counter is held. And we don't want to unload a library that is in
+     use. On HP-UX PA64, we should unload, as reference counting is
+     done there. 20030305 mortene. */
+#if 0
+  int result = shl_unload((shl_t)handle->nativehnd);
+
+  if (result == -1) {
+    const char * e = strerror(errno);
+    cc_debugerror_post("cc_dl_close", "shl_unload(\"%s\") failed with: '%s'",
+                       cc_string_get_text(&handle->libname), e);
+  }
+#endif
 
 #endif
 
