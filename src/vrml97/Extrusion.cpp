@@ -322,6 +322,7 @@
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/SbTesselator.h>
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
@@ -513,7 +514,7 @@ SoVRMLExtrusion::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   THIS->readLock();
   this->updateCache();
-  // FIXME: implement, 2002-10-07 pederb
+  action->addNumTriangles(THIS->idx.getLength() / 4);
   THIS->readUnlock();
 }
 
