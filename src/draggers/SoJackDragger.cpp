@@ -44,6 +44,13 @@
   Rotations are invoked by clicking and dragging the line parts of the
   3 principal "axes" of the dragger geometry.
 
+  <b>NB:</b> How to rotate the dragger might be abit unintuitive for
+  the end user. If the dragger is to be used 'out of the box', a good
+  documentation should be added to your application. An alternative is
+  to modify the geometry to increase the affordance of the dragger.
+  See the SoDragger documentation on how to change the geometry of a
+  dragger.
+
   An "action shot" of the SoJackDragger used within an SoClipPlaneManip:
   <center>
   <img src="http://doc.coin3d.org/images/Coin/draggers/jack-in-action.png">
