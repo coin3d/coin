@@ -48,6 +48,7 @@
 #include <Inventor/misc/SoGlyph.h>
 #include <Inventor/misc/SoState.h>
 #include <string.h>
+#include <float.h> // FLT_MIN
 
 #if HAVE_CONFIG_H
 #include <config.h>
@@ -245,11 +246,8 @@ SoAsciiText::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
     return;
   }
 
-  float maxw = this->getWidth(0, size);
-  for (i = 1; i < n; i++) {
-    float tmp = this->getWidth(i, size);
-    if (tmp > maxw) maxw = tmp;
-  }
+  float maxw = FLT_MIN;
+  for (i = 0; i < n; i++) { maxw = SbMax(maxw, this->getWidth(i, size)); }
 
   SbBox2f maxbox;
   int numglyphs = THIS->glyphs.getLength();

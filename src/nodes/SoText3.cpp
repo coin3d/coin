@@ -61,7 +61,7 @@
 
 #include <coindefs.h> // COIN_OBSOLETED()
 
-#include <float.h> // FLT_MAX
+#include <float.h> // FLT_MAX, FLT_MIN
 
 #if HAVE_CONFIG_H
 #include <config.h>
@@ -209,11 +209,9 @@ SoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
     box.setBounds(center, center);
     return;
   }
-  float maxw = THIS->widths[0];
-  for (i = 1; i < n; i++) {
-    float tmp = THIS->widths[i];
-    if (tmp > maxw) maxw = tmp;
-  }
+
+  float maxw = FLT_MIN;
+  for (i = 0; i < n; i++) { maxw = SbMax(maxw, THIS->widths[i]); }
 
   SbBox2f maxbox;
   for (i = 0; i < numglyphs; i++) {
