@@ -536,12 +536,13 @@ SbBool
 SoRayPickAction::intersect(const SbBox3f & box, SbVec3f & intersection,
                            const SbBool usefullviewvolume)
 {
-  // FIXME: usefullviewvolume == TRUE is not supported.
-  // pederb, 20000519
   const SbLine & line = THIS->osline;
   SbVec3f bounds[2];
   bounds[0] = box.getMin();
   bounds[1] = box.getMax();
+
+  SbVec3f ptonray, ptonbox;
+  float mindist = FLT_MAX;
 
   for (int j = 0; j < 2; j++) {
     for (int i = 0; i < 3; i++) {
@@ -553,13 +554,68 @@ SoRayPickAction::intersect(const SbBox3f & box, SbVec3f & intersection,
       if (plane.intersect(line, isect)) {
         int i1 = (i+1) % 3;
         int i2 = (i+2) % 3;
-        if (isect[i1] >= bounds[0][i1] && isect[i1] <= bounds[1][i1] &&
-            isect[i2] >= bounds[0][i2] && isect[i2] <= bounds[1][i2]) {
-          intersection = isect;
-          return TRUE;
+
+        float d = bounds[0][i1] - isect[i1];
+        if (d > 0.0f) {
+          if (usefullviewvolume && d < mindist) {
+            mindist = d;
+            ptonray = ptonbox = isect;
+            ptonbox[i1] = bounds[0][i1];
+          }
+          continue;
         }
+        d = isect[i1] - bounds[1][i1];
+        if (d > 0.0f) {
+          if (usefullviewvolume && d < mindist) {
+            mindist = d;
+            ptonray = ptonbox = isect;
+            ptonbox[i1] = bounds[1][i1];
+          }
+          continue;
+        }
+        d = bounds[0][i2] - isect[i2];
+        if (d > 0.0f) {
+          if (usefullviewvolume && d < mindist) {
+            mindist = d;
+            ptonray = ptonbox = isect;
+            ptonbox[i2] = bounds[0][i2];
+          }
+          continue;
+        }
+        d = isect[i2] - bounds[1][i2];
+        if (d > 0.0f) {
+          if (usefullviewvolume && d < mindist) {
+            mindist = d;
+            ptonray = ptonbox = isect;
+            ptonbox[i2] = bounds[1][i2];
+          }
+          continue;
+        }
+        // if we get here, we know center of ray hit box directly
+        intersection = isect;
+        return TRUE;
       }
     }
+  }
+  if (mindist != FLT_MAX && usefullviewvolume) {
+
+    // transform ptonray and ptonbox to world space to test on ray cone
+    SbVec3f wptonray, wptonbox;
+    THIS->obj2world.multVecMatrix(ptonbox, wptonbox);
+    THIS->obj2world.multVecMatrix(ptonray, wptonray);
+
+    float raypos = THIS->nearplane.getDistance(wptonray);
+    float distance = (wptonray-wptonbox).length();
+
+    // find ray radius at wptonray
+    float radius = THIS->rayradiusstart +
+      THIS->rayradiusdelta * raypos;
+
+    // test for cone intersection
+    if (radius >= distance) {
+      intersection = ptonbox; // set intersection to the point on box closest to ray
+      return TRUE;
+    }    
   }
   return FALSE;
 }
