@@ -158,12 +158,14 @@ SoConvertAll::initClass()
 
   int i = 0;
   while (SFTypes[i] != SoType::badType()) {
-    SoDB::addConverter(SFTypes[i],
-                       SoSFString::getClassTypeId(),
-                       getClassTypeId());
-    SoDB::addConverter(SoSFString::getClassTypeId(),
-                       SFTypes[i],
-                       getClassTypeId());
+    if (SFTypes[i] != SoSFString::getClassTypeId()) {
+      SoDB::addConverter(SFTypes[i],
+                         SoSFString::getClassTypeId(),
+                         SoConvertAll::getClassTypeId());
+      SoDB::addConverter(SoSFString::getClassTypeId(),
+                         SFTypes[i],
+                         SoConvertAll::getClassTypeId());
+    }
     i++;
   }
 
@@ -229,7 +231,6 @@ SoConvertAll::initClass()
   SO_CONVERTALL_SFMF(SoSFPlane,SoMFPlane);
   SO_CONVERTALL_SFMF(SoSFRotation,SoMFRotation);
   SO_CONVERTALL_SFMF(SoSFShort,SoMFShort);
-  SO_CONVERTALL_SFMF(SoSFString,SoMFString);
   SO_CONVERTALL_SFMF(SoSFTime,SoMFTime);
   SO_CONVERTALL_SFMF(SoSFUInt32,SoMFUInt32);
   SO_CONVERTALL_SFMF(SoSFUShort,SoMFUShort);
