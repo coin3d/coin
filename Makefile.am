@@ -1,11 +1,6 @@
 ############################################################################
 ##
 
-ACLOCAL_AMFLAGS = -I cfg/m4
-
-############################################################################
-##
-
 if BUILD_LIBRARY
 SRCDIRS = data src
 else
@@ -47,7 +42,7 @@ DISTCLEANFILES = \
 
 if BUILD_LIBRARY
 m4datadir = $(datadir)/aclocal
-dist_m4data_DATA = cfg/m4/coin.m4
+dist_m4data_DATA = cfg/coin.m4
 
 cfgdatadir = $(datadir)/Coin/conf
 cfgdata_DATA = coin-@CONFIG@.cfg
@@ -77,42 +72,6 @@ EXTRA_DIST = \
 	docs/coin.doxygen.in \
 	docs/oiki-launch.txt \
 	cfg/ltconfig \
-	cfg/m4/ChangeLog \
-	cfg/m4/doxy4win.pl \
-	cfg/m4/errors.txt \
-	cfg/m4/wrapmsvc.cpp \
-	cfg/m4/wrapmsvc.exe \
-	cfg/m4/gendsp.sh \
-	cfg/m4/check_dl.m4 \
-	cfg/m4/check_mac.m4 \
-	cfg/m4/check_mathlib.m4 \
-	cfg/m4/check_nprintf.m4 \
-	cfg/m4/check_openal.m4 \
-	cfg/m4/check_opengl.m4 \
-	cfg/m4/check_pthread.m4 \
-	cfg/m4/check_x11.m4 \
-	cfg/m4/compile_debug.m4 \
-	cfg/m4/compile_exceptions.m4 \
-	cfg/m4/compile_functionname.m4 \
-	cfg/m4/compile_profiling.m4 \
-	cfg/m4/compile_rtti.m4 \
-	cfg/m4/compile_symbols.m4 \
-	cfg/m4/compile_warnings.m4 \
-	cfg/m4/compiler_capabilities.m4 \
-	cfg/m4/configuration_summary.m4 \
-	cfg/m4/cpp_search_order.m4 \
-	cfg/m4/cvschanges.m4 \
-	cfg/m4/dates.m4 \
-	cfg/m4/doxygen_detection.m4 \
-	cfg/m4/errors.m4 \
-	cfg/m4/general.m4 \
-	cfg/m4/gendsp.m4 \
-	cfg/m4/macro_quoting.m4 \
-	cfg/m4/misc_compiler.m4 \
-	cfg/m4/network.m4 \
-	cfg/m4/simage.m4 \
-	cfg/m4/uniqify_option_list.m4 \
-	cfg/m4/wrapmsvc.m4 \
 	packaging/debian/changelog.in \
 	packaging/debian/control.in \
 	packaging/debian/copyright.in \
@@ -209,14 +168,14 @@ install-data-local:
 	done
 else
 install-data-local:
-install-exec-local: $(srcdir)/cfg/m4/wrapmsvc.exe
+install-exec-local: $(srcdir)/cfg/wrapmsvc.exe
 	@$(NORMAL_INSTALL)
 	@if @BUILD_WITH_MSVC@; then \
 	  echo " $(mkinstalldirs) $(DESTDIR)$(bindir)"; \
 	  $(mkinstalldirs) $(DESTDIR)$(bindir); \
 	  p=wrapmsvc.exe; \
-	  echo " $(INSTALL_PROGRAM) $(srcdir)/cfg/m4/$$p $(DESTDIR)$(bindir)/$$p"; \
-	  $(INSTALL_PROGRAM) $(srcdir)/cfg/m4/$$p $(DESTDIR)$(bindir)/$$p; \
+	  echo " $(INSTALL_PROGRAM) $(srcdir)/cfg/$$p $(DESTDIR)$(bindir)/$$p"; \
+	  $(INSTALL_PROGRAM) $(srcdir)/cfg/$$p $(DESTDIR)$(bindir)/$$p; \
 	else :; fi
 endif
 endif

@@ -126,6 +126,7 @@ X_CFLAGS = @X_CFLAGS@
 X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_LIBS = @X_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
+ac_compiler_gnu = @ac_compiler_gnu@
 am__include = @am__include@
 am__quote = @am__quote@
 coin_build_dir = @coin_build_dir@
@@ -147,10 +148,6 @@ sim_ac_makensis_exe = @sim_ac_makensis_exe@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 
-ACLOCAL_AMFLAGS = -I cfg/m4
-
-
-############################################################################
 @BUILD_LIBRARY_TRUE@SRCDIRS = data src
 @BUILD_LIBRARY_FALSE@SRCDIRS = 
 
@@ -185,7 +182,7 @@ DISTCLEANFILES = \
 
 
 @BUILD_LIBRARY_TRUE@m4datadir = $(datadir)/aclocal
-@BUILD_LIBRARY_TRUE@dist_m4data_DATA = cfg/m4/coin.m4
+@BUILD_LIBRARY_TRUE@dist_m4data_DATA = cfg/coin.m4
 
 @BUILD_LIBRARY_TRUE@cfgdatadir = $(datadir)/Coin/conf
 @BUILD_LIBRARY_TRUE@cfgdata_DATA = coin-@CONFIG@.cfg
@@ -214,42 +211,6 @@ EXTRA_DIST = \
 	docs/coin.doxygen.in \
 	docs/oiki-launch.txt \
 	cfg/ltconfig \
-	cfg/m4/ChangeLog \
-	cfg/m4/doxy4win.pl \
-	cfg/m4/errors.txt \
-	cfg/m4/wrapmsvc.cpp \
-	cfg/m4/wrapmsvc.exe \
-	cfg/m4/gendsp.sh \
-	cfg/m4/check_dl.m4 \
-	cfg/m4/check_mac.m4 \
-	cfg/m4/check_mathlib.m4 \
-	cfg/m4/check_nprintf.m4 \
-	cfg/m4/check_openal.m4 \
-	cfg/m4/check_opengl.m4 \
-	cfg/m4/check_pthread.m4 \
-	cfg/m4/check_x11.m4 \
-	cfg/m4/compile_debug.m4 \
-	cfg/m4/compile_exceptions.m4 \
-	cfg/m4/compile_functionname.m4 \
-	cfg/m4/compile_profiling.m4 \
-	cfg/m4/compile_rtti.m4 \
-	cfg/m4/compile_symbols.m4 \
-	cfg/m4/compile_warnings.m4 \
-	cfg/m4/compiler_capabilities.m4 \
-	cfg/m4/configuration_summary.m4 \
-	cfg/m4/cpp_search_order.m4 \
-	cfg/m4/cvschanges.m4 \
-	cfg/m4/dates.m4 \
-	cfg/m4/doxygen_detection.m4 \
-	cfg/m4/errors.m4 \
-	cfg/m4/general.m4 \
-	cfg/m4/gendsp.m4 \
-	cfg/m4/macro_quoting.m4 \
-	cfg/m4/misc_compiler.m4 \
-	cfg/m4/network.m4 \
-	cfg/m4/simage.m4 \
-	cfg/m4/uniqify_option_list.m4 \
-	cfg/m4/wrapmsvc.m4 \
 	packaging/debian/changelog.in \
 	packaging/debian/control.in \
 	packaging/debian/copyright.in \
@@ -318,7 +279,7 @@ $(top_builddir)/config.status: $(srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
 $(srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(srcdir)/configure.ac $(ACLOCAL_M4) $(CONFIGURE_DEPENDENCIES)
 	cd $(srcdir) && $(AUTOCONF)
 
-$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ configure.ac cfg/m4/changesonly.m4 cfg/m4/check_be.m4 cfg/m4/check_dl.m4 cfg/m4/check_inventor.m4 cfg/m4/check_jpeglib.m4 cfg/m4/check_libsndfile.m4 cfg/m4/check_linkstyle.m4 cfg/m4/check_mac.m4 cfg/m4/check_mathlib.m4 cfg/m4/check_motif.m4 cfg/m4/check_nprintf.m4 cfg/m4/check_oggvorbis.m4 cfg/m4/check_openal.m4 cfg/m4/check_opengl.m4 cfg/m4/check_pnglib.m4 cfg/m4/check_pthread.m4 cfg/m4/check_qt.m4 cfg/m4/check_quicktime.m4 cfg/m4/check_tifflib.m4 cfg/m4/check_ungif.m4 cfg/m4/check_x11.m4 cfg/m4/check_zlib.m4 cfg/m4/coin.m4 cfg/m4/compile_debug.m4 cfg/m4/compile_exceptions.m4 cfg/m4/compile_functionname.m4 cfg/m4/compile_profiling.m4 cfg/m4/compile_rtti.m4 cfg/m4/compile_symbols.m4 cfg/m4/compile_warnings.m4 cfg/m4/compiler_capabilities.m4 cfg/m4/configuration_summary.m4 cfg/m4/cpp_search_order.m4 cfg/m4/cvschanges.m4 cfg/m4/dates.m4 cfg/m4/dime.m4 cfg/m4/doxygen_detection.m4 cfg/m4/errors.m4 cfg/m4/expand_dir_vars.m4 cfg/m4/freetype.m4 cfg/m4/gendsp.m4 cfg/m4/general.m4 cfg/m4/gettext.m4 cfg/m4/guile.m4 cfg/m4/lcmessage.m4 cfg/m4/libtool.m4 cfg/m4/libtre.m4 cfg/m4/linux_api.m4 cfg/m4/macro_quoting.m4 cfg/m4/misc_compiler.m4 cfg/m4/modifierlist.m4 cfg/m4/network.m4 cfg/m4/path_conversion.m4 cfg/m4/profit.m4 cfg/m4/progtest.m4 cfg/m4/reconfigure.m4 cfg/m4/simage.m4 cfg/m4/smallchange.m4 cfg/m4/sobe.m4 cfg/m4/sockets.m4 cfg/m4/sogtk.m4 cfg/m4/sogui-misc-common.m4 cfg/m4/sogui.m4 cfg/m4/somac.m4 cfg/m4/soqt.m4 cfg/m4/sowin.m4 cfg/m4/soxt.m4 cfg/m4/thttpd_utils.m4 cfg/m4/uniqify.m4 cfg/m4/uniqify_option_list.m4 cfg/m4/wrapmsvc.m4
+$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ configure.ac 
 	cd $(srcdir) && $(ACLOCAL) $(ACLOCAL_AMFLAGS)
 uninstall-info-am:
 install-cfgdataDATA: $(cfgdata_DATA)
@@ -459,7 +420,7 @@ GZIP_ENV = --best
 distdir: $(DISTFILES)
 	-chmod -R a+w $(distdir) >/dev/null 2>&1; rm -rf $(distdir)
 	mkdir $(distdir)
-	$(mkinstalldirs) $(distdir)/cfg $(distdir)/cfg/m4 $(distdir)/docs $(distdir)/examples/bindings $(distdir)/packaging/debian $(distdir)/packaging/macosx $(distdir)/packaging/redhat $(distdir)/packaging/windows
+	$(mkinstalldirs) $(distdir)/cfg $(distdir)/docs $(distdir)/examples/bindings $(distdir)/packaging/debian $(distdir)/packaging/macosx $(distdir)/packaging/redhat $(distdir)/packaging/windows
 	@for file in $(DISTFILES); do \
 	  if test -f $$file; then d=.; else d=$(srcdir); fi; \
 	  dir=`echo "$$file" | sed -e 's,/[^/]*$$,,'`; \
@@ -695,14 +656,14 @@ doxygen-docs: built-sources
 @BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	  ln -s Versions/Current/$$symlink "$(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/$$symlink" || exit 1; \
 @BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	done
 @BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@install-data-local:
-@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@install-exec-local: $(srcdir)/cfg/m4/wrapmsvc.exe
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@install-exec-local: $(srcdir)/cfg/wrapmsvc.exe
 @BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@	@$(NORMAL_INSTALL)
 @BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@	@if @BUILD_WITH_MSVC@; then \
 @BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@	  echo " $(mkinstalldirs) $(DESTDIR)$(bindir)"; \
 @BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@	  $(mkinstalldirs) $(DESTDIR)$(bindir); \
 @BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@	  p=wrapmsvc.exe; \
-@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@	  echo " $(INSTALL_PROGRAM) $(srcdir)/cfg/m4/$$p $(DESTDIR)$(bindir)/$$p"; \
-@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@	  $(INSTALL_PROGRAM) $(srcdir)/cfg/m4/$$p $(DESTDIR)$(bindir)/$$p; \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@	  echo " $(INSTALL_PROGRAM) $(srcdir)/cfg/$$p $(DESTDIR)$(bindir)/$$p"; \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@	  $(INSTALL_PROGRAM) $(srcdir)/cfg/$$p $(DESTDIR)$(bindir)/$$p; \
 @BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@	else :; fi
 
 cvs-update:

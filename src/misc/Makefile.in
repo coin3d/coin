@@ -124,6 +124,7 @@ X_CFLAGS = @X_CFLAGS@
 X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_LIBS = @X_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
+ac_compiler_gnu = @ac_compiler_gnu@
 am__include = @am__include@
 am__quote = @am__quote@
 coin_build_dir = @coin_build_dir@
@@ -229,6 +230,7 @@ PrivateHeaders = \
 	SoOffscreenGLXData.icc \
 	SoOffscreenWGLData.icc \
 	cppmangle.icc \
+	defaultfonts.h \
 	../../include/Inventor/misc/SoFontLib.h
 
 

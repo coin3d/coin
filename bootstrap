@@ -1,149 +1,19 @@
 #!/bin/sh
 
-# Regenerate all files which are constructed by the autoconf, automake
-# and libtool tool-chain. Note: only developers should need to use
-# this script.
+cat <<EOF
 
-# Author: Morten Eriksen, <mortene@sim.no>.
+Error: to bootstrap, invoke the script simacros/bin/bootstrap.
+
+The simacros CVS module can be fetched by doing:
+
+   \$ export CVSROOT=:pserver:cvs@cvs.coin3d.org:/export/cvsroot
+   \$ cvs login
+   [password is 'cvs']
+   \$ cvs checkout simacros
 
 
-wd=`echo "$0" | sed 's,[^\/]*$,,g'`;
-me=`echo "$0" | sed 's,^.*/,,g'`;
+Exiting..
 
-cd $wd
-if test ! -f ./"$me"; then
-  echo >&2 "$me: error: unexpected problem with your shell - bailing out"
-  exit 1
-fi
+EOF
 
-if test x"$@" = x"" -a ! -f cfg/mkinstalldirs; then
-  echo "$me: assuming '--add' was meant."
-  set : --add
-  shift
-fi
-
-AUTOCONF_VER=2.5[023456789]
-AUTOMAKE_VER=1.5
-LIBTOOL_VER=1.4.2
-
-PROJECT=Coin
-MACRODIR=cfg/m4
-AUTOMAKE_ADD=
-
-libtoolize=false
-if test "$1" = "--clean"; then
-  rm -f aclocal.m4 \
-        config.h.in \
-        stamp-h*
-  ( cd cfg;
-    rm -f aclocal.m4 \
-          config.guess \
-          config.sub \
-          configure \
-          depcomp \
-          install-sh \
-          ltconfig \
-          ltmain.sh \
-          missing \
-          mkinstalldirs \
-          ltcf-*.sh
-  )
-  find . -name Makefile.in -print | grep -v "^./data/" | xargs rm -f
-  exit
-elif test "$1" = "--add"; then
-  AUTOMAKE_ADD="--add-missing --gnu --copy"
-  libtoolize=true
-fi
-
-echo "Checking the installed configuration tools..."
-
-if test -z "`autoconf --version 2>/dev/null | grep \" $AUTOCONF_VER\"`"; then
-    echo ""
-    echo "You must have autoconf version $AUTOCONF_VER installed to"
-    echo "generate configure information and Makefiles for $PROJECT."
-    echo ""
-    echo "Get ftp://ftp.gnu.org/gnu/autoconf/autoconf-$AUTOCONF_VER.tar.gz"
-    DIE=true
-fi
-
-if test -z "`automake --version 2>/dev/null | grep \" $AUTOMAKE_VER\"`"; then
-    echo ""
-    echo "You must have automake version $AUTOMAKE_VER installed to"
-    echo "generate configure information and Makefiles for $PROJECT."
-    echo ""
-    echo "(The Automake version we are using is the bleeding edge"
-    echo "from the CVS repository.)"
-    DIE=true
-fi
-
-if test -z "`libtool --version 2>/dev/null | egrep \"$LIBTOOL_VER\"`"; then
-# if true; then
-    echo ""
-    echo "You must have libtool version $LIBTOOL_VER installed to"
-    echo "generate configure information and Makefiles for $PROJECT."
-    echo ""
-    echo "Get ftp://ftp.gnu.org/gnu/libtool/libtool-$LIBTOOL_VER.tar.gz"
-    DIE=true
-fi
-
-# The separate $MACRODIR module was added late in the project, and
-# since we need to do a cvs checkout to obtain it (cvs update won't do
-# with modules), we run this check.
-
-if test ! -d $MACRODIR; then
-    cvs -z3 checkout -P $MACRODIR
-    if test ! -d $MACRODIR; then
-        echo ""
-	echo "Couldn't fetch $MACRODIR module!"
-        echo ""
-        echo "Directory ``$MACRODIR'' (a separate CVS module) seems to be missing."
-        echo "You probably checked out $PROJECT before ``$MACRODIR'' was added."
-        echo "Run 'cvs -d :pserver:cvs@cvs.sim.no:/export/cvsroot co $MACRODIR'"
-        echo "to try again."
-	DIE=true
-    fi
-fi
-
-# abnormal exit?
-${DIE=false} && echo "" && echo "Aborted." && exit 1
-
-# **************************************************************************
-
-echo "Running aclocal (generating aclocal.m4)..."
-rm -f aclocal.m4.old
-test -f aclocal.m4 && mv aclocal.m4 aclocal.m4.old
-aclocal -I $MACRODIR
-if test -f aclocal.m4.old; then
-  if cmp -s aclocal.m4 aclocal.m4.old; then
-    echo "aclocal: aclocal.m4 is unchanged"
-    rm -f aclocal.m4
-    mv aclocal.m4.old aclocal.m4
-  else
-    rm -f aclocal.m4.old
-  fi
-fi
-
-if $libtoolize; then
-  libtoolize --copy --force
-  ( cd cfg;
-    test -f ltmain.sh.diff && patch -p0 < ltmain.sh.diff
-    test -f ltconfig.diff  && patch -p0 < ltconfig.diff
-  )
-fi
-
-# probably not necessary to run autoconf twice
-# echo "Running autoconf (generating the configure script)..."
-# ( autoconf 3>&1 1>&2 2>&3 | grep -v AR_FLAGS) 3>&1 1>&2 2>&3
-
-echo "Running autoheader (generating config.h.in)..."
-autoheader
-
-echo "Running automake (generating the Makefile.in files)..."
-( automake $AUTOMAKE_ADD 3>&1 1>&2 2>&3 | \
-  grep -v 'not a standard library name' ) 3>&1 1>&2 2>&3
-
-echo "Running autoconf (generating the configure script)..."
-( autoconf 3>&1 1>&2 2>&3 | grep -v AR_FLAGS) 3>&1 1>&2 2>&3
-
-echo "Done."
-
+exit 1

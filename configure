@@ -1737,7 +1737,7 @@ fi;
 
 BUILD_WITH_MSVC=false
 if $sim_ac_try_msvc; then
-  sim_ac_wrapmsvc=`cd $srcdir; pwd`/cfg/m4/wrapmsvc.exe
+  sim_ac_wrapmsvc=`cd $srcdir; pwd`/cfg/wrapmsvc.exe
   if test -z "$CC" -a -z "$CXX" && $sim_ac_wrapmsvc >/dev/null 2>&1; then
 
 
@@ -1751,7 +1751,7 @@ if $sim_ac_try_msvc; then
 echo >&2 ""
 
 
-: ${sim_ac_message_file=$ac_aux_dir/m4/errors.txt}
+: ${sim_ac_message_file=$ac_aux_dir/errors.txt}
 if test -f $sim_ac_message_file; then
   sim_ac_message="`sed -n -e '/^!no-msvc++$/,/^!/ { /^!/ d; p; }' <$sim_ac_message_file`"
   if test x"$sim_ac_message" = x""; then
@@ -2747,7 +2747,7 @@ if test "${with_msvcrt+set}" = set; then
 echo >&2 ""
 
 
-: ${sim_ac_message_file=$ac_aux_dir/m4/errors.txt}
+: ${sim_ac_message_file=$ac_aux_dir/errors.txt}
 if test -f $sim_ac_message_file; then
   sim_ac_message="`sed -n -e '/^!invalid-msvcrt$/,/^!/ { /^!/ d; p; }' <$sim_ac_message_file`"
   if test x"$sim_ac_message" = x""; then
@@ -3281,6 +3281,10 @@ if $BUILD_WITH_MSVC; then
 fi
 
 #  Initialize libtool
+#
+# FIXME: this must be done even when we're not using libtool (as when
+# building with MSVC++), because that's where at least the enable_static
+# and enable_shared flags are set up. 20030324 mortene.
 # Check whether --enable-shared or --disable-shared was given.
 if test "${enable_shared+set}" = set; then
   enableval="$enable_shared"
@@ -4714,7 +4718,7 @@ test "x$enable_libtool_lock" != xno && enable_libtool_lock=yes
 case $host in
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 4717 "configure"' > conftest.$ac_ext
+  echo '#line 4721 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -5250,7 +5254,7 @@ chmod -w .
 save_CFLAGS="$CFLAGS"
 CFLAGS="$CFLAGS -o out/conftest2.$ac_objext"
 compiler_c_o=no
-if { (eval echo configure:5253: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$ac_objext; then
+if { (eval echo configure:5257: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$ac_objext; then
   # The compiler can only warn and ignore the option if not recognized
   # So say no if there are warnings
   if test -s out/conftest.err; then
@@ -7044,7 +7048,7 @@ else
     lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 7047 "configure"
+#line 7051 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -7142,7 +7146,7 @@ else
     lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 7145 "configure"
+#line 7149 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -8411,7 +8415,7 @@ else
 echo >&2 ""
 
 
-: ${sim_ac_message_file=$ac_aux_dir/m4/errors.txt}
+: ${sim_ac_message_file=$ac_aux_dir/errors.txt}
 if test -f $sim_ac_message_file; then
   sim_ac_message="`sed -n -e '/^!c--inlinefor$/,/^!/ { /^!/ d; p; }' <$sim_ac_message_file`"
   if test x"$sim_ac_message" = x""; then
@@ -8495,7 +8499,7 @@ else
 echo >&2 ""
 
 
-: ${sim_ac_message_file=$ac_aux_dir/m4/errors.txt}
+: ${sim_ac_message_file=$ac_aux_dir/errors.txt}
 if test -f $sim_ac_message_file; then
   sim_ac_message="`sed -n -e '/^!c--vdest$/,/^!/ { /^!/ d; p; }' <$sim_ac_message_file`"
   if test x"$sim_ac_message" = x""; then
@@ -8602,7 +8606,7 @@ if $sim_cv_c_gcctwonightysixbug; then
 echo >&2 ""
 
 
-: ${sim_ac_message_file=$ac_aux_dir/m4/errors.txt}
+: ${sim_ac_message_file=$ac_aux_dir/errors.txt}
 if test -f $sim_ac_message_file; then
   sim_ac_message="`sed -n -e '/^!c--gcc296bug$/,/^!/ { /^!/ d; p; }' <$sim_ac_message_file`"
   if test x"$sim_ac_message" = x""; then
@@ -9134,7 +9138,9 @@ if test x"$with_pthread" != xno; then
 
   # FIXME: should investigate and document the exact meaning of
   # the _REENTRANT flag. larsa's commit message mentions
-  # "glibc-doc/FAQ.threads.html".
+  # "glibc-doc/FAQ.threads.html". Also, kintel points to the
+  # comp.programming.thrads FAQ, which has an entry on the
+  # _REENTRANT define.
   #
   # Preferably, it should only be set up when really needed
   # (as detected by some other configure check).
@@ -13988,7 +13994,7 @@ fi
 echo >&2 ""
 
 
-: ${sim_ac_message_file=$ac_aux_dir/m4/errors.txt}
+: ${sim_ac_message_file=$ac_aux_dir/errors.txt}
 if test -f $sim_ac_message_file; then
   sim_ac_message="`sed -n -e '/^!no-doxygen$/,/^!/ { /^!/ d; p; }' <$sim_ac_message_file`"
   if test x"$sim_ac_message" = x""; then
@@ -14534,7 +14540,11 @@ else
 fi;
 
 if test x"$enable_warnings" = x"yes"; then
-  if test x"$GCC" = x"yes"; then
+
+  for sim_ac_try_warning_option in \
+    "-W" "-Wall" "-Wno-unused" "-Wno-multichar" "-Woverloaded-virtual"; do
+
+    if test x"$GCC" = x"yes"; then
 
 
 
@@ -14544,11 +14554,11 @@ ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
-echo "$as_me:$LINENO: checking whether $CC accepts -W -Wall -Wno-unused" >&5
-echo $ECHO_N "checking whether $CC accepts -W -Wall -Wno-unused... $ECHO_C" >&6
+echo "$as_me:$LINENO: checking whether $CC accepts $sim_ac_try_warning_option" >&5
+echo $ECHO_N "checking whether $CC accepts $sim_ac_try_warning_option... $ECHO_C" >&6
 
 sim_ac_save_cppflags=$CPPFLAGS
-CPPFLAGS="$CPPFLAGS -W -Wall -Wno-unused"
+CPPFLAGS="$CPPFLAGS $sim_ac_try_warning_option"
 cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
 #include "confdefs.h"
@@ -14589,9 +14599,9 @@ rm -f conftest.$ac_objext conftest.$ac_ext
 echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
 echo "${ECHO_T}$sim_ac_accept_result" >&6
 CPPFLAGS=$sim_ac_save_cppflags
-# This need to go last, in case CPPFLAGS is modified in CFLAGS="$CFLAGS -W -Wall -Wno-unused" or .
+# This need to go last, in case CPPFLAGS is modified in CFLAGS="$CFLAGS $sim_ac_try_warning_option" or .
 if test $sim_ac_accept_result = yes; then
-  CFLAGS="$CFLAGS -W -Wall -Wno-unused"
+  CFLAGS="$CFLAGS $sim_ac_try_warning_option"
 else
   :
 fi
@@ -14603,20 +14613,23 @@ ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ex
 ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
 
+    fi
+
+    if test x"$GXX" = x"yes"; then
 
 
 
-ac_ext=c
-ac_cpp='$CPP $CPPFLAGS'
-ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_c_compiler_gnu
+ac_ext=cc
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
-echo "$as_me:$LINENO: checking whether $CC accepts -Wno-multichar" >&5
-echo $ECHO_N "checking whether $CC accepts -Wno-multichar... $ECHO_C" >&6
+echo "$as_me:$LINENO: checking whether $CXX accepts $sim_ac_try_warning_option" >&5
+echo $ECHO_N "checking whether $CXX accepts $sim_ac_try_warning_option... $ECHO_C" >&6
 
 sim_ac_save_cppflags=$CPPFLAGS
-CPPFLAGS="$CPPFLAGS -Wno-multichar"
+CPPFLAGS="$CPPFLAGS $sim_ac_try_warning_option"
 cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
 #include "confdefs.h"
@@ -14657,9 +14670,9 @@ rm -f conftest.$ac_objext conftest.$ac_ext
 echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
 echo "${ECHO_T}$sim_ac_accept_result" >&6
 CPPFLAGS=$sim_ac_save_cppflags
-# This need to go last, in case CPPFLAGS is modified in CFLAGS="$CFLAGS -Wno-multichar" or .
+# This need to go last, in case CPPFLAGS is modified in CXXFLAGS="$CXXFLAGS $sim_ac_try_warning_option" or .
 if test $sim_ac_accept_result = yes; then
-  CFLAGS="$CFLAGS -Wno-multichar"
+  CXXFLAGS="$CXXFLAGS $sim_ac_try_warning_option"
 else
   :
 fi
@@ -14671,151 +14684,17 @@ ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ex
 ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
 
-  fi
+    fi
 
-  if test x"$GXX" = x"yes"; then
-
-
-
-ac_ext=cc
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-echo "$as_me:$LINENO: checking whether $CXX accepts -W -Wall -Wno-unused" >&5
-echo $ECHO_N "checking whether $CXX accepts -W -Wall -Wno-unused... $ECHO_C" >&6
-
-sim_ac_save_cppflags=$CPPFLAGS
-CPPFLAGS="$CPPFLAGS -W -Wall -Wno-unused"
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-#include "confdefs.h"
-
-#ifdef F77_DUMMY_MAIN
-#  ifdef __cplusplus
-     extern "C"
-#  endif
-   int F77_DUMMY_MAIN() { return 1; }
-#endif
-int
-main ()
-{
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  sim_ac_accept_result=yes
-else
-  echo "$as_me: failed program was:" >&5
-cat conftest.$ac_ext >&5
-sim_ac_accept_result=no
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
-echo "${ECHO_T}$sim_ac_accept_result" >&6
-CPPFLAGS=$sim_ac_save_cppflags
-# This need to go last, in case CPPFLAGS is modified in CXXFLAGS="$CXXFLAGS -W -Wall -Wno-unused" or .
-if test $sim_ac_accept_result = yes; then
-  CXXFLAGS="$CXXFLAGS -W -Wall -Wno-unused"
-else
-  :
-fi
-
-ac_ext=cc
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-
-
-
-
-ac_ext=cc
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-echo "$as_me:$LINENO: checking whether $CXX accepts -Wno-multichar" >&5
-echo $ECHO_N "checking whether $CXX accepts -Wno-multichar... $ECHO_C" >&6
-
-sim_ac_save_cppflags=$CPPFLAGS
-CPPFLAGS="$CPPFLAGS -Wno-multichar"
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-#include "confdefs.h"
-
-#ifdef F77_DUMMY_MAIN
-#  ifdef __cplusplus
-     extern "C"
-#  endif
-   int F77_DUMMY_MAIN() { return 1; }
-#endif
-int
-main ()
-{
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  sim_ac_accept_result=yes
-else
-  echo "$as_me: failed program was:" >&5
-cat conftest.$ac_ext >&5
-sim_ac_accept_result=no
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-echo "$as_me:$LINENO: result: $sim_ac_accept_result" >&5
-echo "${ECHO_T}$sim_ac_accept_result" >&6
-CPPFLAGS=$sim_ac_save_cppflags
-# This need to go last, in case CPPFLAGS is modified in CXXFLAGS="$CXXFLAGS -Wno-multichar" or .
-if test $sim_ac_accept_result = yes; then
-  CXXFLAGS="$CXXFLAGS -Wno-multichar"
-else
-  :
-fi
-
-ac_ext=cc
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-
-  fi
+  done
 
   case $host in
   *-*-irix*)
     ### Turn on all warnings ######################################
-    if test x"$CC" = xcc || test x"$CC" = xCC; then
+    # we try to catch settings like CC="CC -n32" too, even though the
+    # -n32 option belongs to C[XX]FLAGS
+    case $CC in
+    cc | "cc "* | CC | "CC "* )
 
 
 
@@ -14884,8 +14763,10 @@ ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ex
 ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
 
-    fi
-    if test x"$CXX" = xCC; then
+      ;;
+    esac
+    case $CXX in
+    CC | "CC "* )
 
 
 
@@ -14954,7 +14835,8 @@ ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ex
 ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
 
-    fi
+      ;;
+    esac
 
     ### Turn off specific (bogus) warnings ########################
 
@@ -14983,7 +14865,8 @@ ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
     sim_ac_bogus_warnings="-woff 3115,3262,1174,1209,1355,1375,3201,1110,1506,1169"
 
-    if test x"$CC" = xcc || test x"$CC" = xCC; then
+    case $CC in
+    cc | "cc "* | CC | "CC "* )
 
 
 
@@ -15052,8 +14935,9 @@ ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ex
 ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
 
-    fi
-    if test x"$CXX" = xCC; then
+    esac
+    case $CXX in
+    CC | "CC "* )
 
 
 
@@ -15122,7 +15006,8 @@ ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ex
 ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
 
-    fi
+      ;;
+    esac
   ;;
   esac
 fi
@@ -15503,7 +15388,7 @@ echo "${ECHO_T}$sim_cv_quote_apostrophes" >&6
 echo >&2 ""
 
 
-: ${sim_ac_message_file=$ac_aux_dir/m4/errors.txt}
+: ${sim_ac_message_file=$ac_aux_dir/errors.txt}
 if test -f $sim_ac_message_file; then
   sim_ac_message="`sed -n -e '/^!no-cpp-quoting$/,/^!/ { /^!/ d; p; }' <$sim_ac_message_file`"
   if test x"$sim_ac_message" = x""; then
@@ -16760,10 +16645,13 @@ echo "${ECHO_T}no" >&6
 fi
 
 
-  if $sim_ac_simage_configcmd; then
+  if ! test "X$sim_ac_simage_configcmd" = "Xfalse"; then
     test -n "$CONFIG" &&
       $sim_ac_simage_configcmd --alternate=$CONFIG >/dev/null 2>/dev/null &&
       sim_ac_simage_configcmd="$sim_ac_simage_configcmd --alternate=$CONFIG"
+  fi
+
+  if $sim_ac_simage_configcmd; then
     sim_ac_simage_cppflags=`$sim_ac_simage_configcmd --cppflags`
     sim_ac_simage_ldflags=`$sim_ac_simage_configcmd --ldflags`
     sim_ac_simage_libs=`$sim_ac_simage_configcmd --libs`
@@ -17415,6 +17303,7 @@ int
 main ()
 {
 FT_Library lib;
+     unsigned long check_for_required_constants = FT_ENCODING_ADOBE_LATIN_1;
      FT_Init_FreeType(&lib);
   ;
   return 0;
@@ -17685,7 +17574,7 @@ else
 echo >&2 ""
 
 
-: ${sim_ac_message_file=$ac_aux_dir/m4/errors.txt}
+: ${sim_ac_message_file=$ac_aux_dir/errors.txt}
 if test -f $sim_ac_message_file; then
   sim_ac_message="`sed -n -e '/^!no-math-library$/,/^!/ { /^!/ d; p; }' <$sim_ac_message_file`"
   if test x"$sim_ac_message" = x""; then
@@ -17879,7 +17768,7 @@ else
 echo >&2 ""
 
 
-: ${sim_ac_message_file=$ac_aux_dir/m4/errors.txt}
+: ${sim_ac_message_file=$ac_aux_dir/errors.txt}
 if test -f $sim_ac_message_file; then
   sim_ac_message="`sed -n -e '/^!no-math-library$/,/^!/ { /^!/ d; p; }' <$sim_ac_message_file`"
   if test x"$sim_ac_message" = x""; then
@@ -18040,7 +17929,12 @@ rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
 # * Handle the detection and inclusion of X11 libraries.
 # *******************************************************************
 
-echo "$as_me:$LINENO: checking for X" >&5
+case $host_os in
+  darwin* )
+    # Don't try to link against X11 on Mac OS X.
+    ;;
+  * )
+    echo "$as_me:$LINENO: checking for X" >&5
 echo $ECHO_N "checking for X... $ECHO_C" >&6
 
 
@@ -19286,9 +19180,10 @@ echo "${ECHO_T}$sim_cv_lib_x11_avail" >&6
 
   if test x"$sim_cv_lib_x11_avail" = x"yes"; then
     sim_ac_x11_avail=yes
-    COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_x11_cppflags"
-                  COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_x11_ldflags"
-                  COIN_EXTRA_LIBS="$sim_ac_x11_libs $COIN_EXTRA_LIBS"
+
+      COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_x11_cppflags"
+      COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_x11_ldflags"
+      COIN_EXTRA_LIBS="$sim_ac_x11_libs $COIN_EXTRA_LIBS"
   else
     CPPFLAGS=$sim_ac_save_cppflags
     LDFLAGS=$sim_ac_save_ldflags
@@ -19298,9 +19193,9 @@ echo "${ECHO_T}$sim_cv_lib_x11_avail" >&6
 fi
 
 
-if test x"$sim_ac_x11_avail" = xyes; then
-  #  If the X11 shared memory extension is available, include it as
-  #  the Mesa library has probably been linked against it.
+    if test x"$sim_ac_x11_avail" = xyes; then
+      #  If the X11 shared memory extension is available, include it as
+      #  the Mesa library has probably been linked against it.
 
 
 sim_ac_x11shmem_avail=no
@@ -19358,17 +19253,18 @@ echo "${ECHO_T}$sim_cv_lib_x11shmem_avail" >&6
 if test x"$sim_cv_lib_x11shmem_avail" = xyes; then
   sim_ac_x11shmem_avail=yes
   COIN_EXTRA_LIBS="$sim_ac_x11shmem_libs $COIN_EXTRA_LIBS"
+
 else
   LIBS=$sim_ac_save_libs
 
 fi
 
-fi
+    fi
 
-## We need this extra, final X11 check to set up the HAVE_X11_AVAILABLE
-## define -- the X_DISPLAY_MISSING define provided by the built-in
-## Autoconf X11 check is not strict enough.
-echo "$as_me:$LINENO: checking if X11 linkage is ready" >&5
+    ## We need this extra, final X11 check to set up the HAVE_X11_AVAILABLE
+    ## define -- the X_DISPLAY_MISSING define provided by the built-in
+    ## Autoconf X11 check is not strict enough.
+    echo "$as_me:$LINENO: checking if X11 linkage is ready" >&5
 echo $ECHO_N "checking if X11 linkage is ready... $ECHO_C" >&6
 if test "${sim_cv_x11_ready+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -19423,6 +19319,8 @@ else
   :
 fi
 
+    ;;
+esac
 
 # *******************************************************************
 # * Test for installation of Mesa or OpenGL development system.
@@ -19734,7 +19632,9 @@ if test x"$with_pthread" != xno; then
 
   # FIXME: should investigate and document the exact meaning of
   # the _REENTRANT flag. larsa's commit message mentions
-  # "glibc-doc/FAQ.threads.html".
+  # "glibc-doc/FAQ.threads.html". Also, kintel points to the
+  # comp.programming.thrads FAQ, which has an entry on the
+  # _REENTRANT define.
   #
   # Preferably, it should only be set up when really needed
   # (as detected by some other configure check).
@@ -20170,6 +20070,72 @@ _ACEOF
 else
 
 
+sim_ac_save_ldflags=$LDFLAGS
+sim_ac_agl_ldflags="-Wl,-framework,ApplicationServices -Wl,-framework,AGL"
+
+LDFLAGS="$LDFLAGS $sim_ac_agl_ldflags"
+
+echo "$as_me:$LINENO: checking whether AGL is on the system" >&5
+echo $ECHO_N "checking whether AGL is on the system... $ECHO_C" >&6
+if test "${sim_cv_have_agl+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+#include "confdefs.h"
+#include <AGL/agl.h>
+#include <Carbon/Carbon.h>
+#ifdef F77_DUMMY_MAIN
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+#endif
+int
+main ()
+{
+aglGetCurrentContext();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  sim_cv_have_agl=true
+else
+  echo "$as_me: failed program was:" >&5
+cat conftest.$ac_ext >&5
+sim_cv_have_agl=false
+fi
+rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
+fi
+echo "$as_me:$LINENO: result: $sim_cv_have_agl" >&5
+echo "${ECHO_T}$sim_cv_have_agl" >&6
+
+LDFLAGS=$sim_ac_save_ldflags
+if ${sim_cv_have_agl=false}; then
+
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_AGL 1
+_ACEOF
+
+      LDFLAGS="$LDFLAGS $sim_ac_agl_ldflags"
+      COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_agl_ldflags"
+
+else
+
+
 echo "$as_me:$LINENO: checking whether GLX is on the system" >&5
 echo $ECHO_N "checking whether GLX is on the system... $ECHO_C" >&6
 if test "${sim_cv_have_glx+set}" = set; then
@@ -20231,72 +20197,6 @@ cat >>confdefs.h <<\_ACEOF
 #define HAVE_GLX 1
 _ACEOF
 
-
-else
-
-
-sim_ac_save_ldflags=$LDFLAGS
-sim_ac_agl_ldflags="-Wl,-framework,ApplicationServices -Wl,-framework,AGL"
-
-LDFLAGS="$LDFLAGS $sim_ac_agl_ldflags"
-
-echo "$as_me:$LINENO: checking whether AGL is on the system" >&5
-echo $ECHO_N "checking whether AGL is on the system... $ECHO_C" >&6
-if test "${sim_cv_have_agl+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-#include "confdefs.h"
-#include <AGL/agl.h>
-#include <Carbon/Carbon.h>
-#ifdef F77_DUMMY_MAIN
-#  ifdef __cplusplus
-     extern "C"
-#  endif
-   int F77_DUMMY_MAIN() { return 1; }
-#endif
-int
-main ()
-{
-aglGetCurrentContext();
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext conftest$ac_exeext
-if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
-  (eval $ac_link) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest$ac_exeext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  sim_cv_have_agl=true
-else
-  echo "$as_me: failed program was:" >&5
-cat conftest.$ac_ext >&5
-sim_cv_have_agl=false
-fi
-rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
-fi
-echo "$as_me:$LINENO: result: $sim_cv_have_agl" >&5
-echo "${ECHO_T}$sim_cv_have_agl" >&6
-
-LDFLAGS=$sim_ac_save_ldflags
-if ${sim_cv_have_agl=false}; then
-
-
-cat >>confdefs.h <<\_ACEOF
-#define HAVE_AGL 1
-_ACEOF
-
-        LDFLAGS="$LDFLAGS $sim_ac_agl_ldflags"
-        COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_agl_ldflags"
 
 else
 
@@ -20910,7 +20810,7 @@ fi
 echo >&2 ""
 
 
-: ${sim_ac_message_file=$ac_aux_dir/m4/errors.txt}
+: ${sim_ac_message_file=$ac_aux_dir/errors.txt}
 if test -f $sim_ac_message_file; then
   sim_ac_message="`sed -n -e '/^!no-opengl$/,/^!/ { /^!/ d; p; }' <$sim_ac_message_file`"
   if test x"$sim_ac_message" = x""; then
@@ -21369,7 +21269,7 @@ else
 fi
 
 if $enable_superglu; then
-  sim_include_glu_h="#include <superglu/include/superglu.h>"
+  sim_include_glu_h="/* #include <GL/glu.h> - not used, Coin linked with embedded SuperGLU */"
 else
   if test x"$ac_cv_header_GL_glu_h" = x"yes"; then
     sim_include_glu_h="#include <GL/glu.h>"
@@ -21488,11 +21388,7 @@ fi
       COIN_EXTRA_LIBS="-lcoin${COIN_MAJOR_VERSION}${SUFFIX}"
     fi
   else
-    if test -n "$COIN_EXTRA_LIBS"; then
-      COIN_EXTRA_LIBS="-lCoin${SUFFIX} $COIN_EXTRA_LIBS"
-    else
-      COIN_EXTRA_LIBS="-lCoin${SUFFIX}"
-    fi
+    COIN_EXTRA_LIBS="-lCoin${SUFFIX} $COIN_EXTRA_LIBS"
   fi
 
   if $BUILD_WITH_MSVC; then
@@ -21599,7 +21495,7 @@ else
 fi
 
 
-  # -DHAVE_CONFIG_H is set up in $DEFS too late for use to use, and some
+  # -DHAVE_CONFIG_H is set up in $DEFS too late for us to use, and some
   # include directives are usually set up in the Makefile.am files
   for arg in -DHAVE_CONFIG_H -I$coin_build_dir -I$coin_build_dir/include -I$coin_src_dir/include $CPPFLAGS $LDFLAGS $LIBS; do
     case $arg in
@@ -21634,7 +21530,7 @@ fi
     -DCOIN_DEBUG* | -DNDEBUG )
       # Defines that vary between release/debug configurations can't be
       # set up dynamically in <lib>_DSP_DEFS - they must be static in the
-      # gendsp.sh script.  We therefore catche them here so we can ignore
+      # gendsp.sh script.  We therefore catch them here so we can ignore
       # checking for them below.
       ;;
     -D*=* | -D* )
@@ -21648,9 +21544,9 @@ fi
     esac
   done
 
-  CC=$coin_src_dir/cfg/m4/gendsp.sh
-  CXX=$coin_src_dir/cfg/m4/gendsp.sh
-  CXXLD=$coin_src_dir/cfg/m4/gendsp.sh
+  CC=$coin_src_dir/cfg/gendsp.sh
+  CXX=$coin_src_dir/cfg/gendsp.sh
+  CXXLD=$coin_src_dir/cfg/gendsp.sh
   # Yes, this is totally bogus stuff, but don't worry about it.  As long
   # as gendsp.sh recognizes it...  20030219 larsa
   CPPFLAGS="$CPPFLAGS -Ddspfile=$coin_build_dir/coin$COIN_MAJOR_VERSION.dsp"
@@ -21659,8 +21555,8 @@ fi
 
   # this can't be set up at the point the libtool script is generated
   mv libtool libtool.bak
-  sed -e "s%^CC=\"gcc\"%CC=\"$coin_src_dir/cfg/m4/gendsp.sh\"%" \
-      -e "s%^CC=\".*/wrapmsvc.exe\"%CC=\"$coin_src_dir/cfg/m4/gendsp.sh\"%" \
+  sed -e "s%^CC=\"gcc\"%CC=\"$coin_src_dir/cfg/gendsp.sh\"%" \
+      -e "s%^CC=\".*/wrapmsvc.exe\"%CC=\"$coin_src_dir/cfg/gendsp.sh\"%" \
       <libtool.bak >libtool
   rm -f libtool.bak
   chmod 755 libtool

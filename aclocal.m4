@@ -363,7 +363,7 @@ $1_DSP_DEFS=
 if $sim_ac_make_dsp; then
   SIM_AC_CONFIGURATION_SETTING([$2 build type], [msvc .dsp])
 
-  # -DHAVE_CONFIG_H is set up in $DEFS too late for use to use, and some
+  # -DHAVE_CONFIG_H is set up in $DEFS too late for us to use, and some
   # include directives are usually set up in the Makefile.am files
   for arg in -DHAVE_CONFIG_H $4 $CPPFLAGS $LDFLAGS $LIBS; do
     case $arg in
@@ -398,7 +398,7 @@ if $sim_ac_make_dsp; then
     -D$1_DEBUG* | -DNDEBUG )
       # Defines that vary between release/debug configurations can't be
       # set up dynamically in <lib>_DSP_DEFS - they must be static in the
-      # gendsp.sh script.  We therefore catche them here so we can ignore
+      # gendsp.sh script.  We therefore catch them here so we can ignore
       # checking for them below.
       ;;
     -D*=* | -D* )
@@ -412,9 +412,9 @@ if $sim_ac_make_dsp; then
     esac
   done
 
-  CC=[$]$3_src_dir/cfg/m4/gendsp.sh
-  CXX=[$]$3_src_dir/cfg/m4/gendsp.sh
-  CXXLD=[$]$3_src_dir/cfg/m4/gendsp.sh
+  CC=[$]$3_src_dir/cfg/gendsp.sh
+  CXX=[$]$3_src_dir/cfg/gendsp.sh
+  CXXLD=[$]$3_src_dir/cfg/gendsp.sh
   # Yes, this is totally bogus stuff, but don't worry about it.  As long
   # as gendsp.sh recognizes it...  20030219 larsa
   CPPFLAGS="$CPPFLAGS -Ddspfile=[$]$3_build_dir/$3[$]$1_MAJOR_VERSION.dsp"
@@ -423,8 +423,8 @@ if $sim_ac_make_dsp; then
 
   # this can't be set up at the point the libtool script is generated
   mv libtool libtool.bak
-  sed -e "s%^CC=\"gcc\"%CC=\"[$]$3_src_dir/cfg/m4/gendsp.sh\"%" \
-      -e "s%^CC=\".*/wrapmsvc.exe\"%CC=\"[$]$3_src_dir/cfg/m4/gendsp.sh\"%" \
+  sed -e "s%^CC=\"gcc\"%CC=\"[$]$3_src_dir/cfg/gendsp.sh\"%" \
+      -e "s%^CC=\".*/wrapmsvc.exe\"%CC=\"[$]$3_src_dir/cfg/gendsp.sh\"%" \
       <libtool.bak >libtool
   rm -f libtool.bak
   chmod 755 libtool
@@ -560,7 +560,7 @@ AC_REQUIRE([SIM_AC_MSVC_DISABLE_OPTION])
 
 BUILD_WITH_MSVC=false
 if $sim_ac_try_msvc; then
-  sim_ac_wrapmsvc=`cd $srcdir; pwd`/cfg/m4/wrapmsvc.exe
+  sim_ac_wrapmsvc=`cd $srcdir; pwd`/cfg/wrapmsvc.exe
   if test -z "$CC" -a -z "$CXX" && $sim_ac_wrapmsvc >/dev/null 2>&1; then
     m4_ifdef([$0_VISITED],
       [AC_FATAL([Macro $0 invoked multiple times])])
@@ -666,7 +666,7 @@ sim_ac_message_file=$1
 ]) # SIM_AC_ERROR_MESSAGE_FILE
 
 AC_DEFUN([SIM_AC_ONE_MESSAGE], [
-: ${sim_ac_message_file=$ac_aux_dir/m4/errors.txt}
+: ${sim_ac_message_file=$ac_aux_dir/errors.txt}
 if test -f $sim_ac_message_file; then
   sim_ac_message="`sed -n -e '/^!$1$/,/^!/ { /^!/ d; p; }' <$sim_ac_message_file`"
   if test x"$sim_ac_message" = x""; then
@@ -5119,7 +5119,9 @@ if test x"$with_pthread" != xno; then
 
   # FIXME: should investigate and document the exact meaning of
   # the _REENTRANT flag. larsa's commit message mentions
-  # "glibc-doc/FAQ.threads.html".
+  # "glibc-doc/FAQ.threads.html". Also, kintel points to the
+  # comp.programming.thrads FAQ, which has an entry on the
+  # _REENTRANT define.
   #
   # Preferably, it should only be set up when really needed
   # (as detected by some other configure check).
@@ -5418,29 +5420,37 @@ AC_ARG_ENABLE(
   [enable_warnings=yes])
 
 if test x"$enable_warnings" = x"yes"; then
-  if test x"$GCC" = x"yes"; then
-    SIM_AC_CC_COMPILER_OPTION([-W -Wall -Wno-unused],
-                              [CFLAGS="$CFLAGS -W -Wall -Wno-unused"])
-    SIM_AC_CC_COMPILER_OPTION([-Wno-multichar],
-                              [CFLAGS="$CFLAGS -Wno-multichar"])
-  fi
 
-  if test x"$GXX" = x"yes"; then
-    SIM_AC_CXX_COMPILER_OPTION([-W -Wall -Wno-unused],
-                               [CXXFLAGS="$CXXFLAGS -W -Wall -Wno-unused"])
-    SIM_AC_CXX_COMPILER_OPTION([-Wno-multichar],
-                               [CXXFLAGS="$CXXFLAGS -Wno-multichar"])
-  fi
+  for sim_ac_try_warning_option in \
+    "-W" "-Wall" "-Wno-unused" "-Wno-multichar" "-Woverloaded-virtual"; do
 
+    if test x"$GCC" = x"yes"; then
+      SIM_AC_CC_COMPILER_OPTION([$sim_ac_try_warning_option],
+                                [CFLAGS="$CFLAGS $sim_ac_try_warning_option"])
+    fi
+  
+    if test x"$GXX" = x"yes"; then
+      SIM_AC_CXX_COMPILER_OPTION([$sim_ac_try_warning_option],
+                                 [CXXFLAGS="$CXXFLAGS $sim_ac_try_warning_option"])
+    fi
+
+  done
+    
   case $host in
   *-*-irix*) 
     ### Turn on all warnings ######################################
-    if test x"$CC" = xcc || test x"$CC" = xCC; then
+    # we try to catch settings like CC="CC -n32" too, even though the
+    # -n32 option belongs to C[XX]FLAGS
+    case $CC in
+    cc | "cc "* | CC | "CC "* )
       SIM_AC_CC_COMPILER_OPTION([-fullwarn], [CFLAGS="$CFLAGS -fullwarn"])
-    fi
-    if test x"$CXX" = xCC; then
+      ;;
+    esac
+    case $CXX in
+    CC | "CC "* )
       SIM_AC_CXX_COMPILER_OPTION([-fullwarn], [CXXFLAGS="$CXXFLAGS -fullwarn"])
-    fi
+      ;;
+    esac
 
     ### Turn off specific (bogus) warnings ########################
 
@@ -5469,14 +5479,17 @@ if test x"$enable_warnings" = x"yes"; then
 
     sim_ac_bogus_warnings="-woff 3115,3262,1174,1209,1355,1375,3201,1110,1506,1169"
 
-    if test x"$CC" = xcc || test x"$CC" = xCC; then
+    case $CC in
+    cc | "cc "* | CC | "CC "* )
       SIM_AC_CC_COMPILER_OPTION([$sim_ac_bogus_warnings],
                                 [CFLAGS="$CFLAGS $sim_ac_bogus_warnings"])
-    fi
-    if test x"$CXX" = xCC; then
+    esac
+    case $CXX in
+    CC | "CC "* )
       SIM_AC_CXX_COMPILER_OPTION([$sim_ac_bogus_warnings],
                                  [CXXFLAGS="$CXXFLAGS $sim_ac_bogus_warnings"])
-    fi
+      ;;
+    esac
   ;;
   esac
 fi
@@ -5919,10 +5932,13 @@ if $sim_ac_simage_desired; then
 
   AC_PATH_PROG(sim_ac_simage_configcmd, simage-config, false, $sim_ac_path)
 
-  if $sim_ac_simage_configcmd; then
+  if ! test "X$sim_ac_simage_configcmd" = "Xfalse"; then
     test -n "$CONFIG" &&
       $sim_ac_simage_configcmd --alternate=$CONFIG >/dev/null 2>/dev/null &&
       sim_ac_simage_configcmd="$sim_ac_simage_configcmd --alternate=$CONFIG"
+  fi
+
+  if $sim_ac_simage_configcmd; then
     sim_ac_simage_cppflags=`$sim_ac_simage_configcmd --cppflags`
     sim_ac_simage_ldflags=`$sim_ac_simage_configcmd --ldflags`
     sim_ac_simage_libs=`$sim_ac_simage_configcmd --libs`
@@ -6988,6 +7004,7 @@ esac
     [#include <ft2build.h>
      #include FT_FREETYPE_H],
     [FT_Library lib;
+     unsigned long check_for_required_constants = FT_ENCODING_ADOBE_LATIN_1;
      FT_Init_FreeType(&lib);],
     [sim_ac_have_freetype=true])
 
@@ -7251,36 +7268,74 @@ fi
 #  The LIBS flag will also be modified accordingly. In addition, the
 #  variable $sim_ac_x11mu_avail is set to "yes" if the X11 miscellaneous
 #  utilities extension is found.
+#  CPPFLAGS and LDFLAGS might also be modified, if library is found in a
+#  non-standard location.
 #
 # Author: Morten Eriksen, <mortene@sim.no>.
 #
 # TODO:
 #    * [mortene:20000122] make sure this work on MSWin (with
 #      Cygwin installation)
-#
 
 AC_DEFUN([SIM_AC_CHECK_X11MU], [
 
 sim_ac_x11mu_avail=no
+sim_ac_x11mu_cppflags=""
+sim_ac_x11mu_ldflags=""
 sim_ac_x11mu_libs="-lXmu"
+
 sim_ac_save_libs=$LIBS
+sim_ac_save_cppflags=$CPPFLAGS
+sim_ac_save_ldflags=$LDFLAGS
+
 LIBS="$sim_ac_x11mu_libs $LIBS"
 
 AC_CACHE_CHECK(
-  [whether the X11 miscellaneous utilities is available],
+  [whether the X11 miscellaneous utilities library is available],
   sim_cv_lib_x11mu_avail,
   [AC_TRY_LINK([#include <X11/Xlib.h>
                 #include <X11/Xmu/Xmu.h>
                 #include <X11/Xmu/StdCmap.h>],
                [(void)XmuAllStandardColormaps(0L);],
                [sim_cv_lib_x11mu_avail=yes],
-               [sim_cv_lib_x11mu_avail=no])])
+               [sim_cv_lib_x11mu_avail=maybe])])
 
 if test x"$sim_cv_lib_x11mu_avail" = xyes; then
   sim_ac_x11mu_avail=yes
+else
+  # On HP-UX, Xmu might be located under /usr/contrib/X11R6/
+  mudir=/usr/contrib/X11R6
+  if test -d $mudir; then
+    sim_ac_x11mu_cppflags="-I$mudir/include"
+    sim_ac_x11mu_ldflags="-L$mudir/lib"
+    CPPFLAGS="$sim_ac_x11mu_cppflags $CPPFLAGS"
+    LDFLAGS="$sim_ac_x11mu_ldflags $LDFLAGS"
+
+    AC_CACHE_CHECK(
+      [once more whether the X11 miscellaneous utilities library is available],
+      sim_cv_lib_x11mu_contrib_avail,
+      [AC_TRY_LINK([#include <X11/Xlib.h>
+                    #include <X11/Xmu/Xmu.h>
+                    #include <X11/Xmu/StdCmap.h>],
+                   [(void)XmuAllStandardColormaps(0L);],
+                   [sim_cv_lib_x11mu_contrib_avail=yes],
+                   [sim_cv_lib_x11mu_contrib_avail=no])])
+    if test x"$sim_cv_lib_x11mu_contrib_avail" = xyes; then
+      sim_ac_x11mu_avail=yes
+    else
+      sim_ac_x11mu_cppflags=""
+      sim_ac_x11mu_ldflags=""
+    fi
+  fi
+fi
+
+if test x"$sim_ac_x11mu_avail" = xyes; then
+  :
   $1
 else
   LIBS=$sim_ac_save_libs
+  CPPFLAGS=$sim_ac_save_cppflags
+  LDFLAGS=$sim_ac_save_ldflags
   $2
 fi
 ])
@@ -7319,7 +7374,7 @@ AC_CACHE_CHECK(
                [sim_cv_lib_x11xid_avail=yes],
                [sim_cv_lib_x11xid_avail=no])])
 
-if test x"$sim_cv_lib_x11xid_avail" = xyes; then
+if test x"$sim_cv_lib_x11xid_avail" = x"yes"; then
   sim_ac_x11xid_avail=yes
   $1
 else

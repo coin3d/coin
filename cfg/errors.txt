@@ -1,0 +1,110 @@
+This file contains the textual explanations for errors that can occur when
+configure is run.  The correct message is automatically extracted and dumped
+on the screen by the configure script.
+
+!too-old-qt
+Versions of the Qt library older than version 2.0.0 is not supported.
+
+!no-qt
+Could not find any way to build against the Qt library. If you
+are sure Qt is properly installed on your system, see the file
+config.log to find out what went wrong.
+
+Note that it is possible to override the combinations of Qt libraries
+configure tries to link against by setting up the environment variable
+CONFIG_QTLIBS.
+
+If you for instance know the correct set of libraries to be
+qt304.lib, qtmain.lib and gdi32.lib (on an MSWindows system),
+then set CONFIG_QTLIBS to the string "-lqt304 -lqtmain -lgdi32"
+before re-running configure.
+
+!no-qgl
+The configure script could not find any way to build code which uses
+Qt's OpenGL bindings (called "QGL"), neither as part of the main Qt
+library, nor as a stand-alone library.
+
+You must rebuild your local Qt library with OpenGL support to be able
+to resolve this problem.
+
+!no-msvc++
+You need to have the Microsoft Visual C++ compiler suite accessible in the
+Cygwin environment.  Look in README.WIN32.
+
+!c--inlinefor
+This C++ compiler (\"$CXX\") does not seem to be capable of compiling
+Coin, as it can't compile a simple test snippet with a for()-loop
+within an inline function.
+
+This check is primarily supposed to smoke out the useless gratis C++
+compiler bundled by Hewlett-Packard along with HP-UX. If you get this
+error message for other compilers, there might be something very wrong
+with your local environment or compiler version.
+
+(We've had error reports with this for g++ 2.95.3 on SuSe Linux, which
+we have so far not been able to pin down to it's exact cause -- just
+that it causes g++ to exit due to an internal compiler error, which is
+of course a "should never happen" condition for any compiler. If you
+are hit by this problem, try upgrading to a later g++ version.)
+
+!c--vdest
+This C++ compiler (\"$CXX\") is not capable of compiling Coin.
+If you are using the Sun CC compiler, try upgrading to a new version,
+or even downgrading to an older version.
+
+!c--gcc296bug
+Your compiler contains a nasty bug which makes it unsuited for
+building this project.
+
+If this is the GCC 2.96.x compiler shipped with Red Hat Linux, Red Hat
+might provide updated RPMs of GCC without the bug. We strongly advise
+you to upgrade before building *any* software on your system.
+
+(gcc 2.96 was never really supported by the GCC team, as it was just a
+snapshot taken from the development CVS repository by RedHat, then
+branded as "version 2.96".)
+
+If you can not find or install any updated version of the compiler,
+you may try to re-run configure with the "--disable-optimization"
+option, which should take care of the problem. Note that this will
+have a negative impact on the Coin library's performance.
+
+Another possibility is to change to a higher optimization level, as
+only the default -O2 optimization level seems to exhibit this
+particular bug. Note that you do so on your own risk, as there might
+be gcc-bugs undetected by us for the higher optimization levels. If
+you still want to go ahead with increasing the optimization level,
+just set up the CPPFLAGS environment variable when invoking configure,
+like this:
+
+        $ <srcdir>/configure [your-options] CPPFLAGS="-O3"
+
+
+!no-network-conversion
+Could not find network conversion functions like htonl() and its variants.
+
+!no-doxygen
+Could not find the doxygen tool.
+See http://www.doxygen.org for download information.
+
+!no-opengl
+Could not find an OpenGL software development kit.
+
+!no-cpp-quoting
+Couldn't figure out how to quote strings in CPP macros.
+
+!no-math-library
+Could not find a way to use the math library.
+
+!invalid-msvcrt
+Your choice for MSVC++ C library (the --with-msvcrt=<crt> option) was
+invalid.  Use one of the following choices (aliases on the right):
+
+  singlethread-static        [ /ml  | ml  | libc    ]
+  singlethread-static-debug  [ /mld | mld | libcd   ]
+  multithread-static         [ /mt  | mt  | libcmt  ]
+  multithread-static-debug   [ /mtd | mtd | libcmtd ]
+  multithread-dynamic        [ /md  | md  | msvcrt  ]
+  multithread-dynamic-debug  [ /mdd | mdd | msvcrtd ]
+
+!end
