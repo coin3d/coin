@@ -292,7 +292,7 @@ SbRotation::setValue(const float q[4])
 
   \sa getValue().
  */
-SbRotation&
+SbRotation &
 SbRotation::setValue(const SbMatrix& m)
 {
   float scalerow = m[0][0] + m[1][1] + m[2][2];
@@ -493,18 +493,11 @@ SbRotation::equals(const SbRotation& r, const float tolerance) const
   Multiplies the two rotations and returns the result.
 */
 SbRotation
-operator *(const SbRotation& q1, const SbRotation& q2)
+operator *(const SbRotation & q1, const SbRotation & q2)
 {
-  // Same code as in SbRotation::operator*=()
-
-  float a, b, c, d, x, y, z, w;
-  q2.getValue(b, c, d, a);
-  q1.getValue(y, z, w, x);
-
-  return SbRotation(a*y+b*x+c*w-d*z,
-                    a*z-b*w+c*x+d*y,
-                    a*w+b*z-c*y+d*x,
-                    a*x-b*y-c*z-d*w);
+  SbRotation q(q1);
+  q *= q2;
+  return q;
 }
 
 /*!
