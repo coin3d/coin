@@ -832,7 +832,10 @@ else
 SIM_AC_HAVE_OPENAL_IFELSE([
   CPPFLAGS="$CPPFLAGS $sim_ac_openal_cppflags"
   LDFLAGS="$LDFLAGS $sim_ac_openal_ldflags"
-  LIBS="$sim_ac_openal_libs $LIBS"
+  LIBS="$LIBS $sim_ac_openal_libs"
+  COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_openal_cppflags"
+  COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_openal_ldflags"
+  COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS $sim_ac_openal_libs"
   AC_DEFINE(HAVE_OPENAL, 1, [openal extensions available])
   SIM_AC_CONFIGURATION_SETTING([OpenAL support], [Yes, link-time binding])
 ], [
@@ -856,7 +859,6 @@ fi
 AC_SUBST(HAVE_SOUND)
 
 AM_CONDITIONAL([BUILD_WITH_SOUND], [$sim_ac_enable_sound])
-
 
 
 # *******************************************************************
@@ -1106,12 +1108,12 @@ AC_SUBST([coin_src_dir], [`cd $srcdir; pwd`])
 # **************************************************************************
 # Remove redundant options from certain option lists.
 
-SIM_AC_UNIQIFY_LIST(COIN_EXTRA_CPPFLAGS, -I$includedir $COIN_EXTRA_CPPFLAGS)
-SIM_AC_UNIQIFY_LIST(COIN_EXTRA_LDFLAGS, -L$libdir $COIN_EXTRA_LDFLAGS)
-SIM_AC_UNIQIFY_LIST(COIN_EXTRA_LIBS, $COIN_EXTRA_LIBS)
-SIM_AC_UNIQIFY_LIST(CPPFLAGS, $CPPFLAGS)
-SIM_AC_UNIQIFY_LIST(LDFLAGS, $LDFLAGS)
-SIM_AC_UNIQIFY_LIST(LIBS, $LIBS)
+SIM_AC_UNIQIFY_OPTION_LIST(COIN_EXTRA_CPPFLAGS, -I$includedir $COIN_EXTRA_CPPFLAGS)
+SIM_AC_UNIQIFY_OPTION_LIST(COIN_EXTRA_LDFLAGS, -L$libdir $COIN_EXTRA_LDFLAGS)
+SIM_AC_UNIQIFY_OPTION_LIST(COIN_EXTRA_LIBS, $COIN_EXTRA_LIBS)
+SIM_AC_UNIQIFY_OPTION_LIST(CPPFLAGS, $CPPFLAGS)
+SIM_AC_UNIQIFY_OPTION_LIST(LDFLAGS, $LDFLAGS)
+SIM_AC_UNIQIFY_OPTION_LIST(LIBS, $LIBS)
 
 case $enable_static in
 yes | true)  COIN_STATIC=true ;;
