@@ -50,9 +50,10 @@ public:
   static SbVec2s getMaxDimensions(void);
 private:
   virtual SbVec2s getMax(void);
+  static Display * getDisplay(void);
 
   unsigned char * buffer;
-  Display * display;
+  static Display * display;
   XVisualInfo * visinfo;
   GLXContext context;
   Pixmap pixmap;
@@ -63,20 +64,50 @@ private:
   GLXContext storedcontext;
 };
 
+Display * SoOffscreenGLXData::display = NULL;
+
+Display *
+SoOffscreenGLXData::getDisplay(void)
+{
+  static SbBool first = TRUE;
+  if (first) {
+    first = FALSE;
+
+    // Keep a single static display-ptr.
+    // 
+    // This resource is never deallocated explicitly (but of course
+    // implicitly by the system on application close-down). This to
+    // work around some strange problems with the NVidia-driver 29.60
+    // on XFree86 v4 when using XCloseDisplay() -- like doublebuffered
+    // visuals not working correctly.
+    //
+    // Also, XCloseDisplay() has been known to cause crashes when
+    // running remotely from some old Mesa version on Red Hat Linux
+    // 6.2 onto an IRIX6.5 display. It seems likely that this was
+    // caused by a bug in that particular old Mesa version.
+    //
+    // mortene@sim.no
+
+    SoOffscreenGLXData::display = XOpenDisplay(NULL);
+
+    if (!SoOffscreenGLXData::display) {
+      SoDebugError::post("SoOffscreenGLXData::SoOffscreenGLXData",
+                         "Couldn't connect to X11 DISPLAY.");
+      // FIXME: will probably cause a crash later? If so, should be
+      // more robust. 20020802 mortene.
+      return NULL;
+    }
+  }
+
+  return SoOffscreenGLXData::display;
+}
 
 SoOffscreenGLXData::SoOffscreenGLXData(void)
   // set everything to NULL first to gracefully handle error conditions
-  : display(NULL), visinfo(NULL), context(NULL), pixmap(0), glxpixmap(0),
+  : visinfo(NULL), context(NULL), pixmap(0), glxpixmap(0),
     storedcontext(NULL)
 {
   this->buffer = NULL;
-
-  this->display = XOpenDisplay(NULL);
-  if (!this->display) {
-    SoDebugError::postWarning("SoOffscreenGLXData::SoOffscreenGLXData",
-                              "Couldn't connect to X11 DISPLAY.");
-    return;
-  }
 
   int trynum = 0;
   const int ARRAYSIZE = 32;
@@ -84,8 +115,8 @@ SoOffscreenGLXData::SoOffscreenGLXData(void)
   while (this->visinfo == NULL && trynum < 8) {
     int arraysize = SoOffscreenGLXData::buildGLAttrs(attrs, trynum);
     assert(arraysize < ARRAYSIZE);
-    this->visinfo = glXChooseVisual(this->display,
-                                    DefaultScreen(this->display),
+    this->visinfo = glXChooseVisual(SoOffscreenGLXData::getDisplay(),
+                                    DefaultScreen(SoOffscreenGLXData::getDisplay()),
                                     attrs);
     trynum++;
   }
@@ -96,7 +127,8 @@ SoOffscreenGLXData::SoOffscreenGLXData(void)
     return;
   }
 
-  this->context = glXCreateContext(this->display, this->visinfo,
+  this->context = glXCreateContext(SoOffscreenGLXData::getDisplay(),
+                                   this->visinfo,
                                    0, GL_FALSE);
   if (!this->context) {
     SoDebugError::postWarning("SoOffscreenGLXData::SoOffscreenGLXData",
@@ -116,24 +148,10 @@ SoOffscreenGLXData::~SoOffscreenGLXData()
                          "destroy context %p", this->context);
 #endif // debug
 
-  if (this->context) glXDestroyContext(this->display, this->context);
-  if (this->glxpixmap) glXDestroyGLXPixmap(this->display, this->glxpixmap);
-  if (this->pixmap) XFreePixmap(this->display, this->pixmap);
+  if (this->context) glXDestroyContext(SoOffscreenGLXData::getDisplay(), this->context);
+  if (this->glxpixmap) glXDestroyGLXPixmap(SoOffscreenGLXData::getDisplay(), this->glxpixmap);
+  if (this->pixmap) XFreePixmap(SoOffscreenGLXData::getDisplay(), this->pixmap);
   if (this->visinfo) XFree(this->visinfo);
-  // The following XCloseDisplay() call has been known to crash the
-  // application when running remotely from some old Mesa version on
-  // Red Hat Linux 6.2 onto an IRIX6.5 display. It seems likely that
-  // this was caused by a bug in that particular old Mesa
-  // version. Since the leak caused by _not_ freeing up the Display
-  // resource is a showstopper for applications doing lots of
-  // offscreen rendering, we leave this in.
-  //
-  // If you see crashes, feel free to report the particulars about
-  // your system to us (OpenGL implementation & version, X11 server
-  // and client implementations and versions, etc).
-  //
-  // mortene@sim.no
-  if (this->display) XCloseDisplay(this->display);
 
   delete[] this->buffer;
 }
@@ -142,18 +160,14 @@ SoOffscreenGLXData::~SoOffscreenGLXData()
 SbVec2f
 SoOffscreenGLXData::getResolution(void)
 {
-  Display * d = XOpenDisplay(NULL);
+  Display * d = SoOffscreenGLXData::getDisplay();
   if (!d) {
-    SoDebugError::postWarning("SoOffscreenGLXData::getResolution",
-                              "Couldn't connect to X11 DISPLAY.");
     return SbVec2f(72.0f / 25.4f, 72.0f / 25.4f); // fall back to 72dpi
   }
 
   int s = DefaultScreen(d);
   SbVec2f r(((float)DisplayWidth(d, s)) /  ((float)DisplayWidthMM(d, s)),
             ((float)DisplayHeight(d, s)) / ((float)DisplayHeightMM(d, s)));
-
-  XCloseDisplay(d);
 
   return r;
 }
@@ -202,12 +216,12 @@ SoOffscreenGLXData::setBufferSize(const SbVec2s & size)
   this->buffer =
     new unsigned char[this->buffersize[0] * this->buffersize[1] * 4];
 
-  if (this->glxpixmap) glXDestroyGLXPixmap(this->display, this->glxpixmap);
-  if (this->pixmap) XFreePixmap(this->display, this->pixmap);
+  if (this->glxpixmap) glXDestroyGLXPixmap(SoOffscreenGLXData::getDisplay(), this->glxpixmap);
+  if (this->pixmap) XFreePixmap(SoOffscreenGLXData::getDisplay(), this->pixmap);
 
   if (this->context) {
-    this->pixmap = XCreatePixmap(this->display,
-                                 DefaultRootWindow(this->display),
+    this->pixmap = XCreatePixmap(SoOffscreenGLXData::getDisplay(),
+                                 DefaultRootWindow(SoOffscreenGLXData::getDisplay()),
                                  size[0], size[1],
                                  this->visinfo->depth);
     if (!this->pixmap) {
@@ -215,8 +229,8 @@ SoOffscreenGLXData::setBufferSize(const SbVec2s & size)
                                 "Couldn't create %dx%dx%d Pixmap.");
     }
     else {
-      this->glxpixmap = glXCreateGLXPixmap(this->display, this->visinfo,
-                                           this->pixmap);
+      this->glxpixmap = glXCreateGLXPixmap(SoOffscreenGLXData::getDisplay(),
+                                           this->visinfo, this->pixmap);
       if (!this->glxpixmap) {
         SoDebugError::postWarning("SoOffscreenGLXData::SoOffscreenGLXData",
                                   "Couldn't create GLX Pixmap.");
@@ -251,7 +265,7 @@ SoOffscreenGLXData::makeContextCurrent(uint32_t contextid)
                            this->storeddisplay);
 #endif // debug
 
-    Bool r = glXMakeCurrent(this->display, this->glxpixmap, this->context);
+    Bool r = glXMakeCurrent(SoOffscreenGLXData::getDisplay(), this->glxpixmap, this->context);
 
 #if DEBUG_GLXCONTEXT_HANDLING // debug
     SoDebugError::postInfo("SoOffscreenGLXData::makeContextCurrent",
@@ -284,7 +298,7 @@ SoOffscreenGLXData::postRender(void)
     SoDebugError::postInfo("SoOffscreenGLXData::postRender",
                            "releasing context (glxMakeCurrent(d, None, NULL))");
 #endif // debug
-    (void) glXMakeCurrent(this->display, None, NULL); // release
+    (void) glXMakeCurrent(SoOffscreenGLXData::getDisplay(), None, NULL); // release
 
     // The previous context is stored and reset to make it possible
     // to use an SoOffscreenRenderer from for instance an SoCallback
