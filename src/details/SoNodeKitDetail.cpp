@@ -33,8 +33,21 @@
 #include <Inventor/details/SoNodeKitDetail.h>
 #include <Inventor/nodekits/SoBaseKit.h>
 
-SO_DETAIL_SOURCE(SoNodeKitDetail);
+/*!
+  \var SoBaseKit * SoNodeKitDetail::myNodeKit
+  The nodekit generating this details object.
+*/
+/*!
+  \var SoNode * SoNodeKitDetail::myPart
+  Node inside nodekit which was hit.
+*/
+/*!
+  \var SbName SoNodeKitDetail::myPartName
+  Catalog name of nodekit part which was hit.
+*/
 
+
+SO_DETAIL_SOURCE(SoNodeKitDetail);
 
 /*!
   Constructor.
