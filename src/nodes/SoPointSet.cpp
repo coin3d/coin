@@ -150,6 +150,9 @@ SoPointSet::findNormalBinding(SoState * const state) const
 void
 SoPointSet::GLRender(SoGLRenderAction * action)
 {
+  int32_t numpts = this->numPoints.getValue();
+  if (numpts == 0) return;
+
   SoState * state = action->getState();
 
   SbBool didpush = FALSE;
@@ -202,7 +205,6 @@ SoPointSet::GLRender(SoGLRenderAction * action)
   mb.sendFirst(); // make sure we have the correct material
 
   int32_t idx = this->startIndex.getValue();
-  int32_t numpts = this->numPoints.getValue();
   if (numpts < 0) numpts = coords->getNum() - idx;
 
   sogl_render_pointset(coords,
@@ -265,6 +267,9 @@ SoPointSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 void
 SoPointSet::generatePrimitives(SoAction *action)
 {
+  int32_t numpts = this->numPoints.getValue();
+  if (numpts == 0) return;
+
   SoState * state = action->getState();
 
   if (this->vertexProperty.getValue()) {
@@ -301,7 +306,6 @@ SoPointSet::generatePrimitives(SoAction *action)
     vertex.setNormal(*currnormal);
 
   int32_t idx = this->startIndex.getValue();
-  int32_t numpts = this->numPoints.getValue();
   if (numpts < 0) numpts = coords->getNum() - idx;
 
   int matnr = 0;
