@@ -691,7 +691,7 @@ coin_hton_uint16(uint16_t value)
 uint16_t
 coin_ntoh_uint16(uint16_t value)
 {
-  return coin_ntoh_uint16(value);
+  return coin_hton_uint16(value);
 }
 
 static void
