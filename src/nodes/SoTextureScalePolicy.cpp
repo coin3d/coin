@@ -112,12 +112,21 @@
   \var SoSFEnum SoTextureScalePolicy::policy
 
   The policy setting. Default value is USE_TEXTURE_QUALITY.
+  USE_TEXTURE_QUALITY means that Complexity::textureQuality will be
+  used to decide if the texture should be scaled up or down.
+  textureQuality >= 0.7 means scale up, while < 0.7 means scale
+  down. Textures smaller than 256 pixels are never scaled down since
+  you loose too much information.
 */
 
 /*!
   \var SoSFFloat SoTextureScalePolicy::quality
   
-  The texture scale/resize quality. Default value is 0.5.
+  The texture scale/resize quality. Default value is 0.5.  This field
+  can be used to force Coin to use a lower quality (but much faster)
+  image resize function.  Currently, if you set this field to a value
+  < 0.5, a low quality resize function will be used, otherwise a high
+  quality (but slow) function will be used.
 */
 
 // *************************************************************************
