@@ -167,6 +167,7 @@ PublicHeaders = \
 	../../include/Inventor/nodes/SoTextureCoordinateFunction.h \
 	../../include/Inventor/nodes/SoTextureCoordinatePlane.h \
 	../../include/Inventor/nodes/SoTextureScalePolicy.h \
+	../../include/Inventor/nodes/SoTextureUnit.h \
 	../../include/Inventor/nodes/SoTransform.h \
 	../../include/Inventor/nodes/SoTransparencyType.h \
 	../../include/Inventor/nodes/SoTransformSeparator.h \

@@ -46,6 +46,10 @@ PublicHeaders = \
 	../../../include/Inventor/elements/SoGLLinePatternElement.h \
 	../../../include/Inventor/elements/SoGLLineWidthElement.h \
 	../../../include/Inventor/elements/SoGLModelMatrixElement.h \
+	../../../include/Inventor/elements/SoGLMultiTextureCoordinateElement.h \
+	../../../include/Inventor/elements/SoGLMultiTextureEnabledElement.h \
+	../../../include/Inventor/elements/SoGLMultiTextureMatrixElement.h \
+	../../../include/Inventor/elements/SoGLMultiTextureImageElement.h \
 	../../../include/Inventor/elements/SoGLNormalElement.h \
 	../../../include/Inventor/elements/SoGLNormalizeElement.h \
 	../../../include/Inventor/elements/SoGLPointSizeElement.h \

@@ -408,6 +408,7 @@ PublicHeaders = \
 	../../include/Inventor/nodes/SoTextureCoordinateFunction.h \
 	../../include/Inventor/nodes/SoTextureCoordinatePlane.h \
 	../../include/Inventor/nodes/SoTextureScalePolicy.h \
+	../../include/Inventor/nodes/SoTextureUnit.h \
 	../../include/Inventor/nodes/SoTransform.h \
 	../../include/Inventor/nodes/SoTransparencyType.h \
 	../../include/Inventor/nodes/SoTransformSeparator.h \
@@ -635,6 +636,7 @@ am__EXTRA_nodes_lst_SOURCES_DIST = \
 	../../include/Inventor/nodes/SoTextureCoordinateFunction.h \
 	../../include/Inventor/nodes/SoTextureCoordinatePlane.h \
 	../../include/Inventor/nodes/SoTextureScalePolicy.h \
+	../../include/Inventor/nodes/SoTextureUnit.h \
 	../../include/Inventor/nodes/SoTransform.h \
 	../../include/Inventor/nodes/SoTransparencyType.h \
 	../../include/Inventor/nodes/SoTransformSeparator.h \
@@ -819,6 +821,7 @@ am__EXTRA_libnodes_la_SOURCES_DIST = \
 	../../include/Inventor/nodes/SoTextureCoordinateFunction.h \
 	../../include/Inventor/nodes/SoTextureCoordinatePlane.h \
 	../../include/Inventor/nodes/SoTextureScalePolicy.h \
+	../../include/Inventor/nodes/SoTextureUnit.h \
 	../../include/Inventor/nodes/SoTransform.h \
 	../../include/Inventor/nodes/SoTransparencyType.h \
 	../../include/Inventor/nodes/SoTransformSeparator.h \
@@ -971,6 +974,7 @@ am__EXTRA_libnodes@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/nodes/SoTextureCoordinateFunction.h \
 	../../include/Inventor/nodes/SoTextureCoordinatePlane.h \
 	../../include/Inventor/nodes/SoTextureScalePolicy.h \
+	../../include/Inventor/nodes/SoTextureUnit.h \
 	../../include/Inventor/nodes/SoTransform.h \
 	../../include/Inventor/nodes/SoTransparencyType.h \
 	../../include/Inventor/nodes/SoTransformSeparator.h \

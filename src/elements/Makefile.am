@@ -121,6 +121,10 @@ PublicHeaders = \
 	../../include/Inventor/elements/SoLongElement.h \
 	../../include/Inventor/elements/SoMaterialBindingElement.h \
 	../../include/Inventor/elements/SoModelMatrixElement.h \
+	../../include/Inventor/elements/SoMultiTextureCoordinateElement.h \
+	../../include/Inventor/elements/SoMultiTextureEnabledElement.h \
+	../../include/Inventor/elements/SoMultiTextureMatrixElement.h \
+	../../include/Inventor/elements/SoMultiTextureImageElement.h \
 	../../include/Inventor/elements/SoNormalBindingElement.h \
 	../../include/Inventor/elements/SoNormalElement.h \
 	../../include/Inventor/elements/SoOverrideElement.h \
@@ -146,6 +150,7 @@ PublicHeaders = \
 	../../include/Inventor/elements/SoTextureMatrixElement.h \
 	../../include/Inventor/elements/SoTextureOverrideElement.h \
 	../../include/Inventor/elements/SoTextureQualityElement.h \
+	../../include/Inventor/elements/SoTextureUnitElement.h \
 	../../include/Inventor/elements/SoTransparencyElement.h \
 	../../include/Inventor/elements/SoUnitsElement.h \
 	../../include/Inventor/elements/SoViewVolumeElement.h \
