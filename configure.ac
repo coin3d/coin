@@ -293,10 +293,11 @@ if $sim_ac_enable_threads; then
   fi
 fi
 
-AC_DEFINE([HAVE_THREADS],, [*EXPERIMENTAL* to use the threads extension])
 HAVE_THREADS=1
 if test "$sim_ac_threads_api" = "none"; then
   HAVE_THREADS=0
+else
+  AC_DEFINE([HAVE_THREADS],, [*EXPERIMENTAL* to use the threads extension])
 fi
 AC_SUBST([HAVE_THREADS])
 
