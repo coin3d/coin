@@ -27,6 +27,10 @@
 #include <windows.h>
 #endif /* HAVE_WINDOWS_H */
 
+#ifdef HAVE_SYS_TIMEB_H
+#include <sys/timeb.h> /* struct _timeb */
+#endif /* HAVE_SYS_TIMEB_H */
+
 #ifdef HAVE_SYS_TIME_H
 #include <sys/time.h> /* gettimeofday() */
 #endif /* HAVE_SYS_TIME_H */
