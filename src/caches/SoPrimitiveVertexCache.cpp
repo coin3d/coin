@@ -52,8 +52,6 @@ public:
   SbList <int32_t> indices;
   SbHash <int32_t, SoPrimitiveVertexCache::Vertex> vhash;
 
-  const SbBool * enabledunits;
-  int maxenabled;
   const SbVec2f * bumpcoords;
   int numbumpcoords;
 
@@ -67,6 +65,12 @@ public:
   int prevfaceidx;
   SbBool colorpervertex;
   uint32_t firstcolor;
+
+  const SbBool * enabledunits;
+  int lastenabled;
+  const SoMultiTextureCoordinateElement * multielem;
+  SbList <SbVec4f> * multitexcoords;
+  SoState * state;
 };
 
 #endif // DOXYGEN_SKIP_THIS
@@ -82,10 +86,8 @@ SoPrimitiveVertexCache::SoPrimitiveVertexCache(SoState * state)
   : SoCache(state)
 {
   PRIVATE(this) = new SoPrimitiveVertexCacheP;
+  PRIVATE(this)->state = state;
 
-  PRIVATE(this)->enabledunits =
-    SoMultiTextureEnabledElement::getEnabledUnits(state,
-                                                  PRIVATE(this)->maxenabled);
   const SoBumpMapCoordinateElement * belem =
     SoBumpMapCoordinateElement::getInstance(state);
 
@@ -120,7 +122,20 @@ SoPrimitiveVertexCache::SoPrimitiveVertexCache(SoState * state)
     float tmpt = PRIVATE(this)->transpptr[0];
     col = tmpc.getPackedValue(tmpt);
   }
-  PRIVATE(this)->firstcolor = col;  
+  PRIVATE(this)->firstcolor = col;   
+  
+  // set up for multi texturing
+  PRIVATE(this)->lastenabled = -1;
+  PRIVATE(this)->enabledunits = 
+    SoMultiTextureEnabledElement::getEnabledUnits(state, PRIVATE(this)->lastenabled);
+  PRIVATE(this)->multielem = NULL;
+  PRIVATE(this)->multitexcoords = NULL;
+  if (PRIVATE(this)->lastenabled >= 1) {
+    PRIVATE(this)->multitexcoords = new SbList<SbVec4f>[PRIVATE(this)->lastenabled+1];    
+    // delay fetching SoMultiTextureCoordinateElement until the first
+    // triangle callback. SoTextureCoordinateBundle might push a new
+    // element.
+  }
 }
 
 /*!
@@ -128,6 +143,9 @@ SoPrimitiveVertexCache::SoPrimitiveVertexCache(SoState * state)
 */
 SoPrimitiveVertexCache::~SoPrimitiveVertexCache()
 {
+  if (PRIVATE(this)->lastenabled >= 1) {
+    delete[] PRIVATE(this)->multitexcoords;
+  }
   delete PRIVATE(this);
 }
 
@@ -137,6 +155,10 @@ SoPrimitiveVertexCache::addTriangle(const SoPrimitiveVertex * v0,
                                     const SoPrimitiveVertex * v2,
                                     const int * pointdetailidx)
 {
+  if (PRIVATE(this)->lastenabled >= 1 && PRIVATE(this)->multielem == NULL) {
+    // fetch SoMultiTextureCoordinateElement the first time we get here
+    PRIVATE(this)->multielem = SoMultiTextureCoordinateElement::getInstance(PRIVATE(this)->state);
+  }
   const SoPrimitiveVertex *vp[3] = { v0,v1,v2 };
 
   for (int i = 0; i < 3; i++) {
@@ -175,9 +197,7 @@ SoPrimitiveVertexCache::addTriangle(const SoPrimitiveVertex * v0,
       SoPointDetail * pd = (SoPointDetail*) 
         fd->getPoint(pointdetailidx[i]);
       
-      int tidx  = v.texcoordidx = pd->getTextureCoordIndex();
-      v.texcoordidx = tidx;
-            
+      int tidx  = v.texcoordidx = pd->getTextureCoordIndex();            
       if (PRIVATE(this)->numbumpcoords) {
         v.bumpcoord = PRIVATE(this)->bumpcoords[SbClamp(tidx, 0, PRIVATE(this)->numbumpcoords)];
       }
@@ -188,6 +208,20 @@ SoPrimitiveVertexCache::addTriangle(const SoPrimitiveVertex * v0,
       PRIVATE(this)->vhash.put(v, idx);
       PRIVATE(this)->vertices.append(v);
       PRIVATE(this)->indices.append(idx);
+      
+      // update texture coordinates for unit 1-n
+      for (int i = 1; i <= PRIVATE(this)->lastenabled; i++) {
+        if (v.texcoordidx >= 0 &&
+            (PRIVATE(this)->multielem->getType(i) == SoTextureCoordinateElement::EXPLICIT)) {
+          PRIVATE(this)->multitexcoords[i].append(PRIVATE(this)->multielem->get4(i, v.texcoordidx));
+        }
+        else if (PRIVATE(this)->multielem->getType(i) == SoTextureCoordinateElement::FUNCTION) {
+          PRIVATE(this)->multitexcoords[i].append(PRIVATE(this)->multielem->get(i, v.vertex, v.normal));
+        }
+        else {
+          PRIVATE(this)->multitexcoords[i].append(v.texcoord0);
+        }
+      }
     }
     else {
       PRIVATE(this)->indices.append(idx);
@@ -236,6 +270,14 @@ SoPrimitiveVertexCache::colorPerVertex(void) const
 {
   return PRIVATE(this)->colorpervertex;
 }
+
+const SbVec4f * 
+SoPrimitiveVertexCache::getMultiTextureCoordinateArray(const int unit) const
+{
+  assert(unit <= PRIVATE(this)->lastenabled);
+  return PRIVATE(this)->multitexcoords[unit].getArrayPtr();
+}
+
 
 #undef PRIVATE
 
