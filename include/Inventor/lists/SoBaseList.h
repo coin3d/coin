@@ -45,6 +45,7 @@ public:
   SoBase * operator[](const int i) const;
   void set(const int i, SoBase * const ptr);
   void addReferences(const SbBool flag);
+  SbBool isReferencing(void) const;
 
 private:
   SbBool referencing;

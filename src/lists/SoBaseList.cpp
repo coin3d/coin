@@ -219,6 +219,19 @@ SoBaseList::addReferences(const SbBool flag)
 }
 
 /*!
+  Return whether the SoBase instances are automatically referenced
+  and dereferenced when they are added and removed from the list.
+
+  \sa addReferences()
+  \since 2002-10-01
+*/
+SbBool 
+SoBaseList::isReferencing(void) const
+{
+  return this->referencing;
+}
+
+/*!
   Index operator to set element at \a i. Does \e not expand array
   bounds if \a i is outside the list.
 */
