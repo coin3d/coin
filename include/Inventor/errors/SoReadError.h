@@ -45,13 +45,9 @@ protected:
   virtual SoErrorCB * getHandler(void *& data) const;
 
 private:
-  static void cleanClass(void);
-
   static SoType classTypeId;
   static SoErrorCB * callback;
   static void * callbackData;
-  static char * strbuffer;
-  static size_t strbuffersize;
 };
 
 #endif // !COIN_SOREADERROR_H

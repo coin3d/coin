@@ -66,14 +66,11 @@ protected:
 private:
   static void generateBaseString(SbString & str, const SoBase * const base,
                                  const char * const what);
-  static void cleanClass(void);
 
   static SoType classTypeId;
   static SoErrorCB * callback;
   static void * callbackData;
   SbString debugstring;
-  static char * strbuffer;
-  static size_t strbuffersize;
 };
 
 #endif // !COIN_SOERROR_H

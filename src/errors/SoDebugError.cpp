@@ -52,16 +52,11 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <../snprintf.h> // snprintf() and vsnprintf() definitions.
 
 
 SoType SoDebugError::classTypeId;
 SoErrorCB * SoDebugError::callback = SoError::defaultHandlerCB;
 void * SoDebugError::callbackData = NULL;
-char * SoDebugError::strbuffer = NULL;
-size_t SoDebugError::strbuffersize = 0;
-
-static const size_t buffer_inc = 512;
 
 
 /*!
@@ -79,16 +74,6 @@ SoDebugError::initClass(void)
   SoDebugError::callbackData = NULL;
   SoDebugError::classTypeId =
     SoType::createType(SoError::getClassTypeId(), "DebugError");
-}
-
-/*!
-  \internal
-  Free resources used by this class.
- */
-void
-SoDebugError::cleanClass(void)
-{
-  delete SoDebugError::strbuffer;
 }
 
 // Documented for parent class.
@@ -146,16 +131,8 @@ SoDebugError::getSeverity(void) const
 #define SODEBUGERROR_POST(SEVERITY, TYPE) \
   va_list args; \
   va_start(args, format); \
- \
-  while (!SoDebugError::strbuffersize || \
-         vsnprintf(SoDebugError::strbuffer, \
-                   SoDebugError::strbuffersize, \
-                   format, args) == -1) { \
-    delete SoDebugError::strbuffer; \
-    SoDebugError::strbuffersize += buffer_inc; \
-    SoDebugError::strbuffer = new char[SoDebugError::strbuffersize]; \
-  } \
- \
+  SbString s; \
+  s.vsprintf(format, args); \
   va_end(args); \
  \
   SoDebugError error; \
@@ -165,7 +142,7 @@ SoDebugError::getSeverity(void) const
   error.appendToDebugString(" in "); \
   error.appendToDebugString(source); \
   error.appendToDebugString("(): "); \
-  error.appendToDebugString(SoDebugError::strbuffer); \
+  error.appendToDebugString(s.getString()); \
   error.handleError()
 
 

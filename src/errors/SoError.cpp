@@ -54,16 +54,10 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#include <../snprintf.h> // snprintf() and vsnprintf() definitions.
-
 
 SoType SoError::classTypeId;
 SoErrorCB * SoError::callback = SoError::defaultHandlerCB;
 void * SoError::callbackData = NULL;
-char * SoError::strbuffer = NULL;
-size_t SoError::strbuffersize = 0;
-
-static const size_t buffer_inc = 512;
 
 
 /*!
@@ -79,24 +73,10 @@ static const size_t buffer_inc = 512;
 void
 SoError::initClass(void)
 {
-  (void)atexit(SoError::cleanClass);
-
   SoError::callback = defaultHandlerCB;
   SoError::callbackData = NULL;
   SoError::classTypeId =
     SoType::createType(SoType::badType(), SbName("Error"));
-}
-
-/*!
-  \internal
-  Free resources used by this class.
- */
-void
-SoError::cleanClass(void)
-{
-#if COIN_DEBUG
-  delete SoError::strbuffer; SoError::strbuffer = NULL;
-#endif // COIN_DEBUG
 }
 
 /*!
@@ -196,19 +176,12 @@ SoError::post(const char * const format, ...)
 {
   va_list args;
   va_start(args, format);
-
-  while (!SoError::strbuffersize || vsnprintf(SoError::strbuffer,
-                                              SoError::strbuffersize,
-                                              format, args) == -1) {
-    delete SoError::strbuffer;
-    SoError::strbuffersize += buffer_inc;
-    SoError::strbuffer = new char[SoError::strbuffersize];
-  }
-
+  SbString s;
+  s.vsprintf(format, args);
   va_end(args);
 
   SoError error;
-  error.setDebugString(SoError::strbuffer);
+  error.setDebugString(s.getString());
   error.handleError();
 }
 
@@ -312,15 +285,6 @@ SoError::generateBaseString(SbString & str,
                             const SoBase * const base,
                             const char * const what)
 {
-  while (!SoError::strbuffersize ||
-         snprintf(SoError::strbuffer,
-                  SoError::strbuffersize,
-                  "%s named \"%s\" at address %p",
-                  what, base->getName().getString(), base) == -1) {
-    delete SoError::strbuffer;
-    SoError::strbuffersize += buffer_inc;
-    SoError::strbuffer = new char[SoError::strbuffersize];
-  }
-
-  str = SoError::strbuffer;
+  str.sprintf("%s named \"%s\" at address %p",
+              what, base->getName().getString(), base);
 }
