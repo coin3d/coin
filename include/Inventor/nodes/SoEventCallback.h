@@ -74,13 +74,14 @@ protected:
 private:
   struct CallbackInfo {
     SoEventCallbackCB * func;
-    SoType event;
+    SoType eventtype;
     void * userdata;
   };
 
   SbList<CallbackInfo> callbacks;
-
   SoHandleEventAction * heaction;
+  SoPath *path;
+
 };
 
 #endif // !COIN_SOEVENTCALLBACK_H

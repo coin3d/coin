@@ -29,7 +29,8 @@
 #include <Inventor/nodes/SoEventCallback.h>
 #include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/events/SoEvent.h>
-#include <coindefs.h> // COIN_STUB()
+#include <Inventor/SoPath.h>
+#include <Inventor/SoPickedPoint.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -47,6 +48,7 @@ SoEventCallback::SoEventCallback(void)
   SO_NODE_INTERNAL_CONSTRUCTOR(SoEventCallback);
 
   this->heaction = NULL;
+  this->path = NULL;
 }
 
 /*!
@@ -54,6 +56,7 @@ SoEventCallback::SoEventCallback(void)
 */
 SoEventCallback::~SoEventCallback()
 {
+  if (this->path) this->path->unref();
 }
 
 // Doc from superclass.
@@ -64,22 +67,33 @@ SoEventCallback::initClass(void)
 }
 
 /*!
-  FIXME: write function documentation
+  Sets the path that must be picked before the registered 
+  callbacks are invoked. If \e NULL, callbacks will be 
+  invoked for every event that matches the callback 
+  event type.
+  \sa getPath()
 */
 void
-SoEventCallback::setPath(SoPath * /* path */)
+SoEventCallback::setPath(SoPath *path)
 {
-  COIN_STUB();
+  if (this->path) {
+    this->path->unref();
+    this->path = NULL;
+  }
+  if (path) {
+    this->path = path->copy();
+    this->path->ref();
+  }
 }
 
 /*!
-  FIXME: write function documentation
+  Returns the path that must be picked before callbacks are invoked.
+  \sa setPath()
 */
 const SoPath *
 SoEventCallback::getPath(void)
 {
-  COIN_STUB();
-  return NULL;
+  return this->path;
 }
 
 
@@ -94,7 +108,7 @@ SoEventCallback::addEventCallback(SoType eventtype, SoEventCallbackCB * f,
 {
   struct CallbackInfo cb;
   cb.func = f;
-  cb.event = eventtype;
+  cb.eventtype = eventtype;
   cb.userdata = userdata;
 
   this->callbacks.append(cb);
@@ -109,7 +123,7 @@ SoEventCallback::removeEventCallback(SoType eventtype, SoEventCallbackCB * f,
 {
   for (int i = 0; i < this->callbacks.getLength(); i++) {
     if (this->callbacks[i].func == f &&
-        this->callbacks[i].event == eventtype &&
+        this->callbacks[i].eventtype == eventtype &&
         this->callbacks[i].userdata == userdata) {
       this->callbacks.remove(i);
       return;
@@ -144,13 +158,12 @@ SoEventCallback::getEvent(void) const
 }
 
 /*!
-  FIXME: write function documentation
+  Returns the picked point for the current handle event traversal.
 */
 const SoPickedPoint *
 SoEventCallback::getPickedPoint(void) const
 {
-  COIN_STUB();
-  return NULL;
+  return this->heaction ? this->heaction->getPickedPoint() : NULL;
 }
 
 
@@ -243,13 +256,21 @@ SoEventCallback::releaseEvents(void)
 void
 SoEventCallback::handleEvent(SoHandleEventAction * action)
 {
+  // check if correct path is picked
+  if (this->path) {
+    const SoPickedPoint *pp = action->getPickedPoint();
+    if (pp && pp->getPath()->containsPath(this->path)) return;
+  }
+
   // Make it possible to access the action object from the callback
   // code.
   this->heaction = action;
 
+  SoType eventtype = this->heaction->getEvent()->getTypeId();
+  
   // Invoke callbacks.
-  for(int i=0; i < this->callbacks.getLength(); i++) {
-    if (this->heaction->getEvent()->isOfType(this->callbacks[i].event)) {
+  for(int i = 0; i < this->callbacks.getLength(); i++) {
+    if (eventtype.isDerivedFrom(this->callbacks[i].eventtype)) {
       SoEventCallbackCB * cb = this->callbacks[i].func;
       cb(this->callbacks[i].userdata, this);
     }
