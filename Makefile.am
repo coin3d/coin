@@ -162,6 +162,8 @@ EXTRA_DIST = \
 	build/msvc6/include/Inventor/system/gl.h \
 	build/msvc6/include/Inventor/system/inttypes.h \
 	build/msvc6/include/config.h \
+	build/msvc6/installcoin.bat \
+	build/msvc6/installcoinheaders.bat \
 	build/msvc7/data/draggerDefaults/centerballDragger.h \
 	build/msvc7/data/draggerDefaults/directionalLightDragger.h \
 	build/msvc7/data/draggerDefaults/dragPointDragger.h \
@@ -191,7 +193,9 @@ EXTRA_DIST = \
 	build/msvc7/include/Inventor/C/basic.h \
 	build/msvc7/include/Inventor/system/gl.h \
 	build/msvc7/include/Inventor/system/inttypes.h \
-	build/msvc7/include/config.h
+	build/msvc7/include/config.h \
+	build/msvc7/installcoin.bat \
+	build/msvc7/installcoinheaders.bat
 
 # FIXME: These files should really be added instead of the ones
 #        containing '_' instead of ' '. If this is fixed, also
