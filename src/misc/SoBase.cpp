@@ -165,6 +165,10 @@ uint32_t SoBase::writecounter = 0;
 // For counting write references during SoWriteAction traversal, to
 // make DEF / USE come out correctly in the output. The hash mapping
 // is from SoBase* -> int.
+//
+// FIXME: this data-structure is not safe to use in a multithreading
+// context, with multiple SoWriteAction instances applied in
+// parallel. 20020324 mortene.
 static SbDict * writerefs = NULL;
 
 static inline int
@@ -1022,6 +1026,10 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
     // Ouch. Does this to avoid having two subsequent write actions on
     // the same SoOutput to write "USE ..." when it should write a
     // full node/subgraph specification on the second run.  -mortene.
+    //
+    // FIXME: accessing out->sobase2id directly takes a "friend
+    // SoBase" in the SoOutput class definition. Should fix with
+    // proper design for Coin-2. 20020426 mortene
     if (out->findReference(this) != -1)
       out->sobase2id->remove((unsigned long)this);
   }
