@@ -34,6 +34,8 @@
 #include <Inventor/lists/SbStringList.h>
 #include <Inventor/SbTime.h>
 
+class SoVRMLAudioClipP;
+
 class COIN_DLL_API SoVRMLAudioClip : public SoNode
 {
   typedef SoNode inherited;
@@ -90,8 +92,8 @@ protected:
   SoSFBool isActive;         // eventOut
 
 private:
-  class SoVRMLAudioClipP *pimpl;
-  friend class SoVRMLAudioClipP;
+  SoVRMLAudioClipP *pimpl;
+  friend SoVRMLAudioClipP;
 };
 
 #endif // ! COIN_SOVRMLAUDIOCLIP_H

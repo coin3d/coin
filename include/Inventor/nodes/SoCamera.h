@@ -49,6 +49,8 @@
 
 class SoPath;
 
+class SoCameraP;
+
 class COIN_DLL_API SoCamera : public SoNode {
   typedef SoNode inherited;
 
@@ -132,8 +134,8 @@ private:
   float stereoadjustment;
   float balanceadjustment;
 private:
-  class SoCameraP *pimpl;
-  friend class SoCameraP;
+  SoCameraP *pimpl;
+  friend SoCameraP;
 };
 
 #endif // !COIN_SOCAMERA_H

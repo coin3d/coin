@@ -29,6 +29,8 @@
 #include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/fields/SoSFVec3f.h>
 
+class SoLODP;
+
 class COIN_DLL_API SoLOD : public SoGroup {
   typedef SoGroup inherited;
 
@@ -64,8 +66,8 @@ private:
   void commonConstructor(void);
 
 private:
-  class SoLODP *pimpl;
-  friend class SoLODP;
+  SoLODP *pimpl;
+  friend SoLODP;
 };
 
 #endif // !COIN_SOLOD_H

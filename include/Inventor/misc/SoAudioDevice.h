@@ -28,6 +28,8 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoAudioRenderAction.h>
 
+class SoAudioDeviceP;
+
 class COIN_DLL_API SoAudioDevice {
 public:
   static SoAudioDevice *instance();
@@ -46,8 +48,8 @@ private:
   SoAudioDevice(const SoAudioDevice &);
   const SoAudioDevice & operator=(const SoAudioDevice &);
 
-  class SoAudioDeviceP *pimpl;
-  friend class SoAudioDeviceP;
+  SoAudioDeviceP *pimpl;
+  friend SoAudioDeviceP;
 };
 
 #endif // !COIN_SOAUDIODEVICE_H

@@ -32,6 +32,8 @@
 #define SO_SWITCH_INHERIT (-2)
 #define SO_SWITCH_ALL (-3)
 
+class SoSwitchP;
+
 class COIN_DLL_API SoSwitch : public SoGroup {
   typedef SoGroup inherited;
 
@@ -65,8 +67,8 @@ protected:
   void traverseChildren(SoAction * action);
 
 private:
-  class SoSwitchP *pimpl;
-  friend class SoSwitchP;
+  SoSwitchP *pimpl;
+  friend SoSwitchP;
 
   void commonConstructor(void);
 };

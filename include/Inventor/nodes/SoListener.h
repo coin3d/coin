@@ -29,6 +29,8 @@
 #include <Inventor/fields/SoSFRotation.h>
 #include <Inventor/fields/SoSFFloat.h>
 
+class SoListenerP;
+
 class COIN_DLL_API SoListener : public SoNode {
   typedef SoNode inherited;
 
@@ -54,8 +56,8 @@ protected:
   virtual ~SoListener();
 
 private:
-  class SoListenerP *pimpl;
-  friend class SoListenerP;
+  SoListenerP *pimpl;
+  friend SoListenerP;
 };
 
 #endif // COIN_SOLISTENER_H

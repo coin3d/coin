@@ -31,6 +31,9 @@
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/SbTime.h>
 
+class SoVRMLSoundP;
+class SoPath;
+
 class COIN_DLL_API SoVRMLSound : public SoNode
 {
   typedef SoNode inherited;
@@ -56,6 +59,9 @@ public:
   void setDopplerFactor(float factor);
   float getDopplerFactor();
 
+  void startPlaying(SoPath *path, void *userdataptr);
+  void stopPlaying(SoPath *path, void *userdataptr);
+
   static void setDefaultBufferingProperties(int bufferLength, int numBuffers, 
                                             SbTime sleepTime);
   void setBufferingProperties(int bufferLength, int numBuffers, 
@@ -69,8 +75,8 @@ protected:
   virtual ~SoVRMLSound(void);
 
 private:
-  class SoVRMLSoundP *pimpl;
-  friend class SoVRMLSoundP;
+  SoVRMLSoundP *pimpl;
+  friend SoVRMLSoundP;
 };
 
 #endif // ! COIN_SOVRMLSOUND_H
