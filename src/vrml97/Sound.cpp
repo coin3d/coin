@@ -814,7 +814,8 @@ SbBool SoVRMLSoundP::startPlaying()
   alSourcePlay(this->sourceId);
   if ((error = alGetError()) != AL_NO_ERROR) {
     SoDebugError::postWarning("SoVRMLSoundP::StartPlaying",
-                              "alSourcePlay failed. %s",
+                              "alSourcePlay(sid=%d) failed: %s",
+                              this->sourceId,
                               coin_get_openal_error(error));
     return FALSE;
   }
@@ -909,11 +910,16 @@ void SoVRMLSoundP::fillBuffers()
     alformat = getALSampleFormat(this->channels, 16);
 
     alBufferData(BufferID, alformat, this->audioBuffer, 
-      this->bufferLength * sizeof(int16_t) * this->channels, 
-      this->currentAudioClip->getSampleRate());
+                 this->bufferLength * sizeof(int16_t) * this->channels, 
+                 this->currentAudioClip->getSampleRate());
+
     if ((error = alGetError()) != AL_NO_ERROR) {
       SoDebugError::post("SoVRMLSound::fillBuffers",
-                         "alBufferData failed. %s",
+                         "alBufferData(buffer=%d, format=%d, data=%p, "
+                         "size=%d, freq=%d) failed: %s",
+                         BufferID, alformat, this->audioBuffer, 
+                         this->bufferLength * sizeof(int16_t) * this->channels,
+                         this->currentAudioClip->getSampleRate(),
                          coin_get_openal_error(error));
       this->errorInThread = TRUE;
       return;
@@ -949,7 +955,8 @@ void SoVRMLSoundP::fillBuffers()
       alSourcePlay(this->sourceId);
       if ((error = alGetError()) != AL_NO_ERROR) {
         SoDebugError::post("SoVRMLSoundP::fillBuffers",
-                           "alSourcePlay failed. %s",
+                           "alSourcePlay(sid=%d) failed: %s",
+                           this->sourceId,
                            coin_get_openal_error(error));
         this->errorInThread = TRUE;
         return;
