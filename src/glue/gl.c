@@ -588,10 +588,10 @@ glglue_resolve_symbols(cc_glglue * w)
 #endif /* GL_ARB_multitexture */
 
   /* SGI's glx.h header file shipped with the NVidia Linux drivers
-     lists glXGetCurrentDisplay() as a GLX 1.3 method, but Sun's GL
-     man pages lists it as a GLX 1.2 function, ditto for HP's GL man
-     pages, and ditto for AIX's man pages. (See top of this file for
-     URL). So we will assume the man pages are correct.
+     identifies glXGetCurrentDisplay() as a GLX 1.3 method, but Sun's
+     GL man pages lists it as a GLX 1.2 function, ditto for HP's GL
+     man pages, and ditto for AIX's man pages. (See top of this file
+     for URL). So we will assume the man pages are correct.
   */
   w->glXGetCurrentDisplay = NULL;
 #ifdef GLX_VERSION_1_2
@@ -725,7 +725,8 @@ glglue_resolve_symbols(cc_glglue * w)
     to EXT_paletted_texture.
 
     Note: our O2 supports this extension, but not
-    EXT_paletted_texture, so it can be used for development.
+    EXT_paletted_texture, so it can be used for development and
+    testing of support for this extension.
 
     20030129 mortene.
    */
@@ -998,6 +999,8 @@ cc_glglue_instance(int contextid)
      * setting up a cc_glglue instance was made when there is no
      * current OpenGL context. */
     gi->versionstr = (const char *)glGetString(GL_VERSION);
+    assert(gi->versionstr && "could not call glGetString() -- no current GL context?");
+    assert(glGetError() == GL_NO_ERROR && "GL error when calling glGetString() -- no current GL context?");
 
     glglue_set_glVersion(gi);
     glxglue_init(gi);
@@ -1035,6 +1038,16 @@ cc_glglue_instance(int contextid)
 
   CC_SYNC_END(cc_glglue_instance);
   return gi;
+}
+
+const cc_glglue *
+cc_glglue_instance_from_context_ptr(void * ctx)
+{
+  /* The id can really be anything unique for the current context, but
+     we should avoid a crash with the possible ids defined by
+     SoGLCacheContextElement. It's a bit of a hack, this. */
+  const int id = (int)((long)ctx);
+  return cc_glglue_instance(id);
 }
 
 SbBool
@@ -1709,3 +1722,47 @@ cc_glglue_glXGetCurrentDisplay(const cc_glglue * w)
 {
   return w->glXGetCurrentDisplay ? w->glXGetCurrentDisplay() : NULL;
 }
+
+/*** Offscreen buffer handling. *********************************************/
+
+void *
+cc_glglue_context_create_offscreen(unsigned int width, unsigned int height)
+{
+#ifdef HAVE_GLX
+  return glxglue_context_create_offscreen(width, height);
+#endif /* HAVE_GLX */
+  assert(FALSE && "unimplemented");
+  return NULL;
+}
+
+SbBool
+cc_glglue_context_make_current(void * ctx)
+{
+#ifdef HAVE_GLX
+  return glxglue_context_make_current(ctx);
+#endif /* HAVE_GLX */
+  assert(FALSE && "unimplemented");
+  return FALSE;
+}
+
+void
+cc_glglue_context_reinstate_previous(void * ctx)
+{
+#ifdef HAVE_GLX
+  glxglue_context_reinstate_previous(ctx);
+#else /* !HAVE_GLX */
+  assert(FALSE && "unimplemented");
+#endif /* !HAVE_GLX */
+}
+
+void
+cc_glglue_context_destruct(void * ctx)
+{
+#ifdef HAVE_GLX
+  glxglue_context_destruct(ctx);
+#else /* !HAVE_GLX */
+  assert(FALSE && "unimplemented");
+#endif /* !HAVE_GLX */
+}
+
+/*** </Offscreen buffer handling.> ******************************************/

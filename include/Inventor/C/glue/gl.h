@@ -48,6 +48,7 @@ typedef struct cc_glglue cc_glglue;
   doesn't crash with those.)
 */
 COIN_DLL_API const cc_glglue * cc_glglue_instance(int contextid);
+COIN_DLL_API const cc_glglue * cc_glglue_instance_from_context_ptr(void * ctx);
 
 /*
   Fetch version number information for the underlying OpenGL
@@ -274,6 +275,11 @@ COIN_DLL_API SbBool cc_glglue_has_blendequation(const cc_glglue * glue);
 COIN_DLL_API void cc_glglue_glBlendEquation(const cc_glglue * glue, GLenum mode);
 
 COIN_DLL_API void * cc_glglue_glXGetCurrentDisplay(const cc_glglue * w);
+
+COIN_DLL_API void * cc_glglue_context_create_offscreen(unsigned int width, unsigned int height);
+COIN_DLL_API SbBool cc_glglue_context_make_current(void * ctx);
+COIN_DLL_API void cc_glglue_context_reinstate_previous(void * ctx);
+COIN_DLL_API void cc_glglue_context_destruct(void * ctx);
 
 #ifdef __cplusplus
 }
