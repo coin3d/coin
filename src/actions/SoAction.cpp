@@ -75,6 +75,127 @@
   describes the tasks involved in detail.  Reading the sourcecode of
   the built-in action classes in Coin should also provide very
   helpful.
+
+  The following example shows the basic outline on how to set up your
+  own extension action class:
+
+  \code
+  // This is sample code on how you can get progress indication on Coin
+  // export operations by extending the library with your own action
+  // class. The new class inherits SoWriteAction. The code is presented
+  // as a stand-alone example.
+  //
+  // The general technique is to inherit SoWriteAction and override it's
+  // "entry point" into each node of the scenegraph. The granularity of
+  // the progress callbacks is on a per-node basis, which should usually
+  // be good enough.
+  
+  #include <Inventor/SoDB.h>
+  #include <Inventor/actions/SoWriteAction.h>
+  #include <Inventor/nodes/SoSeparator.h>
+  
+  
+  //// Definition of extension class "MyWriteAction" ///////////////
+
+  class MyWriteAction : public SoWriteAction {
+    SO_ACTION_HEADER(SoWriteAction);
+  
+  public:
+    MyWriteAction(SoOutput * out);
+    virtual ~MyWriteAction();
+  
+    static void initClass(void);
+  
+  protected:
+    virtual void beginTraversal(SoNode * node);
+  
+  private:
+    static void actionMethod(SoAction *, SoNode *);
+    int nrnodes;
+    int totalnrnodes;
+  };
+  
+  //// Implementation of extension class "MyWriteAction" ///////////
+
+  SO_ACTION_SOURCE(MyWriteAction);
+  
+  MyWriteAction::MyWriteAction(SoOutput * out)
+    : SoWriteAction(out)
+  {
+    SO_ACTION_CONSTRUCTOR(MyWriteAction);
+  }
+  
+  MyWriteAction::~MyWriteAction()
+  {
+  }
+  
+  void
+  MyWriteAction::initClass(void)
+  {
+    SO_ACTION_INIT_CLASS(MyWriteAction, SoWriteAction);
+  
+    SO_ACTION_ADD_METHOD(SoNode, MyWriteAction::actionMethod);
+  }
+  
+  void
+  MyWriteAction::beginTraversal(SoNode * node)
+  {
+    this->nrnodes = 0;
+    this->totalnrnodes = 0;
+    SoWriteAction::beginTraversal(node);
+  }
+  
+  void
+  MyWriteAction::actionMethod(SoAction * a, SoNode * n)
+  {
+    // To abort the export process in mid-writing, we could just avoid
+    // calling in to the SoNode::writeS() method.
+    SoNode::writeS(a, n);
+  
+    MyWriteAction * mwa = (MyWriteAction *)a;
+    SoOutput * out = mwa->getOutput();
+    if (out->getStage() == SoOutput::COUNT_REFS) {
+      mwa->totalnrnodes++;
+    }
+    else { //  (out->getStage() == SoOutput::WRITE)
+      mwa->nrnodes++;
+      SbString s;
+      s.sprintf(" # wrote node %p (%d/%d) \n", n, mwa->nrnodes, mwa->totalnrnodes);
+      out->write(s.getString());
+    }
+  }
+  
+  //// main ////////////////////////////////////////////////////////
+
+  int
+  main(int argc, char ** argv)
+  {
+    if (argc < 2) {
+      (void)fprintf(stderr, "\n\nUsage: %s <filename>\n\n", argv[0]);
+      exit(1);
+    }
+  
+    SoDB::init();
+    MyWriteAction::initClass();
+  
+    SoInput in;
+    if (!in.openFile(argv[1])) { exit(1); }
+  
+    SoSeparator * root = SoDB::readAll(&in);
+    if (!root) { exit(1); }
+  
+    root->ref();
+  
+    SoOutput out;
+    MyWriteAction mwa(&out);
+    mwa.apply(root);
+  
+    root->unref();
+  
+    return 0;
+  }
+  \endcode
+
 */
 
 #include <Inventor/actions/SoActions.h>

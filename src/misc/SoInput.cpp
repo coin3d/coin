@@ -299,8 +299,8 @@ SoInput::constructorsCommon(void)
 }
 
 /*!
-  Destructor.
- */
+  Destructor. Runs SoInput::closeFile() to close any open files.
+*/
 SoInput::~SoInput(void)
 {
   this->closeFile();
@@ -574,12 +574,17 @@ SoInput::pushFile(const char * filename)
 }
 
 /*!
-  Removes all files from the internal stack. Any files opened by openFile() or
-  pushFile() will also be closed, but not the files coming from
-  setFilePointer() -- which are the responsibility of the caller.
+  Removes all files from the internal stack. Any files opened by
+  openFile() or pushFile() will also be closed, but not the files
+  coming from setFilePointer() -- which are the responsibility of the
+  caller.
+
+  You usually don't need to call this method explicitly, as it will
+  automatically be triggered by the SoInput destructor to close any
+  open files when the SoInput instance goes out of scope.
 
   \sa setFilePointer(), openFile(), pushFile()
- */
+*/
 void
 SoInput::closeFile(void)
 {

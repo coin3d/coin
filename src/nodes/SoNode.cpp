@@ -104,6 +104,8 @@
   \code
   #include <Inventor/nodes/SoWWWInline.h>
 
+  //// Definition of extension class "MyWWWInline" ///////////////
+
   class MyWWWInline : public SoWWWInline {
     SO_NODE_HEADER(MyWWWInline);
 
@@ -114,6 +116,8 @@
   protected:
     virtual ~MyWWWInline();
   };
+
+  //// Implementation of extension class "MyWWWInline" ///////////
 
   SO_NODE_SOURCE(MyWWWInline);
 
@@ -131,6 +135,8 @@
   {
     SO_NODE_INIT_CLASS(MyWWWInline, SoWWWInline, "SoWWWInline");
   }
+
+  //// main //////////////////////////////////////////////////////
 
   int
   main(int argc, char ** argv)
@@ -150,7 +156,8 @@
 
   For a complete reference on how to extend the Coin library, we
   strongly recommend that you get hold of the «The Inventor Toolmaker»
-  book (ISBN 0-201-62493-1).
+  book (ISBN 0-201-62493-1), which explains all the details about how
+  to make extensions classes for any part of Coin.
 */
 
 #include <Inventor/SoOutput.h>
