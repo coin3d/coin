@@ -69,7 +69,7 @@
 */
 
 /*!
-  SoEngineOutput SoElapsedTime::timeOut
+  \var SoEngineOutput SoElapsedTime::timeOut
   (SoSFTime) Output time value. Starts at 0.
 */
 

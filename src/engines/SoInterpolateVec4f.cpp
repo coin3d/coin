@@ -19,14 +19,21 @@
 
 /*!
   \class SoInterpolateVec4f SoInterpolateVec4f.h Inventor/engines/SoInterpolateVec4f.h
-  \brief The SoInterpolateVec4f class is used to interpolate between two 4D vectors.
+  \brief The SoInterpolateVec4f class is used to interpolate between pairs of 4D vectors.
   \ingroup engines
-
-  FIXME: doc
 */
 
 #include <Inventor/engines/SoInterpolateVec4f.h>
 #include <Inventor/engines/SoSubEngineP.h>
+
+/*!
+  \var SoMFVec4f SoInterpolateVec4f::input0
+  First set of input values.
+*/
+/*!
+  \var SoMFVec4f SoInterpolateVec4f::input1
+  Second set of input values.
+*/
 
 SO_INTERPOLATE_INTERNAL_INIT_CLASS(SoInterpolateVec4f);
 

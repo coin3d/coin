@@ -34,7 +34,7 @@ public:
   static void initClasses(void);
 
   SoSFFloat alpha;
-  SoEngineOutput output; // SoMFFloat
+  SoEngineOutput output; // type varies for subclasses
 
 protected:
   SoInterpolate();

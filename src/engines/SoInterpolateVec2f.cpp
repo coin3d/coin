@@ -19,14 +19,21 @@
 
 /*!
   \class SoInterpolateVec2f SoInterpolateVec2f.h Inventor/engines/SoInterpolateVec2f.h
-  \brief The SoInterpolateVec2f class is used to interpolate between two 2D vectors.
+  \brief The SoInterpolateVec2f class is used to interpolate between pairs of 2D vectors.
   \ingroup engines
-
-  FIXME: doc
 */
 
 #include <Inventor/engines/SoInterpolateVec2f.h>
 #include <Inventor/engines/SoSubEngineP.h>
+
+/*!
+  \var SoMFVec2f SoInterpolateVec2f::input0
+  First set of input values.
+*/
+/*!
+  \var SoMFVec2f SoInterpolateVec2f::input1
+  Second set of input values.
+*/
 
 SO_INTERPOLATE_INTERNAL_INIT_CLASS(SoInterpolateVec2f);
 

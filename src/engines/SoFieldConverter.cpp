@@ -58,9 +58,26 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+/*!
+  \fn SoField * SoFieldConverter::getInput(SoType type)
+
+  Returns input field for the converter engine. Must be overloaded in
+  non-abstract converter engine classes.
+*/
+/*!
+  \fn SoEngineOutput * SoFieldConverter::getOutput(SoType type)
+
+  Returns output for the converter engine. Must be overloaded in
+  non-abstract converter engine classes.
+*/
+
+
 SO_ENGINE_ABSTRACT_SOURCE(SoFieldConverter);
 
 
+/*!
+  Default constructor.
+*/
 SoFieldConverter::SoFieldConverter(void)
 {
 #if COIN_DEBUG && 0 // debug
@@ -68,6 +85,9 @@ SoFieldConverter::SoFieldConverter(void)
 #endif // debug
 }
 
+/*!
+  Default destructor.
+*/
 SoFieldConverter::~SoFieldConverter()
 {
 }

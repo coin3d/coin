@@ -21,13 +21,20 @@
   \class SoInterpolateRotation SoInterpolateRotation.h Inventor/engines/SoInterpolateRotation.h
   \brief The SoInterpolateRotation class is used to interpolate between two rotations.
   \ingroup engines
-
-  FIXME: doc
 */
 
 #include <Inventor/engines/SoInterpolateRotation.h>
 #include <Inventor/engines/SoSubEngineP.h>
 #include <Inventor/SbVec3f.h>
+
+/*!
+  \var SoMFRotation SoInterpolateRotation::input0
+  First set of input values.
+*/
+/*!
+  \var SoMFRotation SoInterpolateRotation::input1
+  Second set of input values.
+*/
 
 SO_INTERPOLATE_INTERNAL_INIT_CLASS(SoInterpolateRotation);
 

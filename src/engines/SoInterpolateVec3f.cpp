@@ -19,14 +19,21 @@
 
 /*!
   \class SoInterpolateVec3f SoInterpolateVec3f.h Inventor/engines/SoInterpolateVec3f.h
-  \brief The SoInterpolateVec3f class is used to interpolate between two 3D vectors.
+  \brief The SoInterpolateVec3f class is used to interpolate between pairs of 3D vectors.
   \ingroup engines
-
-  FIXME: doc
 */
 
 #include <Inventor/engines/SoInterpolateVec3f.h>
 #include <Inventor/engines/SoSubEngineP.h>
+
+/*!
+  \var SoMFVec3f SoInterpolateVec3f::input0
+  First set of input values.
+*/
+/*!
+  \var SoMFVec3f SoInterpolateVec3f::input1
+  Second set of input values.
+*/
 
 SO_INTERPOLATE_INTERNAL_INIT_CLASS(SoInterpolateVec3f);
 

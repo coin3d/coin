@@ -38,7 +38,25 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+/*!
+  \var SoSFFloat SoInterpolate::alpha
+
+  The value which says how much we've should interpolate from first
+  value to second value. A value equal to 0 will give an output equal
+  to the first value, alpha equal to 1 gives the second value, any
+  value in between gives a "weighted" interpolation between the two
+  values.
+*/
+/*!
+  \var SoEngineOutput SoInterpolate::output
+
+  Interpolated values from the input fields. The type of the output
+  will of course be the same as the type of the input fields of each
+  non-abstract subclass inheriting SoInterpolate.
+*/
+
 SO_ENGINE_ABSTRACT_SOURCE(SoInterpolate);
+
 
 /*!
   Default constructor.

@@ -21,12 +21,19 @@
   \class SoInterpolateFloat SoInterpolateFloat.h Inventor/engines/SoInterpolateFloat.h
   \brief The SoInterpolateFloat class is used to interpolate two floating point values.
   \ingroup engines
-
-  FIXME: doc
 */
 
 #include <Inventor/engines/SoInterpolateFloat.h>
 #include <Inventor/engines/SoSubEngineP.h>
+
+/*!
+  \var SoMFFloat SoInterpolateFloat::input0
+  First set of input values.
+*/
+/*!
+  \var SoMFFloat SoInterpolateFloat::input1
+  Second set of input values.
+*/
 
 SO_INTERPOLATE_INTERNAL_INIT_CLASS(SoInterpolateFloat);
 
