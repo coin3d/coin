@@ -16242,6 +16242,14 @@ fi
 
 fi
 
+# We currently don't support runtime linking on Mac OS X, so we
+# shouldn't try to do runtime linking, even if somebody happens to have
+# libdl installed.
+case $host_os in
+  darwin* ) coin_can_do_runtime_linking=false ;;
+esac
+
+
 # *******************************************************************
 # * Set us up for using the simage library (if wanted, and if
 # * available).
