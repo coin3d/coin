@@ -537,6 +537,14 @@ aglglue_context_pbuffer_is_bound(void * ctx)
   return (context->pbufferisbound);
 }
 
+SbBool 
+aglglue_context_can_render_to_texture(void * ctx)
+{
+  struct aglglue_contextdata * context = (struct aglglue_contextdata *)ctx;
+  return context->aglpbuffer != NULL;
+}
+
+
 #endif /* HAVE_AGL */
 
 

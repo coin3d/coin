@@ -2994,6 +2994,18 @@ cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height)
   dim[1] = *height;
 }
 
+SbBool
+cc_glglue_context_can_render_to_texture(void * ctx)
+{
+#if defined(HAVE_AGL)
+  return aglglue_context_can_render_to_texture(ctx);
+#elif defined(HAVE_WGL)
+  return wglglue_context_can_render_to_texture(ctx);
+#endif
+  /* GLX */
+  return FALSE; 
+}
+
 
 void
 cc_glglue_context_bind_pbuffer(void * ctx)

@@ -873,6 +873,13 @@ wglglue_context_pbuffer_is_bound(void * ctx)
   return context->pbufferisbound;
 }
 
+SbBool 
+wglglue_context_can_render_to_texture(void * ctx)
+{
+  struct wglglue_contextdata * context = (struct wglglue_contextdata *)ctx;
+  return context->hpbuffer != NULL;
+}
+
 #endif /* HAVE_WGL */
 
 /* ********************************************************************** */
