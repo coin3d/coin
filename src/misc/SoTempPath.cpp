@@ -31,7 +31,8 @@
   Constructor.
 */
 SoTempPath::SoTempPath(const int approxlength)
-  : SoPath(approxlength)
+  : SoFullPath(approxlength)
 {
   this->auditPath(FALSE);
 }
+

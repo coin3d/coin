@@ -25,7 +25,7 @@
 
 class SoFullPath : public SoPath {
   typedef SoPath inherited;
-  friend class dummy; // avoiding warnings 19990205 mortene.
+  friend class SoTempPath;
 
 private:
   SoFullPath(const int approxLength);

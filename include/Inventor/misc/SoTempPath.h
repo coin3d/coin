@@ -20,9 +20,9 @@
 #ifndef COIN_SOTEMPPATH_H
 #define COIN_SOTEMPPATH_H
 
-#include <Inventor/SoPath.h>
+#include <Inventor/SoFullPath.h>
 
-class SoTempPath : public SoPath {
+class SoTempPath : public SoFullPath {
 public:
   SoTempPath(const int approxlength);
 };
