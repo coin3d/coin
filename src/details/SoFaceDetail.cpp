@@ -198,7 +198,10 @@ SoFaceDetail::setPartIndex(const int idx)
 /*!
   Used internally from library client code setting up a SoFaceDetail
   instance.
- */
+
+  This function is specific for Coin, and is not present in SGI/TGS
+  Open Inventor.
+*/
 void
 SoFaceDetail::incFaceIndex(void)
 {
@@ -208,7 +211,10 @@ SoFaceDetail::incFaceIndex(void)
 /*!
   Used internally from library client code setting up a SoFaceDetail
   instance.
- */
+
+  This function is specific for Coin, and is not present in SGI/TGS
+  Open Inventor.
+*/
 void
 SoFaceDetail::incPartIndex(void)
 {
