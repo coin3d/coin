@@ -629,8 +629,11 @@ SoGLRenderAction::addTransPath(SoPath * path)
   
   // test if we can calculate bbox using SoShape::computeBBox. This is
   // the common case, and quite a lot faster than using an
-  // SoGetBoundingBoxAction
-  if (tail->isOfType(SoShape::getClassTypeId()) && 
+  // SoGetBoundingBoxAction. We only do this if no cache is currently
+  // open, to avoid cache dependencies on model matrix and view
+  // volume, which would be very bad for cache performance.
+  if (!this->state->isCacheOpen() &&
+      tail->isOfType(SoShape::getClassTypeId()) && 
       *(this->getCurPath()) == *path) { // common case
     SbBox3f dummy;
     SbVec3f center;
