@@ -113,6 +113,7 @@
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoGLTextureImageElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
+#include <Inventor/elements/SoTextureScaleQualityElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/misc/SoGL.h>
@@ -1224,7 +1225,14 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
     // function. We prefer to use that to avoid using GLU, since
     // there are lots of buggy GLU libraries out there.
     if (zsize == 0) { // 2D image
-      if (simage_wrapper()->available &&
+      // simage_resize and gluScaleImage can be pretty slow. Use
+      // fast_image_resize() if high quality isn't needed
+      if (SoTextureScaleQualityElement::get(state) < 0.5f) {
+        fast_image_resize(bytes, glimage_tmpimagebuffer,
+                          xsize, ysize, numcomponents,
+                          newx, newy);
+      }
+      else if (simage_wrapper()->available &&
           simage_wrapper()->versionMatchesAtLeast(1,1,1) &&
           simage_wrapper()->simage_resize) {
         unsigned char *result =
