@@ -95,6 +95,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
+#include <limits.h> // SHRT_MAX
 
 #ifdef HAVE_AGL
 #include <AGL/AGL.h>
@@ -1856,6 +1857,71 @@ cc_glglue_context_destruct(void * ctx)
 #else 
   assert(FALSE && "unimplemented");
 #endif
+}
+
+void
+cc_glglue_context_max_dimensions(short * width, short * height)
+{
+  
+  GLint size[2] = { 128, 128 };  
+  void * ctx = cc_glglue_context_create_offscreen(128, 128);
+  const char * vendor;
+  const char * env;
+  static int forcedtilewidth = -1;
+  static int forcedtileheight = -1;
+  SbBool ok;
+
+  if (ctx) {
+    ok = cc_glglue_context_make_current(ctx);
+    if (ok) {
+      glGetIntegerv(GL_MAX_VIEWPORT_DIMS, size);
+      
+      vendor = (const char *)glGetString(GL_VENDOR);
+      if (strcmp(vendor, "NVIDIA Corporation") == 0) {
+        
+        // NVIDIA seems to have a bug where max render size is limited by
+        // desktop resolution (at least for their Linux X11 drivers), not
+        // the texture maxsize returned by OpenGL. So we use a workaround
+        // by limiting max size to the lowend resolution for desktop
+        // monitors.
+        //
+        // According to pederb, there are versions of the NVidia drivers
+        // where the offscreen buffer also has to have dimensions that are
+        // 2^x, so we limit further down to these dimension settings to be
+        // sure.
+        
+        size[0] = 512;
+        size[1] = 512;
+      }
+      
+      // Makes it possible to override the default tilesizes. Should prove
+      // useful for debugging problems on remote sites.
+       if (forcedtilewidth == -1) {
+        env = coin_getenv("COIN_OFFSCREENRENDERER_TILEWIDTH");
+        forcedtilewidth = env ? atoi(env) : 0;
+        env = coin_getenv("COIN_OFFSCREENRENDERER_TILEHEIGHT");
+        forcedtileheight = env ? atoi(env) : 0;
+      }
+      if (forcedtilewidth != 0) { size[0] = forcedtilewidth; }
+      if (forcedtileheight != 0) { size[1] = forcedtileheight; }
+      
+      cc_glglue_context_reinstate_previous(ctx);
+    }
+    cc_glglue_context_destruct(ctx);
+  }
+
+  if(size[0] < SHRT_MAX) *width = (short) size[0];
+  else *width = (short) SHRT_MAX;
+
+  if(size[1] < SHRT_MAX) *height = (short) size[1];
+  else *height = (short) SHRT_MAX;
+  
+  if (coin_glglue_debug()) {
+    cc_debugerror_postinfo("cc_glglue_context_max_dimensions",
+                           "max dimensions <%d, %d>", width, height);
+  }
+  
+
 }
 
 /*** </Offscreen buffer handling.> ******************************************/
