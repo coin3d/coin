@@ -437,11 +437,9 @@ SoImage::GLRender(SoGLRenderAction * action)
 
     // in case of rounding errors
     if (skipx + srcw > orgsize[0]) {
-      assert(0); 
-     srcw = orgsize[0] - skipx;
+      srcw = orgsize[0] - skipx;
     }
     if (skipy + srch > orgsize[1]) { 
-      assert(0);
       srch = orgsize[1] - skipy;
     }
   }
