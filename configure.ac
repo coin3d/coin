@@ -497,7 +497,7 @@ AC_SUBST([HAVE_THREADSAFE])
 # the result from compilation, not just pre-processing. (A space is enough
 # to indicate non-emptiness.)
 AC_CHECK_HEADERS(
-  [unistd.h sys/types.h inttypes.h stdint.h sys/param.h sys/time.h sys/timeb.h time.h io.h windows.h libgen.h direct.h],
+  [unistd.h sys/types.h inttypes.h stdint.h sys/param.h sys/time.h sys/timeb.h time.h io.h windows.h libgen.h direct.h ieeefp.h],
   [], [],
   [ ])
 
@@ -617,6 +617,16 @@ AC_TRY_LINK(
     AC_MSG_RESULT([available])],
    [AC_MSG_RESULT([not available])])
 ])
+
+AC_MSG_CHECKING([for fpclass() function])
+AC_TRY_LINK(
+[#ifdef HAVE_IEEEFP_H
+#include <ieeefp.h>
+#endif],
+ [int result = fpclass(42.0);],
+ [AC_DEFINE(HAVE_FPCLASS, 1, [whether or not fpclass() is available])
+  AC_MSG_RESULT([available])],
+ [AC_MSG_RESULT([not available])])
 
 AC_MSG_CHECKING([for _fpclass() function])
 AC_TRY_LINK(
