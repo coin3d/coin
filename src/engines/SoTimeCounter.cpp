@@ -308,7 +308,7 @@ SoTimeCounter::findOutputValue(double timeincycle) const
   }
   else {
     double steptime = this->cyclelen / this->numsteps;
-    val = minval + (short)(timeincycle / steptime);
+    val = minval + (short)(timeincycle / steptime) * stepval;
     if (val > maxval) val = maxval;
   }
   assert(val >= minval && val <= maxval);
