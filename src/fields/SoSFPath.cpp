@@ -205,6 +205,9 @@ SoSFPath::countWriteRefs(SoOutput * out) const
   // Set the "from field" flag as FALSE, is that flag is meant to be
   // used for references through field-to-field connections.
   if (n) n->addWriteReference(out, FALSE);
+#ifdef COIN_SOSFPATH_H
+  if (n && n->getHead()) n->getHead()->addWriteReference(out, FALSE);
+#endif // COIN_SOSFPATH_H
 }
 
 // Override from parent to update our path pointer reference.
