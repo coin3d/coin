@@ -99,9 +99,6 @@ public:
 
   static SbBool isSearchingChildren(void);
   static void setSearchingChildren(const SbBool newval);
-  static SoNode * typeCheck(const SbName & partname, const SoType & parttype,
-                            SoNode * node);
-
 
 protected:
   virtual ~SoBaseKit();

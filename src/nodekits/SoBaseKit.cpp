@@ -1537,33 +1537,6 @@ SoBaseKit::setSearchingChildren(const SbBool newval)
   SoBaseKit::searchchildren = newval;
 }
 
-/*!
-  \COININTERNAL
-
-  This is a private method in the original SGI Inventor 2.1
-  API. Consider it obsolete -- it will be removed from Coin v3.0.
-*/
-SoNode *
-SoBaseKit::typeCheck(const SbName & partname, const SoType & parttype,
-                     SoNode * node)
-{
-  if (node == NULL) {
-#if COIN_DEBUG
-    SoDebugError::postInfo("SoBaseKit::typeCheck",
-                           "node was NULL");
-#endif // COIN_DEBUG
-    return NULL;
-  }
-  if (!node->isOfType(parttype)) {
-#if COIN_DEBUG
-    SoDebugError::postInfo("SoBaseKit::typeCheck",
-                           "wrong type: %s", node->getTypeId().getName().getString());
-#endif // COIN_DEBUG
-    return NULL;
-  }
-  return node;
-}
-
 // Documented in superclass. Overridden to also recurse on non-null
 // part nodes.
 SoNode *
