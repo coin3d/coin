@@ -3854,3 +3854,57 @@ main(int argc, char* argv[])
     20040903 mortene.
 
 =====================================================================
+
+140 Rust in the SoVRMLParent machinery for keeping both an SoMFNode
+    and an SoChildList of its children.
+
+    Jochen Stier reported a problem with this on coin-discuss, and
+    provided the following code for reproducing the problem:
+
+----8<----- [snip] --------------------8<----- [snip] ----------------
+I have a little piece of code that demonstrate the problem. As far as
+I understand, all the print statements should output 1. But that is
+not the case..... The refcount of the children of lGroup is
+incremented during the copy, but never decremented :(
+ 
+    SoVRMLGroup* lGroup = new SoVRMLGroup();
+    lGroup->ref();
+ 
+    lGroup->addChild(new SoVRMLGroup());
+    ((SoVRMLGroup*)lGroup->getChild(0))->addChild(new SoVRMLGroup());
+    ((SoVRMLGroup*)((SoVRMLGroup*)lGroup->getChild(0))->getChild(0))->addChild(new SoVRMLGroup());
+ 
+    LOG<12> () << lGroup->getRefCount();
+    LOG<12> () << ((SoVRMLGroup*)lGroup->getChild(0))->getRefCount();
+    LOG<12> () << ((SoVRMLGroup*)((SoVRMLGroup*)lGroup->getChild(0))->getChild(0))->getRefCount();
+ 
+    SoVRMLGroup* lCopy = (SoVRMLGroup*)lGroup->copy();
+    lCopy->ref();
+ 
+    LOG<12> () << lGroup->getRefCount();
+    LOG<12> () << ((SoVRMLGroup*)lGroup->getChild(0))->getRefCount();
+    LOG<12> () << ((SoVRMLGroup*)((SoVRMLGroup*)lGroup->getChild(0))->getChild(0))->getRefCount();
+ 
+    LOG<12> () << lCopy->getRefCount();
+    LOG<12> () << ((SoVRMLGroup*)lCopy->getChild(0))->getRefCount();
+    LOG<12> () << ((SoVRMLGroup*)((SoVRMLGroup*)lCopy->getChild(0))->getChild(0))->getRefCount();
+ ----8<----- [snip] --------------------8<----- [snip] ----------------
+
+    At the least, this can lead to memory leaks as some nodes will
+    never be destructed.
+
+    The problem is related to the fact that we need to keep two copies
+    of references to children nodes for an SoVRMLParent: one from the
+    "children" SoMFNode field (because that is in the public API) and
+    one that can be fetched from the SoNode::getChildren() method
+    (also part of the public API, and used by e.g. traversal methods).
+
+    The issue of keeping these internally in sync at all times has
+    been a long-standing source of bugs, and this bug report indicates
+    that it is still not working 100%.
+
+    Consider this medium-to-high priority.
+
+    20040908 mortene.
+
+=====================================================================
