@@ -54,6 +54,7 @@
 #include <float.h>
 #include <math.h>
 #include <limits.h>
+#include <string.h> // memset()
 
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/tidbits.h> // coin_getenv()
@@ -949,6 +950,12 @@ SoExtSelection::handleEvent(SoHandleEventAction * action)
     }
     // mouse release
     else if (SO_MOUSE_RELEASE_EVENT(event,BUTTON1)) {
+      // This has been reported to be called when the sensor is not
+      // scheduled, which is a bug..? Wasn't able to find a way to
+      // reproduce the bug locally, however. I just left a note here
+      // in case someone else stumbles over this problem.
+      // 
+      // 20041217 mortene.
       PRIVATE(this)->timersensor->unschedule();
       PRIVATE(this)->isDragging = FALSE;
       PRIVATE(this)->selectionstate = SoExtSelectionP::NONE;
