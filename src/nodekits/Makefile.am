@@ -54,4 +54,20 @@ libnodekitsLINKHACK_la_SOURCES = $(ALLSOURCES)
 libnodekitsincdir = $(includedir)/Inventor/nodekits
 
 libnodekitsinc_HEADERS = $(ALLINSTHEADERS)
+
+
+
+# Replaced the ordinary install to compare files and only install if
+# there's any changes. mortene.
+
+install-libnodekitsincHEADERS: $(libnodekitsinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	@$(mkinstalldirs) $(DESTDIR)$(libnodekitsincdir)
+	@list='$(libnodekitsinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  if ! cmp -s $$d$$p $(DESTDIR)$(libnodekitsincdir)/$$f; then echo " Installing $(DESTDIR)$(libnodekitsincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libnodekitsincdir)/$$f; fi; \
+	done
+
 ##$ END TEMPLATE Make-Common

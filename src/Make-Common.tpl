@@ -21,3 +21,6 @@ lib-xxx-LINKHACK_la_SOURCES = $(ALLSOURCES)
 lib-xxx-incdir = $(includedir)/Inventor/-xxx-
 
 lib-xxx-inc_HEADERS = $(ALLINSTHEADERS)
+
+
+##$ INSERT TEMPLATE Make-Install(lib-xxx-)

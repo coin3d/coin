@@ -284,16 +284,6 @@ libsensors.la: $(libsensors_la_OBJECTS) $(libsensors_la_DEPENDENCIES)
 libsensorsLINKHACK.la: $(libsensorsLINKHACK_la_OBJECTS) $(libsensorsLINKHACK_la_DEPENDENCIES)
 	$(CXXLINK) -rpath $(libdir) $(libsensorsLINKHACK_la_LDFLAGS) $(libsensorsLINKHACK_la_OBJECTS) $(libsensorsLINKHACK_la_LIBADD) $(LIBS)
 
-install-libsensorsincHEADERS: $(libsensorsinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libsensorsincdir)
-	@list='$(libsensorsinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libsensorsincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libsensorsincdir)/$$f; \
-	done
-
 uninstall-libsensorsincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libsensorsinc_HEADERS)'; for p in $$list; do \
@@ -470,6 +460,19 @@ uninstall-am uninstall all-redirect all-am all install-strip \
 installdirs mostlyclean-generic distclean-generic clean-generic \
 maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 
+
+# Replaced the ordinary install to compare files and only install if
+# there's any changes. mortene.
+
+install-libsensorsincHEADERS: $(libsensorsinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	@$(mkinstalldirs) $(DESTDIR)$(libsensorsincdir)
+	@list='$(libsensorsinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  if ! cmp -s $$d$$p $(DESTDIR)$(libsensorsincdir)/$$f; then echo " Installing $(DESTDIR)$(libsensorsincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libsensorsincdir)/$$f; fi; \
+	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

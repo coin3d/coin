@@ -557,16 +557,6 @@ libelements.la: $(libelements_la_OBJECTS) $(libelements_la_DEPENDENCIES)
 libelementsLINKHACK.la: $(libelementsLINKHACK_la_OBJECTS) $(libelementsLINKHACK_la_DEPENDENCIES)
 	$(CXXLINK) -rpath $(libdir) $(libelementsLINKHACK_la_LDFLAGS) $(libelementsLINKHACK_la_OBJECTS) $(libelementsLINKHACK_la_LIBADD) $(LIBS)
 
-install-libelementsincHEADERS: $(libelementsinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libelementsincdir)
-	@list='$(libelementsinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libelementsincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libelementsincdir)/$$f; \
-	done
-
 uninstall-libelementsincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libelementsinc_HEADERS)'; for p in $$list; do \
@@ -822,6 +812,19 @@ uninstall-am uninstall all-redirect all-am all install-strip \
 installdirs mostlyclean-generic distclean-generic clean-generic \
 maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 
+
+# Replaced the ordinary install to compare files and only install if
+# there's any changes. mortene.
+
+install-libelementsincHEADERS: $(libelementsinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	@$(mkinstalldirs) $(DESTDIR)$(libelementsincdir)
+	@list='$(libelementsinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  if ! cmp -s $$d$$p $(DESTDIR)$(libelementsincdir)/$$f; then echo " Installing $(DESTDIR)$(libelementsincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libelementsincdir)/$$f; fi; \
+	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

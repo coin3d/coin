@@ -302,16 +302,6 @@ libbase.la: $(libbase_la_OBJECTS) $(libbase_la_DEPENDENCIES)
 libbaseLINKHACK.la: $(libbaseLINKHACK_la_OBJECTS) $(libbaseLINKHACK_la_DEPENDENCIES)
 	$(CXXLINK) -rpath $(libdir) $(libbaseLINKHACK_la_LDFLAGS) $(libbaseLINKHACK_la_OBJECTS) $(libbaseLINKHACK_la_LIBADD) $(LIBS)
 
-install-libbaseincHEADERS: $(libbaseinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libbaseincdir)
-	@list='$(libbaseinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbaseincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbaseincdir)/$$f; \
-	done
-
 uninstall-libbaseincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libbaseinc_HEADERS)'; for p in $$list; do \
@@ -501,6 +491,19 @@ uninstall-am uninstall all-redirect all-am all install-strip \
 installdirs mostlyclean-generic distclean-generic clean-generic \
 maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 
+
+# Replaced the ordinary install to compare files and only install if
+# there's any changes. mortene.
+
+install-libbaseincHEADERS: $(libbaseinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	@$(mkinstalldirs) $(DESTDIR)$(libbaseincdir)
+	@list='$(libbaseinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  if ! cmp -s $$d$$p $(DESTDIR)$(libbaseincdir)/$$f; then echo " Installing $(DESTDIR)$(libbaseincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbaseincdir)/$$f; fi; \
+	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

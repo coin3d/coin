@@ -247,16 +247,6 @@ libbundles.la: $(libbundles_la_OBJECTS) $(libbundles_la_DEPENDENCIES)
 libbundlesLINKHACK.la: $(libbundlesLINKHACK_la_OBJECTS) $(libbundlesLINKHACK_la_DEPENDENCIES)
 	$(CXXLINK) -rpath $(libdir) $(libbundlesLINKHACK_la_LDFLAGS) $(libbundlesLINKHACK_la_OBJECTS) $(libbundlesLINKHACK_la_LIBADD) $(LIBS)
 
-install-libbundlesincHEADERS: $(libbundlesinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libbundlesincdir)
-	@list='$(libbundlesinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbundlesincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbundlesincdir)/$$f; \
-	done
-
 uninstall-libbundlesincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libbundlesinc_HEADERS)'; for p in $$list; do \
@@ -424,6 +414,19 @@ uninstall-am uninstall all-redirect all-am all install-strip \
 installdirs mostlyclean-generic distclean-generic clean-generic \
 maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 
+
+# Replaced the ordinary install to compare files and only install if
+# there's any changes. mortene.
+
+install-libbundlesincHEADERS: $(libbundlesinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	@$(mkinstalldirs) $(DESTDIR)$(libbundlesincdir)
+	@list='$(libbundlesinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  if ! cmp -s $$d$$p $(DESTDIR)$(libbundlesincdir)/$$f; then echo " Installing $(DESTDIR)$(libbundlesincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbundlesincdir)/$$f; fi; \
+	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

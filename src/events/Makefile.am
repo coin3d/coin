@@ -51,4 +51,20 @@ libeventsLINKHACK_la_SOURCES = $(ALLSOURCES)
 libeventsincdir = $(includedir)/Inventor/events
 
 libeventsinc_HEADERS = $(ALLINSTHEADERS)
+
+
+
+# Replaced the ordinary install to compare files and only install if
+# there's any changes. mortene.
+
+install-libeventsincHEADERS: $(libeventsinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	@$(mkinstalldirs) $(DESTDIR)$(libeventsincdir)
+	@list='$(libeventsinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  if ! cmp -s $$d$$p $(DESTDIR)$(libeventsincdir)/$$f; then echo " Installing $(DESTDIR)$(libeventsincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libeventsincdir)/$$f; fi; \
+	done
+
 ##$ END TEMPLATE Make-Common

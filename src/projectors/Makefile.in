@@ -285,16 +285,6 @@ libprojectors.la: $(libprojectors_la_OBJECTS) $(libprojectors_la_DEPENDENCIES)
 libprojectorsLINKHACK.la: $(libprojectorsLINKHACK_la_OBJECTS) $(libprojectorsLINKHACK_la_DEPENDENCIES)
 	$(CXXLINK) -rpath $(libdir) $(libprojectorsLINKHACK_la_LDFLAGS) $(libprojectorsLINKHACK_la_OBJECTS) $(libprojectorsLINKHACK_la_LIBADD) $(LIBS)
 
-install-libprojectorsincHEADERS: $(libprojectorsinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libprojectorsincdir)
-	@list='$(libprojectorsinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libprojectorsincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libprojectorsincdir)/$$f; \
-	done
-
 uninstall-libprojectorsincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libprojectorsinc_HEADERS)'; for p in $$list; do \
@@ -471,6 +461,19 @@ all-redirect all-am all install-strip installdirs mostlyclean-generic \
 distclean-generic clean-generic maintainer-clean-generic clean \
 mostlyclean distclean maintainer-clean
 
+
+# Replaced the ordinary install to compare files and only install if
+# there's any changes. mortene.
+
+install-libprojectorsincHEADERS: $(libprojectorsinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	@$(mkinstalldirs) $(DESTDIR)$(libprojectorsincdir)
+	@list='$(libprojectorsinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  if ! cmp -s $$d$$p $(DESTDIR)$(libprojectorsincdir)/$$f; then echo " Installing $(DESTDIR)$(libprojectorsincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libprojectorsincdir)/$$f; fi; \
+	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

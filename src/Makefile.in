@@ -292,16 +292,6 @@ maintainer-clean-libtool:
 libCoin.la: $(libCoin_la_OBJECTS) $(libCoin_la_DEPENDENCIES)
 	$(LINK) -rpath $(libdir) $(libCoin_la_LDFLAGS) $(libCoin_la_OBJECTS) $(libCoin_la_LIBADD) $(LIBS)
 
-install-libCoinincHEADERS: $(libCoininc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libCoinincdir)
-	@list='$(libCoininc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libCoinincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libCoinincdir)/$$f; \
-	done
-
 uninstall-libCoinincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libCoininc_HEADERS)'; for p in $$list; do \
@@ -537,6 +527,19 @@ all-redirect all-am all install-strip installdirs-am installdirs \
 mostlyclean-generic distclean-generic clean-generic \
 maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 
+
+# Replaced the ordinary install to compare files and only install if
+# there's any changes. mortene.
+
+install-libCoinincHEADERS: $(libCoininc_HEADERS)
+	@$(NORMAL_INSTALL)
+	@$(mkinstalldirs) $(DESTDIR)$(libCoinincdir)
+	@list='$(libCoininc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  if ! cmp -s $$d$$p $(DESTDIR)$(libCoinincdir)/$$f; then echo " Installing $(DESTDIR)$(libCoinincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libCoinincdir)/$$f; fi; \
+	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -80,4 +80,20 @@ libbaseLINKHACK_la_SOURCES = $(ALLSOURCES)
 libbaseincdir = $(includedir)/Inventor/base
 
 libbaseinc_HEADERS = $(ALLINSTHEADERS)
+
+
+
+# Replaced the ordinary install to compare files and only install if
+# there's any changes. mortene.
+
+install-libbaseincHEADERS: $(libbaseinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	@$(mkinstalldirs) $(DESTDIR)$(libbaseincdir)
+	@list='$(libbaseinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  if ! cmp -s $$d$$p $(DESTDIR)$(libbaseincdir)/$$f; then echo " Installing $(DESTDIR)$(libbaseincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbaseincdir)/$$f; fi; \
+	done
+
 ##$ END TEMPLATE Make-Common

@@ -37,4 +37,20 @@ libVRMLnodesLINKHACK_la_SOURCES = $(ALLSOURCES)
 libVRMLnodesincdir = $(includedir)/Inventor/VRMLnodes
 
 libVRMLnodesinc_HEADERS = $(ALLINSTHEADERS)
+
+
+
+# Replaced the ordinary install to compare files and only install if
+# there's any changes. mortene.
+
+install-libVRMLnodesincHEADERS: $(libVRMLnodesinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	@$(mkinstalldirs) $(DESTDIR)$(libVRMLnodesincdir)
+	@list='$(libVRMLnodesinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  if ! cmp -s $$d$$p $(DESTDIR)$(libVRMLnodesincdir)/$$f; then echo " Installing $(DESTDIR)$(libVRMLnodesincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libVRMLnodesincdir)/$$f; fi; \
+	done
+
 ##$ END TEMPLATE Make-Common

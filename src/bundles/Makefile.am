@@ -37,4 +37,20 @@ libbundlesLINKHACK_la_SOURCES = $(ALLSOURCES)
 libbundlesincdir = $(includedir)/Inventor/bundles
 
 libbundlesinc_HEADERS = $(ALLINSTHEADERS)
+
+
+
+# Replaced the ordinary install to compare files and only install if
+# there's any changes. mortene.
+
+install-libbundlesincHEADERS: $(libbundlesinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	@$(mkinstalldirs) $(DESTDIR)$(libbundlesincdir)
+	@list='$(libbundlesinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  if ! cmp -s $$d$$p $(DESTDIR)$(libbundlesincdir)/$$f; then echo " Installing $(DESTDIR)$(libbundlesincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbundlesincdir)/$$f; fi; \
+	done
+
 ##$ END TEMPLATE Make-Common

@@ -181,4 +181,20 @@ libfieldsLINKHACK_la_SOURCES = $(ALLSOURCES)
 libfieldsincdir = $(includedir)/Inventor/fields
 
 libfieldsinc_HEADERS = $(ALLINSTHEADERS)
+
+
+
+# Replaced the ordinary install to compare files and only install if
+# there's any changes. mortene.
+
+install-libfieldsincHEADERS: $(libfieldsinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	@$(mkinstalldirs) $(DESTDIR)$(libfieldsincdir)
+	@list='$(libfieldsinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  if ! cmp -s $$d$$p $(DESTDIR)$(libfieldsincdir)/$$f; then echo " Installing $(DESTDIR)$(libfieldsincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libfieldsincdir)/$$f; fi; \
+	done
+
 ##$ END TEMPLATE Make-Common

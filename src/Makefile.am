@@ -87,3 +87,21 @@ libCoininc_HEADERS = \
 	$(top_srcdir)/include/Inventor/SbViewVolume.h \
 	$(top_srcdir)/include/Inventor/SbViewportRegion.h \
 	$(top_srcdir)/include/Inventor/SbXfBox3f.h
+
+
+##$ BEGIN TEMPLATE Make-Install(libCoin)
+
+# Replaced the ordinary install to compare files and only install if
+# there's any changes. mortene.
+
+install-libCoinincHEADERS: $(libCoininc_HEADERS)
+	@$(NORMAL_INSTALL)
+	@$(mkinstalldirs) $(DESTDIR)$(libCoinincdir)
+	@list='$(libCoininc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  if ! cmp -s $$d$$p $(DESTDIR)$(libCoinincdir)/$$f; then echo " Installing $(DESTDIR)$(libCoinincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libCoinincdir)/$$f; fi; \
+	done
+
+##$ END TEMPLATE Make-Install

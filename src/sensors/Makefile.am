@@ -65,4 +65,20 @@ libsensorsLINKHACK_la_SOURCES = $(ALLSOURCES)
 libsensorsincdir = $(includedir)/Inventor/sensors
 
 libsensorsinc_HEADERS = $(ALLINSTHEADERS)
+
+
+
+# Replaced the ordinary install to compare files and only install if
+# there's any changes. mortene.
+
+install-libsensorsincHEADERS: $(libsensorsinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	@$(mkinstalldirs) $(DESTDIR)$(libsensorsincdir)
+	@list='$(libsensorsinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  if ! cmp -s $$d$$p $(DESTDIR)$(libsensorsincdir)/$$f; then echo " Installing $(DESTDIR)$(libsensorsincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libsensorsincdir)/$$f; fi; \
+	done
+
 ##$ END TEMPLATE Make-Common

@@ -265,16 +265,6 @@ libmanips.la: $(libmanips_la_OBJECTS) $(libmanips_la_DEPENDENCIES)
 libmanipsLINKHACK.la: $(libmanipsLINKHACK_la_OBJECTS) $(libmanipsLINKHACK_la_DEPENDENCIES)
 	$(CXXLINK) -rpath $(libdir) $(libmanipsLINKHACK_la_LDFLAGS) $(libmanipsLINKHACK_la_OBJECTS) $(libmanipsLINKHACK_la_LIBADD) $(LIBS)
 
-install-libmanipsincHEADERS: $(libmanipsinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libmanipsincdir)
-	@list='$(libmanipsinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libmanipsincdir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libmanipsincdir)/$$f; \
-	done
-
 uninstall-libmanipsincHEADERS:
 	@$(NORMAL_UNINSTALL)
 	@list='$(libmanipsinc_HEADERS)'; for p in $$list; do \
@@ -458,6 +448,19 @@ maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 	$(top_srcdir)/include/Inventor/manips/SoTrackballManip.h \
 	$(top_srcdir)/include/Inventor/manips/SoTransformBoxManip.h \
 	$(top_srcdir)/include/Inventor/manips/SoTransformerManip.h
+
+# Replaced the ordinary install to compare files and only install if
+# there's any changes. mortene.
+
+install-libmanipsincHEADERS: $(libmanipsinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	@$(mkinstalldirs) $(DESTDIR)$(libmanipsincdir)
+	@list='$(libmanipsinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  if ! cmp -s $$d$$p $(DESTDIR)$(libmanipsincdir)/$$f; then echo " Installing $(DESTDIR)$(libmanipsincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libmanipsincdir)/$$f; fi; \
+	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
