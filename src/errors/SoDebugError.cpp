@@ -77,7 +77,7 @@ SoDebugError::initClass(void)
   SoDebugError::callback = SoError::defaultHandlerCB;
   SoDebugError::callbackData = NULL;
   SoDebugError::classTypeId =
-    SoType::createType(SoError::getClassTypeId(), "SoDebugError");
+    SoType::createType(SoError::getClassTypeId(), "DebugError");
 }
 
 /*!

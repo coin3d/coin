@@ -69,7 +69,7 @@ SoMemoryError::initClass(void)
   SoMemoryError::callback = SoError::defaultHandlerCB;
   SoMemoryError::callbackData = NULL;
   SoMemoryError::classTypeId =
-    SoType::createType(SoError::getClassTypeId(), "SoMemoryError");
+    SoType::createType(SoError::getClassTypeId(), "MemoryError");
 }
 
 /*!

@@ -71,7 +71,7 @@ SoReadError::initClass(void)
   SoReadError::callback = SoError::defaultHandlerCB;
   SoReadError::callbackData = NULL;
   SoReadError::classTypeId =
-    SoType::createType(SoError::getClassTypeId(), "SoReadError");
+    SoType::createType(SoError::getClassTypeId(), "ReadError");
 }
 
 /*!

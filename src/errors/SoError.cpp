@@ -79,7 +79,7 @@ SoError::initClass(void)
   SoError::callback = defaultHandlerCB;
   SoError::callbackData = NULL;
   SoError::classTypeId =
-    SoType::createType(SoType::badType(), SbName("SoError"));
+    SoType::createType(SoType::badType(), SbName("Error"));
 }
 
 /*!
