@@ -64,9 +64,8 @@ public:
 
   virtual unsigned char * getBuffer(void) = 0;
 
-
   virtual void setBufferSize(const SbVec2s & size) {
-    SbVec2s maxsize = SoOffscreenRenderer::getMaximumResolution();
+    SbVec2s maxsize = this->getMax();
 
 #if COIN_DEBUG
     if (size[0] > maxsize[0]) {
@@ -108,6 +107,9 @@ public:
 
 protected:
   SbVec2s buffersize;
+
+  // Note: should _really_ be overloaded by subclasses.
+  virtual SbVec2s getMax(void) { return SbVec2s(32767, 32767); }
 };
 
 #if HAVE_OSMESACREATECONTEXT
@@ -147,11 +149,45 @@ public:
     return FALSE;
   }
 
+  virtual SbVec2s getMaxDimensions(void) {
+    // Create and set up a dummy context to be able to use
+    // glGetIntegerv() below.
+    OSMesaContext tmpctx = OSMesaCreateContext(OSMESA_RGBA, NULL);
+
+    if (!tmpctx) {
+#if COIN_DEBUG
+      SoDebugError::postWarning("SoOffscreenRenderer::getMaximumResolution",
+                                "couldn't create context");
+#endif // COIN_DEBUG
+      return SbVec2s(0, 0);
+    }
+
+    const int dummydim = 16;
+    unsigned char buffer[4 * dummydim * dummydim];
+    OSMesaMakeCurrent(tmpctx, buffer, GL_UNSIGNED_BYTE, dummydim, dummydim);
+
+    GLint dims[2];
+    glGetIntegerv(GL_MAX_VIEWPORT_DIMS, dims);
+
+    OSMesaDestroyContext(tmpctx);
+
+    // Avoid overflow.
+    dims[0] = SbMin(dims[0], 32767);
+    dims[1] = SbMin(dims[1], 32767);
+
+    return SbVec2s((short)dims[0], (short)dims[1]);
+  }
+
+
   virtual unsigned char * getBuffer(void) {
     return this->buffer;
   }
 
 private:
+  virtual SbVec2s getMax(void) {
+    return SoOffscreenMesaData::getMaxDimensions();
+  }
+
   unsigned char * buffer;
   OSMesaContext context;
 };
@@ -258,7 +294,18 @@ public:
     }
   }
 
+  virtual SbVec2s getMaxDimensions(void) {
+    // FIXME: where can we get hold of the _real_ max values for
+    // Pixmap and/or GLXPixmap? 20000417 mortene.
+    return SbVec2s(32767, 32767);
+  }
+
+
 private:
+  virtual SbVec2s getMax(void) {
+    return SoOffscreenGLXData::getMaxDimensions();
+  }
+
   unsigned char * buffer;
   Display * display;
   XVisualInfo * visinfo;
@@ -340,42 +387,11 @@ SbVec2s
 SoOffscreenRenderer::getMaximumResolution(void)
 {
 #if HAVE_OSMESACREATECONTEXT
-  // Create and set up a dummy context to be able to use
-  // glGetIntegerv() below.
-  OSMesaContext tmpctx = OSMesaCreateContext(OSMESA_RGBA, NULL);
-
-  if (!tmpctx) {
-#if COIN_DEBUG
-    SoDebugError::postWarning("SoOffscreenRenderer::getMaximumResolution",
-                              "couldn't create context");
-#endif // COIN_DEBUG
-    return SbVec2s(1, 1);
-  }
-
-  const int dummydim = 16;
-  unsigned char buffer[4 * dummydim * dummydim];
-  OSMesaMakeCurrent(tmpctx, buffer, GL_UNSIGNED_BYTE, dummydim, dummydim);
-
-  GLint dims[2];
-  glGetIntegerv(GL_MAX_VIEWPORT_DIMS, dims);
-
-  OSMesaDestroyContext(tmpctx);
-
-  // Avoid overflow.
-  dims[0] = SbMin(dims[0], 32767);
-  dims[1] = SbMin(dims[1], 32767);
-
-  return SbVec2s((short)dims[0], (short)dims[1]);
-
+  SoOffscreenMesaData::getMaxDimensions();
 #elif HAVE_GLX
-
-  // FIXME: where can we get hold of the _real_ max values for Pixmap
-  // and/or GLXPixmap? 20000417 mortene.
-  return SbVec2s(32767, 32767);
-
+  SoOffscreenGLXData::getMaxDimensions();
 #endif // HAVE_GLX
-
-  return SbVec2s(1280, 1024);
+  return SbVec2s(0, 0);
 }
 
 /*!
@@ -475,6 +491,7 @@ SbBool
 SoOffscreenRenderer::renderFromBase(SoBase * base)
 {
   if (this->internaldata && this->internaldata->makeContextCurrent()) {
+    glEnable(GL_DEPTH_TEST);
     glClearColor(this->backgroundcolor[0],
                  this->backgroundcolor[1],
                  this->backgroundcolor[2],
