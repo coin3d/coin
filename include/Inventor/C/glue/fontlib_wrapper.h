@@ -59,27 +59,24 @@ extern "C" {
   void cc_flw_initialize(void);
   void cc_flw_exit(void);
   
-  int cc_flw_create_font(const char * fontname, const int sizex, const int sizey);
-  int cc_flw_get_font(const char * fontname, const int sizex, const int ysizey);
-  void cc_flw_done_font(int font);
+  int cc_flw_get_font(const char * fontname, const int sizex, const int sizey);
+  int cc_flw_find_font(const char * fontname, const int sizex, const int ysizey);
+  void cc_flw_done_font(unsigned int font);
 
-  int cc_flw_get_num_charmaps(int font);
-  const char * cc_flw_get_charmap_name(int font, int charmap);
-  void cc_flw_set_charmap(int font, int charmap);
+  unsigned int cc_flw_get_num_charmaps(unsigned int font);
+  const char * cc_flw_get_charmap_name(unsigned int font, unsigned int charmap);
+  void cc_flw_set_charmap(unsigned int font, unsigned int charmap);
 
-  void cc_flw_set_char_size(int font, int width, int height);
-  const char * cc_flw_get_font_name(int font);
-  void cc_flw_set_font_rotation(int font, float angle);
+  void cc_flw_set_char_size(unsigned int font, unsigned int width, unsigned int height);
+  const char * cc_flw_get_font_name(unsigned int font);
+  void cc_flw_set_font_rotation(unsigned int font, float angle);
 
-  int cc_flw_get_glyph(int font, int charidx);
-  void cc_flw_get_advance(int font, int glyph, float * x, float * y);
-  void cc_flw_get_kerning(int font, int glyph1, int glyph2, float * x, float * y);
-  void cc_flw_done_glyph(int font, int glyph);
+  unsigned int cc_flw_get_glyph(unsigned int font, unsigned int charidx);
+  void cc_flw_get_advance(unsigned int font, unsigned int glyph, float * x, float * y);
+  void cc_flw_get_kerning(unsigned int font, unsigned int glyph1, unsigned int glyph2, float * x, float * y);
+  void cc_flw_done_glyph(unsigned int font, unsigned int glyph);
 
-  struct cc_flw_bitmap * cc_flw_get_bitmap(int font, int glyph);
-  void cc_flw_done_bitmap(struct cc_flw_bitmap * bitmap);
-  
-  int cc_flw_get_outline(int font, int glyph);
+  struct cc_flw_bitmap * cc_flw_get_bitmap(unsigned int font, unsigned int glyph);
   
   SbBool cc_flw_debug(void);       
 
