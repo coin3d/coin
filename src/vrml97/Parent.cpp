@@ -332,7 +332,11 @@ SoVRMLParent::copyContents(const SoFieldContainer * from,
                            SbBool copyConn)
 {
   SoGroup::children->truncate(0);
+  PRIVATE(this)->addsensor->detach();
+  PRIVATE(this)->removesensor->detach();
   SoNode::copyContents(from, copyConn);
+  PRIVATE(this)->addsensor->attach(&this->addChildren);
+  PRIVATE(this)->removesensor->attach(&this->removeChildren);
   PRIVATE(this)->childlistvalid = FALSE;
 }
 
