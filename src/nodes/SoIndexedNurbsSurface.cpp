@@ -52,35 +52,35 @@
 #include <coindefs.h> // COIN_STUB()
 
 /*!
-  \var SoSFInt32 SoNurbsSurface::numUControlPoints
+  \var SoSFInt32 SoIndexedNurbsSurface::numUControlPoints
   Number of control points in the U direction.
 */
 /*!
-  \var SoSFInt32 SoNurbsSurface::numVControlPoints
+  \var SoSFInt32 SoIndexedNurbsSurface::numVControlPoints
   Number of control points in the V direction.
 */
 /*!
-  \var SoSFInt32 SoNurbsSurface::numSControlPoints
+  \var SoSFInt32 SoIndexedNurbsSurface::numSControlPoints
   Number of control points in the S direction.
 */
 /*!
-  \var SoSFInt32 SoNurbsSurface::numTControlPoints
+  \var SoSFInt32 SoIndexedNurbsSurface::numTControlPoints
   Number of control points in the T direction.
 */
 /*!
-  \var SoMFFloat SoNurbsSurface::uKnotVector
+  \var SoMFFloat SoIndexedNurbsSurface::uKnotVector
   The Bezier knot vector for the U direction.
 */
 /*!
-  \var SoMFFloat SoNurbsSurface::vKnotVector
+  \var SoMFFloat SoIndexedNurbsSurface::vKnotVector
   The Bezier knot vector for the V direction.
 */
 /*!
-  \var SoMFFloat SoNurbsSurface::sKnotVector
+  \var SoMFFloat SoIndexedNurbsSurface::sKnotVector
   The Bezier knot vector for the S direction.
 */
 /*!
-  \var SoMFFloat SoNurbsSurface::tKnotVector
+  \var SoMFFloat SoIndexedNurbsSurface::tKnotVector
   The Bezier knot vector for the T direction.
 */
 

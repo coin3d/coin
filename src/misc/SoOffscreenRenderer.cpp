@@ -47,6 +47,13 @@
 #include <coindefs.h> // COIN_STUB()
 #include <Inventor/errors/SoDebugError.h>
 
+/*!
+  \enum SoOffscreenRenderer::Components
+
+  Enumerated values for the available image formats.
+
+  \sa setComponents()
+*/
 
 #ifndef DOXYGEN_SKIP_THIS // Don't document internal classes.
 
@@ -335,6 +342,8 @@ SoOffscreenRenderer::getMaximumResolution(void)
   \c RGB will give us a 24-bit image with 8 bits each for the red,
   green and blue component, and \c RGB_TRANSPARENCY yields a 32-bit
   image (\c RGB plus transparency).
+
+  The default format to render to is \c RGB.
 */
 void
 SoOffscreenRenderer::setComponents(const Components components)

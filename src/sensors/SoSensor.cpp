@@ -90,7 +90,7 @@
  */
 
 /*!
-  \typedef void SoSensor::SoSensorCB(void * data, SoSensor * sensor)
+  \typedef void SoSensorCB(void * data, SoSensor * sensor)
 
   Sensor callback functions must have this signature to be valid for
   registering with SoSensor.

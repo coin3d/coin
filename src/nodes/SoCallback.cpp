@@ -36,7 +36,7 @@
 #include <Inventor/actions/SoActions.h> // SoCallback uses all of them.
 
 /*!
-  \typedef void SoCallback::SoCallbackCB(void * userdata, SoAction * action)
+  \typedef void SoCallbackCB(void * userdata, SoAction * action)
   Signature that callback functions need to have.
 */
 

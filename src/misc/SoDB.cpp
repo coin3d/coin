@@ -27,7 +27,7 @@
   with) the API of Open Inventor, the \e de \e facto standard 3D
   graphics library for complex visualization applications.
 
-  Systems in Motion are working on providing libraries for interfacing
+  Systems in Motion is working on providing libraries for interfacing
   Coin with a wide range of windowing systems and GUI toolkits. The
   library for interfacing against X11 through Xt/Motif is nearing
   completion, and the SoQt library for interfacing to X11 or MSWin

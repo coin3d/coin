@@ -78,11 +78,12 @@
 */
 
 
-/*!  
-  \var SoMFInt32 SoTriangleStripSet::numVertices Specifies the
-  number of vertices in each triangle strip. The vertices are fetched
-  from the current coordinate node, or from the vertexProperty field
-  if present.  
+/*!
+  \var SoMFInt32 SoTriangleStripSet::numVertices
+
+  Specifies the number of vertices in each triangle strip. The
+  vertices are fetched from the current coordinate node, or from the
+  vertexProperty field if present.
 */
 
 // *************************************************************************
@@ -390,7 +391,7 @@ SoTriangleStripSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 }
 
 // doc from parent
-SbBool 
+SbBool
 SoTriangleStripSet::willSetShadeModel(void) const
 {
   return TRUE;

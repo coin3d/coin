@@ -52,6 +52,18 @@
   </ul>
  */
 
+/*!
+  \typedef void SoGLRenderPassCB(void * userdata)
+
+  Callback functions for the setPassCallback() method need to be of
+  this type.
+
+  \a userdata is a void pointer to any data the application need to
+  know of in the callback function (like for instance a \e this
+  pointer).
+ */
+
+
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/SbColor.h>
 #include <Inventor/SbPlane.h>

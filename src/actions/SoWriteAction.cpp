@@ -20,6 +20,7 @@
 /*!
   \class SoWriteAction SoWriteAction.h Inventor/actions/SoWriteAction.h
   \brief The SoWriteAction class writes a scene graph to file.
+  \ingroup actions
 
   When applied to a scene, this action writes its contents to the
   stream contained within an SoOutput instance. This can be a file, a

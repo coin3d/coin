@@ -50,6 +50,19 @@
 SO_EVENT_SOURCE(SoEvent);
 
 /*!
+  \fn SoType SoEvent::getClassTypeId(void)
+
+  This static method returns the SoType object associated with objects
+  of this class.
+ */
+/*!
+  \fn SoType SoEvent::getTypeId(void) const
+
+  Returns the actual type id of an instantiated object.
+*/
+
+
+/*!
   Initialize SoEvent and all it's known subclasses (i.e. all subclasses
   which are part of the standard classes in the Coin library).
 

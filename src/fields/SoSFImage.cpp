@@ -54,23 +54,32 @@ PRIVATE_TYPEID_SOURCE(SoSFImage);
 PRIVATE_EQUALITY_SOURCE(SoSFImage);
 
 
-/*!
-  Constructor, initialized field to be empty.
+/*
+  (Constructor declaration hidden in macro in SoSFImage.h, so don't
+  use Doxygen commenting.)
+
+  Constructor, initializes fields to represent an empty image.
 */
 SoSFImage::SoSFImage(void)
   : image(new SbImage)
 {
 }
 
-/*!
-  Destructor, free resources associated with the image.
+/*
+  (Destructor declaration hidden in macro in SoSFImage.h, so don't use
+  Doxygen commenting.)
+
+  Free all resources associated with the image.
 */
 SoSFImage::~SoSFImage()
 {
   delete this->image;
 }
 
-/*!
+/*
+  (Declaration hidden in macro in SoSFImage.h, so don't use Doxygen
+  commenting.)
+
   Copy the image of \a field into this field.
 */
 const SoSFImage &

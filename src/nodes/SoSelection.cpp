@@ -58,7 +58,53 @@
 */
 
 
-static SoSearchAction *searchAction; // used to search for nodes
+/*!
+  \var SoPathList SoSelection::selectionList
+  \internal
+*/
+/*!
+  \var SoCallbackList * SoSelection::selCBList
+  \internal
+*/
+/*!
+  \var SoCallbackList * SoSelection::deselCBList
+  \internal
+*/
+/*!
+  \var SoCallbackList * SoSelection::startCBList
+  \internal
+*/
+/*!
+  \var SoCallbackList * SoSelection::finishCBList
+  \internal
+*/
+/*!
+  \var SoSelectionPickCB * SoSelection::pickCBFunc
+  \internal
+*/
+/*!
+  \var void * SoSelection::pickCBData
+  \internal
+*/
+/*!
+  \var SbBool SoSelection::callPickCBOnlyIfSelectable
+  \internal
+*/
+/*!
+  \var SoCallbackList * SoSelection::changeCBList
+  \internal
+*/
+/*!
+  \var SoPath * SoSelection::mouseDownPickPath
+  \internal
+*/
+/*!
+  \var SbBool SoSelection::pickMatching
+  \internal
+*/
+
+
+static SoSearchAction * searchAction; // used to search for nodes
 
 // *************************************************************************
 
@@ -142,7 +188,7 @@ SoSelection::init(void)
 void
 SoSelection::select(const SoPath * path)
 {
-  SoPath *newpath = this->copyFromThis(path);
+  SoPath * newpath = this->copyFromThis(path);
   if (newpath && this->findPath(newpath) < 0) {
     newpath->ref();
     this->addPath(newpath);
@@ -156,7 +202,7 @@ SoSelection::select(const SoPath * path)
 void
 SoSelection::select(SoNode * node)
 {
-  SoPath *path = this->searchNode(node);
+  SoPath * path = this->searchNode(node);
   if (path && this->findPath(path) < 0) {
     path->ref();
     this->addPath(path);
@@ -189,7 +235,7 @@ SoSelection::deselect(const int which)
 void
 SoSelection::deselect(SoNode * node)
 {
-  SoPath *path = this->searchNode(node);
+  SoPath * path = this->searchNode(node);
   if (path) {
     path->ref();
     this->deselect(path);
@@ -215,7 +261,7 @@ SoSelection::toggle(const SoPath * path)
 void
 SoSelection::toggle(SoNode * node)
 {
-  SoPath *path = this->searchNode(node);
+  SoPath * path = this->searchNode(node);
   if (path) {
     path->ref();
     this->toggle(path);
@@ -238,7 +284,7 @@ SoSelection::isSelected(const SoPath * path) const
 SbBool
 SoSelection::isSelected(SoNode * node) const
 {
-  SoPath *path = this->searchNode(node);
+  SoPath * path = this->searchNode(node);
   if (path) {
     path->ref();
     SbBool ret = this->isSelected(path);
@@ -297,80 +343,80 @@ SoSelection::operator[](const int i) const
   FIXME: write doc
  */
 void
-SoSelection::addSelectionCallback(SoSelectionPathCB *f, void *userData)
+SoSelection::addSelectionCallback(SoSelectionPathCB * f, void * userData)
 {
-  this->selCBList->addCallback((SoCallbackListCB*)f, userData);
+  this->selCBList->addCallback((SoCallbackListCB *)f, userData);
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoSelection::removeSelectionCallback(SoSelectionPathCB *f, void *userData)
+SoSelection::removeSelectionCallback(SoSelectionPathCB * f, void * userData)
 {
-  this->selCBList->removeCallback((SoCallbackListCB*)f, userData);
+  this->selCBList->removeCallback((SoCallbackListCB *)f, userData);
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoSelection::addDeselectionCallback(SoSelectionPathCB *f, void *userData)
+SoSelection::addDeselectionCallback(SoSelectionPathCB * f, void * userData)
 {
-  this->deselCBList->addCallback((SoCallbackListCB*)f, userData);
+  this->deselCBList->addCallback((SoCallbackListCB *)f, userData);
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoSelection::removeDeselectionCallback(SoSelectionPathCB *f, void *userData)
+SoSelection::removeDeselectionCallback(SoSelectionPathCB * f, void * userData)
 {
-  this->deselCBList->removeCallback((SoCallbackListCB*)f, userData);
+  this->deselCBList->removeCallback((SoCallbackListCB *)f, userData);
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoSelection::addStartCallback(SoSelectionClassCB *f, void *userData)
+SoSelection::addStartCallback(SoSelectionClassCB * f, void * userData)
 {
-  this->startCBList->addCallback((SoCallbackListCB*)f, userData);
+  this->startCBList->addCallback((SoCallbackListCB *)f, userData);
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoSelection::removeStartCallback(SoSelectionClassCB *f, void *userData)
+SoSelection::removeStartCallback(SoSelectionClassCB * f, void * userData)
 {
-  this->startCBList->removeCallback((SoCallbackListCB*)f, userData);
+  this->startCBList->removeCallback((SoCallbackListCB *)f, userData);
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoSelection::addFinishCallback(SoSelectionClassCB *f, void *userData)
+SoSelection::addFinishCallback(SoSelectionClassCB * f, void * userData)
 {
-  this->finishCBList->addCallback((SoCallbackListCB*)f, userData);
+  this->finishCBList->addCallback((SoCallbackListCB *)f, userData);
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoSelection::removeFinishCallback(SoSelectionClassCB *f, void *userData)
+SoSelection::removeFinishCallback(SoSelectionClassCB * f, void * userData)
 {
-  this->finishCBList->removeCallback((SoCallbackListCB*)f, userData);
+  this->finishCBList->removeCallback((SoCallbackListCB *)f, userData);
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoSelection::setPickFilterCallback(SoSelectionPickCB *f,
-                                   void *userData,
+SoSelection::setPickFilterCallback(SoSelectionPickCB * f,
+                                   void * userData,
                                    const SbBool callOnlyIfSelectable)
 {
   this->pickCBFunc = f;
@@ -409,18 +455,18 @@ SoSelection::getPickMatching(void) const
   FIXME: write doc
  */
 void
-SoSelection::addChangeCallback(SoSelectionClassCB *f, void *userData)
+SoSelection::addChangeCallback(SoSelectionClassCB * f, void * userData)
 {
-  this->changeCBList->addCallback((SoCallbackListCB*)f, userData);
+  this->changeCBList->addCallback((SoCallbackListCB *)f, userData);
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoSelection::removeChangeCallback(SoSelectionClassCB *f, void *userData)
+SoSelection::removeChangeCallback(SoSelectionClassCB * f, void * userData)
 {
-  this->changeCBList->removeCallback((SoCallbackListCB*)f, userData);
+  this->changeCBList->removeCallback((SoCallbackListCB *)f, userData);
 }
 /*!
   FIXME: write doc
@@ -442,7 +488,7 @@ SoSelection::invokeSelectionPolicy(SoPath * path,
   FIXME: write doc
  */
 void
-SoSelection::performSingleSelection(SoPath *path)
+SoSelection::performSingleSelection(SoPath * path)
 {
   while (this->getNumSelected()) {
     this->removePath(this->getNumSelected()-1);
@@ -454,7 +500,7 @@ SoSelection::performSingleSelection(SoPath *path)
   FIXME: write doc
  */
 void
-SoSelection::performToggleSelection(SoPath *path)
+SoSelection::performToggleSelection(SoPath * path)
 {
   if (path) {
     int idx = this->findPath(path);
@@ -473,7 +519,7 @@ SoSelection::performToggleSelection(SoPath *path)
 SoPath *
 SoSelection::copyFromThis(const SoPath * path) const
 {
-  SoPath *newpath = NULL;
+  SoPath * newpath = NULL;
   path->ref();
   int i = path->findNode(this);
   if (i >= 0) {
@@ -487,7 +533,7 @@ SoSelection::copyFromThis(const SoPath * path) const
   FIXME: write doc
  */
 void
-SoSelection::addPath(SoPath *path)
+SoSelection::addPath(SoPath * path)
 {
   this->selectionList.append(path);
   this->selCBList->invokeCallbacks(path);
@@ -499,7 +545,7 @@ SoSelection::addPath(SoPath *path)
 void
 SoSelection::removePath(const int which)
 {
-  SoPath *path = this->selectionList[which];
+  SoPath * path = this->selectionList[which];
   path->ref();
   this->selectionList.remove(which);
   this->deselCBList->invokeCallbacks(path);
@@ -510,13 +556,13 @@ SoSelection::removePath(const int which)
   FIXME: write doc
  */
 int
-SoSelection::findPath(const SoPath *path) const
+SoSelection::findPath(const SoPath * path) const
 {
   int idx = -1;
 
   // make copy only if necessary
-  if (path->getHead() != (SoNode*)this) {
-    SoPath *newpath = this->copyFromThis(path);
+  if (path->getHead() != (SoNode *)this) {
+    SoPath * newpath = this->copyFromThis(path);
     if (newpath) {
       newpath->ref();
       idx = this->selectionList.findPath(*newpath);
@@ -532,9 +578,9 @@ SoSelection::findPath(const SoPath *path) const
   FIXME: write doc
  */
 void
-SoSelection::handleEvent(SoHandleEventAction *action)
+SoSelection::handleEvent(SoHandleEventAction * action)
 {
-  const SoEvent *event = action->getEvent();
+  const SoEvent * event = action->getEvent();
 
   SbBool haltaction = FALSE;
   if (SO_MOUSE_PRESS_EVENT(event, BUTTON1)) {
@@ -542,7 +588,7 @@ SoSelection::handleEvent(SoHandleEventAction *action)
       this->mouseDownPickPath->unref();
       this->mouseDownPickPath = NULL;
     }
-    const SoPickedPoint *pp = action->getPickedPoint();
+    const SoPickedPoint * pp = action->getPickedPoint();
     if (pp) {
       this->mouseDownPickPath = pp->getPath();
       this->mouseDownPickPath->ref();
@@ -551,7 +597,7 @@ SoSelection::handleEvent(SoHandleEventAction *action)
   }
   else if (SO_MOUSE_RELEASE_EVENT(event, BUTTON1)) {
     SbBool ignorepick = FALSE;
-    SoPath *selpath = this->getSelectionPath(action, ignorepick, haltaction);
+    SoPath * selpath = this->getSelectionPath(action, ignorepick, haltaction);
 
     if (haltaction) {
       action->isHandled();
@@ -588,13 +634,13 @@ SoSelection::searchNode(SoNode * node) const
     searchAction->setInterest(SoSearchAction::FIRST);
   }
   searchAction->setNode(node);
-  searchAction->apply((SoNode*)this);
+  searchAction->apply((SoNode *)this);
   return searchAction->getPath();
 }
 
 SoPath *
-SoSelection::getSelectionPath(SoHandleEventAction *action, SbBool &ignorepick,
-                              SbBool &haltaction)
+SoSelection::getSelectionPath(SoHandleEventAction * action, SbBool & ignorepick,
+                              SbBool & haltaction)
 {
   //
   // handled like described in the man-pages for SoSelection
@@ -604,8 +650,8 @@ SoSelection::getSelectionPath(SoHandleEventAction *action, SbBool &ignorepick,
   ignorepick = FALSE;
   if (!this->mouseDownPickPath) return NULL;
 
-  const SoPickedPoint *pp = action->getPickedPoint();
-  SoPath *selectionpath = NULL;
+  const SoPickedPoint * pp = action->getPickedPoint();
+  SoPath * selectionpath = NULL;
   if (pp) {
     selectionpath = pp->getPath();
     int forkpos = selectionpath->findFork(this->mouseDownPickPath);

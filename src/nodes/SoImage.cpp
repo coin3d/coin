@@ -150,7 +150,7 @@ SoImage::SoImage(void)
   this->readstatus = TRUE;
   this->transparency = FALSE;
   this->testtransparency = FALSE;
-  
+
   // use field sensor for filename since we will load an image if
   // filename changes. This is a time-consuming task which should
   // not be done in notify().
@@ -204,7 +204,7 @@ SoImage::GLRender(SoGLRenderAction * action)
   SoState *state = action->getState();
   this->testTransparency();
   if (action->handleTransparency(this->transparency)) return;
-  
+
   const SbViewportRegion & vp = SoViewportRegionElement::get(state);
   SbVec2s vpsize = vp.getViewportSizePixels();
 
@@ -370,7 +370,7 @@ SoImage::generatePrimitives(SoAction * action)
   // not quite sure if I should do this, but this will enable
   // SoCallbackAction to get all data it needs to render
   // this quad correctly. pederb 19991131
-  
+
   SbVec2s size;
   int nc;
   const unsigned char * dataptr = this->getImage(size, nc);
@@ -494,9 +494,7 @@ SoImage::getNilpoint(SoState * state)
   return nilpoint;
 }
 
-//
-// calculates the quad in 3D
-//
+// Calculates the quad in 3D.
 void
 SoImage::getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
                  SbVec3f & v2, SbVec3f & v3)
@@ -587,7 +585,7 @@ SoImage::getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
   inv.multVecMatrix(v3, v3);
 }
 
-// returns requested on-screen size
+// Returns requested on-screen size.
 SbVec2s
 SoImage::getSize(void) const
 {
@@ -613,7 +611,7 @@ SoImage::getImage(SbVec2s & size, int & nc)
       const unsigned char * orgdata = this->image.getValue(orgsize, nc);
       SbVec2s newsize = this->getSize();
       this->resizedimage->setValue(newsize, nc, NULL);
-      const unsigned char * rezdata = this->resizedimage->getValue(newsize, nc); 
+      const unsigned char * rezdata = this->resizedimage->getValue(newsize, nc);
       GLenum format;
       switch (nc) {
       default: // avoid compiler warnings
@@ -635,8 +633,8 @@ SoImage::getImage(SbVec2s & size, int & nc)
 
 //
 // check image data for transparency
-// 
-void 
+//
+void
 SoImage::testTransparency(void)
 {
   if (!this->testtransparency) return;
@@ -645,11 +643,11 @@ SoImage::testTransparency(void)
   SbVec2s size;
   int nc;
   const unsigned char * data = this->image.getValue(size, nc);
-  
+
   if (nc == 2 || nc == 4) {
     int n = size[0] * size[1];
     const unsigned char * ptr = (unsigned char *) data + nc - 1;
-    
+
     while (n) {
       if (*ptr != 255) break;
       ptr += nc;
@@ -663,7 +661,7 @@ SoImage::testTransparency(void)
 // Called from readInstance() or when user changes the
 // filename field.
 //
-SbBool 
+SbBool
 SoImage::loadFilename(void)
 {
   SbBool retval = FALSE;

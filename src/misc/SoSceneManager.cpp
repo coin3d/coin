@@ -59,7 +59,8 @@
  */
 
 /*!
-  \typedef typedef SoSceneManager::SoSceneManagerRenderCB(void * userdata, SoSceneManager * mgr)
+  \typedef SoSceneManagerRenderCB(void * userdata, SoSceneManager * mgr)
+
   Render callback function must have this signature.
 */
 

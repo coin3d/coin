@@ -1095,8 +1095,11 @@ SbViewVolume::getViewVolumePlanes(SbPlane planes[6]) const
   planes[5] = SbPlane(far_ll, far_lr, far_ur); // far
 }
 
+/*!
+  Transform the viewing volume by \a matrix.
+ */
 void
-SbViewVolume::transform(const SbMatrix &matrix)
+SbViewVolume::transform(const SbMatrix & matrix)
 {
   matrix.multDirMatrix(this->projectiondir, this->projectiondir);
 
