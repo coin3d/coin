@@ -18,24 +18,41 @@
 \**************************************************************************/
 
 /*!
-  \class SoPickAction Inventor/actions/SoPickAction.h
-  \brief The SoPickAction class is for picking nodes in a scene graph.
+  \class SoPickAction SoPickAction.h Inventor/actions/SoPickAction.h
+  \brief The SoPickAction class is the base class for picking actions.
+  \ingroup actions
+
+  The basis for all interaction features that Coin provides for the
+  application programmer is the pick actions. Draggers, manipulators,
+  SoSelection nodes, etc all make use of the functionality provided by
+  the pick actions for selecting and manipulating scene geometry in
+  various ways.
+
+  This class is not supposed to be used directly by the application
+  programmer, see SoRayPickAction.
+
+  \sa SoSelection
 */
 
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/actions/SoSubActionP.h>
-#include <Inventor/misc/SoState.h>
+
+#include <Inventor/elements/SoDecimationPercentageElement.h>
+#include <Inventor/elements/SoDecimationTypeElement.h>
+#include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
+#include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoNode.h>
 
-#include <Inventor/elements/SoViewportRegionElement.h>
-#include <Inventor/elements/SoDecimationTypeElement.h>
-#include <Inventor/elements/SoDecimationPercentageElement.h>
-#include <Inventor/elements/SoLazyElement.h>
-
+/*!
+  \var SbViewportRegion SoPickAction::vpRegion
+  The viewport region used by pick actions.
+*/
 
 
 SO_ACTION_SOURCE(SoPickAction);
+
 
 // Override from parent class.
 void
@@ -51,12 +68,10 @@ SoPickAction::initClass(void)
 
 
 /*!
-  A constructor.
+  Constructor.
 */
-
-SoPickAction::SoPickAction(const SbViewportRegion & viewportRegion)
-  : vpRegion(viewportRegion),
-    cullingEnabled(TRUE)
+SoPickAction::SoPickAction(const SbViewportRegion & viewportregion)
+  : vpRegion(viewportregion), cullingenabled(TRUE)
 {
   SO_ACTION_CONSTRUCTOR(SoPickAction);
 
@@ -64,15 +79,37 @@ SoPickAction::SoPickAction(const SbViewportRegion & viewportRegion)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
-
 SoPickAction::~SoPickAction(void)
 {
 }
 
+/*!
+  Set a new viewport region to replace the one passed in with the
+  constructor.
+ */
 void
-SoPickAction::beginTraversal(SoNode *node)
+SoPickAction::setViewportRegion(const SbViewportRegion & newregion)
+{
+  this->vpRegion = newregion;
+}
+
+/*!
+  Returns the viewport region used by the action.
+ */
+const SbViewportRegion &
+SoPickAction::getViewportRegion(void)
+{
+  return this->vpRegion;
+}
+
+/*!
+  Overloads parent traversal to set up the state element for the
+  viewport region.
+ */
+void
+SoPickAction::beginTraversal(SoNode * node)
 {
   this->getState()->push();
   SoViewportRegionElement::set(this->getState(), this->vpRegion);
@@ -80,14 +117,23 @@ SoPickAction::beginTraversal(SoNode *node)
   this->getState()->pop();
 }
 
+/*!
+  Don't calculate bounding boxes and try to do culling when picking.
+
+  This can provide a speed-up in cases where the default setting of \c
+  on would be inefficient.
+ */
 void
 SoPickAction::enableCulling(const SbBool flag)
 {
-  this->cullingEnabled = flag;
+  this->cullingenabled = flag;
 }
 
+/*!
+  Returns the current state of the culling flag.
+ */
 SbBool
-SoPickAction::isCullingEnabled() const
+SoPickAction::isCullingEnabled(void) const
 {
-  return this->cullingEnabled;
+  return this->cullingenabled;
 }

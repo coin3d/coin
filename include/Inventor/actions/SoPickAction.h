@@ -31,19 +31,24 @@ class SoPickAction : public SoAction {
   SO_ACTION_HEADER(SoPickAction);
 
 public:
-  virtual ~SoPickAction();
   static void initClass(void);
 
-  void enableCulling(const SbBool flag);
+  void setViewportRegion(const SbViewportRegion & newregion);
+  const SbViewportRegion & getViewportRegion(void);
+
+void enableCulling(const SbBool flag);
   SbBool isCullingEnabled() const;
 
 protected:
-  SoPickAction(const SbViewportRegion & viewportRegion);
-  virtual void beginTraversal(SoNode *node);
+  SoPickAction(const SbViewportRegion & viewportregion);
+  virtual ~SoPickAction();
+
+  virtual void beginTraversal(SoNode * node);
+
   SbViewportRegion vpRegion;
 
 private:
-  SbBool cullingEnabled;
+  SbBool cullingenabled;
 };
 
 #endif // !COIN_SOPICKACTION_H
