@@ -40,7 +40,7 @@ extern "C" {
 
   unsigned int cc_glyph2d_getwidth(const cc_glyph2d * g);
   const unsigned char * cc_glyph2d_getbitmap(const cc_glyph2d * g, int * size, int * offset);
-  
+  SbBool cc_glyph2d_getmono(const cc_glyph2d * g);
 
 #ifdef __cplusplus
 }

@@ -56,6 +56,7 @@ struct cc_glyph2d {
   unsigned char * bitmap;
   int refcount;
   int fontid;
+  SbBool mono;
 };
 
 static cc_hash * glyph2d_fonthash = NULL;
@@ -203,11 +204,12 @@ cc_glyph2d_ref(uint32_t character, const cc_font_specification * spec, float ang
   assert(bm);
   glyph->width = bm->width;
   glyph->height = bm->rows;
-  glyph->bitmapwidth = bm->pitch * 8;
+  glyph->bitmapwidth = bm->mono ? bm->pitch * 8 : bm->pitch;
   glyph->bitmapheight = bm->rows;
   glyph->bitmapoffsetx = bm->bearingX;
   glyph->bitmapoffsety = bm->bearingY;
   glyph->bitmap = bm->buffer;
+  glyph->mono = bm->mono;
   glyph->refcount = 1;
   
   /* Store newly created glyph in the list for this character */
@@ -296,4 +298,10 @@ cc_glyph2d_getbitmap(const cc_glyph2d * g, int * size, int * offset)
   offset[1] = g->bitmapoffsety;
 
   return g->bitmap;
+}
+
+SbBool 
+cc_glyph2d_getmono(const cc_glyph2d * g)
+{
+  return g->mono;
 }
