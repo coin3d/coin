@@ -60,6 +60,9 @@
 #define CC_SYNC_END(_myid_) \
   cc_sync_end(coin_mydummysyncptr)
 
+#define CC_GLOBAL_LOCK cc_mutex_global_lock()
+#define CC_GLOBAL_UNLOCK cc_mutex_global_unlock()
+
 #else /* HAVE_THREADS */
 
 #define CC_MUTEX_CONSTRUCT(_mymutex_)
@@ -68,6 +71,8 @@
 #define CC_MUTEX_UNLOCK(_mymutex_)
 #define CC_SYNC_BEGIN(_myid_)
 #define CC_SYNC_END(_myid_)
+#define CC_GLOBAL_LOCK
+#define CC_GLOBAL_UNLOCK
 
 #endif /* ! HAVE_THREADS */
 
