@@ -257,11 +257,9 @@ static void _funcname_ (const int numconnections, const int inputstop, \
       out->setNum(numvalues); \
       for (int j = 0; j <= inputstop; j++) { \
         _fieldtype_ * in = (_fieldtype_ *) input[j]; \
-        const int num = in->getNum(); \
-        for (int k = 0; k < num; k++) { \
-          out->setValues(cnt, in->getNum(), in->getValues(0)); \
-          cnt += in->getNum(); \
-        } \
+        assert(in != NULL); \
+        out->setValues(cnt, in->getNum(), in->getValues(0)); \
+        cnt += in->getNum(); \
       } \
     } \
   } \
