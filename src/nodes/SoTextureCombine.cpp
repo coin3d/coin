@@ -42,7 +42,7 @@
 
   This node has many fields, but usually it is sufficient to set only
   one or very few fields. FIXME: more doc, pederb, 2004-01-27
-  
+
   \since 2004-01-27
 */
 
@@ -94,7 +94,7 @@
 
 /*!
   \var SoTextureCombine::Operand SoTextureCombine::ONE_MINUS_SRC_COLOR
-  
+
   Use one minus source color as operand.
 */
 
@@ -112,7 +112,7 @@
 
 /*!
   \var SoTextureCombine::Operation SoTextureCombine::REPLACE
-  
+
   dst = Arg0
 */
 
@@ -225,7 +225,7 @@
 
 /*!
   SoTextureCombine::constantColor
-  
+
   The constant color (when CONSTANT is used as source). Default value
   is (1,1,1,1).
 */
@@ -257,7 +257,7 @@ SoTextureCombine::SoTextureCombine(void)
   SO_NODE_ADD_FIELD(alphaSource, (TEXTURE));
   SO_NODE_ADD_FIELD(rgbOperand, (SRC_COLOR));
   SO_NODE_ADD_FIELD(alphaOperand, (SRC_ALPHA));
-  
+
   this->rgbSource.setNum(0);
   this->rgbSource.setDefault(TRUE);
   this->alphaSource.setNum(0);
@@ -269,7 +269,7 @@ SoTextureCombine::SoTextureCombine(void)
 
   SO_NODE_ADD_FIELD(rgbOperation, (MODULATE));
   SO_NODE_ADD_FIELD(alphaOperation, (MODULATE));
-  
+
   SO_NODE_ADD_FIELD(rgbScale, (1.0f));
   SO_NODE_ADD_FIELD(alphaScale, (1.0f));
 
@@ -324,8 +324,25 @@ void
 SoTextureCombine::GLRender(SoGLRenderAction * action)
 {
   const cc_glglue * glue = cc_glglue_instance(action->getCacheContext());
-  if (cc_glglue_glversion_matches_at_least(glue, 1, 3, 0) ||
-      cc_glglue_glext_supported(glue, "GL_ARB_texture_env_combine")) {
+
+  SoTextureCombine::Operation rgbaop = 
+    (SoTextureCombine::Operation) this->rgbOperation.getValue();
+  
+  SoTextureCombine::Operation alphaop = 
+    (SoTextureCombine::Operation) this->alphaOperation.getValue();
+
+  SbBool supported = cc_glglue_glversion_matches_at_least(glue, 1, 3, 0);
+  
+  if (!supported) {
+    supported = cc_glglue_glext_supported(glue, "GL_ARB_texture_env_combine");
+    if (supported && (alphaop == DOT3_RGB || alphaop == DOT3_RGBA ||
+                      rgbaop == DOT3_RGB || rgbaop == DOT3_RGBA)) {
+      supported = 
+        cc_glglue_glext_supported(glue, "GL_ARB_texture_env_dot3");
+    }
+  }
+
+  if (supported) {
     SoTextureCombine::doAction((SoAction*)action);
   }
   else {
@@ -345,28 +362,28 @@ void
 SoTextureCombine::doAction(SoAction * action)
 {
   SoState * state = action->getState();
-  int unit = SoTextureUnitElement::get(state); 
-  
-  SoTextureCombineElement::Source rgbsource[3] = { 
-    SoTextureCombineElement::TEXTURE, 
-    SoTextureCombineElement::PREVIOUS, 
-    SoTextureCombineElement::CONSTANT 
-  };
-  SoTextureCombineElement::Operand rgboperand[3] = { 
-    SoTextureCombineElement::SRC_COLOR, 
-    SoTextureCombineElement::SRC_COLOR, 
-    SoTextureCombineElement::SRC_COLOR 
-  };
+  int unit = SoTextureUnitElement::get(state);
 
-  SoTextureCombineElement::Source alphasource[3] = { 
-    SoTextureCombineElement::TEXTURE, 
-    SoTextureCombineElement::PREVIOUS, 
+  SoTextureCombineElement::Source rgbsource[3] = {
+    SoTextureCombineElement::TEXTURE,
+    SoTextureCombineElement::PREVIOUS,
     SoTextureCombineElement::CONSTANT
   };
-  SoTextureCombineElement::Operand alphaoperand[3] = { 
-    SoTextureCombineElement::SRC_ALPHA, 
-    SoTextureCombineElement::SRC_ALPHA, 
-    SoTextureCombineElement::SRC_ALPHA 
+  SoTextureCombineElement::Operand rgboperand[3] = {
+    SoTextureCombineElement::SRC_COLOR,
+    SoTextureCombineElement::SRC_COLOR,
+    SoTextureCombineElement::SRC_COLOR
+  };
+
+  SoTextureCombineElement::Source alphasource[3] = {
+    SoTextureCombineElement::TEXTURE,
+    SoTextureCombineElement::PREVIOUS,
+    SoTextureCombineElement::CONSTANT
+  };
+  SoTextureCombineElement::Operand alphaoperand[3] = {
+    SoTextureCombineElement::SRC_ALPHA,
+    SoTextureCombineElement::SRC_ALPHA,
+    SoTextureCombineElement::SRC_ALPHA
   };
   int i;
   for (i = 0; i < this->rgbSource.getNum() && i < 3; i++) {
@@ -419,4 +436,3 @@ SoTextureCombine::pick(SoPickAction * action)
   // reimplement the method just in case
   inherited::pick(action);
 }
-
