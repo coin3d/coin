@@ -9,7 +9,8 @@ RegularSources = \
 	SoGLRenderCache.cpp \
 	SoNormalCache.cpp \
 	SoTextureCoordinateCache.cpp \
-	SoPrimitiveVertexCache.cpp
+	SoPrimitiveVertexCache.cpp \
+	SoGlyphCache.cpp
 LinkHackSources = \
 	all-caches-cpp.cpp
 PublicHeaders =

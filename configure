@@ -465,7 +465,7 @@ ac_includes_default="\
 #endif"
 
 ac_subdirs_all="$ac_subdirs_all src/extensions/superglu"
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os RFC822_DATE coin_configure_date BUILD_WITH_MSVC MAC_FRAMEWORK MAC_FRAMEWORK_NAME MAC_FRAMEWORK_PREFIX MAC_FRAMEWORK_VERSION nop ivincludedir frameworkdir COIN_MAJOR_VERSION COIN_MINOR_VERSION COIN_MICRO_VERSION COIN_BETA_VERSION COIN_VERSION LT_CURRENT LT_REVISION LT_AGE COIN_SO_VERSION CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT COIN_MSVC_LIBC INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE am__leading_dot DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CCDEPMODE am__fastdepCC_TRUE am__fastdepCC_FALSE MAINTAINER_MODE_TRUE MAINTAINER_MODE_FALSE MAINT MAC_FRAMEWORK_TRUE MAC_FRAMEWORK_FALSE MACOSX_10_2FF_TRUE MACOSX_10_2FF_FALSE MACOSX_NAME CXX CXXFLAGS ac_ct_CXX CXXDEPMODE am__fastdepCXX_TRUE am__fastdepCXX_FALSE CXXCPP EGREP LN_S ECHO AR ac_ct_AR RANLIB ac_ct_RANLIB CPP F77 FFLAGS ac_ct_F77 LIBTOOL COIN_EXTRA_CPPFLAGS COIN_EXTRA_CFLAGS COIN_EXTRA_CXXFLAGS COIN_EXTRA_LDFLAGS COIN_EXTRA_LIBS HAVE_3DS_IMPORT_CAPABILITIES BUILD_3DS_CAPABILITIES_TRUE BUILD_3DS_CAPABILITIES_FALSE HAVE_VRML97 BUILD_VRML97_TRUE BUILD_VRML97_FALSE subdirs HAVE_SUPERGLU SUPERGLUPREFIX BUILD_WITH_SUPERGLU_TRUE BUILD_WITH_SUPERGLU_FALSE HAVE_THREADS BUILD_WITH_THREADS_TRUE BUILD_WITH_THREADS_FALSE HAVE_THREADSAFE BUILD_LIBRARY_TRUE BUILD_LIBRARY_FALSE htmldir COIN_DOC_HTML coin_html_dir COIN_DOC_MAN coin_man_dir BUILD_MANPAGES_TRUE BUILD_MANPAGES_FALSE BUILD_HTMLPAGES_TRUE BUILD_HTMLPAGES_FALSE sim_ac_doxygen_exe sim_ac_perl_exe path_tag sim_ac_makensis_exe sim_ac_dpkg_buildpackage_exe WIN_PACKAGEABLE_TRUE WIN_PACKAGEABLE_FALSE DEB_PACKAGEABLE_TRUE DEB_PACKAGEABLE_FALSE sim_ac_packagemaker_app MACOSX_PACKAGEABLE_TRUE MACOSX_PACKAGEABLE_FALSE CONFIG SUFFIX DSUFFIX sim_ac_simage_configcmd HAVE_SOUND BUILD_WITH_SOUND_TRUE BUILD_WITH_SOUND_FALSE HAVE_FREETYPE_TRUE HAVE_FREETYPE_FALSE X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS HACKING_COMPACT_BUILD_TRUE HACKING_COMPACT_BUILD_FALSE HACKING_DYNAMIC_MODULES_TRUE HACKING_DYNAMIC_MODULES_FALSE COIN_HACKING_LIBDIRS coin_build_dir coin_w32_build_dir coin_src_dir coin_w32_src_dir LIBFLAGS SIM_INCLUDE_WINDOWS_H SIM_INCLUDE_GL_H SIM_INCLUDE_GLU_H SIM_INCLUDE_GLEXT_H BUILD_WITH_MSVC_TRUE BUILD_WITH_MSVC_FALSE COIN_COMPILER ac_compiler_gnu COIN_DSP_LIBS COIN_DSP_INCS COIN_DSP_DEFS LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os RFC822_DATE coin_configure_date BUILD_WITH_MSVC MAC_FRAMEWORK MAC_FRAMEWORK_NAME MAC_FRAMEWORK_PREFIX MAC_FRAMEWORK_VERSION nop ivincludedir frameworkdir COIN_MAJOR_VERSION COIN_MINOR_VERSION COIN_MICRO_VERSION COIN_BETA_VERSION COIN_VERSION LT_CURRENT LT_REVISION LT_AGE COIN_SO_VERSION CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT COIN_MSVC_LIBC INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM AWK SET_MAKE am__leading_dot DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CCDEPMODE am__fastdepCC_TRUE am__fastdepCC_FALSE MAINTAINER_MODE_TRUE MAINTAINER_MODE_FALSE MAINT MAC_FRAMEWORK_TRUE MAC_FRAMEWORK_FALSE MACOSX_10_2FF_TRUE MACOSX_10_2FF_FALSE MACOSX_TRUE MACOSX_FALSE MACOSX_NAME CXX CXXFLAGS ac_ct_CXX CXXDEPMODE am__fastdepCXX_TRUE am__fastdepCXX_FALSE CXXCPP EGREP LN_S ECHO AR ac_ct_AR RANLIB ac_ct_RANLIB CPP F77 FFLAGS ac_ct_F77 LIBTOOL COIN_EXTRA_CPPFLAGS COIN_EXTRA_CFLAGS COIN_EXTRA_CXXFLAGS COIN_EXTRA_LDFLAGS COIN_EXTRA_LIBS HAVE_3DS_IMPORT_CAPABILITIES BUILD_3DS_CAPABILITIES_TRUE BUILD_3DS_CAPABILITIES_FALSE HAVE_VRML97 BUILD_VRML97_TRUE BUILD_VRML97_FALSE subdirs HAVE_SUPERGLU SUPERGLUPREFIX BUILD_WITH_SUPERGLU_TRUE BUILD_WITH_SUPERGLU_FALSE HAVE_THREADS BUILD_WITH_THREADS_TRUE BUILD_WITH_THREADS_FALSE HAVE_THREADSAFE BUILD_LIBRARY_TRUE BUILD_LIBRARY_FALSE htmldir COIN_DOC_HTML coin_html_dir COIN_DOC_MAN coin_man_dir BUILD_MANPAGES_TRUE BUILD_MANPAGES_FALSE BUILD_HTMLPAGES_TRUE BUILD_HTMLPAGES_FALSE sim_ac_doxygen_exe sim_ac_perl_exe path_tag sim_ac_makensis_exe sim_ac_dpkg_buildpackage_exe WIN_PACKAGEABLE_TRUE WIN_PACKAGEABLE_FALSE DEB_PACKAGEABLE_TRUE DEB_PACKAGEABLE_FALSE sim_ac_packagemaker_app MACOSX_PACKAGEABLE_TRUE MACOSX_PACKAGEABLE_FALSE CONFIG SUFFIX DSUFFIX sim_ac_simage_configcmd HAVE_SOUND BUILD_WITH_SOUND_TRUE BUILD_WITH_SOUND_FALSE HAVE_FREETYPE_TRUE HAVE_FREETYPE_FALSE X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS HACKING_COMPACT_BUILD_TRUE HACKING_COMPACT_BUILD_FALSE HACKING_DYNAMIC_MODULES_TRUE HACKING_DYNAMIC_MODULES_FALSE COIN_HACKING_LIBDIRS coin_build_dir coin_w32_build_dir coin_src_dir coin_w32_src_dir LIBFLAGS SIM_INCLUDE_WINDOWS_H SIM_INCLUDE_GL_H SIM_INCLUDE_GLU_H SIM_INCLUDE_GLEXT_H BUILD_WITH_MSVC_TRUE BUILD_WITH_MSVC_FALSE COIN_COMPILER ac_compiler_gnu COIN_DSP_LIBS COIN_DSP_INCS COIN_DSP_DEFS LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -3543,17 +3543,24 @@ if $BUILD_WITH_MSVC; then
   export RANLIB
 fi
 
-# Detect Mac OS 10.2 "Jaguar" or 10.3 "Panther"
+# Detect Mac OS X in general and Mac OS 10.2 "Jaguar" or 10.3
+# "Panther" in particular
 case $host_os in
 darwin6.* )
+  sim_ac_macosx=true
   sim_ac_macosx_10_2ff=true
   sim_ac_macosx_name="Jaguar"
   ;;
 darwin7.* )
+  sim_ac_macosx=true
   sim_ac_macosx_10_2ff=true
   sim_ac_macosx_name="Panther"
   ;;
+darwin* )
+  sim_ac_macosx=true
+  ;;
 * )
+  sim_ac_macosx=false
   sim_ac_macosx_10_2ff=false
   sim_ac_macosx_name=""
   ;;
@@ -3577,6 +3584,16 @@ if $sim_ac_macosx_10_2ff; then
 else
   MACOSX_10_2FF_TRUE='#'
   MACOSX_10_2FF_FALSE=
+fi
+
+
+
+if $sim_ac_macosx; then
+  MACOSX_TRUE=
+  MACOSX_FALSE='#'
+else
+  MACOSX_TRUE='#'
+  MACOSX_FALSE=
 fi
 
 MACOSX_NAME=$sim_ac_macosx_name
@@ -4801,7 +4818,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 4804 "configure"' > conftest.$ac_ext
+  echo '#line 4821 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -5646,7 +5663,7 @@ fi
 
 
 # Provide some information about the compiler.
-echo "$as_me:5649:" \
+echo "$as_me:5666:" \
      "checking for Fortran 77 compiler version" >&5
 ac_compiler=`set X $ac_compile; echo $2`
 { (eval echo "$as_me:$LINENO: \"$ac_compiler --version </dev/null >&5\"") >&5
@@ -6657,11 +6674,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:6660: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:6677: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:6664: \$? = $ac_status" >&5
+   echo "$as_me:6681: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -6889,11 +6906,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:6892: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:6909: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:6896: \$? = $ac_status" >&5
+   echo "$as_me:6913: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -6956,11 +6973,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:6959: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:6976: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:6963: \$? = $ac_status" >&5
+   echo "$as_me:6980: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -8968,7 +8985,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 8971 "configure"
+#line 8988 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -9066,7 +9083,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 9069 "configure"
+#line 9086 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -11200,11 +11217,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:11203: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:11220: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:11207: \$? = $ac_status" >&5
+   echo "$as_me:11224: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -11267,11 +11284,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:11270: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:11287: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:11274: \$? = $ac_status" >&5
+   echo "$as_me:11291: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -12510,7 +12527,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 12513 "configure"
+#line 12530 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -12608,7 +12625,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 12611 "configure"
+#line 12628 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -13430,11 +13447,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:13433: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:13450: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:13437: \$? = $ac_status" >&5
+   echo "$as_me:13454: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -13497,11 +13514,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:13500: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:13517: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:13504: \$? = $ac_status" >&5
+   echo "$as_me:13521: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -15437,11 +15454,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:15440: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:15457: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:15444: \$? = $ac_status" >&5
+   echo "$as_me:15461: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -15669,11 +15686,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:15672: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:15689: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:15676: \$? = $ac_status" >&5
+   echo "$as_me:15693: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -15736,11 +15753,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:15739: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:15756: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:15743: \$? = $ac_status" >&5
+   echo "$as_me:15760: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -17748,7 +17765,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 17751 "configure"
+#line 17768 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -17846,7 +17863,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 17849 "configure"
+#line 17866 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -32863,6 +32880,13 @@ echo "$as_me: error: conditional \"MACOSX_10_2FF\" was never defined.
 Usually this means the macro was only invoked conditionally." >&2;}
    { (exit 1); exit 1; }; }
 fi
+if test -z "${MACOSX_TRUE}" && test -z "${MACOSX_FALSE}"; then
+  { { echo "$as_me:$LINENO: error: conditional \"MACOSX\" was never defined.
+Usually this means the macro was only invoked conditionally." >&5
+echo "$as_me: error: conditional \"MACOSX\" was never defined.
+Usually this means the macro was only invoked conditionally." >&2;}
+   { (exit 1); exit 1; }; }
+fi
 if test -z "${am__fastdepCXX_TRUE}" && test -z "${am__fastdepCXX_FALSE}"; then
   { { echo "$as_me:$LINENO: error: conditional \"am__fastdepCXX\" was never defined.
 Usually this means the macro was only invoked conditionally." >&5
@@ -33649,6 +33673,8 @@ s,@MAC_FRAMEWORK_TRUE@,$MAC_FRAMEWORK_TRUE,;t t
 s,@MAC_FRAMEWORK_FALSE@,$MAC_FRAMEWORK_FALSE,;t t
 s,@MACOSX_10_2FF_TRUE@,$MACOSX_10_2FF_TRUE,;t t
 s,@MACOSX_10_2FF_FALSE@,$MACOSX_10_2FF_FALSE,;t t
+s,@MACOSX_TRUE@,$MACOSX_TRUE,;t t
+s,@MACOSX_FALSE@,$MACOSX_FALSE,;t t
 s,@MACOSX_NAME@,$MACOSX_NAME,;t t
 s,@CXX@,$CXX,;t t
 s,@CXXFLAGS@,$CXXFLAGS,;t t

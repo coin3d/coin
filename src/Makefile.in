@@ -141,9 +141,11 @@ LT_CURRENT = @LT_CURRENT@
 LT_REVISION = @LT_REVISION@
 MACOSX_10_2FF_FALSE = @MACOSX_10_2FF_FALSE@
 MACOSX_10_2FF_TRUE = @MACOSX_10_2FF_TRUE@
+MACOSX_FALSE = @MACOSX_FALSE@
 MACOSX_NAME = @MACOSX_NAME@
 MACOSX_PACKAGEABLE_FALSE = @MACOSX_PACKAGEABLE_FALSE@
 MACOSX_PACKAGEABLE_TRUE = @MACOSX_PACKAGEABLE_TRUE@
+MACOSX_TRUE = @MACOSX_TRUE@
 MAC_FRAMEWORK = @MAC_FRAMEWORK@
 MAC_FRAMEWORK_FALSE = @MAC_FRAMEWORK_FALSE@
 MAC_FRAMEWORK_NAME = @MAC_FRAMEWORK_NAME@
@@ -331,9 +333,12 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = \
 	coin-dummy.cpp
 
 
-# we are dealing with the Mac OS X 10.2 gcc compiler toolset...
-@MACOSX_10_2FF_TRUE@LibtoolLinkArgs = -Wl,-twolevel_namespace -Wl,-undefined,error -Wl,-prebind -Wl,-seg1addr,0x3f000000
-@MACOSX_10_2FF_FALSE@LibtoolLinkArgs = -no-undefined
+@MACOSX_FALSE@LibtoolLinkArgs = -no-undefined 
+# On Mac OS X, pad the install_name to make it possible to change it
+# later (e.g. to include the library in an app bundle).On Mac OS 10.2
+# or later, also create two-level namespace binaries and use prebinding.
+@MACOSX_10_2FF_TRUE@@MACOSX_TRUE@LibtoolLinkArgs = -Wl,-twolevel_namespace -Wl,-undefined,error -Wl,-prebind -Wl,-seg1addr,0x3f000000 -Wl,-headerpad_max_install_names 
+@MACOSX_10_2FF_FALSE@@MACOSX_TRUE@LibtoolLinkArgs = -Wl,-headerpad_max_install_names 
 
 libCoin@SUFFIX@_la_LDFLAGS = \
 	$(LibtoolLinkArgs) \

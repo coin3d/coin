@@ -139,9 +139,11 @@ LT_CURRENT = @LT_CURRENT@
 LT_REVISION = @LT_REVISION@
 MACOSX_10_2FF_FALSE = @MACOSX_10_2FF_FALSE@
 MACOSX_10_2FF_TRUE = @MACOSX_10_2FF_TRUE@
+MACOSX_FALSE = @MACOSX_FALSE@
 MACOSX_NAME = @MACOSX_NAME@
 MACOSX_PACKAGEABLE_FALSE = @MACOSX_PACKAGEABLE_FALSE@
 MACOSX_PACKAGEABLE_TRUE = @MACOSX_PACKAGEABLE_TRUE@
+MACOSX_TRUE = @MACOSX_TRUE@
 MAC_FRAMEWORK = @MAC_FRAMEWORK@
 MAC_FRAMEWORK_FALSE = @MAC_FRAMEWORK_FALSE@
 MAC_FRAMEWORK_NAME = @MAC_FRAMEWORK_NAME@
@@ -259,7 +261,9 @@ BUILT_SOURCES = \
 	include/Inventor/SbBasic.h \
 	include/Inventor/system/gl.h \
 	include/Inventor/system/inttypes.h \
-	coin-@CONFIG@.cfg
+	coin-@CONFIG@.cfg \
+	Info.plist \
+	version.plist
 
 
 CLEANFILES = \
@@ -272,8 +276,8 @@ CLEANFILES = \
 
 DISTCLEANFILES = \
 	coin-@CONFIG@.cfg \
-	docs/coin.doxygen \
-	docs/coin.doxygen.bak
+	Info.plist \
+	version.plist
 
 
 @BUILD_LIBRARY_TRUE@m4datadir = $(datadir)/aclocal
@@ -281,6 +285,9 @@ DISTCLEANFILES = \
 
 @BUILD_LIBRARY_TRUE@cfgdatadir = $(datadir)/Coin/conf
 @BUILD_LIBRARY_TRUE@cfgdata_DATA = coin-@CONFIG@.cfg
+
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@frameworkdatadir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Resources
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@frameworkdata_DATA = Info.plist version.plist
 
 EXTRA_DIST = \
 	FAQ \
@@ -296,7 +303,8 @@ EXTRA_DIST = \
 	RELNOTES \
 	bootstrap \
 	coin.cfg.in \
-	Info.plist \
+	Info.plist.in \
+	version.plist.in \
 	docs/ChangeLog.1999 \
 	docs/ChangeLog.2000 \
 	docs/ChangeLog.2001 \
@@ -322,16 +330,16 @@ EXTRA_DIST = \
 	packaging/macosx/checklist.txt \
 	packaging/macosx/Coin_Description.plist.in \
 	packaging/macosx/Coin_Info.plist.in \
-	packaging/macosx/Coin_Welcome.rtfd/TXT.rtf \
+	packaging/macosx/Coin_Welcome.rtf \
 	packaging/macosx/CoinTools_Description.plist.in \
 	packaging/macosx/CoinTools_Info.plist.in \
-	packaging/macosx/CoinTools_Welcome.rtfd/TXT.rtf \
+	packaging/macosx/CoinTools_Welcome.rtf \
 	packaging/macosx/inst-dmg-files/.DS_Store \
 	packaging/macosx/inst-dmg-files/.VolumeIcon.icns \
 	packaging/macosx/inst-dmg-files/background.png \
 	packaging/macosx/inst-dmg-files/Desktop_DB \
 	packaging/macosx/inst-dmg-files/Desktop_DF \
-	packaging/macosx/License.rtfd/TXT.rtf \
+	packaging/macosx/License.rtf \
 	packaging/macosx/makecoinpkg.sh.in \
 	packaging/macosx/makecointoolspkg.sh.in \
 	packaging/macosx/makedmg.sh.in \
@@ -349,6 +357,7 @@ EXTRA_DIST = \
 	packaging/macosx/inst-README-Jaguar.txt.in \
 	packaging/macosx/inst-README-Panther.txt.in \
 	packaging/macosx/inst-README-.txt.in \
+	packaging/macosx/background.tiff \
 	packaging/redhat/coin.spec.in \
 	packaging/windows/Makefile.in \
 	packaging/windows/bfheader.nsi.in \
@@ -365,7 +374,7 @@ mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/include/config.h
 CONFIG_CLEAN_FILES =
 DIST_SOURCES =
-DATA = $(cfgdata_DATA) $(dist_m4data_DATA)
+DATA = $(cfgdata_DATA) $(dist_m4data_DATA) $(frameworkdata_DATA)
 
 
 RECURSIVE_TARGETS = info-recursive dvi-recursive pdf-recursive \
@@ -444,6 +453,24 @@ uninstall-dist_m4dataDATA:
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  echo " rm -f $(DESTDIR)$(m4datadir)/$$f"; \
 	  rm -f $(DESTDIR)$(m4datadir)/$$f; \
+	done
+frameworkdataDATA_INSTALL = $(INSTALL_DATA)
+install-frameworkdataDATA: $(frameworkdata_DATA)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(frameworkdatadir)
+	@list='$(frameworkdata_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(frameworkdataDATA_INSTALL) $$d$$p $(DESTDIR)$(frameworkdatadir)/$$f"; \
+	  $(frameworkdataDATA_INSTALL) $$d$$p $(DESTDIR)$(frameworkdatadir)/$$f; \
+	done
+
+uninstall-frameworkdataDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(frameworkdata_DATA)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(frameworkdatadir)/$$f"; \
+	  rm -f $(DESTDIR)$(frameworkdatadir)/$$f; \
 	done
 
 # This directory's subdirectories are mostly independent; you can cd
@@ -586,7 +613,7 @@ distcleancheck_listfiles = find . -type f -print
 distdir: $(DISTFILES)
 	$(am__remove_distdir)
 	mkdir $(distdir)
-	$(mkinstalldirs) $(distdir)/cfg $(distdir)/docs $(distdir)/examples/bindings $(distdir)/packaging/debian $(distdir)/packaging/macosx $(distdir)/packaging/macosx/CoinTools_Welcome.rtfd $(distdir)/packaging/macosx/Coin_Welcome.rtfd $(distdir)/packaging/macosx/License.rtfd $(distdir)/packaging/macosx/inst-dmg-files $(distdir)/packaging/macosx/noinst-dmg-files $(distdir)/packaging/redhat $(distdir)/packaging/windows
+	$(mkinstalldirs) $(distdir)/cfg $(distdir)/docs $(distdir)/examples/bindings $(distdir)/packaging/debian $(distdir)/packaging/macosx $(distdir)/packaging/macosx/inst-dmg-files $(distdir)/packaging/macosx/noinst-dmg-files $(distdir)/packaging/redhat $(distdir)/packaging/windows
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \
@@ -701,7 +728,7 @@ check: $(BUILT_SOURCES)
 all-am: Makefile $(DATA)
 installdirs: installdirs-recursive
 installdirs-am:
-	$(mkinstalldirs) $(DESTDIR)$(cfgdatadir) $(DESTDIR)$(m4datadir)
+	$(mkinstalldirs) $(DESTDIR)$(cfgdatadir) $(DESTDIR)$(m4datadir) $(DESTDIR)$(frameworkdatadir)
 
 install: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) install-recursive
@@ -749,7 +776,7 @@ info: info-recursive
 info-am:
 
 install-data-am: install-cfgdataDATA install-data-local \
-	install-dist_m4dataDATA
+	install-dist_m4dataDATA install-frameworkdataDATA
 
 install-exec-am: install-exec-local
 
@@ -777,7 +804,7 @@ ps: ps-recursive
 ps-am:
 
 uninstall-am: uninstall-cfgdataDATA uninstall-dist_m4dataDATA \
-	uninstall-info-am
+	uninstall-frameworkdataDATA uninstall-info-am
 
 uninstall-info: uninstall-info-recursive
 
@@ -790,18 +817,20 @@ uninstall-info: uninstall-info-recursive
 	install-am install-cfgdataDATA install-data install-data-am \
 	install-data-local install-data-recursive \
 	install-dist_m4dataDATA install-exec install-exec-am \
-	install-exec-local install-exec-recursive install-info \
-	install-info-am install-info-recursive install-man \
-	install-recursive install-strip installcheck installcheck-am \
-	installdirs installdirs-am installdirs-recursive \
-	maintainer-clean maintainer-clean-generic \
-	maintainer-clean-recursive mostlyclean mostlyclean-generic \
-	mostlyclean-libtool mostlyclean-recursive pdf pdf-am \
-	pdf-recursive ps ps-am ps-recursive tags tags-recursive \
-	uninstall uninstall-am uninstall-cfgdataDATA \
-	uninstall-dist_m4dataDATA uninstall-info-am \
-	uninstall-info-recursive uninstall-recursive
+	install-exec-local install-exec-recursive \
+	install-frameworkdataDATA install-info install-info-am \
+	install-info-recursive install-man install-recursive \
+	install-strip installcheck installcheck-am installdirs \
+	installdirs-am installdirs-recursive maintainer-clean \
+	maintainer-clean-generic maintainer-clean-recursive mostlyclean \
+	mostlyclean-generic mostlyclean-libtool mostlyclean-recursive \
+	pdf pdf-am pdf-recursive ps ps-am ps-recursive tags \
+	tags-recursive uninstall uninstall-am uninstall-cfgdataDATA \
+	uninstall-dist_m4dataDATA uninstall-frameworkdataDATA \
+	uninstall-info-am uninstall-info-recursive uninstall-recursive
 
+	docs/coin.doxygen \
+	docs/coin.doxygen.bak
 
 # FIXME: These files should really be added instead of the ones
 #        containing '_' instead of ' '. If this is fixed, also
@@ -814,6 +843,12 @@ uninstall-info: uninstall-info-recursive
 
 coin-@CONFIG@.cfg: config.status $(srcdir)/coin.cfg.in
 	@$(SHELL) config.status --file=$@:coin.cfg.in
+
+Info.plist: config.status $(srcdir)/Info.plist.in
+	@$(SHELL) config.status --file=$@:Info.plist.in
+
+version.plist: config.status $(srcdir)/version.plist.in
+	@$(SHELL) config.status --file=$@:version.plist.in
 
 # sources needed to generate docs must be created by this rule
 built-sources: $(BUILT_SOURCES)
