@@ -29,7 +29,8 @@ RegularSources = \
 	SoVertexShape.cpp \
 	soshape_primdata.cpp \
 	soshape_bigtexture.cpp \
-	soshape_trianglesort.cpp
+	soshape_trianglesort.cpp \
+	soshape_bumprender.cpp
 LinkHackSources = \
 	all-shapenodes-cpp.cpp
 PublicHeaders = \
@@ -61,7 +62,8 @@ PublicHeaders = \
 PrivateHeaders = \
 	soshape_primdata.h \
 	soshape_trianglesort.h \
-	soshape_bigtexture.h
+	soshape_bigtexture.h \
+	soshape_bumprender.h
 
 ##$ BEGIN TEMPLATE Make-Common(shapenodes, nodes)
 # **************************************************************************

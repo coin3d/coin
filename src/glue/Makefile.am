@@ -9,7 +9,8 @@ RegularSources = \
 	zlib.c \
 	bzip2.c \
 	freetype.c \
-	glue-dummy.cpp
+	glue-dummy.cpp \
+	normalization_cubemap.c
 
 LinkHackSources = \
 	all-glue-c.c \
