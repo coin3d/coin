@@ -44,6 +44,10 @@
   Rotations are invoked by clicking and dragging the line parts of the
   3 principal "axes" of the dragger geometry.
 
+  An "action shot" of the SoJackDragger used within an SoClipPlaneManip:
+  <center>
+  <img src="http://doc.coin3d.org/images/Coin/draggers/jack-in-action.png">
+  </center>
 
   The name "Jack dragger" probably stems from this dragger being
   implemented by SGI for interacting with a "jack-in-the-box" type

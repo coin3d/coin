@@ -40,6 +40,11 @@
   documentation of SoJackDragger for details about how to control the
   manipulator.
 
+  An "action shot" of the SoClipPlaneManip:
+  <center>
+  <img src="http://doc.coin3d.org/images/Coin/draggers/jack-in-action.png">
+  </center>
+
   This manipulator is an extension versus the original SGI Inventor
   v2.1 API.  In addition to being a Coin extension, it is also present
   in TGS' Inventor implementation (with the same API).

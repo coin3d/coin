@@ -31,6 +31,10 @@
   either single floating point values or vectors) as variables in the
   free-form engine expressions and places the results on the output
   fields.
+
+  FIXME: more class documentation! It's close to hopeless to use this
+  class with this little doc (without looking in the sourcecode or at
+  the Inventor Mentor). 20020925 mortene.
 */
 
 #include <Inventor/engines/SoCalculator.h>
