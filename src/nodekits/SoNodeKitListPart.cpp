@@ -48,6 +48,7 @@
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
+#include <Inventor/actions/SoAudioRenderAction.h>
 #include <assert.h>
 
 #if COIN_DEBUG
@@ -104,6 +105,9 @@ void
 SoNodeKitListPart::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoNodeKitListPart, SO_FROM_INVENTOR_1);
+  SoType type = SoNodeKitListPart::getClassTypeId();
+  SoAudioRenderAction::addMethod(type,
+                                 SoAudioRenderAction::callDoAction);
 }
 
 /*!
