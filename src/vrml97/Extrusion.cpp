@@ -563,8 +563,8 @@ SoVRMLExtrusion::createTriangleDetail(SoRayPickAction * action,
 #ifndef DOXYGEN_SKIP_THIS
 
 
-static SbVec3f 
-calculate_y_axis(const SbVec3f * spine, const int i, 
+static SbVec3f
+calculate_y_axis(const SbVec3f * spine, const int i,
                  const int numspine, const SbBool closed)
 {
   SbVec3f Y;
@@ -590,7 +590,7 @@ calculate_z_axis(const SbVec3f * spine, const int i,
                  const int numspine, const SbBool closed)
 {
   SbVec3f z0, z1;
-  
+
   if (closed) {
     if (i > 0) {
       z0 = spine[i+1] - spine[i];
@@ -619,7 +619,7 @@ calculate_z_axis(const SbVec3f * spine, const int i,
 
   my_normalize(z0);
   my_normalize(z1);
-  
+
   // test if spine segments are collinear. If they are, the cross
   // product will not be reliable, and we should just use the previous
   // Z-axis instead.
@@ -682,7 +682,7 @@ SoVRMLExtrusionP::generateCoords(void)
       if (Z != empty) prevZ = Z;
     }
   }
-  
+
   if (prevY == empty) prevY = SbVec3f(0.0f, 1.0f, 0.0f);
   if (prevZ == empty) { // all spine segments are colinear, calculate constant Z axis
     prevZ = SbVec3f(0.0f, 0.0f, 1.0f);
@@ -698,7 +698,7 @@ SoVRMLExtrusionP::generateCoords(void)
 
   int numscale = this->master->scale.getNum();
   const SbVec2f * scale = this->master->scale.getValues(0);
-  
+
   // loop through all spines
   for (i = 0; i < numspine; i++) {
     if (colinear) {
@@ -716,7 +716,7 @@ SoVRMLExtrusionP::generateCoords(void)
 
     X = Y.cross(Z);
     my_normalize(X);
-    
+
     prevY = Y;
     prevZ = Z;
 
@@ -771,8 +771,8 @@ SoVRMLExtrusionP::generateCoords(void)
 #define ADD_TRIANGLE(i0, j0, i1, j1, i2, j2) \
   do { \
     this->idx.append((i0)*numcross+(j0)); \
-    this->idx.append((i1)*numcross+(j1)); \
     this->idx.append((i2)*numcross+(j2)); \
+    this->idx.append((i1)*numcross+(j1)); \
     this->idx.append(-1); \
   } while (0)
 
