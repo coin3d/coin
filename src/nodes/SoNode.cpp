@@ -189,6 +189,7 @@
 #include <Inventor/nodes/SoUnknownNode.h>
 #include <Inventor/nodes/SoSceneTexture2.h>
 #include <Inventor/nodes/SoTextureCombine.h>
+#include <Inventor/C/threads/threadsutilp.h>
 #include <assert.h>
 #include <stdlib.h>
 
@@ -277,6 +278,7 @@ int SoNode::nextActionMethodIndex = 0;
 // Sun CC v4.0. (Bitpattern 0x0000 equals SoType::badType()).
 SoType SoNode::classTypeId;
 SbDict * SoNode::compatibilitydict = NULL;
+static void * sonode_mutex = NULL;
 
 static void
 init_action_methods(void);
@@ -323,7 +325,9 @@ SoNode::getState(const unsigned int bits) const
 */
 SoNode::SoNode(void)
 {
+  CC_MUTEX_LOCK(sonode_mutex);
   this->uniqueId = SoNode::nextUniqueId++;
+  CC_MUTEX_UNLOCK(sonode_mutex);
   this->stateflags = 0; // clear all flags
 
   // set node type to Inventor by default.
@@ -413,7 +417,9 @@ SoNode::notify(SoNotList * l)
   // only continue if node hasn't already been notified.
   // The time stamp is set in the SoNotList constructor.
   if (l->getTimeStamp() > this->uniqueId) {
+    CC_MUTEX_LOCK(sonode_mutex);
     this->uniqueId = SoNode::nextUniqueId++;
+    CC_MUTEX_UNLOCK(sonode_mutex);
     inherited::notify(l);
   }
 }
@@ -472,6 +478,7 @@ SoNode::initClass(void)
   // Make sure parent class has been initialized.
   assert(inherited::getClassTypeId() != SoType::badType());
 
+  CC_MUTEX_CONSTRUCT(sonode_mutex);
   SoNode::classTypeId =
     SoType::createType(inherited::getClassTypeId(), "Node", NULL,
                        SoNode::nextActionMethodIndex++);
@@ -641,7 +648,9 @@ SoNode::setOverride(const SbBool state)
   if (state != this->getState(FLAG_OVERRIDE)) {
     // This change affects caches in the tree, so we must change our id
     // setting, so the caches are regenerated.
+    CC_MUTEX_LOCK(sonode_mutex);
     this->uniqueId = SoNode::nextUniqueId++;
+    CC_MUTEX_UNLOCK(sonode_mutex);
 
     if (state) this->setStateFlags(FLAG_OVERRIDE);
     else this->clearStateFlags(FLAG_OVERRIDE);
@@ -1437,6 +1446,7 @@ void
 SoNode::cleanupClass(void)
 {
   delete SoNode::compatibilitydict;
+  CC_MUTEX_DESTRUCT(sonode_mutex);
 }
 
 // just undef flags here
