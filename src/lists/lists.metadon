@@ -17,7 +17,7 @@
 # ID      SbVec3fList 
 # ID      SbPList
 # ID          SoAuditorList 
-#             SoActionMethodList
+# ID          SoActionMethodList
 # I           SoBaseList
 # I               SoEngineList
 # I               SoNodeList

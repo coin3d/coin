@@ -18,18 +18,19 @@
 \**************************************************************************/
 
 /*!
-  \class SoActionMethodList Inventor/lists/SoActionMethodList.h
-  \brief The SoActionMethodList class contains routines to call for an action,
-  one for each node type.
+  \class SoActionMethodList SoActionMethodList.h Inventor/lists/SoActionMethodList.h
+  \brief The SoActionMethodList class contains function pointers for action methods.
 
-  FIXME: write doc.
+  An SoActionMethodList contains one function pointer per node
+  type. Each action contains an SoActioMethodList to know which
+  functions to call during scene graph traversal.
 */
 
 #include <Inventor/lists/SoActionMethodList.h>
-#include <Inventor/actions/SoAction.h>
-#include <Inventor/nodes/SoNode.h>
-#include <Inventor/lists/SoTypeList.h>
 #include <Inventor/SbName.h>
+#include <Inventor/actions/SoAction.h>
+#include <Inventor/lists/SoTypeList.h>
+#include <Inventor/nodes/SoNode.h>
 #include <assert.h>
 
 #if COIN_DEBUG
@@ -37,61 +38,49 @@
 #endif // COIN_DEBUG
 
 /*!
-  The constructor.  The \a parentList argument is the parent action's
-  action method list.  It can obviously be NULL for action method lists that
+  The constructor.  The \a parentlist argument is the parent action's
+  action method list.  It can be \c NULL for action method lists that
   are not based on inheriting from a parent action.
 */
-
-SoActionMethodList::SoActionMethodList(SoActionMethodList * const parentList)
-  : SbPList(0), parent(parentList)
+SoActionMethodList::SoActionMethodList(SoActionMethodList * const parentlist)
+  : SbPList(0), parent(parentlist)
 {
 }
 
 /*!
-  This operator is used to get and set methods.  The list will grow
-  dynamically as we access methods off the end of the list, and entries
-  will be initialized to NULL.
+  Overloaded from parent to cast from \c void pointer.
 */
-
 SoActionMethod &
-SoActionMethodList::operator [] (const int index)
+SoActionMethodList::operator[](const int index)
 {
-  // Automatically expand list with NULL pointers if index is out of
-  // bounds.
-  while (index >= this->getLength()) this->append(NULL);
-
   return (SoActionMethod&)SbPList::operator[](index);
 }
 
 /*!
-  This operator is used to get methods.
+  Overloaded from parent to cast from \c void *.
 */
-
 const SoActionMethod
-SoActionMethodList::operator [] (const int index) const
+SoActionMethodList::operator[](const int index) const
 {
-  return (const SoActionMethod) SbPList::operator[](index);
+  return (const SoActionMethod)SbPList::operator[](index);
 }
 
 /*!
-  This method adds a method to the appropriate place in the list.
+  Add a function pointer to a node type's action method.
 */
-
 void
-SoActionMethodList::addMethod(const SoType nodeType,
-                              const SoActionMethod method)
+SoActionMethodList::addMethod(const SoType node, const SoActionMethod method)
 {
-  //
-  // I'm a bit unsure about this one. Should I really find all
-  // nodes derived from a node when adding methods, and should
-  // perhaps the method for the children be overwritten even
-  // though method != NULL?  pederb 19991029
+  // I'm a bit unsure about this one. Should I really find all nodes
+  // derived from a node when adding methods, and should perhaps the
+  // method for the children be overwritten even though method !=
+  // NULL?  pederb 19991029
 
-  const int index = nodeType.getData();
-  (*this)[ index ] = method;
+  const int index = node.getData();
+  (*this)[index] = method;
 
   SoTypeList derivedtypes;
-  int n = SoType::getAllDerivedFrom(nodeType, derivedtypes);
+  int n = SoType::getAllDerivedFrom(node, derivedtypes);
   for (int i = 0; i < n; i++) {
     SoType type = derivedtypes[i];
     if ((*this)[(int)type.getData()] == NULL) {
@@ -114,11 +103,10 @@ SoActionMethodList::addMethod(const SoType nodeType,
 }
 
 /*!
-  This method must be called before using the list.  It fills in NULL
-  entries with their parents' method. Also, nodes will inherit method
-  from their parent, so parent nodes are also searched for methods.
+  This method must be called as the last initialization step before
+  using the list. It fills in \c NULL entries with the parent's
+  method.
 */
-
 void
 SoActionMethodList::setUp(void)
 {
@@ -129,36 +117,4 @@ SoActionMethodList::setUp(void)
       if ((*this)[i] == NULL) (*this)[i] = (*(this->parent))[i];
     }
   }
-}
-
-/*!
-  Debug method for dumping the contents of a list.
- */
-void
-SoActionMethodList::dump_list(void)
-{
-#if 0 // debug
-  for (int i=0; i < SoType::getNumTypes(); i++) {
-    SoType t = SoType::fromKey(i);
-    if (!t.isBad() && t.isDerivedFrom(SoNode::getClassTypeId())) {
-//      if (!t.isBad() && t.isDerivedFrom(SoType::fromName("Sphere"))) {
-
-      const int index = t.getData();
-      SoActionMethod method = (*this)[index];
-
-      char buffer[256];
-      const char * methodname = NULL;
-      if (method == SoNode::pickS) methodname = "pickS";
-      else if (method == SoNode::rayPickS) methodname = "rayPickS";
-      else {
-        methodname = buffer;
-        sprintf(buffer, "%p", method);
-      }
-
-      SoDebugError::postInfo("SoActionMethodList::dump_list",
-                             "(listp %p) type ``%s'', method %s",
-                             this, t.getName().getString(), methodname);
-    }
-  }
-#endif // debug
 }

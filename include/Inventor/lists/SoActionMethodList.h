@@ -32,15 +32,13 @@ class SoActionMethodList : public SbPList {
   typedef SbPList inherited;
 
 public:
-  SoActionMethodList(SoActionMethodList * const parentList);
+  SoActionMethodList(SoActionMethodList * const parentlist);
 
-  SoActionMethod & operator [] (const int index);
-  const SoActionMethod operator [] (const int index) const;
+  SoActionMethod & operator[](const int index);
+  const SoActionMethod operator[](const int index) const;
 
-  void addMethod(const SoType nodeType, const SoActionMethod method);
+  void addMethod(const SoType node, const SoActionMethod method);
   void setUp(void);
-
-  void dump_list(void);
 
 private:
   SoActionMethodList * parent;

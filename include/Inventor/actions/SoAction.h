@@ -23,7 +23,11 @@
 #include <Inventor/SbBasic.h>
 #include <Inventor/SoType.h>
 #include <Inventor/misc/SoTempPath.h>
+
+// Include instead of forward declaration to be compatible with Open
+// Inventor.
 #include <Inventor/lists/SoActionMethodList.h>
+
 
 // Avoid problem with HPUX 10.20 C library API headers, which defines
 // IN_PATH in <sys/unistd.h>.
@@ -31,6 +35,7 @@
 #define SOACTION_STORE_INPATH_DEF IN_PATH
 #undef IN_PATH
 #endif /* ERROR */
+
 
 
 #define SO_ENABLE(actionClass, elementClass) \
