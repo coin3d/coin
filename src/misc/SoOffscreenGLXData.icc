@@ -135,8 +135,8 @@ SoOffscreenGLXData::getResolution(void)
   }
 
   int s = DefaultScreen(d);
-  SbVec2f r(float(DisplayWidth(d, s)) /  float(DisplayWidthMM(d, s)),
-            float(DisplayHeight(d, s)) / float(DisplayHeightMM(d, s)));
+  SbVec2f r(((float)DisplayWidth(d, s)) /  ((float)DisplayWidthMM(d, s)),
+            ((float)DisplayHeight(d, s)) / ((float)DisplayHeightMM(d, s)));
 
   XCloseDisplay(d);
 
