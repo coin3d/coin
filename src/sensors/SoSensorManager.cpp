@@ -159,12 +159,14 @@ void
 SoSensorManagerP::assertAlive(SoSensorManagerP * that)
 {
   if (that->alive != ALIVE_PATTERN) {
+#if COIN_DEBUG
     SoDebugError::post("SoSensorManagerP::assertAlive",
                        "Detected an attempt to access SoSensorManager "
                        "instance after it was destructed!  "
                        "This is most likely to be the result of some grave "
                        "programming error in the internal library code. "
                        "Please report this problem");
+#endif // COIN_DEBUG
     assert(FALSE && "SoSensorManager-object no longer alive!");
   }
 }
