@@ -225,3 +225,9 @@ THE WISH LIST
           +- SbDict32 (key type == uint16_t)
           +- SbDict64 (key type == uint32_t)
           +- SbDict (key type == unsigned long, for API compatibility)
+
+  Comment by pederb:
+    Remember that all template code should be inline, in the SbDict.h
+    header file. Otherwise we will run into tons of problems on
+    different compilers. 
+
