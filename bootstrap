@@ -22,8 +22,8 @@ if test x"$@" = x"" -a ! -f cfg/mkinstalldirs; then
   shift
 fi
 
-AUTOCONF_VER=2.50[a]  # Autoconf from CVS
-AUTOMAKE_VER=1.4[cdef]   # Automake from CVS
+AUTOCONF_VER=2.50
+AUTOMAKE_VER=1.4[cdefg]  # Automake from CVS
 LIBTOOL_VER=1.3.5
 
 PROJECT=Coin
@@ -76,8 +76,8 @@ if test -z "`automake --version 2>/dev/null | grep \" $AUTOMAKE_VER\"`"; then
     DIE=true
 fi
 
-#if test -z "`libtool --version 2>/dev/null | egrep \"$LIBTOOL_VER\"`"; then
-if true; then
+if test -z "`libtool --version 2>/dev/null | egrep \"$LIBTOOL_VER\"`"; then
+# if true; then
     echo ""
     echo "You must have libtool version $LIBTOOL_VER installed to"
     echo "generate configure information and Makefiles for $PROJECT."
