@@ -50,8 +50,7 @@ struct cc_memalloc {
   cc_memalloc_free * free;
   cc_memalloc_memnode * memnode;
 
-  unsigned int requested_size;
-  unsigned int allocated_size;
+  unsigned int chunksize;
 
   unsigned int num_allocated_units;
   cc_memalloc_strategy_cb * strategy;
@@ -79,10 +78,14 @@ node_alloc(struct cc_memalloc_memnode * memnode, const int numbytes)
 static struct cc_memalloc_memnode *
 create_memnode(cc_memalloc * allocator)
 {
-  int numbytes;
+  unsigned int numbytes;
+  int chunkmultiplier;
   cc_memalloc_memnode * node =
     (cc_memalloc_memnode*) malloc(sizeof(cc_memalloc_memnode));
-  numbytes = allocator->allocated_size * allocator->strategy(allocator->num_allocated_units);
+
+  chunkmultiplier = allocator->strategy(allocator->num_allocated_units);
+  assert(chunkmultiplier >= 1 && "strategy callback returned erroneous value");
+  numbytes = allocator->chunksize * chunkmultiplier;
   
   node->next = allocator->memnode;
   node->block = (unsigned char*) malloc(numbytes);
@@ -99,15 +102,16 @@ create_memnode(cc_memalloc * allocator)
 static void *
 alloc_from_memnode(cc_memalloc * allocator)
 {
-  int unitsize;
   void * ret = NULL;
 
-  unitsize = allocator->allocated_size;
-
-  if (allocator->memnode) ret = node_alloc(allocator->memnode, unitsize);
+  if (allocator->memnode) ret = node_alloc(allocator->memnode, allocator->chunksize);
   if (ret == NULL) {
     allocator->memnode = create_memnode(allocator);
-    ret = node_alloc(allocator->memnode, unitsize);
+    ret = node_alloc(allocator->memnode, allocator->chunksize);
+    /* FIXME: I've seen this assert() hit, but I couldn't easily
+       reproduce it. (It hit for a system that was running a viewer
+       spin overnight.) I've inserted additional assert() calls to try
+       to catch the problem closer to the source. 20031008 mortene. */
     assert(ret);
   }
   return ret;
@@ -123,11 +127,10 @@ cc_memalloc_construct(const unsigned int unitsize)
   cc_memalloc * allocator = (cc_memalloc*)
     malloc(sizeof(cc_memalloc));
 
-  allocator->allocated_size = unitsize;
+  allocator->chunksize = unitsize;
   if (unitsize < sizeof(cc_memalloc_free)) {
-    allocator->allocated_size = sizeof(cc_memalloc_free);
+    allocator->chunksize = sizeof(cc_memalloc_free);
   }
-  allocator->requested_size = unitsize;
   allocator->free = NULL;
   allocator->memnode = NULL;
   allocator->num_allocated_units = 0;
@@ -203,10 +206,13 @@ default_strategy(const int numunits_allocated)
 
 /*!
   Sets the allocator strategy callback. \cb should be a function that
-  returns the number of units to allocated in a block, bases on the
-  number of units currently allocated. The default strategy is to
-  just return the number of units allocated, unless the number of
-  units allocated is less than 64, then 64 is returned.
+  returns the number of units to allocated in a block, based on the
+  number of units currently allocated.
+
+  The default strategy is to just return the number of units allocated
+  (which will successively double the internal memory chunk sizes),
+  unless the number of units allocated is less than 64, then 64 is
+  returned.
 */
 void
 cc_memalloc_set_strategy(cc_memalloc * allocator, cc_memalloc_strategy_cb * cb)
