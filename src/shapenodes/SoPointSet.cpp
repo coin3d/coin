@@ -180,9 +180,6 @@ SoPointSet::GLRender(SoGLRenderAction * action)
 
   SoState * state = action->getState();
 
-  // send approx number of points for autocache handling
-  sogl_autocache_update(state, numpts); 
-
   SbBool didpush = FALSE;
   if (this->vertexProperty.getValue()) {
     state->push();
@@ -241,6 +238,10 @@ SoPointSet::GLRender(SoGLRenderAction * action)
   
   if (didpush)
     state->pop();
+
+  // send approx number of points for autocache handling. Multiply
+  // by three so that three points is the same as one triangle.
+  sogl_autocache_update(state, numpts*3);
 }
 
 // Documented in superclass.
