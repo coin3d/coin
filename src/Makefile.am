@@ -228,8 +228,9 @@ uninstall-local:
 	done; \
 	baseincdir="$(DESTDIR)$(includedir)/Inventor"; \
 	for dir in \
-	  "$$baseincdir/actions" \
+	  "$$baseincdir/3ds" \
 	  "$$baseincdir/base" \
+	  "$$baseincdir/actions" \
 	  "$$baseincdir/bundles" \
 	  "$$baseincdir/caches" \
 	  "$$baseincdir/collision" \
