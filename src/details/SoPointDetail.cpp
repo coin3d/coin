@@ -41,10 +41,10 @@
 SO_DETAIL_SOURCE(SoPointDetail);
 
 /*!
-  Sets up an empty detail instance (all indices are equal to -1).
+  Sets up an empty detail instance (all indices are equal to 0).
  */
 SoPointDetail::SoPointDetail(void)
-  : coordindex(-1), matindex(-1), normindex(-1), texcoordindex(-1)
+  : coordindex(0), matindex(0), normindex(0), texcoordindex(0)
 {
 }
 
