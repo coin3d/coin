@@ -137,6 +137,7 @@ baseinc_HEADERS = \
 	debug.h \
 	hash.h \
 	heap.h \
+	memalloc.h \
 	rbptree.h \
 	time.h \
 	string.h \
