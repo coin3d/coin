@@ -138,7 +138,8 @@ SoVRMLScript::initClass(void) // static
   SoVRMLScript::classTypeId =
     SoType::createType(SoNode::getClassTypeId(),
                        SbName("VRMLScript"),
-                       SoVRMLScript::createInstance);
+                       SoVRMLScript::createInstance,
+                       SoNode::nextActionMethodIndex++);
 }
 
 SoVRMLScript::SoVRMLScript(void)
@@ -340,6 +341,8 @@ SoVRMLScript::readInstance(SoInput * in, unsigned short flags)
 
   SbBool err = FALSE;
 
+  SoField * builtinfield;
+
   while (!err && ok) {
     if (name == EVENTIN ||
         name == EVENTOUT ||
@@ -380,11 +383,19 @@ SoVRMLScript::readInstance(SoInput * in, unsigned short flags)
         ok = in->read(name, TRUE);
       }
     }
+    else if ((builtinfield = this->getField(name)) != NULL) {
+      err = !builtinfield->read(in, name);
+      if (!err) {
+        name = "";
+        ok = in->read(name, TRUE);
+      }
+    }
     else ok = FALSE;
   }
   if (!err) {
     if (name != "") in->putBack(name.getString());
-    return inherited::readInstance(in, flags);
+    //    return inherited::readInstance(in, flags);
+    return TRUE;
   }
   return FALSE;
 }
