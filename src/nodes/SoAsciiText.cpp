@@ -47,6 +47,7 @@
 #include <Inventor/elements/SoFontSizeElement.h>
 #include <Inventor/elements/SoGLNormalizeElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoGlyph.h>
 #include <Inventor/misc/SoState.h>
