@@ -523,22 +523,6 @@ AC_SUBST(COIN_HACKING_LIBDIRS)
 
 
 # *******************************************************************
-# * Do we want to build the example programs?
-# *******************************************************************
-
-AC_ARG_WITH(examples,
-  AC_HELP_STRING([--with-examples], [build Coin example programs [[default=yes]]]),
-  [case "${withval}" in
-    yes) want_examples=yes ;;
-    no)  want_examples=no ;;
-    *) AC_MSG_ERROR(bad value "${withval}" for --with-examples) ;;
-  esac],
-  [want_examples=yes])
-
-AM_CONDITIONAL(BUILD_EXAMPLES, test x"$want_examples" = xyes)
-
-
-# *******************************************************************
 # * List all files configure shall generate.
 # *******************************************************************
 
@@ -634,9 +618,6 @@ AC_OUTPUT([
         src/projectors/Makefile
         src/sensors/Makefile
         src/system/Makefile
-        examples/Makefile
-        examples/advanced/Makefile
-        examples/advanced/elements/Makefile
         build/Makefile
         build/CoinSDK.iwz
         build/SoCoinSDK.iwz.in

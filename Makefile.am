@@ -1,12 +1,6 @@
 ## Process this file with automake to generate Makefile.in.
 
-if BUILD_EXAMPLES
-EXAMPLEDIR = examples
-else
-EXAMPLEDIR =
-endif
-
-SUBDIRS = include data build src $(EXAMPLEDIR)
+SUBDIRS = include data build src
 
 bin_SCRIPTS = coin-config
 BUILT_SOURCES = coin-config
