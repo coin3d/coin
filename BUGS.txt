@@ -192,3 +192,47 @@
 
     <mortene@sim.no> 20020521.
 
+=====================================================================
+
+008 Bounding box calculations for SoMultipleCopy is not correct. To
+    reproduce, load the following model into an examinerviewer and do
+    "view all":
+
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+
+    #Inventor V2.5 ascii
+    
+    Group {
+       MultipleCopy {
+          matrix [
+           1 0 0 0
+           0 1 0 0
+           0 0 1 0
+           0 0 0 1,
+          
+           1 0 0 0
+           0 1 0 0
+           0 0 1 0
+           4 0 0 1,
+    
+           1 0 0 0
+           0 1 0 0
+           0 0 1 0
+           -4 0 0 1,
+          ]
+          
+          Cube {
+          }
+       }
+    
+       Rotation {
+          rotation 0 1 0   0.785
+       }
+    
+       Cube {
+       }
+    }
+
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+
+=====================================================================
