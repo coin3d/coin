@@ -77,6 +77,7 @@
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/elements/SoGLShapeHintsElement.h>
+#include <Inventor/elements/SoTextureCoordinateElement.h>
 
 #define SPHERE_NUM_SLICES 30.0f
 #define SPHERE_NUM_STACKS 30.0f
@@ -120,8 +121,9 @@ SoVRMLSphere::GLRender(SoGLRenderAction * action)
 
   SbBool doTextures = SoGLTextureEnabledElement::get(state);
 
-  SbBool sendNormals = !mb.isColorOnly();
-
+  SbBool sendNormals = !mb.isColorOnly() ||
+    (SoTextureCoordinateElement::getType(state) == SoTextureCoordinateElement::FUNCTION);
+  
   float complexity = this->getComplexityValue(action);
 
   unsigned int flags = 0;

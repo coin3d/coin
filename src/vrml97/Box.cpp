@@ -75,6 +75,7 @@
 #include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoTextureCoordinateElement.h>
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
@@ -123,7 +124,8 @@ SoVRMLBox::GLRender(SoGLRenderAction * action)
   SoMaterialBundle mb(action);
   mb.sendFirst();
 
-  SbBool sendNormals = !mb.isColorOnly();
+  SbBool sendNormals = !mb.isColorOnly() ||
+    (SoTextureCoordinateElement::getType(state) == SoTextureCoordinateElement::FUNCTION);
 
   unsigned int flags = 0;
   if (doTextures) flags |= SOGL_NEED_TEXCOORDS;

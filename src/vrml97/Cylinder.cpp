@@ -163,8 +163,11 @@ SoVRMLCylinder::GLRender(SoGLRenderAction * action)
   mb.sendFirst();
 
   unsigned int flags = 0;
+
+  SbBool sendNormals = !mb.isColorOnly() ||
+    (SoTextureCoordinateElement::getType(state) == SoTextureCoordinateElement::FUNCTION);
   
-  if (!mb.isColorOnly())
+  if (sendNormals)
     flags |= SOGL_NEED_NORMALS;
   if ((SoGLTextureEnabledElement::get(state) || SoGLTexture3EnabledElement::get(state)) &&
       SoTextureCoordinateElement::getType(state) != SoTextureCoordinateElement::TEXGEN)
