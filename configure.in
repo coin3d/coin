@@ -710,7 +710,7 @@ AM_CONDITIONAL(HACKING_DYNAMIC_MODULES, test x"$enable_hacking" = x"yes")
 
 if test x"$enable_hacking" = x"yes"; then
   for dir in \
-    base VRMLnodes actions bundles caches details draggers elements engines \
+    base actions bundles caches details draggers elements engines \
     errors events fields manips misc lists nodekits nodes projectors sensors; \
   do
     HACKING_LIBDIRS="$HACKING_LIBDIRS -L${coin_build_dir}/src/$dir/.libs"
@@ -888,7 +888,6 @@ AC_CONFIG_FILES(
         html/Makefile
         src/Makefile
         src/base/Makefile
-        src/VRMLnodes/Makefile
         src/actions/Makefile
         src/bundles/Makefile
         src/caches/Makefile

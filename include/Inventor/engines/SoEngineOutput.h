@@ -24,7 +24,9 @@
 #include <Inventor/lists/SoFieldList.h>
 
 class SoNotList;
-
+class SoFieldContainer;
+class SoEngine;
+class SoNodeEngine;
 
 class COIN_DLL_API SoEngineOutput {
 public:
@@ -35,9 +37,12 @@ public:
   int getForwardConnections(SoFieldList & fl) const;
   void enable(const SbBool flag);
   SbBool isEnabled(void) const;
-  class SoEngine * getContainer(void) const;
+  SoEngine * getContainer(void) const;
+  SoNodeEngine * getNodeContainer(void) const;
+  SbBool isNodeEngineOutput(void) const;
 
   void setContainer(SoEngine * engine);
+  void setNodeContainer(SoNodeEngine * nodeengine);
   void addConnection(SoField * f);
   void removeConnection(SoField * f);
   int getNumConnections(void) const;
@@ -48,7 +53,10 @@ public:
 
   void touchSlaves(SoNotList * nl, SbBool donotify);
 
+  SoFieldContainer * getFieldContainer(void);
+
 private:
+  
   SbBool enabled;
   SoEngine * container;
   SoFieldList slaves;

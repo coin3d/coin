@@ -151,6 +151,7 @@ RegularSources = \
 	SoInterpolateVec2f.cpp \
 	SoInterpolateVec3f.cpp \
 	SoInterpolateVec4f.cpp \
+	SoNodeEngine.cpp \
 	SoOnOff.cpp \
 	SoOneShot.cpp \
         SoOutputData.cpp \
@@ -206,6 +207,9 @@ PublicHeaders = \
 PrivateHeaders = \
 	../../include/Inventor/engines/SoSubEngineP.h \
 	../../include/Inventor/engines/SoConvertAll.h \
+	../../include/Inventor/engines/SoNodeEngine.h \
+	../../include/Inventor/engines/SoSubNodeEngine.h \
+	../../include/Inventor/engines/SoSubNodeEngineP.h \
 	evaluator.h \
 	lex.so_eval.c
 
@@ -298,6 +302,7 @@ engines_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoInterpolateVec2f.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoInterpolateVec3f.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoInterpolateVec4f.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoNodeEngine.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoOnOff.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoOneShot.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoOutputData.$(OBJEXT) \
@@ -336,7 +341,8 @@ libengines_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoInterpolateRotation.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoInterpolateVec2f.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoInterpolateVec3f.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoInterpolateVec4f.lo SoOnOff.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoInterpolateVec4f.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoNodeEngine.lo SoOnOff.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoOneShot.lo SoOutputData.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoSelectOne.lo SoTimeCounter.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTransformVec3f.lo \
@@ -370,7 +376,8 @@ libengines@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoInterpolateRotation.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoInterpolateVec2f.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoInterpolateVec3f.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoInterpolateVec4f.lo SoOnOff.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoInterpolateVec4f.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoNodeEngine.lo SoOnOff.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoOneShot.lo SoOutputData.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoSelectOne.lo SoTimeCounter.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTransformVec3f.lo \
@@ -435,9 +442,10 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoInterpolateVec3f.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoInterpolateVec4f.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoInterpolateVec4f.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoOnOff.Plo $(DEPDIR)/SoOnOff.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoOneShot.Plo $(DEPDIR)/SoOneShot.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoOutputData.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoNodeEngine.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoNodeEngine.Po $(DEPDIR)/SoOnOff.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoOnOff.Po $(DEPDIR)/SoOneShot.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoOneShot.Po $(DEPDIR)/SoOutputData.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoOutputData.Po $(DEPDIR)/SoSelectOne.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoSelectOne.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoTimeCounter.Plo \
@@ -590,6 +598,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoInterpolateVec3f.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoInterpolateVec4f.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoInterpolateVec4f.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoNodeEngine.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoNodeEngine.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoOnOff.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoOnOff.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoOneShot.Plo@am__quote@

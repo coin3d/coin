@@ -146,7 +146,7 @@ sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 
 # **************************************************************************
 SUBDIRS = \
-	VRMLnodes actions base bundles caches details draggers elements \
+	actions base bundles caches details draggers elements \
 	engines errors events fields manips misc lists nodekits nodes \
 	projectors sensors $(VRML97DIR) $(SUPERGLUDIR) .
 
@@ -158,7 +158,7 @@ INCLUDES = -I$(top_srcdir)/include
 
 @HACKING_DYNAMIC_MODULES_TRUE@libCoin@SUFFIX@_la_LIBADD = 
 @HACKING_DYNAMIC_MODULES_FALSE@libCoin@SUFFIX@_la_LIBADD = \
-@HACKING_DYNAMIC_MODULES_FALSE@	VRMLnodes/libVRMLnodes.la actions/libactions.la base/libbase.la \
+@HACKING_DYNAMIC_MODULES_FALSE@	actions/libactions.la base/libbase.la \
 @HACKING_DYNAMIC_MODULES_FALSE@	bundles/libbundles.la caches/libcaches.la elements/libelements.la \
 @HACKING_DYNAMIC_MODULES_FALSE@	engines/libengines.la errors/liberrors.la events/libevents.la \
 @HACKING_DYNAMIC_MODULES_FALSE@	fields/libfields.la misc/libmisc.la lists/liblists.la \
@@ -172,7 +172,7 @@ libCoin@SUFFIX@_la_SOURCES = \
 
 
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
-	VRMLnodes/VRMLnodes.lst actions/actions.lst base/base.lst \
+	actions/actions.lst base/base.lst \
 	bundles/bundles.lst caches/caches.lst elements/elements.lst \
 	engines/engines.lst errors/errors.lst events/events.lst \
 	fields/fields.lst misc/misc.lst lists/lists.lst \
@@ -247,7 +247,6 @@ LIBRARIES = $(lib_LIBRARIES)
 
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_AR = $(AR) cru
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_DEPENDENCIES = \
-@BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@	VRMLnodes/VRMLnodes.lst \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@	actions/actions.lst \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@	base/base.lst \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@	bundles/bundles.lst \
@@ -268,7 +267,6 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_AR = $(AR) cru
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@	manips/manips.lst \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@	$(SUPERGLUDIR)/${SUPERGLUPREFIX}GLU.lst
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_DEPENDENCIES = \
-@BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@	VRMLnodes/VRMLnodes.lst \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@	actions/actions.lst \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@	base/base.lst \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@	bundles/bundles.lst \
@@ -288,7 +286,6 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_AR = $(AR) cru
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@	draggers/draggers.lst \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@	manips/manips.lst
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_DEPENDENCIES = \
-@BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@	VRMLnodes/VRMLnodes.lst \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@	actions/actions.lst \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@	base/base.lst \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@	bundles/bundles.lst \
@@ -310,7 +307,6 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_AR = $(AR) cru
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@	$(VRML97DIR)/vrml97.lst \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@	$(SUPERGLUDIR)/${SUPERGLUPREFIX}GLU.lst
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_DEPENDENCIES = \
-@BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@	VRMLnodes/VRMLnodes.lst \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@	actions/actions.lst \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@	base/base.lst \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@	bundles/bundles.lst \
@@ -337,7 +333,6 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_TRUE@libCoin@SUFFIX@_la_DEPENDENCIES =
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@libCoin@SUFFIX@_la_DEPENDENCIES = \
-@BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	VRMLnodes/libVRMLnodes.la \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	actions/libactions.la \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	base/libbase.la \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	bundles/libbundles.la \
@@ -358,7 +353,6 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	manips/libmanips.la
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_TRUE@libCoin@SUFFIX@_la_DEPENDENCIES =
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@libCoin@SUFFIX@_la_DEPENDENCIES = \
-@BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	VRMLnodes/libVRMLnodes.la \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	actions/libactions.la \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	base/libbase.la \
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	bundles/libbundles.la \
@@ -380,7 +374,6 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 @BUILD_VRML97_FALSE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	$(SUPERGLUDIR)/lib${SUPERGLUPREFIX}GLU.la
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_TRUE@libCoin@SUFFIX@_la_DEPENDENCIES =
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@libCoin@SUFFIX@_la_DEPENDENCIES = \
-@BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	VRMLnodes/libVRMLnodes.la \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	actions/libactions.la \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	base/libbase.la \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	bundles/libbundles.la \
@@ -402,7 +395,6 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	$(VRML97DIR)/libvrml97.la
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_TRUE@libCoin@SUFFIX@_la_DEPENDENCIES =
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@libCoin@SUFFIX@_la_DEPENDENCIES = \
-@BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	VRMLnodes/libVRMLnodes.la \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	actions/libactions.la \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	base/libbase.la \
 @BUILD_VRML97_TRUE@@BUILD_WITH_SUPERGLU_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	bundles/libbundles.la \
@@ -451,10 +443,9 @@ RECURSIVE_TARGETS = info-recursive dvi-recursive install-info-recursive \
 	install-exec-recursive installdirs-recursive install-recursive \
 	uninstall-recursive check-recursive installcheck-recursive
 DIST_COMMON = $(libCoininc_HEADERS) Makefile.am Makefile.in
-DIST_SUBDIRS = VRMLnodes actions base bundles caches details draggers \
-	elements engines errors events fields manips misc lists \
-	nodekits nodes projectors sensors extensions/vrml97/src \
-	extensions/superglu .
+DIST_SUBDIRS = actions base bundles caches details draggers elements \
+	engines errors events fields manips misc lists nodekits nodes \
+	projectors sensors extensions/vrml97/src extensions/superglu .
 SOURCES = $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES) $(libCoin@SUFFIX@_la_SOURCES)
 
 all: all-recursive
@@ -856,7 +847,6 @@ uninstall-local:
 	done; \
 	baseincdir="$(DESTDIR)$(includedir)/Inventor"; \
 	for dir in \
-	  "$$baseincdir/VRMLnodes" \
 	  "$$baseincdir/actions" \
 	  "$$baseincdir/base" \
 	  "$$baseincdir/bundles" \

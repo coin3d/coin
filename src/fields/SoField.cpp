@@ -52,16 +52,14 @@
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
-#include <Inventor/VRMLnodes/SoVRMLInterpOutput.h>
-#include <Inventor/VRMLnodes/SoVRMLInterpolator.h>
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/engines/SoConvertAll.h>
+#include <Inventor/engines/SoNodeEngine.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoFields.h>
 #include <Inventor/lists/SoEngineList.h>
 #include <Inventor/lists/SoEngineOutputList.h>
-#include <Inventor/lists/SoVRMLInterpOutputList.h>
 #include <Inventor/sensors/SoDataSensor.h>
 #include <Inventor/misc/SoProto.h>
 
@@ -109,7 +107,6 @@ public:
 
     assert(masterfields.getLength() == 0);
     assert(masterengineouts.getLength() == 0);
-    assert(masterinterpouts.getLength() == 0);
 
     assert(slaves.getLength() == 0);
     assert(auditors.getLength() == 0);
@@ -123,7 +120,6 @@ public:
   // dict to find SoFieldConverter engine in the connection (if any).
   SoFieldList masterfields;
   SoEngineOutputList masterengineouts;
-  SoVRMLInterpOutputList masterinterpouts;
   // Fields which are slaves to us. Use maptoconverter dict to find
   // SoFieldConverter engine in the connection (if any).
   SoFieldList slaves;
@@ -275,8 +271,8 @@ SoField::SoField(void)
 }
 
 /*!
-  Destructor. Disconnects ourself from any connected field, engine or
-  VRML interpolator, before we disconnect all auditors on the field.
+  Destructor. Disconnects ourself from any connected field or engine
+  before we disconnect all auditors on the field.
 */
 SoField::~SoField()
 {
@@ -307,10 +303,6 @@ SoField::~SoField()
       switch (type) {
       case SoNotRec::ENGINE:
         ((SoEngineOutput *)obj)->removeConnection(this);
-        break;
-
-      case SoNotRec::INTERP:
-        ((SoVRMLInterpOutput *)obj)->removeConnection(this);
         break;
 
       case SoNotRec::CONTAINER:
@@ -571,7 +563,8 @@ SoField::connectFrom(SoEngineOutput * master, SbBool notnotify, SbBool append)
   // If we connectFrom() on the same engine as the field is already
   // connected to, we want to avoid the master container engine being
   // unref()'ed down to ref-count 0 upon the disconnect().
-  SoEngine * masterengine = master->getContainer();
+  SoFieldContainer * masterengine = master->getFieldContainer();
+
   if (masterengine) masterengine->ref();
 
 
@@ -630,36 +623,6 @@ SoField::connectFrom(SoEngineOutput * master, SbBool notnotify, SbBool append)
   }
 
   return TRUE;
-}
-
-
-/*!
-  Connects this field as a slave to \a master. This means that the value
-  of this field will be automatically updated when \a master is changed (as
-  long as the connection also is enabled).
-
-  If the field output connected \e from is of a different type from
-  the field connected \e to, a field converter is inserted. For some
-  combinations of fields no such conversion is possible, and we'll
-  return \c FALSE.
-
-  If this field had any master-relationships beforehand, these are all
-  broken up if \a append is \c FALSE.
-
-  Call with \a notnotify if you want to avoid the initial notification
-  of connected auditors (a.k.a. \e slaves).
-
-  \sa enableConnection(), isConnectionEnabled(), isConnectedFromField()
-  \sa getConnectedField(), appendConnection(SoVRMLInterpOutput *)
-*/
-SbBool
-SoField::connectFrom(SoVRMLInterpOutput * master,
-                     SbBool notnotify, SbBool append)
-{
-  // I believe the code will be more or less identical with
-  // SoField::disconnect(SoEngineOutput *). 20000411 mortene.
-  COIN_STUB(); // FIXME
-  return FALSE;
 }
 
 
@@ -772,17 +735,6 @@ SoField::disconnect(SoEngineOutput * master)
 }
 
 /*!
-  Disconnect this field as a slave from \a master.
-*/
-void
-SoField::disconnect(SoVRMLInterpOutput * master)
-{
-  // I believe the code will be more or less identical with
-  // SoField::disconnect(SoEngineOutput *). 20000411 mortene.
-  COIN_STUB(); // FIXME
-}
-
-/*!
   Returns number of fields this field is a slave of.
 
   \sa getConnections()
@@ -814,7 +766,7 @@ SoField::getConnections(SoFieldList & masterlist) const
 
 /*!
   Disconnect all connections from this field as a slave to master
-  fields, engine outputs or VRML interpolator outputs.
+  fields or engine outputs.
 */
 void
 SoField::disconnect(void)
@@ -827,10 +779,6 @@ SoField::disconnect(void)
   while (this->isConnectedFromEngine())
     this->disconnect(this->storage->masterengineouts[0]);
 
-  // Disconnect us from all master VRML interpolator outputs.
-  while (this->isConnectedFromVRMLInterp())
-    this->disconnect(this->storage->masterinterpouts[0]);
-
   assert(this->isConnected() == FALSE);
 }
 
@@ -839,20 +787,19 @@ SoField::disconnect(void)
   interpolator.
 
   \sa isConnectedFromField(), isConnectedFromEngine()
-  \sa isConnectedFromVRMLInterp(), connectFrom()
+  \sa connectFrom()
 */
 SbBool
 SoField::isConnected(void) const
 {
   return (this->isConnectedFromField() ||
-          this->isConnectedFromEngine() ||
-          this->isConnectedFromVRMLInterp());
+          this->isConnectedFromEngine());
 }
 
 /*!
   Returns \c TRUE if we're a slave of at least one field.
 
-  \sa isConnected(), isConnectedFromEngine(), isConnectedFromVRMLInterp()
+  \sa isConnected(), isConnectedFromEngine()
   \sa connectFrom(SoField *)
 */
 SbBool
@@ -863,22 +810,9 @@ SoField::isConnectedFromField(void) const
 }
 
 /*!
-  Returns \c TRUE if we're a slave of at least one VRML interpolator.
-
-  \sa isConnected(), isConnectedFromEngine(), isConnectedFromField()
-  \sa connectFrom(SoVRMLInterpOutput *)
-*/
-SbBool
-SoField::isConnectedFromVRMLInterp(void) const
-{
-  return (this->hasExtendedStorage() &&
-          this->storage->masterinterpouts.getLength() > 0);
-}
-
-/*!
   Returns \c TRUE if we're connected from an engine.
 
-  \sa isConnected(), isConnectedFromVRMLInterp(), isConnectedFromField()
+  \sa isConnected(), isConnectedFromField()
   \sa connectFrom(SoEngineOutput *)
 */
 SbBool
@@ -908,21 +842,6 @@ SbBool
 SoField::getConnectedField(SoField *& master) const
 {
   SOFIELD_GETCONNECTED(masterfields);
-}
-
-
-/*!
-  Returns \c TRUE if we are connected as a slave to at least one VRML
-  interpolator. \a master will be set to the source of the last
-  interpolator connection made.
-
-  \sa isConnectedFromVRMLInterp(), connectFrom(SoVRMLInterpOutput *)
-  \sa appendConnection(SoVRMLInterpOutput *)
-*/
-SbBool
-SoField::getConnectedVRMLInterp(SoVRMLInterpOutput *& master) const
-{
-  SOFIELD_GETCONNECTED(masterinterpouts);
 }
 
 /*!
@@ -1382,10 +1301,6 @@ SoField::copyConnection(const SoField * fromfield)
   else if (fromfield->isConnectedFromEngine()) {
     COPYCONNECT(SoEngineOutput, getConnectedEngine);
   }
-  else if (fromfield->isConnectedFromVRMLInterp()) {
-    COPYCONNECT(SoVRMLInterpOutput, getConnectedVRMLInterp);
-  }
-
 #undef COPYCONNECT
 }
 
@@ -1681,18 +1596,6 @@ SoField::appendConnection(SoField * master, SbBool notnotify)
   return this->connectFrom(master, notnotify, TRUE);
 }
 
-/*!
-  Connect ourself as slave to another object, while still keeping the
-  other connections currently in place.
-
-  \sa connectFrom()
-*/
-SbBool
-SoField::appendConnection(SoVRMLInterpOutput * master, SbBool notnotify)
-{
-  return this->connectFrom(master, notnotify, TRUE);
-}
-
 // Make a converter from value(s) of the given field type and the
 // value(s) of this type. Returns NULL if no value conversion between
 // types is possible.
@@ -1765,13 +1668,14 @@ SoField::readConnection(SoInput * in)
 
   // Get pointer to master field or engine output and connect.
 
-  // FIXME: does this also work for connections to VRML
-  // interpolators? 20000129 mortene.
   SoField * masterfield = fc->getField(mastername);
   if (!masterfield) {
-    if (fc->isOfType(SoEngine::getClassTypeId())) {
-      SoEngine * fcengine = (SoEngine *)fc;
-      SoEngineOutput * masteroutput = fcengine->getOutput(mastername);
+    if (fc->isOfType(SoEngine::getClassTypeId()) || fc->isOfType(SoNodeEngine::getClassTypeId())) {
+      SoEngineOutput * masteroutput = 
+        fc->isOfType(SoEngine::getClassTypeId()) ?
+        ((SoEngine*)fc)->getOutput(mastername) :
+        ((SoNodeEngine*)fc)->getOutput(mastername);
+
       if (!masteroutput) {
         SoReadError::post(in, "no field or output ``%s'' in ``%s''",
                           mastername.getString(),
@@ -1852,7 +1756,6 @@ SoField::resolveWriteConnection(SbName & mastername) const
   SoFieldContainer * fc = NULL;
   SoField * fieldmaster;
   SoEngineOutput * enginemaster;
-  SoVRMLInterpOutput * interpmaster;
 
   if (this->getConnectedField(fieldmaster)) {
     fc = fieldmaster->getContainer();
@@ -1861,17 +1764,13 @@ SoField::resolveWriteConnection(SbName & mastername) const
     assert(ok);
   }
   else if (this->getConnectedEngine(enginemaster)) {
-    fc = enginemaster->getContainer();
+    fc = enginemaster->getFieldContainer();
     assert(fc);
     // FIXME: couldn't we use getFieldName()? 20000129 mortene.
-    SbBool ok = ((SoEngine *)fc)->getOutputName(enginemaster, mastername);
-    assert(ok);
-  }
-  else if (this->getConnectedVRMLInterp(interpmaster)) {
-    fc = interpmaster->getContainer();
-    assert(fc);
-    // FIXME: couldn't we use getFieldName()? 20000129 mortene.
-    SbBool ok = ((SoVRMLInterpolator *)fc)->getOutputName(interpmaster, mastername);
+    SbBool ok = 
+      enginemaster->isNodeEngineOutput() ? 
+      ((SoNodeEngine *)fc)->getOutputName(enginemaster, mastername) :       
+      ((SoEngine *)fc)->getOutputName(enginemaster, mastername);
     assert(ok);
   }
   else assert(FALSE);
@@ -1914,9 +1813,6 @@ SoField::evaluateConnection(void) const
     SoFieldConverter * converter = this->storage->findConverter(master);
     if (converter) converter->evaluateWrapper();
     else master->getContainer()->evaluateWrapper();
-  }
-  else if (this->isConnectedFromVRMLInterp()) {
-    COIN_STUB();
   }
   else {
     // Should never happen.

@@ -40,7 +40,6 @@
  */
 
 #include <Inventor/engines/SoOutputData.h>
-#include <Inventor/engines/SoEngine.h>
 #include <Inventor/engines/SoEngineOutput.h>
 #include <Inventor/SbName.h>
 #include <Inventor/SoInput.h>
@@ -134,28 +133,7 @@ void
 SoEngineOutputData::addOutput(const SoEngine *base, const char *name,
                               const SoEngineOutput *output, SoType type)
 {
-  char * vbase = (char *)base;
-  char * voutput = (char *)output;
-  this->outputlist.append(new SoOutputDataEntry(name, type, voutput-vbase));
-
-#if COIN_DEBUG
-  // FIXME: this is an ugly design flaw, which doesn't seem easily
-  // resolvable while still keeping compatibility. 20000915 mortene.
-  if (type.isDerivedFrom(SoType::fromName("SoSFEnum")) ||
-      type.isDerivedFrom(SoType::fromName("SoMFEnum"))) {
-    static SbBool warn = TRUE;
-    if (warn) {
-      warn = FALSE; // Warn only once.
-      SoDebugError::postWarning("SoEngineOutputData::addOutput",
-                                "Using as engine output a field which has "
-                                "enum type is not advisable, as it contains "
-                                "more state than just the value of the field "
-                                "(i.e. the name<->value hash mapping must "
-                                "also be considered in certain situations). "
-                                "This is a design flaw.");
-    }
-  }
-#endif // COIN_DEBUG
+  this->addOutputInternal((const SoFieldContainer*) base, name, output, type);
 }
 
 /*!
@@ -183,10 +161,7 @@ SoEngineOutputData::getOutputName(int index) const
 SoEngineOutput *
 SoEngineOutputData::getOutput(const SoEngine *engine, int index) const
 {
-  assert(index >= 0 && index < this->outputlist.getLength());
-  char * outputptr = (char *)engine;
-  outputptr += this->outputlist[index]->ptroffset;
-  return (SoEngineOutput *)outputptr;
+  return this->getOutputInternal((const SoFieldContainer*) engine, index);
 }
 
 /*!
@@ -197,14 +172,7 @@ int
 SoEngineOutputData::getIndex(const SoEngine *engine,
                              const SoEngineOutput *output) const
 {
-  char * vbase = (char *)engine;
-  char * voutput = (char *)output;
-  int ptroffset = voutput - vbase;
-
-  for (int i = 0; i < this->outputlist.getLength(); i++) {
-    if (this->outputlist[i]->ptroffset == ptroffset) return i;
-  }
-  return -1;
+  return this->getIndexInternal((const SoFieldContainer*) engine, output);
 }
 
 /*!
@@ -233,4 +201,85 @@ void
 SoEngineOutputData::writeDescriptions(SoOutput *out, SoEngine *engine) const
 {
   COIN_STUB();
+}
+
+/*!
+  \overload
+*/
+void 
+SoEngineOutputData::addOutput(const SoNodeEngine * base, const char *name,
+                              const SoEngineOutput * output, SoType type)
+{
+  this->addOutputInternal((const SoFieldContainer*) base, name, output, type);
+}
+
+/*!
+  \overload
+*/
+SoEngineOutput * 
+SoEngineOutputData::getOutput(const SoNodeEngine * engine, int index) const
+{
+  return this->getOutputInternal((const SoFieldContainer*) engine, index);
+}
+
+/*!
+  \overload
+*/
+int 
+SoEngineOutputData::getIndex(const SoNodeEngine * engine, const SoEngineOutput * output) const
+{
+  return this->getIndexInternal((const SoFieldContainer*) engine, output);
+}
+
+// does the actual job of adding an engine output
+void 
+SoEngineOutputData::addOutputInternal(const SoFieldContainer * base, const char *name,
+                                      const SoEngineOutput * output, SoType type)
+{
+  char * vbase = (char *)base;
+  char * voutput = (char *)output;
+  this->outputlist.append(new SoOutputDataEntry(name, type, voutput-vbase));
+
+#if COIN_DEBUG
+  // FIXME: this is an ugly design flaw, which doesn't seem easily
+  // resolvable while still keeping compatibility. 20000915 mortene.
+  if (type.isDerivedFrom(SoType::fromName("SoSFEnum")) ||
+      type.isDerivedFrom(SoType::fromName("SoMFEnum"))) {
+    static SbBool warn = TRUE;
+    if (warn) {
+      warn = FALSE; // Warn only once.
+      SoDebugError::postWarning("SoEngineOutputData::addOutput",
+                                "Using as engine output a field which has "
+                                "enum type is not advisable, as it contains "
+                                "more state than just the value of the field "
+                                "(i.e. the name<->value hash mapping must "
+                                "also be considered in certain situations). "
+                                "This is a design flaw.");
+    }
+  }
+#endif // COIN_DEBUG
+}
+
+// does the actual job of returning an engine output
+SoEngineOutput * 
+SoEngineOutputData::getOutputInternal(const SoFieldContainer * base, int index) const
+{
+  assert(index >= 0 && index < this->outputlist.getLength());
+  char * outputptr = (char *)base;
+  outputptr += this->outputlist[index]->ptroffset;
+  return (SoEngineOutput *)outputptr;
+}
+
+// does the actual job of returning an engine output index
+int 
+SoEngineOutputData::getIndexInternal(const SoFieldContainer * base, const SoEngineOutput * output) const
+{
+  char * vbase = (char *)base;
+  char * voutput = (char *)output;
+  int ptroffset = voutput - vbase;
+
+  for (int i = 0; i < this->outputlist.getLength(); i++) {
+    if (this->outputlist[i]->ptroffset == ptroffset) return i;
+  }
+  return -1;
 }

@@ -120,7 +120,6 @@ SoNotRec::print(FILE * const file) const
   case SENSOR:     (void)fprintf(file, "SENSOR"); break;
   case FIELD:      (void)fprintf(file, "FIELD"); break;
   case ENGINE:     (void)fprintf(file, "ENGINE"); break;
-  case INTERP:     (void)fprintf(file, "INTERP"); break;
   default:         (void)fprintf(file, "UNSET"); break;
   }
   if (this->base) {
@@ -151,7 +150,6 @@ SoNotList::SoNotList(void)
   this->firstnoderec = NULL;
   this->lastfield = NULL;
   this->lastengine = NULL;
-  this->lastinterp = NULL;
   // this is used in SoNode::notify() to stop a notification
   // when a node has already been notified.
   this->stamp = SoNode::getNextNodeId();
@@ -209,19 +207,6 @@ SoNotList::append(SoNotRec * const rec, SoField * const field)
 }
 
 /*!
-  Append \a rec notification source to the list, setting \a interpout
-  as the last VRML interpolator having been influenced by the
-  notification process.
-*/
-void
-SoNotList::append(SoNotRec * const rec, SoVRMLInterpOutput * const interpout)
-{
-  assert(interpout);
-  this->lastinterp = interpout;
-  this->append(rec);
-}
-
-/*!
   Append \a rec notification source to the list, setting \a engineout
   as the last engine output field having been influenced by the
   notification process.
@@ -246,7 +231,6 @@ SoNotList::setLastType(const SoNotRec::Type type)
   switch (type) {
   case SoNotRec::FIELD:
   case SoNotRec::ENGINE:
-  case SoNotRec::INTERP:
     this->firstnoderec = NULL;
   default:
     break;
@@ -287,16 +271,6 @@ SoField *
 SoNotList::getLastField(void) const
 {
   return this->lastfield;
-}
-
-/*!
-  Returns the last VRML interpolator output field touched by
-  notification.
-*/
-SoVRMLInterpOutput *
-SoNotList::getLastInterpOutput(void) const
-{
-  return this->lastinterp;
 }
 
 /*!

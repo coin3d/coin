@@ -30,6 +30,7 @@
 
 #include <Inventor/engines/SoEngineOutput.h>
 #include <Inventor/engines/SoEngine.h>
+#include <Inventor/engines/SoNodeEngine.h>
 #include <Inventor/engines/SoOutputData.h>
 #include <Inventor/fields/SoField.h>
 
@@ -97,9 +98,12 @@ SoType
 SoEngineOutput::getConnectionType(void) const
 {
   assert(this->getContainer() != NULL);
-  const SoEngineOutputData * outputs = this->getContainer()->getOutputData();
+  const SoEngineOutputData * outputs = 
+    this->isNodeEngineOutput() ? 
+    this->getContainer()->getOutputData() :
+    this->getNodeContainer()->getOutputData();
   assert(outputs);
-  int idx = outputs->getIndex(this->getContainer(), this);
+  int idx = outputs->getIndex(this->container, this);
   assert(idx >= 0 && "an engine should have at least one output");
   return outputs->getType(idx);
 }
@@ -143,15 +147,65 @@ SoEngineOutput::isEnabled(void) const
   return this->enabled;
 }
 
-/*!
-  Returns the engine containing this output.
+/*!  
+  Returns the engine containing this output. If the engine
+  containing this output is a NodeEngine, this method returns NULL.
 
-  \sa setContainer()
+  \sa setContainer(), getNodeContainer() 
 */
-SoEngine*
+SoEngine *
 SoEngineOutput::getContainer(void) const
 {
+  if (this->isNodeEngineOutput()) {
+#if COIN_DEBUG
+    SoDebugError::postWarning("SoEngineOutput::getContainer",
+                              "Container is not an Engine");
+#endif // COIN_DEBUG
+    return NULL;
+  }
   return this->container;
+}
+
+/*!  
+
+  Returns the node engine containing this output. If the engine
+  containing this output is not a NodeEgine, this method returns NULL.
+
+  This method was not part of the Open Inventor 2.1 API, and is an
+  extension specific to Coin.
+
+  \since 2001-10-19
+
+  \sa setNodeContainer(), getContainer() 
+*/
+
+SoNodeEngine * 
+SoEngineOutput::getNodeContainer(void) const
+{
+  if (!this->isNodeEngineOutput()) {
+#if COIN_DEBUG
+    SoDebugError::postWarning("SoEngineOutput::getContainer",
+                              "Container is not a NodeEngine");
+#endif // COIN_DEBUG
+    return NULL;
+  }
+  return (SoNodeEngine*) this->container;
+}
+
+/*
+  Returns \e TRUE if the container is a NodeEngine.
+
+  This method was not part of the Open Inventor 2.1 API, and is an
+  extension specific to Coin.
+
+  \since 2001-10-19
+
+  \sa getNodeContainer(), getContainer() 
+*/
+SbBool 
+SoEngineOutput::isNodeEngineOutput(void) const
+{
+  return this->container->getTypeId().isDerivedFrom(SoEngine::getClassTypeId());
 }
 
 /*!
@@ -163,6 +217,25 @@ void
 SoEngineOutput::setContainer(SoEngine * engine)
 {
   this->container = engine;
+}
+
+
+/*!
+  Sets the NodeEngine containing this output.
+
+  This method was not part of the Open Inventor 2.1 API, and is an
+  extension specific to Coin.
+
+  \since 2001-10-19
+
+  \sa getNodeContainer()
+*/
+
+void 
+SoEngineOutput::setNodeContainer(SoNodeEngine * nodeengine)
+{
+  // FIXME: need a union as member instead of container
+  this->container = (SoEngine*) nodeengine;
 }
 
 /*!
@@ -315,4 +388,19 @@ SoEngineOutput::touchSlaves(SoNotList * nl, SbBool donotify)
       else field->setDirty(TRUE);
     }
   }
+}
+
+/*!
+  Convenience method that returns a field container. This method can
+  be used both for NodeEngine and Engine outputs.
+
+  This method was not part of the Open Inventor 2.1 API, and is an
+  extension specific to Coin.
+
+  \since 2001-10-19
+*/
+SoFieldContainer * 
+SoEngineOutput::getFieldContainer(void)
+{
+  return (SoFieldContainer*) this->container;
 }

@@ -181,7 +181,6 @@ SoAuditorList::notify(SoNotList * l)
 
       case SoNotRec::FIELD:
       case SoNotRec::ENGINE:
-      case SoNotRec::INTERP:
         {
           // We used to check whether or not the fields was already
           // dirty before we transmitted the notification

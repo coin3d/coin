@@ -23,6 +23,8 @@
 #include <Inventor/lists/SbList.h>
 
 class SoEngine;
+class SoNodeEngine;
+class SoFieldContainer;
 class SoEngineOutput;
 class SbName;
 class SoInput;
@@ -33,22 +35,32 @@ class SoType;
 class COIN_DLL_API SoEngineOutputData {
 public:
   SoEngineOutputData();
-  SoEngineOutputData(const SoEngineOutputData *data);
+  SoEngineOutputData(const SoEngineOutputData * data);
   SoEngineOutputData(int approxnum);
   ~SoEngineOutputData();
 
-  void addOutput(const SoEngine *base, const char *name,
-                 const SoEngineOutput *output, SoType type);
+  void addOutput(const SoEngine * base, const char *name,
+                 const SoEngineOutput * output, SoType type);
+  void addOutput(const SoNodeEngine * base, const char *name,
+                 const SoEngineOutput * output, SoType type);
 
   int getNumOutputs(void) const;
   const SbName & getOutputName(int index) const;
-  SoEngineOutput * getOutput(const SoEngine *engine, int index) const;
-  int getIndex(const SoEngine *engine, const SoEngineOutput *output) const;
+  SoEngineOutput * getOutput(const SoEngine * engine, int index) const;
+  SoEngineOutput * getOutput(const SoNodeEngine * engine, int index) const;
+  int getIndex(const SoEngine * engine, const SoEngineOutput * output) const;
+  int getIndex(const SoNodeEngine * engine, const SoEngineOutput * output) const;
   const SoType & getType(int index) const;
-  SbBool readDescriptions(SoInput *in, SoEngine *engine) const;
-  void writeDescriptions(SoOutput *out, SoEngine *engine) const;
+  SbBool readDescriptions(SoInput *in, SoEngine * engine) const;
+  void writeDescriptions(SoOutput *out, SoEngine * engine) const;
 
 private:
+
+  void addOutputInternal(const SoFieldContainer * base, const char *name,
+                         const SoEngineOutput * output, SoType type);
+  SoEngineOutput * getOutputInternal(const SoFieldContainer * base, int index) const;
+  int getIndexInternal(const SoFieldContainer * base, const SoEngineOutput * output) const;
+
   SbList <SoOutputDataEntry*> outputlist;
 };
 

@@ -34,8 +34,7 @@ public:
     PARENT,
     SENSOR,
     FIELD,
-    ENGINE,
-    INTERP
+    ENGINE
   };
 
   SoNotRec(SoBase * const notifbase);
@@ -54,7 +53,6 @@ private:
 
 class SoEngineOutput;
 class SoField;
-class SoVRMLInterpOutput;
 
 class COIN_DLL_API SoNotList {
 public:
@@ -63,14 +61,12 @@ public:
 
   void append(SoNotRec * const rec);
   void append(SoNotRec * const rec, SoField * const field);
-  void append(SoNotRec * const rec, SoVRMLInterpOutput * const interpout);
   void append(SoNotRec * const rec, SoEngineOutput * const engineout);
   void setLastType(const SoNotRec::Type type);
   SoNotRec * getFirstRec(void) const;
   SoNotRec * getLastRec(void) const;
   SoNotRec * getFirstRecAtNode(void) const;
   SoField * getLastField(void) const;
-  SoVRMLInterpOutput * getLastInterpOutput(void) const;
   SoEngineOutput * getLastEngineOutput(void) const;
   uint32_t getTimeStamp(void) const;
 
@@ -82,7 +78,8 @@ private:
   SoNotRec * firstnoderec;
   SoField * lastfield;
   SoEngineOutput * lastengine;
-  SoVRMLInterpOutput * lastinterp;
+  // kept to be ABI-compatible
+  class SoVRMLInterpOutput * lastinterp;
   uint32_t stamp;
 };
 

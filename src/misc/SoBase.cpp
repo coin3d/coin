@@ -221,7 +221,6 @@ SoBase::destroy(void)
 
     case SoNotRec::FIELD:
     case SoNotRec::ENGINE:
-    case SoNotRec::INTERP:
     case SoNotRec::CONTAINER:
     case SoNotRec::PARENT:
       // FIXME: should any of these get special treatment? 20000402 mortene.

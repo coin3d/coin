@@ -28,7 +28,7 @@ endif
 # **************************************************************************
 
 SUBDIRS = \
-	VRMLnodes actions base bundles caches details draggers elements \
+	actions base bundles caches details draggers elements \
 	engines errors events fields manips misc lists nodekits nodes \
 	projectors sensors $(VRML97DIR) $(SUPERGLUDIR) .
 
@@ -44,7 +44,7 @@ if HACKING_DYNAMIC_MODULES
 libCoin@SUFFIX@_la_LIBADD = 
 else
 libCoin@SUFFIX@_la_LIBADD = \
-	VRMLnodes/libVRMLnodes.la actions/libactions.la base/libbase.la \
+	actions/libactions.la base/libbase.la \
 	bundles/libbundles.la caches/libcaches.la elements/libelements.la \
 	engines/libengines.la errors/liberrors.la events/libevents.la \
 	fields/libfields.la misc/libmisc.la lists/liblists.la \
@@ -57,7 +57,7 @@ libCoin@SUFFIX@_la_SOURCES = \
 	tidbits.c tidbits.h
 
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
-	VRMLnodes/VRMLnodes.lst actions/actions.lst base/base.lst \
+	actions/actions.lst base/base.lst \
 	bundles/bundles.lst caches/caches.lst elements/elements.lst \
 	engines/engines.lst errors/errors.lst events/events.lst \
 	fields/fields.lst misc/misc.lst lists/lists.lst \
@@ -190,7 +190,6 @@ uninstall-local:
 	done; \
 	baseincdir="$(DESTDIR)$(includedir)/Inventor"; \
 	for dir in \
-	  "$$baseincdir/VRMLnodes" \
 	  "$$baseincdir/actions" \
 	  "$$baseincdir/base" \
 	  "$$baseincdir/bundles" \

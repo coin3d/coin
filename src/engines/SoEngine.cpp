@@ -43,6 +43,7 @@
 */
 
 #include <Inventor/engines/SoEngines.h>
+#include <Inventor/engines/SoNodeEngine.h>
 #include <Inventor/engines/SoOutputData.h>
 #include <Inventor/lists/SoEngineList.h>
 #include <Inventor/lists/SoEngineOutputList.h>
@@ -137,6 +138,7 @@ SoEngine::initClass(void)
 void
 SoEngine::initClasses(void)
 {
+  SoNodeEngine::initClass();
   SoBoolOperation::initClass();
   SoCalculator::initClass();
   SoComposeVec2f::initClass();

@@ -30,6 +30,7 @@ RegularSources = \
 	SoInterpolateVec2f.cpp \
 	SoInterpolateVec3f.cpp \
 	SoInterpolateVec4f.cpp \
+	SoNodeEngine.cpp \
 	SoOnOff.cpp \
 	SoOneShot.cpp \
         SoOutputData.cpp \
@@ -82,6 +83,9 @@ PublicHeaders = \
 PrivateHeaders = \
 	../../include/Inventor/engines/SoSubEngineP.h \
 	../../include/Inventor/engines/SoConvertAll.h \
+	../../include/Inventor/engines/SoNodeEngine.h \
+	../../include/Inventor/engines/SoSubNodeEngine.h \
+	../../include/Inventor/engines/SoSubNodeEngineP.h \
 	evaluator.h \
 	lex.so_eval.c
 

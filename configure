@@ -15660,7 +15660,7 @@ fi
 
 if test x"$enable_hacking" = x"yes"; then
   for dir in \
-    base VRMLnodes actions bundles caches details draggers elements engines \
+    base actions bundles caches details draggers elements engines \
     errors events fields manips misc lists nodekits nodes projectors sensors; \
   do
     HACKING_LIBDIRS="$HACKING_LIBDIRS -L${coin_build_dir}/src/$dir/.libs"
@@ -16021,7 +16021,7 @@ fi
 # ``configure'' won't work for those without the vrml97 extension
 # checked out.
 #        src/extensions/vrml97/src/Makefile
-ac_config_files="$ac_config_files Makefile include/Makefile include/Inventor/Makefile include/Inventor/lock/Makefile include/Inventor/system/Makefile data/Makefile data/draggerDefaults/Makefile man/Makefile man/man1/Makefile man/man3/Makefile html/Makefile src/Makefile src/base/Makefile src/VRMLnodes/Makefile src/actions/Makefile src/bundles/Makefile src/caches/Makefile src/details/Makefile src/draggers/Makefile src/elements/Makefile src/engines/Makefile src/errors/Makefile src/events/Makefile src/fields/Makefile src/manips/Makefile src/misc/Makefile src/lists/Makefile src/nodekits/Makefile src/nodes/Makefile src/projectors/Makefile src/sensors/Makefile docs/coin.doxygen"
+ac_config_files="$ac_config_files Makefile include/Makefile include/Inventor/Makefile include/Inventor/lock/Makefile include/Inventor/system/Makefile data/Makefile data/draggerDefaults/Makefile man/Makefile man/man1/Makefile man/man3/Makefile html/Makefile src/Makefile src/base/Makefile src/actions/Makefile src/bundles/Makefile src/caches/Makefile src/details/Makefile src/draggers/Makefile src/elements/Makefile src/engines/Makefile src/errors/Makefile src/events/Makefile src/fields/Makefile src/manips/Makefile src/misc/Makefile src/lists/Makefile src/nodekits/Makefile src/nodes/Makefile src/projectors/Makefile src/sensors/Makefile docs/coin.doxygen"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -16355,7 +16355,6 @@ do
   "html/Makefile" ) CONFIG_FILES="$CONFIG_FILES html/Makefile" ;;
   "src/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/Makefile" ;;
   "src/base/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/base/Makefile" ;;
-  "src/VRMLnodes/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/VRMLnodes/Makefile" ;;
   "src/actions/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/actions/Makefile" ;;
   "src/bundles/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/bundles/Makefile" ;;
   "src/caches/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/caches/Makefile" ;;
@@ -16376,7 +16375,7 @@ do
   "docs/coin.doxygen" ) CONFIG_FILES="$CONFIG_FILES docs/coin.doxygen" ;;
   "default-1" ) CONFIG_COMMANDS="$CONFIG_COMMANDS default-1" ;;
   "include/config.h" ) CONFIG_HEADERS="$CONFIG_HEADERS include/config.h" ;;
-  *) { { echo "$as_me:16379: error: invalid argument: $ac_config_target" >&5
+  *) { { echo "$as_me:16378: error: invalid argument: $ac_config_target" >&5
 echo "$as_me: error: invalid argument: $ac_config_target" >&2;}
    { (exit 1); exit 1; }; };;
   esac
@@ -16685,7 +16684,7 @@ done; }
   esac
 
   if test x"$ac_file" != x-; then
-    { echo "$as_me:16688: creating $ac_file" >&5
+    { echo "$as_me:16687: creating $ac_file" >&5
 echo "$as_me: creating $ac_file" >&6;}
     rm -f "$ac_file"
   fi
@@ -16703,7 +16702,7 @@ echo "$as_me: creating $ac_file" >&6;}
       -) echo $tmp/stdin ;;
       [\\/$]*)
          # Absolute (can't be DOS-style, as IFS=:)
-         test -f "$f" || { { echo "$as_me:16706: error: cannot find input file: $f" >&5
+         test -f "$f" || { { echo "$as_me:16705: error: cannot find input file: $f" >&5
 echo "$as_me: error: cannot find input file: $f" >&2;}
    { (exit 1); exit 1; }; }
          echo $f;;
@@ -16716,7 +16715,7 @@ echo "$as_me: error: cannot find input file: $f" >&2;}
            echo $srcdir/$f
          else
            # /dev/null tree
-           { { echo "$as_me:16719: error: cannot find input file: $f" >&5
+           { { echo "$as_me:16718: error: cannot find input file: $f" >&5
 echo "$as_me: error: cannot find input file: $f" >&2;}
    { (exit 1); exit 1; }; }
          fi;;
@@ -16777,7 +16776,7 @@ for ac_file in : $CONFIG_HEADERS; do test "x$ac_file" = x: && continue
   * )   ac_file_in=$ac_file.in ;;
   esac
 
-  test x"$ac_file" != x- && { echo "$as_me:16780: creating $ac_file" >&5
+  test x"$ac_file" != x- && { echo "$as_me:16779: creating $ac_file" >&5
 echo "$as_me: creating $ac_file" >&6;}
 
   # First look for the input files in the build tree, otherwise in the
@@ -16788,7 +16787,7 @@ echo "$as_me: creating $ac_file" >&6;}
       -) echo $tmp/stdin ;;
       [\\/$]*)
          # Absolute (can't be DOS-style, as IFS=:)
-         test -f "$f" || { { echo "$as_me:16791: error: cannot find input file: $f" >&5
+         test -f "$f" || { { echo "$as_me:16790: error: cannot find input file: $f" >&5
 echo "$as_me: error: cannot find input file: $f" >&2;}
    { (exit 1); exit 1; }; }
          echo $f;;
@@ -16801,7 +16800,7 @@ echo "$as_me: error: cannot find input file: $f" >&2;}
            echo $srcdir/$f
          else
            # /dev/null tree
-           { { echo "$as_me:16804: error: cannot find input file: $f" >&5
+           { { echo "$as_me:16803: error: cannot find input file: $f" >&5
 echo "$as_me: error: cannot find input file: $f" >&2;}
    { (exit 1); exit 1; }; }
          fi;;
@@ -16918,7 +16917,7 @@ cat >>$CONFIG_STATUS <<\EOF
   rm -f $tmp/in
   if test x"$ac_file" != x-; then
     if cmp -s $ac_file $tmp/config.h 2>/dev/null; then
-      { echo "$as_me:16921: $ac_file is unchanged" >&5
+      { echo "$as_me:16920: $ac_file is unchanged" >&5
 echo "$as_me: $ac_file is unchanged" >&6;}
     else
       ac_dir=`$as_expr X"$ac_file" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
@@ -17080,7 +17079,7 @@ if test "$no_recursion" != yes; then
     # parts of a large source tree are present.
     test -d $srcdir/$ac_subdir || continue
 
-    { echo "$as_me:17083: configuring in $ac_subdir" >&5
+    { echo "$as_me:17082: configuring in $ac_subdir" >&5
 echo "$as_me: configuring in $ac_subdir" >&6;}
     case $srcdir in
     .) ;;
@@ -17102,7 +17101,7 @@ done; }
 
        if test -d ./$ac_subdir; then :;
        else
-         { { echo "$as_me:17105: error: cannot create \`pwd\`/$ac_subdir" >&5
+         { { echo "$as_me:17104: error: cannot create \`pwd\`/$ac_subdir" >&5
 echo "$as_me: error: cannot create \`pwd\`/$ac_subdir" >&2;}
    { (exit 1); exit 1; }; }
        fi
@@ -17133,7 +17132,7 @@ echo "$as_me: error: cannot create \`pwd\`/$ac_subdir" >&2;}
     elif test -f $ac_sub_srcdir/configure.in; then
       ac_sub_configure=$ac_configure
     else
-      { echo "$as_me:17136: WARNING: no configuration information is in $ac_subdir" >&5
+      { echo "$as_me:17135: WARNING: no configuration information is in $ac_subdir" >&5
 echo "$as_me: WARNING: no configuration information is in $ac_subdir" >&2;}
       ac_sub_configure=
     fi
@@ -17147,12 +17146,12 @@ echo "$as_me: WARNING: no configuration information is in $ac_subdir" >&2;}
         ac_sub_cache_file=$ac_dots$cache_file ;;
       esac
 
-      { echo "$as_me:17150: running $ac_sub_configure $ac_sub_configure_args --cache-file=$ac_sub_cache_file --srcdir=$ac_sub_srcdir" >&5
+      { echo "$as_me:17149: running $ac_sub_configure $ac_sub_configure_args --cache-file=$ac_sub_cache_file --srcdir=$ac_sub_srcdir" >&5
 echo "$as_me: running $ac_sub_configure $ac_sub_configure_args --cache-file=$ac_sub_cache_file --srcdir=$ac_sub_srcdir" >&6;}
       # The eval makes quoting arguments work.
       eval $ac_sub_configure $ac_sub_configure_args \
            --cache-file=$ac_sub_cache_file --srcdir=$ac_sub_srcdir ||
-        { { echo "$as_me:17155: error: $ac_sub_configure failed for $ac_subdir" >&5
+        { { echo "$as_me:17154: error: $ac_sub_configure failed for $ac_subdir" >&5
 echo "$as_me: error: $ac_sub_configure failed for $ac_subdir" >&2;}
    { (exit 1); exit 1; }; }
     fi
