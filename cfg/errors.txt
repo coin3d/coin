@@ -219,4 +219,9 @@ Could not build against the SimVoleon library. If you are sure
 SimVoleon is properly installed on your system, see the file
 config.log to find out what went wrong.
 
+!soqt-unavailable
+Could not build against the SoQt library. If you are sure
+SoQt is properly installed on your system, see the file
+config.log to find out what went wrong.
+
 !end
