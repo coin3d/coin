@@ -1691,8 +1691,18 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
   if (!glrender) { // supply the sampling matrices
     SbMatrix glmodelmatrix = SoViewingMatrixElement::get(state);
     glmodelmatrix.multLeft(SoModelMatrixElement::get(state));
-    SbVec2s origin = SoViewportRegionElement::get(state).getViewportOriginPixels();
-    SbVec2s size = SoViewportRegionElement::get(state).getViewportSizePixels();
+    SbVec2s size, origin;
+    // not all actions enables SoViewportRegion
+    // (e.g. SoGetPrimitiveCount).  Just set viewport to a default
+    // viewport if the element is not enabled.
+    if (state->isElementEnabled(SoViewportRegionElement::getClassStackIndex())) {
+      origin = SoViewportRegionElement::get(state).getViewportOriginPixels();
+      size = SoViewportRegionElement::get(state).getViewportSizePixels();
+    }
+    else {
+      origin.setValue(0, 0);
+      size.setValue(640, 480);
+    }
     GLint viewport[4];
     viewport[0] = origin[0];
     viewport[1] = origin[1];
