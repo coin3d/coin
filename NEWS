@@ -11,6 +11,8 @@ New in Coin 1.0 final beta (2001-07-22):
   - SoPolygonOffset node
   - SoImage node
   - SoExtSelection node
+  - SoMarkerSet node
+  - SoClipPlaneManip manipulator
   - SoMouseButtonEvent::BUTTON4, BUTTON5 for wheelmouse events
   - SoKeyboardEvent::DELETE is portable even for MS Windows
   - SoAction::IN_PATH is portable even for HPUX
