@@ -447,6 +447,44 @@ typedef void (APIENTRY * COIN_PFNGLGETVERTEXATTRIBIVARBPROC)(GLuint index, GLenu
 typedef void (APIENTRY * COIN_PFNGLGETVERTEXATTRIBPOINTERVARBPROC)(GLuint index, GLenum pname, 
                                                                    GLvoid **pointer);
 
+/* Typedefs for shader objects -- GL_ARB_shader_objects */
+
+/* FIXME: according to the GL_ARB_shader_objects doc, these types must
+   be at least 8 bits wide and 32 bits wide, respectively. Apart from
+   that, there does not seem to be any other limitations on them, so
+   these types may not match the actual types used on the platform
+   (these were taken from NVIDIA's glext.h for their 32-bit Linux
+   drivers). How should this be properly handled? Is there any way at
+   all one could possibly pick up these at the correct size in a
+   dynamic manner? 20050124 mortene. */
+typedef char COIN_GLchar;
+typedef unsigned long COIN_GLhandle;
+
+typedef int (APIENTRY * COIN_PFNGLGETUNIFORMLOCATIONARBPROC)(COIN_GLhandle,
+                                                             const COIN_GLchar *);
+typedef void (APIENTRY * COIN_PFNGLGETACTIVEUNIFORMARBPROC)(COIN_GLhandle,
+                                                            GLuint index,
+                                                            GLsizei maxLength,
+                                                            GLsizei * length,
+                                                            GLint * size,
+                                                            GLenum * type,
+                                                            COIN_GLchar * name);
+typedef void (APIENTRY * COIN_PFNGLUNIFORM1FARBPROC)(GLint location, GLfloat v0);
+typedef void (APIENTRY * COIN_PFNGLUNIFORM2FARBPROC)(GLint location, GLfloat v0, GLfloat v1);
+typedef void (APIENTRY * COIN_PFNGLUNIFORM3FARBPROC)(GLint location, GLfloat v0, GLfloat v1, GLfloat v2);
+typedef void (APIENTRY * COIN_PFNGLUNIFORM4FARBPROC)(GLint location, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3);
+typedef COIN_GLhandle (APIENTRY * COIN_PFNGLCREATESHADEROBJECTARBPROC)(GLenum);
+typedef void (APIENTRY * COIN_PFNGLSHADERSOURCEARBPROC)(COIN_GLhandle, GLsizei, const COIN_GLchar **, const GLint *);
+typedef void (APIENTRY * COIN_PFNGLCOMPILESHADERARBPROC)(COIN_GLhandle);
+typedef void (APIENTRY * COIN_PFNGLGETOBJECTPARAMETERIVARBPROC)(COIN_GLhandle, GLenum, GLint *);
+typedef void (APIENTRY * COIN_PFNGLDELETEOBJECTARBPROC)(COIN_GLhandle);
+typedef void (APIENTRY * COIN_PFNGLATTACHOBJECTARBPROC)(COIN_GLhandle, COIN_GLhandle);
+typedef void (APIENTRY * COIN_PFNGLDETACHOBJECTARBPROC)(COIN_GLhandle, COIN_GLhandle);
+typedef void (APIENTRY * COIN_PFNGLGETINFOLOGARBPROC)(COIN_GLhandle, GLsizei, GLsizei *, COIN_GLchar *);
+typedef void (APIENTRY * COIN_PFNGLLINKPROGRAMARBPROC)(COIN_GLhandle);
+typedef void (APIENTRY * COIN_PFNGLUSEPROGRAMOBJECTARBPROC)(COIN_GLhandle);
+typedef COIN_GLhandle (APIENTRY * COIN_PFNGLCREATEPROGRAMOBJECTARBPROC)(void);
+
 
 /* Typedefs for GLX functions. */
 typedef void *(APIENTRY * COIN_PFNGLXGETCURRENTDISPLAYPROC)(void);
@@ -638,7 +676,26 @@ struct cc_glglue {
   COIN_PFNGLGETVERTEXATTRIBFVARBPROC glGetVertexAttribfvARB;
   COIN_PFNGLGETVERTEXATTRIBIVARBPROC glGetVertexAttribivARB;
   COIN_PFNGLGETVERTEXATTRIBPOINTERVARBPROC glGetVertexAttribPointervARB;
-  
+
+  /* shader objects */
+  COIN_PFNGLGETUNIFORMLOCATIONARBPROC glGetUniformLocationARB;
+  COIN_PFNGLGETACTIVEUNIFORMARBPROC glGetActiveUniformARB;
+  COIN_PFNGLUNIFORM1FARBPROC glUniform1fARB;
+  COIN_PFNGLUNIFORM2FARBPROC glUniform2fARB;
+  COIN_PFNGLUNIFORM3FARBPROC glUniform3fARB;
+  COIN_PFNGLUNIFORM4FARBPROC glUniform4fARB;
+  COIN_PFNGLCREATESHADEROBJECTARBPROC glCreateShaderObjectARB;
+  COIN_PFNGLSHADERSOURCEARBPROC glShaderSourceARB;
+  COIN_PFNGLCOMPILESHADERARBPROC glCompileShaderARB;
+  COIN_PFNGLGETOBJECTPARAMETERIVARBPROC glGetObjectParameterivARB;
+  COIN_PFNGLDELETEOBJECTARBPROC glDeleteObjectARB;
+  COIN_PFNGLATTACHOBJECTARBPROC glAttachObjectARB;
+  COIN_PFNGLDETACHOBJECTARBPROC glDetachObjectARB;
+  COIN_PFNGLGETINFOLOGARBPROC glGetInfoLogARB;
+  COIN_PFNGLLINKPROGRAMARBPROC glLinkProgramARB;
+  COIN_PFNGLUSEPROGRAMOBJECTARBPROC glUseProgramObjectARB;
+  COIN_PFNGLCREATEPROGRAMOBJECTARBPROC glCreateProgramObjectARB;
+
   const char * versionstr;
   const char * vendorstr;
   SbBool vendor_is_SGI;
