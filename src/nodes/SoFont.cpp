@@ -112,7 +112,6 @@
 class SoFontP {
  public:
   SoFont * owner;
-  SbString lastreqname;
   SbString lastfontname;
   float lastsize;
   SbBool firsttime;
@@ -204,7 +203,6 @@ SoFont::initClass(void)
 void
 SoFont::doAction(SoAction * action)
 {
-  // __asm { int 3};
   SoState * state = action->getState();
   uint32_t flags = SoOverrideElement::getFlags(state);
   
@@ -213,9 +211,9 @@ SoFont::doAction(SoAction * action)
   const float this_size = this->size.getValue();
   if (pimpl->firsttime || 
       pimpl->lastsize != this_size || 
-      strcmp(pimpl->lastreqname.getString(), this_name)) {
-    pimpl->lastfontname = SoFontLib::createFont(this->name.getValue(), SbString(""), SbVec2s((short)this_size, (short)this_size));
-    pimpl->lastreqname = this->name.getValue();
+      strcmp(pimpl->lastfontname.getString(), this_name)) {
+    pimpl->lastfontname = this->name.getValue();
+    SoFontLib::createFont(this->name.getValue(), SbString(""), SbVec2s((short)this_size, (short)this_size));
     pimpl->lastsize = this_size;
     pimpl->firsttime = FALSE;
   }
@@ -223,7 +221,7 @@ SoFont::doAction(SoAction * action)
 #define TEST_OVERRIDE(bit) ((SoOverrideElement::bit & flags) != 0)
   
   if (!name.isIgnored() && !TEST_OVERRIDE(FONT_NAME)) {
-    SoFontNameElement::set(state, this, pimpl->lastfontname);
+    SoFontNameElement::set(state, this, this->name.getValue());
     if (this->isOverride()) {
       SoOverrideElement::setFontNameOverride(state, this, TRUE);
     }
