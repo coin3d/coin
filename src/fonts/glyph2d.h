@@ -6,10 +6,11 @@
 extern "C" {
 #endif
 
-#include <Inventor/C/base/list.h>
 #include "fontspec.h"
  
   typedef struct cc_glyph2d cc_glyph2d;
+
+  void cc_glyph2d_initialize();
 
   cc_glyph2d * cc_glyph2d_getglyph(uint32_t character, const cc_font_specification * spec, float angle);
   

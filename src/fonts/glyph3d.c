@@ -13,16 +13,14 @@
 #include <Inventor/C/base/hash.h>
 #include <Inventor/C/base/hashp.h>
 #include <Inventor/C/base/string.h>
+#include <Inventor/C/threads/threadsutilp.h>
 
 #include <Inventor/C/glue/freetype.h>
 
 #include "fontlib_wrapper.h"
 #include "freetype.h"
 #include "glyph3d.h"
-
-#if !defined(COIN_NO_DEFAULT_3DFONT)
 #include "../misc/defaultfonts.h"
-#endif // COIN_NO_DEFAULT_3DFONT
 
 static SbBool specmatch(const cc_font_specification * spec1, const cc_font_specification * spec2);
 static void calcboundingbox(cc_glyph3d * g);
@@ -39,9 +37,56 @@ struct cc_glyph3d {
 static cc_hash * fonthash = NULL;
 static int spaceglyphindices[] = { -1, -1 };
 static float spaceglyphvertices[] = { 0, 0 };
+static SbBool glyph3d_initialized = FALSE;
 
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
+
+/*
+  Mutex lock for the static ang global font hash
+*/
+static void * fonthash_lock = NULL;
+
+/* Debug: enable this in case code hangs waiting for a lock.  A hang
+   will typically happen for one out of two reasons:
+
+   1) The mutex is locked but not released. To check whether or not
+      this is the cause, look for multiple exit points (return
+      statements) in a function.
+
+   2) A cc_flw_*() function locks the global mutex, then calls another
+      cc_flw_*() function, which when attempting to lock the same
+      mutex will simply hang.
+
+  -- mortene.
+*/
+#if 0
+#define GLYPH3D_MUTEX_LOCK(m) \
+  do { \
+    (void)fprintf(stderr, "glyph3d mutex lock in %s\n", __func__); \
+    CC_MUTEX_LOCK(m); \
+  } while (0)
+#define GLYPH3D_MUTEX_UNLOCK(m) \
+  do { \
+    (void)fprintf(stderr, "glyph3d mutex unlock in %s\n", __func__); \
+    CC_MUTEX_UNLOCK(m); \
+  } while (0)
+#else
+#define GLYPH3D_MUTEX_LOCK(m) CC_MUTEX_LOCK(m)
+#define GLYPH3D_MUTEX_UNLOCK(m) CC_MUTEX_UNLOCK(m)
+#endif
+
+void
+cc_glyph3d_initialize()
+{
+  if (!glyph3d_initialized) {
+    CC_MUTEX_CONSTRUCT(glyph3d_fonthash_lock);
+    GLYPH3D_MUTEX_LOCK(fonthash_lock);
+    fonthash = cc_hash_construct(15, 0.75);
+    GLYPH3D_MUTEX_UNLOCK(glyph3d_fonthash_lock);
+    glyph3d_initialized = TRUE;
+  }
+}
 
 cc_glyph3d * 
 cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
@@ -57,13 +102,13 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
 
   assert(spec);
  
-  if (fonthash == NULL)
-    fonthash = cc_hash_construct(15, 0.75);
 
   /* Has the glyph been created before? */
+  GLYPH3D_MUTEX_LOCK(glyph3d_fonthash_lock);
   if (cc_hash_get(fonthash, (unsigned long) character, &val)) {    
     glyph = (cc_glyph3d *) val;
     if (specmatch(spec, glyph->fontspec)) {
+      GLYPH3D_MUTEX_UNLOCK(glyph3d_fonthash_lock);
       return glyph;    
     }
   } 
@@ -88,7 +133,6 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
      should be used.  -mortene. */
   glyphidx = cc_flw_get_glyph(fontidx, character);
   assert(glyphidx >= 0);
-
   
   glyph->glyphidx = glyphidx;
   glyph->fontidx = fontidx;
@@ -105,6 +149,12 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
     glyph->vectorglyph = (struct cc_flw_vector_glyph *) malloc(sizeof(struct cc_flw_vector_glyph));
 
     if (character <= 32 || character >= 127) {
+      
+      /*
+      // FIXME: Charachers other than space, should be replaced with
+      // squares. (20030910 handegar)
+      */
+
       /* treat all these characters as spaces*/
       glyph->vectorglyph->vertices = (float *) spaceglyphvertices;
       glyph->vectorglyph->faceindices = (int *) spaceglyphindices;
@@ -124,6 +174,7 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
 
   cc_hash_put(fonthash, (unsigned long) character, glyph);
 
+  GLYPH3D_MUTEX_UNLOCK(glyph3d_fonthash_lock);
   return glyph;
 }
 

@@ -10,6 +10,7 @@
 #include <Inventor/C/base/hash.h>
 #include <Inventor/C/base/hashp.h>
 #include <Inventor/C/base/string.h>
+#include <Inventor/C/threads/threadsutilp.h>
 
 #include "fontlib_wrapper.h"
 #include "freetype.h"
@@ -32,6 +33,56 @@ struct cc_glyph2d {
 };
 
 static cc_hash * fonthash = NULL;
+static SbBool glyph2d_initialized = FALSE;
+
+/*
+  Mutex lock for the static ang global font hash
+*/
+static void * glyph2d_fonthash_lock = NULL;
+
+/* Debug: enable this in case code hangs waiting for a lock.  A hang
+   will typically happen for one out of two reasons:
+
+   1) The mutex is locked but not released. To check whether or not
+      this is the cause, look for multiple exit points (return
+      statements) in a function.
+
+   2) A cc_flw_*() function locks the global mutex, then calls another
+      cc_flw_*() function, which when attempting to lock the same
+      mutex will simply hang.
+
+  -- mortene.
+*/
+#if 0
+#define GLYPH2D_MUTEX_LOCK(m) \
+  do { \
+    (void)fprintf(stderr, "glyph2d mutex lock in %s\n", __func__); \
+    CC_MUTEX_LOCK(m); \
+  } while (0)
+#define GLYPH2D_MUTEX_UNLOCK(m) \
+  do { \
+    (void)fprintf(stderr, "glyph2d mutex unlock in %s\n", __func__); \
+    CC_MUTEX_UNLOCK(m); \
+  } while (0)
+#else
+#define GLYPH2D_MUTEX_LOCK(m) CC_MUTEX_LOCK(m)
+#define GLYPH2D_MUTEX_UNLOCK(m) CC_MUTEX_UNLOCK(m)
+#endif
+
+void
+cc_glyph2d_initialize()
+{
+  if (!glyph2d_initialized) {
+    CC_MUTEX_CONSTRUCT(glyph2d_fonthash_lock);
+    GLYPH2D_MUTEX_LOCK(glyph2d_fonthash_lock);
+    fonthash = cc_hash_construct(15, 0.75);
+    GLYPH2D_MUTEX_UNLOCK(glyph2d_fonthash_lock);
+    glyph2d_initialized = TRUE;
+  }
+}
+
+
+
 
 cc_glyph2d * 
 cc_glyph2d_getglyph(uint32_t character, const cc_font_specification * spec, float angle)
@@ -47,15 +98,17 @@ cc_glyph2d_getglyph(uint32_t character, const cc_font_specification * spec, floa
 
   assert(spec);
  
-  if (fonthash == NULL)
-    fonthash = cc_hash_construct(15, 0.75);
+
+  GLYPH2D_MUTEX_LOCK(glyph2d_fonthash_lock);
 
   /* Has the glyph been created before? */
   if (cc_hash_get(fonthash, (unsigned long) character, &val)) {    
     glyph = (cc_glyph2d *) val;
     if (angle == glyph->angle) {
-      if (specmatch(spec, glyph->fontspec)) 
-      return glyph;
+      if (specmatch(spec, glyph->fontspec)) {
+        GLYPH2D_MUTEX_UNLOCK(glyph2d_fonthash_lock);         
+        return glyph;
+      }
     }
   } 
   
@@ -101,6 +154,7 @@ cc_glyph2d_getglyph(uint32_t character, const cc_font_specification * spec, floa
   /* Insert the new glyph into the hash-table using 'character' as key */
   cc_hash_put(fonthash, (unsigned long) character, glyph);
   
+  GLYPH2D_MUTEX_LOCK(glyph2d_fonthash_lock);
   return glyph;
 
 }
