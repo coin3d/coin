@@ -21,10 +21,9 @@
 #define COIN_SOTYPELIST_H
 
 #include <Inventor/lists/SbList.h>
+#include <Inventor/SoType.h>
 
-class SoType;
-
-class SoTypeList : public SbList <SoType> {
+class SoTypeList : public SbList<SoType> {
 };
 
 #endif // !COIN_SOTYPELIST_H

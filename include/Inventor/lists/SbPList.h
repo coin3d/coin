@@ -24,10 +24,8 @@
 // _not_ checking on and setting the same define-string as the other
 // SbPList.h file in the include/Inventor/ directory.
 
-#include <Inventor/SbBasic.h> // TRUE / FALSE / SbMax()
-
-#include <assert.h>
 #include <stdio.h>
+
 
 class SbPList {
 public:

@@ -11,6 +11,7 @@
 # ID
 # ==
 # HIERARCHY
+# ID  SbList
 # ID  SbPList
 #         SbVec3fList 
 #         SoAuditorList 

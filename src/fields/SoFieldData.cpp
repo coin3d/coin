@@ -337,8 +337,8 @@ SoFieldData::getEnumData(const char * enumname, int & num,
       num = e->names.getLength();
       if (num) {
         assert(e->names.getLength() == e->values.getLength());
-        names = e->names.constArrayPointer();
-        values = e->values.constArrayPointer();
+        names = e->names;
+        values = e->values;
       }
       return;
     }

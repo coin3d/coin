@@ -98,7 +98,7 @@ SoEnabledElementsList::merge(const SoEnabledElementsList & list)
   SoType bad = SoType::badType();
   const int num = list.elements.getLength();
   for (int i = 0; i < num; i++) {
-    if (list.elements.get(i) != bad) this->enable(list.elements.get(i), i);
+    if (list.elements[i] != bad) this->enable(list.elements[i], i);
   }
 }
 

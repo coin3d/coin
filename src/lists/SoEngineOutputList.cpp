@@ -18,74 +18,66 @@
 \**************************************************************************/
 
 /*!
-  \class SoEngineOutputList Inventor/lists/SoEngineOutputList.h
-  \brief The SoEngineOutputList class is a container class for lists of
-  SoEngineOutput objects.
+  \class SoEngineOutputList SoEngineOutputList.h Inventor/lists/SoEngineOutputList.h
+  \brief The SoEngineOutputList class is a container for lists of SoEngineOutput objects.
   \ingroup lists
 */
 
 #include <Inventor/lists/SoEngineOutputList.h>
 
 /*!
-  A constructor (default).
+  Default Constructor, initializes an empty list.
 */
-
-SoEngineOutputList::SoEngineOutputList()
-  :SbPList()
+SoEngineOutputList::SoEngineOutputList(void)
+  : inherited()
 {
 }
 
 /*!
-  A constructor which takes a hint for the list size.
+  Constructor which takes a hint about the list size for effective
+  allocation of resources.
 */
-
 SoEngineOutputList::SoEngineOutputList(const int size)
-  : SbPList(size)
+  : inherited(size)
 {
 }
 
 /*!
   Copy constructor.
 */
-
 SoEngineOutputList::SoEngineOutputList(const SoEngineOutputList & l)
-  : SbPList(l)
+  : inherited(l)
 {
 }
 
 /*!
-  The destructor.
+  Destructor, free resources.
 */
-
 SoEngineOutputList::~SoEngineOutputList(void)
 {
 }
 
 /*!
-  Add \a ptr at the end of the list.
+  Add \a ptr to SoEngineOutput at the end of the list.
 */
-
 void
 SoEngineOutputList::append(SoEngineOutput * const ptr)
 {
-  SbPList::append((SoEngineOutput *)ptr);
+  inherited::append((SoEngineOutput *)ptr);
 }
 
 /*!
-  Insert \a ptr into the list at index \a addBefore.
+  Insert \a ptr into the list at index \a addbefore.
 */
-
 void
-SoEngineOutputList::insert(SoEngineOutput * const ptr, const int addBefore)
+SoEngineOutputList::insert(SoEngineOutput * const ptr, const int addbefore)
 {
-  SbPList::insert((SoEngineOutput *)ptr, addBefore);
+  inherited::insert((SoEngineOutput *)ptr, addbefore);
 }
 
 /*!
   Returns list element at index \a i.
 */
-
-//$ EXPORT INLINE
 SoEngineOutput *
 SoEngineOutputList::operator [](const int i) const
 {
@@ -93,10 +85,10 @@ SoEngineOutputList::operator [](const int i) const
 }
 
 /*!
-  Replace list element at index \a with \a ptr.
+  Replace list element at index \a i with \a ptr.
 */
 void
 SoEngineOutputList::set(const int i, SoEngineOutput * const ptr)
 {
-  SbPList::set(i, (SoEngineOutput *)ptr);
+  inherited::set(i, (SoEngineOutput *)ptr);
 }

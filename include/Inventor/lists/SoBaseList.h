@@ -22,7 +22,9 @@
 
 class SoBase;
 
+#include <Inventor/SbBasic.h>
 #include <Inventor/lists/SbPList.h>
+
 
 class SoBaseList : public SbPList {
 public:

@@ -747,7 +747,7 @@ SoGLRenderAction::doPathSort()
 {
   // need to cast to SbPList to avoid ref/unref problems
   SbPList *plist = (SbPList*) &this->transpObjPaths;
-  float *darray = this->transpObjDistances.arrayPointer();
+  float * darray = this->transpObjDistances;
 
   int i, j, distance, n = this->transpObjDistances.getLength();
   void *ptmp;

@@ -35,8 +35,8 @@
 #include <Inventor/lists/SbPList.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#include <iostream.h> // For print() functionality.
 #endif // COIN_DEBUG
+#include <assert.h>
 
 /*!
   \var SbPList::itemBuffer
@@ -557,4 +557,3 @@ SbPList::makeDefaultRoom(int newSize) const
     thisobj->itemBuffer[i]=thisobj->defaultItem;
   thisobj->numItems=newSize;
 }
-

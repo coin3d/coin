@@ -19,6 +19,7 @@
 
 #include <Inventor/SbDict.h>
 #include <Inventor/lists/SbPList.h>
+#include <assert.h>
 
 /*!
   \class SbDict SbDict.h Inventor/SbDict.h
@@ -137,7 +138,7 @@ SbDict::clear(void)
 
   \e If \a key does not exist in the dictionary, a new entry
   is created and \c TRUE is returned. Otherwise, the generic user
-  data is changed to \a value, and \e FALSE is returned.
+  data is changed to \a value, and \c FALSE is returned.
 */
 SbBool
 SbDict::enter(const unsigned long key, void * const value)
@@ -158,8 +159,8 @@ SbDict::enter(const unsigned long key, void * const value)
 
 /*!
   Searches for \a key in the dictionary. If an entry with this
-  key exists, \a TRUE is returned and the entry value is returned
-  in \a value. Otherwise, \e FALSE is returned.
+  key exists, \c TRUE is returned and the entry value is returned
+  in \a value. Otherwise, \c FALSE is returned.
 */
 SbBool
 SbDict::find(const unsigned long key, void *& value) const
@@ -177,8 +178,8 @@ SbDict::find(const unsigned long key, void *& value) const
 }
 
 /*!
-  Removes the entry with key \a key. \e TRUE is returned if an entry
-  with this key was present, \e FALSE otherwise.
+  Removes the entry with key \a key. \c TRUE is returned if an entry
+  with this key was present, \c FALSE otherwise.
 */
 SbBool
 SbDict::remove(const unsigned long key)

@@ -19,10 +19,8 @@
 
 /*!
   \class SoTypeList Inventor/lists/SoTypeList.h
-  \brief The SoTypeList class is a container class for arrays of SoType
-  objects.
-
-  FIXME: write doc.
+  \brief The SoTypeList class is a container class for arrays of SoType objects.
+  \ingroup lists
 */
 
 // SoTypeList was moved from being a subclass of SbPList to being a

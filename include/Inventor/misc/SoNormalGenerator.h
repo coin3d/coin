@@ -28,9 +28,7 @@
 class SoNormalGenerator
 {
 public:
-  SoNormalGenerator(const SbBool ccw,
-                    const int approxVertices = 64,
-                    const SbBool freeNormals = FALSE);
+  SoNormalGenerator(const SbBool ccw, const int approxVertices = 64);
   ~SoNormalGenerator();
 
   void beginPolygon();
@@ -65,7 +63,6 @@ private:
 
   SbBool ccw;
   int currFaceStart;
-  SbBool freeNormals;
 
   SbVec3f calcFaceNormal();
 };

@@ -256,7 +256,7 @@ coin_bspnode::split()
       !this->right->indices.getLength()) {
     fprintf(stderr,"Left:\n");
     n = this->indices.getLength();
-    SbVec3f *pts = this->pointsArray->arrayPointer();
+    SbVec3f * pts = (SbVec3f *)this->pointsArray;
     for (i = 0; i < n; i++) {
       SbVec3f vec = pts[this->indices[i]];
       fprintf(stderr,"pt: %f %f %f\n",
@@ -280,7 +280,7 @@ coin_bspnode::split()
 
 
   // will never be used anymore
-  this->indices.clear(1);
+  this->indices.truncate(0, TRUE);
 }
 
 //
@@ -289,10 +289,10 @@ coin_bspnode::split()
 void
 coin_bspnode::sort()
 {
-  int *idxarray = this->indices.arrayPointer();
+  int * idxarray = this->indices;
   int num = this->indices.getLength();
   int dim = this->dimension;
-  SbVec3f *points = this->pointsArray->arrayPointer();
+  SbVec3f * points = (SbVec3f *)this->pointsArray;
   int i, j, distance;
   int idx;
   for (distance = 1; distance <= num/9; distance = 3*distance + 1);
@@ -487,8 +487,8 @@ SbBSPTree::clear(const int initsize)
 {
   delete this->topnode;
   this->topnode = NULL;
-  this->pointsArray.clear(initsize);
-  this->userdataArray.clear(initsize);
+  this->pointsArray.truncate(0, TRUE);
+  this->userdataArray.truncate(0, TRUE);
   this->topnode = new coin_bspnode(&this->pointsArray);
   this->boundingBox.makeEmpty();
 }
@@ -553,7 +553,7 @@ SbBSPTree::findClosest(const SbVec3f &pos) const
   Returns a pointer to the array of points inserted into the BPS tree.
 */
 const SbVec3f *
-SbBSPTree::getPointsArrayPtr() const
+SbBSPTree::getPointsArrayPtr(void) const
 {
-  return pointsArray.constArrayPointer();
+  return (const SbVec3f *)this->pointsArray;
 }

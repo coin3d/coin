@@ -29,8 +29,8 @@
 */
 
 #include <Inventor/lists/SoBaseList.h>
-
 #include <Inventor/misc/SoBase.h>
+#include <assert.h>
 
 /*!
   A constructor.

@@ -79,9 +79,6 @@ SoTextureCoordinateCache::generate(const SbBox3f &bbox,
     SbSwap(offsets[0], offsets[1]);
   }
 
-  // allocate space for texture coordinates
-  this->texCoords.setBufferSize(numvertices);
-
   float s, t;
   for (int i = 0; i < numvertices; i++) {
     s = vertices[i][offsets[0]];
@@ -90,8 +87,13 @@ SoTextureCoordinateCache::generate(const SbBox3f &bbox,
     t -= minvalues[1];
     s /= sizes[0];
     t /= sizes[1];
-    texCoords[i].setValue(s, t);
+    // expand list array as needed
+    if (i >= this->texCoords.getLength()) this->texCoords.append(SbVec2f());
+    this->texCoords[i].setValue(s, t);
   }
+
+  // fit list array in case we used to have more items than now
+  this->texCoords.truncate(numvertices);
 }
 
 /*!
@@ -100,7 +102,7 @@ SoTextureCoordinateCache::generate(const SbBox3f &bbox,
 const SbVec2f *
 SoTextureCoordinateCache::get() const
 {
-  return this->texCoords.constArrayPointer();
+  return this->texCoords;
 }
 
 /*!

@@ -61,10 +61,9 @@ SoConvexDataCache::~SoConvexDataCache()
   \sa SoConvexDataCache::getNumCoordIndices()
 */
 const int32_t *
-SoConvexDataCache::getCoordIndices() const
+SoConvexDataCache::getCoordIndices(void) const
 {
-  if (this->coordIndices.getLength())
-    return this->coordIndices.constArrayPointer();
+  if (this->coordIndices.getLength()) return this->coordIndices;
   return NULL;
 }
 
@@ -73,7 +72,7 @@ SoConvexDataCache::getCoordIndices() const
   \sa SoConvexDataCache::getCoordIndices()
 */
 int
-SoConvexDataCache::getNumCoordIndices() const
+SoConvexDataCache::getNumCoordIndices(void) const
 {
   return this->coordIndices.getLength();
 }
@@ -83,10 +82,9 @@ SoConvexDataCache::getNumCoordIndices() const
   \sa SoConvexDataCache::getNumMaterialIndices()
 */
 const int32_t *
-SoConvexDataCache::getMaterialIndices() const
+SoConvexDataCache::getMaterialIndices(void) const
 {
-  if (this->materialIndices.getLength())
-    return this->materialIndices.constArrayPointer();
+  if (this->materialIndices.getLength()) return this->materialIndices;
   return NULL;
 }
 
@@ -95,7 +93,7 @@ SoConvexDataCache::getMaterialIndices() const
   \sa SoConvexDataCache::getMaterialIndices()
 */
 int
-SoConvexDataCache::getNumMaterialIndices() const
+SoConvexDataCache::getNumMaterialIndices(void) const
 {
   return this->materialIndices.getLength();
 }
@@ -105,10 +103,9 @@ SoConvexDataCache::getNumMaterialIndices() const
   \sa SoConvexDataCache::getNumNormalIndices()
 */
 const int32_t *
-SoConvexDataCache::getNormalIndices() const
+SoConvexDataCache::getNormalIndices(void) const
 {
-  if (this->normalIndices.getLength())
-    return this->normalIndices.constArrayPointer();
+  if (this->normalIndices.getLength()) return this->normalIndices;
   return NULL;
 }
 
@@ -117,7 +114,7 @@ SoConvexDataCache::getNormalIndices() const
   \sa SoConvexDataCache::getNormalIndices()
 */
 int
-SoConvexDataCache::getNumNormalIndices() const
+SoConvexDataCache::getNumNormalIndices(void) const
 {
   return this->normalIndices.getLength();
 }
@@ -127,10 +124,9 @@ SoConvexDataCache::getNumNormalIndices() const
   \sa SoConvexDataCache::getNumTexIndices()
 */
 const int32_t *
-SoConvexDataCache::getTexIndices() const
+SoConvexDataCache::getTexIndices(void) const
 {
-  if (this->texIndices.getLength())
-    return this->texIndices.constArrayPointer();
+  if (this->texIndices.getLength()) return this->texIndices;
   return NULL;
 
 }
@@ -140,7 +136,7 @@ SoConvexDataCache::getTexIndices() const
   \sa SoConvexDataCache::getTexIndices()
 */
 int
-SoConvexDataCache::getNumTexIndices() const
+SoConvexDataCache::getNumTexIndices(void) const
 {
   return this->texIndices.getLength();
 }

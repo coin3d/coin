@@ -18,47 +18,37 @@
 \**************************************************************************/
 
 /*!
-  \class SbList Inventor/lists/SbList.h
+  \class SbList SbList.h Inventor/lists/SbList.h
   \brief The SbList class is a template container class for lists.
+  \ingroup base
+
+  SbList is an extension of the Coin library versus the original Open
+  Inventor API. Open Inventor handles most list classes by inheriting
+  the SbPList class, which contains an array of generic \c void*
+  pointers. By using this template-based class instead, we can share
+  more code and make the list handling code more typesafe.
+
+  Care has been taken to make sure the list classes which are part of
+  the Open Inventor API to still be compatible with their original
+  interfaces derived from the SbPList base class. If you still bump
+  into any problems when porting your Open Inventor applications, let
+  us know and we'll do our best to sort them out.
+
+
+  \sa SbPList
 */
-
-#if defined(__GNUC__) || defined( __BEOS__ ) || defined( WIN32 )
-// IRIX/CC doesn't instanciate templates like this.
-
-// #define NO_SB_LIST_INLINE_KEYWORDS
 
 #include <Inventor/lists/SbList.h>
 
-#endif // defined(__GNUC__) || defined( __BEOS__ ) || defined( WIN32 )
-
 /*!
-  \var SbList::itemBuffer
-
-  FIXME: write doc.
-*/
-
-/*!
-  \var SbList::itemBufferSize
-
-  FIXME: write doc.
-
-*/
-
-/*!
-  \var SbList::numItems
-
-  FIXME: write doc.
-*/
-
-/*!
-  \fn SbList::SbList(const int initSize = 4)
+  \fn SbList<Type>::SbList(const int initsize)
 
   Default constructor.
 
-  The \a initSize argument hints about how many elements the list will
+  The \a initsize argument hints about how many elements the list will
   contain, so memory allocation can be done efficiently.
 
-  Important note: explicitly specifying an \a initSize value does \c
+  Important note: explicitly specifying an \a initsize value does \c
   not mean that the list will initially contain this number of
   values. Here's a good example on how to give yourself hard to find
   bugs:
@@ -70,216 +60,145 @@
   \endcode
 
   Since this conceptual misunderstanding is so easy to make, you're
-  probably better (or at least safer) off leaving the \a initSize
+  probably better (or at least safer) off leaving the \a initsize
   argument to its default value by not explicitly specifying it.
 
  */
 
 /*!
-  \fn SbList::SbList(const SbList<Type> & list)
+  \fn SbList<Type>::SbList(const SbList<Type> & l)
 
-  A copy constructor.
+  Copy constructor.
+ */
+
+/*!
+\fn SbList<Type>::~SbList()
+
+  Destructor, frees all internal resources used by the list container.
 */
 
 /*!
-  \fn SbList::~SbList(void)
+  \fn void SbList<Type>::copy(const SbList<Type> & l)
 
-  The destructor.
+  Make this list a copy of \a l.
+ */
+
+/*!
+  \fn SbList<Type> & SbList<Type>::operator=(const SbList<Type> & l)
+
+  Make this list a copy of \a l.
+ */
+
+/*!
+  \fn void SbList<Type>::fit(void)
+
+  Fit the allocated array exactly around the length of the list.
+
+  You should normally not need to call this method, and it is only
+  available for the sake of having the option to optimize memory usage
+  for the unlikely event that you should use a huge SbList list.
+ */
+
+/*!
+  \fn void SbList<Type>::append(const Type item)
+
+  Append the \a item at the end of list.
+ */
+
+/*!
+  \fn int SbList<Type>::find(const Type item) const
+
+  Return index of \a item in the list, or -1 if \a item is not
+  present.
 */
 
 /*!
-  \fn void SbList::copy(const SbList<Type> & list)
+  \fn void SbList<Type>::insert(const Type item, const int insertbefore)
 
-  FIXME: write doc.
+  Insert \a item at index \a insertbefore.
+
+  \a insertbefore should not be larger than the current number of
+  items in the list.
+ */
+
+/*!
+  \fn void SbList<Type>::remove(const int index)
+
+  Remove the item at \a index, moving all subsequent items downwards
+  on place in the list.
 */
 
 /*!
-  \fn void SbList::append(const Type item)
+  \fn void SbList<Type>::removeFast(const int index)
 
-  FIXME: write doc.
+  Remove the item at \a index, moving the last item into its place and
+  truncating the list.
 */
 
 /*!
-  \fn void SbList::append(const SbList<Type> & list)
-
-  FIXME: write doc.
+  \fn int SbList<Type>::getLength(void) const
+  
+  Returns number of items in the list.
 */
 
 /*!
-  \fn int SbList::find(const Type item) const
+ \fn void SbList<Type>::truncate(const int length, const int fit)
 
-  Return index of \a item in the list, or -1 if \item is
-  not present.
+ Shorten the list to contain \a length elements, removing items from
+ \e index \a length and onwards.
+
+ If \a fit is non-zero, will also shrink the internal size of the
+ allocated array. Note that this is much less efficient than not
+ re-fitting the array size.
 */
 
 /*!
-  \fn void SbList::insert(const Type item, const int addBefore)
+  \fn void SbList<Type>::push(const Type item)
 
-  FIXME: write doc.
+  This appends \a item at the end of the list in the same fashion as
+  append() does. Provided as an abstraction for using the list class
+  as a stack.
 */
 
 /*!
-  \fn void SbList::remove(const int index)
+  \fn Type SbList<Type>::pop(void)
 
-  FIXME: write doc.
+  Pops off the last element of the list and returns it.
 */
 
 /*!
-  \fn void SbList::removeFast(const int index)
+  \fn SbList<Type>::operator Type *(void)
 
-  FIXME: write doc.
+  Returns pointer to a modifiable array of the lists elements.
 */
 
 /*!
-  \fn int SbList::getLength(void) const
+  \fn SbList<Type>::operator const Type *(void) const
 
-  FIXME: write doc.
+  Returns pointer to a non-modifiable array of the lists elements.
 */
 
 /*!
-  \fn void SbList::truncate(const int length)
+  \fn Type SbList<Type>::operator[](const int index) const
 
-  FIXME: write doc.
+  Returns a copy of item at \a index.
 */
 
 /*!
-  \fn void SbList::clear(const int newSize = MIN_LIST_SIZE)
+  \fn Type & SbList<Type>::operator[](const int index)
 
-  FIXME: write doc.
+  Returns a reference to item at \a index.
 */
 
 /*!
-  \fn void SbList::push(const Type item)
+  \fn SbBool SbList<Type>::operator==(const SbList<Type> & l) const
 
-  FIXME: write doc.
+  Returns \c TRUE if this list and \a l are identical, containing
+  the exact same set of elements.
 */
 
 /*!
-  \fn Type SbList::pop(void)
+  \fn SbBool SbList<Type>::operator!=(const SbList<Type> & l) const
 
-  FIXME: write doc.
+  Returns \c TRUE if this list and \a l are not equal.
 */
-
-/*!
-  \fn SbList<Type> & SbList::operator = (const SbList<Type> & list)
-
-  FIXME: write doc.
-*/
-
-/*!
-  \fn SbList::operator Type * (void)
-
-  FIXME: write doc.
-*/
-
-/*!
-  \fn SbList::operator const Type * (void) const
-
-  FIXME: write doc.
-*/
-
-/*!
-  \fn const Type * SbList::constArrayPointer(void) const
-
-  FIXME: write doc.
-*/
-
-/*!
-  \fn Type * SbList::arrayPointer(void)
-
-  FIXME: write doc.
-*/
-
-/*!
-  \fn Type SbList::operator [] (const int index) const
-
-  FIXME: write doc.
-*/
-
-/*!
-  \fn Type & SbList::operator [] (const int index)
-
-  FIXME: write doc.
-*/
-
-/*!
-  \fn int SbList::operator == (const SbList<Type> & list) const
-
-  FIXME: write doc.
-*/
-
-/*!
-  \fn int SbList::operator != (const SbList<Type> & list) const
-
-  FIXME: write doc.
-*/
-
-/*!
-  \fn Type SbList::get(const int index) const
-
-  FIXME: write doc.
-*/
-
-/*!
-  \fn void SbList::set(const int index, const Type item)
-
-  FIXME: write doc.
-*/
-
-/*!
-  \fn void SbList::fit(void)
-
-  FIXME: write doc.
-*/
-
-/*!
-  \fn Type * SbList::stealPointer(void)
-
-  FIXME: write doc.
-
-  Do not use the array after calling this method.
-*/
-
-/*!
-  \fn void SbList::setBufferSize(const int newsize)
-
-  FIXME: write doc.
-*/
-
-/*!
-  \fn void SbList::growList(void);
-
-  FIXME: write doc.
-*/
-
-#if 0
-void main(void) {
-    SbIntList list1;
-    list1.append(0);
-    list1.append(4);
-    list1.append(2);
-    list1.append(8);
-    list1.append(0);
-    SbIntList list2(list1);
-    list1.print();
-    printf("list1: 0: %d, 1: %d, 2: %d, 3: %d, 4: %d\n",
-        list1[0], list1[1], list1[2], list1[3], list1[4]);
-    list2.print();
-    printf("list1: 0: %d, 1: %d, 2: %d, 3: %d, 4: %d\n",
-        list2[0], list2[1], list2[2], list2[3], list2[4]);
-    if (list1 == list2)  printf( "  list1 == list2\n" );
-    else                   printf("! list1 == list2\n");
-    if (list1 != list2)  printf( "  list1 != list2\n" );
-    else                   printf("! list1 != list2\n");
-    list2.append(list1);
-    list2.print();
-    printf("list2: 0: %d, 1: %d, 2: %d, 3: %d, 4: %d",
-        list2[0], list2[1], list2[2], list2[3], list2[4]);
-    printf(" 5: %d, 6: %d, 7: %d, 8: %d, 9: %d\n",
-        list2[5], list2[6], list2[7], list2[8], list2[9]);
-    if (list1 == list2)  printf( "  list1 == list2\n" );
-    else                   printf("! list1 == list2\n");
-    if (list1 != list2)  printf( "  list1 != list2\n" );
-    else                   printf("! list1 != list2\n");
-}
-#endif

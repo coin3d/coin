@@ -339,8 +339,7 @@ SoTriangleStripSet::generateDefaultNormals(SoState * state, SoNormalCache * nc)
 
   if (perVertex) {
     SoNormalGenerator * gen =
-      new SoNormalGenerator(ccw, this->numVertices.getNum()*3,
-                            TRUE);
+      new SoNormalGenerator(ccw, this->numVertices.getNum()*3);
 
     int32_t idx = startIndex.getValue();
     int32_t dummyarray[1];
