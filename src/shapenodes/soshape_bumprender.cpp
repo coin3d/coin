@@ -492,6 +492,8 @@ soshape_bumprender::renderBump(SoState * state,
   // only use vertex program if two texture units (or less) are used
   // (only two units supported in the vertex program)
   SbBool use_vertex_program = lastenabled <= 1 && glue->has_arb_vertex_program;
+  use_vertex_program = FALSE; // FIXME: disabled until vertex program
+                              // for point lights is implemented
   if (use_vertex_program) {
     if (!this->diffuseprogramsinitialized) {
       this->initDiffusePrograms(glue);
@@ -640,6 +642,8 @@ soshape_bumprender::renderNormal(SoState * state, const SoPrimitiveVertexCache *
   // only use vertex program if two texture units (or less) are used
   // (only two units supported in the vertex program)
   SbBool use_vertex_program = lastenabled <= 1 && glue->has_arb_vertex_program;
+  use_vertex_program = FALSE; // FIXME: disabled until vertex program
+                              // for point lights is implemented
   if (use_vertex_program) {
     if (!this->diffuseprogramsinitialized) {
       this->initDiffusePrograms(glue);
