@@ -21,11 +21,9 @@
 #define COIN_SOPATH_H
 
 #include <Inventor/misc/SoBase.h>
-#include <Inventor/lists/SbIntList.h>
+#include <Inventor/lists/SbList.h>
 #include <Inventor/lists/SoNodeList.h>
 
-class SoPath;
-class SoNode;
 class SoWriteAction;
 class SoNotList;
 class SoInput;
@@ -35,33 +33,24 @@ class SoPathList;
 class SoPath : public SoBase {
   typedef SoBase inherited;
 
-  friend class SoAction; // FIXME: needed to compile on SGI? 19980916 mortene.
-
-// The Type System
-protected:
-  static SoType classTypeId;
 public:
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  static void * createInstance(void);
   static void initClass(void);
 
-// construction // destruction
-public:
-  SoPath(const int approxLength = 0);
+  SoPath(const int approxlength = 4);
   SoPath(SoNode * const head);
   SoPath(const SoPath & rhs);
-  SoPath & operator = (const SoPath & rhs);
-protected:
-  virtual ~SoPath(void); // destructed by ref()
 
-public:
+  SoPath & operator=(const SoPath & rhs);
+
+  static SoType getClassTypeId(void);
+  virtual SoType getTypeId(void) const;
+
   void setHead(SoNode * const head);
   SoNode * getHead(void) const;
-  void append(const int childIndex);
+  void append(const int childindex);
   void append(SoNode * const node);
-  void append(const SoPath * const fromPath);
-  void push(const int childIndex);
+  void append(const SoPath * const frompath);
+  void push(const int childindex);
   void pop(void);
   SoNode * getTail(void) const;
   SoNode * getNode(const int index) const;
@@ -76,41 +65,43 @@ public:
 
   SbBool containsNode(const SoNode * const node) const;
   SbBool containsPath(const SoPath * const path) const;
-  SoPath * copy(const int startFromNodeIndex = 0,
-                 int numNodes = 0) const;
-  friend SbBool operator == (const SoPath & lhs, const SoPath & rhs);
-  friend SbBool operator != (const SoPath & lhs, const SoPath & rhs);
+  SoPath * copy(const int startfromnodeindex = 0, int numnodes = 0) const;
+  friend SbBool operator==(const SoPath & lhs, const SoPath & rhs);
+  friend SbBool operator!=(const SoPath & lhs, const SoPath & rhs);
 
   static SoPath * getByName(const SbName name);
-  static int getByName(const SbName name, SoPathList & list);
+  static int getByName(const SbName name, SoPathList & l);
 
-// internal (for path updating on graph changes)
-  void insertIndex(SoNode * const parent, const int newIndex);
-  void removeIndex(SoNode * const parent, const int oldIndex);
+  void insertIndex(SoNode * const parent, const int newindex);
+  void removeIndex(SoNode * const parent, const int oldindex);
   void replaceIndex(SoNode * const parent, const int index,
-                     SoNode * const newChild);
-  SbBool isRelevantNotification(SoNotList * const list) const;
+                    SoNode * const newchild);
+  SbBool isRelevantNotification(SoNotList * const l) const;
 
-  virtual void write(SoWriteAction * writeAction) const;
+  virtual void write(SoWriteAction * action) const;
 
 protected:
+  virtual ~SoPath();
   void auditPath(const SbBool flag);
 
-  void append(SoNode * const node, const int index);
-  SoNodeList nodes;
-  SbIntList indices;
-  SbBool doAuditors;
-
-  int getFullLength(void) const;
-
-  void truncate(const int length, const SbBool doNotify);
-
-  virtual SbBool readInstance(SoInput * in, unsigned short flags);
-
 private:
-  SbBool hasHiddenChildren(SoNode *node) const;
-  void findFirstHidden();
-  int firstHidden;
+  static void * createInstance(void);
+  void append(SoNode * const node, const int index);
+  int getFullLength(void) const;
+  void truncate(const int length, const SbBool donotify);
+  virtual SbBool readInstance(SoInput * in, unsigned short flags);
+  SbBool hasHiddenChildren(SoNode * node) const;
+  void setFirstHidden(void);
+
+  SoNodeList nodes;
+  SbList<int> indices;
+  SbBool isauditing;
+  int firsthidden;
+  static SoType classTypeId;
+
+  friend class SoFullPath;
+  friend class SoNodeKitPath;
+  friend class SoAction;
 };
 
 #ifndef COIN_INTERNAL
