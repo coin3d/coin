@@ -421,7 +421,9 @@ SoVRMLImageTexture::read_thread(void * closure)
     assert(THISP->glimage);
     THISP->glimage->setEndFrameCallback(glimage_callback, thisp);
     THISP->glimagevalid = FALSE;
+#ifdef COIN_THREADSAFE
     thisp->touch(); // schedule redraw
+#endif // COIN_THREADSAFE
   }  
   THISP->readimagemutex.unlock(); // unlock to enable new images to be read
 #endif // HAVE_THREADS
