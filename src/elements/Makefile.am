@@ -118,6 +118,7 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/elements/SoComplexityTypeElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoCoordinateElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoCreaseAngleElement.h \
+	$(top_srcdir)/include/Inventor/elements/SoCullElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoDecimationPercentageElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoDecimationTypeElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoDiffuseColorElement.h \
