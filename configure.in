@@ -436,6 +436,36 @@ AC_SUBST(coin_lib_dir)
 SIM_AC_ISO8601_DATE(coin_configure_date)
 AC_SUBST(coin_configure_date)
 
+# **************************************************************************
+# Remove redundant options from certain option lists.
+# We add the first argument ourselves to shift it off because it's added
+# again inside coin-config.in
+
+SIM_AC_UNIQIFY_LIST(COIN_EXTRA_CPPFLAGS, -I$includedir $COIN_EXTRA_CPPFLAGS)
+set : $COIN_EXTRA_CPPFLAGS
+shift
+shift
+COIN_EXTRA_CPPFLAGS=$@
+
+SIM_AC_UNIQIFY_LIST(COIN_EXTRA_LDFLAGS, -L$libdir $COIN_EXTRA_LDFLAGS)
+set : $COIN_EXTRA_LDFLAGS
+shift
+shift
+COIN_EXTRA_LDFLAGS=$@
+
+SIM_AC_UNIQIFY_LIST(COIN_EXTRA_LIBS, $COIN_LIBNAME $COIN_EXTRA_LIBS)
+set : $COIN_EXTRA_LIBS
+shift
+shift
+COIN_EXTRA_LIBS=$@
+
+# We don't have to do shift magic on these:
+SIM_AC_UNIQIFY_LIST(CPPFLAGS, $CPPFLAGS)
+SIM_AC_UNIQIFY_LIST(LDFLAGS, $LDFLAGS)
+SIM_AC_UNIQIFY_LIST(LIBS, $LIBS)
+
+# **************************************************************************
+
 AC_OUTPUT([
         coin-config
         Makefile

@@ -5603,6 +5603,114 @@ fi
 
   eval "coin_configure_date=\"`date +%Y%m%d`\""
 
+# **************************************************************************
+# Remove redundant options from certain option lists.
+# We add the first argument ourselves to shift it off because it's added
+# again inside coin-config.in
+
+sim_ac_uniqued_list=
+for sim_ac_item in -I$includedir $COIN_EXTRA_CPPFLAGS; do
+  if test x"$sim_ac_uniqued_list" = x; then
+    sim_ac_uniqued_list="$sim_ac_item"
+  else
+    sim_ac_unique=true
+    for sim_ac_uniq in $sim_ac_uniqued_list; do
+      test x"$sim_ac_item" = x"$sim_ac_uniq" && sim_ac_unique=false
+    done
+    $sim_ac_unique && sim_ac_uniqued_list="$sim_ac_uniqued_list $sim_ac_item"
+  fi
+done
+COIN_EXTRA_CPPFLAGS=$sim_ac_uniqued_list
+
+set : $COIN_EXTRA_CPPFLAGS
+shift
+shift
+COIN_EXTRA_CPPFLAGS=$@
+
+sim_ac_uniqued_list=
+for sim_ac_item in -L$libdir $COIN_EXTRA_LDFLAGS; do
+  if test x"$sim_ac_uniqued_list" = x; then
+    sim_ac_uniqued_list="$sim_ac_item"
+  else
+    sim_ac_unique=true
+    for sim_ac_uniq in $sim_ac_uniqued_list; do
+      test x"$sim_ac_item" = x"$sim_ac_uniq" && sim_ac_unique=false
+    done
+    $sim_ac_unique && sim_ac_uniqued_list="$sim_ac_uniqued_list $sim_ac_item"
+  fi
+done
+COIN_EXTRA_LDFLAGS=$sim_ac_uniqued_list
+
+set : $COIN_EXTRA_LDFLAGS
+shift
+shift
+COIN_EXTRA_LDFLAGS=$@
+
+sim_ac_uniqued_list=
+for sim_ac_item in $COIN_LIBNAME $COIN_EXTRA_LIBS; do
+  if test x"$sim_ac_uniqued_list" = x; then
+    sim_ac_uniqued_list="$sim_ac_item"
+  else
+    sim_ac_unique=true
+    for sim_ac_uniq in $sim_ac_uniqued_list; do
+      test x"$sim_ac_item" = x"$sim_ac_uniq" && sim_ac_unique=false
+    done
+    $sim_ac_unique && sim_ac_uniqued_list="$sim_ac_uniqued_list $sim_ac_item"
+  fi
+done
+COIN_EXTRA_LIBS=$sim_ac_uniqued_list
+
+set : $COIN_EXTRA_LIBS
+shift
+shift
+COIN_EXTRA_LIBS=$@
+
+# We don't have to do shift magic on these:
+
+sim_ac_uniqued_list=
+for sim_ac_item in $CPPFLAGS; do
+  if test x"$sim_ac_uniqued_list" = x; then
+    sim_ac_uniqued_list="$sim_ac_item"
+  else
+    sim_ac_unique=true
+    for sim_ac_uniq in $sim_ac_uniqued_list; do
+      test x"$sim_ac_item" = x"$sim_ac_uniq" && sim_ac_unique=false
+    done
+    $sim_ac_unique && sim_ac_uniqued_list="$sim_ac_uniqued_list $sim_ac_item"
+  fi
+done
+CPPFLAGS=$sim_ac_uniqued_list
+
+sim_ac_uniqued_list=
+for sim_ac_item in $LDFLAGS; do
+  if test x"$sim_ac_uniqued_list" = x; then
+    sim_ac_uniqued_list="$sim_ac_item"
+  else
+    sim_ac_unique=true
+    for sim_ac_uniq in $sim_ac_uniqued_list; do
+      test x"$sim_ac_item" = x"$sim_ac_uniq" && sim_ac_unique=false
+    done
+    $sim_ac_unique && sim_ac_uniqued_list="$sim_ac_uniqued_list $sim_ac_item"
+  fi
+done
+LDFLAGS=$sim_ac_uniqued_list
+
+sim_ac_uniqued_list=
+for sim_ac_item in $LIBS; do
+  if test x"$sim_ac_uniqued_list" = x; then
+    sim_ac_uniqued_list="$sim_ac_item"
+  else
+    sim_ac_unique=true
+    for sim_ac_uniq in $sim_ac_uniqued_list; do
+      test x"$sim_ac_item" = x"$sim_ac_uniq" && sim_ac_unique=false
+    done
+    $sim_ac_unique && sim_ac_uniqued_list="$sim_ac_uniqued_list $sim_ac_item"
+  fi
+done
+LIBS=$sim_ac_uniqued_list
+
+# **************************************************************************
+
 ac_config_files="$ac_config_files
         coin-config
         Makefile

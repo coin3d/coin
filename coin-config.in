@@ -20,6 +20,9 @@ EOF
 while test $# -gt 0; do
   case $1 in
     --cppflags)
+      # NOTE: If the first includedir argument is changed in the future,
+      # we need to update configure.in as well, since the argument is
+      # shifted off.
       echo -I@includedir@ @COIN_EXTRA_CPPFLAGS@
       ;;
     --ldflags)
