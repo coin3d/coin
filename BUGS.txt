@@ -1079,3 +1079,66 @@
     20021015 mortene.
 
 =====================================================================
+
+039 VRML97 file with PROTO use crashes on import.
+
+    This file will cause import through SoDB::readAll() to crash Coin:
+
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
+    #VRML V2.0 utf8
+    
+    PROTO Surface [
+     exposedField SFNode  coord      NULL 
+     field        MFVec3f point      []  
+    ]
+    {
+       Shape {
+          geometry IndexedFaceSet {
+             coord      IS coord   
+             coord DEF SurfaceCoord Coordinate { point IS point }
+          }
+       }
+    }
+    
+    Surface {
+       coord Coordinate {              
+          point [ 0 0 0 ]
+       }   
+    }
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
+
+    (The file is nonsensical, but that is because it's been cut down
+    into the minimal size that still exposes the bug.)
+
+    The call-stack backtrace looks like this:
+
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
+    Program received signal SIGSEGV, Segmentation fault.
+    [Switching to Thread 1024 (LWP 9048)]
+    0x40966bd5 in SoProto::connectISRefs (this=0x80a5670, inst=0x80a69e8, src=0x80a5d20, dst=0x80b7038) at /home/sigma/mortene/code/coin-head/src/misc/SoProto.cpp:613
+    613           dstfield = node->getField(fieldname);
+    (gdb) bt
+    #0  0x40966bd5 in SoProto::connectISRefs (this=0x80a5670, inst=0x80a69e8, src=0x80a5d20, dst=0x80b7038) at /home/sigma/mortene/code/coin-head/src/misc/SoProto.cpp:613
+    #1  0x40966803 in SoProto::createInstanceRoot (this=0x80a5670, inst=0x80a69e8) at /home/sigma/mortene/code/coin-head/src/misc/SoProto.cpp:540
+    #2  0x40965353 in SoProto::createProtoInstance (this=0x80a5670) at /home/sigma/mortene/code/coin-head/src/misc/SoProto.cpp:156
+    #3  0x4091c617 in SoBase::createInstance (in=0xbffff9f8, classname=@0xbffff8fc) at /home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:1673
+    #4  0x4091c1de in SoBase::readBaseInstance (in=0xbffff9f8, classname=@0xbffff8fc, refname=@0xbffff8ac, base=@0xbffff974)
+        at /home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:1599
+    #5  0x4091c0e9 in SoBase::readBase (in=0xbffff9f8, classname=@0xbffff8fc, base=@0xbffff974) at /home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:1554
+    #6  0x4091b099 in SoBase::read (in=0xbffff9f8, base=@0xbffff974, expectedtype=
+          {index = 5, static typelist = 0x8079cb8, static typedatalist = 0x8079cd0, static typedict = 0x8079cf0}) at /home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:1052
+    #7  0x409578e9 in SoDB::read (in=0xbffff9f8, base=@0xbffff974) at /home/sigma/mortene/code/coin-head/src/misc/SoDB.cpp:555
+    #8  0x4095792a in SoDB::read (in=0xbffff9f8, rootnode=@0xbffff9b8) at /home/sigma/mortene/code/coin-head/src/misc/SoDB.cpp:573
+    #9  0x40957aa6 in SoDB::readAll (in=0xbffff9f8) at /home/sigma/mortene/code/coin-head/src/misc/SoDB.cpp:650
+    #10 0x0804973c in get_scene_graph (argc=2, argv=0xbffffac4) at computils.cpp:131
+    #11 0x080492eb in main (argc=2, argv=0xbffffac4) at examinerviewer.cpp:39
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
+
+    We should of course never crash when importing any .iv or .wrl
+    file. If the file is faulty, we need to detect this and handle in
+    a robust manner by using SoReadError::post() and aborting the
+    import process.
+
+    20021015 mortene.
+
+=====================================================================
