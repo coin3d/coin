@@ -27,11 +27,13 @@
   \ingroup base
 
   SbLine is used by many other classes in Coin.  It provides a way of
-  specifying a directed line (also known as a ray) through a specified
-  point (origin) and a direction in 3D space. Note that the line is
-  infinite in both directions from its definition point.
+  specifying a directed line through a specified point (origin) and a
+  direction in 3D space.  Note that the line is infinite in both directions
+  from its definition point as far as the getClosestPoint() functions are
+  concerned.
 
-  \sa SbVec3f */
+  \sa SbVec3f
+*/
 
 
 #include <assert.h>
@@ -49,31 +51,43 @@ SbLine::SbLine(void)
 }
 
 /*!
-  Constructor with \a p0 specifying the line start point and \a p1 the line
-  end point. \a p0 should not be the same as \a p1, as this will lead to
-  having a null vector as the direction vector, which would cause division
-  by zero problems in some of the other methods on this class.
+  Constructor with \a origin specifying the line origin point, and \a point
+  specifying another point on the line that is used to determine the line's
+  direction.  \a point should not be the same as \a origin, as this will
+  lead to the line having a null vector as the direction vector.  This will
+  cause division by zero problems in some of the other methods on this class.
+
+  Be aware that the direction vector will be normalized and not be the same
+  as \a point - \a origin.
+
+  \sa setValue, getOrigin, getDirection
 */
-SbLine::SbLine(const SbVec3f& p0, const SbVec3f& p1)
+SbLine::SbLine(const SbVec3f& origin, const SbVec3f& point)
 {
-  this->setValue(p0, p1);
+  this->setValue(origin, point);
 }
 
 /*!
-  Set new position and direction of the line by specifying line start
-  point and end point. \a p0 should not be the same as \a p1, as this
-  will lead to having a null vector as the direction vector, which
-  would cause division by zero problems in some of the other methods
-  on this class.
+  Set new position and direction of the line by specifying line origin
+  and another point on the line that is used to determine the line's
+  direction. \a point should not be the same as \a origin, as this
+  will lead to having a null vector as the direction vector.  This will
+  cause division by zero problems in some of the other methods on this
+  class.
+
+  Be aware that the direction vector will be normalized and not be the same
+  as \a point - \a origin.
+
+  \sa setValue, getOrigin, getDirection
 */
 void
-SbLine::setValue(const SbVec3f& p0, const SbVec3f& p1)
+SbLine::setValue(const SbVec3f& origin, const SbVec3f& point)
 {
-  this->pos = p0;
-  this->dir = p1 - p0;
+  this->pos = origin;
+  this->dir = point - origin;
 
 #if COIN_DEBUG
-  if(!(p0 != p1)) {
+  if(origin == point) {
     SoDebugError::postWarning("SbLine::setValue",
                               "The two points defining the line is "
                               "equal => line is invalid.");
@@ -85,7 +99,7 @@ SbLine::setValue(const SbVec3f& p0, const SbVec3f& p1)
 }
 
 /*!
-  Returns the two closest points on the lines. If the lines are
+  Returns the two closest points on the lines.  If the lines are
   parallel, all points are equally close and we return \c FALSE. If
   the lines are not parallel, the point positions will be stored in \a
   ptOnThis and \a ptOnLine2, and we'll return \c TRUE.
@@ -97,10 +111,10 @@ SbLine::getClosestPoints(const SbLine& line2,
                          SbVec3f& ptOnThis, SbVec3f& ptOnLine2) const
 {
 #if COIN_DEBUG
-  if(!(this->getDirection().length() != 0.0))
+  if(this->getDirection().length() == 0.0)
     SoDebugError::postWarning("SbLine::getClosestPoints",
                               "This line has no direction (zero vector).");
-  if(!(line2.getDirection().length() != 0.0))
+  if(line2.getDirection().length() == 0.0)
     SoDebugError::postWarning("SbLine::getClosestPoints",
                               "argument line has no direction (zero vector).");
 #endif // COIN_DEBUG
@@ -247,7 +261,9 @@ SbLine::getClosestPoint(const SbVec3f& point) const
 }
 
 /*!
-  Return a vector representing a point on the line.
+  Return a vector representing the origin point on the line.
+
+  \sa setValue
  */
 const SbVec3f&
 SbLine::getPosition(void) const

@@ -32,13 +32,13 @@
 class COIN_DLL_API SbLine {
 public:
   SbLine(void);
-  SbLine(const SbVec3f& p0, const SbVec3f& p1);
-  void setValue(const SbVec3f& p0, const SbVec3f& p1);
-  SbBool getClosestPoints(const SbLine& line2,
-                          SbVec3f& ptOnThis, SbVec3f& ptOnLine2) const;
-  SbVec3f getClosestPoint(const SbVec3f& point) const;
-  const SbVec3f& getPosition(void) const;
-  const SbVec3f& getDirection(void) const;
+  SbLine(const SbVec3f & origin, const SbVec3f & point);
+  void setValue(const SbVec3f & origin, const SbVec3f & point);
+  SbBool getClosestPoints(const SbLine & line2,
+                          SbVec3f & ptOnThis, SbVec3f & ptOnLine2) const;
+  SbVec3f getClosestPoint(const SbVec3f & point) const;
+  const SbVec3f & getPosition(void) const;
+  const SbVec3f & getDirection(void) const;
 
   void print(FILE * file) const;
 
