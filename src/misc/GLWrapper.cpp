@@ -324,6 +324,18 @@ GLWrapper(int contextid)
   GLWrapper_t * gi = NULL;
 
   if (!found) {
+
+    // Internal consistency checking.
+#ifdef HAVE_GLX
+    assert((glXGetCurrentContext() != NULL) && "must have a current GL context when instantiating GLWrapper");
+#endif // HAVE_GLX
+#ifdef HAVE_WGL
+    assert((wglGetCurrentContext() != NULL) && "must have a current GL context when instantiating GLWrapper");
+#endif // HAVE_WGL
+#ifdef HAVE_AGL
+    assert((aglGetCurrentContext() != NULL) && "must have a current GL context when instantiating GLWrapper");
+#endif // HAVE_AGL
+
     gi = (GLWrapper_t *)malloc(sizeof(GLWrapper_t));
     /* FIXME: handle out-of-memory on malloc(). 20000928 mortene. */
 
