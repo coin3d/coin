@@ -1125,7 +1125,7 @@ void SoVRMLSoundP::fillBuffers()
       // so it can decide if it would like to stop playing
       int channels;
       ret = this->currentAudioClip->read(this->cliphandle, NULL, 0, channels);
-      assert (ret == NULL); // or else the AudioClip isn't performing as it should
+      assert (ret == 0); // or else the AudioClip isn't performing as it should
     }
   } else {
     while (((processed > 0) || (queued<this->numBuffers)) && !this->endoffile)  {
@@ -1240,7 +1240,7 @@ void SoVRMLSoundP::fillBuffers()
         return;
       }
 
-      if (ret == NULL) {
+      if (ret == 0) {
         this->endoffile = TRUE;
         // AudioClip has reached EOF (or an error), so we shouldn't
         // fill any more buffers
