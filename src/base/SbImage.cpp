@@ -53,8 +53,6 @@
 #include <Inventor/threads/SbRWMutex.h>
 #endif // HAVE_THREADS
 
-#ifndef DOXYGEN_SKIP_THIS
-
 class SbImageP {
 public:
   enum DataType {
@@ -131,12 +129,8 @@ public:
 #endif // ! HAVE_THREADS
 };
 
-#endif // DOXYGEN_SKIP_THIS
-
 //////////////////////////////////////////////////////////////////////////
 
-#undef THIS
-#define THIS (this->pimpl)
 #define PRIVATE(image) ((image)->pimpl)
 
 /*!
@@ -144,7 +138,7 @@ public:
 */
 SbImage::SbImage(void)
 {
-  THIS = new SbImageP;
+  PRIVATE(this) = new SbImageP;
 }
 
 /*!
@@ -154,7 +148,7 @@ SbImage::SbImage(void)
 SbImage::SbImage(const unsigned char * bytes,
                  const SbVec2s & size, const int bytesperpixel)
 {
-  THIS = new SbImageP;
+  PRIVATE(this) = new SbImageP;
   this->setValue(size, bytesperpixel, bytes);
 }
 
@@ -167,7 +161,7 @@ SbImage::SbImage(const unsigned char * bytes,
 SbImage::SbImage(const unsigned char * bytes,
                  const SbVec3s & size, const int bytesperpixel)
 {
-  THIS = new SbImageP;
+  PRIVATE(this) = new SbImageP;
   this->setValue(size, bytesperpixel, bytes);
 }
 
@@ -176,8 +170,8 @@ SbImage::SbImage(const unsigned char * bytes,
 */
 SbImage::~SbImage(void)
 {
-  THIS->freeData();
-  delete THIS;
+  PRIVATE(this)->freeData();
+  delete PRIVATE(this);
 }
 
 /*!
@@ -194,7 +188,7 @@ SbImage::~SbImage(void)
 void
 SbImage::readLock(void) const
 {
-  THIS->readLock();
+  PRIVATE(this)->readLock();
 }
 
 /*!
@@ -209,7 +203,7 @@ SbImage::readLock(void) const
 void
 SbImage::readUnlock(void) const
 {
-  THIS->readUnlock();
+  PRIVATE(this)->readUnlock();
 }
 
 /*!
@@ -243,15 +237,15 @@ void
 SbImage::setValuePtr(const SbVec3s & size, const int bytesperpixel,
                      const unsigned char * bytes)
 {
-  THIS->writeLock();
-  THIS->schedulename = "";
-  THIS->schedulecb = NULL;
-  THIS->freeData();
-  THIS->bytes = (unsigned char *) bytes;
-  THIS->datatype = SbImageP::SETVALUEPTR_DATA;
-  THIS->size = size;
-  THIS->bpp = bytesperpixel;
-  THIS->writeUnlock();
+  PRIVATE(this)->writeLock();
+  PRIVATE(this)->schedulename = "";
+  PRIVATE(this)->schedulecb = NULL;
+  PRIVATE(this)->freeData();
+  PRIVATE(this)->bytes = (unsigned char *) bytes;
+  PRIVATE(this)->datatype = SbImageP::SETVALUEPTR_DATA;
+  PRIVATE(this)->size = size;
+  PRIVATE(this)->bpp = bytesperpixel;
+  PRIVATE(this)->writeUnlock();
 }
 
 /*!
@@ -285,39 +279,39 @@ void
 SbImage::setValue(const SbVec3s & size, const int bytesperpixel,
                   const unsigned char * bytes)
 {
-  THIS->writeLock();
-  THIS->schedulename = "";
-  THIS->schedulecb = NULL;
-  if (THIS->bytes && THIS->datatype == SbImageP::INTERNAL_DATA) {
+  PRIVATE(this)->writeLock();
+  PRIVATE(this)->schedulename = "";
+  PRIVATE(this)->schedulecb = NULL;
+  if (PRIVATE(this)->bytes && PRIVATE(this)->datatype == SbImageP::INTERNAL_DATA) {
     // check for special case where we don't have to reallocate
-    if (bytes && (size == THIS->size) && (bytesperpixel == THIS->bpp)) {
-      memcpy(THIS->bytes, bytes, 
+    if (bytes && (size == PRIVATE(this)->size) && (bytesperpixel == PRIVATE(this)->bpp)) {
+      memcpy(PRIVATE(this)->bytes, bytes, 
              int(size[0]) * int(size[1]) * int(size[2]==0?1:size[2]) *
              bytesperpixel);
-      THIS->writeUnlock();
+      PRIVATE(this)->writeUnlock();
       return;
     }
   }
-  THIS->freeData();
-  THIS->size = size;
-  THIS->bpp = bytesperpixel;
+  PRIVATE(this)->freeData();
+  PRIVATE(this)->size = size;
+  PRIVATE(this)->bpp = bytesperpixel;
   int buffersize = int(size[0]) * int(size[1]) * int(size[2]==0?1:size[2]) * 
     bytesperpixel;
   if (buffersize) {
     // Align buffers because the binary file format has the data aligned
     // (simplifies export code in SoSFImage).
     buffersize = ((buffersize + 3) / 4) * 4;
-    THIS->bytes = new unsigned char[buffersize];
-    THIS->datatype = SbImageP::INTERNAL_DATA;
+    PRIVATE(this)->bytes = new unsigned char[buffersize];
+    PRIVATE(this)->datatype = SbImageP::INTERNAL_DATA;
 
     if (bytes) {
       // Important: don't copy buffersize num bytes here!
-      (void)memcpy(THIS->bytes, bytes,
+      (void)memcpy(PRIVATE(this)->bytes, bytes,
                    int(size[0]) * int(size[1]) * int(size[2]==0?1:size[2]) * 
                    bytesperpixel);
     }
   }
-  THIS->writeUnlock();
+  PRIVATE(this)->writeUnlock();
 }
 
 /*!
@@ -340,20 +334,20 @@ SbImage::getValue(SbVec2s & size, int & bytesperpixel) const
 unsigned char *
 SbImage::getValue(SbVec3s & size, int & bytesperpixel) const
 {
-  THIS->readLock();
-  if (THIS->schedulecb) {
+  PRIVATE(this)->readLock();
+  if (PRIVATE(this)->schedulecb) {
     SbImage * thisp = (SbImage*) this;
     // start a thread to read the image.
-    SbBool scheduled = THIS->schedulecb(THIS->schedulename, thisp, 
-                                        THIS->scheduleclosure);
+    SbBool scheduled = PRIVATE(this)->schedulecb(PRIVATE(this)->schedulename, thisp, 
+                                        PRIVATE(this)->scheduleclosure);
     if (scheduled) {
-      THIS->schedulecb = NULL;
+      PRIVATE(this)->schedulecb = NULL;
     }
   }
-  size = THIS->size;
-  bytesperpixel = THIS->bpp;
-  unsigned char * bytes = THIS->bytes;
-  THIS->readUnlock();
+  size = PRIVATE(this)->size;
+  bytesperpixel = PRIVATE(this)->bpp;
+  unsigned char * bytes = PRIVATE(this)->bytes;
+  PRIVATE(this)->readUnlock();
   return bytes;
 
 }
@@ -445,7 +439,7 @@ SbImage::readFile(const SbString & filename,
     // NB, this is a trick. We use setValuePtr() to set the size
     // and data pointer, and then we change the data type to simage
     // peder, 2002-03-22
-    THIS->datatype = SbImageP::SIMAGE_DATA;
+    PRIVATE(this)->datatype = SbImageP::SIMAGE_DATA;
     return TRUE;
   }
 #if COIN_DEBUG
@@ -483,21 +477,61 @@ SbImage::operator==(const SbImage & image) const
 {
   this->readLock();
   int ret = 0;
-  if (!THIS->schedulecb && !PRIVATE(&image)->schedulecb) {
-    if (THIS->size != PRIVATE(&image)->size) return FALSE;
-    if (THIS->bpp != PRIVATE(&image)->bpp) return FALSE;
-    if (THIS->bytes == NULL || PRIVATE(&image)->bytes == NULL) {
-      return (THIS->bytes == PRIVATE(&image)->bytes);
+  if (!PRIVATE(this)->schedulecb && !PRIVATE(&image)->schedulecb) {
+    if (PRIVATE(this)->size != PRIVATE(&image)->size) return FALSE;
+    if (PRIVATE(this)->bpp != PRIVATE(&image)->bpp) return FALSE;
+    if (PRIVATE(this)->bytes == NULL || PRIVATE(&image)->bytes == NULL) {
+      return (PRIVATE(this)->bytes == PRIVATE(&image)->bytes);
     }
-    SbBool ret = memcmp(THIS->bytes, PRIVATE(&image)->bytes,
-                        int(THIS->size[0]) *
-                        int(THIS->size[1]) *
-                        int(THIS->size[2]==0?1:THIS->size[2]) * 
-                        THIS->bpp) == 0;
+    SbBool ret = memcmp(PRIVATE(this)->bytes, PRIVATE(&image)->bytes,
+                        int(PRIVATE(this)->size[0]) *
+                        int(PRIVATE(this)->size[1]) *
+                        int(PRIVATE(this)->size[2]==0?1:PRIVATE(this)->size[2]) * 
+                        PRIVATE(this)->bpp) == 0;
   }
   this->readUnlock();
   return ret;
 }
+
+/*!
+  Assignment operator.
+*/
+SbImage & 
+SbImage::operator=(const SbImage & image)
+{
+  if (*this != image ) {
+    PRIVATE(this)->writeLock();
+    PRIVATE(this)->freeData();
+    PRIVATE(this)->writeUnlock();
+
+    if (PRIVATE(&image)->bytes) {
+      PRIVATE(&image)->readLock();
+
+      switch (PRIVATE(&image)->datatype) {
+      default:
+        assert(0 && "unknown data type");
+        break;
+      case SbImageP::INTERNAL_DATA:
+      case SbImageP::SIMAGE_DATA:
+        // need to copy data both for INTERNAL and SIMAGE data, since
+        // we can only free the data once when the data is of SIMAGE type.
+        this->setValue(PRIVATE(&image)->size,
+                       PRIVATE(&image)->bpp,
+                       PRIVATE(&image)->bytes);
+        break;
+      case SbImageP::SETVALUEPTR_DATA:
+        // just set the data ptr
+        this->setValuePtr(PRIVATE(&image)->size,
+                          PRIVATE(&image)->bpp,
+                          PRIVATE(&image)->bytes);
+        break;
+      }
+      PRIVATE(&image)->readUnlock();
+    }
+  }
+  return *this;
+}
+
 
 /*!
   Schedule a file for reading. \a cb will be called the first time
@@ -516,16 +550,16 @@ SbImage::scheduleReadFile(SbImageScheduleReadCB * cb,
                           const int numdirectories)
 {
   this->setValue(SbVec3s(0,0,0), 0, NULL);
-  THIS->writeLock();
-  THIS->schedulecb = NULL;
-  THIS->schedulename =
+  PRIVATE(this)->writeLock();
+  PRIVATE(this)->schedulecb = NULL;
+  PRIVATE(this)->schedulename =
     this->searchForFile(filename, searchdirectories, numdirectories);
-  int len = THIS->schedulename.getLength();
+  int len = PRIVATE(this)->schedulename.getLength();
   if (len > 0) {
-    THIS->schedulecb = cb;
-    THIS->scheduleclosure = closure;
+    PRIVATE(this)->schedulecb = cb;
+    PRIVATE(this)->scheduleclosure = closure;
   }
-  THIS->writeUnlock();
+  PRIVATE(this)->writeUnlock();
   return len > 0;
 }
 
@@ -541,7 +575,7 @@ SbImage::hasData(void) const
 {
   SbBool ret;
   this->readLock();
-  ret = THIS->bytes != NULL;
+  ret = PRIVATE(this)->bytes != NULL;
   this->readUnlock();
   return ret;
 }
@@ -556,8 +590,7 @@ SbImage::hasData(void) const
 SbVec3s
 SbImage::getSize(void) const
 {
-  return THIS->size;
+  return PRIVATE(this)->size;
 }
 
-#undef THIS
 #undef PRIVATE

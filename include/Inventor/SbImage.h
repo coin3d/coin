@@ -62,6 +62,7 @@ public:
   int operator!=(const SbImage & image) const {
     return ! operator == (image);
   }
+  SbImage & operator=(const SbImage & image);
 
   static SbString searchForFile(const SbString & basename,
                                 const SbString * const * dirlist,
