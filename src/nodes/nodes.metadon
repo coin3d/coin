@@ -104,11 +104,11 @@
 # ID-------!      SoInfo
 # ID-------!      SoLabel
 # IDT-G---C!      SoLightModel
-#    B -P-C!      SoProfile
-#    ! -!-!!              SoLinearProfile
-#    ! -!-!!              SoNurbsProfile
-#   T-G---C!      SoMaterial
-#   T-G-P-C!      SoMaterialBinding
+# ID-BG-P-C!      SoProfile
+#  D !!-!-!!              SoLinearProfile
+#  D !!-!-!!              SoNurbsProfile
+# IDT-G---C!      SoMaterial
+# IDT-G-P-C!      SoMaterialBinding
 #   --G-P-C!      SoNormal
 #   T-G-P-C!      SoNormalBinding
 #   T-G---C!      SoPackedColor

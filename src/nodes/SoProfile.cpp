@@ -19,58 +19,68 @@
 
 /*!
   \class SoProfile SoProfile.h Inventor/nodes/SoProfile.h
-  \brief The SoProfile class ...
+  \brief The SoProfile class is the abstract superclass for profile definitions.
   \ingroup nodes
 
-  FIXME: write class doc
+  Node subclasses of SoProfile specifies profiles for extruded 3D text
+  and nurbs surface data.
 */
 
 #include <Inventor/nodes/SoProfile.h>
 
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/actions/SoPickAction.h>
-#include <Inventor/elements/SoProfileElement.h>
-#include <Inventor/elements/SoProfileCoordinateElement.h>
 #include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
+#include <Inventor/actions/SoPickAction.h>
+#include <Inventor/elements/SoProfileCoordinateElement.h>
+#include <Inventor/elements/SoProfileElement.h>
 
 /*!
   \enum SoProfile::Profile
-  FIXME: write documentation for enum
+
+  Enumeration of various choices of how to link together multiple
+  profiles.
 */
 /*!
   \var SoProfile::Profile SoProfile::START_FIRST
-  FIXME: write documentation for enum definition
+  Replace the current profile state set with this profile alone.
 */
 /*!
   \var SoProfile::Profile SoProfile::START_NEW
-  FIXME: write documentation for enum definition
+  Append this profile to the state as a new profile.
 */
 /*!
   \var SoProfile::Profile SoProfile::ADD_TO_CURRENT
-  FIXME: write documentation for enum definition
+  Append indices of this node to the last profile.
 */
 
 
 /*!
   \var SoMFInt32 SoProfile::index
-  FIXME: write documentation for field
+
+  Profile coordinate indices.
+
+  These must match what is available from previous
+  SoProfileCoordinate2 and SoProfileCoordinate3 nodes in the
+  traversal.
 */
 /*!
   \var SoSFEnum SoProfile::linkage
-  FIXME: write documentation for field
+
+  How the indices of this profile node should be combined with the
+  current profile index set of the traversal state.
 */
 
 
 /*!
-  \fn void SoProfile::getTrimCurve(SoState * state, int32_t & numPoints, float *& points, int & floatsPerVec, int32_t & numKnots, float *& knotVector)
-  FIXME: write doc
+  \fn void SoProfile::getTrimCurve(SoState * state, int32_t & numpoints, float *& points, int & floatspervec, int32_t & numknots, float *& knotvector)
+  Return \a points and \a knotvector of the \a state.
 */
 
 /*!
-  \fn void SoProfile::getVertices(SoState * state, int32_t & nVertices, SbVec2f *& vertices)
-  FIXME: write doc
+  \fn void SoProfile::getVertices(SoState * state, int32_t & numvertices, SbVec2f *& vertices)
+  Return vertex set of \a state.
 */
 
 
@@ -81,7 +91,7 @@ SO_NODE_ABSTRACT_SOURCE(SoProfile);
 /*!
   Constructor.
 */
-SoProfile::SoProfile()
+SoProfile::SoProfile(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoProfile);
 
@@ -96,83 +106,62 @@ SoProfile::~SoProfile()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoProfile class. This includes setting up the
-  type system, among other things.
-*/
+// Doc from superclass.
 void
 SoProfile::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoProfile);
 
-  SO_ENABLE(SoGetBoundingBoxAction, SoProfileElement);
-  SO_ENABLE(SoGetBoundingBoxAction, SoProfileCoordinateElement);
-
-  SO_ENABLE(SoGLRenderAction, SoProfileElement);
-  SO_ENABLE(SoGLRenderAction, SoProfileCoordinateElement);
-
-  SO_ENABLE(SoPickAction, SoProfileElement);
-  SO_ENABLE(SoPickAction, SoProfileCoordinateElement);
-
+  SO_ENABLE(SoCallbackAction, SoProfileCoordinateElement);
+  SO_ENABLE(SoCallbackAction, SoProfileCoordinateElement);
   SO_ENABLE(SoCallbackAction, SoProfileElement);
-  SO_ENABLE(SoCallbackAction, SoProfileCoordinateElement);
-
+  SO_ENABLE(SoGLRenderAction, SoProfileCoordinateElement);
+  SO_ENABLE(SoGLRenderAction, SoProfileElement);
+  SO_ENABLE(SoGetBoundingBoxAction, SoProfileCoordinateElement);
+  SO_ENABLE(SoGetBoundingBoxAction, SoProfileElement);
   SO_ENABLE(SoGetPrimitiveCountAction, SoProfileElement);
-  SO_ENABLE(SoCallbackAction, SoProfileCoordinateElement);
+  SO_ENABLE(SoPickAction, SoProfileCoordinateElement);
+  SO_ENABLE(SoPickAction, SoProfileElement);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoProfile::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoProfile::doAction(action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoProfile::doAction(SoAction *action)
+SoProfile::doAction(SoAction * action)
 {
   SoProfileElement::add(action->getState(), this);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoProfile::callback(SoCallbackAction *action)
+SoProfile::callback(SoCallbackAction * action)
 {
   SoProfile::doAction(action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
 SoProfile::GLRender(SoGLRenderAction * action)
 {
   SoProfile::doAction(action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoProfile::pick(SoPickAction *action)
+SoProfile::pick(SoPickAction * action)
 {
   SoProfile::doAction(action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoProfile::getPrimitiveCount(SoGetPrimitiveCountAction *action)
+SoProfile::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   SoProfile::doAction(action);
 }
-

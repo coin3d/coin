@@ -19,10 +19,11 @@
 
 /*!
   \class SoNurbsProfile SoNurbsProfile.h Inventor/nodes/SoNurbsProfile.h
-  \brief The SoNurbsProfile class ...
+  \brief The SoNurbsProfile class is a node for specifying smooth profile curves.
   \ingroup nodes
 
-  FIXME: write class doc
+  Use nodes of this type if you want to set up profiles that are
+  smooth curves.
 */
 
 #include <Inventor/nodes/SoNurbsProfile.h>
@@ -31,7 +32,7 @@
 
 /*!
   \var SoMFFloat SoNurbsProfile::knotVector
-  FIXME: write documentation for field
+  Knot values for the nurbs curve.
 */
 
 // *************************************************************************
@@ -41,7 +42,7 @@ SO_NODE_SOURCE(SoNurbsProfile);
 /*!
   Constructor.
 */
-SoNurbsProfile::SoNurbsProfile()
+SoNurbsProfile::SoNurbsProfile(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoNurbsProfile);
 
@@ -55,35 +56,26 @@ SoNurbsProfile::~SoNurbsProfile()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoNurbsProfile class. This includes setting up the
-  type system, among other things.
-*/
+// Doc from superclass.
 void
 SoNurbsProfile::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoNurbsProfile);
 }
 
-
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoNurbsProfile::getTrimCurve(SoState * /* state */, int32_t & /* numPoints */,
-                             float *& /* points */, int & /* floatsPerVec */,
-                             int32_t & /* numKnots */, float *& /* knotVector */)
+SoNurbsProfile::getTrimCurve(SoState * state, int32_t & numpoints,
+                             float *& points, int & floatspervec,
+                             int32_t & numknots, float *& knotvector)
 {
-  COIN_STUB();
+  COIN_STUB(); // FIXME
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoNurbsProfile::getVertices(SoState * /* state */, int32_t & /* nVertices */,
-                            SbVec2f *& /* vertices */)
+SoNurbsProfile::getVertices(SoState * state, int32_t & numvertices,
+                            SbVec2f *& vertices)
 {
-  COIN_STUB();
+  COIN_STUB(); // FIXME
 }

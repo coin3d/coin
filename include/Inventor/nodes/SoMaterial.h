@@ -49,13 +49,6 @@ public:
 
 protected:
   virtual ~SoMaterial();
-
-private:
-  // -- FIXME: not in the OIV API. Remove? 19990611 mortene
-#if 0 // OBSOLETED 1999-12-06, pederb
-  float compareAppearance(int thisIdx,SoMaterial * otherMaterial,int otherIdx);
-  float compareAppearanceVRML2(SoMaterial * otherMaterial);
-#endif // OBSOLETED
 };
 
 #endif // !COIN_SOMATERIAL_H

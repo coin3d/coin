@@ -51,10 +51,10 @@ public:
   virtual void pick(SoPickAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 
-  virtual void getTrimCurve(SoState * state, int32_t & numPoints,
-                            float *& points, int & floatsPerVec,
-                            int32_t & numKnots, float *& knotVector) = 0;
-  virtual void getVertices(SoState * state, int32_t & nVertices,
+  virtual void getTrimCurve(SoState * state, int32_t & numpoints,
+                            float *& points, int & floatspervec,
+                            int32_t & numknots, float *& knotvector) = 0;
+  virtual void getVertices(SoState * state, int32_t & numvertices,
                            SbVec2f *& vertices) = 0;
 
 protected:

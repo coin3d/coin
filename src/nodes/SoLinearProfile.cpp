@@ -19,10 +19,11 @@
 
 /*!
   \class SoLinearProfile SoLinearProfile.h Inventor/nodes/SoLinearProfile.h
-  \brief The SoLinearProfile class ...
+  \brief The SoLinearProfile class is a node for specifying linear profile curves.
   \ingroup nodes
 
-  FIXME: write class doc
+  Use nodes of this type if you want to set up profiles that are
+  simply straight lines connected by control points.
 */
 
 #include <Inventor/nodes/SoLinearProfile.h>
@@ -36,7 +37,7 @@ SO_NODE_SOURCE(SoLinearProfile);
 /*!
   Constructor.
 */
-SoLinearProfile::SoLinearProfile()
+SoLinearProfile::SoLinearProfile(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoLinearProfile);
 }
@@ -48,34 +49,26 @@ SoLinearProfile::~SoLinearProfile()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoLinearProfile class. This includes setting up the
-  type system, among other things.
-*/
+// Doc from superclass.
 void
 SoLinearProfile::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoLinearProfile);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoLinearProfile::getTrimCurve(SoState * /* state */, int32_t & /* numPoints */,
-                              float *& /* points */, int & /* floatsPerVec */,
-                              int32_t & /* numKnots */, float *& /* knotVector */)
+SoLinearProfile::getTrimCurve(SoState * state, int32_t & numpoints,
+                              float *& points, int & floatspervec,
+                              int32_t & numknots, float *& knotvector)
 {
-  COIN_STUB();
+  COIN_STUB(); // FIXME
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoLinearProfile::getVertices(SoState * /* state */, int32_t & /* nVertices */,
-                             SbVec2f *& /* vertices */)
+SoLinearProfile::getVertices(SoState * state, int32_t & numvertices,
+                             SbVec2f *& vertices)
 {
-  COIN_STUB();
+  COIN_STUB(); // FIXME
 }

@@ -19,68 +19,73 @@
 
 /*!
   \class SoMaterial SoMaterial.h Inventor/nodes/SoMaterial.h
-  \brief The SoMaterial class ...
+  \brief The SoMaterial class is a node type for setting up material values for scene geometry.
   \ingroup nodes
 
-  FIXME: write class doc
+  Subsequent geometry-type nodes in the scene graph will use values
+  from the material "pool" of the traversal state.
+
+  Note that values from a material node will \e replace the previous
+  values from in the traversal state.
+
+  \sa SoMaterialBinding
 */
 
 #include <Inventor/nodes/SoMaterial.h>
 
-
-#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/elements/SoGLAmbientColorElement.h>
 #include <Inventor/elements/SoGLDiffuseColorElement.h>
 #include <Inventor/elements/SoGLEmissiveColorElement.h>
-#include <Inventor/elements/SoGLSpecularColorElement.h>
-#include <Inventor/elements/SoGLShininessElement.h>
-#include <Inventor/elements/SoTransparencyElement.h>
 #include <Inventor/elements/SoGLPolygonStippleElement.h>
+#include <Inventor/elements/SoGLShininessElement.h>
+#include <Inventor/elements/SoGLSpecularColorElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/elements/SoTransparencyElement.h>
 
 /*!
   \var SoMFColor SoMaterial::ambientColor
-  FIXME: write documentation for field
+
+  Ambient material part color values.
+
+  The ambient part of the material is not influenced by the lights in
+  the scene, but which is always added to the geometry surfaces.
 */
 /*!
   \var SoMFColor SoMaterial::diffuseColor
-  FIXME: write documentation for field
+
+  Diffuse material part color values.
+
+  The diffuse part is combined with the light emitted from the scene's
+  light sources.
 */
 /*!
   \var SoMFColor SoMaterial::specularColor
-  FIXME: write documentation for field
+
+  Specular material part color values.
 */
 /*!
   \var SoMFColor SoMaterial::emissiveColor
-  FIXME: write documentation for field
+
+  The color of the light "emitted" by the geometry surfaces.
 */
 /*!
   \var SoMFFloat SoMaterial::shininess
-  FIXME: write documentation for field
+
+  Shininess values. Decides how the light from light sources are
+  distributed across the geometry surfaces. Valid range is from 0.0
+  (which gives a dim appearance), to 1.0 (glossy-looking surfaces).
 */
 /*!
   \var SoMFFloat SoMaterial::transparency
-  FIXME: write documentation for field
+
+  Transparency values. Valid range is from 0.0 (completely opaque,
+  which is the default) to 1.0 (completely transparent,
+  i.e. invisible).
 */
 
-
-// *************************************************************************
-
-// FIXME: old crust, find a good place to store this code. 19980913 mortene.
-#if 0 // OBSOLETED 1999-12-04, pederb
-static float
-compareAppearance(SoMFColor * firstColor, int firstIdx,
-                   SoMFColor * otherColor, int otherIdx)
-{
-  if (firstColor->isDefault() && otherColor->isDefault()) return 0.0f;
-  return 0.299 * pow(firstColor->getValues(0)[firstIdx][0]-otherColor->getValues(0)[otherIdx][0],2)
-+
-    0.587 * pow(firstColor->getValues(0)[firstIdx][1]-otherColor->getValues(0)[otherIdx][1],2)+
-    0.114 * pow(firstColor->getValues(0)[firstIdx][2]-otherColor->getValues(0)[otherIdx][2],2);
-}
-#endif // OBSOLETED
 
 // *************************************************************************
 
@@ -89,16 +94,16 @@ SO_NODE_SOURCE(SoMaterial);
 /*!
   Constructor.
 */
-SoMaterial::SoMaterial()
+SoMaterial::SoMaterial(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoMaterial);
 
-  SO_NODE_ADD_FIELD(ambientColor,(0.2f, 0.2f, 0.2f));
-  SO_NODE_ADD_FIELD(diffuseColor,(0.8f, 0.8f, 0.8f));
-  SO_NODE_ADD_FIELD(specularColor,(0.0f, 0.0f, 0.0f));
-  SO_NODE_ADD_FIELD(emissiveColor,(0.0f, 0.0f, 0.0f));
-  SO_NODE_ADD_FIELD(shininess,(0.2f));
-  SO_NODE_ADD_FIELD(transparency,(0.0f));
+  SO_NODE_ADD_FIELD(ambientColor, (0.2f, 0.2f, 0.2f));
+  SO_NODE_ADD_FIELD(diffuseColor, (0.8f, 0.8f, 0.8f));
+  SO_NODE_ADD_FIELD(specularColor, (0.0f, 0.0f, 0.0f));
+  SO_NODE_ADD_FIELD(emissiveColor, (0.0f, 0.0f, 0.0f));
+  SO_NODE_ADD_FIELD(shininess, (0.2f));
+  SO_NODE_ADD_FIELD(transparency, (0.0f));
 }
 
 /*!
@@ -108,11 +113,7 @@ SoMaterial::~SoMaterial()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoMaterial class. This includes setting up the
-  type system, among other things.
-*/
+// Doc from superclass.
 void
 SoMaterial::initClass(void)
 {
@@ -141,48 +142,18 @@ SoMaterial::initClass(void)
   SO_ENABLE(SoCallbackAction, SoTransparencyElement);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoMaterial::GLRender(SoGLRenderAction * action)
 {
   SoMaterial::doAction(action);
 }
 
-//
-// Compares materials
-// FIXME: Better compare function
-
-#if 0 // OBSOLETED 1999-12-06, pederb
-float
-SoMaterial::compareAppearance(int thisIdx,SoMaterial * otherMaterial,int otherIdx)
-{
-  return 0.25 *(::compareAppearance(&(this->ambientColor), thisIdx,&(otherMaterial->ambientColor),otherIdx)+
-               ::compareAppearance(&(this->diffuseColor), thisIdx,&(otherMaterial->diffuseColor),otherIdx)+
-               ::compareAppearance(&(this->specularColor), thisIdx,&(otherMaterial->specularColor),otherIdx)+
-               ::compareAppearance(&(this->emissiveColor), thisIdx,&(otherMaterial->emissiveColor),otherIdx));
-}
-
-//
-// Compares materials
-// FIXME: Better compare function
-float
-SoMaterial::compareAppearanceVRML2(SoMaterial * otherMaterial)
-{
-  return 0.25 *(::compareAppearance(&(this->diffuseColor), 0,&(otherMaterial->diffuseColor),0)+
-               ::compareAppearance(&(this->specularColor), 0,&(otherMaterial->specularColor),0)+
-               ::compareAppearance(&(this->emissiveColor), 0,&(otherMaterial->emissiveColor),0));
-}
-#endif // OBSOLETED
-
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoMaterial::doAction(SoAction *action)
+SoMaterial::doAction(SoAction * action)
 {
-  SoState *state = action->getState();
+  SoState * state = action->getState();
 
   uint32_t flags = SoOverrideElement::getFlags(state);
 #define TEST_OVERRIDE(bit) ((SoOverrideElement::bit & flags) != 0)
@@ -245,11 +216,9 @@ SoMaterial::doAction(SoAction *action)
 #undef TEST_OVERRIDE
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoMaterial::callback(SoCallbackAction *action)
+SoMaterial::callback(SoCallbackAction * action)
 {
   SoMaterial::doAction(action);
 }
