@@ -250,6 +250,11 @@ fi
 #  Initialize libtool
 AC_PROG_LIBTOOL
 
+case $host_os in
+darwin6.* ) sim_ac_macosx_10_2=true ;;
+* )         sim_ac_macosx_10_2=false ;;
+esac
+
 AM_CONDITIONAL([MAC_FRAMEWORK], [$sim_ac_framework])
 AM_CONDITIONAL([MACOSX_10_2], [$sim_ac_macosx_10_2])
 

@@ -8248,6 +8248,11 @@ LIBTOOL='$(SHELL) $(top_builddir)/libtool'
 
 
 
+case $host_os in
+darwin6.* ) sim_ac_macosx_10_2=true ;;
+* )         sim_ac_macosx_10_2=false ;;
+esac
+
 
 
 if $sim_ac_framework; then
