@@ -39,6 +39,7 @@ int coin_default2dfont_get_size(void);
 const float ** coin_default3dfont_get_coords(void);
 const int ** coin_default3dfont_get_faceidx(void);
 const int ** coin_default3dfont_get_edgeidx(void);
+const float coin_default3dfont_get_advance(int charidx);
 
 #ifdef __cplusplus
 } /* extern "C" */

@@ -97,6 +97,7 @@ struct cc_flw_glyph {
   unsigned int glyph;
   struct cc_flw_bitmap * bitmap;
   SbBool fromdefaultfont;
+  uint32_t charidx;
 };
 
 struct cc_flw_font {
@@ -151,6 +152,7 @@ glyphstruct_new(void)
   gs->glyph = 0;
   gs->bitmap = NULL;
   gs->fromdefaultfont = FALSE;
+  gs->charidx = 0;
   return gs;
 }
 
@@ -666,6 +668,7 @@ cc_flw_get_glyph(unsigned int font, unsigned int charidx)
     struct cc_flw_glyph * gs = glyphstruct_new();
     gs->glyph = charidx;
     gs->fromdefaultfont = TRUE;
+    gs->charidx = charidx;
     cc_dynarray_append(fs->glypharray, gs);
     fsid = cc_dynarray_length(fs->glypharray) - 1;
   }
@@ -688,8 +691,7 @@ cc_flw_get_bitmap_advance(unsigned int font, unsigned int glyph, int * x, int * 
   *x = *y = 0;
 
   if (fs->defaultfont || gs->fromdefaultfont) {
-    *x = 7;
-    *y = 0;
+    *x = 7; /* All chars are equal in width. No need for a lookup table */
   }
   else {
     if (win32api) { cc_flww32_get_bitmap_advance(fs->font, gs->glyph, x, y); }
@@ -713,9 +715,7 @@ cc_flw_get_vector_advance(unsigned int font, unsigned int glyph, float * x, floa
   *x = *y = 0.0f;
 
   if (fs->defaultfont || gs->fromdefaultfont) {
-    /* FIXME: This is not good enough. Temporarily hack. 20030923 handegar */
-    *x = 0.5f;
-    *y = 0;
+    *x = coin_default3dfont_get_advance(gs->charidx);
   }
   else {
     if (win32api) { cc_flww32_get_vector_advance(fs->font, gs->glyph, x, y); }
