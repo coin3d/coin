@@ -360,8 +360,10 @@ public:
      idx(32),
      gen(TRUE),
      tess(tess_callback, this),
-     dirty(TRUE),
-     rwmutex(SbRWMutex::READ_PRECEDENCE)
+#ifdef COIN_THREADSAFE
+     rwmutex(SbRWMutex::READ_PRECEDENCE),
+#endif // COIN_THREADSAFE
+     dirty(TRUE)
   {
   }
 
@@ -371,13 +373,14 @@ public:
   SbList <int> idx;
   SoNormalGenerator gen;
   SbTesselator tess;
-  SbBool dirty;
   static void tess_callback(void *, void *, void *, void *);
   void generateCoords(void);
   void generateNormals(void);
 #ifdef COIN_THREADSAFE
   SbRWMutex rwmutex;
 #endif // COIN_THREADSAFE
+  SbBool dirty;
+
   void readLock(void) {
 #ifdef COIN_THREADSAFE
     this->rwmutex.readLock();
