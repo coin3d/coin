@@ -60,7 +60,7 @@
   camera viewport.)
 
   Storing data members as fields also provides other conveniences for
-  the application prgrammer:
+  the application programmer:
 
   \li Fields can be connected to other fields. This makes it for
       instance possible to have "self-updating" scenes, ie you can set

@@ -889,7 +889,6 @@ SoBase::shouldWrite(void)
 
 /*!
   \COININTERNAL
-  Don't know what this is good for.
 */
 void
 SoBase::incrementCurrentWriteCounter(void)
@@ -899,8 +898,7 @@ SoBase::incrementCurrentWriteCounter(void)
 
 /*!
   \COININTERNAL
-  Don't know what this is good for.
- */
+*/
 void
 SoBase::decrementCurrentWriteCounter(void)
 {
@@ -1399,8 +1397,7 @@ SoBase::getFileFormatName(void) const
 
 /*!
   \COININTERNAL
-  Don't know what this is good for.
- */
+*/
 uint32_t
 SoBase::getCurrentWriteCounter(void)
 {

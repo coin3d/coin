@@ -34,6 +34,31 @@
   The SoPointSet::numPoints field specifies the number of points in
   the coordinate set which should be rendered (or otherwise handled by
   traversal actions).
+
+  Here's a simple usage example of SoPointSet in a scenegraph:
+
+  \verbatim
+  #Inventor V2.1 ascii
+  
+  Separator {
+     Material {
+        diffuseColor [
+         1 0 0, 0 1 0, 0 0 1, 1 1 0, 1 0 1, 1 1 1, 1 0.8 0.6, 0.6 0.8 1
+        ]
+     }
+     MaterialBinding { value PER_PART }
+  
+     Coordinate3 {
+        point [
+         -1 1 0, -1 -1 0, 1 -1 0, 1 1 0, 0 2 -1, -2 0 -1, 0 -2 -1, 2 0 -1
+        ]
+     }
+  
+     DrawStyle { pointSize 3 }
+  
+     PointSet { }
+  }
+  \endverbatim
 */
 
 #include <Inventor/nodes/SoPointSet.h>

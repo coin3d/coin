@@ -30,7 +30,10 @@
   setValuesPointer() method. See SoMField documentation for
   information on how to use this function.
 
-  FIXME: write class doc
+  This field is used where nodes, engines or other field containers
+  needs to store a group of multiple short unsigned integer values.
+
+  \sa SoSFUShort
 */
 
 #include <Inventor/fields/SoMFUShort.h>

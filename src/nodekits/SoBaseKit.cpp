@@ -595,6 +595,31 @@ SO_KIT_SOURCE(SoBaseKit);
 
 /*!
   Constructor.
+
+  This is the top-level superclass of all node kit and dragger
+  classes. The catalog structure of SoBaseKit is as follows:
+
+  \verbatim
+  CLASS SoBaseKit
+  -->"this"
+  -->   "callbackList"
+  \endverbatim
+
+  \NODEKIT_POST_DIAGRAM
+
+  \NODEKIT_PRE_TABLE
+
+  \verbatim
+  CLASS SoBaseKit
+  PVT   "this",  SoBaseKit  --- 
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
+  \endverbatim
+
+  \NODEKIT_POST_TABLE
+
+  As can be seen from the catalog, all node kits can have a callback
+  node in front of all other nodes in the kit. This is handy for
+  catching events that should go to application processing.
 */
 SoBaseKit::SoBaseKit(void)
 {
