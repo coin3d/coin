@@ -1220,7 +1220,7 @@ SoDB::addConverter(SoType from, SoType to, SoType converter)
   uint32_t convtype = (uint32_t)converter.getKey();
 
   SbBool nonexist = SoDBP::converters->enter((unsigned long)linkid,
-                                            (void *)convtype);
+                                            (void *) ((uintptr_t) convtype));
   if (!nonexist) {
 #if COIN_DEBUG
     SoDebugError::postWarning("SoDB::addConverter",

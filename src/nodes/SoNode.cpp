@@ -1385,7 +1385,7 @@ SoNode::setCompatibilityTypes(const SoType & nodetype, const uint32_t bitmask)
 {
   assert(SoNode::compatibilitydict);
   assert(nodetype.isDerivedFrom(SoNode::getClassTypeId()));
-  SoNode::compatibilitydict->enter((unsigned long) nodetype.getKey(), (void*) bitmask);
+  SoNode::compatibilitydict->enter((unsigned long) nodetype.getKey(), (void*) ((uintptr_t) bitmask));
 }
 
 //

@@ -235,7 +235,7 @@ SoSceneManager::render(SoGLRenderAction * action,
     // is set by SoGLRenderAction before rendering.  It might not be
     // correct when we get here.
     // This callback is removed again in the prerendercb function
-    action->addPreRenderCallback(PRIVATE(this)->prerendercb, (void*) mask);
+    action->addPreRenderCallback(PRIVATE(this)->prerendercb, (void*) (uintptr_t) mask);
   }
 
   if (initmatrices) {

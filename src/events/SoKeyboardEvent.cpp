@@ -134,7 +134,7 @@ build_convert_dicts(void)
   ADD_KEY(GRAVE,'`');
 
   for (i = (int) SoKeyboardEvent::A; i <= (int) SoKeyboardEvent::Z; i++) {
-    d->enter((unsigned long) i, (void*) ('a' + i - (int) SoKeyboardEvent::A));
+    d->enter((unsigned long) i, (void *) ((uintptr_t) ('a' + i - (int) SoKeyboardEvent::A)));
   }
 
   // shift down
@@ -181,7 +181,7 @@ build_convert_dicts(void)
   ADD_KEY(GRAVE,'~');
 
   for (i = (int) SoKeyboardEvent::A; i <= (int) SoKeyboardEvent::Z; i++) {
-    d->enter((unsigned long) i, (void*) ('A' + i - (int) SoKeyboardEvent::A));
+    d->enter((unsigned long) i, (void *) ((uintptr_t) ('A' + i - (int) SoKeyboardEvent::A)));
   }
 #undef ADD_KEY
 }

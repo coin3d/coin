@@ -238,7 +238,7 @@ get_current_writeref(const SoBase * base)
   void * val;
   SbBool found = writerefs->find((unsigned long)base, val);
   int refcount = 0;
-  if (found) { refcount = (int)((long)val); }
+  if (found) { refcount = (int)((intptr_t) val); }
   return refcount;
 }
 
@@ -246,7 +246,7 @@ static inline void
 set_current_writeref(const SoBase * base, const int rc)
 {
   assert(rc >= 0 && "buggy writerefcounter");
-  (void)writerefs->enter((unsigned long)base, (void *)rc);
+  (void)writerefs->enter((unsigned long)base, (void *) ((uintptr_t) rc));
 }
 
 static SbBool

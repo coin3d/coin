@@ -211,7 +211,7 @@ SoType::createType(const SoType parent, const SbName name,
   // casting from int16_t to void*.
   uint32_t mapval = (uint32_t)newType.getKey();
 
-  SoType::typedict->enter((unsigned long)name.getString(), (void *)mapval);
+  SoType::typedict->enter((unsigned long)name.getString(), (void *) ((uintptr_t) mapval));
   return newType;
 }
 
