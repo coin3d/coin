@@ -114,6 +114,9 @@
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/VRMLnodes/SoVRMLFontStyle.h>
 
+#include <Inventor/elements/SoFontNameElement.h>
+#include <Inventor/elements/SoFontSizeElement.h>
+
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -130,6 +133,7 @@
 #include <Inventor/nodes/SoAsciiText.h>
 
 
+#include "../fonts/glyph3d.h"
 
 static void fontstylechangeCB(void * data, SoSensor * sensor);
 
@@ -139,9 +143,10 @@ public:
   SoVRMLText * master;
 
   float getWidth(const int idx, const float fontsize);
-  SbList <const SoGlyph *> glyphs;
   SbList <float> glyphwidths;
   SbBool needsetup;
+  cc_font_specification * fontspec;
+
   void setUpGlyphs(SoState * state, SoVRMLText * textnode);
 
   SoFieldSensor * fontstylesensor;
@@ -200,6 +205,8 @@ SoVRMLText::SoVRMLText(void)
   PRIVATE(this)->fontstylesensor->attach(&fontStyle);
   PRIVATE(this)->fontstylesensor->setPriority(0);
   
+  PRIVATE(this)->fontspec = NULL;
+
 }
 
 float
@@ -217,11 +224,16 @@ SoVRMLTextP::getWidth(const int idx, const float fontsize)
 */
 SoVRMLText::~SoVRMLText()
 {
-  // unref() glyphs before the list get destructed.
-  for (int j = 0; j < PRIVATE(this)->glyphs.getLength(); j++) {
-    PRIVATE(this)->glyphs[j]->unref();
+
+  if (PRIVATE(this)->fontspec != NULL) {
+    cc_string_destruct(PRIVATE(this)->fontspec->name);
+    if (PRIVATE(this)->fontspec->family != NULL)
+      cc_string_destruct(PRIVATE(this)->fontspec->family);
+    if (PRIVATE(this)->fontspec->style != NULL)
+      cc_string_destruct(PRIVATE(this)->fontspec->style);
+    delete PRIVATE(this)->fontspec;
   }
-  
+
   delete PRIVATE(this)->fontstylesensor;
   delete PRIVATE(this);
 }
@@ -284,7 +296,7 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
     // http://xsun.sdct.itl.nist.gov/mkass-bin/write_list.pl?mix-compexp
     // for an example. (13Aug2003 handegar)
 
-    float stretchlength = 0;
+    float stretchlength = 0.0f;
     if (i < this->length.getNum()) 
       stretchlength = this->length[i];
     float stretchfactor = (stretchlength * PRIVATE(this)->textsize) / strlen(str);
@@ -302,7 +314,7 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
       
       switch (PRIVATE(this)->justificationmajor) {
       case SoAsciiText::LEFT:
-        xpos = 0;
+        xpos = 0.0f;
         break;
       case SoAsciiText::CENTER:
         if (PRIVATE(this)->lefttorighttext)
@@ -377,28 +389,41 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
     }
      
 
-    const SoGlyph * lastglyph = NULL;
+    const cc_glyph3d * lastglyph = NULL;
 
     while (*str++) {
-      const SoGlyph * glyph = PRIVATE(this)->glyphs[glyphidx++];
-      float width = glyph->getWidth();
+
+      cc_glyph3d * glyph = cc_glyph3d_getglyph(*(str-1), PRIVATE(this)->fontspec);
+
+      float width = cc_glyph3d_getwidth(glyph);
       if (width == 0) 
         width = PRIVATE(this)->textsize / 3; // SPACE width is always == 0...
 
       // Kerning adjustments
-      if (lastglyph != NULL) 
-        xpos += ((float) lastglyph->getKerning(*PRIVATE(this)->glyphs[glyphidx-1])[0])/PRIVATE(this)->textsize; 
+      if (lastglyph != NULL) {
+        float kerningx = 0.0f;
+        float kerningy = 0.0f;
+        // FIXME: Must implement proper kerning support here. (20030910 handegar)
+        //cc_glyph3d_getkerning(lastglyph, PRIVATE(this)->glyphs[glyphidx-1][0], &kerningx, &kerningy)/PRIVATE(this)->textsize;         
+        xpos += kerningx;
+      }
+
       lastglyph = glyph;
 
-
-      const SbVec2f * coords = glyph->getCoords();
-      const int * ptr = glyph->getFaceIndices();
+      const SbVec2f * coords = (SbVec2f *) cc_glyph3d_getcoords(glyph);
+      const int * ptr = cc_glyph3d_getfaceindices(glyph);
 
       if (PRIVATE(this)->horizontaltext) {
         if (!PRIVATE(this)->lefttorighttext) {// Right to left text.
-          xpos -= ((glyph->getWidth()*PRIVATE(this)->textsize) + stretchfactor) * compressfactor;
-          if (lastglyph != NULL) 
-            xpos -= ((float) lastglyph->getKerning(*PRIVATE(this)->glyphs[glyphidx-1])[0])/PRIVATE(this)->textsize;           
+          xpos -= (width + stretchfactor) * compressfactor * PRIVATE(this)->textsize;
+
+          if (lastglyph != NULL) {
+            float kerningx = 0.0f;
+            float kerningy = 0.0f;
+            // FIXME: Must implement proper kerning support here. (20030910 handegar)
+            //cc_glyph3d_getkerning(lastglyph, PRIVATE(this)->glyphs[glyphidx-1][0], &kerningx, &kerningy)/PRIVATE(this)->textsize;         
+            xpos += kerningx;
+          }
         }
       }             
 
@@ -425,15 +450,12 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
       if (!PRIVATE(this)->horizontaltext) {
         
         if (PRIVATE(this)->toptobottomtext)
-          ypos -= PRIVATE(this)->textsize;//maxglyphheight;
+          ypos -= PRIVATE(this)->textsize;
         else 
-          ypos += PRIVATE(this)->textsize;//maxglyphheight;
+          ypos += PRIVATE(this)->textsize;
         
       } else if (PRIVATE(this)->lefttorighttext) {
-        xpos += (width + stretchfactor) * compressfactor;
-        //xpos += ((glyph->getWidth()*PRIVATE(this)->textsize) + stretchfactor) * compressfactor;
-        
-        
+        xpos += (width + stretchfactor) * compressfactor * PRIVATE(this)->textsize;
       }
     }
 
@@ -443,8 +465,6 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
       else
         ypos += spacing * PRIVATE(this)->maxglyphheight;
     }
-
-
    
   }
   glEnd();
@@ -457,21 +477,26 @@ SoVRMLText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   PRIVATE(this)->setUpGlyphs(action->getState(), this);
 
-  if (action->is3DTextCountedAsTriangles()) {
-    const int n = PRIVATE(this)->glyphs.getLength();
-    int numtris = 0;
-    for (int i = 0; i < n; i++) {
-      const SoGlyph * glyph = PRIVATE(this)->glyphs[i];
-      int cnt = 0;
-      const int * ptr = glyph->getFaceIndices();
-      while (*ptr++ >= 0) cnt++;
-      numtris += cnt / 3;
+  if (action->is3DTextCountedAsTriangles()) {        
+    int lines = this->string.getNum();
+    int numtris = 0;      
+    for (int i = 0;i < lines; ++i) {
+      int n = this->string[i].getLength();
+      const char * str = this->string[i].getString();
+      for (int j = 0; j < n; j++) {
+        cc_glyph3d * glyph = cc_glyph3d_getglyph(*str++, PRIVATE(this)->fontspec);
+        int cnt = 0;
+        const int * ptr = cc_glyph3d_getfaceindices(glyph);
+        while (*ptr++ >= 0) cnt++;
+        numtris += cnt / 3;
+      }
     }
     action->addNumTriangles(numtris);
   }
   else {
     action->addNumText(this->string.getNum());
   }
+
 }
 
 // Doc in parent
@@ -501,12 +526,6 @@ SoVRMLText::computeBBox(SoAction * action,
 
   int i;
   const int n = this->string.getNum();
-  if (n == 0 || PRIVATE(this)->glyphs.getLength() == 0) {
-    center = SbVec3f(0.0f, 0.0f, 0.0f);
-    box.setBounds(center, center);
-    return;
-  }
-
   const float linespacing = PRIVATE(this)->textspacing * PRIVATE(this)->maxglyphheight;
 
   float maxw = FLT_MIN;
@@ -516,14 +535,9 @@ SoVRMLText::computeBBox(SoAction * action,
     maxstringchars = SbMax(maxstringchars, this->string[i].getLength());
   }
 
-  SbBox2f maxbox;
-  int numglyphs = PRIVATE(this)->glyphs.getLength();
-  for (i = 0; i < numglyphs; i++) 
-    maxbox.extendBy(PRIVATE(this)->glyphs[i]->getBoundingBox());  
-  float maxglyphsize = PRIVATE(this)->maxglyphheight;
+  float maxglyphsize = PRIVATE(this)->maxglyphheight;  
+  float maxlength = 0.0f;
 
-  
-  float maxlength = 0;
   for (i = 0; i < this->length.getNum();++i) 
     maxlength = SbMax(maxlength, this->length[i]);
   float stretchfactor = (maxlength * PRIVATE(this)->textsize);
@@ -531,32 +545,39 @@ SoVRMLText::computeBBox(SoAction * action,
   float maxy, miny;
   float minx, maxx;
   
+  // FIXME: Glyphs which have parts below the writing line (ie. 'q',
+  // 'g' etc.) are not completely inside the boundingbox. Must
+  // fix. (20030910 handegar)
 
   if (PRIVATE(this)->horizontaltext) {  // -- Horizontal text -----------------
     
     if (PRIVATE(this)->toptobottomtext) {
-      maxy = PRIVATE(this)->textsize * maxbox.getMax()[1];
-      miny = maxy - (maxglyphsize + (n-1) * PRIVATE(this)->textspacing * maxglyphsize);           
+      miny = -PRIVATE(this)->textsize * PRIVATE(this)->textspacing * (n-1);
+      maxy = PRIVATE(this)->textsize;
     } 
     else {
-      miny = 0;
-      maxy = (maxglyphsize + (n-1) * PRIVATE(this)->textspacing);    
+      miny = 0.0f;
+      maxy = PRIVATE(this)->textsize * PRIVATE(this)->textspacing * (n-1);
     }
     
     minx = 0.0f;  
-    maxx = maxw + stretchfactor;
+    maxx = (maxw + stretchfactor) * PRIVATE(this)->textsize;
  
     switch (PRIVATE(this)->justificationmajor) {
     case SoAsciiText::LEFT:
+      if (!PRIVATE(this)->lefttorighttext) {
+        maxx -= (maxw + stretchfactor) * PRIVATE(this)->textsize;
+        minx -= (maxw + stretchfactor) * PRIVATE(this)->textsize;
+      }
       break;
     case SoAsciiText::RIGHT:
       if (PRIVATE(this)->lefttorighttext) {
-        maxx = 0;
-        minx = -maxw  * PRIVATE(this)->textsize; 
+        maxx = 0.0f;
+        minx = -maxw * PRIVATE(this)->textsize; 
       }
       else {
-        minx = 0;
-        maxx = maxw  * PRIVATE(this)->textsize;      
+        minx = 0.0f;
+        maxx = maxw * PRIVATE(this)->textsize;      
       }
       break;
     case SoAsciiText::CENTER:
@@ -573,12 +594,12 @@ SoVRMLText::computeBBox(SoAction * action,
     case SoAsciiText::LEFT:
       break;
     case SoAsciiText::RIGHT:
-      miny += ((n-1) * PRIVATE(this)->maxglyphheight);
-      maxy += ((n-1) * PRIVATE(this)->maxglyphheight);
+      miny += ((n-1) * PRIVATE(this)->textsize);
+      maxy += ((n-1) * PRIVATE(this)->textsize);
       break;
     case SoAsciiText::CENTER:
-      miny += ((n-1) * PRIVATE(this)->maxglyphheight) * 0.5f;
-      maxy += ((n-1) * PRIVATE(this)->maxglyphheight) * 0.5f;
+      miny += ((n-1) * PRIVATE(this)->textsize) * 0.5f;
+      maxy += ((n-1) * PRIVATE(this)->textsize) * 0.5f;
       break;
     default:
       break;
@@ -589,7 +610,7 @@ SoVRMLText::computeBBox(SoAction * action,
 
 
     if (PRIVATE(this)->lefttorighttext) {
-      minx = 0;
+      minx = 0.0f;
       maxx = ((n-1) * linespacing) + PRIVATE(this)->textsize;
     }
     else {
@@ -605,11 +626,11 @@ SoVRMLText::computeBBox(SoAction * action,
     // yet... Might be wrong but it works for horizontal
     // text. (27Aug2003 handegar)
     if (PRIVATE(this)->toptobottomtext) {
-      maxy = 0;
-      miny = -maxstringchars - stretchfactor;
+      maxy = 0.0f;
+      miny = -maxstringchars*PRIVATE(this)->textsize - stretchfactor;
     }
     else {
-      miny = 0;
+      miny = 0.0f;
       maxy = maxstringchars + stretchfactor;
     }
 
@@ -683,7 +704,7 @@ SoVRMLText::generatePrimitives(SoAction * action)
     float xpos = 0.0f;
     const char * str = this->string[i].getString();
     
-    float stretchlength = 0;
+    float stretchlength = 0.0f;
     if (i < this->length.getNum()) 
       stretchlength = this->length[i];
     float stretchfactor = (stretchlength * PRIVATE(this)->textsize) / strlen(str);
@@ -701,7 +722,7 @@ SoVRMLText::generatePrimitives(SoAction * action)
       
       switch (PRIVATE(this)->justificationmajor) {
       case SoAsciiText::LEFT:
-        xpos = 0;
+        xpos = 0.0f;
         break;
       case SoAsciiText::CENTER:
         if (PRIVATE(this)->lefttorighttext)
@@ -742,7 +763,7 @@ SoVRMLText::generatePrimitives(SoAction * action)
         
       switch (PRIVATE(this)->justificationmajor) {
       case SoAsciiText::LEFT:        
-        ypos = 0;
+        ypos = 0.0f;
         break;
       case SoAsciiText::RIGHT:
         if (PRIVATE(this)->toptobottomtext)
@@ -779,13 +800,16 @@ SoVRMLText::generatePrimitives(SoAction * action)
     
     while (*str++) {
       detail.setCharacterIndex(charidx++);
-      const SoGlyph * glyph = PRIVATE(this)->glyphs[glyphidx++];
-      const SbVec2f * coords = glyph->getCoords();
-      const int * ptr = glyph->getFaceIndices();
+
+      cc_glyph3d * glyph = cc_glyph3d_getglyph(*(str-1), PRIVATE(this)->fontspec);
+
+
+      const SbVec2f * coords = (SbVec2f *) cc_glyph3d_getcoords(glyph);
+      const int * ptr = cc_glyph3d_getfaceindices(glyph);
 
       if (PRIVATE(this)->horizontaltext) {
         if (!PRIVATE(this)->lefttorighttext)
-          xpos -= ((glyph->getWidth() * PRIVATE(this)->textsize) + stretchfactor) * compressfactor;
+          xpos -= ((cc_glyph3d_getwidth(glyph) * PRIVATE(this)->textsize) + stretchfactor) * compressfactor;
       }             
 
       while (*ptr >= 0) {
@@ -811,7 +835,7 @@ SoVRMLText::generatePrimitives(SoAction * action)
         else 
           ypos += PRIVATE(this)->textsize;       
       } else if (PRIVATE(this)->lefttorighttext)
-        xpos += ((glyph->getWidth() * PRIVATE(this)->textsize) + stretchfactor) * compressfactor; 
+        xpos += ((cc_glyph3d_getwidth(glyph) * PRIVATE(this)->textsize) + stretchfactor) * compressfactor; 
     }
 
     if (PRIVATE(this)->horizontaltext) {
@@ -820,7 +844,6 @@ SoVRMLText::generatePrimitives(SoAction * action)
       else
         ypos += spacing;
     }
-
 
   }
 
@@ -840,11 +863,14 @@ SoVRMLTextP::setUpGlyphs(SoState * state, SoVRMLText * textnode)
   if (!this->needsetup) return;
   this->needsetup = FALSE;
 
-  // store old glyphs to avoid freeing glyphs too soon
-  SbList<const SoGlyph *> oldglyphs;
-  oldglyphs = this->glyphs;
+  // Build up font-spesification struct  
+  this->fontspec = new cc_font_specification;
+  this->fontspec->name = cc_string_construct_new();
+  cc_string_set_text(this->fontspec->name, SoFontNameElement::get(state).getString());
+  this->fontspec->family = NULL;
+  this->fontspec->style = NULL;
+  this->fontspec->size = SoFontSizeElement::get(state);
 
-  this->glyphs.truncate(0);
   this->glyphwidths.truncate(0);
 
   for (int i = 0; i < textnode->string.getNum(); i++) {
@@ -855,38 +881,25 @@ SoVRMLTextP::setUpGlyphs(SoState * state, SoVRMLText * textnode)
     // set up to 127) be expanded to huge int numbers that turn
     // negative when casted to integer size.
     const unsigned char * ptr = (const unsigned char *)s.getString();
-    float width = 0.0f;
+    float stringwidth = 0.0f;
     float glyphwidth = 0.0f;
+
     for (int j = 0; j < strlen; j++) {
+   
+      cc_glyph3d * glyph = cc_glyph3d_getglyph(ptr[j], this->fontspec);
 
-      // FIXME: This 'getGlyph' call is obsolete. Should call the
-      // other one which is based on the current state instead
-      // (20Aug2003 handegar)
-      //const SoGlyph * glyph = SoGlyph::getGlyph(ptr[j], SbName("default"));
-      const SoGlyph * glyph = SoGlyph::getGlyph(state, (unsigned char) ptr[j], SbVec2s(this->textsize,this->textsize), 0);      
       assert(glyph);
-      this->glyphs.append(glyph);
 
-      glyphwidth = glyph->getWidth();
-      if(glyphwidth == 0)
+      glyphwidth = cc_glyph3d_getwidth(glyph);
+      if (glyphwidth == 0)
         glyphwidth = this->textsize/3; // SPACE width is always == 0.
 
-      width += glyphwidth;
-      
-      // Find the line skipping length and character width, ie. the
-      // highest and widest character.
-      float boxwidth, boxheight;
-      const SbBox2f bbox = glyph->getBoundingBox();
-      bbox.getSize(boxwidth, boxheight);
-      if(boxheight > this->maxglyphheight) this->maxglyphheight = boxheight;      
-      if(boxwidth > this->maxglyphwidth) this->maxglyphwidth = boxwidth;
-      
+      stringwidth += glyphwidth;
+            
     }
-    this->glyphwidths.append(width);
+    this->glyphwidths.append(stringwidth);
   }
 
-  // unref old glyphs
-  for (int j = 0; j < oldglyphs.getLength(); j++) oldglyphs[j]->unref();
 }
 
 void 
