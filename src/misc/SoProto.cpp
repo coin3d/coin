@@ -301,8 +301,7 @@ SoProto::createProtoInstance(void)
   if (PRIVATE(this)->extprotonode) {
     return PRIVATE(this)->extprotonode->createProtoInstance();
   }
-  SoProtoInstance * inst = new SoProtoInstance(this,
-                                               PRIVATE(this)->fielddata);
+  SoProtoInstance * inst = new SoProtoInstance(this, PRIVATE(this)->fielddata);
   inst->ref();
   inst->setRootNode(this->createInstanceRoot(inst));
   return inst;
@@ -606,54 +605,19 @@ SoProto::addRoute(const SbName & fromnode, const SbName & fromfield,
 SbBool
 SoProto::readInterface(SoInput * in)
 {
-  return PRIVATE(this)->fielddata->readFieldDescriptions(in, this, 4, PRIVATE(this)->externurl == NULL);
-#if 0 // OBSOLETED
-  const SbName EVENTIN("eventIn");
-  const SbName EVENTOUT("eventOut");
-  const SbName FIELD("field");
-  const SbName EXPOSEDFIELD("exposedField");
-  const SbName EOI("]");
-
-  SbName itype;
-  SbName ftype;
-  SbName fname;
-
-  SbBool ok = in->read(itype, FALSE);
-  while (ok && itype != "") {
-    ok = in->read(ftype, TRUE) && in->read(fname, TRUE);
-    if (!ok) break;
-    SoType type = SoType::fromName(ftype);
-    ok = type.isDerivedFrom(SoField::getClassTypeId()) &&
-      type.canCreateInstance();
-    if (!ok) break;
-
-    SoField * f = (SoField*) type.createInstance();
-
-    f->setContainer(NULL);
-    PRIVATE(this)->fielddata->addField(NULL, fname, f);
-
-    if (itype == EVENTIN) {
-      f->setFieldType(SoField::EVENTIN_FIELD);
-    }
-    else if (itype == EVENTOUT) {
-      f->setFieldType(SoField::EVENTOUT_FIELD);
-    }
-    else if (itype == FIELD) {
-      f->setFieldType(SoField::NORMAL_FIELD);
-      if (!PRIVATE(this)->externurl) {
-        ok = f->read(in, fname);
+  SbBool ok = PRIVATE(this)->fielddata->readFieldDescriptions(in, this, 4, PRIVATE(this)->externurl == NULL);
+  if ( ok ) {
+    const int numfields = PRIVATE(this)->fielddata->getNumFields();
+    for (int i = 0; i < numfields; i++) {
+      SoField * f = PRIVATE(this)->fielddata->getField(this, i);
+      switch ( f->getFieldType() ) {
+      case SoField::NORMAL_FIELD:
+      case SoField::EXPOSED_FIELD:
+        f->setDefault(TRUE);
       }
     }
-    else if (itype == EXPOSEDFIELD) {
-      f->setFieldType(SoField::EXPOSED_FIELD);
-      if (!PRIVATE(this)->externurl) {
-        ok = f->read(in, fname);
-      }
-    }
-    if (ok) ok = in->read(itype, FALSE);
   }
   return ok;
-#endif // OBSOLETED
 }
 
 //
@@ -940,7 +904,9 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
         srcfield->connectFrom(dstfield);
       }
       else {
+        // make bidirectional connection
         dstfield->connectFrom(srcfield);
+        srcfield->connectFrom(dstfield, FALSE, TRUE);
       }
     }
     else {
