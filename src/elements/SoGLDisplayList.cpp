@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -36,10 +36,12 @@
 
 // where this class is declared
 #include <Inventor/elements/SoGLCacheContextElement.h>
-#include <Inventor/misc/SoState.h>
+
 #include <Inventor/caches/SoGLRenderCache.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/misc/SoState.h>
 
 #include <assert.h>
 #if HAVE_CONFIG_H
@@ -47,10 +49,6 @@
 #endif // HAVE_CONFIG_H
 
 #include "../misc/GLWrapper.h"
-
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 /*!
   Constructor.
@@ -64,28 +62,36 @@ SoGLDisplayList::SoGLDisplayList(SoState * state, Type type, int allocnum,
     mipmap(mipmaptexobj)
 {
   if (type == TEXTURE_OBJECT) {
-    // it is only possible to create one texture object at a time
-    assert(allocnum == 1);
+    assert(allocnum == 1 && "it is only possible to create one texture object at a time");
     const GLWrapper_t * glw = GLWrapper(this->context);
     if (glw->glGenTextures) {
       // use temporary variable, in case GLuint is typedef'ed to
       // something other than unsigned int
-      GLuint tmpindex; 
+      GLuint tmpindex;
       glw->glGenTextures(1, &tmpindex);
       this->firstindex = (unsigned int )tmpindex;
     }
     else { // Fall back to display list
       this->type = DISPLAY_LIST;
       this->firstindex = (unsigned int) glGenLists(allocnum);
-      // FIXME: be robust -- don't just assert here! GL displaylists
+      SoDebugError::post("SoGLDisplayList::SoGLDisplayList",
+                         "could not reserve %d displaylist%s", allocnum, allocnum==1 ? "" : "s");
+      // FIXME: be robust -- don't just ignore this! GL displaylists
       // can be a scarce resource. 20020212 mortene.
-      assert(this->firstindex != 0 && "could not reserve a displaylist resource");
     }
   }
   else {
     this->firstindex = (unsigned int) glGenLists(allocnum);
-    // FIXME: be robust, don't assert. 20020212 mortene.
-    assert(this->firstindex != 0 && "could not reserve a displaylist resource");
+    if (this->firstindex == 0) {
+      SoDebugError::post("SoGLDisplayList::SoGLDisplayList",
+                         "could not reserve %d displaylist%s", allocnum, allocnum==1 ? "" : "s");
+      // FIXME: be more robust in handling this -- the rendering will
+      // gradually go bonkers after we hit this problem. 20020619 mortene.
+    }
+#if COIN_DEBUG && 0 // debug
+    SoDebugError::postInfo("SoGLDisplayList::SoGLDisplayList",
+                           "firstindex==%d", this->firstindex);
+#endif // debug
   }
 }
 
@@ -236,7 +242,7 @@ SoGLDisplayList::getContext(void) const
 
   \since 2001-11-27
 */
-void 
+void
 SoGLDisplayList::bindTexture(SoState *state)
 {
   const GLWrapper_t * glw = GLWrapper(this->context);
