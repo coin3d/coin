@@ -2475,7 +2475,7 @@ else
     # FIXME: Relying on posixy $() will cause problems for
     #        cross-compilation, but unfortunately the echo tests do not
     #        yet detect zsh echo's removal of \ escapes.
-    archive_cmds='$nonopt $(test x$module = xyes && echo -bundle || echo -dynamiclib) $allow_undefined_flag -o $lib $libobjs $linker_flags -install_name $rpath/$soname $verstring'
+    archive_cmds='$nonopt $(test x$module = xyes && echo -bundle || echo -dynamiclib) $allow_undefined_flag -o $lib $libobjs $deplibs$linker_flags -install_name $rpath/$soname $verstring'
     # We need to add '_' to the symbols in $export_symbols first
     #archive_expsym_cmds="$archive_cmds"' && strip -s $export_symbols'
     hardcode_direct=yes
@@ -4596,8 +4596,8 @@ AC_DEFUN([SIM_AC_MAC_CPP_ADJUSTMENTS],
 case $host_os in
 darwin*)
   if test x"$GCC" = x"yes"; then
-    SIM_AC_CC_COMPILER_OPTION([-no-cpp-precomp], [CFLAGS="$CFLAGS -no-cpp-precomp"])
-    SIM_AC_CXX_COMPILER_OPTION([-no-cpp-precomp], [CXXFLAGS="$CXXFLAGS -no-cpp-precomp"])
+    # FIXME: create a SIM_AC_CPP_OPTION macro
+    SIM_AC_CC_COMPILER_OPTION([-no-cpp-precomp], [CPPFLAGS="$CPPFLAGS -no-cpp-precomp"])
   fi
   ;;
 esac
@@ -4978,14 +4978,6 @@ fi
 #   * [mortene:19991114] find out how to get GCC's
 #     -Werror-implicit-function-declaration option to work as expected
 #
-#   * [mortene:20000606] there are a few assumptions here which doesn't
-#     necessarily hold water: both the C and C++ compiler doesn't have
-#     to be "compatible", i.e. the C compiler could be gcc, while the
-#     C++ compiler could be a native compiler, for instance. So some
-#     restructuring should be done.
-# 
-#   * [larsa:20000607] don't check all -woff options to SGI MIPSpro CC,
-#     just put all of them on the same line, to check if the syntax is ok.
 #   * [larsa:20010504] rename to SIM_AC_COMPILER_WARNINGS and clean up
 #     the macro
 
@@ -5002,63 +4994,67 @@ AC_ARG_ENABLE(
   [enable_warnings=yes])
 
 if test x"$enable_warnings" = x"yes"; then
-  if test x"$GXX" = x"yes" || test x"$GCC" = x"yes"; then
-    sim_ac_common_gcc_warnings="-W -Wall -Wno-unused"
-    CFLAGS="$CFLAGS $sim_ac_common_gcc_warnings"
-    CXXFLAGS="$CXXFLAGS $sim_ac_common_gcc_warnings"
+  if test x"$GCC" = x"yes"; then
+    SIM_AC_CC_COMPILER_OPTION([-W -Wall -Wno-unused],
+                              [CFLAGS="$CFLAGS -W -Wall -Wno-unused"])
     SIM_AC_CC_COMPILER_OPTION([-Wno-multichar],
                               [CFLAGS="$CFLAGS -Wno-multichar"])
+  fi
+
+  if test x"$GXX" = x"yes"; then
+    SIM_AC_CXX_COMPILER_OPTION([-W -Wall -Wno-unused],
+                               [CXXFLAGS="$CXXFLAGS -W -Wall -Wno-unused"])
     SIM_AC_CXX_COMPILER_OPTION([-Wno-multichar],
                                [CXXFLAGS="$CXXFLAGS -Wno-multichar"])
-  else
-    case $host in
-    *-*-irix*) 
-      if test x"$CC" = xcc || test x"$CC" = xCC || test x"$CXX" = xCC; then
-        _warn_flags=
-        _woffs=""
-        ### Turn on all warnings ######################################
-        SIM_AC_CC_COMPILER_OPTION([-fullwarn], [CFLAGS="$CFLAGS -fullwarn"])
-        SIM_AC_CXX_COMPILER_OPTION([-fullwarn], [CXXFLAGS="$CXXFLAGS -fullwarn"])
-
-        ### Turn off specific (bogus) warnings ########################
-
-        ### SGI MipsPro v?.?? (our compiler on IRIX 6.2) ##############
-        ##
-        ## 3115: ``type qualifiers are meaningless in this declaration''.
-        ## 3262: unused variables.
-        ##
-        ### SGI MipsPro v7.30 #########################################
-        ##
-	## 1174: "The function was declared but never referenced."
-        ## 1209: "The controlling expression is constant." (kill warning on
-        ##       if (0), assert(FALSE), etc).
-        ## 1355: Kill warnings on extra semicolons (which happens with some
-        ##       of the Coin macros).
-        ## 1375: Non-virtual destructors in base classes.
-        ## 3201: Unused argument to a function.
-        ## 1110: "Statement is not reachable" (the Lex/Flex generated code in
-        ##       Coin/src/engines has lots of shitty code which needs this).
-        ## 1506: Implicit conversion from "unsigned long" to "long".
-        ##       SbTime.h in SGI/TGS Inventor does this, so we need to kill
-        ##       this warning to avoid all the output clutter when compiling
-        ##       the SoQt, SoGtk or SoXt libraries on IRIX with SGI MIPSPro CC.
-
-        sim_ac_bogus_warnings="-woff 3115,3262,1174,1209,1355,1375,3201,1110,1506"
-        SIM_AC_CC_COMPILER_OPTION([$sim_ac_bogus_warnings],
-                                  [CFLAGS="$CFLAGS $sim_ac_bogus_warnings"])
-        SIM_AC_CXX_COMPILER_OPTION([$sim_ac_bogus_warnings],
-                                   [CXXFLAGS="$CXXFLAGS $sim_ac_bogus_warnings"])
-      fi
-    ;;
-    esac
   fi
-else
-  if test x"$GXX" != x"yes" && test x"$GCC" != x"yes"; then
-    AC_MSG_WARN([--enable-warnings only has effect when using GNU gcc or g++])
-  fi
+
+  case $host in
+  *-*-irix*) 
+    ### Turn on all warnings ######################################
+    if test x"$CC" = xcc || test x"$CC" = xCC; then
+      SIM_AC_CC_COMPILER_OPTION([-fullwarn], [CFLAGS="$CFLAGS -fullwarn"])
+    fi
+    if test x"$CXX" = xCC; then
+      SIM_AC_CXX_COMPILER_OPTION([-fullwarn], [CXXFLAGS="$CXXFLAGS -fullwarn"])
+    fi
+
+    ### Turn off specific (bogus) warnings ########################
+
+    ### SGI MipsPro v?.?? (our compiler on IRIX 6.2) ##############
+    ##
+    ## 3115: ``type qualifiers are meaningless in this declaration''.
+    ## 3262: unused variables.
+    ##
+    ### SGI MipsPro v7.30 #########################################
+    ##
+    ## 1174: "The function was declared but never referenced."
+    ## 1209: "The controlling expression is constant." (kill warning on
+    ##       if (0), assert(FALSE), etc).
+    ## 1355: Kill warnings on extra semicolons (which happens with some
+    ##       of the Coin macros).
+    ## 1375: Non-virtual destructors in base classes.
+    ## 3201: Unused argument to a function.
+    ## 1110: "Statement is not reachable" (the Lex/Flex generated code in
+    ##       Coin/src/engines has lots of shitty code which needs this).
+    ## 1506: Implicit conversion from "unsigned long" to "long".
+    ##       SbTime.h in SGI/TGS Inventor does this, so we need to kill
+    ##       this warning to avoid all the output clutter when compiling
+    ##       the SoQt, SoGtk or SoXt libraries on IRIX with SGI MIPSPro CC.
+
+    sim_ac_bogus_warnings="-woff 3115,3262,1174,1209,1355,1375,3201,1110,1506"
+
+    if test x"$CC" = xcc || test x"$CC" = xCC; then
+      SIM_AC_CC_COMPILER_OPTION([$sim_ac_bogus_warnings],
+                                [CFLAGS="$CFLAGS $sim_ac_bogus_warnings"])
+    fi
+    if test x"$CXX" = xCC; then
+      SIM_AC_CXX_COMPILER_OPTION([$sim_ac_bogus_warnings],
+                                 [CXXFLAGS="$CXXFLAGS $sim_ac_bogus_warnings"])
+    fi
+  ;;
+  esac
 fi
 ])
-
 
 # Usage:
 #  SIM_CHECK_SNPRINTF
@@ -5931,18 +5927,166 @@ fi
 #  implementation or the OpenGL-compatible Mesa library. If
 #  it is found, these shell variables are set:
 #
-#    $sim_ac_gl_cppflags (extra flags the compiler needs for OpenGL/Mesa)
+#    $sim_ac_gl_cflags   (extra flags the compiler needs for OpenGL/Mesa)
+#    $sim_ac_gl_cxxflags (extra flags the compiler needs for OpenGL/Mesa)
+#    $sim_ac_gl_cppflags (extra flags the preprocessor needs for OpenGL/Mesa)
 #    $sim_ac_gl_ldflags  (extra flags the linker needs for OpenGL/Mesa)
 #    $sim_ac_gl_libs     (link libraries the linker needs for OpenGL/Mesa)
 #
-#  The CPPFLAGS, LDFLAGS and LIBS flags will also be modified accordingly.
 #  In addition, the variable $sim_ac_gl_avail is set to "yes" if an
 #  OpenGL-compatible development system is found.
 #
+# TODO:
+#   these macros are ripe for a complete rewrite...
 #
 # Authors:
 #   Morten Eriksen <mortene@sim.no>
 #   Lars J. Aas <larsa@sim.no>
+
+# **************************************************************************
+# SIM_AC_CHECK_HEADER_SILENT([header], [if-found], [if-not-found], [includes])
+# 
+# This macro will not output any header checking information, nor will it
+# cache the result, so it can be used multiple times on the same header,
+# trying out different compiler options.
+
+AC_DEFUN([SIM_AC_CHECK_HEADER_SILENT],
+[AS_VAR_PUSHDEF([ac_Header], [ac_cv_header_$1])
+m4_ifval([$4],
+         [AC_COMPILE_IFELSE([AC_LANG_SOURCE([$4
+@%:@include <$1>])],
+                            [AS_VAR_SET(ac_Header, yes)],
+                            [AS_VAR_SET(ac_Header, no)])],
+         [AC_PREPROC_IFELSE([AC_LANG_SOURCE([@%:@include <$1>])],
+                            [AS_VAR_SET(ac_Header, yes)],
+                            [AS_VAR_SET(ac_Header, no)])])
+AS_IF([test AS_VAR_GET(ac_Header) = yes], [$2], [$3])
+AS_VAR_POPDEF([ac_Header])
+])# SIM_AC_CHECK_HEADER_SILENT
+
+# **************************************************************************
+# SIM_AC_CHECK_HEADER_GL([IF-FOUND], [IF-NOT-FOUND])
+#
+# This macro detects how to include the GL header file, and gives you the
+# necessary CPPFLAGS in $sim_ac_gl_cppflags, and also sets the config.h
+# defines HAVE_GL_GL_H or HAVE_OPENGL_GL_H if one of them is found.
+
+AC_DEFUN([SIM_AC_CHECK_HEADER_GL],
+[sim_ac_gl_header_avail=false
+AC_MSG_CHECKING([how to include gl.h])
+if test x"$with_opengl" != x"no"; then
+  sim_ac_gl_save_CPPFLAGS=$CPPFLAGS
+  if test x"$with_opengl" != xyes && test x"$with_opengl" != x""; then
+    sim_ac_gl_cppflags="-I${with_opengl}/include"
+    CPPFLAGS="$CPPFLAGS $sim_ac_gl_cppflags"
+  fi
+  SIM_AC_CHECK_HEADER_SILENT([GL/gl.h], [
+    sim_ac_gl_header_avail=true
+    sim_ac_gl_header=GL/gl.h
+    AC_DEFINE([HAVE_GL_GL_H], , [define if the GL header should be included as GL/gl.h])
+  ], [
+    SIM_AC_CHECK_HEADER_SILENT([OpenGL/gl.h], [
+      sim_ac_gl_header_avail=true
+      sim_ac_gl_header=OpenGL/gl.h
+      AC_DEFINE([HAVE_OPENGL_GL_H], , [define if the GL header should be included as OpenGL/gl.h])
+    ])
+  ])
+  sim_ac_gl_hpux=/opt/graphics/OpenGL
+  if test x$sim_ac_gl_header_avail = xfalse && test -d $sim_ac_gl_hpux; then
+    sim_ac_gl_cppflags=-I$sim_ac_gl_hpux/include
+    CPPFLAGS="$CPPFLAGS $sim_ac_gl_cppflags"
+    SIM_AC_CHECK_HEADER_SILENT([GL/gl.h], [
+      sim_ac_gl_header_avail=true
+      sim_ac_gl_header=GL/gl.h
+      AC_DEFINE([HAVE_GL_GL_H], , [define if the GL header should be included as GL/gl.h])
+    ], [
+      SIM_AC_CHECK_HEADER_SILENT([OpenGL/gl.h], [
+        sim_ac_gl_header_avail=true
+        sim_ac_gl_header=OpenGL/gl.h
+        AC_DEFINE([HAVE_OPENGL_GL_H], , [define if the GL header should be included as OpenGL/gl.h])
+      ])
+    ])
+  fi
+  CPPFLAGS="$sim_ac_gl_save_CPPFLAGS"
+  if $sim_ac_gl_header_avail; then
+    if test x"$sim_ac_gl_cppflags" = x""; then
+      AC_MSG_RESULT([@%:@include <$sim_ac_gl_header>])
+    else
+      AC_MSG_RESULT([$sim_ac_gl_cppflags, @%:@include <$sim_ac_gl_header>])
+    fi
+    $1
+  else
+    AC_MSG_RESULT([not found])
+    $2
+  fi
+else
+  AC_MSG_RESULT([disabled])
+  $2
+fi
+])# SIM_AC_CHECK_HEADER_GL
+
+# **************************************************************************
+# SIM_AC_CHECK_HEADER_GLU([IF-FOUND], [IF-NOT-FOUND])
+#
+# This macro detects how to include the GLU header file, and gives you the
+# necessary CPPFLAGS in $sim_ac_glu_cppflags, and also sets the config.h
+# defines HAVE_GL_GLU_H or HAVE_OPENGL_GLU_H if one of them is found.
+
+AC_DEFUN([SIM_AC_CHECK_HEADER_GLU],
+[sim_ac_glu_header_avail=false
+AC_MSG_CHECKING([how to include glu.h])
+if test x"$with_opengl" != x"no"; then
+  sim_ac_glu_save_CPPFLAGS=$CPPFLAGS
+  if test x"$with_opengl" != xyes && test x"$with_opengl" != x""; then
+    sim_ac_glu_cppflags="-I${with_opengl}/include"
+    CPPFLAGS="$CPPFLAGS $sim_ac_glu_cppflags"
+  fi
+  SIM_AC_CHECK_HEADER_SILENT([GL/glu.h], [
+    sim_ac_glu_header_avail=true
+    sim_ac_glu_header=GL/glu.h
+    AC_DEFINE([HAVE_GL_GLU_H], , [define if the GLU header should be included as GL/glu.h])
+  ], [
+    SIM_AC_CHECK_HEADER_SILENT([OpenGL/gl.h], [
+      sim_ac_glu_header_avail=true
+      sim_ac_glu_header=OpenGL/glu.h
+      AC_DEFINE([HAVE_OPENGL_GLU_H], , [define if the GLU header should be included as OpenGL/glu.h])
+    ])
+  ])
+  sim_ac_gl_hpux=/opt/graphics/OpenGL
+  if test x$sim_ac_glu_header_avail = xfalse && test -d $sim_ac_gl_hpux; then
+    sim_ac_glu_cppflags=-I$sim_ac_gl_hpux/include
+    CPPFLAGS="$CPPFLAGS $sim_ac_glu_cppflags"
+    SIM_AC_CHECK_HEADER_SILENT([GL/glu.h], [
+      sim_ac_glu_header_avail=true
+      sim_ac_glu_header=GL/glu.h
+      AC_DEFINE([HAVE_GL_GLU_H], , [define if the GLU header should be included as GL/glu.h])
+    ], [
+      SIM_AC_CHECK_HEADER_SILENT([OpenGL/glu.h], [
+        sim_ac_glu_header_avail=true
+        sim_ac_glu_header=OpenGL/glu.h
+        AC_DEFINE([HAVE_OPENGL_GLU_H], , [define if the GLU header should be included as OpenGL/glu.h])
+      ])
+    ])
+  fi
+  CPPFLAGS="$sim_ac_glu_save_CPPFLAGS"
+  if $sim_ac_glu_header_avail; then
+    if test x"$sim_ac_glu_cppflags" = x""; then
+      AC_MSG_RESULT([@%:@include <$sim_ac_glu_header>])
+    else
+      AC_MSG_RESULT([$sim_ac_glu_cppflags, @%:@include <$sim_ac_glu_header>])
+    fi
+    $1
+  else
+    AC_MSG_RESULT([not found])
+    $2
+  fi
+else
+  AC_MSG_RESULT([disabled])
+  $2
+fi
+])# SIM_AC_CHECK_HEADER_GLU
+
+# **************************************************************************
 
 AC_DEFUN(SIM_AC_CHECK_OPENGL, [
 
@@ -5989,23 +6133,13 @@ if test x"$with_opengl" != xno; then
     ;;
   esac
 
-  if test x"$with_opengl" != xyes; then
-    sim_ac_gl_cppflags="-I${with_opengl}/include"
-    sim_ac_gl_ldflags="-L${with_opengl}/lib"
-  else
-    if $sim_ac_use_framework_option; then
-      # hopefully, this is the default behavior and not needed. 20011005 larsa
-      # sim_ac_gl_cppflags="-F/System/Library/Frameworks/OpenGL.framework/"
-      sim_ac_gl_ldflags="-Wl,-framework,OpenGL"
-    else
-      ## This is a common location for the OpenGL library on HPUX.
-      sim_ac_gl_hpux=/opt/graphics/OpenGL
-      if test -d $sim_ac_gl_hpux; then
-        sim_ac_gl_cppflags=-I$sim_ac_gl_hpux/include
-        sim_ac_gl_ldflags=-L$sim_ac_gl_hpux/lib
-      fi
-    fi
+  if $sim_ac_use_framework_option; then
+    # hopefully, this is the default behavior and not needed. 20011005 larsa
+    # sim_ac_gl_cppflags="-F/System/Library/Frameworks/OpenGL.framework/"
+    sim_ac_gl_ldflags="-Wl,-framework,OpenGL"
   fi
+
+  SIM_AC_CHECK_HEADER_GL(, [AC_MSG_ERROR([could not find gl.h])])
 
   sim_ac_save_cppflags=$CPPFLAGS
   sim_ac_save_cflags=$CFLAGS
@@ -6015,9 +6149,6 @@ if test x"$with_opengl" != xno; then
 
   CPPFLAGS="$CPPFLAGS $sim_ac_gl_cppflags"
   LDFLAGS="$LDFLAGS $sim_ac_gl_ldflags"
-
-  ## This must be done after include-paths have been set up for CPPFLAGS.
-  AC_CHECK_HEADERS([GL/gl.h OpenGL/gl.h])
 
   AC_CACHE_CHECK(
     [whether OpenGL library is available],
@@ -6125,7 +6256,11 @@ fi
 # SIM_AC_GLU_READY_IFELSE( [ACTION-IF-TRUE], [ACTION-IF-FALSE] )
 
 AC_DEFUN([SIM_AC_GLU_READY_IFELSE], [
-AC_CHECK_HEADERS([GL/glu.h OpenGL/glu.h])
+sim_ac_glu_save_CPPFLAGS=$CPPFLAGS
+SIM_AC_CHECK_HEADER_GLU(, [AC_MSG_WARN([could not find glu.h])])
+if test x"$sim_ac_gl_cppflags" != x"$sim_ac_glu_cppflags"; then
+  CPPFLAGS="$CPPFLAGS $sim_ac_gl_cppflags $sim_ac_glu_cppflags"
+fi
 AC_CACHE_CHECK(
   [if GLU is available as part of GL library],
   [sim_cv_glu_ready],
@@ -6157,13 +6292,14 @@ glEnd();
 ],
     [sim_cv_glu_ready=true],
     [sim_cv_glu_ready=false])])
-if ${sim_cv_glu_ready}; then
+
+CPPFLAGS=$sim_ac_glu_save_CPPFLAGS
+if $sim_cv_glu_ready; then
   ifelse([$1], , :, [$1])
 else
   ifelse([$2], , :, [$2])
 fi
 ]) # SIM_AC_GLU_READY_IFELSE()
-
 
 # Usage:
 #  SIM_AC_CHECK_GLU([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
@@ -6183,11 +6319,11 @@ fi
 # Author: Morten Eriksen, <mortene@sim.no>.
 
 AC_DEFUN([SIM_AC_CHECK_GLU], [
-AC_CHECK_HEADERS([GL/glu.h OpenGL/glu.h])
-
-unset sim_ac_glu_cppflags
-unset sim_ac_glu_ldflags
-unset sim_ac_glu_libs
+sim_ac_glu_save_CPPFLAGS=$CPPFLAGS
+SIM_AC_CHECK_HEADER_GLU(, [AC_MSG_WARN([could not find glu.h])])
+if test x"$sim_ac_gl_cppflags" != x"$sim_ac_glu_cppflags"; then
+  CPPFLAGS="$CPPFLAGS $sim_ac_gl_cppflags $sim_ac_glu_cppflags"
+fi
 sim_ac_glu_avail=no
 
 # It's usually libGLU.so on UNIX systems and glu32.lib on MSWindows.
@@ -6212,7 +6348,7 @@ AC_ARG_WITH(
 
 if test x"$with_glu" != xno; then
   if test x"$with_glu" != xyes; then
-    sim_ac_glu_cppflags="-I${with_glu}/include"
+    # sim_ac_glu_cppflags="-I${with_glu}/include"
     sim_ac_glu_ldflags="-L${with_glu}/lib"
   fi
 
@@ -6261,12 +6397,22 @@ glEnd();
                     [sim_cv_lib_glu="$sim_ac_glu_libcheck"])
       fi
     done
+    if test x"$sim_cv_lib_glu" = x"" &&
+       test x`echo $LDFLAGS | grep -c -- "-Wl,-framework,OpenGL"` = x1; then
+      # just for the visual representation on Mac OS X
+      sim_cv_lib_glu="-Wl,-framework,OpenGL"
+    fi
   ])
 
   LIBS="$sim_ac_save_libs"
 
+  CPPFLAGS=$sim_ac_glu_save_CPPFLAGS
   if test "x$sim_cv_lib_glu" != "xUNRESOLVED"; then
-    sim_ac_glu_libs="$sim_cv_lib_glu"
+    if test x"$sim_cv_lib_glu" = x"-Wl,-framework,OpenGL"; then
+      sim_ac_glu_libs=""
+    else
+      sim_ac_glu_libs="$sim_cv_lib_glu"
+    fi
     LIBS="$sim_ac_glu_libs $sim_ac_save_libs"
     sim_ac_glu_avail=yes
     $1
