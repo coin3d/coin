@@ -193,8 +193,14 @@ SoType::createType(const SoType parent, const SbName name,
   newType.index = SoType::typelist->getLength();
   SoType::typelist->append(newType);
   SoType::typedatalist->append(typeData);
+
   // add to dictionary for fast lookup
-  SoType::typedict->enter((unsigned long)name.getString(), (void *)newType.index);
+
+  // Cast needed to silence gcc3, which don't seem to like direct
+  // casting from int16_t to void*.
+  uint32_t mapval = (uint32_t)newType.getKey();
+
+  SoType::typedict->enter((unsigned long)name.getString(), (void *)mapval);
   return newType;
 }
 

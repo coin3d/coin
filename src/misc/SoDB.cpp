@@ -411,6 +411,15 @@ SoDB::init(void)
   SoDB::registerHeader(SbString("#VRML V1.0 ascii   "), FALSE, 2.1f,
                        NULL, NULL, NULL);
 
+
+  // FIXME: should be more robust and accept a set of headers that
+  // /almost/ match the exact specifications above. I have for
+  // instance seen several VRML models from the web which starts with
+  // "#VRML 2.0 utf8", which will cause SoDB::readAll() to fail with
+  // "Not a valid Inventor file." We should rather spit out a warning
+  // and read it anyway if we detect it's a close match. 20020920 mortene.
+
+
   SoDB::realtimeinterval->setValue(1.0/12.0);
 
   SoDB::createGlobalField("realTime", SoSFTime::getClassTypeId());
@@ -1071,8 +1080,13 @@ SoDB::doSelect(int nfds, void * readfds, void * writefds,
 void
 SoDB::addConverter(SoType from, SoType to, SoType converter)
 {
-  uint32_t val = (((uint32_t)from.getKey()) << 16) + to.getKey();
-  SbBool nonexist = SoDB::converters->enter(val, (void *)converter.getKey());
+  uint32_t linkid = (((uint32_t)from.getKey()) << 16) + to.getKey();
+  // Cast needed to silence gcc3, which don't seem to like direct
+  // casting from int16_t to void*.
+  uint32_t convtype = (uint32_t)converter.getKey();
+
+  SbBool nonexist = SoDB::converters->enter((unsigned long)linkid,
+                                            (void *)convtype);
   if (!nonexist) {
 #if COIN_DEBUG
     SoDebugError::postWarning("SoDB::addConverter",
