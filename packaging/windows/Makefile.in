@@ -1,0 +1,204 @@
+# **************************************************************************
+# Makefile
+#
+# Makefile for creating MS Windows installers for the Coin binary SDK for
+# MS Windows.
+#
+# Prerequisites:
+#   Cygwin system.
+#   makensis - the nullsoft installer system
+#
+# Authors:
+#   Lars J. Aas <larsa@sim.no>
+# **************************************************************************
+
+sdk_prefix = /tmp/coin3d/coin
+top_srcdir = @top_srcdir@
+
+# default c library option
+libc = md
+
+ALLCFLAGS = /noBool /WX 
+DBGCFLAGS = $(ALLCFLAGS) /GZ /Zi /Yd
+OPTCFLAGS = $(ALLCFLAGS) /Oitgb1 /Gs
+DLLCFLAGS = /GD
+
+BUILDS = docs shared-release shared-debug # static-release static-debug
+
+# **************************************************************************
+
+all:: $(BUILDS) coin-v$(VERSION)-install.exe
+
+# **************************************************************************
+
+extract.sed: Makefile
+	@echo -e "2,\$$ {\n/GENERAL PUBLIC LICENSE/,/END OF TERMS/ {\ns/\f//;\np;\n};\n};" >extract.sed
+
+unix2dos.sed: Makefile
+	@echo -e "s/\$$/\r/;\np;" >unix2dos.sed
+
+LICENSE.TXT: extract.sed unix2dos.sed
+	@cp $(top_srcdir)/LICENSE.LGPL LICENSE.TXT;
+	@for process in extract unix2dos; do \
+	  sed -n -f $${process}.sed <LICENSE.TXT >LICENSE.TMP; \
+	  rm -f LICENSE.TXT; \
+	  mv -f LICENSE.TMP LICENSE.TXT; \
+	  rm -f $${process}.sed; \
+	done
+
+# FIXME: use full makensis path (and support spaces in the path)...
+# something like ac_subst $(sim_ac_makensis_exe)
+coin-v$(VERSION)-install.exe: coin.nsi LICENSE.TXT coin-sdk.html
+	makensis coin.nsi
+
+Coin-$(VERSION): Coin-$(VERSION).tar.gz
+	tar zxf Coin-$(VERSION).tar.gz
+
+Coin-$(VERSION).tar.gz:
+	@( cd ..; $(MAKE) dist; mv Coin-$(VERSION).tar.gz windows/ )
+
+headerlist.nsi: Makefile
+	winpath=`CYGWIN= cygpath -w "$(sdk_prefix)"`; \
+	( prevdir=; cd $(sdk_prefix); for path in `find include -type f`; do \
+	  dir=`echo $$path | sed 's/\/[^\/]*$$//'`; \
+	  if test x"$$dir" != x"$$prevdir"; then \
+	    prevdir=$$dir; \
+	    file=`echo $$path | sed 's/^.*\///g'`; \
+	    dir=`echo $$dir | sed 's/\//\\\\/g'`; \
+	    echo "SetOutPath \$$INSTDIR\\$$dir"; \
+	    echo "File $$winpath\\$$dir\\*.h"; \
+	  fi; \
+	done ) >headerlist.nsi
+
+sourcelist.nsi: Coin-$(VERSION) Makefile
+	( prevdir=""; for path in `find Coin-$(VERSION) -type f`; do \
+	  dir=`echo $$path | sed 's/\/[^\/]*$$//'`; \
+	  if test x"$$dir" != x"$$prevdir"; then \
+	    prevdir=$$dir; \
+	    file=`echo $$path | sed 's/^.*\///g'`; \
+	    dir=`echo $$dir | sed 's/\//\\\\/g'`; \
+	    echo "SetOutPath \$$INSTDIR\\source\\$$dir"; \
+	    echo "File $$dir\\*"; \
+	  fi; \
+	done ) >sourcelist.nsi
+
+uninstall.nsi: Makefile
+	( cd $(sdk_prefix); \
+	for dir in `find . -type d -depth`; do \
+	  dir=`echo $$dir | sed 's/^.\///; s/\//\\\\/g'`; \
+	  echo "Delete \$$INSTDIR\\$$dir\\*"; \
+	done; \
+	for dir in `find . -type d -depth`; do \
+	  dir=`echo $$dir | sed 's/^.\///; s/\//\\\\/g'`; \
+	  echo "RMDir \$$INSTDIR\\$$dir"; \
+	done ) >uninstall.nsi
+
+coin.nsi: heading.nsi headerlist.nsi middle.nsi sourcelist.nsi uninstall.nsi footer.nsi unix2dos.sed Makefile
+	cat heading.nsi headerlist.nsi middle.nsi sourcelist.nsi post.nsi uninstall.nsi footer.nsi >coin.tmp
+	winpath=`CYGWIN= cygpath -w "$(sdk_prefix)"`; \
+	winpath=`echo $$winpath | sed -e 's/\\\\/\\\\\\\\/g'`; \
+	sed -e 's/@win_prefix@/'$$winpath'/g' \
+	    -e 's/@sdk_version@/$(VERSION)/g' <coin.tmp >coin.tmp2
+	sed -n -f unix2dos.sed <coin.tmp2 >coin.nsi
+	rm -f coin.tmp coin.tmp2
+
+# **************************************************************************
+
+build-docs/html/index.html: Coin-$(VERSION)
+	@if test -d build-docs; then :; else mkdir build-docs; fi
+	cd build-docs; \
+	../Coin-$(VERSION)/configure \
+	  --disable-build \
+	  --enable-html htmldir=html/Coin \
+	  --enable-man \
+	  --prefix=$(sdk_prefix)
+	cd build-docs/; \
+	$(MAKE)
+	cd build-docs/; \
+	$(MAKE) install
+
+docs: build-docs/html/index.html
+
+build-shared-release/src/coin@COIN_MAJOR@.dll: Coin-$(VERSION)
+	@if test -d build-shared-release; then :; else mkdir build-shared-release; fi
+	cd build-shared-release; \
+	../Coin-$(VERSION)/configure \
+	  CFLAGS="$(OPTCFLAGS) $(DLLCFLAGS)" \
+	  CXXFLAGS="$(OPTCFLAGS) $(DLLCFLAGS)" \
+	  --disable-dependency-tracking \
+	  --disable-debug \
+	  --disable-symbols \
+	  --with-msvcrt=$(libc) \
+	  --prefix=$(sdk_prefix)
+	cd build-shared-release; \
+	$(MAKE)
+	cd build-shared-release; \
+	$(MAKE) install
+
+shared-release: build-shared-release/src/coin@COIN_MAJOR@.dll
+
+build-shared-debug/src/coin@COIN_MAJOR@d.dll: Coin-$(VERSION)
+	@if test -d build-shared-debug; then :; else mkdir build-shared-debug; fi
+	cd build-shared-debug; \
+	../Coin-$(VERSION)/configure \
+	  CFLAGS="$(DBGCFLAGS)" \
+	  CXXFLAGS="$(DBGCFLAGS)" \
+	  --disable-dependency-tracking \
+	  --enable-debug \
+	  --enable-symbols \
+	  --with-msvcrt=$(libc)d \
+	  --with-alternate=debug \
+	  --with-suffix=d \
+	  --prefix=$(sdk_prefix)
+	cd build-shared-debug; \
+	$(MAKE)
+	cd build-shared-debug; \
+	$(MAKE) install
+
+shared-debug: build-shared-debug/src/coin@COIN_MAJOR@d.dll
+
+build-static-release/src/coin@COIN_MAJOR@d.dll: Coin-$(VERSION)
+	@if test -d build-static-release; then :; else mkdir build-static-release; fi
+	cd build-static-release; \
+	../Coin-$(VERSION)/configure \
+	  CFLAGS="$(OPTCFLAGS)" \
+	  CXXFLAGS="$(OPTCFLAGS)" \
+	  --disable-dependency-tracking \
+	  --disable-shared \
+	  --disable-debug \
+	  --disable-symbols \
+	  --with-msvcrt=$(libc) \
+	  --with-alternate=static \
+	  --with-suffix=s \
+	  --prefix=$(sdk_prefix)
+	cd build-static-release; \
+	$(MAKE)
+	cd build-static-release; \
+	$(MAKE) install
+
+static-release: build-static-release/src/coin@COIN_MAJOR@d.dll
+
+build-static-debug/src/coin@COIN_MAJOR@d.dll: Coin-$(VERSION)
+	@if test -d build-static-debug; then :; else mkdir build-static-debug; fi
+	cd build-static-debug; \
+	../Coin-$(VERSION)/configure \
+	  CFLAGS="$(DBGCFLAGS)" \
+	  CXXFLAGS="$(DBGCFLAGS)" \
+	  --disable-dependency-tracking \
+	  --disable-shared \
+	  --enable-debug \
+	  --enable-symbols \
+	  --with-msvcrt=$(libc)d \
+	  --with-alternate=static-debug \
+	  --with-suffix=sd \
+	  --prefix=$(sdk_prefix)
+	cd build-static-debug; \
+	$(MAKE)
+	cd build-static-debug; \
+	$(MAKE) install
+
+static-debug: build-static-debug/src/coin@COIN_MAJOR@d.dll
+
+.PHONY: docs shared-release shared-debug static-release static-debug
+
+# **************************************************************************

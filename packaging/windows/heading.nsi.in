@@ -1,0 +1,56 @@
+# **************************************************************************
+# SuperPIMP (NSIS) Configuration File for the Coin installer.
+# See http://www.nullsoft.com/free/nsis/ for SuperPIMP information.
+# **************************************************************************
+# Authors:
+#   Lars J. Aas <larsa@sim.no>
+
+Name "Coin @sdk_version@"
+OutFile "coin-v@sdk_version@-install.exe"
+SilentInstall "normal"
+CRCCheck "on"
+
+LicenseText "GNU General Public License"
+LicenseData LICENSE.TXT
+
+ComponentText "Installing the Coin library"
+InstType "Binary SDK"
+InstType "Run-Time Only"
+InstType "Full"
+
+DirText "Where to install Coin"
+InstallDir "D:\Coin3D"
+InstallDirRegKey HKEY_LOCAL_MACHINE SOFTWARE\Coin3D InstallPath
+
+# **************************************************************************
+Section "Run-Time Library"
+SectionIn 1,2,3
+
+SetCompress auto
+SetOverwrite on
+
+SetOutPath $INSTDIR\bin
+File @win_prefix@\bin\coin1.dll
+
+SetOutPath $INSTDIR\html
+File coin-sdk.html
+
+SectionEnd
+# **************************************************************************
+Section "Binary SDK"
+SectionIn 1,3
+
+SetCompress auto
+SetOverwrite on
+
+SetOutPath $INSTDIR\bin
+File @win_prefix@\bin\coin1.dll
+File @win_prefix@\bin\coin1d.dll
+File @win_prefix@\bin\coin1d.pdb
+
+SetOutPath $INSTDIR\lib
+File @win_prefix@\lib\coin1.lib
+File @win_prefix@\lib\coin1d.lib
+# File @win_prefix@\lib\coin1s.lib
+# File @win_prefix@\lib\coin1sd.lib
+

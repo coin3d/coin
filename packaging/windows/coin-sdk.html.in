@@ -1,0 +1,41 @@
+<html>
+<head>
+<title>SDK Notes: Coin-@VERSION@</title>
+</head>
+<body>
+<h1 align=center>SDK Notes: Coin-@VERSION@</h1>
+<hr>
+<h2>Feature Notes:</h2>
+<ul>
+<li>Coin API HTML Documentation:
+  <a href="Coin/index.html">off-line</a> (if installed), or
+  <a href="http://doc.coin3d.org/Coin/">on-line</a>
+</ul>
+<hr>
+<h2>Two Coin Libraries?</h2>
+If you install the Binary SDK, you will find that it includes
+two builds of the Coin library:
+<ol>
+<li>shared release (coin@COIN_MAJOR_VERSION@.lib w/coin@COIN_MAJOR_VERSION@.dll)<br>
+    (default configuration)
+<li>shared debug (coin@COIN_MAJOR_VERSION@d.lib w/coin@COIN_MAJOR_VERSION@d.dll)<br>
+    (configuration name: <strong>debug</strong>)
+</ol>
+<p>
+coin@COIN_MAJOR_VERSION@.lib has been linked with the multithread dynamic
+C library (msvcrt.dll - the /MD compiler option) and was compiled without
+debug tests and symbol information.
+<p>
+coin@COIN_MAJOR_VERSION@d.lib has been linked with the multithread dynamic
+debug C library (msvcrtd.dll) and was compiled with debug tests and symbol
+information.
+<p>
+When using Cygwin (or another Bourne shell for MS Windows),
+you can run the <tt><strong>coin-config</strong></tt> script
+with the option <tt>--alternate=&lt;configuration-name&gt;</tt>
+to decide which Coin configuration to retrieve information for.
+<p>
+
+<hr>
+</body>
+</html>

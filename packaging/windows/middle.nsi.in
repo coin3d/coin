@@ -1,0 +1,67 @@
+SectionEnd
+# **************************************************************************
+Section "SDK Shell Parts"
+SectionIn 1,3
+
+SetCompress auto
+SetOverwrite on
+
+SetOutPath $INSTDIR\bin
+File @win_prefix@\bin\coin-config
+File @win_prefix@\bin\wrapmsvc.exe
+
+SetOutPath $INSTDIR\man\man1
+File @win_prefix@\man\man1\*.1
+
+SetOutPath $INSTDIR\share\aclocal
+File @win_prefix@\share\aclocal\coin.m4
+
+SetOutPath $INSTDIR\share\Coin\conf
+File @win_prefix@\share\Coin\conf\coin-default.cfg
+File @win_prefix@\share\Coin\conf\coin-debug.cfg
+# File @win_prefix@\share\Coin\conf\coin-static.cfg
+# File @win_prefix@\share\Coin\conf\coin-static-debug.cfg
+
+SectionEnd
+# **************************************************************************
+Section "Data Files"
+SectionIn 1,2,3
+
+SetCompress auto
+SetOverwrite on
+
+SetOutPath $INSTDIR\share\Coin\draggerDefaults
+File @win_prefix@\share\Coin\draggerDefaults\*.iv
+
+SectionEnd
+# **************************************************************************
+Section "HTML API Documentation"
+SectionIn 1,3
+
+SetCompress auto
+SetOverwrite on
+
+SetOutPath $INSTDIR\html\Coin
+File @win_prefix@\html\Coin\*.html
+File @win_prefix@\html\Coin\*.png
+File @win_prefix@\html\Coin\*.css
+
+SectionEnd
+# **************************************************************************
+Section "Man-page API Documentation"
+SectionIn 3
+
+SetCompress auto
+SetOverwrite on
+
+SetOutPath $INSTDIR\man\man3
+File @win_prefix@\man\man3\*.3
+
+SectionEnd
+# **************************************************************************
+Section "Source Code"
+SectionIn 3
+
+SetCompress auto
+SetOverwrite on
+

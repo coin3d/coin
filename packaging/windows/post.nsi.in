@@ -1,0 +1,28 @@
+SectionEnd
+# **************************************************************************
+Section "Uninstaller"
+SectionIn 1,2,3
+
+SetCompress auto
+SetOverwrite on
+
+WriteUninstaller bin\coin-v@sdk_version@-uninstall.exe
+
+SectionEnd
+# **************************************************************************
+# Section "Extra Libraries"
+# - freetype when support is implemented?
+
+# **************************************************************************
+Section -post
+
+WriteRegStr HKEY_LOCAL_MACHINE SOFTWARE\Coin3D InstallPath "$INSTDIR"
+Exec '"explorer" "$INSTDIR\"'
+# Exec '"explorer" "$INSTDIR\html\coin-sdk.html"'
+
+SectionEnd
+# **************************************************************************
+Section Uninstall
+
+Delete $INSTDIR\html\coin-sdk.html
+Delete $INSTDIR\bin\coin-v@sdk_version@-uninstall.exe

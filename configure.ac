@@ -487,8 +487,6 @@ AC_ARG_ENABLE(html,
   esac],
   [want_html=no])
 
-coin_html_dir=`pwd`/html
-
 case $htmldir in
 "")
   htmldir="$datadir/Coin/html"
@@ -511,13 +509,11 @@ AC_ARG_ENABLE(man,
   esac],
   [want_man=no])
 
-coin_man_dir=`pwd`/man
-
 # Used in the Doxygen parameter file.
 AC_SUBST([COIN_DOC_HTML], [`echo $want_html | tr '[a-z]' '[A-Z]'`])
-AC_SUBST([coin_html_dir])
+AC_SUBST([coin_html_dir], [`pwd`/html])
 AC_SUBST([COIN_DOC_MAN], [`echo $want_man | tr '[a-z]' '[A-Z]'`])
-AC_SUBST([coin_man_dir])
+AC_SUBST([coin_man_dir], [`pwd`/man])
 
 AM_CONDITIONAL(BUILD_MANPAGES, test x"$want_man" = x"yes")
 AM_CONDITIONAL(BUILD_HTMLPAGES, test x"$want_html" = x"yes")
@@ -530,13 +526,13 @@ if test x"$want_html" = x"yes"; then
   SIM_AC_CONFIGURATION_SETTING([HTML installation], [$htmldir])
 fi
 
-
 if test x"$want_html" != xno -o x"$want_man" != xno; then
   SIM_AC_DOXYGEN_TOOL([], [SIM_AC_ERROR([no-doxygen])])
-  sim_ac_doxygen_our_version=1.2.1
-  if test x"$sim_ac_doxygen_avail" != x"$sim_ac_doxygen_our_version"; then
-    AC_MSG_WARN(You are not using Doxygen version $sim_ac_doxygen_our_version)
-  fi
+  # we don't care about this - 20011204 larsa
+  # sim_ac_doxygen_our_version=1.2.1
+  # if test x"$sim_ac_doxygen_avail" != x"$sim_ac_doxygen_our_version"; then
+  #   AC_MSG_WARN(You are not using Doxygen version $sim_ac_doxygen_our_version)
+  # fi
 
   AC_PATH_PROG(sim_ac_perl_exe, perl, false, $PATH)
   if test x"$sim_ac_perl_exe" = xfalse; then
@@ -553,6 +549,30 @@ case $host in
 esac
 
 AC_SUBST(path_tag)
+
+sim_ac_makensis_exe=false
+case $host in
+*-cygwin)
+  AC_PATH_PROG([sim_ac_makensis_exe], [makensis], [false], [$PATH])
+  ;;
+esac
+
+AC_PATH_PROG([sim_ac_dpkg_buildpackage_exe],
+  [dpkg-buildpackage], [false], [$PATH])
+
+sim_ac_windows_packagable=true
+if test x"$sim_ac_perl_exe" = xfalse || test x"$sim_ac_makensis_exe" = xfalse; then
+  sim_ac_windows_packageable=false
+fi
+
+AM_CONDITIONAL([WIN_PACKAGEABLE], $sim_ac_windows_packageable)
+
+sim_ac_debian_packageable=true
+if test x"$sim_ac_dpkg_buildpackage_exe" = xfalse; then
+  sim_ac_debian_packageable=false
+fi
+
+AM_CONDITIONAL([DEB_PACKAGEABLE], [$sim_ac_debian_packageable])
 
 # *******************************************************************
 # Configure an alternate installation?
