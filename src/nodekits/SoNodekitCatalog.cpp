@@ -378,7 +378,7 @@ const SoTypeList &
 SoNodekitCatalog::getListItemTypes(int part) const
 {
   assert( this->delayeditems.getLength() == 0);
-  assert( (part < 0 && part <= this->getNumEntries()) &&
+  assert( (part >= 0 && part < this->getNumEntries()) &&
           "invalid part");
   assert( (this->items[part]->islist) && 
           "part is not a list container" );
