@@ -21,13 +21,14 @@
  *
 \**************************************************************************/
 
+#include <assert.h>
+#include <stdio.h>
+#include <string.h>
+
 #include <Inventor/C/base/hash.h>
 #include <Inventor/C/base/hashp.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/errors/debugerror.h>
-#include <assert.h>
-#include <stdio.h>
-#include <string.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -45,6 +46,7 @@ hash_default_hashfunc(const unsigned long key)
 static unsigned int
 hash_get_index(cc_hash * ht, unsigned long key)
 {
+  assert(ht != NULL);
   key = ht->hashfunc(key);
   key -= (key << 7); /* i.e. key = key * -127; */
   return key & (ht->size-1);
