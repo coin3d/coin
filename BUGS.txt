@@ -3708,6 +3708,21 @@ end
     (Note, split this last part out as a separate bug-item in this
     list if the load-speed issue is solved first.)
 
+    UPDATE 20040830 jornskaa: it appears that the speed issue with loading
+    the iv-files only is a problem when attempting to load files with
+    
+        #Inventor V2.X ascii
+
+    headers, where X can be 2.0, 2.4 or 2.5. When changing
+    the header to
+
+        #Inventor V2.1 ascii
+    
+    the loading is again about just as fast as the binary version, indicating
+    something strange happens when the file header is anything other than 2.1.
+    This may be related to the fact that SoDB registers the 2.1 file header
+    before any other headers.
+
 =====================================================================
 
 131 Writing fails for nodes that have a pointer to the parent node
