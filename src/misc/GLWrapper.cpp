@@ -407,11 +407,11 @@ GLWrapper(int contextid)
 #endif
 
 #ifdef COIN_INTERNAL
-#if COIN_DEBUG
-    SoDebugError::post("GLWrapper",
-                       "Using %s for dynamic binding.\n",
-                       GLWrapper_getProcAddressMethod(gi));
-#endif // COIN_DEBUG
+    if (COIN_DEBUG && 0) {
+      SoDebugError::postInfo("GLWrapper",
+                             "Using %s for dynamic binding.\n",
+                             GLWrapper_getProcAddressMethod(gi));
+    }
 #else
     printf("GLWrapper(): Using %s for dynamic binding.\n",
            GLWrapper_getProcAddressMethod(gi));
