@@ -49,7 +49,7 @@
 #    Bg-- -!              SoNurbsSurface
 #   TBG--R-!              SoSphere
 #   TbG-- -!              SoText2
-#      -- -!              SoText3
+#    bg--r-!              SoText3
 #    B -P--!      SoAnnoText3Property
 #   -BGMP-C       SoGroup
 #   -BGM--C               SoSeparator

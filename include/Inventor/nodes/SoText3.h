@@ -26,7 +26,11 @@
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFBitMask.h>
+#include <Inventor/lists/SbList.h>
 
+class SoSensor;
+class SoFieldSensor;
+class SoGlyph;
 
 class SoText3 : public SoShape {
   typedef SoShape inherited;
@@ -40,10 +44,10 @@ public:
   enum Part {
     FRONT = 1,
     SIDES = 2,
-    BACK = 4,
-    ALL = 7
+    BACK =  4,
+    ALL = FRONT|BACK|SIDES
   };
-
+  
   enum Justification {
     LEFT = 1,
     RIGHT,
@@ -58,7 +62,6 @@ public:
   SbBox3f getCharacterBounds(SoState *state, int stringIndex, int charIndex);
 
   virtual void GLRender(SoGLRenderAction * action);
-  virtual void rayPick(SoRayPickAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 
 protected:
@@ -66,6 +69,25 @@ protected:
 
   virtual void generatePrimitives(SoAction *);
   virtual void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
+  virtual SbBool willSetShapeHints(void) const;
+  virtual SbBool willUpdateNormalizeElement(SoState *) const;
+  virtual SoDetail *createTriangleDetail(SoRayPickAction * action,
+                                         const SoPrimitiveVertex *v1,
+                                         const SoPrimitiveVertex *v2,
+                                         const SoPrimitiveVertex *v3,
+                                         SoPickedPoint * pp);
+
+private:
+  SbList <const SoGlyph*> glyphs;
+  SbList <float> widths;
+  void setUpGlyphs(SoState *state);
+  SbBool needsetup;
+  
+  SoFieldSensor *stringsensor;
+  static void fieldSensorCB(void *d, SoSensor *s);
+  
+  void render(SoState *state, unsigned int part);
+  void generate(SoAction *action, unsigned int part);
 };
 
 #endif // !COIN_SOTEXT3_H
