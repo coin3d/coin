@@ -284,15 +284,8 @@ GLUWrapper(void)
 
     /* Define GLUWRAPPER_REGISTER_FUNC macro. Casting the type is
        necessary for this file to be compatible with C++ compilers. */
-#ifdef HAVE_HASH_QUOTING
 #define GLUWRAPPER_REGISTER_FUNC(_funcname_, _funcsig_) \
-    gi->_funcname_ = (_funcsig_)GET_RUNTIME_SYMBOL(GLU_libhandle, #_funcname_)
-#elif defined(HAVE_APOSTROPHES_QUOTING)
-#define GLUWRAPPER_REGISTER_FUNC(_funcname_, _funcsig_) \
-    gi->_funcname_ = (_funcsig_)GET_RUNTIME_SYMBOL(GLU_libhandle, "_funcname_")
-#else
-#error Unknown quoting.
-#endif
+    gi->_funcname_ = (_funcsig_)GET_RUNTIME_SYMBOL(GLU_libhandle, SO__QUOTE(_funcname_))
 
 #elif defined(GLUWRAPPER_ASSUME_GLU) /* !GLU_RUNTIME_LINKING */
 

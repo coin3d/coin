@@ -22,6 +22,7 @@
 \**************************************************************************/
 
 #include <simage_wrapper.h>
+#include <Inventor/C/basic.h>
 
 #include <assert.h>
 #include <stdlib.h>
@@ -232,15 +233,8 @@ simage_wrapper(void)
     }
     /* Define SIMAGEWRAPPER_REGISTER_FUNC macro. Casting the type is
        necessary for this file to be compatible with C++ compilers. */
-#ifdef HAVE_HASH_QUOTING
 #define SIMAGEWRAPPER_REGISTER_FUNC(_funcname_, _funcsig_) \
-    si->_funcname_ = (_funcsig_)GET_RUNTIME_SYMBOL(simage_libhandle, #_funcname_)
-#elif defined(HAVE_APOSTROPHES_QUOTING)
-#define SIMAGEWRAPPER_REGISTER_FUNC(_funcname_, _funcsig_) \
-    si->_funcname_ = (_funcsig_)GET_RUNTIME_SYMBOL(simage_libhandle, "_funcname_")
-#else
-#error Unknown quoting.
-#endif
+    si->_funcname_ = (_funcsig_)GET_RUNTIME_SYMBOL(simage_libhandle, SO__QUOTE(_funcname_))
 
 #elif defined(SIMAGEWRAPPER_ASSUME_SIMAGE) /* !SIMAGE_RUNTIME_LINKING */
 

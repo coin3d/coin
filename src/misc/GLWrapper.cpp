@@ -49,15 +49,8 @@
 /*
   Define the GETPROCADDRESS macro.
  */
-#ifdef HAVE_HASH_QUOTING
 #define GETPROCADDRESS(GLWHANDLE,FUNC) \
-  GLWrapper_getProcAddress(GLWHANDLE,#FUNC)
-#elif defined(HAVE_APOSTROPHES_QUOTING)
-#define GETPROCADDRESS(GLWHANDLE,FUNC) \
-  GLWrapper_getProcAddress(GLWHANDLE,"FUNC")
-#else
-#error Unknown quoting.
-#endif
+  GLWrapper_getProcAddress(GLWHANDLE, SO__QUOTE(FUNC))
 
 /*
    Define GLWRAPPER_REGISTER_FUNC macro. Casting the type is
