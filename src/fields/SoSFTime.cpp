@@ -37,15 +37,13 @@
 */
 
 #include <Inventor/fields/SoSFTime.h>
-#include <Inventor/fields/SoSubFieldP.h>
+
+#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
-#include <Inventor/errors/SoReadError.h>
-
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
-
+#include <Inventor/errors/SoReadError.h>
+#include <Inventor/fields/SoSubFieldP.h>
 
 
 SO_SFIELD_SOURCE(SoSFTime, SbTime, const SbTime &);
@@ -70,8 +68,17 @@ sosftime_read_value(SoInput * in, SbTime & t)
 {
   double val;
   if (!in->read(val)) {
-    SoReadError::post(in, "Couldn't read double value");
+    SoReadError::post(in, "Premature end of file");
     return FALSE;
+  }
+
+  if (!coin_finite(val)) {
+    SoReadError::post(in, "Detected non-valid floating point number");
+    SoDebugError::postWarning("sosftime_read_value",
+                              "replacing non-valid number with 0.0f");
+    val = 0.0;
+    // We don't return FALSE, thereby allowing the read process to
+    // continue, as a convenience for the application programmer.
   }
 
   t.setValue(val);

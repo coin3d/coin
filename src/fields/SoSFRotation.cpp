@@ -57,16 +57,15 @@
 */
 
 #include <Inventor/fields/SoSFRotation.h>
-#include <Inventor/fields/SoSubFieldP.h>
+
+#include <Inventor/SbVec3f.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
-#include <Inventor/SbVec3f.h>
-#include <Inventor/errors/SoReadError.h>
-
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
+#include <Inventor/errors/SoReadError.h>
+#include <Inventor/fields/SoSubFieldP.h>
 
+extern SbBool sofield_read_float_values(SoInput * in, float * val, int numvals);
 
 SO_SFIELD_SOURCE(SoSFRotation, SbRotation, const SbRotation &);
 
@@ -88,13 +87,11 @@ SoSFRotation::initClass(void)
 SbBool
 sosfrotation_read_value(SoInput * in, SbRotation & r)
 {
-  SbVec3f axis;
-  float angle;
-  if (!(in->read(axis[0]) && in->read(axis[1]) && in->read(axis[2]) &&
-        in->read(angle))) {
-    SoReadError::post(in, "Couldn't read values");
-    return FALSE;
-  }
+  float f[4];
+  if (!sofield_read_float_values(in, f, 4)) { return FALSE; }
+
+  SbVec3f axis(f[0], f[1], f[2]);
+  const float angle = f[3];
 
   // vrml97 identity rotations are often specified with a null vector.
   // test for this and just set to z-axis.

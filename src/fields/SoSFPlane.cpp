@@ -37,15 +37,14 @@
 */
 
 #include <Inventor/fields/SoSFPlane.h>
-#include <Inventor/fields/SoSubFieldP.h>
-#include <Inventor/SoOutput.h>
+
 #include <Inventor/SoInput.h>
-#include <Inventor/errors/SoReadError.h>
-
-#if COIN_DEBUG
+#include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
+#include <Inventor/errors/SoReadError.h>
+#include <Inventor/fields/SoSubFieldP.h>
 
+extern SbBool sofield_read_float_values(SoInput * in, float * val, int numvals);
 
 SO_SFIELD_SOURCE(SoSFPlane, SbPlane, const SbPlane &);
 
@@ -67,15 +66,9 @@ SoSFPlane::initClass(void)
 SbBool
 sosfplane_read_value(SoInput * in, SbPlane & p)
 {
-  SbVec3f normal;
-  float offset;
-  if (!(in->read(normal[0]) && in->read(normal[1]) && in->read(normal[2]) &&
-        in->read(offset))) {
-    SoReadError::post(in, "Couldn't read values");
-    return FALSE;
-  }
-
-  p = SbPlane(normal, offset);
+  float f[4];
+  if (!sofield_read_float_values(in, f, 4)) { return FALSE; }
+  p = SbPlane(SbVec3f(f[0], f[1], f[2]), f[3]);
   return TRUE;
 }
 

@@ -37,16 +37,14 @@
 */
 
 #include <Inventor/fields/SoSFColor.h>
-#include <Inventor/fields/SoSubFieldP.h>
 
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
-#include <Inventor/errors/SoReadError.h>
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
+#include <Inventor/errors/SoReadError.h>
+#include <Inventor/fields/SoSubFieldP.h>
 
-
+extern SbBool sofield_read_float_values(SoInput * in, float * val, int numvals);
 
 SO_SFIELD_SOURCE(SoSFColor, SbColor, const SbColor &);
 
@@ -67,11 +65,10 @@ SoSFColor::initClass(void)
 SbBool
 sosfcolor_read_value(SoInput * in, SbColor & val)
 {
-  if (in->read(val[0]) && in->read(val[1]) && in->read(val[2]))
-    return TRUE;
-
-  SoReadError::post(in, "Premature end of file");
-  return FALSE;
+  float v[3];
+  if (!sofield_read_float_values(in, v, 3)) { return FALSE; }
+  for (int i=0; i < 3; i++) { val[i] = v[i]; }
+  return TRUE;
 }
 
 SbBool

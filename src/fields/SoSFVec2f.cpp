@@ -34,15 +34,14 @@
 */
 
 #include <Inventor/fields/SoSFVec2f.h>
-#include <Inventor/fields/SoSubFieldP.h>
+
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
-#include <Inventor/errors/SoReadError.h>
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
+#include <Inventor/errors/SoReadError.h>
+#include <Inventor/fields/SoSubFieldP.h>
 
-
+extern SbBool sofield_read_float_values(SoInput * in, float * val, int numvals);
 
 SO_SFIELD_SOURCE(SoSFVec2f, SbVec2f, const SbVec2f &);
 
@@ -64,10 +63,9 @@ SoSFVec2f::initClass(void)
 SbBool
 sosfvec2f_read_value(SoInput * in, SbVec2f & v)
 {
-  if (!in->read(v[0]) || !in->read(v[1])) {
-    SoReadError::post(in, "Couldn't read vector");
-    return FALSE;
-  }
+  float val[2];
+  if (!sofield_read_float_values(in, val, 2)) { return FALSE; }
+  v.setValue(val[0], val[1]);
   return TRUE;
 }
 

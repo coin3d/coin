@@ -36,14 +36,14 @@
 */
 
 #include <Inventor/fields/SoSFMatrix.h>
-#include <Inventor/fields/SoSubFieldP.h>
-#include <Inventor/SoOutput.h>
-#include <Inventor/SoInput.h>
-#include <Inventor/errors/SoReadError.h>
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
+#include <Inventor/SoInput.h>
+#include <Inventor/SoOutput.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/errors/SoReadError.h>
+#include <Inventor/fields/SoSubFieldP.h>
+
+extern SbBool sofield_read_float_values(SoInput * in, float * val, int numvals);
 
 SO_SFIELD_SOURCE(SoSFMatrix, SbMatrix, const SbMatrix &);
 
@@ -65,18 +65,8 @@ SoSFMatrix::initClass(void)
 SbBool
 sosfmatrix_read_value(SoInput * in, SbMatrix & m)
 {
-  if (in->read(m[0][0]) && in->read(m[0][1]) &&
-      in->read(m[0][2]) && in->read(m[0][3]) &&
-      in->read(m[1][0]) && in->read(m[1][1]) &&
-      in->read(m[1][2]) && in->read(m[1][3]) &&
-      in->read(m[2][0]) && in->read(m[2][1]) &&
-      in->read(m[2][2]) && in->read(m[2][3]) &&
-      in->read(m[3][0]) && in->read(m[3][1]) &&
-      in->read(m[3][2]) && in->read(m[3][3]))
-    return TRUE;
-
-  SoReadError::post(in, "Premature end of file");
-  return FALSE;
+  if (!sofield_read_float_values(in, m.operator[](0), 16)) { return FALSE; }
+  return TRUE;
 }
 
 SbBool
