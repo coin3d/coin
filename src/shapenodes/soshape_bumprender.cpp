@@ -252,8 +252,13 @@ soshape_bumprender::soshape_bumprender(void)
 
 soshape_bumprender::~soshape_bumprender()
 {
-  this->diffuseprogramdict->applyToAll(soshape_bumprender_diffuseprogramdeletion);
-  this->specularprogramdict->applyToAll(soshape_bumprender_specularprogramdeletion);  
+
+  // FIXME: Cannot delete programs just yet, as we dont know if the
+  // contex was valid or not. We must wait for new functionality to be
+  // implemented for the context element code. (20040209 handegar)
+  //this->diffuseprogramdict->applyToAll(soshape_bumprender_diffuseprogramdeletion);
+  //this->specularprogramdict->applyToAll(soshape_bumprender_specularprogramdeletion);
+
   this->diffuseprogramdict->clear();
   this->specularprogramdict->clear();
   delete this->diffuseprogramdict;  
