@@ -231,11 +231,32 @@ GENERATE_BUGLIST       = YES
 # will result in a user defined paragraph with heading "Side Effects:". 
 # You can put \n's in the value part of an alias to insert newlines.
 
+# Aliases are listed as follows (each block separated by a blank line):
+#
+#       * general aliases that may be spread around in the
+#         documentation anywhere
+#
+#       * VRML97-specific aliases
+#
+#       * aliases for node kits documentation
+#
+#       * aliases for draggers
+#
+# mortene.
+
 ALIASES                = \
-  WEB3DCOPYRIGHT="<b>The detailed class documentation is taken verbatim from the VRML97 standard (ISO/IEC 14772-1:1997). It is copyright The Web3D Consortium, and is used by permission of the Consortium:</b>\n\n" \
   COININTERNAL="<em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em>\n\n" \
   DANGEROUS_ALLOC_RETURN="<b>Note that if the Coin library has been built as a DLL under Microsoft Windows and you use this method from application code, you \e must make sure that both the Coin DLL and the application executable is using the same instance of a C Run-Time (CRT) library. Otherwise, you \e will get memory heap corruption upon deallocating the returned instances, eventually leading to mysterious crashes.</b>\n\n" \
-  TOOLMAKER_REF="For extending the Coin library with your own classes, we strongly recommend that you make yourself acquainted with the excellent «The Inventor Toolmaker» book (ISBN 0-201-62493-1), which describes the tasks involved in detail. This book was written by the original SGI Inventor designers and explains many of the underlying design ideas, aswell as having lots of hands-on examples on how to extend the Coin toolkit in ways that are true to the fundamental design ideas. («The Inventor Toolmaker» is also available at SGI's online library, at no cost. See <a href=\"http://techpubs.sgi.com/library/tpl/cgi-bin/download.cgi?coll=0650&db=bks&docnumber=860-0107-002\">Download The Inventor Toolmaker</a>.) Reading the sourcecode of the built-in classes in Coin should also provide very helpful.\n"
+  TOOLMAKER_REF="For extending the Coin library with your own classes, we strongly recommend that you make yourself acquainted with the excellent «The Inventor Toolmaker» book (ISBN 0-201-62493-1), which describes the tasks involved in detail. This book was written by the original SGI Inventor designers and explains many of the underlying design ideas, aswell as having lots of hands-on examples on how to extend the Coin toolkit in ways that are true to the fundamental design ideas. («The Inventor Toolmaker» is also available at SGI's online library, at no cost. See <a href=\"http://techpubs.sgi.com/library/tpl/cgi-bin/download.cgi?coll=0650&db=bks&docnumber=860-0107-002\">Download The Inventor Toolmaker</a>.) Reading the sourcecode of the built-in classes in Coin should also provide very helpful.\n" \
+  \
+  WEB3DCOPYRIGHT="<b>The detailed class documentation is taken verbatim from the VRML97 standard (ISO/IEC 14772-1:1997). It is copyright The Web3D Consortium, and is used by permission of the Consortium:</b>\n\n" \
+  \
+  NODEKIT_PRE_DIAGRAM="Node kit structure (new entries versus parent class marked with arrow prefix):" \
+  NODEKIT_POST_DIAGRAM="(See SoBaseKit::printDiagram() for information about the output formatting.)" \
+  NODEKIT_PRE_TABLE="Detailed information on catalog parts:" \
+  NODEKIT_POST_TABLE="(See SoBaseKit::printTable() for information about the output formatting.)" \
+  \
+  DRAGGER_CONSTRUCTOR="Default constructor, sets up the dragger nodekit catalog with the interaction and feedback geometry."
 
 
 # The ENABLED_SECTIONS tag can be used to enable conditional 
