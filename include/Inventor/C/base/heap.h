@@ -29,23 +29,23 @@ extern "C" {
 #endif /* __cplusplus */
 
   typedef int cc_heap_compare_cb(void * closure, void * o1, void * o2);
-
-  typedef struct cc_heap cc_heap;
-
-  cc_heap * cc_heap_construct(unsigned int size, 
-                              cc_heap_compare_cb * comparecb,
-                              void * compareclosure,
-                              SbBool support_remove);
   
-  void cc_heap_destruct(cc_heap * h);
-  void cc_heap_clear(cc_heap * h);
+  typedef struct cc_heap cc_heap;
+  
+  COIN_DLL_API cc_heap * cc_heap_construct(unsigned int size, 
+                                           cc_heap_compare_cb * comparecb,
+                                           void * compareclosure,
+                                           SbBool support_remove);
+  
+  COIN_DLL_API void cc_heap_destruct(cc_heap * h);
+  COIN_DLL_API void cc_heap_clear(cc_heap * h);
 
-  void cc_heap_add(cc_heap * h, void * o);
-  void * cc_heap_get_top(cc_heap * h);
-  void * cc_heap_extract_top(cc_heap * h);
-  int cc_heap_remove(cc_heap * h, void * o);
-  unsigned int cc_heap_elements(cc_heap * h);
-  SbBool cc_heap_empty(cc_heap * h);
+  COIN_DLL_API void cc_heap_add(cc_heap * h, void * o);
+  COIN_DLL_API void * cc_heap_get_top(cc_heap * h);
+  COIN_DLL_API void * cc_heap_extract_top(cc_heap * h);
+  COIN_DLL_API int cc_heap_remove(cc_heap * h, void * o);
+  COIN_DLL_API unsigned int cc_heap_elements(cc_heap * h);
+  COIN_DLL_API SbBool cc_heap_empty(cc_heap * h);
 
 /* ********************************************************************** */
 
