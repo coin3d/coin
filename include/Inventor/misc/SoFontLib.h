@@ -35,11 +35,11 @@ class SoFontLib {
 public:
   static void initialize(void);
   static void exit(void);
-  static SbString createFont(const SbName & fontname, const SbName & stylename, const SbVec2s & size);
+  static int createFont(const SbName & fontname, const SbName & stylename, const SbVec2s & size);
   static int getFont(const SbName & fontname, const SbVec2s & size);
   static void doneFont(const int font);
   static int getNumCharmaps(const int font);
-  static SbName getCharmapName(const int font, const int charmap);
+  static SbString getCharmapName(const int font, const int charmap);
   static void setCharmap(const int font, const int charmap);
   static void setCharSize(const int font, const SbVec2s & size);
   static void setFontRotation(const int font, const float angle);
