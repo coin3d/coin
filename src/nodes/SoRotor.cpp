@@ -51,7 +51,6 @@
 #include <Inventor/nodes/SoRotor.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/sensors/SoFieldSensor.h>
-#include <Inventor/sensors/SoTimerSensor.h>
 #include <coindefs.h>
 
 /*!
@@ -87,12 +86,12 @@ public:
   SbTime starttime;
   SbVec3f startaxis;
   float startangle;
-  SoTimerSensor * timersensor;
+  SoFieldSensor * rtfieldsensor;
   SoFieldSensor * onfieldsensor;
   SoFieldSensor * rotfieldsensor;
   SoFieldSensor * speedfieldsensor;
 
-  static void timerSensorCB(void * d, SoSensor * s);
+  static void rtFieldSensorCB(void * d, SoSensor * s);
   static void fieldSensorCB(void * d, SoSensor * s);
   void setRotation(void);
 
@@ -117,8 +116,10 @@ SoRotor::SoRotor(void)
   SO_NODE_ADD_FIELD(speed, (1.0f));
   SO_NODE_ADD_FIELD(on, (TRUE));
 
-  PRIVATE(this)->timersensor = new SoTimerSensor(SoRotorP::timerSensorCB, this);
-  PRIVATE(this)->timersensor->setInterval(SoDB::getRealTimeInterval());
+  SoField * f = SoDB::getGlobalField("realTime");
+  PRIVATE(this)->rtfieldsensor = new SoFieldSensor(SoRotorP::rtFieldSensorCB, this);
+  PRIVATE(this)->rtfieldsensor->attach(f);
+  PRIVATE(this)->rtfieldsensor->setPriority(0);
   PRIVATE(this)->onfieldsensor = new SoFieldSensor(SoRotorP::fieldSensorCB, this);
   PRIVATE(this)->onfieldsensor->setPriority(0);
   PRIVATE(this)->onfieldsensor->attach(&this->on);
@@ -131,7 +132,6 @@ SoRotor::SoRotor(void)
 
   PRIVATE(this)->starttime = SbTime::zero();
   this->rotation.getValue(PRIVATE(this)->startaxis, PRIVATE(this)->startangle);
-  PRIVATE(this)->timersensor->schedule();
 }
 
 
@@ -141,7 +141,7 @@ SoRotor::SoRotor(void)
 SoRotor::~SoRotor()
 {
   delete PRIVATE(this)->rotfieldsensor;
-  delete PRIVATE(this)->timersensor;
+  delete PRIVATE(this)->rtfieldsensor;
   delete PRIVATE(this)->onfieldsensor;
   delete PRIVATE(this)->speedfieldsensor;
   delete PRIVATE(this);
@@ -161,15 +161,9 @@ SoRotorP::fieldSensorCB(void * d, SoSensor * s)
   SoRotor * thisp = (SoRotor *) d;
 
   if (s == PRIVATE(thisp)->onfieldsensor) {
-    if (thisp->on.getValue() == FALSE) {
-      if (PRIVATE(thisp)->timersensor->isScheduled())
-        PRIVATE(thisp)->timersensor->unschedule();
-    }
-    else {
+    if (thisp->on.getValue() == TRUE) {
       thisp->rotation.getValue(PRIVATE(thisp)->startaxis, PRIVATE(thisp)->startangle);
       PRIVATE(thisp)->starttime = get_current_time();
-      if (!PRIVATE(thisp)->timersensor->isScheduled())
-        PRIVATE(thisp)->timersensor->schedule();
     }
   }
   else if (s == PRIVATE(thisp)->speedfieldsensor) {
@@ -184,16 +178,13 @@ SoRotorP::fieldSensorCB(void * d, SoSensor * s)
 
 
 void
-SoRotorP::timerSensorCB(void * d, SoSensor *)
+SoRotorP::rtFieldSensorCB(void * d, SoSensor *)
 {
   SoRotor * thisp = (SoRotor *) d;
-  // got to check value of on field here in case timersensor
+  // got to check value of on field here in case rtfieldsensor
   // triggers before onfieldsensor.
   if (thisp->on.getValue()) {
     PRIVATE(thisp)->setRotation();
-  }
-  else {
-    PRIVATE(thisp)->timersensor->unschedule();
   }
 }
 
