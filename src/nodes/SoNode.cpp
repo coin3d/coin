@@ -169,6 +169,7 @@
 */
 
 #include <Inventor/nodes/SoNodes.h>
+#include <Inventor/nodes/SoTextureUnit.h>
 
 #include <Inventor/C/tidbitsp.h>
 #include <Inventor/SoInput.h>
@@ -594,9 +595,9 @@ SoNode::initClasses(void)
   SoListener::initClass();  
 
   SoTransparencyType::initClass();
-
-  // this node are not part of the public API yet.
   SoTextureScalePolicy::initClass();
+
+  SoTextureUnit::initClass();
 }
 
 /*!
