@@ -32,7 +32,9 @@
 
 #include <Inventor/events/SoKeyboardEvent.h>
 #include <Inventor/SbName.h>
+#include <Inventor/SbDict.h>
 #include <assert.h>
+#include <stdlib.h> // atexit
 
 // Avoid problem with Microsoft Win32 API headers (yes, they actually
 // #define DELETE somewhere in their header files).
@@ -62,66 +64,122 @@
   given \c KEY.
 */
 
+static SbDict * converttoprintable = NULL;
+static SbDict * converttoprintable_shift = NULL;
 
-static char converttoprintable[] = {
-//    ANY
-  '.',
-//    LEFT_SHIFT RIGHT_SHIFT LEFT_CONTROL RIGHT_CONTROL LEFT_ALT RIGHT_ALT
-  '.', '.', '.', '.', '.', '.',
-//      NUMBER_0 NUMBER_1 NUMBER_2 NUMBER_3 NUMBER_4 NUMBER_5 NUMBER_6
-//      NUMBER_7 NUMBER_8 NUMBER_9
-  '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-//      A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
-  'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
-  'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-//      HOME LEFT_ARROW UP_ARROW RIGHT_ARROW DOWN_ARROW PAGE_UP PAGE_DOWN
-//      PRIOR NEXT END
-  '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
-//      PAD_ENTER PAD_F1 PAD_F2 PAD_F3 PAD_F4 PAD_0 PAD_1 PAD_2 PAD_3
-//      PAD_4 PAD_5 PAD_6 PAD_7 PAD_8 PAD_9 PAD_ADD PAD_SUBTRACT
-//      PAD_MULTIPLY PAD_DIVIDE PAD_SPACE PAD_TAB PAD_INSERT PAD_DELETE
-//      PAD_PERIOD
-  '.', '.', '.', '.', '.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-  '+', '-', '*', '/', ' ', '.', '.', '.', '.',
-//      F1 F2 F3 F4 F5 F6 F7 F8 F9 F10 F11 F12
-  '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
-//      BACKSPACE TAB RETURN ENTER PAUSE SCROLL_LOCK ESCAPE DELETE PRINT
-//      INSERT NUM_LOCK CAPS_LOCK SHIFT_LOCK
-  '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
-//      SPACE APOSTROPHE COMMA MINUS PERIOD SLASH SEMICOLON EQUAL
-//      BRACKETLEFT BACKSLASH BRACKETRIGHT GRAVE
-  ' ', '\'', ',', '-', '.', '/', ';', '=', '[', '\\', ']', '~'
-};
+static void
+sokeyboardevent_cleanup(void)
+{
+  delete converttoprintable;
+  delete converttoprintable_shift;
+}
 
-static char converttoprintable_shift[] = {
-//    ANY
-  '.',
-//    LEFT_SHIFT RIGHT_SHIFT LEFT_CONTROL RIGHT_CONTROL LEFT_ALT RIGHT_ALT
-  '.', '.', '.', '.', '.', '.',
-//      NUMBER_0 NUMBER_1 NUMBER_2 NUMBER_3 NUMBER_4 NUMBER_5 NUMBER_6
-//      NUMBER_7 NUMBER_8 NUMBER_9
-  ')', '!', '@', '#', '$', '%', '^', '&', '*', '(',
-//      A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
-  'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
-  'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-//      HOME LEFT_ARROW UP_ARROW RIGHT_ARROW DOWN_ARROW PAGE_UP PAGE_DOWN
-//      PRIOR NEXT END
-  '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
-//      PAD_ENTER PAD_F1 PAD_F2 PAD_F3 PAD_F4 PAD_0 PAD_1 PAD_2 PAD_3
-//      PAD_4 PAD_5 PAD_6 PAD_7 PAD_8 PAD_9 PAD_ADD PAD_SUBTRACT
-//      PAD_MULTIPLY PAD_DIVIDE PAD_SPACE PAD_TAB PAD_INSERT PAD_DELETE
-//      PAD_PERIOD
-  '.', '.', '.', '.', '.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-  '+', '-', '*', '/', ' ', '.', '.', '.', '.',
-//      F1 F2 F3 F4 F5 F6 F7 F8 F9 F10 F11 F12
-  '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
-//      BACKSPACE TAB RETURN ENTER PAUSE SCROLL_LOCK ESCAPE DELETE PRINT
-//      INSERT NUM_LOCK CAPS_LOCK SHIFT_LOCK
-  '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
-//      SPACE APOSTROPHE COMMA MINUS PERIOD SLASH SEMICOLON EQUAL
-//      BRACKETLEFT BACKSLASH BRACKETRIGHT GRAVE
-  ' ', '\'', ',', '-', '.', '/', ';', '=', '[', '\\', ']', '~'
-};
+static void
+build_convert_dicts(void)
+{
+  int i;
+  converttoprintable = new SbDict();
+  converttoprintable_shift = new SbDict();
+  atexit(sokeyboardevent_cleanup);
+
+#undef ADD_KEY // just in case
+#define ADD_KEY(x,y) d->enter((unsigned long)(SoKeyboardEvent::x), (void*)y)
+
+  // shift not down
+  SbDict * d = converttoprintable;
+  ADD_KEY(NUMBER_0, '0');
+  ADD_KEY(NUMBER_1, '1');
+  ADD_KEY(NUMBER_2, '2');
+  ADD_KEY(NUMBER_3, '3');
+  ADD_KEY(NUMBER_4, '4');
+  ADD_KEY(NUMBER_5, '5');
+  ADD_KEY(NUMBER_6, '6');
+  ADD_KEY(NUMBER_7, '7');
+  ADD_KEY(NUMBER_8, '8');
+  ADD_KEY(NUMBER_9, '9');
+
+  ADD_KEY(PAD_0, '0');
+  ADD_KEY(PAD_1, '1');
+  ADD_KEY(PAD_2, '2');
+  ADD_KEY(PAD_3, '3');
+  ADD_KEY(PAD_4, '4');
+  ADD_KEY(PAD_5, '5');
+  ADD_KEY(PAD_6, '6');
+  ADD_KEY(PAD_7, '7');
+  ADD_KEY(PAD_8, '8');
+  ADD_KEY(PAD_9, '9');
+
+  ADD_KEY(PAD_ADD, '+');
+  ADD_KEY(PAD_SUBTRACT, '-');
+  ADD_KEY(PAD_MULTIPLY, '*');
+  ADD_KEY(PAD_DIVIDE, '/');
+  ADD_KEY(PAD_SPACE, ' ');
+
+  ADD_KEY(SPACE, ' ');
+  ADD_KEY(APOSTROPHE, '\'');
+  ADD_KEY(COMMA, ',');
+  ADD_KEY(MINUS, '-');
+  ADD_KEY(PERIOD, '.');
+  ADD_KEY(SLASH, '/');
+  ADD_KEY(SEMICOLON, ';');
+  ADD_KEY(EQUAL, '=');
+  ADD_KEY(BRACKETLEFT, '[');
+  ADD_KEY(BACKSLASH, '\\');
+  ADD_KEY(BRACKETRIGHT,']');
+  ADD_KEY(GRAVE,'`');
+
+  for (i = (int) SoKeyboardEvent::A; i <= (int) SoKeyboardEvent::Z; i++) {
+    d->enter((unsigned long) i, (void*) ('a' + i - (int) SoKeyboardEvent::A));
+  }
+
+  // shift down
+  d = converttoprintable_shift;
+  ADD_KEY(NUMBER_0, ')');
+  ADD_KEY(NUMBER_1, '!');
+  ADD_KEY(NUMBER_2, '@');
+  ADD_KEY(NUMBER_3, '#');
+  ADD_KEY(NUMBER_4, '$');
+  ADD_KEY(NUMBER_5, '%');
+  ADD_KEY(NUMBER_6, '^');
+  ADD_KEY(NUMBER_7, '&');
+  ADD_KEY(NUMBER_8, '*');
+  ADD_KEY(NUMBER_9, '(');
+
+  ADD_KEY(PAD_0, '0');
+  ADD_KEY(PAD_1, '1');
+  ADD_KEY(PAD_2, '2');
+  ADD_KEY(PAD_3, '3');
+  ADD_KEY(PAD_4, '4');
+  ADD_KEY(PAD_5, '5');
+  ADD_KEY(PAD_6, '6');
+  ADD_KEY(PAD_7, '7');
+  ADD_KEY(PAD_8, '8');
+  ADD_KEY(PAD_9, '9');
+
+  ADD_KEY(PAD_ADD, '+');
+  ADD_KEY(PAD_SUBTRACT, '-');
+  ADD_KEY(PAD_MULTIPLY, '*');
+  ADD_KEY(PAD_DIVIDE, '/');
+  ADD_KEY(PAD_SPACE, ' ');
+
+  ADD_KEY(SPACE, ' ');
+  ADD_KEY(APOSTROPHE, '\"');
+  ADD_KEY(COMMA, '<');
+  ADD_KEY(MINUS, '_');
+  ADD_KEY(PERIOD, '>');
+  ADD_KEY(SLASH, '?');
+  ADD_KEY(SEMICOLON, ':');
+  ADD_KEY(EQUAL, '+');
+  ADD_KEY(BRACKETLEFT, '{');
+  ADD_KEY(BACKSLASH, '|');
+  ADD_KEY(BRACKETRIGHT,'}');
+  ADD_KEY(GRAVE,'~');
+
+  for (i = (int) SoKeyboardEvent::A; i <= (int) SoKeyboardEvent::Z; i++) {
+    d->enter((unsigned long) i, (void*) ('A' + i - (int) SoKeyboardEvent::A));
+  }
+#undef ADD_KEY
+}
 
 SO_EVENT_SOURCE(SoKeyboardEvent);
 
@@ -162,6 +220,7 @@ void
 SoKeyboardEvent::setKey(SoKeyboardEvent::Key key)
 {
   this->key = key;
+  this->isprintableset = 0;
 }
 
 /*!
@@ -176,7 +235,7 @@ SoKeyboardEvent::setKey(SoKeyboardEvent::Key key)
   non-alphanumerical characters.
 
   \sa getPrintableCharacter(), getState()
-  \sa wasShiftDown(), wasCtrlDown(), wasAltDown(), getPosition(), getTime() 
+  \sa wasShiftDown(), wasCtrlDown(), wasAltDown(), getPosition(), getTime()
 */
 SoKeyboardEvent::Key
 SoKeyboardEvent::getKey(void) const
@@ -223,11 +282,13 @@ SoKeyboardEvent::isKeyReleaseEvent(const SoEvent * e,
   This conversion does not work on non-US keyboards, so we recommend
   that you set the printable character using this method instead.
 
+  This printable character is cleared each time setKey() is called.
+
   This method is an extension versus the Open Inventor API.
 
   \sa getPrintableCharacter()
 */
-void 
+void
 SoKeyboardEvent::setPrintableCharacter(const char c)
 {
   this->printable = c;
@@ -243,14 +304,22 @@ SoKeyboardEvent::setPrintableCharacter(const char c)
   keyboards. The Coin GUI toolkits (SoGtk/SoQt/SoWin/SoXt) will
   set the printable character correctly.
 
-  \sa getKey(), wasShiftDown(), wasCtrlDown(), wasAltDown(), setPrintableCharacter() 
+  \sa getKey(), wasShiftDown(), wasCtrlDown(), wasAltDown(), setPrintableCharacter()
 */
 char
 SoKeyboardEvent::getPrintableCharacter(void) const
 {
   if (this->isprintableset) return this->printable;
 
-  char * ca =
+  if (converttoprintable == NULL) {
+    build_convert_dicts();
+  }
+
+  SbDict * dict =
     this->wasShiftDown() ? converttoprintable_shift : converttoprintable;
-  return ca[this->getKey()];
+  void * value;
+  if (dict->find((unsigned long) this->getKey(), value)) {
+    return (char) value;
+  }
+  return '.';
 }
