@@ -106,8 +106,11 @@ VERSION = @VERSION@
 _am_include = @_am_include@
 coin_build_dir = @coin_build_dir@
 coin_configure_date = @coin_configure_date@
+coin_html_dir = @coin_html_dir@
+coin_man_dir = @coin_man_dir@
 coin_src_dir = @coin_src_dir@
 install_sh = @install_sh@
+path_tag = @path_tag@
 sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
@@ -563,6 +566,9 @@ coin-@CONFIG@.cfg: config.status $(srcdir)/coin.cfg.in
 
 doxygen-doc:
 	@@sim_ac_doxygen_exe@ $(top_builddir)/docs/coin.doxygen
+
+# sources needed to generate docs must be created by this rule
+built-sources:
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
