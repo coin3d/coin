@@ -34,6 +34,12 @@
 #include <Inventor/C/glue/gl_wgl.h>
 #include <Inventor/C/tidbits.h>
 
+#ifdef HAVE_WIN32_API
+/* Conditional inclusion, as the functions in win32api.h will not be
+   implemented unless the Win32 API is available. */
+#include <Inventor/C/glue/win32api.h>
+#endif /* HAVE_WIN32_API */
+
 /* ********************************************************************** */
 
 #ifndef HAVE_WGL
