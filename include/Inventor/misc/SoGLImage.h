@@ -28,7 +28,7 @@
 // a stable interface over a long period of time. It is installed
 // because we need it in an internal project. 
 
-// FIXME: make sure we do a design review for this class for Coin v2.0
+// FIXME: make sure we do a design review for this class for Coin v3.0
 // pederb, 2001-11-28
 
 #include <Inventor/SbBasic.h>
