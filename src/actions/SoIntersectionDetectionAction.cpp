@@ -138,10 +138,12 @@ SO_ACTION_SOURCE(SoIntersectionDetectionAction);
   \ingroup actions
   \ingroup collision
 
-  Note that the implementation is somewhat incomplete.  The epsilon setting is
-  not supported yet, only intersection testing between triangles is done, and
-  the algorithm used is O(N^2) - no significant optimizations is done at this
-  time.
+  HUGE WARNING SIGN:
+  Note that the implementation is somewhat incomplete. Only intersection 
+  testing between triangles is done, and the algorithm used is O(N^2) - 
+  no significant optimizations is done at this time.
+  The algorithm used when specifying an epsilon value is even more 
+  non-optimized and unusable for any real scenario.
 
   \since 20021022
 */
@@ -551,7 +553,8 @@ SoIntersectionDetectionActionP::deletePrimitives(PrimitiveData * primitives)
 }
 
 SoCallbackAction::Response
-SoIntersectionDetectionActionP::shape(SoCallbackAction * action, SoShape * shape)
+SoIntersectionDetectionActionP::shape(SoCallbackAction * action, 
+                                      SoShape * shape)
 {
   SbBox3f bbox;
   SbVec3f center;
@@ -630,70 +633,81 @@ void
 SoIntersectionDetectionActionP::reset(void)
 {
   int i;
-  for ( i = 0; i < this->shapedata->getLength(); i++ ) {
-    ShapeData * data = (ShapeData *) (*(this->shapedata))[i];
+  for (i = 0; i < this->shapedata->getLength(); i++) {
+    ShapeData * data = (ShapeData *)(*(this->shapedata))[i];
     data->path->unref();
     delete data;
   }
   this->shapedata->truncate(0);
   this->traverser = new SoCallbackAction;
-  this->traverser->addPreCallback(SoDragger::getClassTypeId(), draggerCB, this);
-  this->traverser->addPreCallback(SoNode::getClassTypeId(), traverseCB, this);
-  for ( i = 0; i < this->prunetypes->getLength(); i++ )
-    this->traverser->addPreCallback((*(this->prunetypes))[i], pruneCB, NULL);
-  this->traverser->addPreCallback(SoShape::getClassTypeId(), shapeCB, this);
+  this->traverser->addPreCallback(SoDragger::getClassTypeId(), 
+                                  draggerCB, this);
+  this->traverser->addPreCallback(SoNode::getClassTypeId(), 
+                                  traverseCB, this);
+  for (i = 0; i < this->prunetypes->getLength(); i++)
+    this->traverser->addPreCallback((*(this->prunetypes))[i], 
+                                    pruneCB, NULL);
+  this->traverser->addPreCallback(SoShape::getClassTypeId(), 
+                                  shapeCB, this);
 }
 
 void
 SoIntersectionDetectionActionP::doIntersectionTesting(void)
 {
-  if ( this->callbacks->getLength() == 0 ) return;
+  if (this->callbacks->getLength() == 0) return;
   const float epsilon = this->getEpsilon();
   delete this->traverser;
   this->traverser = NULL;
   int i, j;
-  for ( i = 0; i < this->shapedata->getLength(); i++ ) {
-    ShapeData * shape1 = (ShapeData *) (*(this->shapedata))[i];
+  for (i = 0; i < this->shapedata->getLength(); i++) {
+    ShapeData * shape1 = (ShapeData *)(*(this->shapedata))[i];
     PrimitiveData * primitives1 = NULL;
-    if ( this->internalsenabled ) {
-      primitives1 = SoIntersectionDetectionActionP::generatePrimitives(shape1);
-      SbBool cont = this->doInternalPrimitiveIntersectionTesting(primitives1);
-      if ( !cont ) {
+    if (this->internalsenabled) {
+      primitives1 = 
+        SoIntersectionDetectionActionP::generatePrimitives(shape1);
+      SbBool cont = 
+        this->doInternalPrimitiveIntersectionTesting(primitives1);
+      if (!cont) {
         SoIntersectionDetectionActionP::deletePrimitives(primitives1);
         return;
       }
     }
-    for ( j = i + 1; j < this->shapedata->getLength(); j++ ) {
-      ShapeData * shape2 = (ShapeData *) (*(this->shapedata))[j];
+    for (j = i + 1; j < this->shapedata->getLength(); j++) {
+      bool bboxhit = FALSE;
+      ShapeData * shape2 = (ShapeData *)(*(this->shapedata))[j];
       // support for negative epsilons can be added here
       // note that if support is added for this, negative bounding box volumes must be filtered
-      /*
-      if ( epsilon > 0.0f ) {
+      if (epsilon > 0.0f) {
         SbVec3f epsilonvec(epsilon, epsilon, epsilon);
         SbBox3f shape2box(shape2->bbox);
-        shape2->bbox.getTransform().multDirMatrix(epsilonvec, epsilonvec); // move epsilon to object space
+        // move epsilon to object space
+        shape2->bbox.getTransform().multDirMatrix(epsilonvec, epsilonvec);
         float localepsilon = epsilonvec.length(); // yes, it's a bit large...
-        shape2box.getMin() -= SbVec3f(localepsilon, localepsilon, localepsilon);
-        shape2box.getMax() += SbVec3f(localepsilon, localepsilon, localepsilon);
+        shape2box.getMin() -= 
+          SbVec3f(localepsilon, localepsilon, localepsilon);
+        shape2box.getMax() += 
+          SbVec3f(localepsilon, localepsilon, localepsilon);
         SbXfBox3f shape2xfbbox(shape2box);
         shape2xfbbox.setTransform(shape2->bbox.getTransform());
-        if ( shape1->bbox.intersect(shape2xfbbox) ) {
-          if ( !this->filtercb || this->filtercb(this->filterclosure, shape1->path, shape2->path) ) {
-            fprintf(stderr, "FIXME: primitive testing\n");
-            // do primitive testing
-          }
-        }
+        if (shape1->bbox.intersect(shape2xfbbox)) bboxhit = TRUE;
       }
-      else
-      */
-      if ( shape1->bbox.intersect(shape2->bbox) ) {
-        if ( !this->filtercb || this->filtercb(this->filterclosure, shape1->path, shape2->path) ) {
-          if ( primitives1 == NULL ) primitives1 = SoIntersectionDetectionActionP::generatePrimitives(shape1);
-          PrimitiveData * primitives2 = SoIntersectionDetectionActionP::generatePrimitives(shape2);
-          SbBool cont = this->doPrimitiveIntersectionTesting(primitives1, primitives2);
+      else {
+        if (shape1->bbox.intersect(shape2->bbox)) bboxhit = TRUE;
+      }
+      if (bboxhit) {
+        if (!this->filtercb || this->filtercb(this->filterclosure, 
+                                              shape1->path, 
+                                              shape2->path)) {
+          if (primitives1 == NULL) 
+            primitives1 = 
+              SoIntersectionDetectionActionP::generatePrimitives(shape1);
+          PrimitiveData * primitives2 = 
+            SoIntersectionDetectionActionP::generatePrimitives(shape2);
+          SbBool cont = this->doPrimitiveIntersectionTesting(primitives1, 
+                                                             primitives2);
           SoIntersectionDetectionActionP::deletePrimitives(primitives2);
-          if ( !cont ) {
-	    SoIntersectionDetectionActionP::deletePrimitives(primitives1);
+          if (!cont) {
+            SoIntersectionDetectionActionP::deletePrimitives(primitives1);
             return;
           }
         }
@@ -707,11 +721,11 @@ SbBool
 SoIntersectionDetectionActionP::doPrimitiveIntersectionTesting(PrimitiveData * primitives1, PrimitiveData * primitives2)
 {
   int i, j;
-  for ( i = 0; i < primitives1->triangles->getLength(); i++ ) {
+  for (i = 0; i < primitives1->triangles->getLength(); i++) {
     SbTri3f * t1 = (SbTri3f *) (*(primitives1->triangles))[i];
-    for ( j = 0; j < primitives2->triangles->getLength(); j++ ) {
+    for (j = 0; j < primitives2->triangles->getLength(); j++) {
       SbTri3f * t2 = (SbTri3f *) (*(primitives2->triangles))[j];
-      if ( t1->intersect(*t2) ) {
+      if (t1->intersect(*t2, this->getEpsilon())) {
         SoIntersectingPrimitive p1;
         p1.path = primitives1->path;
         p1.type = SoIntersectingPrimitive::TRIANGLE;
@@ -726,7 +740,7 @@ SoIntersectionDetectionActionP::doPrimitiveIntersectionTesting(PrimitiveData * p
         primitives2->invtransform.multVecMatrix(p2.xf_vertex[0], p2.vertex[0]);
         primitives2->invtransform.multVecMatrix(p2.xf_vertex[1], p2.vertex[1]);
         primitives2->invtransform.multVecMatrix(p2.xf_vertex[2], p2.vertex[2]);
-	int c;
+        int c;
         for ( c = 0; c < this->callbacks->getLength(); c += 2 ) {
           SoIntersectionDetectionAction::SoIntersectionCB * cb =
             (SoIntersectionDetectionAction::SoIntersectionCB *) (*(this->callbacks))[c];
@@ -737,8 +751,8 @@ SoIntersectionDetectionActionP::doPrimitiveIntersectionTesting(PrimitiveData * p
             return TRUE;
           case SoIntersectionDetectionAction::ABORT:
             return FALSE;
-	  default:
-	    assert(0);
+          default:
+            assert(0);
           }
         }
       }
