@@ -1,0 +1,21 @@
+Here is some information about building Coin (and SoQt) with Microsoft
+Visual C++.
+
+1. To run the configure shell-script you need CygWin from Cygnus
+   Solutions <URL:http://sourceware.cygnus.com/cygwin/>.
+
+2. Ignore the message at the end of the configure-script saying:
+
+   "Now, run 'make install' to build Coin."
+
+   The Microsoft make-utility is 'nmake.exe', and it is not compatible
+   with gnu make.  To build a Microsoft compatible library (.lib),
+   enter the 'build' directory and run nmake on 'coin.mak'.
+
+3. Because we process the project-file with the configure-script,
+   DevStudio complains that the project file was not made with
+   DevStudio. There are no fixes for this bug at this time. Use the
+   makefile to build 'Coin.lib'.
+
+--
+mariusbu@sim.no
