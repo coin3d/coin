@@ -295,8 +295,8 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
                       tindices,
                       (int)nbind,
                       (int)mbind,
-                      doTextures ? 0 : 1,
-                      drawPoints ? 0 : 1);
+                      doTextures ? 1 : 0,
+                      drawPoints ? 1 : 0);
 
   if (didpush) {
     state->pop();
