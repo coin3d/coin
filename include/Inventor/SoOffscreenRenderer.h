@@ -64,6 +64,10 @@ public:
   SbBool writeToRGB(FILE * fp) const;
   SbBool writeToPostScript(FILE * fp) const;
   SbBool writeToPostScript(FILE * fp, const SbVec2f & printsize) const;
+
+  SbBool writeToRGB(const char * filename) const;
+  SbBool writeToPostScript(const char * filename) const;
+  SbBool writeToPostScript(const char * filename, const SbVec2f & printsize) const;
   
   SbBool isWriteSupported(const SbName & filetypeextension) const;
   int getNumWriteFiletypes(void) const;

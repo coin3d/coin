@@ -894,7 +894,13 @@ write_short(FILE * fp, unsigned short val)
 }
 
 /*!
-  Writes the buffer to an SGI format RGB file.
+  Writes the buffer in SGI RGB format by appending it to the already
+  open file.
+
+  Important note: do \e not use this method when the Coin library has
+  been compiled as an MSWindows DLL, as passing FILE* instances back
+  or forth to DLLs is dangerous and will most likely cause a
+  crash. This is an intrinsic limitation for MSWindows DLLs.
 */
 SbBool
 SoOffscreenRenderer::writeToRGB(FILE * fp) const
@@ -941,7 +947,34 @@ SoOffscreenRenderer::writeToRGB(FILE * fp) const
 }
 
 /*!
-  Writes the buffer to a file in Postscript format.
+  Opens a file with the given name and writes the offscreen buffer in
+  SGI RGB format to the new file. If the file already exists, it will
+  be overwritten (if permitted by the filesystem).
+
+  Returns \c TRUE if all went ok, otherwise \c FALSE.
+*/
+SbBool
+SoOffscreenRenderer::writeToRGB(const char * filename) const
+{
+  FILE * rgbfp = fopen(filename, "wb");
+  if (!rgbfp) {
+    SoDebugError::postWarning("SoOffscreenRenderer::writeToRGB",
+                              "couldn't open file '%s'", filename);
+    return FALSE;
+  }
+  SbBool result = this->writeToRGB(rgbfp);
+  (void)fclose(rgbfp);
+  return result;
+}
+
+/*!
+  Writes the buffer in Postscript format by appending it to the
+  already open file.
+
+  Important note: do \e not use this method when the Coin library has
+  been compiled as an MSWindows DLL, as passing FILE* instances back
+  or forth to DLLs is dangerous and will most likely cause a
+  crash. This is an intrinsic limitation for MSWindows DLLs.
 */
 SbBool
 SoOffscreenRenderer::writeToPostScript(FILE * fp) const
@@ -951,8 +984,34 @@ SoOffscreenRenderer::writeToPostScript(FILE * fp) const
 }
 
 /*!
+  Opens a file with the given name and writes the offscreen buffer in
+  Postscript format to the new file. If the file already exists, it
+  will be overwritten (if permitted by the filesystem).
+
+  Returns \c TRUE if all went ok, otherwise \c FALSE.
+*/
+SbBool
+SoOffscreenRenderer::writeToPostScript(const char * filename) const
+{
+  FILE * psfp = fopen(filename, "wb");
+  if (!psfp) {
+    SoDebugError::postWarning("SoOffscreenRenderer::writeToPostScript",
+                              "couldn't open file '%s'", filename);
+    return FALSE;
+  }
+  SbBool result = this->writeToPostScript(psfp);
+  (void)fclose(psfp);
+  return result;
+}
+
+/*!
   Writes the buffer to a file in Postscript format, with \a printsize
   dimensions.
+
+  Important note: do \e not use this method when the Coin library has
+  been compiled as an MSWindows DLL, as passing FILE* instances back
+  or forth to DLLs is dangerous and will most likely cause a
+  crash. This is an intrinsic limitation for MSWindows DLLs.
 */
 SbBool
 SoOffscreenRenderer::writeToPostScript(FILE * fp,
@@ -963,11 +1022,35 @@ SoOffscreenRenderer::writeToPostScript(FILE * fp,
 }
 
 /*!
+  Opens a file with the given name and writes the offscreen buffer in
+  Postscript format with \a printsize dimensions to the new file. If
+  the file already exists, it will be overwritten (if permitted by the
+  filesystem).
+
+  Returns \c TRUE if all went ok, otherwise \c FALSE.
+*/
+SbBool
+SoOffscreenRenderer::writeToPostScript(const char * filename,
+                                       const SbVec2f & printsize) const
+{
+  FILE * psfp = fopen(filename, "wb");
+  if (!psfp) {
+    SoDebugError::postWarning("SoOffscreenRenderer::writeToPostScript",
+                              "couldn't open file '%s'", filename);
+    return FALSE;
+  }
+  SbBool result = this->writeToPostScript(psfp, printsize);
+  (void)fclose(psfp);
+  return result;
+}
+
+
+/*!
   Returns TRUE if the buffer can be saved as a file of type \a
   filetypeextension, using SoOffscreenRenderer::writeToFile().  This
   function needs simage v1.1 or newer. Examples of supported
-  extensions are: jpg, png, tiff and rgb. The extension match is
-  not case sensitive.
+  extensions are: jpg, png, tiff and rgb. The extension match is not
+  case sensitive.
 
   This method is an extension versus the Open Inventor API.
 
