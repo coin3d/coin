@@ -22,29 +22,28 @@
   \brief The SoAsciiText class renders flat 3D text.
   \ingroup nodes
 
-  This class renders text using 3D geometry.
+  The text is rendered using 3D polygon geometry.
 
-  It is different from the SoText2 node in that it rotates, scales,
-  translates etc just like other geometry in the scene. It is
+  This node is different from the SoText2 node in that it rotates,
+  scales, translates etc just like other geometry in the scene. It is
   different from the SoText3 node in that it renders the text "flat",
   i.e. does not extrude the fonts to have depth.
 */
 
-
 #include <Inventor/nodes/SoAsciiText.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/misc/SoGlyph.h>
-#include <Inventor/sensors/SoFieldSensor.h>
-#include <Inventor/elements/SoFontSizeElement.h>
-#include <Inventor/elements/SoFontNameElement.h>
-#include <Inventor/bundles/SoMaterialBundle.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/actions/SoGetPrimitiveCountAction.h>
-#include <Inventor/elements/SoGLShapeHintsElement.h>
-#include <Inventor/elements/SoGLNormalizeElement.h>
-#include <Inventor/details/SoTextDetail.h>
 #include <Inventor/SoPrimitiveVertex.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
+#include <Inventor/bundles/SoMaterialBundle.h>
+#include <Inventor/details/SoTextDetail.h>
+#include <Inventor/elements/SoFontNameElement.h>
+#include <Inventor/elements/SoFontSizeElement.h>
+#include <Inventor/elements/SoGLNormalizeElement.h>
+#include <Inventor/elements/SoGLShapeHintsElement.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/misc/SoGlyph.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/sensors/SoFieldSensor.h>
 
 #ifdef _WIN32
 #include <windows.h> // *sigh* needed for gl.h
@@ -65,8 +64,9 @@
   \var SoSFFloat SoAsciiText::spacing
   Spacing between each line. Defaults to 1.0.
 */
-/*!  \var SoSFEnum SoAsciiText::justification   
-  Horizontal alignment. Default SoAsciiText::LEFT.  
+/*!
+  \var SoSFEnum SoAsciiText::justification
+  Horizontal alignment. Default SoAsciiText::LEFT.
 */
 
 /*!
@@ -123,9 +123,9 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
 {
   if (!this->shouldGLRender(action)) return;
 
-  SoState *state = action->getState();
+  SoState * state = action->getState();
   this->setUpGlyphs(state);
-  
+
   SoMaterialBundle mb(action);
   mb.sendFirst();
 
@@ -140,9 +140,9 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
 
   float size = SoFontSizeElement::get(state);
   SbBool doTextures = SoGLTextureEnabledElement::get(state);
-  
+
   int i, n = this->string.getNum();
-  
+
   glBegin(GL_TRIANGLES);
   glNormal3f(0.0f, 0.0f, 1.0f);
 
@@ -161,18 +161,18 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
       break;
     }
 
-    const char *str = this->string[i].getString();
+    const char * str = this->string[i].getString();
     int len = strlen(str);
     float horizspacing = 0.0f;
     if (len > 1) {
       horizspacing = ((currwidth - this->glyphwidths[i]) / (len - 1)) * size;
     }
-    
+
     while (*str++) {
-      const SoGlyph *glyph = this->glyphs[glyphidx++];
-      const SbVec2f *coords = glyph->getCoords();
-      const int *ptr = glyph->getFaceIndices();
-      while (*ptr >= 0) {          
+      const SoGlyph * glyph = this->glyphs[glyphidx++];
+      const SbVec2f * coords = glyph->getCoords();
+      const int * ptr = glyph->getFaceIndices();
+      while (*ptr >= 0) {
         SbVec2f v0, v1, v2;
         float zval;
         v0 = coords[*ptr++];
@@ -206,9 +206,9 @@ SoAsciiText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
     int n = this->glyphs.getLength();
     int numtris = 0;
     for (int i = 0; i < n; i++) {
-      const SoGlyph *glyph = this->glyphs[i];
+      const SoGlyph * glyph = this->glyphs[i];
       int cnt = 0;
-      const int *ptr = glyph->getFaceIndices();
+      const int * ptr = glyph->getFaceIndices();
       while (*ptr++ >= 0) cnt++;
       numtris += cnt / 3;
     }
@@ -237,15 +237,15 @@ SoAsciiText::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
     float tmp = this->getWidth(i, size);
     if (tmp > maxw) maxw = tmp;
   }
-  
+
   float maxy = size * 0.7f; // this is an approximation
   float miny = maxy - (size + (n-1) * size * this->spacing.getValue());
-  
+
   float minx, maxx;
   switch (this->justification.getValue()) {
   case SoAsciiText::LEFT:
     minx = 0.0f;
-    maxx = maxw*size;
+    maxx = maxw * size;
     break;
   case SoAsciiText::RIGHT:
     minx = -maxw * size;
@@ -260,7 +260,7 @@ SoAsciiText::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
     minx = maxx = 0.0f;
     break;
   }
-  
+
   box.setBounds(SbVec3f(minx, miny, 0.0f), SbVec3f(maxx, maxy, 0.0f));
   center = box.getCenter();
 }
@@ -270,9 +270,9 @@ void
 SoAsciiText::generatePrimitives(SoAction * action)
 {
   float size = SoFontSizeElement::get(action->getState());
-  
+
   int i, n = this->string.getNum();
-  
+
   SoPrimitiveVertex vertex;
   SoTextDetail detail;
   detail.setPart(0);
@@ -281,7 +281,7 @@ SoAsciiText::generatePrimitives(SoAction * action)
 
   this->beginShape(action, SoShape::TRIANGLES, NULL);
   vertex.setNormal(SbVec3f(0.0f, 0.0f, 1.0f));
-    
+
   int glyphidx = 0;
   float ypos = 0.0f;
 
@@ -297,8 +297,8 @@ SoAsciiText::generatePrimitives(SoAction * action)
       xpos = - currwidth * size * 0.5f;
       break;
     }
-    
-    const char *str = this->string[i].getString();
+
+    const char * str = this->string[i].getString();
     int len = strlen(str);
     float horizspacing = 0.0f;
     if (len > 1) {
@@ -308,10 +308,10 @@ SoAsciiText::generatePrimitives(SoAction * action)
 
     while (*str++) {
       detail.setCharacterIndex(charidx++);
-      const SoGlyph *glyph = this->glyphs[glyphidx++];
-      const SbVec2f *coords = glyph->getCoords();
-      const int *ptr = glyph->getFaceIndices();
-      while (*ptr >= 0) {          
+      const SoGlyph * glyph = this->glyphs[glyphidx++];
+      const SbVec2f * coords = glyph->getCoords();
+      const int * ptr = glyph->getFaceIndices();
+      while (*ptr >= 0) {
         SbVec2f v0, v1, v2;
         float zval;
         v0 = coords[*ptr++];
@@ -335,14 +335,14 @@ SoAsciiText::generatePrimitives(SoAction * action)
 }
 
 // doc in parent
-SbBool 
+SbBool
 SoAsciiText::willSetShapeHints(void) const
 {
   return TRUE;
 }
 
 // doc in parent
-SbBool 
+SbBool
 SoAsciiText::willUpdateNormalizeElement(SoState *) const
 {
   return TRUE;
@@ -351,9 +351,9 @@ SoAsciiText::willUpdateNormalizeElement(SoState *) const
 // doc in parent
 SoDetail *
 SoAsciiText::createTriangleDetail(SoRayPickAction * action,
-                              const SoPrimitiveVertex *v1,
-                              const SoPrimitiveVertex * /*v2*/,
-                              const SoPrimitiveVertex * /*v3*/,
+                              const SoPrimitiveVertex * v1,
+                              const SoPrimitiveVertex * v2,
+                              const SoPrimitiveVertex * v3,
                               SoPickedPoint * pp)
 {
   // generatePrimitives() places text details inside each primitive vertex
@@ -363,14 +363,14 @@ SoAsciiText::createTriangleDetail(SoRayPickAction * action,
 
 
 // recalculate glyphs
-void 
-SoAsciiText::setUpGlyphs(SoState *state)
+void
+SoAsciiText::setUpGlyphs(SoState * state)
 {
   if (!this->needsetup) return;
   this->needsetup = FALSE;
 
   // store old glyphs to avoid freeing glyphs too soon
-  SbList <const SoGlyph*> oldglyphs; 
+  SbList <const SoGlyph *> oldglyphs;
   int i;
   int n = this->glyphs.getLength();
   for (i = 0; i < n; i++) {
@@ -380,12 +380,12 @@ SoAsciiText::setUpGlyphs(SoState *state)
   this->glyphwidths.truncate(0);
 
   for (i = 0; i < this->string.getNum(); i++) {
-    const SbString &s = this->string[i];
+    const SbString & s = this->string[i];
     int strlen = s.getLength();
-    const char *ptr = s.getString();
+    const char * ptr = s.getString();
     float width = 0.0f;
     for (int j = 0; j < strlen; j++) {
-      const SoGlyph *glyph = SoGlyph::getGlyph(ptr[j], SbName("default"));
+      const SoGlyph * glyph = SoGlyph::getGlyph(ptr[j], SbName("default"));
       this->glyphs.append(glyph);
       width += glyph->getWidth();
     }
@@ -399,21 +399,20 @@ SoAsciiText::setUpGlyphs(SoState *state)
   }
 }
 
-// called whenever SoAsciiText::string is edited 
-void 
-SoAsciiText::fieldSensorCB(void *d, SoSensor *)
+// called whenever SoAsciiText::string is edited
+void
+SoAsciiText::fieldSensorCB(void * d, SoSensor *)
 {
-  SoAsciiText *thisp = (SoAsciiText*)d;
+  SoAsciiText * thisp = (SoAsciiText *)d;
   thisp->needsetup = TRUE;
 }
 
 // returns "normalized" width of specified string. When too few
 // width values are supplied, the glyphwidths are used instead.
-float 
+float
 SoAsciiText::getWidth(const int idx, const float fontsize)
 {
   if (idx < this->width.getNum() && this->width[idx] > 0.0f)
     return this->width[idx] / fontsize;
   return this->glyphwidths[idx];
 }
-

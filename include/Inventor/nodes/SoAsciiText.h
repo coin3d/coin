@@ -64,19 +64,18 @@ protected:
   virtual SbBool willSetShapeHints(void) const;
   virtual SbBool willUpdateNormalizeElement(SoState *) const;
   virtual SoDetail * createTriangleDetail(SoRayPickAction * action,
-                                          const SoPrimitiveVertex *v1,
-                                          const SoPrimitiveVertex *v2,
-                                          const SoPrimitiveVertex *v3,
+                                          const SoPrimitiveVertex * v1,
+                                          const SoPrimitiveVertex * v2,
+                                          const SoPrimitiveVertex * v3,
                                           SoPickedPoint * pp);
 private:
   float getWidth(const int idx, const float fontsize);
   SbList <const SoGlyph *> glyphs;
   SbList <float> glyphwidths;
-  SoFieldSensor *stringsensor;
+  SoFieldSensor * stringsensor;
   SbBool needsetup;
-  void setUpGlyphs(SoState *state);
-  static void fieldSensorCB(void *d, SoSensor *s);
+  void setUpGlyphs(SoState * state);
+  static void fieldSensorCB(void * d, SoSensor * s);
 };
 
 #endif // !COIN_SOASCIITEXT_H
-
