@@ -187,6 +187,11 @@ SoDebugError::callbackForwarder(const class cc_debugerror * error, void * data)
 void
 SoDebugError::setHandlerCallback(SoErrorCB * const function, void * const data)
 {
+  /* FIXME: Overriding the error handler for subclasses of SoError
+     doesn't work yet. Use SoError::setHandlerCallback() instead as a
+     workaround, but note that this will stop working when callback
+     override is implemented properly. 2003-01-22 thammer.  
+  */
   if (SoDebugError::callback == SoError::defaultHandlerCB) {
     // The user is overriding the default handler, so set up a
     // "converter" callback function that makes an SoDebugError out of
