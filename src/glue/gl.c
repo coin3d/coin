@@ -1619,7 +1619,7 @@ cc_glglue_has_multitexture(const cc_glglue * w)
 int 
 cc_glglue_max_texture_units(const cc_glglue * w)
 {
-  return w->maxtextureunits; // will be 1 when multitexturing is not available
+  return w->maxtextureunits; /* will be 1 when multitexturing is not available */
 }
 
 
