@@ -34,14 +34,61 @@
 
   The node classes are the main "primitive" for building these data
   structures. In Coin, you build tree hierarchies made up of different
-  node types: group nodes (for the layout of the other nodes),
-  appearance nodes (for setting up materials, textures, etc), shape
-  nodes (for the actual geometry), and nodes for lighting, camera
-  positioning etc etc.
+  node types: group nodes (for the tree structure layout of the other
+  nodes), appearance nodes (for setting up materials, textures, etc),
+  shape nodes (for the actual geometry), and nodes for lighting and
+  camera positioning.
 
-  For more information, see the "Inventor Mentor: Programming
-  Object-Oriented 3D Graphics with Open Inventor" (ISBN 0-201-62495-8)
-  for detailed explanations on the basic principles involved.
+  One common issue with newcomers to the API is that you should not
+  and can not use the C++ delete operator on nodes -- the destructor
+  is protected. This is because node instances are using a common
+  technique for memory resource handling called "reference
+  counting". Nodes are deleted (actually, they delete themselves) when
+  their unref() method is called and the reference count goes to zero.
+
+  Usually application programmers won't manually ref() and unref()
+  nodes a lot, because you pass the nodes directly to
+  SoGroup::addChild() or So*Viewer::setSceneGraph() or something
+  similar.  These functions will ref() the nodes they are passed, and
+  unref() them when they are finished with them.
+
+  Make sure you do ref() nodes that you keep pointers to so they
+  aren't accidentally deleted prematurely due to an unref() call from
+  within the library itself.  If you haven't manually called ref() on
+  a top-level root node, it will then be deleted automatically. This
+  code shows how to do it:
+
+  \code
+  SoSeparator * root = new SoSeparator; // root's refcount starts out at zero
+  root->addChild(foo_node); // foo_node refcount is increased by 1
+  root->addChild(bar_node); // bar_node refcount +1
+
+  // increase refcount before passing it to setScenegraph(), to avoid
+  // premature destruction
+  root->ref();
+
+  myviewer->setSceneGraph(root); // root's refcount +1, is now 2
+
+  // [misc visualization and processing]
+
+  // myviewer will let go of it's reference to the root node, thereby
+  // decreasing it's referencecount by 1
+  myviewer->setSceneGraph(NULL);
+
+  // root's refcount goes from +1 to 0, and it will self-destruct controllably
+  root->unref();
+  // avoid dangling pointer, in case "root" is attempted used again
+  // (not really necessary, but good for smoking out bugs early)
+  root = NULL;
+  \endcode
+
+  For full information and tutorial-style introductions to all API
+  issues, see the "Inventor Mentor: Programming Object-Oriented 3D
+  Graphics with Open Inventor" (ISBN 0-201-62495-8). It has detailed
+  explanations on all the basic principles involved.
+
+  See specifically the section "References and Deletion" in Chapter 3
+  to learn about the reference counting techniques.
 */
 
 #include <Inventor/SoOutput.h>

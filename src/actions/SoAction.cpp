@@ -38,6 +38,9 @@
   depth-first and left-to-right, applying it's specific processing at
   the nodes where it is applicable.
 
+  (The SoAction and it's derived classes in Coin is an implementation
+  of the design pattern commonly known as the "Visitor" pattern.)
+
   Here's a simple example that shows how to use the SoWriteAction to
   dump a scenegraph in the Inventor format to a file:
 

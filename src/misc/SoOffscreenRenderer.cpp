@@ -274,8 +274,10 @@ public:
                    this->buffer);
       glPixelStorei(GL_PACK_ALIGNMENT, 4);
 
-      // FIXME: GLX version saves old context and drawable, and restores 
-      // it after use, should i do that as well? kyrah 20020223
+      // FIXME: GLX version saves old context and drawable, and
+      // restores it after use, should i do that as well? kyrah
+      // 20020223 UPDATE: yes, see comment above the GLX version of
+      // postRender(). 20020401 mortene.
     }
   }
 
@@ -460,6 +462,11 @@ public:
       glPixelStorei(GL_PACK_ALIGNMENT, 4);
       (void) glXMakeCurrent(this->display, None, NULL); // release
 
+      // The previous context is stored and reset to make it possible
+      // to use an SoOffscreenRenderer from for instance an SoCallback
+      // node callback during SoGLRenderAction traversal, without the
+      // need for any extra book-keeping on the application side.
+
       if (this->storedcontext && this->storeddrawable && this->storeddisplay) {
         (void) glXMakeCurrent(this->storeddisplay, this->storeddrawable,
                               this->storedcontext);
@@ -547,6 +554,11 @@ public:
       glReadPixels(0, 0, size[0], size[1], GL_RGBA, GL_UNSIGNED_BYTE,
                    this->buffer);
       glPixelStorei(GL_PACK_ALIGNMENT, 4);
+
+      // The previous context is stored and reset to make it possible
+      // to use an SoOffscreenRenderer from for instance an SoCallback
+      // node callback during SoGLRenderAction traversal, without the
+      // need for any extra book-keeping on the application side.
 
       if (this->storedcontext && this->storeddc) {
         wglMakeCurrent(this->storeddc, this->storedcontext);
