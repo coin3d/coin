@@ -35,262 +35,97 @@
 #include <unistd.h>
 #endif /* HAVE_UNISTD_H */
 
-/* ********************************************************************** */
 
 /*
-  \internal
-*/
+ * FIXME: consider moving pthread and w32thread code to different
+ * source code files. pederb, 2001-12-10 
+ */
 
-void
-cc_condvar_struct_init(cc_condvar * condvar_struct)
-{
-  CC_PTHREAD(int status;)
-  assert(condvar_struct->type == CC_INVALID_TYPE);
-
+/* ********************************************************************** */
 #ifdef USE_PTHREAD
+static int 
+internal_struct_init(cc_condvar * condvar_struct)
+{
+  int status;
   status = pthread_mutex_init(&(condvar_struct->pthread.mutexid), NULL);
-  if ( status != 0 ) {
-    if ( COIN_DEBUG )
+  if (status != 0) {
+    if (COIN_DEBUG)
       cc_fprintf(stderr, "pthread_mutex_init() error: %d\n", status);
-    goto error;
+    return CC_ERROR;
   }
   status = pthread_cond_init(&(condvar_struct->pthread.condid), NULL);
-  if ( status != 0 ) {
-    if ( COIN_DEBUG )
+  if (status != 0) {
+    if (COIN_DEBUG)
       cc_fprintf(stderr, "pthread_cond_init() error: %d\n", status);
-    goto error;
+    return CC_ERROR;
   }
-  /* FIXME: initialize */
+  return CC_OK;
+}
 
-#endif /* USE_PTHREAD */
-
-#ifdef USE_W32THREAD
-  condvar_struct->w32thread.eventhandle_one = CreateEvent(NULL, FALSE, FALSE, NULL); /* auto-reset, initially is non-signaled */
-  if (condvar_struct->w32thread.eventhandle_one == NULL) {
-    if ( COIN_DEBUG ) {
-      DWORD err;
-      char *errstr;
-      err = GetLastError();
-      errstr = cc_internal_w32_getlasterrorstring(err);
-      cc_fprintf(stderr, "CreateEvent() error: %d, \"%s\"\n",
-        err, errstr);
-      cc_internal_w32_freelasterrorstring(errstr);
-    }
-    goto error;
-  }
-  condvar_struct->w32thread.eventhandle_all = CreateEvent(NULL, TRUE, FALSE, NULL); /* auto-reset, initially is non-signaled */
-  if (condvar_struct->w32thread.eventhandle_all == NULL) {
-    if ( COIN_DEBUG ) {
-      DWORD err;
-      char *errstr;
-      err = GetLastError();
-      errstr = cc_internal_w32_getlasterrorstring(err);
-      cc_fprintf(stderr, "CreateEvent() error: %d, \"%s\"\n",
-        err, errstr);
-      cc_internal_w32_freelasterrorstring(errstr);
-    }
-    goto error;
-  }
-#endif /* USE_W32THREAD */
-
-  condvar_struct->type = CC_CONDVAR_TYPE;
-  return;
-
-error:
-  condvar_struct->type = CC_INVALID_TYPE;
-} /* cc_condvar_struct_init() */
-
-/*
-  \internal
-*/
-
-void
-cc_condvar_struct_clean(cc_condvar * condvar_struct)
+static int
+internal_struct_clean(cc_condvar * condvar_struct)
 {
-  CC_PTHREAD(int status;)
-  CC_W32THREAD(BOOL status;)
-  assert((condvar_struct != NULL) && (condvar_struct->type == CC_CONDVAR_TYPE));
-
-#ifdef USE_PTHREAD
+  int status;
+  int ret = CC_OK;
   status = pthread_cond_destroy(&(condvar_struct->pthread.condid));
-  if ( status != 0 ) {
-    if ( COIN_DEBUG )
+  if (status != 0) {
+    if (COIN_DEBUG)
       cc_fprintf(stderr, "pthread_cond_destroy() error: %d\n", status);
-    goto error;
+    ret = CC_ERROR;
   }
-
+  
   status = pthread_mutex_destroy(&(condvar_struct->pthread.mutexid));
-  if ( status != 0 ) {
-    if ( COIN_DEBUG )
+  if (status != 0) {
+    if (COIN_DEBUG)
       cc_fprintf(stderr, "pthread_mutex_destroy() error: %d\n", status);
-    goto error;
+    ret = CC_ERROR;
   }
-#endif /* USE_PTHREAD */
+  return ret;
+}
 
-#ifdef USE_W32THREAD
-  status = CloseHandle(condvar_struct->w32thread.eventhandle_one);
-  if (status == FALSE) {
-    if ( COIN_DEBUG ) {
-      DWORD err;
-      char *errstr;
-      err = GetLastError();
-      errstr = cc_internal_w32_getlasterrorstring(err);
-      cc_fprintf(stderr, "CloseHandle() error: %d, \"%s\"\n",
-        err, errstr);
-      cc_internal_w32_freelasterrorstring(errstr);
-    }
-    goto error;
-  }
-  status = CloseHandle(condvar_struct->w32thread.eventhandle_all);
-  if (status == FALSE) {
-    if ( COIN_DEBUG ) {
-      DWORD err;
-      char *errstr;
-      err = GetLastError();
-      errstr = cc_internal_w32_getlasterrorstring(err);
-      cc_fprintf(stderr, "CloseHandle() error: %d, \"%s\"\n",
-        err, errstr);
-      cc_internal_w32_freelasterrorstring(errstr);
-    }
-    goto error;
-  }
-#endif /* USE_W32THREAD */
-
-  condvar_struct->type = CC_INVALID_TYPE;
-  return;
-error:
-
-  condvar_struct->type = CC_INVALID_TYPE;
-} /* cc_condvar_struct_clean() */
-
-/* ********************************************************************** */
-
-/*
-*/
-
-cc_condvar *
-cc_condvar_construct(void)
+static int 
+internal_wait(cc_condvar * condvar)
 {
-  cc_condvar * condvar;
-  condvar = (cc_condvar *) malloc(sizeof(cc_condvar));
-  assert(condvar != NULL);
-  condvar->type = CC_INVALID_TYPE;
-  cc_condvar_struct_init(condvar);
-  if ( condvar->type != CC_CONDVAR_TYPE ) goto error;
-  return condvar;
-
-error:
-  free(condvar);
-  return NULL;
-} /* cc_condvar_construct() */
-
-/*
-*/
-
-void
-cc_condvar_destruct(
-  cc_condvar * condvar )
-{
-  assert((condvar != NULL) && (condvar->type == CC_CONDVAR_TYPE));
-  cc_condvar_struct_clean(condvar);
-  if ( condvar->type != CC_INVALID_TYPE ) goto error;
-  free(condvar);
-  return;
-
-error:
-  free(condvar);
-} /* cc_condvar_destruct() */
-
-/*
-*/
-
-int
-cc_condvar_wait(
-  cc_condvar * condvar )
-{
-  CC_PTHREAD(int status;)
-  CC_W32THREAD(DWORD status;)
-  CC_W32THREAD(HANDLE eventhandles[2];)
-  assert((condvar != NULL) && (condvar->type == CC_CONDVAR_TYPE));
-
-#ifdef USE_PTHREAD
+  int status;
   status = pthread_mutex_lock(&(condvar->pthread.mutexid));
-  if ( status != 0 ) {
-    if ( COIN_DEBUG )
+  if (status != 0) {
+    if (COIN_DEBUG)
       cc_fprintf(stderr, "pthread_mutex_lock() error: %d\n", status);
-    goto error;
+    return CC_ERROR;
   }
   status = pthread_cond_wait(&(condvar->pthread.condid),
                              &(condvar->pthread.mutexid));
-  if ( status != 0 ) {
-    if ( COIN_DEBUG )
+  if (status != 0) {
+    if (COIN_DEBUG)
       cc_fprintf(stderr, "pthread_cond_wait() error: %d\n", status);
-    goto error;
+    return CC_ERROR;
   }
   status = pthread_mutex_unlock(&(condvar->pthread.mutexid));
-  if ( status != 0 ) {
-    if ( COIN_DEBUG )
+  if (status != 0) {
+    if (COIN_DEBUG)
       cc_fprintf(stderr, "pthread_mutex_unlock() error: %d\n", status);
-    goto error;
+    return CC_ERROR;
   }
-#endif /* USE_PTHREAD */
+  return CC_OK;
+}
 
-#ifdef USE_W32THREAD
-  eventhandles[0] = condvar->w32thread.eventhandle_one;
-  eventhandles[1] = condvar->w32thread.eventhandle_all;
-  status = WaitForMultipleObjects(2, eventhandles, FALSE, INFINITE);
-  if (status == WAIT_FAILED) {
-    if ( COIN_DEBUG ) {
-      DWORD err;
-      char *errstr;
-      err = GetLastError();
-      errstr = cc_internal_w32_getlasterrorstring(err);
-      cc_fprintf(stderr, "WaitForMultipleObjects() error: %d, \"%s\"\n",
-        err, errstr);
-      cc_internal_w32_freelasterrorstring(errstr);
-    }
-    goto error;
-  }
-  else if ( (status != WAIT_OBJECT_0) && (status != WAIT_OBJECT_0+1) ) {
-    if ( COIN_DEBUG ) {
-      cc_fprintf(stderr, "WaitForSingleObject() - unknown return value: %d\n",
-        status);
-    }
-  }
-#endif /* USE_W32THREAD */
-
-  return TRUE;
-
-error:
-  return FALSE;
-} /* cc_condvar_wait() */
-
-/*
-*/
-
-int
-cc_condvar_timed_wait(
-  cc_condvar * condvar,
-  cc_time period )
+static int 
+internal_timed_wait(cc_condvar * condvar, cc_time period)
 {
-  CC_PTHREAD(struct timespec timeout;)
+  struct timespec timeout;
+  int status, ret;
 #ifdef HAVE_GETTIMEOFDAY
-  CC_PTHREAD(struct timeval now;)
-  CC_PTHREAD(struct timezone zone;)
+  struct timeval now;
+  struct timezone zone;
 #else /* HAVE_GETTIMEOFDAY */
   unsigned long int now;
 #endif /* ! HAVE_GETTIMEOFDAY */
-  CC_PTHREAD(int status;)
-  CC_W32THREAD(DWORD status;)
-  CC_W32THREAD(HANDLE eventhandles[2];)
-  assert((condvar != NULL) && (condvar->type == CC_CONDVAR_TYPE));
 
-#ifdef USE_PTHREAD
   status = pthread_mutex_lock(&(condvar->pthread.mutexid));
-  if ( status != 0 ) {
-    if ( COIN_DEBUG )
+  if (status != 0) {
+    if (COIN_DEBUG)
       cc_fprintf(stderr, "pthread_mutex_lock() error: %d\n", status);
-    goto error;
+    return CC_ERROR;
   }
 
 #ifdef HAVE_GETTIMEOFDAY
@@ -306,12 +141,16 @@ cc_condvar_timed_wait(
 #endif /* ! HAVE_GETTIMEOFDAY */
   status = pthread_cond_timedwait(&(condvar->pthread.condid),
                                   &(condvar->pthread.mutexid), &timeout);
-  if ( status != 0 ) {
-    if ( status != ETIMEDOUT ) {
-      if ( COIN_DEBUG ) {
+
+  ret = CC_OK;
+  if (status != 0) {
+    if (status == ETIMEDOUT) ret = CC_TIMEOUT;
+    else {
+      ret = CC_ERROR;
+      if (COIN_DEBUG) {
         cc_fprintf_lock();
         cc_fprintf_locked(stderr, "pthread_cond_timedwait() error: %d", status);
-        switch ( status ) {
+        switch (status) {
         case EINTR: cc_fprintf_locked(stderr, "EINTR\n"); break;
         case EBUSY: cc_fprintf_locked(stderr, "EBUSY\n"); break;
         default: cc_fprintf_locked(stderr, "default\n"); break;
@@ -319,30 +158,127 @@ cc_condvar_timed_wait(
         cc_fprintf_unlock();
       }
     }
+  }
+  /* FIXME: try to unlock even when an error occurred?
+   * pederb, 2001-12-10 */
+  if (ret != CC_ERROR) {
     status = pthread_mutex_unlock(&(condvar->pthread.mutexid));
-    if ( status != 0 ) {
-      if ( COIN_DEBUG )
+    if (status != 0) {
+      if (COIN_DEBUG)
         cc_fprintf(stderr, "pthread_mutex_unlock() error: %d\n", status);
-      /* goto error; */
+      ret = CC_ERROR;
     }
-    goto error;
   }
-  status = pthread_mutex_unlock(&(condvar->pthread.mutexid));
-  if ( status != 0 ) {
-    if ( COIN_DEBUG )
-      cc_fprintf(stderr, "pthread_mutex_unlock() error: %d\n", status);
-    goto error;
-  }
+  return ret;
+}
 
-  return TRUE;
+static int
+internal_wake_one(cc_condvar * condvar)
+{
+  int status;
+  status = pthread_cond_signal(&(condvar->pthread.condid));
+  if (status != 0) {
+    if (COIN_DEBUG)
+      cc_fprintf(stderr, "pthread_cond_signal() error: %d\n", status);
+    return CC_ERROR;
+  }
+  return CC_OK;
+}
+
+static int
+internal_wake_all(cc_condvar * condvar)
+{
+  int status = pthread_cond_broadcast(&(condvar->pthread.condid));
+  if (status != 0) {
+    if (COIN_DEBUG)
+      cc_fprintf(stderr, "pthread_cond_broadcast() error: %d\n", status);
+    return CC_ERROR;
+  }
+  return CC_OK;
+}
+
 #endif /* USE_PTHREAD */
 
 #ifdef USE_W32THREAD
+static int 
+internal_struct_init(cc_condvar * condvar_struct)
+{
+  /* auto-reset, initially is non-signaled */
+  condvar_struct->w32thread.eventhandle_one = CreateEvent(NULL, FALSE, FALSE, NULL);
+  if (condvar_struct->w32thread.eventhandle_one == NULL) {
+    if (COIN_DEBUG) {
+      DWORD err;
+      char *errstr;
+      err = GetLastError();
+      errstr = cc_internal_w32_getlasterrorstring(err);
+      cc_fprintf(stderr, "CreateEvent() error: %d, \"%s\"\n",
+        err, errstr);
+      cc_internal_w32_freelasterrorstring(errstr);
+    }
+    return CC_ERROR;
+  }
+  /* auto-reset, initially is non-signaled */
+  condvar_struct->w32thread.eventhandle_all = CreateEvent(NULL, TRUE, FALSE, NULL);
+  if (condvar_struct->w32thread.eventhandle_all == NULL) {
+    if (COIN_DEBUG) {
+      DWORD err;
+      char *errstr;
+      err = GetLastError();
+      errstr = cc_internal_w32_getlasterrorstring(err);
+      cc_fprintf(stderr, "CreateEvent() error: %d, \"%s\"\n",
+        err, errstr);
+      cc_internal_w32_freelasterrorstring(errstr);
+    }
+    return CC_ERROR;
+  }
+  return CC_OK;
+}
+
+static int 
+internal_struct_clean(cc_condvar * condvar_struct)
+{
+  BOOL status;
+  int ret = CC_OK;
+  status = CloseHandle(condvar_struct->w32thread.eventhandle_one);
+  if (status == FALSE) {
+    if (COIN_DEBUG) {
+      DWORD err;
+      char *errstr;
+      err = GetLastError();
+      errstr = cc_internal_w32_getlasterrorstring(err);
+      cc_fprintf(stderr, "CloseHandle() error: %d, \"%s\"\n",
+        err, errstr);
+      cc_internal_w32_freelasterrorstring(errstr);
+    }
+    ret = CC_ERROR;
+  }
+  status = CloseHandle(condvar_struct->w32thread.eventhandle_all);
+  if (status == FALSE) {
+    if (COIN_DEBUG) {
+      DWORD err;
+      char *errstr;
+      err = GetLastError();
+      errstr = cc_internal_w32_getlasterrorstring(err);
+      cc_fprintf(stderr, "CloseHandle() error: %d, \"%s\"\n",
+        err, errstr);
+      cc_internal_w32_freelasterrorstring(errstr);
+    }
+    ret = CC_ERROR;
+  }
+  return ret;
+}
+
+static int 
+internal_wait(cc_condvar * condvar)
+{
+  DWORD status;
+  HANDLE eventhandles[2];
+
   eventhandles[0] = condvar->w32thread.eventhandle_one;
   eventhandles[1] = condvar->w32thread.eventhandle_all;
-  status = WaitForMultipleObjects(2, eventhandles, FALSE, (DWORD)floor(period*1000.0f));
+  status = WaitForMultipleObjects(2, eventhandles, FALSE, INFINITE);
   if (status == WAIT_FAILED) {
-    if ( COIN_DEBUG ) {
+    if (COIN_DEBUG) {
       DWORD err;
       char *errstr;
       err = GetLastError();
@@ -351,53 +287,62 @@ cc_condvar_timed_wait(
         err, errstr);
       cc_internal_w32_freelasterrorstring(errstr);
     }
-    goto error;
+    return CC_ERROR;
   }
-  else if ( (status == WAIT_OBJECT_0) || (status == WAIT_OBJECT_0+1) ) {
+  else if ((status != WAIT_OBJECT_0) && (status != WAIT_OBJECT_0+1) ) {
+    if (COIN_DEBUG) {
+      cc_fprintf(stderr, "WaitForSingleObject() - unknown return value: %d\n",
+                 status);
+    }
+    return CC_ERROR;
+  }
+  return CC_OK;
+}
+
+static int 
+internal_timed_wait(cc_condvar * condvar, cc_time period)
+{
+  DWORD status;
+  HANDLE eventhandles[2];
+
+  eventhandles[0] = condvar->w32thread.eventhandle_one;
+  eventhandles[1] = condvar->w32thread.eventhandle_all;
+  status = WaitForMultipleObjects(2, eventhandles, FALSE, (DWORD)floor(period*1000.0f));
+  if (status == WAIT_FAILED) {
+    if (COIN_DEBUG) {
+      DWORD err;
+      char *errstr;
+      err = GetLastError();
+      errstr = cc_internal_w32_getlasterrorstring(err);
+      cc_fprintf(stderr, "WaitForMultipleObjects() error: %d, \"%s\"\n",
+        err, errstr);
+      cc_internal_w32_freelasterrorstring(errstr);
+    }
+    return CC_ERROR;
+  }
+  else if ((status == WAIT_OBJECT_0) || (status == WAIT_OBJECT_0+1)) {
     return CC_OK;
   }
   else if (status == WAIT_TIMEOUT) {
     return CC_TIMEOUT;
   }
-  else {
-    if ( COIN_DEBUG ) {
-      cc_fprintf(stderr, "WaitForSingleObject() - unknown return value: %d\n",
-        status);
-    }
-    return CC_OK;
+  /* if we get here, there was an error */
+  if (COIN_DEBUG) {
+    cc_fprintf(stderr, "WaitForSingleObject() - unknown return value: %d\n",
+               status);
   }
-#endif /* USE_W32THREAD */
-
-error:
   return CC_ERROR;
-} /* cc_condvar_timed_wait() */
+}
 
-/*
-*/
-
-void
-cc_condvar_wake_one(
-  cc_condvar * condvar )
+static int 
+internal_wake_one(cc_condvar * condvar)
 {
-  CC_PTHREAD(int status;)
-  CC_W32THREAD(BOOL status;)
-  /* FIXME: should return that thread was actually woken? */
-  assert((condvar != NULL) && (condvar->type == CC_CONDVAR_TYPE));
+  BOOL status;
 
-#ifdef USE_PTHREAD
-  status = pthread_cond_signal(&(condvar->pthread.condid));
-  if ( status != 0 ) {
-    if ( COIN_DEBUG )
-      cc_fprintf(stderr, "pthread_cond_signal() error: %d\n", status);
-    goto error;
-  }
-#endif /* USE_PTHREAD */
-
-#ifdef USE_W32THREAD
   status = PulseEvent(condvar->w32thread.eventhandle_one);
   /* the event is auto-reset */
   if (status == FALSE) {
-    if ( COIN_DEBUG ) {
+    if (COIN_DEBUG) {
       DWORD err;
       char *errstr;
       err = GetLastError();
@@ -406,58 +351,148 @@ cc_condvar_wake_one(
         err, errstr);
       cc_internal_w32_freelasterrorstring(errstr);
     }
-    goto error;
+    return CC_ERROR;
   }
+  return CC_OK;
+}
+
+static int
+internal_wake_all(cc_condvar * condvar)
+{
+  BOOL status = PulseEvent(condvar->w32thread.eventhandle_all);
+  /* event is manually-reset, but PulseEvent will reset when all
+     waiting threads have been released */
+  if (status == FALSE) {
+    if (COIN_DEBUG) {
+      DWORD err;
+      char *errstr;
+      err = GetLastError();
+      errstr = cc_internal_w32_getlasterrorstring(err);
+      cc_fprintf(stderr, "SetEvent error: %d, \"%s\"\n",
+        err, errstr);
+      cc_internal_w32_freelasterrorstring(errstr);
+    }
+    return CC_ERROR;
+  }
+  return CC_OK;
+}
+
 #endif /* USE_W32THREAD */
 
-  return;
-error:
-  ;
-} /* cc_condvar_wake_one() */
+/*
+  \internal
+*/
+
+void
+cc_condvar_struct_init(cc_condvar * condvar_struct)
+{
+  int ok;
+  assert(condvar_struct->type == CC_INVALID_TYPE);
+  ok = internal_struct_init(condvar_struct);
+  assert(ok == CC_OK);
+  if (ok == CC_OK)
+    condvar_struct->type = CC_CONDVAR_TYPE;
+  else
+    condvar_struct->type = CC_INVALID_TYPE;
+}
+
+/*
+  \internal
+*/
+
+void
+cc_condvar_struct_clean(cc_condvar * condvar_struct)
+{
+  int ok;
+  assert((condvar_struct != NULL) && (condvar_struct->type == CC_CONDVAR_TYPE));
+  ok = internal_struct_clean(condvar_struct);
+  assert(ok == CC_OK);
+  condvar_struct->type = CC_INVALID_TYPE;
+}
+
+/* ********************************************************************** */
+
+/*
+*/
+
+cc_condvar *
+cc_condvar_construct(void)
+{
+  cc_condvar * condvar;
+  condvar = (cc_condvar *) malloc(sizeof(cc_condvar));
+  assert(condvar != NULL);
+  condvar->type = CC_INVALID_TYPE;
+  cc_condvar_struct_init(condvar);
+  
+  return (condvar->type == CC_CONDVAR_TYPE) ?
+    condvar : NULL;
+}
 
 /*
 */
 
 void
-cc_condvar_wake_all(
-  cc_condvar * condvar )
+cc_condvar_destruct(cc_condvar * condvar)
 {
-  CC_PTHREAD(int status;)
-  CC_W32THREAD(BOOL status;)
-  /* FIXME: should return that thread was actually woken? */
   assert((condvar != NULL) && (condvar->type == CC_CONDVAR_TYPE));
+  cc_condvar_struct_clean(condvar);
+  free(condvar);
+}
 
-#ifdef USE_PTHREAD
-  status = pthread_cond_broadcast(&(condvar->pthread.condid));
-  if ( status != 0 ) {
-    if ( COIN_DEBUG )
-      cc_fprintf(stderr, "pthread_cond_broadcast() error: %d\n", status);
-    goto error;
-  }
-#endif /* USE_PTHREAD */
+/*
+*/
 
-#ifdef USE_W32THREAD
-  status = PulseEvent(condvar->w32thread.eventhandle_all);
-  /* event is manually-reset, but PulseEvent will reset when all
-     waiting threads have been released */
-  if (status == FALSE) {
-    if ( COIN_DEBUG ) {
-      DWORD err;
-      char *errstr;
-      err = GetLastError();
-      errstr = cc_internal_w32_getlasterrorstring(err);
-      cc_fprintf(stderr, "SetEvent error: %d, \"%s\"\n",
-        err, errstr);
-      cc_internal_w32_freelasterrorstring(errstr);
-    }
-    goto error;
-  }
-#endif /* USE_W32THREAD */
+int
+cc_condvar_wait(cc_condvar * condvar)
+{
+  int ok;
+  assert((condvar != NULL) && (condvar->type == CC_CONDVAR_TYPE));
+  ok = internal_wait(condvar);
+  assert(ok == CC_OK);
+  return ok;
+}
 
-  return;
-error:
-  ;
-} /* cc_condvar_wake_all() */
+/*
+*/
+
+int
+cc_condvar_timed_wait(cc_condvar * condvar,
+                      cc_time period)
+{
+  int ret;
+  assert((condvar != NULL) && (condvar->type == CC_CONDVAR_TYPE));
+  ret = internal_timed_wait(condvar, period);
+  assert(ret == CC_OK || ret == CC_TIMEOUT);
+  return ret;
+}
+
+/*
+*/
+
+void
+cc_condvar_wake_one(cc_condvar * condvar)
+{
+  int ok;
+  /* FIXME: should return that thread was actually woken? */
+  /* I don't think this is possible with pthreads. pederb, 2001-12-10 */
+  assert((condvar != NULL) && (condvar->type == CC_CONDVAR_TYPE));
+  ok = internal_wake_one(condvar);
+  assert(ok == CC_OK);
+}
+
+/*
+*/
+void
+cc_condvar_wake_all(cc_condvar * condvar)
+{
+  int ok;
+  /* FIXME: should return that thread(s) was actually woken? */
+  /* I don't think this is possible with pthreads. pederb, 2001-12-10 */
+  assert((condvar != NULL) && (condvar->type == CC_CONDVAR_TYPE));
+  
+  ok = internal_wake_all(condvar);
+  assert(ok == CC_OK);
+}
 
 /* ********************************************************************** */
 
