@@ -35,12 +35,8 @@
 
 class SoVertexArrayIndexer {
 public:
-  SoVertexArrayIndexer(GLenum target);
+  SoVertexArrayIndexer(void);
   ~SoVertexArrayIndexer();
-  
-  void setNext(SoVertexArrayIndexer * next);
-  SoVertexArrayIndexer * getNext(void) const;
-  GLenum getTarget(void) const;
   
   void addTriangle(const int32_t v0,
                    const int32_t v1,
@@ -51,19 +47,18 @@ public:
                const int32_t v2,
                const int32_t v3);
   
-  void beginTarget(void);
-  void targetVertex(const int32_t v);
-  void endTarget(void);
+  void beginTarget(GLenum target);
+  void targetVertex(GLenum target, const int32_t v);
+  void endTarget(GLenum target);
 
   void close(void);
-  void render(const cc_glglue * glue);
+  void render(const cc_glglue * glue, const SbBool vbo); 
 
-  // for debugging
-  int getNumVertices(void) {
-    return this->indexarray.getLength();
-  }
+  int getNumVertices(void);
 
 private:
+  SoVertexArrayIndexer * getNext(void);
+
   GLenum target;
   SoVertexArrayIndexer * next;
 

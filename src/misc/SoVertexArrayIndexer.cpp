@@ -25,36 +25,15 @@
 #include <assert.h>
 #include <string.h>
 
-SoVertexArrayIndexer::SoVertexArrayIndexer(GLenum targetin)
-  : target(targetin),
+SoVertexArrayIndexer::SoVertexArrayIndexer(void)
+  : target(0),
     next(NULL)
 {
 }
 
 SoVertexArrayIndexer::~SoVertexArrayIndexer() 
 {
-  for (int i = 0; i < this->ciarray.getLength(); i++) {
-    delete[] this->ciarray[i];
-  }
   delete this->next;
-}
-  
-GLenum 
-SoVertexArrayIndexer::getTarget(void) const
-{
-  return this->target;
-}
-
-void 
-SoVertexArrayIndexer::setNext(SoVertexArrayIndexer * nextin)
-{
-  this->next = nextin;
-}
-
-SoVertexArrayIndexer * 
-SoVertexArrayIndexer::getNext(void) const
-{
-  return this->next;
 }
 
 void 
@@ -62,10 +41,15 @@ SoVertexArrayIndexer::addTriangle(const int32_t v0,
                                   const int32_t v1,
                                   const int32_t v2)
 {
-  assert(this->target == GL_TRIANGLES);
-  this->indexarray.append(v0);
-  this->indexarray.append(v1);
-  this->indexarray.append(v2);
+  if (this->target == 0) this->target = GL_TRIANGLES;
+  if (this->target == GL_TRIANGLES) {
+    this->indexarray.append(v0);
+    this->indexarray.append(v1);
+    this->indexarray.append(v2);
+  }
+  else {
+    this->getNext()->addTriangle(v0,v1,v2);
+  }
 }
 
 void 
@@ -74,29 +58,53 @@ SoVertexArrayIndexer::addQuad(const int32_t v0,
                               const int32_t v2,
                               const int32_t v3)
 {
-  assert(this->target == GL_QUADS);
-  this->indexarray.append(v0);
-  this->indexarray.append(v1);
-  this->indexarray.append(v2);
-}
-  
-void 
-SoVertexArrayIndexer::beginTarget(void)
-{
-  this->targetcounter = 0;
-}
- 
-void 
-SoVertexArrayIndexer::targetVertex(const int32_t v)
-{
-  this->targetcounter++;
-  this->indexarray.append(v);
+  if (this->target == 0) this->target = GL_QUADS;
+  if (this->target == GL_QUADS) {
+    this->indexarray.append(v0);
+    this->indexarray.append(v1);
+    this->indexarray.append(v2);
+    this->indexarray.append(v3);
+  }
+  else {
+    this->getNext()->addQuad(v0,v1,v2,v3);
+  }
 }
 
 void 
-SoVertexArrayIndexer::endTarget(void)
+SoVertexArrayIndexer::beginTarget(GLenum targetin)
 {
-  this->countarray.append(this->targetcounter);
+  if (this->target == 0) this->target = targetin;
+  if (this->target == targetin) {
+    this->targetcounter = 0;
+  }
+  else {
+    this->getNext()->beginTarget(targetin);
+  }
+}
+ 
+void 
+SoVertexArrayIndexer::targetVertex(GLenum targetin, const int32_t v)
+{
+  assert(this->target != 0);
+  if (this->target == targetin) {
+    this->targetcounter++;
+    this->indexarray.append(v);
+  }
+  else {
+    this->getNext()->targetVertex(targetin, v);
+  }
+}
+
+void 
+SoVertexArrayIndexer::endTarget(GLenum targetin)
+{
+  assert(this->target != 0);
+  if (this->target == targetin) {
+    this->countarray.append(this->targetcounter);
+  }
+  else {
+    this->getNext()->endTarget(targetin);
+  }
 }
 
 void 
@@ -110,10 +118,11 @@ SoVertexArrayIndexer::close(void)
     this->ciarray.append(ptr);
     ptr += (int) this->countarray[i];
   }
+  if (this->next) this->next->close();
 }
 
 void 
-SoVertexArrayIndexer::render(const cc_glglue * glue)
+SoVertexArrayIndexer::render(const cc_glglue * glue, const SbBool vbo)
 {
   switch (this->target) {
   case GL_TRIANGLES:
@@ -148,5 +157,22 @@ SoVertexArrayIndexer::render(const cc_glglue * glue)
     break;
   }
 
-  if (this->next) this->next->render(glue);
+  if (this->next) this->next->render(glue, vbo);
+}
+
+int 
+SoVertexArrayIndexer::getNumVertices(void)
+{
+  int count = this->indexarray.getLength();
+  if (this->next) count += this->next->getNumVertices();
+  return count;
+}
+
+SoVertexArrayIndexer *
+SoVertexArrayIndexer::getNext(void)
+{
+  if (this->next == NULL) {
+    this->next = new SoVertexArrayIndexer;
+  }
+  return this->next;
 }
