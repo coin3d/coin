@@ -696,17 +696,17 @@ cc_dl_close(cc_libhandle handle)
      http://fink.sourceforge.net/doc/porting/shared.php for details. */
 
 #elif defined (HAVE_WINDLL_RUNTIME_BINDING)
-
-  BOOL result = FreeLibrary(handle->nativehnd);
-
-  if (!result) {
-    cc_string funcstr;
-    cc_string_construct(&funcstr);
-    cc_string_sprintf(&funcstr, "FreeLibrary(\"%s\")", cc_string_get_text(&handle->libname));
-    cc_win32_print_error("cc_dl_close", cc_string_get_text(&funcstr), GetLastError());
-    cc_string_clean(&funcstr);
+  { 
+    BOOL result = FreeLibrary(handle->nativehnd);
+    
+    if (!result) {
+      cc_string funcstr;
+      cc_string_construct(&funcstr);
+      cc_string_sprintf(&funcstr, "FreeLibrary(\"%s\")", cc_string_get_text(&handle->libname));
+      cc_win32_print_error("cc_dl_close", cc_string_get_text(&funcstr), GetLastError());
+      cc_string_clean(&funcstr);
+    }
   }
-
 #elif defined (HAVE_DLD_LIB)
 
   /* FIXME: lib unloading disabled, as on HP-UX PA32, no reference
