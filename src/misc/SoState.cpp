@@ -45,6 +45,26 @@
   circumstances or strange side-effect will occur.
 */
 
+/*!
+  \fn SbBool SoState::isCacheOpen(void) const
+
+  Returns whether a cache is open.
+*/
+
+/*!
+  \fn SbBool SoState::isElementEnabled(const int stackindex) const
+
+  This method returns TRUE if the element with the given element stack
+  index is enabled, and FALSE otherwise.
+*/
+
+/*!
+  SoElement * SoState::getElementNoPush(const int stackindex) const
+
+  This method returns a pointer to a writable element without
+  checking for state depth.  Use with care.
+*/
+
 #include <Inventor/misc/SoState.h>
 
 #include <Inventor/SbName.h>
@@ -79,9 +99,7 @@ class SoStateP {
 public:
   SoAction * action;
   SoElement ** initial;
-  int numstacks;
   int depth;
-  SbBool cacheopen;
   class sostate_pushstore * pushstore;
   SbList <int> lazylist;
 };
@@ -107,18 +125,18 @@ SoState::SoState(SoAction * theAction, const SoTypeList & enabledelements)
 
   THIS->action = theAction;
   THIS->depth = 0;
-  THIS->cacheopen = FALSE;
+  this->cacheopen = FALSE;
 
   int i;
 
-  THIS->numstacks = SoElement::getNumStackIndices() ;
+  this->numstacks = SoElement::getNumStackIndices() ;
 
   // the stack member can be accessed from inline methods, and is
   // therefore not moved to the private class.
-  this->stack = new SoElement * [THIS->numstacks];
-  THIS->initial = new SoElement * [THIS->numstacks];
+  this->stack = new SoElement * [this->numstacks];
+  THIS->initial = new SoElement * [this->numstacks];
 
-  for (i = 0; i < THIS->numstacks; i++) {
+  for (i = 0; i < this->numstacks; i++) {
     THIS->initial[i] = NULL;
     this->stack[i] = NULL;
   }
@@ -152,7 +170,7 @@ SoState::SoState(SoAction * theAction, const SoTypeList & enabledelements)
 
 SoState::~SoState(void)
 {
-  for (int i = 0; i < THIS->numstacks; i++) {
+  for (int i = 0; i < this->numstacks; i++) {
     SoElement * elem = THIS->initial[i];
     SoElement * next;
     while (elem) {
@@ -283,24 +301,13 @@ SoState::print(FILE * const file) const
 {
   fprintf(file, "SoState[%p]: depth = %d\n", this, THIS->depth);
   fprintf(file, "  enabled elements {\n");
-  for (int i = 0; i < THIS->numstacks; i++) {
+  for (int i = 0; i < this->numstacks; i++) {
     SoElement * element;
     if ((element = this->stack[i]) != NULL)
       fprintf(file, "    %s\n",
                element->getTypeId().getName().getString());
   }
   fprintf(file, "  }\n");
-}
-
-/*!
-  This method returns TRUE if the element with the given element stack
-  index is enabled, and FALSE otherwise.
-*/
-
-SbBool
-SoState::isElementEnabled(const int stackindex) const
-{
-  return (stackindex < THIS->numstacks) && (this->stack[stackindex] != NULL);
 }
 
 /*!
@@ -321,28 +328,7 @@ SoState::getDepth(void) const
 void
 SoState::setCacheOpen(const SbBool open)
 {
-  THIS->cacheopen = open;
-}
-
-/*!
-  Returns whether a cache is open.
-*/
-SbBool
-SoState::isCacheOpen(void) const
-{
-  return THIS->cacheopen;
-}
-
-/*!
-  This method returns a pointer to a writable element without
-  checking for state depth.  Use with care.
-*/
-
-SoElement *
-SoState::getElementNoPush(const int stackindex) const
-{
-  assert(this->isElementEnabled(stackindex));
-  return this->stack[stackindex];
+  this->cacheopen = open;
 }
 
 /*!

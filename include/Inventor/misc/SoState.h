@@ -60,14 +60,36 @@ public:
 
 private:
   SoElement ** stack;
+  int numstacks;
+  SbBool cacheopen;
   class SoStateP * pimpl;  
 };
 
-// used very often, and is therefore inlined
+// these methods are used very often, and is therefore inlined
+
 inline const SoElement *
 SoState::getConstElement(const int stackindex) const
 {
   return this->stack[stackindex];
 }
+
+inline SbBool 
+SoState::isCacheOpen(void) const
+{
+  return this->cacheopen;
+}
+
+inline SbBool
+SoState::isElementEnabled(const int stackindex) const
+{
+  return (stackindex < this->numstacks) && (this->stack[stackindex] != NULL);
+}
+
+inline SoElement *
+SoState::getElementNoPush(const int stackindex) const
+{
+  return this->stack[stackindex];
+}
+
 
 #endif // !COIN_SOSTATE_H
