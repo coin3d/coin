@@ -86,8 +86,8 @@ static const char CONNECTIONCHAR = '=';
 */
 class SoConnectStorage {
 public:
-  SoConnectStorage(SoFieldContainer * c)
-    : container(c)
+  SoConnectStorage(SoFieldContainer * c, SoType t)
+    : container(c), fieldtype(t)
     { }
 
 #if COIN_DEBUG
@@ -121,8 +121,6 @@ public:
   SoFieldList slaves;
   // Direct auditors of us.
   SoAuditorList auditors;
-  // Dictionary of void* -> SoFieldConverter* mappings.
-  SbDict maptoconverter;
 
 
   // Convenience functions for adding, removing and finding SbDict
@@ -147,6 +145,19 @@ public:
       return NULL;
     return (SoFieldConverter *)val;
   }
+
+  // Provides us with a hack to get at a master field's type in code
+  // called from its constructor (SoField::getTypeId() is virtual and
+  // can't be used).
+  //
+  // (Used in the master::~SoField() -> slave::disconnect(master)
+  // chain.)
+  SoType fieldtype;
+
+
+private:
+  // Dictionary of void* -> SoFieldConverter* mappings.
+  SbDict maptoconverter;
 };
 
 
@@ -602,8 +613,12 @@ SoField::disconnect(SoField * master)
 
   SoFieldConverter * converter = this->storage->findConverter(master);
   if (converter) { // There's a converter engine between the fields.
-//      SoField * converterinput = converter->getInput(master->getTypeId());
-    SoField * converterinput = converter->getInput(SoType::badType()); // FIXME: type
+
+    // Can't use getTypeId() as it will lead to pure virtual calls
+    // when this method is called from SoField::~SoField().
+    SoType mastertype = master->storage->fieldtype;
+
+    SoField * converterinput = converter->getInput(mastertype);
     converterinput->disconnect(master);
 
     SoEngineOutput * converteroutput = converter->getOutput(this->getTypeId());
@@ -1041,7 +1056,7 @@ void
 SoField::extendStorageIfNecessary(void)
 {
   if (!this->hasExtendedStorage()) {
-    this->storage = new SoConnectStorage(this->container);
+    this->storage = new SoConnectStorage(this->container, this->getTypeId());
     this->statusflags.extstorage = TRUE;
   }
 }
