@@ -11,7 +11,9 @@ Section 01 -- Basic build instructions.
   Anyway, you should be able to build the library if you have these
   components installed on your system:
 
-        * Cygwin[1], latest release
+        * Cygwin[1], latest release, with the packages needed to run a
+          configure script (bash, binutils, ...)
+
         * Microsoft Visual C++ v6.x
 
   First, make sure Microsoft Visual C++ is accessible from the Cygwin
