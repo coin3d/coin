@@ -189,6 +189,11 @@ A:      The reason is probably that the two windows do not share the same
             renderaction->setCacheContext(uniqcc);
           }
 
+        This is taken care of automatically by Systems in Motion's
+        SoQt / SoGtk / SoXt / SoWin libraries, so you shouldn't have
+        to worry about it unless you are making your own GUI binding
+        to Coin from scratch.
+
 
 Q2.2:   Why does my Visual C++ program using Coin work for debug builds but
         not for release builds?
