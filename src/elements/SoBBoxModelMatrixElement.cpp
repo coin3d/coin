@@ -97,8 +97,8 @@ SoBBoxModelMatrixElement::pushMatrix(SoState * const state,
                                      SbMatrix &matrix,
                                      SbMatrix &localmatrix)
 {
-  matrix = SoModelMatrixElement::get(state);
-  localmatrix = SoLocalBBoxMatrixElement::get(state);
+  matrix = SoModelMatrixElement::pushMatrix(state);
+  localmatrix = SoLocalBBoxMatrixElement::pushMatrix(state);
 }
 
 /*!
@@ -111,8 +111,8 @@ SoBBoxModelMatrixElement::popMatrix(SoState * const state,
                                     const SbMatrix & matrix,
                                     const SbMatrix & localmatrix)
 {
-  SoModelMatrixElement::set(state, NULL, matrix);
-  SoLocalBBoxMatrixElement::set(state, localmatrix);
+  SoModelMatrixElement::popMatrix(state,  matrix);
+  SoLocalBBoxMatrixElement::popMatrix(state, localmatrix);
 }
 
 //! FIXME: write doc.
@@ -176,8 +176,7 @@ SoBBoxModelMatrixElement::scaleEltBy(const SbVec3f &scaleFactor)
 SbMatrix
 SoBBoxModelMatrixElement::pushMatrixElt()
 {
-  assert(0 && "Should never be called!");
-  return SbMatrix::identity();
+  return inherited::pushMatrixElt();
 }
 
 /*!
@@ -185,7 +184,7 @@ SoBBoxModelMatrixElement::pushMatrixElt()
 */
 
 void
-SoBBoxModelMatrixElement::popMatrixElt(const SbMatrix &)
+SoBBoxModelMatrixElement::popMatrixElt(const SbMatrix & m)
 {
-  assert(0 && "Should never be called!");
+  inherited::popMatrixElt(m);
 }

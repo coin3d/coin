@@ -209,8 +209,9 @@ SoLocalBBoxMatrixElement::scaleBy(SoState * const state,
 SbMatrix
 SoLocalBBoxMatrixElement::pushMatrix(SoState * const state)
 {
+  // use getElementNoPush to avoid element push
   SoLocalBBoxMatrixElement * elem = (SoLocalBBoxMatrixElement*)
-    SoElement::getConstElement(state, classStackIndex);
+    state->getElementNoPush(classStackIndex);
   return elem->localMatrix;
 }
 
