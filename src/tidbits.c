@@ -29,6 +29,8 @@
 
 #include <Inventor/system/inttypes.h>
 
+#include <assert.h>
+#include <string.h> /* strncasecmp() */
 #include <stdio.h>
 #include <stdlib.h>
 #ifdef HAVE_WINDOWS_H
@@ -282,7 +284,32 @@ coin_getenv(const char * envname)
 
 /**************************************************************************/
 
-#include <assert.h>
+/*
+  strncasecmp() is not available on all platforms (it's neither ISO C
+  nor POSIX). At least MSVC doesn't have it.
+ */
+int
+coin_strncasecmp(const char * s1, const char * s2, int len)
+{
+#ifdef HAVE_STRNCASECMP
+
+  return strncasecmp(s1, s2, len);
+
+#else /* !HAVE_STRNCASECMP */
+
+  assert(s1 && s2);
+  while (len > 0) {
+    if (*s1 < *s2) { return -1; }
+    if (*s1 > *s2) { return +1; }
+    if (*s1=='\0' && *s2=='\0') { return 0; } /* in case len is too large */
+    len--; s1++; s2++;
+  }
+  return 0;
+
+#endif /* !HAVE_STRNCASECMP */
+}
+
+/**************************************************************************/
 
 int
 coin_host_is_bigendian(void)

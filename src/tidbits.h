@@ -49,6 +49,7 @@ int vsnprintf(char * target, size_t n, const char * formatstr, va_list args);
 #endif /* !HAVE_VSNPRINTF */
 
 const char * coin_getenv(const char *);
+int coin_strncasecmp(const char *, const char *, int);
 
 int coin_host_is_bigendian(void);
 
