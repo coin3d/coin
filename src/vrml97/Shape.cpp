@@ -165,9 +165,11 @@ SoVRMLShape::initClass(void) // static
 #define THISP thisp->pimpl
 
 #ifdef COIN_THREADSAFE
+#define TRY_LOCK_BBOX(_thisp_) (_thisp_)->pimpl->bboxmutex.tryLock()
 #define LOCK_BBOX(_thisp_) (_thisp_)->pimpl->bboxmutex.lock()
 #define UNLOCK_BBOX(_thisp_) (_thisp_)->pimpl->bboxmutex.unlock()
 #else // COIN_THREADSAFE
+#define TRY_LOCK_BBOX(_thisp_) TRUE
 #define LOCK_BBOX(_thisp_)
 #define UNLOCK_BBOX(_thisp_)
 #endif // COIN_THREADSAFE
@@ -389,9 +391,9 @@ SoVRMLShape::getBoundingBox(SoGetBoundingBoxAction * action)
     break;
   }
   
-  LOCK_BBOX(this);
+  if (iscaching) iscaching = TRY_LOCK_BBOX(this);
 
-  SbBool validcache = THIS->bboxcache && THIS->bboxcache->isValid(state);
+  SbBool validcache = iscaching && THIS->bboxcache && THIS->bboxcache->isValid(state);
 
   if (iscaching && validcache) {
     SoCacheElement::addCacheDependency(state, THIS->bboxcache);
@@ -439,7 +441,7 @@ SoVRMLShape::getBoundingBox(SoGetBoundingBoxAction * action)
     if (iscaching) SoCacheElement::setInvalid(storedinvalid);
   }
 
-  UNLOCK_BBOX(this);
+  if (iscaching) UNLOCK_BBOX(this);
 
   if (!childrenbbox.isEmpty()) {
     action->extendBy(childrenbbox);
