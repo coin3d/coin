@@ -23,10 +23,12 @@
 #include <Inventor/misc/SoBase.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/lists/SoNodeList.h>
+
 #ifndef COIN_INTERNAL
- // For Open Inventor compatibility.
- #include <Inventor/SoLists.h>
+// For SGI / TGS Open Inventor compile-time compatibility.
+#include <Inventor/SoLists.h>
 #endif // !COIN_INTERNAL
+
 
 class SoWriteAction;
 class SoNotList;
@@ -109,15 +111,7 @@ private:
   friend class SoTempPath;
 };
 
-#ifndef COIN_INTERNAL
-#include <Inventor/SoFullPath.h>
-#endif // COIN_INTERNAL
-
-#ifndef COIN_INTERNAL
-#include <Inventor/misc/SoLightPath.h>
-#endif // COIN_INTERNAL
-
-// inline methods
+/// inlined methods, block start //////////////////////////////////////////
 
 inline int
 SoPath::getFullLength(void) const
@@ -137,6 +131,13 @@ SoPath::pop(void)
   this->truncate(this->getFullLength() - 1);
 }
 
+/// inlined methods, block end ////////////////////////////////////////////
 
+
+#ifndef COIN_INTERNAL
+// For SGI / TGS Open Inventor compile-time compatibility.
+#include <Inventor/SoFullPath.h>
+#include <Inventor/misc/SoLightPath.h>
+#endif // COIN_INTERNAL
 
 #endif // !COIN_SOPATH_H
