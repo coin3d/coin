@@ -6,6 +6,7 @@ ALLSOURCES = \
 	SoChildList.cpp SoChildList.h \
 	SoGL.cpp SoGL.h \
 	SoGLImage.cpp SoGLImage.h \
+	SoGlyph.cpp SoGlyph.h \
 	SoNormalGenerator.cpp SoNormalGenerator.h \
 	SoNotification.cpp SoNotification.h \
 	SoState.cpp SoState.h \
@@ -23,7 +24,8 @@ ALLSOURCES = \
 	SoSceneManager.cpp SoSceneManager.h \
 	SoType.cpp SoType.h \
 	SoOffscreenRenderer.cpp SoOffscreenRenderer.h \
-	SoGenerate.cpp
+	SoGenerate.cpp SoGenerate.h \
+	default3dfont.cpp
 
 
 ALLINSTHEADERS = \
