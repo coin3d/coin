@@ -279,7 +279,7 @@ SoMFEngine::insertSpace(int start, int num)
 void
 SoMFEngine::copyValue(int to, int from)
 {
-  this->values[from] = this->values[to];
+  this->values[to] = this->values[from];
 }
 
 //// From the SO_MFIELD_VALUE_SOURCE macro, end. /////////////////////////////
