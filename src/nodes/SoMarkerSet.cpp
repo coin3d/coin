@@ -1112,9 +1112,9 @@ SoMarkerSet::GLRender(SoGLRenderAction * action)
   SoState * state = action->getState();
 
   state->push();
-  // we just disable lighting and texturing for markers, since
-  // we can't see any reason this should ever be enabled.
-  // send an angry email to pederb if you disagree.
+  // We just disable lighting and texturing for markers, since we
+  // can't see any reason this should ever be enabled.  send an angry
+  // email to <pederb@coin3d.org> if you disagree.
 
   SoLightModelElement::set(state, this, SoLightModelElement::BASE_COLOR);
   SoGLTextureEnabledElement::set(state, this, FALSE);
@@ -1127,8 +1127,7 @@ SoMarkerSet::GLRender(SoGLRenderAction * action)
   const SbVec3f * dummy;
   SbBool needNormals = FALSE;
 
-  SoVertexShape::getVertexData(state, tmpcoord, dummy,
-                               needNormals);
+  SoVertexShape::getVertexData(state, tmpcoord, dummy, needNormals);
 
   if (!this->shouldGLRender(action)) {
     state->pop();
@@ -1168,24 +1167,35 @@ SoMarkerSet::GLRender(SoGLRenderAction * action)
     point[0] = point[0] * float(vpsize[0]); // screen pixel position
     point[1] = point[1] * float(vpsize[1]);
 
-    int midx = SbMin(i, this->markerIndex.getNum()-1);
-    if (this->markerIndex[midx] < markerlist->getLength()) {
-      so_marker * tmp = &(*markerlist)[ this->markerIndex[midx] ];
-      glPixelStorei(GL_UNPACK_ALIGNMENT, tmp->align);
-      glRasterPos3f(point[0], point[1], -point[2]);
-      glBitmap(tmp->width, tmp->height, 0, 0, 0, 0, tmp->data);
-    }
+    int midx = SbMin(i, this->markerIndex.getNum() - 1);
+
 #if COIN_DEBUG
-    else {
-      static int firsterror = 1;
+    if (midx < 0 || (this->markerIndex[midx] >= markerlist->getLength())) {
+      static SbBool firsterror = TRUE;
       if (firsterror) {
-        SoDebugError::postWarning("SoMarkerSet::GLRender.",
+        SoDebugError::postWarning("SoMarkerSet::GLRender",
                                   "markerIndex %d out of bound",
                                   markerIndex[i]);
-        firsterror = 0;
+        firsterror = FALSE;
       }
+      // Don't render, jump back to top of for-loop and continue with
+      // next index.
+      continue;
     }
 #endif // COIN_DEBUG
+
+    so_marker * tmp = &(*markerlist)[ this->markerIndex[midx] ];
+
+    // To have the exact center point of the marker drawn at the
+    // projected 3D position.  (FIXME: I haven't actually checked that
+    // this is what TGS' implementation of the SoMarkerSet node does
+    // when rendering, but it seems likely. 20010823 mortene.)
+    point[0] = point[0] - (tmp->width - 1) / 2;
+    point[1] = point[1] - (tmp->height - 1) / 2;
+
+    glPixelStorei(GL_UNPACK_ALIGNMENT, tmp->align);
+    glRasterPos3f(point[0], point[1], -point[2]);
+    glBitmap(tmp->width, tmp->height, 0, 0, 0, 0, tmp->data);
   }
   glPixelStorei(GL_UNPACK_ALIGNMENT, 4); // restore default value
   glMatrixMode(GL_PROJECTION);
