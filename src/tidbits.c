@@ -175,11 +175,17 @@ snprintf(char * target, size_t n, const char * formatstr, ...)
 
 /*** Singlelinked list for the environment variables. *********************/
 
-/* FIXME: should implement a generic (macro-based) singlelinked list
-   abstraction in C (the following code could be a good starting
-   point). Then axe this code. Then move the various listhandling
-   stuff in the Coin library from the SbList<> template to the C-based
-   one to aid any future transition to pure C. 20010821 mortene. */
+/*
+  FIXME: should implement a generic (macro-based) singlelinked list
+  abstraction in C (the following code could be a good starting
+  point). Then axe this code. Then move the various listhandling stuff
+  in the Coin library from the SbList<> template to the C-based one to
+  aid any future transition to pure C. 20010821 mortene.
+
+  UPDATE: SbList isn't really a linked list, but in fact a growable
+  array -- so the code below can not be used as a replacement. Still,
+  we should have a generic linked list class. 20011220 mortene.
+*/
 
 static struct envvar_data * envlist_head = NULL;
 static struct envvar_data * envlist_tail = NULL;
@@ -231,6 +237,10 @@ envlist_append(struct envvar_data * item)
 const char *
 coin_getenv(const char * envname)
 {
+  // Important note: this code is identical to the getenv() code in
+  // So*/.../common/SoAny.cpp.in. If you do bugfixes or whatever --
+  // keep them in sync!
+
 #ifdef HAVE_GETENVIRONMENTVARIABLE
   int neededsize;
 

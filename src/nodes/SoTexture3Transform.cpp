@@ -23,11 +23,17 @@
 
 /*!
   \class SoTexture3Transform SoTexture3Transform.h Inventor/nodes/SoTexture3Transform.h
-  \brief The SoTexture3Transform class is used to define 3D texture transformatSions.
+  \brief The SoTexture3Transform class is used to define 3D texture transformations.
   \ingroup nodes
 
+  Textures applied to shapes in the scene can be transformed by
+  "prefixing" in the state with instances of this node
+  type. Translations, rotations and scaling in 3D can all be done.
+
+  The default settings of this node's fields equals a "null
+  transform", ie no transformation.
+
   \sa SoTexture2Transform
-  FIXME: write class doc
 */
 
 #include <Inventor/nodes/SoTexture3Transform.h>
@@ -41,23 +47,30 @@
 
 /*!
   \var SoSFVec3f SoTexture3Transform::translation
-  Texture coordinate translation.
+
+  Texture coordinate translation. Default value is [0, 0, 0].
 */
 /*!
   \var SoSFRotation SoTexture3Transform::rotation
-  Texture coordinate rotation (s is x-axis, t is y-axis and r is z-axis).
+
+  Texture coordinate rotation (s is x-axis, t is y-axis and r is
+  z-axis).  Defaults to an identity rotation (ie zero rotation).
 */
 /*!
   \var SoSFVec3f SoTexture3Transform::scaleFactor
-  Texture coordinate scale factors.
+
+  Texture coordinate scale factors. Default value is [1, 1, 1].
 */
 /*!
   \var SoSFRotation SoTexture3Transform::scaleOrientation
-  The orientation the texture is set to before scaling.
+
+  The orientation the texture is set to before scaling.  Defaults to
+  an identity rotation (ie zero rotation).
 */
 /*!
   \var SoSFVec3f SoTexture3Transform::center
-  Center for scale and rotation.
+
+  Center for scale and rotation. Default value is [0, 0, 0].
 */
 
 // *************************************************************************
@@ -67,7 +80,7 @@ SO_NODE_SOURCE(SoTexture3Transform);
 /*!
   Constructor.
 */
-SoTexture3Transform::SoTexture3Transform()
+SoTexture3Transform::SoTexture3Transform(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTexture3Transform);
 
@@ -85,7 +98,7 @@ SoTexture3Transform::~SoTexture3Transform()
 {
 }
 
-// doc from parent
+// Documented in superclass.
 void
 SoTexture3Transform::initClass(void)
 {
@@ -97,14 +110,14 @@ SoTexture3Transform::initClass(void)
 }
 
 
-// doc from parent
+// Documented in superclass.
 void
 SoTexture3Transform::GLRender(SoGLRenderAction * action)
 {
   SoTexture3Transform::doAction(action);
 }
 
-// doc from parent
+// Documented in superclass.
 void
 SoTexture3Transform::doAction(SoAction *action)
 {
@@ -117,14 +130,14 @@ SoTexture3Transform::doAction(SoAction *action)
   SoTextureMatrixElement::mult(action->getState(), this, mat);
 }
 
-// doc from parent
+// Documented in superclass.
 void
 SoTexture3Transform::callback(SoCallbackAction *action)
 {
   SoTexture3Transform::doAction(action);
 }
 
-// doc from parent
+// Documented in superclass.
 void
 SoTexture3Transform::getMatrix(SoGetMatrixAction * action)
 {
@@ -138,7 +151,7 @@ SoTexture3Transform::getMatrix(SoGetMatrixAction * action)
   action->getTextureInverse().multRight(mat.inverse());
 }
 
-// doc from parent
+// Documented in superclass.
 void
 SoTexture3Transform::pick(SoPickAction * action)
 {

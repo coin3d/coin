@@ -26,9 +26,14 @@
   \brief The SoTexture2Transform class is used to define 2D texture transformations.
   \ingroup nodes
 
-  \sa SoTexture2Transform
+  Textures applied to shapes in the scene can be transformed by
+  "prefixing" in the state with instances of this node
+  type. Translations, rotations and scaling in 2D can all be done.
 
-  FIXME: write class doc
+  The default settings of this node's fields equals a "null
+  transform", ie no transformation.
+
+  \sa SoTexture3Transform
 */
 
 #include <Inventor/nodes/SoTexture2Transform.h>
@@ -42,19 +47,24 @@
 
 /*!
   \var SoSFVec2f SoTexture2Transform::translation
-  Texture coordinate translation.
+
+  Texture coordinate translation. Default value is [0, 0].
 */
 /*!
   \var SoSFFloat SoTexture2Transform::rotation
-  Texture coordinate rotation (around z-axis, s is x-axis and t is y-axis).
+
+  Texture coordinate rotation (around z-axis, s is x-axis and t is
+  y-axis).  Defaults to an identity rotation (ie zero rotation).
 */
 /*!
   \var SoSFVec2f SoTexture2Transform::scaleFactor
-  Texture coordinate scale factors.
+
+  Texture coordinate scale factors. Default value is [1, 1].
 */
 /*!
   \var SoSFVec2f SoTexture2Transform::center
-  Center for scale and rotation.
+
+  Center for scale and rotation. Default value is [0, 0].
 */
 
 // *************************************************************************
@@ -64,7 +74,7 @@ SO_NODE_SOURCE(SoTexture2Transform);
 /*!
   Constructor.
 */
-SoTexture2Transform::SoTexture2Transform()
+SoTexture2Transform::SoTexture2Transform(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTexture2Transform);
 
@@ -81,7 +91,7 @@ SoTexture2Transform::~SoTexture2Transform()
 {
 }
 
-// doc from parent
+// Documented in superclass.
 void
 SoTexture2Transform::initClass(void)
 {
@@ -93,14 +103,14 @@ SoTexture2Transform::initClass(void)
 }
 
 
-// doc from parent
+// Documented in superclass.
 void
 SoTexture2Transform::GLRender(SoGLRenderAction * action)
 {
   SoTexture2Transform::doAction(action);
 }
 
-// doc from parent
+// Documented in superclass.
 void
 SoTexture2Transform::doAction(SoAction *action)
 {
@@ -110,14 +120,14 @@ SoTexture2Transform::doAction(SoAction *action)
                                mat);
 }
 
-// doc from parent
+// Documented in superclass.
 void
 SoTexture2Transform::callback(SoCallbackAction *action)
 {
   SoTexture2Transform::doAction(action);
 }
 
-// doc from parent
+// Documented in superclass.
 void
 SoTexture2Transform::getMatrix(SoGetMatrixAction * action)
 {
@@ -127,7 +137,7 @@ SoTexture2Transform::getMatrix(SoGetMatrixAction * action)
   action->getTextureInverse().multRight(mat.inverse());
 }
 
-// doc from parent
+// Documented in superclass.
 void
 SoTexture2Transform::pick(SoPickAction * action)
 {

@@ -1111,6 +1111,11 @@ convert_bitmaps(void)
 void
 SoMarkerSet::GLRender(SoGLRenderAction * action)
 {
+  // FIXME: the marker bitmaps are toggled off when the leftmost pixel
+  // is outside the left border, and ditto for the bottommost pixel
+  // versus the bottom border. They should be drawn partly until they
+  // are wholly outside the canvas instead. 20011218 mortene.
+
   SoState * state = action->getState();
 
   state->push();

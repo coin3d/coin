@@ -27,9 +27,10 @@
   \ingroup base
 
   SbRotation is used extensively throughout the Coin library.
+
   An SbRotation is stored internally as a quaternion for speed and
-  storage reasons, but inquires can be done to get and set axis and angle
-  values for convenience.
+  storage reasons, but inquiries can be done to get and set axis and
+  angle values for convenience.
 
   \sa SbMatrix
 */
