@@ -34,12 +34,45 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+/*!
+  \var SoSFTime SoElapsedTime::timeIn
+  FIXME
+*/
+/*!
+  \var SoSFFloat SoElapsedTime::speed
+  FIXME
+*/
+/*!
+  \var SoSFBool SoElapsedTime::on
+  FIXME
+*/
+/*!
+  \var SoSFBool SoElapsedTime::pause
+  FIXME
+*/
+/*!
+  \var SoSFTrigger SoElapsedTime::reset
+  FIXME
+*/
+
+/*!
+  SoEngineOutput SoElapsedTime::timeOut
+  (SoSFTime) FIXME
+*/
+
 SO_ENGINE_SOURCE(SoElapsedTime);
+
+// overloaded from parent
+void
+SoElapsedTime::initClass(void)
+{
+  SO_ENGINE_INTERNAL_INIT_CLASS(SoElapsedTime);
+}
 
 /*!
   Default constructor.
 */
-SoElapsedTime::SoElapsedTime()
+SoElapsedTime::SoElapsedTime(void)
 {
   SO_ENGINE_INTERNAL_CONSTRUCTOR(SoElapsedTime);
 
@@ -51,82 +84,74 @@ SoElapsedTime::SoElapsedTime()
 
   SO_ENGINE_ADD_OUTPUT(timeOut,SoSFTime);
 
-  SoField *realtime=SoDB::getGlobalField("realTime");
+  SoField * realtime = SoDB::getGlobalField("realTime");
   this->timeIn.connectFrom(realtime);
 
-  this->currTime=SbTime::zero();
-  this->lastTime=((SoSFTime *)realtime)->getValue();
-  this->status=SoElapsedTime::RUNNING;
-  this->firstTime=TRUE;
+  this->currtime = SbTime::zero();
+  this->lasttime = ((SoSFTime *)realtime)->getValue();
+  this->status = SoElapsedTime::RUNNING;
+  this->firsttime = TRUE;
 }
 
-// overloaded from parent
-void
-SoElapsedTime::initClass()
-{
-  SO_ENGINE_INTERNAL_INIT_CLASS(SoElapsedTime);
-}
-
-
-//
-// private members
-//
+/*!
+  Destructor.
+*/
 SoElapsedTime::~SoElapsedTime()
 {
 }
 
 // overloaded from parent
 void
-SoElapsedTime::evaluate()
+SoElapsedTime::evaluate(void)
 {
-  //  if (this->firstTime) return;
-  if (this->status==SoElapsedTime::STOPPED) {
-    SO_ENGINE_OUTPUT(timeOut,SoSFTime,setValue(this->currTime));
+  //  if (this->firsttime) return;
+  if (this->status == SoElapsedTime::STOPPED) {
+    SO_ENGINE_OUTPUT(timeOut,SoSFTime,setValue(this->currtime));
   }
   else {
-    SbTime now=this->timeIn.getValue();
-    this->currTime+=(now-this->lastTime)*this->speed.getValue();
-    this->lastTime=now;
-    if (this->status==SoElapsedTime::PAUSED) {
-      SO_ENGINE_OUTPUT(timeOut,SoSFTime,setValue(this->pauseTime));
+    SbTime now = this->timeIn.getValue();
+    this->currtime += (now-this->lasttime) * this->speed.getValue();
+    this->lasttime = now;
+    if (this->status == SoElapsedTime::PAUSED) {
+      SO_ENGINE_OUTPUT(timeOut,SoSFTime,setValue(this->pausetime));
     }
     else {
-      SO_ENGINE_OUTPUT(timeOut,SoSFTime,setValue(this->currTime));
+      SO_ENGINE_OUTPUT(timeOut,SoSFTime,setValue(this->currtime));
     }
   }
 }
 
 // overloaded from parent
 void
-SoElapsedTime::inputChanged(SoField *which)
+SoElapsedTime::inputChanged(SoField * which)
 {
-  if (which==&this->timeIn) return;
+  if (which == &this->timeIn) return;
 
-//   if (which==&this->timeIn && this->firstTime) {
-//     this->lastTime=this->timeIn.getValue();
-//     this->firstTime=FALSE;
+//   if (which == &this->timeIn && this->firsttime) {
+//     this->lasttime = this->timeIn.getValue();
+//     this->firsttime = FALSE;
 //     printf("!!!!!!!\n");
 //   }
-  else if (which==&this->reset) {
-    this->currTime=SbTime::zero();
-    this->lastTime=this->timeIn.getValue();
+  else if (which == &this->reset) {
+    this->currtime = SbTime::zero();
+    this->lasttime = this->timeIn.getValue();
   }
-  else if (which==&this->pause) {
-    if (this->pause.getValue() && this->status==SoElapsedTime::RUNNING) {
-      this->status=SoElapsedTime::PAUSED;
-      this->pauseTime=this->currTime;
+  else if (which == &this->pause) {
+    if (this->pause.getValue() && this->status == SoElapsedTime::RUNNING) {
+      this->status = SoElapsedTime::PAUSED;
+      this->pausetime = this->currtime;
     }
-    else if (!this->pause.getValue() && this->status==SoElapsedTime::PAUSED) {
-      this->status=SoElapsedTime::RUNNING;
+    else if (!this->pause.getValue() && this->status == SoElapsedTime::PAUSED) {
+      this->status = SoElapsedTime::RUNNING;
     }
   }
-  else if (which==&this->on) {
-    if (this->on.getValue() && this->status==SoElapsedTime::STOPPED) {
-      this->status=SoElapsedTime::RUNNING;
-      this->lastTime=this->timeIn.getValue();
+  else if (which == &this->on) {
+    if (this->on.getValue() && this->status == SoElapsedTime::STOPPED) {
+      this->status = SoElapsedTime::RUNNING;
+      this->lasttime = this->timeIn.getValue();
     }
-    else if (!this->on.getValue() && this->status!=SoElapsedTime::STOPPED) {
-      this->status=SoElapsedTime::STOPPED;
+    else if (!this->on.getValue() && this->status != SoElapsedTime::STOPPED) {
+      this->status = SoElapsedTime::STOPPED;
     }
   }
 }

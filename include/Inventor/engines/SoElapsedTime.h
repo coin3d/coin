@@ -30,9 +30,13 @@
 
 class COIN_DLL_EXPORT SoElapsedTime : public SoEngine {
   typedef SoEngine inherited;
+
   SO_ENGINE_HEADER(SoElapsedTime);
 
 public:
+  static void initClass(void);
+  SoElapsedTime(void);
+
   SoSFTime timeIn;
   SoSFFloat speed;
   SoSFBool on;
@@ -41,10 +45,6 @@ public:
 
   SoEngineOutput timeOut; // SoSFTime
 
-  SoElapsedTime();
-
-  static void initClass();
-
 protected:
   ~SoElapsedTime();
 
@@ -52,11 +52,9 @@ private:
   virtual void evaluate(void);
   virtual void inputChanged(SoField * which);
 
-  SbTime pauseTime;
-  SbTime lastTime;
-  SbTime currTime;
+  SbTime pausetime, lasttime, currtime;
   enum {RUNNING, STOPPED, PAUSED} status;
-  SbBool firstTime;
+  SbBool firsttime;
 };
 
 #endif // !COIN_SOELAPSEDTIME_H
