@@ -290,7 +290,15 @@ aglglue_context_create_pbuffer(struct aglglue_contextdata * ctx)
      dimensions in the context struct versus GLX_MAX_PBUFFER_WIDTH,
      GLX_MAX_PBUFFER_HEIGHT and GLX_MAX_PBUFFER_PIXELS
      somewhere. Copied from gl_glx.c by kyrah 20031114, originally 
-     mentioned by mortene 20030811. */
+     mentioned by mortene 20030811. 
+  
+     Update kyrah 20040714: The way to query maximum pBuffer size
+     on AGL is (according to Geoff Stahl of Apple) GL_MAX_VIEWPORT_DIMS,
+     but this won't get us very far, since the numbers reported
+     reflect the theoretical maximum size. We'll in any case have
+     to try and allocate a pBuffer to see if we can actually get
+     so much VRAM...
+  */
 
   GLenum error;
   GLint attribs[] = { 
@@ -303,6 +311,13 @@ aglglue_context_create_pbuffer(struct aglglue_contextdata * ctx)
     AGL_NO_RECOVERY, 
     AGL_NONE 
   };
+
+  /* Note that unlike in WGL, where the ability to bind a pBuffer
+     as a texture has to be specified when creating the pixel
+     format, AGL works in a different way: We can assume that 
+     when pBuffers are supported, it is also possible to bind
+     the pBuffer as a texture (i.e. call aglTexImagePBuffer).
+   */
 
   if (coin_glglue_debug()) {
     cc_debugerror_postinfo("aglglue_context_create_pbuffer",
