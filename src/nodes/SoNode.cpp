@@ -646,6 +646,8 @@ SoNode::initClasses(void)
 
   SoTextureCombine::initClass();
   SoCacheHint::initClass();
+  SoTextureCubeMap::initClass();
+
 }
 
 /*!
