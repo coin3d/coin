@@ -2,5 +2,5 @@ README
 ======
 
 This directory contains project and makefiles for building Coin with
-the VC++ compiler.  Read ../README.WIN for more information.
-
+the Microsoft VisualC++ compiler. Read ../README.WIN32 for more
+information.
