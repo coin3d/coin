@@ -1224,16 +1224,20 @@ SoField::read(SoInput * in, const SbName & name)
         return FALSE;
       }
 
-      // Check again for ignored flag.
-      READ_VAL(c);
-      if (c == IGNOREDCHAR) this->setIgnored(TRUE);
-      else in->putBack(c);
+      if (!in->eof()) {  // Can happen for memory buffers with SoField::set().
+        // Check again for ignored flag.
+        READ_VAL(c);
+        if (c == IGNOREDCHAR) this->setIgnored(TRUE);
+        else in->putBack(c);
+      }
     }
 
-    // Check if there's a field-to-field connection here.
-    READ_VAL(c);
-    if (c == CONNECTIONCHAR) { if (!this->readConnection(in)) return FALSE; }
-    else in->putBack(c);
+    if (!in->eof()) {  // Can happen for memory buffers with SoField::set().
+      // Check if there's a field-to-field connection here.
+      READ_VAL(c);
+      if (c == CONNECTIONCHAR) { if (!this->readConnection(in)) return FALSE; }
+      else in->putBack(c);
+    }
   }
   else { // Binary file format.
     // Read field value(s).
