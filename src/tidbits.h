@@ -24,14 +24,14 @@
 #ifndef COIN_TIDBITS_H
 #define COIN_TIDBITS_H
 
+#include <Inventor/C/basic.h>
+#include <stdarg.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif /*__cplusplus */
 
 /* ********************************************************************** */
-
-#include <Inventor/C/basic.h>
-#include <stdarg.h>
 
 int coin_snprintf(char * dst, unsigned int n, const char * fmtstr, ...);
 int coin_vsnprintf(char * dst, unsigned int n, const char * fmtstr, va_list args);
