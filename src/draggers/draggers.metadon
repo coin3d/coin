@@ -16,21 +16,21 @@
 # I        SoCenterballDragger
 # I        SoDirectionalLightDragger
 # I G      SoDragPointDragger
-# I        SoHandleBoxDragger
+# I G      SoHandleBoxDragger
 # I        SoJackDragger
 # I G      SoPointLightDragger
-# I        SoRotateCylindricalDragger
+# I G      SoRotateCylindricalDragger
 # I        SoRotateDiscDragger
 # I        SoRotateSphericalDragger
 # I        SoScale1Dragger
 # I        SoScale2Dragger
 # I        SoScale2UniformDragger
-# I        SoScaleUniformDragger
+# I G      SoScaleUniformDragger
 # I        SoSpotLightDragger
 # I        SoTabBoxDragger
 # I        SoTabPlaneDragger
-# I        SoTrackballDragger
-# I        SoTransformBoxDragger
+# I G      SoTrackballDragger
+# I G      SoTransformBoxDragger
 # i        SoTransformerDragger
 # I G      SoTranslate1Dragger
 # I G      SoTranslate2Dragger
