@@ -10,7 +10,7 @@
 # ===
 # HIERARCHY
 # i    SoDragger
-#          SoCenterballDragger
+# I        SoCenterballDragger
 # I        SoDirectionalLightDragger
 # I        SoDragPointDragger
 # I        SoHandleBoxDragger
@@ -24,7 +24,7 @@
 # I        SoScale2UniformDragger
 # I        SoScaleUniformDragger
 # I        SoSpotLightDragger
-#          SoTabBoxDragger
+# I        SoTabBoxDragger
 # I        SoTabPlaneDragger
 # I        SoTrackballDragger
 # I        SoTransformBoxDragger

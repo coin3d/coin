@@ -17,11 +17,20 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoTabBoxDragger SoTabBoxDragger.h Inventor/draggers/SoTabBoxDragger.h
+  \brief The SoTabBoxDragger class is a box dragger you can translate and scale. 
+  \ingroup draggers
+  
+  FIXME: write class doc
+*/
+
 #include <Inventor/draggers/SoTabBoxDragger.h>
 #include <Inventor/draggers/SoTabPlaneDragger.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSurroundScale.h>
 #include <Inventor/nodes/SoTransform.h>
+#include <Inventor/sensors/SoFieldSensor.h>
 #include <coindefs.h> // COIN_STUB()
 
 
@@ -59,51 +68,161 @@ SoTabBoxDragger::SoTabBoxDragger(void)
   SO_KIT_ADD_CATALOG_ENTRY(tabPlane6, SoTabPlaneDragger, TRUE, tabPlane6Sep, "", TRUE);
   SO_KIT_ADD_CATALOG_ENTRY(boxGeom, SoSeparator, TRUE, geomSeparator, "", TRUE);
 
+  if (SO_KIT_IS_FIRST_INSTANCE()) {
+    SoInteractionKit::readDefaultParts("tabBoxDragger.iv", NULL, 0);
+  }
+
   SO_NODE_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
   SO_NODE_ADD_FIELD(scaleFactor, (1.0f, 1.0f, 1.0f));
 
   SO_KIT_INIT_INSTANCE();
+
+  // create subdraggers
+  SO_GET_ANY_PART(this, "tabPlane1", SoTabPlaneDragger);
+  SO_GET_ANY_PART(this, "tabPlane2", SoTabPlaneDragger);
+  SO_GET_ANY_PART(this, "tabPlane3", SoTabPlaneDragger);
+  SO_GET_ANY_PART(this, "tabPlane4", SoTabPlaneDragger);
+  SO_GET_ANY_PART(this, "tabPlane5", SoTabPlaneDragger);
+  SO_GET_ANY_PART(this, "tabPlane6", SoTabPlaneDragger);
+
+  this->setPartAsDefault("boxGeom", "tabBoxBoxGeom");
+
+  this->initTransformNodes();
+  
+  this->addValueChangedCallback(SoTabBoxDragger::valueChangedCB);
+  
+  this->scaleFieldSensor = new SoFieldSensor(SoTabBoxDragger::fieldSensorCB, this);
+  this->translFieldSensor = new SoFieldSensor(SoTabBoxDragger::fieldSensorCB, this);
+  this->setUpConnections(TRUE, TRUE);
 }
+
 
 
 SoTabBoxDragger::~SoTabBoxDragger()
 {
-  COIN_STUB();
+  delete this->scaleFieldSensor;
+  delete this->translFieldSensor;
 }
 
 SbBool
 SoTabBoxDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 {
-  COIN_STUB();
-  return FALSE;
+  if (!doitalways && this->connectionsSetUp == onoff) return onoff;
+
+  SbString str;
+  if (onoff) {
+    inherited::setUpConnections(onoff, doitalways);
+    SoDragger *child;
+    for (int i = 1; i <= 6; i++) {
+      str.sprintf("tabPlane%d", i);
+      child = (SoDragger*)this->getAnyPart(str.getString(), FALSE);
+      child->setPartAsDefault("translator", "tabBoxTranslator");
+      child->setPartAsDefault("scaleTabMaterial", "tabBoxScaleTabMaterial");
+      child->setPartAsDefault("scaleTabHints", "tabBoxScaleTabHints");
+      child->addStartCallback(SoTabBoxDragger::invalidateSurroundScaleCB, this);
+      child->addFinishCallback(SoTabBoxDragger::invalidateSurroundScaleCB, this);
+      this->registerChildDragger(child);
+    } 
+    
+    if (this->translFieldSensor->getAttachedField() != &this->translation) {
+      this->translFieldSensor->attach(&this->translation);
+    }
+    if (this->scaleFieldSensor->getAttachedField() != &this->scaleFactor) {
+      this->scaleFieldSensor->attach(&this->scaleFactor);
+    }
+  }
+  else {
+    SoDragger *child;
+    for (int i = 1; i <= 6; i++) {
+      str.sprintf("tabPlane%d", i);
+      child = (SoDragger*)this->getAnyPart(str.getString(), FALSE);
+      child->removeStartCallback(SoTabBoxDragger::invalidateSurroundScaleCB, this);
+      child->removeFinishCallback(SoTabBoxDragger::invalidateSurroundScaleCB, this);
+      this->unregisterChildDragger(child);      
+    }
+
+    if (this->translFieldSensor->getAttachedField() != NULL) {
+      this->translFieldSensor->detach();
+    }
+    if (this->scaleFieldSensor->getAttachedField() != NULL) {
+      this->scaleFieldSensor->detach();
+    }
+    inherited::setUpConnections(onoff, doitalways);
+  }
+  return !(this->connectionsSetUp = onoff);
 }
 
 void
 SoTabBoxDragger::setDefaultOnNonWritingFields(void)
 {
   COIN_STUB();
+  inherited::setDefaultOnNonWritingFields();
 }
 
 void
-SoTabBoxDragger::fieldSensorCB(void * f, SoSensor * s)
+SoTabBoxDragger::fieldSensorCB(void * d, SoSensor *)
 {
-  COIN_STUB();
+  SoTabBoxDragger *thisp = (SoTabBoxDragger*)d;
+  SbMatrix matrix = thisp->getMotionMatrix();
+  thisp->workFieldsIntoTransform(matrix);
+  thisp->setMotionMatrix(matrix);
 }
 
 void
-SoTabBoxDragger::valueChangedCB(void * f, SoDragger * d)
+SoTabBoxDragger::valueChangedCB(void *, SoDragger *d)
 {
-  COIN_STUB();
+  SoTabBoxDragger *thisp = (SoTabBoxDragger*)d;
+  
+  const SbMatrix &matrix = thisp->getMotionMatrix();
+  SbVec3f t, s;
+  SbRotation r, so;
+  matrix.getTransform(t, r, s, so);
+  
+  thisp->translFieldSensor->detach();
+  if (thisp->translation.getValue() != t) {
+    thisp->translation = t;
+  }
+  thisp->translFieldSensor->attach(&thisp->translation);
+  
+  thisp->scaleFieldSensor->detach();
+  if (thisp->scaleFactor.getValue() != s) {
+    thisp->scaleFactor = s;
+  }
+  thisp->scaleFieldSensor->attach(&thisp->scaleFactor);
 }
 
+/*!
+  \e surroundScale is invalidated every time a child dragger is 
+  activated/deactivated using this callback
+*/
 void
 SoTabBoxDragger::invalidateSurroundScaleCB(void * f, SoDragger * d)
 {
-  COIN_STUB();
+  SoTabBoxDragger *thisp = (SoTabBoxDragger*)d;
+  SoSurroundScale *ss = (SoSurroundScale*)thisp->getPart(SbName("surroundScale"), FALSE);
+  if (ss) ss->invalidate();
 }
 
-void
-SoTabBoxDragger::adjustScaleTabSizeCB(void * f, SoDragger * d)
+void 
+SoTabBoxDragger::initTransformNodes(void)
 {
-  COIN_STUB();
+  SoTransform *tf;
+  tf = SO_GET_ANY_PART(this, "tabPlane1Xf", SoTransform);
+  tf->translation = SbVec3f(0.0f, 0.0f, 1.0f);
+  tf = SO_GET_ANY_PART(this, "tabPlane2Xf", SoTransform);
+  tf->translation = SbVec3f(0.0f, 0.0f, -1.0f);
+  tf->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), M_PI);
+  tf = SO_GET_ANY_PART(this, "tabPlane3Xf", SoTransform);
+  tf->translation = SbVec3f(1.0f, 0.0f, 0.0f);
+  tf->rotation = SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), M_PI*0.5f);
+  tf = SO_GET_ANY_PART(this, "tabPlane4Xf", SoTransform);
+  tf->translation = SbVec3f(-1.0f, 0.0f, 0.0f);
+  tf->rotation = SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), -M_PI*0.5f);
+  tf = SO_GET_ANY_PART(this, "tabPlane5Xf", SoTransform);
+  tf->translation = SbVec3f(0.0f, 1.0f, 0.0f);
+  tf->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), -M_PI*0.5f);
+  tf = SO_GET_ANY_PART(this, "tabPlane6Xf", SoTransform);
+  tf->translation = SbVec3f(0.0f, -1.0f, 0.0f);
+  tf->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), M_PI*0.5f);
 }
+

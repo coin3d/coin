@@ -67,12 +67,14 @@ protected:
   virtual void setDefaultOnNonWritingFields(void);
 
   static void invalidateSurroundScaleCB(void * f, SoDragger * d);
-  static void adjustScaleTabSizeCB(void * f, SoDragger * d);
   static void fieldSensorCB(void * f, SoSensor * s);
   static void valueChangedCB(void * f, SoDragger * d);
 
   SoFieldSensor * translFieldSensor;
   SoFieldSensor * scaleFieldSensor;
+
+private:
+  void initTransformNodes(void);
 };
 
 #endif // !COIN_SOTABBOXDRAGGER_H
