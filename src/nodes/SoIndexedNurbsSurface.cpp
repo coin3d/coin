@@ -280,11 +280,11 @@ SoIndexedNurbsSurface::doNurbs(SoAction * action, const SbBool glrender)
 
 #if GLU_VERSION_1_3
     void * tmp = (void*) tessBegin;
-    gluNurbsCallback(nurbsobj, (GLenum) GLU_NURBS_BEGIN_DATA, (void (*)(...))tessBegin);
-    gluNurbsCallback(nurbsobj, (GLenum) GLU_NURBS_TEXTURE_COORD_DATA, (void (*)(...))tessTexCoord);
-    gluNurbsCallback(nurbsobj, (GLenum) GLU_NURBS_NORMAL_DATA, (void (*)(...))tessNormal);
-    gluNurbsCallback(nurbsobj, (GLenum) GLU_NURBS_VERTEX_DATA, (void (*)(...))tessVertex);
-    gluNurbsCallback(nurbsobj, (GLenum) GLU_NURBS_END_DATA, (void (*)(...))tessEnd);
+    gluNurbsCallback(nurbsobj, (GLenum) GLU_NURBS_BEGIN_DATA, (void (*)())tessBegin);
+    gluNurbsCallback(nurbsobj, (GLenum) GLU_NURBS_TEXTURE_COORD_DATA, (void (*)())tessTexCoord);
+    gluNurbsCallback(nurbsobj, (GLenum) GLU_NURBS_NORMAL_DATA, (void (*)())tessNormal);
+    gluNurbsCallback(nurbsobj, (GLenum) GLU_NURBS_VERTEX_DATA, (void (*)())tessVertex);
+    gluNurbsCallback(nurbsobj, (GLenum) GLU_NURBS_END_DATA, (void (*)())tessEnd);
 #endif // GLU_VERSION_1_3
   }
   nurbsobj = (HAVE_GLU_NURBSOBJECT *) this->nurbsrenderer;
