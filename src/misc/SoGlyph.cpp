@@ -104,6 +104,50 @@ SoGlyph::getEdgeIndices(void) const
 }
 
 /*!
+  Returns a pointer to the next clockwise edge. Returns NULL if
+  none could be found.
+*/
+const int * 
+SoGlyph::getNextCWEdge(const int edgeidx) const
+{
+  int idx = edgeidx * 2;
+  // test for common case
+  if (edgeidx > 0) {
+    if (this->edgeidx[idx] == this->edgeidx[idx-1])
+      return &this->edgeidx[idx-2];
+  }
+  // do a linear search
+  int findidx = this->edgeidx[idx];
+  int * ptr = this->edgeidx;
+  while (*ptr >= 0) {
+    if (ptr[1] == findidx) return ptr;
+    ptr += 2;
+  }
+  return NULL;
+}
+
+/*!
+  Returns a pointer to the next counter clockwise edge. 
+  NULL if none could be found.
+*/
+const int * 
+SoGlyph::getNextCCWEdge(const int edgeidx) const
+{
+  int idx = edgeidx * 2;
+  // test for common case
+  if (this->edgeidx[idx+1] == this->edgeidx[idx+2])
+    return &this->edgeidx[idx+2];
+  // do a linear search
+  int findidx = this->edgeidx[idx+1];
+  int * ptr = this->edgeidx;
+  while (*ptr >= 0) {
+    if (*ptr == findidx) return ptr;
+    ptr += 2;
+  }
+  return NULL;
+}
+
+/*!
   Convenience method which returns the width of the glyph, and
   adds a small value to get some space between letters.
 */
@@ -284,7 +328,7 @@ SoGlyph::getGlyph(const char character, const SbName &font)
       glyph->setCoords(NULL);
       glyph->setFaceIndices(spaceidx);
       glyph->setEdgeIndices(spaceidx);
-      glyph->bbox.setBounds(SbVec2f(0.0f, 0.0f), SbVec2f(0.2f, 0.0f));      
+      glyph->bbox.setBounds(SbVec2f(0.0f, 0.0f), SbVec2f(0.2f, 0.0f));
       glyph->flags.didcalcbbox = 1;
     }
     else {

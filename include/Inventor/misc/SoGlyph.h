@@ -35,6 +35,8 @@ public:
   const SbVec2f * getCoords(void) const;
   const int * getFaceIndices(void) const;
   const int * getEdgeIndices(void) const;
+  const int * getNextCWEdge(const int edgeidx) const;
+  const int * getNextCCWEdge(const int edgeidx) const;
 
   float getWidth(void) const;
   const SbBox2f & getBoundingBox(void) const;
