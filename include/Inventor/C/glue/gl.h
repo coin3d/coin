@@ -86,9 +86,15 @@ COIN_DLL_API SbBool cc_glglue_glext_supported(const cc_glglue * glue, const char
 /*** Wrapped OpenGL 1.1+ features and extensions. *********************/
 
 COIN_DLL_API SbBool cc_glglue_has_polygon_offset(const cc_glglue * glue);
+/* Bitflags for the last argument of cc_glglue_glPolygonOffsetEnable(). */
+enum cc_glglue_Primitives { cc_glglue_FILLED = 1 << 0,
+                            cc_glglue_LINES  = 1 << 1,
+                            cc_glglue_POINTS = 1 << 2 };
+COIN_DLL_API void cc_glglue_glPolygonOffsetEnable(const cc_glglue * glue,
+                                                  SbBool enable, int m);
 COIN_DLL_API void cc_glglue_glPolygonOffset(const cc_glglue * glue,
                                             GLfloat factor, 
-                                            GLfloat bias);
+                                            GLfloat units);
 
 COIN_DLL_API SbBool cc_glglue_has_texture_objects(const cc_glglue * glue);
 COIN_DLL_API void cc_glglue_glGenTextures(const cc_glglue * glue,
@@ -100,6 +106,7 @@ COIN_DLL_API void cc_glglue_glBindTexture(const cc_glglue * glue,
 COIN_DLL_API void cc_glglue_glDeleteTextures(const cc_glglue * glue,
                                              GLsizei n, 
                                              const GLuint * textures);
+
 
 COIN_DLL_API SbBool cc_glglue_has_3d_textures(const cc_glglue * glue);
 COIN_DLL_API void cc_glglue_glTexImage3D(const cc_glglue * glue,
@@ -136,6 +143,7 @@ COIN_DLL_API void cc_glglue_glCopyTexSubImage3D(const cc_glglue * glue,
                                                 GLsizei width, 
                                                 GLsizei height);
 
+
 COIN_DLL_API SbBool cc_glglue_has_multitexture(const cc_glglue * glue);
 COIN_DLL_API void cc_glglue_glMultiTexCoord2f(const cc_glglue * glue,
                                               GLenum target,
@@ -143,6 +151,7 @@ COIN_DLL_API void cc_glglue_glMultiTexCoord2f(const cc_glglue * glue,
                                               GLfloat t);
 COIN_DLL_API void cc_glglue_glActiveTexture(const cc_glglue * glue,
                                             GLenum texture);
+
 
 COIN_DLL_API SbBool cc_glglue_has_texsubimage(const cc_glglue * glue);
 COIN_DLL_API void cc_glglue_glTexSubImage2D(const cc_glglue * glue,
@@ -156,8 +165,12 @@ COIN_DLL_API void cc_glglue_glTexSubImage2D(const cc_glglue * glue,
                                             GLenum type, 
                                             const GLvoid * pixels);
 
+
 COIN_DLL_API SbBool cc_glglue_has_2d_proxy_textures(const cc_glglue * glue);
+
+
 COIN_DLL_API SbBool cc_glglue_has_texture_edge_clamp(const cc_glglue * glue);
+
 
 COIN_DLL_API void * cc_glglue_glXGetCurrentDisplay(const cc_glglue * w);
 

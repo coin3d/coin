@@ -565,10 +565,9 @@ cc_glglue_has_polygon_offset(const cc_glglue * w)
   return (w->glPolygonOffset || w->glPolygonOffsetEXT) ? TRUE : FALSE;
 }
 
-void
-cc_glglue_glPolygonOffset(const cc_glglue * w,
-                          GLfloat factor,
-                          GLfloat bias)
+/* Returns the glPolygonOffset() we're actually going to use. */
+static COIN_PFNGLPOLYGONOFFSETPROC
+glglue_glPolygonOffset(const cc_glglue * w)
 {
   COIN_PFNGLPOLYGONOFFSETPROC poff = NULL;
 
@@ -600,7 +599,80 @@ cc_glglue_glPolygonOffset(const cc_glglue * w,
      back on extension. */
   if (poff == NULL) { poff = w->glPolygonOffsetEXT; }
 
-  poff(factor, bias);
+  return poff;
+}
+
+/*!
+  Enable or disable z-buffer offsetting for the given primitive types.
+*/
+void
+cc_glglue_glPolygonOffsetEnable(const cc_glglue * w,
+                                SbBool enable, int m)
+{
+  COIN_PFNGLPOLYGONOFFSETPROC poff = glglue_glPolygonOffset(w);
+
+  if (enable) {
+    if (poff == w->glPolygonOffset) {
+      if (m & cc_glglue_FILLED) glEnable(GL_POLYGON_OFFSET_FILL);
+      else glDisable(GL_POLYGON_OFFSET_FILL);
+      if (m & cc_glglue_LINES) glEnable(GL_POLYGON_OFFSET_LINE);
+      else glDisable(GL_POLYGON_OFFSET_LINE);        
+      if (m & cc_glglue_POINTS) glEnable(GL_POLYGON_OFFSET_POINT);
+      else glDisable(GL_POLYGON_OFFSET_POINT);
+    }
+    else { /* using glPolygonOffsetEXT() */
+      /* The old pre-1.1 extension only supports filled polygon
+         offsetting. */
+      if (m & cc_glglue_FILLED) glEnable(GL_POLYGON_OFFSET_EXT);
+      else glDisable(GL_POLYGON_OFFSET_EXT);
+
+      if (coin_glglue_debug() && (m != cc_glglue_FILLED)) {
+        static SbBool first = TRUE;
+        if (first) {
+          cc_debugerror_postwarning("cc_glglue_glPolygonOffsetEnable",
+                                    "using EXT_polygon_offset, which only "
+                                    "supports filled-polygon offsetting");
+          first = FALSE;
+        }
+      }
+    }
+  }
+  else { /* disable */
+    if (poff == w->glPolygonOffset) {
+      if (m & cc_glglue_FILLED) glDisable(GL_POLYGON_OFFSET_FILL);
+      if (m & cc_glglue_LINES) glDisable(GL_POLYGON_OFFSET_LINE);
+      if (m & cc_glglue_POINTS) glDisable(GL_POLYGON_OFFSET_POINT);
+    }
+    else { /* using glPolygonOffsetEXT() */
+      if (m & cc_glglue_FILLED) glDisable(GL_POLYGON_OFFSET_EXT);
+      /* Pre-1.1 glPolygonOffset extension only supported filled primitives.*/
+    }
+  }
+}
+
+void
+cc_glglue_glPolygonOffset(const cc_glglue * w,
+                          GLfloat factor,
+                          GLfloat units)
+{
+  COIN_PFNGLPOLYGONOFFSETPROC poff = glglue_glPolygonOffset(w);
+
+  if (poff == w->glPolygonOffsetEXT) {
+    /* Try to detect if user actually attempted to specify a valid
+       bias value, like the old glPolygonOffsetEXT() extension
+       needs. If not, assume that the "units" argument was set up for
+       the "real" glPolygonOffset() function, and use a default value
+       that should work fairly ok under most circumstances. */
+    SbBool isbias = (units > 0.0f) && (units < 0.01f);
+    if (!isbias) units = 0.000001f;
+
+    /* FIXME: shouldn't there be an attempt to convert the other way
+       around too? Ie, if it *is* a "bias" value and we're using the
+       "real" 1.1 glPolygonOffset() function, try to convert it into a
+       valid "units" value? 20020919 mortene. */
+  }
+
+  poff(factor, units);
 }
 
 /*!
