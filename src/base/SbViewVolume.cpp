@@ -36,7 +36,9 @@ These methods are still not implemented:
 <LI>SbViewVolume::narrow()</LI>
 <LI>SbViewVolume::zNarrow()</LI>
 </UL>
+*/
 
+/*¡
 These methods need better documentation:
 <UL>
 <LI>SbViewVolume::ortho()</LI>

@@ -227,7 +227,7 @@ SoSFNode::referencesCopy(void) const
 void
 SoSFNode::writeValue(SoOutput * out) const
 {
-#if 0 // OBSOLETED: inelegant. 19991113 mortene.
+#if 0 // OBSOLETED: ugly and error-prone. 19991113 mortene.
   // Note: make sure this code is in sync with the code in
   // SoNode::write(). Any changes here might need to be propagated to
   // that method.

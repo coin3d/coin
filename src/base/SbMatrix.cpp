@@ -34,7 +34,9 @@
   <LI>SbMatrix::getTransform() (x2)</LI>
   <LI>SbMatrix::factor()</LI>
   </UL>
+*/
 
+/*¡
   Optimizations are not done yet, so there's a <B>lot</B> of room for
   improvements.
 */
