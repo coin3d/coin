@@ -201,10 +201,6 @@ THE LINKS
 * SDL and GLUT bindings (So*RenderArea):
   <URL:http://www.stud.fee.vutbr.cz/~xpeciv00/> (Jan Peciva)
 
-* Check out "Valgrind", a Purify-like (?) memory debugger tool:
-  <URL:http://devel-home.kde.org/~sewardj/> (or
-  <URL:http://developer.kde.org/~sewardj>).
-
 * TrueType Fonts with liberal licensing (?): <URL:http://fonts.tom7.com/>
 
   A list of PD fonts, from a posting on debian-legal:
@@ -231,6 +227,11 @@ THE LINKS
   - http://www.sdsc.edu/~nadeau, homepage of David Nadeau, with misc
     research papers
 
+
+  - The Seismic Unix project <URL:http://www.cwp.mines.edu/cwpcodes>
+    Tools for loading and processing seismic data, including support
+    for SEGY import.
+
 * OpenGL and ActiveX:
 
   - Working demo code:
@@ -243,9 +244,3 @@ THE LINKS
   <URL:http://www.uni-karlsruhe.de/~uli2/>. Available under a
   BSD-style license. Check it out to see if it's better designed than
   GLWrapper.
-
-* The Seismic Unix project
-  <URL:http://www.cwp.mines.edu/cwpcodes>
-  Tools for loading and processing seismic data, including support
-  for SEGY import.
-
