@@ -321,6 +321,7 @@ SoSFImage::operator==(const SoSFImage & field) const
 const unsigned char *
 SoSFImage::getValue(SbVec2s & size, int & nc) const
 {
+  this->evaluate();
   return PRIVATE(this)->image->getValue(size, nc);
 }
 
