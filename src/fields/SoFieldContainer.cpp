@@ -232,6 +232,11 @@ SoFieldContainer::getAllFields(SoFieldList & l) const
 {
   // No VRML support yet. Add eventIn and eventOut fields when it is
   // implemented.
+
+  // FIXME: after implementation, remember to check up on the code
+  // which uses SoFieldContainer::getFields() and see if it should
+  // really call this method instead. 20000512 mortene.
+
   COIN_STUB();
   return this->getFields(l);
 }
