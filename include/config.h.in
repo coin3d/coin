@@ -100,6 +100,9 @@
 /* define if the Mac OS X dyld can be used for runtime binding */
 #undef HAVE_DYLD_RUNTIME_BINDING
 
+/* should be defined if there is some way of doing dynamic linking */
+#undef HAVE_DYNAMIC_LINKING
+
 /* define if you have the freetype library */
 #undef HAVE_FREETYPE
 
