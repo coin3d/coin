@@ -26,27 +26,34 @@
   The SoPrimitiveVertexClass is used to cache generated triangles.
 */
 
+// *************************************************************************
+
 #include <Inventor/caches/SoPrimitiveVertexCache.h>
-#include <Inventor/lists/SbList.h>
-#include <Inventor/SbVec3f.h>
-#include <Inventor/misc/SbHash.h>
-#include <Inventor/elements/SoMultiTextureCoordinateElement.h>
-#include <Inventor/elements/SoMultiTextureEnabledElement.h>
-#include <Inventor/elements/SoBumpMapCoordinateElement.h>
-#include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/elements/SoGLCacheContextElement.h>
-#include <Inventor/SoPrimitiveVertex.h>
-#include <Inventor/details/SoPointDetail.h>
-#include <Inventor/details/SoLineDetail.h>
-#include <Inventor/details/SoFaceDetail.h>
+
 #include <stddef.h>
 #include <stdlib.h>
-#include <Inventor/SbDict.h>
-#include <Inventor/C/glue/gl.h>
-#include <Inventor/misc/SoGL.h>
 #include <string.h> // memcmp()
-#include <Inventor/system/gl.h>
+#include <math.h> // log()
+
+#include <Inventor/C/glue/gl.h>
 #include <Inventor/C/tidbits.h>
+#include <Inventor/SbDict.h>
+#include <Inventor/SbVec3f.h>
+#include <Inventor/SoPrimitiveVertex.h>
+#include <Inventor/details/SoFaceDetail.h>
+#include <Inventor/details/SoLineDetail.h>
+#include <Inventor/details/SoPointDetail.h>
+#include <Inventor/elements/SoBumpMapCoordinateElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/elements/SoMultiTextureCoordinateElement.h>
+#include <Inventor/elements/SoMultiTextureEnabledElement.h>
+#include <Inventor/lists/SbList.h>
+#include <Inventor/misc/SbHash.h>
+#include <Inventor/misc/SoGL.h>
+#include <Inventor/system/gl.h>
+
+// *************************************************************************
 
 #define MAX_UNITS 16
 
@@ -143,6 +150,8 @@ public:
 
 #undef PRIVATE
 #define PRIVATE(obj) obj->pimpl
+
+// *************************************************************************
 
 /*!
   Constructor.
@@ -653,20 +662,11 @@ SoPrimitiveVertexCache::fit(void)
 
 SoPrimitiveVertexCache::Vertex::operator unsigned long(void) const
 {
-  int size = sizeof(*this);
-  unsigned long key = 0;
-  const unsigned char * ptr = (const unsigned char *) this;
-  for (int i = 0; i < size; i++) {
-    int shift = (i%4) * 8;
-    key ^= (ptr[i]<<shift);
-  }
-  return key;
-}
-
-int
-SoPrimitiveVertexCache::Vertex::operator==(const Vertex & v) const
-{
-  return memcmp(this, &v, sizeof(Vertex)) == 0;
+  double d = fabs(this->vertex.sqrLength());
+  // if in range <0, 1>, make into positive number to avoid clumping
+  // at the hash bucket with key value 0:
+  if ((d < 1) && (d > 0)) { d = -log(d); }
+  return (unsigned long)d;
 }
 
 void 

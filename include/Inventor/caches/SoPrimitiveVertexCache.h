@@ -96,7 +96,6 @@ private:
 
     // needed for SbHash
     operator unsigned long(void) const;
-    int operator==(const Vertex & v) const;
   };
 
   SoPrimitiveVertexCacheP * pimpl;
