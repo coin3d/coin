@@ -394,3 +394,16 @@ STUFF TO FIX IN COIN
   without crashing upon slight errors is important for the general
   robustness of applications built on top of Coin. It will also be
   important for the miscellaneous planned multithreaded functionality.
+
+
+* 100% correct transparency mode.
+  2002-05-15  Morten Eriksen  <mortene@sim.no>
+
+  Even the best transparency mode in Coin will still fail under
+  certain circumstances, such as intersecting polygons. It would
+  probably be very slow (and quite hard to implement), but we should
+  give the user the option to pick a transparency mode where rendering
+  is guaranteed to be correct -- if at all possible.
+
+  See also the comments about this in the technical ``FAQ'' file on
+  the root of the sourcecode archive.
