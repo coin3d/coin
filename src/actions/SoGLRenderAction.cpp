@@ -877,8 +877,8 @@ SoGLRenderAction::addTransPath(SoPath * path)
 
   // if we're not going to sort the paths we don't need to calculate
   // distance
-  if (THIS->transparencytype == BLEND ||
-      THIS->transparencytype == ADD) return;
+  if (THIS->transparencytype == DELAYED_BLEND ||
+      THIS->transparencytype == DELAYED_ADD) return;
 
   SoNode * tail = ((SoFullPath*)path)->getTail();
   float dist;
