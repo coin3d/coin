@@ -505,6 +505,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/engines/SoTimeCounter.h \
                          @path_tag@@coin_src_dir@/include/Inventor/engines/SoTransformVec3f.h \
                          @path_tag@@coin_src_dir@/include/Inventor/engines/SoTriggerAny.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoNodeEngine.h \
                          @path_tag@@coin_src_dir@/include/Inventor/errors/SoDebugError.h \
                          @path_tag@@coin_src_dir@/include/Inventor/errors/SoError.h \
                          @path_tag@@coin_src_dir@/include/Inventor/errors/SoMemoryError.h \
@@ -945,6 +946,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/engines/SoTimeCounter.cpp \
                          @path_tag@@coin_src_dir@/src/engines/SoTransformVec3f.cpp \
                          @path_tag@@coin_src_dir@/src/engines/SoTriggerAny.cpp \
+                         @path_tag@@coin_src_dir@/src/engines/SoNodeEngine.cpp \
                          @path_tag@@coin_src_dir@/src/errors/SoDebugError.cpp \
                          @path_tag@@coin_src_dir@/src/errors/SoError.cpp \
                          @path_tag@@coin_src_dir@/src/errors/SoMemoryError.cpp \

@@ -26,12 +26,18 @@
   \brief SoNodeEngine is the base class for Coin node engines.
   \ingroup engines
 
-  Node engines have the same functionality as normal Engines, except
-  that they inherit from SoNode, which makes it possible to insert
-  node engines in the scene graph.
+  Node engines have the same functionality as normal engines, except
+  that they inherit SoNode, which makes it possible to insert node
+  engines in the scene graph.
 
-  This class is not part of the Open Inventor 2.1 API, and is an
-  extension specific to Coin.
+  The main rationale for this class is to simplify the implementation
+  of VRML interpolator nodes, which are in a sense engines embedded in
+  the shape of ordinary nodes.
+
+  This class will likely be of no interest to the Coin application
+  programmers, and you can safely ignore it.
+
+  \COIN_CLASS_EXTENSION
 */
 
 // FIXME: currently most of the code in this class is simply copied
@@ -45,10 +51,7 @@
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/SbName.h>
 #include <coindefs.h> // COIN_STUB()
-
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 // FIXME: document these properly. 20000405 mortene.
 /*!

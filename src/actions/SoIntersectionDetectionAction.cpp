@@ -134,6 +134,32 @@
 
 // *************************************************************************
 
+/*!
+  \struct SoIntersectingPrimitive Inventor/collision/SoIntersectionDetectionAction.h
+  \brief Struct with collision information.
+
+  This struct is passed to the collision callback registered by the
+  application programmer. It contains information about which
+  primitives are intersecting each other.
+*/
+
+// FIXME: should document all elements in the struct;
+//
+// struct SoIntersectingPrimitive {
+//   SoPath * path;
+//   enum PrimitiveType {
+//     SEGMENT = 2,
+//     LINE_SEGMENT = 2,
+//     TRIANGLE = 3
+//   } type;
+//   SbVec3f vertex[3];
+//   SbVec3f xf_vertex[3];
+// };
+//
+// 20030613 mortene.
+
+// *************************************************************************
+
 class ShapeData;
 class PrimitiveData;
 
