@@ -33,25 +33,13 @@
 #define HEAP_LEFT(i) ((i) * 2 + 1)
 #define HEAP_RIGHT(i) ((i) * 2 + 2)
 
-/*!
-
-  The default compare function casts the void pointers to signed int
-  pointers, and sort lowest value first.
-
-*/
-static int
-heap_default_comparefunc(void * o1, void * o2)
-{
-  return *((int*)o2) - *((int*)o1);
-}
-
 static void
 heap_resize(cc_heap * h, unsigned int newsize)
 {
   /* Never shrink the heap */
   if (h->size >= newsize)
     return;
-  
+
   h->array = (void **) realloc(h->array, newsize * sizeof(void *));
   assert(h->array);
   h->size = newsize;
@@ -63,28 +51,28 @@ heap_heapify(cc_heap * h, unsigned int i)
   unsigned int left = HEAP_LEFT(i);
   unsigned int right = HEAP_RIGHT(i);
   unsigned int largest;
-  
+
   /* Check which node is larger of i and its two children; if any
    * of them is larger swap it with i and recurse down on the child
    */
-  if (left < h->elements && h->compare(h->compareclosure, h->array[left], h->array[i]) > 0)
+  if (left < h->elements && h->compare(h->array[left], h->array[i]) > 0)
     largest = left;
   else
     largest = i;
-  
-  if (right < h->elements && h->compare(h->compareclosure, h->array[right], h->array[largest]) > 0)
+
+  if (right < h->elements && h->compare(h->array[right], h->array[largest]) > 0)
     largest = right;
-  
+
   if (largest != i) {
     void * tmp = h->array[largest];
     h->array[largest] = h->array[i];
     h->array[i] = tmp;
-    
+
     if (h->support_remove) {
       cc_hash_put(h->hash, (unsigned long)h->array[i], (void*)i);
       cc_hash_put(h->hash, (unsigned long)h->array[largest], (void*)largest);
     }
-    
+
     heap_heapify(h, largest);
   }
 }
@@ -94,12 +82,11 @@ heap_heapify(cc_heap * h, unsigned int i)
 
 /*!
 
-  Construct a heap. \a size is the initial array size. 
+  Construct a heap. \a size is the initial array size.
 
   \a comparecb should return a negative value if the first element
   is less than the second, zero if they are equal and a positive value
-  if the first element is greater than the second. \a compareclosure
-  will be sent as the first argument to \a comparecb.
+  if the first element is greater than the second.
 
   \a support_remove specifies if the heap should support removal of
   elements (other than the top element) after they are added; this
@@ -109,10 +96,9 @@ heap_heapify(cc_heap * h, unsigned int i)
 
 */
 
-cc_heap * 
-cc_heap_construct(unsigned int size, 
+cc_heap *
+cc_heap_construct(unsigned int size,
                   cc_heap_compare_cb * comparecb,
-                  void * compareclosure,
                   SbBool support_remove)
 {
   cc_heap * h = (cc_heap *) malloc(sizeof(cc_heap));
@@ -123,7 +109,6 @@ cc_heap_construct(unsigned int size,
   h->array = (void **) malloc(size * sizeof(void *));
   assert(h->array);
   h->compare = comparecb;
-  h->compareclosure = compareclosure;
   h->support_remove = support_remove;
   h->hash = NULL;
   if (support_remove) {
@@ -169,13 +154,13 @@ cc_heap_add(cc_heap * h, void * o)
   i = h->elements++;
 
   /* If o is greater than its parent, swap them and check again */
-  while (i > 0 && h->compare(h->compareclosure, o, h->array[HEAP_PARENT(i)]) > 0) {
+  while (i > 0 && h->compare(o, h->array[HEAP_PARENT(i)]) > 0) {
     h->array[i] = h->array[HEAP_PARENT(i)];
-    
+
     if (h->support_remove) {
       cc_hash_put(h->hash, (unsigned long)h->array[i], (void*)i);
     }
-    
+
     i = HEAP_PARENT(i);
   }
   h->array[i] = o;
@@ -233,7 +218,7 @@ cc_heap_remove(cc_heap * h, void * o)
   void * tmp;
 
   if (!h->support_remove) return FALSE;
-  
+
   if (!cc_hash_get(h->hash, (unsigned long)o, &tmp))
     return FALSE;
 
@@ -246,7 +231,7 @@ cc_heap_remove(cc_heap * h, void * o)
     cc_hash_put(h->hash, (unsigned long) h->array[i], (void*) i);
   }
   heap_heapify(h, i);
-  
+
   cc_hash_remove(h->hash, (unsigned long)o);
 
   return TRUE;
@@ -273,4 +258,3 @@ cc_heap_empty(cc_heap * h)
 #undef HEAP_LEFT
 #undef HEAP_PARENT
 #undef HEAP_RIGHT
-
