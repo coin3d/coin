@@ -17,7 +17,9 @@ RegularSources = \
 	SoLineHighlightRenderAction.cpp \
 	SoPickAction.cpp \
 	SoRayPickAction.cpp \
+	SoReorganizeAction.cpp \
 	SoSearchAction.cpp \
+	SoSimplifyAction.cpp \\
 	SoToVRMLAction.cpp \
 	SoToVRML2Action.cpp \
 	SoWriteAction.cpp \

@@ -15,7 +15,9 @@ PublicHeaders = \
 	SoLineHighlightRenderAction.h \
 	SoPickAction.h \
 	SoRayPickAction.h \
+	SoReorganizeAction.h \
 	SoSearchAction.h \
+	SoSimplifyAction.h \
 	SoToVRMLAction.h \
 	SoToVRML2Action.h \
 	SoWriteAction.h \
