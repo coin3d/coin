@@ -60,6 +60,7 @@
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoTextureOverrideElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
+#include <Inventor/errors/SoDebugError.h>
 
 /*!
   \enum SoComplexity::Type
@@ -113,6 +114,13 @@
   The same value for this field on different platforms can yield
   varying results, depending on the quality of the underlying
   rendering hardware.
+
+  Note that this field influences the behavior of the SoTexture2 node,
+  \e not the shape nodes. There is an important consequence of this
+  that the application programmer need to know about: you need to
+  insert your SoComplexity node(s) \e before the SoTexture2 node(s) in
+  the scenegraph for them to have any influence on the textured
+  shapes.
 */
 
 
@@ -187,10 +195,10 @@ SoComplexity::GLRender(SoGLRenderAction * action)
   SoComplexity::doAction(action);
 
   SoState * state = action->getState();
-  if (!textureQuality.isIgnored() &&
+  if (!this->textureQuality.isIgnored() &&
       !SoTextureOverrideElement::getQualityOverride(state)) {
     SoTextureQualityElement::set(state, this,
-                                 textureQuality.getValue());
+                                 this->textureQuality.getValue());
     if (this->isOverride()) {
       SoTextureOverrideElement::setQualityOverride(state, TRUE);
     }
@@ -222,9 +230,9 @@ void
 SoComplexity::callback(SoCallbackAction * action)
 {
   SoComplexity::doAction((SoAction *)action);
-  if (!textureQuality.isIgnored()) {
+  if (!this->textureQuality.isIgnored()) {
     SoTextureQualityElement::set(action->getState(), this,
-                                 textureQuality.getValue());
+                                 this->textureQuality.getValue());
   }
 }
 
