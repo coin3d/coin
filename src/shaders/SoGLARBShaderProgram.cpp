@@ -30,6 +30,11 @@
 
 // *************************************************************************
 
+// FIXME: no checking is done to see whether "ARB shading" is actually
+// supported or not. 20050124 mortene.
+
+// *************************************************************************
+
 SoGLARBShaderProgram::SoGLARBShaderProgram(void)
 {
   this->fragmentShader = NULL;
