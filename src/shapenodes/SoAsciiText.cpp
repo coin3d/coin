@@ -179,13 +179,11 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
 
   PRIVATE(this)->setUpGlyphs(state, &fontspec, this);
 
-  SoMaterialBundle mb(action);
-  mb.sendFirst();
-
   SbBool do2Dtextures = FALSE;
   SbBool do3Dtextures = FALSE;
   if (SoGLTextureEnabledElement::get(state)) do2Dtextures = TRUE;
   else if (SoGLTexture3EnabledElement::get(state)) do3Dtextures = TRUE;
+
   // FIXME: implement proper support for 3D-texturing, and get rid of
   // this. 20020120 mortene.
   if (do3Dtextures) {
@@ -196,6 +194,9 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
                                 "3D-textures not properly supported for this node type yet.");
     }
   }
+
+  SoMaterialBundle mb(action);
+  mb.sendFirst();
 
   int i, n = this->string.getNum();
 
@@ -252,18 +253,19 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
         v0 = coords[*ptr++];
         v1 = coords[*ptr++];
         v2 = coords[*ptr++];
-        if (do2Dtextures) {
+
+        if (do2Dtextures)
           glTexCoord2f(v0[0], v0[1]);
-        }
         glVertex3f(v0[0] * fontspec.size + xpos, v0[1] * fontspec.size + ypos, 0.0f);
-        if (do2Dtextures) {
-          glTexCoord2f(v1[0], v1[1]);
-        }
+        
+        if (do2Dtextures) 
+          glTexCoord2f(v1[0], v1[1]);        
         glVertex3f(v1[0] * fontspec.size + xpos, v1[1] * fontspec.size + ypos, 0.0f);
-        if (do2Dtextures) {
-          glTexCoord2f(v2[0], v2[1]);
-        }
+        
+        if (do2Dtextures) 
+          glTexCoord2f(v2[0], v2[1]);        
         glVertex3f(v2[0] * fontspec.size + xpos, v2[1] * fontspec.size + ypos, 0.0f);
+
       }
 
       // FIXME: Add proper support for kerning aswell. (20030923 handegar)
