@@ -32,8 +32,6 @@ DEF directionalLightRotatorRotatorActive Separator {
 
 DEF directionalLightRotatorFeedback Separator { }
 DEF directionalLightRotatorFeedbackActive Separator { }
-#DEF directionalLightRotatorFeedback Group { }
-#DEF directionalLightRotatorFeedbackActive Group { }
 
 
 DEF directionalLightTranslatorPlaneTranslator Separator {
