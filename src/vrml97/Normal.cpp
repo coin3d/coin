@@ -103,7 +103,7 @@ SoVRMLNormal::callback(SoCallbackAction * action)
 
 // Doc in parent
 void
-SoVRMLNormal::pick(SoRayPickAction * action)
+SoVRMLNormal::pick(SoPickAction * action)
 {
   SoVRMLNormal::doAction((SoAction*) action);
 }

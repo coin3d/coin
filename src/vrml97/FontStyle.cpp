@@ -144,7 +144,7 @@ SoVRMLFontStyle::getBoundingBox(SoGetBoundingBoxAction * action)
 // Doc in parent
 
 void
-SoVRMLFontStyle::pick(SoRayPickAction * action)
+SoVRMLFontStyle::pick(SoPickAction * action)
 {
 }
 

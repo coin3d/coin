@@ -35,11 +35,11 @@ public:
 
   SoMFVec3f vector;
 
-  virtual void doAction( SoAction * action );
-  virtual void GLRender( SoGLRenderAction * action );
-  virtual void callback( SoCallbackAction * action );
-  virtual void pick( SoRayPickAction * action );
-  virtual void getPrimitiveCount( SoGetPrimitiveCountAction * action );
+  virtual void doAction(SoAction * action);
+  virtual void GLRender(SoGLRenderAction * action);
+  virtual void callback(SoCallbackAction * action);
+  virtual void pick(SoPickAction * action);
+  virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 
 protected:
   virtual ~SoVRMLNormal();
