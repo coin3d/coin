@@ -683,6 +683,17 @@ SoGLImage::getWrapT(void) const
   return THIS->wrapt;
 }
 
+/*!
+  Virtual method that will be called once each frame.  The method
+  should unref display lists that has an age bigger or equal to \a
+  maxage, and increment the age for other display lists.
+*/
+void 
+SoGLImage::unrefOldDL(SoState * state, const uint32_t maxage)
+{
+  THIS->unrefOldDL(state, maxage);
+}
+
 #undef THIS
 
 #ifndef DOXYGEN_SKIP_THIS
@@ -1181,7 +1192,7 @@ SoGLImage::endFrame(SoState * state)
     int n = glimage_reglist->getLength();
     for (int i = 0; i < n; i++) {
       SoGLImage * img = (*glimage_reglist)[i];
-      img->pimpl->unrefOldDL(state, glimage_maxage);
+      img->unrefOldDL(state, glimage_maxage);
     }
   }
 }

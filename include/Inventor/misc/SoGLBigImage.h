@@ -55,6 +55,9 @@ public:
   // update the texture state.
   virtual SoGLDisplayList * getGLDisplayList(SoState * state);
 
+protected:
+  virtual void unrefOldDL(SoState * state, const uint32_t maxage);
+
 private:
   virtual ~SoGLBigImage();
 

@@ -54,7 +54,8 @@ public:
     tmpbuf(NULL),
     tmpbufsize(0),
     glimagearray(NULL),
-    glimagediv(NULL) {}
+    glimagediv(NULL),
+    glimageage(NULL) {}
   
   ~SoGLBigImageP() {
     assert(this->glimagearray == NULL);
@@ -67,6 +68,7 @@ public:
   int tmpbufsize;
   SoGLImage ** glimagearray;
   int * glimagediv;
+  uint32_t * glimageage;
   SbVec2f tcmul;
   
   void copySubImage(const int idx,
@@ -86,8 +88,10 @@ public:
       }
     }
     delete[] this->glimagearray;
+    delete[] this->glimageage;
     delete[] this->glimagediv;
     this->glimagearray = NULL;
+    this->glimageage = NULL;
     this->glimagediv = NULL;
     this->imagesize.setValue(0,0);
     this->remain.setValue(0,0);
@@ -197,9 +201,11 @@ SoGLBigImage::initSubImages(SoState * state,
 
   THIS->glimagediv = new int[numimages];
   THIS->glimagearray = new SoGLImage*[numimages];
+  THIS->glimageage = new uint32_t[numimages];
   for (int i = 0; i < numimages; i++) {
     THIS->glimagearray[i] = NULL;
     THIS->glimagediv[i] = 1;
+    THIS->glimageage[i] = 0;
   }
 
   THIS->tcmul[0] = float(THIS->dim[0] * subimagesize[0]) / float(size[0]);
@@ -238,8 +244,9 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
   div >>= 1;
     
   if (THIS->glimagearray[idx] == NULL || THIS->glimagediv[idx] != div) {
-    if (THIS->glimagearray[idx] == NULL) 
+    if (THIS->glimagearray[idx] == NULL) {
       THIS->glimagearray[idx] = new SoGLImage();
+    }
     THIS->glimagediv[idx] = div;
 
     uint32_t flags = this->getFlags();
@@ -277,8 +284,31 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
   }
 
   SoGLDisplayList * dl = THIS->glimagearray[idx]->getGLDisplayList(state);
+  THIS->glimageage[idx] = 0;
   SoGLImage::tagImage(state, THIS->glimagearray[idx]);
   dl->call(state);
+}
+
+/*!
+  Overloaded to handle age on subimages.
+*/
+void 
+SoGLBigImage::unrefOldDL(SoState * state, const uint32_t maxage)
+{
+  const int numimages = THIS->dim[0] * THIS->dim[1];
+  for (int i = 0; i < numimages; i++) {
+    if (THIS->glimagearray[i]) {
+      if (THIS->glimageage[i] >= maxage) {
+#if COIN_DEBUG && 0 // debug
+        SoDebugError::postInfo("SoGLBigImage::unrefOldDL",
+                               "Killed image because of old age.");
+#endif // debug
+        THIS->glimagearray[i]->unref(state);
+        THIS->glimagearray[i] = NULL;
+      }
+      else THIS->glimageage[i] += 1;
+    }
+  }
 }
 
 #undef THIS

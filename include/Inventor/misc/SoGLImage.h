@@ -90,6 +90,7 @@ public:
 
 protected:
 
+  virtual void unrefOldDL(SoState * state, const uint32_t maxage);
   virtual ~SoGLImage();
 
 private:
