@@ -75,6 +75,7 @@
 /*! \defgroup base Base classes */
 /*! \defgroup bundles Bundles (mostly for internal use) */
 /*! \defgroup caches Cache storage (mostly for internal use) */
+/*! \defgroup collision Collision detections between scene geometry */
 /*! \defgroup details Detail classes */
 /*! \defgroup draggers Draggers */
 /*! \defgroup elements Elements (mostly for internal use) */

@@ -393,6 +393,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/actions/SoGetMatrixAction.h \
                          @path_tag@@coin_src_dir@/include/Inventor/actions/SoGetPrimitiveCountAction.h \
                          @path_tag@@coin_src_dir@/include/Inventor/actions/SoHandleEventAction.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/collision/SoIntersectionDetectionAction.h \
                          @path_tag@@coin_src_dir@/include/Inventor/actions/SoLineHighlightRenderAction.h \
                          @path_tag@@coin_src_dir@/include/Inventor/actions/SoPickAction.h \
                          @path_tag@@coin_src_dir@/include/Inventor/actions/SoRayPickAction.h \
@@ -790,6 +791,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/actions/SoGetMatrixAction.cpp \
                          @path_tag@@coin_src_dir@/src/actions/SoGetPrimitiveCountAction.cpp \
                          @path_tag@@coin_src_dir@/src/actions/SoHandleEventAction.cpp \
+                         @path_tag@@coin_src_dir@/src/actions/SoIntersectionDetectionAction.cpp \
                          @path_tag@@coin_src_dir@/src/actions/SoLineHighlightRenderAction.cpp \
                          @path_tag@@coin_src_dir@/src/actions/SoPickAction.cpp \
                          @path_tag@@coin_src_dir@/src/actions/SoRayPickAction.cpp \
