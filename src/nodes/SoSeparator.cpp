@@ -33,6 +33,7 @@
 #include <Inventor/caches/SoBoundingBoxCache.h>
 
 #include <Inventor/misc/SoState.h>
+#include <Inventor/misc/SoNotification.h>
 
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -375,6 +376,10 @@ SoSeparator::notify(SoNotList * list)
 {
   // FIXME: flag caches as dirty. 19990612 mortene.
   inherited::notify(list);
+
+  if (this->bboxCache) {
+    this->bboxCache->invalidate();
+  }
 }
 
 /*!
