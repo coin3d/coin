@@ -26,6 +26,10 @@
 #error You have tried to use one of the private Coin header files
 #endif /* ! COIN_INTERNAL */
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 /* ********************************************************************** */
 
 void cc_sync_init(void);
