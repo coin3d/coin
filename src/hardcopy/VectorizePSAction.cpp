@@ -23,11 +23,11 @@
 
 /*!
   \class SoVectorizePSAction HardCopy/SoVectorizePSAction.h
-  \brief The SoVectorizePSAction class is used for rendering to Postscript.
+  \brief The SoVectorizePSAction class is used for rendering to a Postscript file.
   \ingroup hardcopy
 
-  FIXME: does this class need more doc? That's for pederb to decide.
-  20030704 mortene.
+  \since Coin 2.1
+  \since TGS provides HardCopy support as a separate extension for TGS Inventor.
 */
 
 #include <HardCopy/SoVectorizePSAction.h>
@@ -72,7 +72,7 @@ public:
 
   SbString fontname;
   float fontsize;
-  
+
   // used for gouraud shading workaround
   int dummycnt;
 
@@ -288,7 +288,7 @@ SoVectorizePSAction::printHeader(void) const
     fprintf(file, "90 rotate\n");
     fprintf(file, "%g %g translate\n\n", -(psize[1]+porg[1]), -(psize[0]+porg[1]));
   }
-  
+
   // used for gouraud shading workaround
   PRIVATE(this)->dummycnt = 0;
 }
@@ -512,7 +512,7 @@ SoVectorizePSActionP::printCircle(const SbVec3f & v, const SbColor & c, const fl
 //
 // will print a postscript square centered in 'v'
 //
-void 
+void
 SoVectorizePSActionP::printSquare(const SbVec3f & v, const SbColor & c, const float size) const
 {
   FILE * file = PUBLIC(this)->getOutput()->getFilePointer();
@@ -527,7 +527,7 @@ SoVectorizePSActionP::printSquare(const SbVec3f & v, const SbColor & c, const fl
   fprintf(file, "closepath\n");
   fprintf(file, "%g %g %g setrgbcolor\n",
           c[0], c[1], c[2]);
-  fprintf(file, "fill\n"); 
+  fprintf(file, "fill\n");
 }
 
 
@@ -573,13 +573,13 @@ SoVectorizePSActionP::printTriangle(const SbVec3f * v, const SbColor * c)
 
   FILE * file = PUBLIC(this)->getOutput()->getFilePointer();
 
-  SbBool flatshade = 
+  SbBool flatshade =
     (this->gouraudeps == 0.0f) ||
     ((c[0] == c[1]) && (c[1] == c[2]));
-  
+
   if (flatshade || this->dummycnt == 0) {
     SbColor a = (c[0] + c[1] + c[2]) / 3.0f;
-    
+
     // flatshaded
     fprintf(file, "%g %g %g %g %g %g %g %g %g flatshadetriangle\n",
             a[0], a[1], a[2],

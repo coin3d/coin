@@ -33,8 +33,11 @@
 
   SoVectorizeAction will create an SoVectorOutput which will output
   to stdout by default. SoVectorizeAction::getOutput() can be used to
-  fetch this output, and the user will probably want to set a 
+  fetch this output, and the user will probably want to set a
   file to output to.
+
+  \since Coin 2.1
+  \since TGS provides HardCopy support as a separate extension for TGS Inventor.
 */
 
 class SoVectorOutputP {
@@ -103,7 +106,7 @@ SoVectorOutput::closeFile(void)
 /*!
   Returns the \e stdio file handle pointer.
 */
-FILE * 
+FILE *
 SoVectorOutput::getFilePointer(void)
 {
   return PRIVATE(this)->fp;

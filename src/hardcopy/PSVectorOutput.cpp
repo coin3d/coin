@@ -23,9 +23,11 @@
 
 /*!
   \class SoPSVectorOutput HardCopy/SoPSVectorOutput.h
-  \brief The SoPSVectorOutput class is writing Postscript.
+  \brief The SoPSVectorOutput class is used for writing Postscript.
   \ingroup hardcopy
 
+  \since Coin 2.1
+  \since TGS provides HardCopy support as a separate extension for TGS Inventor.
 */
 
 #include <HardCopy/SoPSVectorOutput.h>
@@ -38,25 +40,36 @@ public:
 
 #define PRIVATE(p) (p->pimpl)
 
+/*!
+  Constructor.
+*/
 SoPSVectorOutput::SoPSVectorOutput()
 {
 }
 
+/*!
+  Destructor.
+*/
 SoPSVectorOutput::~SoPSVectorOutput()
 {
 }
 
-void 
+/*!
+  Sets whether the geometry should be colored.
+*/
+void
 SoPSVectorOutput::setColored(SbBool flag)
 {
   PRIVATE(this)->colored = flag;
-} 
+}
 
-SbBool 
+/*!
+  Returns whether geometry is colored.
+*/
+SbBool
 SoPSVectorOutput::getColored(void) const
 {
   return PRIVATE(this)->colored;
 }
 
 #undef PRIVATE
-

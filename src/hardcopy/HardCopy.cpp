@@ -26,18 +26,78 @@
 /*!
   \page hardcopy_overview An overview of the hardcopy support.
 
+  The main API for HardCopy support in Coin is the abstract class
+  SoVectorizAction. SoVectorizeAction will extract geometry from an
+  Inventor scene graph, and project the geometry onto a specified
+  page.  Since postscript and other vector based file formats do not
+  support z-buffer or depth clipping, all geometry is rendered using a
+  simple painter's algorithm (geometry is sorted based on distance to
+  camera).
 
-  FIXME: document HardCopy extension with:
+  SoVectorizePSAction inherits SoVectorizeAction, and will output a
+  Postscript file.
 
-    * features
+  Texture-mapped polygons are not supported, since this is not
+  supported by the vector file formats, at least it's not supported in
+  Postscript. Gouraud shading is not supported in the Postscript
+  language (at least not for V2.0), but an approximation is
+  implemeting using an algorithm that divides the triangle into
+  several small (flat-shaded) triangles. The gouraud shading quality
+  (the number of sub-triangles) is controlled by an epsilon value. The
+  gouraud shading function is written by Frederic Delhoume
+  (delhoume@ilog.fr), and is free (public domain) software.
 
-    * usage example (just link to
-      <URL:http://source.coin3d.org/SoGuiExamples/annex/hardcopy.cpp.in>?)
+  Typical use of SoVectorizePSAction is shown in the following piece
+  of code:
 
-    * list of current limitations
+  \code
+  
+  SoVectorizePSAction * ps = new SoVectorizePSAction;
+  SoVectorOutput * out = ps->getOutput();
+  
+  if (!out->openFile("output.ps")) {
+    return -1; // unable to open output file
+  }
+  
+  // to enable gouraud shading. 0.1 is a nice epsilon value
+  // ps->setGouraudThreshold(0.1f);
 
-  20030704 mortene.
+  // clear to white background. Not really necessary if you
+  // want a white background
+  ps->setBackgroundColor(TRUE, SbColor(1.0f, 1.0f, 1.0f));
 
+  // select LANDSCAPE or PORTRAIT orientation
+  ps->setOrientation(SoVectorizeAction::LANDSCAPE);
+
+  // start creating a new page (A4 page, with 10mm border).  
+  ps->beginPage(SbVec2f(10.0f, 10.0f), SbVec2f(190.0f, 277.0f));
+  
+  // There are also enums for A0-A10. Example:
+  // ps->beginStandardPage(SoVectorizeAction::A4, 10.0f);
+
+  // calibrate so that text, lines, points and images will have the
+  // same size in the postscript file as on the monitor.
+  ps->calibrate(viewer->getViewportRegion());
+
+  // apply action on the viewer scenegraph. Remember to use
+  // SoSceneManager's scene graph so that the camera is included.
+  ps->apply(viewer->getSceneManager()->getSceneGraph());
+
+  // this will create the postscript file
+  ps->endPage();
+
+  // close file
+  out->closeFile();
+
+  delete ps;
+
+  \endcode
+
+  It is also possible to have several viewports and/or layers on a
+  page. This is useful if your application has several layers of
+  geometry, for instance some annotations in 2D on top of a 3D scene
+  graph. To create several layers, the beginViewport() and
+  endViewport() functions can be used. 
 
   \since Coin 2.1
   \since TGS provides HardCopy support as a separate extension for TGS Inventor.
