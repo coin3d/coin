@@ -28,10 +28,6 @@
 #include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/lists/SbList.h>
 
-class SoSensor;
-class SoFieldSensor;
-class SoGlyph;
-
 class COIN_DLL_API SoAsciiText : public SoShape {
   typedef SoShape inherited;
 
@@ -66,14 +62,13 @@ protected:
                                           const SoPrimitiveVertex * v2,
                                           const SoPrimitiveVertex * v3,
                                           SoPickedPoint * pp);
+  virtual void notify(SoNotList * list);
+  
 private:
+  class SoAsciiTextP * pimpl;
+  friend class SoAsciiTextP;
+
   float getWidth(const int idx, const float fontsize);
-  SbList <const SoGlyph *> glyphs;
-  SbList <float> glyphwidths;
-  SoFieldSensor * stringsensor;
-  SbBool needsetup;
-  void setUpGlyphs(SoState * state);
-  static void fieldSensorCB(void * d, SoSensor * s);
 };
 
 #endif // !COIN_SOASCIITEXT_H
