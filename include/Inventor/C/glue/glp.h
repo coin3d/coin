@@ -286,6 +286,13 @@ struct cc_glglue {
 int coin_glglue_debug(void);
 int coin_glglue_extension_available(const char * extensions, const char * ext);
 
+/* FIXME: move to public interface for Coin 2.2 release. 20030812 mortene. */
+#if (COIN_MINOR_VERSION > 2)
+#error Update public API!
+#endif
+void cc_glglue_context_max_dimensions(short * width, short * height);
+
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
