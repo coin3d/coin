@@ -43,6 +43,11 @@
 #include <GL/gl.h>
 #include <Inventor/errors/SoDebugError.h>
 
+// the number of subtextures that can be changed (resized) each frame.
+// By keeping this number small, we avoid slow updates when zooming in
+// on an image, as only few textures are changed each frame.
+#define CHANGELIMIT 2
+
 #ifndef DOXYGEN_SKIP_THIS
 
 class SoGLBigImageP {
@@ -73,6 +78,7 @@ public:
   int * glimagediv;
   uint32_t * glimageage;
   SbVec2f tcmul;
+  int changecnt;
   
   void copySubImage(const int idx,
                     const unsigned char * src,
@@ -183,8 +189,9 @@ int
 SoGLBigImage::initSubImages(SoState * state,
                             const SbVec2s & subimagesize) const
 {
-  // FIXME: support not using full resolution when projsize is small
+  THIS->changecnt = 0;
   if (subimagesize == THIS->imagesize) return THIS->dim[0] * THIS->dim[1];
+
   THIS->reset(state);
   THIS->imagesize = subimagesize;
 
@@ -245,16 +252,17 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
   while ((THIS->imagesize[0]/div > projsize[0]) && 
          (THIS->imagesize[1]/div > projsize[1])) div <<= 1;
   div >>= 1;
-    
-  if (THIS->glimagearray[idx] == NULL || THIS->glimagediv[idx] != div) {
+  
+  if (THIS->glimagearray[idx] == NULL || 
+      (THIS->glimagediv[idx] != div && THIS->changecnt++ < CHANGELIMIT)) {
     if (THIS->glimagearray[idx] == NULL) {
       THIS->glimagearray[idx] = new SoGLImage();
     }
     THIS->glimagediv[idx] = div;
-
+    
     uint32_t flags = this->getFlags();
     flags |= NO_MIPMAP;
-
+    
     if (flags & USE_QUALITY_VALUE) {
       flags &= ~USE_QUALITY_VALUE;
       if (quality >= 0.5f) {
@@ -262,7 +270,7 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
       }
     }
     THIS->glimagearray[idx]->setFlags(flags);
-
+    
     SbVec2s actualsize(THIS->imagesize[0]/div,
                        THIS->imagesize[1]/div);
     
