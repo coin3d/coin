@@ -63,6 +63,15 @@
 /*!
   \defgroup vrml2 VRML 2.0
 */
+/*!
+  \defgroup details Detail classes
+*/
+/*!
+  \defgroup draggers Draggers
+*/
+/*!
+  \defgroup manips Manipulators
+*/
 
 
 
