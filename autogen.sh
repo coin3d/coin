@@ -7,16 +7,15 @@
 # Author: Morten Eriksen, <mortene@sim.no>.
 
 # Makes it possible to run autogen.sh from any location.
-directory=`echo "$0" | sed -e 's/[^\/]*$//g'`;
+directory=`echo "$0" | sed 's/[^\/]*$//g'`;
+me=`echo "$0" | sed 's/^.*\///g'`;
 cd $directory
-if ! test -f ./autogen.sh; then
+if ! test -f ./"$me"; then
   echo "unexpected problem with your shell - bailing out"
   exit 1
 fi
 
-DIE=false
-
-AUTOCONF_VER=2.49a  # Autoconf from CVS
+AUTOCONF_VER=2.49b  # Autoconf from CVS
 AUTOMAKE_VER=1.4a   # Automake from CVS
 LIBTOOL_VER=1.3.5
 
@@ -45,35 +44,32 @@ fi
 
 echo "Checking the installed configuration tools..."
 
-if test -z "`autoconf --version | grep \" $AUTOCONF_VER\" 2> /dev/null`"; then
-    echo
+if test -z "`autoconf --version 2>/dev/null | grep \" $AUTOCONF_VER\"`"; then
+    echo ""
     echo "You must have autoconf version $AUTOCONF_VER installed to"
     echo "generate configure information and Makefiles for $PROJECT."
     echo ""
     echo "(The Autoconf version we are using is the bleeding edge"
     echo "from the CVS repository.)"
-    echo ""
     DIE=true
 fi
 
-if test -z "`automake --version | grep \" $AUTOMAKE_VER\" 2> /dev/null`"; then
-    echo
+if test -z "`automake --version 2>/dev/null | grep \" $AUTOMAKE_VER\"`"; then
+    echo ""
     echo "You must have automake version $AUTOMAKE_VER installed to"
     echo "generate configure information and Makefiles for $PROJECT."
     echo ""
     echo "(The Automake version we are using is the bleeding edge"
     echo "from the CVS repository.)"
-    echo ""
     DIE=true
 fi
 
-if test -z "`libtool --version | egrep \"$LIBTOOL_VER\" 2> /dev/null`"; then
-    echo
+if test -z "`libtool --version 2>/dev/null | egrep \"$LIBTOOL_VER\"`"; then
+    echo ""
     echo "You must have libtool version $LIBTOOL_VER installed to"
     echo "generate configure information and Makefiles for $PROJECT."
     echo ""
     echo "Get ftp://ftp.gnu.org/pub/gnu/libtool/libtool-1.3.5.tar.gz"
-    echo ""
     DIE=true
 fi
 
@@ -84,8 +80,9 @@ fi
 if test ! -d $MACRODIR; then
     cvs -z3 checkout -P $MACRODIR
     if test ! -d $MACRODIR; then
+        echo ""
 	echo "Couldn't fetch $MACRODIR module!"
-        echo
+        echo ""
         echo "Directory ``$MACRODIR'' (a separate CVS module) seems to be missing."
         echo "You probably checked out $PROJECT before ``$MACRODIR'' was added."
         echo "Run 'cvs -d :pserver:cvs@cvs.sim.no:/export/cvsroot co $MACRODIR'"
@@ -94,7 +91,8 @@ if test ! -d $MACRODIR; then
     fi
 fi
 
-$DIE && exit 1
+# abnormal exit?
+${DIE=false} && echo "" && echo "Aborted." && exit 1
 
 echo "Running aclocal (generating aclocal.m4)..."
 aclocal -I $MACRODIR
@@ -108,7 +106,5 @@ automake $AUTOMAKE_ADD
 echo "Running autoconf (generating the configure script)..."
 autoconf
 
-echo
-echo "Done. Now run './configure' and 'make install' to build $PROJECT."
-echo
+echo "Done."
 
