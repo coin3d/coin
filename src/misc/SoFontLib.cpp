@@ -180,11 +180,8 @@ SoFontLib::createFont(const SbName &fontname, const SbName &stylename, const SbV
     font = cc_flw_create_font( path.getString(), size[0], size[1] );
     // Add font to openfonts dict
     if (font >= 0) {
-      // use SbName to store fontname in dict. SbName creates a safe,
-      // global pointer to the string.
-      SbName fname(fontname.getString());
       SbString * newfont = new SbString(path);
-      SoFontLibP::openfonts.enter((unsigned long)fname.getString(), (void *)newfont);
+      SoFontLibP::openfonts.enter((unsigned long)fontname.getString(), (void *)newfont);
     }
   }
   CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
