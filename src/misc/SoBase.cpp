@@ -583,7 +583,7 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedType)
     return TRUE; // EOF, return TRUE with base==NULL
   }
 
-#if COIN_DEBUG && 1 // debug
+#if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoBase::read", "name: '%s'",
                          name.getString());
 #endif // debug

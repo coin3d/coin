@@ -358,7 +358,7 @@ public:
 #define MAXPATHLEN 4096 // FIXME: get this properly. 19981024 mortene.
 
 #define TEST_FILE(x) \
-   SoDebugError::postInfo("TEST_FILE", "texture search: %s", x); \
+   if (0) SoDebugError::postInfo("TEST_FILE", "texture search: %s", x); \
    fp = fopen(x, "rb"); \
    if (fp != NULL) { \
      fclose(fp); \
