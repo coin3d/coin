@@ -162,6 +162,18 @@ simage_wrapper_get_saver_description(void * handle)
   return NULL;
 }
 
+unsigned char * APIENTRY 
+simage_wrapper_resize3d(unsigned char * imagedata,
+                        int width, int height,
+                        int numcomponents,
+                        int layers,
+                        int newwidth, 
+                        int newheight,
+                        int newlayers)
+{
+  return NULL;
+}
+
 /* Implemented by using the singleton pattern. */
 const simage_wrapper_t *
 simage_wrapper(void)
@@ -288,6 +300,13 @@ simage_wrapper(void)
       si->simage_get_saver_fullname = simage_wrapper_get_saver_fullname;
       si->simage_get_saver_description = simage_wrapper_get_saver_description;
     }
+
+    if (simage_wrapper_versionMatchesAtLeast(1,3,0)) {
+#if !defined(HAVE_LIBSIMAGE) || defined(SIMAGE_VERSION_1_3)
+      SIMAGEWRAPPER_REGISTER_FUNC(simage_resize3d, simage_resize3d_t);
+#endif
+    }
+    else si->simage_resize3d = NULL;
   }
   return simage_instance;
 }

@@ -321,8 +321,10 @@ GLUWrapper(void)
     GLUWRAPPER_REGISTER_FUNC(gluNurbsCallback, gluNurbsCallback_t);
 #if defined(GLU_VERSION_1_3) || defined(GLU_RUNTIME_LINKING)
     GLUWRAPPER_REGISTER_FUNC(gluNurbsCallbackData, gluNurbsCallbackData_t);
+    GLUWRAPPER_REGISTER_FUNC(gluBuild3DMipmaps, gluBuild3DMipmaps_t);
 #else /* !gluNurbsCallbackData */
     gi->gluNurbsCallbackData = NULL;
+    gi->gluBuild3DMipmaps = NULL;
 #endif /* !gluNurbsCallbackData */
 
     /* "Backup" functions, makes it easier to be robust even when no

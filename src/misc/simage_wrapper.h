@@ -61,6 +61,13 @@ extern "C" {
                                                       int width, int height,
                                                       int numcomponents,
                                                       int newwidth, int newheight);
+  typedef unsigned char * (APIENTRY *simage_resize3d_t)(unsigned char * imagedata,
+                                                        int width, int height,
+                                                        int numcomponents,
+                                                        int layers,
+                                                        int newwidth, 
+                                                        int newheight,
+                                                        int newlayers);
   typedef void (APIENTRY *simage_free_image_t)(unsigned char * imagedata);
   typedef int (APIENTRY *simage_next_power_of_two_t)(int val);
 
@@ -96,6 +103,7 @@ extern "C" {
     simage_get_saver_extensions_t simage_get_saver_extensions;
     simage_get_saver_fullname_t simage_get_saver_fullname;
     simage_get_saver_description_t simage_get_saver_description;
+    simage_resize3d_t simage_resize3d;
   } simage_wrapper_t;
 
   const simage_wrapper_t * simage_wrapper(void);

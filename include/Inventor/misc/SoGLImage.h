@@ -33,6 +33,7 @@
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbVec2s.h>
+#include <Inventor/SbVec3s.h>
 #include <Inventor/SoType.h>
 #include <stddef.h>
 
@@ -67,9 +68,27 @@ public:
                const int border = 0,
                SoState * createinstate = NULL);
 
+  void setData(const unsigned char * bytes,
+               const SbVec3s & size,
+               const int numcomponents,
+               const Wrap wraps = REPEAT,
+               const Wrap wrapt = REPEAT,
+               const Wrap wrapr = REPEAT,
+               const float quality = 0.5f,
+               const int border = 0,
+               SoState * createinstate = NULL);
+
   virtual void setData(const SbImage * image,
                        const Wrap wraps = REPEAT,
                        const Wrap wrapt = REPEAT,
+                       const float quality = 0.5f,
+                       const int border = 0,
+                       SoState * createinstate = NULL);
+
+  virtual void setData(const SbImage * image,
+                       const Wrap wraps = REPEAT,
+                       const Wrap wrapt = REPEAT,
+                       const Wrap wrapr = REPEAT,
                        const float quality = 0.5f,
                        const int border = 0,
                        SoState * createinstate = NULL);
@@ -105,6 +124,7 @@ public:
   SbBool useAlphaTest(void) const;
   Wrap getWrapS(void) const;
   Wrap getWrapT(void) const;
+  Wrap getWrapR(void) const;
 
 protected:
 
