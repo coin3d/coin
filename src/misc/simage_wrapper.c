@@ -341,6 +341,9 @@ simage_wrapper(void)
 #endif
       }
       else {
+#if 0
+        // 20021018 thammer. I might want to use these later instead
+        // of setting all of them to NULL
         si->s_params_set = simage_wrapper_s_params_set;
         si->s_params_get = simage_wrapper_s_params_get;
         si->s_stream_open = simage_wrapper_s_stream_open;
@@ -348,6 +351,14 @@ simage_wrapper(void)
         si->s_stream_close = simage_wrapper_s_stream_close;
         si->s_stream_destroy = simage_wrapper_s_stream_destroy;
         si->s_stream_params = simage_wrapper_s_stream_params;
+#endif
+        si->s_params_set = NULL;
+        si->s_params_get = NULL;
+        si->s_stream_open = ;
+        si->s_stream_get_buffer = NULL;
+        si->s_stream_close = NULL;
+        si->s_stream_destroy = NULL;
+        si->s_stream_params = NULL;
       }
     }
   }

@@ -88,6 +88,7 @@ DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
 ECHO = @ECHO@
 EXEEXT = @EXEEXT@
+HAVE_SOUND = @HAVE_SOUND@
 HAVE_SUPERGLU = @HAVE_SUPERGLU@
 HAVE_THREADS = @HAVE_THREADS@
 HAVE_VRML97 = @HAVE_VRML97@
@@ -170,7 +171,9 @@ RegularSources = \
 	default3dfont.cpp \
 	default2dfont.cpp \
 	GLUWrapper.c \
-	simage_wrapper.c
+	simage_wrapper.c \
+	SoAudioDevice.cpp \
+        AudioTools.cpp
 
 LinkHackSources = \
 	all-cpp.cpp \
@@ -195,7 +198,8 @@ PublicHeaders = \
 	../../include/Inventor/misc/SoTranscribe.h \
 	../../include/Inventor/misc/SoTranSender.h \
 	../../include/Inventor/misc/SoLightPath.h \
-	../../include/Inventor/misc/SoTempPath.h
+	../../include/Inventor/misc/SoTempPath.h \
+	../../include/Inventor/misc/SoAudioDevice.h
 
 PrivateHeaders = \
 	../../include/Inventor/misc/SoGL.h \
@@ -204,6 +208,7 @@ PrivateHeaders = \
 	../../include/Inventor/misc/SoPick.h \
 	GLUWrapper.h \
 	simage_wrapper.h \
+        AudioTools.h \
 	SoGLFaceSetTemplate.icc \
 	SoGLLineSetTemplate.icc \
 	SoGLTristripTemplate.icc \
@@ -298,7 +303,9 @@ misc_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	default3dfont.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	default2dfont.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	GLUWrapper.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	simage_wrapper.$(OBJEXT)
+@HACKING_COMPACT_BUILD_FALSE@	simage_wrapper.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoAudioDevice.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	AudioTools.$(OBJEXT)
 misc_lst_OBJECTS = $(am_misc_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -323,7 +330,8 @@ libmisc_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoByteStream.lo SoTranSender.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTranReceiver.lo default3dfont.lo \
 @HACKING_COMPACT_BUILD_FALSE@	default2dfont.lo GLUWrapper.lo \
-@HACKING_COMPACT_BUILD_FALSE@	simage_wrapper.lo
+@HACKING_COMPACT_BUILD_FALSE@	simage_wrapper.lo SoAudioDevice.lo \
+@HACKING_COMPACT_BUILD_FALSE@	AudioTools.lo
 libmisc_la_OBJECTS = $(am_libmisc_la_OBJECTS)
 libmisc@SUFFIX@LINKHACK_la_LDFLAGS =
 libmisc@SUFFIX@LINKHACK_la_LIBADD =
@@ -347,7 +355,8 @@ libmisc@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoByteStream.lo SoTranSender.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTranReceiver.lo default3dfont.lo \
 @HACKING_COMPACT_BUILD_FALSE@	default2dfont.lo GLUWrapper.lo \
-@HACKING_COMPACT_BUILD_FALSE@	simage_wrapper.lo
+@HACKING_COMPACT_BUILD_FALSE@	simage_wrapper.lo SoAudioDevice.lo \
+@HACKING_COMPACT_BUILD_FALSE@	AudioTools.lo
 libmisc@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libmisc@SUFFIX@LINKHACK_la_OBJECTS)
 
@@ -356,9 +365,11 @@ DEFAULT_INCLUDES =  -I. -I$(srcdir) -I$(top_builddir)/include
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
-@AMDEP_TRUE@DEP_FILES = $(DEPDIR)/GLUWrapper.Plo $(DEPDIR)/GLUWrapper.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoBase.Plo $(DEPDIR)/SoBase.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoByteStream.Plo \
+@AMDEP_TRUE@DEP_FILES = $(DEPDIR)/AudioTools.Plo $(DEPDIR)/AudioTools.Po \
+@AMDEP_TRUE@	$(DEPDIR)/GLUWrapper.Plo $(DEPDIR)/GLUWrapper.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoAudioDevice.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoAudioDevice.Po $(DEPDIR)/SoBase.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoBase.Po $(DEPDIR)/SoByteStream.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoByteStream.Po $(DEPDIR)/SoChildList.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoChildList.Po $(DEPDIR)/SoDB.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoDB.Po $(DEPDIR)/SoFullPath.Plo \
@@ -490,8 +501,12 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/AudioTools.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/AudioTools.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/GLUWrapper.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/GLUWrapper.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoAudioDevice.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoAudioDevice.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoBase.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoBase.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoByteStream.Plo@am__quote@
