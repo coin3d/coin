@@ -235,14 +235,18 @@ SoFieldData::overlay(SoFieldContainer * to, const SoFieldContainer * from,
   // The field containers should have equal SoFieldData sets.
   assert(fd0 && fd1 && *fd0==*fd1);
 
-  int num = fd0->getNumFields();
+  const int num = fd0->getNumFields();
   for (int i = 0; i < num; i++) {
     SoField * field0 = fd0->getField(to, i);
     SoField * field1 = fd1->getField(from, i);
-    // copy value
-    field0->copyFrom(*field1);
+    // copy value only if necessary
+    if ( !field0->isDefault() || !field1->isDefault() ) {
+      // note how SoTexture2::filename and SoTexture2::image would
+      // affect each other without this test
+      field0->copyFrom(*field1);
+      field0->setDefault(field1->isDefault());
+    }
     // copy flags
-    field0->setDefault(field1->isDefault());
     field0->setIgnored(field1->isIgnored());
     field0->enableNotify(field1->isNotifyEnabled());
     
