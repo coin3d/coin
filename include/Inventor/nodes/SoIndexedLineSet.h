@@ -57,10 +57,10 @@ protected:
 private:
   virtual void generatePrimitives(SoAction * action);
 
-  SbBool generateDefaultNormals(SoState *, SoNormalCache *nc);
+  virtual SbBool generateDefaultNormals(SoState * state, SoNormalCache * nc);
 
-  Binding findNormalBinding(SoState *state);
-  Binding findMaterialBinding(SoState *state);
+  Binding findNormalBinding(SoState * state);
+  Binding findMaterialBinding(SoState * state);
 
   int numLines() const;
   int numLineSegments() const;
