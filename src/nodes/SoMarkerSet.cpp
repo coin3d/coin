@@ -30,406 +30,406 @@
 
 #include <Inventor/nodes/SoMarkerSet.h>
 #include <Inventor/nodes/SoSubNodeP.h>
-#include <coindefs.h> // COIN_STUB()
-
 #include <Inventor/misc/SoState.h>
 
-#include <Inventor/bundles/SoTextureCoordinateBundle.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#ifdef HAVE_WINDOWS_H
-#include <windows.h>
-#endif // HAVE_WINDOWS_H
-#include <GL/gl.h>
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/elements/SoGLCoordinateElement.h>
-#include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/elements/SoGLLightModelElement.h>
-#include <Inventor/caches/SoNormalCache.h>
-#include <Inventor/details/SoPointDetail.h>
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
-
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLLightModelElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_WINDOWS_H
+#include <windows.h> // needed for gl.h *sigh*
+#endif // HAVE_WINDOWS_H
+#include <GL/gl.h>
+
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
+#include <coindefs.h> // COIN_OBSOLETED
 
 /*!
   \enum SoMarkerSet::MarkerType
-  FIXME: write documentation for enum
+  Defines the different markers.
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::CROSS_5_5
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::PLUS_5_5
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::MINUS_5_5
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::SLASH_5_5
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::BACKSLASH_5_5
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::BAR_5_5
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::STAR_5_5
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::Y_5_5
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::LIGHTNING_5_5
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::WELL_5_5
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::CIRCLE_LINE_5_5
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::SQUARE_LINE_5_5
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::DIAMOND_LINE_5_5
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::TRIANGLE_LINE_5_5
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::RHOMBUS_LINE_5_5
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::HOURGLASS_LINE_5_5
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::SATELLITE_LINE_5_5
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::PINE_TREE_LINE_5_5
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::CAUTION_LINE_5_5
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::SHIP_LINE_5_5
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::CIRCLE_FILLED_5_5
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::SQUARE_FILLED_5_5
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::DIAMOND_FILLED_5_5
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::TRIANGLE_FILLED_5_5
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::RHOMBUS_FILLED_5_5
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::HOURGLASS_FILLED_5_5
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::SATELLITE_FILLED_5_5
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::PINE_TREE_FILLED_5_5
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::CAUTION_FILLED_5_5
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::SHIP_FILLED_5_5
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::CROSS_7_7
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::PLUS_7_7
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::MINUS_7_7
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::SLASH_7_7
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::BACKSLASH_7_7
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::BAR_7_7
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::STAR_7_7
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::Y_7_7
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::LIGHTNING_7_7
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::WELL_7_7
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::CIRCLE_LINE_7_7
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::SQUARE_LINE_7_7
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::DIAMOND_LINE_7_7
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::TRIANGLE_LINE_7_7
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::RHOMBUS_LINE_7_7
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::HOURGLASS_LINE_7_7
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::SATELLITE_LINE_7_7
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::PINE_TREE_LINE_7_7
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::CAUTION_LINE_7_7
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::SHIP_LINE_7_7
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::CIRCLE_FILLED_7_7
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::SQUARE_FILLED_7_7
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::DIAMOND_FILLED_7_7
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::TRIANGLE_FILLED_7_7
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::RHOMBUS_FILLED_7_7
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::HOURGLASS_FILLED_7_7
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::SATELLITE_FILLED_7_7
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::PINE_TREE_FILLED_7_7
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::CAUTION_FILLED_7_7
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::SHIP_FILLED_7_7
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::CROSS_9_9
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::PLUS_9_9
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::MINUS_9_9
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::SLASH_9_9
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::BACKSLASH_9_9
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::BAR_9_9
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::STAR_9_9
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::Y_9_9
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::LIGHTNING_9_9
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::WELL_9_9
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::CIRCLE_LINE_9_9
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::SQUARE_LINE_9_9
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::DIAMOND_LINE_9_9
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::TRIANGLE_LINE_9_9
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::RHOMBUS_LINE_9_9
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::HOURGLASS_LINE_9_9
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::SATELLITE_LINE_9_9
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::PINE_TREE_LINE_9_9
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::CAUTION_LINE_9_9
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::SHIP_LINE_9_9
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::CIRCLE_FILLED_9_9
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::SQUARE_FILLED_9_9
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::DIAMOND_FILLED_9_9
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::TRIANGLE_FILLED_9_9
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::RHOMBUS_FILLED_9_9
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::HOURGLASS_FILLED_9_9
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::SATELLITE_FILLED_9_9
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::PINE_TREE_FILLED_9_9
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::CAUTION_FILLED_9_9
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
 /*!
   \var SoMarkerSet::MarkerType SoMarkerSet::SHIP_FILLED_9_9
-  FIXME: write documentation for enum definition
+  Used to identify this marker
 */
-
 
 /*!
   \var SoMFInt32 SoMarkerSet::markerIndex
-  FIXME: write documentation for field
+  Can be used to select markers for each coordinate.
 */
-
 
 // *************************************************************************
 
@@ -451,30 +451,30 @@ SoMarkerSet::~SoMarkerSet()
 {
 }
 
-// ----------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------
 
-typedef struct marker
-{
+typedef struct {
   int width;
   int height;
   int align;
   unsigned char *data;
   bool deletedata;
-} marker;
+} so_marker;
 
-static SbList<marker> *markerlist;
-static GLubyte *markerimages;
+static SbList <so_marker> * markerlist;
+static GLubyte * markerimages;
 static void convert_bitmaps(void);
 static void free_marker_images(void);
 
-// ------------
+// -----------------------------------------------------------------------
 
 static void free_marker_images(void)
 {
   delete[] markerimages;
-  if ( markerlist->getLength() > 90 ) {    // markers have been added.. free marker->data
-    for (int i=90; i<markerlist->getLength(); i++) {
-      marker * tmp = &(*markerlist)[i];
+  if (markerlist->getLength() > SoMarkerSet::NUM_MARKERS) {
+    // markers have been added.. free marker->data
+    for (int i = SoMarkerSet::NUM_MARKERS; i < markerlist->getLength(); i++) {
+      so_marker * tmp = &(*markerlist)[i];
       if (tmp->deletedata) delete tmp->data;
     }
   }
@@ -490,25 +490,20 @@ void
 SoMarkerSet::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoMarkerSet);
-  markerimages = new GLubyte[90*9*4];        // hardcoded 90 markers, 32x9 bitmaps (9x9 used), dword alignment
-  markerlist = new SbList<marker>;
+  markerimages = new GLubyte[NUM_MARKERS*9*4]; // hardcoded markers, 32x9 bitmaps (9x9 used), dword alignment
+  markerlist = new SbList<so_marker>;
   atexit(free_marker_images);
   convert_bitmaps();
-  marker temp;
-  for (int i=0;i<90;i++) {
+  so_marker temp;
+  for (int i = 0; i < NUM_MARKERS; i++) {
     temp.width  = 9;
     temp.height = 9;
     temp.align  = 4;
     temp.data   = markerimages + (i * 36);
-    temp.deletedata = false;
+    temp.deletedata = FALSE;
     markerlist->append(temp);
   }
 }
-
-// -----
-
-// copy/paste fra pointset...
-
 // Internal method which translates the current material binding
 // found on the state to a material binding for this node.
 // PER_PART, PER_FACE, PER_VERTEX and their indexed counterparts
@@ -521,23 +516,6 @@ SoMarkerSet::findMaterialBinding(SoState * const state) const
   Binding binding = OVERALL;
   if (SoMaterialBindingElement::get(state) !=
       SoMaterialBindingElement::OVERALL) binding = PER_VERTEX;
-  return binding;
-}
-
-//  Internal method which translates the current normal binding
-//  found on the state to a normal binding for this node.
-//  PER_PART, PER_FACE, PER_VERTEX and their indexed counterparts
-//  are translated to PER_VERTEX binding. OVERALL means overall
-//  binding for point set also, of course. The default normal
-//  binding is PER_VERTEX.
-SoMarkerSet::Binding
-SoMarkerSet::findNormalBinding(SoState * const state) const
-
-{
-  Binding binding = PER_VERTEX;
-
-  if (SoNormalBindingElement::get(state) ==
-      SoNormalBindingElement::OVERALL) binding = OVERALL;
   return binding;
 }
 
@@ -1451,7 +1429,7 @@ convert_bitmaps(void)
 {
   int rpos = 0;
   int wpos = 0;
-  for (int img=0;img<90;img++) {
+  for (int img = 0; img < SoMarkerSet::NUM_MARKERS; img++) {
     for (int l=8;l>=0;l--) {
       unsigned char v1 = 0;
       unsigned char v2 = 0;
@@ -1479,31 +1457,35 @@ convert_bitmaps(void)
 void
 SoMarkerSet::GLRender(SoGLRenderAction * action)
 {
-  if (!this->shouldGLRender(action)) return;
-  SoState *state = action->getState();
-  const SoCoordinateElement *tmp;
-  const SbVec3f *normals;
-  SbBool doTextures;
-  SbBool needNormals = (SoLightModelElement::get(state) != SoLightModelElement::BASE_COLOR);
-  SoVertexShape::getVertexData(action->getState(), tmp, normals, needNormals);
-  if (normals == NULL) needNormals = FALSE;
-  const SoGLCoordinateElement * coords = (SoGLCoordinateElement *)tmp;
-  SoTextureCoordinateBundle tb(action, TRUE, FALSE);
-  doTextures = tb.needCoordinates();
+  SoState * state = action->getState();
+
+  state->push();
+  // we just disable lighting and texturing for markers, since
+  // we can't see any reason this should ever be enabled.
+  // send an angry email to pederb if you disagree.
+
+  SoLightModelElement::set(state, this, SoLightModelElement::BASE_COLOR);
+  SoGLTextureEnabledElement::set(state, this, FALSE);
+  
+  if (this->vertexProperty.getValue()) {
+    this->vertexProperty.getValue()->GLRender(action);
+  }
+  
+  const SoCoordinateElement * tmpcoord;
+  const SbVec3f * dummy;
+  SbBool needNormals = FALSE;
+
+  SoVertexShape::getVertexData(state, tmpcoord, dummy,
+                               needNormals);
+
+  if (!this->shouldGLRender(action)) {
+    state->pop();
+    return;
+  }
+
+  const SoGLCoordinateElement * coords = (SoGLCoordinateElement *)tmpcoord;
 
   Binding mbind = this->findMaterialBinding(action->getState());
-  Binding nbind = this->findNormalBinding(action->getState());
-  if (!needNormals) {
-    nbind = OVERALL;
-    const SoGLLightModelElement * lm = (SoGLLightModelElement *)
-      state->getConstElement(SoGLLightModelElement::getClassStackIndex());
-    lm->forceSend(SoLightModelElement::BASE_COLOR);
-  }
-  SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
-  const SbVec3f * currnormal = &dummynormal;
-  if (normals) currnormal = normals;
-  if (nbind == OVERALL && needNormals)
-    glNormal3fv((const GLfloat *)currnormal);
 
   SoMaterialBundle mb(action);
   mb.sendFirst();
@@ -1512,7 +1494,6 @@ SoMarkerSet::GLRender(SoGLRenderAction * action)
   int32_t numpts = this->numPoints.getValue();
   if (numpts < 0) numpts = coords->getNum() - idx;
   int matnr = 0;
-  int texnr = 0;
 
   const SbMatrix & mat = SoModelMatrixElement::get(state);
   const SbViewVolume & vv = SoViewVolumeElement::get(state);
@@ -1526,59 +1507,79 @@ SoMarkerSet::GLRender(SoGLRenderAction * action)
   glPushMatrix();
   glLoadIdentity();
   glOrtho(0, vpsize[0], 0, vpsize[1], -1.0f, 1.0f);
-  SbVec3f nilpoint;
-  for (int i = 0; i < numpts; i++)
-    {
-      if (nbind == PER_VERTEX) {
-        currnormal = normals++;
-        glNormal3fv((const GLfloat *)currnormal);
-      }
+
+  for (int i = 0; i < numpts; i++) {
       if (mbind == PER_VERTEX) mb.send(matnr++, TRUE);
-      if (doTextures) tb.send(texnr++, coords->get3(idx), *currnormal);
-      nilpoint = coords->get3(idx++);
-      mat.multVecMatrix(nilpoint, nilpoint);
-      vv.projectToScreen(nilpoint, nilpoint);
-      nilpoint[0] = nilpoint[0] * float(vpsize[0]);
-      nilpoint[1] = nilpoint[1] * float(vpsize[1]);
+      SbVec3f point = coords->get3(idx++);
+      mat.multVecMatrix(point, point);  // wcs
+      vv.projectToScreen(point, point); // normalized screen coordinates   
+      point[0] = point[0] * float(vpsize[0]); // screen pixel position
+      point[1] = point[1] * float(vpsize[1]);
 
       if (markerIndex[i] < markerlist->getLength()) {
-        marker * tmp = &(*markerlist)[ markerIndex[i] ];
-        glPixelStorei(GL_UNPACK_ALIGNMENT, tmp->align );
-        glRasterPos2i(0,0);
-        glBitmap(0,0,0,0,nilpoint[0],nilpoint[1],NULL);
-        //glBitmap(9,9,4,4,0,0,markerimages + (markerIndex[i] * 36) );
-        glBitmap(tmp->width,tmp->height,0,0,0,0,tmp->data );
+        so_marker * tmp = &(*markerlist)[ markerIndex[i] ];
+        glPixelStorei(GL_UNPACK_ALIGNMENT, tmp->align);
+        glRasterPos3f(point[0], point[1], -point[2]);
+        glBitmap(tmp->width, tmp->height, 0, 0, 0, 0, tmp->data);
       }
 #if COIN_DEBUG
       else {
         static int firsterror = 1;
         if (firsterror) {
-          SoDebugError::postWarning("SoMarkerSet::GLRender.","markerIndex %d out of bound",markerIndex[i]);
+          SoDebugError::postWarning("SoMarkerSet::GLRender.",
+                                    "markerIndex %d out of bound",
+                                    markerIndex[i]);
           firsterror = 0;
         }
       }
 #endif // COIN_DEBUG
-    }
-  glPixelStorei(GL_UNPACK_ALIGNMENT,4);
+  }
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 4); // restore default value
   glMatrixMode(GL_PROJECTION);
   glPopMatrix();
   glMatrixMode(GL_MODELVIEW);
   glPopMatrix();
+
+  state->pop(); // we pushed, remember
 }
 
 // ----------------------------------------------------------------------------------------------------
 
 /*!
-  FIXME: write doc
- */
+  Overloaded to add the number of markers to the number of
+  images in \a action.
+*/
 void
-SoMarkerSet::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoMarkerSet::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-  COIN_STUB();
+  if (!this->shouldPrimitiveCount(action)) return;
+
+  SoState * state = action->getState();
+
+  state->push(); // in case we have a vertexProperty node
+  
+  if (this->vertexProperty.getValue()) {
+    this->vertexProperty.getValue()->getPrimitiveCount(action);
+  }
+  
+  const SoCoordinateElement * coord;
+  const SbVec3f * dummy;
+  SbBool needNormals = FALSE;
+
+  SoVertexShape::getVertexData(state, coord, dummy,
+                               needNormals);
+
+  int32_t idx = this->startIndex.getValue();
+  int32_t numpts = this->numPoints.getValue();
+  if (numpts < 0) numpts = coord->getNum() - idx;
+
+  action->addNumImage(numpts);
+
+  state->pop();
 }
 
 /*!
-  FIXME: write doc
+  Returns the number of defined markers.
  */
 int
 SoMarkerSet::getNumDefinedMarkers(void)
@@ -1586,14 +1587,10 @@ SoMarkerSet::getNumDefinedMarkers(void)
   return markerlist->getLength();
 }
 
-/*!
-  FIXME: write doc
- */
-
-  // FIXME: sloppy code... 20000906. skei
-
-static void swap_leftright(unsigned char *data, int width, int height)
+static void 
+swap_leftright(unsigned char *data, int width, int height)
 {
+  // FIXME: sloppy code... 20000906. skei
   unsigned char t;
 
   int y;
@@ -1621,14 +1618,15 @@ static void swap_leftright(unsigned char *data, int width, int height)
   }
 }
 
-static void swap_updown(unsigned char *data, int width, int height)
+static void 
+swap_updown(unsigned char *data, int width, int height)
 {
   int linewidth = (int)ceil(width / 8);
-  for (int y=0; y<floor(height/2); y++) {
-    for (int x=0; x<linewidth; x++) {
+  for (int y = 0; y < (height>>1); y++) {
+    for (int x = 0; x < linewidth; x++) {
       int tmp = data[y*linewidth+x];
-      data[ y*linewidth + x ] = data[ ((height-y-1)*linewidth) + x ];
-      data[ ((height-y-1)*linewidth) + x ] = tmp;
+      data[y*linewidth + x] = data[((height-y-1)*linewidth) + x];
+      data[((height-y-1)*linewidth) + x] = tmp;
     }
   }
 }
@@ -1638,15 +1636,15 @@ static void swap_updown(unsigned char *data, int width, int height)
   representation given by \a size dimensions with the bitmap data at
   \a bytes. \a isLSBFirst and \a isUpToDown indicates how the bitmap
   data is ordered.
- */
+*/
 void
 SoMarkerSet::addMarker(int markerIndex, const SbVec2s & size,
                        const unsigned char * bytes, SbBool isLSBFirst,
                        SbBool isUpToDown)
 {
   // FIXME: implement the lsLSBFirst and isUpToDown. skei 20000905
-  marker tempmarker;
-  marker *temp;
+  so_marker tempmarker;
+  so_marker *temp;
 
   SbBool appendnew = markerIndex >= markerlist->getLength() ? TRUE : FALSE;
   temp = &tempmarker;
@@ -1673,15 +1671,15 @@ SoMarkerSet::addMarker(int markerIndex, const SbVec2s & size,
 }
 
 /*!
-  FIXME: write doc
- */
-  // FIXME: handle lsLSBFirst. skei 20000905
+  Returns data for marker at \a markerIndex.
+*/
 SbBool
 SoMarkerSet::getMarker(int markerIndex, SbVec2s & size,
                        const unsigned char *& bytes, SbBool & isLSBFirst)
 {
+  // FIXME: handle lsLSBFirst. skei 20000905
   if (markerIndex >= markerlist->getLength()) return FALSE;
-  marker * temp = &(*markerlist)[markerIndex];
+  so_marker * temp = &(*markerlist)[markerIndex];
   size[0] = temp->width;
   size[1] = temp->height;
   bytes = temp->data;
@@ -1690,24 +1688,24 @@ SoMarkerSet::getMarker(int markerIndex, SbVec2s & size,
 }
 
 /*!
-  FIXME: write doc
- */
+  Removes marker at \a markerIndex.
+*/
 SbBool
 SoMarkerSet::removeMarker(int markerIndex)
 {
   if (markerIndex >= markerlist->getLength()) return FALSE;
-  marker * tmp = &(*markerlist)[markerIndex];
+  so_marker * tmp = &(*markerlist)[markerIndex];
   if (tmp->deletedata) delete tmp->data;
   markerlist->remove(markerIndex);
   return TRUE;
 }
 
 /*!
-  FIXME: write doc
- */
+  Not supported in Coin. Should have been private in OIV.
+*/
 SbBool
 SoMarkerSet::isMarkerBitSet(int /* markerIndex */, int /* bitNumber */)
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
   return FALSE;
 }

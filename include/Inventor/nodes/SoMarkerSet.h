@@ -69,7 +69,8 @@ public:
     CIRCLE_FILLED_9_9, SQUARE_FILLED_9_9, DIAMOND_FILLED_9_9,
     TRIANGLE_FILLED_9_9, RHOMBUS_FILLED_9_9, HOURGLASS_FILLED_9_9,
     SATELLITE_FILLED_9_9, PINE_TREE_FILLED_9_9, CAUTION_FILLED_9_9,
-    SHIP_FILLED_9_9
+    SHIP_FILLED_9_9,
+    NUM_MARKERS /* must be last, and is _not_ a marker :) */
   };
 
   SoMFInt32 markerIndex;
@@ -88,16 +89,13 @@ public:
 
 protected:
   virtual ~SoMarkerSet();
-  
+
 private:
   enum Binding {
     OVERALL = 0,
     PER_VERTEX
   };
-
-  Binding findNormalBinding(SoState * const state) const;
   Binding findMaterialBinding(SoState * const state) const;
-  
 };
 
 #endif // !COIN_SOMARKERSET_H
