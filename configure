@@ -1859,6 +1859,9 @@ _ACEOF
 # Miscellaneous options and initializations.
 
 coin_build_dir=`pwd`
+coin_src_dir=`cd "$srcdir"; pwd`
+coin_w32_build_dir=`cygpath -w "$coin_build_dir" 2>/dev/null || echo "$coin_build_dir"`
+coin_w32_src_dir=`cygpath -w "$coin_src_dir" 2>/dev/null || echo "$coin_src_dir"`
 
 # *******************************************************************
 # set up configure options for "make distcheck" mode - we want to
@@ -5059,7 +5062,7 @@ test "x$enable_libtool_lock" != xno && enable_libtool_lock=yes
 case $host in
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 5062 "configure"' > conftest.$ac_ext
+  echo '#line 5065 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -5595,7 +5598,7 @@ chmod -w .
 save_CFLAGS="$CFLAGS"
 CFLAGS="$CFLAGS -o out/conftest2.$ac_objext"
 compiler_c_o=no
-if { (eval echo configure:5598: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$ac_objext; then
+if { (eval echo configure:5601: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$ac_objext; then
   # The compiler can only warn and ignore the option if not recognized
   # So say no if there are warnings
   if test -s out/conftest.err; then
@@ -7388,7 +7391,7 @@ else
     lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 7391 "configure"
+#line 7394 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -7486,7 +7489,7 @@ else
     lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 7489 "configure"
+#line 7492 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -20396,9 +20399,9 @@ fi
 # * misc configuration files under the $top_src_dir/build/ directory.
 # *******************************************************************
 
-coin_build_dir=`pwd`
 
-coin_src_dir=`cd $srcdir; pwd`
+
+
 
 
 # **************************************************************************
@@ -21583,7 +21586,9 @@ s,@HACKING_DYNAMIC_MODULES_TRUE@,$HACKING_DYNAMIC_MODULES_TRUE,;t t
 s,@HACKING_DYNAMIC_MODULES_FALSE@,$HACKING_DYNAMIC_MODULES_FALSE,;t t
 s,@COIN_HACKING_LIBDIRS@,$COIN_HACKING_LIBDIRS,;t t
 s,@coin_build_dir@,$coin_build_dir,;t t
+s,@coin_w32_build_dir@,$coin_w32_build_dir,;t t
 s,@coin_src_dir@,$coin_src_dir,;t t
+s,@coin_w32_src_dir@,$coin_w32_src_dir,;t t
 s,@LIBFLAGS@,$LIBFLAGS,;t t
 s,@SIM_INCLUDE_WINDOWS_H@,$SIM_INCLUDE_WINDOWS_H,;t t
 s,@SIM_INCLUDE_GL_H@,$SIM_INCLUDE_GL_H,;t t

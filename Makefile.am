@@ -36,7 +36,11 @@ BUILT_SOURCES = \
 	coin-@CONFIG@.cfg
 
 CLEANFILES = \
-	coin@COIN_MAJOR_VERSION@.dsp
+	coin@COIN_MAJOR_VERSION@.dsp \
+	coin@COIN_MAJOR_VERSION@.dsw \
+	coin@COIN_MAJOR_VERSION@.ncb \
+	coin@COIN_MAJOR_VERSION@.opt \
+	coin@COIN_MAJOR_VERSION@.plg
 
 DISTCLEANFILES = \
 	coin-@CONFIG@.cfg \

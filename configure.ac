@@ -146,6 +146,9 @@ AC_DEFINE_UNQUOTED([COIN_VERSION], ["$COIN_VERSION"],
 # Miscellaneous options and initializations.
 
 coin_build_dir=`pwd`
+coin_src_dir=`cd "$srcdir"; pwd`
+coin_w32_build_dir=`cygpath -w "$coin_build_dir" 2>/dev/null || echo "$coin_build_dir"`
+coin_w32_src_dir=`cygpath -w "$coin_src_dir" 2>/dev/null || echo "$coin_src_dir"`
 
 # *******************************************************************
 # set up configure options for "make distcheck" mode - we want to
@@ -1154,8 +1157,10 @@ fi
 # * misc configuration files under the $top_src_dir/build/ directory.
 # *******************************************************************
 
-AC_SUBST([coin_build_dir], [`pwd`])
-AC_SUBST([coin_src_dir], [`cd $srcdir; pwd`])
+AC_SUBST([coin_build_dir])
+AC_SUBST([coin_w32_build_dir])
+AC_SUBST([coin_src_dir])
+AC_SUBST([coin_w32_src_dir])
 
 # **************************************************************************
 # Remove redundant options from certain option lists.
