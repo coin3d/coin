@@ -172,7 +172,6 @@ PublicHeaders = \
 	../../include/Inventor/VRMLnodes/SoVRMLNormal.h \
 	../../include/Inventor/VRMLnodes/SoVRMLNormalInterpolator.h \
 	../../include/Inventor/VRMLnodes/SoVRMLOrientationInterpolator.h \
-	../../include/Inventor/VRMLnodes/SoVRMLOutputData.h \
 	../../include/Inventor/VRMLnodes/SoVRMLParent.h \
 	../../include/Inventor/VRMLnodes/SoVRMLPixelTexture.h \
 	../../include/Inventor/VRMLnodes/SoVRMLPlaneSensor.h \
@@ -247,7 +246,6 @@ RegularSources = \
 	Normal.cpp \
 	NormalInterpolator.cpp \
 	OrientationInterpolator.cpp \
-	OutputData.cpp \
 	Parent.cpp \
 	PixelTexture.cpp \
 	PlaneSensor.cpp \
@@ -354,7 +352,6 @@ vrml97_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	Normal.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	NormalInterpolator.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	OrientationInterpolator.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	OutputData.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	Parent.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	PixelTexture.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	PlaneSensor.$(OBJEXT) \
@@ -406,9 +403,9 @@ libvrml97_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	MovieTexture.lo NavigationInfo.lo \
 @HACKING_COMPACT_BUILD_FALSE@	Normal.lo NormalInterpolator.lo \
 @HACKING_COMPACT_BUILD_FALSE@	OrientationInterpolator.lo \
-@HACKING_COMPACT_BUILD_FALSE@	OutputData.lo Parent.lo \
-@HACKING_COMPACT_BUILD_FALSE@	PixelTexture.lo PlaneSensor.lo \
-@HACKING_COMPACT_BUILD_FALSE@	PointLight.lo PointSet.lo \
+@HACKING_COMPACT_BUILD_FALSE@	Parent.lo PixelTexture.lo \
+@HACKING_COMPACT_BUILD_FALSE@	PlaneSensor.lo PointLight.lo \
+@HACKING_COMPACT_BUILD_FALSE@	PointSet.lo \
 @HACKING_COMPACT_BUILD_FALSE@	PositionInterpolator.lo \
 @HACKING_COMPACT_BUILD_FALSE@	ProximitySensor.lo \
 @HACKING_COMPACT_BUILD_FALSE@	ScalarInterpolator.lo Script.lo \
@@ -445,9 +442,9 @@ libvrml97@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	MovieTexture.lo NavigationInfo.lo \
 @HACKING_COMPACT_BUILD_FALSE@	Normal.lo NormalInterpolator.lo \
 @HACKING_COMPACT_BUILD_FALSE@	OrientationInterpolator.lo \
-@HACKING_COMPACT_BUILD_FALSE@	OutputData.lo Parent.lo \
-@HACKING_COMPACT_BUILD_FALSE@	PixelTexture.lo PlaneSensor.lo \
-@HACKING_COMPACT_BUILD_FALSE@	PointLight.lo PointSet.lo \
+@HACKING_COMPACT_BUILD_FALSE@	Parent.lo PixelTexture.lo \
+@HACKING_COMPACT_BUILD_FALSE@	PlaneSensor.lo PointLight.lo \
+@HACKING_COMPACT_BUILD_FALSE@	PointSet.lo \
 @HACKING_COMPACT_BUILD_FALSE@	PositionInterpolator.lo \
 @HACKING_COMPACT_BUILD_FALSE@	ProximitySensor.lo \
 @HACKING_COMPACT_BUILD_FALSE@	ScalarInterpolator.lo Script.lo \
@@ -517,7 +514,6 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/NormalInterpolator.Po \
 @AMDEP_TRUE@	$(DEPDIR)/OrientationInterpolator.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/OrientationInterpolator.Po \
-@AMDEP_TRUE@	$(DEPDIR)/OutputData.Plo $(DEPDIR)/OutputData.Po \
 @AMDEP_TRUE@	$(DEPDIR)/Parent.Plo $(DEPDIR)/Parent.Po \
 @AMDEP_TRUE@	$(DEPDIR)/PixelTexture.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/PixelTexture.Po $(DEPDIR)/PlaneSensor.Plo \
@@ -716,8 +712,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/NormalInterpolator.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/OrientationInterpolator.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/OrientationInterpolator.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/OutputData.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/OutputData.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Parent.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Parent.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/PixelTexture.Plo@am__quote@

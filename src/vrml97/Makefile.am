@@ -44,7 +44,6 @@ PublicHeaders = \
 	../../include/Inventor/VRMLnodes/SoVRMLNormal.h \
 	../../include/Inventor/VRMLnodes/SoVRMLNormalInterpolator.h \
 	../../include/Inventor/VRMLnodes/SoVRMLOrientationInterpolator.h \
-	../../include/Inventor/VRMLnodes/SoVRMLOutputData.h \
 	../../include/Inventor/VRMLnodes/SoVRMLParent.h \
 	../../include/Inventor/VRMLnodes/SoVRMLPixelTexture.h \
 	../../include/Inventor/VRMLnodes/SoVRMLPlaneSensor.h \
@@ -117,7 +116,6 @@ RegularSources = \
 	Normal.cpp \
 	NormalInterpolator.cpp \
 	OrientationInterpolator.cpp \
-	OutputData.cpp \
 	Parent.cpp \
 	PixelTexture.cpp \
 	PlaneSensor.cpp \
