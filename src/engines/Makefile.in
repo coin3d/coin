@@ -48,6 +48,7 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_FLAG =
+INSTALL_HEADER = $(INSTALL_DATA)
 transform = @program_transform_name@
 
 NORMAL_INSTALL = :
@@ -66,6 +67,7 @@ target_alias = @target_alias@
 target_triplet = @target@
 AMDEP = @AMDEP@
 AMTAR = @AMTAR@
+AM_INCLUDE = @AM_INCLUDE@
 AS = @AS@
 AWK = @AWK@
 BUILD_WITH_MSVC = @BUILD_WITH_MSVC@
@@ -301,25 +303,29 @@ $(libengines@SUFFIX@LINKHACK_la_SOURCES)
 HEADERS =  $(libenginesinc_HEADERS)
 
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
-DEP_FILES =  @AMDEP@ $(DEPDIR)/SoBoolOperation.Plo \
-$(DEPDIR)/SoCalculator.Plo $(DEPDIR)/SoComposeMatrix.Plo \
-$(DEPDIR)/SoComposeRotation.Plo $(DEPDIR)/SoComposeRotationFromTo.Plo \
-$(DEPDIR)/SoComposeVec2f.Plo $(DEPDIR)/SoComposeVec3f.Plo \
-$(DEPDIR)/SoComposeVec4f.Plo $(DEPDIR)/SoComputeBoundingBox.Plo \
-$(DEPDIR)/SoConcatenate.Plo $(DEPDIR)/SoConvertAll.Plo \
-$(DEPDIR)/SoCounter.Plo $(DEPDIR)/SoDecomposeMatrix.Plo \
-$(DEPDIR)/SoDecomposeRotation.Plo $(DEPDIR)/SoDecomposeVec2f.Plo \
-$(DEPDIR)/SoDecomposeVec3f.Plo $(DEPDIR)/SoDecomposeVec4f.Plo \
-$(DEPDIR)/SoElapsedTime.Plo $(DEPDIR)/SoEngine.Plo \
-$(DEPDIR)/SoEngineOutput.Plo $(DEPDIR)/SoFieldConverter.Plo \
-$(DEPDIR)/SoGate.Plo $(DEPDIR)/SoInterpolate.Plo \
-$(DEPDIR)/SoInterpolateFloat.Plo $(DEPDIR)/SoInterpolateRotation.Plo \
-$(DEPDIR)/SoInterpolateVec2f.Plo $(DEPDIR)/SoInterpolateVec3f.Plo \
-$(DEPDIR)/SoInterpolateVec4f.Plo $(DEPDIR)/SoOnOff.Plo \
-$(DEPDIR)/SoOneShot.Plo $(DEPDIR)/SoOutputData.Plo \
-$(DEPDIR)/SoSelectOne.Plo $(DEPDIR)/SoTimeCounter.Plo \
-$(DEPDIR)/SoTransformVec3f.Plo $(DEPDIR)/SoTriggerAny.Plo \
-$(DEPDIR)/all.Plo $(DEPDIR)/evaluator.Plo $(DEPDIR)/evaluator_tab.Plo
+@AMDEP@DEP_FILES =  $(DEPDIR)/SoBoolOperation.Plo \
+@AMDEP@$(DEPDIR)/SoCalculator.Plo $(DEPDIR)/SoComposeMatrix.Plo \
+@AMDEP@$(DEPDIR)/SoComposeRotation.Plo \
+@AMDEP@$(DEPDIR)/SoComposeRotationFromTo.Plo \
+@AMDEP@$(DEPDIR)/SoComposeVec2f.Plo $(DEPDIR)/SoComposeVec3f.Plo \
+@AMDEP@$(DEPDIR)/SoComposeVec4f.Plo $(DEPDIR)/SoComputeBoundingBox.Plo \
+@AMDEP@$(DEPDIR)/SoConcatenate.Plo $(DEPDIR)/SoConvertAll.Plo \
+@AMDEP@$(DEPDIR)/SoCounter.Plo $(DEPDIR)/SoDecomposeMatrix.Plo \
+@AMDEP@$(DEPDIR)/SoDecomposeRotation.Plo $(DEPDIR)/SoDecomposeVec2f.Plo \
+@AMDEP@$(DEPDIR)/SoDecomposeVec3f.Plo $(DEPDIR)/SoDecomposeVec4f.Plo \
+@AMDEP@$(DEPDIR)/SoElapsedTime.Plo $(DEPDIR)/SoEngine.Plo \
+@AMDEP@$(DEPDIR)/SoEngineOutput.Plo $(DEPDIR)/SoFieldConverter.Plo \
+@AMDEP@$(DEPDIR)/SoGate.Plo $(DEPDIR)/SoInterpolate.Plo \
+@AMDEP@$(DEPDIR)/SoInterpolateFloat.Plo \
+@AMDEP@$(DEPDIR)/SoInterpolateRotation.Plo \
+@AMDEP@$(DEPDIR)/SoInterpolateVec2f.Plo \
+@AMDEP@$(DEPDIR)/SoInterpolateVec3f.Plo \
+@AMDEP@$(DEPDIR)/SoInterpolateVec4f.Plo $(DEPDIR)/SoOnOff.Plo \
+@AMDEP@$(DEPDIR)/SoOneShot.Plo $(DEPDIR)/SoOutputData.Plo \
+@AMDEP@$(DEPDIR)/SoSelectOne.Plo $(DEPDIR)/SoTimeCounter.Plo \
+@AMDEP@$(DEPDIR)/SoTransformVec3f.Plo $(DEPDIR)/SoTriggerAny.Plo \
+@AMDEP@$(DEPDIR)/all.Plo $(DEPDIR)/evaluator.Plo \
+@AMDEP@$(DEPDIR)/evaluator_tab.Plo
 DIST_COMMON =  $(libenginesinc_HEADERS) Makefile.am Makefile.in
 
 
@@ -337,7 +343,7 @@ $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am $(top_srcdir)/configur
 
 Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) \
-	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= CONFIG_LINKS= CONFIG_COMMANDS= $(SHELL) ./config.status
 
 
 mostlyclean-libLTLIBRARIES:
@@ -408,8 +414,8 @@ install-libenginesincHEADERS: $(libenginesinc_HEADERS)
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  if cmp -s $$d$$p $(DESTDIR)$(libenginesincdir)/$$f; then :; else \
-	    echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libenginesincdir)/$$f"; \
-	    $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libenginesincdir)/$$f; \
+	    echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libenginesincdir)/$$f"; \
+	    $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libenginesincdir)/$$f; \
 	  fi; \
 	done
 
@@ -459,44 +465,44 @@ distclean-tags:
 
 maintainer-clean-tags:
 
-@AMDEP@include $(DEPDIR)/SoBoolOperation.Plo
-@AMDEP@include $(DEPDIR)/SoCalculator.Plo
-@AMDEP@include $(DEPDIR)/SoComposeMatrix.Plo
-@AMDEP@include $(DEPDIR)/SoComposeRotation.Plo
-@AMDEP@include $(DEPDIR)/SoComposeRotationFromTo.Plo
-@AMDEP@include $(DEPDIR)/SoComposeVec2f.Plo
-@AMDEP@include $(DEPDIR)/SoComposeVec3f.Plo
-@AMDEP@include $(DEPDIR)/SoComposeVec4f.Plo
-@AMDEP@include $(DEPDIR)/SoComputeBoundingBox.Plo
-@AMDEP@include $(DEPDIR)/SoConcatenate.Plo
-@AMDEP@include $(DEPDIR)/SoConvertAll.Plo
-@AMDEP@include $(DEPDIR)/SoCounter.Plo
-@AMDEP@include $(DEPDIR)/SoDecomposeMatrix.Plo
-@AMDEP@include $(DEPDIR)/SoDecomposeRotation.Plo
-@AMDEP@include $(DEPDIR)/SoDecomposeVec2f.Plo
-@AMDEP@include $(DEPDIR)/SoDecomposeVec3f.Plo
-@AMDEP@include $(DEPDIR)/SoDecomposeVec4f.Plo
-@AMDEP@include $(DEPDIR)/SoElapsedTime.Plo
-@AMDEP@include $(DEPDIR)/SoEngine.Plo
-@AMDEP@include $(DEPDIR)/SoEngineOutput.Plo
-@AMDEP@include $(DEPDIR)/SoFieldConverter.Plo
-@AMDEP@include $(DEPDIR)/SoGate.Plo
-@AMDEP@include $(DEPDIR)/SoInterpolate.Plo
-@AMDEP@include $(DEPDIR)/SoInterpolateFloat.Plo
-@AMDEP@include $(DEPDIR)/SoInterpolateRotation.Plo
-@AMDEP@include $(DEPDIR)/SoInterpolateVec2f.Plo
-@AMDEP@include $(DEPDIR)/SoInterpolateVec3f.Plo
-@AMDEP@include $(DEPDIR)/SoInterpolateVec4f.Plo
-@AMDEP@include $(DEPDIR)/SoOnOff.Plo
-@AMDEP@include $(DEPDIR)/SoOneShot.Plo
-@AMDEP@include $(DEPDIR)/SoOutputData.Plo
-@AMDEP@include $(DEPDIR)/SoSelectOne.Plo
-@AMDEP@include $(DEPDIR)/SoTimeCounter.Plo
-@AMDEP@include $(DEPDIR)/SoTransformVec3f.Plo
-@AMDEP@include $(DEPDIR)/SoTriggerAny.Plo
-@AMDEP@include $(DEPDIR)/all.Plo
-@AMDEP@include $(DEPDIR)/evaluator.Plo
-@AMDEP@include $(DEPDIR)/evaluator_tab.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoBoolOperation.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoCalculator.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoComposeMatrix.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoComposeRotation.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoComposeRotationFromTo.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoComposeVec2f.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoComposeVec3f.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoComposeVec4f.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoComputeBoundingBox.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoConcatenate.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoConvertAll.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoCounter.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoDecomposeMatrix.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoDecomposeRotation.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoDecomposeVec2f.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoDecomposeVec3f.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoDecomposeVec4f.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoElapsedTime.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoEngine.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoEngineOutput.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoFieldConverter.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGate.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoInterpolate.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoInterpolateFloat.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoInterpolateRotation.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoInterpolateVec2f.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoInterpolateVec3f.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoInterpolateVec4f.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoOnOff.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoOneShot.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoOutputData.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoSelectOne.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTimeCounter.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTransformVec3f.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTriggerAny.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/all.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/evaluator.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/evaluator_tab.Plo
 
 mostlyclean-depend:
 
@@ -539,8 +545,9 @@ maintainer-clean-depend:
 
 distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
 
+
 distdir: $(DISTFILES)
-	$(mkinstalldirs) $(distdir)/$(top_srcdir)/include/Inventor/engines
+	$(mkinstalldirs) $(distdir)/$(top_srcdir)/include/Inventor/engines $(top_srcdir)/include/Inventor/engines
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
@@ -619,230 +626,22 @@ maintainer-clean-am:  maintainer-clean-libLTLIBRARIES \
 
 maintainer-clean: maintainer-clean-am
 
-.PHONY:      all all all all all all all all all all all all all all all \
-all all-am all-am all-am all-am all-am all-am all-am all-am all-am \
-all-am all-am all-am all-am all-am all-am all-am all-recursive \
-all-recursive all-recursive all-recursive all-recursive \
-all-recursive-am all-recursive-am all-recursive-am all-redirect \
-all-redirect all-redirect all-redirect all-redirect all-redirect \
-all-redirect all-redirect all-redirect all-redirect all-redirect \
-all-redirect all-redirect all-redirect all-redirect all-redirect check \
-check check check check check check check check check check check check \
-check check check check-am check-am check-am check-am check-am check-am \
-check-am check-am check-am check-am check-am check-am check-am check-am \
-check-am check-am check-recursive check-recursive check-recursive \
-check-recursive check-recursive clean clean clean clean clean clean \
-clean clean clean clean clean clean clean clean clean clean \
-clean-compile clean-compile clean-compile clean-compile clean-compile \
-clean-compile clean-compile clean-compile clean-compile clean-compile \
-clean-depend clean-depend clean-depend clean-depend clean-depend \
-clean-depend clean-depend clean-depend clean-depend clean-depend \
-clean-generic clean-generic clean-generic clean-generic clean-generic \
-clean-generic clean-generic clean-generic clean-generic clean-generic \
-clean-generic clean-generic clean-generic clean-generic clean-generic \
-clean-generic clean-hdr clean-hdr clean-libLTLIBRARIES \
-clean-libLTLIBRARIES clean-libLTLIBRARIES clean-libLTLIBRARIES \
-clean-libLTLIBRARIES clean-libLTLIBRARIES clean-libLTLIBRARIES \
-clean-libLTLIBRARIES clean-libLTLIBRARIES clean-libLTLIBRARIES \
-clean-libtool clean-libtool clean-libtool clean-libtool clean-libtool \
-clean-libtool clean-libtool clean-libtool clean-libtool clean-libtool \
-clean-noinstLTLIBRARIES clean-noinstLTLIBRARIES clean-noinstLTLIBRARIES \
-clean-noinstLTLIBRARIES clean-noinstLTLIBRARIES clean-noinstLTLIBRARIES \
-clean-noinstLTLIBRARIES clean-noinstLTLIBRARIES clean-noinstLTLIBRARIES \
-clean-recursive clean-recursive clean-recursive clean-recursive \
-clean-recursive clean-tags clean-tags clean-tags clean-tags clean-tags \
-clean-tags clean-tags clean-tags clean-tags clean-tags clean-tags \
-clean-tags clean-tags clean-tags clean-tags clean-tags distclean \
-distclean distclean distclean distclean distclean distclean distclean \
-distclean distclean distclean distclean distclean distclean distclean \
-distclean distclean-compile distclean-compile distclean-compile \
-distclean-compile distclean-compile distclean-compile distclean-compile \
-distclean-compile distclean-compile distclean-compile distclean-depend \
-distclean-depend distclean-depend distclean-depend distclean-depend \
-distclean-depend distclean-depend distclean-depend distclean-depend \
-distclean-depend distclean-generic distclean-generic distclean-generic \
-distclean-generic distclean-generic distclean-generic distclean-generic \
-distclean-generic distclean-generic distclean-generic distclean-generic \
-distclean-generic distclean-generic distclean-generic distclean-generic \
-distclean-generic distclean-hdr distclean-hdr distclean-libLTLIBRARIES \
-distclean-libLTLIBRARIES distclean-libLTLIBRARIES \
-distclean-libLTLIBRARIES distclean-libLTLIBRARIES \
-distclean-libLTLIBRARIES distclean-libLTLIBRARIES \
-distclean-libLTLIBRARIES distclean-libLTLIBRARIES \
-distclean-libLTLIBRARIES distclean-libtool distclean-libtool \
-distclean-libtool distclean-libtool distclean-libtool distclean-libtool \
-distclean-libtool distclean-libtool distclean-libtool distclean-libtool \
-distclean-noinstLTLIBRARIES distclean-noinstLTLIBRARIES \
-distclean-noinstLTLIBRARIES distclean-noinstLTLIBRARIES \
-distclean-noinstLTLIBRARIES distclean-noinstLTLIBRARIES \
-distclean-noinstLTLIBRARIES distclean-noinstLTLIBRARIES \
-distclean-noinstLTLIBRARIES distclean-recursive distclean-recursive \
-distclean-recursive distclean-recursive distclean-recursive \
-distclean-tags distclean-tags distclean-tags distclean-tags \
-distclean-tags distclean-tags distclean-tags distclean-tags \
-distclean-tags distclean-tags distclean-tags distclean-tags \
-distclean-tags distclean-tags distclean-tags distclean-tags distdir \
-distdir distdir distdir distdir distdir distdir distdir distdir distdir \
-distdir distdir distdir distdir distdir distdir dvi dvi dvi dvi dvi dvi \
-dvi dvi dvi dvi dvi dvi dvi dvi dvi dvi dvi-am dvi-am dvi-am dvi-am \
-dvi-am dvi-am dvi-am dvi-am dvi-am dvi-am dvi-am dvi-am dvi-am dvi-am \
-dvi-am dvi-am dvi-recursive dvi-recursive dvi-recursive dvi-recursive \
-dvi-recursive info info info info info info info info info info info \
-info info info info info info-am info-am info-am info-am info-am \
-info-am info-am info-am info-am info-am info-am info-am info-am info-am \
-info-am info-am info-recursive info-recursive info-recursive \
-info-recursive info-recursive install install install install install \
-install install install install install install install install install \
-install install install-am install-am install-am install-am install-am \
-install-am install-am install-am install-am install-am install-am \
-install-am install-am install-am install-am install-am \
-install-binSCRIPTS install-cfgdataDATA install-data install-data \
-install-data install-data install-data install-data install-data \
-install-data install-data install-data install-data install-data \
-install-data install-data install-data install-data install-data-am \
-install-data-am install-data-am install-data-am install-data-am \
-install-data-am install-data-am install-data-am install-data-am \
-install-data-am install-data-am install-data-am install-data-am \
-install-data-am install-data-am install-data-am install-data-recursive \
-install-data-recursive install-data-recursive install-data-recursive \
-install-data-recursive install-draggerdefdataDATA install-exec \
-install-exec install-exec install-exec install-exec install-exec \
-install-exec install-exec install-exec install-exec install-exec \
-install-exec install-exec install-exec install-exec install-exec \
-install-exec-am install-exec-am install-exec-am install-exec-am \
-install-exec-am install-exec-am install-exec-am install-exec-am \
-install-exec-am install-exec-am install-exec-am install-exec-am \
-install-exec-am install-exec-am install-exec-am install-exec-am \
-install-exec-recursive install-exec-recursive install-exec-recursive \
-install-exec-recursive install-exec-recursive \
-install-libCoin@SUFFIX@incHEADERS install-libLTLIBRARIES \
-install-libLTLIBRARIES install-libLTLIBRARIES install-libLTLIBRARIES \
-install-libLTLIBRARIES install-libLTLIBRARIES install-libLTLIBRARIES \
-install-libLTLIBRARIES install-libLTLIBRARIES install-libLTLIBRARIES \
-install-libVRMLnodesincHEADERS install-libactionsincHEADERS \
-install-libbaseincHEADERS install-libbundlesincHEADERS \
-install-libcachesincHEADERS install-libdetailsincHEADERS \
-install-libdraggersincHEADERS install-libelementsincHEADERS \
-install-libenginesincHEADERS install-lockincHEADERS install-m4dataDATA \
-install-recursive install-recursive install-recursive install-recursive \
-install-recursive install-strip install-strip install-strip \
-install-strip install-strip install-strip install-strip install-strip \
-install-strip install-strip install-strip install-strip install-strip \
-install-strip install-strip install-strip install-thisincHEADERS \
-installcheck installcheck installcheck installcheck installcheck \
-installcheck installcheck installcheck installcheck installcheck \
-installcheck installcheck installcheck installcheck installcheck \
-installcheck installcheck-am installcheck-am installcheck-am \
-installcheck-am installcheck-am installcheck-am installcheck-am \
-installcheck-am installcheck-am installcheck-am installcheck-am \
-installcheck-am installcheck-am installcheck-am installcheck-am \
-installcheck-am installcheck-recursive installcheck-recursive \
-installcheck-recursive installcheck-recursive installcheck-recursive \
-installdirs installdirs installdirs installdirs installdirs installdirs \
-installdirs installdirs installdirs installdirs installdirs installdirs \
-installdirs installdirs installdirs installdirs installdirs-am \
-installdirs-am installdirs-am installdirs-am installdirs-am \
-installdirs-recursive installdirs-recursive installdirs-recursive \
-installdirs-recursive installdirs-recursive maintainer-clean \
-maintainer-clean maintainer-clean maintainer-clean maintainer-clean \
-maintainer-clean maintainer-clean maintainer-clean maintainer-clean \
-maintainer-clean maintainer-clean maintainer-clean maintainer-clean \
-maintainer-clean maintainer-clean maintainer-clean \
-maintainer-clean-compile maintainer-clean-compile \
-maintainer-clean-compile maintainer-clean-compile \
-maintainer-clean-compile maintainer-clean-compile \
-maintainer-clean-compile maintainer-clean-compile \
-maintainer-clean-compile maintainer-clean-compile \
-maintainer-clean-depend maintainer-clean-depend maintainer-clean-depend \
-maintainer-clean-depend maintainer-clean-depend maintainer-clean-depend \
-maintainer-clean-depend maintainer-clean-depend maintainer-clean-depend \
+.PHONY: all all-am all-redirect check check-am clean clean-compile \
+clean-depend clean-generic clean-libLTLIBRARIES clean-libtool \
+clean-noinstLTLIBRARIES clean-tags distclean distclean-compile \
+distclean-depend distclean-generic distclean-libLTLIBRARIES \
+distclean-libtool distclean-noinstLTLIBRARIES distclean-tags distdir \
+dvi dvi-am info info-am install install-am install-data install-data-am \
+install-exec install-exec-am install-libLTLIBRARIES \
+install-libenginesincHEADERS install-strip installcheck installcheck-am \
+installdirs maintainer-clean maintainer-clean-compile \
 maintainer-clean-depend maintainer-clean-generic \
-maintainer-clean-generic maintainer-clean-generic \
-maintainer-clean-generic maintainer-clean-generic \
-maintainer-clean-generic maintainer-clean-generic \
-maintainer-clean-generic maintainer-clean-generic \
-maintainer-clean-generic maintainer-clean-generic \
-maintainer-clean-generic maintainer-clean-generic \
-maintainer-clean-generic maintainer-clean-generic \
-maintainer-clean-generic maintainer-clean-hdr maintainer-clean-hdr \
-maintainer-clean-libLTLIBRARIES maintainer-clean-libLTLIBRARIES \
-maintainer-clean-libLTLIBRARIES maintainer-clean-libLTLIBRARIES \
-maintainer-clean-libLTLIBRARIES maintainer-clean-libLTLIBRARIES \
-maintainer-clean-libLTLIBRARIES maintainer-clean-libLTLIBRARIES \
-maintainer-clean-libLTLIBRARIES maintainer-clean-libLTLIBRARIES \
-maintainer-clean-libtool maintainer-clean-libtool \
-maintainer-clean-libtool maintainer-clean-libtool \
-maintainer-clean-libtool maintainer-clean-libtool \
-maintainer-clean-libtool maintainer-clean-libtool \
-maintainer-clean-libtool maintainer-clean-libtool \
-maintainer-clean-noinstLTLIBRARIES maintainer-clean-noinstLTLIBRARIES \
-maintainer-clean-noinstLTLIBRARIES maintainer-clean-noinstLTLIBRARIES \
-maintainer-clean-noinstLTLIBRARIES maintainer-clean-noinstLTLIBRARIES \
-maintainer-clean-noinstLTLIBRARIES maintainer-clean-noinstLTLIBRARIES \
-maintainer-clean-noinstLTLIBRARIES maintainer-clean-recursive \
-maintainer-clean-recursive maintainer-clean-recursive \
-maintainer-clean-recursive maintainer-clean-recursive \
-maintainer-clean-tags maintainer-clean-tags maintainer-clean-tags \
-maintainer-clean-tags maintainer-clean-tags maintainer-clean-tags \
-maintainer-clean-tags maintainer-clean-tags maintainer-clean-tags \
-maintainer-clean-tags maintainer-clean-tags maintainer-clean-tags \
-maintainer-clean-tags maintainer-clean-tags maintainer-clean-tags \
-maintainer-clean-tags mostlyclean mostlyclean mostlyclean mostlyclean \
-mostlyclean mostlyclean mostlyclean mostlyclean mostlyclean mostlyclean \
-mostlyclean mostlyclean mostlyclean mostlyclean mostlyclean mostlyclean \
-mostlyclean-compile mostlyclean-compile mostlyclean-compile \
-mostlyclean-compile mostlyclean-compile mostlyclean-compile \
-mostlyclean-compile mostlyclean-compile mostlyclean-compile \
-mostlyclean-compile mostlyclean-depend mostlyclean-depend \
-mostlyclean-depend mostlyclean-depend mostlyclean-depend \
-mostlyclean-depend mostlyclean-depend mostlyclean-depend \
-mostlyclean-depend mostlyclean-depend mostlyclean-generic \
-mostlyclean-generic mostlyclean-generic mostlyclean-generic \
-mostlyclean-generic mostlyclean-generic mostlyclean-generic \
-mostlyclean-generic mostlyclean-generic mostlyclean-generic \
-mostlyclean-generic mostlyclean-generic mostlyclean-generic \
-mostlyclean-generic mostlyclean-generic mostlyclean-generic \
-mostlyclean-hdr mostlyclean-hdr mostlyclean-libLTLIBRARIES \
-mostlyclean-libLTLIBRARIES mostlyclean-libLTLIBRARIES \
-mostlyclean-libLTLIBRARIES mostlyclean-libLTLIBRARIES \
-mostlyclean-libLTLIBRARIES mostlyclean-libLTLIBRARIES \
-mostlyclean-libLTLIBRARIES mostlyclean-libLTLIBRARIES \
-mostlyclean-libLTLIBRARIES mostlyclean-libtool mostlyclean-libtool \
-mostlyclean-libtool mostlyclean-libtool mostlyclean-libtool \
-mostlyclean-libtool mostlyclean-libtool mostlyclean-libtool \
-mostlyclean-libtool mostlyclean-libtool mostlyclean-noinstLTLIBRARIES \
-mostlyclean-noinstLTLIBRARIES mostlyclean-noinstLTLIBRARIES \
-mostlyclean-noinstLTLIBRARIES mostlyclean-noinstLTLIBRARIES \
-mostlyclean-noinstLTLIBRARIES mostlyclean-noinstLTLIBRARIES \
-mostlyclean-noinstLTLIBRARIES mostlyclean-noinstLTLIBRARIES \
-mostlyclean-recursive mostlyclean-recursive mostlyclean-recursive \
-mostlyclean-recursive mostlyclean-recursive mostlyclean-tags \
-mostlyclean-tags mostlyclean-tags mostlyclean-tags mostlyclean-tags \
-mostlyclean-tags mostlyclean-tags mostlyclean-tags mostlyclean-tags \
-mostlyclean-tags mostlyclean-tags mostlyclean-tags mostlyclean-tags \
-mostlyclean-tags mostlyclean-tags mostlyclean-tags tags tags tags tags \
-tags tags tags tags tags tags tags tags tags tags tags tags \
-tags-recursive tags-recursive tags-recursive tags-recursive \
-tags-recursive uninstall uninstall uninstall uninstall uninstall \
-uninstall uninstall uninstall uninstall uninstall uninstall uninstall \
-uninstall uninstall uninstall uninstall uninstall-am uninstall-am \
-uninstall-am uninstall-am uninstall-am uninstall-am uninstall-am \
-uninstall-am uninstall-am uninstall-am uninstall-am uninstall-am \
-uninstall-am uninstall-am uninstall-am uninstall-am \
-uninstall-binSCRIPTS uninstall-cfgdataDATA uninstall-draggerdefdataDATA \
-uninstall-libCoin@SUFFIX@incHEADERS uninstall-libLTLIBRARIES \
-uninstall-libLTLIBRARIES uninstall-libLTLIBRARIES \
-uninstall-libLTLIBRARIES uninstall-libLTLIBRARIES \
-uninstall-libLTLIBRARIES uninstall-libLTLIBRARIES \
-uninstall-libLTLIBRARIES uninstall-libLTLIBRARIES \
-uninstall-libLTLIBRARIES uninstall-libVRMLnodesincHEADERS \
-uninstall-libactionsincHEADERS uninstall-libbaseincHEADERS \
-uninstall-libbundlesincHEADERS uninstall-libcachesincHEADERS \
-uninstall-libdetailsincHEADERS uninstall-libdraggersincHEADERS \
-uninstall-libelementsincHEADERS uninstall-libenginesincHEADERS \
-uninstall-lockincHEADERS uninstall-m4dataDATA uninstall-recursive \
-uninstall-recursive uninstall-recursive uninstall-recursive \
-uninstall-recursive uninstall-thisincHEADERS
+maintainer-clean-libLTLIBRARIES maintainer-clean-libtool \
+maintainer-clean-noinstLTLIBRARIES maintainer-clean-tags mostlyclean \
+mostlyclean-compile mostlyclean-depend mostlyclean-generic \
+mostlyclean-libLTLIBRARIES mostlyclean-libtool \
+mostlyclean-noinstLTLIBRARIES mostlyclean-tags tags uninstall \
+uninstall-am uninstall-libLTLIBRARIES uninstall-libenginesincHEADERS
 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

@@ -48,6 +48,7 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_FLAG =
+INSTALL_HEADER = $(INSTALL_DATA)
 transform = @program_transform_name@
 
 NORMAL_INSTALL = :
@@ -66,6 +67,7 @@ target_alias = @target_alias@
 target_triplet = @target@
 AMDEP = @AMDEP@
 AMTAR = @AMTAR@
+AM_INCLUDE = @AM_INCLUDE@
 AS = @AS@
 AWK = @AWK@
 BUILD_WITH_MSVC = @BUILD_WITH_MSVC@
@@ -484,59 +486,64 @@ $(libnodes@SUFFIX@LINKHACK_la_SOURCES)
 HEADERS =  $(libnodesinc_HEADERS)
 
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
-DEP_FILES =  @AMDEP@ $(DEPDIR)/SoAnnoText3.Plo \
-$(DEPDIR)/SoAnnoText3Property.Plo $(DEPDIR)/SoAnnotation.Plo \
-$(DEPDIR)/SoAntiSquish.Plo $(DEPDIR)/SoArray.Plo \
-$(DEPDIR)/SoAsciiText.Plo $(DEPDIR)/SoBaseColor.Plo \
-$(DEPDIR)/SoBlinker.Plo $(DEPDIR)/SoCallback.Plo $(DEPDIR)/SoCamera.Plo \
-$(DEPDIR)/SoClipPlane.Plo $(DEPDIR)/SoColorIndex.Plo \
-$(DEPDIR)/SoComplexity.Plo $(DEPDIR)/SoCone.Plo \
-$(DEPDIR)/SoCoordinate3.Plo $(DEPDIR)/SoCoordinate4.Plo \
-$(DEPDIR)/SoCube.Plo $(DEPDIR)/SoCylinder.Plo \
-$(DEPDIR)/SoDirectionalLight.Plo $(DEPDIR)/SoDrawStyle.Plo \
-$(DEPDIR)/SoEnvironment.Plo $(DEPDIR)/SoEventCallback.Plo \
-$(DEPDIR)/SoExtSelection.Plo $(DEPDIR)/SoFaceSet.Plo \
-$(DEPDIR)/SoFile.Plo $(DEPDIR)/SoFont.Plo $(DEPDIR)/SoFontStyle.Plo \
-$(DEPDIR)/SoGroup.Plo $(DEPDIR)/SoImage.Plo \
-$(DEPDIR)/SoIndexedFaceSet.Plo $(DEPDIR)/SoIndexedLineSet.Plo \
-$(DEPDIR)/SoIndexedNurbsCurve.Plo $(DEPDIR)/SoIndexedNurbsSurface.Plo \
-$(DEPDIR)/SoIndexedShape.Plo $(DEPDIR)/SoIndexedTriangleStripSet.Plo \
-$(DEPDIR)/SoInfo.Plo $(DEPDIR)/SoLOD.Plo $(DEPDIR)/SoLabel.Plo \
-$(DEPDIR)/SoLevelOfDetail.Plo $(DEPDIR)/SoLevelOfSimplification.Plo \
-$(DEPDIR)/SoLight.Plo $(DEPDIR)/SoLightModel.Plo \
-$(DEPDIR)/SoLineSet.Plo $(DEPDIR)/SoLinearProfile.Plo \
-$(DEPDIR)/SoLocateHighlight.Plo $(DEPDIR)/SoMarkerSet.Plo \
-$(DEPDIR)/SoMaterial.Plo $(DEPDIR)/SoMaterialBinding.Plo \
-$(DEPDIR)/SoMatrixTransform.Plo $(DEPDIR)/SoMultipleCopy.Plo \
-$(DEPDIR)/SoNode.Plo $(DEPDIR)/SoNonIndexedShape.Plo \
-$(DEPDIR)/SoNormal.Plo $(DEPDIR)/SoNormalBinding.Plo \
-$(DEPDIR)/SoNurbsCurve.Plo $(DEPDIR)/SoNurbsProfile.Plo \
-$(DEPDIR)/SoNurbsSurface.Plo $(DEPDIR)/SoOrthographicCamera.Plo \
-$(DEPDIR)/SoPackedColor.Plo $(DEPDIR)/SoPathSwitch.Plo \
-$(DEPDIR)/SoPendulum.Plo $(DEPDIR)/SoPerspectiveCamera.Plo \
-$(DEPDIR)/SoPickStyle.Plo $(DEPDIR)/SoPointLight.Plo \
-$(DEPDIR)/SoPointSet.Plo $(DEPDIR)/SoPolygonOffset.Plo \
-$(DEPDIR)/SoProfile.Plo $(DEPDIR)/SoProfileCoordinate2.Plo \
-$(DEPDIR)/SoProfileCoordinate3.Plo $(DEPDIR)/SoQuadMesh.Plo \
-$(DEPDIR)/SoResetTransform.Plo $(DEPDIR)/SoRotation.Plo \
-$(DEPDIR)/SoRotationXYZ.Plo $(DEPDIR)/SoRotor.Plo $(DEPDIR)/SoScale.Plo \
-$(DEPDIR)/SoSelection.Plo $(DEPDIR)/SoSeparator.Plo \
-$(DEPDIR)/SoShape.Plo $(DEPDIR)/SoShapeHints.Plo \
-$(DEPDIR)/SoShuttle.Plo $(DEPDIR)/SoSphere.Plo \
-$(DEPDIR)/SoSpotLight.Plo $(DEPDIR)/SoSurroundScale.Plo \
-$(DEPDIR)/SoSwitch.Plo $(DEPDIR)/SoText2.Plo $(DEPDIR)/SoText3.Plo \
-$(DEPDIR)/SoTexture2.Plo $(DEPDIR)/SoTexture2Transform.Plo \
-$(DEPDIR)/SoTextureCoordinate2.Plo \
-$(DEPDIR)/SoTextureCoordinateBinding.Plo \
-$(DEPDIR)/SoTextureCoordinateDefault.Plo \
-$(DEPDIR)/SoTextureCoordinateEnvironment.Plo \
-$(DEPDIR)/SoTextureCoordinateFunction.Plo \
-$(DEPDIR)/SoTextureCoordinatePlane.Plo $(DEPDIR)/SoTransform.Plo \
-$(DEPDIR)/SoTransformSeparator.Plo $(DEPDIR)/SoTransformation.Plo \
-$(DEPDIR)/SoTranslation.Plo $(DEPDIR)/SoTriangleStripSet.Plo \
-$(DEPDIR)/SoUnits.Plo $(DEPDIR)/SoUnknownNode.Plo \
-$(DEPDIR)/SoVertexProperty.Plo $(DEPDIR)/SoVertexShape.Plo \
-$(DEPDIR)/SoWWWAnchor.Plo $(DEPDIR)/SoWWWInline.Plo $(DEPDIR)/all.Plo
+@AMDEP@DEP_FILES =  $(DEPDIR)/SoAnnoText3.Plo \
+@AMDEP@$(DEPDIR)/SoAnnoText3Property.Plo $(DEPDIR)/SoAnnotation.Plo \
+@AMDEP@$(DEPDIR)/SoAntiSquish.Plo $(DEPDIR)/SoArray.Plo \
+@AMDEP@$(DEPDIR)/SoAsciiText.Plo $(DEPDIR)/SoBaseColor.Plo \
+@AMDEP@$(DEPDIR)/SoBlinker.Plo $(DEPDIR)/SoCallback.Plo \
+@AMDEP@$(DEPDIR)/SoCamera.Plo $(DEPDIR)/SoClipPlane.Plo \
+@AMDEP@$(DEPDIR)/SoColorIndex.Plo $(DEPDIR)/SoComplexity.Plo \
+@AMDEP@$(DEPDIR)/SoCone.Plo $(DEPDIR)/SoCoordinate3.Plo \
+@AMDEP@$(DEPDIR)/SoCoordinate4.Plo $(DEPDIR)/SoCube.Plo \
+@AMDEP@$(DEPDIR)/SoCylinder.Plo $(DEPDIR)/SoDirectionalLight.Plo \
+@AMDEP@$(DEPDIR)/SoDrawStyle.Plo $(DEPDIR)/SoEnvironment.Plo \
+@AMDEP@$(DEPDIR)/SoEventCallback.Plo $(DEPDIR)/SoExtSelection.Plo \
+@AMDEP@$(DEPDIR)/SoFaceSet.Plo $(DEPDIR)/SoFile.Plo \
+@AMDEP@$(DEPDIR)/SoFont.Plo $(DEPDIR)/SoFontStyle.Plo \
+@AMDEP@$(DEPDIR)/SoGroup.Plo $(DEPDIR)/SoImage.Plo \
+@AMDEP@$(DEPDIR)/SoIndexedFaceSet.Plo $(DEPDIR)/SoIndexedLineSet.Plo \
+@AMDEP@$(DEPDIR)/SoIndexedNurbsCurve.Plo \
+@AMDEP@$(DEPDIR)/SoIndexedNurbsSurface.Plo $(DEPDIR)/SoIndexedShape.Plo \
+@AMDEP@$(DEPDIR)/SoIndexedTriangleStripSet.Plo $(DEPDIR)/SoInfo.Plo \
+@AMDEP@$(DEPDIR)/SoLOD.Plo $(DEPDIR)/SoLabel.Plo \
+@AMDEP@$(DEPDIR)/SoLevelOfDetail.Plo \
+@AMDEP@$(DEPDIR)/SoLevelOfSimplification.Plo $(DEPDIR)/SoLight.Plo \
+@AMDEP@$(DEPDIR)/SoLightModel.Plo $(DEPDIR)/SoLineSet.Plo \
+@AMDEP@$(DEPDIR)/SoLinearProfile.Plo $(DEPDIR)/SoLocateHighlight.Plo \
+@AMDEP@$(DEPDIR)/SoMarkerSet.Plo $(DEPDIR)/SoMaterial.Plo \
+@AMDEP@$(DEPDIR)/SoMaterialBinding.Plo $(DEPDIR)/SoMatrixTransform.Plo \
+@AMDEP@$(DEPDIR)/SoMultipleCopy.Plo $(DEPDIR)/SoNode.Plo \
+@AMDEP@$(DEPDIR)/SoNonIndexedShape.Plo $(DEPDIR)/SoNormal.Plo \
+@AMDEP@$(DEPDIR)/SoNormalBinding.Plo $(DEPDIR)/SoNurbsCurve.Plo \
+@AMDEP@$(DEPDIR)/SoNurbsProfile.Plo $(DEPDIR)/SoNurbsSurface.Plo \
+@AMDEP@$(DEPDIR)/SoOrthographicCamera.Plo $(DEPDIR)/SoPackedColor.Plo \
+@AMDEP@$(DEPDIR)/SoPathSwitch.Plo $(DEPDIR)/SoPendulum.Plo \
+@AMDEP@$(DEPDIR)/SoPerspectiveCamera.Plo $(DEPDIR)/SoPickStyle.Plo \
+@AMDEP@$(DEPDIR)/SoPointLight.Plo $(DEPDIR)/SoPointSet.Plo \
+@AMDEP@$(DEPDIR)/SoPolygonOffset.Plo $(DEPDIR)/SoProfile.Plo \
+@AMDEP@$(DEPDIR)/SoProfileCoordinate2.Plo \
+@AMDEP@$(DEPDIR)/SoProfileCoordinate3.Plo $(DEPDIR)/SoQuadMesh.Plo \
+@AMDEP@$(DEPDIR)/SoResetTransform.Plo $(DEPDIR)/SoRotation.Plo \
+@AMDEP@$(DEPDIR)/SoRotationXYZ.Plo $(DEPDIR)/SoRotor.Plo \
+@AMDEP@$(DEPDIR)/SoScale.Plo $(DEPDIR)/SoSelection.Plo \
+@AMDEP@$(DEPDIR)/SoSeparator.Plo $(DEPDIR)/SoShape.Plo \
+@AMDEP@$(DEPDIR)/SoShapeHints.Plo $(DEPDIR)/SoShuttle.Plo \
+@AMDEP@$(DEPDIR)/SoSphere.Plo $(DEPDIR)/SoSpotLight.Plo \
+@AMDEP@$(DEPDIR)/SoSurroundScale.Plo $(DEPDIR)/SoSwitch.Plo \
+@AMDEP@$(DEPDIR)/SoText2.Plo $(DEPDIR)/SoText3.Plo \
+@AMDEP@$(DEPDIR)/SoTexture2.Plo $(DEPDIR)/SoTexture2Transform.Plo \
+@AMDEP@$(DEPDIR)/SoTextureCoordinate2.Plo \
+@AMDEP@$(DEPDIR)/SoTextureCoordinateBinding.Plo \
+@AMDEP@$(DEPDIR)/SoTextureCoordinateDefault.Plo \
+@AMDEP@$(DEPDIR)/SoTextureCoordinateEnvironment.Plo \
+@AMDEP@$(DEPDIR)/SoTextureCoordinateFunction.Plo \
+@AMDEP@$(DEPDIR)/SoTextureCoordinatePlane.Plo $(DEPDIR)/SoTransform.Plo \
+@AMDEP@$(DEPDIR)/SoTransformSeparator.Plo \
+@AMDEP@$(DEPDIR)/SoTransformation.Plo $(DEPDIR)/SoTranslation.Plo \
+@AMDEP@$(DEPDIR)/SoTriangleStripSet.Plo $(DEPDIR)/SoUnits.Plo \
+@AMDEP@$(DEPDIR)/SoUnknownNode.Plo $(DEPDIR)/SoVertexProperty.Plo \
+@AMDEP@$(DEPDIR)/SoVertexShape.Plo $(DEPDIR)/SoWWWAnchor.Plo \
+@AMDEP@$(DEPDIR)/SoWWWInline.Plo $(DEPDIR)/all.Plo
 DIST_COMMON =  $(libnodesinc_HEADERS) Makefile.am Makefile.in
 
 
@@ -554,7 +561,7 @@ $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am $(top_srcdir)/configur
 
 Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) \
-	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= CONFIG_LINKS= CONFIG_COMMANDS= $(SHELL) ./config.status
 
 
 mostlyclean-libLTLIBRARIES:
@@ -625,8 +632,8 @@ install-libnodesincHEADERS: $(libnodesinc_HEADERS)
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  if cmp -s $$d$$p $(DESTDIR)$(libnodesincdir)/$$f; then :; else \
-	    echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libnodesincdir)/$$f"; \
-	    $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libnodesincdir)/$$f; \
+	    echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libnodesincdir)/$$f"; \
+	    $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libnodesincdir)/$$f; \
 	  fi; \
 	done
 
@@ -676,112 +683,112 @@ distclean-tags:
 
 maintainer-clean-tags:
 
-@AMDEP@include $(DEPDIR)/SoAnnoText3.Plo
-@AMDEP@include $(DEPDIR)/SoAnnoText3Property.Plo
-@AMDEP@include $(DEPDIR)/SoAnnotation.Plo
-@AMDEP@include $(DEPDIR)/SoAntiSquish.Plo
-@AMDEP@include $(DEPDIR)/SoArray.Plo
-@AMDEP@include $(DEPDIR)/SoAsciiText.Plo
-@AMDEP@include $(DEPDIR)/SoBaseColor.Plo
-@AMDEP@include $(DEPDIR)/SoBlinker.Plo
-@AMDEP@include $(DEPDIR)/SoCallback.Plo
-@AMDEP@include $(DEPDIR)/SoCamera.Plo
-@AMDEP@include $(DEPDIR)/SoClipPlane.Plo
-@AMDEP@include $(DEPDIR)/SoColorIndex.Plo
-@AMDEP@include $(DEPDIR)/SoComplexity.Plo
-@AMDEP@include $(DEPDIR)/SoCone.Plo
-@AMDEP@include $(DEPDIR)/SoCoordinate3.Plo
-@AMDEP@include $(DEPDIR)/SoCoordinate4.Plo
-@AMDEP@include $(DEPDIR)/SoCube.Plo
-@AMDEP@include $(DEPDIR)/SoCylinder.Plo
-@AMDEP@include $(DEPDIR)/SoDirectionalLight.Plo
-@AMDEP@include $(DEPDIR)/SoDrawStyle.Plo
-@AMDEP@include $(DEPDIR)/SoEnvironment.Plo
-@AMDEP@include $(DEPDIR)/SoEventCallback.Plo
-@AMDEP@include $(DEPDIR)/SoExtSelection.Plo
-@AMDEP@include $(DEPDIR)/SoFaceSet.Plo
-@AMDEP@include $(DEPDIR)/SoFile.Plo
-@AMDEP@include $(DEPDIR)/SoFont.Plo
-@AMDEP@include $(DEPDIR)/SoFontStyle.Plo
-@AMDEP@include $(DEPDIR)/SoGroup.Plo
-@AMDEP@include $(DEPDIR)/SoImage.Plo
-@AMDEP@include $(DEPDIR)/SoIndexedFaceSet.Plo
-@AMDEP@include $(DEPDIR)/SoIndexedLineSet.Plo
-@AMDEP@include $(DEPDIR)/SoIndexedNurbsCurve.Plo
-@AMDEP@include $(DEPDIR)/SoIndexedNurbsSurface.Plo
-@AMDEP@include $(DEPDIR)/SoIndexedShape.Plo
-@AMDEP@include $(DEPDIR)/SoIndexedTriangleStripSet.Plo
-@AMDEP@include $(DEPDIR)/SoInfo.Plo
-@AMDEP@include $(DEPDIR)/SoLOD.Plo
-@AMDEP@include $(DEPDIR)/SoLabel.Plo
-@AMDEP@include $(DEPDIR)/SoLevelOfDetail.Plo
-@AMDEP@include $(DEPDIR)/SoLevelOfSimplification.Plo
-@AMDEP@include $(DEPDIR)/SoLight.Plo
-@AMDEP@include $(DEPDIR)/SoLightModel.Plo
-@AMDEP@include $(DEPDIR)/SoLineSet.Plo
-@AMDEP@include $(DEPDIR)/SoLinearProfile.Plo
-@AMDEP@include $(DEPDIR)/SoLocateHighlight.Plo
-@AMDEP@include $(DEPDIR)/SoMarkerSet.Plo
-@AMDEP@include $(DEPDIR)/SoMaterial.Plo
-@AMDEP@include $(DEPDIR)/SoMaterialBinding.Plo
-@AMDEP@include $(DEPDIR)/SoMatrixTransform.Plo
-@AMDEP@include $(DEPDIR)/SoMultipleCopy.Plo
-@AMDEP@include $(DEPDIR)/SoNode.Plo
-@AMDEP@include $(DEPDIR)/SoNonIndexedShape.Plo
-@AMDEP@include $(DEPDIR)/SoNormal.Plo
-@AMDEP@include $(DEPDIR)/SoNormalBinding.Plo
-@AMDEP@include $(DEPDIR)/SoNurbsCurve.Plo
-@AMDEP@include $(DEPDIR)/SoNurbsProfile.Plo
-@AMDEP@include $(DEPDIR)/SoNurbsSurface.Plo
-@AMDEP@include $(DEPDIR)/SoOrthographicCamera.Plo
-@AMDEP@include $(DEPDIR)/SoPackedColor.Plo
-@AMDEP@include $(DEPDIR)/SoPathSwitch.Plo
-@AMDEP@include $(DEPDIR)/SoPendulum.Plo
-@AMDEP@include $(DEPDIR)/SoPerspectiveCamera.Plo
-@AMDEP@include $(DEPDIR)/SoPickStyle.Plo
-@AMDEP@include $(DEPDIR)/SoPointLight.Plo
-@AMDEP@include $(DEPDIR)/SoPointSet.Plo
-@AMDEP@include $(DEPDIR)/SoPolygonOffset.Plo
-@AMDEP@include $(DEPDIR)/SoProfile.Plo
-@AMDEP@include $(DEPDIR)/SoProfileCoordinate2.Plo
-@AMDEP@include $(DEPDIR)/SoProfileCoordinate3.Plo
-@AMDEP@include $(DEPDIR)/SoQuadMesh.Plo
-@AMDEP@include $(DEPDIR)/SoResetTransform.Plo
-@AMDEP@include $(DEPDIR)/SoRotation.Plo
-@AMDEP@include $(DEPDIR)/SoRotationXYZ.Plo
-@AMDEP@include $(DEPDIR)/SoRotor.Plo
-@AMDEP@include $(DEPDIR)/SoScale.Plo
-@AMDEP@include $(DEPDIR)/SoSelection.Plo
-@AMDEP@include $(DEPDIR)/SoSeparator.Plo
-@AMDEP@include $(DEPDIR)/SoShape.Plo
-@AMDEP@include $(DEPDIR)/SoShapeHints.Plo
-@AMDEP@include $(DEPDIR)/SoShuttle.Plo
-@AMDEP@include $(DEPDIR)/SoSphere.Plo
-@AMDEP@include $(DEPDIR)/SoSpotLight.Plo
-@AMDEP@include $(DEPDIR)/SoSurroundScale.Plo
-@AMDEP@include $(DEPDIR)/SoSwitch.Plo
-@AMDEP@include $(DEPDIR)/SoText2.Plo
-@AMDEP@include $(DEPDIR)/SoText3.Plo
-@AMDEP@include $(DEPDIR)/SoTexture2.Plo
-@AMDEP@include $(DEPDIR)/SoTexture2Transform.Plo
-@AMDEP@include $(DEPDIR)/SoTextureCoordinate2.Plo
-@AMDEP@include $(DEPDIR)/SoTextureCoordinateBinding.Plo
-@AMDEP@include $(DEPDIR)/SoTextureCoordinateDefault.Plo
-@AMDEP@include $(DEPDIR)/SoTextureCoordinateEnvironment.Plo
-@AMDEP@include $(DEPDIR)/SoTextureCoordinateFunction.Plo
-@AMDEP@include $(DEPDIR)/SoTextureCoordinatePlane.Plo
-@AMDEP@include $(DEPDIR)/SoTransform.Plo
-@AMDEP@include $(DEPDIR)/SoTransformSeparator.Plo
-@AMDEP@include $(DEPDIR)/SoTransformation.Plo
-@AMDEP@include $(DEPDIR)/SoTranslation.Plo
-@AMDEP@include $(DEPDIR)/SoTriangleStripSet.Plo
-@AMDEP@include $(DEPDIR)/SoUnits.Plo
-@AMDEP@include $(DEPDIR)/SoUnknownNode.Plo
-@AMDEP@include $(DEPDIR)/SoVertexProperty.Plo
-@AMDEP@include $(DEPDIR)/SoVertexShape.Plo
-@AMDEP@include $(DEPDIR)/SoWWWAnchor.Plo
-@AMDEP@include $(DEPDIR)/SoWWWInline.Plo
-@AMDEP@include $(DEPDIR)/all.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoAnnoText3.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoAnnoText3Property.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoAnnotation.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoAntiSquish.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoArray.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoAsciiText.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoBaseColor.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoBlinker.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoCallback.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoCamera.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoClipPlane.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoColorIndex.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoComplexity.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoCone.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoCoordinate3.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoCoordinate4.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoCube.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoCylinder.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoDirectionalLight.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoDrawStyle.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoEnvironment.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoEventCallback.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoExtSelection.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoFaceSet.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoFile.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoFont.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoFontStyle.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGroup.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoImage.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoIndexedFaceSet.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoIndexedLineSet.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoIndexedNurbsCurve.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoIndexedNurbsSurface.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoIndexedShape.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoIndexedTriangleStripSet.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoInfo.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoLOD.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoLabel.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoLevelOfDetail.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoLevelOfSimplification.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoLight.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoLightModel.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoLineSet.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoLinearProfile.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoLocateHighlight.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoMarkerSet.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoMaterial.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoMaterialBinding.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoMatrixTransform.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoMultipleCopy.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoNode.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoNonIndexedShape.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoNormal.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoNormalBinding.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoNurbsCurve.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoNurbsProfile.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoNurbsSurface.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoOrthographicCamera.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoPackedColor.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoPathSwitch.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoPendulum.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoPerspectiveCamera.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoPickStyle.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoPointLight.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoPointSet.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoPolygonOffset.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoProfile.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoProfileCoordinate2.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoProfileCoordinate3.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoQuadMesh.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoResetTransform.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoRotation.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoRotationXYZ.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoRotor.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoScale.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoSelection.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoSeparator.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoShape.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoShapeHints.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoShuttle.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoSphere.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoSpotLight.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoSurroundScale.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoSwitch.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoText2.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoText3.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTexture2.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTexture2Transform.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTextureCoordinate2.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTextureCoordinateBinding.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTextureCoordinateDefault.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTextureCoordinateEnvironment.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTextureCoordinateFunction.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTextureCoordinatePlane.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTransform.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTransformSeparator.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTransformation.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTranslation.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTriangleStripSet.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoUnits.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoUnknownNode.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoVertexProperty.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoVertexShape.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoWWWAnchor.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoWWWInline.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/all.Plo
 
 mostlyclean-depend:
 
@@ -809,8 +816,9 @@ maintainer-clean-depend:
 
 distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
 
+
 distdir: $(DISTFILES)
-	$(mkinstalldirs) $(distdir)/$(top_srcdir)/include/Inventor/nodes
+	$(mkinstalldirs) $(distdir)/$(top_srcdir)/include/Inventor/nodes $(top_srcdir)/include/Inventor/nodes
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
@@ -889,355 +897,22 @@ maintainer-clean-am:  maintainer-clean-libLTLIBRARIES \
 
 maintainer-clean: maintainer-clean-am
 
-.PHONY:      all all all all all all all all all all all all all all all \
-all all all all all all all all all all-am all-am all-am all-am all-am \
-all-am all-am all-am all-am all-am all-am all-am all-am all-am all-am \
-all-am all-am all-am all-am all-am all-am all-am all-am all-am \
-all-recursive all-recursive all-recursive all-recursive all-recursive \
-all-recursive-am all-recursive-am all-recursive-am all-redirect \
-all-redirect all-redirect all-redirect all-redirect all-redirect \
-all-redirect all-redirect all-redirect all-redirect all-redirect \
-all-redirect all-redirect all-redirect all-redirect all-redirect \
-all-redirect all-redirect all-redirect all-redirect all-redirect \
-all-redirect all-redirect all-redirect check check check check check \
-check check check check check check check check check check check check \
-check check check check check check check check-am check-am check-am \
-check-am check-am check-am check-am check-am check-am check-am check-am \
-check-am check-am check-am check-am check-am check-am check-am check-am \
-check-am check-am check-am check-am check-am check-recursive \
-check-recursive check-recursive check-recursive check-recursive clean \
-clean clean clean clean clean clean clean clean clean clean clean clean \
-clean clean clean clean clean clean clean clean clean clean clean \
-clean-compile clean-compile clean-compile clean-compile clean-compile \
-clean-compile clean-compile clean-compile clean-compile clean-compile \
-clean-compile clean-compile clean-compile clean-compile clean-compile \
-clean-compile clean-compile clean-compile clean-depend clean-depend \
-clean-depend clean-depend clean-depend clean-depend clean-depend \
-clean-depend clean-depend clean-depend clean-depend clean-depend \
-clean-depend clean-depend clean-depend clean-depend clean-depend \
-clean-depend clean-generic clean-generic clean-generic clean-generic \
-clean-generic clean-generic clean-generic clean-generic clean-generic \
-clean-generic clean-generic clean-generic clean-generic clean-generic \
-clean-generic clean-generic clean-generic clean-generic clean-generic \
-clean-generic clean-generic clean-generic clean-generic clean-generic \
-clean-hdr clean-hdr clean-libLTLIBRARIES clean-libLTLIBRARIES \
-clean-libLTLIBRARIES clean-libLTLIBRARIES clean-libLTLIBRARIES \
-clean-libLTLIBRARIES clean-libLTLIBRARIES clean-libLTLIBRARIES \
-clean-libLTLIBRARIES clean-libLTLIBRARIES clean-libLTLIBRARIES \
-clean-libLTLIBRARIES clean-libLTLIBRARIES clean-libLTLIBRARIES \
-clean-libLTLIBRARIES clean-libLTLIBRARIES clean-libLTLIBRARIES \
-clean-libLTLIBRARIES clean-libtool clean-libtool clean-libtool \
-clean-libtool clean-libtool clean-libtool clean-libtool clean-libtool \
-clean-libtool clean-libtool clean-libtool clean-libtool clean-libtool \
-clean-libtool clean-libtool clean-libtool clean-libtool clean-libtool \
-clean-noinstLTLIBRARIES clean-noinstLTLIBRARIES clean-noinstLTLIBRARIES \
-clean-noinstLTLIBRARIES clean-noinstLTLIBRARIES clean-noinstLTLIBRARIES \
-clean-noinstLTLIBRARIES clean-noinstLTLIBRARIES clean-noinstLTLIBRARIES \
-clean-noinstLTLIBRARIES clean-noinstLTLIBRARIES clean-noinstLTLIBRARIES \
-clean-noinstLTLIBRARIES clean-noinstLTLIBRARIES clean-noinstLTLIBRARIES \
-clean-noinstLTLIBRARIES clean-noinstLTLIBRARIES clean-recursive \
-clean-recursive clean-recursive clean-recursive clean-recursive \
-clean-tags clean-tags clean-tags clean-tags clean-tags clean-tags \
-clean-tags clean-tags clean-tags clean-tags clean-tags clean-tags \
-clean-tags clean-tags clean-tags clean-tags clean-tags clean-tags \
-clean-tags clean-tags clean-tags clean-tags clean-tags clean-tags \
-distclean distclean distclean distclean distclean distclean distclean \
-distclean distclean distclean distclean distclean distclean distclean \
-distclean distclean distclean distclean distclean distclean distclean \
-distclean distclean distclean distclean-compile distclean-compile \
-distclean-compile distclean-compile distclean-compile distclean-compile \
-distclean-compile distclean-compile distclean-compile distclean-compile \
-distclean-compile distclean-compile distclean-compile distclean-compile \
-distclean-compile distclean-compile distclean-compile distclean-compile \
-distclean-depend distclean-depend distclean-depend distclean-depend \
-distclean-depend distclean-depend distclean-depend distclean-depend \
-distclean-depend distclean-depend distclean-depend distclean-depend \
-distclean-depend distclean-depend distclean-depend distclean-depend \
-distclean-depend distclean-depend distclean-generic distclean-generic \
-distclean-generic distclean-generic distclean-generic distclean-generic \
-distclean-generic distclean-generic distclean-generic distclean-generic \
-distclean-generic distclean-generic distclean-generic distclean-generic \
-distclean-generic distclean-generic distclean-generic distclean-generic \
-distclean-generic distclean-generic distclean-generic distclean-generic \
-distclean-generic distclean-generic distclean-hdr distclean-hdr \
-distclean-libLTLIBRARIES distclean-libLTLIBRARIES \
-distclean-libLTLIBRARIES distclean-libLTLIBRARIES \
-distclean-libLTLIBRARIES distclean-libLTLIBRARIES \
-distclean-libLTLIBRARIES distclean-libLTLIBRARIES \
-distclean-libLTLIBRARIES distclean-libLTLIBRARIES \
-distclean-libLTLIBRARIES distclean-libLTLIBRARIES \
-distclean-libLTLIBRARIES distclean-libLTLIBRARIES \
-distclean-libLTLIBRARIES distclean-libLTLIBRARIES \
-distclean-libLTLIBRARIES distclean-libLTLIBRARIES distclean-libtool \
-distclean-libtool distclean-libtool distclean-libtool distclean-libtool \
-distclean-libtool distclean-libtool distclean-libtool distclean-libtool \
-distclean-libtool distclean-libtool distclean-libtool distclean-libtool \
-distclean-libtool distclean-libtool distclean-libtool distclean-libtool \
-distclean-libtool distclean-noinstLTLIBRARIES \
-distclean-noinstLTLIBRARIES distclean-noinstLTLIBRARIES \
-distclean-noinstLTLIBRARIES distclean-noinstLTLIBRARIES \
-distclean-noinstLTLIBRARIES distclean-noinstLTLIBRARIES \
-distclean-noinstLTLIBRARIES distclean-noinstLTLIBRARIES \
-distclean-noinstLTLIBRARIES distclean-noinstLTLIBRARIES \
-distclean-noinstLTLIBRARIES distclean-noinstLTLIBRARIES \
-distclean-noinstLTLIBRARIES distclean-noinstLTLIBRARIES \
-distclean-noinstLTLIBRARIES distclean-noinstLTLIBRARIES \
-distclean-recursive distclean-recursive distclean-recursive \
-distclean-recursive distclean-recursive distclean-tags distclean-tags \
-distclean-tags distclean-tags distclean-tags distclean-tags \
-distclean-tags distclean-tags distclean-tags distclean-tags \
-distclean-tags distclean-tags distclean-tags distclean-tags \
-distclean-tags distclean-tags distclean-tags distclean-tags \
-distclean-tags distclean-tags distclean-tags distclean-tags \
-distclean-tags distclean-tags distdir distdir distdir distdir distdir \
-distdir distdir distdir distdir distdir distdir distdir distdir distdir \
-distdir distdir distdir distdir distdir distdir distdir distdir distdir \
-distdir dvi dvi dvi dvi dvi dvi dvi dvi dvi dvi dvi dvi dvi dvi dvi dvi \
-dvi dvi dvi dvi dvi dvi dvi dvi dvi-am dvi-am dvi-am dvi-am dvi-am \
-dvi-am dvi-am dvi-am dvi-am dvi-am dvi-am dvi-am dvi-am dvi-am dvi-am \
-dvi-am dvi-am dvi-am dvi-am dvi-am dvi-am dvi-am dvi-am dvi-am \
-dvi-recursive dvi-recursive dvi-recursive dvi-recursive dvi-recursive \
-info info info info info info info info info info info info info info \
-info info info info info info info info info info info-am info-am \
-info-am info-am info-am info-am info-am info-am info-am info-am info-am \
-info-am info-am info-am info-am info-am info-am info-am info-am info-am \
-info-am info-am info-am info-am info-recursive info-recursive \
-info-recursive info-recursive info-recursive install install install \
-install install install install install install install install install \
-install install install install install install install install install \
-install install install install-am install-am install-am install-am \
-install-am install-am install-am install-am install-am install-am \
-install-am install-am install-am install-am install-am install-am \
-install-am install-am install-am install-am install-am install-am \
-install-am install-am install-binSCRIPTS install-cfgdataDATA \
-install-data install-data install-data install-data install-data \
-install-data install-data install-data install-data install-data \
-install-data install-data install-data install-data install-data \
-install-data install-data install-data install-data install-data \
-install-data install-data install-data install-data install-data-am \
-install-data-am install-data-am install-data-am install-data-am \
-install-data-am install-data-am install-data-am install-data-am \
-install-data-am install-data-am install-data-am install-data-am \
-install-data-am install-data-am install-data-am install-data-am \
-install-data-am install-data-am install-data-am install-data-am \
-install-data-am install-data-am install-data-am install-data-recursive \
-install-data-recursive install-data-recursive install-data-recursive \
-install-data-recursive install-draggerdefdataDATA install-exec \
-install-exec install-exec install-exec install-exec install-exec \
-install-exec install-exec install-exec install-exec install-exec \
-install-exec install-exec install-exec install-exec install-exec \
-install-exec install-exec install-exec install-exec install-exec \
-install-exec install-exec install-exec install-exec-am install-exec-am \
-install-exec-am install-exec-am install-exec-am install-exec-am \
-install-exec-am install-exec-am install-exec-am install-exec-am \
-install-exec-am install-exec-am install-exec-am install-exec-am \
-install-exec-am install-exec-am install-exec-am install-exec-am \
-install-exec-am install-exec-am install-exec-am install-exec-am \
-install-exec-am install-exec-am install-exec-recursive \
-install-exec-recursive install-exec-recursive install-exec-recursive \
-install-exec-recursive install-libCoin@SUFFIX@incHEADERS \
-install-libLTLIBRARIES install-libLTLIBRARIES install-libLTLIBRARIES \
-install-libLTLIBRARIES install-libLTLIBRARIES install-libLTLIBRARIES \
-install-libLTLIBRARIES install-libLTLIBRARIES install-libLTLIBRARIES \
-install-libLTLIBRARIES install-libLTLIBRARIES install-libLTLIBRARIES \
-install-libLTLIBRARIES install-libLTLIBRARIES install-libLTLIBRARIES \
-install-libLTLIBRARIES install-libLTLIBRARIES install-libLTLIBRARIES \
-install-libVRMLnodesincHEADERS install-libactionsincHEADERS \
-install-libbaseincHEADERS install-libbundlesincHEADERS \
-install-libcachesincHEADERS install-libdetailsincHEADERS \
-install-libdraggersincHEADERS install-libelementsincHEADERS \
-install-libenginesincHEADERS install-liberrorsincHEADERS \
-install-libeventsincHEADERS install-libfieldsincHEADERS \
-install-liblistsincHEADERS install-libmanipsincHEADERS \
-install-libmiscincHEADERS install-libnodekitsincHEADERS \
-install-libnodesincHEADERS install-lockincHEADERS install-m4dataDATA \
-install-recursive install-recursive install-recursive install-recursive \
-install-recursive install-strip install-strip install-strip \
-install-strip install-strip install-strip install-strip install-strip \
-install-strip install-strip install-strip install-strip install-strip \
-install-strip install-strip install-strip install-strip install-strip \
-install-strip install-strip install-strip install-strip install-strip \
-install-strip install-thisincHEADERS installcheck installcheck \
-installcheck installcheck installcheck installcheck installcheck \
-installcheck installcheck installcheck installcheck installcheck \
-installcheck installcheck installcheck installcheck installcheck \
-installcheck installcheck installcheck installcheck installcheck \
-installcheck installcheck installcheck-am installcheck-am \
-installcheck-am installcheck-am installcheck-am installcheck-am \
-installcheck-am installcheck-am installcheck-am installcheck-am \
-installcheck-am installcheck-am installcheck-am installcheck-am \
-installcheck-am installcheck-am installcheck-am installcheck-am \
-installcheck-am installcheck-am installcheck-am installcheck-am \
-installcheck-am installcheck-am installcheck-recursive \
-installcheck-recursive installcheck-recursive installcheck-recursive \
-installcheck-recursive installdirs installdirs installdirs installdirs \
-installdirs installdirs installdirs installdirs installdirs installdirs \
-installdirs installdirs installdirs installdirs installdirs installdirs \
-installdirs installdirs installdirs installdirs installdirs installdirs \
-installdirs installdirs installdirs-am installdirs-am installdirs-am \
-installdirs-am installdirs-am installdirs-recursive \
-installdirs-recursive installdirs-recursive installdirs-recursive \
-installdirs-recursive maintainer-clean maintainer-clean \
-maintainer-clean maintainer-clean maintainer-clean maintainer-clean \
-maintainer-clean maintainer-clean maintainer-clean maintainer-clean \
-maintainer-clean maintainer-clean maintainer-clean maintainer-clean \
-maintainer-clean maintainer-clean maintainer-clean maintainer-clean \
-maintainer-clean maintainer-clean maintainer-clean maintainer-clean \
-maintainer-clean maintainer-clean maintainer-clean-compile \
-maintainer-clean-compile maintainer-clean-compile \
-maintainer-clean-compile maintainer-clean-compile \
-maintainer-clean-compile maintainer-clean-compile \
-maintainer-clean-compile maintainer-clean-compile \
-maintainer-clean-compile maintainer-clean-compile \
-maintainer-clean-compile maintainer-clean-compile \
-maintainer-clean-compile maintainer-clean-compile \
-maintainer-clean-compile maintainer-clean-compile \
-maintainer-clean-compile maintainer-clean-depend \
-maintainer-clean-depend maintainer-clean-depend maintainer-clean-depend \
-maintainer-clean-depend maintainer-clean-depend maintainer-clean-depend \
-maintainer-clean-depend maintainer-clean-depend maintainer-clean-depend \
-maintainer-clean-depend maintainer-clean-depend maintainer-clean-depend \
-maintainer-clean-depend maintainer-clean-depend maintainer-clean-depend \
-maintainer-clean-depend maintainer-clean-depend \
-maintainer-clean-generic maintainer-clean-generic \
-maintainer-clean-generic maintainer-clean-generic \
-maintainer-clean-generic maintainer-clean-generic \
-maintainer-clean-generic maintainer-clean-generic \
-maintainer-clean-generic maintainer-clean-generic \
-maintainer-clean-generic maintainer-clean-generic \
-maintainer-clean-generic maintainer-clean-generic \
-maintainer-clean-generic maintainer-clean-generic \
-maintainer-clean-generic maintainer-clean-generic \
-maintainer-clean-generic maintainer-clean-generic \
-maintainer-clean-generic maintainer-clean-generic \
-maintainer-clean-generic maintainer-clean-generic maintainer-clean-hdr \
-maintainer-clean-hdr maintainer-clean-libLTLIBRARIES \
-maintainer-clean-libLTLIBRARIES maintainer-clean-libLTLIBRARIES \
-maintainer-clean-libLTLIBRARIES maintainer-clean-libLTLIBRARIES \
-maintainer-clean-libLTLIBRARIES maintainer-clean-libLTLIBRARIES \
-maintainer-clean-libLTLIBRARIES maintainer-clean-libLTLIBRARIES \
-maintainer-clean-libLTLIBRARIES maintainer-clean-libLTLIBRARIES \
-maintainer-clean-libLTLIBRARIES maintainer-clean-libLTLIBRARIES \
-maintainer-clean-libLTLIBRARIES maintainer-clean-libLTLIBRARIES \
-maintainer-clean-libLTLIBRARIES maintainer-clean-libLTLIBRARIES \
+.PHONY: all all-am all-redirect check check-am clean clean-compile \
+clean-depend clean-generic clean-libLTLIBRARIES clean-libtool \
+clean-noinstLTLIBRARIES clean-tags distclean distclean-compile \
+distclean-depend distclean-generic distclean-libLTLIBRARIES \
+distclean-libtool distclean-noinstLTLIBRARIES distclean-tags distdir \
+dvi dvi-am info info-am install install-am install-data install-data-am \
+install-exec install-exec-am install-libLTLIBRARIES \
+install-libnodesincHEADERS install-strip installcheck installcheck-am \
+installdirs maintainer-clean maintainer-clean-compile \
+maintainer-clean-depend maintainer-clean-generic \
 maintainer-clean-libLTLIBRARIES maintainer-clean-libtool \
-maintainer-clean-libtool maintainer-clean-libtool \
-maintainer-clean-libtool maintainer-clean-libtool \
-maintainer-clean-libtool maintainer-clean-libtool \
-maintainer-clean-libtool maintainer-clean-libtool \
-maintainer-clean-libtool maintainer-clean-libtool \
-maintainer-clean-libtool maintainer-clean-libtool \
-maintainer-clean-libtool maintainer-clean-libtool \
-maintainer-clean-libtool maintainer-clean-libtool \
-maintainer-clean-libtool maintainer-clean-noinstLTLIBRARIES \
-maintainer-clean-noinstLTLIBRARIES maintainer-clean-noinstLTLIBRARIES \
-maintainer-clean-noinstLTLIBRARIES maintainer-clean-noinstLTLIBRARIES \
-maintainer-clean-noinstLTLIBRARIES maintainer-clean-noinstLTLIBRARIES \
-maintainer-clean-noinstLTLIBRARIES maintainer-clean-noinstLTLIBRARIES \
-maintainer-clean-noinstLTLIBRARIES maintainer-clean-noinstLTLIBRARIES \
-maintainer-clean-noinstLTLIBRARIES maintainer-clean-noinstLTLIBRARIES \
-maintainer-clean-noinstLTLIBRARIES maintainer-clean-noinstLTLIBRARIES \
-maintainer-clean-noinstLTLIBRARIES maintainer-clean-noinstLTLIBRARIES \
-maintainer-clean-recursive maintainer-clean-recursive \
-maintainer-clean-recursive maintainer-clean-recursive \
-maintainer-clean-recursive maintainer-clean-tags maintainer-clean-tags \
-maintainer-clean-tags maintainer-clean-tags maintainer-clean-tags \
-maintainer-clean-tags maintainer-clean-tags maintainer-clean-tags \
-maintainer-clean-tags maintainer-clean-tags maintainer-clean-tags \
-maintainer-clean-tags maintainer-clean-tags maintainer-clean-tags \
-maintainer-clean-tags maintainer-clean-tags maintainer-clean-tags \
-maintainer-clean-tags maintainer-clean-tags maintainer-clean-tags \
-maintainer-clean-tags maintainer-clean-tags maintainer-clean-tags \
-maintainer-clean-tags mostlyclean mostlyclean mostlyclean mostlyclean \
-mostlyclean mostlyclean mostlyclean mostlyclean mostlyclean mostlyclean \
-mostlyclean mostlyclean mostlyclean mostlyclean mostlyclean mostlyclean \
-mostlyclean mostlyclean mostlyclean mostlyclean mostlyclean mostlyclean \
-mostlyclean mostlyclean mostlyclean-compile mostlyclean-compile \
-mostlyclean-compile mostlyclean-compile mostlyclean-compile \
-mostlyclean-compile mostlyclean-compile mostlyclean-compile \
-mostlyclean-compile mostlyclean-compile mostlyclean-compile \
-mostlyclean-compile mostlyclean-compile mostlyclean-compile \
-mostlyclean-compile mostlyclean-compile mostlyclean-compile \
-mostlyclean-compile mostlyclean-depend mostlyclean-depend \
-mostlyclean-depend mostlyclean-depend mostlyclean-depend \
-mostlyclean-depend mostlyclean-depend mostlyclean-depend \
-mostlyclean-depend mostlyclean-depend mostlyclean-depend \
-mostlyclean-depend mostlyclean-depend mostlyclean-depend \
-mostlyclean-depend mostlyclean-depend mostlyclean-depend \
-mostlyclean-depend mostlyclean-generic mostlyclean-generic \
-mostlyclean-generic mostlyclean-generic mostlyclean-generic \
-mostlyclean-generic mostlyclean-generic mostlyclean-generic \
-mostlyclean-generic mostlyclean-generic mostlyclean-generic \
-mostlyclean-generic mostlyclean-generic mostlyclean-generic \
-mostlyclean-generic mostlyclean-generic mostlyclean-generic \
-mostlyclean-generic mostlyclean-generic mostlyclean-generic \
-mostlyclean-generic mostlyclean-generic mostlyclean-generic \
-mostlyclean-generic mostlyclean-hdr mostlyclean-hdr \
-mostlyclean-libLTLIBRARIES mostlyclean-libLTLIBRARIES \
-mostlyclean-libLTLIBRARIES mostlyclean-libLTLIBRARIES \
-mostlyclean-libLTLIBRARIES mostlyclean-libLTLIBRARIES \
-mostlyclean-libLTLIBRARIES mostlyclean-libLTLIBRARIES \
-mostlyclean-libLTLIBRARIES mostlyclean-libLTLIBRARIES \
-mostlyclean-libLTLIBRARIES mostlyclean-libLTLIBRARIES \
-mostlyclean-libLTLIBRARIES mostlyclean-libLTLIBRARIES \
-mostlyclean-libLTLIBRARIES mostlyclean-libLTLIBRARIES \
-mostlyclean-libLTLIBRARIES mostlyclean-libLTLIBRARIES \
-mostlyclean-libtool mostlyclean-libtool mostlyclean-libtool \
-mostlyclean-libtool mostlyclean-libtool mostlyclean-libtool \
-mostlyclean-libtool mostlyclean-libtool mostlyclean-libtool \
-mostlyclean-libtool mostlyclean-libtool mostlyclean-libtool \
-mostlyclean-libtool mostlyclean-libtool mostlyclean-libtool \
-mostlyclean-libtool mostlyclean-libtool mostlyclean-libtool \
-mostlyclean-noinstLTLIBRARIES mostlyclean-noinstLTLIBRARIES \
-mostlyclean-noinstLTLIBRARIES mostlyclean-noinstLTLIBRARIES \
-mostlyclean-noinstLTLIBRARIES mostlyclean-noinstLTLIBRARIES \
-mostlyclean-noinstLTLIBRARIES mostlyclean-noinstLTLIBRARIES \
-mostlyclean-noinstLTLIBRARIES mostlyclean-noinstLTLIBRARIES \
-mostlyclean-noinstLTLIBRARIES mostlyclean-noinstLTLIBRARIES \
-mostlyclean-noinstLTLIBRARIES mostlyclean-noinstLTLIBRARIES \
-mostlyclean-noinstLTLIBRARIES mostlyclean-noinstLTLIBRARIES \
-mostlyclean-noinstLTLIBRARIES mostlyclean-recursive \
-mostlyclean-recursive mostlyclean-recursive mostlyclean-recursive \
-mostlyclean-recursive mostlyclean-tags mostlyclean-tags \
-mostlyclean-tags mostlyclean-tags mostlyclean-tags mostlyclean-tags \
-mostlyclean-tags mostlyclean-tags mostlyclean-tags mostlyclean-tags \
-mostlyclean-tags mostlyclean-tags mostlyclean-tags mostlyclean-tags \
-mostlyclean-tags mostlyclean-tags mostlyclean-tags mostlyclean-tags \
-mostlyclean-tags mostlyclean-tags mostlyclean-tags mostlyclean-tags \
-mostlyclean-tags mostlyclean-tags tags tags tags tags tags tags tags \
-tags tags tags tags tags tags tags tags tags tags tags tags tags tags \
-tags tags tags tags-recursive tags-recursive tags-recursive \
-tags-recursive tags-recursive uninstall uninstall uninstall uninstall \
-uninstall uninstall uninstall uninstall uninstall uninstall uninstall \
-uninstall uninstall uninstall uninstall uninstall uninstall uninstall \
-uninstall uninstall uninstall uninstall uninstall uninstall \
-uninstall-am uninstall-am uninstall-am uninstall-am uninstall-am \
-uninstall-am uninstall-am uninstall-am uninstall-am uninstall-am \
-uninstall-am uninstall-am uninstall-am uninstall-am uninstall-am \
-uninstall-am uninstall-am uninstall-am uninstall-am uninstall-am \
-uninstall-am uninstall-am uninstall-am uninstall-am \
-uninstall-binSCRIPTS uninstall-cfgdataDATA uninstall-draggerdefdataDATA \
-uninstall-libCoin@SUFFIX@incHEADERS uninstall-libLTLIBRARIES \
-uninstall-libLTLIBRARIES uninstall-libLTLIBRARIES \
-uninstall-libLTLIBRARIES uninstall-libLTLIBRARIES \
-uninstall-libLTLIBRARIES uninstall-libLTLIBRARIES \
-uninstall-libLTLIBRARIES uninstall-libLTLIBRARIES \
-uninstall-libLTLIBRARIES uninstall-libLTLIBRARIES \
-uninstall-libLTLIBRARIES uninstall-libLTLIBRARIES \
-uninstall-libLTLIBRARIES uninstall-libLTLIBRARIES \
-uninstall-libLTLIBRARIES uninstall-libLTLIBRARIES \
-uninstall-libLTLIBRARIES uninstall-libVRMLnodesincHEADERS \
-uninstall-libactionsincHEADERS uninstall-libbaseincHEADERS \
-uninstall-libbundlesincHEADERS uninstall-libcachesincHEADERS \
-uninstall-libdetailsincHEADERS uninstall-libdraggersincHEADERS \
-uninstall-libelementsincHEADERS uninstall-libenginesincHEADERS \
-uninstall-liberrorsincHEADERS uninstall-libeventsincHEADERS \
-uninstall-libfieldsincHEADERS uninstall-liblistsincHEADERS \
-uninstall-libmanipsincHEADERS uninstall-libmiscincHEADERS \
-uninstall-libnodekitsincHEADERS uninstall-libnodesincHEADERS \
-uninstall-lockincHEADERS uninstall-m4dataDATA uninstall-recursive \
-uninstall-recursive uninstall-recursive uninstall-recursive \
-uninstall-recursive uninstall-thisincHEADERS
+maintainer-clean-noinstLTLIBRARIES maintainer-clean-tags mostlyclean \
+mostlyclean-compile mostlyclean-depend mostlyclean-generic \
+mostlyclean-libLTLIBRARIES mostlyclean-libtool \
+mostlyclean-noinstLTLIBRARIES mostlyclean-tags tags uninstall \
+uninstall-am uninstall-libLTLIBRARIES uninstall-libnodesincHEADERS
 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

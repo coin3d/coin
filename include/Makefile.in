@@ -48,6 +48,7 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_FLAG =
+INSTALL_HEADER = $(INSTALL_DATA)
 transform = @program_transform_name@
 
 NORMAL_INSTALL = :
@@ -66,6 +67,7 @@ target_alias = @target_alias@
 target_triplet = @target@
 AMDEP = @AMDEP@
 AMTAR = @AMTAR@
+AM_INCLUDE = @AM_INCLUDE@
 AS = @AS@
 AWK = @AWK@
 BUILD_WITH_MSVC = @BUILD_WITH_MSVC@
@@ -137,7 +139,7 @@ $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am $(top_srcdir)/configur
 
 Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) \
-	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= CONFIG_LINKS= CONFIG_COMMANDS= $(SHELL) ./config.status
 
 
 install-thisincHEADERS: $(thisinc_HEADERS)
@@ -147,8 +149,8 @@ install-thisincHEADERS: $(thisinc_HEADERS)
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  if cmp -s $$d$$p $(DESTDIR)$(thisincdir)/$$f; then :; else \
-	    echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(thisincdir)/$$f"; \
-	    $(INSTALL_DATA) $$d$$p $(DESTDIR)$(thisincdir)/$$f; \
+	    echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(thisincdir)/$$f"; \
+	    $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(thisincdir)/$$f; \
 	  fi; \
 	done
 
@@ -262,8 +264,9 @@ maintainer-clean-tags:
 
 distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
 
+
 distdir: $(DISTFILES)
-	$(mkinstalldirs) $(distdir)/$(top_srcdir)/include
+	$(mkinstalldirs) $(distdir)/$(top_srcdir)/include $(top_srcdir)/include
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
@@ -280,7 +283,8 @@ distdir: $(DISTFILES)
 	    test -d $(distdir)/$$subdir \
 	    || mkdir $(distdir)/$$subdir \
 	    || exit 1; \
-	    (cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) top_distdir=../$(top_distdir) distdir=../$(distdir)/$$subdir distdir) \
+	    (cd $$subdir && \
+	      $(MAKE) $(AM_MAKEFLAGS) top_distdir=../$(top_distdir) distdir=../$(distdir)/$$subdir distdir) \
 	      || exit 1; \
 	  fi; \
 	done
@@ -342,33 +346,18 @@ maintainer-clean-am:  maintainer-clean-tags maintainer-clean-generic \
 
 maintainer-clean: maintainer-clean-recursive
 
-.PHONY:   all all all-am all-am all-recursive all-recursive \
-all-recursive-am all-redirect all-redirect check check check-am \
-check-am check-recursive check-recursive clean clean clean-generic \
-clean-generic clean-hdr clean-recursive clean-recursive clean-tags \
-clean-tags distclean distclean distclean-generic distclean-generic \
-distclean-hdr distclean-recursive distclean-recursive distclean-tags \
-distclean-tags distdir distdir dvi dvi dvi-am dvi-am dvi-recursive \
-dvi-recursive info info info-am info-am info-recursive info-recursive \
-install install install-am install-am install-binSCRIPTS \
-install-cfgdataDATA install-data install-data install-data-am \
-install-data-am install-data-recursive install-data-recursive \
-install-exec install-exec install-exec-am install-exec-am \
-install-exec-recursive install-exec-recursive install-m4dataDATA \
-install-recursive install-recursive install-strip install-strip \
-install-thisincHEADERS installcheck installcheck installcheck-am \
-installcheck-am installcheck-recursive installcheck-recursive \
-installdirs installdirs installdirs-am installdirs-am \
-installdirs-recursive installdirs-recursive maintainer-clean \
-maintainer-clean maintainer-clean-generic maintainer-clean-generic \
-maintainer-clean-hdr maintainer-clean-recursive \
-maintainer-clean-recursive maintainer-clean-tags maintainer-clean-tags \
-mostlyclean mostlyclean mostlyclean-generic mostlyclean-generic \
-mostlyclean-hdr mostlyclean-recursive mostlyclean-recursive \
-mostlyclean-tags mostlyclean-tags tags tags tags-recursive \
-tags-recursive uninstall uninstall uninstall-am uninstall-am \
-uninstall-binSCRIPTS uninstall-cfgdataDATA uninstall-m4dataDATA \
-uninstall-recursive uninstall-recursive uninstall-thisincHEADERS
+.PHONY:  all all-am all-recursive all-redirect check check-am \
+check-recursive clean clean-generic clean-recursive clean-tags \
+distclean distclean-generic distclean-recursive distclean-tags distdir \
+dvi dvi-am dvi-recursive info info-am info-recursive install install-am \
+install-data install-data-am install-data-recursive install-exec \
+install-exec-am install-exec-recursive install-recursive install-strip \
+install-thisincHEADERS installcheck installcheck-am \
+installcheck-recursive installdirs installdirs-am installdirs-recursive \
+maintainer-clean maintainer-clean-generic maintainer-clean-recursive \
+maintainer-clean-tags mostlyclean mostlyclean-generic \
+mostlyclean-recursive mostlyclean-tags tags tags-recursive uninstall \
+uninstall-am uninstall-recursive uninstall-thisincHEADERS
 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

@@ -48,6 +48,7 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_FLAG =
+INSTALL_HEADER = $(INSTALL_DATA)
 transform = @program_transform_name@
 
 NORMAL_INSTALL = :
@@ -66,6 +67,7 @@ target_alias = @target_alias@
 target_triplet = @target@
 AMDEP = @AMDEP@
 AMTAR = @AMTAR@
+AM_INCLUDE = @AM_INCLUDE@
 AS = @AS@
 AWK = @AWK@
 BUILD_WITH_MSVC = @BUILD_WITH_MSVC@
@@ -184,9 +186,9 @@ $(libbundles@SUFFIX@LINKHACK_la_SOURCES)
 HEADERS =  $(libbundlesinc_HEADERS)
 
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
-DEP_FILES =  @AMDEP@ $(DEPDIR)/SoBundle.Plo \
-$(DEPDIR)/SoMaterialBundle.Plo $(DEPDIR)/SoTextureCoordinateBundle.Plo \
-$(DEPDIR)/all.Plo
+@AMDEP@DEP_FILES =  $(DEPDIR)/SoBundle.Plo \
+@AMDEP@$(DEPDIR)/SoMaterialBundle.Plo \
+@AMDEP@$(DEPDIR)/SoTextureCoordinateBundle.Plo $(DEPDIR)/all.Plo
 DIST_COMMON =  $(libbundlesinc_HEADERS) Makefile.am Makefile.in
 
 
@@ -204,7 +206,7 @@ $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am $(top_srcdir)/configur
 
 Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) \
-	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= CONFIG_LINKS= CONFIG_COMMANDS= $(SHELL) ./config.status
 
 
 mostlyclean-libLTLIBRARIES:
@@ -275,8 +277,8 @@ install-libbundlesincHEADERS: $(libbundlesinc_HEADERS)
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  if cmp -s $$d$$p $(DESTDIR)$(libbundlesincdir)/$$f; then :; else \
-	    echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbundlesincdir)/$$f"; \
-	    $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbundlesincdir)/$$f; \
+	    echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libbundlesincdir)/$$f"; \
+	    $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libbundlesincdir)/$$f; \
 	  fi; \
 	done
 
@@ -326,10 +328,10 @@ distclean-tags:
 
 maintainer-clean-tags:
 
-@AMDEP@include $(DEPDIR)/SoBundle.Plo
-@AMDEP@include $(DEPDIR)/SoMaterialBundle.Plo
-@AMDEP@include $(DEPDIR)/SoTextureCoordinateBundle.Plo
-@AMDEP@include $(DEPDIR)/all.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoBundle.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoMaterialBundle.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTextureCoordinateBundle.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/all.Plo
 
 mostlyclean-depend:
 
@@ -357,8 +359,9 @@ maintainer-clean-depend:
 
 distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
 
+
 distdir: $(DISTFILES)
-	$(mkinstalldirs) $(distdir)/$(top_srcdir)/include/Inventor/bundles
+	$(mkinstalldirs) $(distdir)/$(top_srcdir)/include/Inventor/bundles $(top_srcdir)/include/Inventor/bundles
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
@@ -437,152 +440,22 @@ maintainer-clean-am:  maintainer-clean-libLTLIBRARIES \
 
 maintainer-clean: maintainer-clean-am
 
-.PHONY:      all all all all all all all all all all all all-am all-am \
-all-am all-am all-am all-am all-am all-am all-am all-am all-am \
-all-recursive all-recursive all-recursive all-recursive all-recursive \
-all-recursive-am all-recursive-am all-recursive-am all-redirect \
-all-redirect all-redirect all-redirect all-redirect all-redirect \
-all-redirect all-redirect all-redirect all-redirect all-redirect check \
-check check check check check check check check check check check-am \
-check-am check-am check-am check-am check-am check-am check-am check-am \
-check-am check-am check-recursive check-recursive check-recursive \
-check-recursive check-recursive clean clean clean clean clean clean \
-clean clean clean clean clean clean-compile clean-compile clean-compile \
-clean-compile clean-compile clean-depend clean-depend clean-depend \
-clean-depend clean-depend clean-generic clean-generic clean-generic \
-clean-generic clean-generic clean-generic clean-generic clean-generic \
-clean-generic clean-generic clean-generic clean-hdr clean-hdr \
-clean-libLTLIBRARIES clean-libLTLIBRARIES clean-libLTLIBRARIES \
-clean-libLTLIBRARIES clean-libLTLIBRARIES clean-libtool clean-libtool \
-clean-libtool clean-libtool clean-libtool clean-noinstLTLIBRARIES \
-clean-noinstLTLIBRARIES clean-noinstLTLIBRARIES clean-noinstLTLIBRARIES \
-clean-recursive clean-recursive clean-recursive clean-recursive \
-clean-recursive clean-tags clean-tags clean-tags clean-tags clean-tags \
-clean-tags clean-tags clean-tags clean-tags clean-tags clean-tags \
-distclean distclean distclean distclean distclean distclean distclean \
-distclean distclean distclean distclean distclean-compile \
-distclean-compile distclean-compile distclean-compile distclean-compile \
-distclean-depend distclean-depend distclean-depend distclean-depend \
-distclean-depend distclean-generic distclean-generic distclean-generic \
-distclean-generic distclean-generic distclean-generic distclean-generic \
-distclean-generic distclean-generic distclean-generic distclean-generic \
-distclean-hdr distclean-hdr distclean-libLTLIBRARIES \
-distclean-libLTLIBRARIES distclean-libLTLIBRARIES \
-distclean-libLTLIBRARIES distclean-libLTLIBRARIES distclean-libtool \
-distclean-libtool distclean-libtool distclean-libtool distclean-libtool \
-distclean-noinstLTLIBRARIES distclean-noinstLTLIBRARIES \
-distclean-noinstLTLIBRARIES distclean-noinstLTLIBRARIES \
-distclean-recursive distclean-recursive distclean-recursive \
-distclean-recursive distclean-recursive distclean-tags distclean-tags \
-distclean-tags distclean-tags distclean-tags distclean-tags \
-distclean-tags distclean-tags distclean-tags distclean-tags \
-distclean-tags distdir distdir distdir distdir distdir distdir distdir \
-distdir distdir distdir distdir dvi dvi dvi dvi dvi dvi dvi dvi dvi dvi \
-dvi dvi-am dvi-am dvi-am dvi-am dvi-am dvi-am dvi-am dvi-am dvi-am \
-dvi-am dvi-am dvi-recursive dvi-recursive dvi-recursive dvi-recursive \
-dvi-recursive info info info info info info info info info info info \
-info-am info-am info-am info-am info-am info-am info-am info-am info-am \
-info-am info-am info-recursive info-recursive info-recursive \
-info-recursive info-recursive install install install install install \
-install install install install install install install-am install-am \
-install-am install-am install-am install-am install-am install-am \
-install-am install-am install-am install-binSCRIPTS install-cfgdataDATA \
-install-data install-data install-data install-data install-data \
-install-data install-data install-data install-data install-data \
-install-data install-data-am install-data-am install-data-am \
-install-data-am install-data-am install-data-am install-data-am \
-install-data-am install-data-am install-data-am install-data-am \
-install-data-recursive install-data-recursive install-data-recursive \
-install-data-recursive install-data-recursive \
-install-draggerdefdataDATA install-exec install-exec install-exec \
-install-exec install-exec install-exec install-exec install-exec \
-install-exec install-exec install-exec install-exec-am install-exec-am \
-install-exec-am install-exec-am install-exec-am install-exec-am \
-install-exec-am install-exec-am install-exec-am install-exec-am \
-install-exec-am install-exec-recursive install-exec-recursive \
-install-exec-recursive install-exec-recursive install-exec-recursive \
-install-libCoin@SUFFIX@incHEADERS install-libLTLIBRARIES \
-install-libLTLIBRARIES install-libLTLIBRARIES install-libLTLIBRARIES \
-install-libLTLIBRARIES install-libVRMLnodesincHEADERS \
-install-libactionsincHEADERS install-libbaseincHEADERS \
-install-libbundlesincHEADERS install-lockincHEADERS install-m4dataDATA \
-install-recursive install-recursive install-recursive install-recursive \
-install-recursive install-strip install-strip install-strip \
-install-strip install-strip install-strip install-strip install-strip \
-install-strip install-strip install-strip install-thisincHEADERS \
-installcheck installcheck installcheck installcheck installcheck \
-installcheck installcheck installcheck installcheck installcheck \
-installcheck installcheck-am installcheck-am installcheck-am \
-installcheck-am installcheck-am installcheck-am installcheck-am \
-installcheck-am installcheck-am installcheck-am installcheck-am \
-installcheck-recursive installcheck-recursive installcheck-recursive \
-installcheck-recursive installcheck-recursive installdirs installdirs \
-installdirs installdirs installdirs installdirs installdirs installdirs \
-installdirs installdirs installdirs installdirs-am installdirs-am \
-installdirs-am installdirs-am installdirs-am installdirs-recursive \
-installdirs-recursive installdirs-recursive installdirs-recursive \
-installdirs-recursive maintainer-clean maintainer-clean \
-maintainer-clean maintainer-clean maintainer-clean maintainer-clean \
-maintainer-clean maintainer-clean maintainer-clean maintainer-clean \
-maintainer-clean maintainer-clean-compile maintainer-clean-compile \
-maintainer-clean-compile maintainer-clean-compile \
-maintainer-clean-compile maintainer-clean-depend \
-maintainer-clean-depend maintainer-clean-depend maintainer-clean-depend \
+.PHONY: all all-am all-redirect check check-am clean clean-compile \
+clean-depend clean-generic clean-libLTLIBRARIES clean-libtool \
+clean-noinstLTLIBRARIES clean-tags distclean distclean-compile \
+distclean-depend distclean-generic distclean-libLTLIBRARIES \
+distclean-libtool distclean-noinstLTLIBRARIES distclean-tags distdir \
+dvi dvi-am info info-am install install-am install-data install-data-am \
+install-exec install-exec-am install-libLTLIBRARIES \
+install-libbundlesincHEADERS install-strip installcheck installcheck-am \
+installdirs maintainer-clean maintainer-clean-compile \
 maintainer-clean-depend maintainer-clean-generic \
-maintainer-clean-generic maintainer-clean-generic \
-maintainer-clean-generic maintainer-clean-generic \
-maintainer-clean-generic maintainer-clean-generic \
-maintainer-clean-generic maintainer-clean-generic \
-maintainer-clean-generic maintainer-clean-generic maintainer-clean-hdr \
-maintainer-clean-hdr maintainer-clean-libLTLIBRARIES \
-maintainer-clean-libLTLIBRARIES maintainer-clean-libLTLIBRARIES \
-maintainer-clean-libLTLIBRARIES maintainer-clean-libLTLIBRARIES \
-maintainer-clean-libtool maintainer-clean-libtool \
-maintainer-clean-libtool maintainer-clean-libtool \
-maintainer-clean-libtool maintainer-clean-noinstLTLIBRARIES \
-maintainer-clean-noinstLTLIBRARIES maintainer-clean-noinstLTLIBRARIES \
-maintainer-clean-noinstLTLIBRARIES maintainer-clean-recursive \
-maintainer-clean-recursive maintainer-clean-recursive \
-maintainer-clean-recursive maintainer-clean-recursive \
-maintainer-clean-tags maintainer-clean-tags maintainer-clean-tags \
-maintainer-clean-tags maintainer-clean-tags maintainer-clean-tags \
-maintainer-clean-tags maintainer-clean-tags maintainer-clean-tags \
-maintainer-clean-tags maintainer-clean-tags mostlyclean mostlyclean \
-mostlyclean mostlyclean mostlyclean mostlyclean mostlyclean mostlyclean \
-mostlyclean mostlyclean mostlyclean mostlyclean-compile \
-mostlyclean-compile mostlyclean-compile mostlyclean-compile \
-mostlyclean-compile mostlyclean-depend mostlyclean-depend \
-mostlyclean-depend mostlyclean-depend mostlyclean-depend \
-mostlyclean-generic mostlyclean-generic mostlyclean-generic \
-mostlyclean-generic mostlyclean-generic mostlyclean-generic \
-mostlyclean-generic mostlyclean-generic mostlyclean-generic \
-mostlyclean-generic mostlyclean-generic mostlyclean-hdr mostlyclean-hdr \
-mostlyclean-libLTLIBRARIES mostlyclean-libLTLIBRARIES \
-mostlyclean-libLTLIBRARIES mostlyclean-libLTLIBRARIES \
-mostlyclean-libLTLIBRARIES mostlyclean-libtool mostlyclean-libtool \
-mostlyclean-libtool mostlyclean-libtool mostlyclean-libtool \
-mostlyclean-noinstLTLIBRARIES mostlyclean-noinstLTLIBRARIES \
-mostlyclean-noinstLTLIBRARIES mostlyclean-noinstLTLIBRARIES \
-mostlyclean-recursive mostlyclean-recursive mostlyclean-recursive \
-mostlyclean-recursive mostlyclean-recursive mostlyclean-tags \
-mostlyclean-tags mostlyclean-tags mostlyclean-tags mostlyclean-tags \
-mostlyclean-tags mostlyclean-tags mostlyclean-tags mostlyclean-tags \
-mostlyclean-tags mostlyclean-tags tags tags tags tags tags tags tags \
-tags tags tags tags tags-recursive tags-recursive tags-recursive \
-tags-recursive tags-recursive uninstall uninstall uninstall uninstall \
-uninstall uninstall uninstall uninstall uninstall uninstall uninstall \
-uninstall-am uninstall-am uninstall-am uninstall-am uninstall-am \
-uninstall-am uninstall-am uninstall-am uninstall-am uninstall-am \
-uninstall-am uninstall-binSCRIPTS uninstall-cfgdataDATA \
-uninstall-draggerdefdataDATA uninstall-libCoin@SUFFIX@incHEADERS \
-uninstall-libLTLIBRARIES uninstall-libLTLIBRARIES \
-uninstall-libLTLIBRARIES uninstall-libLTLIBRARIES \
-uninstall-libLTLIBRARIES uninstall-libVRMLnodesincHEADERS \
-uninstall-libactionsincHEADERS uninstall-libbaseincHEADERS \
-uninstall-libbundlesincHEADERS uninstall-lockincHEADERS \
-uninstall-m4dataDATA uninstall-recursive uninstall-recursive \
-uninstall-recursive uninstall-recursive uninstall-recursive \
-uninstall-thisincHEADERS
+maintainer-clean-libLTLIBRARIES maintainer-clean-libtool \
+maintainer-clean-noinstLTLIBRARIES maintainer-clean-tags mostlyclean \
+mostlyclean-compile mostlyclean-depend mostlyclean-generic \
+mostlyclean-libLTLIBRARIES mostlyclean-libtool \
+mostlyclean-noinstLTLIBRARIES mostlyclean-tags tags uninstall \
+uninstall-am uninstall-libLTLIBRARIES uninstall-libbundlesincHEADERS
 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

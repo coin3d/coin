@@ -48,6 +48,7 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_FLAG =
+INSTALL_HEADER = $(INSTALL_DATA)
 transform = @program_transform_name@
 
 NORMAL_INSTALL = :
@@ -66,6 +67,7 @@ target_alias = @target_alias@
 target_triplet = @target@
 AMDEP = @AMDEP@
 AMTAR = @AMTAR@
+AM_INCLUDE = @AM_INCLUDE@
 AS = @AS@
 AWK = @AWK@
 BUILD_WITH_MSVC = @BUILD_WITH_MSVC@
@@ -229,7 +231,7 @@ DIST_SOURCES =  $(libCoin@SUFFIX@_la_SOURCES)
 HEADERS =  $(libCoin@SUFFIX@inc_HEADERS)
 
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
-DEP_FILES =  @AMDEP@ $(DEPDIR)/snprintf.Plo
+@AMDEP@DEP_FILES =  $(DEPDIR)/snprintf.Plo
 DIST_COMMON =  $(libCoin@SUFFIX@inc_HEADERS) Makefile.am Makefile.in
 
 
@@ -248,7 +250,7 @@ $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am $(top_srcdir)/configur
 
 Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) \
-	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= CONFIG_LINKS= CONFIG_COMMANDS= $(SHELL) ./config.status
 
 
 mostlyclean-libLTLIBRARIES:
@@ -307,8 +309,8 @@ install-libCoin@SUFFIX@incHEADERS: $(libCoin@SUFFIX@inc_HEADERS)
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  if cmp -s $$d$$p $(DESTDIR)$(libCoin@SUFFIX@incdir)/$$f; then :; else \
-	    echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libCoin@SUFFIX@incdir)/$$f"; \
-	    $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libCoin@SUFFIX@incdir)/$$f; \
+	    echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libCoin@SUFFIX@incdir)/$$f"; \
+	    $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libCoin@SUFFIX@incdir)/$$f; \
 	  fi; \
 	done
 
@@ -420,7 +422,7 @@ distclean-tags:
 
 maintainer-clean-tags:
 
-@AMDEP@include $(DEPDIR)/snprintf.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/snprintf.Plo
 
 mostlyclean-depend:
 
@@ -448,6 +450,7 @@ maintainer-clean-depend:
 
 distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
 
+
 distdir: $(DISTFILES)
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
@@ -465,7 +468,8 @@ distdir: $(DISTFILES)
 	    test -d $(distdir)/$$subdir \
 	    || mkdir $(distdir)/$$subdir \
 	    || exit 1; \
-	    (cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) top_distdir=../$(top_distdir) distdir=../$(distdir)/$$subdir distdir) \
+	    (cd $$subdir && \
+	      $(MAKE) $(AM_MAKEFLAGS) top_distdir=../$(top_distdir) distdir=../$(distdir)/$$subdir distdir) \
 	      || exit 1; \
 	  fi; \
 	done
@@ -538,90 +542,26 @@ maintainer-clean-am:  maintainer-clean-libLTLIBRARIES \
 
 maintainer-clean: maintainer-clean-recursive
 
-.PHONY:      all all all all all all all all-am all-am all-am all-am \
-all-am all-am all-am all-recursive all-recursive all-recursive \
-all-recursive all-recursive all-recursive-am all-recursive-am \
-all-recursive-am all-redirect all-redirect all-redirect all-redirect \
-all-redirect all-redirect all-redirect check check check check check \
-check check check-am check-am check-am check-am check-am check-am \
-check-am check-recursive check-recursive check-recursive \
-check-recursive check-recursive clean clean clean clean clean clean \
-clean clean-compile clean-depend clean-generic clean-generic \
-clean-generic clean-generic clean-generic clean-generic clean-generic \
-clean-hdr clean-hdr clean-libLTLIBRARIES clean-libtool clean-recursive \
-clean-recursive clean-recursive clean-recursive clean-recursive \
-clean-tags clean-tags clean-tags clean-tags clean-tags clean-tags \
-clean-tags distclean distclean distclean distclean distclean distclean \
-distclean distclean-compile distclean-depend distclean-generic \
-distclean-generic distclean-generic distclean-generic distclean-generic \
-distclean-generic distclean-generic distclean-hdr distclean-hdr \
+.PHONY:  all all-am all-recursive all-redirect check check-am \
+check-recursive clean clean-compile clean-depend clean-generic \
+clean-libLTLIBRARIES clean-libtool clean-recursive clean-tags distclean \
+distclean-compile distclean-depend distclean-generic \
 distclean-libLTLIBRARIES distclean-libtool distclean-recursive \
-distclean-recursive distclean-recursive distclean-recursive \
-distclean-recursive distclean-tags distclean-tags distclean-tags \
-distclean-tags distclean-tags distclean-tags distclean-tags distdir \
-distdir distdir distdir distdir distdir distdir dvi dvi dvi dvi dvi dvi \
-dvi dvi-am dvi-am dvi-am dvi-am dvi-am dvi-am dvi-am dvi-recursive \
-dvi-recursive dvi-recursive dvi-recursive dvi-recursive info info info \
-info info info info info-am info-am info-am info-am info-am info-am \
-info-am info-recursive info-recursive info-recursive info-recursive \
-info-recursive install install install install install install install \
-install-am install-am install-am install-am install-am install-am \
-install-am install-binSCRIPTS install-cfgdataDATA install-data \
-install-data install-data install-data install-data install-data \
-install-data install-data-am install-data-am install-data-am \
-install-data-am install-data-am install-data-am install-data-am \
-install-data-recursive install-data-recursive install-data-recursive \
-install-data-recursive install-data-recursive \
-install-draggerdefdataDATA install-exec install-exec install-exec \
-install-exec install-exec install-exec install-exec install-exec-am \
-install-exec-am install-exec-am install-exec-am install-exec-am \
-install-exec-am install-exec-am install-exec-recursive \
-install-exec-recursive install-exec-recursive install-exec-recursive \
+distclean-tags distdir dvi dvi-am dvi-recursive info info-am \
+info-recursive install install-am install-data install-data-am \
+install-data-recursive install-exec install-exec-am \
 install-exec-recursive install-libCoin@SUFFIX@incHEADERS \
-install-libLTLIBRARIES install-lockincHEADERS install-m4dataDATA \
-install-recursive install-recursive install-recursive install-recursive \
-install-recursive install-strip install-strip install-strip \
-install-strip install-strip install-strip install-strip \
-install-thisincHEADERS installcheck installcheck installcheck \
-installcheck installcheck installcheck installcheck installcheck-am \
-installcheck-am installcheck-am installcheck-am installcheck-am \
-installcheck-am installcheck-am installcheck-recursive \
-installcheck-recursive installcheck-recursive installcheck-recursive \
-installcheck-recursive installdirs installdirs installdirs installdirs \
-installdirs installdirs installdirs installdirs-am installdirs-am \
-installdirs-am installdirs-am installdirs-am installdirs-recursive \
-installdirs-recursive installdirs-recursive installdirs-recursive \
-installdirs-recursive maintainer-clean maintainer-clean \
-maintainer-clean maintainer-clean maintainer-clean maintainer-clean \
-maintainer-clean maintainer-clean-compile maintainer-clean-depend \
-maintainer-clean-generic maintainer-clean-generic \
-maintainer-clean-generic maintainer-clean-generic \
-maintainer-clean-generic maintainer-clean-generic \
-maintainer-clean-generic maintainer-clean-hdr maintainer-clean-hdr \
+install-libLTLIBRARIES install-recursive install-strip installcheck \
+installcheck-am installcheck-recursive installdirs installdirs-am \
+installdirs-recursive maintainer-clean maintainer-clean-compile \
+maintainer-clean-depend maintainer-clean-generic \
 maintainer-clean-libLTLIBRARIES maintainer-clean-libtool \
-maintainer-clean-recursive maintainer-clean-recursive \
-maintainer-clean-recursive maintainer-clean-recursive \
-maintainer-clean-recursive maintainer-clean-tags maintainer-clean-tags \
-maintainer-clean-tags maintainer-clean-tags maintainer-clean-tags \
-maintainer-clean-tags maintainer-clean-tags mostlyclean mostlyclean \
-mostlyclean mostlyclean mostlyclean mostlyclean mostlyclean \
+maintainer-clean-recursive maintainer-clean-tags mostlyclean \
 mostlyclean-compile mostlyclean-depend mostlyclean-generic \
-mostlyclean-generic mostlyclean-generic mostlyclean-generic \
-mostlyclean-generic mostlyclean-generic mostlyclean-generic \
-mostlyclean-hdr mostlyclean-hdr mostlyclean-libLTLIBRARIES \
-mostlyclean-libtool mostlyclean-recursive mostlyclean-recursive \
-mostlyclean-recursive mostlyclean-recursive mostlyclean-recursive \
-mostlyclean-tags mostlyclean-tags mostlyclean-tags mostlyclean-tags \
-mostlyclean-tags mostlyclean-tags mostlyclean-tags tags tags tags tags \
-tags tags tags tags-recursive tags-recursive tags-recursive \
-tags-recursive tags-recursive uninstall uninstall uninstall uninstall \
-uninstall uninstall uninstall uninstall-am uninstall-am uninstall-am \
-uninstall-am uninstall-am uninstall-am uninstall-am \
-uninstall-binSCRIPTS uninstall-cfgdataDATA uninstall-draggerdefdataDATA \
+mostlyclean-libLTLIBRARIES mostlyclean-libtool mostlyclean-recursive \
+mostlyclean-tags tags tags-recursive uninstall uninstall-am \
 uninstall-libCoin@SUFFIX@incHEADERS uninstall-libLTLIBRARIES \
-uninstall-lockincHEADERS uninstall-m4dataDATA uninstall-recursive \
-uninstall-recursive uninstall-recursive uninstall-recursive \
-uninstall-recursive uninstall-thisincHEADERS
+uninstall-recursive
 
 
 #### Additional "native" Make rules #########################################

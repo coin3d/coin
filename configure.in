@@ -631,9 +631,9 @@ if $BUILD_WITH_MSVC; then
   debugfile="`pwd`/src/coin${COIN_MAJOR_VERSION}${SUFFIX}.pdb"
   debugfile=`cygpath -w "$debugfile" | sed 's,\\\\,\\\\\\\\,g'`
   CPPFLAGS="/Fd$debugfile $CPPFLAGS"
-  test -n "`echo $CFLAGS $CXXFLAGS $CPPFLAGS | grep -- '-g\\>'`" &&
-    DLLFLAGS="$DLLFLAGS /DEBUG"
-  DLLFLAGS="$DLLFLAGS /PDB:$debugfile"
+  if test -n "`echo $CFLAGS $CXXFLAGS $CPPFLAGS | grep -- '-g\\>'`"; then
+    DLLFLAGS="$DLLFLAGS /DEBUG /PDB:$debugfile"
+  fi
   AC_SUBST(DLLFLAGS)
 
   # We use a version suffix on the .dll-file, so several incompatible

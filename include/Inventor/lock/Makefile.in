@@ -48,6 +48,7 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_FLAG =
+INSTALL_HEADER = $(INSTALL_DATA)
 transform = @program_transform_name@
 
 NORMAL_INSTALL = :
@@ -66,6 +67,7 @@ target_alias = @target_alias@
 target_triplet = @target@
 AMDEP = @AMDEP@
 AMTAR = @AMTAR@
+AM_INCLUDE = @AM_INCLUDE@
 AS = @AS@
 AWK = @AWK@
 BUILD_WITH_MSVC = @BUILD_WITH_MSVC@
@@ -133,7 +135,7 @@ $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am $(top_srcdir)/configur
 
 Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) \
-	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= CONFIG_LINKS= CONFIG_COMMANDS= $(SHELL) ./config.status
 
 
 install-lockincHEADERS: $(lockinc_HEADERS)
@@ -143,8 +145,8 @@ install-lockincHEADERS: $(lockinc_HEADERS)
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  if cmp -s $$d$$p $(DESTDIR)$(lockincdir)/$$f; then :; else \
-	    echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(lockincdir)/$$f"; \
-	    $(INSTALL_DATA) $$d$$p $(DESTDIR)$(lockincdir)/$$f; \
+	    echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(lockincdir)/$$f"; \
+	    $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(lockincdir)/$$f; \
 	  fi; \
 	done
 
@@ -196,8 +198,9 @@ maintainer-clean-tags:
 
 distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
 
+
 distdir: $(DISTFILES)
-	$(mkinstalldirs) $(distdir)/$(top_srcdir)/include/Inventor/lock
+	$(mkinstalldirs) $(distdir)/$(top_srcdir)/include/Inventor/lock $(top_srcdir)/include/Inventor/lock
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
@@ -266,52 +269,14 @@ maintainer-clean-am:  maintainer-clean-tags maintainer-clean-generic \
 
 maintainer-clean: maintainer-clean-am
 
-.PHONY:    all all all all all-am all-am all-am all-am all-recursive \
-all-recursive all-recursive all-recursive-am all-recursive-am \
-all-redirect all-redirect all-redirect all-redirect check check check \
-check check-am check-am check-am check-am check-recursive \
-check-recursive check-recursive clean clean clean clean clean-generic \
-clean-generic clean-generic clean-generic clean-hdr clean-hdr \
-clean-recursive clean-recursive clean-recursive clean-tags clean-tags \
-clean-tags clean-tags distclean distclean distclean distclean \
-distclean-generic distclean-generic distclean-generic distclean-generic \
-distclean-hdr distclean-hdr distclean-recursive distclean-recursive \
-distclean-recursive distclean-tags distclean-tags distclean-tags \
-distclean-tags distdir distdir distdir distdir dvi dvi dvi dvi dvi-am \
-dvi-am dvi-am dvi-am dvi-recursive dvi-recursive dvi-recursive info \
-info info info info-am info-am info-am info-am info-recursive \
-info-recursive info-recursive install install install install \
-install-am install-am install-am install-am install-binSCRIPTS \
-install-cfgdataDATA install-data install-data install-data install-data \
-install-data-am install-data-am install-data-am install-data-am \
-install-data-recursive install-data-recursive install-data-recursive \
-install-exec install-exec install-exec install-exec install-exec-am \
-install-exec-am install-exec-am install-exec-am install-exec-recursive \
-install-exec-recursive install-exec-recursive install-lockincHEADERS \
-install-m4dataDATA install-recursive install-recursive \
-install-recursive install-strip install-strip install-strip \
-install-strip install-thisincHEADERS installcheck installcheck \
-installcheck installcheck installcheck-am installcheck-am \
-installcheck-am installcheck-am installcheck-recursive \
-installcheck-recursive installcheck-recursive installdirs installdirs \
-installdirs installdirs installdirs-am installdirs-am installdirs-am \
-installdirs-recursive installdirs-recursive installdirs-recursive \
-maintainer-clean maintainer-clean maintainer-clean maintainer-clean \
-maintainer-clean-generic maintainer-clean-generic \
-maintainer-clean-generic maintainer-clean-generic maintainer-clean-hdr \
-maintainer-clean-hdr maintainer-clean-recursive \
-maintainer-clean-recursive maintainer-clean-recursive \
-maintainer-clean-tags maintainer-clean-tags maintainer-clean-tags \
-maintainer-clean-tags mostlyclean mostlyclean mostlyclean mostlyclean \
-mostlyclean-generic mostlyclean-generic mostlyclean-generic \
-mostlyclean-generic mostlyclean-hdr mostlyclean-hdr \
-mostlyclean-recursive mostlyclean-recursive mostlyclean-recursive \
-mostlyclean-tags mostlyclean-tags mostlyclean-tags mostlyclean-tags \
-tags tags tags tags tags-recursive tags-recursive tags-recursive \
-uninstall uninstall uninstall uninstall uninstall-am uninstall-am \
-uninstall-am uninstall-am uninstall-binSCRIPTS uninstall-cfgdataDATA \
-uninstall-lockincHEADERS uninstall-m4dataDATA uninstall-recursive \
-uninstall-recursive uninstall-recursive uninstall-thisincHEADERS
+.PHONY: all all-am all-redirect check check-am clean clean-generic \
+clean-tags distclean distclean-generic distclean-tags distdir dvi \
+dvi-am info info-am install install-am install-data install-data-am \
+install-exec install-exec-am install-lockincHEADERS install-strip \
+installcheck installcheck-am installdirs maintainer-clean \
+maintainer-clean-generic maintainer-clean-tags mostlyclean \
+mostlyclean-generic mostlyclean-tags tags uninstall uninstall-am \
+uninstall-lockincHEADERS
 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
