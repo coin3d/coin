@@ -1282,3 +1282,22 @@
     20030204 mortene, reported by kintel.
 
 =====================================================================
+
+056 SoClipPlaneManip GL clipping plane doesn't keep up.
+
+    If the principal axis direction of the geometry is changed by
+    hitting the CTRL key, the actual clipping plane is still stuck in
+    the original orientation.
+
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+    #Inventor V2.1 ascii
+    
+    Separator {
+       ClipPlaneManip { }
+       Text3 { string "Hello Coin"  parts ALL }
+    }
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+
+    20030226 mortene.
+
+=====================================================================
