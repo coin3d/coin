@@ -253,9 +253,10 @@ coin_glglue_silence_all_driver_warnings(void)
 static int
 coin_glglue_radeon_warning(void)
 {
+  static int d = -1;
+
   if (coin_glglue_silence_all_driver_warnings()) { return 0; }
 
-  static int d = -1;
   if (d == -1) { d = glglue_resolve_envvar("COIN_GLGLUE_NO_RADEON_WARNING"); }
   /* Note the inversion of the envvar value versus the return value. */
   return (d > 0) ? 0 : 1;
@@ -265,9 +266,10 @@ coin_glglue_radeon_warning(void)
 static int
 coin_glglue_old_matrox_warning(void)
 {
+  static int d = -1;
+
   if (coin_glglue_silence_all_driver_warnings()) { return 0; }
 
-  static int d = -1;
   if (d == -1) { d = glglue_resolve_envvar("COIN_GLGLUE_NO_G400_WARNING"); }
   /* Note the inversion of the envvar value versus the return value. */
   return (d > 0) ? 0 : 1;
@@ -277,9 +279,10 @@ coin_glglue_old_matrox_warning(void)
 static int
 coin_glglue_old_elsa_warning(void)
 {
+  static int d = -1;
+
   if (coin_glglue_silence_all_driver_warnings()) { return 0; }
 
-  static int d = -1;
   if (d == -1) { d = glglue_resolve_envvar("COIN_GLGLUE_NO_ELSA_WARNING"); }
   /* Note the inversion of the envvar value versus the return value. */
   return (d > 0) ? 0 : 1;
@@ -289,9 +292,10 @@ coin_glglue_old_elsa_warning(void)
 static int
 coin_glglue_sun_expert3d_warning(void)
 {
+  static int d = -1;
+
   if (coin_glglue_silence_all_driver_warnings()) { return 0; }
 
-  static int d = -1;
   if (d == -1) { d = glglue_resolve_envvar("COIN_GLGLUE_NO_SUN_EXPERT3D_WARNING"); }
   /* Note the inversion of the envvar value versus the return value. */
   return (d > 0) ? 0 : 1;
@@ -301,9 +305,10 @@ coin_glglue_sun_expert3d_warning(void)
 static int
 coin_glglue_trident_warning(void)
 {
+  static int d = -1;
+
   if (coin_glglue_silence_all_driver_warnings()) { return 0; }
 
-  static int d = -1;
   if (d == -1) { d = glglue_resolve_envvar("COIN_GLGLUE_NO_TRIDENT_WARNING"); }
   /* Note the inversion of the envvar value versus the return value. */
   return (d > 0) ? 0 : 1;
