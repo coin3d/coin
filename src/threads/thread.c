@@ -21,7 +21,7 @@
 
 #include <Inventor/C/threads/thread.h>
 #include <Inventor/C/threads/threadp.h>
-
+#include <Inventor/C/base/basep.h>
 #include <Inventor/C/base/debug.h>
 
 #include <stdlib.h>
@@ -316,34 +316,6 @@ cc_sleep(float seconds)
   Sleep((int)(seconds*1000.0));
 #endif
 };
-
-
-#ifdef _WIN32
-
-char *cc_internal_w32_getlasterrorstring(DWORD lasterror)
-{
-  LPVOID lpMsgBuf;
-  FormatMessage(
-      FORMAT_MESSAGE_ALLOCATE_BUFFER |
-      FORMAT_MESSAGE_FROM_SYSTEM |
-      FORMAT_MESSAGE_IGNORE_INSERTS,
-      NULL,
-      lasterror,
-      MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), /* Default language */
-      (LPTSTR) &lpMsgBuf,
-      0,
-      NULL
-  );
-  return (LPTSTR)lpMsgBuf;
-};
-
-void cc_internal_w32_freelasterrorstring(char *str)
-{
-  LocalFree((LPVOID)str);
-};
-
-#endif /* _WIN32 */
-
 
 /* ********************************************************************** */
 
