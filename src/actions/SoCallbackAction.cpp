@@ -235,7 +235,6 @@ SoCallbackAction::initClass(void)
   SO_ENABLE(SoCallbackAction, SoDecimationPercentageElement);
   SO_ENABLE(SoCallbackAction, SoOverrideElement);
   SO_ENABLE(SoCallbackAction, SoTextureOverrideElement);
-  SO_ENABLE(SoCallbackAction, SoViewportRegionElement);
   SO_ENABLE(SoCallbackAction, SoLazyElement);
   SO_ENABLE(SoCallbackAction, SoCacheElement);
 }
@@ -843,8 +842,11 @@ SoCallbackAction::getCurrentResponse(void) const
 void
 SoCallbackAction::invokePreCallbacks(const SoNode * const node)
 {
+  // reset response if previous node was pruned
+  if (this->response == PRUNE) this->response = CONTINUE;
+  
   int idx = (int) node->getTypeId().getData();
-
+  
   if (idx < this->precallback.getLength() && this->precallback[idx] != NULL) {
     this->response = this->precallback[idx]->doNodeCallbacks(this, node);
     if (this->response == SoCallbackAction::ABORT) {
@@ -873,6 +875,9 @@ SoCallbackAction::invokePreCallbacks(const SoNode * const node)
 void
 SoCallbackAction::invokePostCallbacks(const SoNode * const node)
 {
+  // reset response if previous node was pruned
+  if (this->response == PRUNE) this->response = CONTINUE;
+
   int idx = (int) node->getTypeId().getData();
   if (idx < this->postcallback.getLength() && this->postcallback[idx] != NULL) {
     this->response = (Response) this->postcallback[idx]->doNodeCallbacks(this, node);
