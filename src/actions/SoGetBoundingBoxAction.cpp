@@ -68,6 +68,122 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+
+// FIXME: kristian investigated the assumed bug-cases listed below,
+// and found that it is fundamentally impossible making a perfect fit
+// around any scene graph geometry with the current strategy of
+// combining SbXfBox3f instances. (To get a perfect fit, we'd need a
+// "memory" of all boxes used for combining into larger ones.)
+//
+// Seems hard to fix without breaking or extending the API in
+// non-trivial ways -- but it could perhaps be done (SoGroup-derived
+// nodes would at least have to store bboxes and transforms from all
+// their children, and another algorithm than the current simple
+// "combine two and two" would have to be run over this list).
+//
+// The bug-reports stored below for reference, as they would be nice
+// to use for testing if we ever decide to try to fix the defect(s)
+// with the bbox accumulations.
+//
+// 20030116 mortene.
+//
+// ======================================================================
+//
+//  013 Bounding box calculation of the scenegraph given below is
+//      sub-optimal.
+//
+//      ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+//      #Inventor V2.1 ascii
+//
+//      Separator {
+//         Separator {
+//            Cube { }
+//
+//            BaseColor { rgb 1 0 0 }
+//            Translation { translation +4 0 0 }
+//            Separator {
+//      	 Transform {
+//      	    translation 0 -0.5 0
+//      	    rotation 0 0 1 0.78
+//      	    scaleFactor 0.5 2 3
+//      	    scaleOrientation 1 0 0 0.78
+//      	    center 0.5 0.5 0.5
+//      	 }
+//      	 Cube { }
+//            }
+//         }
+//
+//         Translation { translation 0 +6 0 }
+//         Separator {
+//            Cube { }
+
+//            BaseColor { rgb 1 0 0 }
+//            Translation { translation +4 0 0 }
+//            Separator {
+//      	 Transform {
+//      	    translation 10 -0.5 0 ~
+//      	    rotation 0 0 1 0.78
+//      	    scaleFactor 0.5 2 3
+//      	    scaleOrientation 1 0 0 0.78
+//      	    center 0.5 0.5 0.5
+//      	 }
+//      	 Cube { }
+//            }
+//         }
+//      }
+//      ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+//
+//      A good opening gambit for investigating the bug is using the
+//      SoGuiExamples/engines/computexfbox example code to load the scene
+//      and view the resulting bbox.
+//
+//      mortene 20020729.
+//
+// ======================================================================
+//
+//  022 Sub-optimal bounding box calculations.
+//
+//      The fairly simple scenegraph below results in a rather sub-optimal
+//      bounding box being calculated. For a good view of how it is, use
+//      the SoGuiExamples/engines/computexfbbox example.
+//
+//      ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+//      #Inventor V2.1 ascii
+//    
+//      Separator {
+//         LightModel { model BASE_COLOR }
+//       
+//         Cube { height 5 }
+//    
+//         Separator {
+//            Rotation { rotation 1 0 0  0.7854 }
+//            Cube { }
+//         }
+//    
+//         Rotation { rotation 2 3 9  1.5708 }
+//         Cube { height 4 }
+//      }
+//      ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+//
+//      (Note that this scenegraph does not show a _grave_ bbox error. I
+//      prioritized getting it as small as possible while still
+//      demonstrating that there *is* an error. I have the original
+//      scenegraph which I constructed this from, where the bbox is _way_
+//      off.)
+//
+//      UPDATE 20020830 mortene: I used SGI Inventor to check both the
+//      boundingbox of the minimal case above and the larger scene where
+//      it comes out fairly sub-optimal for us -- and the original SGI
+//      Inventor doesn't make any tighter fit than we are. So there might
+//      be something fundamental about the case above which makes it
+//      impossible to have SbXfBox3f.extendBy(SbXfbox3f) come out with a
+//      perfect fit?  Need to investigate.
+//
+//      20020826 mortene.
+//
+// ======================================================================
+
+
 // *************************************************************************
 
 /*!
@@ -133,6 +249,7 @@ SoGetBoundingBoxAction::initClass(void)
 SoGetBoundingBoxAction::SoGetBoundingBoxAction(const SbViewportRegion & vp)
   : center(0, 0, 0),
     vpregion(vp),
+    resettype(SoGetBoundingBoxAction::ALL),
     resetpath(NULL),
     flags(SoGetBoundingBoxAction::RESET_BEFORE)
 {
