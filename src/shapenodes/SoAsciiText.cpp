@@ -97,6 +97,8 @@ public:
   SbBool needsetup;
   cc_font_specification * fontspec;
   float textsize;
+  SbBox3f maxglyphbbox;
+
 };
 
 #endif // DOXYGEN_SKIP_THIS
@@ -218,7 +220,7 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
 
       float width = cc_glyph3d_getwidth(glyph);
       if (width == 0) 
-        width = 3 / PRIVATE(this)->textsize; // SPACE width is always == 0...
+        width = (1.0f / 3.0f); // setting spacesize to fontsize/3
       const SbVec2f * coords = (SbVec2f *) cc_glyph3d_getcoords(glyph);
       const int * ptr = cc_glyph3d_getfaceindices(glyph);
 
@@ -240,7 +242,12 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
         }
         glVertex3f(v2[0] * size + xpos, v2[1] * size + ypos, 0.0f);
       }
+
+      // FIXME: next charpos should be based on 'advancement' and
+      // 'kerning' from the font, not just glyph-width. (20030916
+      // handegar)
       xpos += width * PRIVATE(this)->textsize;
+
     }
     ypos -= size * this->spacing.getValue();
   }
@@ -327,6 +334,11 @@ SoAsciiText::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   
   
   box.setBounds(SbVec3f(minx, miny, 0.0f), SbVec3f(maxx, maxy, 0.0f));
+
+  // Expanding bbox so that glyphs like 'j's and 'q's are completely inside.
+  box.extendBy(SbVec3f(0,PRIVATE(this)->maxglyphbbox.getMin()[1] - (n-1)*PRIVATE(this)->textsize, 0));
+  
+  box.extendBy(PRIVATE(this)->maxglyphbbox);
   center = box.getCenter();
 
 }
@@ -350,19 +362,23 @@ SoAsciiText::generatePrimitives(SoAction * action)
   this->beginShape(action, SoShape::TRIANGLES, NULL);
   vertex.setNormal(SbVec3f(0.0f, 0.0f, 1.0f));
 
+  float longeststring = FLT_MIN;
+  for (i = 0;i<PRIVATE(this)->stringwidths.getLength();++i)
+    longeststring = SbMax(longeststring, PRIVATE(this)->stringwidths[i]);
+
   int glyphidx = 0;
   float ypos = 0.0f;
 
   for (i = 0; i < n; i++) {
-    float currwidth = this->getWidth(i, size);
+    float currwidth = PRIVATE(this)->stringwidths[i];
     detail.setStringIndex(i);
     float xpos = 0.0f;
     switch (this->justification.getValue()) {
     case SoAsciiText::RIGHT:
-      xpos = -currwidth * size;
+      xpos = -currwidth + longeststring;
       break;
     case SoAsciiText::CENTER:
-      xpos = - currwidth * size * 0.5f;
+      xpos = - currwidth * 0.5f;
       break;
     }
 
@@ -374,8 +390,12 @@ SoAsciiText::generatePrimitives(SoAction * action)
 
       cc_glyph3d * glyph = cc_glyph3d_getglyph(*(str-1), PRIVATE(this)->fontspec);
 
+      float width = cc_glyph3d_getwidth(glyph);
+      if (width == 0) 
+        width = (1.0f / 3.0f); // setting spacesize to fontsize/3   
       const SbVec2f * coords = (SbVec2f *) cc_glyph3d_getcoords(glyph);
       const int * ptr = cc_glyph3d_getfaceindices(glyph);
+
       while (*ptr >= 0) {
         SbVec2f v0, v1, v2;
         v0 = coords[*ptr++];
@@ -391,7 +411,7 @@ SoAsciiText::generatePrimitives(SoAction * action)
         vertex.setPoint(SbVec3f(v2[0] * size + xpos, v2[1] * size + ypos, 0.0f));
         this->shapeVertex(&vertex);
       }
-      xpos += cc_glyph3d_getwidth(glyph) * size;
+      xpos += width * size;
     }
     ypos -= size * this->spacing.getValue();
   }
@@ -474,22 +494,30 @@ SoAsciiTextP::setUpGlyphs(SoState * state, SoAsciiText * textnode)
     const unsigned char * ptr = (const unsigned char *)s.getString();
     float stringwidth = 0.0f;
     float glyphwidth = 0.0f;
+    float * maxbbox;
+    this->maxglyphbbox.makeEmpty();
+
     for (int j = 0; j < strlen; j++) {
 
       cc_glyph3d * glyph = cc_glyph3d_getglyph(ptr[j], this->fontspec);
-      
+      assert(glyph);
+
+      maxbbox = cc_glyph3d_getboundingbox(glyph); // Get max height
+      this->maxglyphbbox.extendBy(SbVec3f(0, maxbbox[0] * this->fontspec->size, 0));
+      this->maxglyphbbox.extendBy(SbVec3f(0, maxbbox[1] * this->fontspec->size, 0));
+
       glyphwidth = cc_glyph3d_getwidth(glyph);
       if (glyphwidth == 0)
-        glyphwidth = 3 / this->textsize;
+        glyphwidth = 1.0f / 3.0f;
 
       stringwidth += glyphwidth * this->textsize;
      
+      
       if (j > 0) 
         cc_glyph3d_getkerning(prevglyph, glyph, &kerningx, &kerningy);          
       cc_glyph3d_getadvance(glyph, &advancex, &advancey);
-
       this->glyphwidths.append(advancex + kerningx);
-
+      
       prevglyph = glyph;
     }
 
