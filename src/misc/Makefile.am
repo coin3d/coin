@@ -73,7 +73,10 @@ PrivateHeaders = \
 	SoGLindexedLineSetTemplate.icc \
 	SoGLnonindexedFaceSetTemplate.icc \
 	SoGLnonindexedTristripSetTemplate.icc \
-	SoGLqmeshTemplate.icc
+	SoGLqmeshTemplate.icc \
+	SoOffscreenAGLData.icc \
+	SoOffscreenGLXData.icc \
+	SoOffscreenWGLData.icc
 
 ##$ BEGIN TEMPLATE Make-Common(misc)
 # **************************************************************************
