@@ -271,6 +271,22 @@ check_breakpoints(const char *)
 #endif // ! COIN_DEBUG
 
 
+void
+SoDebugError::commonPostHandling(Severity severity, const char * type,
+                                 const char * source, const SbString & s)
+{
+  SoDebugError error;
+  error.severity = severity;
+  error.setDebugString("Coin ");
+  error.appendToDebugString(type);
+  error.appendToDebugString(" in ");
+  error.appendToDebugString(source);
+  error.appendToDebugString("(): ");
+  error.appendToDebugString(s.getString());
+  error.handleError();
+  check_breakpoints(source);
+}
+
 #define SODEBUGERROR_POST(SEVERITY, TYPE) \
   va_list args; \
   va_start(args, format); \
@@ -278,16 +294,7 @@ check_breakpoints(const char *)
   s.vsprintf(format, args); \
   va_end(args); \
  \
-  SoDebugError error; \
-  error.severity = SEVERITY; \
-  error.setDebugString("Coin "); \
-  error.appendToDebugString(TYPE); \
-  error.appendToDebugString(" in "); \
-  error.appendToDebugString(source); \
-  error.appendToDebugString("(): "); \
-  error.appendToDebugString(s.getString()); \
-  error.handleError(); \
-  check_breakpoints(source)
+  SoDebugError::commonPostHandling(SEVERITY, TYPE, source, s)
 
 
 /*!

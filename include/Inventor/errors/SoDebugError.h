@@ -61,6 +61,8 @@ protected:
 
 private:
   static void callbackForwarder(const struct cc_debugerror * error, void * data);
+  static void commonPostHandling(Severity severity, const char * type,
+                                 const char * source, const SbString & s);
 
   static SoType classTypeId;
   static SoErrorCB * callback;
