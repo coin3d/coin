@@ -36,7 +36,7 @@
 
 // FIXME: currently most of the code in this class is simply copied
 // from SoEngine.cpp. We should try to use a templant file or
-// something to make it easier to maintain the code.  
+// something to make it easier to maintain the code.
 // pederb, 2001-10-23
 
 #include <Inventor/engines/SoNodeEngine.h>
@@ -225,9 +225,6 @@ SoNodeEngine::notify(SoNotList * nl)
   int numoutputs = outputs->getNumOutputs();
   for (int i = 0; i < numoutputs; i++)
     outputs->getOutput(this, i)->touchSlaves(nl, this->isNotifyEnabled());
-
-  // notify auditors?
-  //  inherited::notify(nl);
 
   this->flags &= ~FLAG_ISNOTIFYING;
 

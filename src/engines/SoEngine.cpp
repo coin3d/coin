@@ -297,12 +297,7 @@ SoEngine::notify(SoNotList * nl)
   for (int i = 0; i < numoutputs; i++)
     outputs->getOutput(this, i)->touchSlaves(nl, this->isNotifyEnabled());
 
-  // notify auditors?
-  //  inherited::notify(nl);
-
   this->flags &= ~FLAG_ISNOTIFYING;
-
-
 
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoEngine::notify", "%p - %s, done",
