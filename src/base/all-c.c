@@ -25,10 +25,11 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
-#ifdef HAVE_THREADS
 #include "base.c"
-#include "debug.c"
-#include "time.c"
-#endif
-
+#include "hash.c"
+#include "heap.c"
+#include "list.c"
+#include "memalloc.c"
+#include "rbptree.c"
 #include "string.c"
+#include "time.c"
