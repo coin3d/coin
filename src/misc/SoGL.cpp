@@ -34,13 +34,13 @@
 #include <Inventor/elements/SoGLCoordinateElement.h>
 #include <Inventor/elements/SoProjectionMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
-#include <Inventor/elements/SoTextureCoordinateElement.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoTextureCoordinateElement.h>
 #include <Inventor/elements/SoProfileElement.h>
 #include <Inventor/elements/SoComplexityElement.h>
 #include <Inventor/elements/SoComplexityTypeElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/nodes/SoProfile.h>
 #include <Inventor/lists/SbList.h>
@@ -106,6 +106,10 @@ sogl_render_cone(const float radius,
 
   sogl_generate_3d_circle(coords, slices, radius, -h2);
   coords[slices] = coords[0];
+  if (flags & (SOGL_NEED_TEXCOORDS|SOGL_NEED_3DTEXCOORDS)) {
+    sogl_generate_2d_circle(texcoords, slices, 0.5f);
+    texcoords[slices] = texcoords[0];
+  }
 
   if (flags & SOGL_NEED_NORMALS) {
     double a = atan(height/radius);
@@ -131,6 +135,9 @@ sogl_render_cone(const float radius,
       if (flags & SOGL_NEED_TEXCOORDS) {
         glTexCoord2f(t - delta*0.5f, 1.0f);
       }
+      else if (flags & SOGL_NEED_3DTEXCOORDS) {
+        glTexCoord3f(0.5f, 1.0f, 0.5f);
+      }
       if (flags & SOGL_NEED_NORMALS) {
         SbVec3f n = (normals[i] + normals[i+1])*0.5f;
         glNormal3f(n[0], n[1], n[2]);
@@ -139,6 +146,9 @@ sogl_render_cone(const float radius,
       if (flags & SOGL_NEED_TEXCOORDS) {
         glTexCoord2f(t, 0.0f);
       }
+      else if (flags & SOGL_NEED_3DTEXCOORDS) {
+        glTexCoord3f(texcoords[i][0]+0.5f, 0.0f, texcoords[i][1]+0.5f);
+      }
       if (flags & SOGL_NEED_NORMALS) {
         glNormal3fv((const GLfloat*)&normals[i]);
       }
@@ -146,6 +156,9 @@ sogl_render_cone(const float radius,
 
       if (flags & SOGL_NEED_TEXCOORDS) {
         glTexCoord2f(t - delta, 0.0f);
+      }
+      else if (flags & SOGL_NEED_3DTEXCOORDS) {
+        glTexCoord3f(texcoords[i+1][0]+0.5f, 0.0f, texcoords[i+1][1]+0.5f);
       }
       if (flags & SOGL_NEED_NORMALS) {
         glNormal3fv((const GLfloat*)&normals[i+1]);
@@ -161,11 +174,6 @@ sogl_render_cone(const float radius,
   }
 
   if (flags & SOGL_RENDER_BOTTOM) {
-    if (flags & SOGL_NEED_TEXCOORDS) {
-      sogl_generate_2d_circle(texcoords, slices, 0.5f);
-      texcoords[slices] = texcoords[0];
-    }
-
     if (flags & SOGL_MATERIAL_PER_PART) {
       material->send(matnr, TRUE);
     }
@@ -175,6 +183,9 @@ sogl_render_cone(const float radius,
     for (i = slices-1; i >= 0; i--) {
       if (flags & SOGL_NEED_TEXCOORDS) {
         glTexCoord2f(texcoords[i][0]+0.5f, texcoords[i][1]+0.5f);
+      }
+      else if (flags & SOGL_NEED_3DTEXCOORDS) {
+        glTexCoord3f(texcoords[i][0]+0.5f, 0.0f, texcoords[i][1]+0.5f);
       }
       glVertex3fv((const GLfloat*)&coords[i]);
     }
@@ -202,6 +213,12 @@ sogl_render_cylinder(const float radius,
 
   sogl_generate_3d_circle(coords, slices, radius, -h2);
   coords[slices] = coords[0];
+  if (flags & SOGL_NEED_3DTEXCOORDS ||
+      (flags & SOGL_NEED_TEXCOORDS &&
+       flags & (SOGL_RENDER_BOTTOM | SOGL_RENDER_TOP))) {
+    sogl_generate_2d_circle(texcoords, slices, 0.5f);
+    texcoords[slices] = texcoords[0];
+  }
 
   if (flags & SOGL_NEED_NORMALS) {
     sogl_generate_3d_circle(normals, slices, 1.0f, 0.0f);
@@ -222,6 +239,9 @@ sogl_render_cylinder(const float radius,
       if (flags & SOGL_NEED_TEXCOORDS) {
         glTexCoord2f(t, 1.0f);
       }
+      else if (flags & SOGL_NEED_3DTEXCOORDS) {
+        glTexCoord3f(texcoords[i][0]+0.5f, 1.0f, 1.0f - texcoords[i][1]-0.5f);
+      }
       if (flags & SOGL_NEED_NORMALS) {
         glNormal3fv((const GLfloat*)&normals[i]);
       }
@@ -229,6 +249,9 @@ sogl_render_cylinder(const float radius,
       glVertex3f(c[0], h2, c[2]);
       if (flags & SOGL_NEED_TEXCOORDS) {
         glTexCoord2f(t, 0.0f);
+      }
+      else if (flags & SOGL_NEED_3DTEXCOORDS) {
+        glTexCoord3f(texcoords[i][0]+0.5f, 0.0f, 1.0f - texcoords[i][1]-0.5f);
       }
       glVertex3f(c[0], c[1], c[2]);
       i++;
@@ -254,7 +277,10 @@ sogl_render_cylinder(const float radius,
 
     for (i = 0; i < slices; i++) {
       if (flags & SOGL_NEED_TEXCOORDS) {
-        glTexCoord2f(texcoords[i][0]+0.5f, 1.0f - texcoords[i][1] - 0.5f);
+        glTexCoord2f(texcoords[i][0]+0.5f, 1.0f - texcoords[i][1]-0.5f);
+      }
+      else if (flags & SOGL_NEED_3DTEXCOORDS) {
+        glTexCoord3f(texcoords[i][0]+0.5f, 1.0f, 1.0f - texcoords[i][1]-0.5f);
       }
       const SbVec3f &c = coords[i];
       glVertex3f(c[0], h2, c[2]);
@@ -273,6 +299,9 @@ sogl_render_cylinder(const float radius,
       if (flags & SOGL_NEED_TEXCOORDS) {
         glTexCoord2f(texcoords[i][0]+0.5f, texcoords[i][1]+0.5f);
       }
+      else if (flags & SOGL_NEED_3DTEXCOORDS) {
+        glTexCoord3f(texcoords[i][0]+0.5f, 0.0f, 1.0f - texcoords[i][1]-0.5f);
+      }
       glVertex3fv((const GLfloat*)&coords[i]);
     }
     glEnd();
@@ -284,7 +313,7 @@ sogl_render_sphere(const float radius,
                    const int numstacks,
                    const int numslices,
                    SoMaterialBundle * const /* material */,
-                   const unsigned int /* flags */)
+                   const unsigned int flags)
 {
   int stacks = numstacks;
   int slices = numslices;
@@ -298,6 +327,7 @@ sogl_render_sphere(const float radius,
   SbVec3f coords[129];
   SbVec3f normals[129];
   float S[129];
+  SbVec3f texcoords[129];
 
   int i, j;
   float rho;
@@ -320,6 +350,7 @@ sogl_render_sphere(const float radius,
                tc,
                ts);
   normals[0] = tmp;
+  texcoords[0] = tmp/2 + SbVec3f(0.5f,0.5f,0.5f);
   tmp *= radius;
   coords[0] = tmp;
   S[0] = currs;
@@ -330,26 +361,41 @@ sogl_render_sphere(const float radius,
 
   for (j = 1; j <= slices; j++) {
     glNormal3f(0.0f, 1.0f, 0.0f);
-    glTexCoord2f(currs + 0.5f * incs, 1.0f);
+    if (flags & SOGL_NEED_TEXCOORDS) {
+      glTexCoord2f(currs + 0.5f * incs, 1.0f);
+    }
+    else if (flags & SOGL_NEED_3DTEXCOORDS) {
+      glTexCoord3f(0.5f, 1.0f, 0.5f);
+    }
     glVertex3f(0.0f, radius, 0.0f);
 
     glNormal3fv((const GLfloat*) &normals[j-1]);
-    glTexCoord2f(currs, T);
+    if (flags & SOGL_NEED_TEXCOORDS) {
+      glTexCoord2f(currs, T);
+    }
+    else if (flags & SOGL_NEED_3DTEXCOORDS) {
+      glTexCoord3fv((const GLfloat*) &texcoords[j-1]);
+    }
     glVertex3fv((const GLfloat*) &coords[j-1]);
 
     currs += incs;
     theta += dtheta;
-    S[j] = currs;
     tmp.setValue(float(sin(theta))*ts,
                  tc,
                  float(cos(theta))*ts);
 
     normals[j] = tmp;
+    glNormal3fv((const GLfloat*)&normals[j]);
+    if (flags & SOGL_NEED_TEXCOORDS) {
+      S[j] = currs;
+      glTexCoord2f(currs, T);
+    }
+    else if (flags & SOGL_NEED_3DTEXCOORDS) {
+      texcoords[j] = tmp/2 + SbVec3f(0.5f,0.5f,0.5f);
+      glTexCoord3fv((const GLfloat*) &texcoords[j]);
+    }
     tmp *= radius;
     coords[j] = tmp;
-
-    glNormal3fv((const GLfloat*)&normals[j]);
-    glTexCoord2f(currs, T);
     glVertex3fv((const GLfloat*)&coords[j]);
   }
   glEnd(); // GL_TRIANGLES
@@ -362,14 +408,25 @@ sogl_render_sphere(const float radius,
     glBegin(GL_QUAD_STRIP);
     theta = 0.0f;
     for (j = 0; j <= slices; j++) {
-      glTexCoord2f(S[j], T);
+      if (flags & SOGL_NEED_TEXCOORDS) {
+        glTexCoord2f(S[j], T);
+      }
+      else if (flags & SOGL_NEED_3DTEXCOORDS) {
+        glTexCoord3fv((const GLfloat*) &texcoords[j]);
+      }
       glNormal3fv((const GLfloat*)&normals[j]);
       glVertex3fv((const GLfloat*)&coords[j]);
 
-      glTexCoord2f(S[j], T - dT);
       tmp.setValue(float(sin(theta))*ts,
                    tc,
                    float(cos(theta))*ts);
+      if (flags & SOGL_NEED_TEXCOORDS) {
+        glTexCoord2f(S[j], T - dT);
+      }
+      else if (flags & SOGL_NEED_3DTEXCOORDS) {
+        texcoords[j] = tmp/2 + SbVec3f(0.5f,0.5f,0.5f);
+        glTexCoord3fv((const GLfloat*) &texcoords[j]);
+      }
       normals[j] = tmp;
       glNormal3f(tmp[0], tmp[1], tmp[2]);
       tmp *= radius;
@@ -384,15 +441,30 @@ sogl_render_sphere(const float radius,
 
   glBegin(GL_TRIANGLES);
   for (j = 0; j < slices; j++) {
-    glTexCoord2f(S[j], T);
+    if (flags & SOGL_NEED_TEXCOORDS) {
+      glTexCoord2f(S[j], T);
+    }
+    else if (flags & SOGL_NEED_3DTEXCOORDS) {
+      glTexCoord3fv((const GLfloat*) &texcoords[j]);
+    }
     glNormal3fv((const GLfloat*)&normals[j]);
     glVertex3fv((const GLfloat*)&coords[j]);
 
-    glTexCoord2f(S[j]+incs*0.5f, 0.0f);
+    if (flags & SOGL_NEED_TEXCOORDS) {
+      glTexCoord2f(S[j]+incs*0.5f, 0.0f);
+    }
+    else if (flags & SOGL_NEED_3DTEXCOORDS) {
+      glTexCoord3f(0.5f, 0.0f, 0.5f);
+    }
     glNormal3f(0.0f, -1.0f, 0.0f);
     glVertex3f(0.0f, -radius, 0.0f);
 
-    glTexCoord2f(S[j+1], T);
+    if (flags & SOGL_NEED_TEXCOORDS) {
+      glTexCoord2f(S[j+1], T);
+    }
+    else if (flags & SOGL_NEED_3DTEXCOORDS) {
+      glTexCoord3fv((const GLfloat*) &texcoords[j+1]);
+    }
     glNormal3fv((const GLfloat*)&normals[j+1]);
     glVertex3fv((const GLfloat*)&coords[j+1]);
   }
@@ -418,6 +490,18 @@ static float sogl_cube_texcoords[] =
   0.0f, 1.0f,
   0.0f, 0.0f,
   1.0f, 0.0f
+};
+
+static float sogl_cube_3dtexcoords[][3] =
+{
+  {1.0f, 1.0f, 1.0f},
+  {1.0f, 1.0f, 0.0f},
+  {1.0f, 0.0f, 1.0f},
+  {1.0f, 0.0f, 0.0f},
+  {0.0f, 1.0f, 1.0f},
+  {0.0f, 1.0f, 0.0f},
+  {0.0f, 0.0f, 1.0f},
+  {0.0f, 0.0f, 0.0f}
 };
 
 static float sogl_cube_normals[] =
@@ -468,6 +552,10 @@ sogl_render_cube(const float width,
       if (flags & SOGL_NEED_TEXCOORDS) {
         glTexCoord2fv(&sogl_cube_texcoords[j<<1]);
       }
+      else if (flags & SOGL_NEED_3DTEXCOORDS) {
+        glTexCoord3fv(sogl_cube_3dtexcoords[*iptr]);
+      }
+
       glVertex3fv((const GLfloat*)&varray[*iptr++]);
     }
   }
