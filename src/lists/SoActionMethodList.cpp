@@ -57,7 +57,11 @@ SoActionMethodList::SoActionMethodList(SoActionMethodList * const parentList)
 SoActionMethod &
 SoActionMethodList::operator [] (const int index)
 {
+#if 0 // OBSOLETED 19991109 pederb,  unreadable code
   return ((SoActionMethod &)((*(SbPList *)this)[index]));
+#else // new code
+  return (SoActionMethod&)SbPList::operator[](index);
+#endif // new code
 }
 
 /*!
@@ -67,7 +71,11 @@ SoActionMethodList::operator [] (const int index)
 const SoActionMethod
 SoActionMethodList::operator [] (const int index) const
 {
+#if 0 // OBSOLETED 19991109 pederb,  unreadable code
   return ((const SoActionMethod)((*(const SbPList *)this)[index]));
+#else // new code
+  return (const SoActionMethod) SbPList::operator[](index);
+#endif // new code
 }
 
 /*!
