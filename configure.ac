@@ -71,6 +71,14 @@ AC_SUBST([RFC822_DATE])
 SIM_AC_ISO8601_DATE([coin_configure_date])
 AC_SUBST([coin_configure_date])
 
+AC_ARG_ENABLE([msvcdsp],
+  [AC_HELP_STRING([--enable-msvcdsp], [build .dsp, not library])],
+  [case $enableval in
+  no | false) sim_ac_make_dsp=false ;;
+  *)          sim_ac_make_dsp=true ;;
+  esac],
+  [sim_ac_make_dsp=false])
+
 # If the Microsoft Visual C++ cl.exe compiler is available, set us up for
 # compiling with it and to generate an MSWindows .dll file.
 
@@ -1305,6 +1313,21 @@ else
   SIM_AC_CONFIGURATION_SETTING([Coin build type], [build disabled])
 fi
 
+if $sim_ac_make_dsp; then
+  CC=$srcdir/cfg/m4/gendsp.sh
+  CXX=$srcdir/cfg/m4/gendsp.sh
+  CXXLD=$srcdir/cfg/m4/gendsp.sh
+  CPPFLAGS="$CPPFLAGS -Ddspfile=$coin_build_dir/coin$COIN_MAJOR_VERSION.dsp"
+  LDFLAGS="$LDFLAGS -Wl,-Ddspfile=$coin_build_dir/coin$COIN_MAJOR_VERSION.dsp"
+  # this can't be set up at the point the libtool script is generated
+  mv libtool libtool.bak
+  sed -e "s%^CC=\"gcc\"%CC=\"$srcdir/cfg/m4/gendsp.sh\"%" \
+      -e "s%^CC=\"$srcdir/cfg/m4/wrapmsvc.exe\"%CC=\"$srcdir/cfg/m4/gendsp.sh\"%" \
+      <libtool.bak >libtool
+  rm -f libtool.bak
+  chmod 755 libtool
+fi
+
 # **************************************************************************
 
 AM_CONFIG_HEADER(include/config.h)
@@ -1313,14 +1336,14 @@ AM_CONFIG_HEADER(include/config.h)
 
 AC_CONFIG_FILES([
         Makefile
-	bin/Makefile
+        bin/Makefile
         include/Makefile
         include/Inventor/Makefile
-	include/Inventor/C/Makefile
-	include/Inventor/C/base/Makefile
-	include/Inventor/C/errors/Makefile
-	include/Inventor/C/glue/Makefile
-	include/Inventor/C/threads/Makefile
+        include/Inventor/C/Makefile
+        include/Inventor/C/base/Makefile
+        include/Inventor/C/errors/Makefile
+        include/Inventor/C/glue/Makefile
+        include/Inventor/C/threads/Makefile
         include/Inventor/lock/Makefile
         include/Inventor/system/Makefile
         data/Makefile

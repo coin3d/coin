@@ -1014,6 +1014,7 @@ Optional Features:
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
   --enable-cvs-auto-update
                           auto-update CVS repository if possible
+  --enable-msvcdsp        build .dsp, not library
   --disable-msvc          don't require MS Visual C++ on Cygwin
   --disable-dependency-tracking Speeds up one-time builds
   --enable-dependency-tracking  Do not reject slow dependency extractors
@@ -1687,6 +1688,17 @@ _ACEOF
   eval "coin_configure_date=\"`date +%Y%m%d`\""
 
 
+
+# Check whether --enable-msvcdsp or --disable-msvcdsp was given.
+if test "${enable_msvcdsp+set}" = set; then
+  enableval="$enable_msvcdsp"
+  case $enableval in
+  no | false) sim_ac_make_dsp=false ;;
+  *)          sim_ac_make_dsp=true ;;
+  esac
+else
+  sim_ac_make_dsp=false
+fi;
 
 # If the Microsoft Visual C++ cl.exe compiler is available, set us up for
 # compiling with it and to generate an MSWindows .dll file.
@@ -5047,7 +5059,7 @@ test "x$enable_libtool_lock" != xno && enable_libtool_lock=yes
 case $host in
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 5050 "configure"' > conftest.$ac_ext
+  echo '#line 5062 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -5583,7 +5595,7 @@ chmod -w .
 save_CFLAGS="$CFLAGS"
 CFLAGS="$CFLAGS -o out/conftest2.$ac_objext"
 compiler_c_o=no
-if { (eval echo configure:5586: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$ac_objext; then
+if { (eval echo configure:5598: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$ac_objext; then
   # The compiler can only warn and ignore the option if not recognized
   # So say no if there are warnings
   if test -s out/conftest.err; then
@@ -7376,7 +7388,7 @@ else
     lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 7379 "configure"
+#line 7391 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -7474,7 +7486,7 @@ else
     lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 7477 "configure"
+#line 7489 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -20792,6 +20804,21 @@ else
   sim_ac_configuration_settings="$sim_ac_configuration_settings|Coin build type:build disabled"
 fi
 
+fi
+
+if $sim_ac_make_dsp; then
+  CC=$srcdir/cfg/m4/gendsp.sh
+  CXX=$srcdir/cfg/m4/gendsp.sh
+  CXXLD=$srcdir/cfg/m4/gendsp.sh
+  CPPFLAGS="$CPPFLAGS -Ddspfile=$coin_build_dir/coin$COIN_MAJOR_VERSION.dsp"
+  LDFLAGS="$LDFLAGS -Wl,-Ddspfile=$coin_build_dir/coin$COIN_MAJOR_VERSION.dsp"
+  # this can't be set up at the point the libtool script is generated
+  mv libtool libtool.bak
+  sed -e "s%^CC=\"gcc\"%CC=\"$srcdir/cfg/m4/gendsp.sh\"%" \
+      -e "s%^CC=\"$srcdir/cfg/m4/wrapmsvc.exe\"%CC=\"$srcdir/cfg/m4/gendsp.sh\"%" \
+      <libtool.bak >libtool
+  rm -f libtool.bak
+  chmod 755 libtool
 fi
 
 # **************************************************************************
