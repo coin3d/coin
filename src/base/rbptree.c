@@ -491,7 +491,7 @@ rbptree_remove_inline(cc_rbptree * t, const int idx)
 }
 
 /*!
- * Remove the node with value \a p. Returns \e TRUE if \a p
+ * Remove the (first) node with value \a p. Returns \e TRUE if \a p
  * is found and removed, \e FALSE otherwise.
  */
 SbBool 
