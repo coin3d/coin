@@ -161,8 +161,8 @@ SoDebugError::getSeverity(void) const
   SoDebugError error; \
   error.severity = SEVERITY; \
   error.setDebugString("Coin "); \
-  error.setDebugString(TYPE); \
-  error.setDebugString(" in "); \
+  error.appendToDebugString(TYPE); \
+  error.appendToDebugString(" in "); \
   error.appendToDebugString(source); \
   error.appendToDebugString("(): "); \
   error.appendToDebugString(SoDebugError::strbuffer); \
