@@ -32,6 +32,8 @@
 
 #ifdef HAVE_WIN32_API
 
+/* ********************************************************************** */
+
 #include <assert.h>
 #include <stdlib.h>
 
@@ -39,6 +41,8 @@
 
 #include <Inventor/C/glue/win32api.h>
 #include <Inventor/C/errors/debugerror.h>
+
+/* ********************************************************************** */
 
 /* internal helper function */
 void
@@ -106,16 +110,33 @@ exitfunc:
   }
 }
 
+/* ********************************************************************** */
 
 static int WINAPI
 coin_GetTextFace(HDC hdc, /* handle to device context */
                  int nCount, /* length of buffer receiving typeface name */
                  LPTSTR lpFaceName) /* pointer to buffer receiving typeface name */
 {
-  const int copied = GetTextFace(hdc, nCount, lpFaceName);
+  int copied;
+
+  /* Check input parameters (we've had problem reports about this
+     function failing in unexpected ways). */
+  assert((lpFaceName == NULL) || (nCount > 0));
+
+  copied = GetTextFace(hdc, nCount, lpFaceName);
   if (copied == 0) {
-    cc_win32_print_error("coin_GetTextFace", "GetTextFace()", GetLastError());
+    cc_string apicall;
+    DWORD err = GetLastError();
+
+    /* This case has been seen to hit, so we try to provide more
+       information to aid future debugging. */
+    cc_string_construct(&apicall);
+    cc_string_sprintf(&apicall,
+                      "GetTextFace(hdc==%p, nCount==%d, lpFaceName==%p)",
+                      hdc, nCount, lpFaceName);
+    cc_win32_print_error("coin_GetTextFace", cc_string_get_text(&apicall), err);
     assert(FALSE && "unexpected error");
+    cc_string_clean(&apicall);
   }
   return copied;
 }
@@ -129,6 +150,8 @@ coin_LocalFree(HLOCAL hMem) /* handle to local memory object */
     assert(FALSE && "unexpected error");
   }
 }
+
+/* ********************************************************************** */
 
 /* singleton access to the structure, so we can initialize it at first
    use */
@@ -149,5 +172,7 @@ cc_win32(void)
 
   return instance;
 }
+
+/* ********************************************************************** */
 
 #endif /* HAVE_WIN32_API */
