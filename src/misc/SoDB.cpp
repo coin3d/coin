@@ -95,7 +95,6 @@ public:
   SbString headerstring;
   SbBool isbinary;
   float ivversion;
-  // FIXME: the callbacks aren't used. 20000130 mortene.
   SoDBHeaderCB * preload_cb, * postload_cb;
   void * userdata;
 };
@@ -425,6 +424,7 @@ SoDB::readAll(SoInput * in)
   // Detect problems with missing pops from the SoInput file stack.
   assert(stackdepth == in->filestack.getLength());
 #endif // COIN_DEBUG
+  if (in->filestack.getLength() == 1) in->popFile(); // force a header post callback
 
   assert(retnode->getRefCount() == 1);
   retnode->unrefNoDelete(); // return with a zero refcount

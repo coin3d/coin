@@ -114,315 +114,57 @@ const unsigned int READBUFSIZE = 65536;
 
 class SoInput_FileInfo {
 public:
-  SoInput_FileInfo(const char * const filename, FILE * filepointer)
-    {
-      this->commonConstructor();
+  SoInput_FileInfo(const char * const filename, FILE * filepointer);
+  SoInput_FileInfo(void * bufPointer, size_t bufSize);
+  void commonConstructor(void);
 
-      this->filename = filename;
-      this->fp = filepointer;
-      this->readbuf = new char[READBUFSIZE];
-      this->readbuflen = 0;
-      this->ismembuffer = FALSE;
-    }
+  ~SoInput_FileInfo();
 
-  SoInput_FileInfo(void * bufPointer, size_t bufSize)
-    {
-      this->commonConstructor();
-
-      this->filename="<memory>";
-      this->fp = NULL;
-      this->readbuf = (char *)bufPointer;
-      this->readbuflen = bufSize;
-      this->ismembuffer=TRUE;
-    }
-
-  void commonConstructor(void)
-    {
-      this->header = NULL;
-      this->headerisread = FALSE;
-      this->ivversion = 0.0f;
-      this->linenr = 1;
-      this->readbufidx = 0;
-      this->totalread = 0;
-      this->lastputback = -1;
-      this->lastchar = -1;
-      this->eof = FALSE;
-      this->isbinary = FALSE;
-      this->vrml1file = FALSE;
-    }
-
-  ~SoInput_FileInfo()
-    {
-      if (!this->ismembuffer) delete [] this->readbuf;
-
-      // Close files which are not a memory buffer nor the stdin and
-      // which we do have a filename for (if we don't have a filename,
-      // the FILE ptr was just passed in through setFilePointer() and
-      // is the library programmer's responsibility).
-      if (this->fp &&
-          (this->filename != "<stdin>") &&
-          (this->filename.getLength()))
-        fclose(this->fp);
-    }
-
-  SbBool doBufferRead(void)
-    {
-      // Make sure that we really do need to read more bytes.
-      assert(this->backbuffer.getLength() == 0);
-      assert(this->readbufidx == this->readbuflen);
-
-      if (this->ismembuffer) {
-        // Input memory buffers are statically sized entities, so no
-        // further reading can be done.
-        //
-        // (Note that it is still convenient to call doBufferRead()
-        // for memory buffer streams, as it provides a "common lowest
-        // denominator" for the character reading interface.)
-        this->eof = TRUE;
-        return FALSE;
-      }
-
-      int len = fread(this->readbuf, 1, READBUFSIZE, this->fp);
-      if (len <= 0) {
-        this->readbufidx = 0;
-        this->readbuflen = 0;
-        this->eof = TRUE;
-#if 0 // debug
-        SoDebugError::postInfo("doBufferRead", "met Mr End-of-file");
-#endif // debug
-        return FALSE;
-      }
-
-      this->totalread += this->readbufidx;
-      this->readbufidx = 0;
-      this->readbuflen = len;
-      return TRUE;
-    }
-
-  size_t getNumBytesParsedSoFar(void) const
-    {
-      return this->totalread + this->readbufidx - this->backbuffer.getLength();
-    }
-
-  SbBool getChunkOfBytes(unsigned char * ptr, size_t length)
-    {
-      // Suck out any bytes from the backbuffer first.
-      while ((this->backbuffer.getLength() > 0) && (length > 0)) {
-        *ptr++ = this->backbuffer.pop();
-        length--;
-      }
-
-      do {
-        // Grab bytes from the buffer.
-        while ((this->readbufidx < this->readbuflen) && (length > 0)) {
-          *ptr++ = this->readbuf[this->readbufidx++];
-          length--;
-        }
-
-        // Fetch more bytes if necessary.
-        if ((length > 0) && !this->eof) this->doBufferRead();
-
-      } while (length && !this->eof);
-
-      return !this->eof;
-    }
-
-  SbBool get(char & c)
-    {
-      if (this->backbuffer.getLength() > 0) {
-        c = this->backbuffer.pop();
-      }
-      else if (this->readbufidx >= this->readbuflen) {
-        // doBufferRead() also does the right thing (i.e. sets the EOF
-        // flag for the stream) if we're reading from memory.
-        if (!this->doBufferRead()) {
-          c = (char) EOF;
-          return FALSE;
-        }
-
-        c = this->readbuf[this->readbufidx++];
-      }
-      else {
-        c = this->readbuf[this->readbufidx++];
-      }
-
-      // NB: the line counting is not working 100% if we start putting
-      // back and re-reading '\r\n' sequences.
-      if ((c == '\r') || ((c == '\n') && (this->lastchar != '\r')))
-        this->linenr++;
-      this->lastchar = c;
-      this->lastputback = -1;
-
-      return TRUE;
-    }
-
-  void putBack(const char c)
-    {
-      // Decrease line count if we put back an end-of-line character.
-      // This should take care of Unix-, MSDOS/MSWin- and MacOS-style
-      // generated files. NB: the line counting is not working 100% if
-      // we start putting back and re-reading multiple parts of '\r\n'
-      // sequences.
-      if (!this->isbinary && ((c == '\r') || (c == '\n'))) this->linenr--;
-
-      this->lastputback = (int)c;
-      this->lastchar = -1;
-
-      if (this->readbufidx > 0 && this->backbuffer.getLength() == 0) {
-        this->readbufidx--;
-        // Make sure we write back the same character which was read..
-        assert(c == this->readbuf[this->readbufidx]);
-      }
-      else {
-        this->backbuffer.push(c);
-      }
-
-      this->eof = FALSE;
-    }
-
-  void putBack(const char * const str)
-    {
-      assert(!this->isbinary);
-
-      int n = strlen(str);
-      if (!n) return;
-
-      // Decrease line count if we put back any end-of-line
-      // characters. This should take care of Unix-, MSDOS/MSWin- and
-      // MacOS-style generated files. What a mess.
-      for (int i=0; i < n; i++) {
-        if ((str[i] == '\r') || ((str[i] == '\n') &&
-                                 (this->lastputback != (int)'\r')))
-          this->linenr--;
-        this->lastputback = (int)str[i];
-      }
-
-      this->lastchar = -1;
-
-      if (n <= this->readbufidx && this->backbuffer.getLength() == 0)
-        this->readbufidx -= n;
-      else
-        for (int i = n - 1; i >= 0; i--) this->backbuffer.push(str[i]);
-
-      this->eof = FALSE;
-    }
-
-  SbBool skipWhiteSpace(void)
-    {
-      const char COMMENT_CHAR = '#';
-
-      while (TRUE) {
-        char c;
-        SbBool gotchar;
-        while ((gotchar = this->get(c)) && isspace(c));
-
-        if (!gotchar) return FALSE;
-
-        if (c == COMMENT_CHAR) {
-          while ((gotchar = this->get(c)) && (c != '\n') && (c != '\r'));
-          if (!gotchar) return FALSE;
-          if (c == '\r') {
-            gotchar = this->get(c);
-            if (!gotchar) return FALSE;
-            if (c != '\n') this->putBack(c);
-          }
-        }
-        else {
-          this->putBack(c);
-          break;
-        }
-      }
-
-      return TRUE;
-    }
-
+  SbBool doBufferRead(void);
+  size_t getNumBytesParsedSoFar(void) const;
+  SbBool getChunkOfBytes(unsigned char * ptr, size_t length);
+  SbBool get(char & c);
+  void putBack(const char c);
+  void putBack(const char * const str);
+  SbBool skipWhiteSpace(void);
   // Returns TRUE if an attempt at reading the file header went
   // without hitting EOF. Check this->ivversion != 0.0f to see if the
   // header parse actually succeeded.
-  SbBool readHeader(void)
-    {
-      if (this->headerisread) return this->eof ? FALSE : TRUE;
-      this->headerisread = TRUE;
-
-      this->header = "";
-      this->ivversion = 0.0f;
-      this->vrml1file = FALSE;
-
-      char c;
-      if (!this->get(c)) return FALSE;
-
-      if (c != '#') {
-        this->putBack(c);
-        return TRUE;
-      }
-
-      this->header += c;
-
-      while (this->get(c) && (c != '\n') && (c != '\r')) this->header += c;
-      if (this->eof) return FALSE;
-
-      if (!SoDB::getHeaderData(this->header, this->isbinary, this->ivversion,
-                               this->prefunc, this->postfunc, this->userdata,
-                               TRUE)) {
-        this->ivversion = 0.0f;
-      }
-      else {
-        if (this->header == SbString("#VRML V1.0 ascii")) {
-          this->vrml1file = TRUE;
-        }
-      }
-      return TRUE;
-    }
-
-  SbBool isMemBuffer(void)
-    {
-      return this->ismembuffer;
-    }
-
-  SbBool isBinary(void)
-    {
-      return this->isbinary;
-    }
-
-  float ivVersion(void)
-    {
-      return this->ivversion;
-    }
-
-  SbBool isFileVRML1(void)
-  {
+  SbBool readHeader(SoInput * input);
+  SbBool isMemBuffer(void) {
+    return this->ismembuffer;
+  }
+  SbBool isBinary(void) {
+    return this->isbinary;
+  }
+  float ivVersion(void) {
+    return this->ivversion;
+  }
+  SbBool isFileVRML1(void) {
     return this->vrml1file;
   }
-
-  void setIvVersion(const float v)
-    {
+  void setIvVersion(const float v) {
       this->ivversion = v;
-    }
+  }
+  const SbString & ivHeader(void) {
+    return this->header;
+  }
+  const SbString & ivFilename(void) {
+    return this->filename;
+  }
 
-  const SbString & ivHeader(void)
-    {
-      return this->header;
-    }
-
-  const SbString & ivFilename(void)
-    {
-      return this->filename;
-    }
-
-  FILE * ivFilePointer(void)
-    {
-      return this->fp;
-    }
-
-  unsigned int lineNr(void)
-    {
-      return this->linenr;
-    }
-
-  SbBool isEndOfFile(void)
-    {
-      return this->eof;
-    }
+  FILE * ivFilePointer(void) {
+    return this->fp;
+  }
+  unsigned int lineNr(void) {
+    return this->linenr;
+  }
+  SbBool isEndOfFile(void) {
+    return this->eof;
+  }
+  void applyPostCallback(SoInput * soinput) {
+    if (this->postfunc) this->postfunc(this->userdata, soinput);
+  }
 
 private:
   SbString filename;
@@ -1647,7 +1389,7 @@ SoInput::checkHeader(SbBool bValidateBufferHeader)
     fi = this->getTopOfStack();
     if (!fi) return FALSE;
   }
-  return fi->readHeader() && (!bValidateBufferHeader || fi->ivVersion() != 0.0f);
+  return fi->readHeader(this) && (!bValidateBufferHeader || fi->ivVersion() != 0.0f);
 }
 
 /*!
@@ -1682,13 +1424,19 @@ SbBool
 SoInput::popFile(void)
 {
   if (this->filestack.getLength() == 0) return FALSE;
-
-  if (this->getTopOfStack()->ivFilePointer()) {
-    const char * filename = this->getTopOfStack()->ivFilename().getString();
+  
+  // apply post callback, even if we're not going to pop
+  SoInput_FileInfo * topofstack = this->getTopOfStack();
+  topofstack->applyPostCallback(this);
+  
+  if (this->filestack.getLength() == 1) return FALSE;
+ 
+  if (topofstack->ivFilePointer()) {
+    const char * filename = topofstack->ivFilename().getString();
     SbString path = SoInput::getPathname(filename);
     if (path.getLength()) SoInput::removeDirectory(path.getString());
   }
-  delete this->getTopOfStack();
+  delete topofstack;
   this->filestack.remove(0);
   return TRUE;
 }
@@ -2209,3 +1957,284 @@ SoInput::findFile(const char * basename, SbString & fullname)
 
   return fp;
 }
+
+
+// implementation of the SoInput_FileInfo class
+
+#ifndef DOXYGEN_SKIP_THIS
+
+SoInput_FileInfo::SoInput_FileInfo(const char * const filename, FILE * filepointer)
+{
+  this->commonConstructor();
+  
+  this->filename = filename;
+  this->fp = filepointer;
+  this->readbuf = new char[READBUFSIZE];
+  this->readbuflen = 0;
+  this->ismembuffer = FALSE;
+}
+
+SoInput_FileInfo::SoInput_FileInfo(void * bufPointer, size_t bufSize)
+{
+  this->commonConstructor();
+  
+  this->filename="<memory>";
+  this->fp = NULL;
+  this->readbuf = (char *)bufPointer;
+  this->readbuflen = bufSize;
+  this->ismembuffer=TRUE;
+}
+
+void 
+SoInput_FileInfo::commonConstructor(void)
+{
+  this->header = NULL;
+  this->headerisread = FALSE;
+  this->ivversion = 0.0f;
+  this->linenr = 1;
+  this->readbufidx = 0;
+  this->totalread = 0;
+  this->lastputback = -1;
+  this->lastchar = -1;
+  this->eof = FALSE;
+  this->isbinary = FALSE;
+  this->vrml1file = FALSE;
+  this->prefunc = NULL;
+  this->postfunc = NULL;
+}
+
+SoInput_FileInfo::~SoInput_FileInfo()
+{
+  if (!this->ismembuffer) delete [] this->readbuf;
+  
+  // Close files which are not a memory buffer nor the stdin and
+  // which we do have a filename for (if we don't have a filename,
+  // the FILE ptr was just passed in through setFilePointer() and
+  // is the library programmer's responsibility).
+  if (this->fp &&
+      (this->filename != "<stdin>") &&
+      (this->filename.getLength()))
+    fclose(this->fp);
+}
+
+SbBool 
+SoInput_FileInfo::doBufferRead(void)
+{
+  // Make sure that we really do need to read more bytes.
+  assert(this->backbuffer.getLength() == 0);
+  assert(this->readbufidx == this->readbuflen);
+  
+  if (this->ismembuffer) {
+    // Input memory buffers are statically sized entities, so no
+    // further reading can be done.
+    //
+    // (Note that it is still convenient to call doBufferRead()
+    // for memory buffer streams, as it provides a "common lowest
+    // denominator" for the character reading interface.)
+    this->eof = TRUE;
+    return FALSE;
+  }
+  
+  int len = fread(this->readbuf, 1, READBUFSIZE, this->fp);
+  if (len <= 0) {
+    this->readbufidx = 0;
+    this->readbuflen = 0;
+    this->eof = TRUE;
+#if 0 // debug
+    SoDebugError::postInfo("doBufferRead", "met Mr End-of-file");
+#endif // debug
+    return FALSE;
+  }
+  
+  this->totalread += this->readbufidx;
+  this->readbufidx = 0;
+  this->readbuflen = len;
+  return TRUE;
+}
+
+size_t 
+SoInput_FileInfo::getNumBytesParsedSoFar(void) const
+{
+  return this->totalread + this->readbufidx - this->backbuffer.getLength();
+}
+
+SbBool 
+SoInput_FileInfo::getChunkOfBytes(unsigned char * ptr, size_t length)
+{
+  // Suck out any bytes from the backbuffer first.
+  while ((this->backbuffer.getLength() > 0) && (length > 0)) {
+    *ptr++ = this->backbuffer.pop();
+    length--;
+  }
+  
+  do {
+    // Grab bytes from the buffer.
+    while ((this->readbufidx < this->readbuflen) && (length > 0)) {
+      *ptr++ = this->readbuf[this->readbufidx++];
+      length--;
+    }
+    
+    // Fetch more bytes if necessary.
+    if ((length > 0) && !this->eof) this->doBufferRead();
+    
+  } while (length && !this->eof);
+  
+  return !this->eof;
+}
+
+SbBool 
+SoInput_FileInfo::get(char & c)
+{
+  if (this->backbuffer.getLength() > 0) {
+    c = this->backbuffer.pop();
+  }
+  else if (this->readbufidx >= this->readbuflen) {
+    // doBufferRead() also does the right thing (i.e. sets the EOF
+    // flag for the stream) if we're reading from memory.
+    if (!this->doBufferRead()) {
+      c = (char) EOF;
+      return FALSE;
+    }
+    
+    c = this->readbuf[this->readbufidx++];
+  }
+  else {
+    c = this->readbuf[this->readbufidx++];
+  }
+  
+  // NB: the line counting is not working 100% if we start putting
+  // back and re-reading '\r\n' sequences.
+  if ((c == '\r') || ((c == '\n') && (this->lastchar != '\r')))
+    this->linenr++;
+  this->lastchar = c;
+  this->lastputback = -1;
+  
+  return TRUE;
+}
+
+void 
+SoInput_FileInfo::putBack(const char c)
+{
+  // Decrease line count if we put back an end-of-line character.
+  // This should take care of Unix-, MSDOS/MSWin- and MacOS-style
+  // generated files. NB: the line counting is not working 100% if
+  // we start putting back and re-reading multiple parts of '\r\n'
+  // sequences.
+  if (!this->isbinary && ((c == '\r') || (c == '\n'))) this->linenr--;
+  
+  this->lastputback = (int)c;
+  this->lastchar = -1;
+  
+  if (this->readbufidx > 0 && this->backbuffer.getLength() == 0) {
+    this->readbufidx--;
+    // Make sure we write back the same character which was read..
+    assert(c == this->readbuf[this->readbufidx]);
+  }
+  else {
+    this->backbuffer.push(c);
+  }
+  
+  this->eof = FALSE;
+}
+
+void 
+SoInput_FileInfo::putBack(const char * const str)
+{
+  assert(!this->isbinary);
+  
+  int n = strlen(str);
+  if (!n) return;
+  
+  // Decrease line count if we put back any end-of-line
+  // characters. This should take care of Unix-, MSDOS/MSWin- and
+  // MacOS-style generated files. What a mess.
+  for (int i=0; i < n; i++) {
+    if ((str[i] == '\r') || ((str[i] == '\n') &&
+                             (this->lastputback != (int)'\r')))
+      this->linenr--;
+    this->lastputback = (int)str[i];
+  }
+  
+  this->lastchar = -1;
+  
+  if (n <= this->readbufidx && this->backbuffer.getLength() == 0)
+    this->readbufidx -= n;
+  else
+    for (int i = n - 1; i >= 0; i--) this->backbuffer.push(str[i]);
+  
+  this->eof = FALSE;
+}
+
+SbBool 
+SoInput_FileInfo::skipWhiteSpace(void)
+{
+  const char COMMENT_CHAR = '#';
+  
+  while (TRUE) {
+    char c;
+    SbBool gotchar;
+    while ((gotchar = this->get(c)) && isspace(c));
+    
+    if (!gotchar) return FALSE;
+    
+    if (c == COMMENT_CHAR) {
+      while ((gotchar = this->get(c)) && (c != '\n') && (c != '\r'));
+      if (!gotchar) return FALSE;
+      if (c == '\r') {
+        gotchar = this->get(c);
+        if (!gotchar) return FALSE;
+        if (c != '\n') this->putBack(c);
+      }
+    }
+    else {
+      this->putBack(c);
+      break;
+    }
+  }  
+  return TRUE;
+}
+
+// Returns TRUE if an attempt at reading the file header went
+// without hitting EOF. Check this->ivversion != 0.0f to see if the
+// header parse actually succeeded.
+
+// The SoInput parameter is used in the precallback
+SbBool 
+SoInput_FileInfo::readHeader(SoInput * soinput)
+{
+  if (this->headerisread) return this->eof ? FALSE : TRUE;
+  this->headerisread = TRUE;
+  
+  this->header = "";
+  this->ivversion = 0.0f;
+  this->vrml1file = FALSE;
+  
+  char c;
+  if (!this->get(c)) return FALSE;
+  
+  if (c != '#') {
+    this->putBack(c);
+    return TRUE;
+  }
+  
+  this->header += c;
+  
+  while (this->get(c) && (c != '\n') && (c != '\r')) this->header += c;
+  if (this->eof) return FALSE;
+  
+  if (!SoDB::getHeaderData(this->header, this->isbinary, this->ivversion,
+                           this->prefunc, this->postfunc, this->userdata,
+                           TRUE)) {
+    this->ivversion = 0.0f;
+  }
+  else {
+    if (this->header == SbString("#VRML V1.0 ascii")) {
+      this->vrml1file = TRUE;
+    }
+    if (this->prefunc) this->prefunc(this->userdata, soinput);
+  }
+  return TRUE;
+}
+
+
+#endif // DOXYGEN_SKIP_THIS
