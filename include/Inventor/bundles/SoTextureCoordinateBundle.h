@@ -30,7 +30,6 @@
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 
 #include <Inventor/SbVec4f.h>
-#include <Inventor/SbVec2f.h>
 
 class SoTextureCoordinateElement;
 class SoGLTextureCoordinateElement;
@@ -45,8 +44,8 @@ public:
                             const SbBool setUpDefault = TRUE);
   ~SoTextureCoordinateBundle();
 
-  SbBool needCoordinates() const;
-  SbBool isFunction() const;
+  SbBool needCoordinates(void) const;
+  SbBool isFunction(void) const;
 
   const SbVec4f &get(const int index);
   const SbVec4f &get(const SbVec3f &point, const SbVec3f &normal);
