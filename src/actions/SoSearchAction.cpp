@@ -32,6 +32,21 @@
   When using more than one of the setNode(), setType() and setName()
   calls, note that the action will search for node(s) with an \c "AND"
   combination of the given search criteria.
+
+  Be aware that if you do search operations on an SoSearchAction
+  created on the stack, you can get some unfortunate side effects if
+  you're not careful. Since SoSearchAction keeps a list of the path(s)
+  found in the latest search, the nodes in these paths will be
+  unref'ed when the SoSearchAction stack instance is destructed at the
+  end of your function. If the root of your scene-graph then has
+  ref-count zero (it is often useful to do a unrefNoDelete() before
+  returning a node from a function to leave the referencing to the
+  caller), the root node will be destructed! It might be better to
+  create a heap instance of the search action in those cases, since
+  you'll then be able to destruct the search action before calling
+  unrefNoDelete(). Another solution would be to call reset() before
+  calling unrefNoDelete() on your object, since reset() truncates
+  the path list.
 */
 
 #include <Inventor/actions/SoSearchAction.h>
