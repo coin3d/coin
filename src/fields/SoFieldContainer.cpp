@@ -530,17 +530,23 @@ SoFieldContainer::get(SbString & fielddata, SoOutput * out)
 
   size_t size;
   output->getBuffer(buffer, size);
-  // Strip off header.
-  char * start = strstr((char *)buffer, "\n\n");
-  if (start != NULL) {
-    start += 2;
-    fielddata = start;
-  }
-  else {
-    fielddata = "";
-  }
-  free(buffer);
 
+  // Initialize fielddata to the default value if no fields are found.
+  fielddata = "";
+
+  // getBuffer() might return a size of zero. If it does, no need to
+  // try to strip off the header.
+  if (size > 0) {
+    // Strip off header.
+    char * start = strstr((char *)buffer, "\n\n");
+    if (start != NULL) {
+      start += 2;
+      fielddata = start;
+    }
+  }
+
+  free(buffer);
+  
   delete output;
 }
 
