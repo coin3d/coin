@@ -98,13 +98,14 @@
   names are supported in Coin, but it is recommended for portability
   purposes to only use the English terms.
 
-  If the "COIN_DEBUG_FONTSUPPORT" environment variable is set to 1,
-  debug messages will be sent to the console when initializing the
-  requested fonts. Issues like missing fonts and errors binding the
-  font engine will be reported here.
+  If the "COIN_DEBUG_FONTSUPPORT" environment variable is set to 1, an
+  extensive amount of information about loading, initializing and
+  using fonts will be output. Issues like missing fonts and other
+  related problems will then be reported, so we advice you to first
+  try to use that debugging option when something does not work quite
+  as expected.
 
   \sa SoFontStyle, SoGlyph, SoText2, SoText3, SoAsciiText
-
 */
 
 

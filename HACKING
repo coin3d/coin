@@ -229,17 +229,19 @@ and explains the principles applied fairly well.
 
    - Useful environment variables for the Mesa OpenGL implementation:
 
-        * export LIBGL_ALWAYS_INDIRECT=yes
+        * LIBGL_ALWAYS_INDIRECT=yes
 
           (Avoids any use of hardware acceleration -- useful for
           running Coin-on-Mesa under Valgrind.)
 
-        * export LIBGL_DEBUG=yes
-        * export MESA_DEBUG=yes
+        * LIBGL_DEBUG=yes
+        * MESA_DEBUG=yes
 
 
-   [FIXME: add in information about how to turn off NVidia HW
-   acceleration (also useful for Valgrinding). 20031017 mortene.]
+   - To turn off SSE/MMX use in the NVidia Linux drivers, which avoids
+     problems with at least pre-2.0 Valgrind version:
+
+        * __GL_FORCE_GENERIC_CPU=1
 
 
 

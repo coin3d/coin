@@ -47,17 +47,21 @@
   principles, aswell as close to 100% of the API, in an excellent
   manner.)
 
+  For overviews of various selected features of the Coin library, see
+  the "Related pages" document from the link in the upper right corner
+  of this page.
+
 
   Systems in Motion is working on providing libraries for interfacing
   Coin with a wide range of windowing systems and GUI toolkits.
-  <ol>
+  <ul>
   <li><a href="http://doc.coin3d.org/SoXt">SoXt</a> is for interfacing with Xt/Motif on X Windows.</li>
   <li><a href="http://doc.coin3d.org/SoQt">SoQt</a> is for interfacing with Trolltech's cross-platform Qt toolkit
       (UNIX, Windows, Mac OS X).</li>
   <li><a href="http://doc.coin3d.org/SoWin">SoWin</a> is for interfacing with the Win32 API on Microsoft Windows
       platforms.</li>
   <li><a href="http://doc.coin3d.org/SoGtk">SoGtk</a> is for interfacing with GTK+.</li>
-  </ol>
+  </ul>
 
   See <http://www.coin3d.org/> for more information about Coin and the
   GUI toolkit libraries.
@@ -119,6 +123,38 @@
   SbBool is not really a class, just a \c typedef.
 */
 
+
+/* *********************************************************************** */
+
+// FIXME: complete this to a first usable version -- it should evolve
+// into a whitepaper-like document to educate people about exactly
+// what Coin is and what features it has. As of now it is just a
+// placeholder for misc explanations etc we drop on coin-discuss or
+// other places.
+//
+// Note that the comment starts with "/*" instead of "/*!", so as not
+// to activate this doc for Doxygen yet, as this is a work in
+// progress.
+//
+// 20031105 mortene.
+/*
+  \page coin_technical_whitepaper Coin Technical Whitepaper
+
+  * larsa on Performer vs Inventor:
+
+    [...] both are scene-graph based.
+
+    The main difference is that Open Inventor is data-driven (and
+    event-based), while Performer is application-driven.  It basically
+    means that Open Inventor will know when the program has changed
+    something in the scene, and will redraw it for you, while for
+    application-driven libraries it is up to the application to decide
+    when to render the scene again, which usually ends up meaning
+    continuous redrawing if you're not smart about it.  Also, the
+    event-mechanism in Open Inventor makes it really easy to create
+    interactive 3D components like draggers and manipulators, one of
+    the major features that makes people choose to use Open Inventor.
+*/
 
 /* *********************************************************************** */
 

@@ -199,6 +199,89 @@ cc_thread_init(void)
 /* ********************************************************************** */
 
 /*!
+  \page multithreading_support Multithreading Support in Coin
+
+  The support in Coin for using multiple threads in application
+  programs and the Coin library itself, consists of two main features:
+
+  <ul>
+
+  <li>
+  Coin provides platform-independent thread-handling abstraction
+  classes. These are classes that the application programmer can
+  freely use in her application code to start new threads, control
+  their execution, work with mutexes and do other tasks related to
+  handling multiple threads.
+
+  The classes in question are SbThread, SbMutex, SbStorage, SbBarrier,
+  SbCondVar, SbFifo, SbThreadAutoLock, SbRWMutex, and
+  SbTypedStorage. See their respective documentation for the detailed
+  information.
+
+  The classes fully hides the system-specific implementation, which is
+  either done on top of native Win32 (if on Microsoft Windows), or
+  over POSIX threads (on UNIX and UNIX-like systems).
+  </li>
+
+  <li>
+  The other aspect of our multi-threading support is that Coin can be
+  specially configured so that rendering traversals of the scene graph
+  are done in a thread-safe manner. This means e.g. that it is
+  possible to have Coin render the scene in parallel on multiple CPUs
+  for multiple rendering pipes, to better take advantage of such
+  high-end systems (like CAVE environments, for instance).
+
+  Thread-safe render traversals are \e off by default, because there
+  is a small overhead involved which would make rendering (very)
+  slightly slower on single-threaded invocations.
+
+  To get a Coin library built with thread-safe rendering, one must
+  actively re-configure Coin and build a special, local version. For
+  configure-based builds (UNIX and UNIX-like systems, or with Cygwin
+  on Microsoft Windows) this is done with the option
+  "--enable-threadsafe" to Autoconf configure. For how to change the
+  configuration and re-build with Visual Studio, get in touch with us
+  at "coin-support@coin3d.org".
+  </li>
+
+  </ul>
+
+  There are some restrictions and other issues which it is important
+  to be aware of:
+  
+  <ul>
+
+  <li> We do not yet provide any support for binding the
+  multi-threaded rendering support into the SoQt / SoWin / etc GUI
+  bindings, and neither do we provide bindings against any specific
+  library that handles multi-pipe rendering. This means the
+  application programmer will have to possess some expertise, and put
+  in some effort, to be able to utilize multi-pipe rendering with
+  Coin. </li>
+
+  <li> Rendering traversals is currently the only operation which we
+  publicly support to be thread-safe. There are other aspects of Coin
+  that we know are thread-safe, like most other action traversals
+  beside just rendering, but we make no guarantees in this
+  regard. </li>
+
+  <li> Be careful about using a separate thread for changing Coin
+  structures versus what is used for the application's GUI event
+  thread.
+
+  We are aware of at least issues with Qt (and thereby SoQt), where
+  you should not modify the scene graph in any way in a thread
+  separate from the main Qt thread. This because it will trigger
+  operations where Qt is not thread-safe. </li>
+
+  </ul>
+
+  \since Coin 2.0
+*/
+
+/* ********************************************************************** */
+
+/*!
   \class SbThread Inventor/threads/SbThread.h
   \brief A class for managing threads.
   \ingroup threads
