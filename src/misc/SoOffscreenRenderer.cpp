@@ -163,6 +163,7 @@
 #include <limits.h> // SHRT_MAX
 
 #include <Inventor/C/glue/gl.h>
+#include <Inventor/C/glue/glp.h>
 #include <Inventor/C/glue/simage_wrapper.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/tidbitsp.h>
@@ -1403,66 +1404,13 @@ SoOffscreenRendererP::pasteSubscreen(const SbVec2s & subscreenidx,
 SbVec2s
 SoOffscreenRendererP::getMaxTileSize(void)
 {
-  static SbBool wasvisited = FALSE;
-  static short dims[2] = {128, 128};
 
-  if (wasvisited) { return SbVec2s(dims[0], dims[1]); }
-  wasvisited = TRUE;
+  SbVec2s dims(128,128);
+  cc_glglue_context_max_dimensions(&dims[0], &dims[1]);
+  return dims;
 
-  GLint size[2] = { 128, 128 };
-
-  void * ctx = cc_glglue_context_create_offscreen(128, 128);
-  if (ctx) {
-    SbBool ok = cc_glglue_context_make_current(ctx);
-    if (ok) {
-      glGetIntegerv(GL_MAX_VIEWPORT_DIMS, size);
-
-      const char * vendor = (const char *)glGetString(GL_VENDOR);
-      if (strcmp(vendor, "NVIDIA Corporation") == 0) {
-
-        // NVIDIA seems to have a bug where max render size is limited by
-        // desktop resolution (at least for their Linux X11 drivers), not
-        // the texture maxsize returned by OpenGL. So we use a workaround
-        // by limiting max size to the lowend resolution for desktop
-        // monitors.
-        //
-        // According to pederb, there are versions of the NVidia drivers
-        // where the offscreen buffer also has to have dimensions that are
-        // 2^x, so we limit further down to these dimension settings to be
-        // sure.
-
-        size[0] = 512;
-        size[1] = 512;
-      }
-
-      // Makes it possible to override the default tilesizes. Should prove
-      // useful for debugging problems on remote sites.
-      static int forcedtilewidth = -1;
-      static int forcedtileheight = -1;
-      if (forcedtilewidth == -1) {
-        const char * env = coin_getenv("COIN_OFFSCREENRENDERER_TILEWIDTH");
-        forcedtilewidth = env ? atoi(env) : 0;
-        env = coin_getenv("COIN_OFFSCREENRENDERER_TILEHEIGHT");
-        forcedtileheight = env ? atoi(env) : 0;
-      }
-      if (forcedtilewidth != 0) { size[0] = forcedtilewidth; }
-      if (forcedtileheight != 0) { size[1] = forcedtileheight; }
-      
-      cc_glglue_context_reinstate_previous(ctx);
-    }
-    cc_glglue_context_destruct(ctx);
-  }
-
-  dims[0] = SbMin((short)size[0], (short)SHRT_MAX);
-  dims[1] = SbMin((short)size[1], (short)SHRT_MAX);
-
-  if (SoOffscreenRendererP::debug()) {
-    SoDebugError::postInfo("SoOffscreenRendererP::getMaxTileSize",
-                           "<%d, %d>", size[0], size[1]);
-  }
-
-  return SbVec2s(dims[0], dims[1]);
 }
+
 
 #undef PRIVATE
 #undef PUBLIC
