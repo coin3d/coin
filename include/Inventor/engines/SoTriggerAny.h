@@ -27,9 +27,13 @@
 
 class COIN_DLL_EXPORT SoTriggerAny : public SoEngine {
   typedef SoEngine inherited;
+
   SO_ENGINE_HEADER(SoTriggerAny);
 
 public:
+  static void initClass(void);
+  SoTriggerAny(void);
+
   SoSFTrigger input0;
   SoSFTrigger input1;
   SoSFTrigger input2;
@@ -43,15 +47,11 @@ public:
 
   SoEngineOutput output;  // SoSFTrigger
 
-  SoTriggerAny();
-
-  static void initClass();
-
 protected:
   ~SoTriggerAny();
 
 private:
-  virtual void evaluate();
+  virtual void evaluate(void);
 };
 
 #endif // !COIN_SOTRIGGERANY_H

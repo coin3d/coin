@@ -31,6 +31,8 @@ class COIN_DLL_EXPORT SoTransformVec3f : public SoEngine {
   SO_ENGINE_HEADER(SoTransformVec3f);
 
 public:
+  static void initClass(void);
+  SoTransformVec3f(void);
 
   SoMFVec3f vector;
   SoMFMatrix matrix;
@@ -38,9 +40,6 @@ public:
   SoEngineOutput point;           // SoMFVec3f
   SoEngineOutput direction;       // SoMFVec3f
   SoEngineOutput normalDirection; // SoMFVec3f
-
-  SoTransformVec3f(void);
-  static void initClass(void);
 
 protected:
   virtual ~SoTransformVec3f();

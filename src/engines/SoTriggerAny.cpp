@@ -22,53 +22,96 @@
   \brief The SoTriggerAny class is a fan-in engine for triggers.
   \ingroup engines
 
-  FIXME: doc
+  When any one of the input triggers are "pulsed", any field connected
+  as a slave to the engine output will be notified.
 */
 
 #include <Inventor/engines/SoTriggerAny.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/engines/SoSubEngineP.h>
 
-SO_ENGINE_SOURCE(SoTriggerAny);
-
 /*!
-  Default constructor.
+  \var SoSFTrigger SoTriggerAny::input0
+  Input trigger.
 */
-SoTriggerAny::SoTriggerAny()
-{
-  SO_ENGINE_INTERNAL_CONSTRUCTOR(SoTriggerAny);
+/*!
+  \var SoSFTrigger SoTriggerAny::input1
+  Input trigger.
+*/
+/*!
+  \var SoSFTrigger SoTriggerAny::input2
+  Input trigger.
+*/
+/*!
+  \var SoSFTrigger SoTriggerAny::input3
+  Input trigger.
+*/
+/*!
+  \var SoSFTrigger SoTriggerAny::input4
+  Input trigger.
+*/
+/*!
+  \var SoSFTrigger SoTriggerAny::input5
+  Input trigger.
+*/
+/*!
+  \var SoSFTrigger SoTriggerAny::input6
+  Input trigger.
+*/
+/*!
+  \var SoSFTrigger SoTriggerAny::input7
+  Input trigger.
+*/
+/*!
+  \var SoSFTrigger SoTriggerAny::input8
+  Input trigger.
+*/
+/*!
+  \var SoSFTrigger SoTriggerAny::input9
+  Input trigger.
+*/
 
-  SO_ENGINE_ADD_INPUT(input0,());
-  SO_ENGINE_ADD_INPUT(input1,());
-  SO_ENGINE_ADD_INPUT(input2,());
-  SO_ENGINE_ADD_INPUT(input3,());
-  SO_ENGINE_ADD_INPUT(input4,());
-  SO_ENGINE_ADD_INPUT(input5,());
-  SO_ENGINE_ADD_INPUT(input6,());
-  SO_ENGINE_ADD_INPUT(input7,());
-  SO_ENGINE_ADD_INPUT(input8,());
-  SO_ENGINE_ADD_INPUT(input9,());
-
-  SO_ENGINE_ADD_OUTPUT(output,SoSFTrigger);
-}
+SO_ENGINE_SOURCE(SoTriggerAny);
 
 // overloaded from parent
 void
-SoTriggerAny::initClass()
+SoTriggerAny::initClass(void)
 {
   SO_ENGINE_INTERNAL_INIT_CLASS(SoTriggerAny);
 }
 
-//
-// private members
-//
+/*!
+  Default constructor.
+*/
+SoTriggerAny::SoTriggerAny(void)
+{
+  SO_ENGINE_INTERNAL_CONSTRUCTOR(SoTriggerAny);
+
+  SO_ENGINE_ADD_INPUT(input0, ());
+  SO_ENGINE_ADD_INPUT(input1, ());
+  SO_ENGINE_ADD_INPUT(input2, ());
+  SO_ENGINE_ADD_INPUT(input3, ());
+  SO_ENGINE_ADD_INPUT(input4, ());
+  SO_ENGINE_ADD_INPUT(input5, ());
+  SO_ENGINE_ADD_INPUT(input6, ());
+  SO_ENGINE_ADD_INPUT(input7, ());
+  SO_ENGINE_ADD_INPUT(input8, ());
+  SO_ENGINE_ADD_INPUT(input9, ());
+
+  SO_ENGINE_ADD_OUTPUT(output, SoSFTrigger);
+}
+
+/*!
+  Destructor is protected because explicit destruction of engines is
+  not allowed.
+*/
 SoTriggerAny::~SoTriggerAny()
 {
 }
 
 // overloaded from parent
 void
-SoTriggerAny::evaluate()
+SoTriggerAny::evaluate(void)
 {
-  // FIXME: there should probably be some code here :) pederb, 20000309
+  SO_ENGINE_OUTPUT(output, SoSFTrigger, setValue());
 }

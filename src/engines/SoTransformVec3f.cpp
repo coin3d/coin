@@ -19,23 +19,48 @@
 
 /*!
   \class SoTransformVec3f SoTransformVec3f.h Inventor/engines/SoTransformVec3f.h
-  \brief The SoTransformVec3f class can be used to trasnform 3D vectors by a matrix.
+  \brief The SoTransformVec3f class transforms 3D vectors by a matrix.
   \ingroup engines
-
-  FIXME: doc
 */
 
 #include <Inventor/engines/SoTransformVec3f.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/engines/SoSubEngineP.h>
 
+/*!
+  \var SoMFVec3f SoTransformVec3f::vector
+  Set of 3D vector inputs to transform.
+*/
+/*!
+  \var SoMFMatrix SoTransformVec3f::matrix
+  Set of transformation matrices to use on the vectors.
+*/
+/*!
+  \var SoEngineOutput SoTransformVec3f::point
+  (SoMFVec3f) Transformed points.
+*/
+/*!
+  \var SoEngineOutput SoTransformVec3f::direction
+  (SoMFVec3f) Transformed vector directions.
+*/
+/*!
+  \var SoEngineOutput SoTransformVec3f::normalDirection
+  (SoMFVec3f) Normalized transformed vector directions.
+*/
 
 SO_ENGINE_SOURCE(SoTransformVec3f);
+
+// doc in parent
+void
+SoTransformVec3f::initClass(void)
+{
+  SO_ENGINE_INTERNAL_INIT_CLASS(SoTransformVec3f);
+}
 
 /*!
   Default constructor.
 */
-SoTransformVec3f::SoTransformVec3f()
+SoTransformVec3f::SoTransformVec3f(void)
 {
   SO_ENGINE_INTERNAL_CONSTRUCTOR(SoTransformVec3f);
 
@@ -47,36 +72,32 @@ SoTransformVec3f::SoTransformVec3f()
   SO_ENGINE_ADD_OUTPUT(normalDirection, SoMFVec3f);
 }
 
-// doc in parent
-void
-SoTransformVec3f::initClass()
-{
-  SO_ENGINE_INTERNAL_INIT_CLASS(SoTransformVec3f);
-}
-
-// private destructor
+/*!
+  Destructor is protected because explicit destruction of engines is
+  not allowed.
+*/
 SoTransformVec3f::~SoTransformVec3f()
 {
 }
 
 // doc in parent
 void
-SoTransformVec3f::evaluate()
+SoTransformVec3f::evaluate(void)
 {
-  int numVec = this->vector.getNum();
-  int numMatrix = this->matrix.getNum();
+  int numvec = this->vector.getNum();
+  int nummatrices = this->matrix.getNum();
 
-  int numOut = SbMax(numVec, numMatrix);
+  int numoutputs = SbMax(numvec, nummatrices);
 
-  SO_ENGINE_OUTPUT(point, SoMFVec3f, setNum(numOut));
-  SO_ENGINE_OUTPUT(direction, SoMFVec3f, setNum(numOut));
-  SO_ENGINE_OUTPUT(normalDirection, SoMFVec3f, setNum(numOut));
+  SO_ENGINE_OUTPUT(point, SoMFVec3f, setNum(numoutputs));
+  SO_ENGINE_OUTPUT(direction, SoMFVec3f, setNum(numoutputs));
+  SO_ENGINE_OUTPUT(normalDirection, SoMFVec3f, setNum(numoutputs));
 
   SbVec3f pt, dir, ndir;
 
-  for (int i = 0; i < numOut; i++) {
-    const SbVec3f &v = this->vector[SbMin(i, numVec-1)];
-    const SbMatrix &m = this->matrix[SbMin(i, numMatrix-1)];
+  for (int i = 0; i < numoutputs; i++) {
+    const SbVec3f & v = this->vector[SbMin(i, numvec-1)];
+    const SbMatrix & m = this->matrix[SbMin(i, nummatrices-1)];
     m.multVecMatrix(v, pt);
     m.multDirMatrix(v, dir);
     ndir = dir;

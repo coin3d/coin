@@ -44,8 +44,8 @@
 # ID      SoOneShot
 # ID      SoSelectOne
 # ID      SoTimeCounter
-#         SoTransformVec3f
-# Id      SoTriggerAny
+# ID      SoTransformVec3f
+# ID      SoTriggerAny
 # ID  SoEngineOutput
 #     SoUnknownEngine
 #
