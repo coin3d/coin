@@ -5,6 +5,7 @@
 #undef COIN_MINOR_VERSION
 #undef COIN_MICRO_VERSION
 #undef COIN_VERSION
+#undef HAVE_OSMESACREATECONTEXT
 
 /* Define if you have the <io.h> header file. */
 #undef HAVE_IO_H

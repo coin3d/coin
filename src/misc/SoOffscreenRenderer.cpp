@@ -39,6 +39,7 @@
 #include <Inventor/misc/SoBasic.h>
 #include <GL/gl.h>
 #include <assert.h>
+#include <config.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -71,7 +72,7 @@ protected:
   SbVec2s buffersize;
 };
 
-#if HAVE_OSMESA
+#if HAVE_OSMESACREATECONTEXT
 #include <GL/osmesa.h>
 
 class SoOffscreenMesaData : public SoOffscreenInternalData {
@@ -110,7 +111,7 @@ private:
   OSMesaContext context;
 };
 
-#endif // HAVE_OSMESA
+#endif // HAVE_OSMESACREATECONTEXT
 
 #endif // DOXYGEN_SKIP_THIS
 
@@ -127,9 +128,9 @@ SoOffscreenRenderer::SoOffscreenRenderer(const SbViewportRegion & viewportregion
     didallocaction(TRUE),
     internaldata(NULL)
 {
-#if HAVE_OSMESA
+#if HAVE_OSMESACREATECONTEXT
   this->internaldata = new SoOffscreenMesaData();
-#endif // HAVE_OSMESA
+#endif // HAVE_OSMESACREATECONTEXT
   this->setViewportRegion(viewportregion);
 }
 
@@ -146,9 +147,9 @@ SoOffscreenRenderer::SoOffscreenRenderer(SoGLRenderAction * action)
     didallocaction(FALSE),
     internaldata(NULL)
 {
-#if HAVE_OSMESA
+#if HAVE_OSMESACREATECONTEXT
   this->internaldata = new SoOffscreenMesaData();
-#endif // HAVE_OSMESA
+#endif // HAVE_OSMESACREATECONTEXT
   assert(action);
   this->setViewportRegion(action->getViewportRegion());
 }
