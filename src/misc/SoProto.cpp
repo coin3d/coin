@@ -49,6 +49,7 @@
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/engines/SoEngineOutput.h>
+#include <string.h>
 
 static SoType soproto_type;
 
