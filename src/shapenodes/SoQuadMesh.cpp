@@ -171,7 +171,7 @@
 #include <Inventor/system/gl.h>
 #include <math.h> // ilogb
 #include <float.h> // _logb
-
+#include "../caches/normalcache_numcoords_hack.h"
 
 /*!
   \var SoSFInt32 SoQuadMesh::verticesPerColumn
@@ -1137,6 +1137,21 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
 
   int start = this->startIndex.getValue();
 
+  if (coords->getNum() - start < rowsize * colsize) {
+    static uint32_t glrendererrors_quadmesh = 0;
+    if (glrendererrors_quadmesh < 1) {
+      SoDebugError::postWarning("SoQuadMesh::GLRender", "Illegal quadmesh "
+                                "dimension [%d %d] with %d coordinates available. "
+                                "Ignoring. This message will only be shown once, but "
+                                "there might be more errors.", 
+                                rowsize, colsize, coords->getNum() - start);
+    }
+
+    glrendererrors_quadmesh++;
+    return;
+  }
+
+
   Binding mbind = findMaterialBinding(action->getState());
   Binding nbind = findNormalBinding(action->getState());
   if (!needNormals) nbind = OVERALL;
@@ -1202,6 +1217,8 @@ SoQuadMesh::generateDefaultNormals(SoState * state, SoNormalCache * nc)
 
   const SbVec3f * coords = SoCoordinateElement::getInstance(state)->getArrayPtr3();
   assert(coords);
+
+  normalcache_set_num_coords_hack(nc, SoCoordinateElement::getInstance(state)->getNum() - startIndex.getValue());
 
   Binding binding = findNormalBinding(state);
 

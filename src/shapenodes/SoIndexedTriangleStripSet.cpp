@@ -85,8 +85,10 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 #include <Inventor/system/gl.h>
+#include "../caches/normalcache_numcoords_hack.h"
 
 #include <assert.h>
+
 
 
 SO_NODE_SOURCE(SoIndexedTriangleStripSet);
@@ -338,6 +340,8 @@ SoIndexedTriangleStripSet::generateDefaultNormals(SoState * state,
     vp->vertex.getValues(0) :
     coordelem->getArrayPtr3();
   assert(coords);
+
+  normalcache_set_num_coords_hack(nc, SoCoordinateElement::getInstance(state)->getNum());
 
   SoNormalBindingElement::Binding normbind = vpnorm ?
     (SoNormalBindingElement::Binding) vp->normalBinding.getValue() :

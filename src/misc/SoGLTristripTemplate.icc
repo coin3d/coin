@@ -33,9 +33,11 @@
 {
   int texidx = 0;
   const int32_t *viptr = vertexindices;
+  const int32_t *vistartptr = vertexindices;
   const int32_t *viendptr = viptr + numindices;
   int32_t v1, v2, v3;
   SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
+  int numverts = vertexlist->getNum();
 
   const SbVec3f * coords3d = NULL;
   const SbVec4f * coords4d = NULL;
@@ -52,8 +54,15 @@
 #define SEND_VERTEX(_idx_) \
   if (is3d) glVertex3fv((const GLfloat*) (coords3d + _idx_)); \
   else glVertex4fv((const GLfloat*) (coords4d + _idx_));
+
+#if NBINDING==PER_VERTEX || NBINDING==PER_TRIANGLE || NBINDING==PER_STRIP || NBINDING==PER_VERTEX_INDEXED || NBINDING==PER_TRIANGLE_INDEXED || NBINDING==PER_STRIP_INDEXED
+
+  assert(normals && "Aborting rendering of tristrip; got NULL normals");
+
+#endif
  
 #if NBINDING==PER_VERTEX || NBINDING==PER_TRIANGLE || NBINDING==PER_STRIP || NBINDING==PER_VERTEX_INDEXED || NBINDING==PER_TRIANGLE_INDEXED || NBINDING==PER_STRIP_INDEXED || TEXTURES==TRUE
+
   const SbVec3f *currnormal = &dummynormal;
   if (normals) currnormal = normals;
 #endif // currnormal wrapper
@@ -64,7 +73,23 @@
     v1 = *viptr++;
     v2 = *viptr++;
     v3 = *viptr++;
-    assert(v1 >= 0 && v2 >= 0 && v3 >= 0);
+
+    // This should be here to prevent illegal polygons from being rendered
+    if (v1 < 0 || v2 < 0 || v3 < 0 ||
+        v1 >= numverts || v2 >= numverts || v3 >= numverts) {
+
+      static uint32_t current_errors = 0;
+      if (current_errors < 1) {
+        SoDebugError::postWarning("[tristrip]::GLRender", "Erroneous polygon detected. "
+                                  "Ignoring (offset: %d, [%d %d %d]). Should be within "
+                                  " [0, %d] This message will only be shown once, but "
+                                  "more errors may be present",
+                                  viptr - vistartptr - 3, v1, v2, v3, numverts - 1);
+      }
+
+      current_errors++;
+      break;
+    }
 
     glBegin(GL_TRIANGLE_STRIP);
 

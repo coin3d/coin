@@ -157,6 +157,7 @@
 #include <assert.h>
 
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
+#include "../caches/normalcache_numcoords_hack.h"
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbRWMutex.h>
@@ -889,6 +890,8 @@ SoIndexedFaceSet::generateDefaultNormals(SoState * state,
 
   const SbVec3f * coords = SoCoordinateElement::getInstance(state)->getArrayPtr3();
   assert(coords);
+
+  normalcache_set_num_coords_hack(nc, SoCoordinateElement::getInstance(state)->getNum());
 
   SoNormalBindingElement::Binding normbind =
     SoNormalBindingElement::get(state);

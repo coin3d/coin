@@ -1,3 +1,6 @@
+#ifndef COIN_NORMALCACHE_NUMCOORDS_HACK_H
+#define COIN_NORMALCACHE_NUMCOORDS_HACK_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,13 +24,12 @@
  *
 \**************************************************************************/
 
-#include "SoBoundingBoxCache.cpp"
-#include "SoCache.cpp"
-#include "SoConvexDataCache.cpp"
-#include "SoGLCacheList.cpp"
-#include "SoGLRenderCache.cpp"
-#include "SoNormalCache.cpp"
-#include "SoTextureCoordinateCache.cpp"
-#include "SoPrimitiveVertexCache.cpp"
-#include "SoGlyphCache.cpp"
-#include "normalcache_numcoords_hack.cpp"
+// Hack used to circumvent the fact that the API interface for the public
+// class SoNormalCache does not supply the number of coordinates as an argument
+
+class SoNormalCache;
+
+void normalcache_set_num_coords_hack(const SoNormalCache * n, unsigned int nr);
+unsigned int normalcache_get_num_coords_hack(const SoNormalCache * n);
+
+#endif // !COIN_NORMALCACHE_HACK_H

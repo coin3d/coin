@@ -36,14 +36,19 @@
   quads.
 */
 
-#include <Inventor/caches/SoNormalCache.h>
-#include <Inventor/misc/SoNormalGenerator.h>
-#include <Inventor/lists/SbList.h>
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
+// *************************************************************************
 
 #include <float.h> // FLT_EPSILON
+
+#include <Inventor/caches/SoNormalCache.h>
+
+#include <Inventor/misc/SoNormalGenerator.h>
+#include <Inventor/lists/SbList.h>
+#include <Inventor/errors/SoDebugError.h>
+
+#include "normalcache_numcoords_hack.h"
+
+// *************************************************************************
 
 #ifndef DOXYGEN_SKIP_THIS
 class SoNormalCacheP {
@@ -66,6 +71,10 @@ public:
 
 #undef THIS
 #define THIS this->pimpl
+
+#define NORMALCACHE_DEBUG 0 // Set to one for debug output
+
+// *************************************************************************
 
 /*!
   Contructor with \a state being the current state.
@@ -164,9 +173,9 @@ SoNormalCache::getIndices(void) const
 // normal vectors of all incident faces
 //
 static void
-calc_normal_vec(const SbVec3f * facenormals, const int facenum,
-                SbList <int32_t> & faceArray, const float threshold,
-                SbVec3f & vertnormal)
+calc_normal_vec(const SbVec3f * facenormals, const int facenum, 
+                const int numfacenorm, SbList <int32_t> & faceArray, 
+                const float threshold, SbVec3f & vertnormal)
 {
   // start with face normal vector
   const SbVec3f * facenormal = & facenormals[facenum];
@@ -178,10 +187,23 @@ calc_normal_vec(const SbVec3f * facenormals, const int facenum,
   for (int i = 0; i < n; i++) {
     currface = faceArray[i];
     if (currface != facenum) { // check all but this face
-      const SbVec3f & normal = facenormals[currface];
-      if ((normal.dot(*facenormal)) > threshold) {
-        // smooth towards this face
-        vertnormal += normal;
+      if (currface < numfacenorm || numfacenorm == -1) { // -1 means: assume
+        const SbVec3f & normal = facenormals[currface];  // everything is ok
+        if ((normal.dot(*facenormal)) > threshold) {
+          // smooth towards this face
+          vertnormal += normal;
+        }
+      }
+      else {
+        static int calc_norm_error = 0;
+        if (calc_norm_error < 1) {
+          SoDebugError::postWarning("SoNormalCache::calc_normal_vec", "Normals "
+                                    "have not been specified for all faces. "
+                                    "this warning will only be shown once, "
+                                    "but there might be more errors");
+        }
+
+        calc_norm_error++;
       }
     }
   }
@@ -200,12 +222,24 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
                                  const int numvi,
                                  const float crease_angle,
                                  const SbVec3f * facenormals,
+                                 // FIXME: also supply the number of normals
+                                 // for more robustness, jornskaa 20040624
                                  const SbBool ccw,
                                  const SbBool tristrip)
 {
+#if NORMALCACHE_DEBUG && COIN_DEBUG
+  SoDebugError::postInfo("SoNormalCache::generatePerVertex", "generating normals");
+#endif
+
+  // FIXME: numcoords should really be given as an argument
+  // 
+  // jornskaa 20040624
+  const unsigned int numcoords = normalcache_get_num_coords_hack(this);
+
   this->clearGenerator();
   THIS->indices.truncate(0);
   THIS->normalArray.truncate(0);
+
 
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoNormalCache::generatePerVertex", "%d", numvi);
@@ -216,6 +250,9 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
 
 
   SoNormalCache tempcache(NULL);
+  normalcache_set_num_coords_hack(&tempcache, numcoords);
+
+  int numfacenorm = -1; // -1 means any number of facenorms.
   const SbVec3f * facenorm = (SbVec3f *) facenormals;
   if (facenorm == NULL) {
     // use a SoNormalCache to store temporary data
@@ -225,7 +262,11 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
     else {
       tempcache.generatePerFace(coords, vindex, numvi, ccw);
     }
+
     facenorm = tempcache.getNormals();
+    numfacenorm = tempcache.getNum();
+
+    assert(facenorm && "Normals should be generated for all coords");
   }
 
   // find biggest vertex index
@@ -246,38 +287,62 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
   int numfaces = 0;
 
   if (tristrip) {
+    // Find and save the faces belonging to the different vertices
     i = 0;
     while (i + 2 < numvi) {
-      temp = vindex[i++];
-      assert(temp >= 0);
-      vertexFaceArray[temp].append(numfaces);
-      temp = vindex[i++];
-      assert(temp >= 0);
-      vertexFaceArray[temp].append(numfaces);
-      temp = vindex[i++];
-      assert(temp >= 0);
-      vertexFaceArray[temp].append(numfaces);
-
-      numfaces++;
-      temp = i < numvi ? vindex[i++] : -1;
-      
-      while (temp >= 0) {
-        vertexFaceArray[temp].append(numfaces++);
-        temp = vindex[i++];
+      temp = vindex[i];
+      if (temp >= 0 && (unsigned int)temp < numcoords) {
+        vertexFaceArray[temp].append(numfaces);
       }
+      else {
+        i = i+1;
+        numfaces++;
+        continue;
+      }
+
+      temp = vindex[i+1];
+      if (temp >= 0 && (unsigned int)temp < numcoords) {
+        vertexFaceArray[temp].append(numfaces);
+      }
+      else {
+        i = i+2;
+        numfaces++;
+        continue;
+      }
+
+      temp = vindex[i+2];
+      if (temp >= 0 && (unsigned int)temp < numcoords) {
+        vertexFaceArray[temp].append(numfaces);
+      }
+      else {
+        i = i+3;
+        numfaces++;
+        continue;
+      }
+
+      temp = i+3 < numvi ? vindex[i+3] : -1;
+      if (temp < 0 || (unsigned int)temp >= numcoords) {
+        i = i + 4; // Jump to next possible face
+        numfaces++;
+        continue;
+      }
+
+      i++;
+      numfaces++;
     }
   }
   else { // !tristrip
     for (i = 0; i < numvi; i++) {
       temp = vindex[i];
-      if (temp >= 0)
+      if (temp >= 0 && (unsigned int)temp < numcoords) {
         vertexFaceArray[temp].append(numfaces);
-      else numfaces++;
+      }
+      else {
+        numfaces++;
+      }
     }
-    // add a face if last index != -1
-    if (numvi >= 3 && vindex[numvi-1] != -1) numfaces++;
   }
-  
+
   float threshold = (float)cos(SbClamp(crease_angle, 0.0f, (float) M_PI));
   SbBool found;
   int currindex = 0; // current normal index
@@ -288,15 +353,29 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
 
   for (i = 0; i < numvi; i++) {
     currindex = vindex[i];
-    if (currindex >= 0) {
+    if (currindex >= 0 && (unsigned int)currindex < numcoords) {
       if (tristrip) {
         if (++stripcnt > 3) facenum++; // next face
       }
       // calc normal for this vertex
       SbVec3f tmpvec;
-      calc_normal_vec(facenorm, facenum, vertexFaceArray[currindex],
+      calc_normal_vec(facenorm, facenum, numfacenorm, vertexFaceArray[currindex], 
                       threshold, tmpvec);
-      tmpvec.normalize();
+
+      // Be robust when it comes to erroneously specified triangles.
+      float len = tmpvec.length();
+
+      if (len <= 0.0f) {
+        static uint32_t normgenerrors_vertex = 0;
+        if (normgenerrors_vertex < 1) {
+          SoDebugError::postWarning("SoNormalCache::generatePerVertex","Unable to "
+                                    "generate valid normal for face %d", facenum);
+        }
+        normgenerrors_vertex++;
+      }
+
+      if (len > 0.0f) tmpvec /= len;
+      else tmpvec.setValue(1.0f, 0.0f, 0.0f); // dummy value
 
       if (THIS->normalArray.getLength() <= nindex)
         THIS->normalArray.append(tmpvec);
@@ -337,10 +416,10 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
     THIS->normalData.normals = THIS->normalArray.getArrayPtr();
     THIS->numNormals = THIS->normalArray.getLength();
   }
-#if 0 && COIN_DEBUG
-  SoDebugError::post(("SoNormalCache::generatePerVertex",
-                      "generated normals per vertex: %p %d %d\n",
-                      normals, numNormals, THIS->indices.getLength());
+#if NORMALCACHE_DEBUG && COIN_DEBUG
+  SoDebugError::postInfo("SoNormalCache::generatePerVertex",
+                         "generated normals per vertex: %p %d %d\n",
+                         THIS->normalData.normals, THIS->numNormals, THIS->indices.getLength());
 #endif
   delete [] vertexFaceArray;
   delete [] vertexNormalArray;
@@ -348,8 +427,7 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
 
 /*!
   Generates face normals for the faceset defined by \a coords
-  and \a cind. Assumes indices are correct (all faces has at least
-  three vertices, index array ends with a -1).
+  and \a cind. 
 */
 void
 SoNormalCache::generatePerFace(const SbVec3f * const coords,
@@ -357,8 +435,16 @@ SoNormalCache::generatePerFace(const SbVec3f * const coords,
                                const int nv,
                                const SbBool ccw)
 {
+#if NORMALCACHE_DEBUG && COIN_DEBUG
+    SoDebugError::postInfo("SoNormalCache::generatePerFace", "generating normals");
+#endif
+
+  // FIXME: numcoords should really be given as an argument 
+  //
+  // jornskaa 20040624
+  const unsigned int numcoords = normalcache_get_num_coords_hack(this);
+
   this->clearGenerator();
-  // FIXME: make this code robust. 19990405 mortene.
   THIS->indices.truncate(0);
   THIS->normalArray.truncate(0, TRUE);
 
@@ -367,22 +453,46 @@ SoNormalCache::generatePerFace(const SbVec3f * const coords,
 
   SbVec3f tmpvec;
 
+  int maxcoordidx = numcoords - 1;
+
   while (cind + 2 < endptr) {
     int v0 = cind[0];
     int v1 = cind[1];
     int v2 = cind[2];
 
-    if (v0 < 0 || v1 < 0 || v2 < 0) {
-#if COIN_DEBUG
-      SoDebugError::postInfo("SoNormalCache::generatePerFace",
-                             "Polygon with less than three vertices detected. "
-                             "Aborting current shape (offset: %d, [%d %d %d])",
-                             cind - cstart, v0, v1, v2);
-#endif // COIN_DEBUG
-      break;
+    if (v0 < 0 || v1 < 0 || v2 < 0 ||
+        v0 > maxcoordidx || v1 > maxcoordidx || v2 > maxcoordidx) {
+
+      SoDebugError::postWarning("SoNormalCache::generatePerFace",
+                                "Polygon with less than three valid "
+                                "vertices detected. (offset: %d, [%d %d %d]). "
+                                "Should be within [0, %d].",
+                                cind - cstart, v0, v1, v2, maxcoordidx);
+
+       // Insert dummy normal for robustness
+      SbVec3f dummynormal;
+      dummynormal.setValue(1.0, 0.0, 0.0);
+      THIS->normalArray.append(dummynormal);
+
+      // Skip ahead to next possible index
+      if (cind[0] < 0 || cind[0] > maxcoordidx) {
+        cind += 1;
+      }
+      else if (cind[1] < 0 || cind[1] > maxcoordidx) {
+        cind += 2;
+      }
+      else if (cind + 3 < endptr && (cind[2] < 0 || cind[2] > maxcoordidx)) {
+        cind += 3;
+      }
+      else {
+        cind += 3; // For robustness check after while loop
+        break;
+      }
+
+      continue;
     }
     
-    if (cind + 3 >= endptr || cind[3] < 0) { // triangle
+    if (cind + 3 >= endptr || cind[3] < 0 || cind[3] > maxcoordidx) { // triangle
       if (!ccw)
         tmpvec = (coords[v0] - coords[v1]).cross(coords[v2] - coords[v1]);
       else
@@ -390,10 +500,10 @@ SoNormalCache::generatePerFace(const SbVec3f * const coords,
 
       // Be robust when it comes to erroneously specified triangles.
       float len = tmpvec.length();
-#if COIN_DEBUG
+
       if (len <= 0.0f) {
-        static uint32_t normgenerrors_tri = 0;
-        if (normgenerrors_tri < 1) {
+        static uint32_t normgenerrors_face = 0;
+        if (normgenerrors_face < 1) {
           SoDebugError::postWarning("SoNormalCache::generatePerFace",
                                     "Erroneous triangle specification in model "
                                     "(indices= [%d, %d, %d], "
@@ -405,10 +515,10 @@ SoNormalCache::generatePerFace(const SbVec3f * const coords,
                                     coords[v1][0], coords[v1][1], coords[v1][2],
                                     coords[v2][0], coords[v2][1], coords[v2][2]);
         }
-        normgenerrors_tri++;
+        normgenerrors_face++;
       }
-#endif // !COIN_DEBUG
-      if (len > 0.0f) tmpvec.normalize();
+
+      if (len > 0.0f) tmpvec /= len;
       else tmpvec.setValue(1.0f, 0.0f, 0.0f); // dummy value
       THIS->normalArray.append(tmpvec);
       cind += 4; // goto next triangle/polygon
@@ -423,7 +533,7 @@ SoNormalCache::generatePerFace(const SbVec3f * const coords,
       // The cind < endptr check makes us robust with regard to a
       // missing "-1" termination of the coordIndex field of the
       // IndexedShape nodetype.
-      while (cind < endptr && *cind >= 0) {
+      while (cind < endptr && *cind >= 0 && *cind <= maxcoordidx) {
         vert1 = vert2;
         vert2 = coords + *cind++;
         tmpvec[0] += ((*vert1)[1] - (*vert2)[1]) * ((*vert1)[2] + (*vert2)[2]);
@@ -439,23 +549,34 @@ SoNormalCache::generatePerFace(const SbVec3f * const coords,
 
       // Be robust when it comes to erroneously specified polygons.
       float len = tmpvec.length();
-#if COIN_DEBUG
+
       if (len <= 0.0f) {
-        static uint32_t normgenerrors_poly = 0;
-        if (normgenerrors_poly < 1) {
+        static uint32_t normgenerrors_face = 0;
+        if (normgenerrors_face < 1) {
           SoDebugError::postWarning("SoNormalCache::generatePerFace",
-                                    "Erroneous polygon specification in model "
+                                    "Erroneous polygon specification in model. "
+                                    "Unable to generate normal; using dummy normal. "
                                     "(this warning will be printed only once, "
                                     "but there might be more errors).");
         }
-        normgenerrors_poly++;
+        normgenerrors_face++;
       }
-#endif // !COIN_DEBUG
-      if (len > 0.0f) tmpvec.normalize();
+
+      if (len > 0.0f) tmpvec /= len;
       else tmpvec.setValue(1.0f, 0.0f, 0.0f); // dummy value
       THIS->normalArray.append(ccw ? tmpvec : -tmpvec);
       cind++; // skip the -1
     }
+  }
+
+  if (endptr - cind > 0) {
+    SoDebugError::postWarning("SoNormalCache::generatePerFace", "Face "
+                              "specification did not end with a valid "
+                              "polygon. Too few points");
+
+    SbVec3f dummynormal;
+    dummynormal.setValue(1.0, 0.0, 0.0);
+    THIS->normalArray.append(dummynormal);
   }
 
   if (THIS->normalArray.getLength()) {
@@ -463,10 +584,10 @@ SoNormalCache::generatePerFace(const SbVec3f * const coords,
     THIS->numNormals = THIS->normalArray.getLength();
   }
 
-#if 0 // debug
+#if NORMALCACHE_DEBUG && COIN_DEBUG // debug
   SoDebugError::postInfo("SoNormalCache::generatePerFace",
                          "generated normals per face: %p %d",
-                         normals, numNormals);
+                         THIS->normalData.normals, THIS->numNormals);
 #endif // debug
 }
 
@@ -479,10 +600,20 @@ SoNormalCache::generatePerFaceStrip(const SbVec3f * const coords,
                                     const int nv,
                                     const SbBool ccw)
 {
+#if NORMALCACHE_DEBUG && COIN_DEBUG
+  SoDebugError::postInfo("SoNormalCache::generatePerFaceStrip", "generating normals");
+#endif
+
+  // FIXME: numcoords should really be given as an argument 
+  //
+  // jornskaa 20040624
+  const unsigned int numcoords = normalcache_get_num_coords_hack(this);
+
   this->clearGenerator();
   THIS->indices.truncate(0);
   THIS->normalArray.truncate(0, TRUE);
 
+  const int32_t * cstart = cind;
   const int32_t * endptr = cind + nv;
 
   const SbVec3f * c0, * c1, * c2;
@@ -490,7 +621,40 @@ SoNormalCache::generatePerFaceStrip(const SbVec3f * const coords,
 
   SbBool flip = ccw;
 
+  const int maxcoordidx = numcoords - 1;
+
   while (cind + 2 < endptr) {
+    if (cind[0] < 0 || cind[1] < 0 || cind[2] < 0 ||
+        cind[0] > maxcoordidx || cind[1] > maxcoordidx || cind[2] > maxcoordidx) {
+
+      SoDebugError::postWarning("SoNormalCache::generatePerFaceStrip", "Erroneous "
+                                "coordinate index detected (offset: %d, [%d %d %d]). Should be "
+                                "within [0, %d].",
+                                cind - cstart, *(cind), *(cind+1), *(cind+2), maxcoordidx);
+
+      // Insert dummy normal for robustness
+      SbVec3f dummynormal;
+      dummynormal.setValue(1.0, 0.0, 0.0);
+      THIS->normalArray.append(dummynormal);
+
+      // Skip to next possibly valid index
+      if (cind[0] < 0 || cind[0] > maxcoordidx) {
+        cind += 1;
+      }
+      else if (cind[1] < 0 || cind[1] > maxcoordidx) {
+        cind += 2;
+      }
+      else if (cind + 3 < endptr && (cind[2] < 0 || cind[2] > maxcoordidx)) {
+        cind += 3;
+      }
+      else {
+        cind += 3; // For robustness check after while loop
+        break;
+      }
+
+      continue;
+    }
+
     flip = ccw;
     c0 = &coords[*cind++];
     c1 = &coords[*cind++];
@@ -500,11 +664,34 @@ SoNormalCache::generatePerFaceStrip(const SbVec3f * const coords,
       n = (*c0 - *c1).cross(*c2 - *c1);
     else
       n = (*c2 - *c1).cross(*c0 - *c1);
-    n.normalize();
+
+    // Be robust when it comes to erroneously specified polygons.
+    float len = n.length();
+    
+    static uint32_t normgenerrors_facestrip = 0;
+    if (len <= 0.0f) {
+      if (normgenerrors_facestrip < 1) {
+        SoDebugError::postWarning("SoNormalCache::generatePerFaceStrip",
+                                  "Erroneous triangle specification in model "
+                                  "(coords=<%f, %f, %f>, <%f, %f, %f>, <%f, %f, %f>) "
+                                  "(this warning will be printed only once, "
+                                  "but there might be more errors).",
+                                  c0[0][0], c0[0][1], c0[0][2],
+                                  c1[0][0], c1[0][1], c1[0][2],
+                                  c2[0][0], c2[0][1], c2[0][2]);
+
+
+
+      }
+      normgenerrors_facestrip++;
+    }
+    
+    if (len > 0.0f) n /= len;
+    else n.setValue(1.0f, 0.0f, 0.0f); // dummy value
     THIS->normalArray.append(n);
 
     int idx = cind < endptr ? *cind++ : -1;
-    while (idx >= 0) {
+    while (idx >= 0 && idx <= maxcoordidx) {
       c0 = c1;
       c1 = c2;
       c2 = &coords[idx];
@@ -513,10 +700,52 @@ SoNormalCache::generatePerFaceStrip(const SbVec3f * const coords,
         n = (*c0 - *c1).cross(*c2 - *c1);
       else
         n = (*c2 - *c1).cross(*c0 - *c1);
-      n.normalize();
+
+      // Be robust when it comes to erroneously specified polygons.
+      float len = n.length();
+
+      if (len <= 0.0f) {
+        if (normgenerrors_facestrip < 1) {
+          SoDebugError::postWarning("SoNormalCache::generatePerFaceStrip",
+                                    "Erroneous triangle specification in model "
+                                    "(coords=<%f, %f, %f>, <%f, %f, %f>, <%f, %f, %f>) "
+                                    "(this warning will be printed only once, "
+                                    "but there might be more errors).",
+                                    c0[0][0], c0[0][1], c0[0][2],
+                                    c1[0][0], c1[0][1], c1[0][2],
+                                    c2[0][0], c2[0][1], c2[0][2]);
+        }
+        normgenerrors_facestrip++;
+      }
+
+      if (len > 0.0f) n /= len;
+      else n.setValue(1.0f, 0.0f, 0.0f); // dummy value
       THIS->normalArray.append(n);
       idx = cind < endptr ? *cind++ : -1;
     }
+
+    if (idx > maxcoordidx) {
+      static uint32_t normgenerrors_facestrip = 0;
+      if (normgenerrors_facestrip < 1) {
+        SoDebugError::postWarning("SoNormalCache::generatePerFaceStrip",
+                                  "Erroneous polygon specification in model. "
+                                  "Index out of bounds: %d. Max index: %d. "
+                                  "(this warning will be printed only once, "
+                                  "but there might be more errors).", 
+                                  idx, maxcoordidx);
+      }
+      normgenerrors_facestrip++;
+    }
+  }
+
+  if (endptr - cind > 0) {
+    SoDebugError::postWarning("SoNormalCache::generatePerFaceStrip", "Strip "
+                              "did not end with a valid polygon. Too few "
+                              "points");
+
+    SbVec3f dummynormal;
+    dummynormal.setValue(1.0, 0.0, 0.0);
+    THIS->normalArray.append(dummynormal);
   }
 
   if (THIS->normalArray.getLength()) {
@@ -524,10 +753,10 @@ SoNormalCache::generatePerFaceStrip(const SbVec3f * const coords,
     THIS->numNormals = THIS->normalArray.getLength();
   }
 
-#if 0 && COIN_DEBUG
-  SoDebugError::post("SoNormalCache::generatePerFaceStrip",
-                     "generated tristrip normals per face: %p %d",
-                     normals, numNormals);
+#if NORMALCACHE_DEBUG && COIN_DEBUG
+  SoDebugError::postInfo("SoNormalCache::generatePerFaceStrip",
+                         "generated tristrip normals per face: %p %d",
+                         THIS->normalData.normals, THIS->numNormals);
 #endif // debug
 
 }
@@ -541,10 +770,20 @@ SoNormalCache::generatePerStrip(const SbVec3f * const coords,
                                 const int nv,
                                 const SbBool ccw)
 {
+#if NORMALCACHE_DEBUG && COIN_DEBUG
+  SoDebugError::postInfo("SoNormalCache::generatePerStrip", "generating normals");
+#endif
+
+  // FIXME: numcoords should really be given as an argument 
+  //
+  // jornskaa 20040624
+  const unsigned int numcoords = normalcache_get_num_coords_hack(this);
+
   this->clearGenerator();
   THIS->indices.truncate(0);
   THIS->normalArray.truncate(0, TRUE);
 
+  const int32_t * cstart = cind;
   const int32_t * endptr = cind + nv;
 
   const SbVec3f * c0, * c1, * c2;
@@ -552,7 +791,40 @@ SoNormalCache::generatePerStrip(const SbVec3f * const coords,
 
   SbBool flip = ccw;
 
+  const int maxcoordidx = numcoords - 1;
+
   while (cind + 2 < endptr) {
+    if (cind[0] < 0 || cind[1] < 0 || cind[2] < 0 ||
+        cind[0] > maxcoordidx || cind[1] > maxcoordidx || cind[2] > maxcoordidx) {
+
+      SoDebugError::postWarning("SoNormalCache::generatePerStrip", "Erroneous "
+                                "coordinate index detected (offset: %d, [%d %d %d]). Should be "
+                                "within [0, %d].",
+                                cind - cstart, *(cind), *(cind+1), *(cind+2), maxcoordidx);
+
+      // Insert dummy normal for robustness
+      SbVec3f dummynormal;
+      dummynormal.setValue(1.0, 0.0, 0.0);
+      THIS->normalArray.append(dummynormal);
+
+      // Skip to next possibly valid index
+      if (cind[0] < 0 || cind[0] > maxcoordidx) {
+        cind += 1;
+      }
+      else if (cind[1] < 0 || cind[1] > maxcoordidx) {
+        cind += 2;
+      }
+      else if (cind + 3 < endptr && (cind[2] < 0 || cind[2] > maxcoordidx)) {
+        cind += 3;
+      }
+      else {
+        cind += 3; // For robustness check after while loop
+        break;
+      }
+
+      continue;
+    }
+    
     flip = ccw;
     c0 = &coords[*cind++];
     c1 = &coords[*cind++];
@@ -564,7 +836,7 @@ SoNormalCache::generatePerStrip(const SbVec3f * const coords,
       n = (*c2 - *c1).cross(*c0 - *c1);
 
     int idx = cind < endptr ? *cind++ : -1;
-    while (idx >= 0) {
+    while (idx >= 0 && idx <= maxcoordidx) {
       c0 = c1;
       c1 = c2;
       c2 = &coords[idx];
@@ -575,13 +847,61 @@ SoNormalCache::generatePerStrip(const SbVec3f * const coords,
         n += (*c2 - *c1).cross(*c0 - *c1);
       idx = cind < endptr ? *cind++ : -1;
     }
-    n.normalize();
+
+    if (idx > maxcoordidx) {
+      static uint32_t normgenerrors_strip = 0;
+      if (normgenerrors_strip < 1) {
+        SoDebugError::postWarning("SoNormalCache::generatePerStrip",
+                                  "Erroneous polygon specification in model. "
+                                  "Index out of bounds: %d. Max index: %d. "
+                                  "(this warning will be printed only once, "
+                                  "but there might be more errors).", 
+                                  idx, maxcoordidx);
+      }
+      normgenerrors_strip++;
+    }
+
+    // Be robust when it comes to erroneously specified polygons.
+    float len = n.length();
+    
+    if (len <= 0.0f) {
+      static uint32_t normgenerrors_strip = 0;
+      if (normgenerrors_strip < 1) {
+        SoDebugError::postWarning("SoNormalCache::generatePerStrip",
+                                  "Erroneous polygon specification in model.  "
+                                  "Unable to generate non-zero normal. Using "
+                                  "dummy normal. "
+                                  "(this warning will be printed only once, "
+                                  "but there might be more errors).");
+      }
+      normgenerrors_strip++;
+    }
+    
+    if (len > 0.0f) n /= len;
+    else n.setValue(1.0f, 0.0f, 0.0f); // dummy value
     THIS->normalArray.append(n);
   }
+
+  if (endptr - cind > 0) {
+    SoDebugError::postWarning("SoNormalCache::generatePerStrip", "Strip did "
+                              "not end with a valid polygon. Too few points");
+
+    SbVec3f dummynormal;
+    dummynormal.setValue(1.0, 0.0, 0.0);
+    THIS->normalArray.append(dummynormal);
+  }
+
   if (THIS->normalArray.getLength()) {
     THIS->normalData.normals = THIS->normalArray.getArrayPtr();
     THIS->numNormals = THIS->normalArray.getLength();
   }
+
+#if NORMALCACHE_DEBUG && COIN_DEBUG
+  SoDebugError::postInfo("SoNormalCache::generatePerStrip",
+                         "generated normals per strip: %p %d\n",
+                         THIS->normalData.normals, THIS->numNormals);
+#endif
+
 }
 
 /*!
@@ -593,23 +913,58 @@ SoNormalCache::generatePerVertexQuad(const SbVec3f * const coords,
                                      const int vPerColumn,
                                      const SbBool ccw)
 {
+#if NORMALCACHE_DEBUG && COIN_DEBUG
+  SoDebugError::postInfo("SoNormalCache::generatePerVertexQuad", "generating normals");
+#endif
+
+  // FIXME: numcoords should really be given as an argument 
+  //
+  // jornskaa 20040624
+  const unsigned int numcoords = normalcache_get_num_coords_hack(this);
+
   this->clearGenerator();
   THIS->normalArray.truncate(0, TRUE);
 
   SoNormalCache tempcache(NULL);
+  normalcache_set_num_coords_hack(&tempcache, numcoords);
+
   tempcache.generatePerFaceQuad(coords, vPerRow, vPerColumn, ccw);
   const SbVec3f * facenormals = tempcache.getNormals();
+  int numfacenormals = tempcache.getNum(); // Used for extra robustness
 
 #define IDX(r, c) ((r)*(vPerRow-1)+(c))
 
   for (int i = 0; i < vPerColumn; i++) {
     for (int j = 0; j < vPerRow; j++) {
+      const int idx1 = IDX(i, j);
+      const int idx2 = IDX(i-1, j);
+      const int idx3 = IDX(i-1, j-1);
+      const int idx4 = IDX(i, j-1);
+
       SbVec3f n(0, 0, 0);
-      if (i < vPerColumn-1 && j < vPerRow-1) n += facenormals[IDX(i, j)];
-      if (i > 0 && j < vPerRow-1) n += facenormals[IDX(i-1, j)];
-      if (j > 0 && i > 0) n += facenormals[IDX(i-1, j-1)];
-      if (j > 0 && i < vPerColumn-1) n += facenormals[IDX(i, j-1)];
-      n.normalize();
+
+      if (i < vPerColumn-1 && j < vPerRow-1 && idx1 < numfacenormals) n += facenormals[idx1];
+      if (i > 0 && j < vPerRow-1 && idx2 < numfacenormals) n += facenormals[idx2];
+      if (j > 0 && i > 0 && idx3 < numfacenormals) n += facenormals[idx3];
+      if (j > 0 && i < vPerColumn-1 && idx4 < numfacenormals) n += facenormals[idx4];
+
+      // Be robust when it comes to erroneously specified polygons.
+      float len = n.length();
+
+      if (len <= 0.0f) {
+        static uint32_t normgenerrors_vertexquad = 0;
+        if (normgenerrors_vertexquad < 1) {
+          SoDebugError::postWarning("SoNormalCache::generatePerVertexQuad",
+                                    "Erroneous polygon specification in model. "
+                                    "Unable to generate valid normal, adding dummy. "
+                                    "(this warning will be printed only once, "
+                                    "but there might be more errors).");
+        }
+        normgenerrors_vertexquad++;
+      }
+        
+      if (len > 0.0f) n /= len;
+      else n.setValue(1.0f, 0.0f, 0.0f); // dummy value
       THIS->normalArray.append(ccw ? -n : n);
     }
   }
@@ -618,6 +973,12 @@ SoNormalCache::generatePerVertexQuad(const SbVec3f * const coords,
 
   THIS->normalData.normals = THIS->normalArray.getArrayPtr();
   THIS->numNormals = THIS->normalArray.getLength();
+
+#if NORMALCACHE_DEBUG && COIN_DEBUG
+  SoDebugError::postInfo("SoNormalCache::generatePerVertexQuad",
+                         "generated normals per vertex quad: %p %d\n",
+                         THIS->normalData.normals, THIS->numNormals);
+#endif
 }
 
 /*!
@@ -629,17 +990,69 @@ SoNormalCache::generatePerFaceQuad(const SbVec3f * const coords,
                                    const int vPerColumn,
                                    const SbBool ccw)
 {
+#if NORMALCACHE_DEBUG && COIN_DEBUG
+  SoDebugError::postInfo("SoNormalCache::generatePerFaceQuad", "generating normals");
+#endif
+
+  // FIXME: numcoords should really be given as an argument 
+  //
+  // jornskaa 20040624
+  const unsigned int numcoords = normalcache_get_num_coords_hack(this);
+
   this->clearGenerator();
   THIS->normalArray.truncate(0, TRUE);
+
+  if (vPerRow <= 1 || vPerColumn <= 1 || 
+      (unsigned int)(vPerRow * vPerColumn) > numcoords) {
+
+    SoDebugError::postWarning("SoNormalCache::generatePerFaceQuad", "Illegal "
+                              "facequad dimension: [%d %d] with %d coordinates "
+                              "available. verticesPerRow and verticesPerColumn "
+                              "should be > 1, and verticesPerRow * verticesPerColumn "
+                              "<= number of coordinates available.", 
+                              vPerRow, vPerColumn, numcoords);
+  }
 
 #define IDX(r, c) ((r)*(vPerRow)+(c))
 
   for (int i = 0; i < vPerColumn-1; i++) {
     for (int j = 0; j < vPerRow-1; j++) {
-      int idx = IDX(i, j);
-      SbVec3f n = (coords[IDX(i+1, j)]-coords[idx]).cross(coords[IDX(i, j+1)]-coords[idx]);
-      n.normalize();
-      THIS->normalArray.append(ccw ? -n : n);
+      const unsigned int idx1 = IDX(i, j);
+      const unsigned int idx2 = IDX(i+1, j);
+      const unsigned int idx3 = IDX(i, j+1);
+
+      if (idx2 < numcoords) { // Check the largest index only
+        SbVec3f n = (coords[idx2] - coords[idx1]).cross(coords[idx3] - coords[idx1]);
+
+        // Be robust when it comes to erroneously specified polygons.
+        float len = n.length();
+
+        if (len <= 0.0f) {
+          static uint32_t normgenerrors_facequad = 0;
+          if (normgenerrors_facequad < 1) {
+            SoDebugError::postWarning("SoNormalCache::generatePerFaceQuad",
+                                      "Erroneous triangle specification in model "
+                                      "(indices= [%d, %d, %d], "
+                                      "coords=<%f, %f, %f>, <%f, %f, %f>, <%f, %f, %f>) "
+                                      "(this warning will be printed only once, "
+                                      "but there might be more errors).",
+                                      idx1, idx2, idx3,
+                                      coords[idx1][0], coords[idx1][1], coords[idx1][2],
+                                      coords[idx2][0], coords[idx2][1], coords[idx2][2],
+                                      coords[idx3][0], coords[idx3][1], coords[idx3][2]);
+          }
+          normgenerrors_facequad++;
+        }
+        
+        if (len > 0.0f) n /= len;
+        else n.setValue(1.0f, 0.0f, 0.0f); // dummy value
+        THIS->normalArray.append(ccw ? -n : n);
+      }
+      else {
+        // Generate normals even for invalid input
+        SbVec3f dummynormal(1.0, 0.0, 0.0);
+        THIS->normalArray.append(ccw ? -dummynormal : dummynormal);
+      }
     }
   }
 
@@ -649,6 +1062,13 @@ SoNormalCache::generatePerFaceQuad(const SbVec3f * const coords,
     THIS->normalData.normals = THIS->normalArray.getArrayPtr();
     THIS->numNormals = THIS->normalArray.getLength();
   }
+
+#if NORMALCACHE_DEBUG && COIN_DEBUG
+  SoDebugError::postInfo("SoNormalCache::generatePerFaceQuad",
+                         "generated normals per face quad: %p %d\n",
+                         THIS->normalData.normals, THIS->numNormals);
+#endif
+
 }
 
 /*!
@@ -660,19 +1080,61 @@ SoNormalCache::generatePerRowQuad(const SbVec3f * const coords,
                                   const int vPerColumn,
                                   const SbBool ccw)
 {
+#if NORMALCACHE_DEBUG && COIN_DEBUG
+  SoDebugError::postInfo("SoNormalCache::generatePerRowQuad", "generating normals");
+#endif
+
+  // FIXME: numcoords should really be given as an argument 
+  //
+  // jornskaa 20040624
+  const unsigned int numcoords = normalcache_get_num_coords_hack(this);
+
   this->clearGenerator();
   THIS->normalArray.truncate(0, TRUE);
   SbVec3f n;
+
+  if (vPerRow <= 1 || vPerColumn <= 1 || 
+      (unsigned int)(vPerRow * vPerColumn) > numcoords) {
+
+    SoDebugError::postWarning("SoNormalCache::generatePerRowQuad", "Illegal "
+                              "facequad dimension: [%d %d] with %d coordinates "
+                              "available. verticesPerRow and verticesPerColumn "
+                              "should be > 1, and verticesPerRow * verticesPerColumn "
+                              "<= number of coordinates available.", 
+                              vPerRow, vPerColumn, numcoords);
+  }
 
 #define IDX(r, c) ((r)*(vPerRow)+(c))
 
   for (int i = 0; i < vPerColumn-1; i++) {
     n.setValue(0.0f, 0.0f, 0.0f);
     for (int j = 0; j < vPerRow-1; j++) {
-      int idx = IDX(i, j);
-      n += (coords[IDX(i+1, j)]-coords[idx]).cross(coords[IDX(i, j+1)]-coords[idx]);
+      const unsigned int idx1 = IDX(i, j);
+      const unsigned int idx2 = IDX(i+1, j);
+      const unsigned int idx3 = IDX(i, j+1);
+
+      if (idx2 < numcoords) { // Check largest index only
+        n += (coords[idx2] - coords[idx1]).cross(coords[idx3] - coords[idx1]);
+      }
     }
-    n.normalize();
+
+    // Be robust when it comes to erroneously specified polygons.
+    float len = n.length();
+
+    if (len <= 0.0f) {
+      static uint32_t normgenerrors_rowquad = 0;
+      if (normgenerrors_rowquad < 1) {
+        SoDebugError::postWarning("SoNormalCache::generatePerRowQuad",
+                                  "Erroneous polygon specification in model. "
+                                  "Unable to generate valid normal, adding dummy. "
+                                  "(this warning will be printed only once, "
+                                  "but there might be more errors).");
+      }
+      normgenerrors_rowquad++;
+    }
+    
+    if (len > 0.0f) n /= len;
+    else n.setValue(1.0f, 0.0f, 0.0f); // dummy value
     THIS->normalArray.append(ccw ? -n : n);
   }
 
@@ -682,6 +1144,13 @@ SoNormalCache::generatePerRowQuad(const SbVec3f * const coords,
     THIS->normalData.normals = THIS->normalArray.getArrayPtr();
     THIS->numNormals = THIS->normalArray.getLength();
   }
+
+#if NORMALCACHE_DEBUG && COIN_DEBUG
+  SoDebugError::postInfo("SoNormalCache::generatePerRowQuad",
+                         "generated normals per row quad: %p %d\n",
+                         THIS->normalData.normals, THIS->numNormals);
+#endif
+
 }
 
 //
