@@ -21,6 +21,10 @@
 #define COIN_SOLINEHIGHLIGHTRENDERACTION_H
 
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/SbColor.h>
+
+class SoTempPath;
+class SoPathList;
 
 
 class SoLineHighlightRenderAction : public SoGLRenderAction {
@@ -52,6 +56,33 @@ public:
   SoLineHighlightRenderAction(void);
   SoLineHighlightRenderAction(const SbViewportRegion & viewportRegion);
 
+  virtual void apply(SoNode *node);
+  void setVisible(const SbBool visible);
+  SbBool isVisible() const;
+  void setColor(const SbColor &color);
+  const SbColor &getColor();
+  void setLinePattern(unsigned short pattern);
+  unsigned short getLinePattern() const;
+  void setLineWidth(const float width);
+  float getLineWidth() const;
+
+protected:
+
+  SbBool hlVisible;
+  // Some protected members are missing compared to OIV here.
+  // I doubt that anyone will use them though, since it looked
+  // like they should have been private. We chose to implement this 
+  // action in a different manner. But, if you need the protected members
+  // provided by OIV here, contact us any we'll consider reimplementing
+  // the action to conform more to OIV. pederb, 20000222
+
+private:
+  class SoSearchAction *searchAction;
+  void init();
+  void drawBoxes(SoPath *pathtothis, const SoPathList *pathlist);
+  SbColor color;
+  unsigned short linepattern;
+  float linewidth;
 };
 
 #endif // !COIN_SOLINEHIGHLIGHTRENDERACTION_H
