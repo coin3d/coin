@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -171,30 +171,30 @@ SoEnvironmentElement::~SoEnvironmentElement(void)
 
 void
 SoEnvironmentElement::set(SoState * const state,
-			  SoNode * const node,
-			  const float ambientIntensity,
-			  const SbColor & ambientColor,
-			  const SbVec3f & attenuation,
-			  const int32_t fogType,
-			  const SbColor & fogColor,
-			  const float fogVisibility)
+                          SoNode * const node,
+                          const float ambientIntensity,
+                          const SbColor & ambientColor,
+                          const SbVec3f & attenuation,
+                          const int32_t fogType,
+                          const SbColor & fogColor,
+                          const float fogVisibility)
 {
   SoEnvironmentElement * element = (SoEnvironmentElement *)
     SoReplacedElement::getElement(state, classStackIndex, node);
   element->setElt(state, ambientIntensity, ambientColor, attenuation,
-		  fogType, fogColor, fogVisibility);
+                  fogType, fogColor, fogVisibility);
 }
 
 //! FIXME: write doc.
 
 void
 SoEnvironmentElement::get(SoState * const state,
-			  float & ambientIntensity,
-			  SbColor & ambientColor,
-			  SbVec3f & attenuation,
-			  int32_t & fogType,
-			  SbColor & fogColor,
-			  float & fogVisibility)
+                          float & ambientIntensity,
+                          SbColor & ambientColor,
+                          SbVec3f & attenuation,
+                          int32_t & fogType,
+                          SbColor & fogColor,
+                          float & fogVisibility)
 {
   SoEnvironmentElement *element = (SoEnvironmentElement *)
     SoElement::getConstElement(state, classStackIndex);
@@ -210,11 +210,11 @@ SoEnvironmentElement::get(SoState * const state,
 
 void
 SoEnvironmentElement::getDefault(float & ambientIntensity,
-				 SbColor & ambientColor,
-				 SbVec3f & attenuation,
-				 int32_t & fogType,
-				 SbColor & fogColor,
-				 float & fogVisibility)
+                                 SbColor & ambientColor,
+                                 SbVec3f & attenuation,
+                                 int32_t & fogType,
+                                 SbColor & fogColor,
+                                 float & fogVisibility)
 {
   ambientIntensity = 0.2f;
   ambientColor = SbColor(1.0f, 1.0f, 1.0f);
@@ -299,18 +299,18 @@ SoEnvironmentElement::init(SoState * state)
 {
   inherited::init(state);
   this->getDefault(ambientIntensity, ambientColor, attenuation,
-		   fogType, fogColor, fogVisibility);
+                   fogType, fogColor, fogVisibility);
 }
 
 //! FIXME: doc
 void
 SoEnvironmentElement::setElt(SoState * const,
-			     const float ambientIntensity,
-			     const SbColor & ambientColor,
-			     const SbVec3f & attenuation,
-			     const int32_t fogType,
-			     const SbColor & fogColor,
-			     const float fogVisibility)
+                             const float ambientIntensity,
+                             const SbColor & ambientColor,
+                             const SbVec3f & attenuation,
+                             const int32_t fogType,
+                             const SbColor & fogColor,
+                             const float fogVisibility)
 {
   this->ambientIntensity = ambientIntensity;
   this->ambientColor = ambientColor;
@@ -319,4 +319,3 @@ SoEnvironmentElement::setElt(SoState * const,
   this->fogColor = fogColor;
   this->fogVisibility = fogVisibility;
 }
-

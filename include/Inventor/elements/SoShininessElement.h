@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -49,7 +49,7 @@ protected:
 public:
   virtual void init(SoState * state);
   static void set(SoState * const state, SoNode * const node,
-		  const int32_t numValues, const float* const values);  
+                  const int32_t numValues, const float* const values);
 
   static const SoShininessElement * getInstance(SoState *state);
 

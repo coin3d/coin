@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -93,7 +93,7 @@ SoLightModelElement::getClassStackIndex(void)
   SoLightModelElement class.
 */
 
-void 
+void
 SoLightModelElement::initClass()
 {
 //$ BEGIN TEMPLATE InitElementSource(SoLightModelElement)
@@ -124,7 +124,7 @@ SoLightModelElement::initClass()
 SoLightModelElement::SoLightModelElement()
 {
   setTypeId(classTypeId);
-  setStackIndex(classStackIndex); 
+  setStackIndex(classStackIndex);
 }
 
 /*!
@@ -132,12 +132,12 @@ SoLightModelElement::SoLightModelElement()
 */
 
 SoLightModelElement::~SoLightModelElement()
-{ 
+{
 }
 
 //! FIXME: write doc.
 
-void 
+void
 SoLightModelElement::init(SoState * /* state */)
 {
   data = PHONG;
@@ -145,7 +145,7 @@ SoLightModelElement::init(SoState * /* state */)
 
 //! FIXME: write doc.
 
-void 
+void
 SoLightModelElement::set(SoState * const state, const Model model)
 {
   SoInt32Element::set(classStackIndex, state, model);
@@ -156,9 +156,9 @@ SoLightModelElement::set(SoState * const state, const Model model)
 
 //! FIXME: write doc.
 
-void 
+void
 SoLightModelElement::set(SoState * const state, SoNode * const node,
-			 const Model model)
+                         const Model model)
 {
   SoInt32Element::set(classStackIndex, state, node, model);
 #if !defined(COIN_EXCLUDE_SOSHAPESTYLEELEMENT)
@@ -168,7 +168,7 @@ SoLightModelElement::set(SoState * const state, SoNode * const node,
 
 //! FIXME: write doc.
 
-SoLightModelElement::Model 
+SoLightModelElement::Model
 SoLightModelElement::get(SoState * const state)
 {
   return (Model) SoInt32Element::get(classStackIndex, state);
@@ -176,9 +176,8 @@ SoLightModelElement::get(SoState * const state)
 
 //! FIXME: write doc.
 
-SoLightModelElement::Model 
+SoLightModelElement::Model
 SoLightModelElement::getDefault()
 {
   return PHONG;
 }
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -91,7 +91,7 @@ SoInt32Element::initClass(void)
 
   SoInt32Element::classTypeId =
     SoType::createType(inherited::getClassTypeId(),
-		       "SoInt32Element", NULL );
+                       "SoInt32Element", NULL );
 
   if ( inherited::classStackIndex < 0 ) {
     SoInt32Element::classStackIndex =
@@ -146,7 +146,7 @@ SoInt32Element::copyMatchInfo(void) const
         (SoInt32Element *)(getTypeId().createInstance());
     element->data = this->data;
 
-    // DEPRECATED 980807 pederb. copyMatchInfo should only copy 
+    // DEPRECATED 980807 pederb. copyMatchInfo should only copy
     // information needed in matches(). An exact copy is not needed.
     //    element->dataNode = this->dataNode;
     return (SoElement *)element;
@@ -157,7 +157,7 @@ SoInt32Element::copyMatchInfo(void) const
 void
 SoInt32Element::print(FILE * file) const
 {
-    fprintf(file, "%s[%p]: data = %d\n", 
+    fprintf(file, "%s[%p]: data = %d\n",
         getTypeId().getName().getString(), this, this->data);
 }
 
@@ -165,9 +165,9 @@ SoInt32Element::print(FILE * file) const
 
 void
 SoInt32Element::set(const int index,
-		    SoState * const state,
-		    SoNode * const /* node */,
-		    const int32_t value)
+                    SoState * const state,
+                    SoNode * const /* node */,
+                    const int32_t value)
 {
   SoInt32Element * element;
   element = (SoInt32Element *) getElement(state, index);
@@ -181,7 +181,7 @@ SoInt32Element::set(const int index,
 
 void
 SoInt32Element::set(const int index, SoState * const state,
-		    const int32_t value)
+                    const int32_t value)
 {
   set(index, state, NULL, value);
 }
@@ -190,7 +190,7 @@ SoInt32Element::set(const int index, SoState * const state,
 
 int32_t
 SoInt32Element::get(const int index,
-		    SoState * const state)
+                    SoState * const state)
 {
   SoInt32Element * element;
   element = (SoInt32Element *) getConstElement(state, index); //, NULL );
@@ -215,4 +215,3 @@ SoInt32Element::init(SoState * state)
   inherited::init(state);
   this->data = 0;
 }
-

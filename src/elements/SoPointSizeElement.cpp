@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -137,35 +137,34 @@ SoPointSizeElement::init(SoState * state)
 
 //! FIXME: write doc.
 
-void 
-SoPointSizeElement::set(SoState * const state, 
-			SoNode * const node,
-			const float pointSize)
-{ 
+void
+SoPointSizeElement::set(SoState * const state,
+                        SoNode * const node,
+                        const float pointSize)
+{
   SoFloatElement::set(classStackIndex,state, node, pointSize);
 }
 
 //! FIXME: write doc.
 
-void 
+void
 SoPointSizeElement::set(SoState * const state, const float pointSize)
-{ 
-  set(state, NULL, pointSize); 
+{
+  set(state, NULL, pointSize);
 }
 
 //! FIXME: write doc.
 
-float 
+float
 SoPointSizeElement::get(SoState * const state)
-{ 
-  return SoFloatElement::get(classStackIndex, state); 
+{
+  return SoFloatElement::get(classStackIndex, state);
 }
 
 //! FIXME: write doc.
 
-float 
+float
 SoPointSizeElement::getDefault()
-{ 
-  return 0.0f; 
+{
+  return 0.0f;
 }
-

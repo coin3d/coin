@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -142,7 +142,7 @@ SoSpecularColorElement::~SoSpecularColorElement()
 
 //! FIXME: write doc.
 
-void 
+void
 SoSpecularColorElement::init(SoState * /* state */)
 {
   this->colors = &defaultColor;
@@ -151,10 +151,10 @@ SoSpecularColorElement::init(SoState * /* state */)
 
 //! FIXME: write doc.
 
-void 
+void
 SoSpecularColorElement::set(SoState * const state, SoNode * const node,
-			   const int32_t numColors, 
-			   const SbColor * const colors)  
+                           const int32_t numColors,
+                           const SbColor * const colors)
 {
   SoSpecularColorElement *elem = (SoSpecularColorElement*)
     SoReplacedElement::getElement(state, classStackIndex, node);
@@ -163,18 +163,18 @@ SoSpecularColorElement::set(SoState * const state, SoNode * const node,
 
 //! FIXME: write doc.
 
-void 
-SoSpecularColorElement::setElt(const int32_t numColors, 
-			      const SbColor * const colors)
+void
+SoSpecularColorElement::setElt(const int32_t numColors,
+                              const SbColor * const colors)
 {
   this->colors = colors;
   this->numColors = numColors;
 }
- 
+
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-int32_t 
+int32_t
 SoSpecularColorElement::getNum() const
 {
   return this->numColors;
@@ -192,10 +192,9 @@ SoSpecularColorElement::get(const int index) const
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-const SoSpecularColorElement * 
+const SoSpecularColorElement *
 SoSpecularColorElement::getInstance(SoState *state)
 {
   return (const SoSpecularColorElement *)
     SoElement::getConstElement(state, classStackIndex);
 }
-

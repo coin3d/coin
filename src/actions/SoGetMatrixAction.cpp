@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -88,7 +88,7 @@ SoGetMatrixAction::getEnabledElements(void) const
   This method adds a method to be perfomed by the action class on the given
   node type.
 */
-void 
+void
 SoGetMatrixAction::addMethod(const SoType type, SoActionMethod method)
 {
   assert(methods);
@@ -98,7 +98,7 @@ SoGetMatrixAction::addMethod(const SoType type, SoActionMethod method)
 /*!
   This method enables an element in the state stack for the action class.
 */
-void 
+void
 SoGetMatrixAction::enableElement(const SoType type, const int stackIndex)
 {
   assert(enabledElements);
@@ -120,13 +120,13 @@ SoGetMatrixAction::initClass()
   assert(SoGetMatrixAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoGetMatrixAction::classTypeId = 
+  SoGetMatrixAction::classTypeId =
       SoType::createType(inherited::getClassTypeId(),
                          "SoGetMatrixAction");
   enabledElements = new SoEnabledElementsList(inherited::enabledElements);
   methods = new SoActionMethodList(inherited::methods);
 //$ END TEMPLATE InitActionSource
-  
+
   ENABLE_ELEMENT(SoViewportRegionElement);
   //FIXME: enable other elements (check with Toolmaker p.13->) (kintel 1990616)
 }
@@ -147,7 +147,7 @@ SoGetMatrixAction::SoGetMatrixAction(const SbViewportRegion &newRegion)
     SO_ACTION_ADD_METHOD(SoNode, SoNode::getMatrixS);
   }
   methods->setUp();
-  
+
   this->viewportRegion = newRegion;
 }
 
@@ -163,7 +163,7 @@ SoGetMatrixAction::~SoGetMatrixAction()
   This method sets the viewport region.
 */
 
-void 
+void
 SoGetMatrixAction::setViewportRegion(const SbViewportRegion &newRegion)
 {
   this->viewportRegion=newRegion;
@@ -245,7 +245,7 @@ SoGetMatrixAction::beginTraversal(SoNode *node)
   FIXME: write doc.
 */
 
-void 
+void
 SoGetMatrixAction::mult(const SbMatrix &matrix)
 {
   this->matrix.multLeft(matrix);
@@ -256,7 +256,7 @@ SoGetMatrixAction::mult(const SbMatrix &matrix)
   FIXME: write doc.
 */
 
-void 
+void
 SoGetMatrixAction::translateBy(const SbVec3f &vec)
 {
   SbMatrix mat;
@@ -270,7 +270,7 @@ SoGetMatrixAction::translateBy(const SbVec3f &vec)
   FIXME: write doc.
 */
 
-void 
+void
 SoGetMatrixAction::rotateBy(const SbRotation &rot)
 {
   SbMatrix mat;
@@ -284,7 +284,7 @@ SoGetMatrixAction::rotateBy(const SbRotation &rot)
   FIXME: write doc.
 */
 
-void 
+void
 SoGetMatrixAction::scaleBy(const SbVec3f &scaleFactor)
 {
   SbMatrix mat;
@@ -293,4 +293,3 @@ SoGetMatrixAction::scaleBy(const SbVec3f &scaleFactor)
   mat.setScale(-scaleFactor);
   this->invMatrix.multLeft(mat);
 }
-

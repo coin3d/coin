@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -159,11 +159,11 @@ public:
 
   virtual void push(SoState * state);
   virtual void pop(SoState * state,
-		    const SoElement * prevTopElement);
-  
+                    const SoElement * prevTopElement);
+
   virtual SbBool matches(const SoElement * element) const = 0;
   virtual SoElement * copyMatchInfo(void) const = 0;
-  
+
   static void initElements(void); // only for base class (SoElement)
 
   static int getNumStackIndices(void);
@@ -177,9 +177,9 @@ public:
 
 protected:
   static SoElement * getElement(SoState * const state,
-				const int stackIndex);
+                                const int stackIndex);
   static const SoElement * getConstElement(SoState * const state,
-					   const int stackIndex);
+                                           const int stackIndex);
 
   void capture(SoState * const state) const;
   virtual void captureThis(SoState * state) const;
@@ -195,7 +195,7 @@ protected:
 
   int depth;
 
-  SoElement * next; 
+  SoElement * next;
   SoElement * prev;
 
   friend class SoState; // FIXME: bad design. 19990629 mortene.

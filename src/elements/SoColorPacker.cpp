@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -58,8 +58,8 @@ SoColorPacker::~SoColorPacker()
 //$ EXPORT INLINE
 uint32_t *
 SoColorPacker::getPackedColors()
-{ 
-  return this->packedColors; 
+{
+  return this->packedColors;
 }
 
 /*!
@@ -68,10 +68,10 @@ SoColorPacker::getPackedColors()
 */
 
 //$ EXPORT INLINE
-const uint32_t * 
+const uint32_t *
 SoColorPacker::getPackedColors() const
-{ 
-  return this->packedColors; 
+{
+  return this->packedColors;
 }
 
 /*!
@@ -80,10 +80,10 @@ SoColorPacker::getPackedColors() const
 */
 
 //$ EXPORT INLINE
-SbBool 
+SbBool
 SoColorPacker::diffuseMatch(const uint32_t nodeId) const
-{ 
-  return (nodeId == this->diffuseNodeId); 
+{
+  return (nodeId == this->diffuseNodeId);
 }
 
 /*!
@@ -92,10 +92,10 @@ SoColorPacker::diffuseMatch(const uint32_t nodeId) const
 */
 
 //$ EXPORT INLINE
-SbBool 
+SbBool
 SoColorPacker::transpMatch(const uint32_t nodeId) const
-{ 
-  return (nodeId == this->transpNodeId); 
+{
+  return (nodeId == this->transpNodeId);
 }
 
 /*!
@@ -104,11 +104,11 @@ SoColorPacker::transpMatch(const uint32_t nodeId) const
 */
 
 //$ EXPORT INLINE
-void 
+void
 SoColorPacker::setNodeIds(const uint32_t diffNodeId, const uint32_t tNodeId)
-{ 
+{
   this->diffuseNodeId = diffNodeId;
-  this->transpNodeId = tNodeId; 
+  this->transpNodeId = tNodeId;
 }
 
 /*!
@@ -117,10 +117,10 @@ SoColorPacker::setNodeIds(const uint32_t diffNodeId, const uint32_t tNodeId)
 */
 
 //$ EXPORT INLINE
-int32_t 
+int32_t
 SoColorPacker::getSize() const
-{ 
-  return this->packedArraySize; 
+{
+  return this->packedArraySize;
 }
 
 /*!
@@ -140,4 +140,3 @@ SoColorPacker::reallocate(const int32_t size)
     delete [] this->packedColors;
   this->packedColors = newArray;
 }
-

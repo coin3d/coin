@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -148,7 +148,7 @@ SoViewportRegionElement::init(SoState * state)
 SbBool
 SoViewportRegionElement::matches(const SoElement * element) const
 {
-  return this->viewportRegion == 
+  return this->viewportRegion ==
     ((SoViewportRegionElement*) element)->viewportRegion;
 }
 
@@ -157,17 +157,17 @@ SoViewportRegionElement::matches(const SoElement * element) const
 SoElement *
 SoViewportRegionElement::copyMatchInfo() const
 {
-  SoViewportRegionElement * elem = (SoViewportRegionElement*) 
+  SoViewportRegionElement * elem = (SoViewportRegionElement*)
     getTypeId().createInstance();
   elem->viewportRegion = this->viewportRegion;
   return elem;
 }
- 
+
 //! FIXME: write doc.
 
 void
 SoViewportRegionElement::set(SoState * const state,
-			     const SbViewportRegion &viewportRegion)
+                             const SbViewportRegion &viewportRegion)
 {
   SoViewportRegionElement *elem = (SoViewportRegionElement*)
     SoElement::getElement(state, classStackIndex);
@@ -183,7 +183,7 @@ SoViewportRegionElement::get(SoState * const state)
     SoElement::getConstElement(state, classStackIndex);
   return elem->viewportRegion;
 }
- 
+
 //! FIXME: write doc.
 
 void
@@ -199,4 +199,3 @@ SoViewportRegionElement::print(FILE * file) const
 {
   fprintf(file, "SoViewportRegionElement[%p]\n", this);
 }
-

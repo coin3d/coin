@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -142,7 +142,7 @@ SoProfileElement::~SoProfileElement(void)
 
 void
 SoProfileElement::add(SoState * const state,
-		      SoProfile * const profile)
+                      SoProfile * const profile)
 {
   SoProfileElement * element = (SoProfileElement *)
     getElement(state, classStackIndex);
@@ -199,4 +199,3 @@ SoProfileElement::pop(SoState * state, const SoElement * prevTopElement)
 {
     inherited::pop(state, prevTopElement);
 }
-

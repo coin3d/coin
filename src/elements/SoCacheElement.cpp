@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -238,7 +238,7 @@ SoCacheElement::getNextCacheElement(void) const
 
 void
 SoCacheElement::addElement(SoState * const /* state */,
-			   const SoElement * const /* element */)
+                           const SoElement * const /* element */)
 {
     assert(0 && "FIXME: not implemented");
 }
@@ -250,7 +250,7 @@ SoCacheElement::addElement(SoState * const /* state */,
 
 void
 SoCacheElement::addCacheDependency(SoState * const /* state */,
-				   SoCache * const /* cache */)
+                                   SoCache * const /* cache */)
 {
     assert(0 && "FIXME: not implemented");
 }
@@ -276,4 +276,3 @@ SoCacheElement::getCurrentCache(SoState * const state)
 {
   return ((SoCacheElement *)(state->getElementNoPush(classStackIndex)))->cache;
 }
-

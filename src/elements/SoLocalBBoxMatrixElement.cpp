@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -146,7 +146,7 @@ void
 SoLocalBBoxMatrixElement::push(SoState * state)
 {
   inherited::push(state);
-  SoLocalBBoxMatrixElement *elem = 
+  SoLocalBBoxMatrixElement *elem =
     (SoLocalBBoxMatrixElement*) this->next;
   elem->localMatrix = this->localMatrix;
   elem->modelInverseMatrix = this->modelInverseMatrix;
@@ -176,7 +176,7 @@ void
 SoLocalBBoxMatrixElement::makeIdentity(SoState * const state)
 {
   SoLocalBBoxMatrixElement * element;
-  element = (SoLocalBBoxMatrixElement *) 
+  element = (SoLocalBBoxMatrixElement *)
     getElement(state, getClassStackIndex());
   if (element) {
     element->localMatrix.makeIdentity();
@@ -188,10 +188,10 @@ SoLocalBBoxMatrixElement::makeIdentity(SoState * const state)
 
 void
 SoLocalBBoxMatrixElement::set(SoState * const state,
-			      const SbMatrix & matrix)
+                              const SbMatrix & matrix)
 {
   SoLocalBBoxMatrixElement * element;
-  element = (SoLocalBBoxMatrixElement *) 
+  element = (SoLocalBBoxMatrixElement *)
     getElement(state, getClassStackIndex());
   if (element) {
     element->localMatrix = matrix;
@@ -205,9 +205,9 @@ SoLocalBBoxMatrixElement::set(SoState * const state,
 
 void
 SoLocalBBoxMatrixElement::mult(SoState * const state,
-			       const SbMatrix & matrix)
+                               const SbMatrix & matrix)
 {
-  SoLocalBBoxMatrixElement * element = (SoLocalBBoxMatrixElement *) 
+  SoLocalBBoxMatrixElement * element = (SoLocalBBoxMatrixElement *)
     getElement(state, getClassStackIndex());
 
   if (element) element->localMatrix.multLeft(matrix);
@@ -217,10 +217,10 @@ SoLocalBBoxMatrixElement::mult(SoState * const state,
 
 void
 SoLocalBBoxMatrixElement::translateBy(SoState * const state,
-				      const SbVec3f & translation)
+                                      const SbVec3f & translation)
 {
   SoLocalBBoxMatrixElement * element;
-  element = (SoLocalBBoxMatrixElement *) 
+  element = (SoLocalBBoxMatrixElement *)
     getElement(state, getClassStackIndex());
   if (element) {
     SbMatrix matrix;
@@ -233,10 +233,10 @@ SoLocalBBoxMatrixElement::translateBy(SoState * const state,
 
 void
 SoLocalBBoxMatrixElement::rotateBy(SoState * const state,
-				   const SbRotation & rotation)
+                                   const SbRotation & rotation)
 {
   SoLocalBBoxMatrixElement * element;
-  element = (SoLocalBBoxMatrixElement *) 
+  element = (SoLocalBBoxMatrixElement *)
     getElement(state, getClassStackIndex());
   if (element) {
     SbMatrix matrix;
@@ -249,10 +249,10 @@ SoLocalBBoxMatrixElement::rotateBy(SoState * const state,
 
 void
 SoLocalBBoxMatrixElement::scaleBy(SoState * const state,
-				  const SbVec3f & scaleFactor)
+                                  const SbVec3f & scaleFactor)
 {
   SoLocalBBoxMatrixElement * element;
-  element = (SoLocalBBoxMatrixElement *) 
+  element = (SoLocalBBoxMatrixElement *)
     getElement(state, getClassStackIndex());
   if (element) {
     SbMatrix matrix;
@@ -275,7 +275,7 @@ SoLocalBBoxMatrixElement::pushMatrix(SoState * const state)
 
 void
 SoLocalBBoxMatrixElement::popMatrix(SoState * const state,
-				    const SbMatrix & matrix)
+                                    const SbMatrix & matrix)
 {
   // FIXME: should I use getElement() instead of getConstElement()
   SoLocalBBoxMatrixElement *elem = (SoLocalBBoxMatrixElement*)
@@ -293,11 +293,11 @@ SoLocalBBoxMatrixElement::resetAll(SoState * const /* state */)
 
 //! FIXME: write doc.
 
-const SbMatrix & 
+const SbMatrix &
 SoLocalBBoxMatrixElement::get(SoState * const state)
 {
   SoLocalBBoxMatrixElement * element;
-  element = (SoLocalBBoxMatrixElement *) 
+  element = (SoLocalBBoxMatrixElement *)
     getConstElement(state, getClassStackIndex());
   return element->localMatrix;
 }
@@ -309,4 +309,3 @@ SoLocalBBoxMatrixElement::print(FILE * /* file */) const
 {
   assert(0 && "FIXME: not implemented");
 }
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -109,7 +109,7 @@ SoGetBoundingBoxAction::getEnabledElements(void) const
   This method adds a method to be perfomed by the action class on the given
   node type.
 */
-void 
+void
 SoGetBoundingBoxAction::addMethod(const SoType type, SoActionMethod method)
 {
   assert(methods);
@@ -119,7 +119,7 @@ SoGetBoundingBoxAction::addMethod(const SoType type, SoActionMethod method)
 /*!
   This method enables an element in the state stack for the action class.
 */
-void 
+void
 SoGetBoundingBoxAction::enableElement(const SoType type, const int stackIndex)
 {
   assert(enabledElements);
@@ -132,13 +132,13 @@ SoGetBoundingBoxAction::enableElement(const SoType type, const int stackIndex)
 */
 
 SoGetBoundingBoxAction::SoGetBoundingBoxAction(const SbViewportRegion &
-					       viewportRegion)
+                                               viewportRegion)
   : center(0,0,0),
-    vpRegion(viewportRegion), 
+    vpRegion(viewportRegion),
     resetPath(NULL),
     flags(FLAG_RESET_BEFORE)
 {
-  SO_ACTION_CONSTRUCTOR(SoGetBoundingBoxAction);  
+  SO_ACTION_CONSTRUCTOR(SoGetBoundingBoxAction);
 
   static int first = 1;
   if (first) {
@@ -147,7 +147,7 @@ SoGetBoundingBoxAction::SoGetBoundingBoxAction(const SbViewportRegion &
     SO_ACTION_ADD_METHOD(SoNode, SoNode::getBoundingBoxS);
     first = 0;
   }
-  
+
   methods->setUp(); // FIXME: not sure if this should be called here...
 }
 
@@ -171,7 +171,7 @@ SoGetBoundingBoxAction::initClass(void)
   assert(SoGetBoundingBoxAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoGetBoundingBoxAction::classTypeId = 
+  SoGetBoundingBoxAction::classTypeId =
       SoType::createType(inherited::getClassTypeId(),
                          "SoGetBoundingBoxAction");
   enabledElements = new SoEnabledElementsList(inherited::enabledElements);
@@ -187,7 +187,7 @@ SoGetBoundingBoxAction::initClass(void)
   This method sets the viewport region.
 */
 
-void 
+void
 SoGetBoundingBoxAction::setViewportRegion(const SbViewportRegion &newRegion)
 {
   this->vpRegion = newRegion;
@@ -207,7 +207,7 @@ SoGetBoundingBoxAction::getViewportRegion(void) const
   This method gets the bounding box.
 */
 
-SbBox3f 
+SbBox3f
 SoGetBoundingBoxAction::getBoundingBox(void) const
 {
   return this->bbox.project();
@@ -247,7 +247,7 @@ SoGetBoundingBoxAction::getCenter(void) const
   camera space or not.
 */
 
-void 
+void
 SoGetBoundingBoxAction::setInCameraSpace(const SbBool on)
 {
   if (on) {
@@ -263,7 +263,7 @@ SoGetBoundingBoxAction::setInCameraSpace(const SbBool on)
   camera space or not.
 */
 
-SbBool 
+SbBool
 SoGetBoundingBoxAction::isInCameraSpace(void) const
 {
   return (this->flags & FLAG_CAMERA_SPACE) != 0;
@@ -281,10 +281,10 @@ SoGetBoundingBoxAction::isInCameraSpace(void) const
   \sa SoGetBoundingBoxAction::ResetType SoGetBoundingBoxAction::getWhatReset() const
 */
 
-void 
-SoGetBoundingBoxAction::setResetPath(const SoPath *path, 
-				     const SbBool resetBefore, 
-				     const ResetType what)
+void
+SoGetBoundingBoxAction::setResetPath(const SoPath *path,
+                                     const SbBool resetBefore,
+                                     const ResetType what)
 {
   this->resetPath = (SoPath*)path; // force this cast :-(
   this->resetType = what;
@@ -318,7 +318,7 @@ SoGetBoundingBoxAction::getResetPath() const
   \sa SoGetBoundingBoxAction::ResetType SoGetBoundingBoxAction::getWhatReset() const
 */
 
-SbBool 
+SbBool
 SoGetBoundingBoxAction::isResetPath() const
 {
   return this->resetPath != NULL;
@@ -334,7 +334,7 @@ SoGetBoundingBoxAction::isResetPath() const
   \sa SoGetBoundingBoxAction::ResetType SoGetBoundingBoxAction::getWhatReset() const
 */
 
-SbBool 
+SbBool
 SoGetBoundingBoxAction::isResetBefore() const
 {
   return (this->flags & FLAG_RESET_BEFORE) != 0;
@@ -350,7 +350,7 @@ SoGetBoundingBoxAction::isResetBefore() const
   \sa SbBool SoGetBoundingBoxAction::isResetBefore() const
 */
 
-SoGetBoundingBoxAction::ResetType 
+SoGetBoundingBoxAction::ResetType
 SoGetBoundingBoxAction::getWhatReset() const
 {
   return this->resetType;
@@ -362,7 +362,7 @@ SoGetBoundingBoxAction::getWhatReset() const
   FIXME: write doc.
 */
 
-void 
+void
 SoGetBoundingBoxAction::checkResetBefore()
 {
   if (this->resetPath && this->isResetBefore()) {
@@ -374,7 +374,7 @@ SoGetBoundingBoxAction::checkResetBefore()
   FIXME: write doc.
 */
 
-void 
+void
 SoGetBoundingBoxAction::checkResetAfter()
 {
   if (this->resetPath && !this->isResetBefore()) {
@@ -386,7 +386,7 @@ SoGetBoundingBoxAction::checkResetAfter()
   FIXME: write doc.
 */
 
-void 
+void
 SoGetBoundingBoxAction::extendBy(const SbBox3f &box)
 {
   // FIXME: maybe we should convert to an SbXfBox3f? 19990320 mortene.
@@ -399,7 +399,7 @@ SoGetBoundingBoxAction::extendBy(const SbBox3f &box)
     const SbMatrix & mat = SoViewingMatrixElement::get(this->state);
 #if 0 // debug
     SoDebugError::postInfo("SoGetBoundingBoxAction::extendBy",
-			   "in camera space, sbbox3f");
+                           "in camera space, sbbox3f");
 #endif // debug
     tbox.transform(mat);
   }
@@ -412,7 +412,7 @@ SoGetBoundingBoxAction::extendBy(const SbBox3f &box)
   FIXME: write doc.
 */
 
-void 
+void
 SoGetBoundingBoxAction::extendBy(const SbXfBox3f &box)
 {
   SbXfBox3f lbox = box;
@@ -424,21 +424,21 @@ SoGetBoundingBoxAction::extendBy(const SbXfBox3f &box)
     const SbMatrix & mat = SoViewingMatrixElement::get(this->state);
 #if 0 // debug
     SoDebugError::postInfo("SoGetBoundingBoxAction::extendBy",
-			   "in camera space, sbxfbox3f");
+                           "in camera space, sbxfbox3f");
 #endif // debug
     lbox.transform(mat);
   }
 #endif // !COIN_EXCLUDE_SOVIEWINGMATRIXELEMENT
   this->bbox.extendBy(lbox);
 }
-  
+
 /*!
   FIXME: write doc.
 */
 
-void 
+void
 SoGetBoundingBoxAction::setCenter(const SbVec3f &center,
-				  const SbBool transformCenter)
+                                  const SbBool transformCenter)
 {
   assert(!this->isCenterSet());
   this->flags |= FLAG_CENTER_SET;
@@ -462,11 +462,11 @@ SoGetBoundingBoxAction::setCenter(const SbVec3f &center,
 
 #if 0 // debug
   SoDebugError::post("SoGetBoundingBoxAction::setCenter",
-		     "center: <%f, %f, %f>, transformCenter: %s, "
-		     "this->center: <%f, %f, %f>",
-		     center[0], center[1], center[2],
-		     transformCenter ? "TRUE" : "FALSE",
-		     this->center[0], this->center[1], this->center[2]);
+                     "center: <%f, %f, %f>, transformCenter: %s, "
+                     "this->center: <%f, %f, %f>",
+                     center[0], center[1], center[2],
+                     transformCenter ? "TRUE" : "FALSE",
+                     this->center[0], this->center[1], this->center[2]);
 #endif // debug
 }
 
@@ -474,7 +474,7 @@ SoGetBoundingBoxAction::setCenter(const SbVec3f &center,
   FIXME: write doc.
 */
 
-SbBool 
+SbBool
 SoGetBoundingBoxAction::isCenterSet() const
 {
   return (this->flags & FLAG_CENTER_SET) != 0;
@@ -484,7 +484,7 @@ SoGetBoundingBoxAction::isCenterSet() const
   FIXME: write doc.
 */
 
-void 
+void
 SoGetBoundingBoxAction::resetCenter()
 {
   this->flags &= ~FLAG_CENTER_SET;
@@ -501,7 +501,7 @@ SoGetBoundingBoxAction::resetCenter()
   FIXME: write doc.
 */
 
-void 
+void
 SoGetBoundingBoxAction::beginTraversal(SoNode * const node)
 {
   this->resetCenter();
@@ -521,5 +521,3 @@ SoGetBoundingBoxAction::beginTraversal(SoNode * const node)
 #undef FLAG_CENTER_SET
 #undef FLAG_CAMERA_SPACE
 #undef FLAG_RESET_BEFORE
-
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -59,7 +59,7 @@ public:
 
   enum LookFor { NODE = 1, TYPE = 2, NAME = 4 };
   enum Interest { FIRST, LAST, ALL };
-  
+
   void setNode(SoNode * const node);
   SoNode * getNode(void) const;
   void setType(const SoType type,

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -55,17 +55,17 @@ public:
     FOG,
     SMOKE
   };
-  
+
   virtual void init(SoState * state);
-  
+
   static  void set(SoState * const state, SoNode * const node,
-		   const float ambientIntensity, const SbColor & ambientColor,
-		   const SbVec3f & attenuation, const int32_t fogType,
-		   const SbColor & fogColor, const float fogVisibility);
+                   const float ambientIntensity, const SbColor & ambientColor,
+                   const SbVec3f & attenuation, const int32_t fogType,
+                   const SbColor & fogColor, const float fogVisibility);
   static  void get(SoState * const state,
-		   float & ambientIntensity, SbColor & ambientColor,
-		   SbVec3f & attenuation, int32_t & fogType,
-		   SbColor & fogColor, float & fogVisibility);
+                   float & ambientIntensity, SbColor & ambientColor,
+                   SbVec3f & attenuation, int32_t & fogType,
+                   SbColor & fogColor, float & fogVisibility);
 
   static float getAmbientIntensity(SoState * const state);
   static float getFogVisibility(SoState * const state);
@@ -73,24 +73,24 @@ public:
   static const SbColor & getAmbientColor(SoState * const state);
   static const SbColor & getFogColor(SoState * const state);
   static int32_t getFogType(SoState * const state);
-  
+
   static void getDefault(float & ambientIntensity,
-			 SbColor & ambientColor, SbVec3f & attenuation,
-			 int32_t & fogType, SbColor & fogColor, 
-			 float & fogVisibility);
-  
+                         SbColor & ambientColor, SbVec3f & attenuation,
+                         int32_t & fogType, SbColor & fogColor,
+                         float & fogVisibility);
+
   virtual void print(FILE * file) const;
 
 protected:
 
   virtual void setElt(SoState * const state,
-		      const float ambientIntensity, 
-		      const SbColor & ambientColor,
-		      const SbVec3f & attenuation, 
-		      const int32_t fogType,
-		      const SbColor & fogColor, 
-		      const float fogVisibility);
-  
+                      const float ambientIntensity,
+                      const SbColor & ambientColor,
+                      const SbVec3f & attenuation,
+                      const int32_t fogType,
+                      const SbColor & fogColor,
+                      const float fogVisibility);
+
   float ambientIntensity;
   SbColor ambientColor;
   SbVec3f attenuation;

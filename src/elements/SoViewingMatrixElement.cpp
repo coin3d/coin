@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -139,8 +139,8 @@ SoViewingMatrixElement::~SoViewingMatrixElement(void)
 
 void
 SoViewingMatrixElement::set(SoState * const state,
-			    SoNode * const node,
-			    const SbMatrix & viewingMatrix)
+                            SoNode * const node,
+                            const SbMatrix & viewingMatrix)
 {
   SoViewingMatrixElement * element = (SoViewingMatrixElement *)
     SoReplacedElement::getElement(state, classStackIndex, node);
@@ -166,13 +166,13 @@ SoViewingMatrixElement::init(SoState * state)
   viewingMatrix.makeIdentity();
 #if 0 // debug
   SoDebugError::postInfo("SoViewingMatrixElement::init",
-			 "matrix set to identity");
+                         "matrix set to identity");
 #endif // debug
 }
 
 //! FIXME: write doc.
 
-void 
+void
 SoViewingMatrixElement::print(FILE * /* file */) const
 {
   assert(0 && "FIXME: not implemented");
@@ -180,14 +180,13 @@ SoViewingMatrixElement::print(FILE * /* file */) const
 
 //! FIXME: write doc.
 
-void 
+void
 SoViewingMatrixElement::setElt(const SbMatrix &matrix)
 {
   this->viewingMatrix = matrix;
 #if 0 // debug
   SoDebugError::postInfo("SoViewingMatrixElement::setElt",
-			 "viewingmatrix:");
+                         "viewingmatrix:");
   matrix.print(stdout);
 #endif // debug
 }
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -156,7 +156,7 @@ SoGLLineWidthElement::push(SoState * state)
 
 void
 SoGLLineWidthElement::pop(SoState * state,
-			  const SoElement * prevTopElement)
+                          const SoElement * prevTopElement)
 {
   SoGLLineWidthElement *prev = (SoGLLineWidthElement*)prevTopElement;
   prev->current = this->current;
@@ -206,4 +206,3 @@ SoGLLineWidthElement::updategl()
 
   glLineWidth(useval);
 }
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -59,7 +59,7 @@ public:
     SOLID,
     SHAPE_TYPE_AS_IS
   };
-  
+
   enum FaceType {
     UNKNOWN_FACE_TYPE,
     CONVEX,
@@ -73,13 +73,13 @@ public:
   virtual SoElement *copyMatchInfo(void) const;
 
   static void set(SoState * const state, SoNode * const node,
-		  const VertexOrdering vertexOrdering,
-		  const ShapeType shapeType, const FaceType faceType);
+                  const VertexOrdering vertexOrdering,
+                  const ShapeType shapeType, const FaceType faceType);
   static void set(SoState * const state,
-		  const VertexOrdering vertexOrdering,
-		  const ShapeType shapeType, const FaceType faceType);
+                  const VertexOrdering vertexOrdering,
+                  const ShapeType shapeType, const FaceType faceType);
   static void get(SoState * const state, VertexOrdering & vertexOrdering,
-		  ShapeType & shapeType, FaceType & faceType);
+                  ShapeType & shapeType, FaceType & faceType);
 
   static VertexOrdering getVertexOrdering(SoState * const state);
   static ShapeType getShapeType(SoState * const state);
@@ -93,7 +93,7 @@ public:
 
 protected:
   virtual void setElt(VertexOrdering vertexOrdering,
-		      ShapeType shapeType, FaceType faceType);
+                      ShapeType shapeType, FaceType faceType);
 
   VertexOrdering vertexOrdering;
   ShapeType shapeType;

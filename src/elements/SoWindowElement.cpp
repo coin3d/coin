@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -170,7 +170,7 @@ SoWindowElement::push(SoState * state)
 
 void
 SoWindowElement::pop(SoState * state,
-		     const SoElement * prevTopElement)
+                     const SoElement * prevTopElement)
 {
     inherited::pop(state, prevTopElement);
 }
@@ -197,10 +197,10 @@ SoWindowElement::copyMatchInfo(void) const
 
 void
 SoWindowElement::set(SoState * const /* state */,
-		     const Window & /* window */,
-		     const GLXContext & /* context */,
-		     Display * const /* display */,
-		     SoGLRenderAction * const /* action */)
+                     const Window & /* window */,
+                     const GLXContext & /* context */,
+                     Display * const /* display */,
+                     SoGLRenderAction * const /* action */)
 {
     assert(0 && "FIXME: not implemented");
 }
@@ -209,11 +209,10 @@ SoWindowElement::set(SoState * const /* state */,
 
 void
 SoWindowElement::get(SoState * const /* state */,
-		     Window & /* window */,
-		     GLXContext & /* context */,
-		     Display * & /* display */,
-		     SoGLRenderAction * & /* action */)
+                     Window & /* window */,
+                     GLXContext & /* context */,
+                     Display * & /* display */,
+                     SoGLRenderAction * & /* action */)
 {
     assert(0 && "FIXME: not implemented");
 }
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -144,8 +144,8 @@ SoFontNameElement::~SoFontNameElement()
 
 void
 SoFontNameElement::set(SoState * const state,
-		       SoNode * const node,
-		       const SbName fontName)
+                       SoNode * const node,
+                       const SbName fontName)
 {
   SoFontNameElement * element = (SoFontNameElement *)
     SoReplacedElement::getElement(state, classStackIndex, node);
@@ -194,7 +194,7 @@ void
 SoFontNameElement::print(FILE * file) const
 {
   fprintf(file, "SoFontNameElement[%p]: font = %s\n", this,
-	   this->fontName.getString());
+           this->fontName.getString());
 }
 
 //! FIXME: write doc.
@@ -208,9 +208,8 @@ SoFontNameElement::init(SoState * state)
 
 //! FIXME: write doc.
 
-const SbName 
+const SbName
 SoFontNameElement::getDefault()
-{ 
-  return SoFontNameElement::defaultFontName; 
+{
+  return SoFontNameElement::defaultFontName;
 }
-

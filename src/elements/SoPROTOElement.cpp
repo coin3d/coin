@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -158,7 +158,7 @@ SoPROTOElement::pop(SoState * state, const SoElement * prevTopElement)
 
 //! FIXME: write doc.
 
-SbBool 
+SbBool
 SoPROTOElement::matches(const SoElement * /* element */) const
 {
   // FIXME
@@ -174,4 +174,3 @@ SoPROTOElement::copyMatchInfo(void) const
   assert(0 && "FIXME: not implemented");
   return FALSE;
 }
-

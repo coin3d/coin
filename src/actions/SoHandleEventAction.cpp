@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -95,7 +95,7 @@ SoHandleEventAction::getEnabledElements(void) const
   This method adds a method to be perfomed by the action class on the given
   node type.
 */
-void 
+void
 SoHandleEventAction::addMethod(const SoType type, SoActionMethod method)
 {
   assert(methods);
@@ -105,7 +105,7 @@ SoHandleEventAction::addMethod(const SoType type, SoActionMethod method)
 /*!
   This method enables an element in the state stack for the action class.
 */
-void 
+void
 SoHandleEventAction::enableElement(const SoType type, const int stackIndex)
 {
   assert(enabledElements);
@@ -127,7 +127,7 @@ SoHandleEventAction::initClass(void)
   assert(SoHandleEventAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoHandleEventAction::classTypeId = 
+  SoHandleEventAction::classTypeId =
       SoType::createType(inherited::getClassTypeId(),
                          "SoHandleEventAction");
   enabledElements = new SoEnabledElementsList(inherited::enabledElements);
@@ -149,9 +149,9 @@ SoHandleEventAction::initClass(void)
   A constructor.
 */
 SoHandleEventAction::SoHandleEventAction(const SbViewportRegion &
-					 viewportRegion)
+                                         viewportRegion)
 {
-  SO_ACTION_CONSTRUCTOR(SoHandleEventAction);  
+  SO_ACTION_CONSTRUCTOR(SoHandleEventAction);
 
   static int first = 1;
   if (first) {

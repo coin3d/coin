@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -145,21 +145,21 @@ SoAnnoText3RenderPrintElement::init(SoState * state)
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-void 
+void
 SoAnnoText3RenderPrintElement::set(SoState * const state, SoNode * const node,
-				const RenderPrintType type)
-{ 
+                                const RenderPrintType type)
+{
   SoInt32Element::set(classStackIndex,state,node,type);
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-void 
+void
 SoAnnoText3RenderPrintElement::set(SoState * const state,
-				   const RenderPrintType type)
-{ 
-  set(state, NULL, type); 
+                                   const RenderPrintType type)
+{
+  set(state, NULL, type);
 }
 
 //! FIXME: write doc.
@@ -167,9 +167,9 @@ SoAnnoText3RenderPrintElement::set(SoState * const state,
 //$ EXPORT INLINE
 SoAnnoText3RenderPrintElement::RenderPrintType
 SoAnnoText3RenderPrintElement::get(SoState * const state)
-{ 
+{
   return (SoAnnoText3RenderPrintElement::RenderPrintType)
-    SoInt32Element::get(classStackIndex, state); 
+    SoInt32Element::get(classStackIndex, state);
 }
 
 //! FIXME: write doc.
@@ -177,7 +177,6 @@ SoAnnoText3RenderPrintElement::get(SoState * const state)
 //$ EXPORT INLINE
 SoAnnoText3RenderPrintElement::RenderPrintType
 SoAnnoText3RenderPrintElement::getDefault()
-{ 
-  return RENDER3D_PRINT_VECTOR; 
+{
+  return RENDER3D_PRINT_VECTOR;
 }
-

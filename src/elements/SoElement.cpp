@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -396,9 +396,9 @@ SoElement::initClass(void)
 
   // Make sure we only initialize once.
   assert(SoElement::classTypeId == SoType::badType());
-  SoElement::classTypeId = 
+  SoElement::classTypeId =
     SoType::createType(SoType::badType(), "Element", NULL);
-  
+
   SoElement::classStackIndex = -1;
   SoElement::initElements();
 }
@@ -447,10 +447,10 @@ SoElement::init(SoState *)
 }
 
 /*!
-  This method pushes the element. 
+  This method pushes the element.
   It should duplicate the needed internal SoElement instance data
   into the SoElement instance at \e next.
-  
+
   This method is used for copying the
   internal data to the next element in the stack, and is called by SoState
   after such an element has been created.
@@ -557,7 +557,7 @@ SoElement::getDepth() const
 
 SoElement *
 SoElement::getElement(SoState * const state,
-		      const int stackIndex)
+                      const int stackIndex)
 {
   return state->getElement(stackIndex);
 }
@@ -573,7 +573,7 @@ SoElement::getElement(SoState * const state,
 
 const SoElement *
 SoElement::getConstElement(SoState * const state,
-			   const int stackIndex)
+                           const int stackIndex)
 {
   const SoElement * element = state->getConstElement(stackIndex);
   //    element->captureThis(state);
@@ -628,7 +628,7 @@ SoElement::getTypeId() const
   This method returns the stack index for an element instance.
 */
 
-int 
+int
 SoElement::getStackIndex(void) const
 {
   return this->stackIndex;
@@ -666,4 +666,3 @@ SoElement::createStackIndex(const SoType typeId)
   }
   return -1;
 }
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -139,7 +139,7 @@ SoGLDiffuseColorElement::~SoGLDiffuseColorElement()
 
 //! FIXME: write doc.
 
-void 
+void
 SoGLDiffuseColorElement::init(SoState *state)
 {
   inherited::init(state);
@@ -162,13 +162,13 @@ SoGLDiffuseColorElement::push(SoState *state)
 
 //! FIXME: write doc.
 
-void 
+void
 SoGLDiffuseColorElement::pop(SoState *state, const SoElement *prevTopElement)
 {
   inherited::pop(state, prevTopElement);
-  SoGLDiffuseColorElement *prev = 
+  SoGLDiffuseColorElement *prev =
     (SoGLDiffuseColorElement*)prevTopElement;
-  
+
   prev->current = this->current;
   prev->currentPacked = this->currentPacked;
 }
@@ -177,7 +177,7 @@ SoGLDiffuseColorElement::pop(SoState *state, const SoElement *prevTopElement)
 
 static void
 create_packed(unsigned int r, unsigned int g, unsigned int b,
-	      unsigned int a, uint32_t &packed)
+              unsigned int a, uint32_t &packed)
 {
   packed = (r<<24)|(g<<16)|(b<<8)|a;
 }
@@ -203,17 +203,17 @@ SoGLDiffuseColorElement::send(const int index, const float alpha)
   assert(this->numColors > 0);
   int realindex = index < this->numColors ? index : this->numColors - 1;
   if (realindex < 0) realindex = 0;
-  
+
   if (this->colors) {
     const SbVec3f &c = this->colors[realindex];
     SbVec4f col(c[0], c[1], c[2], alpha);
     if (col != this->current) { // FIXME: is it worth it?
       this->current = col;
-      create_packed((unsigned int)(col[0]*255.0f), 
-		    (unsigned int)(col[1]*255.0f), 
-		    (unsigned int)(col[2]*255.0f), 
-		    (unsigned int)(col[3]*255.0f), 
-		    currentPacked);
+      create_packed((unsigned int)(col[0]*255.0f),
+                    (unsigned int)(col[1]*255.0f),
+                    (unsigned int)(col[2]*255.0f),
+                    (unsigned int)(col[3]*255.0f),
+                    currentPacked);
       this->updategl();
     }
   }
@@ -236,7 +236,7 @@ SoGLDiffuseColorElement::send(const int index)
 
 //! FIXME: write doc.
 
-void 
+void
 SoGLDiffuseColorElement::updategl()
 {
 #if 1 // if using GL_COLOR_MATERIAL
@@ -245,4 +245,3 @@ SoGLDiffuseColorElement::updategl()
   glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, col);
 #endif
 }
-

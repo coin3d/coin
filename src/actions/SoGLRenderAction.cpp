@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -168,7 +168,7 @@ SoGLRenderAction::getEnabledElements(void) const
   This method adds a method to be perfomed by the action class on the given
   node type.
 */
-void 
+void
 SoGLRenderAction::addMethod(const SoType type, SoActionMethod method)
 {
   assert(methods);
@@ -178,7 +178,7 @@ SoGLRenderAction::addMethod(const SoType type, SoActionMethod method)
 /*!
   This method enables an element in the state stack for the action class.
 */
-void 
+void
 SoGLRenderAction::enableElement(const SoType type, const int stackIndex)
 {
   assert(enabledElements);
@@ -200,7 +200,7 @@ SoGLRenderAction::initClass(void)
   assert(SoGLRenderAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoGLRenderAction::classTypeId = 
+  SoGLRenderAction::classTypeId =
       SoType::createType(inherited::getClassTypeId(),
                          "SoGLRenderAction");
   enabledElements = new SoEnabledElementsList(inherited::enabledElements);
@@ -240,17 +240,17 @@ SoGLRenderAction::initClass(void)
 
 SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportRegion)
 {
-  SO_ACTION_CONSTRUCTOR(SoGLRenderAction);  
-  
+  SO_ACTION_CONSTRUCTOR(SoGLRenderAction);
+
   static int first = 1;
   if (first) {
     // cannot be set in initClass, since nodes are not initialized yet
-    SO_ACTION_ADD_METHOD(SoNode, SoNode::GLRenderS); 
+    SO_ACTION_ADD_METHOD(SoNode, SoNode::GLRenderS);
     first = 0;
   }
 
   methods->setUp(); // FIXME: not sure if this should be called here...
-  
+
   // Can't just push this on the SoViewportRegionElement stack, as the
   // state hasn't been made yet.
   this->viewport = viewportRegion;
@@ -277,14 +277,14 @@ SoGLRenderAction::~SoGLRenderAction()
   This method sets the viewport region.
 */
 
-void 
+void
 SoGLRenderAction::setViewportRegion(const SbViewportRegion & newRegion)
 {
   if (this->getState()) {
 #if 0 // debug
     SoDebugError::postInfo("SoGLRenderAction::setViewportRegion",
-			   "aspectratio: %f",
-			   newRegion.getViewportAspectRatio());
+                           "aspectratio: %f",
+                           newRegion.getViewportAspectRatio());
 #endif // debug
     SoViewportRegionElement::set(this->getState(), newRegion);
   }
@@ -305,9 +305,9 @@ SoGLRenderAction::getViewportRegion(void) const
   This methor sets the area to be updated.
 */
 
-void 
+void
 SoGLRenderAction::setUpdateArea(const SbVec2f & /* origin */,
-				const SbVec2f & /* size */)
+                                const SbVec2f & /* size */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -316,9 +316,9 @@ SoGLRenderAction::setUpdateArea(const SbVec2f & /* origin */,
   This method gets the area to be updated.
 */
 
-void 
+void
 SoGLRenderAction::getUpdateArea(SbVec2f & /* origin */,
-				SbVec2f & /* size */) const
+                                SbVec2f & /* size */) const
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -328,9 +328,9 @@ SoGLRenderAction::getUpdateArea(SbVec2f & /* origin */,
   traversal to check for abort conditions.
 */
 
-void 
-SoGLRenderAction::setAbortCallback(SoGLRenderAbortCB * const func, 
-				   void * const userData)
+void
+SoGLRenderAction::setAbortCallback(SoGLRenderAbortCB * const func,
+                                   void * const userData)
 {
   this->abortCB = func;
   this->abortCBdata = userData;
@@ -340,14 +340,14 @@ SoGLRenderAction::setAbortCallback(SoGLRenderAbortCB * const func,
   This method sets the transparency type.
 */
 
-void 
+void
 SoGLRenderAction::setTransparencyType(const TransparencyType type)
 {
   if (type != SCREEN_DOOR && type != DELAYED_BLEND) {
 #if COIN_DEBUG
     SoDebugError::postWarning("SoGLRenderAction::setTransType",
-			      "FIXME: Unsupported transparency type: %d\n", 
-			      type);
+                              "FIXME: Unsupported transparency type: %d\n",
+                              type);
 #endif
     this->transType = DELAYED_BLEND;
   }
@@ -359,7 +359,7 @@ SoGLRenderAction::setTransparencyType(const TransparencyType type)
   This method returns the transparency type.
 */
 
-SoGLRenderAction::TransparencyType 
+SoGLRenderAction::TransparencyType
 SoGLRenderAction::getTransparencyType() const
 {
   return this->transType;
@@ -369,7 +369,7 @@ SoGLRenderAction::getTransparencyType() const
   This method sets (or unsets) smoothing.
 */
 
-void 
+void
 SoGLRenderAction::setSmoothing(const SbBool smooth)
 {
   this->smoothing = smooth;
@@ -379,7 +379,7 @@ SoGLRenderAction::setSmoothing(const SbBool smooth)
   This method returns wether smoothing is set or not.
 */
 
-SbBool 
+SbBool
 SoGLRenderAction::isSmoothing() const
 {
   return this->smoothing;
@@ -390,7 +390,7 @@ SoGLRenderAction::isSmoothing() const
   enable antialiasing.
 */
 
-void 
+void
 SoGLRenderAction::setNumPasses(const int num)
 {
   this->numPasses = num;
@@ -400,7 +400,7 @@ SoGLRenderAction::setNumPasses(const int num)
   This method returns the number of passes set for rendering.
 */
 
-int 
+int
 SoGLRenderAction::getNumPasses() const
 {
   return this->numPasses;
@@ -411,7 +411,7 @@ SoGLRenderAction::getNumPasses() const
   multipass antialiasing rendering.  Not in use.
 */
 
-void 
+void
 SoGLRenderAction::setPassUpdate(const SbBool flag)
 {
   this->passUpdate = flag;
@@ -423,7 +423,7 @@ SoGLRenderAction::setPassUpdate(const SbBool flag)
   \sa void SoGLRenderAction::setPassUpdate(const SbBool flag)
 */
 
-SbBool 
+SbBool
 SoGLRenderAction::isPassUpdate() const
 {
   return this->passUpdate;
@@ -434,9 +434,9 @@ SoGLRenderAction::isPassUpdate() const
   pass.
 */
 
-void 
-SoGLRenderAction::setPassCallback(SoGLRenderPassCB * const func, 
-				  void * const userData)
+void
+SoGLRenderAction::setPassCallback(SoGLRenderPassCB * const func,
+                                  void * const userData)
 {
   this->passCB = func;
   this->passCBdata = userData;
@@ -446,7 +446,7 @@ SoGLRenderAction::setPassCallback(SoGLRenderPassCB * const func,
   This methos sets the OpenGL cache context key.
 */
 
-void 
+void
 SoGLRenderAction::setCacheContext(const uint32_t context)
 {
   this->cacheContext = context;
@@ -456,7 +456,7 @@ SoGLRenderAction::setCacheContext(const uint32_t context)
   This method returns the cache context key.
 */
 
-uint32_t 
+uint32_t
 SoGLRenderAction::getCacheContext() const
 {
   return this->cacheContext;
@@ -466,7 +466,7 @@ SoGLRenderAction::getCacheContext() const
   This method is called before the action is applied.
 */
 
-void 
+void
 SoGLRenderAction::beginTraversal(SoNode * node)
 {
   static int first = 1;
@@ -556,23 +556,23 @@ SoGLRenderAction::beginTraversal(SoNode * node)
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
 
-    glEnable(GL_NORMALIZE); 
+    glEnable(GL_NORMALIZE);
 
     glDisable(GL_CULL_FACE);
     glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
     glFrontFace(GL_CCW);
     glShadeModel(GL_SMOOTH);
-    
+
     // only useful while using GL_COLOR_MATERIAL
     glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
     glEnable(GL_COLOR_MATERIAL);
-    
+
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
   }
-  
+
   // FIXME: should we really push() and pop() here? Perhaps in the
   // SoAction class instead? 19990303 mortene.
 
@@ -591,12 +591,12 @@ SoGLRenderAction::beginTraversal(SoNode * node)
   // FIXME: is this the correct place to set these elements? 19990314 mortene.
   SoDecimationPercentageElement::set(this->getState(), 1.0f);
   SoDecimationTypeElement::set(this->getState(),
-			       SoDecimationTypeElement::AUTOMATIC);
+                               SoDecimationTypeElement::AUTOMATIC);
 
   // FIXME: use these as they're supposed to be used. 19990314 mortene.
   SoGLRenderPassElement::set(this->getState(), 0);
   SoGLUpdateAreaElement::set(this->getState(),
-			     SbVec2f(0.0f, 0.0f), SbVec2f(1.0f, 1.0f));
+                             SbVec2f(0.0f, 0.0f), SbVec2f(1.0f, 1.0f));
 
   inherited::beginTraversal(node);
   this->getState()->pop();
@@ -607,27 +607,27 @@ SoGLRenderAction::beginTraversal(SoNode * node)
     this->getState()->push();
 
     SoGLViewportRegionElement::set(this->getState(), this->viewport);
-    
+
     // FIXME: is this the correct place to set these elements? 19990314 mortene.
     SoDecimationPercentageElement::set(this->getState(), 1.0f);
     SoDecimationTypeElement::set(this->getState(),
-				 SoDecimationTypeElement::AUTOMATIC);
-  
+                                 SoDecimationTypeElement::AUTOMATIC);
+
     // FIXME: use these as they're supposed to be used. 19990314 mortene.
     SoGLRenderPassElement::set(this->getState(), 1);
     SoGLUpdateAreaElement::set(this->getState(),
-			       SbVec2f(0.0f, 0.0f), SbVec2f(1.0f, 1.0f));
+                               SbVec2f(0.0f, 0.0f), SbVec2f(1.0f, 1.0f));
 
-    
+
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
     glDepthMask(GL_FALSE);
-    
+
     inherited::beginTraversal(node);
-    
+
     glDisable(GL_BLEND);
     glDepthMask(GL_TRUE);
-    
+
     this->getState()->pop();
   }
 
@@ -659,7 +659,7 @@ SoGLRenderAction::endTraversal(SoNode *)
   FIXME: write doc.
 */
 
-SbBool 
+SbBool
 SoGLRenderAction::handleTransparency(SbBool isTransparent)
 {
   if (isTransparent) this->didHaveTransparent = TRUE;
@@ -671,7 +671,7 @@ SoGLRenderAction::handleTransparency(SbBool isTransparent)
   This method returns the number of the current pass.
 */
 
-int 
+int
 SoGLRenderAction::getCurPass() const
 {
   return this->currentPass;
@@ -682,7 +682,7 @@ SoGLRenderAction::getCurPass() const
   It always returns FALSE at this moment.
 */
 
-SbBool 
+SbBool
 SoGLRenderAction::abortNow()
 {
   // FIXME: not implemented
@@ -690,7 +690,7 @@ SoGLRenderAction::abortNow()
 }
 
 #if !defined(COIN_EXCLUDE_SOPATH)
-void 
+void
 SoGLRenderAction::addDelayedPath(SoPath * path)
 {
   assert(!this->delayedRender);
@@ -700,9 +700,8 @@ SoGLRenderAction::addDelayedPath(SoPath * path)
 }
 #endif // ! COIN_EXCLUDE_SOPATH
 
-SbBool 
+SbBool
 SoGLRenderAction::isRenderingDelayedPaths() const
 {
   return this->delayedRender;
 }
-

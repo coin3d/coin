@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -46,7 +46,7 @@ protected:
   static int classStackIndex;
 //$ END TEMPLATE ElementHeader
 
-public:    
+public:
   const SbVec3f *getPtr3() const;
   const SbVec4f *getPtr4() const;
   void send(const int index) const;

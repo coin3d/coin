@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -55,9 +55,9 @@ public:
 
   static  void reset(SoState * const state, SoNode * const node);
   static  void pushMatrix(SoState * const state, SbMatrix & matrix,
-			  SbMatrix & localmatrix);
+                          SbMatrix & localmatrix);
   static  void popMatrix(SoState * const state, const SbMatrix & matrix,
-			 const SbMatrix & localmatrix);
+                         const SbMatrix & localmatrix);
 
 protected:
   virtual void makeEltIdentity(void);
@@ -73,7 +73,7 @@ protected:
 
 private:
   SoLocalBBoxMatrixElement *getLocal();
-  
+
   SoState *state;
 };
 

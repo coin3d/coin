@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -50,14 +50,14 @@ public:
   enum RenderPrintType {
     RENDER3D_PRINT_VECTOR, RENDER3D_PRINT_RASTER, RENDER2D_PRINT_RASTER
   };
-  
+
   virtual void init(SoState * state);
   static void set(SoState * const state, const RenderPrintType hint);
   static RenderPrintType get(SoState * const state);
   static RenderPrintType getDefault(void);
 
   static void set(SoState * const state, SoNode * const node,
-		  const RenderPrintType type);
+                  const RenderPrintType type);
 };
 
 #endif // !__SOANNOTEXT3RENDERPRINTELEMENT_H__

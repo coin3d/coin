@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -83,7 +83,7 @@ SoSimplifyAction::getEnabledElements(void) const
   This method adds a method to be perfomed by the action class on the given
   node type.
 */
-void 
+void
 SoSimplifyAction::addMethod(const SoType type, SoActionMethod method)
 {
   assert(methods);
@@ -93,7 +93,7 @@ SoSimplifyAction::addMethod(const SoType type, SoActionMethod method)
 /*!
   This method enables an element in the state stack for the action class.
 */
-void 
+void
 SoSimplifyAction::enableElement(const SoType type, const int stackIndex)
 {
   assert(enabledElements);
@@ -115,7 +115,7 @@ SoSimplifyAction::initClass(void)
   assert(SoSimplifyAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoSimplifyAction::classTypeId = 
+  SoSimplifyAction::classTypeId =
       SoType::createType(inherited::getClassTypeId(),
                          "SoSimplifyAction");
   enabledElements = new SoEnabledElementsList(inherited::enabledElements);
@@ -151,4 +151,3 @@ SoSimplifyAction::beginTraversal(SoNode * /* node */)
 {
   assert(0 && "FIXME: not implemented");
 }
-

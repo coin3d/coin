@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -30,7 +30,7 @@
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/system/inttypes.h>
 
-#if !defined(COIN_EXCLUDE_SOPATH)  
+#if !defined(COIN_EXCLUDE_SOPATH)
 #include <Inventor/lists/SoPathList.h>
 #endif // !COIN_EXCLUDE_SOPATH
 
@@ -65,21 +65,21 @@ public:
 
   enum TransparencyType {
     SCREEN_DOOR,
-    ADD,        
-    DELAYED_ADD, 
+    ADD,
+    DELAYED_ADD,
     SORTED_OBJECT_ADD,
-    BLEND,            
-    DELAYED_BLEND,    
+    BLEND,
+    DELAYED_BLEND,
     SORTED_OBJECT_BLEND
   };
-  
+
   enum AbortCode {
     CONTINUE,
-    ABORT,   
-    PRUNE,   
-    DELAY    
+    ABORT,
+    PRUNE,
+    DELAY
   };
- 
+
   typedef AbortCode   SoGLRenderAbortCB(void *userData);
   typedef void        SoGLRenderPassCB(void *userData);
 
@@ -107,13 +107,13 @@ public:
   void addDelayedPath(SoPath *path);
 #endif // ! COIN_EXCLUDE_SOPATH
   SbBool isRenderingDelayedPaths() const;
-  
+
 public:
 
   SbBool handleTransparency(SbBool isTransparent = FALSE);
   int getCurPass() const;
   SbBool abortNow();
-  
+
 protected:
   virtual void beginTraversal(SoNode *node);
   virtual void endTraversal(SoNode *node);
@@ -133,7 +133,7 @@ private:
   int currentPass;
   SbBool didHaveTransparent;
 
-#if !defined(COIN_EXCLUDE_SOPATH)  
+#if !defined(COIN_EXCLUDE_SOPATH)
   SoPathList delayedPaths;
 #endif // !COIN_EXCLUDE_SOPATH
   SbBool delayedRender;

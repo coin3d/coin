@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -153,7 +153,7 @@ SoGLRenderPassElement::push(SoState * state)
 
 void
 SoGLRenderPassElement::pop(SoState * state,
-			   const SoElement * prevTopElement)
+                           const SoElement * prevTopElement)
 {
   inherited::pop(state, prevTopElement);
 }
@@ -180,7 +180,7 @@ SoGLRenderPassElement::copyMatchInfo(void) const
 
 void
 SoGLRenderPassElement::set(SoState * const state,
-			   const int pass)
+                           const int pass)
 {
   SoGLRenderPassElement * element = (SoGLRenderPassElement *)
     getElement(state, classStackIndex);
@@ -204,4 +204,3 @@ SoGLRenderPassElement::print(FILE * /* file */) const
 {
   assert(0 && "FIXME: not implemented");
 }
-

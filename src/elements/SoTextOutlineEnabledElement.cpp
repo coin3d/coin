@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -130,8 +130,8 @@ SoTextOutlineEnabledElement::~SoTextOutlineEnabledElement(void)
 
 void
 SoTextOutlineEnabledElement::set(SoState * const state,
-				 SoNode * const node,
-				 const SbBool enabled)
+                                 SoNode * const node,
+                                 const SbBool enabled)
 {
     SoInt32Element::set(classStackIndex, state, node, enabled);
 }
@@ -186,8 +186,7 @@ SoTextOutlineEnabledElement::push(SoState * state)
 
 void
 SoTextOutlineEnabledElement::pop(SoState * state,
-				 const SoElement * prevTopElement)
+                                 const SoElement * prevTopElement)
 {
     inherited::pop(state, prevTopElement);
 }
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -133,7 +133,7 @@ SoGLShininessElement::~SoGLShininessElement()
 
 //! FIXME: write doc.
 
-void 
+void
 SoGLShininessElement::init(SoState *state)
 {
   inherited::init(state);
@@ -154,7 +154,7 @@ SoGLShininessElement::push(SoState *state)
 
 //! FIXME: write doc.
 
-void 
+void
 SoGLShininessElement::pop(SoState *state, const SoElement *prevTopElement)
 {
   inherited::pop(state, prevTopElement);
@@ -163,7 +163,7 @@ SoGLShininessElement::pop(SoState *state, const SoElement *prevTopElement)
 
 //! FIXME: write doc.
 
-void 
+void
 SoGLShininessElement::send(const int index)
 {
   int realindex = index < this->numValues ? index : this->numValues - 1;
@@ -175,19 +175,18 @@ SoGLShininessElement::send(const int index)
 
 //! FIXME: write doc.
 
-void 
-SoGLShininessElement::setElt(const int32_t numValues, 
-			     const float * const values)
+void
+SoGLShininessElement::setElt(const int32_t numValues,
+                             const float * const values)
 {
   inherited::setElt(numValues, values);
 }
 
 //! FIXME: write doc.
 
-void 
+void
 SoGLShininessElement::updategl()
 {
-  glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 
-	      this->current*128);
+  glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS,
+              this->current*128);
 }
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -50,21 +50,21 @@ public:
   virtual void init(SoState * state);
   virtual void push(SoState * state);
   virtual void pop(SoState * state,
-		   const SoElement * prevTopElement);
-  
+                   const SoElement * prevTopElement);
+
   virtual SbBool matches(const SoElement * element) const;
   virtual SoElement * copyMatchInfo() const;
 
   static void setMatrixState(SoState * const state,
-			     const SbBool valid);
+                             const SbBool valid);
   static void setUnitNormals(SoState * const state,
-			     const SbBool unitNormals);
-			     
+                             const SbBool unitNormals);
+
   void evaluate() const;
   void forceSend(const SbBool normalsAreUnitLength) const;
-  
+
 private:
-  
+
   SbBool okMatrix;
   SbBool unitNormals;
   SbBool glnormalize;

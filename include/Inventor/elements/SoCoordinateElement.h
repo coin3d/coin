@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -51,9 +51,9 @@ protected:
 public:
   virtual void init(SoState * state);
   static void set3(SoState * const state, SoNode * const node,
-		   const int32_t numCoords, const SbVec3f * const coords);
+                   const int32_t numCoords, const SbVec3f * const coords);
   static void set4(SoState * const state, SoNode * const node,
-		   const int32_t numCoords, const SbVec4f * const coords);
+                   const int32_t numCoords, const SbVec4f * const coords);
 
   static const SbVec3f *getArrayPtr3(SoState * const state);
   static const SbVec4f *getArrayPtr4(SoState * const state);
@@ -66,15 +66,15 @@ public:
 
   static SbVec3f getDefault3();
   static SbVec4f getDefault4();
-  
+
   virtual void print(FILE * file) const;
-  
+
 protected:
   int32_t numCoords;
   const SbVec3f *coords3D;
   const SbVec4f *coords4D;
   SbBool areCoords3D;
-  
+
 private:
   SbVec3f dummy3D;
   SbVec4f dummy4D;

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -144,8 +144,8 @@ SoLightAttenuationElement::~SoLightAttenuationElement(void)
 
 void
 SoLightAttenuationElement::set(SoState * const state,
-			       SoNode * const node,
-			       const SbVec3f & lightAttenuation)
+                               SoNode * const node,
+                               const SbVec3f & lightAttenuation)
 {
   SoLightAttenuationElement * element = (SoLightAttenuationElement *)
     SoReplacedElement::getElement(state, classStackIndex, node);
@@ -191,9 +191,9 @@ SoLightAttenuationElement::print(FILE * file) const
 {
   fprintf(file, "SoLightAttenuationElement[%p]: attenuation = ", this);
   fprintf(file, "<%f, %f, %f>\n",
-	   this->lightAttenuation[0],
-	   this->lightAttenuation[1],
-	   this->lightAttenuation[2]);
+           this->lightAttenuation[0],
+           this->lightAttenuation[1],
+           this->lightAttenuation[2]);
 }
 
 //! FIXME: write doc.
@@ -210,7 +210,6 @@ SoLightAttenuationElement::init(SoState * state)
 //$ EXPORT INLINE
 const SbVec3f &
 SoLightAttenuationElement::getDefault()
-{  
-  return SoLightAttenuationElement::defaultAttenuation; 
+{
+  return SoLightAttenuationElement::defaultAttenuation;
 }
-

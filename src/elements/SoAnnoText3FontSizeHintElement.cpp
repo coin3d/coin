@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -145,20 +145,20 @@ SoAnnoText3FontSizeHintElement::init(SoState * state)
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-void 
+void
 SoAnnoText3FontSizeHintElement::set(SoState * const state, SoNode * const node,
-				const FontSizeHint hint)
-{ 
+                                const FontSizeHint hint)
+{
   SoInt32Element::set(classStackIndex,state,node,hint);
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-void 
+void
 SoAnnoText3FontSizeHintElement::set(SoState * const state, const FontSizeHint hint)
-{ 
-  set(state, NULL, hint); 
+{
+  set(state, NULL, hint);
 }
 
 //! FIXME: write doc.
@@ -166,9 +166,9 @@ SoAnnoText3FontSizeHintElement::set(SoState * const state, const FontSizeHint hi
 //$ EXPORT INLINE
 SoAnnoText3FontSizeHintElement::FontSizeHint
 SoAnnoText3FontSizeHintElement::get(SoState * const state)
-{ 
+{
   return (SoAnnoText3FontSizeHintElement::FontSizeHint)
-    SoInt32Element::get(classStackIndex, state); 
+    SoInt32Element::get(classStackIndex, state);
 }
 
 //! FIXME: write doc.
@@ -176,7 +176,6 @@ SoAnnoText3FontSizeHintElement::get(SoState * const state)
 //$ EXPORT INLINE
 SoAnnoText3FontSizeHintElement::FontSizeHint
 SoAnnoText3FontSizeHintElement::getDefault()
-{ 
-  return FIT_TEXT_VECTOR; 
+{
+  return FIT_TEXT_VECTOR;
 }
-

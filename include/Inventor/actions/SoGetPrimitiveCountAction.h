@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -68,13 +68,13 @@ public:
 
   SbBool canApproximateCount();
   void setCanApproximate(const SbBool onOff);
-  
+
 #if 0 // not supported yet
   void setDecimationValue(SoDecimationTypeElement::Type type,
                           float percentage = 1.0);
   SoDecimationTypeElement::Type getDecimationType();
   float getDecimationPercentage();
-#endif // not supported  
+#endif // not supported
 
 public:
   void addNumTriangles(const int num);

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -133,7 +133,7 @@ SoGLSpecularColorElement::~SoGLSpecularColorElement()
 
 //! FIXME: write doc.
 
-void 
+void
 SoGLSpecularColorElement::init(SoState *state)
 {
   inherited::init(state);
@@ -154,7 +154,7 @@ SoGLSpecularColorElement::push(SoState *state)
 
 //! FIXME: write doc.
 
-void 
+void
 SoGLSpecularColorElement::pop(SoState *state, const SoElement *prevTopElement)
 {
   inherited::pop(state, prevTopElement);
@@ -163,7 +163,7 @@ SoGLSpecularColorElement::pop(SoState *state, const SoElement *prevTopElement)
 
 //! FIXME: write doc.
 
-void 
+void
 SoGLSpecularColorElement::send(const int index)
 {
   int realindex = index < this->numColors ? index : this->numColors - 1;
@@ -175,20 +175,19 @@ SoGLSpecularColorElement::send(const int index)
 
 //! FIXME: write doc.
 
-void 
-SoGLSpecularColorElement::setElt(const int32_t numColors, 
-				 const SbColor * const colors)
+void
+SoGLSpecularColorElement::setElt(const int32_t numColors,
+                                 const SbColor * const colors)
 {
   inherited::setElt(numColors, colors);
 }
 
 //! FIXME: write doc.
 
-void 
+void
 SoGLSpecularColorElement::updategl()
 {
   float col[4] = {0.0f, 0.0f, 0.0f, 1.0f};
   this->current.getValue(col[0], col[1], col[2]);
   glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, col);
 }
-

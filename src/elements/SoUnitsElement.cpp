@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -135,8 +135,8 @@ SoUnitsElement::~SoUnitsElement(void)
 
 void
 SoUnitsElement::set(SoState * const state,
-		    SoNode * const node,
-		    const Units unit)
+                    SoNode * const node,
+                    const Units unit)
 {
   assert((int)unit >= (int)METERS && (int)unit <= (int)NAUTICAL_MILES);
   SoInt32Element::set(classStackIndex, state, node, unit);
@@ -153,27 +153,26 @@ SoUnitsElement::init(SoState * state)
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-void 
+void
 SoUnitsElement::set(SoState * const state, const Units units)
-{ 
-  set(state, NULL, units); 
+{
+  set(state, NULL, units);
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-SoUnitsElement::Units 
+SoUnitsElement::Units
 SoUnitsElement::get(SoState * const state)
-{ 
-  return (Units) SoInt32Element::get(classStackIndex, state); 
+{
+  return (Units) SoInt32Element::get(classStackIndex, state);
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-SoUnitsElement::Units 
+SoUnitsElement::Units
 SoUnitsElement::getDefault()
-{ 
-  return METERS; 
+{
+  return METERS;
 }
-

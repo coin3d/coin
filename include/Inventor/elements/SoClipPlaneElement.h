@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -60,26 +60,26 @@ protected:
 
 public:
   virtual void init(SoState * state);
-  
+
   virtual void push(SoState * state);
   virtual void pop(SoState * state,
-		   const SoElement *prevTopElement);
+                   const SoElement *prevTopElement);
 
   static  void add(SoState * const state, SoNode * const node,
-		   const SbPlane & plane);
+                   const SbPlane & plane);
   static  const SoClipPlaneElement *getInstance(SoState * const state);
   int getNum() const;
   const SbPlane & get(const int index,
-		      const SbBool inWorldSpace = TRUE) const;
+                      const SbBool inWorldSpace = TRUE) const;
 
   virtual void print(FILE * file) const;
 
 protected:
   int startIndex;
   SbList <so_plane_data> planes;
-  
+
   virtual void addToElt(const SbPlane & plane,
-			const SbMatrix & modelMatrix);
+                        const SbMatrix & modelMatrix);
 
 };
 

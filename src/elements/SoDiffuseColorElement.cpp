@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -128,7 +128,7 @@ SoDiffuseColorElement::initClass()
 
 //! FIXME: write doc.
 
-void 
+void
 SoDiffuseColorElement::init(SoState * /* state */)
 {
   this->colors = &defaultColor;
@@ -158,10 +158,10 @@ SoDiffuseColorElement::~SoDiffuseColorElement()
 
 //! FIXME: write doc.
 
-void 
+void
 SoDiffuseColorElement::set(SoState * const state, SoNode * const node,
-			   const int32_t numColors, 
-			   const SbColor * const colors)  
+                           const int32_t numColors,
+                           const SbColor * const colors)
 {
   SoDiffuseColorElement *elem = (SoDiffuseColorElement*)
     SoReplacedElement::getElement(state, classStackIndex, node);
@@ -170,10 +170,10 @@ SoDiffuseColorElement::set(SoState * const state, SoNode * const node,
 
 //! FIXME: write doc.
 
-void 
+void
 SoDiffuseColorElement::set(SoState * const state, SoNode * const node,
-			   const int32_t numColors, 
-			   const uint32_t * const colors)
+                           const int32_t numColors,
+                           const uint32_t * const colors)
 {
   SoDiffuseColorElement *elem = (SoDiffuseColorElement*)
     SoReplacedElement::getElement(state, classStackIndex, node);
@@ -182,9 +182,9 @@ SoDiffuseColorElement::set(SoState * const state, SoNode * const node,
 
 //! FIXME: write doc.
 
-void 
-SoDiffuseColorElement::setElt(const int32_t numColors, 
-			      const SbColor * const colors)
+void
+SoDiffuseColorElement::setElt(const int32_t numColors,
+                              const SbColor * const colors)
 {
   this->packedColors = NULL;
   this->colors = colors;
@@ -195,7 +195,7 @@ SoDiffuseColorElement::setElt(const int32_t numColors,
 
 void
 SoDiffuseColorElement::setElt(const int32_t numColors,
-			      const uint32_t * const packedcolors)
+                              const uint32_t * const packedcolors)
 {
   this->packedColors = packedcolors;
   this->numColors = numColors;
@@ -205,7 +205,7 @@ SoDiffuseColorElement::setElt(const int32_t numColors,
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-SbBool 
+SbBool
 SoDiffuseColorElement::isPacked() const
 {
   return this->packedColors != NULL;
@@ -214,7 +214,7 @@ SoDiffuseColorElement::isPacked() const
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-int32_t 
+int32_t
 SoDiffuseColorElement::getNum() const
 {
   return this->numColors;
@@ -232,10 +232,9 @@ SoDiffuseColorElement::get(const int index) const
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-const SoDiffuseColorElement * 
+const SoDiffuseColorElement *
 SoDiffuseColorElement::getInstance(SoState *state)
 {
   return (const SoDiffuseColorElement *)
     SoElement::getConstElement(state, classStackIndex);
 }
-

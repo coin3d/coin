@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -155,9 +155,9 @@ SoGLViewportRegionElement::push(SoState * state)
 
 void
 SoGLViewportRegionElement::pop(SoState * state,
-			       const SoElement * prevTopElement)
+                               const SoElement * prevTopElement)
 {
-  SoGLViewportRegionElement *prev = 
+  SoGLViewportRegionElement *prev =
     (SoGLViewportRegionElement *)prevTopElement;
   if (!(this->viewportRegion == prev->viewportRegion))
     prev->updategl();
@@ -186,8 +186,7 @@ SoGLViewportRegionElement::updategl() const
   }
 #if 0 // too much debug output.. 981021 mortene.
   SoDebugError::postInfo("SoGLViewportRegionElement::updategl",
-			 "glViewport: %d %d %d %d\n",
-			 origin[0], origin[1], size[0], size[1]);
+                         "glViewport: %d %d %d %d\n",
+                         origin[0], origin[1], size[0], size[1]);
 #endif // 0
 }
-

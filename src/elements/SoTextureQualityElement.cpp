@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -149,7 +149,7 @@ SoTextureQualityElement::push(SoState * state)
 
 void
 SoTextureQualityElement::pop(SoState * state,
-			     const SoElement * prevTopElement)
+                             const SoElement * prevTopElement)
 {
     inherited::pop(state, prevTopElement);
 }
@@ -160,7 +160,7 @@ SoTextureQualityElement::pop(SoState * state,
 
 void
 SoTextureQualityElement::set(SoState * const state, SoNode * const node,
-			     const float quality)
+                             const float quality)
 {
   SoFloatElement::set(classStackIndex, state, node, quality);
 }
@@ -195,4 +195,3 @@ SoTextureQualityElement::getDefault(void)
 {
   return 0.5f;
 }
-

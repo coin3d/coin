@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -136,7 +136,7 @@ SoTextureMatrixElement::~SoTextureMatrixElement(void)
 
 void
 SoTextureMatrixElement::makeIdentity(SoState * const state,
-				     SoNode * const node)
+                                     SoNode * const node)
 {
   SoTextureMatrixElement *elem = (SoTextureMatrixElement*)
     SoElement::getElement(state, classStackIndex);
@@ -148,8 +148,8 @@ SoTextureMatrixElement::makeIdentity(SoState * const state,
 
 void
 SoTextureMatrixElement::mult(SoState * const state,
-			   SoNode * const node,
-			   const SbMatrix &matrix)
+                           SoNode * const node,
+                           const SbMatrix &matrix)
 {
   SoTextureMatrixElement *elem = (SoTextureMatrixElement*)
     SoElement::getElement(state, classStackIndex);
@@ -161,22 +161,22 @@ SoTextureMatrixElement::mult(SoState * const state,
 
 void
 SoTextureMatrixElement::translateBy(SoState * const state,
-				  SoNode * const node,
-				  const SbVec3f &translation)
+                                  SoNode * const node,
+                                  const SbVec3f &translation)
 {
   SoTextureMatrixElement *elem = (SoTextureMatrixElement*)
     SoElement::getElement(state, classStackIndex);
   elem->translateEltBy(translation);
   if (node) elem->addNodeId(node);
-  
+
 }
 
 //! FIXME: write doc.
 
 void
 SoTextureMatrixElement::rotateBy(SoState * const state,
-			       SoNode * const node,
-			       const SbRotation & rotation)
+                               SoNode * const node,
+                               const SbRotation & rotation)
 {
   SoTextureMatrixElement *elem = (SoTextureMatrixElement*)
     SoElement::getElement(state, classStackIndex);
@@ -189,8 +189,8 @@ SoTextureMatrixElement::rotateBy(SoState * const state,
 
 void
 SoTextureMatrixElement::scaleBy(SoState * const state,
-			      SoNode * const node,
-			      const SbVec3f & scaleFactor)
+                              SoNode * const node,
+                              const SbVec3f & scaleFactor)
 {
   SoTextureMatrixElement *elem = (SoTextureMatrixElement*)
     SoElement::getElement(state, classStackIndex);
@@ -295,7 +295,7 @@ SoTextureMatrixElement::push(SoState * state)
 
 void
 SoTextureMatrixElement::pop(SoState * state,
-			    const SoElement * prevTopElement)
+                            const SoElement * prevTopElement)
 {
     inherited::pop(state, prevTopElement);
 }
@@ -309,4 +309,3 @@ SoTextureMatrixElement::emptyMatrix(SoState * const /* state */)
 {
   assert(0 && "FIXME: not implemented");
 }
-

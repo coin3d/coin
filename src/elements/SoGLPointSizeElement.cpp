@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -148,14 +148,14 @@ SoGLPointSizeElement::push(SoState * state)
 {
   inherited::push(state);
   SoGLPointSizeElement *top = (SoGLPointSizeElement*)this->next;
-  top->current = this->current;  
+  top->current = this->current;
 }
 
 //! FIXME: write doc.
 
 void
 SoGLPointSizeElement::pop(SoState * state,
-			  const SoElement * prevTopElement)
+                          const SoElement * prevTopElement)
 {
   SoGLPointSizeElement *prev = (SoGLPointSizeElement*)prevTopElement;
   prev->current = this->current;
@@ -195,14 +195,13 @@ SoGLPointSizeElement::updategl()
     SoGLPointSizeElement::sizerange[0] = vals[0];
     SoGLPointSizeElement::sizerange[1] = vals[1];
   }
-  
+
   float useval = this->current;
   // FIXME: spit out a warning? 990314 mortene.
   if (useval < SoGLPointSizeElement::sizerange[0])
     useval = SoGLPointSizeElement::sizerange[0];
   if (useval > SoGLPointSizeElement::sizerange[1])
     useval = SoGLPointSizeElement::sizerange[1];
-  
+
   glPointSize(useval);
 }
-

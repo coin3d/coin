@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -147,7 +147,7 @@ SoLightElement::~SoLightElement(void)
 
 void
 SoLightElement::add(SoState * const /* state */, SoLight * const /* light */,
-		    const SbMatrix & /* WCToVRCMatrix */)
+                    const SbMatrix & /* WCToVRCMatrix */)
 {
 }
 
@@ -177,7 +177,7 @@ void
 SoLightElement::print(FILE * file) const
 {
   fprintf(file, "SoLightElement[%p]: lights = %dn",
-	  this, this->lights.getLength());
+          this, this->lights.getLength());
 }
 
 //! FIXME: write doc.
@@ -216,4 +216,3 @@ SoLightElement::pop(SoState * state, const SoElement * prevTopElement)
 {
     inherited::pop(state, prevTopElement);
 }
-

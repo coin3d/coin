@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -148,8 +148,8 @@ SoGLTextureMatrixElement::push(SoState * state)
 //! FIXME: write doc.
 
 void
-SoGLTextureMatrixElement::pop(SoState * state, 
-			      const SoElement * prevTopElement)
+SoGLTextureMatrixElement::pop(SoState * state,
+                              const SoElement * prevTopElement)
 {
   inherited::pop(state, prevTopElement);
   ((SoGLTextureMatrixElement*)prevTopElement)->updategl();
@@ -162,7 +162,7 @@ SoGLTextureMatrixElement::setEltIdentity()
 {
   assert(0); //seems like an OIV hack for VRML V2.0... pederb, 990503
 
-  // the GL matrix will be correct, but the inherited textureMatrix 
+  // the GL matrix will be correct, but the inherited textureMatrix
   // will not be correct...
   glMatrixMode(GL_TEXTURE);
   glLoadIdentity();
@@ -228,4 +228,3 @@ SoGLTextureMatrixElement::updategl() const
   glLoadMatrixf(textureMatrix[0]);
   glMatrixMode(GL_MODELVIEW);
 }
-

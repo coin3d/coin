@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -159,7 +159,7 @@ SoGLUpdateAreaElement::push(SoState * state)
 
 void
 SoGLUpdateAreaElement::pop(SoState * state,
-			   const SoElement * prevTopElement)
+                           const SoElement * prevTopElement)
 {
     inherited::pop(state, prevTopElement);
 }
@@ -186,8 +186,8 @@ SoGLUpdateAreaElement::copyMatchInfo() const
 
 void
 SoGLUpdateAreaElement::set(SoState * const state,
-			   const SbVec2f & origin,
-			   const SbVec2f & size)
+                           const SbVec2f & origin,
+                           const SbVec2f & size)
 {
   SoGLUpdateAreaElement * e = (SoGLUpdateAreaElement *)
     inherited::getElement(state, SoGLUpdateAreaElement::classStackIndex);
@@ -199,8 +199,8 @@ SoGLUpdateAreaElement::set(SoState * const state,
 
 SbBool
 SoGLUpdateAreaElement::get(SoState * const state,
-			   SbVec2f & origin,
-			   SbVec2f & size)
+                           SbVec2f & origin,
+                           SbVec2f & size)
 {
   const SoGLUpdateAreaElement * e = (const SoGLUpdateAreaElement *)
     inherited::getConstElement(state, SoGLUpdateAreaElement::classStackIndex);
@@ -235,4 +235,3 @@ SoGLUpdateAreaElement::getDefaultSize(void)
 {
   return SbVec2f(1.0f, 1.0f);
 }
-

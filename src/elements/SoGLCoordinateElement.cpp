@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -158,4 +158,3 @@ SoGLCoordinateElement::getPtr4() const
 {
   return this->coords4D;
 }
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -94,7 +94,7 @@ SoWriteAction::getEnabledElements(void) const
   This method adds a method to be perfomed by the action class on the given
   node type.
 */
-void 
+void
 SoWriteAction::addMethod(const SoType type, SoActionMethod method)
 {
   assert(methods);
@@ -104,7 +104,7 @@ SoWriteAction::addMethod(const SoType type, SoActionMethod method)
 /*!
   This method enables an element in the state stack for the action class.
 */
-void 
+void
 SoWriteAction::enableElement(const SoType type, const int stackIndex)
 {
   assert(enabledElements);
@@ -125,7 +125,7 @@ SoWriteAction::initClass(void)
   assert(SoWriteAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoWriteAction::classTypeId = 
+  SoWriteAction::classTypeId =
       SoType::createType(inherited::getClassTypeId(),
                          "SoWriteAction");
   enabledElements = new SoEnabledElementsList(inherited::enabledElements);

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -85,7 +85,7 @@ public:
   static uint32_t getFlags(SoState * const state) {
     return ((SoOverrideElement*)getConstElement(state, classStackIndex))->flags;
   }
-  
+
   static SbBool getAmbientColorOverride(SoState * const state);
   static SbBool getColorIndexOverride(SoState * const state);
   static SbBool getComplexityOverride(SoState * const state);
@@ -109,68 +109,68 @@ public:
   static SbBool getTransparencyOverride(SoState * const state);
 
   static void setAmbientColorOverride(SoState * const state,
-				      SoNode * const node,
-				      const SbBool override);
+                                      SoNode * const node,
+                                      const SbBool override);
   static void setColorIndexOverride(SoState * const state,
-				    SoNode * const node,
-				    const SbBool override);
+                                    SoNode * const node,
+                                    const SbBool override);
   static void setComplexityOverride(SoState * const state,
-				    SoNode * const node,
-				    const SbBool override);
+                                    SoNode * const node,
+                                    const SbBool override);
   static void setComplexityTypeOverride(SoState * const state,
-					SoNode * const node,
-					const SbBool override);
+                                        SoNode * const node,
+                                        const SbBool override);
   static void setCreaseAngleOverride(SoState * const state,
-				     SoNode * const node,
-				     const SbBool override);
+                                     SoNode * const node,
+                                     const SbBool override);
   static void setDiffuseColorOverride(SoState * const state,
-				      SoNode * const node,
-				      const SbBool override);
+                                      SoNode * const node,
+                                      const SbBool override);
   static void setDrawStyleOverride(SoState * const state,
-				   SoNode * const node,
-				   const SbBool override);
+                                   SoNode * const node,
+                                   const SbBool override);
   static void setEmissiveColorOverride(SoState * const state,
-				       SoNode * const node,
-				       const SbBool override);
+                                       SoNode * const node,
+                                       const SbBool override);
   static void setFontNameOverride(SoState * const state,
-				  SoNode * const node,
-				  const SbBool override);
+                                  SoNode * const node,
+                                  const SbBool override);
   static void setFontSizeOverride(SoState * const state,
-				  SoNode * const node,
-				  const SbBool override);
+                                  SoNode * const node,
+                                  const SbBool override);
   static void setLightModelOverride(SoState * const state,
-				    SoNode * const node,
-				    const SbBool override);
+                                    SoNode * const node,
+                                    const SbBool override);
   static void setLinePatternOverride(SoState * const state,
-				     SoNode * const node,
-				     const SbBool override);
+                                     SoNode * const node,
+                                     const SbBool override);
   static void setLineWidthOverride(SoState * const state,
-				   SoNode * const node,
-				   const SbBool override);
+                                   SoNode * const node,
+                                   const SbBool override);
   static void setMaterialBindingOverride(SoState * const state,
-					 SoNode * const node,
-					 const SbBool override);
+                                         SoNode * const node,
+                                         const SbBool override);
   static void setPickStyleOverride(SoState * const state,
-				   SoNode * const node,
-				   const SbBool override);
+                                   SoNode * const node,
+                                   const SbBool override);
   static void setPointSizeOverride(SoState * const state,
-				   SoNode * const node,
-				   const SbBool override);
+                                   SoNode * const node,
+                                   const SbBool override);
   static void setPolygonOffsetOverride(SoState * const state,
-				       SoNode * const node,
-				       const SbBool override);
+                                       SoNode * const node,
+                                       const SbBool override);
   static void setShapeHintsOverride(SoState * const state,
-				    SoNode * const node,
-				    const SbBool override);
+                                    SoNode * const node,
+                                    const SbBool override);
   static void setShininessOverride(SoState * const state,
-				   SoNode * const node,
-				   const SbBool override);
+                                   SoNode * const node,
+                                   const SbBool override);
   static void setSpecularColorOverride(SoState * const state,
-				       SoNode * const node,
-				       const SbBool override);
+                                       SoNode * const node,
+                                       const SbBool override);
   static void setTransparencyOverride(SoState * const state,
-				      SoNode * const node,
-				      const SbBool override);
+                                      SoNode * const node,
+                                      const SbBool override);
 
   virtual void print(FILE * file) const;
 

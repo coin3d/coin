@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -72,8 +72,8 @@ public:
   void setNormalizedPoint(const SbVec2f & normPoint);
   void setRadius(const float radiusInPixels);
   void setRay(const SbVec3f & start, const SbVec3f & direction,
-	      float nearDistance = -1.0,
-	      float farDistance = -1.0);
+              float nearDistance = -1.0,
+              float farDistance = -1.0);
   void setPickAll(const SbBool flag);
   SbBool isPickAll() const;
   const SoPickedPointList & getPickedPointList() const;
@@ -85,15 +85,15 @@ public:
   void setObjectSpace();
   void setObjectSpace(const SbMatrix &matrix);
   SbBool intersect(const SbVec3f &v0,
-		   const SbVec3f &v1,
-		   const SbVec3f &v2,
-		   SbVec3f &intersection, SbVec3f &barycentric,
-		   SbBool &front) const;
+                   const SbVec3f &v1,
+                   const SbVec3f &v2,
+                   SbVec3f &intersection, SbVec3f &barycentric,
+                   SbBool &front) const;
   SbBool intersect(const SbVec3f &v0, const SbVec3f &v1,
-		   SbVec3f &intersection) const;
+                   SbVec3f &intersection) const;
   SbBool intersect(const SbVec3f &point) const;
   SbBool intersect(const SbBox3f &box,
-		   const SbBool useFullViewVolume = TRUE);
+                   const SbBool useFullViewVolume = TRUE);
   const SbViewVolume &getViewVolume();
   const SbLine &getLine();
   SbBool isBetweenPlanes(const SbVec3f &intersection) const;
@@ -104,7 +104,7 @@ protected:
   virtual void beginTraversal(SoNode *node);
 
 private:
-  
+
   void setFlag(const unsigned int flag);
   void clearFlag(const unsigned int flag);
   SbBool isFlagSet(const unsigned int flag) const;
@@ -131,9 +131,9 @@ private:
   SbMatrix obj2World;
   SbMatrix world2Obj;
   SbMatrix extraMatrix;
-  
+
   SoPickedPointList pickedPointList;
- 
+
   unsigned int flags;
 };
 

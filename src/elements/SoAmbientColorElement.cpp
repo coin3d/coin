@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -120,7 +120,7 @@ SoAmbientColorElement::initClass()
 
 //! FIXME: write doc.
 
-void 
+void
 SoAmbientColorElement::init(SoState * /* state */)
 {
   this->colors = &defaultColor;
@@ -149,10 +149,10 @@ SoAmbientColorElement::~SoAmbientColorElement()
 
 //! FIXME: write doc.
 
-void 
+void
 SoAmbientColorElement::set(SoState * const state, SoNode * const node,
-			   const int32_t numColors, 
-			   const SbColor * const colors)  
+                           const int32_t numColors,
+                           const SbColor * const colors)
 {
   SoAmbientColorElement *elem = (SoAmbientColorElement*)
     SoReplacedElement::getElement(state, classStackIndex, node);
@@ -161,9 +161,9 @@ SoAmbientColorElement::set(SoState * const state, SoNode * const node,
 
 //! FIXME: write doc.
 
-void 
-SoAmbientColorElement::setElt(const int32_t numColors, 
-			      const SbColor * const colors)
+void
+SoAmbientColorElement::setElt(const int32_t numColors,
+                              const SbColor * const colors)
 {
   this->colors = colors;
   this->numColors = numColors;
@@ -172,7 +172,7 @@ SoAmbientColorElement::setElt(const int32_t numColors,
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-int32_t 
+int32_t
 SoAmbientColorElement::getNum() const
 {
   return this->numColors;
@@ -190,10 +190,9 @@ SoAmbientColorElement::get(const int index) const
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-const SoAmbientColorElement * 
+const SoAmbientColorElement *
 SoAmbientColorElement::getInstance(SoState *state)
 {
   return (const SoAmbientColorElement *)
     SoElement::getConstElement(state, classStackIndex);
 }
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -138,8 +138,8 @@ SoViewVolumeElement::~SoViewVolumeElement(void)
 
 void
 SoViewVolumeElement::set(SoState * const state,
-			 SoNode * const node,
-			 const SbViewVolume & viewVolume)
+                         SoNode * const node,
+                         const SbViewVolume & viewVolume)
 {
   SoViewVolumeElement * element = (SoViewVolumeElement *)
     SoReplacedElement::getElement(state, classStackIndex, node);
@@ -167,4 +167,3 @@ SoViewVolumeElement::init(SoState * state)
   v.ortho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f);
   this->viewVolume = v;
 }
-

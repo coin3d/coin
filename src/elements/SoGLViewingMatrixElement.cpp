@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -143,7 +143,7 @@ SoGLViewingMatrixElement::init(SoState * state)
 {
 #if 0 // too much debug output.. 981021 mortene.
   SoDebugError::postInfo("SoGLViewingMatrixElement::init",
-			 "");
+                         "");
 #endif // 0
   inherited::init(state);
   this->state = state;
@@ -169,7 +169,7 @@ SoGLViewingMatrixElement::push(SoState * state)
 
 void
 SoGLViewingMatrixElement::pop(SoState * state,
-			      const SoElement * prevTopElement)
+                              const SoElement * prevTopElement)
 {
 #if 0 // too much debug output.. 981021 mortene.
   SoDebugError::postInfo("SoGLViewingMatrixElement::pop()", "");
@@ -201,7 +201,7 @@ SoGLViewingMatrixElement::setElt(const SbMatrix & matrix)
   if (!isIdentity) {
 #if COIN_DEBUG // debug
     SoDebugError::postInfo("SoGLViewingMatrixElement::setElt",
-			   "mult model");
+                           "mult model");
 #endif // debug
     this->viewingMatrix.multRight(mat);
   }
@@ -219,4 +219,3 @@ SoGLViewingMatrixElement::updategl()
 #endif // debug
   glLoadMatrixf((float*)this->viewingMatrix);
 }
-

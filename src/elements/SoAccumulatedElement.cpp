@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -186,4 +186,3 @@ SoAccumulatedElement::captureThis(SoState * /* state */) const
 {
   assert(0 && "FIXME: not implemented");
 }
-

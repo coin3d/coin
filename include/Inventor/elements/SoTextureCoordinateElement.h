@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -33,11 +33,11 @@
 /*
  * TODO
  * - conversion between 2D and 4D (like Open Inventor)
- */ 
+ */
 
 typedef const SbVec4f & SoTextureCoordinateFunctionCB(void * userdata,
-						      const SbVec3f & point,
-						      const SbVec3f & normal);
+                                                      const SbVec3f & point,
+                                                      const SbVec3f & normal);
 
 class SoTextureCoordinateElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
@@ -72,30 +72,30 @@ public:
 
   static void setDefault(SoState * const state, SoNode * const node);
   static void setFunction(SoState * const state, SoNode * const node,
-			  SoTextureCoordinateFunctionCB * const func,
-			  void * const userdata);
+                          SoTextureCoordinateFunctionCB * const func,
+                          void * const userdata);
 
   static void set2(SoState * const state, SoNode * const node,
-		   const int32_t numCoords, const SbVec2f * const coords);
+                   const int32_t numCoords, const SbVec2f * const coords);
   static void set4(SoState * const state, SoNode * const node,
-		   const int32_t numCoords, const SbVec4f * const coords);
+                   const int32_t numCoords, const SbVec4f * const coords);
 
   static const SbVec2f *getArrayPtr2(SoState * const state);
   static const SbVec4f *getArrayPtr4(SoState * const state);
-  
+
   static CoordType getType(SoState * const state);
   virtual CoordType getType() const;
 
   static const SoTextureCoordinateElement *getInstance(SoState * const state);
 
   const SbVec4f &get(const SbVec3f & point,
-		     const SbVec3f & normal) const;
+                     const SbVec3f & normal) const;
   int32_t getNum() const;
   SbBool is2D() const;
 
   const SbVec2f &get2(const int index) const;
   const SbVec4f &get4(const int index) const;
- 
+
 protected:
   CoordType whatKind;
   SoTextureCoordinateFunctionCB *funcCB;

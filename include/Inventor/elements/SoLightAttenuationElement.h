@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -51,10 +51,10 @@ public:
   virtual void init(SoState * state);
 
   static void set(SoState * const state, SoNode * const node,
-		  const SbVec3f & lightAttenuation);
+                  const SbVec3f & lightAttenuation);
   static const SbVec3f &get(SoState * const state);
   static const SbVec3f & getDefault();
- 
+
   virtual SbBool matches(SoElement * element) const;
   virtual SoElement *copyMatchInfo() const;
 

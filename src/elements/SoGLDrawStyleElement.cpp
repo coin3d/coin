@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -151,7 +151,7 @@ SoGLDrawStyleElement::push(SoState * state)
 
 void
 SoGLDrawStyleElement::pop(SoState * state,
-			  const SoElement * prevTopElement)
+                          const SoElement * prevTopElement)
 {
   SoGLDrawStyleElement *prev = (SoGLDrawStyleElement*) prevTopElement;
   if (prev->data != this->data) prev->updategl();
@@ -192,4 +192,3 @@ SoGLDrawStyleElement::updategl()
     break;
   }
 }
-

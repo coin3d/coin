@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -140,7 +140,7 @@ SoCallbackAction::getEnabledElements(void) const
   This method adds a method to be perfomed by the action class on the given
   node type.
 */
-void 
+void
 SoCallbackAction::addMethod(const SoType type, SoActionMethod method)
 {
   assert(methods);
@@ -150,7 +150,7 @@ SoCallbackAction::addMethod(const SoType type, SoActionMethod method)
 /*!
   This method enables an element in the state stack for the action class.
 */
-void 
+void
 SoCallbackAction::enableElement(const SoType type, const int stackIndex)
 {
   assert(enabledElements);
@@ -172,7 +172,7 @@ SoCallbackAction::initClass(void)
   assert(SoCallbackAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoCallbackAction::classTypeId = 
+  SoCallbackAction::classTypeId =
       SoType::createType(inherited::getClassTypeId(),
                          "SoCallbackAction");
   enabledElements = new SoEnabledElementsList(inherited::enabledElements);
@@ -215,9 +215,9 @@ SoCallbackAction::~SoCallbackAction(void)
 //
 // for setting node callbacks. makes sure NULLs are filled in where not set
 //
-static void 
+static void
 set_callback_data(SbList <SoCallbackData> &list, const int idx,
-		  void *func, void *data)
+                  void *func, void *data)
 {
   int n = list.getLength();
   while (n <= idx) {
@@ -227,77 +227,77 @@ set_callback_data(SbList <SoCallbackData> &list, const int idx,
   list[idx] = SoCallbackData(func, data);
 }
 
-void 
-SoCallbackAction::addPreCallback(const SoType type, 
-				 const SoCallbackActionCB *cb, 
-				 void *userdata)
+void
+SoCallbackAction::addPreCallback(const SoType type,
+                                 const SoCallbackActionCB *cb,
+                                 void *userdata)
 {
   set_callback_data(this->preCB, (int)type.getData(), (void*)cb, userdata);
 }
 
-void 
-SoCallbackAction::addPostCallback(const SoType type, 
-				  const SoCallbackActionCB *cb, 
-				  void *userdata)
+void
+SoCallbackAction::addPostCallback(const SoType type,
+                                  const SoCallbackActionCB *cb,
+                                  void *userdata)
 {
   set_callback_data(this->postCB, (int)type.getData(), (void*) cb, userdata);
 }
 
-void 
-SoCallbackAction::addPreTailCallback(const SoType type, 
-				     const SoCallbackActionCB *cb, 
-				     void *userdata)
+void
+SoCallbackAction::addPreTailCallback(const SoType type,
+                                     const SoCallbackActionCB *cb,
+                                     void *userdata)
 {
   set_callback_data(this->preTailCB, (int)type.getData(), (void*) cb, userdata);
 }
 
-void 
-SoCallbackAction::addPostTailCallback(const SoType type, 
-				      const SoCallbackActionCB *cb, 
-				      void *userdata)
+void
+SoCallbackAction::addPostTailCallback(const SoType type,
+                                      const SoCallbackActionCB *cb,
+                                      void *userdata)
 {
   set_callback_data(this->postTailCB, (int)type.getData(), (void*) cb, userdata);
 }
 
-void 
-SoCallbackAction::addTriangleCallback(const SoType type, 
-				      const SoTriangleCB *cb, 
-				      void *userdata)
+void
+SoCallbackAction::addTriangleCallback(const SoType type,
+                                      const SoTriangleCB *cb,
+                                      void *userdata)
 {
   set_callback_data(this->triangleCB, (int)type.getData(), (void*) cb, userdata);
 }
 
-void 
-SoCallbackAction::addLineSegmentCallback(const SoType type, 
-					 const SoLineSegmentCB *cb, 
-					 void *userdata)
+void
+SoCallbackAction::addLineSegmentCallback(const SoType type,
+                                         const SoLineSegmentCB *cb,
+                                         void *userdata)
 {
   set_callback_data(this->lineSegmentCB, (int)type.getData(), (void*) cb, userdata);
 }
 
-void 
-SoCallbackAction::addPointCallback(const SoType type, 
-				   const SoPointCB *cb, 
-				   void *userdata)
+void
+SoCallbackAction::addPointCallback(const SoType type,
+                                   const SoPointCB *cb,
+                                   void *userdata)
 {
   set_callback_data(this->pointCB, (int)type.getData(), (void*) cb, userdata);
 }
 
 /************************************************************************************/
 
-float 
+float
 SoCallbackAction::getComplexity() const
 {
   return SoComplexityElement::get(this->state);
 }
 
-SoComplexity::Type 
+SoComplexity::Type
 SoCallbackAction::getComplexityType() const
 {
   return (SoComplexity::Type) SoComplexityTypeElement::get(this->state);
 }
 
-int32_t 
+int32_t
 SoCallbackAction::getNumCoordinates() const
 {
   return SoCoordinateElement::getInstance(this->state)->getNum();
@@ -312,28 +312,28 @@ SoCallbackAction::getCoordinate3(const int index) const
 const SbVec4f &
 SoCallbackAction::getCoordinate4(const int index) const
 {
-  return SoCoordinateElement::getInstance(this->state)->get4(index);  
+  return SoCoordinateElement::getInstance(this->state)->get4(index);
 }
 
-SoDrawStyle::Style 
+SoDrawStyle::Style
 SoCallbackAction::getDrawStyle() const
 {
   return (SoDrawStyle::Style) SoDrawStyleElement::get(this->state);
 }
 
-unsigned short 
+unsigned short
 SoCallbackAction::getLinePattern() const
 {
   return (unsigned short) SoLinePatternElement::get(this->state);
 }
 
-float 
+float
 SoCallbackAction::getLineWidth() const
 {
   return SoLineWidthElement::get(this->state);
 }
 
-float 
+float
 SoCallbackAction::getPointSize() const
 {
   return SoPointSizeElement::get(this->state);
@@ -345,13 +345,13 @@ SoCallbackAction::getFontName() const
   return SoFontNameElement::get(this->state);
 }
 
-float 
+float
 SoCallbackAction::getFontSize() const
 {
   return SoFontSizeElement::get(this->state);
 }
 
-SoLightModel::Model 
+SoLightModel::Model
 SoCallbackAction::getLightModel() const
 {
   return (SoLightModel::Model) SoLightModelElement::get(this->state);
@@ -364,11 +364,11 @@ SoCallbackAction::getLightAttenuation() const
 }
 
 
-void 
-SoCallbackAction::getMaterial(SbColor &ambient, SbColor &diffuse, 
-			      SbColor &specular, SbColor &emission, 
-			      float &shininess, float &transparency, 
-			      const int index) const
+void
+SoCallbackAction::getMaterial(SbColor &ambient, SbColor &diffuse,
+                              SbColor &specular, SbColor &emission,
+                              float &shininess, float &transparency,
+                              const int index) const
 {
   ambient = SoAmbientColorElement::getInstance(this->state)->get(index);
   diffuse = SoDiffuseColorElement::getInstance(this->state)->get(index);
@@ -378,14 +378,14 @@ SoCallbackAction::getMaterial(SbColor &ambient, SbColor &diffuse,
   transparency = SoTransparencyElement::getInstance(this->state)->get(index);
 }
 
-SoMaterialBinding::Binding 
+SoMaterialBinding::Binding
 SoCallbackAction::getMaterialBinding() const
 {
-  return (SoMaterialBinding::Binding) 
+  return (SoMaterialBinding::Binding)
     SoMaterialBindingElement::get(this->state);
 }
 
-long 
+long
 SoCallbackAction::getNumNormals() const
 {
   return SoNormalElement::getInstance(this->state)->getNum();
@@ -397,14 +397,14 @@ SoCallbackAction::getNormal(const int index) const
   return SoNormalElement::getInstance(this->state)->get(index);
 }
 
-SoNormalBinding::Binding 
+SoNormalBinding::Binding
 SoCallbackAction::getNormalBinding() const
 {
-  return (SoNormalBinding::Binding) 
+  return (SoNormalBinding::Binding)
     SoNormalBindingElement::get(this->state);
 }
 
-int32_t 
+int32_t
 SoCallbackAction::getNumProfileCoordinates() const
 {
   return SoProfileCoordinateElement::getInstance(this->state)->getNum();
@@ -428,34 +428,34 @@ SoCallbackAction::getProfile() const
   return SoProfileElement::get(this->state);
 }
 
-SoShapeHints::VertexOrdering 
+SoShapeHints::VertexOrdering
 SoCallbackAction::getVertexOrdering() const
 {
-  return (SoShapeHints::VertexOrdering) 
+  return (SoShapeHints::VertexOrdering)
     SoShapeHintsElement::getVertexOrdering(this->state);
 }
 
-SoShapeHints::ShapeType 
+SoShapeHints::ShapeType
 SoCallbackAction::getShapeType() const
 {
-  return (SoShapeHints::ShapeType) 
+  return (SoShapeHints::ShapeType)
     SoShapeHintsElement::getShapeType(this->state);
 }
 
-SoShapeHints::FaceType 
+SoShapeHints::FaceType
 SoCallbackAction::getFaceType() const
 {
-  return (SoShapeHints::FaceType) 
+  return (SoShapeHints::FaceType)
     SoShapeHintsElement::getFaceType(this->state);
 }
 
-float 
+float
 SoCallbackAction::getCreaseAngle() const
 {
   return SoCreaseAngleElement::get(this->state);
 }
 
-int32_t 
+int32_t
 SoCallbackAction::getNumTextureCoordinates() const
 {
   return SoTextureCoordinateElement::getInstance(this->state)->getNum();
@@ -473,7 +473,7 @@ SoCallbackAction::getTextureCoordinate4(int index) const
   return SoTextureCoordinateElement::getInstance(this->state)->get4(index);
 }
 
-SoTextureCoordinateBinding::Binding 
+SoTextureCoordinateBinding::Binding
 SoCallbackAction::getTextureCoordinateBinding() const
 {
   return (SoTextureCoordinateBinding::Binding)
@@ -498,19 +498,19 @@ SoCallbackAction::getTextureMatrix() const
   return SoTextureMatrixElement::get(this->state);
 }
 
-SoTexture2::Model 
+SoTexture2::Model
 SoCallbackAction::getTextureModel() const
 {
   return (SoTexture2::Model) SoTextureImageElement::getModel(this->state);
 }
 
-SoTexture2::Wrap 
+SoTexture2::Wrap
 SoCallbackAction::getTextureWrapS() const
 {
   return (SoTexture2::Wrap) SoTextureImageElement::getWrapS(this->state);
 }
 
-SoTexture2::Wrap 
+SoTexture2::Wrap
 SoCallbackAction::getTextureWrapT() const
 {
   return (SoTexture2::Wrap) SoTextureImageElement::getWrapT(this->state);
@@ -522,13 +522,13 @@ SoCallbackAction::getModelMatrix() const
   return SoModelMatrixElement::get(this->state);
 }
 
-SoUnits::Units 
+SoUnits::Units
 SoCallbackAction::getUnits() const
 {
   return (SoUnits::Units) SoUnitsElement::get(this->state);
 }
 
-float 
+float
 SoCallbackAction::getFocalDistance() const
 {
   return SoFocalDistanceElement::get(this->state);
@@ -552,13 +552,13 @@ SoCallbackAction::getViewVolume() const
   return SoViewVolumeElement::get(this->state);
 }
 
-SoPickStyle::Style 
+SoPickStyle::Style
 SoCallbackAction::getPickStyle() const
 {
   return (SoPickStyle::Style) SoPickStyleElement::get(this->state);
 }
 
-int32_t 
+int32_t
 SoCallbackAction::getSwitch() const
 {
   return SoSwitchElement::get(this->state);
@@ -566,13 +566,13 @@ SoCallbackAction::getSwitch() const
 
 /************************************************************************************/
 
-SoCallbackAction::Response 
+SoCallbackAction::Response
 SoCallbackAction::getCurrentResponse(void) const
 {
   return this->response;
 }
 
-void 
+void
 SoCallbackAction::invokePreCallbacks(const SoNode *const node)
 {
   int idx = (int) node->getTypeId().getData();
@@ -583,7 +583,7 @@ SoCallbackAction::invokePreCallbacks(const SoNode *const node)
   }
 }
 
-void 
+void
 SoCallbackAction::invokePostCallbacks(const SoNode * const node)
 {
   int idx = (int) node->getTypeId().getData();
@@ -594,37 +594,37 @@ SoCallbackAction::invokePostCallbacks(const SoNode * const node)
   }
 }
 
-void 
+void
 SoCallbackAction::invokeTriangleCallbacks(const SoShape * const shape,
-					  const SoPrimitiveVertex * const v1,
-					  const SoPrimitiveVertex * const v2,
-					  const SoPrimitiveVertex * const v3)
+                                          const SoPrimitiveVertex * const v1,
+                                          const SoPrimitiveVertex * const v2,
+                                          const SoPrimitiveVertex * const v3)
 {
   int idx = (int) shape->getTypeId().getData();
-  if (idx < this->triangleCB.getLength() && this->triangleCB[idx].hasCallback()) 
+  if (idx < this->triangleCB.getLength() && this->triangleCB[idx].hasCallback())
     this->triangleCB[idx].doTriangleCallback(this, v1, v2, v3);
 }
 
-void 
+void
 SoCallbackAction::invokeLineSegmentCallbacks(const SoShape * const shape,
-					     const SoPrimitiveVertex * const v1,
-					     const SoPrimitiveVertex * const v2)
+                                             const SoPrimitiveVertex * const v1,
+                                             const SoPrimitiveVertex * const v2)
 {
   int idx = (int) shape->getTypeId().getData();
-  if (idx < this->lineSegmentCB.getLength() && this->lineSegmentCB[idx].hasCallback()) 
+  if (idx < this->lineSegmentCB.getLength() && this->lineSegmentCB[idx].hasCallback())
     this->lineSegmentCB[idx].doLineSegmentCallback(this, v1, v2);
 }
 
-void 
+void
 SoCallbackAction::invokePointCallbacks(const SoShape * const shape,
-				       const SoPrimitiveVertex * const v)
+                                       const SoPrimitiveVertex * const v)
 {
   int idx = (int) shape->getTypeId().getData();
-  if (idx < this->pointCB.getLength() && this->pointCB[idx].hasCallback()) 
+  if (idx < this->pointCB.getLength() && this->pointCB[idx].hasCallback())
     this->pointCB[idx].doPointCallback(this, v);
 }
 
-SbBool 
+SbBool
 SoCallbackAction::shouldGeneratePrimitives(const SoShape *shape) const
 {
   int idx = (int) shape->getTypeId().getData();
@@ -643,57 +643,56 @@ SoCallbackAction::getCurPathTail()
   return this->getCurPath()->getTail();
 }
 
-void 
+void
 SoCallbackAction::setCurrentNode(SoNode * const node)
 {
   this->currentNode = node;
 }
 
-void 
+void
 SoCallbackAction::beginTraversal(SoNode *node)
 {
   this->response = CONTINUE;
   this->traverse(node);
 }
 
-int 
-SoCallbackData::doNodeCallback(SoCallbackAction *action, 
-			       const SoNode *node)
+int
+SoCallbackData::doNodeCallback(SoCallbackAction *action,
+                               const SoNode *node)
 {
   assert(this->func != NULL);
-  SoCallbackAction::SoCallbackActionCB *cbfunc = 
+  SoCallbackAction::SoCallbackActionCB *cbfunc =
     (SoCallbackAction::SoCallbackActionCB*) this->func;
-  
+
   return (int) cbfunc(this->data, action, node);
 }
 
-void 
-SoCallbackData::doTriangleCallback(SoCallbackAction *action, 
-				   const SoPrimitiveVertex * const v1,
-				   const SoPrimitiveVertex * const v2,
-				   const SoPrimitiveVertex * const v3)
+void
+SoCallbackData::doTriangleCallback(SoCallbackAction *action,
+                                   const SoPrimitiveVertex * const v1,
+                                   const SoPrimitiveVertex * const v2,
+                                   const SoPrimitiveVertex * const v3)
 {
   assert(this->func != NULL);
   SoTriangleCB *tricb = (SoTriangleCB*) this->func;
   tricb(this->data, action, v1, v2, v3);
 }
 
-void 
+void
 SoCallbackData::doLineSegmentCallback(SoCallbackAction *action,
-				      const SoPrimitiveVertex * const v1,
-				      const SoPrimitiveVertex * const v2)
+                                      const SoPrimitiveVertex * const v1,
+                                      const SoPrimitiveVertex * const v2)
 {
   assert(this->func != NULL);
   SoLineSegmentCB *linecb = (SoLineSegmentCB*) this->func;
   linecb(this->data, action, v1, v2);
 }
 
-void 
+void
 SoCallbackData::doPointCallback(SoCallbackAction *action,
-				const SoPrimitiveVertex *v)
+                                const SoPrimitiveVertex *v)
 {
   assert(this->func != NULL);
   SoPointCB *ptcb = (SoPointCB*) this->func;
   ptcb(this->data, action, v);
 }
-

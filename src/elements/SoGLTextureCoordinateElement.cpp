@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -161,7 +161,7 @@ SoGLTextureCoordinateElement::push(SoState * state)
 
 void
 SoGLTextureCoordinateElement::pop(SoState * state,
-				  const SoElement * prevTopElement)
+                                  const SoElement * prevTopElement)
 {
   inherited::pop(state, prevTopElement);
   ((SoGLTextureCoordinateElement*)prevTopElement)->doCallback();
@@ -171,11 +171,11 @@ SoGLTextureCoordinateElement::pop(SoState * state,
 
 void
 SoGLTextureCoordinateElement::setTexGen(SoState * const state,
-					SoNode * const node,
-					SoTexCoordTexgenCB * const texgenFunc,
-					void * const texgenData,
-					SoTextureCoordinateFunctionCB * const func,
-					void * const funcData)
+                                        SoNode * const node,
+                                        SoTexCoordTexgenCB * const texgenFunc,
+                                        void * const texgenData,
+                                        SoTextureCoordinateFunctionCB * const func,
+                                        void * const funcData)
 {
 #if !defined(COIN_EXCLUDE_SOSHAPESTYLEELEMENT)
   SoShapeStyleElement::setTextureFunction(state, texgenFunc && !func);
@@ -214,9 +214,9 @@ SoGLTextureCoordinateElement::send(const int index) const
 {
   assert(this->whatKind == EXPLICIT);
   assert(index < this->numCoords);
-  if (this->coordsAre2D) 
+  if (this->coordsAre2D)
     glTexCoord2fv(coords2[index].getValue());
-  else 
+  else
     glTexCoord4fv(coords4[index].getValue());
 }
 
@@ -224,8 +224,8 @@ SoGLTextureCoordinateElement::send(const int index) const
 
 void
 SoGLTextureCoordinateElement::send(const int index,
-				   const SbVec3f & /* c */,
-				   const SbVec3f & /* n */) const
+                                   const SbVec3f & /* c */,
+                                   const SbVec3f & /* n */) const
 {
   if (index < 0) return;
   if (index >= this->numCoords) return;
@@ -233,9 +233,9 @@ SoGLTextureCoordinateElement::send(const int index,
   // FIXME: handle texcoord functions
   assert(this->whatKind == EXPLICIT);
   assert(index < this->numCoords);
-  if (this->coordsAre2D) 
+  if (this->coordsAre2D)
     glTexCoord2fv(coords2[index].getValue());
-  else 
+  else
     glTexCoord4fv(coords4[index].getValue());
 }
 
@@ -243,8 +243,8 @@ SoGLTextureCoordinateElement::send(const int index,
 
 void
 SoGLTextureCoordinateElement::setElt(SoTexCoordTexgenCB * func,
-				     void *data)
-{  
+                                     void *data)
+{
   this->texgenCB = func;
   this->texgenData = data;
 }

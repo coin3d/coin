@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -140,7 +140,7 @@ SoShapeHintsElement::init(SoState * state)
 
 //! FIXME: write doc.
 
-void 
+void
 SoShapeHintsElement::push(SoState * state)
 {
   inherited::push(state);
@@ -157,9 +157,9 @@ SoShapeHintsElement::matches(const SoElement * element) const
 {
   SoShapeHintsElement *elem = (SoShapeHintsElement*)element;
   return (this->vertexOrdering == elem->vertexOrdering &&
-	  this->shapeType == elem->shapeType &&
-	  this->faceType == elem->faceType);
-  
+          this->shapeType == elem->shapeType &&
+          this->faceType == elem->faceType);
+
 }
 
 //! FIXME: write doc.
@@ -179,24 +179,24 @@ SoShapeHintsElement::copyMatchInfo() const
 
 void
 SoShapeHintsElement::set(SoState * const state,
-			 SoNode * const /* node */,
-			 const VertexOrdering vertexOrdering,
-			 const ShapeType shapeType,
-			 const FaceType faceType)
+                         SoNode * const /* node */,
+                         const VertexOrdering vertexOrdering,
+                         const ShapeType shapeType,
+                         const FaceType faceType)
 {
   SoShapeHintsElement *elem = (SoShapeHintsElement*)
     SoElement::getElement(state, classStackIndex);
 
   elem->setElt(vertexOrdering, shapeType, faceType);
 }
- 
+
 //! FIXME: write doc.
 
 void
 SoShapeHintsElement::get(SoState * const state,
-			 VertexOrdering & vertexOrdering,
-			 ShapeType & shapeType,
-			 FaceType & faceType)
+                         VertexOrdering & vertexOrdering,
+                         ShapeType & shapeType,
+                         FaceType & faceType)
 {
   SoShapeHintsElement *elem = (SoShapeHintsElement*)
     SoElement::getConstElement(state, classStackIndex);
@@ -207,7 +207,7 @@ SoShapeHintsElement::get(SoState * const state,
 
 //! FIXME: write doc.
 
-SoShapeHintsElement::VertexOrdering 
+SoShapeHintsElement::VertexOrdering
 SoShapeHintsElement::getVertexOrdering(SoState * const state)
 {
   SoShapeHintsElement *elem = (SoShapeHintsElement*)
@@ -217,7 +217,7 @@ SoShapeHintsElement::getVertexOrdering(SoState * const state)
 
 //! FIXME: write doc.
 
-SoShapeHintsElement::ShapeType 
+SoShapeHintsElement::ShapeType
 SoShapeHintsElement::getShapeType(SoState * const state)
 {
   SoShapeHintsElement *elem = (SoShapeHintsElement*)
@@ -227,7 +227,7 @@ SoShapeHintsElement::getShapeType(SoState * const state)
 
 //! FIXME: write doc.
 
-SoShapeHintsElement::FaceType 
+SoShapeHintsElement::FaceType
 SoShapeHintsElement::getFaceType(SoState * const state)
 {
   SoShapeHintsElement *elem = (SoShapeHintsElement*)
@@ -241,13 +241,13 @@ void
 SoShapeHintsElement::print(FILE * /* file */) const
 {
 }
- 
+
 //! FIXME: write doc.
 
 void
 SoShapeHintsElement::setElt(VertexOrdering vertexOrdering,
-			    ShapeType shapeType,
-			    FaceType faceType)
+                            ShapeType shapeType,
+                            FaceType faceType)
 {
   if (vertexOrdering != ORDERING_AS_IS) {
     this->vertexOrdering = vertexOrdering;
@@ -264,37 +264,36 @@ SoShapeHintsElement::setElt(VertexOrdering vertexOrdering,
 
 //$ EXPORT INLINE
 void SoShapeHintsElement::set(SoState * const state,
-			      const VertexOrdering vertexOrdering,
-			      const ShapeType shapeType, 
-			      const FaceType faceType)
-{ 
-  set(state, NULL, vertexOrdering, shapeType, faceType); 
+                              const VertexOrdering vertexOrdering,
+                              const ShapeType shapeType,
+                              const FaceType faceType)
+{
+  set(state, NULL, vertexOrdering, shapeType, faceType);
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-SoShapeHintsElement::VertexOrdering 
+SoShapeHintsElement::VertexOrdering
 SoShapeHintsElement::getDefaultVertexOrdering()
-{ 
-  return UNKNOWN_ORDERING; 
+{
+  return UNKNOWN_ORDERING;
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-SoShapeHintsElement::ShapeType 
+SoShapeHintsElement::ShapeType
 SoShapeHintsElement::getDefaultShapeType()
-{ 
-  return UNKNOWN_SHAPE_TYPE; 
+{
+  return UNKNOWN_SHAPE_TYPE;
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-SoShapeHintsElement::FaceType 
+SoShapeHintsElement::FaceType
 SoShapeHintsElement::getDefaultFaceType()
-{ 
-  return CONVEX; 
+{
+  return CONVEX;
 }
-

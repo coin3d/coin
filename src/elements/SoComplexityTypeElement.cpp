@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -140,15 +140,15 @@ SoComplexityTypeElement::~SoComplexityTypeElement(void)
 
 void
 SoComplexityTypeElement::set(SoState * const state,
-			     SoNode * const node,
-			     const Type type)
+                             SoNode * const node,
+                             const Type type)
 {
   assert(type == OBJECT_SPACE || type == SCREEN_SPACE || type == BOUNDING_BOX);
 
 #if !defined(COIN_EXCLUDE_SOSHAPESTYLEELEMENT)
   SoShapeStyleElement::setComplexityType(state, type);
 #endif // ! COIN_EXCLUDE_SOSHAPESTYLEELEMENT
-  
+
   SoInt32Element::set(classStackIndex, state, node, type);
 }
 
@@ -164,27 +164,26 @@ SoComplexityTypeElement::init(SoState * state)
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-void 
+void
 SoComplexityTypeElement::set(SoState * const state, const Type type)
-{ 
-  set(state, NULL, type); 
+{
+  set(state, NULL, type);
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-SoComplexityTypeElement::Type 
+SoComplexityTypeElement::Type
 SoComplexityTypeElement::get(SoState * const state)
-{ 
-  return (Type)SoInt32Element::get(classStackIndex, state); 
+{
+  return (Type)SoInt32Element::get(classStackIndex, state);
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-SoComplexityTypeElement::Type 
+SoComplexityTypeElement::Type
 SoComplexityTypeElement::getDefault()
-{ 
-  return OBJECT_SPACE; 
+{
+  return OBJECT_SPACE;
 }
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -173,11 +173,11 @@ SoCoordinateElement::init(SoState * state)
 
 void
 SoCoordinateElement::set3(SoState * const state,
-			  SoNode * const node,
-			  const int32_t numCoords,
-			  const SbVec3f * const coords)
+                          SoNode * const node,
+                          const int32_t numCoords,
+                          const SbVec3f * const coords)
 {
-  SoCoordinateElement *elem = 
+  SoCoordinateElement *elem =
     (SoCoordinateElement*) SoElement::getElement(state, classStackIndex);
   elem->areCoords3D = TRUE;
   elem->coords3D = coords;
@@ -189,11 +189,11 @@ SoCoordinateElement::set3(SoState * const state,
 
 void
 SoCoordinateElement::set4(SoState * const state,
-			  SoNode * const node,
-			  const int32_t numCoords,
-			  const SbVec4f * const coords)
+                          SoNode * const node,
+                          const int32_t numCoords,
+                          const SbVec4f * const coords)
 {
-  SoCoordinateElement *elem = 
+  SoCoordinateElement *elem =
     (SoCoordinateElement*) SoElement::getElement(state, classStackIndex);
   elem->areCoords3D = FALSE;
   elem->coords4D = coords;
@@ -219,7 +219,7 @@ SoCoordinateElement::getArrayPtr4(SoState * const state)
 {
   const SoCoordinateElement *elem = getInstance(state);
   if (!elem->areCoords3D) return elem->coords4D;
-  return NULL;  
+  return NULL;
 }
 
 //! FIXME: write doc.
@@ -227,17 +227,17 @@ SoCoordinateElement::getArrayPtr4(SoState * const state)
 const SbVec3f &
 SoCoordinateElement::get3(const int index) const
 {
-  assert(index >= 0 && index < this->numCoords); 
-  
+  assert(index >= 0 && index < this->numCoords);
+
   if (areCoords3D) return this->coords3D[index];
   else {
     // hack around const
     SoCoordinateElement *elem = (SoCoordinateElement*)this;
-    const SbVec4f &vec = this->coords4D[index]; 
+    const SbVec4f &vec = this->coords4D[index];
     elem->dummy3D[0] = vec[0];
     elem->dummy3D[1] = vec[1];
     elem->dummy3D[2] = vec[2];
-    return this->dummy3D; 
+    return this->dummy3D;
   }
 }
 
@@ -246,64 +246,64 @@ SoCoordinateElement::get3(const int index) const
 const SbVec4f &
 SoCoordinateElement::get4(const int index) const
 {
-  assert(index >= 0 && index < this->numCoords); 
-  
+  assert(index >= 0 && index < this->numCoords);
+
   if (!areCoords3D) return this->coords4D[index];
   else {
     // hack around const
     SoCoordinateElement *elem = (SoCoordinateElement*)this;
-    const SbVec3f &vec = this->coords3D[index]; 
+    const SbVec3f &vec = this->coords3D[index];
     elem->dummy4D[0] = vec[0];
     elem->dummy4D[1] = vec[1];
     elem->dummy4D[2] = vec[2];
     elem->dummy4D[3] = 1.0f;
-    return this->dummy4D; 
+    return this->dummy4D;
   }
 }
 
 //! FIXME: write doc.
 
-const SoCoordinateElement * 
+const SoCoordinateElement *
 SoCoordinateElement::getInstance(SoState * const state)
-{ 
+{
   return (const SoCoordinateElement *)
-    (getConstElement(state, classStackIndex)); 
+    (getConstElement(state, classStackIndex));
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-int32_t 
+int32_t
 SoCoordinateElement::getNum(void) const
-{ 
-  return this->numCoords; 
+{
+  return this->numCoords;
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-SbBool 
+SbBool
 SoCoordinateElement::is3D() const
 {
-  return this->areCoords3D; 
+  return this->areCoords3D;
 }
-  
+
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-SbVec3f 
+SbVec3f
 SoCoordinateElement::getDefault3()
-{ 
-  return SbVec3f(0, 0, 0); 
+{
+  return SbVec3f(0, 0, 0);
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-SbVec4f 
+SbVec4f
 SoCoordinateElement::getDefault4()
-{ 
-  return SbVec4f(0, 0, 0, 1); 
+{
+  return SbVec4f(0, 0, 0, 1);
 }
 
 //! FIXME: write doc.
@@ -312,4 +312,3 @@ void
 SoCoordinateElement::print(FILE * /* file */) const
 {
 }
-

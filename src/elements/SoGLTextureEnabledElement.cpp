@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -143,8 +143,8 @@ SoGLTextureEnabledElement::~SoGLTextureEnabledElement(void)
 
 void
 SoGLTextureEnabledElement::set(SoState * const state,
-			       SoNode * const node,
-			       const SbBool enabled)
+                               SoNode * const node,
+                               const SbBool enabled)
 {
   SoInt32Element::set(classStackIndex, state, node, (int32_t) enabled);
 #if !defined(COIN_EXCLUDE_SOSHAPESTYLEELEMENT)
@@ -175,9 +175,9 @@ SoGLTextureEnabledElement::push(SoState * state)
 
 void
 SoGLTextureEnabledElement::pop(SoState * state,
-			       const SoElement * prevTopElement)
+                               const SoElement * prevTopElement)
 {
-  if (this->data != ((SoGLTextureEnabledElement*)prevTopElement)->data) 
+  if (this->data != ((SoGLTextureEnabledElement*)prevTopElement)->data)
     ((SoGLTextureEnabledElement*)prevTopElement)->updategl();
   inherited::pop(state, prevTopElement);
 }
@@ -185,33 +185,33 @@ SoGLTextureEnabledElement::pop(SoState * state,
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-void 
+void
 SoGLTextureEnabledElement::set(SoState * const state, const SbBool enabled)
 {
-  set(state, NULL, enabled); 
+  set(state, NULL, enabled);
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-SbBool 
+SbBool
 SoGLTextureEnabledElement::get(SoState * const state)
-{ 
-  return (SbBool) SoInt32Element::get(classStackIndex, state); 
+{
+  return (SbBool) SoInt32Element::get(classStackIndex, state);
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-SbBool 
+SbBool
 SoGLTextureEnabledElement::getDefault()
-{ 
-  return FALSE; 
+{
+  return FALSE;
 }
 
 //! FIXME: write doc.
 
-void 
+void
 SoGLTextureEnabledElement::setElt(int32_t value)
 {
   if (this->data != value) {
@@ -229,4 +229,3 @@ SoGLTextureEnabledElement::updategl()
   if (this->data) glEnable(GL_TEXTURE_2D);
   else glDisable(GL_TEXTURE_2D);
 }
-

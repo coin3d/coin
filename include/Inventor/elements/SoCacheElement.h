@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -53,7 +53,7 @@ public:
 
   virtual void push(SoState * state);
   virtual void pop(SoState * state,
-		    const SoElement * prevTopElement);
+                    const SoElement * prevTopElement);
 
   static  void set(SoState * const state, SoCache * const cache);
   SoCache * getCache(void) const;
@@ -69,7 +69,7 @@ public:
                                    SoCache * const cache);
   static  SbBool setInvalid(const SbBool newValue);
   static  SoCache * getCurrentCache(SoState * const state);
-  
+
 private:
     SoCache * cache;
     static  SbBool invalidated;

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -51,11 +51,11 @@ public:
     BASE_COLOR,
     PHONG
   };
-  
+
   virtual void init(SoState *state);
   static void set(SoState * const state, const Model model);
   static void set(SoState * const state, SoNode * const node,
-		  const Model model);
+                  const Model model);
   static Model get(SoState * const state);
   static Model getDefault();
 

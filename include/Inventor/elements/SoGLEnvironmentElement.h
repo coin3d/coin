@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -49,7 +49,7 @@ protected:
 public:
   virtual void init(SoState * state);
   virtual void pop(SoState * state,
-		   const SoElement * prevTopElement);
+                   const SoElement * prevTopElement);
 
   virtual SbBool matches(const SoElement * element) const;
   virtual SoElement * copyMatchInfo() const;
@@ -57,12 +57,12 @@ public:
 protected:
 
   virtual void setElt(SoState * const state,
-		      const float ambientIntensity, 
-		      const SbColor & ambientColor,
-		      const SbVec3f & attenuation, 
-		      const int32_t fogType,
-		      const SbColor & fogColor, 
-		      const float fogVisibility);
+                      const float ambientIntensity,
+                      const SbColor & ambientColor,
+                      const SbVec3f & attenuation,
+                      const int32_t fogType,
+                      const SbColor & fogColor,
+                      const float fogVisibility);
 private:
   void updategl(SoState * const state);
 };

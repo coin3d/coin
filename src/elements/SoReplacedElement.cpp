@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -161,7 +161,7 @@ void
 SoReplacedElement::print(FILE * file) const
 {
   fprintf(file, "%s[%p]\n", getTypeId().getName().getString(),
-	  this);
+          this);
 }
 
 /*!
@@ -174,10 +174,10 @@ SoReplacedElement::print(FILE * file) const
 
 SoElement *
 SoReplacedElement::getElement(SoState * const state,
-			      const int stackIndex,
-			      SoNode * const node)
+                              const int stackIndex,
+                              SoNode * const node)
 {
-  SoReplacedElement *elem = 
+  SoReplacedElement *elem =
     (SoReplacedElement*) SoElement::getElement(state, stackIndex);
   if (node)
     elem->nodeId = node->getNodeId();
@@ -193,9 +193,8 @@ SoReplacedElement::getElement(SoState * const state,
 */
 
 //$ EXPORT INLINE
-uint32_t 
+uint32_t
 SoReplacedElement::getNodeId() const
-{ 
-  return this->nodeId; 
+{
+  return this->nodeId;
 }
-

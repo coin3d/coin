@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -72,7 +72,7 @@ class SoPathList;
 class SoState;
 
 class SoAction {
-public:  
+public:
   static void initClass(void);
 
   static  SoType getClassTypeId(void);
@@ -100,12 +100,12 @@ public:
   virtual void apply(SoPath * path);
   virtual void apply(const SoPathList & pathList, SbBool obeysRules = FALSE);
   virtual void invalidateState(void);
-  
+
   enum AppliedCode { NODE       = 0,
-		     PATH       = 1,
-		     PATH_LIST  = 2
+                     PATH       = 1,
+                     PATH_LIST  = 2
   };
-  
+
   enum PathCode {
     NO_PATH       = 0,
     IN_PATH       = 1,
@@ -114,7 +114,7 @@ public:
   };
 
   static void nullAction(SoAction * action, SoNode * node);
-  
+
   AppliedCode getWhatAppliedTo(void) const;
   SoNode * getNodeAppliedTo(void) const;
   SoPath * getPathAppliedTo(void) const;
@@ -122,7 +122,7 @@ public:
   const SoPathList * getOriginalPathListAppliedto(void) const;
 
   SbBool isLastPathListAppliedTo(void) const;
-  
+
   PathCode getPathCode(int & numIndices, const int * & indices);
   void traverse(SoNode * const node);
 

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -50,11 +50,11 @@ public:
   virtual void init(SoState * state);
   virtual void push(SoState * state);
   virtual void pop(SoState * state,
-		   const SoElement * prevTopElement);
+                   const SoElement * prevTopElement);
 
 protected:
   virtual void setElt(const SbViewportRegion & viewportRegion);
-  
+
 private:
   SbBool initialized;
   void updategl() const;

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -139,37 +139,36 @@ SoLineWidthElement::init(SoState * state)
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-void 
+void
 SoLineWidthElement::set(SoState * const state, SoNode * const node,
-			const float lineWidth)
-{ 
+                        const float lineWidth)
+{
   SoFloatElement::set(classStackIndex,state, node, lineWidth);
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-void 
+void
 SoLineWidthElement::set(SoState * const state, const float lineWidth)
-{ 
-  set(state, NULL, lineWidth); 
+{
+  set(state, NULL, lineWidth);
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-float 
+float
 SoLineWidthElement::get(SoState * const state)
-{ 
-  return SoFloatElement::get(classStackIndex, state); 
+{
+  return SoFloatElement::get(classStackIndex, state);
 }
- 
+
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-float 
+float
 SoLineWidthElement::getDefault()
-{ 
-  return 0.0f; 
+{
+  return 0.0f;
 }
-

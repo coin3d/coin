@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -49,12 +49,12 @@ protected:
 public:
   virtual void init(SoState * state);
   virtual void pop(SoState * state,
-		   const SoElement * prevTopElement);
+                   const SoElement * prevTopElement);
   static  int getMaxGLPlanes(void);
 
 protected:
   virtual void addToElt(const SbPlane & plane,
-			const SbMatrix & modelMatrix);
+                        const SbMatrix & modelMatrix);
 
 private:
   static int maxGLPlanes;

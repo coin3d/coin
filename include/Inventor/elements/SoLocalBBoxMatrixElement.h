@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -57,7 +57,7 @@ public:
 
   static void mult(SoState * const state, const SbMatrix & matrix);
   static void translateBy(SoState * const state,
-			   const SbVec3f & translation);
+                           const SbVec3f & translation);
   static void rotateBy(SoState * const state, const SbRotation & rotation);
   static void scaleBy(SoState * const state, const SbVec3f & scaleFactor);
 

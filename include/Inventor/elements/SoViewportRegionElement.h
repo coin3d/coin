@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -53,7 +53,7 @@ public:
   virtual SoElement *copyMatchInfo() const;
 
   static void set(SoState * const state,
-		  const SbViewportRegion & viewportRegion);
+                  const SbViewportRegion & viewportRegion);
   static const SbViewportRegion &get(SoState * const state);
 
   virtual void print(FILE * file) const;

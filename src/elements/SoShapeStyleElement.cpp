@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -199,13 +199,13 @@ SoShapeStyleElement::copyMatchInfo() const
   assert(0 && "FIXME: not implemented");
   return NULL;
 }
- 
+
 //! FIXME: write doc.
 
 const SoShapeStyleElement *
 SoShapeStyleElement::get(SoState * const state)
 {
-  return (const SoShapeStyleElement *) 
+  return (const SoShapeStyleElement *)
     SoElement::getConstElement(state, classStackIndex);
 }
 
@@ -213,7 +213,7 @@ SoShapeStyleElement::get(SoState * const state)
 
 void
 SoShapeStyleElement::setDrawStyle(SoState * const state,
-				  const int32_t value)
+                                  const int32_t value)
 {
 #if !defined(COIN_EXCLUDE_SODRAWSTYLEELEMENT)
   SoShapeStyleElement * elem = getElement(state);
@@ -230,7 +230,7 @@ SoShapeStyleElement::setDrawStyle(SoState * const state,
 
 void
 SoShapeStyleElement::setComplexityType(SoState * const state,
-				       const int32_t value)
+                                       const int32_t value)
 {
 #if !defined(COIN_EXCLUDE_SOCOMPLEXITYTYPEELEMENT)
   SoShapeStyleElement * elem = getElement(state);
@@ -247,7 +247,7 @@ SoShapeStyleElement::setComplexityType(SoState * const state,
 
 void
 SoShapeStyleElement::setTransparencyType(SoState * const state,
-					 const int32_t value)
+                                         const int32_t value)
 {
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SoShapeStyleElement * elem = getElement(state);
@@ -264,7 +264,7 @@ SoShapeStyleElement::setTransparencyType(SoState * const state,
 
 void
 SoShapeStyleElement::setTextureEnabled(SoState * const state,
-				       const SbBool value)
+                                       const SbBool value)
 {
   SoShapeStyleElement * elem = getElement(state);
   if (value) {
@@ -279,7 +279,7 @@ SoShapeStyleElement::setTextureEnabled(SoState * const state,
 
 void
 SoShapeStyleElement::setTextureFunction(SoState * const state,
-					const SbBool value)
+                                        const SbBool value)
 {
   SoShapeStyleElement * elem = getElement(state);
   if (value) {
@@ -294,7 +294,7 @@ SoShapeStyleElement::setTextureFunction(SoState * const state,
 
 void
 SoShapeStyleElement::setLightModel(SoState * const state,
-				   const int32_t value)
+                                   const int32_t value)
 {
 #if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
   SoShapeStyleElement * elem = getElement(state);
@@ -312,10 +312,10 @@ SoShapeStyleElement::setLightModel(SoState * const state,
 
 void
 SoShapeStyleElement::setOverrides(SoState * const state,
-				  const SbBool value)
+                                  const SbBool value)
 {
   SoShapeStyleElement * elem = getElement(state);
-  
+
   if (value) {
     elem->flags |= FLAG_OVERRIDE;
   }
@@ -345,7 +345,7 @@ SoShapeStyleElement::print(FILE * /* file */) const
   FIXME: write doc.
 */
 
-SbBool 
+SbBool
 SoShapeStyleElement::mightNotRender() const
 {
   return (this->flags & FLAG_DELAYMASK) != 0;
@@ -355,7 +355,7 @@ SoShapeStyleElement::mightNotRender() const
   FIXME: write doc.
 */
 
-SbBool 
+SbBool
 SoShapeStyleElement::needNormals() const
 {
   return (this->flags & FLAG_LIGHTING) != 0;

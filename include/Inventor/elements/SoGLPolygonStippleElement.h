@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -29,7 +29,7 @@
 
 class SoGLPolygonStippleElement : public SoElement {
   typedef SoElement inherited;
-  
+
 //$ BEGIN TEMPLATE ElementHeader(SoGLPolygonStippleElement)
 public:
   static SoType classTypeId;
@@ -48,14 +48,14 @@ protected:
 
 public:
   virtual void init(SoState *state);
-  
+
   static void set(SoState * const state, const SbBool onoff);
-  
+
   static void setTransparency(SoState * const state,
-			      const float transparency);
+                              const float transparency);
 
   static SbBool get(SoState * const state);
-  
+
   virtual void push(SoState *state);
   virtual void pop(SoState *state, const SoElement *prevTopElement);
 

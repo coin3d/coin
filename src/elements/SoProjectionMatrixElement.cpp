@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -130,8 +130,8 @@ SoProjectionMatrixElement::~SoProjectionMatrixElement(void)
 
 void
 SoProjectionMatrixElement::set(SoState * const state,
-			       SoNode * const node,
-			       const SbMatrix & projectionMatrix)
+                               SoNode * const node,
+                               const SbMatrix & projectionMatrix)
 {
   SoProjectionMatrixElement * element = (SoProjectionMatrixElement *)
     SoReplacedElement::getElement(state, classStackIndex, node);
@@ -168,4 +168,3 @@ SoProjectionMatrixElement::init(SoState * state)
   inherited::init(state);
   this->projectionMatrix.makeIdentity();
 }
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -50,25 +50,25 @@ public:
   virtual void init(SoState * state);
   virtual void push(SoState * state);
   virtual void pop(SoState * state,
-		   const SoElement * prevTopElement);
+                   const SoElement * prevTopElement);
 
   virtual SbBool matches(const SoElement * element) const;
   virtual SoElement * copyMatchInfo() const;
 
   static void setMaterial(SoState * const state,
-			  const SbBool perVertex);
+                          const SbBool perVertex);
   static void setNormal(SoState * const state,
-			const SbBool perVertex);
+                        const SbBool perVertex);
   virtual void print(FILE * file) const;
 
   void evaluate() const;
   void forceSend(const SbBool flat) const;
-  
+
 private:
   SbBool matPerVertex;
   SbBool normPerVertex;
   SbBool glflat;
-  
+
   void updategl(const SbBool flat);
 };
 

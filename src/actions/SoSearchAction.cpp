@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -108,7 +108,7 @@ SoSearchAction::getEnabledElements(void) const
   This method adds a method to be perfomed by the action class on the given
   node type.
 */
-void 
+void
 SoSearchAction::addMethod(const SoType type, SoActionMethod method)
 {
   assert(methods);
@@ -118,7 +118,7 @@ SoSearchAction::addMethod(const SoType type, SoActionMethod method)
 /*!
   This method enables an element in the state stack for the action class.
 */
-void 
+void
 SoSearchAction::enableElement(const SoType type, const int stackIndex)
 {
   assert(enabledElements);
@@ -140,7 +140,7 @@ SoSearchAction::initClass(void)
   assert(SoSearchAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoSearchAction::classTypeId = 
+  SoSearchAction::classTypeId =
       SoType::createType(inherited::getClassTypeId(),
                          "SoSearchAction");
   enabledElements = new SoEnabledElementsList(inherited::enabledElements);
@@ -193,8 +193,8 @@ SoSearchAction::setNode(SoNode * const node)
 {
 #if 0 // debug
   SoDebugError::postInfo("SoSearchAction::setNode",
-			 "search for node: %p (type '%s')",
-			 node, node->getTypeId().getName().getString());
+                         "search for node: %p (type '%s')",
+                         node, node->getTypeId().getName().getString());
 #endif // debug
 
   node->ref();
@@ -467,4 +467,3 @@ SoSearchAction::beginTraversal(SoNode * node)
   // begin traversal at root node
   this->traverse(node);
 }
-

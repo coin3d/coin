@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -143,7 +143,7 @@ SoShininessElement::~SoShininessElement()
 
 //! FIXME: write doc.
 
-void 
+void
 SoShininessElement::init(SoState * /* state */)
 {
   this->values = &defaultValue;
@@ -152,10 +152,10 @@ SoShininessElement::init(SoState * /* state */)
 
 //! FIXME: write doc.
 
-void 
+void
 SoShininessElement::set(SoState * const state, SoNode * const node,
-			   const int32_t numValues, 
-			   const float * const values)  
+                           const int32_t numValues,
+                           const float * const values)
 {
   SoShininessElement *elem = (SoShininessElement*)
     SoReplacedElement::getElement(state, classStackIndex, node);
@@ -164,18 +164,18 @@ SoShininessElement::set(SoState * const state, SoNode * const node,
 
 //! FIXME: write doc.
 
-void 
+void
 SoShininessElement::setElt(const int32_t numValues,
-			   const float * const values)
+                           const float * const values)
 {
   this->values = values;
   this->numValues = numValues;
 }
- 
+
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-int32_t 
+int32_t
 SoShininessElement::getNum() const
 {
   return this->numValues;
@@ -193,10 +193,9 @@ SoShininessElement::get(const int index) const
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-const SoShininessElement * 
+const SoShininessElement *
 SoShininessElement::getInstance(SoState *state)
 {
   return (const SoShininessElement *)
     SoElement::getConstElement(state, classStackIndex);
 }
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -50,12 +50,12 @@ public:
   virtual void init(SoState * state);
   virtual void push(SoState * state);
   virtual void pop(SoState * state,
-		   const SoElement * prevTopElement);
+                   const SoElement * prevTopElement);
 
   void evaluate() const; // lazy update
 
   // force this value without changing state
-  void forceSend(const Model model) const; 
+  void forceSend(const Model model) const;
 
   static const SoGLLightModelElement *getInstance(SoState *state);
 

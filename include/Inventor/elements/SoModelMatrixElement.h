@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -54,18 +54,18 @@ public:
   virtual SbBool matches(const SoElement * element) const;
   static void makeIdentity(SoState * const state, SoNode * const node);
   static void set(SoState * const state, SoNode * const node,
-		  const SbMatrix & matrix);
+                  const SbMatrix & matrix);
   static void setCullMatrix(SoState * state, SoNode * node,
-			    const SbMatrix & matrix);
+                            const SbMatrix & matrix);
 
   static void mult(SoState * const state, SoNode * const node,
-		   const SbMatrix & matrix);
+                   const SbMatrix & matrix);
   static void translateBy(SoState * const state, SoNode * const node,
-			  const SbVec3f & translation);
+                          const SbVec3f & translation);
   static void rotateBy(SoState * const state, SoNode * const node,
-		       const SbRotation & rotation);
+                       const SbRotation & rotation);
   static void scaleBy(SoState * const state, SoNode * const node,
-		      const SbVec3f & scaleFactor);
+                      const SbVec3f & scaleFactor);
 
   static SbMatrix pushMatrix(SoState * const state);
   static void popMatrix(SoState * const state, const SbMatrix & matrix);

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -19,7 +19,7 @@
 
 /*!
   \class SoFloatElement Inventor/elements/SoFloatElement.h
-  \brief Abstract base class for elements that only take care of a float 
+  \brief Abstract base class for elements that only take care of a float
   value.
 */
 
@@ -144,7 +144,7 @@ SoFloatElement::copyMatchInfo(void) const
     assert(getTypeId().canCreateInstance());
     SoFloatElement * element = (SoFloatElement *) getTypeId().createInstance();
     element->data = this->data;
-    // DEPRECATED 980807 pederb. copyMatchInfo() should only copy 
+    // DEPRECATED 980807 pederb. copyMatchInfo() should only copy
     // information needed in matches(). An exact copy is not needed.
     //    element->dataNode = this->dataNode;
     return element;
@@ -163,9 +163,9 @@ SoFloatElement::print(FILE * file) const
 
 void
 SoFloatElement::set(const int index,
-		    SoState * const state,
-		    SoNode * const /* node */,
-		    const float value)
+                    SoState * const state,
+                    SoNode * const /* node */,
+                    const float value)
 {
   SoFloatElement * element = (SoFloatElement *)
     (getElement(state, index));
@@ -181,7 +181,7 @@ SoFloatElement::set(const int index,
 
 void
 SoFloatElement::set(const int stackIndex, SoState * const state,
-		    const float value)
+                    const float value)
 {
   set(stackIndex, state, NULL, value);
 }
@@ -190,7 +190,7 @@ SoFloatElement::set(const int stackIndex, SoState * const state,
 
 float
 SoFloatElement::get(const int index,
-		    SoState * const state)
+                    SoState * const state)
 {
   SoFloatElement * element = (SoFloatElement *)
     (getConstElement(state, index)); //, NULL );
@@ -215,4 +215,3 @@ SoFloatElement::init(SoState * state)
   inherited::init(state);
   this->data = 0.0f;
 }
-

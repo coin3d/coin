@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -138,34 +138,33 @@ SoFocalDistanceElement::init(SoState * state)
 
 //! FIXME: write doc.
 
-void 
+void
 SoFocalDistanceElement::set(SoState * const state, SoNode * const node,
-			    const float distance)
-{ 
+                            const float distance)
+{
   SoFloatElement::set(classStackIndex, state, node, distance);
 }
 
 //! FIXME: write doc.
 
-void 
+void
 SoFocalDistanceElement::set(SoState * const state, const float distance)
-{ 
-  set(state, NULL, distance); 
+{
+  set(state, NULL, distance);
 }
 
 //! FIXME: write doc.
 
-float 
+float
 SoFocalDistanceElement::get(SoState * const state)
-{ 
-  return SoFloatElement::get(classStackIndex, state); 
+{
+  return SoFloatElement::get(classStackIndex, state);
 }
 
 //! FIXME: write doc.
 
-float 
+float
 SoFocalDistanceElement::getDefault()
-{ 
-  return 5.0f; 
+{
+  return 5.0f;
 }
-

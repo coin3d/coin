@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -136,8 +136,8 @@ SoTextureCoordinateBindingElement::~SoTextureCoordinateBindingElement(void)
 
 void
 SoTextureCoordinateBindingElement::set(SoState * const state,
-				       SoNode * const node,
-				       const Binding binding)
+                                       SoNode * const node,
+                                       const Binding binding)
 {
   assert(binding == PER_VERTEX || binding == PER_VERTEX_INDEXED);
   SoInt32Element::set(classStackIndex, state, node, binding);
@@ -155,28 +155,27 @@ SoTextureCoordinateBindingElement::init(SoState * state)
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-void 
-SoTextureCoordinateBindingElement::set(SoState * const state, 
-				       const Binding binding)
-{ 
-  set(state, NULL, binding); 
+void
+SoTextureCoordinateBindingElement::set(SoState * const state,
+                                       const Binding binding)
+{
+  set(state, NULL, binding);
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-SoTextureCoordinateBindingElement::Binding 
+SoTextureCoordinateBindingElement::Binding
 SoTextureCoordinateBindingElement::get(SoState * const state)
-{ 
-  return (Binding)SoInt32Element::get(classStackIndex, state); 
+{
+  return (Binding)SoInt32Element::get(classStackIndex, state);
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-SoTextureCoordinateBindingElement::Binding 
+SoTextureCoordinateBindingElement::Binding
 SoTextureCoordinateBindingElement::getDefault()
-{ 
-  return PER_VERTEX_INDEXED; 
+{
+  return PER_VERTEX_INDEXED;
 }
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -98,7 +98,7 @@ SoBoxHighlightRenderAction::getEnabledElements(void) const
   This method adds a method to be perfomed by the action class on the given
   node type.
 */
-void 
+void
 SoBoxHighlightRenderAction::addMethod(const SoType type, SoActionMethod method)
 {
   assert(methods);
@@ -108,7 +108,7 @@ SoBoxHighlightRenderAction::addMethod(const SoType type, SoActionMethod method)
 /*!
   This method enables an element in the state stack for the action class.
 */
-void 
+void
 SoBoxHighlightRenderAction::enableElement(const SoType type, const int stackIndex)
 {
   assert(enabledElements);
@@ -130,7 +130,7 @@ SoBoxHighlightRenderAction::initClass(void)
   assert(SoBoxHighlightRenderAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoBoxHighlightRenderAction::classTypeId = 
+  SoBoxHighlightRenderAction::classTypeId =
       SoType::createType(inherited::getClassTypeId(),
                          "SoBoxHighlightRenderAction");
   enabledElements = new SoEnabledElementsList(inherited::enabledElements);
@@ -163,21 +163,21 @@ SoBoxHighlightRenderAction::SoBoxHighlightRenderAction(const SbViewportRegion & 
 //
 // private. called by both constructors
 //
-void 
+void
 SoBoxHighlightRenderAction::init()
 {
   SO_ACTION_CONSTRUCTOR(SoBoxHighlightRenderAction);
-  
+
   SoBoxHighlightRenderAction::methods->setUp(); // initialize action methods
- 
+
   this->localRoot = new SoSeparator;
   this->localRoot->ref();
- 
+
   this->lightModel = new SoLightModel;
   this->lightModel->model = SoLightModel::BASE_COLOR;
   this->baseColor = new SoBaseColor;
   this->drawStyle = new SoDrawStyle;
-  this->drawStyle->style = SoDrawStyle::LINES; 
+  this->drawStyle->style = SoDrawStyle::LINES;
   this->texture = new SoTexture2; // only there to turn off texture
   this->xlate = new SoTranslation; // transform to bbox center
   this->xform = new SoMatrixTransform; // scale and rotate
@@ -218,7 +218,7 @@ SoBoxHighlightRenderAction::~SoBoxHighlightRenderAction(void)
 /*!
   Applies this action on scene rooted by \a node.
 */
-void 
+void
 SoBoxHighlightRenderAction::apply(SoNode *node)
 {
   SoGLRenderAction::apply(node);
@@ -231,14 +231,14 @@ SoBoxHighlightRenderAction::apply(SoNode *node)
     this->searchAction->apply(node);
     if (this->searchAction->isFound()) {
       SoSelection *selection = (SoSelection*)
-	this->searchAction->getPath()->getTail();
+        this->searchAction->getPath()->getTail();
       assert(selection->getTypeId().
-	     isDerivedFrom(SoSelection::getClassTypeId()));
-      
+             isDerivedFrom(SoSelection::getClassTypeId()));
+
       int n = selection->getNumSelected();
       for (int i = 0; i < n; i++) {
-	this->updateBBox(selection->getPath(i));
-	SoGLRenderAction::apply(this->localRoot);
+        this->updateBBox(selection->getPath(i));
+        SoGLRenderAction::apply(this->localRoot);
       }
     }
   }
@@ -247,7 +247,7 @@ SoBoxHighlightRenderAction::apply(SoNode *node)
 /*!
   Sets if highlighted box should be visible.
 */
-void 
+void
 SoBoxHighlightRenderAction::setVisible(const SbBool visible)
 {
   this->hlVisible = visible;
@@ -256,7 +256,7 @@ SoBoxHighlightRenderAction::setVisible(const SbBool visible)
 /*!
   Return if selected box should be visible.
 */
-SbBool 
+SbBool
 SoBoxHighlightRenderAction::isVisible() const
 {
   return this->hlVisible;
@@ -265,7 +265,7 @@ SoBoxHighlightRenderAction::isVisible() const
 /*!
   Sets the color for the highlighted box.
 */
-void 
+void
 SoBoxHighlightRenderAction::setColor(const SbColor &color)
 {
   this->baseColor->rgb = color;
@@ -283,7 +283,7 @@ SoBoxHighlightRenderAction::getColor()
 /*!
   Sets the line pattern used for the highlighted box.
 */
-void 
+void
 SoBoxHighlightRenderAction::setLinePattern(unsigned short pattern)
 {
   this->drawStyle->linePattern = pattern;
@@ -292,7 +292,7 @@ SoBoxHighlightRenderAction::setLinePattern(unsigned short pattern)
 /*!
   Returns line pattern used when drawing box.
 */
-unsigned short 
+unsigned short
 SoBoxHighlightRenderAction::getLinePattern() const
 {
   return this->drawStyle->linePattern.getValue();
@@ -301,7 +301,7 @@ SoBoxHighlightRenderAction::getLinePattern() const
 /*!
   Sets the line width used when drawing box.
 */
-void 
+void
 SoBoxHighlightRenderAction::setLineWidth(const float width)
 {
   this->drawStyle->lineWidth = width;
@@ -310,7 +310,7 @@ SoBoxHighlightRenderAction::setLineWidth(const float width)
 /*!
   Returns the line width used when drawing highlight box.
 */
-float 
+float
 SoBoxHighlightRenderAction::getLineWidth() const
 {
   return this->drawStyle->lineWidth.getValue();
@@ -319,7 +319,7 @@ SoBoxHighlightRenderAction::getLineWidth() const
 /*!
   Is called to calculate bbox for a selected object.
 */
-void 
+void
 SoBoxHighlightRenderAction::updateBBox(SoPath *path)
 {
   if (this->bboxAction == NULL) {
@@ -336,4 +336,3 @@ SoBoxHighlightRenderAction::updateBBox(SoPath *path)
   scale.setScale(SbVec3f(w,h,d));
   this->xform->matrix = scale;
 }
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -48,15 +48,15 @@ protected:
 
 public:
   virtual void init(SoState * state);
-  
+
   virtual void push(SoState * state);
   virtual void pop(SoState * state,
-		   const SoElement * prevTopElement);
-  
+                   const SoElement * prevTopElement);
+
   static  void set(SoState * const state, SoNode * const node,
-		   const SbBool enabled);
+                   const SbBool enabled);
   static  void set(SoState * const state, const SbBool enabled);
-  
+
   static  SbBool get(SoState * const state);
   static  SbBool getDefault();
 

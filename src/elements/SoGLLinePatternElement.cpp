@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -152,7 +152,7 @@ SoGLLinePatternElement::push(SoState * state)
 
 void
 SoGLLinePatternElement::pop(SoState * state,
-			    const SoElement * prevTopElement)
+                            const SoElement * prevTopElement)
 {
   SoGLLinePatternElement *prev = (SoGLLinePatternElement*) prevTopElement;
   if (prev->data != this->data) prev->updategl();
@@ -186,4 +186,3 @@ SoGLLinePatternElement::updategl()
     glEnable(GL_LINE_STIPPLE);
   }
 }
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -136,8 +136,8 @@ SoDecimationTypeElement::~SoDecimationTypeElement(void)
 
 void
 SoDecimationTypeElement::set(SoState * const state,
-			     SoNode * const node,
-			     const Type type)
+                             SoNode * const node,
+                             const Type type)
 {
   assert((int)type >= (int)AUTOMATIC && (int)type <= (int)PERCENTAGE);
   SoInt32Element::set(classStackIndex, state, node, type);
@@ -162,10 +162,10 @@ SoDecimationTypeElement::print(FILE * /* fp */) const
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-void 
+void
 SoDecimationTypeElement::set(SoState * const state, const Type type)
-{ 
-  set(state, NULL, type); 
+{
+  set(state, NULL, type);
 }
 
 //! FIXME: write doc.
@@ -173,16 +173,15 @@ SoDecimationTypeElement::set(SoState * const state, const Type type)
 //$ EXPORT INLINE
 SoDecimationTypeElement::Type
 SoDecimationTypeElement::get(SoState * const state)
-{ 
-  return (Type) SoInt32Element::get(classStackIndex, state); 
+{
+  return (Type) SoInt32Element::get(classStackIndex, state);
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-SoDecimationTypeElement::Type 
+SoDecimationTypeElement::Type
 SoDecimationTypeElement::getDefault()
-{ 
-  return AUTOMATIC; 
+{
+  return AUTOMATIC;
 }
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -40,13 +40,13 @@ public:
   void setNodeIds(const uint32_t diffNodeId, const uint32_t tNodeId);
   int32_t getSize(void) const;
   void reallocate(const int32_t size);
-  
+
 private:
   uint32_t transpNodeId;
   uint32_t diffuseNodeId;
   uint32_t *packedColors;
   int32_t packedArraySize;
-  
+
 };
 
 #endif // !__SOCOLORPACKER_H__

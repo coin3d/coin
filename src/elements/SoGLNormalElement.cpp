@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -145,4 +145,3 @@ SoGLNormalElement::send(const int index) const
   assert(index >= 0 && index < this->numNormals);
   glNormal3fv(this->normals[index].getValue());
 }
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -52,11 +52,11 @@ public:
     PER_VERTEX = 2,
     PER_VERTEX_INDEXED = 3
   };
-  
+
   virtual void init(SoState * state);
 
   static void set(SoState * const state, SoNode * const node,
-		  const Binding binding);
+                  const Binding binding);
   static void set(SoState * const state, const Binding binding);
 
   static Binding get(SoState * const state);

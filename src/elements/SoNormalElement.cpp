@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -142,10 +142,10 @@ SoNormalElement::~SoNormalElement()
 
 void
 SoNormalElement::set(SoState * const state,
-		     SoNode * const node,
-		     const int32_t numNormals,
-		     const SbVec3f * const normals,
-		     const SbBool unitLength)
+                     SoNode * const node,
+                     const int32_t numNormals,
+                     const SbVec3f * const normals,
+                     const SbBool unitLength)
 {
   SoNormalElement *elem = (SoNormalElement*)
     SoReplacedElement::getElement(state, classStackIndex, node);
@@ -159,7 +159,7 @@ SoNormalElement::set(SoState * const state,
 const SbVec3f *
 SoNormalElement::getArrayPtr(SoState * const state)
 {
-  const SoNormalElement *elem = 
+  const SoNormalElement *elem =
     SoNormalElement::getInstance(state);
   return elem->normals;
 }
@@ -185,20 +185,20 @@ SoNormalElement::init(SoState *state)
 
 //! FIXME: write doc.
 
-const SoNormalElement * 
+const SoNormalElement *
 SoNormalElement::getInstance(SoState * const state)
-{ 
+{
   return (const SoNormalElement *)
-    SoElement::getConstElement(state, classStackIndex); 
+    SoElement::getConstElement(state, classStackIndex);
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-int32_t 
+int32_t
 SoNormalElement::getNum() const
-{ 
-  return this->numNormals; 
+{
+  return this->numNormals;
 }
 
 //! FIXME: write doc.
@@ -206,13 +206,13 @@ SoNormalElement::getNum() const
 //$ EXPORT INLINE
 const SbVec3f &
 SoNormalElement::get(const int index) const
-{ 
+{
   assert(index >= 0 && index < getNum());
   return this->normals[index];
 }
 
 //$ EXPORT INLINE
-SbBool 
+SbBool
 SoNormalElement::normalsAreUnitLength() const
 {
   return unitLength;

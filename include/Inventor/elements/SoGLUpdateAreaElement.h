@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -57,20 +57,20 @@ public:
 
   virtual void push(SoState * state);
   virtual void pop(SoState * state,
-		   const SoElement * prevTopElement);
+                   const SoElement * prevTopElement);
 
   virtual SbBool matches(const SoElement * element) const;
   virtual SoElement * copyMatchInfo() const;
 
   static void set(SoState * const state, const SbVec2f & origin,
-		   const SbVec2f & size);
+                   const SbVec2f & size);
 
   static SbBool get(SoState * const state, SbVec2f & origin,
-		    SbVec2f & size);
+                    SbVec2f & size);
 
   static SbVec2f getDefaultOrigin();
   static SbVec2f getDefaultSize();
- 
+
 protected:
   SbVec2f origin;
   SbVec2f size;

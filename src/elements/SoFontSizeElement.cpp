@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -139,37 +139,36 @@ SoFontSizeElement::init(SoState * state)
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-void 
+void
 SoFontSizeElement::set(SoState * const state, SoNode * const node,
-			const float fontSize)
-{ 
+                        const float fontSize)
+{
   SoFloatElement::set(classStackIndex, state, node, fontSize);
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-void 
+void
 SoFontSizeElement::set(SoState * const state, const float fontSize)
-{ 
-  set(state, NULL, fontSize); 
+{
+  set(state, NULL, fontSize);
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-float 
+float
 SoFontSizeElement::get(SoState * const state)
-{ 
-  return SoFloatElement::get(classStackIndex, state); 
+{
+  return SoFloatElement::get(classStackIndex, state);
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-float 
+float
 SoFontSizeElement::getDefault()
-{ 
-  return 10.0f; 
+{
+  return 10.0f;
 }
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -138,37 +138,36 @@ SoComplexityElement::init(SoState * state)
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-void 
+void
 SoComplexityElement::set(SoState * const state, SoNode * const node,
-			 const float complexity)
-{ 
+                         const float complexity)
+{
   SoFloatElement::set(classStackIndex, state, node, complexity);
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-void 
+void
 SoComplexityElement::set(SoState * const state, const float complexity)
-{ 
-  set(state, NULL, complexity); 
+{
+  set(state, NULL, complexity);
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-float 
+float
 SoComplexityElement::get(SoState * const state)
-{ 
-  return SoFloatElement::get(classStackIndex, state); 
+{
+  return SoFloatElement::get(classStackIndex, state);
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-float 
+float
 SoComplexityElement::getDefault()
-{ 
-  return 0.5f; 
+{
+  return 0.5f;
 }
-

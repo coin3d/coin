@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -129,8 +129,8 @@ SoSwitchElement::~SoSwitchElement(void)
 
 void
 SoSwitchElement::set(SoState * const state,
-		     SoNode * const node,
-		     const int32_t index)
+                     SoNode * const node,
+                     const int32_t index)
 {
   SoInt32Element::set(classStackIndex, state, node, index);
 }
@@ -147,27 +147,26 @@ SoSwitchElement::init(SoState * state)
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-void 
+void
 SoSwitchElement::set(SoState * const state, const int32_t index)
-{ 
-  set(state, NULL, index); 
+{
+  set(state, NULL, index);
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-int32_t 
+int32_t
 SoSwitchElement::get(SoState * const state)
-{ 
-  return SoInt32Element::get(classStackIndex, state); 
+{
+  return SoInt32Element::get(classStackIndex, state);
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-int32_t 
+int32_t
 SoSwitchElement::getDefault()
-{ 
-  return -1; 
+{
+  return -1;
 }
-

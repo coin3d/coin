@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -137,10 +137,10 @@ SoAnnoText3CharOrientElement::init(SoState * state)
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-void 
+void
 SoAnnoText3CharOrientElement::set(SoState * const state, SbBool isOriented)
-{ 
-  inherited::set(classStackIndex, state, isOriented); 
+{
+  inherited::set(classStackIndex, state, isOriented);
 }
 
 //! FIXME: write doc.
@@ -160,4 +160,3 @@ SoAnnoText3CharOrientElement::getDefault(void)
 {
   return TRUE;
 }
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -30,7 +30,7 @@
 
 #include <assert.h>
 
-// defines for the flags member 
+// defines for the flags member
 #define FLG_IDENTITY   0x1  // modelMatrix is identity
 #define FLG_CULLMATRIX 0x2  // cullMatrix is set
 #define FLG_COMBINED   0x4  // the combined matrix is calculated
@@ -162,7 +162,7 @@ SbBool
 SoModelMatrixElement::matches(const SoElement * element) const
 {
   const SoModelMatrixElement *elem = (const SoModelMatrixElement*)element;
-  
+
   if ((this->flags & FLG_CULLMATRIX) !=
       (elem->flags & FLG_CULLMATRIX)) return FALSE;
   if ((this->flags & FLG_CULLMATRIX) &&
@@ -174,7 +174,7 @@ SoModelMatrixElement::matches(const SoElement * element) const
 
 void
 SoModelMatrixElement::makeIdentity(SoState * const state,
-				   SoNode * const node)
+                                   SoNode * const node)
 {
   SoModelMatrixElement *elem = (SoModelMatrixElement*)
     SoElement::getElement(state, classStackIndex);
@@ -186,8 +186,8 @@ SoModelMatrixElement::makeIdentity(SoState * const state,
 
 void
 SoModelMatrixElement::set(SoState * const state,
-			  SoNode * const node,
-			  const SbMatrix & matrix)
+                          SoNode * const node,
+                          const SbMatrix & matrix)
 {
   SoModelMatrixElement *elem = (SoModelMatrixElement*)
     SoElement::getElement(state, classStackIndex);
@@ -199,7 +199,7 @@ SoModelMatrixElement::set(SoState * const state,
 
 void
 SoModelMatrixElement::setCullMatrix(SoState * state, SoNode * node,
-				    const SbMatrix & matrix)
+                                    const SbMatrix & matrix)
 {
   SoModelMatrixElement *elem = (SoModelMatrixElement*)
     SoElement::getElement(state, classStackIndex);
@@ -215,17 +215,17 @@ SoModelMatrixElement::setCullMatrix(SoState * state, SoNode * node,
 
 void
 SoModelMatrixElement::mult(SoState * const state,
-			   SoNode * const node,
-			   const SbMatrix &matrix)
+                           SoNode * const node,
+                           const SbMatrix &matrix)
 {
   SoModelMatrixElement *elem = (SoModelMatrixElement*)
     SoElement::getElement(state, classStackIndex);
 
 #if 0 // too much debug output.. 981021 mortene.
   SoDebugError::postInfo("SoModelMatrixElement::mult",
-			 "modelview element depth (%p): %d\n", 
-			 elem,
-			 elem->getDepth());
+                         "modelview element depth (%p): %d\n",
+                         elem,
+                         elem->getDepth());
 #endif // 0
   elem->multElt(matrix);
   if (node) elem->addNodeId(node);
@@ -235,22 +235,22 @@ SoModelMatrixElement::mult(SoState * const state,
 
 void
 SoModelMatrixElement::translateBy(SoState * const state,
-				  SoNode * const node,
-				  const SbVec3f &translation)
+                                  SoNode * const node,
+                                  const SbVec3f &translation)
 {
   SoModelMatrixElement *elem = (SoModelMatrixElement*)
     SoElement::getElement(state, classStackIndex);
   elem->translateEltBy(translation);
   if (node) elem->addNodeId(node);
-  
+
 }
 
 //! FIXME: write doc.
 
 void
 SoModelMatrixElement::rotateBy(SoState * const state,
-			       SoNode * const node,
-			       const SbRotation & rotation)
+                               SoNode * const node,
+                               const SbRotation & rotation)
 {
   SoModelMatrixElement *elem = (SoModelMatrixElement*)
     SoElement::getElement(state, classStackIndex);
@@ -263,8 +263,8 @@ SoModelMatrixElement::rotateBy(SoState * const state,
 
 void
 SoModelMatrixElement::scaleBy(SoState * const state,
-			      SoNode * const node,
-			      const SbVec3f & scaleFactor)
+                              SoNode * const node,
+                              const SbVec3f & scaleFactor)
 {
   SoModelMatrixElement *elem = (SoModelMatrixElement*)
     SoElement::getElement(state, classStackIndex);
@@ -286,7 +286,7 @@ SoModelMatrixElement::pushMatrix(SoState * const state)
 
 void
 SoModelMatrixElement::popMatrix(SoState * const state,
-				const SbMatrix & matrix)
+                                const SbMatrix & matrix)
 {
   // FIXME: or should I use getElement()? pederb
   SoModelMatrixElement *elem = (SoModelMatrixElement*)
@@ -310,7 +310,7 @@ SoModelMatrixElement::getCombinedCullMatrix(SoState * const state)
     if (e->flags & FLG_CULLMATRIX)
       e->combinedMatrix.multRight(e->cullMatrix);
     e->flags |= FLG_COMBINED;
-  } 
+  }
   return elem->combinedMatrix;
 }
 
@@ -328,7 +328,7 @@ SoModelMatrixElement::get(SoState * const state)
 
 const SbMatrix &
 SoModelMatrixElement::get(SoState * const state,
-			  SbBool & isIdentity)
+                          SbBool & isIdentity)
 {
   const SoModelMatrixElement *elem = (SoModelMatrixElement*)
     SoElement::getConstElement(state, classStackIndex);
@@ -453,4 +453,3 @@ SoModelMatrixElement::push(SoState * state)
   if (this->flags & FLG_COMBINED)
     element->combinedMatrix = this->combinedMatrix;
 }
-

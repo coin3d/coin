@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -406,8 +406,8 @@ SoOverrideElement::getPolygonOffsetOverride(SoState * const state)
 
 void
 SoOverrideElement::setAmbientColorOverride(SoState * const state,
-					   SoNode * const /* node */,
-					   const SbBool override)
+                                           SoNode * const /* node */,
+                                           const SbBool override)
 {
   SO_SET_OVERRIDE(AMBIENT_COLOR);
 }
@@ -418,8 +418,8 @@ SoOverrideElement::setAmbientColorOverride(SoState * const state,
 
 void
 SoOverrideElement::setColorIndexOverride(SoState * const state,
-					 SoNode * const /* node */,
-					 const SbBool override)
+                                         SoNode * const /* node */,
+                                         const SbBool override)
 {
   SO_SET_OVERRIDE(COLOR_INDEX);
 }
@@ -430,8 +430,8 @@ SoOverrideElement::setColorIndexOverride(SoState * const state,
 
 void
 SoOverrideElement::setComplexityOverride(SoState * const state,
-					 SoNode * const /* node */,
-					 const SbBool override)
+                                         SoNode * const /* node */,
+                                         const SbBool override)
 {
   SO_SET_OVERRIDE(COMPLEXITY);
 }
@@ -442,8 +442,8 @@ SoOverrideElement::setComplexityOverride(SoState * const state,
 
 void
 SoOverrideElement::setComplexityTypeOverride(SoState * const state,
-					     SoNode * const /* node */,
-					     const SbBool override)
+                                             SoNode * const /* node */,
+                                             const SbBool override)
 {
   SO_SET_OVERRIDE(COMPLEXITY_TYPE);
 }
@@ -454,8 +454,8 @@ SoOverrideElement::setComplexityTypeOverride(SoState * const state,
 
 void
 SoOverrideElement::setCreaseAngleOverride(SoState * const state,
-					  SoNode * const /* node */,
-					  const SbBool override)
+                                          SoNode * const /* node */,
+                                          const SbBool override)
 {
   SO_SET_OVERRIDE(CREASE_ANGLE);
 }
@@ -464,8 +464,8 @@ SoOverrideElement::setCreaseAngleOverride(SoState * const state,
 
 void
 SoOverrideElement::setDiffuseColorOverride(SoState * const state,
-					   SoNode * const /* node */,
-					   const SbBool override)
+                                           SoNode * const /* node */,
+                                           const SbBool override)
 {
   SO_SET_OVERRIDE(DIFFUSE_COLOR);
 }
@@ -476,8 +476,8 @@ SoOverrideElement::setDiffuseColorOverride(SoState * const state,
 
 void
 SoOverrideElement::setDrawStyleOverride(SoState * const state,
-					SoNode * const /* node */,
-					const SbBool override)
+                                        SoNode * const /* node */,
+                                        const SbBool override)
 {
   SO_SET_OVERRIDE(DRAW_STYLE);
 }
@@ -488,8 +488,8 @@ SoOverrideElement::setDrawStyleOverride(SoState * const state,
 
 void
 SoOverrideElement::setEmissiveColorOverride(SoState * const state,
-					    SoNode * const /* node */,
-					    const SbBool override)
+                                            SoNode * const /* node */,
+                                            const SbBool override)
 {
   SO_SET_OVERRIDE(EMISSIVE_COLOR);
 }
@@ -500,8 +500,8 @@ SoOverrideElement::setEmissiveColorOverride(SoState * const state,
 
 void
 SoOverrideElement::setFontNameOverride(SoState * const state,
-				       SoNode * const /* node */,
-				       const SbBool override)
+                                       SoNode * const /* node */,
+                                       const SbBool override)
 {
   SO_SET_OVERRIDE(FONT_NAME);
 }
@@ -512,8 +512,8 @@ SoOverrideElement::setFontNameOverride(SoState * const state,
 
 void
 SoOverrideElement::setFontSizeOverride(SoState * const state,
-				       SoNode * const /* node */,
-				       const SbBool override)
+                                       SoNode * const /* node */,
+                                       const SbBool override)
 {
   SO_SET_OVERRIDE(FONT_SIZE);
 }
@@ -524,8 +524,8 @@ SoOverrideElement::setFontSizeOverride(SoState * const state,
 
 void
 SoOverrideElement::setLightModelOverride(SoState * const state,
-					 SoNode * const /* node */,
-					 const SbBool override)
+                                         SoNode * const /* node */,
+                                         const SbBool override)
 {
   SO_SET_OVERRIDE(LIGHT_MODEL);
 }
@@ -536,8 +536,8 @@ SoOverrideElement::setLightModelOverride(SoState * const state,
 
 void
 SoOverrideElement::setLinePatternOverride(SoState * const state,
-					  SoNode * const /* node */,
-					  const SbBool override)
+                                          SoNode * const /* node */,
+                                          const SbBool override)
 {
   SO_SET_OVERRIDE(LINE_PATTERN);
 }
@@ -548,8 +548,8 @@ SoOverrideElement::setLinePatternOverride(SoState * const state,
 
 void
 SoOverrideElement::setLineWidthOverride(SoState * const state,
-					SoNode * const /* node */,
-					const SbBool override)
+                                        SoNode * const /* node */,
+                                        const SbBool override)
 {
   SO_SET_OVERRIDE(LINE_WIDTH);
 }
@@ -558,8 +558,8 @@ SoOverrideElement::setLineWidthOverride(SoState * const state,
 
 void
 SoOverrideElement::setMaterialBindingOverride(SoState * const state,
-					      SoNode * const /* node */,
-					      const SbBool override)
+                                              SoNode * const /* node */,
+                                              const SbBool override)
 {
   SO_SET_OVERRIDE(MATERIAL_BINDING);
 }
@@ -570,8 +570,8 @@ SoOverrideElement::setMaterialBindingOverride(SoState * const state,
 
 void
 SoOverrideElement::setPickStyleOverride(SoState * const state,
-					SoNode * const /* node */,
-					const SbBool override)
+                                        SoNode * const /* node */,
+                                        const SbBool override)
 {
   SO_SET_OVERRIDE(PICK_STYLE);
 }
@@ -582,8 +582,8 @@ SoOverrideElement::setPickStyleOverride(SoState * const state,
 
 void
 SoOverrideElement::setPointSizeOverride(SoState * const state,
-					SoNode * const /* node */,
-					const SbBool override)
+                                        SoNode * const /* node */,
+                                        const SbBool override)
 {
   SO_SET_OVERRIDE(POINT_SIZE);
 }
@@ -594,8 +594,8 @@ SoOverrideElement::setPointSizeOverride(SoState * const state,
 
 void
 SoOverrideElement::setPolygonOffsetOverride(SoState * const state,
-					    SoNode * const /* node */,
-					    const SbBool override)
+                                            SoNode * const /* node */,
+                                            const SbBool override)
 {
   SO_SET_OVERRIDE(POLYGON_OFFSET);
 }
@@ -606,8 +606,8 @@ SoOverrideElement::setPolygonOffsetOverride(SoState * const state,
 
 void
 SoOverrideElement::setShapeHintsOverride(SoState * const state,
-					 SoNode * const /* node */,
-					 const SbBool override)
+                                         SoNode * const /* node */,
+                                         const SbBool override)
 {
   SO_SET_OVERRIDE(SHAPE_HINTS);
 }
@@ -618,8 +618,8 @@ SoOverrideElement::setShapeHintsOverride(SoState * const state,
 
 void
 SoOverrideElement::setShininessOverride(SoState * const state,
-					SoNode * const /* node */,
-					const SbBool override)
+                                        SoNode * const /* node */,
+                                        const SbBool override)
 {
   SO_SET_OVERRIDE(SHININESS);
 }
@@ -630,8 +630,8 @@ SoOverrideElement::setShininessOverride(SoState * const state,
 
 void
 SoOverrideElement::setSpecularColorOverride(SoState * const state,
-					    SoNode * const /* node */,
-					    const SbBool override)
+                                            SoNode * const /* node */,
+                                            const SbBool override)
 {
   SO_SET_OVERRIDE(SPECULAR_COLOR);
 }
@@ -640,8 +640,8 @@ SoOverrideElement::setSpecularColorOverride(SoState * const state,
 
 void
 SoOverrideElement::setTransparencyOverride(SoState * const state,
-					   SoNode * const /* node */,
-					   const SbBool override)
+                                           SoNode * const /* node */,
+                                           const SbBool override)
 {
   SO_SET_OVERRIDE(TRANSPARENCY);
 }

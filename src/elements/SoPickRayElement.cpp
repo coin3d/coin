@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -144,7 +144,7 @@ SoPickRayElement::init(SoState * state)
 SbBool
 SoPickRayElement::matches(const SoElement * /* element */) const
 {
-  // should always return false; not part of cache consideration 
+  // should always return false; not part of cache consideration
   return FALSE;
 }
 
@@ -164,7 +164,7 @@ SoPickRayElement::copyMatchInfo() const
 
 void
 SoPickRayElement::set(SoState * const state,
-		      const SbViewVolume & volume)
+                      const SbViewVolume & volume)
 {
   SoPickRayElement *elem = (SoPickRayElement*)
     SoElement::getElement(state, classStackIndex);
@@ -188,4 +188,3 @@ SoPickRayElement::print(FILE * /* file */) const
 {
   assert(0 && "FIXME: not imlemented");
 }
-

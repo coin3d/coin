@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -148,8 +148,8 @@ SoDrawStyleElement::init(SoState * state)
 
 void
 SoDrawStyleElement::set(SoState * const state,
-			SoNode * const node,
-			const Style style)
+                        SoNode * const node,
+                        const Style style)
 {
   SoInt32Element::set(classStackIndex, state, node, (int32_t)style);
 #if !defined(COIN_EXCLUDE_SOSHAPESTYLEELEMENT)
@@ -160,27 +160,26 @@ SoDrawStyleElement::set(SoState * const state,
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-void 
+void
 SoDrawStyleElement::set(SoState * const state, const Style style)
-{ 
-  set(state, NULL, style); 
+{
+  set(state, NULL, style);
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-SoDrawStyleElement::Style 
+SoDrawStyleElement::Style
 SoDrawStyleElement::get(SoState * const state)
-{ 
-  return (Style) inherited::get(classStackIndex, state); 
+{
+  return (Style) inherited::get(classStackIndex, state);
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-SoDrawStyleElement::Style 
+SoDrawStyleElement::Style
 SoDrawStyleElement::getDefault()
-{ 
-  return FILLED; 
+{
+  return FILLED;
 }
-

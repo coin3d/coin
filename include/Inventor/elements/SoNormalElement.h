@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -52,17 +52,17 @@ public:
   virtual void init(SoState * state);
 
   static void set(SoState * const state, SoNode * const node,
-		  const int32_t numNormals, const SbVec3f * const normals,
-		  const SbBool normalsAreUnitLength = FALSE);
+                  const int32_t numNormals, const SbVec3f * const normals,
+                  const SbBool normalsAreUnitLength = FALSE);
   static const SbVec3f *getArrayPtr(SoState * const state);
 
   static const SoNormalElement *getInstance(SoState * const state);
   int32_t getNum() const;
   const SbVec3f & get(const int index) const;
   SbBool normalsAreUnitLength() const;
-	
+
   virtual void print(FILE * file) const;
-  
+
 protected:
   int32_t numNormals;
   const SbVec3f *normals;

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -144,12 +144,12 @@ SoGLClipPlaneElement::init(SoState * state)
 
 void
 SoGLClipPlaneElement::pop(SoState * state,
-			  const SoElement * prevTopElement)
+                          const SoElement * prevTopElement)
 {
   // disable used planes
-  for (int i = this->startIndex; i < this->getNum(); i++) 
+  for (int i = this->startIndex; i < this->getNum(); i++)
     glDisable((GLenum)((int)GL_CLIP_PLANE0 + i));
-  
+
   // pop plane data
   inherited::pop(state, prevTopElement);
 }
@@ -175,7 +175,7 @@ SoGLClipPlaneElement::getMaxGLPlanes(void)
 
 void
 SoGLClipPlaneElement::addToElt(const SbPlane & plane,
-			       const SbMatrix & modelMatrix)
+                               const SbMatrix & modelMatrix)
 {
   int idxadd = getNum(); // num planes before this one
   inherited::addToElt(plane, modelMatrix); // store plane
@@ -188,4 +188,3 @@ SoGLClipPlaneElement::addToElt(const SbPlane & plane,
   glClipPlane((GLenum)((int)GL_CLIP_PLANE0 + idxadd), equation);
   glEnable((GLenum)((int)GL_CLIP_PLANE0 + idxadd));
 }
-

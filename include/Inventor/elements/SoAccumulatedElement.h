@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -48,14 +48,14 @@ protected:
 public:
   virtual SbBool matches(const SoElement * element) const;
   virtual void print(FILE * file) const;
-    
+
 protected:
   void clearNodeIds();
   void addNodeId(const SoNode * const node);
   void setNodeId(const SoNode * const node);
   virtual SoElement *copyMatchInfo() const;
   virtual void captureThis(SoState * state) const;
-  
+
   SbPList nodeIds;
 
 };

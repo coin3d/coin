@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -70,22 +70,22 @@ class SoCallbackData { //internal class
 public:
   SoCallbackData(void *cbfunc = NULL, void *userdata = NULL)
     : func(cbfunc), data(userdata) {}
-  
+
   SbBool hasCallback() const {return this->func != NULL;}
-  
-  int doNodeCallback(SoCallbackAction *action, 
-		     const SoNode *node);
-  void doTriangleCallback(SoCallbackAction *action, 
-			  const SoPrimitiveVertex * const v1,
-			  const SoPrimitiveVertex * const v2,
-			  const SoPrimitiveVertex * const v3);
-  
+
+  int doNodeCallback(SoCallbackAction *action,
+                     const SoNode *node);
+  void doTriangleCallback(SoCallbackAction *action,
+                          const SoPrimitiveVertex * const v1,
+                          const SoPrimitiveVertex * const v2,
+                          const SoPrimitiveVertex * const v3);
+
   void doLineSegmentCallback(SoCallbackAction *action,
-			     const SoPrimitiveVertex * const v1,
-			     const SoPrimitiveVertex * const v2);
+                             const SoPrimitiveVertex * const v1,
+                             const SoPrimitiveVertex * const v2);
   void doPointCallback(SoCallbackAction *action,
-		       const SoPrimitiveVertex *v);
-  
+                       const SoPrimitiveVertex *v);
+
 public:
   void *func;
   void *data;
@@ -127,33 +127,33 @@ public:
   };
 
   typedef Response SoCallbackActionCB(void *userData,
-				      SoCallbackAction *action,
-				      const SoNode *node);
-  
+                                      SoCallbackAction *action,
+                                      const SoNode *node);
+
   // setting callbacks
-  void addPreCallback(const SoType type, 
-		      const SoCallbackActionCB *cb, 
-		      void *userdata);
-  void addPostCallback(const SoType type, 
-		       const SoCallbackActionCB *cb, 
-		       void *userdata);
+  void addPreCallback(const SoType type,
+                      const SoCallbackActionCB *cb,
+                      void *userdata);
+  void addPostCallback(const SoType type,
+                       const SoCallbackActionCB *cb,
+                       void *userdata);
 
-  void addPreTailCallback(const SoType type, 
-			  const SoCallbackActionCB *cb, 
-			  void *userdata);
-  void addPostTailCallback(const SoType type, 
-			   const SoCallbackActionCB *cb, 
-			   void *userdata);
+  void addPreTailCallback(const SoType type,
+                          const SoCallbackActionCB *cb,
+                          void *userdata);
+  void addPostTailCallback(const SoType type,
+                           const SoCallbackActionCB *cb,
+                           void *userdata);
 
-  void addTriangleCallback(const SoType type, 
-			   const SoTriangleCB *cb, 
-			   void *userdata);
-  void addLineSegmentCallback(const SoType type, 
-			      const SoLineSegmentCB *cb, 
-			      void *userdata);
-  void addPointCallback(const SoType type, 
-			const SoPointCB *cb, 
-			void *userdata);
+  void addTriangleCallback(const SoType type,
+                           const SoTriangleCB *cb,
+                           void *userdata);
+  void addLineSegmentCallback(const SoType type,
+                              const SoLineSegmentCB *cb,
+                              void *userdata);
+  void addPointCallback(const SoType type,
+                        const SoPointCB *cb,
+                        void *userdata);
 
   // access elements
   float getComplexity() const;
@@ -169,10 +169,10 @@ public:
   float getFontSize() const;
   SoLightModel::Model getLightModel() const;
   const SbVec3f &getLightAttenuation() const;
-  void getMaterial(SbColor &ambient, SbColor &diffuse, 
-		   SbColor &specular, SbColor &emission, 
-		   float &shininess, float
-		   &transparency, const int index = 0) const;
+  void getMaterial(SbColor &ambient, SbColor &diffuse,
+                   SbColor &specular, SbColor &emission,
+                   float &shininess, float
+                   &transparency, const int index = 0) const;
   SoMaterialBinding::Binding getMaterialBinding() const;
   long getNumNormals() const;
   const SbVec3f &getNormal(const int index) const;
@@ -211,14 +211,14 @@ public: // extender
   void invokePreCallbacks(const SoNode * const node);
   void invokePostCallbacks(const SoNode * const node);
   void invokeTriangleCallbacks(const SoShape * const shape,
-			       const SoPrimitiveVertex * const v1,
-			       const SoPrimitiveVertex * const v2,
-			       const SoPrimitiveVertex * const v3);
+                               const SoPrimitiveVertex * const v1,
+                               const SoPrimitiveVertex * const v2,
+                               const SoPrimitiveVertex * const v3);
   void invokeLineSegmentCallbacks(const SoShape * const shape,
-				  const SoPrimitiveVertex * const v1,
-				  const SoPrimitiveVertex * const v2);
+                                  const SoPrimitiveVertex * const v1,
+                                  const SoPrimitiveVertex * const v2);
   void invokePointCallbacks(const SoShape * const shape,
-			    const SoPrimitiveVertex * const v);
+                            const SoPrimitiveVertex * const v);
   SbBool      shouldGeneratePrimitives(const SoShape *shape) const;
 
 public: // internal
@@ -230,16 +230,16 @@ protected:
 
 
 private:
-  
+
   Response response;
   SoNode *currentNode;
-  
+
   SbList <SoCallbackData> preCB;
   SbList <SoCallbackData> postCB;
-  
+
   SbList <SoCallbackData> preTailCB;
   SbList <SoCallbackData> postTailCB;
-  
+
   SbList <SoCallbackData> triangleCB;
   SbList <SoCallbackData> lineSegmentCB;
   SbList <SoCallbackData> pointCB;

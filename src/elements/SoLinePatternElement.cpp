@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -130,8 +130,8 @@ SoLinePatternElement::~SoLinePatternElement(void)
 
 void
 SoLinePatternElement::set(SoState * const state,
-			  SoNode * const node,
-			  const int32_t pattern)
+                          SoNode * const node,
+                          const int32_t pattern)
 {
     SoInt32Element::set(classStackIndex, state, node, pattern);
 }
@@ -149,27 +149,26 @@ SoLinePatternElement::init(SoState * state)
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-void 
+void
 SoLinePatternElement::set(SoState * const state, const int32_t pattern)
-{ 
-  set(state, NULL, pattern); 
+{
+  set(state, NULL, pattern);
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-int32_t 
+int32_t
 SoLinePatternElement::get(SoState * const state)
-{ 
-  return SoInt32Element::get(classStackIndex, state); 
+{
+  return SoInt32Element::get(classStackIndex, state);
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-int32_t 
+int32_t
 SoLinePatternElement::getDefault()
-{ 
-  return CONTINUOUS; 
+{
+  return CONTINUOUS;
 }
-

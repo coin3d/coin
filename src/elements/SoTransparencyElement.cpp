@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -141,7 +141,7 @@ SoTransparencyElement::~SoTransparencyElement()
 
 //! FIXME: write doc.
 
-void 
+void
 SoTransparencyElement::init(SoState * /* state */)
 {
   this->values = &defaultValue;
@@ -150,21 +150,21 @@ SoTransparencyElement::init(SoState * /* state */)
 
 //! FIXME: write doc.
 
-void 
+void
 SoTransparencyElement::set(SoState * const state, SoNode * const node,
-			   const int32_t numValues, 
-			   const float * const values)  
+                           const int32_t numValues,
+                           const float * const values)
 {
   SoTransparencyElement *elem = (SoTransparencyElement*)
     SoReplacedElement::getElement(state, classStackIndex, node);
   elem->values = values;
   elem->numValues = numValues;
 }
- 
+
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-int32_t 
+int32_t
 SoTransparencyElement::getNum() const
 {
   return this->numValues;
@@ -182,10 +182,9 @@ SoTransparencyElement::get(const int index) const
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-const SoTransparencyElement * 
+const SoTransparencyElement *
 SoTransparencyElement::getInstance(SoState *state)
 {
   return (const SoTransparencyElement *)
     SoElement::getConstElement(state, classStackIndex);
 }
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -37,7 +37,7 @@
 //
 // constructor for the internal class
 //
-so_plane_data::so_plane_data(const SbPlane &plane, const SbMatrix &matrix) 
+so_plane_data::so_plane_data(const SbPlane &plane, const SbMatrix &matrix)
 {
   this->plane = this->wcPlane = plane;
   this->wcPlane.transform(matrix);
@@ -165,12 +165,12 @@ SoClipPlaneElement::~SoClipPlaneElement()
 
 void
 SoClipPlaneElement::add(SoState * const state,
-			SoNode * const /* node */,
-			const SbPlane & plane)
+                        SoNode * const /* node */,
+                        const SbPlane & plane)
 {
-  SoClipPlaneElement *element = 
+  SoClipPlaneElement *element =
     (SoClipPlaneElement*) SoElement::getElement(state, classStackIndex);
-  
+
   element->addToElt(plane, SoModelMatrixElement::get(state));
 }
 
@@ -196,7 +196,7 @@ SoClipPlaneElement::getNum() const
 
 const SbPlane &
 SoClipPlaneElement::get(const int index,
-			const SbBool inWorldSpace) const
+                        const SbBool inWorldSpace) const
 {
   static SbPlane staticPlane;
 
@@ -204,7 +204,7 @@ SoClipPlaneElement::get(const int index,
   const so_plane_data &data = this->planes[index];
   if (inWorldSpace) staticPlane = data.wcPlane;
   else staticPlane = data.plane;
-  
+
   return staticPlane;
 }
 
@@ -214,7 +214,7 @@ void
 SoClipPlaneElement::print(FILE *file) const
 {
   fprintf(file, "SoClipPlaneElement[%p]: num = %d, start = %d\n", this,
-	  this->planes.getLength(), this->startIndex);
+          this->planes.getLength(), this->startIndex);
 }
 
 /*!
@@ -224,7 +224,7 @@ SoClipPlaneElement::print(FILE *file) const
 
 void
 SoClipPlaneElement::addToElt(const SbPlane &plane,
-			     const SbMatrix &modelMatrix)
+                             const SbMatrix &modelMatrix)
 {
   so_plane_data data(plane, modelMatrix);
   this->planes.append(data);
@@ -246,7 +246,7 @@ void
 SoClipPlaneElement::push(SoState * state)
 {
   inherited::push(state);
-  
+
   SoClipPlaneElement * const element =
     (SoClipPlaneElement *)(this->next);
 
@@ -261,7 +261,7 @@ SoClipPlaneElement::push(SoState * state)
 
 void
 SoClipPlaneElement::pop(SoState * state,
-			const SoElement * prevTopElement)
+                        const SoElement * prevTopElement)
 {
   inherited::pop(state, prevTopElement);
 }

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -163,9 +163,9 @@ SoPolygonOffsetElement::init(SoState * state)
   inherited::init(state);
 
   SoPolygonOffsetElement::getDefault(this->offsetfactor,
-				     this->offsetunits,
-				     this->style,
-				     this->active);
+                                     this->offsetunits,
+                                     this->style,
+                                     this->active);
 }
 
 //! FIXME: write doc.
@@ -198,7 +198,7 @@ SoPolygonOffsetElement::copyMatchInfo(void) const
 
 void
 SoPolygonOffsetElement::set(SoState * state, SoNode * /* node */,
-			    float factor, float units, Style styles, SbBool on)
+                            float factor, float units, Style styles, SbBool on)
 {
   SoPolygonOffsetElement *elem = (SoPolygonOffsetElement *)
     SoElement::getElement(state, classStackIndex);
@@ -212,7 +212,7 @@ SoPolygonOffsetElement::set(SoState * state, SoNode * /* node */,
 
 void
 SoPolygonOffsetElement::get(SoState * state, float & factor, float & units,
-			    Style & styles, SbBool & on)
+                            Style & styles, SbBool & on)
 {
   const SoPolygonOffsetElement *elem = (SoPolygonOffsetElement *)
     SoElement::getConstElement(state, classStackIndex);
@@ -227,7 +227,7 @@ SoPolygonOffsetElement::get(SoState * state, float & factor, float & units,
 
 void
 SoPolygonOffsetElement::setElt(float factor, float units,
-			       Style styles, SbBool on)
+                               Style styles, SbBool on)
 {
   this->offsetfactor = factor;
   this->offsetunits = units;
@@ -239,11 +239,10 @@ SoPolygonOffsetElement::setElt(float factor, float units,
 
 void
 SoPolygonOffsetElement::getDefault(float & factor, float & units,
-				   Style & styles, SbBool & on)
+                                   Style & styles, SbBool & on)
 {
   factor = 0.0f;
   units = 0.0f;
   styles = SoPolygonOffsetElement::FILLED;
   on = FALSE;
 }
-

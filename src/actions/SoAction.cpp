@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -120,9 +120,9 @@ SoAction::getTypeId() const
 void
 SoAction::initClass()
 {
-  SoAction::classTypeId = 
+  SoAction::classTypeId =
     SoType::createType(SoType::badType(),
-		       SbName("SoAction"));
+                       SbName("SoAction"));
 
   SoAction::enabledElements = new SoEnabledElementsList(NULL);
   SoAction::methods = new SoActionMethodList(NULL);
@@ -130,7 +130,7 @@ SoAction::initClass()
   // Only element enabled in SoAction. Confirmed correct against
   // OIV. 19990213 mortene.
   SoAction::enabledElements->enable(SoOverrideElement::getClassTypeId(),
-  				    SoOverrideElement::getClassStackIndex());
+                                    SoOverrideElement::getClassStackIndex());
 
   SoAction::initActions();
 }
@@ -215,7 +215,7 @@ SoAction::initActions()
 */
 
 SoAction::SoAction()
-  : state(NULL), 
+  : state(NULL),
     traversalMethods(NULL),
     appliedCode(NODE),
     isTerminated(TRUE),
@@ -320,7 +320,7 @@ SoAction::apply(const SoPathList & pathList, SbBool /* obeysRules */)
   this->isTerminated = FALSE;
   if (this->state == NULL)
     this->state = new SoState(this, getEnabledElements().getElements());
-  
+
   for (int i = 0; i < n; i++) {
     SoPath * path = pathList[i];
     this->currentPathCode = IN_PATH;
@@ -369,9 +369,9 @@ SoAction::nullAction(SoAction *, SoNode *)
   the action instance is being applied to.
 */
 
-SoAction::AppliedCode 
+SoAction::AppliedCode
 SoAction::getWhatAppliedTo() const
-{ 
+{
   return this->appliedCode;
 }
 
@@ -381,10 +381,10 @@ SoAction::getWhatAppliedTo() const
   returns NULL.
 */
 
-SoNode * 
+SoNode *
 SoAction::getNodeAppliedTo() const
-{ 
-  return this->appliedData.node; 
+{
+  return this->appliedData.node;
 }
 
 /*!
@@ -395,8 +395,8 @@ SoAction::getNodeAppliedTo() const
 
 SoPath *
 SoAction::getPathAppliedTo() const
-{ 
-  return this->appliedData.path; 
+{
+  return this->appliedData.path;
 }
 
 /*!
@@ -410,10 +410,10 @@ SoAction::getPathAppliedTo() const
   \sa void SoAction::apply(const SoPathList & pathList, SbBool obeysRules)
 */
 
-const SoPathList * 
+const SoPathList *
 SoAction::getPathListAppliedTo() const
-{ 
-  return this->appliedData.pathListData.pathList; 
+{
+  return this->appliedData.pathListData.pathList;
 }
 
 /*!
@@ -422,10 +422,10 @@ SoAction::getPathListAppliedTo() const
   or a path), the method returns NULL.
 */
 
-const SoPathList * 
+const SoPathList *
 SoAction::getOriginalPathListAppliedto() const
-{ 
-  return this->appliedData.pathListData.origPathList; 
+{
+  return this->appliedData.pathListData.origPathList;
 }
 
 /*!
@@ -433,9 +433,9 @@ SoAction::getOriginalPathListAppliedto() const
   last path list (generated) from the original path list.
 */
 
-SbBool 
+SbBool
 SoAction::isLastPathListAppliedTo() const
-{ 
+{
   assert(0 && "FIXME: Not implemented");
   return FALSE;
 }
@@ -446,7 +446,7 @@ SoAction::isLastPathListAppliedTo() const
   \a indices and \a numIndices are only set if the method returns IN_PATH.
 */
 
-SoAction::PathCode 
+SoAction::PathCode
 SoAction::getPathCode(int & numIndices, const int * & indices)
 {
   if (this->currentPathCode == IN_PATH) {
@@ -459,9 +459,9 @@ SoAction::getPathCode(int & numIndices, const int * & indices)
   This method traverses a graph rooted at node.
 */
 
-void 
+void
 SoAction::traverse(SoNode * const node)
-{ 
+{
   //FIXME: if no action method, try parents in inheritance tree up to SoNode
   //SoDebugError::postInfo("SoAction::traverse", "%p\n", node);
   assert(node != NULL);
@@ -470,53 +470,53 @@ SoAction::traverse(SoNode * const node)
 
   //
   // TODO: write code for PathList
-  // 
+  //
 
   this->currentPath.append(node);
-  
+
   switch (this->currentPathCode) {
   case IN_PATH:
     {
       int idx = this->currentPath.getLength();
-      
+
       if (this->appliedData.path->getNode(idx-1) != node) {
-	this->currentPathCode = OFF_PATH;
+        this->currentPathCode = OFF_PATH;
       }
       else { // either in or below path
-	if (idx == this->appliedData.path->getLength()) {
-	  this->currentPathCode = BELOW_PATH;
-	}
-	else {
-	  assert(idx < this->appliedData.path->getLength());
-	  assert(node->isOfType(SoGroup::getClassTypeId()));
-	  this->nextInPathChildIndex = this->appliedData.path->getIndex(idx);
-	}
+        if (idx == this->appliedData.path->getLength()) {
+          this->currentPathCode = BELOW_PATH;
+        }
+        else {
+          assert(idx < this->appliedData.path->getLength());
+          assert(node->isOfType(SoGroup::getClassTypeId()));
+          this->nextInPathChildIndex = this->appliedData.path->getIndex(idx);
+        }
       }
       break;
     }
   case OFF_PATH:
   case BELOW_PATH:
-  case NO_PATH: 
+  case NO_PATH:
     // will stay in this state forever (or until popped)
     break;
   default:
     assert(0 && "Unknown path code");
     break;
   }
-  
+
 
 #if 0 // debug
-  
+
   if (this->currentPathCode)
     fprintf(stderr, "path code: %d\n", this->currentPathCode);
-  
+
 #endif
 
   // This is a pretty good indicator on whether or not we remembered
   // to use the SO_ACTION_CONSTRUCTOR() macro in the constructor of
   // the SoAction subclass.
   assert(this->traversalMethods);
-  
+
 #if 0 // debug
   {
     int midx = SoNode::getActionMethodIndex(node->getTypeId());
@@ -531,20 +531,20 @@ SoAction::traverse(SoNode * const node)
     }
 
     SoDebugError::postInfo("SoAction::traverse",
-			   "%s %s actionmethodindex: %d (func: %s)",
-			   node->getTypeId().getName().getString(),
-			   this->getTypeId().getName().getString(),
-			   midx,
-			   mname);
+                           "%s %s actionmethodindex: %d (func: %s)",
+                           node->getTypeId().getName().getString(),
+                           this->getTypeId().getName().getString(),
+                           midx,
+                           mname);
 
     SoDebugError::postInfo("SoAction::traverse",
-			   "traversalMethods: %p", traversalMethods);
+                           "traversalMethods: %p", traversalMethods);
 
     traversalMethods->dump_list();
   }
 #endif // debug
   (*this->traversalMethods)
-    [SoNode::getActionMethodIndex(node->getTypeId())](this, node); 
+    [SoNode::getActionMethodIndex(node->getTypeId())](this, node);
 
   this->currentPathCode = storedPathCode; // restore current path code
   this->nextInPathChildIndex = storedIndex;
@@ -558,20 +558,20 @@ SoAction::traverse(SoNode * const node)
   This method returns TRUE if the action has terminated.
 */
 
-SbBool 
+SbBool
 SoAction::hasTerminated() const
-{ 
-  return this->isTerminated; 
+{
+  return this->isTerminated;
 }
 
 /*!
   This method returns a pointer to the state of the action instance.
 */
 
-SoState * 
+SoState *
 SoAction::getState() const
 {
-  return this->state; 
+  return this->state;
 }
 
 /*!
@@ -589,10 +589,10 @@ SoAction::getCurPath()
   FIXME: write doc.
 */
 
-SoAction::PathCode 
+SoAction::PathCode
 SoAction::getCurPathCode() const
-{ 
-  return this->currentPathCode; 
+{
+  return this->currentPathCode;
 }
 
 /*!
@@ -651,7 +651,7 @@ SoAction::usePathCode(int & numIndices, const int * & indices)
   FIXME: write doc.
 */
 
-void 
+void
 SoAction::pushCurPath()
 {
   assert(0 && "FIXME: not implemented");
@@ -661,7 +661,7 @@ SoAction::pushCurPath()
   FIXME: write doc.
 */
 
-void 
+void
 SoAction::popPushCurPath(const int childIndex)
 {
   this->currentPath.pop();
@@ -672,9 +672,9 @@ SoAction::popPushCurPath(const int childIndex)
   FIXME: write doc.
 */
 
-void 
+void
 SoAction::popCurPath()
-{ 
+{
   this->currentPath.pop();
 }
 
@@ -716,10 +716,10 @@ SoAction::endTraversal(SoNode * /* node */)
   FIXME: write doc.
 */
 
-void 
+void
 SoAction::setTerminated(const SbBool flag)
 {
-  this->isTerminated = flag; 
+  this->isTerminated = flag;
 }
 
 /*!

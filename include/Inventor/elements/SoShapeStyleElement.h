@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -64,24 +64,24 @@ public:
 
   static void setDrawStyle(SoState * const state, const int32_t value);
   static void setComplexityType(SoState * const state,
-				const int32_t value);
+                                const int32_t value);
   static void setTransparencyType(SoState * const state,
-				  const int32_t value);
+                                  const int32_t value);
   static void setTextureEnabled(SoState * const state, const SbBool value);
   static void setTextureFunction(SoState * const state,
-				 const SbBool value);
+                                 const SbBool value);
   static void setLightModel(SoState * const state, const int32_t value);
   static void setOverrides(SoState * const state, const SbBool value);
 
   static SbBool isScreenDoor(SoState * const state);
-  
+
   virtual void print(FILE * file) const;
 
   SbBool isTextureFunction(void) const;
 
 private:
-  
-  static SoShapeStyleElement * getElement(SoState * const state); 
+
+  static SoShapeStyleElement * getElement(SoState * const state);
   static const SoShapeStyleElement * getConstElement(SoState * const state);
 
   unsigned int flags;

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -62,7 +62,7 @@ public:
 //$ END TEMPLATE ActionHeader
 
 public:
-  
+
   enum ResetType {
     TRANSFORM, BBOX, ALL
   };
@@ -75,9 +75,9 @@ public:
   const SbVec3f & getCenter() const;
   void setInCameraSpace(const SbBool flag);
   SbBool isInCameraSpace() const;
-  void setResetPath(const SoPath * path, 
-		    const SbBool resetBefore = TRUE, 
-		    const ResetType what = ALL);
+  void setResetPath(const SoPath * path,
+                    const SbBool resetBefore = TRUE,
+                    const ResetType what = ALL);
   const SoPath * getResetPath() const;
   SbBool isResetPath() const;
   SbBool isResetBefore() const;
@@ -86,12 +86,12 @@ public:
 
   void checkResetBefore(); // for OI compability
   void checkResetAfter();
-  
+
   void extendBy(const SbBox3f & box);
   void extendBy(const SbXfBox3f & box);
 
   void setCenter(const SbVec3f & center,
-		 const SbBool transformCenter);
+                 const SbBool transformCenter);
   SbBool isCenterSet() const;
   void resetCenter();
 
@@ -100,7 +100,7 @@ protected:
 
 private:
   SbXfBox3f bbox;
-  SbVec3f center;  
+  SbVec3f center;
   SbViewportRegion vpRegion;
   ResetType resetType;
   SoPath * resetPath;

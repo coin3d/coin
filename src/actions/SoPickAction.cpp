@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -95,7 +95,7 @@ SoPickAction::getEnabledElements(void) const
   This method adds a method to be perfomed by the action class on the given
   node type.
 */
-void 
+void
 SoPickAction::addMethod(const SoType type, SoActionMethod method)
 {
   assert(methods);
@@ -105,7 +105,7 @@ SoPickAction::addMethod(const SoType type, SoActionMethod method)
 /*!
   This method enables an element in the state stack for the action class.
 */
-void 
+void
 SoPickAction::enableElement(const SoType type, const int stackIndex)
 {
   assert(enabledElements);
@@ -127,7 +127,7 @@ SoPickAction::initClass(void)
   assert(SoPickAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoPickAction::classTypeId = 
+  SoPickAction::classTypeId =
       SoType::createType(inherited::getClassTypeId(),
                          "SoPickAction");
   enabledElements = new SoEnabledElementsList(inherited::enabledElements);
@@ -165,7 +165,7 @@ SoPickAction::~SoPickAction(void)
 {
 }
 
-void 
+void
 SoPickAction::beginTraversal(SoNode *node)
 {
   this->getState()->push();
@@ -174,18 +174,14 @@ SoPickAction::beginTraversal(SoNode *node)
   this->getState()->pop();
 }
 
-void 
+void
 SoPickAction::enableCulling(const SbBool flag)
 {
   this->cullingEnabled = flag;
 }
 
-SbBool 
+SbBool
 SoPickAction::isCullingEnabled() const
 {
   return this->cullingEnabled;
 }
-
-
-
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -190,7 +190,7 @@ SoTextureCoordinateElement::~SoTextureCoordinateElement()
 
 void
 SoTextureCoordinateElement::setDefault(SoState * const state,
-				       SoNode * const node)
+                                       SoNode * const node)
 {
   SoTextureCoordinateElement * element = (SoTextureCoordinateElement *)
     SoReplacedElement::getElement(state, classStackIndex, node);
@@ -202,9 +202,9 @@ SoTextureCoordinateElement::setDefault(SoState * const state,
 
 void
 SoTextureCoordinateElement::setFunction(SoState * const state,
-					SoNode * const node,
-					SoTextureCoordinateFunctionCB * const func,
-					void * const userdata)
+                                        SoNode * const node,
+                                        SoTextureCoordinateFunctionCB * const func,
+                                        void * const userdata)
 {
   SoTextureCoordinateElement * element = (SoTextureCoordinateElement *)
    SoReplacedElement::getElement(state, classStackIndex, node);
@@ -220,9 +220,9 @@ SoTextureCoordinateElement::setFunction(SoState * const state,
 
 void
 SoTextureCoordinateElement::set2(SoState * const state,
-				 SoNode * const node,
-				 const int32_t numCoords,
-				 const SbVec2f * const coords)
+                                 SoNode * const node,
+                                 const int32_t numCoords,
+                                 const SbVec2f * const coords)
 {
   SoTextureCoordinateElement * element = (SoTextureCoordinateElement *)
     SoReplacedElement::getElement(state, classStackIndex, node);
@@ -237,9 +237,9 @@ SoTextureCoordinateElement::set2(SoState * const state,
 
 void
 SoTextureCoordinateElement::set4(SoState * const state,
-				 SoNode * const node,
-				 const int32_t numCoords,
-				 const SbVec4f * const coords)
+                                 SoNode * const node,
+                                 const int32_t numCoords,
+                                 const SbVec4f * const coords)
 {
   SoTextureCoordinateElement * element = (SoTextureCoordinateElement *)
     SoReplacedElement::getElement(state, classStackIndex, node);
@@ -290,7 +290,7 @@ SoTextureCoordinateElement::getInstance(SoState * const state)
 
 const SbVec4f &
 SoTextureCoordinateElement::get(const SbVec3f & point,
-				const SbVec3f & normal) const
+                                const SbVec3f & normal) const
 {
   assert(this->whatKind == FUNCTION && this->funcCB);
   return (*(this->funcCB))(this->funcCBData, point, normal);
@@ -308,7 +308,7 @@ SoTextureCoordinateElement::get2(const int index) const
   else {
     ((SoTextureCoordinateElement*)
      this)->convert2.setValue(this->coords4[index][0],
-			      this->coords4[index][1]);
+                              this->coords4[index][1]);
     return this->convert2;
   }
 }
@@ -320,14 +320,14 @@ SoTextureCoordinateElement::get4(const int index) const
 {
   assert(index >= 0 && index < this->numCoords);
   assert(this->whatKind == EXPLICIT);
-  if (!this->coordsAre2D) 
+  if (!this->coordsAre2D)
     return this->coords4[index];
   else {
     ((SoTextureCoordinateElement*)
      this)->convert4.setValue(this->coords2[index][0],
-			      this->coords2[index][1],
-			      0.0f,
-			      1.0f);
+                              this->coords2[index][1],
+                              0.0f,
+                              1.0f);
     return this->convert4;
   }
 }
@@ -379,18 +379,17 @@ SoTextureCoordinateElement::init(SoState * state)
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-int32_t 
+int32_t
 SoTextureCoordinateElement::getNum() const
-{ 
-  return this->numCoords; 
+{
+  return this->numCoords;
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-SbBool 
+SbBool
 SoTextureCoordinateElement::is2D() const
-{ 
-  return this->coordsAre2D; 
+{
+  return this->coordsAre2D;
 }
-

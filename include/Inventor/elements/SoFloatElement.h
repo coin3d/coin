@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -57,7 +57,7 @@ public:
                     SoNode * const node, const float value);
   static  void set(const int stackIndex, SoState * const state,
                     const float value);
- 
+
   static  float get(const int stackIndex, SoState * const state);
 
   virtual void setElt(float value);

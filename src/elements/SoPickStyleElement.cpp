@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -135,8 +135,8 @@ SoPickStyleElement::~SoPickStyleElement(void)
 
 void
 SoPickStyleElement::set(SoState * const state,
-			SoNode * const node,
-			const int32_t style)
+                        SoNode * const node,
+                        const int32_t style)
 {
   assert(style >= SHAPE && style <= UNPICKABLE);
   SoInt32Element::set(classStackIndex, state, node, style);
@@ -154,27 +154,26 @@ SoPickStyleElement::init(SoState * state)
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-void 
+void
 SoPickStyleElement::set(SoState * const state, const Style style)
-{ 
-  set(state, NULL, style); 
+{
+  set(state, NULL, style);
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-SoPickStyleElement::Style 
+SoPickStyleElement::Style
 SoPickStyleElement::get(SoState * const state)
-{ 
-  return (Style) SoInt32Element::get(classStackIndex, state); 
+{
+  return (Style) SoInt32Element::get(classStackIndex, state);
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-SoPickStyleElement::Style 
+SoPickStyleElement::Style
 SoPickStyleElement::getDefault()
-{ 
-  return SHAPE; 
+{
+  return SHAPE;
 }
-

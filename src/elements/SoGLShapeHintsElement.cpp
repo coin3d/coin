@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -35,16 +35,16 @@
 //
 // I find this strategy quite odd. My gut-feeling says that
 // when vertexordering is unknown, two-side-lighting should be
-// enabled, since it will be difficult to know if a normal 
+// enabled, since it will be difficult to know if a normal
 // points in or out of a polygon...
 //
- 
-// 
+
+//
 // nodes with automatically generated normals should probably
 // force two-side lighting when vertexordering is unknown, since
 // it is impossible to know if normals are pointing in or out.
 //
-// use SoGLShapeHintsElement::forceSend(twoside) for this purpose  
+// use SoGLShapeHintsElement::forceSend(twoside) for this purpose
 //
 
 #include <Inventor/elements/SoGLShapeHintsElement.h>
@@ -187,7 +187,7 @@ SoGLShapeHintsElement::push(SoState * state)
 
 void
 SoGLShapeHintsElement::pop(SoState * state,
-			   const SoElement * prevTopElement)
+                           const SoElement * prevTopElement)
 {
   inherited::pop(state, prevTopElement);
 
@@ -199,8 +199,8 @@ SoGLShapeHintsElement::pop(SoState * state,
 
 void
 SoGLShapeHintsElement::setElt(VertexOrdering vertexOrdering,
-			      ShapeType shapeType,
-			      FaceType faceType)
+                              ShapeType shapeType,
+                              FaceType faceType)
 {
   inherited::setElt(vertexOrdering, shapeType, faceType);
   // do nothing since this is a lazy element
@@ -219,7 +219,7 @@ SoGLShapeHintsElement::evaluate() const
     if (shapeType == SOLID) flags |= SOSH_CULL;
     else flags |= SOSH_TWOSIDE;
   }
-  
+
   ((SoGLShapeHintsElement*)this)->updategl(flags);
 }
 
@@ -228,7 +228,7 @@ SoGLShapeHintsElement::evaluate() const
   twoside lighting feature.
 */
 
-void 
+void
 SoGLShapeHintsElement::forceSend(const SbBool twoside) const
 {
   SoGLShapeHintsElement *elem = (SoGLShapeHintsElement*)this;
@@ -255,8 +255,8 @@ SoGLShapeHintsElement::forceSend(const SbBool ccw, const SbBool cull) const
 //! FIXME: write doc.
 
 void
-SoGLShapeHintsElement::forceSend(const SbBool ccw, const SbBool cull, 
-				 const SbBool twoside) const
+SoGLShapeHintsElement::forceSend(const SbBool ccw, const SbBool cull,
+                                 const SbBool twoside) const
 {
   SoGLShapeHintsElement *elem = (SoGLShapeHintsElement*)this;
   unsigned int flags = 0;
@@ -268,23 +268,22 @@ SoGLShapeHintsElement::forceSend(const SbBool ccw, const SbBool cull,
 
 //! FIXME: write doc.
 
-void 
+void
 SoGLShapeHintsElement::updategl(const unsigned int flags)
 {
   unsigned int changed = flags ^ this->glflags;
   if (changed == 0) return; // quick return if equal
-  
+
   this->glflags = flags;
 
   if (changed & SOSH_CCW) {
     flags & SOSH_CCW ? glFrontFace(GL_CCW) : glFrontFace(GL_CW);
   }
   if (changed & SOSH_TWOSIDE) {
-    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, 
-		  flags & SOSH_TWOSIDE ? GL_TRUE : GL_FALSE); 
+    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE,
+                  flags & SOSH_TWOSIDE ? GL_TRUE : GL_FALSE);
   }
   if (changed & SOSH_CULL) {
     flags & SOSH_CULL ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
   }
 }
-

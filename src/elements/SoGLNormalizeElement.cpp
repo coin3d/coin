@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -20,10 +20,10 @@
 /*!
   \class SoGLNormalizeElement Inventor/elements/SoGLNormalizeElement.h
   \brief The SoGLNormalizeElement class is for GL optimization only.
-  
+
   It keeps track of the GL_NORMALIZE flag and enables/disables this
-  GL feature depending on the GL matrix and supplied normals. 
-  It is very important that all transformation nodes calls 
+  GL feature depending on the GL matrix and supplied normals.
+  It is very important that all transformation nodes calls
   SoGLNormalizeElement::setMatrixState(state, FALSE) if it contains
   a scale operation. Also, geometry nodes should let this
   element know if it is going to use unit-length normals
@@ -153,8 +153,8 @@ SoGLNormalizeElement::init(SoState * state)
   this->unitNormals = FALSE; /* we know nothing about the normals yet */
   this->okMatrix = TRUE;     /* first matrix is identity */
 
-  /* force a glEnable(GL_NORMALIZE) */ 
-  this->glnormalize = FALSE; 
+  /* force a glEnable(GL_NORMALIZE) */
+  this->glnormalize = FALSE;
   this->updategl(TRUE);
 }
 
@@ -174,7 +174,7 @@ SoGLNormalizeElement::push(SoState * state)
 
 void
 SoGLNormalizeElement::pop(SoState * state,
-			   const SoElement * prevTopElement)
+                           const SoElement * prevTopElement)
 {
   ((SoGLNormalizeElement*)prevTopElement)->glnormalize = this->glnormalize;
   inherited::pop(state, prevTopElement);
@@ -200,15 +200,15 @@ SoGLNormalizeElement::copyMatchInfo() const
 
 /*!
   Should be called only when the node's matrix contains a
-  scale transformation (or some other transformation which will create 
-  non-unit length normals). It should not be called to tell the element 
+  scale transformation (or some other transformation which will create
+  non-unit length normals). It should not be called to tell the element
   that the node has a transformation which is ok. The exception
   is when a node causes a new matrix to be loaded, and it
   is certain that this new matrix contains no scaling.
 */
-void 
+void
 SoGLNormalizeElement::setMatrixState(SoState * const state,
-				     const SbBool valid)
+                                     const SbBool valid)
 {
   SoGLNormalizeElement * e = (SoGLNormalizeElement *)
     inherited::getElement(state, SoGLNormalizeElement::classStackIndex);
@@ -216,7 +216,7 @@ SoGLNormalizeElement::setMatrixState(SoState * const state,
 
 #if 0 // debug
   SoDebugError::postInfo("SoGLNormalizeElement::setMatrixState",
-			 "%d", valid);
+                         "%d", valid);
 #endif // debug
 
 }
@@ -225,9 +225,9 @@ SoGLNormalizeElement::setMatrixState(SoState * const state,
   Normal and geometry nodes should call this to let the element know if
   the normals are unit length or not.
 */
-void 
+void
 SoGLNormalizeElement::setUnitNormals(SoState * const state,
-				     const SbBool unitNormals)
+                                     const SbBool unitNormals)
 {
   SoGLNormalizeElement * e = (SoGLNormalizeElement *)
     inherited::getElement(state, SoGLNormalizeElement::classStackIndex);
@@ -235,7 +235,7 @@ SoGLNormalizeElement::setUnitNormals(SoState * const state,
 
 #if 0 // debug
   SoDebugError::postInfo("SoGLNormalizeElement::setUnitNormals",
-			 "%d", unitNormals);
+                         "%d", unitNormals);
 #endif // debug
 
 }
@@ -251,7 +251,7 @@ SoGLNormalizeElement::evaluate() const
 
 #if 0 // debug
   SoDebugError::postInfo("SoGLNormalizeElement::evaluate",
-			 "%d %d %d", unitNormals, okMatrix, normalize);
+                         "%d %d %d", unitNormals, okMatrix, normalize);
 #endif // debug
 
   ((SoGLNormalizeElement*)this)->updategl(normalize);
@@ -261,7 +261,7 @@ SoGLNormalizeElement::evaluate() const
   Turns on/off normalizing without affecting the state. This
   method should be used by shapes supplying their own
   normals. If it is known that the normals are unit length,
-  this method should be used to optimize rendering. 
+  this method should be used to optimize rendering.
   Normalizing is not disabled unless matrix is valid though.
 */
 void
@@ -269,7 +269,7 @@ SoGLNormalizeElement::forceSend(const SbBool unit) const
 {
 #if 0 // debug
   SoDebugError::postInfo("SoGLNormalizeElement::forceSend",
-			 "%d", unit);
+                         "%d", unit);
 #endif // debug
   ((SoGLNormalizeElement*)this)->updategl(!(unit && this->okMatrix));
 }
@@ -281,10 +281,10 @@ SoGLNormalizeElement::updategl(const SbBool normalize)
 {
 #if 0 // debug
   SoDebugError::postInfo("SoGLNormalizeElement::updategl",
-			 "norm: %d %d", normalize, glnormalize);
+                         "norm: %d %d", normalize, glnormalize);
 #endif // debug
-  
-#if 0 // to disable this optimizing feature 
+
+#if 0 // to disable this optimizing feature
   if (!glnormalize) {
     glnormalize = TRUE;
     glEnable(GL_NORMALIZE);
@@ -297,6 +297,3 @@ SoGLNormalizeElement::updategl(const SbBool normalize)
   }
 #endif // optimized
 }
-
-
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -85,16 +85,16 @@ SoGLPolygonStippleElement::getClassStackIndex(void)
 }
 //$ END TEMPLATE ElementSource
 
-// Some data and functions to create Bayer dither 
+// Some data and functions to create Bayer dither
 // matrices (used for screen door transparency)
 
 static unsigned int two_by_two[] = {0, 2, 3, 1};
 
 //
-// Used to generate a matrix twice the size of the input   
+// Used to generate a matrix twice the size of the input
 //
-static void generate_next_matrix(unsigned int *old, int oldsize, 
-				 unsigned int *matrix)
+static void generate_next_matrix(unsigned int *old, int oldsize,
+                                 unsigned int *matrix)
 {
   int i,j;
   int newsize = oldsize << 1;
@@ -108,7 +108,7 @@ static void generate_next_matrix(unsigned int *old, int oldsize,
 
 //
 // Creates a matrix by starting with a 2x2 and doubling until size
-// Warning: only binary sizes!!   
+// Warning: only binary sizes!!
 //
 static void make_dither_matrix(uint32_t *ptr, int size)
 {
@@ -130,28 +130,28 @@ static void make_dither_matrix(uint32_t *ptr, int size)
   int i;
   for (i = 0; i < size*size; i++)
     ptr[i] = currmatrix[i];
-  
+
   if (currmatrix != two_by_two) delete currmatrix;
 }
 
 //
-// Sets a bit bitnr bits from ptr   
+// Sets a bit bitnr bits from ptr
 //
 static void set_bit(int bitnr, uint32_t *ptr)
 {
   int byte = bitnr / 32;
   int bit = bitnr % 32;
-  
+
   int mask = 0x80000000 >> bit;
-  
+
   ptr[byte] |= mask;
 }
 
 //
 // Create a bitmap from a 32x32 matrix
 //
-static void create_matrix_bitmap(int intensity, uint32_t *bitmap, 
-				 uint32_t *matrix, int size)
+static void create_matrix_bitmap(int intensity, uint32_t *bitmap,
+                                 uint32_t *matrix, int size)
 {
   int cnt = 0;
   int i,j;
@@ -171,7 +171,7 @@ static void create_matrix_bitmap(int intensity, uint32_t *bitmap,
   SoGLPolygonStippleElement class.
 */
 
-void 
+void
 SoGLPolygonStippleElement::initClass()
 {
 //$ BEGIN TEMPLATE InitElementSource(SoGLPolygonStippleElement)
@@ -197,7 +197,7 @@ SoGLPolygonStippleElement::initClass()
   unsigned int matrix[32*32];
   make_dither_matrix(matrix, 32);
   for (i = 0; i <= 64; i++) {
-    create_matrix_bitmap(((32*32)*i)/64, 
+    create_matrix_bitmap(((32*32)*i)/64,
                          (uint32_t*)&patterns[i][0], matrix, 32);
   }
 }
@@ -224,17 +224,17 @@ SoGLPolygonStippleElement::~SoGLPolygonStippleElement()
 
 //! FIXME: write doc.
 
-void 
+void
 SoGLPolygonStippleElement::init(SoState * /* state */)
 {
   this->isEnabled = this->currentEnabled = FALSE;
   this->currentPattern = this->pattern = -1;
   this->updategl();
 }
-  
+
 //! FIXME: write doc.
 
-void 
+void
 SoGLPolygonStippleElement::set(SoState * const state, const SbBool onoff)
 {
   SoGLPolygonStippleElement *elem = (SoGLPolygonStippleElement*)
@@ -245,15 +245,15 @@ SoGLPolygonStippleElement::set(SoState * const state, const SbBool onoff)
 
 //! FIXME: write doc.
 
-void 
+void
 SoGLPolygonStippleElement::setTransparency(SoState * const state,
-				    const float transparency)
+                                    const float transparency)
 {
   SoGLPolygonStippleElement *elem = (SoGLPolygonStippleElement*)
     SoElement::getElement(state, classStackIndex);
-  
+
   int stipplenum = (int)(64.0f*(transparency)); //0-64
-  
+
   // FIXME: print a warning?
   if (stipplenum < 0) stipplenum = 0;
   if (stipplenum > 64) stipplenum = 64;
@@ -262,17 +262,17 @@ SoGLPolygonStippleElement::setTransparency(SoState * const state,
 
 //! FIXME: write doc.
 
-SbBool 
+SbBool
 SoGLPolygonStippleElement::get(SoState * const state)
 {
   SoGLPolygonStippleElement *elem = (SoGLPolygonStippleElement*)
     SoElement::getConstElement(state, classStackIndex);
   return elem->isEnabled;
 }
-  
+
 //! FIXME: write doc.
 
-void 
+void
 SoGLPolygonStippleElement::push(SoState * /* state */)
 {
   SoGLPolygonStippleElement *elem = (SoGLPolygonStippleElement*)
@@ -283,9 +283,9 @@ SoGLPolygonStippleElement::push(SoState * /* state */)
 
 //! FIXME: write doc.
 
-void 
+void
 SoGLPolygonStippleElement::pop(SoState * /* state */,
-			       const SoElement * prevTopElement)
+                               const SoElement * prevTopElement)
 {
   SoGLPolygonStippleElement *prev = (SoGLPolygonStippleElement*)
     prevTopElement;
@@ -296,13 +296,13 @@ SoGLPolygonStippleElement::pop(SoState * /* state */,
 
 //! FIXME: write doc.
 
-SbBool 
+SbBool
 SoGLPolygonStippleElement::matches(const SoElement *elt) const
 {
   SoGLPolygonStippleElement *elem = (SoGLPolygonStippleElement*) elt;
-  
+
   return (this->isEnabled == elem->isEnabled &&
-	  this->pattern == elem->pattern);
+          this->pattern == elem->pattern);
 }
 
 //! FIXME: write doc.
@@ -312,7 +312,7 @@ SoGLPolygonStippleElement::copyMatchInfo() const
 {
   SoGLPolygonStippleElement * elem =
     (SoGLPolygonStippleElement *)(getTypeId().createInstance());
-  
+
   elem->isEnabled = this->isEnabled;
   elem->pattern = this->pattern;
   return elem;
@@ -320,7 +320,7 @@ SoGLPolygonStippleElement::copyMatchInfo() const
 
 //! FIXME: write doc.
 
-void 
+void
 SoGLPolygonStippleElement::print(FILE *fp) const
 {
   fprintf(fp, "SoGLPolygonStippleElement: %p\n", this);
@@ -333,8 +333,8 @@ SoGLPolygonStippleElement::evaluate() const
 {
   if (this->currentEnabled != this->isEnabled ||
       this->currentPattern != this->pattern) {
-    
-    SoGLPolygonStippleElement *elem = 
+
+    SoGLPolygonStippleElement *elem =
       (SoGLPolygonStippleElement*) this;
     elem->currentEnabled = this->isEnabled;
     elem->currentPattern = this->pattern;
@@ -353,4 +353,3 @@ SoGLPolygonStippleElement::updategl()
   }
   else glDisable(GL_POLYGON_STIPPLE);
 }
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -163,7 +163,7 @@ SoGLPolygonOffsetElement::push(SoState * state)
 void
 SoGLPolygonOffsetElement::pop(SoState * state, const SoElement * prevTopElement)
 {
-  SoGLPolygonOffsetElement *prev = 
+  SoGLPolygonOffsetElement *prev =
     (SoGLPolygonOffsetElement*)prevTopElement;
 
   prev->currentActive = this->currentActive;
@@ -178,7 +178,7 @@ SoGLPolygonOffsetElement::pop(SoState * state, const SoElement * prevTopElement)
 
 void
 SoGLPolygonOffsetElement::setElt(float factor, float units,
-				 Style styles, SbBool on)
+                                 Style styles, SbBool on)
 {
   inherited::setElt(factor, units, styles, on);
   // this is a lazy element. Do nothing.
@@ -213,24 +213,24 @@ SoGLPolygonOffsetElement::updategl()
 
   // FIXME: is it possible to enable more than one Style at
   // a time?
-  
+
   if (this->currentActive) {
 #if GL_VERSION_1_1
-    if (currentStyle & FILLED) 
+    if (currentStyle & FILLED)
       glEnable(GL_POLYGON_OFFSET_FILL);
     if (currentStyle & LINES)
       glEnable(GL_POLYGON_OFFSET_LINE);
     if (currentStyle & POINTS)
       glEnable(GL_POLYGON_OFFSET_POINT);
-    
+
     glPolygonOffset(this->currentOffsetunits, this->currentOffsetfactor);
 #elif GL_EXT_polygon_offset
     if (sogl_polygon_offset_ext()) {
-      // FIXME: this value (0.0000001) a hack to make it look 
+      // FIXME: this value (0.0000001) a hack to make it look
       // ok on old SGI HW
       if (currentStyle & FILLED) {
-	glPolygonOffsetEXT(this->currentOffsetunits, 0.000001);
-	glEnable(GL_POLYGON_OFFSET_EXT);
+        glPolygonOffsetEXT(this->currentOffsetunits, 0.000001);
+        glEnable(GL_POLYGON_OFFSET_EXT);
       }
     }
 #endif
@@ -245,6 +245,5 @@ SoGLPolygonOffsetElement::updategl()
       glDisable(GL_POLYGON_OFFSET_EXT);
     }
 #endif
-  } 
+  }
 }
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -20,7 +20,7 @@
 /*!
   \class SoGLShadeModelElement Inventor/elements/SoGLShadeModelElement.h
   \brief The SoGLShadeModelElement class is for GL optimization only.
-  
+
   It keeps track of the current shade model (flat or smooth) and
   evaluates lazily when this should be changed. Flat-shaded
   triangles are much faster to draw (at least in SW) than smooth
@@ -160,7 +160,7 @@ SoGLShadeModelElement::push(SoState * state)
 
 void
 SoGLShadeModelElement::pop(SoState * state,
-			   const SoElement * prevTopElement)
+                           const SoElement * prevTopElement)
 {
   ((SoGLShadeModelElement*)prevTopElement)->glflat = this->glflat;
   inherited::pop(state, prevTopElement);
@@ -186,9 +186,9 @@ SoGLShadeModelElement::copyMatchInfo() const
 
 //! FIXME: write doc.
 
-void 
+void
 SoGLShadeModelElement::setMaterial(SoState * const state,
-				   const SbBool perVertex)
+                                   const SbBool perVertex)
 {
   SoGLShadeModelElement * e = (SoGLShadeModelElement *)
     inherited::getElement(state, SoGLShadeModelElement::classStackIndex);
@@ -197,9 +197,9 @@ SoGLShadeModelElement::setMaterial(SoState * const state,
 
 //! FIXME: write doc.
 
-void 
+void
 SoGLShadeModelElement::setNormal(SoState * const state,
-				 const SbBool perVertex)
+                                 const SbBool perVertex)
 {
   SoGLShadeModelElement * e = (SoGLShadeModelElement *)
     inherited::getElement(state, SoGLShadeModelElement::classStackIndex);
@@ -241,4 +241,3 @@ SoGLShadeModelElement::updategl(const SbBool flat)
     else glShadeModel(GL_SMOOTH);
   }
 }
-

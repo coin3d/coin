@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -140,7 +140,7 @@ void
 SoBBoxModelMatrixElement::push(SoState * state)
 {
   inherited::push(state);
-  
+
   SoBBoxModelMatrixElement * const element =
     (SoBBoxModelMatrixElement *)(this->next);
   element->state = this->state;
@@ -153,7 +153,7 @@ SoBBoxModelMatrixElement::push(SoState * state)
 
 void
 SoBBoxModelMatrixElement::reset(SoState * const /* state */,
-				SoNode * const /* node */)
+                                SoNode * const /* node */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -165,8 +165,8 @@ SoBBoxModelMatrixElement::reset(SoState * const /* state */,
 
 void
 SoBBoxModelMatrixElement::pushMatrix(SoState * const state,
-				     SbMatrix &matrix,
-				     SbMatrix &localmatrix)
+                                     SbMatrix &matrix,
+                                     SbMatrix &localmatrix)
 {
   matrix = SoModelMatrixElement::get(state);
   localmatrix = SoLocalBBoxMatrixElement::get(state);
@@ -179,13 +179,13 @@ SoBBoxModelMatrixElement::pushMatrix(SoState * const state,
 
 void
 SoBBoxModelMatrixElement::popMatrix(SoState * const state,
-				    const SbMatrix & matrix,
-				    const SbMatrix & localmatrix)
+                                    const SbMatrix & matrix,
+                                    const SbMatrix & localmatrix)
 {
   SoModelMatrixElement::set(state, NULL, matrix);
   SoLocalBBoxMatrixElement::set(state, localmatrix);
 }
- 
+
 //! FIXME: write doc.
 
 void
@@ -239,7 +239,7 @@ SoBBoxModelMatrixElement::scaleEltBy(const SbVec3f &scaleFactor)
   inherited::scaleEltBy(scaleFactor);
   SoLocalBBoxMatrixElement::scaleBy(this->state, scaleFactor);
 }
- 
+
 /*!
   This method is for debug use only.
 */
@@ -260,4 +260,3 @@ SoBBoxModelMatrixElement::popMatrixElt(const SbMatrix &)
 {
   assert(0 && "Should never be called!");
 }
-

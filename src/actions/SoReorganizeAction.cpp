@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -82,7 +82,7 @@ SoReorganizeAction::getEnabledElements(void) const
   This method adds a method to be perfomed by the action class on the given
   node type.
 */
-void 
+void
 SoReorganizeAction::addMethod(const SoType type, SoActionMethod method)
 {
   assert(methods);
@@ -92,7 +92,7 @@ SoReorganizeAction::addMethod(const SoType type, SoActionMethod method)
 /*!
   This method enables an element in the state stack for the action class.
 */
-void 
+void
 SoReorganizeAction::enableElement(const SoType type, const int stackIndex)
 {
   assert(enabledElements);
@@ -114,7 +114,7 @@ SoReorganizeAction::initClass(void)
   assert(SoReorganizeAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoReorganizeAction::classTypeId = 
+  SoReorganizeAction::classTypeId =
       SoType::createType(inherited::getClassTypeId(),
                          "SoReorganizeAction");
   enabledElements = new SoEnabledElementsList(inherited::enabledElements);
@@ -151,4 +151,3 @@ SoReorganizeAction::beginTraversal(SoNode * /* node */)
 {
   assert(0 && "FIXME: not implemented");
 }
-

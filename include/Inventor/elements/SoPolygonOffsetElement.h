@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -49,20 +49,20 @@ protected:
 public:
   enum Style {
     FILLED = 0x01,
-    LINES = 0x02, 
+    LINES = 0x02,
     POINTS = 0x04
   };
 
   virtual void init(SoState * state);
-  static void set(SoState * state, SoNode * node, float factor, float units, 
-		  Style styles, SbBool on);
+  static void set(SoState * state, SoNode * node, float factor, float units,
+                  Style styles, SbBool on);
   static void get(SoState * state, float & factor, float & units,
-		  Style & styles, SbBool & on);
+                  Style & styles, SbBool & on);
   virtual void push(SoState * state);
   virtual SbBool matches(const SoElement * elt) const;
   virtual SoElement * copyMatchInfo() const;
   static void getDefault(float & factor, float & units, Style & styles,
-			 SbBool & on);
+                         SbBool & on);
 
 protected:
   Style style;

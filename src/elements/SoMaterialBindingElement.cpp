@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -136,11 +136,11 @@ SoMaterialBindingElement::~SoMaterialBindingElement(void)
 
 void
 SoMaterialBindingElement::set(SoState * const state,
-			      SoNode * const node,
-			      const Binding binding)
+                              SoNode * const node,
+                              const Binding binding)
 {
-  assert((int)binding >= (int)OVERALL && 
-	 (int)binding <= (int)PER_VERTEX_INDEXED);
+  assert((int)binding >= (int)OVERALL &&
+         (int)binding <= (int)PER_VERTEX_INDEXED);
   SoInt32Element::set(classStackIndex, state, node, binding);
 }
 
@@ -156,27 +156,26 @@ SoMaterialBindingElement::init(SoState * state)
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-void 
+void
 SoMaterialBindingElement::set(SoState * const state, const Binding binding)
-{ 
-  set(state, NULL, binding); 
+{
+  set(state, NULL, binding);
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-SoMaterialBindingElement::Binding 
+SoMaterialBindingElement::Binding
 SoMaterialBindingElement::get(SoState * const state)
-{ 
-  return (Binding) SoInt32Element::get(classStackIndex, state); 
+{
+  return (Binding) SoInt32Element::get(classStackIndex, state);
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-SoMaterialBindingElement::Binding 
+SoMaterialBindingElement::Binding
 SoMaterialBindingElement::getDefault()
-{ 
-  return DEFAULT; 
+{
+  return DEFAULT;
 }
-

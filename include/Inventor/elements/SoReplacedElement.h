@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -58,7 +58,7 @@ public:
 
 protected:
   static  SoElement * getElement(SoState * const state,
-				 const int stackIndex, SoNode * const node);
+                                 const int stackIndex, SoNode * const node);
 
   uint32_t nodeId;
 };

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -179,9 +179,9 @@ SoProfileCoordinateElement::init(SoState * state)
 
 void
 SoProfileCoordinateElement::set2(SoState * const state,
-				 SoNode * const node,
-				 const int32_t numCoords,
-				 const SbVec2f * const coords)
+                                 SoNode * const node,
+                                 const int32_t numCoords,
+                                 const SbVec2f * const coords)
 {
   assert(numCoords >= 0);
   SoProfileCoordinateElement * element =
@@ -199,9 +199,9 @@ SoProfileCoordinateElement::set2(SoState * const state,
 
 void
 SoProfileCoordinateElement::set3(SoState * const state,
-				 SoNode * const node,
-				 const int32_t numCoords,
-				 const SbVec3f * const coords)
+                                 SoNode * const node,
+                                 const int32_t numCoords,
+                                 const SbVec3f * const coords)
 {
   assert(numCoords >= 0);
   SoProfileCoordinateElement * element =
@@ -237,7 +237,7 @@ SoProfileCoordinateElement::push(SoState * state)
 
 void
 SoProfileCoordinateElement::pop(SoState * state,
-				const SoElement * prevTopElement)
+                                const SoElement * prevTopElement)
 {
     inherited::pop(state, prevTopElement);
 }
@@ -316,4 +316,3 @@ SoProfileCoordinateElement::getDefault3(void)
 {
   return SbVec3f(0.0f, 0.0f, 1.0f);
 }
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -52,26 +52,26 @@ public:
   virtual void init(SoState * state);
   virtual void push(SoState * state);
   virtual void pop(SoState * state,
-		   const SoElement * prevTopElement);
+                   const SoElement * prevTopElement);
 
   static  void setTexGen(SoState * const state, SoNode * const node,
-			 SoTexCoordTexgenCB * const texgenFunc,
-			 void * const texgenData = NULL,
-			 SoTextureCoordinateFunctionCB * const func = NULL,
-			 void * const funcData = NULL);
-  
+                         SoTexCoordTexgenCB * const texgenFunc,
+                         void * const texgenData = NULL,
+                         SoTextureCoordinateFunctionCB * const func = NULL,
+                         void * const funcData = NULL);
+
   virtual CoordType getType() const;
 
-  static const SoGLTextureCoordinateElement * 
+  static const SoGLTextureCoordinateElement *
   getInstance(SoState * const state);
-  
+
   void send(const int index) const;
   void send(const int index, const SbVec3f &c, const SbVec3f &n) const;
-  
+
 protected:
   virtual void setElt(SoTexCoordTexgenCB *func,
-		      void *data = NULL);
-  
+                      void *data = NULL);
+
 private:
   SoTexCoordTexgenCB *texgenCB;
   void *texgenData;

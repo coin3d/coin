@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -83,7 +83,7 @@ SoToVRMLAction::getEnabledElements(void) const
   This method adds a method to be perfomed by the action class on the given
   node type.
 */
-void 
+void
 SoToVRMLAction::addMethod(const SoType type, SoActionMethod method)
 {
   assert(methods);
@@ -93,7 +93,7 @@ SoToVRMLAction::addMethod(const SoType type, SoActionMethod method)
 /*!
   This method enables an element in the state stack for the action class.
 */
-void 
+void
 SoToVRMLAction::enableElement(const SoType type, const int stackIndex)
 {
   assert(enabledElements);
@@ -115,7 +115,7 @@ SoToVRMLAction::initClass(void)
   assert(SoToVRMLAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  SoToVRMLAction::classTypeId = 
+  SoToVRMLAction::classTypeId =
       SoType::createType(inherited::getClassTypeId(),
                          "SoToVRMLAction");
   enabledElements = new SoEnabledElementsList(inherited::enabledElements);
@@ -152,4 +152,3 @@ SoToVRMLAction::beginTraversal(SoNode * /* node */)
 {
   assert(0 && "FIXME: not implemented");
 }
-

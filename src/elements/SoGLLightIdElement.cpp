@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -171,7 +171,7 @@ SoGLLightIdElement::push(SoState * state)
 
 void
 SoGLLightIdElement::pop(SoState * state,
-			const SoElement * prevTopElement)
+                        const SoElement * prevTopElement)
 {
   int idx = ((SoGLLightIdElement*)prevTopElement)->data + 1;
   // disable used light sources
@@ -186,9 +186,9 @@ SoGLLightIdElement::pop(SoState * state,
 
 int32_t
 SoGLLightIdElement::increment(SoState * const state,
-			      SoNode * const /* node */)
+                              SoNode * const /* node */)
 {
-  SoGLLightIdElement * element = (SoGLLightIdElement *) 
+  SoGLLightIdElement * element = (SoGLLightIdElement *)
     getElement(state, getClassStackIndex());
 
   assert(element);
@@ -202,7 +202,7 @@ SoGLLightIdElement::increment(SoState * const state,
     return -1;
   }
   glEnable((GLenum)((int32_t)GL_LIGHT0 + element->data));
-  
+
   return element->data;
 }
 
@@ -227,27 +227,26 @@ SoGLLightIdElement::getMaxGLSources()
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-int32_t 
+int32_t
 SoGLLightIdElement::increment(SoState * const state)
-{ 
-  return increment(state, NULL); 
+{
+  return increment(state, NULL);
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-int32_t 
+int32_t
 SoGLLightIdElement::get(SoState * const state)
-{ 
-  return SoInt32Element::get(classStackIndex, state); 
+{
+  return SoInt32Element::get(classStackIndex, state);
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
-int32_t 
+int32_t
 SoGLLightIdElement::getDefault()
-{ 
-  return -1; 
+{
+  return -1;
 }
-

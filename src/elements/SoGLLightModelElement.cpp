@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -147,14 +147,14 @@ SoGLLightModelElement::push(SoState * state)
 {
   inherited::push(state);
   SoGLLightModelElement *top = (SoGLLightModelElement*)this->next;
-  top->current = this->current;  
+  top->current = this->current;
 }
 
 //! FIXME: write doc.
 
 void
 SoGLLightModelElement::pop(SoState * state,
-			  const SoElement * prevTopElement)
+                          const SoElement * prevTopElement)
 {
   SoGLLightModelElement *prev = (SoGLLightModelElement*)prevTopElement;
   prev->current = this->current;

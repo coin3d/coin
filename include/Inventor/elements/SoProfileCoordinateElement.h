@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -59,12 +59,12 @@ public:
 
   virtual void push(SoState * state);
   virtual void pop(SoState * state,
-		    const SoElement * prevTopElement);
+                    const SoElement * prevTopElement);
 
   static void set2(SoState * const state, SoNode * const node,
-		    const int32_t numCoords, const SbVec2f * const coords);
+                    const int32_t numCoords, const SbVec2f * const coords);
   static void set3(SoState * const state, SoNode * const node,
-		    const int32_t numCoords, const SbVec3f * const coords);
+                    const int32_t numCoords, const SbVec3f * const coords);
   static const SoProfileCoordinateElement *
              getInstance(SoState * const state);
   int32_t getNum(void) const;
