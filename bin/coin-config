@@ -56,6 +56,7 @@ Options:
   --includedir
   --frameworkdir
   --datadir
+  --htmldir
   --have-feature <featurename>
   --compile <sourcefile> [<sourcefile>]...
   --link <program> <object> [<object>]...
@@ -130,6 +131,7 @@ do
   --ldflags)         echo "$ldflags"       ;;
   --libs)            echo "$libs"          ;;
   --datadir)         echo "$datadir"       ;;
+  --htmldir)         echo "$htmldir"       ;;
   --includedir)      echo "$includedir"    ;;
   --frameworkdir)    echo "$frameworkdir"  ;;
   --msvcrt)          echo "$msvcrt"        ;;
