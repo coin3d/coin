@@ -832,9 +832,10 @@ SbMatrix::getTransform(SbVec3f & t, SbRotation & r, SbVec3f & s,
   t[2] = parts.t.z * mul;
 
   r.setValue(parts.q.x, parts.q.y, parts.q.z, parts.q.w);
-
   mul = 1.0f;
   if (parts.k.w != 0.0f) mul = 1.0f / parts.k.w;
+  // mul be sign of determinant to support negative scales.
+  mul *= parts.f; 
   s[0] = parts.k.x * mul;
   s[1] = parts.k.y * mul;
   s[2] = parts.k.z * mul;
