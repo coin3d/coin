@@ -27,31 +27,29 @@
   \ingroup elements
 */
 
-#include <Inventor/misc/SoState.h>
-#include <Inventor/elements/SoCacheElement.h>
-#include <Inventor/caches/SoCache.h>
-#include <Inventor/C/tidbitsp.h>
-#include <assert.h>
-#include <stdlib.h>
-
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
+
+#include <assert.h>
+#include <stdlib.h>
+
+#include <Inventor/C/tidbitsp.h>
+#include <Inventor/caches/SoCache.h>
+#include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/misc/SoState.h>
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbTypedStorage.h>
 #endif // COIN_THREADSAFE
 
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
-
 SbBool SoCacheElement::invalidated = FALSE;
 
 
 #ifdef COIN_THREADSAFE
-SbTypedStorage <SbBool*> * invalidated_storage = NULL;
+static SbTypedStorage <SbBool*> * invalidated_storage = NULL;
 
 static void
 cacheelement_cleanup(void)
