@@ -18,43 +18,48 @@
 \**************************************************************************/
 
 /*!
-  \class SoSearchAction Inventor/actions/SoSearchAction.h
-  \brief The SoSearchAction class provides methods for searching for nodes
-  matching certain criterions in Open Inventor scene graphs.
+  \class SoSearchAction SoSearchAction.h Inventor/actions/SoSearchAction.h
+  \brief The SoSearchAction class provides methods for searching through scene graphs.
+  \ingroup actions
 
-  Nodes can be searched for by pointer, type, and name, or a combination
-  of those.  Types can be interpreted as exact types, or the type can match
-  nodes derived from it.  Every single node can be searched, or normal
-  traversal rules can be followed (especially related to switches) when
-  searching.
+  Nodes can be searched for by pointer, type, and name, or a
+  combination of those criteria.  Types can be interpreted as exact
+  types, or the type can match nodes derived from it.  Every single
+  node can be searched, or normal traversal rules can be followed when
+  searching (this is especially important to note with regard to
+  switch nodes).
+
+  When using more than one of the setNode(), setType() and setName()
+  calls, note that the action will search for node(s) with an \c "AND"
+  combination of the given search criteria.
 */
 
 #include <Inventor/actions/SoSearchAction.h>
+
 #include <Inventor/actions/SoSubActionP.h>
-
-//#include <Inventor/nodes/SoSwitch.h>
-#include <Inventor/nodes/SoNode.h>
-
-#include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/lists/SoEnabledElementsList.h>
+#include <Inventor/nodes/SoNode.h>
 
 // *************************************************************************
 
 /*!
-  \fn SoSearchAction::LookFor
+  \enum SoSearchAction::LookFor
 
-  FIXME: write doc.
+  Specify the search criterion. This can be a bitwise combination of
+  the available values.
 */
 
 /*!
-  \fn SoSearchAction::Interest
+  \enum SoSearchAction::Interest
 
-  FIXME: write doc.
+  Values used when specifiying what node(s) we are interested in: the
+  first one found, the last one or all of them.
 */
 
 
-
 SO_ACTION_SOURCE(SoSearchAction);
+
 
 // Overridden from parent class.
 void
@@ -65,59 +70,50 @@ SoSearchAction::initClass(void)
 
 
 /*!
-  The constructor.  Initializes all the internals with default values.
+  Initializes internal settings with default values. With the default
+  settings, the SoSearchAction will ignore all nodes.
 */
-
 SoSearchAction::SoSearchAction(void)
-  : lookFor(0), interest( FIRST ), searchAll( FALSE ),
-    node(NULL), type( SoType::badType() ), name( "" ),
+  : lookfor(0), interest(FIRST), searchall(FALSE),
+    node(NULL), type(SoType::badType()), name(""),
     path(NULL) // paths(0)
 {
   SO_ACTION_CONSTRUCTOR(SoSearchAction);
 
   SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::searchS);
 
-  methods->setUp(); // FIXME: not sure if this should be called here...
+  SoSearchAction::methods->setUp();
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
-
-SoSearchAction::~SoSearchAction(void)
+SoSearchAction::~SoSearchAction()
 {
-  reset(); // clears everything
+  this->reset(); // clears everything
 }
 
 // *************************************************************************
 
 /*!
-  This method will set the node pointer to search for.  It automatically
-  configures the action to search for a node pointer, so there is no need
-  to call SoSearchAction::setFind() in anything but special cases.
-*/
+  Sets the \a node pointer to search for.
 
+  The action is also automatically configured to set the search
+  "interest" to LookFor \c NODE, so there is no need to call
+  SoSearchAction::setFind() in anything but special cases. This is
+  also the case for the setType() and setName() calls.
+*/
 void
 SoSearchAction::setNode(SoNode * const node)
 {
-#if 0 // debug
-  SoDebugError::postInfo("SoSearchAction::setNode",
-                         "search for node: %p (type '%s')",
-                         node, node->getTypeId().getName().getString());
-#endif // debug
-
-  node->ref();
-  if (this->node)
-    this->node->unref();
   this->node = node;
-  this->lookFor |= NODE;
+  this->lookfor |= NODE;
 }
 
 /*!
-  This method returns the node the SoSearchAction instance is configured
+  Returns the node the SoSearchAction instance is configured
   to search for.
 */
-
 SoNode *
 SoSearchAction::getNode(void) const
 {
@@ -125,97 +121,88 @@ SoSearchAction::getNode(void) const
 }
 
 /*!
-  This method configures the SoSearchAction instance to search for nodes of
-  the given type, and nodes derived from the given type if includeDerived is
-  set to TRUE.
+  Configures the SoSearchAction instance to search for nodes of the
+  given \a type, and nodes of classes derived from the given \a type
+  if \a chkderived is \c TRUE.
 */
-
 void
-SoSearchAction::setType(const SoType type, const SbBool includeDerived)
+SoSearchAction::setType(const SoType type, const SbBool chkderived)
 {
   this->type = type;
-  this->includeDerived = includeDerived;
-  this->lookFor |= TYPE;
+  this->chkderived = chkderived;
+  this->lookfor |= TYPE;
 }
 
 /*!
-  This method returns the node type which is searched for, and wether derived
+  Returns the node type which is searched for, and whether derived
   classes of that type also returns a match.
 */
-
 SoType
-SoSearchAction::getType(SbBool & includeDerived) const
+SoSearchAction::getType(SbBool & chkderived) const
 {
-  includeDerived = this->includeDerived;
+  chkderived = this->chkderived;
   return this->type;
 }
 
 /*!
-  This method configures the SoSearchAction instance to search for nodes with
-  the given name.  There is no need to call SoSearchAction::setFind() since
-  the configuration is updated automatically.
+  Configures the SoSearchAction instance to search for nodes with the
+  given \a name.
 */
-
 void
-SoSearchAction::setName(const SbName name) // was const SbName &, but SbName is 32 bits, so
+SoSearchAction::setName(const SbName name)
 {
   this->name = name;
-  this->lookFor |= NAME;
+  this->lookfor |= NAME;
 }
 
 /*!
-  This method returns the name the SoSearchAction instance is configured to
-  search for.
+  Returns the name the SoSearchAction instance is configured to search
+  for.
 */
-
-SbName // was const SbName &
+SbName
 SoSearchAction::getName(void) const
 {
   return this->name;
 }
 
 /*!
-  This method configures what to search for in the scene graph.  what is
-  a bitmask of LookFor flags.  Default find configuration is to search for
-  nothing, but the configuration updated automatically when
-  SoSearchAction::setNode(), SoSearchAction::setType(), and
-  SoSearchAction::setName() are called.
-*/
+  Configures what to search for in the scene graph.  \a what is a
+  bitmask of LookFor flags.
 
+  Default find configuration is to ignore all nodes, but the setFind()
+  configuration is updated automatically when any one of
+  SoSearchAction::setNode(), SoSearchAction::setType() or
+  SoSearchAction::setName() is called.
+*/
 void
-SoSearchAction::setFind(const int what) // was int
+SoSearchAction::setFind(const int what)
 {
-  // any sanity checking?
-  this->lookFor = what;
+  this->lookfor = what;
 }
 
 /*!
-  This method returns the search configuration of the SoSearchAction instance.
+  Returns the search configuration of the action instance.
 */
-
 int
 SoSearchAction::getFind(void) const
 {
-  return this->lookFor;
+  return this->lookfor;
 }
 
 /*!
-  This method configures wether only the first, the last, or all the searching
-  matches are of interest.  Default configuration is FIRST.
+  Configures whether only the first, the last, or all the searching
+  matches are of interest.  Default configuration is \c FIRST.
 */
-
 void
 SoSearchAction::setInterest(const Interest interest)
 {
-  // any sanity checking?
   this->interest = interest;
 }
 
 /*!
-  This method returns wether only the first, the last, or all the searching
-  matches will be saved.  Default configuration is FIRST.
+  Returns whether only the first, the last, or all the searching
+  matches will be saved.
 */
-
 SoSearchAction::Interest
 SoSearchAction::getInterest(void) const
 {
@@ -223,36 +210,37 @@ SoSearchAction::getInterest(void) const
 }
 
 /*!
-  This method specifies wether normal graph traversal should be done
-  (searchAll = FALSE) (default), or wether every single node should be
-  searched (searchAll = TRUE).
-*/
+  Specifies whether normal graph traversal should be done (\a
+  searchall is \c FALSE) (which is the default setting), or if every
+  single node should be searched (\a searchall is \c TRUE).
 
+  If the \a searchall flag is \c TRUE, even nodes considered "hidden"
+  by other actions are searched (like for instance the disabled
+  children of SoSwitch nodes).
+*/
 void
-SoSearchAction::setSearchingAll(const SbBool searchAll)
+SoSearchAction::setSearchingAll(const SbBool searchall)
 {
-  this->searchAll = searchAll;
+  this->searchall = searchall;
 }
 
 /*!
-  This method returns the traversal method configuration of the action.
-  Default is not to traverse every single node, but to honor switches
-  among others...
+  Returns the traversal method configuration of the action.
 */
-
 SbBool
 SoSearchAction::isSearchingAll(void) const
 {
-  return this->searchAll;
+  return this->searchall;
 }
 
 /*!
-  This method returns the path to the node of interest that matched the
-  search criterions.  If ALL matches are of interest, NULL is returned, and
-  the result must be fetched through SoSearchAction::getPaths().
-  If no match was found, NULL is returned.
-*/
+  Returns the path to the node of interest that matched the search
+  criterions. If no match was found, \c NULL is returned.
 
+  Note that if \c ALL matches are of interest, the result of a search
+  action must be fetched through SoSearchAction::getPaths().
+  
+*/
 SoPath *
 SoSearchAction::getPath(void) const
 {
@@ -260,11 +248,11 @@ SoSearchAction::getPath(void) const
 }
 
 /*!
-  This method returns a path list for all nodes that matched the search
-  criterions.  If interest were only FIRST or LAST, this method returns
-  an empty path list, and SoSearchAction::getPath() should be used..
-*/
+  Returns a path list of all nodes that matched the search criterions.
 
+  Note that if interest were only \c FIRST or \c LAST,
+  SoSearchAction::getPath() should be used instead of this method.
+*/
 SoPathList &
 SoSearchAction::getPaths(void)
 {
@@ -272,38 +260,29 @@ SoSearchAction::getPaths(void)
 }
 
 /*!
-  This method sets all the SoSearchAction internals back to their default
+  Resets all the SoSearchAction internals back to their default
   values.
 */
-
 void
 SoSearchAction::reset(void)
 {
-  this->lookFor = 0;
-  this->interest = FIRST;
-  this->searchAll = FALSE;
-  this->includeDerived = TRUE;
-  if (this->node) {
-    this->node->unref();
-    this->node = NULL;
-  }
+  this->lookfor = 0;
+  this->interest = SoSearchAction::FIRST;
+  this->searchall = FALSE;
+  this->chkderived = TRUE;
+  this->node = NULL;
   this->type = SoType::badType();
   this->name = SbName("");
-  if (this->path) {
-    this->path->unref();
-    this->path = NULL;
-  }
+  if (this->path) this->path->unref();
+  this->path = NULL;
   this->paths.truncate(0);
 }
 
-// *************************************************************************
-// extender methods
-
 /*!
-  This extender method marks the SoSearchAction instance as having found all
-  nodes of interest.
-*/
+  \internal
 
+  Marks the SoSearchAction instance as terminated.
+*/
 void
 SoSearchAction::setFound(void)
 {
@@ -311,8 +290,9 @@ SoSearchAction::setFound(void)
 }
 
 /*!
-  This extender method returns wether the SoSearchAction instance has found
-  all nodes of interest.
+  \internal
+
+  Returns whether the search action was terminated.
 */
 
 SbBool
@@ -322,11 +302,12 @@ SoSearchAction::isFound(void) const
 }
 
 /*!
-  This extender method sets the path, or adds the path to the path list,
-  depending on the interest configuration.  The path is not copied, so it
-  can not be modified after being added without side effects.
-*/
+  \internal
 
+  Sets the path, or adds the path to the path list, depending on the
+  interest configuration.  The path is not copied, so it can not be
+  modified after being added without side effects.
+*/
 void
 SoSearchAction::addPath(SoPath * const path)
 {
@@ -337,7 +318,7 @@ SoSearchAction::addPath(SoPath * const path)
     assert(! this->path); // should be NULL
     this->path = path;
     this->path->ref();
-    setFound();
+    this->setFound();
     break;
 
   case LAST:
@@ -352,8 +333,7 @@ SoSearchAction::addPath(SoPath * const path)
     break;
 
   default:
-    SoDebugError::post("SoSearchAction::addPath()",
-      "this->interest is invalid (%d)", this->interest);
+    assert(FALSE && "Interest setting is invalid");
     break;
   }
 }
@@ -361,17 +341,14 @@ SoSearchAction::addPath(SoPath * const path)
 // *************************************************************************
 
 /*!
-  This method initiates the SoSearchAction instance on the scene graph.
+  Overloaded from superclass to initialize internal data.
 */
-
 void
 SoSearchAction::beginTraversal(SoNode * node)
 {
   this->paths.truncate(0);
-  if (this->path) {
-    this->path->unref();
-    this->path = NULL;
-  }
+  if (this->path) this->path->unref();
+  this->path = NULL;
 
   // begin traversal at root node
   this->traverse(node);

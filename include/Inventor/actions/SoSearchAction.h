@@ -42,16 +42,15 @@ public:
 
   void setNode(SoNode * const node);
   SoNode * getNode(void) const;
-  void setType(const SoType type,
-                const SbBool includeDerived = TRUE);
-  SoType getType(SbBool & includeDerived) const;
+  void setType(const SoType type, const SbBool chkderived = TRUE);
+  SoType getType(SbBool & chkderived) const;
   void setName(const SbName name);
   SbName getName(void) const;
   void setFind(const int what);
   int getFind(void) const;
   void setInterest(const Interest interest);
   Interest getInterest(void) const;
-  void setSearchingAll(const SbBool searchAll);
+  void setSearchingAll(const SbBool searchall);
   SbBool isSearchingAll(void) const;
   SoPath * getPath(void) const;
   SoPathList & getPaths(void);
@@ -65,16 +64,12 @@ protected:
   virtual void beginTraversal(SoNode * node);
 
 private:
-  int lookFor; // mask of LookFor flags
+  int lookfor;
   Interest interest;
-
-  SbBool searchAll;
-  SbBool includeDerived;
-
+  SbBool searchall, chkderived;
   SoNode * node;
   SoType type;
   SbName name;
-
   SoPath * path;
   SoPathList paths;
 };

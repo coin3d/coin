@@ -27,7 +27,7 @@
 #         SoIntersectionDetectionAction
 # I       SoPickAction
 # i           SoRayPickAction
-# id      SoSearchAction
+# ID      SoSearchAction
 #         SoSimplifyAction
 #             SoGlobalSimplifyAction
 #             SoReorganizeAction
