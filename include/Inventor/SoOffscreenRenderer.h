@@ -87,21 +87,8 @@ public:
   SbBool writeToFile(const SbString & filename, const SbName & filetypeextension) const; 
 
 private:
-
   friend class SoOffscreenRendererP;
   class SoOffscreenRendererP * pimpl;
-  /*
-  SbBool renderFromBase(SoBase * base);
-  void convertBuffer(void);
-
-  SbViewportRegion viewport;
-  SbColor backgroundcolor;
-  Components components;
-  SoGLRenderAction * renderaction;
-  SbBool didallocaction;
-  class SoOffscreenInternalData * internaldata;
-  unsigned char * buffer;
-  */
 };
 
 #endif // !COIN_SOOFFSCREENRENDERER_H
