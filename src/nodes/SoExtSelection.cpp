@@ -1156,10 +1156,13 @@ SoExtSelection::setLassoFilterCallback(SoLassoSelectionFilterCB * f, void * user
 
 /*!
   Sets the callback that will be called for every triangle inside the
-  lasso/rectangle when selecting. The user should return \e FALSE if
-  he/she wants to continue receiving callbacks. When the user returns
-  \e TRUE, the object/shape is selected, and no more callbacks will be
-  invoked for the object.
+  lasso/rectangle when selecting.
+
+  The callback should return \c FALSE if it wants to continue being
+  invoked. When the callback returns \c TRUE, the object/shape is
+  selected, and no more callbacks will be invoked for the object.
+
+  \sa setLineSegmentFilterCallback, setPointFilterCallback
 */
 void
 SoExtSelection::setTriangleFilterCallback(SoExtSelectionTriangleCB * func,
@@ -1171,10 +1174,13 @@ SoExtSelection::setTriangleFilterCallback(SoExtSelectionTriangleCB * func,
 
 /*!
   Sets the callback that will be called for every line segment inside
-  the lasso/rectangle when selecting. The user should return \e FALSE
-  if he/she wants to continue receiving callbacks. When the user
-  returns \e TRUE, the object/shape is selected, and no more callbacks
-  will be invoked for the object.
+  the lasso/rectangle when selecting.
+
+  The callback should return \c FALSE if it wants to continue being
+  invoked. When the callback returns \c TRUE, the object/shape is
+  selected, and no more callbacks will be invoked for the object.
+
+  \sa setTriangleFilterCallback, setPointFilterCallback
 */
 void
 SoExtSelection::setLineSegmentFilterCallback(SoExtSelectionLineSegmentCB * func,
@@ -1186,10 +1192,13 @@ SoExtSelection::setLineSegmentFilterCallback(SoExtSelectionLineSegmentCB * func,
 
 /*!
   Sets the callback that will be called for every point inside the
-  lasso/rectangle when selecting. The user should return \e FALSE if
-  he/she wants to continue receiving callbacks. When the user returns
-  \e TRUE, the object/shape is selected, and no more callbacks will be
-  invoked for the object.
+  lasso/rectangle when selecting.
+
+  The callback should return \c FALSE if it wants to continue being
+  invoked. When the user returns \c TRUE, the object/shape is
+  selected, and no more callbacks will be invoked for the object.
+
+  \sa setLineSegmentFilterCallback, setTriangleFilterCallback
 */
 void
 SoExtSelection::setPointFilterCallback(SoExtSelectionPointCB * func,
@@ -1835,21 +1844,16 @@ SoExtSelectionP::lineSegmentCB(void *userData,
     int flag = 0x1 << (thisp->offscreencolorcounter & 0x07);
     int index = thisp->offscreencolorcounter >> 3;
     
-    if(thisp->visibletrianglesbitarray[index] & flag){
-      
-      if(thisp->lineFilterCB(thisp->lineFilterCBData, action, v1, v2)){
+    if (thisp->visibletrianglesbitarray[index] & flag) {
+      if (thisp->lineFilterCB &&
+          thisp->lineFilterCB(thisp->lineFilterCBData, action, v1, v2)) {
         thisp->primcbdata.hit = TRUE;
         thisp->primcbdata.allhit = TRUE;
       }
     }
-    
     ++thisp->offscreencolorcounter;
-    
   }
-
 }
-
-
 
 void
 SoExtSelectionP::addLineToOffscreenBuffer(SoCallbackAction * action,
@@ -1989,17 +1993,15 @@ SoExtSelectionP::pointCB(void *userData,
     int flag = 0x1 << (thisp->offscreencolorcounter & 0x07);
     int index = thisp->offscreencolorcounter >> 3;
     
-    if(thisp->visibletrianglesbitarray[index] & flag){
-        
-      if(thisp->pointFilterCB(thisp->pointFilterCBData, action, v)){
+    if (thisp->visibletrianglesbitarray[index] & flag) {
+      if (thisp->pointFilterCB &&
+          thisp->pointFilterCB(thisp->pointFilterCBData, action, v)) {
         thisp->primcbdata.hit = TRUE;
         thisp->primcbdata.allhit = TRUE;
       }
     }
     ++thisp->offscreencolorcounter;
-    
   }
-  
 }
 
 void
