@@ -26,11 +26,12 @@
 */
 
 #include <Inventor/fields/SoSFPath.h>
-#include <Inventor/fields/SoMFPath.h>
-#include <Inventor/SbName.h>
-#include <coindefs.h> // COIN_STUB()
+
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
+#include <Inventor/actions/SoWriteAction.h>
+#include <Inventor/fields/SoMFPath.h>
+#include <coindefs.h> // COIN_STUB()
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -89,14 +90,23 @@ SoSFPath::referencesCopy(void) const
   return FALSE;
 }
 
-/*!
-  FIXME: write function documentation
-*/
+#ifndef DOXYGEN_SKIP_THIS
+
 void
-SoSFPath::writeValue(SoOutput * /* out */) const
+SoSFPath::writeValue(SoOutput * out) const
 {
-  COIN_STUB();
+  SoPath * path = this->getValue();
+  if (path) {
+    SoWriteAction wa(out);
+    path->write(&wa);
+  }
+  else {
+    // This actually works for both ASCII and binary formats.
+    out->write("NULL");
+  }
 }
+
+#endif // DOXYGEN_SKIP_THIS
 
 void
 SoSFPath::convertTo(SoField * dest) const
@@ -120,5 +130,12 @@ void
 SoSFPath::countWriteRefs(SoOutput * out) const
 {
   inherited::countWriteRefs(out);
-  COIN_STUB();
+
+  SoPath * p = this->getValue();
+  // Set the "from field" flag as FALSE, is that flag is meant to be
+  // used for references through field-to-field connections.
+  if (p) {
+    SoWriteAction wa(out);
+    p->write(&wa);
+  }
 }

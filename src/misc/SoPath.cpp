@@ -37,11 +37,13 @@
 #include <Inventor/SoPath.h>
 
 #include <Inventor/SbString.h>
-#include <Inventor/SbName.h>
-#include <coindefs.h> // COIN_STUB()
-#include <Inventor/nodes/SoNode.h>
-#include <Inventor/nodes/SoGroup.h>
+#include <Inventor/SoOutput.h>
+#include <Inventor/actions/SoWriteAction.h>
+#include <Inventor/lists/SoPathList.h>
 #include <Inventor/misc/SoChildList.h>
+#include <Inventor/nodes/SoGroup.h>
+#include <Inventor/nodes/SoNode.h>
+#include <coindefs.h> // COIN_STUB()
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -507,7 +509,7 @@ operator==(const SoPath & lhs, const SoPath & rhs)
 SbBool
 operator!=(const SoPath & lhs, const SoPath & rhs)
 {
-  return !this->operator==(lhs, rhs);
+  return !(lhs == rhs);
 }
 
 // *************************************************************************
@@ -553,26 +555,29 @@ SoPath::copy(const int startfromnodeindex, int numnodes) const
 
 /*!
   This static method is for retrieving an SoPath by it's \a name.  The
-  first SoPath found with the given \a name is returned, or \c NULL if
-  no such SoPath exists.
+  last registered SoPath with the given \a name is returned, or \c
+  NULL if no SoPath by \a name exists.
 */
 SoPath *
 SoPath::getByName(const SbName name)
 {
-  COIN_STUB();
-  return NULL;
+  SoBase * b = SoBase::getNamedBase(name, SoPath::getClassTypeId());
+  if (!b) return NULL;
+  return (SoPath *)b;
 }
 
 /*!
   This static method is for finding all the paths with a given \a name
-  and append them to the \a l list. The number of lists found is
-  returned.
+  and append them to the \a l list. The number of SoPath instances
+  with \a name found is returned.
 */
 int
 SoPath::getByName(const SbName name, SoPathList & l)
 {
-  COIN_STUB();
-  return 0;
+  SoBaseList bl;
+  int nr = SoBase::getNamedBases(name, bl, SoPath::getClassTypeId());
+  for (int i=0; i < nr; i++) l.append((SoPath *)bl[i]);
+  return nr;
 }
 
 // *************************************************************************
@@ -639,12 +644,113 @@ SoPath::replaceIndex(SoNode * const parent, const int index,
 // *************************************************************************
 
 /*!
-  This method is used to write an SoPath.
+  This method is used to write the contents of an SoPath.
+
+  A path is written as:
+  \code
+    Path {
+      HEAD-NODE-OF-SUBGRAPH
+      NUMBER-OF-INDICES
+      INDEX0
+      INDEX1
+      ...
+    }
+  \endcode
+
+
+  [The rest of the documentation for this method only explains the
+  reason behind a mismatch in behavior between the original Open
+  Inventor and Coin. Don't read it if you're not taking a particular
+  interest. (Short version: we do SoPath export in a somewhat more
+  inefficient way to avoid the potential for bugs).]
+
+  Note that unlike Open Inventor, we write the complete subgraph below
+  the head node. Only writing the parts of the subgraph affecting the
+  state for nodes within the path is error prone if a subgraph is
+  written out as part of path \e before it is written out
+  "properly". Consider writing a scene graph which looks like this (in
+  memory):
+
+  \code
+    DEF top_sep Separator {
+      Cone { }
+      DEF a_sphere Sphere { }
+      Cube { }
+    }
+
+    DEF path_switch PathSwitch {
+      path Path {
+        ...path from "top_sep" to "a_sphere"...
+      }
+    }
+  \endcode
+
+  ..if we now do:
+
+  \code
+    SoSeparator * root = new SoSeparator;
+    root->addChild([ptr to path_switch]);
+    root->addChild([ptr to top_sep]);
+    SoWriteAction wa;
+    wa.apply(root);
+  \endcode
+
+  ..we would get the scene graph exported like this:
+
+  \code
+    Separator {
+      DEF path_switch PathSwitch {
+        path Path {
+          DEF top_sep Separator {
+            DEF a_sphere Sphere {
+            }
+          }
+          1
+          0
+        }
+      }
+      USE top_sep
+    }
+  \endcode
+
+  ..and as you can see, \e both the Cone and the Cube nodes has
+  vanished, as they was not important for the part per se, and not
+  written as part of it.
+
+  This is why we do full subgraph export for head nodes in paths.
 */
 void
-SoPath::write(SoWriteAction * action) const
+SoPath::write(SoWriteAction * action)
 {
-  COIN_STUB();
+  SoOutput * out = action->getOutput();
+
+  if (out->getStage() == SoOutput::COUNT_REFS) {
+    inherited::addWriteReference(out, FALSE);
+    if (!this->hasMultipleWriteRefs()) {
+      SoWriteAction wa(out);
+      wa.continueToApply(this->getHead());
+    }
+  }
+  else if (out->getStage() == SoOutput::WRITE) {
+    if (this->writeHeader(out, FALSE, FALSE)) return;
+
+    SoWriteAction wa(out);
+    wa.continueToApply(this->getHead());
+    
+    int nrindices = this->indices.getLength();
+    if (!out->isBinary()) out->indent();
+    out->write(nrindices - 1);
+    if (!out->isBinary()) out->write('\n');
+
+    for (int i=1; i < nrindices; i++) {
+      if (!out->isBinary()) out->indent();
+      out->write(this->indices[i]);
+      if (!out->isBinary()) out->write('\n');
+    }
+
+    this->writeFooter(out);
+  }
+  else assert(0 && "unknown stage");
 }
 
 // *************************************************************************

@@ -78,7 +78,7 @@ public:
                     SoNode * const newchild);
   SbBool isRelevantNotification(SoNotList * const l) const;
 
-  virtual void write(SoWriteAction * action) const;
+  virtual void write(SoWriteAction * action);
 
 protected:
   virtual ~SoPath();
