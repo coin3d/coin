@@ -78,6 +78,9 @@ public:
   int getCurPass(void) const;
   SbBool abortNow(void);
 
+  void setRenderingIsRemote(SbBool isremote);
+  SbBool getRenderingIsRemote(void) const;
+
 protected:
   virtual void beginTraversal(SoNode * node);
   virtual void endTraversal(SoNode * node);
@@ -109,6 +112,7 @@ private:
   SbList<float> transpobjdistances;
   class SoGetBoundingBoxAction * bboxaction;
   SbVec2f updateorigin, updatesize;
+  SbBool renderingremote;
 };
 
 #endif // !COIN_SOGLRENDERACTION_H

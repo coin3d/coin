@@ -182,6 +182,7 @@ SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportregion)
   this->bboxaction = NULL;
   this->updateorigin.setValue(0.0f, 0.0f);
   this->updatesize.setValue(1.0f, 1.0f);
+  this->renderingremote = FALSE;
 }
 
 /*!
@@ -623,6 +624,36 @@ SoGLRenderAction::abortNow(void)
 {
   COIN_STUB(); // FIXME
   return FALSE;
+}
+
+/*!
+  Let SoGLRenderAction instance know if application is running on the
+  local machine or if the rendering instructions are sent over the
+  network.
+
+  This call has no effect in Coin for now, but eventually it will be
+  used to optimize rendering (the displaylist caching strategy should
+  be influenced by this flag to be more aggressive with the caching
+  when rendering instructions are passed over the network).
+
+  \sa getRenderingIsRemote()
+ */
+void
+SoGLRenderAction::setRenderingIsRemote(SbBool isremote)
+{
+  // FIXME: this setting is not used yet. 20000628 mortene.
+  this->renderingremote = isremote;
+}
+
+/*!
+  Returns whether or not the application is running remotely.
+
+  \sa setRenderingIsRemote()
+ */
+SbBool
+SoGLRenderAction::getRenderingIsRemote(void) const
+{
+  return this->renderingremote;
 }
 
 /*!
