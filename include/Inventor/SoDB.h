@@ -98,6 +98,12 @@ public:
   static void addProgressCallback(ProgressCallbackType * func, void * userdata);
   static void removeProgressCallback(ProgressCallbackType * func, void * userdata);
 
+  static SbBool isMultiThread(void);
+  static void readlock(void);
+  static void readunlock(void);
+  static void writelock(void);
+  static void writeunlock(void);
+
 private:
   static SoGroup * readAllWrapper(SoInput * in, const SoType & grouptype);
 };

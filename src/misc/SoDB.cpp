@@ -200,6 +200,100 @@
 
 */
 
+/*
+  FIXME: document all variables. pederb, 2004-03-22
+
+  \page environment_variables Environment variables
+
+  Debug related:
+
+  COIN_DEBUG_GLU_INFO 
+  COIN_DEBUG_FONTSUPPORT
+  COIN_DEBUG_3DS
+  COIN_DEBUG_AUDIO
+  COIN_DEBUG_BREAK
+  COIN_DEBUG_CACHING
+  COIN_DEBUG_DL
+  COIN_DEBUG_IMPORT
+  COIN_DEBUG_LISTMODULES
+  COIN_DEBUG_SOINPUT_FINDFILE
+  COIN_DEBUG_SOOFFSCREENRENDERER
+  COIN_DEBUG_WRITEREFS
+  COIN_RANDOMIZE_RENDER_CACHING
+
+  Font/Text rendering related:
+
+  COIN_FREETYPE2_LIBNAME
+  COIN_FORCE_FREETYPE_OFF
+  COIN_FORCE_WIN32FONTS_OFF
+  COIN_FONT_PATH
+
+  COIN_GLU_LIBNAME
+  COIN_AGLGLUE_NO_PBUFFERS
+  COIN_DEBUG_DL
+  COIN_SIMAGE_LIBNAME
+  COIN_GLXGLUE_NO_GLX13_PBUFFERS
+  COIN_GLXGLUE_NO_PBUFFERS
+  COIN_ZLIB_LIBNAME
+  COIN_BZIP2_LIBNAME
+  COIN_WGLGLUE_NO_PBUFFERS
+  COIN_DONT_MANGLE_OUTPUT_NAMES
+  COIN_EXTSELECTION_SAVE_OFFSCREENBUFFER
+  COIN_FORCE_TILED_OFFSCREENRENDERING
+  COIN_GLERROR_DEBUGGING
+  COIN_IDA_DEBUG
+  COIN_OFFSCREENRENDERER_MAX_TILESIZE
+  COIN_OFFSCREENRENDERER_TILEHEIGHT
+  COIN_OFFSCREENRENDERER_TILEWIDTH
+  COIN_OLDSTYLE_FORMATTING
+  COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE
+  COIN_SOINPUT_SEARCH_GLOBAL_DICT
+  COIN_SOOFFSCREENRENDERER_TILEPREFIX
+  COIN_SORTED_LAYERS_USE_NVIDIA_RC
+
+  Sound related:
+
+  COIN_SOUND_BUFFER_LENGTH
+  COIN_SOUND_DISABLE
+  COIN_SOUND_DRIVER_NAME
+  COIN_SOUND_ENABLE
+  COIN_SOUND_INTRO_PAUSE
+  COIN_SOUND_NUM_BUFFERS
+  COIN_SOUND_THREAD_SLEEP_TIME
+  COIN_OPENAL_LIBNAME
+
+  Texture control related:
+
+  COIN_TEX2_LINEAR_LIMIT
+  COIN_TEX2_LINEAR_MIPMAP_LIMIT
+  COIN_TEX2_MIPMAP_LIMIT
+  COIN_TEX2_SCALEUP_LIMIT
+  COIN_TEX2_USE_GLTEXSUBIMAGE
+  COIN_MAXIMUM_TEXTURE2_SIZE
+  COIN_MAXIMUM_TEXTURE3_SIZE
+
+  Rendering (OpenGL) related:
+
+  COIN_USE_GL_VERTEX_ARRAYS
+  COIN_NORMALIZATION_CUBEMAP_SIZE
+  OIV_NUM_SORTED_LAYERS_PASSES
+  COIN_MAX_VBO_MEMORY
+  COIN_NUM_SORTED_LAYERS_PASSES
+  COIN_QUADMESH_PRECISE_LIGHTING
+  COIN_ENABLE_CONFORMANT_GL_CLAMP
+
+  IV_SEPARATOR_MAX_CACHES
+  COIN_AUTOCACHE_LOCAL_MAX
+  COIN_AUTOCACHE_LOCAL_MIN
+  COIN_AUTOCACHE_REMOTE_MAX
+  COIN_AUTOCACHE_REMOTE_MIN
+  COIN_AUTO_CACHING
+  COIN_ENABLE_VBO
+
+  SO_DRAGGER_DIR
+*/
+
+
 /* *********************************************************************** */
 
 /*!
@@ -276,6 +370,8 @@
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbStorage.h>
+#include <Inventor/threads/SbRWMutex.h>
+static SbRWMutex * sodb_globalmutex = NULL;
 static SbStorage * sodb_notificationcounter_storage = NULL;
 #endif // COIN_THREADSAFE
 
@@ -390,6 +486,7 @@ SoDB::init(void)
   cc_thread_init();
 #ifdef COIN_THREADSAFE
   sodb_notificationcounter_storage = new SbStorage(sizeof(int), sodb_clear_counter, NULL);
+  sodb_globalmutex = new SbRWMutex(SbRWMutex::READ_PRECEDENCE);
 #endif // COIN_THREADSAFE
 #endif // HAVE_THREADS
 
@@ -705,6 +802,7 @@ SoDBP::clean(void)
   // we can't delete this here since it might be needed by some atexit
   // functions
   // delete sodb_notificationcounter_storage;
+  delete sodb_globalmutex;
 #endif // COIN_THREADSAFE
 #endif // COIN_DEBUG
 }
@@ -1610,6 +1708,105 @@ SoDB::removeProgressCallback(ProgressCallbackType * func, void * userdata)
   const int idx = SoDBP::progresscblist->find(item);
   assert(idx != -1);
   SoDBP::progresscblist->remove(idx);
+}
+
+/*!  
+  Returns \e TRUE if this is a thread safe version of Coin is
+  (compiled with --enable-threadsafe).
+*/
+SbBool 
+SoDB::isMultiThread(void)
+{
+#ifdef COIN_THREADSAFE
+  return TRUE;
+#else // COIN_THREADSAFE
+  return FALSE;
+#endif // !COIN_THREADSAFE
+}
+
+/*!
+
+  Places a read lock on the global SoDB mutex. This can be used to
+  synchronize between threads that are reading/writing Coin scene
+  graphs.
+
+  If you call this function, you must make sure that you also call
+  SoDB::readunlock(). If you fail to do this, you might experience
+  that your application locks up.
+
+  All Coin actions has a read-lock on the global SoDB mutex while
+  traversing the scene graph.
+
+  The function name needs to be lowercase-only to be compatible with
+  TGS Inventor.
+
+  \sa SoDB::readunlock(), SoDB::writelock()
+
+  \since Coin 2.3
+*/
+void
+SoDB::readlock(void) 
+{ 
+#ifdef COIN_THREADSAFE
+  sodb_globalmutex->readLock(); 
+#endif // COIN_THREADSAFE 
+}
+
+/*!
+  Unlocks the read lock on the global SoDB mutex.
+
+  The function name needs to be lowercase-only to be compatible with
+  TGS Inventor.
+
+  \sa SoDB::readlock()
+  \since Coin 2.3
+*/ 
+void 
+SoDB::readunlock(void)
+{
+#ifdef COIN_THREADSAFE
+  sodb_globalmutex->readUnlock();
+#endif // COIN_THREADSAFE
+}
+
+/*!  
+  Places a write lock on the global SoDB mutex. This can be used to
+  prevent that the scene graph is read or traversed while you modify
+  the scene graph.
+
+  If you call this function, you must make sure that you also call
+  SoDB::writeunlock(). If you fail to do this, you might experience
+  that your application locks up.
+
+  The function name needs to be lowercase-only to be compatible with
+  TGS Inventor.
+
+  \sa SoDB::readlock()
+  \since Coin 2.3  
+*/
+void 
+SoDB::writelock(void)
+{
+#ifdef COIN_THREADSAFE
+  sodb_globalmutex->writeLock();
+#endif // COIN_THREADSAFE
+}
+
+/*!
+  Unlocks the write lock on the global SoDB mutex.
+
+  The function name needs to be lowercase-only to be compatible with
+  TGS Inventor.
+
+  \sa SoDB::writelock()
+  \since Coin 2.3  
+*/
+void 
+SoDB::writeunlock(void)
+{
+#ifdef COIN_THREADSAFE
+  sodb_globalmutex->writeUnlock();
+#endif // COIN_THREADSAFE
 }
 
 /* *********************************************************************** */
