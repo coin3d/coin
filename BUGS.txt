@@ -3782,3 +3782,17 @@ main(int argc, char* argv[])
     20040902 mortene.
 
 =====================================================================
+
+136 Configure/build won't find compiler's current function name
+    define separately for C++ and C compilers.
+
+    This can potentially cause a problem if these are different. We've
+    had a problem report about this from an external developer on
+    Solaris (using the Forte compiler suite).
+
+    The work-around is simple; just set CC=<c++-compiler>, but this
+    should still be handled properly by configure.
+
+    20040902 mortene.
+
+=====================================================================
