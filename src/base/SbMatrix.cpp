@@ -244,61 +244,17 @@ float
 SbMatrix::det3(int r1, int r2, int r3,
                int c1, int c2, int c3) const
 {
-#if COIN_DEBUG
-  if (r1<0 || r1>3) {
-    SoDebugError::postWarning("SbMatrix::det3",
-                              "r1 parameter (%f) out of bounds [0, 3]. "
-                              "Clamping to bounds.", r1);
-    if (r1<0) r1=0;
-    else if (r1>3) r1=3;
+#if COIN_EXTRA_DEBUG
+  // Check indices.
+  if (r1<0 || r1>3 || r2<0 || r2>3 || r3<0 || r3>3 ||
+      c1<0 || c1>3 || c2<0 || c2>3 || c3<0 || c3>3) {
+    SoDebugError::post("SbMatrix::det3",
+		       "At least one idx out of bounds [0, 3]. ");
   }
-  if (r2<0 || r2>3) {
-    SoDebugError::postWarning("SbMatrix::det3",
-                              "r2 parameter (%f) out of bounds [0, 3]. "
-                              "Clamping to bounds.", r2);
-    if (r2<0) r2=0;
-    else if (r2>3) r2=3;
-  }
-  if (r3<0 || r3>3) {
-    SoDebugError::postWarning("SbMatrix::det3",
-                              "r3 parameter (%f) out of bounds [0, 3]. "
-                              "Clamping to bounds.", r3);
-    if (r3<0) r3=0;
-    else if (r3>3) r3=3;
-  }
-  if (c1<0 || c1>3) {
-    SoDebugError::postWarning("SbMatrix::det3",
-                              "c1 parameter (%f) out of bounds [0, 3]. "
-                              "Clamping to bounds.", c1);
-    if (c1<0) c1=0;
-    else if (c1>3) c1=3;
-  }
-  if (c2<0 || c2>3) {
-    SoDebugError::postWarning("SbMatrix::det3",
-                              "c2 parameter (%f) out of bounds [0, 3]. "
-                              "Clamping to bounds.", c2);
-    if (c2<0) c2=0;
-    else if (c2>3) c2=3;
-  }
-  if (c3<0 || c3>3) {
-    SoDebugError::postWarning("SbMatrix::det3",
-                              "c3 parameter (%f) out of bounds [0, 3]. "
-                              "Clamping to bounds.", c3);
-    if (c3<0) c3=0;
-    else if (c3>3) c3=3;
-  }
-#endif // COIN_DEBUG
-
-#if COIN_DEBUG
-  if (r1==r2 || r1==r3 || r2==r3)
-    SoDebugError::postWarning("SbMatrix::det3",
-                              "Row indices (%d, %d, %d) should be distinct.",
-                              r1, r2, r3);
-  if (c1==c2 || c1==c3 || c2==c3)
-    SoDebugError::postWarning("SbMatrix::det3",
-                              "Column indices (%d, %d, %d) should be distinct.",
-                              c1, c2, c3);
-#endif // COIN_DEBUG
+  if (r1==r2 || r1==r3 || r2==r3 ||
+      c1==c2 || c1==c3 || c2==c3)
+    SoDebugError::post("SbMatrix::det3", "Indices should be distinct.");
+#endif // COIN_EXTRA_DEBUG
 
   // More or less directly from "Advanced Engineering Mathematics"
   // (E. Kreyszig), 6th edition.
@@ -610,7 +566,6 @@ void
 SbMatrix::setTranslate(const SbVec3f & t)
 {
   this->makeIdentity();
-
   this->matrix[3][0] = t[0];
   this->matrix[3][1] = t[1];
   this->matrix[3][2] = t[2];
