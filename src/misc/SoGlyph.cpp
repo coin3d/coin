@@ -387,10 +387,17 @@ public:
     this->angle = 0.0;
   }
   coin_glyph_info(const unsigned int character, const float size, const SbName &font, SoGlyph *glyph, const float angle)
-    : character(character), size(size), font(font), glyph(glyph), angle(angle) {}
+  {
+    this->character = character;
+    this->size = size;
+    this->font = font;
+    this->angle = angle;
+    this->glyph = glyph;
+  }
   
   // Note: bitmap glyphs have valid size, polygonal glyphs have size=-1.0
-  SbBool matches(const unsigned int character, const float size, const SbName font, const float angle) {
+  SbBool matches(const unsigned int character, const float size, 
+                 const SbName font, const float angle) {
     return (this->character == character) && (this->size == size) && (this->font == font) && (this->angle == angle);
   }
   
@@ -429,6 +436,7 @@ SoGlyph_cleanup(void)
 const SoGlyph *
 SoGlyph::getGlyph(const char character, const SbName & font)
 {
+
   // FIXME: the API and implementation of this class isn't consistent
   // with regard to the paraneters and variabls that are glyph codes
   // -- some places they are "char", other places "int", some places
@@ -496,9 +504,6 @@ SoGlyph::getGlyph(const char character, const SbName & font)
   activeGlyphs->append(info);
   CC_MUTEX_UNLOCK(SoGlyph_mutex);
   return glyph;
-  
-
-  return NULL;
 
 }
 
@@ -542,16 +547,7 @@ SoGlyph::getGlyph(SoState * state,
     state_name = SbName("defaultFont");
     state_size = 10.0;
   } 
-  
-  // FIXME: If the name 'defaultFont' is sent to the font wrapper, the
-  // space in between each letter will be to large. I haven't manage to
-  // track down the cause yet, but preventing the default font name to
-  // be 'defaultFont' solves the problem... This only affects 3D
-  // chars. (29Aug2003 handegar)
-  if (state_name == SbName("defaultFont"))
-     state_name = SbName("");
-  
-
+     
   SbVec2s fontsize((short)state_size, (short)state_size);
   if (size != SbVec2s(0,0)) { fontsize = size; }
   
@@ -569,24 +565,21 @@ SoGlyph::getGlyph(SoState * state,
 
   int i, n = activeGlyphs->getLength();
   for (i = 0; i < n; i++) {
-    if ((*activeGlyphs)[i].matches(character, fontsize[0], state_name, angle)) break;
-  }
-  if (i < n) {
-    SoGlyph *glyph = (*activeGlyphs)[i].glyph;
-    PRIVATE(glyph)->refcount++;
-    CC_MUTEX_UNLOCK(SoGlyph_mutex);
-    return glyph;
+    if ((*activeGlyphs)[i].matches(character, fontsize[0], state_name, angle)) {
+      SoGlyph *glyph = (*activeGlyphs)[i].glyph;
+      PRIVATE(glyph)->refcount++;
+      CC_MUTEX_UNLOCK(SoGlyph_mutex);
+      return glyph;
+    }
   }
   
   // FIXME: use font style in addition to font name. preng 2003-03-03
   SbString fontname = state_name.getString();
 
-  const int font = cc_flw_get_font(fontname.getString(), fontsize[0], fontsize[1]);
+  const int font = cc_flw_get_font(fontname.getString(), fontsize[0], fontsize[1], angle);
   // Should _always_ be able to get hold of a font.
   assert(font >= 0);
 
-  if (angle != 0)
-    cc_flw_set_font_rotation(font, angle);
 
   const int glyphidx = cc_flw_get_glyph(font, character);
 
@@ -601,7 +594,7 @@ SoGlyph::getGlyph(SoState * state,
   PRIVATE(g)->size = fontsize;
   PRIVATE(g)->angle = angle;
   PRIVATE(g)->character = character;
-  coin_glyph_info info(character, -1, state_name, g, angle);
+  coin_glyph_info info(character, state_size, state_name, g, angle);
   PRIVATE(g)->refcount++;
   activeGlyphs->append(info);
 
