@@ -145,7 +145,7 @@
 
 class SoGLRenderActionP {
 public:
-  SoGLRenderActionP(SoGLRenderAction * action) 
+  SoGLRenderActionP(SoGLRenderAction * action)
     : action(action) { }
 
   SoGLRenderAction * action;
@@ -715,7 +715,7 @@ SoGLRenderActionP::enableBlend(const SbBool force)
 {
   if (force || !this->isblendenabled) {
     glEnable(GL_BLEND);
-    if (!this->delayedpathrender && 
+    if (!this->delayedpathrender &&
         this->transparencytype != SoGLRenderAction::SCREEN_DOOR) {
       glDepthMask(GL_FALSE);
     }
@@ -729,7 +729,7 @@ SoGLRenderActionP::disableBlend(const SbBool force)
 {
   if (force || this->isblendenabled) {
     glDisable(GL_BLEND);
-    if (!this->delayedpathrender && 
+    if (!this->delayedpathrender &&
         this->transparencytype != SoGLRenderAction::SCREEN_DOOR) {
       glDepthMask(GL_TRUE);
     }
@@ -737,14 +737,14 @@ SoGLRenderActionP::disableBlend(const SbBool force)
   }
 }
 
-void 
+void
 SoGLRenderActionP::render(SoNode * node)
 {
   this->isrendering = TRUE;
 
   this->currentpass = 0;
 
-  if (this->transparencytype == SoGLRenderAction::SCREEN_DOOR && 
+  if (this->transparencytype == SoGLRenderAction::SCREEN_DOOR &&
       this->smoothing) {
     this->enableBlend(); // needed for line smoothing
   }
@@ -793,9 +793,12 @@ SoGLRenderActionP::renderMulti(SoNode * node)
   assert(this->numpasses > 1);
   float fraction = 1.0f / float(this->numpasses);
 
+  this->currentpass = 0;
   this->renderSingle(node);
+  if (this->action->hasTerminated()) return;
+
   glAccum(GL_LOAD, fraction);
-  
+
   for (int i = 1; i < this->numpasses; i++) {
     if (this->passupdate) {
       glAccum(GL_RETURN, float(this->numpasses) / float(i));
@@ -803,7 +806,7 @@ SoGLRenderActionP::renderMulti(SoNode * node)
     if (this->passcallback) this->passcallback(this->passcallbackdata);
     this->currentpass = i;
     this->renderSingle(node);
-    
+
     if (this->action->hasTerminated()) return;
     glAccum(GL_ACCUM, fraction);
   }
@@ -860,5 +863,5 @@ SoGLRenderActionP::renderSingle(SoNode * node)
     this->action->apply(this->delayedpaths, TRUE);
     this->delayedpathrender = FALSE;
     this->delayedpaths.truncate(0);
-  }  
+  }
 }
