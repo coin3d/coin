@@ -102,6 +102,9 @@ A:      Coin 1.* does not support VRML97.  Coin 2.0 and upwards supports it.
         bindable nodes, and scripting (can also be supported through
         callbacks).
 
+        VRML97 was amended in 2002 with amongst others GeoSpatial and NURBS
+        nodes.  You will not find these nodes in Coin 2 yet.
+
 
 Q1.5:   Is there an MS Visual C++ project I can use to build Coin?
 
@@ -201,10 +204,12 @@ A:      The MS Visual C++ compiler changes behaviour when you change between
 Q2.4:   I try to change the SoText2/SoText3 font, but nothing happens.
         Why, oh why?
 
-A:      The font support is currently limited to a hardcoded font for both
-        Text2 and Text3.  Better to have one font than none at all.
+A:      The font support prior to Coin 2.1 was limited to a hardcoded font
+        for both Text2 and Text3.  Better to have one font than none at all.
 
-        Support for external fonts is in development.
+        In Coin 2.1, we have implemented loading of truetype fonts for the
+        Text2 node.  Text3 support is not yet implemented.  It will maybe be
+        implemented for Coin 2.2.
 
 
 Q2.5:   Where does the SoGuiExamples module install the programs?
