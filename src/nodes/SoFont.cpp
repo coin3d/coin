@@ -51,8 +51,6 @@
 #include <Inventor/nodes/SoFont.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 
-#include <Inventor/C/tidbits.h>
-#include <Inventor/C/tidbitsp.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -62,7 +60,6 @@
 #include <Inventor/elements/SoFontSizeElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/C/glue/fontlib_wrapper.h>
 
 // *************************************************************************
 
@@ -98,56 +95,7 @@
 
 // *************************************************************************
 
-class SoFontP {
- public:
-  SoFont * owner;
-  SbString lastfontname;
-  float lastsize;
-  SbBool firsttime;
-  
-  SoFontP(SoFont * owner) {
-    this->owner = owner;
-    this->lastsize = 0.0f;
-    this->firsttime = TRUE;
-  }
-};
-
-// The following missing_pimpl_workaround taken from Coin-1 SoWWWInline.cpp
-
-// We forgot about this class before locking the Coin 2.0 ABI, so we
-// have to use an SbDict to store per-instance data members for this
-// class. In Coin 3.0 it's ok to break ABI-compatibility again, so we
-// don't use this little hack there, but rather the usual Cheshire Cat
-// pattern.
-
-static SbDict * sofont_private_data_dict = NULL;
-
-static void
-sofont_private_data_cleanup(void)
-{
-  delete sofont_private_data_dict;
-  sofont_private_data_dict = NULL;
-}
-
-static SoFontP *
-sofont_get_private_data(const SoFont * thisp)
-{
-  if (sofont_private_data_dict == NULL) {
-    sofont_private_data_dict = new SbDict;
-    coin_atexit((coin_atexit_f *)sofont_private_data_cleanup, 0);
-  }
-  void * pimpl;
-  if (!sofont_private_data_dict->find((unsigned long) thisp, pimpl)) {
-    pimpl = (void*) new SoFontP((SoFont*) thisp);
-    (void) sofont_private_data_dict->enter((unsigned long) thisp, pimpl);
-  }
-  return (SoFontP*) pimpl;
-}
-
 SO_NODE_SOURCE(SoFont);
-
-#undef PRIVATE
-#define PRIVATE(p) (sofont_get_private_data(p))
 
 /*!
   Constructor.
@@ -191,42 +139,7 @@ SoFont::doAction(SoAction * action)
 {
   SoState * state = action->getState();
   uint32_t flags = SoOverrideElement::getFlags(state);
-  
-
-  // FIXME: should *not* convert to the translated TTF name here! It's
-  // plain wrong (and it makes us incompatible with SGI
-  // Inventor). 20030317 mortene.
-
-  const char * this_name = this->name.getValue().getString();
-  const float this_size = this->size.getValue();
-  if (PRIVATE(this)->firsttime || 
-      PRIVATE(this)->lastsize != this_size || 
-      strcmp(PRIVATE(this)->lastfontname.getString(), this_name)) {
-    PRIVATE(this)->lastfontname = this->name.getValue();
-
-    // FIXME: this is the wrong place to do this -- should do it as
-    // late as possible, on demand.  I.e. from the text shape nodes
-    // requesting glyphs from the font. 20030527 mortene.
-
-    int font = cc_flw_create_font(this->name.getValue().getString(),
-                                  (int)this_size, (int)this_size);
-    // 'font' should _always_ be >= 0, due to our fall-back on the
-    // default font.
-    assert((font >= 0) && "could not create font");
-
-    if (cc_flw_debug()) {
-      const char * createdfontname = cc_flw_get_font_name(font);
-      SoDebugError::postInfo("SoFont::doAction",
-                             "attempt at creating font from '%s', "
-                             "actual font name is '%s'",
-                             this->name.getValue().getString(),
-                             createdfontname);
-    }
-
-    PRIVATE(this)->lastsize = this_size;
-    PRIVATE(this)->firsttime = FALSE;
-  }
-  
+    
 #define TEST_OVERRIDE(bit) ((SoOverrideElement::bit & flags) != 0)
   
   if (!name.isIgnored() && !TEST_OVERRIDE(FONT_NAME)) {
@@ -236,7 +149,7 @@ SoFont::doAction(SoAction * action)
     }
   }
   if (!size.isIgnored() && !TEST_OVERRIDE(FONT_SIZE)) {
-    SoFontSizeElement::set(state, this, this_size);
+    SoFontSizeElement::set(state, this, this->size.getValue());
     if (this->isOverride()) {
       SoOverrideElement::setFontSizeOverride(state, this, TRUE);
     }

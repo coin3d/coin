@@ -509,8 +509,7 @@ SoGlyph::getGlyph(SoState * state,
   SbString fontname = state_name.getString();
   const int font =
     cc_flw_get_font(fontname.getString(), fontsize[0], fontsize[1]);
-  // Should _always_ be able to get hold of the font, as
-  // cc_flw_create_font() should have been called in advance.
+  // Should _always_ be able to get hold of a font.
   assert(font >= 0);
 
   cc_flw_set_font_rotation(font, angle);
