@@ -263,38 +263,69 @@ cc_rwmutex_read_unlock(cc_rwmutex * rwmutex)
 /*!
   \class SbRWMutex Inventor/threads/SbRWMutex.h
   \ingroup multi-threading
+
+  The SbRWMutex is a mutex that i sused to grant both read and write access
+  to the data it protects.  Multiple threads can have read locks on the data
+  at once, but only one write-lock can be given out and not while a thread
+  has a read lock on the data.
+
+  The policy on granting read locks to threads when a thread is waiting for
+  the write lock is something that should be configurable at construction
+  time but which isn't at the moment.
 */
 
 /*!
   \fn SbRWMutex::SbRWMutex(void)
+
+  Constructor.
 */
 
 /*!
   \fn SbRWMutex::~SbRWMutex(void)
+
+  Destructor.
 */
 
 /*!
   \fn int SbRWMutex::writeLock(void)
+
+  This method blocks the calling thread until it gains write lock status
+  on the SbRWMutex object.
 */
 
 /*!
   \fn SbBool SbRWMutex::tryWriteLock(void)
+
+  This method tries to gain write lock status on the SbRWMutex.  TRUE is
+  returned if it was successful, FALSE otherwise.  This is a non-blocking
+  operation.
 */
 
 /*!
   \fn int SbRWMutex::writeUnlock(void)
+
+  This method is used for unlocking the calling thread's write lock.
 */
 
 /*!
   \fn int SbRWMutex::readLock(void)
+
+  This method blocks the calling thread until it gains read lock status
+  on the SbRWMutex object.
 */
 
 /*!
   \fn SbBool SbRWMutex::tryReadLock(void)
+
+  This method tries to gain read lock status on the SbRWMutex.  TRUE is
+  returned if it was successful, FALSE otherwise.  This is a non-blocking
+  operation.
 */
 
 /*!
   \fn int SbRWMutex::readUnlock(void)
+
+  This method is used for unlocking the calling thread's read lock.
 */
 
 /* ********************************************************************** */
