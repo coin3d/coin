@@ -131,7 +131,11 @@ SoGlyph::SoGlyph(void)
   PRIVATE(this)->edgeidx = NULL;
   PRIVATE(this)->ymin = 0.0f;
   PRIVATE(this)->ymax = 0.0f;
-  PRIVATE(this)->fonttypeis3d = FALSE;
+
+  /* Setting fonttype==3D as default since the 2D text node (SoText2)
+     is no longer depending on the SoGlyph node (20030908 handegar) */
+  PRIVATE(this)->fonttypeis3d = TRUE;
+
   PRIVATE(this)->fontidx = 0;
   PRIVATE(this)->coordsinstalled = FALSE;
 
@@ -166,6 +170,7 @@ SoGlyph::unref(void) const
   correct bounding box shall be calculated etc. As default, glyphs are
   treated as a part of a 2D font.
 */
+
 void 
 SoGlyph::setFontType(Fonttype type) const
 {
@@ -720,11 +725,7 @@ SoGlyphP::setup3DFontData()
   }
 #endif // COIN_NO_DEFAULT_3DFONT
   
-
 }
-
-
-
 
 
 // should handle platform-specific font loading
@@ -733,7 +734,6 @@ SoGlyphP::createSystemGlyph(const char character, int fontid)
 { 
   return NULL;
 }
-
 
 SoGlyph *
 SoGlyphP::createSystemGlyph(const char character, const SbName & font)
