@@ -50,6 +50,9 @@
 // FIXME: One more thing missing: detect cases where we should
 // instantiate SoUnknownEngine instead of SoUnknownNode.
 
+#include <assert.h>
+#include <string.h>
+
 #include "../upgraders/SoUpgrader.h"
 #include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/tidbits.h>
@@ -69,8 +72,7 @@
 #include <Inventor/misc/SoProtoInstance.h>
 #include <Inventor/nodes/SoUnknownNode.h>
 #include <Inventor/sensors/SoDataSensor.h>
-#include <assert.h>
-#include <string.h>
+#include <Inventor/fields/SoGlobalField.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -725,6 +727,9 @@ SoBase::getName(void) const
   derived objects will be automatically replaced by underscore
   characters. If the name \e starts with an invalid character, the new
   name will be \e preceded by an underscore character.
+
+  For the exact definitions of what constitutes legal and illegal
+  characters for SoBase names, see the SbName functions listed below.
 
   \sa getName(), SbName::isBaseNameStartChar(), SbName::isBaseNameChar()
 */
@@ -1693,9 +1698,9 @@ SoBase::readBase(SoInput * in, SbName & classname, SoBase *& base)
       if (ret && !in->isBinary()) {
         if (!(gotchar = in->read(c)) || c != CLOSE_BRACE) {
           if (gotchar)
-            SoReadError::post(in, "Expected '%c'; got '%c'", CLOSE_BRACE, c);
+            SoReadError::post(in, "Expected '%c'; got '%c' for %s", CLOSE_BRACE, c, classname.getString());
           else
-            SoReadError::post(in, "Expected '%c'; got EOF", CLOSE_BRACE);
+            SoReadError::post(in, "Expected '%c'; got EOF for %s", CLOSE_BRACE, classname.getString());
           ret = FALSE;
         }
       }

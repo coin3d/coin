@@ -187,6 +187,10 @@ SbName::isIdentChar(const char c)
   clash with the special characters reserved as tokens in the syntax
   rules of Open Inventor and VRML files.
 
+  Legal characters for the first character of an SoBase object name is
+  underscore ("_") and any uppercase and lowercase alphabetic
+  character from the ASCII character set (i.e. A-Z and a-z).
+
   This method is not part of the original Open Inventor API.
 
   \sa isBaseNameChar()
@@ -194,6 +198,9 @@ SbName::isIdentChar(const char c)
 SbBool
 SbName::isBaseNameStartChar(const char c)
 {
+  // FIXME: it seems silly to have this function here, instead of in
+  // SoBase. 20040611 mortene.
+
   // FIXME: isalpha() takes the current locale into account. This can
   // lead to "interesting" artifacts. We very likely need to audit and
   // fix our isalpha() calls in the Coin sourcecode to behave in the
@@ -210,6 +217,11 @@ SbName::isBaseNameStartChar(const char c)
   clash with the special characters reserved as tokens in the syntax
   rules of Open Inventor and VRML files.
 
+  Legal characters to use for an SoBase object name is any character
+  from the ASCII character set between character 33 (hex 0x21) and 126
+  (hex 0x7e), \e except single and double apostrophes, the plus sign
+  and punctuation, backslash and the curly braces.
+
   This method is not part of the original Open Inventor API.
 
   \sa isBaseNameStartChar()
@@ -217,6 +229,9 @@ SbName::isBaseNameStartChar(const char c)
 SbBool
 SbName::isBaseNameChar(const char c)
 {
+  // FIXME: it seems silly to have this function here, instead of in
+  // SoBase. 20040611 mortene.
+
   static const char invalid[] = "\"\'+.\\{}";
   if (c <= 0x20 || c >= 0x7f || strchr(invalid, c)) return FALSE;
   return TRUE;
