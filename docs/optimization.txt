@@ -101,4 +101,11 @@ Concrete tasks:
           (Note: should investigate a bit (i.e. do profiling) before
           deciding if this is really worth the effort.)
 
+        * Consider adding SoModelMatrixElement::getInverse(SoState*)
+          to enable inverse model matrix caching. The inverse model
+          matrix is used quite frequently, and we now have to do this
+          every time it is needed:
+
+            SbMatrix inv = SoModelMatrixElement::get(state).inverse();
+
 ============================================================================
