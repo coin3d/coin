@@ -51,11 +51,6 @@
   relatively close to the next power of two size. This could save a
   lot of texture memory.
 
-  \li COIN_TEX2_BUILD_MIPMAP_FAST: If this environment variable is set
-  to 1, an internal and optimized function will be used to create
-  mipmaps. Otherwise gluBuild2DMipmap() will be used. Default value is
-  0.
-
   \li COIN_TEX2_USE_GLTEXSUBIMAGE: When set, and when the new texture
   data has the same attributes as the old data, glTexSubImage() will
   be used to copy new data into the texture instead of recreating the
@@ -128,7 +123,6 @@ static float COIN_TEX2_MIPMAP_LIMIT = -1.0f;
 static float COIN_TEX2_LINEAR_MIPMAP_LIMIT = -1.0f;
 static float COIN_TEX2_SCALEUP_LIMIT = -1.0f;
 static int COIN_TEX2_USE_GLTEXSUBIMAGE = -1;
-static int COIN_TEX2_BUILD_MIPMAP_FAST = -1;
 
 typedef struct {
   unsigned char * buffer;
@@ -638,13 +632,6 @@ SoGLImage::SoGLImage(void)
     }
   }
 
-  if (COIN_TEX2_BUILD_MIPMAP_FAST < 0) {
-    const char *env = coin_getenv("COIN_TEX2_BUILD_MIPMAP_FAST");
-    if (env && atoi(env) == 1) {
-      COIN_TEX2_BUILD_MIPMAP_FAST = 1;
-    }
-    else COIN_TEX2_BUILD_MIPMAP_FAST = 0;
-  }
   if (COIN_TEX2_USE_GLTEXSUBIMAGE < 0) {
     const char *env = coin_getenv("COIN_TEX2_USE_GLTEXSUBIMAGE");
     if (env && atoi(env) == 1) {
@@ -1450,21 +1437,18 @@ SoGLImageP::reallyCreateTexture(SoState *state,
       }
     }
     else { // mipmaps
-      //FIXME: TEX2->TEX3 ? (kintel 20011129)
-      if (COIN_TEX2_BUILD_MIPMAP_FAST == 1 ||
-          !GLUWrapper()->available ||
-          !GLUWrapper()->gluBuild3DMipmaps) {
-        // this should be very fast, but I guess it's possible
-        // that some drivers might have hardware accelerated mipmap
-        // creation.
-        fast_mipmap(state, w, h, d, numComponents, texture, glformat, FALSE);
-      }
-      else {
-        // FIXME: ignoring the error code. Silly. 20000929 mortene.
-        (void)GLUWrapper()->gluBuild3DMipmaps(GL_TEXTURE_3D, numComponents,
-                                              w, h, d, glformat,
-                                              GL_UNSIGNED_BYTE, texture);
-      }
+      // We used to default to calling GLU's gluBuild3DMipmaps() here,
+      // but that was axed, because the gluBuild[2|3]DMipmaps()
+      // functions implicitly uses glGenTextures() and other OpenGL
+      // 1.1+ functions -- which again can cause trouble when doing
+      // remote rendering. (At least we've had lots of problems with
+      // NVidia's GLX implementation for non-1.0 OpenGL stuff.)
+      //
+      //   (void)GLUWrapper()->gluBuild3DMipmaps(GL_TEXTURE_3D, numComponents,
+      //                                         w, h, d, glformat,
+      //                                         GL_UNSIGNED_BYTE, texture);
+
+      fast_mipmap(state, w, h, d, numComponents, texture, glformat, FALSE);
     }
   }
   else { // 2D textures
@@ -1480,18 +1464,16 @@ SoGLImageP::reallyCreateTexture(SoState *state,
                    border, glformat, GL_UNSIGNED_BYTE, texture);
     }
     else { // mipmaps
-      if (COIN_TEX2_BUILD_MIPMAP_FAST == 1 || !GLUWrapper()->available) {
-        // this should be very fast, but I guess it's possible
-        // that some drivers might have hardware accelerated mipmap
-        // creation.
-        fast_mipmap(state, w, h, numComponents, texture, glformat, FALSE);
-      }
-      else {
-        // FIXME: ignoring the error code. Silly. 20000929 mortene.
-        (void)GLUWrapper()->gluBuild2DMipmaps(GL_TEXTURE_2D, numComponents,
-                                              w, h, glformat,
-                                              GL_UNSIGNED_BYTE, texture);
-      }
+      // The GLU function invocation has been disabled, for the
+      // reasons stated in the code comments ~20 lines above on the
+      // construction of 3D mipmap textures.
+      //
+      //   (void)GLUWrapper()->gluBuild2DMipmaps(GL_TEXTURE_2D, numComponents,
+      //                                         w, h, glformat,
+      //                                         GL_UNSIGNED_BYTE, texture);
+
+      fast_mipmap(state, w, h, numComponents, texture, glformat, FALSE);
+
     }
   }
   glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
