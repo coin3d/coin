@@ -47,6 +47,8 @@ rm -rf $VOLNAME.dmg
 
 # Create dmgroot from template dir
 ditto -rsrcFork @top_srcdir@/packaging/macosx/inst-dmg-files inst-dmg-root
+mv inst-dmg-root/Desktop_DB inst-dmg-root/Desktop\ DB 
+mv inst-dmg-root/Desktop_DF inst-dmg-root/Desktop\ DF
 
 # Copy dist files
 ditto -rsrcFork Coin.pkg inst-dmg-root/Coin.pkg

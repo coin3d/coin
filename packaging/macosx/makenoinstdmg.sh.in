@@ -54,6 +54,8 @@ rm -rf $VOLNAME-no_inst.dmg
 
 # Create dmgroot from template dir
 ditto -rsrcFork @top_srcdir@/packaging/macosx/noinst-dmg-files noinst-dmg-root
+mv noinst-dmg-root/Desktop_DB noinst-dmg-root/Desktop\ DB 
+mv noinst-dmg-root/Desktop_DF noinst-dmg-root/Desktop\ DF
 
 # Copy dist files
 cp README.txt noinst-dmg-root
