@@ -31,6 +31,9 @@
 */
 
 #include <Inventor/projectors/SbLineProjector.h>
+#include <Inventor/SbPlane.h>
+#include <Inventor/SbVec2f.h>
+#include <assert.h>
 
 /*!
   \var SbLineProjector::line
@@ -59,14 +62,61 @@ SbLineProjector::SbLineProjector(void)
 SbVec3f
 SbLineProjector::project(const SbVec2f & point)
 {
-  SbLine projline = this->getWorkingLine(point);
-  SbVec3f thispt, projpt;
-  SbBool nonparallel = this->line.getClosestPoints(projline, thispt, projpt);
+  // first project the line into screen space to find the 2D point
+  // closest to the projection line there. Then use that 2D point to
+  // find the best projection point.
+  SbLine wrldline;
+  this->workingToWorld.multLineMatrix(this->line, wrldline);
+
+  SbVec3f pt1 = wrldline.getPosition();
+  SbVec3f pt2 = pt1 + wrldline.getDirection();
+  
+  SbVec3f lineorigin = wrldline.getPosition();
+
+  this->viewVol.projectToScreen(pt1, pt1);
+  this->viewVol.projectToScreen(pt2, pt2);
+
+  pt1[2] = 0.0f;
+  pt2[2] = 0.0f;
+
+  SbVec2f newpt = point;
+  
+  if (pt1 == pt2) newpt = SbVec2f(pt1[0], pt2[0]);
+  else {
+    SbLine scrline(pt1, pt2);
+    SbVec3f dummy = scrline.getClosestPoint(SbVec3f(point[0], point[1], 0.0f));
+    newpt = SbVec2f(dummy[0], dummy[1]);
+  }
+
+  SbLine projline = this->getWorkingLine(newpt);
+  SbVec3f projpt, dummy;
+  SbBool nonparallel = this->line.getClosestPoints(projline, projpt, dummy);
+
   // if lines are parallel, we will never get an intersection, and
-  // we set projection point to (0, 0, 0) to avoid strange rotations
-  if (!nonparallel) thispt = SbVec3f(0.0f, 0.0f, 0.0f);
-  this->lastPoint = thispt;
-  return thispt;
+  // we set projection point to the middle of the view volume
+  if (!nonparallel) {
+    float depth = this->viewVol.getNearDist() +
+      this->viewVol.getDepth() * 0.5f;
+    SbPlane plane = this->viewVol.getPlane(depth);
+    if (!plane.intersect(wrldline, projpt)) {
+      assert(0 && "should never happen");
+      projpt = SbVec3f(0.0f, 0.0f, 0.0f);
+    }
+    else this->worldToWorking.multVecMatrix(projpt, projpt);
+  }
+  else if (!this->verifyProjection(projpt)) {
+    float depth = this->findVanishingDistance();
+    SbPlane plane = this->viewVol.getPlane(depth);
+    if (!plane.intersect(wrldline, projpt)) {
+      assert(0 && "should never happen");
+      projpt = SbVec3f(0.0f, 0.0f, 0.0f);
+    }
+    else {
+      this->worldToWorking.multVecMatrix(projpt, projpt);
+    }
+  }
+  this->lastPoint = projpt;
+  return projpt;
 }
 
 /*!
