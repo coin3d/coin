@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -38,7 +38,7 @@ private: \
   static SoNodekitCatalog * classcatalog; \
   static const SoNodekitCatalog ** parentcatalogptr; \
 
-  
+
 
 #define SO_KIT_CATALOG_ENTRY_HEADER(_entry_) \
 protected: SoSFNode _entry_; \
@@ -77,10 +77,13 @@ _class_::getClassNodekitCatalogPtr(void) \
 #define SO_KIT_INIT_CLASS(_class_, _parentclass_, _parentname_) \
   do { \
     SO_NODE_INIT_CLASS(_class_, _parentclass_, _parentname_); \
+    _class_::parentcatalogptr = _parentclass_::getClassNodekitCatalogPtr(); \
   } while (0)
 
 
 #if defined(__SOLIB_INTERNAL__)
+// Internal note for developers: match changes to this macro with the
+// same changes to SoBaseKit::initClass().
 #define SO_KIT_INTERNAL_INIT_CLASS(_class_) \
   do { \
     SO_NODE_INTERNAL_INIT_CLASS(_class_); \
@@ -119,15 +122,15 @@ _class_::getClassNodekitCatalogPtr(void) \
   do { \
     if (SO_KIT_IS_FIRST_INSTANCE()) { \
       classcatalog->addEntry(SO__QUOTE(_part_), \
-  			   _partclass_::getClassTypeId(), \
-  			   _partclass_::getClassTypeId(), \
-  			   _isdefnull_, \
-  			   SO__QUOTE(_parent_), \
-  			   SO__QUOTE(_sibling_), \
-  			   FALSE, \
-  			   SoType::badType(), \
-  			   SoType::badType(), \
-  			   _ispublic_); \
+                           _partclass_::getClassTypeId(), \
+                           _partclass_::getClassTypeId(), \
+                           _isdefnull_, \
+                           SO__QUOTE(_parent_), \
+                           SO__QUOTE(_sibling_), \
+                           FALSE, \
+                           SoType::badType(), \
+                           SoType::badType(), \
+                           _ispublic_); \
     } \
   } while (0)
 
@@ -155,15 +158,15 @@ _class_::getClassNodekitCatalogPtr(void) \
   do { \
     if (SO_KIT_IS_FIRST_INSTANCE()) { \
       classcatalog->addEntry(SO__QUOTE(_part_), \
-			     _class_::getClassTypeId(), \
-			     _defaultclass_::getClassTypeId(), \
-			     _isdefnull_, \
-			     SO__QUOTE(_parent_), \
-			     SO__QUOTE(_sibling_), \
-			     FALSE, \
-			     SoType::badType(), \
-			     SoType::badType(), \
-			     _ispublic_); \
+                             _class_::getClassTypeId(), \
+                             _defaultclass_::getClassTypeId(), \
+                             _isdefnull_, \
+                             SO__QUOTE(_parent_), \
+                             SO__QUOTE(_sibling_), \
+                             FALSE, \
+                             SoType::badType(), \
+                             SoType::badType(), \
+                             _ispublic_); \
     } \
   } while (0)
 

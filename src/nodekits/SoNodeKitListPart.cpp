@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -356,7 +356,7 @@ SoNodeKitListPart::readInstance(SoInput * /*in*/, unsigned short /*flags*/)
 */
 void
 SoNodeKitListPart::copyContents(const SoFieldContainer * /*fromFC*/,
-				SbBool /*copyConnections*/)
+                                SbBool /*copyConnections*/)
 {
   assert(0 && "FIXME: not implemented yet");
 }

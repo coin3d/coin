@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -75,8 +75,8 @@ SoImageInterface::SoImageInterface(const char * const file_name)
   \a data will not be freed when the instance is deleted.
 */
 SoImageInterface::SoImageInterface(const SbVec2s size,
-					   const int numComponents,
-					   const unsigned char * data)
+                                   const int numComponents,
+                                   const unsigned char * data)
 {
   this->orgSize = this->size = size;
   this->orgNumComponents = this->numComponents = numComponents;
@@ -115,55 +115,55 @@ void SoImageInterface::unref()
 #if COIN_DEBUG
     if (filename.getLength())
       SoDebugError::postInfo("SoImageInterface::unref",
-			     "deleting image: %s\n", filename.getString());
+                             "deleting image: %s\n", filename.getString());
 #endif // COIN_DEBUG
     delete this;
   }
 }
 
 /*!
-  A very lame resize function. No bilinear interpolation when 
+  A very lame resize function. No bilinear interpolation when
   scaling up, and no square sum when scaling down. FIXME
 */
-SbBool 
+SbBool
 SoImageInterface::resize(const SbVec2s newsize)
 {
   if (newsize != size) {
 #if COIN_DEBUG
-    SoDebugError::postInfo("SoImageInterface::resize", 
-			   "(%d): %d %d --> %d %d\n",
-			   numComponents,
-			   size[0], size[1], newsize[0], newsize[1]);
+    SoDebugError::postInfo("SoImageInterface::resize",
+                           "(%d): %d %d --> %d %d\n",
+                           numComponents,
+                           size[0], size[1], newsize[0], newsize[1]);
 #endif // COIN_DEBUG
     int num_comp = this->numComponents;
-    unsigned char *dest = 
+    unsigned char *dest =
       (unsigned char *)malloc(newsize[0]*newsize[1]*num_comp);
-    
+
     float sx, sy, dx, dy;
     dx = ((float)this->size[0])/((float)newsize[0]);
     dy = ((float)this->size[1])/((float)newsize[1]);
     int src_bpr = this->size[0] * num_comp;
     int dest_bpr = newsize[0] * num_comp;
-    
+
     unsigned char *src = this->dataPtr; // use local variable for speed
-    
+
     sy = 0.0f;
     int ystop = newsize[1] * dest_bpr;
-    int xstop = newsize[0] * num_comp;   
+    int xstop = newsize[0] * num_comp;
     for (int y = 0; y < ystop; y += dest_bpr) {
       sx = 0.0f;
       for (int x = 0; x < xstop; x += num_comp) {
-	int offset = ((int)sy)*src_bpr + ((int)sx)*num_comp;
-	for (int i = 0; i < num_comp; i++) dest[x+y+i] = src[offset+i];
-	sx += dx;
+        int offset = ((int)sy)*src_bpr + ((int)sx)*num_comp;
+        for (int i = 0; i < num_comp; i++) dest[x+y+i] = src[offset+i];
+        sx += dx;
       }
       sy += dy;
     }
-    
+
     this->size = newsize;
     if (this->didAlloc && this->dataPtr) free(this->dataPtr);
     this->dataPtr = dest;
-    this->didAlloc = 1; // we did alloc this data 
+    this->didAlloc = 1; // we did alloc this data
   }
 
   return TRUE;
@@ -171,7 +171,7 @@ SoImageInterface::resize(const SbVec2s newsize)
 
 /*!
   If the file isn't already loaded, this method will attempt
-  to load the file specified in the constructor. 
+  to load the file specified in the constructor.
   If \a forceTry is \e TRUE, it will try to load the file
   even though the file could not be loaded the last the
   this method was called.
@@ -179,7 +179,7 @@ SoImageInterface::resize(const SbVec2s newsize)
   \e TRUE is returned if the image file is loaded, \e FALSE
   otherwise.
 */
-SbBool 
+SbBool
 SoImageInterface::load(const SbBool forceTry)
 {
   if (this->dataPtr) return TRUE;
@@ -190,12 +190,12 @@ SoImageInterface::load(const SbBool forceTry)
 
     //
     // TODO: code to read images using other image libraries
-    // should be inserted here. 
+    // should be inserted here.
     //
 
 #if defined(HAVE_LIBSIMAGE)
     this->dataPtr = simage_read_image(this->filename.getString(),
-				      &w, &h, &nc);
+                                      &w, &h, &nc);
     if (this->dataPtr) {
       this->orgSize = this->size = SbVec2s(w, h);
       this->orgNumComponents = this->numComponents = nc;
@@ -207,10 +207,10 @@ SoImageInterface::load(const SbBool forceTry)
 }
 
 /*!
-  Returns \e TRUE if the image contains data 
+  Returns \e TRUE if the image contains data
   (is loaded or was constructed with image data).
 */
-SbBool 
+SbBool
 SoImageInterface::isLoaded() const
 {
   return (this->dataPtr != NULL);
@@ -228,7 +228,7 @@ SoImageInterface::getDataPtr() const
 /*!
   Returns the number of components in the image.
 */
-int 
+int
 SoImageInterface::getNumComponents() const
 {
   return this->numComponents;
@@ -237,7 +237,7 @@ SoImageInterface::getNumComponents() const
 /*!
   Returns the size of the image.
 */
-SbVec2s 
+SbVec2s
 SoImageInterface::getSize() const
 {
   return this->size;
@@ -257,7 +257,7 @@ SoImageInterface::getFilename() const
   Currently it is not possible to change the number of components,
   but this might change in the future.
 */
-int 
+int
 SoImageInterface::getOrgNumComponents() const
 {
   return this->orgNumComponents;
@@ -266,9 +266,8 @@ SoImageInterface::getOrgNumComponents() const
 /*!
   Returns the original size of the image, before any resize.
 */
-SbVec2s 
+SbVec2s
 SoImageInterface::getOriginalSize() const
 {
   return this->orgSize;
 }
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -72,10 +72,10 @@ public:
   SoNodekitCatalog * clone(SoType type) const;
 
   SbBool addEntry(const SbName & name, SoType type, SoType defaulttype,
-		  SbBool isdefaultnull, const SbName & parent,
-		  const SbName & rightsibling, SbBool islist,
-		  SoType listcontainertype, SoType listitemtype,
-		  SbBool ispublic);
+                  SbBool isdefaultnull, const SbName & parent,
+                  const SbName & rightsibling, SbBool islist,
+                  SoType listcontainertype, SoType listitemtype,
+                  SbBool ispublic);
   void addListItemType(int part, SoType type);
   void addListItemType(const SbName & name, SoType type);
 
@@ -83,7 +83,7 @@ public:
   void setNullByDefault(const SbName & name, SbBool nullbydefault);
 
   SbBool recursiveSearch(int part, const SbName & name,
-			 SoTypeList * checked) const;
+                         SoTypeList * checked) const;
 
   void printCheck(void) const;
 

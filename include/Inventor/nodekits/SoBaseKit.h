@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -55,8 +55,8 @@ public:
   virtual SoNode * getPart(const SbName & partname, SbBool makeifneeded);
   SbString getPartString(const SoBase * part);
   virtual SoNodeKitPath * createPathToPart(const SbName & partname,
-					   SbBool makeifneeded,
-					   const SoPath * pathtoextend = NULL);
+                                           SbBool makeifneeded,
+                                           const SoPath * pathtoextend = NULL);
   virtual SbBool setPart(const SbName & partname, SoNode * from);
   SbBool set(char * namevaluepairliststring);
   SbBool set(char * partnamestring, char * parameterstring);
@@ -84,7 +84,7 @@ public:
   static SbBool isSearchingChildren(void);
   static void setSearchingChildren(SbBool newval);
   static SoNode * typeCheck(const SbName & partname, const SoType & parttype,
-			    SoNode * node);
+                            SoNode * node);
 
 
 protected:
@@ -94,20 +94,20 @@ protected:
 
   virtual SoNode * addToCopyDict(void) const;
   virtual void copyContents(const SoFieldContainer * fromfc,
-			    SbBool copyconnections);
+                            SbBool copyconnections);
 
   SoGroup * getContainerNode(const SbName & listname,
-			     SbBool makeifneeded = TRUE);
+                             SbBool makeifneeded = TRUE);
   virtual SoNode * getAnyPart(const SbName & partname, SbBool makeifneeded,
-			      SbBool leafcheck = FALSE,
-			      SbBool publiccheck = FALSE);
+                              SbBool leafcheck = FALSE,
+                              SbBool publiccheck = FALSE);
   virtual SoNodeKitPath * createPathToAnyPart(const SbName & partname,
-					      SbBool makeifneeded,
-					      SbBool leafcheck = FALSE,
-					      SbBool publiccheck = FALSE,
-					      const SoPath * pathtoextend = NULL);
+                                              SbBool makeifneeded,
+                                              SbBool leafcheck = FALSE,
+                                              SbBool publiccheck = FALSE,
+                                              const SoPath * pathtoextend = NULL);
   virtual SbBool setAnyPart(const SbName & partname, SoNode * from,
-			    SbBool anypart = TRUE);
+                            SbBool anypart = TRUE);
   void createNodekitPartsList(void);
   virtual void createDefaultParts(void);
   const SoNodekitParts * getNodekitPartsList(void) const;
