@@ -87,6 +87,7 @@ CXX = @CXX@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
+EXEEXT = @EXEEXT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 INSTALL_STRIP_PROGRAM_ENV = @INSTALL_STRIP_PROGRAM_ENV@
 LIBFLAGS = @LIBFLAGS@
@@ -98,6 +99,7 @@ LT_REVISION = @LT_REVISION@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
 OBJDUMP = @OBJDUMP@
+OBJEXT = @OBJEXT@
 PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 STRIP = @STRIP@
@@ -155,8 +157,9 @@ PrivateHeaders = \
 @HACKING_COMPACT_BUILD_TRUE@BuildSources = $(LinkHackSources)
 @HACKING_COMPACT_BUILD_FALSE@BuildSources = $(RegularSources)
 
-@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libnodekits@SUFFIX@LINKHACK.la
-@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libnodekits.la
+@BUILD_WITH_MSVC_TRUE@noinst_LIBRARIES = nodekits.lst
+@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libnodekits@SUFFIX@LINKHACK.la
+@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libnodekits.la
 
 # Remove any linklibraries detected by configure, as they are not
 # needed in the submodules -- only in the toplevel libCoin build.
@@ -174,15 +177,18 @@ EXTRA_libnodekits@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 
+nodekits_lst_SOURCES = $(BuildSources)
+EXTRA_nodekits_lst_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
+
 libnodekitsincdir = $(includedir)/Inventor/nodekits
 libnodekitsinc_HEADERS = $(PublicHeaders)
-EXEEXT =
-OBJEXT = o
 subdir = src/nodekits
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h $(top_builddir)/include/Inventor/SbBasic.h $(top_builddir)/include/Inventor/system/inttypes.h
 CONFIG_CLEAN_FILES =
-LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
+LIBRARIES = $(noinst_LIBRARIES)
 
 
 DEFS = @DEFS@ -I. -I$(srcdir) -I$(top_builddir) -I$(top_builddir)/include/Inventor -I$(top_builddir)/include/Inventor/system
@@ -192,6 +198,26 @@ X_CFLAGS = @X_CFLAGS@
 X_LIBS = @X_LIBS@
 X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
+nodekits_lst_AR = $(AR) cru
+nodekits_lst_LIBADD = 
+@HACKING_COMPACT_BUILD_TRUE@am_nodekits_lst_OBJECTS = all.$(OBJEXT)
+@HACKING_COMPACT_BUILD_FALSE@am_nodekits_lst_OBJECTS = \
+@HACKING_COMPACT_BUILD_FALSE@ SoNodeKit.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoNodeKitPath.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoNodeKitListPart.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoNodekitCatalog.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoBaseKit.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoAppearanceKit.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoCameraKit.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoInteractionKit.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoLightKit.$(OBJEXT) SoSceneKit.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoSeparatorKit.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoShapeKit.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoWrapperKit.$(OBJEXT)
+nodekits_lst_OBJECTS = $(am_nodekits_lst_OBJECTS)
+AR = ar
+LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
+
 libnodekits_la_LDFLAGS = 
 libnodekits_la_LIBADD = 
 @HACKING_COMPACT_BUILD_TRUE@am_libnodekits_la_OBJECTS = all.lo
@@ -227,23 +253,31 @@ COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CF
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-DIST_SOURCES = $(libnodekits_la_SOURCES) $(EXTRA_libnodekits_la_SOURCES) \
+DIST_SOURCES = $(nodekits_lst_SOURCES) $(EXTRA_nodekits_lst_SOURCES) \
+$(libnodekits_la_SOURCES) $(EXTRA_libnodekits_la_SOURCES) \
 $(libnodekits@SUFFIX@LINKHACK_la_SOURCES) \
 $(EXTRA_libnodekits@SUFFIX@LINKHACK_la_SOURCES)
 HEADERS = $(libnodekitsinc_HEADERS)
 
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
-@AMDEP@DEP_FILES = $(DEPDIR)/SoAppearanceKit.Plo $(DEPDIR)/SoBaseKit.Plo \
-@AMDEP@ $(DEPDIR)/SoCameraKit.Plo $(DEPDIR)/SoInteractionKit.Plo \
-@AMDEP@ $(DEPDIR)/SoLightKit.Plo $(DEPDIR)/SoNodeKit.Plo \
-@AMDEP@ $(DEPDIR)/SoNodeKitListPart.Plo $(DEPDIR)/SoNodeKitPath.Plo \
-@AMDEP@ $(DEPDIR)/SoNodekitCatalog.Plo $(DEPDIR)/SoSceneKit.Plo \
-@AMDEP@ $(DEPDIR)/SoSeparatorKit.Plo $(DEPDIR)/SoShapeKit.Plo \
-@AMDEP@ $(DEPDIR)/SoWrapperKit.Plo $(DEPDIR)/all.Plo
+@AMDEP@DEP_FILES = $(DEPDIR)/SoAppearanceKit.Plo \
+@AMDEP@ $(DEPDIR)/SoAppearanceKit.Po $(DEPDIR)/SoBaseKit.Plo \
+@AMDEP@ $(DEPDIR)/SoBaseKit.Po $(DEPDIR)/SoCameraKit.Plo \
+@AMDEP@ $(DEPDIR)/SoCameraKit.Po $(DEPDIR)/SoInteractionKit.Plo \
+@AMDEP@ $(DEPDIR)/SoInteractionKit.Po $(DEPDIR)/SoLightKit.Plo \
+@AMDEP@ $(DEPDIR)/SoLightKit.Po $(DEPDIR)/SoNodeKit.Plo \
+@AMDEP@ $(DEPDIR)/SoNodeKit.Po $(DEPDIR)/SoNodeKitListPart.Plo \
+@AMDEP@ $(DEPDIR)/SoNodeKitListPart.Po $(DEPDIR)/SoNodeKitPath.Plo \
+@AMDEP@ $(DEPDIR)/SoNodeKitPath.Po $(DEPDIR)/SoNodekitCatalog.Plo \
+@AMDEP@ $(DEPDIR)/SoNodekitCatalog.Po $(DEPDIR)/SoSceneKit.Plo \
+@AMDEP@ $(DEPDIR)/SoSceneKit.Po $(DEPDIR)/SoSeparatorKit.Plo \
+@AMDEP@ $(DEPDIR)/SoSeparatorKit.Po $(DEPDIR)/SoShapeKit.Plo \
+@AMDEP@ $(DEPDIR)/SoShapeKit.Po $(DEPDIR)/SoWrapperKit.Plo \
+@AMDEP@ $(DEPDIR)/SoWrapperKit.Po $(DEPDIR)/all.Plo $(DEPDIR)/all.Po
 DIST_COMMON = $(libnodekitsinc_HEADERS) Makefile.am Makefile.in
 
-SOURCES = $(libnodekits_la_SOURCES) $(EXTRA_libnodekits_la_SOURCES) $(libnodekits@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_libnodekits@SUFFIX@LINKHACK_la_SOURCES)
-OBJECTS = $(am_libnodekits_la_OBJECTS) $(am_libnodekits@SUFFIX@LINKHACK_la_OBJECTS)
+SOURCES = $(nodekits_lst_SOURCES) $(EXTRA_nodekits_lst_SOURCES) $(libnodekits_la_SOURCES) $(EXTRA_libnodekits_la_SOURCES) $(libnodekits@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_libnodekits@SUFFIX@LINKHACK_la_SOURCES)
+OBJECTS = $(am_nodekits_lst_OBJECTS) $(am_libnodekits_la_OBJECTS) $(am_libnodekits@SUFFIX@LINKHACK_la_OBJECTS)
 
 all: all-am
 
@@ -258,6 +292,24 @@ Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.s
 	cd $(top_builddir) && \
 	  CONFIG_HEADERS= CONFIG_LINKS= \
 	  CONFIG_FILES=$(subdir)/$@ $(SHELL) ./config.status
+
+clean-noinstLIBRARIES:
+	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
+
+mostlyclean-compile:
+	-rm -f *.$(OBJEXT) core *.core
+
+distclean-compile:
+	-rm -f *.tab.c
+
+mostlyclean-libtool:
+	-rm -f *.lo
+
+clean-libtool:
+	-rm -rf .libs _libs
+
+distclean-libtool:
+	-rm -f libtool
 install-libLTLIBRARIES: $(lib_LTLIBRARIES)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libdir)
@@ -280,21 +332,6 @@ clean-libLTLIBRARIES:
 
 clean-noinstLTLIBRARIES:
 	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
-
-mostlyclean-compile:
-	-rm -f *.$(OBJEXT) core *.core
-
-distclean-compile:
-	-rm -f *.tab.c
-
-mostlyclean-libtool:
-	-rm -f *.lo
-
-clean-libtool:
-	-rm -rf .libs _libs
-
-distclean-libtool:
-	-rm -f libtool
 
 libnodekits.la: $(libnodekits_la_OBJECTS) $(libnodekits_la_DEPENDENCIES)
 	$(CXXLINK)  $(libnodekits_la_LDFLAGS) $(libnodekits_la_OBJECTS) $(libnodekits_la_LIBADD) $(LIBS)
@@ -352,19 +389,33 @@ distclean-tags:
 	-rm -f TAGS ID
 
 @AMDEP@@_am_include@ $(DEPDIR)/SoAppearanceKit.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoAppearanceKit.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoBaseKit.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoBaseKit.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoCameraKit.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoCameraKit.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoInteractionKit.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoInteractionKit.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoLightKit.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoLightKit.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoNodeKit.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoNodeKit.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoNodeKitListPart.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoNodeKitListPart.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoNodeKitPath.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoNodeKitPath.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoNodekitCatalog.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoNodekitCatalog.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoSceneKit.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSceneKit.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoSeparatorKit.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSeparatorKit.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoShapeKit.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoShapeKit.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoWrapperKit.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoWrapperKit.Po
 @AMDEP@@_am_include@ $(DEPDIR)/all.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/all.Po
 
 distclean-depend:
 	-rm -rf $(DEPDIR)
@@ -410,7 +461,7 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(LTLIBRARIES) $(HEADERS)
+all-am: Makefile $(LIBRARIES) $(LTLIBRARIES) $(HEADERS)
 
 installdirs:
 	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(libnodekitsincdir)
@@ -444,7 +495,7 @@ maintainer-clean-generic:
 clean: clean-am
 
 clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
-	clean-noinstLTLIBRARIES mostlyclean-am
+	clean-noinstLIBRARIES clean-noinstLTLIBRARIES mostlyclean-am
 
 distclean: distclean-am
 
@@ -481,18 +532,26 @@ mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 uninstall-am: uninstall-libLTLIBRARIES uninstall-libnodekitsincHEADERS
 
 .PHONY: all all-am check check-am clean clean-generic \
-	clean-libLTLIBRARIES clean-libtool clean-noinstLTLIBRARIES \
-	distclean distclean-compile distclean-depend distclean-generic \
-	distclean-libtool distclean-tags distdir dvi dvi-am info \
-	info-am install install-am install-data install-data-am \
-	install-exec install-exec-am install-info \
-	install-libLTLIBRARIES install-libnodekitsincHEADERS \
-	install-man install-strip installcheck installcheck-am \
-	installdirs maintainer-clean maintainer-clean-generic \
-	mostlyclean mostlyclean-compile mostlyclean-generic \
-	mostlyclean-libtool tags uninstall uninstall-am \
-	uninstall-libLTLIBRARIES uninstall-libnodekitsincHEADERS
+	clean-libLTLIBRARIES clean-libtool clean-noinstLIBRARIES \
+	clean-noinstLTLIBRARIES distclean distclean-compile \
+	distclean-depend distclean-generic distclean-libtool \
+	distclean-tags distdir dvi dvi-am info info-am install \
+	install-am install-data install-data-am install-exec \
+	install-exec-am install-info install-libLTLIBRARIES \
+	install-libnodekitsincHEADERS install-man install-strip \
+	installcheck installcheck-am installdirs maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-compile \
+	mostlyclean-generic mostlyclean-libtool tags uninstall \
+	uninstall-am uninstall-libLTLIBRARIES \
+	uninstall-libnodekitsincHEADERS
 
+
+nodekits.lst: Makefile $(nodekits_lst_OBJECTS)
+	@echo "Linking nodekits.lst..."; \
+	echo $(CC) /LST:nodekits.lst \
+	  $(nodekits_lst_OBJECTS); \
+	$(CC) /LST:nodekits.lst \
+	  $(nodekits_lst_OBJECTS);
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

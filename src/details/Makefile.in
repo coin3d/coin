@@ -87,6 +87,7 @@ CXX = @CXX@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
+EXEEXT = @EXEEXT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 INSTALL_STRIP_PROGRAM_ENV = @INSTALL_STRIP_PROGRAM_ENV@
 LIBFLAGS = @LIBFLAGS@
@@ -98,6 +99,7 @@ LT_REVISION = @LT_REVISION@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
 OBJDUMP = @OBJDUMP@
+OBJEXT = @OBJEXT@
 PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 STRIP = @STRIP@
@@ -147,8 +149,9 @@ PrivateHeaders =
 @HACKING_COMPACT_BUILD_TRUE@BuildSources = $(LinkHackSources)
 @HACKING_COMPACT_BUILD_FALSE@BuildSources = $(RegularSources)
 
-@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libdetails@SUFFIX@LINKHACK.la
-@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libdetails.la
+@BUILD_WITH_MSVC_TRUE@noinst_LIBRARIES = details.lst
+@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libdetails@SUFFIX@LINKHACK.la
+@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libdetails.la
 
 # Remove any linklibraries detected by configure, as they are not
 # needed in the submodules -- only in the toplevel libCoin build.
@@ -166,15 +169,18 @@ EXTRA_libdetails@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 
+details_lst_SOURCES = $(BuildSources)
+EXTRA_details_lst_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
+
 libdetailsincdir = $(includedir)/Inventor/details
 libdetailsinc_HEADERS = $(PublicHeaders)
-EXEEXT =
-OBJEXT = o
 subdir = src/details
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h $(top_builddir)/include/Inventor/SbBasic.h $(top_builddir)/include/Inventor/system/inttypes.h
 CONFIG_CLEAN_FILES =
-LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
+LIBRARIES = $(noinst_LIBRARIES)
 
 
 DEFS = @DEFS@ -I. -I$(srcdir) -I$(top_builddir) -I$(top_builddir)/include/Inventor -I$(top_builddir)/include/Inventor/system
@@ -184,6 +190,22 @@ X_CFLAGS = @X_CFLAGS@
 X_LIBS = @X_LIBS@
 X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
+details_lst_AR = $(AR) cru
+details_lst_LIBADD = 
+@HACKING_COMPACT_BUILD_TRUE@am_details_lst_OBJECTS = all.$(OBJEXT)
+@HACKING_COMPACT_BUILD_FALSE@am_details_lst_OBJECTS = SoDetail.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoConeDetail.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoCubeDetail.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoCylinderDetail.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoFaceDetail.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoLineDetail.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoNodeKitDetail.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoPointDetail.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTextDetail.$(OBJEXT)
+details_lst_OBJECTS = $(am_details_lst_OBJECTS)
+AR = ar
+LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
+
 libdetails_la_LDFLAGS = 
 libdetails_la_LIBADD = 
 @HACKING_COMPACT_BUILD_TRUE@am_libdetails_la_OBJECTS = all.lo
@@ -215,21 +237,27 @@ COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CF
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-DIST_SOURCES = $(libdetails_la_SOURCES) $(EXTRA_libdetails_la_SOURCES) \
+DIST_SOURCES = $(details_lst_SOURCES) $(EXTRA_details_lst_SOURCES) \
+$(libdetails_la_SOURCES) $(EXTRA_libdetails_la_SOURCES) \
 $(libdetails@SUFFIX@LINKHACK_la_SOURCES) \
 $(EXTRA_libdetails@SUFFIX@LINKHACK_la_SOURCES)
 HEADERS = $(libdetailsinc_HEADERS)
 
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
-@AMDEP@DEP_FILES = $(DEPDIR)/SoConeDetail.Plo $(DEPDIR)/SoCubeDetail.Plo \
-@AMDEP@ $(DEPDIR)/SoCylinderDetail.Plo $(DEPDIR)/SoDetail.Plo \
-@AMDEP@ $(DEPDIR)/SoFaceDetail.Plo $(DEPDIR)/SoLineDetail.Plo \
-@AMDEP@ $(DEPDIR)/SoNodeKitDetail.Plo $(DEPDIR)/SoPointDetail.Plo \
-@AMDEP@ $(DEPDIR)/SoTextDetail.Plo $(DEPDIR)/all.Plo
+@AMDEP@DEP_FILES = $(DEPDIR)/SoConeDetail.Plo $(DEPDIR)/SoConeDetail.Po \
+@AMDEP@ $(DEPDIR)/SoCubeDetail.Plo $(DEPDIR)/SoCubeDetail.Po \
+@AMDEP@ $(DEPDIR)/SoCylinderDetail.Plo $(DEPDIR)/SoCylinderDetail.Po \
+@AMDEP@ $(DEPDIR)/SoDetail.Plo $(DEPDIR)/SoDetail.Po \
+@AMDEP@ $(DEPDIR)/SoFaceDetail.Plo $(DEPDIR)/SoFaceDetail.Po \
+@AMDEP@ $(DEPDIR)/SoLineDetail.Plo $(DEPDIR)/SoLineDetail.Po \
+@AMDEP@ $(DEPDIR)/SoNodeKitDetail.Plo $(DEPDIR)/SoNodeKitDetail.Po \
+@AMDEP@ $(DEPDIR)/SoPointDetail.Plo $(DEPDIR)/SoPointDetail.Po \
+@AMDEP@ $(DEPDIR)/SoTextDetail.Plo $(DEPDIR)/SoTextDetail.Po \
+@AMDEP@ $(DEPDIR)/all.Plo $(DEPDIR)/all.Po
 DIST_COMMON = $(libdetailsinc_HEADERS) Makefile.am Makefile.in
 
-SOURCES = $(libdetails_la_SOURCES) $(EXTRA_libdetails_la_SOURCES) $(libdetails@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_libdetails@SUFFIX@LINKHACK_la_SOURCES)
-OBJECTS = $(am_libdetails_la_OBJECTS) $(am_libdetails@SUFFIX@LINKHACK_la_OBJECTS)
+SOURCES = $(details_lst_SOURCES) $(EXTRA_details_lst_SOURCES) $(libdetails_la_SOURCES) $(EXTRA_libdetails_la_SOURCES) $(libdetails@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_libdetails@SUFFIX@LINKHACK_la_SOURCES)
+OBJECTS = $(am_details_lst_OBJECTS) $(am_libdetails_la_OBJECTS) $(am_libdetails@SUFFIX@LINKHACK_la_OBJECTS)
 
 all: all-am
 
@@ -244,6 +272,24 @@ Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.s
 	cd $(top_builddir) && \
 	  CONFIG_HEADERS= CONFIG_LINKS= \
 	  CONFIG_FILES=$(subdir)/$@ $(SHELL) ./config.status
+
+clean-noinstLIBRARIES:
+	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
+
+mostlyclean-compile:
+	-rm -f *.$(OBJEXT) core *.core
+
+distclean-compile:
+	-rm -f *.tab.c
+
+mostlyclean-libtool:
+	-rm -f *.lo
+
+clean-libtool:
+	-rm -rf .libs _libs
+
+distclean-libtool:
+	-rm -f libtool
 install-libLTLIBRARIES: $(lib_LTLIBRARIES)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libdir)
@@ -266,21 +312,6 @@ clean-libLTLIBRARIES:
 
 clean-noinstLTLIBRARIES:
 	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
-
-mostlyclean-compile:
-	-rm -f *.$(OBJEXT) core *.core
-
-distclean-compile:
-	-rm -f *.tab.c
-
-mostlyclean-libtool:
-	-rm -f *.lo
-
-clean-libtool:
-	-rm -rf .libs _libs
-
-distclean-libtool:
-	-rm -f libtool
 
 libdetails.la: $(libdetails_la_OBJECTS) $(libdetails_la_DEPENDENCIES)
 	$(CXXLINK)  $(libdetails_la_LDFLAGS) $(libdetails_la_OBJECTS) $(libdetails_la_LIBADD) $(LIBS)
@@ -338,15 +369,25 @@ distclean-tags:
 	-rm -f TAGS ID
 
 @AMDEP@@_am_include@ $(DEPDIR)/SoConeDetail.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoConeDetail.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoCubeDetail.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoCubeDetail.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoCylinderDetail.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoCylinderDetail.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoDetail.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoDetail.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoFaceDetail.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoFaceDetail.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoLineDetail.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoLineDetail.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoNodeKitDetail.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoNodeKitDetail.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoPointDetail.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoPointDetail.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoTextDetail.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoTextDetail.Po
 @AMDEP@@_am_include@ $(DEPDIR)/all.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/all.Po
 
 distclean-depend:
 	-rm -rf $(DEPDIR)
@@ -392,7 +433,7 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(LTLIBRARIES) $(HEADERS)
+all-am: Makefile $(LIBRARIES) $(LTLIBRARIES) $(HEADERS)
 
 installdirs:
 	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(libdetailsincdir)
@@ -426,7 +467,7 @@ maintainer-clean-generic:
 clean: clean-am
 
 clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
-	clean-noinstLTLIBRARIES mostlyclean-am
+	clean-noinstLIBRARIES clean-noinstLTLIBRARIES mostlyclean-am
 
 distclean: distclean-am
 
@@ -463,18 +504,26 @@ mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 uninstall-am: uninstall-libLTLIBRARIES uninstall-libdetailsincHEADERS
 
 .PHONY: all all-am check check-am clean clean-generic \
-	clean-libLTLIBRARIES clean-libtool clean-noinstLTLIBRARIES \
-	distclean distclean-compile distclean-depend distclean-generic \
-	distclean-libtool distclean-tags distdir dvi dvi-am info \
-	info-am install install-am install-data install-data-am \
-	install-exec install-exec-am install-info \
-	install-libLTLIBRARIES install-libdetailsincHEADERS install-man \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
-	tags uninstall uninstall-am uninstall-libLTLIBRARIES \
+	clean-libLTLIBRARIES clean-libtool clean-noinstLIBRARIES \
+	clean-noinstLTLIBRARIES distclean distclean-compile \
+	distclean-depend distclean-generic distclean-libtool \
+	distclean-tags distdir dvi dvi-am info info-am install \
+	install-am install-data install-data-am install-exec \
+	install-exec-am install-info install-libLTLIBRARIES \
+	install-libdetailsincHEADERS install-man install-strip \
+	installcheck installcheck-am installdirs maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-compile \
+	mostlyclean-generic mostlyclean-libtool tags uninstall \
+	uninstall-am uninstall-libLTLIBRARIES \
 	uninstall-libdetailsincHEADERS
 
+
+details.lst: Makefile $(details_lst_OBJECTS)
+	@echo "Linking details.lst..."; \
+	echo $(CC) /LST:details.lst \
+	  $(details_lst_OBJECTS); \
+	$(CC) /LST:details.lst \
+	  $(details_lst_OBJECTS);
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

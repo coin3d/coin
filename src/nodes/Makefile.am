@@ -225,10 +225,14 @@ else
 BuildSources = $(RegularSources)
 endif
 
+if BUILD_WITH_MSVC
+noinst_LIBRARIES = nodes.lst
+else
 if HACKING_DYNAMIC_MODULES
 lib_LTLIBRARIES = libnodes@SUFFIX@LINKHACK.la
 else
 noinst_LTLIBRARIES = libnodes.la
+endif
 endif
 
 # Remove any linklibraries detected by configure, as they are not
@@ -245,7 +249,18 @@ libnodes@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libnodes@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
+nodes_lst_SOURCES = $(BuildSources)
+EXTRA_nodes_lst_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
 libnodesincdir = $(includedir)/Inventor/nodes
 libnodesinc_HEADERS = $(PublicHeaders)
+
+nodes.lst: Makefile $(nodes_lst_OBJECTS)
+	@echo "Linking nodes.lst..."; \
+	echo $(CC) /LST:nodes.lst \
+	  $(nodes_lst_OBJECTS); \
+	$(CC) /LST:nodes.lst \
+	  $(nodes_lst_OBJECTS);
 
 ##$ END TEMPLATE Make-Common

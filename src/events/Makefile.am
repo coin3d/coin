@@ -34,10 +34,14 @@ else
 BuildSources = $(RegularSources)
 endif
 
+if BUILD_WITH_MSVC
+noinst_LIBRARIES = events.lst
+else
 if HACKING_DYNAMIC_MODULES
 lib_LTLIBRARIES = libevents@SUFFIX@LINKHACK.la
 else
 noinst_LTLIBRARIES = libevents.la
+endif
 endif
 
 # Remove any linklibraries detected by configure, as they are not
@@ -54,7 +58,18 @@ libevents@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libevents@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
+events_lst_SOURCES = $(BuildSources)
+EXTRA_events_lst_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
 libeventsincdir = $(includedir)/Inventor/events
 libeventsinc_HEADERS = $(PublicHeaders)
+
+events.lst: Makefile $(events_lst_OBJECTS)
+	@echo "Linking events.lst..."; \
+	echo $(CC) /LST:events.lst \
+	  $(events_lst_OBJECTS); \
+	$(CC) /LST:events.lst \
+	  $(events_lst_OBJECTS);
 
 ##$ END TEMPLATE Make-Common

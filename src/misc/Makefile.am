@@ -75,10 +75,14 @@ else
 BuildSources = $(RegularSources)
 endif
 
+if BUILD_WITH_MSVC
+noinst_LIBRARIES = misc.lst
+else
 if HACKING_DYNAMIC_MODULES
 lib_LTLIBRARIES = libmisc@SUFFIX@LINKHACK.la
 else
 noinst_LTLIBRARIES = libmisc.la
+endif
 endif
 
 # Remove any linklibraries detected by configure, as they are not
@@ -95,7 +99,18 @@ libmisc@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libmisc@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
+misc_lst_SOURCES = $(BuildSources)
+EXTRA_misc_lst_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
 libmiscincdir = $(includedir)/Inventor/misc
 libmiscinc_HEADERS = $(PublicHeaders)
+
+misc.lst: Makefile $(misc_lst_OBJECTS)
+	@echo "Linking misc.lst..."; \
+	echo $(CC) /LST:misc.lst \
+	  $(misc_lst_OBJECTS); \
+	$(CC) /LST:misc.lst \
+	  $(misc_lst_OBJECTS);
 
 ##$ END TEMPLATE Make-Common

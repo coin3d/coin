@@ -45,10 +45,14 @@ else
 BuildSources = $(RegularSources)
 endif
 
+if BUILD_WITH_MSVC
+noinst_LIBRARIES = nodekits.lst
+else
 if HACKING_DYNAMIC_MODULES
 lib_LTLIBRARIES = libnodekits@SUFFIX@LINKHACK.la
 else
 noinst_LTLIBRARIES = libnodekits.la
+endif
 endif
 
 # Remove any linklibraries detected by configure, as they are not
@@ -65,7 +69,18 @@ libnodekits@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libnodekits@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
+nodekits_lst_SOURCES = $(BuildSources)
+EXTRA_nodekits_lst_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
 libnodekitsincdir = $(includedir)/Inventor/nodekits
 libnodekitsinc_HEADERS = $(PublicHeaders)
+
+nodekits.lst: Makefile $(nodekits_lst_OBJECTS)
+	@echo "Linking nodekits.lst..."; \
+	echo $(CC) /LST:nodekits.lst \
+	  $(nodekits_lst_OBJECTS); \
+	$(CC) /LST:nodekits.lst \
+	  $(nodekits_lst_OBJECTS);
 
 ##$ END TEMPLATE Make-Common

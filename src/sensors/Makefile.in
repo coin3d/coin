@@ -87,6 +87,7 @@ CXX = @CXX@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
+EXEEXT = @EXEEXT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 INSTALL_STRIP_PROGRAM_ENV = @INSTALL_STRIP_PROGRAM_ENV@
 LIBFLAGS = @LIBFLAGS@
@@ -98,6 +99,7 @@ LT_REVISION = @LT_REVISION@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
 OBJDUMP = @OBJDUMP@
+OBJEXT = @OBJEXT@
 PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 STRIP = @STRIP@
@@ -152,8 +154,9 @@ PrivateHeaders =
 @HACKING_COMPACT_BUILD_TRUE@BuildSources = $(LinkHackSources)
 @HACKING_COMPACT_BUILD_FALSE@BuildSources = $(RegularSources)
 
-@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libsensors@SUFFIX@LINKHACK.la
-@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libsensors.la
+@BUILD_WITH_MSVC_TRUE@noinst_LIBRARIES = sensors.lst
+@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libsensors@SUFFIX@LINKHACK.la
+@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libsensors.la
 
 # Remove any linklibraries detected by configure, as they are not
 # needed in the submodules -- only in the toplevel libCoin build.
@@ -171,15 +174,18 @@ EXTRA_libsensors@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 
+sensors_lst_SOURCES = $(BuildSources)
+EXTRA_sensors_lst_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
+
 libsensorsincdir = $(includedir)/Inventor/sensors
 libsensorsinc_HEADERS = $(PublicHeaders)
-EXEEXT =
-OBJEXT = o
 subdir = src/sensors
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h $(top_builddir)/include/Inventor/SbBasic.h $(top_builddir)/include/Inventor/system/inttypes.h
 CONFIG_CLEAN_FILES =
-LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
+LIBRARIES = $(noinst_LIBRARIES)
 
 
 DEFS = @DEFS@ -I. -I$(srcdir) -I$(top_builddir) -I$(top_builddir)/include/Inventor -I$(top_builddir)/include/Inventor/system
@@ -189,6 +195,25 @@ X_CFLAGS = @X_CFLAGS@
 X_LIBS = @X_LIBS@
 X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
+sensors_lst_AR = $(AR) cru
+sensors_lst_LIBADD = 
+@HACKING_COMPACT_BUILD_TRUE@am_sensors_lst_OBJECTS = all.$(OBJEXT)
+@HACKING_COMPACT_BUILD_FALSE@am_sensors_lst_OBJECTS = \
+@HACKING_COMPACT_BUILD_FALSE@ SoAlarmSensor.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoDataSensor.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoDelayQueueSensor.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoFieldSensor.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoIdleSensor.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoNodeSensor.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoOneShotSensor.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoPathSensor.$(OBJEXT) SoSensor.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoSensorManager.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTimerQueueSensor.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTimerSensor.$(OBJEXT)
+sensors_lst_OBJECTS = $(am_sensors_lst_OBJECTS)
+AR = ar
+LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
+
 libsensors_la_LDFLAGS = 
 libsensors_la_LIBADD = 
 @HACKING_COMPACT_BUILD_TRUE@am_libsensors_la_OBJECTS = all.lo
@@ -223,23 +248,30 @@ COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CF
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-DIST_SOURCES = $(libsensors_la_SOURCES) $(EXTRA_libsensors_la_SOURCES) \
+DIST_SOURCES = $(sensors_lst_SOURCES) $(EXTRA_sensors_lst_SOURCES) \
+$(libsensors_la_SOURCES) $(EXTRA_libsensors_la_SOURCES) \
 $(libsensors@SUFFIX@LINKHACK_la_SOURCES) \
 $(EXTRA_libsensors@SUFFIX@LINKHACK_la_SOURCES)
 HEADERS = $(libsensorsinc_HEADERS)
 
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP@DEP_FILES = $(DEPDIR)/SoAlarmSensor.Plo \
-@AMDEP@ $(DEPDIR)/SoDataSensor.Plo $(DEPDIR)/SoDelayQueueSensor.Plo \
-@AMDEP@ $(DEPDIR)/SoFieldSensor.Plo $(DEPDIR)/SoIdleSensor.Plo \
-@AMDEP@ $(DEPDIR)/SoNodeSensor.Plo $(DEPDIR)/SoOneShotSensor.Plo \
-@AMDEP@ $(DEPDIR)/SoPathSensor.Plo $(DEPDIR)/SoSensor.Plo \
-@AMDEP@ $(DEPDIR)/SoSensorManager.Plo $(DEPDIR)/SoTimerQueueSensor.Plo \
-@AMDEP@ $(DEPDIR)/SoTimerSensor.Plo $(DEPDIR)/all.Plo
+@AMDEP@ $(DEPDIR)/SoAlarmSensor.Po $(DEPDIR)/SoDataSensor.Plo \
+@AMDEP@ $(DEPDIR)/SoDataSensor.Po $(DEPDIR)/SoDelayQueueSensor.Plo \
+@AMDEP@ $(DEPDIR)/SoDelayQueueSensor.Po $(DEPDIR)/SoFieldSensor.Plo \
+@AMDEP@ $(DEPDIR)/SoFieldSensor.Po $(DEPDIR)/SoIdleSensor.Plo \
+@AMDEP@ $(DEPDIR)/SoIdleSensor.Po $(DEPDIR)/SoNodeSensor.Plo \
+@AMDEP@ $(DEPDIR)/SoNodeSensor.Po $(DEPDIR)/SoOneShotSensor.Plo \
+@AMDEP@ $(DEPDIR)/SoOneShotSensor.Po $(DEPDIR)/SoPathSensor.Plo \
+@AMDEP@ $(DEPDIR)/SoPathSensor.Po $(DEPDIR)/SoSensor.Plo \
+@AMDEP@ $(DEPDIR)/SoSensor.Po $(DEPDIR)/SoSensorManager.Plo \
+@AMDEP@ $(DEPDIR)/SoSensorManager.Po $(DEPDIR)/SoTimerQueueSensor.Plo \
+@AMDEP@ $(DEPDIR)/SoTimerQueueSensor.Po $(DEPDIR)/SoTimerSensor.Plo \
+@AMDEP@ $(DEPDIR)/SoTimerSensor.Po $(DEPDIR)/all.Plo $(DEPDIR)/all.Po
 DIST_COMMON = $(libsensorsinc_HEADERS) Makefile.am Makefile.in
 
-SOURCES = $(libsensors_la_SOURCES) $(EXTRA_libsensors_la_SOURCES) $(libsensors@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_libsensors@SUFFIX@LINKHACK_la_SOURCES)
-OBJECTS = $(am_libsensors_la_OBJECTS) $(am_libsensors@SUFFIX@LINKHACK_la_OBJECTS)
+SOURCES = $(sensors_lst_SOURCES) $(EXTRA_sensors_lst_SOURCES) $(libsensors_la_SOURCES) $(EXTRA_libsensors_la_SOURCES) $(libsensors@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_libsensors@SUFFIX@LINKHACK_la_SOURCES)
+OBJECTS = $(am_sensors_lst_OBJECTS) $(am_libsensors_la_OBJECTS) $(am_libsensors@SUFFIX@LINKHACK_la_OBJECTS)
 
 all: all-am
 
@@ -254,6 +286,24 @@ Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.s
 	cd $(top_builddir) && \
 	  CONFIG_HEADERS= CONFIG_LINKS= \
 	  CONFIG_FILES=$(subdir)/$@ $(SHELL) ./config.status
+
+clean-noinstLIBRARIES:
+	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
+
+mostlyclean-compile:
+	-rm -f *.$(OBJEXT) core *.core
+
+distclean-compile:
+	-rm -f *.tab.c
+
+mostlyclean-libtool:
+	-rm -f *.lo
+
+clean-libtool:
+	-rm -rf .libs _libs
+
+distclean-libtool:
+	-rm -f libtool
 install-libLTLIBRARIES: $(lib_LTLIBRARIES)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libdir)
@@ -276,21 +326,6 @@ clean-libLTLIBRARIES:
 
 clean-noinstLTLIBRARIES:
 	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
-
-mostlyclean-compile:
-	-rm -f *.$(OBJEXT) core *.core
-
-distclean-compile:
-	-rm -f *.tab.c
-
-mostlyclean-libtool:
-	-rm -f *.lo
-
-clean-libtool:
-	-rm -rf .libs _libs
-
-distclean-libtool:
-	-rm -f libtool
 
 libsensors.la: $(libsensors_la_OBJECTS) $(libsensors_la_DEPENDENCIES)
 	$(CXXLINK)  $(libsensors_la_LDFLAGS) $(libsensors_la_OBJECTS) $(libsensors_la_LIBADD) $(LIBS)
@@ -348,18 +383,31 @@ distclean-tags:
 	-rm -f TAGS ID
 
 @AMDEP@@_am_include@ $(DEPDIR)/SoAlarmSensor.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoAlarmSensor.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoDataSensor.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoDataSensor.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoDelayQueueSensor.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoDelayQueueSensor.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoFieldSensor.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoFieldSensor.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoIdleSensor.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoIdleSensor.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoNodeSensor.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoNodeSensor.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoOneShotSensor.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoOneShotSensor.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoPathSensor.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoPathSensor.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoSensor.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSensor.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoSensorManager.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSensorManager.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoTimerQueueSensor.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoTimerQueueSensor.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoTimerSensor.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoTimerSensor.Po
 @AMDEP@@_am_include@ $(DEPDIR)/all.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/all.Po
 
 distclean-depend:
 	-rm -rf $(DEPDIR)
@@ -405,7 +453,7 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(LTLIBRARIES) $(HEADERS)
+all-am: Makefile $(LIBRARIES) $(LTLIBRARIES) $(HEADERS)
 
 installdirs:
 	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(libsensorsincdir)
@@ -439,7 +487,7 @@ maintainer-clean-generic:
 clean: clean-am
 
 clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
-	clean-noinstLTLIBRARIES mostlyclean-am
+	clean-noinstLIBRARIES clean-noinstLTLIBRARIES mostlyclean-am
 
 distclean: distclean-am
 
@@ -476,18 +524,26 @@ mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 uninstall-am: uninstall-libLTLIBRARIES uninstall-libsensorsincHEADERS
 
 .PHONY: all all-am check check-am clean clean-generic \
-	clean-libLTLIBRARIES clean-libtool clean-noinstLTLIBRARIES \
-	distclean distclean-compile distclean-depend distclean-generic \
-	distclean-libtool distclean-tags distdir dvi dvi-am info \
-	info-am install install-am install-data install-data-am \
-	install-exec install-exec-am install-info \
-	install-libLTLIBRARIES install-libsensorsincHEADERS install-man \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
-	tags uninstall uninstall-am uninstall-libLTLIBRARIES \
+	clean-libLTLIBRARIES clean-libtool clean-noinstLIBRARIES \
+	clean-noinstLTLIBRARIES distclean distclean-compile \
+	distclean-depend distclean-generic distclean-libtool \
+	distclean-tags distdir dvi dvi-am info info-am install \
+	install-am install-data install-data-am install-exec \
+	install-exec-am install-info install-libLTLIBRARIES \
+	install-libsensorsincHEADERS install-man install-strip \
+	installcheck installcheck-am installdirs maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-compile \
+	mostlyclean-generic mostlyclean-libtool tags uninstall \
+	uninstall-am uninstall-libLTLIBRARIES \
 	uninstall-libsensorsincHEADERS
 
+
+sensors.lst: Makefile $(sensors_lst_OBJECTS)
+	@echo "Linking sensors.lst..."; \
+	echo $(CC) /LST:sensors.lst \
+	  $(sensors_lst_OBJECTS); \
+	$(CC) /LST:sensors.lst \
+	  $(sensors_lst_OBJECTS);
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

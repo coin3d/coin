@@ -43,10 +43,14 @@ else
 BuildSources = $(RegularSources)
 endif
 
+if BUILD_WITH_MSVC
+noinst_LIBRARIES = sensors.lst
+else
 if HACKING_DYNAMIC_MODULES
 lib_LTLIBRARIES = libsensors@SUFFIX@LINKHACK.la
 else
 noinst_LTLIBRARIES = libsensors.la
+endif
 endif
 
 # Remove any linklibraries detected by configure, as they are not
@@ -63,7 +67,18 @@ libsensors@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libsensors@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
+sensors_lst_SOURCES = $(BuildSources)
+EXTRA_sensors_lst_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
 libsensorsincdir = $(includedir)/Inventor/sensors
 libsensorsinc_HEADERS = $(PublicHeaders)
+
+sensors.lst: Makefile $(sensors_lst_OBJECTS)
+	@echo "Linking sensors.lst..."; \
+	echo $(CC) /LST:sensors.lst \
+	  $(sensors_lst_OBJECTS); \
+	$(CC) /LST:sensors.lst \
+	  $(sensors_lst_OBJECTS);
 
 ##$ END TEMPLATE Make-Common

@@ -125,10 +125,14 @@ else
 BuildSources = $(RegularSources)
 endif
 
+if BUILD_WITH_MSVC
+noinst_LIBRARIES = fields.lst
+else
 if HACKING_DYNAMIC_MODULES
 lib_LTLIBRARIES = libfields@SUFFIX@LINKHACK.la
 else
 noinst_LTLIBRARIES = libfields.la
+endif
 endif
 
 # Remove any linklibraries detected by configure, as they are not
@@ -145,7 +149,18 @@ libfields@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libfields@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
+fields_lst_SOURCES = $(BuildSources)
+EXTRA_fields_lst_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
 libfieldsincdir = $(includedir)/Inventor/fields
 libfieldsinc_HEADERS = $(PublicHeaders)
+
+fields.lst: Makefile $(fields_lst_OBJECTS)
+	@echo "Linking fields.lst..."; \
+	echo $(CC) /LST:fields.lst \
+	  $(fields_lst_OBJECTS); \
+	$(CC) /LST:fields.lst \
+	  $(fields_lst_OBJECTS);
 
 ##$ END TEMPLATE Make-Common

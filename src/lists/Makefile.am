@@ -56,10 +56,14 @@ else
 BuildSources = $(RegularSources)
 endif
 
+if BUILD_WITH_MSVC
+noinst_LIBRARIES = lists.lst
+else
 if HACKING_DYNAMIC_MODULES
 lib_LTLIBRARIES = liblists@SUFFIX@LINKHACK.la
 else
 noinst_LTLIBRARIES = liblists.la
+endif
 endif
 
 # Remove any linklibraries detected by configure, as they are not
@@ -76,7 +80,18 @@ liblists@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_liblists@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
+lists_lst_SOURCES = $(BuildSources)
+EXTRA_lists_lst_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
 liblistsincdir = $(includedir)/Inventor/lists
 liblistsinc_HEADERS = $(PublicHeaders)
+
+lists.lst: Makefile $(lists_lst_OBJECTS)
+	@echo "Linking lists.lst..."; \
+	echo $(CC) /LST:lists.lst \
+	  $(lists_lst_OBJECTS); \
+	$(CC) /LST:lists.lst \
+	  $(lists_lst_OBJECTS);
 
 ##$ END TEMPLATE Make-Common

@@ -72,10 +72,14 @@ else
 BuildSources = $(RegularSources)
 endif
 
+if BUILD_WITH_MSVC
+noinst_LIBRARIES = base.lst
+else
 if HACKING_DYNAMIC_MODULES
 lib_LTLIBRARIES = libbase@SUFFIX@LINKHACK.la
 else
 noinst_LTLIBRARIES = libbase.la
+endif
 endif
 
 # Remove any linklibraries detected by configure, as they are not
@@ -92,7 +96,18 @@ libbase@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libbase@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
+base_lst_SOURCES = $(BuildSources)
+EXTRA_base_lst_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
 libbaseincdir = $(includedir)/Inventor/base
 libbaseinc_HEADERS = $(PublicHeaders)
+
+base.lst: Makefile $(base_lst_OBJECTS)
+	@echo "Linking base.lst..."; \
+	echo $(CC) /LST:base.lst \
+	  $(base_lst_OBJECTS); \
+	$(CC) /LST:base.lst \
+	  $(base_lst_OBJECTS);
 
 ##$ END TEMPLATE Make-Common

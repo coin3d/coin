@@ -87,6 +87,7 @@ CXX = @CXX@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
+EXEEXT = @EXEEXT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 INSTALL_STRIP_PROGRAM_ENV = @INSTALL_STRIP_PROGRAM_ENV@
 LIBFLAGS = @LIBFLAGS@
@@ -98,6 +99,7 @@ LT_REVISION = @LT_REVISION@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
 OBJDUMP = @OBJDUMP@
+OBJEXT = @OBJEXT@
 PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 STRIP = @STRIP@
@@ -141,8 +143,9 @@ PrivateHeaders =
 @HACKING_COMPACT_BUILD_TRUE@BuildSources = $(LinkHackSources)
 @HACKING_COMPACT_BUILD_FALSE@BuildSources = $(RegularSources)
 
-@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libcaches@SUFFIX@LINKHACK.la
-@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libcaches.la
+@BUILD_WITH_MSVC_TRUE@noinst_LIBRARIES = caches.lst
+@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libcaches@SUFFIX@LINKHACK.la
+@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libcaches.la
 
 # Remove any linklibraries detected by configure, as they are not
 # needed in the submodules -- only in the toplevel libCoin build.
@@ -160,15 +163,18 @@ EXTRA_libcaches@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 
+caches_lst_SOURCES = $(BuildSources)
+EXTRA_caches_lst_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
+
 libcachesincdir = $(includedir)/Inventor/caches
 libcachesinc_HEADERS = $(PublicHeaders)
-EXEEXT =
-OBJEXT = o
 subdir = src/caches
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h $(top_builddir)/include/Inventor/SbBasic.h $(top_builddir)/include/Inventor/system/inttypes.h
 CONFIG_CLEAN_FILES =
-LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
+LIBRARIES = $(noinst_LIBRARIES)
 
 
 DEFS = @DEFS@ -I. -I$(srcdir) -I$(top_builddir) -I$(top_builddir)/include/Inventor -I$(top_builddir)/include/Inventor/system
@@ -178,6 +184,21 @@ X_CFLAGS = @X_CFLAGS@
 X_LIBS = @X_LIBS@
 X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
+caches_lst_AR = $(AR) cru
+caches_lst_LIBADD = 
+@HACKING_COMPACT_BUILD_TRUE@am_caches_lst_OBJECTS = all.$(OBJEXT)
+@HACKING_COMPACT_BUILD_FALSE@am_caches_lst_OBJECTS = \
+@HACKING_COMPACT_BUILD_FALSE@ SoBoundingBoxCache.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoCache.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoConvexDataCache.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLCacheList.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLRenderCache.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoNormalCache.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTextureCoordinateCache.$(OBJEXT)
+caches_lst_OBJECTS = $(am_caches_lst_OBJECTS)
+AR = ar
+LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
+
 libcaches_la_LDFLAGS = 
 libcaches_la_LIBADD = 
 @HACKING_COMPACT_BUILD_TRUE@am_libcaches_la_OBJECTS = all.lo
@@ -208,21 +229,27 @@ COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CF
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-DIST_SOURCES = $(libcaches_la_SOURCES) $(EXTRA_libcaches_la_SOURCES) \
+DIST_SOURCES = $(caches_lst_SOURCES) $(EXTRA_caches_lst_SOURCES) \
+$(libcaches_la_SOURCES) $(EXTRA_libcaches_la_SOURCES) \
 $(libcaches@SUFFIX@LINKHACK_la_SOURCES) \
 $(EXTRA_libcaches@SUFFIX@LINKHACK_la_SOURCES)
 HEADERS = $(libcachesinc_HEADERS)
 
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP@DEP_FILES = $(DEPDIR)/SoBoundingBoxCache.Plo \
-@AMDEP@ $(DEPDIR)/SoCache.Plo $(DEPDIR)/SoConvexDataCache.Plo \
-@AMDEP@ $(DEPDIR)/SoGLCacheList.Plo $(DEPDIR)/SoGLRenderCache.Plo \
-@AMDEP@ $(DEPDIR)/SoNormalCache.Plo \
-@AMDEP@ $(DEPDIR)/SoTextureCoordinateCache.Plo $(DEPDIR)/all.Plo
+@AMDEP@ $(DEPDIR)/SoBoundingBoxCache.Po $(DEPDIR)/SoCache.Plo \
+@AMDEP@ $(DEPDIR)/SoCache.Po $(DEPDIR)/SoConvexDataCache.Plo \
+@AMDEP@ $(DEPDIR)/SoConvexDataCache.Po $(DEPDIR)/SoGLCacheList.Plo \
+@AMDEP@ $(DEPDIR)/SoGLCacheList.Po $(DEPDIR)/SoGLRenderCache.Plo \
+@AMDEP@ $(DEPDIR)/SoGLRenderCache.Po $(DEPDIR)/SoNormalCache.Plo \
+@AMDEP@ $(DEPDIR)/SoNormalCache.Po \
+@AMDEP@ $(DEPDIR)/SoTextureCoordinateCache.Plo \
+@AMDEP@ $(DEPDIR)/SoTextureCoordinateCache.Po $(DEPDIR)/all.Plo \
+@AMDEP@ $(DEPDIR)/all.Po
 DIST_COMMON = $(libcachesinc_HEADERS) Makefile.am Makefile.in
 
-SOURCES = $(libcaches_la_SOURCES) $(EXTRA_libcaches_la_SOURCES) $(libcaches@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_libcaches@SUFFIX@LINKHACK_la_SOURCES)
-OBJECTS = $(am_libcaches_la_OBJECTS) $(am_libcaches@SUFFIX@LINKHACK_la_OBJECTS)
+SOURCES = $(caches_lst_SOURCES) $(EXTRA_caches_lst_SOURCES) $(libcaches_la_SOURCES) $(EXTRA_libcaches_la_SOURCES) $(libcaches@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_libcaches@SUFFIX@LINKHACK_la_SOURCES)
+OBJECTS = $(am_caches_lst_OBJECTS) $(am_libcaches_la_OBJECTS) $(am_libcaches@SUFFIX@LINKHACK_la_OBJECTS)
 
 all: all-am
 
@@ -237,6 +264,24 @@ Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.s
 	cd $(top_builddir) && \
 	  CONFIG_HEADERS= CONFIG_LINKS= \
 	  CONFIG_FILES=$(subdir)/$@ $(SHELL) ./config.status
+
+clean-noinstLIBRARIES:
+	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
+
+mostlyclean-compile:
+	-rm -f *.$(OBJEXT) core *.core
+
+distclean-compile:
+	-rm -f *.tab.c
+
+mostlyclean-libtool:
+	-rm -f *.lo
+
+clean-libtool:
+	-rm -rf .libs _libs
+
+distclean-libtool:
+	-rm -f libtool
 install-libLTLIBRARIES: $(lib_LTLIBRARIES)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libdir)
@@ -259,21 +304,6 @@ clean-libLTLIBRARIES:
 
 clean-noinstLTLIBRARIES:
 	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
-
-mostlyclean-compile:
-	-rm -f *.$(OBJEXT) core *.core
-
-distclean-compile:
-	-rm -f *.tab.c
-
-mostlyclean-libtool:
-	-rm -f *.lo
-
-clean-libtool:
-	-rm -rf .libs _libs
-
-distclean-libtool:
-	-rm -f libtool
 
 libcaches.la: $(libcaches_la_OBJECTS) $(libcaches_la_DEPENDENCIES)
 	$(CXXLINK)  $(libcaches_la_LDFLAGS) $(libcaches_la_OBJECTS) $(libcaches_la_LIBADD) $(LIBS)
@@ -331,13 +361,21 @@ distclean-tags:
 	-rm -f TAGS ID
 
 @AMDEP@@_am_include@ $(DEPDIR)/SoBoundingBoxCache.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoBoundingBoxCache.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoCache.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoCache.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoConvexDataCache.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoConvexDataCache.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoGLCacheList.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoGLCacheList.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoGLRenderCache.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoGLRenderCache.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoNormalCache.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoNormalCache.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoTextureCoordinateCache.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoTextureCoordinateCache.Po
 @AMDEP@@_am_include@ $(DEPDIR)/all.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/all.Po
 
 distclean-depend:
 	-rm -rf $(DEPDIR)
@@ -383,7 +421,7 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(LTLIBRARIES) $(HEADERS)
+all-am: Makefile $(LIBRARIES) $(LTLIBRARIES) $(HEADERS)
 
 installdirs:
 	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(libcachesincdir)
@@ -417,7 +455,7 @@ maintainer-clean-generic:
 clean: clean-am
 
 clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
-	clean-noinstLTLIBRARIES mostlyclean-am
+	clean-noinstLIBRARIES clean-noinstLTLIBRARIES mostlyclean-am
 
 distclean: distclean-am
 
@@ -454,18 +492,26 @@ mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 uninstall-am: uninstall-libLTLIBRARIES uninstall-libcachesincHEADERS
 
 .PHONY: all all-am check check-am clean clean-generic \
-	clean-libLTLIBRARIES clean-libtool clean-noinstLTLIBRARIES \
-	distclean distclean-compile distclean-depend distclean-generic \
-	distclean-libtool distclean-tags distdir dvi dvi-am info \
-	info-am install install-am install-data install-data-am \
-	install-exec install-exec-am install-info \
-	install-libLTLIBRARIES install-libcachesincHEADERS install-man \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
-	tags uninstall uninstall-am uninstall-libLTLIBRARIES \
+	clean-libLTLIBRARIES clean-libtool clean-noinstLIBRARIES \
+	clean-noinstLTLIBRARIES distclean distclean-compile \
+	distclean-depend distclean-generic distclean-libtool \
+	distclean-tags distdir dvi dvi-am info info-am install \
+	install-am install-data install-data-am install-exec \
+	install-exec-am install-info install-libLTLIBRARIES \
+	install-libcachesincHEADERS install-man install-strip \
+	installcheck installcheck-am installdirs maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-compile \
+	mostlyclean-generic mostlyclean-libtool tags uninstall \
+	uninstall-am uninstall-libLTLIBRARIES \
 	uninstall-libcachesincHEADERS
 
+
+caches.lst: Makefile $(caches_lst_OBJECTS)
+	@echo "Linking caches.lst..."; \
+	echo $(CC) /LST:caches.lst \
+	  $(caches_lst_OBJECTS); \
+	$(CC) /LST:caches.lst \
+	  $(caches_lst_OBJECTS);
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

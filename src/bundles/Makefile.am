@@ -24,10 +24,14 @@ else
 BuildSources = $(RegularSources)
 endif
 
+if BUILD_WITH_MSVC
+noinst_LIBRARIES = bundles.lst
+else
 if HACKING_DYNAMIC_MODULES
 lib_LTLIBRARIES = libbundles@SUFFIX@LINKHACK.la
 else
 noinst_LTLIBRARIES = libbundles.la
+endif
 endif
 
 # Remove any linklibraries detected by configure, as they are not
@@ -44,7 +48,18 @@ libbundles@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libbundles@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
+bundles_lst_SOURCES = $(BuildSources)
+EXTRA_bundles_lst_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
 libbundlesincdir = $(includedir)/Inventor/bundles
 libbundlesinc_HEADERS = $(PublicHeaders)
+
+bundles.lst: Makefile $(bundles_lst_OBJECTS)
+	@echo "Linking bundles.lst..."; \
+	echo $(CC) /LST:bundles.lst \
+	  $(bundles_lst_OBJECTS); \
+	$(CC) /LST:bundles.lst \
+	  $(bundles_lst_OBJECTS);
 
 ##$ END TEMPLATE Make-Common

@@ -87,6 +87,7 @@ CXX = @CXX@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
+EXEEXT = @EXEEXT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 INSTALL_STRIP_PROGRAM_ENV = @INSTALL_STRIP_PROGRAM_ENV@
 LIBFLAGS = @LIBFLAGS@
@@ -98,6 +99,7 @@ LT_REVISION = @LT_REVISION@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
 OBJDUMP = @OBJDUMP@
+OBJEXT = @OBJEXT@
 PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 STRIP = @STRIP@
@@ -152,8 +154,9 @@ PrivateHeaders =
 @HACKING_COMPACT_BUILD_TRUE@BuildSources = $(LinkHackSources)
 @HACKING_COMPACT_BUILD_FALSE@BuildSources = $(RegularSources)
 
-@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libmanips@SUFFIX@LINKHACK.la
-@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libmanips.la
+@BUILD_WITH_MSVC_TRUE@noinst_LIBRARIES = manips.lst
+@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libmanips@SUFFIX@LINKHACK.la
+@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libmanips.la
 
 # Remove any linklibraries detected by configure, as they are not
 # needed in the submodules -- only in the toplevel libCoin build.
@@ -171,15 +174,18 @@ EXTRA_libmanips@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 
+manips_lst_SOURCES = $(BuildSources)
+EXTRA_manips_lst_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
+
 libmanipsincdir = $(includedir)/Inventor/manips
 libmanipsinc_HEADERS = $(PublicHeaders)
-EXEEXT =
-OBJEXT = o
 subdir = src/manips
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h $(top_builddir)/include/Inventor/SbBasic.h $(top_builddir)/include/Inventor/system/inttypes.h
 CONFIG_CLEAN_FILES =
-LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
+LIBRARIES = $(noinst_LIBRARIES)
 
 
 DEFS = @DEFS@ -I. -I$(srcdir) -I$(top_builddir) -I$(top_builddir)/include/Inventor -I$(top_builddir)/include/Inventor/system
@@ -189,6 +195,27 @@ X_CFLAGS = @X_CFLAGS@
 X_LIBS = @X_LIBS@
 X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
+manips_lst_AR = $(AR) cru
+manips_lst_LIBADD = 
+@HACKING_COMPACT_BUILD_TRUE@am_manips_lst_OBJECTS = all.$(OBJEXT)
+@HACKING_COMPACT_BUILD_FALSE@am_manips_lst_OBJECTS = \
+@HACKING_COMPACT_BUILD_FALSE@ SoClipPlaneManip.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoDirectionalLightManip.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoPointLightManip.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoSpotLightManip.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTransformManip.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoCenterballManip.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoHandleBoxManip.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoJackManip.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTabBoxManip.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTrackballManip.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTransformBoxManip.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTransformerManip.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ commoncode.$(OBJEXT)
+manips_lst_OBJECTS = $(am_manips_lst_OBJECTS)
+AR = ar
+LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
+
 libmanips_la_LDFLAGS = 
 libmanips_la_LIBADD = 
 @HACKING_COMPACT_BUILD_TRUE@am_libmanips_la_OBJECTS = all.lo
@@ -227,25 +254,34 @@ COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CF
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-DIST_SOURCES = $(libmanips_la_SOURCES) $(EXTRA_libmanips_la_SOURCES) \
+DIST_SOURCES = $(manips_lst_SOURCES) $(EXTRA_manips_lst_SOURCES) \
+$(libmanips_la_SOURCES) $(EXTRA_libmanips_la_SOURCES) \
 $(libmanips@SUFFIX@LINKHACK_la_SOURCES) \
 $(EXTRA_libmanips@SUFFIX@LINKHACK_la_SOURCES)
 HEADERS = $(libmanipsinc_HEADERS)
 
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP@DEP_FILES = $(DEPDIR)/SoCenterballManip.Plo \
-@AMDEP@ $(DEPDIR)/SoClipPlaneManip.Plo \
+@AMDEP@ $(DEPDIR)/SoCenterballManip.Po $(DEPDIR)/SoClipPlaneManip.Plo \
+@AMDEP@ $(DEPDIR)/SoClipPlaneManip.Po \
 @AMDEP@ $(DEPDIR)/SoDirectionalLightManip.Plo \
-@AMDEP@ $(DEPDIR)/SoHandleBoxManip.Plo $(DEPDIR)/SoJackManip.Plo \
-@AMDEP@ $(DEPDIR)/SoPointLightManip.Plo $(DEPDIR)/SoSpotLightManip.Plo \
-@AMDEP@ $(DEPDIR)/SoTabBoxManip.Plo $(DEPDIR)/SoTrackballManip.Plo \
-@AMDEP@ $(DEPDIR)/SoTransformBoxManip.Plo $(DEPDIR)/SoTransformManip.Plo \
-@AMDEP@ $(DEPDIR)/SoTransformerManip.Plo $(DEPDIR)/all.Plo \
-@AMDEP@ $(DEPDIR)/commoncode.Plo
+@AMDEP@ $(DEPDIR)/SoDirectionalLightManip.Po \
+@AMDEP@ $(DEPDIR)/SoHandleBoxManip.Plo $(DEPDIR)/SoHandleBoxManip.Po \
+@AMDEP@ $(DEPDIR)/SoJackManip.Plo $(DEPDIR)/SoJackManip.Po \
+@AMDEP@ $(DEPDIR)/SoPointLightManip.Plo $(DEPDIR)/SoPointLightManip.Po \
+@AMDEP@ $(DEPDIR)/SoSpotLightManip.Plo $(DEPDIR)/SoSpotLightManip.Po \
+@AMDEP@ $(DEPDIR)/SoTabBoxManip.Plo $(DEPDIR)/SoTabBoxManip.Po \
+@AMDEP@ $(DEPDIR)/SoTrackballManip.Plo $(DEPDIR)/SoTrackballManip.Po \
+@AMDEP@ $(DEPDIR)/SoTransformBoxManip.Plo \
+@AMDEP@ $(DEPDIR)/SoTransformBoxManip.Po $(DEPDIR)/SoTransformManip.Plo \
+@AMDEP@ $(DEPDIR)/SoTransformManip.Po $(DEPDIR)/SoTransformerManip.Plo \
+@AMDEP@ $(DEPDIR)/SoTransformerManip.Po $(DEPDIR)/all.Plo \
+@AMDEP@ $(DEPDIR)/all.Po $(DEPDIR)/commoncode.Plo \
+@AMDEP@ $(DEPDIR)/commoncode.Po
 DIST_COMMON = $(libmanipsinc_HEADERS) Makefile.am Makefile.in
 
-SOURCES = $(libmanips_la_SOURCES) $(EXTRA_libmanips_la_SOURCES) $(libmanips@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_libmanips@SUFFIX@LINKHACK_la_SOURCES)
-OBJECTS = $(am_libmanips_la_OBJECTS) $(am_libmanips@SUFFIX@LINKHACK_la_OBJECTS)
+SOURCES = $(manips_lst_SOURCES) $(EXTRA_manips_lst_SOURCES) $(libmanips_la_SOURCES) $(EXTRA_libmanips_la_SOURCES) $(libmanips@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_libmanips@SUFFIX@LINKHACK_la_SOURCES)
+OBJECTS = $(am_manips_lst_OBJECTS) $(am_libmanips_la_OBJECTS) $(am_libmanips@SUFFIX@LINKHACK_la_OBJECTS)
 
 all: all-am
 
@@ -260,6 +296,24 @@ Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.s
 	cd $(top_builddir) && \
 	  CONFIG_HEADERS= CONFIG_LINKS= \
 	  CONFIG_FILES=$(subdir)/$@ $(SHELL) ./config.status
+
+clean-noinstLIBRARIES:
+	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
+
+mostlyclean-compile:
+	-rm -f *.$(OBJEXT) core *.core
+
+distclean-compile:
+	-rm -f *.tab.c
+
+mostlyclean-libtool:
+	-rm -f *.lo
+
+clean-libtool:
+	-rm -rf .libs _libs
+
+distclean-libtool:
+	-rm -f libtool
 install-libLTLIBRARIES: $(lib_LTLIBRARIES)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libdir)
@@ -282,21 +336,6 @@ clean-libLTLIBRARIES:
 
 clean-noinstLTLIBRARIES:
 	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
-
-mostlyclean-compile:
-	-rm -f *.$(OBJEXT) core *.core
-
-distclean-compile:
-	-rm -f *.tab.c
-
-mostlyclean-libtool:
-	-rm -f *.lo
-
-clean-libtool:
-	-rm -rf .libs _libs
-
-distclean-libtool:
-	-rm -f libtool
 
 libmanips.la: $(libmanips_la_OBJECTS) $(libmanips_la_DEPENDENCIES)
 	$(CXXLINK)  $(libmanips_la_LDFLAGS) $(libmanips_la_OBJECTS) $(libmanips_la_LIBADD) $(LIBS)
@@ -354,19 +393,33 @@ distclean-tags:
 	-rm -f TAGS ID
 
 @AMDEP@@_am_include@ $(DEPDIR)/SoCenterballManip.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoCenterballManip.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoClipPlaneManip.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoClipPlaneManip.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoDirectionalLightManip.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoDirectionalLightManip.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoHandleBoxManip.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoHandleBoxManip.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoJackManip.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoJackManip.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoPointLightManip.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoPointLightManip.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoSpotLightManip.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSpotLightManip.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoTabBoxManip.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoTabBoxManip.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoTrackballManip.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoTrackballManip.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoTransformBoxManip.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoTransformBoxManip.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoTransformManip.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoTransformManip.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoTransformerManip.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoTransformerManip.Po
 @AMDEP@@_am_include@ $(DEPDIR)/all.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/all.Po
 @AMDEP@@_am_include@ $(DEPDIR)/commoncode.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/commoncode.Po
 
 distclean-depend:
 	-rm -rf $(DEPDIR)
@@ -412,7 +465,7 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(LTLIBRARIES) $(HEADERS)
+all-am: Makefile $(LIBRARIES) $(LTLIBRARIES) $(HEADERS)
 
 installdirs:
 	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(libmanipsincdir)
@@ -446,7 +499,7 @@ maintainer-clean-generic:
 clean: clean-am
 
 clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
-	clean-noinstLTLIBRARIES mostlyclean-am
+	clean-noinstLIBRARIES clean-noinstLTLIBRARIES mostlyclean-am
 
 distclean: distclean-am
 
@@ -483,18 +536,26 @@ mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 uninstall-am: uninstall-libLTLIBRARIES uninstall-libmanipsincHEADERS
 
 .PHONY: all all-am check check-am clean clean-generic \
-	clean-libLTLIBRARIES clean-libtool clean-noinstLTLIBRARIES \
-	distclean distclean-compile distclean-depend distclean-generic \
-	distclean-libtool distclean-tags distdir dvi dvi-am info \
-	info-am install install-am install-data install-data-am \
-	install-exec install-exec-am install-info \
-	install-libLTLIBRARIES install-libmanipsincHEADERS install-man \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
-	tags uninstall uninstall-am uninstall-libLTLIBRARIES \
+	clean-libLTLIBRARIES clean-libtool clean-noinstLIBRARIES \
+	clean-noinstLTLIBRARIES distclean distclean-compile \
+	distclean-depend distclean-generic distclean-libtool \
+	distclean-tags distdir dvi dvi-am info info-am install \
+	install-am install-data install-data-am install-exec \
+	install-exec-am install-info install-libLTLIBRARIES \
+	install-libmanipsincHEADERS install-man install-strip \
+	installcheck installcheck-am installdirs maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-compile \
+	mostlyclean-generic mostlyclean-libtool tags uninstall \
+	uninstall-am uninstall-libLTLIBRARIES \
 	uninstall-libmanipsincHEADERS
 
+
+manips.lst: Makefile $(manips_lst_OBJECTS)
+	@echo "Linking manips.lst..."; \
+	echo $(CC) /LST:manips.lst \
+	  $(manips_lst_OBJECTS); \
+	$(CC) /LST:manips.lst \
+	  $(manips_lst_OBJECTS);
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -87,6 +87,7 @@ CXX = @CXX@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
+EXEEXT = @EXEEXT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 INSTALL_STRIP_PROGRAM_ENV = @INSTALL_STRIP_PROGRAM_ENV@
 LIBFLAGS = @LIBFLAGS@
@@ -98,6 +99,7 @@ LT_REVISION = @LT_REVISION@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
 OBJDUMP = @OBJDUMP@
+OBJEXT = @OBJEXT@
 PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 STRIP = @STRIP@
@@ -171,8 +173,9 @@ PrivateHeaders =
 @HACKING_COMPACT_BUILD_TRUE@BuildSources = $(LinkHackSources)
 @HACKING_COMPACT_BUILD_FALSE@BuildSources = $(RegularSources)
 
-@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libdraggers@SUFFIX@LINKHACK.la
-@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libdraggers.la
+@BUILD_WITH_MSVC_TRUE@noinst_LIBRARIES = draggers.lst
+@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libdraggers@SUFFIX@LINKHACK.la
+@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libdraggers.la
 
 # Remove any linklibraries detected by configure, as they are not
 # needed in the submodules -- only in the toplevel libCoin build.
@@ -190,15 +193,18 @@ EXTRA_libdraggers@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 
+draggers_lst_SOURCES = $(BuildSources)
+EXTRA_draggers_lst_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
+
 libdraggersincdir = $(includedir)/Inventor/draggers
 libdraggersinc_HEADERS = $(PublicHeaders)
-EXEEXT =
-OBJEXT = o
 subdir = src/draggers
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h $(top_builddir)/include/Inventor/SbBasic.h $(top_builddir)/include/Inventor/system/inttypes.h
 CONFIG_CLEAN_FILES =
-LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
+LIBRARIES = $(noinst_LIBRARIES)
 
 
 DEFS = @DEFS@ -I. -I$(srcdir) -I$(top_builddir) -I$(top_builddir)/include/Inventor -I$(top_builddir)/include/Inventor/system
@@ -208,6 +214,36 @@ X_CFLAGS = @X_CFLAGS@
 X_LIBS = @X_LIBS@
 X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
+draggers_lst_AR = $(AR) cru
+draggers_lst_LIBADD = 
+@HACKING_COMPACT_BUILD_TRUE@am_draggers_lst_OBJECTS = all.$(OBJEXT)
+@HACKING_COMPACT_BUILD_FALSE@am_draggers_lst_OBJECTS = \
+@HACKING_COMPACT_BUILD_FALSE@ SoDragger.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoCenterballDragger.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoDirectionalLightDragger.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoDragPointDragger.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoHandleBoxDragger.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoJackDragger.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoPointLightDragger.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoRotateCylindricalDragger.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoRotateDiscDragger.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoRotateSphericalDragger.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoScale1Dragger.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoScale2Dragger.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoScale2UniformDragger.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoScaleUniformDragger.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoSpotLightDragger.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTabBoxDragger.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTabPlaneDragger.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTrackballDragger.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTransformBoxDragger.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTransformerDragger.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTranslate1Dragger.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTranslate2Dragger.$(OBJEXT)
+draggers_lst_OBJECTS = $(am_draggers_lst_OBJECTS)
+AR = ar
+LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
+
 libdraggers_la_LDFLAGS = 
 libdraggers_la_LIBADD = 
 @HACKING_COMPACT_BUILD_TRUE@am_libdraggers_la_OBJECTS = all.lo
@@ -264,33 +300,52 @@ COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CF
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-DIST_SOURCES = $(libdraggers_la_SOURCES) $(EXTRA_libdraggers_la_SOURCES) \
+DIST_SOURCES = $(draggers_lst_SOURCES) $(EXTRA_draggers_lst_SOURCES) \
+$(libdraggers_la_SOURCES) $(EXTRA_libdraggers_la_SOURCES) \
 $(libdraggers@SUFFIX@LINKHACK_la_SOURCES) \
 $(EXTRA_libdraggers@SUFFIX@LINKHACK_la_SOURCES)
 HEADERS = $(libdraggersinc_HEADERS)
 
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP@DEP_FILES = $(DEPDIR)/SoCenterballDragger.Plo \
+@AMDEP@ $(DEPDIR)/SoCenterballDragger.Po \
 @AMDEP@ $(DEPDIR)/SoDirectionalLightDragger.Plo \
-@AMDEP@ $(DEPDIR)/SoDragPointDragger.Plo $(DEPDIR)/SoDragger.Plo \
-@AMDEP@ $(DEPDIR)/SoHandleBoxDragger.Plo $(DEPDIR)/SoJackDragger.Plo \
+@AMDEP@ $(DEPDIR)/SoDirectionalLightDragger.Po \
+@AMDEP@ $(DEPDIR)/SoDragPointDragger.Plo $(DEPDIR)/SoDragPointDragger.Po \
+@AMDEP@ $(DEPDIR)/SoDragger.Plo $(DEPDIR)/SoDragger.Po \
+@AMDEP@ $(DEPDIR)/SoHandleBoxDragger.Plo $(DEPDIR)/SoHandleBoxDragger.Po \
+@AMDEP@ $(DEPDIR)/SoJackDragger.Plo $(DEPDIR)/SoJackDragger.Po \
 @AMDEP@ $(DEPDIR)/SoPointLightDragger.Plo \
+@AMDEP@ $(DEPDIR)/SoPointLightDragger.Po \
 @AMDEP@ $(DEPDIR)/SoRotateCylindricalDragger.Plo \
+@AMDEP@ $(DEPDIR)/SoRotateCylindricalDragger.Po \
 @AMDEP@ $(DEPDIR)/SoRotateDiscDragger.Plo \
+@AMDEP@ $(DEPDIR)/SoRotateDiscDragger.Po \
 @AMDEP@ $(DEPDIR)/SoRotateSphericalDragger.Plo \
-@AMDEP@ $(DEPDIR)/SoScale1Dragger.Plo $(DEPDIR)/SoScale2Dragger.Plo \
+@AMDEP@ $(DEPDIR)/SoRotateSphericalDragger.Po \
+@AMDEP@ $(DEPDIR)/SoScale1Dragger.Plo $(DEPDIR)/SoScale1Dragger.Po \
+@AMDEP@ $(DEPDIR)/SoScale2Dragger.Plo $(DEPDIR)/SoScale2Dragger.Po \
 @AMDEP@ $(DEPDIR)/SoScale2UniformDragger.Plo \
+@AMDEP@ $(DEPDIR)/SoScale2UniformDragger.Po \
 @AMDEP@ $(DEPDIR)/SoScaleUniformDragger.Plo \
-@AMDEP@ $(DEPDIR)/SoSpotLightDragger.Plo $(DEPDIR)/SoTabBoxDragger.Plo \
-@AMDEP@ $(DEPDIR)/SoTabPlaneDragger.Plo $(DEPDIR)/SoTrackballDragger.Plo \
+@AMDEP@ $(DEPDIR)/SoScaleUniformDragger.Po \
+@AMDEP@ $(DEPDIR)/SoSpotLightDragger.Plo $(DEPDIR)/SoSpotLightDragger.Po \
+@AMDEP@ $(DEPDIR)/SoTabBoxDragger.Plo $(DEPDIR)/SoTabBoxDragger.Po \
+@AMDEP@ $(DEPDIR)/SoTabPlaneDragger.Plo $(DEPDIR)/SoTabPlaneDragger.Po \
+@AMDEP@ $(DEPDIR)/SoTrackballDragger.Plo $(DEPDIR)/SoTrackballDragger.Po \
 @AMDEP@ $(DEPDIR)/SoTransformBoxDragger.Plo \
+@AMDEP@ $(DEPDIR)/SoTransformBoxDragger.Po \
 @AMDEP@ $(DEPDIR)/SoTransformerDragger.Plo \
+@AMDEP@ $(DEPDIR)/SoTransformerDragger.Po \
 @AMDEP@ $(DEPDIR)/SoTranslate1Dragger.Plo \
-@AMDEP@ $(DEPDIR)/SoTranslate2Dragger.Plo $(DEPDIR)/all.Plo
+@AMDEP@ $(DEPDIR)/SoTranslate1Dragger.Po \
+@AMDEP@ $(DEPDIR)/SoTranslate2Dragger.Plo \
+@AMDEP@ $(DEPDIR)/SoTranslate2Dragger.Po $(DEPDIR)/all.Plo \
+@AMDEP@ $(DEPDIR)/all.Po
 DIST_COMMON = $(libdraggersinc_HEADERS) Makefile.am Makefile.in
 
-SOURCES = $(libdraggers_la_SOURCES) $(EXTRA_libdraggers_la_SOURCES) $(libdraggers@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_libdraggers@SUFFIX@LINKHACK_la_SOURCES)
-OBJECTS = $(am_libdraggers_la_OBJECTS) $(am_libdraggers@SUFFIX@LINKHACK_la_OBJECTS)
+SOURCES = $(draggers_lst_SOURCES) $(EXTRA_draggers_lst_SOURCES) $(libdraggers_la_SOURCES) $(EXTRA_libdraggers_la_SOURCES) $(libdraggers@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_libdraggers@SUFFIX@LINKHACK_la_SOURCES)
+OBJECTS = $(am_draggers_lst_OBJECTS) $(am_libdraggers_la_OBJECTS) $(am_libdraggers@SUFFIX@LINKHACK_la_OBJECTS)
 
 all: all-am
 
@@ -305,6 +360,24 @@ Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.s
 	cd $(top_builddir) && \
 	  CONFIG_HEADERS= CONFIG_LINKS= \
 	  CONFIG_FILES=$(subdir)/$@ $(SHELL) ./config.status
+
+clean-noinstLIBRARIES:
+	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
+
+mostlyclean-compile:
+	-rm -f *.$(OBJEXT) core *.core
+
+distclean-compile:
+	-rm -f *.tab.c
+
+mostlyclean-libtool:
+	-rm -f *.lo
+
+clean-libtool:
+	-rm -rf .libs _libs
+
+distclean-libtool:
+	-rm -f libtool
 install-libLTLIBRARIES: $(lib_LTLIBRARIES)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libdir)
@@ -327,21 +400,6 @@ clean-libLTLIBRARIES:
 
 clean-noinstLTLIBRARIES:
 	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
-
-mostlyclean-compile:
-	-rm -f *.$(OBJEXT) core *.core
-
-distclean-compile:
-	-rm -f *.tab.c
-
-mostlyclean-libtool:
-	-rm -f *.lo
-
-clean-libtool:
-	-rm -rf .libs _libs
-
-distclean-libtool:
-	-rm -f libtool
 
 libdraggers.la: $(libdraggers_la_OBJECTS) $(libdraggers_la_DEPENDENCIES)
 	$(CXXLINK)  $(libdraggers_la_LDFLAGS) $(libdraggers_la_OBJECTS) $(libdraggers_la_LIBADD) $(LIBS)
@@ -399,28 +457,51 @@ distclean-tags:
 	-rm -f TAGS ID
 
 @AMDEP@@_am_include@ $(DEPDIR)/SoCenterballDragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoCenterballDragger.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoDirectionalLightDragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoDirectionalLightDragger.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoDragPointDragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoDragPointDragger.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoDragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoDragger.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoHandleBoxDragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoHandleBoxDragger.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoJackDragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoJackDragger.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoPointLightDragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoPointLightDragger.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoRotateCylindricalDragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoRotateCylindricalDragger.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoRotateDiscDragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoRotateDiscDragger.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoRotateSphericalDragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoRotateSphericalDragger.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoScale1Dragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoScale1Dragger.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoScale2Dragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoScale2Dragger.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoScale2UniformDragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoScale2UniformDragger.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoScaleUniformDragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoScaleUniformDragger.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoSpotLightDragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSpotLightDragger.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoTabBoxDragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoTabBoxDragger.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoTabPlaneDragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoTabPlaneDragger.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoTrackballDragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoTrackballDragger.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoTransformBoxDragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoTransformBoxDragger.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoTransformerDragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoTransformerDragger.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoTranslate1Dragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoTranslate1Dragger.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoTranslate2Dragger.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoTranslate2Dragger.Po
 @AMDEP@@_am_include@ $(DEPDIR)/all.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/all.Po
 
 distclean-depend:
 	-rm -rf $(DEPDIR)
@@ -466,7 +547,7 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(LTLIBRARIES) $(HEADERS)
+all-am: Makefile $(LIBRARIES) $(LTLIBRARIES) $(HEADERS)
 
 installdirs:
 	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(libdraggersincdir)
@@ -500,7 +581,7 @@ maintainer-clean-generic:
 clean: clean-am
 
 clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
-	clean-noinstLTLIBRARIES mostlyclean-am
+	clean-noinstLIBRARIES clean-noinstLTLIBRARIES mostlyclean-am
 
 distclean: distclean-am
 
@@ -537,18 +618,26 @@ mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 uninstall-am: uninstall-libLTLIBRARIES uninstall-libdraggersincHEADERS
 
 .PHONY: all all-am check check-am clean clean-generic \
-	clean-libLTLIBRARIES clean-libtool clean-noinstLTLIBRARIES \
-	distclean distclean-compile distclean-depend distclean-generic \
-	distclean-libtool distclean-tags distdir dvi dvi-am info \
-	info-am install install-am install-data install-data-am \
-	install-exec install-exec-am install-info \
-	install-libLTLIBRARIES install-libdraggersincHEADERS \
-	install-man install-strip installcheck installcheck-am \
-	installdirs maintainer-clean maintainer-clean-generic \
-	mostlyclean mostlyclean-compile mostlyclean-generic \
-	mostlyclean-libtool tags uninstall uninstall-am \
-	uninstall-libLTLIBRARIES uninstall-libdraggersincHEADERS
+	clean-libLTLIBRARIES clean-libtool clean-noinstLIBRARIES \
+	clean-noinstLTLIBRARIES distclean distclean-compile \
+	distclean-depend distclean-generic distclean-libtool \
+	distclean-tags distdir dvi dvi-am info info-am install \
+	install-am install-data install-data-am install-exec \
+	install-exec-am install-info install-libLTLIBRARIES \
+	install-libdraggersincHEADERS install-man install-strip \
+	installcheck installcheck-am installdirs maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-compile \
+	mostlyclean-generic mostlyclean-libtool tags uninstall \
+	uninstall-am uninstall-libLTLIBRARIES \
+	uninstall-libdraggersincHEADERS
 
+
+draggers.lst: Makefile $(draggers_lst_OBJECTS)
+	@echo "Linking draggers.lst..."; \
+	echo $(CC) /LST:draggers.lst \
+	  $(draggers_lst_OBJECTS); \
+	$(CC) /LST:draggers.lst \
+	  $(draggers_lst_OBJECTS);
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

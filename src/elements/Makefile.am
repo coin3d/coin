@@ -214,10 +214,14 @@ else
 BuildSources = $(RegularSources)
 endif
 
+if BUILD_WITH_MSVC
+noinst_LIBRARIES = elements.lst
+else
 if HACKING_DYNAMIC_MODULES
 lib_LTLIBRARIES = libelements@SUFFIX@LINKHACK.la
 else
 noinst_LTLIBRARIES = libelements.la
+endif
 endif
 
 # Remove any linklibraries detected by configure, as they are not
@@ -234,7 +238,18 @@ libelements@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libelements@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
+elements_lst_SOURCES = $(BuildSources)
+EXTRA_elements_lst_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
 libelementsincdir = $(includedir)/Inventor/elements
 libelementsinc_HEADERS = $(PublicHeaders)
+
+elements.lst: Makefile $(elements_lst_OBJECTS)
+	@echo "Linking elements.lst..."; \
+	echo $(CC) /LST:elements.lst \
+	  $(elements_lst_OBJECTS); \
+	$(CC) /LST:elements.lst \
+	  $(elements_lst_OBJECTS);
 
 ##$ END TEMPLATE Make-Common

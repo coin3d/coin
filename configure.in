@@ -4,7 +4,7 @@ m4_define([COIN_MAJOR], [0])
 m4_define([COIN_MINOR], [9])
 m4_define([COIN_MICRO], [99])
 
-AC_INIT([Coin], [v[]COIN_MAJOR.COIN_MINOR.COIN_MICRO])
+AC_INIT([Coin], [COIN_MAJOR.COIN_MINOR.COIN_MICRO])
 AC_REVISION([$Revision$])
 
 AC_CONFIG_AUX_DIR(cfg)
@@ -34,7 +34,8 @@ AC_DEFINE_UNQUOTED(COIN_CONFIGURE_TARGET, AC_TR_CPP([$target]), [Build target sy
 # If the Microsoft Visual C++ cl.exe compiler is available, set us up for
 # compiling with it and to generate an MSWindows .dll file.
 
-SIM_AC_SETUP_MSVC_IFELSE([], [
+SIM_AC_SETUP_MSVC_IFELSE([
+], [
   case $host in
   *-cygwin)
     AC_MSG_ERROR([You need Microsoft Visual C++ to build Coin on Cygwin])
@@ -221,6 +222,9 @@ AC_DEFINE_UNQUOTED([COIN_VERSION], ["$COIN_VERSION"],
 # Miscellaneous options and initializations.
 
 coin_build_dir=`pwd`
+
+AC_OBJEXT
+AC_EXEEXT
 
 AM_INIT_AUTOMAKE(Coin, $VERSION)
 
@@ -778,6 +782,8 @@ AC_SUBST(LIBFLAGS)
 
 # **************************************************************************
 # Remaining setup based on platform.
+
+AM_CONDITIONAL(BUILD_WITH_MSVC, $BUILD_WITH_MSVC)
 
 if $sim_ac_build_library; then
 if $BUILD_WITH_MSVC; then

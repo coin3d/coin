@@ -32,10 +32,14 @@ else
 BuildSources = $(RegularSources)
 endif
 
+if BUILD_WITH_MSVC
+noinst_LIBRARIES = caches.lst
+else
 if HACKING_DYNAMIC_MODULES
 lib_LTLIBRARIES = libcaches@SUFFIX@LINKHACK.la
 else
 noinst_LTLIBRARIES = libcaches.la
+endif
 endif
 
 # Remove any linklibraries detected by configure, as they are not
@@ -52,7 +56,18 @@ libcaches@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libcaches@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
+caches_lst_SOURCES = $(BuildSources)
+EXTRA_caches_lst_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
 libcachesincdir = $(includedir)/Inventor/caches
 libcachesinc_HEADERS = $(PublicHeaders)
+
+caches.lst: Makefile $(caches_lst_OBJECTS)
+	@echo "Linking caches.lst..."; \
+	echo $(CC) /LST:caches.lst \
+	  $(caches_lst_OBJECTS); \
+	$(CC) /LST:caches.lst \
+	  $(caches_lst_OBJECTS);
 
 ##$ END TEMPLATE Make-Common

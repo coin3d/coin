@@ -1,11 +1,14 @@
 ## Process this file with automake to generate Makefile.in.
 
-COINLIB = libCoin@SUFFIX@.la
-
-lib_LTLIBRARIES = $(COINLIB)
+if BUILD_WITH_MSVC
+lib_LIBRARIES = coin@COIN_MAJOR_VERSION@@SUFFIX@.lib
+else
+lib_LTLIBRARIES = libCoin@SUFFIX@.la
+endif
 
 if HACKING_DYNAMIC_MODULES
 libCoin@SUFFIX@_la_LIBADD = 
+coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = 
 else
 libCoin@SUFFIX@_la_LIBADD = \
 	VRMLnodes/libVRMLnodes.la actions/libactions.la base/libbase.la \
@@ -15,6 +18,14 @@ libCoin@SUFFIX@_la_LIBADD = \
 	nodekits/libnodekits.la nodes/libnodes.la projectors/libprojectors.la \
 	sensors/libsensors.la details/libdetails.la draggers/libdraggers.la \
 	manips/libmanips.la
+coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
+	VRMLnodes/VRMLnodes.lst actions/actions.lst base/base.lst \
+	bundles/bundles.lst caches/caches.lst elements/elements.lst \
+	engines/engines.lst errors/errors.lst events/events.lst \
+	fields/fields.lst misc/misc.lst lists/lists.lst \
+	nodekits/nodekits.lst nodes/nodes.lst projectors/projectors.lst \
+	sensors/sensors.lst details/details.lst draggers/draggers.lst \
+	manips/manips.lst
 endif
 
 SUBDIRS = \
@@ -24,13 +35,19 @@ SUBDIRS = \
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 
-libCoin@SUFFIX@_la_SOURCES = snprintf.c snprintf.h
+libCoin@SUFFIX@_la_SOURCES = \
+	snprintf.c snprintf.h
+
+coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = \
+	snprintf.c snprintf.h
 
 ## Installation information.
 
 libCoin@SUFFIX@_la_LDFLAGS = \
 	-no-undefined \
         -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
+
+# coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LDFLAGS =
 
 libCoin@SUFFIX@incdir = $(includedir)/Inventor
 libCoin@SUFFIX@inc_HEADERS = \
@@ -85,30 +102,26 @@ libCoin@SUFFIX@inc_HEADERS = \
 
 ## Rule for creating a Windows library.
 
-coin@COIN_MAJOR_VERSION@@SUFFIX@.lib: Makefile $(libCoin@SUFFIX@_la_OBJECTS) $(libCoin@SUFFIX@_la_DEPENDENCIES)
+coin@COIN_MAJOR_VERSION@@SUFFIX@.lib: Makefile \
+  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS) \
+  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_DEPENDENCIES)
 	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
 	rm -f "$$basename.dll" "$$basename.lib"; \
-	if @BUILD_WITH_MSVC@; then \
-	  echo "Linking $$basename.lib..."; \
-	  echo $(CC) $(LDFLAGS) $(LIBFLAGS) \
-	    `echo $(libCoin@SUFFIX@_la_OBJECTS) | sed 's%\.lo%.obj%g'` \
-	    $(libCoin@SUFFIX@_la_LIBADD) $(LIBS); \
-	  $(CC) $(LDFLAGS) $(LIBFLAGS) \
-	    `echo $(libCoin@SUFFIX@_la_OBJECTS) | sed 's%\.lo%.obj%g'` \
-	    $(libCoin@SUFFIX@_la_LIBADD) $(LIBS); \
-	else \
-	  touch "$$basename.dll" "$$basename.lib"; \
-	fi
+	echo "Linking $$basename.lib..."; \
+	echo $(CC) $(LDFLAGS) $(LIBFLAGS) \
+	  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS) \
+	  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD) $(LIBS); \
+	$(CC) $(LDFLAGS) $(LIBFLAGS) \
+	  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS) \
+	  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD) $(LIBS);
 
 # **************************************************************************
-
-all-local: coin@COIN_MAJOR_VERSION@@SUFFIX@.lib
 
 install-exec-local:
 	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
 	for ext in dll pdb; do \
 	  file="$$basename.$$ext"; \
-	  if test -s "$$file"; then \
+	  if test -f "$$file"; then \
 	    $(mkinstalldirs) "$(DESTDIR)$(bindir)"; \
 	    echo " $(INSTALL_PROGRAM)" "$$file" "$(DESTDIR)$(bindir)/$$file"; \
 	    $(INSTALL_PROGRAM) "$$file" "$(DESTDIR)$(bindir)/$$file"; \
@@ -119,7 +132,7 @@ install-data-local:
 	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
 	for ext in lib; do \
 	  file="$$basename.$$ext"; \
-	  if test -s "$$file"; then \
+	  if test -f "$$file"; then \
 	    $(mkinstalldirs) "$(DESTDIR)$(libdir)"; \
 	    echo " $(INSTALL_DATA)" "$$file" "$(DESTDIR)$(libdir)/$$file"; \
 	    $(INSTALL_DATA) "$$file" "$(DESTDIR)$(libdir)/$$file"; \

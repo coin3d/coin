@@ -43,10 +43,14 @@ else
 BuildSources = $(RegularSources)
 endif
 
+if BUILD_WITH_MSVC
+noinst_LIBRARIES = manips.lst
+else
 if HACKING_DYNAMIC_MODULES
 lib_LTLIBRARIES = libmanips@SUFFIX@LINKHACK.la
 else
 noinst_LTLIBRARIES = libmanips.la
+endif
 endif
 
 # Remove any linklibraries detected by configure, as they are not
@@ -63,7 +67,18 @@ libmanips@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libmanips@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
+manips_lst_SOURCES = $(BuildSources)
+EXTRA_manips_lst_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
 libmanipsincdir = $(includedir)/Inventor/manips
 libmanipsinc_HEADERS = $(PublicHeaders)
+
+manips.lst: Makefile $(manips_lst_OBJECTS)
+	@echo "Linking manips.lst..."; \
+	echo $(CC) /LST:manips.lst \
+	  $(manips_lst_OBJECTS); \
+	$(CC) /LST:manips.lst \
+	  $(manips_lst_OBJECTS);
 
 ##$ END TEMPLATE Make-Common

@@ -24,10 +24,14 @@ else
 BuildSources = $(RegularSources)
 endif
 
+if BUILD_WITH_MSVC
+noinst_LIBRARIES = VRMLnodes.lst
+else
 if HACKING_DYNAMIC_MODULES
 lib_LTLIBRARIES = libVRMLnodes@SUFFIX@LINKHACK.la
 else
 noinst_LTLIBRARIES = libVRMLnodes.la
+endif
 endif
 
 # Remove any linklibraries detected by configure, as they are not
@@ -44,7 +48,18 @@ libVRMLnodes@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libVRMLnodes@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
+VRMLnodes_lst_SOURCES = $(BuildSources)
+EXTRA_VRMLnodes_lst_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
 libVRMLnodesincdir = $(includedir)/Inventor/VRMLnodes
 libVRMLnodesinc_HEADERS = $(PublicHeaders)
+
+VRMLnodes.lst: Makefile $(VRMLnodes_lst_OBJECTS)
+	@echo "Linking VRMLnodes.lst..."; \
+	echo $(CC) /LST:VRMLnodes.lst \
+	  $(VRMLnodes_lst_OBJECTS); \
+	$(CC) /LST:VRMLnodes.lst \
+	  $(VRMLnodes_lst_OBJECTS);
 
 ##$ END TEMPLATE Make-Common

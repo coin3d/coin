@@ -62,10 +62,14 @@ else
 BuildSources = $(RegularSources)
 endif
 
+if BUILD_WITH_MSVC
+noinst_LIBRARIES = draggers.lst
+else
 if HACKING_DYNAMIC_MODULES
 lib_LTLIBRARIES = libdraggers@SUFFIX@LINKHACK.la
 else
 noinst_LTLIBRARIES = libdraggers.la
+endif
 endif
 
 # Remove any linklibraries detected by configure, as they are not
@@ -82,7 +86,18 @@ libdraggers@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libdraggers@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
+draggers_lst_SOURCES = $(BuildSources)
+EXTRA_draggers_lst_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
 libdraggersincdir = $(includedir)/Inventor/draggers
 libdraggersinc_HEADERS = $(PublicHeaders)
+
+draggers.lst: Makefile $(draggers_lst_OBJECTS)
+	@echo "Linking draggers.lst..."; \
+	echo $(CC) /LST:draggers.lst \
+	  $(draggers_lst_OBJECTS); \
+	$(CC) /LST:draggers.lst \
+	  $(draggers_lst_OBJECTS);
 
 ##$ END TEMPLATE Make-Common

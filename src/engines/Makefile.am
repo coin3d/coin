@@ -107,10 +107,14 @@ else
 BuildSources = $(RegularSources)
 endif
 
+if BUILD_WITH_MSVC
+noinst_LIBRARIES = engines.lst
+else
 if HACKING_DYNAMIC_MODULES
 lib_LTLIBRARIES = libengines@SUFFIX@LINKHACK.la
 else
 noinst_LTLIBRARIES = libengines.la
+endif
 endif
 
 # Remove any linklibraries detected by configure, as they are not
@@ -127,7 +131,18 @@ libengines@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
 EXTRA_libengines@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
+engines_lst_SOURCES = $(BuildSources)
+EXTRA_engines_lst_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
 libenginesincdir = $(includedir)/Inventor/engines
 libenginesinc_HEADERS = $(PublicHeaders)
+
+engines.lst: Makefile $(engines_lst_OBJECTS)
+	@echo "Linking engines.lst..."; \
+	echo $(CC) /LST:engines.lst \
+	  $(engines_lst_OBJECTS); \
+	$(CC) /LST:engines.lst \
+	  $(engines_lst_OBJECTS);
 
 ##$ END TEMPLATE Make-Common

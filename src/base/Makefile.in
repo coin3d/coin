@@ -87,6 +87,7 @@ CXX = @CXX@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
+EXEEXT = @EXEEXT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 INSTALL_STRIP_PROGRAM_ENV = @INSTALL_STRIP_PROGRAM_ENV@
 LIBFLAGS = @LIBFLAGS@
@@ -98,6 +99,7 @@ LT_REVISION = @LT_REVISION@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
 OBJDUMP = @OBJDUMP@
+OBJEXT = @OBJEXT@
 PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 STRIP = @STRIP@
@@ -181,8 +183,9 @@ PrivateHeaders = \
 @HACKING_COMPACT_BUILD_TRUE@BuildSources = $(LinkHackSources)
 @HACKING_COMPACT_BUILD_FALSE@BuildSources = $(RegularSources)
 
-@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libbase@SUFFIX@LINKHACK.la
-@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libbase.la
+@BUILD_WITH_MSVC_TRUE@noinst_LIBRARIES = base.lst
+@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libbase@SUFFIX@LINKHACK.la
+@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libbase.la
 
 # Remove any linklibraries detected by configure, as they are not
 # needed in the submodules -- only in the toplevel libCoin build.
@@ -200,15 +203,18 @@ EXTRA_libbase@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 
+base_lst_SOURCES = $(BuildSources)
+EXTRA_base_lst_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
+
 libbaseincdir = $(includedir)/Inventor/base
 libbaseinc_HEADERS = $(PublicHeaders)
-EXEEXT =
-OBJEXT = o
 subdir = src/base
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h $(top_builddir)/include/Inventor/SbBasic.h $(top_builddir)/include/Inventor/system/inttypes.h
 CONFIG_CLEAN_FILES =
-LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
+LIBRARIES = $(noinst_LIBRARIES)
 
 
 DEFS = @DEFS@ -I. -I$(srcdir) -I$(top_builddir) -I$(top_builddir)/include/Inventor -I$(top_builddir)/include/Inventor/system
@@ -218,6 +224,28 @@ X_CFLAGS = @X_CFLAGS@
 X_LIBS = @X_LIBS@
 X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
+base_lst_AR = $(AR) cru
+base_lst_LIBADD = 
+@HACKING_COMPACT_BUILD_TRUE@am_base_lst_OBJECTS = all.$(OBJEXT)
+@HACKING_COMPACT_BUILD_FALSE@am_base_lst_OBJECTS = SbBSPTree.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbBox2f.$(OBJEXT) SbBox2s.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbBox3f.$(OBJEXT) SbColor.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbColor4f.$(OBJEXT) SbCylinder.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbDict.$(OBJEXT) SbHeap.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbImage.$(OBJEXT) SbLine.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbMatrix.$(OBJEXT) SbName.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbOctTree.$(OBJEXT) SbPlane.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbRotation.$(OBJEXT) SbSphere.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbString.$(OBJEXT) SbTesselator.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbTime.$(OBJEXT) SbVec2f.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbVec2s.$(OBJEXT) SbVec3f.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbVec4f.$(OBJEXT) SbViewVolume.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbViewportRegion.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbXfBox3f.$(OBJEXT)
+base_lst_OBJECTS = $(am_base_lst_OBJECTS)
+AR = ar
+LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
+
 libbase_la_LDFLAGS = 
 libbase_la_LIBADD = 
 @HACKING_COMPACT_BUILD_TRUE@am_libbase_la_OBJECTS = all.lo
@@ -258,29 +286,40 @@ COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CF
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-DIST_SOURCES = $(libbase_la_SOURCES) $(EXTRA_libbase_la_SOURCES) \
+DIST_SOURCES = $(base_lst_SOURCES) $(EXTRA_base_lst_SOURCES) \
+$(libbase_la_SOURCES) $(EXTRA_libbase_la_SOURCES) \
 $(libbase@SUFFIX@LINKHACK_la_SOURCES) \
 $(EXTRA_libbase@SUFFIX@LINKHACK_la_SOURCES)
 HEADERS = $(libbaseinc_HEADERS)
 
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
-@AMDEP@DEP_FILES = $(DEPDIR)/SbBSPTree.Plo $(DEPDIR)/SbBox2f.Plo \
-@AMDEP@ $(DEPDIR)/SbBox2s.Plo $(DEPDIR)/SbBox3f.Plo \
-@AMDEP@ $(DEPDIR)/SbColor.Plo $(DEPDIR)/SbColor4f.Plo \
-@AMDEP@ $(DEPDIR)/SbCylinder.Plo $(DEPDIR)/SbDict.Plo \
-@AMDEP@ $(DEPDIR)/SbHeap.Plo $(DEPDIR)/SbImage.Plo $(DEPDIR)/SbLine.Plo \
-@AMDEP@ $(DEPDIR)/SbMatrix.Plo $(DEPDIR)/SbName.Plo \
-@AMDEP@ $(DEPDIR)/SbOctTree.Plo $(DEPDIR)/SbPlane.Plo \
-@AMDEP@ $(DEPDIR)/SbRotation.Plo $(DEPDIR)/SbSphere.Plo \
-@AMDEP@ $(DEPDIR)/SbString.Plo $(DEPDIR)/SbTesselator.Plo \
-@AMDEP@ $(DEPDIR)/SbTime.Plo $(DEPDIR)/SbVec2f.Plo $(DEPDIR)/SbVec2s.Plo \
-@AMDEP@ $(DEPDIR)/SbVec3f.Plo $(DEPDIR)/SbVec4f.Plo \
-@AMDEP@ $(DEPDIR)/SbViewVolume.Plo $(DEPDIR)/SbViewportRegion.Plo \
-@AMDEP@ $(DEPDIR)/SbXfBox3f.Plo $(DEPDIR)/all.Plo
+@AMDEP@DEP_FILES = $(DEPDIR)/SbBSPTree.Plo $(DEPDIR)/SbBSPTree.Po \
+@AMDEP@ $(DEPDIR)/SbBox2f.Plo $(DEPDIR)/SbBox2f.Po $(DEPDIR)/SbBox2s.Plo \
+@AMDEP@ $(DEPDIR)/SbBox2s.Po $(DEPDIR)/SbBox3f.Plo $(DEPDIR)/SbBox3f.Po \
+@AMDEP@ $(DEPDIR)/SbColor.Plo $(DEPDIR)/SbColor.Po \
+@AMDEP@ $(DEPDIR)/SbColor4f.Plo $(DEPDIR)/SbColor4f.Po \
+@AMDEP@ $(DEPDIR)/SbCylinder.Plo $(DEPDIR)/SbCylinder.Po \
+@AMDEP@ $(DEPDIR)/SbDict.Plo $(DEPDIR)/SbDict.Po $(DEPDIR)/SbHeap.Plo \
+@AMDEP@ $(DEPDIR)/SbHeap.Po $(DEPDIR)/SbImage.Plo $(DEPDIR)/SbImage.Po \
+@AMDEP@ $(DEPDIR)/SbLine.Plo $(DEPDIR)/SbLine.Po $(DEPDIR)/SbMatrix.Plo \
+@AMDEP@ $(DEPDIR)/SbMatrix.Po $(DEPDIR)/SbName.Plo $(DEPDIR)/SbName.Po \
+@AMDEP@ $(DEPDIR)/SbOctTree.Plo $(DEPDIR)/SbOctTree.Po \
+@AMDEP@ $(DEPDIR)/SbPlane.Plo $(DEPDIR)/SbPlane.Po \
+@AMDEP@ $(DEPDIR)/SbRotation.Plo $(DEPDIR)/SbRotation.Po \
+@AMDEP@ $(DEPDIR)/SbSphere.Plo $(DEPDIR)/SbSphere.Po \
+@AMDEP@ $(DEPDIR)/SbString.Plo $(DEPDIR)/SbString.Po \
+@AMDEP@ $(DEPDIR)/SbTesselator.Plo $(DEPDIR)/SbTesselator.Po \
+@AMDEP@ $(DEPDIR)/SbTime.Plo $(DEPDIR)/SbTime.Po $(DEPDIR)/SbVec2f.Plo \
+@AMDEP@ $(DEPDIR)/SbVec2f.Po $(DEPDIR)/SbVec2s.Plo $(DEPDIR)/SbVec2s.Po \
+@AMDEP@ $(DEPDIR)/SbVec3f.Plo $(DEPDIR)/SbVec3f.Po $(DEPDIR)/SbVec4f.Plo \
+@AMDEP@ $(DEPDIR)/SbVec4f.Po $(DEPDIR)/SbViewVolume.Plo \
+@AMDEP@ $(DEPDIR)/SbViewVolume.Po $(DEPDIR)/SbViewportRegion.Plo \
+@AMDEP@ $(DEPDIR)/SbViewportRegion.Po $(DEPDIR)/SbXfBox3f.Plo \
+@AMDEP@ $(DEPDIR)/SbXfBox3f.Po $(DEPDIR)/all.Plo $(DEPDIR)/all.Po
 DIST_COMMON = $(libbaseinc_HEADERS) Makefile.am Makefile.in
 
-SOURCES = $(libbase_la_SOURCES) $(EXTRA_libbase_la_SOURCES) $(libbase@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_libbase@SUFFIX@LINKHACK_la_SOURCES)
-OBJECTS = $(am_libbase_la_OBJECTS) $(am_libbase@SUFFIX@LINKHACK_la_OBJECTS)
+SOURCES = $(base_lst_SOURCES) $(EXTRA_base_lst_SOURCES) $(libbase_la_SOURCES) $(EXTRA_libbase_la_SOURCES) $(libbase@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_libbase@SUFFIX@LINKHACK_la_SOURCES)
+OBJECTS = $(am_base_lst_OBJECTS) $(am_libbase_la_OBJECTS) $(am_libbase@SUFFIX@LINKHACK_la_OBJECTS)
 
 all: all-am
 
@@ -295,6 +334,24 @@ Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.s
 	cd $(top_builddir) && \
 	  CONFIG_HEADERS= CONFIG_LINKS= \
 	  CONFIG_FILES=$(subdir)/$@ $(SHELL) ./config.status
+
+clean-noinstLIBRARIES:
+	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
+
+mostlyclean-compile:
+	-rm -f *.$(OBJEXT) core *.core
+
+distclean-compile:
+	-rm -f *.tab.c
+
+mostlyclean-libtool:
+	-rm -f *.lo
+
+clean-libtool:
+	-rm -rf .libs _libs
+
+distclean-libtool:
+	-rm -f libtool
 install-libLTLIBRARIES: $(lib_LTLIBRARIES)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libdir)
@@ -317,21 +374,6 @@ clean-libLTLIBRARIES:
 
 clean-noinstLTLIBRARIES:
 	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
-
-mostlyclean-compile:
-	-rm -f *.$(OBJEXT) core *.core
-
-distclean-compile:
-	-rm -f *.tab.c
-
-mostlyclean-libtool:
-	-rm -f *.lo
-
-clean-libtool:
-	-rm -rf .libs _libs
-
-distclean-libtool:
-	-rm -f libtool
 
 libbase.la: $(libbase_la_OBJECTS) $(libbase_la_DEPENDENCIES)
 	$(CXXLINK)  $(libbase_la_LDFLAGS) $(libbase_la_OBJECTS) $(libbase_la_LIBADD) $(LIBS)
@@ -389,33 +431,61 @@ distclean-tags:
 	-rm -f TAGS ID
 
 @AMDEP@@_am_include@ $(DEPDIR)/SbBSPTree.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbBSPTree.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SbBox2f.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbBox2f.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SbBox2s.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbBox2s.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SbBox3f.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbBox3f.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SbColor.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbColor.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SbColor4f.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbColor4f.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SbCylinder.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbCylinder.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SbDict.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbDict.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SbHeap.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbHeap.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SbImage.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbImage.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SbLine.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbLine.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SbMatrix.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbMatrix.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SbName.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbName.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SbOctTree.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbOctTree.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SbPlane.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbPlane.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SbRotation.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbRotation.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SbSphere.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbSphere.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SbString.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbString.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SbTesselator.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbTesselator.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SbTime.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbTime.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SbVec2f.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbVec2f.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SbVec2s.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbVec2s.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SbVec3f.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbVec3f.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SbVec4f.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbVec4f.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SbViewVolume.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbViewVolume.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SbViewportRegion.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbViewportRegion.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SbXfBox3f.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbXfBox3f.Po
 @AMDEP@@_am_include@ $(DEPDIR)/all.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/all.Po
 
 distclean-depend:
 	-rm -rf $(DEPDIR)
@@ -460,7 +530,7 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(LTLIBRARIES) $(HEADERS)
+all-am: Makefile $(LIBRARIES) $(LTLIBRARIES) $(HEADERS)
 
 installdirs:
 	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(libbaseincdir)
@@ -494,7 +564,7 @@ maintainer-clean-generic:
 clean: clean-am
 
 clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
-	clean-noinstLTLIBRARIES mostlyclean-am
+	clean-noinstLIBRARIES clean-noinstLTLIBRARIES mostlyclean-am
 
 distclean: distclean-am
 
@@ -531,18 +601,26 @@ mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 uninstall-am: uninstall-libLTLIBRARIES uninstall-libbaseincHEADERS
 
 .PHONY: all all-am check check-am clean clean-generic \
-	clean-libLTLIBRARIES clean-libtool clean-noinstLTLIBRARIES \
-	distclean distclean-compile distclean-depend distclean-generic \
-	distclean-libtool distclean-tags distdir dvi dvi-am info \
-	info-am install install-am install-data install-data-am \
-	install-exec install-exec-am install-info \
-	install-libLTLIBRARIES install-libbaseincHEADERS install-man \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
-	tags uninstall uninstall-am uninstall-libLTLIBRARIES \
+	clean-libLTLIBRARIES clean-libtool clean-noinstLIBRARIES \
+	clean-noinstLTLIBRARIES distclean distclean-compile \
+	distclean-depend distclean-generic distclean-libtool \
+	distclean-tags distdir dvi dvi-am info info-am install \
+	install-am install-data install-data-am install-exec \
+	install-exec-am install-info install-libLTLIBRARIES \
+	install-libbaseincHEADERS install-man install-strip \
+	installcheck installcheck-am installdirs maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-compile \
+	mostlyclean-generic mostlyclean-libtool tags uninstall \
+	uninstall-am uninstall-libLTLIBRARIES \
 	uninstall-libbaseincHEADERS
 
+
+base.lst: Makefile $(base_lst_OBJECTS)
+	@echo "Linking base.lst..."; \
+	echo $(CC) /LST:base.lst \
+	  $(base_lst_OBJECTS); \
+	$(CC) /LST:base.lst \
+	  $(base_lst_OBJECTS);
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

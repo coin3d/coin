@@ -87,6 +87,7 @@ CXX = @CXX@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
+EXEEXT = @EXEEXT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 INSTALL_STRIP_PROGRAM_ENV = @INSTALL_STRIP_PROGRAM_ENV@
 LIBFLAGS = @LIBFLAGS@
@@ -98,6 +99,7 @@ LT_REVISION = @LT_REVISION@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
 OBJDUMP = @OBJDUMP@
+OBJEXT = @OBJEXT@
 PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 STRIP = @STRIP@
@@ -157,8 +159,9 @@ RegularSources = \
 @HACKING_COMPACT_BUILD_TRUE@BuildSources = $(LinkHackSources)
 @HACKING_COMPACT_BUILD_FALSE@BuildSources = $(RegularSources)
 
-@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libactions@SUFFIX@LINKHACK.la
-@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libactions.la
+@BUILD_WITH_MSVC_TRUE@noinst_LIBRARIES = actions.lst
+@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libactions@SUFFIX@LINKHACK.la
+@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libactions.la
 
 # Remove any linklibraries detected by configure, as they are not
 # needed in the submodules -- only in the toplevel libCoin build.
@@ -176,15 +179,18 @@ EXTRA_libactions@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 
+actions_lst_SOURCES = $(BuildSources)
+EXTRA_actions_lst_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
+
 libactionsincdir = $(includedir)/Inventor/actions
 libactionsinc_HEADERS = $(PublicHeaders)
-EXEEXT =
-OBJEXT = o
 subdir = src/actions
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h $(top_builddir)/include/Inventor/SbBasic.h $(top_builddir)/include/Inventor/system/inttypes.h
 CONFIG_CLEAN_FILES =
-LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
+LIBRARIES = $(noinst_LIBRARIES)
 
 
 DEFS = @DEFS@ -I. -I$(srcdir) -I$(top_builddir) -I$(top_builddir)/include/Inventor -I$(top_builddir)/include/Inventor/system
@@ -194,6 +200,26 @@ X_CFLAGS = @X_CFLAGS@
 X_LIBS = @X_LIBS@
 X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
+actions_lst_AR = $(AR) cru
+actions_lst_LIBADD = 
+@HACKING_COMPACT_BUILD_TRUE@am_actions_lst_OBJECTS = all.$(OBJEXT)
+@HACKING_COMPACT_BUILD_FALSE@am_actions_lst_OBJECTS = SoAction.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoBoxHighlightRenderAction.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoCallbackAction.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLRenderAction.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGetBoundingBoxAction.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGetMatrixAction.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGetPrimitiveCountAction.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoHandleEventAction.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoLineHighlightRenderAction.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoPickAction.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoRayPickAction.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoSearchAction.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoWriteAction.$(OBJEXT)
+actions_lst_OBJECTS = $(am_actions_lst_OBJECTS)
+AR = ar
+LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
+
 libactions_la_LDFLAGS = 
 libactions_la_LIBADD = 
 @HACKING_COMPACT_BUILD_TRUE@am_libactions_la_OBJECTS = all.lo
@@ -234,27 +260,36 @@ COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CF
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-DIST_SOURCES = $(libactions_la_SOURCES) $(EXTRA_libactions_la_SOURCES) \
+DIST_SOURCES = $(actions_lst_SOURCES) $(EXTRA_actions_lst_SOURCES) \
+$(libactions_la_SOURCES) $(EXTRA_libactions_la_SOURCES) \
 $(libactions@SUFFIX@LINKHACK_la_SOURCES) \
 $(EXTRA_libactions@SUFFIX@LINKHACK_la_SOURCES)
 HEADERS = $(libactionsinc_HEADERS)
 
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
-@AMDEP@DEP_FILES = $(DEPDIR)/SoAction.Plo \
+@AMDEP@DEP_FILES = $(DEPDIR)/SoAction.Plo $(DEPDIR)/SoAction.Po \
 @AMDEP@ $(DEPDIR)/SoBoxHighlightRenderAction.Plo \
-@AMDEP@ $(DEPDIR)/SoCallbackAction.Plo $(DEPDIR)/SoGLRenderAction.Plo \
+@AMDEP@ $(DEPDIR)/SoBoxHighlightRenderAction.Po \
+@AMDEP@ $(DEPDIR)/SoCallbackAction.Plo $(DEPDIR)/SoCallbackAction.Po \
+@AMDEP@ $(DEPDIR)/SoGLRenderAction.Plo $(DEPDIR)/SoGLRenderAction.Po \
 @AMDEP@ $(DEPDIR)/SoGetBoundingBoxAction.Plo \
-@AMDEP@ $(DEPDIR)/SoGetMatrixAction.Plo \
+@AMDEP@ $(DEPDIR)/SoGetBoundingBoxAction.Po \
+@AMDEP@ $(DEPDIR)/SoGetMatrixAction.Plo $(DEPDIR)/SoGetMatrixAction.Po \
 @AMDEP@ $(DEPDIR)/SoGetPrimitiveCountAction.Plo \
+@AMDEP@ $(DEPDIR)/SoGetPrimitiveCountAction.Po \
 @AMDEP@ $(DEPDIR)/SoHandleEventAction.Plo \
+@AMDEP@ $(DEPDIR)/SoHandleEventAction.Po \
 @AMDEP@ $(DEPDIR)/SoLineHighlightRenderAction.Plo \
-@AMDEP@ $(DEPDIR)/SoPickAction.Plo $(DEPDIR)/SoRayPickAction.Plo \
-@AMDEP@ $(DEPDIR)/SoSearchAction.Plo $(DEPDIR)/SoWriteAction.Plo \
-@AMDEP@ $(DEPDIR)/all.Plo
+@AMDEP@ $(DEPDIR)/SoLineHighlightRenderAction.Po \
+@AMDEP@ $(DEPDIR)/SoPickAction.Plo $(DEPDIR)/SoPickAction.Po \
+@AMDEP@ $(DEPDIR)/SoRayPickAction.Plo $(DEPDIR)/SoRayPickAction.Po \
+@AMDEP@ $(DEPDIR)/SoSearchAction.Plo $(DEPDIR)/SoSearchAction.Po \
+@AMDEP@ $(DEPDIR)/SoWriteAction.Plo $(DEPDIR)/SoWriteAction.Po \
+@AMDEP@ $(DEPDIR)/all.Plo $(DEPDIR)/all.Po
 DIST_COMMON = $(libactionsinc_HEADERS) Makefile.am Makefile.in
 
-SOURCES = $(libactions_la_SOURCES) $(EXTRA_libactions_la_SOURCES) $(libactions@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_libactions@SUFFIX@LINKHACK_la_SOURCES)
-OBJECTS = $(am_libactions_la_OBJECTS) $(am_libactions@SUFFIX@LINKHACK_la_OBJECTS)
+SOURCES = $(actions_lst_SOURCES) $(EXTRA_actions_lst_SOURCES) $(libactions_la_SOURCES) $(EXTRA_libactions_la_SOURCES) $(libactions@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_libactions@SUFFIX@LINKHACK_la_SOURCES)
+OBJECTS = $(am_actions_lst_OBJECTS) $(am_libactions_la_OBJECTS) $(am_libactions@SUFFIX@LINKHACK_la_OBJECTS)
 
 all: all-am
 
@@ -269,6 +304,24 @@ Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.s
 	cd $(top_builddir) && \
 	  CONFIG_HEADERS= CONFIG_LINKS= \
 	  CONFIG_FILES=$(subdir)/$@ $(SHELL) ./config.status
+
+clean-noinstLIBRARIES:
+	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
+
+mostlyclean-compile:
+	-rm -f *.$(OBJEXT) core *.core
+
+distclean-compile:
+	-rm -f *.tab.c
+
+mostlyclean-libtool:
+	-rm -f *.lo
+
+clean-libtool:
+	-rm -rf .libs _libs
+
+distclean-libtool:
+	-rm -f libtool
 install-libLTLIBRARIES: $(lib_LTLIBRARIES)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libdir)
@@ -291,21 +344,6 @@ clean-libLTLIBRARIES:
 
 clean-noinstLTLIBRARIES:
 	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
-
-mostlyclean-compile:
-	-rm -f *.$(OBJEXT) core *.core
-
-distclean-compile:
-	-rm -f *.tab.c
-
-mostlyclean-libtool:
-	-rm -f *.lo
-
-clean-libtool:
-	-rm -rf .libs _libs
-
-distclean-libtool:
-	-rm -f libtool
 
 libactions.la: $(libactions_la_OBJECTS) $(libactions_la_DEPENDENCIES)
 	$(CXXLINK)  $(libactions_la_LDFLAGS) $(libactions_la_OBJECTS) $(libactions_la_LIBADD) $(LIBS)
@@ -363,19 +401,33 @@ distclean-tags:
 	-rm -f TAGS ID
 
 @AMDEP@@_am_include@ $(DEPDIR)/SoAction.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoAction.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoBoxHighlightRenderAction.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoBoxHighlightRenderAction.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoCallbackAction.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoCallbackAction.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoGLRenderAction.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoGLRenderAction.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoGetBoundingBoxAction.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoGetBoundingBoxAction.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoGetMatrixAction.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoGetMatrixAction.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoGetPrimitiveCountAction.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoGetPrimitiveCountAction.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoHandleEventAction.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoHandleEventAction.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoLineHighlightRenderAction.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoLineHighlightRenderAction.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoPickAction.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoPickAction.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoRayPickAction.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoRayPickAction.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoSearchAction.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSearchAction.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoWriteAction.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoWriteAction.Po
 @AMDEP@@_am_include@ $(DEPDIR)/all.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/all.Po
 
 distclean-depend:
 	-rm -rf $(DEPDIR)
@@ -421,7 +473,7 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(LTLIBRARIES) $(HEADERS)
+all-am: Makefile $(LIBRARIES) $(LTLIBRARIES) $(HEADERS)
 
 installdirs:
 	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(libactionsincdir)
@@ -455,7 +507,7 @@ maintainer-clean-generic:
 clean: clean-am
 
 clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
-	clean-noinstLTLIBRARIES mostlyclean-am
+	clean-noinstLIBRARIES clean-noinstLTLIBRARIES mostlyclean-am
 
 distclean: distclean-am
 
@@ -492,18 +544,26 @@ mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 uninstall-am: uninstall-libLTLIBRARIES uninstall-libactionsincHEADERS
 
 .PHONY: all all-am check check-am clean clean-generic \
-	clean-libLTLIBRARIES clean-libtool clean-noinstLTLIBRARIES \
-	distclean distclean-compile distclean-depend distclean-generic \
-	distclean-libtool distclean-tags distdir dvi dvi-am info \
-	info-am install install-am install-data install-data-am \
-	install-exec install-exec-am install-info \
-	install-libLTLIBRARIES install-libactionsincHEADERS install-man \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
-	tags uninstall uninstall-am uninstall-libLTLIBRARIES \
+	clean-libLTLIBRARIES clean-libtool clean-noinstLIBRARIES \
+	clean-noinstLTLIBRARIES distclean distclean-compile \
+	distclean-depend distclean-generic distclean-libtool \
+	distclean-tags distdir dvi dvi-am info info-am install \
+	install-am install-data install-data-am install-exec \
+	install-exec-am install-info install-libLTLIBRARIES \
+	install-libactionsincHEADERS install-man install-strip \
+	installcheck installcheck-am installdirs maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-compile \
+	mostlyclean-generic mostlyclean-libtool tags uninstall \
+	uninstall-am uninstall-libLTLIBRARIES \
 	uninstall-libactionsincHEADERS
 
+
+actions.lst: Makefile $(actions_lst_OBJECTS)
+	@echo "Linking actions.lst..."; \
+	echo $(CC) /LST:actions.lst \
+	  $(actions_lst_OBJECTS); \
+	$(CC) /LST:actions.lst \
+	  $(actions_lst_OBJECTS);
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

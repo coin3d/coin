@@ -87,6 +87,7 @@ CXX = @CXX@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
+EXEEXT = @EXEEXT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 INSTALL_STRIP_PROGRAM_ENV = @INSTALL_STRIP_PROGRAM_ENV@
 LIBFLAGS = @LIBFLAGS@
@@ -98,6 +99,7 @@ LT_REVISION = @LT_REVISION@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
 OBJDUMP = @OBJDUMP@
+OBJEXT = @OBJEXT@
 PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 STRIP = @STRIP@
@@ -185,8 +187,9 @@ PrivateHeaders = \
 @HACKING_COMPACT_BUILD_TRUE@BuildSources = $(LinkHackSources)
 @HACKING_COMPACT_BUILD_FALSE@BuildSources = $(RegularSources)
 
-@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libmisc@SUFFIX@LINKHACK.la
-@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libmisc.la
+@BUILD_WITH_MSVC_TRUE@noinst_LIBRARIES = misc.lst
+@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libmisc@SUFFIX@LINKHACK.la
+@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libmisc.la
 
 # Remove any linklibraries detected by configure, as they are not
 # needed in the submodules -- only in the toplevel libCoin build.
@@ -204,15 +207,18 @@ EXTRA_libmisc@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 
+misc_lst_SOURCES = $(BuildSources)
+EXTRA_misc_lst_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
+
 libmiscincdir = $(includedir)/Inventor/misc
 libmiscinc_HEADERS = $(PublicHeaders)
-EXEEXT =
-OBJEXT = o
 subdir = src/misc
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h $(top_builddir)/include/Inventor/SbBasic.h $(top_builddir)/include/Inventor/system/inttypes.h
 CONFIG_CLEAN_FILES =
-LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
+LIBRARIES = $(noinst_LIBRARIES)
 
 
 DEFS = @DEFS@ -I. -I$(srcdir) -I$(top_builddir) -I$(top_builddir)/include/Inventor -I$(top_builddir)/include/Inventor/system
@@ -222,6 +228,35 @@ X_CFLAGS = @X_CFLAGS@
 X_LIBS = @X_LIBS@
 X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
+misc_lst_AR = $(AR) cru
+misc_lst_LIBADD = 
+@HACKING_COMPACT_BUILD_TRUE@am_misc_lst_OBJECTS = all.$(OBJEXT)
+@HACKING_COMPACT_BUILD_FALSE@am_misc_lst_OBJECTS = SoBase.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoChildList.$(OBJEXT) SoGL.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLImage.$(OBJEXT) SoGlyph.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoNormalGenerator.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoNotification.$(OBJEXT) SoState.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoDB.$(OBJEXT) SoFullPath.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTempPath.$(OBJEXT) SoLightPath.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoInput.$(OBJEXT) SoInteraction.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoOutput.$(OBJEXT) SoPath.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoPickedPoint.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoPrimitiveVertex.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoSceneManager.$(OBJEXT) SoType.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoOffscreenRenderer.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGenerate.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoLockManager.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoByteStream.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTranSender.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTranReceiver.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ default3dfont.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ default2dfont.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ GLUWrapper.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ simage_wrapper.$(OBJEXT)
+misc_lst_OBJECTS = $(am_misc_lst_OBJECTS)
+AR = ar
+LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
+
 libmisc_la_LDFLAGS = 
 libmisc_la_LIBADD = 
 @HACKING_COMPACT_BUILD_TRUE@am_libmisc_la_OBJECTS = all.lo
@@ -270,37 +305,58 @@ CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-DIST_SOURCES = $(libmisc_la_SOURCES) $(EXTRA_libmisc_la_SOURCES) \
+DIST_SOURCES = $(misc_lst_SOURCES) $(EXTRA_misc_lst_SOURCES) \
+$(libmisc_la_SOURCES) $(EXTRA_libmisc_la_SOURCES) \
 $(libmisc@SUFFIX@LINKHACK_la_SOURCES) \
 $(EXTRA_libmisc@SUFFIX@LINKHACK_la_SOURCES)
 HEADERS = $(libmiscinc_HEADERS)
 
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
-@AMDEP@DEP_FILES = $(DEPDIR)/GLUWrapper.Plo $(DEPDIR)/SoBase.Plo \
-@AMDEP@ $(DEPDIR)/SoByteStream.Plo $(DEPDIR)/SoChildList.Plo \
-@AMDEP@ $(DEPDIR)/SoDB.Plo $(DEPDIR)/SoFullPath.Plo $(DEPDIR)/SoGL.Plo \
-@AMDEP@ $(DEPDIR)/SoGLFaceSetTemplate.Plo $(DEPDIR)/SoGLImage.Plo \
-@AMDEP@ $(DEPDIR)/SoGLLineSetTemplate.Plo \
+@AMDEP@DEP_FILES = $(DEPDIR)/GLUWrapper.Plo $(DEPDIR)/GLUWrapper.Po \
+@AMDEP@ $(DEPDIR)/SoBase.Plo $(DEPDIR)/SoBase.Po \
+@AMDEP@ $(DEPDIR)/SoByteStream.Plo $(DEPDIR)/SoByteStream.Po \
+@AMDEP@ $(DEPDIR)/SoChildList.Plo $(DEPDIR)/SoChildList.Po \
+@AMDEP@ $(DEPDIR)/SoDB.Plo $(DEPDIR)/SoDB.Po $(DEPDIR)/SoFullPath.Plo \
+@AMDEP@ $(DEPDIR)/SoFullPath.Po $(DEPDIR)/SoGL.Plo $(DEPDIR)/SoGL.Po \
+@AMDEP@ $(DEPDIR)/SoGLFaceSetTemplate.Plo \
+@AMDEP@ $(DEPDIR)/SoGLFaceSetTemplate.Po $(DEPDIR)/SoGLImage.Plo \
+@AMDEP@ $(DEPDIR)/SoGLImage.Po $(DEPDIR)/SoGLLineSetTemplate.Plo \
+@AMDEP@ $(DEPDIR)/SoGLLineSetTemplate.Po \
 @AMDEP@ $(DEPDIR)/SoGLTristripTemplate.Plo \
+@AMDEP@ $(DEPDIR)/SoGLTristripTemplate.Po \
 @AMDEP@ $(DEPDIR)/SoGLindexedLineSetTemplate.Plo \
+@AMDEP@ $(DEPDIR)/SoGLindexedLineSetTemplate.Po \
 @AMDEP@ $(DEPDIR)/SoGLnonindexedFaceSetTemplate.Plo \
+@AMDEP@ $(DEPDIR)/SoGLnonindexedFaceSetTemplate.Po \
 @AMDEP@ $(DEPDIR)/SoGLnonindexedTristripSetTemplate.Plo \
-@AMDEP@ $(DEPDIR)/SoGLqmeshTemplate.Plo $(DEPDIR)/SoGenerate.Plo \
-@AMDEP@ $(DEPDIR)/SoGlyph.Plo $(DEPDIR)/SoInput.Plo \
-@AMDEP@ $(DEPDIR)/SoInteraction.Plo $(DEPDIR)/SoLightPath.Plo \
-@AMDEP@ $(DEPDIR)/SoLockManager.Plo $(DEPDIR)/SoNormalGenerator.Plo \
-@AMDEP@ $(DEPDIR)/SoNotification.Plo $(DEPDIR)/SoOffscreenRenderer.Plo \
-@AMDEP@ $(DEPDIR)/SoOutput.Plo $(DEPDIR)/SoPath.Plo \
-@AMDEP@ $(DEPDIR)/SoPickedPoint.Plo $(DEPDIR)/SoPrimitiveVertex.Plo \
-@AMDEP@ $(DEPDIR)/SoSceneManager.Plo $(DEPDIR)/SoState.Plo \
-@AMDEP@ $(DEPDIR)/SoTempPath.Plo $(DEPDIR)/SoTranReceiver.Plo \
-@AMDEP@ $(DEPDIR)/SoTranSender.Plo $(DEPDIR)/SoType.Plo \
-@AMDEP@ $(DEPDIR)/all.Plo $(DEPDIR)/default2dfont.Plo \
-@AMDEP@ $(DEPDIR)/default3dfont.Plo $(DEPDIR)/simage_wrapper.Plo
+@AMDEP@ $(DEPDIR)/SoGLnonindexedTristripSetTemplate.Po \
+@AMDEP@ $(DEPDIR)/SoGLqmeshTemplate.Plo $(DEPDIR)/SoGLqmeshTemplate.Po \
+@AMDEP@ $(DEPDIR)/SoGenerate.Plo $(DEPDIR)/SoGenerate.Po \
+@AMDEP@ $(DEPDIR)/SoGlyph.Plo $(DEPDIR)/SoGlyph.Po $(DEPDIR)/SoInput.Plo \
+@AMDEP@ $(DEPDIR)/SoInput.Po $(DEPDIR)/SoInteraction.Plo \
+@AMDEP@ $(DEPDIR)/SoInteraction.Po $(DEPDIR)/SoLightPath.Plo \
+@AMDEP@ $(DEPDIR)/SoLightPath.Po $(DEPDIR)/SoLockManager.Plo \
+@AMDEP@ $(DEPDIR)/SoLockManager.Po $(DEPDIR)/SoNormalGenerator.Plo \
+@AMDEP@ $(DEPDIR)/SoNormalGenerator.Po $(DEPDIR)/SoNotification.Plo \
+@AMDEP@ $(DEPDIR)/SoNotification.Po $(DEPDIR)/SoOffscreenRenderer.Plo \
+@AMDEP@ $(DEPDIR)/SoOffscreenRenderer.Po $(DEPDIR)/SoOutput.Plo \
+@AMDEP@ $(DEPDIR)/SoOutput.Po $(DEPDIR)/SoPath.Plo $(DEPDIR)/SoPath.Po \
+@AMDEP@ $(DEPDIR)/SoPickedPoint.Plo $(DEPDIR)/SoPickedPoint.Po \
+@AMDEP@ $(DEPDIR)/SoPrimitiveVertex.Plo $(DEPDIR)/SoPrimitiveVertex.Po \
+@AMDEP@ $(DEPDIR)/SoSceneManager.Plo $(DEPDIR)/SoSceneManager.Po \
+@AMDEP@ $(DEPDIR)/SoState.Plo $(DEPDIR)/SoState.Po \
+@AMDEP@ $(DEPDIR)/SoTempPath.Plo $(DEPDIR)/SoTempPath.Po \
+@AMDEP@ $(DEPDIR)/SoTranReceiver.Plo $(DEPDIR)/SoTranReceiver.Po \
+@AMDEP@ $(DEPDIR)/SoTranSender.Plo $(DEPDIR)/SoTranSender.Po \
+@AMDEP@ $(DEPDIR)/SoType.Plo $(DEPDIR)/SoType.Po $(DEPDIR)/all.Plo \
+@AMDEP@ $(DEPDIR)/all.Po $(DEPDIR)/default2dfont.Plo \
+@AMDEP@ $(DEPDIR)/default2dfont.Po $(DEPDIR)/default3dfont.Plo \
+@AMDEP@ $(DEPDIR)/default3dfont.Po $(DEPDIR)/simage_wrapper.Plo \
+@AMDEP@ $(DEPDIR)/simage_wrapper.Po
 DIST_COMMON = $(libmiscinc_HEADERS) Makefile.am Makefile.in
 
-SOURCES = $(libmisc_la_SOURCES) $(EXTRA_libmisc_la_SOURCES) $(libmisc@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_libmisc@SUFFIX@LINKHACK_la_SOURCES)
-OBJECTS = $(am_libmisc_la_OBJECTS) $(am_libmisc@SUFFIX@LINKHACK_la_OBJECTS)
+SOURCES = $(misc_lst_SOURCES) $(EXTRA_misc_lst_SOURCES) $(libmisc_la_SOURCES) $(EXTRA_libmisc_la_SOURCES) $(libmisc@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_libmisc@SUFFIX@LINKHACK_la_SOURCES)
+OBJECTS = $(am_misc_lst_OBJECTS) $(am_libmisc_la_OBJECTS) $(am_libmisc@SUFFIX@LINKHACK_la_OBJECTS)
 
 all: all-am
 
@@ -315,6 +371,24 @@ Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.s
 	cd $(top_builddir) && \
 	  CONFIG_HEADERS= CONFIG_LINKS= \
 	  CONFIG_FILES=$(subdir)/$@ $(SHELL) ./config.status
+
+clean-noinstLIBRARIES:
+	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
+
+mostlyclean-compile:
+	-rm -f *.$(OBJEXT) core *.core
+
+distclean-compile:
+	-rm -f *.tab.c
+
+mostlyclean-libtool:
+	-rm -f *.lo
+
+clean-libtool:
+	-rm -rf .libs _libs
+
+distclean-libtool:
+	-rm -f libtool
 install-libLTLIBRARIES: $(lib_LTLIBRARIES)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libdir)
@@ -337,21 +411,6 @@ clean-libLTLIBRARIES:
 
 clean-noinstLTLIBRARIES:
 	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
-
-mostlyclean-compile:
-	-rm -f *.$(OBJEXT) core *.core
-
-distclean-compile:
-	-rm -f *.tab.c
-
-mostlyclean-libtool:
-	-rm -f *.lo
-
-clean-libtool:
-	-rm -rf .libs _libs
-
-distclean-libtool:
-	-rm -f libtool
 
 libmisc.la: $(libmisc_la_OBJECTS) $(libmisc_la_DEPENDENCIES)
 	$(CXXLINK)  $(libmisc_la_LDFLAGS) $(libmisc_la_OBJECTS) $(libmisc_la_LIBADD) $(LIBS)
@@ -409,43 +468,81 @@ distclean-tags:
 	-rm -f TAGS ID
 
 @AMDEP@@_am_include@ $(DEPDIR)/GLUWrapper.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/GLUWrapper.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoBase.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoBase.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoByteStream.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoByteStream.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoChildList.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoChildList.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoDB.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoDB.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoFullPath.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoFullPath.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoGL.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoGL.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoGLFaceSetTemplate.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoGLFaceSetTemplate.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoGLImage.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoGLImage.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoGLLineSetTemplate.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoGLLineSetTemplate.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoGLTristripTemplate.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoGLTristripTemplate.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoGLindexedLineSetTemplate.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoGLindexedLineSetTemplate.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoGLnonindexedFaceSetTemplate.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoGLnonindexedFaceSetTemplate.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoGLnonindexedTristripSetTemplate.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoGLnonindexedTristripSetTemplate.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoGLqmeshTemplate.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoGLqmeshTemplate.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoGenerate.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoGenerate.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoGlyph.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoGlyph.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoInput.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoInput.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoInteraction.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoInteraction.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoLightPath.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoLightPath.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoLockManager.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoLockManager.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoNormalGenerator.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoNormalGenerator.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoNotification.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoNotification.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoOffscreenRenderer.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoOffscreenRenderer.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoOutput.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoOutput.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoPath.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoPath.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoPickedPoint.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoPickedPoint.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoPrimitiveVertex.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoPrimitiveVertex.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoSceneManager.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoSceneManager.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoState.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoState.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoTempPath.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoTempPath.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoTranReceiver.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoTranReceiver.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoTranSender.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoTranSender.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoType.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoType.Po
 @AMDEP@@_am_include@ $(DEPDIR)/all.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/all.Po
 @AMDEP@@_am_include@ $(DEPDIR)/default2dfont.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/default2dfont.Po
 @AMDEP@@_am_include@ $(DEPDIR)/default3dfont.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/default3dfont.Po
 @AMDEP@@_am_include@ $(DEPDIR)/simage_wrapper.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/simage_wrapper.Po
 
 distclean-depend:
 	-rm -rf $(DEPDIR)
@@ -512,7 +609,7 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(LTLIBRARIES) $(HEADERS)
+all-am: Makefile $(LIBRARIES) $(LTLIBRARIES) $(HEADERS)
 
 installdirs:
 	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(libmiscincdir)
@@ -546,7 +643,7 @@ maintainer-clean-generic:
 clean: clean-am
 
 clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
-	clean-noinstLTLIBRARIES mostlyclean-am
+	clean-noinstLIBRARIES clean-noinstLTLIBRARIES mostlyclean-am
 
 distclean: distclean-am
 
@@ -583,18 +680,26 @@ mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 uninstall-am: uninstall-libLTLIBRARIES uninstall-libmiscincHEADERS
 
 .PHONY: all all-am check check-am clean clean-generic \
-	clean-libLTLIBRARIES clean-libtool clean-noinstLTLIBRARIES \
-	distclean distclean-compile distclean-depend distclean-generic \
-	distclean-libtool distclean-tags distdir dvi dvi-am info \
-	info-am install install-am install-data install-data-am \
-	install-exec install-exec-am install-info \
-	install-libLTLIBRARIES install-libmiscincHEADERS install-man \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
-	tags uninstall uninstall-am uninstall-libLTLIBRARIES \
+	clean-libLTLIBRARIES clean-libtool clean-noinstLIBRARIES \
+	clean-noinstLTLIBRARIES distclean distclean-compile \
+	distclean-depend distclean-generic distclean-libtool \
+	distclean-tags distdir dvi dvi-am info info-am install \
+	install-am install-data install-data-am install-exec \
+	install-exec-am install-info install-libLTLIBRARIES \
+	install-libmiscincHEADERS install-man install-strip \
+	installcheck installcheck-am installdirs maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-compile \
+	mostlyclean-generic mostlyclean-libtool tags uninstall \
+	uninstall-am uninstall-libLTLIBRARIES \
 	uninstall-libmiscincHEADERS
 
+
+misc.lst: Makefile $(misc_lst_OBJECTS)
+	@echo "Linking misc.lst..."; \
+	echo $(CC) /LST:misc.lst \
+	  $(misc_lst_OBJECTS); \
+	$(CC) /LST:misc.lst \
+	  $(misc_lst_OBJECTS);
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
