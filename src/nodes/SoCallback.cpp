@@ -40,6 +40,7 @@
 #include <Inventor/actions/SoActions.h> // SoCallback uses all of them.
 #include <Inventor/elements/SoGLTextureImageElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoDiffuseColorElement.h>
 #include <Inventor/elements/SoTransparencyElement.h>
@@ -140,7 +141,8 @@ SoCallback::GLRender(SoGLRenderAction * action)
     // Update manually
     const SoGLTextureImageElement * ti = (SoGLTextureImageElement *)
       state->getConstElement(SoGLTextureImageElement::getClassStackIndex());
-    ti->evaluate(SoGLTextureEnabledElement::get(state),
+    ti->evaluate(SoGLTextureEnabledElement::get(state) ||
+                 SoGLTexture3EnabledElement::get(state),
                  transparent && !SoShapeStyleElement::isScreenDoor(state));
   }
   SoCallback::doAction(action);

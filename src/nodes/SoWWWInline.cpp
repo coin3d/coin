@@ -45,6 +45,7 @@
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoDiffuseColorElement.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
@@ -421,6 +422,7 @@ SoWWWInline::GLRender(SoGLRenderAction * action)
   SoLightModelElement::set(state, this, SoLightModelElement::BASE_COLOR);
   // disable texture mapping
   SoGLTextureEnabledElement::set(state, this, FALSE);
+  SoGLTexture3EnabledElement::set(state, this, FALSE);
 
   // update GL state
   state->lazyEvaluate();

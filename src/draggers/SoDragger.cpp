@@ -103,6 +103,7 @@
 
 #include <Inventor/elements/SoGLTextureImageElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
@@ -311,8 +312,12 @@ SoDragger::updateElements(SoState * state)
     SoTextureImageElement::setDefault(state, this);
   }
   if (state->isElementEnabled(SoGLTextureEnabledElement::getClassStackIndex())) {
-    // disable texture
+    // disable 2D texture
     SoGLTextureEnabledElement::set(state, this, FALSE);
+  }
+  if (state->isElementEnabled(SoGLTexture3EnabledElement::getClassStackIndex())) {
+    // disable 3D texture
+    SoGLTexture3EnabledElement::set(state, this, FALSE);
   }
   if (state->isElementEnabled(SoNormalBindingElement::getClassStackIndex())) {
     // make default

@@ -56,6 +56,7 @@
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/elements/SoGLLightModelElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoGLLightModelElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
@@ -1119,6 +1120,7 @@ SoMarkerSet::GLRender(SoGLRenderAction * action)
 
   SoLightModelElement::set(state, this, SoLightModelElement::BASE_COLOR);
   SoGLTextureEnabledElement::set(state, this, FALSE);
+  SoGLTexture3EnabledElement::set(state, this, FALSE);
 
   if (this->vertexProperty.getValue()) {
     this->vertexProperty.getValue()->GLRender(action);
