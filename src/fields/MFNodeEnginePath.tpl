@@ -324,20 +324,14 @@ SoMF_Typename_::referencesCopy(void) const
   if (inherited::referencesCopy()) return TRUE;
 
   for (int i=0; i < this->getNum(); i++) {
-    So_Typename_ * n = (*this)[i];
-    if (n) {
-      if (n->isOfType(SoNode::getClassTypeId()) ||
-	  n->isOfType(SoEngine::getClassTypeId())) {
-	if (SoFieldContainer::checkCopy((SoFieldContainer *)n)) return TRUE;
-      }
-      else if (n->isOfType(SoPath::getClassTypeId())) {
-	SoPath * p = (SoPath *)n;
-	if (p->getHead() && SoFieldContainer::checkCopy(p->getHead()))
-	  return TRUE;
-      }
-      else {
-	assert(0 && "strange internal error");
-      }
+    So_Typename_ * item = (*this)[i];
+    if (item) {
+#if defined(COIN_INTERNAL_NODE) || defined(COIN_INTERNAL_ENGINE)
+      if (SoFieldContainer::checkCopy((SoFieldContainer *)item)) return TRUE;
+#endif // COIN_INTERNAL_NODE || COIN_INTERNAL_ENGINE
+#ifdef COIN_INTERNAL_PATH
+      if (item->getHead() && SoFieldContainer::checkCopy(item->getHead())) return TRUE;
+#endif // COIN_INTERNAL_PATH
     }
   }
 

@@ -162,7 +162,7 @@ SoMFPath::set1Value(const int idx, SoPath * newval)
     // The path should be audited by us at all times. So don't use
     // SoMFPath to wrap SoTempPath or SoLightPath, for instance.
     assert(h==this->pathheads[idx] &&
-           "Path head changed without notification!");
+	   "Path head changed without notification!");
     if (h) {
       h->removeAuditor(this, SoNotRec::FIELD);
       h->unref();
@@ -347,20 +347,14 @@ SoMFPath::referencesCopy(void) const
   if (inherited::referencesCopy()) return TRUE;
 
   for (int i=0; i < this->getNum(); i++) {
-    SoPath * n = (*this)[i];
-    if (n) {
-      if (n->isOfType(SoNode::getClassTypeId()) ||
-          n->isOfType(SoEngine::getClassTypeId())) {
-        if (SoFieldContainer::checkCopy((SoFieldContainer *)n)) return TRUE;
-      }
-      else if (n->isOfType(SoPath::getClassTypeId())) {
-        SoPath * p = (SoPath *)n;
-        if (p->getHead() && SoFieldContainer::checkCopy(p->getHead()))
-          return TRUE;
-      }
-      else {
-        assert(0 && "strange internal error");
-      }
+    SoPath * item = (*this)[i];
+    if (item) {
+#if defined(COIN_INTERNAL_NODE) || defined(COIN_INTERNAL_ENGINE)
+      if (SoFieldContainer::checkCopy((SoFieldContainer *)item)) return TRUE;
+#endif // COIN_INTERNAL_NODE || COIN_INTERNAL_ENGINE
+#ifdef COIN_INTERNAL_PATH
+      if (item->getHead() && SoFieldContainer::checkCopy(item->getHead())) return TRUE;
+#endif // COIN_INTERNAL_PATH
     }
   }
 
