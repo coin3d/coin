@@ -47,7 +47,7 @@
 
 /*!
   \fn SbPList::SbPList(const SbPList & l)
-  Copy constructor. 
+  Copy constructor.
 
   \sa SbList<Type>::SbList(const SbList<Type> & l)
 */

@@ -20,19 +20,19 @@
 #ifndef COIN_SBSTRINGLIST_H
 #define COIN_SBSTRINGLIST_H
 
+#include <Inventor/lists/SbList.h>
+
 class SbString;
 
-#include <Inventor/SbBasic.h>
-#include <Inventor/lists/SbPList.h>
 
-class SbStringList : public SbPList {
-  typedef SbPList inherited;
-
+class SbStringList : public SbList<SbString *> {
 public:
-  void append(SbString * string);
-  int find(SbString * string) const;
-  void insert(SbString * string, const int addBefore);
-  SbString * & operator [] (const int i) const;
+  SbStringList(void) : SbList<SbString *>() { }
+  SbStringList(const int sizehint) : SbList<SbString *>(sizehint) { }
+  SbStringList(const SbStringList & l) : SbList<SbString *>(l) { }
+
+  SbString * get(const int index) const { return (*this)[index]; }
+  void set(const int index, SbString * const item) { (*this)[index] = item; }
 };
 
 #endif // !COIN_SBSTRINGLIST_H

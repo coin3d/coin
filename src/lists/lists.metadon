@@ -12,11 +12,11 @@
 # ==
 # HIERARCHY
 # ID  SbList
+# ID      SbIntList
+# ID      SbStringList
 # ID      SbPList
 #             SbVec3fList 
 #             SoAuditorList 
-#             SbIntList
-# I           SbStringList
 #             SoActionMethodList
 # I           SoBaseList
 # I               SoEngineList

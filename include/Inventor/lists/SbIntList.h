@@ -20,28 +20,16 @@
 #ifndef COIN_SBINTLIST_H
 #define COIN_SBINTLIST_H
 
-#include <Inventor/SbBasic.h>
-#include <Inventor/lists/SbPList.h>
+#include <Inventor/lists/SbList.h>
 
-class SbIntList : public SbPList {
-  typedef SbPList inherited;
-
+class SbIntList : public SbList<int> {
 public:
-  SbIntList(const int initSize = 4);
-  SbIntList(const SbIntList & list);
-  ~SbIntList(void);
+  SbIntList(void) : SbList<int>() { }
+  SbIntList(const int sizehint) : SbList<int>(sizehint) { }
+  SbIntList(const SbIntList & l) : SbList<int>(l) { }
 
-  void append(int integer);
-  int find(int integer);
-  void insert(int integer, int addBefore);
-  void copy(const SbIntList & list);
-  SbIntList & operator = (const SbIntList & list);
-  int & operator [](int index) const;
-
-  int get(const int index) const;
-  void set(const int index, int integer);
-  operator int * (void);
-  operator const int * (void) const;
+  int get(const int index) const { return (*this)[index]; }
+  void set(const int index, const int item) { (*this)[index] = item; }
 };
 
 #endif // !COIN_SBINTLIST_H

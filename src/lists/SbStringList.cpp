@@ -19,52 +19,50 @@
 
 /*!
   \class SbStringList Inventor/lists/SbStringList.h
-  \brief The SbStringList class is a container class for arrays of SbString
-  objects.
+  \brief The SbStringList class is a container for arrays of SbString pointers.
+  \ingroup base
 
-  FIXME: write doc.
-*/
+  Note that upon using the equality and inequality operators, the
+  strings themselves are not compared, only the pointer values.
+ */
 
 #include <Inventor/lists/SbStringList.h>
 
 /*!
-  FIXME: write doc.
-*/
+  \fn SbStringList::SbStringList(void)
 
-void
-SbStringList::append(SbString * string)
-{
-  ((SbPList *)this)->append((void *)string);
-}
+  Default constructor.
+*/
 
 /*!
-  FIXME: write doc.
+  \fn SbStringList::SbStringList(const int sizehint)
 
-  PS: the string value is not what is searched for - it is the string object.
+  This constructor initializes the internal allocated size for the
+  list to \a sizehint. Note that the list will still initially contain
+  zero items.
+
+  \sa SbList<Type>::SbList(const int sizehint)
 */
-
-int
-SbStringList::find(SbString * string) const
-{
-  return ((SbPList *)this)->find((void *)string);
-}
 
 /*!
-  FIXME: write doc.
-*/
+  \fn SbStringList::SbStringList(const SbStringList & l)
+  Copy constructor.
 
-void
-SbStringList::insert(SbString * string, const int addBefore)
-{
-  ((SbPList *)this)->insert((void *)string, addBefore);
-}
+  \sa SbList<Type>::SbList(const SbList<Type> & l)
+*/
 
 /*!
-  FIXME: write doc.
+  \fn SbString * SbStringList::get(const int index) const
+
+  This method returns the element at \a index. Does the same thing as
+  the index operator. This method is only present for compatibility
+  with the original Inventor API.
 */
 
-SbString *&
-SbStringList::operator [] (const int i) const
-{
-  return (SbString *&)(*(SbPList *)this)[i];
-}
+/*!
+  \fn void SbStringList::set(const int index, SbString * const item)
+
+  This method sets the element at \a index to \a item. Does the same
+  thing as the assignment index operator. This method is only present
+  for compatibility with the original Inventor API.
+*/

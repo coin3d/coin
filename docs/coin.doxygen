@@ -184,6 +184,10 @@ INPUT                = \
 	$(top_srcdir)/include/Inventor/lists/SbList.h \
 	$(top_srcdir)/src/lists/SbPList.cpp \
 	$(top_srcdir)/include/Inventor/lists/SbPList.h \
+	$(top_srcdir)/src/lists/SbIntList.cpp \
+	$(top_srcdir)/include/Inventor/lists/SbIntList.h \
+	$(top_srcdir)/src/lists/SbStringList.cpp \
+	$(top_srcdir)/include/Inventor/lists/SbStringList.h \
 
 #        \
 #	$(top_srcdir)/src/misc/SoBase.cpp \
@@ -378,10 +382,6 @@ INPUT                = \
 #	$(top_srcdir)/src/SoType.cpp \
 #	$(top_srcdir)/include/Inventor/SoType.h \
 #	\
-#	$(top_srcdir)/src/lists/SbIntList.cpp \
-#	$(top_srcdir)/include/Inventor/lists/SbIntList.h \
-#	$(top_srcdir)/src/lists/SbStringList.cpp \
-#	$(top_srcdir)/include/Inventor/lists/SbStringList.h \
 #	$(top_srcdir)/src/lists/SoActionMethodList.cpp \
 #	$(top_srcdir)/include/Inventor/lists/SoActionMethodList.h \
 #	$(top_srcdir)/src/lists/SoAuditorList.cpp \

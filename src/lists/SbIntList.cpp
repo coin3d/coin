@@ -19,146 +19,47 @@
 
 /*!
   \class SbIntList SbIntList.h Inventor/lists/SbIntList.h
-  \brief The SbIntList class is a container class for integer list arrays.
-
-  See class SbPList, from which SbIntList is derived.
+  \brief The SbIntList class is a container for integer list arrays.
+  \ingroup base
 */
 
-#include <stddef.h> // NULL
 #include <Inventor/lists/SbIntList.h>
 
 /*!
-  A constructor.
-*/
+  \fn SbIntList::SbIntList(void)
 
-SbIntList::SbIntList(const int initSize)
-  : SbPList(initSize)
-{
-}
+  Default constructor.
+*/
 
 /*!
-  A constructor.
-*/
+  \fn SbIntList::SbIntList(const int sizehint)
 
-SbIntList::SbIntList(const SbIntList & list)
-  : SbPList((SbPList &)list)
-{
-}
+  This constructor initializes the internal allocated size for the
+  list to \a sizehint. Note that the list will still initially contain
+  zero items.
+
+  \sa SbList<Type>::SbList(const int sizehint)
+*/
 
 /*!
-  The destructor.
-*/
+  \fn SbIntList::SbIntList(const SbIntList & l)
+  Copy constructor.
 
-SbIntList::~SbIntList()
-{
-}
+  \sa SbList<Type>::SbList(const SbList<Type> & l)
+*/
 
 /*!
-  This method appends an integer to the end of the list.
-*/
+  \fn int SbIntList::get(const int index) const
 
-void
-SbIntList::append(int integer)
-{
-  SbPList::append((void *)integer);
-}
+  This method returns the element at \a index. Does the same thing as
+  the index operator. This method is only present for compatibility
+  with the original Inventor API.
+*/
 
 /*!
-  This method finds the first index for an element with value \a integer.
+  \fn void SbIntList::set(const int index, const int item)
+
+  This method sets the element at \a index to \a item. Does the same
+  thing as the assignment index operator. This method is only present
+  for compatibility with the original Inventor API.
 */
-
-int
-SbIntList::find(int integer)
-{
-  return SbPList::find((void *)integer);
-}
-
-/*!
-  This method inserts the integer \a integer at position \a addBefore, bumping
-  all the following values out.
-*/
-
-void
-SbIntList::insert(int integer, int addBefore)
-{
-  SbPList::insert((void *)integer, addBefore);
-}
-
-/*!
-  This method copies the contents of \a list into the instance.
-*/
-
-void
-SbIntList::copy(const SbIntList & list)
-{
-  SbPList::copy((SbPList &)list);
-}
-
-/*!
-  This operator copies the contents of \a list into the LHS instance,
-  returning itself for further manipulation.
-*/
-
-SbIntList &
-SbIntList::operator=(const SbIntList & list)
-{
-  return (SbIntList &)((*(SbPList *)this)=(SbPList &)list);
-}
-
-/*!
-  This operator returns a reference to the integer at index \a index.
-*/
-
-int &
-SbIntList::operator [](int index) const
-{
-  return (int &) (*(SbPList *)this)[index];
-}
-
-/*!
-  This method returns the value of the integer at position \a index.
-*/
-
-int
-SbIntList::get(const int index) const
-{
-  return (int)SbPList::get(index);
-}
-
-/*!
-  This method sets the value of the integer at position \a index
-  to the value \a integer.
-*/
-
-void
-SbIntList::set(const int index, int integer)
-{
-  SbPList::set(index, (void *)integer);
-}
-
-/*!
-  This method returns a pointer to the array as an int * pointer.
-
-  FIXME: this will cause big problems on architectures with 64bit pointers
-  and 32-bit integers.
-*/
-
-
-SbIntList::operator int * (void)
-{
-  void * ptr = (*this);
-  return (int *)ptr;
-}
-
-/*!
-  This method returns a const pointer to the array as an int * pointer.
-
-  FIXME: this will cause big problems on architectures with 64bit pointers
-  and 32-bit integers.
-*/
-
-SbIntList::operator const int * (void) const
-{
-  const void * ptr = (*this);
-  return (const int *)ptr;
-}

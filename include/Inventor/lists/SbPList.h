@@ -34,6 +34,7 @@ public:
 
 // For compatibility with Open Inventor.
 #ifndef COIN_INTERNAL
+#include <Inventor/lists/SbIntList.h>
 #include <Inventor/lists/SbStringList.h>
 #endif // COIN_INTERNAL
 
