@@ -71,6 +71,14 @@
   Input trigger.
 */
 
+/*!
+  \var SoEngineOutput SoTriggerAny::output
+
+  (SoSFTrigger) Connect to the output with the field(s) you want
+  notified upon any input trigger "pulses".
+*/
+
+
 SO_ENGINE_SOURCE(SoTriggerAny);
 
 // overloaded from parent
