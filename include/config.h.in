@@ -152,6 +152,9 @@
 /* define that the FreeType header is available */
 #undef HAVE_FREETYPE_H
 
+/* define if fstat() is available */
+#undef HAVE_FSTAT
+
 /* Define to use ftime() */
 #undef HAVE_FTIME
 
@@ -212,7 +215,7 @@
 /* Define to 1 if you have the <io.h> header file. */
 #undef HAVE_IO_H
 
-/* whether or not isinf() is available */
+/* define if isinf() is available */
 #undef HAVE_ISINF
 
 /* whether or not isnan() is available */
