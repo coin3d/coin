@@ -43,4 +43,17 @@ THE LINKS
   A library for rendering high quality postscript from any OpenGL
   application. Released under LGPL.
 
+* openNURBS
+  2001-07-20 Marius Kintel <kintel@sim.no>
+
+  http://www.opennurbs.com
+
+  For higher quality ? NURBS rendering. Nice license:
+
+   - Commercial use is encouraged  
+   - The tools, support, and membership are free
+   - There are no restrictions. Neither copyright nor copyleft restrictions 
+     apply
+   - No contribution of effort or technology is required from the members, 
+     although it is encouraged
 
