@@ -574,6 +574,12 @@ cc_glglue_instance(int contextid)
   return gi;
 }
 
+SbBool
+cc_glglue_isdirect(const cc_glglue * w)
+{
+  return w->glx.isdirect;
+}
+
 /* Returns a flag which indicates whether or not to allow the use of
    OpenGL 1.1+ features and extensions.
 

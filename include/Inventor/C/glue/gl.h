@@ -82,6 +82,9 @@ COIN_DLL_API SbBool cc_glglue_glxversion_matches_at_least(const cc_glglue * glue
 */
 COIN_DLL_API SbBool cc_glglue_glext_supported(const cc_glglue * glue, const char * extname);
 
+/* Returns TRUE if rendering is done directly on the display (ie not
+   through any software indirection layer over GLX). */
+COIN_DLL_API SbBool cc_glglue_isdirect(const cc_glglue * w);
 
 /*** Wrapped OpenGL 1.1+ features and extensions. *********************/
 
