@@ -53,8 +53,8 @@ void cc_flww32_set_char_size(void * font, int width, int height) { assert(FALSE)
 void cc_flww32_set_font_rotation(void * font, float angle) { assert(FALSE); }
   
 int cc_flww32_get_glyph(void * font, unsigned int charidx) { assert(FALSE); return 0; }
-int cc_flww32_get_advance(void * font, int glyph, float *x, float *y) { assert(FALSE); return 0; }
-int cc_flww32_get_kerning(void * font, int glyph1, int glyph2, float *x, float *y) { assert(FALSE); return 0; }
+void cc_flww32_get_advance(void * font, int glyph, float *x, float *y) { assert(FALSE); }
+void cc_flww32_get_kerning(void * font, int glyph1, int glyph2, float *x, float *y) { assert(FALSE); }
 void cc_flww32_done_glyph(void * font, int glyph) { assert(FALSE); }
   
 struct cc_flw_bitmap * cc_flww32_get_bitmap(void * font, int glyph) { assert(FALSE); return NULL; }
@@ -360,7 +360,7 @@ cc_flww32_get_glyph(void * font, unsigned int charidx)
 
 /* Returns, in x and y input arguments, how much to advance cursor
    after rendering glyph. */
-int
+void
 cc_flww32_get_advance(void * font, int glyph, float * x, float * y)
 {
   struct cc_flww32_glyph * glyphstruct = get_glyph_struct(font, glyph);
@@ -375,20 +375,16 @@ cc_flww32_get_advance(void * font, int glyph, float * x, float * y)
   if (glyphstruct == NULL) {
     *x = 10.0f;
     *y = 0.0f;
-    return 0;
   }
 #endif
 
   *x = (float) glyphstruct->bitmap->advanceX;
   *y = (float) glyphstruct->bitmap->advanceY;
-  /* FIXME: this function shouldn't need to return a value, fix
-     API. 20030610 mortene. */
-  return 0;
 }
 
 /* Returns kerning, in x and y input arguments, for a pair of
    glyphs. */
-int
+void
 cc_flww32_get_kerning(void * font, int glyph1, int glyph2, float * x, float * y)
 {
   /* FIXME: unimplemented. (Note that setting these values to <0,0>
@@ -396,7 +392,6 @@ cc_flww32_get_kerning(void * font, int glyph1, int glyph2, float * x, float * y)
      specified as an offset)). 20030515 mortene. */
   *x = 0.0f;
   *y = 0.0f;
-  return 0;
 }
 
 /* Client should use this to indicate it's done with a glyph, so the

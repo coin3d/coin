@@ -55,8 +55,8 @@ extern "C" {
   void cc_flwft_set_font_rotation(void * font, float angle);
   
   int cc_flwft_get_glyph(void * font, unsigned int charidx);
-  int cc_flwft_get_advance(void * font, int glyph, float * x, float * y);
-  int cc_flwft_get_kerning(void * font, int glyph1, int glyph2, float * x, float * y);
+  void cc_flwft_get_advance(void * font, int glyph, float * x, float * y);
+  void cc_flwft_get_kerning(void * font, int glyph1, int glyph2, float * x, float * y);
   void cc_flwft_done_glyph(void * font, int glyph);
   
   struct cc_flw_bitmap * cc_flwft_get_bitmap(void * font, int glyph);

@@ -52,8 +52,8 @@ void cc_flwft_set_char_size(void * font, int width, int height) { assert(FALSE);
 void cc_flwft_set_font_rotation(void * font, float angle) { assert(FALSE); }
   
 int cc_flwft_get_glyph(void * font, unsigned int charidx) { assert(FALSE); return 0; }
-int cc_flwft_get_advance(void * font, int glyph, float *x, float *y) { assert(FALSE); return 0; }
-int cc_flwft_get_kerning(void * font, int glyph1, int glyph2, float *x, float *y) { assert(FALSE); return 0; }
+void cc_flwft_get_advance(void * font, int glyph, float *x, float *y) { assert(FALSE); }
+void cc_flwft_get_kerning(void * font, int glyph1, int glyph2, float *x, float *y) { assert(FALSE); }
 void cc_flwft_done_glyph(void * font, int glyph) { assert(FALSE); }
   
 struct cc_flw_bitmap * cc_flwft_get_bitmap(void * font, int glyph) { assert(FALSE); return NULL; }
@@ -613,7 +613,7 @@ cc_flwft_get_glyph(void * font, unsigned int charidx)
   return FT_Get_Char_Index(face, charidx);
 }
 
-int
+void
 cc_flwft_get_advance(void * font, int glyph, float *x, float *y)
 {
   FT_Error error;
@@ -622,18 +622,15 @@ cc_flwft_get_advance(void * font, int glyph, float *x, float *y)
   assert(font);
   face = (FT_Face)font;
   error = FT_Load_Glyph(face, glyph, FT_LOAD_DEFAULT);
-  if (error) {
-    if (cc_freetype_debug()) cc_debugerror_postwarning("cc_flwft_get_advance", "ERROR %d\n", error);
-    return error;
-  }
+  assert(error == 0 && "FT_Load_Glyph() unexpected failure, investigate");
+
   tmp = face->glyph->advance.x;
   x[0] = tmp / (float)64.0;
   tmp = face->glyph->advance.y;
   y[0] = tmp / (float)64.0;
-  return 0;
 }
 
-int
+void
 cc_flwft_get_kerning(void * font, int glyph1, int glyph2, float *x, float *y)
 {
   FT_Error error;
@@ -644,16 +641,14 @@ cc_flwft_get_kerning(void * font, int glyph1, int glyph2, float *x, float *y)
   if (FT_HAS_KERNING(face)) {
     error = FT_Get_Kerning(face, glyph1, glyph2, ft_kerning_default, &kerning);
     if (error) {
-      if (cc_freetype_debug()) cc_debugerror_postwarning("cc_flwft_get_kerning", "ERROR %d\n", error);
-      return error;
+      cc_debugerror_post("cc_flwft_get_kerning", "FT_Get_Kerning() => %d", error);
     }
     *x = kerning.x / (float)64.0;
     *y = kerning.y / (float)64.0;
-    return 0;
-  } else {
+  }
+  else {
     *x = 0.0;
     *y = 0.0;
-    return 0;
   }
 }
 

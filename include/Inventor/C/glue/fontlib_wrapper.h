@@ -72,8 +72,8 @@ extern "C" {
   void cc_flw_set_font_rotation(int font, float angle);
 
   int cc_flw_get_glyph(int font, int charidx);
-  int cc_flw_get_advance(int font, int glyph, float * x, float * y);
-  int cc_flw_get_kerning(int font, int glyph1, int glyph2, float * x, float * y);
+  void cc_flw_get_advance(int font, int glyph, float * x, float * y);
+  void cc_flw_get_kerning(int font, int glyph1, int glyph2, float * x, float * y);
   void cc_flw_done_glyph(int font, int glyph);
 
   struct cc_flw_bitmap * cc_flw_get_bitmap(int font, int glyph);

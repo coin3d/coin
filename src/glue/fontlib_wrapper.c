@@ -602,29 +602,28 @@ cc_flw_get_glyph(int font, int charidx)
   return fontstruct_insert_glyph(font, charidx, 1);
 }
 
-int
+void
 cc_flw_get_advance(int font, int glyph, float *x, float *y)
 {
   struct cc_fontstruct * fs;
   assert(font >= 0 && font < fontcnt && fonts[font]);
+
   fs = fonts[font];
   if (fs->defaultfont || fs->glyphs[glyph].defaultglyph) {
     *x = 8;
     *y = 0;
-    return 0;
   }
   else if (glyph<fs->glyphcnt && fs->glyphs[glyph].glyph != NOGLYPH) {
     if (win32api) {
-      return cc_flww32_get_advance(fs->font, fs->glyphs[glyph].glyph, x, y);
+      cc_flww32_get_advance(fs->font, fs->glyphs[glyph].glyph, x, y);
     }
     else if (freetypelib) {
-      return cc_flwft_get_advance(fs->font, fs->glyphs[glyph].glyph, x, y);
+      cc_flwft_get_advance(fs->font, fs->glyphs[glyph].glyph, x, y);
     }
   }
-  return -1;
 }
 
-int
+void
 cc_flw_get_kerning(int font, int glyph1, int glyph2, float *x, float *y)
 {
   struct cc_fontstruct * fs;
@@ -633,20 +632,18 @@ cc_flw_get_kerning(int font, int glyph1, int glyph2, float *x, float *y)
   if (fs->defaultfont || fs->glyphs[glyph1].defaultglyph || fs->glyphs[glyph2].defaultglyph) {
     *x = 0;
     *y = 0;
-    return 0;
   }
   else if (glyph1<fs->glyphcnt && fs->glyphs[glyph1].glyph != NOGLYPH &&
            glyph2<fs->glyphcnt && fs->glyphs[glyph2].glyph != NOGLYPH) {
     if (win32api) {
-      return cc_flww32_get_kerning(fs->font, fs->glyphs[glyph1].glyph,
-                                   fs->glyphs[glyph2].glyph, x, y);
+      cc_flww32_get_kerning(fs->font, fs->glyphs[glyph1].glyph,
+                            fs->glyphs[glyph2].glyph, x, y);
     }
     else if (freetypelib) {
-      return cc_flwft_get_kerning(fs->font, fs->glyphs[glyph1].glyph,
-                                  fs->glyphs[glyph2].glyph, x, y);
+      cc_flwft_get_kerning(fs->font, fs->glyphs[glyph1].glyph,
+                           fs->glyphs[glyph2].glyph, x, y);
     }
   }
-  return -1;
 }
 
 void

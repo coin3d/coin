@@ -531,35 +531,25 @@ SoGlyph::getGlyph(SoState * state,
 SbVec2s
 SoGlyph::getAdvance(void) const
 {
-  // FIXME: code here seems excessively robust in several
-  // places. Investigate. 20030606 mortene.
+  assert(PRIVATE(this)->fontidx >= 0 && PRIVATE(this)->glyphidx >= 0);
 
-  if (PRIVATE(this)->fontidx >= 0 && PRIVATE(this)->glyphidx >= 0) {
-    float x, y;
-    int result = cc_flw_get_advance(PRIVATE(this)->fontidx, PRIVATE(this)->glyphidx, &x, &y);
-    if (result == 0) {
-      return SbVec2s((short)x, (short)y);
-    }
-  }
-  return SbVec2s(0,0);
+  float x, y;
+  cc_flw_get_advance(PRIVATE(this)->fontidx, PRIVATE(this)->glyphidx, &x, &y);
+  return SbVec2s((short)x, (short)y);
 }
 
 // Pixel kerning when rightglyph is placed to the right of this.
 SbVec2s
 SoGlyph::getKerning(const SoGlyph & rightglyph) const
 {
-  // FIXME: code here seems excessively robust in several
-  // places. Investigate. 20030606 mortene.
+  assert(PRIVATE(this)->fontidx >= 0 && PRIVATE(this)->glyphidx >= 0);
+  assert(PRIVATE(&rightglyph)->fontidx >= 0 && PRIVATE(&rightglyph)->glyphidx >= 0);
 
-  if (PRIVATE(this)->fontidx >= 0 && PRIVATE(this)->glyphidx >= 0 &&
-      PRIVATE(&rightglyph)->fontidx >= 0 && PRIVATE(&rightglyph)->glyphidx >= 0) {
-    float x, y;
-    int result = cc_flw_get_kerning(PRIVATE(this)->fontidx, PRIVATE(this)->glyphidx, PRIVATE(&rightglyph)->glyphidx, &x, &y);
-    if (result == 0) {
-      return SbVec2s((short)x, (short)y);
-    }
-  }
-  return SbVec2s(0,0);
+  float x, y;
+  cc_flw_get_kerning(PRIVATE(this)->fontidx,
+                     PRIVATE(this)->glyphidx, PRIVATE(&rightglyph)->glyphidx,
+                     &x, &y);
+  return SbVec2s((short)x, (short)y);
 }
 
 // Bitmap for glyph. size and pos are return parameters.
