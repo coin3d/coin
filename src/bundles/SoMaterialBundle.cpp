@@ -21,12 +21,12 @@
   \class SoMaterialBundle include/Inventor/SoMaterialBundle.h
   \brief The SoMaterialBundle class simplifies material handling.
 
-  bla, bla, bla, FIXME, doc
+  Every shape node should create (on the stack) an instance of this
+  class and call sendFirst() before sending anything to GL. During
+  rendering, send() should be used to send material values to GL.
 */
 
-
 #include <Inventor/bundles/SoMaterialBundle.h>
-
 #include <Inventor/elements/SoGLAmbientColorElement.h>
 #include <Inventor/elements/SoGLDiffuseColorElement.h>
 #include <Inventor/elements/SoGLEmissiveColorElement.h>
@@ -36,16 +36,17 @@
 #include <Inventor/elements/SoTransparencyElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
-
 #include <Inventor/misc/SoState.h>
 
 #ifdef _WIN32
-#include <windows.h>
+#include <windows.h> /* needed for gl.h */
 #endif // _WIN32
 
 #include <GL/gl.h>
 
-#include <assert.h>
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
 
 /*!
   Constructor with \a action being the action applied to the
@@ -54,9 +55,9 @@
 SoMaterialBundle::SoMaterialBundle(SoAction *action)
   : SoBundle(action)
 {
-  this->firstTime = TRUE;
-  this->packedColors = NULL;
-  this->state->push(); // for stipple element.. FIXME: might be avoided.
+  this->firstTime = TRUE; // other members will be set in setUpElements
+  // we might modify stipple element
+  this->state->push();
 }
 
 /*!
@@ -64,14 +65,14 @@ SoMaterialBundle::SoMaterialBundle(SoAction *action)
 */
 SoMaterialBundle::~SoMaterialBundle()
 {
-  this->state->pop(); // for stipple element... FIXME: might be avoided
+  this->state->pop(); // pop off modified stipple element
 }
 
 /*!
   Currently not in use. It is only provided for OIV comliance.
 */
 void
-SoMaterialBundle::setUpMultiple()
+SoMaterialBundle::setUpMultiple(void)
 {
 }
 
@@ -80,20 +81,19 @@ SoMaterialBundle::setUpMultiple()
   geometry nodes before the rendering begins.
 */
 void
-SoMaterialBundle::sendFirst()
+SoMaterialBundle::sendFirst(void)
 {
   this->setupElements(FALSE);
   this->reallySend(0, FALSE);
-
-  // a small optimization to avoid uneccesary material
-  // testing (it is most common to have multiple diffuse values)
-  if (!diffuseOnly) {
-    if (TRUE &&
-        ambientElt->getNum() <= 1 &&
-        specularElt->getNum() <= 1 &&
-        emissiveElt->getNum() <= 1 &&
-        shininessElt->getNum() <= 1)
-      diffuseOnly = TRUE;
+  
+  // a small optimization to avoid unnecessary material
+  // testing (it is most common to only have multiple diffuse values)
+  if (!this->diffuseOnly) { // diffuseOnly is TRUE when lightModel == BASE_COLOR
+    if (this->ambientElt->getNum() <= 1 &&
+        this->specularElt->getNum() <= 1 &&
+        this->emissiveElt->getNum() <= 1 &&
+        this->shininessElt->getNum() <= 1)
+      this->diffuseOnly = TRUE;
   }
 }
 
@@ -102,7 +102,7 @@ SoMaterialBundle::sendFirst()
   whether the current index equals \a index before sending.
 
   \a betweenBeginEnd should be \e TRUE if your program is
-  between a glBegin() and glEnd() (it is illegal to change
+  between a glBegin() and glEnd() (it is illegal to change the
   polygon stipple between a glBegin() and glEnd()).
 
 */
@@ -111,13 +111,13 @@ SoMaterialBundle::send(const int index, const SbBool betweenBeginEnd)
 {
   if (this->firstTime) this->setupElements(FALSE);
   if (index != this->currIndex) {
-    reallySend(index, betweenBeginEnd);
+    this->reallySend(index, betweenBeginEnd);
   }
 }
 
 /*!
   Will send the material to GL even though \a index equals
-  the current index. Provided for OIV compability.
+  the current index. Provided for OIV compabtibility
 */
 void
 SoMaterialBundle::forceSend(const int index)
@@ -130,21 +130,25 @@ SoMaterialBundle::forceSend(const int index)
   Returns \e TRUE if the current light model is BASE_COLOR.
 */
 SbBool
-SoMaterialBundle::isColorOnly() const
+SoMaterialBundle::isColorOnly(void) const
 {
   return this->colorOnly;
 }
 
 //
-// private method. Will send the material values to GL.
+// private method. Will send needed material values to GL.
 //
 void
 SoMaterialBundle::reallySend(const int index, const SbBool isBetweenBeginEnd)
-{
-  if (doStipple && !isBetweenBeginEnd) {
-    float trans = transparencyElt->get(index);
-    if (packedColors) {
-      trans = (255 - (packedColors[index] & 0xff)) / 255.0f;
+{  
+  if (this->doStipple && !isBetweenBeginEnd) {
+    float trans;
+    if (this->diffusePacked) {
+      uint32_t rgba = this->diffuseElt->getPackedArrayPtr()[index];
+      trans = (255 - (rgba & 0xff)) * 255.0f;
+    }
+    else {
+      trans = transparencyElt->get(this->multiTrans ? index : 0);
     }
     if (trans > 0.0f) {
       SoGLPolygonStippleElement::set(this->state, TRUE);
@@ -152,45 +156,22 @@ SoMaterialBundle::reallySend(const int index, const SbBool isBetweenBeginEnd)
     }
     else
       SoGLPolygonStippleElement::set(this->state, FALSE);
-    stippleElt->evaluate(); // this is a lazy element. Force send.
+    this->stippleElt->evaluate(); // this is a lazy element. Force send.
+    this->diffuseElt->send(index);
   }
-
-  // FIXME: probably not needed anymore. It was an ugly piece
-  // of code anyway... pederb, 990608
-  if (packedColors) {
-    if (1 || index != this->currPacked) {
-      this->currPacked = index;
-      if (this->currPacked >= this->numPacked)
-        this->currPacked = this->numPacked - 1;
-      uint32_t p = packedColors[this->currPacked];
-      glColor4ub((p&0xff000000)>>24,
-                 (p&0xff0000)>>16,
-                 (p&0xff00)>>8,
-                 p&0xff);
-    }
+  else if (!this->diffusePacked) {
+    float trans = this->transparencyElt->get(this->multiTrans ? index : 0);
+    this->diffuseElt->send(index, 1.0f - trans);
   }
-  else {
-    if (!isBetweenBeginEnd) {
-      // If the transparency element has fewer items than the diffuse element,
-      // use transparency 0 (see SoMaterialBinding man page)
-      int transp_index = index;
-      if (diffuseElt->getNum() > transparencyElt->getNum()) {
-         transp_index = 0;
-      }
-      diffuseElt->send(index, 1.0f - transparencyElt->get(transp_index));
-      diffuseElt->send(index);
-    }
-    else {
-      diffuseElt->send(index);
-    }
+  else { // packed or stipple
+    this->diffuseElt->send(index);
   }
-
-  if (!diffuseOnly) {
-    ambientElt->send(index);
-    emissiveElt->send(index);
-    specularElt->send(index);
-    shininessElt->send(index);
-    //    if (doStipple) stippleElt->send();
+  
+  if (!this->diffuseOnly) {
+    this->ambientElt->send(index);
+    this->emissiveElt->send(index);
+    this->specularElt->send(index);
+    this->shininessElt->send(index);
   }
   // store current index
   this->currIndex = index;
@@ -204,42 +185,37 @@ SoMaterialBundle::setupElements(const SbBool /* betweenBeginEnd */)
 {
   this->currIndex = -1; // set to an impossible value
   this->firstTime = FALSE;
-  this->doStipple = SoShapeStyleElement::isScreenDoor(this->state);
   this->diffuseOnly = this->colorOnly =
     SoLightModelElement::get(this->state) ==
     SoLightModelElement::BASE_COLOR;
-
-  diffuseElt = (SoGLDiffuseColorElement*)
+  
+  this->diffuseElt = (SoGLDiffuseColorElement*)
     state->getConstElement(SoGLDiffuseColorElement::getClassStackIndex());
-  if (diffuseElt->isPacked())
-    setPacked(diffuseElt->packedColors, diffuseElt->numColors);
-  transparencyElt = (SoTransparencyElement*)
-    state->getConstElement(SoTransparencyElement::getClassStackIndex());
+  this->diffusePacked = this->diffuseElt->isPacked();
+  
+  if (!this->diffusePacked) {
+    this->transparencyElt = (SoTransparencyElement*)
+      state->getConstElement(SoTransparencyElement::getClassStackIndex());
+    // if there are fewer transparency values than diffuse, use only
+    // the first transparency value
+    this->multiTrans = 
+      (this->transparencyElt->getNum() >= this->diffuseElt->getNum());
+  }
 
-  if (doStipple) {
-    stippleElt = (SoGLPolygonStippleElement*)
+  this->doStipple = SoShapeStyleElement::isScreenDoor(this->state);
+  if (this->doStipple) {
+    this->stippleElt = (SoGLPolygonStippleElement*)
       state->getElement(SoGLPolygonStippleElement::getClassStackIndex());
   }
 
-  if (!colorOnly) {
-    ambientElt = (SoGLAmbientColorElement*)
+  if (!this->colorOnly) {
+    this->ambientElt = (SoGLAmbientColorElement*)
       state->getConstElement(SoGLAmbientColorElement::getClassStackIndex());
-    emissiveElt = (SoGLEmissiveColorElement*)
+    this->emissiveElt = (SoGLEmissiveColorElement*)
       state->getConstElement(SoGLEmissiveColorElement::getClassStackIndex());
-    specularElt = (SoGLSpecularColorElement*)
+    this->specularElt = (SoGLSpecularColorElement*)
       state->getConstElement(SoGLSpecularColorElement::getClassStackIndex());
-    shininessElt = (SoGLShininessElement*)
+    this->shininessElt = (SoGLShininessElement*)
       state->getConstElement(SoGLShininessElement::getClassStackIndex());
   }
-}
-
-/*!
-  FIXME: document (pederb)
-*/
-void
-SoMaterialBundle::setPacked(const uint32_t * /* packed */, const int /* num */)
-{
-//   this->packedColors = packed;
-//   this->numPacked = num;
-//   this->currPacked = -1;
 }

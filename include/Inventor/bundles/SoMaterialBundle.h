@@ -39,14 +39,11 @@ public:
   SoMaterialBundle(SoAction *action);
   ~SoMaterialBundle();
 
-  void setUpMultiple();
-  void sendFirst();
+  void setUpMultiple(void);
+  void sendFirst(void);
   void send(const int index, const SbBool betweenBeginEnd);
   void forceSend(const int index);
-  SbBool isColorOnly() const;
-
-  void setPacked(const uint32_t *packed,
-                 const int num);
+  SbBool isColorOnly(void) const;
 
 private:
 
@@ -57,6 +54,8 @@ private:
   SbBool firstTime;
   SbBool colorOnly;
   SbBool diffuseOnly;
+  SbBool multiTrans;
+  SbBool diffusePacked;
   int currIndex;
 
   SoGLAmbientColorElement *ambientElt;
@@ -66,10 +65,6 @@ private:
   SoGLShininessElement *shininessElt;
   SoTransparencyElement *transparencyElt;
   SoGLPolygonStippleElement *stippleElt;
-
-  const uint32_t *packedColors;
-  int numPacked;
-  int currPacked;
 };
 
 #endif // !COIN_SOMATERIALBUNDLE_H
