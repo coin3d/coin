@@ -89,6 +89,7 @@
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/engines/SoEngineOutput.h>
+#include <Inventor/C/threads/threadsutilp.h>
 #include <string.h>
 
 static SoType soproto_type;
@@ -96,6 +97,7 @@ static SoType soproto_type;
 static SbList <SoProto*> * protolist;
 static SoFetchExternProtoCB * soproto_fetchextern_cb = NULL;
 static void * soproto_fetchextern_closure = NULL;
+static void * soproto_mutex;
 
 // atexit callback
 static void
@@ -103,6 +105,8 @@ soproto_cleanup(void)
 {
   delete protolist;
   protolist = NULL;
+  CC_MUTEX_DESTRUCT(soproto_mutex);
+  soproto_mutex = NULL;
 }
 
 static SoProto *
@@ -215,6 +219,7 @@ SoProto::getClassTypeId(void)
 void
 SoProto::initClass(void)
 {
+  CC_MUTEX_CONSTRUCT(soproto_mutex);
   soproto_type = SoType::createType(SoNode::getClassTypeId(),
                                     SbName("SoProto"), NULL,
                                     SoNode::nextActionMethodIndex++);
@@ -241,7 +246,9 @@ SoProto::SoProto(const SbBool externproto)
   PRIVATE(this)->defroot->ref();
   PRIVATE(this)->extprotonode = NULL;
 
+  CC_MUTEX_LOCK(soproto_mutex);
   protolist->insert(this, 0);
+  CC_MUTEX_UNLOCK(soproto_mutex);
 }
 
 /*!
@@ -282,14 +289,17 @@ SoProto::setFetchExternProtoCallback(SoFetchExternProtoCB * cb,
 SoProto *
 SoProto::findProto(const SbName & name)
 {
+  SoProto * ret = NULL;
+  CC_MUTEX_LOCK(soproto_mutex);
   if (protolist) {
     const int n = protolist->getLength();
     SoProto * const * ptr = protolist->getArrayPtr();
-    for (int i = 0; i < n; i++) {
-      if (ptr[i]->getProtoName() == name) return ptr[i];
+    for (int i = 0; (ret == NULL) && (i < n); i++) {
+      if (ptr[i]->getProtoName() == name) ret = ptr[i];
     }
   }
-  return NULL;
+  CC_MUTEX_UNLOCK(soproto_mutex);
+  return ret;
 }
 
 /*!
@@ -358,11 +368,12 @@ SoProto::readInstance(SoInput * in, unsigned short flags)
 void
 SoProto::destroy(void)
 {
+  CC_MUTEX_LOCK(soproto_mutex);
   int idx = protolist->find(this);
   assert(idx >= 0);
   protolist->remove(idx);
+  CC_MUTEX_UNLOCK(soproto_mutex);
   SoBase::destroy();
-  // FIXME: remove from static list of PROTOs
 }
 
 // doc in parent
