@@ -35,6 +35,7 @@
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/actions/SoReorganizeAction.h>
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/actions/SoAudioRenderAction.h>
 #include <Inventor/collision/SoIntersectionDetectionAction.h>
