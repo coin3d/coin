@@ -27,18 +27,6 @@
 #include <Inventor/SbString.h>
 #include <stdio.h>
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
-
-#ifdef HAVE_ZLIB
-#include <zlib.h>
-#endif // HAVE_ZLIB
-
-#ifdef HAVE_BZIP2
-#include <bzlib.h>
-#endif // HAVE_BZIP2
-
 class SoInput_Reader {
 public:
   SoInput_Reader(void);
@@ -105,8 +93,6 @@ public:
   size_t bufpos;
 };
 
-#ifdef HAVE_ZLIB
-
 class SoInput_GZMemBufferReader : public SoInput_Reader {
 public:
   SoInput_GZMemBufferReader(void * bufPointer, size_t bufSize);
@@ -123,7 +109,7 @@ public:
 
 class SoInput_GZFileReader : public SoInput_Reader {
 public:
-  SoInput_GZFileReader(const char * const filename, gzFile fp);
+  SoInput_GZFileReader(const char * const filename, void * fp);
   virtual ~SoInput_GZFileReader();
 
   virtual ReaderType getType(void) const;
@@ -132,18 +118,13 @@ public:
   virtual const SbString & getFilename(void);
 
 public:
-  gzFile gzfp;
+  void * gzfp;
   SbString filename;
 };
 
-#endif // HAVE_ZLIB
-
-
-#ifdef HAVE_BZIP2
-
 class SoInput_BZ2FileReader : public SoInput_Reader {
 public:
-  SoInput_BZ2FileReader(const char * const filename, BZFILE * fp);
+  SoInput_BZ2FileReader(const char * const filename, void * fp);
   virtual ~SoInput_BZ2FileReader();
 
   virtual ReaderType getType(void) const;
@@ -152,10 +133,8 @@ public:
   virtual const SbString & getFilename(void);
 
 public:
-  BZFILE * bzfp;
+  void * bzfp;
   SbString filename;
 };
-
-#endif // HAVE_BZIP2
 
 #endif // COIN_SOINPUT_READER_H

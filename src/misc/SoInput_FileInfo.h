@@ -54,13 +54,13 @@ public:
   SbBool isMemBuffer(void) {
     // if reader == NULL, it means that we're reading from stdin
     if (this->reader == NULL) return FALSE;
-    return 
+    return
       (this->getReader()->getType() == SoInput_Reader::MEMBUFFER) ||
       (this->getReader()->getType() == SoInput_Reader::GZMEMBUFFER);
   }
-  
-  void setDeleteBuffer(SbBool enable) {
-    this->deletebuffer = enable;
+
+  void setDeleteBuffer(char * buffer) {
+    this->deletebuffer = buffer;
   }
   SbBool isBinary(void) {
     return this->isbinary;
@@ -153,7 +153,7 @@ public:
 
 private:
 
-  SoInput_Reader * getReader(void); 
+  SoInput_Reader * getReader(void);
   SoInput_Reader * reader;
 
   unsigned int linenr;
@@ -181,7 +181,7 @@ private:
   SbList <SoProto*> protostack;
 
   SbString stdinname; // needed for ivFilename()
-  SbBool deletebuffer;
+  char * deletebuffer;
 };
 
 #endif // COIN_SOINPUT_FILEINFO_H

@@ -23,6 +23,7 @@
 
 #include "SoInput_Reader.h"
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/C/glue/zlib.h>
 
 #include <string.h>
 #include <assert.h>
@@ -38,9 +39,11 @@
 #include <io.h> // Win32 dup()
 #endif // HAVE_IO_H
 
-#ifdef HAVE_ZLIB
 #include "gzmemio.h"
-#endif // HAVE_ZLIB
+
+#if defined(HAVE_BZIP2) || defined(LIBBZIP2_RUNTIME_LINKING)
+#include <bzlib.h>
+#endif
 
 //
 // abstract class
@@ -85,30 +88,37 @@ SoInput_Reader::createReader(FILE * fp, const SbString & fullname)
 #ifdef HAVE_BZIP2
   if (header[0] == 'B' && header[1] == 'Z') {
     int bzerror = BZ_OK;
-    BZFILE * bzfp = BZ2_bzReadOpen(&bzerror,  fp, 0, 0, NULL, 0);
+    void * bzfp = BZ2_bzReadOpen(&bzerror,  fp, 0, 0, NULL, 0);
     if ((bzerror == BZ_OK) && (bzfp != NULL)) {
       reader = new SoInput_BZ2FileReader(fullname.getString(), bzfp);
     }
   }
 #endif // HAVE_BZIP2
-#ifdef HAVE_ZLIB
-  if ((reader == NULL) && (header[0] == 0x1f) && (header[1] == 0x8b)) {
-    int fd = fileno(fp);
-    // need to use dup() if we didn't open the file since gzdclose
-    // will close it
-    if (fd >= 0 && fullname.getLength() && fullname != "<stdin>") fd = dup(fd);
-    if (fd >= 0) {
-      gzFile gzfp = gzdopen(fd, "rb");
-      if (gzfp) {
-        reader = new SoInput_GZFileReader(fullname.getString(), gzfp);
-      }
+  if ((reader == NULL) && 
+      (header[0] == 0x1f) && 
+      (header[1] == 0x8b)) {
+    if (!cc_zlibglue_available()) {
+      SoDebugError::postWarning("SoInput_Reader::createReader",
+                                "File seems to be in gzip format, but zlib support is "
+                                "not available.");
     }
     else {
-      SoDebugError::postWarning("SoInput_Reader::createReader",
-                                "Unable to create file descriptor from stream.");
+      int fd = fileno(fp);
+      // need to use dup() if we didn't open the file since gzdclose
+      // will close it
+      if (fd >= 0 && fullname.getLength() && fullname != "<stdin>") fd = dup(fd);
+      if (fd >= 0) {
+        void * gzfp = cc_zlibglue_gzdopen(fd, "rb");
+        if (gzfp) {
+          reader = new SoInput_GZFileReader(fullname.getString(), gzfp);
+        }
+      }
+      else {
+        SoDebugError::postWarning("SoInput_Reader::createReader",
+                                  "Unable to create file descriptor from stream.");
+      }
     }
   }
-#endif // HAVE_ZLIB
   if (reader == NULL) {
     reader = new SoInput_FileReader(fullname.getString(), fp);
   }
@@ -200,8 +210,6 @@ SoInput_MemBufferReader::readBuffer(char * buf, const size_t readlen)
 //
 // gzip readers
 //
-#ifdef HAVE_ZLIB
-
 //
 // gzipped membuffer class
 //
@@ -233,7 +241,7 @@ SoInput_GZMemBufferReader::readBuffer(char * buf, const size_t readlen)
 // gzFile class
 //
 
-SoInput_GZFileReader::SoInput_GZFileReader(const char * const filename, gzFile fp)
+SoInput_GZFileReader::SoInput_GZFileReader(const char * const filename, void * fp)
 {
   this->gzfp = fp;
   this->filename = filename;
@@ -242,7 +250,7 @@ SoInput_GZFileReader::SoInput_GZFileReader(const char * const filename, gzFile f
 SoInput_GZFileReader::~SoInput_GZFileReader()
 {
   assert(this->gzfp);
-  gzclose(this->gzfp);
+  cc_zlibglue_gzclose(this->gzfp);
 }
 
 SoInput_Reader::ReaderType
@@ -254,7 +262,7 @@ SoInput_GZFileReader::getType(void) const
 int
 SoInput_GZFileReader::readBuffer(char * buf, const size_t readlen)
 {
-  return gzread(this->gzfp, (void*) buf, readlen);
+  return cc_zlibglue_gzread(this->gzfp, (void*) buf, readlen);
 }
 
 const SbString &
@@ -263,15 +271,11 @@ SoInput_GZFileReader::getFilename(void)
   return this->filename;
 }
 
-#endif // HAVE_ZLIB
-
-
 //
 // bzFile class
 //
-#ifdef HAVE_BZIP2
 
-SoInput_BZ2FileReader::SoInput_BZ2FileReader(const char * const filename, BZFILE * fp)
+SoInput_BZ2FileReader::SoInput_BZ2FileReader(const char * const filename, void * fp)
 {
   this->bzfp = fp;
   this->filename = filename;
@@ -312,5 +316,3 @@ SoInput_BZ2FileReader::getFilename(void)
 {
   return this->filename;
 }
-
-#endif // HAVE_BZIP2

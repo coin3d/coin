@@ -24,7 +24,7 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #else /* No config.h? Hmm. Assume the zlib library is available for linking. */
-#define ZLIBGLUE_ASSUME_ZLIB
+#define ZLIBGLUE_ASSUME_ZLIB 1
 #endif /* !HAVE_CONFIG_H */
 
 #include <assert.h>
@@ -33,7 +33,7 @@
 #include <stdio.h>
 
 #ifdef HAVE_ZLIB /* In case we're _not_ doing runtime linking. */
-#define ZLIBGLUE_ASSUME_ZLIB
+#define ZLIBGLUE_ASSUME_ZLIB 1
 #include <zlib.h>
 #endif /* ZLIBGLUE_ASSUME_ZLIB */
 
@@ -43,6 +43,7 @@
 #include <Inventor/C/tidbitsp.h>
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/glue/zlib.h>
+
 
 /* workarounds for hacks in the zlib header file. inflateInit2
    and deflateInit2 are not functions but defines. The real
@@ -172,27 +173,27 @@ zlibglue_init(void)
         zlib_failed_to_load = 1;
       }
     }
-    /* Define SIMAGEWRAPPER_REGISTER_FUNC macro. Casting the type is
+    /* Define ZLIBGLUE_REGISTER_FUNC macro. Casting the type is
        necessary for this file to be compatible with C++ compilers. */
 #define ZLIBGLUE_REGISTER_FUNC(_funcsig_, _funcname_) \
     do { \
       zi->_funcname_ = (_funcsig_)cc_dl_sym(zlib_libhandle, SO__QUOTE(_funcname_)); \
-      if (zi->funcname == NULL) zi->available = 0; \
+      if (zi->_funcname_ == NULL) zi->available = 0; \
     } while (0)
 
-#elif defined(ZLIBGLUE_ASSUME_SIMAGE) /* !ZLIB_RUNTIME_LINKING */
+#elif defined(ZLIBGLUE_ASSUME_ZLIB) /* !ZLIB_RUNTIME_LINKING */
 
     /* Define ZLIBGLUE_REGISTER_FUNC macro. */
 #define ZLIBGLUE_REGISTER_FUNC(_funcsig_, _funcname_) \
     zi->_funcname_ = (_funcsig_)_funcname_
 
-#else /* !ZLIBGLUE_ASSUME_SIMAGE */
+#else /* !ZLIBGLUE_ASSUME_ZLIB */
     zi->available = 0;
     /* Define ZLIBGLUE_REGISTER_FUNC macro. */
 #define ZLIBGLUE_REGISTER_FUNC(_funcsig_, _funcname_) \
     zi->_funcname_ = NULL
 
-#endif /* !ZLIBGLUE_ASSUME_SIMAGE */
+#endif /* !ZLIBGLUE_ASSUME_ZLIB */
 
     ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_zlibVersion_t, zlibVersion);
 
@@ -215,7 +216,7 @@ zlibglue_init(void)
       ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_inflateReset_t, inflateReset);
       ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_deflateParams_t, deflateParams);
       ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_deflate_t, deflate);
-      ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_gzopen_t, gzdopen);
+      ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_gzopen_t, gzopen);
       ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_gzdopen_t, gzdopen);
       ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_gzsetparams_t, gzsetparams);
       ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_gzread_t, gzread);
@@ -229,6 +230,11 @@ zlibglue_init(void)
 
       /* Do this late, so we can detect recursive calls to this function. */
       zlib_instance = zi;
+
+      if (!zi->available) {
+        cc_debugerror_post("zlibglue_init",
+                           "Failed to initialize zlib glue.");
+      }
     }
   }
   CC_SYNC_END(zlibglue_init);

@@ -32,6 +32,7 @@
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/misc/SoProto.h>
 #include <Inventor/C/tidbitsp.h>
+#include <Inventor/C/glue/zlib.h>
 
 #include "SoInput_FileInfo.h"
 
@@ -58,22 +59,18 @@ SoInput_FileInfo::SoInput_FileInfo(SoInput_Reader * reader)
   this->prefunc = NULL;
   this->postfunc = NULL;
   this->stdinname = "<stdin>";
-  this->deletebuffer = FALSE;
+  this->deletebuffer = NULL;
 }
 
 SoInput_FileInfo::~SoInput_FileInfo()
 {
   delete[] this->readbuf;
   const char * buffer = NULL;
-  if ( this->deletebuffer ) {
-#ifdef HAVE_ZLIB
-    buffer = (const char *) ((SoInput_GZMemBufferReader *) this->reader)->buf;
-#else // !HAVE_ZLIB
-    buffer = (const char *) ((SoInput_MemBufferReader *) this->reader)->buf;
-#endif // ! HAVE_ZLIB
+  if (this->deletebuffer) {
+    delete[] this->deletebuffer;
   }
   delete this->reader;
-  if ( buffer ) delete [] buffer;
+  if (buffer) delete[] buffer;
 }
 
 SbBool

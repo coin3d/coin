@@ -95,6 +95,7 @@
 #include <Inventor/misc/SoProto.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/tidbitsp.h>
+#include <Inventor/C/glue/zlib.h>
 #include "SoInput_FileInfo.h"
 
 #include <stdlib.h>
@@ -572,7 +573,7 @@ SoInput::setStringArray(const char * strings[])
   }
   this->setBuffer(buf, bufsize);
   SoInput_FileInfo * info = this->getTopOfStack();
-  info->setDeleteBuffer(TRUE);
+  info->setDeleteBuffer(buf);
 }
 
 /*!
@@ -591,11 +592,22 @@ SoInput::setBuffer(void * bufpointer, size_t bufsize)
   // been a "const char *"? 20010821 mortene.
 
   this->closeFile();
-#ifdef HAVE_ZLIB
-  SoInput_Reader * reader = new SoInput_GZMemBufferReader(bufpointer, bufsize);  
-#else // HAVE_ZLIB
-  SoInput_Reader * reader = new SoInput_MemBufferReader(bufpointer, bufsize);
-#endif // ! HAVE_ZLIB
+  SoInput_Reader * reader = NULL;
+  
+  unsigned char * header = (unsigned char*) bufpointer;
+  if ((bufsize >= 2) && (header[0] == 0x1f) && (header[1] == 0x8b)) {
+    if (cc_zlibglue_available()) {
+      reader = new SoInput_GZMemBufferReader(bufpointer, bufsize);  
+    }
+    else {
+      SoDebugError::postWarning("SoInput::setBuffer",
+                                "Bufferseems to be in gzip format, but zlib support is "
+                                "not available.");
+    }
+  }
+  if (reader == NULL) {
+    reader = new SoInput_MemBufferReader(bufpointer, bufsize);
+  }
   SoInput_FileInfo * newfile = new SoInput_FileInfo(reader);
   this->filestack.insert(newfile, 0);
 }
