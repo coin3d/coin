@@ -59,6 +59,7 @@
 
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 
+#include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
@@ -574,7 +575,14 @@ SoIndexedFaceSet::useConvexCache(SoAction * action)
   if (this->convexCache) this->convexCache->unref();
   SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
 
-  // push to create cache dependencies
+  // need to send matrix if we have some weird transformation
+  SbMatrix modelmatrix = SoModelMatrixElement::get(state);
+  if (modelmatrix[3][0] == 0.0f && 
+      modelmatrix[3][1] == 0.0f && 
+      modelmatrix[3][2] == 0.0f &&
+      modelmatrix[3][3] == 1.0f) modelmatrix = SbMatrix::identity();
+
+  // push to create cache dependencies    
   state->push();
   this->convexCache = new SoConvexDataCache(state);
   this->convexCache->ref();
@@ -618,7 +626,8 @@ SoIndexedFaceSet::useConvexCache(SoAction * action)
   if (mbind == PER_VERTEX_INDEXED && mindices == NULL) {
     mindices = cindices;
   }
-  this->convexCache->generate(coords, cindices, numindices,
+  this->convexCache->generate(coords, modelmatrix,
+                              cindices, numindices,
                               mindices, nindices, tindices,
                               (SoConvexDataCache::Binding)mbind,
                               (SoConvexDataCache::Binding)nbind,

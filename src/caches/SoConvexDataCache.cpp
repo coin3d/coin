@@ -29,6 +29,7 @@
 #include <Inventor/caches/SoConvexDataCache.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/SbTesselator.h>
+#include <Inventor/SbMatrix.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <assert.h>
 
@@ -177,6 +178,7 @@ typedef struct {
 */
 void
 SoConvexDataCache::generate(const SoCoordinateElement * const coords,
+                            const SbMatrix & matrix,
                             const int32_t *vind,
                             const int numv,
                             const int32_t *mind, const int32_t *nind,
@@ -188,6 +190,8 @@ SoConvexDataCache::generate(const SoCoordinateElement * const coords,
   SoDebugError::postInfo("SoConvexDataCache::generate",
                          "generating convex data");
 #endif
+
+  SbBool identity = matrix == SbMatrix::identity();
 
   // remove old data
   this->coordIndices.truncate(0);
@@ -258,7 +262,10 @@ SoConvexDataCache::generate(const SoCoordinateElement * const coords,
         tessdata.vertexInfo[i].texnr = tind[texnr++];
       else
         tessdata.vertexInfo[i].texnr = texnr++;
-      tessellator.addVertex(coords->get3(vind[i]),
+
+      SbVec3f v = coords->get3(vind[i]);
+      if (!identity) matrix.multVecMatrix(v,v);
+      tessellator.addVertex(v,
                             (void*)&tessdata.vertexInfo[i]);
     }
   }

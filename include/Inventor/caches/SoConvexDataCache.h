@@ -26,7 +26,7 @@
 
 class SbVec3f;
 class SoCoordinateElement;
-
+class SbMatrix;
 
 class COIN_DLL_EXPORT SoConvexDataCache : public SoCache {
   typedef SoCache inherited;
@@ -43,6 +43,7 @@ public:
   };
 
   void generate(const SoCoordinateElement* const coords,
+                const SbMatrix & matrix,
                 const int32_t *coordindices,
                 const int numcoordindices,
                 const int32_t *matindices, const int32_t *normindices,
