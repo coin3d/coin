@@ -577,7 +577,7 @@ SIM_AC_DEFINE_BYTESIZE_TYPES
 # available.
 
 AC_MSG_CHECKING([for BSD 4.3 isinf() function])
-AC_TRY_COMPILE(
+AC_TRY_LINK(
  [#include <math.h>],
  [int result = isinf(42.0);],
  [AC_DEFINE(HAVE_ISINF, 1, [whether or not isinf() is available])
@@ -585,7 +585,7 @@ AC_TRY_COMPILE(
  [AC_MSG_RESULT([not available])])
 
 AC_MSG_CHECKING([for BSD 4.3 isnan() function])
-AC_TRY_COMPILE(
+AC_TRY_LINK(
  [#include <math.h>],
  [int result = isnan(42.0);],
  [AC_DEFINE(HAVE_ISNAN, 1, [whether or not isnan() is available])
@@ -593,7 +593,7 @@ AC_TRY_COMPILE(
  [AC_MSG_RESULT([not available])
 
   AC_MSG_CHECKING([for _isnan() function])
-  AC_TRY_COMPILE(
+  AC_TRY_LINK(
    [#include <math.h>],
    [int result = _isnan(42.0);],
    [AC_DEFINE(HAVE__ISNAN, 1, [whether or not _isnan() is available])
@@ -602,7 +602,7 @@ AC_TRY_COMPILE(
 ])
 
 AC_MSG_CHECKING([for BSD 4.3 finite() function])
-AC_TRY_COMPILE(
+AC_TRY_LINK(
  [#include <math.h>],
  [int result = finite(42.0);],
  [AC_DEFINE(HAVE_FINITE, 1, [whether or not finite() is available])
@@ -610,7 +610,7 @@ AC_TRY_COMPILE(
  [AC_MSG_RESULT([not available])
 
   AC_MSG_CHECKING([for _finite() function])
-  AC_TRY_COMPILE(
+  AC_TRY_LINK(
    [#include <math.h>],
    [int result = _finite(42.0);],
    [AC_DEFINE(HAVE__FINITE, 1, [whether or not _finite() is available])
@@ -619,7 +619,7 @@ AC_TRY_COMPILE(
 ])
 
 AC_MSG_CHECKING([for _fpclass() function])
-AC_TRY_COMPILE(
+AC_TRY_LINK(
  [#include <math.h>],
  [int result = _fpclass(42.0);],
  [AC_DEFINE(HAVE__FPCLASS, 1, [whether or not _fpclass() is available])
