@@ -109,21 +109,21 @@
 #ifdef HAVE_MACH_O_DYLD_H
 #include <mach-o/dyld.h>
 #include <mach-o/ldsyms.h>
-#endif // HAVE_MACH_O_DYLD_H
+#endif /* HAVE_MACH_O_DYLD_H */
 
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/glue/dl.h>
 #include <Inventor/C/tidbits.h>
 #include <assert.h>
-#include <stddef.h> // NULL definition. 
-#include <stdlib.h> // atoi() 
-#include <string.h> // strlen, strcpy
-#include <stdio.h>  // snprintf
+#include <stddef.h> /* NULL definition. */
+#include <stdlib.h> /* atoi() */
+#include <string.h> /* strlen(), strcpy() */
+#include <stdio.h>  /* snprintf() */
 #ifdef HAVE_LIBGEN_H
-#include <libgen.h> // dirname
+#include <libgen.h> /* dirname() */
 #endif /* HAVE_LIBGEN_H */
-#include <sys/param.h> // PATH_MAX
-#include <sys/stat.h>  // stat
+#include <sys/param.h> /* PATH_MAX */
+#include <sys/stat.h>  /* stat() */
 
 struct cc_libhandle_struct {
   void * nativehnd;
@@ -175,9 +175,9 @@ cc_dl_get_win32_err(DWORD * lasterr, cc_string * str)
 
 #if defined (HAVE_DYLD_RUNTIME_BINDING)
 
-// Returns a string containing the search directories for
-// dynamic libraries, separated by ':'. Needed since Mac OS X
-// wants to have a full path to the library when loading it.
+/* Returns a string containing the search directories for
+   dynamic libraries, separated by ':'. Needed since Mac OS X
+   wants to have a full path to the library when loading it. */
 static const char * 
 cc_build_search_list()
 {
@@ -188,10 +188,10 @@ cc_build_search_list()
   char * p = NULL;
   char * path, * dyld_path, * default_path;
   
-  // We first want to search for simage in the default 
-  // locations (specified by DYLD_LIBRARY_PATH, and the
-  // system's library path). If we do not find it there,
-  // we fall back to the simage library shipped with Coin.
+  /* We first want to search for simage in the default 
+     locations (specified by DYLD_LIBRARY_PATH, and the
+     system's library path). If we do not find it there,
+     we fall back to the simage library shipped with Coin. */
 
   dyld_path = getenv("DYLD_LIBRARY_PATH"); 
   if (!dyld_path) dyld_path = "";
@@ -203,8 +203,8 @@ cc_build_search_list()
     if (_dyld_get_image_header(i) == &_mh_dylib_header) {
       p = _dyld_get_image_name(i);
       if (strstr(p, "Inventor.framework")) {
-        // We get /path/to/Foo.framework/Versions/A/Libraries/foo.dylib
-        // but want /path/to/Foo.framework/Versions/A/Resources
+        /* We get /path/to/Foo.framework/Versions/A/Libraries/foo.dylib
+           but want /path/to/Foo.framework/Versions/A/Resources */
         char * path_to_version_dir = dirname(dirname(p));
         size_t l = strlen(path_to_version_dir) + strlen("/Resources") + 1;
         res_path = malloc(l);
@@ -226,13 +226,13 @@ cc_build_search_list()
   return path;
 }
 
-// Get the full path for the ith entry in the search list.
+/* Get the full path for the ith entry in the search list. */
 
 static const char * 
 cc_get_full_path(int i, const char * file)
 {
-  // FIXME: how many entries should we support? 
-  // 64 is a random value. kyrah 20030306
+  /* FIXME: how many entries should we support? 
+     64 is a random value. kyrah 20030306 */
   #define MAX_NR_PATH_ENTRIES 64
 
   static char fullpath[PATH_MAX];
@@ -240,7 +240,7 @@ cc_get_full_path(int i, const char * file)
   static const char * path[MAX_NR_PATH_ENTRIES] = { 0 };
   static int end_reached = 0;
   
-  // Create list the first time around.
+  /* Create list the first time around. */
   if (!list && !end_reached) list = cc_build_search_list();
   
   while (!path[i] && !end_reached) {
@@ -256,7 +256,7 @@ cc_get_full_path(int i, const char * file)
   return NULL;
 }
 
-// Try to determine full path for file.
+/* Try to determine full path for file. */
 static const struct stat *
 cc_find_file(const char * file, const char ** fullpath)
 {
@@ -270,7 +270,7 @@ cc_find_file(const char * file, const char ** fullpath)
   return 0;
 }
 
-#endif // HAVE_DYLD_RUNTIME_BINDING
+#endif /* HAVE_DYLD_RUNTIME_BINDING */
 
 
 cc_libhandle
@@ -329,12 +329,12 @@ cc_dl_open(const char * filename)
 
   if (filename != NULL) {
 
-    // Note that we must use NSAddImage, since we want to load a
-    // shared library, instead of NSCreateObjectFileImageFromFile()
-    // and NSLinkModule(), which work only with loadable
-    // modules/bundles. See man 3 NSModule, man 3 NSObjectFileImage
-    // and http://fink.sourceforge.net/doc/porting/shared.php for
-    // details.
+    /* Note that we must use NSAddImage, since we want to load a
+       shared library, instead of NSCreateObjectFileImageFromFile()
+       and NSLinkModule(), which work only with loadable
+       modules/bundles. See man 3 NSModule, man 3 NSObjectFileImage
+       and http://fink.sourceforge.net/doc/porting/shared.php for
+       details. */
  
     const struct stat * filestat;
     const char * fullpath;
@@ -450,11 +450,11 @@ cc_dl_sym(cc_libhandle handle, const char * symbolname)
 
 #elif defined (HAVE_DYLD_RUNTIME_BINDING) 
 
-  // Note: The dlopen() version returns NULL here if handle or
-  // handle->nativehnd are NULL, but we do not need a handle for
-  // symbol lookup on Mac OS X - if we have one, it makes the lookup
-  // faster, but that's all, so we can get away with having no valid
-  // handle.
+  /* Note: The dlopen() version returns NULL here if handle or
+     handle->nativehnd are NULL, but we do not need a handle for
+     symbol lookup on Mac OS X - if we have one, it makes the lookup
+     faster, but that's all, so we can get away with having no valid
+     handle. */
 
   NSSymbol symbol = NULL;
   char * mangledname;
@@ -474,10 +474,10 @@ cc_dl_sym(cc_libhandle handle, const char * symbolname)
                NSLOOKUPSYMBOLINIMAGE_OPTION_RETURN_ON_ERROR);
   } 
 
-  // If we did not specifically load the library ourselves
-  // (handle->nativehandle being NULL), or if the symbol could not be
-  // found in the library, let's try if we can find it in any of the
-  // loaded libs.
+  /* If we did not specifically load the library ourselves
+     (handle->nativehandle being NULL), or if the symbol could not be
+     found in the library, let's try if we can find it in any of the
+     loaded libs. */
 
   if (!symbol && NSIsSymbolNameDefined(mangledname)) {
     symbol = NSLookupAndBindSymbol(mangledname);
@@ -534,12 +534,11 @@ cc_dl_close(cc_libhandle handle)
 
 #elif defined (HAVE_DYLD_RUNTIME_BINDING) 
 
-  // Do nothing.
+  /* Do nothing. */
 
-  // Unlike on ELF systems, you cannot unload unload Mach-O shared
-  // libraries. See man 3 NSModule, man 3 NSObjectFileImage and
-  // http://fink.sourceforge.net/doc/porting/shared.php for details.
-
+  /* Unlike on ELF systems, you cannot unload unload Mach-O shared
+     libraries. See man 3 NSModule, man 3 NSObjectFileImage and
+     http://fink.sourceforge.net/doc/porting/shared.php for details. */
 
 #elif defined (HAVE_WINDLL_RUNTIME_BINDING)
 

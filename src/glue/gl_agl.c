@@ -42,7 +42,7 @@
 
 #ifdef HAVE_MACH_O_DYLD_H
 #include <mach-o/dyld.h>
-#endif // HAVE_MACH_O_DYLD_H
+#endif /* HAVE_MACH_O_DYLD_H */
 
 
 void *
