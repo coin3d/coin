@@ -125,6 +125,7 @@ EXTRA_DIST = \
 	packaging/macosx/inst-README-Jaguar.txt.in \
 	packaging/macosx/inst-README-Panther.txt.in \
 	packaging/macosx/inst-README-.txt.in \
+	packaging/macosx/background.tiff \
 	packaging/redhat/coin.spec.in \
 	packaging/windows/Makefile.in \
 	packaging/windows/bfheader.nsi.in \
