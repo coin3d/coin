@@ -362,10 +362,19 @@ SoNode::copy(SbBool copyconnections) const
   // See method documentation above. 20011220 mortene.
 
   SoFieldContainer::initCopyDict();
-  (void)this->addToCopyDict();
+  SoNode * cp = this->addToCopyDict();
+  // ref() to make sure the copy is not destructed while copying
+  cp->ref();
   // Call findCopy() to have copyContents() run only once.
-  SoNode * cp = (SoNode *)SoFieldContainer::findCopy(this, copyconnections);
+#if COIN_DEBUG
+  SoNode * cp2 = (SoNode *)SoFieldContainer::findCopy(this, copyconnections);
+  assert(cp == cp2);
+#else // COIN_DEBUG
+  (void) SoFieldContainer::findCopy(this, copyconnections);
+#endif
   SoFieldContainer::copyDone();
+  // unrefNoDelete() so that we return a copy with reference count 0
+  cp->unrefNoDelete();
   return cp;
 }
 

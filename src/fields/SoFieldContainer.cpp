@@ -822,7 +822,9 @@ static void
 fieldcontainer_unref_node(unsigned long key, void * value)
 {
   SoFieldContainer * fc = (SoFieldContainer*) value;
-  fc->unrefNoDelete();
+  // unref() (not unrefNoDelete()) so that unused nodes are
+  // destructed (can happen during nodekit copy)
+  fc->unref();
 } 
 
 /*!
