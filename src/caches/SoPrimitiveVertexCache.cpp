@@ -590,7 +590,7 @@ SoPrimitiveVertexCache::getIndices(void) const
   return PRIVATE(this)->indices.getArrayPtr();
 }
 
-int
+int32_t
 SoPrimitiveVertexCache::getIndex(const int idx) const
 {
   return PRIVATE(this)->indices[idx];
