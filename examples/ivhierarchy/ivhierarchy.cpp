@@ -131,7 +131,7 @@ main(int argc, char ** argv)
       print_children_trees(t);
     }
 
-    fprintf(stdout, "\n");
+    if (i < argc-1) fprintf(stdout, "\n");
   }
 
   return 0;
