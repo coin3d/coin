@@ -1,34 +1,35 @@
 # CONFIG "The Draggers"
 #
-# FLAGS
+# FLAGS [1]
 # I = implementation complete, or nearly so
-# D = fully documented for Doxygen generation of html/man
+# D = fully documented for Doxygen generation of html/man [0.5]
+# G = default geometry file has been made [0.5]
 #
 # ************************************************************************
-# ID
-# ==
+# IDG
+# ===
 # HIERARCHY
-# i   SoDragger
-#         SoCenterballDragger
-# I       SoDirectionalLightDragger
-# I       SoDragPointDragger
-#         SoHandleBoxDragger
-#         SoJackDragger
-# I       SoPointLightDragger
-# I       SoRotateCylindricalDragger
-# I       SoRotateDiscDragger
-# I       SoRotateSphericalDragger
-# I       SoScale1Dragger
-# I       SoScale2Dragger
-# i       SoScale2UniformDragger
-#         SoScaleUniformDragger
-#         SoSpotLightDragger
-#         SoTabBoxDragger
-#         SoTabPlaneDragger
-#         SoTrackballDragger
-#         SoTransformBoxDragger
-#         SoTransformerDragger
-# I       SoTranslate1Dragger
-# I       SoTranslate2Dragger
+# i    SoDragger
+#          SoCenterballDragger
+# I        SoDirectionalLightDragger
+# I        SoDragPointDragger
+#          SoHandleBoxDragger
+#          SoJackDragger
+# I        SoPointLightDragger
+# I        SoRotateCylindricalDragger
+# I        SoRotateDiscDragger
+# I        SoRotateSphericalDragger
+# I        SoScale1Dragger
+# I        SoScale2Dragger
+# i        SoScale2UniformDragger
+#          SoScaleUniformDragger
+#          SoSpotLightDragger
+#          SoTabBoxDragger
+#          SoTabPlaneDragger
+#          SoTrackballDragger
+#          SoTransformBoxDragger
+#          SoTransformerDragger
+# I G      SoTranslate1Dragger
+# I        SoTranslate2Dragger
 #
 ############################################################################
