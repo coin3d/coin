@@ -36,6 +36,8 @@
 #include <windows.h> /* GetEnvironmentVariable() */
 #endif /* HAVE_WINDOWS_H */
 
+#include <snprintf.h>
+
 #ifndef HAVE_VSNPRINTF
 
 #ifdef HAVE__VSNPRINTF

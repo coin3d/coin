@@ -34,7 +34,7 @@ extern "C" {
 /* This is how it is defined in MSVC++ 5.0. */
 #define snprintf _snprintf
 #else /* !HAVE__SNPRINTF */
-extern int snprintf(char * target, size_t n, const char * formatstr, ...);
+int snprintf(char * target, size_t n, const char * formatstr, ...);
 #endif /* !HAVE__SNPRINTF */
 #endif /* !HAVE_SNPRINTF */
 
@@ -43,11 +43,11 @@ extern int snprintf(char * target, size_t n, const char * formatstr, ...);
 /* This is how it is defined in MSVC++ 5.0. */
 #define vsnprintf _vsnprintf
 #else /* !HAVE__VSNPRINTF */
-extern int vsnprintf(char * target, size_t n, const char * formatstr, va_list args);
+int vsnprintf(char * target, size_t n, const char * formatstr, va_list args);
 #endif /* !HAVE__VSNPRINTF */
 #endif /* !HAVE_VSNPRINTF */
 
-  extern const char * coin_getenv(const char *);
+const char * coin_getenv(const char *);
 
 #ifdef __cplusplus
 }
