@@ -144,6 +144,26 @@ coin_glglue_radeon_warning(void)
   return (d > 0) ? 0 : 1;
 }
 
+/* Return value of COIN_GLGLUE_NO_G400_WARNING environment variable. */
+static int
+coin_glglue_old_matrox_warning(void)
+{
+  static int d = -1;
+  if (d == -1) { d = glglue_resolve_envvar("COIN_GLGLUE_NO_G400_WARNING"); }
+  /* Note the inversion of the envvar value versus the return value. */
+  return (d > 0) ? 0 : 1;
+}
+
+/* Return value of COIN_GLGLUE_NO_ELSA_WARNING environment variable. */
+static int
+coin_glglue_old_elsa_warning(void)
+{
+  static int d = -1;
+  if (d == -1) { d = glglue_resolve_envvar("COIN_GLGLUE_NO_ELSA_WARNING"); }
+  /* Note the inversion of the envvar value versus the return value. */
+  return (d > 0) ? 0 : 1;
+}
+
 /* Return value of COIN_DEBUG_GLGLUE environment variable. */
 int
 coin_glglue_debug(void)
@@ -593,7 +613,6 @@ glglue_resolve_symbols(cc_glglue * w)
 
 #undef PROC
 
-
 /* We're basically using the Singleton pattern to instantiate and
    return OpenGL-glue "object structs". We're constructing one
    instance for each OpenGL context, though.  */
@@ -697,7 +716,7 @@ cc_glglue_instance(int contextid)
              GL_VENDOR == 'ATI Technologies Inc.'
              GL_RENDERER == 'Radeon 7500 DDR x86/SSE2'
 
-           The driver would crash with the
+           The driver was reported to crash on MSWin with the
            SoGuiExamples/nodes/texture3 example. The reporter couldn't
            help us debug it, as he could a) not get a call-stack
            backtrace, and b) swapped his card for an NVidia card.
@@ -710,6 +729,77 @@ cc_glglue_instance(int contextid)
       }
     }
 #endif /* COIN_DEBUG */
+
+    if (coin_glglue_old_matrox_warning() &&
+        (strcmp(gi->rendererstr, "Matrox G400") == 0) &&
+        (strcmp(gi->versionstr, "1.1.3 Aug 30 2001") == 0)) {
+      cc_debugerror_postwarning("cc_glglue_instance",
+                                "This old OpenGL driver (\"%s\" \"%s\") has "
+                                "known bugs, please upgrade.  "
+                                "(This debug message can be turned off "
+                                "permanently by setting the environment "
+                                "variable COIN_GLGLUE_NO_G400_WARNING=1).",
+                                gi->rendererstr, gi->versionstr);
+    }
+
+    if (coin_glglue_old_elsa_warning() &&
+        (strcmp(gi->rendererstr, "ELSA TNT2 Vanta/PCI/SSE") == 0) &&
+        (strcmp(gi->versionstr, "1.1.4 (4.06.00.266)") == 0)) {
+      cc_debugerror_postwarning("cc_glglue_instance",
+                                "This old OpenGL driver (\"%s\" \"%s\") has "
+                                "known bugs, please upgrade.  "
+                                "(This debug message can be turned off "
+                                "permanently by setting the environment "
+                                "variable COIN_GLGLUE_NO_ELSA_WARNING=1).",
+                                gi->rendererstr, gi->versionstr);
+    }
+
+    /* The full driver information for the driver where this was
+       reported is as follows:
+
+       GL_VENDOR == 'Matrox Graphics Inc.'
+       GL_RENDERER == 'Matrox G400'
+       GL_VERSION == '1.1.3 Aug 30 2001'
+
+       GL_VENDOR == 'ELSA AG (Aachen, Germany).'
+       GL_RENDERER == 'ELSA TNT2 Vanta/PCI/SSE'
+       GL_VERSION == '1.1.4 (4.06.00.266)'
+
+       The driver was reported to crash on MSWin under following
+       conditions, quoted verbatim from the problem report:
+
+       ------8<---- [snip] -----------8<---- [snip] -----
+
+       I observe a bit of strange behaviour on my NT4 systems. I
+       have an appliction which uses the the following bit of
+       code:
+
+       // Define line width
+       SoDrawStyle *drawStyle = new SoDrawStyle;
+       drawStyle->lineWidth.setValue(3);
+       drawStyle->linePattern.setValue(0x0F0F);
+       root->addChild(drawStyle);
+           
+       // Define line connection
+       SoCoordinate3 *coords = new SoCoordinate3;
+       coords->point.setValues(0, 2, vert);
+       root->addChild(coords);
+           
+       SoLineSet *lineSet = new SoLineSet ;
+       lineSet->numVertices.set1Value(0, 2) ;
+       root->addChild(lineSet);
+           
+       It defines a line with a dashed pattern. When the line is
+       in a direction and the viewing direction is not parrallel
+       to this line all works fine. In case the viewing direction
+       is the same as the line direction one of my systems crashes
+       [...]
+
+       ------8<---- [snip] -----------8<---- [snip] -----
+
+       <mortene@sim.no>
+    */
+
 
     /* Resolve our function pointers. */
     glglue_resolve_symbols(gi);
