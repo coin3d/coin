@@ -107,7 +107,7 @@ sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 
 
-SUBDIRS = include data src
+SUBDIRS = include data src build
 
 bin_SCRIPTS = coin-config
 BUILT_SOURCES = coin-config
@@ -127,9 +127,10 @@ DIST_SOURCES =
 DATA =  $(m4data_DATA)
 
 DIST_COMMON =  README ./stamp-h1.in AUTHORS COPYING ChangeLog INSTALL \
-Makefile.am Makefile.in NEWS TODO acconfig.h aclocal.m4 coin-config.in \
-config.guess config.h.in config.sub configure configure.in depcomp \
-install-sh ltconfig ltmain.sh missing mkinstalldirs
+Makefile.am Makefile.in NEWS THANKS TODO acconfig.h aclocal.m4 \
+coin-config.in config.guess config.h.in config.sub configure \
+configure.in depcomp install-sh ltconfig ltmain.sh missing \
+mkinstalldirs
 
 
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)

@@ -631,7 +631,7 @@ AC_OUTPUT([
         src/projectors/Makefile
         src/sensors/Makefile
         src/system/Makefile
-        build/coin.iwz
+        build/Makefile
         build/coin.spec
         docs/coin.doxygen
 ], [

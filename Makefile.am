@@ -1,6 +1,6 @@
 ## Process this file with automake to generate Makefile.in.
 
-SUBDIRS = include data src
+SUBDIRS = include data src build
 
 bin_SCRIPTS = coin-config
 BUILT_SOURCES = coin-config

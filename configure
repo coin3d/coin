@@ -7097,7 +7097,7 @@ ac_config_files="$ac_config_files
         src/projectors/Makefile
         src/sensors/Makefile
         src/system/Makefile
-        build/coin.iwz
+        build/Makefile
         build/coin.spec
         docs/coin.doxygen
 "
@@ -7375,7 +7375,7 @@ Try \`$me --help' for more information."; exit 1 ;;
   'src/projectors/Makefile' ) CONFIG_FILES="$CONFIG_FILES src/projectors/Makefile" ;;
   'src/sensors/Makefile' ) CONFIG_FILES="$CONFIG_FILES src/sensors/Makefile" ;;
   'src/system/Makefile' ) CONFIG_FILES="$CONFIG_FILES src/system/Makefile" ;;
-  'build/coin.iwz' ) CONFIG_FILES="$CONFIG_FILES build/coin.iwz" ;;
+  'build/Makefile' ) CONFIG_FILES="$CONFIG_FILES build/Makefile" ;;
   'build/coin.spec' ) CONFIG_FILES="$CONFIG_FILES build/coin.spec" ;;
   'docs/coin.doxygen' ) CONFIG_FILES="$CONFIG_FILES docs/coin.doxygen" ;;
   'default-1' ) CONFIG_COMMANDS="$CONFIG_COMMANDS default-1" ;;
