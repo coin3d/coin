@@ -47,5 +47,18 @@
     this->isBuiltIn = TRUE; \
   } while (0)
 
+#define SO_NODEENGINE_INTERNAL_INIT_CLASS(_class_) \
+  do { \
+    const char * classname = SO__QUOTE(_class_); \
+    PRIVATE_COMMON_NODEENGINE_INIT_CODE(_class_, &classname[2], &_class_::createInstance, inherited); \
+  } while (0)
+
+
+#define SO_NODEENGINE_INTERNAL_INIT_ABSTRACT_CLASS(_class_) \
+  do { \
+    const char * classname = SO__QUOTE(_class_); \
+    PRIVATE_COMMON_NODEENGINE_INIT_CODE(_class_, &classname[2], NULL, inherited); \
+  } while (0)
+
 
 #endif // COIN_SOSUBNODEENGINEP_H

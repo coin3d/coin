@@ -84,17 +84,48 @@ _class_::createInstance(void) \
     this->isBuiltIn = FALSE; \
   } while (0)
 
+#define PRIVATE_COMMON_NODEENGINE_INIT_CODE(_class_, _classname_, _createfunc_, _parentclass_) \
+  do { \
+    /* Make sure we only initialize once. */ \
+    assert(_class_::classTypeId == SoType::badType() && "don't init() twice!"); \
+    /* Make sure superclass gets initialized before subclass. */ \
+    assert(_parentclass_::getClassTypeId() != SoType::badType() && "you forgot init() on parentclass!"); \
+ \
+    /* Set up entry in the type system. */ \
+    _class_::classTypeId = \
+      SoType::createType(_parentclass_::getClassTypeId(), \
+                         _classname_, \
+                         _createfunc_, \
+                         SoNode::getNextActionMethodIndex()); \
+    SoNode::incNextActionMethodIndex(); \
+ \
+    /* Store parent's fielddata pointer for later use in the constructor. */ \
+    _class_::parentFieldData = _parentclass_::getFieldDataPtr(); \
+    _class_::parentoutputdata = _parentclass_::getOutputDataPtr(); \
+  } while (0)
 
 #define SO_NODEENGINE_INIT_CLASS(_class_, _parentclass_, _parentname_) \
-  SO_NODE_INIT_CLASS(_class_, _parentclass_, _parentname_); \
   do { \
-    _class_::parentoutputdata = _parentclass_::getOutputDataPtr(); \
+    const char * classname = SO__QUOTE(_class_); \
+    PRIVATE_COMMON_INIT_CODE(_class_, classname, &_class_::createInstance, _parentclass_); \
   } while (0)
 
+
+
 #define SO_NODEENGINE_INIT_ABSTRACT_CLASS(_class_, _parentclass_, _parentname_) \
-  SO_NODE_INIT_ABSTRACT_CLASS(_class_, _parentclass_, _parentname_); \
   do { \
-    _class_::parentoutputdata = _parentclass_::getOutputDataPtr(); \
+    const char * classname = SO__QUOTE(_class_); \
+    PRIVATE_COMMON_INIT_CODE(_class_, classname, NULL, _parentclass_); \
   } while (0)
+
+#define SO_NODEENGINE_ADD_OUTPUT(_output_, _type_) \
+  do { \
+    if (SO_ENGINE_IS_FIRST_INSTANCE()) { \
+      outputdata->addOutput(this, SO__QUOTE(_output_), \
+                            &this->_output_, \
+                            _type_::getClassTypeId()); \
+    } \
+    this->_output_.setNodeContainer(this); \
+  } while(0)
 
 #endif // COIN_SOSUBNODEENGINE_H
