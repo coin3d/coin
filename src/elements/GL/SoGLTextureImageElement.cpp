@@ -191,10 +191,17 @@ SoGLTextureImageElement::hasTransparency(void) const
 }
 
 /*!
-  The size returned by this function can be a very coarse estimate as
-  it uses glGetIntegerv(GL_MAX_TEXTURE_SIZE).
-  For a better estimate, use isTextureSizeLegal(),
- */
+  The size returned by this function will just be a very coarse
+  estimate as it only uses the more or less obsoleted technique of
+  calling glGetIntegerv(GL_MAX_TEXTURE_SIZE).
+
+  For a better estimate, use
+  SoGLTextureImageElement::isTextureSizeLegal().
+
+  Note that this function needs an OpenGL context to be made current
+  for it to work. Without that, you will most likely get a faulty
+  return value or even a crash.
+*/
 int32_t
 SoGLTextureImageElement::getMaxGLTextureSize(void)
 {
@@ -217,6 +224,10 @@ SoGLTextureImageElement::getMaxGLTextureSize(void)
   if PROXY textures are not supported (OpenGL < 1.1 and GL_EXT_texture not
   available). In the 3D case, 3D textures need to be supported (OpenGL >= 1.2
   or GL_EXT_texture3D).
+
+  Note that this function needs an OpenGL context to be made current
+  for it to work. Without that, you will most likely get a faulty
+  return value or even a crash.
 
   \COIN_FUNCTION_EXTENSION
 
