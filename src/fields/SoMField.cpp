@@ -33,28 +33,35 @@
     SoText2 * textnode = new SoText2;
     textnode->ref();
 
-    /////// Setting multi-field values. /////////////////////////////
+    // Setting multi-field values. /////////////////////////////
 
     // Set the first value of the SoMFString field of the SoText2 node.
     // The field array will be truncated to only contain this single value.
     textnode->string.setValue("Morten");
+    // Full contents of the SoMFString is: [ "Morten" ]
+
     // The setValue() method and the = operator is interchangeable,
     // so this code line does the same as the previous line.
     textnode->string = "Peder";
+    // Full contents of the SoMFString is now: [ "Peder" ]
 
     // Set the value at index 2. If the field value array contained
-    // fewer than 3 elements before this call, first expand it to contain
+    // less than 3 elements before this call, first expand it to contain
     // 3 elements.
     textnode->string.set1Value(2, "Lars");
+    // Full contents of the SoMFString is: [ "Peder", <undefined>, "Lars" ]
 
     // This sets 3 values of the array, starting at index 5. If the
-    // array container fewer than 8 elements before the setValues()
+    // array container had less than 8 elements before the setValues()
     // call, the array will first be expanded.
     SbString s[3] = { "Eriksen", "Blekken", "Aas" };
     textnode->string.setValues(5, sizeof(s), s);
+    // Full contents of the SoMFString is now:
+    //     [ "Peder", <undefined>, "Lars", <undefined>, <undefined>,
+    //       "Eriksen", "Blekken", "Aas" ]
 
 
-    /////// Inspecting multi-field values. //////////////////////////
+    // Inspecting multi-field values. //////////////////////////
 
     // This will read the second element (counting from zero) if the
     // multivalue field and place it in "val".
@@ -67,7 +74,7 @@
     const SbString * vals = textnode->string.getValues(0);
 
 
-    /////// Modifying multi-field values. ///////////////////////////
+    // Modifying multi-field values. ///////////////////////////
 
     // You can of course modify multifield-values by using the set-
     // and get-methods shown above, but when you're working with
@@ -83,7 +90,8 @@
 
   \endcode
 
-  The reason this is more effective is because we avoid the stream of
+  The reason it is more effective to wrap many modifications within
+  startEditing() / finishEditing() is because we avoid the stream of
   notification messages which would otherwise be sent for each and
   every modification done. Instead there will just be a single
   notification about the changes, triggered by the finishEditing()
@@ -475,7 +483,8 @@ SoMField::setNum(const int num)
   Elements with indices larger than the last deleted element will
   be moved downwards in the value array.
 
-  If \a num equals -1, delete from \a start and to the end of the array.
+  If \a num equals -1, delete from index \a start and to the end of
+  the array.
 */
 void
 SoMField::deleteValues(int start, int num)

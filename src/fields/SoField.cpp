@@ -333,8 +333,8 @@ SoField::~SoField()
 }
 
 /*!
-  Must be called upon initialization of the library to set up the type
-  system.
+  Internal method called upon initialization of the library (from
+  SoDB::init()) to set up the type system.
 */
 void
 SoField::initClass(void)
