@@ -58,6 +58,7 @@
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoField.h>
+#include <Inventor/lists/SoFieldList.h>
 #include <Inventor/SbName.h>
 #include <coindefs.h> // COIN_STUB()
 #include <ctype.h>
@@ -797,15 +798,23 @@ void
 SoFieldData::writeFieldDescriptions(SoOutput * out,
                                     const SoFieldContainer * object) const
 {
+  SoFieldList forwardlist;
+  
   if (!out->isBinary()) {
     out->indent();
     out->write("fields [ ");
   }
-
+  
   SbBool atleastonewritten = FALSE;
-  for (int i=0; i < this->getNumFields(); i++) {
+  for (int i = 0; i < this->getNumFields(); i++) {
     const SoField * f = this->getField(object, i);
-    if (f->shouldWrite()) {
+    // Write field description if shouldWrite() returns TRUE, or if
+    // 'object' is an extension node and some field is connected from
+    // the field FIXME: SoFieldContainer::isBuiltIn() is protected so
+    // we can't determine if 'object' is a built in node or not. We
+    // just have to assume that it is.  pederb, 2002-02-07
+    forwardlist.truncate(0);
+    if (f->shouldWrite() || f->getForwardConnections(forwardlist) > 0) {
       if (!out->isBinary() && atleastonewritten) out->write(", ");
       out->write((const char *)(f->getTypeId().getName()));
       if (!out->isBinary()) out->write(' ');
