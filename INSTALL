@@ -319,14 +319,38 @@ Configuration Options
 
 --without-dl
 
-  This option will disable the use of the dl library.  No libraries will
-  get run-time bindings to Coin.
+  Many UNIX and UNIX-like platforms -- including Sun Solaris, SGI
+  IRIX, Linux, and HP-UX 11 -- has a library "libdl" that presents an
+  interface to the operating system's dynamic linking loader.
+
+  Functions of libdl is used for dynamically binding to libraries and
+  their symbols at run-time. In Coin, this mechanism is used among
+  other things to load the simage library, and to pick up OpenGL
+  recent features and extensions.
+
+  To disable using libdl, this option can be used. Note that this
+  should very rarely be of any interest for anybody but the Coin
+  developers.
+
+  Note also that this has nothing to do with Coin being built as a
+  shared or static library, it only influences the internal workings
+  of Coin.
 
 --disable-loadlibrary
 
-  The alternative to the dl library for Windows is called LoadLibrary.
-  To disable using LoadLibrary for loading simage and GLU, this option
-  can be used.
+  The Microsoft Windows Win32 API has a function "LoadLibrary()",
+  which is used for dynamically binding to libraries and their symbols
+  at run-time. In Coin, this mechanism is used among other things to
+  load the simage library, and to pick up OpenGL recent features and
+  extensions.
+
+  To disable using LoadLibrary(), this option can be used. Note that
+  this should very rarely be of any interest for anybody but the Coin
+  developers.
+
+  Note also that this has nothing to do with Coin being built as a
+  shared or static library, it only influences the internal workings
+  of Coin.
 
 --with-simage=DIR
 
