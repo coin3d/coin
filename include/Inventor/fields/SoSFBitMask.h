@@ -31,9 +31,6 @@ class SoSFBitMask : public SoSFEnum {
 public:
   static void initClass(void);
 
-protected:
-  virtual SbBool findEnumValue(const SbName & name, int & val);
-
 private:
   virtual void convertTo(SoField * dest) const;
 

@@ -17,10 +17,10 @@
 # ID         SoSFBool
 # ID         SoSFColor
 #            SoSFEngine
-# i          SoSFEnum
-# i              SoSFBitMask
+# ID         SoSFEnum
+# ID             SoSFBitMask
 # ID         SoSFFloat
-# i          SoSFImage
+# ID         SoSFImage
 # ID         SoSFInt32
 # ID         SoSFMatrix
 # ID         SoSFName
@@ -41,8 +41,8 @@
 # ID         SoMFBool
 # ID         SoMFColor
 #            SoMFEngine
-# i          SoMFEnum
-# i              SoMFBitMask
+# ID         SoMFEnum
+# ID             SoMFBitMask
 # ID         SoMFFloat
 # ID         SoMFInt32
 # ID         SoMFMatrix

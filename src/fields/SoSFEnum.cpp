@@ -19,17 +19,23 @@
 
 /*!
   \class SoSFEnum SoSFEnum.h Inventor/fields/SoSFEnum.h
-  \brief The SoSFEnum class ...
+  \brief The SoSFEnum class is a container for an enum value.
   \ingroup fields
 
-  FIXME: write class doc
+  This field is used where nodes, engines or other field containers
+  needs to store one particular value out of an enumerated set.
+
+  A field of this type stores its value to file as the symbolic
+  name, rather than the actual integer value.
+  
+  \sa SoMFEnum
+
 */
 
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
-#include <Inventor/SbName.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -38,19 +44,19 @@
 
 /*!
   \var int SoSFEnum::numEnums
-  FIXME: write var doc
-*/
-/*!
-  \var int * SoSFEnum::enumValues
-  FIXME: write var doc
+  Number of enumeration mappings.
 */
 /*!
   \var SbName * SoSFEnum::enumNames
-  FIXME: write var doc
+  Array of enumeration names. Maps 1-to-1 with the enumValues.
+*/
+/*!
+  \var int * SoSFEnum::enumValues
+  Array of enumeration values. Maps 1-to-1 with the enumNames.
 */
 /*!
   \var SbBool SoSFEnum::legalValuesSet
-  FIXME: write var doc
+  Is \c TRUE if a set of enum name-to-value mappings has been set.
 */
 
 
@@ -60,21 +66,17 @@ PRIVATE_EQUALITY_SOURCE(SoSFEnum);
 
 
 /*!
-  FIXME: write function documentation
+  Copy enumeration mappings and \a field value.
 */
 const SoSFEnum &
-SoSFEnum::operator = (const SoSFEnum & field)
+SoSFEnum::operator=(const SoSFEnum & field)
 {
   this->setEnums(field.numEnums, field.enumValues, field.enumNames);
   this->setValue(field.getValue());
   return *this;
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoSFEnum class. This includes setting up the
-  type system, among other things.
-*/
+// Override from parent class.
 void
 SoSFEnum::initClass(void)
 {
@@ -84,7 +86,7 @@ SoSFEnum::initClass(void)
 /*!
   Constructor.
 */
-SoSFEnum::SoSFEnum()
+SoSFEnum::SoSFEnum(void)
 {
   this->enumValues = NULL;
   this->enumNames  = NULL;
@@ -102,20 +104,19 @@ SoSFEnum::~SoSFEnum()
 }
 
 /*!
-  FIXME: write function documentation
+  Makes a set of \a num enumeration \a names map to integer values,
+  given by \a vals.
 */
 void
 SoSFEnum::setEnums(const int num, const int * vals, const SbName * names)
 {
-  int * newvals = new int[num];
-  SbName * newnames = new SbName[num];
-
   delete[] this->enumValues;
   delete[] this->enumNames;
 
-  this->enumValues = newvals;
-  this->enumNames = newnames;
+  this->enumValues = new int[num];
+  this->enumNames = new SbName[num];
   this->numEnums = num;
+  this->legalValuesSet = TRUE;
 
   for (int i = 0; i < this->numEnums; i++) {
     this->enumValues[i] = vals[i];
@@ -125,10 +126,10 @@ SoSFEnum::setEnums(const int num, const int * vals, const SbName * names)
 
 /*!
   Return in \a val the enumeration value which matches the given
-  enumeration string.
+  enumeration \a name.
 
-  Returns \a TRUE if \a name is a valid enumeration string, otherwise
-  \a FALSE.
+  Returns \c TRUE if \a name is a valid enumeration string, otherwise
+  \c FALSE.
 */
 SbBool
 SoSFEnum::findEnumValue(const SbName & name, int & val)
@@ -144,10 +145,11 @@ SoSFEnum::findEnumValue(const SbName & name, int & val)
 }
 
 /*!
-  Return the enumeration string which matches the given enumeration value.
+  Set the enumeration \a name which matches the given enumeration
+  value.
 
-  Returns \a TRUE if \a value is a valid enumeration value, otherwise
-  \a FALSE.
+  Returns \c TRUE if \a value is a valid enumeration value, otherwise
+  \c FALSE.
 */
 SbBool
 SoSFEnum::findEnumName(int value, const SbName *& name) const
@@ -162,30 +164,80 @@ SoSFEnum::findEnumName(int value, const SbName *& name) const
   return FALSE;
 }
 
+// No need to document readValue() and writeValue() here, as the
+// necessary information is provided by the documentation of the
+// parent classes.
+#ifndef DOXYGEN_SKIP_THIS
+
 SbBool
 SoSFEnum::readValue(SoInput * in)
 {
-  assert(this->enumValues != NULL);
+  assert(this->legalValuesSet);
 
   SbName n;
   // Read mnemonic value as a character string identifier
-  if (!in->read(n, TRUE)) return FALSE;
-  if (this->findEnumValue(n, this->value)) return TRUE;
+  if (!in->read(n, TRUE)) {
+    SoReadError::post(in, "Couldn't read enumeration name");
+    return FALSE;
+  }
 
-  SoReadError::post(in, "Unknown SoSFEnum enumeration value \"%s\"",
-                    n.getString());
-  return FALSE;
+  int val;
+  if (!this->findEnumValue(n, val)) {
+    SoReadError::post(in, "Unknown enumeration value \"%s\"", n.getString());
+    return FALSE;
+  }
+
+  this->setValue(val);
+  return TRUE;
+}
+
+void
+SoSFEnum::writeValue(SoOutput * out) const
+{
+  int val = this->getValue();
+  for (int i = 0; i < this->numEnums; i++) {
+    if (this->enumValues[i] == val) {
+      out->write((char *)this->enumNames[i].getString());
+      return;
+    }
+  }
+
+#if COIN_DEBUG
+  SoDebugError::post("SoSFEnum::writeValue", "Illegal value (%d) in field", val);
+#endif // COIN_DEBUG
+}
+
+/*!
+  Compare this field with \a f and return \c TRUE if they are
+  equal.
+*/
+int
+SoSFEnum::operator==(const SoSFEnum & f) const
+{
+  // Check for value mismatch first.
+  if (this->getValue() != f.getValue()) return FALSE;
+
+  // Check that we have the same enumeration mappings.
+  if (this->numEnums != f.numEnums) return FALSE;
+  for (int i = 0; i < this->numEnums; i++) {
+    if (this->enumValues[i] != f.enumValues[i]) return FALSE;
+    if (this->enumNames[i] != f.enumNames[i]) return FALSE;
+  }
+
+  return TRUE;
 }
 
 /*!
   Set the value of this field by specifying an enumeration integer value.
 */
 void
-SoSFEnum::setValue(int newValue)
+SoSFEnum::setValue(int newvalue)
 {
-  this->value = newValue;
+  this->value = newvalue;
   this->valueChanged();
 }
+
+#endif // DOXYGEN_SKIP_THIS
 
 /*!
   Set the value of this field by specifying an enumeration string value.
@@ -194,49 +246,15 @@ void
 SoSFEnum::setValue(const SbName name)
 {
   int val;
-  SbBool result = this->findEnumValue(name, val);
-  if (result) {
+  if (this->findEnumValue(name, val)) {
     this->setValue(val);
   }
   else {
 #if COIN_DEBUG
-    SoDebugError::postInfo("SoSFEnum::setValue",
-                           "Unknown enum '%s'", name.getString());
+    SoDebugError::post("SoSFEnum::setValue",
+                       "Unknown enum '%s'", name.getString());
 #endif // COIN_DEBUG
   }
-}
-
-/*!
-  FIXME: write function documentation
-*/
-int
-SoSFEnum::operator ==(const SoSFEnum & f) const
-{
-  // FIXME: should check enum types aswell? 19980913 mortene.
-  if (this->value != f.value) return FALSE;
-  return TRUE;
-}
-
-void
-SoSFEnum::writeValue(SoOutput * out) const
-{
-  SbBool written = FALSE;
-
-  for (int i = 0; i < this->numEnums; i++) {
-    if (this->enumValues[i] == this->value) {
-      out->write((char *)this->enumNames[i].getString());
-      written = TRUE;
-      break;
-    }
-  }
-
-#if COIN_DEBUG
-  // FIXME: this will in the common case screw up the output file so
-  // it can't be re-read. 19990713 mortene.
-  if (!written)
-    SoDebugError::post("SoSFEnum::writeValue", "Illegal value (%d) in field",
-                       this->value);
-#endif // COIN_DEBUG
 }
 
 void

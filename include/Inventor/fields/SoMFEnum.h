@@ -39,7 +39,7 @@ public:
 
 protected:
   virtual SbBool findEnumValue(const SbName & name, int & value);
-  virtual SbBool findEnumName(int val, const SbName * & name) const;
+  virtual SbBool findEnumName(int value, const SbName * & name) const;
 
   SbBool legalValuesSet;
   int numEnums;

@@ -19,10 +19,20 @@
 
 /*!
   \class SoSFBitMask SoSFBitMask.h Inventor/fields/SoSFBitMask.h
-  \brief The SoSFBitMask class ...
+  \brief The SoSFBitMask class is a container for a set of bit flags.
   \ingroup fields
 
-  FIXME: write class doc
+  This field is used where nodes, engines or other field containers
+  needs to store one particular set of bit flags from an enumerated
+  set.
+
+  A field of this type stores its value to file as the symbolic
+  names, rather than the actual integer bitmask. If more than one
+  bit is set in the value when exporting, the bits are written like
+  this: "(BITNAME|BITNAME|BITNAME|...)".
+  
+  \sa SoMFBitMask
+
 */
 
 #include <Inventor/fields/SoSFBitMask.h>
@@ -31,7 +41,6 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 #include <Inventor/fields/SoMFBitMask.h>
-#include <Inventor/SbName.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 
@@ -39,44 +48,28 @@
 
 SO_SFIELD_DERIVED_SOURCE(SoSFBitMask, not_used, not_used);
 
-
-/*!
-  Does initialization common for all objects of the
-  SoSFBitMask class. This includes setting up the
-  type system, among other things.
-*/
+// Override from parent class.
 void
 SoSFBitMask::initClass(void)
 {
   SO_SFIELD_INTERNAL_INIT_CLASS(SoSFBitMask);
 }
 
-/*!
-  FIXME: write function documentation
-*/
-SbBool
-SoSFBitMask::findEnumValue(const SbName & name, int & val)
-{
-  // Look through names table for one that matches
-  for (int i = 0; i < numEnums; i++) {
-    if (name == enumNames[i]) {
-      val = enumValues[i];
-      return TRUE;
-    }
-  }
-  return FALSE;
-}
+
+// No need to document readValue() and writeValue() here, as the
+// necessary information is provided by the documentation of the
+// parent classes.
+#ifndef DOXYGEN_SKIP_THIS
 
 SbBool
 SoSFBitMask::readValue(SoInput * in)
 {
-  assert(this->enumValues != NULL);
-
-  this->value = 0;
-  SbName n;
+  assert(this->legalValuesSet);
 
   if (in->isBinary()) {
+    int bitmask = 0;
     while (TRUE) {
+      SbName n;
       if (!in->read(n, TRUE)) {
         SoReadError::post(in, "Couldn't read SoSFBitMask bitmask value");
         return FALSE;
@@ -84,49 +77,51 @@ SoSFBitMask::readValue(SoInput * in)
       if (n.getLength() == 0) break;
 
       int v;
-      if (this->findEnumValue(n, v)) {
-        this->value |= v;
-      }
-      else {
+      if (!this->findEnumValue(n, v)) {
         SoReadError::post(in, "Unknown SoSFBitMask bit "
                           "mask value \"%s\"", n.getString());
         return FALSE;
       }
+
+      bitmask |= v;
     }
 
+    this->setValue(bitmask);
     return TRUE;
   }
 
 
   // Read first character
   char c;
-  if (!in->read(c)) return FALSE;
+  if (!in->read(c)) {
+    SoReadError::post(in, "Premature end of file");
+    return FALSE;
+  }
 
   // Check for parenthesized list of bitwise-or'ed flags
   if (c == '(') {
+    int bitmask = 0;
+
     // Read names separated by '|'
     while (TRUE) {
+      SbName n;
       if (in->read(n, TRUE) && !(!n)) {
-
         int v;
-        if (this->findEnumValue(n, v)) {
-          this->value |= v;
-        }
-        else {
+        if (!this->findEnumValue(n, v)) {
           SoReadError::post(in, "Unknown SoSFBitMask bit "
                             "mask value \"%s\"", n.getString());
           return FALSE;
         }
+
+        bitmask |= v;
       }
 
       if (!in->read(c)) {
-        SoReadError::post(in, "EOF reached before '%c' "
-                          "in SoSFBitMask value", ')');
+        SoReadError::post(in, "EOF reached before ')' in SoSFBitMask value");
         return FALSE;
       }
 
       if (c == ')') break;
-
       else if (c != '|') {
         SoReadError::post(in,
                           "Expected '|' or ')', got '%c' in SoSFBitMask value",
@@ -134,18 +129,27 @@ SoSFBitMask::readValue(SoInput * in)
         return FALSE;
       }
     }
+
+    this->setValue(bitmask);
   }
   else {
     in->putBack(c);
 
     // Read mnemonic value as a character string identifier
-    if (!in->read(n, TRUE)) return FALSE;
-
-    if (!this->findEnumValue(n, this->value)) {
-      SoReadError::post(in, "Unknown SoSFBitMask bit "
-                        "mask value \"%s\"", n.getString());
+    SbName n;
+    if (!in->read(n, TRUE)) {
+      SoReadError::post(in, "Couldn't read SoSFBitMask bit name");
       return FALSE;
     }
+
+    int v;
+    if (!this->findEnumValue(n, v)) {
+      SoReadError::post(in, "Unknown SoSFBitMask bit mask value \"%s\"",
+                        n.getString());
+      return FALSE;
+    }
+
+    this->setValue(v);
   }
 
   return TRUE;
@@ -162,7 +166,7 @@ SoSFBitMask::writeValue(SoOutput * out) const
   // flags by masking out flags with the highest number of bits
   // first. 19991110 mortene.
 
-  int restval = this->value;
+  int restval = this->getValue();
   int i = 0;
   while (restval) {
     if (i >= this->numEnums) break;
@@ -192,6 +196,9 @@ SoSFBitMask::writeValue(SoOutput * out) const
   }
 #endif // COIN_DEBUG
 }
+
+#endif // DOXYGEN_SKIP_THIS
+
 
 void
 SoSFBitMask::convertTo(SoField * dest) const

@@ -38,9 +38,7 @@
   bytes is 8-bit red + 8-bit green + 8-bit blue (aka RGB) and 4 bytes
   per pixel means 3 bytes for RGB + 1 byte translucency value.
 
-  FIXME: describe fileformat for this field, ASCII and
-  binary. 19991215 mortene.
-
+  \sa SoTexture2
 */
 
 /*¡
@@ -69,7 +67,7 @@ PRIVATE_EQUALITY_SOURCE(SoSFImage);
 
 
 /*!
-  Constructor.
+  Constructor, initialized field to be empty.
 */
 SoSFImage::SoSFImage(void)
 {
@@ -79,7 +77,7 @@ SoSFImage::SoSFImage(void)
 }
 
 /*!
-  Destructor.
+  Destructor, free resources associated with the image.
 */
 SoSFImage::~SoSFImage()
 {
@@ -87,20 +85,16 @@ SoSFImage::~SoSFImage()
 }
 
 /*!
-  FIXME: write function documentation
+  Copy the image of \a field into this field.
 */
 const SoSFImage &
-SoSFImage::operator = (const SoSFImage & field)
+SoSFImage::operator=(const SoSFImage & field)
 {
   this->setValue(field.imgdim, field.bytedepth, field.pixblock);
   return *this;
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoSFImage class. This includes setting up the
-  type system, among other things.
-*/
+// Override from parent class.
 void
 SoSFImage::initClass(void)
 {
@@ -142,9 +136,12 @@ SoSFImage::readValue(SoInput * in)
 
   delete [] this->pixblock;
   this->pixblock = NULL;
-  if (!buffersize) return TRUE;
+  if (!buffersize) {
+    this->valueChanged();
+    return TRUE;
+  }
 
-  // Aling data -- since this is what is done during import of binary
+  // Align data -- since this is what is done during import of binary
   // files with version number 2.0 (and older?).
   buffersize = ((buffersize + 3) / 4) * 4;
 
@@ -172,85 +169,9 @@ SoSFImage::readValue(SoInput * in)
       }
     }
   }
-  return TRUE;
-}
-
-/*!
-  FIXME: write function documentation
-*/
-int
-SoSFImage::operator == (const SoSFImage & field) const
-{
-  if (this->imgdim[0] != field.imgdim[0]) return FALSE;
-  if (this->imgdim[1] != field.imgdim[1]) return FALSE;
-  if (this->bytedepth != field.bytedepth) return FALSE;
-
-  int bytesize = this->imgdim[0] * this->imgdim[1] * this->bytedepth;
-  for (int i=0; i < bytesize; i++) {
-    if (this->pixblock[i] != field.pixblock[i]) return FALSE;
-  }
-  return TRUE;
-}
-
-
-/*!
-  FIXME: write function documentation
-*/
-const unsigned char *
-SoSFImage::getValue(SbVec2s & size, int & nc) const
-{
-  size = this->imgdim;
-  nc = this->bytedepth;
-  return this->pixblock;
-}
-
-/*!
-  FIXME: write function documentation
-*/
-void
-SoSFImage::setValue(const SbVec2s & size, const int nc,
-                    const unsigned char * const bytes)
-{
-  delete[] this->pixblock;
-  this->pixblock = NULL;
-
-  int buffersize = size[0] * size[1] * nc;
-
-  if (buffersize) { // images can be empty
-
-    // Align buffers because the binary file format has the data aligned
-    // (simplifies export code).
-    buffersize = ((buffersize + 3) / 4) * 4;
-    unsigned char * newblock = new unsigned char[buffersize];
-    this->pixblock = newblock;
-
-    this->imgdim = size;
-    this->bytedepth = nc;
-    memcpy(this->pixblock, bytes,
-           this->imgdim[0] * this->imgdim[1] * this->bytedepth);
-  }
 
   this->valueChanged();
-}
-
-/*!
-  FIXME: write function documentation
-*/
-unsigned char *
-SoSFImage::startEditing(SbVec2s & size, int & nc)
-{
-  size = this->imgdim;
-  nc = this->bytedepth;
-  return this->pixblock;
-}
-
-/*!
-  FIXME: write function documentation
-*/
-void
-SoSFImage::finishEditing(void)
-{
-  this->valueChanged();
+  return TRUE;
 }
 
 void
@@ -293,4 +214,97 @@ SoSFImage::writeValue(SoOutput * out) const
       }
     }
   }
+}
+
+
+/*!
+  \fn int SoSFImage::operator!=(const SoSFImage & field) const
+  Compare image of \a field with the image in this field and
+  return \c FALSE if they are equal.
+*/
+
+/*!
+  Compare image of \a field with the image in this field and
+  return \c TRUE if they are equal.
+*/
+int
+SoSFImage::operator==(const SoSFImage & field) const
+{
+  if (this->imgdim[0] != field.imgdim[0]) return FALSE;
+  if (this->imgdim[1] != field.imgdim[1]) return FALSE;
+  if (this->bytedepth != field.bytedepth) return FALSE;
+
+  int bytesize = this->imgdim[0] * this->imgdim[1] * this->bytedepth;
+  for (int i=0; i < bytesize; i++) {
+    if (this->pixblock[i] != field.pixblock[i]) return FALSE;
+  }
+  return TRUE;
+}
+
+
+/*!
+  Return pixel buffer, set \a size to contain the image dimensions and
+  \a nc to the number of components in the image.
+*/
+const unsigned char *
+SoSFImage::getValue(SbVec2s & size, int & nc) const
+{
+  size = this->imgdim;
+  nc = this->bytedepth;
+  return this->pixblock;
+}
+
+/*!
+  Copy the image data from \a bytes with \a size and \a nc
+  number of components into this field.
+*/
+void
+SoSFImage::setValue(const SbVec2s & size, const int nc,
+                    const unsigned char * bytes)
+{
+  delete[] this->pixblock;
+  this->pixblock = NULL;
+
+  int buffersize = size[0] * size[1] * nc;
+
+  if (buffersize) { // images can be empty
+
+    // Align buffers because the binary file format has the data aligned
+    // (simplifies export code).
+    buffersize = ((buffersize + 3) / 4) * 4;
+    unsigned char * newblock = new unsigned char[buffersize];
+    this->pixblock = newblock;
+
+    this->imgdim = size;
+    this->bytedepth = nc;
+    (void)memcpy(this->pixblock, bytes,
+                 this->imgdim[0] * this->imgdim[1] * this->bytedepth);
+  }
+
+  this->valueChanged();
+}
+
+/*!
+  Return pixel buffer, set \a size to contain the image dimensions and
+  \a nc to the number of components in the image.
+
+  The field's container will not be notified about the changes
+  until you call finishEditing().
+*/
+unsigned char *
+SoSFImage::startEditing(SbVec2s & size, int & nc)
+{
+  size = this->imgdim;
+  nc = this->bytedepth;
+  return this->pixblock;
+}
+
+/*!
+  Notify the field's auditors that the image data has been
+  modified.
+*/
+void
+SoSFImage::finishEditing(void)
+{
+  this->valueChanged();
 }

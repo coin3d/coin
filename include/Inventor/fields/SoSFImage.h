@@ -36,7 +36,7 @@ public:
 
   const unsigned char * getValue(SbVec2s & size, int & nc) const;
   void setValue(const SbVec2s & size, const int nc,
-                const unsigned char * const bytes);
+                const unsigned char * bytes);
 
   int operator==(const SoSFImage & field) const;
   int operator!=(const SoSFImage & field) const { return ! operator == (field); }

@@ -267,6 +267,16 @@ INPUT                = \
 	$(top_srcdir)/include/Inventor/fields/SoMFVec3f.h \
 	$(top_srcdir)/src/fields/SoMFVec4f.cpp \
 	$(top_srcdir)/include/Inventor/fields/SoMFVec4f.h \
+	$(top_srcdir)/src/fields/SoSFImage.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoSFImage.h \
+	$(top_srcdir)/src/fields/SoSFEnum.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoSFEnum.h \
+	$(top_srcdir)/src/fields/SoMFEnum.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoMFEnum.h \
+	$(top_srcdir)/src/fields/SoSFBitMask.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoSFBitMask.h \
+	$(top_srcdir)/src/fields/SoMFBitMask.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoMFBitMask.h \
 
 #	$(top_srcdir)/src/base/SbBSPTree.cpp \	
 #	$(top_srcdir)/include/Inventor/SbBSPTree.h \
@@ -697,14 +707,8 @@ INPUT                = \
 #	$(top_srcdir)/src/elements/SoWindowElement.cpp \
 #	$(top_srcdir)/include/Inventor/elements/SoWindowElement.h \
 #	\
-#	$(top_srcdir)/src/fields/SoSFBitMask.cpp \
-#	$(top_srcdir)/include/Inventor/fields/SoSFBitMask.h \
 #	$(top_srcdir)/src/fields/SoSFEngine.cpp \
 #	$(top_srcdir)/include/Inventor/fields/SoSFEngine.h \
-#	$(top_srcdir)/src/fields/SoSFEnum.cpp \
-#	$(top_srcdir)/include/Inventor/fields/SoSFEnum.h \
-#	$(top_srcdir)/src/fields/SoSFImage.cpp \
-#	$(top_srcdir)/include/Inventor/fields/SoSFImage.h \
 #	$(top_srcdir)/src/fields/SoSFNode.cpp \
 #	$(top_srcdir)/include/Inventor/fields/SoSFNode.h \
 #	$(top_srcdir)/src/fields/SoSFPath.cpp \
@@ -713,10 +717,6 @@ INPUT                = \
 #	$(top_srcdir)/include/Inventor/fields/SoSFTrigger.h \
 #	$(top_srcdir)/src/fields/SoMFEngine.cpp \
 #	$(top_srcdir)/include/Inventor/fields/SoMFEngine.h \
-#	$(top_srcdir)/src/fields/SoMFEnum.cpp \
-#	$(top_srcdir)/include/Inventor/fields/SoMFEnum.h \
-#	$(top_srcdir)/src/fields/SoMFBitMask.cpp \
-#	$(top_srcdir)/include/Inventor/fields/SoMFBitMask.h \
 #	$(top_srcdir)/src/fields/SoMFNode.cpp \
 #	$(top_srcdir)/include/Inventor/fields/SoMFNode.h \
 #	$(top_srcdir)/src/fields/SoMFPath.cpp \

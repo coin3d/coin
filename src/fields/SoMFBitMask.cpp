@@ -19,35 +19,39 @@
 
 /*!
   \class SoMFBitMask SoMFBitMask.h Inventor/fields/SoMFBitMask.h
-  \brief The SoMFBitMask class ...
+  \brief The SoMFBitMask class is a container for a set of bitmasks.
   \ingroup fields
 
-  FIXME: write class doc
+  This field is used where nodes, engines or other field containers
+  needs to store multiple bitmasks with values from an enumerated set.
+
+  \sa SoSFBitMask
+
 */
 
 #include <Inventor/fields/SoMFBitMask.h>
 #include <Inventor/fields/SoSFBitMask.h>
 
+#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
-#include <Inventor/SbName.h>
-
 
 
 SO_MFIELD_DERIVED_SOURCE(SoMFBitMask, not_used, not_used);
 
-
-/*!
-  Does initialization common for all objects of the
-  SoMFBitMask class. This includes setting up the
-  type system, among other things.
-*/
+// Override from parent class.
 void
 SoMFBitMask::initClass(void)
 {
   SO_MFIELD_INTERNAL_INIT_CLASS(SoMFBitMask);
 }
+
+// No need to document readValue() and writeValue() here, as the
+// necessary information is provided by the documentation of the
+// parent classes.
+#ifndef DOXYGEN_SKIP_THIS
 
 SbBool
 SoMFBitMask::read1Value(SoInput * in, int idx)
@@ -69,21 +73,8 @@ SoMFBitMask::write1Value(SoOutput * out, int idx) const
   sfbitmask.writeValue(out);
 }
 
-/*!
-  FIXME: write function documentation
-*/
-SbBool
-SoMFBitMask::findEnumValue(const SbName & name, int & val)
-{
-  // Look through names table for one that matches
-  for (int i = 0; i < numEnums; i++) {
-    if (name == enumNames[i]) {
-      val = enumValues[i];
-      return TRUE;
-    }
-  }
-  return FALSE;
-}
+#endif // DOXYGEN_SKIP_THIS
+
 
 void
 SoMFBitMask::convertTo(SoField * dest) const

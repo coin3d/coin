@@ -26,13 +26,10 @@
 class SoMFBitMask : public SoMFEnum {
   typedef SoMFEnum inherited;
 
-  SO_MFIELD_DERIVED_HEADER(SoMFBitMask, not_used, int)
+  SO_MFIELD_DERIVED_HEADER(SoMFBitMask, not_used, int);
 
 public:
   static void initClass(void);
-
-protected:
-  virtual SbBool findEnumValue(const SbName & name, int & value);
 
 private:
   virtual void convertTo(SoField * dest) const;
