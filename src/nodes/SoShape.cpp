@@ -74,6 +74,7 @@
 #include <Inventor/SbPlane.h>
 #include <Inventor/SbBox2f.h>
 #include <Inventor/SbClip.h>
+#include "../tidbits.h"
 
 // SoShape.cpp grew too big, so I had to move some code into
 // three new files. pederb, 2001-07-18
@@ -84,6 +85,10 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
+
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbStorage.h>
+#endif // COIN_THREADSAFE
 
 #include <Inventor/system/gl.h>
 #include <string.h>
@@ -117,7 +122,7 @@ public:
     this->invalidcounter = 0;
     this->readcounter = 0;
   }
-  
+
   ~SoShapeP() {
     if (this->bboxcache) { this->bboxcache->unref(); }
   }
@@ -132,9 +137,69 @@ public:
 #define THIS this->pimpl
 
 // *************************************************************************
+// code/structures to handle static and/or thread safe data
 
+typedef struct {
+  soshape_primdata * primdata;
+  soshape_bigtexture * bigtexture;
+  soshape_trianglesort * trianglesort;
+  
+  // used in generatePrimitives() callbacks to set correct material
+  SoMaterialBundle * currentbundle;
+  
+  // need these in invokeTriangleCallbacks()
+  SbBool is_doing_sorted_rendering;    
+  SbBool is_doing_bigtexture_rendering; 
+} soshape_staticdata;
 
-static shapePrimitiveData * primData = NULL;
+static void
+soshape_construct_staticdata(void * closure)
+{
+  soshape_staticdata * data = (soshape_staticdata*) closure;
+  
+  data->primdata = new soshape_primdata();
+  data->bigtexture = new soshape_bigtexture();
+  data->trianglesort = new soshape_trianglesort();
+}
+
+static void
+soshape_destruct_staticdata(void * closure)
+{
+  soshape_staticdata * data = (soshape_staticdata*) closure;
+  delete data->primdata;
+  delete data->bigtexture;
+  delete data->trianglesort;
+}
+
+#ifdef COIN_THREADSAFE
+static SbStorage * soshape_staticstorage;
+#else // COIN_THREADSAFE
+static soshape_staticdata * soshape_single_staticdata;
+#endif // ! COIN_THREADSAFE
+
+static soshape_staticdata *
+soshape_get_staticdata(void)
+{
+#ifdef COIN_THREADSAFE
+  return (soshape_staticdata*) soshape_staticstorage->get();
+#else // COIN_THREADSAFE
+  return soshape_single_staticdata;
+#endif // !COIN_THREADSAFE
+}
+
+// called by atexit 
+static void
+soshape_cleanup(void)
+{
+#ifdef COIN_THREADSAFE
+  delete soshape_staticstorage;
+#else // COIN_THREADSAFE
+  soshape_destruct_staticdata(soshape_single_staticdata);
+  delete soshape_single_staticdata;
+#endif // ! COIN_THREADSAFE
+}
+
+// *************************************************************************
 
 SO_NODE_ABSTRACT_SOURCE(SoShape);
 
@@ -145,7 +210,7 @@ SO_NODE_ABSTRACT_SOURCE(SoShape);
 SoShape::SoShape(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoShape);
-  
+
   // don't allocate private data until we need it
   THIS = NULL;
 }
@@ -163,6 +228,18 @@ void
 SoShape::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoShape, SO_FROM_INVENTOR_1);
+
+#ifdef COIN_THREADSAFE
+  soshape_staticstorage = 
+    new SbStorage(sizeof(soshape_staticdata), 
+                  soshape_construct_staticdata,
+                  soshape_destruct_staticdata);
+#else // COIN_THREADSAFE
+  soshape_single_staticdata = new soshape_staticdata;
+  soshape_construct_staticdata((void*) soshape_single_staticdata);
+#endif // ! COIN_THREADSAFE
+
+  coin_atexit((coin_atexit_f*) soshape_cleanup);
 }
 
 // Doc in parent.
@@ -178,9 +255,6 @@ SoShape::getBoundingBox(SoGetBoundingBoxAction * action)
   }
 }
 
-// used in generatePrimitives() callbacks to set correct material
-static SoMaterialBundle * currentBundle = NULL;
-
 // Doc in parent.
 void
 SoShape::GLRender(SoGLRenderAction * action)
@@ -193,7 +267,7 @@ SoShape::GLRender(SoGLRenderAction * action)
   if (!this->shouldGLRender(action)) return;
   SoMaterialBundle mb(action);
   mb.sendFirst();
-  currentBundle = &mb;  // needed in the primitive callbacks
+  soshape_get_staticdata()->currentbundle = &mb;  // needed in the primitive callbacks
   this->generatePrimitives(action);
 }
 
@@ -202,7 +276,8 @@ void
 SoShape::callback(SoCallbackAction * action)
 {
   if (action->shouldGeneratePrimitives(this)) {
-    if (primData) primData->faceCounter = 0;
+    soshape_staticdata * shapedata = soshape_get_staticdata();
+    shapedata->primdata->faceCounter = 0;
     this->generatePrimitives(action);
   }
 }
@@ -224,11 +299,11 @@ SoShape::rayPick(SoRayPickAction * action)
 {
   if (this->shouldRayPick(action)) {
     this->computeObjectSpaceRay(action);
-    
+
     // if we have a valid bbox cache, test bbox/ray intersection
     // before testing all triangles.
-    if (!THIS || 
-        !THIS->bboxcache || 
+    if (!THIS ||
+        !THIS->bboxcache ||
         !THIS->bboxcache->isValid(action->getState()) ||
         soshape_ray_intersect(action, THIS->bboxcache->getProjectedBox())) {
       this->generatePrimitives(action);
@@ -321,10 +396,6 @@ SoShape::getComplexityValue(SoAction * action)
   }
 }
 
-static SbBool is_doing_sorted_rendering;     // need this in invokeTriangleCallbacks()
-static SbBool is_doing_bigtexture_rendering;
-
-
 /*!
   \internal
 */
@@ -337,8 +408,8 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
     return FALSE;
 
   // if we have a valid bbox cache, do a view volume cull test here.
-  if (THIS && 
-      THIS->bboxcache && 
+  if (THIS &&
+      THIS->bboxcache &&
       THIS->bboxcache->isValid(state)) {
     if (SoCullElement::cullTest(state, THIS->bboxcache->getProjectedBox())) return FALSE;
   }
@@ -410,21 +481,23 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
        (action->getTransparencyType() ==
         SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_ADD))) {
 
+    soshape_staticdata * shapedata = soshape_get_staticdata();
+
     // do this before generating triangles to get correct
     // material for lines and point (only triangles are sorted).
     SoMaterialBundle mb(action);
     mb.sendFirst();
-    currentBundle = &mb;
+    shapedata->currentbundle = &mb;
 
-    trisort_begin_shape(state);
+    shapedata->trianglesort->beginShape(state);
 
-    // this will render lines and points, and copy triangle vertices
-    // into transparencybuffer.
-    is_doing_sorted_rendering = TRUE;
+    // when setting this flag, the triangles will be sent to the
+    // trianglesort handler in invokeTriangleCallbacks().
+    shapedata->is_doing_sorted_rendering = TRUE;
     this->generatePrimitives(action);
-    is_doing_sorted_rendering = FALSE;
-
-    trisort_end_shape(state, mb); // this will render the triangles
+    shapedata->is_doing_sorted_rendering = FALSE;
+    
+    shapedata->trianglesort->endShape(state, mb); // this will render the triangles
     return FALSE; // tell shape _not_ to render
   }
 
@@ -434,21 +507,23 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
   if (glimage &&
       glimage->isOfType(SoGLBigImage::getClassTypeId()) &&
       SoGLTextureEnabledElement::get(state)) {
+
+    soshape_staticdata * shapedata = soshape_get_staticdata();
+
     // do this before generating triangles to get correct
     // material for lines and point (only triangles are handled for now).
     SoMaterialBundle mb(action);
     mb.sendFirst();
-    currentBundle = &mb;
+    shapedata->currentbundle = &mb;
 
     SoGLBigImage * big = (SoGLBigImage*) glimage;
 
-    is_doing_bigtexture_rendering = TRUE;
+    shapedata->is_doing_bigtexture_rendering = TRUE;
 
-
-    bigtexture_begin_shape(state, big, SoTextureQualityElement::get(state));
+    shapedata->bigtexture->beginShape(state, big, SoTextureQualityElement::get(state));
     this->generatePrimitives(action);
-    bigtexture_end_shape(state, this, mb);
-    is_doing_bigtexture_rendering = FALSE;
+    shapedata->bigtexture->endShape(state, this, mb);
+    shapedata->is_doing_bigtexture_rendering = FALSE;
 
     return FALSE;
   }
@@ -540,8 +615,10 @@ SoShape::createTriangleDetail(SoRayPickAction * action,
                               const SoPrimitiveVertex * /*v3*/,
                               SoPickedPoint * pp)
 {
-  if (primData && primData->faceDetail) {
-    return primData->createPickDetail();
+  soshape_staticdata * shapedata = soshape_get_staticdata();
+
+  if (shapedata->primdata->faceDetail) {
+    return shapedata->primdata->createPickDetail();
   }
 #if COIN_DEBUG
   SoDebugError::postInfo("SoShape::createTriangleDetail",
@@ -571,8 +648,10 @@ SoShape::createLineSegmentDetail(SoRayPickAction * action,
                                  const SoPrimitiveVertex * /* v2 */,
                                  SoPickedPoint * pp)
 {
-  if (primData && primData->lineDetail) {
-    return primData->createPickDetail();
+  soshape_staticdata * shapedata = soshape_get_staticdata();
+
+  if (shapedata->primdata->lineDetail) {
+    return shapedata->primdata->createPickDetail();
   }
 #if COIN_DEBUG
   SoDebugError::postInfo("SoShape::createLineSegmentDetail",
@@ -671,27 +750,29 @@ SoShape::invokeTriangleCallbacks(SoAction * const action,
     ga->incNumTriangles();
   }
   else if (action->getTypeId().isDerivedFrom(SoGLRenderAction::getClassTypeId())) {
-    if (is_doing_sorted_rendering) {
-      trisort_triangle(action->getState(), v1, v2, v3);
+    soshape_staticdata * shapedata = soshape_get_staticdata();
+
+    if (shapedata->is_doing_sorted_rendering) {
+      shapedata->trianglesort->triangle(action->getState(), v1, v2, v3);
     }
-    else if (is_doing_bigtexture_rendering) {
-      bigtexture_triangle(action->getState(), v1, v2, v3);
+    else if (shapedata->is_doing_bigtexture_rendering) {
+      shapedata->bigtexture->triangle(action->getState(), v1, v2, v3);
     }
     else {
       glBegin(GL_TRIANGLES);
       glTexCoord4fv(v1->getTextureCoords().getValue());
       glNormal3fv(v1->getNormal().getValue());
-      currentBundle->send(v1->getMaterialIndex(), TRUE);
+      shapedata->currentbundle->send(v1->getMaterialIndex(), TRUE);
       glVertex3fv(v1->getPoint().getValue());
 
       glTexCoord4fv(v2->getTextureCoords().getValue());
       glNormal3fv(v2->getNormal().getValue());
-      currentBundle->send(v2->getMaterialIndex(), TRUE);
+      shapedata->currentbundle->send(v2->getMaterialIndex(), TRUE);
       glVertex3fv(v2->getPoint().getValue());
 
       glTexCoord4fv(v3->getTextureCoords().getValue());
       glNormal3fv(v3->getNormal().getValue());
-      currentBundle->send(v3->getMaterialIndex(), TRUE);
+      shapedata->currentbundle->send(v3->getMaterialIndex(), TRUE);
       glVertex3fv(v3->getPoint().getValue());
       glEnd();
     }
@@ -751,15 +832,17 @@ SoShape::invokeLineSegmentCallbacks(SoAction * const action,
     ga->incNumLines();
   }
   else if (action->getTypeId().isDerivedFrom(SoGLRenderAction::getClassTypeId())) {
+    soshape_staticdata * shapedata = soshape_get_staticdata();
+
     glBegin(GL_LINES);
     glTexCoord4fv(v1->getTextureCoords().getValue());
     glNormal3fv(v1->getNormal().getValue());
-    currentBundle->send(v1->getMaterialIndex(), TRUE);
+    shapedata->currentbundle->send(v1->getMaterialIndex(), TRUE);
     glVertex3fv(v1->getPoint().getValue());
 
     glTexCoord4fv(v2->getTextureCoords().getValue());
     glNormal3fv(v2->getNormal().getValue());
-    currentBundle->send(v2->getMaterialIndex(), TRUE);
+    shapedata->currentbundle->send(v2->getMaterialIndex(), TRUE);
     glVertex3fv(v2->getPoint().getValue());
     glEnd();
   }
@@ -797,10 +880,12 @@ SoShape::invokePointCallbacks(SoAction * const action,
     ga->incNumPoints();
   }
   else if (action->getTypeId().isDerivedFrom(SoGLRenderAction::getClassTypeId())) {
+    soshape_staticdata * shapedata = soshape_get_staticdata();
+
     glBegin(GL_POINTS);
     glTexCoord4fv(v->getTextureCoords().getValue());
     glNormal3fv(v->getNormal().getValue());
-    currentBundle->send(v->getMaterialIndex(), TRUE);
+    shapedata->currentbundle->send(v->getMaterialIndex(), TRUE);
     glVertex3fv(v->getPoint().getValue());
     glEnd();
   }
@@ -823,8 +908,7 @@ void
 SoShape::beginShape(SoAction * const action, const TriangleShape shapetype,
                     SoDetail * const detail)
 {
-  if (primData == NULL) primData = new shapePrimitiveData();
-  primData->beginShape(this, action, shapetype, detail);
+  soshape_get_staticdata()->primdata->beginShape(this, action, shapetype, detail);
 }
 
 
@@ -834,8 +918,7 @@ SoShape::beginShape(SoAction * const action, const TriangleShape shapetype,
 void
 SoShape::shapeVertex(const SoPrimitiveVertex * const v)
 {
-  assert(primData);
-  primData->shapeVertex(v);
+  soshape_get_staticdata()->primdata->shapeVertex(v);
 }
 
 // FIXME: document this method properly. It's a must for app
@@ -847,8 +930,7 @@ SoShape::shapeVertex(const SoPrimitiveVertex * const v)
 void
 SoShape::endShape(void)
 {
-  assert(primData);
-  primData->endShape();
+  soshape_get_staticdata()->primdata->endShape();
 }
 
 /*!
@@ -933,14 +1015,14 @@ SoShape::GLRenderBoundingBox(SoGLRenderAction * action)
   this->getBBox(action, box, center);
   center = (box.getMin() + box.getMax()) * 0.5f;
   SbVec3f size = box.getMax()  - box.getMin();
-  
+
   SoMaterialBundle mb(action);
   mb.sendFirst();
-  
+
   {
     SoGLShapeHintsElement::forceSend(action->getState(), TRUE, FALSE, FALSE);
   }
-  
+
   glPushMatrix();
   glTranslatef(center[0], center[1], center[2]);
   sogl_render_cube(size[0], size[1], size[2], &mb,
@@ -981,14 +1063,14 @@ void
 SoShape::notify(SoNotList * nl)
 {
   inherited::notify(nl);
-  if (THIS && THIS->bboxcache) { 
-    THIS->bboxcache->invalidate(); 
+  if (THIS && THIS->bboxcache) {
+    THIS->bboxcache->invalidate();
   }
 }
 
 // return the bbox for this shape, using the cache if valid,
 // calculating it if not.
-void 
+void
 SoShape::getBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
   SbBool isvalid = FALSE;
@@ -1003,7 +1085,7 @@ SoShape::getBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
       shouldcache = TRUE;
     }
   }
-  
+
   if (isvalid) {
     box = THIS->bboxcache->getProjectedBox();
     // we know center will be set, so just fetch it from the cache

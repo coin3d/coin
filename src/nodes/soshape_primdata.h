@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -37,15 +37,11 @@ class SoFaceDetail;
 class SoLineDetail;
 class SbTesselator;
 
-// FIXME: this class will also be part of the global namespace of the
-// compiled Coin library (at least when compiled to a UNIX-style
-// library). Use a less "generic" name. 20020220 mortene.
-
-class shapePrimitiveData {
+class soshape_primdata {
 public:
-  shapePrimitiveData(void);
+  soshape_primdata(void);
 
-  ~shapePrimitiveData();
+  ~soshape_primdata();
 
   void beginShape(SoShape * shape, SoAction * action,
                   SoShape::TriangleShape shapetype,

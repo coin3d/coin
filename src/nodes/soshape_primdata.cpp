@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -31,7 +31,7 @@
 #include <Inventor/elements/SoShapeHintsElement.h>
 #include <string.h>
 
-shapePrimitiveData::shapePrimitiveData(void)
+soshape_primdata::soshape_primdata(void)
 {
   this->counter = 0;
   this->action = NULL;
@@ -45,17 +45,17 @@ shapePrimitiveData::shapePrimitiveData(void)
   this->lineDetail = NULL;
 }
 
-shapePrimitiveData::~shapePrimitiveData() 
+soshape_primdata::~soshape_primdata()
 {
   delete[] this->vertsArray;
   delete[] this->pointDetails;
   delete this->tess;
 }
 
-void 
-shapePrimitiveData::beginShape(SoShape * shape, SoAction * action,
+void
+soshape_primdata::beginShape(SoShape * shape, SoAction * action,
                                SoShape::TriangleShape shapetype,
-                               SoDetail * detail) 
+                               SoDetail * detail)
 {
   this->shape = shape;
   this->action = action;
@@ -67,12 +67,12 @@ shapePrimitiveData::beginShape(SoShape * shape, SoAction * action,
   this->counter = 0;
 }
 
-void 
-shapePrimitiveData::endShape(void) 
+void
+soshape_primdata::endShape(void)
 {
   if (this->shapetype == SoShape::POLYGON) {
     this->handleFaceDetail(this->counter);
-    
+
     if (SoShapeHintsElement::getFaceType(action->getState()) ==
         SoShapeHintsElement::CONVEX) {
       for (int i = 1; i < this->counter-1; i++) {
@@ -83,7 +83,7 @@ shapePrimitiveData::endShape(void)
       }
     }
     else {
-      this->tess->setCallback(shapePrimitiveData::tess_callback, this);
+      this->tess->setCallback(soshape_primdata::tess_callback, this);
       this->tess->beginPolygon(TRUE);
       for (int i = 0; i < counter; i++) {
         this->tess->addVertex(vertsArray[i].getPoint(), &vertsArray[i]);
@@ -93,8 +93,8 @@ shapePrimitiveData::endShape(void)
   }
 }
 
-void 
-shapePrimitiveData::shapeVertex(const SoPrimitiveVertex * const v) 
+void
+soshape_primdata::shapeVertex(const SoPrimitiveVertex * const v)
 {
   switch (shapetype) {
   case SoShape::TRIANGLE_STRIP:
@@ -147,13 +147,13 @@ shapePrimitiveData::shapeVertex(const SoPrimitiveVertex * const v)
              sizeof(SoPrimitiveVertex)* this->counter);
       delete [] this->vertsArray;
       this->vertsArray = newArray;
-      
+
       SoPointDetail * newparray = new SoPointDetail[this->arraySize];
       memcpy(newparray, this->pointDetails,
              sizeof(SoPointDetail)* this->counter);
       delete [] this->pointDetails;
       this->pointDetails = newparray;
-      
+
       if (this->faceDetail) {
         for (int i = 0; i < this->counter; i++) {
           this->vertsArray[i].setDetail(&this->pointDetails[i]);
@@ -235,8 +235,8 @@ shapePrimitiveData::shapeVertex(const SoPrimitiveVertex * const v)
   }
 }
 
-void 
-shapePrimitiveData::copyVertex(const int src, const int dest) 
+void
+soshape_primdata::copyVertex(const int src, const int dest)
 {
   this->vertsArray[dest] = this->vertsArray[src];
   if (this->faceDetail) {
@@ -245,8 +245,8 @@ shapePrimitiveData::copyVertex(const int src, const int dest)
   }
 }
 
-void 
-shapePrimitiveData::setVertex(const int idx, const SoPrimitiveVertex * const v) 
+void
+soshape_primdata::setVertex(const int idx, const SoPrimitiveVertex * const v)
 {
   this->vertsArray[idx] = *v;
   if (this->faceDetail) {
@@ -257,8 +257,8 @@ shapePrimitiveData::setVertex(const int idx, const SoPrimitiveVertex * const v)
     }
 }
 
-void 
-shapePrimitiveData::handleFaceDetail(const int numv) 
+void
+soshape_primdata::handleFaceDetail(const int numv)
 {
   if (this->faceDetail) {
     this->faceDetail->setNumPoints(numv);
@@ -269,8 +269,8 @@ shapePrimitiveData::handleFaceDetail(const int numv)
   }
 }
 
-void 
-shapePrimitiveData::handleLineDetail(void) 
+void
+soshape_primdata::handleLineDetail(void)
 {
   if (this->lineDetail) {
     this->lineDetail->setPoint0(&this->pointDetails[0]);
@@ -278,8 +278,8 @@ shapePrimitiveData::handleLineDetail(void)
   }
 }
 
-SoDetail * 
-shapePrimitiveData::createPickDetail(void) 
+SoDetail *
+soshape_primdata::createPickDetail(void)
 {
   switch (this->shapetype) {
   case SoShape::TRIANGLE_STRIP:
@@ -332,10 +332,10 @@ shapePrimitiveData::createPickDetail(void)
   }
 }
 
-void 
-shapePrimitiveData::tess_callback(void * v0, void * v1, void * v2, void * data) 
+void
+soshape_primdata::tess_callback(void * v0, void * v1, void * v2, void * data)
 {
-  shapePrimitiveData * thisp = (shapePrimitiveData *) data;
+  soshape_primdata * thisp = (soshape_primdata *) data;
   thisp->shape->invokeTriangleCallbacks(thisp->action,
                                         (SoPrimitiveVertex *)v0,
                                         (SoPrimitiveVertex *)v1,

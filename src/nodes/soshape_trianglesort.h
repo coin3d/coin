@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -24,19 +24,38 @@
 #ifndef COIN_SOSHAPE_TRIANGLESORT_H
 #define COIN_SOSHAPE_TRIANGLESORT_H
 
+
+#include <Inventor/lists/SbList.h>
+#include <Inventor/SoPrimitiveVertex.h>
+
 class SoState;
 class SoPrimitiveVertex;
 class SoMaterialBundle;
 
-// FIXME: these functions will also be part of the global namespace of
-// the compiled Coin library (at least when compiled to a UNIX-style
-// library). That should be avoided. 20020220 mortene.
+class soshape_trianglesort {
+public:
+  soshape_trianglesort();
+  ~soshape_trianglesort();
 
-void trisort_begin_shape(SoState * state);
-void trisort_triangle(SoState * state,
-                      const SoPrimitiveVertex * v1, 
-                      const SoPrimitiveVertex * v2,
-                      const SoPrimitiveVertex * v3);
-void trisort_end_shape(SoState * state, SoMaterialBundle & mb);
+  void beginShape(SoState * state);
+  void triangle(SoState * state,
+                const SoPrimitiveVertex * v1,
+                const SoPrimitiveVertex * v2,
+                const SoPrimitiveVertex * v3);
+  void endShape(SoState * state, SoMaterialBundle & mb);
+
+  typedef struct {
+    int idx : 31;
+    unsigned int backface : 1;
+    float dist;
+  } sorted_triangle;
+
+private:
+
+  SbList <SoPrimitiveVertex> * pvlist;
+  SbList <sorted_triangle> * trianglelist;
+};
 
 #endif // !COIN_SOSHAPE_TRIANGLESORT_H
+
+

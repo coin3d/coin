@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -41,44 +41,39 @@
 
 #include <Inventor/system/gl.h>
 
-typedef struct {
-  int idx : 31;
-  unsigned int backface : 1;
-  float dist;
-} sorted_triangle;
 
-static SbList <SoPrimitiveVertex> * transparencybuffer = NULL;
-static SbList <sorted_triangle> * sorted_triangle_list = NULL;
-
-// atexit callback
-static void
-cleanup_transparencybuffer(void)
+soshape_trianglesort::soshape_trianglesort(void)
 {
-  delete transparencybuffer;
-  delete sorted_triangle_list;
+  this->pvlist = NULL;
+  this->trianglelist = NULL;
 }
 
-void 
-trisort_begin_shape(SoState *)
+soshape_trianglesort::~soshape_trianglesort()
 {
-  if (transparencybuffer == NULL) {
-    transparencybuffer = new SbList <SoPrimitiveVertex>;
-    sorted_triangle_list = new SbList <sorted_triangle>;
-    coin_atexit((coin_atexit_f *)cleanup_transparencybuffer);
+  delete this->pvlist;
+  delete this->trianglelist;
+}
+
+void
+soshape_trianglesort::beginShape(SoState *)
+{
+  if (this->pvlist == NULL) {
+    this->pvlist = new SbList <SoPrimitiveVertex>;
+    this->trianglelist = new SbList <sorted_triangle>;
   }
-  transparencybuffer->truncate(0);
+  pvlist->truncate(0);
 }
 
-void 
-trisort_triangle(SoState *,
-                 const SoPrimitiveVertex * v1, 
-                 const SoPrimitiveVertex * v2,
-                 const SoPrimitiveVertex * v3)
+void
+soshape_trianglesort::triangle(SoState *,
+                          const SoPrimitiveVertex * v1,
+                          const SoPrimitiveVertex * v2,
+                          const SoPrimitiveVertex * v3)
 {
-  assert(transparencybuffer);
-  transparencybuffer->append(*v1);
-  transparencybuffer->append(*v2);
-  transparencybuffer->append(*v3);
+  assert(this->pvlist);
+  this->pvlist->append(*v1);
+  this->pvlist->append(*v2);
+  this->pvlist->append(*v3);
 }
 
 // qsort() callback.
@@ -90,8 +85,8 @@ extern "C" {
 static int
 compare_triangles(const void * ptr1, const void * ptr2)
 {
-  sorted_triangle * tri1 = (sorted_triangle*) ptr1;
-  sorted_triangle * tri2 = (sorted_triangle*) ptr2;
+  soshape_trianglesort::sorted_triangle * tri1 = (soshape_trianglesort::sorted_triangle*) ptr1;
+  soshape_trianglesort::sorted_triangle * tri2 = (soshape_trianglesort::sorted_triangle*) ptr2;
 
   if (tri1->dist > tri2->dist) return -1;
   if (tri1->dist == tri2->dist) return tri2->backface - tri1->backface;
@@ -100,28 +95,28 @@ compare_triangles(const void * ptr1, const void * ptr2)
 }
 
 void
-trisort_end_shape(SoState * state, SoMaterialBundle & mb)
+soshape_trianglesort::endShape(SoState * state, SoMaterialBundle & mb)
 {
-  int i, n = transparencybuffer->getLength() / 3;
+  int i, n = this->pvlist->getLength() / 3;
   if (n == 0) return;
 
-  const SoPrimitiveVertex * varray = transparencybuffer->getArrayPtr();
-  
-  sorted_triangle_list->truncate(0);
+  const SoPrimitiveVertex * varray = this->pvlist->getArrayPtr();
+
+  this->trianglelist->truncate(0);
   sorted_triangle tri;
 
   const SoPrimitiveVertex * v;
   const SbMatrix & mm = SoModelMatrixElement::get(state);
-  
+
   SoShapeHintsElement::VertexOrdering vo;
   SoShapeHintsElement::ShapeType st;
   SoShapeHintsElement::FaceType ft;
   SoShapeHintsElement::get(state, vo, st, ft);
-  
+
   SbBool bfcull =
     (vo != SoShapeHintsElement::UNKNOWN_ORDERING) &&
     (st == SoShapeHintsElement::SOLID);
-  
+
   if (bfcull || vo == SoShapeHintsElement::UNKNOWN_ORDERING) {
     SbPlane nearp = SoViewVolumeElement::get(state).getPlane(0.0f);
     nearp = SbPlane(-nearp.getNormal(), -nearp.getDistanceFromOrigin());
@@ -139,7 +134,7 @@ trisort_end_shape(SoState * state, SoMaterialBundle & mb)
       center /= 3.0f;
       mm.multVecMatrix(center, center);
       tri.dist = nearp.getDistance(center);
-      sorted_triangle_list->append(tri);
+      trianglelist->append(tri);
     }
   }
   else {
@@ -149,7 +144,7 @@ trisort_end_shape(SoState * state, SoMaterialBundle & mb)
     SbMatrix obj2vp =
       mm * SoViewingMatrixElement::get(state) *
       SoProjectionMatrixElement::get(state);
-    
+
     int clockwise = (vo == SoShapeHintsElement::CLOCKWISE) ? 1 : 0;
     SbVec3f c[3];
     for (i = 0; i < n; i++) {
@@ -172,15 +167,15 @@ trisort_end_shape(SoState * state, SoMaterialBundle & mb)
       tri.backface = clockwise;
       if (cz < 0.0f) tri.backface = 1 - clockwise;
       tri.dist = smalldist;
-      sorted_triangle_list->append(tri);
+      this->trianglelist->append(tri);
     }
   }
-  
-  const sorted_triangle * tarray = sorted_triangle_list->getArrayPtr();
+
+  const sorted_triangle * tarray = this->trianglelist->getArrayPtr();
   qsort((void*)tarray, n, sizeof(sorted_triangle), compare_triangles);
-  
+
   int idx;
-  
+
   // this rendering loop can be optimized a lot, of course, but speed
   // is not so important here, since it's slow to generate, copy and
   // sort the triangles anyway.
@@ -192,13 +187,13 @@ trisort_end_shape(SoState * state, SoMaterialBundle & mb)
     glNormal3fv(v->getNormal().getValue());
     mb.send(v->getMaterialIndex(), TRUE);
     glVertex3fv(v->getPoint().getValue());
-    
+
     v = varray + idx+1;
     glTexCoord4fv(v->getTextureCoords().getValue());
     glNormal3fv(v->getNormal().getValue());
     mb.send(v->getMaterialIndex(), TRUE);
     glVertex3fv(v->getPoint().getValue());
-    
+
     v = varray + idx+2;
     glTexCoord4fv(v->getTextureCoords().getValue());
     glNormal3fv(v->getNormal().getValue());
