@@ -58,8 +58,6 @@
 #include <Inventor/threads/SbMutex.h>
 #endif // COIN_THREADSAFE
 
-#ifndef DOXYGEN_SKIP_THIS
-
 // defines for the flags member
 #define FLAG_RGBMODE 0x0001
 #define FLAG_ACTIVE  0x0002
@@ -108,7 +106,6 @@ public:
 
 SbBool SoSceneManagerP::touchtimer = TRUE;
 
-#endif // DOXYGEN_SKIP_THIS
 
 /*!
   \typedef SoSceneManagerRenderCB(void * userdata, SoSceneManager * mgr)
@@ -125,6 +122,8 @@ SbBool SoSceneManagerP::touchtimer = TRUE;
  */
 SoSceneManager::SoSceneManager(void)
 {
+  assert(SoDB::isInitialized() && "SoDB::init() has not been invoked");
+
   THIS = new SoSceneManagerP;
 
   THIS->glaction = new SoGLRenderAction(SbViewportRegion(400, 400));
@@ -806,7 +805,6 @@ SoSceneManager::isRealTimeUpdateEnabled(void)
 #undef FLAG_RGBMODE
 #undef FLAG_ACTIVE
 
-#ifndef DOXYGEN_SKIP_THIS
 
 // Internal callback.
 void
@@ -852,5 +850,3 @@ SoSceneManagerP::prerendercb(void * userdata, SoGLRenderAction * action)
   // clear the viewport
   glClear(mask);
 }
-
-#endif // DOXYGEN_SKIP_THIS
