@@ -5784,8 +5784,84 @@ fi
 
 # EOF **********************************************************************
 
+# **************************************************************************
+# SIM_AC_CHECK_HEADER_SILENT([header], [if-found], [if-not-found],
+# [includes])
+#
+# This macro will not output any header checking information, nor will
+# it cache the result, so it can be used multiple times on the same header,
+# trying out different compiler options.
+
+AC_DEFUN([SIM_AC_CHECK_HEADER_SILENT],
+[AS_VAR_PUSHDEF([ac_Header], [ac_cv_header_$1])
+m4_ifval([$4],
+         [AC_COMPILE_IFELSE([AC_LANG_SOURCE([$4
+@%:@include <$1>])],
+                            [AS_VAR_SET(ac_Header, yes)],
+                            [AS_VAR_SET(ac_Header, no)])],
+         [AC_PREPROC_IFELSE([AC_LANG_SOURCE([@%:@include <$1>])],
+                            [AS_VAR_SET(ac_Header, yes)],
+                            [AS_VAR_SET(ac_Header, no)])])
+AS_IF([test AS_VAR_GET(ac_Header) = yes], [$2], [$3])
+AS_VAR_POPDEF([ac_Header])
+])# SIM_AC_CHECK_HEADER_SILENT
+
+
+# **************************************************************************
+# SIM_AC_CHECK_HEADER_AL([IF-FOUND], [IF-NOT-FOUND])
+#
+# This macro detects how to include the AL header file, and gives you
+# the
+# necessary CPPFLAGS in $sim_ac_al_cppflags, and also sets the config.h
+# defines HAVE_AL_AL_H or HAVE_OPENAL_AL_H if one of them is found.
+
+AC_DEFUN([SIM_AC_CHECK_HEADER_AL],
+[sim_ac_al_header_avail=false
+AC_MSG_CHECKING([how to include al.h])
+if test x"$with_openal" != x"no"; then
+  sim_ac_al_save_CPPFLAGS=$CPPFLAGS
+  sim_ac_al_cppflags=
+
+  if test x"$with_openal" != xyes && test x"$with_openal" != x""; then
+    sim_ac_al_cppflags="-I${with_openal}/include"
+  fi
+
+  CPPFLAGS="$CPPFLAGS $sim_ac_al_cppflags"
+
+  SIM_AC_CHECK_HEADER_SILENT([AL/al.h], [
+    sim_ac_al_header_avail=true
+    sim_ac_al_header=AL/al.h
+    AC_DEFINE([HAVE_AL_AL_H], 1, [define if the AL header should be
+included as AL/gl.h])
+  ], [
+    SIM_AC_CHECK_HEADER_SILENT([OpenAL/al.h], [
+      sim_ac_al_header_avail=true
+      sim_ac_al_header=OpenAL/al.h
+      AC_DEFINE([HAVE_OPENAL_AL_H], 1, [define if the AL header should
+be included as OpenAL/al.h])
+    ])
+  ])
+
+  CPPFLAGS="$sim_ac_al_save_CPPFLAGS"
+  if $sim_ac_al_header_avail; then
+    if test x"$sim_ac_al_cppflags" = x""; then
+      AC_MSG_RESULT([@%:@include <$sim_ac_al_header>])
+    else
+      AC_MSG_RESULT([$sim_ac_al_cppflags, @%:@include <$sim_ac_al_header>])
+    fi
+    $1
+  else
+    AC_MSG_RESULT([not found])
+    $2
+  fi
+else
+  AC_MSG_RESULT([disabled])
+  $2
+fi
+])# SIM_AC_CHECK_HEADER_AL
+
+
 # Usage:
-#  SIM_AC_CHECK_OPENAL([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 #  SIM_AC_HAVE_OPENAL_IFELSE ( IF-FOUND, IF-NOT-FOUND )
 #
 #  Try to find the OpenAL development system. If it is found, these
@@ -5803,56 +5879,10 @@ fi
 #
 # Authors: Thomas Hammer, <thammer@sim.no>
 #          Peder Blekken, <pederb@sim.no>
-
-AC_DEFUN([SIM_AC_CHECK_OPENAL], [
-
-AC_ARG_WITH(
-  [openal],
-  AC_HELP_STRING([--with-openal=DIR],
-                 [openal installation directory]),
-  [],
-  [with_openal=yes])
-
-sim_ac_openal_avail=no
-
-if test x"$with_openal" != xno; then
-  if test x"$with_openal" != xyes; then
-    sim_ac_openal_cppflags="-I${with_openal}/include"
-    sim_ac_openal_ldflags="-L${with_openal}/lib"
-  fi
-  sim_ac_openal_libs="-lopenal32 -lalut"
-
-  sim_ac_save_cppflags=$CPPFLAGS
-  sim_ac_save_ldflags=$LDFLAGS
-  sim_ac_save_libs=$LIBS
-
-  CPPFLAGS="$CPPFLAGS $sim_ac_openal_cppflags"
-  LDFLAGS="$LDFLAGS $sim_ac_openal_ldflags"
-  LIBS="$sim_ac_openal_libs $LIBS"
-
-  AC_CACHE_CHECK(
-    [whether the openal development system is available],
-    sim_cv_lib_openal_avail,
-    [AC_TRY_LINK([#include <AL/al.h>],
-                 [(void)alGetError();],
-                 [sim_cv_lib_openal_avail=yes],
-                 [sim_cv_lib_openal_avail=no])])
-
-  if test x"$sim_cv_lib_openal_avail" = xyes; then
-    sim_ac_openal_avail=yes
-    $1
-  else
-    CPPFLAGS=$sim_ac_save_cppflags
-    LDFLAGS=$sim_ac_save_ldflags
-    LIBS=$sim_ac_save_libs
-    $2
-  fi
-fi
-])
+#          Karin Kosina,  <kyrah@sim.no>
 
 AC_DEFUN([SIM_AC_HAVE_OPENAL_IFELSE],
 [: ${sim_ac_have_openal=false}
-AC_MSG_CHECKING([for OpenAL])
 AC_ARG_WITH(
   [openal],
   [AC_HELP_STRING([--with-openal=PATH], [enable/disable OpenAL support])],
@@ -5869,6 +5899,12 @@ true)
   sim_ac_openal_save_CPPFLAGS=$CPPFLAGS
   sim_ac_openal_save_LDFLAGS=$LDFLAGS
   sim_ac_openal_save_LIBS=$LIBS
+
+case $host_os in
+darwin*)
+  sim_ac_openal_libs="-Wl,-framework,OpenAL" 
+;;
+*)
   sim_ac_openal_debug=false
   test -n "`echo -- $CPPFLAGS $CFLAGS $CXXFLAGS | grep -- '-g\\>'`" &&
     sim_ac_openal_debug=true
@@ -5894,15 +5930,28 @@ true)
     sim_ac_openal_ldflags="-L$sim_ac_openal_path/lib"
     LDFLAGS="$LDFLAGS $sim_ac_openal_ldflags"
     sim_ac_openal_libs="-l$sim_ac_openal_name"
-#    sim_ac_openal_libs="-l$sim_ac_openal_name -alut"
+    sim_ac_openal_extra_libs="-l$sim_ac_openal_name"
     # unset sim_ac_openal_candidate
     # unset sim_ac_openal_path
   fi
+;;
+esac 
+
+  SIM_AC_CHECK_HEADER_AL([CPPFLAGS="$CPPFLAGS $sim_ac_al_cppflags"],
+                         [AC_MSG_WARN([could not find al.h])])
+
+  AC_MSG_CHECKING([for OpenAL])
   LIBS="$sim_ac_openal_libs $LIBS"
   AC_TRY_LINK(
-    [#include <AL/al.h>],
+    [#ifdef HAVE_AL_AL_H
+     #include <AL/al.h>
+     #endif
+     #ifdef HAVE_OPENAL_AL_H
+     #include <OpenAL/al.h>
+     #endif],
     [(void)alGetError();],
     [sim_ac_have_openal=true])
+
   CPPFLAGS=$sim_ac_openal_save_CPPFLAGS
   LDFLAGS=$sim_ac_openal_save_LDFLAGS
   LIBS=$sim_ac_openal_save_LIBS
@@ -7170,26 +7219,30 @@ fi
 
 
 # **************************************************************************
-# SIM_AC_UNIQIFY_LIST( VARIABLE, LIST )
+# SIM_AC_UNIQIFY_OPTION_LIST( VARIABLE, LIST )
 #
-# This macro filters out redundant items from a list.  This macro was made
-# to avoid having multiple equivalent -I and -L options for the compiler on
-# the command-line, which made compilation quite messy to watch.
-#
-# BUGS:
-#   Items with spaces are probably not supported.
+# This macro filters out redundant commandline options. It is heavily based
+# on the SIM_AC_UNIQIFY_LIST macro, but has been extended to support
+# spaces (i.e. for instance "-framework OpenGL" as needed on Mac OS X).
 #
 # Authors:
 #   Lars J. Aas <larsa@sim.no>
-#
+#   Karin Kosina <kyrah@sim.no>
+#   Tamer Fahmy <tamer@tammura.at>
 
-AC_DEFUN([SIM_AC_UNIQIFY_LIST], [
+AC_DEFUN([SIM_AC_UNIQIFY_OPTION_LIST], [
 sim_ac_save_prefix=$prefix
 sim_ac_save_exec_prefix=$exec_prefix
 test x"$prefix" = xNONE && prefix=/usr/local
 test x"$exec_prefix" = xNONE && exec_prefix='${prefix}'
 sim_ac_uniqued_list=
-for sim_ac_item in $2; do
+eval paramlist='"$2"'
+sim_ac_sed_expr="[s,\(-[_a-zA-Z0-9][#_a-zA-Z0-9]*\) [ ]*\([_a-zA-Z0-9][_a-zA-Z0-9]*\),\1#####\2,g]"
+paramlist="`echo $paramlist | sed \"$sim_ac_sed_expr\"`"
+while test x"$paramlist" != x"`echo $paramlist | sed \"$sim_ac_sed_expr\"`"; do
+  paramlist="`echo $paramlist | sed \"$sim_ac_sed_expr\"`"
+done
+for sim_ac_item in $paramlist; do
   eval sim_ac_eval_item="$sim_ac_item"
   eval sim_ac_eval_item="$sim_ac_eval_item"
   if test x"$sim_ac_uniqued_list" = x; then
@@ -7204,14 +7257,14 @@ for sim_ac_item in $2; do
     $sim_ac_unique && sim_ac_uniqued_list="$sim_ac_uniqued_list $sim_ac_item"
   fi
 done
-$1=$sim_ac_uniqued_list
+$1=`echo $sim_ac_uniqued_list | sed 's/#####/ /g'`
 prefix=$sim_ac_save_prefix
 exec_prefix=$sim_ac_save_exec_prefix
 # unset sim_ac_save_prefix
 # unset sim_ac_save_exec_prefix
 # unset sim_ac_eval_item
 # unset sim_ac_eval_uniq
-]) # SIM_AC_UNIQIFY_LIST
+]) # SIM_AC_UNIQIFY_OPTION_LIST
 
 
 # Like AC_CONFIG_HEADER, but automatically create stamp file.

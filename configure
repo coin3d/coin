@@ -16404,8 +16404,6 @@ fi
 
 else
 : ${sim_ac_have_openal=false}
-echo "$as_me:$LINENO: checking for OpenAL" >&5
-echo $ECHO_N "checking for OpenAL... $ECHO_C" >&6
 
 # Check whether --with-openal or --without-openal was given.
 if test "${with_openal+set}" = set; then
@@ -16425,6 +16423,12 @@ true)
   sim_ac_openal_save_CPPFLAGS=$CPPFLAGS
   sim_ac_openal_save_LDFLAGS=$LDFLAGS
   sim_ac_openal_save_LIBS=$LIBS
+
+case $host_os in
+darwin*)
+  sim_ac_openal_libs="-Wl,-framework,OpenAL"
+;;
+*)
   sim_ac_openal_debug=false
   test -n "`echo -- $CPPFLAGS $CFLAGS $CXXFLAGS | grep -- '-g\\>'`" &&
     sim_ac_openal_debug=true
@@ -16450,15 +16454,154 @@ true)
     sim_ac_openal_ldflags="-L$sim_ac_openal_path/lib"
     LDFLAGS="$LDFLAGS $sim_ac_openal_ldflags"
     sim_ac_openal_libs="-l$sim_ac_openal_name"
-#    sim_ac_openal_libs="-l$sim_ac_openal_name -alut"
+    sim_ac_openal_extra_libs="-l$sim_ac_openal_name"
     # unset sim_ac_openal_candidate
     # unset sim_ac_openal_path
   fi
+;;
+esac
+
+  sim_ac_al_header_avail=false
+echo "$as_me:$LINENO: checking how to include al.h" >&5
+echo $ECHO_N "checking how to include al.h... $ECHO_C" >&6
+if test x"$with_openal" != x"no"; then
+  sim_ac_al_save_CPPFLAGS=$CPPFLAGS
+  sim_ac_al_cppflags=
+
+  if test x"$with_openal" != xyes && test x"$with_openal" != x""; then
+    sim_ac_al_cppflags="-I${with_openal}/include"
+  fi
+
+  CPPFLAGS="$CPPFLAGS $sim_ac_al_cppflags"
+
+
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+#include "confdefs.h"
+#include <AL/al.h>
+_ACEOF
+if { (eval echo "$as_me:$LINENO: \"$ac_cpp conftest.$ac_ext\"") >&5
+  (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
+  ac_status=$?
+  egrep -v '^ *\+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } >/dev/null; then
+  if test -s conftest.err; then
+    ac_cpp_err=$ac_cxx_preproc_warn_flag
+  else
+    ac_cpp_err=
+  fi
+else
+  ac_cpp_err=yes
+fi
+if test -z "$ac_cpp_err"; then
+  ac_cv_header_AL_al_h=yes
+else
+  echo "$as_me: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  ac_cv_header_AL_al_h=no
+fi
+rm -f conftest.err conftest.$ac_ext
+if test $ac_cv_header_AL_al_h = yes; then
+
+    sim_ac_al_header_avail=true
+    sim_ac_al_header=AL/al.h
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_AL_AL_H 1
+_ACEOF
+
+
+else
+
+
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+#include "confdefs.h"
+#include <OpenAL/al.h>
+_ACEOF
+if { (eval echo "$as_me:$LINENO: \"$ac_cpp conftest.$ac_ext\"") >&5
+  (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
+  ac_status=$?
+  egrep -v '^ *\+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } >/dev/null; then
+  if test -s conftest.err; then
+    ac_cpp_err=$ac_cxx_preproc_warn_flag
+  else
+    ac_cpp_err=
+  fi
+else
+  ac_cpp_err=yes
+fi
+if test -z "$ac_cpp_err"; then
+  ac_cv_header_OpenAL_al_h=yes
+else
+  echo "$as_me: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  ac_cv_header_OpenAL_al_h=no
+fi
+rm -f conftest.err conftest.$ac_ext
+if test $ac_cv_header_OpenAL_al_h = yes; then
+
+      sim_ac_al_header_avail=true
+      sim_ac_al_header=OpenAL/al.h
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_OPENAL_AL_H 1
+_ACEOF
+
+
+fi
+
+
+
+
+fi
+
+
+
+
+  CPPFLAGS="$sim_ac_al_save_CPPFLAGS"
+  if $sim_ac_al_header_avail; then
+    if test x"$sim_ac_al_cppflags" = x""; then
+      echo "$as_me:$LINENO: result: #include <$sim_ac_al_header>" >&5
+echo "${ECHO_T}#include <$sim_ac_al_header>" >&6
+    else
+      echo "$as_me:$LINENO: result: $sim_ac_al_cppflags, #include <$sim_ac_al_header>" >&5
+echo "${ECHO_T}$sim_ac_al_cppflags, #include <$sim_ac_al_header>" >&6
+    fi
+    CPPFLAGS="$CPPFLAGS $sim_ac_al_cppflags"
+  else
+    echo "$as_me:$LINENO: result: not found" >&5
+echo "${ECHO_T}not found" >&6
+    { echo "$as_me:$LINENO: WARNING: could not find al.h" >&5
+echo "$as_me: WARNING: could not find al.h" >&2;}
+  fi
+else
+  echo "$as_me:$LINENO: result: disabled" >&5
+echo "${ECHO_T}disabled" >&6
+  { echo "$as_me:$LINENO: WARNING: could not find al.h" >&5
+echo "$as_me: WARNING: could not find al.h" >&2;}
+fi
+
+
+  echo "$as_me:$LINENO: checking for OpenAL" >&5
+echo $ECHO_N "checking for OpenAL... $ECHO_C" >&6
   LIBS="$sim_ac_openal_libs $LIBS"
   cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
 #include "confdefs.h"
-#include <AL/al.h>
+#ifdef HAVE_AL_AL_H
+     #include <AL/al.h>
+     #endif
+     #ifdef HAVE_OPENAL_AL_H
+     #include <OpenAL/al.h>
+     #endif
 #ifdef F77_DUMMY_MAIN
 #  ifdef __cplusplus
      extern "C"
@@ -16491,6 +16634,7 @@ else
 cat conftest.$ac_ext >&5
 fi
 rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
+
   CPPFLAGS=$sim_ac_openal_save_CPPFLAGS
   LDFLAGS=$sim_ac_openal_save_LDFLAGS
   LIBS=$sim_ac_openal_save_LIBS
@@ -16508,7 +16652,10 @@ echo "${ECHO_T}success ($sim_ac_openal_libs)" >&6
 
   CPPFLAGS="$CPPFLAGS $sim_ac_openal_cppflags"
   LDFLAGS="$LDFLAGS $sim_ac_openal_ldflags"
-  LIBS="$sim_ac_openal_libs $LIBS"
+  LIBS="$LIBS $sim_ac_openal_libs"
+  COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_openal_cppflags"
+  COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_openal_ldflags"
+  COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS $sim_ac_openal_libs"
 
 cat >>confdefs.h <<\_ACEOF
 #define HAVE_OPENAL 1
@@ -16593,7 +16740,6 @@ else
   BUILD_WITH_SOUND_TRUE='#'
   BUILD_WITH_SOUND_FALSE=
 fi
-
 
 
 # *******************************************************************
@@ -20112,7 +20258,13 @@ sim_ac_save_exec_prefix=$exec_prefix
 test x"$prefix" = xNONE && prefix=/usr/local
 test x"$exec_prefix" = xNONE && exec_prefix='${prefix}'
 sim_ac_uniqued_list=
-for sim_ac_item in -I$includedir $COIN_EXTRA_CPPFLAGS; do
+eval paramlist='"-I$includedir $COIN_EXTRA_CPPFLAGS"'
+sim_ac_sed_expr="s,\(-[_a-zA-Z0-9][#_a-zA-Z0-9]*\) [ ]*\([_a-zA-Z0-9][_a-zA-Z0-9]*\),\1#####\2,g"
+paramlist="`echo $paramlist | sed \"$sim_ac_sed_expr\"`"
+while test x"$paramlist" != x"`echo $paramlist | sed \"$sim_ac_sed_expr\"`"; do
+  paramlist="`echo $paramlist | sed \"$sim_ac_sed_expr\"`"
+done
+for sim_ac_item in $paramlist; do
   eval sim_ac_eval_item="$sim_ac_item"
   eval sim_ac_eval_item="$sim_ac_eval_item"
   if test x"$sim_ac_uniqued_list" = x; then
@@ -20127,7 +20279,7 @@ for sim_ac_item in -I$includedir $COIN_EXTRA_CPPFLAGS; do
     $sim_ac_unique && sim_ac_uniqued_list="$sim_ac_uniqued_list $sim_ac_item"
   fi
 done
-COIN_EXTRA_CPPFLAGS=$sim_ac_uniqued_list
+COIN_EXTRA_CPPFLAGS=`echo $sim_ac_uniqued_list | sed 's/#####/ /g'`
 prefix=$sim_ac_save_prefix
 exec_prefix=$sim_ac_save_exec_prefix
 # unset sim_ac_save_prefix
@@ -20141,7 +20293,13 @@ sim_ac_save_exec_prefix=$exec_prefix
 test x"$prefix" = xNONE && prefix=/usr/local
 test x"$exec_prefix" = xNONE && exec_prefix='${prefix}'
 sim_ac_uniqued_list=
-for sim_ac_item in -L$libdir $COIN_EXTRA_LDFLAGS; do
+eval paramlist='"-L$libdir $COIN_EXTRA_LDFLAGS"'
+sim_ac_sed_expr="s,\(-[_a-zA-Z0-9][#_a-zA-Z0-9]*\) [ ]*\([_a-zA-Z0-9][_a-zA-Z0-9]*\),\1#####\2,g"
+paramlist="`echo $paramlist | sed \"$sim_ac_sed_expr\"`"
+while test x"$paramlist" != x"`echo $paramlist | sed \"$sim_ac_sed_expr\"`"; do
+  paramlist="`echo $paramlist | sed \"$sim_ac_sed_expr\"`"
+done
+for sim_ac_item in $paramlist; do
   eval sim_ac_eval_item="$sim_ac_item"
   eval sim_ac_eval_item="$sim_ac_eval_item"
   if test x"$sim_ac_uniqued_list" = x; then
@@ -20156,7 +20314,7 @@ for sim_ac_item in -L$libdir $COIN_EXTRA_LDFLAGS; do
     $sim_ac_unique && sim_ac_uniqued_list="$sim_ac_uniqued_list $sim_ac_item"
   fi
 done
-COIN_EXTRA_LDFLAGS=$sim_ac_uniqued_list
+COIN_EXTRA_LDFLAGS=`echo $sim_ac_uniqued_list | sed 's/#####/ /g'`
 prefix=$sim_ac_save_prefix
 exec_prefix=$sim_ac_save_exec_prefix
 # unset sim_ac_save_prefix
@@ -20170,7 +20328,13 @@ sim_ac_save_exec_prefix=$exec_prefix
 test x"$prefix" = xNONE && prefix=/usr/local
 test x"$exec_prefix" = xNONE && exec_prefix='${prefix}'
 sim_ac_uniqued_list=
-for sim_ac_item in $COIN_EXTRA_LIBS; do
+eval paramlist='"$COIN_EXTRA_LIBS"'
+sim_ac_sed_expr="s,\(-[_a-zA-Z0-9][#_a-zA-Z0-9]*\) [ ]*\([_a-zA-Z0-9][_a-zA-Z0-9]*\),\1#####\2,g"
+paramlist="`echo $paramlist | sed \"$sim_ac_sed_expr\"`"
+while test x"$paramlist" != x"`echo $paramlist | sed \"$sim_ac_sed_expr\"`"; do
+  paramlist="`echo $paramlist | sed \"$sim_ac_sed_expr\"`"
+done
+for sim_ac_item in $paramlist; do
   eval sim_ac_eval_item="$sim_ac_item"
   eval sim_ac_eval_item="$sim_ac_eval_item"
   if test x"$sim_ac_uniqued_list" = x; then
@@ -20185,7 +20349,7 @@ for sim_ac_item in $COIN_EXTRA_LIBS; do
     $sim_ac_unique && sim_ac_uniqued_list="$sim_ac_uniqued_list $sim_ac_item"
   fi
 done
-COIN_EXTRA_LIBS=$sim_ac_uniqued_list
+COIN_EXTRA_LIBS=`echo $sim_ac_uniqued_list | sed 's/#####/ /g'`
 prefix=$sim_ac_save_prefix
 exec_prefix=$sim_ac_save_exec_prefix
 # unset sim_ac_save_prefix
@@ -20199,7 +20363,13 @@ sim_ac_save_exec_prefix=$exec_prefix
 test x"$prefix" = xNONE && prefix=/usr/local
 test x"$exec_prefix" = xNONE && exec_prefix='${prefix}'
 sim_ac_uniqued_list=
-for sim_ac_item in $CPPFLAGS; do
+eval paramlist='"$CPPFLAGS"'
+sim_ac_sed_expr="s,\(-[_a-zA-Z0-9][#_a-zA-Z0-9]*\) [ ]*\([_a-zA-Z0-9][_a-zA-Z0-9]*\),\1#####\2,g"
+paramlist="`echo $paramlist | sed \"$sim_ac_sed_expr\"`"
+while test x"$paramlist" != x"`echo $paramlist | sed \"$sim_ac_sed_expr\"`"; do
+  paramlist="`echo $paramlist | sed \"$sim_ac_sed_expr\"`"
+done
+for sim_ac_item in $paramlist; do
   eval sim_ac_eval_item="$sim_ac_item"
   eval sim_ac_eval_item="$sim_ac_eval_item"
   if test x"$sim_ac_uniqued_list" = x; then
@@ -20214,7 +20384,7 @@ for sim_ac_item in $CPPFLAGS; do
     $sim_ac_unique && sim_ac_uniqued_list="$sim_ac_uniqued_list $sim_ac_item"
   fi
 done
-CPPFLAGS=$sim_ac_uniqued_list
+CPPFLAGS=`echo $sim_ac_uniqued_list | sed 's/#####/ /g'`
 prefix=$sim_ac_save_prefix
 exec_prefix=$sim_ac_save_exec_prefix
 # unset sim_ac_save_prefix
@@ -20228,7 +20398,13 @@ sim_ac_save_exec_prefix=$exec_prefix
 test x"$prefix" = xNONE && prefix=/usr/local
 test x"$exec_prefix" = xNONE && exec_prefix='${prefix}'
 sim_ac_uniqued_list=
-for sim_ac_item in $LDFLAGS; do
+eval paramlist='"$LDFLAGS"'
+sim_ac_sed_expr="s,\(-[_a-zA-Z0-9][#_a-zA-Z0-9]*\) [ ]*\([_a-zA-Z0-9][_a-zA-Z0-9]*\),\1#####\2,g"
+paramlist="`echo $paramlist | sed \"$sim_ac_sed_expr\"`"
+while test x"$paramlist" != x"`echo $paramlist | sed \"$sim_ac_sed_expr\"`"; do
+  paramlist="`echo $paramlist | sed \"$sim_ac_sed_expr\"`"
+done
+for sim_ac_item in $paramlist; do
   eval sim_ac_eval_item="$sim_ac_item"
   eval sim_ac_eval_item="$sim_ac_eval_item"
   if test x"$sim_ac_uniqued_list" = x; then
@@ -20243,7 +20419,7 @@ for sim_ac_item in $LDFLAGS; do
     $sim_ac_unique && sim_ac_uniqued_list="$sim_ac_uniqued_list $sim_ac_item"
   fi
 done
-LDFLAGS=$sim_ac_uniqued_list
+LDFLAGS=`echo $sim_ac_uniqued_list | sed 's/#####/ /g'`
 prefix=$sim_ac_save_prefix
 exec_prefix=$sim_ac_save_exec_prefix
 # unset sim_ac_save_prefix
@@ -20257,7 +20433,13 @@ sim_ac_save_exec_prefix=$exec_prefix
 test x"$prefix" = xNONE && prefix=/usr/local
 test x"$exec_prefix" = xNONE && exec_prefix='${prefix}'
 sim_ac_uniqued_list=
-for sim_ac_item in $LIBS; do
+eval paramlist='"$LIBS"'
+sim_ac_sed_expr="s,\(-[_a-zA-Z0-9][#_a-zA-Z0-9]*\) [ ]*\([_a-zA-Z0-9][_a-zA-Z0-9]*\),\1#####\2,g"
+paramlist="`echo $paramlist | sed \"$sim_ac_sed_expr\"`"
+while test x"$paramlist" != x"`echo $paramlist | sed \"$sim_ac_sed_expr\"`"; do
+  paramlist="`echo $paramlist | sed \"$sim_ac_sed_expr\"`"
+done
+for sim_ac_item in $paramlist; do
   eval sim_ac_eval_item="$sim_ac_item"
   eval sim_ac_eval_item="$sim_ac_eval_item"
   if test x"$sim_ac_uniqued_list" = x; then
@@ -20272,7 +20454,7 @@ for sim_ac_item in $LIBS; do
     $sim_ac_unique && sim_ac_uniqued_list="$sim_ac_uniqued_list $sim_ac_item"
   fi
 done
-LIBS=$sim_ac_uniqued_list
+LIBS=`echo $sim_ac_uniqued_list | sed 's/#####/ /g'`
 prefix=$sim_ac_save_prefix
 exec_prefix=$sim_ac_save_exec_prefix
 # unset sim_ac_save_prefix
