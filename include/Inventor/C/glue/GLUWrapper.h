@@ -81,7 +81,9 @@ typedef void (APIENTRY *gluNurbsCallbackData_t)(void *, GLvoid *);
   /* gluTessellator routines */
 typedef struct coin_GLUtessellator coin_GLUtessellator;
 typedef coin_GLUtessellator * (APIENTRY *gluNewTess_t)(void);
-typedef void (APIENTRY *gluTessCallback_t)(coin_GLUtessellator * tessobj, GLenum type, _GLUfuncptr CallbackFunc);
+typedef void (APIENTRY *gluTessCallback_cb_t)(void);
+
+typedef void (APIENTRY *gluTessCallback_t)(coin_GLUtessellator *, GLenum, gluTessCallback_cb_t);
 typedef void (APIENTRY *gluTessProperty_t)(coin_GLUtessellator * tessobj, GLenum property, GLdouble value);
 typedef void (APIENTRY *gluTessBeginPolygon_t)(coin_GLUtessellator * tessobj, void * user_data);
 typedef void (APIENTRY *gluTessEndPolygon_t)(coin_GLUtessellator * tessobj);
