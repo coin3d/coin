@@ -209,12 +209,19 @@ static cc_sched * imagetexture_scheduler = NULL;
 
 class SoVRMLImageTextureP {
 public:
+  SoVRMLImageTextureP(SoVRMLImageTexture * master) : master(master) { }
+  SoVRMLImageTexture * master;
+  
   int readstatus;
   class SoGLImage * glimage;
   SbBool glimagevalid;
   SbImage image;
   SoFieldSensor * urlsensor;
   SbBool allowprequalifycb;
+
+  SoTimerSensor * timersensor;
+  SbBool finishedloading;
+  static void timersensor_cb(void * data, SoSensor * sensor);
 
   void readimage_cleanup(void);
   SbBool isdestructing;
@@ -283,7 +290,7 @@ SoVRMLImageTexture::initClass(void) // static
 */
 SoVRMLImageTexture::SoVRMLImageTexture(void)
 {
-  PRIVATE(this) = new SoVRMLImageTextureP;
+  PRIVATE(this) = new SoVRMLImageTextureP(this);
 
   SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLImageTexture);
   SO_VRMLNODE_ADD_EMPTY_EXPOSED_MFIELD(url);
@@ -292,6 +299,9 @@ SoVRMLImageTexture::SoVRMLImageTexture(void)
   PRIVATE(this)->glimagevalid = FALSE;
   PRIVATE(this)->readstatus = 1;
   PRIVATE(this)->allowprequalifycb = TRUE;
+  PRIVATE(this)->timersensor = 
+    new SoTimerSensor(SoVRMLImageTextureP::timersensor_cb, PRIVATE(this));
+  PRIVATE(this)->timersensor->setInterval(SbTime(1.0));
   
   // use field sensor for url since we will load an image if
   // filename changes. This is a time-consuming task which should
@@ -307,6 +317,7 @@ SoVRMLImageTexture::SoVRMLImageTexture(void)
 */
 SoVRMLImageTexture::~SoVRMLImageTexture()
 {
+  delete PRIVATE(this)->timersensor;
 #ifdef COIN_THREADSAFE
   // just wait for all threads to finish reading
   if (imagetexture_scheduler) {
@@ -583,14 +594,6 @@ SoVRMLImageTexture::default_prequalify_cb(const SbString & url,  void * closure,
   SbBool ret = TRUE;
   if (!imagetexture_is_exiting && !PRIVATE(thisp)->isdestructing) {
     ret = PRIVATE(thisp)->image.readFile(url);
-    if (PRIVATE(thisp)->glimage) {
-      PRIVATE(thisp)->glimage->setEndFrameCallback(glimage_callback, thisp);
-      PRIVATE(thisp)->glimagevalid = FALSE;
-    }
-#ifdef COIN_THREADSAFE
-    // this is dangerous when using SoQt since Qt is not thread safe
-    thisp->touch(); // schedule redraw
-#endif // COIN_THREADSAFE
   }
   return ret;
 }
@@ -638,6 +641,11 @@ SoVRMLImageTexture::image_read_cb(const SbString & filename, SbImage * image, vo
   if (!PRIVATE(thisp)->glimage) {
     return FALSE;
   }
+  
+  // start a timer sensor that triggers each second and tests if the
+  // thread that loads images has finished loading this image.
+  PRIVATE(thisp)->finishedloading = FALSE; // this will be TRUE when finished
+  PRIVATE(thisp)->timersensor->schedule();
 
   imagetexture_thread_data * data = new imagetexture_thread_data;
   data->thisp = thisp;
@@ -701,6 +709,12 @@ SoVRMLImageTexture::readImage(const SbString & filename)
   else {
     retval = default_prequalify_cb(filename, NULL, this); 
   }
+  if (PRIVATE(this)->glimage) {
+    PRIVATE(this)->glimage->setEndFrameCallback(glimage_callback, this);
+    PRIVATE(this)->glimagevalid = FALSE;
+  }
+  // set flag that timer sensor will test. 
+  PRIVATE(this)->finishedloading = TRUE;
   return retval;
 }
 
@@ -735,5 +749,17 @@ SoVRMLImageTexture::setImageDataMaxAge(const uint32_t maxage)
 }
 
 #undef PRIVATE
+
+void 
+SoVRMLImageTextureP::timersensor_cb(void * data, SoSensor * sensor)
+{
+  SoVRMLImageTextureP * thisp = (SoVRMLImageTextureP*) data;
+  
+  if (thisp->finishedloading) {
+    thisp->master->touch(); // trigger redraw
+    thisp->timersensor->unschedule();
+  }
+}
+
 #undef LOCK_GLIMAGE
 #undef UNLOCK_GLIMAGE
