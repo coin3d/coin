@@ -82,6 +82,7 @@ public:
 protected:
   SoShaderObject(void);
   virtual ~SoShaderObject();
+  virtual SbBool readInstance(SoInput * in, unsigned short flags);
 
 private:
   class SoShaderObjectP * pimpl;

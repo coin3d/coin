@@ -34,6 +34,8 @@
 #include <Inventor/nodes/SoVertexShader.h>
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <Inventor/nodes/SoSubNodeP.h>
+#include <Inventor/SoInput.h>
+#include <Inventor/lists/SbStringList.h>
 
 #include "SoGLARBShaderObject.h"
 #include "SoGLCgShaderObject.h"
@@ -56,6 +58,8 @@ public:
   SbBool glShaderIsInGLProgram;
   SoShaderObject::SourceType cachedSourceType;
   SbString cachedSourceProgram;
+  SbBool didSetSearchDirectories;
+  SoNodeSensor *sensor;
 
   void updateParameters(int start, int num);
   void updateAllParameters(void);
@@ -63,9 +67,12 @@ public:
   SbBool containStateMatrixParameters() const;
   void removeGLShaderFromGLProgram(SoGLShaderProgram *glProgram);
 
+  void setSearchDirectories(const SbStringList & list);
+
 private:
-  SoNodeSensor *sensor;
   static void sensorCB(void *data, SoSensor *);
+
+  SbStringList searchdirectories;
 
   void checkType(); // sets cachedSourceType
   void readSource(); // sets cachedSourceProgram depending on sourceType
@@ -150,6 +157,20 @@ SoGLShaderObject * SoShaderObject::getGLShaderObject() const
   return SELF->glShaderObject;
 }
 
+SbBool 
+SoShaderObject::readInstance(SoInput * in, unsigned short flags)
+{
+  SELF->glShaderShouldLoad = TRUE;
+  SELF->sensor->detach();
+
+  SbBool ret = inherited::readInstance(in, flags);
+  if (ret) {
+    SELF->setSearchDirectories(SoInput::getDirectories());
+  }
+  SELF->sensor->attach(this);
+
+  return ret;
+}
 
 SoShaderObject::SourceType SoShaderObject::getSourceType() const
 {
@@ -180,10 +201,13 @@ SoShaderObjectP::SoShaderObjectP(SoShaderObject * ownerptr)
   this->glShaderShouldLoad = TRUE;
   this->glShaderIsInGLProgram = FALSE;
   this->cachedSourceType = SoShaderObject::FILENAME;
+  this->didSetSearchDirectories = FALSE;
 }
 
 SoShaderObjectP::~SoShaderObjectP()
 {
+  SbStringList empty;
+  this->setSearchDirectories(empty);
   delete this->sensor;
 
   if (this->glShaderObject) {
@@ -360,11 +384,18 @@ SoShaderObjectP::readSource(void)
     this->cachedSourceProgram = this->owner->sourceProgram.getValue();
   else {
     if (this->cachedSourceType != SoShaderObject::FILENAME) {
-      SbString fileName = this->owner->sourceProgram.getValue();
 
-      // FIXME: should really look for the file in all paths that
-      // SoInput::getDirectories() had when .iv-file was
-      // read. 20050120 mortene.
+
+      SbStringList subdirs;
+      subdirs.append(new SbString("shader"));
+      subdirs.append(new SbString("shaders"));
+      SbString fileName = SoInput::searchForFile(this->owner->sourceProgram.getValue(),
+                                                 this->searchdirectories,
+                                                 subdirs);
+      // delete allocated subdirs before continuing
+      delete subdirs[0];
+      delete subdirs[1];
+      
       FILE * f = fopen(fileName.getString(), "rb");
       if (f) {
         int ret = fseek(f, 0L, SEEK_END);
@@ -512,5 +543,24 @@ SoShaderObjectP::getSourceHint(void) const
 void
 SoShaderObjectP::sensorCB(void *data, SoSensor *)
 {
-  ((SoShaderObjectP *)data)->glShaderShouldLoad = TRUE;
+  SoShaderObjectP * thisp = (SoShaderObjectP*) data;
+
+  if (!thisp->didSetSearchDirectories) {
+    thisp->setSearchDirectories(SoInput::getDirectories());
+  }
+  thisp->glShaderShouldLoad = TRUE;
+}
+
+void 
+SoShaderObjectP::setSearchDirectories(const SbStringList & list)
+{
+  int i;
+  for (i = 0; i< this->searchdirectories.getLength(); i++) {
+    delete this->searchdirectories[i];
+  }
+  
+  for (i = 0; i < list.getLength(); i++) {
+    this->searchdirectories.append(new SbString(*(list[i])));
+  }
+  this->didSetSearchDirectories = TRUE;
 }
