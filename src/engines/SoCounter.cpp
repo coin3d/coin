@@ -22,7 +22,44 @@
   \brief The SoCounter class is an integer counter engine.
   \ingroup engines
 
-  FIXME: doc
+  FIXME: more doc
+*/
+
+/*!
+  \var SoSFShort SoCounter::min
+  Minimum value for counter.
+*/
+
+/*!
+  \var SoSFShort SoCounter::max
+  Maximum value for counter.
+*/
+
+/*!
+  \var SoSFShort SoCounter::step
+  Counter step value.
+*/
+
+/*!  
+  \var SoSFTrigger SoCounter::trigger
+  Increment counter (using step).
+*/
+
+/*!  
+  \var SoSFShort SoCounter::reset
+  Reset counter to this value. The value will be clamped between min and max,
+  and step will be accounted for.
+*/
+
+/*!
+  \var SoEngineOutput SoCounter::output
+  (SoSFShort) Outputs the counter value.
+*/
+
+
+/*!
+  \var SoEngineOutput SoCounter::syncOut
+  (SoSFTrigger) Triggers every time counter restarts.
 */
 
 #include <Inventor/engines/SoCounter.h>
@@ -47,6 +84,9 @@ SoCounter::SoCounter()
   SO_ENGINE_ADD_OUTPUT(syncOut,SoSFTrigger);
 
   this->syncOut.enable(FALSE);  //Disable notification
+
+  this->value = 0;
+  this->numSteps = 0;
 }
 
 // overloaded from parent
@@ -56,72 +96,76 @@ SoCounter::initClass()
   SO_ENGINE_INTERNAL_INIT_CLASS(SoCounter);
 }
 
-//
-// private members
-//
+// private destructor
 SoCounter::~SoCounter()
 {
 }
 
-// overloaded from parent
+// doc in parent
 void
 SoCounter::evaluate()
 {
   SO_ENGINE_OUTPUT(output,SoSFShort,setValue(this->value));
 }
 
-// overloaded from parent
+// doc in parent
 void
 SoCounter::inputChanged(SoField *which)
 {
-  if (which==&this->trigger) {
-    this->numSteps+=1;
-    this->value+=this->step.getValue();
-    if (this->value>this->max.getValue()) {
-      this->value=this->min.getValue();
-      this->numSteps=0;
+  if (which == &this->trigger) {
+    this->numSteps += 1;
+    this->value += this->step.getValue();
+    if (this->value > this->max.getValue()) {
+      this->value = this->min.getValue();
+      this->numSteps = 0;
       this->syncOut.enable(TRUE);
       SO_ENGINE_OUTPUT(syncOut,SoSFTrigger,setValue());
       this->syncOut.enable(FALSE);
     }
   }
-  else if (which==&this->reset) {
-    short resetVal=this->reset.getValue();
-    if (resetVal>this->max.getValue()) this->value=this->max.getValue();
-    else if (resetVal<this->min.getValue()) this->value=this->min.getValue();
+  else if (which == &this->reset) {
+    short minval = this->min.getValue();
+    short maxval = this->max.getValue();
+    short resetval = this->reset.getValue();
+    if (resetval < minval) {
+      this->numSteps = 0;
+      this->value = minval;
+    }
     else {
-      int mod=(resetVal-this->min.getValue())%this->step.getValue();
-      if (mod!=0) this->value=resetVal-mod;
+      if (resetval > maxval) resetval = maxval;
+      short stepval = this->step.getValue();
+      this->numSteps = (resetval - minval) / stepval;
+      this->value = minval + this->numSteps * stepval;
     }
   }
-  else if (which==&this->max) {
-    if (this->max.getValue()<this->min.getValue()) {
-      short tmp=this->max.getValue();
+  else if (which == &this->max) {
+    if (this->max.getValue() < this->min.getValue()) {
+      short tmp = this->max.getValue();
       this->max.setValue(this->min.getValue());
       this->min.setValue(tmp);
     }
-    if (this->max.getValue()<this->value) {
-      this->value=this->min.getValue();
-      //sync
+    if (this->max.getValue() < this->value) {
+      this->value = this->min.getValue();
+      this->numSteps = 0;
     }
   }
-  else if (which==&this->min) {
-    if (this->max.getValue()<this->min.getValue()) {
-      short tmp=this->max.getValue();
+  else if (which == &this->min) {
+    if (this->max.getValue() < this->min.getValue()) {
+      short tmp = this->max.getValue();
       this->max.setValue(this->min.getValue());
       this->min.setValue(tmp);
     }
-    this->value=this->min.getValue()+this->step.getValue()*this->numSteps;
-    if (this->value>this->max.getValue()) {
-      this->numSteps=0;
-      this->value=this->min.getValue();
+    this->value = this->min.getValue() + this->step.getValue() * this->numSteps;
+    if (this->value > this->max.getValue()) {
+      this->numSteps = 0;
+      this->value = this->min.getValue();
     }
   }
-  else if (which==&this->step) {
-    this->value=this->min.getValue()+this->step.getValue()*this->numSteps;
-    if (this->value>this->max.getValue()) {
-      this->numSteps=0;
-      this->value=this->min.getValue();
+  else if (which == &this->step) {
+    this->value = this->min.getValue() + this->step.getValue() * this->numSteps;
+    if (this->value > this->max.getValue()) {
+      this->numSteps = 0;
+      this->value = this->min.getValue();
     }
   }
 }
