@@ -31,6 +31,10 @@
 #include <Inventor/C/glue/glp.h>
 #include <Inventor/C/errors/debugerror.h>
 
+// FIXME: We probably should use a configure-time check for the
+// availability of the NSSymbol functions instead of a simple platform
+// check. Since these functions are part of the core Mac OS X system, this 
+// should be okay for the time being, though. kyrah 20030115
 #ifdef __APPLE__
 
 #include <OpenGL/gl.h>
