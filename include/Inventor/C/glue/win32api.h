@@ -58,17 +58,22 @@ extern "C" {
 #endif
 
   typedef int (WINAPI * GetTextFace_t)(HDC, int, LPTSTR);
+  typedef void (WINAPI * LocalFree_t)(HLOCAL);
 
   struct cc_win32_api {
     GetTextFace_t GetTextFace;
+    LocalFree_t LocalFree;
   };
 
   /* Force singleton access. */
   const struct cc_win32_api * cc_win32(void);
 
-  /* Convenient wrapping of converting and printing out an error code
-     as a text string. */
-  void cc_win32_print_error(const char * callerfuncname, const char * apifuncname, DWORD lasterror);
+  /* Convenient wrapping of converting and printing out a Win32 API
+     error code as a text string. The "lasterror" argument should be
+     the result from GetLastError(). */
+  void cc_win32_print_error(const char * callerfuncname,
+                            const char * apifuncname,
+                            DWORD lasterror);
   
 #ifdef __cplusplus
 }
