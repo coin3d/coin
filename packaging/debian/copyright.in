@@ -1,12 +1,12 @@
-This package was debianized by the Coin Developer Team
-<coin-support@coin3d.org> on Tue, Aug 14 16:37:00 CEST 2001
-
-Copyright:
+This package was debianized by Lars J. Aas <larsa@coin3d.org>
+with guidance from Steve M. Robbins <steven.robbins@videotron.ca>
+on @RFC822_DATE@.
 
 This software is Copyright 1998-2001 by Systems in Motion AS.
+You are free to distribute this software under the terms of the
+GNU Lesser General Public License v2.1.
 
-You are free to distribute this software under the terms of
-the GNU Lesser General Public License v2.1.
-On Debian systems, the complete text of the GNU General Public
-License can be found in /usr/share/common-licenses/LGPL file.
+On Debian systems, the full text of the license can be found in
+the file /usr/share/common-licenses/LGPL-2.1.
 
+The Coin3D project is hosted at http://www.coin3d.org/.
