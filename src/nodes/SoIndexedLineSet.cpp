@@ -297,11 +297,9 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
   SoTextureCoordinateBundle tb(action, TRUE, FALSE);
   doTextures = tb.needCoordinates();
 
-  Binding tbind = PER_VERTEX_INDEXED; // most common
   if (doTextures) {
     if (SoTextureCoordinateBindingElement::get(state) ==
         SoTextureCoordinateBindingElement::PER_VERTEX) {
-      tbind = PER_VERTEX;
       tindices = NULL; // just in case
     }
     else if (tindices == NULL) {
@@ -360,8 +358,7 @@ SoIndexedLineSet::willSetShapeHints(void) const
   FIXME: write function documentation
 */
 SbBool
-SoIndexedLineSet::generateDefaultNormals(SoState * ,
-                                         SoNormalCache * nc)
+SoIndexedLineSet::generateDefaultNormals(SoState * state, SoNormalCache * nc)
 {
   // not possible to generate normals for IndexedLineSet
   nc->set(0, NULL);
@@ -447,11 +444,9 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
   SoTextureCoordinateBundle tb(action, FALSE, FALSE);
   doTextures = tb.needCoordinates();
 
-  Binding tbind = PER_VERTEX_INDEXED; // most common
   if (doTextures) {
     if (SoTextureCoordinateBindingElement::get(state) ==
         SoTextureCoordinateBindingElement::PER_VERTEX) {
-      tbind = PER_VERTEX;
       texindices = NULL; // just in case
     }
     else if (texindices == NULL) {
