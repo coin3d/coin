@@ -187,6 +187,10 @@
               value. This often leads to infinite loop and crash when in VISIBLE_SHAPE mode. 
               Other symptoms are 'GL_OUT_OF_MEMORY' error, Mozilla suddenly dies etc. A restart of 
               X11 is needed. I am using the Mesa drivers. (handegar)
+
+  2002-08-12  Offcreenrendering comes out wrong if offscreenrenderer decides to render to multiple
+              subscreens (due to size limitations). the 'offscreencolorcounter' is increased for each
+              pass on each subscreen which leads to inconsistency on second traversalpass. 
  
 */
 
@@ -220,6 +224,7 @@ public:
   SbBool isDragging;  // 0=no, 1=currently dragging a new point (mouse = last pos)
   
   SbVec2s previousmousecoords;
+  SbVec2s requestedsize;
   
   SbList <SbVec2s> coords;
   SoTimerSensor * timersensor;
@@ -2267,10 +2272,11 @@ SoExtSelectionP::scanOffscreenBuffer(SoNode *sceneRoot)
   for (int k = 0; k < this->coords.getLength(); k++)
     rectbbox.extendBy(this->coords[k]);
 
-  const int minx = rectbbox.getMin()[0];
-  const int maxx = rectbbox.getMax()[0];
-  const int miny = rectbbox.getMin()[1];
-  const int maxy = rectbbox.getMax()[1];
+  // We must also deform lassocoords if offscreen size is changed
+  const int minx = (int) (rectbbox.getMin()[0] * ((float) offscreenSizeX/requestedsize[0]));
+  const int maxx = (int) (rectbbox.getMax()[0] * ((float) offscreenSizeX/requestedsize[0]));
+  const int miny = (int) (rectbbox.getMin()[1] * ((float) offscreenSizeY/requestedsize[1]));
+  const int maxy = (int) (rectbbox.getMax()[1] * ((float) offscreenSizeY/requestedsize[1]));
 
   
   for(int j=miny; j < maxy; ++j){
@@ -2382,11 +2388,38 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
     // --- Do this procedure several times if colorcounter overflows
     this->offscreencolorcounterpasses = 0;
 
+
     // Create offscreen renderer
-    this->renderer = new SoOffscreenRenderer(action->getViewportRegion());
-    this->lassorenderer = new SoOffscreenRenderer(action->getViewportRegion());
+    /*
+      FIXME: Due to the implementation of this node, offscreen rendering using
+      multiple subscreens will lead to erroneous results. Therefore we automatically
+      reduce the size of the offscreen to fit within the maximum offscreen limitations.
+      (20020812 handegar)
+    */
+    SbVec2s maxsize = renderer->getMaximumResolution();
+    this->requestedsize = action->getViewportRegion().getViewportSizePixels();
+    
+    if(requestedsize[0] > maxsize[0] || requestedsize[1] > maxsize[1]){
+      
+      float max = SbMax(requestedsize[0],requestedsize[1]);
+      float min = SbMin(maxsize[0],maxsize[1]);
+      float scale = min/max;
+      
+      SbVec2s newsize;
+      newsize[0] = (int) (requestedsize[0] * scale);
+      newsize[1] = (int) (requestedsize[1] * scale);
+            
+      const SbViewportRegion vp(newsize[0],newsize[1]);
+      this->renderer = new SoOffscreenRenderer(vp);
+      this->lassorenderer = new SoOffscreenRenderer(vp);
+      
+    } else {
+      
+      this->renderer = new SoOffscreenRenderer(action->getViewportRegion());
+      this->lassorenderer = new SoOffscreenRenderer(action->getViewportRegion());
 
-
+    }
+ 
     SoCallback * cbnode = new SoCallback;
     cbnode->ref();
     cbnode->setCallback(offscreenRenderCallback, this);
@@ -2413,7 +2446,7 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
           cbnode2->unref();
         }
       }
-
+      
 
       // First render pass to offscreen buffer.
       this->renderer->render(cbnode);
