@@ -57,17 +57,18 @@ public:
   SbBool isOverride(void) const;
 
   enum NodeType {
-    INVENTOR     = 0x000,
-    VRML1        = 0x001,
-    VRML2        = 0x002,
-    INVENTOR_1   = 0x004,
-    INVENTOR_2_0 = 0x008,
-    INVENTOR_2_1 = 0x010,
-    INVENTOR_2_5 = 0x020,
-    INVENTOR_2_6 = 0x040,
-    COIN_1_0     = 0x080,
-    COIN_2_0     = 0x100,
-    EXTENSION    = 0x200
+    INVENTOR     = 0x0000,
+    VRML1        = 0x0001,
+    VRML2        = 0x0002,
+    INVENTOR_1   = 0x0004,
+    INVENTOR_2_0 = 0x0008,
+    INVENTOR_2_1 = 0x0010,
+    INVENTOR_2_5 = 0x0020,
+    INVENTOR_2_6 = 0x0040,
+    COIN_1_0     = 0x0080,
+    COIN_2_0     = 0x0100,
+    EXTENSION    = 0x0200,
+    COIN_2_2     = 0x0400
   };
 
   static uint32_t getCompatibilityTypes(const SoType & nodetype);

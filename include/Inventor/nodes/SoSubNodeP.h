@@ -92,8 +92,11 @@
 // instead of having to update all node source files on each new Coin
 // major release.
 
+#define SO_FROM_COIN_2_2 \
+  (SoNode::COIN_2_2)
+
 #define SO_FROM_COIN_2_0 \
-  (SoNode::COIN_2_0)
+  (SoNode::COIN_2_0|SO_FROM_COIN_2_2)
 
 #define SO_FROM_COIN_1_0 \
   (SoNode::COIN_1_0|SO_FROM_COIN_2_0)
