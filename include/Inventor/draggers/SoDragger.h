@@ -22,12 +22,17 @@
 
 #include <Inventor/nodekits/SoInteractionKit.h>
 #include <Inventor/fields/SoSFBool.h>
+#include <Inventor/lists/SoCallbackList.h>
+#include <Inventor/SbMatrix.h>
+#include <Inventor/SbVec3f.h>
+#include <Inventor/SbVec2s.h>
+#include <Inventor/SbViewVolume.h>
+#include <Inventor/SbViewportRegion.h>
 
-class SbMatrix;
+
 class SbRotation;
 class SbVec2f;
 class SbVec2s;
-class SbVec3f;
 class SbViewVolume;
 class SbViewportRegion;
 class SoDragger;
@@ -35,7 +40,6 @@ class SoEvent;
 class SoPickedPoint;
 
 typedef void SoDraggerCB(void * data, SoDragger * dragger);
-
 
 class SoDragger : public SoInteractionKit {
   typedef SoInteractionKit inherited;
@@ -137,6 +141,35 @@ protected:
   static void childMotionCB(void *, SoDragger *);
   static void childFinishCB(void *, SoDragger *);
   static void childOtherEventCB(void *, SoDragger *);
+
+private:
+  static float minScale;
+  int minGesture;
+  SoHandleEventAction *eventAction;
+  ProjectorFrontSetting frontOnProjector;
+  SbBool valueChangedCBEnabled;
+  SbBool ignoreInBBox;
+  SbBool isGrabbing;
+  const SoEvent *currentEvent;
+  SoPath *pickedPath;
+  class SoDraggerCache *draggerCache;
+
+  SoCallbackList startCB;
+  SoCallbackList motionCB;
+  SoCallbackList finishCB;
+  SoCallbackList valueChangedCB;
+  SoCallbackList otherEventCB;
+  SbMatrix startMotionMatrix;
+  SbVec3f startingPoint;
+  SbViewVolume viewVolume;
+  SbViewportRegion viewport;
+  SbVec2s startLocaterPos;
+  SoDragger *activeChildDragger;
+
+  SbBool isPicked(SoPath *path);
+  void eventHandled(const SoEvent *event, SoHandleEventAction *action);
+  void updateDraggerCache(const SoPath *path);
+
 };
 
 #endif // !COIN_SODRAGGER_H
