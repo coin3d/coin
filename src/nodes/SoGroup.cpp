@@ -441,15 +441,15 @@ SoGroup::removeChild(SoNode * const child)
 {
   int idx = this->findChild(child);
 
-#if COIN_DEBUG
   if (idx < 0 || idx > this->getNumChildren()) {
+#if COIN_DEBUG
     SoDebugError::post("SoGroup::removeChild",
                        "tried to remove non-existent child %p (%s)",
                        child,
                        child ? child->getTypeId().getName().getString() : "");
+#endif // COIN_DEBUG
     return;
   }
-#endif // COIN_DEBUG
 
   this->removeChild(idx);
 }
