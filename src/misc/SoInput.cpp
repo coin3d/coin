@@ -788,8 +788,7 @@ SoInput::read(SbString & s)
 
         if (*buf == '\\') {
           if (!fi->get(c)) return FALSE;
-          if (c == '\"') *buf = '\"';
-          else fi->putBack(c);
+          *buf = c;
         }
       }
       else if (fi->isSpace(*buf)) {
