@@ -57,20 +57,6 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#undef COIN_THREADSAFE
-
-#ifdef COIN_THREADSAFE
-#include <Inventor/C/threads/sync.h>
-#endif // COIN_THREADSAFE
-
-#ifdef COIN_THREADSAFE
-#define LOCK_ENGINE(obj) cc_sync_begin(obj)
-#define UNLOCK_ENGINE(id) cc_sync_end(id)
-#else
-#define LOCK_ENGINE(obj) NULL
-#define UNLOCK_ENGINE(id)
-#endif
-
 // FIXME: document these properly. 20000405 mortene.
 /*!
   \fn const SoEngineOutputData * SoNodeEngine::getOutputData(void) const
@@ -104,10 +90,6 @@ SoNodeEngine::~SoNodeEngine()
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoNodeEngine::~SoNodeEngine", "%p", this);
 #endif // debug
-#ifdef COIN_THREADSAFE
-  // needed to free sync-items used in notify() and evaluateWrapper()
-  cc_sync_free((void*) this);
-#endif // COIN_THREADSAFE}
 }
 
 // Overrides SoBase::destroy().
@@ -235,7 +217,6 @@ SoNodeEngine::notify(SoNotList * nl)
   // Avoid recursive notification calls.
   if (this->isNotifying()) return;
 
-  void * lockid = LOCK_ENGINE(this);
   this->flags |= FLAG_ISNOTIFYING;
 
   // Let engine know that a field changed, so we can recalculate
@@ -259,7 +240,6 @@ SoNodeEngine::notify(SoNotList * nl)
   SoDebugError::postInfo("SoNodeEngine::notify", "%p - %s, done",
                          this, this->getTypeId().getName().getString());
 #endif // debug
-  UNLOCK_ENGINE(lockid);
 }
 
 /*!
@@ -268,7 +248,6 @@ SoNodeEngine::notify(SoNotList * nl)
 void
 SoNodeEngine::evaluateWrapper(void)
 {
-  void * lockid = LOCK_ENGINE(this);
   const SoEngineOutputData * outputs = this->getOutputData();
   int i, n = outputs->getNumOutputs();
   for (i = 0; i < n; i++) {
@@ -278,7 +257,6 @@ SoNodeEngine::evaluateWrapper(void)
   for (i = 0; i < n; i++) {
     outputs->getOutput(this, i)->doneWriting();
   }
-  UNLOCK_ENGINE(lockid);
 }
 
 /*!
