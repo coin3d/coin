@@ -109,9 +109,8 @@ SoMultipleCopy::getBoundingBox(SoGetBoundingBoxAction * action)
   // _should_ be done.)
   //
   // 20011218 mortene.
-
-  // store incoming modelmatrix
-  SbMatrix mat = SoModelMatrixElement::get(action->getState());
+  //
+  // 20020808 The code should now work properly. kristian.
 
   // get reference to the box
   SbXfBox3f & box = action->getXfBoundingBox();
@@ -122,43 +121,39 @@ SoMultipleCopy::getBoundingBox(SoGetBoundingBoxAction * action)
   // accumulation variables
   SbVec3f acccenter(0.0f, 0.0f, 0.0f);
   int numCenters = 0;
-  SbXfBox3f totalbox;
+  
+  // make current box empty to calculate bbox of this separator
+  box.makeEmpty();
+  box.setTransform(SbMatrix::identity());
+
+  // traverse all children, calculate the local bbox
+  inherited::getBoundingBox(action);
+  SbXfBox3f lbbox = box;
+
+  // Empty the box again
+  box.makeEmpty();
+  box.setTransform(SbMatrix::identity());
 
   for (int i=0; i < matrix.getNum(); i++) {
-    action->getState()->push();
+    // Apply transformation to the local bbox
+    SbXfBox3f tbbox = lbbox;
+    tbbox.transform(matrix[i]);
 
-    SoSwitchElement::set(action->getState(), i);
+    // Accumulate center
+    acccenter += tbbox.getCenter();
+    numCenters++;
 
-    // make current box empty to calculate bbox of this separator
-    box.makeEmpty();
-    box.setTransform(SbMatrix::identity());
-
-    // set bbox matrix
-    SoBBoxModelMatrixElement::set(action->getState(), this, matrix[i]);
-
-    // traverse all children, calculate the local bbox
-    inherited::getBoundingBox(action);
-
-    // If center point is set, accumulate center.
-    if (action->isCenterSet()) {
-      acccenter += action->getCenter();
-      numCenters++;
-      action->resetCenter();
-    }
-
-    // expand box by stored bbox
-    if (!totalbox.isEmpty()) box.extendBy(totalbox);
-    totalbox = box;
-
-    action->getState()->pop();
+    // expand box by transformed bbox
+    if (!tbbox.isEmpty()) box.extendBy(tbbox);
   }
 
-  // transform the local bbox by stored model matrix
-  if (!box.isEmpty()) box.transform(mat);
+  // Extend the bbox by the incoming bbox
   if (!incomingbox.isEmpty()) box.extendBy(incomingbox);
 
-  if (numCenters != 0)
-    action->setCenter(acccenter / float(numCenters), FALSE);
+  if (numCenters != 0) {
+    action->resetCenter();
+    action->setCenter(acccenter / float(numCenters), TRUE);
+  }
 }
 
 // Doc in superclass.
