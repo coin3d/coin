@@ -53,8 +53,8 @@
   the \e FreeType font engine and explicitly name a font-file (This is
   closer described below).
 
-  Here is a simple example on how to print a string using using a bold
-  & Italic Arial font:
+  Here is a simple example on how to print a string using a bold &
+  italic Arial font:
 
   \verbatim
   #Inventor V2.1 ascii
@@ -72,14 +72,52 @@
   \endverbatim
 
   Coin has support for two different font APIs. On non-Windows
-  platforms, the \e FreeType library is used. On Windows the Win32 GDI
-  library is used. \e FreeType is dynamically loaded on demand by Coin
-  if font support are requested by a node. When fontsupport is loaded
-  on Windows, FreeType will have precedence over Win32 if
-  located. This can be prevented by setting the
-  "COIN_FORCE_FREETYPE_OFF" environment variable to 1. When using 
-  FreeType, you need FreeType version 2.1 or later. On Mac OS X, 
-  version 2.1.7 or later is required.
+  platforms, the \e FreeType library together with the optional \e
+  Fontconfig library is used.
+
+  If the \e Fontconfig library is installed the font file on the sytem
+  for a given font name will be located through it. For more
+  information on \e Fontconfig see
+  http://freedesktop.org/software/fontconfig . Additionally \e
+  Fontconfig allows to match specific fonts through its own pattern
+  matching format (see
+  http://pdx.freedesktop.org/~fontconfig/fontconfig-user.html).
+  Please note that the point size value in the textual representation
+  of the Fontconfig pattern is currently overriden by the size field
+  of the SoFont node and if no size field is specified the default
+  value of the size field is in effect. In case you intend to use your
+  application on systems where the \e Fontconfig library is expected
+  to be not installed you should not make use of \e Fontconfig's font
+  pattern syntax. \e Fontconfig usage can be prevented by setting the
+  "COIN_FORCE_FONTCONFIG_OFF" environment variable to 1.
+
+  Here is an example on how to print a string using the \e Fontconfig
+  pattern matching syntax using a bold & italic font where Times New
+  Roman is the preferred font family.
+
+  \verbatim
+  #Inventor V2.1 ascii
+  
+  Separator {
+     Font {
+       name "Times New Roman,Arial,Helvetica:italic:bold"
+       size 24
+     }
+     Text2 {
+       string ["This is a", "Coin font test"]
+       justification CENTER
+     }    
+  }
+  \endverbatim
+
+
+  On Windows the Win32 GDI library is used. \e FreeType and \e
+  Fontconfig are dynamically loaded on demand by Coin if font support
+  are requested by a node. When fontsupport is loaded on Windows,
+  FreeType will have precedence over Win32 if located. This can be
+  prevented by setting the "COIN_FORCE_FREETYPE_OFF" environment
+  variable to 1. When using FreeType, you need FreeType version 2.1 or
+  later. On Mac OS X, version 2.1.7 or later is required.
 
   If Coin cannot load the \e FreeType library, and is not running on
   Microsoft Windows, only the default fonts will be accessible.
