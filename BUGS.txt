@@ -3889,3 +3889,59 @@ incremented during the copy, but never decremented :(
     20040924 mortene.
 
 =====================================================================
+
+144 Tiled rendering with the SoOffscreenRenderer fails if no camera is
+    present in the scene graph.
+
+    Reproduce with this stand-alone example:
+
+----8<----- [snip] --------------------8<----- [snip] ----------------
+#include <Inventor/SbViewportRegion.h>
+#include <Inventor/SoOffscreenRenderer.h>
+#include <Inventor/actions/SoWriteAction.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoText2.h>
+#include <Inventor/nodes/SoPerspectiveCamera.h>
+#include <Inventor/C/tidbits.h>
+
+int
+main(void)
+{
+  SoDB::init();
+
+  SoSeparator * root = new SoSeparator;
+  root->ref();
+
+  SoPerspectiveCamera * cam = new SoPerspectiveCamera;
+  // Enable this line, and it works as expected.
+//   root->addChild(cam);
+
+  SoText2 * txt = new SoText2;
+  txt->string.setValue("habaluba");
+  txt->justification = SoText2::LEFT;
+  root->addChild(txt);
+
+  coin_setenv("COIN_OFFSCREENRENDERER_MAX_TILESIZE", "100", TRUE);
+  SbViewportRegion vp(400, 400);
+
+  cam->viewAll(root, vp);
+  
+  SoOffscreenRenderer renderer(vp);
+  renderer.render(root);
+  renderer.writeToFile("tst.jpg","jpg");
+
+  root->unref();
+
+  return 0;
+}
+----8<----- [snip] --------------------8<----- [snip] ----------------
+
+    This is probably not too hard to fix. I'm not sure whether it
+    /should/ be fixed, though -- perhaps we should just spit out a
+    warning when no camera has been encountered in the scene graph
+    when doing tiled rendering? handegar can probably answer that.
+
+    20041005 mortene, issue originally reported on coin-discuss by
+    Albert van der Meer.
+
+=====================================================================
