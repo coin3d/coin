@@ -144,7 +144,7 @@ private:
      original OIV API. This is not such a good idea, see the comments
      in SoSubAction.h for SO_ACTION_HEADER. */
 
-  static void cleanup(void);
+  static void atexit_cleanup(void);
   static SoEnabledElementsList * enabledElements;
   static SoActionMethodList * methods;
   SoTempPath currentpath;

@@ -52,7 +52,7 @@ private:
   typedef void converter_func(SoField * from, SoField * to);
 
   static void register_converter(converter_func * f, SoType from, SoType to);
-  static void cleanup(void);
+  static void atexit_cleanup(void);
 
   static SbDict * converter_dict;
   converter_func * convertvalue;

@@ -391,12 +391,12 @@ SoAction::initClass(void)
                                     SoOverrideElement::getClassStackIndex());
 
   SoAction::initClasses();
-  coin_atexit((coin_atexit_f*) SoAction::cleanup, 0);
+  coin_atexit((coin_atexit_f*) SoAction::atexit_cleanup, 0);
 }
 
 // private cleanup method
 void
-SoAction::cleanup(void)
+SoAction::atexit_cleanup(void)
 {
   delete SoAction::enabledElements;
   SoAction::enabledElements = NULL;

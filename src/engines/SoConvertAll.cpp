@@ -638,7 +638,7 @@ SoConvertAll::register_converter(converter_func * f, SoType from, SoType to)
 }
 
 void
-SoConvertAll::cleanup(void)
+SoConvertAll::atexit_cleanup(void)
 {
   delete SoConvertAll::converter_dict;
   SoConvertAll::converter_dict = NULL;
@@ -649,7 +649,7 @@ void
 SoConvertAll::initClass(void)
 {
   SoConvertAll::converter_dict = new SbDict;
-  coin_atexit((coin_atexit_f*) SoConvertAll::cleanup, 0);
+  coin_atexit((coin_atexit_f*) SoConvertAll::atexit_cleanup, 0);
 
   // SoConvertAll doesn't have a createInstance() method (because it
   // doesn't have a default constructor), so use the ABSTRACT macros.
