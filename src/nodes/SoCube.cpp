@@ -357,6 +357,8 @@ SoCube::computeBBox(SoAction * /* action */, SbBox3f & box, SbVec3f & center)
 void 
 SoCube::rayPick(SoRayPickAction *action)
 {
+  if (!shouldRayPick(action)) return;
+  
   static int translation[6] = {2,3,5,4,1,0}; // translate into detail part-num
   action->setObjectSpace();
   const SbLine &line = action->getLine();

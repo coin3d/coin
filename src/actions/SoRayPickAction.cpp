@@ -21,6 +21,8 @@
   \class SoRayPickAction Inventor/include/SoRayPickAction.h
   \brief The SoRayPickAction class is for picking objects in a scene through
   sending rays into it.
+
+  FIXME: write full doc
 */
 
 #include <Inventor/SbName.h>
@@ -39,7 +41,6 @@
 #include <Inventor/misc/SoState.h>
 #include <float.h>
 #include <math.h>
-
 
 #if !defined(COIN_EXCLUDE_SOSHAPE)
 #include <Inventor/nodes/SoShape.h>
@@ -174,6 +175,9 @@ SoRayPickAction::initClass(void)
   
   ENABLE_ELEMENT(SoPickRayElement);
   ENABLE_ELEMENT(SoViewportRegionElement);
+#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
+  ENABLE_ELEMENT(SoOverrideElement);
+#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
 }
 
 // *************************************************************************
@@ -193,10 +197,6 @@ SoRayPickAction::SoRayPickAction(const SbViewportRegion & viewportRegion)
   if (first) {
     first = 0;
     // most methods are inherited from SoPickAction
-
-#if !defined(COIN_EXCLUDE_SOSHAPE)
-    SO_ACTION_ADD_METHOD(SoShape, SoNode::rayPickS);
-#endif //!COIN_EXCLUDE_SOSHAPE
 #if !defined(COIN_EXCLUDE_SOCAMERA)
     SO_ACTION_ADD_METHOD(SoCamera, SoNode::rayPickS);
 #endif //!COIN_EXCLUDE_SOCAMERA
@@ -209,9 +209,9 @@ SoRayPickAction::SoRayPickAction(const SbViewportRegion & viewportRegion)
 #if !defined(COIN_EXCLUDE_SOLEVELOFDETAIL)
     SO_ACTION_ADD_METHOD(SoLevelOfDetail, SoNode::rayPickS);
 #endif //!COIN_EXCLUDE_SOLEVELOFDETAIL
-#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
-  ENABLE_ELEMENT(SoOverrideElement);
-#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
+#if !defined(COIN_EXCLUDE_SOSHAPE)
+    SO_ACTION_ADD_METHOD(SoShape, SoNode::rayPickS);
+#endif //!COIN_EXCLUDE_SOSHAPE
   }
 
   methods->setUp(); // FIXME: not sure if this should be called here...

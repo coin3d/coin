@@ -26,7 +26,7 @@
 */
 
 #include <Inventor/nodes/SoSphere.h>
-
+#include <Inventor/SbSphere.h>
 
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/misc/SoState.h>
@@ -52,6 +52,10 @@
 #include <Inventor/misc/SoGL.h>
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
+#if !defined(COIN_EXCLUDE_SORAYPICKRACTION)
+#include <Inventor/actions/SoRayPickAction.h>
+#endif // !COIN_EXCLUDE_SORAYPICKACTION
+
 #if !defined(COIN_EXCLUDE_SOCOMPLEXITYTYPEELEMENT)
 #include <Inventor/elements/SoComplexityTypeElement.h>
 #endif
@@ -59,6 +63,10 @@
 #if !defined(COIN_EXCLUDE_SOCOMPLEXITYELEMENT)
 #include <Inventor/elements/SoComplexityElement.h>
 #endif
+
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
 
 /*!
   \var SoSFFloat SoSphere::radius
@@ -216,9 +224,18 @@ SoSphere::computeBBox(SoAction * /* action */, SbBox3f & box, SbVec3f & center)
   FIXME: write doc
  */
 void
-SoSphere::rayPick(SoRayPickAction * /* action */)
+SoSphere::rayPick(SoRayPickAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  if (!shouldRayPick(action)) return;
+
+  action->setObjectSpace();
+  const SbLine &line = action->getLine();
+  SbSphere sphere(SbVec3f(0.0f, 0.0f, 0.0f), radius.getValue());
+  SbVec3f enter, exit;
+  if (sphere.intersect(line, enter, exit)) {    
+    if (action->isBetweenPlanes(enter)) action->addIntersection(enter);
+    if (action->isBetweenPlanes(exit)) action->addIntersection(exit);
+  }
 }
 #endif // !COIN_EXCLUDE_SORAYPICKACTION
 

@@ -42,8 +42,9 @@ public:
   void addMethod(const SoType nodeType, const SoActionMethod method);
   void setUp(void);
 
+  void dump_list(void);
+
 private:
-  
   SoActionMethodList *parent;
   SoTypeList dummyList;
 

@@ -27,9 +27,9 @@
 
 #include <Inventor/nodes/SoCylinder.h>
 
+#include <Inventor/SbCylinder.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/misc/SoState.h>
-
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -39,6 +39,12 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/misc/SoGL.h>
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+
+#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
+#include <Inventor/actions/SoRayPickAction.h>
+#include <Inventor/details/SoCylinderDetail.h>
+#include <Inventor/SoPickedPoint.h>
+#endif // !COIN_EXCLUDE_SORAYPICKACTION
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -54,15 +60,15 @@
 
 #if !defined(COIN_EXCLUDE_SOMATERIALBINDINGELEMENT)
 #include <Inventor/elements/SoMaterialBindingElement.h>
-#endif
+#endif // ! COIN_EXCLUDE_SOMATERIALBINDINGELEMENT
 
 #if !defined(COIN_EXCLUDE_SOCOMPLEXITYTYPEELEMENT)
 #include <Inventor/elements/SoComplexityTypeElement.h>
-#endif
+#endif // ! COIN_EXCLUDE_SOCOMPLEXITYTYPEELEMENT
 
 #if !defined(COIN_EXCLUDE_SOCOMPLEXITYELEMENT)
 #include <Inventor/elements/SoComplexityElement.h>
-#endif
+#endif // ! COIN_EXCLUDE_SOCOMPLEXITYELEMENT
 
 /*!
   \enum SoCylinder::Part
@@ -320,9 +326,71 @@ SoCylinder::hasPart(SoCylinder::Part part) const
   FIXME: write doc
 */
 void
-SoCylinder::rayPick(SoRayPickAction * /* action */)
+SoCylinder::rayPick(SoRayPickAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  if (!shouldRayPick(action)) return;
+
+  action->setObjectSpace();
+  const SbLine &line = action->getLine();
+  float r = this->radius.getValue();
+  float h = this->height.getValue() * 0.5f;
+
+  // FIXME: possible to simplify cylinder test, since this cylinder
+  // is aligned with the y-axis. 19991110 pederb.
+  SbCylinder cyl(SbLine(SbVec3f(0,0,0), SbVec3f(0,1,0)), r);
+  SbVec3f enter, exit;
+
+  int numPicked = 0; // will never be > 2
+
+  if (cyl.intersect(line, enter, exit)) {
+    if ((fabs(enter[1]) <= h) && action->isBetweenPlanes(enter)) {
+      SoPickedPoint *pp = action->addIntersection(enter);
+      if (pp) {
+	SoCylinderDetail *detail = new SoCylinderDetail();
+	detail->setPart((int)SIDES);
+	pp->setDetail(detail, this);
+	numPicked++;
+      }
+    }
+    if ((fabs(exit[1]) <= h) && action->isBetweenPlanes(exit)) {
+      SoPickedPoint *pp = action->addIntersection(exit);
+      if (pp) {
+	SoCylinderDetail *detail = new SoCylinderDetail();
+	detail->setPart((int)SIDES);      
+	pp->setDetail(detail, this);
+	numPicked++;
+      }
+    }
+  }
+  
+  float r2 = r * r;
+  
+  SbPlane top(SbVec3f(0,1,0), h);
+  if ((numPicked < 2) && top.intersect(line, enter)) {
+    if (((enter[0]*enter[0] + enter[2]*enter[2]) <= r2) &&
+	(action->isBetweenPlanes(enter))) {
+      SoPickedPoint *pp = action->addIntersection(enter);
+      if (pp) {
+	SoCylinderDetail *detail = new SoCylinderDetail();
+	detail->setPart((int)TOP);      
+	pp->setDetail(detail, this);
+	numPicked++;
+      }
+    }
+  }
+  
+  SbPlane bottom(SbVec3f(0,1,0), -h);
+  if ((numPicked < 2) && bottom.intersect(line, enter)) {
+    if (((enter[0]*enter[0] + enter[2]*enter[2]) <= r2) &&
+	(action->isBetweenPlanes(enter))) {
+      SoPickedPoint *pp = action->addIntersection(enter);
+      if (pp) {
+	SoCylinderDetail *detail = new SoCylinderDetail();
+	detail->setPart((int)BOTTOM);      
+	pp->setDetail(detail, this);	
+      }
+    }
+  }
 }
 #endif // !COIN_EXCLUDE_SORAYPICKACTION
 

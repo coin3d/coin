@@ -90,8 +90,25 @@ SoActionMethodList::addMethod(const SoType nodeType,
   int n = SoType::getAllDerivedFrom(nodeType, dummyList);
   for (int i = 0; i < n; i++) {
     SoType type = dummyList[i];
-    if ((*this)[(int)type.getData()] == dummyAction) 
-      (*this)[i] = method;
+    if ((*this)[(int)type.getData()] == dummyAction) {
+#if 0 // debug
+      {
+	char buffer[256];
+	const char * methodname = NULL;
+	if (method == SoNode::pickS) methodname = "pickS";
+	else if (method == SoNode::rayPickS) methodname = "rayPickS";
+	else {
+	  methodname = buffer;
+	  sprintf(buffer, "%p", method);
+	}
+	
+	SoDebugError::postInfo("SoActionMethodList::addMethod",
+			       "(listp %p) ``%s'' overloaded with %s",
+			       this, type.getName().getString(), methodname);
+      }
+#endif // debug
+      (*this)[type.getData()] = method;
+    }
   }
 }
 
@@ -133,3 +150,35 @@ SoActionMethodList::dummyAction(SoAction *action,
 #endif // debug
 }
 
+/*!
+  Debug method for dumping the contents of a list.
+ */
+void
+SoActionMethodList::dump_list(void)
+{
+#if defined(COIN_DEBUG)
+  for (int i=0; i < SoType::getNumTypes(); i++) {
+    SoType t = SoType::fromKey(i);
+    if (!t.isBad() && t.isDerivedFrom(SoNode::getClassTypeId())) {
+//      if (!t.isBad() && t.isDerivedFrom(SoType::fromName("Sphere"))) {
+      
+      const int index = t.getData();
+      SoActionMethod method = (*this)[index];
+      
+      char buffer[256];
+      const char * methodname = NULL;
+      if (method == SoNode::pickS) methodname = "pickS";
+      else if (method == SoNode::rayPickS) methodname = "rayPickS";
+      else if (method == SoActionMethodList::dummyAction) methodname = "dummy";
+      else {
+	methodname = buffer;
+	sprintf(buffer, "%p", method);
+      }
+
+      SoDebugError::postInfo("SoActionMethodList::dump_list",
+			     "(listp %p) type ``%s'', method %s",
+			     this, t.getName().getString(), methodname);
+    }
+  }
+#endif // COIN_DEBUG
+}

@@ -517,6 +517,32 @@ SoAction::traverse(SoNode * const node)
   // the SoAction subclass.
   assert(this->traversalMethods);
   
+#if 0 // debug
+  {
+    int midx = SoNode::getActionMethodIndex(node->getTypeId());
+    const SoActionMethod m = (*this->traversalMethods)[midx];
+    char buffer[256];
+    const char * mname = NULL;
+    if (m == SoNode::pickS) mname = "pickS";
+    else if (m == SoNode::rayPickS) mname = "rayPickS";
+    else {
+      mname = buffer;
+      sprintf(buffer, "%p", m);
+    }
+
+    SoDebugError::postInfo("SoAction::traverse",
+			   "%s %s actionmethodindex: %d (func: %s)",
+			   node->getTypeId().getName().getString(),
+			   this->getTypeId().getName().getString(),
+			   midx,
+			   mname);
+
+    SoDebugError::postInfo("SoAction::traverse",
+			   "traversalMethods: %p", traversalMethods);
+
+    traversalMethods->dump_list();
+  }
+#endif // debug
   (*this->traversalMethods)
     [SoNode::getActionMethodIndex(node->getTypeId())](this, node); 
 

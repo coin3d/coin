@@ -198,6 +198,9 @@ SoNode::initClasses(void)
 #if !defined(COIN_EXCLUDE_SOCUBE)
   SoCube::initClass();
 #endif // COIN_EXCLUDE_SOCUBE
+//  #if !defined(COIN_EXCLUDE_SOSPHERE)
+//    SoSphere::initClass();
+//  #endif // COIN_EXCLUDE_SOSPHERE
 #if !defined(COIN_EXCLUDE_SOCYLINDER)
   SoCylinder::initClass();
 #endif // COIN_EXCLUDE_SOCYLINDER
