@@ -249,12 +249,15 @@ SbTri3f::intersect(const SbTri3f & t) const
       break;
     }
 
+    // FIXME: I'm not confident we've actually found the two vertices that should
+    // be lifted up at this point.  I can think of cases that will give false
+    // negatives.  20021024 larsa
     a1 = a1 + plane1.getNormal();
     a2 = a2 + plane1.getNormal();
     // regenerate planes
     plane1 = SbPlane(a1, b1, c1);
     plane2 = SbPlane(a2, b2, c2);
-  } else {
+  // } else {
     // fprintf(stderr, "normals are different\n");
   }
 
