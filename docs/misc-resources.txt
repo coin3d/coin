@@ -150,3 +150,7 @@ THE LINKS
 
   Contains configure/make logs from building Coin on a number of different
   Debian Linux architectures.
+
+* Open Dynamics Engine, simulation of articulated rigid body dynamics:
+  http://www.q12.org/ode/ode.html (also has links to other similar
+  engines)
