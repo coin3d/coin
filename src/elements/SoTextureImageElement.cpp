@@ -26,7 +26,9 @@
 */
 
 #include <Inventor/elements/SoTextureImageElement.h>
-
+#include <Inventor/elements/SoGLTextureImageElement.h>
+#include <Inventor/misc/SoGLImage.h>
+#include <Inventor/SbImage.h>
 
 #include <assert.h>
 
@@ -185,13 +187,12 @@ SoTextureImageElement::get(SoState * const state,
   SoTextureImageElement *elem = (SoTextureImageElement*)
     SoElement::getConstElement(state, classStackIndex);
 
-  size = elem->size;
-  numComponents = elem->numComponents;
   wrapS = elem->wrapS;
   wrapT = elem->wrapT;
   model = elem->model;
   blendColor = elem->blendColor;
-  return elem->bytes;
+  
+  return getImage(state, size, numComponents);
 }
 
 /*!
@@ -277,6 +278,19 @@ SoTextureImageElement::getImage(SoState * const state,
 {
   SoTextureImageElement *elem = (SoTextureImageElement*)
     SoElement::getConstElement(state, classStackIndex);
+
+  if (elem->getTypeId().isDerivedFrom(SoGLTextureImageElement::getClassTypeId())) {
+    Model dummy1;
+    SbColor dummy2;
+    SoGLImage * image = SoGLTextureImageElement::get(state, dummy1, dummy2);
+    unsigned char * bytes = NULL;
+    size = SbVec2s(0,0);
+    numComponents = 0;
+    if (image && image->getImage()) {
+      bytes = image->getImage()->getValue(size, numComponents);
+    }
+    return bytes;
+  }
   size = elem->size;
   numComponents = elem->numComponents;
   return elem->bytes;

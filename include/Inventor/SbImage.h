@@ -21,9 +21,12 @@
 #define COIN_SBIMAGE_H
 
 #include <Inventor/SbVec2s.h>
+#include <Inventor/SbString.h>
 #include <stddef.h> // for NULL
 
-class SbString;
+class SbImage;
+
+typedef void SbImageScheduleReadCB(const SbString &, SbImage *, void *);
 
 class COIN_DLL_API SbImage {
 public:
@@ -34,11 +37,13 @@ public:
 
   void setValue(const SbVec2s & size, const int bytesperpixel,
                 const unsigned char * bytes);
+  void setValuePtr(const SbVec2s & size, const int bytesperpixel,
+                   const unsigned char * bytes);
   unsigned char * getValue(SbVec2s & size, int & bytesperpixel) const;
 
   SbBool readFile(const SbString & filename,
-                const SbString * const * searchdirectories = NULL,
-                const int numdirectories = 0);
+                  const SbString * const * searchdirectories = NULL,
+                  const int numdirectories = 0);
 
   int operator==(const SbImage & image) const;
   int operator!=(const SbImage & image) const {
@@ -50,9 +55,24 @@ public:
                                 const int numdirs);
 
 private:
-  unsigned char * bytes;
-  SbVec2s size;
-  int bpp;
+
+  // FIXME: remove these and replace with SbImageP * pimpl when it's
+  // ok to break ABI compatibility. pederb, 2001-11-06
+  unsigned char * bytes_obsoleted;
+  SbVec2s size_obsoleted;
+  int bpp_obsoleted;
+
+public:
+
+  // methods for delaying image loading until it is actually needed.
+  void readLock(void) const;
+  void readUnlock(void) const;
+  
+  SbBool scheduleReadFile(SbImageScheduleReadCB * cb,
+                          void * closure,
+                          const SbString & filename,
+                          const SbString * const * searchdirectories = NULL,
+                          const int numdirectories = 0);
 };
 
 #endif // COIN_SBIMAGE_H

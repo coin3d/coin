@@ -29,6 +29,7 @@
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/misc/SoGLImage.h>
+#include <Inventor/SbImage.h>
 
 #if HAVE_CONFIG_H
 #include <config.h>
@@ -111,6 +112,8 @@ SoGLTextureImageElement::pop(SoState * state,
     prevTopElement;
   
   if (prev->dlist) prev->dlist->unref(state); // unref dlist (ref'ed in set())
+  if (prev->image && prev->image->getImage()) prev->image->getImage()->readUnlock();
+
   this->glmodel = prev->glmodel;
   this->glblendcolor = prev->glblendcolor;
   this->glalphatest = prev->glalphatest;
@@ -139,18 +142,21 @@ SoGLTextureImageElement::set(SoState * const state, SoNode * const node,
   SoGLTextureImageElement * elem = (SoGLTextureImageElement*)
     SoReplacedElement::getElement(state, classStackIndex, node);
   if (elem->dlist) elem->dlist->unref();
+  if (elem->image && elem->image->getImage()) elem->image->getImage()->readUnlock();
   if (image) {
     // keep SoTextureImageElement "up-to-date"
     inherited::set(state, node,
-                   image->getSize(),
-                   image->getNumComponents(),
-                   image->getDataPtr(),
+                   SbVec2s(0,0),
+                   0,
+                   NULL,
                    translateWrap(image->getWrapS()),
                    translateWrap(image->getWrapS()),
                    model,
                    blendColor);
     elem->quality = -1.0f;
     elem->image = image;
+    // make sure image isn't changed while this is the active texture
+    if (image->getImage()) image->getImage()->readLock(); 
     elem->didapply = didapply;
     // FIXME: the next line causes a memory leak, according to
     // Purify. 20001102 mortene.

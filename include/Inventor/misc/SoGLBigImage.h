@@ -36,9 +36,7 @@ public:
   static SoType getClassTypeId(void);
   virtual SoType getTypeId(void) const ;
 
-  virtual void setData(const unsigned char * bytes,
-                       const SbVec2s size,
-                       const int nc,
+  virtual void setData(const SbImage * image,
                        const Wrap wraps,
                        const Wrap wrapt,
                        const float quality = 0.5f,

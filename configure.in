@@ -235,6 +235,7 @@ if test -f ${srcdir}/src/extensions/threads/configure; then
   AC_DEFINE([HAVE_THREADS],, [*EXPERIMENTAL* to use the threads extension])
   HAVE_THREADS=1
   AC_CONFIG_SUBDIRS([src/extensions/threads])
+  CPPFLAGS="$CPPFLAGS -I${srcdir}/src/extensions/threads"
 else
   HAVE_THREADS=0
 fi

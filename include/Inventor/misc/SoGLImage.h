@@ -27,6 +27,7 @@
 
 class SoGLDisplayList;
 class SoState;
+class SbImage;
 
 class COIN_DLL_API SoGLImage {
 public:
@@ -45,9 +46,17 @@ public:
   };
 
   void applyQuality(SoGLDisplayList * dl, const float quality);
-  virtual void setData(const unsigned char * bytes,
-                       const SbVec2s size,
-                       const int nc,
+
+  void setData(const unsigned char * bytes,
+               const SbVec2s & size,
+               const int numcomponents,
+               const Wrap wraps = REPEAT,
+               const Wrap wrapt = REPEAT,
+               const float quality = 0.5f,
+               const int border = 0,
+               SoState * createinstate = NULL);
+
+  virtual void setData(const SbImage * image,
                        const Wrap wraps = REPEAT,
                        const Wrap wrapt = REPEAT,
                        const float quality = 0.5f,
@@ -78,9 +87,7 @@ public:
   void setFlags(const uint32_t flags);
   uint32_t getFlags(void) const;
 
-  const unsigned char * getDataPtr(void) const;
-  SbVec2s getSize(void) const;
-  int getNumComponents(void) const;
+  const SbImage * getImage(void) const;
 
   virtual SoGLDisplayList * getGLDisplayList(SoState * state);
   SbBool hasTransparency(void) const;
@@ -105,6 +112,9 @@ public:
   static void endFrame(SoState * state);
   static void setDisplayListMaxAge(const uint32_t maxage);
   static void freeAllImages(SoState * state = NULL);
+
+  void setEndFrameCallback(void (*cb)(void *), void * closure);
+  int getNumFramesSinceUsed(void) const;
 
 private:
   static void registerImage(SoGLImage * image);

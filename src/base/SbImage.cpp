@@ -44,16 +44,81 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_THREADS
+#include <Inventor/threads/SbRWMutex.h>
+#endif // HAVE_THREADS
+
+#ifndef DOXYGEN_SKIP_THIS
+
+class SbImageP {
+public:
+  SbImageP(void)
+    : bytes(NULL),
+      didalloc(FALSE),
+      size(0,0),
+      bpp(0),
+      schedulecb(NULL)
+#ifdef HAVE_THREADS
+    , rwmutex(SbRWMutex::READ_PRECEDENCE)
+#endif // HAVE_THREADS
+  { }
+  unsigned char * bytes;
+  SbBool didalloc;
+  SbVec2s size;
+  int bpp;
+  SbString schedulename;
+  SbImageScheduleReadCB * schedulecb;
+  void * scheduleclosure;
+
+#ifdef HAVE_THREADS
+  SbRWMutex rwmutex;
+  void readLock(void) {
+    //    fprintf(stderr,"readlock: %p\n", this);
+    this->rwmutex.readLock();
+    //fprintf(stderr,"readlock achieved: %p\n", this);
+  }
+  void readUnlock(void) {
+    //fprintf(stderr,"readUnlock: %p\n", this);
+    this->rwmutex.readUnlock();
+  }
+  void writeLock(void) {
+    //fprintf(stderr,"writelock: %p\n", this);
+    this->rwmutex.writeLock();
+    //fprintf(stderr,"writelock achived: %p\n", this);
+  }
+  void writeUnlock(void) {
+    //fprintf(stderr,"writeUnlock: %p\n", this);
+    this->rwmutex.writeUnlock();
+  }
+#else // HAVE_THREADS
+  void readLock(void) { }
+  void readUnlock(void) { }
+  void writeLock(void) { }
+  void writeUnlock(void) { }
+#endif // ! HAVE_THREADS
+};
+
+#endif // DOXYGEN_SKIP_THIS
+
 //////////////////////////////////////////////////////////////////////////
+
+
+// FIXME HACK: We use bytes to store the SbImageP pointer to avoid
+// breaking the ABI compatibility. pederb, 2001-11-06
+#undef THIS
+#define THIS ((SbImageP*) (this->bytes_obsoleted))
+#define PRIVATE(image) ((SbImageP*)((image)->bytes_obsoleted))
 
 /*!
   Default constructor.
 */
 SbImage::SbImage(void)
-  : bytes(NULL),
-    size(0,0),
-    bpp(0)
 {
+  THIS = new SbImageP;
 }
 
 /*!
@@ -62,8 +127,8 @@ SbImage::SbImage(void)
 */
 SbImage::SbImage(const unsigned char * bytes,
                  const SbVec2s & size, const int bytesperpixel)
-  : bytes(NULL)
 {
+  THIS = new SbImageP;
   this->setValue(size, bytesperpixel, bytes);
 }
 
@@ -72,7 +137,66 @@ SbImage::SbImage(const unsigned char * bytes,
 */
 SbImage::~SbImage(void)
 {
-  delete [] this->bytes;
+  if (THIS->didalloc) {
+    delete[] THIS->bytes;
+  }
+  delete THIS;
+}
+
+/*!
+  Apply a read lock on this image. This will make it impossible for
+  other threads to change the image while this lock is active. Other
+  threads can do read-only operations on this image, of course.
+
+  For the single thread version of Coin, this method does nothing.
+
+  \sa readUnlock()
+
+  \since 2001-11-06
+*/
+void
+SbImage::readLock(void) const
+{
+  THIS->readLock();
+}
+
+/*!
+  Release a read lock on this image.
+
+  For the single thread version of Coin, this method does nothing.
+
+  \ sa readLock()
+
+  \since 2001-11-06
+*/
+void
+SbImage::readUnlock(void) const
+{
+  THIS->readUnlock();
+}
+
+/*!
+  Sets the image data without copying the data. \a bytes will be used
+  directly, and the data will not be freed when the image instance is
+  destructed.
+
+  \sa setValue()
+
+  \since 2001-11-06 
+*/
+void
+SbImage::setValuePtr(const SbVec2s & size, const int bytesperpixel,
+                     const unsigned char * bytes)
+{
+  THIS->writeLock();
+  THIS->schedulename = "";
+  THIS->schedulecb = NULL;
+  if (THIS->bytes && THIS->didalloc) delete[] THIS->bytes;
+  THIS->bytes = (unsigned char *) bytes;
+  THIS->didalloc = FALSE;
+  THIS->size = size;
+  THIS->bpp = bytesperpixel;
+  THIS->writeUnlock();
 }
 
 /*!
@@ -90,30 +214,36 @@ void
 SbImage::setValue(const SbVec2s & size, const int bytesperpixel,
                   const unsigned char * bytes)
 {
-  if (this->bytes) {
+  THIS->writeLock();
+  THIS->schedulename = "";
+  THIS->schedulecb = NULL;
+  if (THIS->bytes && THIS->didalloc) {
     // check for special case where we don't have to reallocate
-    if (bytes && (size == this->size) && (bytesperpixel == this->bpp)) {
-      memcpy(this->bytes, bytes, int(size[0])*int(size[1])*bytesperpixel);
+    if (bytes && (size == THIS->size) && (bytesperpixel == THIS->bpp)) {
+      memcpy(THIS->bytes, bytes, int(size[0])*int(size[1])*bytesperpixel);
+      THIS->writeUnlock();
       return;
     }
-    delete [] this->bytes;
-    this->bytes = NULL;
+    delete[] THIS->bytes;
   }
-  this->size = size;
-  this->bpp = bytesperpixel;
+  THIS->bytes = NULL;
+  THIS->size = size;
+  THIS->bpp = bytesperpixel;
   int buffersize = int(size[0]) * int(size[1]) * bytesperpixel;
   if (buffersize) {
     // Align buffers because the binary file format has the data aligned
     // (simplifies export code in SoSFImage).
     buffersize = ((buffersize + 3) / 4) * 4;
-    this->bytes = new unsigned char[buffersize];
+    THIS->bytes = new unsigned char[buffersize];
+    THIS->didalloc = TRUE;
 
     if (bytes) {
       // Important: don't copy buffersize num bytes here!
-      (void)memcpy(this->bytes, bytes,
+      (void)memcpy(THIS->bytes, bytes,
                    int(size[0]) * int(size[1]) * bytesperpixel);
     }
   }
+  THIS->writeUnlock();
 }
 
 /*!
@@ -122,9 +252,19 @@ SbImage::setValue(const SbVec2s & size, const int bytesperpixel,
 unsigned char *
 SbImage::getValue(SbVec2s & size, int & bytesperpixel) const
 {
-  size = this->size;
-  bytesperpixel = bpp;
-  return this->bytes;
+  THIS->readLock();
+  if (THIS->schedulecb) {
+    SbImage * thisp = (SbImage*) this;
+    // start a thread to read the image.
+    THIS->schedulecb(THIS->schedulename, thisp, THIS->scheduleclosure);
+    THIS->schedulecb = NULL;
+  }
+  size = THIS->size;
+  bytesperpixel = THIS->bpp;
+  unsigned char * bytes = THIS->bytes;
+  THIS->readUnlock();
+  return bytes;
+
 }
 
 /*!
@@ -146,7 +286,7 @@ SbImage::searchForFile(const SbString & basename,
   int i;
   SbStringList directories;
   SbStringList subdirectories;
-  
+
   for (i = 0; i < numdirs; i++) {
     directories.append((SbString*) dirlist[i]);
   }
@@ -155,7 +295,7 @@ SbImage::searchForFile(const SbString & basename,
   subdirectories.append(new SbString("images"));
   subdirectories.append(new SbString("pics"));
   subdirectories.append(new SbString("pictures"));
-  
+
   SbString ret = SoInput::searchForFile(basename, directories, subdirectories);
   for (i = 0; i < subdirectories.getLength(); i++) {
     delete subdirectories[i];
@@ -231,11 +371,50 @@ SbImage::readFile(const SbString & filename,
 int
 SbImage::operator==(const SbImage & image) const
 {
-  if (this->size != image.size) return FALSE;
-  if (this->bpp != image.bpp) return FALSE;
-  if (this->bytes == NULL || image.bytes == NULL) {
-    return (this->bytes == image.bytes);
+  this->readLock();
+  int ret = 0;
+  if (!THIS->schedulecb && !PRIVATE(&image)->schedulecb) {
+    if (THIS->size != PRIVATE(&image)->size) return FALSE;
+    if (THIS->bpp != PRIVATE(&image)->bpp) return FALSE;
+    if (THIS->bytes == NULL || PRIVATE(&image)->bytes == NULL) {
+      return (THIS->bytes == PRIVATE(&image)->bytes);
+    }
+    SbBool ret = memcmp(THIS->bytes, PRIVATE(&image)->bytes,
+                        int(THIS->size[0])*int(THIS->size[1])*THIS->bpp) == 0;
   }
-  return memcmp(this->bytes, image.bytes,
-                int(this->size[0])*int(this->size[1])*this->bpp) == 0;
+  this->readUnlock();
+  return ret;
 }
+
+/*!
+  Schedule a file for reading. \a cb will be called the first time
+  getValue() is called for this image, and the callback should then
+  start a thread to read the image. Do not read the image in the
+  callback, as this will lock up the application.
+
+  \sa readFile()
+*/
+SbBool
+SbImage::scheduleReadFile(SbImageScheduleReadCB * cb,
+                          void * closure,
+                          const SbString & filename,
+                          const SbString * const * searchdirectories,
+                          const int numdirectories)
+{
+  this->setValue(SbVec2s(0,0), 0, NULL);
+  THIS->writeLock();
+  THIS->schedulecb = NULL;
+  THIS->schedulename =
+    this->searchForFile(filename, searchdirectories, numdirectories);
+  int len = THIS->schedulename.getLength();
+  if (len > 0) {
+    THIS->schedulecb = cb;
+    THIS->scheduleclosure = closure;
+  }
+  THIS->writeUnlock();
+  return len > 0;
+}
+
+
+#undef THIS
+#undef PRIVATE

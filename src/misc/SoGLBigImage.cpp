@@ -26,6 +26,7 @@
 */
 
 #include <Inventor/misc/SoGLBigImage.h>
+#include <Inventor/SbImage.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/elements/SoGLTextureImageElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
@@ -59,7 +60,7 @@ public:
     glimagearray(NULL),
     glimagediv(NULL),
     glimageage(NULL) {}
-  
+
   ~SoGLBigImageP() {
     assert(this->glimagearray == NULL);
     delete[] this->tmpbuf;
@@ -77,7 +78,8 @@ public:
   uint32_t * glimageage;
   SbVec2f tcmul;
   int changecnt;
-  
+  SbImage myimage;
+
   void copySubImage(const int idx,
                     const unsigned char * src,
                     const SbVec2s & fullsize,
@@ -156,9 +158,7 @@ SoGLBigImage::getTypeId(void) const
 }
 
 void
-SoGLBigImage::setData(const unsigned char * bytes,
-                      const SbVec2s size,
-                      const int nc,
+SoGLBigImage::setData(const SbImage * image,
                       const Wrap wraps,
                       const Wrap wrapt,
                       const float quality,
@@ -170,7 +170,7 @@ SoGLBigImage::setData(const unsigned char * bytes,
                               "createinstate must be NULL for SoGLBigImage");
   }
   THIS->reset(NULL);
-  inherited::setData(bytes, size, nc, wraps, wrapt, quality, border, NULL);
+  inherited::setData(image, wraps, wrapt, quality, border, NULL);
 }
 
 SoGLDisplayList *
@@ -189,9 +189,10 @@ SoGLBigImage::initSubImages(SoState * state,
   THIS->reset(state);
   THIS->imagesize = subimagesize;
 
-  const unsigned char * bytes = this->getDataPtr();
-  const SbVec2s size = this->getSize();
-  const int nc = this->getNumComponents();
+  SbVec2s size;
+  int nc;
+  const unsigned char * bytes = this->getImage() ? 
+    this->getImage()->getValue(size, nc) : NULL;
 
   THIS->dim[0] = size[0] / subimagesize[0];
   THIS->dim[1] = size[1] / subimagesize[1];
@@ -238,25 +239,25 @@ SoGLBigImage::handleSubImage(const int idx,
 }
 
 void
-SoGLBigImage::applySubImage(SoState * state, const int idx, 
+SoGLBigImage::applySubImage(SoState * state, const int idx,
                             const float quality,
                             const SbVec2s & projsize)
 {
   int div = 2;
-  while ((THIS->imagesize[0]/div > projsize[0]) && 
+  while ((THIS->imagesize[0]/div > projsize[0]) &&
          (THIS->imagesize[1]/div > projsize[1])) div <<= 1;
   div >>= 1;
-  
-  if (THIS->glimagearray[idx] == NULL || 
+
+  if (THIS->glimagearray[idx] == NULL ||
       (THIS->glimagediv[idx] != div && THIS->changecnt++ < CHANGELIMIT)) {
     if (THIS->glimagearray[idx] == NULL) {
       THIS->glimagearray[idx] = new SoGLImage();
     }
     THIS->glimagediv[idx] = div;
-    
+
     uint32_t flags = this->getFlags();
     flags |= NO_MIPMAP;
-    
+
     if (flags & USE_QUALITY_VALUE) {
       flags &= ~USE_QUALITY_VALUE;
       if (quality >= 0.5f) {
@@ -264,24 +265,31 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
       }
     }
     THIS->glimagearray[idx]->setFlags(flags);
-    
+
     SbVec2s actualsize(THIS->imagesize[0]/div,
                        THIS->imagesize[1]/div);
+    SbVec2s size;
+    int numcomponents;
+    unsigned char * bytes = this->getImage() ? 
+      this->getImage()->getValue(size, numcomponents) : NULL;
+    if (bytes) {
+      int numbytes = actualsize[0]*actualsize[1]*numcomponents;
+      if (numbytes > THIS->tmpbufsize) {
+        delete[] THIS->tmpbuf;
+        THIS->tmpbuf = new unsigned char[numbytes];
+        THIS->tmpbufsize = numbytes;
+      }
     
-    int numbytes = actualsize[0]*actualsize[1]*this->getNumComponents();
-    if (numbytes > THIS->tmpbufsize) {
-      delete[] THIS->tmpbuf;
-      THIS->tmpbuf = new unsigned char[numbytes];
-      THIS->tmpbufsize = numbytes;
+
+      THIS->copySubImage(idx,
+                         bytes,
+                         size,
+                         numcomponents,
+                         THIS->tmpbuf, div);
+      THIS->myimage.setValuePtr(actualsize, numcomponents, THIS->tmpbuf);
     }
-    THIS->copySubImage(idx, 
-                       this->getDataPtr(),
-                       this->getSize(),
-                       this->getNumComponents(),
-                       THIS->tmpbuf, div);
-    THIS->glimagearray[idx]->setData(THIS->tmpbuf,
-                                     actualsize,
-                                     this->getNumComponents(),
+    else THIS->myimage.setValuePtr(SbVec2s(0,0), 0, NULL);
+    THIS->glimagearray[idx]->setData(&THIS->myimage,
                                      SoGLImage::CLAMP_TO_EDGE,
                                      SoGLImage::CLAMP_TO_EDGE,
                                      quality,
@@ -297,7 +305,7 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
 /*!
   Overloaded to handle age on subimages.
 */
-void 
+void
 SoGLBigImage::unrefOldDL(SoState * state, const uint32_t maxage)
 {
   const int numimages = THIS->dim[0] * THIS->dim[1];
@@ -319,7 +327,7 @@ SoGLBigImage::unrefOldDL(SoState * state, const uint32_t maxage)
 #undef THIS
 
 void
-SoGLBigImageP::copySubImage(const int idx, 
+SoGLBigImageP::copySubImage(const int idx,
                             const unsigned char * src,
                             const SbVec2s & fullsize,
                             const int nc,
@@ -339,7 +347,7 @@ SoGLBigImageP::copySubImage(const int idx,
   for (int y = 0; y < int(this->imagesize[1]); y += div) {
     for (int x = 0; x < int(this->imagesize[0]); x += div) {
       if ((origin[0] + x) < fullsize[0] && (origin[1] + y) < fullsize[1]) {
-        const unsigned char * srcptr = 
+        const unsigned char * srcptr =
           src + nc * (fullsize[0] * (origin[1]+y) + origin[0]+x);
         for (int c = 0; c < nc; c++) {
           *dst++ = srcptr[c];

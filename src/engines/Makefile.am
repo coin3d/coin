@@ -44,6 +44,7 @@ LinkHackSources = \
 	all.cpp
 PublicHeaders = \
 	../../include/Inventor/engines/SoSubEngine.h \
+	../../include/Inventor/engines/SoSubNodeEngine.h \
 	../../include/Inventor/engines/SoEngines.h \
 	../../include/Inventor/engines/SoBoolOperation.h \
 	../../include/Inventor/engines/SoCalculator.h \
@@ -73,6 +74,7 @@ PublicHeaders = \
 	../../include/Inventor/engines/SoInterpolateVec2f.h \
 	../../include/Inventor/engines/SoInterpolateVec3f.h \
 	../../include/Inventor/engines/SoInterpolateVec4f.h \
+	../../include/Inventor/engines/SoNodeEngine.h \
 	../../include/Inventor/engines/SoOnOff.h \
 	../../include/Inventor/engines/SoOneShot.h \
 	../../include/Inventor/engines/SoOutputData.h \
@@ -83,8 +85,6 @@ PublicHeaders = \
 PrivateHeaders = \
 	../../include/Inventor/engines/SoSubEngineP.h \
 	../../include/Inventor/engines/SoConvertAll.h \
-	../../include/Inventor/engines/SoNodeEngine.h \
-	../../include/Inventor/engines/SoSubNodeEngine.h \
 	../../include/Inventor/engines/SoSubNodeEngineP.h \
 	evaluator.h \
 	lex.so_eval.c

@@ -82,6 +82,7 @@
 */
 
 #include <Inventor/misc/SoGLImage.h>
+#include <Inventor/SbImage.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/elements/SoGLTextureImageElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
@@ -226,7 +227,6 @@ class SoGLImageP {
 public:
   static SoType classTypeId;
 
-
   SoGLDisplayList * createGLDisplayList(SoState * state);
   void checkTransparency(void);
   void unrefDLists(SoState * state);
@@ -241,9 +241,11 @@ public:
   SbBool shouldCreateMipmap(void);
   void applyFilter(SbBool ismipmap);
 
-  const unsigned char * bytes;
-  SbVec2s size;
-  int numcomponents;
+  const SbImage * image;
+  SbImage dummyimage;
+  SbVec2s glsize;
+  int glcomp;
+
   SbBool needtransparencytest;
   SbBool hastransparency;
   SbBool usealphatest;
@@ -254,6 +256,9 @@ public:
   SoGLImage::Wrap wrapt;
   int border;
   SbBool isregistered;
+  uint32_t imageage;
+  void (*endframecb)(void*);
+  void * endframeclosure;
 
   class dldata {
   public:
@@ -424,9 +429,7 @@ SoGLImage::isOfType(SoType type) const
   all display lists and memory to be freed.  */
 
 void
-SoGLImage::setData(const unsigned char * bytes,
-                   const SbVec2s size,
-                   const int nc,
+SoGLImage::setData(const SbImage * image,
                    const Wrap wraps,
                    const Wrap wrapt,
                    const float quality,
@@ -434,36 +437,47 @@ SoGLImage::setData(const unsigned char * bytes,
                    SoState * createinstate)
 
 {
-  if (bytes == NULL) {
+  THIS->imageage = 0;
+
+  if (image == NULL) {
     THIS->unrefDLists(createinstate);
     if (THIS->isregistered) SoGLImage::unregisterImage(this);
     THIS->init(); // init to default values
     return;
   }
 
-  THIS->needtransparencytest = FALSE;
+  THIS->needtransparencytest = TRUE;
   THIS->hastransparency = FALSE;
   THIS->usealphatest = FALSE;
   THIS->quality = quality;
 
-  if (nc == 2 || nc == 4) THIS->needtransparencytest = TRUE;
-
   // check for special case where glCopyTexImage can be used.
   // faster for most drivers.
-  SoGLDisplayList * dl;
-  if (COIN_TEX2_USE_GLTEXSUBIMAGE &&
-      createinstate &&
-      size == THIS->size &&
-      nc == THIS->numcomponents &&
-      wraps == THIS->wraps &&
-      wrapt == THIS->wrapt &&
-      border == THIS->border &&
-      border == 0 && // haven't tested with borders yet. Play it safe.
-      (dl = THIS->findDL(createinstate)) != NULL) {
+  SoGLDisplayList * dl = NULL;
+
+  SbBool copyok = 
+    COIN_TEX2_USE_GLTEXSUBIMAGE && 
+    createinstate &&
+    wraps == THIS->wraps &&
+    wrapt == THIS->wrapt &&
+    border == THIS->border &&
+    border == 0 && // haven't tested with borders yet. Play it safe.
+    (dl = THIS->findDL(createinstate)) != NULL;
+
+  unsigned char * bytes = NULL;
+  SbVec2s size;
+  int nc;
+
+  if (copyok) {
+    bytes =  image->getValue(size, nc);
+    if (bytes && size != THIS->glsize || nc != THIS->glcomp) copyok = FALSE;
+  }
+
+  if (copyok) {
     dl->ref();
     THIS->unrefDLists(createinstate);
     THIS->dlists.append(SoGLImageP::dldata(dl));
-    THIS->bytes = NULL; // data is temporary, and only for current context
+    THIS->image = NULL; // data is temporary, and only for current context
     dl->call(createinstate);
     GLenum format;
     switch (nc) {
@@ -474,42 +488,54 @@ SoGLImage::setData(const unsigned char * bytes,
     case 4: format = GL_RGBA; break;
     }
 
-    // scale image to valid GL size
-    int xsize = size[0];
-    int ysize = size[1];
-    unsigned char * imageptr = (unsigned char*) bytes;
-    THIS->resizeImage(imageptr, xsize, ysize);
-
     if (dl->isMipMapTextureObject()) {
-      fast_mipmap(xsize, ysize, nc,
-                  imageptr, format, TRUE);
+      fast_mipmap(size[0], size[1], nc,
+                  bytes, format, TRUE);
     }
     else {
       glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0,
-                      xsize, ysize,
+                      size[0], size[1],
                       format, GL_UNSIGNED_BYTE,
-                      (void*) imageptr);
+                      (void*) bytes);
     }
   }
   else {
-    THIS->bytes = bytes;
-    THIS->size = size;
-    THIS->numcomponents = nc;
+    THIS->image = image;
     THIS->wraps = wraps;
     THIS->wrapt = wrapt;
     THIS->border = border;
     THIS->unrefDLists(createinstate);
     if (createinstate) {
       THIS->dlists.append(SoGLImageP::dldata(THIS->createGLDisplayList(createinstate)));
-      THIS->bytes = NULL; // data is assumed to be temporary
+      THIS->image = NULL; // data is assumed to be temporary
     }
   }
 
-  if (THIS->bytes && !THIS->isregistered && !(this->getFlags() & INVINCIBLE)) {
+  if (THIS->image && !THIS->isregistered && !(this->getFlags() & INVINCIBLE)) {
     THIS->isregistered = TRUE;
     SoGLImage::registerImage(this);
   }
 }
+
+/*!
+  \overload
+*/
+void 
+SoGLImage::setData(const unsigned char * bytes,
+                   const SbVec2s & size,
+                   const int numcomponents,
+                   const Wrap wraps,
+                   const Wrap wrapt,
+                   const float quality,
+                   const int border,
+                   SoState * createinstate)
+{
+  THIS->dummyimage.setValuePtr(size, numcomponents, bytes);
+  this->setData(&THIS->dummyimage,
+                wraps, wrapt, quality,
+                border, createinstate);
+}
+
 
 /*!
   Destructor.
@@ -559,28 +585,10 @@ SoGLImage::getFlags(void) const
 /*!
   Returns a pointer to the image data.
 */
-const unsigned char *
-SoGLImage::getDataPtr(void) const
+const SbImage *
+SoGLImage::getImage(void) const
 {
-  return THIS->bytes;
-}
-
-/*!
-  Returns the size of the texture, in pixels.
-*/
-SbVec2s
-SoGLImage::getSize(void) const
-{
-  return THIS->size;
-}
-
-/*!
-  Returns the number of image components.
-*/
-int
-SoGLImage::getNumComponents(void) const
-{
-  return THIS->numcomponents;
+  return THIS->image;
 }
 
 /*!
@@ -596,7 +604,7 @@ SoGLImage::getGLDisplayList(SoState * state)
     dl = THIS->createGLDisplayList(state);
     if (dl) THIS->dlists.append(SoGLImageP::dldata(dl));
   }
-  if (!dl->isMipMapTextureObject() && THIS->bytes) {
+  if (dl && !dl->isMipMapTextureObject() && THIS->image) {
     float quality = SoTextureQualityElement::get(state);
     float oldquality = THIS->quality;
     THIS->quality = quality;
@@ -681,17 +689,15 @@ SoGLImage::unrefOldDL(SoState * state, const uint32_t maxage)
   THIS->unrefOldDL(state, maxage);
 }
 
-#undef THIS
-
 #ifndef DOXYGEN_SKIP_THIS
 
 void
 SoGLImageP::init(void)
 {
   this->isregistered = FALSE;
-  this->bytes = NULL;
-  this->size.setValue(0,0);
-  this->numcomponents = 0;
+  this->image = NULL;
+  this->glsize.setValue(0,0);
+  this->glcomp = 0;
   this->wraps = SoGLImage::CLAMP;
   this->wrapt = SoGLImage::CLAMP;
   this->border = 0;
@@ -700,6 +706,8 @@ SoGLImageP::init(void)
   this->hastransparency = FALSE;
   this->usealphatest = FALSE;
   this->quality = 0.4f;
+  this->imageage = 0;
+  this->endframecb = NULL;
 }
 
 // returns the number of bits set, and ets highbit to
@@ -774,7 +782,11 @@ SoGLImageP::resizeImage(unsigned char *& imageptr, int & xsize, int & ysize)
   newy += 2 * this->border;
 
   if ((newx != (unsigned long) xsize) || (newy != (unsigned long) ysize)) {
-    int numbytes = newx * newy * this->numcomponents;
+    SbVec2s size;
+    int numcomponents;
+    unsigned char * bytes = this->image->getValue(size, numcomponents);
+
+    int numbytes = newx * newy * numcomponents;
     if (numbytes > glimage_tmpimagebuffersize) {
       if (glimage_tmpimagebuffer == NULL) atexit(cleanup_tmpimage);
       else delete [] glimage_tmpimagebuffer;
@@ -788,8 +800,8 @@ SoGLImageP::resizeImage(unsigned char *& imageptr, int & xsize, int & ysize)
         simage_wrapper()->versionMatchesAtLeast(1,1,1) &&
         simage_wrapper()->simage_resize) {
       unsigned char * result =
-        simage_wrapper()->simage_resize((unsigned char*) this->bytes,
-                                        xsize, ysize, this->numcomponents,
+        simage_wrapper()->simage_resize((unsigned char*) bytes,
+                                        xsize, ysize, numcomponents,
                                         newx, newy);
       (void)memcpy(glimage_tmpimagebuffer, result, numbytes);
       simage_wrapper()->simage_free_image(result);
@@ -797,7 +809,7 @@ SoGLImageP::resizeImage(unsigned char *& imageptr, int & xsize, int & ysize)
     else if (GLUWrapper()->available &&
              GLUWrapper()->gluScaleImage) {
       GLenum format;
-      switch (this->numcomponents) {
+      switch (numcomponents) {
       default: // avoid compiler warnings
       case 1: format = GL_LUMINANCE; break;
       case 2: format = GL_LUMINANCE_ALPHA; break;
@@ -816,7 +828,7 @@ SoGLImageP::resizeImage(unsigned char *& imageptr, int & xsize, int & ysize)
 
       // FIXME: ignoring the error code. Silly. 20000929 mortene.
       (void)GLUWrapper()->gluScaleImage(format, xsize, ysize,
-                                        GL_UNSIGNED_BYTE, (void*) this->bytes,
+                                        GL_UNSIGNED_BYTE, (void*) bytes,
                                         newx, newy, GL_UNSIGNED_BYTE,
                                         (void*)glimage_tmpimagebuffer);
       glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
@@ -841,13 +853,18 @@ SoGLImageP::resizeImage(unsigned char *& imageptr, int & xsize, int & ysize)
 SoGLDisplayList *
 SoGLImageP::createGLDisplayList(SoState * state)
 {
-  if (!this->bytes) return NULL;
+  SbVec2s size;
+  int numcomponents;
+  unsigned char * bytes = 
+    this->image ? this->image->getValue(size, numcomponents) : NULL;
+  
+  if (!bytes) return NULL;
 
-  int xsize = this->size[0];
-  int ysize = this->size[1];
+  int xsize = size[0];
+  int ysize = size[1];
 
   // these might change if image is resized
-  unsigned char * imageptr = (unsigned char *)this->bytes;
+  unsigned char * imageptr = (unsigned char *) bytes;
   this->resizeImage(imageptr, xsize, ysize);
 
   SbBool mipmap = this->shouldCreateMipmap();
@@ -858,7 +875,7 @@ SoGLImageP::createGLDisplayList(SoState * state)
                         1, mipmap);
   dl->ref();
   dl->open(state);
-  this->reallyCreateTexture(state, imageptr, this->numcomponents,
+  this->reallyCreateTexture(state, imageptr, numcomponents,
                             xsize, ysize,
                             dl->getType() == SoGLDisplayList::DISPLAY_LIST,
                             mipmap,
@@ -875,18 +892,23 @@ SoGLImageP::checkTransparency(void)
   this->usealphatest = FALSE;
   this->hastransparency = FALSE;
 
-  if (this->bytes == NULL) {
-    if (this->numcomponents == 2 || this->numcomponents == 4) {
+  SbVec2s size;
+  int numcomponents;
+  unsigned char * bytes = this->image ?
+    this->image->getValue(size, numcomponents) : NULL;
+
+  if (bytes == NULL) {
+    if (this->glcomp == 2 || this->glcomp == 4) {
       // we must assume it has transparency, and that we
       // can't use alpha testing
       this->hastransparency = TRUE;
     }
   }
   else {
-    if (this->numcomponents == 2 || this->numcomponents == 4) {
-      int n = this->size[0] * this->size[1];
-      int nc = this->numcomponents;
-      unsigned char * ptr = (unsigned char *) this->bytes + nc - 1;
+    if (numcomponents == 2 || numcomponents == 4) {
+      int n = size[0] * size[1];
+      int nc = numcomponents;
+      unsigned char * ptr = (unsigned char *) bytes + nc - 1;
 
       while (n) {
         if (*ptr != 255 && *ptr != 0) break;
@@ -939,6 +961,9 @@ SoGLImageP::reallyCreateTexture(SoState * state,
                                 const SbBool mipmap,
                                 const int border)
 {
+  this->glsize = SbVec2s((short) w, (short) h);
+  this->glcomp = numComponents;
+
   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
                   translate_wrap(state, this->wraps));
@@ -1029,6 +1054,7 @@ SoGLImageP::tagDL(SoState * state)
       break;
     }
   }
+  this->imageage = 0;
 }
 
 void
@@ -1055,6 +1081,7 @@ SoGLImageP::unrefOldDL(SoState * state, const uint32_t maxage)
       i++;
     }
   }
+  this->imageage++;
 }
 
 SbBool
@@ -1133,7 +1160,7 @@ static uint32_t glimage_maxage = 5;
 static void
 regimage_cleanup(void)
 {
-
+  delete glimage_reglist;
 }
 
 /*!
@@ -1180,8 +1207,23 @@ SoGLImage::endFrame(SoState * state)
     for (int i = 0; i < n; i++) {
       SoGLImage * img = (*glimage_reglist)[i];
       img->unrefOldDL(state, glimage_maxage);
+      if (img->pimpl->endframecb) 
+        img->pimpl->endframecb(img->pimpl->endframeclosure);
     }
   }
+}
+
+void 
+SoGLImage::setEndFrameCallback(void (*cb)(void *), void * closure)
+{
+  THIS->endframecb = cb;
+  THIS->endframeclosure = closure;
+}
+
+int 
+SoGLImage::getNumFramesSinceUsed(void) const
+{
+  return THIS->imageage;
 }
 
 /*!
@@ -1237,3 +1279,5 @@ SoGLImage::unregisterImage(SoGLImage * image)
     glimage_reglist->removeFast(idx);
   }
 }
+
+#undef THIS
