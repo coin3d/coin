@@ -557,10 +557,15 @@ public:
                  const SbBool copyconnections);
 
   void setParts(SbList <SoNode*> partlist, const SbBool leafparts);
+
+  SbBool readUnknownFields(SoInput *in, SoFieldData *&unknownFieldData );
 };
 
 #undef PRIVATE
 #define PRIVATE(p) ((p)->pimpl)
+
+#undef PUBLIC
+#define PUBLIC(p) ((p)->kit)
 
 SbBool SoBaseKit::searchchildren = FALSE;
 
@@ -2090,8 +2095,16 @@ SoBaseKit::readInstance(SoInput * in, unsigned short flags)
   // by setting the parts again later
   this->getChildren()->truncate(0);
 
-  // actually read the nodekit
-  SbBool ret = inherited::readInstance(in, flags);
+  // actually read the nodekit.
+  // Use readUnknownFields instead to read fields not part of catalog
+  // SbBool ret = inherited::readInstance(in, flags);
+
+  // Fields that's not part of catalog is read as a SoSFNode, and stored
+  // in unknownfielddata. Later they'll be put in nodekit using setAnyPart.
+  SbBool ret = TRUE;
+  SoFieldData * unknownfielddata = new SoFieldData;
+  if (!PRIVATE(this)->readUnknownFields(in, unknownfielddata))
+    ret = FALSE;
 
   if (ret) {
     // loop through fields and copy the read parts into nodelist
@@ -2116,7 +2129,20 @@ SoBaseKit::readInstance(SoInput * in, unsigned short flags)
       this->setPart(i, nodelist[i]);
       PRIVATE(this)->instancelist[i]->setDefault(defaultlist[i]);
     }
+
+    // put the unknown fields into nodekit using setAnyPart
+    SbName partname;
+    SoNode * pnode;
+    SoSFNode * pfield;
+    for (i = 0; i < unknownfielddata->getNumFields(); i++) {
+      partname = unknownfielddata->getFieldName(i);
+      pfield = (SoSFNode *) unknownfielddata->getField(this, i);
+      pnode = pfield->getValue();
+      this->setAnyPart(partname, pnode);
+    }
   }
+
+  delete unknownfielddata;
 
   (void) this->setUpConnections(oldsetup);
   (void) this->enableNotify(oldnotify);
@@ -2638,6 +2664,54 @@ SoBaseKitP::addKitDetail(SoFullPath * path, SoPickedPoint * pp)
       pp->setDetail(detail, this->kit);
       // finished
       break;
+    }
+  }
+}
+
+//  Reading in parts of nested nodekits does not allow certain shortcuts
+//  that are specified by the Inventor Mentor. The Mentor specifies that
+//  within nested nodekits intermediary kits can be left out and will be
+//  created automatically. Reported by Gerhard Reitmayr.
+SbBool 
+SoBaseKitP::readUnknownFields(SoInput *in, SoFieldData *&unknownfielddata)
+{
+  const SoFieldData * fd = PUBLIC(this)->getFieldData();
+
+  // Binary format
+  if (in->isBinary()) {
+    SbBool notbuiltin;
+    return fd->read(in, PUBLIC(this), TRUE, notbuiltin);
+  }
+
+  // ASCII format
+  // keep reading fields until we hit close bracket
+  while (TRUE) {
+    // read first character - if none, EOF
+    char c;
+    if (!in->read(c))
+      return FALSE;
+    in->putBack(c);
+
+    if (c == '}')
+      return TRUE;
+
+    // read fieldname with no identifier, to be able to read names like
+    // appearance.material
+    SbName fieldname;
+    if (!in->read(fieldname, FALSE))
+      return TRUE;
+
+    SbBool foundname;
+    if (!fd->read(in, PUBLIC(this), fieldname, foundname))
+      return FALSE;
+
+    if (!foundname) {
+      // add a node pointer field with this name to the unknownFieldData,
+      // and read it
+      unknownfielddata->addField(PUBLIC(this), fieldname.getString(),
+                                 new SoSFNode);
+      if ( !unknownfielddata->read(in, PUBLIC(this), fieldname, foundname))
+        return FALSE;
     }
   }
 }
