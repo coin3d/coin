@@ -513,6 +513,7 @@ SbTime::parsedate(const char * const date)
 {
   // FIXME: make method 100% robust for erroneous date strings.
   // 19981001 mortene.
+  // FIXME: ditto -- 20020916 larsa
 
   // FIXME: accept datestrings conforming to ISO 8601. 20000331 mortene.
 
@@ -535,8 +536,9 @@ SbTime::parsedate(const char * const date)
   };
 
   const char * dateptr = date;
-  while (*dateptr != ' ' && *dateptr != '\t')
-    dateptr++; // we don't give a shit if it's wednesday
+  while (*dateptr != ' ' && *dateptr != '\t' && *dateptr != '\0')
+    dateptr++; // we don't care if it's wednesday
+  if (*dateptr == '\0') return FALSE;
   dateptr -= 2; // step back
   if (dateptr[0] != 'y' && dateptr[1] == ',') { // RFC 822 / RFC 1123 format
     // FORMAT: Wkd, DD Mnth YYYY HH:MM:SS GMT
@@ -551,7 +553,8 @@ SbTime::parsedate(const char * const date)
     SoDebugError::postInfo("SbTime::parseDate", "Day of month: %d",
                            time.tm_mday);
 #endif // debug
-    while (*dateptr != ' ' && *dateptr != '\t') dateptr++;
+    while (*dateptr != ' ' && *dateptr != '\t' && *dateptr != '\0') dateptr++;
+    if (*dateptr == '\0') return FALSE;
     while (*dateptr == ' ' || *dateptr == '\t') dateptr++;
 
     int i;
@@ -572,15 +575,21 @@ SbTime::parsedate(const char * const date)
 #if COIN_DEBUG && 0 // debug
     SoDebugError::postInfo("SbTime::parseDate", "Month: %d", time.tm_mon);
 #endif // debug
-    while (*dateptr != ' ' && *dateptr != '\t') dateptr++;
+    while (*dateptr != ' ' && *dateptr != '\t' && *dateptr != '\0') dateptr++;
+    if (*dateptr == '\0') return FALSE;
     while (*dateptr == ' ' || *dateptr == '\t') dateptr++;
     time.tm_year = atoi(dateptr) - 1900;
-    while (*dateptr != ' ' && *dateptr != '\t') dateptr++;
+    while (*dateptr != ' ' && *dateptr != '\t' && *dateptr != '\0') dateptr++;
+    if (*dateptr == '\0') return FALSE;
     while (*dateptr == ' ' || *dateptr == '\t') dateptr++;
     time.tm_hour = atoi(dateptr);
-    while (*dateptr != ':') dateptr++; dateptr++;
+    while (*dateptr != ':' && *dateptr != '\0') dateptr++;
+    if (*dateptr == '\0') return FALSE;
+    dateptr++;
     time.tm_min = atoi(dateptr);
-    while (*dateptr != ':') dateptr++; dateptr++;
+    while (*dateptr != ':' && *dateptr != '\0') dateptr++;
+    if (*dateptr == '\0') return FALSE;
+    dateptr++;
     time.tm_sec = atoi(dateptr);
     time.tm_wday = 0;
     time.tm_yday = 0;
@@ -611,14 +620,21 @@ SbTime::parsedate(const char * const date)
       return FALSE;
     }
 
-    while (*dateptr != '-') dateptr++; dateptr++;
+    while (*dateptr != '-' && *dateptr != '\0') dateptr++;
+    if (*dateptr == '\0') return FALSE;
+    dateptr++;
     time.tm_year = atoi(dateptr);
-    while (*dateptr != ' ' && *dateptr != '\t') dateptr++;
+    while (*dateptr != ' ' && *dateptr != '\t' && *dateptr != '\0') dateptr++;
+    if (*dateptr == '\0') return FALSE;
     while (*dateptr == ' ' || *dateptr == '\t') dateptr++;
     time.tm_hour = atoi(dateptr);
-    while (*dateptr != ':') dateptr++; dateptr++;
+    while (*dateptr != ':' && *dateptr != '\0') dateptr++;
+    if (*dateptr == '\0') return FALSE;
+    dateptr++;
     time.tm_min = atoi(dateptr);
-    while (*dateptr != ':') dateptr++; dateptr++;
+    while (*dateptr != ':' && *dateptr != '\0') dateptr++;
+    if (*dateptr == '\0') return FALSE;
+    dateptr++;
     time.tm_sec = atoi(dateptr);
     time.tm_wday = 0;
     time.tm_yday = 0;
@@ -629,7 +645,8 @@ SbTime::parsedate(const char * const date)
     SoDebugError::postInfo("SbTime::parseDate", "date format: asctime()");
 #endif // debug
 
-    while (*dateptr != ' ' && *dateptr != '\t') dateptr++;
+    while (*dateptr != ' ' && *dateptr != '\t' && *dateptr != '\0') dateptr++;
+    if (*dateptr == '\0') return FALSE;
     while (*dateptr == ' ' || *dateptr == '\t') dateptr++;
 
     int i;
@@ -647,17 +664,24 @@ SbTime::parsedate(const char * const date)
       return FALSE;
     }
 
-    while (*dateptr != ' ' && *dateptr != '\t') dateptr++;
+    while (*dateptr != ' ' && *dateptr != '\t' && *dateptr != '\0') dateptr++;
+    if (*dateptr == '\0') return FALSE;
     while (*dateptr == ' ' || *dateptr == '\t') dateptr++;
     time.tm_mday = atoi(dateptr);
-    while (*dateptr != ' ' && *dateptr != '\t') dateptr++;
+    while (*dateptr != ' ' && *dateptr != '\t' && *dateptr != '\0') dateptr++;
+    if (*dateptr == '\0') return FALSE;
     while (*dateptr == ' ' || *dateptr == '\t') dateptr++;
     time.tm_hour = atoi(dateptr);
-    while (*dateptr != ':') dateptr++; dateptr++;
+    while (*dateptr != ':' && *dateptr != '\0') dateptr++;
+    if (*dateptr == '\0') return FALSE;
+    dateptr++;
     time.tm_min = atoi(dateptr);
-    while (*dateptr != ':') dateptr++; dateptr++;
+    while (*dateptr != ':' && *dateptr != '\0') dateptr++;
+    if (*dateptr == '\0') return FALSE;
+    dateptr++;
     time.tm_sec = atoi(dateptr);
-    while (*dateptr != ' ' || *dateptr != '\t') dateptr++;
+    while (*dateptr != ' ' && *dateptr != '\t' && *dateptr != '\0') dateptr++;
+    if (*dateptr == '\0') return FALSE;
     while (*dateptr == ' ' || *dateptr == '\t') dateptr++;
     time.tm_year = atoi(dateptr) - 1900;
     time.tm_wday = 0;
