@@ -35,10 +35,9 @@ class SoGlyphP;
 class COIN_DLL_API SoGlyph {
 public:
 
-  void unref() const;
+  void unref(void) const;
   
-  // Methods related to polygon based text nodes (SoText3, SoAsciiText, SoVRMLText)
-  static const SoGlyph *getGlyph(const char character, const SbName &font);
+  static const SoGlyph * getGlyph(const char character, const SbName & font);
   
   const SbVec2f * getCoords(void) const;
   const int * getFaceIndices(void) const;
@@ -49,17 +48,16 @@ public:
   float getWidth(void) const;
   const SbBox2f & getBoundingBox(void) const;
   
-  // Methods related to bitmap based text nodes (SoText2)
-  static const SoGlyph *getGlyph(SoState * state,
-                                 const unsigned int character, 
-                                 const SbVec2s & size,
-                                 const float angle);
-  SbVec2s getAdvance();
-  SbVec2s getKerning(const SoGlyph &rightglyph);
-  unsigned char * getBitmap(SbVec2s &size, SbVec2s &pos, const SbBool antialiased);
+  static const SoGlyph * getGlyph(SoState * state,
+                                  const unsigned int character, 
+                                  const SbVec2s & size,
+                                  const float angle);
+  SbVec2s getAdvance(void) const;
+  SbVec2s getKerning(const SoGlyph & rightglyph) const;
+  unsigned char * getBitmap(SbVec2s & size, SbVec2s & pos, const SbBool antialiased) const;
   
 protected:
-  SoGlyph();
+  SoGlyph(void);
   ~SoGlyph();
 
   void setCoords(SbVec2f * coords, int numcoords = -1);
@@ -67,7 +65,6 @@ protected:
   void setEdgeIndices(int * indices, int numindices = -1);
 
 private:
-
   static void unrefGlyph(SoGlyph * glyph);
   
   SoGlyphP * pimpl;

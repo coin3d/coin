@@ -140,7 +140,7 @@ SoGlyph::getEdgeIndices(void) const
   Returns a pointer to the next clockwise edge. Returns NULL if
   none could be found.
 */
-const int * 
+const int *
 SoGlyph::getNextCWEdge(const int edgeidx) const
 {
   int idx = edgeidx * 2;
@@ -160,10 +160,10 @@ SoGlyph::getNextCWEdge(const int edgeidx) const
 }
 
 /*!
-  Returns a pointer to the next counter clockwise edge. 
+  Returns a pointer to the next counter clockwise edge.
   NULL if none could be found.
 */
-const int * 
+const int *
 SoGlyph::getNextCCWEdge(const int edgeidx) const
 {
   int idx = edgeidx * 2;
@@ -321,7 +321,7 @@ void SoGlyph_cleanup(void)
   Returns a character of the specified font.
 */
 const SoGlyph *
-SoGlyph::getGlyph(const char character, const SbName &font)
+SoGlyph::getGlyph(const char character, const SbName & font)
 {
   if (SoGlyph_mutex == NULL) {
     CC_MUTEX_CONSTRUCT(SoGlyph_mutex);
@@ -350,7 +350,7 @@ SoGlyph::getGlyph(const char character, const SbName &font)
     CC_MUTEX_UNLOCK(SoGlyph_mutex);
     return glyph;
   }
-  
+
   SoGlyph *glyph = SoGlyphP::createSystemGlyph(character, font);
   if (glyph == NULL) { // no system font could be loaded
 #if defined(COIN_NO_DEFAULT_3DFONT)
@@ -410,24 +410,24 @@ SoGlyph::unrefGlyph(SoGlyph *glyph)
 // Get glyph according to state's font elements.
 // The size parameter overrides state's FontSizeElement (if not SbVec2s(0,0))
 const SoGlyph *
-getGlyph(SoState * state,
-         const unsigned int character, 
-         const SbVec2s & size,
-         const float angle)
+SoGlyph::getGlyph(SoState * state,
+                  const unsigned int character,
+                  const SbVec2s & size,
+                  const float angle)
 {
   return NULL;
 }
 
 // Pixel advance for this glyph.
-SbVec2s 
-getAdvance()
+SbVec2s
+SoGlyph::getAdvance(void) const
 {
   return SbVec2s(0,0);
 }
 
 // Pixel kerning when rightglyph is placed to the right of this.
-SbVec2s 
-getKerning(const SoGlyph &rightglyph)
+SbVec2s
+SoGlyph::getKerning(const SoGlyph & rightglyph) const
 {
   return SbVec2s(0,0);
 }
@@ -436,19 +436,16 @@ getKerning(const SoGlyph &rightglyph)
 // antialiased -> 8 bits per pixel
 // !antialiased -> 1 bit per pixel.
 // Only 1bbp currently supported.
-unsigned char * 
-getBitmap(SbVec2s &size, SbVec2s &pos, const SbBool antialiased)
+unsigned char *
+SoGlyph::getBitmap(SbVec2s & size, SbVec2s & pos, const SbBool antialiased) const
 {
   return NULL;
 }
 
 // should handle platform-specific font loading
 SoGlyph *
-SoGlyphP::createSystemGlyph(const char character, const SbName &font)
+SoGlyphP::createSystemGlyph(const char character, const SbName & font)
 {
   // FIXME: implement me somebody, please
   return NULL;
 }
-
-
-
