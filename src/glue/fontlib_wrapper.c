@@ -21,11 +21,9 @@
  *
 \**************************************************************************/
 
-/* FIXME: Get rid of (typecast)0 hack. preng 20030225 */
-
 #ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
+#endif /* HAVE_CONFIG_H */
 
 #include <stdio.h>
 #include <string.h>
@@ -98,7 +96,7 @@ static void
 glyphstruct_init(struct cc_glyphstruct * gs)
 {
   gs->glyph = (cc_FLWglyph)NOGLYPH;
-  gs->bitmap = (cc_FLWbitmap *)0;
+  gs->bitmap = NULL;
   gs->defaultglyph = 0;
 }
 
@@ -159,7 +157,7 @@ fontstruct_expand()
   for (i=0; i<fontmax; i++)
     newfonts[i] = fonts[i];
   for (i=fontmax; i<fontmax*2; i++)
-    newfonts[i] = (struct cc_fontstruct *)0;
+    newfonts[i] = NULL;
   free(fonts);
   fonts = newfonts;
   fontmax *= 2;
