@@ -56,6 +56,7 @@
 
 #include <Inventor/manips/SoClipPlaneManip.h>
 #include <Inventor/nodes/SoSubNodeP.h>
+#include <Inventor/nodes/SoSurroundScale.h>
 #include <Inventor/draggers/SoJackDragger.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -128,7 +129,13 @@ SoClipPlaneManip::SoClipPlaneManip(void)
     new SoFieldSensor(SoClipPlaneManip::fieldSensorCB, this);
   this->draggerPosFieldSensor->setPriority(0);
 
-  this->setDragger(new SoJackDragger);
+
+  SoJackDragger * dragger = new SoJackDragger;
+  this->setDragger(dragger);
+
+  SoSurroundScale * ss = (SoSurroundScale*) dragger->getPart("surroundScale", TRUE);
+  ss->numNodesUpToContainer = 4;
+  ss->numNodesUpToReset = 3;
 }
 
 /*!
