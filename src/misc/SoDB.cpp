@@ -258,6 +258,16 @@ void
 SoDB::clean(void)
 {
 #if COIN_DEBUG
+  // Avoid having the SoSensorManager instance trigging the callback
+  // into the So@Gui@ class -- not only have it possible "died", but
+  // the whole GUI toolkit could have died until we come here.
+  //
+  // (This has already proven itself to be a source of problems with
+  // the SoQt library, which wets its pants on the
+  // SoDB::globaltimersensor destruction under MSWindows if we don't
+  // first nullify the callback function pointer.)
+  SoDB::sensormanager->setChangedCallback(NULL, NULL);
+
   delete SoDB::globaltimersensor;
 
   delete SoDB::converters;
