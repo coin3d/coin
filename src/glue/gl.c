@@ -683,6 +683,7 @@ cc_glglue_glext_supported(const cc_glglue * wrapper, const char * extension)
 #define GL_EXT_texture_rectangle 1
 #define GL_ARB_fragment_program 1
 #define GL_ARB_vertex_program 1
+#define GL_ARB_shader_objects 1
 
 #else /* static binding */
 
@@ -1449,6 +1450,50 @@ glglue_resolve_symbols(cc_glglue * w)
   } 
 #endif /* GL_ARB_vertex_program */
 
+
+#ifdef GL_ARB_shader_objects
+
+  if (cc_glglue_glext_supported(w, "GL_ARB_shader_objects")) {
+
+#define BIND_FUNCTION_WITH_WARN(_func_, _type_) \
+   w->_func_ = (_type_)PROC(_func_); \
+   do { \
+     if (!w->_func_) { \
+       w->has_arb_shader_objects = FALSE; \
+       if (COIN_DEBUG || coin_glglue_debug()) { \
+         static SbBool error_reported = FALSE; \
+         if (!error_reported) { \
+           cc_debugerror_postwarning("glglue_init", \
+                                     "GL_ARB_shader_objects found, but %s " \
+                                     "function missing.", SO__QUOTE(_func_)); \
+           error_reported = TRUE; \
+         } \
+       } \
+     } \
+   } while (0)
+
+    w->has_arb_shader_objects = TRUE;
+    BIND_FUNCTION_WITH_WARN(glGetUniformLocationARB, COIN_PFNGLGETUNIFORMLOCATIONARBPROC);
+    BIND_FUNCTION_WITH_WARN(glGetActiveUniformARB, COIN_PFNGLGETACTIVEUNIFORMARBPROC);
+    BIND_FUNCTION_WITH_WARN(glUniform1fARB, COIN_PFNGLUNIFORM1FARBPROC);
+    BIND_FUNCTION_WITH_WARN(glUniform2fARB, COIN_PFNGLUNIFORM2FARBPROC);
+    BIND_FUNCTION_WITH_WARN(glUniform3fARB, COIN_PFNGLUNIFORM3FARBPROC);
+    BIND_FUNCTION_WITH_WARN(glUniform4fARB, COIN_PFNGLUNIFORM4FARBPROC);
+    BIND_FUNCTION_WITH_WARN(glCreateShaderObjectARB, COIN_PFNGLCREATESHADEROBJECTARBPROC);
+    BIND_FUNCTION_WITH_WARN(glShaderSourceARB, COIN_PFNGLSHADERSOURCEARBPROC);
+    BIND_FUNCTION_WITH_WARN(glCompileShaderARB, COIN_PFNGLCOMPILESHADERARBPROC);
+    BIND_FUNCTION_WITH_WARN(glGetObjectParameterivARB, COIN_PFNGLGETOBJECTPARAMETERIVARBPROC);
+    BIND_FUNCTION_WITH_WARN(glDeleteObjectARB, COIN_PFNGLDELETEOBJECTARBPROC);
+    BIND_FUNCTION_WITH_WARN(glAttachObjectARB, COIN_PFNGLATTACHOBJECTARBPROC);
+    BIND_FUNCTION_WITH_WARN(glDetachObjectARB, COIN_PFNGLDETACHOBJECTARBPROC);
+    BIND_FUNCTION_WITH_WARN(glGetInfoLogARB, COIN_PFNGLGETINFOLOGARBPROC);
+    BIND_FUNCTION_WITH_WARN(glLinkProgramARB, COIN_PFNGLLINKPROGRAMARBPROC);
+    BIND_FUNCTION_WITH_WARN(glUseProgramObjectARB, COIN_PFNGLUSEPROGRAMOBJECTARBPROC);
+    BIND_FUNCTION_WITH_WARN(glCreateProgramObjectARB, COIN_PFNGLCREATEPROGRAMOBJECTARBPROC);
+
+#undef BIND_FUNCTION_WITH_WARN
+  } 
+#endif /* GL_ARB_shader_objects */
 
 
 

@@ -720,6 +720,7 @@ struct cc_glglue {
   SbBool has_shadow;
   SbBool has_arb_fragment_program;
   SbBool has_arb_vertex_program;
+  SbBool has_arb_shader_objects;
   SbBool has_texture_env_combine;
 
   int max_lights;
