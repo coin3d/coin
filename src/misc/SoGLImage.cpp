@@ -394,6 +394,9 @@ fast_mipmap(SoState * state, int width, int height, const int nc,
   int level = compute_log(height);
   if (level > levels) levels = level;
 
+  int memreq = (SbMax(width>>1,1))*(SbMax(height>>1,1))*nc;
+  unsigned char * mipmap_buffer = glimage_get_buffer(memreq, TRUE);
+
   if (useglsubimage) {
     if (cc_glglue_has_texsubimage(glw)) {
       cc_glglue_glTexSubImage2D(glw, GL_TEXTURE_2D, 0, 0, 0,
@@ -405,26 +408,23 @@ fast_mipmap(SoState * state, int width, int height, const int nc,
     glTexImage2D(GL_TEXTURE_2D, 0, nc, width, height, 0, format,
                  GL_UNSIGNED_BYTE, data);
   }
-
-  int memreq = (SbMax(width>>1,1))*(SbMax(height>>1,1))*nc;
-  unsigned char * mipmap_buffer = glimage_get_buffer(memreq, TRUE);
-
+  unsigned char *src = (unsigned char *) data;
   for (level = 1; level <= levels; level++) {
-    halve_image(width, height, nc, data, mipmap_buffer);
+    halve_image(width, height, nc, src, mipmap_buffer);
     if (width > 1) width >>= 1;
     if (height > 1) height >>= 1;
-
+    src = mipmap_buffer;
     if (useglsubimage) {
       if (cc_glglue_has_texsubimage(glw)) {
         cc_glglue_glTexSubImage2D(glw, GL_TEXTURE_2D, level, 0, 0,
                                   width, height, format,
-                                  GL_UNSIGNED_BYTE, mipmap_buffer);
+                                  GL_UNSIGNED_BYTE, (void*) src);
       }
     }
     else {
       glTexImage2D(GL_TEXTURE_2D, level, nc, width,
                    height, 0, format, GL_UNSIGNED_BYTE,
-                   mipmap_buffer);
+                   (void *) src);
     }
   }
 }
@@ -437,6 +437,9 @@ fast_mipmap(SoState * state, int width, int height, int depth, const int nc,
 {
   const cc_glglue * glw = sogl_glue_instance(state);
   int levels = compute_log(SbMax(SbMax(width, height), depth));
+
+  int memreq = (SbMax(width>>1,1))*(SbMax(height>>1,1))*(SbMax(depth>>1,1))*nc;
+  unsigned char * mipmap_buffer = glimage_get_buffer(memreq, TRUE);
 
   // Send level 0 (original image) to OpenGL
   if (useglsubimage) {
@@ -452,28 +455,25 @@ fast_mipmap(SoState * state, int width, int height, int depth, const int nc,
                              0, format, GL_UNSIGNED_BYTE, data);
     }
   }
-
-  int memreq = (SbMax(width>>1,1))*(SbMax(height>>1,1))*(SbMax(depth>>1,1))*nc;
-  unsigned char * mipmap_buffer = glimage_get_buffer(memreq, TRUE);
-
+  unsigned char *src = (unsigned char *) data;
   for (int level = 1; level <= levels; level++) {
-    halve_image(width, height, depth, nc, data, mipmap_buffer);
+    halve_image(width, height, depth, nc, src, mipmap_buffer);
     if (width > 1) width >>= 1;
     if (height > 1) height >>= 1;
     if (depth > 1) depth >>= 1;
-
+    src = mipmap_buffer;
     if (useglsubimage) {
       if (cc_glglue_has_3d_textures(glw)) {
         cc_glglue_glTexSubImage3D(glw, GL_TEXTURE_3D, level, 0, 0, 0,
                                   width, height, depth, format,
-                                  GL_UNSIGNED_BYTE, mipmap_buffer);
+                                  GL_UNSIGNED_BYTE, (void*) src);
       }
     }
     else {
       if (cc_glglue_has_3d_textures(glw)) {
 	cc_glglue_glTexImage3D(glw, GL_TEXTURE_3D, level, nc, width,
                                height, depth, 0, format, GL_UNSIGNED_BYTE,
-                               mipmap_buffer);
+                               (void *) src);
       }
     }
   }
