@@ -147,10 +147,19 @@ SoBlinker::notify(SoNotList * nl)
   if (this->counter->max.getValue() != lastchildidx) {
     // Wrap to avoid recursive invocation.
     this->counter->enableNotify(FALSE);
+
     // Note that if we have one child, the counting should go from -1
     // to 0 (so the child is toggled on and off).
     this->counter->min.setValue(lastchildidx > 0 ? 0 : SO_SWITCH_NONE);
     this->counter->max.setValue(lastchildidx >= 0 ? lastchildidx : SO_SWITCH_NONE);
+
+    // To avoid SoSwitch getting an out-of-range whichChild value, in
+    // case whichChild was at the end.
+    if (lastchildidx < this->whichChild.getValue()) {
+      this->counter->reset.setValue(lastchildidx);
+      this->whichChild.setDirty(TRUE); // Force evaluate() on the field.
+    }
+
     this->counter->enableNotify(TRUE);
   }
 
