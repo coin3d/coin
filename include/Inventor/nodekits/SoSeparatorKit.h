@@ -22,7 +22,7 @@
 
 #include <Inventor/nodekits/SoSubKit.h>
 #include <Inventor/nodekits/SoBaseKit.h>
-
+#include <Inventor/fields/SoSFEnum.h>
 
 class SoSeparatorKit : public SoBaseKit
 {
@@ -42,6 +42,17 @@ class SoSeparatorKit : public SoBaseKit
 
 public:
   SoSeparatorKit(void);
+
+  enum CacheEnabled {
+    OFF,
+    ON,
+    AUTO
+  };
+  
+  SoSFEnum renderCaching;
+  SoSFEnum boundingBoxCaching;
+  SoSFEnum renderCulling;
+  SoSFEnum pickCulling;
 
   static void initClass(void);
 
