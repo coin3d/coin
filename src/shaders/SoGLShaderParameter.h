@@ -31,8 +31,7 @@
 // *************************************************************************
 
 #include <Inventor/C/glue/gl.h>
-
-#include "SoShaders.h"
+#include <Inventor/nodes/SoShader.h>
 
 // *************************************************************************
 
@@ -46,7 +45,7 @@ public:
   virtual void set3f(const cc_glglue * g, const float * value, const char * name, const int id) = 0;
   virtual void set4f(const cc_glglue * g, const float * value, const char * name, const int id) = 0;
 
-  virtual SoShaders::ShaderType shaderType(void) const = 0;
+  virtual SoShader::ShaderType shaderType(void) const = 0;
 
 public:
   virtual SbBool isFloat(void);
@@ -62,7 +61,7 @@ public:
   void operator delete[](void * obj);
 
 protected:
-  SoShaders::ValueType type;
+  SoShader::ValueType type;
 };
 
 #endif /* ! COIN_SOGLSHADERPARAMETER_H */

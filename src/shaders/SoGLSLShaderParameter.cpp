@@ -34,7 +34,7 @@ SoGLSLShaderParameter::SoGLSLShaderParameter(const cc_glglue * g,
   this->location =
     g->glGetUniformLocationARB(program, (const COIN_GLchar *)theName);
   if (this->location == -1)
-    this->type = SoShaders::UNKNOWN_TYPE;
+    this->type = SoShader::UNKNOWN_TYPE;
   else {
     GLsizei length, size;
     GLenum type;
@@ -42,7 +42,7 @@ SoGLSLShaderParameter::SoGLSLShaderParameter(const cc_glglue * g,
 
     g->glGetActiveUniformARB(program,this->location,128,&length,&size,&type,name);
     this->type = SoGLSLShaderParameter::getParameterTypeFor(type);
-    if (this->type == SoShaders::UNKNOWN_TYPE) 
+    if (this->type == SoShader::UNKNOWN_TYPE) 
       this->location = -1;
     else
       this->name = theName;
@@ -55,10 +55,10 @@ SoGLSLShaderParameter::~SoGLSLShaderParameter()
 
 // *************************************************************************
 
-SoShaders::ShaderType
+SoShader::ShaderType
 SoGLSLShaderParameter::shaderType(void) const
 { 
-  return SoShaders::GLSL_SHADER;
+  return SoShader::GLSL_SHADER;
 }
 
 // *************************************************************************
@@ -101,20 +101,20 @@ SoGLSLShaderParameter::set4f(const cc_glglue * g, const float * value,
 
 // *************************************************************************
 
-SoShaders::ValueType
+SoShader::ValueType
 SoGLSLShaderParameter::getParameterTypeFor(GLenum type)
 {
   switch (type) {
-  case GL_FLOAT: return SoShaders::FLOAT;
-  case GL_FLOAT_VEC2_ARB: return SoShaders::FLOAT2;
-  case GL_FLOAT_VEC3_ARB: return SoShaders::FLOAT3;
-  case GL_FLOAT_VEC4_ARB: return SoShaders::FLOAT4;
-  case GL_FLOAT_MAT2_ARB: return SoShaders::FLOAT_MATRIX2;
-  case GL_FLOAT_MAT3_ARB: return SoShaders::FLOAT_MATRIX3;
-  case GL_FLOAT_MAT4_ARB: return SoShaders::FLOAT_MATRIX4;
+  case GL_FLOAT: return SoShader::FLOAT;
+  case GL_FLOAT_VEC2_ARB: return SoShader::FLOAT2;
+  case GL_FLOAT_VEC3_ARB: return SoShader::FLOAT3;
+  case GL_FLOAT_VEC4_ARB: return SoShader::FLOAT4;
+  case GL_FLOAT_MAT2_ARB: return SoShader::FLOAT_MATRIX2;
+  case GL_FLOAT_MAT3_ARB: return SoShader::FLOAT_MATRIX3;
+  case GL_FLOAT_MAT4_ARB: return SoShader::FLOAT_MATRIX4;
   default:
     SoDebugError::post("SoGLSLShaderParameter::getParameterTypeFor",
                        "Cannot map GLtype to ValueType");
-    return SoShaders::UNKNOWN_TYPE;
+    return SoShader::UNKNOWN_TYPE;
   }
 }

@@ -39,7 +39,7 @@ class SoGLARBShaderParameter : public SoGLShaderParameter
  public: // satisfy SoGLShaderParameter protocol interface
   virtual inline SbBool isReferenced() { return FALSE; }
 
-  virtual SoShaders::ShaderType shaderType() const;
+  virtual SoShader::ShaderType shaderType() const;
 
   virtual void set1f(const cc_glglue * g, const float value, const char * name, const int id);
   virtual void set2f(const cc_glglue * g, const float * value, const char * name, const int id);

@@ -238,13 +238,13 @@ SoShaderObjectP::GLRender(SoGLRenderAction * action)
       SbBool flag = FALSE;
 
       switch (this->glShaderObject->shaderType()) {
-      case SoShaders::ARB_SHADER:
+      case SoShader::ARB_SHADER:
         if (this->cachedSourceType != SoShaderObject::ARB_PROGRAM) flag=TRUE;
         break;
-      case SoShaders::CG_SHADER:
+      case SoShader::CG_SHADER:
         if (this->cachedSourceType != SoShaderObject::CG_PROGRAM) flag=TRUE;
         break;
-      case SoShaders::GLSL_SHADER:
+      case SoShader::GLSL_SHADER:
         if (this->cachedSourceType != SoShaderObject::GLSL_PROGRAM)flag=TRUE;
         break;
       default:

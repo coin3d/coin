@@ -53,13 +53,13 @@ public:
   virtual void set3f(const cc_glglue * g, const float * value, const char * name, const int id);
   virtual void set4f(const cc_glglue * g, const float * value, const char * name, const int id);
 
-  virtual SoShaders::ShaderType shaderType(void) const;
+  virtual SoShader::ShaderType shaderType(void) const;
 
 private:
   GLint location;
   SbString name;
 
-  static SoShaders::ValueType getParameterTypeFor(GLenum type);
+  static SoShader::ValueType getParameterTypeFor(GLenum type);
 };
 
 #endif /* ! COIN_SOGLSLSHADERPARAMETER_H */

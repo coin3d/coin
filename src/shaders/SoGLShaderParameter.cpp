@@ -33,22 +33,22 @@
 
 SoGLShaderParameter::SoGLShaderParameter()
 {
-  this->type = SoShaders::UNKNOWN_TYPE;
+  this->type = SoShader::UNKNOWN_TYPE;
 }
 
-SbBool SoGLShaderParameter::isFloat() { return this->type==SoShaders::FLOAT; }
-SbBool SoGLShaderParameter::isFloat2(){ return this->type==SoShaders::FLOAT2;}
-SbBool SoGLShaderParameter::isFloat3(){ return this->type==SoShaders::FLOAT3;}
-SbBool SoGLShaderParameter::isFloat4(){ return this->type==SoShaders::FLOAT4;}
+SbBool SoGLShaderParameter::isFloat() { return this->type==SoShader::FLOAT; }
+SbBool SoGLShaderParameter::isFloat2(){ return this->type==SoShader::FLOAT2;}
+SbBool SoGLShaderParameter::isFloat3(){ return this->type==SoShader::FLOAT3;}
+SbBool SoGLShaderParameter::isFloat4(){ return this->type==SoShader::FLOAT4;}
 
 SbBool SoGLShaderParameter::isTexture() 
 {
   switch (this->type) {
-  case SoShaders::TEXTURE1D:
-  case SoShaders::TEXTURE2D:
-  case SoShaders::TEXTURE3D:
-  case SoShaders::TEXTURE_CUBE:
-  case SoShaders::TEXTURE_RECT:
+  case SoShader::TEXTURE1D:
+  case SoShader::TEXTURE2D:
+  case SoShader::TEXTURE3D:
+  case SoShader::TEXTURE_CUBE:
+  case SoShader::TEXTURE_RECT:
     return TRUE;
   default:
     return FALSE;
@@ -58,11 +58,11 @@ SbBool SoGLShaderParameter::isTexture()
 void SoGLShaderParameter::operator delete(void *obj) 
 {
   switch (((SoGLShaderParameter*)obj)->shaderType()) {
-  case SoShaders::ARB_SHADER: 
+  case SoShader::ARB_SHADER: 
     ::delete (SoGLARBShaderParameter *)obj; break;
-  case SoShaders::CG_SHADER:
+  case SoShader::CG_SHADER:
     ::delete (SoGLCgShaderParameter *)obj; break;
-  case SoShaders::GLSL_SHADER: 
+  case SoShader::GLSL_SHADER: 
     ::delete (SoGLSLShaderParameter *)obj; break;
   default: assert(FALSE && "shaderType unknown!");
   }
@@ -71,11 +71,11 @@ void SoGLShaderParameter::operator delete(void *obj)
 void SoGLShaderParameter::operator delete[](void *obj) 
 {
   switch (((SoGLShaderParameter*)obj)->shaderType()) {
-  case SoShaders::ARB_SHADER:
+  case SoShader::ARB_SHADER:
     ::delete [] (SoGLARBShaderParameter *)obj; break;
-  case SoShaders::CG_SHADER:
+  case SoShader::CG_SHADER:
     ::delete [] (SoGLCgShaderParameter *)obj; break;
-  case SoShaders::GLSL_SHADER:
+  case SoShader::GLSL_SHADER:
     ::delete [] (SoGLSLShaderParameter *)obj; break;
   default: assert(FALSE && "shaderType unknown!");
   }

@@ -98,7 +98,7 @@ SoUniformShaderParameter::ensureParameter(SoGLShaderObject * shader, int type)
     const char* str = this->name.getValue().getString();
     int index = this->identifier.getValue();
     this->parameter = shader->getParameter(index, str,
-                                           (SoShaders::ValueType)type);
+                                           (SoShader::ValueType)type);
   }
   return TRUE;
 }
@@ -130,7 +130,7 @@ SoShaderParameter1f::~SoShaderParameter1f()
 void
 SoShaderParameter1f::updateParameter(SoGLShaderObject *shader)
 {
-  if (!this->ensureParameter(shader, SoShaders::FLOAT)) return;
+  if (!this->ensureParameter(shader, SoShader::FLOAT)) return;
   this->parameter->set1f(shader->GLContext(),
                          this->value.getValue(),
                          this->name.getValue().getString(),
@@ -162,7 +162,7 @@ SoShaderParameter2f::~SoShaderParameter2f()
 
 void SoShaderParameter2f::updateParameter(SoGLShaderObject *shader)
 {
-  if (!this->ensureParameter(shader, SoShaders::FLOAT2)) return;
+  if (!this->ensureParameter(shader, SoShader::FLOAT2)) return;
   this->parameter->set2f(shader->GLContext(),
                          this->value.getValue().getValue(),
                          this->name.getValue().getString(),
@@ -194,7 +194,7 @@ SoShaderParameter3f::~SoShaderParameter3f()
 
 void SoShaderParameter3f::updateParameter(SoGLShaderObject *shader)
 {
-  if (!this->ensureParameter(shader, SoShaders::FLOAT3)) return;
+  if (!this->ensureParameter(shader, SoShader::FLOAT3)) return;
   this->parameter->set3f(shader->GLContext(),
                          this->value.getValue().getValue(),
                          this->name.getValue().getString(),
@@ -226,7 +226,7 @@ SoShaderParameter4f::~SoShaderParameter4f()
 
 void SoShaderParameter4f::updateParameter(SoGLShaderObject *shader)
 {
-  if (!this->ensureParameter(shader, SoShaders::FLOAT4)) return;
+  if (!this->ensureParameter(shader, SoShader::FLOAT4)) return;
   this->parameter->set4f(shader->GLContext(),
                          this->value.getValue().getValue(),
                          this->name.getValue().getString(),
@@ -277,10 +277,10 @@ SoShaderStateMatrixParameter::~SoShaderStateMatrixParameter()
 void
 SoShaderStateMatrixParameter::updateParameter(SoGLShaderObject *shader)
 {
-  if (shader->shaderType() != SoShaders::CG_SHADER) return;
+  if (shader->shaderType() != SoShader::CG_SHADER) return;
   if (this->name.isDefault()) return;
 
-  if (!this->ensureParameter(shader, SoShaders::FLOAT_MATRIX4)) return;
+  if (!this->ensureParameter(shader, SoShader::FLOAT_MATRIX4)) return;
 
   CGGLenum type;
   switch (matrixType.getValue()) {
@@ -332,6 +332,6 @@ SoShaderParameterSampler2D::~SoShaderParameterSampler2D()
 void
 SoShaderParameterSampler2D::updateParameter(SoGLShaderObject *shader)
 {
-  if (!this->ensureParameter(shader, SoShaders::TEXTURE2D)) return;
+  if (!this->ensureParameter(shader, SoShader::TEXTURE2D)) return;
   //this->parameter->set4f(this->value.getValue().getValue());
 }

@@ -1,5 +1,5 @@
-#ifndef COIN_SOSHADERS_H
-#define COIN_SOSHADERS_H
+#ifndef COIN_SOSHADER_H
+#define COIN_SOSHADER_H
 
 /**************************************************************************\
  *
@@ -28,7 +28,9 @@
 #error this is a private header file
 #endif
 
-class SoShaders
+// *************************************************************************
+
+class SoShader
 {
 public:
   static void init(void);
@@ -56,4 +58,6 @@ public:
   };
 };
 
-#endif /* ! COIN_SOSHADERS_H */
+// *************************************************************************
+
+#endif /* ! COIN_SOSHADER_H */

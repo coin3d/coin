@@ -16,7 +16,7 @@ Regular = \
 	SoShaderObject.cpp \
 	SoShaderParameter.cpp \
 	SoShaderProgram.cpp \
-	SoShaders.cpp \
+	SoShader.cpp \
 	SoVertexShader.cpp
 
 Private = \
@@ -31,8 +31,7 @@ Private = \
 	SoGLSLShaderProgram.h \
 	SoGLShaderParameter.h \
 	SoGLShaderObject.h \
-	SoGLShaderProgram.h \
-	SoShaders.h
+	SoGLShaderProgram.h
 
 RegularSources = $(Regular)
 LinkHackSources = $(Regular)

@@ -32,8 +32,7 @@
 
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/SbString.h>
-
-#include "SoShaders.h"
+#include <Inventor/nodes/SoShader.h>
 
 class SoGLShaderParameter;
 
@@ -49,9 +48,9 @@ public:
   virtual SbBool isLoaded(void) const = 0;
   virtual void load(const char * sourceString) = 0;
   virtual void unload(void) = 0;
-  virtual SoShaders::ShaderType shaderType(void) const = 0;
+  virtual SoShader::ShaderType shaderType(void) const = 0;
   virtual SoGLShaderParameter * getParameter(int index, const char * name,
-                                             SoShaders::ValueType type) = 0;
+                                             SoShader::ValueType type) = 0;
 
 public:
   void operator delete(void * obj);

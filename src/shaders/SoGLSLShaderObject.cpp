@@ -43,10 +43,10 @@ SoGLSLShaderObject::~SoGLSLShaderObject()
 
 // *************************************************************************
 
-SoShaders::ShaderType
+SoShader::ShaderType
 SoGLSLShaderObject::shaderType(void) const
 {
-  return SoShaders::GLSL_SHADER;
+  return SoShader::GLSL_SHADER;
 }
 
 SbBool
@@ -95,7 +95,7 @@ SoGLSLShaderObject::unload(void)
 }
 
 SoGLShaderParameter *
-SoGLSLShaderObject::getParameter(int, const char* name, SoShaders::ValueType)
+SoGLSLShaderObject::getParameter(int, const char* name, SoShader::ValueType)
 {
   return new SoGLSLShaderParameter(this->glctx, this->programHandle, name);
 }

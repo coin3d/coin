@@ -42,9 +42,9 @@ public:
   virtual SbBool isLoaded(void) const;
   virtual void load(const char *sourceString);
   virtual void unload(void);
-  virtual SoShaders::ShaderType shaderType(void) const;
+  virtual SoShader::ShaderType shaderType(void) const;
   virtual SoGLShaderParameter * getParameter(int index, const char * name,
-                                             SoShaders::ValueType type);
+                                             SoShader::ValueType type);
 
 public:
   SoGLARBShaderObject(const cc_glglue * g);

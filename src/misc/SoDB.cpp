@@ -352,7 +352,7 @@
 
 #include <coindefs.h> // COIN_STUB()
 
-#include <Inventor/nodes/SoShaders.h>
+#include <Inventor/nodes/SoShader.h>
 
 #ifdef HAVE_VRML97
 #include <Inventor/VRMLnodes/SoVRML.h>
@@ -573,7 +573,7 @@ SoDB::init(void)
 
   SoHardCopy::init();
 
-  SoShaders::init();
+  SoShader::init();
 
 #ifdef HAVE_VRML97
   so_vrml_init();

@@ -42,10 +42,10 @@ public:
   SoGLSLShaderObject(const cc_glglue * g);
   virtual ~SoGLSLShaderObject();
 
-  virtual SoShaders::ShaderType shaderType(void) const;
+  virtual SoShader::ShaderType shaderType(void) const;
 
   virtual SoGLShaderParameter * getParameter(int index, const char * name,
-                                             SoShaders::ValueType type);
+                                             SoShader::ValueType type);
 
   virtual SbBool isLoaded(void) const;
   virtual void load(const char * sourceString);

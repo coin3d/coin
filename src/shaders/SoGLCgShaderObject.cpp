@@ -46,14 +46,14 @@ SoGLCgShaderObject::~SoGLCgShaderObject()
   SoGLCgShaderObject::destroyCgContext();
 }
 
-SoShaders::ShaderType
+SoShader::ShaderType
 SoGLCgShaderObject::shaderType() const
 {
-  return SoShaders::CG_SHADER;
+  return SoShader::CG_SHADER;
 }
 
 SoGLShaderParameter *
-SoGLCgShaderObject::getParameter(int, const char* name, SoShaders::ValueType type)
+SoGLCgShaderObject::getParameter(int, const char* name, SoShader::ValueType type)
 {
   return new SoGLCgShaderParameter(this, name, type);
 }

@@ -86,14 +86,14 @@ SoGLARBShaderObject::unload(void)
   }
 }
 
-SoShaders::ShaderType
+SoShader::ShaderType
 SoGLARBShaderObject::shaderType(void) const
 {
-  return SoShaders::ARB_SHADER;
+  return SoShader::ARB_SHADER;
 }
 
 SoGLShaderParameter *
-SoGLARBShaderObject::getParameter(int index, const char*, SoShaders::ValueType)
+SoGLARBShaderObject::getParameter(int index, const char*, SoShader::ValueType)
 {
   return new SoGLARBShaderParameter(this->target, index);
 }

@@ -21,7 +21,7 @@
  *
 \**************************************************************************/
 
-#include "SoShaders.h"
+#include <Inventor/nodes/SoShader.h>
 
 #include <Inventor/nodes/SoShaderProgram.h>
 #include <Inventor/nodes/SoShaderObject.h>
@@ -34,7 +34,7 @@
 // *************************************************************************
 
 void
-SoShaders::init(void)
+SoShader::init(void)
 {
   // Trigger loading and init of Cg library glue.
   //
