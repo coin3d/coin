@@ -407,6 +407,11 @@ SoVRMLAudioClip::getSampleRate()
   return PRIVATE(this)->sampleRate;
 }
 
+/*! Sets callbacks for opening, reading, seeking, telling and closing
+ an audio source. Specifying NULL for a function is OK, except for the
+ read function. If a function set to NULL is later called, a default
+ implementation doing nothing is called in it's place. */
+
 void
 SoVRMLAudioClip::setCallbacks(open_func *opencb, read_func *readcb, 
                               seek_func *seekcb, tell_func *tellcb, 
@@ -420,6 +425,8 @@ SoVRMLAudioClip::setCallbacks(open_func *opencb, read_func *readcb,
   PRIVATE(this)->callbackuserdataptr = userdataptr;
 }
 
+/*!  Opens an audio source with the given \a url. Returns a handle to
+  the datasource.  */
 void * 
 SoVRMLAudioClip::open(const SbStringList &url)
 {
@@ -431,6 +438,9 @@ SoVRMLAudioClip::open(const SbStringList &url)
 #endif
   return PRIVATE(this)->open(url, this, PRIVATE(this)->callbackuserdataptr);
 }
+
+/*! Moves the "filepointer" in the \a datasource, returns -1L on error.  
+*/
 
 int
 SoVRMLAudioClip::seek(void *datasource, long offset, int whence)
@@ -445,6 +455,10 @@ SoVRMLAudioClip::seek(void *datasource, long offset, int whence)
                              this, PRIVATE(this)->callbackuserdataptr);
 }
 
+/*! Returns the current position of the "filepointer" in the \a datasource, 
+    or -1L on error.  
+*/
+
 long
 SoVRMLAudioClip::tell(void *datasource)
 {
@@ -458,6 +472,9 @@ SoVRMLAudioClip::tell(void *datasource)
                              this, PRIVATE(this)->callbackuserdataptr);
 }
 
+/*! Closes \a datasource.
+ */
+
 int
 SoVRMLAudioClip::close(void *datasource)
 {
@@ -470,6 +487,13 @@ SoVRMLAudioClip::close(void *datasource)
   return PRIVATE(this)->close(datasource, 
                               this, PRIVATE(this)->callbackuserdataptr);
 }
+
+/*!  Reads \a numframes frames of audio with \a channels channels from
+     \a datasource into \a buffer. Buffer must be allocated by the
+     caller, and must be able to hold all the audio data (size = \a
+     numframes * \a channels * sizeof(int16_t)). Returns 0 if an error
+     occured, otherwise returns the number of frames actually read
+     (should allways be equal to \a numframes).  */
 
 size_t
 SoVRMLAudioClip::read(void *datasource, void *buffer,
