@@ -41,6 +41,19 @@ STUFF TO FIX IN COIN
   had if SoShape nodes kept a bounding box cache in the same manner as
   SoSeparator nodes.
 
+  Additions by Peder Blekken <pederb@sim.no>, 2001-11-28:
+
+  After discussions on the coin internal mailing list, we came to
+  realize that it would be nice to also use the bounding box cache
+  when doing scene bounding box calculations, and also perhaps when
+  doing render culling and certainly for ray pick culling.  We
+  shouldn't store a bounding box cache for all shapes though, only for
+  those shapes that will require much work to calculate.  I suggested
+  a virtual method SoShape::shouldCreateBBoxCache(state), which should
+  return FALSE by default, but it could be overloaded by for instance
+  SoIndexedFaceSet to return TRUE when the shape consisted of more
+  than 1000 coordinate indices or something. If this suggestion is a
+  good idea is yet to be decided.
 
 * Improve error reporting on texture loading
   2001-11-24  Morten Eriksen  <mortene@sim.no>
