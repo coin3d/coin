@@ -210,9 +210,7 @@ SoMField::get1(const int index, SbString & valuestring)
   // remember to update both places if any fixes are done.
 
   SoOutput out;
-  // FIXME: wouldn't it be better to empty the headerstring like this
-  // than doing the stripping later on? 20000312 mortene.
-//    out.setHeaderString("");
+  out.setHeaderString("");
   const size_t STARTSIZE = 32;
   void * buffer = malloc(STARTSIZE);
 
@@ -221,11 +219,7 @@ SoMField::get1(const int index, SbString & valuestring)
 
   size_t size;
   out.getBuffer(buffer, size);
-  // Strip off header.
-  char * start = strstr((char *)buffer, "\n\n");
-  assert(start != NULL);
-  start += 2;
-  valuestring = start;
+  valuestring = (char *)buffer;
   free(buffer);
 }
 

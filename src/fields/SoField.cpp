@@ -510,7 +510,6 @@ SoField::connectFrom(SoEngineOutput * master, SbBool notnotify, SbBool append)
   SoType mastertype = master->getConnectionType();
   SoType thistype = this->getTypeId();
 
-
   // Set up all links.  ///////////////////////////////////////////
 
   if (mastertype == thistype) { // Can do direct field-to-engineout link.
@@ -956,9 +955,7 @@ SoField::get(SbString & valuestring)
   // so remember to update both places if any fixes are done.
 
   SoOutput out;
-  // FIXME: wouldn't it be better to empty the headerstring like this
-  // than doing the stripping later on? 20000312 mortene.
-//    out.setHeaderString("");
+  out.setHeaderString("");
   const size_t STARTSIZE = 32;
   void * buffer = malloc(STARTSIZE);
 
@@ -967,11 +964,7 @@ SoField::get(SbString & valuestring)
 
   size_t size;
   out.getBuffer(buffer, size);
-  // Strip off header.
-  char * start = strstr((char *)buffer, "\n\n");
-  assert(start != NULL);
-  start += 2;
-  valuestring = start;
+  valuestring = (char *)buffer;
   free(buffer);
 }
 
