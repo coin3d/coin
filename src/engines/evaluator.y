@@ -37,11 +37,17 @@
  * The patch is explained at the top of the diff file.
  */
 
-#include <Inventor/C/basic.h>
-#include "evaluator.h"
+#ifdef HAVE_CONFIG_H
+#include <config.h>
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
+#ifdef HAVE_IO_H
+/* isatty() on windows */
+#include <io.h>
+#endif // HAVE_IO_H
+#include <Inventor/C/basic.h>
+#include "evaluator.h"
 %}
 
 %union
