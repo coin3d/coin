@@ -34,8 +34,8 @@
  */
 
 #include <Inventor/SoOffscreenRenderer.h>
-#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/SbVec2s.h>
+#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/misc/SoBasic.h>
 #include <GL/gl.h>
 #include <assert.h>
@@ -61,7 +61,31 @@ public:
   virtual unsigned char * getBuffer(void) = 0;
 
   virtual void setBufferSize(const SbVec2s & size) {
-    this->buffersize = size;
+    SbVec2s maxsize = SoOffscreenRenderer::getMaximumResolution();
+    
+#if COIN_DEBUG
+    if (size[0] > maxsize[0]) {
+      SoDebugError::postWarning("SoOffscreenMesaData::setBufferSize",
+                                "can't set width to %d, maximum is %d",
+                                size[0], maxsize[0]);
+    }
+    else if (size[0] <= 0) {
+      SoDebugError::postWarning("SoOffscreenMesaData::setBufferSize",
+                                "can't set negative width %d", size[0]);
+    }
+    if (size[1] > maxsize[1]) {
+      SoDebugError::postWarning("SoOffscreenMesaData::setBufferSize",
+                                "can't set height to %d, maximum is %d",
+                                size[1], maxsize[1]);
+    }
+    else if (size[1] <= 0) {
+      SoDebugError::postWarning("SoOffscreenMesaData::setBufferSize",
+                                "can't set negative height %d", size[1]);
+    }
+#endif // COIN_DEBUG
+
+    this->buffersize[0] = SbMax((short)1, SbMin(size[0], maxsize[0]));
+    this->buffersize[1] = SbMax((short)1, SbMin(size[1], maxsize[1]));
   }
 
   SbVec2s getSize(void) const {
@@ -79,10 +103,16 @@ class SoOffscreenMesaData : public SoOffscreenInternalData {
 public:
   SoOffscreenMesaData(void) {
     this->context = OSMesaCreateContext(OSMESA_RGBA, NULL);
+#if COIN_DEBUG
+    if (!this->context) {
+      SoDebugError::postWarning("SoOffscreenMesaData::SoOffscreenMesaData",
+                                "couldn't create context");
+    }
+#endif // COIN_DEBUG
     this->buffer = NULL;
   }
   virtual ~SoOffscreenMesaData() {
-    OSMesaDestroyContext(this->context);
+    if (this->context) OSMesaDestroyContext(this->context);
     delete this->buffer;
   }
 
@@ -95,11 +125,12 @@ public:
 
   virtual void makeContextCurrent(void) {
     assert(this->buffer);
-    assert(this->context);
-    OSMesaMakeCurrent(this->context, this->buffer,
-                      GL_UNSIGNED_BYTE,
-                      this->buffersize[0],
-                      this->buffersize[1]);
+    if (this->context) {
+      OSMesaMakeCurrent(this->context, this->buffer,
+                        GL_UNSIGNED_BYTE,
+                        this->buffersize[0],
+                        this->buffersize[1]);
+    }
   }
 
   virtual unsigned char * getBuffer(void) {
@@ -174,19 +205,23 @@ SoOffscreenRenderer::getScreenPixelsPerInch(void)
 }
 
 /*!
-  Get maximum resolution of the offscreen buffer.
+  Get maximum dimensions (width, height) of the offscreen buffer.
 */
 SbVec2s
 SoOffscreenRenderer::getMaximumResolution(void)
 {
-  COIN_STUB();
-  // FIXME: pederb 20000109
-  // values found from osmesa.h, but should query GL about this.
-  return SbVec2s(1280, 1024);
+  GLint dims[2];
+  glGetIntegerv(GL_MAX_VIEWPORT_DIMS, dims);
+
+  // Avoid overflow.
+  dims[0] = SbMin(dims[0], 32767);
+  dims[1] = SbMin(dims[1], 32767);
+
+  return SbVec2s((short)dims[0], (short)dims[1]);
 }
 
 /*!
-  Sets the components of the offscreen buffer. Currently only
+  Sets the component format of the offscreen buffer. Currently only
   the RGB_TRANSPARENCY format is supported.
 */
 void
@@ -202,9 +237,9 @@ SoOffscreenRenderer::setComponents(const Components components)
 }
 
 /*!
-  Returns the components of the offscreen buffer.
+  Returns the component format of the offscreen buffer.
 
-  \sa SoOffscreenRenderer::setComponents()
+  \sa setComponents()
  */
 SoOffscreenRenderer::Components
 SoOffscreenRenderer::getComponents(void) const
@@ -346,13 +381,15 @@ SoOffscreenRenderer::writeToRGB(FILE * fp) const
   //
   if (this->internaldata) {
     SbVec2s size = this->internaldata->getSize();
-    unsigned short comp = (unsigned short)this->getComponents();
     write_short(fp, 0x01da); // imagic
     write_short(fp, 0x0001); // raw (no rle yet)
+
+    unsigned short comp = (unsigned short)this->getComponents();
     if (comp == 1)
       write_short(fp, 0x0002); // 2 dimensions (heightmap)
     else
       write_short(fp, 0x0003); // 3 dimensions
+
     write_short(fp, (unsigned short) size[0]);
     write_short(fp, (unsigned short) size[1]);
     write_short(fp, (unsigned short) comp);
