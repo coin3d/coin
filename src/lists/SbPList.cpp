@@ -41,6 +41,14 @@
 */
 
 /*!
+  \fn void SbPList::append(void * item)
+
+  Append \a item to the end of the list.
+
+  Automatically allocates more items internally if needed.
+*/
+
+/*!
   \fn void * SbPList::get(const int index) const
 
   Returns element at \a index. Does \e not expand array bounds if \a
