@@ -146,9 +146,6 @@ class SoText2P {
 public:
   SoText2P(SoText2 * textnode) : master(textnode)
   {
-    this->laststring = NULL;
-    this->linecnt = 0;
-    this->stringwidth = NULL;
     this->bbox.makeEmpty();
     this->useglyphcache = TRUE;
     this->prevfontname = SbName("");
@@ -169,10 +166,9 @@ public:
   SbBool useglyphcache;
   SbList< SbList<const SoGlyph*> * > glyphs;
   SbList< SbList<SbVec2s> * > positions;
-  SbString ** laststring;
-  int * stringwidth;
+  SbList< SbString > laststring;
+  SbList<int> stringwidth;
   SbBox2s bbox;
-  int linecnt;
   SbName prevfontname;
   float prevfontsize;
   SbBool hasbuiltglyphcache;
@@ -281,7 +277,8 @@ SoText2::GLRender(SoGLRenderAction * action)
       SbVec2s position;
       SbVec2s thissize;
       unsigned char * buffer;
-      for (int i = 0; i < PRIVATE(this)->linecnt; i++) {
+      const int nrlines = PRIVATE(this)->glyphs.getLength();
+      for (int i = 0; i < nrlines; i++) {
         switch (this->justification.getValue()) {
         case SoText2::LEFT:
           xpos = nilpoint[0];
@@ -293,7 +290,7 @@ SoText2::GLRender(SoGLRenderAction * action)
           xpos = nilpoint[0] - PRIVATE(this)->stringwidth[i]/2.0f;
           break;
         }
-        charcnt = PRIVATE(this)->laststring[i]->getLength();
+        charcnt = PRIVATE(this)->laststring[i].getLength();
         for (int i2 = 0; i2 < charcnt; i2++) {
           buffer = (*PRIVATE(this)->glyphs[i])[i2]->getBitmap(thissize, thispos, FALSE);
           ix = thissize[0];
@@ -466,27 +463,24 @@ SoText2::generatePrimitives(SoAction * action)
 void
 SoText2P::flushGlyphCache(const SbBool unrefglyphs)
 {
-  if (this->stringwidth) { free(this->stringwidth); }
-
-  for (int i=0; i<this->linecnt; i++) {
-    if (this->laststring[i] && unrefglyphs) {
-      for (int j=0; j<this->laststring[i]->getLength(); j++) {
+  const int nrlines = this->glyphs.getLength();
+  for (int i=0; i < nrlines; i++) {
+    if (unrefglyphs) {
+      for (int j=0; j<this->laststring[i].getLength(); j++) {
         if ((*this->glyphs[i])[j]) {
           (*this->glyphs[i])[j]->unref();
         }
       }
     }
 
-    delete this->laststring[i];
     delete this->glyphs[i];
     delete this->positions[i];
   }
 
+  this->stringwidth.truncate(0);
   this->glyphs.truncate(0);
   this->positions.truncate(0);
-  this->laststring = NULL;
-  this->linecnt = 0;
-  this->stringwidth = NULL;
+  this->laststring.truncate(0);
   this->bbox.makeEmpty();
 }
 
@@ -496,10 +490,11 @@ SoText2P::dumpGlyphCache()
 {
   // FIXME: pure debug method, remove. preng 2003-03-18.
   fprintf(stderr,"dumpGlyphCache\n");
-  for (int i=0; i<this->linecnt; i++) {
+  const int nrlines = this->glyphs.getLength();
+  for (int i=0; i < nrlines; i++) {
     fprintf(stderr,"  stringwidth[%d]=%d\n", i, this->stringwidth[i]);
-    fprintf(stderr,"  laststring[%d]=%s\n", i, this->laststring[i]->getString());
-    for (int j = 0; j < (int) strlen(this->laststring[i]->getString()); j++) {
+    fprintf(stderr,"  laststring[%d]=%s\n", i, this->laststring[i].getString());
+    for (int j = 0; j < this->laststring[i].getLength(); j++) {
       fprintf(stderr,"    glyph[%d][%d]=%p\n", i, j, (*this->glyphs[i])[j]);
       fprintf(stderr,"    position[%d][%d]=(%d, %d)\n", i, j, (*this->positions[i])[j][0], (*this->positions[i])[j][1]);
     }
@@ -613,12 +608,11 @@ SoText2P::shouldBuildGlyphCache(SoState * state)
   // FIXME: Use notify() mechanism to detect field changes. For
   // Coin3. preng, 2003-03-10.
 
-  if (this->linecnt != PUBLIC(this)->string.getNum()) { return TRUE; }
+  const int nrlines = this->glyphs.getLength();
+  if (nrlines != PUBLIC(this)->string.getNum()) { return TRUE; }
 
-  assert(this->laststring != NULL);
-  for (int i=0; i<this->linecnt; i++) {
-    assert(this->laststring[i] != NULL);
-    if (*(this->laststring[i]) != PUBLIC(this)->string[i]) return TRUE;
+  for (int i=0; i < nrlines; i++) {
+    if (this->laststring[i] != PUBLIC(this)->string[i]) return TRUE;
   }
 
   return FALSE;
@@ -634,35 +628,23 @@ SoText2P::buildGlyphCache(SoState * state)
     this->prevfontsize = curfontsize;
     this->flushGlyphCache(FALSE);
     this->hasbuiltglyphcache = TRUE;
-    this->linecnt = PUBLIC(this)->string.getNum();
-
-    // FIXME: this is buggy as hell -- linecnt can be 0. And another
-    // thing: use new and delete, not malloc and free. 20030408 mortene.
-    this->laststring = (SbString **)malloc(this->linecnt*sizeof(SbString*));
-    this->stringwidth = (int *)malloc(this->linecnt*sizeof(int));
-
-    // Avoid confusing flushGlyphCache with halfway init'l'ed arrays
-    //
-    // FIXME: this is ugly as fuck; it's bad portability to equate a
-    // null bit pattern with NULL. 20030408 mortene.
-    memset(this->laststring, 0, this->linecnt*sizeof(SbString*));
-    memset(this->stringwidth, 0, this->linecnt*sizeof(int));
+    const int nrlines = PUBLIC(this)->string.getNum();
 
     SbVec2s penpos(0, 0);
     SbVec2s advance = penpos;
     SbVec2s kerning = penpos;
 
-    for (int i=0; i<this->linecnt; i++) {
+    for (int i=0; i < nrlines; i++) {
       this->glyphs.append(new SbList<const SoGlyph *>);
       this->positions.append(new SbList<SbVec2s>);
 
       const int strlength = PUBLIC(this)->string[i].getLength();
-      this->laststring[i] = new SbString(PUBLIC(this)->string[i]);
+      this->laststring.append(SbString(PUBLIC(this)->string[i]));
 
       SbVec2s thissize;
 
       for (int j = 0; j < strlength; j++) {
-        const unsigned int idx = (*this->laststring[i])[j];
+        const unsigned int idx = this->laststring[i][j];
         (*this->glyphs[i]).append(SoGlyph::getGlyph(state, idx, SbVec2s(0,0), 0.0));
         // Should _always_ be able to get hold of a glyph -- if no
         // glyph is available for a specific character, a default
@@ -685,7 +667,7 @@ SoText2P::buildGlyphCache(SoState * state)
         this->bbox.extendBy((*this->positions[i])[j] + SbVec2s(thissize[0], -thissize[1]));
       }
 
-      this->stringwidth[i] = (*this->positions[i])[strlength - 1][0] + thissize[0];
+      this->stringwidth.append((*this->positions[i])[strlength - 1][0] + thissize[0]);
       penpos = SbVec2s(0, penpos[1] - (short)(this->prevfontsize * PUBLIC(this)->spacing.getValue()));
     }
   }
