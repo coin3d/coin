@@ -4928,7 +4928,7 @@ config_files="\\
     tools/ivNodeKitStructure/Makefile tools/renderos/Makefile
     examples/Makefile examples/advanced/Makefile
     examples/advanced/elements/Makefile build/coin.dsp build/coin.mak
-    build/coin_dll.dsp build/coin_dll.mak build/CoinSdk.iwz"
+    build/coin_dll.dsp build/coin_dll.mak build/CoinSDK.iwz"
 config_headers="\\
     config.h include/Inventor/SbBasic.h"
 
@@ -5012,7 +5012,7 @@ do
   'build/coin.mak' ) CONFIG_FILES="\$CONFIG_FILES build/coin.mak" ;;
   'build/coin_dll.dsp' ) CONFIG_FILES="\$CONFIG_FILES build/coin_dll.dsp" ;;
   'build/coin_dll.mak' ) CONFIG_FILES="\$CONFIG_FILES build/coin_dll.mak" ;;
-  'build/CoinSdk.iwz' ) CONFIG_FILES="\$CONFIG_FILES build/CoinSdk.iwz" ;;
+  'build/CoinSDK.iwz' ) CONFIG_FILES="\$CONFIG_FILES build/CoinSDK.iwz" ;;
   'config.h' ) CONFIG_HEADERS="\$CONFIG_HEADERS config.h" ;;
   'include/Inventor/SbBasic.h' ) CONFIG_HEADERS="\$CONFIG_HEADERS include/Inventor/SbBasic.h" ;;
   # This is an error.

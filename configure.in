@@ -411,7 +411,7 @@ AC_OUTPUT([
         build/coin.mak
         build/coin_dll.dsp
         build/coin_dll.mak
-        build/CoinSdk.iwz
+        build/CoinSDK.iwz
         ],
         [chmod a+x coin-config])
 
