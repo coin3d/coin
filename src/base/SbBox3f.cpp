@@ -34,7 +34,6 @@
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SbMatrix.h>
 #include <assert.h>
-#include <coindefs.h> // COIN_STUB()
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
