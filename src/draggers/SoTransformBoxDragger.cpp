@@ -17,6 +17,14 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoTransformBoxDragger SoTransformBoxDragger.h Inventor/draggers/SoTransformBoxDragger.h
+  \brief The SoTransformBoxDragger class is (FIXME: doc)
+  \ingroup draggers
+
+  FIXME: document class
+*/
+
 #include <Inventor/draggers/SoTransformBoxDragger.h>
 #include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/draggers/SoRotateCylindricalDragger.h>

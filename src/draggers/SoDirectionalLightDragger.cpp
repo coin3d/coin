@@ -17,6 +17,14 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoDirectionalLightDragger SoDirectionalLightDragger.h Inventor/draggers/SoDirectionalLightDragger.h
+  \brief The SoDirectionalLightDragger class is (FIXME: doc)
+  \ingroup draggers
+
+  FIXME: document class
+*/
+
 #include <Inventor/draggers/SoDirectionalLightDragger.h>
 #include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/draggers/SoDragPointDragger.h>

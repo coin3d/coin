@@ -17,6 +17,14 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoPointLightDragger SoPointLightDragger.h Inventor/draggers/SoPointLightDragger.h
+  \brief The SoPointLightDragger class is (FIXME: doc)
+  \ingroup draggers
+
+  FIXME: document class
+*/
+
 #include <Inventor/draggers/SoPointLightDragger.h>
 #include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/draggers/SoDragPointDragger.h>

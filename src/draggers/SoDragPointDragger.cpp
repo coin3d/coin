@@ -17,6 +17,14 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoDragPointDragger SoDragPointDragger.h Inventor/draggers/SoDragPointDragger.h
+  \brief The SoDragPointDragger class is (FIXME: doc)
+  \ingroup draggers
+
+  FIXME: document class
+*/
+
 #include <Inventor/draggers/SoDragPointDragger.h>
 #include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/draggers/SoTranslate1Dragger.h>

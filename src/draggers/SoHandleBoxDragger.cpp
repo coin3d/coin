@@ -17,6 +17,14 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoHandleBoxDragger SoHandleBoxDragger.h Inventor/draggers/SoHandleBoxDragger.h
+  \brief The SoHandleBoxDragger class is (FIXME: doc)
+  \ingroup draggers
+
+  FIXME: document class
+*/
+
 #include <Inventor/draggers/SoHandleBoxDragger.h>
 #include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodes/SoDrawStyle.h>

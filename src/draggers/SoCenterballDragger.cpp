@@ -22,9 +22,11 @@
   \brief The SoCenterballDragger class is a dragger you can rotate and translate.
   \ingroup draggers
 
-  When translating, instead of modifying the translation part of the motion
-  matrix, a \e center field is updated, and the geometry is moved using
-  an internal transformation node. FIXME: more doc.
+  When translating, instead of modifying the translation part of the
+  motion matrix, a \e center field is updated, and the geometry is
+  moved using an internal transformation node.
+
+  FIXME: more doc.
 */
 
 #include <Inventor/draggers/SoCenterballDragger.h>

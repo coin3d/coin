@@ -17,6 +17,14 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoScale2Dragger SoScale2Dragger.h Inventor/draggers/SoScale2Dragger.h
+  \brief The SoScale2Dragger class is (FIXME: doc)
+  \ingroup draggers
+
+  FIXME: document class
+*/
+
 #include <Inventor/draggers/SoScale2Dragger.h>
 #include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodes/SoSeparator.h>

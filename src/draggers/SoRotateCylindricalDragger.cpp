@@ -17,6 +17,14 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoRotateCylindricalDragger SoRotateCylindricalDragger.h Inventor/draggers/SoRotateCylindricalDragger.h
+  \brief The SoRotateCylindricalDragger class is (FIXME: doc)
+  \ingroup draggers
+
+  FIXME: document class
+*/
+
 #include <Inventor/draggers/SoRotateCylindricalDragger.h>
 #include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodes/SoSeparator.h>

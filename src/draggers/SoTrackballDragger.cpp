@@ -17,6 +17,14 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoTrackballDragger SoTrackballDragger.h Inventor/draggers/SoTrackballDragger.h
+  \brief The SoTrackballDragger class is (FIXME: doc)
+  \ingroup draggers
+
+  FIXME: document class
+*/
+
 #include <Inventor/draggers/SoTrackballDragger.h>
 #include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodes/SoAntiSquish.h>
