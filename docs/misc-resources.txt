@@ -58,10 +58,18 @@ THE LINKS
      although it is encouraged
 
 * Kahlua
-  2001-08-02 Morten Eriksen <mortene@sim.no>
+  2001-08-02  Morten Eriksen  <mortene@sim.no>
 
   <URL:http://www.igd.fhg.de/CP/kahlua/>
 
   A Java wrapper for the Open Inventor library. Sadly not open source,
   so we can't port it to Coin unless the author changes the licensing
   terms. larsa@sim.no is currently investigating.
+
+* Java language binding
+  2001-08-02  Morten Eriksen  <mortene@sim.no>
+
+  Here's the tutorial starting point at Sun's Java pages for
+  interfacing to alien code through the Java Native Interface:
+
+  <URL:http://java.sun.com/docs/books/tutorial/native1.1/index.html>
