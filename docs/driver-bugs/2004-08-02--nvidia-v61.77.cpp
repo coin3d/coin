@@ -100,7 +100,7 @@ expose_cb(void)
 
     glutSwapBuffers();
 
-#if 1 // enable this, and the crashes go away
+#if 0 // enable this, and the crashes go away
     glDeleteLists(gllist, 1);
 #endif
     printf("gllist==%d\n", gllist);
