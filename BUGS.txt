@@ -1836,3 +1836,47 @@
     20030916 mortene.
 
 =====================================================================
+
+075 SoHandleBoxManip does not behave correctly when locking a
+    translation axis.
+
+    To reproduce, load this simple iv-file into an examinerviewer:
+
+    --------------8<----------- [snip] ------------------8<--------
+    #Inventor V2.1 ascii
+
+    HandleBoxManip { }
+    --------------8<----------- [snip] ------------------8<--------
+
+    ..then hold down SHIFT while LMB-clicking on one of the sides (for
+    translation). The translation will correctly be locked to one
+    axis, but when releasing the SHIFT button, the manip will jump to
+    the current cursor location. This last behavior is incorrect.
+
+    20030922 mortene.
+
+=====================================================================
+
+076 SoHandleBoxManip does not behave well upon "deep Z translation".
+
+    To reproduce, load this simple iv-file into an examinerviewer:
+
+    --------------8<----------- [snip] ------------------8<--------
+    #Inventor V2.1 ascii
+
+    HandleBoxManip { }
+    --------------8<----------- [snip] ------------------8<--------
+
+    ..then move the box out to the left side of the view
+    (i.e. translate in -X), before LMB-clicking the right side of the
+    box to translate in the Z direction. The manip will correctly move
+    in the Z direction when moving the mouse cursor to the right, but
+    upon continuing moving the mouse cursor to the right it suddenly
+    misbehaves by first jumping back close to the camera, and then
+    starting to move in the *negative* Z direction.
+
+    This is clearly bad handling of some kind of border case.
+
+    20030922 mortene.
+
+=====================================================================
