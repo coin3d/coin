@@ -129,7 +129,7 @@ SoGLShadeModelElement::setNormal(SoState * const state,
 {
   SoGLShadeModelElement * e = (SoGLShadeModelElement *)
     inherited::getElement(state, SoGLShadeModelElement::classStackIndex);
-  e->matPerVertex = perVertex;
+  e->normPerVertex = perVertex;
 }
 
 //! FIXME: write doc.
