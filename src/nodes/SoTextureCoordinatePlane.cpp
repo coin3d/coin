@@ -19,28 +19,31 @@
 
 /*!
   \class SoTextureCoordinatePlane SoTextureCoordinatePlane.h Inventor/nodes/SoTextureCoordinatePlane.h
-  \brief The SoTextureCoordinatePlane class ...
+  \brief The SoTextureCoordinatePlane class generates texture coordinates by projecting onto a plane.
   \ingroup nodes
 
-  FIXME: write class doc
+  The plane is specified using two direction vectors: directionS
+  and directionT. The S and T texture coordinates are computed as the
+  distance from the origin to the projected point, in the respective
+  directions.
 */
 
 #include <Inventor/nodes/SoTextureCoordinatePlane.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
+
 #ifdef _WIN32
 #include <windows.h>
 #endif // _WIN32
 #include <GL/gl.h>
-#include <coindefs.h> // COIN_STUB()
 
 /*!
   \var SoSFVec3f SoTextureCoordinatePlane::directionS
-  FIXME: write documentation for field
+  The S texture coordinate plane direction.
 */
 /*!
   \var SoSFVec3f SoTextureCoordinatePlane::directionT
-  FIXME: write documentation for field
+  The T texture coordinate plane direction. 
 */
 
 // *************************************************************************
@@ -65,70 +68,73 @@ SoTextureCoordinatePlane::~SoTextureCoordinatePlane()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoTextureCoordinatePlane class. This includes setting up the
-  type system, among other things.
-*/
+// doc from parent
 void
 SoTextureCoordinatePlane::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinatePlane);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// generates texture coordinates for callback and raypick action
 const SbVec4f &
-SoTextureCoordinatePlane::generate(void * /* userdata */,
-                                   const SbVec3f & /* p */,
+SoTextureCoordinatePlane::generate(void * userdata,
+                                   const SbVec3f &p,
                                    const SbVec3f & /* n */)
 {
-  COIN_STUB();
-  static SbVec4f s(0,0,0,1);
-  return s;
+  SoTextureCoordinatePlane *thisp = 
+    (SoTextureCoordinatePlane*) userdata;
+  
+  thisp->gencache.ret.setValue(thisp->gencache.s.dot(p) * thisp->gencache.mul_s,
+                               thisp->gencache.t.dot(p) * thisp->gencache.mul_t,
+                               0.0f, 1.0f);
+  return thisp->gencache.ret;
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// doc from parent
 void
 SoTextureCoordinatePlane::doAction(SoAction * action)
 {
   SoTextureCoordinateElement::setFunction(action->getState(), this,
-                                          generate,
+                                          SoTextureCoordinatePlane::generate,
                                           this);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// doc from parent
 void
 SoTextureCoordinatePlane::GLRender(SoGLRenderAction * action)
 {
   SoTextureCoordinatePlane::doAction((SoAction *)action);
+
+  this->gencache.s = this->directionS.getValue();
+  this->gencache.t = this->directionT.getValue();
+  float lens = this->gencache.s.length();
+  float lent = this->gencache.t.length();
+  this->gencache.mul_s = 1.0f / lens;
+  this->gencache.mul_t = 1.0f / lent;
+  this->gencache.s /= lens;
+  this->gencache.t /= lent;
+
   SoGLTextureCoordinateElement::setTexGen(action->getState(),
-                                          this, handleTexgen, this);
+                                          this, 
+                                          SoTextureCoordinatePlane::handleTexgen, 
+                                          this);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// doc from parent
 void
 SoTextureCoordinatePlane::callback(SoCallbackAction * action)
 {
   SoTextureCoordinatePlane::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// doc from parent
 void
 SoTextureCoordinatePlane::pick(SoPickAction * action)
 {
   SoTextureCoordinatePlane::doAction((SoAction *)action);
 }
 
+// texgen callback. Turns on plane texgen in OpenGL
 void
 SoTextureCoordinatePlane::handleTexgen(void *data)
 {

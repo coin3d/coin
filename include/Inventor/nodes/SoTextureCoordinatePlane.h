@@ -24,7 +24,7 @@
 #include <Inventor/nodes/SoTextureCoordinateFunction.h>
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/SbVec4f.h>
-
+#include <Inventor/SbVec3f.h>
 
 class SoTextureCoordinatePlane : public SoTextureCoordinateFunction {
   typedef SoTextureCoordinateFunction inherited;
@@ -38,10 +38,10 @@ public:
   SoSFVec3f directionS;
   SoSFVec3f directionT;
 
-  void doAction(SoAction * action);
-  void GLRender(SoGLRenderAction * action);
-  void pick(SoPickAction * action);
-  void callback(SoCallbackAction * action);
+  virtual void doAction(SoAction * action);
+  virtual void GLRender(SoGLRenderAction * action);
+  virtual void pick(SoPickAction * action);
+  virtual void callback(SoCallbackAction * action);
 
 protected:
   virtual ~SoTextureCoordinatePlane();
@@ -51,6 +51,12 @@ private:
                                  const SbVec3f &p,
                                  const SbVec3f &n);
   static void handleTexgen(void *data);
+
+  struct {
+    SbVec3f s, t;
+    float mul_s, mul_t;
+    SbVec4f ret;
+  } gencache;
 };
 
 #endif // !COIN_SOTEXTURECOORDINATEPLANE_H
