@@ -40,7 +40,9 @@ static SbBool tried_bind_glXGetProcAddress = FALSE;
 static void
 glxglue_set_version(int * major, int * minor)
 {
+#ifdef HAVE_GLX
   Bool ok = False;
+#endif /* HAVE_GLX */
 
   *major = -1;
   *minor = 0;
