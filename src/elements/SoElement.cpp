@@ -19,8 +19,42 @@
 
 /*!
   \class SoElement Inventor/elements/SoElement.h
-  \brief This is the abstract base class for all elements.  The elements are used by the SoState class.
+  \brief SoElement is the abstract base class for all elements.
   \ingroup elements
+
+  Elements are part of the design for scenegraph traversal in Coin.
+
+  It works like this: any traversal action instantiates and keeps a
+  single SoState instance during traversal. The SoState instance uses
+  SoElement objects as "memory units" to keep track of the current
+  state for any feature of the scenegraph nodes.
+
+  As an example, consider the SoPointSize node: when the SoPointSize
+  node is traversed by for instance a SoGLRenderAction, it will itself
+  push a SoPointSizeElement onto the SoGLRenderAction's SoState stack.
+  Later, when a SoPointSet node occurs in the scenegraph, it will
+  request the current pointsize value from the SoState by reading off
+  the value of it's SoPointSizeElement.
+
+  SoSeparator nodes will push and pop elements on and off the state
+  stack, so anything that changes state below a SoSeparator node will
+  not influence anything \e above the SoSeparator.
+
+
+  For more information on the theoretical underpinnings of this
+  traversal design, you should consider reading available literature
+  on the so-called "Visitor pattern". We recommend "Design Patterns",
+  by Gamma, Helm, Johnson, Vlissides (aka the "Gang Of Four"). This
+  book actually uses the Inventor API traversal mechanism as the case
+  study for explaining the Visitor pattern.
+
+
+  For extending the Coin library with your own action, node and
+  element classes, we strongly recommend that you make yourself
+  acquainted with the excellent «The Inventor Toolmaker» book (ISBN
+  0-201-62493-1), which describes the tasks involved in detail.
+  Reading the sourcecode of the built-in classes in Coin should also
+  provide very helpful.
 */
 
 #include <Inventor/elements/SoElements.h>
@@ -45,6 +79,7 @@
   \sa const SoElement * SoElement::getConstElement(SoState * const state, const int stackIndex)
 */
 
+#if 0 // DISABLED so we get an error from the Doxygen generation. 20011027 mortene.
 /*!
   \fn SoElement::typeId
 
@@ -62,11 +97,8 @@
 
   FIXME: write doc.
 */
+#endif // tmp DISABLED
 
-
-
-// FIXME: do we need to duplicate the following documentation in all
-// subclasses as well to keep Doxygen happy? 19991209 mortene.
 
 /*!
   \fn SoType SoElement::getClassTypeId(void)
@@ -93,9 +125,8 @@ int SoElement::getClassStackIndex(void) { return SoElement::classStackIndex; }
 
 
 /*!
-  This function initializes all the standard Inventor element classes.
+  This function initializes all the built-in Coin element classes.
 */
-
 void
 SoElement::initElements(void)
 {
@@ -199,9 +230,12 @@ SoElement::initElements(void)
   SoTextureScalePolicyElement::initClass();
 }
 
+// Note: the following documentation for initClass() will also be
+// visible for subclasses, so keep it general.
 /*!
-  This function initializes the SoElement class.
-*/
+  Initialize relevant common data for all instances, like the type
+  system.
+ */
 void
 SoElement::initClass(void)
 {
@@ -239,20 +273,19 @@ SoElement::SoElement(void)
 /*!
   The destructor.
 */
-
 SoElement::~SoElement()
 {
 }
 
 /*!
-  This function initializes the element type in the given SoState.  It is
-  called for the first element of each enabled element type in SoState
-  objects.  The default method does nothing.
+  This function initializes the element type in the given SoState.  It
+  is called for the first element of each enabled element type in
+  SoState objects.
 */
-
 void
-SoElement::init(SoState *)
+SoElement::init(SoState * state)
 {
+  // virtual method
 }
 
 /*!
@@ -265,47 +298,48 @@ SoElement::init(SoState *)
   previous top of stack. The push() method is called on the new
   element, and the previous element can be found using
   SoElement::getNextInStack().
-
-  The default method does nothing.
 */
 void
-SoElement::push(SoState * /* state */)
+SoElement::push(SoState * state)
 {
+  // virtual method
 }
 
 /*!
-  This method is callled when the state is popped, and the depth
-  of the element is bigger than the current state depth. pop()
-  is called on the new top of stack, and a pointer to the previous
-  top of stack is passed in \a prevTopElement.
+  This method is callled when the state is popped, and the depth of
+  the element is bigger than the current state depth. pop() is called
+  on the new top of stack, and a pointer to the previous top of stack
+  is passed in \a prevTopElement.
 
-  Default method does nothing. Overload this method if you need
-  to copy some state information from the previou top of stack.
+  Overload this method if you need to copy some state information from
+  the previous top of stack.
 */
 void
-SoElement::pop(SoState * /* state */, const SoElement * /* prevTopElement */)
+SoElement::pop(SoState * state, const SoElement * prevTopElement)
 {
+  // virtual method
 }
 
 /*!
-  This function is for printing element information, mostly for debugging
-  purposes.
+  This function is for printing element information, mostly for
+  debugging purposes.
 */
-
 void
 SoElement::print(FILE * file) const
 {
-    fprintf(file, "%s[%p]\n", getTypeId().getName().getString(), this);
+  (void)fprintf(file, "%s[%p]\n",
+                this->getTypeId().getName().getString(), this);
 }
 
 /*!
-  This function returns TRUE is the element matches another element (of the
-  same class), with respect to cache validity.  If a matches() function is
-  written, one should also write a copyMatchInfo() function.
-*/
+  This function returns \c TRUE is the element matches another element
+  (of the same class), with respect to cache validity.
 
+  If the application programmer's extension element has a matches()
+  function, it should also have a copyMatchInfo() function.
+*/
 SbBool
-SoElement::matches(const SoElement * /* element */) const
+SoElement::matches(const SoElement * element) const
 {
   return FALSE;
 }
@@ -313,14 +347,15 @@ SoElement::matches(const SoElement * /* element */) const
 /*!
   \fn virtual SoElement * SoElement::copyMatchInfo(void) const = 0
 
-  This function creates a copy of the element that contains enough information
-  to enable the matches() function to work.  Used for caching.
+  This function creates a copy of the element that contains enough
+  information to enable the matches() function to work.
+
+  Used to help with scenegraph traversal caching operations.
 */
 
 /*!
-  This method returns the number of allocated element stack index slots.
+  Returns the number of allocated element stack index slots.
 */
-
 int
 SoElement::getNumStackIndices()
 {
@@ -328,21 +363,19 @@ SoElement::getNumStackIndices()
 }
 
 /*!
-  This function returns the SoType identifier for the element class with
-  element state stack index \a stackIndex.
+  Returns the SoType identifier for the element class with element
+  state stack index \a stackIndex.
 */
-
 SoType
 SoElement::getIdFromStackIndex(const int stackIndex)
 {
   assert(SoElement::stackToType->getLength() > stackIndex);
-  return (*SoElement::stackToType)[ stackIndex ];
+  return (*SoElement::stackToType)[stackIndex];
 }
 
 /*!
-  This method sets the depth value of the element instance.
+  Sets the depth value of the element instance in the state stack.
 */
-
 void
 SoElement::setDepth(const int depth)
 {
@@ -350,9 +383,8 @@ SoElement::setDepth(const int depth)
 }
 
 /*!
-  This method returns the depth value of the element instance.
+  Returns the state stack depth value of the element instance.
 */
-
 int
 SoElement::getDepth() const
 {
@@ -360,22 +392,25 @@ SoElement::getDepth() const
 }
 
 /*!
-  This function does whatever is necessary in the state for caching purposes.
-  If should be called by subclasses of SoElement whenever any value in the
-  element is accessed.
+  This function does whatever is necessary in the state for caching
+  purposes.  If should be called by subclasses of SoElement whenever
+  any value in the element is accessed.
 */
-
 inline void
 SoElement::capture(SoState * const state) const
 {
-  if (state->isCacheOpen()) this->captureThis(state);
+  if (state->isCacheOpen()) { this->captureThis(state); }
 }
 
 /*!
-  This method returns a const pointer to the top element of the class with
-  stack index \a stackIndex.  If this instance is modified, strange things
-  will most likely start to happen.
-  If no instance can be returned, NULL is returned.
+  This method returns a reference to the top element of the class with
+  stack index \a stackIndex. The returned element is non-mutable.
+
+  (Don't try to be clever and cast away the constness -- if the
+  returned instance is modified, strange, hard to find and generally
+  wonderful bugs will most likely start to happen.)
+
+  If no instance can be returned, \c NULL is returned.
 
   \sa SoElement * SoElement::getElement(SoState * const state, const int stackIndex)
 */
@@ -388,10 +423,7 @@ SoElement::getConstElement(SoState * const state,
   return element;
 }
 
-/*!
-  FIXME: write doc.
-*/
-
+// FIXME: doc
 void
 SoElement::captureThis(SoState * state) const
 {
@@ -399,20 +431,24 @@ SoElement::captureThis(SoState * state) const
 }
 
 /*!
-  This method sets the type identifier of an instance.
-  This is fundamentally different from the SoNode run-time type system.
-*/
+  Sets the type identifier of an instance.
 
+  Note that this is fundamentally different from the SoNode run-time
+  type system.
+*/
 void
 SoElement::setTypeId(const SoType typeId)
 {
   this->typeId = typeId;
 }
 
-// FIXME: grab better version of getTypeId() doc from SoBase, SoAction
-// and / or SoDetail. 20010913 mortene.
 /*!
-  This method returns the type identifier for the element instance.
+  Returns the type identification of an object derived from a class
+  inheriting SoElement.  This is used for run-time type checking and
+  "downward" casting.
+
+  For a more thorough explanation of the run-time type identification
+  functionality, see the documentation of SoBase::getTypeId().
 */
 const SoType
 SoElement::getTypeId() const
@@ -421,9 +457,8 @@ SoElement::getTypeId() const
 }
 
 /*!
-  This method returns the stack index for an element instance.
+  Returns the stack index for an element instance.
 */
-
 int
 SoElement::getStackIndex(void) const
 {
@@ -431,28 +466,21 @@ SoElement::getStackIndex(void) const
 }
 
 /*!
-  This function sets the stack index in an instance.  Used in constructors
-  of derived elements.
+  Sets the stack index in an instance.  Used in constructors of
+  derived elements.
 */
-
 void
 SoElement::setStackIndex(const int stackIndex)
 {
   this->stackIndex = stackIndex;
 }
 
-/*!
-  \fn SoElement::stackToType
-
-  FIXME: write doc.
-*/
-
+// FIXME: write doc.
 SoTypeList * SoElement::stackToType;
 
 /*!
-  This method returns the value of a new available stack index.
+  Returns the value of a new available stack index.
 */
-
 int
 SoElement::createStackIndex(const SoType typeId)
 {
@@ -464,9 +492,11 @@ SoElement::createStackIndex(const SoType typeId)
 }
 
 /*!
-  Returns the next element down in the stack. Should be used
-  in push() to get the previous element. This method has a
-  silly name (IMHO), but is kept to keep OIV compatibility.
+  Returns the next element down in the stack. Should be used in push()
+  to get the previous element.
+
+  This method has a slightly misleading name, but we didn't change it
+  to stay compatible with the original SGI Inventor API.
 */
 SoElement *
 SoElement::getNextInStack(void) const
@@ -475,7 +505,7 @@ SoElement::getNextInStack(void) const
 }
 
 /*!
-  Returns the next free element. The next element up in the stack.
+  Returns the next free element, ie the next element up in the stack.
 */
 SoElement *
 SoElement::getNextFree(void) const
@@ -484,8 +514,15 @@ SoElement::getNextFree(void) const
 }
 
 /*!
-  Should return \e TRUE if this element needs lazy GL evaluation.
-  Default method returns \e FALSE.
+  Returns \c TRUE if this element does lazy evaluation of state-change
+  operations against the underlying immediate mode rendering library.
+
+  Lazy evaluation (of for instance OpenGL calls) is done as an
+  important optimization measure. State-changes are usually expensive
+  when rendering is done at least partially through hardware
+  acceleration features. We avoid doing as much unnecessary state
+  changes as possible by only setting the correct state right before
+  it is actually needed.
 */
 SbBool
 SoElement::isLazy(void) const
@@ -494,9 +531,10 @@ SoElement::isLazy(void) const
 }
 
 /*!
-  Evaluates lazy GL element. Default method does nothing.
+  Evaluates lazy GL element.
 */
 void
 SoElement::lazyEvaluate(void) const
 {
+  // virtual method
 }
