@@ -45,10 +45,7 @@
 #include <Inventor/engines/SoNodeEngine.h>
 #include <Inventor/fields/SoMFString.h>
 #include <Inventor/SoOutput.h>
-
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 static SoType soproto_type;
 
