@@ -374,7 +374,12 @@ cc_glglue_instance(int contextid)
 
     /* Internal consistency checking. */
 #ifdef HAVE_GLX
-    assert((glXGetCurrentContext() != NULL) && "must have a current GL context when instantiating cc_glglue");
+    /* Disabled this assert because GLX in Mesa version 3.4.2
+       (GL_VENDOR "VA Linux Systems, Inc", GL_RENDERER "Mesa GLX
+       Indirect", GL_VERSION "1.2 Mesa 3.4.2") returns NULL even
+       though there really is a current context set up. (Reported by
+       kintel.) */
+/*     assert((glXGetCurrentContext() != NULL) && "must have a current GL context when instantiating cc_glglue"); */
 #endif /* HAVE_GLX */
 #ifdef HAVE_WGL
     assert((wglGetCurrentContext() != NULL) && "must have a current GL context when instantiating cc_glglue");
