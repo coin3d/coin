@@ -1,0 +1,9 @@
+coin1 (1.0.0-1) unstable; urgency=low
+
+  * Initial Debian Release.
+
+ -- Lars J. Aas <larsa@coin3d.org>  14 Aug 2001 17:25:17 +0000
+
+Local variables:
+mode: debian-changelog
+End:

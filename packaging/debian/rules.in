@@ -1,0 +1,57 @@
+#!/usr/bin/make -f
+############################################################################
+# rules -- debian package make rules
+#
+# Authors:
+#   Lars J. Aas <larsa@coin3d.org>
+
+source: clean
+	@echo "> make debian/$@";
+
+build: build-arch
+	@echo "> make debian/$@";
+
+# optional
+build-arch:
+	@echo "> make debian/$@"; \
+	$(SHELL) configure --prefix=/usr;
+	$(MAKE);
+
+# optional
+# build-indep:
+# 	@echo "> make debian/$@";
+
+binary: binary-arch
+	@echo "> make debian/$@";
+
+binary-arch:
+	@echo "> make debian/$@";
+	@installdir=debian/tmp; \
+	rm -rf $installdir; \
+	mkdir $$installdir; \
+	mkdir $$installdir/DEBIAN; \
+	cp debian/* $$installdir/DEBIAN/; \
+	$(MAKE) DESTDIR=`pwd`/$$installdir install;
+	dpkg-gencontrol;
+	echo >/dev/null dpkg-shlibdeps debian/tmp/usr/lib/libCoin.so;
+	dpkg-deb -b debian/tmp;
+	mv debian/tmp.deb coin1_1.0.0-1.deb;
+
+binary-indep:
+	@echo "> make debian/$@";
+
+# optional
+# get-orig-source:
+# 	@echo "> make debian/$@";
+
+clean::
+	@echo "> make debian/$@";
+	@if test -f Makefile; then \
+	  $(MAKE) distclean; \
+	else \
+	  :; \
+	fi;
+	rm -rf debian/inst
+	rm -f debian/files
+
+.PHONY: build
