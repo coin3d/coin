@@ -36,34 +36,40 @@
   stored in the GUI renderarea class.
 */
 
-#include <Inventor/SoSceneManager.h>
-#include <Inventor/SoDB.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/actions/SoHandleEventAction.h>
-#include <Inventor/actions/SoAudioRenderAction.h>
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/fields/SoSFTime.h>
-#include <Inventor/nodes/SoNode.h>
-#include <Inventor/sensors/SoNodeSensor.h>
-#include <Inventor/sensors/SoOneShotSensor.h>
-#include <Inventor/misc/SoAudioDevice.h>
+// *************************************************************************
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
-#include <Inventor/system/gl.h>
+
 #include <assert.h>
+
+#include <Inventor/SoDB.h>
+#include <Inventor/SoSceneManager.h>
+#include <Inventor/actions/SoAudioRenderAction.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoHandleEventAction.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/fields/SoSFTime.h>
+#include <Inventor/misc/SoAudioDevice.h>
+#include <Inventor/nodes/SoNode.h>
+#include <Inventor/sensors/SoNodeSensor.h>
+#include <Inventor/sensors/SoOneShotSensor.h>
+#include <Inventor/system/gl.h>
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
 #endif // COIN_THREADSAFE
 
-// defines for the flags member
-#define FLAG_RGBMODE 0x0001
-#define FLAG_ACTIVE  0x0002
+// *************************************************************************
 
 class SoSceneManagerP {
 public:
+  enum {
+    FLAG_RGBMODE = 0x0001,
+    FLAG_ACTIVE = 0x0002
+  };
+
   static void nodesensorCB(void * data, SoSensor * sensor);
   static void redrawshotTriggeredCB(void * data, SoSensor * sensor);
 
@@ -106,6 +112,10 @@ public:
 
 SbBool SoSceneManagerP::touchtimer = TRUE;
 
+#undef PRIVATE
+#define PRIVATE(p) (p->pimpl)
+
+// *************************************************************************
 
 /*!
   \typedef SoSceneManagerRenderCB(void * userdata, SoSceneManager * mgr)
@@ -113,8 +123,7 @@ SbBool SoSceneManagerP::touchtimer = TRUE;
   Render callback function must have this signature.
 */
 
-#undef THIS
-#define THIS this->pimpl
+// *************************************************************************
 
 /*!
   Constructor. Sets up default SoGLRenderAction and
@@ -124,30 +133,30 @@ SoSceneManager::SoSceneManager(void)
 {
   assert(SoDB::isInitialized() && "SoDB::init() has not been invoked");
 
-  THIS = new SoSceneManagerP;
+  PRIVATE(this) = new SoSceneManagerP;
 
-  THIS->glaction = new SoGLRenderAction(SbViewportRegion(400, 400));
-  THIS->deleteglaction = TRUE;
+  PRIVATE(this)->glaction = new SoGLRenderAction(SbViewportRegion(400, 400));
+  PRIVATE(this)->deleteglaction = TRUE;
 
-  THIS->audiorenderaction = new SoAudioRenderAction();
-  THIS->deleteaudiorenderaction = TRUE;
+  PRIVATE(this)->audiorenderaction = new SoAudioRenderAction();
+  PRIVATE(this)->deleteaudiorenderaction = TRUE;
 
-  THIS->handleeventaction =
+  PRIVATE(this)->handleeventaction =
     new SoHandleEventAction(SbViewportRegion(400, 400));
-  THIS->deletehandleeventaction = TRUE;
+  PRIVATE(this)->deletehandleeventaction = TRUE;
 
-  THIS->scene = NULL;
-  THIS->rootsensor = NULL;
-  THIS->redrawshot = NULL;
+  PRIVATE(this)->scene = NULL;
+  PRIVATE(this)->rootsensor = NULL;
+  PRIVATE(this)->redrawshot = NULL;
 
-  THIS->backgroundindex = 0;
-  THIS->backgroundcolor.setValue(0.0f, 0.0f, 0.0f);
+  PRIVATE(this)->backgroundindex = 0;
+  PRIVATE(this)->backgroundcolor.setValue(0.0f, 0.0f, 0.0f);
   // rgbmode by default
-  THIS->flags = FLAG_RGBMODE;
-  THIS->redrawpri = SoSceneManager::getDefaultRedrawPriority();
+  PRIVATE(this)->flags = SoSceneManagerP::FLAG_RGBMODE;
+  PRIVATE(this)->redrawpri = SoSceneManager::getDefaultRedrawPriority();
 
-  THIS->rendercb = NULL;
-  THIS->rendercbdata = NULL;
+  PRIVATE(this)->rendercb = NULL;
+  PRIVATE(this)->rendercbdata = NULL;
 }
 
 /*!
@@ -155,15 +164,15 @@ SoSceneManager::SoSceneManager(void)
  */
 SoSceneManager::~SoSceneManager()
 {
-  if (THIS->deleteglaction) delete THIS->glaction;
-  if (THIS->deleteaudiorenderaction) delete THIS->audiorenderaction;
-  if (THIS->deletehandleeventaction) delete THIS->handleeventaction;
+  if (PRIVATE(this)->deleteglaction) delete PRIVATE(this)->glaction;
+  if (PRIVATE(this)->deleteaudiorenderaction) delete PRIVATE(this)->audiorenderaction;
+  if (PRIVATE(this)->deletehandleeventaction) delete PRIVATE(this)->handleeventaction;
 
   this->setSceneGraph(NULL);
-  delete THIS->rootsensor;
-  delete THIS->redrawshot;
+  delete PRIVATE(this)->rootsensor;
+  delete PRIVATE(this)->redrawshot;
 
-  delete THIS;
+  delete PRIVATE(this);
 }
 
 /*!
@@ -180,12 +189,12 @@ void
 SoSceneManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
 {
 #ifdef HAVE_SOUND
-  if ( THIS->scene && SoAudioDevice::instance()->haveSound() &&
+  if ( PRIVATE(this)->scene && SoAudioDevice::instance()->haveSound() &&
        SoAudioDevice::instance()->isEnabled())
-    THIS->audiorenderaction->apply(THIS->scene);
+    PRIVATE(this)->audiorenderaction->apply(PRIVATE(this)->scene);
 #endif
 
-  this->render(THIS->glaction, TRUE, clearwindow, clearzbuffer);
+  this->render(PRIVATE(this)->glaction, TRUE, clearwindow, clearzbuffer);
 }
 
 /*!
@@ -213,20 +222,20 @@ SoSceneManager::render(SoGLRenderAction * action,
   if (clearzbuffer) mask |= GL_DEPTH_BUFFER_BIT;
 
   if (mask) {
-    if (THIS->flags & FLAG_RGBMODE) {
-      glClearColor(THIS->backgroundcolor[0],
-                   THIS->backgroundcolor[1],
-                   THIS->backgroundcolor[2],
+    if (PRIVATE(this)->flags & SoSceneManagerP::FLAG_RGBMODE) {
+      glClearColor(PRIVATE(this)->backgroundcolor[0],
+                   PRIVATE(this)->backgroundcolor[1],
+                   PRIVATE(this)->backgroundcolor[2],
                    0.0f);
     }
     else {
-      glClearIndex((GLfloat) THIS->backgroundindex);
+      glClearIndex((GLfloat) PRIVATE(this)->backgroundindex);
     }
     // Registering a callback is needed since the correct GL viewport
     // is set by SoGLRenderAction before rendering.  It might not be
     // correct when we get here.
     // This callback is removed again in the prerendercb function
-    action->addPreRenderCallback(THIS->prerendercb, (void*) mask);
+    action->addPreRenderCallback(PRIVATE(this)->prerendercb, (void*) mask);
   }
 
   if (initmatrices) {
@@ -242,17 +251,17 @@ SoSceneManager::render(SoGLRenderAction * action,
   // in the case of scenegraph modifications between a nodesensor
   // trigger and SoSceneManager::render() actually being called. It
   // will also help us avoid "double redraws" at expose events.
-  THIS->lock();
-  if (THIS->rootsensor && THIS->rootsensor->isScheduled()) {
+  PRIVATE(this)->lock();
+  if (PRIVATE(this)->rootsensor && PRIVATE(this)->rootsensor->isScheduled()) {
 #if COIN_DEBUG && 0 // debug
     SoDebugError::postInfo("SoSceneManager::render",
                            "rootsensor unschedule");
 #endif // debug
-    THIS->rootsensor->unschedule();
+    PRIVATE(this)->rootsensor->unschedule();
   }
-  THIS->unlock();
+  PRIVATE(this)->unlock();
   // Apply the SoGLRenderAction to the scenegraph root.
-  if (THIS->scene) action->apply(THIS->scene);
+  if (PRIVATE(this)->scene) action->apply(PRIVATE(this)->scene);
 }
 
 /*!
@@ -262,11 +271,11 @@ SoSceneManager::render(SoGLRenderAction * action,
 SbBool
 SoSceneManager::processEvent(const SoEvent * const event)
 {
-  assert(THIS->handleeventaction);
+  assert(PRIVATE(this)->handleeventaction);
 
-  THIS->handleeventaction->setEvent(event);
-  if (THIS->scene) THIS->handleeventaction->apply(THIS->scene);
-  return THIS->handleeventaction->isHandled();
+  PRIVATE(this)->handleeventaction->setEvent(event);
+  if (PRIVATE(this)->scene) PRIVATE(this)->handleeventaction->apply(PRIVATE(this)->scene);
+  return PRIVATE(this)->handleeventaction->isHandled();
 }
 
 /*!
@@ -276,7 +285,7 @@ SoSceneManager::processEvent(const SoEvent * const event)
 void
 SoSceneManager::reinitialize(void)
 {
-  THIS->glaction->invalidateState();
+  PRIVATE(this)->glaction->invalidateState();
 }
 
 /*!
@@ -288,22 +297,22 @@ SoSceneManager::reinitialize(void)
 void
 SoSceneManager::scheduleRedraw(void)
 {
-  THIS->lock();
-  if ((THIS->flags & FLAG_ACTIVE) && THIS->rendercb) {
-    if (!THIS->redrawshot) {
-      THIS->redrawshot =
+  PRIVATE(this)->lock();
+  if ((PRIVATE(this)->flags & SoSceneManagerP::FLAG_ACTIVE) && PRIVATE(this)->rendercb) {
+    if (!PRIVATE(this)->redrawshot) {
+      PRIVATE(this)->redrawshot =
         new SoOneShotSensor(SoSceneManagerP::redrawshotTriggeredCB, this);
-      THIS->redrawshot->setPriority(this->getRedrawPriority());
+      PRIVATE(this)->redrawshot->setPriority(this->getRedrawPriority());
     }
 
 #if COIN_DEBUG && 0 // debug
     SoDebugError::postInfo("SoSceneManager::scheduleRedraw",
                            "scheduling redrawshot (oneshotsensor) %p",
-                           THIS->redrawshot);
+                           PRIVATE(this)->redrawshot);
 #endif // debug
-    THIS->redrawshot->schedule();
+    PRIVATE(this)->redrawshot->schedule();
   }
-  THIS->unlock();
+  PRIVATE(this)->unlock();
 }
 
 /*!
@@ -312,7 +321,7 @@ SoSceneManager::scheduleRedraw(void)
 int
 SoSceneManager::isActive(void) const
 {
-  return (THIS->flags & FLAG_ACTIVE) != 0;
+  return (PRIVATE(this)->flags & SoSceneManagerP::FLAG_ACTIVE) != 0;
 }
 
 /*!
@@ -321,8 +330,8 @@ SoSceneManager::isActive(void) const
 void
 SoSceneManager::redraw(void)
 {
-  if (THIS->rendercb) {
-    THIS->rendercb(THIS->rendercbdata, this);
+  if (PRIVATE(this)->rendercb) {
+    PRIVATE(this)->rendercb(PRIVATE(this)->rendercbdata, this);
 
     // Automatically re-triggers rendering if any animation stuff is
     // connected to the realTime field.
@@ -353,20 +362,20 @@ SoSceneManager::redraw(void)
 void
 SoSceneManager::setSceneGraph(SoNode * const sceneroot)
 {
-  if (THIS->rootsensor) THIS->rootsensor->detach();
+  if (PRIVATE(this)->rootsensor) PRIVATE(this)->rootsensor->detach();
   // Don't unref() until after we've set up the new root, in case the
   // old root == the new sceneroot. (Just to be that bit more robust.)
-  SoNode * oldroot = THIS->scene;
+  SoNode * oldroot = PRIVATE(this)->scene;
 
-  THIS->scene = sceneroot;
+  PRIVATE(this)->scene = sceneroot;
 
-  if (THIS->scene) {
-    THIS->scene->ref();
+  if (PRIVATE(this)->scene) {
+    PRIVATE(this)->scene->ref();
 
-    if (!THIS->rootsensor)
-      THIS->rootsensor = new SoNodeSensor(SoSceneManagerP::nodesensorCB, this);
+    if (!PRIVATE(this)->rootsensor)
+      PRIVATE(this)->rootsensor = new SoNodeSensor(SoSceneManagerP::nodesensorCB, this);
 
-    THIS->rootsensor->attach(sceneroot);
+    PRIVATE(this)->rootsensor->attach(sceneroot);
   }
 
   if (oldroot) oldroot->unref();
@@ -378,7 +387,7 @@ SoSceneManager::setSceneGraph(SoNode * const sceneroot)
 SoNode *
 SoSceneManager::getSceneGraph(void) const
 {
-  return THIS->scene;
+  return PRIVATE(this)->scene;
 }
 
 /*!
@@ -398,13 +407,13 @@ SoSceneManager::setWindowSize(const SbVec2s & newsize)
                          "(%d, %d)", newsize[0], newsize[1]);
 #endif // debug
 
-  SbViewportRegion region = THIS->glaction->getViewportRegion();
+  SbViewportRegion region = PRIVATE(this)->glaction->getViewportRegion();
   region.setWindowSize(newsize[0], newsize[1]);
-  THIS->glaction->setViewportRegion(region);
+  PRIVATE(this)->glaction->setViewportRegion(region);
 
-  region = THIS->handleeventaction->getViewportRegion();
+  region = PRIVATE(this)->handleeventaction->getViewportRegion();
   region.setWindowSize(newsize[0], newsize[1]);
-  THIS->handleeventaction->setViewportRegion(region);
+  PRIVATE(this)->handleeventaction->setViewportRegion(region);
 }
 
 /*!
@@ -415,7 +424,7 @@ SoSceneManager::setWindowSize(const SbVec2s & newsize)
 const SbVec2s &
 SoSceneManager::getWindowSize(void) const
 {
-  return THIS->glaction->getViewportRegion().getWindowSize();
+  return PRIVATE(this)->glaction->getViewportRegion().getWindowSize();
 }
 
 /*!
@@ -430,15 +439,15 @@ SoSceneManager::setSize(const SbVec2s & newsize)
                          "(%d, %d)", newsize[0], newsize[1]);
 #endif // debug
 
-  SbViewportRegion region = THIS->glaction->getViewportRegion();
+  SbViewportRegion region = PRIVATE(this)->glaction->getViewportRegion();
   SbVec2s origin = region.getViewportOriginPixels();
   region.setViewportPixels(origin, newsize);
-  THIS->glaction->setViewportRegion(region);
+  PRIVATE(this)->glaction->setViewportRegion(region);
 
-  region = THIS->handleeventaction->getViewportRegion();
+  region = PRIVATE(this)->handleeventaction->getViewportRegion();
   origin = region.getViewportOriginPixels();
   region.setViewportPixels(origin, newsize);
-  THIS->handleeventaction->setViewportRegion(region);
+  PRIVATE(this)->handleeventaction->setViewportRegion(region);
 }
 
 /*!
@@ -447,7 +456,7 @@ SoSceneManager::setSize(const SbVec2s & newsize)
 const SbVec2s &
 SoSceneManager::getSize(void) const
 {
-  return THIS->glaction->getViewportRegion().getViewportSizePixels();
+  return PRIVATE(this)->glaction->getViewportRegion().getViewportSizePixels();
 }
 
 /*!
@@ -464,15 +473,15 @@ SoSceneManager::setOrigin(const SbVec2s & newOrigin)
                          "(%d, %d)", newOrigin[0], newOrigin[1]);
 #endif // debug
 
-  SbViewportRegion region = THIS->glaction->getViewportRegion();
+  SbViewportRegion region = PRIVATE(this)->glaction->getViewportRegion();
   SbVec2s size = region.getViewportSizePixels();
   region.setViewportPixels(newOrigin, size);
-  THIS->glaction->setViewportRegion(region);
+  PRIVATE(this)->glaction->setViewportRegion(region);
 
-  region = THIS->handleeventaction->getViewportRegion();
+  region = PRIVATE(this)->handleeventaction->getViewportRegion();
   size = region.getViewportSizePixels();
   region.setViewportPixels(newOrigin, size);
-  THIS->handleeventaction->setViewportRegion(region);
+  PRIVATE(this)->handleeventaction->setViewportRegion(region);
 }
 
 /*!
@@ -483,7 +492,7 @@ SoSceneManager::setOrigin(const SbVec2s & newOrigin)
 const SbVec2s &
 SoSceneManager::getOrigin(void) const
 {
-  return THIS->glaction->getViewportRegion().getViewportOriginPixels();
+  return PRIVATE(this)->glaction->getViewportRegion().getViewportOriginPixels();
 }
 
 /*!
@@ -510,8 +519,8 @@ SoSceneManager::setViewportRegion(const SbViewportRegion & newregion)
                          vpsp[0], vpsp[1]);
 #endif // debug
 
-  THIS->glaction->setViewportRegion(newregion);
-  THIS->handleeventaction->setViewportRegion(newregion);
+  PRIVATE(this)->glaction->setViewportRegion(newregion);
+  PRIVATE(this)->handleeventaction->setViewportRegion(newregion);
 }
 
 /*!
@@ -523,7 +532,7 @@ SoSceneManager::setViewportRegion(const SbViewportRegion & newregion)
 const SbViewportRegion &
 SoSceneManager::getViewportRegion(void) const
 {
-  return THIS->glaction->getViewportRegion();
+  return PRIVATE(this)->glaction->getViewportRegion();
 }
 
 /*!
@@ -532,7 +541,7 @@ SoSceneManager::getViewportRegion(void) const
 void
 SoSceneManager::setBackgroundColor(const SbColor & color)
 {
-  THIS->backgroundcolor = color;
+  PRIVATE(this)->backgroundcolor = color;
 }
 
 /*!
@@ -542,7 +551,7 @@ SoSceneManager::setBackgroundColor(const SbColor & color)
 const SbColor &
 SoSceneManager::getBackgroundColor(void) const
 {
-  return THIS->backgroundcolor;
+  return PRIVATE(this)->backgroundcolor;
 }
 
 /*!
@@ -554,7 +563,7 @@ SoSceneManager::getBackgroundColor(void) const
 void
 SoSceneManager::setBackgroundIndex(const int index)
 {
-  THIS->backgroundindex = index;
+  PRIVATE(this)->backgroundindex = index;
 }
 
 /*!
@@ -565,7 +574,7 @@ SoSceneManager::setBackgroundIndex(const int index)
 int
 SoSceneManager::getBackgroundIndex(void) const
 {
-  return THIS->backgroundindex;
+  return PRIVATE(this)->backgroundindex;
 }
 
 /*!
@@ -576,10 +585,10 @@ void
 SoSceneManager::setRGBMode(const SbBool flag)
 {
   if (flag) {
-    THIS->flags |= FLAG_RGBMODE;
+    PRIVATE(this)->flags |= SoSceneManagerP::FLAG_RGBMODE;
   }
   else {
-    THIS->flags &= ~FLAG_RGBMODE;
+    PRIVATE(this)->flags &= ~SoSceneManagerP::FLAG_RGBMODE;
   }
 }
 
@@ -589,7 +598,7 @@ SoSceneManager::setRGBMode(const SbBool flag)
 SbBool
 SoSceneManager::isRGBMode(void) const
 {
-  return (THIS->flags & FLAG_RGBMODE) != 0;
+  return (PRIVATE(this)->flags & SoSceneManagerP::FLAG_RGBMODE) != 0;
 }
 
 /*!
@@ -598,7 +607,7 @@ SoSceneManager::isRGBMode(void) const
 void
 SoSceneManager::activate(void)
 {
-  THIS->flags |= FLAG_ACTIVE;
+  PRIVATE(this)->flags |= SoSceneManagerP::FLAG_ACTIVE;
 }
 
 /*!
@@ -607,7 +616,7 @@ SoSceneManager::activate(void)
 void
 SoSceneManager::deactivate(void)
 {
-  THIS->flags &= ~FLAG_ACTIVE;
+  PRIVATE(this)->flags &= ~SoSceneManagerP::FLAG_ACTIVE;
 }
 
 /*!
@@ -619,8 +628,8 @@ void
 SoSceneManager::setRenderCallback(SoSceneManagerRenderCB * f,
                                   void * const userdata)
 {
-  THIS->rendercb = f;
-  THIS->rendercbdata = userdata;
+  PRIVATE(this)->rendercb = f;
+  PRIVATE(this)->rendercbdata = userdata;
 }
 
 /*!
@@ -633,7 +642,7 @@ SoSceneManager::setRenderCallback(SoSceneManagerRenderCB * f,
 SbBool
 SoSceneManager::isAutoRedraw(void) const
 {
-  return THIS->rendercb != NULL;
+  return PRIVATE(this)->rendercb != NULL;
 }
 
 /*!
@@ -646,9 +655,9 @@ SoSceneManager::isAutoRedraw(void) const
 void
 SoSceneManager::setRedrawPriority(const uint32_t priority)
 {
-  THIS->redrawpri = priority;
+  PRIVATE(this)->redrawpri = priority;
 
-  if (THIS->redrawshot) THIS->redrawshot->setPriority(priority);
+  if (PRIVATE(this)->redrawshot) PRIVATE(this)->redrawshot->setPriority(priority);
 }
 
 /*!
@@ -657,7 +666,7 @@ SoSceneManager::setRedrawPriority(const uint32_t priority)
 uint32_t
 SoSceneManager::getRedrawPriority(void) const
 {
-  return THIS->redrawpri;
+  return PRIVATE(this)->redrawpri;
 }
 
 /*!
@@ -669,8 +678,8 @@ SoSceneManager::getRedrawPriority(void) const
 void
 SoSceneManager::setAntialiasing(const SbBool smoothing, const int numpasses)
 {
-  THIS->glaction->setSmoothing(smoothing);
-  THIS->glaction->setNumPasses(numpasses);
+  PRIVATE(this)->glaction->setSmoothing(smoothing);
+  PRIVATE(this)->glaction->setNumPasses(numpasses);
 }
 
 /*!
@@ -681,8 +690,8 @@ SoSceneManager::setAntialiasing(const SbBool smoothing, const int numpasses)
 void
 SoSceneManager::getAntialiasing(SbBool & smoothing, int & numpasses) const
 {
-  smoothing = THIS->glaction->isSmoothing();
-  numpasses = THIS->glaction->getNumPasses();
+  smoothing = PRIVATE(this)->glaction->isSmoothing();
+  numpasses = PRIVATE(this)->glaction->getNumPasses();
 }
 
 /*!
@@ -692,9 +701,9 @@ SoSceneManager::getAntialiasing(SbBool & smoothing, int & numpasses) const
 void
 SoSceneManager::setGLRenderAction(SoGLRenderAction * const action)
 {
-  if (THIS->deleteglaction) {
-    delete THIS->glaction;
-    THIS->glaction = NULL;
+  if (PRIVATE(this)->deleteglaction) {
+    delete PRIVATE(this)->glaction;
+    PRIVATE(this)->glaction = NULL;
   }
 
   // If action change, we need to invalidate state to enable lazy GL
@@ -702,9 +711,9 @@ SoSceneManager::setGLRenderAction(SoGLRenderAction * const action)
   //
   // Note that the SGI and TGS Inventor implementations doesn't do
   // this -- which smells of a bug.
-  if (action && action != THIS->glaction) action->invalidateState();
-  THIS->glaction = action;
-  THIS->deleteglaction = FALSE;
+  if (action && action != PRIVATE(this)->glaction) action->invalidateState();
+  PRIVATE(this)->glaction = action;
+  PRIVATE(this)->deleteglaction = FALSE;
 }
 
 /*!
@@ -713,7 +722,7 @@ SoSceneManager::setGLRenderAction(SoGLRenderAction * const action)
 SoGLRenderAction *
 SoSceneManager::getGLRenderAction(void) const
 {
-  return THIS->glaction;
+  return PRIVATE(this)->glaction;
 }
 
 /*!
@@ -723,17 +732,17 @@ SoSceneManager::getGLRenderAction(void) const
 void
 SoSceneManager::setAudioRenderAction(SoAudioRenderAction * const action)
 {
-  if (THIS->deleteaudiorenderaction) {
-    delete THIS->audiorenderaction;
-    THIS->audiorenderaction = NULL;
+  if (PRIVATE(this)->deleteaudiorenderaction) {
+    delete PRIVATE(this)->audiorenderaction;
+    PRIVATE(this)->audiorenderaction = NULL;
   }
 
   // If action change, we need to invalidate state to enable lazy GL
   // elements to be evaluated correctly.
   //
-  if (action && action != THIS->audiorenderaction) action->invalidateState();
-  THIS->audiorenderaction = action;
-  THIS->deleteaudiorenderaction = FALSE;
+  if (action && action != PRIVATE(this)->audiorenderaction) action->invalidateState();
+  PRIVATE(this)->audiorenderaction = action;
+  PRIVATE(this)->deleteaudiorenderaction = FALSE;
 }
 
 /*!
@@ -742,7 +751,7 @@ SoSceneManager::setAudioRenderAction(SoAudioRenderAction * const action)
 SoAudioRenderAction *
 SoSceneManager::getAudioRenderAction(void) const
 {
-  return THIS->audiorenderaction;
+  return PRIVATE(this)->audiorenderaction;
 }
 
 /*!
@@ -752,9 +761,9 @@ SoSceneManager::getAudioRenderAction(void) const
 void
 SoSceneManager::setHandleEventAction(SoHandleEventAction * hea)
 {
-  if (THIS->deletehandleeventaction) delete THIS->handleeventaction;
-  THIS->handleeventaction = hea;
-  THIS->deletehandleeventaction = FALSE;
+  if (PRIVATE(this)->deletehandleeventaction) delete PRIVATE(this)->handleeventaction;
+  PRIVATE(this)->handleeventaction = hea;
+  PRIVATE(this)->deletehandleeventaction = FALSE;
 }
 
 /*!
@@ -763,7 +772,7 @@ SoSceneManager::setHandleEventAction(SoHandleEventAction * hea)
 SoHandleEventAction *
 SoSceneManager::getHandleEventAction(void) const
 {
-  return THIS->handleeventaction;
+  return PRIVATE(this)->handleeventaction;
 }
 
 /*!
@@ -801,10 +810,7 @@ SoSceneManager::isRealTimeUpdateEnabled(void)
   return SoSceneManagerP::touchtimer;
 }
 
-#undef THIS
-#undef FLAG_RGBMODE
-#undef FLAG_ACTIVE
-
+// *************************************************************************
 
 // Internal callback.
 void
