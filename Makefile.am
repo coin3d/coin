@@ -284,8 +284,8 @@ install-data-local:
 	  echo " ln -s Versions/Current/$$symlink $(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/$$symlink"; \
 	  ln -s Versions/Current/$$symlink "$(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/$$symlink" || exit 1; \
 	done
-	echo "cd $(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Headers && ln -s ../Headers $(MAC_FRAMEWORK_NAME) && cd -r"; \
-	cd "$(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Headers" && ln -s ../Headers $(MAC_FRAMEWORK_NAME) && cd -;
+	@echo "cd $(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Headers && rm -f $(MAC_FRAMEWORK_NAME) && ln -s ../Headers $(MAC_FRAMEWORK_NAME) && cd -"; \
+	cd "$(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Headers" && rm -f $(MAC_FRAMEWORK_NAME) && ln -s ../Headers $(MAC_FRAMEWORK_NAME) && cd -;
 else
 install-data-local:
 install-exec-local: $(srcdir)/cfg/wrapmsvc.exe
