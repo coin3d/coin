@@ -233,6 +233,10 @@ if $BUILD_WITH_MSVC; then
 fi
 
 #  Initialize libtool
+#
+# FIXME: this must be done even when we're not using libtool (as when
+# building with MSVC++), because that's where at least the enable_static
+# and enable_shared flags are set up. 20030324 mortene.
 AC_PROG_LIBTOOL
 
 # **************************************************************************
@@ -1393,11 +1397,7 @@ if $sim_ac_build_library; then
       COIN_EXTRA_LIBS="-lcoin${COIN_MAJOR_VERSION}${SUFFIX}"
     fi
   else
-    if test -n "$COIN_EXTRA_LIBS"; then
-      COIN_EXTRA_LIBS="-lCoin${SUFFIX} $COIN_EXTRA_LIBS"
-    else
-      COIN_EXTRA_LIBS="-lCoin${SUFFIX}"
-    fi
+    COIN_EXTRA_LIBS="-lCoin${SUFFIX} $COIN_EXTRA_LIBS"
   fi
 
   if $BUILD_WITH_MSVC; then
