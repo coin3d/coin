@@ -47,6 +47,17 @@ public:
   virtual void fixCopy(SbBool copyconnections);
   virtual SbBool referencesCopy(void) const;
 
+  void addNode(SoNode * node);
+  void insertNode(SoNode * node, int idx);
+  SoNode * getNode(int idx) const;
+  int findNode(const SoNode * node) const;
+  int getNumNodes(void) const;
+  void removeNode(int index);
+  void removeNode(SoNode * node);
+  void removeAllNodes(void);
+  void replaceNode(int idx, SoNode * newnode);
+  void replaceNode(SoNode * oldnode, SoNode * newnode);
+
 private:
   virtual void countWriteRefs(SoOutput * out) const;
   virtual void deleteValues(int start, int num = -1);
