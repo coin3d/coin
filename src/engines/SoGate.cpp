@@ -33,6 +33,62 @@
 #include <assert.h>
 #include <Inventor/engines/SoSubEngineP.h>
 
+/*
+ * We cannot use the SO_ENGINE_SOURCE macro, since we need to make
+ * an instance of SoFieldData and SoEngineOutputData for every
+ * SoGate instance, since the input and output is allocated in the
+ * constructor. This makes it impossible to inherit this class,
+ * but I guess that is the case in OIV too. pederb, 20000331
+ */
+
+// Don't set value explicitly to SoType::badType(), to avoid a bug in
+// Sun CC v4.0. (Bitpattern 0x0000 equals SoType::badType()).
+SoType SoGate::classTypeId;
+
+SoType SoGate::getClassTypeId(void) { return SoGate::classTypeId; }
+SoType SoGate::getTypeId(void) const { return SoGate::classTypeId; }
+
+unsigned int SoGate::classinstances = 0;
+SoFieldData * SoGate::inputdata = NULL;
+const SoFieldData ** SoGate::parentinputdata = NULL;
+SoEngineOutputData * SoGate::outputdata = NULL;
+const SoEngineOutputData ** SoGate::parentoutputdata = NULL;
+
+const SoFieldData **
+SoGate::getInputDataPtr(void)
+{
+  assert(0 && "no static fielddata available for SoGate");
+  return NULL;
+}
+
+const SoFieldData *
+SoGate::getFieldData(void) const
+{
+  return this->gateInputData;
+}
+
+const SoEngineOutputData **
+SoGate::getOutputDataPtr(void)
+{
+  assert(0 && "no static outputdata available for SoGate");
+  return NULL;
+}
+
+const SoEngineOutputData *
+SoGate::getOutputData(void) const
+{
+  return this->gateOutputData;
+}
+
+void *
+SoGate::createInstance(void)
+{
+  return new SoGate;
+}
+
+
+/**************************************************************************/
+
 /*!
   Default constructor. Used when reading engine from file.
 */
@@ -171,54 +227,4 @@ SoGate::writeInstance(SoOutput *out)
 
   this->typeField.setValue(this->input->getTypeId().getName());
   inherited::writeInstance(out);
-}
-
-/*
- * We cannot use the SO_ENGINE_SOURCE macro, since we need to make
- * an instance of SoFieldData and SoEngineOutputData for every
- * SoGate instance, since the input and output is allocated in the
- * constructor. This makes it impossible to inherit this class,
- * but I guess that is the case in OIV too. pederb, 20000331
- */
-
-SoType SoGate::classTypeId = SoType::badType();
-SoType SoGate::getClassTypeId(void) { return SoGate::classTypeId; }
-SoType SoGate::getTypeId(void) const { return SoGate::classTypeId; }
-
-unsigned int SoGate::classinstances = 0;
-SoFieldData * SoGate::inputdata = NULL;
-const SoFieldData ** SoGate::parentinputdata = NULL;
-SoEngineOutputData * SoGate::outputdata = NULL;
-const SoEngineOutputData ** SoGate::parentoutputdata = NULL;
-
-const SoFieldData **
-SoGate::getInputDataPtr(void)
-{
-  assert(0 && "no static fielddata available for SoGate");
-  return NULL;
-}
-
-const SoFieldData *
-SoGate::getFieldData(void) const
-{
-  return this->gateInputData;
-}
-
-const SoEngineOutputData **
-SoGate::getOutputDataPtr(void)
-{
-  assert(0 && "no static outputdata available for SoGate");
-  return NULL;
-}
-
-const SoEngineOutputData *
-SoGate::getOutputData(void) const
-{
-  return this->gateOutputData;
-}
-
-void *
-SoGate::createInstance(void)
-{
-  return new SoGate;
 }

@@ -76,7 +76,9 @@
 
 uint32_t SoNode::nextUniqueId = 0;
 int SoNode::nextActionMethodIndex = 0;
-SoType SoNode::classTypeId = SoType::badType();
+// Don't set value explicitly to SoType::badType(), to avoid a bug in
+// Sun CC v4.0. (Bitpattern 0x0000 equals SoType::badType()).
+SoType SoNode::classTypeId;
 
 
 // Overridden from parent.

@@ -54,7 +54,9 @@ public: \
 
 #define PRIVATE_SOELEMENT_VARIABLES(_class_) \
 int _class_::classStackIndex; \
-SoType _class_::classTypeId = SoType::badType(); \
+/* Don't set value explicitly to SoType::badType(), to avoid a bug in */ \
+/* Sun CC v4.0. (Bitpattern 0x0000 equals SoType::badType()). */ \
+SoType _class_::classTypeId; \
 SoType _class_::getClassTypeId(void) { return _class_::classTypeId; } \
 int _class_::getClassStackIndex(void) { return _class_::classStackIndex; }
 

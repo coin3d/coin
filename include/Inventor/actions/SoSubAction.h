@@ -58,7 +58,9 @@ private: \
 #define SO_ACTION_SOURCE(_classname_) \
 SoEnabledElementsList * _classname_::enabledElements = NULL; \
 SoActionMethodList * _classname_::methods = NULL; \
-SoType _classname_::classTypeId = SoType::badType(); \
+/* Don't set value explicitly to SoType::badType(), to avoid a bug in */ \
+/* Sun CC v4.0. (Bitpattern 0x0000 equals SoType::badType()). */ \
+SoType _classname_::classTypeId; \
 SoType _classname_::getClassTypeId(void) { return _classname_::classTypeId; } \
 SoType _classname_::getTypeId(void) const { return _classname_::classTypeId; } \
 const SoEnabledElementsList & _classname_::getEnabledElements(void) const \

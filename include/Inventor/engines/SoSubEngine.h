@@ -60,9 +60,11 @@ private: \
 
 
 #define PRIVATE_ENGINE_TYPESYSTEM_SOURCE(_class_) \
-SoType _class_::classTypeId = SoType::badType(); \
 SoType _class_::getClassTypeId(void) { return _class_::classTypeId; } \
-SoType _class_::getTypeId(void) const { return _class_::classTypeId; }
+SoType _class_::getTypeId(void) const { return _class_::classTypeId; } \
+/* Don't set value explicitly to SoType::badType(), to avoid a bug in */ \
+/* Sun CC v4.0. (Bitpattern 0x0000 equals SoType::badType()). */ \
+SoType _class_::classTypeId
 
 #define SO_ENGINE_ABSTRACT_SOURCE(_class_) \
 PRIVATE_ENGINE_TYPESYSTEM_SOURCE(_class_); \

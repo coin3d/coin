@@ -259,6 +259,9 @@ SoType
 SoType::badType(void)
 {
   SoType bad;
+  // Important note: internally in Coin (in the various initClass()
+  // methods for nodes, engines, fields, etc etc), we depend on the
+  // bitpattern for SoType::badType() to equal 0x0000.
   bad.index = 0;
   return bad;
 }

@@ -90,7 +90,9 @@ SbDict * SoBase::obj2name; // maps from SoBase * to char *
 
 SbString * SoBase::refwriteprefix = NULL;
 
-SoType SoBase::classTypeId = SoType::badType();
+// Don't set value explicitly to SoType::badType(), to avoid a bug in
+// Sun CC v4.0. (Bitpattern 0x0000 equals SoType::badType()).
+SoType SoBase::classTypeId;
 
 SbBool SoBase::tracerefs = FALSE;
 uint32_t SoBase::writecounter = 0;

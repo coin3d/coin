@@ -63,8 +63,10 @@
 */
 
 
+// Don't set value explicitly to SoType::badType(), to avoid a bug in
+// Sun CC v4.0. (Bitpattern 0x0000 equals SoType::badType()).
+SoType SoEngine::classTypeId;
 
-SoType SoEngine::classTypeId = SoType::badType();
 
 /*!
   Default constructor.

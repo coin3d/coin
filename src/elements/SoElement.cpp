@@ -82,7 +82,10 @@
 
 
 int SoElement::classStackIndex;
-SoType SoElement::classTypeId = SoType::badType();
+// Don't set value explicitly to SoType::badType(), to avoid a bug in
+// Sun CC v4.0. (Bitpattern 0x0000 equals SoType::badType()).
+SoType SoElement::classTypeId;
+
 SoType SoElement::getClassTypeId(void) { return SoElement::classTypeId; }
 int SoElement::getClassStackIndex(void) { return SoElement::classStackIndex; }
 
@@ -198,7 +201,7 @@ void
 SoElement::initClass(void)
 {
   SoElement::stackToType = new SoTypeList;
-  
+
   // Make sure we only initialize once.
   assert(SoElement::classTypeId == SoType::badType());
   SoElement::classTypeId =
@@ -212,7 +215,7 @@ SoElement::initClass(void)
 }
 
 // atexit callback
-void 
+void
 SoElement::cleanup(void)
 {
   delete SoElement::stackToType;
