@@ -760,14 +760,66 @@ INPUT                 = @coin_build_dir@/include/Inventor/SbBasic.h \
                         @coin_src_dir@/include/Inventor/engines/SoEngineOutput.h \
                         @coin_src_dir@/src/engines/SoBoolOperation.cpp \
                         @coin_src_dir@/include/Inventor/engines/SoBoolOperation.h \
+                        @coin_src_dir@/src/engines/SoCalculator.cpp \
+                        @coin_src_dir@/include/Inventor/engines/SoCalculator.h \
+                        @coin_src_dir@/src/engines/SoComposeVec2f.cpp \
+                        @coin_src_dir@/include/Inventor/engines/SoComposeVec2f.h \
+                        @coin_src_dir@/src/engines/SoComposeVec3f.cpp \
+                        @coin_src_dir@/include/Inventor/engines/SoComposeVec3f.h \
+                        @coin_src_dir@/src/engines/SoComposeVec4f.cpp \
+                        @coin_src_dir@/include/Inventor/engines/SoComposeVec4f.h \
+                        @coin_src_dir@/src/engines/SoDecomposeVec2f.cpp \
+                        @coin_src_dir@/include/Inventor/engines/SoDecomposeVec2f.h \
+                        @coin_src_dir@/src/engines/SoDecomposeVec3f.cpp \
+                        @coin_src_dir@/include/Inventor/engines/SoDecomposeVec3f.h \
+                        @coin_src_dir@/src/engines/SoDecomposeVec4f.cpp \
+                        @coin_src_dir@/include/Inventor/engines/SoDecomposeVec4f.h \
+                        @coin_src_dir@/src/engines/SoComposeRotation.cpp \
+                        @coin_src_dir@/include/Inventor/engines/SoComposeRotation.h \
+                        @coin_src_dir@/src/engines/SoComposeRotationFromTo.cpp \
+                        @coin_src_dir@/include/Inventor/engines/SoComposeRotationFromTo.h \
+                        @coin_src_dir@/src/engines/SoDecomposeRotation.cpp \
+                        @coin_src_dir@/include/Inventor/engines/SoDecomposeRotation.h \
+                        @coin_src_dir@/src/engines/SoComposeMatrix.cpp \
+                        @coin_src_dir@/include/Inventor/engines/SoComposeMatrix.h \
+                        @coin_src_dir@/src/engines/SoDecomposeMatrix.cpp \
+                        @coin_src_dir@/include/Inventor/engines/SoDecomposeMatrix.h \
+                        @coin_src_dir@/src/engines/SoComputeBoundingBox.cpp \
+                        @coin_src_dir@/include/Inventor/engines/SoComputeBoundingBox.h \
                         @coin_src_dir@/src/engines/SoConcatenate.cpp \
                         @coin_src_dir@/include/Inventor/engines/SoConcatenate.h \
+                        @coin_src_dir@/src/engines/SoCounter.cpp \
+                        @coin_src_dir@/include/Inventor/engines/SoCounter.h \
+                        @coin_src_dir@/src/engines/SoElapsedTime.cpp \
+                        @coin_src_dir@/include/Inventor/engines/SoElapsedTime.h \
+                        @coin_src_dir@/src/engines/SoFieldConverter.cpp \
+                        @coin_src_dir@/include/Inventor/engines/SoFieldConverter.h \
                         @coin_src_dir@/src/engines/SoGate.cpp \
                         @coin_src_dir@/include/Inventor/engines/SoGate.h \
+                        @coin_src_dir@/src/engines/SoInterpolate.cpp \
+                        @coin_src_dir@/include/Inventor/engines/SoInterpolate.h \
+                        @coin_src_dir@/src/engines/SoInterpolateFloat.cpp \
+                        @coin_src_dir@/include/Inventor/engines/SoInterpolateFloat.h \
+                        @coin_src_dir@/src/engines/SoInterpolateRotation.cpp \
+                        @coin_src_dir@/include/Inventor/engines/SoInterpolateRotation.h \
+                        @coin_src_dir@/src/engines/SoInterpolateVec2f.cpp \
+                        @coin_src_dir@/include/Inventor/engines/SoInterpolateVec2f.h \
+                        @coin_src_dir@/src/engines/SoInterpolateVec3f.cpp \
+                        @coin_src_dir@/include/Inventor/engines/SoInterpolateVec3f.h \
+                        @coin_src_dir@/src/engines/SoInterpolateVec4f.cpp \
+                        @coin_src_dir@/include/Inventor/engines/SoInterpolateVec4f.h \
+                        @coin_src_dir@/src/engines/SoOnOff.cpp \
+                        @coin_src_dir@/include/Inventor/engines/SoOnOff.h \
+                        @coin_src_dir@/src/engines/SoOneShot.cpp \
+                        @coin_src_dir@/include/Inventor/engines/SoOneShot.h \
                         @coin_src_dir@/src/engines/SoSelectOne.cpp \
                         @coin_src_dir@/include/Inventor/engines/SoSelectOne.h \
                         @coin_src_dir@/src/engines/SoTimeCounter.cpp \
                         @coin_src_dir@/include/Inventor/engines/SoTimeCounter.h \
+                        @coin_src_dir@/src/engines/SoTransformVec3f.cpp \
+                        @coin_src_dir@/include/Inventor/engines/SoTransformVec3f.h \
+                        @coin_src_dir@/src/engines/SoTriggerAny.cpp \
+                        @coin_src_dir@/include/Inventor/engines/SoTriggerAny.h \
                         @coin_src_dir@/src/nodekits/SoNodeKit.cpp \
                         @coin_src_dir@/include/Inventor/nodekits/SoNodeKit.h \
                         @coin_src_dir@/src/draggers/SoDragger.cpp \
