@@ -34,40 +34,40 @@
   with corners in <0, 0, 0>, <1, 0, 0>, <1, 1, 0> and <0, 1, 0>.
 
   \code
-// Callback function for the tessellator. Called once for each
-// generated triangle with the vertices.
-static void
-tess_cb(void * v0, void * v1, void * v2, void * cbdata)
-{
-  SbVec3f * vtx0 = (SbVec3f *)v0;
-  SbVec3f * vtx1 = (SbVec3f *)v1;
-  SbVec3f * vtx2 = (SbVec3f *)v2;
-  (void)fprintf(stdout, "triangle: <%f, %f, %f> <%f, %f, %f> <%f, %f, %f>\n",
-                (*vtx0)[0], (*vtx0)[1], (*vtx0)[2],
-                (*vtx1)[0], (*vtx1)[1], (*vtx1)[2],
-                (*vtx2)[0], (*vtx2)[1], (*vtx2)[2]);
 
-  // Do stuff with triangle here.
-}
+  // Callback function for the tessellator. Called once for each
+  // generated triangle with the vertices.
+  static void
+  tess_cb(void * v0, void * v1, void * v2, void * cbdata)
+  {
+    SbVec3f * vtx0 = (SbVec3f *)v0;
+    SbVec3f * vtx1 = (SbVec3f *)v1;
+    SbVec3f * vtx2 = (SbVec3f *)v2;
+    (void) fprintf(stdout, "triangle: <%f, %f, %f> <%f, %f, %f> <%f, %f, %f>\n",
+      (*vtx0)[0], (*vtx0)[1], (*vtx0)[2],
+      (*vtx1)[0], (*vtx1)[1], (*vtx1)[2],
+      (*vtx2)[0], (*vtx2)[1], (*vtx2)[2]);
 
-/// Testcode. ////////////////////////////
+    // Do stuff with triangle here.
+  }
 
-static SbVec3f vertices[] = {
-  SbVec3f(1, 0, 0), SbVec3f(1, 1, 0),
-  SbVec3f(0, 1, 0), SbVec3f(0, 0, 0)
-};
+  static SbVec3f vertices[] = {
+    SbVec3f(1, 0, 0), SbVec3f(1, 1, 0),
+    SbVec3f(0, 1, 0), SbVec3f(0, 0, 0)
+  };
 
-SbTesselator mytessellator(tess_cb, NULL);
-mytessellator.beginPolygon();
-for (int i=0; i < 4; i++)
-  mytessellator.addVertex(vertices[i], &vertices[i]);
-mytessellator.endPolygon();
+  SbTesselator mytessellator(tess_cb, NULL);
+  mytessellator.beginPolygon();
+  for (int i=0; i < 4; i++)
+    mytessellator.addVertex(vertices[i], &vertices[i]);
+  mytessellator.endPolygon();
+
   \endcode
-
+  
   The call to SbTesselator::endPolygon() triggers the SbTesselator to
   spring into action, calling the tess_cb() function for each triangle
   it generates.
-
+  
   The reason we use 2 arguments to SbTesselator::addVertex() and passes
   void pointers for the vertices to the callback function is to make it
   possible to have more complex structures than just the coordinates
@@ -85,6 +85,10 @@ mytessellator.endPolygon();
 
 #include <Inventor/SbTesselator.h>
 #include <Inventor/SbHeap.h>
+#include <Inventor/C/base/heap.h>
+#include <Inventor/SbBSPTree.h>
+#include <Inventor/SbSphere.h>
+#include <Inventor/lists/SbList.h>
 #include <stdio.h>
 #include <limits.h>
 #include <assert.h>
@@ -93,13 +97,32 @@ mytessellator.endPolygon();
 struct SbTVertex {
   float weight;
   int dirtyweight;
-  int heapidx;
   SbTVertex *prev;
   SbTesselator *thisp;
   SbVec3f v;
   void *data;
   SbTVertex *next;
 };
+
+class SbTesselatorP {
+public:
+  SbTesselatorP(void) : bsptree(256) { }
+  cc_heap * heap;
+  SbBSPTree bsptree;
+  SbList <int> clippablelist;
+  float epsilon;
+  SbBox3f bbox;
+};
+
+// FIXME: replace with standard pimpl member in Coin-3. pederb, 2003-10-06
+#define PRIVATE(obj) ((SbTesselatorP*)(obj->heap))
+
+int
+SbTesselator::heap_compare(void * h0, void * h1)
+{
+  if (heap_evaluate(h0) > heap_evaluate(h1)) return -1;
+  return 1;
+}
 
 
 float
@@ -108,7 +131,7 @@ SbTesselator::heap_evaluate(void *v)
   SbTVertex *vertex = (SbTVertex*)v;
   if (vertex->dirtyweight) {
     vertex->dirtyweight = 0;
-    if (vertex->thisp->area(vertex) > FLT_EPSILON &&
+    if (vertex->thisp->area(vertex) > PRIVATE(vertex->thisp)->epsilon &&
         vertex->thisp->isTriangle(vertex) &&
         vertex->thisp->clippable(vertex)) {
 #if 0 // testing code to avoid empty triangles
@@ -117,7 +140,7 @@ SbTesselator::heap_evaluate(void *v)
       if (vertex->weight != FLT_MAX &&
           v2->thisp->keepVertices &&
           v2->thisp->numVerts > 4 &&
-          fabs(v2->thisp->area(v2)) < FLT_EPSILON) {
+          fabs(v2->thisp->area(v2)) < PRIVATE(thisp)->epsilon) {
         vertex->weight = 0.0f; // cut immediately!
       }
 
@@ -131,17 +154,6 @@ SbTesselator::heap_evaluate(void *v)
   return vertex->weight;
 }
 
-static int
-heap_get_index(void *v)
-{
-  return ((SbTVertex*)v)->heapidx;
-}
-
-static void
-heap_set_index(void *v, int idx)
-{
-  ((SbTVertex*)v)->heapidx = idx;
-}
 
 //projection enums
 enum {OXY,OXZ,OYZ};
@@ -159,14 +171,11 @@ SbTesselator::SbTesselator(void (*callback)(void * v0, void * v1, void * v2,
 {
   this->setCallback(callback, userdata);
   this->headV = this->tailV = NULL;
-  this->currVertex = 0;
-
-  SbHeapFuncs hf;
-  hf.eval_func = heap_evaluate;
-  hf.get_index_func = heap_get_index;
-  hf.set_index_func = heap_set_index;
-
-  this->heap = new SbHeap(hf, 64);
+  this->currVertex = 0;  
+  
+  PRIVATE(this) = new SbTesselatorP;
+  PRIVATE(this)->heap = cc_heap_construct(256, heap_compare, TRUE);
+  PRIVATE(this)->epsilon = FLT_EPSILON;
 }
 
 /*!
@@ -177,7 +186,9 @@ SbTesselator::~SbTesselator()
   cleanUp();
   int i,n = this->vertexStorage.getLength();
   for (i = 0; i < n; i++) delete this->vertexStorage[i];
-  delete this->heap;
+  
+  cc_heap_destruct(PRIVATE(this)->heap);
+  delete PRIVATE(this);
 }
 
 /*!
@@ -204,6 +215,7 @@ SbTesselator::beginPolygon(SbBool keepVerts, const SbVec3f &normal)
   }
   this->headV = this->tailV = NULL;
   this->numVerts=0;
+  PRIVATE(this)->bbox.makeEmpty();
 }
 
 /*!
@@ -213,13 +225,16 @@ SbTesselator::beginPolygon(SbBool keepVerts, const SbVec3f &normal)
 void
 SbTesselator::addVertex(const SbVec3f &v,void *data)
 {
+  if (this->tailV && !this->keepVertices && v == this->tailV->v) return;
+
+  PRIVATE(this)->bbox.extendBy(v);
+
   SbTVertex *newv = this->newVertex();
   newv->v = v;
   newv->data = data;
   newv->next = NULL;
   newv->dirtyweight = 1;
   newv->weight = FLT_MAX;
-  newv->heapidx = -1;
   newv->prev = this->tailV;
   newv->thisp = this;
   if (!this->headV) this->headV = newv;
@@ -237,10 +252,24 @@ SbTesselator::addVertex(const SbVec3f &v,void *data)
 void
 SbTesselator::endPolygon()
 {
+  // check for special case when last point equals the first point
+  if (!this->keepVertices && this->numVerts >= 3) {
+    SbTVertex * first = this->headV;
+    SbTVertex * last = this->tailV;
+    if (first->v == last->v) {
+      SbTVertex * newlast = last->prev;
+      newlast->next = NULL;
+      // don't delete old tail. We have some special memory handling
+      // in this class
+      this->tailV = newlast;
+      this->numVerts--;
+    }
+  }
+ 
   SbTVertex *v;
 
   if (this->numVerts > 3) {
-    calcPolygonNormal();
+    this->calcPolygonNormal();
 
     // Find best projection plane
     int projection;
@@ -270,34 +299,47 @@ SbTesselator::endPolygon()
       polyDir=(int)(polyNormal[1]/fabs(polyNormal[1]));
       break;
     }
+
+    // find epsilon based on bbox
+    SbVec3f d;
+    PRIVATE(this)->bbox.getSize(d[0],d[1],d[2]);
+    PRIVATE(this)->epsilon = SbMin(d[this->X], d[this->Y]) * FLT_EPSILON;
+
     //Make loop
     this->tailV->next = this->headV;
     this->headV->prev = this->tailV;
 
     // add all vertices to heap.
-    heap->emptyHeap();
-    this->headV->heapidx = this->heap->add(this->headV);
+    cc_heap_clear(PRIVATE(this)->heap);
+    PRIVATE(this)->bsptree.clear(256);
+    
+    int cnt = 1;
+    cc_heap_add(PRIVATE(this)->heap, this->headV);
+    PRIVATE(this)->bsptree.addPoint(this->headV->v, this->headV);
     v = this->headV->next;
     while (v != this->headV) {
-      v->heapidx = this->heap->add(v);
+      cc_heap_add(PRIVATE(this)->heap, v);
+      PRIVATE(this)->bsptree.addPoint(v->v, v);
       v = v->next;
     }
-    this->heap->buildHeap();
-
     while (this->numVerts > 4) {
+      v = (SbTVertex*) cc_heap_get_top(PRIVATE(this)->heap);
 
-      v = (SbTVertex*) this->heap->getMin();
       if (heap_evaluate(v) == FLT_MAX) break;
-      this->heap->remove(v->next->heapidx);
+      cc_heap_remove(PRIVATE(this)->heap, v->next);
+      PRIVATE(this)->bsptree.removePoint(v->next->v);
 
       this->emitTriangle(v); // will remove v->next
       this->numVerts--;
-
-      // update heap
+      
       v->prev->dirtyweight = 1;
       v->dirtyweight = 1;
-      this->heap->newWeight(v->prev, v->prev->heapidx);
-      this->heap->newWeight(v, v->heapidx);
+
+      (void) cc_heap_remove(PRIVATE(this)->heap, v->prev);
+      (void) cc_heap_remove(PRIVATE(this)->heap, v);
+
+      cc_heap_add(PRIVATE(this)->heap, v->prev);
+      cc_heap_add(PRIVATE(this)->heap, v);
     }
 
     // remember that headV and tailV are not valid anymore!
@@ -355,7 +397,7 @@ SbTesselator::setCallback(void (*callback)(void *v0,
 static SbBool
 point_on_edge(const float x, const float y,
               const float * const v0, const float * const v1,
-              const int X, const int Y)
+              const int X, const int Y, const float eps)
 {
   if (x < v0[X] && x < v1[X]) return FALSE;
   if (x > v0[X] && x > v1[X]) return FALSE;
@@ -363,13 +405,13 @@ point_on_edge(const float x, const float y,
   if (y > v0[Y] && y > v1[Y]) return FALSE;
 
   if (v0[X] == v1[X]) {
-    if (fabs(x-v0[X]) <= FLT_EPSILON) return TRUE;
+    if (fabs(x-v0[X]) <= eps) return TRUE;
     return FALSE;
   }
 
   float ny = v0[Y] + (x-v0[X])*(v1[Y]-v0[Y])/(v1[X]-v0[X]);
 
-  if (fabs(y-ny)<= FLT_EPSILON) {
+  if (fabs(y-ny)<= eps) {
     return TRUE;
   }
   return FALSE;
@@ -413,13 +455,13 @@ SbTesselator::pointInTriangle(SbTVertex *p, SbTVertex *t)
 #if 1
   if (this->keepVertices && tst == FALSE) {
     if (point_on_edge(x,y,t->v.getValue(),
-                      t->next->v.getValue(),X,Y))
+                      t->next->v.getValue(),X,Y, PRIVATE(this)->epsilon))
       return TRUE;
     if (point_on_edge(x,y,t->next->v.getValue(),
-                      t->next->next->v.getValue(),X,Y))
+                      t->next->next->v.getValue(),X,Y, PRIVATE(this)->epsilon))
       return TRUE;
     if (point_on_edge(x,y,t->next->next->v.getValue(),
-                      t->v.getValue(),X,Y))
+                      t->v.getValue(),X,Y, PRIVATE(this)->epsilon))
       return TRUE;
   }
 #endif
@@ -448,15 +490,22 @@ SbTesselator::isTriangle(SbTVertex *v)
 SbBool
 SbTesselator::clippable(SbTVertex *v)
 {
-  SbTVertex *vtx=v->next->next->next;
+  SbBox3f bbox;
+  bbox.makeEmpty();
+  bbox.extendBy(v->v);
+  bbox.extendBy(v->next->v);
+  bbox.extendBy(v->next->next->v);
 
-  do {
-    if (vtx!=v && vtx!=v->next && vtx!=v->next->next &&
-        vtx->v!=v->v && vtx->v!=v->next->v && vtx->v!=v->next->next->v)
-      if (pointInTriangle(vtx,v))
-        return FALSE;
-    vtx=vtx->next;
-  } while (vtx!=v);
+  SbSphere sphere;
+  sphere.circumscribe(bbox);
+  
+  SbList <int> & l = PRIVATE(this)->clippablelist;
+  l.truncate(0);
+  PRIVATE(this)->bsptree.findPoints(sphere, l);
+  for (int i = 0; i < l.getLength(); i++) {
+    SbTVertex * vtx = (SbTVertex*) PRIVATE(this)->bsptree.getUserData(l[i]);
+    if (vtx != v && vtx != v->next && vtx != v->next->next && pointInTriangle(vtx, v)) return FALSE;
+  }
   return TRUE;
 }
 
@@ -539,8 +588,8 @@ SbTesselator::circleCenter(const SbVec3f &a, const SbVec3f &b,
   tmp4 += tmp1;
   tmp4 += tmp2;
 
-  float div = 2*(c1+c2+c3);
-  if (fabs(div) > FLT_EPSILON) {
+  float div = 2.0f*(c1+c2+c3);
+  if (div != 0.0f) {
     float val = 1.0f / div;
     cx = tmp4[this->X] * val;
     cy = tmp4[this->Y] * val;
@@ -626,4 +675,5 @@ SbTesselator::cleanUp()
 {
   this->headV = this->tailV = NULL;
   this->currVertex = 0;
+  this->numVerts = 0;
 }

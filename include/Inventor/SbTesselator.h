@@ -79,6 +79,7 @@ private:
   float area(SbTVertex *t);
 
   static float heap_evaluate(void *v);
+  static int heap_compare(void * v0, void * v1);
 };
 
 #endif // !COIN_SBTESSELATOR_H

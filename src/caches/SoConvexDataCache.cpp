@@ -258,7 +258,7 @@ SoConvexDataCache::generate(const SoCoordinateElement * const coords,
   if (texbind != NONE)
     tessdata.texIndex = &THIS->texIndices;
 
-  tessellator.beginPolygon(TRUE);
+  tessellator.beginPolygon(FALSE);
   for (int i = 0; i < numv; i++) {
     if (vind[i] < 0) {
       tessellator.endPolygon();
@@ -270,7 +270,7 @@ SoConvexDataCache::generate(const SoCoordinateElement * const coords,
           normbind == PER_FACE_INDEXED) normnr++;
       if (texbind == PER_VERTEX_INDEXED) texnr++;
       if (i < numv - 1) { // if not last polygon
-        tessellator.beginPolygon();
+        tessellator.beginPolygon(FALSE);
       }
     }
     else {
