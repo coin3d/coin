@@ -31,7 +31,6 @@
 */
 
 #include <Inventor/projectors/SbLineProjector.h>
-#include <assert.h>
 
 /*!
   \var SbLineProjector::line

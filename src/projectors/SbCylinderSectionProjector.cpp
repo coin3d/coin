@@ -30,7 +30,6 @@
 */
 
 #include <Inventor/projectors/SbCylinderSectionProjector.h>
-#include <assert.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -115,7 +114,7 @@ SbCylinderSectionProjector::project(const SbVec2f & point)
       SbVec3f ptOnLine = this->planeLine.getClosestPoint(projpt);
       SbLine myLine(projpt, ptOnLine);
       if (!this->cylinder.intersect(myLine, projpt)) {
-        assert(0 && "shouldn't happen");
+        // shouldn't happen, but be robust if it does
         projpt = SbVec3f(0.0f, 0.0f, 0.0f);
       }
     }

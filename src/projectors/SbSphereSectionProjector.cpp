@@ -29,7 +29,6 @@
  */
 
 #include <Inventor/projectors/SbSphereSectionProjector.h>
-#include <assert.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -120,7 +119,7 @@ SbSphereSectionProjector::project(const SbVec2f & point)
     else {
       SbLine myLine(projpt, this->sphere.getCenter());
       if (!this->sphere.intersect(myLine, projpt)) {
-        assert(0 && "shouldn't happen");
+        // shouldn't happen, but be robust if it does
         projpt = SbVec3f(0.0f, 0.0f, 0.0f);
       }
     }

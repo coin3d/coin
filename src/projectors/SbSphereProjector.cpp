@@ -29,7 +29,6 @@
  */
 
 #include <Inventor/projectors/SbSphereProjector.h>
-#include <assert.h>
 
 /*!
   \fn SbRotation SbSphereProjector::getRotation(const SbVec3f & point1, const SbVec3f & point2)
@@ -189,7 +188,7 @@ SbSphereProjector::isPointInFront(const SbVec3f & point) const
     this->worldToWorking.multDirMatrix( vv.zVector(), camdir);
   }
   SbVec3f ptdir = point - this->sphere.getCenter();
-  return ptdir.dot(camdir) >= 0.0f; 
+  return ptdir.dot(camdir) >= 0.0f;
 }
 
 /*!

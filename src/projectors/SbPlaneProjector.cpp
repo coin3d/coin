@@ -28,7 +28,6 @@
   \sa SbLineProjector
 */
 
-#include <assert.h>
 #include <Inventor/projectors/SbPlaneProjector.h>
 
 #if COIN_DEBUG

@@ -32,7 +32,6 @@
  */
 
 #include <Inventor/projectors/SbCylinderSheetProjector.h>
-#include <assert.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

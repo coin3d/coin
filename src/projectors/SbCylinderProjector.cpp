@@ -30,7 +30,6 @@
 
 #include <Inventor/projectors/SbCylinderProjector.h>
 #include <Inventor/SbRotation.h>
-#include <assert.h>
 
 /*!
   \var SbCylinderProjector::intersectFront

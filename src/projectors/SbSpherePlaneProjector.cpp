@@ -31,7 +31,6 @@
  */
 
 #include <Inventor/projectors/SbSpherePlaneProjector.h>
-#include <assert.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

@@ -34,7 +34,6 @@
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
-#include <assert.h>
 #include <float.h>
 
 /*!
@@ -137,8 +136,8 @@ SbCylinderPlaneProjector::getRotation(const SbVec3f & point1, const SbBool tol1,
     SbVec3f ptOnLine = this->planeLine.getClosestPoint(point1);
     SbLine myLine(point1, ptOnLine);
     if (!this->cylinder.intersect(myLine, pt1_tol)) {
-      assert(0 && "shouldn't happen");
-      pt1_tol = point1;
+      // shouldn't happen, but be robust if it does
+      return SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f);
     }
     pt1_tol = horizline.getClosestPoint(pt1_tol);
   }
@@ -149,8 +148,8 @@ SbCylinderPlaneProjector::getRotation(const SbVec3f & point1, const SbBool tol1,
     SbVec3f ptOnLine = this->planeLine.getClosestPoint(point2);
     SbLine myLine(pt2, ptOnLine);
     if (!this->cylinder.intersect(myLine, pt2_tol)) {
-      assert(0 && "shouldn't happen");
-      pt2_tol = point2;
+      // shouldn't happen, but be robust if it does
+      return SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f);
     }
     pt2_tol = horizline.getClosestPoint(pt2_tol);
   }
