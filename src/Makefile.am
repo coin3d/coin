@@ -60,7 +60,7 @@ libCoin@SUFFIX@_la_LIBADD = \
 	fields/libfields.la misc/libmisc.la lists/liblists.la \
 	nodekits/libnodekits.la nodes/libnodes.la projectors/libprojectors.la \
 	sensors/libsensors.la details/libdetails.la draggers/libdraggers.la \
-	manips/libmanips.la $(THREADSLIBADD) \
+	manips/libmanips.la upgraders/libupgraders.la $(THREADSLIBADD) \
 	$(VRML97LIBADD) $(SUPERGLULIBADD)
 endif
 
@@ -74,7 +74,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 	fields/fields.lst misc/misc.lst lists/lists.lst \
 	nodekits/nodekits.lst nodes/nodes.lst projectors/projectors.lst \
 	sensors/sensors.lst details/details.lst draggers/draggers.lst \
-	manips/manips.lst $(THREADSLSTADD) \
+	manips/manips.lst upgraders/upgraders.lst $(THREADSLSTADD) \
 	$(VRML97LSTADD) $(SUPERGLULSTADD)
 
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = \
