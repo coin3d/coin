@@ -109,6 +109,7 @@
 
 SO_NODE_SOURCE(SoListener);
 
+// Doc in superclass.
 void SoListener::initClass()
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoListener, SO_FROM_COIN_2_0);
@@ -119,6 +120,9 @@ void SoListener::initClass()
   SO_ENABLE(SoAudioRenderAction, SoListenerGainElement);
 }
 
+/*!
+  Contructor.
+*/
 SoListener::SoListener()
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoListener);
@@ -130,10 +134,14 @@ SoListener::SoListener()
   SO_NODE_ADD_FIELD(gain, (1.0f));
 }
 
+/*!
+  Destructor.
+*/
 SoListener::~SoListener()
 {
 }
 
+// Doc in superclass
 void
 SoListener::audioRender(SoAudioRenderAction *action)
 {
@@ -169,4 +177,3 @@ SoListener::audioRender(SoAudioRenderAction *action)
   if (! this->gain.isIgnored())
     SoListenerGainElement::set(state, this, this->gain.getValue());
 }
-
