@@ -235,7 +235,7 @@ int
 coin_vsnprintf(char * dst, unsigned int n, const char * fmtstr, va_list args)
 {
   int len = vfprintf(nullfileptr(), fmtstr, args);
-  if ( ((unsigned int) len + 1) > n) return -1;
+  if (((unsigned int) len + 1) > n) return -1;
   (void)vsprintf(dst, fmtstr, args);
   return len;
 }
@@ -290,7 +290,7 @@ static void
 envlist_cleanup(void)
 {
   struct envvar_data * ptr = envlist_head;
-  while ( ptr != NULL ) {
+  while (ptr != NULL) {
     struct envvar_data * tmp = ptr;
     free(ptr->name);
     free(ptr->val);
@@ -309,10 +309,10 @@ static void
 envlist_cleanup(void)
 {
   struct envvar_data * ptr = envlist_head;
-  while ( ptr != NULL ) {
+  while (ptr != NULL) {
     struct envvar_data * tmp = ptr;
     char * strptr = strchr(ptr->string, '=');
-    if ( strptr ) *strptr = '\0';
+    if (strptr) *strptr = '\0';
     /* else huh? */
     putenv(ptr->string); /* remove string from environment */
     free(ptr->string);
@@ -365,18 +365,18 @@ coin_getenv(const char * envname)
   int neededsize;
   neededsize = GetEnvironmentVariable(envname, NULL, 0);
   /* neededsize includes the \0-terminating character */
-  if ( neededsize >= 1 ) {
+  if (neededsize >= 1) {
     int resultsize;
     struct envvar_data * envptr;
     char * valbuf = (char *) malloc(neededsize);
-    if ( valbuf == NULL ) {
+    if (valbuf == NULL) {
       /* Augh. Could we handle this any better? */
       /* If we already bookkeep a buffer for this variable, we /could/ try
          to reuse it (much work for a non-100% solution).  20030205 larsa */
       return NULL;
     }
     resultsize = GetEnvironmentVariable(envname, valbuf, neededsize);
-    if ( resultsize != (neededsize - 1) ) {
+    if (resultsize != (neededsize - 1)) {
       /* Augh. Could we handle this any better? */
       /* How about looping to top and trying again (in case the reason is mt
          and envval being changed in the background, or maybe just asserting?
@@ -397,20 +397,21 @@ coin_getenv(const char * envname)
 
     /* Try to find bookkeeped envvar buffer among those registered earlier. */
     envptr = envlist_head;
-    while ( (envptr != NULL) && (strcmp(envptr->name, envname) != 0) )
+    while ((envptr != NULL) && (strcmp(envptr->name, envname) != 0))
       envptr = envptr->next;
 
     /* We can avoid this if-else by always freeing the envvar_data for the
        variable upfront, but it's a tad less efficient. */
-    if ( envptr != NULL ) {
+    if (envptr != NULL) {
       /* We are already bookkeeping a buffer for this variable.
        * => free previous value buffer and bookkeep the new one instead */
       free(envptr->val);
       envptr->val = valbuf;
-    } else {
+    } 
+    else {
       /* We aren't bookkeeping a buffer for this one yet. */
       envptr = (struct envvar_data *) malloc(sizeof(struct envvar_data));
-      if ( envptr == NULL ) {
+      if (envptr == NULL) {
         /* Augh. Could we handle this any better? */
 	/* We can alternatively ignore the bookkeeping and leak the buffer
            - 20030205 larsa */
@@ -418,7 +419,7 @@ coin_getenv(const char * envname)
         return NULL;
       }
       envptr->name = strdup(envname);
-      if ( envptr->name == NULL ) {
+      if (envptr->name == NULL) {
         /* Augh. Could we handle this any better? */
 	/* We can alternatively ignore the bookkeeping and leak the buffer
            - 20030205 larsa */
@@ -450,15 +451,15 @@ coin_setenv(const char * name, const char * value, int overwrite)
   struct envvar_data * envptr, * prevptr;
   envptr = envlist_head;
   prevptr = NULL;
-  while ( (envptr != NULL) && (strcmp(envptr->name, name) != 0) ) {
+  while ((envptr != NULL) && (strcmp(envptr->name, name) != 0)) {
     prevptr = envptr;
     envptr = envptr->next;
   }
-  if ( envptr ) {
+  if (envptr) {
     /* unlink node */
-    if ( prevptr ) prevptr->next = envptr->next;
+    if (prevptr) prevptr->next = envptr->next;
     else envlist_head = envptr->next;
-    if ( envlist_tail == envptr ) envlist_tail = prevptr;
+    if (envlist_tail == envptr) envlist_tail = prevptr;
     /* free node */
     free(envptr->name);
     free(envptr->val);
@@ -472,12 +473,12 @@ coin_setenv(const char * name, const char * value, int overwrite)
   sign (=), or foreign lowercase characters in the variable name.
   */
 
-  if ( overwrite || (GetEnvironmentVariable(name, NULL, 0) == 0) )
+  if (overwrite || (GetEnvironmentVariable(name, NULL, 0) == 0))
     return SetEnvironmentVariable(name, value) ? TRUE : FALSE;
   else
     return TRUE;
 #else /* !HAVE_GETENVIRONMENTVARIABLE */
-  if ( !getenv(name) || overwrite ) {
+  if (!getenv(name) || overwrite) {
     /* ugh - this looks like a mess, but things must be ordered very strictly */
 
     struct envvar_data * envptr, * prevptr;
@@ -487,24 +488,25 @@ coin_setenv(const char * name, const char * value, int overwrite)
     cc_string_construct(&str);
     cc_string_sprintf(&str, "%s=%s", name, value);
     strbuf = (char *) malloc(cc_string_length(&str)+1);
-    if ( strbuf ) strcpy(strbuf, cc_string_get_text(&str));
+    if (strbuf) strcpy(strbuf, cc_string_get_text(&str));
     cc_string_clean(&str);
-    if ( !strbuf ) {
+    if (!strbuf) {
       /* handle this better? */
       return FALSE;
     }
 
     envptr = envlist_head;
     len = strlen(name) + 1;
-    while ( envptr && strncmp(strbuf, envptr->string, len) != 0 )
+    while (envptr && strncmp(strbuf, envptr->string, len) != 0)
       envptr = envptr->next;
 
-    if ( envptr ) {
+    if (envptr) {
       oldbuf = envptr->string;
-    } else {
+    } 
+    else {
       oldbuf = NULL;
       envptr = (struct envvar_data *) malloc(sizeof(struct envvar_data));
-      if ( !envptr ) {
+      if (!envptr) {
         /* handle this better? */
         free(strbuf);
         return FALSE;
@@ -512,20 +514,22 @@ coin_setenv(const char * name, const char * value, int overwrite)
     }
     envptr->string = strbuf;
 
-    if ( putenv(envptr->string) == -1 ) { /* denied! */
-      if ( oldbuf ) {
+    if (putenv(envptr->string) == -1) { /* denied! */
+      if (oldbuf) {
 	/* we had old value - setting new didn't work, so we do a rollback and assume we
 	   still need to do bookkeeping of the old value */
 	free(envptr->string);
 	envptr->string = oldbuf;
 	return FALSE;
-      } else {
+      } 
+      else {
 	free(envptr->string);
 	free(envptr);
       }
       return FALSE;
-    } else {
-      if ( oldbuf ) free(oldbuf);
+    } 
+    else {
+      if (oldbuf) free(oldbuf);
       else envlist_append(envptr);
     }
   }
@@ -546,15 +550,15 @@ coin_unsetenv(const char * name)
   struct envvar_data * envptr, * prevptr;
   envptr = envlist_head;
   prevptr = NULL;
-  while ( (envptr != NULL) && (strcmp(envptr->name, name) != 0) ) {
+  while ((envptr != NULL) && (strcmp(envptr->name, name) != 0)) {
     prevptr = envptr;
     envptr = envptr->next;
   }
-  if ( envptr ) {
+  if (envptr) {
     /* unlink node */
-    if ( prevptr ) prevptr->next = envptr->next;
+    if (prevptr) prevptr->next = envptr->next;
     else envlist_head = envptr->next;
-    if ( envlist_tail == envptr ) envlist_tail = prevptr;
+    if (envlist_tail == envptr) envlist_tail = prevptr;
     /* free node */
     free(envptr->name);
     free(envptr->val);
@@ -573,14 +577,14 @@ coin_unsetenv(const char * name)
   prevptr = NULL;
   envptr = envlist_head;
   len = strlen(name);
-  while ( envptr && !((strncmp(name, envptr->string, len) == 0) && (envptr->string[len] == '=')) ) {
+  while (envptr && !((strncmp(name, envptr->string, len) == 0) && (envptr->string[len] == '='))) {
     prevptr = envptr;
     envptr = envptr->next;
   }
-  if ( envptr ) {
-    if ( prevptr ) prevptr->next = envptr->next;
+  if (envptr) {
+    if (prevptr) prevptr->next = envptr->next;
     else envlist_head = envptr->next;
-    if ( envptr == envlist_tail ) envlist_tail = prevptr;
+    if (envptr == envlist_tail) envlist_tail = prevptr;
     free(envptr->string);
     free(envptr);
   }
@@ -635,7 +639,7 @@ coin_host_get_endianness(void)
   temp.bytes[1] = 0x01;
   temp.bytes[2] = 0x02;
   temp.bytes[3] = 0x03;
-  switch ( temp.value ) {
+  switch (temp.value) {
   case 0x03020100: return COIN_HOST_IS_LITTLEENDIAN;
   case 0x00010203: return COIN_HOST_IS_BIGENDIAN;
   /* might be more variations here for some obscure CPU architectures */
@@ -657,9 +661,9 @@ coin_swap_16bit_word(uint8_t * block)
 uint16_t
 coin_hton_uint16(uint16_t value)
 {
-  if ( coin_endianness == COIN_HOST_IS_UNKNOWNENDIAN )
+  if (coin_endianness == COIN_HOST_IS_UNKNOWNENDIAN)
     coin_endianness = coin_host_get_endianness();
-  switch ( coin_endianness ) {
+  switch (coin_endianness) {
   case COIN_HOST_IS_BIGENDIAN:
     /* value = value */
     break;
@@ -695,9 +699,9 @@ coin_swap_32bit_word(uint8_t * block)
 uint32_t
 coin_hton_uint32(uint32_t value)
 {
-  if ( coin_endianness == COIN_HOST_IS_UNKNOWNENDIAN )
+  if (coin_endianness == COIN_HOST_IS_UNKNOWNENDIAN)
     coin_endianness = coin_host_get_endianness();
-  switch ( coin_endianness ) {
+  switch (coin_endianness) {
   case COIN_HOST_IS_BIGENDIAN:
     /* big-endian is the same order as network order */
     break;
@@ -719,9 +723,9 @@ coin_ntoh_uint32(uint32_t value)
 float
 coin_hton_float(float value)
 {
-  if ( coin_endianness == COIN_HOST_IS_UNKNOWNENDIAN )
+  if (coin_endianness == COIN_HOST_IS_UNKNOWNENDIAN)
     coin_endianness = coin_host_get_endianness();
-  switch ( coin_endianness ) {
+  switch (coin_endianness) {
   case COIN_HOST_IS_BIGENDIAN:
     /* big-endian is the same order as network order */
     break;
