@@ -28,7 +28,7 @@
     int32_t, uint32_t
 */
 
-#ifdef __GLIBC__
+#if defined(__GLIBC__) && !defined(__BEOS__)
   typedef u_int32_t uint32_t;
   typedef u_int16_t uint16_t;
 #else // ! __GLIBC__

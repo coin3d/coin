@@ -27,9 +27,9 @@
 #error "Configuration settings not respected, should not include this file!"
 #endif // COIN_EXCLUDE_SOSENSORMANAGER
 
-#ifdef _WIN32
+#if defined(_WIN32) || defined(__BEOS__)
 typedef struct fd_set fd_set;
-#endif //_WIN32
+#endif //_WIN32 || __BEOS__
 
 class SoDelayQueueSensor;
 class SoTimerQueueSensor;

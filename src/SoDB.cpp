@@ -794,7 +794,13 @@ SoDB::doSelect(int nfds, fd_set * readfds, fd_set * writefds,
   // TODO: need to do eventhandling for sensors etc. Check
   // SoSensorManager::doSelect(). Should we just call that method?
   // 19990425 mortene.
+
+#ifdef __BEOS__
+  assert(0 && "FIXME: suitable function not found in BeOS (yet)\n");
+  return 0;
+#else // !__BEOS__
   return select(nfds, readfds, writefds, exceptfds, userTimeOut);
+#endif // __BEOS__
 }
 
 /*!

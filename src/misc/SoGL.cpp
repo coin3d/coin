@@ -581,7 +581,7 @@ sogl_max_texture_size()
   // FIXME: move this code to a static method in
   // SoGLTextureImageElement? Not the case with OIV, but seems to be
   // better design. 19990405 mortene.
-  static int value = -1;
+  static GLint value = -1;
   if (value == -1) glGetIntegerv(GL_MAX_TEXTURE_SIZE, &value);
   return value;
 }

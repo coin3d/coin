@@ -28,15 +28,15 @@
 
 // FIXME: ugly -- this pucks up system-independence within the base
 // Coin library. What is this element used for anyway? 19990808 mortene.
-#ifdef _WIN32
+#if defined(_WIN32) || defined(__BEOS__)
 typedef void * Window;
 typedef void * GLXContext;
 typedef void Display;
-#else // ! _WIN32
+#else // ! _WIN32 && ! __BEOS__
 #include <X11/Xlib.h>
 #include <GL/gl.h>
 #include <GL/glx.h>
-#endif // !_WIN32
+#endif // _WIN32 || __BEOS__
 
 class SoGLRenderAction;
 

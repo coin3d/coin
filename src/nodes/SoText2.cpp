@@ -56,13 +56,13 @@
 #endif // COIN_DEBUG
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
-#ifdef _WIN32
+#if defined(_WIN32)
 #include <windows.h>
-#else // !_WIN32
+#elif !defined(__BEOS__)
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 #include <GL/glx.h>
-#endif // !_WIN32
+#endif // _WIN32 || __BEOS__
 #include <GL/gl.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
@@ -206,9 +206,9 @@ SoText2::cleanClass(void)
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 
-#ifdef _WIN32
+#if defined(_WIN32) || defined(__BEOS__)
 
-#else // !_WIN32
+#else // !_WIN32 && !__BEOS__
 
 static Display * d = NULL;
 
@@ -336,7 +336,7 @@ getGLList(SoGLRenderAction * action, XFontStruct *& fontstruct)
   }
 }
 
-#endif // !_WIN32
+#endif // _WIN32 || __BEOS__
 
 /*!
   FIXME: write function documentation
@@ -346,9 +346,9 @@ SoText2::GLRender(SoGLRenderAction * action)
 {
   if (!this->shouldGLRender(action)) return;
 
-#ifdef _WIN32
+#if defined(_WIN32) || defined(__BEOS__)
 
-#else // !_WIN32
+#else // !_WIN32 && !__BEOS__
   SoState * state = action->getState();
 
   XFontStruct * fontstruct;
@@ -445,7 +445,7 @@ SoText2::GLRender(SoGLRenderAction * action)
     glMatrixMode(GL_MODELVIEW);
     glPopMatrix();
   }
-#endif // !_WIN32
+#endif // _WIN32 || __BEOS__
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
