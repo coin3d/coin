@@ -93,6 +93,7 @@ EXTRA_DIST = \
 	packaging/macosx/CoinTools_Info.plist.in \
 	packaging/macosx/CoinTools_Welcome.rtfd/TXT.rtf \
 	packaging/macosx/inst-dmg-files/.DS_Store \
+	packaging/macosx/inst-dmg-files/.VolumeIcon.icns \
 	packaging/macosx/inst-dmg-files/background.png \
 	packaging/macosx/inst-dmg-files/Desktop_DB \
 	packaging/macosx/inst-dmg-files/Desktop_DF \
@@ -104,6 +105,7 @@ EXTRA_DIST = \
 	packaging/macosx/makeinstdmg.sh.in \
 	packaging/macosx/makenoinstdmg.sh.in \
 	packaging/macosx/noinst-dmg-files/.DS_Store \
+	packaging/macosx/noinst-dmg-files/.VolumeIcon.icns \
 	packaging/macosx/noinst-dmg-files/background.png \
 	packaging/macosx/noinst-dmg-files/Desktop_DB \
 	packaging/macosx/noinst-dmg-files/Desktop_DF \
