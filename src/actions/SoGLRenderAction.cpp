@@ -578,7 +578,6 @@ SoGLRenderAction::beginTraversal(SoNode * node)
                              SbVec2f(0.0f, 0.0f), SbVec2f(1.0f, 1.0f));
 
   inherited::beginTraversal(node);
-  this->getState()->pop();
 
   if (this->didHaveTransparent && !this->sortRender) {
     if (this->transType == DELAYED_BLEND ||
@@ -610,6 +609,7 @@ SoGLRenderAction::beginTraversal(SoNode * node)
       if (usedepthbuffer) glEnable(GL_DEPTH_TEST);
     }
   }
+  this->getState()->pop();
 }
 
 void
