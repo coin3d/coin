@@ -166,7 +166,8 @@ Section 1. Extensions and Ports
 
 Q1.1:   Are there plans for making Coin multi-thread safe?
 
-A:      Yes.  The wheels are in motion on this one.  
+A:      Yes.  The wheels are in motion on this one.  It is probably not going
+        to happen in the Coin 1.* branch though.
 
 
 Q1.2:   Can Coin do multi-pipe rendering?
@@ -191,9 +192,10 @@ A:      There are no volume rendering extensions for Coin yet.  Support for
 
 Q1.4:   Does Coin support VRML97?
 
-A:      Coin does not support VRML97 currently, but support is planned for
-        Coin v2.0.  The development repository for Coin will probably contain
-        VRML97 support code in not too long.
+A:      Coin 1.* does not support VRML97.  Coin 2.0 and upwards will support
+        it.  The development repository for Coin already contains code for a
+        great deal of the VRML97 standard.  It is not 100% complete yet
+        though.
 
 
 Q1.5:   Is there an MS Visual C++ project I can use to build Coin?
