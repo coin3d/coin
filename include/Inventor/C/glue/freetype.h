@@ -192,12 +192,12 @@ typedef struct FT_GlyphRec_ {
 } FT_GlyphRec;
 
 typedef struct {
-  short       n_contours;
-  short       n_points;
+  short n_contours;
+  short n_points;
   FT_Vector * points;
-  char *      tags;
-  short *     contours;
-  int         flags;
+  char * tags;
+  short * contours;
+  int flags;
 } FT_Outline;
 
 typedef struct {
@@ -288,8 +288,8 @@ typedef struct  FT_Outline_Funcs_ {
 
 typedef struct  FT_OutlineGlyphRec_
 {
-  FT_GlyphRec  root;
-  FT_Outline   outline;
+  FT_GlyphRec root;
+  FT_Outline outline;
   
 } FT_OutlineGlyphRec;
 
