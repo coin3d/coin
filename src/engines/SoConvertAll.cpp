@@ -78,9 +78,48 @@ SoEngineOutputData * SoConvertAll::outputdata = (SoEngineOutputData *)0x1;
 const SoFieldData ** SoConvertAll::getInputDataPtr(void) { return NULL; }
 const SoEngineOutputData ** SoConvertAll::getOutputDataPtr(void) { return NULL; }
 
+#define SOCONVERTALL_SINGLE2SINGLE_VEC3(_fromto_, _from_, _to_, _fromtype_, _totype_) \
+static void _fromto_(SoField * from, SoField * to) { \
+  _fromtype_ val(((_from_ *) from)->getValue()); \
+  ((_to_ *) to)->setValue(_totype_(val[0], val[1], val[2])); \
+}
+
+#define SOCONVERTALL_SINGLE2MULTI_VEC3(_fromto_, _from_, _to_, _fromtype_, _totype_) \
+static void _fromto_(SoField * from, SoField * to) { \
+  _fromtype_ val(((_from_ *) from)->getValue()); \
+  ((_to_ *) to)->setValue(_totype_(val[0], val[1], val[2])); \
+}
+
+#define SOCONVERTALL_MULTI2SINGLE_VEC3(_fromto_, _from_, _to_, _fromtype_, _totype_) \
+static void _fromto_(SoField * from, SoField * to) { \
+  _fromtype_ val(((_from_ *) from)->operator[](0)); \
+  ((_to_ *) to)->setValue(_totype_(val[0], val[1], val[2])); \
+}
+
+#define SOCONVERTALL_MULTI2MULTI_VEC3(_fromto_, _from_, _to_, _fromtype_, _totype_) \
+static void _fromto_(SoField * from, SoField * to) { \
+  const int num = ((_from_ *) from)->getNum(); \
+  for ( int i = 0; i < num; i++ ) { \
+    _fromtype_ val(((_from_ *) from)->operator[](i)); \
+    ((_to_ *) to)->set1Value(i, _totype_(val[0], val[1], val[2])); \
+  } \
+}
+
+SOCONVERTALL_SINGLE2SINGLE_VEC3(SoSFVec3f_to_SoSFVec3d, SoSFVec3f, SoSFVec3d, SbVec3f, SbVec3d);
+SOCONVERTALL_SINGLE2SINGLE_VEC3(SoSFVec3d_to_SoSFVec3f, SoSFVec3d, SoSFVec3f, SbVec3d, SbVec3f);
+SOCONVERTALL_SINGLE2MULTI_VEC3(SoSFVec3f_to_SoMFVec3d, SoSFVec3f, SoMFVec3d, SbVec3f, SbVec3d);
+SOCONVERTALL_SINGLE2MULTI_VEC3(SoSFVec3d_to_SoMFVec3f, SoSFVec3d, SoMFVec3f, SbVec3d, SbVec3f);
+SOCONVERTALL_MULTI2SINGLE_VEC3(SoMFVec3f_to_SoSFVec3d, SoMFVec3f, SoSFVec3d, SbVec3f, SbVec3d);
+SOCONVERTALL_MULTI2SINGLE_VEC3(SoMFVec3d_to_SoSFVec3f, SoMFVec3d, SoSFVec3f, SbVec3d, SbVec3f);
+SOCONVERTALL_MULTI2MULTI_VEC3(SoMFVec3f_to_SoMFVec3d, SoMFVec3f, SoMFVec3d, SbVec3f, SbVec3d);
+SOCONVERTALL_MULTI2MULTI_VEC3(SoMFVec3d_to_SoMFVec3f, SoMFVec3d, SoMFVec3f, SbVec3d, SbVec3f);
 
 
-
+// static void
+// SoSFVec3f_to_SoMFVec3d(SoField * from, SoField * to) {
+//   SbVec3f val(((SoSFVec3f *) from)->getValue());
+//   ((SoMFVec3d *)to)->setValue(SbVec3d(val[0], val[1], val[2]));
+// }
 
 
 // Defines function for converting SoSFXXX -> SoMFXXX.
@@ -139,6 +178,8 @@ SOCONVERTALL_SINGLE2MULTI(SoSFVec3f_SoMFVec3f, SoSFVec3f, SoMFVec3f);
 SOCONVERTALL_MULTI2SINGLE(SoMFVec3f_SoSFVec3f, SoMFVec3f, SoSFVec3f);
 SOCONVERTALL_SINGLE2MULTI(SoSFVec4f_SoMFVec4f, SoSFVec4f, SoMFVec4f);
 SOCONVERTALL_MULTI2SINGLE(SoMFVec4f_SoSFVec4f, SoMFVec4f, SoSFVec4f);
+SOCONVERTALL_SINGLE2MULTI(SoSFVec3d_SoMFVec3d, SoSFVec3d, SoMFVec3d);
+SOCONVERTALL_MULTI2SINGLE(SoMFVec3d_SoSFVec3d, SoMFVec3d, SoSFVec3d);
 
 #undef SOCONVERTALL_SINGLE2MULTI
 #undef SOCONVERTALL_MULTI2SINGLE
@@ -278,7 +319,6 @@ static void _fromto_(SoField * from, SoField * to) \
   if (((_from_ *)from)->getNum() > 0) \
     ((_to_ *)to)->setValue((_tobase_)((*((_from_ *)from))[0])); \
 }
-
 
 SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFBool_SoSFFloat, SoMFBool, SoSFFloat, float);
 SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFFloat_SoSFBool, SoMFFloat, SoSFBool, SbBool);
@@ -582,6 +622,8 @@ SoConvertAll::initClass(void)
   SOCONVERTALL_ADDCONVERTER(SoMFVec3f_SoSFVec3f, SoMFVec3f, SoSFVec3f);
   SOCONVERTALL_ADDCONVERTER(SoSFVec4f_SoMFVec4f, SoSFVec4f, SoMFVec4f);
   SOCONVERTALL_ADDCONVERTER(SoMFVec4f_SoSFVec4f, SoMFVec4f, SoSFVec4f);
+  SOCONVERTALL_ADDCONVERTER(SoSFVec3d_SoMFVec3d, SoSFVec3d, SoMFVec3d);
+  SOCONVERTALL_ADDCONVERTER(SoMFVec3d_SoSFVec3d, SoMFVec3d, SoSFVec3d);
 
   SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFBitMask, SoSFString);
   SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFBool, SoSFString);
@@ -619,6 +661,7 @@ SoConvertAll::initClass(void)
   SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFVec2f, SoSFString);
   SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFVec3f, SoSFString);
   SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFVec4f, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFVec3d, SoSFString);
   SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFBitMask, SoMFString);
   SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFBool, SoMFString);
   SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFColor, SoMFString);
@@ -637,6 +680,7 @@ SoConvertAll::initClass(void)
   SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFVec2f, SoMFString);
   SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFVec3f, SoMFString);
   SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFVec4f, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFVec3d, SoMFString);
   SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFBitMask, SoMFString);
   SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFBool, SoMFString);
   SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFColor, SoMFString);
@@ -655,6 +699,7 @@ SoConvertAll::initClass(void)
   SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFVec2f, SoMFString);
   SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFVec3f, SoMFString);
   SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFVec4f, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFVec3d, SoMFString);
 
   SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFBitMask);
   SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFBool);
@@ -694,6 +739,7 @@ SoConvertAll::initClass(void)
   SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFVec2f);
   SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFVec3f);
   SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFVec4f);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFVec3d);
 
   SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFBitMask);
   SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFBool);
@@ -714,6 +760,7 @@ SoConvertAll::initClass(void)
   SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFVec2f);
   SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFVec3f);
   SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFVec4f);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFVec3d);
   SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFBitMask);
   SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFBool);
   SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFColor);
@@ -733,6 +780,7 @@ SoConvertAll::initClass(void)
   SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFVec2f);
   SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFVec3f);
   SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFVec4f);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFVec3d);
 
   SOCONVERTALL_ADDCONVERTER(SoSFBool_SoSFFloat, SoSFBool, SoSFFloat);
   SOCONVERTALL_ADDCONVERTER(SoSFBool_SoMFFloat, SoSFBool, SoMFFloat);
@@ -887,6 +935,14 @@ SoConvertAll::initClass(void)
   SOCONVERTALL_ADDCONVERTER(mftime_to_sfstring, SoMFTime, SoSFString);
   SOCONVERTALL_ADDCONVERTER(mftime_to_mfstring, SoMFTime, SoMFString);
 
+  SOCONVERTALL_ADDCONVERTER(SoSFVec3f_to_SoSFVec3d, SoSFVec3f, SoSFVec3d);
+  SOCONVERTALL_ADDCONVERTER(SoSFVec3f_to_SoMFVec3d, SoSFVec3f, SoMFVec3d);
+  SOCONVERTALL_ADDCONVERTER(SoMFVec3f_to_SoSFVec3d, SoMFVec3f, SoSFVec3d);
+  SOCONVERTALL_ADDCONVERTER(SoMFVec3f_to_SoMFVec3d, SoMFVec3f, SoMFVec3d);
+  SOCONVERTALL_ADDCONVERTER(SoSFVec3d_to_SoSFVec3f, SoSFVec3d, SoSFVec3f);
+  SOCONVERTALL_ADDCONVERTER(SoSFVec3d_to_SoMFVec3f, SoSFVec3d, SoMFVec3f);
+  SOCONVERTALL_ADDCONVERTER(SoMFVec3d_to_SoSFVec3f, SoMFVec3d, SoSFVec3f);
+  SOCONVERTALL_ADDCONVERTER(SoMFVec3d_to_SoMFVec3f, SoMFVec3d, SoMFVec3f);
 #undef SOCONVERTALL_ADDCONVERTER
 
   // Now add conversion to and from SoSFTrigger for all other
