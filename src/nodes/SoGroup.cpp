@@ -97,9 +97,12 @@ SoGroup::~SoGroup()
 
 /*!
   Returns pointer to child node at \a index.
+
+  Please note that this method is not virtual in the original SGI
+  Inventor API.  
 */
 SoNode *
-SoGroup::getChild(const int index) const
+SoGroup::getChild(int index) const
 {
   assert((index >= 0) && (index < this->getNumChildren()));
   
@@ -108,6 +111,9 @@ SoGroup::getChild(const int index) const
 
 /*!
   Returns number of child nodes managed by this group.
+
+  Please note that this method is not virtual in the original SGI
+  Inventor API.  
 */
 int
 SoGroup::getNumChildren(void) const
@@ -209,9 +215,12 @@ SoGroup::copyContents(const SoFieldContainer * from, SbBool copyconnections)
 /*!
   Append a child \a node to the list of children nodes this group node
   is managing.
+
+  Please note that this method is not virtual in the original SGI
+  Inventor API.  
 */
 void
-SoGroup::addChild(SoNode * const node)
+SoGroup::addChild(SoNode * node)
 {
   assert(node != NULL);
   this->getChildren()->append(node);
@@ -219,9 +228,12 @@ SoGroup::addChild(SoNode * const node)
 
 /*!
   Insert a \a child node at position \a newchildindex.
+
+  Please note that this method is not virtual in the original SGI
+  Inventor API.  
 */
 void
-SoGroup::insertChild(SoNode * const child, const int newchildindex)
+SoGroup::insertChild(SoNode * child, int newchildindex)
 {
 #if COIN_DEBUG
   if (newchildindex < 0 || newchildindex > this->getNumChildren()) {
@@ -236,9 +248,12 @@ SoGroup::insertChild(SoNode * const child, const int newchildindex)
 
 /*!
   Remove node at \a childindex in our list of children.
+
+  Please note that this method is not virtual in the original SGI
+  Inventor API.  
 */
 void
-SoGroup::removeChild(const int childindex)
+SoGroup::removeChild(int childindex)
 {
 #if COIN_DEBUG
   if (childindex < 0 || childindex >= this->getNumChildren()) {
@@ -254,9 +269,12 @@ SoGroup::removeChild(const int childindex)
 /*!
   Returns index in our list of children for child \a node, or -1 if \a
   node is not a child of this group node.
+
+  Please note that this method is not virtual in the original SGI
+  Inventor API.  
 */
 int
-SoGroup::findChild(const SoNode * const node) const
+SoGroup::findChild(const SoNode * node) const
 {
   return this->getChildren()->find((SoNode *) node);
 }
@@ -440,9 +458,16 @@ SoGroup::getChildren(void) const
 /*!
   Remove \a child from the set of children managed by this group node.
   Will decrease the reference count of \a child by 1.
+
+  This is a convenience method. It will simply call findChild() with
+  \a child as argument, and then call removeChild(int) if the child is
+  found.
+
+  Please note that this method is not virtual in the original SGI
+  Inventor API.  
 */
 void
-SoGroup::removeChild(SoNode * const child)
+SoGroup::removeChild(SoNode * child)
 {
   int idx = this->findChild(child);
   
@@ -462,6 +487,9 @@ SoGroup::removeChild(SoNode * const child)
 /*!
   Do not manage the children anymore. Will dereference all children by
   1 as they are removed.
+
+  Please note that this method is not virtual in the original SGI
+  Inventor API.
 */
 void
 SoGroup::removeAllChildren(void)
@@ -474,9 +502,12 @@ SoGroup::removeAllChildren(void)
 
   Dereferences the child previously at \a index, and increases the
   reference count of \a newChild by 1.
+
+  Please note that this method is not virtual in the original SGI
+  Inventor API.  
 */
 void
-SoGroup::replaceChild(const int index, SoNode * const newchild)
+SoGroup::replaceChild(int index, SoNode * newchild)
 {
   // Note: its imperative that we use set() here, and not a
   // remove+insert pair of calls as that would puck up SoChildList
@@ -489,9 +520,16 @@ SoGroup::replaceChild(const int index, SoNode * const newchild)
 
   Dereferences \a oldchild by 1, and increases the reference count of
   \a newchild by 1.
+
+  This is a convenience method. It will simply call findChild() with
+  \a oldchild as argument, and call replaceChild(int, SoNode*) if the
+  child is found.
+
+  Please note that this method is not virtual in the original SGI
+  Inventor API.
 */
 void
-SoGroup::replaceChild(SoNode * const oldchild, SoNode * const newchild)
+SoGroup::replaceChild(SoNode * oldchild, SoNode * newchild)
 {
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoGroup::replaceChild",

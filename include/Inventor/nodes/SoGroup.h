@@ -5,7 +5,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -36,17 +36,17 @@ public:
   SoGroup(void);
 
   SoGroup(int nchildren);
-
-  void addChild(SoNode * const node);
-  void insertChild(SoNode * const child, const int newchildindex);
-  SoNode * getChild(const int index) const;
-  int findChild(const SoNode * const node) const;
-  int getNumChildren(void) const;
-  void removeChild(const int childindex);
-  void removeChild(SoNode * const child);
-  void removeAllChildren(void);
-  void replaceChild(const int index, SoNode * const newchild);
-  void replaceChild(SoNode * const oldchild, SoNode * const newchild);
+ 
+  virtual void addChild(SoNode * node);
+  virtual void insertChild(SoNode * child, int newchildindex);
+  virtual SoNode * getChild(int index) const;
+  virtual int findChild(const SoNode * node) const;
+  virtual int getNumChildren(void) const;
+  virtual void removeChild(int childindex);
+  virtual void removeChild(SoNode * child);
+  virtual void removeAllChildren(void);
+  virtual void replaceChild(int index, SoNode * newchild);
+  virtual void replaceChild(SoNode * oldchild, SoNode * newchild);
 
   virtual void doAction(SoAction * action);
   virtual void GLRender(SoGLRenderAction * action);
