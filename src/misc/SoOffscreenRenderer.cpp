@@ -34,7 +34,9 @@
  */
 
 #include <Inventor/SoOffscreenRenderer.h>
+#include <Inventor/SoPath.h>
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/nodes/SoNode.h>
 #include <GL/gl.h>
 #include <assert.h>
 #include <string.h> // memset()
@@ -44,105 +46,6 @@
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
-
-
-// FIXME: GLX offscreen rendering code below, ripped out from our good
-// old KartSim project. Integrate in the class source. 20000417 mortene.
-
-//      Display *dsp = XtDisplay(psGUI::glMap);
-//      int attribs[] = {GLX_RGBA, None};
-
-//      // Set up an off-screen GL pixmap for rendering the overview map w/
-//      // pipelines.
-//      XVisualInfo *visinfo = glXChooseVisual(dsp, DefaultScreen(dsp), attribs);
-//      if(!visinfo) Debug::Info(dbMISC, dbFATAL, "Can't get visual info.");
-//      Pixmap pixmap = XCreatePixmap(dsp, XtWindow(psGUI::glMap),
-//  				  psGUI::mapwidth, psGUI::mapheight,
-//  				  visinfo->depth);
-//      if(!pixmap) Debug::Info(dbMISC, dbFATAL, "Can't get X pixmap.");
-//      GLXPixmap glpixmap = glXCreateGLXPixmap(dsp, visinfo, pixmap);
-//      if(!glpixmap) Debug::Info(dbMISC, dbFATAL, "Can't get GL pixmap.");
-//      GLXContext context = glXCreateContext(dsp, visinfo, 0, GL_FALSE);
-//      if(!context) Debug::Info(dbDATABASE, dbFATAL, "Found no usable context.");
-
-//      // Set current GL context to the glpixmap.
-//      glXMakeCurrent(dsp, glpixmap, context);
-
-//      glMatrixMode(GL_PROJECTION);
-//      glLoadIdentity();
-//      glMatrixMode(GL_MODELVIEW);
-//      glLoadIdentity();
-//      glOrtho(0, psGUI::mapwidth, 0, psGUI::mapheight, -1, 1);
-
-//      // Draw whole map.
-//      glRasterPos2i(0, 0);
-//      glDrawPixels(psGUI::mapwidth, psGUI::mapheight, GL_RGBA, GL_UNSIGNED_BYTE,
-//  		 psGUI::mapbuffer);
-
-//      // Draw lines to indicate pipes.
-//      int r, g, b;
-//      struct polypipes *polyrunner;
-//      struct GUI_markerobject *h = psGUI::pipelist;
-//      while(h) {
-//        ((psPipes *)(h->obj))->psGetPipecolor(r, g, b);
-//        glColor3b(r>>1, g>>1, b>>1);
-//        glLineWidth(1.0);
-
-//        psGUI::drawpipepieces(((psPipes *)(h->obj))->psGetPieceshead(), FALSE);
-
-//        polyrunner = ((psPipes *)(h->obj))->psGetPolyhead();
-//        while(polyrunner) {
-//  	psGUI::drawpipepieces(polyrunner->first, TRUE);
-//  	polyrunner = polyrunner->next;
-//        }
-
-//        h = h->next;
-//      }
-
-//      // Allocate the mapbuffer.
-//      psGUI::mappipebuffer =
-//        new unsigned char[psGUI::mapwidth*psGUI::mapheight*4];
-
-//      glPixelStorei(GL_PACK_ALIGNMENT, 1);
-//      glReadPixels(0, 0, psGUI::mapwidth, psGUI::mapheight,
-//  		 GL_RGBA, GL_UNSIGNED_BYTE, psGUI::mappipebuffer);
-
-//      // Use mappipebuffer from app start.
-//      psGUI::drawbuffer = psGUI::mappipebuffer;
-
-//      // Set current GL context to the 2D map drawing area's.
-//      glXMakeCurrent(dsp, XtWindow(psGUI::glMap), glxcontext); 
-
-//      glMatrixMode(GL_PROJECTION);
-//      glLoadIdentity();
-//      glMatrixMode(GL_MODELVIEW);
-//      glLoadIdentity();
-//      glOrtho(0, psGUI::mapwidth, 0, psGUI::mapheight, -1, 1);
-
-//      // Draw map with pipes.
-//      glRasterPos2i(0, 0);
-//      glDrawPixels(psGUI::mapwidth, psGUI::mapheight, GL_RGBA, GL_UNSIGNED_BYTE,
-//  		 psGUI::drawbuffer);
-
-//      // Draw all 2D markers.
-//      struct GUI_structlist *runner = psGUI::mo_head;
-//      psGUI::setTransState();
-//      while(runner) {
-//        psGUI::drawmarker(runner->GUI_struct);
-//        runner = runner->next;
-//      }
-//      psGUI::resetState();
-
-//      // Reset the context to the one used by the 3D Performer window.
-//      glXMakeCurrent(pfGetCurWSConnection(),
-//  		   perf::shmem->xWinInfo.pw->getCurWSDrawable(),
-//  		   perf::shmem->xWinInfo.pw->getGLCxt());
-
-//      // Free resources used for the generation of map-w/pipes gfx.
-//      glXDestroyContext(dsp, context);
-//      glXDestroyGLXPixmap(dsp, glpixmap);
-//      XFreePixmap(dsp, pixmap);
-
 
 
 #ifndef DOXYGEN_SKIP_THIS // Don't document internal classes.
@@ -155,9 +58,12 @@ public:
   virtual ~SoOffscreenInternalData() {
   }
 
-  // must be overloaded
-  virtual void makeContextCurrent(void) = 0;
+  // Return FALSE if the necessary resource for rendering are not
+  // available.
+  virtual SbBool makeContextCurrent(void) = 0;
+
   virtual unsigned char * getBuffer(void) = 0;
+
 
   virtual void setBufferSize(const SbVec2s & size) {
     SbVec2s maxsize = SoOffscreenRenderer::getMaximumResolution();
@@ -196,6 +102,10 @@ public:
     return this->buffersize;
   }
 
+  // Will be called right after a render operation has taken
+  // place. Default method does nothing.
+  virtual void postRender(void) { }
+
 protected:
   SbVec2s buffersize;
 };
@@ -207,12 +117,10 @@ class SoOffscreenMesaData : public SoOffscreenInternalData {
 public:
   SoOffscreenMesaData(void) {
     this->context = OSMesaCreateContext(OSMESA_RGBA, NULL);
-#if COIN_DEBUG
     if (!this->context) {
       SoDebugError::postWarning("SoOffscreenMesaData::SoOffscreenMesaData",
                                 "couldn't create context");
     }
-#endif // COIN_DEBUG
     this->buffer = NULL;
   }
   virtual ~SoOffscreenMesaData() {
@@ -227,14 +135,16 @@ public:
       new unsigned char[this->buffersize[0] * this->buffersize[1] * 4];
   }
 
-  virtual void makeContextCurrent(void) {
+  virtual SbBool makeContextCurrent(void) {
     assert(this->buffer);
     if (this->context) {
       OSMesaMakeCurrent(this->context, this->buffer,
                         GL_UNSIGNED_BYTE,
                         this->buffersize[0],
                         this->buffersize[1]);
+      return TRUE;
     }
+    return FALSE;
   }
 
   virtual unsigned char * getBuffer(void) {
@@ -247,6 +157,117 @@ private:
 };
 
 #endif // HAVE_OSMESACREATECONTEXT
+
+
+#if HAVE_GLX
+#include <GL/glx.h>
+
+class SoOffscreenGLXData : public SoOffscreenInternalData {
+public:
+  SoOffscreenGLXData(void)
+    // set everything to NULL first to gracefully handle error conditions
+    : display(NULL), visinfo(NULL), context(NULL), pixmap(0), glxpixmap(0)
+  {
+    this->buffer = NULL;
+
+    this->display = XOpenDisplay(NULL);
+    if (!this->display) {
+      SoDebugError::postWarning("SoOffscreenGLXData::SoOffscreenGLXData",
+                                "Couldn't connect to X11 DISPLAY.");
+      return;
+    }
+
+    int attribs[] = { GLX_RGBA, None };
+    this->visinfo = glXChooseVisual(this->display,
+                                    DefaultScreen(this->display),
+                                    attribs);
+    if (!this->visinfo) {
+      SoDebugError::postWarning("SoOffscreenGLXData::SoOffscreenGLXData",
+                                "Couldn't get RGBA X11 visual.");
+      return;
+    }
+    
+    this->context = glXCreateContext(this->display, this->visinfo,
+                                     0, GL_FALSE);
+    if (!this->context) {
+      SoDebugError::postWarning("SoOffscreenGLXData::SoOffscreenGLXData",
+                                "Couldn't create GLX context.");
+    }
+  }
+
+  virtual ~SoOffscreenGLXData() {
+    if (this->context) glXDestroyContext(this->display, this->context);
+    if (this->glxpixmap) glXDestroyGLXPixmap(this->display, this->glxpixmap);
+    if (this->pixmap) XFreePixmap(this->display, this->pixmap);
+    if (this->display) XCloseDisplay(this->display);
+    
+    delete this->buffer;
+  }
+  
+  virtual void setBufferSize(const SbVec2s & size) {
+    SoOffscreenInternalData::setBufferSize(size);
+    
+    delete this->buffer;
+    this->buffer =
+      new unsigned char[this->buffersize[0] * this->buffersize[1] * 4];
+    
+    if (this->pixmap) XFreePixmap(this->display, this->pixmap);
+    if (this->glxpixmap) glXDestroyGLXPixmap(this->display, this->glxpixmap);
+    
+    if (this->context) {
+      this->pixmap = XCreatePixmap(this->display,
+                                   DefaultRootWindow(this->display),
+                                   size[0], size[1],
+                                   this->visinfo->depth);
+      if (!this->pixmap) {
+        SoDebugError::postWarning("SoOffscreenGLXData::SoOffscreenGLXData",
+                                  "Couldn't create %dx%dx%d Pixmap.");
+      }
+      else {
+        this->glxpixmap = glXCreateGLXPixmap(this->display, this->visinfo,
+                                             this->pixmap);
+        if (!this->glxpixmap) {
+          SoDebugError::postWarning("SoOffscreenGLXData::SoOffscreenGLXData",
+                                    "Couldn't create GLX Pixmap.");
+        }
+      }
+      
+    }
+  }
+
+  virtual SbBool makeContextCurrent(void) {
+    assert(this->buffer);
+    if (this->context && this->glxpixmap) {
+      glXMakeCurrent(this->display, this->glxpixmap, this->context);
+      return TRUE;
+    }
+    return FALSE;
+  }
+
+  virtual unsigned char * getBuffer(void) {
+    return this->buffer;
+  }
+
+  virtual void postRender(void) {
+    SbVec2s size = this->getSize();
+
+    if (this->context && this->buffer) {
+      glPixelStorei(GL_PACK_ALIGNMENT, 1);
+      glReadPixels(0, 0, size[0], size[1], GL_RGBA, GL_UNSIGNED_BYTE,
+                   this->buffer);
+    }
+  }
+
+private:
+  unsigned char * buffer;
+  Display * display;
+  XVisualInfo * visinfo;
+  GLXContext context;
+  Pixmap pixmap;
+  GLXPixmap glxpixmap;
+};
+
+#endif // HAVE_GLX
 
 #endif // DOXYGEN_SKIP_THIS
 
@@ -265,7 +286,9 @@ SoOffscreenRenderer::SoOffscreenRenderer(const SbViewportRegion & viewportregion
 {
 #if HAVE_OSMESACREATECONTEXT
   this->internaldata = new SoOffscreenMesaData();
-#endif // HAVE_OSMESACREATECONTEXT
+#elif HAVE_GLX
+  this->internaldata = new SoOffscreenGLXData();
+#endif // HAVE_GLX
   this->setViewportRegion(viewportregion);
 }
 
@@ -284,7 +307,9 @@ SoOffscreenRenderer::SoOffscreenRenderer(SoGLRenderAction * action)
 {
 #if HAVE_OSMESACREATECONTEXT
   this->internaldata = new SoOffscreenMesaData();
-#endif // HAVE_OSMESACREATECONTEXT
+#elif HAVE_GLX
+  this->internaldata = new SoOffscreenGLXData();
+#endif // HAVE_GLX
   assert(action);
   this->setViewportRegion(action->getViewportRegion());
 }
@@ -341,7 +366,14 @@ SoOffscreenRenderer::getMaximumResolution(void)
   dims[1] = SbMin(dims[1], 32767);
 
   return SbVec2s((short)dims[0], (short)dims[1]);
-#endif // HAVE_OSMESACREATECONTEXT
+
+#elif HAVE_GLX
+
+  // FIXME: where can we get hold of the _real_ max values for Pixmap
+  // and/or GLXPixmap? 20000417 mortene.
+  return SbVec2s(32767, 32767);
+
+#endif // HAVE_GLX
 
   return SbVec2s(1280, 1024);
 }
@@ -354,6 +386,10 @@ void
 SoOffscreenRenderer::setComponents(const Components components)
 {
   // FIXME: create support for other image formats, pederb 20000109
+
+  // FIXME: should eventually default to 3-component RGB
+  // format. 20000417 mortene.
+
   if (components != RGB_TRANSPARENCY) {
     COIN_STUB();
     return;
@@ -434,23 +470,36 @@ SoOffscreenRenderer::getGLRenderAction(void) const
   return this->renderaction;
 }
 
+// Collects common code from the two render() functions.
+SbBool
+SoOffscreenRenderer::renderFromBase(SoBase * base)
+{
+  if (this->internaldata && this->internaldata->makeContextCurrent()) {
+    glClearColor(this->backgroundcolor[0],
+                 this->backgroundcolor[1],
+                 this->backgroundcolor[2],
+                 0.0f);
+    glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
+
+    if (base->isOfType(SoNode::getClassTypeId()))
+      this->renderaction->apply((SoNode *)base);
+    else if (base->isOfType(SoPath::getClassTypeId()))
+      this->renderaction->apply((SoPath *)base);
+    else assert(FALSE && "impossible");
+
+    this->internaldata->postRender();
+    return TRUE;
+  }
+  return FALSE;
+}
+
 /*!
   Render \a scene into our internal memory buffer.
 */
 SbBool
 SoOffscreenRenderer::render(SoNode * scene)
 {
-  if (this->internaldata) {
-    this->internaldata->makeContextCurrent();
-    glClearColor(this->backgroundcolor[0],
-                 this->backgroundcolor[1],
-                 this->backgroundcolor[2],
-                 0.0f);
-    glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
-    this->renderaction->apply(scene);
-    return TRUE;
-  }
-  return FALSE;
+  return this->renderFromBase(scene);
 }
 
 /*!
@@ -459,18 +508,7 @@ SoOffscreenRenderer::render(SoNode * scene)
 SbBool
 SoOffscreenRenderer::render(SoPath * scene)
 {
-  if (this->internaldata) {
-    this->internaldata->makeContextCurrent();
-    this->internaldata->makeContextCurrent();
-    glClearColor(this->backgroundcolor[0],
-                 this->backgroundcolor[1],
-                 this->backgroundcolor[2],
-                 0.0f);
-    glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
-    this->renderaction->apply(scene);
-    return TRUE;
-  }
-  return FALSE;
+  return this->renderFromBase(scene);
 }
 
 /*!

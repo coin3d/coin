@@ -24,9 +24,10 @@
 #include <Inventor/SbColor.h>
 #include <stdio.h>
 
+class SoBase;
 class SoGLRenderAction;
-class SoPath;
 class SoNode;
+class SoPath;
 
 
 class SoOffscreenRenderer {
@@ -61,6 +62,8 @@ public:
   SbBool writeToPostScript(FILE * fp, const SbVec2f & printsize) const;
 
 private:
+  SbBool renderFromBase(SoBase * base);
+
   SbViewportRegion viewport;
   SbColor backgroundcolor;
   Components components;
