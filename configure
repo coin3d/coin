@@ -20927,6 +20927,8 @@ main ()
   uint32_t uint32var;
   int64_t int64var;
   uint64_t uint64var;
+  intptr_t intptrvar;
+  uintptr_t uintptrvar;
 
   ;
   return 0;
@@ -21037,125 +21039,37 @@ cat >>confdefs.h <<_ACEOF
 _ACEOF
 
 
+cat >>confdefs.h <<_ACEOF
+#define HAVE_INTPTR_T 1
+_ACEOF
+
+
+cat >>confdefs.h <<_ACEOF
+#define COIN_INTPTR_T intptr_t
+_ACEOF
+
+
+cat >>confdefs.h <<_ACEOF
+#define HAVE_UINTPTR_T 1
+_ACEOF
+
+
+cat >>confdefs.h <<_ACEOF
+#define COIN_UINTPTR_T uintptr_t
+_ACEOF
+
+
+
 else
   echo "$as_me:$LINENO: result: not available" >&5
 echo "${ECHO_T}not available" >&6
 
-sim_ac_searching=true
+  sim_ac_searching=true
+echo "$as_me:$LINENO: checking for int8_t type or equivalent" >&5
+echo $ECHO_N "checking for int8_t type or equivalent... $ECHO_C" >&6
 for sim_ac_type in int8_t char
 do
   if $sim_ac_searching; then
-
-as_ac_Type=`echo "ac_cv_type_$sim_ac_type" | $as_tr_sh`
-echo "$as_me:$LINENO: checking for $sim_ac_type" >&5
-echo $ECHO_N "checking for $sim_ac_type... $ECHO_C" >&6
-if eval "test \"\${$as_ac_Type+set}\" = set"; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-if (($sim_ac_type *) 0)
-  return 0;
-if (sizeof ($sim_ac_type))
-  return 0;
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  eval "$as_ac_Type=yes"
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-eval "$as_ac_Type=no"
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-fi
-echo "$as_me:$LINENO: result: `eval echo '${'$as_ac_Type'}'`" >&5
-echo "${ECHO_T}`eval echo '${'$as_ac_Type'}'`" >&6
-if test `eval echo '${'$as_ac_Type'}'` = yes; then
-
-  if test "$cross_compiling" = yes; then
-  # Depending upon the size, compute the lo and hi bounds.
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) >= 0)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_lo=0 ac_mid=0
-  while :; do
     cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
 /* confdefs.h.  */
@@ -21176,446 +21090,80 @@ cat >>conftest.$ac_ext <<_ACEOF
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
 
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) <= $ac_mid)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_hi=$ac_mid; break
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_lo=`expr $ac_mid + 1`
-                    if test $ac_lo -le $ac_mid; then
-                      ac_lo= ac_hi=
-                      break
-                    fi
-                    ac_mid=`expr 2 '*' $ac_mid + 1`
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-  done
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) < 0)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_hi=-1 ac_mid=-1
-  while :; do
-    cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) >= $ac_mid)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_lo=$ac_mid; break
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_hi=`expr '(' $ac_mid ')' - 1`
-                       if test $ac_mid -le $ac_hi; then
-                         ac_lo= ac_hi=
-                         break
-                       fi
-                       ac_mid=`expr 2 '*' $ac_mid`
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-  done
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_lo= ac_hi=
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-# Binary search between lo and hi bounds.
-while test "x$ac_lo" != "x$ac_hi"; do
-  ac_mid=`expr '(' $ac_hi - $ac_lo ')' / 2 + $ac_lo`
-  cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) <= $ac_mid)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_hi=$ac_mid
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_lo=`expr '(' $ac_mid ')' + 1`
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-done
-case $ac_lo in
-?*) sim_ac_bytesize=$ac_lo;;
-'')  ;;
-esac
-else
-  if test "$cross_compiling" = yes; then
-  { { echo "$as_me:$LINENO: error: cannot run test program while cross compiling
-See \`config.log' for more details." >&5
-echo "$as_me: error: cannot run test program while cross compiling
-See \`config.log' for more details." >&2;}
-   { (exit 1); exit 1; }; }
-else
-  cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-long longval () { return sizeof ($sim_ac_type); }
-unsigned long ulongval () { return sizeof ($sim_ac_type); }
-#include <stdio.h>
-#include <stdlib.h>
 int
 main ()
 {
 
-  FILE *f = fopen ("conftest.val", "w");
-  if (! f)
-    exit (1);
-  if ((sizeof ($sim_ac_type)) < 0)
-    {
-      long i = longval ();
-      if (i != (sizeof ($sim_ac_type)))
-	exit (1);
-      fprintf (f, "%ld\n", i);
+    int switchval = 0;
+    /* trick compiler to abort with error if sizeof(int8_t) equals 1 */
+    switch ( switchval ) {
+    case sizeof(int8_t): break;
+    case 1: break;
     }
-  else
-    {
-      unsigned long i = ulongval ();
-      if (i != (sizeof ($sim_ac_type)))
-	exit (1);
-      fprintf (f, "%lu\n", i);
-    }
-  exit (ferror (f) || fclose (f) != 0);
 
   ;
   return 0;
 }
 _ACEOF
-rm -f conftest$ac_exeext
-if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
-  (eval $ac_link) 2>&5
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } && { ac_try='./conftest$ac_exeext'
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
-  sim_ac_bytesize=`cat conftest.val`
+
+    # compile time success means we *haven't* found the type of right size
+    :
+
 else
-  echo "$as_me: program exited with status $ac_status" >&5
-echo "$as_me: failed program was:" >&5
+  echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
-fi
-rm -f core core.* *.core gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
-fi
-fi
-rm -f conftest.val
 
-else
-  sim_ac_bytesize=0
-fi
-
-
-    if test "$sim_ac_bytesize" = "1"; then
-      sim_ac_searching=false
-      if test "$sim_ac_type" = "int8_t"; then
+    echo "$as_me:$LINENO: result: $sim_ac_type" >&5
+echo "${ECHO_T}$sim_ac_type" >&6
+    sim_ac_searching=false
+    if test "$sim_ac_type" = "int8_t"; then
 
 cat >>confdefs.h <<_ACEOF
 #define HAVE_INT8_T 1
 _ACEOF
 
-      fi
+    fi
 
 cat >>confdefs.h <<_ACEOF
 #define COIN_INT8_T $sim_ac_type
 _ACEOF
 
-    fi
+
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
   fi
 done
 
 if $sim_ac_searching; then
+  echo "$as_me:$LINENO: result: no type found" >&5
+echo "${ECHO_T}no type found" >&6
   { { echo "$as_me:$LINENO: error: could not find 8-bit type" >&5
 echo "$as_me: error: could not find 8-bit type" >&2;}
    { (exit 1); exit 1; }; }
 else
+  # ac_msg_result invoked above
   :
 fi
 
-sim_ac_searching=true
+  sim_ac_searching=true
+echo "$as_me:$LINENO: checking for uint8_t type or equivalent" >&5
+echo $ECHO_N "checking for uint8_t type or equivalent... $ECHO_C" >&6
 for sim_ac_type in uint8_t u_int8_t "unsigned char"
 do
   if $sim_ac_searching; then
-
-as_ac_Type=`echo "ac_cv_type_$sim_ac_type" | $as_tr_sh`
-echo "$as_me:$LINENO: checking for $sim_ac_type" >&5
-echo $ECHO_N "checking for $sim_ac_type... $ECHO_C" >&6
-if eval "test \"\${$as_ac_Type+set}\" = set"; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-if (($sim_ac_type *) 0)
-  return 0;
-if (sizeof ($sim_ac_type))
-  return 0;
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  eval "$as_ac_Type=yes"
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-eval "$as_ac_Type=no"
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-fi
-echo "$as_me:$LINENO: result: `eval echo '${'$as_ac_Type'}'`" >&5
-echo "${ECHO_T}`eval echo '${'$as_ac_Type'}'`" >&6
-if test `eval echo '${'$as_ac_Type'}'` = yes; then
-
-  if test "$cross_compiling" = yes; then
-  # Depending upon the size, compute the lo and hi bounds.
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) >= 0)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_lo=0 ac_mid=0
-  while :; do
     cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
 /* confdefs.h.  */
@@ -21636,447 +21184,81 @@ cat >>conftest.$ac_ext <<_ACEOF
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
 
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) <= $ac_mid)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_hi=$ac_mid; break
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_lo=`expr $ac_mid + 1`
-                    if test $ac_lo -le $ac_mid; then
-                      ac_lo= ac_hi=
-                      break
-                    fi
-                    ac_mid=`expr 2 '*' $ac_mid + 1`
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-  done
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) < 0)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_hi=-1 ac_mid=-1
-  while :; do
-    cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) >= $ac_mid)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_lo=$ac_mid; break
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_hi=`expr '(' $ac_mid ')' - 1`
-                       if test $ac_mid -le $ac_hi; then
-                         ac_lo= ac_hi=
-                         break
-                       fi
-                       ac_mid=`expr 2 '*' $ac_mid`
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-  done
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_lo= ac_hi=
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-# Binary search between lo and hi bounds.
-while test "x$ac_lo" != "x$ac_hi"; do
-  ac_mid=`expr '(' $ac_hi - $ac_lo ')' / 2 + $ac_lo`
-  cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) <= $ac_mid)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_hi=$ac_mid
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_lo=`expr '(' $ac_mid ')' + 1`
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-done
-case $ac_lo in
-?*) sim_ac_bytesize=$ac_lo;;
-'')  ;;
-esac
-else
-  if test "$cross_compiling" = yes; then
-  { { echo "$as_me:$LINENO: error: cannot run test program while cross compiling
-See \`config.log' for more details." >&5
-echo "$as_me: error: cannot run test program while cross compiling
-See \`config.log' for more details." >&2;}
-   { (exit 1); exit 1; }; }
-else
-  cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-long longval () { return sizeof ($sim_ac_type); }
-unsigned long ulongval () { return sizeof ($sim_ac_type); }
-#include <stdio.h>
-#include <stdlib.h>
 int
 main ()
 {
 
-  FILE *f = fopen ("conftest.val", "w");
-  if (! f)
-    exit (1);
-  if ((sizeof ($sim_ac_type)) < 0)
-    {
-      long i = longval ();
-      if (i != (sizeof ($sim_ac_type)))
-	exit (1);
-      fprintf (f, "%ld\n", i);
+    int switchval = 0;
+    /* trick compiler to abort with error if sizeof(uint8_t) equals 1 */
+    switch ( switchval ) {
+    case sizeof(uint8_t): break;
+    case 1: break;
     }
-  else
-    {
-      unsigned long i = ulongval ();
-      if (i != (sizeof ($sim_ac_type)))
-	exit (1);
-      fprintf (f, "%lu\n", i);
-    }
-  exit (ferror (f) || fclose (f) != 0);
 
   ;
   return 0;
 }
 _ACEOF
-rm -f conftest$ac_exeext
-if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
-  (eval $ac_link) 2>&5
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } && { ac_try='./conftest$ac_exeext'
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
-  sim_ac_bytesize=`cat conftest.val`
+
+    # compile time success means we *haven't* found the type of right size
+    :
+
 else
-  echo "$as_me: program exited with status $ac_status" >&5
-echo "$as_me: failed program was:" >&5
+  echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
-fi
-rm -f core core.* *.core gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
-fi
-fi
-rm -f conftest.val
 
-else
-  sim_ac_bytesize=0
-fi
-
-
-    if test "$sim_ac_bytesize" = "1"; then
-      sim_ac_searching=false
-      if test "$sim_ac_type" = "uint8_t"; then
+    echo "$as_me:$LINENO: result: $sim_ac_type" >&5
+echo "${ECHO_T}$sim_ac_type" >&6
+    sim_ac_searching=false
+    if test "$sim_ac_type" = "uint8_t"; then
 
 cat >>confdefs.h <<_ACEOF
 #define HAVE_UINT8_T 1
 _ACEOF
 
-      fi
+    fi
 
 cat >>confdefs.h <<_ACEOF
 #define COIN_UINT8_T $sim_ac_type
 _ACEOF
 
-    fi
+
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
   fi
 done
 
 if $sim_ac_searching; then
+  echo "$as_me:$LINENO: result: no type found" >&5
+echo "${ECHO_T}no type found" >&6
   { { echo "$as_me:$LINENO: error: could not find unsigned 8-bit type" >&5
 echo "$as_me: error: could not find unsigned 8-bit type" >&2;}
    { (exit 1); exit 1; }; }
 else
+  # ac_msg_result invoked above
   :
 fi
 
 
-sim_ac_searching=true
+  sim_ac_searching=true
+echo "$as_me:$LINENO: checking for int16_t type or equivalent" >&5
+echo $ECHO_N "checking for int16_t type or equivalent... $ECHO_C" >&6
 for sim_ac_type in int16_t short int
 do
   if $sim_ac_searching; then
-
-as_ac_Type=`echo "ac_cv_type_$sim_ac_type" | $as_tr_sh`
-echo "$as_me:$LINENO: checking for $sim_ac_type" >&5
-echo $ECHO_N "checking for $sim_ac_type... $ECHO_C" >&6
-if eval "test \"\${$as_ac_Type+set}\" = set"; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-if (($sim_ac_type *) 0)
-  return 0;
-if (sizeof ($sim_ac_type))
-  return 0;
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  eval "$as_ac_Type=yes"
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-eval "$as_ac_Type=no"
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-fi
-echo "$as_me:$LINENO: result: `eval echo '${'$as_ac_Type'}'`" >&5
-echo "${ECHO_T}`eval echo '${'$as_ac_Type'}'`" >&6
-if test `eval echo '${'$as_ac_Type'}'` = yes; then
-
-  if test "$cross_compiling" = yes; then
-  # Depending upon the size, compute the lo and hi bounds.
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) >= 0)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_lo=0 ac_mid=0
-  while :; do
     cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
 /* confdefs.h.  */
@@ -22097,446 +21279,80 @@ cat >>conftest.$ac_ext <<_ACEOF
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
 
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) <= $ac_mid)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_hi=$ac_mid; break
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_lo=`expr $ac_mid + 1`
-                    if test $ac_lo -le $ac_mid; then
-                      ac_lo= ac_hi=
-                      break
-                    fi
-                    ac_mid=`expr 2 '*' $ac_mid + 1`
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-  done
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) < 0)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_hi=-1 ac_mid=-1
-  while :; do
-    cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) >= $ac_mid)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_lo=$ac_mid; break
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_hi=`expr '(' $ac_mid ')' - 1`
-                       if test $ac_mid -le $ac_hi; then
-                         ac_lo= ac_hi=
-                         break
-                       fi
-                       ac_mid=`expr 2 '*' $ac_mid`
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-  done
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_lo= ac_hi=
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-# Binary search between lo and hi bounds.
-while test "x$ac_lo" != "x$ac_hi"; do
-  ac_mid=`expr '(' $ac_hi - $ac_lo ')' / 2 + $ac_lo`
-  cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) <= $ac_mid)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_hi=$ac_mid
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_lo=`expr '(' $ac_mid ')' + 1`
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-done
-case $ac_lo in
-?*) sim_ac_bytesize=$ac_lo;;
-'')  ;;
-esac
-else
-  if test "$cross_compiling" = yes; then
-  { { echo "$as_me:$LINENO: error: cannot run test program while cross compiling
-See \`config.log' for more details." >&5
-echo "$as_me: error: cannot run test program while cross compiling
-See \`config.log' for more details." >&2;}
-   { (exit 1); exit 1; }; }
-else
-  cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-long longval () { return sizeof ($sim_ac_type); }
-unsigned long ulongval () { return sizeof ($sim_ac_type); }
-#include <stdio.h>
-#include <stdlib.h>
 int
 main ()
 {
 
-  FILE *f = fopen ("conftest.val", "w");
-  if (! f)
-    exit (1);
-  if ((sizeof ($sim_ac_type)) < 0)
-    {
-      long i = longval ();
-      if (i != (sizeof ($sim_ac_type)))
-	exit (1);
-      fprintf (f, "%ld\n", i);
+    int switchval = 0;
+    /* trick compiler to abort with error if sizeof(int16_t) equals 2 */
+    switch ( switchval ) {
+    case sizeof(int16_t): break;
+    case 2: break;
     }
-  else
-    {
-      unsigned long i = ulongval ();
-      if (i != (sizeof ($sim_ac_type)))
-	exit (1);
-      fprintf (f, "%lu\n", i);
-    }
-  exit (ferror (f) || fclose (f) != 0);
 
   ;
   return 0;
 }
 _ACEOF
-rm -f conftest$ac_exeext
-if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
-  (eval $ac_link) 2>&5
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } && { ac_try='./conftest$ac_exeext'
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
-  sim_ac_bytesize=`cat conftest.val`
+
+    # compile time success means we *haven't* found the type of right size
+    :
+
 else
-  echo "$as_me: program exited with status $ac_status" >&5
-echo "$as_me: failed program was:" >&5
+  echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
-fi
-rm -f core core.* *.core gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
-fi
-fi
-rm -f conftest.val
 
-else
-  sim_ac_bytesize=0
-fi
-
-
-    if test "$sim_ac_bytesize" = "2"; then
-      sim_ac_searching=false
-      if test "$sim_ac_type" = "int16_t"; then
+    echo "$as_me:$LINENO: result: $sim_ac_type" >&5
+echo "${ECHO_T}$sim_ac_type" >&6
+    sim_ac_searching=false
+    if test "$sim_ac_type" = "int16_t"; then
 
 cat >>confdefs.h <<_ACEOF
 #define HAVE_INT16_T 1
 _ACEOF
 
-      fi
+    fi
 
 cat >>confdefs.h <<_ACEOF
 #define COIN_INT16_T $sim_ac_type
 _ACEOF
 
-    fi
+
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
   fi
 done
 
 if $sim_ac_searching; then
+  echo "$as_me:$LINENO: result: no type found" >&5
+echo "${ECHO_T}no type found" >&6
   { { echo "$as_me:$LINENO: error: could not find 16-bit type" >&5
 echo "$as_me: error: could not find 16-bit type" >&2;}
    { (exit 1); exit 1; }; }
 else
+  # ac_msg_result invoked above
   :
 fi
 
-sim_ac_searching=true
+  sim_ac_searching=true
+echo "$as_me:$LINENO: checking for uint16_t type or equivalent" >&5
+echo $ECHO_N "checking for uint16_t type or equivalent... $ECHO_C" >&6
 for sim_ac_type in uint16_t u_int16_t "unsigned short" "unsigned int"
 do
   if $sim_ac_searching; then
-
-as_ac_Type=`echo "ac_cv_type_$sim_ac_type" | $as_tr_sh`
-echo "$as_me:$LINENO: checking for $sim_ac_type" >&5
-echo $ECHO_N "checking for $sim_ac_type... $ECHO_C" >&6
-if eval "test \"\${$as_ac_Type+set}\" = set"; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-if (($sim_ac_type *) 0)
-  return 0;
-if (sizeof ($sim_ac_type))
-  return 0;
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  eval "$as_ac_Type=yes"
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-eval "$as_ac_Type=no"
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-fi
-echo "$as_me:$LINENO: result: `eval echo '${'$as_ac_Type'}'`" >&5
-echo "${ECHO_T}`eval echo '${'$as_ac_Type'}'`" >&6
-if test `eval echo '${'$as_ac_Type'}'` = yes; then
-
-  if test "$cross_compiling" = yes; then
-  # Depending upon the size, compute the lo and hi bounds.
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) >= 0)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_lo=0 ac_mid=0
-  while :; do
     cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
 /* confdefs.h.  */
@@ -22557,447 +21373,81 @@ cat >>conftest.$ac_ext <<_ACEOF
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
 
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) <= $ac_mid)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_hi=$ac_mid; break
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_lo=`expr $ac_mid + 1`
-                    if test $ac_lo -le $ac_mid; then
-                      ac_lo= ac_hi=
-                      break
-                    fi
-                    ac_mid=`expr 2 '*' $ac_mid + 1`
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-  done
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) < 0)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_hi=-1 ac_mid=-1
-  while :; do
-    cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) >= $ac_mid)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_lo=$ac_mid; break
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_hi=`expr '(' $ac_mid ')' - 1`
-                       if test $ac_mid -le $ac_hi; then
-                         ac_lo= ac_hi=
-                         break
-                       fi
-                       ac_mid=`expr 2 '*' $ac_mid`
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-  done
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_lo= ac_hi=
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-# Binary search between lo and hi bounds.
-while test "x$ac_lo" != "x$ac_hi"; do
-  ac_mid=`expr '(' $ac_hi - $ac_lo ')' / 2 + $ac_lo`
-  cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) <= $ac_mid)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_hi=$ac_mid
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_lo=`expr '(' $ac_mid ')' + 1`
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-done
-case $ac_lo in
-?*) sim_ac_bytesize=$ac_lo;;
-'')  ;;
-esac
-else
-  if test "$cross_compiling" = yes; then
-  { { echo "$as_me:$LINENO: error: cannot run test program while cross compiling
-See \`config.log' for more details." >&5
-echo "$as_me: error: cannot run test program while cross compiling
-See \`config.log' for more details." >&2;}
-   { (exit 1); exit 1; }; }
-else
-  cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-long longval () { return sizeof ($sim_ac_type); }
-unsigned long ulongval () { return sizeof ($sim_ac_type); }
-#include <stdio.h>
-#include <stdlib.h>
 int
 main ()
 {
 
-  FILE *f = fopen ("conftest.val", "w");
-  if (! f)
-    exit (1);
-  if ((sizeof ($sim_ac_type)) < 0)
-    {
-      long i = longval ();
-      if (i != (sizeof ($sim_ac_type)))
-	exit (1);
-      fprintf (f, "%ld\n", i);
+    int switchval = 0;
+    /* trick compiler to abort with error if sizeof(uint16_t) equals 2 */
+    switch ( switchval ) {
+    case sizeof(uint16_t): break;
+    case 2: break;
     }
-  else
-    {
-      unsigned long i = ulongval ();
-      if (i != (sizeof ($sim_ac_type)))
-	exit (1);
-      fprintf (f, "%lu\n", i);
-    }
-  exit (ferror (f) || fclose (f) != 0);
 
   ;
   return 0;
 }
 _ACEOF
-rm -f conftest$ac_exeext
-if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
-  (eval $ac_link) 2>&5
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } && { ac_try='./conftest$ac_exeext'
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
-  sim_ac_bytesize=`cat conftest.val`
+
+    # compile time success means we *haven't* found the type of right size
+    :
+
 else
-  echo "$as_me: program exited with status $ac_status" >&5
-echo "$as_me: failed program was:" >&5
+  echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
-fi
-rm -f core core.* *.core gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
-fi
-fi
-rm -f conftest.val
 
-else
-  sim_ac_bytesize=0
-fi
-
-
-    if test "$sim_ac_bytesize" = "2"; then
-      sim_ac_searching=false
-      if test "$sim_ac_type" = "uint16_t"; then
+    echo "$as_me:$LINENO: result: $sim_ac_type" >&5
+echo "${ECHO_T}$sim_ac_type" >&6
+    sim_ac_searching=false
+    if test "$sim_ac_type" = "uint16_t"; then
 
 cat >>confdefs.h <<_ACEOF
 #define HAVE_UINT16_T 1
 _ACEOF
 
-      fi
+    fi
 
 cat >>confdefs.h <<_ACEOF
 #define COIN_UINT16_T $sim_ac_type
 _ACEOF
 
-    fi
+
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
   fi
 done
 
 if $sim_ac_searching; then
+  echo "$as_me:$LINENO: result: no type found" >&5
+echo "${ECHO_T}no type found" >&6
   { { echo "$as_me:$LINENO: error: could not find unsigned 16-bit type" >&5
 echo "$as_me: error: could not find unsigned 16-bit type" >&2;}
    { (exit 1); exit 1; }; }
 else
+  # ac_msg_result invoked above
   :
 fi
 
 
-sim_ac_searching=true
+  sim_ac_searching=true
+echo "$as_me:$LINENO: checking for int32_t type or equivalent" >&5
+echo $ECHO_N "checking for int32_t type or equivalent... $ECHO_C" >&6
 for sim_ac_type in int32_t int long
 do
   if $sim_ac_searching; then
-
-as_ac_Type=`echo "ac_cv_type_$sim_ac_type" | $as_tr_sh`
-echo "$as_me:$LINENO: checking for $sim_ac_type" >&5
-echo $ECHO_N "checking for $sim_ac_type... $ECHO_C" >&6
-if eval "test \"\${$as_ac_Type+set}\" = set"; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-if (($sim_ac_type *) 0)
-  return 0;
-if (sizeof ($sim_ac_type))
-  return 0;
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  eval "$as_ac_Type=yes"
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-eval "$as_ac_Type=no"
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-fi
-echo "$as_me:$LINENO: result: `eval echo '${'$as_ac_Type'}'`" >&5
-echo "${ECHO_T}`eval echo '${'$as_ac_Type'}'`" >&6
-if test `eval echo '${'$as_ac_Type'}'` = yes; then
-
-  if test "$cross_compiling" = yes; then
-  # Depending upon the size, compute the lo and hi bounds.
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) >= 0)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_lo=0 ac_mid=0
-  while :; do
     cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
 /* confdefs.h.  */
@@ -23018,446 +21468,80 @@ cat >>conftest.$ac_ext <<_ACEOF
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
 
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) <= $ac_mid)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_hi=$ac_mid; break
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_lo=`expr $ac_mid + 1`
-                    if test $ac_lo -le $ac_mid; then
-                      ac_lo= ac_hi=
-                      break
-                    fi
-                    ac_mid=`expr 2 '*' $ac_mid + 1`
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-  done
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) < 0)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_hi=-1 ac_mid=-1
-  while :; do
-    cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) >= $ac_mid)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_lo=$ac_mid; break
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_hi=`expr '(' $ac_mid ')' - 1`
-                       if test $ac_mid -le $ac_hi; then
-                         ac_lo= ac_hi=
-                         break
-                       fi
-                       ac_mid=`expr 2 '*' $ac_mid`
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-  done
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_lo= ac_hi=
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-# Binary search between lo and hi bounds.
-while test "x$ac_lo" != "x$ac_hi"; do
-  ac_mid=`expr '(' $ac_hi - $ac_lo ')' / 2 + $ac_lo`
-  cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) <= $ac_mid)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_hi=$ac_mid
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_lo=`expr '(' $ac_mid ')' + 1`
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-done
-case $ac_lo in
-?*) sim_ac_bytesize=$ac_lo;;
-'')  ;;
-esac
-else
-  if test "$cross_compiling" = yes; then
-  { { echo "$as_me:$LINENO: error: cannot run test program while cross compiling
-See \`config.log' for more details." >&5
-echo "$as_me: error: cannot run test program while cross compiling
-See \`config.log' for more details." >&2;}
-   { (exit 1); exit 1; }; }
-else
-  cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-long longval () { return sizeof ($sim_ac_type); }
-unsigned long ulongval () { return sizeof ($sim_ac_type); }
-#include <stdio.h>
-#include <stdlib.h>
 int
 main ()
 {
 
-  FILE *f = fopen ("conftest.val", "w");
-  if (! f)
-    exit (1);
-  if ((sizeof ($sim_ac_type)) < 0)
-    {
-      long i = longval ();
-      if (i != (sizeof ($sim_ac_type)))
-	exit (1);
-      fprintf (f, "%ld\n", i);
+    int switchval = 0;
+    /* trick compiler to abort with error if sizeof(int32_t) equals 4 */
+    switch ( switchval ) {
+    case sizeof(int32_t): break;
+    case 4: break;
     }
-  else
-    {
-      unsigned long i = ulongval ();
-      if (i != (sizeof ($sim_ac_type)))
-	exit (1);
-      fprintf (f, "%lu\n", i);
-    }
-  exit (ferror (f) || fclose (f) != 0);
 
   ;
   return 0;
 }
 _ACEOF
-rm -f conftest$ac_exeext
-if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
-  (eval $ac_link) 2>&5
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } && { ac_try='./conftest$ac_exeext'
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
-  sim_ac_bytesize=`cat conftest.val`
+
+    # compile time success means we *haven't* found the type of right size
+    :
+
 else
-  echo "$as_me: program exited with status $ac_status" >&5
-echo "$as_me: failed program was:" >&5
+  echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
-fi
-rm -f core core.* *.core gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
-fi
-fi
-rm -f conftest.val
 
-else
-  sim_ac_bytesize=0
-fi
-
-
-    if test "$sim_ac_bytesize" = "4"; then
-      sim_ac_searching=false
-      if test "$sim_ac_type" = "int32_t"; then
+    echo "$as_me:$LINENO: result: $sim_ac_type" >&5
+echo "${ECHO_T}$sim_ac_type" >&6
+    sim_ac_searching=false
+    if test "$sim_ac_type" = "int32_t"; then
 
 cat >>confdefs.h <<_ACEOF
 #define HAVE_INT32_T 1
 _ACEOF
 
-      fi
+    fi
 
 cat >>confdefs.h <<_ACEOF
 #define COIN_INT32_T $sim_ac_type
 _ACEOF
 
-    fi
+
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
   fi
 done
 
 if $sim_ac_searching; then
+  echo "$as_me:$LINENO: result: no type found" >&5
+echo "${ECHO_T}no type found" >&6
   { { echo "$as_me:$LINENO: error: could not find 32-bit type" >&5
 echo "$as_me: error: could not find 32-bit type" >&2;}
    { (exit 1); exit 1; }; }
 else
+  # ac_msg_result invoked above
   :
 fi
 
-sim_ac_searching=true
+  sim_ac_searching=true
+echo "$as_me:$LINENO: checking for uint32_t type or equivalent" >&5
+echo $ECHO_N "checking for uint32_t type or equivalent... $ECHO_C" >&6
 for sim_ac_type in uint32_t u_int32_t "unsigned int" "unsigned long"
 do
   if $sim_ac_searching; then
-
-as_ac_Type=`echo "ac_cv_type_$sim_ac_type" | $as_tr_sh`
-echo "$as_me:$LINENO: checking for $sim_ac_type" >&5
-echo $ECHO_N "checking for $sim_ac_type... $ECHO_C" >&6
-if eval "test \"\${$as_ac_Type+set}\" = set"; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-if (($sim_ac_type *) 0)
-  return 0;
-if (sizeof ($sim_ac_type))
-  return 0;
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  eval "$as_ac_Type=yes"
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-eval "$as_ac_Type=no"
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-fi
-echo "$as_me:$LINENO: result: `eval echo '${'$as_ac_Type'}'`" >&5
-echo "${ECHO_T}`eval echo '${'$as_ac_Type'}'`" >&6
-if test `eval echo '${'$as_ac_Type'}'` = yes; then
-
-  if test "$cross_compiling" = yes; then
-  # Depending upon the size, compute the lo and hi bounds.
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) >= 0)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_lo=0 ac_mid=0
-  while :; do
     cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
 /* confdefs.h.  */
@@ -23478,447 +21562,81 @@ cat >>conftest.$ac_ext <<_ACEOF
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
 
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) <= $ac_mid)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_hi=$ac_mid; break
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_lo=`expr $ac_mid + 1`
-                    if test $ac_lo -le $ac_mid; then
-                      ac_lo= ac_hi=
-                      break
-                    fi
-                    ac_mid=`expr 2 '*' $ac_mid + 1`
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-  done
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) < 0)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_hi=-1 ac_mid=-1
-  while :; do
-    cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) >= $ac_mid)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_lo=$ac_mid; break
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_hi=`expr '(' $ac_mid ')' - 1`
-                       if test $ac_mid -le $ac_hi; then
-                         ac_lo= ac_hi=
-                         break
-                       fi
-                       ac_mid=`expr 2 '*' $ac_mid`
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-  done
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_lo= ac_hi=
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-# Binary search between lo and hi bounds.
-while test "x$ac_lo" != "x$ac_hi"; do
-  ac_mid=`expr '(' $ac_hi - $ac_lo ')' / 2 + $ac_lo`
-  cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) <= $ac_mid)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_hi=$ac_mid
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_lo=`expr '(' $ac_mid ')' + 1`
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-done
-case $ac_lo in
-?*) sim_ac_bytesize=$ac_lo;;
-'')  ;;
-esac
-else
-  if test "$cross_compiling" = yes; then
-  { { echo "$as_me:$LINENO: error: cannot run test program while cross compiling
-See \`config.log' for more details." >&5
-echo "$as_me: error: cannot run test program while cross compiling
-See \`config.log' for more details." >&2;}
-   { (exit 1); exit 1; }; }
-else
-  cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-long longval () { return sizeof ($sim_ac_type); }
-unsigned long ulongval () { return sizeof ($sim_ac_type); }
-#include <stdio.h>
-#include <stdlib.h>
 int
 main ()
 {
 
-  FILE *f = fopen ("conftest.val", "w");
-  if (! f)
-    exit (1);
-  if ((sizeof ($sim_ac_type)) < 0)
-    {
-      long i = longval ();
-      if (i != (sizeof ($sim_ac_type)))
-	exit (1);
-      fprintf (f, "%ld\n", i);
+    int switchval = 0;
+    /* trick compiler to abort with error if sizeof(uint32_t) equals 4 */
+    switch ( switchval ) {
+    case sizeof(uint32_t): break;
+    case 4: break;
     }
-  else
-    {
-      unsigned long i = ulongval ();
-      if (i != (sizeof ($sim_ac_type)))
-	exit (1);
-      fprintf (f, "%lu\n", i);
-    }
-  exit (ferror (f) || fclose (f) != 0);
 
   ;
   return 0;
 }
 _ACEOF
-rm -f conftest$ac_exeext
-if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
-  (eval $ac_link) 2>&5
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } && { ac_try='./conftest$ac_exeext'
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
-  sim_ac_bytesize=`cat conftest.val`
+
+    # compile time success means we *haven't* found the type of right size
+    :
+
 else
-  echo "$as_me: program exited with status $ac_status" >&5
-echo "$as_me: failed program was:" >&5
+  echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
-fi
-rm -f core core.* *.core gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
-fi
-fi
-rm -f conftest.val
 
-else
-  sim_ac_bytesize=0
-fi
-
-
-    if test "$sim_ac_bytesize" = "4"; then
-      sim_ac_searching=false
-      if test "$sim_ac_type" = "uint32_t"; then
+    echo "$as_me:$LINENO: result: $sim_ac_type" >&5
+echo "${ECHO_T}$sim_ac_type" >&6
+    sim_ac_searching=false
+    if test "$sim_ac_type" = "uint32_t"; then
 
 cat >>confdefs.h <<_ACEOF
 #define HAVE_UINT32_T 1
 _ACEOF
 
-      fi
+    fi
 
 cat >>confdefs.h <<_ACEOF
 #define COIN_UINT32_T $sim_ac_type
 _ACEOF
 
-    fi
+
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
   fi
 done
 
 if $sim_ac_searching; then
+  echo "$as_me:$LINENO: result: no type found" >&5
+echo "${ECHO_T}no type found" >&6
   { { echo "$as_me:$LINENO: error: could not find unsigned 32-bit type" >&5
 echo "$as_me: error: could not find unsigned 32-bit type" >&2;}
    { (exit 1); exit 1; }; }
 else
+  # ac_msg_result invoked above
   :
 fi
 
 
-sim_ac_searching=true
+  sim_ac_searching=true
+echo "$as_me:$LINENO: checking for int64_t type or equivalent" >&5
+echo $ECHO_N "checking for int64_t type or equivalent... $ECHO_C" >&6
 for sim_ac_type in int64_t long int "long long" __int64
 do
   if $sim_ac_searching; then
-
-as_ac_Type=`echo "ac_cv_type_$sim_ac_type" | $as_tr_sh`
-echo "$as_me:$LINENO: checking for $sim_ac_type" >&5
-echo $ECHO_N "checking for $sim_ac_type... $ECHO_C" >&6
-if eval "test \"\${$as_ac_Type+set}\" = set"; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-if (($sim_ac_type *) 0)
-  return 0;
-if (sizeof ($sim_ac_type))
-  return 0;
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  eval "$as_ac_Type=yes"
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-eval "$as_ac_Type=no"
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-fi
-echo "$as_me:$LINENO: result: `eval echo '${'$as_ac_Type'}'`" >&5
-echo "${ECHO_T}`eval echo '${'$as_ac_Type'}'`" >&6
-if test `eval echo '${'$as_ac_Type'}'` = yes; then
-
-  if test "$cross_compiling" = yes; then
-  # Depending upon the size, compute the lo and hi bounds.
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) >= 0)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_lo=0 ac_mid=0
-  while :; do
     cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
 /* confdefs.h.  */
@@ -23939,445 +21657,79 @@ cat >>conftest.$ac_ext <<_ACEOF
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
 
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) <= $ac_mid)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_hi=$ac_mid; break
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_lo=`expr $ac_mid + 1`
-                    if test $ac_lo -le $ac_mid; then
-                      ac_lo= ac_hi=
-                      break
-                    fi
-                    ac_mid=`expr 2 '*' $ac_mid + 1`
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-  done
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) < 0)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_hi=-1 ac_mid=-1
-  while :; do
-    cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) >= $ac_mid)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_lo=$ac_mid; break
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_hi=`expr '(' $ac_mid ')' - 1`
-                       if test $ac_mid -le $ac_hi; then
-                         ac_lo= ac_hi=
-                         break
-                       fi
-                       ac_mid=`expr 2 '*' $ac_mid`
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-  done
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_lo= ac_hi=
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-# Binary search between lo and hi bounds.
-while test "x$ac_lo" != "x$ac_hi"; do
-  ac_mid=`expr '(' $ac_hi - $ac_lo ')' / 2 + $ac_lo`
-  cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) <= $ac_mid)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_hi=$ac_mid
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_lo=`expr '(' $ac_mid ')' + 1`
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-done
-case $ac_lo in
-?*) sim_ac_bytesize=$ac_lo;;
-'')  ;;
-esac
-else
-  if test "$cross_compiling" = yes; then
-  { { echo "$as_me:$LINENO: error: cannot run test program while cross compiling
-See \`config.log' for more details." >&5
-echo "$as_me: error: cannot run test program while cross compiling
-See \`config.log' for more details." >&2;}
-   { (exit 1); exit 1; }; }
-else
-  cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-long longval () { return sizeof ($sim_ac_type); }
-unsigned long ulongval () { return sizeof ($sim_ac_type); }
-#include <stdio.h>
-#include <stdlib.h>
 int
 main ()
 {
 
-  FILE *f = fopen ("conftest.val", "w");
-  if (! f)
-    exit (1);
-  if ((sizeof ($sim_ac_type)) < 0)
-    {
-      long i = longval ();
-      if (i != (sizeof ($sim_ac_type)))
-	exit (1);
-      fprintf (f, "%ld\n", i);
+    int switchval = 0;
+    /* trick compiler to abort with error if sizeof(int64_t) equals 8 */
+    switch ( switchval ) {
+    case sizeof(int64_t): break;
+    case 8: break;
     }
-  else
-    {
-      unsigned long i = ulongval ();
-      if (i != (sizeof ($sim_ac_type)))
-	exit (1);
-      fprintf (f, "%lu\n", i);
-    }
-  exit (ferror (f) || fclose (f) != 0);
 
   ;
   return 0;
 }
 _ACEOF
-rm -f conftest$ac_exeext
-if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
-  (eval $ac_link) 2>&5
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } && { ac_try='./conftest$ac_exeext'
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
-  sim_ac_bytesize=`cat conftest.val`
+
+    # compile time success means we *haven't* found the type of right size
+    :
+
 else
-  echo "$as_me: program exited with status $ac_status" >&5
-echo "$as_me: failed program was:" >&5
+  echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
-fi
-rm -f core core.* *.core gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
-fi
-fi
-rm -f conftest.val
 
-else
-  sim_ac_bytesize=0
-fi
-
-
-    if test "$sim_ac_bytesize" = "8"; then
-      sim_ac_searching=false
-      if test "$sim_ac_type" = "int64_t"; then
+    echo "$as_me:$LINENO: result: $sim_ac_type" >&5
+echo "${ECHO_T}$sim_ac_type" >&6
+    sim_ac_searching=false
+    if test "$sim_ac_type" = "int64_t"; then
 
 cat >>confdefs.h <<_ACEOF
 #define HAVE_INT64_T 1
 _ACEOF
 
-      fi
+    fi
 
 cat >>confdefs.h <<_ACEOF
 #define COIN_INT64_T $sim_ac_type
 _ACEOF
 
-    fi
+
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
   fi
 done
 
 if $sim_ac_searching; then
+  echo "$as_me:$LINENO: result: no type found" >&5
+echo "${ECHO_T}no type found" >&6
   { echo "$as_me:$LINENO: WARNING: could not find 64-bit type" >&5
 echo "$as_me: WARNING: could not find 64-bit type" >&2;}
 else
+  # ac_msg_result invoked above
   :
 fi
 
-sim_ac_searching=true
+  sim_ac_searching=true
+echo "$as_me:$LINENO: checking for uint64_t type or equivalent" >&5
+echo $ECHO_N "checking for uint64_t type or equivalent... $ECHO_C" >&6
 for sim_ac_type in uint64_t u_int64_t "unsigned long" "unsigned int" "unsigned long long" "unsigned __int64"
 do
   if $sim_ac_searching; then
-
-as_ac_Type=`echo "ac_cv_type_$sim_ac_type" | $as_tr_sh`
-echo "$as_me:$LINENO: checking for $sim_ac_type" >&5
-echo $ECHO_N "checking for $sim_ac_type... $ECHO_C" >&6
-if eval "test \"\${$as_ac_Type+set}\" = set"; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-if (($sim_ac_type *) 0)
-  return 0;
-if (sizeof ($sim_ac_type))
-  return 0;
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  eval "$as_ac_Type=yes"
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-eval "$as_ac_Type=no"
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-fi
-echo "$as_me:$LINENO: result: `eval echo '${'$as_ac_Type'}'`" >&5
-echo "${ECHO_T}`eval echo '${'$as_ac_Type'}'`" >&6
-if test `eval echo '${'$as_ac_Type'}'` = yes; then
-
-  if test "$cross_compiling" = yes; then
-  # Depending upon the size, compute the lo and hi bounds.
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) >= 0)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_lo=0 ac_mid=0
-  while :; do
     cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
 /* confdefs.h.  */
@@ -24398,327 +21750,257 @@ cat >>conftest.$ac_ext <<_ACEOF
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
 
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) <= $ac_mid)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_hi=$ac_mid; break
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_lo=`expr $ac_mid + 1`
-                    if test $ac_lo -le $ac_mid; then
-                      ac_lo= ac_hi=
-                      break
-                    fi
-                    ac_mid=`expr 2 '*' $ac_mid + 1`
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-  done
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) < 0)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_hi=-1 ac_mid=-1
-  while :; do
-    cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) >= $ac_mid)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_lo=$ac_mid; break
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_hi=`expr '(' $ac_mid ')' - 1`
-                       if test $ac_mid -le $ac_hi; then
-                         ac_lo= ac_hi=
-                         break
-                       fi
-                       ac_mid=`expr 2 '*' $ac_mid`
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-  done
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_lo= ac_hi=
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-# Binary search between lo and hi bounds.
-while test "x$ac_lo" != "x$ac_hi"; do
-  ac_mid=`expr '(' $ac_hi - $ac_lo ')' / 2 + $ac_lo`
-  cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-int
-main ()
-{
-static int test_array [1 - 2 * !((sizeof ($sim_ac_type)) <= $ac_mid)];
-test_array [0] = 0
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_hi=$ac_mid
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_lo=`expr '(' $ac_mid ')' + 1`
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-done
-case $ac_lo in
-?*) sim_ac_bytesize=$ac_lo;;
-'')  ;;
-esac
-else
-  if test "$cross_compiling" = yes; then
-  { { echo "$as_me:$LINENO: error: cannot run test program while cross compiling
-See \`config.log' for more details." >&5
-echo "$as_me: error: cannot run test program while cross compiling
-See \`config.log' for more details." >&2;}
-   { (exit 1); exit 1; }; }
-else
-  cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#else /* !HAVE_INTTYPES_H */
-#ifdef HAVE_STDINT_H
-#include <stdint.h>
-#endif /* HAVE_STDINT_H */
-#endif /* !HAVE_INTTYPES_H */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-
-
-long longval () { return sizeof ($sim_ac_type); }
-unsigned long ulongval () { return sizeof ($sim_ac_type); }
-#include <stdio.h>
-#include <stdlib.h>
 int
 main ()
 {
 
-  FILE *f = fopen ("conftest.val", "w");
-  if (! f)
-    exit (1);
-  if ((sizeof ($sim_ac_type)) < 0)
-    {
-      long i = longval ();
-      if (i != (sizeof ($sim_ac_type)))
-	exit (1);
-      fprintf (f, "%ld\n", i);
+    int switchval = 0;
+    /* trick compiler to abort with error if sizeof(uint64_t) equals 8 */
+    switch ( switchval ) {
+    case sizeof(uint64_t): break;
+    case 8: break;
     }
-  else
-    {
-      unsigned long i = ulongval ();
-      if (i != (sizeof ($sim_ac_type)))
-	exit (1);
-      fprintf (f, "%lu\n", i);
-    }
-  exit (ferror (f) || fclose (f) != 0);
 
   ;
   return 0;
 }
 _ACEOF
-rm -f conftest$ac_exeext
-if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
-  (eval $ac_link) 2>&5
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } && { ac_try='./conftest$ac_exeext'
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
-  sim_ac_bytesize=`cat conftest.val`
+
+    # compile time success means we *haven't* found the type of right size
+    :
+
 else
-  echo "$as_me: program exited with status $ac_status" >&5
-echo "$as_me: failed program was:" >&5
+  echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
-fi
-rm -f core core.* *.core gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
-fi
-fi
-rm -f conftest.val
 
-else
-  sim_ac_bytesize=0
-fi
-
-
-    if test "$sim_ac_bytesize" = "8"; then
-      sim_ac_searching=false
-      if test "$sim_ac_type" = "uint64_t"; then
+    echo "$as_me:$LINENO: result: $sim_ac_type" >&5
+echo "${ECHO_T}$sim_ac_type" >&6
+    sim_ac_searching=false
+    if test "$sim_ac_type" = "uint64_t"; then
 
 cat >>confdefs.h <<_ACEOF
 #define HAVE_UINT64_T 1
 _ACEOF
 
-      fi
+    fi
 
 cat >>confdefs.h <<_ACEOF
 #define COIN_UINT64_T $sim_ac_type
 _ACEOF
 
-    fi
+
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
   fi
 done
 
 if $sim_ac_searching; then
+  echo "$as_me:$LINENO: result: no type found" >&5
+echo "${ECHO_T}no type found" >&6
   { echo "$as_me:$LINENO: WARNING: could not find unsigned 64-bit type" >&5
 echo "$as_me: WARNING: could not find unsigned 64-bit type" >&2;}
 else
+  # ac_msg_result invoked above
+  :
+fi
+
+
+  sim_ac_searching=true
+echo "$as_me:$LINENO: checking for intptr_t type or equivalent" >&5
+echo $ECHO_N "checking for intptr_t type or equivalent... $ECHO_C" >&6
+for sim_ac_type in intptr_t int long "long long" __int64
+do
+  if $sim_ac_searching; then
+    cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+#include <stdio.h>
+#ifdef HAVE_INTTYPES_H
+#include <inttypes.h>
+#else /* !HAVE_INTTYPES_H */
+#ifdef HAVE_STDINT_H
+#include <stdint.h>
+#endif /* HAVE_STDINT_H */
+#endif /* !HAVE_INTTYPES_H */
+#ifdef HAVE_SYS_TYPES_H
+#include <sys/types.h>
+#endif /* HAVE_SYS_TYPES_H */
+
+int
+main ()
+{
+
+    int switchval = 0;
+    /* trick compiler to abort with error if sizeof(intptr_t) equals sizeof(void *) */
+    switch ( switchval ) {
+    case sizeof(intptr_t): break;
+    case sizeof(void *): break;
+    }
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+
+    # compile time success means we *haven't* found the type of right size
+    :
+
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+
+    echo "$as_me:$LINENO: result: $sim_ac_type" >&5
+echo "${ECHO_T}$sim_ac_type" >&6
+    sim_ac_searching=false
+    if test "$sim_ac_type" = "intptr_t"; then
+
+cat >>confdefs.h <<_ACEOF
+#define HAVE_INTPTR_T 1
+_ACEOF
+
+    fi
+
+cat >>confdefs.h <<_ACEOF
+#define COIN_INTPTR_T $sim_ac_type
+_ACEOF
+
+
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+  fi
+done
+
+if $sim_ac_searching; then
+  echo "$as_me:$LINENO: result: no type found" >&5
+echo "${ECHO_T}no type found" >&6
+  { echo "$as_me:$LINENO: WARNING: could not find int-pointer type" >&5
+echo "$as_me: WARNING: could not find int-pointer type" >&2;}
+else
+  # ac_msg_result invoked above
+  :
+fi
+
+  sim_ac_searching=true
+echo "$as_me:$LINENO: checking for uintptr_t type or equivalent" >&5
+echo $ECHO_N "checking for uintptr_t type or equivalent... $ECHO_C" >&6
+for sim_ac_type in uintptr_t u_intptr_t "unsigned int" "unsigned long" u_int64_t "unsigned long long" "unsigned __int64"
+do
+  if $sim_ac_searching; then
+    cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+#include <stdio.h>
+#ifdef HAVE_INTTYPES_H
+#include <inttypes.h>
+#else /* !HAVE_INTTYPES_H */
+#ifdef HAVE_STDINT_H
+#include <stdint.h>
+#endif /* HAVE_STDINT_H */
+#endif /* !HAVE_INTTYPES_H */
+#ifdef HAVE_SYS_TYPES_H
+#include <sys/types.h>
+#endif /* HAVE_SYS_TYPES_H */
+
+int
+main ()
+{
+
+    int switchval = 0;
+    /* trick compiler to abort with error if sizeof(uintptr_t) equals sizeof(void *) */
+    switch ( switchval ) {
+    case sizeof(uintptr_t): break;
+    case sizeof(void *): break;
+    }
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+
+    # compile time success means we *haven't* found the type of right size
+    :
+
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+
+    echo "$as_me:$LINENO: result: $sim_ac_type" >&5
+echo "${ECHO_T}$sim_ac_type" >&6
+    sim_ac_searching=false
+    if test "$sim_ac_type" = "uintptr_t"; then
+
+cat >>confdefs.h <<_ACEOF
+#define HAVE_UINTPTR_T 1
+_ACEOF
+
+    fi
+
+cat >>confdefs.h <<_ACEOF
+#define COIN_UINTPTR_T $sim_ac_type
+_ACEOF
+
+
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+  fi
+done
+
+if $sim_ac_searching; then
+  echo "$as_me:$LINENO: result: no type found" >&5
+echo "${ECHO_T}no type found" >&6
+  { echo "$as_me:$LINENO: WARNING: could not find unsigned int-pointer type" >&5
+echo "$as_me: WARNING: could not find unsigned int-pointer type" >&2;}
+else
+  # ac_msg_result invoked above
   :
 fi
 

@@ -11,7 +11,7 @@
 # even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.
 
-# SIM_AC_CHECK_HEADER(HEADER-FILE, [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND])
+# sim_ac_CHECK_HEADER(HEADER-FILE, [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND])
 # --------------------------------------------------------------------------
 # Modified AC_CHECK_HEADER to use AC_TRY_COMPILE instead of AC_TRY_CPP,
 # as we can get false positives and/or false negatives when running under
@@ -92,6 +92,8 @@ AC_TRY_COMPILE([
   uint32_t uint32var;
   int64_t int64var;
   uint64_t uint64var;
+  intptr_t intptrvar;
+  uintptr_t uintptrvar;
 ],
 [sim_ac_have_have_bytesize_types=true],
 [sim_ac_have_have_bytesize_types=false])
@@ -114,6 +116,10 @@ if $sim_ac_have_have_bytesize_types; then
   AC_DEFINE_UNQUOTED([COIN_INT64_T], [int64_t], [define this to a type of the indicated bitwidth])
   AC_DEFINE_UNQUOTED([HAVE_UINT64_T], [1], [define this if the type is available on the system])
   AC_DEFINE_UNQUOTED([COIN_UINT64_T], [uint64_t], [define this to a type of the indicated bitwidth])
+  AC_DEFINE_UNQUOTED([HAVE_INTPTR_T], [1], [define this if the type is available on the system])
+  AC_DEFINE_UNQUOTED([COIN_INTPTR_T], [intptr_t], [define this to a type of the indicated bitwidth])
+  AC_DEFINE_UNQUOTED([HAVE_UINTPTR_T], [1], [define this if the type is available on the system])
+  AC_DEFINE_UNQUOTED([COIN_UINTPTR_T], [uintptr_t], [define this to a type of the indicated bitwidth])
   $1
 else
   AC_MSG_RESULT([not available])
@@ -124,14 +130,14 @@ fi
 # SIM_AC_BYTESIZE_TYPE(TYPEDEFTYPE, BYTESIZE, ALTERNATE_TYPELIST,
 #                     [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND])
 # ----------------------------------------------------------
-# 
 # FIXME: pretty ugly code with several quick hacks. 20010324 mortene.
 AC_DEFUN([SIM_AC_BYTESIZE_TYPE],
 [sim_ac_searching=true
+AC_MSG_CHECKING([for $1 type or equivalent])
 for sim_ac_type in $1 $3
 do
   if $sim_ac_searching; then
-    SIM_AC_CHECK_SIZEOF($sim_ac_type, [
+    AC_TRY_COMPILE([
 #include <stdio.h>
 #ifdef HAVE_INTTYPES_H
 #include <inttypes.h>
@@ -143,20 +149,32 @@ do
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
-])
-    if test "$sim_ac_bytesize" = "$2"; then
-      sim_ac_searching=false
-      if test "$sim_ac_type" = "$1"; then
-        AC_DEFINE_UNQUOTED(SIM_AS_TR_CPP(have_$1), 1, [define this if the type is available on the system])
-      fi
-      AC_DEFINE_UNQUOTED(SIM_AS_TR_CPP(coin_$1), $sim_ac_type, [define this to a type of the indicated bitwidth])
+], [
+    int switchval = 0;
+    /* trick compiler to abort with error if sizeof($1) equals $2 */
+    switch ( switchval ) {
+    case sizeof($1): break;
+    case $2: break;
+    }
+], [
+    # compile time success means we *haven't* found the type of right size
+    :
+], [
+    AC_MSG_RESULT([$sim_ac_type])
+    sim_ac_searching=false
+    if test "$sim_ac_type" = "$1"; then
+      AC_DEFINE_UNQUOTED(SIM_AS_TR_CPP(have_$1), 1, [define this if the type is available on the system])
     fi
+    AC_DEFINE_UNQUOTED(SIM_AS_TR_CPP(coin_$1), $sim_ac_type, [define this to a type of the indicated bitwidth])
+])
   fi
 done
 
 if $sim_ac_searching; then
+  AC_MSG_RESULT([no type found])
   ifelse([$5], , :, [$5])
 else
+  # ac_msg_result invoked above
   ifelse([$4], , :, [$4])
 fi
 ])# SIM_AC_BYTESIZE_TYPE
@@ -164,20 +182,23 @@ fi
 # SIM_AC_DEFINE_BYTESIZE_TYPES
 # ----------------------------------------------------------
 # 
-AC_DEFUN([SIM_AC_DEFINE_BYTESIZE_TYPES],
-[
-SIM_AC_HAVE_BYTESIZE_TYPES_IFELSE([], [
-SIM_AC_BYTESIZE_TYPE(int8_t, 1, [char], [], AC_MSG_ERROR([could not find 8-bit type]))
-SIM_AC_BYTESIZE_TYPE(uint8_t, 1, [u_int8_t "unsigned char"], [], AC_MSG_ERROR([could not find unsigned 8-bit type]))
+AC_DEFUN([SIM_AC_DEFINE_BYTESIZE_TYPES], [
+SIM_AC_HAVE_BYTESIZE_TYPES_IFELSE([
+], [
+  SIM_AC_BYTESIZE_TYPE(int8_t, 1, [char], [], AC_MSG_ERROR([could not find 8-bit type]))
+  SIM_AC_BYTESIZE_TYPE(uint8_t, 1, [u_int8_t "unsigned char"], [], AC_MSG_ERROR([could not find unsigned 8-bit type]))
 
-SIM_AC_BYTESIZE_TYPE(int16_t, 2, [short int], [], AC_MSG_ERROR([could not find 16-bit type]))
-SIM_AC_BYTESIZE_TYPE(uint16_t, 2, [u_int16_t "unsigned short" "unsigned int"], [], AC_MSG_ERROR([could not find unsigned 16-bit type]))
+  SIM_AC_BYTESIZE_TYPE(int16_t, 2, [short int], [], AC_MSG_ERROR([could not find 16-bit type]))
+  SIM_AC_BYTESIZE_TYPE(uint16_t, 2, [u_int16_t "unsigned short" "unsigned int"], [], AC_MSG_ERROR([could not find unsigned 16-bit type]))
 
-SIM_AC_BYTESIZE_TYPE(int32_t, 4, [int long], [], AC_MSG_ERROR([could not find 32-bit type]))
-SIM_AC_BYTESIZE_TYPE(uint32_t, 4, [u_int32_t "unsigned int" "unsigned long"], [], AC_MSG_ERROR([could not find unsigned 32-bit type]))
+  SIM_AC_BYTESIZE_TYPE(int32_t, 4, [int long], [], AC_MSG_ERROR([could not find 32-bit type]))
+  SIM_AC_BYTESIZE_TYPE(uint32_t, 4, [u_int32_t "unsigned int" "unsigned long"], [], AC_MSG_ERROR([could not find unsigned 32-bit type]))
 
-SIM_AC_BYTESIZE_TYPE(int64_t, 8, [long int "long long" __int64], [], AC_MSG_WARN([could not find 64-bit type]))
-SIM_AC_BYTESIZE_TYPE(uint64_t, 8, [u_int64_t "unsigned long" "unsigned int" "unsigned long long" "unsigned __int64"], [], AC_MSG_WARN([could not find unsigned 64-bit type]))
+  SIM_AC_BYTESIZE_TYPE(int64_t, 8, [long int "long long" __int64], [], AC_MSG_WARN([could not find 64-bit type]))
+  SIM_AC_BYTESIZE_TYPE(uint64_t, 8, [u_int64_t "unsigned long" "unsigned int" "unsigned long long" "unsigned __int64"], [], AC_MSG_WARN([could not find unsigned 64-bit type]))
+
+  SIM_AC_BYTESIZE_TYPE(intptr_t, sizeof(void *), [int long "long long" __int64], [], AC_MSG_WARN([could not find int-pointer type]))
+  SIM_AC_BYTESIZE_TYPE(uintptr_t, sizeof(void *), [u_intptr_t "unsigned int" "unsigned long" u_int64_t "unsigned long long" "unsigned __int64"], [], AC_MSG_WARN([could not find unsigned int-pointer type]))
 ])
 ])# SIM_AC_DEFINE_BYTESIZE_TYPES
 
