@@ -729,7 +729,6 @@ SbMatrix::setTransform(const SbVec3f & translation,
                        const SbRotation & scaleOrientation,
                        const SbVec3f & center)
 {
-#if 0 // replaced with optimized version, 19990423 pederb
   SbMatrix tmp;
 
   this->setTranslate(-center);
@@ -751,39 +750,6 @@ SbMatrix::setTransform(const SbVec3f & translation,
 
   tmp.setTranslate(center);
   this->multRight(tmp);
-
-#else // optimized version
-  // should be quite a lot faster. Matrix multiplication is
-  // expensive, and it rarely happens that all arguments
-  // are used in a Transform node. For VRML2Transform this
-  // is very important, since the Transform node has replaced
-  // the Separator node for that file format.
-  //  pederb, 19990423
-
-  SbMatrix tmp;
-  this->setTranslate(-center);
-  SbBool doorient = scaleOrientation.getValue()[3] != 0.0f;
-  if (doorient) {
-    tmp.setRotate(scaleOrientation.inverse());
-    this->multRight(tmp);
-  }
-  if (scaleFactor != SbVec3f(1.0f, 1.0f, 1.0f)) {
-    tmp.setScale(scaleFactor);
-    this->multRight(tmp);
-  }
-  if (doorient) {
-    tmp.setRotate(scaleOrientation);
-    this->multRight(tmp);
-  }
-  if (rotation.getValue()[3] != 0.0f) {
-    tmp.setRotate(rotation);
-    this->multRight(tmp);
-  }
-  if (translation + center != SbVec3f(0.0f, 0.0f, 0.0f)) {
-    tmp.setTranslate(translation+center);
-    this->multRight(tmp);
-  }
-#endif // end of optimized version
 }
 
 /*!
@@ -835,7 +801,7 @@ SbMatrix::getTransform(SbVec3f & t, SbRotation & r, SbVec3f & s,
   mul = 1.0f;
   if (parts.k.w != 0.0f) mul = 1.0f / parts.k.w;
   // mul be sign of determinant to support negative scales.
-  mul *= parts.f; 
+  mul *= parts.f;
   s[0] = parts.k.x * mul;
   s[1] = parts.k.y * mul;
   s[2] = parts.k.z * mul;
