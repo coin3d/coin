@@ -69,13 +69,6 @@ protected:
                        int & numcindices,
                        const SbBool needNormals,
                        SbBool & normalCacheUsed);
-
-private:
-  // FIXME: these are not in use, but we can't kill them until Coin
-  // v2, or we'd break ABI compatibility.  20010910 mortene.
-  int32_t * tIndices;
-  int32_t * nIndices;
-  int32_t * mIndices;
 };
 
 #endif // !COIN_SOINDEXEDSHAPE_H
