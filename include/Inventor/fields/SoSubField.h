@@ -237,8 +237,6 @@ public: \
   _valtype_ * startEditing(void) { this->evaluate(); return this->values; } \
   void finishEditing(void) { this->valueChanged(); }
 
-
-
 #define SO_MFIELD_DERIVED_VALUE_HEADER(_class_, _valtype_, _valref_) \
   PRIVATE_MFIELD_IO_HEADER(); \
 public: \
@@ -258,8 +256,11 @@ public: \
   SO_SFIELD_REQUIRED_HEADER(_class_); \
   SO_MFIELD_DERIVED_VALUE_HEADER(_class_, _valtype_, _valref_)
 
+#define SO_MFIELD_SETVALUESPOINTER_HEADER(_valtype_) \
+  void setValuesPointer(const int num, const _valtype_ * userdata); \
+  void setValuesPointer(const int num, _valtype_ * userdata);
 
-
+   
 /**************************************************************************
  *
  * Source macros for multiple-value fields.
@@ -402,9 +403,10 @@ _class_::allocValues(int newnum) \
   assert(newnum >= 0); \
  \
   if (newnum == 0) { \
-    delete[] this->values; /* don't fetch pointer through valuesPtr() (avoids void* cast) */ \
+    if (!this->userDataIsUsed) delete[] this->values; /* don't fetch pointer through valuesPtr() (avoids void* cast) */ \
     this->setValuesPtr(NULL); \
     this->maxNum = 0; \
+    this->userDataIsUsed = FALSE; \
   } \
   else if (newnum > this->maxNum || newnum < this->num) { \
     if (this->valuesPtr()) { \
@@ -420,6 +422,7 @@ _class_::allocValues(int newnum) \
       while ((this->maxNum >> 1) >= newnum) this->maxNum >>= 1; \
  \
       _valtype_ * newblock = new _valtype_[this->maxNum]; \
+      this->userDataIsUsed = FALSE; \
  \
       for (int i=0; i < SbMin(this->num, newnum); i++) \
         newblock[i] = this->values[i]; \
@@ -429,6 +432,7 @@ _class_::allocValues(int newnum) \
     } \
     else { \
       this->setValuesPtr(new _valtype_[newnum]); \
+      this->userDataIsUsed = FALSE; \
       this->maxNum = newnum; \
     } \
   } \
@@ -462,9 +466,26 @@ _class_::allocValues(int number) \
   SO_MFIELD_VALUE_SOURCE(_class_, _valtype_, _valref_)
 
 
-
 #define SO_MFIELD_DERIVED_SOURCE(_class_, _valtype_, _valref_) \
   SO_MFIELD_REQUIRED_SOURCE(_class_); \
   SO_MFIELD_DERIVED_CONSTRUCTOR_SOURCE(_class_)
+
+#define SO_MFIELD_SETVALUESPOINTER_SOURCE(_class_, _valtype_, _usertype_) \
+void \
+_class_::setValuesPointer(const int num, _usertype_ * userdata) \
+{ \
+  this->makeRoom(0); \
+  if (num > 0 && userdata) { \
+    this->values = (_valtype_*) userdata; \
+    this->userDataIsUsed = TRUE; \
+    this->num = this->maxNum = num; \
+    this->valueChanged(); \
+  } \
+} \
+void \
+_class_::setValuesPointer(const int num, const _usertype_ * userdata) \
+{ \
+  this->setValuesPointer(num, (_usertype_*) userdata); \
+}
 
 #endif // !COIN_SOSUBFIELD_H

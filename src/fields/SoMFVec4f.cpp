@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -29,6 +29,10 @@
   This field is used where nodes, engines or other field containers
   needs to store an array of vectors with four elements.
 
+  This field supports application data sharing through a
+  setValuesPointer() method. See SoMField documentation for
+  information on how to use this function.
+
   \sa SoSFVec4f
 
 */
@@ -39,9 +43,10 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-
-
 SO_MFIELD_SOURCE(SoMFVec4f, SbVec4f, const SbVec4f &);
+
+SO_MFIELD_SETVALUESPOINTER_SOURCE(SoMFVec4f, SbVec4f, SbVec4f);
+SO_MFIELD_SETVALUESPOINTER_SOURCE(SoMFVec4f, SbVec4f, float);
 
 // Override from parent class.
 void

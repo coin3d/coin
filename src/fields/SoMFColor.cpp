@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -30,6 +30,10 @@
   needs to store multiple color values (i.e. "Red Green Blue"
   triplets).
 
+  This field supports application data sharing through a
+  setValuesPointer() method. See SoMField documentation for
+  information on how to use this function.
+
   \sa SoSFColor
 
 */
@@ -43,6 +47,9 @@
 
 
 SO_MFIELD_SOURCE(SoMFColor, SbColor, const SbColor &);
+
+SO_MFIELD_SETVALUESPOINTER_SOURCE(SoMFColor, SbColor, float);
+SO_MFIELD_SETVALUESPOINTER_SOURCE(SoMFColor, SbColor, SbColor);
 
 // Override from parent.
 void

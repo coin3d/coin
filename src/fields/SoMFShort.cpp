@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -29,6 +29,10 @@
   This field is used where nodes, engines or other field containers
   needs to store a group of multiple short integer values.
 
+  This field supports application data sharing through a
+  setValuesPointer() method. See SoMField documentation for
+  information on how to use this function.
+
   \sa SoSFShort
 
 */
@@ -39,10 +43,9 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-
-
 SO_MFIELD_SOURCE_MALLOC(SoMFShort, short, short);
 
+SO_MFIELD_SETVALUESPOINTER_SOURCE(SoMFShort, short, short);
 
 // Override from parent class.
 void

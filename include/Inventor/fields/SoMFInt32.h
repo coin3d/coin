@@ -5,7 +5,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -31,6 +31,8 @@ class COIN_DLL_API SoMFInt32 : public SoMField {
   typedef SoMField inherited;
 
   SO_MFIELD_HEADER(SoMFInt32, int32_t, int32_t);
+
+  SO_MFIELD_SETVALUESPOINTER_HEADER(int32_t);
 
 public:
   static void initClass(void);

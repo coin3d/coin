@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -126,10 +126,57 @@
      }
   \endcode
 
+  Some fields support application data sharing through a
+  setValuesPointer() method. setValuesPointer() makes it possible to
+  set the data pointer directly in the field. Normally (when using
+  setValues()), Coin makes a copy of your data, so this method can be
+  very useful if your application needs the data internally and you're
+  just using Coin for the visualization. Example code:
+
+  \code
+
+  myapp->calculateCoordinates(SOME_LARGE_VALUE);
+  SbVec3f * mycoords = myapp->getCoordinates();
+
+  SoCoordinate3 * mynode = myapp->getCoordinateNode();
+  mynode->point.setValuesPointer(SOME_LARGE_VALUE, mycoords);
+
+  \endcode
+
+  Be aware that your field should be a read-only field when you set
+  the data like this. If you write to the field, the values in your
+  application array will be overwritten. If you append values to the
+  field, a new array will be allocated, and the data will be copied
+  into it before appending the new values. The array pointer will then
+  be discarded.
+
+  Also note that whenever you change some value in the array, you must
+  manually notify Coin about this by calling SoField::touch(). For our
+  example:
+
+  \code
+
+  SbVec3f * mycoords = myapp->getCoordinate();
+  myapp->updateCoordinate(mycoords);
+  SoCoordinate3 * mynode = myapp->getCoordinateNode();
+  mynode->point.touch(); // this will notify Coin that field has changed
+  
+  \endcode
+
+  You can use SoMField::enableDeleteValues() to make Coin delete the
+  array for you when the field is destructed or the array pointer is
+  discarded because it isn't needed anymore (e.g. when the array size
+  is changed). The array will be deleted using the C++ \e delete[]
+  operator, so if you use it, your array must be allocated using the
+  C++ \e new operator.This function is supported only to be compatible
+  with TGS Inventor and we don't recommend using it. It can have
+  undefined results if you do this, at least on the Windows
+  platform. Allocating memory in the application and destructing it in
+  a DLL can be a bad thing if you're not very careful.
 
   \sa SoSField
 
- */
+*/
 
 /*!
   \fn int SoMField::getNum(void) const
@@ -184,6 +231,7 @@ SoMField::initClass(void)
 SoMField::SoMField(void)
 {
   this->maxNum = this->num = 0;
+  this->userDataIsUsed = FALSE;
 }
 
 /*!
@@ -526,6 +574,40 @@ SoMField::deleteValues(int start, int num)
 }
 
 /*!
+  Can be used to make Coin delete the array pointer set through
+  a setValuesPointer() call. See SoMField documentation for
+  information about the setValuesPointer() function.
+
+  This method is a TGS extension (introduced in TGS OIV v3.0) and is
+  supported only for compatibility. We suggest that you don't use it
+  since it can lead to hard-to-find bugs.
+
+  \since 2002-02-08 
+*/
+void
+SoMField::enableDeleteValues(void)
+{
+  this->userDataIsUsed = FALSE;
+}
+
+/*!
+  Returns whether SoMField::enableDeleteValues() has been
+  called on a field. The result is only valid if setValuesPointer()
+  has been called on the field first.
+
+  This method is a TGS extension (introduced in TGS OIV v3.0) and is
+  supported only for compatibility. We suggest that you don't use it
+  since it can lead to hard-to-find bugs.
+
+  \since 2002-02-08 
+*/
+SbBool
+SoMField::isDeleteValuesEnabled(void)
+{
+  return !this->userDataIsUsed;
+}
+
+/*!
   Insert \a num "slots" for new value elements from \a start.
   The elements already present from \a start will be moved
   "upward" in the extended array.
@@ -570,8 +652,11 @@ SoMField::allocValues(int newnum)
   assert(newnum >= 0);
 
   if (newnum == 0) {
-    delete[] (unsigned char *) this->valuesPtr();
+    if (!this->userDataIsUsed) {
+      delete[] (unsigned char *) this->valuesPtr();
+    }
     this->setValuesPtr(NULL);
+    this->userDataIsUsed = FALSE;
     this->maxNum = 0;
   }
   else if (newnum > this->maxNum || newnum < this->num) {
@@ -607,8 +692,11 @@ SoMField::allocValues(int newnum)
       if (rest > 0) {
         (void)memset(newblock + copysize, 0, rest);
       }
-      delete[] (unsigned char *) this->valuesPtr();
+      if (!this->userDataIsUsed) {
+        delete[] (unsigned char *) this->valuesPtr();
+      }
       this->setValuesPtr(newblock);
+      this->userDataIsUsed = FALSE;
     }
     else {
       unsigned char * data = new unsigned char[newnum * fsize];
@@ -616,6 +704,7 @@ SoMField::allocValues(int newnum)
       // SoMFEngine, so we just initialize the array to NULL.
       (void)memset(data, 0, newnum * fsize);
       this->setValuesPtr(data);
+      this->userDataIsUsed = FALSE;
       this->maxNum = newnum;
     }
   }

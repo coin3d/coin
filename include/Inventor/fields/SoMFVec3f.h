@@ -33,6 +33,9 @@ class COIN_DLL_API SoMFVec3f : public SoMField {
 
   SO_MFIELD_HEADER(SoMFVec3f, SbVec3f, const SbVec3f &);
 
+  SO_MFIELD_SETVALUESPOINTER_HEADER(float);
+  SO_MFIELD_SETVALUESPOINTER_HEADER(SbVec3f);
+
 public:
   static void initClass(void);
 

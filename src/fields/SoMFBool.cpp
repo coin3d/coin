@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -29,8 +29,11 @@
   This field is used where nodes, engines or other field containers
   needs to store multiple boolean on/off or TRUE/FALSE values.
 
+  This field supports application data sharing through a
+  setValuesPointer() method. See SoMField documentation for
+  information on how to use this function.
 
-  \sa SoSFBool
+  \sa SoSFBool 
 */
 
 #include <Inventor/fields/SoMFBool.h>
@@ -41,6 +44,8 @@
 
 
 SO_MFIELD_SOURCE_MALLOC(SoMFBool, SbBool, SbBool);
+
+SO_MFIELD_SETVALUESPOINTER_SOURCE(SoMFBool, SbBool, SbBool);
 
 // Override from parent.
 void

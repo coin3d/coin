@@ -48,6 +48,9 @@ public:
 
   static void initClass(void);
 
+  virtual void enableDeleteValues(void);
+  virtual SbBool isDeleteValuesEnabled(void);
+
 protected:
   SoMField(void);
   virtual void makeRoom(int newnum);
@@ -61,6 +64,7 @@ protected:
 
   int num;
   int maxNum;
+  SbBool userDataIsUsed;
 
 private:
   virtual void deleteAllValues(void) = 0;
