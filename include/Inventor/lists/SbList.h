@@ -160,12 +160,12 @@ public:
     return this->numitems;
   }
 
-  void truncate(const int length, const int fit = 0) {
+  void truncate(const int length, const int dofit = 0) {
 #ifdef COIN_EXTRA_DEBUG
     assert(length <= this->numitems);
 #endif // COIN_EXTRA_DEBUG
     this->numitems = length;
-    if (fit) this->fit();
+    if (dofit) this->fit();
   }
 
   void push(const Type item) {

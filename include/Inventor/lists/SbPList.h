@@ -97,13 +97,13 @@ SbPList::getLength(void) const
 }
 
 inline void 
-SbPList::truncate(const int length, const int fit ) 
+SbPList::truncate(const int length, const int dofit) 
 {
 #ifdef COIN_EXTRA_DEBUG
   assert(length <= this->numitems);
 #endif // COIN_EXTRA_DEBUG
   this->numitems = length;
-  if (fit) this->fit();
+  if (dofit) this->fit();
 }
 
 inline void ** 

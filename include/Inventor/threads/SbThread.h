@@ -45,7 +45,7 @@ public:
   }
 
 protected:
-  SbThread(cc_thread * thread) { this->thread = thread; }
+  SbThread(cc_thread * thrd) { this->thread = thrd; }
   ~SbThread(void) {}
 
 private:
