@@ -24,7 +24,7 @@
 #include <Inventor/actions/SoSubAction.h>
 
 
-class SoSimplifyAction : public SoAction {
+class COIN_DLL_EXPORT SoSimplifyAction : public SoAction {
   typedef SoAction inherited;
 
   SO_ACTION_HEADER(SoSimplifyAction);

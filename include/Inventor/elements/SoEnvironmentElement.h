@@ -24,7 +24,7 @@
 #include <Inventor/SbColor.h>
 
 
-class SoEnvironmentElement : public SoReplacedElement {
+class COIN_DLL_EXPORT SoEnvironmentElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
   SO_ELEMENT_HEADER(SoEnvironmentElement);

@@ -25,7 +25,7 @@
 class SoDetail;
 
 
-class SoDetailList : public SbList<SoDetail *> {
+class COIN_DLL_EXPORT SoDetailList : public SbList<SoDetail *> {
 };
 
 #endif // !COIN_SODETAILLIST_H

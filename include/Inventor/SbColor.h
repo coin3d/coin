@@ -23,7 +23,7 @@
 #include <Inventor/system/inttypes.h>
 #include <Inventor/SbVec3f.h>
 
-class SbColor : public SbVec3f {
+class COIN_DLL_EXPORT SbColor : public SbVec3f {
 public:
   SbColor(void);
   SbColor(const SbVec3f& v);

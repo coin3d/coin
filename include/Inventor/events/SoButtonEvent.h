@@ -23,7 +23,7 @@
 #include <Inventor/events/SoSubEvent.h>
 
 
-class SoButtonEvent : public SoEvent {
+class COIN_DLL_EXPORT SoButtonEvent : public SoEvent {
   typedef SoEvent inherited;
 
   SO_EVENT_HEADER();

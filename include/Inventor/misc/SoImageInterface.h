@@ -27,7 +27,7 @@
 class SbStringList;
 
 
-class SoImageInterface {
+class COIN_DLL_EXPORT SoImageInterface {
 public:
   SoImageInterface(const SbVec2s size,
                    const int numComponents,

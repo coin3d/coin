@@ -25,7 +25,7 @@
 #include <Inventor/fields/SoMField.h>
 
 
-class SoConcatenate : public SoEngine {
+class COIN_DLL_EXPORT SoConcatenate : public SoEngine {
   typedef SoEngine inherited;
 
   SO_ENGINE_HEADER(SoConcatenate);

@@ -25,7 +25,7 @@
 #include <Inventor/fields/SoSFVec3f.h>
 
 
-class SoDirectionalLight : public SoLight {
+class COIN_DLL_EXPORT SoDirectionalLight : public SoLight {
   typedef SoLight inherited;
 
   SO_NODE_HEADER(SoDirectionalLight);

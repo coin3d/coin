@@ -24,7 +24,7 @@
 #include <Inventor/nodes/SoTextureCoordinateFunction.h>
 
 
-class SoTextureCoordinateDefault : public SoTextureCoordinateFunction {
+class COIN_DLL_EXPORT SoTextureCoordinateDefault : public SoTextureCoordinateFunction {
   typedef SoTextureCoordinateFunction inherited;
 
   SO_NODE_HEADER(SoTextureCoordinateDefault);

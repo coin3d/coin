@@ -23,7 +23,7 @@
 #include <Inventor/elements/SoCoordinateElement.h>
 
 
-class SoGLCoordinateElement : public SoCoordinateElement {
+class COIN_DLL_EXPORT SoGLCoordinateElement : public SoCoordinateElement {
   typedef SoCoordinateElement inherited;
 
   SO_ELEMENT_HEADER(SoGLCoordinateElement);

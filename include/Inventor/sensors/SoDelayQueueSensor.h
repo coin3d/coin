@@ -25,7 +25,7 @@
 #include <Inventor/system/inttypes.h>
 
 
-class SoDelayQueueSensor : public SoSensor {
+class COIN_DLL_EXPORT SoDelayQueueSensor : public SoSensor {
   typedef SoSensor inherited;
 
 public:

@@ -25,7 +25,7 @@
 #include <Inventor/fields/SoSFTrigger.h>
 
 
-class SoTriggerAny : public SoEngine {
+class COIN_DLL_EXPORT SoTriggerAny : public SoEngine {
   typedef SoEngine inherited;
   SO_ENGINE_HEADER(SoTriggerAny);
 

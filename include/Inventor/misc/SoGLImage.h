@@ -27,7 +27,7 @@
 class SoImageInterface;
 
 
-class SoGLImage {
+class COIN_DLL_EXPORT SoGLImage {
 public:
 
   static SoGLImage *findOrCreateGLImage(SoImageInterface * const image,
@@ -39,7 +39,7 @@ public:
   void unref(); // use this to delete
 
   SbBool matches(const SbBool clamps, const SbBool clampt) const;
-  
+
   void apply(const float quality) const;
   int getHandle() const;
   SbBool hasTransparency() const;

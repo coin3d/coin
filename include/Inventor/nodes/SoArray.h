@@ -27,7 +27,7 @@
 #include <Inventor/fields/SoSFVec3f.h>
 
 
-class SoArray : public SoGroup {
+class COIN_DLL_EXPORT SoArray : public SoGroup {
     typedef SoGroup inherited;
 
   SO_NODE_HEADER(SoArray);

@@ -24,7 +24,7 @@
 #include <Inventor/system/inttypes.h>
 
 
-class SoInt32Element : public SoElement {
+class COIN_DLL_EXPORT SoInt32Element : public SoElement {
   typedef SoElement inherited;
 
   SO_ELEMENT_ABSTRACT_HEADER(SoInt32Element);

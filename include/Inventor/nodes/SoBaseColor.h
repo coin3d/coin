@@ -24,7 +24,7 @@
 #include <Inventor/fields/SoMFColor.h>
 
 
-class SoBaseColor : public SoNode {
+class COIN_DLL_EXPORT SoBaseColor : public SoNode {
   typedef SoNode inherited;
 
   SO_NODE_HEADER(SoBaseColor);

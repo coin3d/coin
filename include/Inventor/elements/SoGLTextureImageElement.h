@@ -25,7 +25,7 @@
 class SoGLImage;
 
 
-class SoGLTextureImageElement : public SoTextureImageElement {
+class COIN_DLL_EXPORT SoGLTextureImageElement : public SoTextureImageElement {
   typedef SoTextureImageElement inherited;
 
   SO_ELEMENT_HEADER(SoGLTextureImageElement);
@@ -52,9 +52,9 @@ protected:
 private:
   SoGLImage *image;
   float quality;
-  
+
   SoGLImage *glimage;
-  float glquality;  
+  float glquality;
   int glmodel;
   SbColor glblendcolor;
 };

@@ -23,7 +23,7 @@
 #include <Inventor/elements/SoReplacedElement.h>
 
 
-class SoTransparencyElement : public SoReplacedElement {
+class COIN_DLL_EXPORT SoTransparencyElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
   SO_ELEMENT_HEADER(SoTransparencyElement);

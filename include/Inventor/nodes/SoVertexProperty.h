@@ -27,7 +27,7 @@
 #include <Inventor/fields/SoSFEnum.h>
 
 
-class SoVertexProperty : public SoNode {
+class COIN_DLL_EXPORT SoVertexProperty : public SoNode {
   typedef SoNode inherited;
 
   SO_NODE_HEADER(SoVertexProperty);

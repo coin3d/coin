@@ -27,8 +27,7 @@
 
 class SoDetail;
 
-class SoPrimitiveVertex
-{
+class COIN_DLL_EXPORT SoPrimitiveVertex {
 public:
   SoPrimitiveVertex(void);
   SoPrimitiveVertex(const SoPrimitiveVertex & pv);

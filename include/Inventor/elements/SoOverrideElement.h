@@ -26,7 +26,7 @@
 class SoType; // lame doxygen "fix"
 
 
-class SoOverrideElement : public SoElement {
+class COIN_DLL_EXPORT SoOverrideElement : public SoElement {
   typedef SoElement inherited;
 
   SO_ELEMENT_HEADER(SoOverrideElement);

@@ -24,7 +24,7 @@
 #include <Inventor/SbMatrix.h>
 
 
-class SoViewingMatrixElement : public SoReplacedElement {
+class COIN_DLL_EXPORT SoViewingMatrixElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
   SO_ELEMENT_HEADER(SoViewingMatrixElement);

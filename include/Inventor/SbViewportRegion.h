@@ -24,7 +24,7 @@
 #include <Inventor/SbVec2s.h>
 #include <Inventor/SbVec2f.h>
 
-class SbViewportRegion {
+class COIN_DLL_EXPORT SbViewportRegion {
 public:
   SbViewportRegion(void);
   SbViewportRegion(short width, short height);

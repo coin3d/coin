@@ -25,7 +25,7 @@
 #include <Inventor/SbName.h>
 
 
-class SoMFName : public SoMField {
+class COIN_DLL_EXPORT SoMFName : public SoMField {
   typedef SoMField inherited;
 
   SO_MFIELD_HEADER(SoMFName, SbName, const SbName &);

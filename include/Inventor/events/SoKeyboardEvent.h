@@ -38,7 +38,7 @@
  (SoKeyboardEvent::isKeyReleaseEvent(EVENT, SoKeyboardEvent::KEY))
 
 
-class SoKeyboardEvent : public SoButtonEvent {
+class COIN_DLL_EXPORT SoKeyboardEvent : public SoButtonEvent {
   typedef SoButtonEvent inherited;
 
   SO_EVENT_HEADER();

@@ -26,7 +26,7 @@
 #include <Inventor/nodes/SoShape.h>
 
 
-class SoCone : public SoShape {
+class COIN_DLL_EXPORT SoCone : public SoShape {
   typedef SoShape inherited;
 
   SO_NODE_HEADER(SoCone);

@@ -25,7 +25,7 @@
 #include <Inventor/SbTime.h>
 
 
-class SoSFTime : public SoSField {
+class COIN_DLL_EXPORT SoSFTime : public SoSField {
   typedef SoSField inherited;
 
   SO_SFIELD_HEADER(SoSFTime, SbTime, const SbTime &);

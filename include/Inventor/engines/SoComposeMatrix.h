@@ -27,7 +27,7 @@
 #include <Inventor/fields/SoMFRotation.h>
 
 
-class SoComposeMatrix : public SoEngine {
+class COIN_DLL_EXPORT SoComposeMatrix : public SoEngine {
   typedef SoEngine inherited;
 
   SO_COMPOSE__HEADER(SoComposeMatrix);

@@ -24,7 +24,7 @@
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbVec2f.h>
 
-class SbBox2f {
+class COIN_DLL_EXPORT SbBox2f {
 public:
   SbBox2f(void);
   SbBox2f(float xmin, float ymin, float xmax, float ymax);

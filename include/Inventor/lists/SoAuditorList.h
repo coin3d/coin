@@ -36,7 +36,7 @@
 //  -mortene
 
 
-class SoAuditorList : private SbPList {
+class COIN_DLL_EXPORT SoAuditorList : private SbPList {
   typedef SbPList inherited;
 
 public:

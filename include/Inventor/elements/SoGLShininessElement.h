@@ -23,7 +23,7 @@
 #include <Inventor/elements/SoShininessElement.h>
 
 
-class SoGLShininessElement : public SoShininessElement {
+class COIN_DLL_EXPORT SoGLShininessElement : public SoShininessElement {
   typedef SoShininessElement inherited;
 
   SO_ELEMENT_HEADER(SoGLShininessElement);

@@ -21,10 +21,11 @@
 #define COIN_SBVEC2S_H
 
 #include <stdio.h>
-
+#include <Inventor/SbBasic.h>
 #include <Inventor/system/inttypes.h>
 
-class SbVec2s {
+
+class COIN_DLL_EXPORT SbVec2s {
 public:
   SbVec2s(void);
   SbVec2s(const short v[2]);

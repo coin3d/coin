@@ -32,8 +32,7 @@ class SoNode;
 class SoState;
 class SbMatrix;
 
-class SoPickedPoint
-{
+class COIN_DLL_EXPORT SoPickedPoint {
 public:
   SoPickedPoint(const SoPickedPoint & pp);
   SoPickedPoint(const SoPath * const path, SoState * const state,
@@ -54,7 +53,7 @@ public:
   SbVec3f getObjectPoint(const SoNode * const node = NULL) const;
   SbVec3f getObjectNormal(const SoNode * const node = NULL) const;
   SbVec4f getObjectTextureCoords(const SoNode * const node = NULL) const;
-  
+
   void setObjectNormal(const SbVec3f &normal);
   void setObjectTextureCoords(const SbVec4f &texCoords);
   void setMaterialIndex(const int index);

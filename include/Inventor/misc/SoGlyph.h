@@ -25,12 +25,12 @@
 class SbVec2f;
 class SbName;
 
-class SoGlyph {
+class COIN_DLL_EXPORT SoGlyph {
 public:
-  
+
   static const SoGlyph *getGlyph(const char character, const SbName &font);
   void unref() const;
-  
+
   const SbVec2f *getCoords(void) const;
   const int *getFaceIndices(void) const;
   const int *getEdgeIndices(void) const;
@@ -39,16 +39,16 @@ public:
 protected:
   SoGlyph();
   ~SoGlyph();
-  
+
   void setCoords(SbVec2f *coords, int numcoords = -1);
   void setFaceIndices(int *indices, int numindices = -1);
   void setEdgeIndices(int *indices, int numindices = -1);
 
-private: 
-  
+private:
+
   static SoGlyph *createSystemGlyph(const char character, const SbName &font);
   static void unrefGlyph(SoGlyph *glyph);
-  
+
   SbVec2f *coords;
   int *faceidx;
   int *edgeidx;

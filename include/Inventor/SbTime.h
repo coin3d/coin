@@ -38,7 +38,7 @@ struct timeval;
 #include <Inventor/SbString.h>
 
 
-class SbTime {
+class COIN_DLL_EXPORT SbTime {
 public:
   SbTime(void);
   SbTime(const double sec);

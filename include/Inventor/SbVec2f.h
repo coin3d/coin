@@ -24,7 +24,7 @@
 
 #include <Inventor/SbBasic.h>
 
-class SbVec2f {
+class COIN_DLL_EXPORT SbVec2f {
 public:
   SbVec2f(void);
   SbVec2f(const float v[2]);

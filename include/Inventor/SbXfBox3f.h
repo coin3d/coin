@@ -24,8 +24,7 @@
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SbMatrix.h>
 
-class SbXfBox3f : public SbBox3f
-{
+class COIN_DLL_EXPORT SbXfBox3f : public SbBox3f {
   typedef SbBox3f inherited;
 
 public:

@@ -23,7 +23,7 @@
 #include <Inventor/elements/SoDrawStyleElement.h>
 
 
-class SoGLDrawStyleElement : public SoDrawStyleElement {
+class COIN_DLL_EXPORT SoGLDrawStyleElement : public SoDrawStyleElement {
   typedef SoDrawStyleElement inherited;
 
   SO_ELEMENT_HEADER(SoGLDrawStyleElement);

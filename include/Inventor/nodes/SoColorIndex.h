@@ -24,7 +24,7 @@
 #include <Inventor/fields/SoMFInt32.h>
 
 
-class SoColorIndex : public SoNode {
+class COIN_DLL_EXPORT SoColorIndex : public SoNode {
   typedef SoNode inherited;
 
   SO_NODE_HEADER(SoColorIndex);

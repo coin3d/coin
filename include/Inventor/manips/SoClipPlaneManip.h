@@ -31,7 +31,7 @@ class SoPath;
 class SoSensor;
 
 
-class SoClipPlaneManip : public SoClipPlane {
+class COIN_DLL_EXPORT SoClipPlaneManip : public SoClipPlane {
   typedef SoClipPlane inherited;
 
   SO_NODE_HEADER(SoClipPlaneManip);

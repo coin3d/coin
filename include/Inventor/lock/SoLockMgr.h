@@ -20,7 +20,10 @@
 #ifndef COIN_LOCKMGR_H
 #define COIN_LOCKMGR_H
 
-class SoLockManager {
+#include <Inventor/SbBasic.h>
+
+
+class COIN_DLL_EXPORT SoLockManager {
 public:
   static void SetUnlockString(char * unlockstr);
   static char * GetUnlockString(void);

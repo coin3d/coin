@@ -28,7 +28,7 @@
 #include <Inventor/fields/SoSFNode.h>
 
 
-class SoAnnoText3 : public SoShape {
+class COIN_DLL_EXPORT SoAnnoText3 : public SoShape {
   typedef SoShape inherited;
 
   SO_NODE_HEADER(SoAnnoText3);

@@ -23,7 +23,7 @@
 #include <Inventor/caches/SoCache.h>
 #include <Inventor/SbXfBox3f.h>
 
-class SoBoundingBoxCache : public SoCache {
+class COIN_DLL_EXPORT SoBoundingBoxCache : public SoCache {
   typedef SoCache inherited;
 public:
   SoBoundingBoxCache(SoState *state);

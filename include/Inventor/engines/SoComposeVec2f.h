@@ -26,7 +26,7 @@
 #include <Inventor/fields/SoMFVec2f.h>
 
 
-class SoComposeVec2f : public SoEngine {
+class COIN_DLL_EXPORT SoComposeVec2f : public SoEngine {
   typedef SoEngine inherited;
 
   SO_COMPOSE__HEADER(SoComposeVec2f);

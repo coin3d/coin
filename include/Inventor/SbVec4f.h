@@ -26,7 +26,7 @@
 
 class SbVec3f;
 
-class SbVec4f {
+class COIN_DLL_EXPORT SbVec4f {
 public:
   SbVec4f(void);
   SbVec4f(const float v[4]);

@@ -25,7 +25,7 @@
 class SoPath;
 
 
-class SoPathList : public SoBaseList {
+class COIN_DLL_EXPORT SoPathList : public SoBaseList {
   typedef SoBaseList inherited;
 
 public:

@@ -23,7 +23,7 @@
 #include <Inventor/SbBasic.h> // for SbBool type
 
 
-class SoNodeKit {
+class COIN_DLL_EXPORT SoNodeKit {
 public:
   static void init(void);
 

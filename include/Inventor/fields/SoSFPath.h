@@ -27,7 +27,7 @@ class SoPath;
 class SoNotList;
 
 
-class SoSFPath : public SoSField {
+class COIN_DLL_EXPORT SoSFPath : public SoSField {
   typedef SoSField inherited;
 
   SO_SFIELD_HEADER(SoSFPath, SoPath *, SoPath *);

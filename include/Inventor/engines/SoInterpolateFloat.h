@@ -23,7 +23,7 @@
 #include <Inventor/engines/SoInterpolate.h>
 #include <Inventor/fields/SoMFFloat.h>
 
-class SoInterpolateFloat : public SoInterpolate {
+class COIN_DLL_EXPORT SoInterpolateFloat : public SoInterpolate {
   typedef SoInterpolate inherited;
   SO_INTERPOLATE_HEADER(SoInterpolateFloat);
 

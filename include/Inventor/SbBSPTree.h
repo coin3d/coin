@@ -29,8 +29,7 @@ class SbSphere;
 
 class coin_bspnode;
 
-class SbBSPTree
-{
+class COIN_DLL_EXPORT SbBSPTree {
 public:
   SbBSPTree(const int maxnodepts = 64, const int initsize = 4);
   ~SbBSPTree();

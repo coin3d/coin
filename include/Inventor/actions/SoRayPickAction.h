@@ -34,7 +34,7 @@ class SbViewportRegion;
 class SoPickedPoint;
 
 
-class SoRayPickAction : public SoPickAction {
+class COIN_DLL_EXPORT SoRayPickAction : public SoPickAction {
   typedef SoPickAction inherited;
 
   SO_ACTION_HEADER(SoRayPickAction);
@@ -114,8 +114,8 @@ private:
     WS_RAY_COMPUTED = 0x0002, // ray computed in ::computeWorldSpaceRay
     PICK_ALL =        0x0004, // return all picked objects, or just closest
     NORM_POINT =      0x0008, // is normalized vppoint calculated
-    CLIP_NEAR =       0x0010, // clip ray at near plane? 
-    CLIP_FAR =        0x0020, // clip ray at far plane? 
+    CLIP_NEAR =       0x0010, // clip ray at near plane?
+    CLIP_FAR =        0x0020, // clip ray at far plane?
     EXTRA_MATRIX =    0x0040 // is extra matrix supplied in ::setObjectSpace
   };
 };

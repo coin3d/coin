@@ -29,8 +29,7 @@
 class SoGroup;
 
 
-class SoNodeKitListPart : public SoNode
-{
+class COIN_DLL_EXPORT SoNodeKitListPart : public SoNode {
   typedef SoNode inherited;
 
   SO_NODE_HEADER(SoNodeKitListPart);

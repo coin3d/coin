@@ -26,27 +26,27 @@ class SoElement;
 #include <Inventor/SbBasic.h>
 #include <Inventor/lists/SbList.h>
 
-class SoCache {
+class COIN_DLL_EXPORT SoCache {
 public:
   SoCache(SoState * const state);
 
   void ref(void);
   void unref(SoState * state = NULL);
-  
+
   void addElement(const SoElement * const elem);
-  
+
   virtual void addCacheDependency(const SoState * state,
                                   SoCache * cache);
   virtual SbBool isValid(const SoState * state) const;
   const SoElement * getInvalidElement(const SoState * const state) const;
   void invalidate(void);
-  
+
 protected:
   virtual void destroy(SoState * state);
   virtual ~SoCache();
-  
+
 private:
-  
+
   SbList <SoElement *> elements;
   unsigned char * elementflags;
   int refcount;

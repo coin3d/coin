@@ -28,7 +28,7 @@ class SoFieldSensor;
 class SbPlaneProjector;
 class SbLineProjector;
 
-class SoHandleBoxDragger : public SoDragger {
+class COIN_DLL_EXPORT SoHandleBoxDragger : public SoDragger {
   typedef SoDragger inherited;
 
   SO_KIT_HEADER(SoHandleBoxDragger);
@@ -149,7 +149,7 @@ private:
   SbBool ctrlDown;
   SbVec3f worldRestartPt;
   SbVec3f ctrlOffset;
-  
+
   void getSurroundScaleMatrices(SbMatrix &matrix, SbMatrix &inv);
   SbVec3f getDraggerCenter();
   SbVec3f calcCtrlOffset(const SbVec3f startpt);

@@ -28,7 +28,7 @@ class SoFieldSensor;
 class SbCylinderProjector;
 
 
-class SoRotateCylindricalDragger : public SoDragger {
+class COIN_DLL_EXPORT SoRotateCylindricalDragger : public SoDragger {
   typedef SoDragger inherited;
 
   SO_KIT_HEADER(SoRotateCylindricalDragger);

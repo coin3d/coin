@@ -25,7 +25,7 @@
 #include <Inventor/SbRotation.h>
 
 
-class SoMotion3Event : public SoEvent {
+class COIN_DLL_EXPORT SoMotion3Event : public SoEvent {
   typedef SoEvent inherited;
 
   SO_EVENT_HEADER();

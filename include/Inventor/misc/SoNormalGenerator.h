@@ -25,8 +25,7 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/system/inttypes.h>
 
-class SoNormalGenerator
-{
+class COIN_DLL_EXPORT SoNormalGenerator {
 public:
   SoNormalGenerator(const SbBool ccw, const int approxVertices = 64);
   ~SoNormalGenerator();

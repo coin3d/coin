@@ -26,7 +26,7 @@
 class SbMatrix;
 class SbVec3f;
 
-class SbRotation {
+class COIN_DLL_EXPORT SbRotation {
 public:
   SbRotation(void);
   SbRotation(const SbVec3f & axis, const float radians);

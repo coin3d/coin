@@ -26,7 +26,7 @@
 class SbLine;
 class SbBox3f;
 
-class SbSphere {
+class COIN_DLL_EXPORT SbSphere {
 public:
   SbSphere(void);
   SbSphere(const SbVec3f & center, const float radius);

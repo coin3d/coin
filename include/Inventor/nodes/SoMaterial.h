@@ -26,7 +26,7 @@
 #include <Inventor/fields/SoSFFloat.h>
 
 
-class SoMaterial : public SoNode {
+class COIN_DLL_EXPORT SoMaterial : public SoNode {
   typedef SoNode inherited;
 
   SO_NODE_HEADER(SoMaterial);

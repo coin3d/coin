@@ -33,7 +33,7 @@ typedef const SbVec4f & SoTextureCoordinateFunctionCB(void * userdata,
                                                       const SbVec3f & point,
                                                       const SbVec3f & normal);
 
-class SoTextureCoordinateElement : public SoReplacedElement {
+class COIN_DLL_EXPORT SoTextureCoordinateElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
   SO_ELEMENT_HEADER(SoTextureCoordinateElement);

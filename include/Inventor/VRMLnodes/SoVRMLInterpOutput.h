@@ -25,7 +25,7 @@
 
 class SoVRMLInterpolator;
 
-class SoVRMLInterpOutput {
+class COIN_DLL_EXPORT SoVRMLInterpOutput {
 public:
   SoVRMLInterpOutput(void);
   virtual ~SoVRMLInterpOutput();

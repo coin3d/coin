@@ -24,8 +24,7 @@
 #include <Inventor/nodekits/SoBaseKit.h>
 
 
-class SoCameraKit : public SoBaseKit
-{
+class COIN_DLL_EXPORT SoCameraKit : public SoBaseKit {
   typedef SoBaseKit inherited;
 
   SO_KIT_HEADER(SoCameraKit);

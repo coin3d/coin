@@ -28,7 +28,7 @@ class SoFieldSensor;
 class SbLineProjector;
 
 
-class SoScaleUniformDragger : public SoDragger {
+class COIN_DLL_EXPORT SoScaleUniformDragger : public SoDragger {
   typedef SoDragger inherited;
 
   SO_KIT_HEADER(SoScaleUniformDragger);

@@ -27,7 +27,7 @@
 #include <Inventor/SbMatrix.h>
 
 
-class SoAntiSquish : public SoTransformation {
+class COIN_DLL_EXPORT SoAntiSquish : public SoTransformation {
   typedef SoTransformation inherited;
 
   SO_NODE_HEADER(SoAntiSquish);

@@ -24,11 +24,11 @@
 
 class SoGLRenderCache;
 
-class SoGLLazyElement : public SoLazyElement {
+class COIN_DLL_EXPORT SoGLLazyElement : public SoLazyElement {
   typedef SoLazyElement inherited;
 
   SO_ELEMENT_HEADER(SoGLLazyElement);
-  
+
 public:
   static void initClass();
 protected:
@@ -62,20 +62,20 @@ public:
     float           GLEmissive[4];
     float           GLSpecular[4];
     float           GLShininess;
-    SbBool          GLColorMaterial;        
+    SbBool          GLColorMaterial;
     int32_t         GLLightModel;
     SbBool          GLblending;
     int32_t         GLStippleNum;
-  } GLLazyState; 
-  
-  void getCopyGL(SoGLLazyElement* cacheLazyElement, 
+  } GLLazyState;
+
+  void getCopyGL(SoGLLazyElement* cacheLazyElement,
                  SoGLLazyElement::GLLazyState& cacheGLState);
-  
-  void copyBackGL(SoGLLazyElement* cacheLazyElement, 
+
+  void copyBackGL(SoGLLazyElement* cacheLazyElement,
                   SoGLLazyElement::GLLazyState& cacheGLState);
-  void mergeCacheInfo(SoGLRenderCache* childCache, SoGLRenderCache* 
-                      parentCache, uint32_t doSendFlag, uint32_t checkIVFlag, 
+  void mergeCacheInfo(SoGLRenderCache* childCache, SoGLRenderCache*
+                      parentCache, uint32_t doSendFlag, uint32_t checkIVFlag,
                       uint32_t checkGLFlag);
 };
 
-#endif // COIN_SOGLLAZYELEMENT_H 
+#endif // COIN_SOGLLAZYELEMENT_H

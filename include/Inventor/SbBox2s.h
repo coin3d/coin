@@ -23,7 +23,7 @@
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbVec2s.h>
 
-class SbBox2s {
+class COIN_DLL_EXPORT SbBox2s {
 public:
   SbBox2s(void);
   SbBox2s(short xmin, short ymin, short xmax, short ymax);

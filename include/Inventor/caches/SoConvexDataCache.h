@@ -28,7 +28,7 @@ class SbVec3f;
 class SoCoordinateElement;
 
 
-class SoConvexDataCache : public SoCache {
+class COIN_DLL_EXPORT SoConvexDataCache : public SoCache {
   typedef SoCache inherited;
 public:
   SoConvexDataCache(SoState * const state);

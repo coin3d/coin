@@ -32,7 +32,7 @@ class SoPath;
 class SoSensor;
 
 
-class SoPointLightManip : public SoPointLight {
+class COIN_DLL_EXPORT SoPointLightManip : public SoPointLight {
   typedef SoPointLight inherited;
 
   SO_NODE_HEADER(SoPointLightManip);

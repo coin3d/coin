@@ -25,7 +25,7 @@
 #include <Inventor/elements/SoTextureCoordinateBindingElement.h>
 
 
-class SoTextureCoordinateBinding : public SoNode {
+class COIN_DLL_EXPORT SoTextureCoordinateBinding : public SoNode {
   typedef SoNode inherited;
 
   SO_NODE_HEADER(SoTextureCoordinateBinding);

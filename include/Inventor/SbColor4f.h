@@ -25,7 +25,7 @@
 
 class SbVec4f;
 
-class SbColor4f {
+class COIN_DLL_EXPORT SbColor4f {
 public:
   SbColor4f(void);
   SbColor4f(const SbColor &rgb, const float alpha);

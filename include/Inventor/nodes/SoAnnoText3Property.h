@@ -25,7 +25,7 @@
 #include <Inventor/fields/SoSFBool.h>
 
 
-class SoAnnoText3Property : public SoNode {
+class COIN_DLL_EXPORT SoAnnoText3Property : public SoNode {
     typedef SoNode inherited;
 
   SO_NODE_HEADER(SoAnnoText3Property);

@@ -26,7 +26,7 @@
 #include <Inventor/fields/SoSFEnum.h>
 
 
-class SoLocateHighlight : public SoSeparator {
+class COIN_DLL_EXPORT SoLocateHighlight : public SoSeparator {
   typedef SoSeparator inherited;
 
   SO_NODE_HEADER(SoLocateHighlight);

@@ -23,7 +23,7 @@
 #include <Inventor/projectors/SbProjector.h>
 #include <Inventor/SbCylinder.h>
 
-class SbCylinderProjector : public SbProjector {
+class COIN_DLL_EXPORT SbCylinderProjector : public SbProjector {
   typedef SbProjector inherited;
 
 public:

@@ -25,7 +25,7 @@
 class SoCache;
 
 
-class SoCacheElement : public SoElement {
+class COIN_DLL_EXPORT SoCacheElement : public SoElement {
   typedef SoElement inherited;
 
   SO_ELEMENT_HEADER(SoCacheElement);

@@ -28,7 +28,7 @@ class SoBaseList;
 class SoInput;
 class SoOutput;
 
-class SoBase {
+class COIN_DLL_EXPORT SoBase {
 
 public:
   static void initClass(void);

@@ -33,7 +33,7 @@ typedef void SoWWWAnchorCB(const SbString & url, void * data,
 
 // *************************************************************************
 
-class SoWWWAnchor : public SoLocateHighlight {
+class COIN_DLL_EXPORT SoWWWAnchor : public SoLocateHighlight {
   typedef SoLocateHighlight inherited;
 
   SO_NODE_HEADER(SoWWWAnchor);

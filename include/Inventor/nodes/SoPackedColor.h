@@ -24,7 +24,7 @@
 #include <Inventor/nodes/SoSubNode.h>
 
 
-class SoPackedColor : public SoNode {
+class COIN_DLL_EXPORT SoPackedColor : public SoNode {
     typedef SoNode inherited;
 
   SO_NODE_HEADER(SoPackedColor);

@@ -23,7 +23,7 @@
 #include <Inventor/sensors/SoDataSensor.h>
 
 
-class SoPathSensor : public SoDataSensor {
+class COIN_DLL_EXPORT SoPathSensor : public SoDataSensor {
   typedef SoDataSensor inherited;
 
 public:

@@ -26,7 +26,7 @@
 class SoEngine;
 
 
-class SoMFEngine : public SoMField {
+class COIN_DLL_EXPORT SoMFEngine : public SoMField {
   typedef SoMField inherited;
 
   SO_MFIELD_HEADER(SoMFEngine, SoEngine *, SoEngine *);

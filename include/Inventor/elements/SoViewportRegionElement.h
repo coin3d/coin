@@ -24,7 +24,7 @@
 #include <Inventor/SbViewportRegion.h>
 
 
-class SoViewportRegionElement : public SoElement {
+class COIN_DLL_EXPORT SoViewportRegionElement : public SoElement {
   typedef SoElement inherited;
 
   SO_ELEMENT_HEADER(SoViewportRegionElement);

@@ -23,7 +23,7 @@
 #include <Inventor/engines/SoInterpolate.h>
 #include <Inventor/fields/SoMFRotation.h>
 
-class SoInterpolateRotation : public SoInterpolate {
+class COIN_DLL_EXPORT SoInterpolateRotation : public SoInterpolate {
   typedef SoInterpolate inherited;
   SO_INTERPOLATE_HEADER(SoInterpolateRotation);
 

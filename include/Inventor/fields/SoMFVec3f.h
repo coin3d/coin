@@ -25,7 +25,7 @@
 #include <Inventor/SbVec3f.h>
 
 
-class SoMFVec3f : public SoMField {
+class COIN_DLL_EXPORT SoMFVec3f : public SoMField {
   typedef SoMField inherited;
 
   SO_MFIELD_HEADER(SoMFVec3f, SbVec3f, const SbVec3f &);

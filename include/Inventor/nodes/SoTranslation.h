@@ -25,7 +25,7 @@
 #include <Inventor/nodes/SoTransformation.h>
 
 
-class SoTranslation : public SoTransformation {
+class COIN_DLL_EXPORT SoTranslation : public SoTransformation {
   typedef SoTransformation inherited;
 
   SO_NODE_HEADER(SoTranslation);

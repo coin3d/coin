@@ -27,7 +27,7 @@
 
 class SoLight;
 
-class SoLightElement : public SoAccumulatedElement {
+class COIN_DLL_EXPORT SoLightElement : public SoAccumulatedElement {
   typedef SoAccumulatedElement inherited;
 
   SO_ELEMENT_HEADER(SoLightElement);
@@ -35,23 +35,23 @@ public:
   static void initClass(void);
 protected:
   virtual ~SoLightElement();
-  
+
 public:
   virtual void init(SoState * state);
-  virtual void push(SoState * state);  
+  virtual void push(SoState * state);
   static  void add(SoState * const state, SoLight * const light,
                    const SbMatrix & matrix);
   static  const SoNodeList & getLights(SoState * const state);
   static  const SbMatrix & getMatrix(SoState * const state,
                                      const int index);
-    
+
 protected:
   SoNodeList lights;
-  SbList <SbMatrix> * matrixlist; 
+  SbList <SbMatrix> * matrixlist;
 
 private:
-  
-  // dummy class needed to initialize didalloc when constructed.  
+
+  // dummy class needed to initialize didalloc when constructed.
   class so_light_elem_flag {
   public:
     so_light_elem_flag(void) {

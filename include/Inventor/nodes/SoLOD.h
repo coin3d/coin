@@ -26,7 +26,7 @@
 #include <Inventor/fields/SoSFVec3f.h>
 
 
-class SoLOD : public SoGroup {
+class COIN_DLL_EXPORT SoLOD : public SoGroup {
   typedef SoGroup inherited;
 
   SO_NODE_HEADER(SoLOD);

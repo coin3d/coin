@@ -28,7 +28,7 @@ class SoNode;
 
 typedef void (* SoActionMethod)(SoAction *, SoNode *);
 
-class SoActionMethodList : public SbPList {
+class COIN_DLL_EXPORT SoActionMethodList : public SbPList {
   typedef SbPList inherited;
 
 public:

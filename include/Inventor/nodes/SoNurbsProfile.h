@@ -25,7 +25,7 @@
 #include <Inventor/fields/SoMFFloat.h>
 
 
-class SoNurbsProfile : public SoProfile {
+class COIN_DLL_EXPORT SoNurbsProfile : public SoProfile {
   typedef SoProfile inherited;
 
   SO_NODE_HEADER(SoNurbsProfile);

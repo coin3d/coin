@@ -25,7 +25,7 @@
 #include <Inventor/fields/SoMFMatrix.h>
 
 
-class SoDecomposeMatrix : public SoEngine {
+class COIN_DLL_EXPORT SoDecomposeMatrix : public SoEngine {
   typedef SoEngine inherited;
   SO_COMPOSE__HEADER(SoDecomposeMatrix);
 

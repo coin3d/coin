@@ -25,7 +25,7 @@
 #include <assert.h>
 
 
-class SoNormalElement : public SoReplacedElement {
+class COIN_DLL_EXPORT SoNormalElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
   SO_ELEMENT_HEADER(SoNormalElement);

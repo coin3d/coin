@@ -30,7 +30,7 @@ class SoSensor;
 class SoFieldSensor;
 
 
-class SoTransformerDragger : public SoDragger {
+class COIN_DLL_EXPORT SoTransformerDragger : public SoDragger {
   typedef SoDragger inherited;
 
   SO_KIT_HEADER(SoTransformerDragger);
@@ -271,11 +271,11 @@ private:
   static int colinearThreshold;
   int constraintState;
   SbVec3f worldRestartPt;
-  
+
   int whatkind;
   int whatnum;
   int dimension;
-  
+
   void getSurroundScaleMatrices(SbMatrix &matrix, SbMatrix &inv);
   SoNode *getNodeFieldNode(const char *fieldname);
 
@@ -285,14 +285,14 @@ private:
   void build_catalog4(void);
   void build_catalog5(void);
   void build_catalog6(void);
-  
+
   SbMatrix getWorkingToWorldMatrix(void);
   SbMatrix getWorldToWorkingMatrix(void);
   SbVec3f localToWorking(const SbVec3f &v);
   SbVec3f workingToLocal(const SbVec3f &v);
   SbVec3f calcCtrlOffset(const SbVec3f &startpt);
   void setSwitchValue(const char *str, const int which);
-  
+
   SbBool setDynamicTranslatorSwitches(const SoEvent *event);
   SbBool setDynamicRotatorSwitches(const SoEvent *event);
   SbBool setDynamicScaleSwitches(const SoEvent *event);

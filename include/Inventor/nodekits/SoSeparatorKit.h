@@ -24,8 +24,7 @@
 #include <Inventor/nodekits/SoBaseKit.h>
 #include <Inventor/fields/SoSFEnum.h>
 
-class SoSeparatorKit : public SoBaseKit
-{
+class COIN_DLL_EXPORT SoSeparatorKit : public SoBaseKit {
   typedef SoBaseKit inherited;
 
   SO_KIT_HEADER(SoSeparatorKit);
@@ -48,7 +47,7 @@ public:
     ON,
     AUTO
   };
-  
+
   SoSFEnum renderCaching;
   SoSFEnum boundingBoxCaching;
   SoSFEnum renderCulling;

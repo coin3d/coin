@@ -25,7 +25,7 @@
 #include <Inventor/SbString.h>
 
 
-class SoMFString : public SoMField {
+class COIN_DLL_EXPORT SoMFString : public SoMField {
   typedef SoMField inherited;
 
   SO_MFIELD_HEADER(SoMFString, SbString, const SbString &);

@@ -23,7 +23,7 @@
 #include <Inventor/elements/SoLightModelElement.h>
 
 
-class SoGLLightModelElement : public SoLightModelElement {
+class COIN_DLL_EXPORT SoGLLightModelElement : public SoLightModelElement {
   typedef SoLightModelElement inherited;
 
   SO_ELEMENT_HEADER(SoGLLightModelElement);

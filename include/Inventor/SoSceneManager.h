@@ -33,8 +33,7 @@ class SoOneShotSensor;
 class SoSensor;
 
 
-class SoSceneManager
-{
+class COIN_DLL_EXPORT SoSceneManager {
 public:
   typedef void SoSceneManagerRenderCB(void * userdata, SoSceneManager * mgr);
 

@@ -31,7 +31,7 @@
  */
 
 
-class SoProfileCoordinateElement : public SoReplacedElement {
+class COIN_DLL_EXPORT SoProfileCoordinateElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
   SO_ELEMENT_HEADER(SoProfileCoordinateElement);

@@ -34,7 +34,7 @@ class SoInput;
 class SoPathList;
 
 
-class SoPath : public SoBase {
+class COIN_DLL_EXPORT SoPath : public SoBase {
   typedef SoBase inherited;
 
 public:

@@ -30,7 +30,7 @@
 #define SB_STRING_STATIC_STORAGE_SIZE 128
 
 
-class SbString {
+class COIN_DLL_EXPORT SbString {
 public:
   SbString(void);
   SbString(const char * str);

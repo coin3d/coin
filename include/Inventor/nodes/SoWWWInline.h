@@ -37,7 +37,7 @@ typedef void SoWWWInlineFetchURLCB(const SbString & url, void * userData,
 
 // *************************************************************************
 
-class SoWWWInline : public SoNode {
+class COIN_DLL_EXPORT SoWWWInline : public SoNode {
   typedef SoNode inherited;
 
   SO_NODE_HEADER(SoWWWInline);

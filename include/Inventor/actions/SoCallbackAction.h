@@ -60,7 +60,7 @@ typedef void SoPointCB(void * userdata, SoCallbackAction * action,
                        const SoPrimitiveVertex * v);
 
 
-class SoCallbackAction : public SoAction {
+class COIN_DLL_EXPORT SoCallbackAction : public SoAction {
   typedef SoAction inherited;
 
   SO_ACTION_HEADER(SoCallbackAction);
@@ -136,7 +136,7 @@ public:
   const SbViewVolume & getViewVolume(void) const;
   SoPickStyle::Style getPickStyle(void) const;
   int32_t getSwitch(void) const;
-  
+
   Response getCurrentResponse(void) const;
   void invokePreCallbacks(const SoNode * const node);
   void invokePostCallbacks(const SoNode * const node);

@@ -25,7 +25,7 @@
 #include <Inventor/fields/SoSFBitMask.h>
 
 
-class SoResetTransform : public SoTransformation {
+class COIN_DLL_EXPORT SoResetTransform : public SoTransformation {
   typedef SoTransformation inherited;
 
   SO_NODE_HEADER(SoResetTransform);

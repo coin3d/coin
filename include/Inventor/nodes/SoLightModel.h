@@ -25,7 +25,7 @@
 #include <Inventor/elements/SoLightModelElement.h>
 
 
-class SoLightModel : public SoNode {
+class COIN_DLL_EXPORT SoLightModel : public SoNode {
   typedef SoNode inherited;
 
   SO_NODE_HEADER(SoLightModel);

@@ -32,7 +32,7 @@ class SoSensor;
 class SoFieldSensor;
 class SoGlyph;
 
-class SoAsciiText : public SoShape {
+class COIN_DLL_EXPORT SoAsciiText : public SoShape {
   typedef SoShape inherited;
 
   SO_NODE_HEADER(SoAsciiText);

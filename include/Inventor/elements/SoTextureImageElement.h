@@ -27,7 +27,7 @@
 class SoState;
 
 
-class SoTextureImageElement : public SoReplacedElement {
+class COIN_DLL_EXPORT SoTextureImageElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
   SO_ELEMENT_HEADER(SoTextureImageElement);
@@ -97,9 +97,9 @@ protected:
                       const unsigned char * bytes,
                       const Wrap wrapS, const Wrap wrapT,
                       const Model model, const SbColor & blendColor);
-  
+
   virtual SbBool hasTransparency(void) const;
-  
+
   SbVec2s size;
   int numComponents;
   const unsigned char *bytes;

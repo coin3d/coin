@@ -24,7 +24,7 @@
 #include <Inventor/fields/SoMFVec3f.h>
 
 
-class SoCoordinate3 : public SoNode {
+class COIN_DLL_EXPORT SoCoordinate3 : public SoNode {
   typedef SoNode inherited;
 
   SO_NODE_HEADER(SoCoordinate3);

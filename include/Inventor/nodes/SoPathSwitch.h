@@ -25,7 +25,7 @@
 #include <Inventor/fields/SoSFPath.h>
 
 
-class SoPathSwitch : public SoGroup {
+class COIN_DLL_EXPORT SoPathSwitch : public SoGroup {
   typedef SoGroup inherited;
 
   SO_NODE_HEADER(SoPathSwitch);

@@ -24,7 +24,7 @@
 #include <Inventor/SbVec2f.h>
 
 
-class SoGLUpdateAreaElement : public SoElement {
+class COIN_DLL_EXPORT SoGLUpdateAreaElement : public SoElement {
   typedef SoElement inherited;
 
   SO_ELEMENT_HEADER(SoGLUpdateAreaElement);

@@ -25,7 +25,7 @@
 class SoPickedPoint;
 
 
-class SoPickedPointList : public SbList<SoPickedPoint *> {
+class COIN_DLL_EXPORT SoPickedPointList : public SbList<SoPickedPoint *> {
 };
 
 #endif // !COIN_SOPICKEDPOINTLIST_H

@@ -25,7 +25,7 @@
 #include <Inventor/nodes/SoTransformation.h>
 
 
-class SoMatrixTransform : public SoTransformation {
+class COIN_DLL_EXPORT SoMatrixTransform : public SoTransformation {
   typedef SoTransformation inherited;
 
   SO_NODE_HEADER(SoMatrixTransform);

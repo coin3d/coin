@@ -24,7 +24,7 @@
 #include <Inventor/SbMatrix.h>
 
 
-class SoTextureMatrixElement : public SoAccumulatedElement {
+class COIN_DLL_EXPORT SoTextureMatrixElement : public SoAccumulatedElement {
   typedef SoAccumulatedElement inherited;
 
   SO_ELEMENT_HEADER(SoTextureMatrixElement);
@@ -37,20 +37,20 @@ public:
   virtual void init(SoState * state);
   virtual void push(SoState * state);
   static void makeIdentity(SoState * const state, SoNode * const node);
-  
+
   static void mult(SoState * const state, SoNode * const node,
                    const SbMatrix & matrix);
-  
+
   static void translateBy(SoState * const state, SoNode * const node,
                            const SbVec3f & translation);
   static void rotateBy(SoState * const state, SoNode * const node,
                         const SbRotation & rotation);
   static void scaleBy(SoState * const state, SoNode * const node,
                       const SbVec3f & scaleFactor);
-  
+
   static const SbMatrix & get(SoState * const state);
   static void emptyMatrix(SoState * const state);
-  
+
 protected:
   virtual void makeEltIdentity(void);
   virtual void multElt(const SbMatrix & matrix);
@@ -58,7 +58,7 @@ protected:
   virtual void rotateEltBy(const SbRotation & rotation);
   virtual void scaleEltBy(const SbVec3f & scaleFactor);
   virtual const SbMatrix & getElt(void) const;
-  
+
   SbMatrix textureMatrix;
 };
 

@@ -26,7 +26,7 @@
 #include <Inventor/fields/SoMFEnum.h>
 
 
-class SoBoolOperation : public SoEngine {
+class COIN_DLL_EXPORT SoBoolOperation : public SoEngine {
   typedef SoEngine inherited;
 
   SO_ENGINE_HEADER(SoBoolOperation);

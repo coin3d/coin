@@ -25,9 +25,9 @@
 
 class SoProfile;
 
-class SoProfileElement : public SoAccumulatedElement {
+class COIN_DLL_EXPORT SoProfileElement : public SoAccumulatedElement {
   typedef SoAccumulatedElement inherited;
-  
+
   SO_ELEMENT_HEADER(SoProfileElement);
 public:
   static void initClass(void);
@@ -40,12 +40,12 @@ public:
     START_NEW,
     ADD_TO_CURRENT
   };
-  
+
   virtual void init(SoState * state);
   virtual void push(SoState * state);
   static void add(SoState * const state, SoProfile * const profile);
   static const SoNodeList & get(SoState * const state);
-  
+
 protected:
   SoNodeList profiles;
 };

@@ -28,7 +28,7 @@
 #include <Inventor/fields/SoSFBitMask.h>
 
 
-class SoOneShot : public SoEngine {
+class COIN_DLL_EXPORT SoOneShot : public SoEngine {
   typedef SoEngine inherited;
   SO_ENGINE_HEADER(SoOneShot);
 

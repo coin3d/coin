@@ -23,7 +23,7 @@
 #include <Inventor/elements/SoLinePatternElement.h>
 
 
-class SoGLLinePatternElement : public SoLinePatternElement {
+class COIN_DLL_EXPORT SoGLLinePatternElement : public SoLinePatternElement {
   typedef SoLinePatternElement inherited;
 
   SO_ELEMENT_HEADER(SoGLLinePatternElement);

@@ -26,8 +26,7 @@
 
 class SbPlane;
 
-class SbVec3f
-{
+class COIN_DLL_EXPORT SbVec3f {
 public:
   SbVec3f(void);
   SbVec3f(const float v[3]);

@@ -25,7 +25,7 @@
 #include <Inventor/elements/SoDecimationTypeElement.h>
 
 
-class SoGetPrimitiveCountAction : public SoAction {
+class COIN_DLL_EXPORT SoGetPrimitiveCountAction : public SoAction {
   typedef SoAction inherited;
 
   SO_ACTION_HEADER(SoGetPrimitiveCountAction);

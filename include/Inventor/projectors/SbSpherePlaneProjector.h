@@ -23,8 +23,7 @@
 #include <Inventor/projectors/SbSphereSectionProjector.h>
 
 
-class SbSpherePlaneProjector : public SbSphereSectionProjector
-{
+class COIN_DLL_EXPORT SbSpherePlaneProjector : public SbSphereSectionProjector {
   typedef SbSphereSectionProjector inherited;
 
 public:

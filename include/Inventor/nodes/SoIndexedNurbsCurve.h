@@ -27,7 +27,7 @@
 #include <Inventor/fields/SoMFFloat.h>
 
 
-class SoIndexedNurbsCurve : public SoShape {
+class COIN_DLL_EXPORT SoIndexedNurbsCurve : public SoShape {
   typedef SoShape inherited;
 
   SO_NODE_HEADER(SoIndexedNurbsCurve);

@@ -32,7 +32,7 @@ class SoPath;
 class SoSensor;
 
 
-class SoTransformManip : public SoTransform {
+class COIN_DLL_EXPORT SoTransformManip : public SoTransform {
   typedef SoTransform inherited;
 
   SO_NODE_HEADER(SoTransformManip);

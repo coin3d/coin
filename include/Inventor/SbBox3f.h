@@ -27,7 +27,7 @@
 
 class SbMatrix;
 
-class SbBox3f {
+class COIN_DLL_EXPORT SbBox3f {
 public:
   SbBox3f(void);
   SbBox3f(const float minx, const float miny, const float minz,

@@ -28,7 +28,7 @@ class SoFieldList;
 class SoOutput;
 
 
-class SoFieldContainer : public SoBase {
+class COIN_DLL_EXPORT SoFieldContainer : public SoBase {
   typedef SoBase inherited;
 
 public:

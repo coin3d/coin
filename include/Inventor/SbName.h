@@ -30,7 +30,7 @@
 class SbString;
 struct SbNameChunk;
 
-class SbNameEntry {
+class COIN_DLL_EXPORT SbNameEntry {
   friend class SbName;
 public:
   SbBool isEmpty(void) const
@@ -58,7 +58,7 @@ public:
   static void print_info();
 };
 
-class SbName {
+class COIN_DLL_EXPORT SbName {
 public:
   SbName(void);
   SbName(const char * nameString);

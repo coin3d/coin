@@ -29,12 +29,12 @@ class SoMFColor;
 class SoColorPacker;
 
 //
-// this is just a wraparound class to offer the same functionality as 
+// this is just a wraparound class to offer the same functionality as
 // Inventor's LazyElement. Most methods are routed directyly to the
 // subelements.
 //
 
-class SoLazyElement : public SoElement {
+class COIN_DLL_EXPORT SoLazyElement : public SoElement {
   typedef SoElement inherited;
 
   SO_ELEMENT_HEADER(SoLazyElement);
@@ -49,23 +49,23 @@ public:
     COLOR_MATERIAL_CASE,
     DIFFUSE_CASE,
     AMBIENT_CASE,
-    EMISSIVE_CASE, 
+    EMISSIVE_CASE,
     SPECULAR_CASE,
     SHININESS_CASE,
     BLENDING_CASE,
     TRANSPARENCY_CASE,
     LAZYCASES_LAST // must be last
-  }; 
+  };
   enum masks{
-    LIGHT_MODEL_MASK = 1 << LIGHT_MODEL_CASE, 
-    COLOR_MATERIAL_MASK	= 1 << COLOR_MATERIAL_CASE,  
-    DIFFUSE_MASK = 1 << DIFFUSE_CASE, 
-    AMBIENT_MASK = 1 << AMBIENT_CASE, 
+    LIGHT_MODEL_MASK = 1 << LIGHT_MODEL_CASE,
+    COLOR_MATERIAL_MASK	= 1 << COLOR_MATERIAL_CASE,
+    DIFFUSE_MASK = 1 << DIFFUSE_CASE,
+    AMBIENT_MASK = 1 << AMBIENT_CASE,
     EMISSIVE_MASK = 1<<EMISSIVE_CASE,
     SPECULAR_MASK = 1 << SPECULAR_CASE,
     SHININESS_MASK = 1 << SHININESS_CASE,
     TRANSPARENCY_MASK = 1 << TRANSPARENCY_CASE,
-    BLENDING_MASK = 1 << BLENDING_CASE, 
+    BLENDING_MASK = 1 << BLENDING_CASE,
     ALL_MASK = (1 << LAZYCASES_LAST)-1
   };
 
@@ -73,28 +73,28 @@ public:
     BASE_COLOR,
     PHONG
   };
-    
+
   virtual void init(SoState *state);
   virtual void push(SoState *state);
-  virtual SbBool matches(const SoElement *) const; 
-  virtual SoElement *copyMatchInfo(void) const; 
+  virtual SbBool matches(const SoElement *) const;
+  virtual SoElement *copyMatchInfo(void) const;
   virtual void print(FILE *fp) const;
 
-  static void setDiffuse(SoState *state, SoNode *node, int32_t numcolors, 
-                         const SbColor *colors, SoColorPacker *packer);		    
-  static void setTransparency(SoState *state, SoNode *node, int32_t numvalues, 
+  static void setDiffuse(SoState *state, SoNode *node, int32_t numcolors,
+                         const SbColor *colors, SoColorPacker *packer);		
+  static void setTransparency(SoState *state, SoNode *node, int32_t numvalues,
                               const float *transparency, SoColorPacker *packer);
   static void setPacked(SoState *state, SoNode *node,
                         int32_t numcolors, const uint32_t *colors);
-  static void setColorIndices(SoState *state, SoNode *node, 
+  static void setColorIndices(SoState *state, SoNode *node,
                               int32_t numindices, const int32_t *indices);
-  static void setAmbient(SoState *state, const SbColor* color);          
+  static void setAmbient(SoState *state, const SbColor* color);
   static void setEmissive(SoState *state, const SbColor* color);
   static void setSpecular(SoState *state, const SbColor* color);
   static void setShininess(SoState *state, float value);
   static void setColorMaterial(SoState *state, SbBool value);
   static void setBlending(SoState *state,  SbBool value);
-  static void setLightModel(SoState *state, const int32_t model);    
+  static void setLightModel(SoState *state, const int32_t model);
   static const SbColor &getDiffuse(SoState* state, int index);
   static float getTransparency(SoState*, int index);
   static const uint32_t	*getPackedColors(SoState*);
@@ -107,15 +107,15 @@ public:
   static SbBool getColorMaterial(SoState*);
   static SbBool getBlending(SoState*);
   static int32_t getLightModel(SoState*);
-    
+
   int32_t getNumDiffuse(void) const;
   int32_t getNumTransparencies(void) const;
   int32_t getNumColorIndices(void) const;
   SbBool isPacked(void) const;
-  SbBool isTransparent(void) const;    
+  SbBool isTransparent(void) const;
   static SoLazyElement *getInstance(SoState *state);
   static float getDefaultAmbientIntensity(void);
-	 
+	
   static SbColor getDefaultDiffuse(void);
   static SbColor getDefaultAmbient(void);
   static SbColor getDefaultSpecular(void);
@@ -125,26 +125,26 @@ public:
   static float getDefaultTransparency(void);
   static int32_t getDefaultLightModel(void);
   static int32_t getDefaultColorIndex(void);
-       
+
   static void setMaterials(SoState *state, SoNode *node, uint32_t bitmask,
-                           SoColorPacker *cPacker,   
-                           const SoMFColor& diffuse, const SoMFFloat& transp, 
-                           const SoMFColor& ambient, const SoMFColor& emissive, 
+                           SoColorPacker *cPacker,
+                           const SoMFColor& diffuse, const SoMFFloat& transp,
+                           const SoMFColor& ambient, const SoMFColor& emissive,
                            const SoMFColor& specular, const SoMFFloat& shininess);
-			  
+			
   static void setMaterials(SoState *state, SoNode *node, uint32_t bitmask,
                            SoColorPacker *cPacker,
                            SoMFColor *diffuse, SoMFFloat *transp,
                            SoMFColor *ambient, SoMFColor *emissive,
                            SoMFColor *specular, SoMFFloat *shininess);
 
-  
-  static SoLazyElement * getWInstance(SoState *state);    
-  
+
+  static SoLazyElement * getWInstance(SoState *state);
+
   const uint32_t *getPackedPointer(void) const;
   const SbColor* getDiffusePointer(void) const;
   const int32_t	*getColorIndexPointer(void) const;
-  
+
   const float *getTransparencyPointer(void) const;
   static void setTransparencyType(SoState *state, int32_t type);
 
@@ -153,7 +153,7 @@ protected:
   SoState *state;
 
 private:
- 
+
   SbBool colorMaterial;
   SbBool blending;
   float shininess;
@@ -161,7 +161,7 @@ private:
   SbColor emissiveColor;
   SbColor ambientColor;
   SbColor specularColor;
-  
+
   // needed only for matches() and copyMatchInfo()
   SoElement *lightModelMatchInfo;
   SoElement *diffuseMatchInfo;
@@ -175,18 +175,17 @@ private:
 //
 // We really don't care about this class
 //
-class SoColorPacker {
+class COIN_DLL_EXPORT SoColorPacker {
 public:
-  SoColorPacker() {}   
+  SoColorPacker() {}
   ~SoColorPacker() {}
   uint32_t* getPackedColors(void) const {return NULL;}
   SbBool diffuseMatch(const uint32_t /*nodeid*/) const {return FALSE;}
   SbBool transpMatch(const uint32_t /*nodeid*/) const {return FALSE;}
   void setNodeIds(const uint32_t /*diffusenodeid*/, const uint32_t /*transparencynodeid*/) {}
   int32_t getSize(void) const {return 0;}
-  void reallocate(const int32_t /*size*/) {}    
+  void reallocate(const int32_t /*size*/) {}
 };
-    
+
 
 #endif // COIN_SOLAZYELEMENT_H
-

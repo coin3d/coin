@@ -28,7 +28,7 @@
 class SoNormalGenerator;
 
 
-class SoNormalCache : public SoCache {
+class COIN_DLL_EXPORT SoNormalCache : public SoCache {
   typedef SoCache inherited;
 
 public:

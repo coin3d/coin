@@ -33,7 +33,7 @@ class SbRotation;
 class SbVec2f;
 class SbVec3f;
 
-class SbViewVolume {
+class COIN_DLL_EXPORT SbViewVolume {
 public:
   enum ProjectionType { ORTHOGRAPHIC = 0, PERSPECTIVE = 1 };
 
@@ -78,7 +78,7 @@ public:
   float getHeight(void) const;
   float getDepth(void) const;
 
-  void print(FILE * fp) const;  
+  void print(FILE * fp) const;
   void getViewVolumePlanes(SbPlane planes[6]) const;
   void transform(const SbMatrix &matrix);
   SbVec3f getViewUp(void) const;

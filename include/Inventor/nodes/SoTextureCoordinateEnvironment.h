@@ -25,7 +25,7 @@
 #include <Inventor/SbVec4f.h>
 
 
-class SoTextureCoordinateEnvironment : public SoTextureCoordinateFunction {
+class COIN_DLL_EXPORT SoTextureCoordinateEnvironment : public SoTextureCoordinateFunction {
   typedef SoTextureCoordinateFunction inherited;
 
   SO_NODE_HEADER(SoTextureCoordinateEnvironment);

@@ -27,7 +27,7 @@ class SoTempPath;
 class SoPathList;
 
 
-class SoLineHighlightRenderAction : public SoGLRenderAction {
+class COIN_DLL_EXPORT SoLineHighlightRenderAction : public SoGLRenderAction {
   typedef SoGLRenderAction inherited;
 
   SO_ACTION_HEADER(SoLineHighlightRenderAction);

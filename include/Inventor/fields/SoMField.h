@@ -26,7 +26,7 @@ class SoInput;
 class SoOutput;
 
 
-class SoMField : public SoField {
+class COIN_DLL_EXPORT SoMField : public SoField {
   typedef SoField inherited;
 
 public:

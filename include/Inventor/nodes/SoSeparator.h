@@ -26,7 +26,7 @@
 
 class SoState;
 
-class SoSeparator : public SoGroup {
+class COIN_DLL_EXPORT SoSeparator : public SoGroup {
   typedef SoGroup inherited;
 
   SO_NODE_HEADER(SoSeparator);

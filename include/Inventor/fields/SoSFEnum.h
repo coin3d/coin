@@ -25,7 +25,7 @@
 #include <Inventor/SbString.h>
 
 
-class SoSFEnum : public SoSField {
+class COIN_DLL_EXPORT SoSFEnum : public SoSField {
   typedef SoSField inherited;
 
   SO_SFIELD_HEADER(SoSFEnum, int, int);

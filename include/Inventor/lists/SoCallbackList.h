@@ -29,7 +29,7 @@
 typedef void SoCallbackListCB(void * userdata, void * callbackdata);
 
 
-class SoCallbackList {
+class COIN_DLL_EXPORT SoCallbackList {
 public:
   SoCallbackList(void);
   ~SoCallbackList();

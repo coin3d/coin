@@ -25,7 +25,7 @@
 #include <Inventor/fields/SoSFEnum.h>
 
 
-class SoUnits : public SoTransformation {
+class COIN_DLL_EXPORT SoUnits : public SoTransformation {
     typedef SoTransformation inherited;
 
   SO_NODE_HEADER(SoUnits);

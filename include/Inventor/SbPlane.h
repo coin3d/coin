@@ -27,7 +27,7 @@
 class SbLine;
 class SbMatrix;
 
-class SbPlane {
+class COIN_DLL_EXPORT SbPlane {
 public:
   SbPlane(void);
   SbPlane(const SbVec3f& normal, const float D);

@@ -42,7 +42,7 @@ public:
   }
 };
 
-class SoClipPlaneElement : public SoAccumulatedElement {
+class COIN_DLL_EXPORT SoClipPlaneElement : public SoAccumulatedElement {
   typedef SoAccumulatedElement inherited;
 
   SO_ELEMENT_HEADER(SoClipPlaneElement);
@@ -60,7 +60,7 @@ public:
   static  const SoClipPlaneElement * getInstance(SoState * const state);
   int getNum(void) const;
   const SbPlane & get(const int index, const SbBool inworldspace = TRUE) const;
-  
+
 protected:
   SbList <so_plane_data> planes;
   int startIndex;

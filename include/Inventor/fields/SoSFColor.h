@@ -25,7 +25,7 @@
 #include <Inventor/SbColor.h>
 
 
-class SoSFColor : public SoSField {
+class COIN_DLL_EXPORT SoSFColor : public SoSField {
   typedef SoSField inherited;
 
   SO_SFIELD_HEADER(SoSFColor, SbColor, const SbColor &);

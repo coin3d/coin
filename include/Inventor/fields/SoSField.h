@@ -23,7 +23,7 @@
 #include <Inventor/fields/SoField.h>
 
 
-class SoSField : public SoField {
+class COIN_DLL_EXPORT SoSField : public SoField {
   typedef SoField inherited;
 
 public:

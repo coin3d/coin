@@ -30,7 +30,7 @@
 #define SO_SWITCH_ALL (-3)
 
 
-class SoSwitch : public SoGroup {
+class COIN_DLL_EXPORT SoSwitch : public SoGroup {
   typedef SoGroup inherited;
 
   SO_NODE_HEADER(SoSwitch);

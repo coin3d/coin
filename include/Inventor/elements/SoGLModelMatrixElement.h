@@ -23,7 +23,7 @@
 #include <Inventor/elements/SoModelMatrixElement.h>
 
 
-class SoGLModelMatrixElement : public SoModelMatrixElement {
+class COIN_DLL_EXPORT SoGLModelMatrixElement : public SoModelMatrixElement {
   typedef SoModelMatrixElement inherited;
 
   SO_ELEMENT_HEADER(SoGLModelMatrixElement);

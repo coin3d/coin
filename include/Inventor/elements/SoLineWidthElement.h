@@ -23,7 +23,7 @@
 #include <Inventor/elements/SoFloatElement.h>
 
 
-class SoLineWidthElement : public SoFloatElement {
+class COIN_DLL_EXPORT SoLineWidthElement : public SoFloatElement {
   typedef SoFloatElement inherited;
 
   SO_ELEMENT_HEADER(SoLineWidthElement);

@@ -26,8 +26,7 @@ class SoNode;
 class SoBaseKit;
 class SoSearchAction;
 
-class SoNodeKitPath : public SoPath
-{
+class COIN_DLL_EXPORT SoNodeKitPath : public SoPath {
   typedef SoPath inherited;
 
 public:

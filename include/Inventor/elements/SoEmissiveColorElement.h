@@ -25,7 +25,7 @@
 class SbColor;
 
 
-class SoEmissiveColorElement : public SoReplacedElement {
+class COIN_DLL_EXPORT SoEmissiveColorElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
   SO_ELEMENT_HEADER(SoEmissiveColorElement);

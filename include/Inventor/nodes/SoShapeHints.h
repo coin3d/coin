@@ -26,7 +26,7 @@
 #include <Inventor/nodes/SoSubNode.h>
 
 
-class SoShapeHints : public SoNode {
+class COIN_DLL_EXPORT SoShapeHints : public SoNode {
   typedef SoNode inherited;
 
   SO_NODE_HEADER(SoShapeHints);

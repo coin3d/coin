@@ -24,7 +24,7 @@
 #include <Inventor/nodes/SoGroup.h>
 
 
-class SoTransformSeparator : public SoGroup {
+class COIN_DLL_EXPORT SoTransformSeparator : public SoGroup {
   typedef SoGroup inherited;
 
   SO_NODE_HEADER(SoTransformSeparator);

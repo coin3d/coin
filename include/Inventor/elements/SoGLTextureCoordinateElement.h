@@ -25,7 +25,7 @@
 typedef void SoTexCoordTexgenCB(void * data);
 
 
-class SoGLTextureCoordinateElement : public SoTextureCoordinateElement {
+class COIN_DLL_EXPORT SoGLTextureCoordinateElement : public SoTextureCoordinateElement {
   typedef SoTextureCoordinateElement inherited;
 
   SO_ELEMENT_HEADER(SoGLTextureCoordinateElement);

@@ -28,7 +28,7 @@
 #include <Inventor/fields/SoSFString.h>
 
 
-class SoImage : public SoShape {
+class COIN_DLL_EXPORT SoImage : public SoShape {
   typedef SoShape inherited;
 
   SO_NODE_HEADER(SoImage);

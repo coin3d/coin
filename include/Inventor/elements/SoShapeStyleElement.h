@@ -23,7 +23,7 @@
 #include <Inventor/elements/SoSubElement.h>
 
 
-class SoShapeStyleElement : public SoElement {
+class COIN_DLL_EXPORT SoShapeStyleElement : public SoElement {
   typedef SoElement inherited;
 
   SO_ELEMENT_HEADER(SoShapeStyleElement);

@@ -33,7 +33,7 @@ class SoGLTextureCoordinateElement;
 class SoTextureCoordinateCache;
 class SoVertexShape;
 
-class SoTextureCoordinateBundle : public SoBundle {
+class COIN_DLL_EXPORT SoTextureCoordinateBundle : public SoBundle {
   typedef SoBundle inherited;
 public:
   SoTextureCoordinateBundle(SoAction * const action,
@@ -59,7 +59,7 @@ private:
   const SoTextureCoordinateElement *coordElt;
   const SoGLTextureCoordinateElement *glElt;
   unsigned int flags;
-  
+
   // misc stuff for default texture coordinate mappping
   static const SbVec4f &defaultCB(void * userdata,
                                   const SbVec3f & point,

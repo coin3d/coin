@@ -24,7 +24,7 @@
 #include <Inventor/SbVec3f.h>
 
 
-class SoLightAttenuationElement : public SoReplacedElement {
+class COIN_DLL_EXPORT SoLightAttenuationElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
   SO_ELEMENT_HEADER(SoLightAttenuationElement);

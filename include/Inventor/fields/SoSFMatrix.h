@@ -25,7 +25,7 @@
 #include <Inventor/SbMatrix.h>
 
 
-class SoSFMatrix : public SoSField {
+class COIN_DLL_EXPORT SoSFMatrix : public SoSField {
   typedef SoSField inherited;
 
   SO_SFIELD_HEADER(SoSFMatrix, SbMatrix, const SbMatrix &);

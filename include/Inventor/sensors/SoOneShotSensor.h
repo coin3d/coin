@@ -23,7 +23,7 @@
 #include <Inventor/sensors/SoDelayQueueSensor.h>
 
 
-class SoOneShotSensor : public SoDelayQueueSensor {
+class COIN_DLL_EXPORT SoOneShotSensor : public SoDelayQueueSensor {
   typedef SoDelayQueueSensor inherited;
 
 public:

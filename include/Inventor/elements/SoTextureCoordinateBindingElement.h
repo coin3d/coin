@@ -23,7 +23,7 @@
 #include <Inventor/elements/SoInt32Element.h>
 
 
-class SoTextureCoordinateBindingElement : public SoInt32Element {
+class COIN_DLL_EXPORT SoTextureCoordinateBindingElement : public SoInt32Element {
   typedef SoInt32Element inherited;
 
   SO_ELEMENT_HEADER(SoTextureCoordinateBindingElement);

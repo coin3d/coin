@@ -24,7 +24,7 @@
 #include <Inventor/lists/SbList.h>
 
 
-class SoAccumulatedElement : public SoElement {
+class COIN_DLL_EXPORT SoAccumulatedElement : public SoElement {
   typedef SoElement inherited;
 
   SO_ELEMENT_ABSTRACT_HEADER(SoAccumulatedElement);
@@ -36,7 +36,7 @@ protected:
 public:
   virtual SbBool matches(const SoElement * element) const;
   virtual void print(FILE * file) const;
-  
+
 protected:
   void clearNodeIds(void);
   void addNodeId(const SoNode * const node);

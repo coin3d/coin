@@ -29,7 +29,7 @@
 #include <Inventor/fields/SoSFTrigger.h>
 #include <Inventor/fields/SoSFShort.h>
 
-class SoTimeCounter : public SoEngine {
+class COIN_DLL_EXPORT SoTimeCounter : public SoEngine {
   typedef SoEngine inherited;
   SO_ENGINE_HEADER(SoTimeCounter);
 
@@ -52,7 +52,7 @@ public:
 
 protected:
   virtual ~SoTimeCounter();
-  
+
 private:
 
   virtual void evaluate(void);
@@ -72,7 +72,7 @@ private:
   void calcDutySteps(void);
   void calcNumSteps(void);
 
-  SbList <double> dutylimits; 
+  SbList <double> dutylimits;
 };
 
 #endif // !COIN_SOTIMECOUNTER_H

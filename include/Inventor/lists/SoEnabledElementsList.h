@@ -23,7 +23,7 @@
 #include <Inventor/lists/SoTypeList.h>
 
 
-class SoEnabledElementsList {
+class COIN_DLL_EXPORT SoEnabledElementsList {
 public:
   SoEnabledElementsList(SoEnabledElementsList * const parentlist);
   const SoTypeList & getElements(void) const;

@@ -25,7 +25,7 @@
 #include <Inventor/fields/SoSFFloat.h>
 
 
-class SoFont : public SoNode {
+class COIN_DLL_EXPORT SoFont : public SoNode {
   typedef SoNode inherited;
 
   SO_NODE_HEADER(SoFont);

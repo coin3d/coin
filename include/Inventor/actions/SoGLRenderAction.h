@@ -29,7 +29,7 @@
 #include <Inventor/lists/SbList.h>
 
 
-class SoGLRenderAction : public SoAction {
+class COIN_DLL_EXPORT SoGLRenderAction : public SoAction {
   typedef SoAction inherited;
 
   SO_ACTION_HEADER(SoGLRenderAction);

@@ -25,7 +25,7 @@
 class SoEngine;
 
 
-class SoEngineList : public SoBaseList {
+class COIN_DLL_EXPORT SoEngineList : public SoBaseList {
   typedef SoBaseList inherited;
 
 public:

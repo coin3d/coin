@@ -23,7 +23,7 @@
 #include <Inventor/elements/SoInt32Element.h>
 
 
-class SoAnnoText3FontSizeHintElement : public SoInt32Element {
+class COIN_DLL_EXPORT SoAnnoText3FontSizeHintElement : public SoInt32Element {
   typedef SoInt32Element inherited;
 
   SO_ELEMENT_HEADER(SoAnnoText3FontSizeHintElement);

@@ -24,7 +24,7 @@
 #include <Inventor/SbColor.h>
 
 
-class SoGLAmbientColorElement : public SoAmbientColorElement {
+class COIN_DLL_EXPORT SoGLAmbientColorElement : public SoAmbientColorElement {
   typedef SoAmbientColorElement inherited;
 
   SO_ELEMENT_HEADER(SoGLAmbientColorElement);

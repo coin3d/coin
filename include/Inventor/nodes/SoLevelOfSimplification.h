@@ -26,7 +26,7 @@
 #include <Inventor/fields/SoSFInt32.h>
 
 
-class SoLevelOfSimplification : public SoLOD {
+class COIN_DLL_EXPORT SoLevelOfSimplification : public SoLOD {
   typedef SoLOD inherited;
 
   SO_NODE_HEADER(SoLevelOfSimplification);

@@ -24,7 +24,7 @@
 #include <Inventor/lists/SoFieldList.h>
 
 
-class SoEngineOutput {
+class COIN_DLL_EXPORT SoEngineOutput {
 public:
   SoEngineOutput(void);
   virtual ~SoEngineOutput();

@@ -30,7 +30,7 @@ class SoElapsedTime;
 class SoCalculator;
 class SoInterpolateRotation;
 
-class SoPendulum : public SoRotation {
+class COIN_DLL_EXPORT SoPendulum : public SoRotation {
   typedef SoRotation inherited;
 
   SO_NODE_HEADER(SoPendulum);

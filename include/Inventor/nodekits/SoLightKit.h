@@ -24,8 +24,7 @@
 #include <Inventor/nodekits/SoBaseKit.h>
 
 
-class SoLightKit : public SoBaseKit
-{
+class COIN_DLL_EXPORT SoLightKit : public SoBaseKit {
   typedef SoBaseKit inherited;
 
   SO_KIT_HEADER(SoLightKit);

@@ -33,7 +33,7 @@ class SbCylinderProjector;
 class SbLineProjector;
 class SoTimerSensor;
 
-class SoTrackballDragger : public SoDragger {
+class COIN_DLL_EXPORT SoTrackballDragger : public SoDragger {
   typedef SoDragger inherited;
 
   SO_KIT_HEADER(SoTrackballDragger);
@@ -94,7 +94,7 @@ protected:
 private:
   SoNode *getNodeFieldNode(const char *fieldname);
   void updateUserAxisSwitches(const SbBool setactive = FALSE);
-  
+
   SbSphereProjector *sphereProj;
   SbCylinderProjector *cylProj;
   SbLineProjector *lineProj;

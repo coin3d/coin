@@ -29,8 +29,7 @@ class SbName;
 #define SO_CATALOG_NAME_NOT_FOUND -1
 
 
-class SoNodekitCatalog
-{
+class COIN_DLL_EXPORT SoNodekitCatalog {
 public:
   static void initClass(void);
 

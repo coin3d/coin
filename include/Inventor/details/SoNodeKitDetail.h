@@ -27,7 +27,7 @@ class SoBaseKit;
 class SoNode;
 
 
-class SoNodeKitDetail : public SoDetail {
+class COIN_DLL_EXPORT SoNodeKitDetail : public SoDetail {
   typedef SoDetail inherited;
 
 //$ BEGIN TEMPLATE DetailHeader(SoNodeKitDetail)

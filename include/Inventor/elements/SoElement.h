@@ -35,7 +35,7 @@ class SoState;
 class SoNode;
 
 
-class SoElement {
+class COIN_DLL_EXPORT SoElement {
 public:
   static void initClass(void);
 

@@ -28,7 +28,7 @@ class SoGroup;
 class SoSensor;
 
 
-class SoFile : public SoNode {
+class COIN_DLL_EXPORT SoFile : public SoNode {
   typedef SoNode inherited;
 
   SO_NODE_HEADER(SoFile);

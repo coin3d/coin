@@ -27,7 +27,7 @@
 class SoIndexedFaceSet;
 
 
-class SoCube : public SoShape {
+class COIN_DLL_EXPORT SoCube : public SoShape {
     typedef SoShape inherited;
 
   SO_NODE_HEADER(SoCube);

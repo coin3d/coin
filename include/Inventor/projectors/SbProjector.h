@@ -28,7 +28,7 @@
 class SbVec2f;
 
 
-class SbProjector {
+class COIN_DLL_EXPORT SbProjector {
 public:
   virtual SbVec3f project(const SbVec2f & point) = 0;
   virtual void setViewVolume(const SbViewVolume & vol);

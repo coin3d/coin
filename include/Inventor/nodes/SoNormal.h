@@ -26,7 +26,7 @@
 class SbVec3f;
 
 
-class SoNormal : public SoNode {
+class COIN_DLL_EXPORT SoNormal : public SoNode {
   typedef SoNode inherited;
 
   SO_NODE_HEADER(SoNormal);

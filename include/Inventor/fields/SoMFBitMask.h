@@ -23,7 +23,7 @@
 #include <Inventor/fields/SoMFEnum.h>
 
 
-class SoMFBitMask : public SoMFEnum {
+class COIN_DLL_EXPORT SoMFBitMask : public SoMFEnum {
   typedef SoMFEnum inherited;
 
   SO_MFIELD_DERIVED_HEADER(SoMFBitMask, not_used, int);

@@ -25,7 +25,7 @@
 class SoEngineOutput;
 
 
-class SoEngineOutputList : public SbList<SoEngineOutput *> {
+class COIN_DLL_EXPORT SoEngineOutputList : public SbList<SoEngineOutput *> {
 public:
   SoEngineOutputList(void) : SbList<SoEngineOutput *>() { }
   SoEngineOutputList(const int sizehint) : SbList<SoEngineOutput *>(sizehint) { }

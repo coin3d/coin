@@ -28,7 +28,7 @@
 #include <Inventor/SbRotation.h>
 
 
-class SoRotationXYZ : public SoTransformation {
+class COIN_DLL_EXPORT SoRotationXYZ : public SoTransformation {
   typedef SoTransformation inherited;
 
   SO_NODE_HEADER(SoRotationXYZ);

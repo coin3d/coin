@@ -31,7 +31,7 @@ class SoSensor;
 class SoOneShotSensor;
 class SoFieldSensor;
 
-class SoRotor : public SoRotation {
+class COIN_DLL_EXPORT SoRotor : public SoRotation {
   typedef SoRotation inherited;
 
   SO_NODE_HEADER(SoRotor);

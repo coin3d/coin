@@ -24,7 +24,7 @@
 #include <Inventor/actions/SoSubAction.h>
 
 
-class SoToVRMLAction : public SoAction {
+class COIN_DLL_EXPORT SoToVRMLAction : public SoAction {
   typedef SoAction inherited;
 
   SO_ACTION_HEADER(SoToVRMLAction);

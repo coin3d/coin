@@ -20,11 +20,13 @@
 #ifndef COIN_SOBUNDLE_H
 #define COIN_SOBUNDLE_H
 
+#include <Inventor/SbBasic.h>
+
 class SoAction;
 class SoState;
 
 
-class SoBundle {
+class COIN_DLL_EXPORT SoBundle {
 protected:
   SoBundle(SoAction *action);
   ~SoBundle();

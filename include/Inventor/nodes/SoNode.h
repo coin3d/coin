@@ -39,7 +39,7 @@ class SoSearchAction;
 class SoWriteAction;
 
 
-class SoNode : public SoFieldContainer {
+class COIN_DLL_EXPORT SoNode : public SoFieldContainer {
   typedef SoFieldContainer inherited;
 
 public:

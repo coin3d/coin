@@ -23,7 +23,7 @@
 #include <Inventor/nodes/SoSubNode.h>
 
 
-class SoGroup : public SoNode {
+class COIN_DLL_EXPORT SoGroup : public SoNode {
   typedef SoNode inherited;
 
   SO_NODE_HEADER(SoGroup);

@@ -24,7 +24,7 @@
 #include <Inventor/SbViewVolume.h>
 
 
-class SoViewVolumeElement : public SoReplacedElement {
+class COIN_DLL_EXPORT SoViewVolumeElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
   SO_ELEMENT_HEADER(SoViewVolumeElement);

@@ -27,7 +27,7 @@ class SoSensor;
 class SoFieldSensor;
 
 
-class SoTabBoxDragger : public SoDragger {
+class COIN_DLL_EXPORT SoTabBoxDragger : public SoDragger {
   typedef SoDragger inherited;
 
   SO_KIT_HEADER(SoTabBoxDragger);

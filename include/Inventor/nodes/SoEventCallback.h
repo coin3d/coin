@@ -38,7 +38,7 @@ class SoHandleEventAction;
 typedef void SoEventCallbackCB(void * userdata, SoEventCallback * node);
 
 
-class SoEventCallback : public SoNode {
+class COIN_DLL_EXPORT SoEventCallback : public SoNode {
   typedef SoNode inherited;
 
   SO_NODE_HEADER(SoEventCallback);

@@ -20,13 +20,14 @@
 #ifndef COIN_SONOTIFICATION_H
 #define COIN_SONOTIFICATION_H
 
+#include <Inventor/SbBasic.h>
 #include <Inventor/system/inttypes.h>
-
 #include <stdio.h>
 
 class SoBase;
 
-class SoNotRec {
+
+class COIN_DLL_EXPORT SoNotRec {
 public:
   enum Type {
     CONTAINER,
@@ -55,7 +56,7 @@ class SoEngineOutput;
 class SoField;
 class SoVRMLInterpOutput;
 
-class SoNotList {
+class COIN_DLL_EXPORT SoNotList {
 public:
   SoNotList(void);
   SoNotList(const SoNotList * nl);

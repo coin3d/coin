@@ -28,7 +28,7 @@
 #endif // !COIN_INTERNAL
 
 
-class SoIndexedTriangleStripSet : public SoIndexedShape {
+class COIN_DLL_EXPORT SoIndexedTriangleStripSet : public SoIndexedShape {
   typedef SoIndexedShape inherited;
 
   SO_NODE_HEADER(SoIndexedTriangleStripSet);

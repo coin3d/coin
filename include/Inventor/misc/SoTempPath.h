@@ -22,7 +22,7 @@
 
 #include <Inventor/SoFullPath.h>
 
-class SoTempPath : public SoFullPath {
+class COIN_DLL_EXPORT SoTempPath : public SoFullPath {
 public:
   SoTempPath(const int approxlength);
 };

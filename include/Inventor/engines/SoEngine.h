@@ -27,7 +27,7 @@ class SoEngineOutput;
 class SoEngineOutputList;
 class SoEngineOutputData;
 
-class SoEngine : public SoFieldContainer {
+class COIN_DLL_EXPORT SoEngine : public SoFieldContainer {
   typedef SoFieldContainer inherited;
 
 public:

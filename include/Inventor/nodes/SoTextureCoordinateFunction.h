@@ -23,7 +23,7 @@
 #include <Inventor/nodes/SoSubNode.h>
 
 
-class SoTextureCoordinateFunction : public SoNode {
+class COIN_DLL_EXPORT SoTextureCoordinateFunction : public SoNode {
   typedef SoNode inherited;
 
   SO_NODE_ABSTRACT_HEADER(SoTextureCoordinateFunction);

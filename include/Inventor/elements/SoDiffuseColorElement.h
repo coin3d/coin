@@ -25,7 +25,7 @@
 class SbColor;
 
 
-class SoDiffuseColorElement : public SoReplacedElement {
+class COIN_DLL_EXPORT SoDiffuseColorElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
   SO_ELEMENT_HEADER(SoDiffuseColorElement);

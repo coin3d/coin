@@ -30,7 +30,7 @@ class SbVec4f;
 
 typedef float SbMat[4][4];
 
-class SbMatrix {
+class COIN_DLL_EXPORT SbMatrix {
 public:
   SbMatrix(void);
   SbMatrix(const float a11, const float a12, const float a13, const float a14,

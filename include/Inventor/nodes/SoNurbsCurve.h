@@ -30,7 +30,7 @@
 #endif // !_WIN32
 
 
-class SoNurbsCurve : public SoShape {
+class COIN_DLL_EXPORT SoNurbsCurve : public SoShape {
   typedef SoShape inherited;
 
   SO_NODE_HEADER(SoNurbsCurve);

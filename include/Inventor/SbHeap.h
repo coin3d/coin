@@ -31,8 +31,7 @@ typedef struct
   void (*set_index_func)(void*, int);
 } SbHeapFuncs;
 
-class SbHeap
-{
+class COIN_DLL_EXPORT SbHeap {
 public:
   SbHeap(const SbHeapFuncs &SbHeapFuncs,
          const int initsize = 1024);

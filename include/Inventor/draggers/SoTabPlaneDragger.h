@@ -29,7 +29,7 @@ class SbLineProjector;
 class SbPlaneProjector;
 
 
-class SoTabPlaneDragger : public SoDragger {
+class COIN_DLL_EXPORT SoTabPlaneDragger : public SoDragger {
   typedef SoDragger inherited;
 
   SO_KIT_HEADER(SoTabPlaneDragger);
@@ -85,7 +85,7 @@ protected:
   // this class as they clearly should have been private.
   // Let us know if we've removed something that you need.
   // pederb, 20000226
-  
+
 private:
 
   // static methods moved from public to private
@@ -113,4 +113,3 @@ private:
 };
 
 #endif // !COIN_SOTABPLANEDRAGGER_H
-

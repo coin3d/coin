@@ -25,7 +25,7 @@
 #include <Inventor/fields/SoSFInt32.h>
 
 
-class SoNonIndexedShape : public SoVertexShape {
+class COIN_DLL_EXPORT SoNonIndexedShape : public SoVertexShape {
   typedef SoVertexShape inherited;
 
   SO_NODE_ABSTRACT_HEADER(SoNonIndexedShape);
@@ -44,7 +44,7 @@ protected:
 
   void fixNumVerticesPointers(SoState *state, const int32_t *&start, const int32_t *&end,
                               int32_t *dummyarray) const;
-  
+
 };
 
 

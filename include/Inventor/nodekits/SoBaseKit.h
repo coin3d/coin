@@ -49,8 +49,7 @@ class SoPath;
  ((_classname_ *)_kit_->getAnyPart(_name_, FALSE, FALSE, FALSE))
 
 
-class SoBaseKit : public SoNode
-{
+class COIN_DLL_EXPORT SoBaseKit : public SoNode {
   typedef SoNode inherited;
 
   SO_NODE_HEADER(SoBaseKit);

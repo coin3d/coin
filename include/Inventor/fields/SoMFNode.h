@@ -26,7 +26,7 @@
 class SoNode;
 
 
-class SoMFNode : public SoMField {
+class COIN_DLL_EXPORT SoMFNode : public SoMField {
   typedef SoMField inherited;
 
   SO_MFIELD_HEADER(SoMFNode, SoNode *, SoNode *);

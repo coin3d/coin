@@ -40,8 +40,7 @@ typedef struct
 } SbOctTreeFuncs;
 
 
-class SbOctTree
-{
+class COIN_DLL_EXPORT SbOctTree {
 public:
   SbOctTree(const SbBox3f &bbox,
             const SbOctTreeFuncs &itemfuncs,

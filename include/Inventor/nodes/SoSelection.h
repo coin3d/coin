@@ -35,7 +35,7 @@ typedef void SoSelectionClassCB(void * data, SoSelection * sel);
 typedef SoPath * SoSelectionPickCB(void * data, const SoPickedPoint * pick);
 
 
-class SoSelection : public SoSeparator {
+class COIN_DLL_EXPORT SoSelection : public SoSeparator {
   typedef SoSeparator inherited;
 
   SO_NODE_HEADER(SoSelection);
