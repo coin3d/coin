@@ -380,7 +380,6 @@ $1
 ]) # SIM_AC_SETUP_MSVCRT
 
 # EOF **********************************************************************
-# EOF **********************************************************************
 
 # **************************************************************************
 # SIM_AC_ERROR_MESSAGE_FILE( FILENAME )
@@ -6693,6 +6692,36 @@ else
   ifelse([$2], , :, [$2])
 fi
 ]) # SIM_AC_HAVE_GLX_IFELSE()
+
+# **************************************************************************
+# SIM_AC_HAVE_GLXGETPROCADDRESSARB_IFELSE( IF-FOUND, IF-NOT-FOUND )
+#
+# Check for glXGetProcAddressARB() function.
+
+AC_DEFUN([SIM_AC_HAVE_GLXGETPROCADDRESSARB_IFELSE], [
+AC_CACHE_CHECK(
+  [for glXGetProcAddressARB() function],
+  sim_cv_have_glxgetprocaddressarb,
+  AC_TRY_LINK(
+    [
+#include <GL/glx.h>
+#include <GL/gl.h>
+],
+    [
+      glXGetProcAddressARB((const GLubyte *)"glClearColor");
+/* Defect JAGad01283 of HP's aCC compiler causes a link failure unless
+   there is at least one "pure" OpenGL call along with GLU calls. */
+      glEnd();
+],
+    [sim_cv_have_glxgetprocaddressarb=true],
+    [sim_cv_have_glxgetprocaddressarb=false]))
+
+if ${sim_cv_have_glxgetprocaddressarb=false}; then
+  ifelse([$1], , :, [$1])
+else
+  ifelse([$2], , :, [$2])
+fi
+]) # SIM_AC_HAVE_GLXGETPROCADDRESSARB_IFELSE()
 
 
 # **************************************************************************
