@@ -10,12 +10,13 @@ Todo
   try compiling under g++ and SGI CC to check that we've covered the
   functionality provided.)
 
+* [mortene:19990924] clean up the configure.in file a bit by making
+  macros SIM_ARG_WITH_BOOL, SIM_ARG_WITHOUT_BOOL, SIM_ARG_ENABLE_BOOL
+  and SIM_ARG_DISABLE_BOOL.
+
 * [mortene:19990912] add options in configure for compiling slimmed
   versions of Coin (--without-coin-engines etc). Or perhaps make a
   single --compile-basesystem option instead?
-
-* [mortene:19990924] default to compile without RTTI and exceptions
-  for G++/egcs?
 
 * [mortene:19990913] move tasklist from docs/todo.txt into this file.
 
@@ -50,6 +51,9 @@ Done
 ====
 
 (format is: "* [author:conceived-date][implementer:finished-date] item")
+
+* [mortene:19990924][mortene:19990924] default to compile without RTTI
+  and exceptions for g++/egcs?
 
 * [mortene:19990918][mortene:19990918] use the GL_CFLAGS and GL_LIBS
   from the OpenGL detection macro.
