@@ -541,10 +541,10 @@ cc_glglue_instance(int contextid)
     glglue_set_glVersion(gi);
     glxglue_init(gi);
 
-    gi->vendorstr = glGetString(GL_VENDOR);
+    gi->vendorstr = (const char *)glGetString(GL_VENDOR);
     gi->vendor_is_SGI = strcmp((const char *)gi->vendorstr, "SGI") == 0;
-    gi->rendererstr = glGetString(GL_RENDERER);
-    gi->extensionsstr = glGetString(GL_EXTENSIONS);
+    gi->rendererstr = (const char *)glGetString(GL_RENDERER);
+    gi->extensionsstr = (const char *)glGetString(GL_EXTENSIONS);
 
     if (coin_glglue_debug()) {
       cc_debugerror_postinfo("cc_glglue_instance",

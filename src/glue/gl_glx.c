@@ -147,7 +147,7 @@ glxglue_init(cc_glglue * w)
     }
     else {
       /* FIXME: should use the real screen number. :-(  20020926 mortene. */
-      glxglue_screen = XDefaultScreen(glxglue_display);
+      glxglue_screen = XDefaultScreen((Display *)glxglue_display);
     }
   }
 #endif /* HAVE_GLX */
@@ -180,15 +180,16 @@ glxglue_init(cc_glglue * w)
        from GLX 1.1 -- just in case there are ever compile-time,
        link-time or run-time problems with this.  */
 
-    w->glx.serverversion = glXQueryServerString(glxglue_display, glxglue_screen, GLX_VERSION);
-    w->glx.servervendor = glXQueryServerString(glxglue_display, glxglue_screen, GLX_VENDOR);
-    w->glx.serverextensions = glXQueryServerString(glxglue_display, glxglue_screen, GLX_EXTENSIONS);
+    Display * d = (Display *)glxglue_display;
+    w->glx.serverversion = glXQueryServerString(d, glxglue_screen, GLX_VERSION);
+    w->glx.servervendor = glXQueryServerString(d, glxglue_screen, GLX_VENDOR);
+    w->glx.serverextensions = glXQueryServerString(d, glxglue_screen, GLX_EXTENSIONS);
 
-    w->glx.clientversion = glXGetClientString(glxglue_display, GLX_VERSION);
-    w->glx.clientvendor = glXGetClientString(glxglue_display, GLX_VENDOR);
-    w->glx.clientextensions = glXGetClientString(glxglue_display, GLX_EXTENSIONS);
+    w->glx.clientversion = glXGetClientString(d, GLX_VERSION);
+    w->glx.clientvendor = glXGetClientString(d, GLX_VENDOR);
+    w->glx.clientextensions = glXGetClientString(d, GLX_EXTENSIONS);
 
-    w->glx.glxextensions = glXQueryExtensionsString(glxglue_display, glxglue_screen);
+    w->glx.glxextensions = glXQueryExtensionsString(d, glxglue_screen);
 
     if (coin_glglue_debug()) {
       cc_debugerror_postinfo("glxglue_init",
