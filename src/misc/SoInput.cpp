@@ -109,7 +109,6 @@ public:
       this->headerisread = FALSE;
       this->ivversion = 0.0f;
       this->linenr = 1;
-      this->backbufidx = -1;
       this->readbufidx = 0;
       this->totalread = 0;
       this->lastputback = -1;
@@ -135,7 +134,7 @@ public:
   SbBool doBufferRead(void)
     {
       // Make sure that we really do need to read more bytes.
-      assert(this->backbufidx == -1);
+      assert(this->backbuffer.getLength() == 0);
       assert(this->readbufidx == this->readbuflen);
 
       if (this->ismembuffer) {
@@ -168,15 +167,14 @@ public:
 
   size_t getNumBytesParsedSoFar(void) const
     {
-      return this->totalread + this->readbufidx - (this->backbufidx + 1);
+      return this->totalread + this->readbufidx - this->backbuffer.getLength();
     }
 
   SbBool getChunkOfBytes(unsigned char * ptr, size_t length)
     {
       // Suck out any bytes from the backbuffer first.
-      while ((this->backbufidx >= 0) && (length > 0)) {
-        *ptr++ = this->backBuf[this->backbufidx];
-        this->backBuf.truncate(this->backbufidx--);
+      while ((this->backbuffer.getLength() > 0) && (length > 0)) {
+        *ptr++ = this->backbuffer.pop();
         length--;
       }
 
@@ -197,9 +195,8 @@ public:
 
   SbBool get(char & c)
     {
-      if (this->backbufidx >= 0) {
-        c = this->backBuf[this->backbufidx];
-        this->backBuf.truncate(this->backbufidx--);
+      if (this->backbuffer.getLength() > 0) {
+        c = this->backbuffer.pop();
       }
       else if (this->readbufidx >= this->readbuflen) {
         // doBufferRead() also does the right thing (i.e. sets the EOF
@@ -237,14 +234,13 @@ public:
       this->lastputback = c;
       this->lastchar = -1;
 
-      if (this->readbufidx > 0 && this->backbufidx < 0) {
+      if (this->readbufidx > 0 && this->backbuffer.getLength() == 0) {
         this->readbufidx--;
         // Make sure we write back the same character which was read..
         assert(c == this->readbuf[this->readbufidx]);
       }
       else {
-        this->backBuf.append(c);
-        this->backbufidx++;
+        this->backbuffer.push(c);
       }
 
       this->eof = FALSE;
@@ -269,14 +265,10 @@ public:
 
       this->lastchar = -1;
 
-      if (n <= this->readbufidx && this->backbufidx < 0)
+      if (n <= this->readbufidx && this->backbuffer.getLength() == 0)
         this->readbufidx -= n;
-      else {
-        for (int i = n - 1; i >= 0; i--) {
-          this->backBuf.append(str[i]);
-        }
-        this->backbufidx += n;
-      }
+      else
+        for (int i = n - 1; i >= 0; i--) this->backbuffer.push(str[i]);
 
       this->eof = FALSE;
     }
@@ -402,8 +394,7 @@ private:
   int readbufidx;
   int readbuflen;
   size_t totalread;
-  SbList<char> backBuf;
-  int backbufidx;
+  SbList<char> backbuffer; // Used as a stack (SbList provides push() and pop()).
   char lastputback; // The last character put back into the stream.
   char lastchar; // Last read character.
   SbBool ismembuffer;
