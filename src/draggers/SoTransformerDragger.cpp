@@ -1053,11 +1053,10 @@ SoTransformerDragger::dragFinish(void)
   this->setSwitchValue("yAxisFeedbackSwitch", SO_SWITCH_NONE);
   this->setSwitchValue("zAxisFeedbackSwitch", SO_SWITCH_NONE);
 
-  const SbMatrix &m = this->getMotionMatrix();
+#if COIN_DEBUG && 0 // used to debug motion matrix (pederb, 20000225)
   SbRotation r,so;
   SbVec3f t,s;
 
-#if COIN_DEBUG && 0 // used to debug motion matrix (pederb, 20000225)
   fprintf(stderr,"motion matrix:\n");
   m.print(stderr);
   m.getTransform(t, r, s, so);
