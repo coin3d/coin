@@ -508,3 +508,10 @@ THE WISH LIST
 
   Update 2001-09-05 mortene: See also FIXME comment near the top of
   include/Inventor/SbBasic.h.in.
+
+* Make APIs for engine classes more consistent.
+  2001-09-11  Karin Kosina <kyrah@sim.no>, write-up by <mortene@sim.no>
+
+  Instead of a field called "enable" for some engines, "disable" in
+  others and yet again "on" in others, use a consistent single name
+  (but provide backward compatibility).
