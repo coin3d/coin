@@ -415,17 +415,22 @@ SoMField::getNum(void) const
 void
 SoMField::setNum(const int num)
 {
+  // Don't use getNum(), as that could trigger evaluate(), which is
+  // _not_ supposed to be called recursively (which means setNum()
+  // wouldn't have been available from within an evaluate() session).
+  int oldnum = this->num;
+
   // Note: this method is implemented in terms of the virtual methods
   // deleteValues() and insertSpace() so the more "complex" fields
   // (like SoMFNode and SoMFEngine) can also handle setNum() in a
   // correct way.
 
-  if (num < this->getNum()) {
+  if (num < oldnum) {
     this->deleteValues(num, -1);
     // deleteValues() also handles notification.
   }
-  else if (num > this->getNum()) {
-    this->insertSpace(this->getNum(), num - this->getNum());
+  else if (num > oldnum) {
+    this->insertSpace(oldnum, num - oldnum);
     // insertSpace() also handles notification.
   }
   // else no change.
@@ -443,7 +448,9 @@ SoMField::setNum(const int num)
 void
 SoMField::deleteValues(int start, int num)
 {
-  int oldnum = this->getNum();
+  // Don't use getNum(), so we avoid recursive evaluate() calls.
+  int oldnum = this->num;
+
   if (num == -1) num = oldnum - start;
   if (num == 0) return;
   int end = start + num; // First element behind the delete block.
@@ -452,7 +459,7 @@ SoMField::deleteValues(int start, int num)
   if (start < 0 || start >= oldnum || end > oldnum || num < -1) {
     SoDebugError::post("SoMField::deleteValues",
                        "invalid indices [%d, %d] for array of size %d",
-                       start, end - 1, this->getNum());
+                       start, end - 1, oldnum);
     return;
   }
 #endif // COIN_DEBUG
@@ -478,7 +485,8 @@ SoMField::insertSpace(int start, int num)
 {
   if (num == 0) return;
 
-  int oldnum = this->getNum();
+  // Don't use getNum(), so we avoid recursive evaluate() calls.
+  int oldnum = this->num;
 #if COIN_DEBUG
   if (start < 0 || start > oldnum || num < 0) {
     SoDebugError::post("SoMField::insertSpace",
