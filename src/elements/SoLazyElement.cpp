@@ -21,14 +21,10 @@
   \class SoLazyElement Inventor/elements/SoLazyElement.h
   \brief The SoLazyElement class is a very stupid class..
 
-  This is just a wrap-around implementation for compatibility. It should (hopefully)
-  work in the same way as the Inventor class though.
+  This is just a wrap-around implementation for compatibility. It
+  should (hopefully) work in the same way as the Inventor class
+  though.  
 */
-
-//
-// FIXME: cache element pointers to make this class a bit more effective
-//        pederb, 20000208
-//
 
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -72,6 +68,9 @@ SoLazyElement::init(SoState *state)
   this->blending = FALSE;
   this->state = state;
   this->shininess = this->getDefaultShininess();
+  this->ambientColor = this->getDefaultAmbient();
+  this->emissiveColor = this->getDefaultEmissive();
+  this->specularColor = this->getDefaultSpecular();
   this->transparencyType = (int32_t) SoGLRenderAction::SCREEN_DOOR;
 }
 
@@ -86,6 +85,9 @@ SoLazyElement::push(SoState *state)
   elem->blending = this->blending;
   elem->state = this->state;
   elem->shininess = this->shininess;
+  elem->ambientColor = this->ambientColor;
+  elem->specularColor = this->specularColor;
+  elem->emissiveColor = this->emissiveColor;
   elem->transparencyType = this->transparencyType;
 }
 
@@ -190,7 +192,11 @@ SoLazyElement::setColorIndices(SoState *state, SoNode *node,
 void
 SoLazyElement::setAmbient(SoState *state, const SbColor* color)
 {
-  SoAmbientColorElement::set(state, NULL, 1, color);
+  // must copy color into element since it might be on the stack
+  SoLazyElement *elem = (SoLazyElement*)
+    SoElement::getElement(state, classStackIndex);
+  elem->ambientColor = *color;
+  SoAmbientColorElement::set(state, NULL, 1, &elem->ambientColor);
 }
 
 // ! FIXME: write doc
@@ -198,7 +204,11 @@ SoLazyElement::setAmbient(SoState *state, const SbColor* color)
 void
 SoLazyElement::setEmissive(SoState *state, const SbColor* color)
 {
-  SoEmissiveColorElement::set(state, NULL, 1, color);
+  // must copy color into element since it might be on the stack
+  SoLazyElement *elem = (SoLazyElement*)
+    SoElement::getElement(state, classStackIndex);
+  elem->emissiveColor = *color;
+  SoEmissiveColorElement::set(state, NULL, 1, &elem->emissiveColor);
 }
 
 // ! FIXME: write doc
@@ -206,7 +216,11 @@ SoLazyElement::setEmissive(SoState *state, const SbColor* color)
 void
 SoLazyElement::setSpecular(SoState *state, const SbColor* color)
 {
-  SoSpecularColorElement::set(state, NULL, 1, color);
+  // must copy color into element since it might be on the stack
+  SoLazyElement *elem = (SoLazyElement*)
+    SoElement::getElement(state, classStackIndex);
+  elem->specularColor = *color;
+  SoSpecularColorElement::set(state, NULL, 1, &elem->specularColor);
 }
 
 // ! FIXME: write doc

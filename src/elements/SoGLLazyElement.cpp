@@ -27,6 +27,16 @@
 
 #include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoGLDiffuseColorElement.h>
+#include <Inventor/elements/SoGLAmbientColorElement.h>
+#include <Inventor/elements/SoGLEmissiveColorElement.h>
+#include <Inventor/elements/SoGLSpecularColorElement.h>
+#include <Inventor/elements/SoGLShininessElement.h>
+#include <Inventor/elements/SoGLPolygonStippleElement.h>
+#include <Inventor/elements/SoTransparencyElement.h>
+#include <Inventor/elements/SoLightModelElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
+
+#include <Inventor/bundles/SoMaterialBundle.h>
 #include <coindefs.h> // COIN_STUB
 #include <assert.h>
 
@@ -52,9 +62,51 @@ SoGLLazyElement::~SoGLLazyElement()
 //! FIXME: write doc
 
 void
-SoGLLazyElement::sendAllMaterial(SoState */*state*/)
+SoGLLazyElement::sendAllMaterial(SoState *state)
 {
-  // elements should be up-to-date. Do nothing.
+  // code adapted from SoMaterialBundle::reallySend
+
+  SoGLDiffuseColorElement * diffuseElt = 
+    (SoGLDiffuseColorElement*) SoDiffuseColorElement::getInstance(state);
+  if (SoShapeStyleElement::isScreenDoor(state)) {
+    diffuseElt->send(0);
+  }
+  else {
+    SoTransparencyElement *transparencyElt = (SoTransparencyElement*) 
+      SoTransparencyElement::getInstance(state);
+    if (!diffuseElt->isPacked()) {
+      float trans = transparencyElt->get(0);
+      diffuseElt->send(0, 1.0f - trans);
+    }
+    else {
+      diffuseElt->send(0);
+    }
+  }
+  
+  if (SoLightModelElement::get(state) !=
+      SoLightModelElement::BASE_COLOR) {
+
+    SoGLAmbientColorElement *ambientElt = (SoGLAmbientColorElement*)
+      SoAmbientColorElement::getInstance(state);
+    ambientElt->send(0);
+
+    SoGLSpecularColorElement *specularElt = (SoGLSpecularColorElement*)
+      SoSpecularColorElement::getInstance(state);
+    specularElt->send(0);
+
+    SoGLEmissiveColorElement *emissiveElt = (SoGLEmissiveColorElement*)
+      SoEmissiveColorElement::getInstance(state);
+    emissiveElt->send(0);
+
+    SoGLShininessElement *shininessElt = (SoGLShininessElement*)
+      SoShininessElement::getInstance(state);
+    shininessElt->send(0);
+  }
+  
+  // just to make sure polygon stipple is up-to-date
+  const SoGLPolygonStippleElement *stippleElt = (const SoGLPolygonStippleElement*) 
+    SoElement::getConstElement(state, SoGLPolygonStippleElement::getClassStackIndex());
+  stippleElt->evaluate();
 }
 
 //! FIXME: write doc
@@ -79,7 +131,7 @@ void
 SoGLLazyElement::sendDiffuseByIndex(int index) const
 {
   SoGLDiffuseColorElement * elem = (SoGLDiffuseColorElement*)
-    SoElement::getConstElement(this->state, classStackIndex);
+    SoDiffuseColorElement::getInstance(this->state);
   elem->send(index);
 }
 
@@ -115,16 +167,10 @@ void
 SoGLLazyElement::sendVPPacked(SoState* state, const unsigned char* pcolor)
 {
   SoGLDiffuseColorElement * elem = (SoGLDiffuseColorElement*)
-    SoElement::getConstElement(state, classStackIndex);
+    SoDiffuseColorElement::getInstance(state);
   const uint32_t rgba =
     (pcolor[0] << 24) | (pcolor[1] << 16) | (pcolor[2] << 8) | pcolor[3];
   elem->sendOnePacked(rgba);
-
-  // FIXME: I couldn't be bothered to support polygon stipples for
-  // transparency here. Let me know if anybody needs it, and I'll implement it.
-  // I don't think polygons stipples will be used for transparency much longer,
-  // as it looks darn ugly, and often is slower than blending on PCs
-  // with a 3D accelerator. pederb, 20000214
 }
 
 //! FIXME: write doc

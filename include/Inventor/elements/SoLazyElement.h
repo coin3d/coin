@@ -158,7 +158,10 @@ private:
   SbBool blending;
   float shininess;
   int32_t transparencyType;
-
+  SbColor emissiveColor;
+  SbColor ambientColor;
+  SbColor specularColor;
+  
   // needed only for matches() and copyMatchInfo()
   SoElement *lightModelMatchInfo;
   SoElement *diffuseMatchInfo;
