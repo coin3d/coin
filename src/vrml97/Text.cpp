@@ -613,10 +613,6 @@ void
 SoVRMLText::generatePrimitives(SoAction * action)
 {
 
-  // FIXME: This method is not properly implemented yet! It has to
-  // treat font style properties in the same way as GLRender() and
-  // computeBBox(). (15Aug2003 handegar)
-
   PRIVATE(this)->setUpGlyphs(action->getState(), this);
 
   int i, n = this->string.getNum();
