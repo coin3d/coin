@@ -592,6 +592,10 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
         state->pop();
         SoCacheElement::setInvalid(storedinvalid);
       }
+      if (PRIVATE(this)->pvcache->getNumIndices() == 0) {
+        PRIVATE(this)->unlock();
+        return TRUE;
+      }
 
       SoGLLazyElement::getInstance(state)->send(state, SoLazyElement::ALL_MASK);
 
@@ -1000,17 +1004,22 @@ SoShape::invokeLineSegmentCallbacks(SoAction * const action,
   else if (action->getTypeId().isDerivedFrom(SoGLRenderAction::getClassTypeId())) {
     soshape_staticdata * shapedata = soshape_get_staticdata();
 
-    glBegin(GL_LINES);
-    glTexCoord4fv(v1->getTextureCoords().getValue());
-    glNormal3fv(v1->getNormal().getValue());
-    shapedata->currentbundle->send(v1->getMaterialIndex(), TRUE);
-    glVertex3fv(v1->getPoint().getValue());
-
-    glTexCoord4fv(v2->getTextureCoords().getValue());
-    glNormal3fv(v2->getNormal().getValue());
-    shapedata->currentbundle->send(v2->getMaterialIndex(), TRUE);
-    glVertex3fv(v2->getPoint().getValue());
-    glEnd();
+    if (shapedata->is_doing_pvcache_rendering) {      
+      PRIVATE(this)->pvcache->addLine(v1, v2);
+    }
+    else {
+      glBegin(GL_LINES);
+      glTexCoord4fv(v1->getTextureCoords().getValue());
+      glNormal3fv(v1->getNormal().getValue());
+      shapedata->currentbundle->send(v1->getMaterialIndex(), TRUE);
+      glVertex3fv(v1->getPoint().getValue());
+      
+      glTexCoord4fv(v2->getTextureCoords().getValue());
+      glNormal3fv(v2->getNormal().getValue());
+      shapedata->currentbundle->send(v2->getMaterialIndex(), TRUE);
+      glVertex3fv(v2->getPoint().getValue());
+      glEnd();
+    }
   }
 }
 
@@ -1048,12 +1057,17 @@ SoShape::invokePointCallbacks(SoAction * const action,
   else if (action->getTypeId().isDerivedFrom(SoGLRenderAction::getClassTypeId())) {
     soshape_staticdata * shapedata = soshape_get_staticdata();
 
-    glBegin(GL_POINTS);
-    glTexCoord4fv(v->getTextureCoords().getValue());
-    glNormal3fv(v->getNormal().getValue());
-    shapedata->currentbundle->send(v->getMaterialIndex(), TRUE);
-    glVertex3fv(v->getPoint().getValue());
-    glEnd();
+    if (shapedata->is_doing_pvcache_rendering) {      
+      PRIVATE(this)->pvcache->addPoint(v);
+    }
+    else {
+      glBegin(GL_POINTS);
+      glTexCoord4fv(v->getTextureCoords().getValue());
+      glNormal3fv(v->getNormal().getValue());
+      shapedata->currentbundle->send(v->getMaterialIndex(), TRUE);
+      glVertex3fv(v->getPoint().getValue());
+      glEnd();
+    }
   }
 }
 
