@@ -53,8 +53,8 @@ public:
 template <class Type, class Key>
 class SbHash {
 public:
-  typedef unsigned long SbHashFunc(const Key key);
-  typedef void SbHashApplyFunc(Key key, Type obj, void * closure);
+  typedef unsigned long SbHashFunc(const Key & key);
+  typedef void SbHashApplyFunc(const Key & key, const Type & obj, void * closure);
 
 public:
   SbHash(unsigned int size = 256, float loadfactor = 0.0f) {
@@ -88,7 +88,7 @@ public:
     this->elements = 0;
   }
 
-  int put(Key key, Type obj) {
+  int put(const Key & key, const Type & obj) {
     unsigned int i = this->getIndex(key);
     SbHashEntry<Type, Key> * entry = this->buckets[i];
     while ( entry ) {
@@ -113,7 +113,7 @@ public:
     return TRUE;
   }
 
-  int get(Key key, Type & obj) const {
+  int get(const Key & key, Type & obj) const {
     SbHashEntry<Type, Key> * entry;
     unsigned int i = this->getIndex(key);
     entry = this->buckets[i];
@@ -127,7 +127,7 @@ public:
     return FALSE;
   }
 
-  int remove(Key key) {
+  int remove(const Key & key) {
     unsigned int i = this->getIndex(key);
     SbHashEntry<Type, Key> * entry = this->buckets[i], * next, * prev = NULL;
     while ( entry ) {
@@ -186,11 +186,11 @@ public:
   }
 
 protected:
-  static unsigned long default_hash_func(const Key key) {
+  static unsigned long default_hash_func(const Key & key) {
     return (unsigned long) key;
   }
 
-  unsigned int getIndex(const Key key) const {
+  unsigned int getIndex(const Key & key) const {
     unsigned int idx = this->hashfunc(key);
     idx -= (idx << 7); /* i.e. key = key * -127; */
     return idx & (this->size - 1);
