@@ -426,6 +426,16 @@ SoVRMLSound::getDopplerFactor()
   return 0.0f;
 }
 
+void 
+SoVRMLSound::startPlaying(SoPath *path, void *userdataptr)
+{
+}
+
+void 
+SoVRMLSound::stopPlaying(SoPath *path, void *userdataptr)
+{
+}
+
 /*
   FIXME: Calling setDefaultBufferingProperties or
   setBufferingProperties while a sound was playing might mess up quite
