@@ -27,6 +27,7 @@ THE WISH LIST
   A field for every base class is probably not worth implementing, but
   some would be...
 
+
 * SbVec2i
   2000-12-07  Peder Blekken  <pederb@sim.no>
   [upwards compatible extension]
@@ -44,6 +45,7 @@ THE WISH LIST
 
   See also item "SbReal typedef" further down in this file.
 
+
 * SoDepthBuffer, SoGLDepthBufferElement
   2000-12-07  Peder Blekken  <pederb@sim.no>
   [upwards compatible extension]
@@ -54,6 +56,7 @@ THE WISH LIST
 
   In addition, the element would really be useful when rendering
   SoAnnotation nodes.
+
 
 * SoViewportRegion
   2000-12-07  Peder Blekken  <pederb@sim.no>
@@ -67,6 +70,7 @@ THE WISH LIST
   simple node.
 
   This node is implemented and works like a charm.
+
 
 * Coinboard node
   2000-12-07  Peder Blekken  <pederb@sim.no>
@@ -92,6 +96,7 @@ THE WISH LIST
 
   This node is only partly implemented (generatePrimitives() is missing).
 
+
 * SoEnvironment::fogStart field.
   2000-12-07  Peder Blekken  <pederb@sim.no>
   [upwards compatible extension]
@@ -100,6 +105,7 @@ THE WISH LIST
   Environment node? It makes it possible to set the distance at
   which fog starts for linear (HAZE) fog. I've already added support
   for this in SoEnvironmentElement and SoGLEnvironmentElement.
+
 
 * SoSkyDome node.
   2000-12-07  Peder Blekken  <pederb@sim.no>
@@ -121,6 +127,7 @@ THE WISH LIST
   The s texture coordinate is mapped in the same way as SoSphere.
   
   This node is partly implemented (only GLRender()-method so far).
+
 
 * SoGLPrimitiveSet node.
   2000-12-07  Peder Blekken  <pederb@sim.no>
@@ -187,6 +194,7 @@ THE WISH LIST
   it is easy to make mistakes with all the different coordIndex codes.
   But, experienced OpenGL programmers should be able to use it quite easily.
 
+
 * More nodes and elements to control GL state.
   2000-12-07  Peder Blekken  <pederb@sim.no>
   [upwards compatible extension]
@@ -194,6 +202,7 @@ THE WISH LIST
   Alpha test, blending, stencil etc. We should at least have an 
   SoGLAlphaTestElement, since Coin supports alpha test rendering of
   textures.
+
 
 * Add SoMFMatrix input fields in SoCalculator
   2001-03-29  Peder Blekken  <pederb@sim.no>
@@ -204,6 +213,7 @@ THE WISH LIST
   Some new functions would be needed of course, such as 
   multvecmatrix(), multdirmatrix(), multleft(), multright(), 
   inverse() and identity(). 
+
 
 * A better hash/dict class than SbDict.
   2001-03-29  Morten Eriksen  <mortene@sim.no>
@@ -228,6 +238,7 @@ THE WISH LIST
     they do something like this for hashes in the Linux kernel
     sources.
 
+
 * SoGestureEvent
   2001-04-29  Lars J. Aas  <larsa@sim.no>
   [upwards compatible extension]
@@ -237,6 +248,7 @@ THE WISH LIST
   Something like this should be implemented to make it easier to create
   gesture-based interfaces...
 
+
 * SoText2::verticalAlignment / verticalJustification
   2001-04-30  Peder Blekken  <pederb@sim.no>
   [upwards compatible extension]
@@ -245,6 +257,7 @@ THE WISH LIST
   vertical alignment of the strings. Useful if you want to align
   strings at the bottom or centre of something. We could also consider
   adding this field in SoAsciiText and SoText3.
+
 
 * 3D GUI Components
   2001-05-01  Peder Blekken  <pederb@sim.no>
@@ -282,6 +295,7 @@ THE WISH LIST
     Also, I would like to be able to use the components as 2D GUI
     components. It is very useful for creating an overlay GUI.  I
     wouldn't want to have buttons that looks like a ball for a 2D GUI.
+
 
 * Less environment pollution
   2001-05-02  Lars J. Aas  <larsa@sim.no>
@@ -335,6 +349,7 @@ THE WISH LIST
     that could be placed in the scene graph to control some of these options.
     This can be complimentary to the current envvar-scheme.
 
+
 * SbString / SbName / Coin internationalization
   2001-06-28  Morten Eriksen  <mortene@sim.no>
 
@@ -345,6 +360,7 @@ THE WISH LIST
 
   Update 2001-06-28 larsa:  Are there any alternatives better than
   Unicode UTF-8 for this?
+
 
 * SbBool SbMatrix::inversePossible(void) const
   2001-07-02  Peder Blekken <pederb@sim.no>
@@ -357,6 +373,7 @@ THE WISH LIST
 
   Update 2001-07-03 mortene: just want to mention that
   SbMatrix::invertible() would be a somewhat smoother name. :-)
+
 
 * SbList::setEqTester()
   2001-07-03  Marius Bugge Monsen <mariusbu@sim.no>
@@ -379,6 +396,7 @@ THE WISH LIST
   (BTW, the name for this function is crap -- should think of
   something better.)
 
+
 * SoNode::setOverride() should be made persistent
   2001-07-03  Marius Kintel <kintel@sim.no>
   (write-up by mortene)
@@ -397,6 +415,7 @@ THE WISH LIST
   Update 2001-07-03 pederb: It would also be nice if setOverride()
   could be done field-by-field, and not just for the entire node.
 
+
 * SoDB::registerImporter()
   2001-07-06  Marius Kintel <kintel@sim.no>, Peder Blekken <pederb@sim.no>
   (write-up by mortene@sim.no)
@@ -412,6 +431,7 @@ THE WISH LIST
   that could deal with import/export.  Registration (or simply typesystem
   hierarchy traversal) can probably be used in a factory approach for
   supporting foreign formats in an abstract way.
+
 
 * New node TextureAttribute
   2001-06-07  Peder Blekken <pederb@sim.no>, Morten Eriksen <mortene@sim.no>
@@ -440,11 +460,13 @@ THE WISH LIST
     };
     SoSFEnum loadPolicy;
 
+
 * void SbRotation::getAsEuler(SbVec3f &), void SbRotation::setAsEuler(const SbVec3f &)
   2001-07-15 <mortene@sim.no>
 
   Should be simple enough, see quateuler.cpp in this directory for the
   code we need for the getAsEuler() method.
+
 
 * SoTexture2::CLAMP_TO_EDGE
   2001-07-17 <pederb@sim.no>
@@ -455,6 +477,7 @@ THE WISH LIST
   pixel instead of the texture border color when texture coordinates are
   outside the [0,1] range.
 
+
 * SoFocusEvent
   2001-08-15  Lars J. Aas  <larsa@sim.no>
   [upwards compatible extension]
@@ -463,12 +486,14 @@ THE WISH LIST
   renderarea/viewer has input (event) focus and not.  FOCUS_IN and FOCUS_OUT
   would be the focus change event values.
 
+
 * SoMarkerSet scaling
   2001-08-24  suggested by Coin-user Nigel Murry, write-up by <mortene@sim.no>
   [upwards compatible extension]
 
   Add functionality to the SoMarkerSet node to make it possible to
   scale the marker bitmaps.
+
 
 * SbReal typedef
   2001-09-05  Lars J. Aas  <larsa@sim.no>
@@ -486,6 +511,7 @@ THE WISH LIST
 
   See also item "SbVec2i, SbVec2d, SbVec4d" earlier in this file.
 
+
 * The SbBool typedef
   2001-09-05  Lars J. Aas  <larsa@sim.no>
   [ABI-incompatible change (mangled function signatures will not be
@@ -499,6 +525,10 @@ THE WISH LIST
   Update 2001-09-05 mortene: See also FIXME comment near the top of
   include/Inventor/SbBasic.h.in.
 
+  Update 2002-04-18 mortene: Perhaps not such a good idea after all,
+  as SbBasic.h should also be available to use from C code.
+
+
 * Make APIs for engine classes more consistent.
   2001-09-11  Karin Kosina <kyrah@sim.no>, write-up by <mortene@sim.no>
 
@@ -508,6 +538,7 @@ THE WISH LIST
 
   Update 2001-09-19 larsa:  You also have inconsistencies in method names
   wrt the notification mechanism, I think.
+
 
 * SoInput::setStrings(char **)
   2001-09-16  Lars J. Aas  <larsa@sim.no>
@@ -522,6 +553,7 @@ THE WISH LIST
   array of shorter strings, and read from that array as if it was a buffer
   of concatenated strings.
 
+
 * SoInput/SoOutput alternative
   2001-09-16  Lars J. Aas  <larsa@sim.no>
 
@@ -531,6 +563,13 @@ THE WISH LIST
   compression libraries).  A simpler, cleaner, more flexible /
   extendible alternative should be created and allowed to be used as
   an alternative to these classes.
+
+  Update 2002-04-18 mortene: I think I would prefer the following
+  actions when solving this: 1) extract the functionality of these
+  classes into "pure" C constructions / code with cleaner & better
+  design, 2) layer the old SoInput and SoOutput classes on top of
+  these new implementations.
+
 
 * SoAction::apply(SoAction * beingApplied)
   2001-09-20  Lars J. Aas  <larsa@sim.no>
@@ -546,6 +585,7 @@ THE WISH LIST
 
   Method does not need to be virtual (no ABI problems) since it only forwards
   to three other virtual methods.
+
 
 * SbFile
   2001-09-26  Morten Eriksen  <mortene@sim.no>
@@ -655,21 +695,12 @@ THE WISH LIST
       the So* library when converting a native event into an
       SoMouseButtonEvent.
 
+
 * SbBigNum type
   2002-01-17  Lars J. Aas  <larsa@sim.no>
   [upwards compatible extension]
 
   ...with corresponding SbVec and field types.
-
-
-* SoMField::setValuesPointer()
-  2002-01-22  Lars J. Aas  <larsa@sim.no>
-  [upwards compatible extension]
-
-  If memory has to be managed externally in the application, this function
-  would avoid making Coin duplicate the array (- which takes time -) into
-  its own duplicate memory block (- and wastes memory -).  TGS has implemented
-  this (as "setValuePointer").
 
 
 * SoOffscreenRenderer::render(SoPathList &)
@@ -682,6 +713,7 @@ THE WISH LIST
   (Perhaps a better, more general solution would be to just add
   SoOffscreenRenderer::prepareForRendering(), and let the application
   programmer apply his own SoGLRenderAction?)
+
 
 * Support for field value expressions in Inventor ascii files
   2002-03-18  Peder Blekken <pederb@sim.no>
@@ -696,9 +728,9 @@ THE WISH LIST
   In this example I just used parentheses to signal begin/end expression.
   I'm not sure if this is the best solution though.
 
+
 * SoGLTeaPot
   2002-04-01  Lars J. Aas  <larsa@sim.no>
   [upwards compatible extension]
 
   A node that will render the commonly used tea pot shape.
-
