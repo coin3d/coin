@@ -201,7 +201,7 @@ SoEngine::getByName(const SbName &name, SoEngineList &list)
 
 /*!
   Called when an input is changed. The default method does nothing, but
-  subclasses may overload this method to the The Right Thing when a
+  subclasses may overload this method to do the The Right Thing when a
   specific field is changed.
 */
 void
@@ -209,10 +209,11 @@ SoEngine::inputChanged(SoField * /* which */)
 {
 }
 
-// overloaded from parent
+// doc in parent
 void
 SoEngine::notify(SoNotList *list)
 {
+  if (this->stateflags.dirty) return;
   this->stateflags.dirty = 1;
 
   if (!this->isNotifying() && this->isNotifyEnabled()) {
@@ -229,7 +230,8 @@ SoEngine::notify(SoNotList *list)
         }
       }
       for (int i = 0; i < flist.getLength(); i++) {
-        flist[i]->notify(list);
+        if (!flist[i]->getDirty())
+          flist[i]->notify(list);
       }
     }
     this->stateflags.isnotifying = 0;
