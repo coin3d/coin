@@ -1,0 +1,35 @@
+Investigate before release
+==========================
+
+- renderCaching++ fields in Transform should not be exported
+  (do a setDefault(TRUE) on those fields in the first write pass)
+
+- material handling when doing textures. It seems like RGB textures
+  should overwrite the diffuse color entirely. This sounds weird though.
+
+
+Not supported
+=============
+
+- MovieTexture
+- Background (bindable)
+- Collision
+- Fog (bindable)
+- FontStyle
+- Script (needs some callback so that an application can handle it).
+- Text (should implement with default font. Use code from QvLib?)
+- Viewpoint (bindable)
+- NavigationInfo (should be handled by browser, bindable)
+- EXTERNPROTO (needs code to fetch definition from an URL)
+
+Needs more testing
+==================
+
+- Anchor
+- Billboard
+- Inline
+- NavigationInfo
+- PointLight, SpotLight and DirectionalLight (should affect the entire group)
+- ROUTE export
+- Should probably test PROTO export better as well
+
