@@ -38,6 +38,11 @@
   \since Inventor 2.1
 */
 
+// FIXME: as far as I can tell, SoWWWInline does not automatically
+// trigger a (re-)load when the "SoWWWInline::name" field
+// changes. Shouldn't it? Test what SGI/TGS Inventor does and mimic
+// it's behaviour. 20020522 mortene.
+
 #include <Inventor/nodes/SoWWWInline.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 
