@@ -94,6 +94,7 @@ public:
   }
 
   void * nurbsrenderer;
+  void doNurbsWrapper(SoAction * action, const SbBool drawaspoints);
   void doNurbs(SoAction * action, const SbBool glrender, const SbBool drawaspoints);
 
   static void APIENTRY tessBegin(int , void * data);
@@ -274,7 +275,9 @@ SoIndexedNurbsCurve::sendPrimitive(SoAction * ,  SoPrimitiveVertex *)
 void
 SoIndexedNurbsCurve::generatePrimitives(SoAction * action)
 {
-  PRIVATE(this)->doNurbs(action, FALSE, FALSE);
+  if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
+    PRIVATE(this)->doNurbsWrapper(action, FALSE);
+  }
 }
 
 // Documented in superclass.
@@ -415,4 +418,27 @@ SoIndexedNurbsCurveP::tessEnd(void * data)
 {
   coin_inc_cbdata * cbdata = (coin_inc_cbdata*) data;
   cbdata->thisp->endShape();
+}
+
+typedef struct {
+  SoIndexedNurbsCurveP * thisp;
+  SoAction * action;
+  SbBool drawaspoints;
+} soidxnurbscurve_call_donurbs_data;
+
+static void call_donurbs(void * userdata, SoAction * action)
+{
+  soidxnurbscurve_call_donurbs_data * data = 
+    (soidxnurbscurve_call_donurbs_data*) userdata;
+  data->thisp->doNurbs(data->action, FALSE, data->drawaspoints);
+}
+
+void 
+SoIndexedNurbsCurveP::doNurbsWrapper(SoAction * action, const SbBool drawaspoints)
+{
+  soidxnurbscurve_call_donurbs_data data;
+  data.thisp = this;
+  data.action = action;
+  data.drawaspoints = drawaspoints;
+  sogl_offscreencontext_callback(call_donurbs, &data);
 }
