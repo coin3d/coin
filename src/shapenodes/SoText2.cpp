@@ -168,8 +168,8 @@ public:
     this->prevfontsize = 0.0;
   }
 
-  void getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
-               SbVec3f & v2, SbVec3f & v3);
+  SbBool getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
+                 SbVec3f & v2, SbVec3f & v3);
   void flushGlyphCache();
   void buildGlyphCache(SoState * state);
   SbBool shouldBuildGlyphCache(SoState * state);
@@ -384,9 +384,12 @@ SoText2::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   SbVec3f v0, v1, v2, v3;
   // this will cause a cache dependency on the view volume,
   // model matrix and viewport.
-  PRIVATE(this)->getQuad(action->getState(), v0, v1, v2, v3);
 
+  if (!PRIVATE(this)->getQuad(action->getState(), v0, v1, v2, v3))
+    return; // empty
+  
   box.makeEmpty();
+
   box.extendBy(v0);
   box.extendBy(v1);
   box.extendBy(v2);
@@ -403,9 +406,10 @@ SoText2::rayPick(SoRayPickAction * action)
   if (!this->shouldRayPick(action)) return;
   PRIVATE(this)->buildGlyphCache(action->getState());
   action->setObjectSpace();
+
   SbVec3f v0, v1, v2, v3;
-  PRIVATE(this)->getQuad(action->getState(), v0, v1, v2, v3);
-  if (v0 == v1 || v0 == v3) return; // empty
+  if (!PRIVATE(this)->getQuad(action->getState(), v0, v1, v2, v3))
+    return; // empty
 
   SbVec3f isect;
   SbVec3f bary;
@@ -519,12 +523,21 @@ SoText2P::flushGlyphCache()
 
 
 // Calculates a quad around the text in 3D.
-void
+//  Return FALSE if the quad is empty.
+SbBool
 SoText2P::getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
                   SbVec3f & v2, SbVec3f & v3)
 {
+
   this->buildGlyphCache(state);
 
+  short xmin, ymin, xmax, ymax;
+  this->bbox.getBounds(xmin, ymin, xmax, ymax);
+  
+  // FIXME: Why doesn't the SbBox2s have an 'isEmpty()' method as well?
+  // (20040308 handegar)
+  if (xmax < xmin) return FALSE;
+  
   SbVec3f nilpoint(0.0f, 0.0f, 0.0f);
   const SbMatrix & mat = SoModelMatrixElement::get(state);
   mat.multVecMatrix(nilpoint, nilpoint);
@@ -538,8 +551,6 @@ SoText2P::getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
   SbVec2s vpsize = vp.getViewportSizePixels();
   
   SbVec2f n0, n1, n2, n3, center;
-  short xmin, ymin, xmax, ymax;
-  this->bbox.getBounds(xmin, ymin, xmax, ymax);
   SbVec2s sp((short) (screenpoint[0] * vpsize[0]), (short)(screenpoint[1] * vpsize[1]));
   
   n0 = SbVec2f(float(sp[0] + xmin)/float(vpsize[0]), 
@@ -588,6 +599,9 @@ SoText2P::getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
   inv.multVecMatrix(v1, v1);
   inv.multVecMatrix(v2, v2);
   inv.multVecMatrix(v3, v3);
+
+  return TRUE;
+
 }
 
 // Debug convenience method.
@@ -670,6 +684,8 @@ SoText2P::buildGlyphCache(SoState * state)
                         SoFontSizeElement::get(state),
                         SoComplexityElement::get(state));
 
+  this->bbox.makeEmpty();
+
   for (int i=0; i < nrlines; i++) {
 
     const unsigned int length = PUBLIC(this)->string[i].getLength();
@@ -684,7 +700,7 @@ SoText2P::buildGlyphCache(SoState * state)
     int advancey = 0;
     int bitmapsize[2];
     int bitmappos[2];
-    const cc_glyph2d * prevglyph= NULL;
+    const cc_glyph2d * prevglyph = NULL;
 
     // fetch all glyphs first
     for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
@@ -713,7 +729,9 @@ SoText2P::buildGlyphCache(SoState * state)
       SbVec2s kerning((short) kerningx, (short) kerningy);
       SbVec2s advance((short) advancex, (short) advancey);
   
-      SbVec2s pos = penpos + SbVec2s((short) bitmappos[0], (short) bitmappos[1]) + SbVec2s(0, (short) -bitmapsize[1]);
+      SbVec2s pos = penpos + SbVec2s((short) bitmappos[0], 
+                                     (short) bitmappos[1]) + SbVec2s(0, (short) -bitmapsize[1]);
+
       this->bbox.extendBy(pos);
       this->bbox.extendBy(pos + SbVec2s(advancex + kerning[0], bitmapsize[1]));
       this->positions[i].append(pos);
