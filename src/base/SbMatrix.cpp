@@ -1023,7 +1023,11 @@ SbMatrix::multMatrixVec(const SbVec3f & src, SbVec3f & dst) const
 
   It is safe to let \a src and \a dst be the same SbVec3f instance.
 
-  \sa multMatrixVec(), multDirMatrix() and multLineMatrix().
+  This method can be used (using the current model matrix) to
+  transform a point from an object coordinate systems to the world
+  coordinate system.
+
+  \sa multMatrixVec(), multDirMatrix() and multLineMatrix().  
 */
 void
 SbMatrix::multVecMatrix(const SbVec3f & src, SbVec3f & dst) const
