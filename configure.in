@@ -7,8 +7,8 @@ m4_define([COIN_MICRO], [99])
 AC_INIT([Coin], [v[]COIN_MAJOR.COIN_MINOR.COIN_MICRO])
 AC_REVISION([$Revision$])
 
-AC_CONFIG_AUX_DIR([cfg])
-AC_CONFIG_SRCDIR([src/misc/SoDB.cpp])
+AC_CONFIG_AUX_DIR(cfg)
+AC_CONFIG_SRCDIR(src/misc/SoDB.cpp)
 
 SIM_AC_CVS_CHANGES([
   # the moving of "conf-macros" to "cfg/m4"
@@ -288,6 +288,27 @@ SIM_AC_CHECK_VAR_FUNCTIONNAME
 ## Headers we might want to use. #########################################
 AC_CHECK_HEADERS([unistd.h sys/types.h sys/param.h io.h windows.h winsock2.h])
 
+AC_CHECK_HEADERS(
+  [sys/unistd.h],
+  [sim_ac_have_sys_unistd_h=true],
+  [sim_ac_have_sys_unistd_h=false])
+
+if $sim_ac_have_sys_unistd_h; then
+  AC_MSG_CHECKING([for IN_PATH define conflict])
+  AC_TRY_COMPILE(
+   [#include <sys/unistd.h>],
+   [void * v; v = (void*) IN_PATH;],
+   [sim_ac_in_path_defined=true],
+   [sim_ac_in_path_defined=false])
+  if $sim_ac_in_path_defined; then
+    AC_MSG_RESULT([yes])
+    AC_DEFINE([COIN_UNDEF_IN_PATH_HACK],,
+     [define to "remove" conflicting IN_PATH define from <sys/unistd.h>])
+  else
+    AC_MSG_RESULT([no])
+  fi
+fi
+    
 # According to Coin user Ralf Corsepius, at least SunOS4 needs
 # to include sys/types.h before netinet/in.h. There have also
 # been a problem report for FreeBSD which seems to indicate
@@ -301,7 +322,7 @@ AC_CHECK_HEADERS([unistd.h sys/types.h sys/param.h io.h windows.h winsock2.h])
 # include netinet/in.h in the above list to AC_CHECK_HEADERS. We wouldn't
 # catch problems quiet so early on, though. 20001025 mortene.
 
-AC_CACHE_CHECK([netinet/in.h], sim_cv_netinet_in_h, [
+AC_CACHE_CHECK([for netinet/in.h], sim_cv_netinet_in_h, [
   AC_TRY_CPP([
     #if HAVE_SYS_TYPES_H
     #include <sys/types.h>
@@ -813,7 +834,7 @@ fi
 
 # **************************************************************************
 
-AM_CONFIG_HEADER([config.h include/Inventor/SbBasic.h include/Inventor/system/inttypes.h])
+AM_CONFIG_HEADER(config.h include/Inventor/SbBasic.h include/Inventor/system/inttypes.h)
 
 AC_CONFIG_FILES([
         Makefile

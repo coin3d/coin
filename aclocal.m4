@@ -1189,12 +1189,15 @@ fi
 #
 # Side-Effects:
 #   config.h:
+#     HAVE_VAR___func__              (1 if exists)
 #     HAVE_VAR___PRETTY_FUNCTION__   (1 if exists)
-#     HAVE_VAR___FUNCTION__          (always 0 if __PRETTY_FUNCTION__ exists)
+#     HAVE_VAR___FUNCTION__          (1 if exists)
+#
+# (Note that only one of these will be defined.)
 #
 # Authors:
 #   Lars J. Aas <larsa@sim.no>
-#
+#   Morten Eriksen <mortene@sim.no>
 
 AC_DEFUN([SIM_AC_CHECK_VAR_FUNCTIONNAME], [
 AC_CACHE_CHECK([for function name variable],
@@ -1221,6 +1224,9 @@ AC_CACHE_CHECK([for function name variable],
       [sim_cv_var_functionname=__FUNCTION__],
       [sim_cv_var_functionname=none])
   fi])
+
+# FIXME: these can probably be contracted to a single test inside a loop.
+# 20010330 mortene.
 
 if test x"$sim_cv_var_functionname" = x"__func__"; then
   AC_DEFINE([HAVE_VAR___func__], 1,
@@ -1724,6 +1730,8 @@ fi
 # 
 #   * [larsa:20000607] don't check all -woff options to SGI MIPSpro CC,
 #     just put all of them on the same line, to check if the syntax is ok.
+#   * [larsa:20010504] rename to SIM_AC_COMPILER_WARNINGS and clean up
+#     the macro
 
 AC_DEFUN([SIM_COMPILER_WARNINGS], [
 AC_ARG_ENABLE(
@@ -1754,7 +1762,7 @@ if test x"$enable_warnings" = x"yes"; then
   else
     case $host in
     *-*-irix*) 
-      if test x"$CC" = xcc || test x"$CXX" = xCC; then
+      if test x"$CC" = xcc || x"$CC" = xCC || test x"$CXX" = xCC; then
         _warn_flags=
         _woffs=""
         ### Turn on all warnings ######################################

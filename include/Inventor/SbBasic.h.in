@@ -195,6 +195,9 @@ typedef int SbBool;
 #undef HAVE_HASH_QUOTING
 #undef HAVE_APOSTROPHES_QUOTING
 
+/* IN_PATH define in HPUX's sys/unistd.h conflicts with SoAction::IN_PATH */
+#undef COIN_UNDEF_IN_PATH_HACK
+
 #endif /* !COIN_VERSION */ /* Ends configure-generated defines. */
 
 

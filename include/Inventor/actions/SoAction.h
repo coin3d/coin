@@ -31,14 +31,15 @@
 #include <Inventor/lists/SoActionMethodList.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
 
-
-// Avoid problem with HPUX 10.20 C library API headers, which defines
-// IN_PATH in <sys/unistd.h>. IN_PATH is "re-defined" at the end of
-// this file.
-#if defined(IN_PATH)
-#define SOACTION_STORE_INPATH_DEF IN_PATH
+// defined in Inventor/SbBasic.h
+#ifdef COIN_UNDEF_IN_PATH_HACK
+#include <sys/unistd.h>
 #undef IN_PATH
-#endif // IN_PATH already defined
+// Avoid problem with HPUX 10.20 C library API headers, which defines IN_PATH
+// in <sys/unistd.h>.  That define destroys the SoAction::PathCode enum, and
+// the preprocessor is so broken that we can't store/restore the define for
+// the duration of this header file.
+#endif
 
 
 /*!
@@ -157,13 +158,6 @@ private:
   PathCode currentpathcode;
   SbList <SbList<int> *> pathcodearray;
 };
-
-// Avoid problem with HPUX API headers (see near the start of this
-// file).
-#if defined(SOACTION_STORE_INPATH_DEF)
-#define IN_PATH SOACTION_STORE_INPATH_DEF
-#undef SOACTION_STORE_INPATH_DEF
-#endif // SOACTION_STORE_INPATH_DEF
 
 // inline methods
 

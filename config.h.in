@@ -42,6 +42,9 @@
 /* define this to a type of the indicated bitwidth */
 #undef COIN_UINT8_T
 
+/* define to "remove" conflicting IN_PATH define from <sys/unistd.h> */
+#undef COIN_UNDEF_IN_PATH_HACK
+
 /* define this to the full libCoin major.minor.micro version number */
 #undef COIN_VERSION
 
@@ -101,6 +104,9 @@
 
 /* Define if you have the <sys/types.h> header file. */
 #undef HAVE_SYS_TYPES_H
+
+/* Define if you have the <sys/unistd.h> header file. */
+#undef HAVE_SYS_UNISTD_H
 
 /* define this if the type is available on the system */
 #undef HAVE_UINT16_T
