@@ -112,7 +112,7 @@ SoBaseKit::getNodekitCatalog(void) const
 const SoNodekitCatalog **
 SoBaseKit::getClassNodekitCatalogPtr(void)
 {
-  return &SoBaseKit::classcatalog;
+  return (const class SoNodekitCatalog **)&SoBaseKit::classcatalog;
 }
 
 /*!
