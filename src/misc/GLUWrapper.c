@@ -44,11 +44,6 @@
 #define GLUWRAPPER_ASSUME_GLU 1
 #endif /* HAVE_GLU */
 
-#if GLUWRAPPER_ASSUME_GLU
-#include <Inventor/system/gl.h>
-#endif /* GLUWRAPPER_ASSUME_GLU */
-
-
 
 #ifdef HAVE_DL_LIB
 
