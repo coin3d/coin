@@ -37,13 +37,13 @@
 #include <Inventor/SoInput.h>
 #include <Inventor/fields/SoSFNode.h>
 #include <Inventor/sensors/SoFieldSensor.h>
+#include <Inventor/nodes/SoText2.h>
 
 #include <stdlib.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
-
 
 SbList <SoNode*> * SoInteractionKit::defaultdraggerparts = NULL;
 
@@ -107,6 +107,8 @@ SoInteractionKit::SoInteractionKit(void)
 
   this->oldTopSeparator = NULL;
   this->topSeparatorSensor = new SoFieldSensor(SoInteractionKit::sensorCB, this);
+  this->topSeparatorSensor->setPriority(0);
+
   // setup
   SoInteractionKit::sensorCB(this, this->topSeparatorSensor);
 
@@ -306,18 +308,44 @@ SoInteractionKit::readDefaultParts(const char *fileName,
                                    const char defaultBuffer[],
                                    int defBufSize)
 {
-  SbString fullname(getenv("SO_DRAGGER_DIR"));
+  SbString fullname;
+  char *dir = getenv("SO_DRAGGER_DIR");
+  if (dir == NULL) {
+#if COIN_DEBUG && 1 // debug
+    SoDebugError::postInfo("SoInteractionKit::readDefaultParts",
+                           "\n\n\nDraggers are under development. You must set the "
+                           "SO_DRAGGER_DIR environment\nvariable to the draggerDefaults "
+                           "directory to test the draggers!\n\n");
+#endif // debug
+    return;
+  }
+  fullname = dir;
+  
+#ifdef _WIN32  
+  if (fillname[fullname.getLength()-1] != '\\') fullname += "\\";
+#else // ! WIN32
+  if (fullname[fullname.getLength()-1] != '/') fullname += "/";
+#endif // !WIN32
+  
   fullname += fileName;
-
+  
   SoInput input;
   if (!fileName || !input.openFile(fullname.getString())) {
     input.setBuffer((void*)defaultBuffer, defBufSize);
   }
   SoNode *node = (SoNode*)SoDB::readAll(&input);
-  node->ref(); // this node is unref'ed at exit
-  SoInteractionKit::defaultdraggerparts->append(node);
-  if (SoInteractionKit::defaultdraggerparts->getLength() == 1) {
-    atexit(SoInteractionKit::clean);
+  if (node == NULL) {
+#if COIN_DEBUG && 1 // debug
+    SoDebugError::postInfo("SoInteractionKit::readDefaultParts",
+                           "error reading dragger defaults: %s", fullname.getString());
+#endif // debug
+  }
+  else {
+    node->ref(); // this node is unref'ed at exit
+    SoInteractionKit::defaultdraggerparts->append(node);
+    if (SoInteractionKit::defaultdraggerparts->getLength() == 1) {
+      atexit(SoInteractionKit::clean);
+    }
   }
 }
 
@@ -339,9 +367,16 @@ SoInteractionKit::setAnyPartAsDefault(const SbName &partname,
   if (SoBaseKit::findPart(SbString(partname.getString()), kit, partNum,
                           isList, listIdx, TRUE)) {
     SoSFNode *field = kit->fieldList[partNum];
-    if (!onlyifdefault || field->isDefault()) {
+    // FIXME: default check not working properly. pederb, 2000-01-21
+    if (1 || (!onlyifdefault || field->isDefault())) {
       kit->setPart(partNum, node);
       field->setDefault(TRUE);
+    }
+    else {
+#if COIN_DEBUG && 1 // debug
+      SoDebugError::postInfo("SoInteractionKit::setAnyPartAsDefault",
+                             "no permission to set");
+#endif // debug
     }
   }
 #if COIN_DEBUG && 1 // debug
@@ -373,7 +408,12 @@ SoInteractionKit::setAnyPartAsDefault(const SbName &partname,
 #if COIN_DEBUG && 1 // debug
   else {
     SoDebugError::postInfo("SoInteractionKit::setAnyPartAsDefault",
-                           "nodename not found");
+                           "nodename %s not found", nodename.getString());
+
+    // FIXME: temporary code, pederb 2000-01-21
+    node = new SoText2();
+    ((SoText2*)node)->string = "Default dragger part not found";
+    return this->setAnyPartAsDefault(partname, node, anypart, onlyifdefault);
   }
 #endif // debug
   return FALSE;
@@ -469,6 +509,7 @@ SoInteractionKit::setUpConnections(SbBool onoff, SbBool doitalways)
   }
   else {
     this->connectSeparator(sep, FALSE);
+    inherited::setUpConnections(onoff, doitalways);
   }
   this->connectionsSetUp = onoff;
   return !onoff;

@@ -115,6 +115,7 @@ SoBaseKit::SoBaseKit(void)
 
   this->fieldList = NULL;
   this->numCatalogEntries = 0;
+  this->connectionsSetUp = FALSE;
   SO_KIT_INIT_INSTANCE();
 }
 
@@ -898,8 +899,7 @@ SoBaseKit::catalogError(void)
 SbBool
 SoBaseKit::setUpConnections(SbBool /*onoff*/, SbBool /*doitalways*/)
 {
-  COIN_STUB();
-  return FALSE;
+  return this->connectionsSetUp;
 }
 
 /*!
