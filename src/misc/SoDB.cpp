@@ -68,6 +68,7 @@
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/sensors/SoTimerSensor.h>
 #include <coindefs.h> // COIN_STUB()
+#include <stdlib.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -81,6 +82,14 @@
 #if HAVE_WINDOWS_H
 #include <windows.h>
 #endif // HAVE_WINDOWS_H
+
+static SbString * coin_versionstring = NULL;
+
+// atexit callback
+static void cleanup_func(void)
+{
+  delete coin_versionstring;
+}
 
 // *************************************************************************
 
@@ -286,13 +295,13 @@ SoDB::clean(void)
 const char *
 SoDB::getVersion(void)
 {
-  // Dynamically allocated to avoid problems on systems which doesn't
-  // handle static constructors.
-  static SbString * s = new SbString; // FIXME: should deallocate on exit. 20000406 mortene.
-
-  *s = "SIM Coin ";
-  *s += COIN_VERSION;
-  return s->getString();
+  if (coin_versionstring == NULL) {
+    coin_versionstring = new SbString;
+    atexit(cleanup_func);
+  }
+  *coin_versionstring = "SIM Coin ";
+  *coin_versionstring += COIN_VERSION;
+  return coin_versionstring->getString();
 }
 
 /*!
@@ -876,9 +885,20 @@ SoDB::endNotify(void)
 {
   SoDB::notificationcounter--;
   assert(SoDB::notificationcounter >= 0);
-
-  // FIXME: there's probably something which should be done here when
-  // the counter goes down to 0..? 19990530 mortene.
+  if (SoDB::notificationcounter == 0) {
+    // Process zero-priority sensors after notification has been done.
+    SoSensorManager * sm = SoDB::getSensorManager();
+    if (sm->isDelaySensorPending()) sm->processImmediateQueue();
+  }
+  else {
+    SoSensorManager * sm = SoDB::getSensorManager();
+    if (sm->isDelaySensorPending()) {
+#if COIN_DEBUG && 1
+      SoDebugError::postInfo("SoDB::endNotify",
+                             "delaying immediate processing.");
+#endif // debug
+    }
+  }
 }
 
 /*!
