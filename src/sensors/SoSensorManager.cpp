@@ -26,35 +26,39 @@
   \brief The SoSensorManager class handles the sensor queues.
   \ingroup sensors
 
-  There are two major sensor types in Coin: delay-sensors and
-  timer-sensors. Each of these two types has its own queue, which is
-  handled by the SoSensorManager. The queues are kept in sorted order by
-  SoSensorManager, either according to trigger-time (for timer-sensors)
-  or by priority (for delay-sensors).
+  There are two major sensor types in Coin, "delay" sensors and
+  "timer" sensors:
 
-  Delay-sensors trigger when the application is otherwise idle. In
-  addition, to avoid starvation in applications that are continually
-  busy, the delay-sensor queue also has a timeout which, when reached,
-  will empty the queue anyhow.
+  \li Delay sensors trigger when the application is otherwise idle. In
+      addition, to avoid starvation in applications that are
+      continually busy, the delay-sensor queue also has a timeout
+      which, when reached, will empty the queue anyhow.
 
-  Timer-sensors are set up to trigger at specific, abolute times.
+  \li Timer sensors are set up to trigger at specific, absolute times.
 
+  Each of these two types has its own queue, which is handled by the
+  SoSensorManager. The queues are kept in sorted order by
+  SoSensorManager, either according to trigger-time (for
+  timer sensors) or by priority (for delay sensors).
 
-  FIXME: doc
+  The SoSensorManager provides methods for managing these queues, by
+  insertion and removal of sensors, and processing (emptying) of the
+  queues.
 
-  ..provides methods for inserting, removing, processing (emptying)
-  queues of sensors..
+  The sensor mechanism is crucial in Coin for a number of important
+  features, most notably automatic scheduling redrawal upon changes,
+  and for making it possible to set up animations in the scenegraph
+  which does \e not need any additional book-keeping from the
+  application code.
 
-  ..the sensor mechanism is crucial in Coin for (automatic redrawal upon
-  changes,)..
-
-  ..should usually be considered as an internal class in the Coin
-  system, only interesting for "normal users" when implementing new
-  windowsystem-specific libraries (like SoQt,) ... which usually goes
-  like this: (register change callback -- drop in delay queue sensor
-  of type XXX for redraw queueing -- call process*Queue when... --
-  ...) ... confer the SoQt sourcecode to see a complete example of use
-  (list interesting files)...
+  SoSensorManager should usually be considered as an internal class in
+  the Coin API. It is only interesting for application programmers
+  when \e implementing new windowsystem-specific libraries (like
+  Systems in Motion's SoQt, SoXt, SoGtk or SoWin) or wrappers. Then
+  one has to set up code to empty the queues at the correct
+  intervals. For detailed information on how to do that, we would
+  advise you to look at the implementation of said mechanisms in the
+  So*-libraries which SIM provides.
 
   \sa SoSensor SoTimerQueueSensor SoDelayQueueSensor
   \sa SoTimerSensor SoAlarmSensor
@@ -558,7 +562,7 @@ SoSensorManager::processImmediateQueue(void)
 }
 
 /*!
-  FIXME: write doc
+  \COININTERNAL
 */
 void
 SoSensorManager::rescheduleTimer(SoTimerSensor * s)
@@ -569,7 +573,7 @@ SoSensorManager::rescheduleTimer(SoTimerSensor * s)
 }
 
 /*!
-  FIXME: write doc
+  \COININTERNAL
 */
 void
 SoSensorManager::removeRescheduledTimer(SoTimerQueueSensor * s)
@@ -587,7 +591,8 @@ SoSensorManager::removeRescheduledTimer(SoTimerQueueSensor * s)
 }
 
 /*!
-  FIXME: write doc
+  Returns \c TRUE if at least one delay sensor or immediate sensor is
+  present in the respective queue, otherwise \c FALSE.
 */
 SbBool
 SoSensorManager::isDelaySensorPending(void)
@@ -656,7 +661,11 @@ SoSensorManager::getDelaySensorTimeout(void)
 }
 
 /*!
-  FIXME: write doc
+  For setting up a callback function to be invoked whenever any of the
+  sensor queues are changed.
+
+  This callback should typically be responsible for updating the
+  client-side mechanism which is used for processing the queues.
 */
 void
 SoSensorManager::setChangedCallback(void (*func)(void *), void * data)
