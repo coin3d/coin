@@ -420,14 +420,29 @@ cc_dl_open(const char * filename)
 
 #elif defined (HAVE_DYLD_RUNTIME_BINDING) 
 
-  if (filename != NULL) {
+  if (filename == NULL) {
 
-    /* Note that we must use NSAddImage, since we want to load a
+    /* 
+       Simulate the behaviour of dlopen(NULL) by returning a handle to
+       the first image loaded by the dynamic linker, which is the
+       current process. See dyld(3).
+
+       Note that this handle is not necessary for the dyld cc_dl_sym()
+       implementation, but it makes it possible to use cc_dl_open() in
+       the "classic" dlopen() style (where a NULL return value would
+       indicate failure).
+    */ 
+    h->nativehnd = _dyld_get_image_header(0);
+
+  } else {
+
+    /* 
+       Note that we must use NSAddImage, since we want to load a
        shared library, instead of NSCreateObjectFileImageFromFile()
        and NSLinkModule(), which work only with loadable
-       modules/bundles. See man 3 NSModule, man 3 NSObjectFileImage
-       and http://fink.sourceforge.net/doc/porting/shared.php for
-       details. */
+       modules/bundles. See NSModule(3), NSObjectFileImage(3) and
+       http://fink.sourceforge.net/doc/porting/shared.php for details.
+    */
  
     const char * fullpath;
     const struct stat * filestat = cc_find_file(filename, &fullpath);
@@ -748,6 +763,6 @@ cc_dl_close(cc_libhandle handle)
 
 #endif
 
-  cc_string_clean(&handle->libname);
+  if (&handle->libname) cc_string_clean(&handle->libname);
   free(handle);
 }
