@@ -248,6 +248,11 @@ SoSFBitMask::writeValue(SoOutput * out) const
   SbBool paran = FALSE;
   int out_vals_written = 0;
   
+  // FIXME: as enumValues for SoSFBitMasks can be OR'ed combinations
+  // of other enumValues, we should try to write a minimal set of
+  // flags by masking out flags with the highest number of bits
+  // first. 19991110 mortene.
+
   int restval = this->value;
   int i = 0;
   while (restval) {
@@ -272,7 +277,8 @@ SoSFBitMask::writeValue(SoOutput * out) const
 #if COIN_DEBUG
   if (restval) {
     SoDebugError::post("SoSFBitMask::writeValue",
-		       "invalid bitmask -- some bits \"lost\" (0x%x)",
+		       "invalid bitmask -- some bits \"lost\" (0x%x) "
+		       "upon export",
 		       restval);
   }
 #endif // COIN_DEBUG
