@@ -150,6 +150,7 @@ SoTimerSensor::reschedule(const SbTime & schedtime)
   }
   else {
     int intervals = (int)((schedtime - this->base)/this->interval);
+    if ( intervals < 0 ) intervals = 0;
     this->setTriggerTime(this->base + (intervals+1) * this->interval);
 #if DEBUG_TIMERSENSOR_TRACE // debug
     SoDebugError::postInfo("SoTimerSensor::reschedule",
