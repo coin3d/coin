@@ -133,6 +133,9 @@
 /* Define if you have the <netinet/in.h> header file. */
 #undef HAVE_NETINET_IN_H
 
+/* openal extensions available */
+#undef HAVE_OPENAL
+
 /* define if you have OpenGL */
 #undef HAVE_OPENGL
 
@@ -153,6 +156,9 @@
 
 /* define if snprintf() is available */
 #undef HAVE_SNPRINTF
+
+/* define to enable sound support */
+#undef HAVE_SOUND
 
 /* Define to 1 if you have the <stdint.h> header file. */
 #undef HAVE_STDINT_H

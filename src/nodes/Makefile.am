@@ -43,6 +43,7 @@ RegularSources = \
 	SoLightModel.cpp \
 	SoLineSet.cpp \
 	SoLinearProfile.cpp \
+	SoListener.cpp \
 	SoLocateHighlight.cpp \
 	SoMarkerSet.cpp \
 	SoMaterial.cpp \
@@ -158,6 +159,7 @@ PublicHeaders = \
 	../../include/Inventor/nodes/SoLightModel.h \
 	../../include/Inventor/nodes/SoLineSet.h \
 	../../include/Inventor/nodes/SoLinearProfile.h \
+	../../include/Inventor/nodes/SoListener.h \
 	../../include/Inventor/nodes/SoLocateHighlight.h \
 	../../include/Inventor/nodes/SoMarkerSet.h \
 	../../include/Inventor/nodes/SoMaterial.h \

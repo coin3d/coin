@@ -88,6 +88,7 @@ DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
 ECHO = @ECHO@
 EXEEXT = @EXEEXT@
+HAVE_SOUND = @HAVE_SOUND@
 HAVE_SUPERGLU = @HAVE_SUPERGLU@
 HAVE_THREADS = @HAVE_THREADS@
 HAVE_VRML97 = @HAVE_VRML97@
@@ -152,7 +153,8 @@ PublicHeaders = \
 	../../include/Inventor/actions/SoSearchAction.h \
 	../../include/Inventor/actions/SoToVRMLAction.h \
 	../../include/Inventor/actions/SoToVRML2Action.h \
-	../../include/Inventor/actions/SoWriteAction.h
+	../../include/Inventor/actions/SoWriteAction.h \
+	../../include/Inventor/actions/SoAudioRenderAction.h
 
 PrivateHeaders = \
 	../../include/Inventor/actions/SoSubActionP.h
@@ -175,7 +177,8 @@ RegularSources = \
 	SoSearchAction.cpp \
 	SoToVRMLAction.cpp \
 	SoToVRML2Action.cpp \
-	SoWriteAction.cpp
+	SoWriteAction.cpp \
+	SoAudioRenderAction.cpp
 
 
 
@@ -245,7 +248,8 @@ actions_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoSearchAction.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoToVRMLAction.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoToVRML2Action.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoWriteAction.$(OBJEXT)
+@HACKING_COMPACT_BUILD_FALSE@	SoWriteAction.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoAudioRenderAction.$(OBJEXT)
 actions_lst_OBJECTS = $(am_actions_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -265,7 +269,8 @@ libactions_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoSearchAction.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoToVRMLAction.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoToVRML2Action.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoWriteAction.lo
+@HACKING_COMPACT_BUILD_FALSE@	SoWriteAction.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoAudioRenderAction.lo
 libactions_la_OBJECTS = $(am_libactions_la_OBJECTS)
 libactions@SUFFIX@LINKHACK_la_LDFLAGS =
 libactions@SUFFIX@LINKHACK_la_LIBADD =
@@ -285,7 +290,8 @@ libactions@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoSearchAction.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoToVRMLAction.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoToVRML2Action.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoWriteAction.lo
+@HACKING_COMPACT_BUILD_FALSE@	SoWriteAction.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoAudioRenderAction.lo
 libactions@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libactions@SUFFIX@LINKHACK_la_OBJECTS)
 
@@ -295,6 +301,8 @@ CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@DEP_FILES = $(DEPDIR)/SoAction.Plo $(DEPDIR)/SoAction.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoAudioRenderAction.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoAudioRenderAction.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoBoxHighlightRenderAction.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoBoxHighlightRenderAction.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoCallbackAction.Plo \
@@ -410,6 +418,8 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoAction.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoAction.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoAudioRenderAction.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoAudioRenderAction.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoBoxHighlightRenderAction.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoBoxHighlightRenderAction.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoCallbackAction.Plo@am__quote@

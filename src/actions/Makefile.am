@@ -18,7 +18,8 @@ PublicHeaders = \
 	../../include/Inventor/actions/SoSearchAction.h \
 	../../include/Inventor/actions/SoToVRMLAction.h \
 	../../include/Inventor/actions/SoToVRML2Action.h \
-	../../include/Inventor/actions/SoWriteAction.h
+	../../include/Inventor/actions/SoWriteAction.h \
+	../../include/Inventor/actions/SoAudioRenderAction.h
 PrivateHeaders = \
 	../../include/Inventor/actions/SoSubActionP.h
 LinkHackSources = \
@@ -38,7 +39,8 @@ RegularSources = \
 	SoSearchAction.cpp \
 	SoToVRMLAction.cpp \
 	SoToVRML2Action.cpp \
-	SoWriteAction.cpp
+	SoWriteAction.cpp \
+	SoAudioRenderAction.cpp
 
 ##$ BEGIN TEMPLATE Make-Common(actions)
 # **************************************************************************

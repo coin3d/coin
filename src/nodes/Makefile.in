@@ -88,6 +88,7 @@ DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
 ECHO = @ECHO@
 EXEEXT = @EXEEXT@
+HAVE_SOUND = @HAVE_SOUND@
 HAVE_SUPERGLU = @HAVE_SUPERGLU@
 HAVE_THREADS = @HAVE_THREADS@
 HAVE_VRML97 = @HAVE_VRML97@
@@ -177,6 +178,7 @@ RegularSources = \
 	SoLightModel.cpp \
 	SoLineSet.cpp \
 	SoLinearProfile.cpp \
+	SoListener.cpp \
 	SoLocateHighlight.cpp \
 	SoMarkerSet.cpp \
 	SoMaterial.cpp \
@@ -294,6 +296,7 @@ PublicHeaders = \
 	../../include/Inventor/nodes/SoLightModel.h \
 	../../include/Inventor/nodes/SoLineSet.h \
 	../../include/Inventor/nodes/SoLinearProfile.h \
+	../../include/Inventor/nodes/SoListener.h \
 	../../include/Inventor/nodes/SoLocateHighlight.h \
 	../../include/Inventor/nodes/SoMarkerSet.h \
 	../../include/Inventor/nodes/SoMaterial.h \
@@ -461,6 +464,7 @@ nodes_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoLightModel.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoLineSet.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoLinearProfile.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoListener.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoLocateHighlight.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoMarkerSet.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoMaterial.$(OBJEXT) \
@@ -560,7 +564,7 @@ libnodes_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoInfo.lo SoLOD.lo SoLabel.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoLevelOfDetail.lo SoLight.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoLightModel.lo SoLineSet.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoLinearProfile.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoLinearProfile.lo SoListener.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoLocateHighlight.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoMarkerSet.lo SoMaterial.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoMaterialBinding.lo \
@@ -639,7 +643,7 @@ libnodes@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoInfo.lo SoLOD.lo SoLabel.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoLevelOfDetail.lo SoLight.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoLightModel.lo SoLineSet.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoLinearProfile.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoLinearProfile.lo SoListener.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoLocateHighlight.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoMarkerSet.lo SoMaterial.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoMaterialBinding.lo \
@@ -753,6 +757,7 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoLineSet.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoLinearProfile.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoLinearProfile.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoListener.Plo $(DEPDIR)/SoListener.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoLocateHighlight.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoLocateHighlight.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoMarkerSet.Plo $(DEPDIR)/SoMarkerSet.Po \
@@ -1029,6 +1034,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoLineSet.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoLinearProfile.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoLinearProfile.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoListener.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoListener.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoLocateHighlight.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoLocateHighlight.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoMarkerSet.Plo@am__quote@

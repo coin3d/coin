@@ -4956,6 +4956,152 @@ AC_LANG_RESTORE
 ])
 
 # Usage:
+#  SIM_AC_CHECK_OPENAL([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#  SIM_AC_HAVE_OPENAL_IFELSE ( IF-FOUND, IF-NOT-FOUND )
+#
+#  Try to find the OpenAL development system. If it is found, these
+#  shell variables are set:
+#
+#    $sim_ac_openal_cppflags (extra flags the compiler needs for openal)
+#    $sim_ac_openal_ldflags  (extra flags the linker needs for openal)
+#    $sim_ac_openal_libs     (link libraries the linker needs for openal)
+#
+#  The CPPFLAGS, LDFLAGS and LIBS flags will also be modified accordingly.
+#  In addition, the variable $sim_ac_openal_avail is set to "yes" if the
+#  openal development system is found.
+#
+#  Download OpenAL from www.openal.org
+#
+# Authors: Thomas Hammer, <thammer@sim.no>
+#          Peder Blekken, <pederb@sim.no>
+
+AC_DEFUN([SIM_AC_CHECK_OPENAL], [
+
+AC_ARG_WITH(
+  [openal],
+  AC_HELP_STRING([--with-openal=DIR],
+                 [openal installation directory]),
+  [],
+  [with_openal=yes])
+
+sim_ac_openal_avail=no
+
+if test x"$with_openal" != xno; then
+  if test x"$with_openal" != xyes; then
+    sim_ac_openal_cppflags="-I${with_openal}/include"
+    sim_ac_openal_ldflags="-L${with_openal}/lib"
+  fi
+  sim_ac_openal_libs="-lopenal32 -lalut"
+
+  sim_ac_save_cppflags=$CPPFLAGS
+  sim_ac_save_ldflags=$LDFLAGS
+  sim_ac_save_libs=$LIBS
+
+  CPPFLAGS="$CPPFLAGS $sim_ac_openal_cppflags"
+  LDFLAGS="$LDFLAGS $sim_ac_openal_ldflags"
+  LIBS="$sim_ac_openal_libs $LIBS"
+
+  AC_CACHE_CHECK(
+    [whether the openal development system is available],
+    sim_cv_lib_openal_avail,
+    [AC_TRY_LINK([#include <AL/al.h>],
+                 [(void)alGetError();],
+                 [sim_cv_lib_openal_avail=yes],
+                 [sim_cv_lib_openal_avail=no])])
+
+  if test x"$sim_cv_lib_openal_avail" = xyes; then
+    sim_ac_openal_avail=yes
+    $1
+  else
+    CPPFLAGS=$sim_ac_save_cppflags
+    LDFLAGS=$sim_ac_save_ldflags
+    LIBS=$sim_ac_save_libs
+    $2
+  fi
+fi
+])
+
+AC_DEFUN([SIM_AC_HAVE_OPENAL_IFELSE],
+[: ${sim_ac_have_openal=false}
+AC_MSG_CHECKING([for OpenAL])
+AC_ARG_WITH(
+  [openal],
+  [AC_HELP_STRING([--with-openal=PATH], [enable/disable OpenAL support])],
+  [case $withval in
+  yes | "") sim_ac_want_openal=true ;;
+  no)       sim_ac_want_openal=false ;;
+  *)        sim_ac_want_openal=true
+            sim_ac_openal_path=$withval ;;
+  esac],
+  [sim_ac_want_openal=true])
+case $sim_ac_want_openal in
+true)
+  $sim_ac_have_openal && break
+  sim_ac_openal_save_CPPFLAGS=$CPPFLAGS
+  sim_ac_openal_save_LDFLAGS=$LDFLAGS
+  sim_ac_openal_save_LIBS=$LIBS
+  sim_ac_openal_debug=false
+  test -n "`echo -- $CPPFLAGS $CFLAGS $CXXFLAGS | grep -- '-g\\>'`" &&
+    sim_ac_openal_debug=true
+  # test -z "$sim_ac_openal_path" -a x"$prefix" != xNONE &&
+  #   sim_ac_openal_path=$prefix
+  sim_ac_openal_name=openal
+  sim_ac_openal_libs="-l$sim_ac_openal_name"
+  if test -n "$sim_ac_openal_path"; then
+    for sim_ac_openal_candidate in \
+      `( ls $sim_ac_openal_path/lib/openal*.lib;
+         ls $sim_ac_openal_path/lib/openal*d.lib ) 2>/dev/null`
+    do
+      case $sim_ac_openal_candidate in
+      *d.lib)
+        $sim_ac_openal_debug &&
+          sim_ac_openal_name=`basename $sim_ac_openal_candidate .lib` ;;
+      *.lib)
+        sim_ac_openal_name=`basename $sim_ac_openal_candidate .lib` ;;
+      esac
+    done
+    sim_ac_openal_cppflags="-I$sim_ac_openal_path/include"
+    CPPFLAGS="$CPPFLAGS $sim_ac_openal_cppflags"
+    sim_ac_openal_ldflags="-L$sim_ac_openal_path/lib"
+    LDFLAGS="$LDFLAGS $sim_ac_openal_ldflags"
+    sim_ac_openal_libs="-l$sim_ac_openal_name"
+#    sim_ac_openal_libs="-l$sim_ac_openal_name -alut"
+    # unset sim_ac_openal_candidate
+    # unset sim_ac_openal_path
+  fi
+  LIBS="$sim_ac_openal_libs $LIBS"
+  AC_TRY_LINK(
+    [#include <AL/al.h>],
+    [(void)alGetError();],
+    [sim_ac_have_openal=true])
+  CPPFLAGS=$sim_ac_openal_save_CPPFLAGS
+  LDFLAGS=$sim_ac_openal_save_LDFLAGS
+  LIBS=$sim_ac_openal_save_LIBS
+  # unset sim_ac_openal_debug
+  # unset sim_ac_openal_name
+  # unset sim_ac_openal_save_CPPFLAGS
+  # unset sim_ac_openal_save_LDFLAGS
+  # unset sim_ac_openal_save_LIBS
+  ;;
+esac
+if $sim_ac_want_openal; then
+  if $sim_ac_have_openal; then
+    AC_MSG_RESULT([success ($sim_ac_openal_libs)])
+    $1
+  else
+    AC_MSG_RESULT([failure])
+    $2
+  fi
+else
+  AC_MSG_RESULT([disabled])
+  $2
+fi
+# unset sim_ac_want_openal
+])
+
+
+
+# Usage:
 #  SIM_AC_CHECK_PTHREAD([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 #
 #  Try to find the PTHREAD development system. If it is found, these
