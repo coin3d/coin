@@ -126,8 +126,12 @@ SoError::isOfType(const SoType type) const
 }
 
 /*!
-  This method sets the error handler callback for messages posted
-  via this class.
+  This method sets the error handler callback for messages posted via
+  this class.
+
+  Note that this will not override the error/debug message handler for
+  subclasses, these will have to be overrided by calling the subclass'
+  setHandlerCallback() method.
 
   \sa defaultHandlerCB()
 */
