@@ -1368,11 +1368,16 @@ SoBaseKit::readInstance(SoInput * in, unsigned short flags)
 {
   int i;
 
+  SbBool oldnotify = this->enableNotify(FALSE);
+  SbBool oldsetup = this->setUpConnections(FALSE);
+
   // store old part values to find which parts are read
   SbList<SoNode*> nodelist;
+
   // Dummy first element to get indices to match instancelist (where
   // the dummy "this" catalog entry is first).
   nodelist.append(NULL);
+
   for (i = 1; i < THIS->instancelist.getLength(); i++) {
     nodelist.append(THIS->instancelist[i]->getValue());
   }
@@ -1395,6 +1400,10 @@ SoBaseKit::readInstance(SoInput * in, unsigned short flags)
       }
     }
   }
+
+  (void) this->setUpConnections(oldsetup);
+  (void) this->enableNotify(oldnotify);
+
   return ret;
 }
 
@@ -1771,11 +1780,11 @@ SoBaseKitP::copyParts(const SoBaseKit * srckit, SbList <SoNode*> & partlist,
       assert(dstgroup);
       assert(dstgroup->getChildren());
       assert(srcgroup->getChildren());
-      
+
       // find child index in src kit
       int childidx = srcgroup->getChildren()->find(srcfields[i]->getValue());
       assert(childidx >= 0);
-      
+
       // use the already copied child as part node
       assert(childidx < dstgroup->getChildren()->getLength());
       SoNode * child = (*(dstgroup->getChildren()))[childidx];
