@@ -311,8 +311,8 @@ public:
   SbBool geometrybuilt;
 
   void buildGeometry();
-  void modifyCubeFace(SoMFString & urls, SoSeparator * facesep, const int * vindices);
-  SoSeparator * createCubeFace(SoMFString & urls, SoSeparator * sep, const int * vindices);
+  void modifyCubeFace(SoMFString & urls, SoSeparator * facesep, const int32_t * vindices);
+  SoSeparator * createCubeFace(SoMFString & urls, SoSeparator * sep, const int32_t * vindices);
   void buildIndexList(SoIndexedTriangleStripSet * sphere, int len, int slices, int matlength);
 
 };
@@ -719,37 +719,37 @@ SoVRMLBackgroundP::buildGeometry()
   this->bottomface = NULL;
 
   if (PUBLIC(this)->backUrl.getNum() != 0) {     
-    const int vindices[] = {3, 2, 1, 0, -1};
+    const int32_t vindices[] = {3, 2, 1, 0, -1};
     SoSeparator * sep = this->createCubeFace(PUBLIC(this)->backUrl,this->backface, vindices);    
     cubedata->addChild(sep);
   }
   
   if (PUBLIC(this)->leftUrl.getNum() != 0) {
-    const int vindices[] = {0, 1, 5, 4, -1};
+    const int32_t vindices[] = {0, 1, 5, 4, -1};
     SoSeparator * sep = this->createCubeFace(PUBLIC(this)->leftUrl,this->leftface, vindices);    
     cubedata->addChild(sep);
   }
   
   if (PUBLIC(this)->frontUrl.getNum() != 0) {
-    const int vindices[] = {4, 5, 6, 7, -1};
+    const int32_t vindices[] = {4, 5, 6, 7, -1};
     SoSeparator * sep = this->createCubeFace(PUBLIC(this)->frontUrl,this->frontface, vindices);    
     cubedata->addChild(sep);
   }
 
   if (PUBLIC(this)->rightUrl.getNum() != 0) {
-    const int vindices[] = {7, 6, 2, 3, -1};
+    const int32_t vindices[] = {7, 6, 2, 3, -1};
     SoSeparator * sep = this->createCubeFace(PUBLIC(this)->rightUrl,this->rightface, vindices);    
     cubedata->addChild(sep);
   }
 
   if (PUBLIC(this)->bottomUrl.getNum() != 0) {
-    const int vindices[] = {7, 3, 0, 4, -1};
+    const int32_t vindices[] = {7, 3, 0, 4, -1};
     SoSeparator * sep = this->createCubeFace(PUBLIC(this)->bottomUrl,this->bottomface, vindices);    
     cubedata->addChild(sep);
   }
 
   if (PUBLIC(this)->topUrl.getNum() != 0) {
-    const int vindices[] = {2, 6, 5, 1, -1};
+    const int32_t vindices[] = {2, 6, 5, 1, -1};
     SoSeparator * sep = this->createCubeFace(PUBLIC(this)->topUrl,this->topface, vindices);    
     cubedata->addChild(sep);
   }
@@ -815,10 +815,10 @@ SoVRMLBackgroundP::buildIndexList(SoIndexedTriangleStripSet * sphere, int len, i
 
 
 SoSeparator * 
-SoVRMLBackgroundP::createCubeFace(SoMFString & urls, SoSeparator * sep, const int * vindices)
+SoVRMLBackgroundP::createCubeFace(SoMFString & urls, SoSeparator * sep, const int32_t * vindices)
 {
 
-  const int tindices[] = {1, 2, 3, 0, -1};
+  const int32_t tindices[] = {1, 2, 3, 0, -1};
   sep = new SoSeparator;
   sep->ref();
   SoVRMLImageTexture * tex = new SoVRMLImageTexture;
@@ -836,7 +836,7 @@ SoVRMLBackgroundP::createCubeFace(SoMFString & urls, SoSeparator * sep, const in
 }
 
 void
-SoVRMLBackgroundP::modifyCubeFace(SoMFString & urls, SoSeparator * sep, const int * vindices)
+SoVRMLBackgroundP::modifyCubeFace(SoMFString & urls, SoSeparator * sep, const int32_t * vindices)
 {
 
   SoVRMLImageTexture * tex;
@@ -856,7 +856,7 @@ SoVRMLBackgroundP::modifyCubeFace(SoMFString & urls, SoSeparator * sep, const in
     tex->ref();
     tex->repeatS.setValue(FALSE);
     tex->repeatT.setValue(FALSE);
-    const int tindices[] = {1, 2, 3, 0, -1};
+    const int32_t tindices[] = {1, 2, 3, 0, -1};
     SoIndexedFaceSet * faceset = new SoIndexedFaceSet;
     faceset->textureCoordIndex.setValues(0, 5, tindices);
 
@@ -885,7 +885,7 @@ background_vrmltexturechangeCB(void * data, SoSensor * sensor)
   tex->ref();
   tex->repeatS.setValue(FALSE);
   tex->repeatT.setValue(FALSE);
-  const int tindices[] = {1, 2, 3, 0, -1};
+  const int32_t tindices[] = {1, 2, 3, 0, -1};
   SoIndexedFaceSet * faceset = new SoIndexedFaceSet;
   faceset->textureCoordIndex.setValues(0, 5, tindices);
   
