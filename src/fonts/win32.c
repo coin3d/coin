@@ -892,7 +892,8 @@ flww32_getVerticesFromPath(HDC hdc)
 
         GLUWrapper()->gluTessBeginContour(flww32_tessellator.tessellator_object);
         flww32_tessellator.edge_start_vertex = flww32_tessellator.vertex_counter;
-        flww32_tessellator.contour_open = TRUE;		
+        flww32_tessellator.contour_open = TRUE;	
+        continue;
       }                
 					
       /* Close the conture? */
@@ -1042,12 +1043,14 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
 
   GLUWrapper()->gluTessBeginPolygon(flww32_tessellator.tessellator_object, NULL);
   flww32_getVerticesFromPath(memdc);
+ 
   if (flww32_tessellator.contour_open) {
     GLUWrapper()->gluTessEndContour(flww32_tessellator.tessellator_object);        
     cc_list_truncate(flww32_tessellator.edgeindexlist, 
                      cc_list_get_length(flww32_tessellator.edgeindexlist)-1);
     cc_list_append(flww32_tessellator.edgeindexlist, (void *) (flww32_tessellator.edge_start_vertex));
   }
+ 
   GLUWrapper()->gluTessEndPolygon(flww32_tessellator.tessellator_object);  
   GLUWrapper()->gluDeleteTess(flww32_tessellator.tessellator_object);
   
