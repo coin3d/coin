@@ -104,9 +104,19 @@ SoBoundingBoxCache::getCenter() const
 }
 
 /*!
-  Sets the hasLinesOrPoints flag for all open bounding box caches.
+  Sets the flag returned from SoBoundingBoxCache::hasLinesOrPoints()
+  to \c TRUE for all open bounding box caches.
 
-  \sa SoBoundingBoxCache::hasLinesOrPoints()
+  The reason bounding box caches keep a lines-or-points flag is to
+  make it known to client code if the shape(s) they contain have any
+  of these primitives -- or are rendered with these primitives. The
+  reason this is important to know for the client code is because it
+  might need to add an "epsilon" slack value to the calculated
+  bounding box to account for smoothing / anti-aliasing effects in the
+  renderer, so lines and points graphics is not accidently clipped by
+  near and far clipping planes, for instance.
+
+  \sa hasLinesOrPoints()
 */
 void
 SoBoundingBoxCache::setHasLinesOrPoints(SoState * state)
@@ -123,9 +133,11 @@ SoBoundingBoxCache::setHasLinesOrPoints(SoState * state)
 
 /*!
   Return \c TRUE if the hasLinesOrPoints flag has been set.
+
+  \sa setHasLinesOrPoints()
 */
 SbBool
-SoBoundingBoxCache::hasLinesOrPoints() const
+SoBoundingBoxCache::hasLinesOrPoints(void) const
 {
   return this->linesOrPoints == 1;
 }
