@@ -253,7 +253,7 @@ SoFontLib::getAdvance(const int font, const int glyph)
     float x, y;
     int result = flwGetAdvance(font, glyph, &x, &y);
     if (result==0)
-      retval = SbVec2s(x, y);
+      retval = SbVec2s((short)x, (short)y);
   }
   CC_MUTEX_UNLOCK(SoFontLib_mutex);
   return retval;
@@ -268,7 +268,7 @@ SoFontLib::getKerning(const int font, const int leftglyph, const int rightglyph)
     float x, y;
     int result = flwGetKerning(font, leftglyph, rightglyph, &x, &y);
     if (result==0)
-      retval = SbVec2s(x, y);
+      retval = SbVec2s((short)x, (short)y);
   }
   CC_MUTEX_UNLOCK(SoFontLib_mutex);
   return retval;

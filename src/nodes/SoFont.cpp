@@ -62,6 +62,8 @@
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/misc/SoFontLib.h>
 
+#include <string.h>
+
 /*!
   \var SoSFName SoFont::name
 
@@ -201,7 +203,7 @@ SoFont::doAction(SoAction * action)
   if (pimpl->firsttime || 
       pimpl->lastsize != this_size || 
       strcmp(pimpl->lastreqname.getString(), this_name)) {
-    pimpl->lastfontname = SoFontLib::createFont(this->name.getValue(), SbString(""), SbVec2s(this_size, this_size));
+    pimpl->lastfontname = SoFontLib::createFont(this->name.getValue(), SbString(""), SbVec2s((short)this_size, (short)this_size));
     pimpl->lastreqname = this->name.getValue();
     pimpl->lastsize = this_size;
     pimpl->firsttime = FALSE;
