@@ -419,3 +419,6 @@ STUFF TO FIX IN COIN
 
   See also the comments about this in the technical ``FAQ'' file on
   the root of the sourcecode archive.
+
+  For Nvidia specific hardware/drivers:
+    <URL:http://developer.nvidia.com/view.asp?IO=Interactive_Order_Transparency>
