@@ -86,11 +86,11 @@ static int lineToCallback(FT_Vector * to, void * user);
 static int conicToCallback(FT_Vector * control, FT_Vector * to, void * user);
 static int cubicToCallback(FT_Vector * control1, FT_Vector * control2, FT_Vector * to, void * user);
 
-static coin_GLUtesselator * tesselator_object;
+
+static coin_GLUtessellator * tessellator_object;
 static SbBool contour_open;
 static float vertex_scale;
-static int tesselation_steps;
-static struct cc_flw_vector_glyph * vector_glyph;
+static int tessellation_steps;
 static FT_Vector last_vertex;
 static GLenum triangle_mode;
 static int triangle_fan_root_index;
@@ -108,6 +108,11 @@ static void endCallback(void);
 static void combineCallback(GLdouble coords[3], GLvoid * data, GLfloat weight[4], int **dataOut);
 static void errorCallback(GLenum error_code);
 static void addTessVertex(double * vertex);
+
+static void buildVertexList(struct cc_flw_vector_glyph * newglyph);
+static void buildFaceIndexList(struct cc_flw_vector_glyph * newglyph);
+static void buildEdgeIndexList(struct cc_flw_vector_glyph * newglyph);
+
 
 #include <string.h>
 #include <math.h>
@@ -133,6 +138,17 @@ static void addTessVertex(double * vertex);
 #include <Inventor/C/base/dynarray.h>
 #include <Inventor/C/base/namemap.h>
 #include "fontlib_wrapper.h"
+
+
+struct cc_flw_glyph_lists {
+  cc_list * vertexlist;
+  cc_list * faceindexlist;
+  cc_list * edgeindexlist;
+};
+
+static struct cc_flw_glyph_lists * vector_glyph_lists;
+
+
 
 /* ************************************************************************* */
 
@@ -375,6 +391,13 @@ cc_flwft_initialize(void)
     assert(str);
     cc_dynarray_append(fontfiledirs, str);
   }
+  
+  /* Setup temporary glyph-struct used during for tessellation */
+  vector_glyph_lists = (struct cc_flw_glyph_lists *) malloc(sizeof(struct cc_flw_glyph_lists));
+  vector_glyph_lists->vertexlist = NULL;
+  vector_glyph_lists->faceindexlist = NULL;
+  vector_glyph_lists->edgeindexlist = NULL;
+  
 
   return TRUE;
 }
@@ -490,10 +513,6 @@ cc_flwft_get_font(const char * fontname)
                            face->family_name, face->style_name);
   }
 
-  /*
-  // FIXME: Nordic characters like 'זרו' wont display correctly. I
-  // have tried both LATIN1 and UNICODE... (20030905 handegar)
-  */
   cc_flwft_set_charmap(face, FT_ENCODING_ADOBE_LATIN_1);
 
   return face;
@@ -764,6 +783,7 @@ struct cc_flw_vector_glyph *
 cc_flwft_get_vector_glyph(void * font, unsigned int glyph)
 { 
 
+  struct cc_flw_vector_glyph * new_vector_glyph;
   FT_Outline_Funcs outline_funcs;
   FT_Error error;
   FT_Face face;
@@ -785,23 +805,24 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyph)
       (GLUWrapper()->gluDeleteTess == NULL) ||
       (GLUWrapper()->gluTessVertex == NULL) ||
       (GLUWrapper()->gluTessBeginContour == NULL)) {
-    cc_debugerror_post("cc_flwft_get_vector_glyph","Error binding GLU tesselation functions.");
+    cc_debugerror_post("cc_flwft_get_vector_glyph","Unable to binding GLU tessellation functions for 3D FreetType font support.");
     return NULL;
   }
 
   face = (FT_Face) font;
 
-  error = cc_ftglue_FT_Set_Char_Size(face, (font3dsize<<6), (font3dsize<<6), 72, 72);
-  if (error != 0) {
-    cc_debugerror_post("cc_flwft_get_vector_glyph","Error setting character size.");
-    return NULL;
-  }
-
   glyphindex = cc_ftglue_FT_Get_Char_Index(face, glyph);
 
   error = cc_ftglue_FT_Load_Glyph(face, glyphindex, FT_LOAD_DEFAULT );
   if (error != 0) {
-    cc_debugerror_post("cc_flwft_get_vector_glyph","Error loading glyph.");
+    if (cc_flw_debug())
+      cc_debugerror_post("cc_flwft_get_vector_glyph","Error loading glyph (Glyphindex==%d). Font is probably not found.", glyphindex);
+    return NULL;
+  }
+
+  error = cc_ftglue_FT_Set_Char_Size(face, (font3dsize<<6), (font3dsize<<6), 72, 72);
+  if (error != 0) {  
+    cc_debugerror_post("cc_flwft_get_vector_glyph","Could not set character size = %d. Font is not properly initialized.", font3dsize);
     return NULL;
   }
 
@@ -815,10 +836,13 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyph)
 
   outline = g->outline;
 
-  vector_glyph = (struct cc_flw_vector_glyph *) malloc(sizeof(struct cc_flw_vector_glyph));
-  vector_glyph->vertexlist = cc_list_construct();
-  vector_glyph->indexlist = cc_list_construct();
-  vector_glyph->edgeindexlist = cc_list_construct();
+
+  if (vector_glyph_lists->vertexlist == NULL)
+    vector_glyph_lists->vertexlist = cc_list_construct();
+  if (vector_glyph_lists->faceindexlist == NULL)
+    vector_glyph_lists->faceindexlist = cc_list_construct();
+  if (vector_glyph_lists->edgeindexlist == NULL)
+    vector_glyph_lists->edgeindexlist = cc_list_construct();
 
   /* FreeType callbacks */
   outline_funcs.move_to = (FT_Outline_MoveToFunc) moveToCallback;
@@ -830,33 +854,43 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyph)
 
   /* gluTessllator callbacks */
   
-  tesselator_object = GLUWrapper()->gluNewTess(); /* static object pointer */
+  tessellator_object = GLUWrapper()->gluNewTess(); /* static object pointer */
   contour_open = FALSE; /* static flag indicating if contour shall be closed */ 
   vertex_scale = 1.0f; /* static float indicating scaling of every vertice */
-  tesselation_steps = 5; /* Static int indicating how detailed the curves should be */
+  tessellation_steps = 5; /* Static int indicating how detailed the curves should be */
   triangle_mode = 0;
   triangle_index_counter = 0;
   triangle_strip_flipflop = FALSE;
   vertex_counter = 0;
 
 
-  GLUWrapper()->gluTessCallback(tesselator_object, GLU_TESS_VERTEX, (GLvoid (*)()) &vertexCallback);
-  GLUWrapper()->gluTessCallback(tesselator_object, GLU_TESS_BEGIN, (GLvoid (*)()) &beginCallback);
-  GLUWrapper()->gluTessCallback(tesselator_object, GLU_TESS_END, (GLvoid (*)()) &endCallback);
-  GLUWrapper()->gluTessCallback(tesselator_object, GLU_TESS_COMBINE, (GLvoid (*)()) &combineCallback);
-  GLUWrapper()->gluTessCallback(tesselator_object, GLU_TESS_ERROR, (GLvoid (*)()) &errorCallback);
+  GLUWrapper()->gluTessCallback(tessellator_object, GLU_TESS_VERTEX, (GLvoid (*)()) &vertexCallback);
+  GLUWrapper()->gluTessCallback(tessellator_object, GLU_TESS_BEGIN, (GLvoid (*)()) &beginCallback);
+  GLUWrapper()->gluTessCallback(tessellator_object, GLU_TESS_END, (GLvoid (*)()) &endCallback);
+  GLUWrapper()->gluTessCallback(tessellator_object, GLU_TESS_COMBINE, (GLvoid (*)()) &combineCallback);
+  GLUWrapper()->gluTessCallback(tessellator_object, GLU_TESS_ERROR, (GLvoid (*)()) &errorCallback);
 
-  GLUWrapper()->gluTessBeginPolygon(tesselator_object, NULL);  
+  GLUWrapper()->gluTessBeginPolygon(tessellator_object, NULL);  
   error = cc_ftglue_FT_Outline_Decompose(&outline, &outline_funcs, NULL);
   if (contour_open)
-    GLUWrapper()->gluTessEndContour(tesselator_object);
-  GLUWrapper()->gluTessEndPolygon(tesselator_object);  
-  GLUWrapper()->gluDeleteTess(tesselator_object);
+    GLUWrapper()->gluTessEndContour(tessellator_object);
+  GLUWrapper()->gluTessEndPolygon(tessellator_object);  
+  GLUWrapper()->gluDeleteTess(tessellator_object);
   
-  cc_list_append(vector_glyph->indexlist, (void *) -1);  
-  cc_list_append(vector_glyph->edgeindexlist, (void *) -1);
+  cc_list_append(vector_glyph_lists->faceindexlist, (void *) -1);  
+  cc_list_append(vector_glyph_lists->edgeindexlist, (void *) -1);
 
-  return vector_glyph; 
+
+  /* Copy the static vector_glyph struct to a newly allocated struct
+     returned to the user. This is done due to the fact that the
+     tessellation callback solution needs a static working struct. */
+  new_vector_glyph = (struct cc_flw_vector_glyph *) malloc(sizeof(struct cc_flw_vector_glyph));
+
+  buildVertexList(new_vector_glyph);
+  buildFaceIndexList(new_vector_glyph);
+  buildEdgeIndexList(new_vector_glyph);
+  
+  return new_vector_glyph; 
 
 }
 
@@ -869,11 +903,11 @@ addTessVertex(double * vertex)
   point = malloc(sizeof(float)*2);
   point[0] = (float) vertex_scale * vertex[0] / 64;
   point[1] = (float) vertex_scale * vertex[1] / 64;
-  cc_list_append(vector_glyph->vertexlist, point);
+  cc_list_append(vector_glyph_lists->vertexlist, point);
   
   counter = malloc(sizeof(int));
   counter[0] = vertex_counter++;
-  GLUWrapper()->gluTessVertex(tesselator_object, vertex, counter);
+  GLUWrapper()->gluTessVertex(tessellator_object, vertex, counter);
 
 }
 
@@ -883,12 +917,12 @@ moveToCallback(FT_Vector * to, void * user)
 {
 
   if (contour_open)
-    GLUWrapper()->gluTessEndContour(tesselator_object);
+    GLUWrapper()->gluTessEndContour(tessellator_object);
 
   last_vertex.x = to->x;
   last_vertex.y = to->y;
 
-  GLUWrapper()->gluTessBeginContour(tesselator_object);
+  GLUWrapper()->gluTessBeginContour(tessellator_object);
   contour_open = TRUE;
   return 0;
 }
@@ -920,7 +954,7 @@ conicToCallback(FT_Vector * control, FT_Vector * to, void * user)
   double b[2], c[2], d[2], f[2], df[2], df2[2];
   double spline_delta, spline_delta2;
 
-  spline_delta = 1. / (double)tesselation_steps;
+  spline_delta = 1. / (double)tessellation_steps;
   spline_delta2 = spline_delta * spline_delta;
 
   b[0] = last_vertex.x - (2*control->x) + to->x;
@@ -940,7 +974,7 @@ conicToCallback(FT_Vector * control, FT_Vector * to, void * user)
   df2[0] = 2 * b[0] * spline_delta2;
   df2[1] = 2 * b[1] * spline_delta2;
   
-  for (i=0;i<tesselation_steps - 1;i++) {
+  for (i=0;i<tessellation_steps - 1;i++) {
 
     f[0] += df[0];
     f[1] += df[1];
@@ -984,7 +1018,7 @@ cubicToCallback(FT_Vector * control1, FT_Vector * control2, FT_Vector * to, void
   double a[2], b[2], c[2], d[2], f[2], df[2], df2[2], df3[2];
   double spline_delta, spline_delta2, spline_delta3;
 
-  spline_delta = 1. / (double)tesselation_steps;
+  spline_delta = 1. / (double)tessellation_steps;
   spline_delta2 = spline_delta * spline_delta;
   spline_delta3 = spline_delta2 * spline_delta;
 
@@ -1014,7 +1048,7 @@ cubicToCallback(FT_Vector * control1, FT_Vector * control2, FT_Vector * to, void
   df3[1] = 6 * a[1] * spline_delta3;
 
 
-  for (i=0; i < tesselation_steps-1; i++) {
+  for (i=0; i < tessellation_steps-1; i++) {
 
     f[0] += df[0];
     f[1] += df[1];
@@ -1084,13 +1118,13 @@ vertexCallback(GLvoid * data)
     }
     
 
-    cc_list_append(vector_glyph->indexlist, (void *) triangle_indices[0]);  
-    cc_list_append(vector_glyph->indexlist, (void *) triangle_indices[1]);  
-    cc_list_append(vector_glyph->indexlist, (void *) triangle_indices[2]);  
+    cc_list_append(vector_glyph_lists->faceindexlist, (void *) triangle_indices[0]);  
+    cc_list_append(vector_glyph_lists->faceindexlist, (void *) triangle_indices[1]);  
+    cc_list_append(vector_glyph_lists->faceindexlist, (void *) triangle_indices[2]);  
     
-    cc_list_append(vector_glyph->edgeindexlist, (void *) triangle_indices[0]);  
-    cc_list_append(vector_glyph->edgeindexlist, (void *) triangle_indices[1]);  
-    cc_list_append(vector_glyph->edgeindexlist, (void *) triangle_indices[2]);  
+    cc_list_append(vector_glyph_lists->edgeindexlist, (void *) triangle_indices[0]);  
+    cc_list_append(vector_glyph_lists->edgeindexlist, (void *) triangle_indices[1]);  
+    cc_list_append(vector_glyph_lists->edgeindexlist, (void *) triangle_indices[2]);  
     
     if (triangle_mode == GL_TRIANGLE_FAN) {
       triangle_indices[1] = triangle_indices[2];
@@ -1146,7 +1180,7 @@ combineCallback(GLdouble coords[3], GLvoid * vertex_data, GLfloat weight[4], int
   point[0] = (float) vertex_scale * coords[0] / 64;
   point[1] = (float) vertex_scale * coords[1] / 64;
 
-  cc_list_append(vector_glyph->vertexlist, point);
+  cc_list_append(vector_glyph_lists->vertexlist, point);
 
   ret = malloc(sizeof(int));
   ret[0] = vertex_counter++;
@@ -1161,8 +1195,8 @@ errorCallback(GLenum error_code)
 }
 
 
-float *
-cc_flwft_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph)
+static void
+buildVertexList(struct cc_flw_vector_glyph * newglyph)
 {
 
   int numcoords,i;
@@ -1170,63 +1204,83 @@ cc_flwft_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph)
   float * coord;
   float fontscalingx, fontscalingy;
 
-  assert(vecglyph->vertexlist);
+  assert(vector_glyph_lists->vertexlist && "Error fetching vector glyph coordinates\n");
+  numcoords = cc_list_get_length(vector_glyph_lists->vertexlist);
 
-  fontscalingx = ((float) fontcharwidth)/font3dsize;
-  fontscalingy = ((float) fontcharheight)/font3dsize;
-  
-  numcoords = cc_list_get_length(vecglyph->vertexlist);
-  coords = malloc(sizeof(float)*numcoords*2);
+  newglyph->vertices = (float *) malloc(sizeof(float)*numcoords*2);
 
   for (i=0;i<numcoords;++i) {
-    coord = (float *) cc_list_get(vecglyph->vertexlist,i);
-    coords[i*2 + 0] = coord[0] * fontscalingx;
-    coords[i*2 + 1] = coord[1] * fontscalingy;
+    coord = (float *) cc_list_get(vector_glyph_lists->vertexlist,i);
+    newglyph->vertices[i*2 + 0] = coord[0] / font3dsize;
+    newglyph->vertices[i*2 + 1] = coord[1] / font3dsize;
     free(coord);
   }
 
-  cc_list_destruct(vecglyph->vertexlist);
-  return coords;
+  cc_list_destruct(vector_glyph_lists->vertexlist);
+  vector_glyph_lists->vertexlist = NULL;
+
+}
+
+float *
+cc_flwft_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph)
+{   
+  assert(vecglyph->vertices && "Vertices not initialized properly");
+  return vecglyph->vertices;
 } 
 
-int *
-cc_flwft_get_vector_glyph_edgeidx(struct cc_flw_vector_glyph * vecglyph)
+
+static void
+buildEdgeIndexList(struct cc_flw_vector_glyph * newglyph)
 {
 
   int * edgeidxlist;
   int i,len;
 
-  assert(vecglyph->edgeindexlist);
+  assert(vector_glyph_lists->edgeindexlist);
  
-  len = cc_list_get_length(vecglyph->edgeindexlist);
-  edgeidxlist = malloc(sizeof(int)*len);
+  len = cc_list_get_length(vector_glyph_lists->edgeindexlist);
+  newglyph->edgeindices = (int *) malloc(sizeof(int)*len);
 
-  for (i=0;i<len;++i) {
-    edgeidxlist[i] = (int) cc_list_get(vecglyph->edgeindexlist, i);
-  }
+  for (i=0;i<len;++i) 
+    newglyph->edgeindices[i] = (int) cc_list_get(vector_glyph_lists->edgeindexlist, i);
+  
+  cc_list_destruct(vector_glyph_lists->edgeindexlist);
+  vector_glyph_lists->edgeindexlist = NULL;
 
-  cc_list_destruct(vecglyph->edgeindexlist);
-  return edgeidxlist;
+}
+
+int *
+cc_flwft_get_vector_glyph_edgeidx(struct cc_flw_vector_glyph * vecglyph)
+{
+  assert(vecglyph->edgeindices && "Edge indices not initialized properly");
+  return vecglyph->edgeindices;
 } 
+
+static void
+buildFaceIndexList(struct cc_flw_vector_glyph * newglyph)
+{
+  int * idxlist;
+  int len,i;
+
+  assert(vector_glyph_lists->faceindexlist);
+  
+  len = cc_list_get_length(vector_glyph_lists->faceindexlist);
+  newglyph->faceindices = (int *) malloc(sizeof(int)*len);
+
+  for (i=0;i<len;++i)
+    newglyph->faceindices[i] = (int) cc_list_get(vector_glyph_lists->faceindexlist, i);
+ 
+  cc_list_destruct(vector_glyph_lists->faceindexlist);
+  vector_glyph_lists->faceindexlist = NULL;
+
+}
+
 
 int *
 cc_flwft_get_vector_glyph_faceidx(struct cc_flw_vector_glyph * vecglyph)
 {  
-
-  int * idxlist;
-  int len,i;
-
-  assert(vecglyph->indexlist);
-  
-  len = cc_list_get_length(vecglyph->indexlist);
-  idxlist = malloc(sizeof(int)*len);
-
-  for (i=0;i<len;++i) {        
-    idxlist[i] = (int) cc_list_get(vecglyph->indexlist, i);
-  }
-
-  cc_list_destruct(vecglyph->indexlist);
-  return idxlist;
+  assert(vecglyph->faceindices && "Face indices not initialized properly");
+  return vecglyph->faceindices;
 } 
 
 
