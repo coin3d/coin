@@ -280,30 +280,40 @@
   This transparency type is a Coin extension versus the original SGI
   Open Inventor API.
 
-  Using this transparency type will render normal and intersecting
-  transparent object correctly independent of rendering order. This
-  mode is heavily based on OpenGL extensions which are only available
-  on NVIDIA chipsets (GeForce3 and above, except GeForce4 MX). These
-  extensions are \e GL_NV_texture_shader, \e GL_NV_texture_rectangle,
-  \e GL_NV_register_combiners, \e GL_ARB_shadow and \e
-  GL_ARB_depth_texture. If one or more of these extensions are
-  unavailable, SORTED_OBJECT_BLEND will be used as transparency type
-  instead. A rendering context with > 24 bits depth buffer and 8 bits
-  alpha channel must also be present.
+  By using this transparency type, the SoGLRenderAction will render
+  normal and intersecting transparent objects correctly independent of
+  rendering order. It is the only transparency type rendering mode
+  which is guaranteed to do so.
+
+  The current implementation of this mode is heavily based on OpenGL
+  extensions which are only available on NVIDIA chipsets (GeForce3 and
+  above, except GeForce4 MX). These extensions are \c
+  GL_NV_texture_shader, \c GL_NV_texture_rectangle, \c
+  GL_NV_register_combiners, \c GL_ARB_shadow and \c
+  GL_ARB_depth_texture. A rendering context with > 24 bits depth
+  buffer and 8 bits alpha channel must also be present.
+
+  The detection of whether or not the SORTED_LAYERS_BLEND mode can be
+  used will be done automatically by the Coin internals, if this mode
+  has been requested. If one or more of the necessary conditions
+  listed above are unavailable, SoGLRenderAction::SORTED_OBJECT_BLEND
+  will be used as the transparency type instead.
 
   To be able to render correct transparency independent of object
-  order, one have to render multiple passes. The default number of
+  order, one have to render in multiple passes. The default number of
   passes is 4. This number can be specified using the
-  SoGLRenderAction::setSortedLayersNumPasses(int num) or by letting
-  the environment variable \e COIN_NUM_SORTED_LAYERS_PASSES or \e
-  OIT_NUM_SORTED_LAYERS_PASSES specify the number of passes.
+  SoGLRenderAction::setSortedLayersNumPasses() or by letting the
+  environment variable \c COIN_NUM_SORTED_LAYERS_PASSES or \c
+  OIV_NUM_SORTED_LAYERS_PASSES specify the number of passes.
 
   Please note that this transparency type occupy all four texture
   units on the NVIDIA card for all the rendering passes, except the
   first one. Textured surfaces will therefore only be textured if they
-  are un-occluded by another transparent surface.
-
+  are not occluded by another transparent surface.
 */
+
+// FIXME: document what happens if the number of passes with the above
+// mode is made != 4. 20031202 mortene.
 
 // FIXME: 
 //  todo: - Add fragment_program support (thereby adding ATI support).
