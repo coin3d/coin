@@ -36,11 +36,11 @@ class SoHandleEventAction : public SoAction {
   SO_ACTION_HEADER(SoHandleEventAction);
 
 public:
-  SoHandleEventAction(const SbViewportRegion & viewportRegion);
+  SoHandleEventAction(const SbViewportRegion & viewportregion);
   virtual ~SoHandleEventAction();
   static void initClass(void);
 
-  void setViewportRegion(const SbViewportRegion & newRegion);
+  void setViewportRegion(const SbViewportRegion & newregion);
   const SbViewportRegion & getViewportRegion(void) const;
   void setEvent(const SoEvent * ev);
   const SoEvent * getEvent(void) const;
@@ -51,7 +51,7 @@ public:
   SoNode * getGrabber(void) const;
   void setPickRoot(SoNode * node);
   SoNode * getPickRoot(void) const;
-  void setPickRadius(const float radiusInPixels);
+  void setPickRadius(const float radiusinpixels);
   const SoPickedPoint * getPickedPoint(void);
   const SoPickedPointList & getPickedPointList(void);
 
@@ -59,17 +59,16 @@ protected:
   virtual void beginTraversal(SoNode * node);
 
 private:
-
-  SoRayPickAction *getPickAction();
+  SoRayPickAction * getPickAction(void);
 
   SbViewportRegion viewport;
-  const SoEvent *event;
-  SoNode *grabber;
-  SoNode *pickRoot;
-  SbBool pickValid;
-  SbBool didPickAll;
-  SoRayPickAction *pickAction;
-  SoNode *applyNode;
+  const SoEvent * event;
+  SoNode * grabber;
+  SoNode * pickroot;
+  SbBool pickvalid;
+  SbBool didpickall;
+  SoRayPickAction * pickaction;
+  SoNode * applynode;
 };
 
 #endif // !COIN_SOHANDLEEVENTACTION_H

@@ -18,14 +18,19 @@
 \**************************************************************************/
 
 /*!
-  \class SoHandleEventAction Inventor/actions/SoHandleEventAction.h
-  \brief The SoHandleEventAction class is for traversing a scene graph for
-  nodes of interest to a particular event.
+  \class SoHandleEventAction SoHandleEventAction.h Inventor/actions/SoHandleEventAction.h
+  \brief The SoHandleEventAction class distributes user events to the scene.
+  \ingroup actions
 
-  FIXME: write doc.
-  TODO:
-  - use raypick action (when it's ready)
-  - handle grabs
+  This is the action used by the GUI viewer classes to pass
+  interaction events from the window system to the nodes in the scene
+  graph.
+
+  SoHandleEventAction also provides the functionality for tracking the
+  object currently under the cursor, and functionality for "grabbing"
+  the event focus.
+
+  \sa SoEvent
 */
 
 #include <Inventor/actions/SoHandleEventAction.h>
@@ -43,14 +48,12 @@
 
 SO_ACTION_SOURCE(SoHandleEventAction);
 
-// Override from parent class.
+// Overridden from parent class.
 void
 SoHandleEventAction::initClass(void)
 {
   SO_ACTION_INIT_CLASS(SoHandleEventAction, SoAction);
 
-  // FIXME: aren't these supposed to be enabled from node classes?
-  // 19990214 mortene.
   SO_ENABLE(SoHandleEventAction, SoSwitchElement);
   SO_ENABLE(SoHandleEventAction, SoViewVolumeElement);
   SO_ENABLE(SoHandleEventAction, SoViewportRegionElement);
@@ -58,49 +61,46 @@ SoHandleEventAction::initClass(void)
 
 }
 
-// *************************************************************************
-
 /*!
-  A constructor.
-*/
-SoHandleEventAction::SoHandleEventAction(const SbViewportRegion &viewportRegion)
-  : viewport(viewportRegion),
-    event(NULL),
-    grabber(NULL),
-    pickRoot(NULL),
-    pickValid(FALSE),
-    pickAction(NULL),
-    applyNode(NULL)
+  Constructor.
 
+  SoHandleEventAction needs a \a viewportregion to pass on to the
+  raypick action instance it uses for being able to track objects
+  under the mouse cursor.
+*/
+SoHandleEventAction::SoHandleEventAction(const SbViewportRegion & viewportregion)
+  : viewport(viewportregion), event(NULL), grabber(NULL), pickroot(NULL),
+    pickvalid(FALSE), pickaction(NULL), applynode(NULL)
 {
   SO_ACTION_CONSTRUCTOR(SoHandleEventAction);
 
   SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::handleEventS);
 
-  methods->setUp(); // FIXME: not sure if this should be called here...
+  methods->setUp();
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 SoHandleEventAction::~SoHandleEventAction()
 {
-  delete this->pickAction;
+  delete this->pickaction;
 }
 
 /*!
-  This method sets the viewport region.
+  Set a new viewport region, replacing the one passed in the
+  constructor.
 */
 void
-SoHandleEventAction::setViewportRegion(const SbViewportRegion & newRegion)
+SoHandleEventAction::setViewportRegion(const SbViewportRegion & newregion)
 {
-  this->viewport = newRegion;
-  delete this->pickAction;
-  this->pickAction = NULL;
+  this->viewport = newregion;
+  delete this->pickaction;
+  this->pickaction = NULL;
 }
 
 /*!
-  This method returns the viewport region.
+  Returns the viewport region this action instance is using.
 */
 const SbViewportRegion &
 SoHandleEventAction::getViewportRegion(void) const
@@ -109,7 +109,7 @@ SoHandleEventAction::getViewportRegion(void) const
 }
 
 /*!
-  This method sets the event.
+  Set the event to distribute to the nodes of the scene.
 */
 void
 SoHandleEventAction::setEvent(const SoEvent * ev)
@@ -118,7 +118,7 @@ SoHandleEventAction::setEvent(const SoEvent * ev)
 }
 
 /*!
-  Ths method returns the event.
+  Returns the event this action is handling.
 */
 const SoEvent *
 SoHandleEventAction::getEvent(void) const
@@ -127,12 +127,11 @@ SoHandleEventAction::getEvent(void) const
 }
 
 /*!
-  This method marks the action instance as handled, hence terminates the
-  action.
+  Marks the action instance as handled, hence terminates the action.
 
-  The action is only marked as handled when a node in the graph "grabs"
-  the event this action is carrying, so the handled flag will be
-  FALSE after traversal if no nodes wanted the event.
+  The action is only marked as handled when a node in the graph
+  "grabs" the event this action is carrying, so the handled flag will
+  be \c FALSE after traversal if no nodes wanted the event.
 
   \sa isHandled()
 */
@@ -143,8 +142,8 @@ SoHandleEventAction::setHandled(void)
 }
 
 /*!
-  This method returns whether or not the event has been handled by
-  a node during scene graph traversal.
+  Returns whether or not the event has been handled by a node during
+  scene graph traversal.
 
   \sa setHandled()
 */
@@ -155,7 +154,8 @@ SoHandleEventAction::isHandled(void) const
 }
 
 /*!
-  This method sets the grabber node.
+  Set a \a node pointer which will get all future events handled by
+  this action until releaseGrabber() is called.
 */
 void
 SoHandleEventAction::setGrabber(SoNode * node)
@@ -164,7 +164,10 @@ SoHandleEventAction::setGrabber(SoNode * node)
 }
 
 /*!
-  This method unsets the grabber node.
+  Don't send the events to a "grabber" node anymore, use the default
+  behavior of the action and pass them along to the scene graph again.
+
+  \sa setGrabber()
 */
 void
 SoHandleEventAction::releaseGrabber(void)
@@ -173,7 +176,7 @@ SoHandleEventAction::releaseGrabber(void)
 }
 
 /*!
-  This method returns the grabber node, or NULL if no grabber is active.
+  Returns the grabber node, or \c NULL if no grabber is active.
 */
 SoNode *
 SoHandleEventAction::getGrabber(void) const
@@ -182,82 +185,83 @@ SoHandleEventAction::getGrabber(void) const
 }
 
 /*!
-  This method sets the root node that is used for a pick action used by
-  nodes that tracks the cursor.
+  Sets the root \a node that is used for the pick action tracking the
+  cursor.
 */
 void
-SoHandleEventAction::setPickRoot(SoNode *node)
+SoHandleEventAction::setPickRoot(SoNode * node)
 {
-  this->pickRoot = node;
+  this->pickroot = node;
 }
 
 /*!
-  This method returns the root node that is used by nodes that tracks the
+  Returns the root node that is used by nodes that is tracking the
   cursor.
 */
 SoNode *
 SoHandleEventAction::getPickRoot(void) const
 {
-  return this->pickRoot;
+  return this->pickroot;
 }
 
 /*!
-  This method sets the pick radius.
+  Sets the pick radius for cursor tracking.
 */
 void
-SoHandleEventAction::setPickRadius(const float radiusInPixels)
+SoHandleEventAction::setPickRadius(const float radiusinpixels)
 {
-  this->getPickAction()->setRadius(radiusInPixels);
+  this->getPickAction()->setRadius(radiusinpixels);
 }
 
 /*!
-  This method returns the picked point.
+  Returns the SoPickedPoint information for the intersection point
+  below the cursor.
 */
 const SoPickedPoint *
 SoHandleEventAction::getPickedPoint(void)
 {
-  if (this->event && (this->pickRoot || this->applyNode) &&
-      (!this->pickValid || this->didPickAll)) {
+  if (this->event && (this->pickroot || this->applynode) &&
+      (!this->pickvalid || this->didpickall)) {
     this->getPickAction()->setPoint(this->event->getPosition());
     this->getPickAction()->setPickAll(FALSE);
-    this->getPickAction()->apply(this->pickRoot ? this->pickRoot : this->applyNode);
-    this->pickValid = TRUE;
-    this->didPickAll = FALSE;
+    this->getPickAction()->apply(this->pickroot ? this->pickroot : this->applynode);
+    this->pickvalid = TRUE;
+    this->didpickall = FALSE;
   }
   return this->getPickAction()->getPickedPoint();
 }
 
 /*!
-  This method returns a list of picked points.
+  Returns a list of all intersection points below the mouse cursor.
 */
 const SoPickedPointList &
 SoHandleEventAction::getPickedPointList(void)
 {
-  //
-  // Maybe it is A Good Thing to make an extension to SoRayPickAction, to always
-  // make it store all picked point, but also store the closest picked point?
-  // pederb, 19991214
-  //
 
-  if (this->event && (this->pickRoot || this->applyNode) &&
-      (!this->pickValid || this->didPickAll)) {
+//   Maybe it is A Good Thing to make an extension to SoRayPickAction,
+//   to always make it store all picked points, but also store the
+//   closest picked point?  pederb, 19991214
+
+  if (this->event && (this->pickroot || this->applynode) &&
+      (!this->pickvalid || this->didpickall)) {
     this->getPickAction()->setPickAll(TRUE);
-    this->getPickAction()->apply(this->pickRoot ? this->pickRoot : this->applyNode);
-    this->pickValid = TRUE;
-    this->didPickAll = TRUE;
+    this->getPickAction()->apply(this->pickroot ? this->pickroot : this->applynode);
+    this->pickvalid = TRUE;
+    this->didpickall = TRUE;
   }
   return this->getPickAction()->getPickedPointList();
 }
 
 /*!
-  This method is called before the graph is traversed.
+  Overloaded to initialize local data members before executing the
+  scene traversal.
 */
 void
 SoHandleEventAction::beginTraversal(SoNode * node)
 {
   assert(this->event);
-  this->pickValid = FALSE;
-  this->applyNode = node;
+  this->pickvalid = FALSE;
+  this->applynode = node;
 
   this->getState()->push();
   SoViewportRegionElement::set(this->getState(), this->viewport);
@@ -271,11 +275,12 @@ SoHandleEventAction::beginTraversal(SoNode * node)
   this->getState()->pop();
 }
 
+// Singleton pattern for the pick action instance.
 SoRayPickAction *
-SoHandleEventAction::getPickAction()
+SoHandleEventAction::getPickAction(void)
 {
-  if (this->pickAction == NULL) {
-    this->pickAction = new SoRayPickAction(this->viewport);
+  if (this->pickaction == NULL) {
+    this->pickaction = new SoRayPickAction(this->viewport);
   }
-  return this->pickAction;
+  return this->pickaction;
 }
