@@ -55,7 +55,7 @@ SbRotation::SbRotation(void)
   Construct a new SbRotation object initialized with the given
   axis-of-rotation and rotation angle.
  */
-SbRotation::SbRotation(const SbVec3f& axis, const float radians)
+SbRotation::SbRotation(const SbVec3f & axis, const float radians)
 {
 #if COIN_DEBUG
   if (axis.length()==0.0f)
@@ -94,7 +94,7 @@ SbRotation::SbRotation(const float q0, const float q1,
   Construct a new SbRotation object initialized with the given rotation
   matrix.
  */
-SbRotation::SbRotation(const SbMatrix& m)
+SbRotation::SbRotation(const SbMatrix & m)
 {
   this->setValue(m);
 }
@@ -103,7 +103,7 @@ SbRotation::SbRotation(const SbMatrix& m)
   Construct a rotation which is the minimum rotation necessary to make vector
   \a rotateFrom point in the direction of vector \a rotateTo.
  */
-SbRotation::SbRotation(const SbVec3f& rotateFrom, const SbVec3f& rotateTo)
+SbRotation::SbRotation(const SbVec3f & rotateFrom, const SbVec3f & rotateTo)
 {
   // Parameters are checked in setValue().
 
@@ -128,7 +128,7 @@ SbRotation::getValue(void) const
   \sa setValue().
  */
 void
-SbRotation::getValue(float& q0, float& q1, float& q2, float& q3) const
+SbRotation::getValue(float & q0, float & q1, float & q2, float & q3) const
 {
   q0 = this->quat[0];
   q1 = this->quat[1];
@@ -141,7 +141,7 @@ SbRotation::getValue(float& q0, float& q1, float& q2, float& q3) const
 
   \sa getValue().
 */
-SbRotation&
+SbRotation &
 SbRotation::setValue(const float q0, const float q1,
                      const float q2, const float q3)
 {
@@ -160,7 +160,7 @@ SbRotation::setValue(const float q0, const float q1,
   \sa setValue().
  */
 void
-SbRotation::getValue(SbVec3f& axis, float& radians) const
+SbRotation::getValue(SbVec3f & axis, float & radians) const
 {
   if((this->quat[3] >= -1.0f) && (this->quat[3] <= 1.0f)) {
     radians = float(acos(this->quat[3])) * 2.0f;
@@ -188,7 +188,7 @@ SbRotation::getValue(SbVec3f& axis, float& radians) const
   \sa setValue().
  */
 void
-SbRotation::getValue(SbMatrix& matrix) const
+SbRotation::getValue(SbMatrix & matrix) const
 {
   const float x = this->quat[0];
   const float y = this->quat[1];
@@ -293,12 +293,12 @@ SbRotation::setValue(const float q[4])
   \sa getValue().
  */
 SbRotation &
-SbRotation::setValue(const SbMatrix& m)
+SbRotation::setValue(const SbMatrix & m)
 {
   float scalerow = m[0][0] + m[1][1] + m[2][2];
 
   if (scalerow > 0.0f) {
-    float s = (float)sqrt(scalerow + 1.0f);
+    float s = (float)sqrt(scalerow + m[3][3]);
     this->quat[3] = s * 0.5f;
     s = 0.5f / s;
 
@@ -314,16 +314,17 @@ SbRotation::setValue(const SbMatrix& m)
     int j = (i+1)%3;
     int k = (j+1)%3;
 
-    float s = (float)sqrt((m[i][i] - (m[j][j] + m[k][k])) + 1.0f);
+    float s = (float)sqrt((m[i][i] - (m[j][j] + m[k][k])) + m[3][3]);
 
     this->quat[i] = s * 0.5f;
-    if(s != 0.0f) s = 0.5f / s;
+    s = 0.5f / s;
 
     this->quat[3] = (m[j][k] - m[k][j]) * s;
     this->quat[j] = (m[i][j] + m[j][i]) * s;
     this->quat[k] = (m[i][k] + m[k][i]) * s;
   }
 
+  if (m[3][3] != 1.0f) this->operator*=(1.0f/(float)(sqrt(m[3][3])));
   return *this;
 }
 
@@ -335,8 +336,8 @@ SbRotation::setValue(const SbMatrix& m)
 
   \sa getValue().
  */
-SbRotation&
-SbRotation::setValue(const SbVec3f& axis, const float radians)
+SbRotation &
+SbRotation::setValue(const SbVec3f & axis, const float radians)
 {
 #if COIN_DEBUG
   if (axis.length()==0.0f)
@@ -365,8 +366,8 @@ SbRotation::setValue(const SbVec3f& axis, const float radians)
 
   \sa getValue().
  */
-SbRotation&
-SbRotation::setValue(const SbVec3f& rotateFrom, const SbVec3f& rotateTo)
+SbRotation &
+SbRotation::setValue(const SbVec3f & rotateFrom, const SbVec3f & rotateTo)
 {
 #if COIN_DEBUG
   // Check if the vectors are valid.
@@ -422,6 +423,9 @@ SbRotation::setValue(const SbVec3f& rotateFrom, const SbVec3f& rotateTo)
 
 /*!
   Multiplies the quaternions.
+
+  Note that order is important when combining quaternions with the
+  multiplication operator.
  */
 SbRotation &
 SbRotation::operator*=(const SbRotation & q)
@@ -459,7 +463,7 @@ SbRotation::operator*=(const float s)
   \sa equals().
  */
 int
-operator ==(const SbRotation& q1, const SbRotation& q2)
+operator==(const SbRotation & q1, const SbRotation & q2)
 {
   return (q1.quat == q2.quat);
 }
@@ -472,7 +476,7 @@ operator ==(const SbRotation& q1, const SbRotation& q2)
   \sa equals().
  */
 int
-operator !=(const SbRotation& q1, const SbRotation& q2)
+operator!=(const SbRotation & q1, const SbRotation & q2)
 {
   return !(q1 == q2);
 }
@@ -482,7 +486,7 @@ operator !=(const SbRotation& q1, const SbRotation& q2)
   within the given tolerance.
  */
 SbBool
-SbRotation::equals(const SbRotation& r, const float tolerance) const
+SbRotation::equals(const SbRotation & r, const float tolerance) const
 {
   return this->quat.equals(r.quat, tolerance);
 }
@@ -491,9 +495,12 @@ SbRotation::equals(const SbRotation& r, const float tolerance) const
   \relates SbRotation
 
   Multiplies the two rotations and returns the result.
+
+  Note that order is important when combining quaternions with the
+  multiplication operator.
 */
 SbRotation
-operator *(const SbRotation & q1, const SbRotation & q2)
+operator*(const SbRotation & q1, const SbRotation & q2)
 {
   SbRotation q(q1);
   q *= q2;
@@ -504,7 +511,7 @@ operator *(const SbRotation & q1, const SbRotation & q2)
   Rotate the \a src vector and put the result in \a dst.
  */
 void
-SbRotation::multVec(const SbVec3f& src, SbVec3f& dst) const
+SbRotation::multVec(const SbVec3f & src, SbVec3f & dst) const
 {
   SbMatrix mat;
 
@@ -538,7 +545,7 @@ SbRotation::scaleAngle(const float scaleFactor)
   \a t should be in the interval [0, 1].
  */
 SbRotation
-SbRotation::slerp(const SbRotation& rot0, const SbRotation& rot1, float t)
+SbRotation::slerp(const SbRotation & rot0, const SbRotation & rot1, float t)
 {
 #if COIN_DEBUG
   if (t<0.0f || t>1.0f) {
