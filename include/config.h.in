@@ -40,6 +40,9 @@
 /* define this to the libCoin minor version number */
 #undef COIN_MINOR_VERSION
 
+/* define this to the dynamic library name of Coin */
+#undef COIN_SYSTEM_LIBRARY_NAME
+
 /* System dependent thread ID type */
 #undef COIN_THREADID_TYPE
 
@@ -390,6 +393,9 @@
 
 /* define for runtime linking with OpenAL */
 #undef OPENAL_RUNTIME_LINKING
+
+/* define this to the dynamic library name of OpenGL */
+#undef OPENGL_SYSTEM_LIBRARY_NAME
 
 /* Name of package */
 #undef PACKAGE

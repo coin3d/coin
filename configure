@@ -30943,6 +30943,7 @@ fi
 
 sim_ac_ogl_cppflags=
 sim_ac_ogl_ldflags=
+sim_ac_ogl_lib=
 sim_ac_ogl_libs=
 
 
@@ -30955,8 +30956,8 @@ else
 fi;
 
 
-sim_ac_ogl_glnames="-lGL -lopengl32"
-sim_ac_ogl_mesaglnames=-lMesaGL
+sim_ac_ogl_glnames="GL opengl32"
+sim_ac_ogl_mesaglnames=MesaGL
 
 if test "x$with_mesa" = "xyes"; then
   sim_ac_ogl_first=$sim_ac_ogl_mesaglnames
@@ -31427,7 +31428,7 @@ echo $ECHO_N "checking for OpenGL library dev-kit... $ECHO_C" >&6
       # Mac OS X uses nada (only LDFLAGS), which is why "" was set first
       for sim_ac_ogl_libcheck in "" $sim_ac_ogl_first $sim_ac_ogl_second; do
         if $sim_ac_glchk_hit; then :; else
-          LIBS="$sim_ac_ogl_libcheck $sim_ac_oglchk_pthreadslib $sim_ac_save_libs"
+          LIBS="-l${sim_ac_ogl_libcheck} $sim_ac_oglchk_pthreadslib $sim_ac_save_libs"
           cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
 /* confdefs.h.  */
@@ -31468,7 +31469,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   (exit $ac_status); }; }; then
 
              sim_ac_glchk_hit=true
-             sim_ac_ogl_libs="$sim_ac_ogl_libcheck $sim_ac_oglchk_pthreadslib"
+             sim_ac_ogl_lib=$sim_ac_ogl_libcheck
+             sim_ac_ogl_libs="-l${sim_ac_ogl_libcheck} $sim_ac_oglchk_pthreadslib"
 
 
 else
@@ -32714,6 +32716,32 @@ echo "$as_me: error: aborting" >&2;}
 fi
 
 
+# **************************************************************************
+# Make name of dynamic GL library available to Coin source code (used in
+# src/glue/dl.c, at least).
+
+# Will set $sim_ac_shlibext. Note: there's a dependency on this later in
+# the configure script aswell.
+
+echo "$as_me:$LINENO: checking for shared library suffix" >&5
+echo $ECHO_N "checking for shared library suffix... $ECHO_C" >&6
+eval "sim_ac_shlibext=$shrext"
+echo "$as_me:$LINENO: result: $sim_ac_shlibext" >&5
+echo "${ECHO_T}$sim_ac_shlibext" >&6
+
+
+sim_ac_opengl_dll_name=$sim_ac_ogl_lib
+if test "$sim_ac_ogl_lib" = "opengl32"; then :; else
+  sim_ac_opengl_dll_name="lib${sim_ac_opengl_dll_name}"
+fi
+sim_ac_opengl_dll_name="${sim_ac_opengl_dll_name}${sim_ac_shlibext}"
+
+
+cat >>confdefs.h <<_ACEOF
+#define OPENGL_SYSTEM_LIBRARY_NAME $sim_ac_opengl_dll_name
+_ACEOF
+
+
 # *******************************************************************
 # * Provide this nasty hack to help building Coin on platforms
 # * where one can bump into the "Arg list too long" problem
@@ -33267,13 +33295,18 @@ fi
     # list all libs used upon `coin-config --libs`, as we can then
     # also use them from "parent" code (remember that their interfaces
     # is not exposed from the DLL) without any fuss.
+    sim_ac_coin_noextname="coin${COIN_MAJOR_VERSION}${SUFFIX}"
     if test -n "$COIN_EXTRA_LIBS"; then
-      COIN_EXTRA_LIBS="-lcoin${COIN_MAJOR_VERSION}${SUFFIX} $COIN_EXTRA_LIBS"
+      COIN_EXTRA_LIBS="-l${sim_ac_coin_noextname} $COIN_EXTRA_LIBS"
     else
-      COIN_EXTRA_LIBS="-lcoin${COIN_MAJOR_VERSION}${SUFFIX}"
+      COIN_EXTRA_LIBS="-l${sim_ac_coin_noextname}"
     fi
+
+    sim_ac_coin_dll_name="${sim_ac_coin_noextname}${sim_ac_shlibext}"
+
   else
     COIN_EXTRA_LIBS="-lCoin${SUFFIX} $COIN_EXTRA_LIBS"
+    sim_ac_coin_dll_name="libCoin${SUFFIX}${sim_ac_shlibext}"
   fi
 
   if $BUILD_WITH_MSVC; then
@@ -33281,6 +33314,12 @@ fi
     # so we can remove the source code hierarchy
     COIN_COMPILER="wrapmsvc"
   fi
+
+
+cat >>confdefs.h <<_ACEOF
+#define COIN_SYSTEM_LIBRARY_NAME $sim_ac_coin_dll_name
+_ACEOF
+
 
   sim_ac_path_problem=true # until proven otherwise
   eval "prefix=${prefix}"

@@ -11,7 +11,23 @@
 # even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.
 
-# sim_ac_CHECK_HEADER(HEADER-FILE, [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND])
+# SIM_AC_DYNLIB_EXT
+# --------------------------------------------
+# Find out what the shared library suffix is on this platform.
+# (Consider this a hack -- AFAIK, the "shrext" variable from Libtool
+# is undocumented and not guaranteed to stick around forever.)
+#
+# Sets the sim_ac_shlibext variable to the extension name.
+
+AC_DEFUN([SIM_AC_DYNLIB_EXT],
+[
+AC_MSG_CHECKING([for shared library suffix])
+eval "sim_ac_shlibext=$shrext"
+AC_MSG_RESULT($sim_ac_shlibext)
+])
+
+
+# SIM_AC_CHECK_HEADER(HEADER-FILE, [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND])
 # --------------------------------------------------------------------------
 # Modified AC_CHECK_HEADER to use AC_TRY_COMPILE instead of AC_TRY_CPP,
 # as we can get false positives and/or false negatives when running under
@@ -9456,7 +9472,8 @@ fi
 #
 #                $sim_ac_ogl_cppflags
 #                $sim_ac_ogl_ldflags
-#                $sim_ac_ogl_libs
+#                $sim_ac_ogl_libs (OpenGL library and all dependencies)
+#                $sim_ac_ogl_lib (basename of OpenGL library)
 #
 # The necessary extra options are also automatically added to CPPFLAGS,
 # LDFLAGS and LIBS.
@@ -9467,6 +9484,7 @@ AC_DEFUN(SIM_AC_CHECK_OPENGL, [
 
 sim_ac_ogl_cppflags=
 sim_ac_ogl_ldflags=
+sim_ac_ogl_lib=
 sim_ac_ogl_libs=
 
 AC_ARG_WITH(
@@ -9477,8 +9495,8 @@ AC_ARG_WITH(
   [with_mesa=yes])
 
 
-sim_ac_ogl_glnames="-lGL -lopengl32"
-sim_ac_ogl_mesaglnames=-lMesaGL
+sim_ac_ogl_glnames="GL opengl32"
+sim_ac_ogl_mesaglnames=MesaGL
 
 if test "x$with_mesa" = "xyes"; then
   sim_ac_ogl_first=$sim_ac_ogl_mesaglnames
@@ -9564,7 +9582,7 @@ if test x"$with_opengl" != xno; then
       # Mac OS X uses nada (only LDFLAGS), which is why "" was set first
       for sim_ac_ogl_libcheck in "" $sim_ac_ogl_first $sim_ac_ogl_second; do
         if $sim_ac_glchk_hit; then :; else
-          LIBS="$sim_ac_ogl_libcheck $sim_ac_oglchk_pthreadslib $sim_ac_save_libs"
+          LIBS="-l${sim_ac_ogl_libcheck} $sim_ac_oglchk_pthreadslib $sim_ac_save_libs"
           AC_TRY_LINK(
             [#ifdef HAVE_WINDOWS_H
              #include <windows.h>
@@ -9580,7 +9598,8 @@ if test x"$with_opengl" != xno; then
             [glPointSize(1.0f);],
             [
              sim_ac_glchk_hit=true
-             sim_ac_ogl_libs="$sim_ac_ogl_libcheck $sim_ac_oglchk_pthreadslib"
+             sim_ac_ogl_lib=$sim_ac_ogl_libcheck
+             sim_ac_ogl_libs="-l${sim_ac_ogl_libcheck} $sim_ac_oglchk_pthreadslib"
             ]
           )
         fi
@@ -10003,7 +10022,6 @@ AC_DEFUN([SIM_AC_HAVE_AGL_PBUFFER], [
     ifelse([$2], , :, [$2])
   fi
 ])
-
 
 # Usage:
 #  SIM_AC_CHECK_X11([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
