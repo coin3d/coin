@@ -47,7 +47,8 @@ public:
     // SoTexture3).
     BLEND = 0x0be2,
     MODULATE = 0x2100,
-    DECAL = 0x2101
+    DECAL = 0x2101,
+    REPLACE = 0x1E01 // must match GL_REPLACE
   };
 
   enum Wrap {

@@ -250,6 +250,9 @@ SoGLLazyElement::sendGLImage(const uint32_t glimageid) const
             glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
             glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, blendcolor.getValue());
             break;
+          case SoTextureImageElement::REPLACE:
+            glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+            break;
           default:
             assert(0 && "unknown model");
             break;

@@ -49,6 +49,10 @@
 #define GL_CLAMP_TO_EDGE                  ((GLenum)0x812F)
 #endif /* !GL_CLAMP_TO_EDGE */
 
+/* Define for the REPLACE texture model (OpenGL 1.1). */
+#ifndef GL_REPLACE
+#define GL_REPLACE                        ((GLenum)0x1E01)
+#endif /* !GL_REPLACE */
 
 /* Note: all following enums also have an *_EXT version with the same
    enum value as the "real" enum. We only use the "real" enum name in
