@@ -470,7 +470,10 @@ SoProto::writeInterface(SoOutput * out)
         out->write("\n");
       }
       else {
+        SbBool fieldwasdefault = f->isDefault();
+        if ( fieldwasdefault ) f->setDefault(FALSE);
         f->write(out, fd->getFieldName(i));
+        if ( fieldwasdefault ) f->setDefault(TRUE);
       }
       break;
     case SoField::EVENTIN_FIELD:
