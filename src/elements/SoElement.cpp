@@ -135,6 +135,7 @@ SoElement::initElements(void)
   SoGLUpdateAreaElement::initClass();
   SoLocalBBoxMatrixElement::initClass();
   SoOverrideElement::initClass();
+  SoTextureOverrideElement::initClass();
   SoPickRayElement::initClass();
   SoReplacedElement::initClass();
   SoCoordinateElement::initClass();

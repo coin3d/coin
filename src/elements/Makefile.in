@@ -184,6 +184,7 @@ ALLSOURCES = \
 	SoTextureCoordinateElement.cpp SoTextureCoordinateElement.h \
 	SoTextureImageElement.cpp SoTextureImageElement.h \
 	SoTextureMatrixElement.cpp SoTextureMatrixElement.h \
+	SoTextureOverrideElement.cpp SoTextureOverrideElement.h \
 	SoTextureQualityElement.cpp SoTextureQualityElement.h \
 	SoTransparencyElement.cpp SoTransparencyElement.h \
 	SoUnitsElement.cpp SoUnitsElement.h \
@@ -283,6 +284,7 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/elements/SoTextureCoordinateElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoTextureImageElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoTextureMatrixElement.h \
+	$(top_srcdir)/include/Inventor/elements/SoTextureOverrideElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoTextureQualityElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoTransparencyElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoUnitsElement.h \
@@ -363,9 +365,10 @@ SoShapeHintsElement.lo SoShapeStyleElement.lo SoShininessElement.lo \
 SoSpecularColorElement.lo SoSwitchElement.lo \
 SoTextOutlineEnabledElement.lo SoTextureCoordinateBindingElement.lo \
 SoTextureCoordinateElement.lo SoTextureImageElement.lo \
-SoTextureMatrixElement.lo SoTextureQualityElement.lo \
-SoTransparencyElement.lo SoUnitsElement.lo SoViewVolumeElement.lo \
-SoViewingMatrixElement.lo SoViewportRegionElement.lo SoWindowElement.lo
+SoTextureMatrixElement.lo SoTextureOverrideElement.lo \
+SoTextureQualityElement.lo SoTransparencyElement.lo SoUnitsElement.lo \
+SoViewVolumeElement.lo SoViewingMatrixElement.lo \
+SoViewportRegionElement.lo SoWindowElement.lo
 libelements_la_OBJECTS =  $(am_libelements_la_OBJECTS)
 libelementsLINKHACK_la_LDFLAGS = 
 libelementsLINKHACK_la_LIBADD = 
@@ -406,9 +409,10 @@ SoShapeHintsElement.lo SoShapeStyleElement.lo SoShininessElement.lo \
 SoSpecularColorElement.lo SoSwitchElement.lo \
 SoTextOutlineEnabledElement.lo SoTextureCoordinateBindingElement.lo \
 SoTextureCoordinateElement.lo SoTextureImageElement.lo \
-SoTextureMatrixElement.lo SoTextureQualityElement.lo \
-SoTransparencyElement.lo SoUnitsElement.lo SoViewVolumeElement.lo \
-SoViewingMatrixElement.lo SoViewportRegionElement.lo SoWindowElement.lo
+SoTextureMatrixElement.lo SoTextureOverrideElement.lo \
+SoTextureQualityElement.lo SoTransparencyElement.lo SoUnitsElement.lo \
+SoViewVolumeElement.lo SoViewingMatrixElement.lo \
+SoViewportRegionElement.lo SoWindowElement.lo
 libelementsLINKHACK_la_OBJECTS =  $(am_libelementsLINKHACK_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -488,6 +492,7 @@ $(DEPDIR)/SoTextureCoordinateBindingElement.Plo \
 $(DEPDIR)/SoTextureCoordinateElement.Plo \
 $(DEPDIR)/SoTextureImageElement.Plo \
 $(DEPDIR)/SoTextureMatrixElement.Plo \
+$(DEPDIR)/SoTextureOverrideElement.Plo \
 $(DEPDIR)/SoTextureQualityElement.Plo \
 $(DEPDIR)/SoTransparencyElement.Plo $(DEPDIR)/SoUnitsElement.Plo \
 $(DEPDIR)/SoViewVolumeElement.Plo $(DEPDIR)/SoViewingMatrixElement.Plo \
@@ -709,6 +714,7 @@ distdir: $(DISTFILES)
 @AMDEP@include $(DEPDIR)/SoTextureCoordinateElement.Plo
 @AMDEP@include $(DEPDIR)/SoTextureImageElement.Plo
 @AMDEP@include $(DEPDIR)/SoTextureMatrixElement.Plo
+@AMDEP@include $(DEPDIR)/SoTextureOverrideElement.Plo
 @AMDEP@include $(DEPDIR)/SoTextureQualityElement.Plo
 @AMDEP@include $(DEPDIR)/SoTransparencyElement.Plo
 @AMDEP@include $(DEPDIR)/SoUnitsElement.Plo

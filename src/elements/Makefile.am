@@ -88,6 +88,7 @@ ALLSOURCES = \
 	SoTextureCoordinateElement.cpp SoTextureCoordinateElement.h \
 	SoTextureImageElement.cpp SoTextureImageElement.h \
 	SoTextureMatrixElement.cpp SoTextureMatrixElement.h \
+	SoTextureOverrideElement.cpp SoTextureOverrideElement.h \
 	SoTextureQualityElement.cpp SoTextureQualityElement.h \
 	SoTransparencyElement.cpp SoTransparencyElement.h \
 	SoUnitsElement.cpp SoUnitsElement.h \
@@ -186,6 +187,7 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/elements/SoTextureCoordinateElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoTextureImageElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoTextureMatrixElement.h \
+	$(top_srcdir)/include/Inventor/elements/SoTextureOverrideElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoTextureQualityElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoTransparencyElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoUnitsElement.h \

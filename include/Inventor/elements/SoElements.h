@@ -66,6 +66,7 @@
 #include <Inventor/elements/SoGLUpdateAreaElement.h>
 #include <Inventor/elements/SoLocalBBoxMatrixElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/elements/SoTextureOverrideElement.h>
 #include <Inventor/elements/SoPickRayElement.h>
 #include <Inventor/elements/SoReplacedElement.h>
 #include <Inventor/elements/SoCoordinateElement.h>
