@@ -24,6 +24,8 @@
  *
 \**************************************************************************/
 
+#error This class is disabled for the moment
+
 #include <Inventor/actions/SoSubAction.h>
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoCallbackAction.h>
