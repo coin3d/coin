@@ -203,6 +203,9 @@ SoMaterialBinding::GLRender(SoGLRenderAction * action)
     SoGLShadeModelElement::setMaterial(action->getState(),
                                        binding == PER_VERTEX ||
                                        binding == PER_VERTEX_INDEXED);
+    if (this->isOverride()) {
+      SoOverrideElement::setMaterialBindingOverride(action->getState(), this, TRUE);
+    }
   }
 }
 
