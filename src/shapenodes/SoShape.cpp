@@ -585,6 +585,8 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
     return FALSE;
   }
 
+  const cc_glglue * glue = sogl_glue_instance(state);
+
   if (SoBumpMapElement::get(state)) {
     const SoNodeList & lights = SoLightElement::getLights(state);
     if (lights.getLength()) {
@@ -669,7 +671,6 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
       const SbColor spec = SoLazyElement::getSpecular(state); 
       if (spec[0] != 0 || spec[1] != 0 || spec[2] != 0) { // Is the spec. color black?
 
-        const cc_glglue * glue = sogl_glue_instance(state);
         // Can the hardware do specular bump maps?
         if (glue->has_arb_fragment_program && 
             glue->has_arb_vertex_program) {
@@ -707,7 +708,10 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
     }
   }
 
-  if (soshape_use_gl_vertex_arrays && ((PRIVATE(this)->flags & SoShapeP::DISABLE_VERTEX_ARRAY_CACHE) == 0)) {
+
+  if (soshape_use_gl_vertex_arrays && 
+      ((PRIVATE(this)->flags & SoShapeP::DISABLE_VERTEX_ARRAY_CACHE) == 0) &&
+      cc_glglue_has_vertex_array(glue)) {
     // Only create cache for built in Coin shapes, as it is often
     // tempting for developers writing Coin extension nodes to not
     // bother with implementing a proper generatePrimitives()
