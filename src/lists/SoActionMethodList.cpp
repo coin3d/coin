@@ -87,7 +87,7 @@ SoActionMethodList::addMethod(const SoType nodeType,
   (*this)[ index ] = method;
   
   dummyList.truncate(0);
-  int n = nodeType.getAllSubTypes(dummyList);
+  int n = SoType::getAllDerivedFrom(nodeType, dummyList);
   for (int i = 0; i < n; i++) {
     SoType type = dummyList[i];
     if ((*this)[(int)type.getData()] == dummyAction) 

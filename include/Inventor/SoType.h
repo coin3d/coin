@@ -40,11 +40,8 @@ public:
   const SoType getParent(void) const;
   SbBool isDerivedFrom(const SoType type) const;
 
-  int getAllDerivedFrom(SoTypeList & list) const;
   static int getAllDerivedFrom(const SoType type, SoTypeList & list);
 
-  int getAllSubTypes(SoTypeList & list) const;
-  
   SbBool canCreateInstance(void) const;
   void * createInstance(void) const;
   

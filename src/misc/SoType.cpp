@@ -286,57 +286,29 @@ SoType::isDerivedFrom(const SoType parent) const
 }
 
 /*!
-  This method appends all types which is derived from self to \a list
-  and returns the number of types added to the list. Internal types are not
-  included in the list nor are they counted.
-*/
-int 
-SoType::getAllSubTypes(SoTypeList & list) const
-{
-  int counter = 0;
-  int n = this->typeList.getLength();
-  for (int i = this->index+1; i < n; i++) {
-    SoType type = this->typeList[i];
-    if (!type.isInternal() && type.isDerivedFrom(*this)) {
-      list.append(type);
-      counter++;
-    }
-  }
-  return counter;
-}
-
-/*!
-  This method appends all the class types \a type is derived from to \a list,
+  This method appends all the class types derived from \a type to \a list,
   and returns the number of types added to the list.  Internal types are not
   included in the list, nor are they counted.
+
+  \a type itself is also added to the list, as a type is seen as a derivation
+  of its own type.
+
+  NB: do not write code which depends in any way on the order of the
+  elements returned in \a list.
 */
-
-int
-SoType::getAllDerivedFrom(SoTypeList & list) const
-{
-  assert(! this->isBad());
-
-  int counter = 0;
-  SoType type = *this;
-  while (! (type = SoType::typeDataList[(int)type.getKey()]->parent).isBad()) {
-    if (! type.isInternal()) {
-      counter++;
-      list.append(type);
-    }
-  }
-  return counter;
-}
-
-/*!
-  \overload
-
-  \sa int SoType::getAllDerivedFrom(SoTypeList & list) const
-*/
-
 int 
 SoType::getAllDerivedFrom(const SoType type, SoTypeList & list)
 { 
-  return type.getAllDerivedFrom(list); 
+  int counter = 0;
+  int n = SoType::typeList.getLength();
+  for (int i = 0; i < n; i++) {
+    SoType chktype = SoType::typeList[i];
+    if (!chktype.isInternal() && chktype.isDerivedFrom(type)) {
+      list.append(chktype);
+      counter++;
+    }
+  }
+  return counter;
 }
 
 /*!
