@@ -131,15 +131,15 @@ _class_::createInstance(void) \
    (classinstances == 1)
 
 // FIXME: document. 20000103 mortene.
-#define SO_NODE_CONSTRUCTOR(_class_) \
+#define SO_NODE_CONSTRUCTOR_NOLOCK(_class_) \
   do { \
-    SoBase::staticDataLock(); \
     _class_::classinstances++; \
     /* Catch attempts to use a node class which has not been initialized. */ \
     assert(_class_::classTypeId != SoType::badType() && "you forgot init()!"); \
     /* Initialize a fielddata container for the class only once. */ \
     if (!_class_::fieldData) { \
       /* FIXME: this is a "static" memory leak. 20030131 mortene. */ \
+      /* Internal Coin nodes are handled properly though. pederb, 20041122 */ \
       _class_::fieldData = \
         new SoFieldData(_class_::parentFieldData ? \
                         *_class_::parentFieldData : NULL); \
@@ -148,6 +148,13 @@ _class_::createInstance(void) \
        considered native. This is important to get the export code to do \
        the Right Thing. */ \
     this->isBuiltIn = FALSE; \
+  } while (0)
+
+// FIXME: document. 20000103 mortene.
+#define SO_NODE_CONSTRUCTOR(_class_) \
+  do { \
+    SoBase::staticDataLock(); \
+    SO_NODE_CONSTRUCTOR_NOLOCK(_class_); \
     SoBase::staticDataUnlock(); \
   } while (0)
 
