@@ -528,7 +528,7 @@ SoGLLazyElement::sendDiffuseByIndex(const int index) const
       first = 0;
     }
 
-    safeindex = SbClamp(index, 0, this->coinstate.numdiffuse-1);
+    safeindex = SbClamp((long) index, (long) 0, (long) (this->coinstate.numdiffuse-1));
   }
 #endif // COIN_DEBUG
 
