@@ -758,6 +758,10 @@
 
     20020924 mortene.
 
+    UPDATE 20021121 larsa:  I think Øystein has fixed the skewing
+    problem now - don't know if he has been instructed to update this
+    file when fixing bugs?  Anyways, he has other problems.
+
 =====================================================================
 
 031 Setting up the alpha channel for the offscreen renderer doesn't
@@ -797,6 +801,10 @@
 
     UPDATE 20021022 larsa: this was the case - old XFree3 with old
     Mesa does not support alpha for offscreen rendering.
+
+    UPDATE 20021121 larsa: The offscreen renderer GL context creation
+    is nevertheless bogus (with GLX at least), and should be fixed so
+    the best possible context is created.
 
 =====================================================================
 
@@ -1352,5 +1360,10 @@
     20021118 larsa - the --disable-symbols problem is fixed, and I'm
     against adding "--enable-optimization".  The users should rather
     specify the optimization options they want in CFLAGS/CXXFLAGS.
+
+    20021121 larsa: since Autoconf automatically adds -O2, we should
+    consider adding an option to remove that option, if it can be
+    made to work without touching user-set CFLAGS/CXXFLAGS and only
+    the autoconf-set optimization-options.  Tricky stuff...
 
 =====================================================================
