@@ -726,7 +726,7 @@ calculate_z_axis(const SbVec3f * spine, const int i,
   // test if spine segments are collinear. If they are, the cross
   // product will not be reliable, and we should just use the previous
   // Z-axis instead.
-  if (SbAbs(z0.dot(z1)) > 0.9f) {
+  if (SbAbs(z0.dot(z1)) > 0.999f) {
     return SbVec3f(0.0f, 0.0f, 0.0f);
   }
   SbVec3f tmp = z0.cross(z1);
@@ -838,7 +838,6 @@ SoVRMLExtrusionP::generateCoords(void)
       if (Y == empty) Y = prevY;
       Z = calculate_z_axis(spine, i, numspine, closed);
       if (Z == empty) Z = prevZ;
-
       if (Z.dot(prevZ) < 0) Z = -Z;
     }
 
