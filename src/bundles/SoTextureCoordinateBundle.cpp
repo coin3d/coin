@@ -103,7 +103,6 @@ SoTextureCoordinateBundle(SoAction * const action,
     // pederb, 20000218
     //
 
-    const SbVec2f *texcoords = vp->texCoord.getValues(0);
     this->state->push();
     this->flags |= FLAG_DIDPUSH;
     if (forRendering) {
