@@ -58,7 +58,7 @@ $(COINLIB): ../$(COIN) supportlibs/lib/libsimage.dylib supportlibs/lib/libfreety
 	@if test -d $(builddir); then :; else mkdir $(builddir); fi
 	@cd $(builddir); \
 	../../$(COIN)/configure $(BUILDOPTIONS)
-	cd $(builddir); $(MAKE)
+	cd $(builddir); $(MAKE) MACOSX_DEPLOYMENT_TARGET=10.2
 	cd $(builddir); $(MAKE) DESTDIR=$(install_prefix) install
 	touch $(COINLIB)
 	cp supportlibs/lib/libsimage.dylib $(framework_prefix)/Inventor.framework/Versions/Current/Resources
