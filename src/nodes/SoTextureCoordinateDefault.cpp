@@ -75,9 +75,9 @@ SoTextureCoordinateDefault::doAction(SoAction * action)
 void
 SoTextureCoordinateDefault::GLRender(SoGLRenderAction * action)
 {
-  SoTextureCoordinateDefault::doAction((SoAction *)action);
   SoGLTextureCoordinateElement::setTexGen(action->getState(),
                                           this, NULL);
+  SoTextureCoordinateDefault::doAction((SoAction *)action);
 }
 
 /*!
