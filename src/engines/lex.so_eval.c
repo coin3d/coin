@@ -521,7 +521,13 @@ char *yytext;
 \**************************************************************************/
 
 /*
- * Lexical scanner for SoCalculator. Compile with flex -L evaluator.l
+ * Lexical scanner for SoCalculator. Compile into lexical scanner
+ * lex.so_eval.c with
+ *
+ *             flex -L evaluator.l
+ *
+ * (Note: flex version should be 2.5.4, since this is what is
+ * installed on nfs.sim.no).
  */
 
 #include <Inventor/SbBasic.h>
@@ -943,11 +949,11 @@ YY_RULE_SETUP
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-{ yylval.value = atof(yytext); return LEX_VALUE; }
+{ yylval.value = (float)atof(yytext); return LEX_VALUE; }
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-{ yylval.value = atof(yytext); return LEX_VALUE; }
+{ yylval.value = (float)atof(yytext); return LEX_VALUE; }
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
@@ -959,7 +965,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-{ yylval.reg = yytext[0]; return LEX_IN_FLT_REG; } 
+{ yylval.reg = yytext[0]; return LEX_IN_FLT_REG; }
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
@@ -1866,4 +1872,3 @@ int main()
 	return 0;
 	}
 #endif
-
