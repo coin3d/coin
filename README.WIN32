@@ -35,14 +35,16 @@
 
 3.2 Write the following in the command line:
 
-      CC=cl CCFLAGS=/Tp CXXFLAGS=/Tp CXX=cl /your_path_here/configure --prefix=your_install_path
+      CC=cl CXX=cl CFLAGS=/Tp /your_path_here/configure --prefix=your_install_path
       cd data
       make
+    [from here on, you can use build/coin.sdk instead of make]
       cd ..
       cd build
       nmake coin.mak CFG="coin - Win32 Debug"
       cd ..
       make install-data
       make install-exec-am
+
 
 Done!
