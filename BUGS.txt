@@ -188,6 +188,8 @@
     (The other material field values are also likely to be able to
     cause problems like this.)
 
+    Consider this bug a low priority item.
+
     mortene 20020625.
 
 =====================================================================
@@ -576,6 +578,9 @@
     The '*' character can be replaced by any character not valid in
     identifier names, and the bug will still be present.
 
+    Should of course never hang, but rather spit out an error message
+    and abort the import process.
+
     20020911 mortene.
 
 =====================================================================
@@ -688,6 +693,19 @@
     about allowing SoSFEnum et al to be used _without_ name mappings
     (at least in certain contexts).
 
+    Consider this bug a low priority item.
+
     20020923 mortene.
+
+=====================================================================
+
+030 Running larsa's 'iv2scenegraph' tool (from SmallChange/test-code/)
+    on the good old windmill.iv model (and probably others aswell)
+    makes it output a PNG that is "skewed".
+
+    Most likely an SoOffscreenRenderer bug (perhaps with the unlimited
+    buffer size functionality), but more investigation is needed.
+
+    20020924 mortene.
 
 =====================================================================
