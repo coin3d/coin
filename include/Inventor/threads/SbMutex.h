@@ -27,11 +27,6 @@
 #include <Inventor/SbBasic.h>
 #include <Inventor/C/threads/mutex.h>
 
-#ifndef COIN_INTERNAL
-  // For TGS Inventor compile-time compatibility.
-  #include <Inventor/threads/SbThreadAutoLock.h>
-#endif // COIN_INTERNAL
-
 class SbMutex {
 public:
   SbMutex(void) { this->mutex = cc_mutex_construct(); }
@@ -54,5 +49,11 @@ private:
   friend class SbCondVar;
   cc_mutex * mutex;
 };
+
+
+#ifndef COIN_INTERNAL
+// For TGS Inventor compile-time compatibility.
+#include <Inventor/threads/SbThreadAutoLock.h>
+#endif // COIN_INTERNAL
 
 #endif // !COIN_SBMUTEX_H
