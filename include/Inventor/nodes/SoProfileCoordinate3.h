@@ -42,6 +42,7 @@ public:
   virtual void GLRender(SoGLRenderAction * action);
   virtual void callback(SoCallbackAction * action);
   virtual void pick(SoPickAction * action);
+  virtual void getBoundingBox(SoGetBoundingBoxAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 
 protected:

@@ -44,6 +44,7 @@
 
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/elements/SoProfileCoordinateElement.h>
@@ -84,7 +85,14 @@ SoProfileCoordinate3::initClass(void)
   SO_ENABLE(SoGLRenderAction, SoProfileCoordinateElement);
   SO_ENABLE(SoPickAction, SoProfileCoordinateElement);
   SO_ENABLE(SoCallbackAction, SoProfileCoordinateElement);
+  SO_ENABLE(SoGetBoundingBoxAction, SoProfileCoordinateElement);
   SO_ENABLE(SoGetPrimitiveCountAction, SoProfileCoordinateElement);
+}
+
+void
+SoProfileCoordinate3::getBoundingBox(SoGetBoundingBoxAction * action)
+{
+  SoProfileCoordinate3::doAction(action);
 }
 
 void

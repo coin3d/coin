@@ -43,6 +43,7 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/threads/SbStorage.h>
+#include <Inventor/errors/SoDebugError.h>
 
 // *************************************************************************
 
@@ -125,11 +126,20 @@ SoLinearProfile::getTrimCurve(SoState * state, int32_t & numpoints,
   SbList <float> * coordListLinearProfile = 
     so_linearprofile_get_coordlist();
 
-  numknots = 0;
   const SoProfileCoordinateElement * elem = (const SoProfileCoordinateElement*)
     SoProfileCoordinateElement::getInstance(state);
-  numpoints = elem->getNum();
+
+  coordListLinearProfile->truncate(0);
+
+  // Get the number of SoProfileCoordinate2/3 points
+  int32_t numcoords = elem->getNum();
+  // Get the number of profile coordinate indices
+  int n = this->index.getNum();
+
   if (numpoints) {
+    // Both 2D or 3D profile coordinates might have been specified, so
+    // get the appropriate coordinates and save the number of floats
+    // per vector for later usage.
     if (elem->is2D()) {
       points = (float*) elem->getArrayPtr2();
       floatspervec = 2;
@@ -138,16 +148,42 @@ SoLinearProfile::getTrimCurve(SoState * state, int32_t & numpoints,
       points = (float*) elem->getArrayPtr3();
       floatspervec = 3;
     }
-  }
-  coordListLinearProfile->truncate(0);
-  int n = this->index.getNum();
-  for (int i = 0; i < n; i++) {
-    for (int j = 0; j < floatspervec; j++) {
-      coordListLinearProfile->append(points[this->index[i]*floatspervec+j]);
+
+    assert(points);
+
+    // Append the coordinates to a list over the profile coordinates.
+    for (int i = 0; i < n; i++) {
+      int idx = this->index[i];
+
+      // If valid profile coordinates have been specified
+      if (idx >= 0 && idx < numcoords) {
+        for (int j = 0; j < floatspervec; j++) {
+          coordListLinearProfile->append(points[idx * floatspervec + j]);
+        }
+      }
+      // If invalid profile coordinates have been specified
+      else {
+        // Add dummy coordinate for robustness
+        for (int j = 0; j < floatspervec; j++) {
+          coordListLinearProfile->append(0.0f);
+        }
+        
+        // Print errormessage
+        static uint32_t current_errors = 0;
+        if (current_errors < 1) {
+          SoDebugError::postWarning("SoLinearProfile::getVertices", "Illegal profile "
+                                    "coordinate index specified: %d. Should be within "
+                                    "[0, %d]", idx, numcoords - 1);
+        }
+        current_errors++;
+      }
     }
   }
+
+  // Set  return variables
   points = (float*) coordListLinearProfile->getArrayPtr();
   numpoints = n;
+  numknots = 0;
 }
 
 // Doc from superclass.
@@ -163,13 +199,55 @@ SoLinearProfile::getVertices(SoState * state, int32_t & numvertices,
 
   coordListLinearProfile->truncate(0);
 
+  // Get the number of SoProfileCoordinate2/3 points
   int32_t numcoords = elem->getNum();
+  // Get the number of profile coordinate indices
+  int n = this->index.getNum();
+
   if (numcoords) {
-    float * points = (float *)elem->getArrayPtr2();
+    float * points;
+    int floatspervec;
+    // Both 2D or 3D profile coordinates might have been specified, so
+    // get the appropriate coordinates and save the number of floats
+    // per vector for later usage.
+    if (elem->is2D()) {
+      points = (float *) elem->getArrayPtr2();
+      floatspervec = 2;
+    }
+    else {
+      points = (float *) elem->getArrayPtr3();
+      floatspervec = 3;
+    }
+
+    assert(points);
+
+    // Append the coordinates to a list over the profile coordinates.
+    // When 3D profile coordinates have been specified, only the
+    // 2D-part of the coordinates will be used.
     int n = this->index.getNum();
     for (int i = 0; i < n; i++) {
-      coordListLinearProfile->append(points[this->index[i]*2  ]);
-      coordListLinearProfile->append(points[this->index[i]*2+1]);
+      int idx = this->index[i];
+
+      // If valid profile coordinates have been specified
+      if (idx >= 0 && idx < numcoords) {
+        coordListLinearProfile->append(points[(idx * floatspervec)]);
+        coordListLinearProfile->append(points[(idx * floatspervec) + 1]);
+      }
+      // If invalid profile coordinates have been specified
+      else {
+      // Append dummy coordinate for robustness
+        coordListLinearProfile->append(0.0f);
+        coordListLinearProfile->append(0.0f);
+
+        // Print errormessage
+        static uint32_t current_errors = 0;
+        if (current_errors < 1) {
+          SoDebugError::postWarning("SoLinearProfile::getVertices", "Illegal profile "
+                                    "coordinate index specified: %d. Should be within "
+                                    "[0, %d]", idx, numcoords - 1);
+        }
+        current_errors++;
+      }
     }
 
     vertices = (SbVec2f *) coordListLinearProfile->getArrayPtr();
