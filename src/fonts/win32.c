@@ -272,10 +272,8 @@ cc_flww32_initialize(void)
   osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);    
   cc_win32()->GetVersionEx(&osvi);
 
-  if (osvi.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS) {          
+  if (osvi.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS) 
     flww32_win9598Me = TRUE;
-	printf("Win98!\n");
-  } 
 
   return TRUE;
 }
