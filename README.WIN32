@@ -12,7 +12,7 @@ Section 01 -- Basic build instructions.
   components installed on your system:
 
         * Cygwin[1], latest release, with the packages needed to run a
-          configure script (bash, binutils, ...)
+          configure script (bash, binutils, make, perl?, ...)
 
         * Microsoft Visual C++ v6.x
 
@@ -135,6 +135,24 @@ Section 01 -- Basic build instructions.
       information here if we get further feedback from users with this
       problem.
 
+   e) We have various reports of problems related to network NTFS file
+      systems mounted under Cygwin.
+
+      The problems seems to stem from the fact that "test -x" on what
+      should be an executable does not recognize it as such. One
+      possible work-around is to mount the disk with "mount -x" from
+      Cygwin, which makes *all* files executable.
+
+      Another, perhaps preferable, fix is to just not use a network
+      share for storing the source code directory, or for setting up
+      the build and install directories.
+
+   f) We have one report on lib.exe failing silently when building
+      simage, libCoin and SoWin with VS.NET with options
+      "--disable-shared" and "--enable-static" to configure.
+
+      A workaround is to do manual creation of the lib-file, after
+      which ``make install'' will execute ok.
 
 ---
 [1] <URL:http://www.cygwin.com>
@@ -205,8 +223,14 @@ Section 04 -- Building non-default configurations.
   FIXME: explain how to build release versions of the
   libraries. 20011019 mortene.
 
+  (One snippet of information wrt release builds: "-O2" (or whatever
+  optimization level is wanted) should be manually added by the user
+  to CFLAGS/CXXFLAGS.)
+
+
   FIXME: explain how to build static versions of the
   libraries. 20011019 mortene.
+
 
   FIXME: explain how to build the full library-chain on top of other
   versions of the Microsoft C libraries than the default one. 20011019 mortene.

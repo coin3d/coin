@@ -309,6 +309,11 @@ STUFF TO FIX IN COIN
     same manner, for instance in the SoGuiExamples module. That would
     lower the bar on entry for many MSWin / MSVC++ programmers.
 
+    Update 2002-12-10 mortene: there's a small Perl-script in he Wine
+    project, called 'msvcmaker', that I believe converts from
+    Makefile.in files to a .dsp or a .dsw. Check it out, it might be
+    something we could build on.
+
 
 008 Dynamic loading of external extension nodes
     2001-11-29  Lars J. Aas  <larsa@sim.no>
@@ -488,3 +493,15 @@ STUFF TO FIX IN COIN
     extensions classes (at least not for nodes, haven't really
     investigated the rest).
 
+
+021 Call-stack backtraces on errors.
+    2002-11-26  Morten Eriksen  <mortene@sim.no>
+
+    In the "Under The Hood" column in the May 1997 issue of the
+    Microsoft Systems Journal, Matt Pietrek explains how one can use
+    REBASE.EXE and the IMAGEHLP.DLL for getting a full list of
+    call-stack frames -- even for release builds.
+
+    Integrating something like this in Coin, and then catching crash
+    signals (if this is possible under MSWin..) could be a helpful
+    feature.
