@@ -89,6 +89,7 @@ SbColor::SbColor(const float r, const float g, const float b)
 SbColor&
 SbColor::setPackedValue(const uint32_t rgba, float& transparency)
 {
+  // Should work regardless of endianness on run-time architecture.
   this->setValue((rgba >> 24)/255.0f,
                  ((rgba >> 16)&0xff)/255.0f,
                  ((rgba >> 8)&0xff)/255.0f);
@@ -106,6 +107,7 @@ SbColor::setPackedValue(const uint32_t rgba, float& transparency)
 uint32_t
 SbColor::getPackedValue(const float transparency) const
 {
+  // Should work regardless of endianness on run-time architecture.
   return (((uint32_t)(red()*255.0f + 0.5f) << 24) |
           ((uint32_t)(green()*255.0f + 0.5f) << 16) |
           ((uint32_t)(blue()*255.0f + 0.5f) << 8) |
