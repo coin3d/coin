@@ -297,7 +297,9 @@ SoDB::read(SoInput * in, SoPath *& path)
 SbBool
 SoDB::read(SoInput * in, SoBase *& base)
 {
-  if (!in->isValidFile()) return FALSE;
+  // Header is only required when reading from a stream, if reading from
+  // memory no header is required
+  if (in->getCurFile() && !in->isValidFile()) return FALSE;
   return SoBase::read(in, base, SoBase::getClassTypeId());
 }
 
