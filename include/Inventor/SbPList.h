@@ -25,13 +25,17 @@
 \**************************************************************************/
 
 #ifndef COIN_INTERNAL
- // The next two includes are for Open Inventor compatibility.
- #include <Inventor/SbBasic.h>
- #include <Inventor/SbLinear.h>
- // Here's the class definition of SbPList in Coin.
- #include <Inventor/lists/SbPList.h>
+// The next includes are for Open Inventor compatibility.
+#include <Inventor/SbBasic.h>
+#include <Inventor/SbLinear.h>
+// these list classes are defined in SbPList.h in SGI Inventor
+#include <Inventor/lists/SbIntList.h>
+#include <Inventor/lists/SbStringList.h>
+#include <Inventor/lists/SbVec3fList.h>
+// Here's the class definition of SbPList in Coin.
+#include <Inventor/lists/SbPList.h>
 #else // COIN_INTERNAL
- #error "Do not include Inventor/SbPList.h internally (use Inventor/lists/SbPList.h)."
+#error "Do not include Inventor/SbPList.h internally (use Inventor/lists/SbPList.h)."
 #endif // COIN_INTERNAL
 
 #endif // !COIN_SBPLIST_H
