@@ -36,7 +36,6 @@
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoBBoxModelMatrixElement.h>
-#include <Inventor/system/kosher.h>
 
 
 SO_NODE_SOURCE(SoTransformSeparator);
@@ -146,13 +145,11 @@ SoTransformSeparator::getMatrix(SoGetMatrixAction *action)
     matrix = action->getMatrix();
     invmatrix = action->getInverse();
     inherited::getMatrix(action);
-#ifdef SB_MATRIX_WORKAROUND
+    // Note: don't use ..->getMatrix().setValue(...) here, as that
+    // won't work (for some weird reason) with certain compilers (like
+    // MSVC++ 6.0 and AIX xlc).
     action->getMatrix() = matrix;
-        action->getInverse() = invmatrix;
-#else // normal compilers use this code
-    action->getMatrix().setValue(matrix);
-    action->getInverse().setValue(invmatrix);
-#endif // fix for vc6 compiler
+    action->getInverse() = invmatrix;
   }
   else {
     assert(action->getCurPathCode() == SoAction::IN_PATH);

@@ -39,7 +39,6 @@
 #endif // COIN_DEBUG
 #include <Inventor/lists/SoTypeList.h>
 #include <Inventor/lists/SbList.h>
-#include <Inventor/system/kosher.h>
 
 #include <assert.h>
 #include <stdlib.h> // NULL
@@ -60,13 +59,16 @@ struct SoTypeData {
   SoType::instantiationMethod method;
 };
 
-#if defined(NEED_TEMPLATE_DEFINITION)
+// OBSOLETED: this code was only active for GCC 2.7.x, and I don't
+// think we support that old compiler version anyhow. Do look into if
+// this is what the old SGI MIPSpro CC compiler for IRIX6.2 needs to
+// stop spitting out all those linker warnings, though. 20000208 mortene.
+#if 0 // obsoleted
+// #if defined(NEED_TEMPLATE_DEFINITION)
 template class SbList<SoTypeData *>;
-#else // ! defined(NEED_TEMPLATE_DEFINITION)
-#ifndef DONT_NEED_TEMPLATE_DEFINITION
-#error "kosher.h hasn't been included."
-#endif // ! DONT_NEED_TEMPLATE_DEFINITION
-#endif //NEED_TEMPLATE_DEFINITION
+// [...]
+#endif // obsoleted
+
 
 SoTypeList * SoType::typelist = NULL;
 SbList<SoTypeData *> * SoType::typedatalist = NULL;

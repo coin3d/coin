@@ -34,7 +34,6 @@
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbBox3f.h>
-#include <Inventor/system/kosher.h>
 
 /*!
   \enum SoAntiSquish::Sizing
@@ -186,18 +185,16 @@ SoAntiSquish::getMatrix(SoGetMatrixAction *action)
       this->recalcAlways.getValue()) {
     this->matrixValid = TRUE;
     this->inverseValid = TRUE;
-    this->unsquishedMatrix =
-      this->getUnsquishingMatrix(action->getMatrix(),
-                                 TRUE, this->inverseMatrix);
-
+    this->unsquishedMatrix = this->getUnsquishingMatrix(action->getMatrix(),
+                                                        TRUE,
+                                                        this->inverseMatrix);
   }
-#ifdef SB_MATRIX_WORKAROUND
+
+  // Note: don't use ..->getMatrix().setValue(...) here, as that won't
+  // work (for some weird reason) with certain compilers (like MSVC++
+  // 6.0 and AIX xlc).
   action->getMatrix() = this->unsquishedMatrix;
   action->getInverse() = this->inverseMatrix;
-#else // normal compilers use this code
-  action->getMatrix().setValue(this->unsquishedMatrix);
-  action->getInverse().setValue(this->inverseMatrix);
-#endif // fix for vc6 compiler
 }
 
 /*!

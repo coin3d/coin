@@ -44,10 +44,6 @@ TODO:
   Update: a related item is part of the OpenSSH TODO list as of
   release 1.2.2, and there's some code in configure.in.
 
-* [mortene:19990912] get rid of Inventor/system/kosher.h, replace with
-  autoconf checks. (Needs to try compiling under g++ and SGI CC to
-  check that we've covered the functionality provided.)
-
 * [mortene:19990912] add options in configure for compiling slimmed
   versions of Coin (--without-coin-engines etc). Or perhaps make a
   single --compile-basesystem option instead?
