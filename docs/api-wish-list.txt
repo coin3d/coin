@@ -350,7 +350,7 @@ THE WISH LIST
     This can be complimentary to the current envvar-scheme.
 
 
-* SbString / SbName / Coin internationalization
+* Coin internationalization.
   2001-06-28  Morten Eriksen  <mortene@sim.no>
 
   Sooner or later, my guess is that we will have to make SbString and
@@ -363,9 +363,20 @@ THE WISH LIST
 
   Update 2003-01-22 mortene: kintel suggests auditing of the following;
 
-        o node names (SbString/SbName storage+I/O)
-        o file I/O (unicode file names)
-        o font handling
+    o Node names (SbString/SbName storage + I/O).
+
+      (We cannot do much wrt. file formats since we want to be
+      compatible.  VRML97 is fully unicoded through utf-8, I guess
+      Inventor files and VRML1 are latin1 but I'm not sure. We can
+      always create our own Coin file format w/unicode support.)
+
+    o file I/O (unicode file names)
+
+      (File names are subject to file systems constraints and must be
+      handled separately.)
+
+    o Font handling, including text rendering through SoText2,
+      SoText3, SoAsciiText, and SoVRMLText.
 
 
 * SbBool SbMatrix::inversePossible(void) const
