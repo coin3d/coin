@@ -1,6 +1,12 @@
 This document contains a list of ideas for interns' or student's
 projects:
 
+* A "gl-attack" application stressing many different aspects of
+  OpenGL-drivers.
+
+* Java-binding. See the misc-resources.txt file.
+
+* Python-binding. See the misc-resources.txt file.
 
 * A regression test system for the classes under Coin/src/base.
 
