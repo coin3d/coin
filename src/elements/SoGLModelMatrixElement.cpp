@@ -69,6 +69,7 @@ SoGLModelMatrixElement::init(SoState * state)
 {
   this->state = state;
   this->viewEltNodeId = 0;
+  this->stackoverflow = FALSE;
   inherited::init(state);
 }
 
@@ -77,11 +78,25 @@ SoGLModelMatrixElement::init(SoState * state)
 void
 SoGLModelMatrixElement::push(SoState * state)
 {
-  glPushMatrix();
-  inherited::push(state);
   SoGLModelMatrixElement * prev = (SoGLModelMatrixElement*)
     this->getNextInStack();
+  
+  // the stackoverflow test makes it possible to have scene graphs
+  // with virtually unlimited depth and with transformations inside
+  // each separator. If a GL_STACK_OVERFLOW error is encountered,
+  // a glPopMatrix() will not be called in the pop() method, but
+  // the GL matrix will be read from SoModelMatrixElement instead.
+  //                                          pederb, 2000-12-20
+  this->stackoverflow = prev->stackoverflow;
   this->state = prev->state;
+  
+  if (!this->stackoverflow) {
+    glPushMatrix();
+    if (glGetError() == GL_STACK_OVERFLOW) {
+      this->stackoverflow = TRUE;
+    }
+  }
+  inherited::push(state);
 }
 
 //! FIXME: write doc.
@@ -91,7 +106,18 @@ SoGLModelMatrixElement::pop(SoState * state,
                             const SoElement * prevTopElement)
 {
   inherited::pop(state, prevTopElement);
-  glPopMatrix();
+
+  SoGLModelMatrixElement * prev = (SoGLModelMatrixElement*)
+    prevTopElement;
+
+  if (prev->stackoverflow) {
+    const SbMatrix & mat = SoViewingMatrixElement::get(this->state);
+    glLoadMatrixf(mat[0]);
+    glMultMatrixf(this->modelMatrix[0]);
+  }
+  else {
+    glPopMatrix();
+  }
 }
 
 //! FIXME: write doc.

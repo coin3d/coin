@@ -53,7 +53,7 @@ protected:
 private:
   SoState * state;
   uint32_t viewEltNodeId;
-
+  SbBool stackoverflow;
 };
 
 #endif // !COIN_SOGLMODELMATRIXELEMENT_H
