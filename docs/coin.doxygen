@@ -180,6 +180,9 @@ TAB_SIZE             = 8
 INPUT                = \
 	$(top_builddir)/include/Inventor/SbBasic.h \
 	\
+	$(top_srcdir)/src/misc/SoBase.cpp \
+	$(top_srcdir)/include/Inventor/misc/SoBase.h \
+	\
 	$(top_srcdir)/src/errors/SoError.cpp \
 	$(top_srcdir)/include/Inventor/errors/SoError.h \
 	$(top_srcdir)/src/errors/SoReadError.cpp \

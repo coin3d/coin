@@ -19,23 +19,32 @@
 
 /*!
   \class SoBase SoBase.h Inventor/misc/SoBase.h
-  \brief The SoBase class is the top-level superclass for nodes, engines,
-  and other important subclass hierarchies.
+  \brief The SoBase class is the top-level superclass for a number
+  of class-hierarchies.
   \ingroup general
 
-  FIXME: write doc. (which criteria for inheriting from SoBase,
-  explain reference counting,...)
+  SoBase provides the basic interfaces and methods for doing reference
+  counting, type identification and import/export. All classes in Coin
+  which uses these mechanisms are descendent from this class.
 
 */
 
+/*¡
+  There's a lot of methods in SoBase used to implement VRML support
+  which are missing.
+
+  One more thing missing: detect cases where we should instantiate
+  SoUnknownEngine in addition to the SoUnknownNode cases.
+*/
+
 #include <Inventor/misc/SoBase.h>
-#include <Inventor/SbString.h>
 #include <Inventor/SbName.h>
-#include <Inventor/misc/SoBasic.h> // COIN_STUB()
+#include <Inventor/SbString.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/lists/SoBaseList.h>
+#include <Inventor/nodes/SoUnknownNode.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -49,56 +58,43 @@
 */
 /*!
   \fn SbBool SoBase::readInstance(SoInput * in, unsigned short flags)
-  FIXME: write doc
+
+  Reads definition of SoBase instance from input stream \a in.
 */
 /*!
   \enum SoBase::BaseFlags
-  FIXME: write doc
-*/
-/*!
-  \enum SoBase::BaseFlags SoBase::IS_ENGINE
-  FIXME: write doc
-*/
-/*!
-  \enum SoBase::BaseFlags SoBase::IS_GROUP
-  FIXME: write doc
+  \internal
 */
 
 
-
-// Set this to 1 to activate debugging of reference counting, which
-// could aid in finding hard to track down problems with accesses to
-// freed memory or problems with memory leaks. NB: this will produce
-// _lots_ of debug information in any "normal" running system, so use
-// sensibly.
-#define DEBUG_REF_SYSTEM 0
 
 // Strings and character tokens used in parsing.
 static const char OPEN_BRACE = '{';
 static const char CLOSE_BRACE = '}';
-// FIXME: should probably use other end-of-line values on Win32 and
-// Mac. 19990610 mortene.
 static const char END_OF_LINE[] = "\n";
-static const char DEFINITION_KEYWORD[] = "DEF";
-static const char REFERENCE_KEYWORD[] = "USE";
+static const char DEF_KEYWORD[] = "DEF";
+static const char USE_KEYWORD[] = "USE";
+static const char NULL_KEYWORD[] = "NULL";
 
 
 // Only a small number of SoBase derived objects will under usual
-// conditions have designated names, so we use a couple of SbDict
-// objects to keep track of them. Since we avoid storing a pointer for
-// each and every object, we'll save a decent amount of RAM this way
-// (SoBase should be kept as slim as possible, as any dead weight is
-// brought along in a lot of objects).
+// conditions have designated names, so we use a couple of static
+// SbDict objects to keep track of them. Since we avoid storing a
+// pointer for each and every object, we'll cut down on a decent
+// amount of memory use this way (SoBase should be kept as slim as
+// possible, as any dead weight is brought along in a lot of objects).
 SbDict * SoBase::name2obj_dict; // maps from char * to SbPList(SoBase)
-SbDict * SoBase::obj2name_dict; // maps from SoBase * to char*
+SbDict * SoBase::obj2name_dict; // maps from SoBase * to char *
 
 SbString SoBase::refwriteprefix = "+";
 
 SoType SoBase::classTypeId = SoType::badType();
 
+SbBool SoBase::tracerefs = FALSE;
+uint32_t SoBase::writecounter = 0;
 
 /*!
-  Constructor. This will set the current reference count to zero.
+  Constructor. The initial reference count will be set to zero.
  */
 SoBase::SoBase(void)
 {
@@ -123,9 +119,6 @@ SoBase::~SoBase()
 
   SbName n = this->getName();
   if (n.getLength()) this->removeName(this, n.getString());
-
-  // FIXME: detach any node sensor(s) to avoid references to free'd
-  // memory. 19981027 mortene.
 }
 
 /*!
@@ -134,11 +127,13 @@ SoBase::~SoBase()
 void
 SoBase::destroy(void)
 {
-#if DEBUG_REF_SYSTEM // debug
-  SoDebugError::postInfo("SoBase::destroy",
-                         "%p ('%s')",
-                         this, this->getTypeId().getName().getString());
-#endif // debug
+#if COIN_DEBUG
+  if (SoBase::tracerefs) {
+    SoDebugError::postInfo("SoBase::destroy",
+                           "%p ('%s')",
+                           this, this->getTypeId().getName().getString());
+  }
+#endif // COIN_DEBUG
   delete this;
 }
 
@@ -149,6 +144,8 @@ SoBase::destroy(void)
 void
 SoBase::initClass(void)
 {
+  (void)atexit(SoBase::cleanClass);
+
   // Avoid multiple attempts at initialization.
   assert(SoBase::classTypeId == SoType::badType());
 
@@ -158,23 +155,25 @@ SoBase::initClass(void)
   SoBase::obj2name_dict = new SbDict;
 }
 
-#if 0 // FIXME: re-code to be run automatically upon exit. 19991106 mortene.
-/*!
+/*
   Clean up all commonly allocated resources before applcation exit. Only
   for debugging purposes.
  */
 void
 SoBase::cleanClass(void)
 {
-  assert(name2obj_dict);
-  assert(obj2name_dict);
+#if COIN_DEBUG
+  assert(SoBase::name2obj_dict);
+  assert(SoBase::obj2name_dict);
 
-  // got to delete the SbPLists
-  name2obj_dict->applyToAll(SoBase::freeLists);
-  delete name2obj_dict;
-  delete obj2name_dict;
+  // Delete the SbPLists in the dictionaries.
+  SoBase::name2obj_dict->applyToAll(SoBase::freeLists);
+
+  delete SoBase::name2obj_dict; SoBase::name2obj_dict = NULL;
+  delete SoBase::obj2name_dict; SoBase::obj2name_dict = NULL;
+#endif // COIN_DEBUG
 }
-#endif // re-code
+
 
 /*!
   Increase the reference count of the object. This might be necessary
@@ -191,12 +190,14 @@ SoBase::ref(void) const
   SoBase * base = (SoBase *)this;
   base->objdata.referencecount++;
 
-#if DEBUG_REF_SYSTEM // debug
-  SoDebugError::postInfo("SoBase::ref",
-                         "%p ('%s') - referencecount: %d",
-                         this, this->getTypeId().getName().getString(),
-                         this->objdata.referencecount);
-#endif // debug
+#if COIN_DEBUG
+  if (SoBase::tracerefs) {
+    SoDebugError::postInfo("SoBase::ref",
+                           "%p ('%s') - referencecount: %d",
+                           this, this->getTypeId().getName().getString(),
+                           this->objdata.referencecount);
+  }
+#endif // COIN_DEBUG
 }
 
 /*!
@@ -214,13 +215,13 @@ SoBase::unref(void) const
   // Cast away constness.
   SoBase * base = (SoBase *)this;
   base->objdata.referencecount--;
-#if DEBUG_REF_SYSTEM // debug
-  SoDebugError::postInfo("SoBase::unref",
-                         "%p ('%s') - referencecount: %d",
-                         this, this->getTypeId().getName().getString(),
-                         this->objdata.referencecount);
-#endif // debug
 #if COIN_DEBUG
+  if (SoBase::tracerefs) {
+    SoDebugError::postInfo("SoBase::unref",
+                           "%p ('%s') - referencecount: %d",
+                           this, this->getTypeId().getName().getString(),
+                           this->objdata.referencecount);
+  }
   if (this->objdata.referencecount < 0)
     SoDebugError::postWarning("SoBase::unref", "ref count less than zero");
 #endif // COIN_DEBUG
@@ -239,12 +240,14 @@ SoBase::unrefNoDelete(void) const
   // Cast away constness.
   SoBase * base = (SoBase *)this;
   base->objdata.referencecount--;
-#if DEBUG_REF_SYSTEM // debug
-  SoDebugError::postInfo("SoBase::unrefNoDelete",
-                         "%p ('%s') - referencecount: %d",
-                         this, this->getTypeId().getName().getString(),
-                         this->objdata.referencecount);
-#endif // debug
+#if COIN_DEBUG
+  if (SoBase::tracerefs) {
+    SoDebugError::postInfo("SoBase::unrefNoDelete",
+                           "%p ('%s') - referencecount: %d",
+                           this, this->getTypeId().getName().getString(),
+                           this->objdata.referencecount);
+  }
+#endif // COIN_DEBUG
 }
 
 /*!
@@ -397,7 +400,8 @@ SoBase::removeName(SoBase * const b, const char * const name)
 }
 
 /*!
-  FIXME: write doc
+  This is the method which starts the notification sequence
+  after changes.
 */
 void
 SoBase::startNotify(void)
@@ -405,19 +409,12 @@ SoBase::startNotify(void)
 }
 
 /*!
-  FIXME: write doc
+  Notifies all auditors for this instance when changes are made.
 */
 void
 SoBase::notify(SoNotList * list)
 {
-  // FIXME: What else should be put here? kintel.
-
-#if 1 // FIXME: investigate if it is possible to use the faster code below
-  SoAuditorList al = this->getAuditors();
-  al.notify(list);
-#else // faster code, but is it safe?
   this->auditors.notify(list);
-#endif // faster code
 }
 
 /*!
@@ -489,21 +486,23 @@ SoBase::shouldWrite(void)
 }
 
 /*!
-  FIXME: write doc
+  \internal
+  Don't know what this is good for.
 */
 void
 SoBase::incrementCurrentWriteCounter(void)
 {
-  COIN_STUB();
+  SoBase::writecounter++;
 }
 
 /*!
-  FIXME: write doc
+  \internal
+  Don't know what this is good for.
  */
 void
 SoBase::decrementCurrentWriteCounter(void)
 {
-  COIN_STUB();
+  SoBase::writecounter--;
 }
 
 /*!
@@ -556,15 +555,25 @@ SoBase::getNamedBases(const SbName & name, SoBaseList & baselist, SoType type)
 }
 
 /*!
-  ...returns FALSE on error (syntax error, type mismatch, undefined
-  reference, ...)...
 
-  ...result==TRUE and base==NULL on end of file...
-  ...result==TRUE and base==NULL on So[S|M]FNode with NULL values...
-  (use in->eof() to check for EOF condition)
+  Read next SoBase derived instance from the \a in stream, check that
+  it is derived from \a expectedType and place a pointer to the newly
+  allocated instance in \a base.
 
-  FIXME: write complete doc
- */
+  \c FALSE is returned on read errors, mismatch with the \a
+  expectedType, or if there are attempts at referencing (through the
+  \c USE keyword) unknown instances.
+
+  If we return \c TRUE with \a base equal to \c NULL, there was either
+  end-of-file or a NULL keyword for the next \a base instance in the
+  file. Use SoInput::eof() after calling this method to detect
+  end-of-file conditions.
+
+  If \c TRUE is returned and \a base is non-NULL upon return,
+  the instance was allocated and initialized according the what
+  was read from the \a in stream.
+
+*/
 SbBool
 SoBase::read(SoInput * in, SoBase *& base, SoType expectedType)
 {
@@ -572,27 +581,20 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedType)
   base = NULL;
 
   SbName name;
-#if 0 // debug
-  SoDebugError::postInfo("SoBase::read",
-                         "find base name");
-#endif // debug
   SbBool result = in->read(name, TRUE);
   if (!result) {
 #if 0 // debug
     SoDebugError::postInfo("SoBase::read", "hit EOF");
-//      exit(0);
 #endif // debug
     return TRUE; // EOF, return TRUE with base==NULL
   }
 
 #if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoBase::read", "name: '%s'",
-                         name.getString());
+  SoDebugError::postInfo("SoBase::read", "name: '%s'", name.getString());
 #endif // debug
 
-  if (name == "NULL") return TRUE; // happens with So[S|M]FNode field values
-  // FIXME: DEF/USE doesn't work with binary files yet. 19990711 mortene.
-  else if (name == REFERENCE_KEYWORD) result = SoBase::readReference(in, base);
+  if (name == NULL_KEYWORD) return TRUE; // happens with So[S|M]FNode field values
+  else if (name == USE_KEYWORD) result = SoBase::readReference(in, base);
   else result = SoBase::readBase(in, name, base);
 
   // Check type correctness.
@@ -613,7 +615,7 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedType)
     }
   }
 
-  if (!result && base && (name != REFERENCE_KEYWORD)) {
+  if (!result && base && (name != USE_KEYWORD)) {
     base->ref();
     base->unref();
     base = NULL;
@@ -638,22 +640,29 @@ SoBase::setInstancePrefix(const SbString & c)
 }
 
 /*!
-  FIXME: write doc
+  Set to \c TRUE to activate debugging of reference counting, which
+  could aid in finding hard to track down problems with accesses to
+  freed memory or memory leaks. Note: this will produce lots of
+  debug information in any "normal" running system, so use sensibly.
+
+  The reference tracing functionality will be disabled in "release
+  versions" of the Coin library.
  */
 void
-SoBase::setTraceRefs(SbBool /* bTrace */)
+SoBase::setTraceRefs(SbBool bTrace)
 {
-  COIN_STUB();
+  SoBase::tracerefs = TRUE;
 }
 
 /*!
-  FIXME: write doc
+  Return the status of the reference tracing flag.
+
+  \sa setTraceRefs()
  */
 SbBool
 SoBase::getTraceRefs(void)
 {
-  COIN_STUB();
-  return FALSE;
+  return SoBase::tracerefs;
 }
 
 /*!
@@ -701,7 +710,7 @@ SoBase::writeHeader(SoOutput * out, SbBool isGroup, SbBool isEngine) const
   if (multiref && firstwrite) refid = out->addReference(this);
 
   if (!firstwrite) {
-    out->write(REFERENCE_KEYWORD);
+    out->write(USE_KEYWORD);
     if (!out->isBinary()) out->write(' ');
     SbString s = name.getString();
     s += SoBase::refwriteprefix.getString();
@@ -710,7 +719,7 @@ SoBase::writeHeader(SoOutput * out, SbBool isGroup, SbBool isEngine) const
   }
   else {
     if (name.getLength() || multiref) {
-      out->write(DEFINITION_KEYWORD);
+      out->write(DEF_KEYWORD);
       if (!out->isBinary()) out->write(' ');
 
       SbString s = name.getString();
@@ -761,9 +770,6 @@ SoBase::writeFooter(SoOutput * out) const
     out->indent();
     out->write('}');
   }
-  else {
-    // FIXME: sumpin' needed here? 19990707 mortene.
-  }
 }
 
 /*!
@@ -776,13 +782,13 @@ SoBase::getFileFormatName(void) const
 }
 
 /*!
-  FIXME: write doc
+  \internal
+  Don't know what this is good for.
  */
 uint32_t
 SoBase::getCurrentWriteCounter(void)
 {
-  COIN_STUB();
-  return 0;
+  return SoBase::writecounter;
 }
 
 /*
@@ -801,15 +807,13 @@ SoBase::freeLists(unsigned long, void * value)
 SbBool
 SoBase::readReference(SoInput * in, SoBase *& base)
 {
-  SbName refName;
-  if (!in->read(refName, FALSE)) {
-    SoReadError::post(in, "Premature end of file after \"%s\"",
-                      REFERENCE_KEYWORD);
+  SbName refname;
+  if (!in->read(refname, FALSE)) {
+    SoReadError::post(in, "Premature end of file after \"%s\"", USE_KEYWORD);
     return FALSE;
   }
-  else if ((base = in->findReference(refName)) == NULL) {
-    SoReadError::post(in, "Unknown reference \"%s\"",
-                      refName.getString());
+  else if ((base = in->findReference(refname)) == NULL) {
+    SoReadError::post(in, "Unknown reference \"%s\"", refname.getString());
     return FALSE;
   }
 
@@ -832,22 +836,19 @@ SoBase::readBase(SoInput * in, SbName & className, SoBase *& base)
 
   SbName refName;
 
-  // FIXME: doesn't work with binary files yet. 19990711 mortene.
-  if (className == DEFINITION_KEYWORD) {
+  if (className == DEF_KEYWORD) {
     if (!in->read(refName, FALSE) || !in->read(className, TRUE)) {
-      SoReadError::post(in, "Premature end of file after %s",
-                        DEFINITION_KEYWORD);
+      SoReadError::post(in, "Premature end of file after %s", DEF_KEYWORD);
       ret = FALSE;
     }
 
     if (!refName) {
-      SoReadError::post(in, "No name given after %s", DEFINITION_KEYWORD);
+      SoReadError::post(in, "No name given after %s", DEF_KEYWORD);
       ret = FALSE;
     }
 
     if (!className) {
-      SoReadError::post(in, "Invalid definition of %s",
-                        refName.getString());
+      SoReadError::post(in, "Invalid definition of %s", refName.getString());
       ret = FALSE;
     }
   }
@@ -914,12 +915,10 @@ SoBase::readBaseInstance(SoInput * in, const SbName & className,
     unsigned short flags = 0;
     if (in->isBinary())
       retval = in->read(flags);
-#if 0 // I believe the flags parameter is not interesting during ASCII read.
     else
       flags =
-        (base->isOfType(SoGroup::getClassTypeId()) ? IS_GROUP : 0x0) |
-        (base->isOfType(SoEngine::getClassTypeId()) ? IS_ENGINE : 0x0);
-#endif // unused
+        (base->isOfType(SoType::fromName("SoGroup")) ? IS_GROUP : 0x0) |
+        (base->isOfType(SoType::fromName("SoEngine")) ? IS_ENGINE : 0x0);
 
     if (retval) retval = base->readInstance(in, flags);
 
@@ -947,16 +946,16 @@ SoBase::createInstance(SoInput * in, const SbName & className)
   SoBase * instance = (SoBase *)insttype.createInstance();
 
   if (!instance) {
-    COIN_STUB();
-
-    // FIXME: is this ok for .iv-files? Or is it only for VRML 1 (or
-    // VRML 1 & 2)? Check and maybe fix. 19990403 mortene.
     SbString unknownString;
     if (!in->read(unknownString) || unknownString != "fields") {
-      SoReadError::post(in, "Unknown class \"%s\"",
-                        className.getString());
+      // FIXME: check for unknown engine class aswell? 19991229 mortene.
+      SoReadError::post(in, "Unknown class \"%s\"", className.getString());
       return NULL;
     }
+
+    SoUnknownNode * unknownnode = new SoUnknownNode;
+    unknownnode->setNodeClassName(className);
+    instance = unknownnode;
   }
 
   return instance;

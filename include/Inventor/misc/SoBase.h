@@ -75,7 +75,7 @@ public:
 
 
 protected:
-  // Bitflags.
+  // Note: these are bitflags.
   enum BaseFlags { IS_ENGINE = 0x01, IS_GROUP = 0x02 };
 
   SoBase(void);
@@ -94,6 +94,17 @@ protected:
 
 
 private:
+  static SbBool readReference(SoInput * in, SoBase *& base);
+  static SbBool readBase(SoInput * in, SbName & className, SoBase *& base);
+  static SbBool readBaseInstance(SoInput * in, const SbName & className,
+                                 const SbName & refName, SoBase *& base);
+
+  static SoBase * createInstance(SoInput * in, const SbName & className);
+  static void flushInput(SoInput * in);
+
+  static void cleanClass(void);
+  static void freeLists(unsigned long, void * value);
+
   static SoType classTypeId;
 
   struct {
@@ -118,15 +129,8 @@ private:
 
   static SbString refwriteprefix;
 
-  static SbBool readReference(SoInput * in, SoBase *& base);
-  static SbBool readBase(SoInput * in, SbName & className, SoBase *& base);
-  static SbBool readBaseInstance(SoInput * in, const SbName & className,
-                                 const SbName & refName, SoBase *& base);
-
-  static SoBase * createInstance(SoInput * in, const SbName & className);
-  static void flushInput(SoInput * in);
-
-  static void freeLists(unsigned long, void * value);
+  static SbBool tracerefs;
+  static uint32_t writecounter;
 };
 
 #endif // !__SOBASE_H__

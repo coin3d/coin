@@ -3,10 +3,8 @@
 # CONFIG "General Classes"
 #
 # FLAGS
-# C = made 100% API conform with Open Inventor [0.1]
 # I = implementation complete, or nearly so [1.0]
-# R = made robust [0.2]
-# D = fully documented for Doxygen generation of html/man [0.4]
+# D = fully documented for Doxygen generation of html/man [0.5]
 #
 # values:
 # - = not applicable
@@ -14,20 +12,21 @@
 # 
 ############################################################################
 #
-# CIRD
-# ====
+# ID
+# ==
 # HIERARCHY
-# Cird  SoBase
-# Cird  SoDB
-# CIRD  SoInput
-# CIRD  SoOutput
-# Ci-   SoInteraction
-# Cird  SoPath
-# Cird      SoFullPath
-# C     SoPickedPoint
-# Ci    SoPrimitiveVertex
-# Cird  SoSceneManager
-# ci d  SoType
+# ID  SoBase
+# id  SoDB
+# ID  SoInput
+# ID  SoOutput
+#     SoOffscreenRenderer
+# i   SoInteraction
+# id  SoPath
+# id      SoFullPath
+#     SoPickedPoint
+# i   SoPrimitiveVertex
+# id  SoSceneManager
+# id  SoType
 #
 ############################################################################
 #
