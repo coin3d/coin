@@ -48,7 +48,7 @@
 /*!
   \var SoSFNode SoVertexShape::vertexProperty
 
-  If you set the vertexProperty field, it should be with a coordinate
+  If you set the vertexProperty field, it should be with an SoVertexProperty
   node. Otherwise it will simply be ignored. Nodetypes inheriting
   SoVertexShape will then get their coordinate data from the
   vertexProperty node instead of from the global traversal state.

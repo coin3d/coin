@@ -80,8 +80,8 @@
   Texture2 {
      image 2 2 3
 
-     0xffffff 0x00ff00
-     0xff0000 0xffff00
+     0xffffff 0x00ff00   # white   green
+     0xff0000 0xffff00   #  red    yellow
   }
 
   Complexity { textureQuality 0.1 }   # set low to avoid smoothing
