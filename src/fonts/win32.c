@@ -1080,7 +1080,7 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
   new_vector_glyph = (struct cc_flw_vector_glyph *) malloc(sizeof(struct cc_flw_vector_glyph));
 
   size = 200;
-  if (cc_hash_get(cc_flww32_globals.fontsizehash, &tmp)) {
+  if (cc_hash_get(cc_flww32_globals.fontsizehash, (unsigned long) font, &tmp)) {
     size = (int) tmp;
   }
 
