@@ -9,14 +9,18 @@
 #define APIENTRY
 #endif
 
-#include <GL/gl.h>
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#include <Inventor/system/gl.h>
 
 // Our own typedefs for OpenGL functions. These are copied from glext.h
 // and prefixed with COIN_ to avoid namespace collisions.
 typedef void (APIENTRY * COIN_PFNGLTEXIMAGE3DPROC) (GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const GLvoid *pixels);
 typedef void (APIENTRY * COIN_PFNGLTEXIMAGE3DEXTPROC) (GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const GLvoid *pixels);
 
-class GLWrapper 
+class GLWrapper
 {
 public:
   GLWrapper();
