@@ -121,7 +121,7 @@ SoBoxHighlightRenderActionP::initBoxGraph()
   this->bboxseparator->addChild(complexity);
     
   this->bboxseparator->addChild(this->bboxtransform);
-  this->bboxseparator->addChild(new SoCube);
+  this->bboxseparator->addChild(this->bboxcube);
 }
 
 
