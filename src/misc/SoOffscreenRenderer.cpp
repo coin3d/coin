@@ -46,6 +46,105 @@
 #endif // COIN_DEBUG
 
 
+// FIXME: GLX offscreen rendering code below, ripped out from our good
+// old KartSim project. Integrate in the class source. 20000417 mortene.
+
+//      Display *dsp = XtDisplay(psGUI::glMap);
+//      int attribs[] = {GLX_RGBA, None};
+
+//      // Set up an off-screen GL pixmap for rendering the overview map w/
+//      // pipelines.
+//      XVisualInfo *visinfo = glXChooseVisual(dsp, DefaultScreen(dsp), attribs);
+//      if(!visinfo) Debug::Info(dbMISC, dbFATAL, "Can't get visual info.");
+//      Pixmap pixmap = XCreatePixmap(dsp, XtWindow(psGUI::glMap),
+//  				  psGUI::mapwidth, psGUI::mapheight,
+//  				  visinfo->depth);
+//      if(!pixmap) Debug::Info(dbMISC, dbFATAL, "Can't get X pixmap.");
+//      GLXPixmap glpixmap = glXCreateGLXPixmap(dsp, visinfo, pixmap);
+//      if(!glpixmap) Debug::Info(dbMISC, dbFATAL, "Can't get GL pixmap.");
+//      GLXContext context = glXCreateContext(dsp, visinfo, 0, GL_FALSE);
+//      if(!context) Debug::Info(dbDATABASE, dbFATAL, "Found no usable context.");
+
+//      // Set current GL context to the glpixmap.
+//      glXMakeCurrent(dsp, glpixmap, context);
+
+//      glMatrixMode(GL_PROJECTION);
+//      glLoadIdentity();
+//      glMatrixMode(GL_MODELVIEW);
+//      glLoadIdentity();
+//      glOrtho(0, psGUI::mapwidth, 0, psGUI::mapheight, -1, 1);
+
+//      // Draw whole map.
+//      glRasterPos2i(0, 0);
+//      glDrawPixels(psGUI::mapwidth, psGUI::mapheight, GL_RGBA, GL_UNSIGNED_BYTE,
+//  		 psGUI::mapbuffer);
+
+//      // Draw lines to indicate pipes.
+//      int r, g, b;
+//      struct polypipes *polyrunner;
+//      struct GUI_markerobject *h = psGUI::pipelist;
+//      while(h) {
+//        ((psPipes *)(h->obj))->psGetPipecolor(r, g, b);
+//        glColor3b(r>>1, g>>1, b>>1);
+//        glLineWidth(1.0);
+
+//        psGUI::drawpipepieces(((psPipes *)(h->obj))->psGetPieceshead(), FALSE);
+
+//        polyrunner = ((psPipes *)(h->obj))->psGetPolyhead();
+//        while(polyrunner) {
+//  	psGUI::drawpipepieces(polyrunner->first, TRUE);
+//  	polyrunner = polyrunner->next;
+//        }
+
+//        h = h->next;
+//      }
+
+//      // Allocate the mapbuffer.
+//      psGUI::mappipebuffer =
+//        new unsigned char[psGUI::mapwidth*psGUI::mapheight*4];
+
+//      glPixelStorei(GL_PACK_ALIGNMENT, 1);
+//      glReadPixels(0, 0, psGUI::mapwidth, psGUI::mapheight,
+//  		 GL_RGBA, GL_UNSIGNED_BYTE, psGUI::mappipebuffer);
+
+//      // Use mappipebuffer from app start.
+//      psGUI::drawbuffer = psGUI::mappipebuffer;
+
+//      // Set current GL context to the 2D map drawing area's.
+//      glXMakeCurrent(dsp, XtWindow(psGUI::glMap), glxcontext); 
+
+//      glMatrixMode(GL_PROJECTION);
+//      glLoadIdentity();
+//      glMatrixMode(GL_MODELVIEW);
+//      glLoadIdentity();
+//      glOrtho(0, psGUI::mapwidth, 0, psGUI::mapheight, -1, 1);
+
+//      // Draw map with pipes.
+//      glRasterPos2i(0, 0);
+//      glDrawPixels(psGUI::mapwidth, psGUI::mapheight, GL_RGBA, GL_UNSIGNED_BYTE,
+//  		 psGUI::drawbuffer);
+
+//      // Draw all 2D markers.
+//      struct GUI_structlist *runner = psGUI::mo_head;
+//      psGUI::setTransState();
+//      while(runner) {
+//        psGUI::drawmarker(runner->GUI_struct);
+//        runner = runner->next;
+//      }
+//      psGUI::resetState();
+
+//      // Reset the context to the one used by the 3D Performer window.
+//      glXMakeCurrent(pfGetCurWSConnection(),
+//  		   perf::shmem->xWinInfo.pw->getCurWSDrawable(),
+//  		   perf::shmem->xWinInfo.pw->getGLCxt());
+
+//      // Free resources used for the generation of map-w/pipes gfx.
+//      glXDestroyContext(dsp, context);
+//      glXDestroyGLXPixmap(dsp, glpixmap);
+//      XFreePixmap(dsp, pixmap);
+
+
+
 #ifndef DOXYGEN_SKIP_THIS // Don't document internal classes.
 
 class SoOffscreenInternalData {
