@@ -131,6 +131,9 @@ private:
   StereoMode stereomode;
   float stereoadjustment;
   float balanceadjustment;
+private:
+  class SoCameraP *pimpl;
+  friend class SoCameraP;
 };
 
 #endif // !COIN_SOCAMERA_H

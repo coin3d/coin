@@ -28,8 +28,6 @@
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/fields/SoMFFloat.h>
 
-class SoLevelOfDetailP;
-
 class COIN_DLL_API SoLevelOfDetail : public SoGroup {
   typedef SoGroup inherited;
 
@@ -58,7 +56,8 @@ protected:
 private:
   void commonConstructor(void);
 
-  SoLevelOfDetailP * pimpl;
+  class SoLevelOfDetailP * pimpl;
+  friend class SoLevelOfDetailP;
 };
 
 #endif // !COIN_SOLEVELOFDETAIL_H

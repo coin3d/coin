@@ -65,6 +65,7 @@ private:
 
 private:
   class SoLODP *pimpl;
+  friend class SoLODP;
 };
 
 #endif // !COIN_SOLOD_H

@@ -30,8 +30,6 @@
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/fields/SoMFNode.h>
 
-class SoVRMLLODP;
-
 class COIN_DLL_API SoVRMLLOD : public SoGroup
 {
   typedef SoGroup inherited;
@@ -96,7 +94,8 @@ protected:
 
 private:
   void commonConstructor(void);
-  SoVRMLLODP * pimpl;
+  class SoVRMLLODP * pimpl;
+  friend class SoVRMLLODP;
 }; // class SoVRMLLOD
 
 #endif // ! COIN_SOVRMLLOD_H
