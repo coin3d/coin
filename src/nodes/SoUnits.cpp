@@ -127,6 +127,7 @@ SoUnits::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoUnits, SO_FROM_INVENTOR_1);
 
   SO_ENABLE(SoGetBoundingBoxAction, SoUnitsElement);
+  SO_ENABLE(SoGetMatrixAction, SoUnitsElement);
   SO_ENABLE(SoGLRenderAction, SoUnitsElement);
   SO_ENABLE(SoPickAction, SoUnitsElement);
   SO_ENABLE(SoCallbackAction, SoUnitsElement);
