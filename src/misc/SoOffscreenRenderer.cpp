@@ -236,6 +236,7 @@ public:
     if (this->glxpixmap) glXDestroyGLXPixmap(this->display, this->glxpixmap);
     if (this->pixmap) XFreePixmap(this->display, this->pixmap);
     if (this->display) XCloseDisplay(this->display);
+    if (this->visinfo) XFree(this->visinfo);
 
     delete[] this->buffer;
   }

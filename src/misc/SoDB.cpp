@@ -239,6 +239,9 @@ SoDB::clean(void)
   delete SoDB::converters;
   delete SoDB::realtimeinterval;
   delete SoDB::sensormanager;
+
+  for (int i = 0; i < SoDB::headerlist->getLength(); i++)
+    delete (*SoDB::headerlist)[i];
   delete SoDB::headerlist;
 #endif // COIN_DEBUG
 }

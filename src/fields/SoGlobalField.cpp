@@ -112,6 +112,7 @@ SoGlobalField::clean(void)
   while (SoGlobalField::allcontainers->getLength())
     SoGlobalField::allcontainers->remove(0);
 
+  delete SoGlobalField::allcontainers;
   SoGlobalField::allcontainers = NULL;
 #endif // COIN_DEBUG
 }
