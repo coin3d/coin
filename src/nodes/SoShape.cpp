@@ -629,7 +629,8 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
     SoTransparencyElement::getInstance(state);
   SbBool t = trans->getNum() && trans->get(0) > 0.0f;
 
-  if (action->handleTransparency(t)) return FALSE;
+  if (action->handleTransparency(t || SoTextureImageElement::containsTransparency)) 
+    return FALSE;
 #endif // ! COIN_EXCLUDE_SOTRANSPARENCYELEMENT
 
 #if !defined(COIN_EXCLUDE_SODRAWSTYLEELEMENT)
