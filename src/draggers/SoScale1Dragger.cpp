@@ -23,10 +23,14 @@
 
 /*!
   \class SoScale1Dragger SoScale1Dragger.h Inventor/draggers/SoScale1Dragger.h
-  \brief The SoScale1Dragger class is (FIXME: doc)
+  \brief The SoScale1Dragger class provides a mechanism for the end-user to scale in one dimension.
   \ingroup draggers
 
-  FIXME: document class
+  Use this dragger to allow the end-user of your application to scale
+  along the X-axis. (Use a transformation node in front of the dragger
+  to position it and re-orient it to scale along any vector.)
+
+  \sa SoScale2Dragger, SoScaleUniformDragger, SoScale2UniformDragger
 */
 
 #include <Inventor/draggers/SoScale1Dragger.h>
@@ -39,6 +43,24 @@
 
 #include <data/draggerDefaults/scale1Dragger.h>
 
+/*!
+  \var SoSFVec3f SoScale1Dragger::scaleFactor
+
+  Continuously updated to contain the current vector of scaling along
+  the X, Y and Z axes.
+
+  For the SoScale1Dragger, only the X component is used, the Y and Z
+  components will always be equal to 1 (ie no scaling).
+*/
+
+/*!
+  \var SoFieldSensor * SoScale1Dragger::fieldSensor
+  \internal
+*/
+/*!
+  \var SbLineProjector * SoScale1Dragger::lineProj
+  \internal
+*/
 
 SO_KIT_SOURCE(SoScale1Dragger);
 
