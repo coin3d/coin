@@ -129,8 +129,11 @@
 
 #include <Inventor/system/gl.h>
 
+#include "../nodes/SoSoundElementHelper.h"
+
 #ifndef DOXYGEN_SKIP_THIS
-class SoVRMLLODP {
+class SoVRMLLODP  : public SoSoundElementHelper
+{
 public:
   SbBool childlistvalid;
 };
@@ -292,12 +295,19 @@ SoVRMLLOD::doAction(SoAction * action)
 {
   int numindices;
   const int * indices;
-  if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
+  SoAction::PathCode pathcode = action->getPathCode(numindices, indices);
+  if (pathcode == SoAction::IN_PATH) {
     this->getChildren()->traverseInPath(action, numindices, indices);
   }
   else {
     int idx = this->whichToTraverse(action);;
-    if (idx >= 0) this->getChildren()->traverse(action, idx);
+    if (idx >= 0) {
+      this->getChildren()->traverse(action, idx);
+      THIS->enableTraversingOfInactiveChildren();
+      THIS->traverseInactiveChildren(this, action, idx, pathcode,
+                                     this->getNumChildren(), 
+                                     this->getChildren());
+    }
   }
 }
 
@@ -373,7 +383,9 @@ SoVRMLLOD::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 void
 SoVRMLLOD::audioRender(SoAudioRenderAction * action)
 {
+  THIS->preAudioRender(this, action);
   SoVRMLLOD::doAction((SoAction*) action);
+  THIS->postAudioRender(this, action);
 }
 
 // Doc in parent
@@ -539,6 +551,7 @@ SoVRMLLOD::notify(SoNotList * list)
     THIS->childlistvalid = FALSE;
   }
   inherited::notify(list);
+  THIS->notifyCalled();
 }
 
 // Doc in parent

@@ -53,6 +53,7 @@ public:
   virtual void getBoundingBox(SoGetBoundingBoxAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
   virtual void audioRender(SoAudioRenderAction * action);
+  virtual void notify(SoNotList *nl);
 
 protected:
   virtual ~SoLOD();
@@ -61,6 +62,9 @@ protected:
 
 private:
   void commonConstructor(void);
+
+private:
+  class SoLODP *pimpl;
 };
 
 #endif // !COIN_SOLOD_H

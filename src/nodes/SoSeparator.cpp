@@ -652,8 +652,7 @@ SoSeparator::handleEvent(SoHandleEventAction * action)
 void
 SoSeparator::audioRender(SoAudioRenderAction * action)
 {
-  // Note: This function is similar to SoVRMLGroup::audioRender() and
-  // SoSwitch::audioRender(). 2003-01-31 thammer.
+  // Note: This function is similar to SoVRMLGroup::audioRender().
   /* FIXME: how should we handle termination of an action? We should
      probably reset THIS->hassoundchild to MAYBE. Investigate
      2003-01-31 thammer. */
@@ -663,26 +662,12 @@ SoSeparator::audioRender(SoAudioRenderAction * action)
   SoState * state = action->getState();
   if (THIS->hassoundchild != SoSeparatorP::NO) {
     if (action->getPathCode(numindices, indices) != SoAction::IN_PATH) {
-      SbBool oldhassound, newhassound, oldactive;
-      oldactive = SoSoundElement::isPartOfActiveSceneGraph(state);
-      
       action->getState()->push();
-    
       SoSoundElement::setSceneGraphHasSoundNode(state, this, FALSE);
-      SoSoundElement::setIsPartOfActiveSceneGraph(state, this, oldactive);
-
       inherited::doAction(action);
-
-      newhassound = SoSoundElement::sceneGraphHasSoundNode(state);
-     
+      THIS->hassoundchild = SoSoundElement::sceneGraphHasSoundNode(state) ? 
+        SoSeparatorP::YES : SoSeparatorP::NO;
       action->getState()->pop();
-
-      oldhassound = SoSoundElement::sceneGraphHasSoundNode(state);
-      SoSoundElement::setSceneGraphHasSoundNode(state, this, oldhassound || newhassound);
-
-    
-      THIS->hassoundchild = newhassound ? SoSeparatorP::YES : 
-        SoSeparatorP::NO;
     } else {
       SoSeparator::doAction((SoAction*)action);
     }

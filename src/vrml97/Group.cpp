@@ -496,8 +496,25 @@ SoVRMLGroup::write(SoWriteAction * action)
 void
 SoVRMLGroup::audioRender(SoAudioRenderAction * action)
 {
-  // Note: This function is similar to SoSeparator::audioRender() and
-  // SoSwitch::audioRender(). 2003-01-31 thammer.
+  // Note: This function is similar to SoSeparator::audioRender()
+
+  int numindices;
+  const int * indices;
+  SoState * state = action->getState();
+  if (THIS->hassoundchild != SoVRMLGroupP::NO) {
+    if (action->getPathCode(numindices, indices) != SoAction::IN_PATH) {
+      action->getState()->push();
+      SoSoundElement::setSceneGraphHasSoundNode(state, this, FALSE);
+      inherited::doAction(action);
+      THIS->hassoundchild = SoSoundElement::sceneGraphHasSoundNode(state) ? 
+        SoVRMLGroupP::YES : SoVRMLGroupP::NO;
+      action->getState()->pop();
+    } else {
+      SoVRMLGroup::doAction((SoAction*)action);
+    }
+  }
+
+  /* fixme: remove. 2003-02-04 thammer.
 
   int numindices;
   const int * indices;
@@ -528,6 +545,7 @@ SoVRMLGroup::audioRender(SoAudioRenderAction * action)
       SoVRMLGroup::doAction((SoAction*)action);
     }
   }
+  */
 }
 
 // Doc in parent
@@ -562,7 +580,7 @@ SoVRMLGroup::GLRenderBelowPath(SoGLRenderAction * action)
     SoGLCacheList * glcachelist = THIS->getGLCacheList(TRUE);
     if (glcachelist->call(action)) {
 #if GLCACHE_DEBUG && 1 // debug
-      SoDebugError::postInfo("SoSeparator::GLRenderBelowPath",
+      SoDebugError::postInfo("SoVRMLGroup::GLRenderBelowPath",
                              "Executing GL cache: %p", this);
 #endif // debug
       state->pop();
@@ -570,7 +588,7 @@ SoVRMLGroup::GLRenderBelowPath(SoGLRenderAction * action)
     }
     if (!SoCacheElement::anyOpen(state)) {
 #if GLCACHE_DEBUG // debug
-      SoDebugError::postInfo("SoSeparator::GLRenderBelowPath",
+      SoDebugError::postInfo("SoVRMLGroup::GLRenderBelowPath",
                              "Creating GL cache: %p", this);
 #endif // debug
       createcache = glcachelist;

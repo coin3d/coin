@@ -77,10 +77,12 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/actions/SoHandleEventAction.h>
-#include <Inventor/elements/SoSwitchElement.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoWriteAction.h>
+#include <Inventor/actions/SoAudioRenderAction.h>
+#include <Inventor/elements/SoSwitchElement.h>
+#include <Inventor/elements/SoSoundElement.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/misc/SoChildList.h>
 
@@ -97,8 +99,10 @@
 #include <Inventor/threads/SbMutex.h>
 #endif // COIN_THREADSAFE
 
+#include "../nodes/SoSoundElementHelper.h"
+
 #ifndef DOXYGEN_SKIP_THIS
-class SoVRMLSwitchP {
+class SoVRMLSwitchP : public SoSoundElementHelper {
 public:
   SbBool childlistvalid;
 #ifdef COIN_THREADSAFE
@@ -306,7 +310,7 @@ SoVRMLSwitch::doAction(SoAction * action)
 
       for (int i = 0; i < n; i++) {
         this->getChildren()->traverse(bbaction,
-                                 pathcode == SoAction::IN_PATH ? indices[i] : i);
+                                      pathcode == SoAction::IN_PATH ? indices[i] : i);
 
         // If center point is set, accumulate.
         if (bbaction->isCenterSet()) {
@@ -328,29 +332,34 @@ SoVRMLSwitch::doAction(SoAction * action)
       }
     }
   }
-  else if (idx >= 0) { // should only traverse one child
-    if (pathcode == SoAction::IN_PATH) {
-      // traverse only if one path matches idx
-      for (int i = 0; i < numindices; i++) {
-        if (indices[i] == idx) {
+  else {
+    if (idx >= 0) { // should only traverse one child
+      if (pathcode == SoAction::IN_PATH) {
+        // traverse only if one path matches idx
+        for (int i = 0; i < numindices; i++) {
+          if (indices[i] == idx) {
+            this->getChildren()->traverse(action, idx);
+            break;
+          }
+        }
+      }
+      else { // off, below or no path traversal
+        // be robust for index out of range
+        if (idx >= this->getNumChildren()) {
+#if COIN_DEBUG
+          SoDebugError::post("SoVRMLSwitch::doAction",
+                             "whichChoice %d out of range (0-%d).",
+                             idx, this->getNumChildren());
+#endif // COIN_DEBUG
+        }
+        else {
           this->getChildren()->traverse(action, idx);
-          break;
         }
       }
     }
-    else { // off, below or no path traversal
-      // be robust for index out of range
-      if (idx >= this->getNumChildren()) {
-#if COIN_DEBUG
-        SoDebugError::post("SoSwitch::doAction",
-                           "whichChoice %d out of range (0-%d).",
-                           idx, this->getNumChildren());
-#endif // COIN_DEBUG
-      }
-      else {
-        this->getChildren()->traverse(action, idx);
-      }
-    }
+    PRIVATE(this)->traverseInactiveChildren(this, action, idx, pathcode,
+                                            this->getNumChildren(), 
+                                            this->getChildren());
   }
 }
 
@@ -393,7 +402,11 @@ SoVRMLSwitch::handleEvent(SoHandleEventAction * action)
 void
 SoVRMLSwitch::audioRender(SoAudioRenderAction * action)
 {
+  PRIVATE(this)->preAudioRender(this, action);
+  
   SoVRMLSwitch::doAction((SoAction*)action);
+
+  PRIVATE(this)->postAudioRender(this, action);
 }
 
 // Doc in parent
@@ -523,6 +536,8 @@ SoVRMLSwitch::notify(SoNotList * list)
     PRIVATE(this)->childlistvalid = FALSE;
   }
   inherited::notify(list);
+
+  PRIVATE(this)->notifyCalled();
 }
 
 // Doc in parent

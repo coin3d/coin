@@ -57,7 +57,6 @@ public:
   virtual void write(SoWriteAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
   virtual void audioRender(SoAudioRenderAction * action);
-  
   virtual void notify(SoNotList *nl);
 
 protected:

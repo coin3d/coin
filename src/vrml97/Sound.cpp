@@ -257,6 +257,10 @@ public:
 
   void deleteAlBuffers();
 
+  void generateAlSource();
+  void deleteAlSource();
+  SbBool hasValidAlSource();
+
   SoFieldSensor * sourcesensor;
 
   unsigned int sourceId;
@@ -355,7 +359,8 @@ SoVRMLSound::SoVRMLSound(void)
   /* FIXME: if (coin_debug_audio()), post info about which playback
      mode is used, threaded or timer callback. 2003-01-14 thammer */
 
-  PRIVATE(this)->sourcesensor = new SoFieldSensor(PRIVATE(this)->sourceSensorCBWrapper, PRIVATE(this));
+  PRIVATE(this)->sourcesensor = new SoFieldSensor(
+    PRIVATE(this)->sourceSensorCBWrapper, PRIVATE(this));
   PRIVATE(this)->sourcesensor->setPriority(0);
   PRIVATE(this)->sourcesensor->attach(&this->source);
 
@@ -366,21 +371,11 @@ SoVRMLSound::SoVRMLSound(void)
   PRIVATE(this)->errorInThread = FALSE;
   PRIVATE(this)->audioBuffer = NULL;
 
-  this->setBufferingProperties(SoVRMLSoundP::defaultBufferLength, SoVRMLSoundP::defaultNumBuffers,
+  this->setBufferingProperties(SoVRMLSoundP::defaultBufferLength, 
+                               SoVRMLSoundP::defaultNumBuffers,
                                SoVRMLSoundP::defaultSleepTime);
-
-#ifdef HAVE_SOUND
-  if (SoAudioDevice::instance()->haveSound()) {
-    int  error;
-    openal_wrapper()->alGenSources(1, &(PRIVATE(this)->sourceId));
-    if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
-      SoDebugError::post("SoVRMLSound::SoVRMLSound",
-                         "alGenSources failed. %s",
-                         coin_get_openal_error(error));
-      return;
-    }
-  }
-#endif
+  
+  PRIVATE(this)->sourceId = 0;
 }
 
 /*!
@@ -400,15 +395,7 @@ SoVRMLSound::~SoVRMLSound(void)
     delete[] PRIVATE(this)->audioBuffer;
 
 #ifdef HAVE_SOUND
-  if (SoAudioDevice::instance()->haveSound()) {
-    int error;
-    openal_wrapper()->alDeleteSources(1, &(PRIVATE(this)->sourceId));
-    if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
-      SoDebugError::postWarning("SoVRMLSound::~SoVRMLSound",
-                                "alDeleteSources() failed. %s",
-                                coin_get_openal_error(error));
-    }
-  }
+  assert(!PRIVATE(this)->hasValidAlSource());
   PRIVATE(this)->deleteAlBuffers();
 #endif
   delete PRIVATE(this);
@@ -512,7 +499,8 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
 
   // if we got here then we're either allready playing, or we should be
 
-  SoSoundElement::setSoundNodeIsPlaying(state, this, TRUE);
+  if (!PRIVATE(this)->hasValidAlSource()) 
+    PRIVATE(this)->generateAlSource();
 
   // get listener stuff
   const SbVec3f &listenerpos = SoListenerPositionElement::get(state);
@@ -548,6 +536,7 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
     SoDebugError::postWarning("SoVRMLSound::audioRender",
                               "alSourcefv(,AL_POSITION,) failed. %s",
                               coin_get_openal_error(error));
+    PRIVATE(this)->deleteAlSource();
     return;
   }
 
@@ -562,6 +551,7 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
     SoDebugError::postWarning("SoVRMLSound::GLRender",
                               "alSourcefv(,AL_VELOCITY,) failed. %s",
                               coin_get_openal_error(error));
+    PRIVATE(this)->deleteAlSource();
     return;
   }
 #endif
@@ -575,6 +565,7 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
     SoDebugError::postWarning("SoVRMLSound::audioRender",
                               "alSourcef(,AL_GAIN,) failed. %s",
                               coin_get_openal_error(error));
+    PRIVATE(this)->deleteAlSource();
     return;
   }
 
@@ -611,6 +602,7 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
       SoDebugError::postWarning("SoVRMLSound::audioRender",
                                 "alSourcef(,AL_ROLLOFF_FACTOR,) failed. %s",
                                 coin_get_openal_error(error));
+      PRIVATE(this)->deleteAlSource();
       return;
     }
 
@@ -630,6 +622,7 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
       SoDebugError::postWarning("SoVRMLSound::audioRender",
                                 "alSourcef(,AL_ROLLOFF_FACTOR,) failed. %s",
                                 coin_get_openal_error(error));
+      PRIVATE(this)->deleteAlSource();
       return;
     }
 #ifndef __APPLE__
@@ -645,9 +638,37 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
       SoDebugError::postWarning("SoVRMLSound::audioRender",
                                 "alSourcef(,AL_MIN_GAIN,) failed. %s",
                                 coin_get_openal_error(error));
+      PRIVATE(this)->deleteAlSource();
       return;
     }
 #endif // ! __APPLE__
+  }
+
+  /* Note: According to the OpenAL 1.0 spec, the legal range for pitch
+     is [0, 1].  However, both the Win32 implementation and the linux
+     implementation supports the range [0, 2]. The Mac implementation
+     supports the range [0, infinite>.  Testing shows that Creative
+     Labs' binary-only OpenAL implementations also supports the range
+     [0, 2]. Since it is very useful to be able to increase the pitch
+     above unity, and since the VRML97 spec specifies the range to be
+     [0, infinite>, we will allow the range to be within [0, 2], and
+     clamp outside this range. 2002-11-07 thammer.
+
+     Update: It turns out that CreativeLabs' Win32 binary release of
+     OpenAL will crash if pitch == 0.0. For that reason, we will clamp
+     at 0.01. The range supported is thus [0.01..2.0]. 2002-11-07
+     thammer.  */
+
+  float pitch = PRIVATE(this)->currentAudioClip->pitch.getValue();
+  pitch = (pitch >= 0.01f) ? ( (pitch<=2.0f) ? pitch : 2.0f ) : 0.01f;
+  openal_wrapper()->alSourcef(PRIVATE(this)->sourceId, AL_PITCH, pitch);
+  if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR)
+  {
+    SoDebugError::postWarning("SoVRMLSoundP::sourceSensorCB",
+                              "alSourcef(,AL_PITCH,) failed. %s",
+                              coin_get_openal_error(error));
+    PRIVATE(this)->deleteAlSource();
+    return;
   }
 
   // Spatialization
@@ -670,6 +691,9 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
   if ( (!PRIVATE(this)->playing) && isactive )  {
     PRIVATE(this)->startPlaying();
   }
+
+  SoSoundElement::setSoundNodeIsPlaying(state, this, TRUE);
+
 #endif // HAVE_SOUND
 }
 
@@ -710,7 +734,8 @@ getALSampleFormat(int channels, int bitspersample)
 }
 #endif // HAVE_SOUND
 
-void SoVRMLSoundP::deleteAlBuffers()
+void 
+SoVRMLSoundP::deleteAlBuffers()
 {
 #ifdef HAVE_SOUND
   int error;
@@ -728,13 +753,58 @@ void SoVRMLSoundP::deleteAlBuffers()
 #endif
 }
 
-void *SoVRMLSoundP::threadCallbackWrapper(void *userdata)
+void 
+SoVRMLSoundP::generateAlSource()
+{
+#ifdef HAVE_SOUND
+  if (SoAudioDevice::instance()->haveSound()) {
+    assert (this->sourceId == 0);
+    int error;
+    openal_wrapper()->alGenSources(1, &(this->sourceId));
+    if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
+      SoDebugError::post("SoVRMLSound::generateAlSource",
+                         "alGenSources failed. %s",
+                         coin_get_openal_error(error));
+      return;
+    }
+  }
+#endif
+}
+
+void 
+SoVRMLSoundP::deleteAlSource()
+{
+#ifdef HAVE_SOUND
+  if (SoAudioDevice::instance()->haveSound()) {
+    assert (this->sourceId != 0);
+    int error;
+    openal_wrapper()->alDeleteSources(1, &(this->sourceId));
+    this->sourceId = 0;
+    if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
+      SoDebugError::postWarning("SoVRMLSound::~SoVRMLSound",
+                                "alDeleteSources() failed. %s",
+                                coin_get_openal_error(error));
+    }
+  }
+#endif
+}
+
+SbBool 
+SoVRMLSoundP::hasValidAlSource()
+{
+  return this->sourceId != 0;
+}
+
+
+void *
+SoVRMLSoundP::threadCallbackWrapper(void *userdata)
 {
   SoVRMLSoundP *thisp = (SoVRMLSoundP *)userdata;
   return thisp->threadCallback();
 }
 
-void *SoVRMLSoundP::threadCallback()
+void *
+SoVRMLSoundP::threadCallback()
 {
   /* FIXME: An application using Coin might crash when shutdown
      because a SoAudioClip node might have been deleted (even though
@@ -834,8 +904,6 @@ SbBool SoVRMLSoundP::stopPlaying()
     retval= FALSE;
   }
 
-  /* FIXME: improve use of alGetSourcei[v] to avoid the #ifdef _WIN32.
-     Look at how it is done in SoAudioRender.  20021106 thammer.  */
   int      processed;
   int      queued;
 
@@ -891,13 +959,14 @@ SbBool SoVRMLSoundP::stopPlaying()
     SoDebugError::postWarning("SoVRMLSoundP::stopPlaying",
                               "alSourcei(,AL_BUFFER, AL_NONE) failed. %s",
                               coin_get_openal_error(error));
-    return FALSE;
+    retval = FALSE;
   }
 
   openal_wrapper()->alGetSourcei(this->sourceId, AL_BUFFERS_QUEUED, &queued);
 
   assert(queued == 0);
 
+  this->deleteAlSource();
   this->deleteAlBuffers();
 
   this->playing = FALSE;
@@ -925,11 +994,17 @@ SbBool SoVRMLSoundP::startPlaying()
 
   assert(this->alBuffers.getLength() == 0);
 
+  if (!this->hasValidAlSource()) 
+    this->generateAlSource();
+
   openal_wrapper()->alSourcei(this->sourceId, AL_LOOPING, FALSE);
   if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
     SoDebugError::postWarning("SoVRMLSoundP::startPlaying",
                               "alSourcei(,AL_LOOPING,) failed. %s",
                               coin_get_openal_error(error));
+    if (this->hasValidAlSource()) 
+      this->deleteAlSource();
+
     return FALSE;
   }
 
@@ -990,6 +1065,7 @@ void SoVRMLSoundP::fillBuffers()
 #endif
 
   assert(this->currentAudioClip != NULL);
+  assert(this->hasValidAlSource());
 
   if (this->waitingForAudioClipToFinish) {
 #if COIN_DEBUG && DEBUG_AUDIO // debug
@@ -1138,7 +1214,8 @@ void SoVRMLSoundP::fillBuffers()
                            "Queued: %d, Processed: %d. "
                            "OpenAL error: %s",
                            bufferid, alformat, this->audioBuffer, 
-                           this->bufferLength * sizeof(int16_t) * this->channels,
+                           this->bufferLength * sizeof(int16_t) *
+                           this->channels,
                            this->currentAudioClip->getSampleRate(),
                            queued, processed,
                            coin_get_openal_error(error));
@@ -1186,24 +1263,26 @@ void SoVRMLSoundP::fillBuffers()
           }
           if (state == AL_STOPPED)
             SoDebugError::postWarning("SoVRMLSoundP::fillBuffers",
-                                      "Buffer underrun. The audio source had to be restarted. "
-                                      "Queued: %d, Processed: %d. "
-                                      "Try increasing buffer size (current: %d frames), "
-                                      "and/or increasing number of buffers (current: %d buffers), "
-                                      "and/or decreasing sleeptime (current: %0.3fs)", 
-                                      queued, processed,
-                                      this->bufferLength, this->numBuffers, this->sleepTime.getValue());
+              "Buffer underrun. The audio source had to be restarted. "
+              "Queued: %d, Processed: %d. "
+              "Try increasing buffer size (current: %d frames), "
+              "and/or increasing number of buffers (current: %d buffers), "
+              "and/or decreasing sleeptime (current: %0.3fs)", 
+              queued, processed,
+              this->bufferLength, this->numBuffers, 
+              this->sleepTime.getValue());
           else {
 #if COIN_DEBUG && DEBUG_AUDIO // debug
             SoDebugError::postInfo("SoVRMLSoundP::fillBuffers",
-                                   "Source had not been started (state==AL_INITIAL). "
-                                   "The audio source has been started. "
-                                   "Queued: %d, Processed: %d. "
-                                   "Current buffer size: %d frames, "
-                                   "current number of buffers: %d buffers, "
-                                   "current sleeptime: %0.3fs", 
-                                   queued, processed,
-                                   this->bufferLength, this->numBuffers, this->sleepTime.getValue());
+              "Source had not been started (state==AL_INITIAL). "
+              "The audio source has been started. "
+              "Queued: %d, Processed: %d. "
+              "Current buffer size: %d frames, "
+              "current number of buffers: %d buffers, "
+              "current sleeptime: %0.3fs", 
+              queued, processed,
+              this->bufferLength, this->numBuffers, 
+              this->sleepTime.getValue());
 #endif // debug
           }
         }
@@ -1297,35 +1376,9 @@ SoVRMLSoundP::sourceSensorCB(SoSensor *)
   if (this->currentAudioClip == NULL)
     return;
 
-  SoSFBool * isActiveField = (SoSFBool *)this->currentAudioClip->getField("isActive");
+  SoSFBool * isActiveField = 
+    (SoSFBool *)this->currentAudioClip->getField("isActive");
   SbBool isactive = isActiveField->getValue();
-
-  /* Note: According to the OpenAL 1.0 spec, the legal range for pitch
-     is [0, 1].  However, both the Win32 implementation and the linux
-     implementation supports the range [0, 2]. The Mac implementation
-     supports the range [0, infinite>.  Testing shows that Creative
-     Labs' binary-only OpenAL implementations also supports the range
-     [0, 2]. Since it is very useful to be able to increase the pitch
-     above unity, and since the VRML97 spec specifies the range to be
-     [0, infinite>, we will allow the range to be within [0, 2], and
-     clamp outside this range. 2002-11-07 thammer.
-
-     Update: It turns out that CreativeLabs' Win32 binary release of
-     OpenAL will crash if pitch == 0.0. For that reason, we will clamp
-     at 0.01. The range supported is thus [0.01..2.0]. 2002-11-07
-     thammer.  */
-
-  int error;
-  float pitch = this->currentAudioClip->pitch.getValue();
-  pitch = (pitch >= 0.01f) ? ( (pitch<=2.0f) ? pitch : 2.0f ) : 0.01f;
-  openal_wrapper()->alSourcef(this->sourceId, AL_PITCH, pitch);
-  if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR)
-  {
-    SoDebugError::postWarning("SoVRMLSoundP::sourceSensorCB",
-                              "alSourcef(,AL_PITCH,) failed. %s",
-                              coin_get_openal_error(error));
-    // return;
-  }
 
   if ( this->playing && (!isactive) ) {
 #if COIN_DEBUG && DEBUG_AUDIO // debug

@@ -592,6 +592,19 @@ SoCamera::audioRender(SoAudioRenderAction *action)
     }
     SoListenerOrientationElement::set(state, this, r, FALSE);
   }
+
+  // Set view volume. This is needed for LOD nodes to work properly.
+  SbViewportRegion vp;
+  SbViewVolume vv;
+  this->getView(action, vv, vp, FALSE);
+
+  if (! (vv.getDepth() == 0.0f || vv.getWidth() == 0.0f || vv.getHeight() == 0.0f) ) {
+    SbBool identity;
+    const SbMatrix & mm = SoModelMatrixElement::get(state, identity);
+    if (!identity)
+      vv.transform(mm);
+  }
+  SoViewVolumeElement::set(state, this, vv);
 }
 
 // Doc in superclass.

@@ -55,6 +55,7 @@ public:
   static SbBool isPartOfActiveSceneGraph(SoState * const state);
 
   virtual void push(SoState * state);
+  virtual void pop(SoState * state, const SoElement * prevTopElement);
 
   virtual void print(FILE * file) const;
 

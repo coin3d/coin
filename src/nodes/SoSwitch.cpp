@@ -82,15 +82,14 @@
 
 // *************************************************************************
 
-class SoSwitchP
+
+#include "SoSoundElementHelper.h"
+
+class SoSwitchP : public SoSoundElementHelper
 {
 public:
   SoSwitchP(SoSwitch * master) : master(master) {};
   SoSwitch *master;
-
-  enum { YES, NO, MAYBE } hassoundchild;
-  SbBool soundchildplaying;
-  SbBool shoulddosoundtraversal;
 };
 
 #undef PRIVATE
@@ -125,14 +124,10 @@ SoSwitch::SoSwitch(int numchildren)
 void
 SoSwitch::commonConstructor(void)
 {
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoSwitch);
-
-  SO_NODE_ADD_FIELD(whichChild, (SO_SWITCH_NONE));
-
   PRIVATE(this) = new SoSwitchP(this);
-  PRIVATE(this)->hassoundchild = SoSwitchP::MAYBE;
-  PRIVATE(this)->soundchildplaying = FALSE;
-  PRIVATE(this)->shoulddosoundtraversal = TRUE;
+
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoSwitch);
+  SO_NODE_ADD_FIELD(whichChild, (SO_SWITCH_NONE));
 }
 
 /*!
@@ -249,13 +244,9 @@ SoSwitch::doAction(SoAction * action)
       }
     }
   } else {
-    SbBool dosoundtraversal = action->isOfType(SoAudioRenderAction::getClassTypeId()) &&
-      (PRIVATE(this)->hassoundchild != SoSwitchP::NO);
-      // do more testing before enabeling this && PRIVATE(this)->soundchildplaying;
     if (idx >= 0) { // should only traverse one child
       if (pathcode == SoAction::IN_PATH) {
         // traverse only if one path matches idx
-        dosoundtraversal = FALSE;
         for (int i = 0; i < numindices; i++) {
           if (indices[i] == idx) {
             this->children->traverse(action, idx);
@@ -291,27 +282,9 @@ SoSwitch::doAction(SoAction * action)
         }
       }
     }
-    if (dosoundtraversal) {
-      // Note: If there is a playing SoVRMLSound node somewhere among
-      // the non-active children sub-graphs, it must be informed that
-      // it shouldn't be playing anymore. So we traverse all inactive
-      // children. This could be optimized, as we only need to visit
-      // the old active (now inactive) child. 2003-02-04 thammer.
-
-      if (PRIVATE(this)->shoulddosoundtraversal) {
-        SoSoundElement::setIsPartOfActiveSceneGraph(state, this, FALSE);
-        int n = this->getNumChildren();
-        for (int i=0; i<n; i++) {
-          if (i != idx) {
-            action->getState()->push();
-            SoSoundElement::setIsPartOfActiveSceneGraph(state, this, FALSE);
-            this->children->traverse(action, i);
-            action->getState()->pop();
-          }
-        }
-        PRIVATE(this)->shoulddosoundtraversal = FALSE;
-      }
-    }
+    PRIVATE(this)->traverseInactiveChildren(this, action, idx, pathcode,
+                                            this->getNumChildren(), 
+                                            this->getChildren());
   }
 }
 
@@ -353,30 +326,11 @@ SoSwitch::callback(SoCallbackAction *action)
 void
 SoSwitch::audioRender(SoAudioRenderAction * action)
 {
-  SbBool lookforsoundnode = FALSE;
-  SbBool oldhassound = FALSE, oldisplaying = FALSE; // initialize to avoid compiler warnings
-  int numindices;
-  const int * indices;
-  SoState * state = action->getState();
-  if ((action->getPathCode(numindices, indices) != SoAction::IN_PATH) &&
-      (PRIVATE(this)->hassoundchild != SoSwitchP::NO) )
-    lookforsoundnode = TRUE;
-  if (lookforsoundnode) {
-    oldhassound = SoSoundElement::setSceneGraphHasSoundNode(state, this, FALSE);
-    oldisplaying = SoSoundElement::setSoundNodeIsPlaying(state, this, FALSE);
-  }
-  
+  PRIVATE(this)->preAudioRender(this, action);
+
   SoSwitch::doAction((SoAction*)action);
 
-  if (lookforsoundnode) {
-    SbBool soundnodefound = SoSoundElement::sceneGraphHasSoundNode(state);
-    PRIVATE(this)->soundchildplaying = SoSoundElement::soundNodeIsPlaying(state);
-    SoSoundElement::setSceneGraphHasSoundNode(state, this, oldhassound || soundnodefound);
-    SoSoundElement::setSoundNodeIsPlaying(state, this,
-                                          oldisplaying || PRIVATE(this)->soundchildplaying);
-    PRIVATE(this)->hassoundchild = soundnodefound ? SoSwitchP::YES :
-      SoSwitchP::NO;
-  }
+  PRIVATE(this)->postAudioRender(this, action);
 }
 
 // Documented in superclass.
@@ -455,7 +409,5 @@ SoSwitch::notify(SoNotList * nl)
 {
   inherited::notify(nl);
 
-  PRIVATE(this)->hassoundchild = SoSwitchP::MAYBE;
-  PRIVATE(this)->soundchildplaying = FALSE;
-  PRIVATE(this)->shoulddosoundtraversal = TRUE;
+  PRIVATE(this)->notifyCalled();
 }

@@ -76,6 +76,8 @@
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 
+#include "SoSoundElementHelper.h"
+
 /*!
   \var SoMFFloat SoLOD::range
 
@@ -99,6 +101,18 @@
 */
 
 // *************************************************************************
+
+class SoLODP : public SoSoundElementHelper
+{
+public:
+  SoLODP(SoLOD * master) : master(master) {};
+  SoLOD *master;
+};
+
+#undef PRIVATE
+#define PRIVATE(p) ((p)->pimpl)
+#undef PUBLIC
+#define PUBLIC(p) ((p)->master)
 
 SO_NODE_SOURCE(SoLOD);
 
@@ -128,6 +142,8 @@ SoLOD::SoLOD(int numchildren)
 void
 SoLOD::commonConstructor(void)
 {
+  PRIVATE(this) = new SoLODP(this);
+
   SO_NODE_INTERNAL_CONSTRUCTOR(SoLOD);
 
   SO_NODE_ADD_FIELD(center, (SbVec3f(0, 0, 0)));
@@ -135,6 +151,7 @@ SoLOD::commonConstructor(void)
 
   // Make multivalue field empty.
   this->range.setNum(0);
+
 }
 
 /*!
@@ -142,6 +159,7 @@ SoLOD::commonConstructor(void)
 */
 SoLOD::~SoLOD()
 {
+  delete PRIVATE(this);
 }
 
 // Documented in superclass.
@@ -158,12 +176,19 @@ SoLOD::doAction(SoAction *action)
 {
   int numindices;
   const int * indices;
-  if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
+  SoAction::PathCode pathcode = action->getPathCode(numindices, indices);
+  if (pathcode == SoAction::IN_PATH) {
     this->children->traverseInPath(action, numindices, indices);
   }
   else {
     int idx = this->whichToTraverse(action);;
-    if (idx >= 0) this->children->traverse(action, idx);
+    if (idx >= 0) {
+      this->children->traverse(action, idx);
+      PRIVATE(this)->enableTraversingOfInactiveChildren();
+      PRIVATE(this)->traverseInactiveChildren(this, action, idx, pathcode,
+                                              this->getNumChildren(), 
+                                              this->getChildren());
+    }
   }
 }
 
@@ -178,7 +203,9 @@ SoLOD::callback(SoCallbackAction *action)
 void
 SoLOD::audioRender(SoAudioRenderAction * action)
 {
+  PRIVATE(this)->preAudioRender(this, action);
   SoLOD::doAction((SoAction*)action);
+  PRIVATE(this)->postAudioRender(this, action);
 }
 
 // Documented in superclass.
@@ -312,3 +339,12 @@ SoLOD::whichToTraverse(SoAction *action)
   if (i >= this->getNumChildren()) i = this->getNumChildren() - 1;
   return i;
 }
+
+// Doc from superclass.
+void
+SoLOD::notify(SoNotList * nl)
+{
+  inherited::notify(nl);
+  PRIVATE(this)->notifyCalled();
+}
+

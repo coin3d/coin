@@ -195,7 +195,8 @@ SoSoundElement::isPartOfActiveSceneGraph(SoState * const state)
 
 /*!  
   Calls the superclass' push method. Initializes the element to the
-  default values.
+  default values. Uses previous element's isPartOfActiveSceneGraph
+  flag.  
 */
 
 void
@@ -203,8 +204,27 @@ SoSoundElement::push(SoState * state)
 {
   inherited::push(state);
 
-  this->setDefaultValues();
+  SoSoundElement * prev = (SoSoundElement*) this->getNextInStack();
+
+  this->scenegraphhassoundnode = FALSE;
+  this->soundnodeisplaying = FALSE;
+  this->ispartofactivescenegraph = prev->ispartofactivescenegraph;
 }
+
+/*!
+  Calls the superclass' pop method.
+ */
+
+void
+SoSoundElement::pop(SoState * state, const SoElement * prevTopElement)
+{
+  SoSoundElement * prevtop = (SoSoundElement *)prevTopElement;
+  this->scenegraphhassoundnode = this->scenegraphhassoundnode | 
+    prevtop->scenegraphhassoundnode;
+  this->soundnodeisplaying = this->soundnodeisplaying | 
+    prevtop->soundnodeisplaying;
+}
+
 
 /*!
   Initializes the element to the default values. The default values for the sceneGraphHasSoundNode is FALSE. The default value for the isPartOfActiveSceneGraph flag is TRUE. the default value for the soundNodeIsPlaying flag is FALSE.
