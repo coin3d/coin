@@ -86,20 +86,6 @@ public:
     uint32_t reserved[4];
   } GLState;
 
-  uint32_t didsetbitmask;
-  uint32_t didntsetbitmask;
-  uint32_t cachebitmask;
-  uint32_t opencacheflags;
-
-  GLState glstate;
-  GLState * postcachestate;
-  GLState * precachestate;
-  SbBool colorindex;
-  SoColorPacker * colorpacker;
-  const uint32_t * packedpointer;
-  uint32_t transpmask;
-  SoState * state;
-
   virtual void setDiffuseElt(SoNode*,  int32_t numcolors,
                              const SbColor * colors, SoColorPacker * packer);
   virtual void setPackedElt(SoNode * node, int32_t numcolors,
@@ -164,9 +150,21 @@ private:
   void sendAlphaTest(const SbBool onoff) const;
   void initGL(void);
   void packColors(SoColorPacker * packer) const;
-  
+ 
+  uint32_t didsetbitmask;
+  uint32_t didntsetbitmask;
+  uint32_t cachebitmask;
+  uint32_t opencacheflags;
+
+  GLState glstate;
+  GLState * postcachestate;
+  GLState * precachestate;
+  SbBool colorindex;
+  SoColorPacker * colorpacker;
+  const uint32_t * packedpointer;
+  uint32_t transpmask;
+  SoState * state;
   SoGLLazyElementP * pimpl; // for future use
-  
 };
 
 #endif // !COIN_SOGLLAZYELEMENT_H
