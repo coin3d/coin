@@ -120,8 +120,11 @@ cc_rwmutex_write_lock(cc_rwmutex * rwmutex)
   }
   rwmutex->writewaiters++;
   
-  (void) cc_condvar_wait(&rwmutex->write, &rwmutex->mutex);
-  assert(rwmutex->readers == 0 && rwmutex->writers == 0);
+  /* loop in case some other thread acquires the lock while we wait
+     for the signal */
+  do {
+    (void) cc_condvar_wait(&rwmutex->write, &rwmutex->mutex);
+  } while (rwmutex->readers != 0 || rwmutex->writers != 0);  
   rwmutex->writers++;
   rwmutex->writewaiters--;
   assert(rwmutex->writewaiters >= 0);
@@ -188,8 +191,13 @@ cc_rwmutex_read_lock(cc_rwmutex * rwmutex)
     return CC_OK;
   }
   rwmutex->readwaiters++;
-  (void) cc_condvar_wait(&rwmutex->read, &rwmutex->mutex);
-  assert(rwmutex->writers == 0);
+
+  /* loop in case some other thread acquires the lock while we wait
+     for the signal */
+  do {
+    (void) cc_condvar_wait(&rwmutex->read, &rwmutex->mutex);
+  } while (rwmutex->writers != 0);
+
   rwmutex->readers++;
   rwmutex->readwaiters--;
   assert(rwmutex->readwaiters >= 0);
