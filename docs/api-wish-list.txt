@@ -404,7 +404,7 @@ THE WISH LIST
   this information persistance would be more convenient for the
   application programmer.
 
-  Note that it is very probably that fixing this would force us to
+  Note that it is very probable that fixing this would force us to
   break downward and "cross-over" compatibility with earlier Coin
   versions and TGS / SGI Inventor versions of the file format, so it
   is unlikely that we will do anything about this until we'd made our
