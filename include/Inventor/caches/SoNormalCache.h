@@ -77,11 +77,11 @@ public:
                           const int vPerColumn,
                           const SbBool ccw);
 
-  int getNum() const;
-  const SbVec3f *getNormals() const;
+  int getNum(void) const;
+  const SbVec3f *getNormals(void) const;
 
-  int getNumIndices() const;
-  const int32_t *getIndices() const;
+  int getNumIndices(void) const;
+  const int32_t *getIndices(void) const;
 
 private:
   int numNormals;
@@ -92,7 +92,7 @@ private:
   SbList <int32_t> indices;
   SbList <SbVec3f> normalArray;
 
-  void clearGenerator();
+  void clearGenerator(void);
 };
 
 #endif // !COIN_SONORMALCACHE_H

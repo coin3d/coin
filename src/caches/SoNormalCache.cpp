@@ -93,7 +93,7 @@ SoNormalCache::set(SoNormalGenerator * generator)
   Returns the number of normals in the cache.
 */
 int
-SoNormalCache::getNum() const
+SoNormalCache::getNum(void) const
 {
   if (this->numNormals == 0 && this->normalData.generator) {
     return this->normalData.generator->getNumNormals();
@@ -105,7 +105,7 @@ SoNormalCache::getNum() const
   Return a pointer to the normals in this cache.
 */
 const SbVec3f *
-SoNormalCache::getNormals() const
+SoNormalCache::getNormals(void) const
 {
   if (this->numNormals == 0 && this->normalData.generator) {
     return this->normalData.generator->getNormals();
@@ -118,7 +118,7 @@ SoNormalCache::getNormals() const
   generated with PER_VERTEX_INDEXED binding.
 */
 int
-SoNormalCache::getNumIndices() const
+SoNormalCache::getNumIndices(void) const
 {
   return this->indices.getLength();
 }
@@ -127,7 +127,7 @@ SoNormalCache::getNumIndices() const
   Returns the normal indices.
 */
 const int32_t *
-SoNormalCache::getIndices() const
+SoNormalCache::getIndices(void) const
 {
   if (this->indices.getLength()) return this->indices.getArrayPtr();
   return NULL;
@@ -649,7 +649,7 @@ SoNormalCache::generatePerRowQuad(const SbVec3f * const coords,
 // frees generator and resets normal data.
 //
 void
-SoNormalCache::clearGenerator()
+SoNormalCache::clearGenerator(void)
 {
   if (this->numNormals == 0 && this->normalData.generator) {
     delete this->normalData.generator;
