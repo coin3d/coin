@@ -526,6 +526,9 @@ COIN_DLL_API SbBool cc_glglue_can_do_sortedlayersblend(const cc_glglue * glue);
 COIN_DLL_API int cc_glglue_get_max_lights(const cc_glglue * glue);
 COIN_DLL_API const float * cc_glglue_get_line_width_range(const cc_glglue * glue);
 COIN_DLL_API const float * cc_glglue_get_point_size_range(const cc_glglue * glue);
+COIN_DLL_API SbBool cc_glglue_is_texture_size_legal(const cc_glglue * glw, int xsize, int ysize, 
+                                                    int zsize, int bytespertexel, SbBool mipmap);
+
 
 /* ********************************************************************** */
 

@@ -645,6 +645,7 @@ struct cc_glglue {
 
   /* normalization cube map */
   GLuint normalizationcubemap;
+  GLuint specularlookup;
 
   SbBool can_do_bumpmapping;
   SbBool can_do_sortedlayersblend;
@@ -661,6 +662,7 @@ struct cc_glglue {
   int max_lights;
   float line_width_range[2];
   float point_size_range[2];
+  int max_texture_size;
   cc_hash * glextdict;
 };
 
@@ -670,6 +672,7 @@ int coin_glglue_extension_available(const char * extensions, const char * ext);
 
 /* needed for bumpmap rendering */
 void coin_apply_normalization_cube_map(const cc_glglue * glue);
+void coin_apply_specular_lookup_texture(const cc_glglue * glue);
 
 #ifdef __cplusplus
 }

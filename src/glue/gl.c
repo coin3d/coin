@@ -208,6 +208,8 @@ extern "C" {
 
 static cc_libhandle glglue_self_handle = NULL;
 static SbBool glglue_tried_open_self = FALSE;
+static int COIN_MAXIMUM_TEXTURE2_SIZE = -1;
+static int COIN_MAXIMUM_TEXTURE3_SIZE = -1;
 
 /* ********************************************************************** */
 
@@ -1064,9 +1066,17 @@ glglue_resolve_symbols(cc_glglue * w)
      using the Nvidia 44.96 driver (version 1.4.0). The VBO extension
      is therefore disabled for this driver. The issue was solved for
      the 53.28 driver (version 1.4.1). */
-  if(!strcmp(w->vendorstr, "NVIDIA Corporation") && 
-     !cc_glglue_glversion_matches_at_least(w, 1, 4, 1)) 
-    w->glBindBuffer = NULL;  
+  if (!strcmp(w->vendorstr, "NVIDIA Corporation")) {
+    if (!cc_glglue_glversion_matches_at_least(w, 1, 4, 1)) {
+      w->glBindBuffer = NULL;
+    }
+    /* VBOs seems really slow on the GeForce4 Go GPUs, but this test
+       is disabled for now until we know for sure that VBOs will
+       always be slow for this GPU */
+    /*     else if (strstr(w->rendererstr, "GeForce4 420 Go")) { */
+    /*       w->glBindBuffer = NULL; */
+    /*     } */
+  }
 #endif
 
 #endif /* GL_ARB_vertex_buffer_object */
@@ -1706,6 +1716,18 @@ cc_glglue_instance(int contextid)
 
   CC_SYNC_BEGIN(cc_glglue_instance);
 
+  /* check environment variables */
+  if (COIN_MAXIMUM_TEXTURE2_SIZE == 0) {
+    const char * env = coin_getenv("COIN_MAXIMUM_TEXTURE2_SIZE");
+    if (env) COIN_MAXIMUM_TEXTURE2_SIZE = atoi(env);
+    else COIN_MAXIMUM_TEXTURE2_SIZE = -1;
+  }
+  if (COIN_MAXIMUM_TEXTURE3_SIZE == 0) {
+    const char * env = coin_getenv("COIN_MAXIMUM_TEXTURE3_SIZE");
+    if (env) COIN_MAXIMUM_TEXTURE3_SIZE = atoi(env);
+    else COIN_MAXIMUM_TEXTURE3_SIZE = -1;
+  }
+
   if (!gldict) {  /* First invocation, do initializations. */
     gldict = cc_hash_construct(16, 0.75f);
     coin_atexit((coin_atexit_f *)glglue_cleanup, 0);
@@ -1765,6 +1787,10 @@ cc_glglue_instance(int contextid)
     gi->extensionsstr = (const char *)glGetString(GL_EXTENSIONS);
 
     /* read some limits */
+
+    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &gltmp);
+    gi->max_texture_size = gltmp;
+
     glGetIntegerv(GL_MAX_LIGHTS, &gltmp);
     gi->max_lights = (int) gltmp;
 
@@ -3851,8 +3877,146 @@ cc_glglue_context_pbuffer_is_bound(void * ctx)
 #endif
 }
 
+
+/*** </Offscreen buffer handling.> ******************************************/
+
+/*** <PROXY texture handling> ***********************************************/
+
+#define SBMAX(x,y) ((x)>=(y)?(x):(y))
+
+static int
+compute_log(int value)
+{
+  int i = 0;
+  while (value > 1) { value>>=1; i++; }
+  return i;
+}
+
+// proxy mipmap creation
+static SbBool
+proxy_mipmap_2d(int width, int height, const int nc, GLenum format, SbBool mipmap)
+{
+  GLint w;
+  int level;
+  int levels = compute_log(SBMAX(width, height));
+  
+  glTexImage2D(GL_PROXY_TEXTURE_2D, 0, nc, width, height, 0, format, GL_UNSIGNED_BYTE, NULL);
+  glGetTexLevelParameteriv(GL_PROXY_TEXTURE_2D, 0,
+                           GL_TEXTURE_WIDTH, &w);
+  if (w == 0) return FALSE;
+  if (!mipmap) return TRUE;
+
+  for (level = 1; level <= levels; level++) {
+    if (width > 1) width >>= 1;
+    if (height > 1) height >>= 1;
+    glTexImage2D(GL_PROXY_TEXTURE_2D, level, nc, width,
+                 height, 0, format, GL_UNSIGNED_BYTE,
+                 NULL);
+    glGetTexLevelParameteriv(GL_PROXY_TEXTURE_2D, 0,
+                             GL_TEXTURE_WIDTH, &w);
+    fprintf(stderr,"proxy test (%d): %d %d ==> %d\n",
+            level, width, height, w);
+    if (w == 0) return FALSE;
+  }
+  return TRUE;
+}
+
+// proxy mipmap creation. 3D version.
+static SbBool
+proxy_mipmap_3d(const cc_glglue * glw, int width, int height, int depth, const int nc, 
+                GLenum format, SbBool mipmap)
+{
+  GLint w;
+  int level;
+  int levels = compute_log(SBMAX(SBMAX(width, height), depth));
+
+  cc_glglue_glTexImage3D(glw, GL_PROXY_TEXTURE_3D, 0, (GLenum) nc, width, height, depth,
+                         0, format, GL_UNSIGNED_BYTE, NULL);
+  glGetTexLevelParameteriv(GL_PROXY_TEXTURE_3D, 0,
+                           GL_TEXTURE_WIDTH, &w);
+  if (w == 0) return FALSE;
+  if (!mipmap) return TRUE;
+
+  for (level = 1; level <= levels; level++) {
+    if (width > 1) width >>= 1;
+    if (height > 1) height >>= 1;
+    if (depth > 1) depth >>= 1;
+    cc_glglue_glTexImage3D(glw, GL_PROXY_TEXTURE_3D, level, (GLenum) nc, width,
+                           height, depth, 0, format, GL_UNSIGNED_BYTE,
+                           NULL);
+    glGetTexLevelParameteriv(GL_PROXY_TEXTURE_3D, 0,
+                             GL_TEXTURE_WIDTH, &w);
+    if (w == 0) return FALSE;
+  }
+  return TRUE;
+}
+
+SbBool
+cc_glglue_is_texture_size_legal(const cc_glglue * glw, int xsize, int ysize, int zsize, 
+                                int bytespertexel, SbBool mipmap)
+{ 
+  GLenum format;
+
+  switch (bytespertexel) {
+  case 1:
+    format = GL_LUMINANCE;
+    break;
+  case 2:
+    format = GL_LUMINANCE_ALPHA;
+    break;
+  case 3:
+    format = GL_RGB;
+    break;
+  case 4:
+  default:
+    format = GL_RGBA;
+    break;
+  }
+  
+  if (zsize == 0) { /* 2D textures */
+    if (COIN_MAXIMUM_TEXTURE2_SIZE > 0) {
+      if (xsize > COIN_MAXIMUM_TEXTURE2_SIZE) return FALSE;
+      if (ysize > COIN_MAXIMUM_TEXTURE2_SIZE) return FALSE;
+      return TRUE;
+    }
+    if (cc_glglue_has_2d_proxy_textures(glw)) {
+      return proxy_mipmap_2d(xsize, ysize, bytespertexel, format, mipmap);
+    }
+    else {
+      if (xsize > glw->max_texture_size) return FALSE;
+      if (ysize > glw->max_texture_size) return FALSE;
+      return TRUE;
+    }
+  }
+  else { // 3D textures
+    if (cc_glglue_has_3d_textures(glw)) {
+      if (COIN_MAXIMUM_TEXTURE3_SIZE > 0) {
+        if (xsize > COIN_MAXIMUM_TEXTURE3_SIZE) return FALSE;
+        if (ysize > COIN_MAXIMUM_TEXTURE3_SIZE) return FALSE;
+        if (zsize > COIN_MAXIMUM_TEXTURE3_SIZE) return FALSE;
+        return TRUE;
+      }
+      return proxy_mipmap_3d(glw, xsize, ysize, zsize, bytespertexel, format, mipmap);
+    }
+    else {
+#if COIN_DEBUG
+      static SbBool first = TRUE;
+      if (first) {
+        cc_debugerror_post("glglue_is_texture_size_legal",
+                           "3D not supported with this OpenGL driver");
+        first = FALSE;
+      }
+#endif // COIN_DEBUG
+      return FALSE;
+    }
+  }
+}
+
+#undef SBMAX
+
+/*** </PROXY texture handling> ***********************************************/
+
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif /* __cplusplus */
-
-/*** </Offscreen buffer handling.> ******************************************/
