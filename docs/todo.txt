@@ -55,6 +55,7 @@ STUFF TO FIX IN COIN
   than 1000 coordinate indices or something. If this suggestion is a
   good idea is yet to be decided.
 
+
 * Improve error reporting on texture loading
   2001-11-24  Morten Eriksen  <mortene@sim.no>
 
@@ -208,6 +209,9 @@ STUFF TO FIX IN COIN
   We should re-design and layer the old API / classes on top of our
   new and improved design.
 
+  2001-11-29 larsa:  We should probably actually implement loading of
+  external fonts first :)
+
 
 * Auto-generation of MSVC++ project files
   2001-11-28  Morten Eriksen  <mortene@sim.no>
@@ -267,7 +271,20 @@ STUFF TO FIX IN COIN
           The *.lst-generation mechanism now used in all sourcecode
           sub-directories can probably be applied again.
 
-   I think it could also be worth looking into the ability to generate
-   client application project files automatically in the same manner,
-   for instance in the SoGuiExamples module. That would lower the bar
-   on entry for many MSWin / MSVC++ programmers.
+  I think it could also be worth looking into the ability to generate
+  client application project files automatically in the same manner,
+  for instance in the SoGuiExamples module. That would lower the bar
+  on entry for many MSWin / MSVC++ programmers.
+
+
+* Dynamic loading of external extension nodes
+  2001-11-29  Lars J. Aas  <larsa@sim.no>
+
+  This functionality is missing in Coin.  Do we need to do it the same way
+  as SGI/TGS from the get go?  I don't think so.  How about ignoring the
+  C++ mangling problem and just having a special C symbol (like
+  'extern "C" void init(void);', only less likely to collide with other
+  symbols) for initing the loaded node for the first implementation?
+  Supporting C++ name mangling can be tackled later...
+
+
