@@ -221,12 +221,30 @@ GLWrapper_set_glVersion(GLWrapper_t * wrapper)
 static int
 GLWrapper_set_glxVersion(GLWrapper_t * gi)
 {
-  int ok = 0;
 #ifdef HAVE_GLX
-  gi->glxVersion.major = 0;
-  gi->glxVersion.minor = 0;
+  int major, minor;
+
+  Display * display = XOpenDisplay(NULL);
+  Bool ok = False;
+
+  if (display) {
+    ok = glXQueryVersion(display, &major, &minor);
+    XCloseDisplay(display);
+  }
+
+  if (!ok) {
+    SoDebugError::post("GLWrapper_set_glxVersion",
+                       "couldn't decide GLX version on your system -- ai!%s",
+                       display == NULL ? " (couldn't open NULL display)" : "");
+  }
+
+  gi->glxVersion.major = major;
+  gi->glxVersion.minor = minor;
+
+  return ok ? 1 : 0;
+#else
+  return 0;
 #endif
-  return ok;
 }
 
 int
