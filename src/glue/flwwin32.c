@@ -41,8 +41,7 @@ SbBool cc_flww32_initialize(void) { return FALSE; }
 void cc_flww32_exit(void) { }
 
 void * cc_flww32_get_font(const char * fontname, int sizex, int sizey) { assert(FALSE); return NULL; }
-cc_string * cc_flww32_get_font_name(void * font) { assert(FALSE); return NULL; }
-cc_string * cc_flww32_get_font_style(void * font) { assert(FALSE); return NULL; }
+void cc_flww32_get_font_name(void * font, cc_string * str) { assert(FALSE); }
 void cc_flww32_done_font(void * font) { assert(FALSE); }
 
 int cc_flww32_get_num_charmaps(void * font) { assert(FALSE); return 0; }
@@ -255,36 +254,17 @@ cc_flww32_get_font(const char * fontname, int sizex, int sizey)
   return (void *)wfont;
 }
 
-/* Allocates a cc_string and returns with name of given font id. */
-cc_string *
-cc_flww32_get_font_name(void * font)
+/* Returns with name of given font id in the string. cc_string needs
+   to have been constructed properly by caller. */
+void
+cc_flww32_get_font_name(void * font, cc_string * str)
 {
-  /* FIXME: fix interface silliness of allocating a cc_string -- that
-     should be done on the client side. 20030515 mortene. */
-  cc_string * str = cc_string_construct_new();
-
-  int size = cc_win32()->GetTextFace(cc_flww32_globals.devctx, 0, NULL);
+  const int size = cc_win32()->GetTextFace(cc_flww32_globals.devctx, 0, NULL);
   char * s = (char *)malloc(size);
   assert(s); /* FIXME: handle alloc problem better. 20030530 mortene. */
   (void)cc_win32()->GetTextFace(cc_flww32_globals.devctx, size, s);
-  
   cc_string_set_text(str, s);
   free(s);
-
-  return str;
-}
-
-/* Allocates a cc_string and returns with style of given font id. */
-cc_string *
-cc_flww32_get_font_style(void * font)
-{
-  /* FIXME: unimplemented. 20030515 mortene. */
-
-  /* FIXME: fix interface silliness of allocating a string -- that
-     should be done on the client side. 20030515 mortene. */
-  cc_string * str = cc_string_construct_new();
-  cc_string_set_text(str, "0xdeadbeef-fontstyle");
-  return str;
 }
 
 /* Deallocates the resources connected with the given font id. Assumes

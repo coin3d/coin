@@ -43,8 +43,7 @@ extern "C" {
   void cc_flwft_exit(void);
 
   void * cc_flwft_get_font(const char * fontname);
-  cc_string * cc_flwft_get_font_name(void * font);
-  cc_string * cc_flwft_get_font_style(void * font);
+  void cc_flwft_get_font_name(void * font, cc_string * str);
   void cc_flwft_done_font(void * font);
 
   int cc_flwft_get_num_charmaps(void * font);

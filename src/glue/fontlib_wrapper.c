@@ -390,7 +390,6 @@ cc_flw_create_font(const char * fontname, const int sizex, const int sizey)
   struct cc_fontstruct * fs;
   void * font;
   int i, idx;
-  cc_string * createdfontname;
   
   /* Don't create font if one has already been created for this name
      and size. */
@@ -409,21 +408,22 @@ cc_flw_create_font(const char * fontname, const int sizex, const int sizey)
   }
 
   if (font) {
+    cc_string str;
+    cc_string_construct(&str);
+
     fs = fontstruct_new(font);
     fontstruct_set_requestname(fs, fontname);
     fontstruct_set_size(fs, sizex, sizey);
 
     if (win32api) {
-      createdfontname = cc_flww32_get_font_name(font);
-      fontstruct_set_fontname(fs, cc_string_get_text(createdfontname));
-      cc_string_destruct(createdfontname);
+      cc_flww32_get_font_name(font, &str);
+      fontstruct_set_fontname(fs, cc_string_get_text(&str));
     }
     else if (freetypelib) {
       cc_flwft_set_char_size(font, sizex, sizey);
 
-      createdfontname = cc_flwft_get_font_name(font);
-      fontstruct_set_fontname(fs, cc_string_get_text(createdfontname));
-      cc_string_destruct(createdfontname);
+      cc_flwft_get_font_name(font, &str);
+      fontstruct_set_fontname(fs, cc_string_get_text(&str));
     }
     else {
       assert(FALSE && "incomplete code path");
@@ -438,6 +438,7 @@ cc_flw_create_font(const char * fontname, const int sizex, const int sizey)
                              (idx == -1) ? "" : (fonts[idx]->defaultfont ? "(defaultfont)" : "(not defaultfont)"));
     }
     
+    cc_string_clean(&str);
     return idx;
   }
   else {

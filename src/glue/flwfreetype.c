@@ -40,8 +40,7 @@ SbBool cc_flwft_initialize(void) { return FALSE; }
 void cc_flwft_exit(void) { }
 
 void * cc_flwft_get_font(const char * fontname) { assert(FALSE); return NULL; }
-cc_string * cc_flwft_get_font_name(void * font) { assert(FALSE); return NULL; }
-cc_string * cc_flwft_get_font_style(void * font) { assert(FALSE); return NULL; }
+void cc_flwft_get_font_name(void * font, cc_string * str) { assert(FALSE); }
 void cc_flwft_done_font(void * font) { assert(FALSE); }
 
 int cc_flwft_get_num_charmaps(void * font) { assert(FALSE); return 0; }
@@ -445,28 +444,13 @@ cc_flwft_get_font(const char * fontname)
   return face;
 }
 
-cc_string *
-cc_flwft_get_font_name(void * font)
+void
+cc_flwft_get_font_name(void * font, cc_string * str)
 {
   FT_Face face;
-  cc_string * name;
   assert(font);
   face = (FT_Face)font;
-  name = cc_string_construct_new();
-  cc_string_sprintf(name, "%s %s", face->family_name, face->style_name);
-  return name;
-}
-
-cc_string *
-cc_flwft_get_font_style(void * font)
-{
-  FT_Face face;
-  cc_string * name;
-  assert(font);
-  face = (FT_Face)font;
-  name = cc_string_construct_new();
-  cc_string_set_text(name, face->style_name);
-  return name;
+  cc_string_sprintf(str, "%s %s", face->family_name, face->style_name);
 }
 
 void
