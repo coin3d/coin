@@ -95,6 +95,7 @@
 #include <Inventor/VRMLnodes/SoVRMLShape.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/VRMLnodes/SoVRMLAppearance.h>
+#include <Inventor/VRMLnodes/SoVRMLMaterial.h>
 #include <Inventor/VRMLnodes/SoVRMLParent.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/misc/SoChildList.h>
@@ -112,6 +113,16 @@
 #include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
 #include <Inventor/caches/SoGLCacheList.h>
+#include <Inventor/misc/SoGL.h>
+#include <Inventor/elements/SoGLShapeHintsElement.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLLightModelElement.h>
+#include <Inventor/elements/SoGLDiffuseColorElement.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+#include <Inventor/system/gl.h>
 
 #include <stddef.h>
 
@@ -232,6 +243,38 @@ SoVRMLShape::GLRender(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
 
+  if (SoComplexityTypeElement::get(state) ==
+      SoComplexityTypeElement::BOUNDING_BOX) {
+    SbBool validcache = THIS->bboxcache && THIS->bboxcache->isValid(state);
+    if (validcache) {
+      SbBox3f box = THIS->bboxcache->getProjectedBox();      
+      SbVec3f center = (box.getMin() + box.getMax()) * 0.5f;
+      SbVec3f size = box.getMax()  - box.getMin();
+      
+      SoGLTextureEnabledElement::forceSend(state, FALSE);
+      SoGLShapeHintsElement::forceSend(state, TRUE, FALSE, FALSE);
+      SoGLLightModelElement::forceSend(state, SoLightModelElement::BASE_COLOR);
+  
+      SoVRMLAppearance * app = (SoVRMLAppearance*) this->appearance.getValue();
+      
+      SbColor color(0.8f, 0.8f, 0.8f);
+
+      if (app && app->material.getValue()) {
+        SoVRMLMaterial * mat = (SoVRMLMaterial*) app->material.getValue();
+        color = mat->diffuseColor.getValue();
+      }
+      SoGLDiffuseColorElement * elem = (SoGLDiffuseColorElement*)
+        SoDiffuseColorElement::getInstance(state);
+      elem->sendOnePacked(color.getPackedValue());
+
+      glPushMatrix();
+      glTranslatef(center[0], center[1], center[2]);
+      sogl_render_cube(size[0], size[1], size[2], NULL, 0);
+      glPopMatrix();
+      return;
+    }
+  }
+
   // if we have a valid bbox cache, do a view volume cull test here.
   if (THIS->bboxcache &&
       THIS->bboxcache->isValid(state)) {
@@ -240,16 +283,6 @@ SoVRMLShape::GLRender(SoGLRenderAction * action)
     }
   }
 
-#if 0
-  if (SoComplexityTypeElement::get(state) ==
-      SoComplexityTypeElement::BOUNDING_BOX) {
-    SbBool validcache = THIS->bboxcache && THIS->bboxcache->isValid(state);
-    if (valid) {
-      // FIXME: bbox rendering code here...
-      return;
-    }
-  }
-#endif
 
   state->push();
 
