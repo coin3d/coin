@@ -46,13 +46,6 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#ifdef _WIN32
-#include <strstrea.h>
-#else // ! _WIN32
-#include <strstream.h>
-#endif // ! _WIN32
-
-
 
 SO_SFIELD_SOURCE(SoSFFloat, float, const float);
 
@@ -125,11 +118,13 @@ SoSFFloat::convertTo(SoField * dest) const
   else if (dest->getTypeId()==SoSFUShort::getClassTypeId()) {
     ((SoSFUShort *)dest)->setValue((unsigned short)this->getValue());
   }
+#if 0 // OBSOLETED: don't use libstdc++ stuff. 20000219 mortene
   else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
     ostrstream ostr;
     ostr << this->getValue() << '\0';
     ((SoSFString *)dest)->setValue(ostr.str());
   }
+#endif // OBSOLETED
   else if (dest->getTypeId()==SoMFFloat::getClassTypeId()) {
     ((SoMFFloat *)dest)->setValue(this->getValue());
   }

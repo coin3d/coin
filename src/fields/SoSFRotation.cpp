@@ -45,15 +45,9 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#ifdef _WIN32
-#include <strstrea.h>
-#else // ! _WIN32
-#include <strstream.h>
-#endif // ! _WIN32
-
-
 
 SO_SFIELD_SOURCE(SoSFRotation, SbRotation, const SbRotation &);
+
 
 // Override from parent.
 void
@@ -174,6 +168,7 @@ SoSFRotation::convertTo(SoField * dest) const
     mat.setRotate(this->getValue());
     ((SoSFMatrix *)dest)->setValue(mat);
   }
+#if 0 // OBSOLETED: don't use libstdc++ stuff. 20000219 mortene
   else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
     ostrstream ostr;
     SbVec3f vec;
@@ -183,6 +178,7 @@ SoSFRotation::convertTo(SoField * dest) const
       rad << ends;
     ((SoSFString *)dest)->setValue(ostr.str());
   }
+#endif // OBSOLETED
   else if (dest->getTypeId()==SoMFRotation::getClassTypeId()) {
     ((SoMFRotation *)dest)->setValue(this->getValue());
   }

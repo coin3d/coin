@@ -30,22 +30,13 @@
 */
 
 #include <Inventor/fields/SoMFPlane.h>
-#include <Inventor/fields/SoSFPlane.h>
-
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
+#include <Inventor/fields/SoSFPlane.h>
+#include <Inventor/fields/SoSFString.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
-
-#include <Inventor/fields/SoSFString.h>
-
-#ifdef _WIN32
-#include <strstrea.h>
-#else
-#include <strstream.h>
-#endif
-
 
 
 SO_MFIELD_SOURCE(SoMFPlane, SbPlane, const SbPlane &);
@@ -100,6 +91,7 @@ SoMFPlane::convertTo(SoField * dest) const
     if (this->getNum()>0)
       ((SoSFPlane *)dest)->setValue((*this)[0]);
   }
+#if 0 // OBSOLETED: don't use libstdc++ stuff. 20000219 mortene
   else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
     ostrstream ostr;
     const SbPlane * plane;
@@ -117,6 +109,7 @@ SoMFPlane::convertTo(SoField * dest) const
     ostr << ends;
     ((SoSFString *)dest)->setValue(ostr.str());
   }
+#endif // OBSOLETED
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoMFPlane::convertTo",

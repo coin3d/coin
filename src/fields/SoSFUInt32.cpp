@@ -45,15 +45,9 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#ifdef _WIN32
-#include <strstrea.h>
-#else // ! _WIN32
-#include <strstream.h>
-#endif // ! _WIN32
-
-
 
 SO_SFIELD_SOURCE(SoSFUInt32, uint32_t, const uint32_t);
+
 
 // Override from parent class.
 void
@@ -123,12 +117,14 @@ SoSFUInt32::convertTo(SoField * dest) const
   else if (dest->getTypeId()==SoSFUShort::getClassTypeId()) {
     ((SoSFUShort *)dest)->setValue(this->getValue());
   }
+#if 0 // OBSOLETED: don't use libstdc++ stuff. 20000219 mortene
   else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
     ostrstream ostr;
     if (this->getValue()>0) ostr.flags(ios::hex|ios::showbase);
     ostr << this->getValue() << '\0';
     ((SoSFString *)dest)->setValue(ostr.str());
   }
+#endif // OBSOLETED
   else if (dest->getTypeId()==SoMFUInt32::getClassTypeId()) {
     ((SoMFUInt32 *)dest)->setValue(this->getValue());
   }

@@ -42,12 +42,6 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#ifdef _WIN32
-#include <strstrea.h>
-#else // ! _WIN32
-#include <strstream.h>
-#endif // ! _WIN32
-
 
 SO_SFIELD_SOURCE(SoSFVec3f, SbVec3f, const SbVec3f &);
 
@@ -128,6 +122,7 @@ SoSFVec3f::convertTo(SoField * dest) const
   if (dest->getTypeId()==SoSFColor::getClassTypeId()) {
     ((SoSFColor *)dest)->setValue(this->getValue().getValue());
   }
+#if 0 // OBSOLETED: don't use libstdc++ stuff. 20000219 mortene
   else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
     ostrstream ostr;
     ostr << this->getValue()[0] << " " <<
@@ -135,6 +130,7 @@ SoSFVec3f::convertTo(SoField * dest) const
       this->getValue()[2] << '\0';
     ((SoSFString *)dest)->setValue(ostr.str());
   }
+#endif // OBSOLETED
   else if (dest->getTypeId()==SoMFVec3f::getClassTypeId()) {
     ((SoMFVec3f *)dest)->setValue(this->getValue());
   }

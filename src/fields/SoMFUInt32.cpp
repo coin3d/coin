@@ -29,17 +29,11 @@
 */
 
 #include <Inventor/fields/SoMFUInt32.h>
-#include <Inventor/fields/SoSFUInt32.h>
 
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/fields/SoSFString.h>
-
-#ifdef _WIN32
-#include <strstrea.h>
-#else // ! _WIN32
-#include <strstream.h>
-#endif // ! _WIN32
+#include <Inventor/fields/SoSFUInt32.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -70,7 +64,7 @@ SbBool
 SoMFUInt32::read1Value(SoInput * in, int idx)
 {
   uint32_t val;
-  if (!sosfuint32_read_value(in, val)) return FALSE; 
+  if (!sosfuint32_read_value(in, val)) return FALSE;
   this->set1Value(idx, val);
   return TRUE;
 }
@@ -99,6 +93,7 @@ SoMFUInt32::convertTo(SoField * dest) const
     if (this->getNum()>0)
       ((SoSFUInt32 *)dest)->setValue((*this)[0]);
   }
+#if 0 // OBSOLETED: don't use libstdc++ stuff. 20000219 mortene
   else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
     const int num=this->getNum();
     ostrstream ostr;
@@ -112,6 +107,7 @@ SoMFUInt32::convertTo(SoField * dest) const
     ostr << ends;
     ((SoSFString *)dest)->setValue(ostr.str());
   }
+#endif // OBSOLETED
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoMFUInt32::convertTo",

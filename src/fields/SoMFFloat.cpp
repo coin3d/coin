@@ -29,22 +29,15 @@
 */
 
 #include <Inventor/fields/SoMFFloat.h>
+#include <Inventor/SbName.h>
+#include <Inventor/SoInput.h>
+#include <Inventor/SoOutput.h>
 #include <Inventor/fields/SoSFFloat.h>
+#include <Inventor/fields/SoSFString.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
-#include <Inventor/SoInput.h>
-#include <Inventor/SoOutput.h>
-#include <Inventor/SbName.h>
-#include <Inventor/fields/SoSFString.h>
-
-#ifdef _WIN32
-#include <strstrea.h>
-#else // ! _WIN32
-#include <strstream.h>
-#endif // ! _WIN32
-
 
 
 SO_MFIELD_SOURCE_MALLOC(SoMFFloat, float, float);
@@ -99,6 +92,7 @@ SoMFFloat::convertTo(SoField * dest) const
     if (this->getNum()>0)
       ((SoSFFloat *)dest)->setValue((*this)[0]);
   }
+#if 0 // OBSOLETED: don't use libstdc++ stuff. 20000219 mortene
   else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
     const int num=this->getNum();
     ostrstream ostr;
@@ -111,6 +105,7 @@ SoMFFloat::convertTo(SoField * dest) const
     ostr << ends;
     ((SoSFString *)dest)->setValue(ostr.str());
   }
+#endif // OBSOLETED
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoMFFloat::convertTo",

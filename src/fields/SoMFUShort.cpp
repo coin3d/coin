@@ -26,17 +26,10 @@
 */
 
 #include <Inventor/fields/SoMFUShort.h>
-#include <Inventor/fields/SoSFUShort.h>
-
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/fields/SoSFString.h>
-#ifdef _WIN32
-#include <strstrea.h>
-#else
-#include <strstream.h>
-#endif
-#include <iomanip.h>
+#include <Inventor/fields/SoSFUShort.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -65,7 +58,7 @@ SbBool
 SoMFUShort::read1Value(SoInput * in, int idx)
 {
   unsigned short val;
-  if (!sosfushort_read_value(in, val)) return FALSE; 
+  if (!sosfushort_read_value(in, val)) return FALSE;
   this->set1Value(idx, val);
   return TRUE;
 }
@@ -94,6 +87,7 @@ SoMFUShort::convertTo(SoField * dest) const
     if (this->getNum()>0)
       ((SoSFUShort *)dest)->setValue((*this)[0]);
   }
+#if 0 // OBSOLETED: don't use libstdc++ stuff. 20000219 mortene
   else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
     const int num=this->getNum();
     ostrstream ostr;
@@ -107,6 +101,7 @@ SoMFUShort::convertTo(SoField * dest) const
     ostr << ends;
     ((SoSFString *)dest)->setValue(ostr.str());
   }
+#endif // OBSOLETED
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoMFUShort::convertTo",

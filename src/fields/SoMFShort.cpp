@@ -30,16 +30,10 @@
 */
 
 #include <Inventor/fields/SoMFShort.h>
-#include <Inventor/fields/SoSFShort.h>
-
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
+#include <Inventor/fields/SoSFShort.h>
 #include <Inventor/fields/SoSFString.h>
-#ifdef _WIN32
-#include <strstrea.h>
-#else
-#include <strstream.h>
-#endif
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -98,6 +92,7 @@ SoMFShort::convertTo(SoField * dest) const
     if (this->getNum()>0)
       ((SoSFShort *)dest)->setValue((*this)[0]);
   }
+#if 0 // OBSOLETED: don't use libstdc++ stuff. 20000219 mortene
   else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
     const int num=this->getNum();
     ostrstream ostr;
@@ -110,6 +105,7 @@ SoMFShort::convertTo(SoField * dest) const
     ostr << ends;
     ((SoSFString *)dest)->setValue(ostr.str());
   }
+#endif // OBSOLETED
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoMFRotation::convertTo",

@@ -30,23 +30,15 @@
 */
 
 #include <Inventor/fields/SoMFMatrix.h>
-
+#include <Inventor/SbName.h>
+#include <Inventor/SoInput.h>
+#include <Inventor/SoOutput.h>
 #include <Inventor/fields/SoSFMatrix.h>
 #include <Inventor/fields/SoSFString.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
-#include <Inventor/SbName.h>
-#include <Inventor/SoInput.h>
-#include <Inventor/SoOutput.h>
-
-#ifdef _WIN32
-#include <strstrea.h>
-#else // ! _WIN32
-#include <strstream.h>
-#endif // ! _WIN32
-
 
 
 SO_MFIELD_SOURCE(SoMFMatrix, SbMatrix, const SbMatrix &);
@@ -114,6 +106,7 @@ SoMFMatrix::convertTo(SoField * dest) const
     if (this->getNum()>0)
       ((SoSFMatrix *)dest)->setValue((*this)[0]);
   }
+#if 0 // OBSOLETED: don't use libstdc++ stuff. 20000219 mortene
   else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
     ostrstream ostr;
     int num=this->getNum();
@@ -145,6 +138,7 @@ SoMFMatrix::convertTo(SoField * dest) const
     ostr << ends;
     ((SoSFString *)dest)->setValue(ostr.str());
   }
+#endif // OBSOLETED
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoMFMatrix::convertTo",

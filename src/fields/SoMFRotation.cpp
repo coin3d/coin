@@ -30,26 +30,18 @@
 */
 
 #include <Inventor/fields/SoMFRotation.h>
-#include <Inventor/fields/SoSFRotation.h>
-
+#include <Inventor/SbVec3f.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
-#include <Inventor/SbVec3f.h>
+#include <Inventor/fields/SoSFRotation.h>
+#include <Inventor/fields/SoSFString.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#include <Inventor/fields/SoSFString.h>
-
-#ifdef _WIN32
-#include <strstrea.h>
-#else // ! _WIN32
-#include <strstream.h>
-#endif // ! _WIN32
-
-
 
 SO_MFIELD_SOURCE(SoMFRotation, SbRotation, const SbRotation &);
+
 
 // Override parent class.
 void
@@ -162,6 +154,7 @@ SoMFRotation::convertTo(SoField * dest) const
     if (this->getNum()>0)
       ((SoSFRotation *)dest)->setValue((*this)[0]);
   }
+#if 0 // OBSOLETED: don't use libstdc++ stuff. 20000219 mortene
   else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
     ostrstream ostr;
     SbVec3f vec;
@@ -179,6 +172,7 @@ SoMFRotation::convertTo(SoField * dest) const
     ostr << ends;
     ((SoSFString *)dest)->setValue(ostr.str());
   }
+#endif // OBSOLETED
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoMFRotation::convertTo",
