@@ -100,7 +100,7 @@ install-libCoinincHEADERS: $(libCoininc_HEADERS)
 	@list='$(libCoininc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if ! cmp -s $$d$$p $(DESTDIR)$(libCoinincdir)/$$f; then echo " Installing $(DESTDIR)$(libCoinincdir)/$$f"; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libCoinincdir)/$$f; then : ; else echo " Installing $(DESTDIR)$(libCoinincdir)/$$f"; \
 	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libCoinincdir)/$$f; fi; \
 	done
 

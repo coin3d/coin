@@ -85,7 +85,7 @@ install-libdraggersincHEADERS: $(libdraggersinc_HEADERS)
 	@list='$(libdraggersinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if ! cmp -s $$d$$p $(DESTDIR)$(libdraggersincdir)/$$f; then echo " Installing $(DESTDIR)$(libdraggersincdir)/$$f"; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libdraggersincdir)/$$f; then : ; else echo " Installing $(DESTDIR)$(libdraggersincdir)/$$f"; \
 	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libdraggersincdir)/$$f; fi; \
 	done
 

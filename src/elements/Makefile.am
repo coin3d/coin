@@ -225,7 +225,7 @@ install-libelementsincHEADERS: $(libelementsinc_HEADERS)
 	@list='$(libelementsinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if ! cmp -s $$d$$p $(DESTDIR)$(libelementsincdir)/$$f; then echo " Installing $(DESTDIR)$(libelementsincdir)/$$f"; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libelementsincdir)/$$f; then : ; else echo " Installing $(DESTDIR)$(libelementsincdir)/$$f"; \
 	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libelementsincdir)/$$f; fi; \
 	done
 

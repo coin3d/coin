@@ -9,7 +9,7 @@ install--xxx-incHEADERS: $(-xxx-inc_HEADERS)
 	@list='$(-xxx-inc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if ! cmp -s $$d$$p $(DESTDIR)$(-xxx-incdir)/$$f; then echo " Installing $(DESTDIR)$(-xxx-incdir)/$$f"; \
+	  if cmp -s $$d$$p $(DESTDIR)$(-xxx-incdir)/$$f; then : ; else echo " Installing $(DESTDIR)$(-xxx-incdir)/$$f"; \
 	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(-xxx-incdir)/$$f; fi; \
 	done
 

@@ -252,7 +252,7 @@ install-libnodesincHEADERS: $(libnodesinc_HEADERS)
 	@list='$(libnodesinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if ! cmp -s $$d$$p $(DESTDIR)$(libnodesincdir)/$$f; then echo " Installing $(DESTDIR)$(libnodesincdir)/$$f"; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libnodesincdir)/$$f; then : ; else echo " Installing $(DESTDIR)$(libnodesincdir)/$$f"; \
 	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libnodesincdir)/$$f; fi; \
 	done
 

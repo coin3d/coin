@@ -136,7 +136,7 @@ install-libenginesincHEADERS: $(libenginesinc_HEADERS)
 	@list='$(libenginesinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if ! cmp -s $$d$$p $(DESTDIR)$(libenginesincdir)/$$f; then echo " Installing $(DESTDIR)$(libenginesincdir)/$$f"; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libenginesincdir)/$$f; then : ; else echo " Installing $(DESTDIR)$(libenginesincdir)/$$f"; \
 	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libenginesincdir)/$$f; fi; \
 	done
 

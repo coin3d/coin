@@ -781,9 +781,9 @@ AC_ARG_WITH(simage, AC_HELP_STRING([--with-simage=DIR], [use simage for loading 
 
 sim_ac_simage_avail=no
 
-if ! test x"$with_simage" = xno; then
+if test x"$with_simage" != xno; then
   sim_ac_path=$PATH
-  if ! test x"$with_simage" = xyes; then
+  if test x"$with_simage" != xyes; then
     sim_ac_path=${with_simage}/bin:$PATH
   fi
 
@@ -1026,8 +1026,8 @@ AC_ARG_WITH(opengl, AC_HELP_STRING([--with-opengl=DIR], [OpenGL/Mesa installatio
 sim_ac_gl_avail=no
 sim_ac_gl_is_mesa=no
 
-if ! test x"$with_opengl" = xno; then
-  if ! test x"$with_opengl" = xyes; then
+if test x"$with_opengl" != xno; then
+  if test x"$with_opengl" != xyes; then
     sim_ac_gl_cppflags="-I${with_opengl}/include"
     sim_ac_gl_ldflags="-L${with_opengl}/lib"
   fi

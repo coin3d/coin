@@ -424,7 +424,7 @@ install-libVRMLnodesincHEADERS: $(libVRMLnodesinc_HEADERS)
 	@list='$(libVRMLnodesinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if ! cmp -s $$d$$p $(DESTDIR)$(libVRMLnodesincdir)/$$f; then echo " Installing $(DESTDIR)$(libVRMLnodesincdir)/$$f"; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libVRMLnodesincdir)/$$f; then : ; else echo " Installing $(DESTDIR)$(libVRMLnodesincdir)/$$f"; \
 	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libVRMLnodesincdir)/$$f; fi; \
 	done
 

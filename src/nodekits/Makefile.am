@@ -66,7 +66,7 @@ install-libnodekitsincHEADERS: $(libnodekitsinc_HEADERS)
 	@list='$(libnodekitsinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if ! cmp -s $$d$$p $(DESTDIR)$(libnodekitsincdir)/$$f; then echo " Installing $(DESTDIR)$(libnodekitsincdir)/$$f"; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libnodekitsincdir)/$$f; then : ; else echo " Installing $(DESTDIR)$(libnodekitsincdir)/$$f"; \
 	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libnodekitsincdir)/$$f; fi; \
 	done
 

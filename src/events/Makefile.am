@@ -63,7 +63,7 @@ install-libeventsincHEADERS: $(libeventsinc_HEADERS)
 	@list='$(libeventsinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if ! cmp -s $$d$$p $(DESTDIR)$(libeventsincdir)/$$f; then echo " Installing $(DESTDIR)$(libeventsincdir)/$$f"; \
+	  if cmp -s $$d$$p $(DESTDIR)$(libeventsincdir)/$$f; then : ; else echo " Installing $(DESTDIR)$(libeventsincdir)/$$f"; \
 	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libeventsincdir)/$$f; fi; \
 	done
 
