@@ -429,6 +429,11 @@ SoElement::initElements(void)
   SoGLCacheContextElement::initClass();
 
   SoTextureScalePolicyElement::initClass();
+
+  SoListenerPositionElement::initClass();
+  SoListenerOrientationElement::initClass();
+  SoListenerVelocityElement::initClass();
+  SoListenerGainElement::initClass();
 }
 
 // Note: the following documentation for initClass() will also be
