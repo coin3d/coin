@@ -338,10 +338,11 @@ coin_getenv(const char * envname)
 #ifdef HAVE_GETENVIRONMENTVARIABLE
   int neededsize;
   neededsize = GetEnvironmentVariable(envname, NULL, 0);
+  /* neededsize includes the \0-terminating character */
   if ( neededsize >= 1 ) {
     int resultsize;
     struct envvar_data * envptr;
-    char * valbuf = (char *) malloc(neededsize + 1);
+    char * valbuf = (char *) malloc(neededsize);
     if ( valbuf == NULL ) {
       /* Augh. Could we handle this any better? */
       /* If we already bookkeep a buffer for this variable, we /could/ try
