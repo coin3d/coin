@@ -21,16 +21,6 @@
  *
 \**************************************************************************/
 
-#include <assert.h>
-#include <float.h>
-
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/SbPlane.h>
-#include <Inventor/SbLine.h>
-#include <Inventor/SbBox3f.h>
-
-#include "SbTri3f.ih"
-
 /*!
   \class SbTri3f noheader
   \brief A class that at this point in time has one purpose - figuring out
@@ -47,6 +37,21 @@
 
   \since 20021022
 */
+
+// FIXME: build this class in the normal way. 20030603 mortene.
+
+// FIXME: clean up the code -- there's lots of stuff that has been
+// commented out without any explanation, for instance. 20030603 mortene.
+
+#include <assert.h>
+#include <float.h>
+
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/SbPlane.h>
+#include <Inventor/SbLine.h>
+#include <Inventor/SbBox3f.h>
+
+#include "SbTri3f.ih"
 
 // Here's an idea for an alternate approach for this class:
 //
@@ -875,7 +880,7 @@ SbTri3f::getDistance(const SbVec3f & p1, const SbVec3f & p2) const
 //    if (pfTriP0) *pfTriP0 = fS;
 //    if (pfTriP1) *pfTriP1 = fT;
 
-  return sqrt(fSqrDist);
+  return (float)sqrt(fSqrDist);
 }
 
 //FIXME: Old non-working code
@@ -1062,7 +1067,7 @@ SbTri3f::sqrDistance(const SbVec3f & a1, const SbVec3f & a2,
   float fA11 = dir1.sqrLength();
   float fB0 = kDiff.dot(dir0);
   float fC = kDiff.sqrLength();
-  float fDet = fabs(fA00*fA11-fA01*fA01);
+  float fDet = (float)fabs(fA00*fA11-fA01*fA01);
   float fB1, fS, fT, fSqrDist, fTmp;
 
   if (fDet >= gs_fTolerance) {
@@ -1331,7 +1336,7 @@ SbTri3f::sqrDistance(const SbVec3f & a1, const SbVec3f & a2,
 
   if (pfSegP1) *pfSegP1 = fT;
 
-  return fabs(fSqrDist);
+  return (float)fabs(fSqrDist);
 
   //FIXME: Old code. not for segments but lines.
 #if 0
@@ -1443,7 +1448,7 @@ SbTri3f::sqrDistance (const SbVec3f & p1,
   float fB0 = kDiff.dot(edge0);
   float fB1 = kDiff.dot(edge1);
   float fC = kDiff.sqrLength();
-  float fDet = fabs(fA00*fA11-fA01*fA01);
+  float fDet = (float)fabs(fA00*fA11-fA01*fA01);
   float fS = fA01*fB1-fA11*fB0;
   float fT = fA01*fB0-fA00*fB1;
   float fSqrDist;
@@ -1660,7 +1665,7 @@ SbTri3f::sqrDistance (const SbVec3f & p1,
   if (pfTParam)
     *pfTParam = fT;
 
-  return fabs(fSqrDist);
+  return (float)fabs(fSqrDist);
 }
 
 // *************************************************************************
