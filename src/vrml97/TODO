@@ -3,7 +3,7 @@ Unsupported features
 
 - Anchor
 - AudioClip/Sound
-- MovieTexture
+- Collision node and viewer support
 - EXTERNPROTO (passthrough)
 - bindable nodes (Fog, Background, Viewpoint etc).
 - Heed min/maxAngle in CylinderSensor
