@@ -1,8 +1,8 @@
-coin1 (1.0.0-1) unstable; urgency=low
+coin1 (@VERSION@-1) unstable; urgency=low
 
-  * Initial Debian Release.
+  * Initial Debian packaging.
 
- -- Lars J. Aas <larsa@coin3d.org>  14 Aug 2001 17:25:17 +0000
+ -- Lars J. Aas <larsa@coin3d.org>  @RFC822_DATE@
 
 Local variables:
 mode: debian-changelog
