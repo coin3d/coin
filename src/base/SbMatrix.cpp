@@ -32,10 +32,11 @@
 /*¡
   FIXME:
 
-  The SbMatrix::factor() function has not been implemented yet.
+  * The SbMatrix::factor() function has not been implemented yet.
 
-  Optimizations are not done yet, so there's a lot of room for
-  improvements.
+  * Optimizations are not done yet, so there's a lot of room for
+    improvements.
+
 */
 
 
@@ -48,6 +49,14 @@
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
+
+// FIXME: should merge all the PD code we're using from GGIV into
+// SbMatrix, SbRotation and SbVec3f proper (for two reasons: 1)
+// there's a lot of duplicated code here (like for instance the
+// matrix->quaternion decomposition, which also exists in
+// SbRotation::setValue(SbMatrix&)), and 2) the remaining code
+// snippets look generally useful outside the purpose of breaking down
+// a matrix into it's transformation components). 20010114 mortene.
 
 /*
  * declarations for polar_decomp algorithm from Graphics Gems IV,
@@ -134,7 +143,7 @@ SbMatrix::~SbMatrix(void)
 
   \sa setValue().
  */
-const SbMat&
+const SbMat &
 SbMatrix::getValue(void) const
 {
   return this->matrix;
@@ -148,14 +157,14 @@ SbMatrix::getValue(void) const
 void
 SbMatrix::setValue(const SbMat & m)
 {
-  memcpy(this->matrix, m, sizeof(float)*4*4);
+  (void)memmove(this->matrix, m, sizeof(float)*4*4);
 }
 
 /*!
   Assignment operator. Copies the elements from \a m to the matrix.
  */
-SbMatrix&
-SbMatrix::operator =(const SbMat & m)
+SbMatrix &
+SbMatrix::operator=(const SbMat & m)
 {
   this->setValue(m);
   return *this;
@@ -164,8 +173,8 @@ SbMatrix::operator =(const SbMat & m)
 /*!
   Assignment operator. Copies the elements from \a m to the matrix.
  */
-SbMatrix&
-SbMatrix::operator =(const SbMatrix & m)
+SbMatrix &
+SbMatrix::operator=(const SbMatrix & m)
 {
   this->setValue(m.matrix);
   return *this;
@@ -203,7 +212,7 @@ SbMatrix::setRotate(const SbRotation & q)
   Multiply all element values in the matrix with \a v.
  */
 void
-SbMatrix::operator *=(const float v)
+SbMatrix::operator*=(const float v)
 {
   for (int i=0; i < 4; i++) {
     for (int j=0; j < 4; j++) {
@@ -216,7 +225,7 @@ SbMatrix::operator *=(const float v)
   Divide all element values in the matrix on \a v.
  */
 void
-SbMatrix::operator /=(const float v)
+SbMatrix::operator/=(const float v)
 {
 #if COIN_DEBUG
   if (v==0.0f)
@@ -224,7 +233,7 @@ SbMatrix::operator /=(const float v)
                               "Division by zero.");
 #endif // COIN_DEBUG
 
-  operator*=(1.0f/v);
+  this->operator*=(1.0f/v);
 }
 
 /*!
@@ -544,7 +553,7 @@ operator !=(const SbMatrix & m1, const SbMatrix & m2)
 void
 SbMatrix::getValue(SbMat & m) const
 {
-  memcpy(&m[0][0], &(this->matrix[0][0]), sizeof(float)*4*4);
+  (void)memmove(&m[0][0], &(this->matrix[0][0]), sizeof(float)*4*4);
 }
 
 /*!
@@ -962,6 +971,7 @@ SbMatrix::multRight(const SbMatrix & m)
   const float * t2 = (*this)[2];
   const float * t3 = (*this)[3];
 
+  // FIXME: replace with 2 for loops to increase readability. 20010114 mortene.
   tmp[0][0]=m0[0]*t0[0]+m1[0]*t0[1]+m2[0]*t0[2]+m3[0]*t0[3];
   tmp[0][1]=m0[1]*t0[0]+m1[1]*t0[1]+m2[1]*t0[2]+m3[1]*t0[3];
   tmp[0][2]=m0[2]*t0[0]+m1[2]*t0[1]+m2[2]*t0[2]+m3[2]*t0[3];
@@ -979,7 +989,7 @@ SbMatrix::multRight(const SbMatrix & m)
   tmp[3][2]=m0[2]*t3[0]+m1[2]*t3[1]+m2[2]*t3[2]+m3[2]*t3[3];
   tmp[3][3]=m0[3]*t3[0]+m1[3]*t3[1]+m2[3]*t3[2]+m3[3]*t3[3];
 
-  memcpy(this->matrix, tmp.matrix, sizeof(float)*4*4);
+  (void)memcpy(this->matrix, tmp.matrix, sizeof(float)*4*4);
   return *this;
 }
 
@@ -1002,6 +1012,7 @@ SbMatrix::multLeft(const SbMatrix & m)
   const float * t2 = (*this)[2];
   const float * t3 = (*this)[3];
 
+  // FIXME: replace with 2 for loops to increase readability. 20010114 mortene.
   tmp[0][0]=m0[0]*t0[0]+m0[1]*t1[0]+m0[2]*t2[0]+m0[3]*t3[0];
   tmp[0][1]=m0[0]*t0[1]+m0[1]*t1[1]+m0[2]*t2[1]+m0[3]*t3[1];
   tmp[0][2]=m0[0]*t0[2]+m0[1]*t1[2]+m0[2]*t2[2]+m0[3]*t3[2];
@@ -1019,7 +1030,7 @@ SbMatrix::multLeft(const SbMatrix & m)
   tmp[3][2]=m3[0]*t0[2]+m3[1]*t1[2]+m3[2]*t2[2]+m3[3]*t3[2];
   tmp[3][3]=m3[0]*t0[3]+m3[1]*t1[3]+m3[2]*t2[3]+m3[3]*t3[3];
 
-  memcpy(this->matrix, tmp.matrix, sizeof(float)*4*4);
+  (void)memcpy(this->matrix, tmp.matrix, sizeof(float)*4*4);
   return *this;
 }
 
@@ -1150,6 +1161,14 @@ SbMatrix::print(FILE * fp) const
    <shoemake@graphics.cis.upenn.edu>. It was part of the
    Graphics Gems IV archive.
 ************************************************************************/
+
+// FIXME: should merge all the PD code we're using from GGIV into
+// SbMatrix, SbRotation and SbVec3f proper (for two reasons: 1)
+// there's a lot of duplicated code here (like for instance the
+// matrix->quaternion decomposition, which also exists in
+// SbRotation::setValue(SbMatrix&)), and 2) the remaining code
+// snippets look generally useful outside the purpose of breaking down
+// a matrix into it's transformation components). 20010114 mortene.
 
 
 /**** Decompose.c ****/
