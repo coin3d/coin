@@ -31,6 +31,7 @@
   \sa SoEventCallback, SoHandleEventAction */
 
 #include <Inventor/events/SoMouseButtonEvent.h>
+#include <Inventor/SbName.h>
 #include <assert.h>
 
 /*!

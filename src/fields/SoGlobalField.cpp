@@ -39,6 +39,7 @@
 #include <Inventor/fields/SoField.h>
 #include <Inventor/fields/SoFieldData.h>
 #include <Inventor/lists/SoBaseList.h>
+#include <Inventor/SbName.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

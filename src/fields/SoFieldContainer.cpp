@@ -41,6 +41,7 @@
 #include <Inventor/VRMLnodes/SoVRMLInterpOutput.h>
 #include <Inventor/fields/SoField.h>
 #include <Inventor/fields/SoFieldData.h>
+#include <Inventor/SbName.h>
 #include <coindefs.h> // COIN_STUB()
 
 #if COIN_DEBUG

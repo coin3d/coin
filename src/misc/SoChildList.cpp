@@ -31,6 +31,7 @@
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/nodes/SoNode.h>
+#include <Inventor/SbName.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

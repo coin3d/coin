@@ -31,6 +31,7 @@
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbDict.h>
+#include <Inventor/SbName.h>
 #include <assert.h>
 #if HAVE_CONFIG_H
 #include <config.h>

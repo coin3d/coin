@@ -41,6 +41,7 @@
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/SoPath.h>
 #include <Inventor/engines/SoEngine.h>
+#include <Inventor/SbName.h>
 
 #include <stdarg.h>
 #include <stdlib.h>

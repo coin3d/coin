@@ -54,6 +54,7 @@
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoField.h>
+#include <Inventor/SbName.h>
 #include <coindefs.h> // COIN_STUB()
 #include <ctype.h>
 

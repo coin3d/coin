@@ -67,6 +67,7 @@
 #include <Inventor/lists/SbStringList.h>
 #include <coindefs.h> // COIN_STUB()
 #include <Inventor/SoDB.h>
+#include <Inventor/SbName.h>
 
 #if HAVE_CONFIG_H
 #include <config.h>

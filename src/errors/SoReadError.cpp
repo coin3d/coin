@@ -32,6 +32,7 @@
 
 #include <Inventor/SoType.h>
 #include <Inventor/SoInput.h>
+#include <Inventor/SbName.h>
 
 #include <stdarg.h>
 #include <stdio.h>

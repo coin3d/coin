@@ -35,6 +35,7 @@
 
 #include <Inventor/misc/SoNotification.h>
 #include <Inventor/nodes/SoNode.h>
+#include <Inventor/SbName.h>
 #include <assert.h>
 #include <time.h>
 
@@ -122,9 +123,14 @@ SoNotRec::print(FILE * const file) const
   case INTERP:     (void)fprintf(file, "INTERP"); break;
   default:         (void)fprintf(file, "UNSET"); break;
   }
-  (void)fprintf(file, ", base %p (type %s, \"%s\")\n",
-                this->base, this->base->getTypeId().getName().getString(),
-                this->base->getName().getString());
+  if (this->base) {
+    (void)fprintf(file, ", base %p (type %s, \"%s\")\n",
+                  this->base, this->base->getTypeId().getName().getString(),
+                  this->base->getName().getString());
+  }
+  else {
+    (void)fprintf(file," base is NULL\n");
+  }
 #endif // COIN_DEBUG
 }
 
@@ -167,10 +173,16 @@ void
 SoNotList::append(SoNotRec * const rec)
 {
 #if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoNotList::append", "%p - %p (base: %p %s \"%s\")",
-                         this, rec, rec->getBase(),
-                         rec->getBase()->getTypeId().getName().getString(),
-                         rec->getBase()->getName().getString());
+  if (rec->getBase()) {
+    SoDebugError::postInfo("SoNotList::append", "%p - %p (base: %p %s \"%s\")",
+                           this, rec, rec->getBase(),
+                           rec->getBase()->getTypeId().getName().getString(),
+                           rec->getBase()->getName().getString());
+  }
+  else {
+    SoDebugError::postInfo("SoNotList::append", "%p - %p (base is NULL)",
+                           this, rec);
+  }
 #endif // debug
 
   // Link into list.

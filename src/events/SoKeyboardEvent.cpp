@@ -34,6 +34,7 @@
   \sa SoEventCallback, SoHandleEventAction */
 
 #include <Inventor/events/SoKeyboardEvent.h>
+#include <Inventor/SbName.h>
 #include <assert.h>
 
 // Avoid problem with Microsoft Win32 API headers (yes, they actually

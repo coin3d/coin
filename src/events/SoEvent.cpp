@@ -45,6 +45,7 @@
 #include <Inventor/events/SoLocation2Event.h>
 #include <Inventor/events/SoMotion3Event.h>
 #include <Inventor/SbViewportRegion.h>
+#include <Inventor/SbName.h>
 #include <assert.h>
 
 SO_EVENT_SOURCE(SoEvent);
