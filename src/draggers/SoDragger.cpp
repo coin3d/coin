@@ -26,15 +26,41 @@
   \brief The SoDragger class is the base class for all draggers.
   \ingroup draggers
 
-  It holds the motion matrix, and offers lots of convenience methods
-  for subdraggers.
+  Draggers is a mechanism used for letting the end-users of your
+  application code interact with elements in 3D, by scaling, rotating
+  or translating geometry or other instances in the scene (like
+  cameras or lightsources).
+
+  For a very thorough introduction and tutorial to the dragger classes
+  and general concepts, we advise you to consult «The Inventor
+  Mentor», ISBN 0-201-62495-8, chapter 15.
+
+  This is the common superclass for all dragger classes.
+
+  It holds the current motion matrix, and offers lots of convenience
+  methods to build from for it's subclasses -- that is, the
+  non-abstract dragger classes to use as nodes in your scenegraph.
 
   The motion matrix is used to modify the model matrix during
-  traversal, and all draggers should update this during dragging.
+  traversal, and this is a common dragger mechanism -- all draggers
+  should update this during dragging.
+
+  A number of the Coin dragger classes have built-in convenience
+  wrapper classes, called \e manipulators. See for instance the
+  SoTrackballDragger / SoTrackballManip pair.
+
+  The matching manipulator class for any dragger class has basically
+  two convenient additions to the functionality of the stand-alone
+  dragger: 1) it makes "correct" scenegraph insertion very
+  straightforward, 2) it wraps up the dragger with SoSurroundScale and
+  SoAntiSquish nodes where applicable, so the dragger geometry
+  automatically scales up or down to match the geometry it influences.
+
+  FIXME: more class doc! The general concept of draggers should be
+  explained in more detail here -- just refering to the Inventor
+  Mentor is a cop-out. And include at least one general usage example
+  and some screenshots.  20011219 mortene.
 */
-// FIXME: more class doc! The general concept of draggers should be
-// explained here. And include at least one general usage example.
-// 20011219 mortene.
 
 
 /*!
