@@ -260,7 +260,7 @@ SoVRMLSpotLight::GLRender(SoGLRenderAction * action)
   glLightfv(light, GL_POSITION, posvec.getValue());
   glLightfv(light, GL_SPOT_DIRECTION, this->direction.getValue().getValue());
 
-  float cutoff = this->cutOffAngle.getValue() * 180.0f / float(M_PI);
+  float cutoff = SbClamp(this->cutOffAngle.getValue(), 0.0f, float(M_PI)*0.5f) * 180.0f / float(M_PI);
   glLightf(light, GL_SPOT_EXPONENT, 0.0f);
   glLightf(light, GL_SPOT_CUTOFF, cutoff);
 
