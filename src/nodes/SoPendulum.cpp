@@ -101,3 +101,33 @@ SoPendulum::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoPendulum);
 }
+
+/*!
+  Overloaded to not write out internal engine connections.
+ */
+void
+SoPendulum::write(SoWriteAction * action)
+{
+  // Decouple connections to/from internal engine to avoid it being
+  // written.
+  this->timer->on.disconnect(&this->on);
+  this->timer->on = FALSE;
+  this->calculator->b.disconnect(&this->speed);
+  this->interpolator->input0.disconnect(&this->rotation0);
+  this->interpolator->input1.disconnect(&this->rotation1);
+  this->rotation.disconnect(&this->interpolator->output);
+
+  inherited::write(action);
+
+  // Reenable all connections to/from internal engine.
+  this->timer->on.connectFrom(&this->on);
+  this->calculator->b.connectFrom(&this->speed);
+  this->interpolator->input0.connectFrom(&this->rotation0);
+  this->interpolator->input1.connectFrom(&this->rotation1);
+  this->interpolator->alpha.connectFrom(&this->calculator->oa);
+  this->rotation.connectFrom(&this->interpolator->output);
+
+  // Make sure "on" field of the timer engine get synchronized with
+  // the "on" field of the pendulum.
+  this->on.touch();
+}

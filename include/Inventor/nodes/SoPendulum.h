@@ -44,6 +44,8 @@ public:
   SoSFFloat speed;
   SoSFBool on;
 
+  virtual void write(SoWriteAction * action);
+
 protected:
   virtual ~SoPendulum();
 
