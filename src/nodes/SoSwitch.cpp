@@ -41,6 +41,10 @@
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 /*!
   \var SoSFInt32 SoSwitch::whichChild
   FIXME: write documentation for field
@@ -114,16 +118,22 @@ SoSwitch::getBoundingBox(SoGetBoundingBoxAction * action)
   if (action->getPathCode(numIndices, indices) == SoAction::IN_PATH)
     idx = indices[numIndices-1];
   else
-    idx = whichChild.getValue();
+    idx = this->whichChild.getValue();
 
   if (idx == SO_SWITCH_INHERIT) idx = SoSwitchElement::get(action->getState());
   else SoSwitchElement::set(action->getState(), idx);
 
   if (idx == SO_SWITCH_NONE) return;
 
-  // FIXME: handle gracefully. 19990324 mortene.
-  assert((idx < this->getNumChildren() && idx >= 0)
-         || idx == SO_SWITCH_ALL);
+  if (! ((idx < this->getNumChildren() && idx >= 0) || idx == SO_SWITCH_ALL)) {
+#if COIN_DEBUG
+    SoDebugError::post("SoSwitch::getBoundingBox",
+                       "invalid whichChild value (%d) or switch index (%d)",
+                       this->whichChild.getValue(), idx);
+    this->whichChild = SO_SWITCH_NONE;
+#endif // COIN_DEBUG
+    return;
+  }
 
   if (idx == SO_SWITCH_ALL) {
     // Initialize accumulation variables.
@@ -217,6 +227,15 @@ SoSwitch::doAction(SoAction * action)
   }
   for (int i = startIdx; i <= endIdx; i++) {
     if (!inheritIdx) SoSwitchElement::set(state, this, i);
+    if (i < 0 || i >= this->getNumChildren()) {
+#if COIN_DEBUG
+      SoDebugError::post("SoSwitch::doAction",
+                         "invalid whichChild value (%d) or switch index (%d)",
+                         this->whichChild.getValue(), i);
+      this->whichChild = SO_SWITCH_NONE;
+#endif // COIN_DEBUG
+      return;
+    }
     this->children->traverse(action, i);
   }
 }
@@ -299,9 +318,9 @@ SoSwitch::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 
 /*!
   FIXME: write doc
- */
+*/
 void
-SoSwitch::traverseChildren(SoAction * /* action */)
+SoSwitch::traverseChildren(SoAction * action)
 {
   COIN_STUB();
 }
