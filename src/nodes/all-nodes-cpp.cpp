@@ -28,6 +28,7 @@
 #include "SoBlinker.cpp"
 #include "SoBumpMap.cpp"
 #include "SoBumpMapCoordinate.cpp"
+#include "SoBumpMapTransform.cpp"
 #include "SoBumpMappingProperty.cpp"
 #include "SoCallback.cpp"
 #include "SoCamera.cpp"
