@@ -265,12 +265,12 @@ AC_CHECK_HEADERS([unistd.h sys/types.h sys/param.h io.h windows.h winsock2.h])
 # catch problems quiet so early on, though. 20001025 mortene.
 
 AC_CACHE_CHECK([netinet/in.h], sim_cv_netinet_in_h, [
-  AC_TRY_COMPILE([
+  AC_TRY_CPP([
     #if HAVE_SYS_TYPES_H
     #include <sys/types.h>
     #endif /* HAVE_SYS_TYPES_H */
     #include <netinet/in.h>],
-    [], [sim_cv_netinet_in_h=true], [sim_cv_netinet_in_h=false])])
+    [sim_cv_netinet_in_h=true], [sim_cv_netinet_in_h=false])])
 
 if $sim_cv_netinet_in_h; then
   AC_DEFINE_UNQUOTED([HAVE_NETINET_IN_H], [1],
