@@ -788,7 +788,7 @@ if test x"$enable_hacking" = x"yes"; then
   fi
   if $enable_superglu; then
     HACKING_LIBDIRS="$HACKING_LIBDIRS -L${coin_build_dir}/src/extensions/superglu/.libs"
-    EXTRA_LIBS="$EXTRA_LIBS -l${SUPERGLUPREFIX}GLU${SUFFIX}LINKHACK"
+    EXTRA_LIBS="$EXTRA_LIBS -l${SUPERGLUPREFIX}GLU"
   fi
   COIN_HACKING_LIBDIRS="$HACKING_LIBDIRS"
   COIN_EXTRA_LIBS="$EXTRA_LIBS $COIN_EXTRA_LIBS"
