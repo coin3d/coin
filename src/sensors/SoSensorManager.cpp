@@ -596,12 +596,14 @@ int
 SoSensorManager::mergeTimerQueues(void)
 {
   assert(0 && "obsoleted");
+  return 0;
 }
 
 int 
 SoSensorManager::mergeDelayQueues(void)
 {
   assert(0 && "obsoleted");
+  return 0;
 }
 
 
