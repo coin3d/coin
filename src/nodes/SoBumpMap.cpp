@@ -167,6 +167,9 @@ SoBumpMap::GLRender(SoGLRenderAction * action)
     }
     SoBumpMapElement::set(state, this, PRIVATE(this)->glimage);
   }
+  else {
+    SoBumpMapElement::set(state, this, NULL);
+  }
 }
 
 // Documented in superclass.
