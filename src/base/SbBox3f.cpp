@@ -494,12 +494,16 @@ SbBox3f::outside(const SbMatrix & mvp, int & cullbits) const
   for (int j = 0; j < 3; j++) {
     if (cullbits & (1<<j)) {
       int inside = 0;
-      int outside = 0;
+      int outsideneg = 0;
+      int outsidepos = 0;
       for (i = 0; i < 8; i++) {
-        if (SbAbs(clip[i][j]) <= 1.0f) inside++;
-        else outside++;
+        float val = clip[i][j];
+        if (val < -1.0f) outsideneg++;
+        else if (val > 1.0f) outsidepos++;
+        else inside++;
       }
-      if (outside == 8) return TRUE;
+      if (outsidepos == 8) return TRUE;
+      if (outsideneg == 8) return TRUE;
       if (inside == 8) cullbits ^= (1<<j);
     }
   }
