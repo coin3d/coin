@@ -26,7 +26,7 @@
 /**************************************************************************
  *
  * Header macros for single-value fields.
- *                                                                           
+ *
  **************************************************************************/
 
 #define SO_SFIELD_CONSTRUCTOR_HEADER(_class_) \
@@ -93,7 +93,7 @@ public: \
 /**************************************************************************
  *
  * Source macros for single-value fields.
- *                                                                           
+ *
  **************************************************************************/
 
 #define SO_SFIELD_INIT_CLASS(_class_, _parent_) \
@@ -127,7 +127,7 @@ _class_::operator==(const _class_ & field) const \
 }
 
 
-#define PRIVATE_SFIELD_TYPE_SOURCE(_class_) \
+#define PRIVATE_TYPEID_SOURCE(_class_) \
 SoType _class_::classTypeId = SoType::badType(); \
  \
 SoType _class_::getTypeId(void) const { return _class_::classTypeId; } \
@@ -136,7 +136,7 @@ void * _class_::createInstance(void) { return new _class_; }
 
 
 
-#define PRIVATE_SFIELD_EQUALITY_SOURCE(_class_) \
+#define PRIVATE_EQUALITY_SOURCE(_class_) \
 void \
 _class_::copyFrom(const SoField & field) \
 { \
@@ -153,8 +153,8 @@ _class_::isSame(const SoField & field) const \
 
 
 #define SO_SFIELD_REQUIRED_SOURCE(_class_) \
-PRIVATE_SFIELD_TYPE_SOURCE(_class_); \
-PRIVATE_SFIELD_EQUALITY_SOURCE(_class_); \
+PRIVATE_TYPEID_SOURCE(_class_); \
+PRIVATE_EQUALITY_SOURCE(_class_); \
  \
 const _class_ & \
 _class_::operator=(const _class_ & field) \
@@ -180,7 +180,7 @@ _class_::operator=(const _class_ & field) \
 /**************************************************************************
  *
  * Header macros for multiple-value fields.
- *                                                                           
+ *
  **************************************************************************/
 
 #define PRIVATE_MFIELD_IO_HEADER() \
@@ -234,6 +234,192 @@ public: \
   SO_SFIELD_CONSTRUCTOR_HEADER(_class_); \
   SO_SFIELD_REQUIRED_HEADER(_class_); \
   SO_MFIELD_DERIVED_VALUE_HEADER(_class_, _valtype_, _valref_)
+
+
+
+/**************************************************************************
+ *
+ * Source macros for multiple-value fields.
+ *
+ **************************************************************************/
+
+
+#define SO_MFIELD_INIT_CLASS(_class_, _parent_) \
+  SO_SFIELD_INIT_CLASS(_class_, _parent_)
+
+
+
+#define SO_MFIELD_CONSTRUCTOR_SOURCE(_class_) \
+_class_::_class_(void) \
+{ \
+  assert(_class_::classTypeId != SoType::badType()); \
+  this->values = NULL; \
+} \
+ \
+_class_::~_class_(void) \
+{ \
+  this->deleteAllValues(); \
+}
+
+
+
+#define SO_MFIELD_DERIVED_CONSTRUCTOR_SOURCE(_class_) \
+_class_::_class_(void) { } \
+_class_::~_class_(void) { }
+
+
+
+#define SO_MFIELD_REQUIRED_SOURCE(_class_) \
+PRIVATE_TYPEID_SOURCE(_class_); \
+PRIVATE_EQUALITY_SOURCE(_class_); \
+const _class_ & \
+_class_::operator = (const _class_ & field) \
+{ \
+  if (field.getNum() < this->getNum()) this->deleteAllValues(); \
+  this->setValues(0, field.getNum(), field.getValues(0)); \
+  return *this; \
+}
+
+
+
+#define SO_MFIELD_VALUE_SOURCE(_class_, _valtype_, _valref_) \
+int \
+_class_::fieldSizeof(void) const \
+{ \
+  return sizeof(_valtype_); \
+} \
+ \
+void * \
+_class_::valuesPtr(void) \
+{ \
+  return (void *)this->values; \
+} \
+ \
+void \
+_class_::setValuesPtr(void * ptr) \
+{ \
+  this->values = (_valtype_ *)ptr; \
+} \
+ \
+int \
+_class_::find(_valref_ value, SbBool addIfNotFound) \
+{ \
+  for (int i=0; i < this->num; i++) if (this->values[i] == value) return i; \
+ \
+  if (addIfNotFound) this->set1Value(this->num, value); \
+  return -1; \
+} \
+ \
+void \
+_class_::setValues(const int start, const int num, const _valtype_ * newValues) \
+{ \
+  if (start+num > this->maxNum) this->allocValues(start+num); \
+  else if (start+num > this->num) this->num = start+num; \
+ \
+  for (int i=0; i < num; i++) \
+    this->values[i+start] = (_valtype_) newValues[i]; \
+  this->valueChanged(); \
+} \
+ \
+void \
+_class_::set1Value(const int idx, _valref_ value) \
+{ \
+  if (idx+1 > this->maxNum) this->allocValues(idx+1); \
+  else if (idx+1 > this->num) this->num = idx+1; \
+  this->values[idx] = value; \
+  this->valueChanged(); \
+} \
+ \
+void \
+_class_::setValue(_valref_ value) \
+{ \
+  this->allocValues(1); \
+  this->values[0] = value; \
+  this->valueChanged(); \
+} \
+ \
+SbBool \
+_class_::operator == (const _class_ & field) const \
+{ \
+  if (this == &field) return TRUE; \
+  if (this->getNum() != field.getNum()) return FALSE; \
+ \
+  const _valtype_ * const lhs = this->getValues(0); \
+  const _valtype_ * const rhs = field.getValues(0); \
+  for (int i = 0; i < num; i++) if (lhs[i] != rhs[i]) return FALSE; \
+  return TRUE; \
+} \
+ \
+void \
+_class_::deleteAllValues(void) \
+{ \
+  this->allocValues(0); \
+} \
+ \
+void \
+_class_::copyValue(int to, int from) \
+{ \
+  assert(this->values && SbMax(to, from) < num); \
+  this->values[to] = this->values[from]; \
+  this->valueChanged(); \
+}
+
+
+#define SO_MFIELD_ALLOC_SOURCE(_class_, _valtype_) \
+void \
+_class_::allocValues(int number) \
+{ \
+  assert(number >= 0); \
+ \
+  if (number == 0) { \
+    delete[] this->values; \
+    this->values = NULL; \
+  } \
+  else { \
+    if (this->values) { \
+      _valtype_ * newblock = new _valtype_[number]; \
+      for (int i=0; i < SbMin(this->num, number); i++) \
+        newblock[i] = this->values[i]; \
+ \
+      delete[] this->values; \
+      this->values = newblock; \
+    } \
+    else { \
+      this->values = new _valtype_[number]; \
+    } \
+  } \
+ \
+  SbBool valchanged = number < this->num ? TRUE : FALSE; \
+  this->num = number; \
+  this->maxNum = number; \
+  if (valchanged) this->valueChanged(); \
+}
+
+
+
+#define SO_MFIELD_MALLOC_SOURCE(_class_, _valtype_)
+
+
+
+#define SO_MFIELD_SOURCE_MALLOC(_class_, _valtype_, _valref_) \
+  SO_MFIELD_REQUIRED_SOURCE(_class_); \
+  SO_MFIELD_CONSTRUCTOR_SOURCE(_class_); \
+  SO_MFIELD_MALLOC_SOURCE(_class_, _valtype_); \
+  SO_MFIELD_VALUE_SOURCE(_class_, _valtype_, _valref_)
+
+
+
+#define SO_MFIELD_SOURCE(_class_, _valtype_, _valref_) \
+  SO_MFIELD_REQUIRED_SOURCE(_class_); \
+  SO_MFIELD_CONSTRUCTOR_SOURCE(_class_); \
+  SO_MFIELD_ALLOC_SOURCE(_class_, _valtype_); \
+  SO_MFIELD_VALUE_SOURCE(_class_, _valtype_, _valref_)
+
+
+
+#define SO_MFIELD_DERIVED_SOURCE(_class_, _valtype_, _valref_) \
+  SO_MFIELD_REQUIRED_SOURCE(_class_); \
+  SO_MFIELD_DERIVED_CONSTRUCTOR_SOURCE(_class_)
 
 
 

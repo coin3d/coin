@@ -33,110 +33,10 @@
 #include <Inventor/SoOutput.h>
 #include <Inventor/SbName.h>
 
-// *************************************************************************
 
-//$ BEGIN TEMPLATE MFieldConstructor(SoMFBitMask)
 
-/*!
-  Constructor.
-*/
-SoMFBitMask::SoMFBitMask(void)
-{
-  // Make sure we have initialized class.
-  assert(SoMFBitMask::classTypeId != SoType::badType());
-  this->values = NULL;
-}
+SO_MFIELD_DERIVED_SOURCE(SoMFBitMask, not_used, not_used);
 
-/*!
-  Destructor.
-*/
-SoMFBitMask::~SoMFBitMask(void)
-{
-  this->deleteAllValues();
-}
-//$ END TEMPLATE MFieldConstructor
-
-//$ BEGIN TEMPLATE MFieldRequired(SoMFBitMask)
-
-SoType SoMFBitMask::classTypeId = SoType::badType();
-
-/*!
-  Virtual method which returns the type identifier for an object.
-
-  \sa getClassTypeId()
-*/
-SoType
-SoMFBitMask::getTypeId(void) const
-{
-  return SoMFBitMask::classTypeId;
-}
-
-/*!
-  Returns a unique type identifier for the SoMFBitMask class.
-
-  \sa getTypeId(), SoType
- */
-SoType
-SoMFBitMask::getClassTypeId(void)
-{
-  return SoMFBitMask::classTypeId;
-}
-
-/*!
-  Constructs and returns a new instance of the SoMFBitMask class.
-*/
-void *
-SoMFBitMask::createInstance(void)
-{
-  return new SoMFBitMask;
-}
-/*!
-  Copy all data from \a field into this object. \a field \e must
-  be of the same type as the field we are copying into.
-*/
-void
-SoMFBitMask::copyFrom(const SoField & field)
-{
-#if 0 // COIN_DEBUG
-  // Calling field.getTypeId() here fails when "this" is connected to "field"
-  // and "field" is destructed. The error message is "pure virtual method
-  // called" with egcs 1.0.2 under Linux. 19990713 mortene.
-  if (field.getTypeId() != this->getTypeId()) {
-    SoDebugError::postWarning("SoMFBitMask::copyFrom",
-                              "not of the same type: (this) '%s' (from) '%s'",
-                              this->getTypeId().getName().getString(),
-                              field.getTypeId().getName().getString());
-    return;
-  }
-#endif // COIN_DEBUG
-
-  this->operator=((const SoMFBitMask &)field);
-}
-
-/*!
-  Tests \a field against this field for equality. Returns \a FALSE if they
-  are not of the same type, or if they do not contain the same data.
-*/
-SbBool
-SoMFBitMask::isSame(const SoField & field) const
-{
-  if (field.getTypeId() != this->getTypeId()) return FALSE;
-  return this->operator==((const SoMFBitMask &) field);
-}
-
-/*!
-  Copy all field values from \a field into this object.
-*/
-const SoMFBitMask &
-SoMFBitMask::operator = (const SoMFBitMask & field)
-{
-  if (field.getNum() < this->getNum()) this->deleteAllValues();
-  this->setValues(0, field.getNum(), field.getValues(0));
-  return *this;
-}
-//$ END TEMPLATE MFieldRequired
-
-// *************************************************************************
 
 /*!
   Does initialization common for all objects of the
@@ -146,19 +46,8 @@ SoMFBitMask::operator = (const SoMFBitMask & field)
 void
 SoMFBitMask::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass(MFBitMask)
-  // Make sure we only initialize once.
-  assert(SoMFBitMask::classTypeId == SoType::badType());
-  // Make sure superclass has been initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoMFBitMask::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "MFBitMask", &SoMFBitMask::createInstance);
-//$ END TEMPLATE FieldInitClass
+  SO_MFIELD_INIT_CLASS(SoMFBitMask, inherited);
 }
-
-// *************************************************************************
 
 SbBool
 SoMFBitMask::read1Value(SoInput * in, int idx)

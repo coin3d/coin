@@ -35,8 +35,8 @@ SO_SFIELD_CONSTRUCTOR_SOURCE(SoSFTrigger);
 // The following code is the internals of the
 // SO_SFIELD_REQUIRED_SOURCE macro, with a minor modification
 // (setValue() takes a void argument).
-PRIVATE_SFIELD_TYPE_SOURCE(SoSFTrigger);
-PRIVATE_SFIELD_EQUALITY_SOURCE(SoSFTrigger);
+PRIVATE_TYPEID_SOURCE(SoSFTrigger);
+PRIVATE_EQUALITY_SOURCE(SoSFTrigger);
 const SoSFTrigger &
 SoSFTrigger::operator=(const SoSFTrigger & field)
 {
