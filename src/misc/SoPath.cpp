@@ -225,21 +225,34 @@ SoPath::append(const int childindex)
 void
 SoPath::append(SoNode * const node)
 {
-  if (this->getFullLength() == 0) {
+  const unsigned int full_length = (unsigned int)this->getFullLength();
+
+  if (full_length == 0) {
     this->setHead(node);
     return;
   }
 
-  SoChildList * children =
-    this->nodes[this->getFullLength() - 1]->getChildren();
-#ifdef COIN_EXTRA_DEBUG
-  assert(children);
-#endif // COIN_EXTRA_DEBUG
+  SoNode * tail = this->nodes[full_length - 1];
+  const SoChildList * children = tail->getChildren();
+
+#if COIN_DEBUG
+  if (!children) {
+    SoDebugError::post("SoPath::append",
+                       "The current tail of the SoPath, of type %s, does "
+                       "not have any children, so append()'ing new elements "
+                       "is bogus!",
+                       tail->getTypeId().getName().getString());
+    return;
+  }
+#endif // COIN_DEBUG
 
   const int idx = children->find((void *)node);
 #if COIN_DEBUG
   if (idx < 0) {
-    SoDebugError::post("SoPath::append", "node not found as child of tail");
+    SoDebugError::post("SoPath::append",
+                       "The current tail of the SoPath does not have the "
+                       "input argument node as a child, so append()'ing "
+                       "it is bogus!");
     return;
   }
 #endif // COIN_DEBUG
