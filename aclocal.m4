@@ -1017,19 +1017,16 @@ dnl * [larsa:20000222] more warnings on potential problems
 dnl
 
 define([m4_noquote],
-[changequote(,)$1changequote([,])])
-
-define([LF],
-[
-])
-
-define([TAB],
-[	])
+[changequote(-=<{,}>=-)$1-=<{}>=-changequote([,])])
 
 AC_DEFUN([SIM_AC_PML_WARNING],
 [errprint([SIM_PARSE_MODIFIER_LIST: $1
   (file "]__file__[", line ]__line__[)
 ])])
+
+define([TAB],[	])
+define([LF],[
+])
 
 dnl * this is an unquoted string compaction - words in string must expand to
 dnl * nothing before compaction starts...
@@ -1037,7 +1034,7 @@ AC_DEFUN([SIM_AC_PML_STRING_COMPACT],
 [patsubst(patsubst([$1],m4_noquote([[TAB LF]+]),[ ]),[^ \| $],[])])
 
 AC_DEFUN([SIM_AC_PML_STRING_WORDCOUNT_COMPACT],
-[m4_eval((1+len(patsubst([[$1]],[[^ ]+],[_])))/2)])
+[m4_eval((1+len(patsubst([$1],[[^ ]+],[_])))/2)])
 
 AC_DEFUN([SIM_AC_PML_STRING_WORDCOUNT],
 [SIM_AC_PML_STRING_WORDCOUNT_COMPACT([SIM_AC_PML_STRING_COMPACT([$1])])])
@@ -1054,7 +1051,7 @@ AC_DEFUN([SIM_AC_PML_DEFINE_VARIABLES],
 
 AC_DEFUN([SIM_AC_PML_PUSHDEF_MODIFIER],
 [ifelse(defn([$2]), [],
-        [SIM_AC_PML_ERROR([invalid variable (arg 3): "$2"])],
+        [SIM_AC_PML_ERROR([invalid variable in argument 3: "$2"])],
         [pushdef([$1],[define([$2],[$3])])])])
 
 AC_DEFUN([SIM_AC_PML_PUSHDEF_MODIFIERS],
@@ -1078,14 +1075,14 @@ AC_DEFUN([SIM_AC_PML_PARSE_MODIFIER_LIST],
 [pushdef([wordcount],SIM_AC_PML_STRING_WORDCOUNT([$2]))]dnl
 [ifelse(m4_eval(((wordcount % 2) == 0) && (wordcount > 0)), 1,
         [],
-        [SIM_AC_PML_WARNING([invalid word count (arg 2): "]SIM_AC_PML_STRING_COMPACT([$2])")])]dnl
+        [SIM_AC_PML_WARNING([invalid word count ]wordcount[ for argument 2: "]SIM_AC_PML_STRING_COMPACT([$2])")])]dnl
 [popdef([wordcount])]dnl
-[SIM_AC_PML_DEFINE_VARIABLES([$2])]dnl
 [pushdef([wordcount],SIM_AC_PML_STRING_WORDCOUNT([$3]))]dnl
 [ifelse(m4_eval(((wordcount % 3) == 0) && (wordcount > 0)), 1,
         [],
-        [SIM_AC_PML_WARNING([invalid word count (arg 3): "$3"])])]dnl
+        [SIM_AC_PML_WARNING([invalid word count ]wordcount[ for argument 3: "$3"])])]dnl
 [popdef([wordcount])]dnl
+[SIM_AC_PML_DEFINE_VARIABLES([$2])]dnl
 [SIM_AC_PML_PUSHDEF_MODIFIERS([$3])]dnl
 [ifelse(SIM_AC_PML_STRING_COMPACT([$1]), [],
         [ifelse([$4], [], [], [$4])],
