@@ -35,6 +35,27 @@
 
 // *************************************************************************
 
+//$ BEGIN TEMPLATE MFieldConstructor(SoMFBitMask)
+
+/*!
+  Constructor.
+*/
+SoMFBitMask::SoMFBitMask(void)
+{
+  // Make sure we have initialized class.
+  assert(SoMFBitMask::classTypeId != SoType::badType());
+  this->values = NULL;
+}
+
+/*!
+  Destructor.
+*/
+SoMFBitMask::~SoMFBitMask(void)
+{
+  this->deleteAllValues();
+}
+//$ END TEMPLATE MFieldConstructor
+
 //$ BEGIN TEMPLATE MFieldRequired(SoMFBitMask)
 
 SoType SoMFBitMask::classTypeId = SoType::badType();

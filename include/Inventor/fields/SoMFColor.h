@@ -21,70 +21,18 @@
 #define __SOMFCOLOR_H__
 
 #include <Inventor/fields/SoMField.h>
+#include <Inventor/fields/SoSubField.h>
 #include <Inventor/SbColor.h>
 
 
 class SoMFColor : public SoMField {
     typedef SoMField inherited;
 
-//$ BEGIN TEMPLATE MField(SoMFColor, SbColor, const SbColor &)
-private:
-  static SoType classTypeId;
+  SO_MFIELD_HEADER(SoMFColor, SbColor, const SbColor &);
 
 public:
-  static void * createInstance(void);
-  static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-
   static void initClass(void);
 
-  virtual void copyFrom(const SoField & field);
-  const SoMFColor & operator = (const SoMFColor & field);
-  virtual SbBool isSame(const SoField & field) const;
-public:
-  SoMFColor(void);
-  virtual ~SoMFColor(void);
-private:
-  virtual SbBool read1Value(SoInput * in, int idx);
-  virtual void write1Value(SoOutput * out, int idx) const;
-public:
-  /*! Returns the element at the \a idx position. */
-  const SbColor & operator [] (const int idx) const
-    { this->evaluate(); return this->values[idx]; }
-  /*! Returns a pointer to an array of element starting at the \a start position. */
-  const SbColor * getValues(const int start) const
-    { this->evaluate(); return (const SbColor *)(this->values + start); }
-  int find(const SbColor & value, SbBool addIfNotFound = FALSE);
-  void setValues(const int start, const int num, const SbColor * values);
-  void set1Value(const int idx, const SbColor & value);
-  void setValue(const SbColor & value);
-  /*! Make field contain a just the single value \a val. */
-  const SbColor & operator = (const SbColor & val)
-    { this->setValue(val); return val; }
-  SbBool operator == (const SoMFColor & field) const;
-  /*! Returns \a TRUE if this field is \e not equal to \a field. */
-  SbBool operator != (const SoMFColor & field) const
-    { return ! operator == (field); }
-  /*! Returns a pointer to the array of values for editing. \e Must be matched
-      with a call to finishEditing() upon completion. */
-  SbColor * startEditing(void)
-    { this->evaluate(); return this->values; }
-  /*! Call this method to notify Coin that you're through editing the data. */
-  void finishEditing(void)
-    { this->valueChanged(); }
-
-protected:
-  virtual void deleteAllValues(void);
-  virtual void copyValue(int to, int from);
-  virtual int fieldSizeof(void) const;
-  virtual void * valuesPtr(void);
-  virtual void setValuesPtr(void * ptr);
-
-  /*! Pointer to array of values. */
-  SbColor * values;
-//$ END TEMPLATE MField
-
-public:
   void setValues(const int start, const int num, const float rgb[][3]);
   void setHSVValues(const int start, const int num, const float hsv[][3]);
 

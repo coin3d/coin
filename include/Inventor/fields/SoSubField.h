@@ -177,4 +177,64 @@ _class_::operator=(const _class_ & field) \
   SO_SFIELD_REQUIRED_SOURCE(_class_)
 
 
+/**************************************************************************
+ *
+ * Header macros for multiple-value fields.
+ *                                                                           
+ **************************************************************************/
+
+#define PRIVATE_MFIELD_IO_HEADER() \
+private: \
+  virtual SbBool read1Value(SoInput * in, int idx); \
+  virtual void write1Value(SoOutput * out, int idx) const
+
+
+
+#define SO_MFIELD_VALUE_HEADER(_class_, _valtype_, _valref_) \
+  PRIVATE_MFIELD_IO_HEADER(); \
+protected: \
+  virtual void deleteAllValues(void); \
+  virtual void copyValue(int to, int from); \
+  virtual int fieldSizeof(void) const; \
+  virtual void * valuesPtr(void); \
+  virtual void setValuesPtr(void * ptr); \
+ \
+  _valtype_ * values; \
+public: \
+  _valref_ operator[](const int idx) const \
+    { this->evaluate(); return this->values[idx]; } \
+  const _valtype_ * getValues(const int start) const \
+    { this->evaluate(); return (const _valtype_ *)(this->values + start); } \
+  int find(_valref_ value, SbBool addIfNotFound = FALSE); \
+  void setValues(const int start, const int num, const _valtype_ * values); \
+  void set1Value(const int idx, _valref_ value); \
+  void setValue(_valref_ value); \
+  _valref_ operator=(_valref_ val) { this->setValue(val); return val; } \
+  SbBool operator==(const _class_ & field) const; \
+  SbBool operator!=(const _class_ & field) const { return !operator==(field); } \
+  _valtype_ * startEditing(void) { this->evaluate(); return this->values; } \
+  void finishEditing(void) { this->valueChanged(); }
+
+
+
+#define SO_MFIELD_DERIVED_VALUE_HEADER(_class_, _valtype_, _valref_) \
+  PRIVATE_MFIELD_IO_HEADER(); \
+  _valref_ operator=(_valref_ val) { this->setValue(val); return val; }
+
+
+
+#define SO_MFIELD_HEADER(_class_, _valtype_, _valref_) \
+  SO_SFIELD_CONSTRUCTOR_HEADER(_class_); \
+  SO_SFIELD_REQUIRED_HEADER(_class_); \
+  SO_MFIELD_VALUE_HEADER(_class_, _valtype_, _valref_)
+
+
+
+#define SO_MFIELD_DERIVED_HEADER(_class_, _valtype_, _valref_) \
+  SO_SFIELD_CONSTRUCTOR_HEADER(_class_); \
+  SO_SFIELD_REQUIRED_HEADER(_class_); \
+  SO_MFIELD_DERIVED_VALUE_HEADER(_class_, _valtype_, _valref_)
+
+
+
 #endif // !__SOSUBFIELD_H__
