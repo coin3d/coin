@@ -122,9 +122,9 @@ SoPathList::findPath(const SoPath & path) const
 static int
 compare_paths(const void * v0, const void * v1)
 {
-  SoPath * p0 = (SoPath *)v0;
-  SoPath * p1 = (SoPath *)v1;
-
+  SoPath * p0 = *((SoPath**)v0);
+  SoPath * p1 = *((SoPath**)v1);
+  
   int diff = (char *)p0->getHead() - (char *)p1->getHead();
   if (diff != 0) return diff;
 
@@ -145,28 +145,7 @@ compare_paths(const void * v0, const void * v1)
 void
 SoPathList::sort(void)
 {
-#if 0 // OBSOLETED: why not use qsort() from the C library? 20000228 mortene.
-  int i, j, distance, n = this->getLength();
-  SoPath * tmp;
-  void ** ptr = (void **)(*this);
-  SoPath ** array = (SoPath **)ptr;
-
-  // shell sort algorithm (O(nlog(n))
-  for (distance = 1; distance <= n/9; distance = 3 * distance + 1);
-  for (; distance > 0; distance /= 3) {
-    for (i = distance; i < n; i++) {
-      tmp = array[i];
-      j = i;
-      while (j >= distance && compare_paths(array[j-distance], tmp) > 0) {
-        array[j] = array[j-distance];
-        j -= distance;
-      }
-      array[j] = tmp;
-    }
-  }
-#else
   qsort((void **)this->getArrayPtr(), this->getLength(), sizeof(void *), compare_paths);
-#endif
 }
 
 /*!
