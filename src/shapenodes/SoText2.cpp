@@ -683,7 +683,7 @@ SoText2P::buildGlyphCache(SoState * state)
         this->validarraydims = 2;
         this->laststring[i] = new SbString(s);
         for (int j=0; j<len; j++) {
-          idx = s[j];
+          idx = (unsigned char)s[j];
           this->glyphs[i][j] = (SoGlyph *)(SoGlyph::getGlyph(state, idx, SbVec2s(0,0), 0.0));
           if (!this->glyphs[i][j]) {
             this->flushGlyphCache(FALSE);
