@@ -1977,10 +1977,12 @@ AC_CONFIG_FILES([
 AC_OUTPUT
 
 # in case someone has the old generated SbBasic.h lying about...
-if cmp -s $srcdir/include/Inventor/SbBasic.h $builddir/include/Inventor/SbBasic.h; then
-  :
-else
-  rm $builddir/include/Inventor/SbBasic.h
+if test -f include/Inventor/SbBasic.h; then
+  if cmp -s $srcdir/include/Inventor/SbBasic.h include/Inventor/SbBasic.h; then
+    :
+  else
+    rm include/Inventor/SbBasic.h
+  fi
 fi
 
 # *******************************************************************
