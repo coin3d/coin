@@ -615,7 +615,7 @@ SoVRMLBackgroundP::buildGeometry()
 
   if ((PUBLIC(this)->groundAngle.getNum() > 0) || (PUBLIC(this)->groundColor.getNum() > 0)) {
 
-    sphereradius = sphereradius * 0.9;
+    sphereradius = sphereradius * 0.9f;
     angles.truncate(0);
     angles.append(0);
     float angle = 0;
@@ -732,8 +732,6 @@ SoVRMLBackgroundP::buildGeometry()
   this->rightface = NULL;
   this->topface = NULL;
   this->bottomface = NULL;
-
-  SoVRMLImageTexture * tex;
 
   if (PUBLIC(this)->backUrl.getNum() != 0) {     
     const int vindices[] = {3, 2, 1, 0, -1};
@@ -959,9 +957,6 @@ void
 bindingchangeCB(void * data, SoSensor * sensor)
 {
   SoVRMLBackgroundP * pimpl = (SoVRMLBackgroundP *) data;
-
-  SoFieldSensor * setbindsensor;
-  SoFieldSensor * isboundsensor;
 
   // FIXME: Support for 'set_bind' and 'isBound' must be implemented.
   // But first, a Coin viewer must support this kind of special node

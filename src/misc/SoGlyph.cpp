@@ -306,7 +306,7 @@ SoGlyph::getBoundingBox(void) const
       idx = *ptr++;
     }
 
-    float advancex, advancey, width, height;
+    float advancex, advancey;
     cc_flw_get_advance(PRIVATE(this)->fontidx, PRIVATE(this)->glyphidx, &advancex, &advancey);
     SbVec2f max = PRIVATE(this)->bbox.getMax();
     

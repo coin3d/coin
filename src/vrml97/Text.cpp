@@ -618,7 +618,7 @@ SoVRMLText::computeBBox(SoAction * action,
       // FIXME: This is probably not the right way of doing this. The
       // box tends to be abit larger on the right side than
       // needed. (14Aug2003 handegar)
-      maxx = ((n-1) * linespacing * 0.5) - PRIVATE(this)->textsize;
+      maxx = ((n-1) * linespacing * 0.5f) - PRIVATE(this)->textsize;
       minx = -(n+2) * linespacing * 0.5f;
     }
     
