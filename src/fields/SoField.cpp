@@ -87,6 +87,7 @@
 #include <Inventor/lists/SoEngineList.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/sensors/SoDataSensor.h>
+#include <Inventor/C/threads/threadsutilp.h>
 
 // flags for this->statusbits
 #define FLAG_TYPEMASK       0x0007  // need 3 bits for values [0-5]
@@ -410,6 +411,16 @@ SoField::~SoField()
 #endif // debug
 }
 
+// need one static mutex for field_buffer in SoField::get(SbString &)
+static void * sofield_mutex = NULL;
+
+// atexit
+static void
+field_mutex_cleanup(void)
+{
+  CC_MUTEX_DESTRUCT(sofield_mutex);
+}
+
 /*!
   Internal method called upon initialization of the library (from
   SoDB::init()) to set up the type system.
@@ -419,6 +430,9 @@ SoField::initClass(void)
 {
   // Make sure we only initialize once.
   assert(SoField::classTypeId == SoType::badType());
+
+  CC_MUTEX_CONSTRUCT(sofield_mutex);
+  coin_atexit((coin_atexit_f*) field_mutex_cleanup);
 
   SoField::classTypeId = SoType::createType(SoType::badType(), "Field");
   SoField::initClasses();
@@ -1067,6 +1081,8 @@ field_buffer_realloc(void * bufptr, size_t size)
 void
 SoField::get(SbString & valuestring)
 {
+  CC_MUTEX_LOCK(sofield_mutex); // need to lock since a static array is used
+
   // Note: this code has an almost verbatim copy in SoMField::get1(),
   // so remember to update both places if any fixes are done.
 
@@ -1104,6 +1120,8 @@ SoField::get(SbString & valuestring)
   if (field_buffer_size >= MAXSIZE) {
     (void) field_buffer_realloc(field_buffer, STARTSIZE);
   }
+
+  CC_MUTEX_UNLOCK(sofield_mutex);
 }
 
 /*!
