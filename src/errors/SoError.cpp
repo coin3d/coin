@@ -17,12 +17,6 @@
  *
 \**************************************************************************/
 
-/*************************************************************************/
-
-#include <stdio.h>
-
-/*************************************************************************/
-
 /*!
   \class SoError SoError.h Inventor/errors/SoError.h
   \brief The SoError class is the base class for all the error
@@ -51,6 +45,15 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <stdio.h>
+#ifdef HAVE_UNISTD_H
+#include <unistd.h> // STDERR_FILENO
+#endif // HAVE_UNISTD_H
+
+#ifndef STDERR_FILENO
+// stderr should always be on file descriptor 2, according to POSIX.
+#define STDERR_FILENO 2
+#endif // STDERR_FILENO
 
 
 SoType SoError::classTypeId;
@@ -226,9 +229,18 @@ SoError::getString(const SoEngine * const engine)
   standard error file handle.
 */
 void
-SoError::defaultHandlerCB(const SoError * error, void * /* data */)
+SoError::defaultHandlerCB(const SoError * error, void * data)
 {
-  (void)fprintf(stderr, "%s\n", error->getDebugString().getString());
+  // It is not possible to "pass" C library data from the application
+  // to a MSWin .DLL, so this is necessary to get hold of the stderr
+  // FILE*. Just using fprintf(stderr, ...) or fprintf(stdout, ...)
+  // directly will result in a crash when Coin has been compiled as a
+  // .DLL.
+  static FILE * coin_stderr = NULL;
+  if (!coin_stderr) coin_stderr = fdopen(STDERR_FILENO, "w");
+
+  if (coin_stderr) (void)fprintf(coin_stderr, "%s\n",
+                                 error->getDebugString().getString());
 }
 
 /*!
