@@ -53,6 +53,8 @@ public:
   virtual void copyContents(const SoFieldContainer * from,
                             SbBool copyconnections);
 
+  const SbString & getFullName(void) const;
+  
 protected:
   virtual ~SoFile();
 
@@ -64,6 +66,7 @@ private:
 
   SoChildList * children;
   SoFieldSensor * namesensor;
+  SbString fullname;
 };
 
 #endif // !COIN_SOFILE_H

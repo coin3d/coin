@@ -95,6 +95,19 @@ SoFile::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoFile);
 }
 
+/*!  
+  Returns the read filename, possibly including the (relative) path
+  where the file was found.  Returns an empty string if no file has
+  been read.
+
+  This method is an extension versus the Open Inventor API.  
+*/
+const SbString & 
+SoFile::getFullName(void) const
+{
+  return this->fullname;
+}
+
 // Doc from superclass.
 void
 SoFile::getBoundingBox(SoGetBoundingBoxAction * action)
@@ -124,6 +137,7 @@ SoFile::readInstance(SoInput * in, unsigned short flags)
   //
   // (Fixed Bugzilla #202.)
 
+  this->fullname.makeEmpty();
   this->namesensor->detach();
   SbBool result = inherited::readInstance(in, flags);
   this->namesensor->attach(& this->name);
@@ -146,6 +160,8 @@ SoFile::readNamedFile(SoInput * in)
   // the way Inventor works, which will make the whole read process
   // exit with a failure code.
   if (!in->pushFile(this->name.getValue().getString())) return TRUE;
+
+  this->fullname = in->getCurFileName();
 
   SoSeparator * node = SoDB::readAll(in);
   // Popping the file off the stack again is done implicit in SoInput
@@ -179,6 +195,7 @@ SoFile::nameFieldModified(void * userdata, SoSensor * sensor)
 {
   SoFile * that = (SoFile *)userdata;
   SoInput in;
+  that->fullname.makeEmpty();
   (void)that->readNamedFile(&in);
 }
 
