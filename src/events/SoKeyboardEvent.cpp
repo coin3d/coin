@@ -36,6 +36,11 @@
 #include <Inventor/events/SoKeyboardEvent.h>
 #include <assert.h>
 
+// Avoid problem with Microsoft Win32 API headers (yes, they actually
+// #define DELETE somewhere in their header files).
+#undef DELETE
+
+
 /*¡
   The keycode handling in SoKeyboardEvent is really terrible -- could
   we improve it while still keeping Open Inventor API compatibility?

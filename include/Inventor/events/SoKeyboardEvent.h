@@ -75,7 +75,7 @@ public:
     BACKSPACE = 0xff08, TAB = 0xff08,
     RETURN = 0xff0d, ENTER = 0xff0d,
     PAUSE = 0xff13, SCROLL_LOCK = 0xff14,
-    ESCAPE = 0xff1b, DELETE = 0xffff,
+    ESCAPE = 0xff1b, DELETE = 0xffff, KEY_DELETE = DELETE,
     PRINT = 0xff61, INSERT = 0xff63,
     NUM_LOCK = 0xff7f, CAPS_LOCK = 0xffe5, SHIFT_LOCK = 0xffe6,
 
