@@ -273,10 +273,10 @@ and explains the principles applied fairly well.
 
         * Add the source files to the Makefile.am file in the source
           file directory (for building).
-
-        * If the class is public, add the header file to
-          src/Makefile.am or any of src/*/Makefile.am (for
-          installation).
+          Remember to add the header file correctly under PublicHeaders 
+          or PrivateHeaders. If you're adding a public base class, add the
+          header file to src/Makefile.am as well.
+          (for installation)
 
         * Remember to rerun bootstrap when changing any
           Makefile.am. You need to have the correct versions of the
