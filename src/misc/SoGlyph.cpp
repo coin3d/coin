@@ -52,7 +52,6 @@ SoGlyph::SoGlyph()
   this->coords = NULL;
   this->faceidx = NULL;
   this->edgeidx = NULL;
-  this->width = 0.0f;
   this->ymin = 0.0f;
   this->ymax = 0.0f;
 }
@@ -105,13 +104,14 @@ SoGlyph::getEdgeIndices(void) const
 }
 
 /*!
-  Convenience method which returns the width of the glyph.
+  Convenience method which returns the width of the glyph, and
+  adds a small value to get some space between letters.
 */
 float
 SoGlyph::getWidth(void) const
 {
   const SbBox2f & box = this->getBoundingBox();
-  return box.getMax()[0] - box.getMin()[0];
+  return box.getMax()[0] - box.getMin()[0] + 0.05; // some ext
 }
 
 /*!
@@ -284,7 +284,8 @@ SoGlyph::getGlyph(const char character, const SbName &font)
       glyph->setCoords(NULL);
       glyph->setFaceIndices(spaceidx);
       glyph->setEdgeIndices(spaceidx);
-      glyph->width = 0.2f;
+      glyph->bbox.setBounds(SbVec2f(0.0f, 0.0f), SbVec2f(0.2f, 0.0f));      
+      glyph->flags.didcalcbbox = 1;
     }
     else {
       glyph->setCoords((SbVec2f*)coin_defaultfont_coords[character-33]);

@@ -57,7 +57,6 @@ private:
   int * faceidx;
   int * edgeidx;
   int refcount;
-  float width;
   float ymin, ymax;
 
   struct {
