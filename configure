@@ -20860,12 +20860,12 @@ fi
     COIN_EXTRA_CPPFLAGS=
     COIN_EXTRA_CFLAGS=
     COIN_EXTRA_CXXFLAGS=
-    COIN_EXTRA_LDFLAGS="-framework $MAC_FRAMEWORK_NAME"
+    COIN_EXTRA_LDFLAGS="-Wl,-framework,$MAC_FRAMEWORK_NAME"
     COIN_EXTRA_LIBS=
     # adjust for AGL usage
     COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_agl_ldflags"
     # adjust for OpenGL usage
-    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS -framework OpenGL"
+    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS -Wl,-framework,OpenGL"
     # adjust for simage usage
     COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_simage_ldflags"
     COIN_EXTRA_LIBS="$sim_ac_simage_libs $COIN_EXTRA_LIBS"
