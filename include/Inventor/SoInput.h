@@ -107,6 +107,10 @@ public:
   static SbString getBasename(const char * const filename);
   static SbString getBasename(const SbString & s);
 
+  static SbString searchForFile(const SbString & basename,
+                                const SbStringList & directories,
+                                const SbStringList & subdirectories);
+
 
 protected:
   virtual SbBool popFile(void);

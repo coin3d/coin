@@ -1368,6 +1368,103 @@ SoInput::getBasename(const SbString & s)
   return SoInput::getBasename(s.getString());
 }
 
+// internal method used for testing if a file exists
+static SbBool 
+test_filename(const SbString & filename)
+{ 
+  FILE * fp = fopen(filename.getString(), "rb");
+#if COIN_DEBUG && 0 // flip 1<->0 to turn texture search trace on or off
+  SoDebugError::postInfo("test_filename", "file search: %s (%s)\n",
+                         filename.getString(), fp ? "hit" : "miss");
+#endif // !COIN_DEBUG
+  
+  if (fp != NULL) {
+    fclose(fp);
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/*!  
+  Given a \a basename for a file and an array of \a directories to
+  search, returns the full name of the file found.
+  
+  In addition to looking at the root of each directory in \a
+  directories, all \a subdirectories is also searched for each item in
+  \a directories.
+
+  If no file matching \a basename could be found in any of the
+  directories, returns an empty string.  
+*/
+SbString 
+SoInput::searchForFile(const SbString & basename,
+                       const SbStringList & directories,
+                       const SbStringList & subdirectories)
+{
+  int i;
+
+  if (test_filename(basename)) return basename;
+
+  SbString fullname = basename;
+
+  SbBool trypath = TRUE;
+  const char * strptr = basename.getString();
+  const char * lastunixdelim = strrchr(strptr, '/');
+  const char * lastdosdelim = strrchr(strptr, '\\');
+  if (!lastdosdelim) {
+    lastdosdelim = strrchr(strptr, ':');
+    if (lastdosdelim) trypath = FALSE;
+  }
+  const char * lastdelim = SbMax(lastunixdelim, lastdosdelim);
+
+  if (lastdelim && trypath) {
+    SbString tmpstring;
+    for (i = 0; i < directories.getLength(); i++) {
+      SbString dirname(directories[i]->getString());
+      int dirlen = dirname.getLength();
+      
+      if (dirlen > 0 &&
+          dirname[dirlen-1] != '/' &&
+          dirname[dirlen-1] != '\\' &&
+          dirname[dirlen-1] != ':') {
+        dirname += "/";
+      }
+
+      tmpstring.sprintf("%s%s", dirname.getString(),
+                        fullname.getString());
+      if (test_filename(tmpstring)) return tmpstring;
+    }
+  }
+
+  SbString base = lastdelim ?
+    basename.getSubString(lastdelim-strptr + 1, -1) :
+    basename;
+
+  for (i = 0; i < directories.getLength(); i++) {
+    SbString dirname(directories[i]->getString());
+    int dirlen = dirname.getLength();
+    
+    if (dirlen > 0 &&
+        dirname[dirlen-1] != '/' &&
+        dirname[dirlen-1] != '\\' &&
+        dirname[dirlen-1] != ':') {
+      dirname += "/";
+    }
+    fullname.sprintf("%s%s", dirname.getString(),
+                     base.getString());
+    if (test_filename(fullname)) return fullname;
+    for (int j = 0; j < subdirectories.getLength(); j++) {
+      fullname.sprintf("%s%s/%s", dirname.getString(),
+                       subdirectories[j]->getString(),
+                       base.getString());
+      if (test_filename(fullname)) return fullname;
+    }
+  }
+  // none found
+  return SbString("");
+}
+
+
 /*!
   Changes the file format version number for the stream at the top of the
   stack.
