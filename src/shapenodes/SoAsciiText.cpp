@@ -300,8 +300,15 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
 void
 SoAsciiText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-
   if (action->is3DTextCountedAsTriangles()) {        
+    SoState * state = action->getState();
+    cc_font_specification fontspec;
+    cc_fontspec_construct(&fontspec, SoFontNameElement::get(state).getString(),
+                          SoFontSizeElement::get(state),
+                          SoComplexityElement::get(state));
+    
+    PRIVATE(this)->setUpGlyphs(state, &fontspec, this);
+
     const int lines = this->string.getNum();
     int numtris = 0;      
     for (int i = 0;i < lines; ++i) {
@@ -314,7 +321,7 @@ SoAsciiText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
         // set up to 127) be expanded to huge int numbers that turn
         // negative when casted to integer size.        
         const uint32_t glyphidx = (const unsigned char) this->string[i][strcharidx];
-        const cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, PRIVATE(this)->fontspec);
+        const cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, &fontspec);
 
         int cnt = 0;
         const int * ptr = cc_glyph3d_getfaceindices(glyph);
@@ -325,6 +332,7 @@ SoAsciiText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
       }
     }
     action->addNumTriangles(numtris);
+    cc_fontspec_clean(&fontspec);
   }
   else {
     action->addNumText(this->string.getNum());
