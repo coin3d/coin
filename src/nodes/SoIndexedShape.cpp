@@ -146,7 +146,6 @@ SoIndexedShape::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
     const SbVec3f * coords = vpvtx ?
       vp->vertex.getValues(0) :
       coordelem->getArrayPtr3();
-    assert(coords);
 
     const int32_t * ptr = this->coordIndex.getValues(0);
     const int32_t * endptr = ptr + this->coordIndex.getNum();
@@ -159,16 +158,16 @@ SoIndexedShape::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
       else {
         const int faultyidxpos = (ptr - this->coordIndex.getValues(0)) - 1;
         error_idx_out_of_bounds(this, faultyidxpos, numcoords - 1);
-        if (numcoords == 1) break; // give only one error msg on missing coords
-        // (note that there's always at least a single default
-        // coordinate on the state stack)
+        if (numcoords <= 1) break; // give only one error msg on missing coords
+        // (the default state is that there's a default
+        // SoCoordinateElement element with a single default
+        // coordinate point setup)
       }
 #endif // COIN_DEBUG
     }
   }
   else {
     const SbVec4f * coords = coordelem->getArrayPtr4();
-    assert(coords);
     const int32_t * ptr = this->coordIndex.getValues(0);
     const int32_t * endptr = ptr + this->coordIndex.getNum();
     while (ptr < endptr) {
@@ -183,9 +182,10 @@ SoIndexedShape::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
       else {
         const int faultyidxpos = (ptr - this->coordIndex.getValues(0)) - 1;
         error_idx_out_of_bounds(this, faultyidxpos, numcoords - 1);
-        if (numcoords == 1) break; // give only one error msg on missing coords
-        // (note that there's always at least a single default
-        // coordinate on the state stack)
+        if (numcoords <= 1) break; // give only one error msg on missing coords
+        // (the default state is that there's a default
+        // SoCoordinateElement element with a single default
+        // coordinate point setup)
       }
 #endif // COIN_DEBUG
     }
