@@ -330,6 +330,17 @@ THE WISH LIST
     setting the single COIN_OPTIONS environment variable would be a
     lot harder from within application /code/ -- think about it..
 
+  ** Answer, larsa
+
+    I was thinking along the lines of having a simple API for this
+    functionality.  It's not "a lot harder", and we could add flexibility
+    by making variables watchable (callbacks) and other things.
+
+    Another possibility is to have an SoOptions node (or some similar name)
+    that could be placed in the scene graph to control some of these options.
+    This can be complimentary to the current envvar-scheme.
+
+
 * SbString::apply(int (*func)(int))
   2001-05-07  Peder Blekken <pederb@sim.no>
 
@@ -338,4 +349,5 @@ THE WISH LIST
   user-defined method. This could be handled by invoking callbacks
   for each character in the string, and setting the character to
   the value returned from the callback function.
+
 
