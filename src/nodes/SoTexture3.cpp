@@ -41,7 +41,9 @@
   <img src="http://doc.coin3d.org/images/SoGuiExamples/nodes/texture3.png">
   </center>
 
-  \since 2002-01-10
+  \COIN_CLASS_EXTENSION
+
+  \since Coin 2.0
   \since TGS Inventor 2.6
 */
 

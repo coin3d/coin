@@ -447,10 +447,9 @@ SoBase::cleanClass(void)
   with subsequent memory corruption and mysterious crashes, should be
   a Good Thing.
 
-  This is a method not part of the original SGI Inventor v2.1 API, and
-  is specific to the Coin library.
+  \COIN_FUNCTION_EXTENSION
 
-  \since 2002-09-28
+  \since Coin 2.0
 */
 void
 SoBase::assertAlive(void) const
@@ -1776,10 +1775,9 @@ find_field(SoNode * node, const SbName & fieldname)
   tofieldname. This method will consider the fields types (event in,
   event out, etc) when connecting.
 
-  This method was not part of the Inventor v2.1 API, and is an
-  extension specific to Coin.
+  \COIN_FUNCTION_EXTENSION
 
-  \since 2001-10-12
+  \since Coin 2.0
 */
 SbBool
 SoBase::connectRoute(SoInput * in,

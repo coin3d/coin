@@ -36,7 +36,7 @@
   FRACTURE, in which case the texture will be split into several small
   subtextures before the geometry using the texture is rendered.
 
-  \since 2003-02-26
+  \since Coin 2.0
 */
 
 #include <Inventor/nodes/SoTextureScalePolicy.h>

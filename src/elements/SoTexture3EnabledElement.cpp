@@ -27,8 +27,11 @@
   whether 3D texturing is enabled or not.
   \ingroup elements
 
+  \COIN_CLASS_EXTENSION
+
   \sa SoTextureEnabledElement
-  \since 2002-10-29
+  \since Coin 2.0
+  \since TGS Inventor 2.6
 */
 
 #include <Inventor/elements/SoTexture3EnabledElement.h>

@@ -29,8 +29,10 @@
   This gain is set by SoListener nodes during audio rendering. 
   The SoListenerGainElement is used when the SoVRMLSound nodes render 
   themselves. 
+
+  \COIN_CLASS_EXTENSION
   
-  \since 2002-11-12
+  \since Coin 2.0
 */
 
 #include <Inventor/elements/SoListenerGainElement.h>

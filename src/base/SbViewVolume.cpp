@@ -449,7 +449,9 @@ SbViewVolume::perspective(float fovy, float aspect,
   volumes (e.g. off center volumes). It has the same arguments and
   functionality as the corresponding OpenGL glFrustum() function.
 
-  \since 2002-07-16
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.0
 
   \sa perspective()
 */

@@ -610,7 +610,10 @@ SbXfBox3f::intersect(const SbBox3f & bb) const
 
 /*!
   Check if two transformed boxes intersect.
-  \since 20021017
+
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.0
 */
 
 SbBool

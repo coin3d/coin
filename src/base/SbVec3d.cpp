@@ -31,6 +31,8 @@
   arithmetic operations.
 
   \sa SbVec3f
+  \since Coin 2.0
+  \since TGS Inventor 2.6
 */
 
 
@@ -92,8 +94,6 @@ SbVec3d::SbVec3d(const double x, const double y, const double z)
 /*!  
   Constructs an SbVec3d instance with initial values from the
   single precision vector \a v.  
-
-  \since 2002-04-25
 */
 SbVec3d::SbVec3d(const SbVec3f & v)
 {
@@ -290,8 +290,6 @@ SbVec3d::setValue(const SbVec3d & barycentric,
 /*!
   Sets this vector to the single precision vector \a v, converting
   the vector to a double precision vector.
-
-  \since 2002-04-25
 */
 SbVec3d & 
 SbVec3d::setValue(const SbVec3f & v)

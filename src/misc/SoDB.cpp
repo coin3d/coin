@@ -788,10 +788,8 @@ SoDB::readAll(SoInput * in)
   Same as SoDB::readAll(), except it return an SoVRMLGroup instead
   of an SoSeparator.
 
-  
-
   \sa SoDB::readAll()
-  \since 2003-02-21
+  \since Coin 2.0
 */
 SoVRMLGroup * 
 SoDB::readAllVRML(SoInput * in)

@@ -30,9 +30,10 @@
   volume.  It has methods for projection of primitives from or into
   the 3D volume, doing camera transforms, view volume transforms etc.
 
-  
+  \COIN_CLASS_EXTENSION
 
-  \sa SbViewportRegion.
+  \sa SbViewportRegion
+  \since Coin 2.0
 */
 
 #include <Inventor/SbDPViewVolume.h>

@@ -252,10 +252,9 @@ SoVRMLVertexShape::setNormalCache(SoState * state,
   read locked, and the caller should call readUnlockNormalCache()
   when the normals in the cache is no longer needed.
 
-  This method is specific to Coin and is not part of the OIV API.  
+  \COIN_FUNCTION_EXTENSION
 
-  \since 2002-07-11 
-
+  \since Coin 2.0
 */
 SoNormalCache *
 SoVRMLVertexShape::generateAndReadLockNormalCache(SoState * const state)
@@ -325,9 +324,10 @@ SoVRMLVertexShape::getVertexData(SoState * state,
   
   It is also possible to use generateAndReadLockNormalCache().
 
-  \since 2002-07-11
+  \COIN_FUNCTION_EXTENSION
 
   \sa readUnlockNormalCache()
+  \since Coin 2.0
 */
 void 
 SoVRMLVertexShape::readLockNormalCache(void)
@@ -338,13 +338,13 @@ SoVRMLVertexShape::readLockNormalCache(void)
 }
 
 /*!
-
   Read unlock the normal cache. Should be called when the read-locked
   cached normals are no longer needed.
 
-  \since 2002-07-11
-  
+  \COIN_FUNCTION_EXTENSION
+
   \sa readLockNormalCache()
+  \since Coin 2.0
 */
 void 
 SoVRMLVertexShape::readUnlockNormalCache(void)

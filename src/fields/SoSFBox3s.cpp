@@ -29,7 +29,10 @@
   This field is used where nodes, engines or other field containers
   needs to store a box.
 
-  \since 2002-10-29
+  \COIN_CLASS_EXTENSION
+
+  \since Coin 2.0
+  \since TGS Inventor ?.?
 */
 
 #include <Inventor/fields/SoSFBox3s.h>

@@ -832,8 +832,8 @@ SoFieldContainer::readInstance(SoInput * in, unsigned short flags)
   that is in some way related to the field container. getUserData()
   can later be used to retrieve the pointer.
 
-  \sa getUserData().
-  \since 2003-02-26
+  \sa getUserData()
+  \since Coin 2.0
 */
 void 
 SoFieldContainer::setUserData(void * userdata) const
@@ -847,8 +847,8 @@ SoFieldContainer::setUserData(void * userdata) const
   Return the generic user data pointer for this field container, or
   NULL if no user data has been set.
 
-  \sa setUserData().
-  \since 2003-02-26
+  \sa setUserData()
+  \since Coin 2.0
 */
 void * 
 SoFieldContainer::getUserData(void) const

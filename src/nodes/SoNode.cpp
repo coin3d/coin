@@ -1327,7 +1327,9 @@ SoNode::readInstance(SoInput * in, unsigned short flags)
   return value will be a bit mask of SoNode::NodeType flags,
   containing one or several flags.
 
-  \since 2002-05-24
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.0
 */
 uint32_t 
 SoNode::getCompatibilityTypes(const SoType & nodetype)
@@ -1343,13 +1345,13 @@ SoNode::getCompatibilityTypes(const SoType & nodetype)
 }
 
 /*!
-
   Set the node compatibility mask for node type \a nodetype.  The mask
   specifies for which file formats the node is supported.
 
+  \COIN_FUNCTION_EXTENSION
   
   \sa getCompatibilityMode()
-  \since 2002-05-24 
+  \since Coin 2.0
 */
 void 
 SoNode::setCompatibilityTypes(const SoType & nodetype, const uint32_t bitmask)

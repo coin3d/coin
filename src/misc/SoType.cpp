@@ -663,7 +663,9 @@ SoType::getNumTypes(void)
   Returns a pointer to the method used to instantiate objects of the given
   type.
 
-  \since 2002-01-22
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.0
 */
 
 SoType::instantiationMethod

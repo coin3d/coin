@@ -191,7 +191,9 @@ SbVec3f::SbVec3f(const SbPlane & p0, const SbPlane & p1, const SbPlane & p2)
   Constructs an SbVec3f instance with initial values from the
   double precision vector \a v.  
 
-  \since 2002-04-25
+  This is a Coin extension.
+
+  \since Coin 2.0
 */
 SbVec3f::SbVec3f(const SbVec3d & v)
 {
@@ -418,7 +420,9 @@ SbVec3f::setValue(const SbVec3f & barycentric,
   Sets this vector to the double precision vector \a v, converting the
   vector to a single precision vector.
 
-  \since 2002-04-25
+  This is a Coin extension.
+
+  \since Coin 2.0
 */
 SbVec3f & 
 SbVec3f::setValue(const SbVec3d & v)

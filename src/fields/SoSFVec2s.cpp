@@ -29,9 +29,10 @@
   This field is used where nodes, engines or other field containers
   needs to store a single vector with two elements.
 
-  \since 2002-01-25
+  \COIN_CLASS_EXTENSION
 
   \sa SoMFVec2s
+  \since Coin 2.0
 */
 
 #include <Inventor/fields/SoSFVec2s.h>

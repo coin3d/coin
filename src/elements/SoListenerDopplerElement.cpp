@@ -30,7 +30,10 @@
   during audio rendering. The SoListenerDopplerElement is used when
   the SoVRMLSound nodes render themselves.
 
-  \since 2002-11-12 */
+  \COIN_CLASS_EXTENSION
+
+  \since Coin 2.0
+*/
 
 #include <Inventor/elements/SoListenerDopplerElement.h>
 #include <Inventor/nodes/SoNode.h>

@@ -1124,7 +1124,9 @@ SoOutput::removeDEFNode(SbName name)
 /*!
   \COININTERNAL
 
-  \since 2002-05-27
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.0
 */
 void 
 SoOutput::pushProto(SoProto * proto)
@@ -1141,7 +1143,9 @@ SoOutput::pushProto(SoProto * proto)
 /*!
   \COININTERNAL
 
-  \since 2002-05-27
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.0
 */
 SoProto * 
 SoOutput::getCurrentProto(void) const
@@ -1159,7 +1163,9 @@ SoOutput::getCurrentProto(void) const
 /*!
   \COININTERNAL
 
-  \since 2002-05-27
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.0
 */
 void 
 SoOutput::popProto(void)
@@ -1177,7 +1183,9 @@ SoOutput::popProto(void)
 /*!
   \COININTERNAL
 
-  \since 2002-06-12
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.0
 */
 
 void 
@@ -1201,7 +1209,9 @@ SoOutput::addRoute(SoFieldContainer * from, const SbName & fromfield,
 /*!
   \COININTERNAL
 
-  \since 2002-06-12 
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.0
 */
 void 
 SoOutput::resolveRoutes(void)

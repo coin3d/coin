@@ -69,7 +69,7 @@ compute_prefix_function(SbList <int> & pi, const SbString & str)
   Open Inventor API.
 
   \sa SbString::findAll()
-  \since 2002-02-19
+  \since Coin 2.0
 */
 int
 SbString::find(const SbString & str) const
@@ -105,7 +105,7 @@ SbString::find(const SbString & str) const
   Inventor API.
 
   \sa SbString::find()
-  \since 2002-02-19
+  \since Coin 2.0
 */
 
 SbBool

@@ -655,7 +655,8 @@ SoMField::deleteValues(int start, int num)
   supported only for compatibility. We suggest that you don't use it
   since it can lead to hard-to-find bugs.
 
-  \since 2002-02-08
+  \since Coin 2.0
+  \since TGS Inventor 3.0
 */
 void
 SoMField::enableDeleteValues(void)
@@ -672,7 +673,8 @@ SoMField::enableDeleteValues(void)
   supported only for compatibility. We suggest that you don't use it
   since it can lead to hard-to-find bugs.
 
-  \since 2002-02-08
+  \since Coin 2.0
+  \since TGS Inventor 3.0
 */
 SbBool
 SoMField::isDeleteValuesEnabled(void)

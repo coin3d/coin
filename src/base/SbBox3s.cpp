@@ -33,6 +33,8 @@
   screen or canvas areas in absolute window coordinates.
 
   \sa SbBox2f, SbBox3f  
+  \since Coin 2.0
+  \since TGS Inventor ?.?
 */
 
 

@@ -26,8 +26,10 @@
   \brief The SoTextureEnabledElement class is an element which stores whether texturing is enabled or not.
   \ingroup elements
 
+  \COIN_CLASS_EXTENSION
+
   \sa SoTexture3EnabledElement
-  \since 2002-10-29
+  \since Coin 2.0
 */
 
 #include <Inventor/elements/SoTextureEnabledElement.h>

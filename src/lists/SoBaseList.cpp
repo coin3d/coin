@@ -222,8 +222,10 @@ SoBaseList::addReferences(const SbBool flag)
   Return whether the SoBase instances are automatically referenced
   and dereferenced when they are added and removed from the list.
 
+  \COIN_FUNCTION_EXTENSION
+
   \sa addReferences()
-  \since 2002-10-01
+  \since Coin 2.0
 */
 SbBool 
 SoBaseList::isReferencing(void) const

@@ -46,6 +46,10 @@
   fly.  When mipmapping is enabled, the amount of texture memory used
   is doubled, and creating the texture object is much slower, so we
   avoid this for SoGLBigImage.
+
+  \COIN_CLASS_EXTENSION
+
+  \since Coin 2.0
 */
 
 #include <Inventor/misc/SoGLBigImage.h>
@@ -212,7 +216,6 @@ SoGLBigImage::unref(SoState * state)
 
 /*!
   \COININTERNAL
-  \since 2002-11-07
 */
 void
 SoGLBigImage::initClass(void)

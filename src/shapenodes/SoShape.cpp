@@ -996,7 +996,9 @@ SoShape::generateVertex(SoPrimitiveVertex * const pv,
   Convenience function which sets up an SoPrimitiveVertex, and sends
   it using the SoShape::shapeVertex() function. 3D version.
 
-  \since 2001-12-04
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.0
 */
 void
 SoShape::generateVertex(SoPrimitiveVertex * const pv,
@@ -1118,7 +1120,9 @@ SoShape::notify(SoNotList * nl)
   caller must check if the cache is valid before using it. This
   can be done using SoCache::isValid().
   
-  \since 2002-11-07
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.0
 */
 const SoBoundingBoxCache * 
 SoShape::getBoundingBoxCache(void) const

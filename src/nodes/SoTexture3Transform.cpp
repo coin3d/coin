@@ -33,7 +33,11 @@
   The default settings of this node's fields equals a "null
   transform", ie no transformation.
 
+  \COIN_CLASS_EXTENSION
+
   \sa SoTexture2Transform
+  \since Coin 2.0
+  \since TGS Inventor 2.6
 */
 
 #include <Inventor/nodes/SoTexture3Transform.h>

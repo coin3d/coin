@@ -34,9 +34,10 @@
 
   This class is a Coin extension.
 
-  \since 2002-03-09
-
   \sa SbBox2f
+
+  \since Coin 2.0
+  \since TGS Inventor 2.6
 */
 
 
@@ -211,8 +212,6 @@ SbBox2d::intersect(const SbBox2d & box) const
   coordinates of the union line in \a ia and \a ib.
 
   This function is a Coin extension.
-
-  \since 2002-03-09 larsa
 */
 SbBool
 SbBox2d::findIntersection(const SbVec2d & a, const SbVec2d & b, SbVec2d & ia, SbVec2d & ib) const

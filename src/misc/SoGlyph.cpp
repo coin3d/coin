@@ -27,6 +27,8 @@
 
   FIXME: class doc
 
+  \COIN_CLASS_EXTENSION
+
   \since Coin 2.0
 */
 

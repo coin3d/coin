@@ -199,7 +199,9 @@ SoSceneManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
   rendering buffer before drawing. If \a clearzbuffer is \c TRUE,
   clear the depth buffer values before rendering
 
-  \since 2002-10-19
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.0
  */
 void
 SoSceneManager::render(SoGLRenderAction * action,

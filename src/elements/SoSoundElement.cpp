@@ -25,7 +25,8 @@
   \class SoSoundElement Inventor/elements/SoSoundElement.h
   \brief The SoSoundElement is used for optimizing audio rendering and for turning off inactive SoVRMLSound nodes
   \ingroup elements
-  \since 2003-01-31
+
+  \since Coin 2.0
 */
 
 #include <Inventor/elements/SoSoundElement.h>

@@ -25,8 +25,6 @@
   \class SoGLImage include/Inventor/misc/SoGLImage.h
   \brief The SoGLImage class is used to handle OpenGL 2D/3D textures.
 
-  FIXME: Add TEX3 enviroment variables (or general TEX variables?) (kintel 20011112)
-
   A number of environment variables can be set to control how textures
   are created. This is useful to tune Coin to fit your system. E.g. if you
   are running on a laptop, it might be a good idea to disable linear
@@ -65,6 +63,10 @@
   want.  See
   http://www.opengl.org/discussion_boards/ubb/Forum3/HTML/007306.html
   for a discussion regarding GL_CLAMP and GL_CLAMP_TO_EDGE.  
+
+  \COIN_CLASS_EXTENSION
+
+  \since Coin 2.0
 */
 
 /*!
@@ -90,6 +92,9 @@
   flags using the SoGLImage::setFlags() method.
 
 */
+
+// FIXME: Add TEX3 enviroment variables (or general TEX variables?)
+// (kintel 20011112)
 
 #include <Inventor/misc/SoGLImage.h>
 
@@ -662,8 +667,6 @@ SoGLImage::SoGLImage(void)
 
 /*!
   \COININTERNAL
-
-  \since 2002-11-07
 */
 void
 SoGLImage::initClass(void)

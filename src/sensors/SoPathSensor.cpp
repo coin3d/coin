@@ -172,7 +172,7 @@ SoPathSensor::getAttachedPath(void) const
 
   The default is PATH_AND_NODES.
 
-  \since 2003-02-25
+  \since Coin 2.0
 */
 void
 SoPathSensor::setTriggerFilter(const TriggerFilter filter)
@@ -183,7 +183,7 @@ SoPathSensor::setTriggerFilter(const TriggerFilter filter)
 /*!
   Return the TriggerFilter for this sensor.
 
-  \since 2003-02-25
+  \since Coin 2.0
 */
 SoPathSensor::TriggerFilter
 SoPathSensor::getTriggerFilter(void) const
