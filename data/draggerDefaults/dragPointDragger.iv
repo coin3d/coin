@@ -4,6 +4,8 @@
 
 DEF DRAGPOINT_INACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0.5  emissiveColor 0.5 0.5 0.5 }
 DEF DRAGPOINT_ACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0  emissiveColor 0.5 0.5 0 }
+DEF DRAGPOINT_FEEDBACK_MATERIAL Material { diffuseColor 0.5 0 0.5  emissiveColor  0.5 0 0.5  transparency 0.2 }
+
 
 
 DEF DRAGPOINT_STICK Group {
@@ -46,8 +48,6 @@ DEF dragPointXZTranslatorTranslatorActive Separator { USE DRAGPOINT_ACTIVE_PLANE
 DEF dragPointYZTranslatorTranslator Separator { USE DRAGPOINT_INACTIVE_PLANE }
 DEF dragPointYZTranslatorTranslatorActive Separator { USE DRAGPOINT_ACTIVE_PLANE }
 
-
-DEF DRAGPOINT_FEEDBACK_MATERIAL Material { diffuseColor 0 0.2 0.2  emissiveColor  0 0.2 0.2  transparency 0.2 }
 
 DEF DRAGPOINT_FEEDBACK_LINE Group {
    Coordinate3 { point [ 0 -10 0, 0 10 0 ] }
