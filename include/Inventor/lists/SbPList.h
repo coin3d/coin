@@ -28,21 +28,6 @@
 #include <assert.h>
 #include <stddef.h> // NULL definition
 
-// We usually implement inline functions below the class definition,
-// since we think that makes the file more readable. However, this is
-// not done for this class, since Visual C++ is not too happy about
-// having functions declared as inline for a template class.
-// pederb, 2001-10-12
-
-// FIXME: this is just a quick hack to avoid heaps of irritating
-// warning messages from the compiler for client code compiled under
-// MSVC++. Should try to find the real reason for the warnings and fix
-// the cause of the problem instead. 20020730 mortene.
-#ifdef _MSC_VER // Microsoft Visual C++
-#pragma warning(disable:4251)
-#pragma warning(disable:4275)
-#endif // _MSC_VER
-
 class SbPList {
   // Older compilers aren't too happy about const declarations in the
   // class definitions, so use the enum trick described by Scott
