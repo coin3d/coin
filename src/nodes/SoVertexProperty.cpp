@@ -209,20 +209,6 @@ SoVertexProperty::getBoundingBox(SoGetBoundingBoxAction * action)
 void
 SoVertexProperty::GLRender(SoGLRenderAction * action)
 {
-  SoState *state = action->getState();
-
-  if (SoShapeStyleElement::isScreenDoor(state) &&
-      this->orderedRGBA.getNum() &&
-      ! SoOverrideElement::getTransparencyOverride(state)) {
-    float t = (255 - (this->orderedRGBA[0] & 0xff)) / 255.0f;
-    SoGLPolygonStippleElement::setTransparency(state, t);
-    SoGLPolygonStippleElement::set(state, t >= 1.0f/255.0f);
-  }
-
-  if (this->texCoord.getNum() > 0) {
-    SoGLTextureCoordinateElement::setTexGen(state,
-                                            this, NULL);
-  }
   SoVertexProperty::doAction(action);
 }
 
@@ -232,6 +218,18 @@ SoVertexProperty::GLRender(SoGLRenderAction * action)
 void
 SoVertexProperty::doAction(SoAction *action)
 {
+  SoState * state = action->getState();
+
+  SbBool glrender = action->isOfType(SoGLRenderAction::getClassTypeId());
+  if (glrender &&
+      SoShapeStyleElement::isScreenDoor(state) &&
+      this->orderedRGBA.getNum() &&
+      ! SoOverrideElement::getTransparencyOverride(state)) {
+    float t = (255 - (this->orderedRGBA[0] & 0xff)) / 255.0f;
+    SoGLPolygonStippleElement::setTransparency(state, t);
+    SoGLPolygonStippleElement::set(state, t >= 1.0f/255.0f);
+  }
+
   if (this->checktransparent) {
     this->checktransparent = FALSE;
     this->transparent = FALSE;
@@ -244,12 +242,15 @@ SoVertexProperty::doAction(SoAction *action)
     }
   }
 
-  SoState * state = action->getState();
   if (this->vertex.getNum() > 0)
     SoCoordinateElement::set3(state, this, this->vertex.getNum(),
                               this->vertex.getValues(0));
 
   if (this->texCoord.getNum() > 0) {
+    if (glrender) {
+      SoGLTextureCoordinateElement::setTexGen(state,
+                                              this, NULL);
+    }
     SoTextureCoordinateElement::set2(state, this, this->texCoord.getNum(),
                                      this->texCoord.getValues(0));
   }
