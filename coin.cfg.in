@@ -1,3 +1,6 @@
+# prefix is determined in coin-config, making the package "movable"
+# prefix="@prefix@"
+exec_prefix="@exec_prefix@"
 version="@COIN_VERSION@"
 cppflags="@COIN_EXTRA_CPPFLAGS@"
 cxxflags="@COIN_EXTRA_CXXFLAGS@"

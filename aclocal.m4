@@ -557,16 +557,16 @@ doit:
 END
 # If we don't find an include directive, just comment out the code.
 AC_MSG_CHECKING([for style of include used by $am_make])
-AM_INCLUDE='#'
+AMINCLUDE='#'
 for am_inc in include .include; do
    echo "$am_inc confinc" > confmf
    if test "`$am_make -f confmf 2> /dev/null`" = "done"; then
-      AM_INCLUDE=$am_inc
+      AMINCLUDE=$am_inc
       break
    fi
 done
-AC_SUBST(AM_INCLUDE)
-AC_MSG_RESULT($AM_INCLUDE)
+AC_SUBST(AMINCLUDE)
+AC_MSG_RESULT($AMINCLUDE)
 rm -f confinc confmf
 ])
 
@@ -1799,6 +1799,95 @@ fi
 
 
 # **************************************************************************
+# configuration_summary.m4
+#
+# This file contains some utility macros for making it easy to have a short
+# summary of the important configuration settings printed at the end of the
+# configure run.
+#
+# Authors:
+#   Lars J. Aas <larsa@sim.no>
+#
+
+# **************************************************************************
+# SIM_AC_CONFIGURATION_SETTING( DESCRIPTION, SETTING )
+#
+# This macro registers a configuration setting to be dumped by the
+# SIM_AC_CONFIGURATION_SUMMARY macro.
+
+AC_DEFUN([SIM_AC_CONFIGURATION_SETTING],
+[if test x${sim_ac_configuration_settings+set} != xset; then
+  sim_ac_configuration_settings="$1:$2"
+else
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|$1:$2"
+fi
+]) # SIM_AC_CONFIGURATION_SETTING
+
+# **************************************************************************
+# SIM_AC_CONFIGURATION_WARNING( WARNING )
+#
+# This macro registers a configuration warning to be dumped by the
+# SIM_AC_CONFIGURATION_SUMMARY macro.
+
+AC_DEFUN([SIM_AC_CONFIGURATION_WARNING],
+[if test x${sim_ac_configuration_warnings+set} != xset; then
+  sim_ac_configuration_warnings="$1"
+else
+  sim_ac_configuration_warnings="$sim_ac_configuration_warnings|$1"
+fi
+]) # SIM_AC_CONFIGURATION_WARNING
+
+# **************************************************************************
+# SIM_AC_CONFIGURATION_SUMMARY
+#
+# This macro dumps the settings and warnings summary.
+
+AC_DEFUN([SIM_AC_CONFIGURATION_SUMMARY],
+[sim_ac_settings=$sim_ac_configuration_settings
+sim_ac_num_settings=`echo "$sim_ac_settings" | tr -d -c "|" | wc -c`
+sim_ac_maxlength=0
+while test $sim_ac_num_settings -ge 0; do
+  sim_ac_description=`echo "$sim_ac_settings" | cut -d: -f1`
+  sim_ac_length=`echo "$sim_ac_description" | wc -c`
+  if test $sim_ac_length -gt $sim_ac_maxlength; then
+    sim_ac_maxlength=`expr $sim_ac_length + 0`
+  fi
+  sim_ac_settings=`echo $sim_ac_settings | cut -d"|" -f2-`
+  sim_ac_num_settings=`expr $sim_ac_num_settings - 1`
+done
+
+sim_ac_maxlength=`expr $sim_ac_maxlength + 3`
+sim_ac_padding=`echo "                                             " |
+  cut -c1-$sim_ac_maxlength`
+
+sim_ac_num_settings=`echo "$sim_ac_configuration_settings" | tr -d -c "|" | wc -c`
+echo ""
+echo "$PACKAGE configuration settings:"
+while test $sim_ac_num_settings -ge 0; do
+  sim_ac_setting=`echo $sim_ac_configuration_settings | cut -d"|" -f1`
+  sim_ac_description=`echo "$sim_ac_setting" | cut -d: -f1`
+  sim_ac_status=`echo "$sim_ac_setting" | cut -d: -f2-`
+  # hopefully not too many terminals are too dumb for this
+  echo -e "$sim_ac_padding $sim_ac_status\r  $sim_ac_description:"
+  sim_ac_configuration_settings=`echo $sim_ac_configuration_settings | cut -d"|" -f2-`
+  sim_ac_num_settings=`expr $sim_ac_num_settings - 1`
+done
+
+if test x${sim_ac_configuration_warnings+set} = xset; then
+sim_ac_num_warnings=`echo "$sim_ac_configuration_warnings" | tr -d -c "|" | wc -c`
+echo ""
+echo "$PACKAGE configuration warnings:"
+while test $sim_ac_num_warnings -ge 0; do
+  sim_ac_warning=`echo "$sim_ac_configuration_warnings" | cut -d"|" -f1`
+  echo "  * $sim_ac_warning"
+  sim_ac_configuration_warnings=`echo $sim_ac_configuration_warnings | cut -d"|" -f2-`
+  sim_ac_num_warnings=`expr $sim_ac_num_warnings - 1`
+done
+fi
+]) # SIM_AC_CONFIGURATION_SUMMARY
+
+
+# **************************************************************************
 # SIM_AC_HAVE_SIMAGE_IFELSE( IF-FOUND, IF-NOT-FOUND )
 #
 # Description:
@@ -2815,36 +2904,6 @@ fi
 ])
 
 
-# Usage:
-#   SIM_EXPAND_DIR_VARS
-#
-# Description:
-#   Expand these variables into their correct full directory paths:
-#    $prefix  $exec_prefix  $includedir  $libdir  $datadir
-# 
-# Author: Morten Eriksen, <mortene@sim.no>.
-# 
-
-AC_DEFUN([SIM_EXPAND_DIR_VARS], [
-test x"$prefix" = x"NONE" && prefix="$ac_default_prefix"
-test x"$exec_prefix" = x"NONE" && exec_prefix="${prefix}"
-
-# This is the list of all install-path variables found in configure
-# scripts. FIXME: use another "eval-nesting" to move assignments into
-# a for-loop. 20000704 mortene.
-bindir="`eval echo $bindir`"
-sbindir="`eval echo $sbindir`"
-libexecdir="`eval echo $libexecdir`"
-datadir="`eval echo $datadir`"
-sysconfdir="`eval echo $sysconfdir`"
-sharedstatedir="`eval echo $sharedstatedir`"
-localstatedir="`eval echo $localstatedir`"
-libdir="`eval echo $libdir`"
-includedir="`eval echo $includedir`"
-infodir="`eval echo $infodir`"
-mandir="`eval echo $mandir`"
-])
-
 # **************************************************************************
 # SIM_AC_UNIQIFY_LIST( VARIABLE, LIST )
 #
@@ -2860,19 +2919,33 @@ mandir="`eval echo $mandir`"
 #
 
 AC_DEFUN([SIM_AC_UNIQIFY_LIST], [
+sim_ac_save_prefix=$prefix
+sim_ac_save_exec_prefix=$exec_prefix
+test x"$prefix" = xNONE && prefix=/usr/local
+test x"$exec_prefix" = xNONE && exec_prefix='${prefix}'
 sim_ac_uniqued_list=
 for sim_ac_item in $2; do
+  eval sim_ac_eval_item="$sim_ac_item"
+  eval sim_ac_eval_item="$sim_ac_eval_item"
   if test x"$sim_ac_uniqued_list" = x; then
     sim_ac_uniqued_list="$sim_ac_item"
   else
     sim_ac_unique=true
     for sim_ac_uniq in $sim_ac_uniqued_list; do
-      test x"$sim_ac_item" = x"$sim_ac_uniq" && sim_ac_unique=false
+      eval sim_ac_eval_uniq="$sim_ac_uniq"
+      eval sim_ac_eval_uniq="$sim_ac_eval_uniq"
+      test x"$sim_ac_eval_item" = x"$sim_ac_eval_uniq" && sim_ac_unique=false
     done
     $sim_ac_unique && sim_ac_uniqued_list="$sim_ac_uniqued_list $sim_ac_item"
   fi
 done
 $1=$sim_ac_uniqued_list
+prefix=$sim_ac_save_prefix
+exec_prefix=$sim_ac_save_exec_prefix
+# unset sim_ac_save_prefix
+# unset sim_ac_save_exec_prefix
+# unset sim_ac_eval_item
+# unset sim_ac_eval_uniq
 ]) # SIM_AC_UNIQIFY_LIST
 
 

@@ -18,6 +18,7 @@ for arg
 do
   case $arg in
   --alternate=*) alternate=`echo $arg | cut -d= -f2-` ;;
+  --debug) alternate=debug ;;
   esac
 done
 
@@ -66,6 +67,7 @@ do
     ;;
   # ignore some options
   --alternate=*) ;;
+  --debug) ;;
   *)
     echo >&2 "$me: Invalid option: \"$1\""
     echo >&2 "$usage"
