@@ -434,7 +434,7 @@ SoGLRenderAction::beginTraversal(SoNode * node)
     }
     else {
       glDisable(GL_POINT_SMOOTH);
-      glDisable(GL_POINT_SMOOTH);
+      glDisable(GL_LINE_SMOOTH);
     }
   }
   this->currentpass = 0;
