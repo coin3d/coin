@@ -303,7 +303,14 @@ SoImage::GLRender(SoGLRenderAction * action)
 {
   SbVec2s size;
   int nc;
-  const unsigned char * dataptr = this->getImage(size, nc);
+
+  if (this->getSize() == SbVec2s(0,0)) {
+    size = SbVec2s(0,0);
+    nc = 0;
+    return;
+  }
+
+  const unsigned char * dataptr = this->image.getValue(size, nc);
   if (dataptr == NULL) return; // no image
 
   if (!this->shouldGLRender(action)) return;
@@ -420,14 +427,26 @@ SoImage::GLRender(SoGLRenderAction * action)
   glPixelStorei(GL_PACK_ALIGNMENT, 1);
   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
+  float zx, zy;
+  glGetFloatv(GL_ZOOM_X, &zx);
+  glGetFloatv(GL_ZOOM_Y, &zy);
+  SbVec2s newsize = this->getSize();
+
+  if (newsize[0] >= 0 || newsize[1] >= 0) {
+    glPixelZoom(float(newsize[0]) / size[0], float(newsize[1]) / size[1]);
+  }
+
   glDrawPixels(srcw, srch, format, GL_UNSIGNED_BYTE,
                (const GLvoid*) dataptr);
+
   glMatrixMode(GL_PROJECTION);
   glPopMatrix();
   glMatrixMode(GL_MODELVIEW);
   glPopMatrix();
 
   // we always restore pixel store values to default after use
+  glPixelZoom(zx, zy);
+
   glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
   glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
   glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
