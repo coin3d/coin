@@ -464,6 +464,9 @@
     investigating this further, as there seem to be some gravel in the
     list-machinery. (See FIXME in SoChildList::insert)
 
+    UPDATE 20021209 rolvs: Consider this fixed and remove from BUGS?
+    (Still unable to reproduce)
+
 =====================================================================
 
 021 SoGetBoundingBoxAction can be made to fail when applied to a path.
@@ -644,43 +647,6 @@
     bboxes matches the geometry that actually gets rendered.
 
     20020915 mortene.
-
-=====================================================================
-
-027 Timer queue management is incorrect
-    This example should start chiming in once every fourth second
-    after a delay of two seconds.  The first timer callback at 
-    baseTime is not executed.
-
-    #include <Inventor/SoDB.h>
-    #include <Inventor/sensors/SoTimerSensor.h>
-    #include <Inventor/Qt/SoQt.h>
-    #include <stdio.h>
-
-    void
-    sensorCB(void * data, SoSensor * sensor) {
-      printf("timer callback: %s\n", SbTime::getTimeOfDay().format().getString());
-    }
-
-    int
-    main(int argc, char ** argv)
-    { 
-      SoQt::init("test");
-      printf("init: %s\n", SbTime::getTimeOfDay().format().getString());
-      SoTimerSensor * sensor = new SoTimerSensor(sensorCB, NULL);
-      sensor->setInterval(2.0);
-      sensor->setBaseTime(SbTime::getTimeOfDay() + SbTime(4.0));
-      sensor->schedule();
-      SoQt::mainLoop();
-    }
-
-    The "obvious" fix you'll find in in SoTimerSensor::reschedule()
-    doesn't solve the problem, so it hasn't been applied.
-
-    20020916 larsa.
-
-    UPDATE: The bug is fixed, with a 'mod' to the 'obvious'
-    fix. 20021122 rolvs
 
 =====================================================================
 
@@ -1264,7 +1230,52 @@
        SoQt::mainLoop();
        return 0;
     }
+    
+    UPDATE 20021209 rolvs:
 
+    The following backtrace is provoked by assert(0) when the realTime
+    sensor is updated 'some' times. (e.g. 100)
+
+    #0  0x40c8f581 in kill () from /lib/libc.so.6
+    #1  0x40bee94e in pthread_kill () from /lib/libpthread.so.0
+    #2  0x40beee29 in raise () from /lib/libpthread.so.0
+    #3  0x40c908d1 in abort () from /lib/libc.so.6
+    #4  0x40c89db2 in __assert_fail () from /lib/libc.so.6
+    #5  0x80492a6 in realTimeFieldUpdateCB (data=0x0, sensor=0x80a3028)
+    at bug.cpp:20
+    #6  0x40a7394d in SoSensor::trigger (this=0x80a3028)
+    at ../../../../src/Coin/src/sensors/SoSensor.cpp:183
+    #7  0x40a72f42 in SoDelayQueueSensor::trigger (this=0x80a3028)
+    at ../../../../src/Coin/src/sensors/SoDelayQueueSensor.cpp:129
+    #8  0x40a72bcc in SoDataSensor::trigger (this=0x80a3028)
+    at ../../../../src/Coin/src/sensors/SoDataSensor.cpp:191
+    #9  0x40a73229 in SoFieldSensor::trigger (this=0x80a3028)
+    at ../../../../src/Coin/src/sensors/SoFieldSensor.cpp:112
+    #10 0x40a74455 in SoSensorManager::processDelayQueue 
+    (this=0x8077090, isidle=1)
+    at ../../../../src/Coin/src/sensors/SoSensorManager.cpp:494
+    #11 0x40036a9d in SoQtP::slot_idleSensor (this=0x80a30a8)
+    at ../../../../../src/SoQt/src/Inventor/Qt/SoQt.cpp:405
+    #12 0x40036699 in SoQtP::qt_invoke (this=0x80a30a8, _id=3, _o=0xbffff708)
+    at moc_SoQtP.cpp:87
+    #13 0x40274b86 in QObject::activate_signal () from /usr/lib/libqt.so.3
+    #14 0x40274ade in QObject::activate_signal () 
+    #15 0x404b0448 in QTimer::timeout ()
+    #16 0x4028e99b in QTimer::event () 
+    #17 0x4022d8a3 in QApplication::internalNotify () 
+    #18 0x4022d744 in QApplication::notify ()
+    #19 0x401df94e in qt_activate_timers ()
+    #20 0x401dd651 in QApplication::processNextEvent ()
+    #21 0x4022ec95 in QApplication::enter_loop ()
+    #22 0x401dd2fb in QApplication::exec ()
+    #23 0x4003705b in SoQt::mainLoop ()
+    at ../../../../../src/SoQt/src/Inventor/Qt/SoQt.cpp:670
+    #24 0x804973a in main (argv=0xbffffbc4) at bug.cpp:62
+    #25 0x40c7f0bf in __libc_start_main () from /lib/libc.so.6
+    
+    (Update made by larsa, committed by rolvs 20021209. If that makes
+    sense to anyone... ? :-)
+    
 =====================================================================
 
 041 Circular field connections not always handled.
