@@ -1755,8 +1755,32 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
         0.0f, 1.0f,
         1.0f, 1.0f
       };
-      static GLfloat defaulttexknot[] = {0.0f, 0.0f, 1.0f, 1.0f};
-      GLUWrapper()->gluNurbsSurface(nurbsrenderer, 4, defaulttexknot, 4, defaulttexknot,
+      int i;
+      GLfloat defaultknots[4] = {uknotvec[0], uknotvec[0], uknotvec[0], uknotvec[0]};
+      for (i = 1; i < numuknot; i++) {
+        float val = uknotvec[i];
+        if (val < defaultknots[0]) {
+          defaultknots[0] = val;
+          defaultknots[1] = val;
+        }
+        if (val > defaultknots[2]) {
+          defaultknots[2] = val;
+          defaultknots[3] = val;
+        }
+      }
+      GLfloat defaultknott[4] = {vknotvec[0], vknotvec[0], vknotvec[0], vknotvec[0]};
+      for (i = 1; i < numvknot; i++) {
+        float val = vknotvec[i];
+        if (val < defaultknott[0]) {
+          defaultknott[0] = val;
+          defaultknott[1] = val;
+        }
+        if (val > defaultknott[2]) {
+          defaultknott[2] = val;
+          defaultknott[3] = val;
+        }
+      }
+      GLUWrapper()->gluNurbsSurface(nurbsrenderer, 4, defaultknots, 4, defaultknott,
                                     2, 2*2, defaulttex, 4-2, 4-2,
                                     GL_MAP2_TEXTURE_COORD_2);
     }
