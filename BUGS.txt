@@ -37,6 +37,13 @@
     not implemented a do-nothing NodeKit with a Switch with children
     as 'proof' yet) 20021031 rolvs
 
+    UPDATE: some additional information on this; I'm not sure it
+    should really be allowed to specify any dragger internals in an
+    .iv-file -- I _believe_ draggers are supposed to be just
+    black-boxes in those circumstances. pederb might have more info on
+    that. If my assumption is correct, that would affect what kind of
+    fix to make for this. 20021031 mortene.
+
 =====================================================================
 
 003 There are seams in texturemaps on SGI Octane with "IMPACTSR"
