@@ -63,13 +63,15 @@ cc_fontspec_construct(cc_font_specification * spec,
     cc_string_remove_substring(&spec->name, trimposname + 1, namelen-1);
     
     trimstyleend = cc_string_length(&spec->style);
+    trimposstyle = trimstyleend;
     tmpstr = cc_string_get_text(&spec->style);
 
     while (tmpstr[trimstyleend-1] == ' ') { 
       --trimstyleend;
     }
-
-    cc_string_remove_substring(&spec->style, trimstyleend, cc_string_length(&spec->style) - 1);
+    
+    if(trimstyleend !=  trimposstyle)
+      cc_string_remove_substring(&spec->style, trimstyleend, cc_string_length(&spec->style) - 1);
     
     tmpstr = cc_string_get_text(&spec->name);
     trimnamestart = 0;
