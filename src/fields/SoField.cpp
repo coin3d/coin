@@ -1722,12 +1722,19 @@ SoField::evaluateField(void) const
   // Cast away the const. (evaluate() must be const, since we're using
   // evaluate() from getValue().)
   SoField * that = (SoField *)this;
-
-  that->setStatusBits(FLAG_ISEVALUATING);
-  this->evaluateConnection();
-  that->clearStatusBits(FLAG_ISEVALUATING);
-  that->setDirty(FALSE);
-
+  
+  // Check the NEEDEVALUATION flag in case some other thread has just
+  // evaluated the field. The flag is checked in SoField::evaluate(),
+  // but it is possible that two (or more) threads might enter
+  // evaluateField() simultaneously, so this test is necessary.
+  // pederb, 2002-10-04
+  if (this->getStatus(FLAG_NEEDEVALUATION)) {
+    that->setStatusBits(FLAG_ISEVALUATING);
+    this->evaluateConnection();
+    that->clearStatusBits(FLAG_ISEVALUATING);
+    // this will clear the NEEDEVALUATION flag
+    that->setDirty(FALSE);
+  }
   CC_MUTEX_UNLOCK(this->storage->mutex);
 }
 
