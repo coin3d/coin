@@ -69,10 +69,12 @@ class COIN_DLL_API SoCallbackAction : public SoAction {
 public:
   SoCallbackAction(void);
   SoCallbackAction(const SbViewportRegion & vp);
-  
+
   virtual ~SoCallbackAction();
 
   static void initClass(void);
+
+  void setViewportRegion(const SbViewportRegion & vp);
 
   enum Response { CONTINUE,  ABORT, PRUNE };
 

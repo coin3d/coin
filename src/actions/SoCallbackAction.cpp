@@ -192,6 +192,7 @@ SoCallbackData::doPointCallbacks(SoCallbackAction * action,
 // class to hold private, hidden data
 class SoCallbackActionP {
 public:
+  SbBool viewportset;
   SbViewportRegion viewport;
   SoCallbackAction::Response response;
   SoNode * currentnode;
@@ -268,7 +269,6 @@ SoCallbackAction::initClass(void)
 SoCallbackAction::SoCallbackAction(void)
 {
   this->commonConstructor();
-  THIS->viewport = SbViewportRegion(640, 512);
 }
 
 /*!
@@ -280,6 +280,7 @@ SoCallbackAction::SoCallbackAction(const SbViewportRegion & vp)
 {
   this->commonConstructor();
   THIS->viewport = vp;
+  THIS->viewportset = TRUE;
 }
 
 void
@@ -292,6 +293,14 @@ SoCallbackAction::commonConstructor(void)
   THIS = new SoCallbackActionP;
   THIS->pretailcallback = NULL;
   THIS->posttailcallback = NULL;
+  THIS->viewportset = FALSE;
+}
+
+void 
+SoCallbackAction::setViewportRegion(const SbViewportRegion & vp)
+{
+  THIS->viewport = vp;
+  THIS->viewportset = TRUE;
 }
 
 static void
@@ -1053,7 +1062,9 @@ SoCallbackAction::beginTraversal(SoNode * node)
   // for SoCallbackAction in Inventor, bu we think it should be.
   // It makes it possible to calculate screen space stuff in
   // the callback action callbacks.
-  SoViewportRegionElement::set(this->getState(), THIS->viewport);
+  if (THIS->viewportset) {
+    SoViewportRegionElement::set(this->getState(), THIS->viewport);
+  }
   this->traverse(node);
 }
 
