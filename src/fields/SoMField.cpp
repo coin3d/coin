@@ -101,6 +101,12 @@
   notification about the changes, triggered by the finishEditing()
   call.
 
+  The correct manner in which to pre-allocate a specific number of
+  field values in one chunk is to use the SoMField::setNum() method,
+  for instance in advance of using the startEditing() and
+  finishEditing() methods. The field values will be uninitialized
+  after expanding the field with the setNum() call.
+
 
   When nodes, engines or other types of field containers are written
   to file, their multiple-value fields are written to file in this
@@ -150,9 +156,9 @@
   into it before appending the new values. The array pointer will then
   be discarded.
 
-  Also note that whenever you change some value in the array, you must
-  manually notify Coin about this by calling SoField::touch(). For our
-  example:
+  Also note that whenever you change some value(s) in the array, you
+  must manually notify Coin about this by calling
+  SoField::touch(). For our example:
 
   \code
 
@@ -168,14 +174,17 @@
   discarded because it isn't needed anymore (e.g. when the array size
   is changed). The array will be deleted using the C++ \e delete[]
   operator, so if you use it, your array must be allocated using the
-  C++ \e new operator.This function is supported only to be compatible
-  with TGS Inventor and we don't recommend using it. It can have
-  undefined results if you do this, at least on the Windows
+  C++ \e new[] operator.
+
+  SoMField::enableDeleteValues() is supported only to be compatible
+  with later versions of TGS Inventor and we don't recommend using
+  it. It can have undefined results on the Microsoft Windows
   platform. Allocating memory in the application and destructing it in
-  a DLL can be a bad thing if you're not very careful.
+  a DLL can be a bad thing, causing mysterious crashes, if you're not
+  very careful about how your application and DLLs are linked to the
+  underlying C library.
 
   \sa SoSField
-
 */
 
 /*!
