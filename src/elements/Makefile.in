@@ -66,8 +66,8 @@ host_triplet = @host@
 target_alias = @target_alias@
 target_triplet = @target@
 AMDEP = @AMDEP@
+AMINCLUDE = @AMINCLUDE@
 AMTAR = @AMTAR@
-AM_INCLUDE = @AM_INCLUDE@
 AS = @AS@
 AWK = @AWK@
 BUILD_WITH_MSVC = @BUILD_WITH_MSVC@
@@ -75,6 +75,7 @@ CC = @CC@
 COIN_DOC_HTML = @COIN_DOC_HTML@
 COIN_DOC_MAN = @COIN_DOC_MAN@
 COIN_EXTRA_CPPFLAGS = @COIN_EXTRA_CPPFLAGS@
+COIN_EXTRA_CXXFLAGS = @COIN_EXTRA_CXXFLAGS@
 COIN_EXTRA_LDFLAGS = @COIN_EXTRA_LDFLAGS@
 COIN_EXTRA_LIBS = @COIN_EXTRA_LIBS@
 COIN_HACKING_LIBDIRS = @COIN_HACKING_LIBDIRS@
@@ -85,9 +86,9 @@ COIN_VERSION = @COIN_VERSION@
 CONFIG = @CONFIG@
 CXX = @CXX@
 DEPDIR = @DEPDIR@
-DLLFLAGS = @DLLFLAGS@
 DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
+LIBFLAGS = @LIBFLAGS@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
 LT_AGE = @LT_AGE@
@@ -107,7 +108,6 @@ install_sh = @install_sh@
 sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
-win_srcdir = @win_srcdir@
 
 @HACKING_COMPACT_BUILD_TRUE@ALLSOURCES = @HACKING_COMPACT_BUILD_TRUE@all.cpp
 @HACKING_COMPACT_BUILD_FALSE@ALLSOURCES = @HACKING_COMPACT_BUILD_FALSE@\
@@ -716,12 +716,12 @@ install-libelementsincHEADERS: $(libelementsinc_HEADERS)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libelementsincdir)
 	@list='$(libelementsinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  if cmp -s $$d$$p $(DESTDIR)$(libelementsincdir)/$$f; then :; else \
 	    echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libelementsincdir)/$$f"; \
 	    $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libelementsincdir)/$$f; \
-	  fi; \
+	  fi \
 	done
 
 uninstall-libelementsincHEADERS:
@@ -765,105 +765,105 @@ GTAGS:
 distclean-tags:
 	-rm -f TAGS ID
 
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoAccumulatedElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoAmbientColorElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoAnnoText3CharOrientElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoAnnoText3FontSizeHintElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoAnnoText3RenderPrintElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoBBoxModelMatrixElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoCacheElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoClipPlaneElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoComplexityElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoComplexityTypeElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoCoordinateElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoCreaseAngleElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoCullElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoDecimationPercentageElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoDecimationTypeElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoDiffuseColorElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoDrawStyleElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoEmissiveColorElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoEnvironmentElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoFloatElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoFocalDistanceElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoFontNameElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoFontSizeElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGLAmbientColorElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGLCacheContextElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGLClipPlaneElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGLColorIndexElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGLCoordinateElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGLDiffuseColorElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGLDisplayList.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGLDrawStyleElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGLEmissiveColorElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGLEnvironmentElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGLLazyElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGLLightIdElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGLLightModelElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGLLinePatternElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGLLineWidthElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGLModelMatrixElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGLNormalElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGLNormalizeElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGLPointSizeElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGLPolygonOffsetElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGLPolygonStippleElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGLProjectionMatrixElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGLRenderPassElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGLShadeModelElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGLShapeHintsElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGLShininessElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGLSpecularColorElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGLTextureCoordinateElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGLTextureEnabledElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGLTextureImageElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGLTextureMatrixElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGLUpdateAreaElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGLViewingMatrixElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGLViewportRegionElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoInt32Element.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoLazyElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoLightAttenuationElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoLightElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoLightModelElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoLinePatternElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoLineWidthElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoLocalBBoxMatrixElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoMaterialBindingElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoModelMatrixElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoNormalBindingElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoNormalElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoOverrideElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoPROTOElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoPickRayElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoPickStyleElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoPointSizeElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoPolygonOffsetElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoProfileCoordinateElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoProfileElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoProjectionMatrixElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoReplacedElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoShapeHintsElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoShapeStyleElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoShininessElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoSpecularColorElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoSwitchElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTextOutlineEnabledElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTextureCoordinateBindingElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTextureCoordinateElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTextureImageElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTextureMatrixElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTextureOverrideElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTextureQualityElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTransparencyElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoUnitsElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoViewVolumeElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoViewingMatrixElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoViewportRegionElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoWindowElement.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/all.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoAccumulatedElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoAmbientColorElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoAnnoText3CharOrientElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoAnnoText3FontSizeHintElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoAnnoText3RenderPrintElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoBBoxModelMatrixElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoCacheElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoClipPlaneElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoComplexityElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoComplexityTypeElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoCoordinateElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoCreaseAngleElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoCullElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoDecimationPercentageElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoDecimationTypeElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoDiffuseColorElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoDrawStyleElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoEmissiveColorElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoEnvironmentElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoFloatElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoFocalDistanceElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoFontNameElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoFontSizeElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGLAmbientColorElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGLCacheContextElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGLClipPlaneElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGLColorIndexElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGLCoordinateElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGLDiffuseColorElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGLDisplayList.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGLDrawStyleElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGLEmissiveColorElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGLEnvironmentElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGLLazyElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGLLightIdElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGLLightModelElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGLLinePatternElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGLLineWidthElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGLModelMatrixElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGLNormalElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGLNormalizeElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGLPointSizeElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGLPolygonOffsetElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGLPolygonStippleElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGLProjectionMatrixElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGLRenderPassElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGLShadeModelElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGLShapeHintsElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGLShininessElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGLSpecularColorElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGLTextureCoordinateElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGLTextureEnabledElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGLTextureImageElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGLTextureMatrixElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGLUpdateAreaElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGLViewingMatrixElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGLViewportRegionElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoInt32Element.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoLazyElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoLightAttenuationElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoLightElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoLightModelElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoLinePatternElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoLineWidthElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoLocalBBoxMatrixElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoMaterialBindingElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoModelMatrixElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoNormalBindingElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoNormalElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoOverrideElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoPROTOElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoPickRayElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoPickStyleElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoPointSizeElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoPolygonOffsetElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoProfileCoordinateElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoProfileElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoProjectionMatrixElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoReplacedElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoShapeHintsElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoShapeStyleElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoShininessElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSpecularColorElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSwitchElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTextOutlineEnabledElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTextureCoordinateBindingElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTextureCoordinateElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTextureImageElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTextureMatrixElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTextureOverrideElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTextureQualityElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTransparencyElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoUnitsElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoViewVolumeElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoViewingMatrixElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoViewportRegionElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoWindowElement.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/all.Plo
 
 distclean-depend:
 	-rm -rf $(DEPDIR)

@@ -66,8 +66,8 @@ host_triplet = @host@
 target_alias = @target_alias@
 target_triplet = @target@
 AMDEP = @AMDEP@
+AMINCLUDE = @AMINCLUDE@
 AMTAR = @AMTAR@
-AM_INCLUDE = @AM_INCLUDE@
 AS = @AS@
 AWK = @AWK@
 BUILD_WITH_MSVC = @BUILD_WITH_MSVC@
@@ -75,6 +75,7 @@ CC = @CC@
 COIN_DOC_HTML = @COIN_DOC_HTML@
 COIN_DOC_MAN = @COIN_DOC_MAN@
 COIN_EXTRA_CPPFLAGS = @COIN_EXTRA_CPPFLAGS@
+COIN_EXTRA_CXXFLAGS = @COIN_EXTRA_CXXFLAGS@
 COIN_EXTRA_LDFLAGS = @COIN_EXTRA_LDFLAGS@
 COIN_EXTRA_LIBS = @COIN_EXTRA_LIBS@
 COIN_HACKING_LIBDIRS = @COIN_HACKING_LIBDIRS@
@@ -85,9 +86,9 @@ COIN_VERSION = @COIN_VERSION@
 CONFIG = @CONFIG@
 CXX = @CXX@
 DEPDIR = @DEPDIR@
-DLLFLAGS = @DLLFLAGS@
 DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
+LIBFLAGS = @LIBFLAGS@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
 LT_AGE = @LT_AGE@
@@ -107,7 +108,6 @@ install_sh = @install_sh@
 sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
-win_srcdir = @win_srcdir@
 
 @HACKING_COMPACT_BUILD_TRUE@ALLSOURCES = @HACKING_COMPACT_BUILD_TRUE@all.cpp
 @HACKING_COMPACT_BUILD_FALSE@ALLSOURCES = @HACKING_COMPACT_BUILD_FALSE@\
@@ -316,12 +316,12 @@ install-libbaseincHEADERS: $(libbaseinc_HEADERS)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libbaseincdir)
 	@list='$(libbaseinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  if cmp -s $$d$$p $(DESTDIR)$(libbaseincdir)/$$f; then :; else \
 	    echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libbaseincdir)/$$f"; \
 	    $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libbaseincdir)/$$f; \
-	  fi; \
+	  fi \
 	done
 
 uninstall-libbaseincHEADERS:
@@ -365,34 +365,34 @@ GTAGS:
 distclean-tags:
 	-rm -f TAGS ID
 
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbBSPTree.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbBox2f.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbBox2s.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbBox3f.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbColor.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbColor4f.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbCylinder.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbDict.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbHeap.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbImage.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbLine.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbMatrix.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbName.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbOctTree.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbPlane.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbRotation.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbSphere.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbString.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbTesselator.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbTime.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbVec2f.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbVec2s.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbVec3f.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbVec4f.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbViewVolume.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbViewportRegion.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbXfBox3f.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/all.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbBSPTree.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbBox2f.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbBox2s.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbBox3f.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbColor.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbColor4f.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbCylinder.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbDict.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbHeap.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbImage.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbLine.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbMatrix.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbName.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbOctTree.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbPlane.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbRotation.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbSphere.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbString.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbTesselator.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbTime.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbVec2f.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbVec2s.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbVec3f.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbVec4f.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbViewVolume.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbViewportRegion.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbXfBox3f.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/all.Plo
 
 distclean-depend:
 	-rm -rf $(DEPDIR)

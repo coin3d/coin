@@ -66,8 +66,8 @@ host_triplet = @host@
 target_alias = @target_alias@
 target_triplet = @target@
 AMDEP = @AMDEP@
+AMINCLUDE = @AMINCLUDE@
 AMTAR = @AMTAR@
-AM_INCLUDE = @AM_INCLUDE@
 AS = @AS@
 AWK = @AWK@
 BUILD_WITH_MSVC = @BUILD_WITH_MSVC@
@@ -75,6 +75,7 @@ CC = @CC@
 COIN_DOC_HTML = @COIN_DOC_HTML@
 COIN_DOC_MAN = @COIN_DOC_MAN@
 COIN_EXTRA_CPPFLAGS = @COIN_EXTRA_CPPFLAGS@
+COIN_EXTRA_CXXFLAGS = @COIN_EXTRA_CXXFLAGS@
 COIN_EXTRA_LDFLAGS = @COIN_EXTRA_LDFLAGS@
 COIN_EXTRA_LIBS = @COIN_EXTRA_LIBS@
 COIN_HACKING_LIBDIRS = @COIN_HACKING_LIBDIRS@
@@ -85,9 +86,9 @@ COIN_VERSION = @COIN_VERSION@
 CONFIG = @CONFIG@
 CXX = @CXX@
 DEPDIR = @DEPDIR@
-DLLFLAGS = @DLLFLAGS@
 DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
+LIBFLAGS = @LIBFLAGS@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
 LT_AGE = @LT_AGE@
@@ -107,7 +108,6 @@ install_sh = @install_sh@
 sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
-win_srcdir = @win_srcdir@
 
 @HACKING_COMPACT_BUILD_TRUE@ALLSOURCES = @HACKING_COMPACT_BUILD_TRUE@all.cpp
 @HACKING_COMPACT_BUILD_FALSE@ALLSOURCES = @HACKING_COMPACT_BUILD_FALSE@\
@@ -320,12 +320,12 @@ install-libprojectorsincHEADERS: $(libprojectorsinc_HEADERS)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libprojectorsincdir)
 	@list='$(libprojectorsinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  if cmp -s $$d$$p $(DESTDIR)$(libprojectorsincdir)/$$f; then :; else \
 	    echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libprojectorsincdir)/$$f"; \
 	    $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libprojectorsincdir)/$$f; \
-	  fi; \
+	  fi \
 	done
 
 uninstall-libprojectorsincHEADERS:
@@ -369,18 +369,18 @@ GTAGS:
 distclean-tags:
 	-rm -f TAGS ID
 
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbCylinderPlaneProjector.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbCylinderProjector.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbCylinderSectionProjector.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbCylinderSheetProjector.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbLineProjector.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbPlaneProjector.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbProjector.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbSpherePlaneProjector.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbSphereProjector.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbSphereSectionProjector.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbSphereSheetProjector.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/all.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbCylinderPlaneProjector.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbCylinderProjector.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbCylinderSectionProjector.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbCylinderSheetProjector.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbLineProjector.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbPlaneProjector.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbProjector.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbSpherePlaneProjector.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbSphereProjector.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbSphereSectionProjector.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SbSphereSheetProjector.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/all.Plo
 
 distclean-depend:
 	-rm -rf $(DEPDIR)

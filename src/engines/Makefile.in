@@ -66,8 +66,8 @@ host_triplet = @host@
 target_alias = @target_alias@
 target_triplet = @target@
 AMDEP = @AMDEP@
+AMINCLUDE = @AMINCLUDE@
 AMTAR = @AMTAR@
-AM_INCLUDE = @AM_INCLUDE@
 AS = @AS@
 AWK = @AWK@
 BUILD_WITH_MSVC = @BUILD_WITH_MSVC@
@@ -75,6 +75,7 @@ CC = @CC@
 COIN_DOC_HTML = @COIN_DOC_HTML@
 COIN_DOC_MAN = @COIN_DOC_MAN@
 COIN_EXTRA_CPPFLAGS = @COIN_EXTRA_CPPFLAGS@
+COIN_EXTRA_CXXFLAGS = @COIN_EXTRA_CXXFLAGS@
 COIN_EXTRA_LDFLAGS = @COIN_EXTRA_LDFLAGS@
 COIN_EXTRA_LIBS = @COIN_EXTRA_LIBS@
 COIN_HACKING_LIBDIRS = @COIN_HACKING_LIBDIRS@
@@ -85,9 +86,9 @@ COIN_VERSION = @COIN_VERSION@
 CONFIG = @CONFIG@
 CXX = @CXX@
 DEPDIR = @DEPDIR@
-DLLFLAGS = @DLLFLAGS@
 DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
+LIBFLAGS = @LIBFLAGS@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
 LT_AGE = @LT_AGE@
@@ -107,7 +108,6 @@ install_sh = @install_sh@
 sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
-win_srcdir = @win_srcdir@
 
 @HACKING_COMPACT_BUILD_TRUE@ALLSOURCES = @HACKING_COMPACT_BUILD_TRUE@all.cpp
 @HACKING_COMPACT_BUILD_FALSE@ALLSOURCES = @HACKING_COMPACT_BUILD_FALSE@\
@@ -412,12 +412,12 @@ install-libenginesincHEADERS: $(libenginesinc_HEADERS)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libenginesincdir)
 	@list='$(libenginesinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  if cmp -s $$d$$p $(DESTDIR)$(libenginesincdir)/$$f; then :; else \
 	    echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libenginesincdir)/$$f"; \
 	    $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libenginesincdir)/$$f; \
-	  fi; \
+	  fi \
 	done
 
 uninstall-libenginesincHEADERS:
@@ -461,44 +461,44 @@ GTAGS:
 distclean-tags:
 	-rm -f TAGS ID
 
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoBoolOperation.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoCalculator.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoComposeMatrix.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoComposeRotation.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoComposeRotationFromTo.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoComposeVec2f.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoComposeVec3f.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoComposeVec4f.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoComputeBoundingBox.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoConcatenate.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoConvertAll.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoCounter.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoDecomposeMatrix.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoDecomposeRotation.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoDecomposeVec2f.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoDecomposeVec3f.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoDecomposeVec4f.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoElapsedTime.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoEngine.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoEngineOutput.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoFieldConverter.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGate.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoInterpolate.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoInterpolateFloat.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoInterpolateRotation.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoInterpolateVec2f.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoInterpolateVec3f.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoInterpolateVec4f.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoOnOff.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoOneShot.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoOutputData.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoSelectOne.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTimeCounter.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTransformVec3f.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTriggerAny.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/all.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/evaluator.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/evaluator_tab.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoBoolOperation.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoCalculator.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoComposeMatrix.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoComposeRotation.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoComposeRotationFromTo.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoComposeVec2f.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoComposeVec3f.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoComposeVec4f.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoComputeBoundingBox.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoConcatenate.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoConvertAll.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoCounter.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoDecomposeMatrix.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoDecomposeRotation.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoDecomposeVec2f.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoDecomposeVec3f.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoDecomposeVec4f.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoElapsedTime.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoEngine.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoEngineOutput.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoFieldConverter.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGate.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoInterpolate.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoInterpolateFloat.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoInterpolateRotation.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoInterpolateVec2f.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoInterpolateVec3f.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoInterpolateVec4f.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoOnOff.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoOneShot.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoOutputData.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSelectOne.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTimeCounter.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTransformVec3f.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTriggerAny.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/all.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/evaluator.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/evaluator_tab.Plo
 
 distclean-depend:
 	-rm -rf $(DEPDIR)

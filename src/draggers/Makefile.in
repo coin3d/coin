@@ -66,8 +66,8 @@ host_triplet = @host@
 target_alias = @target_alias@
 target_triplet = @target@
 AMDEP = @AMDEP@
+AMINCLUDE = @AMINCLUDE@
 AMTAR = @AMTAR@
-AM_INCLUDE = @AM_INCLUDE@
 AS = @AS@
 AWK = @AWK@
 BUILD_WITH_MSVC = @BUILD_WITH_MSVC@
@@ -75,6 +75,7 @@ CC = @CC@
 COIN_DOC_HTML = @COIN_DOC_HTML@
 COIN_DOC_MAN = @COIN_DOC_MAN@
 COIN_EXTRA_CPPFLAGS = @COIN_EXTRA_CPPFLAGS@
+COIN_EXTRA_CXXFLAGS = @COIN_EXTRA_CXXFLAGS@
 COIN_EXTRA_LDFLAGS = @COIN_EXTRA_LDFLAGS@
 COIN_EXTRA_LIBS = @COIN_EXTRA_LIBS@
 COIN_HACKING_LIBDIRS = @COIN_HACKING_LIBDIRS@
@@ -85,9 +86,9 @@ COIN_VERSION = @COIN_VERSION@
 CONFIG = @CONFIG@
 CXX = @CXX@
 DEPDIR = @DEPDIR@
-DLLFLAGS = @DLLFLAGS@
 DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
+LIBFLAGS = @LIBFLAGS@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
 LT_AGE = @LT_AGE@
@@ -107,7 +108,6 @@ install_sh = @install_sh@
 sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
-win_srcdir = @win_srcdir@
 
 @HACKING_COMPACT_BUILD_TRUE@ALLSOURCES = @HACKING_COMPACT_BUILD_TRUE@all.cpp
 @HACKING_COMPACT_BUILD_FALSE@ALLSOURCES = @HACKING_COMPACT_BUILD_FALSE@\
@@ -354,12 +354,12 @@ install-libdraggersincHEADERS: $(libdraggersinc_HEADERS)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libdraggersincdir)
 	@list='$(libdraggersinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  if cmp -s $$d$$p $(DESTDIR)$(libdraggersincdir)/$$f; then :; else \
 	    echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libdraggersincdir)/$$f"; \
 	    $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libdraggersincdir)/$$f; \
-	  fi; \
+	  fi \
 	done
 
 uninstall-libdraggersincHEADERS:
@@ -403,29 +403,29 @@ GTAGS:
 distclean-tags:
 	-rm -f TAGS ID
 
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoCenterballDragger.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoDirectionalLightDragger.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoDragPointDragger.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoDragger.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoHandleBoxDragger.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoJackDragger.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoPointLightDragger.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoRotateCylindricalDragger.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoRotateDiscDragger.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoRotateSphericalDragger.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoScale1Dragger.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoScale2Dragger.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoScale2UniformDragger.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoScaleUniformDragger.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoSpotLightDragger.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTabBoxDragger.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTabPlaneDragger.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTrackballDragger.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTransformBoxDragger.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTransformerDragger.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTranslate1Dragger.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTranslate2Dragger.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/all.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoCenterballDragger.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoDirectionalLightDragger.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoDragPointDragger.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoDragger.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoHandleBoxDragger.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoJackDragger.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoPointLightDragger.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoRotateCylindricalDragger.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoRotateDiscDragger.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoRotateSphericalDragger.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoScale1Dragger.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoScale2Dragger.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoScale2UniformDragger.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoScaleUniformDragger.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSpotLightDragger.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTabBoxDragger.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTabPlaneDragger.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTrackballDragger.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTransformBoxDragger.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTransformerDragger.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTranslate1Dragger.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTranslate2Dragger.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/all.Plo
 
 distclean-depend:
 	-rm -rf $(DEPDIR)

@@ -66,8 +66,8 @@ host_triplet = @host@
 target_alias = @target_alias@
 target_triplet = @target@
 AMDEP = @AMDEP@
+AMINCLUDE = @AMINCLUDE@
 AMTAR = @AMTAR@
-AM_INCLUDE = @AM_INCLUDE@
 AS = @AS@
 AWK = @AWK@
 BUILD_WITH_MSVC = @BUILD_WITH_MSVC@
@@ -75,6 +75,7 @@ CC = @CC@
 COIN_DOC_HTML = @COIN_DOC_HTML@
 COIN_DOC_MAN = @COIN_DOC_MAN@
 COIN_EXTRA_CPPFLAGS = @COIN_EXTRA_CPPFLAGS@
+COIN_EXTRA_CXXFLAGS = @COIN_EXTRA_CXXFLAGS@
 COIN_EXTRA_LDFLAGS = @COIN_EXTRA_LDFLAGS@
 COIN_EXTRA_LIBS = @COIN_EXTRA_LIBS@
 COIN_HACKING_LIBDIRS = @COIN_HACKING_LIBDIRS@
@@ -85,9 +86,9 @@ COIN_VERSION = @COIN_VERSION@
 CONFIG = @CONFIG@
 CXX = @CXX@
 DEPDIR = @DEPDIR@
-DLLFLAGS = @DLLFLAGS@
 DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
+LIBFLAGS = @LIBFLAGS@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
 LT_AGE = @LT_AGE@
@@ -107,7 +108,6 @@ install_sh = @install_sh@
 sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
-win_srcdir = @win_srcdir@
 
 @HACKING_COMPACT_BUILD_TRUE@ALLSOURCES = @HACKING_COMPACT_BUILD_TRUE@all.cpp
 @HACKING_COMPACT_BUILD_FALSE@ALLSOURCES = @HACKING_COMPACT_BUILD_FALSE@\
@@ -317,12 +317,12 @@ install-libactionsincHEADERS: $(libactionsinc_HEADERS)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libactionsincdir)
 	@list='$(libactionsinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  if cmp -s $$d$$p $(DESTDIR)$(libactionsincdir)/$$f; then :; else \
 	    echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libactionsincdir)/$$f"; \
 	    $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libactionsincdir)/$$f; \
-	  fi; \
+	  fi \
 	done
 
 uninstall-libactionsincHEADERS:
@@ -366,20 +366,20 @@ GTAGS:
 distclean-tags:
 	-rm -f TAGS ID
 
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoAction.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoBoxHighlightRenderAction.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoCallbackAction.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGLRenderAction.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGetBoundingBoxAction.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGetMatrixAction.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGetPrimitiveCountAction.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoHandleEventAction.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoLineHighlightRenderAction.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoPickAction.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoRayPickAction.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoSearchAction.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoWriteAction.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/all.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoAction.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoBoxHighlightRenderAction.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoCallbackAction.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGLRenderAction.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGetBoundingBoxAction.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGetMatrixAction.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGetPrimitiveCountAction.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoHandleEventAction.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoLineHighlightRenderAction.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoPickAction.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoRayPickAction.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSearchAction.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoWriteAction.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/all.Plo
 
 distclean-depend:
 	-rm -rf $(DEPDIR)

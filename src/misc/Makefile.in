@@ -66,8 +66,8 @@ host_triplet = @host@
 target_alias = @target_alias@
 target_triplet = @target@
 AMDEP = @AMDEP@
+AMINCLUDE = @AMINCLUDE@
 AMTAR = @AMTAR@
-AM_INCLUDE = @AM_INCLUDE@
 AS = @AS@
 AWK = @AWK@
 BUILD_WITH_MSVC = @BUILD_WITH_MSVC@
@@ -75,6 +75,7 @@ CC = @CC@
 COIN_DOC_HTML = @COIN_DOC_HTML@
 COIN_DOC_MAN = @COIN_DOC_MAN@
 COIN_EXTRA_CPPFLAGS = @COIN_EXTRA_CPPFLAGS@
+COIN_EXTRA_CXXFLAGS = @COIN_EXTRA_CXXFLAGS@
 COIN_EXTRA_LDFLAGS = @COIN_EXTRA_LDFLAGS@
 COIN_EXTRA_LIBS = @COIN_EXTRA_LIBS@
 COIN_HACKING_LIBDIRS = @COIN_HACKING_LIBDIRS@
@@ -85,9 +86,9 @@ COIN_VERSION = @COIN_VERSION@
 CONFIG = @CONFIG@
 CXX = @CXX@
 DEPDIR = @DEPDIR@
-DLLFLAGS = @DLLFLAGS@
 DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
+LIBFLAGS = @LIBFLAGS@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
 LT_AGE = @LT_AGE@
@@ -107,7 +108,6 @@ install_sh = @install_sh@
 sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
-win_srcdir = @win_srcdir@
 
 @HACKING_COMPACT_BUILD_TRUE@ALLSOURCES = @HACKING_COMPACT_BUILD_TRUE@all.cpp
 @HACKING_COMPACT_BUILD_FALSE@ALLSOURCES = @HACKING_COMPACT_BUILD_FALSE@\
@@ -344,12 +344,12 @@ install-libmiscincHEADERS: $(libmiscinc_HEADERS)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libmiscincdir)
 	@list='$(libmiscinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  if cmp -s $$d$$p $(DESTDIR)$(libmiscincdir)/$$f; then :; else \
 	    echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libmiscincdir)/$$f"; \
 	    $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libmiscincdir)/$$f; \
-	  fi; \
+	  fi \
 	done
 
 uninstall-libmiscincHEADERS:
@@ -393,37 +393,37 @@ GTAGS:
 distclean-tags:
 	-rm -f TAGS ID
 
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/GLUWrapper.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoBase.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoByteStream.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoChildList.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoDB.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoFullPath.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGL.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGLImage.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGenerate.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGlyph.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoInput.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoInteraction.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoLightPath.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoLockManager.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoNormalGenerator.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoNotification.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoOffscreenRenderer.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoOutput.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoPath.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoPickedPoint.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoPrimitiveVertex.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoSceneManager.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoState.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTempPath.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTranReceiver.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTranSender.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoType.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/all.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/default2dfont.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/default3dfont.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/simage_wrapper.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/GLUWrapper.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoBase.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoByteStream.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoChildList.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoDB.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoFullPath.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGL.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGLImage.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGenerate.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGlyph.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoInput.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoInteraction.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoLightPath.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoLockManager.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoNormalGenerator.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoNotification.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoOffscreenRenderer.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoOutput.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoPath.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoPickedPoint.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoPrimitiveVertex.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSceneManager.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoState.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTempPath.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTranReceiver.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTranSender.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoType.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/all.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/default2dfont.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/default3dfont.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/simage_wrapper.Plo
 
 distclean-depend:
 	-rm -rf $(DEPDIR)

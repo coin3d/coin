@@ -66,8 +66,8 @@ host_triplet = @host@
 target_alias = @target_alias@
 target_triplet = @target@
 AMDEP = @AMDEP@
+AMINCLUDE = @AMINCLUDE@
 AMTAR = @AMTAR@
-AM_INCLUDE = @AM_INCLUDE@
 AS = @AS@
 AWK = @AWK@
 BUILD_WITH_MSVC = @BUILD_WITH_MSVC@
@@ -75,6 +75,7 @@ CC = @CC@
 COIN_DOC_HTML = @COIN_DOC_HTML@
 COIN_DOC_MAN = @COIN_DOC_MAN@
 COIN_EXTRA_CPPFLAGS = @COIN_EXTRA_CPPFLAGS@
+COIN_EXTRA_CXXFLAGS = @COIN_EXTRA_CXXFLAGS@
 COIN_EXTRA_LDFLAGS = @COIN_EXTRA_LDFLAGS@
 COIN_EXTRA_LIBS = @COIN_EXTRA_LIBS@
 COIN_HACKING_LIBDIRS = @COIN_HACKING_LIBDIRS@
@@ -85,9 +86,9 @@ COIN_VERSION = @COIN_VERSION@
 CONFIG = @CONFIG@
 CXX = @CXX@
 DEPDIR = @DEPDIR@
-DLLFLAGS = @DLLFLAGS@
 DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
+LIBFLAGS = @LIBFLAGS@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
 LT_AGE = @LT_AGE@
@@ -107,7 +108,6 @@ install_sh = @install_sh@
 sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
-win_srcdir = @win_srcdir@
 
 @HACKING_COMPACT_BUILD_TRUE@ALLSOURCES = @HACKING_COMPACT_BUILD_TRUE@all.cpp
 @HACKING_COMPACT_BUILD_FALSE@ALLSOURCES = @HACKING_COMPACT_BUILD_FALSE@\
@@ -630,12 +630,12 @@ install-libnodesincHEADERS: $(libnodesinc_HEADERS)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libnodesincdir)
 	@list='$(libnodesinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  if cmp -s $$d$$p $(DESTDIR)$(libnodesincdir)/$$f; then :; else \
 	    echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libnodesincdir)/$$f"; \
 	    $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libnodesincdir)/$$f; \
-	  fi; \
+	  fi \
 	done
 
 uninstall-libnodesincHEADERS:
@@ -679,112 +679,112 @@ GTAGS:
 distclean-tags:
 	-rm -f TAGS ID
 
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoAnnoText3.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoAnnoText3Property.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoAnnotation.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoAntiSquish.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoArray.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoAsciiText.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoBaseColor.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoBlinker.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoCallback.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoCamera.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoClipPlane.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoColorIndex.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoComplexity.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoCone.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoCoordinate3.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoCoordinate4.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoCube.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoCylinder.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoDirectionalLight.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoDrawStyle.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoEnvironment.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoEventCallback.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoExtSelection.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoFaceSet.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoFile.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoFont.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoFontStyle.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoGroup.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoImage.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoIndexedFaceSet.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoIndexedLineSet.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoIndexedNurbsCurve.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoIndexedNurbsSurface.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoIndexedShape.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoIndexedTriangleStripSet.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoInfo.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoLOD.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoLabel.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoLevelOfDetail.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoLevelOfSimplification.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoLight.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoLightModel.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoLineSet.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoLinearProfile.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoLocateHighlight.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoMarkerSet.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoMaterial.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoMaterialBinding.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoMatrixTransform.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoMultipleCopy.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoNode.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoNonIndexedShape.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoNormal.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoNormalBinding.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoNurbsCurve.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoNurbsProfile.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoNurbsSurface.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoOrthographicCamera.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoPackedColor.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoPathSwitch.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoPendulum.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoPerspectiveCamera.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoPickStyle.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoPointLight.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoPointSet.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoPolygonOffset.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoProfile.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoProfileCoordinate2.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoProfileCoordinate3.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoQuadMesh.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoResetTransform.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoRotation.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoRotationXYZ.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoRotor.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoScale.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoSelection.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoSeparator.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoShape.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoShapeHints.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoShuttle.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoSphere.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoSpotLight.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoSurroundScale.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoSwitch.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoText2.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoText3.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTexture2.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTexture2Transform.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTextureCoordinate2.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTextureCoordinateBinding.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTextureCoordinateDefault.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTextureCoordinateEnvironment.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTextureCoordinateFunction.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTextureCoordinatePlane.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTransform.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTransformSeparator.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTransformation.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTranslation.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoTriangleStripSet.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoUnits.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoUnknownNode.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoVertexProperty.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoVertexShape.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoWWWAnchor.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/SoWWWInline.Plo
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/all.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoAnnoText3.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoAnnoText3Property.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoAnnotation.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoAntiSquish.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoArray.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoAsciiText.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoBaseColor.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoBlinker.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoCallback.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoCamera.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoClipPlane.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoColorIndex.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoComplexity.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoCone.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoCoordinate3.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoCoordinate4.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoCube.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoCylinder.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoDirectionalLight.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoDrawStyle.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoEnvironment.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoEventCallback.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoExtSelection.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoFaceSet.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoFile.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoFont.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoFontStyle.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoGroup.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoImage.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoIndexedFaceSet.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoIndexedLineSet.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoIndexedNurbsCurve.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoIndexedNurbsSurface.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoIndexedShape.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoIndexedTriangleStripSet.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoInfo.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoLOD.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoLabel.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoLevelOfDetail.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoLevelOfSimplification.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoLight.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoLightModel.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoLineSet.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoLinearProfile.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoLocateHighlight.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoMarkerSet.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoMaterial.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoMaterialBinding.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoMatrixTransform.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoMultipleCopy.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoNode.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoNonIndexedShape.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoNormal.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoNormalBinding.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoNurbsCurve.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoNurbsProfile.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoNurbsSurface.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoOrthographicCamera.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoPackedColor.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoPathSwitch.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoPendulum.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoPerspectiveCamera.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoPickStyle.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoPointLight.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoPointSet.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoPolygonOffset.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoProfile.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoProfileCoordinate2.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoProfileCoordinate3.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoQuadMesh.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoResetTransform.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoRotation.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoRotationXYZ.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoRotor.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoScale.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSelection.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSeparator.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoShape.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoShapeHints.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoShuttle.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSphere.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSpotLight.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSurroundScale.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoSwitch.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoText2.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoText3.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTexture2.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTexture2Transform.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTextureCoordinate2.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTextureCoordinateBinding.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTextureCoordinateDefault.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTextureCoordinateEnvironment.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTextureCoordinateFunction.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTextureCoordinatePlane.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTransform.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTransformSeparator.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTransformation.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTranslation.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoTriangleStripSet.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoUnits.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoUnknownNode.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoVertexProperty.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoVertexShape.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoWWWAnchor.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/SoWWWInline.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/all.Plo
 
 distclean-depend:
 	-rm -rf $(DEPDIR)
