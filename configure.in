@@ -273,33 +273,6 @@ SIM_AC_CHECK_OPENGL([AC_DEFINE(HAVE_OPENGL)
 if test x"$sim_ac_gl_avail" = xyes; then
 
   # *******************************************************************
-  # ** Check if the Mesa offscreen rendering interface is available.
-  # *******************************************************************
-
-  AC_CACHE_CHECK([whether Mesa offscreen rendering is available],
-    sim_cv_func_osmesacreatecontext_avail,
-    [AC_TRY_LINK([#include <GL/osmesa.h>],
-                 [(void)OSMesaCreateContext(OSMESA_RGB, 0L);],
-                 sim_cv_func_osmesacreatecontext_avail=yes,
-                 sim_cv_func_osmesacreatecontext_avail=no)])
-
-  if test x"$sim_cv_func_osmesacreatecontext_avail" = xyes; then
-    AC_DEFINE(HAVE_OSMESACREATECONTEXT)
-
-    AC_CACHE_CHECK([whether Mesa pixelstore format should be set],
-      sim_cv_func_osmesapixelstore_avail,
-      [AC_TRY_LINK([#include <GL/osmesa.h>],
-                   [OSMesaPixelStore(OSMESA_Y_UP, 0);],
-                   sim_cv_func_osmesapixelstore_avail=yes,
-                   sim_cv_func_osmesapixelstore_avail=no)])
-
-    if test x"$sim_cv_func_osmesapixelstore_avail" = xyes; then
-      AC_DEFINE(HAVE_OSMESAPIXELSTORE)
-    fi
-  fi
-
-
-  # *******************************************************************
   # ** Check if GLX is available.
   # *******************************************************************
 

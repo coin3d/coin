@@ -4741,94 +4741,23 @@ fi
 if test x"$sim_ac_gl_avail" = xyes; then
 
   # *******************************************************************
-  # ** Check if the Mesa offscreen rendering interface is available.
-  # *******************************************************************
-
-  echo $ac_n "checking whether Mesa offscreen rendering is available... $ac_c" 1>&6
-echo "configure:4749: checking whether Mesa offscreen rendering is available" 1>&5
-if test "${sim_cv_func_osmesacreatecontext_avail+set}" = set; then
-  echo $ac_n "(cached) $ac_c" 1>&6
-else
-  cat >conftest.$ac_ext <<EOF
-#line 4754 "configure"
-#include "confdefs.h"
-#include <GL/osmesa.h>
-int main() {
-(void)OSMesaCreateContext(OSMESA_RGB, 0L);
-; return 0; }
-EOF
-if { (eval echo configure:4761: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
-  rm -rf conftest*
-  sim_cv_func_osmesacreatecontext_avail=yes
-else
-  echo "configure: failed program was:" >&5
-  cat conftest.$ac_ext >&5
-  rm -rf conftest*
-  sim_cv_func_osmesacreatecontext_avail=no
-fi
-rm -f conftest*
-fi
-echo "$ac_t""$sim_cv_func_osmesacreatecontext_avail" 1>&6
-
-  if test x"$sim_cv_func_osmesacreatecontext_avail" = xyes; then
-    cat >>confdefs.h <<\EOF
-#define HAVE_OSMESACREATECONTEXT 1
-EOF
-
-
-    echo $ac_n "checking whether Mesa pixelstore format should be set... $ac_c" 1>&6
-echo "configure:4781: checking whether Mesa pixelstore format should be set" 1>&5
-if test "${sim_cv_func_osmesapixelstore_avail+set}" = set; then
-  echo $ac_n "(cached) $ac_c" 1>&6
-else
-  cat >conftest.$ac_ext <<EOF
-#line 4786 "configure"
-#include "confdefs.h"
-#include <GL/osmesa.h>
-int main() {
-OSMesaPixelStore(OSMESA_Y_UP, 0);
-; return 0; }
-EOF
-if { (eval echo configure:4793: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
-  rm -rf conftest*
-  sim_cv_func_osmesapixelstore_avail=yes
-else
-  echo "configure: failed program was:" >&5
-  cat conftest.$ac_ext >&5
-  rm -rf conftest*
-  sim_cv_func_osmesapixelstore_avail=no
-fi
-rm -f conftest*
-fi
-echo "$ac_t""$sim_cv_func_osmesapixelstore_avail" 1>&6
-
-    if test x"$sim_cv_func_osmesapixelstore_avail" = xyes; then
-      cat >>confdefs.h <<\EOF
-#define HAVE_OSMESAPIXELSTORE 1
-EOF
-
-    fi
-  fi
-
-
-  # *******************************************************************
   # ** Check if GLX is available.
   # *******************************************************************
 
   echo $ac_n "checking whether GLX is available... $ac_c" 1>&6
-echo "configure:4820: checking whether GLX is available" 1>&5
+echo "configure:4749: checking whether GLX is available" 1>&5
 if test "${sim_cv_func_glx_avail+set}" = set; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat >conftest.$ac_ext <<EOF
-#line 4825 "configure"
+#line 4754 "configure"
 #include "confdefs.h"
 #include <GL/glx.h>
 int main() {
 (void)glXChooseVisual(0L, 0, 0L);
 ; return 0; }
 EOF
-if { (eval echo configure:4832: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:4761: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   sim_cv_func_glx_avail=yes
 else
@@ -4856,7 +4785,7 @@ EOF
 
   
 echo $ac_n "checking what structure to use in the GLU NURBS interface... $ac_c" 1>&6
-echo "configure:4860: checking what structure to use in the GLU NURBS interface" 1>&5
+echo "configure:4789: checking what structure to use in the GLU NURBS interface" 1>&5
 if test "${sim_cv_func_glu_nurbsobject+set}" = set; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -4864,7 +4793,7 @@ else
    for sim_ac_glu_structname in GLUnurbs GLUnurbsObj; do
     if test "$sim_cv_func_glu_nurbsobject" = NONE; then
       cat >conftest.$ac_ext <<EOF
-#line 4868 "configure"
+#line 4797 "configure"
 #include "confdefs.h"
 #ifdef _WIN32
                   #include <windows.h>
@@ -4876,7 +4805,7 @@ $sim_ac_glu_structname * hepp = gluNewNurbsRenderer();
                    gluDeleteNurbsRenderer(hepp)
 ; return 0; }
 EOF
-if { (eval echo configure:4880: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:4809: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   sim_cv_func_glu_nurbsobject=$sim_ac_glu_structname
 else
@@ -5080,6 +5009,7 @@ libdir="`eval echo $libdir`"
 includedir="`eval echo $includedir`"
 infodir="`eval echo $infodir`"
 mandir="`eval echo $mandir`"
+
 
 
 coin_src_dir=$srcdir

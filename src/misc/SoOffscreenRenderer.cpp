@@ -28,8 +28,8 @@
   the scene to disk files (as pixel bitmaps or as Postscript files for
   sending to a Postscript-capable printer).
 
-  Currently offscreen rendering can only be done if Mesa is used as
-  the OpenGL rendering library.
+  Currently offscreen rendering can only be done with GLX (i.e. OpenGL
+  on X11).
 
  */
 
@@ -69,21 +69,21 @@ public:
 
 #if COIN_DEBUG
     if (size[0] > maxsize[0]) {
-      SoDebugError::postWarning("SoOffscreenMesaData::setBufferSize",
+      SoDebugError::postWarning("SoOffscreenInternalData::setBufferSize",
                                 "can't set width to %d, maximum is %d",
                                 size[0], maxsize[0]);
     }
     else if (size[0] <= 0) {
-      SoDebugError::postWarning("SoOffscreenMesaData::setBufferSize",
+      SoDebugError::postWarning("SoOffscreenInternalData::setBufferSize",
                                 "can't set negative width %d", size[0]);
     }
     if (size[1] > maxsize[1]) {
-      SoDebugError::postWarning("SoOffscreenMesaData::setBufferSize",
+      SoDebugError::postWarning("SoOffscreenInternalData::setBufferSize",
                                 "can't set height to %d, maximum is %d",
                                 size[1], maxsize[1]);
     }
     else if (size[1] <= 0) {
-      SoDebugError::postWarning("SoOffscreenMesaData::setBufferSize",
+      SoDebugError::postWarning("SoOffscreenInternalData::setBufferSize",
                                 "can't set negative height %d", size[1]);
     }
 #endif // COIN_DEBUG
@@ -111,91 +111,6 @@ protected:
   // Note: should _really_ be overloaded by subclasses.
   virtual SbVec2s getMax(void) { return SbVec2s(32767, 32767); }
 };
-
-#if HAVE_OSMESACREATECONTEXT
-#include <GL/osmesa.h>
-
-class SoOffscreenMesaData : public SoOffscreenInternalData {
-public:
-  SoOffscreenMesaData(void) {
-    this->context = OSMesaCreateContext(OSMESA_RGBA, NULL);
-    if (!this->context) {
-      SoDebugError::postWarning("SoOffscreenMesaData::SoOffscreenMesaData",
-                                "couldn't create context");
-    }
-    this->buffer = NULL;
-  }
-  virtual ~SoOffscreenMesaData() {
-    if (this->context) OSMesaDestroyContext(this->context);
-    delete[] this->buffer;
-  }
-
-  virtual void setBufferSize(const SbVec2s & size) {
-    SoOffscreenInternalData::setBufferSize(size);
-    delete[] this->buffer;
-    this->buffer =
-      new unsigned char[this->buffersize[0] * this->buffersize[1] * 4];
-  }
-
-  virtual SbBool makeContextCurrent(void) {
-    assert(this->buffer);
-    if (this->context) {
-      OSMesaMakeCurrent(this->context, this->buffer,
-                        GL_UNSIGNED_BYTE,
-                        this->buffersize[0],
-                        this->buffersize[1]);
-#if HAVE_OSMESAPIXELSTORE
-      OSMesaPixelStore(OSMESA_Y_UP, 0); // Draw top-to-bottom
-#endif // HAVE_OSMESAPIXELSTORE
-      return TRUE;
-    }
-    return FALSE;
-  }
-
-  static SbVec2s getMaxDimensions(void) {
-    // Create and set up a dummy context to be able to use
-    // glGetIntegerv() below.
-    OSMesaContext tmpctx = OSMesaCreateContext(OSMESA_RGBA, NULL);
-
-    if (!tmpctx) {
-#if COIN_DEBUG
-      SoDebugError::postWarning("SoOffscreenRenderer::getMaximumResolution",
-                                "couldn't create context");
-#endif // COIN_DEBUG
-      return SbVec2s(0, 0);
-    }
-
-    const int dummydim = 16;
-    unsigned char buffer[4 * dummydim * dummydim];
-    OSMesaMakeCurrent(tmpctx, buffer, GL_UNSIGNED_BYTE, dummydim, dummydim);
-
-    GLint dims[2];
-    glGetIntegerv(GL_MAX_VIEWPORT_DIMS, dims);
-
-    OSMesaDestroyContext(tmpctx);
-
-    // Avoid overflow.
-    dims[0] = SbMin(dims[0], 32767);
-    dims[1] = SbMin(dims[1], 32767);
-
-    return SbVec2s((short)dims[0], (short)dims[1]);
-  }
-
-
-  virtual unsigned char * getBuffer(void) {
-    return this->buffer;
-  }
-
-private:
-  virtual SbVec2s getMax(void) {
-    return SoOffscreenMesaData::getMaxDimensions();
-  }
-
-  unsigned char * buffer;
-  OSMesaContext context;
-};
-
-#endif // HAVE_OSMESACREATECONTEXT
 
 
 #if HAVE_GLX
@@ -252,8 +167,11 @@ public:
     if (this->context) glXDestroyContext(this->display, this->context);
     if (this->glxpixmap) glXDestroyGLXPixmap(this->display, this->glxpixmap);
     if (this->pixmap) XFreePixmap(this->display, this->pixmap);
-    if (this->display) XCloseDisplay(this->display);
     if (this->visinfo) XFree(this->visinfo);
+    // FIXME: there's a memory leak here, but leaving this in causes a
+    // crash when running remotely from Mesa on RH Linux 6.2 to OpenGL
+    // on IRIX6.5. Investigate further. 20000705 mortene.
+//      if (this->display) XCloseDisplay(this->display);
 
     delete[] this->buffer;
   }
@@ -350,9 +268,7 @@ SoOffscreenRenderer::SoOffscreenRenderer(const SbViewportRegion & viewportregion
     internaldata(NULL),
     buffer(NULL)
 {
-#if HAVE_OSMESACREATECONTEXT
-  this->internaldata = new SoOffscreenMesaData();
-#elif HAVE_GLX
+#if HAVE_GLX
   this->internaldata = new SoOffscreenGLXData();
 #endif // HAVE_GLX
   this->setViewportRegion(viewportregion);
@@ -372,9 +288,7 @@ SoOffscreenRenderer::SoOffscreenRenderer(SoGLRenderAction * action)
     internaldata(NULL),
     buffer(NULL)
 {
-#if HAVE_OSMESACREATECONTEXT
-  this->internaldata = new SoOffscreenMesaData();
-#elif HAVE_GLX
+#if HAVE_GLX
   this->internaldata = new SoOffscreenGLXData();
 #endif // HAVE_GLX
   assert(action);
@@ -407,9 +321,7 @@ SoOffscreenRenderer::getScreenPixelsPerInch(void)
 SbVec2s
 SoOffscreenRenderer::getMaximumResolution(void)
 {
-#if HAVE_OSMESACREATECONTEXT
-  SoOffscreenMesaData::getMaxDimensions();
-#elif HAVE_GLX
+#if HAVE_GLX
   SoOffscreenGLXData::getMaxDimensions();
 #endif // HAVE_GLX
   return SbVec2s(0, 0);
