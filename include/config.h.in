@@ -70,6 +70,9 @@
 /* Define to use GetEnvironmentVariable() instead of getenv() */
 #undef HAVE_GETENVIRONMENTVARIABLE
 
+/* Define to use SVr4 / BSD4.3 gettimeofday() */
+#undef HAVE_GETTIMEOFDAY
+
 /* define if you have GLU */
 #undef HAVE_GLU
 
@@ -117,6 +120,9 @@
 
 /* define if the GL header should be included as OpenGL/gl.h */
 #undef HAVE_OPENGL_GL_H
+
+/* Define to use Win32 QueryPerformanceCounter() */
+#undef HAVE_QUERYPERFORMANCECOUNTER
 
 /* define if single-precision math functions are avialable */
 #undef HAVE_SINGLEPRECISION_MATH
@@ -186,6 +192,9 @@
 
 /* define if it is possible to build against X11 */
 #undef HAVE_X11_AVAILABLE
+
+/* Define to use Win32 _ftime() */
+#undef HAVE__FTIME
 
 /* define if _snprintf() is available */
 #undef HAVE__SNPRINTF
