@@ -194,6 +194,8 @@ SoAuditorList::notify(SoNotList * l)
 void 
 SoAuditorList::doNotify(SoNotList * l, const void * auditor, const SoNotRec::Type type)
 {
+  l->setLastType(type);
+
   switch (type) {
   case SoNotRec::CONTAINER:
   case SoNotRec::PARENT:

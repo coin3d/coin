@@ -1930,6 +1930,7 @@ SoBase::readRoute(SoInput * in)
 void
 SoBase::doNotify(SoNotList * l, const void * auditor, const SoNotRec::Type type)
 {
+  l->setLastType(type);
   switch (type) {
   case SoNotRec::CONTAINER:
   case SoNotRec::PARENT:
