@@ -60,6 +60,9 @@ TODO:
   versions of Coin (--without-coin-engines etc). Or perhaps make a
   single --compile-basesystem option instead?
 
+* [mortene:19991226] search for the doxygen tool by using an autoconf
+  macro.
+
 * [mortene:19990913] integrate the doxygen man- and html-generation
   into "make install".
 

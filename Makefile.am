@@ -14,3 +14,7 @@ endif
 
 SUBDIRS = src $(TOOLDIR) $(EXAMPLEDIR)
 
+
+doxygen-doc:
+	top_builddir=$(top_builddir) top_srcdir=$(top_srcdir) \
+	doxygen $(top_srcdir)/docs/coin.doxygen

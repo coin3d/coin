@@ -397,6 +397,10 @@ installdirs mostlyclean-generic distclean-generic clean-generic \
 maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 
 
+doxygen-doc:
+	top_builddir=$(top_builddir) top_srcdir=$(top_srcdir) \
+	doxygen $(top_srcdir)/docs/coin.doxygen
+
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
