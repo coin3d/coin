@@ -205,25 +205,19 @@ SoAction::apply(SoNode * root)
   this->traversalMethods->setUp();
   this->terminated = FALSE;
 
-  // So the graph is not deallocated during traversal.
-  if (root) root->ref();
-
   this->currentpathcode = SoAction::NO_PATH;
   this->applieddata.node = root;
   this->appliedcode = SoAction::NODE;
   if (root) {
-    if (!this->state) {
-      const SoTypeList & elementtypes =
-        this->getEnabledElements().getElements();
-      this->state = new SoState(this, elementtypes);
-    }
-
+    // So the graph is not deallocated during traversal.
+    root->ref();
+    // make sure state is created before traversing
+    (void) this->getState(); 
     this->beginTraversal(root);
     this->endTraversal(root);
     this->applieddata.node = NULL;
+    root->unrefNoDelete();
   }
-
-  if (root) root->unrefNoDelete();
 }
 
 /*!
@@ -246,10 +240,8 @@ SoAction::apply(SoPath * path)
   this->applieddata.path = path;
   this->appliedcode = SoAction::PATH;
 
-  if (!this->state) {
-    const SoTypeList & elementtypes = this->getEnabledElements().getElements();
-    this->state = new SoState(this, elementtypes);
-  }
+  // make sure state is created before traversing
+  (void) this->getState(); 
 
   if (path->getLength() && path->getNode(0)) {
     SoNode * node = path->getNode(0);
@@ -289,8 +281,9 @@ SoAction::apply(const SoPathList & pathlist, SbBool obeysrules)
   assert(pathlist[0]->getNode(0));
 
   int n = pathlist.getLength();
-  if (this->state == NULL)
-    this->state = new SoState(this, getEnabledElements().getElements());
+ 
+  // make sure state is created before traversing
+  (void) this->getState(); 
 
   for (int i = 0; i < n; i++) {
     SoPath * path = pathlist[i];
@@ -500,6 +493,11 @@ SoAction::hasTerminated(void) const
 SoState *
 SoAction::getState(void) const
 {
+  if (this->state == NULL) {
+    // cast away constness to set state
+    ((SoAction*)this)->state = 
+      new SoState((SoAction*)this, this->getEnabledElements().getElements());
+  }
   return this->state;
 }
 
