@@ -26,6 +26,14 @@
   to some geometry. Since this node inherits the SoRotation node,
   rotation is restricted around the axis specified in the
   rotation field.
+
+  The angle value of the SoRotation::rotation field (inherited by this
+  node) gives the rotation direction. If the value is larger than 0.0,
+  the rotation will be done in the counterclockwise direction, if it
+  is negative the rotation will be done in the clockwise direction.
+
+  Note also that the rotation will always start at angle 0°, no matter
+  how large or small the angle value of the rotation field is.
 */
 
 #include <Inventor/nodes/SoRotor.h>
