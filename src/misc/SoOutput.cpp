@@ -473,7 +473,7 @@ SoOutput::write(const int i)
     this->writeBytesWithPadding(buffer, strlen(buffer));
   }
   else {
-    // FIXME: Probably breaks on 64-bit architectures, which is pretty
+    // FIXME: breaks on 64-bit architectures, which is pretty
     // lame... 19990621 mortene.
     assert(sizeof(int) == sizeof(int32_t));
     int32_t val = i;
