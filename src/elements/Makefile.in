@@ -234,7 +234,8 @@ RegularSources = \
 	SoListenerPositionElement.cpp \
 	SoListenerOrientationElement.cpp \
 	SoListenerGainElement.cpp \
-	SoListenerVelocityElement.cpp
+	SoListenerVelocityElement.cpp \
+	SoSoundElement.cpp
 
 LinkHackSources = \
 	all.cpp
@@ -338,7 +339,8 @@ PublicHeaders = \
 	../../include/Inventor/elements/SoListenerPositionElement.h \
 	../../include/Inventor/elements/SoListenerOrientationElement.h \
 	../../include/Inventor/elements/SoListenerGainElement.h \
-	../../include/Inventor/elements/SoListenerVelocityElement.h 
+	../../include/Inventor/elements/SoListenerVelocityElement.h \
+	../../include/Inventor/elements/SoSoundElement.h
 
 PrivateHeaders = \
 	../../include/Inventor/elements/SoTextureScalePolicyElement.h
@@ -494,7 +496,8 @@ elements_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoListenerPositionElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoListenerOrientationElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoListenerGainElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoListenerVelocityElement.$(OBJEXT)
+@HACKING_COMPACT_BUILD_FALSE@	SoListenerVelocityElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoSoundElement.$(OBJEXT)
 elements_lst_OBJECTS = $(am_elements_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -595,7 +598,8 @@ libelements_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoListenerPositionElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoListenerOrientationElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoListenerGainElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoListenerVelocityElement.lo
+@HACKING_COMPACT_BUILD_FALSE@	SoListenerVelocityElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoSoundElement.lo
 libelements_la_OBJECTS = $(am_libelements_la_OBJECTS)
 libelements@SUFFIX@LINKHACK_la_LDFLAGS =
 libelements@SUFFIX@LINKHACK_la_LIBADD =
@@ -695,7 +699,8 @@ libelements@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoListenerPositionElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoListenerOrientationElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoListenerGainElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoListenerVelocityElement.lo
+@HACKING_COMPACT_BUILD_FALSE@	SoListenerVelocityElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoSoundElement.lo
 libelements@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libelements@SUFFIX@LINKHACK_la_OBJECTS)
 
@@ -859,6 +864,8 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoShapeStyleElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoShininessElement.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoShininessElement.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoSoundElement.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoSoundElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoSpecularColorElement.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoSpecularColorElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoSwitchElement.Plo \
@@ -1136,6 +1143,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoShapeStyleElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoShininessElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoShininessElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoSoundElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoSoundElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoSpecularColorElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoSpecularColorElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoSwitchElement.Plo@am__quote@
