@@ -1249,6 +1249,24 @@ if $sim_ac_make_dsp; then
   CPPFLAGS="$CPPFLAGS -Ddspfile=$coin_build_dir/coin$COIN_MAJOR_VERSION.dsp"
   LDFLAGS="$LDFLAGS -Wl,-Ddspfile=$coin_build_dir/coin$COIN_MAJOR_VERSION.dsp"
   LIBFLAGS="$LIBFLAGS -o coin$COIN_MAJOR_VERSION.so.0"
+
+  COIN_DSP_LIBS=
+  for arg in $LIBS; do
+    case $arg in
+    -l* )
+      libname=`echo $arg | cut -c3-`
+      if test x"$COIN_DSP_LIBS" = x""; then
+        COIN_DSP_LIBS="$libname.lib"
+      else
+        COIN_DSP_LIBS="$COIN_DSP_LIBS $libname.lib"
+      fi
+      ;;
+    * )
+      ;;
+    esac
+  done
+  AC_SUBST(COIN_DSP_LIBS)
+
   # this can't be set up at the point the libtool script is generated
   mv libtool libtool.bak
   sed -e "s%^CC=\"gcc\"%CC=\"$coin_src_dir/cfg/m4/gendsp.sh\"%" \
