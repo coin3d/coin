@@ -299,10 +299,14 @@ SoSensorManager::processDelayQueue(SbBool isidle)
 #endif // debug
 
     if (!isidle && this->delayqueue[0]->isIdleOnly()) {
-      // Will be merged back into the "real" queue after processing
-      // has completed and queue has emptied.
-      this->insertDelaySensor(this->delayqueue[0]);
-      this->delayqueue[0]->unschedule();
+      // Remove from current queue without using unschedule().
+      SoDelayQueueSensor * tmpptr = this->delayqueue[0];
+      this->delayqueue.remove(0);
+
+      // Will automatically put sensor in "processing wait-queue", and
+      // merge back into the "real" queue after processing has
+      // completed and queue has been emptied.
+      this->insertDelaySensor(tmpptr);
     }
     else {
       this->delayqueue[0]->trigger();
