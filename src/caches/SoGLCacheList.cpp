@@ -118,11 +118,12 @@ SoGLCacheList::open(SoGLRenderAction * action, SbBool autocache)
 {
   assert(this->opencache == NULL);
   SoState * state = action->getState();
-  if (SoCacheElement::anyOpen(state)) return;
-  if (autocache && !(this->flags & FLAG_SHOULD_TRY)) return;
-  
+
   // will be restored in close()
   this->savedinvalid = SoCacheElement::setInvalid(FALSE);
+
+  if (SoCacheElement::anyOpen(state)) return;
+  if (autocache && !(this->flags & FLAG_SHOULD_TRY)) return;
   
   SbBool shouldcreate = TRUE;
   if (autocache && this->autocachebits == SoGLCacheContextElement::DO_AUTO_CACHE) {
