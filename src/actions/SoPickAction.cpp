@@ -149,6 +149,8 @@ SoPickAction::SoPickAction(const SbViewportRegion & viewportRegion)
   : vpRegion(viewportRegion),
     cullingEnabled(TRUE)
 {
+  SO_ACTION_CONSTRUCTOR(SoPickAction);
+
   static int first = 1;
   if (first) {
     SO_ACTION_ADD_METHOD(SoNode, SoNode::pickS);
