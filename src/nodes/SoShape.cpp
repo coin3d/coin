@@ -127,9 +127,11 @@ public:
   }
   void endShape() {
     if (this->shapetype == SoShape::POLYGON) {
+      this->handleFaceDetail(this->counter);
+
       if (SoShapeHintsElement::getFaceType(action->getState()) ==
           SoShapeHintsElement::CONVEX) {
-        for (int i = 1; i < counter-1; i++) {
+        for (int i = 1; i < this->counter-1; i++) {
           this->shape->invokeTriangleCallbacks(this->action,
                                                &vertsArray[0],
                                                &vertsArray[i],
@@ -157,6 +159,7 @@ public:
       this->setVertex(SbMin(this->counter, 2), v);
       this->counter++;
       if (this->counter >= 3) {
+        this->handleFaceDetail(3);
         this->shape->invokeTriangleCallbacks(this->action,
                                              &vertsArray[0],
                                              &vertsArray[1],
@@ -172,6 +175,7 @@ public:
         this->setVertex(this->counter++, v);
       }
       if (this->counter == 3) {
+        this->handleFaceDetail(3);
         this->shape->invokeTriangleCallbacks(this->action,
                                              &vertsArray[0],
                                              &vertsArray[1],
@@ -181,6 +185,7 @@ public:
     case SoShape::TRIANGLES:
       this->setVertex(counter++, v);
       if (this->counter == 3) {
+        this->handleFaceDetail(3);
         this->shape->invokeTriangleCallbacks(this->action,
                                              &vertsArray[0],
                                              &vertsArray[1],
@@ -214,6 +219,7 @@ public:
     case SoShape::QUADS:
       this->setVertex(this->counter++, v);
       if (this->counter == 4) {
+        this->handleFaceDetail(4);
         this->shape->invokeTriangleCallbacks(this->action,
                                              &vertsArray[0],
                                              &vertsArray[1],
@@ -228,6 +234,7 @@ public:
     case SoShape::QUAD_STRIP:
       this->setVertex(this->counter++, v);
       if (counter == 4) {
+        this->handleFaceDetail(4);
         this->shape->invokeTriangleCallbacks(this->action,
                                              &vertsArray[0],
                                              &vertsArray[1],
@@ -247,6 +254,7 @@ public:
     case SoShape::LINES:
       this->setVertex(this->counter++, v);
       if (this->counter == 2) {
+        this->handleLineDetail();
         this->shape->invokeLineSegmentCallbacks(this->action,
                                                 &vertsArray[0],
                                                 &vertsArray[1]);
@@ -256,6 +264,7 @@ public:
     case SoShape::LINE_STRIP:
       this->setVertex(this->counter++, v);
       if (this->counter == 2) {
+        this->handleLineDetail();
         this->shape->invokeLineSegmentCallbacks(this->action,
                                                 &vertsArray[0],
                                                 &vertsArray[1]);
@@ -298,31 +307,20 @@ public:
     }
   }
 
-  void doTriangleCB(const int i0, const int i1, const int i2) {
+  void handleFaceDetail(const int numv) {
     if (this->faceDetail) {
-      this->faceDetail->setNumPoints(3);
-      this->faceDetail->setPoint(0, &this->pointDetails[i0]);
-      this->faceDetail->setPoint(1, &this->pointDetails[i1]);
-      this->faceDetail->setPoint(2, &this->pointDetails[i2]);
-      this->vertsArray[i0].setDetail(this->faceDetail);
-      this->vertsArray[i1].setDetail(this->faceDetail);
-      this->vertsArray[i2].setDetail(this->faceDetail);
+      this->faceDetail->setNumPoints(numv);
+      for (int i = 0; i < numv; i++) {
+        this->faceDetail->setPoint(i, &this->pointDetails[i]);
+        this->vertsArray[i].setDetail(this->faceDetail);
+      }
     }
-    this->shape->invokeTriangleCallbacks(this->action,
-                                         &this->vertsArray[i0],
-                                         &this->vertsArray[i1],
-                                         &this->vertsArray[i2]);
   }
-  void doLineSegmentCB(const int i0, const int i1) {
+  void handleLineDetail(void) {
     if (this->lineDetail) {
-      this->lineDetail->setPoint0(&this->pointDetails[i0]);
-      this->lineDetail->setPoint1(&this->pointDetails[i1]);
-      this->vertsArray[i0].setDetail(this->lineDetail);
-      this->vertsArray[i1].setDetail(this->lineDetail);
+      this->lineDetail->setPoint0(&this->pointDetails[0]);
+      this->lineDetail->setPoint1(&this->pointDetails[1]);
     }
-    this->shape->invokeLineSegmentCallbacks(this->action,
-                                            &this->vertsArray[i0],
-                                            &this->vertsArray[i1]);
   }
 
   SoDetail * createPickDetail() {
@@ -556,7 +554,7 @@ SoShape::getComplexityValue(SoAction * action)
 
 typedef struct {
   int idx : 31;
-  int backface : 1;
+  unsigned int backface : 1;
   float dist;
 } sorted_triangle;
 
