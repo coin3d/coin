@@ -346,7 +346,7 @@ SoNormalCache::generatePerFace(const SbVec3f * const coords,
 
   SbVec3f tmpvec;
 
-  while (cind + 4 < endptr) {
+  while (cind + 3 < endptr) {
     int v0 = cind[0];
     int v1 = cind[1];
     int v2 = cind[2];
