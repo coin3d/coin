@@ -489,7 +489,7 @@ SoIndexedTriangleStripSet::generatePrimitives(SoAction * action)
   vertex.setNormal(*currnormal);
   vertex.setDetail(&pointdetail);
 
-  while (viptr < viendptr) {
+  while (viptr + 2 < viendptr) {
     facedetail.setFaceIndex(0);
 
     v1 = *viptr++;
@@ -600,7 +600,7 @@ SoIndexedTriangleStripSet::generatePrimitives(SoAction * action)
     this->shapeVertex(&vertex);
     facedetail.incFaceIndex();
 
-    v1 = *viptr++;
+    v1 = viptr < viendptr ? *viptr++ : -1;
     while (v1 >= 0) {
       if (mbind == PER_VERTEX || mbind == PER_TRIANGLE) {
         pointdetail.setMaterialIndex(matnr);
@@ -635,7 +635,7 @@ SoIndexedTriangleStripSet::generatePrimitives(SoAction * action)
       this->shapeVertex(&vertex);
       facedetail.incFaceIndex();
 
-      v1 = *viptr++;
+      v1 = viptr < viendptr ? *viptr++ : -1;
     }
     this->endShape();
     facedetail.incPartIndex();
