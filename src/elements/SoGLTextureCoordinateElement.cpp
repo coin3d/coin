@@ -158,19 +158,28 @@ SoGLTextureCoordinateElement::send(const int index) const
 
 void
 SoGLTextureCoordinateElement::send(const int index,
-                                   const SbVec3f & /* c */,
-                                   const SbVec3f & /* n */) const
+                                   const SbVec3f &c,
+                                   const SbVec3f &n) const
 {
-  if (index < 0) return;
-  if (index >= this->numCoords) return;
-
-  // FIXME: handle texcoord functions
-  assert(this->whatKind == EXPLICIT);
-  assert(index < this->numCoords);
-  if (this->coordsAre2D)
-    glTexCoord2fv(coords2[index].getValue());
-  else
-    glTexCoord4fv(coords4[index].getValue());
+  if (this->whatKind == FUNCTION) {    
+    assert(this->funcCB);
+    const SbVec4f &tc = this->funcCB(this->funcCBData, c, n);
+    glTexCoord4fv(tc.getValue());
+  }
+  else {
+    assert(this->whatKind == EXPLICIT);
+    //
+    // FIXME: these tests are just here to avoid crashes when illagal
+    // files are rendered. Will remove later, when we implement a 
+    // SoVerifyGraphAction or something. pederb, 20000218
+    //
+    if (index < 0) return;
+    if (index >= this->numCoords) return;
+    if (this->coordsAre2D)
+      glTexCoord2fv(coords2[index].getValue());
+    else
+      glTexCoord4fv(coords4[index].getValue());
+  }
 }
 
 //!  FIXME: write doc.

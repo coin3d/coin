@@ -285,7 +285,7 @@ void
 SoTextureCoordinateElement::init(SoState * state)
 {
   inherited::init(state);
-  whatKind = EXPLICIT;
+  whatKind = DEFAULT;
   funcCB = NULL;
   funcCBData = NULL;
   numCoords = 0;

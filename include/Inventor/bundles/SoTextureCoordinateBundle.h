@@ -26,11 +26,12 @@
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 
 #include <Inventor/SbVec4f.h>
+#include <Inventor/SbVec2f.h>
 
 class SoTextureCoordinateElement;
 class SoGLTextureCoordinateElement;
 class SoTextureCoordinateCache;
-
+class SoVertexShape;
 
 class SoTextureCoordinateBundle : public SoBundle {
   typedef SoBundle inherited;
@@ -58,6 +59,17 @@ private:
   const SoTextureCoordinateElement *coordElt;
   const SoGLTextureCoordinateElement *glElt;
   unsigned int flags;
+  
+  // misc stuff for default texture coordinate mappping
+  static const SbVec4f &defaultCB(void * userdata,
+                                  const SbVec3f & point,
+                                  const SbVec3f & normal);
+  SoVertexShape *shapenode;
+  SbVec2f defaultorigo;
+  SbVec2f defaultsize;
+  SbVec4f dummyInstance;
+  int defaultdim0, defaultdim1;
+  void initDefault(SoAction * const action, const SbBool forRendering);
 };
 
 #endif // !COIN_SOTEXTURECOORDINATEBUNDLE_H

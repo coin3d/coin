@@ -28,8 +28,13 @@
 #include <coindefs.h> // COIN_STUB()
 #include <Inventor/misc/SoState.h>
 #include <Inventor/elements/SoTextureCoordinateElement.h>
+#include <Inventor/elements/SoTextureImageElement.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/nodes/SoVertexShape.h>
+#include <Inventor/nodes/SoVertexProperty.h>
+#include <Inventor/actions/SoAction.h>
+#include <Inventor/SbVec2s.h>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -43,9 +48,10 @@
 #endif // COIN_DEBUG
 
 
-#define FLAG_FOR_RENDERING 0x1
-#define FLAG_FUNCTION      0x4
-#define FLAG_NEEDCOORDS    0x8
+#define FLAG_FUNCTION           0x01
+#define FLAG_NEEDCOORDS         0x02
+#define FLAG_DEFAULT            0x04
+#define FLAG_DIDPUSH            0x08
 
 /*!
   Constructor with \a action being the action applied to the node.
@@ -61,15 +67,51 @@ SoTextureCoordinateBundle(SoAction * const action,
   : SoBundle(action)
 {
   this->flags = 0;
-
-  coordElt = SoTextureCoordinateElement::getInstance(state);
+  //
+  // return immediately if there is no texture
+  //
+  if (forRendering && !SoGLTextureEnabledElement::get(this->state))
+    return;
+  if (!forRendering) {
+    SbVec2s dummysize;
+    int dummynum;
+    if (!SoTextureImageElement::getImage(this->state, dummysize, dummynum))
+      return;
+  }
+ 
+  assert(action->getCurPathTail()->isOfType(SoVertexShape::getClassTypeId()));
+  this->shapenode = (SoVertexShape*)action->getCurPathTail();
+  
+  SoVertexProperty *vp = (SoVertexProperty*)
+    this->shapenode->vertexProperty.getValue();
+  
+  if (vp && vp->texCoord.getNum() > 0) {
+    // FIXME:
+    // the SoVertexProperty node is a bad design idea, IMHO
+    // Just push and place needed stuff on the element stack for now.
+    // will probably optimize later.
+    // pederb, 20000218
+    //
+    
+    const SbVec2f *texcoords = vp->texCoord.getValues(0);
+    this->state->push();
+    this->flags |= FLAG_DIDPUSH;
+    SoTextureCoordinateElement::set2(this->state, vp,
+                                     vp->texCoord.getNum(),
+                                     vp->texCoord.getValues(0));
+  }
+  
+  this->coordElt = SoTextureCoordinateElement::getInstance(this->state);
   switch (coordElt->getType()) {
   case SoTextureCoordinateElement::DEFAULT:
-    COIN_STUB();
+    this->initDefault(action, forRendering);
     break;
   case SoTextureCoordinateElement::EXPLICIT:
-    if (coordElt->getNum() > 0) {
+    if (this->coordElt->getNum() > 0) {
       this->flags |= FLAG_NEEDCOORDS;
+    }
+    else {
+      this->initDefault(action, forRendering);
     }
     break;
   case SoTextureCoordinateElement::FUNCTION:
@@ -88,18 +130,16 @@ SoTextureCoordinateBundle(SoAction * const action,
     break;
   }
 
-  glElt = NULL;
-  if (forRendering && SoGLTextureEnabledElement::get(state)) {
-    glElt = (SoGLTextureCoordinateElement*) coordElt;
+  this->glElt = NULL; 
+  if (forRendering) {
+    this->glElt = (SoGLTextureCoordinateElement*) coordElt;
   }
-  if (setUpDefault) {
-    assert(0 && "FIXME: implement default texture coordinates (pederb)");
-  }
-  if (forRendering && (glElt == NULL)) {
-    this->flags &= ~FLAG_NEEDCOORDS;
-  }
-
-  if (forRendering) this->flags |= FLAG_FOR_RENDERING;
+  if ((this->flags & FLAG_DEFAULT) && !setUpDefault) {
+    //
+    // FIXME: I couldn't be bothered to support this yet. It is for picking 
+    // optimization only, pederb, 20000218
+    //
+  }  
 }
 
 /*!
@@ -107,6 +147,7 @@ SoTextureCoordinateBundle(SoAction * const action,
 */
 SoTextureCoordinateBundle::~SoTextureCoordinateBundle()
 {
+  if (this->flags & FLAG_DIDPUSH) this->state->pop();
 }
 
 /*!
@@ -135,7 +176,20 @@ const SbVec4f &
 SoTextureCoordinateBundle::get(const SbVec3f &point, const SbVec3f &normal)
 {
   assert(coordElt != NULL && (this->flags & FLAG_FUNCTION));
-  return coordElt->get(point, normal);
+  if (this->flags & FLAG_DEFAULT) {
+    SbVec2f pt(point[this->defaultdim0]-this->defaultorigo[0],
+               point[this->defaultdim1]-this->defaultorigo[1]);
+    //
+    // FIXME: when support for 3D textures is implemented, should
+    // we provide the third texture coordinate also? pederb
+    //
+    this->dummyInstance[0] = pt[0]/this->defaultsize[0];
+    this->dummyInstance[1] = pt[1]/this->defaultsize[1];
+    return this->dummyInstance;
+  }
+  else {
+    return coordElt->get(point, normal);
+  }
 }
 
 /*!
@@ -162,3 +216,91 @@ SoTextureCoordinateBundle::get(const int index)
   code if ordinary texture coordinates or function texture coordinates
   are used.
 */
+
+
+void 
+SoTextureCoordinateBundle::initDefault(SoAction * const action,
+                                       const SbBool forRendering)
+{
+  this->flags |= FLAG_NEEDCOORDS;
+  this->flags |= FLAG_DEFAULT;
+  this->flags |= FLAG_FUNCTION;
+
+  if (forRendering) {
+    if (!this->flags & FLAG_DIDPUSH) {
+      this->state->push();
+      this->flags |= FLAG_DIDPUSH;
+    }
+    // have glElt generate the default texture coordinates using a
+    // callback to this instance.
+    SoTextureCoordinateElement::setFunction(this->state, this->shapenode,
+                                            SoTextureCoordinateBundle::defaultCB,
+                                            this);
+    this->coordElt = SoTextureCoordinateElement::getInstance(this->state);
+  }
+  
+  //
+  // calculate needed stuff for default mapping
+  //
+  SbBox3f box;
+  SbVec3f center;
+  // this could be very slow, but if you're looking for speed, default
+  // texture coordinate mapping shouldn't be used. We might optimize this
+  // by using a SoTextureCoordinateCache soon though. pederb, 20000218
+  this->shapenode->computeBBox(action, box, center);
+  SbVec3f size;
+  box.getSize(size[0], size[1], size[2]);
+  
+  // find the two biggest dimensions
+  int smallest = 0;
+  float smallval = size[0];
+  if (size[1] < smallval) {
+    smallest = 1;
+    smallval = size[1];
+  }
+  if (size[2] < smallval) {
+    smallest = 2;
+  }
+  
+  this->defaultdim0 = (smallest + 1) % 3;
+  this->defaultdim1 = (smallest + 2) % 3;
+  
+  if (size[this->defaultdim0] == size[this->defaultdim1]) {
+    // FIXME: this is probably an OIV bug. The OIV man pages are not
+    // clear on this point (surprise), but the VRML specification states
+    // that if the two dimensions are equal, the ordering X>Y>Z should 
+    // be used.
+#if 0 // the correct way to do it
+    if (this->defaultdim0 > this->defaultdim1) {
+      SbSwap(this->defaultdim0, this->defaultdim1);
+    }
+#else // the OIV way to do it.
+    if (this->defaultdim0 < this->defaultdim1) {
+      SbSwap(this->defaultdim0, this->defaultdim1);
+    }
+#endif // OIV compatibility fix
+  }
+  else if (size[this->defaultdim0] < size[this->defaultdim1]) {
+    SbSwap(this->defaultdim0, this->defaultdim1);
+  }
+  
+  SbVec3f origo = box.getMin();
+  this->defaultorigo[0] = origo[this->defaultdim0];
+  this->defaultorigo[1] = origo[this->defaultdim1];
+  this->defaultsize[0] = size[this->defaultdim0];
+  this->defaultsize[1] = size[this->defaultdim1];
+
+  this->dummyInstance[2] = 0.0f;
+  this->dummyInstance[3] = 1.0f;
+  assert(this->defaultsize[0] > 0.0f);
+  assert(this->defaultsize[1] > 0.0f);
+}
+
+
+const SbVec4f &
+SoTextureCoordinateBundle::defaultCB(void * userdata,
+                                     const SbVec3f & point,
+                                     const SbVec3f & normal)
+{
+  return ((SoTextureCoordinateBundle*)userdata)->get(point, normal);
+}
