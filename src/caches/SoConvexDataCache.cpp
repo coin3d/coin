@@ -186,7 +186,7 @@ SoConvexDataCache::generate(const SoCoordinateElement * const coords,
                             const Binding matbind, const Binding normbind,
                             const Binding texbind)
 {
-#if COIN_DEBUG
+#if COIN_DEBUG && 0
   SoDebugError::postInfo("SoConvexDataCache::generate",
                          "generating convex data");
 #endif
