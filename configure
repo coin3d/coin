@@ -4805,6 +4805,7 @@ test x"$prefix" = x"NONE" && prefix="$ac_default_prefix"
 test x"$exec_prefix" = x"NONE" && exec_prefix="${prefix}"
 includedir="`eval echo $includedir`"
 libdir="`eval echo $libdir`"
+datadir="`eval echo $datadir`"
 
 
 # Set coin_build_dir so we can change coin.dsp

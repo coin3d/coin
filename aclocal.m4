@@ -2292,7 +2292,7 @@ fi
 #
 # Description:
 #   Expand these variables into their correct full directory paths:
-#    $prefix  $exec_prefix  $includedir  $libdir
+#    $prefix  $exec_prefix  $includedir  $libdir  $datadir
 # 
 # Author: Morten Eriksen, <mortene@sim.no>.
 # 
@@ -2302,8 +2302,8 @@ test x"$prefix" = x"NONE" && prefix="$ac_default_prefix"
 test x"$exec_prefix" = x"NONE" && exec_prefix="${prefix}"
 includedir="`eval echo $includedir`"
 libdir="`eval echo $libdir`"
+datadir="`eval echo $datadir`"
 ])
-
 
 # Convenience macros SIM_AC_DEBACKSLASH and SIM_AC_DOBACKSLASH for
 # converting to and from MSWin/MS-DOS style paths.

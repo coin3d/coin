@@ -11,6 +11,7 @@ cat <<EOF
             [--version]
             [--cppflags]
             [--ldflags]
+            [--datadir]
             [--libs]
 EOF
   exit $1
@@ -36,6 +37,9 @@ while test $# -gt 0; do
       ;;
     --libs)
       echo @COIN_LIBNAME@ @COIN_EXTRA_LIBS@
+      ;;
+    --datadir)
+      echo @datadir@
       ;;
     *)
       echo "Unknown option: \"$1\""
