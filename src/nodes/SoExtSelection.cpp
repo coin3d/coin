@@ -588,7 +588,7 @@ SoExtSelection::initClass(void)
   else has been rendered -- and this is the strategy we apply in Coin.
 */
 void
-SoExtSelection::useOverlay(const SbBool overlay)
+SoExtSelection::useOverlay(SbBool overlay)
 {
   COIN_OBSOLETED();
 }

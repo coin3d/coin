@@ -82,7 +82,7 @@ SoGLCacheList::~SoGLCacheList()
   the GL state stack again after calling the cache.
 */
 SbBool
-SoGLCacheList::call(SoGLRenderAction * action, const uint32_t pushattribbits)
+SoGLCacheList::call(SoGLRenderAction * action, uint32_t pushattribbits)
 {
   SoState * state = action->getState();
   int context = SoGLCacheContextElement::get(state);

@@ -1110,7 +1110,7 @@ SoGLImageP::shouldCreateMipmap(void)
 }
 
 void
-SoGLImageP::applyFilter(const SbBool ismipmap)
+SoGLImageP::applyFilter(SbBool ismipmap)
 {
   if (this->flags & SoGLImage::USE_QUALITY_VALUE) {
     if (this->quality < COIN_TEX2_LINEAR_LIMIT) {
