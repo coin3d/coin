@@ -382,3 +382,55 @@
     mortene 20020813.
 
 =====================================================================
+
+018 SoTransformerDragger has a bug where the transformation matrix can
+    end up with shearing.
+
+    Here's a simple way of reproducing the bug: click and drag the
+    middle front rotation point after loading the following scene (and
+    changing the viewpoint slightly, so the camera direction is not
+    normal to it)
+
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+    #Inventor V2.1 ascii
+  
+    Separator {
+       TransformerManip { }
+       Text3 { string "b"   parts ALL }
+    }
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+
+    The bug is also listed in the topmost FIXME in
+    src/draggers/SoTransformerDragger.cpp, so update that comment
+    aswell if you fix the problem.
+
+    mortene 20020813.
+
+=====================================================================
+
+019 When using the CTRL key while doing scaling with
+    SoTransformerDragger (to scale against the corner point on the
+    opposite side), the geometry will jump by an offset both on
+    pushing and releasing the CTRL key.
+
+    For convenience, here's a (trivial) scenegraph to reproduce the
+    problem:
+
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+    #Inventor V2.1 ascii
+  
+    Separator {
+       TransformerManip { }
+       Text3 { string "b"   parts ALL }
+    }
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+
+    This bug basically renders the "CTRL-scaling" feature unusable.
+
+    The bug is also listed in a FIXME near the top in
+    src/draggers/SoTransformerDragger.cpp, so update that comment
+    aswell if you fix the problem.
+
+    20011208 mortene.
+
+=====================================================================
