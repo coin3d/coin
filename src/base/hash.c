@@ -57,7 +57,7 @@ hash_resize(cc_hash * ht, unsigned int newsize)
   ht->size = newsize;
   ht->elements = 0;
   ht->threshold = (unsigned int) (newsize * ht->loadfactor);
-  ht->buckets = (cc_hash_entry **) calloc(newsize, sizeof(cc_hash_entry));
+  ht->buckets = (cc_hash_entry **) calloc(newsize, sizeof(cc_hash_entry*));
 
   /* Transfer all mappings */
   for (i = 0; i < oldsize; i++) {
@@ -100,7 +100,7 @@ cc_hash_construct(unsigned int size, float loadfactor)
   ht->elements = 0;
   ht->threshold = (unsigned int) (s * loadfactor);
   ht->loadfactor = loadfactor;
-  ht->buckets = (cc_hash_entry **) calloc(s, sizeof(cc_hash_entry));
+  ht->buckets = (cc_hash_entry **) calloc(s, sizeof(cc_hash_entry*));
   ht->hashfunc = hash_default_hashfunc;
   /* we use a memory allocator to avoid an operating system malloc
      every time a new entry is needed */
@@ -127,7 +127,7 @@ void
 cc_hash_clear(cc_hash * ht)
 {
   cc_memalloc_clear(ht->memalloc); /* free all memory used by all entries */
-  memset(ht->buckets, 0, ht->size * sizeof(cc_hash_entry));
+  memset(ht->buckets, 0, ht->size * sizeof(cc_hash_entry*));
   ht->elements = 0;
 }
 
