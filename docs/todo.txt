@@ -589,6 +589,21 @@ STUFF TO FIX IN COIN
     (Cygwin?, MSVC's command-line tools, SuperPIMP, ...).
 
 
+027 Build Coin / SoQt / SoWin on MSWin without relying on MSVC++.
+    2003-01-10  Morten Eriksen  <mortene@sim.no>
+
+    It would be nice if MSWin developers could work with Coin without
+    having to buy the expensive MSVS suite. Doubly nice would be if we
+    ported it to compilers that are free.
+
+    Likely candidates for porting efforts includes at least:
+
+        - OpenWatcom (<URL:http://www.openwatcom.org>)
+        - Cygwin GCC (<URL:http://www.cygwin.com>)
+        - MingW (URL?)
+        - Borland's C++ compiler
+
+
 
 OTHER COIN-RELATED STUFF TO FIX
 ===============================

@@ -54,6 +54,3 @@ projects:
 
 * Profiling and optimalization of the base classes. Should depend on a
   good regression test suite having been implemented first.
-
-* Port the build setup to other MSWin-compilers: Cygwin g++, Borland
-  C++, ...
