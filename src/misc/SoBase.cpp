@@ -117,6 +117,9 @@ SoBase::SoBase(void)
  */
 SoBase::~SoBase()
 {
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoBase::~SoBase", "%p", this);
+#endif // debug
 }
 
 /*!
@@ -177,6 +180,10 @@ SoBase::destroy(void)
   // Link out instance name from the list of all SoBase instances.
   SbName n = this->getName();
   if (n.getLength()) this->removeName(this, n.getString());
+
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoBase::destroy", "delete this %p", this);
+#endif // debug
 
   // Sjølmord.
   delete this;
