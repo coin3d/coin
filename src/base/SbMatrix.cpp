@@ -983,7 +983,7 @@ SbMatrix::multMatrixVec(const SbVec3f & src, SbVec3f & dst) const
   Multiplication is done with the vector on the left side of the
   expression, i.e. dst = src * M.
 
-  It is safe to let \a src and \dst be the same SbVec3f instance.
+  It is safe to let \a src and \a dst be the same SbVec3f instance.
 
   \sa multMatrixVec(), multDirMatrix() and multLineMatrix().
 */

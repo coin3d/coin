@@ -116,8 +116,8 @@ int SoSeparator::numrendercaches = 2;
 
   For now, render caching is in the beta stage. You can enable render
   caching by setting the environment variable COIN_RENDER_CACHING to
-  1.  Separators will then be cached if the renderCaching field is set
-  to ON.
+  1.  Separators will then use caching if the renderCaching field is
+  set to ON.
 */
 
 /*!
@@ -271,7 +271,7 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
     childrenbbox = this->bboxcache->getBox();
     childrencenterset = this->bboxcache->isCenterSet();
     childrencenter = this->bboxcache->getCenter();
-    if (bboxcache->hasLinesOrPoints()) {
+    if (this->bboxcache->hasLinesOrPoints()) {
       SoBoundingBoxCache::setHasLinesOrPoints(state);
     }
   }

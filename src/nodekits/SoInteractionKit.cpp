@@ -533,6 +533,9 @@ SoInteractionKit::setAnyPartAsDefault(const SbName & partname,
   Protected version of setPartAsPath(), to make it possible to set
   non-leaf and private parts.
 
+  ("The nice thing about C++ is that only your friends can handle your
+  private parts.")
+
   \sa setPartAsPath()
 */
 SbBool

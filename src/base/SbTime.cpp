@@ -447,6 +447,7 @@ SbTime::formatDate(const char * const fmt) const
   }
 }
 
+// FIXME: write a few examples for the following doc.
 /*!
   This method takes a date string and converts it to the internal
   SbTime format.  The date string must conform to one of three
@@ -457,7 +458,6 @@ SbTime::formatDate(const char * const fmt) const
   Feeding an invalid date string to this method will make it return
   \a FALSE.
 */
-// FIXME: write a few examples for the doc.
 SbBool
 SbTime::parsedate(const char * const date)
 {

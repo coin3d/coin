@@ -33,6 +33,16 @@
   Apply this action to a path or scene graph root to calculate the
   bounding box and the center point of the geometry contained within
   the scene.
+
+
+  SoSeparator nodes are aggressively caching the results of bounding
+  box calculations, so that they are really only re-calculated
+  whenever the scenegraph rooted below any SoSeparator node has been
+  modified. This means that applying this action to scenegraphs, or
+  parts of scenegraphs, should be very quick on successive runs for
+  "static" parts of the scene.
+
+  \sa SoSeparator::boundingBoxCaching
 */
 
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -289,16 +299,18 @@ SoGetBoundingBoxAction::checkResetAfter(void)
 
 /*!
   Extend bounding box by the given \a box. Called from nodes during
-  traversal. Should not be used by application programmers, unless
-  you're extending Coin with your own node types.
+  traversal.
+
+  Should usually not be of interest to application programmers, unless
+  you're extending Coin with your own shapenode extension classes.
 */
 void
 SoGetBoundingBoxAction::extendBy(const SbBox3f & box)
 {
   if (box.isEmpty()) {
-#if COIN_DEBUG && 1 // debug
+#if COIN_DEBUG
     SoDebugError::postWarning("SoGetBoundingBoxAction::extendBy", "empty box");
-#endif // debug
+#endif // COIN_DEBUG
     return;
   }
 
@@ -312,18 +324,14 @@ SoGetBoundingBoxAction::extendBy(const SbBox3f & box)
   this->bbox.extendBy(xfbox);
 }
 
-/*!
-  Extend bounding box by the given \a box. Called from nodes during
-  traversal. Should not be used by application programmers, unless
-  you're extending Coin with your own node types.
-*/
+/*! \overload */
 void
 SoGetBoundingBoxAction::extendBy(const SbXfBox3f & box)
 {
   if (box.isEmpty()) {
-#if COIN_DEBUG && 1 // debug
+#if COIN_DEBUG
     SoDebugError::postWarning("SoGetBoundingBoxAction::extendBy", "empty box");
-#endif // debug
+#endif // COIN_DEBUG
     return;
   }
 
@@ -359,12 +367,12 @@ SoGetBoundingBoxAction::setCenter(const SbVec3f & center,
   }
 
 #if COIN_DEBUG && 0 // debug
-  SoDebugError::post("SoGetBoundingBoxAction::setCenter",
-                     "center: <%f, %f, %f>, transformcenter: %s, "
-                     "this->center: <%f, %f, %f>",
-                     center[0], center[1], center[2],
-                     transformcenter ? "TRUE" : "FALSE",
-                     this->center[0], this->center[1], this->center[2]);
+  SoDebugError::postInfo("SoGetBoundingBoxAction::setCenter",
+                         "center: <%f, %f, %f>, transformcenter: %s, "
+                         "this->center: <%f, %f, %f>",
+                         center[0], center[1], center[2],
+                         transformcenter ? "TRUE" : "FALSE",
+                         this->center[0], this->center[1], this->center[2]);
 #endif // debug
 }
 
@@ -389,10 +397,8 @@ SoGetBoundingBoxAction::resetCenter(void)
   this->center.setValue(0.0f, 0.0f, 0.0f);
 }
 
-/*!
-  Overloaded to reset center point and bounding box before traversal
-  starts.
-*/
+// Documented in superclass. Overridden to reset center point and
+// bounding box before traversal starts.
 void
 SoGetBoundingBoxAction::beginTraversal(SoNode * node)
 {

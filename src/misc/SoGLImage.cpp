@@ -1019,17 +1019,23 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
   if ((unsigned int) orgsize[0] != newx || 
       (unsigned int) orgsize[1] != newy || 
       (unsigned int) orgsize[2] != newz) {
-    if (newz)
-      SoDebugError::postInfo("SoGLImageP::resizeImage",
-                             "Too large 3D texture rescaled (%dx%dx%d)"
-                             "->(%dx%dx%d)", 
-                             orgsize[0], orgsize[1], orgsize[2],
-                             newx, newy, newz);
-    else
-      SoDebugError::postInfo("SoGLImageP::resizeImage",
-                             "Too large 2D texture rescaled (%dx%d)"
-                             "->(%dx%d)", 
-                             orgsize[0], orgsize[1], newx, newy);
+    if (newz != 0) {
+      SoDebugError::postWarning("SoGLImageP::resizeImage",
+                                "Original 3D texture too large for "
+                                "your graphics hardware and / or OpenGL "
+                                "driver. Rescaled from (%d x %d x %d) "
+                                "to (%d x %d x %d).", 
+                                orgsize[0], orgsize[1], orgsize[2],
+                                newx, newy, newz);
+    }
+    else {
+      SoDebugError::postWarning("SoGLImageP::resizeImage",
+                                "Original 2D texture too large for "
+                                "your graphics hardware and / or OpenGL "
+                                "driver. Rescaled from (%d x %d) "
+                                "to (%d x %d).", 
+                                orgsize[0], orgsize[1], newx, newy);
+    }
   }
 #endif // COIN_DEBUG
 
