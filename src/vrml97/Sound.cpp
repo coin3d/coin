@@ -226,8 +226,8 @@
 class SoVRMLSoundP
 {
 public:
-  SoVRMLSoundP(SoVRMLSound * interfaceptr) : ifacep(interfaceptr) {};
-  SoVRMLSound *ifacep;
+  SoVRMLSoundP(SoVRMLSound * master) : master(master) {};
+  SoVRMLSound *master;
 
   static void sourceSensorCBWrapper(void *, SoSensor *);
   void sourceSensorCB(SoSensor *);
@@ -273,12 +273,10 @@ public:
 
 };
 
-#undef THIS
-#define THIS this->sovrmlsound_impl
-
-#undef ITHIS
-#define ITHIS this->ifacep
-
+#undef PRIVATE
+#define PRIVATE(p) ((p)->pimpl)
+#undef PUBLIC
+#define PUBLIC(p) ((p)->master)
 
 // fixme 20021006 thammer: should really do individual synchronization instead of global
 SbMutex *SoVRMLSoundP::syncmutex = NULL;
@@ -317,37 +315,37 @@ SoVRMLSound::SoVRMLSound(void)
 
   SO_VRMLNODE_ADD_FIELD(spatialize, (TRUE));
 
-  THIS = new SoVRMLSoundP(this);
+  PRIVATE(this) = new SoVRMLSoundP(this);
 
-  THIS->channels = 1; // because spatialize defaults to TRUE and OpenAL only spatializes mono buffers
+  PRIVATE(this)->channels = 1; // because spatialize defaults to TRUE and OpenAL only spatializes mono buffers
 
-  THIS->currentAudioClip = NULL;
-  THIS->playing = FALSE;
+  PRIVATE(this)->currentAudioClip = NULL;
+  PRIVATE(this)->playing = FALSE;
 
-  THIS->timersensor = NULL;
-  THIS->useTimerCallback = TRUE;
+  PRIVATE(this)->timersensor = NULL;
+  PRIVATE(this)->useTimerCallback = TRUE; // fixme 20021021 thammer: this should be false if thread support is available
 
 #ifdef HAVE_SOUND
   ALint  error;
 
-  alGenSources(1, &(THIS->sourceId));
+  alGenSources(1, &(PRIVATE(this)->sourceId));
   if ((error = alGetError()) != AL_NO_ERROR) {
     SoDebugError::post("SoVRMLSound::SoVRMLSound",
                        "alGenSources failed. %s",
                        coin_get_openal_error(error));
     return;
   }
-  THIS->alBuffers = NULL;
+  PRIVATE(this)->alBuffers = NULL;
 #endif
 
-  THIS->sourcesensor = new SoFieldSensor(THIS->sourceSensorCBWrapper, THIS);
-  THIS->sourcesensor->setPriority(0);
-  THIS->sourcesensor->attach(&this->source);
+  PRIVATE(this)->sourcesensor = new SoFieldSensor(PRIVATE(this)->sourceSensorCBWrapper, PRIVATE(this));
+  PRIVATE(this)->sourcesensor->setPriority(0);
+  PRIVATE(this)->sourcesensor->attach(&this->source);
 
-  THIS->workerThread = NULL;
-  THIS->exitthread = FALSE;
-  THIS->errorInThread = FALSE;
-  THIS->audioBuffer = NULL;
+  PRIVATE(this)->workerThread = NULL;
+  PRIVATE(this)->exitthread = FALSE;
+  PRIVATE(this)->errorInThread = FALSE;
+  PRIVATE(this)->audioBuffer = NULL;
 
   this->setBufferingProperties(SoVRMLSoundP::defaultBufferLength, SoVRMLSoundP::defaultNumBuffers,
                                SoVRMLSoundP::defaultSleepTime);
@@ -358,28 +356,28 @@ SoVRMLSound::SoVRMLSound(void)
 */
 SoVRMLSound::~SoVRMLSound(void)
 {
-  delete THIS->sourcesensor;
+  delete PRIVATE(this)->sourcesensor;
 
-  if (THIS->currentAudioClip != NULL)
-    THIS->currentAudioClip->unref();
-  THIS->currentAudioClip = NULL;
+  if (PRIVATE(this)->currentAudioClip != NULL)
+    PRIVATE(this)->currentAudioClip->unref();
+  PRIVATE(this)->currentAudioClip = NULL;
 
-  THIS->stopPlaying();
+  PRIVATE(this)->stopPlaying();
 
-  if (THIS->audioBuffer != NULL)
-    delete[] THIS->audioBuffer;
+  if (PRIVATE(this)->audioBuffer != NULL)
+    delete[] PRIVATE(this)->audioBuffer;
 
 #ifdef HAVE_SOUND
   ALint  error;
-  alDeleteSources(1, &(THIS->sourceId));
+  alDeleteSources(1, &(PRIVATE(this)->sourceId));
   if ((error = alGetError()) != AL_NO_ERROR) {
     SoDebugError::postWarning("SoVRMLSound::~SoVRMLSound",
                               "alDeleteSources() failed. %s",
                               coin_get_openal_error(error));
   }
-  THIS->deleteAlBuffers();
+  PRIVATE(this)->deleteAlBuffers();
 #endif
-  delete THIS;
+  delete PRIVATE(this);
 }
 
 void SoVRMLSound::setDefaultBufferingProperties(int bufferLength, int numBuffers, SbTime sleepTime)
@@ -393,24 +391,24 @@ void SoVRMLSound::setBufferingProperties(int bufferLength, int numBuffers, SbTim
 {
   SbMutexAutoLock autoLock(SoVRMLSoundP::syncmutex);
  
-  THIS->numBuffers = numBuffers;
-  THIS->sleepTime = sleepTime;
+  PRIVATE(this)->numBuffers = numBuffers;
+  PRIVATE(this)->sleepTime = sleepTime;
 
-  if (THIS->bufferLength == bufferLength) 
+  if (PRIVATE(this)->bufferLength == bufferLength) 
     return;
 
-  THIS->bufferLength = bufferLength;
-  delete[] THIS->audioBuffer;
-  THIS->audioBuffer = new int16_t[THIS->bufferLength * 2];
+  PRIVATE(this)->bufferLength = bufferLength;
+  delete[] PRIVATE(this)->audioBuffer;
+  PRIVATE(this)->audioBuffer = new int16_t[PRIVATE(this)->bufferLength * 2];
 }
 
 void SoVRMLSound::getBufferingProperties(int &bufferLength, int &numBuffers, SbTime &sleepTime)
 {
   SbMutexAutoLock autoLock(SoVRMLSoundP::syncmutex);
 
-  bufferLength = THIS->bufferLength;
-  numBuffers = THIS->numBuffers;
-  sleepTime = THIS->sleepTime;
+  bufferLength = PRIVATE(this)->bufferLength;
+  numBuffers = PRIVATE(this)->numBuffers;
+  sleepTime = PRIVATE(this)->sleepTime;
 }
 
 #ifdef HAVE_SOUND
@@ -426,22 +424,22 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
 #ifdef HAVE_SOUND
   SbMutexAutoLock autoLock(SoVRMLSoundP::syncmutex);
 
-  if (THIS->currentAudioClip == NULL)
+  if (PRIVATE(this)->currentAudioClip == NULL)
     return;
 
-  SoSFBool * isActiveField = (SoSFBool *)THIS->currentAudioClip->getField("isActive");
+  SoSFBool * isActiveField = (SoSFBool *)PRIVATE(this)->currentAudioClip->getField("isActive");
   SbBool isactive = isActiveField->getValue();
 
-  if ( (!THIS->playing) && (!isactive) )
+  if ( (!PRIVATE(this)->playing) && (!isactive) )
     return;
 
-  if (THIS->errorInThread) {
-    THIS->stopPlaying();
+  if (PRIVATE(this)->errorInThread) {
+    PRIVATE(this)->stopPlaying();
     return;
   }
 
-  if ( THIS->playing && (!isactive) ) {
-    THIS->stopPlaying();
+  if ( PRIVATE(this)->playing && (!isactive) ) {
+    PRIVATE(this)->stopPlaying();
     return;
   }
 
@@ -463,7 +461,7 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
   SbVec3f2ALfloat3(alfloat3, worldpos);
 
   // Position ...
-  alSourcefv(THIS->sourceId, AL_POSITION, alfloat3);
+  alSourcefv(PRIVATE(this)->sourceId, AL_POSITION, alfloat3);
   if ((error = alGetError()) != AL_NO_ERROR) {
     SoDebugError::postWarning("SoVRMLSound::audioRender",
                               "alSourcefv(,AL_POSITION,) failed. %s",
@@ -474,7 +472,7 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
 #if 0
   // 20021007 thammer note: if we ever want to implement velocity (supported by OpenAL)
   // then this is how it should be done
-  // get alfloat3 from THIS->velocity
+  // get alfloat3 from PRIVATE(this)->velocity
   SbVec3f2ALfloat3(alfloat3, velocity.getValue());
 
   alSourcefv(this->sourceId, AL_VELOCITY, alfloat3);
@@ -487,7 +485,7 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
 #endif
 
   // Gain / intensity
-  alSourcef(THIS->sourceId,AL_GAIN, this->intensity.getValue());
+  alSourcef(PRIVATE(this)->sourceId,AL_GAIN, this->intensity.getValue());
   if ((error = alGetError()) != AL_NO_ERROR) {
     SoDebugError::postWarning("SoVRMLSound::audioRender",
                               "alSourcef(,AL_GAIN,) failed. %s",
@@ -496,15 +494,15 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
   }
 
   int newchannels = this->spatialize.getValue() ? 1 : 2;
-  if (THIS->channels != newchannels) {
-    if (THIS->playing)
-      THIS->stopPlaying();
+  if (PRIVATE(this)->channels != newchannels) {
+    if (PRIVATE(this)->playing)
+      PRIVATE(this)->stopPlaying();
 
-    THIS->channels = newchannels;
+    PRIVATE(this)->channels = newchannels;
   }
 
-  if ( (!THIS->playing) && isactive ) 
-    THIS->startPlaying();
+  if ( (!PRIVATE(this)->playing) && isactive ) 
+    PRIVATE(this)->startPlaying();
 #endif // HAVE_SOUND
 }
 
@@ -761,6 +759,12 @@ SbBool SoVRMLSoundP::startPlaying()
     }
   }
 
+  if (bufferno==0) {
+    SoDebugError::postWarning("SoVRMLSoundP::startPlaying",
+                              "Couldn't get any audio data from the audio clip. "
+                              "The SoVRMLAudioClip node should have posted a warning with information about the problem.");
+    return FALSE;
+  }
 
   // Queue the buffers on the source
   
@@ -857,11 +861,12 @@ void SoVRMLSoundP::fillBuffers()
   printf("Processed: %d, Queued: %d\n", processed, queued);
 #endif // debug
 
-  ALuint BufferID;
+  ALuint BufferID = 0;
   ALint error;
   void *ret;
 
-/*
+#if 0
+  // 20021021 thammer, kept for debugging purposes
   if (queued<=0) {
     // no buffers were queued, so there's nothing to do
     // this should only happen after audioclip::fillBuffer() returns NULL to indicate an EOF,
@@ -871,7 +876,7 @@ void SoVRMLSoundP::fillBuffers()
     #endif // debug
     return; 
   }
-*/
+#endif
 
   while (processed>0) {
 
@@ -883,7 +888,10 @@ void SoVRMLSoundP::fillBuffers()
     alSourceUnqueueBuffers(this->sourceId, 1, &BufferID);
     if ((error = alGetError()) != AL_NO_ERROR) {
       SoDebugError::post("SoVRMLSound::fillBuffers",
-                         "alSourceUnqueueBuffers failed. %s",
+                         "alSourceUnqueueBuffers failed. "
+                         "Queued: %d, Processed: %d."
+                         "OpenAL error: %s.",
+                         queued, processed,
                          coin_get_openal_error(error));
       this->errorInThread = TRUE;
       return;
@@ -896,9 +904,12 @@ void SoVRMLSoundP::fillBuffers()
     ret = this->currentAudioClip->fillBuffer(frameoffset, this->audioBuffer, 
       this->bufferLength, channels);
 
-/*    if (ret == NULL)
+#if 0
+    // 20021021 thammer note: kept for debugging purposes
+    if (ret == NULL)
       return; // AudioClip has reached EOF (or an error), so we shouldn't fill any more buffers
-*/
+#endif
+
     if ( (channels==1) && (this->channels==2) )
       mono2stereo(this->audioBuffer, this->bufferLength);
     else if ( (channels==2) && (this->channels==1) )
@@ -916,10 +927,13 @@ void SoVRMLSoundP::fillBuffers()
     if ((error = alGetError()) != AL_NO_ERROR) {
       SoDebugError::post("SoVRMLSound::fillBuffers",
                          "alBufferData(buffer=%d, format=%d, data=%p, "
-                         "size=%d, freq=%d) failed: %s",
+                         "size=%d, freq=%d) failed. "
+                         "Queued: %d, Processed: %d. "
+                         "OpenAL error: %s",
                          BufferID, alformat, this->audioBuffer, 
                          this->bufferLength * sizeof(int16_t) * this->channels,
                          this->currentAudioClip->getSampleRate(),
+                         queued, processed,
                          coin_get_openal_error(error));
       this->errorInThread = TRUE;
       return;
@@ -929,7 +943,10 @@ void SoVRMLSoundP::fillBuffers()
     alSourceQueueBuffers(this->sourceId, 1, &BufferID);
     if ((error = alGetError()) != AL_NO_ERROR) {
       SoDebugError::post("SoVRMLSound::fillBuffers",
-                         "alSourceQueueBuffers failed. %s",
+                         "alSourceQueueBuffers failed. "
+                         "Queued: %d, Processed: %d."
+                         "OpenAL error: %s.",
+                         queued, processed,
                          coin_get_openal_error(error));
       this->errorInThread = TRUE;
       return;
@@ -1008,7 +1025,7 @@ SoVRMLSoundP::sourceSensorCB(SoSensor *)
 
   SbMutexAutoLock autoLock(SoVRMLSoundP::syncmutex);
 
-  SoNode *node = (SoNode *)ITHIS->source.getValue();
+  SoNode *node = (SoNode *)PUBLIC(this)->source.getValue();
 
   if (!node->isOfType(SoVRMLAudioClip::getClassTypeId())) {
     SoDebugError::postWarning("SoVRMLSoundP::sourceSensorCB",
@@ -1057,5 +1074,12 @@ SoVRMLSoundP::sourceSensorCB(SoSensor *)
   if ( this->playing && (!isactive) ) {
     this->stopPlaying();
   }
+  /* FIXME: If the sound is stopped because the file is done playing, 
+     all remaining buffers should be allowed to play.
+     If the sound is stopped because the clip's stop time has been reached, 
+     the sound should stop immediately.
+     If the file is done playing, clip.fillBuffer will return NULL...
+     20021021 thammer
+   */
 
 }

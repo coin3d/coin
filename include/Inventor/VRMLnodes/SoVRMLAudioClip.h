@@ -76,7 +76,7 @@ protected:
   SoSFBool isActive;         // eventOut
 
 private:
-  class SoVRMLAudioClipP *sovrmlaudioclip_impl;
+  class SoVRMLAudioClipP *pimpl;
   friend class SoVRMLAudioClipP;
 };
 

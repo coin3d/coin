@@ -158,8 +158,8 @@
 class SoVRMLAudioClipP 
 {
 public:
-  SoVRMLAudioClipP(SoVRMLAudioClip * interfaceptr) : ifacep(interfaceptr) {};
-  SoVRMLAudioClip *ifacep;
+  SoVRMLAudioClipP(SoVRMLAudioClip * master) : master(master) {};
+  SoVRMLAudioClip *master;
 
   static void urlSensorCBWrapper(void *, SoSensor *);
   void urlSensorCB(SoSensor *);
@@ -186,6 +186,8 @@ public:
 
   void startPlaying();
   void stopPlaying();
+
+  static SbBool simageVersionOK(const char *functionName);
   
   void *fillBufferCallbackUserData;
 
@@ -224,19 +226,20 @@ public:
 
   SbTime actualStartTime;
   int totalNumberOfFramesToPlay;
+
+  static SbBool warnAboutMissingSimage;
 };
 
 SbStringList SoVRMLAudioClipP::subdirectories = SbStringList();
 SbTime SoVRMLAudioClipP::pauseBetweenTracks = 2.0f;
 SbTime SoVRMLAudioClipP::introPause = 0.0f;
 int SoVRMLAudioClipP::defaultSampleRate = 44100;
+SbBool SoVRMLAudioClipP::warnAboutMissingSimage = TRUE;
 
-
-#undef THIS
-#define THIS this->sovrmlaudioclip_impl
-
-#undef ITHIS
-#define ITHIS this->ifacep
+#undef PRIVATE
+#define PRIVATE(p) ((p)->pimpl)
+#undef PUBLIC
+#define PUBLIC(p) ((p)->master)
 
 SO_NODE_SOURCE(SoVRMLAudioClip);
 
@@ -268,43 +271,43 @@ SoVRMLAudioClip::SoVRMLAudioClip(void)
 
   this->isActive.setValue(FALSE);
 
-  THIS = new SoVRMLAudioClipP(this);
+  PRIVATE(this) = new SoVRMLAudioClipP(this);
 
-  THIS->urlsensor = new SoFieldSensor(THIS->urlSensorCBWrapper, THIS);
-  THIS->urlsensor->setPriority(0);
-  THIS->urlsensor->attach(&this->url);
+  PRIVATE(this)->urlsensor = new SoFieldSensor(PRIVATE(this)->urlSensorCBWrapper, PRIVATE(this));
+  PRIVATE(this)->urlsensor->setPriority(0);
+  PRIVATE(this)->urlsensor->attach(&this->url);
 
-  THIS->loopsensor = new SoFieldSensor(THIS->loopSensorCBWrapper, THIS);
-  THIS->loopsensor->setPriority(0);
-  THIS->loopsensor->attach(&this->loop);
+  PRIVATE(this)->loopsensor = new SoFieldSensor(PRIVATE(this)->loopSensorCBWrapper, PRIVATE(this));
+  PRIVATE(this)->loopsensor->setPriority(0);
+  PRIVATE(this)->loopsensor->attach(&this->loop);
 
-  THIS->startTimeSensor = new SoFieldSensor(THIS->startTimeSensorCBWrapper, 
-                                            THIS);
-  THIS->startTimeSensor->setPriority(0);
-  THIS->startTimeSensor->attach(&this->startTime);
+  PRIVATE(this)->startTimeSensor = new SoFieldSensor(PRIVATE(this)->startTimeSensorCBWrapper, 
+                                            PRIVATE(this));
+  PRIVATE(this)->startTimeSensor->setPriority(0);
+  PRIVATE(this)->startTimeSensor->attach(&this->startTime);
 
-  THIS->stopTimeSensor = new SoFieldSensor(THIS->stopTimeSensorCBWrapper, 
-                                           THIS);
-  THIS->stopTimeSensor->setPriority(0);
-  THIS->stopTimeSensor->attach(&this->stopTime);
+  PRIVATE(this)->stopTimeSensor = new SoFieldSensor(PRIVATE(this)->stopTimeSensorCBWrapper, 
+                                           PRIVATE(this));
+  PRIVATE(this)->stopTimeSensor->setPriority(0);
+  PRIVATE(this)->stopTimeSensor->attach(&this->stopTime);
 
-  THIS->loop = FALSE;
-  THIS->endOfFile = FALSE;
+  PRIVATE(this)->loop = FALSE;
+  PRIVATE(this)->endOfFile = FALSE;
 
-  THIS->stream = NULL;
+  PRIVATE(this)->stream = NULL;
 
-  THIS->channels = 0;
-  THIS->bitspersample = 0;
+  PRIVATE(this)->channels = 0;
+  PRIVATE(this)->bitspersample = 0;
 
-  THIS->currentPlaylistIndex = 0;
-  THIS->playlistDirty = FALSE;
+  PRIVATE(this)->currentPlaylistIndex = 0;
+  PRIVATE(this)->playlistDirty = FALSE;
 
-  THIS->sampleRate = SoVRMLAudioClipP::defaultSampleRate;
+  PRIVATE(this)->sampleRate = SoVRMLAudioClipP::defaultSampleRate;
 
-  this->setFillBufferCallback(THIS->internalFillBufferWrapper, THIS);
+  this->setFillBufferCallback(PRIVATE(this)->internalFillBufferWrapper, PRIVATE(this));
 
-  THIS->actualStartTime = 0.0f;
-  THIS->totalNumberOfFramesToPlay = 0;
+  PRIVATE(this)->actualStartTime = 0.0f;
+  PRIVATE(this)->totalNumberOfFramesToPlay = 0;
 }
 
 /*!
@@ -312,37 +315,42 @@ SoVRMLAudioClip::SoVRMLAudioClip(void)
 */
 SoVRMLAudioClip::~SoVRMLAudioClip() 
 {
-  THIS->unloadUrl();
+  PRIVATE(this)->unloadUrl();
 
-  delete THIS->urlsensor;
-  delete THIS->loopsensor;
-  delete THIS->startTimeSensor;
-  delete THIS->stopTimeSensor;
-  delete THIS;
+  delete PRIVATE(this)->urlsensor;
+  delete PRIVATE(this)->loopsensor;
+  delete PRIVATE(this)->startTimeSensor;
+  delete PRIVATE(this)->stopTimeSensor;
+  delete PRIVATE(this);
 }
 
-void SoVRMLAudioClip::setDefaultSampleRate(int samplerate)
+void 
+SoVRMLAudioClip::setDefaultSampleRate(int samplerate)
 {
   SoVRMLAudioClipP::defaultSampleRate = samplerate;
 }
 
-void SoVRMLAudioClip::setDefaultPauseBetweenTracks(SbTime pause)
+void 
+SoVRMLAudioClip::setDefaultPauseBetweenTracks(SbTime pause)
 {
-  // fixme: use SbTime instead. use both default and node-specific. 20021007 thammer.
+  // FIXME: use both default and node-specific pause. 20021007 thammer.
   SoVRMLAudioClipP::pauseBetweenTracks = pause;
-};
+}
 
-void SoVRMLAudioClip::setDefaultIntroPause(SbTime pause)
+void 
+SoVRMLAudioClip::setDefaultIntroPause(SbTime pause)
 {
   SoVRMLAudioClipP::introPause = pause;
 }
 
-int SoVRMLAudioClip::getSampleRate()
+int 
+SoVRMLAudioClip::getSampleRate()
 {
-  return THIS->sampleRate;
+  return PRIVATE(this)->sampleRate;
 }
 
-int SoVRMLAudioClip::getCurrentFrameOffset()
+int 
+SoVRMLAudioClip::getCurrentFrameOffset()
 {
   /* fixme 20021007 thammer. Implement this. It is needed to support more than one 
      sound node connected to each audioclip.
@@ -350,30 +358,33 @@ int SoVRMLAudioClip::getCurrentFrameOffset()
   return 0;
 }
 
-void SoVRMLAudioClip::setFillBufferCallback(FillBufferCallback *callback, void *userdata)
+void 
+SoVRMLAudioClip::setFillBufferCallback(FillBufferCallback *callback, void *userdata)
 {
-  THIS->fillBufferCallback = callback;
-  THIS->fillBufferCallbackUserData = userdata;
+  PRIVATE(this)->fillBufferCallback = callback;
+  PRIVATE(this)->fillBufferCallbackUserData = userdata;
 }
 
-void * SoVRMLAudioClip::fillBuffer(int frameoffset, void *buffer, int numframes, int &channels)
+void * 
+SoVRMLAudioClip::fillBuffer(int frameoffset, void *buffer, int numframes, int &channels)
 {
-  assert (THIS->fillBufferCallback != NULL);
+  assert (PRIVATE(this)->fillBufferCallback != NULL);
 
-  SbMutexAutoLock autoLock(&THIS->syncmutex);
-  if (THIS->actualStartTime == 0.0f)
-    THIS->actualStartTime = SbTime::getTimeOfDay();
+  SbMutexAutoLock autoLock(&PRIVATE(this)->syncmutex);
+  if (PRIVATE(this)->actualStartTime == 0.0f)
+    PRIVATE(this)->actualStartTime = SbTime::getTimeOfDay();
   void *ret;
-  ret = THIS->fillBufferCallback(frameoffset, buffer, numframes, channels, 
-                                  THIS->fillBufferCallbackUserData);
+  ret = PRIVATE(this)->fillBufferCallback(frameoffset, buffer, numframes, channels, 
+                                  PRIVATE(this)->fillBufferCallbackUserData);
   if (ret != NULL) {
-    THIS->totalNumberOfFramesToPlay += numframes;
+    PRIVATE(this)->totalNumberOfFramesToPlay += numframes;
   }
 
   return ret;
 }
 
-void SoVRMLAudioClip::setSubdirectories(const SbList<SbString> &subdirectories)
+void 
+SoVRMLAudioClip::setSubdirectories(const SbList<SbString> &subdirectories)
 {
   int i;
   for (i = 0; i < SoVRMLAudioClipP::subdirectories.getLength(); i++) {
@@ -384,14 +395,16 @@ void SoVRMLAudioClip::setSubdirectories(const SbList<SbString> &subdirectories)
   }
 }
 
-const SbStringList & SoVRMLAudioClip::getSubdirectories()
+const SbStringList & 
+SoVRMLAudioClip::getSubdirectories()
 {
   return SoVRMLAudioClipP::subdirectories;
 }
 
-void SoVRMLAudioClip::audioRender(SoAudioRenderAction *action)
+void 
+SoVRMLAudioClip::audioRender(SoAudioRenderAction *action)
 {
-  SbMutexAutoLock autoLock(&THIS->syncmutex);
+  SbMutexAutoLock autoLock(&PRIVATE(this)->syncmutex);
 
   SbTime now = SbTime::getTimeOfDay();
   SbTime start = this->startTime.getValue();
@@ -409,30 +422,56 @@ void SoVRMLAudioClip::audioRender(SoAudioRenderAction *action)
   {
     // we shouldn't be playing now
     if  (this->isActive.getValue())
-      THIS->stopPlaying();
+      PRIVATE(this)->stopPlaying();
     return; 
   }
 
   // ( (now<stop) || (stop<=start) )
 
-  if (THIS->endOfFile == TRUE) {
+  if (PRIVATE(this)->endOfFile == TRUE) {
     if  (this->isActive.getValue()) {
       // FIXME: perhaps add some additional slack, the size of one buffer? 20021008 thammer.
-      if ( (now-THIS->actualStartTime) > 
-           ((float)THIS->totalNumberOfFramesToPlay / (float)SoVRMLAudioClipP::defaultSampleRate) )
+      if ( (now-PRIVATE(this)->actualStartTime) > 
+           ((float)PRIVATE(this)->totalNumberOfFramesToPlay / (float)SoVRMLAudioClipP::defaultSampleRate) )
         // we have played through the clip once, so we shouldn't play anymore
-        THIS->stopPlaying(); 
+        PRIVATE(this)->stopPlaying(); 
     }
     return; 
   }
 
   if (now>=start) {
     if (!this->isActive.getValue())
-      THIS->startPlaying();
+      PRIVATE(this)->startPlaying();
   }
 }
 
-void SoVRMLAudioClipP::startPlaying()
+SbBool 
+SoVRMLAudioClipP::simageVersionOK(const char *functionName)
+{
+  if (simage_wrapper()->available &&
+      simage_wrapper()->versionMatchesAtLeast(1,4,0) &&
+      simage_wrapper()->s_stream_open &&
+      simage_wrapper()->s_stream_get_buffer &&
+      simage_wrapper()->s_stream_params &&
+      simage_wrapper()->s_params_get &&
+      simage_wrapper()->s_stream_close &&
+      simage_wrapper()->s_stream_destroy) {
+      return TRUE;
+  } else {
+    if (SoVRMLAudioClipP::warnAboutMissingSimage) {
+      SoDebugError::postWarning(functionName,
+                                "This function needs a version of simage that supports"
+                                "the stream interface and parameter access to be able "
+                                "to read audio files. Please visit www.coin3d.org "
+                                "and download the latest version of simage.");
+      SoVRMLAudioClipP::warnAboutMissingSimage = FALSE;
+    }
+    return FALSE;
+  }
+}
+
+void 
+SoVRMLAudioClipP::startPlaying()
 {
 #ifdef DEBUG_AUDIO
   printf("ac:start\n");
@@ -440,28 +479,31 @@ void SoVRMLAudioClipP::startPlaying()
   this->currentPause = SoVRMLAudioClipP::introPause;
   this->currentPlaylistIndex = 0;
   this->endOfFile = FALSE;
-  ITHIS->isActive.setValue(TRUE);
+  PUBLIC(this)->isActive.setValue(TRUE);
   this->actualStartTime = 0.0f; // will be set in fillBuffers
   this->totalNumberOfFramesToPlay = 0; // will be increased in fillBuffers
 }
 
-void SoVRMLAudioClipP::stopPlaying()
+void 
+SoVRMLAudioClipP::stopPlaying()
 {
 #ifdef DEBUG_AUDIO
   printf("ac:stop\n");
 #endif
-  ITHIS->isActive.setValue(FALSE);
+  PUBLIC(this)->isActive.setValue(FALSE);
   this->closeFile();
 }
 
-void * SoVRMLAudioClipP::internalFillBufferWrapper(int frameoffset, void *buffer, int numframes, 
+void * 
+SoVRMLAudioClipP::internalFillBufferWrapper(int frameoffset, void *buffer, int numframes, 
                                                int &channels, void *userdata)
 {
   SoVRMLAudioClipP *pthis = (SoVRMLAudioClipP *)userdata;
   return pthis->internalFillBuffer(frameoffset, buffer, numframes, channels);
 }
 
-void * SoVRMLAudioClipP::internalFillBuffer(int frameoffset, void *buffer, int numframes, int &channels)
+void * 
+SoVRMLAudioClipP::internalFillBuffer(int frameoffset, void *buffer, int numframes, int &channels)
 {
   // 20021007 thammer note:
   // this method might be called from a thread different from the thread which created the
@@ -479,10 +521,7 @@ void * SoVRMLAudioClipP::internalFillBuffer(int frameoffset, void *buffer, int n
      20021007 thammer.
   */
 
-  if (! (simage_wrapper()->available &&
-         simage_wrapper()->versionMatchesAtLeast(1,4,0) &&
-         simage_wrapper()->s_stream_get_buffer) ) {
-    // without simage, we can't deliver
+  if (!this->simageVersionOK("SoVRMLAudioClipP::internalFillBuffer")) {
     this->endOfFile = TRUE;
     int outputsize = numframes * 1 * sizeof(int16_t);
     memset(buffer, 0, outputsize);
@@ -495,8 +534,6 @@ void * SoVRMLAudioClipP::internalFillBuffer(int frameoffset, void *buffer, int n
     // deliver a zero'ed, mono buffer
     int outputsize = numframes * 1 * sizeof(int16_t);
     memset(buffer, 0, outputsize);
-    // for (int i=0; i<outputsize; i++)
-    //   ((char *)buffer)[i] = 0;
     currentPause -= (double)numframes / (double)SoVRMLAudioClipP::defaultSampleRate;
     channels = 1;
     return buffer;
@@ -560,14 +597,15 @@ void * SoVRMLAudioClipP::internalFillBuffer(int frameoffset, void *buffer, int n
   return buffer;
 }
 
-void SoVRMLAudioClipP::loadUrl()
+void 
+SoVRMLAudioClipP::loadUrl()
 {
   SbMutexAutoLock autoLock(&this->syncmutex);
 
   this->unloadUrl();
 
-  for (int i=0; i<ITHIS->url.getNum(); i++) {
-    const char * str = ITHIS->url[i].getString();
+  for (int i=0; i<PUBLIC(this)->url.getNum(); i++) {
+    const char * str = PUBLIC(this)->url[i].getString();
     if ( (str == NULL) || (strlen(str)==0) )
       continue; // ignore empty url
 
@@ -586,7 +624,8 @@ void SoVRMLAudioClipP::loadUrl()
   }
 }
 
-void SoVRMLAudioClipP::unloadUrl()
+void 
+SoVRMLAudioClipP::unloadUrl()
 {
   this->playlistDirty = TRUE;
   this->playlist.truncate(0);
@@ -629,7 +668,7 @@ void
 SoVRMLAudioClipP::loopSensorCB(SoSensor *)
 {
   SbMutexAutoLock autoLock(&this->syncmutex);
-  this->loop = ITHIS->loop.getValue();
+  this->loop = PUBLIC(this)->loop.getValue();
 }
 
 //
@@ -651,10 +690,10 @@ SoVRMLAudioClipP::startTimeSensorCB(SoSensor *)
   SbMutexAutoLock autoLock(&this->syncmutex);
 
   SbTime now = SbTime::getTimeOfDay();
-  SbTime start = ITHIS->startTime.getValue();
+  SbTime start = PUBLIC(this)->startTime.getValue();
 
   if (now>=start) {
-    if (!ITHIS->isActive.getValue())
+    if (!PUBLIC(this)->isActive.getValue())
       this->startPlaying();
   }
 }
@@ -678,37 +717,32 @@ SoVRMLAudioClipP::stopTimeSensorCB(SoSensor *)
   SbMutexAutoLock autoLock(&this->syncmutex);
 
   SbTime now = SbTime::getTimeOfDay();
-  SbTime start = ITHIS->startTime.getValue();
-  SbTime stop = ITHIS->stopTime.getValue();
+  SbTime start = PUBLIC(this)->startTime.getValue();
+  SbTime stop = PUBLIC(this)->stopTime.getValue();
 
   if ( (now>=stop) && (stop>start) ) 
   {
     // we shouldn't be playing now
-    if  (ITHIS->isActive.getValue()) 
+    if  (PUBLIC(this)->isActive.getValue()) 
       this->stopPlaying();
     return; 
   }
 }
 
-SbBool SoVRMLAudioClipP::openFile(int playlistIndex)
+SbBool 
+SoVRMLAudioClipP::openFile(int playlistIndex)
 {
   assert ( (playlistIndex<this->playlist.getLength()) && (playlistIndex>=0) );
 
   return this->openFile(this->playlist[playlistIndex].getString());
 }
 
-SbBool SoVRMLAudioClipP::openFile(const char *filename)
+SbBool 
+SoVRMLAudioClipP::openFile(const char *filename)
 {
   closeFile();
 
-  if (! (simage_wrapper()->available &&
-         simage_wrapper()->versionMatchesAtLeast(1,4,0) &&
-         simage_wrapper()->s_stream_open &&
-         simage_wrapper()->s_params_get) ) {
-    SoDebugError::postWarning("SoVRMLAudioClipP::openFile",
-                              "This function needs simage v1.4.0 or newer"
-                              " to read audio files. Couldn't open file '%s'",
-                              filename);
+  if (!this->simageVersionOK("SoVRMLAudioClipP::openFile")) {
     return FALSE;
   }
 
@@ -740,13 +774,11 @@ SbBool SoVRMLAudioClipP::openFile(const char *filename)
   return TRUE; // OK
 }
 
-void SoVRMLAudioClipP::closeFile()
+void 
+SoVRMLAudioClipP::closeFile()
 {
   if (this->stream != NULL) {
-    if (! (simage_wrapper()->available &&
-           simage_wrapper()->versionMatchesAtLeast(1,4,0) &&
-           simage_wrapper()->s_stream_close &&
-           simage_wrapper()->s_stream_destroy) ) {
+    if (!this->simageVersionOK("SoVRMLAudioClipP::closeFile")) {
       return;
     } else {
       simage_wrapper()->s_stream_close(this->stream);

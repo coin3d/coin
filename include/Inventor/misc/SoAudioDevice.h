@@ -30,18 +30,21 @@
 
 class COIN_DLL_API SoAudioDevice {
 public:
-  SoAudioDevice();
-  virtual ~SoAudioDevice();
-
-  virtual SbBool init(const SbString &devicetype, const SbString &devicename);
+  static SoAudioDevice *instance();
+  SbBool init(const SbString &devicetype, const SbString &devicename);
   void setSceneGraph(SoNode *root);
   void setGLRenderAction(SoGLRenderAction *ra);
-  virtual SbBool enable();
-  virtual void disable();
+  SbBool enable();
+  void disable();
+  SbBool haveSound();
+  ~SoAudioDevice();
 
 private:
-  class SoAudioDeviceP *soaudiodevice_impl;
-  friend class SoAudioDeviceP;
+  SoAudioDevice();
+  SoAudioDevice(const SoAudioDevice &);
+  const SoAudioDevice & operator=(const SoAudioDevice &);
+
+  class SoAudioDeviceP *pimpl;
 };
 
 #endif // !COIN_SOAUDIODEVICE_H
