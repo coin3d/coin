@@ -139,9 +139,7 @@ protected:
   virtual void writeConnection(SoOutput * out) const;
 
 private:
-  void doConnect(SoField * master, SbBool notify);
-  void doConnect(SoVRMLInterpOutput * master, SbBool notify);
-  void doConnect(SoEngineOutput * master, SbBool notify);
+  void extendStorageIfNecessary(void);
   SoFieldConverter * createConverter(SoType from) const;
   SoFieldContainer * resolveWriteConnection(SbName & mastername) const;
 
