@@ -31,6 +31,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <stddef.h>
 
 #include <Inventor/C/glue/fontlib_wrapper.h>
 #include <Inventor/C/tidbits.h>
