@@ -602,11 +602,11 @@ STUFF TO FIX IN COIN
     API for this (in SoGuiRenderArea), smth. like this:
     void addSceneGraph(SoNode*, SbViewportRegion)
     void removeSceneGraph(SoNode*)
-    
+
     Issues:
     o We should be able to control a larger subset of the API of the
       SoGuiRenderArea which can be cumbersome with this approach.
-    
+
     Solution:
     class SoViewportArea:
     o set/get scene graph, bgcolor, overlays, transparency, aliasing,
@@ -616,13 +616,13 @@ STUFF TO FIX IN COIN
       use.
     o Let some or all of the existing functions affect all viewport areas
       (global override).
-    
+
     in SoGuiRenderAres:
     o Add SoViewportArea instances
     o Remap event coordinates for each viewport area (in reverse render
       priority order) and send the event to each of their scene graphs (like
       we do now for the overlay/normal scene managers.
-    
+
     We also have to resolve the camera issue somehow; control cameras per
     viewport area vs. sharing cameras between viewport areas, sync cameras
     with the viewer, control view/pick mode per viewport area.
@@ -729,6 +729,39 @@ STUFF TO FIX IN COIN
 
     This would presuppose that we implemented the SbFile / SbDirectory
     abstraction(s) mentioned in the api-wish-list.txt file first.
+
+
+032 Port SGI's ''ivperf'' tool.
+    2003-03-06  Morten Eriksen  <mortene@sim.no>
+
+    This should go into the IvTools CVS repository. Note that
+    ''ivperf'' contains SoXt- and X11/Motif-specific code, and IvTools
+    so far only contains Coin-only dependent source code.
+
+
+033 Port TGS's ''ivtovrml'' tool.
+    2003-03-06  Morten Eriksen  <mortene@sim.no>
+
+    Here's the interface:
+
+        C:\>ivtovrml
+        Usage: ivtovrml [-vfntuhpqr] [-o filename] [-d InlineDir] file ...
+        -v : Generate VRML2 output
+        -o : Write output to [filename]
+        -d : A directory path. When converting SoFile to Inline nodes,
+             write converted filed to [InlineDir]
+        -f : Expand File nodes instead of converting to Inline nodes
+        -n : Force Texture Coordinates to write for all Nurbs Surfaces
+        -p : Do not reuse existing appearance nodes
+        -q : Do not reuse existing geometry property nodes
+        -r : Do not reuse existing geometry nodes
+        -t : Expand Texture2 nodes
+        -u : Write unknown nodes to output instead of removing them
+        -h : This message (help)
+        If given a filename of '-', standard input will be read.
+
+        If the -o option is not used to specify the output filename, the
+        converted file is written to standard output
 
 
 
