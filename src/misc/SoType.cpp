@@ -408,9 +408,16 @@ SoType::fromName(const SbName name)
     // symbol first?  dlopen(NULL) might not be portable enough, but it
     // could be a cool feature.  20030223 larsa
 
+    // FIXME: We probably should use loadable modules (type MH_BUNDLE)
+    // instead of shared libraries for dynamic extension nodes, on Mac
+    // OS X, since (1) this is the Recommended Way for dynamically
+    // loadable code and (2) it allows us to unload them when they are
+    // no longer needed. Note that this would require major changes to
+    // the Mac cc_dl_open() and cc_dl_sym() code. 20030318 kyrah
+
     SbString modulename;
     static char * modulenamepatterns[] = {
-      "%s.so", "lib%s.so", "%s.dll", "lib%s.dll",
+      "%s.so", "lib%s.so", "%s.dll", "lib%s.dll", "%s.dylib", "lib%s.dylib",
       NULL
     };
 
