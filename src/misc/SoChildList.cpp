@@ -204,6 +204,47 @@ SoChildList::set(const int index, SoNode * const node)
 }
 
 /*!
+  Optimized IN_PATH traversal method.
+  
+  This method is an extension versus the Open Inventor API.
+*/
+void
+SoChildList::traverseInPath(SoAction * const action,
+                            const int numindices,
+                            const int * indices)
+{
+  assert(action->getCurPathCode() == SoAction::IN_PATH);
+  
+  // only traverse nodes in path list, and nodes off path that
+  // affects state.
+  int childidx = 0;
+  SoNode * node;
+  SoNode ** childarray = (SoNode **) this->getArrayPtr();
+
+  for (int i = 0; i < numindices && !action->hasTerminated(); i++) {
+    int stop = indices[i];
+    for (; childidx < stop && !action->hasTerminated(); childidx++) {
+      // we are off path. Check if node affects state before traversing
+      node = childarray[childidx];
+      if (node->affectsState()) {
+        action->pushCurPath(childidx, node);
+        action->traverse(node);
+        action->popCurPath(SoAction::IN_PATH);
+      }
+    }
+    
+    if (!action->hasTerminated()) {
+      // here we are in path. Always traverse
+      node = childarray[childidx];
+      action->pushCurPath(childidx, node);
+      action->traverse(node);
+      action->popCurPath(SoAction::IN_PATH);
+      childidx++;
+    }
+  }
+}
+
+/*!
   Traverse child nodes in the list from index \a first up to and
   including index \a last, or until the SoAction::hasTerminated() flag
   of \a action has been set.
@@ -214,7 +255,7 @@ SoChildList::traverse(SoAction * const action, const int first, const int last)
   int i;
   int numindices;
   const int * indices;
-  SoNode * node;
+  SoNode * node = NULL;
 
   // use a local array pointer for speed
   SoNode ** childarray = (SoNode **) this->getArrayPtr();
@@ -223,36 +264,28 @@ SoChildList::traverse(SoAction * const action, const int first, const int last)
   case SoAction::NO_PATH:
   case SoAction::BELOW_PATH:
     // always traverse all nodes.
+    action->pushCurPath();
     for (i = first; i <= last && !action->hasTerminated(); i++) {
-      action->traverse(childarray[i]);
+      node = childarray[i];
+      action->popPushCurPath(i, node);
+      action->traverse(node);
     }
+    action->popCurPath();
     break;
   case SoAction::OFF_PATH:
     // only traverse nodes that affects state.
+    action->pushCurPath();
     for (i = first; i <= last && !action->hasTerminated(); i++) {
       node = childarray[i];
       if (node->affectsState()) {
+        action->popPushCurPath(i, node);
         action->traverse(node);
       }
     }
+    action->popCurPath();
     break;
   case SoAction::IN_PATH:
-    {
-      // only traverse nodes in path list, and nodes off path that
-      // affects state.
-      int childidx = 0;
-      for (i = 0; i < numindices; i++) {
-        int stop = indices[i];
-        for (; childidx < stop && !action->hasTerminated(); childidx++) {
-          // we are off path. Check if node affects state before traversing
-          node = childarray[childidx];
-          if (node->affectsState()) action->traverse(node);
-        }
-        // here we are in path. Always traverse
-        action->traverse(childarray[childidx]);
-        childidx++;
-      }
-    }
+    this->traverseInPath(action, numindices, indices);
     break;
   default:
     assert(0 && "unknown path code.");

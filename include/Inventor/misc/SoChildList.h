@@ -42,11 +42,14 @@ public:
   void copy(const SoChildList & cl);
   void set(const int index, SoNode * const node);
 
+  void traverseInPath(SoAction * const action, const int numindices,
+                      const int * indices);
   void traverse(SoAction * const action);
   void traverse(SoAction * const action, const int index);
   void traverse(SoAction * const action, SoNode * node);
   void traverse(SoAction * const action, const int first, const int last);
-
+  
+public:
   void addPathAuditor(SoPath * const path);
   void removePathAuditor(SoPath * const path);
 

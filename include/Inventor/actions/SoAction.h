@@ -23,6 +23,7 @@
 #include <Inventor/SbBasic.h>
 #include <Inventor/SoType.h>
 #include <Inventor/misc/SoTempPath.h>
+#include <Inventor/lists/SbList.h>
 
 // Include instead of using forward declarations to be compatible with
 // Open Inventor (and besides, all the other action class definitions
@@ -90,24 +91,25 @@ public:
   SbBool isLastPathListAppliedTo(void) const;
 
   PathCode getPathCode(int & numindices, const int * & indices);
-  void traverse(SoNode * const node);
 
+  void traverse(SoNode * const node);
   SbBool hasTerminated(void) const;
 
   const SoPath * getCurPath(void);
   SoState * getState(void) const;
 
   PathCode getCurPathCode(void) const;
-
-  void pushCurPath(const int childindex, SoNode * node = NULL);
-  void popCurPath(const PathCode prevpathcode);
   virtual SoNode * getCurPathTail(void);
   void usePathCode(int & numindices, const int * & indices);
+  
+  void pushCurPath(const int childindex, SoNode * node = NULL);
+  void popCurPath(const PathCode prevpathcode);
   void pushCurPath(void);
-
-  void popPushCurPath(const int childindex);
+  
+  void popPushCurPath(const int childindex, SoNode * node = NULL);
   void popCurPath(void);
 
+public:
   void switchToPathTraversal(SoPath * path);
   void switchToNodeTraversal(SoNode * node);
 
@@ -153,7 +155,7 @@ private:
   SoTempPath currentpath;
   SbBool terminated;
   PathCode currentpathcode;
-  int pathcodearray[1];
+  SbList <SbList<int> *> pathcodearray;
 };
 
 // Avoid problem with HPUX API headers (see near the start of this

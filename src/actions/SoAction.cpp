@@ -114,7 +114,10 @@ SoType SoAction::classTypeId;
 
 /*!
   \fn void SoAction::popCurPath(const PathCode prevpathcode)
-  Internal method used to optimize GLRender() traversal.
+  Pops the current path, and sets the path code to \a prevpathcode.
+
+  This method is very internal. Do not use unless you know
+  what you're doing.
 */
 
 // *************************************************************************
@@ -138,6 +141,8 @@ SoAction::SoAction(void)
 */
 SoAction::~SoAction(void)
 {
+  int n = this->pathcodearray.getLength();
+  for (int i = 0; i < n; i++) delete this->pathcodearray[i];
   delete this->state;
 }
 
@@ -235,6 +240,7 @@ SoAction::apply(SoNode * root)
 #endif // COIN_DEBUG
     // So the graph is not deallocated during traversal.
     root->ref();
+    this->currentpath.setHead(root);
     // make sure state is created before traversing
     (void) this->getState();
     this->beginTraversal(root);
@@ -276,6 +282,7 @@ SoAction::apply(SoPath * path)
 
   if (path->getLength() && path->getNode(0)) {
     SoNode * node = path->getNode(0);
+    this->currentpath.setHead(node);
     this->beginTraversal(node);
     this->endTraversal(node);
   }
@@ -322,6 +329,7 @@ SoAction::apply(const SoPathList & pathlist, SbBool obeysrules)
     this->applieddata.path = path;
     this->appliedcode = PATH;
     this->state->push();
+    this->currentpath.setHead(path->getNode(0));
     if (i == 0) {
       this->beginTraversal(path->getNode(0));
     }
@@ -457,75 +465,47 @@ SoAction::getPathCode(int & numindices, const int * & indices)
 void
 SoAction::traverse(SoNode * const node)
 {
-  assert(node);
-  PathCode storedpathcode = this->currentpathcode;
-
-  // FIXME: write code for PathList traversal.
-
-  this->currentpath.append(node);
-
-  switch (this->currentpathcode) {
-  case SoAction::IN_PATH:
-    {
-      int idx = this->currentpath.getFullLength();
-      int nodeidx = this->currentpath.getIndexFromTail(0);
-
-      if (this->applieddata.path->getIndex(idx - 1) != nodeidx) {
-        this->currentpathcode = SoAction::OFF_PATH;
-      }
-      else { // either in or below path
-        if (idx == this->applieddata.path->getFullLength()) {
-          this->currentpathcode = SoAction::BELOW_PATH;
-        }
-        else {
-          assert(idx < this->applieddata.path->getFullLength());
-          assert(node->getChildren());
-        }
-      }
-      break;
-    }
-
-  case SoAction::OFF_PATH:
-  case SoAction::BELOW_PATH:
-  case SoAction::NO_PATH:
-    // will stay in this state forever (or until popped)
-    break;
-
-  default:
-    assert(0 && "Unknown path code");
-    break;
-  }
-
   (*this->traversalMethods)
     [SoNode::getActionMethodIndex(node->getTypeId())](this, node);
-
-  this->currentpathcode = storedpathcode; // restore current path code
-
-  this->currentpath.pop();
 }
 
 /*!
-  Internal Coin method used to optimize rendering traversal.
+  Get ready to traverse the \a childindex'th child. Use this method
+  if the path code might change as a result of this.
+
+  This method is very internal. Do not use unless you know
+  what you're doing.
 */
 void
 SoAction::pushCurPath(const int childindex, SoNode * node)
 {
   if (node) this->currentpath.append(node, childindex);
   else this->currentpath.append(childindex);
-  if (this->currentpathcode == SoAction::IN_PATH) {
-    // test if we're in a new state
-    int idx = this->currentpath.getFullLength();
-    int nodeidx = this->currentpath.getIndexFromTail(0);
-    if (this->applieddata.path->getIndex(idx - 1) != nodeidx) {
-      this->currentpathcode = SoAction::OFF_PATH;
-    }
-    else { // either in or below path
-      if (idx == this->applieddata.path->getFullLength()) {
-        this->currentpathcode = SoAction::BELOW_PATH;
+
+  int curlen = this->currentpath.getFullLength();
+
+  if (this->currentpathcode == IN_PATH) {
+    if (this->getWhatAppliedTo() == PATH) {
+      if (curlen == this->applieddata.path->getFullLength()) {
+        this->currentpathcode = BELOW_PATH;
       }
-      else {
-        assert(idx < this->applieddata.path->getFullLength());
-        assert(node->getChildren());
+      else if (this->currentpath.getIndex(curlen-1) !=
+               this->applieddata.path->getIndex(curlen-1)) {
+        this->currentpathcode = OFF_PATH;
+      }
+    }
+    else {
+      // FIXME: not finished. Fix when PAYH_LIST rendering
+      // is properly supported.
+      assert(this->getWhatAppliedTo() == PATH_LIST);
+      const SoPathList * pl = this->applieddata.pathlistdata.pathlist;
+      int n = pl->getLength();
+      for (int i = 0; i < n; i++) {
+        const SoPath * path = (*pl)[i];
+        if (path->getFullLength() > curlen) {
+          this->currentpathcode = BELOW_PATH;
+          break;
+        }
       }
     }
   }
@@ -586,43 +566,82 @@ SoAction::getCurPathTail(void)
 void
 SoAction::usePathCode(int & numindices, const int * & indices)
 {
-  // FIXME: this is for path-traversal only. Code for PathList
-  // traversal needs to be written.
+  int curlen = this->currentpath.getFullLength();
 
-  numindices = 1;
-  this->pathcodearray[0] =
-    this->applieddata.path->getIndex(this->currentpath.getFullLength());
-  indices = this->pathcodearray;
+  while (this->pathcodearray.getLength() < curlen) {
+    this->pathcodearray.append(new SbList<int>);
+  }
+
+  SbList <int> * myarray = this->pathcodearray[curlen-1];
+  myarray->truncate(0);
+
+  if (this->getWhatAppliedTo() == PATH_LIST) {
+    const SoPathList * pl = this->applieddata.pathlistdata.pathlist;
+    int n = pl->getLength();
+    int cnt = 0;
+    myarray->truncate(0);
+    for (int i = 0; i < n; i++) {
+      const SoPath * path = (*pl)[i];
+      if (path->getFullLength() > curlen) {
+        myarray->append(path->getIndex(curlen));
+        cnt++;
+      }
+    }
+    numindices = cnt;
+    indices = myarray->getArrayPtr();
+  }
+  else {
+    numindices = 1;
+    myarray->append(this->applieddata.path->getIndex(curlen));
+    indices = myarray->getArrayPtr();
+  }
 }
 
 /*!
-  Internal OIV method used to optimize GLRender traversal. Not
-  implemented (yet).
+  Pushes a NULL node onto the current path. Use this before
+  traversing all children when you know that the path code will not
+  change while traversing children.
+
+  This method is very internal. Do not use unless you know
+  what you're doing.
 */
 void
 SoAction::pushCurPath(void)
 {
-  COIN_OBSOLETED();
+  this->currentpath.append((SoNode*) NULL, -1);
 }
 
 /*!
-  Internal OIV method used to optimize GLRender traversal. Not
-  implemented (yet).
+  Get ready to traverse the \a childindex'th child. Use this method
+  if you know the path code will not change as a result of this.
+
+  This method is very internal. Do not use unless you know
+  what you're doing.
 */
 void
-SoAction::popPushCurPath(const int childindex)
+SoAction::popPushCurPath(const int childindex, SoNode * node)
 {
-  COIN_OBSOLETED();
+  this->currentpath.pop(); // pop off previous or NULL node
+  if (node == NULL) {
+    this->currentpath.append(childindex);
+  }
+  else {
+    this->currentpath.append(node, childindex);
+  }
 }
 
 /*!
-  Internal OIV method used to optimize GLRender traversal. Not
-  implemented (yet).
+  Pops of the last child in the current path. Use this if
+  you know the path code hasn't changed since the current
+  path was pushed.
+
+  This method is very internal. Do not use unless you know
+  what you're doing.
 */
 void
 SoAction::popCurPath(void)
 {
-  COIN_OBSOLETED();
+  this->currentpath.pop();
 }
 
 // *************************************************************************
