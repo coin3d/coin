@@ -986,8 +986,8 @@ doxygen-docs: built-sources
 @BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	  echo " ln -s Versions/Current/$$symlink $(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/$$symlink"; \
 @BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	  ln -s Versions/Current/$$symlink "$(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/$$symlink" || exit 1; \
 @BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	done
-@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	echo "cd $(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Headers && ln -s ../Headers $(MAC_FRAMEWORK_NAME) && cd -r"; \
-@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	cd "$(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Headers" && ln -s ../Headers $(MAC_FRAMEWORK_NAME) && cd -;
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	@echo "cd $(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Headers && rm -f $(MAC_FRAMEWORK_NAME) && ln -s ../Headers $(MAC_FRAMEWORK_NAME) && cd -"; \
+@BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@	cd "$(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Headers" && rm -f $(MAC_FRAMEWORK_NAME) && ln -s ../Headers $(MAC_FRAMEWORK_NAME) && cd -;
 @BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@install-data-local:
 @BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@install-exec-local: $(srcdir)/cfg/wrapmsvc.exe
 @BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_FALSE@	@$(NORMAL_INSTALL)
