@@ -314,7 +314,6 @@ SoIndexedShape::getVertexData(SoState * state,
     nindices = this->normalIndex.getValues(0);
     if (this->normalIndex.getNum() <= 0 || nindices[0] < 0) nindices = NULL;
 
-    normalCacheUsed = FALSE;
     if (normals == NULL) {
       SoNormalCache * nc = this->generateAndReadLockNormalCache(state);
       normals = nc->getNormals();
