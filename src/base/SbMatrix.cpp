@@ -197,7 +197,7 @@ SbMatrix::setRotate(const SbRotation& q)
     this->makeIdentity();
     this->matrix[1][1] = cost;
     this->matrix[2][1] = -sint;
-    this->matrix[2][1] = sint;
+    this->matrix[1][2] = sint;
     this->matrix[2][2] = cost;
   }
   else if (u == SbVec3f(0.0f, 1.0f, 0.0f)) {
