@@ -1152,6 +1152,8 @@ SoVRMLSoundP::sourceSensorCBWrapper(void * data, SoSensor *)
 void
 SoVRMLSoundP::sourceSensorCB(SoSensor *)
 {
+#ifdef HAVE_SOUND
+
   #if COIN_DEBUG && DEBUG_AUDIO // debug
     fprintf(stderr, "(S)");
   #endif // debug
@@ -1245,4 +1247,5 @@ SoVRMLSoundP::sourceSensorCB(SoSensor *)
       SoVRMLSoundP::syncmutex->lock();
 #endif
   }
+#endif // HAVE_SOUND
 }
