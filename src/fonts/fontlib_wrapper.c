@@ -455,7 +455,7 @@ flw_find_font(const char * fontname, const unsigned int sizex, const unsigned in
 
 
 void 
-cc_flw_ref_font(const int fontid)
+cc_flw_ref_font(int fontid)
 {
   int i, n;
   struct cc_flw_font * fs;
@@ -471,7 +471,7 @@ cc_flw_ref_font(const int fontid)
 }
 
 void 
-cc_flw_unref_font(const int fontid)
+cc_flw_unref_font(int fontid)
 {
   int i, n;
   struct cc_flw_font * fs;
@@ -595,7 +595,6 @@ cc_flw_get_font_id(const char * fontname, const unsigned int sizex, const unsign
 void * 
 cc_flw_get_font_handle(int fontid)
 {
-  int idx;
   static struct cc_flw_font * font;
   font = flw_fontidx2fontptr(fontid);
   assert(font);
