@@ -267,6 +267,7 @@ SoImage::SoImage(void)
 SoImage::~SoImage()
 {
   delete this->resizedimage;
+  delete this->filenamesensor;
 }
 
 // doc from parent
