@@ -600,12 +600,17 @@ SoSelection::getSelectionPath(SoHandleEventAction *action, SbBool &ignorepick,
       if (selectionpath) {
         if (selectionpath->getLength() == 1 &&
             selectionpath->getNode(0) == this) {
+          selectionpath->ref();
+          selectionpath->unref();
           selectionpath = NULL;
         }
         else if (selectionpath->findNode(this) >= 0) {
           haltaction = TRUE;
         }
         else { // path with this not in the path (most probably an empty path)
+          selectionpath->ref();
+          selectionpath->unref();
+          selectionpath = NULL;
           ignorepick = TRUE;
         }
       }
