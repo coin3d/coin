@@ -183,7 +183,7 @@ struct FT_FaceRec_ {
 
 typedef struct FT_GlyphRec_ {
   FT_Library library;
-  void * class;
+  void * clazz; /* const FT_Glyph_Class * */
   int format;
   FT_Vector advance;
 } FT_GlyphRec;
