@@ -47,7 +47,7 @@ machine looks like this (I'm using SoXt as the GUI library for
 demonstration purposes):
 
   $ cd $HOME
-  $ mkdir code compile install
+  $ mkdir code
   $ cd code
   $ cvs -z3 -d :pserver:cvs@cvs.sim.no:/export/cvsroot checkout -P simage-1
   [cvs doing its thing]
@@ -68,53 +68,55 @@ demonstration purposes):
         instead of the full checkout.
 
 
-  $ cd $HOME/compile
+  $ export WORKDIR=<somewhere on a local disc>
+  $ mkdir compile install
+  $ cd $WORKDIR/compile
   $ mkdir simage Coin SoXt
 
-  $ cd $HOME/compile/simage
-  $ $HOME/code/simage-1/configure --prefix=$HOME/install
+  $ cd $WORKDIR/compile/simage
+  $ $HOME/code/simage-1/configure --prefix=$WORKDIR/install
   [configure running]
   $ make install
   [build should complete quickly]
 
-  $ cd $HOME/compile/Coin
-  $ $HOME/code/Coin-1/configure --prefix=$HOME/install --enable-hacking
+  $ cd $WORKDIR/compile/Coin
+  $ $HOME/code/Coin-1/configure --prefix=$WORKDIR/install --enable-hacking
   [configure running]
 
         Note the "--enable-hacking" option to configure. This is the
         brilliant part. What happens with this option is that instead
         of making one monolithic libCoin.so file, the Coin library
         will be linked into many shared libraries, one for each
-        subdirectory under $HOME/compile/Coin/src/. The brilliance of
+        subdirectory under $WORKDIR/compile/Coin/src/. The brilliance of
         this little trick will be explained later in the walk-through.
 
   $ make install
   [building will take quite some time, go for a coffee]
 
-  $ cd $HOME/compile/SoXt
-  $ $HOME/code/SoXt/configure --prefix=$HOME/install
+  $ cd $WORKDIR/compile/SoXt
+  $ $HOME/code/SoXt/configure --prefix=$WORKDIR/install
   [configure running]
   $ make install
   [build shouldn't take long]
 
 Ok, that's it. You should now have libsimage, libCoin and libSoXt
-built and installed under $HOME/install/lib/.
+built and installed under $WORKDIR/install/lib/.
 
-If you go look in the $HOME/install/lib/ directory, you will see a
+If you go look in the $WORKDIR/install/lib/ directory, you will see a
 bunch of files named lib**something**LINKHACK.so. For each of the
 "submodules" in Coin where you will be working, you should now remove
 the relevant .so-files and instead symlink them directly from the
 build directory. I.e., if you are going to work with the node classes,
 execute the following:
 
-  $ cd $HOME/install/lib
+  $ cd $WORKDIR/install/lib
   $ ls -c1 *nodesLINKHACK*
   libnodesLINKHACK.la*
   libnodesLINKHACK.so@
   libnodesLINKHACK.so.0@
   libnodesLINKHACK.so.0.0.0*
   $ rm libnodesLINKHACK.so.0.0.0
-  $ ln -s $HOME/compile/Coin/src/nodes/.libs/libnodesLINKHACK.so.0.0.0 libnodesLINKHACK.so.0.0.0
+  $ ln -s $WORKDIR/compile/Coin/src/nodes/.libs/libnodesLINKHACK.so.0.0.0 libnodesLINKHACK.so.0.0.0
 
 (The other two .so-files are just symlinks to the .so.0.0.0 file, so
 we don't need to do anything about those.)
@@ -123,7 +125,7 @@ You should now be able to do development with very short compile &
 link turn-around cycles on the classes in the $HOME/code/Coin/nodes/
 directory. Each time you have made a change to the sourcecode, just
 
-  $ cd $HOME/compile/Coin/src/nodes
+  $ cd $WORKDIR/compile/Coin/src/nodes
   $ make
 
 Only the relevant .cpp will now be re-compiled and only the
@@ -248,9 +250,14 @@ and explains the principles applied fairly well.
 6 The Run-Time Environment
 ==========================
 
-To enable the experimental support for display list caching, set the
-environment variable COIN_RENDER_CACHING to "1" and the renderCaching
-field of SoSeparator nodes to ON.
+  * To help debug the somewhat experimental support for display list
+    caching, set the environment variable
+    COIN_RANDOMIZE_RENDER_CACHING to "1" and the renderCaching field
+    of SoSeparator nodes will randomly be switched on and off upon
+    construction of new SoSeparator nodes.
+
+  * See So@Gui@/src/Inventor/@Gui@/common/HACKING for further
+    debugging hints.
 
 
 7 How To Add / Modify A Class In Coin
@@ -564,8 +571,9 @@ versus the code "layout" (to make it more easily readable):
     out because it is a new feature which is yet to be completed? etc
     etc etc).
 
-    Programmers who sin against this rule should be taken out behind
-    the barn to be shot.
+    Programmers who continues to sin against this rule after having
+    this pointed out to them should be taken out behind the barn to be
+    shot.
 
  3) During debugging, write debug code like this:
 
@@ -592,6 +600,12 @@ versus the code "layout" (to make it more easily readable):
     if ( COIN_DEBUG ) {
       SoDebugError::postInfo("SoDB::funnyRabbit", "follow the white rabbit");
     }
+
+    UPDATE 2002-06-17 mortene: this decision has been reversed, at
+    least temporarily, as we can't seem to get a definitive answer to
+    whether or not code and data within an "if (0) { ... }" construct
+    is still taking up space in the generated object and library
+    files.
 
  4) Do not under any circumstances use printf() / fprintf() / puts()
     or related functions for output.  It should not be necessary --
@@ -625,7 +639,12 @@ versus the code "layout" (to make it more easily readable):
       opening brace on the next line.
 
    b) Indentation: use 2 spaces extra for each level of nesting.
-      *Never* use tabulator characters (ie ASCII code 0x09).
+
+      *Never* use tabulator characters (ie ASCII code 0x09), as
+      editors expands them differently. The code indentation will
+      therefore more often than not look like crap with the default
+      settings of any other editor than the one you happen to be using
+      yourself.
 
    c) Spacing: use 1 space after commas and around operators (like +,
       -, *, /, ==, &&, etc), but not after or before parentheses.
@@ -650,6 +669,11 @@ versus the code "layout" (to make it more easily readable):
         ...
         ...
       }
+
+
+      For C code, name functions with underscores between words, in
+      all lowercase.
+
 
    e) Pointer types and references: use a space on each side of the
       '*' and '&' operators, like this
