@@ -32,6 +32,9 @@ fi
 cd $RPM_BUILD_DIR
 test -d Coin || mkdir Coin
 cd Coin
+# Errors might go unnoticed if configuration info is taken from
+# an old cache.
+rm -f ./config.cache
 # The options must cover the set of install-directories in the %files section.
 $RPM_SOURCE_DIR/Coin/configure \
                        --bindir=@bindir@ --includedir=@includedir@ \
@@ -43,7 +46,10 @@ make
 %install
 
 cd $RPM_BUILD_DIR/Coin
-make install
+make install-strip
+# FIXME: for some unknown reason, the lib-file is not automatically
+# stripped, so we "hack" it in. 20000705 mortene.
+strip @libdir@/libCoin-0.6.so.0.0.0
 make doxygen-doc
 
 %files
