@@ -1091,7 +1091,7 @@ MACRO_EXPANSION       = YES
 # then the macro expansion is limited to the macros specified with the 
 # PREDEFINED and EXPAND_AS_PREDEFINED tags. 
 
-EXPAND_ONLY_PREDEF    = NO
+EXPAND_ONLY_PREDEF    = YES
 
 # If the SEARCH_INCLUDES tag is set to YES (the default) the includes files 
 # in the INCLUDE_PATH (see below) will be search if a #include is found. 
@@ -1117,7 +1117,8 @@ PREDEFINED            = DOXYGEN_SKIP_THIS
 # The macro definition that is found in the sources will be used. 
 # Use the PREDEFINED tag if you want to use a different macro definition. 
 
-EXPAND_AS_DEFINED     = 
+EXPAND_AS_DEFINED     = \
+                        SO_COMPOSE__HEADER
 
 #---------------------------------------------------------------------------
 # Configuration::addtions related to external references   
