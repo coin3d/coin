@@ -113,6 +113,8 @@ SbSpherePlaneProjector::getRotation(const SbVec3f &point1, const SbBool tol1,
   float angle = 0.0f;
 
   if (!tol1 && !tol2) {
+    // FIXME: this might not be 100% correct in all cases, but
+    // I doubt anyone will notice :-) pederb, 20000220
     angle = vec.length() / this->sphere.getRadius();
   }
   else {
@@ -142,5 +144,5 @@ SbSpherePlaneProjector::getRotation(const SbVec3f &point1, const SbBool tol1,
     // rotation caused by dragging plane
     angle += (tolpt-planePt).length() / this->sphere.getRadius();
   }
-  return SbRotation(axis, angle);
+  return SbRotation(axis, -angle);
 }
