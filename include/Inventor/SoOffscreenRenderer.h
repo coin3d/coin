@@ -27,6 +27,7 @@
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/SbColor.h>
 #include <Inventor/lists/SbList.h>
+#include <Inventor/lists/SbPList.h>
 #include <Inventor/SbString.h>
 #include <Inventor/SbName.h>
 
@@ -81,10 +82,17 @@ public:
   SbBool isWriteSupported(const SbName & filetypeextension) const;
   int getNumWriteFiletypes(void) const;
   void getWriteFiletypeInfo(const int idx,
-                            SbList <SbName> & extlist,
+                            SbPList & extlist,
                             SbString & fullname,
                             SbString & description);
   SbBool writeToFile(const SbString & filename, const SbName & filetypeextension) const; 
+
+  // Please stop using this function. It will be removed in 
+  // Coin 3.0. Use the SbPList version instead.
+  void getWriteFiletypeInfo(const int idx,
+                            SbList <SbName> & extlist,
+                            SbString & fullname,
+                            SbString & description);
 
 private:
   friend class SoOffscreenRendererP;

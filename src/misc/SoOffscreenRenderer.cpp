@@ -1262,12 +1262,15 @@ SoOffscreenRenderer::getNumWriteFiletypes(void) const
   return simage_wrapper()->simage_get_num_savers();
 }
 
-/*!
-  Returns information about an image exporter. \a extlist is a list of
-  filenameextensions for a file format. E.g. for JPEG it is legal to
-  use both jpg and jpeg. \a fullname is the full name of the image
-  format. \a description is an optional string with more information
-  about the file format.
+/*!  
+  Returns information about an image exporter. \a extlist is a list
+  of filename extensions for a file format. E.g. for JPEG it is legal
+  to use both jpg and jpeg. Extlist will contain const char * pointers
+  (you need to cast the void * pointers to const char * before using
+  them).
+  
+  \a fullname is the full name of the image format. \a description is
+  an optional string with more information about the file format.
 
   See SoOffscreenRenderer::isWriteSupported() for information about
   which file formats you can expect to be present.
@@ -1296,14 +1299,14 @@ SoOffscreenRenderer::getNumWriteFiletypes(void) const
     }
     else {
       for (int i=0; i < num; i++) {
-        SbList<SbName> extlist;
+        SbPList extlist;
         SbString fullname, description;
         r->getWriteFiletypeInfo(i, extlist, fullname, description);
         (void)fprintf(stdout, "%s: %s (extension%s: ",
                       fullname.getString(), description.getString(),
                       extlist.getLength() > 1 ? "s" : "");
         for (int j=0; j < extlist.getLength(); j++) {
-          (void)fprintf(stdout, "%s%s", j>0 ? ", " : "", extlist[j].getString());
+          (void)fprintf(stdout, "%s%s", j>0 ? ", " : "", (const char*) extlist[j]);
         }
         (void)fprintf(stdout, ")\n");
       }
@@ -1315,10 +1318,12 @@ SoOffscreenRenderer::getNumWriteFiletypes(void) const
   \endcode
 
   \sa getNumWriteFiletypes(), writeToFile()
+
+  \since Coin 2.3
 */
 void
 SoOffscreenRenderer::getWriteFiletypeInfo(const int idx,
-                                          SbList <SbName> & extlist,
+                                          SbPList & extlist,
                                           SbString & fullname,
                                           SbString & description)
 {
@@ -1338,12 +1343,14 @@ SoOffscreenRenderer::getWriteFiletypeInfo(const int idx,
   const char * end = strchr(curr, ',');
   while (end) {
     SbString ext = allext.getSubString(curr-start, end-start-1);
-    extlist.append(SbName(ext.getString()));
+    SbName extname(ext.getString());
+    extlist.append((void*)extname.getString());
     curr = end+1;
     end = strchr(curr, ',');
   }
   SbString ext = allext.getSubString(curr-start);
-  extlist.append(SbName(ext.getString()));
+  SbName extname(ext.getString());
+  extlist.append((void*)extname.getString());
   const char * fullname_s = simage_wrapper()->simage_get_saver_fullname(saver);
   const char * desc_s = simage_wrapper()->simage_get_saver_description(saver);
   fullname = fullname_s ? SbString(fullname_s) : SbString("");
@@ -1531,6 +1538,48 @@ SoOffscreenRendererP::getMaxTileSize(void)
   maxtile[1] = SbMin(height, (unsigned int)SHRT_MAX);
 
   return SbVec2s((short)maxtile[0], (short)maxtile[1]);
+}
+
+/*!
+  WARNING: Please don't use this function. It can cause hard to find
+  bugs on the Windows platform if your application is linked against a
+  different CRT than your Coin DLL. 
+  
+  Use void getWriteFiletypeInfo(const int idx, SbPList & extlist, SbString & fullname, SbString & description)
+  instead.
+ */
+void
+SoOffscreenRenderer::getWriteFiletypeInfo(const int idx,
+                                          SbList <SbName> & extlist,
+                                          SbString & fullname,
+                                          SbString & description)
+{
+  if (!simage_wrapper()->versionMatchesAtLeast(1,1,0)) {
+#if COIN_DEBUG
+    SoDebugError::postInfo("SoOffscreenRenderer::getNumWriteFiletypes",
+                           "You need simage v1.1 for this functionality.");
+#endif // COIN_DEBUG
+    return;
+  }
+  extlist.truncate(0);
+  assert(idx >= 0 && idx < this->getNumWriteFiletypes());
+  void * saver = simage_wrapper()->simage_get_saver_handle(idx);
+  SbString allext(simage_wrapper()->simage_get_saver_extensions(saver));
+  const char * start = allext.getString();
+  const char * curr = start;
+  const char * end = strchr(curr, ',');
+  while (end) {
+    SbString ext = allext.getSubString(curr-start, end-start-1);
+    extlist.append(SbName(ext.getString()));
+    curr = end+1;
+    end = strchr(curr, ',');
+  }
+  SbString ext = allext.getSubString(curr-start);
+  extlist.append(SbName(ext.getString()));
+  const char * fullname_s = simage_wrapper()->simage_get_saver_fullname(saver);
+  const char * desc_s = simage_wrapper()->simage_get_saver_description(saver);
+  fullname = fullname_s ? SbString(fullname_s) : SbString("");
+  description = desc_s ? SbString(desc_s) : SbString("");
 }
 
 #undef PRIVATE
