@@ -485,9 +485,13 @@ SoText3::render(SoState * state, unsigned int part)
         }
       }
     }
+    nearz = -nearz;
+    farz = -farz;
   }
-  nearz = -nearz;
-  farz = -farz;
+  else {
+    nearz = 0.0;
+    farz = -1.0;
+  }
   if (part != SoText3::SIDES) {
     glBegin(GL_TRIANGLES);
     if (part == SoText3::FRONT)
