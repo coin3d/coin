@@ -30,8 +30,8 @@ TODO:
   could just as well wait for the next Automake release, and remove
   the hack altogether?
 
-* [mortene:19991107] example programs shouldn't be compiled with the
-  __SOLIB_INTERNAL__ define set.
+* [mortene:19991107] example programs and tools shouldn't be compiled
+  with the __SOLIB_INTERNAL__ define set.
 
 * [mortene:19990926] add configure option to enable crash (and
   subsequent core dump, of course) on SoDebugError::postWarning() and
@@ -68,22 +68,21 @@ TODO:
   "#if.*(COIN_EXCLUDE_.*)" blocks? Remove stuff between
   __SOLIB_INTERNAL__.
 
-* [mortene:19990926] fix code which generates warnings when configured
-  with --disable-debug.
-
 * [mortene:1999????] make Coin build under MSWindows with the Cygwin
   tools.
 
-* [mortene:19991127] use the PETI_WITH_DMALLOC from the autoconf macro
-  archives to optionally make with dmalloc (<http://www.dmalloc.com>).
+* [mortene:19991127] use the PETI_WITH_DMALLOC macro from the autoconf
+  macro archives to optionally make with dmalloc
+  (<http://www.dmalloc.com>).
 
 *** GENERIC ITEMS ***
 
 * [mortene:19991130] names containing (note: not only "beginning
-  with") __ (double underscore) or _[A-Z] (single underscore
-  immediately followed by an uppercase letter) are reserved in C++ for
-  the implementation. All header file "wrapper definitions" must be
-  rewritten, and the __SOLIB_INTERNAL__ define must be changed.
+  with") __ (double underscore) or beginning with _[A-Z] (single
+  underscore immediately followed by an uppercase letter) are reserved
+  in C++ for the implementation. All header file "wrapper definitions"
+  must be rewritten, and the __SOLIB_INTERNAL__ define must be
+  changed.
 
 * [mortene:19991128] code restructuring: convert internal use of lists
   to SbList wherever possible.
@@ -143,6 +142,9 @@ DONE:
 
 
 *** BUILD ITEMS ***
+
+* [mortene:19990926][mortene:19991205] fix code which generates
+  warnings when configured with --disable-debug.
 
 * [mortene:19991124][mortene:19991126] install the binaries under the
   tools/ directory in $prefix/bin.
