@@ -38,12 +38,10 @@
 static void
 send_triangle(void)
 {
-  const float t[3][2] = { { 0, 0 }, { 1, 0 }, { 1, 1 } };
   const float v[3][3] = { { 0, -1, 0 }, { 1, -1, 0 }, { 1, 0, 0 } };
 
   for (int j=0; j < 3; j++) {
     glNormal3f(0, 0, 1);
-    glTexCoord2f(t[j][0], t[j][1]);
     glVertex3f(v[j][0], v[j][1], v[j][2]);
   }
 }
