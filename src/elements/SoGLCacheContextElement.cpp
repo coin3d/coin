@@ -64,7 +64,10 @@ typedef struct {
 
 static SbList <so_glext_info *> *extsupportlist;
 static SbList <SoGLDisplayList*> *scheduledeletelist;
+
+#ifdef HAVE_THREADS
 static SbMutex * glcache_mutex;
+#endif // HAVE_THREADS
 
 
 static void soglcachecontext_cleanup(void)
