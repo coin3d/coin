@@ -279,6 +279,15 @@ public:
     case SoShape::POINTS:
       this->shape->invokePointCallbacks(this->action, v);
       break;
+    case SoShape::LINES:
+      this->vertsArray[this->counter++] = *v;
+      if (counter == 2) {
+	this->shape->invokeLineSegmentCallbacks(this->action,
+						&vertsArray[0],
+						&vertsArray[1]);	
+	counter = 0;
+      }
+      break;
     case SoShape::LINE_STRIP:
       this->vertsArray[this->counter++] = *v;
       if (this->counter == 2) {
@@ -730,10 +739,26 @@ SoShape::invokeLineSegmentCallbacks(SoAction * const action,
   FIXME: write function documentation
 */
 void 
-SoShape::invokePointCallbacks(SoAction * const /* action */,
-			      const SoPrimitiveVertex * const /* v */)
+SoShape::invokePointCallbacks(SoAction * const action,
+			      const SoPrimitiveVertex * const v)
 {
-  assert(0 && "FIXME: not implemented yet");
+  if (action->getTypeId().isDerivedFrom(SoRayPickAction::getClassTypeId())) {
+    SoRayPickAction *ra = (SoRayPickAction*) action;
+    
+    SbVec3f intersection = v->getPoint();
+    if (ra->intersect(intersection)) {
+      if (ra->isBetweenPlanes(intersection)) {
+	SoPickedPoint * pp = ra->addIntersection(intersection);
+	if (pp) {
+	  // FIXME: add point detail
+	}   
+      }
+    }
+  }
+  else {
+    assert(0 && "FIXME: not implemented");
+  }
+
 }
 
 /*!

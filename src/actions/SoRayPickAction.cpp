@@ -384,7 +384,9 @@ SoRayPickAction::computeWorldSpaceRay()
       vv.getWorldToScreenScale(this->rayStart + this->rayDirection,
 			       this->calcRayRadius(this->radiusInPixels));
     this->rayRadiusDelta -= rayRadiusStart;
-
+    this->wsLine = SbLine(this->rayStart, 
+			  this->rayStart + this->rayDirection);
+    
 #if 1 // debug
     SoDebugError::postInfo("SoRayPickAction::computeWorldSpaceRay",
 			   "%f %f %f",
@@ -488,6 +490,13 @@ SoRayPickAction::intersect(const SbVec3f &v0, const SbVec3f &v1,
   SbVec3f p0,p1; // world space
 
   this->osLine.getClosestPoints(line, op0, op1);
+
+  // clamp op1 between v0 and v1
+  if ((op1-v0).dot(line.getDirection()) < 0.0f) op1 = v0;
+  else if ((v1-op1).dot(line.getDirection()) < 0.0f) op1 = v1;
+
+  // FIXME: clamp op0 to rayStart, rayFar ???
+
   this->obj2World.multVecMatrix(op0, p0);
   this->obj2World.multVecMatrix(op1, p1);
 
@@ -507,10 +516,21 @@ SoRayPickAction::intersect(const SbVec3f &v0, const SbVec3f &v1,
 }
 
 SbBool 
-SoRayPickAction::intersect(const SbVec3f &/*point*/) const
+SoRayPickAction::intersect(const SbVec3f &point) const
 {
-  assert(0 && "FIXME: not implemented");
-  return FALSE;
+  SbVec3f wPoint;
+  this->obj2World.multVecMatrix(point, wPoint);
+  SbVec3f ptOnLine = this->wsLine.getClosestPoint(wPoint);
+
+  // distance between points
+  float distance = (wPoint-ptOnLine).length();
+  
+  float raypos = (ptOnLine - this->rayStart).length();
+  
+  float radius = this->rayRadiusStart + 
+    this->rayRadiusDelta*raypos/this->rayFar;
+  
+  return (radius >= distance);
 }
 
 SbBool 

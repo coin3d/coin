@@ -27,8 +27,8 @@
 
 #include <Inventor/nodes/SoIndexedLineSet.h>
 
-
-
+#include <Inventor/SoPrimitiveVertex.h>
+#include <Inventor/actions/SoRayPickAction.h>
 
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/misc/SoState.h>
@@ -443,9 +443,241 @@ SoIndexedLineSet::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
   FIXME: write doc
 */
 void
-SoIndexedLineSet::generatePrimitives(SoAction * /* action */)
+SoIndexedLineSet::generatePrimitives(SoAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoState * state = action->getState();
+
+  if (this->vertexProperty.getValue()) {
+    state->push();
+    this->vertexProperty.getValue()->doAction(action);
+  }
+  
+  Binding mbind = this->findMaterialBinding(state);
+  Binding nbind = this->findNormalBinding(state);
+
+  const SoCoordinateElement * coords;
+  const SbVec3f * normals;
+  const int32_t * cindices;
+  int32_t numindices;
+  const int32_t * normindices;
+  const int32_t * texindices;
+  const int32_t * matindices;
+  SbBool doTextures;
+  SbBool sendNormals = TRUE;
+  SbBool normalCacheUsed;
+
+  getVertexData(state, coords, normals, cindices, 
+		normindices, texindices, matindices, numindices, 
+		sendNormals, normalCacheUsed);
+  
+  if (normals == NULL) {
+    sendNormals = FALSE;
+    nbind = OVERALL;
+  }
+
+  SoTextureCoordinateBundle tb(action, TRUE, FALSE);
+  doTextures = tb.needCoordinates();
+
+  Binding tbind = PER_VERTEX_INDEXED; // most common
+  if (doTextures) {
+    if (SoTextureCoordinateBindingElement::get(state) ==
+	SoTextureCoordinateBindingElement::PER_VERTEX) {
+      tbind = PER_VERTEX;
+      texindices = NULL; // just in case
+    }
+    else if (texindices == NULL) {
+      texindices = cindices;
+    }
+  }
+    
+  SbBool drawAsPoints = FALSE;
+#if !defined(COIN_EXCLUDE_SODRAWSTYLEELEMENT)
+  drawAsPoints = SoDrawStyleElement::get(state) ==
+    SoDrawStyleElement::POINTS;
+#endif
+
+  if (mbind == PER_VERTEX_INDEXED && matindices == NULL) {
+    matindices = cindices;
+  }
+  if (nbind == PER_VERTEX_INDEXED && normindices == NULL) {
+    normindices = cindices;
+  }
+  if (mbind == PER_VERTEX || mbind == PER_LINE || mbind == PER_SEGMENT) {
+    matindices = NULL;
+  }
+  if (nbind == PER_VERTEX || nbind == PER_LINE || nbind == PER_SEGMENT) {
+    normindices = NULL;
+  }
+
+  if (nbind == OVERALL) normindices = NULL;
+  if (mbind == OVERALL) matindices = NULL;
+
+  int matnr = 0;
+  int texidx = 0;
+  int32_t i;
+  const int32_t *end = cindices + numindices;
+  
+  SoPrimitiveVertex vertex;
+  SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
+  const SbVec3f *currnormal = &dummynormal;
+  if (normals) currnormal = normals;
+
+  if (nbind == OVERALL) {
+    vertex.setNormal(*currnormal);
+  }  
+
+  if (mbind == PER_SEGMENT || mbind == PER_SEGMENT_INDEXED ||
+      nbind == PER_SEGMENT || nbind == PER_SEGMENT_INDEXED) {
+    int previ;
+    SbBool matPerPolyline = mbind == PER_LINE || mbind == PER_LINE_INDEXED;
+    SbBool normPerPolyline = nbind == PER_LINE || nbind == PER_LINE_INDEXED;
+    
+    if (drawAsPoints) this->beginShape(action, SoShape::POINTS); 
+    else this->beginShape(action, SoShape::LINES);
+    
+    while (cindices < end) {
+      previ = *cindices++;
+
+      if (matPerPolyline) {
+	if (matindices) vertex.setMaterialIndex(*matindices++);
+	else vertex.setMaterialIndex(matnr++);
+      }
+      if (normPerPolyline) {
+	if (normindices) currnormal = &normals[*normindices++];
+	else currnormal = normals++;
+	vertex.setNormal(*currnormal);
+      }
+      
+      i = *cindices++;
+      while (i >= 0) {
+	if (!matPerPolyline && mbind != OVERALL) {
+	  if (matindices) vertex.setMaterialIndex(*matindices++);
+	  else vertex.setMaterialIndex(matnr++);
+	}
+	if (!normPerPolyline && nbind != OVERALL) {
+	  if (normindices) currnormal = &normals[*normindices++];
+	  else currnormal = normals++;
+	  vertex.setNormal(*currnormal);
+	}
+	if (doTextures) {
+	  if (tb.isFunction()) {
+	    vertex.setTextureCoords(tb.get(coords->get3(previ), *currnormal));
+	  }
+	  else {
+	    vertex.setTextureCoords(tb.get(texindices?*texindices++:texidx++));
+	  }
+	}
+	vertex.setPoint(coords->get3(previ));
+	this->shapeVertex(&vertex);
+
+	if (mbind >= PER_VERTEX) {
+	  if (matindices) vertex.setMaterialIndex(*matindices++);
+	  else vertex.setMaterialIndex(matnr++);
+	}
+	if (nbind >= PER_VERTEX) {
+	  if (normindices) currnormal = &normals[*normindices++];
+	  else currnormal = normals++;
+	  vertex.setNormal(*currnormal);
+	}
+	if (doTextures) {
+	  if (tb.isFunction()) {
+	    vertex.setTextureCoords(tb.get(coords->get3(i), *currnormal));
+	  }
+	  else {
+	    vertex.setTextureCoords(tb.get(texindices?*texindices++:texidx++));
+	  }
+	}
+	vertex.setPoint(coords->get3(i));
+	this->shapeVertex(&vertex);
+	previ = i;
+	i = *cindices++;
+      }
+      if (mbind == PER_VERTEX_INDEXED) matindices++;
+      if (nbind == PER_VERTEX_INDEXED) normindices++;
+      if (doTextures && texindices) texindices++;
+    }
+    this->endShape();
+    return;
+  }
+  
+  if (drawAsPoints) this->beginShape(action, POINTS);
+  
+  while (cindices < end) {
+    if (!drawAsPoints) this->beginShape(action, LINE_STRIP);
+    i = *cindices++;
+    assert(i >= 0);
+    if (matindices) vertex.setMaterialIndex(*matindices++);
+    else if (mbind != OVERALL) vertex.setMaterialIndex(matnr++);
+    if (normindices) currnormal = &normals[*normindices++];
+    else if (nbind != OVERALL) currnormal = normals++;
+    vertex.setNormal(*currnormal);
+    if (doTextures) {
+      if (tb.isFunction()) {
+	vertex.setTextureCoords(tb.get(coords->get3(i), *currnormal));
+      }
+      else {
+	vertex.setTextureCoords(tb.get(texindices?*texindices++:texidx++));
+      }
+    }
+    vertex.setPoint(coords->get3(i));
+    this->shapeVertex(&vertex);
+
+    i = *cindices++;
+    assert(i >= 0);
+    if (mbind >= PER_VERTEX) {
+      if (matindices) vertex.setMaterialIndex(*matindices++);
+      else vertex.setMaterialIndex(matnr++);
+    }
+    if (nbind >= PER_VERTEX) {
+      if (normindices) currnormal = &normals[*normindices++];
+      else currnormal = normals++;
+      vertex.setNormal(*currnormal);
+    }
+    if (doTextures) {
+      if (tb.isFunction()) {
+	vertex.setTextureCoords(tb.get(coords->get3(i), *currnormal));
+      }
+      else {
+	vertex.setTextureCoords(tb.get(texindices?*texindices++:texidx++));
+      }
+    }
+    vertex.setPoint(coords->get3(i));
+    this->shapeVertex(&vertex);
+
+    i = *cindices++;
+    while (i >= 0) {
+      assert(cindices <= end);
+      if (mbind >= PER_VERTEX) {
+	if (matindices) vertex.setMaterialIndex(*matindices++);
+	else vertex.setMaterialIndex(matnr++);
+      }
+      if (nbind >= PER_VERTEX) {
+	if (normindices) currnormal = &normals[*normindices++];
+	else currnormal = normals++;
+	vertex.setNormal(*currnormal);
+      }
+      if (doTextures) {
+	if (tb.isFunction()) {
+	  vertex.setTextureCoords(tb.get(coords->get3(i), *currnormal));
+	}
+	else {
+	  vertex.setTextureCoords(tb.get(texindices?*texindices++:texidx++));
+	}
+      }
+      vertex.setPoint(coords->get3(i));
+      this->shapeVertex(&vertex);
+      i = *cindices++;
+    }
+    if (!drawAsPoints) this->endShape(); // end of line strip
+    if (mbind == PER_VERTEX_INDEXED) matindices++;
+    if (nbind == PER_VERTEX_INDEXED) normindices++;
+    if (doTextures && texindices) texindices++;
+  }
+  if (drawAsPoints) this->endShape();
+
+  if (this->vertexProperty.getValue()) {
+    state->pop();
+  }
 }
 #endif // !COIN_EXCLUDE_SOACTION
 
@@ -463,3 +695,5 @@ SoIndexedLineSet::createLineSegmentDetail(SoRayPickAction * /* action */,
   return NULL;
 }
 #endif // !COIN_EXCLUDE_SORAYPICKACTION
+
+

@@ -59,6 +59,7 @@ public:
     // the following are not part of OIV-API
     QUAD_STRIP,
     POINTS,
+    LINES,
     LINE_STRIP
   };
 
