@@ -22,6 +22,10 @@
 
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/SbColor.h>
+#include <Inventor/lists/SbList.h>
+#include <Inventor/SbString.h>
+#include <Inventor/SbName.h>
+
 #include <stdio.h>
 
 class SoBase;
@@ -60,6 +64,14 @@ public:
   SbBool writeToRGB(FILE * fp) const;
   SbBool writeToPostScript(FILE * fp) const;
   SbBool writeToPostScript(FILE * fp, const SbVec2f & printsize) const;
+  
+  SbBool isWriteSupported(const SbName & filetypeextension) const;
+  int getNumWriteFiletypes(void) const;
+  void getWriteFiletypeInfo(const int idx,
+                            SbList <SbName> & extlist,
+                            SbString & fullname,
+                            SbString & description);
+  SbBool writeToFile(const SbString & filename, const SbName & filetypeextension) const; 
 
 private:
   SbBool renderFromBase(SoBase * base);

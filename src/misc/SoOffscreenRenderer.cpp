@@ -49,6 +49,9 @@
 #include <coindefs.h> // COIN_STUB()
 #include <Inventor/errors/SoDebugError.h>
 
+#include <src/misc/simage_wrapper.h>
+
+
 /*!
   \enum SoOffscreenRenderer::Components
 
@@ -645,5 +648,121 @@ SoOffscreenRenderer::writeToPostScript(FILE * fp,
                                        const SbVec2f & printsize) const
 {
   COIN_STUB();
+  return FALSE;
+}
+
+/*!  
+  Returns TRUE if the buffer can be saved as a file of type \a
+  filetypeextension, using SoOffscreenRenderer::writeToFile().  This
+  function needs simage v1.1 or newer. Examples of supported
+  extensions are: jpg, png, tiff and rgb. The extension match is
+  not case sensitive.
+
+  This method is an extension versus the Open Inventor API.  
+
+  \sa  getNumWriteFiletypes(), getWriteFiletypeInfo(), writeToFile()
+*/
+SbBool 
+SoOffscreenRenderer::isWriteSupported(const SbName & filetypeextension) const
+{
+  if (!simage_wrapper()->versionMatchesAtLeast(1,1,0)) {
+#if COIN_DEBUG
+    SoDebugError::postInfo("SoOffscreenRenderer::isWriteSupported",
+                           "You need simage v1.1 for this functionality.");
+#endif // COIN_DEBUG
+    return FALSE;
+  }
+  int ret = simage_wrapper()->simage_check_save_supported(filetypeextension.getString());
+  return ret ? TRUE : FALSE;
+}
+
+/*!
+  Returns the number of available exporters. Information about exporters
+  can be found using getNumWriteFiletypes().
+  
+  This method is an extension versus the Open Inventor API.  
+
+  \sa getWriteFiletypeInfo()
+*/
+int 
+SoOffscreenRenderer::getNumWriteFiletypes(void) const
+{
+  if (!simage_wrapper()->versionMatchesAtLeast(1,1,0)) {
+#if COIN_DEBUG
+    SoDebugError::postInfo("SoOffscreenRenderer::getNumWriteFiletypes",
+                           "You need simage v1.1 for this functionality.");
+#endif // COIN_DEBUG
+    return 0;
+  }
+  return simage_wrapper()->simage_get_num_savers();
+}
+
+/*!  
+  Returns information about an image exporter. \a extlist is a list of filenameextensions
+  for a file format. E.g. for JPEG it is legal to use both jpg and jpeg. \a fullname
+  is the full name of the image format. \a description is an optional string with
+  more information about the file format.
+  
+  This method is an extension versus the Open Inventor API.  
+  
+  \sa getNumWriteFiletypes(), writeToFile()
+*/
+void 
+SoOffscreenRenderer::getWriteFiletypeInfo(const int idx,
+                                          SbList <SbName> & extlist,
+                                          SbString & fullname,
+                                          SbString & description)
+{
+  if (!simage_wrapper()->versionMatchesAtLeast(1,1,0)) {
+#if COIN_DEBUG
+    SoDebugError::postInfo("SoOffscreenRenderer::getNumWriteFiletypes",
+                           "You need simage v1.1 for this functionality.");
+#endif // COIN_DEBUG
+    return;
+  }
+  extlist.truncate(0);
+  assert(idx >= 0 && idx < this->getNumWriteFiletypes());
+  void * saver = simage_wrapper()->simage_get_saver_handle(idx);
+  SbString allext(simage_wrapper()->simage_get_saver_extensions(saver));
+  const char * start = allext.getString();
+  const char * curr = start; 
+  char * end = strchr(curr, ',');
+  while (end) {
+    SbString ext = allext.getSubString(curr-start, end-start-1);
+    extlist.append(SbName(ext.getString()));
+    curr = end+1;
+    end = strchr(curr, ',');
+  }
+  SbString ext = allext.getSubString(curr-start);
+  extlist.append(SbName(ext.getString()));
+  const char * fullname_s = simage_wrapper()->simage_get_saver_fullname(saver);
+  const char * desc_s = simage_wrapper()->simage_get_saver_description(saver);
+  fullname = fullname_s ? SbString(fullname_s) : SbString("");
+  description = desc_s ? SbString(desc_s) : SbString("");
+}
+
+/*!
+  Saves the buffer to \a filename, in the filetype specified by \a filetypeextensions.
+  
+  This method is an extension versus the Open Inventor API.  
+  
+  \sa isWriteSupported()
+*/
+SbBool 
+SoOffscreenRenderer::writeToFile(const SbString & filename, const SbName & filetypeextension) const
+{
+  if (!simage_wrapper()->versionMatchesAtLeast(1,1,0)) {
+    return FALSE;
+  }
+  if (this->internaldata) {
+    SbVec2s size = this->internaldata->getSize();
+    int comp = (int) this->getComponents();
+    unsigned char * bytes = this->buffer;
+    int ret = simage_wrapper()->simage_save_image(filename.getString(),
+                                                  bytes,
+                                                  int(size[0]), int(size[1]), comp,
+                                                  filetypeextension.getString());
+    return ret ? TRUE : FALSE;
+  }
   return FALSE;
 }
