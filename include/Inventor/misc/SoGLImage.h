@@ -84,9 +84,9 @@ public:
                        SoState * createinstate = NULL);
 
   virtual void setData(const SbImage * image,
-                       const Wrap wraps = REPEAT,
-                       const Wrap wrapt = REPEAT,
-                       const Wrap wrapr = REPEAT,
+                       const Wrap wraps,
+                       const Wrap wrapt,
+                       const Wrap wrapr,
                        const float quality = 0.5f,
                        const int border = 0,
                        SoState * createinstate = NULL);
