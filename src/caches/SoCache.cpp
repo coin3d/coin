@@ -89,7 +89,7 @@ SoCache::unref(SoState *state)
 void
 SoCache::addElement(const SoElement * const elem)
 {
-  if (elem->getDepth() == this->statedepth) {
+  if (elem->getDepth() < this->statedepth) {
     int idx = elem->getStackIndex();
     int flag = 0x1 << (idx & 0x7);
     idx >>= 3; // get byte number
