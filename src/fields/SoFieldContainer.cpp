@@ -46,8 +46,11 @@
 #include <Inventor/lists/SoFieldList.h>
 #include <Inventor/misc/SoProtoInstance.h>
 #include <Inventor/misc/SoProto.h>
+#include <Inventor/C/base/hash.h>
 #include <Inventor/SbName.h>
 #include <coindefs.h> // COIN_STUB()
+#include <Inventor/C/tidbitsp.h>
+#include <assert.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -69,6 +72,18 @@
 // Sun CC v4.0. (Bitpattern 0x0000 equals SoType::badType()).
 SoType SoFieldContainer::classTypeId;
 
+// used by setUserData() and getUserData()
+static cc_hash * sofieldcontainer_userdata_dict = NULL;
+
+// cleanup-function for sofieldcontainer_userdata_dict
+static void
+sofieldcontainer_userdata_cleanup(void)
+{
+  if (sofieldcontainer_userdata_dict) {
+    cc_hash_destruct(sofieldcontainer_userdata_dict);
+    sofieldcontainer_userdata_dict = NULL;
+  }
+}
 
 /*!
   Constructor.
@@ -96,6 +111,9 @@ SoFieldContainer::initClass(void)
 
   SoFieldContainer::classTypeId =
     SoType::createType(inherited::getClassTypeId(), "FieldContainer", NULL);
+
+  sofieldcontainer_userdata_dict = cc_hash_construct(64, 0.75f);
+  coin_atexit((coin_atexit_f*) sofieldcontainer_userdata_cleanup, 0);
 }
 
 // Overridden from parent class.
@@ -805,3 +823,44 @@ SoFieldContainer::readInstance(SoInput * in, unsigned short flags)
   }
   return TRUE;
 }
+
+/*!
+  Set a generic user data pointer for this field container.
+
+  This function can be used by the application programmer to, for
+  instance, store a pointer to an application specific data structure
+  that is in some way related to the field container. getUserData()
+  can later be used to retrieve the pointer.
+
+  \sa getUserData().
+  \since 2003-02-26
+*/
+void 
+SoFieldContainer::setUserData(void * userdata) const
+{
+  (void) cc_hash_put(sofieldcontainer_userdata_dict,
+                     (unsigned long) this,
+                     userdata);
+}
+
+/*!  
+  Return the generic user data pointer for this field container, or
+  NULL if no user data has been set.
+
+  \sa setUserData().
+  \since 2003-02-26
+*/
+void * 
+SoFieldContainer::getUserData(void) const
+{
+  void * tmp = NULL;
+  if (cc_hash_get(sofieldcontainer_userdata_dict,
+                  (unsigned long) this,
+                  &tmp)) {
+    return tmp;
+  }
+  return NULL;
+  
+}
+
+

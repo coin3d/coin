@@ -84,6 +84,9 @@ public:
                                      const SbBool copyconnections);
   static void copyDone(void);
 
+  void setUserData(void * userdata) const;
+  void * getUserData(void) const;
+
 protected:
   SoFieldContainer(void);
   ~SoFieldContainer();
