@@ -13,18 +13,18 @@
 # ===
 # HIERARCHY
 # i -  SoDragger
-# I        SoCenterballDragger
+# I G      SoCenterballDragger
 # I        SoDirectionalLightDragger
 # I G      SoDragPointDragger
 # I G      SoHandleBoxDragger
 # I        SoJackDragger
 # I G      SoPointLightDragger
 # I G      SoRotateCylindricalDragger
-# I        SoRotateDiscDragger
-# I        SoRotateSphericalDragger
-# I        SoScale1Dragger
-# I        SoScale2Dragger
-# I        SoScale2UniformDragger
+# I G      SoRotateDiscDragger
+# I G      SoRotateSphericalDragger
+# I G      SoScale1Dragger
+# I G      SoScale2Dragger
+# I G      SoScale2UniformDragger
 # I G      SoScaleUniformDragger
 # I        SoSpotLightDragger
 # I        SoTabBoxDragger

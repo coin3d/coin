@@ -25,6 +25,7 @@
 #include <Inventor/projectors/SbPlaneProjector.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 
+#include <data/draggerDefaults/scale2Dragger.h>
 
 SO_KIT_SOURCE(SoScale2Dragger);
 
@@ -47,7 +48,9 @@ SoScale2Dragger::SoScale2Dragger(void)
   SO_KIT_ADD_CATALOG_ENTRY(feedbackActive, SoSeparator, TRUE, feedbackSwitch, "", TRUE);
 
   if (SO_KIT_IS_FIRST_INSTANCE()) {
-    SoInteractionKit::readDefaultParts("scale2Dragger.iv", NULL, 0);
+    SoInteractionKit::readDefaultParts("scale2Dragger.iv",
+                                       SCALE2DRAGGER_draggergeometry,
+                                       sizeof(SCALE2DRAGGER_draggergeometry));
   }
 
   SO_NODE_ADD_FIELD(scaleFactor, (1.0f, 1.0f, 1.0f));

@@ -25,6 +25,8 @@
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <coindefs.h> // COIN_STUB()
 
+#include <data/draggerDefaults/rotateSphericalDragger.h>
+
 
 //
 // FIXME: investigate what to do with prevMotionMatrix and
@@ -51,7 +53,9 @@ SoRotateSphericalDragger::SoRotateSphericalDragger(void)
   SO_KIT_ADD_CATALOG_ENTRY(feedbackActive, SoSeparator, TRUE, feedbackSwitch, "", TRUE);
 
   if (SO_KIT_IS_FIRST_INSTANCE()) {
-    SoInteractionKit::readDefaultParts("rotateSphericalDragger.iv", NULL, 0);
+    SoInteractionKit::readDefaultParts("rotateSphericalDragger.iv",
+                                       ROTATESPHERICALDRAGGER_draggergeometry,
+                                       sizeof(ROTATESPHERICALDRAGGER_draggergeometry));
   }
 
   SO_NODE_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));

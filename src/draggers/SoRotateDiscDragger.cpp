@@ -24,6 +24,8 @@
 #include <Inventor/projectors/SbPlaneProjector.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 
+#include <data/draggerDefaults/rotateDiscDragger.h>
+
 SO_KIT_SOURCE(SoRotateDiscDragger);
 
 
@@ -45,7 +47,9 @@ SoRotateDiscDragger::SoRotateDiscDragger(void)
   SO_KIT_ADD_CATALOG_ENTRY(feedbackActive, SoSeparator, TRUE, feedbackSwitch, "", TRUE);
 
   if (SO_KIT_IS_FIRST_INSTANCE()) {
-    SoInteractionKit::readDefaultParts("rotateDiscDragger.iv", NULL, 0);
+    SoInteractionKit::readDefaultParts("rotateDiscDragger.iv",
+                                       ROTATEDISCDRAGGER_draggergeometry,
+                                       sizeof(ROTATEDISCDRAGGER_draggergeometry));
   }
 
   SO_NODE_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));

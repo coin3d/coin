@@ -43,6 +43,9 @@
 
 #include <coindefs.h> // COIN_STUB()
 
+#include <data/draggerDefaults/centerballDragger.h>
+
+
 SO_KIT_SOURCE(SoCenterballDragger);
 
 
@@ -80,7 +83,9 @@ SoCenterballDragger::SoCenterballDragger(void)
   SO_KIT_ADD_CATALOG_ENTRY(translateToCenter, SoMatrixTransform, TRUE, topSeparator, surroundScale, TRUE);
 
   if (SO_KIT_IS_FIRST_INSTANCE()) {
-    SoInteractionKit::readDefaultParts("centerballDragger.iv", NULL, 0);
+    SoInteractionKit::readDefaultParts("centerballDragger.iv",
+                                       CENTERBALLDRAGGER_draggergeometry,
+                                       sizeof(CENTERBALLDRAGGER_draggergeometry));
   }
 
   SO_NODE_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
