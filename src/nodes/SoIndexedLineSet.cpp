@@ -191,15 +191,12 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
   if (this->coordIndex.getNum() < 2) return;
   SoState * state = action->getState();
 
+  SbBool didpush = FALSE;
+
   if (this->vertexProperty.getValue()) {
     state->push();
+    didpush = TRUE;
     this->vertexProperty.getValue()->GLRender(action);
-  }
-
-  if (!this->shouldGLRender(action)) {
-    if (this->vertexProperty.getValue())
-      state->pop();
-    return;
   }
 
   // If the coordIndex field is invalid by not including the
@@ -210,12 +207,10 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
   // could find a better solution -- which also goes for the other
   // nodes using coordinate index fields, of course. 20010104
   // mortene.)
+
   if (this->coordIndex.getNum() && this->coordIndex[this->coordIndex.getNum()-1] >= 0) {
     this->coordIndex.set1Value(coordIndex.getNum(), -1);
   }
-
-  Binding mbind = this->findMaterialBinding(state);
-  Binding nbind = this->findNormalBinding(state);
 
   const SoCoordinateElement * coords;
   const SbVec3f * normals;
@@ -224,7 +219,6 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
   const int32_t * nindices;
   const int32_t * tindices;
   const int32_t * mindices;
-  SbBool doTextures;
   SbBool normalCacheUsed;
 
   SbBool sendNormals =
@@ -235,10 +229,26 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
                 nindices, tindices, mindices, numindices,
                 sendNormals, normalCacheUsed);
 
-  if (normals == NULL) sendNormals = FALSE;
+  if (sendNormals && normals == NULL) {
+    if (!didpush) {
+      state->push();
+      didpush = TRUE;
+    }
+    sendNormals = FALSE;
+    SoLightModelElement::set(state, SoLightModelElement::BASE_COLOR);
+  }
+
+  if (!this->shouldGLRender(action)) {
+    if (didpush)
+      state->pop();
+    return;
+  }
+
+  Binding mbind = this->findMaterialBinding(state);
+  Binding nbind = this->findNormalBinding(state);
 
   SoTextureCoordinateBundle tb(action, TRUE, FALSE);
-  doTextures = tb.needCoordinates();
+  SbBool doTextures = tb.needCoordinates();
 
   if (doTextures) {
     if (SoTextureCoordinateBindingElement::get(state) ==
@@ -250,12 +260,7 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
     }
   }
 
-  if (!sendNormals) {
-    nbind = OVERALL;
-    const SoGLLightModelElement * lm = (SoGLLightModelElement *)
-      state->getConstElement(SoGLLightModelElement::getClassStackIndex());
-    lm->forceSend(SoLightModelElement::BASE_COLOR);
-  }
+  if (!sendNormals) nbind = OVERALL;
   else if (nbind == OVERALL) {
     glNormal3fv((const GLfloat *)normals);
   }
@@ -283,7 +288,7 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
                       doTextures?1:0,
                       drawPoints?1:0);
 
-  if (this->vertexProperty.getValue()) {
+  if (didpush) {
     state->pop();
   }
 }

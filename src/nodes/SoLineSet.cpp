@@ -189,29 +189,36 @@ SoLineSet::GLRender(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
 
+  SbBool didpush = FALSE;
   if (this->vertexProperty.getValue()) {
     state->push();
+    didpush = TRUE;
     this->vertexProperty.getValue()->GLRender(action);
-  }
-
-  if (!this->shouldGLRender(action)) {
-    if (this->vertexProperty.getValue())
-      state->pop();
-    return;
   }
 
   const SoCoordinateElement * tmp;
   const SbVec3f * normals;
-  SbBool doTextures;
   SbBool needNormals =
     (SoLightModelElement::get(state) !=
      SoLightModelElement::BASE_COLOR);
+  SoVertexShape::getVertexData(state, tmp, normals,
+                               needNormals);
+  if (normals == NULL && needNormals) {
+    needNormals = FALSE;
+    if (!didpush) {
+      state->push();
+      didpush = TRUE;
+    }
+    SoLightModelElement::set(state, SoLightModelElement::BASE_COLOR);
+  }
 
-  SoVertexShape::getVertexData(action->getState(), tmp, normals,
-                           needNormals);
+  if (!this->shouldGLRender(action)) {
+    if (didpush)
+      state->pop();
+    return;
+  }
 
-  if (normals == NULL) needNormals = FALSE;
-
+  SbBool doTextures;
   const SoGLCoordinateElement * coords = (SoGLCoordinateElement *)tmp;
 
   SoTextureCoordinateBundle tb(action, TRUE, FALSE);
@@ -318,7 +325,7 @@ SoLineSet::GLRender(SoGLRenderAction * action)
     }
     if (drawPoints) glEnd();
   }
-  if (this->vertexProperty.getValue())
+  if (didpush)
     state->pop();
 }
 
