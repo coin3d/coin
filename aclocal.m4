@@ -1322,7 +1322,7 @@ if test x"$sim_ac_vsnprintf_avail" = xno; then
     [whether _vsnprintf() is available],
     sim_cv_func__vsnprintf,
     [AC_TRY_LINK([#include <stdio.h>],
-                 [(void)_vsnprintf(0L, 0, 0L);],
+                 [(void)_vsnprintf(0L, 0, 0L, 0L);],
                  [sim_cv_func__vsnprintf=yes],
                  [sim_cv_func__vsnprintf=no])])
   sim_ac__vsnprintf_avail=$sim_cv_func__vsnprintf
