@@ -236,6 +236,12 @@ SoIndexedTriangleStripSet::GLRender(SoGLRenderAction * action)
   else if (normalcacheused && nbind == PER_VERTEX) {
     nbind = PER_VERTEX_INDEXED;
   }
+  else if (normalcacheused && nbind == PER_TRIANGLE_INDEXED) {
+    nbind = PER_TRIANGLE;
+  }
+  else if (normalcacheused && nbind == PER_STRIP_INDEXED) {
+    nbind = PER_STRIP;
+  }
 
   const SoGLShadeModelElement * sm = SoGLShadeModelElement::getInstance(state);
   if ((nbind == PER_TRIANGLE) || (nbind == PER_TRIANGLE_INDEXED) ||
@@ -458,6 +464,12 @@ SoIndexedTriangleStripSet::generatePrimitives(SoAction * action)
   }
   else if (normalcacheused && nbind == PER_VERTEX) {
     nbind = PER_VERTEX_INDEXED;
+  }
+  else if (normalcacheused && nbind == PER_TRIANGLE_INDEXED) {
+    nbind = PER_TRIANGLE;
+  }
+  else if (normalcacheused && nbind == PER_STRIP_INDEXED) {
+    nbind = PER_STRIP;
   }
 
   int texidx = 0;
