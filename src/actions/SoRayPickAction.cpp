@@ -639,11 +639,36 @@ SoRayPickAction::intersect(const SbBox3f & box, SbVec3f & intersection,
 
   SbVec3f ptonray, ptonbox;
   float sqrmindist = FLT_MAX;
-
+  
   SbBool conepick = usefullviewvolume && !THIS->isFlagSet(SoRayPickActionP::WS_RAY_SET);
 
+  int i;
+
+  if (THIS->isFlagSet(SoRayPickActionP::CLIP_NEAR|SoRayPickActionP::CLIP_FAR)) {
+    // check if all points are in front of the near or behind the far
+    // clipping plane
+    int numnear = 0;
+    int numfar = 0;
+
+    for (i = 0; i < 8; i++) {
+      SbVec3f bp(i&1 ? bounds[0][0] : bounds[1][0],
+                 i&2 ? bounds[0][1] : bounds[1][1],
+                 i&4 ? bounds[0][2] : bounds[1][2]);
+      THIS->obj2world.multVecMatrix(bp, bp);
+      float dist = THIS->nearplane.getDistance(bp);
+      if (THIS->isFlagSet(SoRayPickActionP::CLIP_NEAR)) {
+        if (dist < 0.0f) numnear++;
+      }
+      if (THIS->isFlagSet(SoRayPickActionP::CLIP_FAR)) {
+        if (dist > (THIS->rayfar - THIS->raynear)) numfar++;
+      }
+      if ((numnear < i) && (numfar < i)) break;
+    }
+    if (numnear == 8 || numfar == 8) return FALSE;
+  }
+  
   for (int j = 0; j < 2; j++) {
-    for (int i = 0; i < 3; i++) {
+    for (i = 0; i < 3; i++) {
       SbVec3f norm(0.0f, 0.0f, 0.0f);
       norm[i] = 1.0f;
       SbVec3f isect;
