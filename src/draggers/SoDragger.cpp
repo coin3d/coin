@@ -72,38 +72,40 @@
 class SoDraggerCache {
 public:
   SoDraggerCache(SoDragger * parent) :
-    path(4),
+    path((SoFullPath*)new SoPath(4)),
     dragger(parent),
     matrixAction(new SoGetMatrixAction(dragger->getViewportRegion())),
     draggerToWorld(SbMatrix::identity()),
     worldToDragger(SbMatrix::identity())
   {
-    // Avoid warning due to zero refcount when applying the
-    // SoGetMatrixAction (NB: don't unref() in destructor as that
-    // would call delete on a stack item).
-    this->path.ref();
+    this->path->ref();
   }
 
   ~SoDraggerCache() {
     delete this->matrixAction;
+    this->path->unref();
   }
 
   void updateMatrix(void) {
     this->matrixAction->setViewportRegion(this->dragger->getViewportRegion());
-    this->matrixAction->apply(&this->path);
+    this->matrixAction->apply(this->path);
     this->draggerToWorld = this->matrixAction->getMatrix();
     this->worldToDragger = this->matrixAction->getInverse();
   }
 
   void update(const SoFullPath * newpath, const int draggeridx) {
-    this->path.setHead(newpath->getHead());
+    this->path->setHead(newpath->getHead());
     for (int i = 1; i <= draggeridx; i++) {
-      this->path.append(newpath->getIndex(i));
+      this->path->append(newpath->getIndex(i));
     }
     this->updateMatrix();
   }
 
-  SoTempPath path;                 // use temp path to avoid auditor overhead
+  void truncatePath(void) {
+    this->path->truncate(0);
+  }
+
+  SoFullPath * path;                // use temp path to avoid auditor overhead
   SoDragger * dragger;              // pointer to cache owner
   SoGetMatrixAction * matrixAction; // avoid reallocating this action each frame
   SbMatrix draggerToWorld;
@@ -1117,6 +1119,7 @@ SoDragger::handleEvent(SoHandleEventAction * action)
       THIS->pickedpath = NULL;
     }
     THIS->finishCB.invokeCallbacks(this);
+    THIS->draggercache->truncatePath();
   }
   else if (this->isActive.getValue() && event->isOfType(SoLocation2Event::getClassTypeId())) {
     this->eventHandled(event, action);
