@@ -47,6 +47,10 @@
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/details/SoPointDetail.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 /*!
   \enum SoPointSet::Binding
   FIXME: write documentation for enum
@@ -186,10 +190,11 @@ SoPointSet::GLRender(SoGLRenderAction * action)
 
   SoMaterialBundle mb(action);
   mb.sendFirst(); // make sure we have the correct material
-
+  
   int32_t idx = this->startIndex.getValue();
-  int32_t numpts = this->numPoints.getValue();
-
+  int32_t numpts = this->numPoints.getValue(); 
+  if (numpts < 0) numpts = coords->getNum() - idx;
+ 
   int matnr = 0;
   int texnr = 0;
 
@@ -285,6 +290,7 @@ SoPointSet::generatePrimitives(SoAction *action)
 
   int32_t idx = this->startIndex.getValue();
   int32_t numpts = this->numPoints.getValue();
+  if (numpts < 0) numpts = coords->getNum() - idx;
 
   int matnr = 0;
   int texnr = 0;
