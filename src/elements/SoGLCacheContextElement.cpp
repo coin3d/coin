@@ -183,13 +183,16 @@ SoGLCacheContextElement::set(SoState * state, int context,
 
   if (remoterendering) elem->autocachebits = DO_AUTO_CACHE;
 
-  int i = 0;
   CC_MUTEX_LOCK(glcache_mutex);
 
-  while (i < scheduledeletelist->getLength()) {
+  int i = 0;
+  int n = scheduledeletelist->getLength();
+
+  while (i < n) {
     SoGLDisplayList * dl = (*scheduledeletelist)[i];
     if (dl->getContext() == context) {
       scheduledeletelist->removeFast(i);
+      n--;
       delete dl;
     }
     else i++;
