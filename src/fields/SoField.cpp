@@ -1601,8 +1601,8 @@ SoField::read(SoInput * in, const SbName & name)
     else {
       in->putBack(c);
 
-      // Check if there's a field-to-field connection here as the
-      // default value following the field can be omitted.
+      // First check if there's a field-to-field connection here as
+      // the default value following the field can be omitted.
       if (in->read(c)) { // if-check in case EOF on an SoField::set() invocation
         // There's potential for an obscure bug to happen here: if the
         // field is an SoSFString where the string is unquoted and
@@ -1629,8 +1629,13 @@ SoField::read(SoInput * in, const SbName & name)
         // message, to let the app programmer actually stand a chance
         // of debugging this when it happens. 20030811 mortene.
         if (c == CONNECTIONCHAR) { 
-          if (!this->readConnection(in)) return FALSE;
-          else return TRUE;
+          if (!this->readConnection(in)) { return FALSE; }
+          // Mark ourself as dirty so as to make the next evaluate()
+          // copy value(s) in from the master field. This is done
+          // because no value was read for this field, and we're most
+          // likely just set at the default.
+          this->setDirty(TRUE);
+          return TRUE;
         }
         else in->putBack(c);
       }
@@ -1642,17 +1647,19 @@ SoField::read(SoInput * in, const SbName & name)
         return FALSE;
       }
 
-      // Check again for ignored flag.
+      // Check again for the ignored flag indicator after the field
+      // value.
       if (in->read(c)) { // if-check in case EOF on an SoField::set() invocation
         if (c == IGNOREDCHAR) this->setIgnored(TRUE);
         else in->putBack(c);
       }
     }
 
-    // Check again if there's a field-to-field connection here.
+    // Check field-to-field connection indicator again /after/ the
+    // field (start-)value.
     if (in->read(c)) { // if-check in case EOF on an SoField::set() invocation
-      if (c == CONNECTIONCHAR) { if (!this->readConnection(in)) return FALSE; }
-      else in->putBack(c);
+      if (c == CONNECTIONCHAR) { if (!this->readConnection(in)) { return FALSE; } }
+      else { in->putBack(c); }
     }
   }
   else { // Binary file format.
@@ -1670,6 +1677,7 @@ SoField::read(SoInput * in, const SbName & name)
     if (flags & SoField::IGNORED) this->setIgnored(TRUE);
     if (flags & SoField::CONNECTED) { if (!this->readConnection(in)) return FALSE; }
     if (flags & SoField::DEFAULT) this->setDefault(TRUE);
+
 #if COIN_DEBUG
     if (flags & ~SoField::ALLFILEFLAGS) {
       SoDebugError::postWarning("SoField::read",
@@ -1945,12 +1953,44 @@ SoField::createConverter(SoType from) const
 
 
 /*!
-  Read the fieldcontainer and master field id of a field-to-field
-  connection.
+  Read the master field of a field-to-field connection (and its field
+  container).
+
+  If input parsing is successful, this field will be connected as a
+  slave to the master field.
+
+  Note that this slave field will \e not be marked as "dirty" upon
+  connection, i.e. it will retain its value until the first update of
+  the master field is made \e after the connection was set up. This to
+  be in conformance with how the Inventor Mentor specifies how field
+  connections should be imported (see page 270).
 */
 SbBool
 SoField::readConnection(SoInput * in)
 {
+  // For debugging purposes, here's a handy test case for checking
+  // that a field-field connection, where an initial value for the
+  // slave is given, will behave according to the Mentor, as mentioned
+  // above in the function API documentation:
+  //
+  // -----8<------- [snip] -----------------8<------- [snip] -----------
+  // #Inventor V2.1 ascii
+  //
+  // DEF SCENE_ROOT Separator {
+  //    ## on startup this should give a green cube
+  //    Switch {
+  //       whichChild 0 = SelectOne { type SoMFInt32 index 1 input [ 0,1 ] }.output
+  //       Material { diffuseColor 0.1 1.0 0.1 }
+  //       Material { diffuseColor 1.0 0.1 0.1 }
+  //    }
+  //    Cone {}
+  // } # SCENE_ROOT
+  // -----8<------- [snip] -----------------8<------- [snip] -----------
+  //
+  // (Provided by Gerhard Reitmayr.)
+
+  // ***********************************************************************
+
   // Read the fieldcontainer instance containing the master field
   // we're connected to.
   SoBase * bp;
@@ -1970,7 +2010,8 @@ SoField::readConnection(SoInput * in)
       return FALSE;
     }
     if (c != '.') {
-      SoReadError::post(in, "expected '.', got '%c'", c);
+      SoReadError::post(in, "expected field connection token '.', "
+                        "but got '%c'", c);
       return FALSE;
     }
   }
@@ -1985,41 +2026,41 @@ SoField::readConnection(SoInput * in)
 
   // Get pointer to master field or engine output and connect.
 
+  SoEngineOutput * masteroutput = NULL;
   SoField * masterfield = fc->getField(mastername);
-  if (!masterfield) {
-    if (fc->isOfType(SoEngine::getClassTypeId()) || fc->isOfType(SoNodeEngine::getClassTypeId())) {
-      SoEngineOutput * masteroutput =
-        fc->isOfType(SoEngine::getClassTypeId()) ?
-        ((SoEngine*)fc)->getOutput(mastername) :
-        ((SoNodeEngine*)fc)->getOutput(mastername);
 
-      if (!masteroutput) {
-        SoReadError::post(in, "no field or output ``%s'' in ``%s''",
-                          mastername.getString(),
-                          fc->getTypeId().getName().getString());
-        return FALSE;
-      }
-      else {
-        // Make connection.
-        if (!this->connectFrom(masteroutput)) {
-          SoReadError::post(in, "couldn't connect to ``%s''",
-                            mastername.getString());
-        }
-      }
-    }
-    else {
-      SoReadError::post(in, "no field ``%s'' in ``%s''",
-                        mastername.getString(),
-                        fc->getTypeId().getName().getString());
-      return FALSE;
+  if (!masterfield) {
+    masteroutput =
+      fc->isOfType(SoEngine::getClassTypeId()) ?
+      ((SoEngine*)fc)->getOutput(mastername) : NULL;
+
+    if (!masteroutput) {
+      masteroutput =
+        fc->isOfType(SoNodeEngine::getClassTypeId()) ?
+        ((SoNodeEngine*)fc)->getOutput(mastername) : NULL;
     }
   }
-  else {
-    // Make connection.
-    if (!this->connectFrom(masterfield)) {
-      SoReadError::post(in, "couldn't connect to ``%s''",
-                        mastername.getString());
-    }
+
+  if (!masterfield && !masteroutput) {
+    SoReadError::post(in, "no field or output ``%s'' in ``%s''",
+                      mastername.getString(),
+                      fc->getTypeId().getName().getString());
+    return FALSE;
+  }
+
+  SbBool ok = FALSE;
+
+  // Make connection, with "do not notify" flag set to TRUE, to avoid
+  // making ourselves "dirty" (i.e.: we will continue using our
+  // current value until the master is updated).
+  if (masterfield) { ok = this->connectFrom(masterfield, TRUE); }
+  else if (masteroutput) { ok = this->connectFrom(masteroutput, TRUE); }
+
+  if (!ok) {
+    SoReadError::post(in, "couldn't connect ``%s'' field to ``%s'', "
+                      "connection will be ignored",
+                      this->getTypeId().getName().getString(),
+                      mastername.getString());
   }
 
   return TRUE;
