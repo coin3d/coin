@@ -1242,6 +1242,6 @@ SbDPViewVolume::copyValues(SbViewVolume & vv)
   vv.nearDist = (float) this->nearDist;
   vv.nearToFar = (float) this->nearToFar;
   vv.llf = dp_to_sbvec3f(this->llf + this->projPoint);
-  vv.lrf = dp_to_sbvec3f(this->llf + this->projPoint);
-  vv.ulf = dp_to_sbvec3f(this->llf + this->projPoint);
+  vv.lrf = dp_to_sbvec3f(this->lrf + this->projPoint);
+  vv.ulf = dp_to_sbvec3f(this->ulf + this->projPoint);
 }
