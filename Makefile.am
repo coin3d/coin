@@ -40,7 +40,7 @@ CLEANFILES = \
 DISTCLEANFILES = \
 	coin-@CONFIG@.cfg \
 	Info.plist \
-	version.plist
+	version.plist \
 	docs/coin.doxygen \
 	docs/coin.doxygen.bak
 
