@@ -38,10 +38,22 @@ extern "C" {
 typedef struct cc_glglue cc_glglue;
 
 /*
-  Returns the glue instance for the given context ID (defined
-  by SoGLCacheContextElement).
+  Returns the glue instance for the given context ID.
+
+  The context ID can be any number chosen to match the current OpenGL
+  context in a _unique_ manner (this is important!).
+
+  (Note: internally in Coin, we use the context id defined by
+  SoGLCacheContextElement).
 */
 COIN_DLL_API const cc_glglue * cc_glglue_instance(int contextid);
+
+/* Fetch version number information for the underlying OpenGL
+   implementation. */
+COIN_DLL_API void cc_glglue_glversion(const cc_glglue * glue,
+                                      unsigned int * major,
+                                      unsigned int * minor,
+                                      unsigned int * release);
 
 /*
   Returns TRUE if the OpenGL implementation of the wrapper context is at
@@ -66,12 +78,6 @@ COIN_DLL_API SbBool cc_glglue_glxversion_matches_at_least(const cc_glglue * glue
   FALSE if not.
 */
 COIN_DLL_API SbBool cc_glglue_glext_supported(const cc_glglue * glue, const char * extname);
-
-/*
-  Returns TRUE if the gived GLX extension is supported by this GLX implementation,
-  FALSE if not.
- */
-COIN_DLL_API SbBool cc_glglue_glxext_supported(const cc_glglue * glue, const char * extname);
 
 /* feature checking */
 COIN_DLL_API SbBool cc_glglue_has_3d_textures(const cc_glglue * glue);

@@ -38,11 +38,6 @@
 
 #include <Inventor/system/gl.h>
 
-/* convenience macro */
-#define GLGLUE_FROM_STATE(state) \
-  cc_glglue_instance(((SoGLRenderAction *)state->getAction())->getCacheContext())
-
-
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
@@ -50,6 +45,8 @@ extern "C" {
 #if 0 /* to get proper auto-indentation in emacs */
 }
 #endif /* emacs indentation */
+
+
 
 /* Under Win32, we need to make sure we use the correct calling method
    by using the APIENTRY define for the function signature types (or
@@ -59,8 +56,8 @@ extern "C" {
 #define APIENTRY
 #endif /* !APIENTRY */
 
-/* Our own typedefs for OpenGL functions. These are copied from
-   glext.h and prefixed with COIN_ to avoid namespace collisions. */
+/* Our own typedefs for OpenGL functions. Prefixed with COIN_ to avoid
+   namespace collisions. */
 typedef void (APIENTRY * COIN_PFNGLTEXIMAGE3DPROC)(GLenum target, 
                                                    GLint level, 
                                                    GLenum internalformat, 
@@ -117,13 +114,10 @@ typedef void (APIENTRY * COIN_PFNGLTEXSUBIMAGE2DPROC)(GLenum target,
                                                       const GLvoid * pixels);
 
 typedef void (APIENTRY * COIN_PFNGLACTIVETEXTUREPROC)(GLenum texture);
-typedef void (APIENTRY * COIN_PFNGLMULTITEXCOORD2FPROC)(GLenum target, GLfloat s, GLfloat t);
-
-#ifdef HAVE_GLX
-/* GLX functions */
-typedef void *(APIENTRY * COIN_PFNGLXGETPROCADDRESSARB) (const GLubyte * procName);
-typedef Display *(APIENTRY * COIN_PFNGLXGETCURRENTDISPLAYPROC) (void);
-#endif /* HAVE_GLX */
+typedef void (APIENTRY * COIN_PFNGLMULTITEXCOORD2FPROC)(GLenum target,
+                                                        GLfloat s,
+                                                        GLfloat t);
+typedef void *(APIENTRY * COIN_PFNGLXGETCURRENTDISPLAYPROC)(void);
 
 struct cc_glglue {
   /* OpenGL versioning. */
@@ -134,8 +128,6 @@ struct cc_glglue {
   struct {
     int major, minor;
   } glxVersion;
-
-  void * libhandle; /* Only used in case of dlopen()/dlsym() binding */
 
   /* Capability flags for features of the underlying OpenGL implementation. */
   SbBool has3DTextures;
@@ -156,12 +148,11 @@ struct cc_glglue {
   COIN_PFNGLTEXSUBIMAGE2DPROC glTexSubImage2D;
   COIN_PFNGLACTIVETEXTUREPROC glActiveTexture;
   COIN_PFNGLMULTITEXCOORD2FPROC glMultiTexCoord2f;
-
-#ifdef HAVE_GLX
-  COIN_PFNGLXGETPROCADDRESSARB glXGetProcAddressARB;
   COIN_PFNGLXGETCURRENTDISPLAYPROC glXGetCurrentDisplay;
-#endif /* HAVE_GLX */
 };
+
+/* Exported internally to gl_glx.c and gl_wgl.c. */
+int coin_glglue_debug(void);
 
 #ifdef __cplusplus
 }
