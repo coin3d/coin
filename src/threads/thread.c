@@ -141,9 +141,9 @@ cc_thread_id(void)
   static unsigned long currentidx = 1;
   LPVOID val = TlsGetValue(win32_threadid_idx);
   if (val == 0) { /* not set yet */
-    cc_global_lock();
+    cc_mutex_global_lock();
     val = (LPVOID) currentidx++;
-    cc_global_unlock();
+    cc_mutex_global_unlock();
     if (!TlsSetValue(win32_threadid_idx, (LPVOID)val)) {
       assert(0 && "unexpected failure");
     }
