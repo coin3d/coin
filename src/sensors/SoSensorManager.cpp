@@ -26,6 +26,20 @@
   \brief The SoSensorManager class handles the sensor queues.
   \ingroup sensors
 
+  There are two major sensor types in Coin: delay-sensors and
+  timer-sensors. Each of these two types has its own queue, which is
+  handled by the SoSensorManager. The queues are kept in sorted order by
+  SoSensorManager, either according to trigger-time (for timer-sensors)
+  or by priority (for delay-sensors).
+
+  Delay-sensors trigger when the application is otherwise idle. In
+  addition, to avoid starvation in applications that are continually
+  busy, the delay-sensor queue also has a timeout which, when reached,
+  will empty the queue anyhow.
+
+  Timer-sensors are set up to trigger at specific, abolute times.
+
+
   FIXME: doc
 
   ..provides methods for inserting, removing, processing (emptying)
