@@ -1236,7 +1236,7 @@ SoInput::putBack(const char * str)
  */
 void
 SoInput::addReference(const SbName & name, SoBase * base,
-                      SbBool /* addToGlobalDict */)
+                      SbBool /* addToGlobalDict */) // FIXME: why the unused arg? 20001024 mortene.
 {
   this->refdict.enter((unsigned long)name.getString(), (void *) base);
 }
