@@ -86,6 +86,7 @@ SoSFEngine::SoSFEngine(void)
 */
 SoSFEngine::~SoSFEngine(void)
 {
+  this->enableNotify(FALSE);
   this->setValue(NULL);
 }
 

@@ -71,6 +71,7 @@ SoSFNode::SoSFNode(void)
 */
 SoSFNode::~SoSFNode(void)
 {
+  this->enableNotify(FALSE);
   this->setValue(NULL);
 }
 
