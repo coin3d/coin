@@ -100,6 +100,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef HAVE_ZLIB
+#include <zlib.h>
+#endif // HAVE_ZLIB
+
 #include <sys/stat.h>
 #if HAVE_UNISTD_H
 #include <unistd.h>
@@ -385,14 +389,24 @@ SoInput::openFile(const char * fileName, SbBool okIfNotFound)
   SbString fullname;
   FILE * fp = this->findFile(fileName, fullname);
   if (fp) {
-    SoInput_FileReader * reader = new SoInput_FileReader(fullname.getString(), fp);
+    SoInput_Reader * reader = NULL;
+#ifdef HAVE_ZLIB
+    gzFile gzfp = gzopen(fullname.getString(), "rb");
+    if (gzfp) {
+      fclose(fp); // close original file handle
+      reader = new SoInput_GZFileReader(fullname.getString(), (void*)gzfp);
+    }
+#endif // HAVE_ZLIB
+    if (reader == NULL) {
+      reader = new SoInput_FileReader(fullname.getString(), fp);
+    }
+    assert(reader != NULL);
     SoInput_FileInfo * newfile = new SoInput_FileInfo(reader);
     this->filestack.insert(newfile, 0);
 
     SoInput::addDirectoryFirst(SoInput::getPathname(fullname).getString());
     return TRUE;
   }
-
   if (!okIfNotFound)
     SoReadError::post(this, "Couldn't open file '%s' for reading.", fileName);
 
@@ -420,7 +434,18 @@ SoInput::pushFile(const char * filename)
   SbString fullname;
   FILE * fp = this->findFile(filename, fullname);
   if (fp) {
-    SoInput_FileReader * reader = new SoInput_FileReader(fullname.getString(), fp);
+    SoInput_Reader * reader = NULL;
+#ifdef HAVE_ZLIB
+    gzFile gzfp = gzopen(fullname.getString(), "rb");
+    if (gzfp) {
+      fclose(fp); // close original file handle
+      reader = new SoInput_GZFileReader(fullname.getString(), (void*)gzfp);
+    }
+#endif // HAVE_ZLIB
+    if (reader == NULL) {
+      reader = new SoInput_FileReader(fullname.getString(), fp);
+    }
+    assert(reader != NULL);
     SoInput_FileInfo * newfile = new SoInput_FileInfo(reader);
     this->filestack.insert(newfile, 0);
 

@@ -774,6 +774,8 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
 
   SoSearchAction sa;
   for (int i = 0; i < n; i++) {
+    SbBool append = FALSE;
+    SbBool notify = TRUE;
     SoNode * node = PRIVATE(this)->isnodelist[i];
     
     SbName fieldname = PRIVATE(this)->isfieldlist[i];

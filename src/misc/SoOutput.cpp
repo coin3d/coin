@@ -1016,7 +1016,7 @@ SoOutput::writeBytesWithPadding(const char * const p, const size_t nr)
     if (padbytes[0] == 'X')
       for (int i=0; i < HOSTWORDSIZE; i++) padbytes[i] = '\0';
 
-    const int writeposition = THIS->bufferoffset - THIS->startoffset;
+    const int writeposition = this->bytesInBuf() - THIS->startoffset;
     int padsize = HOSTWORDSIZE - (writeposition % HOSTWORDSIZE);
     if (padsize == HOSTWORDSIZE) padsize = 0;
     this->writeBinaryArray(padbytes, padsize);
