@@ -527,14 +527,6 @@ fi
 
 SIM_AC_DEFINE_BYTESIZE_TYPES
 
-
-# Test for ntohl() etc.
-# disabled after converting from htonl to coin_hton_*() in src/tidbits.c
-# - need this for select() on win32 unfortunately
-SIM_AC_BYTEORDER_CONVERSION(
-  [COIN_EXTRA_LIBS="$sim_ac_byteorder_conversion_libs $COIN_EXTRA_LIBS"],
-  [SIM_AC_ERROR([no-network-conversion])])
-
 # *******************************************************************
 
 sim_ac_build_library=true
