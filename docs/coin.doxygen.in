@@ -231,7 +231,9 @@ GENERATE_BUGLIST       = YES
 # will result in a user defined paragraph with heading "Side Effects:". 
 # You can put \n's in the value part of an alias to insert newlines.
 
-ALIASES                = WEB3DCOPYRIGHT="The following documentation is copyright The Web3D Consortium, and is used by permission of the Consortium:\n\n"
+ALIASES                = \
+  WEB3DCOPYRIGHT="The following documentation is copyright The Web3D Consortium, and is used by permission of the Consortium:\n\n" \
+  COININTERNAL="This API member is considered internal to the library and is not documented, as it is not likely to be of interest to the application programmer."
 
 # The ENABLED_SECTIONS tag can be used to enable conditional 
 # documentation sections, marked by \if sectionname ... \endif.
