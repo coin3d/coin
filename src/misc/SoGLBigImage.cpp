@@ -73,6 +73,7 @@ public:
   static SoType classTypeId;
 
   SbVec2s imagesize;
+  SbVec2s glimagesize;
   SbVec2s remain;
   SbVec2s dim;
   unsigned char * tmpbuf;
@@ -91,6 +92,13 @@ public:
                     unsigned char * dst,
                     const int div);
 
+  void copyResizeSubImage(const int idx,
+                          const unsigned char * src,
+                          const SbVec2s & fullsize,
+                          const int nc,
+                          unsigned char * dst,
+                          const SbVec2s & targetsize);
+
 
   void reset(SoState * state = NULL) {
     const int n = this->dim[0] * this->dim[1];
@@ -107,6 +115,7 @@ public:
     this->glimageage = NULL;
     this->glimagediv = NULL;
     this->imagesize.setValue(0,0);
+    this->glimagesize.setValue(0,0);
     this->remain.setValue(0,0);
     this->dim.setValue(0,0);
   }
@@ -183,6 +192,32 @@ SoGLBigImage::getGLDisplayList(SoState * state)
   return NULL;
 }
 
+// returns the number of bits set, and ets highbit to
+// the highest bit set.
+static int
+cnt_bits(unsigned long val, int & highbit)
+{
+  int cnt = 0;
+  highbit = 0;
+  while (val) {
+    if (val & 1) cnt++;
+    val>>=1;
+    highbit++;
+  }
+  return cnt;
+}
+
+// returns the next power of two greater or equal to val
+static short
+next_power_of_two(short val)
+{
+  int highbit;
+  if (cnt_bits((unsigned long) val, highbit) > 1) {
+    return (short) (1<<highbit);
+  }
+  return val;
+}
+
 int
 SoGLBigImage::initSubImages(SoState * state,
                             const SbVec2s & subimagesize) const
@@ -192,7 +227,12 @@ SoGLBigImage::initSubImages(SoState * state,
       THIS->dim[0] > 0) return THIS->dim[0] * THIS->dim[1];
   
   THIS->reset(state);
+
   THIS->imagesize = subimagesize;
+  THIS->glimagesize[0] = next_power_of_two(THIS->imagesize[0]);
+  THIS->glimagesize[1] = next_power_of_two(THIS->imagesize[1]);
+
+  int highbit;
 
   SbVec2s size(0,0);
   int nc;
@@ -272,8 +312,8 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
     }
     THIS->glimagearray[idx]->setFlags(flags);
 
-    SbVec2s actualsize(THIS->imagesize[0]/div,
-                       THIS->imagesize[1]/div);
+    SbVec2s actualsize(THIS->glimagesize[0]/div,
+                       THIS->glimagesize[1]/div);
     SbVec2s size;
     int numcomponents;
     unsigned char * bytes = this->getImage() ? 
@@ -286,12 +326,21 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
         THIS->tmpbufsize = numbytes;
       }
     
-
-      THIS->copySubImage(idx,
-                         bytes,
-                         size,
-                         numcomponents,
-                         THIS->tmpbuf, div);
+      if (THIS->glimagesize == THIS->imagesize) {
+        THIS->copySubImage(idx,
+                           bytes,
+                           size,
+                           numcomponents,
+                           THIS->tmpbuf, div);
+      }
+      else {
+        THIS->copyResizeSubImage(idx,
+                                 bytes,
+                                 size,
+                                 numcomponents,
+                                 THIS->tmpbuf,
+                                 actualsize);
+      }
       THIS->myimage.setValuePtr(actualsize, numcomponents, THIS->tmpbuf);
     }
     else THIS->myimage.setValuePtr(SbVec2s(0,0), 0, NULL);
@@ -334,6 +383,8 @@ SoGLBigImage::unrefOldDL(SoState * state, const uint32_t maxage)
 
 #undef THIS
 
+#ifndef DOXYGEN_SKIP_THIS
+
 void
 SoGLBigImageP::copySubImage(const int idx,
                             const unsigned char * src,
@@ -352,8 +403,11 @@ SoGLBigImageP::copySubImage(const int idx,
   origin[0] = pos[0] * this->imagesize[0];
   origin[1] = pos[1] * this->imagesize[1];
 
-  for (int y = 0; y < int(this->imagesize[1]); y += div) {
-    for (int x = 0; x < int(this->imagesize[0]); x += div) {
+  const int w = this->imagesize[0];
+  const int h = this->imagesize[1];
+
+  for (int y = 0; y < h; y += div) {
+    for (int x = 0; x < w; x += div) {
       if ((origin[0] + x) < fullsize[0] && (origin[1] + y) < fullsize[1]) {
         const unsigned char * srcptr =
           src + nc * (fullsize[0] * (origin[1]+y) + origin[0]+x);
@@ -367,3 +421,42 @@ SoGLBigImageP::copySubImage(const int idx,
     }
   }
 }
+
+void 
+SoGLBigImageP::copyResizeSubImage(const int idx,
+                                  const unsigned char * src,
+                                  const SbVec2s & fullsize,
+                                  const int nc,
+                                  unsigned char * dst,
+                                  const SbVec2s & targetsize)
+{
+  SbVec2s pos(idx % this->dim[0], idx / this->dim[0]);
+  
+  SbVec2s origin;
+  origin[0] = pos[0] * this->imagesize[0];
+  origin[1] = pos[1] * this->imagesize[1];
+  
+  int incy = ((this->imagesize[1]<<8) / targetsize[1]);
+  int incx = ((this->imagesize[0]<<8) / targetsize[0]);
+  
+  const int w = targetsize[0];
+  const int h = targetsize[1];
+
+  int addy = 0;
+
+  for (int y = 0; y < h; y++) {
+    int addx = 0;
+    for (int x  = 0; x < w; x++) {
+      const unsigned char * ptr = src + ((addy>>8)+origin[1])*fullsize[0]*nc + ((addx>>8)+origin[0]) * nc;
+      for (int c = 0; c < nc; c++) {
+        *dst++ = *ptr++; 
+      }
+      addx += incx;
+    }
+    addy += incy;
+  }
+}
+
+
+
+#endif // DOXYGEN_SKIP_THIS
