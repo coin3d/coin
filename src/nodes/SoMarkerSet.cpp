@@ -18,6 +18,7 @@
 \**************************************************************************/
 
 // TODO: Skei: Clean up everything.... it's quite messy at the moment... :-/
+// FIXME: change standard markers to use GL_UNPACK_ALIGNMENT 1, instead of 4, as it is now... skei 200009005
 
 /*!
   \class SoMarkerSet SoMarkerSet.h Inventor/nodes/SoMarkerSet.h
@@ -452,17 +453,32 @@ SoMarkerSet::~SoMarkerSet()
 
 // ----------------------------------------------------------------------------------------------------
 
-// static GLubyte markerimages[90*9*4];
-GLubyte *markerimages;
+typedef struct marker
+{
+  int width;
+  int height;
+  int align;
+  unsigned char *data;
+  bool deletedata;
+} marker;
 
-void convert_bitmaps(void);
-void free_marker_images(void);
+static SbList<marker> *markerlist;
+static GLubyte *markerimages;
+static void convert_bitmaps(void);
+static void free_marker_images(void);
 
 // ------------
 
-void free_marker_images(void)
+static void free_marker_images(void)
 {
-	delete markerimages;	
+	delete markerimages;
+  if ( markerlist->getLength() > 90 ) {    // markers have been added.. free marker->data
+  	for (int i=90; i<markerlist->getLength(); i++) {
+      marker * tmp = &(*markerlist)[i];
+      if (tmp->deletedata) delete tmp->data;
+    }
+  }
+	delete markerlist;
 }
 
 /*!
@@ -474,9 +490,19 @@ void
 SoMarkerSet::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoMarkerSet);
-  markerimages = new GLubyte[90*9*4];  // hardcoded 90 markers, 9x9 bitmaps, dword memory alignment
+  markerimages = new GLubyte[90*9*4];        // hardcoded 90 markers, 32x9 bitmaps (9x9 used), dword alignment
+  markerlist = new SbList<marker>;
   atexit(free_marker_images);
   convert_bitmaps();
+  marker temp;
+  for (int i=0;i<90;i++) {
+    temp.width  = 9;
+    temp.height = 9;
+    temp.align  = 4;
+    temp.data   = markerimages + (i * 36);
+    temp.deletedata = false;
+    markerlist->append(temp);
+  }
 }
 
 // -----
@@ -1432,8 +1458,6 @@ convert_bitmaps(void)
   for (img=0;img<90;img++) {
     for (l=8;l>=0;l--) {
       v1 = v2 = 0;
-      //if (marker_char_bitmaps[rpos        ] == '#') return;
-      // glBitmap = upside down.....
       if (marker_char_bitmaps[(l*9)+rpos  ] == 'x') v1 += 0x80;
       if (marker_char_bitmaps[(l*9)+rpos+1] == 'x') v1 += 0x40;
       if (marker_char_bitmaps[(l*9)+rpos+2] == 'x') v1 += 0x20;
@@ -1447,13 +1471,13 @@ convert_bitmaps(void)
       markerimages[wpos+1] = v2;
       markerimages[wpos+2] = 0;
       markerimages[wpos+3] = 0;
-      //rpos += 9;
       wpos += 4;
+      //printf(",0x%x,0x%x",v1,v2);
     }
+    //printf("\n");
     rpos += (9*9);
   }
 }
-
 
 void
 SoMarkerSet::GLRender(SoGLRenderAction * action)
@@ -1485,7 +1509,7 @@ SoMarkerSet::GLRender(SoGLRenderAction * action)
     glNormal3fv((const GLfloat *)currnormal);
 
   SoMaterialBundle mb(action);
-  mb.sendFirst(); // make sure we have the correct material
+  mb.sendFirst();
 
   int32_t idx = this->startIndex.getValue();
   int32_t numpts = this->numPoints.getValue();
@@ -1505,12 +1529,7 @@ SoMarkerSet::GLRender(SoGLRenderAction * action)
   glPushMatrix();
   glLoadIdentity();
   glOrtho(0, vpsize[0], 0, vpsize[1], -1.0f, 1.0f);
-
-  //glPixelStorei(GL_UNPACK_ALIGNMENT,4);
-
   SbVec3f nilpoint;
-	
-  //glBegin(GL_POINTS);
   for (int i = 0; i < numpts; i++)
     {
       if (nbind == PER_VERTEX) {
@@ -1519,21 +1538,31 @@ SoMarkerSet::GLRender(SoGLRenderAction * action)
       }
       if (mbind == PER_VERTEX) mb.send(matnr++, TRUE);
       if (doTextures) tb.send(texnr++, coords->get3(idx), *currnormal);
-
-      //coords->send(idx++);
       nilpoint = coords->get3(idx++);
       mat.multVecMatrix(nilpoint, nilpoint);
       vv.projectToScreen(nilpoint, nilpoint);
       nilpoint[0] = nilpoint[0] * float(vpsize[0]);
       nilpoint[1] = nilpoint[1] * float(vpsize[1]);
-      // glRasterPos2i(nilpoint[0],nilpoint[1]);
-      // glBitmap(9,9,4,4,0,0,markerimages + (markerIndex[i] * 36) );
-      glRasterPos2i(0,0);
-      //glBitmap(9,9,4,4,nilpoint[0],nilpoint[1],NULL);						// -> crash, core dump
-      glBitmap(0,0,0,0,nilpoint[0],nilpoint[1],NULL);							// -> working...
-      glBitmap(9,9,4,4,0,0,markerimages + (markerIndex[i] * 36) );
+
+      if (markerIndex[i] < markerlist->getLength()) {
+        marker * tmp = &(*markerlist)[ markerIndex[i] ];
+        glPixelStorei(GL_UNPACK_ALIGNMENT, tmp->align );
+        glRasterPos2i(0,0);
+        glBitmap(0,0,0,0,nilpoint[0],nilpoint[1],NULL);
+        //glBitmap(9,9,4,4,0,0,markerimages + (markerIndex[i] * 36) );
+        glBitmap(tmp->width,tmp->height,0,0,0,0,tmp->data );
+      }
+#if COIN_DEBUG
+      else {
+        static int firsterror = 1;
+        if (firsterror) {
+          SoDebugError::postWarning("SoMarkerSet::GLRender.","markerIndex %d out of bound",markerIndex[i]);
+          firsterror = 0;
+        }
+      }
+#endif // COIN_DEBUG
     }
-  //glEnd();
+  glPixelStorei(GL_UNPACK_ALIGNMENT,4);
   glMatrixMode(GL_PROJECTION);
   glPopMatrix();
   glMatrixMode(GL_MODELVIEW);
@@ -1557,40 +1586,125 @@ SoMarkerSet::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 int
 SoMarkerSet::getNumDefinedMarkers(void)
 {
-  // FIXME: this shouldn't really be hardcoded. 20000904 skei.
-  return 90;
+  return markerlist->getLength();
 }
 
 /*!
   FIXME: write doc
  */
+ 
+  // FIXME: sloppy code... 20000906. skei
+
+static void swap_leftright(unsigned char *data, int width, int height)
+{
+  unsigned char t;
+  
+  int linewidth = (int)ceil(width / 8);
+  for (int y=0; y<height; y++) {
+    for (int x=0; x<floor(linewidth/2); x++) {
+      int tmp = data[y*linewidth+x];
+      data[ y*linewidth + x ] = data[ (y*linewidth) + (linewidth-x-1) ];
+      data[ (y*linewidth) + (linewidth-x-1) ] = tmp;
+    }
+  }
+  for (int y=0; y<height; y++) {
+    for (int x=0; x<linewidth; x++) {
+      t = 0;
+      if ((data[y*linewidth+x] & 128) != 0) t += 1;
+      if ((data[y*linewidth+x] &  64) != 0) t += 2;
+      if ((data[y*linewidth+x] &  32) != 0) t += 4;
+      if ((data[y*linewidth+x] &  16) != 0) t += 8;
+      if ((data[y*linewidth+x] &   8) != 0) t += 16;
+      if ((data[y*linewidth+x] &   4) != 0) t += 32;
+      if ((data[y*linewidth+x] &   2) != 0) t += 64;
+      if ((data[y*linewidth+x] &   1) != 0) t += 128;
+      data[y*linewidth+x] = t;
+    }
+  }
+}
+ 
+static void swap_updown(unsigned char *data, int width, int height)
+{
+  int linewidth = (int)ceil(width / 8);
+  for (int y=0; y<floor(height/2); y++) {
+    for (int x=0; x<linewidth; x++) {
+      int tmp = data[y*linewidth+x];
+      data[ y*linewidth + x ] = data[ ((height-y-1)*linewidth) + x ];
+      data[ ((height-y-1)*linewidth) + x ] = tmp;
+    }
+  }
+}
+
+  // FIXME: implement the lsLSBFirst and isUpToDown. skei 20000905
 void
-SoMarkerSet::addMarker(int /* markerIndex */, const SbVec2s & /* size */,
-                       const unsigned char * /* bytes */, SbBool /* isLSBFirst */,
-                       SbBool /* isUpToDown */)
+SoMarkerSet::addMarker(int markerIndex, const SbVec2s & size,
+                       const unsigned char * bytes, SbBool isLSBFirst,
+                       SbBool isUpToDown)
 {
-  COIN_STUB();
+//  SbBool appendnew = markerIndex >= markerlist->getLength() ? TRUE : FALSE; 
+
+  if (markerIndex >= markerlist->getLength()) {
+    marker temp;
+    temp.width  = 0;
+    temp.height = 0;
+    temp.align  = 0;
+    temp.data   = 0;
+    while (markerIndex > markerlist->getLength()) markerlist->append(temp);
+    temp.width = size[0];
+    temp.height = size[1];
+    int datasize = (int)ceil(size[0] / 8) * size[1];
+    temp.deletedata = true;
+    temp.data = new unsigned char[ datasize ];
+    memcpy(temp.data,bytes,datasize);
+    if (isLSBFirst) swap_leftright(temp.data,size[0],size[1]);
+    if (isUpToDown) swap_updown(temp.data,size[0],size[1]);
+    temp.align = 1;
+    markerlist->append(temp);
+  }
+  else {
+    marker * temp = &(*markerlist)[markerIndex];
+    temp->width = size[0];
+    temp->height = size[1];
+    temp->align = 1;
+    int datasize = (int)ceil(size[0] / 8) * size[1];
+    if (temp->deletedata) delete temp->data;
+    temp->deletedata = true;
+    temp->data = new unsigned char[ datasize ];
+    memcpy(temp->data,bytes,datasize);
+    if (isLSBFirst) swap_leftright(temp->data,size[0],size[1]);
+    if (isUpToDown) swap_updown(temp->data,size[0],size[1]);
+    // markerlist->append(temp);
+  }
+}
+
+/*!
+  FIXME: write doc
+ */
+  // FIXME: handle lsLSBFirst. skei 20000905
+SbBool
+SoMarkerSet::getMarker(int markerIndex, SbVec2s & size,
+                       const unsigned char *& bytes, SbBool & isLSBFirst)
+{
+  if (markerIndex >= markerlist->getLength()) return FALSE;
+  marker * temp = &(*markerlist)[markerIndex];  
+  size[0] = temp->width;
+  size[1] = temp->height;
+  bytes = temp->data;
+  isLSBFirst = FALSE;
+  return TRUE;
 }
 
 /*!
   FIXME: write doc
  */
 SbBool
-SoMarkerSet::getMarker(int /* markerIndex */, SbVec2s & /* size */,
-                       const unsigned char *& /* bytes */, SbBool & /* isLSBFirst */)
+SoMarkerSet::removeMarker(int markerIndex)
 {
-  COIN_STUB();
-  return FALSE;
-}
-
-/*!
-  FIXME: write doc
- */
-SbBool
-SoMarkerSet::removeMarker(int /* markerIndex */)
-{
-  COIN_STUB();
-  return FALSE;
+  if (markerIndex >= markerlist->getLength()) return FALSE;
+  marker * tmp = &(*markerlist)[markerIndex];
+  if (tmp->deletedata) delete tmp->data;
+  markerlist->remove(markerIndex);
+  return TRUE;
 }
 
 /*!
