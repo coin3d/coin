@@ -1225,6 +1225,10 @@
     causing a malformed boundingbox for the image and thus a malformed
     view.
 
+    UPDATE 20030225 mortene: is there any simple and clean way to
+    detect and handle this with a) a warning message for the app
+    programmer, b) using a decent "dummy" / default region?
+
 =====================================================================
 
 052 MSWin dependency walker gives surprising results.
