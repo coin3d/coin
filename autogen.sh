@@ -77,7 +77,7 @@ if test -z "`libtool --version | egrep \"$LIBTOOL_VER\" 2> /dev/null`"; then
     echo "You must have libtool version $LIBTOOL_VER installed to"
     echo "generate configure information and Makefiles for $PROJECT."
     echo ""
-    echo "Get ftp://ftp.gnu.org/pub/libtool/libtool-1.3.5.tar.gz"
+    echo "Get ftp://ftp.gnu.org/pub/gnu/libtool/libtool-1.3.5.tar.gz"
     echo ""
     DIE=true
 fi
