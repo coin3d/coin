@@ -27,3 +27,5 @@
 
 #include "glyph2d.c"
 #include "glyph3d.c"
+
+#include "fontspec.c"

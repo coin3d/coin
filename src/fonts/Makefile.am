@@ -1,6 +1,6 @@
 RegularSources = \
 	fontlib_wrapper.c win32.c freetype.c \
-	glyph2d.c glyph3d.c
+	fontspec.c glyph2d.c glyph3d.c
 
 LinkHackSources = \
 	all-fonts-c.c
