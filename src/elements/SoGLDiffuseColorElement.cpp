@@ -151,12 +151,13 @@ SoGLDiffuseColorElement::send(const int index, const float alpha)
                     (unsigned int)(col[1]*255.0f),
                     (unsigned int)(col[2]*255.0f),
                     (unsigned int)(col[3]*255.0f),
-                    currentPacked);
+                    this->currentPacked);
       this->updategl();
     }
   }
-  else if (packedColors && packedColors[realindex] != this->currentPacked) {
-    this->currentPacked = packedColors[realindex];
+  else if (this->packedColors && 
+           this->packedColors[realindex] != this->currentPacked) {
+    this->currentPacked = this->packedColors[realindex];
     convert_packed(this->currentPacked, current);
     this->updategl();
   }
@@ -165,11 +166,22 @@ SoGLDiffuseColorElement::send(const int index, const float alpha)
 /*!
   FIXME: write doc.
 */
-
 void
 SoGLDiffuseColorElement::send(const int index)
 {
-  send(index, this->current[3]);
+  this->send(index, this->current[3]);
+}
+
+/*!
+  Do not use. Provided only to support SoGLLazyElement.
+*/
+void 
+SoGLDiffuseColorElement::sendOnePacked(const uint32_t packedcol)
+{
+  SoGLDiffuseColorElement *thisp = (SoGLDiffuseColorElement*)this;
+  thisp->currentPacked = packedcol;
+  convert_packed(packedcol, thisp->current);
+  thisp->updategl();
 }
 
 //! FIXME: write doc.

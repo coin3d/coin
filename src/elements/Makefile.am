@@ -32,6 +32,7 @@ ALLSOURCES = \
 	SoGLDrawStyleElement.cpp SoGLDrawStyleElement.h \
 	SoGLEmissiveColorElement.cpp SoGLEmissiveColorElement.h \
 	SoGLEnvironmentElement.cpp SoGLEnvironmentElement.h \
+	SoGLLazyElement.cpp SoGLLazyElement.h \
 	SoGLLightIdElement.cpp SoGLLightIdElement.h \
 	SoGLLightModelElement.cpp SoGLLightModelElement.h \
 	SoGLLinePatternElement.cpp SoGLLinePatternElement.h \
@@ -128,6 +129,7 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/elements/SoGLDrawStyleElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoGLEmissiveColorElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoGLEnvironmentElement.h \
+	$(top_srcdir)/include/Inventor/elements/SoGLLazyElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoGLLightIdElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoGLLightModelElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoGLLinePatternElement.h \

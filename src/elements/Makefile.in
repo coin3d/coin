@@ -128,6 +128,7 @@ ALLSOURCES = \
 	SoGLDrawStyleElement.cpp SoGLDrawStyleElement.h \
 	SoGLEmissiveColorElement.cpp SoGLEmissiveColorElement.h \
 	SoGLEnvironmentElement.cpp SoGLEnvironmentElement.h \
+	SoGLLazyElement.cpp SoGLLazyElement.h \
 	SoGLLightIdElement.cpp SoGLLightIdElement.h \
 	SoGLLightModelElement.cpp SoGLLightModelElement.h \
 	SoGLLinePatternElement.cpp SoGLLinePatternElement.h \
@@ -225,6 +226,7 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/elements/SoGLDrawStyleElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoGLEmissiveColorElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoGLEnvironmentElement.h \
+	$(top_srcdir)/include/Inventor/elements/SoGLLazyElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoGLLightIdElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoGLLightModelElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoGLLinePatternElement.h \
@@ -337,7 +339,7 @@ SoFocalDistanceElement.lo SoFontNameElement.lo SoFontSizeElement.lo \
 SoGLAmbientColorElement.lo SoGLClipPlaneElement.lo \
 SoGLCoordinateElement.lo SoGLDiffuseColorElement.lo \
 SoGLDrawStyleElement.lo SoGLEmissiveColorElement.lo \
-SoGLEnvironmentElement.lo SoGLLightIdElement.lo \
+SoGLEnvironmentElement.lo SoGLLazyElement.lo SoGLLightIdElement.lo \
 SoGLLightModelElement.lo SoGLLinePatternElement.lo \
 SoGLLineWidthElement.lo SoGLModelMatrixElement.lo SoGLNormalElement.lo \
 SoGLNormalizeElement.lo SoGLPointSizeElement.lo \
@@ -380,7 +382,7 @@ SoFocalDistanceElement.lo SoFontNameElement.lo SoFontSizeElement.lo \
 SoGLAmbientColorElement.lo SoGLClipPlaneElement.lo \
 SoGLCoordinateElement.lo SoGLDiffuseColorElement.lo \
 SoGLDrawStyleElement.lo SoGLEmissiveColorElement.lo \
-SoGLEnvironmentElement.lo SoGLLightIdElement.lo \
+SoGLEnvironmentElement.lo SoGLLazyElement.lo SoGLLightIdElement.lo \
 SoGLLightModelElement.lo SoGLLinePatternElement.lo \
 SoGLLineWidthElement.lo SoGLModelMatrixElement.lo SoGLNormalElement.lo \
 SoGLNormalizeElement.lo SoGLPointSizeElement.lo \
@@ -449,8 +451,8 @@ $(DEPDIR)/SoGLClipPlaneElement.Plo $(DEPDIR)/SoGLCoordinateElement.Plo \
 $(DEPDIR)/SoGLDiffuseColorElement.Plo \
 $(DEPDIR)/SoGLDrawStyleElement.Plo \
 $(DEPDIR)/SoGLEmissiveColorElement.Plo \
-$(DEPDIR)/SoGLEnvironmentElement.Plo $(DEPDIR)/SoGLLightIdElement.Plo \
-$(DEPDIR)/SoGLLightModelElement.Plo \
+$(DEPDIR)/SoGLEnvironmentElement.Plo $(DEPDIR)/SoGLLazyElement.Plo \
+$(DEPDIR)/SoGLLightIdElement.Plo $(DEPDIR)/SoGLLightModelElement.Plo \
 $(DEPDIR)/SoGLLinePatternElement.Plo $(DEPDIR)/SoGLLineWidthElement.Plo \
 $(DEPDIR)/SoGLModelMatrixElement.Plo $(DEPDIR)/SoGLNormalElement.Plo \
 $(DEPDIR)/SoGLNormalizeElement.Plo $(DEPDIR)/SoGLPointSizeElement.Plo \
@@ -651,6 +653,7 @@ distdir: $(DISTFILES)
 @AMDEP@include $(DEPDIR)/SoGLDrawStyleElement.Plo
 @AMDEP@include $(DEPDIR)/SoGLEmissiveColorElement.Plo
 @AMDEP@include $(DEPDIR)/SoGLEnvironmentElement.Plo
+@AMDEP@include $(DEPDIR)/SoGLLazyElement.Plo
 @AMDEP@include $(DEPDIR)/SoGLLightIdElement.Plo
 @AMDEP@include $(DEPDIR)/SoGLLightModelElement.Plo
 @AMDEP@include $(DEPDIR)/SoGLLinePatternElement.Plo

@@ -149,9 +149,11 @@ public:
   static void setTransparencyType(SoState *state, int32_t type);
 
 
+protected:
+  SoState *state;
+
 private:
  
-  SoState *state;
   SbBool colorMaterial;
   SbBool blending;
   float shininess;
