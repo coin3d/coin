@@ -154,9 +154,8 @@ cc_glyph2d_getglyph(uint32_t character, const cc_font_specification * spec, floa
   /* Insert the new glyph into the hash-table using 'character' as key */
   cc_hash_put(fonthash, (unsigned long) character, glyph);
   
-  GLYPH2D_MUTEX_LOCK(glyph2d_fonthash_lock);
+  GLYPH2D_MUTEX_UNLOCK(glyph2d_fonthash_lock);
   return glyph;
-
 }
 
 static SbBool 
