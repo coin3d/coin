@@ -21,6 +21,13 @@
   \class SoElapsedTime SoElapsedTime.h Inventor/engines/SoElapsedTime.h
   \brief The SoElapsedTime class is a controllable time source engine.
   \ingroup engines
+
+  The additional functionality provided by this engine versus just
+  connecting to the realTime global field is the ability to control
+  the speed of the time source plus logic to reset, stop and restart
+  it.
+
+  \sa SoTimeCounter
 */
 
 #include <Inventor/engines/SoElapsedTime.h>
@@ -131,6 +138,10 @@ SoElapsedTime::inputChanged(SoField * which)
 {
   if (which == &this->timeIn) return;
 
+  // Default to turn output off, only turn it back on if the engine is
+  // running.
+  this->timeOut.enable(FALSE);
+
   if (which == &this->reset) {
     this->currtime = SbTime::zero();
     this->lasttime = this->timeIn.getValue();
@@ -152,5 +163,35 @@ SoElapsedTime::inputChanged(SoField * which)
     else if (!this->on.getValue() && this->status != SoElapsedTime::STOPPED) {
       this->status = SoElapsedTime::STOPPED;
     }
+  }
+
+  this->timeOut.enable(this->status == SoElapsedTime::RUNNING);
+}
+
+// Overloaded to not write connection to realTime global field.
+void
+SoElapsedTime::writeInstance(SoOutput * out)
+{
+  // Note: the code in this method matches that of
+  // SoTimeCounter::writeInstance(), so if any bugs are found and
+  // corrected, remember to pass on the updates.
+
+  // Disconnect from realTime field.
+  SoField * connectfield = NULL;
+  SbBool connectfromrealTime =
+    this->timeIn.getConnectedField(connectfield) &&
+    connectfield == SoDB::getGlobalField("realTime");
+  SbBool defaultflag = this->timeIn.isDefault();
+  if (connectfromrealTime) {
+    this->timeIn.disconnect();
+    this->timeIn.setDefault(TRUE);
+  }
+
+  inherited::writeInstance(out);
+
+  // Re-connect to realTime field.
+  if (connectfromrealTime) {
+    this->timeIn.connectFrom(connectfield);
+    this->timeIn.setDefault(defaultflag);
   }
 }
