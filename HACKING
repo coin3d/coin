@@ -634,6 +634,51 @@ versus the code "layout" (to make it more easily readable):
 
 ==============================================================================
 
+API Documentation Guidelines
+============================
+
+Documentation of the Coin API is done with a setup and syntax
+compatible with the Doxygen tool. For general information and detailed
+documentation about the Doxygen syntax, see
+<URL:http://www.doxygen.org>.
+
+We allow documentation to be done in a rather free-form manner, as
+long as it conforms to the valid syntax of Doxygen. There is basically
+just one rule which is an absolute must:
+
+        * New functions and classes in the API have to be tagged with
+          "\since", to make it possible for application programmers to
+          know when the API was extended -- in case they want to
+          support a range of older versions of the library, for
+          instance.
+
+Other than this, use your common sense and look at the already
+existing documentation that is available.
+
+A few hints:
+
+        * We never started using the common "JavaDoc"-style way of
+          forcing tags and documentation on all arguments and return
+          types with "\param" and "\return" -- so there's no point in
+          doing that for the functions you write.
+
+        * Cross-reference to other functions and / or classes with the
+          "\sa" ("see also") tag where it seems helpful for the
+          application programmer. Remember that Doxygen automatically
+          finds and crossreferences class or function names found in
+          the doc anyway, so don't overuse the "\sa" tag.
+
+        * We do not force a third-person vs an imperative style, or
+          vice versa. Use the same style as "nearby" documentation.
+
+        * Make sure as *all* important aspects of a class or a
+          function is documented properly -- _don't_ expect the
+          application programmer to ever having to resort to the
+          header files or implementation sourcecode.
+
+
+==============================================================================
+
 Footnotes
 =========
 
