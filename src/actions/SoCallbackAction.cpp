@@ -19,60 +19,76 @@
 
 /*!
   \class SoCallbackAction SoCallbackAction.h Inventor/actions/SoCallbackAction.h
-  \brief The SoCallbackAction class is a traversal action that invokes callbacks at specific nodes.
+  \brief The SoCallbackAction class invokes callbacks at specific nodes.
+  \ingroup actions
+
+  This action has mechanisms for tracking traversal position and
+  traversal state.  In combination with the ability to pass geometry
+  primitives to callback actions set by the user, this does for
+  instance make it rather straightforward to extract the geometry of a
+  scene graph.
+
+  You should be able to use this action for most of your "simple"
+  traversal needs, instead of cooking up your own code, as the
+  SoCallbackAction is rather flexible.
 */
+
+// Metadon doc:
+/*!
+  FIXME: doesn't handle pathlist traversal yet. 20000305 mortene.
+ */
 
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoSubActionP.h>
-#include <Inventor/nodes/SoShape.h>
-#include <Inventor/SbName.h>
-#include <Inventor/lists/SoEnabledElementsList.h>
 
+#include <Inventor/SbName.h>
+#include <Inventor/SbVec4f.h>
+#include <Inventor/SoPath.h>
+#include <Inventor/elements/SoAmbientColorElement.h>
 #include <Inventor/elements/SoComplexityElement.h>
 #include <Inventor/elements/SoCoordinateElement.h>
+#include <Inventor/elements/SoCreaseAngleElement.h>
+#include <Inventor/elements/SoDecimationPercentageElement.h>
+#include <Inventor/elements/SoDiffuseColorElement.h>
 #include <Inventor/elements/SoDrawStyleElement.h>
-#include <Inventor/elements/SoLinePatternElement.h>
-#include <Inventor/elements/SoLineWidthElement.h>
-#include <Inventor/elements/SoPointSizeElement.h>
+#include <Inventor/elements/SoEmissiveColorElement.h>
+#include <Inventor/elements/SoFocalDistanceElement.h>
 #include <Inventor/elements/SoFontNameElement.h>
 #include <Inventor/elements/SoFontSizeElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoLightAttenuationElement.h>
-#include <Inventor/elements/SoAmbientColorElement.h>
-#include <Inventor/elements/SoDiffuseColorElement.h>
-#include <Inventor/elements/SoEmissiveColorElement.h>
-#include <Inventor/elements/SoSpecularColorElement.h>
-#include <Inventor/elements/SoShininessElement.h>
-#include <Inventor/elements/SoTransparencyElement.h>
+#include <Inventor/elements/SoLinePatternElement.h>
+#include <Inventor/elements/SoLineWidthElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
-#include <Inventor/elements/SoNormalElement.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
+#include <Inventor/elements/SoNormalElement.h>
+#include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/elements/SoPickStyleElement.h>
+#include <Inventor/elements/SoPointSizeElement.h>
 #include <Inventor/elements/SoProfileCoordinateElement.h>
 #include <Inventor/elements/SoProfileElement.h>
+#include <Inventor/elements/SoProjectionMatrixElement.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
-#include <Inventor/elements/SoCreaseAngleElement.h>
-#include <Inventor/elements/SoTextureCoordinateElement.h>
+#include <Inventor/elements/SoShininessElement.h>
+#include <Inventor/elements/SoSpecularColorElement.h>
+#include <Inventor/elements/SoSwitchElement.h>
 #include <Inventor/elements/SoTextureCoordinateBindingElement.h>
+#include <Inventor/elements/SoTextureCoordinateElement.h>
 #include <Inventor/elements/SoTextureImageElement.h>
 #include <Inventor/elements/SoTextureMatrixElement.h>
-#include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/elements/SoUnitsElement.h>
-#include <Inventor/elements/SoFocalDistanceElement.h>
-#include <Inventor/elements/SoProjectionMatrixElement.h>
-#include <Inventor/elements/SoViewingMatrixElement.h>
-#include <Inventor/elements/SoViewVolumeElement.h>
-#include <Inventor/elements/SoPickStyleElement.h>
-#include <Inventor/elements/SoSwitchElement.h>
-#include <Inventor/elements/SoViewportRegionElement.h>
-#include <Inventor/elements/SoDecimationTypeElement.h>
-#include <Inventor/elements/SoDecimationPercentageElement.h>
-#include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoTextureOverrideElement.h>
-#include <Inventor/elements/SoLazyElement.h>
-
-#include <Inventor/SoPath.h>
-#include <Inventor/SbVec4f.h>
+#include <Inventor/elements/SoTransparencyElement.h>
+#include <Inventor/elements/SoUnitsElement.h>
+#include <Inventor/elements/SoViewVolumeElement.h>
+#include <Inventor/elements/SoViewingMatrixElement.h>
+#include <Inventor/elements/SoViewportRegionElement.h>
+#include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/nodes/SoShape.h>
 
+
+#ifndef DOXYGEN_SKIP_THIS
 
 class SoCallbackData { //internal class
 public:
@@ -86,7 +102,7 @@ public:
     cbdata->next = newdata;
   }
 
-  void deleteAll() {
+  void deleteAll(void) {
     SoCallbackData * cbdata = this;
     SoCallbackData * next;
     while (cbdata) {
@@ -95,6 +111,7 @@ public:
       cbdata = next;
     }
   }
+
   SoCallbackAction::Response doNodeCallbacks(SoCallbackAction * action,
                                              const SoNode * node);
   void doTriangleCallbacks(SoCallbackAction * action,
@@ -114,555 +131,6 @@ public:
   SoCallbackData * next;
 };
 
-
-
-SO_ACTION_SOURCE(SoCallbackAction);
-
-// Override from parent class.
-void
-SoCallbackAction::initClass(void)
-{
-  SO_ACTION_INIT_CLASS(SoCallbackAction, SoAction);
-
-  SO_ENABLE(SoCallbackAction, SoViewportRegionElement);
-  SO_ENABLE(SoCallbackAction, SoDecimationTypeElement);
-  SO_ENABLE(SoCallbackAction, SoDecimationPercentageElement);
-  SO_ENABLE(SoCallbackAction, SoOverrideElement);
-  SO_ENABLE(SoCallbackAction, SoTextureOverrideElement);
-  SO_ENABLE(SoCallbackAction, SoViewportRegionElement);
-  SO_ENABLE(SoCallbackAction, SoLazyElement);
-}
-
-
-/*!
-  A constructor.
-*/
-
-SoCallbackAction::SoCallbackAction(void)
-{
-  SO_ACTION_CONSTRUCTOR(SoCallbackAction);
-
-  SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::callbackS);
-
-  methods->setUp(); // FIXME: not sure if this should be called here...
-
-  this->preTailCB = NULL;
-  this->postTailCB = NULL;
-}
-
-static void
-delete_list_elements(SbList<SoCallbackData *>&list)
-{
-  int n = list.getLength();
-  SoCallbackData * data, * next;
-  for (int i = 0; i < n; i++) {
-    list[i]->deleteAll();
-  }
-}
-
-/*!
-  The destructor.
-*/
-
-SoCallbackAction::~SoCallbackAction(void)
-{
-  delete_list_elements(this->preCB);
-  delete_list_elements(this->postCB);
-  delete_list_elements(this->triangleCB);
-  delete_list_elements(this->lineSegmentCB);
-  delete_list_elements(this->pointCB);
-
-  this->preTailCB->deleteAll();
-  this->postTailCB->deleteAll();
-}
-
-//
-// for setting node callbacks. makes sure NULLs are filled in where not set
-//
-static void
-set_callback_data_idx(SbList<SoCallbackData *> & list, const int idx,
-                      void * func, void * data)
-{
-  int n = list.getLength();
-  while (n <= idx) {
-    list.append(NULL);
-    n++;
-  }
-  if (list[idx] == NULL) list[idx] = new SoCallbackData(func, data);
-  else list[idx]->append(new SoCallbackData(func, data));
-}
-
-void
-set_callback_data(SbList<SoCallbackData *> & list, const SoType type,
-                  void * func, void * data)
-{
-  SoTypeList derivedtypes;
-  int n = SoType::getAllDerivedFrom(type, derivedtypes);
-  for (int i = 0; i < n; i++) {
-    set_callback_data_idx(list, (int)derivedtypes[i].getData(),
-                          func, data);
-  }
-}
-
-void
-SoCallbackAction::addPreCallback(const SoType type,
-                                 SoCallbackActionCB * cb,
-                                 void * userdata)
-{
-  set_callback_data(this->preCB, type, (void *)cb, userdata);
-}
-
-void
-SoCallbackAction::addPostCallback(const SoType type,
-                                  SoCallbackActionCB * cb,
-                                  void * userdata)
-{
-  set_callback_data(this->postCB, type, (void *) cb, userdata);
-}
-
-void
-SoCallbackAction::addPreTailCallback(SoCallbackActionCB * cb,
-                                     void * userdata)
-{
-  if (this->preTailCB == NULL)
-    this->preTailCB = new SoCallbackData((void *)cb, userdata);
-  else
-    this->preTailCB->append(new SoCallbackData((void *)cb, userdata));
-}
-
-void
-SoCallbackAction::addPostTailCallback(SoCallbackActionCB * cb,
-                                      void * userdata)
-{
-  if (this->postTailCB == NULL)
-    this->postTailCB = new SoCallbackData((void *)cb, userdata);
-  else
-    this->postTailCB->append(new SoCallbackData((void *)cb, userdata));
-}
-
-void
-SoCallbackAction::addTriangleCallback(const SoType type,
-                                      SoTriangleCB * cb,
-                                      void * userdata)
-{
-  set_callback_data(this->triangleCB, type, (void *) cb, userdata);
-}
-
-void
-SoCallbackAction::addLineSegmentCallback(const SoType type,
-                                         SoLineSegmentCB * cb,
-                                         void * userdata)
-{
-  set_callback_data(this->lineSegmentCB, type, (void *) cb, userdata);
-}
-
-void
-SoCallbackAction::addPointCallback(const SoType type,
-                                   SoPointCB * cb,
-                                   void * userdata)
-{
-  set_callback_data(this->pointCB, type, (void *) cb, userdata);
-}
-
-/************************************************************************************/
-
-float
-SoCallbackAction::getComplexity() const
-{
-  return SoComplexityElement::get(this->state);
-}
-
-SoComplexity::Type
-SoCallbackAction::getComplexityType() const
-{
-  return (SoComplexity::Type) SoComplexityTypeElement::get(this->state);
-}
-
-int32_t
-SoCallbackAction::getNumCoordinates() const
-{
-  return SoCoordinateElement::getInstance(this->state)->getNum();
-}
-
-const SbVec3f &
-SoCallbackAction::getCoordinate3(const int index) const
-{
-  return SoCoordinateElement::getInstance(this->state)->get3(index);
-}
-
-const SbVec4f &
-SoCallbackAction::getCoordinate4(const int index) const
-{
-  return SoCoordinateElement::getInstance(this->state)->get4(index);
-}
-
-SoDrawStyle::Style
-SoCallbackAction::getDrawStyle() const
-{
-  return (SoDrawStyle::Style) SoDrawStyleElement::get(this->state);
-}
-
-unsigned short
-SoCallbackAction::getLinePattern() const
-{
-  return (unsigned short) SoLinePatternElement::get(this->state);
-}
-
-float
-SoCallbackAction::getLineWidth() const
-{
-  return SoLineWidthElement::get(this->state);
-}
-
-float
-SoCallbackAction::getPointSize() const
-{
-  return SoPointSizeElement::get(this->state);
-}
-
-SbName
-SoCallbackAction::getFontName() const
-{
-  return SoFontNameElement::get(this->state);
-}
-
-float
-SoCallbackAction::getFontSize() const
-{
-  return SoFontSizeElement::get(this->state);
-}
-
-SoLightModel::Model
-SoCallbackAction::getLightModel() const
-{
-  return (SoLightModel::Model) SoLightModelElement::get(this->state);
-}
-
-const SbVec3f &
-SoCallbackAction::getLightAttenuation() const
-{
-  return SoLightAttenuationElement::get(this->state);
-}
-
-
-void
-SoCallbackAction::getMaterial(SbColor & ambient, SbColor & diffuse,
-                              SbColor & specular, SbColor & emission,
-                              float & shininess, float & transparency,
-                              const int index) const
-{
-  ambient = SoAmbientColorElement::getInstance(this->state)->get(index);
-  diffuse = SoDiffuseColorElement::getInstance(this->state)->get(index);
-  emission = SoEmissiveColorElement::getInstance(this->state)->get(index);
-  specular = SoSpecularColorElement::getInstance(this->state)->get(index);
-  shininess = SoShininessElement::getInstance(this->state)->get(index);
-  transparency = SoTransparencyElement::getInstance(this->state)->get(index);
-}
-
-SoMaterialBinding::Binding
-SoCallbackAction::getMaterialBinding() const
-{
-  return (SoMaterialBinding::Binding)
-    SoMaterialBindingElement::get(this->state);
-}
-
-long
-SoCallbackAction::getNumNormals() const
-{
-  return SoNormalElement::getInstance(this->state)->getNum();
-}
-
-const SbVec3f &
-SoCallbackAction::getNormal(const int index) const
-{
-  return SoNormalElement::getInstance(this->state)->get(index);
-}
-
-SoNormalBinding::Binding
-SoCallbackAction::getNormalBinding() const
-{
-  return (SoNormalBinding::Binding)
-    SoNormalBindingElement::get(this->state);
-}
-
-int32_t
-SoCallbackAction::getNumProfileCoordinates() const
-{
-  return SoProfileCoordinateElement::getInstance(this->state)->getNum();
-}
-
-const SbVec2f &
-SoCallbackAction::getProfileCoordinate2(const int index) const
-{
-  return SoProfileCoordinateElement::getInstance(this->state)->get2(index);
-}
-
-const SbVec3f &
-SoCallbackAction::getProfileCoordinate3(const int index) const
-{
-  return SoProfileCoordinateElement::getInstance(this->state)->get3(index);
-}
-
-const SoNodeList &
-SoCallbackAction::getProfile() const
-{
-  return SoProfileElement::get(this->state);
-}
-
-SoShapeHints::VertexOrdering
-SoCallbackAction::getVertexOrdering() const
-{
-  return (SoShapeHints::VertexOrdering)
-    SoShapeHintsElement::getVertexOrdering(this->state);
-}
-
-SoShapeHints::ShapeType
-SoCallbackAction::getShapeType() const
-{
-  return (SoShapeHints::ShapeType)
-    SoShapeHintsElement::getShapeType(this->state);
-}
-
-SoShapeHints::FaceType
-SoCallbackAction::getFaceType() const
-{
-  return (SoShapeHints::FaceType)
-    SoShapeHintsElement::getFaceType(this->state);
-}
-
-float
-SoCallbackAction::getCreaseAngle() const
-{
-  return SoCreaseAngleElement::get(this->state);
-}
-
-int32_t
-SoCallbackAction::getNumTextureCoordinates() const
-{
-  return SoTextureCoordinateElement::getInstance(this->state)->getNum();
-}
-
-const SbVec2f &
-SoCallbackAction::getTextureCoordinate2(const int index) const
-{
-  return SoTextureCoordinateElement::getInstance(this->state)->get2(index);
-}
-
-const SbVec4f &
-SoCallbackAction::getTextureCoordinate4(const int index) const
-{
-  return SoTextureCoordinateElement::getInstance(this->state)->get4(index);
-}
-
-SoTextureCoordinateBinding::Binding
-SoCallbackAction::getTextureCoordinateBinding() const
-{
-  return (SoTextureCoordinateBinding::Binding)
-    SoTextureCoordinateBindingElement::get(this->state);
-}
-
-const SbColor &
-SoCallbackAction::getTextureBlendColor() const
-{
-  return SoTextureImageElement::getBlendColor(this->state);
-}
-
-const unsigned char *
-SoCallbackAction::getTextureImage(SbVec2s & size, int & numComps) const
-{
-  return SoTextureImageElement::getImage(state, size, numComps);
-}
-
-const SbMatrix &
-SoCallbackAction::getTextureMatrix() const
-{
-  return SoTextureMatrixElement::get(this->state);
-}
-
-SoTexture2::Model
-SoCallbackAction::getTextureModel() const
-{
-  return (SoTexture2::Model) SoTextureImageElement::getModel(this->state);
-}
-
-SoTexture2::Wrap
-SoCallbackAction::getTextureWrapS() const
-{
-  return (SoTexture2::Wrap) SoTextureImageElement::getWrapS(this->state);
-}
-
-SoTexture2::Wrap
-SoCallbackAction::getTextureWrapT() const
-{
-  return (SoTexture2::Wrap) SoTextureImageElement::getWrapT(this->state);
-}
-
-const SbMatrix &
-SoCallbackAction::getModelMatrix() const
-{
-  return SoModelMatrixElement::get(this->state);
-}
-
-SoUnits::Units
-SoCallbackAction::getUnits() const
-{
-  return (SoUnits::Units) SoUnitsElement::get(this->state);
-}
-
-float
-SoCallbackAction::getFocalDistance() const
-{
-  return SoFocalDistanceElement::get(this->state);
-}
-
-const SbMatrix &
-SoCallbackAction::getProjectionMatrix() const
-{
-  return SoProjectionMatrixElement::get(this->state);
-}
-
-const SbMatrix &
-SoCallbackAction::getViewingMatrix() const
-{
-  return SoViewingMatrixElement::get(this->state);
-}
-
-const SbViewVolume &
-SoCallbackAction::getViewVolume() const
-{
-  return SoViewVolumeElement::get(this->state);
-}
-
-SoPickStyle::Style
-SoCallbackAction::getPickStyle() const
-{
-  return (SoPickStyle::Style) SoPickStyleElement::get(this->state);
-}
-
-int32_t
-SoCallbackAction::getSwitch() const
-{
-  return SoSwitchElement::get(this->state);
-}
-
-/************************************************************************************/
-
-SoCallbackAction::Response
-SoCallbackAction::getCurrentResponse(void) const
-{
-  return this->response;
-}
-
-void
-SoCallbackAction::invokePreCallbacks(const SoNode * const node)
-{
-  int idx = (int) node->getTypeId().getData();
-
-  if (idx < this->preCB.getLength() && this->preCB[idx] != NULL) {
-    this->response = this->preCB[idx]->doNodeCallbacks(this, node);
-    if (this->response == SoCallbackAction::ABORT) {
-      this->setTerminated(TRUE);
-      return;
-    }
-  }
-
-  if (this->getWhatAppliedTo() == SoAction::PATH &&
-      this->getPathAppliedTo()->getTail() == node && this->preTailCB != NULL) {
-    this->response = this->preTailCB->doNodeCallbacks(this, node);
-    if (this->response == SoCallbackAction::ABORT) {
-      this->setTerminated(TRUE);
-      return;
-    }
-  }
-  // FIXME: add code to handle pathlist traversal callbacks
-  // pederb, 19991209
-}
-
-void
-SoCallbackAction::invokePostCallbacks(const SoNode * const node)
-{
-  int idx = (int) node->getTypeId().getData();
-  if (idx < this->postCB.getLength() && this->postCB[idx] != NULL) {
-    this->response = (Response) this->postCB[idx]->doNodeCallbacks(this, node);
-    if (this->response == SoCallbackAction::ABORT) {
-      this->setTerminated(TRUE);
-      return;
-    }
-  }
-
-  if (this->getWhatAppliedTo() == SoAction::PATH &&
-      this->getPathAppliedTo()->getTail() == node && this->postTailCB) {
-    this->response = this->postTailCB->doNodeCallbacks(this, node);
-    if (this->response == SoCallbackAction::ABORT) {
-      this->setTerminated(TRUE);
-      return;
-    }
-  }
-  // FIXME: add code to handle pathlist traversal callbacks
-  // pederb, 19991209
-}
-
-void
-SoCallbackAction::invokeTriangleCallbacks(const SoShape * const shape,
-                                          const SoPrimitiveVertex * const v1,
-                                          const SoPrimitiveVertex * const v2,
-                                          const SoPrimitiveVertex * const v3)
-{
-  int idx = (int) shape->getTypeId().getData();
-  if (idx < this->triangleCB.getLength() && this->triangleCB[idx] != NULL)
-    this->triangleCB[idx]->doTriangleCallbacks(this, v1, v2, v3);
-}
-
-void
-SoCallbackAction::invokeLineSegmentCallbacks(const SoShape * const shape,
-                                             const SoPrimitiveVertex * const v1,
-                                             const SoPrimitiveVertex * const v2)
-{
-  int idx = (int) shape->getTypeId().getData();
-  if (idx < this->lineSegmentCB.getLength() && this->lineSegmentCB[idx] != NULL)
-    this->lineSegmentCB[idx]->doLineSegmentCallbacks(this, v1, v2);
-}
-
-void
-SoCallbackAction::invokePointCallbacks(const SoShape * const shape,
-                                       const SoPrimitiveVertex * const v)
-{
-  int idx = (int) shape->getTypeId().getData();
-  if (idx < this->pointCB.getLength() && this->pointCB[idx] != NULL)
-    this->pointCB[idx]->doPointCallbacks(this, v);
-}
-
-SbBool
-SoCallbackAction::shouldGeneratePrimitives(const SoShape * shape) const
-{
-  int idx = (int) shape->getTypeId().getData();
-  if (idx < this->triangleCB.getLength() && this->triangleCB[idx])
-    return TRUE;
-  if (idx < this->lineSegmentCB.getLength() && this->lineSegmentCB[idx])
-    return TRUE;
-  if (idx < this->pointCB.getLength() && this->pointCB[idx])
-    return TRUE;
-  return FALSE;
-}
-
-SoNode *
-SoCallbackAction::getCurPathTail()
-{
-  return this->currentNode;
-}
-
-void
-SoCallbackAction::setCurrentNode(SoNode * const node)
-{
-  this->currentNode = node;
-}
-
-void
-SoCallbackAction::beginTraversal(SoNode * node)
-{
-  this->response = CONTINUE;
-  this->traverse(node);
-}
 
 SoCallbackAction::Response
 SoCallbackData::doNodeCallbacks(SoCallbackAction * action,
@@ -722,4 +190,808 @@ SoCallbackData::doPointCallbacks(SoCallbackAction * action,
     ptcb(cbdata->data, action, v);
     cbdata = cbdata->next;
   }
+}
+
+#endif // !DOXYGEN_SKIP_THIS
+
+
+// ***********************************************************************
+
+/*!
+  \typedef Response SoCallbackAction::SoCallbackActionCB(void * userdata, SoCallbackAction * action, const SoNode * node)
+
+  Callback functions need to be of this type. \a node is at the
+  current traversal point in the scene graph.
+ */
+
+/*!
+  \enum SoCallbackAction::Response
+  Response values for callback function.
+ */
+/*!
+  \var SoCallbackAction::Response SoCallbackAction::CONTINUE
+  Continue traversal as usual.
+ */
+/*!
+  \var SoCallbackAction::Response SoCallbackAction::ABORT
+  Abort traversal.
+ */
+/*!
+  \var SoCallbackAction::Response SoCallbackAction::PRUNE
+  Don't do traversal of neither the current node (if returning from a
+  pre-traversal callback) nor its children.
+ */
+
+// ***********************************************************************
+
+
+SO_ACTION_SOURCE(SoCallbackAction);
+
+
+// Override from parent class.
+void
+SoCallbackAction::initClass(void)
+{
+  SO_ACTION_INIT_CLASS(SoCallbackAction, SoAction);
+
+  SO_ENABLE(SoCallbackAction, SoViewportRegionElement);
+  SO_ENABLE(SoCallbackAction, SoDecimationTypeElement);
+  SO_ENABLE(SoCallbackAction, SoDecimationPercentageElement);
+  SO_ENABLE(SoCallbackAction, SoOverrideElement);
+  SO_ENABLE(SoCallbackAction, SoTextureOverrideElement);
+  SO_ENABLE(SoCallbackAction, SoViewportRegionElement);
+  SO_ENABLE(SoCallbackAction, SoLazyElement);
+}
+
+
+/*!
+  Constructor.
+*/
+SoCallbackAction::SoCallbackAction(void)
+{
+  SO_ACTION_CONSTRUCTOR(SoCallbackAction);
+
+  SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::callbackS);
+
+  SoCallbackAction::methods->setUp();
+
+  this->pretailcallback = NULL;
+  this->posttailcallback = NULL;
+}
+
+static void
+delete_list_elements(SbList<SoCallbackData *> & cl)
+{
+  int n = cl.getLength();
+  SoCallbackData * data, * next;
+  for (int i = 0; i < n; i++) cl[i]->deleteAll();
+}
+
+/*!
+  Destructor.
+*/
+SoCallbackAction::~SoCallbackAction()
+{
+  delete_list_elements(this->precallback);
+  delete_list_elements(this->postcallback);
+  delete_list_elements(this->trianglecallback);
+  delete_list_elements(this->linecallback);
+  delete_list_elements(this->pointcallback);
+
+  this->pretailcallback->deleteAll();
+  this->posttailcallback->deleteAll();
+}
+
+//
+// for setting node callbacks. makes sure NULLs are filled in where not set
+//
+static void
+set_callback_data_idx(SbList<SoCallbackData *> & list, const int idx,
+                      void * func, void * data)
+{
+  int n = list.getLength();
+  while (n <= idx) {
+    list.append(NULL);
+    n++;
+  }
+  if (list[idx] == NULL) list[idx] = new SoCallbackData(func, data);
+  else list[idx]->append(new SoCallbackData(func, data));
+}
+
+void
+set_callback_data(SbList<SoCallbackData *> & list, const SoType type,
+                  void * func, void * data)
+{
+  SoTypeList derivedtypes;
+  int n = SoType::getAllDerivedFrom(type, derivedtypes);
+  for (int i = 0; i < n; i++) {
+    set_callback_data_idx(list, (int)derivedtypes[i].getData(),
+                          func, data);
+  }
+}
+
+/*!
+  Set a function \a cb to call before every node of \a type is
+  traversed. \a cb will be called with \a userdata.
+ */
+void
+SoCallbackAction::addPreCallback(const SoType type, SoCallbackActionCB * cb,
+                                 void * userdata)
+{
+  set_callback_data(this->precallback, type, (void *)cb, userdata);
+}
+
+/*!
+  Set a function \a cb to call after every node of \a type has been
+  traversed. \a cb will be called with \a userdata.
+ */
+void
+SoCallbackAction::addPostCallback(const SoType type, SoCallbackActionCB * cb,
+                                  void * userdata)
+{
+  set_callback_data(this->postcallback, type, (void *) cb, userdata);
+}
+
+/*!
+  Set a function \a cb to call before the tail of a path is
+  traversed. \a cb will be called with \a userdata.
+ */
+void
+SoCallbackAction::addPreTailCallback(SoCallbackActionCB * cb, void * userdata)
+{
+  if (this->pretailcallback == NULL)
+    this->pretailcallback = new SoCallbackData((void *)cb, userdata);
+  else
+    this->pretailcallback->append(new SoCallbackData((void *)cb, userdata));
+}
+
+/*!
+  Set a function \a cb to call after the tail of a path has been
+  traversed. \a cb will be called with \a userdata.
+ */
+void
+SoCallbackAction::addPostTailCallback(SoCallbackActionCB * cb, void * userdata)
+{
+  if (this->posttailcallback == NULL)
+    this->posttailcallback = new SoCallbackData((void *)cb, userdata);
+  else
+    this->posttailcallback->append(new SoCallbackData((void *)cb, userdata));
+}
+
+/*!
+  Set a function \a cb to call when traversing a node of \a type which
+  generates triangle primitives for rendering. \a cb will be called
+  with \a userdata.
+ */
+void
+SoCallbackAction::addTriangleCallback(const SoType type, SoTriangleCB * cb,
+                                      void * userdata)
+{
+  set_callback_data(this->trianglecallback, type, (void *) cb, userdata);
+}
+
+/*!
+  Set a function \a cb to call when traversing a node of \a type which
+  generates line primitives for rendering. \a cb will be called with
+  \a userdata.
+ */
+void
+SoCallbackAction::addLineSegmentCallback(const SoType type, SoLineSegmentCB * cb,
+                                         void * userdata)
+{
+  set_callback_data(this->linecallback, type, (void *) cb, userdata);
+}
+
+/*!
+  Set a function \a cb to call when traversing a node of \a type which
+  generates single point primitives for rendering. \a cb will be
+  called with \a userdata.
+ */
+void
+SoCallbackAction::addPointCallback(const SoType type, SoPointCB * cb,
+                                   void * userdata)
+{
+  set_callback_data(this->pointcallback, type, (void *) cb, userdata);
+}
+
+/************************************************************************************/
+
+/*!
+  Returns current decimation type setting.
+ */
+SoDecimationTypeElement::Type
+SoCallbackAction::getDecimationType(void) const
+{
+  return SoDecimationTypeElement::get(this->state);
+}
+
+/*!
+  Returns current decimation percentage setting.
+ */
+float
+SoCallbackAction::getDecimationPercentage(void) const
+{
+  return SoDecimationPercentageElement::get(this->state);
+}
+
+/*!
+  Returns current complexity setting.
+ */
+float
+SoCallbackAction::getComplexity(void) const
+{
+  return SoComplexityElement::get(this->state);
+}
+
+/*!
+  Returns current complexity type setting.
+*/
+SoComplexity::Type
+SoCallbackAction::getComplexityType(void) const
+{
+  return (SoComplexity::Type) SoComplexityTypeElement::get(this->state);
+}
+
+/*!
+  Returns current number of coordinates in the state.
+*/
+int32_t
+SoCallbackAction::getNumCoordinates(void) const
+{
+  return SoCoordinateElement::getInstance(this->state)->getNum();
+}
+
+/*!
+  Returns a coordinate triplet from the current state pool of
+  coordinates.
+*/
+const SbVec3f &
+SoCallbackAction::getCoordinate3(const int index) const
+{
+  return SoCoordinateElement::getInstance(this->state)->get3(index);
+}
+
+/*!
+  Returns a coordinate quartuplet from the current state pool of
+  coordinates.
+*/
+const SbVec4f &
+SoCallbackAction::getCoordinate4(const int index) const
+{
+  return SoCoordinateElement::getInstance(this->state)->get4(index);
+}
+
+/*!
+  Returns current draw style setting.
+*/
+SoDrawStyle::Style
+SoCallbackAction::getDrawStyle(void) const
+{
+  return (SoDrawStyle::Style) SoDrawStyleElement::get(this->state);
+}
+
+/*!
+  Returns current line pattern setting.
+*/
+unsigned short
+SoCallbackAction::getLinePattern(void) const
+{
+  return (unsigned short) SoLinePatternElement::get(this->state);
+}
+
+/*!
+  Returns current line width setting.
+*/
+float
+SoCallbackAction::getLineWidth(void) const
+{
+  return SoLineWidthElement::get(this->state);
+}
+
+/*!
+  Returns current point size setting.
+*/
+float
+SoCallbackAction::getPointSize(void) const
+{
+  return SoPointSizeElement::get(this->state);
+}
+
+/*!
+  Returns current fontname setting.
+*/
+const SbName &
+SoCallbackAction::getFontName(void) const
+{
+  return SoFontNameElement::get(this->state);
+}
+
+/*!
+  Returns current fontsize setting.
+*/
+float
+SoCallbackAction::getFontSize(void) const
+{
+  return SoFontSizeElement::get(this->state);
+}
+
+/*!
+  Returns current lightmodel setting.
+*/
+SoLightModel::Model
+SoCallbackAction::getLightModel(void) const
+{
+  return (SoLightModel::Model) SoLightModelElement::get(this->state);
+}
+
+/*!
+  Returns current light attenuation setting.
+*/
+const SbVec3f &
+SoCallbackAction::getLightAttenuation(void) const
+{
+  return SoLightAttenuationElement::get(this->state);
+}
+
+
+/*!
+  Returns current material settings.
+*/
+void
+SoCallbackAction::getMaterial(SbColor & ambient, SbColor & diffuse,
+                              SbColor & specular, SbColor & emission,
+                              float & shininess, float & transparency,
+                              const int index) const
+{
+  ambient = SoAmbientColorElement::getInstance(this->state)->get(index);
+  diffuse = SoDiffuseColorElement::getInstance(this->state)->get(index);
+  emission = SoEmissiveColorElement::getInstance(this->state)->get(index);
+  specular = SoSpecularColorElement::getInstance(this->state)->get(index);
+  shininess = SoShininessElement::getInstance(this->state)->get(index);
+  transparency = SoTransparencyElement::getInstance(this->state)->get(index);
+}
+
+/*!
+  Returns current materialbinding setting.
+*/
+SoMaterialBinding::Binding
+SoCallbackAction::getMaterialBinding(void) const
+{
+  return (SoMaterialBinding::Binding)
+    SoMaterialBindingElement::get(this->state);
+}
+
+/*!
+  Returns current number of normals in the state.
+*/
+uint32_t
+SoCallbackAction::getNumNormals(void) const
+{
+  return SoNormalElement::getInstance(this->state)->getNum();
+}
+
+/*!
+  Returns the normal vectors at \a index from the current state.
+*/
+const SbVec3f &
+SoCallbackAction::getNormal(const int index) const
+{
+  return SoNormalElement::getInstance(this->state)->get(index);
+}
+
+/*!
+  Returns current normalbinding setting.
+*/
+SoNormalBinding::Binding
+SoCallbackAction::getNormalBinding(void) const
+{
+  return (SoNormalBinding::Binding)
+    SoNormalBindingElement::get(this->state);
+}
+
+/*!
+  Returns current number of profile coordinates in the state.
+*/
+int32_t
+SoCallbackAction::getNumProfileCoordinates(void) const
+{
+  return SoProfileCoordinateElement::getInstance(this->state)->getNum();
+}
+
+/*!
+  Returns current number of SbVec2f profile coordinates in the state.
+*/
+const SbVec2f &
+SoCallbackAction::getProfileCoordinate2(const int index) const
+{
+  return SoProfileCoordinateElement::getInstance(this->state)->get2(index);
+}
+
+/*!
+  Returns current number of SbVec3f profile coordinates in the state.
+*/
+const SbVec3f &
+SoCallbackAction::getProfileCoordinate3(const int index) const
+{
+  return SoProfileCoordinateElement::getInstance(this->state)->get3(index);
+}
+
+/*!
+  Returns current list of profile nodes.
+*/
+const SoNodeList &
+SoCallbackAction::getProfile(void) const
+{
+  return SoProfileElement::get(this->state);
+}
+
+/*!
+  Returns current vertexordering shapehint setting.
+*/
+SoShapeHints::VertexOrdering
+SoCallbackAction::getVertexOrdering(void) const
+{
+  return (SoShapeHints::VertexOrdering)
+    SoShapeHintsElement::getVertexOrdering(this->state);
+}
+
+/*!
+  Returns current shapetype hint setting.
+*/
+SoShapeHints::ShapeType
+SoCallbackAction::getShapeType(void) const
+{
+  return (SoShapeHints::ShapeType)
+    SoShapeHintsElement::getShapeType(this->state);
+}
+
+/*!
+  Returns current facetype hint setting.
+*/
+SoShapeHints::FaceType
+SoCallbackAction::getFaceType(void) const
+{
+  return (SoShapeHints::FaceType)
+    SoShapeHintsElement::getFaceType(this->state);
+}
+
+/*!
+  Returns current creaseangle setting.
+*/
+float
+SoCallbackAction::getCreaseAngle(void) const
+{
+  return SoCreaseAngleElement::get(this->state);
+}
+
+/*!
+  Returns current number of texture coordinates in the traversal
+  state.
+*/
+int32_t
+SoCallbackAction::getNumTextureCoordinates(void) const
+{
+  return SoTextureCoordinateElement::getInstance(this->state)->getNum();
+}
+
+/*!
+  Returns SbVec2f texture coordinate at \a index from the texture
+  coordinate pool of the traversal state.
+*/
+const SbVec2f &
+SoCallbackAction::getTextureCoordinate2(const int index) const
+{
+  return SoTextureCoordinateElement::getInstance(this->state)->get2(index);
+}
+
+/*!
+  Returns SbVec4f texture coordinate at \a index from the texture
+  coordinate pool of the traversal state.
+*/
+const SbVec4f &
+SoCallbackAction::getTextureCoordinate4(const int index) const
+{
+  return SoTextureCoordinateElement::getInstance(this->state)->get4(index);
+}
+
+/*!
+  Returns current texturecoordinate binding setting.
+*/
+SoTextureCoordinateBinding::Binding
+SoCallbackAction::getTextureCoordinateBinding(void) const
+{
+  return (SoTextureCoordinateBinding::Binding)
+    SoTextureCoordinateBindingElement::get(this->state);
+}
+
+/*!
+  Returns current texture blend color setting.
+*/
+const SbColor &
+SoCallbackAction::getTextureBlendColor(void) const
+{
+  return SoTextureImageElement::getBlendColor(this->state);
+}
+
+/*!
+  Returns current texture image settings.
+*/
+const unsigned char *
+SoCallbackAction::getTextureImage(SbVec2s & size, int & numcomps) const
+{
+  return SoTextureImageElement::getImage(state, size, numcomps);
+}
+
+/*!
+  Returns current texture transformation matrix setting.
+*/
+const SbMatrix &
+SoCallbackAction::getTextureMatrix(void) const
+{
+  return SoTextureMatrixElement::get(this->state);
+}
+
+/*!
+  Returns current texturemapping model setting.
+*/
+SoTexture2::Model
+SoCallbackAction::getTextureModel(void) const
+{
+  return (SoTexture2::Model) SoTextureImageElement::getModel(this->state);
+}
+
+/*!
+  Returns current texture wrapping setting for the \c S coordinate.
+*/
+SoTexture2::Wrap
+SoCallbackAction::getTextureWrapS(void) const
+{
+  return (SoTexture2::Wrap) SoTextureImageElement::getWrapS(this->state);
+}
+
+/*!
+  Returns current texture wrapping setting for the \c T coordinate.
+*/
+SoTexture2::Wrap
+SoCallbackAction::getTextureWrapT(void) const
+{
+  return (SoTexture2::Wrap) SoTextureImageElement::getWrapT(this->state);
+}
+
+/*!
+  Returns current model matrix.
+*/
+const SbMatrix &
+SoCallbackAction::getModelMatrix(void) const
+{
+  return SoModelMatrixElement::get(this->state);
+}
+
+/*!
+  Returns current units setting.
+*/
+SoUnits::Units
+SoCallbackAction::getUnits(void) const
+{
+  return (SoUnits::Units) SoUnitsElement::get(this->state);
+}
+
+/*!
+  Returns current camera focal distance setting.
+*/
+float
+SoCallbackAction::getFocalDistance(void) const
+{
+  return SoFocalDistanceElement::get(this->state);
+}
+
+/*!
+  Returns current projection matrix.
+*/
+const SbMatrix &
+SoCallbackAction::getProjectionMatrix(void) const
+{
+  return SoProjectionMatrixElement::get(this->state);
+}
+
+/*!
+  Returns current viewing matrix.
+*/
+const SbMatrix &
+SoCallbackAction::getViewingMatrix(void) const
+{
+  return SoViewingMatrixElement::get(this->state);
+}
+
+/*!
+  Returns current view volume setting.
+*/
+const SbViewVolume &
+SoCallbackAction::getViewVolume(void) const
+{
+  return SoViewVolumeElement::get(this->state);
+}
+
+/*!
+  Returns current pickstyle setting.
+*/
+SoPickStyle::Style
+SoCallbackAction::getPickStyle(void) const
+{
+  return (SoPickStyle::Style) SoPickStyleElement::get(this->state);
+}
+
+/*!
+  Returns last SoSwitch::whichChild setting during the traversal.
+*/
+int32_t
+SoCallbackAction::getSwitch(void) const
+{
+  return SoSwitchElement::get(this->state);
+}
+
+/************************************************************************************/
+
+/*!
+  \internal
+ */
+SoCallbackAction::Response
+SoCallbackAction::getCurrentResponse(void) const
+{
+  return this->response;
+}
+
+/*!
+  \internal
+
+  Invoke all "pre traversal" callbacks.
+ */
+void
+SoCallbackAction::invokePreCallbacks(const SoNode * const node)
+{
+  int idx = (int) node->getTypeId().getData();
+
+  if (idx < this->precallback.getLength() && this->precallback[idx] != NULL) {
+    this->response = this->precallback[idx]->doNodeCallbacks(this, node);
+    if (this->response == SoCallbackAction::ABORT) {
+      this->setTerminated(TRUE);
+      return;
+    }
+  }
+
+  if (this->getWhatAppliedTo() == SoAction::PATH &&
+      this->getPathAppliedTo()->getTail() == node && this->pretailcallback != NULL) {
+    this->response = this->pretailcallback->doNodeCallbacks(this, node);
+    if (this->response == SoCallbackAction::ABORT) {
+      this->setTerminated(TRUE);
+      return;
+    }
+  }
+  // FIXME: add code to handle pathlist traversal callbacks
+  // pederb, 19991209
+}
+
+/*!
+  \internal
+
+  Invoke all "post traversal" callbacks.
+ */
+void
+SoCallbackAction::invokePostCallbacks(const SoNode * const node)
+{
+  int idx = (int) node->getTypeId().getData();
+  if (idx < this->postcallback.getLength() && this->postcallback[idx] != NULL) {
+    this->response = (Response) this->postcallback[idx]->doNodeCallbacks(this, node);
+    if (this->response == SoCallbackAction::ABORT) {
+      this->setTerminated(TRUE);
+      return;
+    }
+  }
+
+  if (this->getWhatAppliedTo() == SoAction::PATH &&
+      this->getPathAppliedTo()->getTail() == node && this->posttailcallback) {
+    this->response = this->posttailcallback->doNodeCallbacks(this, node);
+    if (this->response == SoCallbackAction::ABORT) {
+      this->setTerminated(TRUE);
+      return;
+    }
+  }
+  // FIXME: add code to handle pathlist traversal callbacks
+  // pederb, 19991209
+}
+
+/*!
+  \internal
+
+  Invoke all "triangle generation" callbacks.
+ */
+void
+SoCallbackAction::invokeTriangleCallbacks(const SoShape * const shape,
+                                          const SoPrimitiveVertex * const v1,
+                                          const SoPrimitiveVertex * const v2,
+                                          const SoPrimitiveVertex * const v3)
+{
+  int idx = (int) shape->getTypeId().getData();
+  if (idx < this->trianglecallback.getLength() && this->trianglecallback[idx] != NULL)
+    this->trianglecallback[idx]->doTriangleCallbacks(this, v1, v2, v3);
+}
+
+/*!
+  \internal
+
+  Invoke all "line segment generation" callbacks.
+ */
+void
+SoCallbackAction::invokeLineSegmentCallbacks(const SoShape * const shape,
+                                             const SoPrimitiveVertex * const v1,
+                                             const SoPrimitiveVertex * const v2)
+{
+  int idx = (int) shape->getTypeId().getData();
+  if (idx < this->linecallback.getLength() && this->linecallback[idx] != NULL)
+    this->linecallback[idx]->doLineSegmentCallbacks(this, v1, v2);
+}
+
+/*!
+  \internal
+
+  Invoke all "point" callbacks.
+ */
+void
+SoCallbackAction::invokePointCallbacks(const SoShape * const shape,
+                                       const SoPrimitiveVertex * const v)
+{
+  int idx = (int) shape->getTypeId().getData();
+  if (idx < this->pointcallback.getLength() && this->pointcallback[idx] != NULL)
+    this->pointcallback[idx]->doPointCallbacks(this, v);
+}
+
+/*!
+  \internal
+
+  Check from the shape nodes whether or not to generate primitives
+  from the complex shapes. If there are no callbacks attached to the
+  node types, making the primitives would only be a waste of CPU.
+ */
+SbBool
+SoCallbackAction::shouldGeneratePrimitives(const SoShape * shape) const
+{
+  int idx = (int) shape->getTypeId().getData();
+  if (idx < this->trianglecallback.getLength() && this->trianglecallback[idx])
+    return TRUE;
+  if (idx < this->linecallback.getLength() && this->linecallback[idx])
+    return TRUE;
+  if (idx < this->pointcallback.getLength() && this->pointcallback[idx])
+    return TRUE;
+  return FALSE;
+}
+
+/*!
+  Returns the current tail of the traversal path for the callback
+  action.
+ */
+SoNode *
+SoCallbackAction::getCurPathTail(void)
+{
+  return this->currentnode;
+}
+
+/*!
+  Used from nodes during traversal to keep a current node pointer in
+  the action.
+ */
+void
+SoCallbackAction::setCurrentNode(SoNode * const node)
+{
+  this->currentnode = node;
+}
+
+/*!
+  Overloaded from parent class to initialize variables which need to
+  be reset for each traversal.
+ */
+void
+SoCallbackAction::beginTraversal(SoNode * node)
+{
+  this->response = SoCallbackAction::CONTINUE;
+  this->traverse(node);
 }
