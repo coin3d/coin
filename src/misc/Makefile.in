@@ -301,6 +301,7 @@ PublicHeaders = \
 	../../include/Inventor/misc/SoAudioDevice.h
 
 PrivateHeaders = \
+	../../include/Inventor/misc/SbHash.h \
 	../../include/Inventor/misc/SoGL.h \
 	../../include/Inventor/misc/SoGenerate.h \
 	../../include/Inventor/misc/SoPick.h \
@@ -431,6 +432,7 @@ am__EXTRA_misc_lst_SOURCES_DIST = \
 	../../include/Inventor/misc/SoTempPath.h \
 	../../include/Inventor/misc/SoGlyph.h \
 	../../include/Inventor/misc/SoAudioDevice.h \
+	../../include/Inventor/misc/SbHash.h \
 	../../include/Inventor/misc/SoGL.h \
 	../../include/Inventor/misc/SoGenerate.h \
 	../../include/Inventor/misc/SoPick.h AudioTools.h \
@@ -502,6 +504,7 @@ am__EXTRA_libmisc_la_SOURCES_DIST = \
 	../../include/Inventor/misc/SoTempPath.h \
 	../../include/Inventor/misc/SoGlyph.h \
 	../../include/Inventor/misc/SoAudioDevice.h \
+	../../include/Inventor/misc/SbHash.h \
 	../../include/Inventor/misc/SoGL.h \
 	../../include/Inventor/misc/SoGenerate.h \
 	../../include/Inventor/misc/SoPick.h AudioTools.h \
@@ -559,6 +562,7 @@ am__EXTRA_libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/misc/SoTempPath.h \
 	../../include/Inventor/misc/SoGlyph.h \
 	../../include/Inventor/misc/SoAudioDevice.h \
+	../../include/Inventor/misc/SbHash.h \
 	../../include/Inventor/misc/SoGL.h \
 	../../include/Inventor/misc/SoGenerate.h \
 	../../include/Inventor/misc/SoPick.h AudioTools.h \

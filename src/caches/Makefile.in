@@ -264,7 +264,6 @@ PublicHeaders = \
 
 
 PrivateHeaders = \
-	../../include/Inventor/caches/SbHash.h \
 	../../include/Inventor/caches/SoPrimitiveVertexCache.h
 
 
@@ -348,7 +347,6 @@ am__EXTRA_caches_lst_SOURCES_DIST = \
 	../../include/Inventor/caches/SoGLRenderCache.h \
 	../../include/Inventor/caches/SoNormalCache.h \
 	../../include/Inventor/caches/SoTextureCoordinateCache.h \
-	../../include/Inventor/caches/SbHash.h \
 	../../include/Inventor/caches/SoPrimitiveVertexCache.h \
 	all-caches-cpp.cpp SoBoundingBoxCache.cpp SoCache.cpp \
 	SoConvexDataCache.cpp SoGLCacheList.cpp SoGLRenderCache.cpp \
@@ -378,7 +376,6 @@ am__EXTRA_libcaches_la_SOURCES_DIST = \
 	../../include/Inventor/caches/SoGLRenderCache.h \
 	../../include/Inventor/caches/SoNormalCache.h \
 	../../include/Inventor/caches/SoTextureCoordinateCache.h \
-	../../include/Inventor/caches/SbHash.h \
 	../../include/Inventor/caches/SoPrimitiveVertexCache.h \
 	all-caches-cpp.cpp SoBoundingBoxCache.cpp SoCache.cpp \
 	SoConvexDataCache.cpp SoGLCacheList.cpp SoGLRenderCache.cpp \
@@ -401,7 +398,6 @@ am__EXTRA_libcaches@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/caches/SoGLRenderCache.h \
 	../../include/Inventor/caches/SoNormalCache.h \
 	../../include/Inventor/caches/SoTextureCoordinateCache.h \
-	../../include/Inventor/caches/SbHash.h \
 	../../include/Inventor/caches/SoPrimitiveVertexCache.h \
 	all-caches-cpp.cpp SoBoundingBoxCache.cpp SoCache.cpp \
 	SoConvexDataCache.cpp SoGLCacheList.cpp SoGLRenderCache.cpp \
