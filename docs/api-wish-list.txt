@@ -319,3 +319,13 @@ THE WISH LIST
   not work with the above scheme of appending overriding options at the
   end of COIN_OPTIONS since you need to know which variable is parsed last.
 
+
+  ** Comment, mortene 2001-05-02:
+
+    This sounds like a bad idea to me -- trading off env-var pollution
+    for obfuscation.
+
+    The pollution doesn't look to be bad, as long as we keep a "COIN_"
+    prefix to simulate a separate namespace. And besides, querying and
+    setting the single COIN_OPTIONS environment variable would be a
+    lot harder from within application /code/ -- think about it..
