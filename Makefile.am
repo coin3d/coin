@@ -56,13 +56,18 @@ endif
 EXTRA_DIST = \
 	FAQ \
 	FAQ.legal \
+	INSTALL.GNU \
 	LICENSE.GPL \
 	README.AIX \
-	README.SUN \
 	README.IRIX \
 	README.MAC \
+	README.SUN \
+	README.VRML97 \
 	README.WIN32 \
+	RELNOTES \
+	bootstrap \
 	coin.cfg.in \
+	Info.plist \
 	docs/ChangeLog.1999 \
 	docs/ChangeLog.2000 \
 	docs/ChangeLog.2001 \
