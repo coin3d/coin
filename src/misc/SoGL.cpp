@@ -205,52 +205,16 @@ sogl_render_cone(const float radius,
 
   int matnr = 0;
 
-//   if (flags & SOGL_RENDER_SIDE) {
-//     glBegin(GL_QUAD_STRIP);
-//     i = 0;
-
-//     float t = 0.0;
-//     float inc = 1.0f / slices;
-
-//     while (i <= slices) {
-//       if (flags & SOGL_NEED_TEXCOORDS) {
-//      glTexCoord2f(t, 1.0f);
-//       }
-//       if (flags & SOGL_NEED_NORMALS) {
-//      SbVec3f n = (normals[i] + normals[i+1])*0.5f;
-//      glNormal3f(n[0], n[1], n[2]);
-//      // FIXME: what is nicest here?
-//      //      glNormal3fv((const GLfloat*)&normals[i]);
-//      //      glNormal3f(0.0f, 1.0f, 0.0f);
-//       }
-//       glVertex3f(0.0f, h2, 0.0f);
-//       if (flags & SOGL_NEED_TEXCOORDS) {
-//      glTexCoord2f(t, 0.0f);
-//       }
-//       if (flags & SOGL_NEED_NORMALS) {
-//      glNormal3fv((const GLfloat*)&normals[i]);
-//       }
-
-//       glVertex3fv((const GLfloat*)&coords[i]);
-//       i++;
-//       t += inc;
-//     }
-
-//     matnr++;
-//     glEnd();
-//   }
-
-
   if (flags & SOGL_RENDER_SIDE) {
     glBegin(GL_TRIANGLES);
     i = 0;
-
-    float t = 0.0;
-    float inc = 1.0f / slices;
+    
+    float t = 1.0;
+    float delta = 1.0f / slices;
 
     while (i < slices) {
       if (flags & SOGL_NEED_TEXCOORDS) {
-        glTexCoord2f(t + inc*0.5f, 1.0f);
+        glTexCoord2f(t - delta*0.5f, 1.0f);
       }
       if (flags & SOGL_NEED_NORMALS) {
         SbVec3f n = (normals[i] + normals[i+1])*0.5f;
@@ -266,7 +230,7 @@ sogl_render_cone(const float radius,
       glVertex3fv((const GLfloat*)&coords[i]);
 
       if (flags & SOGL_NEED_TEXCOORDS) {
-        glTexCoord2f(t+inc, 0.0f);
+        glTexCoord2f(t - delta, 0.0f);
       }
       if (flags & SOGL_NEED_NORMALS) {
         glNormal3fv((const GLfloat*)&normals[i+1]);
@@ -274,14 +238,12 @@ sogl_render_cone(const float radius,
       glVertex3fv((const GLfloat*)&coords[i+1]);
 
       i++;
-      t += inc;
+      t -= delta;
     }
 
     matnr++;
     glEnd();
   }
-
-
 
   if (flags & SOGL_RENDER_BOTTOM) {
     if (flags & SOGL_NEED_TEXCOORDS) {
@@ -393,7 +355,7 @@ sogl_render_cylinder(const float radius,
 
     for (i = 0; i < slices; i++) {
       if (flags & SOGL_NEED_TEXCOORDS) {
-        glTexCoord2f(texcoords[i][0]+0.5f, texcoords[i][1]+0.5f);
+        glTexCoord2f(texcoords[i][0]+0.5f, 1.0f - texcoords[i][1] - 0.5f);
       }
       const SbVec3f &c = coords[i];
       glVertex3f(c[0], h2, c[2]);
@@ -420,43 +382,79 @@ sogl_render_sphere(const float radius,
   // used to cache last stack's data
   SbVec3f coords[129];
   SbVec3f normals[129];
-  SbVec2f texcoords[129];
-
+  float S[129];
+  
   int i, j;
   float rho;
   float drho;
   float theta;
   float dtheta;
-  float ts, tc;
+  float tc, ts;
   SbVec3f tmp;
 
   drho = float(M_PI) / (float) (stacks-1);
   dtheta = 2.0f * float(M_PI) / (float) slices;
-
-  i = 0;
-  for (j = 0; j <= slices; j++) {
-    texcoords[j].setValue((float)j/slices, (float)(stacks-1-i)/(stacks-1));
-    normals[j].setValue(0.0f, 1.0f, 0.0f);
-    coords[j].setValue(0.0f, radius, 0.0f);
-  }
-
+  
+  float currs = 0.0f;
+  float incs = 1.0f / (float)slices;
   rho = drho;
-  for (i = 1; i < stacks; i++) {
+  theta = 0.0f;
+  tc = (float) cos(rho);
+  ts = - (float) sin(rho);
+  tmp.setValue(0.0f,
+               tc,
+               ts);
+  normals[0] = tmp;
+  tmp *= radius;
+  coords[0] = tmp;
+  S[0] = currs;
+  float dT = 1.0f / (float) (stacks-1);
+  float T = 1.0f - dT;
+  
+  glBegin(GL_TRIANGLES);
+
+  for (j = 1; j <= slices; j++) {
+    glNormal3f(0.0f, 1.0f, 0.0f);
+    glTexCoord2f(currs + 0.5f * incs, 1.0f);
+    glVertex3f(0.0f, radius, 0.0f);
+    
+    glNormal3fv((const GLfloat*) &normals[j-1]);
+    glTexCoord2f(currs, T);
+    glVertex3fv((const GLfloat*) &coords[j-1]);
+    
+    currs += incs;
+    theta += dtheta;
+    S[j] = currs;
+    tmp.setValue(float(sin(theta))*ts,
+                 tc,
+                 float(cos(theta))*ts);
+
+    normals[j] = tmp;
+    tmp *= radius;
+    coords[j] = tmp;
+    
+    glNormal3fv((const GLfloat*)&normals[j]);
+    glTexCoord2f(currs, T);
+    glVertex3fv((const GLfloat*)&coords[j]);
+  }
+  glEnd(); // GL_TRIANGLES
+  
+  rho += drho;
+
+  for (i = 2; i < stacks-1; i++) {
     tc = (float)cos(rho);
-    ts = (float)sin(rho);
+    ts = - (float) sin(rho);
     glBegin(GL_QUAD_STRIP);
     theta = 0.0f;
     for (j = 0; j <= slices; j++) {
-      glTexCoord2fv((const GLfloat*)&texcoords[j]);
+      glTexCoord2f(S[j], T);
       glNormal3fv((const GLfloat*)&normals[j]);
       glVertex3fv((const GLfloat*)&coords[j]);
-
-      texcoords[j].setValue((float)j/slices, (float)(stacks-1-i)/(stacks-1));
-      glTexCoord2f(texcoords[j][0], texcoords[j][1]);
-
-      tmp.setValue(float(cos(theta))*ts,
+      
+      glTexCoord2f(S[j], T - dT);
+      tmp.setValue(float(sin(theta))*ts,
                    tc,
-                   -float(sin(theta))*ts);
+                   float(cos(theta))*ts);
       normals[j] = tmp;
       glNormal3f(tmp[0], tmp[1], tmp[2]);
       tmp *= radius;
@@ -464,9 +462,26 @@ sogl_render_sphere(const float radius,
       coords[j] = tmp;
       theta += dtheta;
     }
-    glEnd();
+    glEnd(); // GL_QUAD_STRIP
     rho += drho;
+    T -= dT;
   }
+
+  glBegin(GL_TRIANGLES);
+  for (j = 0; j < slices; j++) {
+    glTexCoord2f(S[j], T);
+    glNormal3fv((const GLfloat*)&normals[j]);
+    glVertex3fv((const GLfloat*)&coords[j]);
+    
+    glTexCoord2f(S[j]+incs*0.5f, 0.0f);
+    glNormal3f(0.0f, -1.0f, 0.0f);
+    glVertex3f(0.0f, -radius, 0.0f);
+
+    glTexCoord2f(S[j+1], T);
+    glNormal3fv((const GLfloat*)&normals[j+1]);
+    glVertex3fv((const GLfloat*)&coords[j+1]);
+  }
+  glEnd(); // GL_TRIANGLES
 }
 
 //
@@ -482,35 +497,22 @@ static int cube_vindices[] =
   2, 3, 7, 6
 };
 
-static int cube_tindices[] =
-{
-  3, 2, 1, 0,
-  3, 2, 1, 0,
-  3, 2, 1, 0,
-  3, 2, 1, 0,
-  3, 2, 1, 0,
-  3, 2, 1, 0
-};
-
 static float cube_texcoords[] =
 {
-  0.0f, 0.0f,
-  1.0f, 0.0f,
   1.0f, 1.0f,
-  0.0f, 1.0f
+  0.0f, 1.0f,
+  0.0f, 0.0f,
+  1.0f, 0.0f
 };
 
-//
-// a cube needs 6 normals
-//
-static SbVec3f cube_normals[] =
+static float cube_normals[] =
 {
-  SbVec3f(0.0f, 0.0f, 1.0f),
-  SbVec3f(-1.0f, 0.0f, 0.0f),
-  SbVec3f(0.0f, 0.0f, -1.0f),
-  SbVec3f(1.0f, 0.0f, 0.0f),
-  SbVec3f(0.0f, 1.0f, 0.0f),
-  SbVec3f(0.0f, -1.0f, 0.0f),
+  0.0f, 0.0f, 1.0f,
+  -1.0f, 0.0f, 0.0f,
+  0.0f, 0.0f, -1.0f,
+  1.0f, 0.0f, 0.0f,
+  0.0f, 1.0f, 0.0f,
+  0.0f, -1.0f, 0.0f
 };
 
 static void
@@ -541,16 +543,15 @@ sogl_render_cube(const float width,
                          depth * 0.5f);
   glBegin(GL_QUADS);
   int *iptr = cube_vindices;
-  int *tptr = cube_tindices;
 
   for (int i = 0; i < 6; i++) { // 6 quads
     if (flags & SOGL_NEED_NORMALS)
-      glNormal3fv((const GLfloat*)&cube_normals[i]);
+      glNormal3fv((const GLfloat*)&cube_normals[i*3]);
     if (flags & SOGL_MATERIAL_PER_PART)
       material->send(i, TRUE);
     for (int j = 0; j < 4; j++) {
       if (flags & SOGL_NEED_TEXCOORDS) {
-        glTexCoord2fv(&cube_texcoords[*tptr++ * 2]);
+        glTexCoord2fv(&cube_texcoords[j<<1]);
       }
       glVertex3fv((const GLfloat*)&varray[*iptr++]);
     }
