@@ -1739,6 +1739,10 @@ public:
                  "to check if there is a mismatch between debug and release\n"
                  "libraries.\n\n"
 
+                 "The depends.exe program that comes with VisualC++ is a\n"
+                 "good tool for tracking things like this down. Make sure\n"
+                 "you inspect the complete path of each loaded dll.\n\n"
+
                  "If you are completely lost as how to find and fix\n"
                  "this problem on your own, try the\n"
                  "<coin-discuss@coin3d.org> mailing list (or the support\n"
@@ -1749,22 +1753,14 @@ public:
                  "Fatal error!", MB_OK | MB_ICONERROR | MB_TASKMODAL);
       exit(1);
     }
-    else {
-      StaticObjectInDLL::RegisterPresenceOfDLL();
-    }
   }
 
   static SbBool AlreadyPresent(void)
   {
-    HANDLE h = OpenMutex(0, FALSE, StaticObjectInDLL::mutexName().getString());
-    return (h != NULL) ? TRUE : FALSE;
-  }
-
-  static void RegisterPresenceOfDLL(void)
-  {
-    (void)CreateMutex(NULL, FALSE, StaticObjectInDLL::mutexName().getString());
+    (void)CreateMutex(NULL, TRUE, StaticObjectInDLL::mutexName().getString());
     // The mutex is automatically destructed by the operating system
     // when the process exits.
+    return (GetLastError() == ERROR_ALREADY_EXISTS) ? TRUE : FALSE;
   }
 
 private:
