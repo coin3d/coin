@@ -524,8 +524,10 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
     static SbBool first = TRUE;
     if (first) {
       first = FALSE;
+#if COIN_DEBUG
       SoDebugError::postWarning("SoText3::GLRender",
                                 "3D-textures not supported for this node type yet.");
+#endif // COIN_DEBUG
     }
   }
 
@@ -916,8 +918,10 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
     static SbBool first = TRUE;
     if (first) {
       first = FALSE;
+#if COIN_DEBUG
       SoDebugError::postWarning("SoText3::GLRender",
                                 "3D-textures not supported for this node type yet.");
+#endif // COIN_DEBUG
     }
   }
 
