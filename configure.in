@@ -245,7 +245,7 @@ AC_ARG_WITH(tools,
   [want_tools=yes])
 
 if test "x$want_tools" = "xno"; then
-  echo "FIXME: --without-tools doesn't work anymore. 20000112 mortene."
+  echo "FIXME: --without-tools has been temp disabled. 20000112 mortene."
 fi
 
 AM_CONDITIONAL(BUILD_TOOLS, test "x$want_tools" = "xyes")
@@ -264,7 +264,7 @@ AC_ARG_WITH(examples,
   [want_examples=yes])
 
 if test "x$want_examples" = "xno"; then
-  echo "FIXME: --without-tools doesn't work anymore. 20000112 mortene."
+  echo "FIXME: --without-tools has been temp disabled. 20000112 mortene."
 fi
 
 AM_CONDITIONAL(BUILD_EXAMPLES, test "x$want_examples" = "xyes")
