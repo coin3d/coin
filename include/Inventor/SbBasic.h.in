@@ -283,19 +283,62 @@ inline Type SbSqr(const Type val) {
 
 /* *********************************************************************** */
 
+/* Precaution to avoid an error easily made by the application programmer. */
+#ifdef COIN_DLL_API
+# error Leave the Coin-internal COIN_DLL_API define alone.
+#endif /* COIN_DLL_API */
+
+/*
+  On MSWindows platforms, one of these defines must always be set:
+
+   - "COIN_MAKE_DLL", only when building the library itself. Taken
+     care of automatically by the configure / build process.
+
+   - "COIN_DLL", when application programmers are using the Coin
+     library in the form of a dynamic link library (DLL)
+
+   - "COIN_NOT_DLL", when application programmers are using the Coin
+     library in the form of a static object library (LIB)
+
+  Note that either COIN_DLL or COIN_NOT_DLL _must_ be defined by the
+  application programmer on MSWindows platforms, or else the #error
+  statement will hit. Set up one or the other of these two defines in
+  your compiler environment according to how the Coin library was
+  built -- as a DLL (use "COIN_DLL") or as a LIB (use
+  "COIN_NOT_DLL").
+
+  (Setting up defines for the compiler is typically done by either
+  adding something like "/DCOIN_DLL" to the compiler's argument line
+  (for command-line build processes), or by adding the define to the
+  list of preprocessor symbols in your IDE GUI (in the MSVC IDE, this
+  is done from the "Project"->"Settings" menu, choose the "C/C++" tab,
+  then "Preprocessor" from the dropdown box and add the appropriate
+  define)).
+
+  It is extremely important that the application programmer uses the
+  correct define, as using "COIN_NOT_DLL" when "COIN_DLL" is correct
+  will cause mysterious crashes for certain Coin functions.
+ */
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
 /* Enable to generate COIN.DLL (under Win32). */
-#ifdef COIN_MAKE_DLL
-#define COIN_DLL_API __declspec(dllexport)
-#endif /* !COIN_MAKE_DLL */
-
+# ifdef COIN_MAKE_DLL
+#  define COIN_DLL_API __declspec(dllexport)
+# else /* !COIN_MAKE_DLL */
 /* Enable to build against COIN.DLL (under Win32). */
-#ifdef COIN_DLL
-#define COIN_DLL_API __declspec(dllimport)
-#endif /* !COIN_DLL */
+#  ifdef COIN_DLL
+#   define COIN_DLL_API __declspec(dllimport)
+#  else /* !COIN_DLL */
+#   ifndef COIN_NOT_DLL
+#    error Define either COIN_DLL or COIN_NOT_DLL as appropriate for your Coin linkage! See Inventor/SbBasic.h for further instructions.
+#   endif /* COIN_NOT_DLL */
+#  endif /* !COIN_DLL */
+# endif /* !COIN_MAKE_DLL */
+#endif /* Microsoft Windows */
 
-/* Empty define to avoid errors when _not_ compiling as a DLL. */
+/* Empty define to avoid errors when _not_ compiling an MSWindows DLL. */
 #ifndef COIN_DLL_API
-#define COIN_DLL_API
+# define COIN_DLL_API
 #endif /* !COIN_DLL_API */
+
 
 #endif /* !COIN_SBBASIC_H */
