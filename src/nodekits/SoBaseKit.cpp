@@ -1672,6 +1672,17 @@ SoBaseKit::setPart(const int partnum, SoNode * node)
   const SoNodekitCatalog * catalog = this->getNodekitCatalog();
   assert(catalog);
 
+  if (node && !node->getTypeId().isDerivedFrom(catalog->getType(partnum))) {
+#if COIN_DEBUG
+    SoDebugError::postWarning("SoBaseKit::setPart",
+                              "Attempted to set part ``%s'' "
+                              "to wrong type. Expected ``%s'', got ``%s''",
+                              catalog->getName(partnum).getString(),
+                              catalog->getType(partnum).getName().getString(),
+                              node->getTypeId().getName().getString());
+#endif // COIN_DEBUG
+    return FALSE;
+  }
   int parentIdx = catalog->getParentPartNumber(partnum);
   assert(parentIdx >= 0 && parentIdx < THIS->instancelist.getLength());
   SoNode * parent = NULL;
