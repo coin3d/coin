@@ -354,6 +354,7 @@ SoSpotLightDragger::dragStart(void)
 
   SbVec3f hitPt = this->getLocalStartingPoint();
   SbVec3f apex = SO_GET_ANY_PART(this, "beamPlacement", SoTranslation)->translation.getValue();
+  apex[2] += 1; // FIXME: This should probably be handled another way. 20020814 kristian.
 
   this->planeProj->setPlane(SbPlane(apex, apex+SbVec3f(0.0f, 0.0f, -1.0f),
                                     hitPt));
@@ -368,6 +369,7 @@ SoSpotLightDragger::drag(void)
   if (this->getActiveChildDragger()) return;
 
   SbVec3f apex = SO_GET_ANY_PART(this, "beamPlacement", SoTranslation)->translation.getValue();
+  apex[2] += 1; // FIXME: This should probably be handled another way. 20020814 kristian.
   this->planeProj->setViewVolume(this->getViewVolume());
   this->planeProj->setWorkingSpace(this->getLocalToWorldMatrix());
   SbVec3f projPt = planeProj->project(this->getNormalizedLocaterPosition());
