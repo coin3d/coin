@@ -147,10 +147,8 @@ SoGetBoundingBoxAction::getCenter(void) const
     SoGetBoundingBoxAction * action = (SoGetBoundingBoxAction *)this;
     action->center.setValue(0.0f, 0.0f, 0.0f);
   }
-  // FIXME: probably needs to transform center..? 19990316
-  // mortene. Update: if so, remember to check the code in
-  // SoSeparator::getBoundingBox() (the state->pop() probably needs to
-  // be moved further down in the code). 19990422 mortene.
+  // Center point should not be affected by the current
+  // transformation.
   return this->center;
 }
 
