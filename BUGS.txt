@@ -354,7 +354,7 @@
 
     ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
     #VRML V2.0 utf8
-    
+
     Group {
        children [
           *
@@ -415,7 +415,7 @@
     h""ey" yo"u to produce the string "hey you".  The C string syntax
     would perhaps be more natural to compare with - there this kind of
     stuff isn't allowed at all.
-    
+
     20020923 larsa.
 
     UPDATE 20030709 larsa: changes has been made wrt handling of
@@ -430,7 +430,7 @@
 
     ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
     #Inventor V2.1 ascii
-    
+
     MarkerKit {
        fields [ SFEnum outerShape ]
        outerShape 0
@@ -542,7 +542,7 @@
     20020927 larsa.
 
     UPDATE 20021010 mortene: fixed now?
-    
+
 =====================================================================
 
 033 Some of the default geometry files for dragger geometries uses an
@@ -570,39 +570,39 @@
     #include <Inventor/nodes/SoNodes.h>
     #include <Inventor/sensors/SoTimerSensor.h>
     #include <Inventor/draggers/SoTrackballDragger.h>
-    
+
     static void deleteObjectCB(void *d, SoSensor *sensor)
     {
       SoSeparator * root = (SoSeparator *)d;
       if (root->getNumChildren() > 0) { root->removeChild(0); }
-    
+
       SoNode * n = new SoTrackballDragger;
       root->addChild(n);
     }
-    
+
     int
     main(int argc, char **argv)
     {
       QWidget * mainWindow = SoQt::init(argv[0]);
-    
+
       SoSeparator * root = new SoSeparator;
       root->ref();
-    
+
       SoTimerSensor * sensor = new SoTimerSensor(deleteObjectCB, root);
       sensor->setInterval(1);
       sensor->schedule();
-    
+
       SoQtExaminerViewer *viewer = new SoQtExaminerViewer(mainWindow);
       viewer->setSceneGraph(root);
       viewer->viewAll();
       viewer->show();
       SoQt::show(mainWindow);
       SoQt::mainLoop();
-    
+
       delete sensor;
       delete viewer;
       root->unref();
-    
+
       return 0;
     }
     ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
@@ -629,11 +629,11 @@
 
     ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
     #Inventor V2.1 ascii
-    
+
     Separator {
-    
+
        Texture2 { image 2 2 4 0xff0000ff 0x00ff00ff 0x0000ffff 0xff00ffff }
-    
+
        Coordinate3 {
           point [
            0 0 0,
@@ -656,7 +656,7 @@
            4.5 -2.0 -6.0
           ]
        }
-    
+
        TextureCoordinate2 {
           point [
            0 0,
@@ -680,8 +680,8 @@
            4.5 -6.0
           ]
        }
-    
-    
+
+
        IndexedNurbsSurface {
           numUControlPoints 4
           numVControlPoints 4
@@ -715,24 +715,24 @@
 
     ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
     #VRML V2.0 utf8
-    
+
     PROTO Surface [
-     exposedField SFNode  coord      NULL 
-     field        MFVec3f point      []  
+     exposedField SFNode  coord      NULL
+     field        MFVec3f point      []
     ]
     {
        Shape {
           geometry IndexedFaceSet {
-             coord      IS coord   
+             coord      IS coord
              coord DEF SurfaceCoord Coordinate { point IS point }
           }
        }
     }
-    
+
     Surface {
-       coord Coordinate {              
+       coord Coordinate {
           point [ 0 0 0 ]
-       }   
+       }
     }
     ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
 
@@ -791,41 +791,41 @@
 
     int
     main(int , char **argv)
-    {  
+    {
        QWidget * myWindow = SoQt::init(argv[0]);
        if (myWindow == NULL) exit(1);
-    
+
        SoSeparator *root = new SoSeparator;
        root->ref();
-    
+
        SoPerspectiveCamera *myCamera = new SoPerspectiveCamera;
        root->addChild(myCamera);
        root->addChild(new SoDirectionalLight);
        SoMaterial *myMaterial = new SoMaterial;
        myMaterial->diffuseColor.setValue(1.0, 1.0, 1.0);
        root->addChild(myMaterial);
-    
+
        SoText3 *myText = new SoText3;
        root->addChild(myText);
        myText->string.connectFrom(SoDB::getGlobalField("realTime"));
-    
+
        //-----------------------------------------------------------
        SoDB::setRealTimeInterval(SbTime(10.0f));
        fprintf(stderr, "%s\n", SoDB::getRealTimeInterval().format().getString());
        //-----------------------------------------------------------
-    
+
        SoQtExaminerViewer *myRenderArea = new SoQtExaminerViewer(myWindow);
        myCamera->viewAll(root, myRenderArea->getSize());
        myRenderArea->setSceneGraph(root);
        myRenderArea->setTitle("Date & Time");
        myRenderArea->show();
-    
+
        SoQt::show(myWindow);
 
        SoQt::mainLoop();
        return 0;
     }
-    
+
     UPDATE 20021209 rolvs:
 
     The following backtrace is provoked by assert(0) when the realTime
@@ -846,7 +846,7 @@
     at ../../../../src/Coin/src/sensors/SoDataSensor.cpp:191
     #9  0x40a73229 in SoFieldSensor::trigger (this=0x80a3028)
     at ../../../../src/Coin/src/sensors/SoFieldSensor.cpp:112
-    #10 0x40a74455 in SoSensorManager::processDelayQueue 
+    #10 0x40a74455 in SoSensorManager::processDelayQueue
     (this=0x8077090, isidle=1)
     at ../../../../src/Coin/src/sensors/SoSensorManager.cpp:494
     #11 0x40036a9d in SoQtP::slot_idleSensor (this=0x80a30a8)
@@ -854,10 +854,10 @@
     #12 0x40036699 in SoQtP::qt_invoke (this=0x80a30a8, _id=3, _o=0xbffff708)
     at moc_SoQtP.cpp:87
     #13 0x40274b86 in QObject::activate_signal () from /usr/lib/libqt.so.3
-    #14 0x40274ade in QObject::activate_signal () 
+    #14 0x40274ade in QObject::activate_signal ()
     #15 0x404b0448 in QTimer::timeout ()
-    #16 0x4028e99b in QTimer::event () 
-    #17 0x4022d8a3 in QApplication::internalNotify () 
+    #16 0x4028e99b in QTimer::event ()
+    #17 0x4022d8a3 in QApplication::internalNotify ()
     #18 0x4022d744 in QApplication::notify ()
     #19 0x401df94e in qt_activate_timers ()
     #20 0x401dd651 in QApplication::processNextEvent ()
@@ -867,14 +867,14 @@
     at ../../../../../src/SoQt/src/Inventor/Qt/SoQt.cpp:670
     #24 0x804973a in main (argv=0xbffffbc4) at bug.cpp:62
     #25 0x40c7f0bf in __libc_start_main () from /lib/libc.so.6
-    
+
     (Update made by larsa, committed by rolvs 20021209. If that makes
     sense to anyone... ? :-)
 
     UPDATE 20021209 rolvs : This bug is caused by intended behaviour:
     The real-time field is updated every frame (TGS and
     SGI). Investigate to find the correct update policy.
-    
+
 =====================================================================
 
 041 Circular field connections not always handled.
@@ -890,48 +890,48 @@
     #include <Inventor/engines/SoInterpolateVec3f.h>
     #include <Inventor/nodes/SoTranslation.h>
     #include <Inventor/engines/SoCompose.h>
-    
+
     int main(int argc, char *argv[])
     {
       SoDB::init();
-    
+
       SoSeparator *root = new SoSeparator;
       root->ref();
-    
+
       SoSeparator *test = new SoSeparator;
       SoTranslation *redball = new SoTranslation;
       test->addChild(redball);
-    
+
       SoSeparator *scene = new SoSeparator;
       SoMaterial *mat = new SoMaterial;
       scene->addChild(mat);
-    
+
       root->addChild(test);
       root->addChild(scene);
-    
+
       SoDecomposeVec3f *dv = NULL;
       SoComposeVec3f *cv = NULL;
       SoInterpolateVec3f *interpred = NULL;
-      
+
       dv = new SoDecomposeVec3f;
       interpred = new SoInterpolateVec3f;
-      
+
       interpred->input0.setValue(0.0, -0.5, 0.0);
       interpred->input1.setValue(0.0, 0.5, 0.0);
       interpred->alpha.connectFrom(&dv->x);
       redball->translation.connectFrom(&interpred->output);
-      
+
       cv = new SoComposeVec3f;
       cv->ref();
       cv->x.connectFrom(&dv->x);
       cv->y.connectFrom(&dv->y);
       cv->z.connectFrom(&dv->z);
-      
+
       dv->vector.connectFrom(&mat->diffuseColor);
       mat->diffuseColor.connectFrom(&cv->vector);
-    
+
       root->unref();
-    
+
       return 0;
     }
     ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
@@ -990,9 +990,9 @@
 
     NOTE: The bug is not visible if there is no connected geometry, or
     if the geometry is 'simple', like one cube or one cone.
-    
+
     A simple scene-graph to reproduce:
-    
+
     ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
     #Inventor V2.1 ascii
 
@@ -1008,8 +1008,8 @@
                	Cone {}
 	}
     }
-    
-    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
 
     20021209 rolvs
 
@@ -1047,8 +1047,8 @@
 
     From a coin-discuss posting by Philippe Debanné:
 
-    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
-    
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
+
     I am planning to design my own Dragger class and have been looking
     at the Toolmaker Ch. 8 examples: TranslateRadialDragger and
     RotTransDragger.  I found an unexpected behaviour of
@@ -1070,7 +1070,7 @@
     sphere.  All this seems to be independant of the AntiSquish
     'sizing' field, e.g.  BIGGEST_DIMENSION or LONGEST_DIAGONAL.
 
-    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
 
     pederb has investigated, and found that this seems likely to be a
     problem with our SbMatrix code that factors the translation,
@@ -1105,21 +1105,21 @@
     Here's a simple file to reproduce with (load with
     SoDB::readAll()):
 
-    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
     #Inventor V2.1 ascii
 
     DEF test[0] Separator { }
-    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
 
     This results in the following error messages, and a terminated
     import operation:
 
-    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
     Coin read error: Premature end of file after DEF
             Occurred at line   3 in <ivfile>
     Coin read error: Invalid definition of test
             Occurred at line   3 in <ivfile>
-    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
 
     SGI Inventor handles the same file with no problems.
 
@@ -1134,39 +1134,39 @@
     "aass_logo.rgb" is an image of dimensions 80x68 (I haven't
     investigated if this matters or not).
 
-    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
     #include <Inventor/Qt/SoQt.h>
     #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
     #include <Inventor/nodes/SoSeparator.h>
     #include <Inventor/nodes/SoImage.h>
     #include <Inventor/nodes/SoCone.h>
-        
+
     int
     main(int argc, char* argv[])
     {
       QWidget * mainwin = SoQt::init(argv[0]);
-    
+
       SoSeparator * root = new SoSeparator;
       root->ref();
-    
+
       root->addChild(new SoCone);
-    
+
       SoImage * img = new SoImage;
       root->addChild(img);
       img->filename = "aass_logo.rgb";
-    
+
       SoQtExaminerViewer * viewer = new SoQtExaminerViewer(mainwin);
       viewer->setSceneGraph(root);
-        
+
       SoQt::show(mainwin);
       SoQt::mainLoop();
-    
+
       delete viewer;
       root->unref();
-        
+
       return 0;
     }
-    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
 
     Notice how the cone is a tiny dot in the lower left corner of the
     image at first. Then click view all (the eye icon) and see how the
@@ -1206,13 +1206,13 @@
     The SoGuiExamples/engines/computexfbbox example fails with a small
     scene with an SoText2 in it:
 
-    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
     #Inventor V2.1 ascii
 
     Cube { }
     Translation { translation 10 0 0 }
     Text2 { string [ "hepp", "tjo-bing", "hupp" ] }
-    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
 
     ..and pederb tracked this down to a failure of the engine's
     evaluate() to be called again when the camera position changes.
@@ -1227,13 +1227,13 @@
 
     The following VRML file makes SoDB::readAll() hang:
 
-    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
     #VRML V2.0 utf8
 
     Switch {
       choice [ 0 ]
     }
-    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
 
     20030204 mortene, reported by kintel.
 
@@ -1245,14 +1245,14 @@
     hitting the CTRL key, the actual clipping plane is still stuck in
     the original orientation.
 
-    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
     #Inventor V2.1 ascii
-    
+
     Separator {
        ClipPlaneManip { }
        Text3 { string "Hello Coin"  parts ALL }
     }
-    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
 
     20030226 mortene.
 
@@ -1266,10 +1266,10 @@
     axis, the position will be reported as <x, 0, 1.0>. That z=1.0 is
     obviously wrong.
 
-    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
     #include <Inventor/Qt/SoQt.h>
     #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
-    
+
     #include <Inventor/nodes/SoEventCallback.h>
     #include <Inventor/nodes/SoSeparator.h>
     #include <Inventor/nodes/SoText3.h>
@@ -1277,15 +1277,15 @@
     #include <Inventor/manips/SoClipPlaneManip.h>
     #include <Inventor/events/SoMouseButtonEvent.h>
     #include <Inventor/errors/SoDebugError.h>
-    
+
     SoClipPlaneManip * clipplane;
-    
+
     // *************************************************************************
-    
+
     void mySelectionC(void *ud, SoEventCallback *n)
     {
       const SoMouseButtonEvent * mbe = (SoMouseButtonEvent*) n->getEvent();
-    
+
       if ((mbe->getButton() == SoMouseButtonEvent::BUTTON1) &&
           (mbe->getState() == SoButtonEvent::DOWN)) {
         SbVec3f v = clipplane->draggerPosition.getValue();
@@ -1293,37 +1293,37 @@
                                v[0], v[1], v[2]);
       }
     }
-    
+
     int
     main(int argc, char ** argv)
     {
       QWidget * window = SoQt::init(argv[0]);
-    
+
       SoSeparator * root = new SoSeparator;
       root->ref();
-    
-      SoEventCallback * ecb = new SoEventCallback; 
+
+      SoEventCallback * ecb = new SoEventCallback;
       ecb->addEventCallback(SoMouseButtonEvent::getClassTypeId(), mySelectionC, 0);
       root->addChild(ecb);
-    
+
       SoTransformSeparator * transsep = new SoTransformSeparator;
-    
+
       clipplane = new SoClipPlaneManip;
       transsep->addChild(clipplane);
       root->addChild(transsep);
-    
+
       SoQtExaminerViewer * viewer = new SoQtExaminerViewer(window);
       viewer->setSceneGraph(root);
       viewer->show();
       SoQt::show(window);
       SoQt::mainLoop();
-    
+
       root->unref();
-    
+
       delete viewer;
       return 0;
     }
-    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
 
     20030226 mortene.
 
@@ -1331,13 +1331,13 @@
 
 059 VRML97 file crashes Coin.
 
-    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
     #VRML V2.0 utf8
 
     Group {
       children
-    }  
-    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+    }
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
 
     Partly tracked down: there is something fishy about how we handle
     empty group nodes -- it seems like a NULL pointer get added to the
@@ -1350,19 +1350,19 @@
 
     UPDATE: kintel also had a related bug report. This file:
 
-    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
     #VRML V2.0 utf8
-    
+
     PROTO Object [ field MFNode children NULL ] {
       Group {
         children IS children
       }
     }
-    
-    Object { }
-    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
 
-    ..causes the following assert: 
+    Object { }
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
+
+    ..causes the following assert:
 
         Coin-2/src/nodes/SoGroup.cpp:323: void SoGroup::getBoundingBox
         (SoGetBoundingBoxAction *): Assertion `this->getNumChildren()
@@ -1382,7 +1382,7 @@
 
       ----8<---- [snip] ---------8<---- [snip] ---------8<----
       #VRML V2.0 utf8
-      
+
       Transform {
         children Shape {
           geometry IndexedFaceSet {
@@ -1397,7 +1397,7 @@
 
       ----8<---- [snip] ---------8<---- [snip] ---------8<----
       #VRML V2.0 utf8
-      
+
       Group {
         children
               Group {
@@ -1420,7 +1420,7 @@
     The following VRML97 file causes an assert:
 
     #VRML V2.0 utf8
-    
+
     Transform {
       scale 1 1 1e40
       children Shape {
@@ -1432,9 +1432,9 @@
     &, const SbVec3f &): Assertion `0' failed.
 
     FIX: The correct thing to do is to track downwards to the "uppermost"
-    place in the call-stack where whatever causes this error condition is 
-    still an _invalid_ condition. Then go one more step down and catch the 
-    problem there (by spitting out a warning and otherwise handle the 
+    place in the call-stack where whatever causes this error condition is
+    still an _invalid_ condition. Then go one more step down and catch the
+    problem there (by spitting out a warning and otherwise handle the
     condition gracefully (don't crash or assert)).
 
     20030312 kintel.
@@ -1448,7 +1448,7 @@
 
     ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
     #VRML V2.0 utf8
-    
+
     Shape {
       appearance Appearance {
         material Material {
@@ -1477,13 +1477,13 @@
     rotate, then translate the dragger. The translation after a
     rotation does not seem to update the center field in the correct
     manner.
-    
+
     ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
     #Inventor V2.1 ascii
-    
+
     Separator {
        Separator {
-    
+
           Translation {
              translation -4 0 0
           }
@@ -1491,7 +1491,7 @@
           }
        }
        TransformSeparator {
-    
+
           Translation {
              translation 0 0 0 =
              USE +0			. center
@@ -1500,7 +1500,7 @@
              rotation 0 0 1  0 =
              USE +0			. rotation
           }
-    
+
           Cube {
              width 10
              height 10
@@ -1508,7 +1508,7 @@
           }
        }
        Separator {
-    
+
           Material {
              diffuseColor 1 1 0
           }
@@ -1561,13 +1561,13 @@
 
     ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
     #VRML V1.0 ascii
-    
+
     Separator {
       Separator {
         Coordinate3 {
           point [ 372031 7.20114e+06    32.4351, 372031 7.20114e+06   -465.843 ]
         }
-        IndexedLineSet { 
+        IndexedLineSet {
           coordIndex [ 0, 1, -1 ]
         }
       }
@@ -1575,7 +1575,7 @@
         Coordinate3 {
           point [ 386603 7.19641e+06    32.1387, 386603 7.19641e+06   -348.644 ]
         }
-        IndexedLineSet { 
+        IndexedLineSet {
           coordIndex [ 0, 1, -1 ]
         }
       }
@@ -1583,7 +1583,7 @@
         Coordinate3 {
           point [ 384767 7.19186e+06    25.2236, 384767 7.19186e+06   -285.863 ]
         }
-        IndexedLineSet { 
+        IndexedLineSet {
           coordIndex [ 0, 1, -1 ]
         }
       }
@@ -1591,7 +1591,7 @@
         Coordinate3 {
           point [ 377824 7.20872e+06    32.4382, 377824 7.20872e+06   -329.9802 ]
         }
-        IndexedLineSet { 
+        IndexedLineSet {
           coordIndex [ 0, 1, -1 ]
         }
       }
@@ -1599,7 +1599,7 @@
         Coordinate3 {
           point [ 383236 7.18857e+06    40.1396, 383236 7.18857e+06   -371.016 ]
         }
-        IndexedLineSet { 
+        IndexedLineSet {
           coordIndex [ 0, 1, -1 ]
         }
       }
@@ -1623,7 +1623,7 @@
     --------------8<----------- [snip] ------------------8<--------
     #include <Inventor/SoDB.h>
     #include <Inventor/events/SoMouseButtonEvent.h>
-    
+
     int
     main(int argc, char ** argv)
     {
@@ -1646,16 +1646,16 @@
     --------------8<----------- [snip] ------------------8<--------
     I'm trying to port ivperf to Windows, and came across this strange
     problem -
-    
+
     When it calls SoNode::copyContents, I get an assert thrown in
     SoFieldContainer::findCopy (which was called from
     SoMFNode::fixCopy).  It complains that the "copiedinstancestack"
     hasn't been created. (line 735)
-    
+
     Now, looking at the code, it appears that the copiedinstancestack
     and friends only get created by a call from SoNode::copy, not
     SoNode::copyContents.  Is this a bug in Coin or ivperf?
-    
+
     I had a brief look through the SGI Inventor source, and it appears
     that their findCopy would return NULL if the dictionary hadn't
     been created. Is this the correct behaviour?
@@ -1698,56 +1698,56 @@
     #include <Inventor/nodekits/SoNodeKit.h>
     #include <Inventor/nodekits/SoBaseKit.h>
     #include <Inventor/nodes/SoGroup.h>
-    
+
     class SoTestKit : public SoBaseKit
     {
       SO_KIT_HEADER(SoTestKit);
       SO_KIT_CATALOG_ENTRY_HEADER(A);
-      
-     public:      
-      static void initClass();      
+
+     public:
+      static void initClass();
       SoTestKit();
     };
-    
-    
-    
+
+
+
     SO_KIT_SOURCE(SoTestKit);
-    
+
     void
-    SoTestKit::initClass() 
+    SoTestKit::initClass()
     {
        SO_KIT_INIT_CLASS(SoTestKit, SoBaseKit, "BaseKit");
     };
-    
+
     SoTestKit::SoTestKit()
     {
        SO_KIT_CONSTRUCTOR(SoTestKit);
-    
+
        SO_KIT_ADD_CATALOG_ENTRY(A, SoGroup, FALSE, this, \x0, TRUE );
-    
+
        SO_KIT_INIT_INSTANCE();
     };
-    
+
     int
     main(int argc, char ** argv)
     {
       SoDB::init();
       SoNodeKit::init();
       SoTestKit::initClass();
-    
+
       SoTestKit * testkit = new SoTestKit();
       testkit->ref();
-    
+
       char * buf = (char*)malloc(1024);
       SoOutput out;
       out.setBuffer(buf, 1024, realloc);
       out.setBinary(TRUE);
-    
+
       SoWriteAction wa(&out);
       wa.apply(testkit);
-    
+
       testkit->unref();
-    
+
       return 0;
     }
     --------------8<----------- [snip] ------------------8<--------
@@ -1768,20 +1768,20 @@
 
     --------------8<----------- [snip] ------------------8<--------
     #Inventor V2.1 ascii
-    
+
     Separator {
        Separator {
           Complexity { textureQuality 0.1 }
-    
+
           DEF mytex Texture2 {
              image 2 2 3
              0xffffff 0x00ff00   # white   green
              0xff0000 0xffff00   #  red    yellow
           }
-    
+
           Cube { }
        }
-    
+
        Separator {
           Complexity { textureQuality 1.0 }
           USE mytex
@@ -1818,14 +1818,14 @@
 
     --------------8<----------- [snip] ------------------8<--------
     #Inventor V2.1 ascii
-    
+
     Separator {
       Texture2 {
          image 2 2 3
          0xffffff 0x00ff00   # white   green
          0xff0000 0xffff00   #  red    yellow
       }
-    
+
       Complexity { textureQuality 0 }
 
       Cube { }
@@ -1923,18 +1923,18 @@
 
     --------------8<----------- [snip] ------------------8<--------
     #Inventor V2.1 ascii
-    
+
     Separator {
        Coordinate3 { point [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ] }
-    
+
        BaseColor { rgb 0 0.5 0 }
        FaceSet { numVertices [ 4 ] }
-    
+
        PolygonOffset {
          styles LINES
          units -1.0
        }
-    
+
        BaseColor { rgb 1 1 0 }
        IndexedLineSet { coordIndex [ 0, 1, 2, 3, 0, 2, -1, 1, 3 -1 ] }
     }
@@ -1960,29 +1960,29 @@
 
     --------------8<----------- [snip] ------------------8<--------
     #Inventor V2.1 ascii
-    
-    Complexity { textureQuality 0.1 } # set low to avoid smoothing                  
-    ShapeHints { 
-      shapeType SOLID 
+
+    Complexity { textureQuality 0.1 } # set low to avoid smoothing
+    ShapeHints {
+      shapeType SOLID
       vertexOrdering COUNTERCLOCKWISE
     }
-    TransparencyType { value SORTED_OBJECT_SORTED_TRIANGLE_BLEND }          
+    TransparencyType { value SORTED_OBJECT_SORTED_TRIANGLE_BLEND }
     Texture2 {
        image 2 2 4
-    
+
        0xffffffff 0x00ff0088   # white   green
        0xff0000ff 0xffff00ff   #  red    yellow
     }
-    
+
     Cube { }
-    
+
     Translation { translation 0 0 5 }
     Cone { }
 
     --------------8<----------- [snip] ------------------8<--------
 
     This is a serious error, and a high priority item.
-  
+
     20031013 mortene.
 
     It's quite easy to fix. If you set up your viewer to use some
@@ -1993,8 +1993,8 @@
     TRUE for shapes that need to be sorted, so that when the viewer
     transparency is set to SCREEN_DOOR, the shapes are still sorted
     (not just delayed) when rendering.
-    
-    20031014 pederb 
+
+    20031014 pederb
 
 =====================================================================
 
@@ -2037,8 +2037,8 @@
     This extremely unlikely assertion has started to occur lately:
 
     -----8<------ [snip] ------------8<------ [snip] -------
-    SoGL.cpp:77: const cc_glglue* sogl_glue_instance(const SoState*): 
-    Assertion `action->isOfType(SoGLRenderAction::getClassTypeId()) && "must 
+    SoGL.cpp:77: const cc_glglue* sogl_glue_instance(const SoState*):
+    Assertion `action->isOfType(SoGLRenderAction::getClassTypeId()) && "must
     have state from SoGLRenderAction to get hold of GL wrapper"' failed.
     -----8<------ [snip] ------------8<------ [snip] -------
 
@@ -2118,7 +2118,7 @@
         so they added a __builtin_expect function for gcc3 compilers
         to make use of its branch prediction feature. not a bad idea
         actually, but why does it break?
-        
+
         [...] i then tested the new macro assertion with my gcc-3.2.3
         compiler on my gentoo box and it also did not pass the
         assertion.
@@ -2128,7 +2128,7 @@
                  "must have state from SoGLRenderAction to get hold of GL wrapper");
         to:
           assert((action->isOfType(SoGLRenderAction::getClassTypeId()) == 1) &&
-                 "must have state from SoGLRenderAction to get hold of GL wrapper"); 
+                 "must have state from SoGLRenderAction to get hold of GL wrapper");
         everything was back to normal.
 
         but why??? the __builtin_expect(!!epxr, 1) ? : ; construct
@@ -2165,10 +2165,10 @@
           //Y (const Y& y) : _y(y._y) {}
           int _y;
         };
-        
+
         bool foo() { return true; }
         Y bar() { return Y(); }
-        
+
         int main()
         {
           assert (bar()._y==0);
@@ -2179,7 +2179,7 @@
 
         If one uncomments the copy constructor above everything works
         again.
-        
+
         Bugzilla entry (patches to gcc at the very end):
         http://gcc.gnu.org/bugzilla/show_bug.cgi?id=13239
 
@@ -2471,7 +2471,7 @@ end
     investigated further.
 
     It also hangs with SGI Inventor.
-  
+
     20031119 mortene. Problem reported by Cristian Luciano.
 
 =====================================================================
@@ -3161,12 +3161,12 @@ diff -u -r1.46 SoGetBoundingBoxAction.cpp
 +++ src/actions/SoGetBoundingBoxAction.cpp	17 Oct 2003 14:29:01 -0000
 @@ -498,7 +498,7 @@
    }
- 
+
    xfbox.transform(transform);
 -  this->bbox.extendBy(xfbox);
 +  this->bbox.extendBy(xfbox.project());
  }
- 
+
  /*! \overload */
 
 -----8<------ [snip] ------------8<------ [snip] -------
@@ -3554,9 +3554,9 @@ diff -u -r1.6 SoGLnonindexedTristripSetTemplate.icc
 --- src/misc/SoGLnonindexedTristripSetTemplate.icc	14 Feb 2003 17:31:28 -0000	1.6
 +++ src/misc/SoGLnonindexedTristripSetTemplate.icc	20 Nov 2003 12:43:03 -0000
 @@ -67,8 +67,12 @@
- 
+
      glBegin(GL_TRIANGLE_STRIP);
- 
+
 +#if NBINDING==PER_VERTEX || NBINDING==PER_STRIP || NBINDING==PER_FACE
  #if NBINDING==PER_VERTEX || NBINDING==PER_STRIP
      currnormal = normals++;
@@ -3569,7 +3569,7 @@ diff -u -r1.6 SoGLnonindexedTristripSetTemplate.icc
 @@ -80,8 +84,12 @@
      SEND_VERTEX(idx);
      idx++;
-     
+
 +#if NBINDING==PER_VERTEX || NBINDING==PER_FACE
  #if NBINDING==PER_VERTEX
      currnormal = normals++;
@@ -3697,7 +3697,7 @@ main(int argc, char ** argv)
   SoSeparator * sep = SoDB::readAll(&in);
   assert(sep);
   return 0;
-}    
+}
 ----------8<--------------- [snip] ------------8<--------------- [snip] --
 
     Fairly obscure and easy to work around, so don't consider this a
@@ -3749,3 +3749,52 @@ main(int argc, char ** argv)
 
     20040218 larsa
 
+=====================================================================
+
+104 Unhelpful read error message.
+
+    Trying to load the faulty iv-file below will correctly terminate
+    the import operation with an error message, but the error message
+    is really lousy:
+
+    --------8<------------- [snip] --------------8<------------- [snip]
+    #Inventor V2.1 ascii
+
+    SeparatorKit {
+      childList {
+        ShapeKit {
+          shape Cone{}
+        }
+      }
+    }
+    --------8<------------- [snip] --------------8<------------- [snip]
+
+    Results in:
+
+        Coin read error: Expected '}'; got '{'
+                Occurred at line   4 in hepp.iv
+
+    ...which just seems wrong, or at least completely unhelpful.
+
+    This is a low priority item.
+
+    Just for reference, the corrected iv-file in this case would look
+    something like this:
+
+    --------8<------------- [snip] --------------8<------------- [snip]
+    #Inventor V2.1 ascii
+
+    SeparatorKit {
+      childList NodeKitListPart {
+        containerNode Group {
+          ShapeKit {
+            shape Cone { }
+          }
+        }
+      }
+    }
+    --------8<------------- [snip] --------------8<------------- [snip]
+
+    20040220 mortene.
+
+=====================================================================
