@@ -42,9 +42,8 @@
 
 #ifdef HAVE_THREADS
 static cc_mutex * cc_error_mutex = NULL;
+static void cc_error_mutex_cleanup(void) { if (cc_error_mutex) { cc_mutex_destruct(cc_error_mutex); cc_error_mutex = NULL; } }
 #endif /* HAVE_THREADS */
-
-
 
 /* FIXME: should be hidden from public API, and only visible to
    subclasses. 20020526 mortene. */
@@ -114,6 +113,7 @@ cc_error_handle(cc_error * me)
     cc_mutex_global_lock();
     if (cc_error_mutex == NULL) {
       cc_error_mutex = cc_mutex_construct();
+      coin_atexit(cc_error_mutex_cleanup, 0);
     }
     cc_mutex_global_unlock();
   }
