@@ -21,11 +21,19 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
 #include "AudioTools.h"
 #include <stdio.h>
 #include <assert.h>
-#include <AL/altypes.h>
 #include <Inventor/SbString.h>
+
+#ifdef HAVE_OPENAL
+#include <AL/altypes.h>
+#endif // HAVE_OPENAL
+
 
 // There are some differences in error defines between different
 // versions of OpenAL, and we try to fix them up below.
