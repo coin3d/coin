@@ -434,10 +434,6 @@ INPUT                  = @coin_build_dir@/include/Inventor/SbBasic.h \
                          @coin_src_dir@/include/Inventor/nodes/SoProfileCoordinate3.h \
                          @coin_src_dir@/src/nodes/SoShapeHints.cpp \
                          @coin_src_dir@/include/Inventor/nodes/SoShapeHints.h \
-                         @coin_src_dir@/src/nodes/SoAnnoText3.cpp \
-                         @coin_src_dir@/include/Inventor/nodes/SoAnnoText3.h \
-                         @coin_src_dir@/src/nodes/SoAnnoText3Property.cpp \
-                         @coin_src_dir@/include/Inventor/nodes/SoAnnoText3Property.h \
                          @coin_src_dir@/src/nodes/SoAnnotation.cpp \
                          @coin_src_dir@/include/Inventor/nodes/SoAnnotation.h \
                          @coin_src_dir@/src/nodes/SoArray.cpp \
@@ -472,8 +468,6 @@ INPUT                  = @coin_build_dir@/include/Inventor/SbBasic.h \
                          @coin_src_dir@/include/Inventor/nodes/SoLOD.h \
                          @coin_src_dir@/src/nodes/SoLevelOfDetail.cpp \
                          @coin_src_dir@/include/Inventor/nodes/SoLevelOfDetail.h \
-                         @coin_src_dir@/src/nodes/SoLevelOfSimplification.cpp \
-                         @coin_src_dir@/include/Inventor/nodes/SoLevelOfSimplification.h \
                          @coin_src_dir@/src/nodes/SoLineSet.cpp \
                          @coin_src_dir@/include/Inventor/nodes/SoLineSet.h \
                          @coin_src_dir@/src/nodes/SoLocateHighlight.cpp \
