@@ -573,8 +573,8 @@ install-exec-local:
 install-data-local:
 	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
 	if test -s "$$basename.lib"; then \
-	  $(mkinstalldirs) "$(DESTDIR)$(bindir)"; \
-	  $(INSTALL_DATA) "$$basename.lib" "$(DESTDIR)$(bindir)/$$basename.lib"; \
+	  $(mkinstalldirs) "$(DESTDIR)$(libdir)"; \
+	  $(INSTALL_DATA) "$$basename.lib" "$(DESTDIR)$(libdir)/$$basename.lib"; \
 	fi
 
 uninstall-local:
