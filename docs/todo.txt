@@ -61,13 +61,14 @@ STUFF TO FIX IN COIN
   measure the process/CPU-time for just the current thread to get
   proper data for this type of profiling.
 
-  There's an ANSI C function "clock()" which gives us the CPU time.
+  There's an ANSI C function -- clock() -- which gives us the CPU
+  time used by a process.
 
   If that doesn't do what we want, on MSWin we could use
-  "GetProcessTimes()" and there's a POSIX function for doing it on
-  UNIX-style platforms; "times()" (plus we need to use the POSIX
-  "sysconf(_SC_CLK_TCK)" to find the clocktick value to multiply
-  with).
+  GetProcessTimes() or GetThreadTimes(), and there's a POSIX function
+  for doing it on UNIX-style platforms; times() (plus we need to use
+  the POSIX sysconf(_SC_CLK_TCK) to find the clocktick value to
+  multiply with).
 
   Interface suggestion:
 
@@ -113,3 +114,12 @@ STUFF TO FIX IN COIN
   As part of this, we should audit to check that all relevant
   shape-type nodes uses the SoBoundingBoxCaches::setHasLinesOrPoints()
   method.
+
+
+* Clean up the file versioning mess
+  2001-11-28  Morten Eriksen  <mortene@sim.no>
+
+  Scenegraphs exported through the SoWriteAction should have a correct
+  header to reflect the actual contents. As it is now, everything is
+  just written as Inventor v2.1, even if there are nodes from Inventor
+  >2.1, or nodes specific for Coin.
