@@ -1,4 +1,4 @@
-//$ TEMPLATE ActionClassTypeSource( _actionname_ )
+//$ TEMPLATE ActionClassTypeSource(_actionname_)
 
 SoType _actionname_::classTypeId = SoType::badType();
 

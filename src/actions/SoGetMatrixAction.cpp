@@ -34,8 +34,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource( SoGetMatrixAction )
-//$ BEGIN TEMPLATE ActionClassTypeSource( SoGetMatrixAction )
+//$ BEGIN TEMPLATE ActionSource(SoGetMatrixAction)
 
 SoType SoGetMatrixAction::classTypeId = SoType::badType();
 
@@ -56,7 +55,6 @@ SoGetMatrixAction::getTypeId(void) const
 {
   return classTypeId;
 }
-//$ END TEMPLATE ActionClassTypeSource
 
 #include <assert.h>
 
@@ -116,7 +114,7 @@ SoGetMatrixAction::enableElement(const SoType type, const int stackIndex)
 void
 SoGetMatrixAction::initClass()
 {
-//$ BEGIN TEMPLATE InitActionSource( SoGetMatrixAction )
+//$ BEGIN TEMPLATE InitActionSource(SoGetMatrixAction)
   assert(SoGetMatrixAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 

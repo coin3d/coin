@@ -55,8 +55,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource( SoGetBoundingBoxAction )
-//$ BEGIN TEMPLATE ActionClassTypeSource( SoGetBoundingBoxAction )
+//$ BEGIN TEMPLATE ActionSource(SoGetBoundingBoxAction)
 
 SoType SoGetBoundingBoxAction::classTypeId = SoType::badType();
 
@@ -77,7 +76,6 @@ SoGetBoundingBoxAction::getTypeId(void) const
 {
   return classTypeId;
 }
-//$ END TEMPLATE ActionClassTypeSource
 
 #include <assert.h>
 
@@ -167,7 +165,7 @@ SoGetBoundingBoxAction::~SoGetBoundingBoxAction()
 void
 SoGetBoundingBoxAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource( SoGetBoundingBoxAction )
+//$ BEGIN TEMPLATE InitActionSource(SoGetBoundingBoxAction)
   assert(SoGetBoundingBoxAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 

@@ -1,9 +1,9 @@
-//$ TEMPLATE InitActionSource( actionName )
-  assert(actionName::getClassTypeId() == SoType::badType());
+//$ TEMPLATE InitActionSource(_actionname_)
+  assert(_actionname_::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  actionName::classTypeId = 
+  _actionname_::classTypeId =
       SoType::createType(inherited::getClassTypeId(),
-                         #actionName);
+                         #_actionname_);
   enabledElements = new SoEnabledElementsList(inherited::enabledElements);
   methods = new SoActionMethodList(inherited::methods);

@@ -83,8 +83,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource( SoCallbackAction )
-//$ BEGIN TEMPLATE ActionClassTypeSource( SoCallbackAction )
+//$ BEGIN TEMPLATE ActionSource(SoCallbackAction)
 
 SoType SoCallbackAction::classTypeId = SoType::badType();
 
@@ -105,13 +104,8 @@ SoCallbackAction::getTypeId(void) const
 {
   return classTypeId;
 }
-//$ END TEMPLATE ActionClassTypeSource
 
 #include <assert.h>
-
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 // static variables
 SoEnabledElementsList * SoCallbackAction::enabledElements;
@@ -169,7 +163,7 @@ SoCallbackAction::enableElement(const SoType type, const int stackIndex)
 void
 SoCallbackAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource( SoCallbackAction )
+//$ BEGIN TEMPLATE InitActionSource(SoCallbackAction)
   assert(SoCallbackAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 

@@ -40,8 +40,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource( SoWriteAction )
-//$ BEGIN TEMPLATE ActionClassTypeSource( SoWriteAction )
+//$ BEGIN TEMPLATE ActionSource(SoWriteAction)
 
 SoType SoWriteAction::classTypeId = SoType::badType();
 
@@ -62,7 +61,6 @@ SoWriteAction::getTypeId(void) const
 {
   return classTypeId;
 }
-//$ END TEMPLATE ActionClassTypeSource
 
 #include <assert.h>
 
@@ -121,7 +119,7 @@ SoWriteAction::enableElement(const SoType type, const int stackIndex)
 void
 SoWriteAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource( SoWriteAction )
+//$ BEGIN TEMPLATE InitActionSource(SoWriteAction)
   assert(SoWriteAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 

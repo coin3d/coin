@@ -41,8 +41,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource( SoPickAction )
-//$ BEGIN TEMPLATE ActionClassTypeSource( SoPickAction )
+//$ BEGIN TEMPLATE ActionSource(SoPickAction)
 
 SoType SoPickAction::classTypeId = SoType::badType();
 
@@ -63,7 +62,6 @@ SoPickAction::getTypeId(void) const
 {
   return classTypeId;
 }
-//$ END TEMPLATE ActionClassTypeSource
 
 #include <assert.h>
 
@@ -123,7 +121,7 @@ SoPickAction::enableElement(const SoType type, const int stackIndex)
 void
 SoPickAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource( SoPickAction )
+//$ BEGIN TEMPLATE InitActionSource(SoPickAction)
   assert(SoPickAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 

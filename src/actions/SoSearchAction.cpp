@@ -54,8 +54,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource( SoSearchAction )
-//$ BEGIN TEMPLATE ActionClassTypeSource( SoSearchAction )
+//$ BEGIN TEMPLATE ActionSource(SoSearchAction)
 
 SoType SoSearchAction::classTypeId = SoType::badType();
 
@@ -76,7 +75,6 @@ SoSearchAction::getTypeId(void) const
 {
   return classTypeId;
 }
-//$ END TEMPLATE ActionClassTypeSource
 
 #include <assert.h>
 
@@ -136,7 +134,7 @@ SoSearchAction::enableElement(const SoType type, const int stackIndex)
 void
 SoSearchAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource( SoSearchAction )
+//$ BEGIN TEMPLATE InitActionSource(SoSearchAction)
   assert(SoSearchAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 

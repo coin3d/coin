@@ -44,8 +44,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource( SoBoxHighlightRenderAction )
-//$ BEGIN TEMPLATE ActionClassTypeSource( SoBoxHighlightRenderAction )
+//$ BEGIN TEMPLATE ActionSource(SoBoxHighlightRenderAction)
 
 SoType SoBoxHighlightRenderAction::classTypeId = SoType::badType();
 
@@ -66,7 +65,6 @@ SoBoxHighlightRenderAction::getTypeId(void) const
 {
   return classTypeId;
 }
-//$ END TEMPLATE ActionClassTypeSource
 
 #include <assert.h>
 
@@ -126,7 +124,7 @@ SoBoxHighlightRenderAction::enableElement(const SoType type, const int stackInde
 void
 SoBoxHighlightRenderAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource( SoBoxHighlightRenderAction )
+//$ BEGIN TEMPLATE InitActionSource(SoBoxHighlightRenderAction)
   assert(SoBoxHighlightRenderAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 

@@ -28,8 +28,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource( SoReorganizeAction )
-//$ BEGIN TEMPLATE ActionClassTypeSource( SoReorganizeAction )
+//$ BEGIN TEMPLATE ActionSource(SoReorganizeAction)
 
 SoType SoReorganizeAction::classTypeId = SoType::badType();
 
@@ -50,7 +49,6 @@ SoReorganizeAction::getTypeId(void) const
 {
   return classTypeId;
 }
-//$ END TEMPLATE ActionClassTypeSource
 
 #include <assert.h>
 
@@ -110,7 +108,7 @@ SoReorganizeAction::enableElement(const SoType type, const int stackIndex)
 void
 SoReorganizeAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource( SoReorganizeAction )
+//$ BEGIN TEMPLATE InitActionSource(SoReorganizeAction)
   assert(SoReorganizeAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 

@@ -29,8 +29,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource( SoToVRML2Action )
-//$ BEGIN TEMPLATE ActionClassTypeSource( SoToVRML2Action )
+//$ BEGIN TEMPLATE ActionSource(SoToVRML2Action)
 
 SoType SoToVRML2Action::classTypeId = SoType::badType();
 
@@ -51,7 +50,6 @@ SoToVRML2Action::getTypeId(void) const
 {
   return classTypeId;
 }
-//$ END TEMPLATE ActionClassTypeSource
 
 #include <assert.h>
 
@@ -111,7 +109,7 @@ SoToVRML2Action::enableElement(const SoType type, const int stackIndex)
 void
 SoToVRML2Action::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource( SoToVRML2Action )
+//$ BEGIN TEMPLATE InitActionSource(SoToVRML2Action)
   assert(SoToVRML2Action::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 

@@ -43,6 +43,10 @@
 #include <float.h>
 #include <math.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 #if !defined(COIN_EXCLUDE_SOSHAPE)
 #include <Inventor/nodes/SoShape.h>
 #endif // !COIN_EXCLUDE_SOSHAPE
@@ -77,8 +81,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource( SoRayPickAction )
-//$ BEGIN TEMPLATE ActionClassTypeSource( SoRayPickAction )
+//$ BEGIN TEMPLATE ActionSource(SoRayPickAction)
 
 SoType SoRayPickAction::classTypeId = SoType::badType();
 
@@ -99,13 +102,8 @@ SoRayPickAction::getTypeId(void) const
 {
   return classTypeId;
 }
-//$ END TEMPLATE ActionClassTypeSource
 
 #include <assert.h>
-
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 // static variables
 SoEnabledElementsList * SoRayPickAction::enabledElements;
@@ -163,7 +161,7 @@ SoRayPickAction::enableElement(const SoType type, const int stackIndex)
 void
 SoRayPickAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource( SoRayPickAction )
+//$ BEGIN TEMPLATE InitActionSource(SoRayPickAction)
   assert(SoRayPickAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 

@@ -41,8 +41,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource( SoHandleEventAction )
-//$ BEGIN TEMPLATE ActionClassTypeSource( SoHandleEventAction )
+//$ BEGIN TEMPLATE ActionSource(SoHandleEventAction)
 
 SoType SoHandleEventAction::classTypeId = SoType::badType();
 
@@ -63,7 +62,6 @@ SoHandleEventAction::getTypeId(void) const
 {
   return classTypeId;
 }
-//$ END TEMPLATE ActionClassTypeSource
 
 #include <assert.h>
 
@@ -123,7 +121,7 @@ SoHandleEventAction::enableElement(const SoType type, const int stackIndex)
 void
 SoHandleEventAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource( SoHandleEventAction )
+//$ BEGIN TEMPLATE InitActionSource(SoHandleEventAction)
   assert(SoHandleEventAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 

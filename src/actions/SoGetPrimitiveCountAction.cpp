@@ -33,8 +33,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource( SoGetPrimitiveCountAction )
-//$ BEGIN TEMPLATE ActionClassTypeSource( SoGetPrimitiveCountAction )
+//$ BEGIN TEMPLATE ActionSource(SoGetPrimitiveCountAction)
 
 SoType SoGetPrimitiveCountAction::classTypeId = SoType::badType();
 
@@ -55,7 +54,6 @@ SoGetPrimitiveCountAction::getTypeId(void) const
 {
   return classTypeId;
 }
-//$ END TEMPLATE ActionClassTypeSource
 
 #include <assert.h>
 
@@ -115,7 +113,7 @@ SoGetPrimitiveCountAction::enableElement(const SoType type, const int stackIndex
 void
 SoGetPrimitiveCountAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource( SoGetPrimitiveCountAction )
+//$ BEGIN TEMPLATE InitActionSource(SoGetPrimitiveCountAction)
   assert(SoGetPrimitiveCountAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 

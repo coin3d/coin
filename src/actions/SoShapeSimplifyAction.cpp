@@ -29,8 +29,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource( SoShapeSimplifyAction )
-//$ BEGIN TEMPLATE ActionClassTypeSource( SoShapeSimplifyAction )
+//$ BEGIN TEMPLATE ActionSource(SoShapeSimplifyAction)
 
 SoType SoShapeSimplifyAction::classTypeId = SoType::badType();
 
@@ -51,7 +50,6 @@ SoShapeSimplifyAction::getTypeId(void) const
 {
   return classTypeId;
 }
-//$ END TEMPLATE ActionClassTypeSource
 
 #include <assert.h>
 
@@ -111,7 +109,7 @@ SoShapeSimplifyAction::enableElement(const SoType type, const int stackIndex)
 void
 SoShapeSimplifyAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource( SoShapeSimplifyAction )
+//$ BEGIN TEMPLATE InitActionSource(SoShapeSimplifyAction)
   assert(SoShapeSimplifyAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 

@@ -31,7 +31,7 @@ _actionname_::getEnabledElements(void) const
   This method adds a method to be perfomed by the action class on the given
   node type.
 */
-void 
+void
 _actionname_::addMethod(const SoType type, SoActionMethod method)
 {
   assert(methods);
@@ -41,7 +41,7 @@ _actionname_::addMethod(const SoType type, SoActionMethod method)
 /*!
   This method enables an element in the state stack for the action class.
 */
-void 
+void
 _actionname_::enableElement(const SoType type, const int stackIndex)
 {
   assert(enabledElements);
