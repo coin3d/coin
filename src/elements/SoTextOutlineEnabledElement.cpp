@@ -27,6 +27,9 @@
   \ingroup elements
 
   FIXME: write doc.
+
+  \since Coin 1.0
+  \since TGS Inventor 2.4
 */
 
 
@@ -61,7 +64,7 @@ SoTextOutlineEnabledElement::set(SoState * const state,
                                  SoNode * const node,
                                  const SbBool enabled)
 {
-    SoInt32Element::set(classStackIndex, state, node, enabled);
+  SoInt32Element::set(classStackIndex, state, node, enabled);
 }
 
 /*!
@@ -99,8 +102,8 @@ SoTextOutlineEnabledElement::getDefault(void)
 void
 SoTextOutlineEnabledElement::init(SoState * state)
 {
-    inherited::init(state);
-    this->data = getDefault();
+  inherited::init(state);
+  this->data = getDefault();
 }
 
 //! FIXME: write doc.
@@ -108,7 +111,7 @@ SoTextOutlineEnabledElement::init(SoState * state)
 void
 SoTextOutlineEnabledElement::push(SoState * state)
 {
-    inherited::push(state);
+  inherited::push(state);
 }
 
 //! FIXME: write doc.
@@ -117,5 +120,5 @@ void
 SoTextOutlineEnabledElement::pop(SoState * state,
                                  const SoElement * prevTopElement)
 {
-    inherited::pop(state, prevTopElement);
+  inherited::pop(state, prevTopElement);
 }

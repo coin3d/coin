@@ -98,6 +98,8 @@
   \sa SoText2, SoAsciiText, SoProfile
 */
 
+// *************************************************************************
+
 #include <Inventor/nodes/SoText3.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/SoPrimitiveVertex.h>
@@ -117,6 +119,7 @@
 #include <Inventor/elements/SoCreaseAngleElement.h>
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoTextOutlineEnabledElement.h>
 #include <Inventor/misc/SoGlyph.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/misc/SoNormalGenerator.h>
@@ -146,6 +149,8 @@
 #endif // COIN_DEBUG
 
 #include "../fonts/glyph3d.h"
+
+// *************************************************************************
 
 /*!
   \enum SoText3::Part
@@ -433,6 +438,22 @@ SoText3::GLRender(SoGLRenderAction * action)
   PRIVATE(this)->lock();
 
   SoState * state = action->getState();
+
+  // FIXME: implement this feature. 20040820 mortene.
+  static SbBool warned = FALSE;
+  if (!warned) {
+    int stackidx = SoTextOutlineEnabledElement::getClassStackIndex();
+    const SoElement * outline = state->getConstElement(stackidx);
+
+    if (outline && SoTextOutlineEnabledElement::get(state)) {
+      SoDebugError::postWarning("SoText3::GLRender",
+                                "Support for rendering SoText3 nodes in outline "
+                                "(i.e. heeding the SoTextOutlineEnabledElement) "
+                                "not yet implemented.");
+      warned = TRUE;
+    }
+  }
+
 
   PRIVATE(this)->setUpGlyphs(state, this);
   SoCacheElement::addCacheDependency(state, PRIVATE(this)->cache);

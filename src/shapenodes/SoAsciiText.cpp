@@ -108,6 +108,8 @@
 
 // FIXME: Write doc about how text is textured. jornskaa 20040716
 
+// *************************************************************************
+
 #include <Inventor/nodes/SoAsciiText.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/SoPrimitiveVertex.h>
@@ -123,6 +125,7 @@
 #include <Inventor/elements/SoComplexityTypeElement.h>
 #include <Inventor/elements/SoComplexityElement.h>
 #include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoTextOutlineEnabledElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/caches/SoGlyphCache.h>
@@ -140,6 +143,7 @@
 
 #include "../fonts/glyph3d.h"
 
+// *************************************************************************
 
 /*!  \enum SoAsciiText::Justification
   The font justification values control the text
@@ -281,6 +285,23 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
 
   PRIVATE(this)->lock();
   SoState * state = action->getState();
+
+  // FIXME: implement this feature. 20040820 mortene.
+  static SbBool warned = FALSE;
+  if (!warned) {
+    int stackidx = SoTextOutlineEnabledElement::getClassStackIndex();
+    const SoElement * outline = state->getConstElement(stackidx);
+
+    if (outline && SoTextOutlineEnabledElement::get(state)) {
+      SoDebugError::postWarning("SoAsciiText::GLRender",
+                                "Support for rendering SoAsciiText nodes in outline "
+                                "(i.e. heeding the SoTextOutlineEnabledElement) "
+                                "not yet implemented.");
+      warned = TRUE;
+    }
+  }
+
+
   PRIVATE(this)->setUpGlyphs(state, this);
   SoCacheElement::addCacheDependency(state, PRIVATE(this)->cache);
 
