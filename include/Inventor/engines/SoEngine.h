@@ -75,6 +75,11 @@ private:
   virtual void destroy(void); // overrides SoBase::destroy()
 
   static SoType classTypeId;
+
+  enum InternalEngineFlags {
+    FLAG_ISNOTIFYING = (1 << 0),
+    FLAG_ISDIRTY = (1 << 1)
+  };
   unsigned int flags;
 };
 

@@ -47,15 +47,13 @@
 */
 
 #include <Inventor/engines/SoEngines.h>
+
 #include <Inventor/engines/SoNodeEngine.h>
 #include <Inventor/engines/SoOutputData.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SoEngineList.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <coindefs.h> // COIN_STUB()
-
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 // FIXME: document these properly. 20000405 mortene.
 /*!
@@ -71,8 +69,6 @@
 // Don't set value explicitly to SoType::badType(), to avoid a bug in
 // Sun CC v4.0. (Bitpattern 0x0000 equals SoType::badType()).
 SoType SoEngine::classTypeId;
-
-#define FLAG_ISNOTIFYING 0x1
 
 /*!
   Default constructor.
@@ -282,6 +278,11 @@ SoEngine::notify(SoNotList * nl)
   if (this->isNotifying()) return;
   this->flags |= FLAG_ISNOTIFYING;
 
+  // The notification invocation could stem from a value change in
+  // whatever this engine is connected to, so we need to be evaluated
+  // on the next attempted read on our output(s).
+  this->flags |= FLAG_ISDIRTY;
+
   // Let engine know that a field changed, so we can recalculate
   // internal variables, if necessary.
   this->inputChanged(nl->getLastField());
@@ -312,15 +313,17 @@ void
 SoEngine::evaluateWrapper(void)
 {
   const SoEngineOutputData * outputs = this->getOutputData();
-
   // For the engines which dynamically allocates input fields and
   // outputs [*], they can be destructed before there's any
   // SoEngineOutputData set up -- for instance upon an error on
-  // import.
+  // import. So we need to check for a NULL value here.
   //
   // [*] (So far, that is: SoGate, SoConcatenate, SoSelectOne,
-  //     SoConvertAll.)
-  if (!outputs) return;
+  //     SoConvertAll.)  
+  if (!outputs) { return; }
+
+  if(!(this->flags & FLAG_ISDIRTY)) { return; }
+  this->flags &= ~FLAG_ISDIRTY;
 
   int i, n = outputs->getNumOutputs();
   for (i = 0; i < n; i++) {

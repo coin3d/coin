@@ -231,16 +231,22 @@ SoEngineOutput::setNodeContainer(SoNodeEngine * nodeengine)
 void
 SoEngineOutput::addConnection(SoField * f)
 {
-  int i = this->slaves.find(f);
 #if COIN_DEBUG
-  if (i != -1) {
+  if (this->slaves.find(f) != -1) {
     SoDebugError::postWarning("SoEngineOutput::addConnection",
                               "connection from %p already made", f);
     return;
   }
 #endif // COIN_DEBUG
+
   this->slaves.append(f);
+
+  // An engine's reference count increases with the number of
+  // connections it has.
   this->getFieldContainer()->ref();
+
+  // Trigger re-evaluation of engine.
+  this->getFieldContainer()->touch();
 }
 
 /*!
