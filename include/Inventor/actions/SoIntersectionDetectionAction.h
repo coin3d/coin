@@ -41,7 +41,7 @@ struct SoIntersectingPrimitive {
 
 class SoIntersectionDetectionActionP;
 
-class SoIntersectionDetectionAction : public SoAction {
+class COIN_DLL_API SoIntersectionDetectionAction : public SoAction {
   typedef SoAction hinherited;
   SO_ACTION_HEADER(SoIntersectionDetectionAction);
 public:
@@ -57,7 +57,7 @@ public:
 
   typedef SoCallbackAction::Response SoIntersectionVisitationCB(void * closure, const SoPath * where);
   typedef SbBool SoIntersectionFilterCB(void * closure, const SoPath * p1, const SoPath * p2);
-  typedef Resp SoIntersectionCB(void * closure, const SoIntersectingPrimitive *, const SoIntersectingPrimitive *);
+  typedef Resp SoIntersectionCB(void * closure, const SoIntersectingPrimitive * p1, const SoIntersectingPrimitive * p2);
 
   void setIntersectionDetectionEpsilon(float epsilon);
   float getIntersectionDetectionEpsilon(void) const;
@@ -73,6 +73,9 @@ public:
 
   void setDraggersEnabled(SbBool enable);
   SbBool isDraggersEnabled(void) const;
+
+  void setShapeInternalsEnabled(SbBool enable);
+  SbBool isShapeInternalsEnabled(void) const;
 
   void addVisitationCallback(SoType type, SoIntersectionVisitationCB * cb, void * closure);
   void removeVisitationCallback(SoType type, SoIntersectionVisitationCB * cb, void * closure);
