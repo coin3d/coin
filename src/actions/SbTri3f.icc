@@ -502,7 +502,7 @@ SbTri3f::getDistance(const SbVec3f & p1, const SbVec3f & p2) const
   SbVec3f kN = edge0.cross(edge1);
   float fNSqrLen = kN.sqrLength();
   float fDot = (p2-p1).dot(kN);
-  bool bNotParallel = (fDot*fDot >= gs_fTolerance*fA00*fNSqrLen);
+  SbBool bNotParallel = (fDot*fDot >= gs_fTolerance*fA00*fNSqrLen);
 
   if (bNotParallel) {
     float fCof00 = fA11*fA22-fA12*fA12;
@@ -904,7 +904,7 @@ SbTri3f::getDistance(const SbVec3f & p1, const SbVec3f & p2) const
   SbVec3f kN = edge0.cross(edge1);
   float fNSqrLen = kN.sqrLength();
   float fDot = (p2-p1).dot(kN);
-  bool bNotParallel = (fDot*fDot >= gs_fTolerance*fA00*fNSqrLen);
+  SbBool bNotParallel = (fDot*fDot >= gs_fTolerance*fA00*fNSqrLen);
   
   if (bNotParallel) {
     float fCof00 = fA11*fA22-fA12*fA12;
