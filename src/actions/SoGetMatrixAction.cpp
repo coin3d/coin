@@ -128,7 +128,7 @@ SoGetMatrixAction::initClass()
   methods = new SoActionMethodList(inherited::methods);
 //$ END TEMPLATE InitActionSource
 
-  ENABLE_ELEMENT(SoViewportRegionElement);
+  SO_ENABLE(SoGetMatrixAction, SoViewportRegionElement);
   //FIXME: enable other elements (check with Toolmaker p.13->) (kintel 1990616)
 }
 

@@ -209,13 +209,13 @@ SoCallbackAction::initClass(void)
   methods = new SoActionMethodList(inherited::methods);
 //$ END TEMPLATE InitActionSource
 
-  ENABLE_ELEMENT(SoViewportRegionElement);
-  ENABLE_ELEMENT(SoDecimationTypeElement);
-  ENABLE_ELEMENT(SoDecimationPercentageElement);
-  ENABLE_ELEMENT(SoOverrideElement);
-  ENABLE_ELEMENT(SoTextureOverrideElement);
-  ENABLE_ELEMENT(SoViewportRegionElement);
-  ENABLE_ELEMENT(SoLazyElement);
+  SO_ENABLE(SoCallbackAction, SoViewportRegionElement);
+  SO_ENABLE(SoCallbackAction, SoDecimationTypeElement);
+  SO_ENABLE(SoCallbackAction, SoDecimationPercentageElement);
+  SO_ENABLE(SoCallbackAction, SoOverrideElement);
+  SO_ENABLE(SoCallbackAction, SoTextureOverrideElement);
+  SO_ENABLE(SoCallbackAction, SoViewportRegionElement);
+  SO_ENABLE(SoCallbackAction, SoLazyElement);
 }
 
 // *************************************************************************

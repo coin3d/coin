@@ -171,7 +171,7 @@ SoGetBoundingBoxAction::initClass(void)
   methods = new SoActionMethodList(inherited::methods);
 //$ END TEMPLATE InitActionSource
 
-  ENABLE_ELEMENT(SoViewportRegionElement);
+  SO_ENABLE(SoGetBoundingBoxAction, SoViewportRegionElement);
 }
 
 // *************************************************************************

@@ -24,30 +24,33 @@
 #include <Inventor/SoType.h>
 #include <Inventor/misc/SoTempPath.h>
 
-// Include instead of forward declaration to be compatible with Open
-// Inventor.
+// Include instead of using a forward declaration to be compatible
+// with Open Inventor (and besides, all the other action class
+// definitions needs to know about the SoActionMethodList).
 #include <Inventor/lists/SoActionMethodList.h>
 
 
 // Avoid problem with HPUX 10.20 C library API headers, which defines
-// IN_PATH in <sys/unistd.h>.
+// IN_PATH in <sys/unistd.h>. IN_PATH is "re-defined" at the end of
+// this file.
 #if defined(IN_PATH)
 #define SOACTION_STORE_INPATH_DEF IN_PATH
 #undef IN_PATH
-#endif /* ERROR */
+#endif // IN_PATH already defined
 
 
+/*!
+  The SO_ENABLE macro is a convenient mechanism for letting an action
+  class specify which elements it needs during its operation.
+*/
+#define SO_ENABLE(action, element) \
+  do { \
+    assert(!element::getClassTypeId().isBad()); \
+    action::enableElement(element::getClassTypeId(), \
+                          element::getClassStackIndex()); \
+  } while (0)
 
-#define SO_ENABLE(actionClass, elementClass) \
-  assert(! elementClass::getClassTypeId().isBad()); \
-  actionClass::enableElement(elementClass::getClassTypeId(), \
-                             elementClass::getClassStackIndex())
 
-#define ENABLE_ELEMENT(element) \
-  assert(! element::getClassTypeId().isBad()); \
-  enableElement(element::getClassTypeId(), element::getClassStackIndex())
-
-class SoCompactPathList;
 class SoEnabledElementsList;
 class SoNode;
 class SoPath;
@@ -57,46 +60,23 @@ class SoState;
 
 class SoAction {
 public:
-  static void initClass(void);
+  enum AppliedCode { NODE = 0, PATH = 1, PATH_LIST = 2 };
+  enum PathCode { NO_PATH = 0, IN_PATH = 1, BELOW_PATH = 2, OFF_PATH = 3 };
 
-  static  SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
-  virtual SbBool isOfType(SoType type) const;
   virtual ~SoAction();
 
-protected:
-  virtual const SoEnabledElementsList & getEnabledElements(void) const;
-  static SoEnabledElementsList * enabledElements;
-  static SoActionMethodList * methods;
+  static void initClass(void);
+  static void initClasses(void);
+  
+  static SoType getClassTypeId(void);
+  virtual SoType getTypeId(void) const = 0;
+  virtual SbBool isOfType(SoType type) const;
 
-private:
-  static SoType classTypeId;
 
-  // end of code defined in template
-
-protected:
-  SoAction(void); // abstract class
-
-public:
-  static void initClasses(void) { initActions(); }; // OI compatibility.
-
-public:
-  virtual void apply(SoNode * rootNode);
+  virtual void apply(SoNode * root);
   virtual void apply(SoPath * path);
-  virtual void apply(const SoPathList & pathList, SbBool obeysRules = FALSE);
+  virtual void apply(const SoPathList & pathlist, SbBool obeysrules = FALSE);
   virtual void invalidateState(void);
-
-  enum AppliedCode { NODE       = 0,
-                     PATH       = 1,
-                     PATH_LIST  = 2
-  };
-
-  enum PathCode {
-    NO_PATH       = 0,
-    IN_PATH       = 1,
-    BELOW_PATH    = 2,
-    OFF_PATH      = 3
-  };
 
   static void nullAction(SoAction * action, SoNode * node);
 
@@ -127,43 +107,51 @@ public:
   void popPushCurPath(const int childIndex);
   void popCurPath(void);
 
-  void switchToPathTraversal(SoPath *path);
-  void switchToNodeTraversal(SoNode *node);
+  void switchToPathTraversal(SoPath * path);
+  void switchToNodeTraversal(SoNode * node);
+
 
 protected:
+  SoAction(void);
+
   virtual void beginTraversal(SoNode * node);
   virtual void endTraversal(SoNode * node);
   void setTerminated(const SbBool flag);
 
+  virtual const SoEnabledElementsList & getEnabledElements(void) const;
   virtual SbBool shouldCompactPathList(void) const;
 
   SoState * state;
   SoActionMethodList * traversalMethods;
+  static SoEnabledElementsList * enabledElements;
+  static SoActionMethodList * methods;
 
 private:
-  static void initActions(void);
+  static SoType classTypeId;
 
-  AppliedCode appliedCode;
+  AppliedCode appliedcode;
+
   union AppliedData {
     SoNode * node;
     SoPath * path;
     struct {
-      const SoPathList * pathList;
-      const SoPathList * origPathList;
-    } pathListData;
-  } appliedData;
+      const SoPathList * pathlist;
+      const SoPathList * origpathlist;
+    } pathlistdata;
+  } applieddata;
 
-  SoTempPath currentPath;
-  SbBool isTerminated;
-  PathCode currentPathCode;
-  int dummyArray[1];
-  int nextInPathChildIndex;
+  SoTempPath currentpath;
+  SbBool terminated;
+  PathCode currentpathcode;
+  int pathcodearray[1];
+  int nextinpathchildindex;
 };
 
-// Avoid problem with HPUX API headers (see above).
+// Avoid problem with HPUX API headers (see near the start of this
+// file).
 #if defined(SOACTION_STORE_INPATH_DEF)
 #define IN_PATH SOACTION_STORE_INPATH_DEF
 #undef SOACTION_STORE_INPATH_DEF
-#endif /* SOACTION_STORE_INPATH_DEF */
+#endif // SOACTION_STORE_INPATH_DEF
 
 #endif // !COIN_SOACTION_H

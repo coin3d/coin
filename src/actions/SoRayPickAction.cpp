@@ -155,9 +155,9 @@ SoRayPickAction::initClass(void)
   methods = new SoActionMethodList(inherited::methods);
 //$ END TEMPLATE InitActionSource
 
-  ENABLE_ELEMENT(SoPickRayElement);
-  ENABLE_ELEMENT(SoViewportRegionElement);
-  ENABLE_ELEMENT(SoOverrideElement);
+  SO_ENABLE(SoRayPickAction, SoPickRayElement);
+  SO_ENABLE(SoRayPickAction, SoViewportRegionElement);
+  SO_ENABLE(SoRayPickAction, SoOverrideElement);
 }
 
 // *************************************************************************

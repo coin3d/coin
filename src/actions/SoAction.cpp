@@ -18,25 +18,33 @@
 \**************************************************************************/
 
 /*!
-  \class SoAction Inventor/actions/SoAction.h
-  \brief The SoAction class is the base class for all traversal methods.
+  \class SoAction SoAction.h Inventor/actions/SoAction.h
+  \brief The SoAction class is the base class for all traversal actions.
+  \ingroup actions
 
-  TODO: doc
+  Applying actions is the basic mechanism in Coin for executing
+  various operations on scene graphs or paths within scene graphs,
+  including search operations, rendering, interaction through picking,
+  etc.
 
-  ...When traversing, lookup is done based on the node type and the
-  action type...
+  See the builtin actions for further information, or look at the
+  example code applications of the Coin library to see how actions are
+  generally used.
+
+  For extending the Coin library with your own action classes, we
+  strongly recommend that you make yourself acquainted with the
+  excellent "The Inventor Toolmaker" book, which describes the tasks
+  involved in detail.
 */
 
-#include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoActions.h>
-#include <coindefs.h> // COIN_STUB()
-
 #include <Inventor/SoType.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/lists/SoPathList.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoNode.h>
+#include <coindefs.h> // COIN_STUB()
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -46,122 +54,99 @@
 
 // *************************************************************************
 
-// static variables
-SoEnabledElementsList * SoAction::enabledElements;
-SoActionMethodList * SoAction::methods;
-SoType SoAction::classTypeId;
+SoEnabledElementsList * SoAction::enabledElements = NULL;
+SoActionMethodList * SoAction::methods = NULL;
+SoType SoAction::classTypeId = SoType::badType();
 
 // *************************************************************************
 
 /*!
-  \fn SoAction::AppliedCode
-
-  FIXME: write doc
+  \enum SoAction::AppliedCode
+  Enumerated values for what the action was applied to.
 */
 
 /*!
-  \fn SoAction::PathCode
-
-  FIXME: write doc.
+  \enum SoAction::PathCode
+  Enumerated values for how the action is applied to a scene graph.
 */
 
 /*!
-  \fn SoAction::state
-
-  FIXME: write doc.
+  \var SoAction::state
+  Pointer to the traversal state instance of the action.
 */
 
 /*!
-  \fn SoAction::traversalMethods
+  \var SoAction::traversalMethods
 
-  FIXME: write doc.
+  Stores the list of "nodetype to actionmethod" mappings for the
+  particular action instance.
 */
 
 /*!
-  \fn SoAction::enabledElements
+  \var SoAction::methods
 
-  FIXME: write doc.
+  Stores the list of default "nodetype to actionmethod" mappings for
+  the action class.
 */
 
 /*!
-  \fn SoAction::methods
+  \var SoAction::enabledElements
 
-  FIXME: write doc.
+  The list of elements enabled during traversals with actions of this
+  type.
 */
 
 // *************************************************************************
 
 /*!
-  This static method returns the SoType run-time type object for the given
-  action class.
+  Default constructor, does all necessary toplevel initialization.
 */
-
-SoType
-SoAction::getClassTypeId()
+SoAction::SoAction(void)
+  : state(NULL),
+    traversalMethods(NULL),
+    appliedcode(NODE),
+    currentpath(8),
+    terminated(FALSE),
+    currentpathcode(NO_PATH)
 {
-  return SoAction::classTypeId;
+  this->applieddata.node = NULL;
 }
 
 /*!
-  This virtual method returns the SoType run-time type object for the given
-  action instance.
+  Destructor, free resources.
 */
-
-SoType
-SoAction::getTypeId() const
+SoAction::~SoAction(void)
 {
-  return SoAction::classTypeId;
+  delete this->state;
 }
 
-/*!
-    Returns \c TRUE if the type of this object is either of the same
-    type or inherited from \a type.
-*/
-SbBool
-SoAction::isOfType(SoType type) const
-{
-  return this->getTypeId().isDerivedFrom(type);
-}
+// *************************************************************************
 
 /*!
-  This static method initializes the run-time type system for the SoAction
-  class, and sets up / prepares the enabled elements and action method list.
+  Initializes the run-time type system for this class, and sets up the
+  enabled elements and action method list.
 */
-
 void
-SoAction::initClass()
+SoAction::initClass(void)
 {
-  SoAction::classTypeId =
-    SoType::createType(SoType::badType(),
-                       SbName("SoAction"));
+  SoAction::classTypeId = SoType::createType(SoType::badType(), "SoAction");
 
+  // Pass NULL pointers for the parent lists.
   SoAction::enabledElements = new SoEnabledElementsList(NULL);
   SoAction::methods = new SoActionMethodList(NULL);
 
-  // Only element enabled in SoAction. Confirmed correct against
-  // OIV. 19990213 mortene.
-  SoAction::enabledElements->enable(SoOverrideElement::getClassTypeId(),
-                                    SoOverrideElement::getClassStackIndex());
+  // Override element is used everywhere.
+  SO_ENABLE(SoActio, SoOverrideElement);
 
-  SoAction::initActions();
+  SoAction::initClasses();
 }
 
-// *************************************************************************
-
 /*!
-  \fn void SoAction::initClasses(void)
-
-  For OI compatibility - just forwards the call to SoAction::initActions().
-
-  \sa void SoAction::initActions()
+  Initialize all the SoAction subclasses. Automatically called from
+  SoAction::initClass().
 */
-
-/*!
-  This static method initializes all the SoAction classes.
-*/
-
 void
-SoAction::initActions()
+SoAction::initClasses(void)
 {
   SoCallbackAction::initClass();
   SoGLRenderAction::initClass();
@@ -183,147 +168,138 @@ SoAction::initActions()
   SoWriteAction::initClass();
 }
 
-// *************************************************************************
-
 /*!
-  The constructor.
+  Returns the run-time type object associated with instances of this
+  class.
 */
-
-SoAction::SoAction()
-  : state(NULL),
-    traversalMethods(NULL),
-    appliedCode(NODE),
-    currentPath(8),
-    isTerminated(FALSE),
-    currentPathCode(NO_PATH)
+SoType
+SoAction::getClassTypeId(void)
 {
-  appliedData.node = NULL;
+  return SoAction::classTypeId;
 }
 
 /*!
-  The destructor.
+  Returns \c TRUE if the type of this object is either of the same
+  type or a subclass of \a type.
 */
-
-SoAction::~SoAction(void)
+SbBool
+SoAction::isOfType(SoType type) const
 {
-  delete this->state;
+  return this->getTypeId().isDerivedFrom(type);
 }
 
 // *************************************************************************
 
 /*!
-  This method applies action to the graph rooted at rootNode.
+  Applies the action to the scene graph rooted at \a root.
 */
-
 void
-SoAction::apply(SoNode * rootNode)
+SoAction::apply(SoNode * root)
 {
-  this->isTerminated = FALSE;
-#if 0 // FIXME: doesn't work with a rootNode == NULL. 19990819 mortene.
-  assert(rootNode);
-  rootNode->ref();
-  this->currentPathCode = NO_PATH;
-  this->appliedData.node = rootNode;
-  this->appliedCode = NODE;
-  if (this->state == NULL)
-    this->state = new SoState(this, getEnabledElements().getElements());
-  this->beginTraversal(rootNode);
-  this->endTraversal(rootNode);
-  this->appliedData.node = NULL;
-  // An action should not trigger node (or node tree) destruction.
-  rootNode->unrefNoDelete();
-#else // FIXME: Handles rootNode == NULL gracefully, not sure if that is a Good Thing, though. 19990819 mortene.
+  this->terminated = FALSE;
 
-  if (rootNode) rootNode->ref();
-  this->currentPathCode = NO_PATH;
-  this->appliedData.node = rootNode;
-  this->appliedCode = NODE;
-  if (rootNode) {
-    if (this->state == NULL)
-      this->state = new SoState(this, getEnabledElements().getElements());
-    this->beginTraversal(rootNode);
-    this->endTraversal(rootNode);
-    this->appliedData.node = NULL;
+  // So the graph is not deallocated during traversal.
+  if (root) root->ref();
+
+  this->currentpathcode = SoAction::NO_PATH;
+  this->applieddata.node = root;
+  this->appliedcode = SoAction::NODE;
+  if (root) {
+    if (!this->state) {
+      const SoTypeList & elementtypes =
+        this->getEnabledElements().getElements();
+      this->state = new SoState(this, elementtypes);
+    }
+
+    this->beginTraversal(root);
+    this->endTraversal(root);
+    this->applieddata.node = NULL;
   }
-  // An action should not trigger node (or node tree) destruction.
-  if (rootNode) rootNode->unrefNoDelete();
-#endif
+
+  if (root) root->unrefNoDelete();
 }
 
 /*!
-  This function applies action to the graph defined by path.
+  Applies the action to the parts of the graph defined by \a path.
 */
-
 void
 SoAction::apply(SoPath * path)
 {
-  this->isTerminated = FALSE;
+  this->terminated = FALSE;
 
-  // ref path's root node?
-  assert(path->getLength() > 0);
-  assert(path->getNode(0));
-  this->currentPathCode = IN_PATH;
-  this->appliedData.path = path;
-  this->appliedCode = PATH;
-  if (this->state == NULL)
-    this->state = new SoState(this, getEnabledElements().getElements());
-  this->beginTraversal(path->getNode(0));
-  this->endTraversal(path->getNode(0));
+  // So the path is not deallocated during traversal.
+  path->ref();
+
+  this->currentpathcode = SoAction::IN_PATH;
+  this->applieddata.path = path;
+  this->appliedcode = SoAction::PATH;
+
+  if (!this->state) {
+    const SoTypeList & elementtypes = this->getEnabledElements().getElements();
+    this->state = new SoState(this, elementtypes);
+  }
+
+  if (path->getLength() && path->getNode(0)) {
+    SoNode * node = path->getNode(0);
+    this->beginTraversal(node);
+    this->endTraversal(node);
+  }
+
+  path->unrefNoDelete();
 }
 
 /*!
-  This function applies action to the graphs defined by a path list.  If
-  obeysRules is set to TRUE, pathList must obey the following four conditions
-  (which is the case for path lists returned from search actions for non-group
-  nodes and path lists returned from picking actions).
+  Applies action to the graphs defined by \a pathlist.  If \a
+  obeysrules is set to \c TRUE, \a pathlist must obey the following
+  four conditions (which is the case for path lists returned from
+  search actions for non-group nodes and path lists returned from
+  picking actions):
 
-  *) all paths must have the same head node.
-  *) all paths must be sorted in traversal order.
-  *) all paths must be unique.
-  *) no path must continue through the end point of another path.
+  All paths must start at the same head node. All paths must be sorted
+  in traversal order. The paths must be unique. No path can continue
+  through the end point of another path.
 */
-
 void
-SoAction::apply(const SoPathList & pathList, SbBool /* obeysRules */)
+SoAction::apply(const SoPathList & pathlist, SbBool obeysrules)
 {
-  this->isTerminated = FALSE;
+  if (pathlist.getLength() == 0) return;
+
+  // FIXME: doesn't check obeysrules. 20000301 mortene.
+
+  this->terminated = FALSE;
 
   // FIXME: temporary code until proper pathlist traversal is implemented
-  assert(pathList.getLength() > 0);
-  assert(pathList[0]->getNode(0));
+  assert(pathlist[0]->getNode(0));
 
-  int n = pathList.getLength();
+  int n = pathlist.getLength();
   if (this->state == NULL)
     this->state = new SoState(this, getEnabledElements().getElements());
 
   for (int i = 0; i < n; i++) {
-    SoPath * path = pathList[i];
-    this->currentPathCode = IN_PATH;
-    this->appliedData.path = path;
-    this->appliedCode = PATH;
+    SoPath * path = pathlist[i];
+    this->currentpathcode = IN_PATH;
+    this->applieddata.path = path;
+    this->appliedcode = PATH;
     this->state->push();
     if (i == 0) {
       this->beginTraversal(path->getNode(0));
     }
     else this->traverse(path->getNode(0));
     this->state->pop();
-    this->appliedData.node = NULL;
+    this->applieddata.node = NULL;
   }
-  this->endTraversal(pathList[0]->getNode(0));
+  this->endTraversal(pathlist[0]->getNode(0));
 }
 
 /*!
-  This function invalidates the state, forcing it to be recreated at the
-  next apply.  This is typically unnecessary in most applications.
+  Invalidates the state, forcing it to be recreated at the next
+  apply() invocation.
 */
-
 void
-SoAction::invalidateState()
+SoAction::invalidateState(void)
 {
-  COIN_STUB();
-  // do what here?
-  // probable use - if the list of enabled elements changes for an action,
-  // the state must be destroyed and recreated at next apply()
+  delete this->state;
+  this->state = NULL;
 }
 
 // *************************************************************************
@@ -346,7 +322,7 @@ SoAction::nullAction(SoAction *, SoNode *)
 SoAction::AppliedCode
 SoAction::getWhatAppliedTo() const
 {
-  return this->appliedCode;
+  return this->appliedcode;
 }
 
 /*!
@@ -358,7 +334,7 @@ SoAction::getWhatAppliedTo() const
 SoNode *
 SoAction::getNodeAppliedTo() const
 {
-  return this->appliedData.node;
+  return this->applieddata.node;
 }
 
 /*!
@@ -370,7 +346,7 @@ SoAction::getNodeAppliedTo() const
 SoPath *
 SoAction::getPathAppliedTo() const
 {
-  return this->appliedData.path;
+  return this->applieddata.path;
 }
 
 /*!
@@ -381,13 +357,13 @@ SoAction::getPathAppliedTo() const
   the path list for efficiency reasons (to conform with the four rules
   mentioned for SoAction::apply()).
 
-  \sa void SoAction::apply(const SoPathList & pathList, SbBool obeysRules)
+  \sa void SoAction::apply(const SoPathList &, SbBool)
 */
 
 const SoPathList *
 SoAction::getPathListAppliedTo() const
 {
-  return this->appliedData.pathListData.pathList;
+  return this->applieddata.pathlistdata.pathlist;
 }
 
 /*!
@@ -399,7 +375,7 @@ SoAction::getPathListAppliedTo() const
 const SoPathList *
 SoAction::getOriginalPathListAppliedto() const
 {
-  return this->appliedData.pathListData.origPathList;
+  return this->applieddata.pathlistdata.origpathlist;
 }
 
 /*!
@@ -423,10 +399,10 @@ SoAction::isLastPathListAppliedTo() const
 SoAction::PathCode
 SoAction::getPathCode(int & numIndices, const int * & indices)
 {
-  if (this->currentPathCode == IN_PATH) {
+  if (this->currentpathcode == IN_PATH) {
     usePathCode(numIndices, indices);
   }
-  return this->currentPathCode;
+  return this->currentpathcode;
 }
 
 /*!
@@ -439,31 +415,31 @@ SoAction::traverse(SoNode * const node)
   //FIXME: if no action method, try parents in inheritance tree up to SoNode
   //SoDebugError::postInfo("SoAction::traverse", "%p\n", node);
   assert(node != NULL);
-  PathCode storedPathCode = this->currentPathCode; // save current path code
-  int storedIndex = this->nextInPathChildIndex;
+  PathCode storedPathCode = this->currentpathcode; // save current path code
+  int storedIndex = this->nextinpathchildindex;
 
   //
   // TODO: write code for PathList
   //
 
-  this->currentPath.append(node);
+  this->currentpath.append(node);
 
-  switch (this->currentPathCode) {
+  switch (this->currentpathcode) {
   case IN_PATH:
     {
-      int idx = this->currentPath.getFullLength();
+      int idx = this->currentpath.getFullLength();
 
-      if (this->appliedData.path->getNode(idx-1) != node) {
-        this->currentPathCode = OFF_PATH;
+      if (this->applieddata.path->getNode(idx-1) != node) {
+        this->currentpathcode = OFF_PATH;
       }
       else { // either in or below path
-        if (idx == this->appliedData.path->getFullLength()) {
-          this->currentPathCode = BELOW_PATH;
+        if (idx == this->applieddata.path->getFullLength()) {
+          this->currentpathcode = BELOW_PATH;
         }
         else {
-          assert(idx < this->appliedData.path->getFullLength());
+          assert(idx < this->applieddata.path->getFullLength());
           assert(node->getChildren());
-          this->nextInPathChildIndex = this->appliedData.path->getIndex(idx);
+          this->nextinpathchildindex = this->applieddata.path->getIndex(idx);
         }
       }
       break;
@@ -509,12 +485,12 @@ SoAction::traverse(SoNode * const node)
   (*this->traversalMethods)
     [SoNode::getActionMethodIndex(node->getTypeId())](this, node);
 
-  this->currentPathCode = storedPathCode; // restore current path code
-  this->nextInPathChildIndex = storedIndex;
+  this->currentpathcode = storedPathCode; // restore current path code
+  this->nextinpathchildindex = storedIndex;
 
   // FIXME: code to traverse VRML2 node fields.
 
-  this->currentPath.pop();
+  this->currentpath.pop();
 }
 
 /*!
@@ -529,7 +505,7 @@ SoAction::traverse(SoNode * const node)
 SbBool
 SoAction::hasTerminated() const
 {
-  return this->isTerminated;
+  return this->terminated;
 }
 
 /*!
@@ -550,7 +526,7 @@ SoAction::getState() const
 const SoPath *
 SoAction::getCurPath()
 {
-  return &this->currentPath;
+  return &this->currentpath;
 }
 
 /*!
@@ -560,7 +536,7 @@ SoAction::getCurPath()
 SoAction::PathCode
 SoAction::getCurPathCode() const
 {
-  return this->currentPathCode;
+  return this->currentpathcode;
 }
 
 /*!
@@ -570,7 +546,7 @@ SoAction::getCurPathCode() const
 void
 SoAction::pushCurPath(const int childIndex)
 {
-  this->currentPath.push(childIndex);
+  this->currentpath.push(childIndex);
 }
 
 /*!
@@ -580,8 +556,8 @@ SoAction::pushCurPath(const int childIndex)
 void
 SoAction::popCurPath(const PathCode prevPathCode)
 {
-  this->currentPath.pop();
-  this->currentPathCode = prevPathCode;
+  this->currentpath.pop();
+  this->currentpathcode = prevPathCode;
 }
 
 /*!
@@ -591,7 +567,7 @@ SoAction::popCurPath(const PathCode prevPathCode)
 SoNode *
 SoAction::getCurPathTail()
 {
-  return this->currentPath.getTail();
+  return this->currentpath.getTail();
 }
 
 /*!
@@ -607,12 +583,9 @@ SoAction::usePathCode(int & numIndices, const int * & indices)
   //
 
   numIndices = 1;
-#if 0 // OBSOLETED 19991108, code won't work for SoArray and SoMultipleCopy
-  dummyArray[0] = this->nextInPathChildIndex;
-#else // new, more flexible code
-  dummyArray[0] = this->appliedData.path->getIndex(this->currentPath.getFullLength());
-#endif // end of new code
-  indices = dummyArray;
+  this->pathcodearray[0] =
+    this->applieddata.path->getIndex(this->currentpath.getFullLength());
+  indices = this->pathcodearray;
 }
 
 /*!
@@ -632,8 +605,8 @@ SoAction::pushCurPath(void)
 void
 SoAction::popPushCurPath(const int childIndex)
 {
-  this->currentPath.pop();
-  this->currentPath.push(childIndex);
+  this->currentpath.pop();
+  this->currentpath.push(childIndex);
 }
 
 /*!
@@ -643,7 +616,7 @@ SoAction::popPushCurPath(const int childIndex)
 void
 SoAction::popCurPath(void)
 {
-  this->currentPath.pop();
+  this->currentpath.pop();
 }
 
 // *************************************************************************
@@ -676,7 +649,7 @@ SoAction::beginTraversal(SoNode * node)
 */
 
 void
-SoAction::endTraversal(SoNode * /* node */)
+SoAction::endTraversal(SoNode * node)
 {
 }
 
@@ -693,7 +666,7 @@ SoAction::endTraversal(SoNode * /* node */)
 void
 SoAction::setTerminated(const SbBool flag)
 {
-  this->isTerminated = flag;
+  this->terminated = flag;
 }
 
 /*!
@@ -710,42 +683,42 @@ SoAction::shouldCompactPathList() const
 void
 SoAction::switchToPathTraversal(SoPath *path)
 {
-  AppliedData oldData = this->appliedData;
-  AppliedCode oldCode = this->appliedCode;
-  PathCode oldPathCode = this->currentPathCode;
-  SoTempPath oldPath = this->currentPath;
+  AppliedData oldData = this->applieddata;
+  AppliedCode oldCode = this->appliedcode;
+  PathCode oldPathCode = this->currentpathcode;
+  SoTempPath oldPath = this->currentpath;
 
-  this->appliedCode = SoAction::PATH;
-  this->appliedData.path = path;
-  this->currentPathCode = SoAction::IN_PATH;
+  this->appliedcode = SoAction::PATH;
+  this->applieddata.path = path;
+  this->currentpathcode = SoAction::IN_PATH;
 
   this->traverse(path->getNode(0));
 
   // restore previous state
-  this->currentPath = oldPath;
-  this->currentPathCode = oldPathCode;
-  this->appliedData = oldData;
-  this->appliedCode = oldCode;
+  this->currentpath = oldPath;
+  this->currentpathcode = oldPathCode;
+  this->applieddata = oldData;
+  this->appliedcode = oldCode;
 }
 
 void
 SoAction::switchToNodeTraversal(SoNode *node)
 {
-  AppliedData oldData = this->appliedData;
-  AppliedCode oldCode = this->appliedCode;
-  PathCode oldPathCode = this->currentPathCode;
-  SoTempPath oldPath = this->currentPath;
+  AppliedData oldData = this->applieddata;
+  AppliedCode oldCode = this->appliedcode;
+  PathCode oldPathCode = this->currentpathcode;
+  SoTempPath oldPath = this->currentpath;
 
-  this->appliedCode = SoAction::NODE;
-  this->appliedData.node = node;
-  this->currentPathCode = SoAction::NO_PATH;
-  this->currentPath.truncate(0);
+  this->appliedcode = SoAction::NODE;
+  this->applieddata.node = node;
+  this->currentpathcode = SoAction::NO_PATH;
+  this->currentpath.truncate(0);
 
   this->traverse(node);
 
   // restore previous state
-  this->currentPath = oldPath;
-  this->currentPathCode = oldPathCode;
-  this->appliedData = oldData;
-  this->appliedCode = oldCode;
+  this->currentpath = oldPath;
+  this->currentpathcode = oldPathCode;
+  this->applieddata = oldData;
+  this->appliedcode = oldCode;
 }

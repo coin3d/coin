@@ -126,10 +126,10 @@ SoPickAction::initClass(void)
   methods = new SoActionMethodList(inherited::methods);
 //$ END TEMPLATE InitActionSource
 
-  ENABLE_ELEMENT(SoViewportRegionElement);
-  ENABLE_ELEMENT(SoDecimationTypeElement);
-  ENABLE_ELEMENT(SoDecimationPercentageElement);
-  ENABLE_ELEMENT(SoLazyElement);
+  SO_ENABLE(SoPickAction, SoViewportRegionElement);
+  SO_ENABLE(SoPickAction, SoDecimationTypeElement);
+  SO_ENABLE(SoPickAction, SoDecimationPercentageElement);
+  SO_ENABLE(SoPickAction, SoLazyElement);
 }
 
 // *************************************************************************

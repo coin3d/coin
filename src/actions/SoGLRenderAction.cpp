@@ -181,24 +181,24 @@ SoGLRenderAction::initClass(void)
   methods = new SoActionMethodList(inherited::methods);
 //$ END TEMPLATE InitActionSource
 
-  ENABLE_ELEMENT(SoViewportRegionElement);
-  ENABLE_ELEMENT(SoGLRenderPassElement);
-  ENABLE_ELEMENT(SoDecimationTypeElement);
-  ENABLE_ELEMENT(SoDecimationPercentageElement);
-  ENABLE_ELEMENT(SoWindowElement);
-  ENABLE_ELEMENT(SoGLLightIdElement);
-  ENABLE_ELEMENT(SoGLUpdateAreaElement);
+  SO_ENABLE(SoGLRenderAction, SoViewportRegionElement);
+  SO_ENABLE(SoGLRenderAction, SoGLRenderPassElement);
+  SO_ENABLE(SoGLRenderAction, SoDecimationTypeElement);
+  SO_ENABLE(SoGLRenderAction, SoDecimationPercentageElement);
+  SO_ENABLE(SoGLRenderAction, SoWindowElement);
+  SO_ENABLE(SoGLRenderAction, SoGLLightIdElement);
+  SO_ENABLE(SoGLRenderAction, SoGLUpdateAreaElement);
 
-  ENABLE_ELEMENT(SoGLShadeModelElement);
-  ENABLE_ELEMENT(SoGLNormalizeElement);
+  SO_ENABLE(SoGLRenderAction, SoGLShadeModelElement);
+  SO_ENABLE(SoGLRenderAction, SoGLNormalizeElement);
 
-  ENABLE_ELEMENT(SoOverrideElement);
-  ENABLE_ELEMENT(SoTextureOverrideElement);
-  ENABLE_ELEMENT(SoLazyElement);
+  SO_ENABLE(SoGLRenderAction, SoOverrideElement);
+  SO_ENABLE(SoGLRenderAction, SoTextureOverrideElement);
+  SO_ENABLE(SoGLRenderAction, SoLazyElement);
 
   // FIXME: see comment on SoGLViewportRegionElement::set in
   // beginTraversel() below. 19990228 mortene.
-  ENABLE_ELEMENT(SoGLViewportRegionElement);
+  SO_ENABLE(SoGLRenderAction, SoGLViewportRegionElement);
 }
 
 // *************************************************************************

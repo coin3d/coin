@@ -139,10 +139,10 @@ SoHandleEventAction::initClass(void)
 
   // FIXME: aren't these supposed to be enabled from node classes?
   // 19990214 mortene.
-  ENABLE_ELEMENT(SoSwitchElement);
-  ENABLE_ELEMENT(SoViewVolumeElement);
-  ENABLE_ELEMENT(SoViewportRegionElement);
-  ENABLE_ELEMENT(SoWindowElement);
+  SO_ENABLE(SoHandleEventAction, SoSwitchElement);
+  SO_ENABLE(SoHandleEventAction, SoViewVolumeElement);
+  SO_ENABLE(SoHandleEventAction, SoViewportRegionElement);
+  SO_ENABLE(SoHandleEventAction, SoWindowElement);
 
 }
 
