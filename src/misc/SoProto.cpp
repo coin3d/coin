@@ -131,8 +131,6 @@ soproto_fetchextern_default_cb(SoInput * in,
   return NULL;
 }
 
-#ifndef DOXYGEN_SKIP_THIS
-
 class SoProtoP {
 public:
   SoProtoP() : fielddata(NULL), defroot(NULL) { }
@@ -148,8 +146,6 @@ public:
   SoMFString * externurl;
   SoNode * extprotonode;
 };
-
-#endif // DOXYGEN_SKIP_THIS
 
 // doc in parent
 SoType
@@ -177,23 +173,22 @@ SoProto::initClass(void)
   SoProto::setFetchExternProtoCallback(NULL, NULL);
 }
 
-#undef THIS
-#define THIS this->pimpl
+#define PRIVATE(obj) ((obj)->pimpl)
 
 /*!
   Constructor.
 */
 SoProto::SoProto(const SbBool externproto)
 {
-  THIS = new SoProtoP;
-  THIS->externurl = NULL;
+  PRIVATE(this) = new SoProtoP;
+  PRIVATE(this)->externurl = NULL;
   if (externproto) {
-    THIS->externurl = new SoMFString;
+    PRIVATE(this)->externurl = new SoMFString;
   }
-  THIS->fielddata = new SoFieldData;
-  THIS->defroot = new SoGroup;
-  THIS->defroot->ref();
-  THIS->extprotonode = NULL;
+  PRIVATE(this)->fielddata = new SoFieldData;
+  PRIVATE(this)->defroot = new SoGroup;
+  PRIVATE(this)->defroot->ref();
+  PRIVATE(this)->extprotonode = NULL;
 
   protolist->insert(this, 0);
 }
@@ -203,17 +198,17 @@ SoProto::SoProto(const SbBool externproto)
 */
 SoProto::~SoProto()
 {
-  const int n = THIS->fielddata->getNumFields();
+  const int n = PRIVATE(this)->fielddata->getNumFields();
   for (int i = 0; i < n; i++) {
-    delete THIS->fielddata->getField(this, i);
+    delete PRIVATE(this)->fielddata->getField(this, i);
   }
-  THIS->defroot->unref();
-  delete THIS->externurl;
-  delete THIS;
+  PRIVATE(this)->defroot->unref();
+  delete PRIVATE(this)->externurl;
 
-  if (THIS->extprotonode) {
-    THIS->extprotonode->unref();
+  if (PRIVATE(this)->extprotonode) {
+    PRIVATE(this)->extprotonode->unref();
   }
+  delete PRIVATE(this);
 }
 
 void 
@@ -253,7 +248,7 @@ SoProtoInstance *
 SoProto::createProtoInstance(void)
 {
   SoProtoInstance * inst = new SoProtoInstance(this,
-                                               THIS->fielddata);
+                                               PRIVATE(this)->fielddata);
   inst->ref();
   inst->setRootNode(this->createInstanceRoot(inst));
   return inst;
@@ -265,7 +260,7 @@ SoProto::createProtoInstance(void)
 SbName
 SoProto::getProtoName(void) const
 {
-  return THIS->name;
+  return PRIVATE(this)->name;
 }
 
 // Documented in superclass. Overridden to read Proto definition.
@@ -277,22 +272,22 @@ SoProto::readInstance(SoInput * in, unsigned short flags)
   char c;
   SbBool ok = in->read(protoname, TRUE);
   if (ok) {
-    THIS->name = protoname;
+    PRIVATE(this)->name = protoname;
     ok = this->readInterface(in);
   }
   if (!ok) {
     SoReadError::post(in, "Error parsing PROTO interface.");
   }
-  else if (!THIS->externurl) {
+  else if (!PRIVATE(this)->externurl) {
     ok = in->read(c) && c == '{';
     if (ok) ok = this->readDefinition(in);
   }
   else {
-    ok = THIS->externurl->read(in, SbName("EXTERNPROTO URL"));
+    ok = PRIVATE(this)->externurl->read(in, SbName("EXTERNPROTO URL"));
     if (ok) {
       SoProto * proto = soproto_fetchextern_cb(in,
-                                               THIS->externurl->getValues(0),
-                                               THIS->externurl->getNum(),
+                                               PRIVATE(this)->externurl->getValues(0),
+                                               PRIVATE(this)->externurl->getNum(),
                                                soproto_fetchextern_closure);
       if (proto == NULL) {
         SoReadError::post(in, "Error reading EXTERNPROTO definition.");        
@@ -326,14 +321,14 @@ SoProto::write(SoWriteAction * action)
 
   if (out->getStage() == SoOutput::COUNT_REFS) {
     this->addWriteReference(out, FALSE);
-    if (THIS->defroot && !THIS->externurl) {
+    if (PRIVATE(this)->defroot && !PRIVATE(this)->externurl) {
       this->writeDefinition(action);
     }
   }
   else if (out->getStage() == SoOutput::WRITE) {
     out->indent();
-    out->write(THIS->externurl ? "EXTERNPROTO " : "PROTO ");
-    out->write(THIS->name.getString());
+    out->write(PRIVATE(this)->externurl ? "EXTERNPROTO " : "PROTO ");
+    out->write(PRIVATE(this)->name.getString());
     out->write(" [\n");
     out->incrementIndent();
 
@@ -342,7 +337,7 @@ SoProto::write(SoWriteAction * action)
     out->decrementIndent();
     out->indent();
     out->write("]\n");
-    if (THIS->externurl) {
+    if (PRIVATE(this)->externurl) {
       this->writeURLs(out);
     }
     else {
@@ -350,7 +345,7 @@ SoProto::write(SoWriteAction * action)
       out->write("{\n");
       out->incrementIndent();
       
-      if (THIS->defroot) {
+      if (PRIVATE(this)->defroot) {
         this->writeDefinition(action);
       }
       out->resolveRoutes();
@@ -370,7 +365,7 @@ SoProto::write(SoWriteAction * action)
 SbBool
 SoProto::writeInterface(SoOutput * out)
 {
-  const SoFieldData * fd = THIS->fielddata;
+  const SoFieldData * fd = PRIVATE(this)->fielddata;
 
   for (int i = 0; i < fd->getNumFields(); i++) {
     out->indent();
@@ -380,7 +375,7 @@ SoProto::writeInterface(SoOutput * out)
     case SoField::NORMAL_FIELD:
       out->write("field ");
       out->write(t.getName().getString());
-      if (THIS->externurl) {
+      if (PRIVATE(this)->externurl) {
         out->write(' ');
         out->write(fd->getFieldName(i).getString());
         out->write("\n");
@@ -392,7 +387,7 @@ SoProto::writeInterface(SoOutput * out)
     case SoField::EXPOSED_FIELD:
       out->write("exposedField ");
       out->write(t.getName().getString());
-      if (THIS->externurl) {
+      if (PRIVATE(this)->externurl) {
         out->write(' ');
         out->write(fd->getFieldName(i).getString());        
         out->write("\n");
@@ -426,7 +421,7 @@ SbBool
 SoProto::writeDefinition(SoWriteAction * action)
 {
   SoOutput * out = action->getOutput();
-  SoGroup * def = THIS->defroot;
+  SoGroup * def = PRIVATE(this)->defroot;
 
   if (out->getStage() == SoOutput::COUNT_REFS) {
     for (int i = 0; i < def->getNumChildren(); i++) {
@@ -446,14 +441,14 @@ SbBool
 SoProto::writeURLs(SoOutput * out)
 {
   // We use this code to write the URLs to get nicer indentation. Just
-  // calling THIS->externurl->write(out, SbName("")) would also have
+  // calling PRIVATE(this)->externurl->write(out, SbName("")) would also have
   // produced a valid VRML file.
 
-  const int n = THIS->externurl->getNum();
+  const int n = PRIVATE(this)->externurl->getNum();
   if (n == 1) {
     out->indent();
     out->write('\"');
-    out->write((*THIS->externurl)[0].getString());
+    out->write((*PRIVATE(this)->externurl)[0].getString());
     out->write("\"\n");
   }
   else {
@@ -463,7 +458,7 @@ SoProto::writeURLs(SoOutput * out)
     for (int i = 0; i < n; i++) {
       out->indent();
       out->write('\"');
-      out->write((*THIS->externurl)[i].getString());
+      out->write((*PRIVATE(this)->externurl)[i].getString());
       out->write(i < n-1 ? "\",\n" : "\"\n");
     }
     out->decrementIndent();
@@ -482,9 +477,9 @@ SoProto::addISReference(SoNode * container,
                         const SbName & interfacename)
 {
   assert(container->isOfType(SoNode::getClassTypeId()));
-  THIS->isnodelist.append(container);
-  THIS->isfieldlist.append(fieldname);
-  THIS->isnamelist.append(interfacename);
+  PRIVATE(this)->isnodelist.append(container);
+  PRIVATE(this)->isfieldlist.append(fieldname);
+  PRIVATE(this)->isnamelist.append(interfacename);
 }
 
 /*!
@@ -496,10 +491,10 @@ SbName
 SoProto::findISReference(const SoFieldContainer * container,
                          const SbName & fieldname)
 {
-  const int n = THIS->isnodelist.getLength();
+  const int n = PRIVATE(this)->isnodelist.getLength();
   for (int i = 0; i < n; i++) {
-    if (THIS->isnodelist[i] == container &&
-        THIS->isfieldlist[i] == fieldname) return THIS->isnamelist[i];
+    if (PRIVATE(this)->isnodelist[i] == container &&
+        PRIVATE(this)->isfieldlist[i] == fieldname) return PRIVATE(this)->isnamelist[i];
   }
   return SbName("");
 }
@@ -511,7 +506,7 @@ SoProto::findISReference(const SoFieldContainer * container,
 void
 SoProto::addReference(const SbName & name, SoBase * base)
 {
-  THIS->refdict.enter((unsigned long)name.getString(), (void *) base);
+  PRIVATE(this)->refdict.enter((unsigned long)name.getString(), (void *) base);
 }
 
 /*!
@@ -520,7 +515,7 @@ SoProto::addReference(const SbName & name, SoBase * base)
 void
 SoProto::removeReference(const SbName & name)
 {
-  THIS->refdict.remove((unsigned long)name.getString());
+  PRIVATE(this)->refdict.remove((unsigned long)name.getString());
 }
 
 /*!
@@ -531,7 +526,7 @@ SoProto::findReference(const SbName & name) const
 {
   void * base;
 
-  if (THIS->refdict.find((unsigned long)name.getString(), base))
+  if (PRIVATE(this)->refdict.find((unsigned long)name.getString(), base))
     return (SoBase *) base;
   return NULL;
 }
@@ -543,10 +538,10 @@ void
 SoProto::addRoute(const SbName & fromnode, const SbName & fromfield,
                   const SbName & tonode, const SbName & tofield)
 {
-  THIS->routelist.append(fromnode);
-  THIS->routelist.append(fromfield);
-  THIS->routelist.append(tonode);
-  THIS->routelist.append(tofield);
+  PRIVATE(this)->routelist.append(fromnode);
+  PRIVATE(this)->routelist.append(fromfield);
+  PRIVATE(this)->routelist.append(tonode);
+  PRIVATE(this)->routelist.append(tofield);
 }
 
 //
@@ -555,7 +550,7 @@ SoProto::addRoute(const SbName & fromnode, const SbName & fromfield,
 SbBool
 SoProto::readInterface(SoInput * in)
 {
-  return THIS->fielddata->readFieldDescriptions(in, this, 4, THIS->externurl == NULL);
+  return PRIVATE(this)->fielddata->readFieldDescriptions(in, this, 4, PRIVATE(this)->externurl == NULL);
 #if 0 // OBSOLETED
   const SbName EVENTIN("eventIn");
   const SbName EVENTOUT("eventOut");
@@ -579,7 +574,7 @@ SoProto::readInterface(SoInput * in)
     SoField * f = (SoField*) type.createInstance();
 
     f->setContainer(NULL);
-    THIS->fielddata->addField(NULL, fname, f);
+    PRIVATE(this)->fielddata->addField(NULL, fname, f);
 
     if (itype == EVENTIN) {
       f->setFieldType(SoField::EVENTIN_FIELD);
@@ -589,13 +584,13 @@ SoProto::readInterface(SoInput * in)
     }
     else if (itype == FIELD) {
       f->setFieldType(SoField::NORMAL_FIELD);
-      if (!THIS->externurl) {
+      if (!PRIVATE(this)->externurl) {
         ok = f->read(in, fname);
       }
     }
     else if (itype == EXPOSEDFIELD) {
       f->setFieldType(SoField::EXPOSED_FIELD);
-      if (!THIS->externurl) {
+      if (!PRIVATE(this)->externurl) {
         ok = f->read(in, fname);
       }
     }
@@ -626,7 +621,7 @@ SoProto::readDefinition(SoInput * in)
         break; // finished reading, break out
       }
       else {
-        THIS->defroot->addChild((SoNode*) child);
+        PRIVATE(this)->defroot->addChild((SoNode*) child);
       }
     }
   }
@@ -642,9 +637,9 @@ SoNode *
 SoProto::createInstanceRoot(SoProtoInstance * inst) const
 {
   SoNode * root;
-  if (THIS->defroot->getNumChildren() == 1)
-    root = THIS->defroot->getChild(0);
-  else root = THIS->defroot;
+  if (PRIVATE(this)->defroot->getNumChildren() == 1)
+    root = PRIVATE(this)->defroot->getChild(0);
+  else root = PRIVATE(this)->defroot;
 
   SoNode * cpy;
   cpy = root->copy(FALSE);
@@ -660,19 +655,19 @@ SoProto::createInstanceRoot(SoProtoInstance * inst) const
 void
 SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
 {
-  if (THIS->externurl) {
+  if (PRIVATE(this)->externurl) {
     SoDebugError::postWarning("SoProto::connectISRefs",
                               "EXTERNPROTO URL fetching is not yet supported.");
     return;
   }
 
-  const int n = THIS->isfieldlist.getLength();
+  const int n = PRIVATE(this)->isfieldlist.getLength();
 
   SoSearchAction sa;
   for (int i = 0; i < n; i++) {
-    SoNode * node = THIS->isnodelist[i];
+    SoNode * node = PRIVATE(this)->isnodelist[i];
     
-    SbName fieldname = THIS->isfieldlist[i];
+    SbName fieldname = PRIVATE(this)->isfieldlist[i];
     SoField * dstfield = node->getField(fieldname);
 
     SoEngineOutput * eventout = NULL;
@@ -697,7 +692,7 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
       node = ((SoProtoInstance*) node)->getRootNode();
       isprotoinstance = TRUE;
     }
-    SbName iname = THIS->isnamelist[i];
+    SbName iname = PRIVATE(this)->isnamelist[i];
     sa.setNode(node);
     sa.setInterest(SoSearchAction::FIRST);
     sa.setSearchingAll(TRUE);
@@ -706,7 +701,7 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
     if (!path) {
       SoDebugError::postWarning("SoProto::connectISRefs",
                                 "Unable to resolve '%s' from '%s' in '%s' PROTO",
-                                fieldname.getString(), iname.getString(), THIS->name.getString());
+                                fieldname.getString(), iname.getString(), PRIVATE(this)->name.getString());
 
       continue;
     }
@@ -769,6 +764,9 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
 SbBool
 SoProto::setupExtern(SoInput * in, SoProto * externproto)
 {
-  // FIXME: implement, pederb 2003-02-27
+  assert(externproto);  
   return FALSE;
 }
+
+#undef PRIVATE
+
