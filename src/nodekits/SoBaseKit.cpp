@@ -202,8 +202,9 @@
   sub-graph.
 
   The header file:
+
   \code
-  // Copyright (C) 1998-2002 by Systems in Motion. All rights reserved.
+  // Copyright (C) 1998-2003 by Systems in Motion. All rights reserved.
 
   #ifndef COIN_SHAPESCALE_H
   #define COIN_SHAPESCALE_H
@@ -227,10 +228,7 @@
     
    public:
     ShapeScale(void);
-
     static void initClass(void);
-
-   public:
 
     SoSFFloat active;
     SoSFFloat projectedSize;
@@ -238,15 +236,15 @@
    protected:
     virtual void GLRender(SoGLRenderAction * action);
     virtual ~ShapeScale();
-  
   };
 
   #endif // ! SHAPESCALE_H
   \endcode
 
   The source code for the example:
+
   \code
-  // Copyright (C) 1998-2002 by Systems in Motion. All rights reserved.
+  // Copyright (C) 1998-2003 by Systems in Motion. All rights reserved.
   
   //  The ShapeScale class is used for scaling a shape based on
   //  projected size.
@@ -343,8 +341,9 @@
   \endcode
 
   And a complete example showing how one can use this node kit:
+
   \code
-  // Copyright (C) 1998-2002 by Systems in Motion. All rights reserved.
+  // Copyright (C) 1998-2003 by Systems in Motion. All rights reserved.
 
   #include <Inventor/Qt/SoQt.h>
   #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
@@ -686,14 +685,12 @@ SoBaseKit::initClass(void)
 /*!
   Returns a pointer to the node part with \a partname.
 
-  If the part is not in the nodekit's catalog, return \c NULL.
+  This method calls SoBaseKit::getAnyPart() with \a leafcheck and \a
+  publiccheck both set to \c TRUE.
 
-  If the part is in the catalog, has not been made and \a makeifneeded
-  is \c TRUE, construct the part and all it's parents, and return the
-  node pointer. If the node part has not been made and \a makeifneeded
-  is \c FALSE, return \c NULL.
-
-  FIXME: describe syntax for specifiying "paths". 19991205 mortene.
+  See the documentation of SoBaseKit::getAnyPart() for information on
+  how to use \a partname and \a makeifneeded, and what you can expect
+  to get returned from this method.
 */
 SoNode *
 SoBaseKit::getPart(const SbName & partname, SbBool makeifneeded)
@@ -1655,9 +1652,12 @@ SoBaseKit::getContainerNode(const SbName & listname, SbBool makeifneeded)
 /*!
   Returns catalog part of the given \a partname.
 
-  If the part has not yet been made, the function will either
-  construct the part (if \a makeifneeded is \c TRUE) or just return \c
-  NULL (if \a makeifneeded is \c FALSE).
+  If the \a partname part is not in the nodekit's catalog, return \c
+  NULL.
+
+  If the part is specified in the catalog, but has not yet been made,
+  the function will either construct the part (if \a makeifneeded is
+  \c TRUE) or just return \c NULL (if \a makeifneeded is \c FALSE).
 
   If \a leafcheck is \c TRUE, a pointer to the part will only be
   returned if it's a leaf in the catalog (otherwise \c NULL is
@@ -1666,6 +1666,25 @@ SoBaseKit::getContainerNode(const SbName & listname, SbBool makeifneeded)
   If \a publiccheck is \c TRUE, a pointer to the part will only be
   returned if it's a public catalog part (otherwise \c NULL is
   returned).
+
+
+  The \a partname input argument should be given as a \e "path" of
+  catalog part names down to the wanted leaf part. The syntax for
+  specifiying \a partname "paths" is as follows (given in Backus-Naur
+  Form (BNF)):
+
+  \verbatim
+  BNF:
+
+  partname = singlename | compoundname
+  compoundname = singlename | compoundname.singlename
+  singlename = singlepartname | singlelistelementname
+  singlelistelementname = singlelistname[idx]
+
+  singlepartname is name of a part ("ordinary", nodekit or list)
+  singlelistname is name of a part which is a list
+  idx is an integer value
+  \endverbatim
 */
 SoNode *
 SoBaseKit::getAnyPart(const SbName & partname, SbBool makeifneeded,
