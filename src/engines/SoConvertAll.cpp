@@ -841,14 +841,38 @@ SoConvertAll::~SoConvertAll()
 }
 
 SoField *
-SoConvertAll::getInput(SoType /* type */)
+SoConvertAll::getInput(SoType type)
 {
+#if COIN_DEBUG
+  SoType inputtype = this->input->getTypeId();
+  if (type != inputtype && type != SoType::badType()) {
+    SoDebugError::postWarning("SoConvertAll::getInput",
+                              "field is of type %s, not %s",
+                              inputtype.getName().getString(),
+                              type.getName().getString());
+  }
+#endif // COIN_DEBUG
+
+  // ignore type, as we have only a single input field
+
   return this->input;
 }
 
 SoEngineOutput *
-SoConvertAll::getOutput(SoType /* type */)
+SoConvertAll::getOutput(SoType type)
 {
+#if COIN_DEBUG
+  SoType outputtype = this->output.getConnectionType();
+  if (type != outputtype && type != SoType::badType()) {
+    SoDebugError::postWarning("SoConvertAll::getOutput",
+                              "engineout is of type %s, not %s",
+                              outputtype.getName().getString(),
+                              type.getName().getString());
+  }
+#endif // COIN_DEBUG
+
+  // ignore type, as we have only a single engineoutput
+
   return &this->output;
 }
 
