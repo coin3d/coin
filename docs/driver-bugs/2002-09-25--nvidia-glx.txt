@@ -4,6 +4,10 @@ implementation. We're storing this mail here for reference. As of now
 
         -mortene
 
+UPDATE 2004-08-02 mortene: no response was ever received. As far as I
+know, nobody has checked whether or not the bug is still present with
+later driver versions.
+
 ------------------------------------------------------------------------
 
 From: Morten Eriksen <mortene@sim.no>
