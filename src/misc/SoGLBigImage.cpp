@@ -362,7 +362,7 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
     THIS->reset(state);
     THIS->currentdim = THIS->dim;
     const int numimages = THIS->dim[0] * THIS->dim[1];
-    
+
     THIS->glimagediv = new int[numimages];
     THIS->glimagearray = new SoGLImage*[numimages];
     THIS->glimageage = new uint32_t[numimages];
@@ -799,6 +799,8 @@ SoGLBigImageP::createCache(const unsigned char * bytes, const SbVec2s size, cons
     short w = size[0]>>l;
     short h = size[1]>>l;
     this->cachesize[l] = SbVec2s(w, h);
+    if (w == 0) w = 1;
+    if (h == 0) h = 1;
     this->cache[l] = new unsigned char[w*h*nc];
     image_downsample_fast(this->cachesize[l-1][0], this->cachesize[l-1][1], nc,
                           this->cache[l-1], this->cache[l]); 
