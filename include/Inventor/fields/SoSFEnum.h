@@ -66,7 +66,7 @@ protected:
   PRIVATE_SOENUM_SET_TYPE(_fieldname_, _enumtype_, inputdata)
 
 #define SO_NODE_SET_SF_ENUM_TYPE(_fieldname_, _enumtype_) \
-  PRIVATE_SOENUM_SET_TYPE(_fieldname_, _enumtype_, classfielddata)
+  PRIVATE_SOENUM_SET_TYPE(_fieldname_, _enumtype_, fieldData)
 
 
 
