@@ -115,11 +115,15 @@
 #include <mach-o/ldsyms.h>
 #endif /* HAVE_MACH_O_DYLD_H */
 
+#ifdef HAVE_WIN32_API
+/* Conditional inclusion, as the functions in win32api.h will not be
+   implemented unless the Win32 API is available. */
+#include <Inventor/C/glue/win32api.h>
+#endif /* HAVE_WIN32_API */
+
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/glue/dl.h>
-#include <Inventor/C/glue/win32api.h>
 #include <Inventor/C/tidbits.h>
-#include <assert.h>
 #include <assert.h>
 #include <stddef.h> /* NULL definition. */
 #include <stdlib.h> /* atoi() */
