@@ -208,44 +208,21 @@ SbString::getSubString(int startChar, int endChar) const
 void
 SbString::deleteSubString(int startChar, int endChar)
 {
+  int len = this->getLength();
+  if (endChar == -1) endChar = len - 1;
+
 #if COIN_DEBUG
-  int len=this->getLength();
-  if (startChar<0) {
+  if (startChar < 0 || startChar >= len || endChar < 0 || endChar >= len ||
+      startChar > endChar) {
     SoDebugError::postWarning("SbString::deleteSubString",
-                              "startChar index (%d) should be >= 0. "
-                              "Clamped to 0.", startChar);
-    startChar=0;
-  }
-  else if (startChar>=len) {
-    SoDebugError::postWarning("SbString::deleteSubString",
-                              "startChar index (%d) is out of bounds [0, %d>. "
-                              "Clamped to %d.", startChar, len, len-1);
-    startChar=len-1;
-  }
-  if (endChar<-1) {
-    SoDebugError::postWarning("SbString::deleteSubString",
-                              "endChar index should be >=-1. Clamping to -1.");
-    endChar=-1;
-  }
-  else if (endChar>=len) {
-    SoDebugError::postWarning("SbString::deleteSubString",
-                              "endChar index (%d) is out of bounds [0, %d>. "
-                              "Clamped to %d.", endChar, len, len-1);
-    endChar=len-1;
-  }
-  if (startChar>endChar) {
-    SoDebugError::postWarning("SbString::deleteSubString",
-                              "start index (%d) is greater than end index "
-                              "(%d). Nothing deleted.", startChar, endChar);
+                              "invalid arguments [%d, %d] for string ``%s''",
+                              startChar, endChar, this->sstring);
     return;
   }
 #endif // COIN_DEBUG
 
-  if (endChar==-1) endChar=this->getLength();
-
-  memmove(this->sstring+startChar,
-          this->sstring+endChar+1,
-          strlen(this->sstring)-endChar);
+  (void)memmove(this->sstring + startChar, this->sstring + endChar + 1,
+                strlen(this->sstring) - endChar);
 }
 
 /*!
