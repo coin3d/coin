@@ -98,7 +98,7 @@ cc_fifo *
 cc_fifo_new(void)
 {
   cc_fifo * fifo;
-  fifo = malloc(sizeof(cc_fifo));
+  fifo = (cc_fifo*) malloc(sizeof(cc_fifo));
   cc_fifo_struct_init(fifo);
   return fifo;
 } /* cc_fifo_construct() */
@@ -209,7 +209,7 @@ cc_fifo_item *
 cc_fifo_item_new(void) /* static */
 {
   cc_fifo_item * item;
-  item = malloc(sizeof(cc_fifo_item));
+  item = (cc_fifo_item*) malloc(sizeof(cc_fifo_item));
   assert(item != NULL);
   item->next = NULL;
   item->item = NULL;
