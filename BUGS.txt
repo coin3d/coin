@@ -4115,3 +4115,26 @@ main(int argc, char ** argv)
     20041019 mortene.
 
 =====================================================================
+
+154 SoVRMLBillboard buggy with non-uniform scaling?
+
+    Looks like it from this wrl file:
+
+----8<----- [snip] --------------------8<----- [snip] ----------------
+#VRML V2.0 utf8
+
+Transform {
+  scale 1 1 2
+  children Billboard {
+    children Shape {
+      geometry Text {
+        string "6406/2-3"
+      }
+    }
+  }
+}
+----8<----- [snip] --------------------8<----- [snip] ----------------
+
+    20041025 mortene, reported by kintel.
+
+=====================================================================
