@@ -23,7 +23,7 @@
 ///////////////////////////////////////////////////////////////////////////
 
 
-//$ BEGIN TEMPLATE SFNodeEnginePath(Engine, engine)
+//$ BEGIN TEMPLATE SFNodeEnginePath(ENGINE, Engine, engine)
 
 /*!
   \class SoSFEngine SoSFEngine.h Inventor/fields/SoSFEngine.h
@@ -40,6 +40,11 @@
   \sa SoEngine, SoMFEngine
 
 */
+
+// Type-specific define to be able to do #ifdef tests on type.  (Note:
+// used to check the header file wrapper define, but that doesn't work
+// with --enable-compact build.)
+#define COIN_INTERNAL_ENGINE
 
 #include <Inventor/fields/SoSFEngine.h>
 #include <Inventor/fields/SoSubFieldP.h>
@@ -75,9 +80,9 @@ SoSFEngine::initClass(void)
 SoSFEngine::SoSFEngine(void)
 {
   this->value = NULL;
-#ifdef COIN_SOSFPATH_H
+#ifdef COIN_INTERNAL_PATH
   this->head = NULL;
-#endif // COIN_SOSFPATH_H
+#endif // COIN_INTERNAL_PATH
 }
 
 /* Destructor, dereferences the current engine pointer if necessary. */
@@ -106,7 +111,7 @@ SoSFEngine::setValue(SoEngine * newval)
   if (oldptr) {
     oldptr->removeAuditor(this, SoNotRec::FIELD);
     oldptr->unref();
-#ifdef COIN_SOSFPATH_H
+#ifdef COIN_INTERNAL_PATH
     SoNode * h = oldptr->getHead();
     // The path should be audited by us at all times. So don't use
     // SoSFPath to wrap SoTempPath or SoLightPath, for instance.
@@ -115,19 +120,19 @@ SoSFEngine::setValue(SoEngine * newval)
       h->removeAuditor(this, SoNotRec::FIELD);
       h->unref();
     }
-#endif // COIN_SOSFPATH_H
+#endif // COIN_INTERNAL_PATH
   }
 
   if (newval) {
     newval->addAuditor(this, SoNotRec::FIELD);
     newval->ref();
-#ifdef COIN_SOSFPATH_H
+#ifdef COIN_INTERNAL_PATH
     this->head = newval->getHead();
     if (this->head) {
       this->head->addAuditor(this, SoNotRec::FIELD);
       this->head->ref();
     }
-#endif // COIN_SOSFPATH_H
+#endif // COIN_INTERNAL_PATH
   }
 
   this->value = newval;
@@ -203,9 +208,9 @@ SoSFEngine::countWriteRefs(SoOutput * out) const
   // Set the "from field" flag as FALSE, as that flag is meant to be
   // used for references through field-to-field connections.
   if (n) n->addWriteReference(out, FALSE);
-#ifdef COIN_SOSFPATH_H
+#ifdef COIN_INTERNAL_PATH
   if (n && n->getHead()) n->getHead()->addWriteReference(out, FALSE);
-#endif // COIN_SOSFPATH_H
+#endif // COIN_INTERNAL_PATH
 }
 
 // Override from parent to update our engine pointer reference.
@@ -220,14 +225,14 @@ SoSFEngine::fixCopy(SbBool copyconnections)
   // setting the value to NULL and then re-setting with setValue().
   this->value = NULL;
 
-#if defined(COIN_SOSFNODE_H) || defined(COIN_SOSFENGINE_H)
+#if defined(COIN_INTERNAL_NODE) || defined(COIN_INTERNAL_ENGINE)
   SoFieldContainer * fc = SoFieldContainer::findCopy(n, copyconnections);
   this->setValue((SoEngine *)fc);
-#endif // COIN_SOSFNODE_H || COIN_SOSFENGINE_H
+#endif // COIN_INTERNAL_NODE || COIN_INTERNAL_ENGINE
 
-#ifdef COIN_SOSFPATH_H
+#ifdef COIN_INTERNAL_PATH
   this->setValue(n->copy());
-#endif // COIN_SOSFPATH_H
+#endif // COIN_INTERNAL_PATH
 }
 
 // Override from SoField to check engine pointer.
@@ -254,4 +259,7 @@ SoSFEngine::referencesCopy(void) const
 
   return FALSE;
 }
+
+// Kill the type-specific define.
+#undef COIN_INTERNAL_ENGINE
 //$ END TEMPLATE SFNodeEnginePath

@@ -21,7 +21,7 @@
 // Coin/scripts/templant script from the code in MFNodeEnginePath.tpl,
 // only the notify() method is specific for SoMFPath.cpp.
 
-//$ BEGIN TEMPLATE MFNodeEnginePath(Path, path)
+//$ BEGIN TEMPLATE MFNodeEnginePath(PATH, Path, path)
 
 /*!
   \class SoMFPath SoMFPath.h Inventor/fields/SoMFPath.h
@@ -38,6 +38,11 @@
   \sa SoPath, SoSFPath
 
 */
+
+// Type-specific define to be able to do #ifdef tests on type.  (Note:
+// used to check the header file wrapper define, but that doesn't work
+// with --enable-compact build.)
+#define COIN_INTERNAL_PATH
 
 #include <Inventor/fields/SoMFPath.h>
 #include <Inventor/fields/SoSubFieldP.h>
@@ -140,9 +145,9 @@ SoMFPath::set1Value(const int idx, SoPath * newval)
 
   // Expand array if necessary.
   if (idx >= this->getNum()) {
-#ifdef COIN_SOMFPATH_H
+#ifdef COIN_INTERNAL_PATH
     for (int i = this->getNum(); i <= idx; i++) this->pathheads.append(NULL);
-#endif // COIN_SOMFPATH_H
+#endif // COIN_INTERNAL_PATH
     this->setNum(idx + 1);
   }
 
@@ -152,7 +157,7 @@ SoMFPath::set1Value(const int idx, SoPath * newval)
   if (oldptr) {
     oldptr->removeAuditor(this, SoNotRec::FIELD);
     oldptr->unref();
-#ifdef COIN_SOMFPATH_H
+#ifdef COIN_INTERNAL_PATH
     SoNode * h = oldptr->getHead();
     // The path should be audited by us at all times. So don't use
     // SoMFPath to wrap SoTempPath or SoLightPath, for instance.
@@ -162,25 +167,25 @@ SoMFPath::set1Value(const int idx, SoPath * newval)
       h->removeAuditor(this, SoNotRec::FIELD);
       h->unref();
     }
-#endif // COIN_SOMFPATH_H
+#endif // COIN_INTERNAL_PATH
   }
 
   if (newval) {
     newval->addAuditor(this, SoNotRec::FIELD);
     newval->ref();
-#ifdef COIN_SOMFPATH_H
+#ifdef COIN_INTERNAL_PATH
     SoNode * h = newval->getHead();
     if (h) {
       h->addAuditor(this, SoNotRec::FIELD);
       h->ref();
     }
-#endif // COIN_SOMFPATH_H
+#endif // COIN_INTERNAL_PATH
   }
 
   this->values[idx] = newval;
-#ifdef COIN_SOMFPATH_H
+#ifdef COIN_INTERNAL_PATH
   this->pathheads[idx] = newval ? newval->getHead() : NULL;
-#endif // COIN_SOMFPATH_H
+#endif // COIN_INTERNAL_PATH
 
   // Finally, send notification.
   (void)this->enableNotify(notificstate);
@@ -223,14 +228,14 @@ SoMFPath::deleteValues(int start, int num)
       n->removeAuditor(this, SoNotRec::FIELD);
       n->unref();
     }
-#ifdef COIN_SOMFPATH_H
+#ifdef COIN_INTERNAL_PATH
     SoNode * h = this->pathheads[start];
     this->pathheads.remove(start);
     if (h) {
       h->removeAuditor(this, SoNotRec::FIELD);
       h->unref();
     }
-#endif // COIN_SOMFPATH_H
+#endif // COIN_INTERNAL_PATH
   }
 
   inherited::deleteValues(start, num);
@@ -246,9 +251,9 @@ SoMFPath::insertSpace(int start, int num)
 
   inherited::insertSpace(start, num);
   for (int i=start; i < start+num; i++) {
-#ifdef COIN_SOMFPATH_H
+#ifdef COIN_INTERNAL_PATH
     this->pathheads.insert(NULL, start);
-#endif // COIN_SOMFPATH_H
+#endif // COIN_INTERNAL_PATH
     this->values[i] = NULL;
   }
 
@@ -302,9 +307,9 @@ SoMFPath::countWriteRefs(SoOutput * out) const
     // Set the "from field" flag as FALSE, as that flag is meant to be
     // used for references through field-to-field connections.
     if (n) n->addWriteReference(out, FALSE);
-#ifdef COIN_SOMFPATH_H
+#ifdef COIN_INTERNAL_PATH
     if (this->pathheads[i]) this->pathheads[i]->addWriteReference(out, FALSE);
-#endif // COIN_SOMFPATH_H
+#endif // COIN_INTERNAL_PATH
   }
 }
 
@@ -323,14 +328,14 @@ SoMFPath::fixCopy(SbBool copyconnections)
       // that by setting the value to NULL and then re-setting with
       // setValue().
       this->values[i] = NULL;
-#if defined(COIN_SOMFNODE_H) || defined(COIN_SOMFENGINE_H)
+#if defined(COIN_INTERNAL_NODE) || defined(COIN_INTERNAL_ENGINE)
       SoFieldContainer * fc = SoFieldContainer::findCopy(n, copyconnections);
       this->set1Value(i, (SoPath *)fc);
-#endif // COIN_SOMFNODE_H || COIN_SOMFENGINE_H
+#endif // COIN_INTERNAL_NODE || COIN_INTERNAL_ENGINE
 
-#ifdef COIN_SOMFPATH_H
+#ifdef COIN_INTERNAL_PATH
       this->set1Value(i, n->copy());
-#endif // COIN_SOMFPATH_H
+#endif // COIN_INTERNAL_PATH
     }
   }
 }
@@ -361,6 +366,9 @@ SoMFPath::referencesCopy(void) const
 
   return FALSE;
 }
+
+// Kill the type-specific define.
+#undef COIN_INTERNAL_PATH
 //$ END TEMPLATE MFNodeEnginePath
 
 
