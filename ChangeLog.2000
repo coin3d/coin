@@ -12,16 +12,6 @@ cvs2cl script used to generate this file.
 
 ============================================================================
 
-2001-01-02 16:52  mortene
-
-	* src/nodekits/SoBaseKit.cpp:
-	
-	Fixed bug which caused recursive search for parts to fail in some
-	cases.	Bug reported by Jacob Støren.  Improved debug information
-	when part is not found.
-	
-	By pederb.
-
 2000-12-20 20:30  mortene
 
 	* include/Inventor/elements/SoGLModelMatrixElement.h,
