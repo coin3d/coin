@@ -213,10 +213,14 @@ SoVRMLAppearance::GLRender(SoGLRenderAction * action)
     action->popCurPath();
   }
 
-  if (this->texture.getValue() && SoTextureQualityElement::get(state) > 0.0f) {
-    static uint32_t white = 0xffffffff;
-    SoLazyElement::setPacked(state, this, 1, &white);
-  }
+  
+  // FIXME: read up on the VRML97 lighting model. It seems like we should check
+  // how many components there are in the texture before deciding what to do with
+  // the material diffuse color. pederb, 2002-11-08
+//    if (this->texture.getValue() && SoTextureQualityElement::get(state) > 0.0f) {
+//      static uint32_t white = 0xffffffff;
+//      SoLazyElement::setPacked(state, this, 1, &white);
+//    }
 }
 
 // doc in parent
