@@ -794,7 +794,15 @@ SoInput::read(SbString & s)
 
         if (*buf == '\\') {
           if (!fi->get(c)) return FALSE;
-          *buf = c;
+          // for VRML97, \\ and \" should be converted to \ and ".
+          // for VRML 1.0 and Inventor, only \" should be converted.
+          if (c == '\"' || (c == '\\' && this->isFileVRML2())) {
+            *buf = c;
+          }
+          else {
+            *buf = '\\';
+            fi->putBack(c);
+          }
         }
       }
       else if (fi->isSpace(*buf)) {
