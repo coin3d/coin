@@ -94,10 +94,10 @@ private:
   SbVec2f normvppoint;
   SbVec3f raystart;
   SbVec3f raydirection;
-  float rayradiusstart;
-  float rayradiusdelta;
-  float raynear;
-  float rayfar;
+  double rayradiusstart;
+  double rayradiusdelta;
+  double raynear;
+  double rayfar;
   float radiusinpixels;
 
   float currentPickDistance;
