@@ -41,6 +41,7 @@
 #include <Inventor/nodes/SoAntiSquish.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 
 /*!
@@ -114,7 +115,21 @@ SoAntiSquish::initClass(void)
 void
 SoAntiSquish::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  SoAntiSquish::doAction((SoAction *) action);
+  SbBool matrixwasvalid = this->matrixvalid;
+  SoAntiSquish::doAction(action);
+  if (this->recalcAlways.getValue() == FALSE) {
+    // Usually when recalcAlways is FALSE, SoAntiSquish::recalc() is
+    // called by manipulators at the same time as
+    // SoSurroundScale::invalidate() is called. This means that the
+    // first time we get here is often because SoSurrondScale applied
+    // an SoGetBoundingBoxAction to the scene graph it is going to
+    // calculate the surround scale for. This is _not_ the scene graph
+    // we want to anti-squish so we should recalculate it the next time
+    // we get here.
+    if (matrixwasvalid == FALSE) {
+      this->matrixvalid = FALSE;
+    }
+  }
 }
 
 /*!
