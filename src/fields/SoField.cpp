@@ -876,8 +876,8 @@ SoField::getContainer(void) const
 SbBool
 SoField::set(const char * valueString)
 {
-  // FIXME: does this really work? Don't we need to account for the
-  // missing header identification line? 20000111 mortene.
+  // Note that it is not necessary to set a header identification line
+  // for this to work.
   SoInput in;
   in.setBuffer((void *)valueString, strlen(valueString));
   if (!this->readValue(&in)) return FALSE;
@@ -885,19 +885,6 @@ SoField::set(const char * valueString)
   this->valueChanged();
   return TRUE;
 }
-
-// Overload SoOutput to make sure no header is written to the buffer.
-// NB: this class is only used by the SoField::get() method below.
-class DerivedSoOutput : public SoOutput {
-  // FIXME: I tried to move this class definition inside the
-  // SoField::get() scope, but this resulted in an "unresolved symbol"
-  // error at link time when compiling with certain versions of the
-  // egcs/gcc compiler (at least with egcs-2.91.66 and gcc
-  // 2.95). 19990929 mortene.
-public:
-  DerivedSoOutput(void) { this->wroteHeader = TRUE; }
-  virtual void reset(void) { SoOutput::reset(); this->wroteHeader = TRUE; }
-};
 
 /*!
   Returns the field's value as an ASCII string in the export data format
@@ -908,7 +895,7 @@ public:
 void
 SoField::get(SbString & valueString)
 {
-  DerivedSoOutput out;
+  SoOutput out;
   const size_t STARTSIZE = 32;
   void * buffer = malloc(STARTSIZE);
 
@@ -917,7 +904,11 @@ SoField::get(SbString & valueString)
 
   size_t size;
   out.getBuffer(buffer, size);
-  valueString = (char *)buffer;
+  // Strip off header.
+  char * start = strstr((char *)buffer, "\n\n");
+  assert(start != NULL);
+  start += 2;
+  valueString = start;
   free(buffer);
 }
 
