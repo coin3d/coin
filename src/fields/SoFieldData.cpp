@@ -237,6 +237,7 @@ SoFieldData::overlay(SoFieldContainer * to, const SoFieldContainer * from,
     SoField * field0 = fd0->getField(to, i);
     SoField * field1 = fd1->getField(from, i);
     field0->copyFrom(*field1);
+    if (field1->isDefault()) field0->setDefault(TRUE);
     field0->fixCopy(copyconnections);
     if (copyconnections) field0->copyConnection(field1);
   }
