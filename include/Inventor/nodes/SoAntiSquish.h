@@ -45,7 +45,7 @@ public:
   SoSFBool recalcAlways;
 
   void recalc(void);
-  void doAction(SoAction * action);
+  virtual void doAction(SoAction * action);
 
 protected:
   virtual ~SoAntiSquish();

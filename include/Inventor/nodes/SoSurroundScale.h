@@ -41,7 +41,7 @@ public:
   SoSFInt32 numNodesUpToReset;
 
   void invalidate(void);
-  void doAction(SoAction * action);
+  virtual void doAction(SoAction * action);
   void setDoingTranslations(const SbBool val);
   SbBool isDoingTranslations(void);
 

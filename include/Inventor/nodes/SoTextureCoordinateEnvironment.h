@@ -34,11 +34,10 @@ public:
   static void initClass(void);
   SoTextureCoordinateEnvironment(void);
 
-
-  void doAction(SoAction * action);
-  void GLRender(SoGLRenderAction * action);
-  void pick(SoPickAction * action);
-  void callback(SoCallbackAction * action);
+  virtual void doAction(SoAction * action);
+  virtual void GLRender(SoGLRenderAction * action);
+  virtual void pick(SoPickAction * action);
+  virtual void callback(SoCallbackAction * action);
 
 protected:
   virtual ~SoTextureCoordinateEnvironment();
