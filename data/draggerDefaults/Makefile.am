@@ -54,6 +54,9 @@ dist_draggerdefdata_DATA = \
 noinst_SCRIPTS = \
 	$(srcdir)/iv2h.sh
 
+EXTRA_DIST = \
+	iv2h.sh
+
 # This is necessary to include so the headers are actually built.
 Makefile: $(BUILT_SOURCES)
 

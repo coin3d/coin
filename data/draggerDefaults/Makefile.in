@@ -168,6 +168,10 @@ dist_draggerdefdata_DATA = \
 noinst_SCRIPTS = \
 	$(srcdir)/iv2h.sh
 
+
+EXTRA_DIST = \
+	iv2h.sh
+
 subdir = data/draggerDefaults
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/include/config.h

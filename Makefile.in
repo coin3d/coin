@@ -127,14 +127,15 @@ noinst_SCRIPTS = \
 
 BUILT_SOURCES = \
 	include/Inventor/SbBasic.h \
-	include/Inventor/system/inttypes.h
+	include/Inventor/system/inttypes.h \
+	coin-@CONFIG@.cfg
 
 
 m4datadir = $(datadir)/aclocal
 dist_m4data_DATA = cfg/m4/coin.m4
 
 cfgdatadir = $(datadir)/Coin/conf
-dist_cfgdata_DATA = coin-@CONFIG@.cfg
+cfgdata_DATA = coin-@CONFIG@.cfg
 
 EXTRA_DIST = \
 	ChangeLog.1999 \
@@ -144,10 +145,10 @@ EXTRA_DIST = \
 	README.AIX \
 	README.IRIX \
 	README.WIN32 \
-	cfg/depcomp \
-	cfg/ltconfig \
-	cfg/install-header \
-	docs/coin.doxygen.in
+	coin.cfg.in \
+	docs/coin.doxygen.in \
+	cfg/doxy4win.pl \
+	cfg/m4/msvccc
 
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -157,19 +158,18 @@ CONFIG_CLEAN_FILES = docs/coin.doxygen
 SCRIPTS = $(dist_bin_SCRIPTS) $(noinst_SCRIPTS)
 
 DIST_SOURCES =
-DATA = $(dist_cfgdata_DATA) $(dist_m4data_DATA)
+DATA = $(cfgdata_DATA) $(dist_m4data_DATA)
 
 
 RECURSIVE_TARGETS = info-recursive dvi-recursive install-info-recursive \
 	uninstall-info-recursive all-recursive install-data-recursive \
 	install-exec-recursive installdirs-recursive install-recursive \
 	uninstall-recursive check-recursive installcheck-recursive
-DIST_COMMON = README $(dist_bin_SCRIPTS) $(dist_cfgdata_DATA) \
-	$(dist_m4data_DATA) AUTHORS COPYING ChangeLog INSTALL \
-	Makefile.am Makefile.in NEWS THANKS aclocal.m4 cfg/config.guess \
-	cfg/config.sub cfg/depcomp cfg/install-sh cfg/ltconfig \
-	cfg/ltmain.sh cfg/missing cfg/mkinstalldirs cfg/texinfo.tex \
-	configure configure.in
+DIST_COMMON = README $(dist_bin_SCRIPTS) $(dist_m4data_DATA) AUTHORS \
+	COPYING ChangeLog INSTALL Makefile.am Makefile.in NEWS THANKS \
+	aclocal.m4 cfg/config.guess cfg/config.sub cfg/depcomp \
+	cfg/install-sh cfg/ltconfig cfg/ltmain.sh cfg/missing \
+	cfg/mkinstalldirs cfg/texinfo.tex configure configure.in
 DIST_SUBDIRS = $(SUBDIRS)
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
@@ -223,19 +223,19 @@ uninstall-dist_binSCRIPTS:
 	  rm -f $(DESTDIR)$(bindir)/$$f; \
 	done
 uninstall-info-am:
-install-dist_cfgdataDATA: $(dist_cfgdata_DATA)
+install-cfgdataDATA: $(cfgdata_DATA)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(cfgdatadir)
-	@list='$(dist_cfgdata_DATA)'; for p in $$list; do \
+	@list='$(cfgdata_DATA)'; for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(cfgdatadir)/$$f"; \
 	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(cfgdatadir)/$$f; \
 	done
 
-uninstall-dist_cfgdataDATA:
+uninstall-cfgdataDATA:
 	@$(NORMAL_UNINSTALL)
-	@list='$(dist_cfgdata_DATA)'; for p in $$list; do \
+	@list='$(cfgdata_DATA)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  echo " rm -f $(DESTDIR)$(cfgdatadir)/$$f"; \
 	  rm -f $(DESTDIR)$(cfgdatadir)/$$f; \
@@ -481,7 +481,7 @@ info: info-recursive
 
 info-am:
 
-install-data-am: install-dist_binSCRIPTS install-dist_cfgdataDATA \
+install-data-am: install-cfgdataDATA install-dist_binSCRIPTS \
 	install-dist_m4dataDATA
 
 install-exec-am:
@@ -500,7 +500,7 @@ mostlyclean: mostlyclean-recursive
 
 mostlyclean-am: mostlyclean-generic mostlyclean-libtool
 
-uninstall-am: uninstall-dist_binSCRIPTS uninstall-dist_cfgdataDATA \
+uninstall-am: uninstall-cfgdataDATA uninstall-dist_binSCRIPTS \
 	uninstall-dist_m4dataDATA uninstall-info-am
 
 uninstall-info: uninstall-info-recursive
@@ -510,8 +510,8 @@ uninstall-info: uninstall-info-recursive
 	distcheck distclean distclean-generic distclean-libtool \
 	distclean-recursive distclean-tags distdir dvi dvi-am \
 	dvi-recursive info info-am info-recursive install install-am \
-	install-data install-data-am install-data-recursive \
-	install-dist_binSCRIPTS install-dist_cfgdataDATA \
+	install-cfgdataDATA install-data install-data-am \
+	install-data-recursive install-dist_binSCRIPTS \
 	install-dist_m4dataDATA install-exec install-exec-am \
 	install-exec-recursive install-info install-info-am \
 	install-info-recursive install-man install-recursive \
@@ -520,13 +520,10 @@ uninstall-info: uninstall-info-recursive
 	maintainer-clean-generic maintainer-clean-recursive mostlyclean \
 	mostlyclean-generic mostlyclean-libtool mostlyclean-recursive \
 	tags tags-recursive uninstall uninstall-am \
-	uninstall-dist_binSCRIPTS uninstall-dist_cfgdataDATA \
+	uninstall-cfgdataDATA uninstall-dist_binSCRIPTS \
 	uninstall-dist_m4dataDATA uninstall-info-am \
 	uninstall-info-recursive uninstall-recursive
 
-
-coin-@CONFIG@.cfg: config.status $(srcdir)/coin.cfg.in
-	@$(SHELL) config.status --file=$@:coin.cfg.in
 
 doxygen-doc:
 	@@sim_ac_doxygen_exe@ $(top_builddir)/docs/coin.doxygen
@@ -539,6 +536,9 @@ include/Inventor/SbBasic.h: $(srcdir)/include/Inventor/SbBasic.h.in
 
 include/Inventor/system/inttypes.h: $(srcdir)/include/Inventor/system/inttypes.h.in
 	@./config.status --header=$@
+
+coin-@CONFIG@.cfg: config.status $(srcdir)/coin.cfg.in
+	@$(SHELL) config.status --file=$@:coin.cfg.in
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

@@ -119,10 +119,14 @@ BUILT_SOURCES = \
 	inttypes.h
 
 
+EXTRA_DIST = \
+	inttypes.h.in
+
+
 
 # header installation information
 systemincdir = $(includedir)/Inventor/system
-systeminc_HEADERS = \
+nodist_systeminc_HEADERS = \
 	inttypes.h
 
 subdir = include/Inventor/system
@@ -130,9 +134,9 @@ mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/include/config.h
 CONFIG_CLEAN_FILES =
 DIST_SOURCES =
-HEADERS = $(systeminc_HEADERS)
+HEADERS = $(nodist_systeminc_HEADERS)
 
-DIST_COMMON = $(systeminc_HEADERS) Makefile.am Makefile.in
+DIST_COMMON = Makefile.am Makefile.in
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
@@ -154,19 +158,19 @@ Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.s
 	  CONFIG_HEADERS= CONFIG_LINKS= \
 	  CONFIG_FILES=$(subdir)/$@ $(SHELL) ./config.status
 uninstall-info-am:
-install-systemincHEADERS: $(systeminc_HEADERS)
+install-nodist_systemincHEADERS: $(nodist_systeminc_HEADERS)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(systemincdir)
-	@list='$(systeminc_HEADERS)'; for p in $$list; do \
+	@list='$(nodist_systeminc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(systemincdir)/$$f"; \
 	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(systemincdir)/$$f; \
 	done
 
-uninstall-systemincHEADERS:
+uninstall-nodist_systemincHEADERS:
 	@$(NORMAL_UNINSTALL)
-	@list='$(systeminc_HEADERS)'; for p in $$list; do \
+	@list='$(nodist_systeminc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  echo " rm -f $(DESTDIR)$(systemincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(systemincdir)/$$f; \
@@ -273,7 +277,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-systemincHEADERS
+install-data-am: install-nodist_systemincHEADERS
 
 install-exec-am:
 
@@ -291,18 +295,18 @@ mostlyclean: mostlyclean-am
 
 mostlyclean-am: mostlyclean-generic mostlyclean-libtool
 
-uninstall-am: uninstall-info-am uninstall-systemincHEADERS
+uninstall-am: uninstall-info-am uninstall-nodist_systemincHEADERS
 
 .PHONY: GTAGS all all-am check check-am clean clean-generic \
 	clean-libtool distclean distclean-generic distclean-libtool \
 	distclean-tags distdir dvi dvi-am info info-am install \
 	install-am install-data install-data-am install-exec \
 	install-exec-am install-info install-info-am install-man \
-	install-strip install-systemincHEADERS installcheck \
+	install-nodist_systemincHEADERS install-strip installcheck \
 	installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-generic \
 	mostlyclean-libtool tags uninstall uninstall-am \
-	uninstall-info-am uninstall-systemincHEADERS
+	uninstall-info-am uninstall-nodist_systemincHEADERS
 
 
 inttypes.h: $(srcdir)/inttypes.h.in

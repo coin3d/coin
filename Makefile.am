@@ -10,16 +10,14 @@ noinst_SCRIPTS = \
 
 BUILT_SOURCES = \
 	include/Inventor/SbBasic.h \
-	include/Inventor/system/inttypes.h
+	include/Inventor/system/inttypes.h \
+	coin-@CONFIG@.cfg
 
 m4datadir = $(datadir)/aclocal
 dist_m4data_DATA = cfg/m4/coin.m4
 
 cfgdatadir = $(datadir)/Coin/conf
-dist_cfgdata_DATA = coin-@CONFIG@.cfg
-
-coin-@CONFIG@.cfg: config.status $(srcdir)/coin.cfg.in
-	@$(SHELL) config.status --file=$@:coin.cfg.in
+cfgdata_DATA = coin-@CONFIG@.cfg
 
 EXTRA_DIST = \
 	ChangeLog.1999 \
@@ -29,10 +27,10 @@ EXTRA_DIST = \
 	README.AIX \
 	README.IRIX \
 	README.WIN32 \
-	cfg/depcomp \
-	cfg/ltconfig \
-	cfg/install-header \
-	docs/coin.doxygen.in
+	coin.cfg.in \
+	docs/coin.doxygen.in \
+	cfg/doxy4win.pl \
+	cfg/m4/msvccc
 
 doxygen-doc:
 	@@sim_ac_doxygen_exe@ $(top_builddir)/docs/coin.doxygen
@@ -45,4 +43,7 @@ include/Inventor/SbBasic.h: $(srcdir)/include/Inventor/SbBasic.h.in
 
 include/Inventor/system/inttypes.h: $(srcdir)/include/Inventor/system/inttypes.h.in
 	@./config.status --header=$@
+
+coin-@CONFIG@.cfg: config.status $(srcdir)/coin.cfg.in
+	@$(SHELL) config.status --file=$@:coin.cfg.in
 

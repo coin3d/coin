@@ -115,14 +115,18 @@ sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 
+SUBDIRS = lock system
+
 BUILT_SOURCES = \
 	SbBasic.h
 
 
-SUBDIRS = lock system
+EXTRA_DIST = \
+	SbBasic.h.in
+
 
 libCoinincdir = $(includedir)/Inventor
-libCoininc_HEADERS = \
+nodist_libCoininc_HEADERS = \
 	SbBasic.h
 
 subdir = include/Inventor
@@ -130,14 +134,14 @@ mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/include/config.h
 CONFIG_CLEAN_FILES =
 DIST_SOURCES =
-HEADERS = $(libCoininc_HEADERS)
+HEADERS = $(nodist_libCoininc_HEADERS)
 
 
 RECURSIVE_TARGETS = info-recursive dvi-recursive install-info-recursive \
 	uninstall-info-recursive all-recursive install-data-recursive \
 	install-exec-recursive installdirs-recursive install-recursive \
 	uninstall-recursive check-recursive installcheck-recursive
-DIST_COMMON = $(libCoininc_HEADERS) Makefile.am Makefile.in
+DIST_COMMON = Makefile.am Makefile.in
 DIST_SUBDIRS = $(SUBDIRS)
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
@@ -160,19 +164,19 @@ Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.s
 	  CONFIG_HEADERS= CONFIG_LINKS= \
 	  CONFIG_FILES=$(subdir)/$@ $(SHELL) ./config.status
 uninstall-info-am:
-install-libCoinincHEADERS: $(libCoininc_HEADERS)
+install-nodist_libCoinincHEADERS: $(nodist_libCoininc_HEADERS)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libCoinincdir)
-	@list='$(libCoininc_HEADERS)'; for p in $$list; do \
+	@list='$(nodist_libCoininc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libCoinincdir)/$$f"; \
 	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libCoinincdir)/$$f; \
 	done
 
-uninstall-libCoinincHEADERS:
+uninstall-nodist_libCoinincHEADERS:
 	@$(NORMAL_UNINSTALL)
-	@list='$(libCoininc_HEADERS)'; for p in $$list; do \
+	@list='$(nodist_libCoininc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  echo " rm -f $(DESTDIR)$(libCoinincdir)/$$f"; \
 	  rm -f $(DESTDIR)$(libCoinincdir)/$$f; \
@@ -352,7 +356,7 @@ info: info-recursive
 
 info-am:
 
-install-data-am: install-libCoinincHEADERS
+install-data-am: install-nodist_libCoinincHEADERS
 
 install-exec-am:
 
@@ -370,7 +374,7 @@ mostlyclean: mostlyclean-recursive
 
 mostlyclean-am: mostlyclean-generic mostlyclean-libtool
 
-uninstall-am: uninstall-info-am uninstall-libCoinincHEADERS
+uninstall-am: uninstall-info-am uninstall-nodist_libCoinincHEADERS
 
 uninstall-info: uninstall-info-recursive
 
@@ -381,14 +385,14 @@ uninstall-info: uninstall-info-recursive
 	info-recursive install install-am install-data install-data-am \
 	install-data-recursive install-exec install-exec-am \
 	install-exec-recursive install-info install-info-am \
-	install-info-recursive install-libCoinincHEADERS install-man \
-	install-recursive install-strip installcheck installcheck-am \
-	installdirs installdirs-am installdirs-recursive \
-	maintainer-clean maintainer-clean-generic \
-	maintainer-clean-recursive mostlyclean mostlyclean-generic \
-	mostlyclean-libtool mostlyclean-recursive tags tags-recursive \
-	uninstall uninstall-am uninstall-info-am \
-	uninstall-info-recursive uninstall-libCoinincHEADERS \
+	install-info-recursive install-man \
+	install-nodist_libCoinincHEADERS install-recursive \
+	install-strip installcheck installcheck-am installdirs \
+	installdirs-am installdirs-recursive maintainer-clean \
+	maintainer-clean-generic maintainer-clean-recursive mostlyclean \
+	mostlyclean-generic mostlyclean-libtool mostlyclean-recursive \
+	tags tags-recursive uninstall uninstall-am uninstall-info-am \
+	uninstall-info-recursive uninstall-nodist_libCoinincHEADERS \
 	uninstall-recursive
 
 
