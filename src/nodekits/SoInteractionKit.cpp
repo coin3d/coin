@@ -562,6 +562,12 @@ SoInteractionKit::setAnyPartAsDefault(const SbName & partname,
   return FALSE;
 }
 
+// FIXME: the API doc on setAnySurrogatePath() below stinks. Surrogate
+// parts is such a useful mechanism that it deserves proper
+// documentation. We should explain what it's good for, the details of
+// setting up a surrogate part, and add in a small usage example (ie
+// source code). 20021008 mortene.
+
 /*!
   Protected version of setPartAsPath(), to make it possible to set
   non-leaf and private parts.
