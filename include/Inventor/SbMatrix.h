@@ -38,6 +38,7 @@ public:
            const float a31, const float a32, const float a33, const float a34,
            const float a41, const float a42, const float a43, const float a44);
   SbMatrix(const SbMat & matrix);
+  SbMatrix(SbMat & matrix);
   ~SbMatrix(void);
 
   SbMatrix & operator =(const SbMat & m);
