@@ -329,7 +329,8 @@ SoEngine::getOutputDataPtr(void)
 SbBool
 SoEngine::readInstance(SoInput * in, unsigned short flags)
 {
-  COIN_STUB();
+  // FIXME: I believe there's code missing here for reading
+  // SoUnknownEngine instances. 20000919 mortene.
   return inherited::readInstance(in, flags);
 }
 
