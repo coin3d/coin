@@ -788,7 +788,10 @@ SoSeparator::getMatrix(SoGetMatrixAction * action)
   int numindices;
   const int * indices;
   if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
+    // need to push/pop to handle SoUnitsElement correctly
+    action->getState()->push();
     this->children->traverseInPath(action, numindices, indices);
+    action->getState()->pop();
   }
 }
 

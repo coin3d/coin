@@ -432,6 +432,9 @@ SoVRMLTransform::getBoundingBox(SoGetBoundingBoxAction * action)
 void
 SoVRMLTransform::getMatrix(SoGetMatrixAction * action)
 {
+  // need to push/pop to handle SoUnitsElement correctly
+  action->getState()->push();
+
   SbMatrix m;
   m.setTransform(this->translation.getValue(),
                  this->rotation.getValue(),
@@ -443,6 +446,7 @@ SoVRMLTransform::getMatrix(SoGetMatrixAction * action)
   action->getInverse().multRight(mi);
 
   SoGroup::getMatrix(action);
+  action->getState()->pop();
 }
 
 // Doc in parent
