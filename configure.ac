@@ -1985,9 +1985,14 @@ AC_CONFIG_FILES([
         src/hardcopy/Makefile
         src/mpeg/Makefile
         src/shaders/Makefile
+        cfg/gendsp.sh
 ])
 
 AC_OUTPUT
+
+if test -f cfg/gendsp.sh; then
+  chmod +x cfg/gendsp.sh
+fi
 
 # in case someone has the old generated SbBasic.h lying about...
 if test -f include/Inventor/SbBasic.h; then
