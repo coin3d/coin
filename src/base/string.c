@@ -18,11 +18,18 @@
 \**************************************************************************/
 
 #include <Inventor/C/base/string.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif /* HAVE_CONFIG_H */
+
 #include "../tidbits.h" // snprintf() and vsnprintf() definitions.
 
 #include <assert.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <stdarg.h>
 
 /* ********************************************************************** */
 
@@ -55,7 +62,7 @@ cc_string_remove_substring(cc_string * me, int start, int end)
     /*
     SoDebugError::postWarning("cc_string_remove_substring",
                               "invalid arguments [%d, %d] for string ``%s''",
-                              startidx, endidx, this->sstring);
+                              startidx, endidx, me->sstring);
     */
     return;
   }
@@ -387,10 +394,10 @@ cc_string_vsprintf(cc_string * me, const char * formatstr, va_list args)
        (as documented in the snprintf(3) man-page) when we can't fit
        the constructed string within the given buffer, but rather the
        number of characters needed. */
-    if (!expand) { expand = (length > this->storagesize); }
+    if (!expand) { expand = (length > me->bufsize); }
     /* IRIX 6.5 vsnprintf() just returns the number of characters
        until clipped. */
-    if (!expand) { expand = (length == this->storagesize - 1); }
+    if (!expand) { expand = (length == me->bufsize - 1); }
 
     /* FIXME: all the vsnprintf() differences should be hidden in a
        tidbits.c coin_vsnprintf() implementation. Or perhaps just make
