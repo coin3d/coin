@@ -1357,7 +1357,7 @@ if test x"$enable_hacking" = x"yes"; then
     base actions bundles caches details draggers elements \
     elements/GL:glelements engines errors events fields glue \
     manips misc lists nodekits nodes shapenodes projectors \
-    sensors upgraders hardcopy 3ds:format3ds; \
+    sensors upgraders hardcopy collision 3ds:format3ds; \
   do
     case $dir in
     *:* )
