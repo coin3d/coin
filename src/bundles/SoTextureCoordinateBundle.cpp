@@ -40,7 +40,7 @@
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 
-#include <Inventor/nodes/SoVertexShape.h>
+#include <Inventor/nodes/SoShape.h>
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -81,12 +81,9 @@ SoTextureCoordinateBundle(SoAction * const action,
       !SoTexture3EnabledElement::get(this->state))
     return;
 
-  // FIXME: shapenode is not guaranteed to be a SoVertexShape, since
-  // the VRML nodes have a different node hierarchy. It is safe to
-  // assume that shapenode is of type SoShape though, so remember to
-  // cast to SoShape before doing any operations on the node. For Coin
-  // V2.0 we'll change the shapenode member to be of type SoShape
-  this->shapenode = (SoVertexShape*) action->getCurPathTail();
+  // It is safe to assume that shapenode is of type SoShape, so we
+  // cast to SoShape before doing any operations on the node.
+  this->shapenode = (SoShape *)action->getCurPathTail();
 
   this->coordElt = SoTextureCoordinateElement::getInstance(this->state);
   switch (this->coordElt->getType()) {
@@ -238,9 +235,7 @@ SoTextureCoordinateBundle::initDefault(SoAction * const action,
   // texture coordinate mapping shouldn't be used. We might optimize this
   // by using a SoTextureCoordinateCache soon though. pederb, 20000218
 
-  // just in case, cast to SoShape since it's not guaranteed that
-  // shapenode is of type SoVertexShape.
-  SoShape * shape = (SoShape*) this->shapenode;
+  SoShape * shape = (SoShape *)this->shapenode;
   const SoBoundingBoxCache * bboxcache = shape->getBoundingBoxCache();
   if (bboxcache && bboxcache->isValid(action->getState())) {
     box = bboxcache->getProjectedBox();

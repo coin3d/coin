@@ -34,7 +34,8 @@
 class SoTextureCoordinateElement;
 class SoGLTextureCoordinateElement;
 class SoTextureCoordinateCache;
-class SoVertexShape;
+class SoShape;
+
 
 class COIN_DLL_API SoTextureCoordinateBundle : public SoBundle {
   typedef SoBundle inherited;
@@ -67,7 +68,7 @@ private:
   static const SbVec4f &defaultCB(void * userdata,
                                   const SbVec3f & point,
                                   const SbVec3f & normal);
-  SoVertexShape *shapenode; // FIXME: change to type SoShape in Coin version 2.0
+  SoShape * shapenode;
   SbVec3f defaultorigo;
   SbVec3f defaultsize;
   SbVec4f dummyInstance;
