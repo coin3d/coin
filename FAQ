@@ -82,14 +82,14 @@ A:      Yes, but you have to do some work. Coin can do thread-safe
 
 Q1.3:   Can I do volume rendering with Coin?
 
-A:      There are no volume rendering extensions for Coin yet.  Support for
-        3D textures, which is a prerequisite for proper volume rendering
-        support, was implemented for Coin 2.0.
+A:      Yes, SIM provide an add-on library called "SIM Voleon" for
+        volume rendering. The library provides a set of scene graph
+        nodes which lets developers set up and visualize volume data
+        (in the form of voxels).
 
-        Exactly when fullblown volume rendering is going to be implemented
-        is in the blue, but it is functionality we see a demand for, so we
-        are certainly interested in adding support for it, but there are
-        no concrete plans for putting resources on this currently.
+        SIM Voleon is available from the same channels as Coin itself,
+        i.e. the same FTP site and directory, and the same CVS
+        repository (the CVS module is named "SIMVoleon").
 
 
 Q1.4:   Does Coin support VRML97?
