@@ -37,7 +37,7 @@ SO_ENGINE_SOURCE(SoConcatenate);
 */
 SoConcatenate::SoConcatenate(SoType inputType)
 {
-  SO_ENGINE_CONSTRUCTOR(SoConcatenate);
+  SO_ENGINE_INTERNAL_CONSTRUCTOR(SoConcatenate);
 
   for (int i=0;i<10;i++)
     this->input[i]=(SoMField *)inputType.createInstance();

@@ -97,7 +97,7 @@ SO_ENGINE_SOURCE(SoTimeCounter);
 */
 SoTimeCounter::SoTimeCounter()
 {
-  SO_ENGINE_CONSTRUCTOR(SoTimeCounter);
+  SO_ENGINE_INTERNAL_CONSTRUCTOR(SoTimeCounter);
 
   SO_ENGINE_ADD_INPUT(timeIn, (SbTime::zero()));
   SO_ENGINE_ADD_INPUT(min, (0));

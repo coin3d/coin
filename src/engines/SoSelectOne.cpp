@@ -38,7 +38,7 @@ SO_ENGINE_SOURCE(SoSelectOne);
 */
 SoSelectOne::SoSelectOne(SoType inputType)
 {
-  SO_ENGINE_CONSTRUCTOR(SoSelectOne);
+  SO_ENGINE_INTERNAL_CONSTRUCTOR(SoSelectOne);
 
   SO_ENGINE_ADD_INPUT(index,(0));
   this->input=(SoMField *)inputType.createInstance();

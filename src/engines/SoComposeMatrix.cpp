@@ -37,7 +37,7 @@ SO_ENGINE_SOURCE(SoComposeMatrix);
 */
 SoComposeMatrix::SoComposeMatrix()
 {
-  SO_ENGINE_CONSTRUCTOR(SoComposeMatrix);
+  SO_ENGINE_INTERNAL_CONSTRUCTOR(SoComposeMatrix);
 
   SO_ENGINE_ADD_INPUT(translation,(0,0,0));
   SO_ENGINE_ADD_INPUT(rotation,(0,0,0,0));

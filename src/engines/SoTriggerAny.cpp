@@ -36,7 +36,7 @@ SO_ENGINE_SOURCE(SoTriggerAny);
 */
 SoTriggerAny::SoTriggerAny()
 {
-  SO_ENGINE_CONSTRUCTOR(SoTriggerAny);
+  SO_ENGINE_INTERNAL_CONSTRUCTOR(SoTriggerAny);
 
   SO_ENGINE_ADD_INPUT(input0,());
   SO_ENGINE_ADD_INPUT(input1,());

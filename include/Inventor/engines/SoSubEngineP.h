@@ -34,6 +34,10 @@
 
 #include <Inventor/engines/SoSubEngine.h>
 
+// Be aware that any changes to the SO_ENGINE_INTERNAL_CONSTRUCTOR
+// macro should be matched by similar changes to the constructor in
+// the SO_INTERPOLATE_SOURCE macro (which have to use
+// SO_ENGINE_CONSTRUCTOR because it is "public").
 
 #define SO_ENGINE_INTERNAL_CONSTRUCTOR(_class_) \
   do { \

@@ -36,7 +36,7 @@ SO_ENGINE_SOURCE(SoDecomposeVec2f);
 */
 SoDecomposeVec2f::SoDecomposeVec2f()
 {
-  SO_ENGINE_CONSTRUCTOR(SoDecomposeVec2f);
+  SO_ENGINE_INTERNAL_CONSTRUCTOR(SoDecomposeVec2f);
 
   SO_ENGINE_ADD_INPUT(vector,(0,0));
 

@@ -39,7 +39,7 @@ SO_ENGINE_SOURCE(SoComputeBoundingBox);
 */
 SoComputeBoundingBox::SoComputeBoundingBox()
 {
-  SO_ENGINE_CONSTRUCTOR(SoComputeBoundingBox);
+  SO_ENGINE_INTERNAL_CONSTRUCTOR(SoComputeBoundingBox);
 
   SO_ENGINE_ADD_INPUT(node,(NULL));
   SO_ENGINE_ADD_INPUT(path,(NULL));

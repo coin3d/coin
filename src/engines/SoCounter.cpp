@@ -73,7 +73,7 @@ SO_ENGINE_SOURCE(SoCounter);
 */
 SoCounter::SoCounter()
 {
-  SO_ENGINE_CONSTRUCTOR(SoCounter);
+  SO_ENGINE_INTERNAL_CONSTRUCTOR(SoCounter);
 
   SO_ENGINE_ADD_INPUT(min,(0));
   SO_ENGINE_ADD_INPUT(max,(1));

@@ -37,7 +37,7 @@ SO_ENGINE_SOURCE(SoComposeRotationFromTo);
 */
 SoComposeRotationFromTo::SoComposeRotationFromTo()
 {
-  SO_ENGINE_CONSTRUCTOR(SoComposeRotationFromTo);
+  SO_ENGINE_INTERNAL_CONSTRUCTOR(SoComposeRotationFromTo);
 
   SO_ENGINE_ADD_INPUT(from,(0.0f,0.0f,1.0f));
   SO_ENGINE_ADD_INPUT(to,(0.0f,0.0f,1.0f));

@@ -37,7 +37,7 @@ SO_ENGINE_SOURCE(SoComposeRotation);
 */
 SoComposeRotation::SoComposeRotation()
 {
-  SO_ENGINE_CONSTRUCTOR(SoComposeRotation);
+  SO_ENGINE_INTERNAL_CONSTRUCTOR(SoComposeRotation);
 
   SO_ENGINE_ADD_INPUT(axis,(0.0f,0.0f,0.0f));
   SO_ENGINE_ADD_INPUT(angle,(0.0f));

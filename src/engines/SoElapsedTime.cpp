@@ -41,7 +41,7 @@ SO_ENGINE_SOURCE(SoElapsedTime);
 */
 SoElapsedTime::SoElapsedTime()
 {
-  SO_ENGINE_CONSTRUCTOR(SoElapsedTime);
+  SO_ENGINE_INTERNAL_CONSTRUCTOR(SoElapsedTime);
 
   SO_ENGINE_ADD_INPUT(timeIn,(SbTime::zero()));
   SO_ENGINE_ADD_INPUT(speed,(1));

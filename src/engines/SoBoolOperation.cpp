@@ -40,7 +40,7 @@ SO_ENGINE_SOURCE(SoBoolOperation);
 */
 SoBoolOperation::SoBoolOperation()
 {
-  SO_ENGINE_CONSTRUCTOR(SoBoolOperation);
+  SO_ENGINE_INTERNAL_CONSTRUCTOR(SoBoolOperation);
 
   SO_ENGINE_ADD_INPUT(a,(FALSE));
   SO_ENGINE_ADD_INPUT(b,(FALSE));

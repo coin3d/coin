@@ -43,7 +43,7 @@ SO_ENGINE_SOURCE(SoCalculator);
 */
 SoCalculator::SoCalculator(void)
 {
-  SO_ENGINE_CONSTRUCTOR(SoCalculator);
+  SO_ENGINE_INTERNAL_CONSTRUCTOR(SoCalculator);
 
   SO_ENGINE_ADD_INPUT(a, (0.0f));
   SO_ENGINE_ADD_INPUT(b, (0.0f));

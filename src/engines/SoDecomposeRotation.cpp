@@ -38,7 +38,7 @@ SO_ENGINE_SOURCE(SoDecomposeRotation);
 */
 SoDecomposeRotation::SoDecomposeRotation()
 {
-  SO_ENGINE_CONSTRUCTOR(SoDecomposeRotation);
+  SO_ENGINE_INTERNAL_CONSTRUCTOR(SoDecomposeRotation);
 
   SO_ENGINE_ADD_INPUT(rotation,(0.0f, 0.0f, 1.0f, 0.0f));
 

@@ -36,7 +36,7 @@ SO_ENGINE_SOURCE(SoComposeVec3f);
 */
 SoComposeVec3f::SoComposeVec3f()
 {
-  SO_ENGINE_CONSTRUCTOR(SoComposeVec3f);
+  SO_ENGINE_INTERNAL_CONSTRUCTOR(SoComposeVec3f);
 
   SO_ENGINE_ADD_INPUT(x,(0.0f));
   SO_ENGINE_ADD_INPUT(y,(0.0f));

@@ -40,7 +40,7 @@ SO_ENGINE_SOURCE(SoOneShot);
 */
 SoOneShot::SoOneShot()
 {
-  SO_ENGINE_CONSTRUCTOR(SoOneShot);
+  SO_ENGINE_INTERNAL_CONSTRUCTOR(SoOneShot);
 
   SO_ENGINE_ADD_INPUT(timeIn,(SbTime::zero()));
   SO_ENGINE_ADD_INPUT(duration,(SbTime(1.0)));

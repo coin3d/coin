@@ -37,7 +37,7 @@ SO_ENGINE_SOURCE(SoTransformVec3f);
 */
 SoTransformVec3f::SoTransformVec3f()
 {
-  SO_ENGINE_CONSTRUCTOR(SoTransformVec3f);
+  SO_ENGINE_INTERNAL_CONSTRUCTOR(SoTransformVec3f);
 
   SO_ENGINE_ADD_INPUT(vector, (0.0f, 0.0f, 0.0f));
   SO_ENGINE_ADD_INPUT(matrix, (SbMatrix::identity()));

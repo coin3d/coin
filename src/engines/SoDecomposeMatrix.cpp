@@ -38,7 +38,7 @@ SO_ENGINE_SOURCE(SoDecomposeMatrix);
 */
 SoDecomposeMatrix::SoDecomposeMatrix()
 {
-  SO_ENGINE_CONSTRUCTOR(SoDecomposeMatrix);
+  SO_ENGINE_INTERNAL_CONSTRUCTOR(SoDecomposeMatrix);
 
   SO_ENGINE_ADD_INPUT(matrix,(SbMatrix()));
 
