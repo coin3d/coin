@@ -146,6 +146,13 @@
 
   The diffuse part is combined with the light emitted from the scene's
   light sources.
+
+  Traditional Open Inventor uses the same override bit for both
+  diffuse color and transparency.  To get around this problem if you
+  need to override one without the other, set the environment
+  variable "COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE".  This is
+  a Coin extension, and  will not work on the other Open Inventor
+  implementations.
 */
 /*!
   \var SoMFColor SoMaterial::specularColor
@@ -179,6 +186,13 @@
   i.e. invisible).
 
   Defaults to contain a single value of 0.0.
+
+  Traditional Open Inventor uses the same override bit for both
+  transparency and diffuse color.  To get around this problem if you
+  need to override one without the other, set the environment
+  variable "COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE".  This is
+  a Coin extension, and  will not work on the other Open Inventor
+  implementations.
 */
 
 // defines for materialtype

@@ -557,6 +557,9 @@ SoField::initClass(void)
   The effect of this flag depends on what type of field it is used on,
   and the type of the node which includes the field.
 
+  This flag is represented in Inventor files by a ~ behind the field
+  name.  The flag is in other words persistent.
+
   \sa isIgnored()
 */
 void

@@ -627,6 +627,13 @@ SoNode::initClasses(void)
   A common applicaton for "override nodes" is to place them at the top
   of the tree as a convenient way to force e.g. a common drawstyle on
   the complete tree.
+
+  The override flag does not exist in the Inventor file format.  This
+  flag is in other words not persistent, and must be programmatically
+  set.  The rationale for this flag is for viewers to be able to
+  control rendering style of the 3D models, so it would look stupid if
+  some parts of certain models suddenly didn't adhere to the viewer
+  mode.
 */
 void
 SoNode::setOverride(const SbBool state)
