@@ -20,6 +20,7 @@
 /*!
   \class SoTextOutlineEnabledElement Inventor/elements/SoTextOutlineEnabledElement.h
   \brief The SoTextOutlineEnabledElement class is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 */

@@ -19,8 +19,8 @@
 
 /*!
   \class SoError SoError.h Inventor/errors/SoError.h
-  \brief The SoError class is the base class for all the error
-  handling classes.
+  \brief The SoError class is the base class for all the error handling classes.
+  \ingroup errors
 
   The default error handler just prints messages on the standard error
   output channel, but this can be overridden by client applications.

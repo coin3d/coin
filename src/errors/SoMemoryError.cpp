@@ -19,8 +19,8 @@
 
 /*!
   \class SoMemoryError SoMemoryError.h Inventor/errors/SoMemoryError.h
-  \brief The SoMemoryError class is used to inform of problems with
-  memory allocation.
+  \brief The SoMemoryError class is used to inform of problems with memory allocation.
+  \ingroup errors
 
   Modern operating systems takes care of handling most out of memory
   conditions for you, but in certain situations it can be wise to do
@@ -42,14 +42,13 @@
   taken care of by internally handling failed attempts at memory
   allocation. An example: the user tries to load a model file which
   contains a filename pointer to a huge bitmapfile with a texture
-  map. The machine you are one does not provide you with enough memory
-  to load the file and prepare the texture image for rendering,
-  though. This is a case where it is possible to just emit a warning
-  and continue. The warning will then be passed through this class.
+  map. The end-user's system does not provide enough memory to load
+  the file and prepare the texture image for rendering, though. This
+  is a case where it is possible to just emit a warning and
+  continue. The warning will then be passed through this class.
 
   Note that SoMemoryError is probably not of much use to the
   application programmer.
-
 */
 
 #include <Inventor/errors/SoMemoryError.h>

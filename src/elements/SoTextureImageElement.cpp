@@ -20,6 +20,7 @@
 /*!
   \class SoTextureImageElement Inventor/elements/SoTextureImageElement.h
   \brief The SoTextureImageElement class is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 */

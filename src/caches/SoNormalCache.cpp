@@ -20,13 +20,16 @@
 /*!
   \class SoNormalCache SoNormalCache.h include/Inventor/caches/SoNormalCache.h
   \brief The SoNormalCache class is used to hold cached normals.
+  \ingroup caches
 
-  As an extension to Inventor, it is also possible to generate normals
-  using this class. It is more powerful and easier to use than the
-  SoNormalGenerator class. It is possible to generate normals per
-  vertex with indices (using much less memory than plain per vertex
-  normals), and it contains special methods to generate normals for
-  triangle strips and quads.
+  As an extension to the original SGI Open Inventor v2.1 API, it is
+  also possible to generate normals using this class.
+
+  It is more powerful and easier to use than the SoNormalGenerator
+  class. It is possible to generate normals per vertex with indices
+  (using much less memory than plain per vertex normals), and it
+  contains special methods to generate normals for triangle strips and
+  quads.
 */
 
 #include <Inventor/caches/SoNormalCache.h>

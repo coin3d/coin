@@ -20,6 +20,7 @@
 /*!
   \class SoGLTextureImageElement Inventor/elements/SoGLTextureImageElement.h
   \brief The SoGLTextureImageElement is used to control the current GL texture.
+  \ingroup elements
 
   This is a lazy element. It is evaluated in SoShape::shouldGLRender().
 */

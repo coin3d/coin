@@ -20,6 +20,7 @@
 /*!
   \class SoGLDiffuseColorElement Inventor/elements/SoGLDiffuseColorElement.h
   \brief The SoGLDiffuseColorElement class is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 */

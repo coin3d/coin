@@ -20,6 +20,7 @@
 /*!
   \class SoGLLightModelElement Inventor/elements/SoGLLightModelElement.h
   \brief The SoGLLightModelElement class is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 */

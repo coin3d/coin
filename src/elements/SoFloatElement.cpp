@@ -19,8 +19,8 @@
 
 /*!
   \class SoFloatElement Inventor/elements/SoFloatElement.h
-  \brief Abstract base class for elements that only take care of a float
-  value.
+  \brief Abstract base class for elements that only take care of a float value.
+  \ingroup elements
 */
 
 #include <Inventor/elements/SoFloatElement.h>

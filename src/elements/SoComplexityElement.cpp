@@ -19,8 +19,8 @@
 
 /*!
   \class SoComplexityElement Inventor/elements/SoComplexityElement.h
-  \brief The SoComplexityElement class contains the current shape complexity
-  for a graph traverser.
+  \brief The SoComplexityElement class contains the current shape complexity for a graph traverser.
+  \ingroup elements
 */
 
 #include <Inventor/elements/SoComplexityElement.h>

@@ -20,6 +20,7 @@
 /*!
   \class SoReadError SoReadError.h Inventor/errors/SoReadError.h
   \brief The SoReadError class is used during model import operations.
+  \ingroup errors
 
   During model file import, this class will be used to output any
   error or warning messages.

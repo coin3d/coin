@@ -20,6 +20,7 @@
 /*!
   \class SoGLSpecularColorElement Inventor/elements/SoGLSpecularColorElement.h
   \brief The SoGLSpecularColorElement class is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 */

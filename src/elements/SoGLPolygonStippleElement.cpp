@@ -20,6 +20,7 @@
 /*!
   \class SoGLPolygonStippleElement Inventor/elements/SoGLPolygonStippleElement.h
   \brief The SoGLPolygonStippleElement class is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 */

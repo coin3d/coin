@@ -19,8 +19,8 @@
 
 /*!
   \class SoGLTextureCoordinateElement Inventor/elements/SoGLTextureCoordinateElement.h
-  \brief The SoGLTextureCoordinateElement class stores the current gltexture
-  coordinates.
+  \brief The SoGLTextureCoordinateElement class stores the current gltexture coordinates.
+  \ingroup elements
 */
 
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>

@@ -20,6 +20,7 @@
 /*!
   \class SoEnvironmentElement Inventor/elements/SoEnvironmentElement.h
   \brief The SoEnvironmentElement class is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 */

@@ -20,6 +20,7 @@
 /*!
   \class SoGLDrawStyleElement Inventor/elements/SoGLDrawStyleElement.h
   \brief The SoGLDrawStyleElement updates the current draw style in OpenGL.
+  \ingroup elements
 */
 
 #include <Inventor/elements/SoGLDrawStyleElement.h>

@@ -20,6 +20,7 @@
 /*!
   \class SoLazyElement Inventor/elements/SoLazyElement.h
   \brief The SoLazyElement class is a very stupid class..
+  \ingroup elements
 
   This is just a wrap-around implementation for compatibility. It
   should (hopefully) work in the same way as the Inventor class

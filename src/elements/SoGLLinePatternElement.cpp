@@ -20,6 +20,7 @@
 /*!
   \class SoGLLinePatternElement Inventor/elements/SoGLLinePatternElement.h
   \brief The SoGLLinePatternElement class is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 */

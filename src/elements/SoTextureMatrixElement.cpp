@@ -20,6 +20,7 @@
 /*!
   \class SoTextureMatrixElement Inventor/elements/SoTextureMatrixElement.h
   \brief The SoTextureMatrixElement class is used to manage the texture matrix stack.
+  \ingroup elements
 
   The texture matrix is used to transform texture coordinates before
   being used to map textures onto polygons.

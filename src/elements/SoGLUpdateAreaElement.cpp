@@ -20,6 +20,7 @@
 /*!
   \class SoGLUpdateAreaElement Inventor/elements/SoGLUpdateAreaElement.h
   \brief The SoGLUpdateAreaElement class is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 */

@@ -20,6 +20,7 @@
 /*!
   \class SoGLShapeHintsElement Inventor/elements/SoGLShapeHintsElement.h
   \brief The SoGLShapeHintsElement class is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 */

@@ -20,6 +20,7 @@
 /*!
   \class SoPointSizeElement Inventor/elements/SoPointSizeElement.h
   \brief The SoPointSizeElement class is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 */

@@ -20,6 +20,7 @@
 /*!
   \class SoComplexityTypeElement Inventor/elements/SoComplexityTypeElement.h
   \brief The SoComplexityTypeElement class is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 */

@@ -20,6 +20,7 @@
 /*!
   \class SoGLLineWidthElement Inventor/elements/SoGLLineWidthElement.h
   \brief The SoGLLineWidthElement class is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 */

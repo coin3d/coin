@@ -20,6 +20,7 @@
 /*!
   \class SoSwitchElement Inventor/elements/SoSwitchElement.h
   \brief The SoSwitchElement class is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 */

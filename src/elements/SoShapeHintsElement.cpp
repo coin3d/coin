@@ -20,6 +20,7 @@
 /*!
   \class SoShapehintsElement Inventor/elements/SoShapeHintsElement.h
   \brief The SoShapeHintsElement class is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 */

@@ -20,6 +20,7 @@
 /*!
   \class SoTextureScalePolicyElement Inventor/elements/SoTextureScalePolicyElement.h
   \brief The SoTextureScalePolicyElement class is yet to be documented.
+  \ingroup elements
 
   This is currently an internal Coin element. The header file is not
   installed, and the API for this element might change without notice.  

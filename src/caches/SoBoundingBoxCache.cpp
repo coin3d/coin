@@ -20,7 +20,7 @@
 /*!
   \class SoBoundingBoxCache include/Inventor/caches/SoBoundingBoxCache.h
   \brief The SoBoundingBoxCache class is used to cache bounding boxes.
-
+  \ingroup caches
 */
 
 #include <Inventor/caches/SoBoundingBoxCache.h>

@@ -20,6 +20,7 @@
 /*!
   \class SoGLCacheElement Inventor/elements/SoGLCacheElement.h
   \brief The SoGLCacheElement class handles OpenGL caches for multiple contexts.
+  \ingroup elements
 */
 
 #include <Inventor/elements/SoGLCacheContextElement.h>

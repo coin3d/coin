@@ -20,6 +20,7 @@
 /*!
   \class SoGLProjectionMatrixElement Inventor/elements/SoGLProjectionMatrixElement.h
   \brief The SoGLProjectionMatrixElement class is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 */

@@ -20,6 +20,7 @@
 /*!
   \class SoReplacedElement Inventor/elements/SoReplacedElement.h
   \brief The SoReplacedElement class is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 */

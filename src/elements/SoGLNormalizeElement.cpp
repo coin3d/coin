@@ -20,6 +20,7 @@
 /*!
   \class SoGLNormalizeElement Inventor/elements/SoGLNormalizeElement.h
   \brief The SoGLNormalizeElement class is for GL optimization only.
+  \ingroup elements
 
   It keeps track of the GL_NORMALIZE flag and enables/disables this
   GL feature depending on the GL matrix and supplied normals.

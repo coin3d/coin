@@ -20,6 +20,7 @@
 /*!
   \class SoShininessElement Inventor/elements/SoShininessElement.h
   \brief The SoShininessElement class is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 

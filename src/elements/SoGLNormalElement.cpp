@@ -20,6 +20,7 @@
 /*!
   \class SoGLNormalElement Inventor/elements/SoGLNormalElement.h
   \brief The SoGLNormalElement class is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 */

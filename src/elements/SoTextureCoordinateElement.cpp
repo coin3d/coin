@@ -20,6 +20,7 @@
 /*!
   \class SoTextureCoordinateElement Inventor/elements/SoTextureCoordinateElement.h
   \brief The SoTextureCoordinateElement class is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 */

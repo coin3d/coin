@@ -20,6 +20,7 @@
 /*!
   \class SoGLCoordinateElement Inventor/elements/SoGLCoordinateElement.h
   \brief The SoGLCoordinateElement class is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 */

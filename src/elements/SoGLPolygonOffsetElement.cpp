@@ -20,6 +20,7 @@
 /*!
   \class SoGLPolygonOffsetElement Inventor/elements/SoGLPolygonOffsetElement.h
   \brief The SoGLPolygonOffsetElement class is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 */

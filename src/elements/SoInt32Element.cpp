@@ -19,8 +19,8 @@
 
 /*!
   \class SoInt32Element Inventor/elements/SoInt32Element.h
-  \brief The SoInt32Element class is the base class for all elements
-  that only take care of a 32-bit integer.
+  \brief The SoInt32Element class is the base class for all elements that only take care of a 32-bit integer.
+  \ingroup elements
 */
 
 #include <Inventor/elements/SoInt32Element.h>

@@ -20,6 +20,7 @@
 /*!
   \class SoViewVolumeElement Inventor/elements/SoViewVolumeElement.h
   \brief The SoViewVolumeElement class is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 */

@@ -20,6 +20,7 @@
 /*!
   \class SoGLAmbientColorElement Inventor/elements/SoGLAmbientColorElement.h
   \brief The SoGLAmbientColorElement class is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 */

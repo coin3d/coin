@@ -44,17 +44,20 @@
 
 /*! \defgroup actions Actions */
 /*! \defgroup base Base classes */
+/*! \defgroup bundles Bundles (mostly for internal use) */
+/*! \defgroup caches Cache storage (mostly for internal use) */
 /*! \defgroup details Detail classes */
 /*! \defgroup draggers Draggers */
-/*! \defgroup elements Elements */
+/*! \defgroup elements Elements (mostly for internal use) */
 /*! \defgroup engines Engine classes */
+/*! \defgroup errors Error handling */
 /*! \defgroup events Event classes */
 /*! \defgroup fields Field classes */
 /*! \defgroup general General classes */
 /*! \defgroup manips Manipulators */
 /*! \defgroup nodekits Node Kits */
 /*! \defgroup nodes Nodes */
-/*! \defgroup projectors Projector classes */
+/*! \defgroup projectors Projector classes (mostly for internal use) */
 /*! \defgroup sensors Sensor classes */
 
 /*!

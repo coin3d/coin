@@ -23,9 +23,11 @@
 /*!
   \class SoBundle include/Inventor/bundles/SoBundle.h
   \brief The SoBundle class is the superclass for all bundle classes.
-
-  bla, bla, bla, FIXME: doc
+  \ingroup bundles
 */
+// FIXME: document class properly (write general explanation of what
+// bundles are used for. 20010828 mortene.
+
 
 /*!
   Constructor with action being the action applied to the node.

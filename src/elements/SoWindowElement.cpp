@@ -20,6 +20,7 @@
 /*!
   \class SoWindowElement Inventor/elements/SoWindowElement.h
   \brief The SoWindowElement class is used to store current window attributes.
+  \ingroup elements
 
   In Coin, this element is not API-compatible with SGI Inventor, since 
   it contains platform specific stuff, which we want to avoid.

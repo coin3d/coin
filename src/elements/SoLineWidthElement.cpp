@@ -20,6 +20,7 @@
 /*!
   \class SoLineWidthElement Inventor/elements/SoLineWidthElement.h
   \brief The SoLineWidthElement class is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 */

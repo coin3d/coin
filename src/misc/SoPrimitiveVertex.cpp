@@ -19,10 +19,11 @@
 
 /*!
   \class SoPrimitiveVertex SoPrimitiveVertex.h Inventor/SoPrimitiveVertex.h
-  \brief The SoPrimitiveVertex class ... blablabla ...
+  \brief The SoPrimitiveVertex class FIXME: doc
+  \ingroup general
 
-  FIXME: write doc
- */
+  FIXME: document properly
+*/
 
 #include <Inventor/SoPrimitiveVertex.h>
 #include <stdlib.h>

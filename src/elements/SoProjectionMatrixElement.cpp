@@ -20,6 +20,7 @@
 /*!
   \class SoProjectionMatrix Inventor/elements/SoProjectionMatrixElement.h
   \brief The SoProjectionMatrixElement class is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 */

@@ -20,7 +20,7 @@
 /*!
   \class SoGLColorIndexElement Inventor/elements/SoGLColorIndexElement.h
   \brief The SoGLColorIndexElement class is used when rendering in color index mode.
-
+  \ingroup elements
 */
 
 #include <Inventor/elements/SoGLColorIndexElement.h>

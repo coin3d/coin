@@ -20,6 +20,7 @@
 /*!
   \class SoDecimationTypeElement Inventor/elements/SoDecimationTypeElement.h
   \brief The SoDecimationTypeElement class is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 */

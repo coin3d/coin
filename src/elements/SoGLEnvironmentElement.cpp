@@ -20,7 +20,7 @@
 /*!
   \class SoGLEnvironmentElement Inventor/elements/SoGLEnvironmentElement.h
   \brief The SoGLEnvironmentElement class is for setting GL fog etc.
-
+  \ingroup elements
 */
 
 

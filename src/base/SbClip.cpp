@@ -26,6 +26,7 @@
 /*!
   \class SbClip SbClip.h include/Inventor/base/SbClip.h
   \brief The SbClip class is a generic polygon clipper class.
+  \ingroup base
 
   It is used by first adding all vertices in the polygon, and then
   clipping against any number of planes. If you need to supply
@@ -37,6 +38,9 @@
   (clipped against some plane) vertex. You should then create a new
   vertex structure, calculate your data (e.g. a new texture
   coordinate) and return a pointer to this structure.  
+
+  Be aware that this class is an extension of Coin, and it is not
+  available in the original SGi Open Inventor v2.1 API.
 */
 
 /*!

@@ -20,6 +20,7 @@
 /*!
   \class SoAnnoText3FontSizeHintElement Inventor/elements/SoAnnoText3FontSizeHintElement.h
   \brief The SoAnnoText3FontSizeHintElement class is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 */

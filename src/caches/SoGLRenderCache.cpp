@@ -19,8 +19,8 @@
 
 /*!
   \class SoGLRenderCache include/Inventor/caches/SoGLRenderCache.h
-  \brief The SoGLRenderCache class is used to cache GL calls.
-
+  \brief The SoGLRenderCache class is used to cache OpenGL calls.
+  \ingroup caches
 */
 
 #include <Inventor/caches/SoGLRenderCache.h>

@@ -20,6 +20,7 @@
 /*!
   \class SoCacheElement Inventor/elements/SoCacheElement.h
   \brief The SoCacheElement class stores and manages the opene caches.
+  \ingroup elements
 */
 
 #include <Inventor/misc/SoState.h>

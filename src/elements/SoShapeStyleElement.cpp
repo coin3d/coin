@@ -20,6 +20,7 @@
 /*!
   \class SoShapeStyleElement Inventor/elements/SoShapeStyleElement.h
   \brief The SoShapeStyleElement class is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 */

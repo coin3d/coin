@@ -20,6 +20,7 @@
 /*!
   \class SoGLShadeModelElement Inventor/elements/SoGLShadeModelElement.h
   \brief The SoGLShadeModelElement class is used to control the GL shade model.
+  \ingroup elements
 
   It keeps track of the current shade model (flat or smooth) and
   evaluates lazily when the GL state should be updated. Flat-shaded

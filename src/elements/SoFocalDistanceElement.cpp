@@ -20,6 +20,7 @@
 /*!
   \class SoFocalDistanceElement Inventor/elements/SoFocalDistanceElement.h
   \brief The SoFocalDistanceElement class is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 */

@@ -19,8 +19,8 @@
 
 /*!
   \class SoElement Inventor/elements/SoElement.h
-  \brief This is the abstract base class for all elements.  The elements are
-  used by the SoState class.
+  \brief This is the abstract base class for all elements.  The elements are used by the SoState class.
+  \ingroup elements
 */
 
 #include <Inventor/elements/SoElements.h>

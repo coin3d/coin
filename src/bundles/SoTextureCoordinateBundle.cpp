@@ -20,8 +20,13 @@
 /*!
   \class SoTextureCoordinateBundle include/Inventor/bundles/SoTextureCoordinateBundle.h
   \brief The SoTextureCoordinateBundle class simplifies texture coordinate handling.
-  bla, bla, bla, FIXME: doc
+  \ingroup bundles
+
+  It is unlikely that application programmers should need to know how
+  to use this class, as it is mostly intended for internal use.
 */
+// FIXME: document class better.
+
 
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 

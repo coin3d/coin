@@ -20,6 +20,7 @@
 /*!
   \class SoFontNameElement Inventor/elements/SoFontNameElement.h
   \brief The SoFontNameElement class is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 */

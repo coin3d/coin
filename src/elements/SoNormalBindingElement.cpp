@@ -20,6 +20,7 @@
 /*!
   \class SoNormalBindingElement Inventor/elements/SoNormalBindingElement.h
   \brief The SoNormalBindingElement is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 */

@@ -20,6 +20,7 @@
 /*!
   \class SoGLEmissiveColorElement Inventor/elements/SoGLEmissiveColorElement.h
   \brief The SoGLEmissiveColorElement class is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 */

@@ -20,6 +20,7 @@
 /*!
   \class SoViewingMatrixElement Inventor/elements/SoViewingMatrixElement.h
   \brief The SoViewingMatrixElement class is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 */

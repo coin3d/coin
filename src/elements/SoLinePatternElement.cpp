@@ -20,6 +20,7 @@
 /*!
   \class SoLinePatternElement Inventor/elements/SoLinePatternElement.h
   \brief The SoLinePatternElement class is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 */

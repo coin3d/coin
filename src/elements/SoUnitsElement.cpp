@@ -20,6 +20,7 @@
 /*!
   \class SoUnitsElement Inventor/elements/SoUnitsElement.h
   \brief The SoUnitsElement class is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 */

@@ -20,6 +20,7 @@
 /*!
   \class SoAccumulatedElement Inventor/elements/SoAccumulatedElement.h
   \brief The SoAccumulatedElement class is an abstract class for storing accumulated state.
+  \ingroup elements
 
   It stores node ids for all nodes accumulating the current
   state. These ids are used to quickly determine when to invalidate

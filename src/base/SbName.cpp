@@ -20,6 +20,7 @@
 /*!
   \class SbName SbName.h Inventor/SbName.h
   \brief The SbName class stores strings by reference in a hash table.
+  \ingroup base
 
   The class is used by inventor for keywords and other unique names that are
   used all over the place and would waste tons of memory if they were

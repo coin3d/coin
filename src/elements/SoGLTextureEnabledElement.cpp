@@ -20,12 +20,13 @@
 /*!
   \class SoGLTextureEnabledElement Inventor/elements/SoGLTextureEnabledElement.h
   \brief The SoGLTextureEnabledElement class is a lazy element which controls whether texturing is enabled or not.
+  \ingroup elements
 
-  This element is evaluated in SoShape::shouldGLRender() so you'll normally not
-  have to worry about this being a lazy element. However, if you implement your
-  own shape and need to disable texturing while rendering, use the
-  forceSend() method to change the GL state without changing the state of
-  the element.
+  This element is evaluated in SoShape::shouldGLRender() so you'll
+  normally not have to worry about this being a lazy element. However,
+  if you implement your own shape and need to disable texturing while
+  rendering, use the forceSend() method to change the GL state without
+  changing the state of the element.
 */
 
 #include <Inventor/elements/SoGLTextureEnabledElement.h>

@@ -20,6 +20,7 @@
 /*!
   \class SoLightPath Inventor/misc/SoLightPath.h
   \brief The SoLightPath class is a light version of SoPath.
+  \ingroup general
 
   SoLightPath can be used if you only need a temporary path, and don't
   want the overhead that comes with an SoPath (ref, unref, auditing etc).

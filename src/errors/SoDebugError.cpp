@@ -19,8 +19,8 @@
 
 /*!
   \class SoDebugError SoDebugError.h Inventor/errors/SoDebugError.h
-  \brief The SoDebugError class is the internal debugging message
-  passing mechanism.
+  \brief The SoDebugError class is the internal debugging message passing mechanism.
+  \ingroup errors
 
   This class basically serves two purposes:
 

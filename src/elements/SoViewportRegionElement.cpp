@@ -20,6 +20,7 @@
 /*!
   \class SoViewportRegionElement Inventor/elements/SoViewportRegionElement.h
   \brief The SoViewportRegionElement class is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 */

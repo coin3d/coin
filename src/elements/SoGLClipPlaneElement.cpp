@@ -20,6 +20,7 @@
 /*!
   \class SoGLClipPlaneElement Inventor/elements/SoGLClipPlaneElement.h
   \brief The SoGLClipPlaneElement class is yet to be documented.
+  \ingroup elements
 
   FIXME: write doc.
 */
