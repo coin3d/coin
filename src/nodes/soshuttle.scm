@@ -9,13 +9,13 @@
 (-> root 'addchild shuttle)
 (-> root 'addchild (new-socone))
 
-;; To get initial movement (default is from <0, 0, 0> to <0, 0, 0>).
-(-> (-> shuttle 'translation0) 'setvalue 0 1 0)
-(-> (-> shuttle 'translation1) 'setvalue 0 -1 0)
-
 (define viewer (new-soxtexaminerviewer))
 (-> viewer 'setscenegraph root)
 (-> viewer 'show)
+
+;; To get initial movement (default is from <0, 0, 0> to <0, 0, 0>).
+(-> (-> shuttle 'translation0) 'setvalue 0 1 0)
+(-> (-> shuttle 'translation1) 'setvalue 0 -1 0)
 
 ;;; End initial eval-region
 
@@ -35,8 +35,15 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;; Confirmed and potential bugs. ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; FIXME: setting translation field manually freezes the animation,
-;; see Bugzilla #197.  20000912 mortene.
+;; None
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;; False alarms (ex-possible bugs) and ex-bugs ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Setting translation field manually used to freeze the animation,
+;; see Bugzilla #197.  The reason for this was an unsafe optimization in
+;; SoEngine::notify().
 
 ;; from parent class SoTranslation
 (-> (-> shuttle 'translation) 'setvalue '#(1 0 0))

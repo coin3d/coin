@@ -72,7 +72,6 @@ SoType SoEngine::classTypeId;
 */
 SoEngine::SoEngine(void)
 {
-  this->stateflags.hasnotified = 0;
   this->stateflags.isnotifying = 0;
 }
 
@@ -290,28 +289,16 @@ SoEngine::notify(SoNotList * nl)
   // internal variables, if necessary.
   this->inputChanged(nl->getLastField());
 
-  // If hasnotified is set, there's nothing more to do, as output
-  // connections have been notified earlier.
-  //
-  // (Note: this is a "premature" optimization -- we're not actually
-  // sure it is worth the added complexity (it is for instance also
-  // necessary to fiddle with this flag from SoEngineOutput). There's
-  // also the question if we perhaps _should_ send notification
-  // no-matter-what -- as that's what SGI's Open Inventor does.)
-  if (this->stateflags.hasnotified == 0) {
-    this->stateflags.hasnotified = 1;
-
-    const SoEngineOutputData * outputs = this->getOutputData();
-    int numoutputs = outputs->getNumOutputs();
-    for (int i = 0; i < numoutputs; i++) {
-      SoEngineOutput * output = outputs->getOutput(this, i);
-      if (output->isEnabled()) {
-        int numconnections = output->getNumConnections();
-        for (int j = 0; j < numconnections; j++) {
-          SoField * field = (*output)[j];
-          if (this->isNotifyEnabled()) field->notify(nl);
-          else field->setDirty(TRUE);
-        }
+  const SoEngineOutputData * outputs = this->getOutputData();
+  int numoutputs = outputs->getNumOutputs();
+  for (int i = 0; i < numoutputs; i++) {
+    SoEngineOutput * output = outputs->getOutput(this, i);
+    if (output->isEnabled()) {
+      int numconnections = output->getNumConnections();
+      for (int j = 0; j < numconnections; j++) {
+        SoField * field = (*output)[j];
+        if (this->isNotifyEnabled()) field->notify(nl);
+        else field->setDirty(TRUE);
       }
     }
   }
@@ -334,7 +321,6 @@ SoEngine::evaluateWrapper(void)
   for (i = 0; i < n; i++) {
     outputs->getOutput(this, i)->doneWriting();
   }
-  this->stateflags.hasnotified = 0;
 }
 
 /*!

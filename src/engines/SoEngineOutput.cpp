@@ -113,10 +113,8 @@ void
 SoEngineOutput::enable(const SbBool flag)
 {
   if (this->getContainer()) {
-    // need to notify fields connected to this output
-    this->getContainer()->stateflags.hasnotified = 0;
-    // FIXME: I think the above is not enough -- probably need to
-    // notify fields directly. 20000911 mortene.
+    // FIXME: I think we need to notify connected fields
+    // here. 20000911 mortene.
   }
   this->enabled = flag;
 }
@@ -175,10 +173,6 @@ SoEngineOutput::addConnection(SoField * f)
   this->slaves.append(f);
 
   this->getContainer()->ref();
-
-  // New field has of course not been notified about changes in
-  // engine.
-  this->getContainer()->stateflags.hasnotified = 0;
 }
 
 /*!
