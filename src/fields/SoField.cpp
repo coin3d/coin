@@ -120,6 +120,23 @@
 #include <Inventor/sensors/SoDataSensor.h>
 #include <coindefs.h> // COIN_STUB()
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef COIN_THREADSAFE
+#include <Inventor/C/threads/recmutexp.h>
+#define SOFIELD_RECLOCK (void) cc_recmutex_internal_field_lock()
+#define SOFIELD_RECUNLOCK (void) cc_recmutex_internal_field_unlock()
+
+#else // COIN_THREADSAFE
+
+#define SOFIELD_RECLOCK
+#define SOFIELD_RECUNLOCK
+
+#endif // !COIN_THREADSAFE
+
+
 // flags for this->statusbits
 
 static const char IGNOREDCHAR = '~';
@@ -141,8 +158,6 @@ public:
     : container(c), fieldtype(t),
       maptoconverter(13) // save about ~1kB vs default SbDict nr of buckets
     {
-      this->mutex = NULL;
-      CC_MUTEX_CONSTRUCT(this->mutex);
     }
 
 #if COIN_DEBUG
@@ -159,8 +174,6 @@ public:
 
     assert(slaves.getLength() == 0);
     assert(auditors.getLength() == 0);
-
-    CC_MUTEX_DESTRUCT(this->mutex);
   }
 #endif // COIN_DEBUG
 
@@ -176,10 +189,6 @@ public:
   SoFieldList slaves;
   // Direct auditors of us.
   SoAuditorList auditors;
-
-  // we need a mutex if we have connections since we need to lock in
-  // evaluate() to avoid several threads evaluating at the same time.
-  void * mutex;
 
   // Convenience functions for adding, removing and finding SbDict
   // mappings.
@@ -1918,8 +1927,7 @@ SoField::evaluateField(void) const
   assert(this->storage != NULL);
 
   // lock _before_ testing FLAG_ISEVALUATING to be thread safe
-  CC_MUTEX_LOCK(this->storage->mutex);
-
+  SOFIELD_RECLOCK;
   // Recursive calls to SoField::evalute() should _absolutely_ not
   // happen, as the state of the field variables might not be
   // consistent while evaluating.
@@ -1940,7 +1948,7 @@ SoField::evaluateField(void) const
                        "We strongly advise you to investigate and resolve "
                        "this issue before moving on.");
 #endif // COIN_DEBUG
-    CC_MUTEX_UNLOCK(this->storage->mutex);
+    SOFIELD_RECUNLOCK;
     return;
   }
 
@@ -1960,7 +1968,7 @@ SoField::evaluateField(void) const
     // this will clear the NEEDEVALUATION flag
     that->setDirty(FALSE);
   }
-  CC_MUTEX_UNLOCK(this->storage->mutex);
+  SOFIELD_RECUNLOCK;
 }
 
 /*!
@@ -2429,3 +2437,5 @@ SoField::initClasses(void)
 #undef FLAG_ISDESTRUCTING
 #undef FLAG_ISEVALUATING
 #undef FLAG_ISNOTIFIED
+#undef SOFIELD_RECLOCK
+#undef SOFIELD_RECUNLOCK
