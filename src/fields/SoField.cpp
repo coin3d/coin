@@ -1532,6 +1532,12 @@ SoField::evaluate(void) const
   if (this->getDirty() == FALSE) return;
   if (this->isConnected() == FALSE) return;
 
+  // FIXME: 2002-02-22 pederb
+  // Temporary fix. I needed to read a field while in notify() in Geo2000.
+  // Notify me before removing this code, please...
+  if (this->getStatus(FLAG_ISEVALUATING)) return;
+
+
   // Recursive calls to SoField::evalute() shouldn't happen, as the
   // state of the field variables might not be consistent while
   // evaluating.
