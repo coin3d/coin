@@ -122,6 +122,8 @@
 // the "#define WIN32_LEAN_AND_MEAN" hack. 20030625 mortene.
 
 
+#include "../fonts/glyph2d.h"
+
 static const unsigned int NOT_AVAILABLE = UINT_MAX;
 
 /*!
@@ -171,13 +173,15 @@ public:
   void dumpGlyphCache();
   void dumpBuffer(unsigned char * buffer, SbVec2s size, SbVec2s pos);
 
-  SbList< SbList<const SoGlyph *> > glyphs;
-  SbList< SbList<SbVec2s> > positions;
+  cc_font_specification * fontspec;
+
   SbList< SbString > laststring;
   SbList<int> stringwidth;
+  SbList< SbList<SbVec2s> > positions;
   SbBox2s bbox;
   SbName prevfontname;
   float prevfontsize;
+  int numberoflines;
 
 private:
   SoText2 * master;
@@ -209,6 +213,10 @@ SoText2::SoText2(void)
   SO_NODE_DEFINE_ENUM_VALUE(Justification, RIGHT);
   SO_NODE_DEFINE_ENUM_VALUE(Justification, CENTER);
   SO_NODE_SET_SF_ENUM_TYPE(justification, Justification);
+
+  PRIVATE(this)->fontspec = NULL;
+  PRIVATE(this)->numberoflines = -1;
+
 }
 
 /*!
@@ -240,7 +248,6 @@ SoText2::GLRender(SoGLRenderAction * action)
 
   state->push();
   SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
-  
   // Render using SoGlyphs
   PRIVATE(this)->buildGlyphCache(state);
 
@@ -276,15 +283,19 @@ SoText2::GLRender(SoGLRenderAction * action)
     glOrtho(0, vpsize[0], 0, vpsize[1], -1.0f, 1.0f);
     glPixelStorei(GL_UNPACK_ALIGNMENT,1);
 
+    float spacesize = SoFontSizeElement::get(state) / 3;  
     float xpos = nilpoint[0];      // to get rid of compiler warning..
     float ypos = nilpoint[1];
     float fx, fy, rasterx, rastery, rpx, rpy, offsetx, offsety;
-    int ix, iy, charcnt, offvp;
-    SbVec2s thispos;
-    SbVec2s position;
-    SbVec2s thissize;
-    unsigned char * buffer;
-    const int nrlines = PRIVATE(this)->glyphs.getLength();
+    int ix=0, iy=0;
+    int charcnt, offvp;
+    int thispos[2];
+    int thissize[2];
+    unsigned char * buffer = NULL;
+    const cc_glyph2d * prevglyph = NULL;
+
+    const int nrlines = PRIVATE(this)->laststring.getLength();
+
     for (int i = 0; i < nrlines; i++) {
       switch (this->justification.getValue()) {
       case SoText2::LEFT:
@@ -298,28 +309,56 @@ SoText2::GLRender(SoGLRenderAction * action)
         break;
       }
       charcnt = PRIVATE(this)->laststring[i].getLength();
+
       for (int i2 = 0; i2 < charcnt; i2++) {
-        buffer = PRIVATE(this)->glyphs[i][i2]->getBitmap(thissize, thispos, FALSE);
+
+        const cc_glyph2d * glyph = cc_glyph2d_getglyph((int) PRIVATE(this)->laststring[i][i2], 
+                                                       PRIVATE(this)->fontspec);
+
+        buffer = cc_glyph2d_getbitmap(glyph, thissize, thispos);
+
         ix = thissize[0];
         iy = thissize[1];
-        position = PRIVATE(this)->positions[i][i2];
-        fx = (float)position[0];
-        fy = (float)position[1];
-          
-        rasterx = xpos + fx;
+
+        int charwidth = (int) cc_glyph2d_getwidth(glyph);
+      
+        rasterx = xpos + thispos[0]; 
         rpx = rasterx >= 0 ? rasterx : 0;
         offvp = rasterx < 0 ? 1 : 0;
         offsetx = rasterx >= 0 ? 0 : rasterx;
           
-        rastery = ypos + fy;
-        rpy = rastery >= 0 ? rastery : 0;
+        rastery = ypos + (thispos[1] - thissize[1]);
+        rpy = rastery>= 0 ? rastery : 0;
         offvp = offvp || rastery < 0 ? 1 : 0;
         offsety = rastery >= 0 ? 0 : rastery;
-          
-        glRasterPos3f(rpx, rpy, -nilpoint[2]);
+
+        int advancex, advancey;
+        cc_glyph2d_getadvance(glyph, &advancex, &advancey);
+
+        int kerningx, kerningy;
+        if (i2 > 0) {
+          cc_glyph2d_getkerning(prevglyph, glyph, &kerningx, &kerningy);
+        } else {
+          kerningx = 0;
+          kerningy = 0;          
+        }
+
+        glRasterPos3f(rpx + advancex + kerningx, 
+                      rpy + advancey + kerningy,
+                      -nilpoint[2]);
+
         if (offvp) { glBitmap(0,0,0,0,offsetx,offsety,NULL); }
         if (buffer) { glBitmap(ix,iy,0,0,0,0,(const GLubyte *)buffer); }
+
+        if (charwidth != 0) xpos += charwidth + 1;  // +1 so that TTFont letters dont get too close to each other...
+        else xpos += (int) spacesize;
+        
+        prevglyph = glyph;
+
       }
+
+      ypos -= (((int) SoFontSizeElement::get(state)) * this->spacing.getValue());
+
     }
       
     glPixelStorei(GL_UNPACK_ALIGNMENT,4);
@@ -361,6 +400,7 @@ SoText2::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 void
 SoText2::rayPick(SoRayPickAction * action)
 {
+  
   if (!this->shouldRayPick(action)) return;
   PRIVATE(this)->buildGlyphCache(action->getState());
   action->setObjectSpace();
@@ -389,12 +429,13 @@ SoText2::rayPick(SoRayPickAction * action)
     hdist /= w;
 
     // find which string was hit
-    float fonth =  1.0f / float(this->string.getNum());
-    int stringidx = SbClamp(int(vdist/fonth), 0, this->string.getNum()-1);
+    const int numstr = this->string.getNum();
+    float fonth =  1.0f / float(numstr);
+    int stringidx = (numstr - SbClamp(int(vdist/fonth), 0, numstr-1)) - 1;
 
     int maxlen = 0;
     int i;
-    for (i = 0; i < this->string.getNum(); i++) {
+    for (i = 0; i < numstr; i++) {
       int len = this->string[i].getLength();
       if (len > maxlen) maxlen = len;
     }
@@ -422,7 +463,7 @@ SoText2::rayPick(SoRayPickAction * action)
     default:
       assert(0 && "SoText2::rayPick: unknown justification");
     }
-    
+
     float charleft, charright;
     for (i=0; i<strlength; i++) {
       charleft = strleft + PRIVATE(this)->positions[stringidx][i][0] / bbwidth;
@@ -433,6 +474,7 @@ SoText2::rayPick(SoRayPickAction * action)
       }
     }
     
+
     if (charidx >= 0 && charidx < strlength) { // we have a hit!
       SoPickedPoint * pp = action->addIntersection(isect);
       if (pp) {
@@ -451,7 +493,8 @@ SoText2::rayPick(SoRayPickAction * action)
 void
 SoText2::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  if (!this->shouldPrimitiveCount(action)) return;
+  if (!this->shouldPrimitiveCount(action)) 
+    return;
 
   action->addNumText(this->string.getNum());
 }
@@ -469,19 +512,7 @@ SoText2::generatePrimitives(SoAction * action)
 void
 SoText2P::flushGlyphCache(const SbBool unrefglyphs)
 {
-  const int nrlines = this->glyphs.getLength();
-  for (int i=0; i < nrlines; i++) {
-    if (unrefglyphs) {
-      for (int j=0; j<this->laststring[i].getLength(); j++) {
-        if (this->glyphs[i][j]) {
-          this->glyphs[i][j]->unref();
-        }
-      }
-    }
-  }
-
   this->stringwidth.truncate(0);
-  this->glyphs.truncate(0);
   this->positions.truncate(0);
   this->laststring.truncate(0);
   this->bbox.makeEmpty();
@@ -491,6 +522,11 @@ SoText2P::flushGlyphCache(const SbBool unrefglyphs)
 void
 SoText2P::dumpGlyphCache()
 {
+
+  // FIXME: Must re-implement using new glyph2d.c functions. Unless it
+  // can be discarded as obsolete. (1Sep2003 handegar)
+
+  /*
   // FIXME: pure debug method, remove. preng 2003-03-18.
   fprintf(stderr,"dumpGlyphCache\n");
   const int nrlines = this->glyphs.getLength();
@@ -502,6 +538,8 @@ SoText2P::dumpGlyphCache()
       fprintf(stderr,"    position[%d][%d]=(%d, %d)\n", i, j, this->positions[i][j][0], this->positions[i][j][1]);
     }
   }
+  */
+
 }
 
 // Calculates a quad around the text in 3D.
@@ -526,7 +564,7 @@ SoText2P::getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
   SbVec2f n0, n1, n2, n3, center;
   short xmin, ymin, xmax, ymax;
   this->bbox.getBounds(xmin, ymin, xmax, ymax);
-  SbVec2s sp((short) (screenpoint[0] * vpsize[0]), (short)(screenpoint[1]*vpsize[1]));
+  SbVec2s sp((short) (screenpoint[0] * vpsize[0]), (short)(screenpoint[1] * vpsize[1]));
   
   n0 = SbVec2f(float(sp[0] + xmin)/float(vpsize[0]), 
                float(sp[1] + ymax)/float(vpsize[1]));
@@ -612,20 +650,24 @@ SoText2P::dumpBuffer(unsigned char * buffer, SbVec2s size, SbVec2s pos)
 SbBool
 SoText2P::shouldBuildGlyphCache(SoState * state)
 {
+
   const SbName curfontname = SoFontNameElement::get(state);
   const float curfontsize = SoFontSizeElement::get(state);
 
   if (this->prevfontname != curfontname ||
-      this->prevfontsize != curfontsize) { return TRUE; }
+      this->prevfontsize != curfontsize)  
+    return TRUE; 
+  
+  if (this->numberoflines != PUBLIC(this)->string.getNum())  
+    return TRUE; 
 
-  const int nrlines = this->glyphs.getLength();
-  if (nrlines != PUBLIC(this)->string.getNum()) { return TRUE; }
-
-  for (int i=0; i < nrlines; i++) {
-    if (this->laststring[i] != PUBLIC(this)->string[i]) return TRUE;
+  for (int i=0; i < this->numberoflines; i++) {
+    if (this->laststring[i] != PUBLIC(this)->string[i]) 
+      return TRUE;
   }
 
   return FALSE;
+
 }
 
 void
@@ -637,19 +679,37 @@ SoText2P::buildGlyphCache(SoState * state)
   this->prevfontsize = SoFontSizeElement::get(state);
   this->flushGlyphCache(FALSE);
   const int nrlines = PUBLIC(this)->string.getNum();
+  this->numberoflines = nrlines;
 
+  // Build up font-spesification struct
+  if (fontspec != NULL)
+    delete fontspec; 
+  this->fontspec = new cc_font_specification;
+  this->fontspec->name = cc_string_construct_new();
+  cc_string_set_text(this->fontspec->name, SoFontNameElement::get(state).getString());   
+  this->fontspec->family = NULL;
+  this->fontspec->style = NULL;
+  this->fontspec->size = SoFontSizeElement::get(state);
+  this->fontspec->angle = 0;
+ 
   SbVec2s penpos(0, 0);
 
+
   for (int i=0; i < nrlines; i++) {
-    this->glyphs.append(SbList<const SoGlyph *>());
-    this->positions.append(SbList<SbVec2s>());
 
     const int strlength = PUBLIC(this)->string[i].getLength();
     this->laststring.append(SbString(PUBLIC(this)->string[i]));
+    this->positions.append(SbList<SbVec2s>());
 
-    SbVec2s thissize;
-    SbVec2s kerning(0, 0);
-    SbVec2s advance(0, 0);
+    int glyphwidth = 0;
+    int actuallength = 0;
+    int kerningx = 0;
+    int kerningy = 0;
+    int advancex = 0;
+    int advancey = 0;
+    int bitmapsize[2];
+    int bitmappos[2];
+    const cc_glyph2d * prevglyph= NULL;
 
     int j;
     // fetch all glyphs first
@@ -659,31 +719,42 @@ SoText2P::buildGlyphCache(SoState * state)
       // set up to 127) be expanded to huge int numbers that turn
       // negative when casted to integer size.
       const unsigned int idx = (unsigned char)this->laststring[i][j];
-      this->glyphs[i].append(SoGlyph::getGlyph(state, idx, SbVec2s(0,0), 0.0));
+
+      cc_glyph2d * glyph = cc_glyph2d_getglyph(idx, this->fontspec);
+
       // Should _always_ be able to get hold of a glyph -- if no
       // glyph is available for a specific character, a default
       // empty rectangle should be used.  -mortene.
-      assert(this->glyphs[i][j]);
-    }
-    // now calculate positions and bbox
-    int w = 0;
-    for (j = 0; j < strlength; j++) {
-      SbVec2s thispos;
-      (void)this->glyphs[i][j]->getBitmap(thissize, thispos, FALSE);
+      assert(glyph);
+      
+      glyphwidth = (int) cc_glyph2d_getwidth(glyph);
+      if (glyphwidth == 0) // SPACE width is always returned 0, set to standardwidth/3.
+        glyphwidth = (int) SoFontSizeElement::get(state) / 3; 
+      actuallength += glyphwidth;
+        
+      // Must fetch special modifiers so that heights for chars like
+      // 'q' and 'g' will be taken into account when creating a
+      // boundingbox.
+      (void) cc_glyph2d_getbitmap(glyph, bitmapsize, bitmappos);
 
-      kerning = (j < strlength-1) ? 
-        this->glyphs[i][j]->getKerning(*this->glyphs[i][j+1]) : SbVec2s(0, 0);
-      advance = this->glyphs[i][j]->getAdvance();
-            
-      SbVec2s pos = penpos + thispos + SbVec2s(0, -thissize[1]);
-      this->positions[i].append(pos);
+      // Advance & Kerning
+      if (j > 0) cc_glyph2d_getkerning(prevglyph, glyph, &kerningx, &kerningy);
+      cc_glyph2d_getadvance(glyph, &advancex, &advancey);           
+      SbVec2s kerning((short) kerningx, (short) kerningy);
+      SbVec2s advance((short) advancex, (short) advancey);
+      
+      SbVec2s pos = penpos + SbVec2s((short) bitmappos[0], (short) bitmappos[1]) + SbVec2s(0, (short) -bitmapsize[1]);
       this->bbox.extendBy(pos);
-      this->bbox.extendBy(pos + SbVec2s(advance[0]+kerning[0], thissize[1]));
-      penpos += advance + kerning;
-      w += (advance[0] + kerning[0]);
+      this->bbox.extendBy(pos + SbVec2s(advance[0] + kerning[0] + glyphwidth, bitmapsize[1]));
+      this->positions[i].append(pos);
+
+      penpos += kerning + advance + SbVec2s(glyphwidth + 1, 0);
+      prevglyph = glyph;
+
     }
-    
-    this->stringwidth.append(w);
-    penpos = SbVec2s(0, penpos[1] - (short)(this->prevfontsize * PUBLIC(this)->spacing.getValue()));
+
+    this->stringwidth.append(actuallength);
+    penpos = SbVec2s(0, penpos[1] - (short)(SoFontSizeElement::get(state) * PUBLIC(this)->spacing.getValue()));
+
   }
 }
