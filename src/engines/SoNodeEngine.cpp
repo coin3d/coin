@@ -22,7 +22,18 @@
   \brief SoNodeEngine is the base class for Coin node engines.
   \ingroup engines
 
+  Node engines have the same functionality as normal Engines, except
+  that they inherit from SoNode, which makes it possible to insert
+  node engines in the scene graph.
+
+  This class is not part of the Open Inventor 2.1 API, and is an
+  extension specific to Coin.
 */
+
+// FIXME: currently most of the code in this class is simply copied
+// from SoEngine.cpp. We should try to use a templant file or
+// something to make it easier to maintain the code.  
+// pederb, 2001-10-23
 
 #include <Inventor/engines/SoNodeEngine.h>
 #include <Inventor/engines/SoEngineOutput.h>
