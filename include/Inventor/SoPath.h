@@ -45,7 +45,6 @@ class COIN_DLL_API SoPath : public SoBase {
 
 public:
   static void initClass(void);
-  static void cleanupClass(void);
 
   SoPath(const int approxlength = 4);
   SoPath(SoNode * const head);
@@ -96,6 +95,7 @@ protected:
   void auditPath(const SbBool flag);
 
 private:
+  static void cleanupClass(void);
   static void * createInstance(void);
   void append(SoNode * const node, const int index);
   int getFullLength(void) const;

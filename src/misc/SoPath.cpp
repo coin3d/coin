@@ -1057,7 +1057,7 @@ SoPath::initClass(void)
 void
 SoPath::cleanupClass(void)
 {
-  SoPath::classTypeId STATIC_SOTYPE_INIT;
+  SoPath::classTypeId = SoType::badType();
 }
 
 
