@@ -21,6 +21,32 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoAudioDevice Inventor/misc/SoAudioDevice.h
+  \brief The SoAudioDevice class is used to control an audio device.
+  \ingroup general
+
+  The SoAudioDevice class is responsible for initialization of an 
+  audio device, as well as enabling and disabling sound. It is a singleton
+  class.
+
+  The application programmer does not need to use this class directly, as
+  audio support is enabled by default, and the default settings are 
+  reasonable.
+
+  Coin uses OpenAL (http://www.openal.org/, 
+  http://developer.soundblaster.com [Games section]) to render audio.
+  OpenAL should work with any soundcard,
+  and on most modern operating systems (including Unix, Linux, *BSD, 
+  Mac OS X and Microsoft Windows). 2 speaker output is allways available,
+  and on some OS and soundcard combinations, more advanced speaker 
+  configurations are supported. On Microsoft Windows, OpenAL can use
+  DirectSound3D to render audio, thus supporting any speaker configuration
+  the current DirectSound3D driver supports. Configuring speakers are
+  done through the soundcard driver, and is transparent to both Coin
+  and OpenAL.
+*/
+
 #if HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -57,7 +83,6 @@ public:
   COIN_ALCDESTROYCONTEXT alcDestroyContext;
 #endif // HAVE_SOUND
   SoAudioRenderAction *audioRenderAction;
-  SoNode *root;
 
   SbBool enabled;
   SbBool initOK;
@@ -71,6 +96,10 @@ public:
 
 SoAudioDevice *SoAudioDeviceP::singleton = NULL;
 
+/*!
+  Returns a pointer to the SoAudioDevice class, which is a singleton.
+ */
+
 SoAudioDevice *
 SoAudioDevice::instance()
 {
@@ -80,13 +109,16 @@ SoAudioDevice::instance()
   return SoAudioDeviceP::singleton;
 }
 
+/*!
+  Constructor
+ */
+
 SoAudioDevice::SoAudioDevice()
 {
   PRIVATE(this) = new SoAudioDeviceP(this);
   PRIVATE(this)->context = NULL;
   PRIVATE(this)->audioRenderAction = NULL;
   PRIVATE(this)->enabled = FALSE;
-  PRIVATE(this)->root = NULL;
   PRIVATE(this)->initOK = FALSE;
 
 #ifdef HAVE_SOUND
@@ -104,12 +136,29 @@ SoAudioDevice::SoAudioDevice()
   PRIVATE(this)->audioRenderAction = new SoAudioRenderAction();
 }
 
+/*!
+  Destructor
+ */
+
 SoAudioDevice::~SoAudioDevice()
 {
   this->cleanup();
 
   delete PRIVATE(this);
 }
+
+/*!
+  Initializes the audio device. Currently, the only supported \a devicetype
+  is "OpenAL". The supported \a devicename depends on the OS and on installed
+  soundcards and drivers. On Microsoft Windows, supported device names are
+  "DirectSound3D", "DirectSound", and "MMSYSTEM". See OpenAL documentation
+  (available from http://www.openal.org/) for further information.
+
+  This function is called by SoDB::init(). The user can control which
+  \a devicename SoDB::init() uses by setting the COIN_SOUND_DRIVER_NAME
+  environment variable. On Microsoft Windows, the default driver name
+  is "DirectSound3D", which should normally be what the user wants.
+ */
 
 SbBool SoAudioDevice::init(const SbString &devicetype, 
                            const SbString &devicename)
@@ -164,6 +213,10 @@ SbBool SoAudioDevice::init(const SbString &devicetype,
   return PRIVATE(this)->initOK;
 }
 
+/*!
+  Cleans up any allocated resources.
+ */
+
 void SoAudioDevice::cleanup()
 {
   this->disable();
@@ -185,15 +238,18 @@ void SoAudioDevice::cleanup()
 
 }
   
+/*!
+  returns true if the audio device has been initialized successfully.
+ */
+
 SbBool SoAudioDevice::haveSound()
 {
   return PRIVATE(this)->initOK;
 }
 
-void SoAudioDevice::setSceneGraph(SoNode *root)
-{
-  PRIVATE(this)->root = root;
-}
+/*!
+  Enables sound
+ */
 
 SbBool SoAudioDevice::enable()
 {
@@ -203,11 +259,16 @@ SbBool SoAudioDevice::enable()
   PRIVATE(this)->enabled = TRUE;
 
   /*  FIXME: implement enable/disable (disable -> stop playing).
+      Remember to make it threadsafe!
       2002-11-07 thammer
   */
 
   return TRUE;
 }
+
+/*!
+  Disables sound. Effectively silencing all audio output.
+ */
 
 void SoAudioDevice::disable()
 {
@@ -216,6 +277,16 @@ void SoAudioDevice::disable()
   
   PRIVATE(this)->enabled = FALSE;
 
+}
+
+/*!
+  Returns TRUE if audio is enabled.
+ */
+
+SbBool 
+SoAudioDevice::isEnabled()
+{
+  return PRIVATE(this)->enabled;
 }
 
 
