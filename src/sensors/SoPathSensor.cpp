@@ -201,18 +201,25 @@ SoPathSensor::notify(SoNotList * l)
   if ((lastbase != firstbase) && (lastbase == (SoBase*) PRIVATE(this)->path)) {
     // some node in/off the path was changed, wait for the
     // notification from the head node so that we only do the
-    // processing once.
+    // processing/triggering once.
     return;
   }
   // if the path triggered the notification, we should always trigger
   if (firstbase == (SoBase*) (PRIVATE(this)->path)) {
-    inherited::notify(l);
+    // check filter before triggering
+    if (PRIVATE(this)->triggerfilter & PATH) {
+      inherited::notify(l);
+    }
   }
   else {
-    // we came here because the root node notified us. For now we
-    // always schedule (by calling SoDataSensor::notify()), but this
-    // will be fixed soon. pederb, 2003-02-25
-    inherited::notify(l);
+    // we came here because the root node notified us. Use
+    // SoPath::isRelevantNotification() to figure out if we should
+    // trigger.
+    if (PRIVATE(this)->triggerfilter & NODES) {
+      if (PRIVATE(this)->path->isRelevantNotification(l)) {
+        inherited::notify(l);
+      }
+    }
   }
 }
 
