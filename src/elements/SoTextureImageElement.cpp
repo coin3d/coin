@@ -83,7 +83,7 @@
 
   FIXME: write doc.
 
-  \since 2001-MM-DD
+  \since 2001-12-04
 */
 
 /*!
@@ -171,7 +171,7 @@ SoTextureImageElement::set(SoState * const state, SoNode * const node,
 /*!
   FIXME: write doc.
 
-  \since 2001-MM-DD
+  \since 2001-12-04
 */
 void
 SoTextureImageElement::set(SoState * const state, SoNode * const node,
@@ -209,7 +209,7 @@ void SoTextureImageElement::set(SoState * const state, SoNode * const node,
 /*!
   FIXME: write doc.
 
-  \since 2001-MM-DD
+  \since 2001-12-04
 */
 void SoTextureImageElement::set(SoState * const state, SoNode * const node,
                                 const SbVec3s & size, const int numComponents,
@@ -250,7 +250,7 @@ SoTextureImageElement::get(SoState * const state,
 
 /*! FIXME: write doc.
 
-  \since 2001-MM-DD
+  \since 2001-12-04
 */
 const unsigned char *
 SoTextureImageElement::get(SoState * const state,
@@ -292,7 +292,7 @@ SoTextureImageElement::get(SoState * const state, SbVec2s & size,
 /*!
   FIXME: write doc.
 
-  \since 2001-MM-DD
+  \since 2001-12-04
 */
 const unsigned char *
 SoTextureImageElement::get(SoState * const state, SbVec3s & size,
@@ -345,7 +345,7 @@ SoTextureImageElement::getDefault(SbVec2s & size, int & numComponents)
 
 /*! FIXME: write doc.
  
-  \since 2001-MM-DD
+  \since 2001-12-04
 */
 const unsigned char *
 SoTextureImageElement::getDefault(SbVec3s & size, int & numComponents)
@@ -376,7 +376,7 @@ SoTextureImageElement::setElt(const SbVec2s &size, const int numComponents,
 /*!
   FIXME: write doc.
 
-  \since 2001-MM-DD 
+  \since 2001-12-04 
 */
 void
 SoTextureImageElement::setElt(const SbVec3s &size, const int numComponents,
@@ -429,7 +429,7 @@ SoTextureImageElement::getImage(SoState * const state,
 }
 
 /*!
-  \since 2001-MM-DD 
+  \since 2001-12-04 
 */
 const unsigned char *
 SoTextureImageElement::getImage(SoState * const state,
@@ -473,7 +473,7 @@ SoTextureImageElement::getWrapT(SoState * const state)
 }
 
 /*! 
-  \since 2001-MM-DD 
+  \since 2001-12-04 
 */
 SoTextureImageElement::Wrap
 SoTextureImageElement::getWrapR(SoState * const state)
