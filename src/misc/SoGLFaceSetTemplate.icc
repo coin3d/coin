@@ -86,10 +86,10 @@
       break;
     }
     v4 = viptr < viendptr ? *viptr++ : -1;
-    if (v4  < 0) newmode = GL_TRIANGLES;
+    if (v4  < 0 || v4 >= numverts) newmode = GL_TRIANGLES;
     else {
       v5 = viptr < viendptr ? *viptr++ : -1;
-      if (v5 < 0) newmode = GL_QUADS;
+      if (v5 < 0 || v5 >= numverts) newmode = GL_QUADS;
       else newmode = GL_POLYGON;
     }
     if (newmode != mode) {
@@ -200,7 +200,7 @@
 #endif
         SEND_VERTEX(v5);
         v1 = viptr < viendptr ? *viptr++ : -1;
-        while (v1 >= 0) {
+        while (v1 >= 0 && v1 < numverts) {
       /* vertex 6-n (polygon) *****************************************/
 #if MBINDING==PER_VERTEX
           materials->send(matnr++, TRUE);
