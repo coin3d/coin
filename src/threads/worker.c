@@ -99,6 +99,7 @@ worker_start_thread(cc_worker * worker)
        a signal before we return */
     cc_mutex_lock(worker->mutex);
     worker->threadisrunning = 1;
+    cc_mutex_unlock(worker->beginmutex);
   }
 }
 
