@@ -52,6 +52,19 @@ private: \
   static const SoNodekitCatalog ** parentcatalogptr
 
 
+#define SO_KIT_ABSTRACT_HEADER(_kitclass_) \
+  SO_NODE_ABSTRACT_HEADER(_kitclass_); \
+public: \
+  static const SoNodekitCatalog * getClassNodekitCatalog(void); \
+  virtual const SoNodekitCatalog * getNodekitCatalog(void) const; \
+ \
+protected: \
+  static const SoNodekitCatalog ** getClassNodekitCatalogPtr(void); \
+ \
+private: \
+  static SoNodekitCatalog * classcatalog; \
+  static const SoNodekitCatalog ** parentcatalogptr
+
 
 #define SO_KIT_CATALOG_ENTRY_HEADER(_entry_) \
 protected: SoSFNode _entry_
@@ -82,6 +95,32 @@ _class_::getClassNodekitCatalogPtr(void) \
   return (const class SoNodekitCatalog **)&_class_::classcatalog; \
 }
 
+
+#define SO_KIT_ABSTRACT_SOURCE(_class_) \
+SoNodekitCatalog * _class_::classcatalog = NULL; \
+const SoNodekitCatalog ** _class_::parentcatalogptr = NULL; \
+ \
+SO_NODE_ABSTRACT_SOURCE(_class_); \
+ \
+const SoNodekitCatalog * \
+_class_::getClassNodekitCatalog(void) \
+{ \
+  return _class_::classcatalog; \
+} \
+ \
+const SoNodekitCatalog * \
+_class_::getNodekitCatalog(void) const \
+{ \
+  return _class_::classcatalog; \
+} \
+ \
+const SoNodekitCatalog ** \
+_class_::getClassNodekitCatalogPtr(void) \
+{ \
+  return (const class SoNodekitCatalog **)&_class_::classcatalog; \
+}
+
+
 #define SO_KIT_IS_FIRST_INSTANCE() \
    SO_NODE_IS_FIRST_INSTANCE()
 
@@ -91,6 +130,12 @@ _class_::getClassNodekitCatalogPtr(void) \
     _class_::parentcatalogptr = _parentclass_::getClassNodekitCatalogPtr(); \
   } while (0)
 
+
+#define SO_KIT_INIT_ABSTRACT_CLASS(_class_, _parentclass_, _parentname_) \
+  do { \
+    SO_NODE_INIT_ABSTRACT_CLASS(_class_, _parentclass_, _parentname_); \
+    _class_::parentcatalogptr = _parentclass_::getClassNodekitCatalogPtr(); \
+  } while (0)
 
 
 #define SO_KIT_CONSTRUCTOR(_class_) \
