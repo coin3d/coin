@@ -171,6 +171,11 @@ SbXfBox3f::getCenter() const
 void
 SbXfBox3f::extendBy(const SbVec3f &pt)
 {
+  if (this->isEmpty()) {
+    this->matrix.makeIdentity();
+    this->invertedmatrix.makeIdentity();
+  }
+
   const SbMatrix & im = this->getInverse();
   SbVec3f trans;
   im.multVecMatrix(pt, trans);
