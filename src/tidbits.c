@@ -62,11 +62,12 @@ coin_vsnprintf(char * dst, unsigned int n, const char * fmtstr, va_list args)
      At least with GNU libc 2.1.1, vsnprintf() does _not_ return -1
      (as documented in the snprintf(3) man-page) when we can't fit the
      constructed string within the given buffer, but rather the number
-     of characters needed. */
-  if (length > (int)n) { length = -1; }
-  /* IRIX 6.5 vsnprintf() just returns the number of characters until
-     clipped. */
-  if (length == (((int)n) - 1)) { length = -1; }
+     of characters needed.
+
+     IRIX 6.5 vsnprintf() just returns the number of characters until
+     clipped.
+  */
+  if (length >= (((int)n) - 1)) { length = -1; }
 
   return length;
 }
