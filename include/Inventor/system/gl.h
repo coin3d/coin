@@ -47,6 +47,14 @@
 #endif /* !HAVE_GL_GL_H */
 #endif /* !HAVE_OPENGL_GL_H */
 
+#ifdef HAVE_GL_GLU_H
+#include <GL/glu.h>
+#else
+#ifdef HAVE_OPENGL_GLU_H
+#include <OpenGL/glu.h>
+#endif
+#endif
+
 /*
   MS Windows often has very old gl.h files, so we just define these
   value here if not defined. Run-time checks are used to determine

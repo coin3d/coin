@@ -36,7 +36,7 @@
 #endif /* HAVE_GLU */
 
 #if GLUWRAPPER_ASSUME_GLU
-#include <GL/glu.h>
+#include <Inventor/system/gl.h>
 #endif /* GLUWRAPPER_ASSUME_GLU */
 
 
