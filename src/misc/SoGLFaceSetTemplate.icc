@@ -52,9 +52,11 @@
   int mode = GL_POLYGON; // ...to save a test
   int newmode;
   const int32_t *viptr = vertexindices;
+  const int32_t *vistartptr = vertexindices;
   const int32_t *viendptr = viptr + numindices;
   int32_t v1, v2, v3, v4, v5 = 0; // v5 init unnecessary, but kills a compiler warning.
   SbVec3f dummynormal(0,0,1);
+  int numverts = vertexlist->getNum();
 
 #if NBINDING==PER_VERTEX || NBINDING==PER_FACE || NBINDING==PER_VERTEX_INDEXED || NBINDING==PER_FACE_INDEXED || TEXTURES==TRUE
   const SbVec3f *currnormal = &dummynormal;
@@ -67,14 +69,20 @@
     v1 = *viptr++;
     v2 = *viptr++;
     v3 = *viptr++;
-    if (v1 < 0 || v2 < 0 || v3 < 0) {
-#if COIN_DEBUG
-      SoDebugError::postWarning("[faceset]::GLRender",
-                                "Polygon with less than three vertices detected. "
-                                "(First 3 indices are: <%d, %d, %d, ...>.) "
-                                "Rendering aborted for current shape.",
-                                v1, v2, v3);
-#endif // COIN_DEBUG
+
+    if (v1 < 0 || v2 < 0 || v3 < 0 ||
+        v1 >= numverts || v2 >= numverts || v3 >= numverts) {
+
+      static uint32_t current_errors = 0;
+      if (current_errors < 1) {
+        SoDebugError::postWarning("[faceset]::GLRender", "Erroneous polygon detected. "
+                                  "Ignoring (offset: %d, [%d %d %d]). Should be within "
+                                  " [0, %d] This message will only be shown once, but "
+                                  "more errors might be present",
+                                  viptr - vistartptr - 3, v1, v2, v3, numverts - 1);
+      }
+
+      current_errors++;
       break;
     }
     v4 = viptr < viendptr ? *viptr++ : -1;
