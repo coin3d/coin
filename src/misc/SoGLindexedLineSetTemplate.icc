@@ -42,6 +42,7 @@
   else {
     coords4d = coords->getArrayPtr4();
   }
+  int numcoords = coords->getNum();
 
   // This is the same code as in SoGLCoordinateElement::send().
   // It is inlined here for speed (~15% speed increase).
@@ -84,6 +85,20 @@
   while (indices < end) {
     previ = *indices++;
 
+    if (previ < 0 || previ >= numcoords) {
+      static uint32_t current_errors = 0;
+      if (current_errors < 1) {
+        SoDebugError::postWarning("[indexedlineset]::GLRender", "Erroneous coordinate "
+                                  "index: %d (Should be within [0, %d]). Aborting "
+                                  "rendering. This message will be shown once, but "
+                                  "there might be more errors", previ, numcoords - 1);
+      }
+
+      current_errors++;
+      glEnd();
+      return;
+    }
+
 #if MBINDING==PER_LINE || MBINDING==PER_VERTEX
     materials->send(matnr++, TRUE);
 #elif MBINDING==PER_LINE_INDEXED || MBINDING==PER_VERTEX_INDEXED
@@ -101,7 +116,7 @@
     texcoords->send(texindices ? *texindices++ : texidx++,coords->get3(previ), *currnormal);
 #endif
     i = (indices < end) ? *indices++ : -1;
-    while (i >= 0) {
+    while (i >= 0 && i < numcoords) {
 #if MBINDING==PER_SEGMENT
       materials->send(matnr++, TRUE);
 #elif MBINDING==PER_SEGMENT_INDEXED
@@ -157,7 +172,21 @@
       glBegin(GL_LINE_STRIP);
 
     i = *indices++;
-    assert(i >= 0);
+
+    if (i < 0 || i >= numcoords) {
+      static uint32_t current_errors = 0;
+      if (current_errors < 1) {
+        SoDebugError::postWarning("[indexedlineset]::GLRender", "Erroneous coordinate "
+                                  "index: %d (Should be within [0, %d]). Aborting "
+                                  "rendering. This message will be shown once, but "
+                                  "there might be more errors", i, numcoords - 1);
+      }
+
+      current_errors++;
+      glEnd();
+      return;
+    }
+
 #if MBINDING==PER_VERTEX_INDEXED || MBINDING==PER_LINE_INDEXED
     materials->send(*matindices++, TRUE);
 #elif MBINDING==PER_VERTEX || MBINDING==PER_LINE
@@ -175,7 +204,7 @@
 #endif
     SEND_VERTEX(i);
     i = indices < end ? *indices++ : -1;
-    while (i >= 0) {
+    while (i >= 0 && i < numcoords) {
 #if MBINDING==PER_VERTEX
       materials->send(matnr++, TRUE);
 #elif MBINDING==PER_VERTEX_INDEXED
