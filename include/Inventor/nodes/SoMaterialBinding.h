@@ -20,9 +20,10 @@
 #ifndef COIN_SOMATERIALBINDING_H
 #define COIN_SOMATERIALBINDING_H
 
-#include <Inventor/nodes/SoSubNode.h>
+#include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/nodes/SoNode.h>
+#include <Inventor/nodes/SoSubNode.h>
 
 
 class SoMaterialBinding : public SoNode {
@@ -34,18 +35,17 @@ public:
   static void initClass(void);
   SoMaterialBinding(void);
 
-  // Definitions must match 100% with the enum in
-  // SoMaterialBindingElement. NB: DEFAULT and NONE bindings are
-  // obsolete, but we include them to be compatible with old Open
-  // Inventor code.
   enum Binding {
-    OVERALL = 2,
-    PER_PART,
-    PER_PART_INDEXED,
-    PER_FACE,
-    PER_FACE_INDEXED,
-    PER_VERTEX,
-    PER_VERTEX_INDEXED,
+    OVERALL = SoMaterialBindingElement::OVERALL,
+    PER_PART = SoMaterialBindingElement::PER_PART,
+    PER_PART_INDEXED = SoMaterialBindingElement::PER_PART_INDEXED,
+    PER_FACE = SoMaterialBindingElement::PER_FACE,
+    PER_FACE_INDEXED = SoMaterialBindingElement::PER_FACE_INDEXED,
+    PER_VERTEX = SoMaterialBindingElement::PER_VERTEX,
+    PER_VERTEX_INDEXED = SoMaterialBindingElement::PER_VERTEX_INDEXED,
+
+    // Note: DEFAULT and NONE bindings are obsolete, but we include them
+    // to be compatible with old Open Inventor code.
     DEFAULT = OVERALL,
     NONE = OVERALL
   };
@@ -60,8 +60,6 @@ public:
 
 protected:
   virtual ~SoMaterialBinding();
-
-  virtual SbBool readInstance(SoInput * in, unsigned short flags);
 };
 
 #endif // !COIN_SOMATERIALBINDING_H
