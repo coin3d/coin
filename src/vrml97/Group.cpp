@@ -40,7 +40,7 @@
   removeChildren fields and eventIns can be found in 4.6.5, Grouping
   and children nodes
   (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.5).
-  
+
   The bboxCenter and bboxSize fields specify a bounding box that
   encloses the Group node's children. This is a hint that may be used
   for optimization purposes. The results are undefined if the
@@ -116,7 +116,7 @@ public:
   SoGLCacheList * glcachelist;
 };
 
-#endif // DOXYGEN_SKIP_THIS 
+#endif // DOXYGEN_SKIP_THIS
 
 SO_NODE_SOURCE(SoVRMLGroup);
 
@@ -188,7 +188,7 @@ SoVRMLGroup::~SoVRMLGroup()
 
 /*!
   Set the maximum number of render caches per group node.
-*/ 
+*/
 void
 SoVRMLGroup::setNumRenderCaches(int num )
 {
@@ -388,11 +388,10 @@ SoVRMLGroup::search(SoSearchAction * action)
 void
 SoVRMLGroup::write(SoWriteAction * action)
 {
-  SoState * state = action->getState();
-  state->push();
   // do not call inherited::write() or SoGroup::write()
+  this->boundingBoxCaching.setDefault(TRUE);
+  this->renderCaching.setDefault(TRUE);
   SoNode::write(action);
-  state->pop();
 }
 
 // Doc in parent
@@ -579,17 +578,17 @@ SoVRMLGroup::cullTest(SoState * state)
       !THIS->bboxcache->isValid(state) ||
       THIS->bboxcache->getProjectedBox().isEmpty()) return FALSE;
   if (SoCullElement::completelyInside(state)) return FALSE;
-  
+
   SbBox3f box = THIS->bboxcache->getProjectedBox();
   SbVec3f minv = box.getMin();
   SbVec3f maxv = box.getMax();
-  
+
   return SoCullElement::cullBox(state, THIS->bboxcache->getProjectedBox());
 }
 
 //
 // no-push culltest
-//  
+//
 SbBool
 SoVRMLGroup::cullTestNoPush(SoState * state)
 {
