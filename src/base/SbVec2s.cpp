@@ -249,8 +249,8 @@ SbVec2s::operator +=(const SbVec2s& u)
 SbVec2s&
 SbVec2s::operator -=(const SbVec2s& u)
 {
-  this->vec[0] += u[0];
-  this->vec[1] += u[1];
+  this->vec[0] -= u[0];
+  this->vec[1] -= u[1];
   return *this;
 }
 
