@@ -78,9 +78,33 @@ public:
   void postRender(void) {
     SbVec2s size = this->getBufferSize();
     glPixelStorei(GL_PACK_ALIGNMENT, 1);
+
+    // The flushing of the OpenGL pipeline before and after the
+    // glReadPixels() call is done as a work-around for a reported
+    // OpenGL driver bug: on a Win2000 system with ATI Radeon graphics
+    // card, the system would hang hard if the flushing was not
+    // done.
+    //
+    // This is obviously an OpenGL driver bug, but the workaround of
+    // doing excessive flushing has no real ill effects, so we just do
+    // it unconditionally for all drivers. Note that it might not be
+    // necessary to flush both before and after glReadPixels() to work
+    // around the bug (this was not established with the external
+    // reporter), but again it shouldn't matter if we do.
+    //
+    // For reference, the specific driver which was reported to fail:
+    //
+    // GL_VENDOR="ATI Technologies Inc."
+    // GL_RENDERER="Radeon 9000 DDR x86/SSE2"
+    // GL_VERSION="1.3.3446 Win2000 Release"
+    //
+    // mortene.
+
+    glFlush(); glFinish();
     glReadPixels(0, 0, size[0], size[1], GL_RGBA, GL_UNSIGNED_BYTE,
                  this->getBuffer());
     glPixelStorei(GL_PACK_ALIGNMENT, 4);
+    glFlush(); glFinish();
   }
 
 protected:
