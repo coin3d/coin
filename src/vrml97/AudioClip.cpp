@@ -459,7 +459,7 @@ SoVRMLAudioClipP::simageVersionOK(const char *functionName)
 void 
 SoVRMLAudioClipP::startPlaying()
 {
-#ifdef COIN_DEBUG && DEBUG_AUDIO
+#if COIN_DEBUG && DEBUG_AUDIO
   fprintf(stderr, "ac:start\n");
 #endif // debug 
   this->currentPause = SoVRMLAudioClipP::introPause;
@@ -473,7 +473,7 @@ SoVRMLAudioClipP::startPlaying()
 void 
 SoVRMLAudioClipP::stopPlaying()
 {
-#ifdef COIN_DEBUG && DEBUG_AUDIO
+#if COIN_DEBUG && DEBUG_AUDIO
   fprintf(stderr, "ac:stop\n");
 #endif // debug
   PUBLIC(this)->isActive.setValue(FALSE);
@@ -851,7 +851,7 @@ SoVRMLAudioClipP::openFile(const char *filename)
                  "samplerate", S_INTEGER_PARAM_TYPE, &this->samplerate, NULL);
   }
 
-#ifdef COIN_DEBUG && DEBUG_AUDIO
+#if COIN_DEBUG && DEBUG_AUDIO
   fprintf(stderr, "Wave file '%s' opened successfully\n", filename);
 #endif // debug
 
