@@ -74,9 +74,17 @@ SoOffscreenWGLData::~SoOffscreenWGLData()
 SbVec2f
 SoOffscreenWGLData::getResolution(void)
 {
-  // FIXME: use Win32 API method GetDeviceCaps(). 20020524 mortene.
-  COIN_STUB();
-  return SbVec2f(72.0f / 25.4f, 72.0f / 25.4f); // fall back to 72dpi
+  HDC devctx = CreateCompatibleDC(NULL);
+  if (devctx == NULL) {
+    SoDebugError::postWarning("SoOffscreenWGLData::getResolution",
+                              "Couldn't create a device context.");
+    return SbVec2f(72.0f / 25.4f, 72.0f / 25.4f); // fall back to 72dpi
+  }
+  float resx = (float)GetDeviceCaps(devctx, LOGPIXELSX);
+  float resy = (float)GetDeviceCaps(devctx, LOGPIXELSY);
+  (void)DeleteDC(devctx);
+
+  return SbVec2f(resx / 25.4f, resy / 25.4f);
 }
 
 void 
