@@ -617,13 +617,15 @@ SoShape::computeObjectSpaceRay(SoRayPickAction * const action,
 
   This method returns \c NULL in Open Inventor, and subclasses will
   need to override this method to create details for a SoPickedPoint.
+  Detail classes must be allocated on the heap (using new), since the
+  SoPickedPoint instance will delete the detail upon destruction.
 
   This is not necessary with Coin. Of course, if you choose to
   override it, it will work in the same way as Open Inventor.
 
   For this to work, you must supply a face or line detail when
   generating primitives. If you supply \c NULL for the detail argument in
-  SoShape::beginShape(), you'll have to override this method.
+  SoShape::beginShape(), you'll have to override this method.  
 */
 SoDetail *
 SoShape::createTriangleDetail(SoRayPickAction * action,
