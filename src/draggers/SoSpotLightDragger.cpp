@@ -342,9 +342,14 @@ SoSpotLightDragger::setDefaultOnNonWritingFields(void)
 
 /*! \COININTERNAL */
 void
-SoSpotLightDragger::fieldSensorCB(void * d, SoSensor *)
+SoSpotLightDragger::fieldSensorCB(void * d, SoSensor * s)
 {
   SoSpotLightDragger *thisp = (SoSpotLightDragger*)d;
+
+  if (s == (SoSensor*) thisp->angleFieldSensor) {
+    thisp->setBeamScaleFromAngle(thisp->angle.getValue());
+  }
+
   SbMatrix matrix = thisp->getMotionMatrix();
   thisp->workFieldsIntoTransform(matrix);
   thisp->setMotionMatrix(matrix);
