@@ -1,17 +1,33 @@
 #! /bin/sh
 # **************************************************************************
-# This is a script for retrieving configuration information about the
-# installed Coin libraries on the system.
+# coin-config -- a utility for retrieving configuration information about
+# the installed Coin library.
 #
 # Authors:
-#   Morten Eriksen <mortene@coin3d.org>
 #   Lars J. Aas <larsa@coin3d.org>
+#   Morten Eriksen <mortene@coin3d.org>
 #
 
+program="$0"
 me=`echo "$0" | sed 's,^.*[/\\],,g'`
 wd=`echo "$0" | sed 's,/[^/]*$,,'`
-# wd=`cd "$wd"; pwd`
 prefix=`cd "$wd/.."; pwd`
+
+usage="\
+Usage: $me [OPTIONS]
+Options:
+  --alternate=<string>
+  --cppflags
+  --cxxflags
+  --ldflags
+  --libs
+  --datadir
+  --have-feature <featurename>
+  --compile <sourcefile> [<sourcefile>]...
+  --link <program> <object> [<object>]...
+  --build <program> <sourcefile> [<sourcefile>]...
+  --version
+  --usage | --help"
 
 alternate=default
 for arg
@@ -23,48 +39,98 @@ do
 done
 
 if test -f $prefix/share/Coin/conf/coin-$alternate.cfg; then
-  . $prefix/share/Coin/conf/coin-$alternate.cfg
+  configfile="$prefix/share/Coin/conf/coin-$alternate.cfg"
+  . $configfile
 elif test -f $prefix/share/Coin/conf/coin-default.cfg; then
-  . $prefix/share/Coin/conf/coin-default.cfg
+  configfile="$prefix/share/Coin/conf/coin-default.cfg"
+  . $configfile
 else
   echo >&2 "$me: no default Coin config available"
   exit 1
 fi
 
-usage="\
-Usage: $me [OPTIONS]
-Options:
-  --alternate=<string>
-  --cppflags
-  --cxxflags
-  --ldflags
-  --libs
-  --datadir
-  --build <program> <sourcefile> [<sourcefile>]...
-  --version
-  --usage | --help"
-
 while test $# -gt 0
 do
   case $1 in
-  --help | --usage) echo "$usage" ;;
-  --version)        echo "$version" ;;
-  --cppflags)       echo "$cppflags" ;;
-  --cxxflags)       echo "$cxxflags" ;;
-  --ldflags)        echo "$ldflags" ;;
-  --libs)           echo "$libs" ;;
-  --datadir)        echo "$datadir" ;;
-  --build)
-    shift
-    program=$1
-    shift
-    exec $compiler \
-      $CPPFLAGS $cppflags \
-      $CXXFLAGS $cxxflags \
-      $LDFLAGS $ldflags \
-      -o $program $@ \
-      $LIBS $libs
-    ;;
+    --usage | --help)  echo "$usage"    ;;
+    --version)         echo "$version"  ;;
+    --cppflags)        echo "$cppflags" ;;
+    --cxxflags)        echo "$cxxflags" ;;
+    --ldflags)         echo "$ldflags"  ;;
+    --libs)            echo "$libs"     ;;
+    --datadir)         echo "$datadir"  ;;
+    --have-feature)
+      exitcode=1
+      eval "test x\${have_$2+set} = xset && exitcode=0"
+      exit $exitcode
+      ;;
+    --compile)
+      shift
+      if test $# -eq 1; then
+        echo $compiler $CPPFLAGS $cppflags $CXXFLAGS $cxxflags -c $1 \
+          | fmt -t -w76 | sed -e '$q; 1,$ s/$/ \\/'
+        $compiler \
+          $CPPFLAGS $cppflags \
+          $CXXFLAGS $cxxflags \
+          -c $1
+        test $? -ne 0 && exit $?
+      else
+        for arg in $@; do
+          $program --alternate="$alternate" --compile $arg
+          test $? -ne 0 && exit $?
+        done
+      fi
+      exit 0
+      ;;
+    --link)
+      shift
+      progname=$1
+      shift
+      echo $compiler $LDFLAGS $ldflags -o $progname $@ $libs $LIBS \
+        | fmt -t -w76 | sed -e '$q; 1,$ s/$/ \\/'
+      $compiler \
+        $LDFLAGS $ldflags \
+        -o $progname $@ \
+        $libs $LIBS
+      test $? -ne 0 && exit $?
+      exit 0
+      ;;
+    --build)
+      shift
+      progname=$1
+      objs=
+      extraldflags=
+      extralibs=
+      shift
+      for arg in $@; do
+        case $arg in
+          *.c | *.cpp | *.cxx | *.cc | *.c++)
+            basename=`echo "$arg" | sed -e 's/\.[^\.]*$//'`
+            $program --alternate="$alternate" --compile $arg
+            test $? -ne 0 && exit $?
+            objfile=`ls $basename.o $basename.obj 2>/dev/null`
+            objs="$objs $objfile"
+            ;;
+          -L*)
+            extraldflags="$extraldflags $arg"
+            ;;
+          -l*)
+            extralibs="$extralibs $arg"
+            ;;
+        esac
+      done
+      echo $compiler $LDFLAGS $ldflags $extraldflags \
+        -o $progname $objs $extralibs $libs $LIBS \
+        | fmt -t -w76 | sed -e '$q; 1,$ s/$/ \\/'
+      $compiler \
+        $CPPFLAGS $cppflags \
+        $CXXFLAGS $cxxflags \
+        $LDFLAGS $ldflags $extraldflags \
+        -o $progname $objs \
+        $extralibs $libs $LIBS
+      test $? -ne 0 && exit $?
+      exit 0
+      ;;
   # ignore some options
   --alternate=*) ;;
   --debug) ;;
