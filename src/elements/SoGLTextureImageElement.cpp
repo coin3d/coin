@@ -32,6 +32,7 @@
 #include <Inventor/elements/SoGLTextureImageElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/SbImage.h>
 
@@ -39,7 +40,7 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#include <Inventor/system/gl.h>
+#include "../misc/GLWrapper.h"
 
 SO_ELEMENT_SOURCE(SoGLTextureImageElement);
 
@@ -274,15 +275,73 @@ SoGLTextureImageElement::evaluate(const SbBool enabled, const SbBool transparenc
   }
 }
 
+/*!
+  The size returned by this function can be a very coarse estimate as
+  it uses glGetIntegerv(GL_MAX_TEXTURE_SIZE).
+  For a better estimate, use isTextureSizeLegal(),
+ */
 int32_t
 SoGLTextureImageElement::getMaxGLTextureSize(void)
 {
   static int32_t maxGLTextureSize = -1;
+
   if (maxGLTextureSize == -1) {
     GLint val;
-    //FIXME: Use 3D_TEXTURE_SIZE or proxy textures? (kintel 20011111)
     glGetIntegerv(GL_MAX_TEXTURE_SIZE, &val);
     maxGLTextureSize = (int32_t)val;
   }
   return maxGLTextureSize;
 }
+
+/*!
+  Returns true if the texture with the given dimensions is supported
+  by the current OpenGL context.
+  If zsize==0, 2D texturing is assumed, else 3D texturing is assumed.
+
+  This function uses PROXY textures and will fall back to getMaxGLTextureSize()
+  if PROXY textures are not supported (OpenGL < 1.1 and GL_EXT_texture not
+  available). In the 3D case, 3D textures need to be supported (OpenGL >= 1.2 
+  or GL_EXT_texture3D).
+
+  \since 2001-12-04
+*/
+SbBool 
+SoGLTextureImageElement::isTextureSizeLegal(int xsize, int ysize, int zsize, 
+                                            int bytespertexel)
+{
+  const GLWrapper_t * glw = GLWRAPPER_FROM_STATE(this->state);
+  if (zsize==0) { // 2D textures
+    if (glw->COIN_GL_PROXY_TEXTURE_2D) {
+      GLint w;
+      glTexImage2D(glw->COIN_GL_PROXY_TEXTURE_2D, 0, bytespertexel,
+                   xsize, ysize, 0,
+                   GL_RGBA, GL_UNSIGNED_BYTE,
+                   NULL);
+      glGetTexLevelParameteriv(glw->COIN_GL_PROXY_TEXTURE_2D, 0, 
+                               GL_TEXTURE_WIDTH, &w);
+      if (w==0) return false;
+      return true;
+    }
+    else {
+      // Falls back to using the old method
+      int maxsize = SoGLTextureImageElement::getMaxGLTextureSize();
+      if (xsize > maxsize || ysize > maxsize) return false;
+      return true;
+    }
+  }
+  else { // 3D textures
+    if (glw->COIN_GL_PROXY_TEXTURE_3D) {
+      GLint w;
+      glTexImage3D(glw->COIN_GL_PROXY_TEXTURE_3D, 0, bytespertexel,
+                   xsize, ysize, zsize, 0,
+                   GL_RGBA, GL_UNSIGNED_BYTE,
+                   NULL);
+      glGetTexLevelParameteriv(glw->COIN_GL_PROXY_TEXTURE_3D, 0, 
+                               GL_TEXTURE_WIDTH, &w);
+      if (w==0) return false;
+      return true;
+    }
+    return false; // 3D textured not supported
+  }
+}
+

@@ -54,6 +54,8 @@ public:
 
   virtual void evaluate(const SbBool enabled, const SbBool transparency) const;
   static int32_t getMaxGLTextureSize(void);
+  virtual SbBool isTextureSizeLegal(int xsize, int ysize, int zsize, 
+                                    int bytespertexel);
 
 protected:
   virtual SbBool hasTransparency(void) const;
