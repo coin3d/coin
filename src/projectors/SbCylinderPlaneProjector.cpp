@@ -31,6 +31,7 @@
 #endif // COIN_DEBUG
 #include <assert.h>
 #include <float.h>
+#include <math.h>
 
 /*!
   FIXME: write doc
@@ -67,10 +68,10 @@ SbVec3f
 SbCylinderPlaneProjector::project(const SbVec2f &point)
 {
   if (this->needSetup) this->setupTolerance();
-  
+
   SbLine projline = this->getWorkingLine(point);
   SbVec3f projpt;
-  
+
   SbBool tst = this->intersectCylinderFront(projline, projpt);
   if (!tst || !this->isWithinTolerance(projpt)) {
 #if 1 // debug
@@ -85,7 +86,7 @@ SbCylinderPlaneProjector::project(const SbVec2f &point)
 #endif // COIN_DEBUG
       return SbVec3f(0.0f, 0.0f, 0.0f);
     }
-  }  
+  }
   this->lastPoint = projpt;
   return projpt;
 }
@@ -127,13 +128,13 @@ SbCylinderPlaneProjector::getRotation(const SbVec3f &point1, SbBool tol1,
   // pt1 is the point projected onto horizLine. pt1_tol is different from
   // pt1 if tol1==FALSE. pt1_tol will then be on the edge of the cylinder
   // section, where the cylinder section intersects the plane, but it will
-  // also be on horizLine. 
-  //  
+  // also be on horizLine.
+  //
   SbVec3f pt1, pt1_tol, pt2, pt2_tol;
-  
+
   pt1 = horizLine.getClosestPoint(point1);
   pt2 = horizLine.getClosestPoint(point2);
-  
+
   if (tol1) {
     pt1_tol = pt1;
   }
@@ -160,14 +161,14 @@ SbCylinderPlaneProjector::getRotation(const SbVec3f &point1, SbBool tol1,
   }
 
   // find normal cylinder-section rotation
-  SbRotation rot = inherited::getRotation(tol1 ? point1 : pt1_tol, 
+  SbRotation rot = inherited::getRotation(tol1 ? point1 : pt1_tol,
                                           tol2 ? point2 : pt2_tol);
   SbVec3f axis;
   float angle;
   rot.getValue(axis, angle);
   axis = this->cylinder.getAxis().getDirection(); // in case angle==0
-  
-  SbBool positiveAngle = TRUE;  
+
+  SbBool positiveAngle = TRUE;
   if (float(fabs(angle)) < FLT_EPSILON) {
     // test if angle will be positive or negative
     SbRotation dummy = inherited::getRotation(point1, point2);
@@ -179,7 +180,7 @@ SbCylinderPlaneProjector::getRotation(const SbVec3f &point1, SbBool tol1,
   else if (angle < 0.0f) {
     positiveAngle = FALSE;
   }
-  
+
   float len = 0.0f;
 
   // both pts on same side of cylinder ?
