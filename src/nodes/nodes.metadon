@@ -71,7 +71,7 @@
 #        -                SoPathSwitch
 #   TBGMP-C               SoTransformSeparator
 #   -B-----       SoTransformation
-#   T    -                SoAntiSquish
+#   TBGMP-                SoAntiSquish
 #   TBGMP-C               SoMatrixTransform
 #   TBGMP-C               SoRotation
 #   T!!!!-!                       SoPendulum

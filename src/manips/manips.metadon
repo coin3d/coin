@@ -16,7 +16,7 @@
 #               SoTrackballManip
 #               SoTransformBoxManip
 #               SoTransformerManip
-#       SoPointLightManip
+# Id    SoPointLightManip
 #       SoSpotLightManip
 #       SoDirectionalLightManip
 #

@@ -8,19 +8,19 @@
 # ID
 # ==
 # HIERARCHY
-#     SoDragger
+# i   SoDragger
 #         SoCenterballDragger
-#         SoDirectionalLightDragger
-#         SoDragPointDragger
+# I       SoDirectionalLightDragger
+# I       SoDragPointDragger
 #         SoHandleBoxDragger
 #         SoJackDragger
-#         SoPointLightDragger
-#         SoRotateCylindricalDragger
-#         SoRotateDiscDragger
-#         SoRotateSphericalDragger
-#         SoScale1Dragger
-#         SoScale2Dragger
-#         SoScale2UniformDragger
+# I       SoPointLightDragger
+# I       SoRotateCylindricalDragger
+# I       SoRotateDiscDragger
+# I       SoRotateSphericalDragger
+# I       SoScale1Dragger
+# I       SoScale2Dragger
+# i       SoScale2UniformDragger
 #         SoScaleUniformDragger
 #         SoSpotLightDragger
 #         SoTabBoxDragger
@@ -28,7 +28,7 @@
 #         SoTrackballDragger
 #         SoTransformBoxDragger
 #         SoTransformerDragger
-#         SoTranslate1Dragger
-#         SoTranslate2Dragger
+# I       SoTranslate1Dragger
+# I       SoTranslate2Dragger
 #
 ############################################################################
