@@ -34,7 +34,7 @@
 //
 // constructor for the internal class
 //
-so_plane_data::so_plane_data(const SbPlane &planeref, const SbMatrix &matrix)
+SoClipPlaneElement::so_plane_data::so_plane_data(const SbPlane &planeref, const SbMatrix &matrix)
 {
   this->plane = this->wcPlane = planeref;
   this->wcPlane.transform(matrix);
@@ -122,7 +122,7 @@ void
 SoClipPlaneElement::addToElt(const SbPlane &plane,
                              const SbMatrix &modelMatrix)
 {
-  so_plane_data data(plane, modelMatrix);
+  SoClipPlaneElement::so_plane_data data(plane, modelMatrix);
   this->planes.append(data);
 }
 

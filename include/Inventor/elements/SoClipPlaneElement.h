@@ -28,23 +28,6 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SbPlane.h>
 
-class so_plane_data // internal
-{
-public:
-  so_plane_data() {}
-  so_plane_data(const SbPlane &plane, const SbMatrix &matrix);
-public:
-  SbPlane plane;
-  SbPlane wcPlane;
-  // Needed by AIX compiler
-  SbBool operator==(const so_plane_data &spd) const {
-    return spd.plane == plane && spd.wcPlane == wcPlane;
-  }
-  SbBool operator!=(const so_plane_data &spd) const {
-    return spd.plane != plane || spd.wcPlane != wcPlane;
-  }
-};
-
 class COIN_DLL_API SoClipPlaneElement : public SoAccumulatedElement {
   typedef SoAccumulatedElement inherited;
 
@@ -63,6 +46,24 @@ public:
   static  const SoClipPlaneElement * getInstance(SoState * const state);
   int getNum(void) const;
   const SbPlane & get(const int index, const SbBool inworldspace = TRUE) const;
+
+private:
+  class so_plane_data // internal
+  {
+  public:
+    so_plane_data() {}
+    so_plane_data(const SbPlane &plane, const SbMatrix &matrix);
+  public:
+    SbPlane plane;
+    SbPlane wcPlane;
+    // Needed by AIX compiler
+    SbBool operator==(const so_plane_data &spd) const {
+      return spd.plane == plane && spd.wcPlane == wcPlane;
+    }
+    SbBool operator!=(const so_plane_data &spd) const {
+      return spd.plane != plane || spd.wcPlane != wcPlane;
+    }
+  };
 
 protected:
   SbList <so_plane_data> planes;
