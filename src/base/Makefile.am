@@ -62,7 +62,7 @@ LinkHackSources = \
 	all-cpp.cpp
 PublicHeaders =
 PrivateHeaders = \
-	../../include/Inventor/C/memalloc.h \
+	../../include/Inventor/C/base/memalloc.h \
 	../../include/Inventor/SbBSPTree.h \
 	../../include/Inventor/SbBox2f.h \
 	../../include/Inventor/SbBox2s.h \
