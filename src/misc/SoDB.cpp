@@ -17,6 +17,9 @@
  *
 \**************************************************************************/
 
+/* *********************************************************************** */
+/* Misc global Doxygen documentation stuff. ****************************** */
+
 /*!
   \mainpage
 
@@ -38,6 +41,36 @@
   See <http://www.coin3d.org> for more information about Coin and the
   SoXt, SoQt and other GUI glue libraries.
  */
+
+/*! \defgroup actions Actions */
+/*! \defgroup base Base classes */
+/*! \defgroup details Detail classes */
+/*! \defgroup draggers Draggers */
+/*! \defgroup elements Elements */
+/*! \defgroup engines Engine classes */
+/*! \defgroup events Event classes */
+/*! \defgroup fields Field classes */
+/*! \defgroup general General classes */
+/*! \defgroup manips Manipulators */
+/*! \defgroup nodekits Node Kits */
+/*! \defgroup nodes Nodes */
+/*! \defgroup projectors Projector classes */
+/*! \defgroup sensors Sensor classes */
+
+/*!
+  \class SbBool SbBasic.h Inventor/SbBasic.h
+  \brief SbBool is a compiler portable boolean type.
+  \ingroup base
+
+  SbBool is meant to be a "compiler portable" way of defining a
+  boolean type, since there are older compilers out there which don't
+  support the ISO-standard C++ \c bool keyword.
+
+  SbBool is not really a class, just a \c typedef.
+*/
+
+
+/* *********************************************************************** */
 
 /*!
   \class SoDB SoDB.h Inventor/SoDB.h

@@ -22,50 +22,19 @@
 
 /*
   NOTE: SbBasic.h is automatically generated from SbBasic.h.in, so
-  don't edit SbBasic.h directly. 19990913 mortene.
+  don't edit SbBasic.h directly.
 */
-
 
 /* *********************************************************************** */
 
-/* For the Doxygen tool. */
-/* FIXME: these Doxygen "tags" should be moved to an internal
-   headerfile. 20010810 mortene. */
+/* FIXME: should use "bool" instead of "int" in the following typedef
+   if the "bool" keyword is supported by the compiler. Breaks
+   ABI-compatibility, though, so wait until Coin v2. (Should then also
+   use "false" and "true" instead of "0" and "1" for the FALSE and
+   TRUE defines below.) 20010810 mortene. */
 
-/*! \defgroup base Base classes */
-/*! \defgroup general General classes */
-/*! \defgroup events Event classes */
-/*! \defgroup projectors Projector classes */
-/*! \defgroup sensors Sensor classes */
-/*! \defgroup fields Field classes */
-/*! \defgroup nodes Nodes */
-/*! \defgroup nodekits Node Kits */
-/*! \defgroup actions Actions */
-/*! \defgroup details Detail classes */
-/*! \defgroup draggers Draggers */
-/*! \defgroup manips Manipulators */
-/*! \defgroup engines Engine classes */
-
-/* *********************************************************************** */
-
-/*!
-  \class SbBool SbBasic.h Inventor/SbBasic.h
-  \brief SbBool is a compiler portable boolean type.
-  \ingroup base
-
-  SbBool is meant to be a "compiler portable" way of defining a
-  boolean type, since there are older compilers out there which don't
-  support the ISO-standard C++ \c bool keyword.
-
-  SbBool is not really a class, just a \c typedef.
-*/
-
+// Documented for Doxygen in SoDB.cpp.
 typedef int SbBool;
-/* FIXME: should use "bool" instead of "int" if the "bool" keyword is
-   supported by the compiler. Breaks ABI-compatibility, though, so
-   wait until Coin v2. (Should then also use "false" and "true"
-   instead of "0" and "1" for the FALSE and TRUE defines below.)
-   20010810 mortene. */
 
 #ifndef FALSE
 #define FALSE 0
