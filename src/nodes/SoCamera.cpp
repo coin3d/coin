@@ -165,11 +165,17 @@
   orientation where the camera is pointing along the negative z-axis,
   with "up" along the positive y-axis.
 
-  E.g. to get the "up" vector of the camera, you can do:
+  E.g., to rotate the camera to point along the X axis:
+
+  \code
+  mycamera->orientation.setValue(SbRotation(SbVec3f(0, 1, 0), M_PI / 2.0f);
+  \endcode
+
+  For queries, e.g. to get the "up" vector of the camera:
 
   \code
   SbVec3f up(0, 1, 0); // up-vector on no rotation
-  SbRotation camrot = camera->orientation.getValue();
+  SbRotation camrot = mycamera->orientation.getValue();
   camrot.multVec(up, up);
   \endcode
 */

@@ -154,6 +154,15 @@ Section 01 -- Basic build instructions.
       A workaround is to do manual creation of the lib-file, after
       which ``make install'' will execute ok.
 
+   g) The Qt library for MSWindows has a file ''install.exe'' in it's
+      installation package. If the $QTDIR/bin/ path comes before the
+      path to the Cygwin <cygdir>/usr/bin/install.exe tool, the Qt
+      install.exe will be invoked upon ''make install''.
+
+      To get around this, set up your $PATH to have Cygwin's /usr/bin/
+      listed before $QTDIR/bin/.
+
+
 ---
 [1] <URL:http://www.cygwin.com>
 

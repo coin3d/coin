@@ -112,7 +112,7 @@ int SoSeparator::numrendercaches = 2;
   \var SoSFEnum SoSeparator::renderCaching
 
   Policy for caching of rendering instructions for faster
-  execution. This will typically use the OpenGL \e renderlists
+  execution. This will typically use the OpenGL \e displaylist
   mechanism.
 
   Default value is SoSeparator::AUTO.
@@ -128,7 +128,7 @@ int SoSeparator::numrendercaches = 2;
   well. The advantages that \e can be had from setting
   SoSeparator::renderCaching to \c ON are:
 
-  <ol>
+  <ul>
    <li> If you positively know that the geometry under the SoSeparator is
      static, you get the cache set up right away.
 
@@ -160,7 +160,7 @@ int SoSeparator::numrendercaches = 2;
      with SIM and describe the platform and the problem, and we could
      integrate a proper fix into Coin.)
    </li>
-  </ol>
+  </ul>
 
   There are good reasons for setting renderCaching to \c OFF, like
   when you know the geometry will be changing a lot. Still, Coin
@@ -169,6 +169,47 @@ int SoSeparator::numrendercaches = 2;
   other cache smashing nodes, the caching heuristics will stop the
   SoSeparator node from trying to make caches -- at least after a few
   tries has been made and failed.)
+
+
+  The short story about how auto-caching works is as follows:
+
+  <ul>
+
+    <li>For vertex-based shapes with fewer than 100 triangles and
+        where the geometry is detected to be fairly static, caching is
+        enabled.</li>
+
+    <li>For shapes with more than 1000 trangles, it is disabled, to
+        avoid spending too much of the on-board graphics card's memory
+        resources.</li>
+
+    <li>For shapes with between 100 and 1000 shapes, displaylist
+        caching will be turned on if our heuristics decides that the
+        geometry can be considered static.</li>
+
+  </ul>
+
+  The maximum threshold (of 1000) is higher when doing remote
+  rendering (as when rendering from one X11-based system to another).
+
+  Disabling the displaylist caching takes precedence over enabling, so
+  if you have an SoSeparator with a shape with more than 1000
+  triangles and a shape with fewer than 100 triangles, caching will be
+  disabled for the SoSeparator.
+
+  It's possible to tune the limits using some environment variables:
+
+  <ul>
+ 
+    <li>\c COIN_AUTOCACHE_LOCAL_MIN can be used to change the
+        enable-caching limit, while \c COIN_AUTOCACHE_LOCAL_MAX
+        controls the disable-caching limit.</li>
+
+    <li>The corresponding variables for remote rendering are \c
+        COIN_AUTOCACHE_REMOTE_MIN and \c
+        COIN_AUTOCACHE_REMOTE_MAX.</li>
+
+  </ul>
 */
 
 /*!

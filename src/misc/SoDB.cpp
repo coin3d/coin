@@ -65,7 +65,7 @@
   <b>IMPORTANT NOTE: the online documentation for the Coin library is
   a continuous work-in-progress.</b> Although the large majority of
   classes have been documented properly, there are still some poorly
-  documentation items. If you happen upon an undocumented or poorly
+  documented items. If you happen upon an undocumented or poorly
   documented class and / or class method which you find hard to
   understand, please give us a notice so we can rectify the situation.
 */
@@ -497,9 +497,9 @@ SoDB::init(void)
                        NULL, NULL, NULL);
 
   // FIXME: this is erroneous, we don't _really_ support v1.x Inventor
-  // files.  Should perhaps just remove the following lines, but do it
-  // as part of a larger renovation on the file-format support /
-  // versioning stuff.  20010925 mortene.
+  // files.  Should spit out a warning, and a helpful message on how
+  // it is possible to convert old files, and then exit import.
+  // 20010925 mortene.
   SoDB::registerHeader(SbString("#Inventor V1.0 ascii   "), FALSE, 1.0f,
                        NULL, NULL, NULL);
   SoDB::registerHeader(SbString("#Inventor V1.0 binary  "), TRUE, 1.0f,

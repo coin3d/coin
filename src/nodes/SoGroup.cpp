@@ -26,11 +26,105 @@
   \brief The SoGroup class is a node which managed other node instances.
   \ingroup nodes
 
-  The internal scene datastructures in Coin is managed as directed
+  The internal scene data structures in Coin are managed as directed
   graphs. The graphs are built by setting up a hierarchy through the
   use of group nodes (either of this type, or from subclasses like
   SoSeparator) which is then traversed when applying actions (like
   SoGLRenderAction) to it.
+
+  SoGroup, SoSeparator, and other classes derived from SoGroup, are
+  the "tools" the application programmer uses when making the layout
+  of the scene graph.
+
+
+  An important note about SoGroup nodes: you should not change the
+  scene graph layout during any action traversal, as that is not
+  allowed by the internal Coin code. I.e. do not use addChild(),
+  removeChild(), insertChild() or replaceChild() from any callback
+  that is triggered directly or indirectly from an action
+  traversal. The most common way of getting hit by this error, would
+  be something like the following (simplified) example:
+
+  \code
+  #include <Inventor/Qt/SoQt.h>
+  #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
+  
+  #include <Inventor/nodes/SoEventCallback.h>
+  #include <Inventor/nodes/SoSeparator.h>
+  #include <Inventor/nodes/SoCone.h>
+  #include <Inventor/manips/SoPointLightManip.h>
+  #include <Inventor/events/SoMouseButtonEvent.h>
+  
+  SoPointLightManip * global_pointlightmanip;
+  SoSeparator * global_root;
+  
+  // Remove pointlight when clicking right mouse button.
+  static void
+  mySelectionC(void * ud, SoEventCallback * n)
+  {
+    const SoMouseButtonEvent * mbe = (SoMouseButtonEvent*) n->getEvent();
+  
+    if ((mbe->getButton() == SoMouseButtonEvent::BUTTON2) &&
+        (mbe->getState() == SoButtonEvent::DOWN)) {
+      if (global_pointlightmanip) {
+        global_root->removeChild(global_pointlightmanip);
+        global_pointlightmanip = NULL;
+      }
+    }
+  }
+  
+  int
+  main(int argc, char ** argv)
+  {
+    QWidget * window = SoQt::init(argv[0]);
+  
+    global_root = new SoSeparator;
+    global_root->ref();
+  
+    SoEventCallback * ecb = new SoEventCallback;
+    ecb->addEventCallback(SoMouseButtonEvent::getClassTypeId(), mySelectionC, 0);
+    global_root->addChild(ecb);
+  
+    global_root->addChild(new SoCone);
+  
+    global_pointlightmanip = new SoPointLightManip;
+    global_root->addChild(global_pointlightmanip);
+  
+    SoQtExaminerViewer * viewer = new SoQtExaminerViewer(window);
+    viewer->setSceneGraph(global_root);
+    viewer->show();
+  
+    SoQt::show(window);
+    SoQt::mainLoop();
+  
+    global_root->unref();
+    delete viewer;
+  
+    return 0;
+  }
+  \endcode
+
+  What happens in the above case is this: when clicking with the right
+  mouse button, the SoQtExaminerViewer converts the Qt event to a Coin
+  event, which is sent down the scene graph with an
+  SoHandleEventAction. The action traversal reaches the "global_root"
+  SoSeparator node, where it sees that it should further traverse 3
+  child nodes (first the SoEventCallback, then the SoCone, then the
+  SoPointLightManip). When it then traverses the SoEventCallback, the
+  mySelectionC() callback will be invoked, which removes the last
+  child. But the SoHandleEventAction will still continue it's
+  traversal as if the global_root node has 3 children -- and the code
+  will crash.
+
+  (This exact example would perhaps be straight-forward to handle
+  internally in Coin, but there are other ways to change the scene
+  graph layout that are very difficult to handle properly. So in
+  general, changing layout during action traversal is not allowed.)
+
+  What to do in these cases is to change the code inside the callback
+  to not do any operations that immediately changes the layout of the
+  scene graph, but to delay it for after the traversal is done. This
+  can e.g. be done by using a Coin sensor.
 */
 
 #include <Inventor/nodes/SoGroup.h>

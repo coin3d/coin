@@ -43,6 +43,50 @@
   When translating, instead of modifying the translation part of the
   motion matrix, a \e center field is updated, and the geometry is
   moved using an internal transformation node.
+
+  Here's a simple usage example, in the form of a scene graph as an
+  iv-file:
+
+  \verbatim
+  #Inventor V2.1 ascii
+  
+  Separator {
+  
+     # The dragger, offset a little bit against the geometry to clip,
+     # so as to not mess up the user interface.
+     Separator {
+        Translation { translation -4 0 0 }
+        DEF cbdragger CenterballDragger { }
+     }
+  
+     # The clipping plane sub-graph.
+     TransformSeparator {
+
+        # Connect transformations to those of the dragger.
+        Rotation { rotation 0 0 1 0 = USE cbdragger . rotation }
+        Translation { translation 0 0 0 = USE cbdragger . center }
+  
+        # Use a simple lineset-based indicator to show how the
+        # clipping plane is situated in space.
+        Coordinate3 {
+           point [
+            0 2 2, 0 2 -2,
+            0 -2 2, 0 -2 -2,
+            0 2 -2, 0 -2 -2,
+            0 2 2, 0 -2 2
+         ]
+        }
+        LineSet { numVertices [ 2, 2, 2, 2 ] }
+        
+        ClipPlane { }
+     }
+  
+     # Then follows the geometry that gets clipped. For this
+     # example, we use a simple sphere.
+
+     Sphere { }
+  }
+  \endverbatim
 */
 
 #include <Inventor/draggers/SoCenterballDragger.h>

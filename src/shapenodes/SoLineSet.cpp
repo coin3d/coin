@@ -33,6 +33,23 @@
   a line through coordinates 0, 1 and 2, a line through coordinates 3, 4, 5
   and 6, and finally a single line segment between coordinates 7 and 8.
 
+  Here's a very simple usage example:
+
+  \verbatim
+  #Inventor V2.1 ascii
+  
+  Separator {
+     Coordinate3 {
+        point [ 0 0 0, 1 1 1, 2 1 1, 2 2 1, 2 2 2, 2 2 3, 2 3 2, 2 3 3, 3 3 3 ]
+     }
+  
+     LineSet {
+        numVertices [ 3, 4, 2 ]
+     }
+  }
+  \endverbatim
+
+
   Binding PER_VERTEX, PER_FACE, PER_PART or OVERALL can be set for
   material, and normals. The default material binding is OVERALL. The
   default normal binding is PER_VERTEX. If no normals are set, the

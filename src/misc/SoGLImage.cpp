@@ -21,6 +21,29 @@
  *
 \**************************************************************************/
 
+// FIXME: in my not so humble opinion, this class is an ugly mess --
+// or at least it's interface.
+//
+// Some examples: there are 4* functions named "setData()" -- which
+// should throw up a huge red warning sign alone. Methods named
+// "setData()" and "setFlags()" (the latter which we also have in
+// SoGLImage) should make API designers cringe.  There's a whole bunch
+// of *public* methods marked as being *private* and *internal* -- another
+// warning sign. The setData() method that creates a 2D texture object
+// simply calls into the method that makes a 3D texture object, while
+// the obvious right thing to do would be to refactor common code to
+// private methods.
+//
+// Since this was made part of the public API of Coin 2, I guess we'll
+// have to support it until the end of time, or at least a couple of
+// major versions down the road. What we should do with it is to mark
+// it as obsolete, then refactor the functionality out of it,
+// preferably into a nice, *clean* little C API to complement the
+// stuff contained in cc_glglue_*(), then convert all internal code to
+// use that instead.
+//
+// 20030312 mortene.
+
 /*!
   \class SoGLImage include/Inventor/misc/SoGLImage.h
   \brief The SoGLImage class is used to handle OpenGL 2D/3D textures.

@@ -1301,7 +1301,7 @@ SoNode::copyThroughConnection(void) const
 /*!
   Return the next unique identification number to be assigned upon
   node construction or change.  It is unlikely that application
-  programmers will ever need use this method fom client application
+  programmers will ever need use this method from client application
   code, unless working with extensions to the core library (and
   probably not even then).
 

@@ -53,6 +53,14 @@
   SbRotation rotation(SbVec3f(0, 0, 1), 1.5707963f);
   \endcode
 
+
+  Another common problem is to set the rotation value to exactly 0.0,
+  while wanting to store just the information about a rotation \e
+  angle: rotations are internally handled as quaternions, and when
+  converting from an angle and a rotation value to a quaternion
+  representation, the information about the angle "gets lost" if there
+  is no actual rotation.
+
   \sa SbMatrix
 */
 

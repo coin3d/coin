@@ -36,6 +36,11 @@
   the rotation will be done in the counterclockwise direction, if it
   is negative the rotation will be done in the clockwise direction.
 
+  Do not set the rotation value to exactly 0.0, as rotations are
+  internally handled as quaternions, and when converting from an angle
+  and a rotation value to a quaternion representation, the information
+  about the angle "gets lost" if there is no actual rotation.
+
   Note also that the rotation will start at the given angle value.
 */
 

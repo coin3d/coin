@@ -33,13 +33,9 @@
   Note that values from a material node will \e replace the previous
   values from the traversal state, they will \e not accumulate.
 
-  FIXME: usage example here. 20020118 mortene.
-
-  FIXME: describe what happens if the number of values in the fields
-  is not consistent. 20020119 mortene.
-
-  FIXME: refer to the OpenGL color model. 20020119 mortene.
-
+  See also the information on the OpenGL color model, presented in the
+  chapter "Colors and Coloring" (chapter 2.13 in the OpenGL 1.4
+  specification).
 
 
   Note that nodes imported as part of a VRML V1.0 file has a special
@@ -75,6 +71,12 @@
 
   \sa SoMaterialBinding, SoBaseColor, SoPackedColor
 */
+
+// FIXME: add a usage example to the class doc. 20020118 mortene.
+//
+// FIXME: should also describe what happens if the number of values in
+// the fields are not consistent. 20020119 mortene.
+
 
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoSubNodeP.h>

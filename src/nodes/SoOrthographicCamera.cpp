@@ -27,8 +27,37 @@
   \ingroup nodes
 
   Orthographic rendering will not give a particularly realistic
-  impression of the scene, but is for various reasons widely used in
-  applications for Computer Aided Design.
+  impression of the scene, but non-realistic rendering is for various
+  reasons widely used in applications for e.g. Computer Aided Design.
+
+  Also, a simple technique for drawing overlay / HUD style graphics
+  (often appearing to be in 2D) can be implemented by setting up a
+  "sub scene graph" with an SoOrthographicCamera and the geometry.  As
+  a simple demonstration of this concept, load this file into e.g. the
+  ExaminerViewer:
+
+  \verbatim
+  #Inventor V2.1 ascii
+  
+  Separator {
+     PerspectiveCamera { position 0 0 5 }
+     Cone { }
+  
+     Separator {
+        OrthographicCamera {
+           position -0.75 -0.75 2
+        }
+        BaseColor { rgb 1 1 0 }
+        Sphere { radius 0.2 }
+     }
+  }
+  \endverbatim
+
+  You will likely encounter Z-buffer issues with this technique which
+  makes the overlay / HUD graphics end up interspersed with the "real"
+  geometry. If so, this can be solved by e.g. inserting an SoCallback
+  node in the sub-scene, where you let the callback disable the depth
+  buffer with glDisable(GL_DEPTH_TEST).
 */
 
 #include <Inventor/nodes/SoOrthographicCamera.h>

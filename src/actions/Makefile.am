@@ -47,6 +47,9 @@ RegularSources = \
 
 # The SoIntersectionDetectionAction header needs to be under
 # Inventor/collision/ for TGS compatibility.
+#
+# FIXME: it'd be easier to place a Makefile.am under include/Inventor/collision
+# and let that install the file. 20030324 mortene.
 
 # if BUILD_LIBRARY
 # if MAC_FRAMEWORK
