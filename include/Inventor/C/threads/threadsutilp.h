@@ -37,11 +37,13 @@
 #include <Inventor/C/threads/sync.h>
 
 #define CC_MUTEX_CONSTRUCT(_mymutex_) \
-  cc_mutex_global_lock(); \
-  if (_mymutex_ == NULL) { \
-    _mymutex_ = (void*) cc_mutex_construct(); \
-  } \
-  cc_mutex_global_unlock()
+  do { \
+    cc_mutex_global_lock(); \
+    if (_mymutex_ == NULL) { \
+      _mymutex_ = (void*) cc_mutex_construct(); \
+    } \
+    cc_mutex_global_unlock(); \
+  } while (0)
 
 #define CC_MUTEX_DESTRUCT(_mymutex_) \
   cc_mutex_destruct((cc_mutex*) _mymutex_)
