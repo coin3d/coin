@@ -34,13 +34,7 @@ class COIN_DLL_API SoSFBitMask : public SoSFEnum {
 public:
   static void initClass(void);
 
-  // FIXME: there's a bug in Doxygen (at least with version 1.2.9)
-  // which causes the following statement to be regarded as a member
-  // variable. Remove this workaround when the bug has been
-  // fixed. 20011125 mortene.
-#ifndef DOXYGEN_SKIP_THIS
   friend class SoMFBitMask; // For readValue() & writeValue().
-#endif // DOXYGEN_SKIP_THIS
 };
 
 #endif // !COIN_SOSFBITMASK_H

@@ -66,17 +66,11 @@ private:
 
   static void initEvents(void);
 
-  // FIXME: this is to avoid a complaint from Doxygen, which has a bug
-  // that makes it spit out a warning on undocumented *private*
-  // structs and classes. Bug has been reported to
-  // <doxygen-develop@lists.sourceforge.net> at 2002-07-30 by mortene.
-#ifndef DOXYGEN_SKIP_THIS
   struct {
     unsigned int shiftdown : 1;
     unsigned int ctrldown  : 1;
     unsigned int altdown   : 1;
   } modifiers;
-#endif // DOXYGEN_SKIP_THIS
 };
 
 #endif // !COIN_SOEVENT_H

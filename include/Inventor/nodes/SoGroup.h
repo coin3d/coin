@@ -71,13 +71,8 @@ protected:
 
   SoChildList * children;
 
-  // FIXME: there's a bug in Doxygen (at least with version 1.2.9)
-  // which causes the following statement to be regarded as a member
-  // variable. Remove this workaround when the bug has been
-  // fixed. 20011113 mortene.
-#ifndef DOXYGEN_SKIP_THIS
+private:
   friend class SoUnknownNode; // Let SoUnknownNode access readChildren().
-#endif // DOXYGEN_SKIP_THIS
 };
 
 #endif // !COIN_SOGROUP_H

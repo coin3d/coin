@@ -117,12 +117,6 @@ private:
 
   static SoType classTypeId;
 
-  // FIXME: the ifndef wrapper is a workaround for a bug in Doxygen
-  // 1.0.0, where private members in a structure doesn't "inherit" the
-  // private status of their "parent". (This has been confirmed to be
-  // a bug by Dimitri.) Remove the workaround when a fixed Doxygen
-  // appears. 20000124 mortene.
-#ifndef DOXYGEN_SKIP_THIS
   struct {
     int32_t referencecount  : 27;
     unsigned int ingraph    :  1;
@@ -130,7 +124,6 @@ private:
     // The number of bits should sum up to 32, so we don't allocate
     // more than one machine word on a 32-bit platform.
   } objdata;
-#endif // DOXYGEN_SKIP_THIS
   
   void doNotify(SoNotList * l, const void * auditor, const SoNotRec::Type type);  
   static void rbptree_notify_cb(void * auditor, void * type, void * closure);

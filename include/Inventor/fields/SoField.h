@@ -185,16 +185,10 @@ private:
   void setStatusBits(const unsigned int bits);
   SbBool getStatus(const unsigned int bits) const;
   unsigned int statusbits;
-  // FIXME: this is to avoid a complaint from Doxygen, which has a bug
-  // that makes it spit out a warning on undocumented *private*
-  // unions. A similar (but not exactly the same) bug was reported to
-  // <doxygen-develop@lists.sourceforge.net> at 2002-07-30 by mortene.
-#ifndef DOXYGEN_SKIP_THIS
   union {
     SoFieldContainer * container;
     class SoConnectStorage * storage;
   };
-#endif // DOXYGEN_SKIP_THIS
 
   SbBool hasExtendedStorage(void) const;
 };
