@@ -19,8 +19,8 @@
 
 /*!
   \class SoModelMatrixElement Inventor/elements/SoModelMatrixElement.h
-  \brief The SoModelMatrixElement class is yet to be documented.
-
+  \brief The SoModelMatrixElement class is used to manage the current transformation.
+  
   FIXME: write doc.
 */
 
@@ -83,22 +83,19 @@ SoModelMatrixElement::~SoModelMatrixElement(void)
 {
 }
 
-//! FIXME: write doc.
-
+// doc from parent
 SbBool
 SoModelMatrixElement::matches(const SoElement * element) const
 {
-  const SoModelMatrixElement *elem = (const SoModelMatrixElement*)element;
-
-  if ((this->flags & FLG_CULLMATRIX) !=
-      (elem->flags & FLG_CULLMATRIX)) return FALSE;
-  if ((this->flags & FLG_CULLMATRIX) &&
-      (this->cullMatrix != elem->cullMatrix)) return FALSE;
-  return SoAccumulatedElement::matches(element);
+  // FIXME: should invalidate cache on certain cull conditions.
+  // we are using a different culling scheme, so I don't know 
+  // if this will ever apply to us... pederb, 20000608
+  return inherited::matches(element);
 }
 
-//! FIXME: write doc.
-
+/*!
+  Sets the current model matrix to the identity matrix.
+*/
 void
 SoModelMatrixElement::makeIdentity(SoState * const state,
                                    SoNode * const node)
@@ -109,8 +106,9 @@ SoModelMatrixElement::makeIdentity(SoState * const state,
   if (node) elem->setNodeId(node);
 }
 
-//! FIXME: write doc.
-
+/*!
+  Sets the current model matrix to \a matrix.
+*/
 void
 SoModelMatrixElement::set(SoState * const state,
                           SoNode * const node,
@@ -122,24 +120,23 @@ SoModelMatrixElement::set(SoState * const state,
   if (node) elem->setNodeId(node);
 }
 
-//! FIXME: write doc.
-
+/*!
+  Sets the current cull matrix.
+*/
 void
 SoModelMatrixElement::setCullMatrix(SoState * state, SoNode * node,
                                     const SbMatrix & matrix)
 {
   SoModelMatrixElement *elem = (SoModelMatrixElement*)
     SoElement::getElement(state, classStackIndex);
-  elem->setElt(matrix);
-  if (node) elem->setNodeId(node);
-
   elem->cullMatrix = matrix;
   elem->flags |= FLG_CULLMATRIX;
   elem->flags &= ~FLG_COMBINED;
 }
 
-//! FIXME: write doc.
-
+/*!
+  Multiplies \a matrix into the model matrix.
+*/
 void
 SoModelMatrixElement::mult(SoState * const state,
                            SoNode * const node,
@@ -147,19 +144,14 @@ SoModelMatrixElement::mult(SoState * const state,
 {
   SoModelMatrixElement *elem = (SoModelMatrixElement*)
     SoElement::getElement(state, classStackIndex);
-
-#if 0 // too much debug output.. 981021 mortene.
-  SoDebugError::postInfo("SoModelMatrixElement::mult",
-                         "modelview element depth (%p): %d\n",
-                         elem,
-                         elem->getDepth());
-#endif // 0
   elem->multElt(matrix);
   if (node) elem->addNodeId(node);
 }
 
-//! FIXME: write doc.
 
+/*!
+  Appends \a translation to the model matrix.
+*/
 void
 SoModelMatrixElement::translateBy(SoState * const state,
                                   SoNode * const node,
@@ -169,11 +161,12 @@ SoModelMatrixElement::translateBy(SoState * const state,
     SoElement::getElement(state, classStackIndex);
   elem->translateEltBy(translation);
   if (node) elem->addNodeId(node);
-
 }
 
-//! FIXME: write doc.
 
+/*!
+  Appends \a rotation to the model matrix.
+*/
 void
 SoModelMatrixElement::rotateBy(SoState * const state,
                                SoNode * const node,
@@ -186,8 +179,9 @@ SoModelMatrixElement::rotateBy(SoState * const state,
 
 }
 
-//! FIXME: write doc.
-
+/*!
+  Appends \a scaleFactor to the model matrix.
+*/
 void
 SoModelMatrixElement::scaleBy(SoState * const state,
                               SoNode * const node,
@@ -209,8 +203,10 @@ SoModelMatrixElement::scaleBy(SoState * const state,
   if (node) elem->addNodeId(node);
 }
 
-//! FIXME: write doc.
-
+/*!
+  Used by SoTransformSeparator to store and restore model matrix.
+  Don't use it for any other reason.
+*/
 SbMatrix
 SoModelMatrixElement::pushMatrix(SoState * const state)
 {
@@ -219,20 +215,23 @@ SoModelMatrixElement::pushMatrix(SoState * const state)
   return elem->pushMatrixElt();
 }
 
-//! FIXME: write doc.
-
+/*!
+  Used by SoTransformSeparator to store and restore model matrix.
+  Don't use it for any other reason.
+*/  
 void
 SoModelMatrixElement::popMatrix(SoState * const state,
                                 const SbMatrix & matrix)
 {
-  // FIXME: or should I use getElement()? pederb
   SoModelMatrixElement *elem = (SoModelMatrixElement*)
     SoElement::getConstElement(state, classStackIndex);
   elem->popMatrixElt(matrix);
 }
 
-//! FIXME: write doc.
-
+/*!
+  Returns the combined cull and model matrix. This matrix
+  is cached.
+*/
 const SbMatrix &
 SoModelMatrixElement::getCombinedCullMatrix(SoState * const state)
 {
@@ -251,8 +250,9 @@ SoModelMatrixElement::getCombinedCullMatrix(SoState * const state)
   return elem->combinedMatrix;
 }
 
-//! FIXME: write doc.
-
+/*!
+  Returns the current model matrix.
+*/
 const SbMatrix &
 SoModelMatrixElement::get(SoState * const state)
 {
@@ -261,8 +261,10 @@ SoModelMatrixElement::get(SoState * const state)
   return elem->modelMatrix;
 }
 
-//! FIXME: write doc.
-
+/*!
+  Returns the current model matrix. Sets \a isIdentity to
+  TRUE if the model matrix is known to be an identity matrix.
+*/
 const SbMatrix &
 SoModelMatrixElement::get(SoState * const state,
                           SbBool & isIdentity)
@@ -274,49 +276,45 @@ SoModelMatrixElement::get(SoState * const state,
   return elem->modelMatrix;
 }
 
-//! FIXME: write doc.
-
+/*!
+  virtual method which is called from the static method 
+  makeIdentity(). Sets element model matrix to identity.
+*/
 void
-SoModelMatrixElement::print(FILE * file) const
-{
-  fprintf(file, "SoModelMatrixElement[%p]\n", this);
-}
-
-//! FIXME: write doc.
-
-void
-SoModelMatrixElement::makeEltIdentity(// virtual, protected
-    void)
+SoModelMatrixElement::makeEltIdentity(void)
 {
   this->modelMatrix.makeIdentity();
   this->flags = FLG_IDENTITY;
 }
 
-//! FIXME: write doc.
-
+/*!
+  virtual method which is called from the static method 
+  set(). Sets element model matrix to \a matrix.
+*/
 void
-SoModelMatrixElement::setElt(// virtual, protected
-    const SbMatrix & matrix)
+SoModelMatrixElement::setElt(const SbMatrix & matrix)
 {
   this->modelMatrix = matrix;
   this->flags &= ~(FLG_IDENTITY|FLG_COMBINED);
 }
 
-//! FIXME: write doc.
-
+/*!
+  virtual method which is called from the static method 
+  mult(). Multiplies \a matrix into element model matrix.
+*/
 void
-SoModelMatrixElement::multElt(// virtual, protected
-    const SbMatrix & matrix)
+SoModelMatrixElement::multElt(const SbMatrix & matrix)
 {
   this->modelMatrix.multLeft(matrix);
   this->flags &= ~(FLG_IDENTITY|FLG_COMBINED);
 }
 
-//! FIXME: write doc.
-
+/*!
+  virtual method which is called from the static method 
+  translateBy(). Appends \a translation to element model matrix.
+*/
 void
-SoModelMatrixElement::translateEltBy(// virtual, protected
-    const SbVec3f & translation)
+SoModelMatrixElement::translateEltBy(const SbVec3f & translation)
 {
   SbMatrix matrix = SbMatrix::identity();
   matrix.setTranslate(translation);
@@ -324,11 +322,12 @@ SoModelMatrixElement::translateEltBy(// virtual, protected
   this->flags &= ~(FLG_IDENTITY|FLG_COMBINED);
 }
 
-//! FIXME: write doc.
-
+/*!
+  virtual method which is called from the static method 
+  rotateBy(). Appends \a rotation to element model matrix.
+*/
 void
-SoModelMatrixElement::rotateEltBy(// virtual, protected
-    const SbRotation & rotation)
+SoModelMatrixElement::rotateEltBy(const SbRotation & rotation)
 {
   SbMatrix matrix = SbMatrix::identity();
   matrix.setRotate(rotation);
@@ -336,11 +335,12 @@ SoModelMatrixElement::rotateEltBy(// virtual, protected
   this->flags &= ~(FLG_IDENTITY|FLG_COMBINED);
 }
 
-//! FIXME: write doc.
-
+/*!
+  virtual method which is called from the static method 
+  scaleBy(). Appends \a scaleFactor to element model matrix.
+*/
 void
-SoModelMatrixElement::scaleEltBy(// virtual, protected
-    const SbVec3f & scaleFactor)
+SoModelMatrixElement::scaleEltBy(const SbVec3f & scaleFactor)
 {
   SbMatrix matrix = SbMatrix::identity();
   matrix.setScale(scaleFactor);
@@ -348,34 +348,40 @@ SoModelMatrixElement::scaleEltBy(// virtual, protected
   this->flags &= ~(FLG_IDENTITY|FLG_COMBINED);
 }
 
-//! FIXME: write doc.
-
+/*!
+  virtual method which is called from the static method 
+  pushMatrix(). Returns current model matrix.
+*/
 SbMatrix
 SoModelMatrixElement::pushMatrixElt()
 {
   return this->modelMatrix;
 }
 
-//! FIXME: write doc.
-
+/*!  
+  virtual method which is called from the static method
+  popMatrix(). Retores model matrix to the matrix returned from
+  pushMatrix().  
+*/
 void
 SoModelMatrixElement::popMatrixElt(const SbMatrix & matrix)
 {
   this->modelMatrix = matrix;
 }
 
-//! FIXME: write doc.
-
+// doc from parent
 void
 SoModelMatrixElement::init(SoState * state)
 {
   inherited::init(state);
   this->modelMatrix.makeIdentity();
   this->flags = FLG_IDENTITY;
+  this->clearNodeIds();
 }
 
-//! FIXME: write doc.
-
+/*!
+  Overloaded to copy matrices and accumulate node ids.
+*/
 void
 SoModelMatrixElement::push(SoState * state)
 {
@@ -389,4 +395,9 @@ SoModelMatrixElement::push(SoState * state)
     element->cullMatrix = this->cullMatrix;
   if (this->flags & FLG_COMBINED)
     element->combinedMatrix = this->combinedMatrix;
+  
+  // make sure node ids are accumulated properly
+  element->copyNodeIds(this);
 }
+
+

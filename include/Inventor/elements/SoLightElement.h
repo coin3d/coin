@@ -21,12 +21,11 @@
 #define COIN_SOLIGHTELEMENT_H
 
 #include <Inventor/elements/SoAccumulatedElement.h>
-#include <Inventor/lists/SbPList.h>
 #include <Inventor/lists/SoNodeList.h>
+#include <Inventor/lists/SbList.h>
 #include <Inventor/SbMatrix.h>
 
 class SoLight;
-
 
 class SoLightElement : public SoAccumulatedElement {
   typedef SoAccumulatedElement inherited;
@@ -36,27 +35,31 @@ public:
   static void initClass(void);
 protected:
   virtual ~SoLightElement();
-
+  
 public:
   virtual void init(SoState * state);
-
-  virtual void push(SoState * state);
-  virtual void pop(SoState * state,
-              const SoElement * prevTopElement);
-
+  virtual void push(SoState * state);  
   static  void add(SoState * const state, SoLight * const light,
-              const SbMatrix & WCToVRCMatrix);
+                   const SbMatrix & matrix);
   static  const SoNodeList & getLights(SoState * const state);
   static  const SbMatrix & getMatrix(SoState * const state,
-              const int index);
-
-  virtual void print(FILE * file) const;
-
+                                     const int index);
+    
 protected:
   SoNodeList lights;
-  SbPList WCToVRCMatrices; // World Coords -> View Reference Coords
-  int startIndex;
+  SbList <SbMatrix> * matrixlist; 
 
+private:
+  
+  // dummy class needed to initialize didalloc when constructed.  
+  class so_light_elem_flag {
+  public:
+    so_light_elem_flag(void) {
+      this->state = FALSE;
+    }
+    SbBool state;
+  };
+  so_light_elem_flag didalloc;
 };
 
 #endif // !COIN_SOLIGHTELEMENT_H

@@ -25,10 +25,9 @@
 
 class SoProfile;
 
-
 class SoProfileElement : public SoAccumulatedElement {
   typedef SoAccumulatedElement inherited;
-
+  
   SO_ELEMENT_HEADER(SoProfileElement);
 public:
   static void initClass(void);
@@ -37,25 +36,18 @@ protected:
 
 public:
   enum Profile {
-    START_FIRST = 0,
-    START_NEW = 1,
-    ADD_TO_CURRENT = 2
+    START_FIRST,
+    START_NEW,
+    ADD_TO_CURRENT
   };
-
+  
   virtual void init(SoState * state);
-
   virtual void push(SoState * state);
-  virtual void pop(SoState * state,
-              const SoElement * prevTopElement);
-
-  static  void add(SoState * const state, SoProfile * const profile);
-  static  const SoNodeList & get(SoState * const state);
-
-  virtual void print(FILE * file) const;
-
+  static void add(SoState * const state, SoProfile * const profile);
+  static const SoNodeList & get(SoState * const state);
+  
 protected:
   SoNodeList profiles;
-
 };
 
 #endif // !COIN_SOPROFILEELEMENT_H

@@ -19,30 +19,24 @@
 
 /*!
   \class SoTextureMatrixElement Inventor/elements/SoTextureMatrixElement.h
-  \brief The SoTextureMatrixElement class is yet to be documented.
+  \brief The SoTextureMatrixElement class is used to manage the texture matrix stack.
 
-  FIXME: write doc.
+  The texture matrix is used to transform texture coordinates before 
+  being used to map textures onto polygons.
 */
 
 #include <Inventor/elements/SoTextureMatrixElement.h>
-
 #include <coindefs.h> // COIN_STUB()
-
-#include <assert.h>
 
 /*!
   \fn SoTextureMatrixElement::textureMatrix
-
-  FIXME: write doc.
+  
+  The matrix.
 */
 
 SO_ELEMENT_SOURCE(SoTextureMatrixElement);
 
-/*!
-  This static method initializes static data for the
-  SoTextureMatrixElement class.
-*/
-
+// doc from parent
 void
 SoTextureMatrixElement::initClass(void)
 {
@@ -52,13 +46,13 @@ SoTextureMatrixElement::initClass(void)
 /*!
   The destructor.
 */
-
 SoTextureMatrixElement::~SoTextureMatrixElement(void)
 {
 }
 
-//! FIXME: write doc.
-
+/*!
+  Sets current texture matrix to identity.
+*/
 void
 SoTextureMatrixElement::makeIdentity(SoState * const state,
                                      SoNode * const node)
@@ -69,8 +63,9 @@ SoTextureMatrixElement::makeIdentity(SoState * const state,
   if (node) elem->setNodeId(node);
 }
 
-//! FIXME: write doc.
-
+/*!
+  Multiplies \a matrix into the current texture matrix.
+*/
 void
 SoTextureMatrixElement::mult(SoState * const state,
                            SoNode * const node,
@@ -82,8 +77,10 @@ SoTextureMatrixElement::mult(SoState * const state,
   if (node) elem->addNodeId(node);
 }
 
-//! FIXME: write doc.
 
+/*!
+  Appends \a translation to the current texture matrix.
+*/
 void
 SoTextureMatrixElement::translateBy(SoState * const state,
                                   SoNode * const node,
@@ -96,8 +93,9 @@ SoTextureMatrixElement::translateBy(SoState * const state,
 
 }
 
-//! FIXME: write doc.
-
+/*!
+  Appends \a rotation to the current texture matrix.
+*/
 void
 SoTextureMatrixElement::rotateBy(SoState * const state,
                                SoNode * const node,
@@ -110,8 +108,9 @@ SoTextureMatrixElement::rotateBy(SoState * const state,
 
 }
 
-//! FIXME: write doc.
-
+/*!
+  Appends \a scaleFactor to the current texture matrix.
+*/
 void
 SoTextureMatrixElement::scaleBy(SoState * const state,
                               SoNode * const node,
@@ -123,8 +122,10 @@ SoTextureMatrixElement::scaleBy(SoState * const state,
   if (node) elem->addNodeId(node);
 }
 
-//! FIXME: write doc.
 
+/*!
+  Returns current texture matrix.
+*/
 const SbMatrix &
 SoTextureMatrixElement::get(SoState * const state)
 {
@@ -133,32 +134,30 @@ SoTextureMatrixElement::get(SoState * const state)
   return elem->getElt();
 }
 
-//! FIXME: write doc.
-
-void
-SoTextureMatrixElement::print(FILE * file) const
-{
-    fprintf(file, "SoTextureMatrixElement[%p]\n", this);
-}
-
-//! FIXME: write doc.
-
+/*!
+  virtual method which is called from makeIdentity().
+  Sets element matrix to identity.
+*/
 void
 SoTextureMatrixElement::makeEltIdentity(void)
 {
   this->textureMatrix.makeIdentity();
 }
 
-//! FIXME: write doc.
-
+/*!
+  virtual method which is called from mult(). Multiplies \a matrix
+  into element matrix.
+*/
 void
 SoTextureMatrixElement::multElt(const SbMatrix & matrix)
 {
   this->textureMatrix.multRight(matrix);
 }
 
-//! FIXME: write doc.
-
+/*!
+  virtual method which is called from translateBy().
+  Appends \a translation to the element matrix.
+*/
 void
 SoTextureMatrixElement::translateEltBy(const SbVec3f & translation)
 {
@@ -167,8 +166,10 @@ SoTextureMatrixElement::translateEltBy(const SbVec3f & translation)
   this->textureMatrix.multRight(matrix);
 }
 
-//! FIXME: write doc.
-
+/*!
+  virtual method which is called from rotateBy().
+  Appends \a rotation to the element matrix.
+*/
 void
 SoTextureMatrixElement::rotateEltBy(const SbRotation & rotation)
 {
@@ -177,8 +178,10 @@ SoTextureMatrixElement::rotateEltBy(const SbRotation & rotation)
   this->textureMatrix.multRight(matrix);
 }
 
-//! FIXME: write doc.
-
+/*!
+  virtual method which is called from scaleBy().
+  Append \a scaleFactor to the element matrix.
+*/
 void
 SoTextureMatrixElement::scaleEltBy(const SbVec3f & scaleFactor)
 {
@@ -187,48 +190,43 @@ SoTextureMatrixElement::scaleEltBy(const SbVec3f & scaleFactor)
   this->textureMatrix.multRight(matrix);
 }
 
-//! FIXME: write doc.
-
+/*!
+  Returns element matrix. Called from get().
+*/
 const SbMatrix &
 SoTextureMatrixElement::getElt(void) const
 {
   return this->textureMatrix;
 }
 
-//! FIXME: write doc.
-
+// doc from parent
 void
 SoTextureMatrixElement::init(SoState * state)
 {
-    inherited::init(state);
-    this->textureMatrix.makeIdentity();
-}
-
-//! FIXME: write doc.
-
-void
-SoTextureMatrixElement::push(SoState * state)
-{
-    inherited::push(state);
-
-    SoTextureMatrixElement * const element =
-        (SoTextureMatrixElement *)(this->next);
-    element->textureMatrix = this->textureMatrix;
-}
-
-//! FIXME: write doc.
-
-void
-SoTextureMatrixElement::pop(SoState * state,
-                            const SoElement * prevTopElement)
-{
-    inherited::pop(state, prevTopElement);
+  inherited::init(state);
+  this->textureMatrix.makeIdentity();
+  this->clearNodeIds();
 }
 
 /*!
-  FIXME: write doc.
+  Overloaded to copy current matrix and update accumulated node ids.
 */
+void
+SoTextureMatrixElement::push(SoState * state)
+{
+  inherited::push(state);
+  
+  SoTextureMatrixElement * const element =
+    (SoTextureMatrixElement *)(this->next);
+  element->textureMatrix = this->textureMatrix;
 
+  // make sure node ids are accumulated properly
+  element->copyNodeIds(this);
+}
+
+/*!
+  Provided for API compatibility only. Does nothing for the moment.
+*/
 void
 SoTextureMatrixElement::emptyMatrix(SoState * const /* state */)
 {

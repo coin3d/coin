@@ -21,7 +21,7 @@
 #define COIN_SOACCUMULATEDELEMENT_H
 
 #include <Inventor/elements/SoSubElement.h>
-#include <Inventor/lists/SbPList.h>
+#include <Inventor/lists/SbList.h>
 
 
 class SoAccumulatedElement : public SoElement {
@@ -36,16 +36,17 @@ protected:
 public:
   virtual SbBool matches(const SoElement * element) const;
   virtual void print(FILE * file) const;
-
+  
 protected:
-  void clearNodeIds();
+  void clearNodeIds(void);
   void addNodeId(const SoNode * const node);
   void setNodeId(const SoNode * const node);
-  virtual SoElement *copyMatchInfo() const;
+  void copyNodeIds(const SoAccumulatedElement * copyfrom);
+  virtual SoElement * copyMatchInfo(void) const;
   virtual void captureThis(SoState * state) const;
 
-  SbPList nodeIds;
-
+  SbList <uint32_t> nodeids;
+  uint32_t checksum;
 };
 
 #endif // !COIN_SOACCUMULATEDELEMENT_H

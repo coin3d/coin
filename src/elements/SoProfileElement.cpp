@@ -25,10 +25,7 @@
 */
 
 #include <Inventor/elements/SoProfileElement.h>
-
 #include <Inventor/nodes/SoProfile.h>
-
-#include <assert.h>
 
 /*!
   \fn SoProfileElement::Profile
@@ -44,10 +41,7 @@
 
 SO_ELEMENT_SOURCE(SoProfileElement);
 
-/*!
-  This static method initializes static data for the SoProfileElement class.
-*/
-
+// doc from parent
 void
 SoProfileElement::initClass(void)
 {
@@ -57,13 +51,13 @@ SoProfileElement::initClass(void)
 /*!
   The destructor.
 */
-
 SoProfileElement::~SoProfileElement(void)
 {
 }
 
-//! FIXME: write doc.
-
+/*!
+  Adds \a profile to the list of profiles.
+*/
 void
 SoProfileElement::add(SoState * const state,
                       SoProfile * const profile)
@@ -71,14 +65,26 @@ SoProfileElement::add(SoState * const state,
   SoProfileElement * element = (SoProfileElement *)
     getElement(state, classStackIndex);
 
-  // FIXME: this doesn't look correct. Shouldn't we check the
-  // SoProfile::linkage field, and then append or replace based on
-  // that value? 20000327 mortene.
-  element->profiles.append(profile);
+  switch ((SoProfileElement::Profile)profile->linkage.getValue()) {
+  case START_FIRST:
+    element->profiles.truncate(0);
+    element->clearNodeIds();
+    break;
+  case START_NEW:
+    element->profiles.truncate(0);
+    element->profiles.append(profile);
+    element->setNodeId(profile);
+    break;
+  case ADD_TO_CURRENT:
+    element->profiles.append(profile);
+    element->addNodeId(profile);
+    break;
+  }
 }
 
-//! FIXME: write doc.
-
+/*!
+  Returns current list of profiles.
+*/
 const SoNodeList &
 SoProfileElement::get(SoState * const state)
 {
@@ -87,43 +93,29 @@ SoProfileElement::get(SoState * const state)
   return element->profiles;
 }
 
-//! FIXME: write doc.
-
-void
-SoProfileElement::print(FILE * file) const
-{
-    fprintf(file, "SoProfileElement[%p]: num = %d\n", this,
-        this->profiles.getLength());
-}
-
-//! FIXME: write doc.
-
+// doc from parent
 void
 SoProfileElement::init(SoState * state)
 {
   inherited::init(state);
   this->profiles.truncate(0);
+  this->clearNodeIds();
 }
 
-//! FIXME: write doc.
-
+/*!
+  Overloaded to copy profiles and node ids.
+*/
 void
 SoProfileElement::push(SoState * state)
 {
-    inherited::push(state);
-
-    SoProfileElement * const element =
-        (SoProfileElement *)(this->next);
-    element->profiles.truncate(0);
-    const int numProfiles = this->profiles.getLength();
-    for (int i = 0; i < numProfiles; i++)
-        element->profiles.append(this->profiles[ i ]);
+  inherited::push(state);
+    
+  SoProfileElement * const element =
+    (SoProfileElement *)(this->next);
+  element->profiles.truncate(0);
+  const int numProfiles = this->profiles.getLength();
+  for (int i = 0; i < numProfiles; i++)
+    element->profiles.append(this->profiles[ i ]);
+  element->copyNodeIds(this);
 }
 
-//! FIXME: write doc.
-
-void
-SoProfileElement::pop(SoState * state, const SoElement * prevTopElement)
-{
-    inherited::pop(state, prevTopElement);
-}

@@ -93,6 +93,7 @@ private:
   static SoType classTypeId;
 
   friend class SoState; // FIXME: bad design. 19990629 mortene.
+  static void cleanup(void);
 };
 
 #endif // !COIN_SOELEMENT_H

@@ -53,23 +53,19 @@ protected:
 
 public:
   virtual void init(SoState * state);
-
   virtual void push(SoState * state);
-  virtual void pop(SoState * state, const SoElement *prevTopElement);
 
   static  void add(SoState * const state, SoNode * const node,
                    const SbPlane & plane);
-  static  const SoClipPlaneElement *getInstance(SoState * const state);
+  static  const SoClipPlaneElement * getInstance(SoState * const state);
   int getNum(void) const;
-  const SbPlane & get(const int index, const SbBool inWorldSpace = TRUE) const;
-
-  virtual void print(FILE * file) const;
-
+  const SbPlane & get(const int index, const SbBool inworldspace = TRUE) const;
+  
 protected:
-  int startIndex;
   SbList <so_plane_data> planes;
+  int startIndex;
 
-  virtual void addToElt(const SbPlane & plane, const SbMatrix & modelMatrix);
+  virtual void addToElt(const SbPlane & plane, const SbMatrix & modelmatrix);
 };
 
 #endif // !COIN_SOCLIPPLANEELEMENT_H

@@ -19,16 +19,12 @@
 
 /*!
   \class SoClipPlaneElement Inventor/elements/SoClipPlaneElement.h
-  \brief The SoClipPlaneElement class is yet to be documented.
+  \brief The SoClipPlaneElement class is used to manage the clip plane stack.
 */
 
 #include <Inventor/elements/SoClipPlaneElement.h>
-
 #include <Inventor/elements/SoModelMatrixElement.h>
-
-#include <assert.h>
-
-
+#include <Inventor/nodes/SoNode.h>
 
 //
 // constructor for the internal class
@@ -41,29 +37,18 @@ so_plane_data::so_plane_data(const SbPlane &plane, const SbMatrix &matrix)
 
 /*!
   \fn SoClipPlaneElement::planes
-
-  FIXME: write doc.
-*/
-
-/*!
-  \fn SoClipPlaneElement::num
-
-  FIXME: write doc.
+  List of currently active planes.
 */
 
 /*!
   \fn SoClipPlaneElement::startIndex
-
-  FIXME: write doc.
+  Index of first clip plane in this element. Used to disable clip planes
+  in SoGLClipPlaneElement::pop().
 */
 
 SO_ELEMENT_SOURCE(SoClipPlaneElement);
 
-/*!
-  This static method initializes static data for the
-  SoClipPlaneElement class.
-*/
-
+// doc from parent
 void
 SoClipPlaneElement::initClass(void)
 {
@@ -73,26 +58,27 @@ SoClipPlaneElement::initClass(void)
 /*!
   The destructor.
 */
-
 SoClipPlaneElement::~SoClipPlaneElement()
 {
 }
 
-//! FIXME: write doc.
-
+/*!
+  Adds \a plane as an active plane. Calls addToElt() to do the job.
+*/
 void
 SoClipPlaneElement::add(SoState * const state,
-                        SoNode * const /* node */,
+                        SoNode * const node,
                         const SbPlane & plane)
 {
   SoClipPlaneElement *element =
     (SoClipPlaneElement*) SoElement::getElement(state, classStackIndex);
-
   element->addToElt(plane, SoModelMatrixElement::get(state));
+  if (node) element->addNodeId(node);
 }
 
-//! FIXME: write doc.
-
+/*!
+  Returns the current (top-of-stack) element.
+*/
 const SoClipPlaneElement *
 SoClipPlaneElement::getInstance(SoState * const state)
 {
@@ -100,49 +86,31 @@ SoClipPlaneElement::getInstance(SoState * const state)
     SoElement::getConstElement(state, classStackIndex);
 }
 
-//! FIXME: write doc.
-
-//$ EXPORT INLINE
+/*!
+  Returns the current number of active clipping planes.
+*/
 int
 SoClipPlaneElement::getNum() const
 {
   return this->planes.getLength();
 }
 
-//! FIXME: write doc.
-
+/*!
+  Returns the \index'th plane.
+*/
 const SbPlane &
 SoClipPlaneElement::get(const int index,
-                        const SbBool inWorldSpace) const
+                        const SbBool inworldspace) const
 {
-  // Dynamically allocated to avoid problems on systems which doesn't
-  // handle static constructors. (Yes, I know we only use the
-  // operator=() in this method, but better safe than sorry -- if the
-  // code changes, we've got a hard to find bug on our hands).
-  static SbPlane * staticplane = new SbPlane; // FIXME: should deallocate on exit. 20000406 mortene.
-
   assert(index >= 0 && index < this->planes.getLength());
-  const so_plane_data &data = this->planes[index];
-  if (inWorldSpace) *staticplane = data.wcPlane;
-  else *staticplane = data.plane;
-
-  return *staticplane;
-}
-
-//! FIXME: write doc.
-
-void
-SoClipPlaneElement::print(FILE *file) const
-{
-  fprintf(file, "SoClipPlaneElement[%p]: num = %d, start = %d\n", this,
-          this->planes.getLength(), this->startIndex);
+  if (inworldspace) return this->planes.getArrayPtr()[index].wcPlane;
+  return this->planes.getArrayPtr()[index].plane;
 }
 
 /*!
   This method adds the clipping plane, \a plane, to an instance.
-  \a modelMatrix is the current model matrix.
+  \a modelmatrix is the current model matrix.
 */
-
 void
 SoClipPlaneElement::addToElt(const SbPlane &plane,
                              const SbMatrix &modelMatrix)
@@ -151,38 +119,31 @@ SoClipPlaneElement::addToElt(const SbPlane &plane,
   this->planes.append(data);
 }
 
-//! FIXME: write doc.
-
+// doc from parent
 void
 SoClipPlaneElement::init(SoState * state)
 {
   inherited::init(state);
-  this->startIndex = 0;
   this->planes.truncate(0);
+  this->startIndex = 0;
 }
 
-//! FIXME: write doc.
-
+/*!
+  Overloaded to copy planes into the new top of stack, since 
+  planes are accumulated. Also copies accumulated node ids.
+*/
 void
 SoClipPlaneElement::push(SoState * state)
 {
   inherited::push(state);
-
+  
   SoClipPlaneElement * const element =
     (SoClipPlaneElement *)(this->next);
-
+  
   element->planes.truncate(0);
   for (int i = 0; i < this->planes.getLength(); i++) {
     element->planes.append(this->planes[i]);
   }
   element->startIndex = this->planes.getLength();
-}
-
-//! FIXME: write doc.
-
-void
-SoClipPlaneElement::pop(SoState * state,
-                        const SoElement * prevTopElement)
-{
-  inherited::pop(state, prevTopElement);
+  element->copyNodeIds(this);
 }

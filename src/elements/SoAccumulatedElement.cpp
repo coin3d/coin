@@ -19,29 +19,30 @@
 
 /*!
   \class SoAccumulatedElement Inventor/elements/SoAccumulatedElement.h
-  \brief The SoAccumulatedElement class is yet to be documented.
+  \brief The SoAccumulatedElement class is an abstract class for storing accumulated state.
 
-  FIXME: write doc.
+  It stores node ids for all nodes accumulating the current
+  state. These ids are used to quickly determine when to invalidate
+  caches. 
 */
 
 #include <Inventor/elements/SoAccumulatedElement.h>
-
-#include <coindefs.h> // COIN_STUB()
 #include <Inventor/nodes/SoNode.h>
+#include <assert.h>
 
 /*!
-  \fn SoAccumulatedElement::nodeIds
+  \fn SoAccumulatedElement::nodeids
+  Used to store node ids.
+*/
 
-  This is a SoMFNodeField.
+/*!
+  \fn SoAccumulatedElement::checksum
+  Used to optimize the matches() method.
 */
 
 SO_ELEMENT_ABSTRACT_SOURCE(SoAccumulatedElement);
 
-/*!
-  This static method initializes static data for the SoAccumulatedElement
-  class.
-*/
-
+// doc from parent
 void
 SoAccumulatedElement::initClass(void)
 {
@@ -56,61 +57,103 @@ SoAccumulatedElement::~SoAccumulatedElement(void)
 {
 }
 
-//! FIXME: write doc.
-
+/*!
+  Overloaded to compare node ids.
+*/
 SbBool
-SoAccumulatedElement::matches(const SoElement * /* element */) const
+SoAccumulatedElement::matches(const SoElement * element) const
 {
-  COIN_STUB();
-  return FALSE;
+  const SoAccumulatedElement * elem = 
+    (SoAccumulatedElement*) element;
+  if (elem->checksum != this->checksum) return FALSE;
+  const int n = this->nodeids.getLength();
+  if (n != elem->nodeids.getLength()) return FALSE;
+  const uint32_t * p0 = this->nodeids.getArrayPtr();
+  const uint32_t * p1 = elem->nodeids.getArrayPtr();
+  for (int i = 0; i < n; i++) {
+    if (p0[i] != p1[i]) return FALSE;
+  }
+  return TRUE;
 }
 
-//! FIXME: write doc.
-
+// doc from parent
 void
 SoAccumulatedElement::print(FILE * file) const
 {
   fprintf(file, "SoAccumulatedElement(%p)\n", this);
 }
 
-//! FIXME: write doc.
-
+/*!
+  Empty the list of node ids.
+*/
 void
 SoAccumulatedElement::clearNodeIds(void)
 {
-  this->nodeIds.truncate(0);
+  this->nodeids.truncate(0);
+  this->checksum = 0;
 }
 
-//! FIXME: write doc.
-
+/*!
+  Add the node id of \a node to the list of node ids.
+*/
 void
 SoAccumulatedElement::addNodeId(const SoNode * const node)
 {
-  this->nodeIds.append((void *)node->getNodeId());
+  uint32_t id = node->getNodeId();
+  this->checksum += id;
+  this->nodeids.append(id);
 }
 
-//! FIXME: write doc.
-
+/*!
+  Empty the list of node ids, and add the id of \a node.
+*/
 void
 SoAccumulatedElement::setNodeId(const SoNode * const node)
 {
   this->clearNodeIds();
-  this->nodeIds.append((void *)node->getNodeId());
+  this->addNodeId(node);
 }
 
-//! FIXME: write doc.
-
+/*!
+  Overloaded to copy node ids.
+*/
 SoElement *
 SoAccumulatedElement::copyMatchInfo() const
 {
-  COIN_STUB();
-  return NULL;
+  SoAccumulatedElement * element =
+    (SoAccumulatedElement *) this->getTypeId().createInstance();
+  const int n = this->nodeids.getLength();
+  for (int i = 0; i < n; i++) {
+    element->nodeids.append(this->nodeids[i]);
+  }
+  element->checksum = this->checksum;
+  return element;
 }
 
-//! FIXME: write doc.
-
-void
-SoAccumulatedElement::captureThis(SoState * /* state */) const
+/*!  
+  Convenience method which copies the node ids from \a copyfrom to
+  this element. This method is not part of the OIV API.  
+*/
+void 
+SoAccumulatedElement::copyNodeIds(const SoAccumulatedElement * copyfrom)
 {
-  COIN_STUB();
+  this->checksum = 0;
+  this->nodeids.truncate(0);
+  const int n = copyfrom->nodeids.getLength();
+  for (int i = 0; i < n; i++) {
+    uint32_t id = copyfrom->nodeids[i];
+    this->checksum += id;
+    this->nodeids.append(id);
+  }
 }
+
+/*!
+  Overloaded to capture more elements.
+*/
+void
+SoAccumulatedElement::captureThis(SoState * state) const
+{
+  // FIXME: not quite sure what is needed here. pederb, 20000608
+  inherited::captureThis(state);
+}
+

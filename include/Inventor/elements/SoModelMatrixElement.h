@@ -43,7 +43,6 @@ public:
                   const SbMatrix & matrix);
   static void setCullMatrix(SoState * state, SoNode * node,
                             const SbMatrix & matrix);
-
   static void mult(SoState * const state, SoNode * const node,
                    const SbMatrix & matrix);
   static void translateBy(SoState * const state, SoNode * const node,
@@ -59,8 +58,8 @@ public:
   static const SbMatrix & getCombinedCullMatrix(SoState * const state);
   static const SbMatrix & get(SoState * const state);
   static const SbMatrix & get(SoState * const state, SbBool & isIdentity);
-
-  virtual void print(FILE * file) const;
+  static const SbMatrix & getInverse(SoState * const state);
+  static const SbMatrix & getInverse(SoState * const state, SbBool & isIdentity);
 
 protected:
   virtual void makeEltIdentity(void);

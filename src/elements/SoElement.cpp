@@ -26,6 +26,7 @@
 #include <Inventor/elements/SoElements.h>
 #include <Inventor/elements/SoCullElement.h> // internal element
 #include <Inventor/misc/SoState.h>
+#include <stdlib.h>
 #include <coindefs.h> // COIN_STUB()
 #include <Inventor/lists/SoTypeList.h>
 
@@ -193,12 +194,11 @@ SoElement::initElements(void)
 /*!
   This function initializes the SoElement class.
 */
-
 void
 SoElement::initClass(void)
 {
   SoElement::stackToType = new SoTypeList;
-
+  
   // Make sure we only initialize once.
   assert(SoElement::classTypeId == SoType::badType());
   SoElement::classTypeId =
@@ -206,26 +206,22 @@ SoElement::initClass(void)
 
   SoElement::classStackIndex = -1;
   SoElement::initElements();
+
+  // cleanup at exit
+  atexit(SoElement::cleanup);
 }
 
-#if 0 // FIXME: re-code to be run automatically upon exit. 19991106 mortene.
-/*!
-  This function cleans up after the SoElement class.
-*/
-
-void
-SoElement::cleanClass(void)
+// atexit callback
+void 
+SoElement::cleanup(void)
 {
-  SoElement::cleanElements();
   delete SoElement::stackToType;
 }
-#endif // re-code
 
 /*!
   The constructor.  To create element instances, use SoType::createInstance()
   for the elements type identifier..
 */
-
 SoElement::SoElement(void)
 {
   this->next = NULL;
@@ -368,6 +364,18 @@ SoElement::getElement(SoState * const state,
 }
 
 /*!
+  This function does whatever is necessary in the state for caching purposes.
+  If should be called by subclasses of SoElement whenever any value in the
+  element is accessed.
+*/
+
+inline void
+SoElement::capture(SoState * const state) const
+{
+  if (state->isCacheOpen()) this->captureThis(state);
+}
+
+/*!
   This method returns a const pointer to the top element of the class with
   stack index \a stackIndex.  If this instance is modified, strange things
   will most likely start to happen.
@@ -375,27 +383,13 @@ SoElement::getElement(SoState * const state,
 
   \sa SoElement * SoElement::getElement(SoState * const state, const int stackIndex)
 */
-
 const SoElement *
 SoElement::getConstElement(SoState * const state,
                            const int stackIndex)
 {
   const SoElement * element = state->getConstElement(stackIndex);
-  //    element->captureThis(state);
+  element->capture(state);
   return element;
-}
-
-/*!
-  This function does whatever is necessary in the state for caching purposes.
-  If should be called by subclasses of SoElement whenever any value in the
-  element is accessed.
-*/
-
-void
-SoElement::capture(SoState * const state) const
-{
-  if (state->isCacheOpen())
-    captureThis(state);
 }
 
 /*!
@@ -403,9 +397,9 @@ SoElement::capture(SoState * const state) const
 */
 
 void
-SoElement::captureThis(SoState * /* state */) const
+SoElement::captureThis(SoState * state) const
 {
-  COIN_STUB();
+  SoCacheElement::addElement(state, this);
 }
 
 /*!

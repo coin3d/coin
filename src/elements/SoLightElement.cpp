@@ -19,41 +19,33 @@
 
 /*!
   \class SoLightElement Inventor/elements/SoLightElement.h
-  \brief The SoLightElement class is yet to be documented.
+  \brief The SoLightElement class manages the currently active light sources.
 
-  FIXME: write doc.
 */
 
 #include <Inventor/elements/SoLightElement.h>
-
-#include <coindefs.h> // COIN_STUB()
-
+#include <Inventor/nodes/SoLight.h>
+#include <Inventor/lists/SbList.h>
 #include <assert.h>
 
 /*!
   \fn SoLightElement::lights
-
-  FIXME: write doc.
+  List of current light nodes.
 */
 
-/*!
-  \fn SoLightElement::WCToVRCMatrices
-
-  FIXME: write doc.
-*/
-
-/*!
-  \fn SoLightElement::startIndex
-
-  FIXME: write doc.
+/*!  
+  \fn SoLightElement::matrixlist 
+  
+  List of matrices to map from world coordinates to view reference
+  coordinates. To avoid getting a hugs element (sizeof), this
+  list is only allocated in the bottom element, and the pointer
+  to this list is passed along to the other elements.
 */
 
 SO_ELEMENT_SOURCE(SoLightElement);
 
-/*!
-  This static method initializes static data for the SoLightElement class.
-*/
 
+// doc from parent
 void
 SoLightElement::initClass(void)
 {
@@ -63,82 +55,82 @@ SoLightElement::initClass(void)
 /*!
   The destructor.
 */
-
 SoLightElement::~SoLightElement(void)
 {
+  if (this->didalloc.state) delete this->matrixlist;
 }
 
-//! FIXME: write doc.
-
+ 
+/*!
+  Adds \a light to the list of active lights. \a matrix should
+  transform the light from the world coordinate system to 
+  the view reference coordinate system.
+*/
 void
-SoLightElement::add(SoState * const /* state */, SoLight * const /* light */,
-                    const SbMatrix & /* WCToVRCMatrix */)
-{
+SoLightElement::add(SoState * const state, SoLight * const light,
+                    const SbMatrix & matrix)
+{ 
+  SoLightElement * elem = (SoLightElement*) 
+    SoElement::getElement(state, classStackIndex);
+  
+  int i = elem->lights.getLength();
+  elem->lights.append(light);
+  elem->addNodeId(light);
+  if (i >= elem->matrixlist->getLength())
+    elem->matrixlist->append(matrix);
+  else
+    (*elem->matrixlist)[i] = matrix;
 }
 
-//! FIXME: write doc.
-
+/*!
+  Returns the list of light nodes.
+*/
 const SoNodeList &
-SoLightElement::getLights(SoState * const /* state */)
+SoLightElement::getLights(SoState * const state)
 {
-  COIN_STUB();
-  static SoNodeList nl;
-  return nl;
+  SoLightElement * elem = (SoLightElement*)
+    SoElement::getConstElement(state, classStackIndex);
+  return elem->lights;
 }
 
-//! FIXME: write doc.
-
+/*!  
+  Get matrix which transforms light \a index from the world
+  coordinate system to the view reference system.  
+*/
 const SbMatrix &
-SoLightElement::getMatrix(SoState * const /* state */, const int /* index */)
+SoLightElement::getMatrix(SoState * const state, const int index)
 {
-  COIN_STUB();
-  static SbMatrix m = SbMatrix::identity();
-  return m;
+  SoLightElement * elem = (SoLightElement*)
+    SoElement::getConstElement(state, classStackIndex);
+  assert(index >= 0 && index < elem->matrixlist->getLength());
+  return elem->matrixlist->getArrayPtr()[index];
 }
 
-//! FIXME: write doc.
-
-void
-SoLightElement::print(FILE * file) const
-{
-  fprintf(file, "SoLightElement[%p]: lights = %dn",
-          this, this->lights.getLength());
-}
-
-//! FIXME: write doc.
-
+// doc from parent
 void
 SoLightElement::init(SoState * state)
 {
-    inherited::init(state);
-    this->startIndex = -1;
+  inherited::init(state);
+  this->matrixlist = new SbList <SbMatrix>;
+  this->didalloc.state = TRUE;
 }
 
-//! FIXME: write doc.
-
+/*!
+  Overloaded to copy lights to the new top of stack. Also 
+  copies node ids.
+*/
 void
 SoLightElement::push(SoState * state)
 {
-    inherited::push(state);
-
-    SoLightElement * const element =
-        (SoLightElement *)(this->next);
-    element->lights.truncate(0);
-    const int numLights = this->lights.getLength();
-    int i;
-    for (i = 0; i < numLights; i++)
-        element->lights.append(this->lights[ i ]);
-    element->WCToVRCMatrices.truncate(0);
-    const int numMatrices = WCToVRCMatrices.getLength();
-    for (i = 0; i < numMatrices; i++)
-        element->WCToVRCMatrices.append(this->WCToVRCMatrices[ i ]);
-    element->startIndex = this->startIndex;
-}
-
-//! FIXME: write doc.
-
-void
-SoLightElement::pop(SoState * state, const SoElement * prevTopElement)
-{
-    inherited::pop(state, prevTopElement);
+  inherited::push(state);
+  
+  SoLightElement * const element =
+    (SoLightElement *)(this->next);
+  element->lights.truncate(0);
+  const int numLights = this->lights.getLength();
+  int i;
+  for (i = 0; i < numLights; i++)
+    element->lights.append(this->lights[ i ]);
+  element->matrixlist = this->matrixlist; // just pass pointer to list
+  element->copyNodeIds(this);
 }
