@@ -748,6 +748,29 @@ AC_TRY_LINK([
 ], [
   AC_MSG_RESULT([yes])
   AC_DEFINE([HAVE_TIMEGETTIME],, [Define to use timeGetTime()])
+  COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS -lwinmm"
+], [
+  AC_MSG_RESULT([no])
+  LIBS=$sim_ac_save_LIBS
+])
+
+# *******************************************************************
+# The MessageBox() Win32 API call is used in SoDB.cpp to throw up
+# an error message when multiple Coin-instances are detected in the
+# same process image.
+
+sim_ac_save_LIBS=$LIBS
+LIBS="$LIBS -luser32"
+AC_MSG_CHECKING([for MessageBox() function])
+AC_TRY_LINK([
+#ifdef HAVE_WINDOWS_H
+#include <windows.h>
+#endif
+], [
+  (void)MessageBox(NULL, NULL, NULL, 0);
+], [
+  AC_MSG_RESULT([yes])
+  COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS -luser32"
 ], [
   AC_MSG_RESULT([no])
   LIBS=$sim_ac_save_LIBS
