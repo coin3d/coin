@@ -26,15 +26,15 @@ static SbBool specmatch(const cc_font_specification * spec1, const cc_font_speci
 static void calcboundingbox(cc_glyph3d * g);
 
 struct cc_glyph3d {
-  int fontidx;    
+  int fontidx;
   int glyphidx;
   float width;
   float * bbox;
   cc_flw_vector_glyph * vectorglyph;
-  cc_font_specification * fontspec;  
+  cc_font_specification * fontspec;
 };
 
-static cc_hash * fonthash = NULL;
+static cc_hash * glyph3d_fonthash = NULL;
 static int spaceglyphindices[] = { -1, -1 };
 static float spaceglyphvertices[] = { 0, 0 };
 static SbBool glyph3d_initialized = FALSE;
@@ -81,17 +81,17 @@ cc_glyph3d_initialize()
 {
   if (!glyph3d_initialized) {
     CC_MUTEX_CONSTRUCT(glyph3d_fonthash_lock);
-    GLYPH3D_MUTEX_LOCK(fonthash_lock);
-    fonthash = cc_hash_construct(15, 0.75);
+    GLYPH3D_MUTEX_LOCK(glyph3d_fonthash_lock);
+    glyph3d_fonthash = cc_hash_construct(15, 0.75);
     GLYPH3D_MUTEX_UNLOCK(glyph3d_fonthash_lock);
     glyph3d_initialized = TRUE;
   }
 }
 
-cc_glyph3d * 
+cc_glyph3d *
 cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
 {
-  
+
   cc_glyph3d * glyph;
   int glyphidx;
   int fontidx;
@@ -101,39 +101,39 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
   int namelen = 0;
 
   assert(spec);
- 
+
 
   /* Has the glyph been created before? */
   GLYPH3D_MUTEX_LOCK(glyph3d_fonthash_lock);
-  if (cc_hash_get(fonthash, (unsigned long) character, &val)) {    
+  if (cc_hash_get(glyph3d_fonthash, (unsigned long) character, &val)) {
     glyph = (cc_glyph3d *) val;
     if (specmatch(spec, glyph->fontspec)) {
       GLYPH3D_MUTEX_UNLOCK(glyph3d_fonthash_lock);
-      return glyph;    
+      return glyph;
     }
-  } 
+  }
 
-  /* build a new glyph struct */    
+  /* build a new glyph struct */
   glyph = (cc_glyph3d *) malloc(sizeof(cc_glyph3d));
-  
+
   /* FIXME: Must add family and style support (2Sep2003 handegar) */
-  newspec = (cc_font_specification *) malloc(sizeof(cc_font_specification)); 
+  newspec = (cc_font_specification *) malloc(sizeof(cc_font_specification));
   assert(newspec);
   newspec->size = spec->size;
   newspec->name = cc_string_construct_new();
   cc_string_set_text(newspec->name, cc_string_get_text(spec->name));
-  
-  glyph->fontspec = newspec; 
+
+  glyph->fontspec = newspec;
   fontidx = cc_flw_get_font(cc_string_get_text(newspec->name), (int)(newspec->size), (int)(newspec->size));
   assert(fontidx >= 0);
-  
-  
+
+
   /* Should _always_ be able to get hold of a glyph -- if no glyph is
      available for a specific character, a default empty rectangle
      should be used.  -mortene. */
   glyphidx = cc_flw_get_glyph(fontidx, character);
   assert(glyphidx >= 0);
-  
+
   glyph->glyphidx = glyphidx;
   glyph->fontidx = fontidx;
   glyph->bbox = (float *) malloc(sizeof(float) * 4);
@@ -149,7 +149,7 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
     glyph->vectorglyph = (struct cc_flw_vector_glyph *) malloc(sizeof(struct cc_flw_vector_glyph));
 
     if (character <= 32 || character >= 127) {
-      
+
       /*
       // FIXME: Charachers other than space, should be replaced with
       // squares. (20030910 handegar)
@@ -159,7 +159,7 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
       glyph->vectorglyph->vertices = (float *) spaceglyphvertices;
       glyph->vectorglyph->faceindices = (int *) spaceglyphindices;
       glyph->vectorglyph->edgeindices = (int *) spaceglyphindices;
-    } 
+    }
     else {
 
       glyph->vectorglyph->vertices = (float *) coin_default3dfont_get_coords()[character-33];
@@ -172,44 +172,44 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
   calcboundingbox(glyph);
   glyph->width = glyph->bbox[2] - glyph->bbox[0];
 
-  cc_hash_put(fonthash, (unsigned long) character, glyph);
+  cc_hash_put(glyph3d_fonthash, (unsigned long) character, glyph);
 
   GLYPH3D_MUTEX_UNLOCK(glyph3d_fonthash_lock);
   return glyph;
 }
 
-float * 
+float *
 cc_glyph3d_getcoords(const cc_glyph3d * g)
 {
   return cc_flw_get_vector_glyph_coords(g->vectorglyph);
 }
 
-int * 
+int *
 cc_glyph3d_getfaceindices(const cc_glyph3d * g)
 {
   return cc_flw_get_vector_glyph_faceidx(g->vectorglyph);
 }
 
-int * 
+int *
 cc_glyph3d_getedgeindices(const cc_glyph3d * g)
 {
   return cc_flw_get_vector_glyph_edgeidx(g->vectorglyph);
 }
 
-int * 
+int *
 cc_glyph3d_getnextcwedge(const cc_glyph3d * g, int edgeidx)
 {
   return NULL;
 }
 
-int * 
+int *
 cc_glyph3d_getnextccwedge(const cc_glyph3d * g, int edgeidx)
 {
   return NULL;
 }
 
 
-float 
+float
 cc_glyph3d_getwidth(const cc_glyph3d * g)
 {
   return g->width;
@@ -225,29 +225,29 @@ calcboundingbox(cc_glyph3d * g)
   g->bbox[1] = 0;
   g->bbox[2] = 0;
   g->bbox[3] = 0;
-  
+
   coordptr = cc_glyph3d_getcoords(g);
   edgeptr = cc_glyph3d_getedgeindices(g);
- 
-  while ((*edgeptr >= 0) && (*edgeptr != -1)) {    
-    
+
+  while ((*edgeptr >= 0) && (*edgeptr != -1)) {
+
     g->bbox[0] = MIN(coordptr[(*edgeptr)*2], g->bbox[0]);
     g->bbox[1] = MIN(coordptr[(*edgeptr)*2 + 1], g->bbox[1]);
     g->bbox[2] = MAX(coordptr[(*edgeptr)*2], g->bbox[2]);
     g->bbox[3] = MAX(coordptr[(*edgeptr)*2 + 1], g->bbox[3]);
-    
+
     *edgeptr++;
   }
-  
+
 }
 
-float * 
+float *
 cc_glyph3d_getboundingbox(const cc_glyph3d * g)
 {
   return g->bbox;
 }
 
-void 
+void
 cc_glyph3d_getadvance(const cc_glyph3d * g, float * x, float * y)
 {
   float advancex, advancey;
@@ -257,8 +257,8 @@ cc_glyph3d_getadvance(const cc_glyph3d * g, float * x, float * y)
   *y = advancey;
 }
 
-void 
-cc_glyph3d_getkerning(const cc_glyph3d * left, const cc_glyph3d * right, 
+void
+cc_glyph3d_getkerning(const cc_glyph3d * left, const cc_glyph3d * right,
                       float * x, float * y)
 {
   float kx, ky;
@@ -268,7 +268,7 @@ cc_glyph3d_getkerning(const cc_glyph3d * left, const cc_glyph3d * right,
   *y = ky;
 }
 
-static SbBool 
+static SbBool
 specmatch(const cc_font_specification * spec1, const cc_font_specification * spec2)
 {
 
@@ -283,5 +283,5 @@ specmatch(const cc_font_specification * spec1, const cc_font_specification * spe
     return TRUE;
   }
   else return FALSE;
-  
+
 }
