@@ -19,7 +19,7 @@
 
 /*!
   \class SoPointLight SoPointLight.h Inventor/nodes/SoPointLight.h
-  \brief The SoPointLight class is a node type modelling pointlights.
+  \brief The SoPointLight class is a node type for light sources.
   \ingroup nodes
 
   Pointlights emits light equally in all directions from a specified
