@@ -19,45 +19,108 @@
 
 /*!
   \class SbTime SbTime.h Inventor/SbTime.h
-  \brief The SbTime class represents a time value.
+  \brief The SbTime class instances represents time values.
   \ingroup base
 
-  SbTime is used in a number of places in Coin. It is meant
-  to be a convenient way of doing system independent representation and
-  calculations on values of time.
+  SbTime is a convenient way of doing system independent
+  representation and calculations on time values of high resolution.
 */
 
 #include <Inventor/SbTime.h>
 
 #include <assert.h>
-#include <string.h>
 #include <stdlib.h>
 #include <limits.h>
 #include <errno.h>
+#include "../tidbits.h" // coin_strncasecmp()
 
-#if COIN_DEBUG
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_WINDOWS_H
+#include <windows.h>
+#endif // HAVE_WINDOWS_H
+
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
-
-
-// Used by SbTime::parsedate().
-#ifdef _WIN32
-inline int
-strncasecmp(const char * const s1, const char * const s2, int len)
-{
-  return _strnicmp(s1, s2, len);
-}
-
-#include <windows.h> // for struct timeval. It sucks, I know...
-#endif // WIN32
-
 
 static const double SMALLEST_DOUBLE_TIMEUNIT  = 1.0/1000000.0;
 
+#ifdef HAVE_QUERYPERFORMANCECOUNTER
+static int highperf_available = -1;
+static double highperf_start = -1;
+static double highperf_tick = -1;
+#endif // HAVE_QUERYPERFORMANCECOUNTER
+
+// The Win32 QueryPerformanceCounter() strategy is based on code
+// submitted by Jan Peciva (aka PCJohn).
+inline
+SbBool SbTime_QueryPerformanceCounter(SbTime & sbtime)
+{
+#ifdef HAVE_QUERYPERFORMANCECOUNTER
+  if (highperf_available == -1) {
+    LARGE_INTEGER frequency;
+    highperf_available = (QueryPerformanceFrequency(&frequency) == 0);
+    if (highperf_available) {
+      highperf_tick = 1.0 / frequency.QuadPart;
+
+      time_t tt = time(NULL);
+      LARGE_INTEGER counter;
+      (void)QueryPerformanceCounter(&counter);
+      highperf_start = tt - ((double)counter.QuadPart * highperf_tick);
+    }
+  }
+
+  if (highperf_available) {
+    LARGE_INTEGER counter;
+    BOOL b = QueryPerformanceCounter(&counter);
+    assert(b && "QueryPerformanceCounter() failed even though QueryPerformanceFrequency() worked");
+    sbtime.setValue((double)counter.QuadPart * highperf_tick + highperf_start);
+    return TRUE;
+  }
+  return FALSE;
+#else // !HAVE_QUERYPERFORMANCECOUNTER
+  return FALSE;
+#endif // !HAVE_QUERYPERFORMANCECOUNTER
+}
+
+inline
+SbBool SbTime_gettimeofday(SbTime & sbtime)
+{
+#ifdef HAVE_GETTIMEOFDAY
+  struct timeval tmp;
+  int result = gettimeofday(&tmp, NULL);
+  if (COIN_DEBUG && (result < 0)) {
+    SoDebugError::postWarning("SbTime_gettimeofday",
+                              "Something went wrong (invalid timezone "
+                              "setting?). Result is undefined.");
+  }
+  sbtime.setValue(&tmp);
+  return TRUE;
+#else // !HAVE_GETTIMEOFDAY
+  return FALSE;
+#endif // !HAVE_GETTIMEOFDAY
+}
+
+inline
+SbBool SbTime__ftime(SbTime & sbtime)
+{
+#ifdef HAVE__FTIME
+  struct _timeb timebuffer;
+  _ftime(&timebuffer);
+  // FIXME: should use timezone field of struct _timeb aswell. 20011023 mortene.
+  sbtime.setValue((double)timebuffer.time +
+                  (double)timebuffer.millitm / 1000.0);
+  return TRUE;
+#else // !HAVE__FTIME
+  return FALSE;
+#endif // !HAVE__FTIME
+}
+
+
 /*!
-  The default constructor does nothing. The internally stored time will
-  be uninitialized.
- */
+  The default constructor sets up a time instance of 0 seconds.
+*/
 SbTime::SbTime(void)
 {
   this->setValue(0.0);
@@ -92,34 +155,21 @@ SbTime::SbTime(const struct timeval * const tv)
 }
 
 /*!
-  Returns an SbTime instance with the current clock time. The current time
-  will be given as a particular number of seconds and microseconds since
-  00:00:00.00 January 1st 1970.
+  Returns an SbTime instance with the current clock time. The current
+  time will be given as a particular number of seconds and
+  microseconds since 00:00:00.00 January 1st 1970.
 
   \sa setToTimeOfDay().
  */
 SbTime
 SbTime::getTimeOfDay(void)
 {
-  struct timeval tmp;
-#ifdef _WIN32
-  struct _timeb timebuffer;
-  _ftime(&timebuffer);
-  tmp.tv_sec = timebuffer.time;
-  tmp.tv_usec = timebuffer.millitm * 1000; // FIXME: low accuracy */
-#else // ! _WIN32
-
-#if COIN_DEBUG
-  int result = gettimeofday(&tmp, NULL);
-  if (result < 0)
-    SoDebugError::postWarning("SbTime::getTimeOfDay",
-                              "Something went wrong (invalid timezone "
-                              "setting?). Result is undefined.");
-#else // ! COIN_DEBUG
-  gettimeofday(&tmp, NULL);
-#endif // ! COIN_DEBUG
-#endif // ! _WIN32
-  return SbTime(&tmp);
+  SbTime t;
+  if (SbTime_QueryPerformanceCounter(t)) { return t; }
+  if (SbTime_gettimeofday(t)) { return t; }
+  if (SbTime__ftime(t)) { return t; }
+  assert(FALSE && "unable to find current time");
+  return t;
 }
 
 /*!
@@ -493,7 +543,7 @@ SbTime::parsedate(const char * const date)
 #endif // COIN_DEBUG
 
 #if 0 // debug
-  SoDebugError::postInfo("SbTime::parseDate", "date string: '%s'\n", date);
+  SoDebugError::postInfo("SbTime::parseDate", "date string: '%s'", date);
 #endif // debug
 
   struct tm time;
@@ -508,18 +558,23 @@ SbTime::parsedate(const char * const date)
   dateptr -= 2; // step back
   if (dateptr[0] != 'y' && dateptr[1] == ',') { // RFC 822 / RFC 1123 format
     // FORMAT: Wkd, DD Mnth YYYY HH:MM:SS GMT
-//     fprintf(stdout, "date format: RFC 822\n");
+#if COIN_DEBUG && 0 // debug
+    SoDebugError::postInfo("SbTime::parseDate", "date format: RFC 822");
+#endif // debug
 
     dateptr += 2;
     while (*dateptr == ' ' || *dateptr == '\t') dateptr++;
     time.tm_mday = atoi(dateptr);
-//     fprintf(stdout, "Day of month: %d\n", time.tm_mday);
+#if COIN_DEBUG && 0 // debug
+    SoDebugError::postInfo("SbTime::parseDate", "Day of month: %d",
+                           time.tm_mday);
+#endif // debug
     while (*dateptr != ' ' && *dateptr != '\t') dateptr++;
     while (*dateptr == ' ' || *dateptr == '\t') dateptr++;
 
     int i;
     for (i=0; i < 12; i++) {
-      if (! strncasecmp(dateptr, months[i], 3)) {
+      if (! coin_strncasecmp(dateptr, months[i], 3)) {
         time.tm_mon = i;
         break;
       }
@@ -532,7 +587,9 @@ SbTime::parsedate(const char * const date)
       return FALSE;
     }
 
-//     fprintf(stdout, "Month: %d\n", time.tm_mon);
+#if COIN_DEBUG && 0 // debug
+    SoDebugError::postInfo("SbTime::parseDate", "Month: %d", time.tm_mon);
+#endif // debug
     while (*dateptr != ' ' && *dateptr != '\t') dateptr++;
     while (*dateptr == ' ' || *dateptr == '\t') dateptr++;
     time.tm_year = atoi(dateptr) - 1900;
@@ -548,7 +605,9 @@ SbTime::parsedate(const char * const date)
     time.tm_isdst = 0;
   } else if (dateptr[1] == ',') { // RFC 850 / RFC 1036 format
     // FORMAT: Weekday, DD-Mnth-YY HH:MM:SS GMT
-//     fprintf(stdout, "date format: RFC 850\n");
+#if COIN_DEBUG && 0 // debug
+    SoDebugError::postInfo("SbTime::parseDate", "date format: RFC 850");
+#endif // debug
 
     dateptr += 2;
     while (*dateptr == ' ' || *dateptr == '\t') dateptr++;
@@ -557,7 +616,7 @@ SbTime::parsedate(const char * const date)
 
     int i;
     for (i=0; i < 12; i++) {
-      if (! strncasecmp(dateptr, months[i], 3)) {
+      if (! coin_strncasecmp(dateptr, months[i], 3)) {
         time.tm_mon = i;
         break;
       }
@@ -584,14 +643,16 @@ SbTime::parsedate(const char * const date)
     time.tm_isdst = 0;
   } else { // assumed to be ANSI C's asctime() format
     // format: Wkdy Mnth  D HH:MM:SS YYYY
-//     fprintf(stdout, "date format: asctime()\n");
+#if COIN_DEBUG && 0 // debug
+    SoDebugError::postInfo("SbTime::parseDate", "date format: asctime()");
+#endif // debug
 
     while (*dateptr != ' ' && *dateptr != '\t') dateptr++;
     while (*dateptr == ' ' || *dateptr == '\t') dateptr++;
 
     int i;
     for (i=0; i < 12; i++) {
-      if (! strncasecmp(dateptr, months[i], 3)) {
+      if (! coin_strncasecmp(dateptr, months[i], 3)) {
         time.tm_mon = i;
         break;
       }
@@ -919,7 +980,7 @@ SbTime::print(FILE * fp) const
   struct timeval tm;
   this->getValue(&tm);
   SbString str = this->formatDate();
-  fprintf(fp, "%s", str.getString());
-  fprintf(fp, ", secs: %ld, msecs: %ld\n", tm.tv_sec, tm.tv_usec);
+  (void)fprintf(fp, "%s", str.getString());
+  (void)fprintf(fp, ", secs: %ld, msecs: %ld\n", tm.tv_sec, tm.tv_usec);
 #endif // COIN_DEBUG
 }
