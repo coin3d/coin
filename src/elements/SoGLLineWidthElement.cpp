@@ -63,10 +63,7 @@
 #include <Inventor/system/gl.h>
 
 #include <assert.h>
-
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 // Also used in other element .cpp files, so wrap to handle
 // --enable-compact build mode.
