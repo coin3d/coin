@@ -32,10 +32,9 @@
 #include <stdlib.h>
 #include <assert.h>
 
-/*!
-  \struct cc_fifo Inventor/C/threads/fifo.h
-  \brief The cc_fifo is a C datatype for managing a pointer first-in, first-out queue.
-  \ingroup threads
+/*
+  The cc_fifo is a C datatype for managing a pointer first-in,
+  first-out queue.
 */
 
 /* ********************************************************************** */
@@ -49,9 +48,6 @@ static cc_fifo_item * i_unlink_head(cc_fifo * fifo);
 
 /* ********************************************************************** */
 
-/*!
-*/
-
 void
 cc_fifo_struct_init(cc_fifo * fifo)
 {
@@ -62,10 +58,7 @@ cc_fifo_struct_init(cc_fifo * fifo)
   fifo->free = NULL;
   fifo->elements = 0;
   cc_condvar_struct_init(&fifo->sleep);
-} /* cc_fifo_struct_init() */
-
-/*!
-*/
+}
 
 void
 cc_fifo_struct_clean(cc_fifo * fifo)
@@ -88,13 +81,9 @@ cc_fifo_struct_clean(cc_fifo * fifo)
     item = next;
   }
   cc_condvar_struct_clean(&fifo->sleep);
-} /* cc_fifo_struct_clean() */
+}
 
 /* ********************************************************************** */
-
-/*!
-  constructor.
-*/
 
 cc_fifo *
 cc_fifo_new(void)
@@ -103,24 +92,16 @@ cc_fifo_new(void)
   fifo = (cc_fifo*) malloc(sizeof(cc_fifo));
   cc_fifo_struct_init(fifo);
   return fifo;
-} /* cc_fifo_construct() */
-
-/*!
-  destructor.
-*/
+}
 
 void
 cc_fifo_delete(cc_fifo * fifo)
 {
   cc_fifo_struct_clean(fifo);
   free(fifo);
-} /* cc_fifo_destruct() */
+}
 
 /* ********************************************************************** */
-
-/*!
-  puts pointer \a ptr of type \a type into the fifo.
-*/
 
 void
 cc_fifo_assign(cc_fifo * fifo, void * ptr, uint32_t type)
@@ -134,13 +115,7 @@ cc_fifo_assign(cc_fifo * fifo, void * ptr, uint32_t type)
   i_append(fifo, item);
   cc_condvar_wake_one(&fifo->sleep);
   cc_mutex_unlock(&fifo->access);
-} /* cc_fifo_assign() */
-
-/*!
-  reads a pointer from the fifo.  blocks until a pointer is available for
-  reading.
-  NULL can be given as the \a type argument if type data is uninteresting.
-*/
+}
 
 void
 cc_fifo_retrieve(cc_fifo * fifo, void ** ptr, uint32_t * type)
@@ -162,13 +137,7 @@ cc_fifo_retrieve(cc_fifo * fifo, void ** ptr, uint32_t * type)
       return;
     }
   }
-} /* cc_fifo_retrieve() */
-
-/*!
-  tries to read a pointer from the fifo.  if no data can be read, FALSE is
-  returned, and TRUE otherwise.  the function does not block.
-  NULL can be given as the \a type argument if type data is uninteresting.
-*/
+}
 
 SbBool
 cc_fifo_try_retrieve(cc_fifo * fifo, void ** ptr, uint32_t * type)
@@ -190,20 +159,16 @@ cc_fifo_try_retrieve(cc_fifo * fifo, void ** ptr, uint32_t * type)
   cc_mutex_unlock(&fifo->access);
   cc_condvar_wake_one(&fifo->sleep);
   return TRUE;
-} /* cc_fifo_try_retrieve() */
+}
 
 /* ********************************************************************** */
-
-/*!
-  returns the number of pointers put on the fifo.
-*/
 
 unsigned int
 cc_fifo_size(cc_fifo * fifo)
 {
   assert(fifo != NULL);
   return fifo->elements;
-} /* cc_fifo_size() */
+}
 
 /* ********************************************************************** */
 
@@ -217,60 +182,39 @@ cc_fifo_item_new(void) /* static */
   item->item = NULL;
   item->type = 0;
   return item;
-} /* cc_fifo_item_new() */
+}
 
 void
 cc_fifo_item_delete(cc_fifo_item * item) /* static */
 {
   assert(item != NULL);
   free(item);
-} /* cc_fifo_item_delete() */
+}
 
 /* ********************************************************************** */
-
-/*!
-  Blocks until the fifo can be locked.
-*/
 
 void
 cc_fifo_lock(cc_fifo * fifo)
 {
   assert(fifo != NULL);
   cc_mutex_lock(&fifo->access);
-} /* cc_fifo_lock() */
-
-/*!
-  Returns TRUE if locking the fifo immediately was successful, and
-  FALSE otherwise.
-*/
+}
 
 SbBool
 cc_fifo_try_lock(cc_fifo * fifo)
 {
   assert(fifo != NULL);
   return cc_mutex_try_lock(&fifo->access);
-} /* cc_fifo_try_lock() */
-
-/*!
-  Unlocks the fifo.
-*/
+}
 
 void
 cc_fifo_unlock(cc_fifo * fifo)
 {
   assert(fifo != NULL);
   cc_mutex_unlock(&fifo->access);
-} /* cc_fifo_unlock() */
+}
 
 /* ********************************************************************** */
-
-/*!
-  Peeks at the head item of the fifo without removing it.
-  In the case where the fifo is empty, FALSE is returned.
-
-  The fifo must be locked in advance with cc_fifo_lock() before using
-  this function.
-*/
 
 SbBool
 cc_fifo_peek(cc_fifo * fifo, void ** item, uint32_t * type)
@@ -280,14 +224,7 @@ cc_fifo_peek(cc_fifo * fifo, void ** item, uint32_t * type)
   *item = fifo->head->item;
   if ( type != NULL ) *type = fifo->head->type;
   return TRUE;
-} /* cc_fifo_peek() */
-
-/*!
-  returns TRUE of FALSE on whether the item is in the fifo queue.
-
-  The fifo must be locked in advance with cc_fifo_lock() before using
-  this function.
-*/
+}
 
 SbBool
 cc_fifo_contains(cc_fifo * fifo, void * itemptr)
@@ -300,16 +237,7 @@ cc_fifo_contains(cc_fifo * fifo, void * itemptr)
     item = item->next;
   }
   return FALSE;
-} /* cc_fifo_contains() */
-
-/*!
-  this function removes the item from the fifo queue.
-  returns TRUE of FALSE on whether the item was in the fifo queue in the
-  first place.
-
-  The fifo must be locked in advance with cc_fifo_lock() before using
-  this function.
-*/
+}
 
 SbBool
 cc_fifo_reclaim(cc_fifo * fifo, void * itemptr)
@@ -334,7 +262,7 @@ cc_fifo_reclaim(cc_fifo * fifo, void * itemptr)
     item = item->next;
   }
   return FALSE;
-} /* cc_fifo_reclaim() */
+}
 
 /* ********************************************************************** */
 
@@ -354,7 +282,7 @@ i_get_free_item(cc_fifo * fifo) /* static */
     item = cc_fifo_item_new();
   }
   return item;
-} /* i_get_free_item() */
+}
 
 /*
   append item to fifo.  make sure both ::head and ::tail are correct
@@ -372,7 +300,7 @@ i_append(cc_fifo * fifo, cc_fifo_item * item) /* static */
     fifo->tail = item;
   }
   fifo->elements += 1;
-} /* i_append() */
+}
 
 /*
   unlink first item from fifo.  make sure both ::head and ::tail are
@@ -389,6 +317,87 @@ i_unlink_head(cc_fifo * fifo) /* static */
     fifo->tail = NULL;
   fifo->elements -= 1;
   return item;
-} /* i_unlink_head() */
+}
+
+/* ********************************************************************** */
+
+/*!
+  \class SbFifo Inventor/threads/SbFifo.h
+  \brief A class for managing a pointer first-in, first-out queue.
+  \ingroup threads
+*/
+
+/*!
+  \fn void SbFifo::assign(void * ptr, uint32_t type)
+
+  Puts pointer \a ptr of type \a type into the fifo.
+
+  The \a type argument is just meant as a user data tag, and a 0 value
+  can be given as the \a type argument if type data is uninteresting.
+*/
+
+/*!
+  \fn void SbFifo::retrieve(void *& ptr, uint32_t &type)
+
+  Reads a pointer from the queue. Blocks until a pointer is available
+  for reading.
+*/
+
+/*!
+  \fn SbBool SbFifo::tryRetrieve(void *& ptr, uint32_t & type)
+
+  Tries to read a pointer from the queue. If no data can be read, \c
+  FALSE is returned, and \c TRUE otherwise. The function does not
+  block.
+*/
+
+/*!
+  \fn unsigned int SbFifo::size(void) const
+
+  Returns number of pointers currently in the queue.
+*/
+
+/*!
+  \fn void SbFifo::lock(void) const
+
+  Blocks until the queue can be locked.
+*/
+
+/*!
+  \fn void SbFifo::unlock(void) const
+
+  Unlocks the queue.
+*/
+
+/*!
+  \fn SbBool SbFifo::peek(void *& item, uint32_t & type) const
+
+  Peeks at the head item of the queue without removing it.  In the
+  case where the fifo is empty, \c FALSE is returned.
+
+  The queue must be locked with SbFifo::lock() before using this
+  function, then unlocked.
+*/
+
+/*!
+  \fn SbBool SbFifo::contains(void * item) const
+
+  Returns \c TRUE or \c FALSE depending on whether the item is in the
+  queue.
+
+  The queue must be locked with SbFifo::lock() before using this
+  function, then unlocked.
+*/
+
+/*!
+  \fn SbBool SbFifo::reclaim(void * item)
+
+  This function removes the given \a item from the queue.  Returns \c
+  TRUE or \c FALSE depending on whether the item was in the queue in
+  the first place.
+
+  The queue must be locked with SbFifo::lock() before using this
+  function, then unlocked.
+*/
 
 /* ********************************************************************** */

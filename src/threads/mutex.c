@@ -232,10 +232,11 @@ cc_mutex_global_unlock(void)
 
 /*!
   \class SbMutex Inventor/threads/SbMutex.h
-  \brief A basic class for managing a mutex
-  \ingroup multi-threading
+  \brief A basic class for managing a mutex.
+  \ingroup threads
 
-  FIXME: write doc
+  This class provides a portable framework around the mutex interface
+  of the underlying native thread-handling toolkit.
 */
 
 /*!
@@ -245,7 +246,7 @@ cc_mutex_global_unlock(void)
 */
 
 /*!
-  \fn SbMutex::~SbMutex(void)
+  \fn SbMutex::~SbMutex()
 
   Destructor.
 */
@@ -253,8 +254,8 @@ cc_mutex_global_unlock(void)
 /*!
   \fn SbBool SbMutex::lock(void)
 
-  This method locks the mutex.  TRUE is returned on success.
-  This is a blocking operation.
+  This method locks the mutex. \c TRUE is returned on success.  This
+  is a blocking operation.
 */
 
 /*!
@@ -266,8 +267,55 @@ cc_mutex_global_unlock(void)
 /*!
   \fn SbBool SbMutex::tryLock(void)
 
-  This method tries to lock the mutex, and returns whether it was locked
-  or not.  This is a non-blocking operation.
+  This method tries to lock the mutex, and returns whether it was
+  locked or not.  This is a non-blocking operation.
+*/
+
+/* ********************************************************************** */
+
+/*!
+  \class SbThreadAutoLock Inventor/threads/SbThreadAutoLock.h
+  \brief Simple convenience class for locking access to a function.
+  \ingroup threads
+
+  This class provides a simple convenience mechanism for automatically
+  locking access to a function that is not re-entrant.
+
+  Usage example:
+
+  \code
+  void
+  myfunction(void)
+  {
+    SbThreadAutoLock lock(aMutexPtr);
+
+    // [other code]
+  }
+  \endcode
+
+  In the class constructor, SbMutex::lock() is called on the mutex,
+  and when the function exits (this is the convenience part) the
+  destructor will automatically by invoked, calling SbMutex::unlock()
+  on the same mutex.
+*/
+
+/*!
+  \fn SbThreadAutoLock::SbThreadAutoLock(SbMutex * mutex)
+
+  The constructor calls SbMutex::lock() on \a mutex.
+*/
+
+/*!
+  \fn SbThreadAutoLock::~SbThreadAutoLock()
+
+  The destructor calls SbMutex::unlock() on the mutex passed in as a
+  parameter to the constructor.
+*/
+
+/*!
+  \var SbThreadAutoLock::mutex
+
+  \COININTERNAL
 */
 
 /* ********************************************************************** */
