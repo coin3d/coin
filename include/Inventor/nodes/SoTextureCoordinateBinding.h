@@ -39,7 +39,12 @@ public:
 
   enum Binding {
     PER_VERTEX = SoTextureCoordinateBindingElement::PER_VERTEX,
-    PER_VERTEX_INDEXED = SoTextureCoordinateBindingElement::PER_VERTEX_INDEXED
+    PER_VERTEX_INDEXED = SoTextureCoordinateBindingElement::PER_VERTEX_INDEXED,
+
+    // Note: this value is marked as obsolete in SGI Open Inventor
+    // 2.1, but we need it for compatibility with old 3rd party Open
+    // Inventor code.
+    DEFAULT = PER_VERTEX_INDEXED
   };
 
   SoSFEnum value;

@@ -59,6 +59,11 @@
 
   Texture coordinates are fetched by the index value settings of the shape.
 */
+/*!
+  \var SoTextureCoordinateBinding::Binding SoTextureCoordinateBinding::DEFAULT
+
+  Obsolete value, please don't use.
+*/
 
 
 /*!
@@ -85,6 +90,7 @@ SoTextureCoordinateBinding::SoTextureCoordinateBinding(void)
 
   SO_NODE_DEFINE_ENUM_VALUE(Binding, PER_VERTEX);
   SO_NODE_DEFINE_ENUM_VALUE(Binding, PER_VERTEX_INDEXED);
+  SO_NODE_DEFINE_ENUM_VALUE(Binding, DEFAULT);
   SO_NODE_SET_SF_ENUM_TYPE(value, Binding);
 }
 
