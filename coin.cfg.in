@@ -1,5 +1,6 @@
 # prefix is determined in coin-config, making the package "movable"
 # prefix="@prefix@"
+host="@host@"
 exec_prefix="@exec_prefix@"
 version="@COIN_VERSION@"
 cflags="@COIN_EXTRA_CFLAGS@"
