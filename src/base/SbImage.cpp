@@ -22,7 +22,9 @@
 #include <Inventor/SbString.h>
 #include <string.h>
 #include <stdlib.h>
+#if HAVE_CONFIG_H
 #include <config.h> // HAVE_LIBSIMAGE define
+#endif // HAVE_CONFIG_H
 #if HAVE_LIBSIMAGE
 #include <simage.h>
 #endif // HAVE_LIBSIMAGE
