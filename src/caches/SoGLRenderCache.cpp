@@ -29,6 +29,7 @@
 
 #include <Inventor/caches/SoGLRenderCache.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/lists/SbList.h>
 #include <assert.h>
 
@@ -110,7 +111,18 @@ void
 SoGLRenderCache::call(SoState * state)
 {
   assert(THIS->displaylist != NULL);
+
+  // FIXME: needed for nested caching, pederb 2002-01-24
+  //  SoCacheElement::addCacheDependency(state, this);
+
+  // FIXME: this is just a temporary workaround until nested caching is
+  // properly supported. pederb, 2002-01-24
+  SoCacheElement::invalidate(state);
   THIS->displaylist->call(state);
+
+  if (state->isCacheOpen()) {
+    // FIXME: support nested caching properly, pederb, 2002-01-24
+  }
 }
 
 /*!
