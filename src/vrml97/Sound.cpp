@@ -379,11 +379,11 @@ SoVRMLSound::~SoVRMLSound(void)
 {
   delete PRIVATE(this)->sourcesensor;
 
+  PRIVATE(this)->stopPlaying();
+
   if (PRIVATE(this)->currentAudioClip != NULL)
     PRIVATE(this)->currentAudioClip->unref();
   PRIVATE(this)->currentAudioClip = NULL;
-
-  PRIVATE(this)->stopPlaying();
 
   if (PRIVATE(this)->audioBuffer != NULL)
     delete[] PRIVATE(this)->audioBuffer;
@@ -506,7 +506,7 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
 #if COIN_DEBUG && 0 // debug
   float x, y, z;
   listenerpos.getValue(x, y, z);
-  SoDebugError::postInfo("SoVRMLSound::audioRender", "listenerpos = (%0.2f, %0.2f, %0.2f)\n", x, y, z);
+  SoDebugError::postInfo("SoVRMLSound::audioRender", "listenerpos = (%0.2f, %0.2f, %0.2f)", x, y, z);
 #endif // debug
 
   ALint error;
@@ -519,7 +519,7 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
   listenerorientation.inverse().multVec(worldpos, worldpos);
 #if COIN_DEBUG && 0 // debug
   worldpos.getValue(x, y, z);
-  SoDebugError::postInfo("SoVRMLSound::audioRender", "rotated (inversed) : (%0.2f, %0.2f, %0.2f)\n", x, y, z);
+  SoDebugError::postInfo("SoVRMLSound::audioRender", "rotated (inversed) : (%0.2f, %0.2f, %0.2f)", x, y, z);
 #endif // debug
 
   SbVec3f2ALfloat3(alfloat3, worldpos);
@@ -579,15 +579,14 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
     FIXME: move these to a sensor instead. 2002-11-07 thammer.
    */
   if ((this->maxBack.getValue() == 0.0) && (this->maxFront.getValue() == 0.0)) {
-    /* Note: On some systems, it might not be possible to disable distance attenuation.
-       This has been experienced by thammer on WindowsXP using Creaitve Labs Extigy,
-       driver version 5.12.01.0038.
-       On the same system, using another soundcard (DellInspiron 8200's built-in 
-       soundcard), distance attenuation was disabled, as it should be.
-       This difference is probably due to poor DirectSound3D drivers for the Extigy.
-       2002-11-07 thammer.
-      
-     */
+    /* Note: On some systems, it might not be possible to disable
+      distance attenuation.  This has been experienced by thammer on
+      WindowsXP using Creaitve Labs Extigy, driver version
+      5.12.01.0038.  On the same system, using another soundcard
+      (DellInspiron 8200's built-in soundcard), distance attenuation
+      was disabled, as it should be.  This difference is probably due
+      to poor DirectSound3D drivers for the Extigy.  2002-11-07
+      thammer.  */
     alSourcef(PRIVATE(this)->sourceId, AL_ROLLOFF_FACTOR, 0.0f); // no distance attenuation
     if ((error = alGetError()) != AL_NO_ERROR) {
       SoDebugError::postWarning("SoVRMLSound::audioRender",
@@ -947,6 +946,8 @@ void SoVRMLSoundP::fillBuffers()
 #ifdef HAVE_THREADS
   SbThreadAutoLock autoLock(&this->syncmutex);
 #endif
+
+  assert(this->currentAudioClip != NULL);
 
   if (this->waitingForAudioClipToFinish) {
 #if COIN_DEBUG && DEBUG_AUDIO // debug
