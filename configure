@@ -20319,8 +20319,9 @@ fi
 
 if test x"$enable_hacking" = x"yes"; then
   for dir in \
-    base actions bundles caches details draggers elements elements/GL:glelements engines \
-    errors events fields glue manips misc lists nodekits nodes projectors \
+    base actions bundles caches details draggers elements \
+    elements/GL:glelements engines errors events fields glue \
+    manips misc lists nodekits nodes shapenodes projectors \
     sensors upgraders 3ds:format3ds; \
   do
     case $dir in
@@ -20780,7 +20781,7 @@ fi
 
 # **************************************************************************
 
-ac_config_files="$ac_config_files Makefile bin/Makefile include/Makefile include/Inventor/Makefile include/Inventor/C/Makefile include/Inventor/C/base/Makefile include/Inventor/C/errors/Makefile include/Inventor/C/glue/Makefile include/Inventor/C/threads/Makefile include/Inventor/lock/Makefile include/Inventor/system/Makefile data/Makefile data/draggerDefaults/Makefile man/Makefile man/man1/Makefile man/man3/Makefile html/Makefile src/Makefile src/base/Makefile src/actions/Makefile src/bundles/Makefile src/caches/Makefile src/details/Makefile src/draggers/Makefile src/elements/Makefile src/elements/GL/Makefile src/engines/Makefile src/errors/Makefile src/events/Makefile src/fields/Makefile src/glue/Makefile src/manips/Makefile src/misc/Makefile src/lists/Makefile src/nodekits/Makefile src/nodes/Makefile src/projectors/Makefile src/3ds/Makefile src/sensors/Makefile src/upgraders/Makefile src/threads/Makefile src/extensions/Makefile src/vrml97/Makefile"
+ac_config_files="$ac_config_files Makefile bin/Makefile include/Makefile include/Inventor/Makefile include/Inventor/C/Makefile include/Inventor/C/base/Makefile include/Inventor/C/errors/Makefile include/Inventor/C/glue/Makefile include/Inventor/C/threads/Makefile include/Inventor/lock/Makefile include/Inventor/system/Makefile data/Makefile data/draggerDefaults/Makefile man/Makefile man/man1/Makefile man/man3/Makefile html/Makefile src/Makefile src/base/Makefile src/actions/Makefile src/bundles/Makefile src/caches/Makefile src/details/Makefile src/draggers/Makefile src/elements/Makefile src/elements/GL/Makefile src/engines/Makefile src/errors/Makefile src/events/Makefile src/fields/Makefile src/glue/Makefile src/manips/Makefile src/misc/Makefile src/lists/Makefile src/nodekits/Makefile src/nodes/Makefile src/projectors/Makefile src/3ds/Makefile src/sensors/Makefile src/upgraders/Makefile src/shapenodes/Makefile src/threads/Makefile src/extensions/Makefile src/vrml97/Makefile"
 
 
 cat >confcache <<\_ACEOF
@@ -21305,6 +21306,7 @@ do
   "src/3ds/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/3ds/Makefile" ;;
   "src/sensors/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/sensors/Makefile" ;;
   "src/upgraders/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/upgraders/Makefile" ;;
+  "src/shapenodes/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/shapenodes/Makefile" ;;
   "src/threads/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/threads/Makefile" ;;
   "src/extensions/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/extensions/Makefile" ;;
   "src/vrml97/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/vrml97/Makefile" ;;

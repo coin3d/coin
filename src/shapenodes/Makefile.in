@@ -1,0 +1,732 @@
+# Makefile.in generated automatically by automake 1.5 from Makefile.am.
+
+# Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
+# Free Software Foundation, Inc.
+# This Makefile.in is free software; the Free Software Foundation
+# gives unlimited permission to copy and/or distribute it,
+# with or without modifications, as long as this notice is preserved.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY, to the extent permitted by law; without
+# even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+@SET_MAKE@
+
+SHELL = @SHELL@
+
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+VPATH = @srcdir@
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+
+bindir = @bindir@
+sbindir = @sbindir@
+libexecdir = @libexecdir@
+datadir = @datadir@
+sysconfdir = @sysconfdir@
+sharedstatedir = @sharedstatedir@
+localstatedir = @localstatedir@
+libdir = @libdir@
+infodir = @infodir@
+mandir = @mandir@
+includedir = @includedir@
+oldincludedir = /usr/include
+pkgdatadir = $(datadir)/@PACKAGE@
+pkglibdir = $(libdir)/@PACKAGE@
+pkgincludedir = $(includedir)/@PACKAGE@
+top_builddir = ../..
+
+ACLOCAL = @ACLOCAL@
+AUTOCONF = @AUTOCONF@
+AUTOMAKE = @AUTOMAKE@
+AUTOHEADER = @AUTOHEADER@
+
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_SCRIPT = @INSTALL_SCRIPT@
+INSTALL_HEADER = $(INSTALL_DATA)
+transform = @program_transform_name@
+NORMAL_INSTALL = :
+PRE_INSTALL = :
+POST_INSTALL = :
+NORMAL_UNINSTALL = :
+PRE_UNINSTALL = :
+POST_UNINSTALL = :
+build_alias = @build_alias@
+build_triplet = @build@
+host_alias = @host_alias@
+host_triplet = @host@
+target_alias = @target_alias@
+target_triplet = @target@
+AMTAR = @AMTAR@
+AS = @AS@
+AWK = @AWK@
+BUILD_WITH_MSVC = @BUILD_WITH_MSVC@
+CC = @CC@
+COIN_BETA_VERSION = @COIN_BETA_VERSION@
+COIN_COMPILER = @COIN_COMPILER@
+COIN_DOC_HTML = @COIN_DOC_HTML@
+COIN_DOC_MAN = @COIN_DOC_MAN@
+COIN_EXTRA_CFLAGS = @COIN_EXTRA_CFLAGS@
+COIN_EXTRA_CPPFLAGS = @COIN_EXTRA_CPPFLAGS@
+COIN_EXTRA_CXXFLAGS = @COIN_EXTRA_CXXFLAGS@
+COIN_EXTRA_LDFLAGS = @COIN_EXTRA_LDFLAGS@
+COIN_EXTRA_LIBS = @COIN_EXTRA_LIBS@
+COIN_HACKING_LIBDIRS = @COIN_HACKING_LIBDIRS@
+COIN_MAJOR_VERSION = @COIN_MAJOR_VERSION@
+COIN_MICRO_VERSION = @COIN_MICRO_VERSION@
+COIN_MINOR_VERSION = @COIN_MINOR_VERSION@
+COIN_MSVC_LIBC = @COIN_MSVC_LIBC@
+COIN_VERSION = @COIN_VERSION@
+CONFIG = @CONFIG@
+CXX = @CXX@
+DEPDIR = @DEPDIR@
+DLLTOOL = @DLLTOOL@
+DSUFFIX = @DSUFFIX@
+ECHO = @ECHO@
+EXEEXT = @EXEEXT@
+HAVE_3DS_IMPORT_CAPABILITIES = @HAVE_3DS_IMPORT_CAPABILITIES@
+HAVE_SOUND = @HAVE_SOUND@
+HAVE_SUPERGLU = @HAVE_SUPERGLU@
+HAVE_THREADS = @HAVE_THREADS@
+HAVE_THREADSAFE = @HAVE_THREADSAFE@
+HAVE_VRML97 = @HAVE_VRML97@
+INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
+LIBFLAGS = @LIBFLAGS@
+LIBTOOL = @LIBTOOL@
+LN_S = @LN_S@
+LT_AGE = @LT_AGE@
+LT_CURRENT = @LT_CURRENT@
+LT_REVISION = @LT_REVISION@
+MAC_FRAMEWORK = @MAC_FRAMEWORK@
+MAC_FRAMEWORK_NAME = @MAC_FRAMEWORK_NAME@
+MAC_FRAMEWORK_PREFIX = @MAC_FRAMEWORK_PREFIX@
+MAC_FRAMEWORK_VERSION = @MAC_FRAMEWORK_VERSION@
+MAINT = @MAINT@
+OBJDUMP = @OBJDUMP@
+OBJEXT = @OBJEXT@
+PACKAGE = @PACKAGE@
+RANLIB = @RANLIB@
+RFC822_DATE = @RFC822_DATE@
+SIM_INCLUDE_GLEXT_H = @SIM_INCLUDE_GLEXT_H@
+SIM_INCLUDE_GLU_H = @SIM_INCLUDE_GLU_H@
+SIM_INCLUDE_GL_H = @SIM_INCLUDE_GL_H@
+SIM_INCLUDE_WINDOWS_H = @SIM_INCLUDE_WINDOWS_H@
+STRIP = @STRIP@
+SUFFIX = @SUFFIX@
+SUPERGLUPREFIX = @SUPERGLUPREFIX@
+VERSION = @VERSION@
+X_CFLAGS = @X_CFLAGS@
+X_EXTRA_LIBS = @X_EXTRA_LIBS@
+X_LIBS = @X_LIBS@
+X_PRE_LIBS = @X_PRE_LIBS@
+am__include = @am__include@
+am__quote = @am__quote@
+coin_build_dir = @coin_build_dir@
+coin_configure_date = @coin_configure_date@
+coin_html_dir = @coin_html_dir@
+coin_man_dir = @coin_man_dir@
+coin_src_dir = @coin_src_dir@
+htmldir = @htmldir@
+install_sh = @install_sh@
+nop = @nop@
+path_tag = @path_tag@
+sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
+sim_ac_dpkg_buildpackage_exe = @sim_ac_dpkg_buildpackage_exe@
+sim_ac_makensis_exe = @sim_ac_makensis_exe@
+sim_ac_perl_exe = @sim_ac_perl_exe@
+sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
+
+RegularSources = \
+	SoAsciiText.cpp \
+	SoCone.cpp \
+	SoCube.cpp \
+	SoCylinder.cpp \
+	SoFaceSet.cpp \
+	SoImage.cpp \
+	SoIndexedFaceSet.cpp \
+	SoIndexedLineSet.cpp \
+	SoIndexedNurbsCurve.cpp \
+	SoIndexedNurbsSurface.cpp \
+	SoIndexedShape.cpp \
+	SoIndexedTriangleStripSet.cpp \
+	SoLineSet.cpp \
+	SoMarkerSet.cpp \
+	SoNonIndexedShape.cpp \
+	SoNurbsCurve.cpp \
+	SoNurbsSurface.cpp \
+	SoPointSet.cpp \
+	SoQuadMesh.cpp \
+	SoShape.cpp \
+	SoSphere.cpp \
+	SoText2.cpp \
+	SoText3.cpp \
+	SoTriangleStripSet.cpp \
+	SoVertexShape.cpp \
+	soshape_primdata.cpp \
+	soshape_bigtexture.cpp \
+	soshape_trianglesort.cpp
+
+LinkHackSources = \
+	all-cpp.cpp
+
+PublicHeaders = \
+	../../include/Inventor/nodes/SoAsciiText.h \
+	../../include/Inventor/nodes/SoCone.h \
+	../../include/Inventor/nodes/SoCube.h \
+	../../include/Inventor/nodes/SoCylinder.h \
+	../../include/Inventor/nodes/SoFaceSet.h \
+	../../include/Inventor/nodes/SoImage.h \
+	../../include/Inventor/nodes/SoIndexedFaceSet.h \
+	../../include/Inventor/nodes/SoIndexedLineSet.h \
+	../../include/Inventor/nodes/SoIndexedNurbsCurve.h \
+	../../include/Inventor/nodes/SoIndexedNurbsSurface.h \
+	../../include/Inventor/nodes/SoIndexedShape.h \
+	../../include/Inventor/nodes/SoIndexedTriangleStripSet.h \
+	../../include/Inventor/nodes/SoLineSet.h \
+	../../include/Inventor/nodes/SoMarkerSet.h \
+	../../include/Inventor/nodes/SoNonIndexedShape.h \
+	../../include/Inventor/nodes/SoNurbsCurve.h \
+	../../include/Inventor/nodes/SoNurbsSurface.h \
+	../../include/Inventor/nodes/SoPointSet.h \
+	../../include/Inventor/nodes/SoQuadMesh.h \
+	../../include/Inventor/nodes/SoShape.h \
+	../../include/Inventor/nodes/SoSphere.h \
+	../../include/Inventor/nodes/SoText2.h \
+	../../include/Inventor/nodes/SoText3.h \
+	../../include/Inventor/nodes/SoTriangleStripSet.h \
+	../../include/Inventor/nodes/SoVertexShape.h
+
+PrivateHeaders = \
+	soshape_primdata.h \
+	soshape_trianglesort.h \
+	soshape_bigtexture.h
+
+
+
+# **************************************************************************
+# This template depends on the following variables having been set up before
+# its invokation.
+#
+# PublicHeaders    - header files that should be installed
+# PrivateHeaders   - source files that should be distributed, but not
+#                    installed - including source-included source files.
+# RegularSources   - source files compiled in this directory
+# LinkHackSources  - alternative source files used on -enable-compact compilation
+# ObsoletedHeaders - header files that should be removed upon installation
+
+# Everything below is autogenerated from a macro, so don't modify
+# within the Makefile.am itself. 19991201 mortene.
+@HACKING_COMPACT_BUILD_TRUE@BuildSources = $(LinkHackSources)
+@HACKING_COMPACT_BUILD_FALSE@BuildSources = $(RegularSources)
+
+@BUILD_WITH_MSVC_TRUE@noinst_LIBRARIES = shapenodes.lst
+@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libshapenodes@SUFFIX@LINKHACK.la
+@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libshapenodes.la
+
+# Remove any linklibraries detected by configure, as they are not
+# needed in the submodules -- only in the toplevel libCoin build.
+LIBS = 
+
+INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/src/extensions
+
+libshapenodes_la_SOURCES = $(BuildSources)
+EXTRA_libshapenodes_la_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
+
+libshapenodes@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
+EXTRA_libshapenodes@SUFFIX@LINKHACK_la_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
+
+libshapenodesincdir = $(includedir)/Inventor/nodes
+libshapenodesinc_HEADERS = $(PublicHeaders)
+
+shapenodes_lst_SOURCES = $(BuildSources)
+EXTRA_shapenodes_lst_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
+subdir = src/shapenodes
+mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
+CONFIG_HEADER = $(top_builddir)/include/config.h
+CONFIG_CLEAN_FILES =
+LIBRARIES = $(noinst_LIBRARIES)
+
+shapenodes_lst_AR = $(AR) cru
+shapenodes_lst_LIBADD =
+@HACKING_COMPACT_BUILD_TRUE@am_shapenodes_lst_OBJECTS = \
+@HACKING_COMPACT_BUILD_TRUE@	all-cpp.$(OBJEXT)
+@HACKING_COMPACT_BUILD_FALSE@am_shapenodes_lst_OBJECTS = \
+@HACKING_COMPACT_BUILD_FALSE@	SoAsciiText.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoCone.$(OBJEXT) SoCube.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoCylinder.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoFaceSet.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoImage.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoIndexedFaceSet.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoIndexedLineSet.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoIndexedNurbsCurve.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoIndexedNurbsSurface.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoIndexedShape.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoIndexedTriangleStripSet.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoLineSet.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoMarkerSet.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoNonIndexedShape.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoNurbsCurve.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoNurbsSurface.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoPointSet.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoQuadMesh.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoShape.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoSphere.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoText2.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoText3.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoTriangleStripSet.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoVertexShape.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	soshape_primdata.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	soshape_bigtexture.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	soshape_trianglesort.$(OBJEXT)
+shapenodes_lst_OBJECTS = $(am_shapenodes_lst_OBJECTS)
+LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
+
+libshapenodes_la_LDFLAGS =
+libshapenodes_la_LIBADD =
+@HACKING_COMPACT_BUILD_TRUE@am_libshapenodes_la_OBJECTS = all-cpp.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libshapenodes_la_OBJECTS = \
+@HACKING_COMPACT_BUILD_FALSE@	SoAsciiText.lo SoCone.lo SoCube.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoCylinder.lo SoFaceSet.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoImage.lo SoIndexedFaceSet.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoIndexedLineSet.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoIndexedNurbsCurve.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoIndexedNurbsSurface.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoIndexedShape.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoIndexedTriangleStripSet.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoLineSet.lo SoMarkerSet.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoNonIndexedShape.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoNurbsCurve.lo SoNurbsSurface.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoPointSet.lo SoQuadMesh.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoShape.lo SoSphere.lo SoText2.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoText3.lo SoTriangleStripSet.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoVertexShape.lo \
+@HACKING_COMPACT_BUILD_FALSE@	soshape_primdata.lo \
+@HACKING_COMPACT_BUILD_FALSE@	soshape_bigtexture.lo \
+@HACKING_COMPACT_BUILD_FALSE@	soshape_trianglesort.lo
+libshapenodes_la_OBJECTS = $(am_libshapenodes_la_OBJECTS)
+libshapenodes@SUFFIX@LINKHACK_la_LDFLAGS =
+libshapenodes@SUFFIX@LINKHACK_la_LIBADD =
+@HACKING_COMPACT_BUILD_TRUE@am_libshapenodes@SUFFIX@LINKHACK_la_OBJECTS = \
+@HACKING_COMPACT_BUILD_TRUE@	all-cpp.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libshapenodes@SUFFIX@LINKHACK_la_OBJECTS = \
+@HACKING_COMPACT_BUILD_FALSE@	SoAsciiText.lo SoCone.lo SoCube.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoCylinder.lo SoFaceSet.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoImage.lo SoIndexedFaceSet.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoIndexedLineSet.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoIndexedNurbsCurve.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoIndexedNurbsSurface.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoIndexedShape.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoIndexedTriangleStripSet.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoLineSet.lo SoMarkerSet.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoNonIndexedShape.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoNurbsCurve.lo SoNurbsSurface.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoPointSet.lo SoQuadMesh.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoShape.lo SoSphere.lo SoText2.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoText3.lo SoTriangleStripSet.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoVertexShape.lo \
+@HACKING_COMPACT_BUILD_FALSE@	soshape_primdata.lo \
+@HACKING_COMPACT_BUILD_FALSE@	soshape_bigtexture.lo \
+@HACKING_COMPACT_BUILD_FALSE@	soshape_trianglesort.lo
+libshapenodes@SUFFIX@LINKHACK_la_OBJECTS = \
+	$(am_libshapenodes@SUFFIX@LINKHACK_la_OBJECTS)
+
+DEFS = @DEFS@
+DEFAULT_INCLUDES =  -I. -I$(srcdir) -I$(top_builddir)/include
+CPPFLAGS = @CPPFLAGS@
+LDFLAGS = @LDFLAGS@
+depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
+@AMDEP_TRUE@DEP_FILES = $(DEPDIR)/SoAsciiText.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoAsciiText.Po $(DEPDIR)/SoCone.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoCone.Po $(DEPDIR)/SoCube.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoCube.Po $(DEPDIR)/SoCylinder.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoCylinder.Po $(DEPDIR)/SoFaceSet.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoFaceSet.Po $(DEPDIR)/SoImage.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoImage.Po $(DEPDIR)/SoIndexedFaceSet.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoIndexedFaceSet.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoIndexedLineSet.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoIndexedLineSet.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoIndexedNurbsCurve.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoIndexedNurbsCurve.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoIndexedNurbsSurface.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoIndexedNurbsSurface.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoIndexedShape.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoIndexedShape.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoIndexedTriangleStripSet.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoIndexedTriangleStripSet.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoLineSet.Plo $(DEPDIR)/SoLineSet.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoMarkerSet.Plo $(DEPDIR)/SoMarkerSet.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoNonIndexedShape.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoNonIndexedShape.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoNurbsCurve.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoNurbsCurve.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoNurbsSurface.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoNurbsSurface.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoPointSet.Plo $(DEPDIR)/SoPointSet.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoQuadMesh.Plo $(DEPDIR)/SoQuadMesh.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoShape.Plo $(DEPDIR)/SoShape.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoSphere.Plo $(DEPDIR)/SoSphere.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoText2.Plo $(DEPDIR)/SoText2.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoText3.Plo $(DEPDIR)/SoText3.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoTriangleStripSet.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoTriangleStripSet.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoVertexShape.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoVertexShape.Po $(DEPDIR)/all-cpp.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/all-cpp.Po \
+@AMDEP_TRUE@	$(DEPDIR)/soshape_bigtexture.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/soshape_bigtexture.Po \
+@AMDEP_TRUE@	$(DEPDIR)/soshape_primdata.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/soshape_primdata.Po \
+@AMDEP_TRUE@	$(DEPDIR)/soshape_trianglesort.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/soshape_trianglesort.Po
+CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
+	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
+LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
+	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
+	$(AM_CXXFLAGS) $(CXXFLAGS)
+CXXLD = $(CXX)
+CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
+	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+CXXFLAGS = @CXXFLAGS@
+CFLAGS = @CFLAGS@
+COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
+	$(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+DIST_SOURCES = $(shapenodes_lst_SOURCES) $(EXTRA_shapenodes_lst_SOURCES) \
+	$(libshapenodes_la_SOURCES) $(EXTRA_libshapenodes_la_SOURCES) \
+	$(libshapenodes@SUFFIX@LINKHACK_la_SOURCES) \
+	$(EXTRA_libshapenodes@SUFFIX@LINKHACK_la_SOURCES)
+HEADERS = $(libshapenodesinc_HEADERS)
+
+DIST_COMMON = $(libshapenodesinc_HEADERS) Makefile.am Makefile.in
+SOURCES = $(shapenodes_lst_SOURCES) $(EXTRA_shapenodes_lst_SOURCES) $(libshapenodes_la_SOURCES) $(EXTRA_libshapenodes_la_SOURCES) $(libshapenodes@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_libshapenodes@SUFFIX@LINKHACK_la_SOURCES)
+
+all: all-am
+
+.SUFFIXES:
+.SUFFIXES: .cpp .lo .o .obj
+
+mostlyclean-libtool:
+	-rm -f *.lo
+
+clean-libtool:
+	-rm -rf .libs _libs
+
+distclean-libtool:
+	-rm -f libtool
+$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
+	cd $(top_srcdir) && \
+	  $(AUTOMAKE) --gnu  src/shapenodes/Makefile
+Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
+	cd $(top_builddir) && \
+	  CONFIG_HEADERS= CONFIG_LINKS= \
+	  CONFIG_FILES=$(subdir)/$@ $(SHELL) ./config.status
+
+AR = ar
+
+clean-noinstLIBRARIES:
+	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
+install-libLTLIBRARIES: $(lib_LTLIBRARIES)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libdir)
+	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+	  if test -f $$p; then \
+	    echo " $(LIBTOOL) --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$p $(DESTDIR)$(libdir)/$$p"; \
+	    $(LIBTOOL) --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$p $(DESTDIR)$(libdir)/$$p; \
+	  else :; fi; \
+	done
+
+uninstall-libLTLIBRARIES:
+	@$(NORMAL_UNINSTALL)
+	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+	  echo " $(LIBTOOL) --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p"; \
+	  $(LIBTOOL) --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p; \
+	done
+
+clean-libLTLIBRARIES:
+	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
+
+clean-noinstLTLIBRARIES:
+	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
+libshapenodes.la: $(libshapenodes_la_OBJECTS) $(libshapenodes_la_DEPENDENCIES) 
+	$(CXXLINK)  $(libshapenodes_la_LDFLAGS) $(libshapenodes_la_OBJECTS) $(libshapenodes_la_LIBADD) $(LIBS)
+libshapenodes@SUFFIX@LINKHACK.la: $(libshapenodes@SUFFIX@LINKHACK_la_OBJECTS) $(libshapenodes@SUFFIX@LINKHACK_la_DEPENDENCIES) 
+	$(CXXLINK) -rpath $(libdir) $(libshapenodes@SUFFIX@LINKHACK_la_LDFLAGS) $(libshapenodes@SUFFIX@LINKHACK_la_OBJECTS) $(libshapenodes@SUFFIX@LINKHACK_la_LIBADD) $(LIBS)
+
+mostlyclean-compile:
+	-rm -f *.$(OBJEXT) core *.core
+
+distclean-compile:
+	-rm -f *.tab.c
+
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoAsciiText.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoAsciiText.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoCone.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoCone.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoCube.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoCube.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoCylinder.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoCylinder.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoFaceSet.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoFaceSet.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoImage.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoImage.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoIndexedFaceSet.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoIndexedFaceSet.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoIndexedLineSet.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoIndexedLineSet.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoIndexedNurbsCurve.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoIndexedNurbsCurve.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoIndexedNurbsSurface.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoIndexedNurbsSurface.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoIndexedShape.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoIndexedShape.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoIndexedTriangleStripSet.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoIndexedTriangleStripSet.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoLineSet.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoLineSet.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoMarkerSet.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoMarkerSet.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoNonIndexedShape.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoNonIndexedShape.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoNurbsCurve.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoNurbsCurve.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoNurbsSurface.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoNurbsSurface.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoPointSet.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoPointSet.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoQuadMesh.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoQuadMesh.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoShape.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoShape.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoSphere.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoSphere.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoText2.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoText2.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoText3.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoText3.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTriangleStripSet.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTriangleStripSet.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoVertexShape.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoVertexShape.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/all-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/all-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/soshape_bigtexture.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/soshape_bigtexture.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/soshape_primdata.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/soshape_primdata.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/soshape_trianglesort.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/soshape_trianglesort.Po@am__quote@
+
+distclean-depend:
+	-rm -rf $(DEPDIR)
+
+.cpp.o:
+@AMDEP_TRUE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(CXXCOMPILE) -c -o $@ `test -f $< || echo '$(srcdir)/'`$<
+
+.cpp.obj:
+@AMDEP_TRUE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(CXXCOMPILE) -c -o $@ `( test -f $< || echo -n '$(srcdir)/'; echo -n $< ) | xargs cygpath -w`
+
+.cpp.lo:
+@AMDEP_TRUE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(LTCXXCOMPILE) -c -o $@ `test -f $< || echo '$(srcdir)/'`$<
+CXXDEPMODE = @CXXDEPMODE@
+uninstall-info-am:
+
+uninstall-libshapenodesincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libshapenodesinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libshapenodesincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libshapenodesincdir)/$$f; \
+	done
+
+tags: TAGS
+
+ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
+	list='$(SOURCES) $(HEADERS) $(TAGS_FILES)'; \
+	unique=`for i in $$list; do \
+	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
+	  done | \
+	  $(AWK) '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	mkid -fID $$unique $(LISP)
+
+TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
+		$(TAGS_FILES) $(LISP)
+	tags=; \
+	here=`pwd`; \
+	list='$(SOURCES) $(HEADERS) $(TAGS_FILES)'; \
+	unique=`for i in $$list; do \
+	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
+	  done | \
+	  $(AWK) '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	test -z "$(ETAGS_ARGS)$$unique$(LISP)$$tags" \
+	  || etags $(ETAGS_ARGS) $$tags  $$unique $(LISP)
+
+GTAGS:
+	here=`CDPATH=: && cd $(top_builddir) && pwd` \
+	  && cd $(top_srcdir) \
+	  && gtags -i $(GTAGS_ARGS) $$here
+
+distclean-tags:
+	-rm -f TAGS ID GTAGS GRTAGS GSYMS GPATH
+
+DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
+
+top_distdir = ../..
+distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
+
+distdir: $(DISTFILES)
+	$(mkinstalldirs) $(distdir)/../../include/Inventor/nodes
+	@for file in $(DISTFILES); do \
+	  if test -f $$file; then d=.; else d=$(srcdir); fi; \
+	  dir=`echo "$$file" | sed -e 's,/[^/]*$$,,'`; \
+	  if test "$$dir" != "$$file" && test "$$dir" != "."; then \
+	    $(mkinstalldirs) "$(distdir)/$$dir"; \
+	  fi; \
+	  if test -d $$d/$$file; then \
+	    cp -pR $$d/$$file $(distdir) \
+	    || exit 1; \
+	  else \
+	    test -f $(distdir)/$$file \
+	    || cp -p $$d/$$file $(distdir)/$$file \
+	    || exit 1; \
+	  fi; \
+	done
+check-am: all-am
+check: check-am
+all-am: Makefile $(LIBRARIES) $(LTLIBRARIES) $(HEADERS)
+
+installdirs:
+	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(libshapenodesincdir)
+
+install: install-am
+install-exec: install-exec-am
+install-data: install-data-am
+uninstall: uninstall-am
+
+install-am: all-am
+	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
+
+installcheck: installcheck-am
+install-strip:
+	$(MAKE) $(AM_MAKEFLAGS) INSTALL_PROGRAM="$(INSTALL_STRIP_PROGRAM)" \
+	  `test -z '$(STRIP)' || \
+	    echo "INSTALL_PROGRAM_ENV=STRIPPROG='$(STRIP)'"` install
+mostlyclean-generic:
+
+clean-generic:
+
+distclean-generic:
+	-rm -f Makefile $(CONFIG_CLEAN_FILES) stamp-h stamp-h[0-9]*
+
+maintainer-clean-generic:
+	@echo "This command is intended for maintainers to use"
+	@echo "it deletes files that may require special tools to rebuild."
+clean: clean-am
+
+clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
+	clean-noinstLIBRARIES clean-noinstLTLIBRARIES mostlyclean-am
+
+distclean: distclean-am
+
+distclean-am: clean-am distclean-compile distclean-depend \
+	distclean-generic distclean-libtool distclean-tags
+
+dvi: dvi-am
+
+dvi-am:
+
+info: info-am
+
+info-am:
+
+install-data-am: install-libshapenodesincHEADERS
+
+install-exec-am: install-libLTLIBRARIES
+
+install-info: install-info-am
+
+install-man:
+
+installcheck-am:
+
+maintainer-clean: maintainer-clean-am
+
+maintainer-clean-am: distclean-am maintainer-clean-generic
+
+mostlyclean: mostlyclean-am
+
+mostlyclean-am: mostlyclean-compile mostlyclean-generic \
+	mostlyclean-libtool
+
+uninstall-am: uninstall-info-am uninstall-libLTLIBRARIES \
+	uninstall-libshapenodesincHEADERS
+
+.PHONY: GTAGS all all-am check check-am clean clean-generic \
+	clean-libLTLIBRARIES clean-libtool clean-noinstLIBRARIES \
+	clean-noinstLTLIBRARIES distclean distclean-compile \
+	distclean-depend distclean-generic distclean-libtool \
+	distclean-tags distdir dvi dvi-am info info-am install \
+	install-am install-data install-data-am install-exec \
+	install-exec-am install-info install-info-am \
+	install-libLTLIBRARIES install-libshapenodesincHEADERS \
+	install-man install-strip installcheck installcheck-am \
+	installdirs maintainer-clean maintainer-clean-generic \
+	mostlyclean mostlyclean-compile mostlyclean-generic \
+	mostlyclean-libtool tags uninstall uninstall-am \
+	uninstall-info-am uninstall-libLTLIBRARIES \
+	uninstall-libshapenodesincHEADERS
+
+
+# this rule causes a make warning, so we remove it when it is not in use
+shapenodes.lst: Makefile $(shapenodes_lst_OBJECTS)
+	@echo "Linking shapenodes.lst..."; \
+	rm -f $@; touch $@; \
+	for i in $(shapenodes_lst_OBJECTS); do echo $$i >>$@; done
+
+install-libshapenodesincHEADERS: $(libshapenodesinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libshapenodesincdir)
+	@list='$(libshapenodesinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libshapenodesincdir)/$$f"; \
+	  if cmp -s "$$src" "$$dst"; then :; else \
+	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+	  fi \
+	done
+	@list='$(ObsoletedHeaders)'; for f in $$list; do \
+	  file="$(DESTDIR)$(libshapenodesincdir)/$$f"; \
+	  if test -x "$$file"; then \
+	    echo " rm -f $$file"; \
+	    rm -f "$$file"; \
+	  fi \
+	done
+# Tell versions [3.59,3.63) of GNU make to not export all variables.
+# Otherwise a system limit (for SysV at least) may be exceeded.
+.NOEXPORT:

@@ -144,7 +144,6 @@ RegularSources = \
 	SoAnnotation.cpp \
 	SoAntiSquish.cpp \
 	SoArray.cpp \
-	SoAsciiText.cpp \
 	SoBaseColor.cpp \
 	SoBlinker.cpp \
 	SoCallback.cpp \
@@ -152,50 +151,34 @@ RegularSources = \
 	SoClipPlane.cpp \
 	SoColorIndex.cpp \
 	SoComplexity.cpp \
-	SoCone.cpp \
 	SoCoordinate3.cpp \
 	SoCoordinate4.cpp \
-	SoCube.cpp \
-	SoCylinder.cpp \
 	SoDirectionalLight.cpp \
 	SoDrawStyle.cpp \
 	SoEnvironment.cpp \
 	SoEventCallback.cpp \
 	SoExtSelection.cpp \
-	SoFaceSet.cpp \
 	SoFile.cpp \
 	SoFont.cpp \
 	SoFontStyle.cpp \
 	SoGroup.cpp \
-	SoImage.cpp \
-	SoIndexedFaceSet.cpp \
-	SoIndexedLineSet.cpp \
-	SoIndexedNurbsCurve.cpp \
-	SoIndexedNurbsSurface.cpp \
-	SoIndexedShape.cpp \
-	SoIndexedTriangleStripSet.cpp \
 	SoInfo.cpp \
 	SoLOD.cpp \
 	SoLabel.cpp \
 	SoLevelOfDetail.cpp \
 	SoLight.cpp \
 	SoLightModel.cpp \
-	SoLineSet.cpp \
 	SoLinearProfile.cpp \
 	SoListener.cpp \
 	SoLocateHighlight.cpp \
-	SoMarkerSet.cpp \
 	SoMaterial.cpp \
 	SoMaterialBinding.cpp \
 	SoMatrixTransform.cpp \
 	SoMultipleCopy.cpp \
 	SoNode.cpp \
-	SoNonIndexedShape.cpp \
 	SoNormal.cpp \
 	SoNormalBinding.cpp \
-	SoNurbsCurve.cpp \
 	SoNurbsProfile.cpp \
-	SoNurbsSurface.cpp \
 	SoOrthographicCamera.cpp \
 	SoPackedColor.cpp \
 	SoPathSwitch.cpp \
@@ -203,12 +186,10 @@ RegularSources = \
 	SoPerspectiveCamera.cpp \
 	SoPickStyle.cpp \
 	SoPointLight.cpp \
-	SoPointSet.cpp \
 	SoPolygonOffset.cpp \
 	SoProfile.cpp \
 	SoProfileCoordinate2.cpp \
 	SoProfileCoordinate3.cpp \
-	SoQuadMesh.cpp \
 	SoResetTransform.cpp \
 	SoRotation.cpp \
 	SoRotationXYZ.cpp \
@@ -216,15 +197,11 @@ RegularSources = \
 	SoScale.cpp \
 	SoSelection.cpp \
 	SoSeparator.cpp \
-	SoShape.cpp \
 	SoShapeHints.cpp \
 	SoShuttle.cpp \
-	SoSphere.cpp \
 	SoSpotLight.cpp \
 	SoSurroundScale.cpp \
 	SoSwitch.cpp \
-	SoText2.cpp \
-	SoText3.cpp \
 	SoTexture2.cpp \
 	SoTexture3.cpp \
 	SoTexture2Transform.cpp \
@@ -242,16 +219,11 @@ RegularSources = \
 	SoTransformSeparator.cpp \
 	SoTransformation.cpp \
 	SoTranslation.cpp \
-	SoTriangleStripSet.cpp \
 	SoUnits.cpp \
 	SoUnknownNode.cpp \
 	SoVertexProperty.cpp \
-	SoVertexShape.cpp \
 	SoWWWAnchor.cpp \
-	SoWWWInline.cpp \
-	soshape_primdata.cpp \
-	soshape_bigtexture.cpp \
-	soshape_trianglesort.cpp
+	SoWWWInline.cpp
 
 LinkHackSources = \
 	all.cpp
@@ -262,7 +234,6 @@ PublicHeaders = \
 	../../include/Inventor/nodes/SoAnnotation.h \
 	../../include/Inventor/nodes/SoAntiSquish.h \
 	../../include/Inventor/nodes/SoArray.h \
-	../../include/Inventor/nodes/SoAsciiText.h \
 	../../include/Inventor/nodes/SoBaseColor.h \
 	../../include/Inventor/nodes/SoBlinker.h \
 	../../include/Inventor/nodes/SoCallback.h \
@@ -270,11 +241,8 @@ PublicHeaders = \
 	../../include/Inventor/nodes/SoClipPlane.h \
 	../../include/Inventor/nodes/SoColorIndex.h \
 	../../include/Inventor/nodes/SoComplexity.h \
-	../../include/Inventor/nodes/SoCone.h \
 	../../include/Inventor/nodes/SoCoordinate3.h \
 	../../include/Inventor/nodes/SoCoordinate4.h \
-	../../include/Inventor/nodes/SoCube.h \
-	../../include/Inventor/nodes/SoCylinder.h \
 	../../include/Inventor/nodes/SoDirectionalLight.h \
 	../../include/Inventor/nodes/SoDrawStyle.h \
 	../../include/Inventor/nodes/SoEnvironment.h \
@@ -285,13 +253,6 @@ PublicHeaders = \
 	../../include/Inventor/nodes/SoFont.h \
 	../../include/Inventor/nodes/SoFontStyle.h \
 	../../include/Inventor/nodes/SoGroup.h \
-	../../include/Inventor/nodes/SoImage.h \
-	../../include/Inventor/nodes/SoIndexedFaceSet.h \
-	../../include/Inventor/nodes/SoIndexedLineSet.h \
-	../../include/Inventor/nodes/SoIndexedNurbsCurve.h \
-	../../include/Inventor/nodes/SoIndexedNurbsSurface.h \
-	../../include/Inventor/nodes/SoIndexedShape.h \
-	../../include/Inventor/nodes/SoIndexedTriangleStripSet.h \
 	../../include/Inventor/nodes/SoInfo.h \
 	../../include/Inventor/nodes/SoLOD.h \
 	../../include/Inventor/nodes/SoLabel.h \
@@ -308,12 +269,9 @@ PublicHeaders = \
 	../../include/Inventor/nodes/SoMatrixTransform.h \
 	../../include/Inventor/nodes/SoMultipleCopy.h \
 	../../include/Inventor/nodes/SoNode.h \
-	../../include/Inventor/nodes/SoNonIndexedShape.h \
 	../../include/Inventor/nodes/SoNormal.h \
 	../../include/Inventor/nodes/SoNormalBinding.h \
-	../../include/Inventor/nodes/SoNurbsCurve.h \
 	../../include/Inventor/nodes/SoNurbsProfile.h \
-	../../include/Inventor/nodes/SoNurbsSurface.h \
 	../../include/Inventor/nodes/SoOrthographicCamera.h \
 	../../include/Inventor/nodes/SoPackedColor.h \
 	../../include/Inventor/nodes/SoPathSwitch.h \
@@ -321,12 +279,10 @@ PublicHeaders = \
 	../../include/Inventor/nodes/SoPerspectiveCamera.h \
 	../../include/Inventor/nodes/SoPickStyle.h \
 	../../include/Inventor/nodes/SoPointLight.h \
-	../../include/Inventor/nodes/SoPointSet.h \
 	../../include/Inventor/nodes/SoPolygonOffset.h \
 	../../include/Inventor/nodes/SoProfile.h \
 	../../include/Inventor/nodes/SoProfileCoordinate2.h \
 	../../include/Inventor/nodes/SoProfileCoordinate3.h \
-	../../include/Inventor/nodes/SoQuadMesh.h \
 	../../include/Inventor/nodes/SoResetTransform.h \
 	../../include/Inventor/nodes/SoRotation.h \
 	../../include/Inventor/nodes/SoRotationXYZ.h \
@@ -334,15 +290,11 @@ PublicHeaders = \
 	../../include/Inventor/nodes/SoScale.h \
 	../../include/Inventor/nodes/SoSelection.h \
 	../../include/Inventor/nodes/SoSeparator.h \
-	../../include/Inventor/nodes/SoShape.h \
 	../../include/Inventor/nodes/SoShapeHints.h \
 	../../include/Inventor/nodes/SoShuttle.h \
-	../../include/Inventor/nodes/SoSphere.h \
 	../../include/Inventor/nodes/SoSpotLight.h \
 	../../include/Inventor/nodes/SoSurroundScale.h \
 	../../include/Inventor/nodes/SoSwitch.h \
-	../../include/Inventor/nodes/SoText2.h \
-	../../include/Inventor/nodes/SoText3.h \
 	../../include/Inventor/nodes/SoTexture2.h \
 	../../include/Inventor/nodes/SoTexture3.h \
 	../../include/Inventor/nodes/SoTexture2Transform.h \
@@ -359,10 +311,8 @@ PublicHeaders = \
 	../../include/Inventor/nodes/SoTransformSeparator.h \
 	../../include/Inventor/nodes/SoTransformation.h \
 	../../include/Inventor/nodes/SoTranslation.h \
-	../../include/Inventor/nodes/SoTriangleStripSet.h \
 	../../include/Inventor/nodes/SoUnits.h \
 	../../include/Inventor/nodes/SoVertexProperty.h \
-	../../include/Inventor/nodes/SoVertexShape.h \
 	../../include/Inventor/nodes/SoWWWAnchor.h \
 	../../include/Inventor/nodes/SoWWWInline.h
 
@@ -370,9 +320,6 @@ PrivateHeaders = \
 	../../include/Inventor/nodes/SoSubNodeP.h \
 	../../include/Inventor/nodes/SoUnknownNode.h \
 	../../include/Inventor/nodes/SoTextureScalePolicy.h \
-	soshape_primdata.h \
-	soshape_trianglesort.h \
-	soshape_bigtexture.h \
 	SoSoundElementHelper.h
 
 
@@ -433,7 +380,6 @@ nodes_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoAnnotation.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoAntiSquish.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoArray.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoAsciiText.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoBaseColor.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoBlinker.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoCallback.$(OBJEXT) \
@@ -441,48 +387,31 @@ nodes_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoClipPlane.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoColorIndex.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoComplexity.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoCone.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoCoordinate3.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoCoordinate4.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoCube.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoCylinder.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoDirectionalLight.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoDrawStyle.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoEnvironment.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoEventCallback.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoExtSelection.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoFaceSet.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoFile.$(OBJEXT) SoFont.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoFontStyle.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGroup.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoImage.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoIndexedFaceSet.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoIndexedLineSet.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoIndexedNurbsCurve.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoIndexedNurbsSurface.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoIndexedShape.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoIndexedTriangleStripSet.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoInfo.$(OBJEXT) SoLOD.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoLabel.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoGroup.$(OBJEXT) SoInfo.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoLOD.$(OBJEXT) SoLabel.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoLevelOfDetail.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoLight.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoLightModel.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoLineSet.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoLinearProfile.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoListener.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoLocateHighlight.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoMarkerSet.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoMaterial.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoMaterialBinding.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoMatrixTransform.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoMultipleCopy.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoNode.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoNonIndexedShape.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoNormal.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoNormalBinding.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoNurbsCurve.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoNurbsProfile.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoNurbsSurface.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoOrthographicCamera.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoPackedColor.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoPathSwitch.$(OBJEXT) \
@@ -490,12 +419,10 @@ nodes_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoPerspectiveCamera.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoPickStyle.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoPointLight.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoPointSet.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoPolygonOffset.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoProfile.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoProfileCoordinate2.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoProfileCoordinate3.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoQuadMesh.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoResetTransform.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoRotation.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoRotationXYZ.$(OBJEXT) \
@@ -503,15 +430,11 @@ nodes_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoScale.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoSelection.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoSeparator.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoShape.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoShapeHints.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoShuttle.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoSphere.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoSpotLight.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoSurroundScale.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoSwitch.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoText2.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoText3.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoTexture2.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoTexture3.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoTexture2Transform.$(OBJEXT) \
@@ -529,16 +452,11 @@ nodes_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoTransformSeparator.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoTransformation.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoTranslation.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoTriangleStripSet.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoUnits.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoUnknownNode.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoVertexProperty.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoVertexShape.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoWWWAnchor.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoWWWInline.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	soshape_primdata.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	soshape_bigtexture.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	soshape_trianglesort.$(OBJEXT)
+@HACKING_COMPACT_BUILD_FALSE@	SoWWWInline.$(OBJEXT)
 nodes_lst_OBJECTS = $(am_nodes_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -547,55 +465,40 @@ libnodes_la_LIBADD =
 @HACKING_COMPACT_BUILD_TRUE@am_libnodes_la_OBJECTS = all.lo
 @HACKING_COMPACT_BUILD_FALSE@am_libnodes_la_OBJECTS = SoAnnotation.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoAntiSquish.lo SoArray.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoAsciiText.lo SoBaseColor.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoBlinker.lo SoCallback.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoCamera.lo SoClipPlane.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoColorIndex.lo SoComplexity.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoCone.lo SoCoordinate3.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoCoordinate4.lo SoCube.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoCylinder.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoBaseColor.lo SoBlinker.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoCallback.lo SoCamera.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoClipPlane.lo SoColorIndex.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoComplexity.lo SoCoordinate3.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoCoordinate4.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoDirectionalLight.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoDrawStyle.lo SoEnvironment.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoEventCallback.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoExtSelection.lo SoFaceSet.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoFile.lo SoFont.lo SoFontStyle.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGroup.lo SoImage.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoIndexedFaceSet.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoIndexedLineSet.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoIndexedNurbsCurve.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoIndexedNurbsSurface.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoIndexedShape.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoIndexedTriangleStripSet.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoInfo.lo SoLOD.lo SoLabel.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoLevelOfDetail.lo SoLight.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoLightModel.lo SoLineSet.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoExtSelection.lo SoFile.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoFont.lo SoFontStyle.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGroup.lo SoInfo.lo SoLOD.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoLabel.lo SoLevelOfDetail.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoLight.lo SoLightModel.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoLinearProfile.lo SoListener.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoLocateHighlight.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoMarkerSet.lo SoMaterial.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoLocateHighlight.lo SoMaterial.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoMaterialBinding.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoMatrixTransform.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoMultipleCopy.lo SoNode.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoNonIndexedShape.lo SoNormal.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoNormalBinding.lo SoNurbsCurve.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoNormal.lo SoNormalBinding.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoNurbsProfile.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoNurbsSurface.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoOrthographicCamera.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoPackedColor.lo SoPathSwitch.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoPendulum.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoPerspectiveCamera.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoPickStyle.lo SoPointLight.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoPointSet.lo SoPolygonOffset.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoProfile.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoPolygonOffset.lo SoProfile.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoProfileCoordinate2.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoProfileCoordinate3.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoQuadMesh.lo SoResetTransform.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoRotation.lo SoRotationXYZ.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoRotor.lo SoScale.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoSelection.lo SoSeparator.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoShape.lo SoShapeHints.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoShuttle.lo SoSphere.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoSpotLight.lo SoSurroundScale.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoSwitch.lo SoText2.lo SoText3.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoResetTransform.lo SoRotation.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoRotationXYZ.lo SoRotor.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoScale.lo SoSelection.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoSeparator.lo SoShapeHints.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoShuttle.lo SoSpotLight.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoSurroundScale.lo SoSwitch.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTexture2.lo SoTexture3.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTexture2Transform.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTexture3Transform.lo \
@@ -611,14 +514,10 @@ libnodes_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoTransparencyType.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTransformSeparator.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTransformation.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoTranslation.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoTriangleStripSet.lo SoUnits.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoTranslation.lo SoUnits.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoUnknownNode.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoVertexProperty.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoVertexShape.lo SoWWWAnchor.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoWWWInline.lo soshape_primdata.lo \
-@HACKING_COMPACT_BUILD_FALSE@	soshape_bigtexture.lo \
-@HACKING_COMPACT_BUILD_FALSE@	soshape_trianglesort.lo
+@HACKING_COMPACT_BUILD_FALSE@	SoVertexProperty.lo SoWWWAnchor.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoWWWInline.lo
 libnodes_la_OBJECTS = $(am_libnodes_la_OBJECTS)
 libnodes@SUFFIX@LINKHACK_la_LDFLAGS =
 libnodes@SUFFIX@LINKHACK_la_LIBADD =
@@ -626,55 +525,40 @@ libnodes@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_TRUE@	all.lo
 @HACKING_COMPACT_BUILD_FALSE@am_libnodes@SUFFIX@LINKHACK_la_OBJECTS = \
 @HACKING_COMPACT_BUILD_FALSE@	SoAnnotation.lo SoAntiSquish.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoArray.lo SoAsciiText.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoBaseColor.lo SoBlinker.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoCallback.lo SoCamera.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoClipPlane.lo SoColorIndex.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoComplexity.lo SoCone.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoArray.lo SoBaseColor.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoBlinker.lo SoCallback.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoCamera.lo SoClipPlane.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoColorIndex.lo SoComplexity.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoCoordinate3.lo SoCoordinate4.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoCube.lo SoCylinder.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoDirectionalLight.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoDrawStyle.lo SoEnvironment.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoEventCallback.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoExtSelection.lo SoFaceSet.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoFile.lo SoFont.lo SoFontStyle.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGroup.lo SoImage.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoIndexedFaceSet.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoIndexedLineSet.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoIndexedNurbsCurve.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoIndexedNurbsSurface.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoIndexedShape.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoIndexedTriangleStripSet.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoInfo.lo SoLOD.lo SoLabel.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoLevelOfDetail.lo SoLight.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoLightModel.lo SoLineSet.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoExtSelection.lo SoFile.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoFont.lo SoFontStyle.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGroup.lo SoInfo.lo SoLOD.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoLabel.lo SoLevelOfDetail.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoLight.lo SoLightModel.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoLinearProfile.lo SoListener.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoLocateHighlight.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoMarkerSet.lo SoMaterial.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoLocateHighlight.lo SoMaterial.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoMaterialBinding.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoMatrixTransform.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoMultipleCopy.lo SoNode.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoNonIndexedShape.lo SoNormal.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoNormalBinding.lo SoNurbsCurve.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoNormal.lo SoNormalBinding.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoNurbsProfile.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoNurbsSurface.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoOrthographicCamera.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoPackedColor.lo SoPathSwitch.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoPendulum.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoPerspectiveCamera.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoPickStyle.lo SoPointLight.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoPointSet.lo SoPolygonOffset.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoProfile.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoPolygonOffset.lo SoProfile.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoProfileCoordinate2.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoProfileCoordinate3.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoQuadMesh.lo SoResetTransform.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoRotation.lo SoRotationXYZ.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoRotor.lo SoScale.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoSelection.lo SoSeparator.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoShape.lo SoShapeHints.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoShuttle.lo SoSphere.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoSpotLight.lo SoSurroundScale.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoSwitch.lo SoText2.lo SoText3.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoResetTransform.lo SoRotation.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoRotationXYZ.lo SoRotor.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoScale.lo SoSelection.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoSeparator.lo SoShapeHints.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoShuttle.lo SoSpotLight.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoSurroundScale.lo SoSwitch.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTexture2.lo SoTexture3.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTexture2Transform.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTexture3Transform.lo \
@@ -690,14 +574,10 @@ libnodes@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoTransparencyType.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTransformSeparator.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTransformation.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoTranslation.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoTriangleStripSet.lo SoUnits.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoTranslation.lo SoUnits.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoUnknownNode.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoVertexProperty.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoVertexShape.lo SoWWWAnchor.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoWWWInline.lo soshape_primdata.lo \
-@HACKING_COMPACT_BUILD_FALSE@	soshape_bigtexture.lo \
-@HACKING_COMPACT_BUILD_FALSE@	soshape_trianglesort.lo
+@HACKING_COMPACT_BUILD_FALSE@	SoVertexProperty.lo SoWWWAnchor.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoWWWInline.lo
 libnodes@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libnodes@SUFFIX@LINKHACK_la_OBJECTS)
 
@@ -710,8 +590,7 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoAnnotation.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoAntiSquish.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoAntiSquish.Po $(DEPDIR)/SoArray.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoArray.Po $(DEPDIR)/SoAsciiText.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoAsciiText.Po $(DEPDIR)/SoBaseColor.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoArray.Po $(DEPDIR)/SoBaseColor.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoBaseColor.Po $(DEPDIR)/SoBlinker.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoBlinker.Po $(DEPDIR)/SoCallback.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoCallback.Po $(DEPDIR)/SoCamera.Plo \
@@ -719,13 +598,11 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoClipPlane.Po $(DEPDIR)/SoColorIndex.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoColorIndex.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoComplexity.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoComplexity.Po $(DEPDIR)/SoCone.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoCone.Po $(DEPDIR)/SoCoordinate3.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoComplexity.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoCoordinate3.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoCoordinate3.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoCoordinate4.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoCoordinate4.Po $(DEPDIR)/SoCube.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoCube.Po $(DEPDIR)/SoCylinder.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoCylinder.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoCoordinate4.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoDirectionalLight.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoDirectionalLight.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoDrawStyle.Plo $(DEPDIR)/SoDrawStyle.Po \
@@ -734,38 +611,22 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoEventCallback.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoEventCallback.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoExtSelection.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoExtSelection.Po $(DEPDIR)/SoFaceSet.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoFaceSet.Po $(DEPDIR)/SoFile.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoExtSelection.Po $(DEPDIR)/SoFile.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoFile.Po $(DEPDIR)/SoFont.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoFont.Po $(DEPDIR)/SoFontStyle.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoFontStyle.Po $(DEPDIR)/SoGroup.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGroup.Po $(DEPDIR)/SoImage.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoImage.Po $(DEPDIR)/SoIndexedFaceSet.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoIndexedFaceSet.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoIndexedLineSet.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoIndexedLineSet.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoIndexedNurbsCurve.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoIndexedNurbsCurve.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoIndexedNurbsSurface.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoIndexedNurbsSurface.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoIndexedShape.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoIndexedShape.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoIndexedTriangleStripSet.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoIndexedTriangleStripSet.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoInfo.Plo $(DEPDIR)/SoInfo.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoLOD.Plo $(DEPDIR)/SoLOD.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoLabel.Plo $(DEPDIR)/SoLabel.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoLevelOfDetail.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoGroup.Po $(DEPDIR)/SoInfo.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoInfo.Po $(DEPDIR)/SoLOD.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoLOD.Po $(DEPDIR)/SoLabel.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoLabel.Po $(DEPDIR)/SoLevelOfDetail.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoLevelOfDetail.Po $(DEPDIR)/SoLight.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoLight.Po $(DEPDIR)/SoLightModel.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoLightModel.Po $(DEPDIR)/SoLineSet.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoLineSet.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoLightModel.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoLinearProfile.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoLinearProfile.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoListener.Plo $(DEPDIR)/SoListener.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoLocateHighlight.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoLocateHighlight.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoMarkerSet.Plo $(DEPDIR)/SoMarkerSet.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoMaterial.Plo $(DEPDIR)/SoMaterial.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoMaterialBinding.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoMaterialBinding.Po \
@@ -773,17 +634,11 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoMatrixTransform.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoMultipleCopy.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoMultipleCopy.Po $(DEPDIR)/SoNode.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoNode.Po $(DEPDIR)/SoNonIndexedShape.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoNonIndexedShape.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoNormal.Plo $(DEPDIR)/SoNormal.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoNormalBinding.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoNode.Po $(DEPDIR)/SoNormal.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoNormal.Po $(DEPDIR)/SoNormalBinding.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoNormalBinding.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoNurbsCurve.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoNurbsCurve.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoNurbsProfile.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoNurbsProfile.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoNurbsSurface.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoNurbsSurface.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoOrthographicCamera.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoOrthographicCamera.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoPackedColor.Plo \
@@ -795,8 +650,7 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoPerspectiveCamera.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoPickStyle.Plo $(DEPDIR)/SoPickStyle.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoPointLight.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoPointLight.Po $(DEPDIR)/SoPointSet.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoPointSet.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoPointLight.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoPolygonOffset.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoPolygonOffset.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoProfile.Plo $(DEPDIR)/SoProfile.Po \
@@ -804,7 +658,6 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoProfileCoordinate2.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoProfileCoordinate3.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoProfileCoordinate3.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoQuadMesh.Plo $(DEPDIR)/SoQuadMesh.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoResetTransform.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoResetTransform.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoRotation.Plo $(DEPDIR)/SoRotation.Po \
@@ -813,17 +666,13 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoRotor.Po $(DEPDIR)/SoScale.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoScale.Po $(DEPDIR)/SoSelection.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoSelection.Po $(DEPDIR)/SoSeparator.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoSeparator.Po $(DEPDIR)/SoShape.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoShape.Po $(DEPDIR)/SoShapeHints.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoSeparator.Po $(DEPDIR)/SoShapeHints.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoShapeHints.Po $(DEPDIR)/SoShuttle.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoShuttle.Po $(DEPDIR)/SoSphere.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoSphere.Po $(DEPDIR)/SoSpotLight.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoShuttle.Po $(DEPDIR)/SoSpotLight.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoSpotLight.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoSurroundScale.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoSurroundScale.Po $(DEPDIR)/SoSwitch.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoSwitch.Po $(DEPDIR)/SoText2.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoText2.Po $(DEPDIR)/SoText3.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoText3.Po $(DEPDIR)/SoTexture2.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoSwitch.Po $(DEPDIR)/SoTexture2.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoTexture2.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoTexture2Transform.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoTexture2Transform.Po \
@@ -855,24 +704,14 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoTranslation.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoTransparencyType.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoTransparencyType.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoTriangleStripSet.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoTriangleStripSet.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoUnits.Plo $(DEPDIR)/SoUnits.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoUnknownNode.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoUnknownNode.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoVertexProperty.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoVertexProperty.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoVertexShape.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoVertexShape.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoWWWAnchor.Plo $(DEPDIR)/SoWWWAnchor.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoWWWInline.Plo $(DEPDIR)/SoWWWInline.Po \
-@AMDEP_TRUE@	$(DEPDIR)/all.Plo $(DEPDIR)/all.Po \
-@AMDEP_TRUE@	$(DEPDIR)/soshape_bigtexture.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/soshape_bigtexture.Po \
-@AMDEP_TRUE@	$(DEPDIR)/soshape_primdata.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/soshape_primdata.Po \
-@AMDEP_TRUE@	$(DEPDIR)/soshape_trianglesort.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/soshape_trianglesort.Po
+@AMDEP_TRUE@	$(DEPDIR)/all.Plo $(DEPDIR)/all.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -963,8 +802,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoAntiSquish.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoArray.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoArray.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoAsciiText.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoAsciiText.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoBaseColor.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoBaseColor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoBlinker.Plo@am__quote@
@@ -979,16 +816,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoColorIndex.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoComplexity.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoComplexity.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoCone.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoCone.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoCoordinate3.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoCoordinate3.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoCoordinate4.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoCoordinate4.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoCube.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoCube.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoCylinder.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoCylinder.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoDirectionalLight.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoDirectionalLight.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoDrawStyle.Plo@am__quote@
@@ -999,8 +830,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoEventCallback.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoExtSelection.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoExtSelection.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoFaceSet.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoFaceSet.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoFile.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoFile.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoFont.Plo@am__quote@
@@ -1009,20 +838,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoFontStyle.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGroup.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGroup.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoImage.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoImage.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoIndexedFaceSet.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoIndexedFaceSet.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoIndexedLineSet.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoIndexedLineSet.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoIndexedNurbsCurve.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoIndexedNurbsCurve.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoIndexedNurbsSurface.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoIndexedNurbsSurface.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoIndexedShape.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoIndexedShape.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoIndexedTriangleStripSet.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoIndexedTriangleStripSet.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoInfo.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoInfo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoLOD.Plo@am__quote@
@@ -1035,16 +850,12 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoLight.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoLightModel.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoLightModel.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoLineSet.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoLineSet.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoLinearProfile.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoLinearProfile.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoListener.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoListener.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoLocateHighlight.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoLocateHighlight.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoMarkerSet.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoMarkerSet.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoMaterial.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoMaterial.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoMaterialBinding.Plo@am__quote@
@@ -1055,18 +866,12 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoMultipleCopy.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoNode.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoNode.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoNonIndexedShape.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoNonIndexedShape.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoNormal.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoNormal.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoNormalBinding.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoNormalBinding.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoNurbsCurve.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoNurbsCurve.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoNurbsProfile.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoNurbsProfile.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoNurbsSurface.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoNurbsSurface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoOrthographicCamera.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoOrthographicCamera.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoPackedColor.Plo@am__quote@
@@ -1081,8 +886,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoPickStyle.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoPointLight.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoPointLight.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoPointSet.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoPointSet.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoPolygonOffset.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoPolygonOffset.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoProfile.Plo@am__quote@
@@ -1091,8 +894,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoProfileCoordinate2.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoProfileCoordinate3.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoProfileCoordinate3.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoQuadMesh.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoQuadMesh.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoResetTransform.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoResetTransform.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoRotation.Plo@am__quote@
@@ -1107,24 +908,16 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoSelection.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoSeparator.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoSeparator.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoShape.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoShape.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoShapeHints.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoShapeHints.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoShuttle.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoShuttle.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoSphere.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoSphere.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoSpotLight.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoSpotLight.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoSurroundScale.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoSurroundScale.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoSwitch.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoSwitch.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoText2.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoText2.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoText3.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoText3.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTexture2.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTexture2.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTexture2Transform.Plo@am__quote@
@@ -1159,28 +952,18 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTranslation.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTransparencyType.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTransparencyType.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTriangleStripSet.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTriangleStripSet.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoUnits.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoUnits.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoUnknownNode.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoUnknownNode.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoVertexProperty.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoVertexProperty.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoVertexShape.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoVertexShape.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoWWWAnchor.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoWWWAnchor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoWWWInline.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoWWWInline.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/all.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/all.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/soshape_bigtexture.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/soshape_bigtexture.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/soshape_primdata.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/soshape_primdata.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/soshape_trianglesort.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/soshape_trianglesort.Po@am__quote@
 
 distclean-depend:
 	-rm -rf $(DEPDIR)

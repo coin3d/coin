@@ -45,7 +45,7 @@ endif
 SUBDIRS = \
 	extensions actions base bundles caches details draggers elements \
 	engines errors events fields glue manips misc lists nodekits nodes \
-	projectors sensors upgraders 3ds $(THREADSDIR) $(VRML97DIR) .
+	shapenodes projectors sensors upgraders 3ds $(THREADSDIR) $(VRML97DIR) .
 
 INCLUDES = -I$(top_srcdir)/include
 
@@ -61,12 +61,13 @@ else
 libCoin@SUFFIX@_la_LIBADD = \
 	actions/libactions.la base/libbase.la \
 	bundles/libbundles.la caches/libcaches.la elements/libelements.la \
-	elements/GL/libglelements.la \
-	engines/libengines.la errors/liberrors.la events/libevents.la \
-	fields/libfields.la glue/libglue.la misc/libmisc.la lists/liblists.la \
-	nodekits/libnodekits.la nodes/libnodes.la projectors/libprojectors.la \
-	sensors/libsensors.la details/libdetails.la draggers/libdraggers.la \
-	manips/libmanips.la upgraders/libupgraders.la 3ds/libformat3ds.la \
+	elements/GL/libglelements.la engines/libengines.la \
+	errors/liberrors.la events/libevents.la fields/libfields.la \
+	glue/libglue.la misc/libmisc.la lists/liblists.la \
+	nodekits/libnodekits.la nodes/libnodes.la shapenodes/libshapenodes.la \
+	projectors/libprojectors.la sensors/libsensors.la \
+	details/libdetails.la draggers/libdraggers.la manips/libmanips.la \
+	upgraders/libupgraders.la 3ds/libformat3ds.la \
 	$(THREADSLIBADD) $(VRML97LIBADD) $(SUPERGLULIBADD)
 endif
 
@@ -77,12 +78,13 @@ libCoin@SUFFIX@_la_SOURCES = \
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 	actions/actions.lst base/base.lst \
 	bundles/bundles.lst caches/caches.lst elements/elements.lst \
-	elements/GL/glelements.lst \
-	engines/engines.lst errors/errors.lst events/events.lst \
-	fields/fields.lst glue/glue.lst misc/misc.lst lists/lists.lst \
-	nodekits/nodekits.lst nodes/nodes.lst projectors/projectors.lst \
-	sensors/sensors.lst details/details.lst draggers/draggers.lst \
-	manips/manips.lst upgraders/upgraders.lst 3ds/format3ds.lst \
+	elements/GL/glelements.lst engines/engines.lst \
+	errors/errors.lst events/events.lst fields/fields.lst \
+	glue/glue.lst misc/misc.lst lists/lists.lst \
+	nodekits/nodekits.lst nodes/nodes.lst shapenodes/shapenodes.lst \
+	projectors/projectors.lst sensors/sensors.lst \
+	details/details.lst draggers/draggers.lst manips/manips.lst \
+	upgraders/upgraders.lst 3ds/format3ds.lst \
 	$(THREADSLSTADD) $(VRML97LSTADD) $(SUPERGLULSTADD)
 
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = \
