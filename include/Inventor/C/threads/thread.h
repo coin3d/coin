@@ -36,6 +36,7 @@ COIN_DLL_API void cc_thread_destruct(cc_thread * thread);
 
 COIN_DLL_API int cc_thread_join(cc_thread * thread, void ** retvalptr);
 
+COIN_DLL_API unsigned long cc_thread_id(void);
 COIN_DLL_API void cc_sleep(float seconds);
 
 /*

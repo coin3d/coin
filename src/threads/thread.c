@@ -121,6 +121,20 @@ cc_sleep(float seconds)
 #endif
 };
 
+
+unsigned long 
+cc_thread_id(void)
+{
+#ifdef USE_PTHREAD
+  return (unsigned long) pthread_self();
+#endif /* USE_PTHREAD */
+
+#ifdef USE_W32THREAD
+  return 0; /* not supported yet */
+#endif /* USE_W32THREAD */
+}
+
+
 /* ********************************************************************** */
 
 /* maybe use static table of thread structures, reference counted, to be
