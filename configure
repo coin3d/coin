@@ -4822,7 +4822,7 @@ echo "$as_me: WARNING: --enable-warnings only has effect when using GNU gcc or g
 fi
 
 COIN_DEBUG_BUILD=false
-echo "$CPPFLAGS $CFLAGS $CXXFLAGS" | egrep -q -- "-g\\>" &&
+test -n "`echo $CPPFLAGS CFLAGS $CXXFLAGS | grep -- '-g\\>'`" &&
   COIN_DEBUG_BUILD=true
 
 if $COIN_DEBUG_BUILD; then
@@ -7598,7 +7598,7 @@ fi
 
 # **************************************************************************
 
-ac_config_files="$ac_config_files Makefile include/Makefile include/Inventor/Makefile include/Inventor/lock/Makefile data/Makefile data/draggerDefaults/Makefile src/Makefile src/base/Makefile src/VRMLnodes/Makefile src/actions/Makefile src/bundles/Makefile src/caches/Makefile src/details/Makefile src/draggers/Makefile src/elements/Makefile src/engines/Makefile src/errors/Makefile src/events/Makefile src/fields/Makefile src/manips/Makefile src/misc/Makefile src/lists/Makefile src/nodekits/Makefile src/nodes/Makefile src/projectors/Makefile src/sensors/Makefile src/system/Makefile build/Makefile build/coin.spec build/coin.nsi docs/coin.doxygen coin.cfg"
+ac_config_files="$ac_config_files Makefile include/Makefile include/Inventor/Makefile include/Inventor/lock/Makefile data/Makefile data/draggerDefaults/Makefile src/Makefile src/base/Makefile src/VRMLnodes/Makefile src/actions/Makefile src/bundles/Makefile src/caches/Makefile src/details/Makefile src/draggers/Makefile src/elements/Makefile src/engines/Makefile src/errors/Makefile src/events/Makefile src/fields/Makefile src/manips/Makefile src/misc/Makefile src/lists/Makefile src/nodekits/Makefile src/nodes/Makefile src/projectors/Makefile src/sensors/Makefile src/system/Makefile build/Makefile build/coin.spec docs/coin.doxygen coin.cfg"
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
 # tests run on this system so they can be shared between configure
@@ -7917,7 +7917,6 @@ Try \`$0 --help' for more information." >&2;}
   'src/system/Makefile' ) CONFIG_FILES="$CONFIG_FILES src/system/Makefile" ;;
   'build/Makefile' ) CONFIG_FILES="$CONFIG_FILES build/Makefile" ;;
   'build/coin.spec' ) CONFIG_FILES="$CONFIG_FILES build/coin.spec" ;;
-  'build/coin.nsi' ) CONFIG_FILES="$CONFIG_FILES build/coin.nsi" ;;
   'docs/coin.doxygen' ) CONFIG_FILES="$CONFIG_FILES docs/coin.doxygen" ;;
   'coin.cfg' ) CONFIG_FILES="$CONFIG_FILES coin.cfg" ;;
   'default-1' ) CONFIG_COMMANDS="$CONFIG_COMMANDS default-1" ;;
@@ -7926,12 +7925,12 @@ Try \`$0 --help' for more information." >&2;}
   'include/Inventor/SbBasic.h' ) CONFIG_HEADERS="$CONFIG_HEADERS include/Inventor/SbBasic.h" ;;
 
   # This is an error.
-  -*) { { echo "$as_me:7929: error: unrecognized option: $1
+  -*) { { echo "$as_me:7928: error: unrecognized option: $1
 Try \`$0 --help' for more information." >&5
 echo "$as_me: error: unrecognized option: $1
 Try \`$0 --help' for more information." >&2;}
    { (exit 1); exit 1; }; } ;;
-  *) { { echo "$as_me:7934: error: invalid argument: $1" >&5
+  *) { { echo "$as_me:7933: error: invalid argument: $1" >&5
 echo "$as_me: error: invalid argument: $1" >&2;}
    { (exit 1); exit 1; }; };;
   esac
@@ -8230,7 +8229,7 @@ done; }
   esac
 
   if test x"$ac_file" != x-; then
-    { echo "$as_me:8233: creating $ac_file" >&5
+    { echo "$as_me:8232: creating $ac_file" >&5
 echo "$as_me: creating $ac_file" >&6;}
     rm -f "$ac_file"
   fi
@@ -8248,7 +8247,7 @@ echo "$as_me: creating $ac_file" >&6;}
       -) echo $tmp/stdin ;;
       [\\/$]* | ?:[\\/]*)
          # Absolute
-         test -f "$f" || { { echo "$as_me:8251: error: cannot find input file: $f" >&5
+         test -f "$f" || { { echo "$as_me:8250: error: cannot find input file: $f" >&5
 echo "$as_me: error: cannot find input file: $f" >&2;}
    { (exit 1); exit 1; }; }
          echo $f;;
@@ -8261,7 +8260,7 @@ echo "$as_me: error: cannot find input file: $f" >&2;}
            echo $srcdir/$f
          else
            # /dev/null tree
-           { { echo "$as_me:8264: error: cannot find input file: $f" >&5
+           { { echo "$as_me:8263: error: cannot find input file: $f" >&5
 echo "$as_me: error: cannot find input file: $f" >&2;}
    { (exit 1); exit 1; }; }
          fi;;
@@ -8322,7 +8321,7 @@ for ac_file in : $CONFIG_HEADERS; do test "x$ac_file" = x: && continue
   * )   ac_file_in=$ac_file.in ;;
   esac
 
-  test x"$ac_file" != x- && { echo "$as_me:8325: creating $ac_file" >&5
+  test x"$ac_file" != x- && { echo "$as_me:8324: creating $ac_file" >&5
 echo "$as_me: creating $ac_file" >&6;}
 
   # First look for the input files in the build tree, otherwise in the
@@ -8333,7 +8332,7 @@ echo "$as_me: creating $ac_file" >&6;}
       -) echo $tmp/stdin ;;
       [\\/$]* | ?:[\\/]*)
          # Absolute
-         test -f "$f" || { { echo "$as_me:8336: error: cannot find input file: $f" >&5
+         test -f "$f" || { { echo "$as_me:8335: error: cannot find input file: $f" >&5
 echo "$as_me: error: cannot find input file: $f" >&2;}
    { (exit 1); exit 1; }; }
          echo $f;;
@@ -8346,7 +8345,7 @@ echo "$as_me: error: cannot find input file: $f" >&2;}
            echo $srcdir/$f
          else
            # /dev/null tree
-           { { echo "$as_me:8349: error: cannot find input file: $f" >&5
+           { { echo "$as_me:8348: error: cannot find input file: $f" >&5
 echo "$as_me: error: cannot find input file: $f" >&2;}
    { (exit 1); exit 1; }; }
          fi;;
@@ -8463,7 +8462,7 @@ cat >>$CONFIG_STATUS <<\EOF
   rm -f $tmp/in
   if test x"$ac_file" != x-; then
     if cmp -s $ac_file $tmp/config.h 2>/dev/null; then
-      { echo "$as_me:8466: $ac_file is unchanged" >&5
+      { echo "$as_me:8465: $ac_file is unchanged" >&5
 echo "$as_me: $ac_file is unchanged" >&6;}
     else
       ac_dir=`$as_expr X"$ac_file" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
