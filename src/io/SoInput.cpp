@@ -404,11 +404,17 @@ SoInput::SoInput(SoInput * dictIn)
 void
 SoInput::constructorsCommon(void)
 {
-  // If an SoInput instance is made before SoDB::init() was called,
-  // we'll get a crash further down into the call stack from this
-  // function, so let's try to catch this potential confusing problem
-  // early on:
-  assert(SoDB::isInitialized() && "SoDB::init() has not been called!");
+  // In general, we force app programmers to call SoDB::init(),
+  // directly or indirectly, before using any other part of the Coin
+  // API. We grant slack in one particular spot, though: it should be
+  // possible to construct an SoInput before SoDB::init() has been
+  // invoked from app code, as it is common to just have an SoInput on
+  // the stack of the main() function.
+  // 
+  // But since SoInput uses threads, which needs to be initialized, we
+  // need to check for SoDB::init() here, and invoke it if it was not
+  // yet called.
+  if (!SoDB::isInitialized()) { SoDB::init(); }
 
   PRIVATE(this) = new SoInputP(this);
 
@@ -436,7 +442,22 @@ SoInput::~SoInput(void)
 {
   this->closeFile();
 
+  // FIXME: this causes a crash if SoDB::cleanup() was already called,
+  // as the atexit-function destructed soinput_tls. This can
+  // e.g. happen for the following, common main() structure:
+  //
+  // int main(void) {
+  //   SoDB::init();
+  //   [...]
+  //   SoInput in;
+  //   [...]
+  //   SoDB::cleanup();
+  //   return 0;
+  // }
+  //
+  // 20041022 mortene.
   soinput_tls_data * data = (soinput_tls_data *)soinput_tls->get();
+
   data->instancecount--;
   if (data->instancecount == 0) {
     for (int i = 0; i < data->searchlist->getLength(); i++) {
@@ -1920,7 +1941,7 @@ SoInput::clean(void)
   delete SoInput::dirsearchlist;
   SoInput::dirsearchlist = NULL;
 
-  delete soinput_tls;
+  delete soinput_tls; soinput_tls = NULL;
 }
 
 /*!
