@@ -128,7 +128,9 @@ SoGLDisplayList::SoGLDisplayList(SoState * state, Type type, int allocnum,
       this->firstindex = (unsigned int) glGenLists(allocnum);
       if (this->firstindex == 0) {
         SoDebugError::post("SoGLDisplayList::SoGLDisplayList",
-                           "could not reserve %d displaylist%s", allocnum, allocnum==1 ? "" : "s");
+                           "Could not reserve %d displaylist%s. "
+                           "Expect flawed rendering.",
+                           allocnum, allocnum==1 ? "" : "s");
       }
     }
   }
@@ -136,7 +138,9 @@ SoGLDisplayList::SoGLDisplayList(SoState * state, Type type, int allocnum,
     this->firstindex = (unsigned int) glGenLists(allocnum);
     if (this->firstindex == 0) {
       SoDebugError::post("SoGLDisplayList::SoGLDisplayList",
-                         "could not reserve %d displaylist%s", allocnum, allocnum==1 ? "" : "s");
+                         "Could not reserve %d displaylist%s. "
+                         "Expect flawed rendering.",
+                         allocnum, allocnum==1 ? "" : "s");
       // FIXME: be more robust in handling this -- the rendering will
       // gradually go bonkers after we hit this problem. 20020619 mortene.
     }
@@ -211,6 +215,12 @@ SoGLDisplayList::close(SoState * state)
 {
   if (this->type == DISPLAY_LIST) {
     glEndList();
+    if (glGetError() == GL_OUT_OF_MEMORY) {
+      SoDebugError::post("SoGLDisplayList::close",
+                         "Not enough memory resources available on system "
+                         "to store full display list. Expect flaws in "
+                         "rendering.");
+    }
   }
 }
 
