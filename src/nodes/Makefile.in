@@ -212,6 +212,7 @@ RegularSources = \
 	SoTexture2.cpp \
 	SoTexture2Transform.cpp \
 	SoTextureCoordinate2.cpp \
+	SoTextureCoordinate3.cpp \
 	SoTextureCoordinateBinding.cpp \
 	SoTextureCoordinateDefault.cpp \
 	SoTextureCoordinateEnvironment.cpp \
@@ -326,6 +327,7 @@ PublicHeaders = \
 	../../include/Inventor/nodes/SoTexture2.h \
 	../../include/Inventor/nodes/SoTexture2Transform.h \
 	../../include/Inventor/nodes/SoTextureCoordinate2.h \
+	../../include/Inventor/nodes/SoTextureCoordinate3.h \
 	../../include/Inventor/nodes/SoTextureCoordinateBinding.h \
 	../../include/Inventor/nodes/SoTextureCoordinateDefault.h \
 	../../include/Inventor/nodes/SoTextureCoordinateEnvironment.h \
@@ -482,6 +484,7 @@ nodes_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoTexture2.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoTexture2Transform.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinate2.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinate3.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinateBinding.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinateDefault.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinateEnvironment.$(OBJEXT) \
@@ -563,6 +566,7 @@ libnodes_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoTexture2.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTexture2Transform.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinate2.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinate3.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinateBinding.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinateDefault.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinateEnvironment.lo \
@@ -640,6 +644,7 @@ libnodes@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoTexture2.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTexture2Transform.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinate2.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinate3.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinateBinding.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinateDefault.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinateEnvironment.lo \
@@ -788,6 +793,8 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoTexture2Transform.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoTextureCoordinate2.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoTextureCoordinate2.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoTextureCoordinate3.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoTextureCoordinate3.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoTextureCoordinateBinding.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoTextureCoordinateBinding.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoTextureCoordinateDefault.Plo \
@@ -1083,6 +1090,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTexture2Transform.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTextureCoordinate2.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTextureCoordinate2.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTextureCoordinate3.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTextureCoordinate3.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTextureCoordinateBinding.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTextureCoordinateBinding.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTextureCoordinateDefault.Plo@am__quote@

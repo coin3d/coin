@@ -506,6 +506,8 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/SbBasic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTexture2Transform.h \
                          @path_tag@@coin_src_dir@/src/nodes/SoTextureCoordinate2.cpp \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinate2.h \
+                         @path_tag@@coin_src_dir@/src/nodes/SoTextureCoordinate3.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinate3.h \
                          @path_tag@@coin_src_dir@/src/nodes/SoTextureCoordinateBinding.cpp \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoTextureCoordinateBinding.h \
                          @path_tag@@coin_src_dir@/src/nodes/SoTextureCoordinateDefault.cpp \

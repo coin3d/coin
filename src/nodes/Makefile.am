@@ -88,6 +88,7 @@ RegularSources = \
 	SoTexture2.cpp \
 	SoTexture2Transform.cpp \
 	SoTextureCoordinate2.cpp \
+	SoTextureCoordinate3.cpp \
 	SoTextureCoordinateBinding.cpp \
 	SoTextureCoordinateDefault.cpp \
 	SoTextureCoordinateEnvironment.cpp \
@@ -200,6 +201,7 @@ PublicHeaders = \
 	../../include/Inventor/nodes/SoTexture2.h \
 	../../include/Inventor/nodes/SoTexture2Transform.h \
 	../../include/Inventor/nodes/SoTextureCoordinate2.h \
+	../../include/Inventor/nodes/SoTextureCoordinate3.h \
 	../../include/Inventor/nodes/SoTextureCoordinateBinding.h \
 	../../include/Inventor/nodes/SoTextureCoordinateDefault.h \
 	../../include/Inventor/nodes/SoTextureCoordinateEnvironment.h \
@@ -223,7 +225,7 @@ PrivateHeaders = \
 	soshape_primdata.h \
 	soshape_trianglesort.h \
 	soshape_bigtexture.h 
-	
+
 
 ##$ BEGIN TEMPLATE Make-Common(nodes)
 
