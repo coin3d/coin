@@ -133,9 +133,11 @@ static int cc_gzm_ferror(cc_gzm_file * file);
 
 void * cc_gzm_open(const uint8_t * buffer, uint32_t len)
 {
+  int err;
   int level = Z_DEFAULT_COMPRESSION; /* compression level */
   int strategy = Z_DEFAULT_STRATEGY; /* compression strategy */
   cc_gzm_stream * s;
+
 
   s = (cc_gzm_stream *) Z_ALLOC(sizeof(cc_gzm_stream));
   if (!s) return NULL;
@@ -758,7 +760,8 @@ int cc_gzm_close(void * file)
 
   if (s->mode == 'w') {
 #ifdef Z_NO_DEFLATE
-    return Z_STREAM_ERROR;
+    err = Z_STREAM_ERROR;
+    return err;
 #else
     err = do_flush (file, Z_FINISH);
     if (err != Z_OK) return destroy((cc_gzm_stream*)file);
