@@ -66,7 +66,6 @@ sosfint32_read_value(SoInput * in, int32_t & val)
 {
   int tmp;
   if (!in->read(tmp)) {
-    SoReadError::post(in, "Premature end of file");
     return FALSE;
   }
   val = (int32_t) tmp;
