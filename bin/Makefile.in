@@ -138,6 +138,8 @@ install_sh = @install_sh@
 nop = @nop@
 path_tag = @path_tag@
 sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
+sim_ac_dpkg_buildpackage_exe = @sim_ac_dpkg_buildpackage_exe@
+sim_ac_makensis_exe = @sim_ac_makensis_exe@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 

@@ -13743,8 +13743,6 @@ else
   want_html=no
 fi;
 
-coin_html_dir=`pwd`/html
-
 case $htmldir in
 "")
   htmldir="$datadir/Coin/html"
@@ -13770,14 +13768,14 @@ else
   want_man=no
 fi;
 
-coin_man_dir=`pwd`/man
-
 # Used in the Doxygen parameter file.
 COIN_DOC_HTML=`echo $want_html | tr 'a-z' 'A-Z'`
 
+coin_html_dir=`pwd`/html
 
 COIN_DOC_MAN=`echo $want_man | tr 'a-z' 'A-Z'`
 
+coin_man_dir=`pwd`/man
 
 
 
@@ -13816,7 +13814,6 @@ else
 fi
 
 fi
-
 
 if test x"$want_html" != xno -o x"$want_man" != xno; then
 
@@ -13911,11 +13908,11 @@ echo "$as_me: error: aborting" >&2;}
   fi
 fi
 
-  sim_ac_doxygen_our_version=1.2.1
-  if test x"$sim_ac_doxygen_avail" != x"$sim_ac_doxygen_our_version"; then
-    { echo "$as_me:$LINENO: WARNING: You are not using Doxygen version $sim_ac_doxygen_our_version" >&5
-echo "$as_me: WARNING: You are not using Doxygen version $sim_ac_doxygen_our_version" >&2;}
-  fi
+  # we don't care about this - 20011204 larsa
+  # sim_ac_doxygen_our_version=1.2.1
+  # if test x"$sim_ac_doxygen_avail" != x"$sim_ac_doxygen_our_version"; then
+  #   AC_MSG_WARN(You are not using Doxygen version $sim_ac_doxygen_our_version)
+  # fi
 
   # Extract the first word of "perl", so it can be a program name with args.
 set dummy perl; ac_word=$2
@@ -13972,6 +13969,123 @@ case $host in
 esac
 
 
+
+sim_ac_makensis_exe=false
+case $host in
+*-cygwin)
+  # Extract the first word of "makensis", so it can be a program name with args.
+set dummy makensis; ac_word=$2
+echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+if test "${ac_cv_path_sim_ac_makensis_exe+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  case $sim_ac_makensis_exe in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_sim_ac_makensis_exe="$sim_ac_makensis_exe" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_sim_ac_makensis_exe="$as_dir/$ac_word$ac_exec_ext"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+
+  test -z "$ac_cv_path_sim_ac_makensis_exe" && ac_cv_path_sim_ac_makensis_exe="false"
+  ;;
+esac
+fi
+sim_ac_makensis_exe=$ac_cv_path_sim_ac_makensis_exe
+
+if test -n "$sim_ac_makensis_exe"; then
+  echo "$as_me:$LINENO: result: $sim_ac_makensis_exe" >&5
+echo "${ECHO_T}$sim_ac_makensis_exe" >&6
+else
+  echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+fi
+
+  ;;
+esac
+
+# Extract the first word of "dpkg-buildpackage", so it can be a program name with args.
+set dummy dpkg-buildpackage; ac_word=$2
+echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+if test "${ac_cv_path_sim_ac_dpkg_buildpackage_exe+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  case $sim_ac_dpkg_buildpackage_exe in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_sim_ac_dpkg_buildpackage_exe="$sim_ac_dpkg_buildpackage_exe" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_sim_ac_dpkg_buildpackage_exe="$as_dir/$ac_word$ac_exec_ext"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+
+  test -z "$ac_cv_path_sim_ac_dpkg_buildpackage_exe" && ac_cv_path_sim_ac_dpkg_buildpackage_exe="false"
+  ;;
+esac
+fi
+sim_ac_dpkg_buildpackage_exe=$ac_cv_path_sim_ac_dpkg_buildpackage_exe
+
+if test -n "$sim_ac_dpkg_buildpackage_exe"; then
+  echo "$as_me:$LINENO: result: $sim_ac_dpkg_buildpackage_exe" >&5
+echo "${ECHO_T}$sim_ac_dpkg_buildpackage_exe" >&6
+else
+  echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+fi
+
+
+sim_ac_windows_packagable=true
+if test x"$sim_ac_perl_exe" = xfalse || test x"$sim_ac_makensis_exe" = xfalse; then
+  sim_ac_windows_packageable=false
+fi
+
+
+
+if $sim_ac_windows_packageable; then
+  WIN_PACKAGEABLE_TRUE=
+  WIN_PACKAGEABLE_FALSE='#'
+else
+  WIN_PACKAGEABLE_TRUE='#'
+  WIN_PACKAGEABLE_FALSE=
+fi
+
+sim_ac_debian_packageable=true
+if test x"$sim_ac_dpkg_buildpackage_exe" = xfalse; then
+  sim_ac_debian_packageable=false
+fi
+
+
+
+if $sim_ac_debian_packageable; then
+  DEB_PACKAGEABLE_TRUE=
+  DEB_PACKAGEABLE_FALSE='#'
+else
+  DEB_PACKAGEABLE_TRUE='#'
+  DEB_PACKAGEABLE_FALSE=
+fi
 
 # *******************************************************************
 # Configure an alternate installation?
@@ -21384,6 +21498,12 @@ s,@BUILD_HTMLPAGES_FALSE@,$BUILD_HTMLPAGES_FALSE,;t t
 s,@sim_ac_doxygen_exe@,$sim_ac_doxygen_exe,;t t
 s,@sim_ac_perl_exe@,$sim_ac_perl_exe,;t t
 s,@path_tag@,$path_tag,;t t
+s,@sim_ac_makensis_exe@,$sim_ac_makensis_exe,;t t
+s,@sim_ac_dpkg_buildpackage_exe@,$sim_ac_dpkg_buildpackage_exe,;t t
+s,@WIN_PACKAGEABLE_TRUE@,$WIN_PACKAGEABLE_TRUE,;t t
+s,@WIN_PACKAGEABLE_FALSE@,$WIN_PACKAGEABLE_FALSE,;t t
+s,@DEB_PACKAGEABLE_TRUE@,$DEB_PACKAGEABLE_TRUE,;t t
+s,@DEB_PACKAGEABLE_FALSE@,$DEB_PACKAGEABLE_FALSE,;t t
 s,@CONFIG@,$CONFIG,;t t
 s,@SUFFIX@,$SUFFIX,;t t
 s,@DSUFFIX@,$DSUFFIX,;t t
