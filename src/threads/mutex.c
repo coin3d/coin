@@ -398,31 +398,33 @@ cc_mutex_unlock(cc_mutex * mutex)
 /*!
   \fn SbMutex::SbMutex(void)
 
-  FIXME: write doc
+  Constructor.
 */
 
 /*!
   \fn SbMutex::~SbMutex(void)
 
-  FIXME: write doc
+  Destructor.
 */
 
 /*!
   \fn SbBool SbMutex::lock(void)
 
-  FIXME: write doc
+  This method locks the mutex.  TRUE is returned on success.
+  This is a blocking operation.
 */
 
 /*!
   \fn SbBool SbMutex::unlock(void)
 
-  FIXME: write doc
+  This method unlocks the mutex.
 */
 
 /*!
   \fn SbBool SbMutex::tryLock(void)
 
-  FIXME: write doc
+  This method tries to lock the mutex, and returns whether it was locked
+  or not.  This is a non-blocking operation.
 */
 
 /* ********************************************************************** */

@@ -506,37 +506,43 @@ cc_condvar_wake_all(cc_condvar * condvar)
 /*!
   \fn SbCondVar::SbCondVar(void)
 
-  FIXME: write doc
+  Constructor.
 */
 
 /*!
   \fn SbCondVar::~SbCondVar(void)
 
-  FIXME: write doc
+  Destructor.
 */
 
 /*!
   \fn SbBool SbCondVar::wait(void)
 
-  FIXME: write doc
+  This method blocks the calling thread until another thread calls
+  wakeOne() or wakeAll() on the SbCondVar object.
 */
 
 /*!
   \fn SbBool SbCondVar::timedWait(SbTime period)
 
-  FIXME: write doc
+  This method blocks the calling thread until another thread calls
+  wakeOne() or wakeAll() on the object, but if this does not happen
+  within \c period, the thread is woken again anyways.
+
+  TRUE is returned when the thread wakes because either wakeOne()
+  or wakeAll() was called, FALSE is returned if the wait times out.
 */
 
 /*!
   \fn void SbCondVar::wakeOne(void)
 
-  FIXME: write doc
+  This method wakes up one of the threads waiting on this SbCondVar.
 */
 
 /*!
   \fn void SbCondVar::wakeAll(void)
 
-  FIXME: write doc
+  This method wakes up all the threads waiting on this SbCondVar.
 */
 
 /* ********************************************************************** */

@@ -38,6 +38,8 @@
 /* ********************************************************************** */
 
 /*
+ FIXME:
+ - copy struct malloc/free/init/clean setup scheme from cc_string
  - use static table of cc_thread structures?
  - use cc_storage to reference self-structure for cc_thread_get_self()?
 */
@@ -294,26 +296,44 @@ cc_sleep(float seconds)
 
 /*!
   \fn static SbThread * SbThread::create(void (*func)(void *), void * closure)
+
+  This function creates a new thread, or returns NULL on failure.
 */
 
 /*!
   \fn static void SbThread::destroy(SbThread * thread)
+
+  This function destroys a thread.
 */
 
 /*!
   \fn static int SbThread::join(SbThread * thread, void ** retval)
+
+  This function waits on the death of the given thread, returning the thread's
+  return value at the location pointed to by \c retval.
 */
 
 /*!
   \fn int SbThread::join(void ** retval)
+
+  This function waits on the death of the given thread, returning the thread's
+  return value at the location pointed to by \c retval.
 */
 
 /*!
   \fn SbThread::SbThread(cc_thread * thread)
+
+  Protected constructor handling the internal thread ADT.
+
+  \sa SbThread::create
 */
 
 /*!
   \fn SbThread::~SbThread(void)
+
+  Destructor.
+
+  \sa SbThread::destroy
 */
 
 /* ********************************************************************** */
