@@ -1364,6 +1364,15 @@
 #define GL_OBJECT_LINK_STATUS_ARB 0x8B82
 #endif /* GL_OBJECT_LINK_STATUS_ARB */
 
+/* GL_EXT_texture_filter_anisotropic */
+#ifndef GL_TEXTURE_MAX_ANISOTROPY_EXT
+#define GL_TEXTURE_MAX_ANISOTROPY_EXT 0x84FE
+#endif /* GL_TEXTURE_MAX_ANISOTROPY_EXT */
+
+#ifndef GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT
+#define GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT 0x84FF
+#endif /* GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT */
+
 /*** GL enums, end ****************************************************/
 /**********************************************************************/
 
