@@ -608,6 +608,9 @@ SoNode::initClasses(void)
   SoBumpMapTransform::initClass();
 
   SoSceneTexture2::initClass();
+
+  SoTextureCoordinateCube::initClass();
+
 }
 
 /*!
