@@ -144,8 +144,8 @@ SoMaterialBundle::reallySend(const int index, const SbBool isBetweenBeginEnd)
   if (this->doStipple && !isBetweenBeginEnd) {
     float trans;
     if (this->diffusePacked) {
-      uint32_t rgba = this->diffuseElt->getPackedArrayPtr()[index];
-      trans = (255 - (rgba & 0xff)) * 255.0f;
+      uint32_t rgba = this->diffuseElt->getPackedArrayPtr()[this->multiTrans ? index : 0];
+      trans = (255 - (rgba & 0xff)) / 255.0f;
     }
     else {
       trans = transparencyElt->get(this->multiTrans ? index : 0);
