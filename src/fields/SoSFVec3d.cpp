@@ -60,7 +60,7 @@ SoSFVec3d::initClass(void)
 // Read integer value from input stream, return TRUE if
 // successful. Also used from SoMFVec3f class.
 SbBool
-sosfvec3f_read_value(SoInput * in, SbVec3d & v)
+sosfvec3d_read_value(SoInput * in, SbVec3d & v)
 {
   if (!in->read(v[0]) || !in->read(v[1]) || !in->read(v[2])) {
     SoReadError::post(in, "Couldn't read vector");
@@ -73,7 +73,7 @@ SbBool
 SoSFVec3d::readValue(SoInput * in)
 {
   SbVec3d v;
-  if (!sosfvec3f_read_value(in, v)) return FALSE;
+  if (!sosfvec3d_read_value(in, v)) return FALSE;
   this->setValue(v);
   return TRUE;
 }
@@ -81,7 +81,7 @@ SoSFVec3d::readValue(SoInput * in)
 // Write integer value to output stream. Also used from SoMFVec3f
 // class.
 void
-sosfvec3f_write_value(SoOutput * out, const SbVec3d & v)
+sosfvec3d_write_value(SoOutput * out, const SbVec3d & v)
 {
   out->write(v[0]);
   if (!out->isBinary()) out->write(' ');
@@ -93,7 +93,7 @@ sosfvec3f_write_value(SoOutput * out, const SbVec3d & v)
 void
 SoSFVec3d::writeValue(SoOutput * out) const
 {
-  sosfvec3f_write_value(out, this->getValue());
+  sosfvec3d_write_value(out, this->getValue());
 }
 
 #endif // DOXYGEN_SKIP_THIS
