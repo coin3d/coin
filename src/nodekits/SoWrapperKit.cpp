@@ -26,8 +26,12 @@
 */
 
 #include <Inventor/nodekits/SoWrapperKit.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoTransform.h>
+
 
 SO_KIT_SOURCE(SoWrapperKit);
+
 
 /*!
   Constructor.
@@ -36,7 +40,8 @@ SoWrapperKit::SoWrapperKit(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoWrapperKit);
 
-  // FIXME: need to define catalog here. 19991107 mortene.
+  SO_KIT_ADD_CATALOG_ENTRY(localTransform, SoTransform, TRUE, topSeparator, , TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(contents, SoSeparator, TRUE, topSeparator, , TRUE);
 
   SO_KIT_INIT_INSTANCE();
 }

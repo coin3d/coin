@@ -26,8 +26,15 @@
 */
 
 #include <Inventor/nodekits/SoLightKit.h>
+#include <Inventor/nodes/SoTransformSeparator.h>
+#include <Inventor/nodes/SoTransform.h>
+#include <Inventor/nodes/SoDirectionalLight.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoCube.h>
+
 
 SO_KIT_SOURCE(SoLightKit);
+
 
 /*!
   Constructor.
@@ -36,7 +43,11 @@ SoLightKit::SoLightKit(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoLightKit);
 
-  // FIXME: need to define catalog here. 19991107 mortene.
+  SO_KIT_ADD_CATALOG_ENTRY(transformGroup, SoTransformSeparator, TRUE, this, , FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(transform, SoTransform, TRUE, transformGroup, , TRUE);
+  SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(light, SoLight, SoDirectionalLight, FALSE, transformGroup, , TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(iconSeparator, SoSeparator, TRUE, transformGroup, , FALSE);
+  SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(icon, SoNode, SoCube, TRUE, iconSeparator, , TRUE);
 
   SO_KIT_INIT_INSTANCE();
 }

@@ -26,8 +26,18 @@
 */
 
 #include <Inventor/nodekits/SoSeparatorKit.h>
+#include <Inventor/nodekits/SoShapeKit.h>
+#include <Inventor/nodekits/SoAppearanceKit.h>
+#include <Inventor/nodekits/SoNodeKitListPart.h>
+#include <Inventor/nodes/SoPickStyle.h>
+#include <Inventor/nodes/SoUnits.h>
+#include <Inventor/nodes/SoTransform.h>
+#include <Inventor/nodes/SoTexture2Transform.h>
+#include <Inventor/nodes/SoSeparator.h>
+
 
 SO_KIT_SOURCE(SoSeparatorKit);
+
 
 /*!
   Constructor.
@@ -36,7 +46,14 @@ SoSeparatorKit::SoSeparatorKit(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoSeparatorKit);
 
-  // FIXME: need to define catalog here. 19991107 mortene.
+  SO_KIT_ADD_CATALOG_ENTRY(topSeparator, SoSeparator, TRUE, this, , FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(pickStyle, SoPickStyle, TRUE, topSeparator, , TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(appearance, SoAppearanceKit, TRUE, topSeparator, , TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(units, SoUnits, TRUE, topSeparator, , TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(transform, SoTransform, TRUE, topSeparator, , TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(texture2Transform, SoTexture2Transform, TRUE, topSeparator, , TRUE);
+  SO_KIT_ADD_CATALOG_LIST_ENTRY(childList, SoSeparator, TRUE, topSeparator, , SoShapeKit, TRUE);
+  SO_KIT_ADD_LIST_ITEM_TYPE(childList, SoSeparatorKit);
 
   SO_KIT_INIT_INSTANCE();
 }
@@ -58,3 +75,6 @@ SoSeparatorKit::initClass(void)
 {
   SO_KIT_INTERNAL_INIT_CLASS(SoSeparatorKit);
 }
+
+
+// FIXME: lots of code missing in this class. 19991120 mortene.

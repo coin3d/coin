@@ -584,6 +584,15 @@ SoNodekitCatalog::addEntry(const SbName & name, SoType type,
 			   SbBool islist, SoType listcontainertype,
 			   SoType listitemtype, SbBool ispublic)
 {
+
+  // The elements of a nodekit catalog is conceptually ordered like a
+  // tree, but implementation-wise we stuff them inside a list. This
+  // will make it speedier to access the elements through preset part
+  // number indices.
+  //
+  // The list is in the same order which we would get by continually
+  // appending elements through a prefix traversal of the tree.
+
 #if COIN_DEBUG // debug
   if (name == "") {
     SoDebugError::post("SoNodekitCatalog::addEntry", "empty name not allowed");
@@ -592,6 +601,22 @@ SoNodekitCatalog::addEntry(const SbName & name, SoType type,
   else if (this->getPartNumber(name) != SO_CATALOG_NAME_NOT_FOUND) {
     SoDebugError::post("SoNodekitCatalog::addEntry",
 		       "partname \"%s\" already in use", name.getString());
+    return FALSE;
+  }
+  else if (rightsibling != "" &&
+	   this->getPartNumber(rightsibling) == SO_CATALOG_NAME_NOT_FOUND) {
+    SoDebugError::post("SoNodekitCatalog::addEntry",
+		       "right sibling \"%s\" not found", name.getString());
+    return FALSE;
+  }
+  else if (parent != "" &&
+	   this->getPartNumber(parent) == SO_CATALOG_NAME_NOT_FOUND) {
+    SoDebugError::post("SoNodekitCatalog::addEntry",
+		       "parent \"%s\" not found", name.getString());
+    return FALSE;
+  }
+  else if (parent == "" && this->getNumEntries() > 0) {
+    SoDebugError::post("SoNodekitCatalog::addEntry", "we need a parent name");
     return FALSE;
   }
   else if ((type == SoType::badType()) || (defaulttype == SoType::badType()) ||
@@ -613,7 +638,61 @@ SoNodekitCatalog::addEntry(const SbName & name, SoType type,
   newitem->containertype = listcontainertype;
   newitem->itemtypeslist.append(listitemtype);
   newitem->ispublic = ispublic;
-  this->items.append(newitem);
+
+  // First item in catalog?
+  if (this->items.getLength() == 0) {
+#if COIN_DEBUG
+    if (newitem->parentname != "" || newitem->siblingname != "") {
+      SoDebugError::post("SoNodekitCatalog::addEntry",
+			 "first item must be the toplevel parent");
+      return FALSE;
+    }
+#endif // COIN_DEBUG
+    this->items.append(newitem);
+    return TRUE;
+  }
+
+  int position = 0;
+
+  // First find parent.
+  while (this->items[position]->name != newitem->parentname) position++;
+
+  // See if we're only child so far..
+  position++;
+  if (position == this->items.getLength()) {
+    this->items.append(newitem);
+    return TRUE;
+  }
+  else {
+    CatalogItem * next = this->items[position];
+    if (next->parentname != newitem->parentname) {
+#if COIN_DEBUG
+      if (newitem->siblingname != "") {
+	SoDebugError::post("SoNodekitCatalog::addEntry",
+			   "%s is not a child of %s",
+			   newitem->siblingname.getString(),
+			   newitem->parentname.getString());
+	return FALSE;
+      }
+#endif // COIN_DEBUG
+      this->items.insert(newitem, position);
+      return TRUE;
+    }
+  }
+
+  // Find correct position among the siblings.
+  while (position < this->items.getLength() &&
+	 this->items[position]->name != newitem->siblingname &&
+	 this->items[position]->parentname == newitem->parentname) position++;
+
+  // Then insert in catalog.
+
+  CatalogItem * prev = this->items[position-1];
+  if (prev->parentname == newitem->parentname)
+    prev->siblingname = newitem->name;
+
+  if (position == this->items.getLength()) this->items.append(newitem);
+  else this->items.insert(newitem, position);
   return TRUE;
 }
 

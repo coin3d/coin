@@ -34,19 +34,28 @@
 #include <Inventor/SbString.h>
 
 
+// FIXME: switch with SO_KIT_SOURCE(). 19991120 mortene.
 SO_NODE_SOURCE(SoBaseKit);
 
 
 SoNodekitCatalog * SoBaseKit::classcatalog = NULL;
-const SoNodekitCatalog ** SoBaseKit::parentcatalogptr;
+const SoNodekitCatalog ** SoBaseKit::parentcatalogptr = NULL;
 
 
 /*!
   Constructor.
 */
-SoBaseKit::SoBaseKit()
+SoBaseKit::SoBaseKit(void)
 {
-  SO_NODE_CONSTRUCTOR(SoBaseKit);
+  SO_KIT_INTERNAL_CONSTRUCTOR(SoBaseKit);
+
+  if (SO_KIT_IS_FIRST_INSTANCE()) {
+    SO_KIT_ADD_CATALOG_ENTRY(this, SoBaseKit, TRUE, , , FALSE);
+    SO_KIT_ADD_CATALOG_LIST_ENTRY(callbackList, SoSeparator, TRUE, this, , SoCallback, TRUE);
+    SO_KIT_ADD_LIST_ITEM_TYPE(callbackList, SoEventCallback);
+  }
+
+  SO_KIT_INIT_INSTANCE();
 }
 
 /*!
@@ -65,26 +74,6 @@ void
 SoBaseKit::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoBaseKit);
-
-  SoBaseKit::parentcatalogptr = NULL;
-
-  SoBaseKit::classcatalog = new SoNodekitCatalog;
-  SoBaseKit::classcatalog->addEntry("this",
-				    SoBaseKit::getClassTypeId(),
-				    SoBaseKit::getClassTypeId(),
-				    TRUE, "", "", FALSE,
-				    SoType::badType(),
-				    SoType::badType(),
-				    FALSE);
-  SoBaseKit::classcatalog->addEntry("callbackList",
-				    SoNodeKitListPart::getClassTypeId(),
-				    SoNodeKitListPart::getClassTypeId(),
-				    TRUE, "this", "", TRUE,
-				    SoSeparator::getClassTypeId(),
-				    SoCallback::getClassTypeId(),
-				    TRUE);
-  SoBaseKit::classcatalog->addListItemType("callbackList",
-					   SoEventCallback::getClassTypeId());
 }
 
 
@@ -284,7 +273,7 @@ SoBaseKit::getChildren(void) const
 void
 SoBaseKit::printDiagram(void)
 {
-  fprintf(stdout, "CLASS %s\n", this->getTypeId().getName().getString());
+  fprintf(stdout, "CLASS So%s\n", this->getTypeId().getName().getString());
   this->printSubDiagram("this", 0);
 }
 
@@ -304,9 +293,12 @@ SoBaseKit::printSubDiagram(const SbName & rootname, int level)
     parentobj->unref();
   }
 
+  const SoNodekitCatalog * thiscat = this->getNodekitCatalog();
+
   int i = 0;
   if (!parentcatalog ||
-      parentcatalog->getPartNumber(rootname) == SO_CATALOG_NAME_NOT_FOUND) {
+      parentcatalog->getPartNumber(rootname) == SO_CATALOG_NAME_NOT_FOUND ||
+      parentcatalog->getType(rootname) != thiscat->getType(rootname)) {
     fprintf(stdout, "-->");
     i++;
   }
@@ -314,10 +306,7 @@ SoBaseKit::printSubDiagram(const SbName & rootname, int level)
 
   fprintf(stdout, "\"%s\"\n", rootname.getString());
 
-  const SoNodekitCatalog * thiscat = this->getNodekitCatalog();
   for (int j=0; j < thiscat->getNumEntries(); j++) {
-    // FIXME: make a list of sorted children to print in correct
-    // sibling order. 19991118 mortene.
     if (thiscat->getParentName(j) == rootname)
       this->printSubDiagram(thiscat->getName(j), level + 1);
   }
@@ -329,7 +318,7 @@ SoBaseKit::printSubDiagram(const SbName & rootname, int level)
 void
 SoBaseKit::printTable(void)
 {
-  fprintf(stdout, "CLASS %s\n", this->getTypeId().getName().getString());
+  fprintf(stdout, "CLASS So%s\n", this->getTypeId().getName().getString());
 
   const SoNodekitCatalog * thiscat = this->getNodekitCatalog();
   for (int i=0; i < thiscat->getNumEntries(); i++) {

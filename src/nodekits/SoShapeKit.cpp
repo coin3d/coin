@@ -26,8 +26,26 @@
 */
 
 #include <Inventor/nodekits/SoShapeKit.h>
+#include <Inventor/nodekits/SoNodeKitListPart.h>
+#include <Inventor/nodes/SoMaterialBinding.h>
+#include <Inventor/nodes/SoNormalBinding.h>
+#include <Inventor/nodes/SoTextureCoordinateBinding.h>
+#include <Inventor/nodes/SoShapeHints.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoCoordinate4.h>
+#include <Inventor/nodes/SoNormal.h>
+#include <Inventor/nodes/SoTextureCoordinate2.h>
+#include <Inventor/nodes/SoProfileCoordinate2.h>
+#include <Inventor/nodes/SoProfileCoordinate3.h>
+#include <Inventor/nodes/SoTextureCoordinateDefault.h>
+#include <Inventor/nodes/SoTransform.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoCube.h>
+#include <Inventor/nodes/SoProfile.h>
+
 
 SO_KIT_SOURCE(SoShapeKit);
+
 
 /*!
   Constructor.
@@ -36,7 +54,24 @@ SoShapeKit::SoShapeKit(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoShapeKit);
 
-  // FIXME: need to define catalog here. 19991107 mortene.
+  SO_KIT_ADD_CATALOG_ENTRY(localTransform, SoTransform, TRUE, topSeparator, , TRUE);
+
+  SO_KIT_ADD_CATALOG_ENTRY(materialBinding, SoMaterialBinding, TRUE, topSeparator, childList, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(normalBinding, SoNormalBinding, TRUE, topSeparator, childList, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(textureCoordinateBinding, SoTextureCoordinateBinding, TRUE, topSeparator, childList, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(shapeHints, SoShapeHints, TRUE, topSeparator, childList, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(coordinate3, SoCoordinate3, TRUE, topSeparator, childList, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(coordinate4, SoCoordinate4, TRUE, topSeparator, childList, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(normal, SoNormal, TRUE, topSeparator, childList, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(textureCoordinate2, SoTextureCoordinate2, TRUE, topSeparator, childList, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(profileCoordinate2, SoProfileCoordinate2, TRUE, topSeparator, childList, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(profileCoordinate3, SoProfileCoordinate3, TRUE, topSeparator, childList, TRUE);
+  SO_KIT_ADD_CATALOG_LIST_ENTRY(profileList, SoGroup, TRUE, topSeparator, childList, SoProfile, TRUE);
+
+  SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(textureCoordinateFunction, SoTextureCoordinateFunction, SoTextureCoordinateDefault, TRUE, topSeparator, , TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(localTransform, SoTransform, TRUE, topSeparator, , TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(shapeSeparator, SoSeparator, TRUE, topSeparator, , FALSE);
+  SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(shape, SoShape, SoCube, FALSE, shapeSeparator, , TRUE);
 
   SO_KIT_INIT_INSTANCE();
 }

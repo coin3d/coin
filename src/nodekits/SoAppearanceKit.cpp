@@ -25,13 +25,23 @@
   FIXME: write class doc
 */
 
+
 #include <Inventor/nodekits/SoAppearanceKit.h>
+#include <Inventor/nodes/SoLightModel.h>
+#include <Inventor/nodes/SoEnvironment.h>
+#include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoComplexity.h>
+#include <Inventor/nodes/SoTexture2.h>
+#include <Inventor/nodes/SoFont.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+
 SO_KIT_SOURCE(SoAppearanceKit);
+
 
 /*!
   Constructor.
@@ -40,9 +50,13 @@ SoAppearanceKit::SoAppearanceKit(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoAppearanceKit);
 
-//    SO_KIT_ADD_CATALOG_ENTRY(lightModel, SoLightModel, TRUE, this, , TRUE);
-
-  // FIXME: need to define rest of catalog here. 19991107 mortene.
+  SO_KIT_ADD_CATALOG_ENTRY(lightModel, SoLightModel, TRUE, this, , TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(environment, SoEnvironment, TRUE, this, , TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(drawStyle, SoDrawStyle, TRUE, this, , TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(material, SoMaterial, TRUE, this, , TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(complexity, SoComplexity, TRUE, this, , TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(texture2, SoTexture2, TRUE, this, , TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(font, SoFont, TRUE, this, , TRUE);
 
   SO_KIT_INIT_INSTANCE();
 }

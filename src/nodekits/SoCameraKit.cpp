@@ -26,8 +26,13 @@
 */
 
 #include <Inventor/nodekits/SoCameraKit.h>
+#include <Inventor/nodes/SoTransformSeparator.h>
+#include <Inventor/nodes/SoTransform.h>
+#include <Inventor/nodes/SoPerspectiveCamera.h>
+
 
 SO_KIT_SOURCE(SoCameraKit);
+
 
 /*!
   Constructor.
@@ -36,7 +41,9 @@ SoCameraKit::SoCameraKit(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoCameraKit);
 
-  // FIXME: need to define catalog here. 19991107 mortene.
+  SO_KIT_ADD_CATALOG_ENTRY(transformGroup, SoTransformSeparator, TRUE, this, , FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(transform, SoTransform, TRUE, transformGroup, , TRUE);
+  SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(camera, SoCamera, SoPerspectiveCamera, FALSE, transformGroup, , TRUE);
 
   SO_KIT_INIT_INSTANCE();
 }

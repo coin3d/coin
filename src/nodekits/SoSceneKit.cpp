@@ -26,8 +26,17 @@
 */
 
 #include <Inventor/nodekits/SoSceneKit.h>
+#include <Inventor/nodekits/SoCameraKit.h>
+#include <Inventor/nodekits/SoLightKit.h>
+#include <Inventor/nodekits/SoShapeKit.h>
+#include <Inventor/nodekits/SoSeparatorKit.h>
+#include <Inventor/nodekits/SoNodeKitListPart.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoSwitch.h>
+
 
 SO_KIT_SOURCE(SoSceneKit);
+
 
 /*!
   Constructor.
@@ -36,7 +45,11 @@ SoSceneKit::SoSceneKit(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoSceneKit);
 
-  // FIXME: need to define catalog here. 19991107 mortene.
+  SO_KIT_ADD_CATALOG_ENTRY(topSeparator, SoSeparator, TRUE, this, , FALSE);
+  SO_KIT_ADD_CATALOG_LIST_ENTRY(cameraList, SoSwitch, TRUE, topSeparator, , SoCameraKit, TRUE);
+  SO_KIT_ADD_CATALOG_LIST_ENTRY(lightList, SoGroup, TRUE, topSeparator, , SoLightKit, TRUE);
+  SO_KIT_ADD_CATALOG_LIST_ENTRY(childList, SoGroup, TRUE, topSeparator, , SoShapeKit, TRUE);
+  SO_KIT_ADD_LIST_ITEM_TYPE(childList, SoSeparatorKit);
 
   SO_KIT_INIT_INSTANCE();
 }

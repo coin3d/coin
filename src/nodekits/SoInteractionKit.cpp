@@ -26,8 +26,11 @@
 */
 
 #include <Inventor/nodekits/SoInteractionKit.h>
+#include <Inventor/nodes/SoSeparator.h>
+
 
 SO_KIT_SOURCE(SoInteractionKit);
+
 
 /*!
   Constructor.
@@ -36,7 +39,8 @@ SoInteractionKit::SoInteractionKit(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoInteractionKit);
 
-  // FIXME: need to define catalog here. 19991107 mortene.
+  SO_KIT_ADD_CATALOG_ENTRY(topSeparator, SoSeparator, TRUE, this, , FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(geomSeparator, SoSeparator, TRUE, topSeparator, , FALSE);
 
   SO_KIT_INIT_INSTANCE();
 }
@@ -58,3 +62,6 @@ SoInteractionKit::initClass(void)
 {
   SO_KIT_INTERNAL_INIT_CLASS(SoInteractionKit);
 }
+
+
+// FIXME: lots of code missing in this class. 19991120 mortene.

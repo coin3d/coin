@@ -105,10 +105,79 @@ _class_::getClassNodekitCatalogPtr(void) \
     SO_NODE_INTERNAL_CONSTRUCTOR(_class_); \
     if (SO_KIT_IS_FIRST_INSTANCE()) { \
       SoType mytype = SoType::fromName(SO__QUOTE(_class_)); \
-      _class_::classcatalog = (*_class_::parentcatalogptr)->clone(mytype); \
+      if (_class_::parentcatalogptr) \
+        _class_::classcatalog = (*_class_::parentcatalogptr)->clone(mytype); \
+      else \
+        _class_::classcatalog = new SoNodekitCatalog; \
     } \
   } while (0)
 #endif // INTERNAL macro definition
+
+
+
+#define SO_KIT_ADD_CATALOG_ENTRY(_part_, _partclass_, _isdefnull_ , _parent_, _sibling_, _ispublic_) \
+  do { \
+    if (SO_KIT_IS_FIRST_INSTANCE()) { \
+      classcatalog->addEntry(SO__QUOTE(_part_), \
+  			   _partclass_::getClassTypeId(), \
+  			   _partclass_::getClassTypeId(), \
+  			   _isdefnull_, \
+  			   SO__QUOTE(_parent_), \
+  			   SO__QUOTE(_sibling_), \
+  			   FALSE, \
+  			   SoType::badType(), \
+  			   SoType::badType(), \
+  			   _ispublic_); \
+    } \
+  } while (0)
+
+
+
+#define SO_KIT_ADD_CATALOG_LIST_ENTRY(_part_, _containertype_, _isdefnull_, _parent_, _sibling_, _itemtype_, _ispublic_) \
+  do {  \
+    if (SO_KIT_IS_FIRST_INSTANCE()) { \
+      classcatalog->addEntry(SO__QUOTE(_part_), \
+                             SoNodeKitListPart::getClassTypeId(), \
+                             SoNodeKitListPart::getClassTypeId(), \
+                             _isdefnull_, \
+                             SO__QUOTE(_parent_), \
+                             SO__QUOTE(_sibling_), \
+                             TRUE, \
+                             _containertype_::getClassTypeId(), \
+                             _itemtype_::getClassTypeId(), \
+                             _ispublic_); \
+    } \
+  } while (0)
+
+
+
+#define SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(_part_, _class_, _defaultclass_, _isdefnull_, _parent_, _sibling_, _ispublic_) \
+  do { \
+    if (SO_KIT_IS_FIRST_INSTANCE()) { \
+      classcatalog->addEntry(SO__QUOTE(_part_), \
+			     _class_::getClassTypeId(), \
+			     _defaultclass_::getClassTypeId(), \
+			     _isdefnull_, \
+			     SO__QUOTE(_parent_), \
+			     SO__QUOTE(_sibling_), \
+			     FALSE, \
+			     SoType::badType(), \
+			     SoType::badType(), \
+			     _ispublic_); \
+    } \
+  } while (0)
+
+
+
+#define SO_KIT_ADD_LIST_ITEM_TYPE(_part_, _listitemtype_) \
+  do { \
+    if (SO_KIT_IS_FIRST_INSTANCE()) { \
+      classcatalog->addListItemType(SO__QUOTE(_part_), \
+                                  _listitemtype_::getClassTypeId()); \
+    } \
+  } while (0)
+
+
 
 
 #define SO_KIT_INIT_INSTANCE()
