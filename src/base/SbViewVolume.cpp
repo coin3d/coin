@@ -33,8 +33,6 @@
 These methods are still not implemented:
 <UL>
 <LI>SbViewVolume::getAlignRotation()</LI>
-<LI>SbViewVolume::narrow()</LI>
-<LI>SbViewVolume::zNarrow()</LI>
 </UL>
 */
 
@@ -46,7 +44,6 @@ These methods need better documentation:
 </UL>
 */
 
-#include <assert.h>
 #include <Inventor/SbViewVolume.h>
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbLine.h>
@@ -57,6 +54,9 @@ These methods need better documentation:
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
+
+#include <coindefs.h> // COIN_OBSOLETED()
+#include <assert.h>
 
 /*!
   \enum SbViewVolume::ProjectionType
@@ -353,13 +353,13 @@ SbViewVolume::getPlanePoint(const float distFromEye,
 }
 
 /*!
-  TODO: not implemented
+  This method is obsoleted in Coin. Let us know if you need it, and
+  we'll consider implementing it.
  */
 SbRotation
 SbViewVolume::getAlignRotation(SbBool /* rightAngleOnly */) const
 {
-  // TODO: not implemented.
-  assert(0);
+  COIN_OBSOLETED();
   return SbRotation::identity();
 }
 
@@ -540,16 +540,22 @@ SbViewVolume::narrow(float left, float bottom,
   return nvw;
 }
 
-/*!
-  TODO: not implemented
- */
+/*!  
+
+  Returns a narrowed version of the view volume which is within the
+  given [0, 1] normalized coordinates. The box x and y coordinates are
+  taken to be corner points of a normalized "view window" on the near
+  clipping plane. The box z coordinates are used to adjust the near
+  and far clipping planes, and should be relative to the current
+  clipping planes. A value of 1.0 is at the current near plane. A
+  value of 0.0 is at the current far plane.
+*/
 SbViewVolume
-SbViewVolume::narrow(const SbBox3f& /* box */) const
+SbViewVolume::narrow(const SbBox3f & box) const
 {
-  //TODO: Check if legal box in debug-mode.
-  // TODO: not implemented.
-  assert(0);
-  return *this;
+  const SbVec3f & bmin = box.getMin();
+  const SbVec3f & bmax = box.getMax();
+  return this->narrow(bmin[0], bmin[1], bmax[0], bmax[1]).zNarrow(bmax[2], bmin[2]);
 }
 
 /*!
@@ -723,60 +729,29 @@ SbViewVolume::zVector(void) const
 
 /*!
   Return a copy SbViewVolume with narrowed depth by supplying parameters
-  for new near and far clipping planes. \a near and \a far should be
-  given in terms of \a zVector(), i.e. \a near must be a larger value
-  than \a far.
+  for new near and far clipping planes. 
+
+  \a nearval and \farval should be relative to the current clipping
+  planes. A value of 1.0 is at the current near plane. A value of
+  0.0 is at the current far plane.
 
   \sa zVector().
- */
+*/
 SbViewVolume
 SbViewVolume::zNarrow(float nearval, float farval) const
 {
-#if COIN_DEBUG
-  if (nearval>farval) {
-    SoDebugError::postWarning("SbViewVolume::zNarrow",
-                              "far coordinate (%f) should be larger than "
-                              "near coordinate (%f). Swapping near/far.",
-                              farval,nearval);
-    float tmp=farval;
-    farval=nearval;
-    nearval=tmp;
-  }
-#endif // COIN_DEBUG
+  SbViewVolume narrowed = *this;
+  
+  narrowed.nearplanedistance = this->nearplanedistance + (1.0f - nearval) * this->nearfardistance;
+  narrowed.nearfardistance = this->nearplanedistance + this->nearfardistance * (1.0f - farval);
 
-  // TODO
-  assert(0);
-  return *this;
-
-#if 0 // not working yet
-  SbViewVolume nvw = *this;
-
-  float n = SbMin(1.0f, nearval);
-  float f = SbMax(0.0f, farval);
-
-  nvw.nearplanedistance = n;
-  nvw.nearfardistance = -(f-n) * this->nearfardistance;
-
-  float oldvecz = this->getDepth() + this->getNearDist();
-
-  nvw.lowerleftfrust +=
-    (-nvw.nearplanedistance +
-     ((nvw.nearplanedistance + nvw.nearfardistance) - oldvecz)) *
-     nvw.projectiondir;
-
-  nvw.lowerrightfrust +=
-    (-nvw.nearplanedistance +
-     ((nvw.nearplanedistance + nvw.nearfardistance) - oldvecz)) *
-     nvw.projectiondir;
-
-  nvw.upperleftfrust +=
-    (-nvw.nearplanedistance +
-     ((nvw.nearplanedistance + nvw.nearfardistance) - oldvecz)) *
-     nvw.projectiondir;
-
-  return nvw;
-
-#endif // 0
+  SbVec3f dummy;
+  this->getPlaneRectangle(narrowed.nearplanedistance-this->nearplanedistance, 
+                          narrowed.lowerleftfrust, 
+                          narrowed.lowerrightfrust,
+                          narrowed.upperleftfrust,
+                          dummy);
+  return narrowed;
 }
 
 /*!
@@ -1073,33 +1048,9 @@ SbViewVolume::getViewVolumePlanes(SbPlane planes[6]) const
   SbVec3f far_ul;
   SbVec3f far_ur;
 
-  float depth = this->nearplanedistance + this->nearfardistance;
+  this->getPlaneRectangle(this->nearfardistance, far_ll, far_lr, far_ul, far_ur);
   SbVec3f near_ur = this->upperleftfrust + (this->lowerrightfrust-this->lowerleftfrust);
 
-  if (this->type == PERSPECTIVE) {
-    SbVec3f dir;
-    dir = this->lowerleftfrust - this->projectionpt;
-    dir.normalize();
-    far_ll = this->projectionpt + dir * depth / dir.dot(this->projectiondir);
-
-    dir = this->lowerrightfrust - this->projectionpt;
-    dir.normalize();
-    far_lr = this->projectionpt + dir * depth / dir.dot(this->projectiondir);
-
-    dir = this->upperleftfrust - this->projectionpt;
-    dir.normalize();
-    far_ul = this->projectionpt + dir * depth / dir.dot(this->projectiondir);
-
-    dir = near_ur - this->projectionpt;
-    dir.normalize();
-    far_ur = this->projectionpt + dir * depth / dir.dot(this->projectiondir);
-  }
-  else {
-    far_ll = this->lowerleftfrust + this->projectiondir * depth;
-    far_lr = this->lowerrightfrust + this->projectiondir * depth;
-    far_ul = this->upperleftfrust + this->projectiondir * depth;
-    far_ur = near_ur + this->projectiondir * depth;
-  }
   planes[0] = SbPlane(this->upperleftfrust, this->lowerleftfrust, far_ll);  // left
   planes[1] = SbPlane(this->lowerleftfrust, this->lowerrightfrust, far_lr); // bottom
   planes[2] = SbPlane(this->lowerrightfrust, near_ur, far_ur); // right
@@ -1147,6 +1098,45 @@ SbVec3f
 SbViewVolume::getViewUp(void) const
 {
   SbVec3f v = this->upperleftfrust - this->lowerleftfrust;
-  v.normalize();
+  (void) v.normalize();
   return v;
+}
+
+//
+// Returns the four points defining the view volume rectangle at the specified distance
+// from the near plane, towards the far plane.
+//
+void 
+SbViewVolume::getPlaneRectangle(const float distance, SbVec3f & lowerleft, 
+                                SbVec3f & lowerright, 
+                                SbVec3f & upperleft, 
+                                SbVec3f & upperright) const
+{
+  SbVec3f near_ur = this->upperleftfrust + (this->lowerrightfrust-this->lowerleftfrust);
+
+  if (this->type == PERSPECTIVE) {
+    float depth = this->nearplanedistance + distance;
+    SbVec3f dir;
+    dir = this->lowerleftfrust - this->projectionpt;
+    dir.normalize();
+    lowerleft = this->projectionpt + dir * depth / dir.dot(this->projectiondir);
+    
+    dir = this->lowerrightfrust - this->projectionpt;
+    dir.normalize();
+    lowerright = this->projectionpt + dir * depth / dir.dot(this->projectiondir);
+    
+    dir = this->upperleftfrust - this->projectionpt;
+    dir.normalize();
+    upperleft = this->projectionpt + dir * depth / dir.dot(this->projectiondir);
+    
+    dir = near_ur - this->projectionpt;
+    dir.normalize();
+    upperright = this->projectionpt + dir * depth / dir.dot(this->projectiondir);
+  }
+  else {
+    lowerleft = this->lowerleftfrust + this->projectiondir * distance;
+    lowerright = this->lowerrightfrust + this->projectiondir * distance;
+    upperleft = this->upperleftfrust + this->projectiondir * distance;
+    upperright = near_ur + this->projectiondir * distance;
+  }
 }

@@ -99,6 +99,9 @@ private:
   static SbMatrix getPerspectiveProjection(const float left, const float right,
                                            const float bottom, const float top,
                                            const float nearval, const float farval);
+
+  void getPlaneRectangle(const float depth, SbVec3f & lowerleft, SbVec3f & lowerright, 
+                         SbVec3f & upperleft, SbVec3f & upperright) const;
 };
 
 #endif // !COIN_SBVIEWVOLUME_H
