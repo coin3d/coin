@@ -145,7 +145,7 @@ SoSphere::GLRender(SoGLRenderAction * action)
                      (int)(SPHERE_NUM_SLICES * complexity),
                      (int)(SPHERE_NUM_STACKS * complexity),
                      &mb,
-                     flags);
+                     flags, state);
 }
 
 // Documented in superclass.

@@ -76,7 +76,8 @@ void sogl_render_sphere(const float radius,
                         const int numstacks,
                         const int numslices,
                         SoMaterialBundle * const material,
-                        const unsigned int flags);
+                        const unsigned int flags,
+                        SoState * state);
 
 void sogl_render_cube(const float width,
                       const float height,
@@ -179,4 +180,3 @@ SbString sogl_glerror_string(int err);
 void sogl_autocache_update(SoState * state, const int numprimitives);
 
 #endif // !COIN_SOGL_H
-

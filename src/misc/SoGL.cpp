@@ -42,6 +42,7 @@
 #include <Inventor/elements/SoTextureCoordinateElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
+#include <Inventor/elements/SoMultiTextureEnabledElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/misc/SoGL.h>
@@ -335,8 +336,22 @@ sogl_render_sphere(const float radius,
                    const int numstacks,
                    const int numslices,
                    SoMaterialBundle * const /* material */,
-                   const unsigned int flags)
+                   const unsigned int flags,
+                   SoState * state)
 {
+  const SbBool * unitenabled = NULL;
+  int maxunit = 0;
+  const cc_glglue * glue = NULL;
+
+  if (state && (flags & SOGL_NEED_TEXCOORDS)) {
+    unitenabled = 
+      SoMultiTextureEnabledElement::getEnabledUnits(state, maxunit);
+    if (unitenabled) {
+      glue = sogl_glue_instance(state);
+    }
+    else maxunit = -1;
+  }
+  
   int stacks = numstacks;
   int slices = numslices;
 
@@ -351,7 +366,7 @@ sogl_render_sphere(const float radius,
   float S[129];
   SbVec3f texcoords[129];
 
-  int i, j;
+  int i, j, u;
   float rho;
   float drho;
   float theta;
@@ -385,6 +400,12 @@ sogl_render_sphere(const float radius,
     glNormal3f(0.0f, 1.0f, 0.0f);
     if (flags & SOGL_NEED_TEXCOORDS) {
       glTexCoord2f(currs + 0.5f * incs, 1.0f);
+      for (u = 1; u <= maxunit; u++) {
+        if (unitenabled[u]) {
+          cc_glglue_glMultiTexCoord2f(glue, (GLenum) (GL_TEXTURE0 + u),
+                                      currs + 0.5f * incs, 1.0f);
+        }
+      }
     }
     else if (flags & SOGL_NEED_3DTEXCOORDS) {
       glTexCoord3f(0.5f, 1.0f, 0.5f);
@@ -394,6 +415,12 @@ sogl_render_sphere(const float radius,
     glNormal3fv((const GLfloat*) &normals[j-1]);
     if (flags & SOGL_NEED_TEXCOORDS) {
       glTexCoord2f(currs, T);
+      for (u = 1; u <= maxunit; u++) {
+        if (unitenabled[u]) {
+          cc_glglue_glMultiTexCoord2f(glue, (GLenum) (GL_TEXTURE0 + u),
+                                      currs, T);
+        }
+      }
     }
     else if (flags & SOGL_NEED_3DTEXCOORDS) {
       glTexCoord3fv((const GLfloat*) &texcoords[j-1]);
@@ -411,6 +438,12 @@ sogl_render_sphere(const float radius,
     if (flags & SOGL_NEED_TEXCOORDS) {
       S[j] = currs;
       glTexCoord2f(currs, T);
+      for (u = 1; u <= maxunit; u++) {
+        if (unitenabled[u]) {
+          cc_glglue_glMultiTexCoord2f(glue, (GLenum) (GL_TEXTURE0 + u),
+                                      currs, T);
+        }
+      }
     }
     else if (flags & SOGL_NEED_3DTEXCOORDS) {
       texcoords[j] = tmp/2 + SbVec3f(0.5f,0.5f,0.5f);
@@ -432,6 +465,13 @@ sogl_render_sphere(const float radius,
     for (j = 0; j <= slices; j++) {
       if (flags & SOGL_NEED_TEXCOORDS) {
         glTexCoord2f(S[j], T);
+
+        for (u = 1; u <= maxunit; u++) {
+          if (unitenabled[u]) {
+            cc_glglue_glMultiTexCoord2f(glue, (GLenum) (GL_TEXTURE0 + u),
+                                        S[j], T);
+          }
+        }
       }
       else if (flags & SOGL_NEED_3DTEXCOORDS) {
         glTexCoord3fv((const GLfloat*) &texcoords[j]);
@@ -444,6 +484,12 @@ sogl_render_sphere(const float radius,
                    float(cos(theta))*ts);
       if (flags & SOGL_NEED_TEXCOORDS) {
         glTexCoord2f(S[j], T - dT);
+        for (u = 1; u <= maxunit; u++) {
+          if (unitenabled[u]) {
+            cc_glglue_glMultiTexCoord2f(glue, (GLenum) (GL_TEXTURE0 + u),
+                                        S[j], T - dT);
+          }
+        }
       }
       else if (flags & SOGL_NEED_3DTEXCOORDS) {
         texcoords[j] = tmp/2 + SbVec3f(0.5f,0.5f,0.5f);
@@ -465,6 +511,12 @@ sogl_render_sphere(const float radius,
   for (j = 0; j < slices; j++) {
     if (flags & SOGL_NEED_TEXCOORDS) {
       glTexCoord2f(S[j], T);
+      for (u = 1; u <= maxunit; u++) {
+        if (unitenabled[u]) {
+          cc_glglue_glMultiTexCoord2f(glue, (GLenum) (GL_TEXTURE0 + u),
+                                      S[j], T);
+        }
+      }
     }
     else if (flags & SOGL_NEED_3DTEXCOORDS) {
       glTexCoord3fv((const GLfloat*) &texcoords[j]);
@@ -474,6 +526,12 @@ sogl_render_sphere(const float radius,
 
     if (flags & SOGL_NEED_TEXCOORDS) {
       glTexCoord2f(S[j]+incs*0.5f, 0.0f);
+      for (u = 1; u <= maxunit; u++) {
+        if (unitenabled[u]) {
+          cc_glglue_glMultiTexCoord2f(glue, (GLenum) (GL_TEXTURE0 + u),
+                                      S[j]+incs*0.5f, 0.0f);
+        }
+      }
     }
     else if (flags & SOGL_NEED_3DTEXCOORDS) {
       glTexCoord3f(0.5f, 0.0f, 0.5f);
@@ -483,6 +541,12 @@ sogl_render_sphere(const float radius,
 
     if (flags & SOGL_NEED_TEXCOORDS) {
       glTexCoord2f(S[j+1], T);
+      for (u = 1; u <= maxunit; u++) {
+        if (unitenabled[u]) {
+          cc_glglue_glMultiTexCoord2f(glue, (GLenum) (GL_TEXTURE0 + u),
+                                      S[j+1], T);
+        }
+      }
     }
     else if (flags & SOGL_NEED_3DTEXCOORDS) {
       glTexCoord3fv((const GLfloat*) &texcoords[j+1]);
