@@ -157,6 +157,7 @@
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/system/gl.h>
 #include <Inventor/threads/SbStorage.h>
+#include <Inventor/misc/SoContextHandler.h>
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
@@ -617,6 +618,7 @@ public:
   SbMutex mutex;
 #endif // COIN_THREADSAFE
   void init(void);
+  static void contextCleanup(uint32_t context, void * closure);
 };
 
 
@@ -656,6 +658,7 @@ uint32_t SoGLImageP::current_glimageid = 1;
 SoGLImage::SoGLImage(void)
 {
   PRIVATE(this) = new SoGLImageP;
+  SoContextHandler::addContextDestructionCallback(SoGLImageP::contextCleanup, PRIVATE(this));
   PRIVATE(this)->init(); // init members to default values
   PRIVATE(this)->owner = this; // for debugging
 
@@ -1015,6 +1018,7 @@ SoGLImage::setData(const unsigned char *bytes,
 */
 SoGLImage::~SoGLImage()
 {
+  SoContextHandler::removeContextDestructionCallback(SoGLImageP::contextCleanup, PRIVATE(this));
   if (PRIVATE(this)->isregistered) SoGLImage::unregisterImage(this);
   PRIVATE(this)->unrefDLists(NULL);
   delete PRIVATE(this);
@@ -1943,6 +1947,35 @@ SoGLImage::unregisterImage(SoGLImage *image)
     glimage_reglist->removeFast(idx);
   }
   CC_MUTEX_UNLOCK(glimage_reglist_mutex);
+}
+
+// *************************************************************************
+
+//
+// Callback from SoContextHandler
+//
+void 
+SoGLImageP::contextCleanup(uint32_t context, void * closure)
+{
+  SoGLImageP * thisp = (SoGLImageP *) closure;
+#ifdef COIN_THREADSAFE
+  thisp->mutex.lock();
+#endif // COIN_THREADSAFE
+  
+  int n = thisp->dlists.getLength();
+  int i = 0;
+  
+  while (i < n) {
+    if (thisp->dlists[i].dlist->getContext() == (int) context) {
+      thisp->dlists[i].dlist->unref(NULL);
+      thisp->dlists.remove(i);
+      n--;
+    }
+    else i++;
+  }
+#ifdef COIN_THREADSAFE
+  thisp->mutex.unlock();
+#endif // COIN_THREADSAFE
 }
 
 // *************************************************************************
