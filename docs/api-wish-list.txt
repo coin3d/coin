@@ -452,3 +452,8 @@ THE WISH LIST
     };
     SoSFEnum loadPolicy;
 
+* void SbRotation::getAsEuler(SbVec3f &), void SbRotation::setAsEuler(const SbVec3f &)
+  2001-07-15 <mortene@sim.no>
+
+  Should be simple enough, see quateuler.cpp in this directory for the
+  code we need for the getAsEuler() method.
