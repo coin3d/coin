@@ -390,7 +390,7 @@ cc_gzm_read (void * file, void * buf, uint32_t len)
 
     if (s->z_err == Z_STREAM_END) {
       /* Check CRC and original size */
-      s->crc = cc_zlibglue_crc32(s->crc, start, (uint32_t)(s->stream.next_out - start));
+      s->crc = cc_zlibglue_crc32(s->crc, (const char*) start, (uint32_t)(s->stream.next_out - start));
       start = s->stream.next_out;
 
       if (getInt32(s) != s->crc) {
@@ -415,7 +415,7 @@ cc_gzm_read (void * file, void * buf, uint32_t len)
     }
     if (s->z_err != Z_OK || s->z_eof) break;
   }
-  s->crc = cc_zlibglue_crc32(s->crc, start, (uint32_t)(s->stream.next_out - start));
+  s->crc = cc_zlibglue_crc32(s->crc, (const char*) start, (uint32_t)(s->stream.next_out - start));
 
   return (int)(len - s->stream.avail_out);
 }
