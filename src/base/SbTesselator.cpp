@@ -445,8 +445,8 @@ SbTesselator::cutTriangle(SbTVertex *t)
 float
 SbTesselator::area(SbTVertex *v)
 {
-  return fabs(((v->next->v[X]-v->v[X])*(v->next->next->v[Y]-v->v[Y])-
-               (v->next->v[Y]-v->v[Y])*(v->next->next->v[X]-v->v[X])));
+  return (float)fabs(((v->next->v[X]-v->v[X])*(v->next->next->v[Y]-v->v[Y])-
+                     (v->next->v[Y]-v->v[Y])*(v->next->next->v[X]-v->v[X])));
 }
 
 //

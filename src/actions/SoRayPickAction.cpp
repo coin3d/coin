@@ -452,7 +452,7 @@ SoRayPickAction::intersect(const SbVec3f &v0,
   float &v = barycentric[1];
   float &w = barycentric[2];
 
-  float inv_det = 1.0 / det;
+  float inv_det = 1.0f / det;
 
   // calculate distance from v0 to ray origin
   SbVec3f tvec = orig - v0;
@@ -667,5 +667,5 @@ SoRayPickAction::calcRayRadius(const float radiusInPixels)
   float xsize = float(size[0]);
   float ysize = float(size[1]);
 
-  return radiusInPixels / sqrt(xsize*xsize + ysize*ysize);
+  return float(radiusInPixels / sqrt(xsize*xsize + ysize*ysize));
 }

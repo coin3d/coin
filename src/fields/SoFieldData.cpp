@@ -124,7 +124,7 @@ SoFieldData::SoFieldData(int /* numfields */)
 SoFieldData::~SoFieldData()
 {
   struct SoFieldEntry * tmpField;
-  struct SoEnumEntry * tmpEnum;
+  SoEnumEntry * tmpEnum;
 
   for (int i=0; i<fields.getLength(); i++) {
     tmpField = (struct SoFieldEntry *)fields[i];
@@ -211,12 +211,12 @@ void
 SoFieldData::addEnumValue(const char * typeNameArg, const char * valNameArg,
                           int val)
 {
-  struct SoEnumEntry * e = NULL;
+  SoEnumEntry * e = NULL;
   SbName typeName = stripWhite(typeNameArg);
   SbName valName = stripWhite(valNameArg);
   int i;
   for (i=0; i<enums.getLength(); i++) {
-    e = (struct SoEnumEntry *) enums[i];
+    e = (SoEnumEntry *) enums[i];
     if (e->typeName == typeName)
       break;
     else
@@ -256,7 +256,7 @@ SoFieldData::getEnumData(const char * typeNameArg, int & num,
   SbName typeName = stripWhite(typeNameArg);
   int i;
   for (i=0; i<enums.getLength(); i++) {
-    struct SoEnumEntry * e = (struct SoEnumEntry *) enums[i];
+    SoEnumEntry * e = (SoEnumEntry *) enums[i];
     if (e->typeName == typeName) {
       num = e->num;
       vals = e->vals;

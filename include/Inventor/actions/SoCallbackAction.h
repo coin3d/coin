@@ -132,27 +132,27 @@ public:
 
   // setting callbacks
   void addPreCallback(const SoType type,
-                      const SoCallbackActionCB *cb,
+                      SoCallbackActionCB *cb,
                       void *userdata);
   void addPostCallback(const SoType type,
-                       const SoCallbackActionCB *cb,
+                       SoCallbackActionCB *cb,
                        void *userdata);
 
   void addPreTailCallback(const SoType type,
-                          const SoCallbackActionCB *cb,
+                          SoCallbackActionCB *cb,
                           void *userdata);
   void addPostTailCallback(const SoType type,
-                           const SoCallbackActionCB *cb,
+                           SoCallbackActionCB *cb,
                            void *userdata);
 
   void addTriangleCallback(const SoType type,
-                           const SoTriangleCB *cb,
+                           SoTriangleCB *cb,
                            void *userdata);
   void addLineSegmentCallback(const SoType type,
-                              const SoLineSegmentCB *cb,
+                              SoLineSegmentCB *cb,
                               void *userdata);
   void addPointCallback(const SoType type,
-                        const SoPointCB *cb,
+                        SoPointCB *cb,
                         void *userdata);
 
   // access elements

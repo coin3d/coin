@@ -410,7 +410,8 @@ void
 SoText2::computeBBox(SoAction * /* action */, SbBox3f & box, SbVec3f & center)
 {
   // FIXME: implement properly. 19990418 mortene.
-  box.setBounds(SbVec3f(-1, -1, -0.1), SbVec3f(1, 1, 0.1));
+  box.setBounds(SbVec3f(-1.0f, -1.0f, -0.1f), 
+	            SbVec3f(1.0f, 1.0f, 0.1f));
   center.setValue(0.0f, 0.0f, 0.0f);
 }
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION

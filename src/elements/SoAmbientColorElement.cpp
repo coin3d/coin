@@ -29,7 +29,7 @@
 
 #include <assert.h>
 
-static const SbColor defaultColor(0.2, 0.2, 0.2);
+static const SbColor defaultColor(0.2f, 0.2f, 0.2f);
 
 /*!
   \fn SoAmbientColorElement::numColors

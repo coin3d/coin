@@ -287,12 +287,9 @@ SoSFBitMask::writeValue(SoOutput * out) const
 void
 SoSFBitMask::convertTo(SoField * dest) const
 {
-  if (0);
-#if !defined(COIN_EXCLUDE_SOMFBITMASK)
   if (dest->getTypeId()==SoMFBitMask::getClassTypeId()) {
     ((SoMFBitMask *)dest)->setValue(this->getValue());
   }
-#endif // !COIN_EXCLUDE_SOMFBITMASK
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoSFBitMask::convertTo",

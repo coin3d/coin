@@ -37,7 +37,7 @@
 // fixme: add test to shrink normalArray.
 //
 
-#define NORMAL_EPSILON 0.001
+#define NORMAL_EPSILON 0.001f
 
 /*!
   Contructor with \a state being the current state.
@@ -289,7 +289,7 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
     }
   }
 
-  float threshold = cos(crease_angle);
+  float threshold = (float)cos(crease_angle);
   SbBool found;
   int currindex = 0; // current normal index
   int nindex = 0;

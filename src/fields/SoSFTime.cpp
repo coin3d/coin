@@ -212,7 +212,7 @@ SoSFTime::convertTo(SoField * dest) const
   if (0);
 #if !defined(COIN_EXCLUDE_SOSFFLOAT)
   else if (dest->getTypeId()==SoSFFloat::getClassTypeId()) {
-    ((SoSFFloat *)dest)->setValue(this->getValue().getValue());
+    ((SoSFFloat *)dest)->setValue(float(this->getValue().getValue()));
   }
 #endif // !COIN_EXCLUDE_SOSFFLOAT
 #if !defined(COIN_EXCLUDE_SOSFSTRING)

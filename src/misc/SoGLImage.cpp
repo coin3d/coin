@@ -239,7 +239,7 @@ SoGLImage::checkResize()
   while (newy > maxsize) newy >>= 1;
 
   if (newx != (unsigned long) xsize || newy != (unsigned long) ysize) {
-    this->image->resize(SbVec2s(newx, newy));
+    this->image->resize(SbVec2s((short)newx, (short)newy));
   }
 }
 

@@ -441,7 +441,7 @@ SbBool intersect_box_edges(const SbVec3f &min,
 
           // find what we need to multiply coordinate j by to
           // put it onto the current plane
-          float delta = fabs((boxpts[k][j] - l1[j]) / dir[j]);
+          float delta = (float)fabs((boxpts[k][j] - l1[j]) / dir[j]);
           // calculate the two other coordinates
           float v1 = l1[t1] + delta*dir[t1];
           float v2 = l1[t2] + delta*dir[t2];
@@ -596,22 +596,22 @@ SbXfBox3f::getVolume(void) const
 {
   if (!this->hasVolume()) return 0.0f;
 
-  float scalex = sqrt(this->matrix[0][0] * this->matrix[0][0] +
-                      this->matrix[1][0] * this->matrix[1][0] +
-                      this->matrix[2][0] * this->matrix[2][0]);
-  float scaley = sqrt(this->matrix[0][1] * this->matrix[0][1] +
-                      this->matrix[1][1] * this->matrix[1][1] +
-                      this->matrix[2][1] * this->matrix[2][1]);
-  float scalez = sqrt(this->matrix[0][2] * this->matrix[0][2] +
-                      this->matrix[1][2] * this->matrix[1][2] +
-                      this->matrix[2][2] * this->matrix[2][2]);
+  float scalex = (float)sqrt(this->matrix[0][0] * this->matrix[0][0] +
+                             this->matrix[1][0] * this->matrix[1][0] +
+                             this->matrix[2][0] * this->matrix[2][0]);
+  float scaley = (float)sqrt(this->matrix[0][1] * this->matrix[0][1] +
+                             this->matrix[1][1] * this->matrix[1][1] +
+                             this->matrix[2][1] * this->matrix[2][1]);
+  float scalez = (float)sqrt(this->matrix[0][2] * this->matrix[0][2] +
+                             this->matrix[1][2] * this->matrix[1][2] +
+                             this->matrix[2][2] * this->matrix[2][2]);
 
   SbVec3f min, max;
   this->getBounds(min, max);
 
-  return fabs(((max[0]-min[0]) * scalex *
-               (max[1]-min[1]) * scaley *
-               (max[2]-min[2]) * scalez));
+  return (float)fabs(((max[0]-min[0]) * scalex *
+                      (max[1]-min[1]) * scaley *
+                      (max[2]-min[2]) * scalez));
 }
 
 /*!

@@ -222,27 +222,27 @@ SoSFFloat::convertTo(SoField * dest) const
   if (0);
 #if !defined(COIN_EXCLUDE_SOSFBOOL)
   else if (dest->getTypeId()==SoSFBool::getClassTypeId()) {
-    ((SoSFBool *)dest)->setValue(this->getValue());
+    ((SoSFBool *)dest)->setValue((SbBool)this->getValue());
   }
 #endif // !COIN_EXCLUDE_SOSFBOOL
 #if !defined(COIN_EXCLUDE_SOSFINT32)
   else if (dest->getTypeId()==SoSFInt32::getClassTypeId()) {
-    ((SoSFInt32 *)dest)->setValue(this->getValue());
+    ((SoSFInt32 *)dest)->setValue((int32_t)this->getValue());
   }
 #endif // !COIN_EXCLUDE_SOSFINT32
 #if !defined(COIN_EXCLUDE_SOSFSHORT)
   else if (dest->getTypeId()==SoSFShort::getClassTypeId()) {
-    ((SoSFShort *)dest)->setValue(this->getValue());
+    ((SoSFShort *)dest)->setValue((short)this->getValue());
   }
 #endif // !COIN_EXCLUDE_SOSFSHORT
 #if !defined(COIN_EXCLUDE_SOSFUINT32)
   else if (dest->getTypeId()==SoSFUInt32::getClassTypeId()) {
-    ((SoSFUInt32 *)dest)->setValue(this->getValue());
+    ((SoSFUInt32 *)dest)->setValue((uint32_t)this->getValue());
   }
 #endif // !COIN_EXCLUDE_SOSFUINT32
 #if !defined(COIN_EXCLUDE_SOSFUSHORT)
   else if (dest->getTypeId()==SoSFUShort::getClassTypeId()) {
-    ((SoSFUShort *)dest)->setValue(this->getValue());
+    ((SoSFUShort *)dest)->setValue((unsigned short)this->getValue());
   }
 #endif // !COIN_EXCLUDE_SOSFUSHORT
 #if !defined(COIN_EXCLUDE_SOSFSTRING)

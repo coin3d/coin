@@ -176,7 +176,7 @@ SoNormalGenerator::generate(const float creaseAngle,
     vertexFaceArray[vertexList[i]].append(vertexFace[i]);
   }
 
-  float threshold = cos(creaseAngle);
+  float threshold = (float)cos(creaseAngle);
 
   if (striplens) {
     i = 0;

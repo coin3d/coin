@@ -584,7 +584,7 @@ SoShape::getComplexityValue(SoAction *action)
       // FIXME: needs calibration.
 
 #if 1 // testing new complexity code
-      return sqrt(SbMax(size[0], size[1])) * 0.4f *
+      return float(sqrt(SbMax(size[0], size[1]))) * 0.4f *
         SoComplexityElement::get(state);
 #else // first version
       float numPixels = float(size[0])*float(size[1]);
@@ -817,9 +817,9 @@ SoShape::computeObjectSpaceRay(SoRayPickAction * const action,
 */
 SoDetail *
 SoShape::createTriangleDetail(SoRayPickAction *action,
-                              const SoPrimitiveVertex */*v1*/,
-                              const SoPrimitiveVertex */*v2*/,
-                              const SoPrimitiveVertex */*v3*/,
+                              const SoPrimitiveVertex * /*v1*/,
+                              const SoPrimitiveVertex * /*v2*/,
+                              const SoPrimitiveVertex * /*v3*/,
                               SoPickedPoint *pp)
 {
   assert(primData);

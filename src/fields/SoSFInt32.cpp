@@ -225,7 +225,7 @@ SoSFInt32::convertTo(SoField * dest) const
 #endif // !COIN_EXCLUDE_SOSFBOOL
 #if !defined(COIN_EXCLUDE_SOSFFLOAT)
   else if (dest->getTypeId()==SoSFFloat::getClassTypeId()) {
-    ((SoSFFloat *)dest)->setValue(this->getValue());
+    ((SoSFFloat *)dest)->setValue(float(this->getValue()));
   }
 #endif // !COIN_EXCLUDE_SOSFFLOAT
 #if !defined(COIN_EXCLUDE_SOSFSHORT)

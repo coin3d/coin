@@ -146,7 +146,7 @@ SbSphere::circumscribe(const SbBox3f &box)
   float dx, dy, dz;
   box.getSize(dx, dy, dz);
 
-  this->setRadius(sqrt(dx*dx + dy*dy + dz*dz) / 2.0f);
+  this->setRadius(float(sqrt(dx*dx + dy*dy + dz*dz)) / 2.0f);
 }
 
 /*!
@@ -213,8 +213,8 @@ SbSphere::intersect(const SbLine &l, SbVec3f &enter, SbVec3f &exit) const
 
   float core = b*b - 4.0f*c;
   if(core >= 0.0f) {
-    float t1 = (-b + sqrt(core))/2;
-    float t2 = (-b - sqrt(core))/2;
+    float t1 = (-b + float(sqrt(core)))/2.0f;
+    float t2 = (-b - float(sqrt(core)))/2.0f;
 
     if(t1 > t2) SbSwap(t1, t2);
     enter = linepos + t1*linedir;

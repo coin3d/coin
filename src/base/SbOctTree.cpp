@@ -98,7 +98,7 @@ box_inside_planes(const SbBox3f &box, const SbPlane * const planes,
   // "better safe than sorry" for speed
   //
   SbVec3f size = (box.getMax() - box.getMin()) * 0.5f;
-  float radius = sqrt(size[0]*size[0] + size[1]*size[1] + size[2]*size[2]);
+  float radius = (float)sqrt(size[0]*size[0] + size[1]*size[1] + size[2]*size[2]);
 
   SbVec3f center = (box.getMin() + box.getMax()) * 0.5f;
 

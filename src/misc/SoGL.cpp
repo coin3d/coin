@@ -160,12 +160,12 @@ sogl_global_init()
 static void
 generate_3d_circle(SbVec3f *coords, const int num, const float radius, const float y)
 {
-  float delta = 2*SB_PI/num;
+  float delta = 2.0f*float(SB_PI)/float(num);
   float angle = 0.0f;
   for (int i = 0; i < num; i++) {
-    coords[i][0] = -sin(angle) * radius;
+    coords[i][0] = -float(sin(angle)) * radius;
     coords[i][1] = y;
-    coords[i][2] = -cos(angle) * radius;
+    coords[i][2] = -float(cos(angle)) * radius;
     angle += delta;
   }
 }
@@ -174,11 +174,11 @@ generate_3d_circle(SbVec3f *coords, const int num, const float radius, const flo
 static void
 generate_2d_circle(SbVec2f *coords, const int num, const float radius)
 {
-  float delta = 2*SB_PI/num;
+  float delta = 2.0f*float(SB_PI)/float(num);
   float angle = 0.0f;
   for (int i = 0; i < num; i++) {
-    coords[i][0] = -sin(angle) * radius;
-    coords[i][1] = -cos(angle) * radius;
+    coords[i][0] = -float(sin(angle)) * radius;
+    coords[i][1] = -float(cos(angle)) * radius;
     angle += delta;
   }
 }
@@ -209,7 +209,7 @@ sogl_render_cone(const float radius,
 
   if (flags & SOGL_NEED_NORMALS) {
     double a = atan(height/radius);
-    generate_3d_circle(normals, slices, sin(a), cos(a));
+    generate_3d_circle(normals, slices, float(sin(a)), float(cos(a)));
     normals[slices] = normals[0];
     normals[slices+1] = normals[1];
   }
@@ -441,8 +441,8 @@ sogl_render_sphere(const float radius,
   float ts, tc;
   SbVec3f tmp;
 
-  drho = SB_PI / (float) (stacks-1);
-  dtheta = 2.0f * SB_PI / (float) slices;
+  drho = float(SB_PI) / (float) (stacks-1);
+  dtheta = 2.0f * float(SB_PI) / (float) slices;
 
   i = 0;
   for (j = 0; j <= slices; j++) {
@@ -453,8 +453,8 @@ sogl_render_sphere(const float radius,
 
   rho = drho;
   for (i = 1; i < stacks; i++) {
-    tc = cos(rho);
-    ts = sin(rho);
+    tc = (float)cos(rho);
+    ts = (float)sin(rho);
     glBegin(GL_QUAD_STRIP);
     theta = 0.0f;
     for (j = 0; j <= slices; j++) {
@@ -465,9 +465,9 @@ sogl_render_sphere(const float radius,
       texcoords[j].setValue((float)j/slices, (float)(stacks-1-i)/(stacks-1));
       glTexCoord2f(texcoords[j][0], texcoords[j][1]);
 
-      tmp.setValue(cos(theta)*ts,
+      tmp.setValue(float(cos(theta))*ts,
                    tc,
-                   -sin(theta)*ts);
+                   -float(sin(theta))*ts);
       normals[j] = tmp;
       glNormal3f(tmp[0], tmp[1], tmp[2]);
       tmp *= radius;
@@ -688,9 +688,9 @@ really_create_texture(const int wrapS, const int wrapT,
                       const SbBool dlist)
 {
   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
                   wrapS ? GL_CLAMP : GL_REPEAT);
-  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,
                   wrapT ? GL_CLAMP : GL_REPEAT);
 
   //

@@ -84,7 +84,7 @@ SoSpotLight::SoSpotLight()
   SO_NODE_ADD_FIELD(location, (SbVec3f(0.0f, 0.0f, 1.0f)));
   SO_NODE_ADD_FIELD(direction, (SbVec3f(0.0f, 0.0f, -1.0f)));
   SO_NODE_ADD_FIELD(dropOffRate, (0.0f));
-  SO_NODE_ADD_FIELD(cutOffAngle, (SB_PI/4.0f));
+  SO_NODE_ADD_FIELD(cutOffAngle, (float(SB_PI)/4.0f));
 }
 
 /*!
@@ -153,8 +153,8 @@ SoSpotLight::GLRender(SoGLRenderAction * action)
   glLightfv(light, GL_POSITION, posvec.getValue());
 
   float cutOff = !cutOffAngle.isIgnored() ?
-    cutOffAngle.getValue() * SB_PI/180.0f :
-    SB_PI/4.0f;
+    cutOffAngle.getValue() * float(SB_PI)/180.0f :
+    float(SB_PI)/4.0f;
 
   float dropOff = !dropOffRate.isIgnored() ?
     dropOffRate.getValue() * 128.0f :

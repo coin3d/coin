@@ -185,8 +185,8 @@ SbMatrix::setRotate(const SbRotation& q)
   float t,cost,sint;
 
   q.getValue(u, t);
-  cost=cos(t);
-  sint=sin(t);
+  cost = (float)cos(t);
+  sint = (float)sin(t);
 
   // pederb, 19990423
   // added tests for special cases ==> quite a lot faster
@@ -1062,7 +1062,7 @@ SbMatrix::multMatrixVec(const SbVec3f& src, SbVec3f& dst) const
   // Copy the src vector, just in case src and dst is the same vector.
   SbVec3f s = src;
 
-  double W = s[0]*t3[0] + s[1]*t3[1] + s[2]*t3[2] + t3[3];
+  float W = s[0]*t3[0] + s[1]*t3[1] + s[2]*t3[2] + t3[3];
 
   dst[0] = (s[0]*t0[0] + s[1]*t0[1] + s[2]*t0[2] + t0[3])/W;
   dst[1] = (s[0]*t1[0] + s[1]*t1[1] + s[2]*t1[2] + t1[3])/W;
@@ -1088,7 +1088,7 @@ SbMatrix::multVecMatrix(const SbVec3f& src, SbVec3f& dst) const
   // Copy the src vector, just in case src and dst is the same vector.
   SbVec3f s = src;
 
-  double W = s[0]*t0[3] + s[1]*t1[3] + s[2]*t2[3] + t3[3];
+  float W = s[0]*t0[3] + s[1]*t1[3] + s[2]*t2[3] + t3[3];
 
   dst[0] = (s[0]*t0[0] + s[1]*t1[0] + s[2]*t2[0] + t3[0])/W;
   dst[1] = (s[0]*t0[1] + s[1]*t1[1] + s[2]*t2[1] + t3[1])/W;

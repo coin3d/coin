@@ -236,7 +236,7 @@ set_callback_data(SbList <SoCallbackData> &list, const SoType type,
 
 void
 SoCallbackAction::addPreCallback(const SoType type,
-                                 const SoCallbackActionCB *cb,
+                                 SoCallbackActionCB *cb,
                                  void *userdata)
 {
   set_callback_data(this->preCB, type, (void*)cb, userdata);
@@ -244,7 +244,7 @@ SoCallbackAction::addPreCallback(const SoType type,
 
 void
 SoCallbackAction::addPostCallback(const SoType type,
-                                  const SoCallbackActionCB *cb,
+                                  SoCallbackActionCB *cb,
                                   void *userdata)
 {
   set_callback_data(this->postCB, type, (void*) cb, userdata);
@@ -252,7 +252,7 @@ SoCallbackAction::addPostCallback(const SoType type,
 
 void
 SoCallbackAction::addPreTailCallback(const SoType type,
-                                     const SoCallbackActionCB *cb,
+                                     SoCallbackActionCB *cb,
                                      void *userdata)
 {
   set_callback_data(this->preTailCB, type, (void*) cb, userdata);
@@ -260,7 +260,7 @@ SoCallbackAction::addPreTailCallback(const SoType type,
 
 void
 SoCallbackAction::addPostTailCallback(const SoType type,
-                                      const SoCallbackActionCB *cb,
+                                      SoCallbackActionCB *cb,
                                       void *userdata)
 {
   set_callback_data(this->postTailCB, type, (void*) cb, userdata);
@@ -268,7 +268,7 @@ SoCallbackAction::addPostTailCallback(const SoType type,
 
 void
 SoCallbackAction::addTriangleCallback(const SoType type,
-                                      const SoTriangleCB *cb,
+                                      SoTriangleCB *cb,
                                       void *userdata)
 {
   set_callback_data(this->triangleCB, type, (void*) cb, userdata);
@@ -276,7 +276,7 @@ SoCallbackAction::addTriangleCallback(const SoType type,
 
 void
 SoCallbackAction::addLineSegmentCallback(const SoType type,
-                                         const SoLineSegmentCB *cb,
+                                         SoLineSegmentCB *cb,
                                          void *userdata)
 {
   set_callback_data(this->lineSegmentCB, type, (void*) cb, userdata);
@@ -284,7 +284,7 @@ SoCallbackAction::addLineSegmentCallback(const SoType type,
 
 void
 SoCallbackAction::addPointCallback(const SoType type,
-                                   const SoPointCB *cb,
+                                   SoPointCB *cb,
                                    void *userdata)
 {
   set_callback_data(this->pointCB, type, (void*) cb, userdata);

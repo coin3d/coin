@@ -31,7 +31,7 @@
 
 #include <assert.h>
 
-static const SbColor defaultColor(0.8, 0.8, 0.8);
+static const SbColor defaultColor(0.8f, 0.8f, 0.8f);
 
 /*!
   \fn SoDiffuseColorElement::numColors

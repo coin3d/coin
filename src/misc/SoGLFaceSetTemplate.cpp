@@ -43,13 +43,13 @@
  const int32_t *texindices)
 {
   // to avoid compiler warnings
-#if NINDEX==FALSE
+#if NINDEX==FALSE && !defined(_WIN32)
   if (normalindices);
 #endif
-#if MINDEX==FALSE
+#if MINDEX==FALSE && !defined(_WIN32)
   if (matindices);
 #endif
-#if TEXTURES==FALSE
+#if TEXTURES==FALSE && !defined(_WIN32)
   if (texcoords && texindices);
 #else
   int texidx = 0;
@@ -68,10 +68,10 @@
   int matnr = 0;
 #endif
 
-#if NBINDING==OVERALL
+#if NBINDING==OVERALL && !defined(_WIN32)
   if (normals);
 #endif
-#if MBINDING==OVERALL
+#if MBINDING==OVERALL && !defined(_WIN32)
   if (materials);
 #endif
 

@@ -169,7 +169,7 @@ SoSwitch::getBoundingBox(SoGetBoundingBoxAction * action)
     }
 
     if (numCenters != 0)
-      action->setCenter(acccenter / numCenters, FALSE);
+      action->setCenter(acccenter / float(numCenters), FALSE);
   }
   else {
     this->getChildren()->traverse(action, idx);

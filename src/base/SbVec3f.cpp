@@ -216,14 +216,14 @@ SbVec3f::equals(const SbVec3f& v, const float tolerance) const
 SbVec3f
 SbVec3f::getClosestAxis(void) const
 {
-  SbVec3f closest(0.0, 0.0, 0.0);
-  float xabs = fabs(this->vec[0]);
-  float yabs = fabs(this->vec[1]);
-  float zabs = fabs(this->vec[2]);
+  SbVec3f closest(0.0f, 0.0f, 0.0f);
+  float xabs = (float)fabs(this->vec[0]);
+  float yabs = (float)fabs(this->vec[1]);
+  float zabs = (float)fabs(this->vec[2]);
 
-  if(xabs>=yabs && xabs>=zabs) closest[0] = (this->vec[0] > 0.0) ? 1.0 : -1.0;
-  else if(yabs>=zabs) closest[1] = (this->vec[1] > 0.0) ? 1.0 : -1.0;
-  else closest[2] = (this->vec[2] > 0.0) ? 1.0 : -1.0;
+  if(xabs>=yabs && xabs>=zabs) closest[0] = (this->vec[0] > 0.0f) ? 1.0f : -1.0f;
+  else if(yabs>=zabs) closest[1] = (this->vec[1] > 0.0f) ? 1.0f : -1.0f;
+  else closest[2] = (this->vec[2] > 0.0f) ? 1.0f : -1.0f;
 
   return closest;
 }
@@ -259,9 +259,9 @@ SbVec3f::getValue(float& x, float& y, float& z) const
 float
 SbVec3f::length(void) const
 {
-  return sqrt(this->vec[0]*this->vec[0] +
-              this->vec[1]*this->vec[1] +
-              this->vec[2]*this->vec[2]);
+  return (float)sqrt(this->vec[0]*this->vec[0] +
+                     this->vec[1]*this->vec[1] +
+                     this->vec[2]*this->vec[2]);
 }
 
 /*!

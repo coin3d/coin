@@ -71,7 +71,7 @@ SoOneShot::evaluate()
     if (elapsed<durationVal) {
       SO_ENGINE_OUTPUT(timeOut,SoSFTime,setValue(elapsed));
       SO_ENGINE_OUTPUT(ramp,SoSFFloat,
-                       setValue(elapsed.getValue()/durationVal.getValue()));
+                       setValue(float(elapsed.getValue())/float(durationVal.getValue())));
     }
     else {
       SO_ENGINE_OUTPUT(timeOut,SoSFTime,setValue(durationVal));

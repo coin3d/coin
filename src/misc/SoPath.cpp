@@ -503,9 +503,8 @@ SoPath::truncate(const int length)
 */
 
 void
-SoPath::truncate(const int length, const SbBool doNotify)
+SoPath::truncate(const int length, const SbBool /*doNotify*/)
 {
-  if (doNotify);
 #if COIN_DEBUG
   if (length < 0 || length > this->nodes.getLength()) {
     SoDebugError::postWarning("SoPath::truncate()",
@@ -675,10 +674,9 @@ SoPath::copy(const int startFromNodeIndex, int numNodes) const
 */
 
 SoPath *
-SoPath::getByName(const SbName name)
+SoPath::getByName(const SbName /*name*/)
 {
-  if (&name);
-  assert(0);
+  assert(0 && "FIXME: implement");
   return NULL;
 }
 
@@ -688,11 +686,9 @@ SoPath::getByName(const SbName name)
 */
 
 int
-SoPath::getByName(const SbName name, SoPathList & list)
+SoPath::getByName(const SbName /*name*/, SoPathList & /*list*/)
 {
-  if (&name);
-  if (&list);
-  assert(0);
+  assert(0 && "FIXME: implement");
   return 0;
 }
 
@@ -767,10 +763,9 @@ SoPath::replaceIndex(SoNode * const parent, const int index,
 */
 
 void
-SoPath::write(SoWriteAction * writeAction) const
+SoPath::write(SoWriteAction * /*writeAction*/) const
 {
-    assert(0); // FIXME: implement
-    if (writeAction);
+  assert(0 && "FIXME: implement");
 }
 
 // *************************************************************************
@@ -786,11 +781,10 @@ SoPath::write(SoWriteAction * writeAction) const
 */
 
 SbBool
-SoPath::isRelevantNotification(SoNotList * const list) const
+SoPath::isRelevantNotification(SoNotList * const /*list*/) const
 {
-    if (list);
-    assert(0); // FIXME: imlement
-    return FALSE;
+  assert(0 && "FIXME: implement");
+  return FALSE;
 }
 
 /*!
@@ -812,10 +806,8 @@ SoPath::auditPath(const SbBool flag)
 */
 
 SbBool
-SoPath::readInstance(SoInput * in, unsigned short flags)
+SoPath::readInstance(SoInput * /*in*/, unsigned short /*flags*/)
 {
-  if (in);
-  if (flags);
   assert(0); // FIXME: implement
   return TRUE;
 }

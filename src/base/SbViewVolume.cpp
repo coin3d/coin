@@ -597,7 +597,7 @@ SbViewVolume::perspective(float fovy, float aspect,
   this->nearplanedistance = nearval;
   this->nearfardistance = farval - nearval;
 
-  float top = nearval * tan(fovy/2.0f);
+  float top = nearval * float(tan(fovy/2.0f));
   float bottom = -top;
   float left = bottom * aspect;
   float right = -left;
@@ -982,7 +982,7 @@ void
 SbViewVolume::print(ostream & file) const
 {
 #if COIN_DEBUG
-  file << "  projtype: " << this->getProjectionType() << endl;
+  file << "  projtype: " << (int)this->getProjectionType() << endl;
   file << "  projpt:   "; this->getProjectionPoint().print(file); file << endl;
   file << "  projdir:  "; this->getProjectionDirection().print(file);
   file << endl;

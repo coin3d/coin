@@ -193,7 +193,6 @@ SoImageInterface::load(const SbBool forceTry)
   if (this->dataPtr) return TRUE;
   if (forceTry || !this->hasTried) {
     this->hasTried = TRUE;
-    int w, h, nc;
     this->dataPtr = NULL;
 
     //
@@ -202,6 +201,7 @@ SoImageInterface::load(const SbBool forceTry)
     //
 
 #if defined(HAVE_LIBSIMAGE)
+    int w, h, nc;
     this->dataPtr = simage_read_image(this->filename.getString(),
                                       &w, &h, &nc);
     if (this->dataPtr) {

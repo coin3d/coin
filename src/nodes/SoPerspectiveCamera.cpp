@@ -52,7 +52,7 @@ SoPerspectiveCamera::SoPerspectiveCamera()
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoPerspectiveCamera);
 
-  SO_NODE_ADD_FIELD(heightAngle, (SB_PI/4.0f));  // 45 degrees
+  SO_NODE_ADD_FIELD(heightAngle, (float(SB_PI)/4.0f));  // 45 degrees
 }
 
 /*!
@@ -137,7 +137,7 @@ SoPerspectiveCamera::viewBoundingBox(const SbBox3f & box, float aspect,
   SbVec3f direction = this->position.getValue() - box.getCenter();
   direction.normalize();
   float movelength =
-    aspectradius + (aspectradius/atan(this->heightAngle.getValue()));
+    aspectradius + (aspectradius/float(atan(this->heightAngle.getValue())));
   this->position.setValue(box.getCenter() + direction * movelength);
 
 

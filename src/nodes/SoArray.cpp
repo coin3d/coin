@@ -324,7 +324,7 @@ SoArray::getBoundingBox(SoGetBoundingBoxAction * action)
   }
 
   if (numCenters != 0)
-    action->setCenter(acccenter / numCenters, FALSE);
+    action->setCenter(acccenter / float(numCenters), FALSE);
 #endif // end of new code by pederb
 }
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION

@@ -548,7 +548,7 @@ SoGLRenderAction::beginTraversal(SoNode * node)
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
     // light model
-    float lgt[4] = {0.2, 0.2, 0.2, 1.0};
+    float lgt[4] = {0.2f, 0.2f, 0.2f, 1.0f};
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lgt);
     glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
 

@@ -122,6 +122,6 @@ SoNonIndexedShape::computeCoordBBox(SoAction * action, int numVertices,
     center += coords[i];
   }
 
-  center /= lastidx + 1 - startidx;
+  center /= float(lastidx + 1 - startidx);
 }
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION

@@ -101,6 +101,7 @@
 // *************************************************************************
 
 // FIXME: old crust, find a good place to store this code. 19980913 mortene.
+#if 0 // OBSOLETED 1999-12-04, pederb
 static float
 compareAppearance(SoMFColor * firstColor, int firstIdx,
                    SoMFColor * otherColor, int otherIdx)
@@ -111,7 +112,7 @@ compareAppearance(SoMFColor * firstColor, int firstIdx,
     0.587 * pow(firstColor->getValues(0)[firstIdx][1]-otherColor->getValues(0)[otherIdx][1],2)+
     0.114 * pow(firstColor->getValues(0)[firstIdx][2]-otherColor->getValues(0)[otherIdx][2],2);
 }
-
+#endif // OBSOLETED 
 
 // *************************************************************************
 
@@ -194,6 +195,8 @@ SoMaterial::GLRender(SoGLRenderAction * action)
 //
 // Compares materials
 // FIXME: Better compare function
+
+#if 0 // OBSOLETED 1999-12-06, pederb
 float
 SoMaterial::compareAppearance(int thisIdx,SoMaterial * otherMaterial,int otherIdx)
 {
@@ -213,7 +216,7 @@ SoMaterial::compareAppearanceVRML2(SoMaterial * otherMaterial)
                ::compareAppearance(&(this->specularColor), 0,&(otherMaterial->specularColor),0)+
                ::compareAppearance(&(this->emissiveColor), 0,&(otherMaterial->emissiveColor),0));
 }
-
+#endif // OBSOLETED
 
 #if !defined(COIN_EXCLUDE_SOACTION)
 /*!

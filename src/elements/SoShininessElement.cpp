@@ -33,7 +33,7 @@
 
 #include <assert.h>
 
-static const float defaultValue = 0.2;
+static const float defaultValue = 0.2f;
 
 /*!
   \fn SoShininessElement::numValues

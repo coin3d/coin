@@ -136,7 +136,7 @@ SbVec2f::getValue(float& x, float& y) const
 float
 SbVec2f::length(void) const
 {
-  return sqrt(this->vec[0]*this->vec[0] + this->vec[1]*this->vec[1]);
+  return (float)sqrt(this->vec[0]*this->vec[0] + this->vec[1]*this->vec[1]);
 }
 
 /*!

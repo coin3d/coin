@@ -341,7 +341,7 @@ SbTime::format(const char * const fmt) const
         if (dtmp < 10.0) str += '0';
         {
           SbString is;
-          is.intToString(dtmp);
+          is.intToString((int)dtmp);
           str += is;
         }
         break;
@@ -354,7 +354,7 @@ SbTime::format(const char * const fmt) const
         if (dtmp < 10.0) str += '0';
         {
           SbString is;
-          is.intToString(dtmp);
+          is.intToString((int)dtmp);
           str += is;
         }
         break;
@@ -366,7 +366,7 @@ SbTime::format(const char * const fmt) const
         if (dtmp < 10.0) str += '0';
         {
           SbString is;
-          is.intToString(dtmp);
+          is.intToString((int)dtmp);
           str += is;
         }
         break;
@@ -379,7 +379,7 @@ SbTime::format(const char * const fmt) const
         if (dtmp < 10.0) str += '0';
         {
           SbString is;
-          is.intToString(dtmp);
+          is.intToString((int)dtmp);
           str += is;
         }
         break;
@@ -395,7 +395,7 @@ SbTime::format(const char * const fmt) const
         if (dtmp < 10.0) str += '0';
         {
           SbString is;
-          is.intToString(dtmp);
+          is.intToString((int)dtmp);
           str += is;
         }
         break;
@@ -887,7 +887,7 @@ SbTime::addToString(SbString & str, const double v) const
     // Add to string.
     val = floor(val);
     SbString is;
-    is.intToString(val);
+    is.intToString((int)val);
     str += is;
 
     int scopy = steps;
@@ -910,7 +910,7 @@ SbTime::addToString(SbString & str, const double v) const
 
   if (val != 0.0) {
     SbString is;
-    is.intToString(val);
+    is.intToString((int)val);
     str += is;
   }
 }
