@@ -115,6 +115,8 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#include <Inventor/C/threads/threadsutilp.h>
+
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbStorage.h>
 #endif // COIN_THREADSAFE
@@ -1580,10 +1582,12 @@ SoGLImageP::applyFilter(const SbBool ismipmap)
 
 static SbList <SoGLImage*> * glimage_reglist;
 static uint32_t glimage_maxage = 60;
+static void * glimage_reglist_mutex = NULL;
 
 static void
 regimage_cleanup(void)
 {
+  CC_MUTEX_DESTRUCT(glimage_reglist_mutex);
   delete glimage_reglist;
 }
 
@@ -1628,6 +1632,7 @@ void
 SoGLImage::endFrame(SoState *state)
 {
   if (glimage_reglist) {
+    CC_MUTEX_LOCK(glimage_reglist_mutex);
     int n = glimage_reglist->getLength();
     for (int i = 0; i < n; i++) {
       SoGLImage *img = (*glimage_reglist)[i];
@@ -1635,6 +1640,7 @@ SoGLImage::endFrame(SoState *state)
       if (img->pimpl->endframecb) 
         img->pimpl->endframecb(img->pimpl->endframeclosure);
     }
+    CC_MUTEX_UNLOCK(glimage_reglist_mutex);
   }
 }
 
@@ -1685,12 +1691,18 @@ SoGLImage::setDisplayListMaxAge(const uint32_t maxage)
 void
 SoGLImage::registerImage(SoGLImage *image)
 {
+  if (!glimage_reglist_mutex) {
+    CC_MUTEX_CONSTRUCT(glimage_reglist_mutex);
+  }
+  
+  CC_MUTEX_LOCK(glimage_reglist_mutex);
   if (glimage_reglist == NULL) {
-    glimage_reglist = new SbList<SoGLImage*>;
     coin_atexit((coin_atexit_f *)regimage_cleanup);
+    glimage_reglist = new SbList<SoGLImage*>;
   }
   assert(glimage_reglist->find(image) < 0);
   glimage_reglist->append(image);
+  CC_MUTEX_UNLOCK(glimage_reglist_mutex);
 }
 
 // used internally to keep track of the SoGLImages
@@ -1698,11 +1710,14 @@ void
 SoGLImage::unregisterImage(SoGLImage *image)
 {
   assert(glimage_reglist);
+
+  CC_MUTEX_LOCK(glimage_reglist_mutex);
   int idx = glimage_reglist->find(image);
   assert(idx >= 0);
   if (idx >= 0) {
     glimage_reglist->removeFast(idx);
   }
+  CC_MUTEX_UNLOCK(glimage_reglist_mutex);
 }
 
 #undef THIS
