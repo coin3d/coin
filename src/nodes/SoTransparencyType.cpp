@@ -31,11 +31,10 @@
   could be inconvenient if different transparency types was wanted for
   different shapes.
 
-  This node was not part of the Open Inventor 2.1 API, and is an
-  extension specific to Coin.
+  \COIN_CLASS_EXTENSION
 
-  \since 2001-11-05
   \sa SoGLRenderAction::TransparencyType
+  \since Coin 2.0
 */
 
 #include <Inventor/nodes/SoTransparencyType.h>

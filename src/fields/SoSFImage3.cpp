@@ -93,10 +93,11 @@
   plane is colored black+blue on the first line and green+cyan on the
   second line.
 
-
-  \since 2001-11-20
+  \COIN_CLASS_EXTENSION
 
   \sa SoTexture3, SoSFImage
+  \since Coin 2.0
+  \since TGS Inventor 2.6
 */
 
 #include <Inventor/fields/SoSFImage3.h>

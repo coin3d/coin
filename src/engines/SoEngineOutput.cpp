@@ -159,12 +159,10 @@ SoEngineOutput::getContainer(void) const
   Returns the node engine containing this output. If the engine
   containing this output is not a NodeEgine, this method returns NULL.
 
-  This method was not part of the Open Inventor 2.1 API, and is an
-  extension specific to Coin.
-
-  \since 2001-10-19
+  \COIN_FUNCTION_EXTENSION
 
   \sa setNodeContainer(), getContainer() 
+  \since Coin 2.0
 */
 
 SoNodeEngine * 
@@ -183,12 +181,10 @@ SoEngineOutput::getNodeContainer(void) const
 /*!
   Returns \e TRUE if the container is a NodeEngine.
 
-  This method was not part of the Open Inventor 2.1 API, and is an
-  extension specific to Coin.
-
-  \since 2001-10-19
+  \COIN_FUNCTION_EXTENSION
 
   \sa getNodeContainer(), getContainer() 
+  \since Coin 2.0
 */
 SbBool 
 SoEngineOutput::isNodeEngineOutput(void) const
@@ -212,12 +208,10 @@ SoEngineOutput::setContainer(SoEngine * engine)
 /*!
   Sets the NodeEngine containing this output.
 
-  This method was not part of the Open Inventor 2.1 API, and is an
-  extension specific to Coin.
-
-  \since 2001-10-19
+  \COIN_FUNCTION_EXTENSION
 
   \sa getNodeContainer()
+  \since Coin 2.0
 */
 
 void 
@@ -368,10 +362,9 @@ SoEngineOutput::touchSlaves(SoNotList * nl, SbBool donotify)
   Convenience method that returns a field container. This method can
   be used both for NodeEngine and Engine outputs.
 
-  This method was not part of the Open Inventor 2.1 API, and is an
-  extension specific to Coin.
+  \COIN_FUNCTION_EXTENSION
 
-  \since 2001-10-19
+  \since Coin 2.0
 */
 SoFieldContainer * 
 SoEngineOutput::getFieldContainer(void)

@@ -31,7 +31,11 @@
   point (origin) and a direction in 3D space. Note that the line is
   infinite in both directions from its definition point.
 
-  \sa SbVec3d */
+  \COIN_CLASS_EXTENSION
+
+  \sa SbVec3d
+  \since Coin 2.0
+*/
 
 // FIXME: we should _really_ have double-precision classes compatible
 // with those in TGS' API, for several good reasons. So either rename

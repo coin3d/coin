@@ -75,7 +75,9 @@
 
   FIXME: write doc.
 
-  \since 2001-11-26
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.0
 */
 
 /*!
@@ -95,7 +97,9 @@
 
   FIXME: write doc.
 
-  \since 2001-11-26
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.0
 */
 
 /*!
@@ -109,7 +113,9 @@
 
   FIXME: write doc.
 
-  \since 2001-11-26
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.0
 */
 
 SO_ELEMENT_SOURCE(SoTextureCoordinateElement);
@@ -191,7 +197,9 @@ SoTextureCoordinateElement::set2(SoState * const state,
 /*!
   FIXME: write doc.
 
-  \since 2001-11-26
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.0
 */
 void
 SoTextureCoordinateElement::set3(SoState * const state,
@@ -283,7 +291,9 @@ SoTextureCoordinateElement::get2(const int index) const
 /*!
   FIXME: write doc.
 
-  \since 2001-11-26
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.0
 */
 const SbVec3f &
 SoTextureCoordinateElement::get3(const int index) const
@@ -403,7 +413,9 @@ SoTextureCoordinateElement::is2D() const
 
 /*! FIXME: write doc.
 
-  \since 2001-11-26
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.0
 */
 //$ EXPORT INLINE
 int32_t
@@ -423,10 +435,11 @@ SoTextureCoordinateElement::getArrayPtr2() const
 }
 
 /*!
-  Returns a pointer to the 3D texture coordinate array. This method is not
-  part of the OIV API.
+  Returns a pointer to the 3D texture coordinate array.
 
-  \since 2001-11-26
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.0
 */
 const SbVec3f *
 SoTextureCoordinateElement::getArrayPtr3() const

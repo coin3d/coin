@@ -316,10 +316,9 @@ SoInput::~SoInput(void)
   tofield. This makes it possible to defines ROUTEs in files
   before the \a fromnode or \a tonode is parsed.
 
-  This method was not part of the Inventor v2.1 API, and is an
-  extension specific to Coin.
+  \COIN_FUNCTION_EXTENSION
 
-  \since 2001-10-12
+  \since Coin 2.0
 */
 void
 SoInput::addRoute(const SbName & fromnode, const SbName & fromfield,
@@ -336,10 +335,9 @@ SoInput::addRoute(const SbName & fromnode, const SbName & fromfield,
 /*!
   Adds a Proto which should be active in the current scope.
 
-  This method was not part of the Inventor v2.1 API, and is an
-  extension specific to Coin.
+  \COIN_FUNCTION_EXTENSION
 
-  \since 2001-10-15
+  \since Coin 2.0
 */
 void
 SoInput::addProto(SoProto * proto)
@@ -356,12 +354,10 @@ SoInput::addProto(SoProto * proto)
   Pushed a Proto onto the Proto stack. The Proto stack is used during
   VRML2 file parsing.
 
-  This method was not part of the Inventor v2.1 API, and is an
-  extension specific to Coin.
-
-  \since 2001-10-23
+  \COIN_FUNCTION_EXTENSION
 
   \sa popProto()
+  \since Coin 2.0
 */
 void
 SoInput::pushProto(SoProto * proto)
@@ -376,12 +372,10 @@ SoInput::pushProto(SoProto * proto)
 /*!
   Pops a Proto off the Proto stack.
 
-  This method was not part of the Inventor v2.1 API, and is an
-  extension specific to Coin.
-
-  \since 2001-10-23
+  \COIN_FUNCTION_EXTENSION
 
   \sa pushProto()
+  \since Coin 2.0
 */
 void
 SoInput::popProto(void)
@@ -396,12 +390,10 @@ SoInput::popProto(void)
 /*!
   Returns the Proto at the top of the Proto stack.
 
-  This method was not part of the Inventor v2.1 API, and is an
-  extension specific to Coin.
-
-  \since 2001-10-23
+  \COIN_FUNCTION_EXTENSION
 
   \sa pushProto()
+  \since Coin 2.0
 */
 SoProto *
 SoInput::getCurrentProto(void) const
@@ -419,10 +411,9 @@ SoInput::getCurrentProto(void) const
   if the IS keyword was found, \a readok will be set to \c FALSE if
   some error occured while searching for the IS keyword.
 
-  This method was not part of the SGI Inventor v2.1 API, and is an
-  extension specific to Coin.
+  \COIN_FUNCTION_EXTENSION
 
-  \since 2001-10-23
+  \since Coin 2.0
 */
 SbBool
 SoInput::checkISReference(SoFieldContainer * container,

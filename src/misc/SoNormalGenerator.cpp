@@ -61,10 +61,9 @@ SoNormalGenerator::~SoNormalGenerator()
   Resets the normal generator, making it possible to reuse it without
   allocating a new one.
 
-  This method was not part of the Inventor v2.1 API, and is an
-  extension specific to Coin.
+  \COIN_FUNCTION_EXTENSION
 
-  \since 2001-10-12
+  \since Coin 2.0
 */
 void
 SoNormalGenerator::reset(const SbBool ccw)

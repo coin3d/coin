@@ -39,9 +39,10 @@
   Note that an SoTextureCoordinate3 node will \e replace the
   coordinates already present in the state (if any).
 
-  \sa SoTextureCoordinate2
+  \COIN_CLASS_EXTENSION
 
-  \since 2001-11-27
+  \sa SoTextureCoordinate2
+  \since Coin 2.0
   \since TGS Inventor 2.6
 */
 

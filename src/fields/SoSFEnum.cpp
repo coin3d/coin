@@ -277,7 +277,9 @@ SoSFEnum::setValue(const SbName name)
   Note that this API method is not part of the original SGI Inventor
   2.1 API, and is an extension specific to Coin.
 
-  \since 2001-01-22
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.0
 */
 int
 SoSFEnum::getNumEnums(void) const
@@ -292,7 +294,9 @@ SoSFEnum::getNumEnums(void) const
   Note that this API method is not part of the original SGI Inventor
   2.1 API, and is an extension specific to Coin.
 
-  \since 2001-01-22
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.0
 */
 int
 SoSFEnum::getEnum(const int idx, SbName & name) const

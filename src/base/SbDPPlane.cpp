@@ -29,6 +29,10 @@
   SbDPPlane is used by many other classes in Coin.  It provides a way of
   representing a plane, specified by a plane normal vector and a
   distance from the origin of the coordinate system.
+
+  \COIN_CLASS_EXTENSION
+
+  \since Coin 2.0
 */
 
 #include <assert.h>
@@ -263,10 +267,9 @@ SbDPPlane::getDistanceFromOrigin(void) const
   line. Returns \c TRUE if an intersection line can be found, and \c
   FALSE if the planes are parallel.
 
-  This method was not part of the Inventor v2.1 API, and is an
-  extension specific to Coin.
+  \COIN_FUNCTION_EXTENSION
 
-  \since 2001-10-11 pederb
+  \since Coin 2.0
 */
 SbBool
 SbDPPlane::intersect(const SbDPPlane & pl, SbDPLine & line)

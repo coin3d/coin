@@ -201,7 +201,9 @@ SoGLTextureImageElement::getMaxGLTextureSize(void)
   available). In the 3D case, 3D textures need to be supported (OpenGL >= 1.2
   or GL_EXT_texture3D).
 
-  \since 2001-12-04
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.0
 */
 SbBool
 SoGLTextureImageElement::isTextureSizeLegal(int xsize, int ysize, int zsize,

@@ -269,10 +269,9 @@ SbPlane::getDistanceFromOrigin(void) const
   line. Returns \c TRUE if an intersection line can be found, and \c
   FALSE if the planes are parallel.
 
-  This method was not part of the Inventor v2.1 API, and is an
-  extension specific to Coin.
+  \COIN_FUNCTION_EXTENSION
 
-  \since 2001-10-11 pederb
+  \since Coin 2.0
 */
 SbBool
 SbPlane::intersect(const SbPlane & pl, SbLine & line)

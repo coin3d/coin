@@ -176,9 +176,11 @@ SoPrimitiveVertex::setTextureCoords(const SbVec2f & texcoords)
 }
 
 /*!
-  Covenience function. Will fill in 1 in the last coord
+  Covenience function. Will fill in 1 in the last coord.
 
-  \since 2001-11-26
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.0
 */
 void
 SoPrimitiveVertex::setTextureCoords(const SbVec3f & texcoords)

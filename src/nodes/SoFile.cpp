@@ -159,8 +159,10 @@ SoFile::readInstance(SoInput * in, unsigned short flags)
 /*!
   Read the file named in the SoFile::name field.
 
-  \since 2001-12-05. Used to be private, moved into protected space to
-  enable subclasses to detect when the file is (re)read.
+  Used to be a private method, moved into protected space to enable
+  subclasses to detect when the file is (re)read.
+
+  \since Coin 2.0
 */
 SbBool
 SoFile::readNamedFile(SoInput * in)

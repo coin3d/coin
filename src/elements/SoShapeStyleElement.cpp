@@ -197,7 +197,9 @@ SoShapeStyleElement::setTextureEnabled(SoState * const state,
 /*!
   FIXME: write doc.
 
-  \since 2001-11-26
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.0
 */
 void
 SoShapeStyleElement::setTexture3Enabled(SoState * const state,
@@ -278,10 +280,9 @@ SoShapeStyleElement::isScreenDoor(SoState * const state)
 /*!
   Returns the current transparency type.
 
-  This method was not part of the Open Inventor 2.1 API, and is an
-  extension specific to Coin.
-  
-  \since 2001-11-04 
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.0
 */
 int 
 SoShapeStyleElement::getTransparencyType(SoState * const state)

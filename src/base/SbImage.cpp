@@ -26,7 +26,9 @@
   \brief The SbImage class is an abstract datatype for 2D and 3D images.
   \ingroup base
 
-  This class is a Coin extension to the original Open Inventor API.
+  \COIN_CLASS_EXTENSION
+
+  \since Coin 1.0
 */
 
 // FIXME: this class could be used to handle image reusage, since it's
@@ -155,9 +157,11 @@ SbImage::SbImage(const unsigned char * bytes,
 
 /*!
   Constructor which sets 3D data using setValue().
-  \sa setValue()
 
-  \since 2001-11-19
+  \COIN_FUNCTION_EXTENSION
+
+  \sa setValue()
+  \since Coin 2.0
 */
 SbImage::SbImage(const unsigned char * bytes,
                  const SbVec3s & size, const int bytesperpixel)
@@ -183,8 +187,7 @@ SbImage::~SbImage(void)
   For the single thread version of Coin, this method does nothing.
 
   \sa readUnlock()
-
-  \since 2001-11-06
+  \since Coin 2.0
 */
 void
 SbImage::readLock(void) const
@@ -197,9 +200,8 @@ SbImage::readLock(void) const
 
   For the single thread version of Coin, this method does nothing.
 
-  \ sa readLock()
-
-  \since 2001-11-06
+  \sa readLock()
+  \since Coin 2.0
 */
 void
 SbImage::readUnlock(void) const
@@ -211,8 +213,7 @@ SbImage::readUnlock(void) const
   Convenience 2D version of setValuePtr.
 
   \sa setValue()
-
-  \since 2001-11-06
+  \since Coin 2.0
 */
 void
 SbImage::setValuePtr(const SbVec2s & size, const int bytesperpixel,
@@ -231,8 +232,7 @@ SbImage::setValuePtr(const SbVec2s & size, const int bytesperpixel,
   a 2D image.
 
   \sa setValue()
-
-  \since 2001-11-19
+  \since Coin 2.0
 */
 void
 SbImage::setValuePtr(const SbVec3s & size, const int bytesperpixel,
@@ -274,7 +274,7 @@ SbImage::setValue(const SbVec2s & size, const int bytesperpixel,
   If the depth of the image (size[2]) is zero, the image is considered
   a 2D image.
 
-  \since 2001-11-19
+  \since Coin 2.0
 */
 void
 SbImage::setValue(const SbVec3s & size, const int bytesperpixel,
@@ -330,7 +330,7 @@ SbImage::getValue(SbVec2s & size, int & bytesperpixel) const
 /*!
   Returns the 3D image data.
 
-  \since 2001-11-19
+  \since Coin 2.0
 */
 unsigned char *
 SbImage::getValue(SbVec3s & size, int & bytesperpixel) const
@@ -541,7 +541,7 @@ SbImage::operator=(const SbImage & image)
   callback, as this will lock up the application.
 
   \sa readFile()
-  \since 2001-11-07
+  \since Coin 2.0
 */
 SbBool
 SbImage::scheduleReadFile(SbImageScheduleReadCB * cb,
@@ -569,7 +569,7 @@ SbImage::scheduleReadFile(SbImageScheduleReadCB * cb,
   getValue() will start loading the image if scheduleReadFile() has
   been used to set the image data.
 
-  \since 2001-11-08
+  \since Coin 2.0
 */
 SbBool 
 SbImage::hasData(void) const
@@ -586,7 +586,7 @@ SbImage::hasData(void) const
   z component is zero. If this is a 3D image, the z component is
   >= 1.
 
-  \since 2001-11-19
+  \since Coin 2.0
  */
 SbVec3s
 SbImage::getSize(void) const

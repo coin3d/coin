@@ -293,7 +293,9 @@ SoGLDisplayList::getContext(void) const
 /*!
   \COININTERNAL
 
-  \since 2001-11-27
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.0
 */
 void
 SoGLDisplayList::bindTexture(SoState *state)

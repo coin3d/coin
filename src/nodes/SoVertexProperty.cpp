@@ -124,7 +124,8 @@
   field contains no coordinates.
 
   \sa SoTextureCoordinate3
-  \since 2001-12-05
+  \since Coin 2.0
+  \since TGS Inventor 2.6
 */
 /*!
   \var SoMFVec3f SoVertexProperty::normal
@@ -181,8 +182,11 @@ SoVertexProperty::SoVertexProperty(void)
   SO_NODE_ADD_FIELD(vertex, (0));
   SO_NODE_ADD_FIELD(normal, (0));
   SO_NODE_ADD_FIELD(texCoord, (0));
-  SO_NODE_ADD_FIELD(texCoord3, (0));
   SO_NODE_ADD_FIELD(orderedRGBA, (0));
+  // FIXME: this field was added in TGS Inventor 2.6 and Coin
+  // 2.0. This should have repercussions for file format
+  // compatibility. 20030227 mortene.
+  SO_NODE_ADD_FIELD(texCoord3, (0));
 
   // Make multivalue fields empty.
   this->vertex.setNum(0);

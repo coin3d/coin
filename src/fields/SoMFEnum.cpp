@@ -259,10 +259,9 @@ SoMFEnum::findEnumName(int value, const SbName * & name) const
 /*!
   Returns the number of enum names the SoSFEnum object understands.
 
-  Note that this API method is not part of the original SGI Inventor
-  2.1 API, and is an extension specific to Coin.
+  \COIN_FUNCTION_EXTENSION
 
-  \since 2001-01-22
+  \since Coin 2.0
 */
 int
 SoMFEnum::getNumEnums(void) const
@@ -274,10 +273,9 @@ SoMFEnum::getNumEnums(void) const
   Returns the value of the Nth enum this SoSFEnum object understands,
   and mutates \a name to contain the Nth enum's name.
 
-  Note that this API method is not part of the original SGI Inventor
-  2.1 API, and is an extension specific to Coin.
+  \COIN_FUNCTION_EXTENSION
 
-  \since 2001-01-22
+  \since Coin 2.0
 */
 int
 SoMFEnum::getEnum(const int idx, SbName & name) const

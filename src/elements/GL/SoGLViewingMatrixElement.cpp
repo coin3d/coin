@@ -131,10 +131,9 @@ SoGLViewingMatrixElement::updategl(void)
   simply load the viewing matrix, since the transformations that were
   applied before the camera needs to be accounted for.
 
-  This method was not part of the Open Inventor V2.1 API, and
-  is an extension specific to Coin.
+  \COIN_FUNCTION_EXTENSION
 
-  \since 2001-11-02
+  \since Coin 2.0
 */
 SbMatrix 
 SoGLViewingMatrixElement::getResetMatrix(SoState * state)

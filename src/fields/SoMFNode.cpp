@@ -445,7 +445,9 @@ SoMFNode::referencesCopy(void) const
 /*!
   Adds a node at the end of the array.
 
-  \since 2001-10-25
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.0
 */
 void
 SoMFNode::addNode(SoNode * node)
@@ -456,7 +458,9 @@ SoMFNode::addNode(SoNode * node)
 /*!
   Inserts a node at index \a idx.
 
-  \since 2001-10-25
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.0
 */
 void
 SoMFNode::insertNode(SoNode * node, int idx)
@@ -469,7 +473,9 @@ SoMFNode::insertNode(SoNode * node, int idx)
 /*!
   Returns the node at index \a idx.
 
-  \since 2001-10-25
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.0
 */
 SoNode *
 SoMFNode::getNode(int idx) const
@@ -482,7 +488,9 @@ SoMFNode::getNode(int idx) const
   Returns the index for the first instance of \a node in the field,
   or -1 if not found.
 
-  \since 2001-10-25
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.0
 */
 int
 SoMFNode::findNode(const SoNode * node) const
@@ -498,7 +506,9 @@ SoMFNode::findNode(const SoNode * node) const
 /*!
   Returns the number of nodes in this field.
 
-  \since 2001-10-25
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.0
 */
 int
 SoMFNode::getNumNodes(void) const
@@ -509,7 +519,9 @@ SoMFNode::getNumNodes(void) const
 /*!
   Removes the node at index \a idx.
 
-  \since 2001-10-25
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.0
 */
 void
 SoMFNode::removeNode(int idx)
@@ -521,7 +533,9 @@ SoMFNode::removeNode(int idx)
 /*!
   Removes the first instance of \a node in the field.
 
-  \since 2001-10-25
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.0
 */
 void
 SoMFNode::removeNode(SoNode * node)
@@ -533,7 +547,9 @@ SoMFNode::removeNode(SoNode * node)
 /*!
   Removes all nodes from the field.
 
-  \since 2001-10-25
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.0
 */
 void
 SoMFNode::removeAllNodes(void)
@@ -543,7 +559,9 @@ SoMFNode::removeAllNodes(void)
 /*!
   Replaces the node at index \a idx with \a newnode.
 
-  \since 2001-10-25
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.0
 */
 void
 SoMFNode::replaceNode(int idx, SoNode * newnode)
@@ -555,7 +573,9 @@ SoMFNode::replaceNode(int idx, SoNode * newnode)
 /*!
   Replaces the first instance of \a oldnode with \a newnode.
 
-  \since 2001-10-25
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.0
 */
 void
 SoMFNode::replaceNode(SoNode * oldnode, SoNode * newnode)
