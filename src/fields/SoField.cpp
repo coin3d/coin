@@ -1438,6 +1438,16 @@ SoField::evaluate(void) const
 {
   if (this->getDirty() == FALSE) return;
   if (this->isConnected() == FALSE) return;
+  // FIXME: should this perhaps be an assert()? It seems bogus that
+  // evaluate() should be allowed to be called recursively -- won't
+  // that lead to erraneous return values from the recursive
+  // inquiries?
+  //
+  // And on a related note: shouldn't notification be disabled while
+  // we're evaluating? We're calling setDirty(FALSE) at the end of
+  // this function anyway, so... :^/
+  //
+  // 20000915 mortene.
   if (this->statusflags.isevaluating == 1) return;
 
   // Cast away the const. (evaluate() must be const, since we're using
@@ -1706,7 +1716,11 @@ SoField::evaluateConnection(void) const
     SoField * master = this->storage->masterfields[idx];
     SoFieldConverter * converter = this->storage->findConverter(master);
     if (converter) converter->evaluateWrapper();
-    else ((SoField *)this)->copyFrom(*master); // cast away const and copy
+    else {
+      SoField * that = (SoField *)this; // cast away const
+      // Copy data.
+      that->copyFrom(*master);
+    }
   }
   else if (this->isConnectedFromEngine()) {
     int idx = this->storage->masterengineouts.getLength() - 1;
