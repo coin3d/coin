@@ -218,10 +218,9 @@ SoSpotLightDragger::SoSpotLightDragger(void)
   // create this part here so that we don't add this node to the scene
   // graph during handleEvent() (causes changes to the scene graph
   // during traversal)
-  this->setPart("translatorRotInv", new SoRotation);
+  (void)SO_GET_ANY_PART(this, "translatorRotInv", SoRotation);
 
-  SoSwitch *sw;
-  sw = SO_GET_ANY_PART(this, "beamSwitch", SoSwitch);
+  SoSwitch * sw = SO_GET_ANY_PART(this, "beamSwitch", SoSwitch);
   SoInteractionKit::setSwitchValue(sw, 0);
 
   this->setBeamScaleFromAngle(1.0f);
