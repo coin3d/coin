@@ -64,6 +64,38 @@ AM_PROG_LIBTOOL
 
 
 dnl *******************************************************************
+dnl * Check if we want to use simage (if available).
+dnl *******************************************************************
+
+AC_ARG_WITH(simage,
+	[  --with-simage           use the simage library for loading textures [default=yes]],
+	[case "${withval}" in
+		yes) want_simage=yes ;;
+		no)  want_simage=no ;;
+		*) AC_MSG_ERROR(bad value \"${withval}\" for --with-simage) ;;
+	esac],
+	[want_simage=yes])
+
+dnl *******************************************************************
+dnl * Check if libsimage development system is installed.
+dnl *******************************************************************
+
+if test "$want_simage" = yes; then
+  AC_CHECK_HEADER(simage.h, simage_dev=yes, simage_dev=no)
+  if test "$simage_dev" = yes; then
+    AC_CHECK_LIB(simage, simage_read_image, , simage_dev=no, -lz -lm)
+  fi
+  if test "$simage_dev" = no; then
+    AC_MSG_WARN(libsimage development system not found -- no simage texture support)
+  fi
+fi
+
+if test "$simage_dev" = yes; then
+  AC_DEFINE(HAVE_SIMAGELIB, 1)
+fi
+
+
+dnl *******************************************************************
 dnl * List all files configure shall generate.
 dnl *******************************************************************
 

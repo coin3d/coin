@@ -22,6 +22,8 @@
 #include <stdlib.h>
 #include <stddef.h>
 
+#include <config.h>
+
 #if defined(HAVE_SIMAGELIB)
 #include <simage.h>
 #endif // HAVE_SIMAGELIB

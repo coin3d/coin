@@ -1,5 +1,10 @@
 /* config.h.in.  Generated automatically from configure.in by autoheader.  */
 
+#undef HAVE_SIMAGELIB
+
+/* Define if you have the simage library (-lsimage).  */
+#undef HAVE_LIBSIMAGE
+
 /* Name of package */
 #undef PACKAGE
 

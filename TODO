@@ -7,8 +7,6 @@ prioritized order)
 
 * [mortene:19990912] include check in configure.in for OpenGL/Mesa.
 
-* [mortene:19990912] include check in configure.in for simage.
-
 * [mortene:19990912] make version settings in SbBasic.h automatically
   follow the definitions made in configure.in.
 
@@ -28,7 +26,7 @@ prioritized order)
   with profiling information on or off.
 
 * [mortene:19990912] add options in configure for compiling slimmed
-  versions of Coin.
+  versions of Coin (--without-coin-engines etc).
 
 * [mortene:19990913] move tasklist from docs/todo.txt into this file.
 
@@ -44,5 +42,11 @@ Done
 
 (format is: "* [author:conceived-date][implementer:finished-date] item")
 
+* [mortene:19990912][mortene:19990913] include check in configure.in
+  for simage.
+
+* [mortene:19990913][mortene:19990913] use simage define setting to
+  include/exclude use of functionality possibly provided by the simage
+  library.
 
 ===============================================================================
