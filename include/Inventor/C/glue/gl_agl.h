@@ -32,7 +32,7 @@
 extern "C" {
 #endif /* __cplusplus */
 
-void * coin_nsgl_getprocaddress(const char * fname);
+void * coin_agl_getprocaddress(const char * fname);
 
 void * aglglue_context_create_offscreen(unsigned int width, 
                                         unsigned int height);
