@@ -1,0 +1,44 @@
+* levels of optimization (sorted in order of impact):
+
+        i) asymptotic algorithm time (list traversal, sorting, etc)
+
+       ii) caching strategies (and implementations)
+
+      iii) low-level stuff (piping data to OpenGL, inlining of
+           functions, etc)
+
+   i) should be more-or-less ok in Coin. There are major tasks at ii),
+   particularly in the SoSeparator implementation. The obvious stuff
+   at iii) is in the Sb* classes; SbVec3f, SbMatrix etc, but we need
+   decent profiling to expose the bottlenecks.
+
+   One important thing to note about case iii) is the fact that we
+   should _really_ have some kind of regression testing system in
+   place before we start optimization of the basic classes, to avoid
+   introducing hard-to-find bugs.
+
+
+* tasks for optimizations:
+        0) try to single out interesting areas for profiling
+
+        1) make a good test case for one particular area
+        2) optional: show us the testcode for approval & feedback
+        3) do extensive profiling
+        4) analyze results
+        5) optional: present them for sanity checking
+        6) optimize
+        7) submit fixes as patches 
+        8) goto 1
+
+
+* interesting areas to fix (roughly in sorted order):
+
+        - traversal in general, rendering and picking in particular
+          ("optimization-by-caching") -- this is first priority
+
+        - file import / parsing (and export?)
+
+        - startup-time (for instance measured for the
+          examples/components/examinerviewer executable)
+
+        - user interaction through manipulators
