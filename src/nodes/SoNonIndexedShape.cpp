@@ -132,7 +132,9 @@ SoNonIndexedShape::computeCoordBBox(SoAction * action, int numVertices,
       center += c;
     }
   }
-  center /= float(lastidx + 1 - startidx);
+  if (lastidx+1 - startidx) {
+    center /= float(lastidx + 1 - startidx);
+  }
 }
 
 /*!  
