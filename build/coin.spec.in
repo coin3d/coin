@@ -241,6 +241,7 @@ make doxygen-doc
 @includedir@/Inventor/elements/SoGLSpecularColorElement.h
 @includedir@/Inventor/elements/SoGLTextureCoordinateElement.h
 @includedir@/Inventor/elements/SoGLTextureEnabledElement.h
+@includedir@/Inventor/elements/SoGLTexture3EnabledElement.h
 @includedir@/Inventor/elements/SoGLTextureImageElement.h
 @includedir@/Inventor/elements/SoGLTextureMatrixElement.h
 @includedir@/Inventor/elements/SoGLUpdateAreaElement.h

@@ -47,6 +47,7 @@
 #include <Inventor/elements/SoGLDrawStyleElement.h>
 #include <Inventor/elements/SoGLLightIdElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoLinePatternElement.h>
 #include <Inventor/elements/SoGLLinePatternElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>

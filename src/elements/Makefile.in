@@ -178,6 +178,7 @@ RegularSources = \
 	SoGLSpecularColorElement.cpp \
 	SoGLTextureCoordinateElement.cpp \
 	SoGLTextureEnabledElement.cpp \
+	SoGLTexture3EnabledElement.cpp \
 	SoGLTextureImageElement.cpp \
 	SoGLTextureMatrixElement.cpp \
 	SoGLUpdateAreaElement.cpp \
@@ -283,6 +284,7 @@ PublicHeaders = \
 	../../include/Inventor/elements/SoGLSpecularColorElement.h \
 	../../include/Inventor/elements/SoGLTextureCoordinateElement.h \
 	../../include/Inventor/elements/SoGLTextureEnabledElement.h \
+	../../include/Inventor/elements/SoGLTexture3EnabledElement.h \
 	../../include/Inventor/elements/SoGLTextureImageElement.h \
 	../../include/Inventor/elements/SoGLTextureMatrixElement.h \
 	../../include/Inventor/elements/SoGLUpdateAreaElement.h \
@@ -431,6 +433,7 @@ elements_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoGLSpecularColorElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLTextureCoordinateElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLTextureEnabledElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLTexture3EnabledElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLTextureImageElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLTextureMatrixElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLUpdateAreaElement.$(OBJEXT) \
@@ -535,6 +538,7 @@ libelements_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoGLSpecularColorElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLTextureCoordinateElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLTextureEnabledElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLTexture3EnabledElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLTextureImageElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLTextureMatrixElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLUpdateAreaElement.lo \
@@ -637,6 +641,7 @@ libelements@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoGLSpecularColorElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLTextureCoordinateElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLTextureEnabledElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLTexture3EnabledElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLTextureImageElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLTextureMatrixElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLUpdateAreaElement.lo \
@@ -791,6 +796,8 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoGLShininessElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLSpecularColorElement.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLSpecularColorElement.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLTexture3EnabledElement.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLTexture3EnabledElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLTextureCoordinateElement.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLTextureCoordinateElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLTextureEnabledElement.Plo \
@@ -1072,6 +1079,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLShininessElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLSpecularColorElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLSpecularColorElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLTexture3EnabledElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLTexture3EnabledElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLTextureCoordinateElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLTextureCoordinateElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLTextureEnabledElement.Plo@am__quote@

@@ -74,6 +74,7 @@
 #include "SoGLSpecularColorElement.cpp"
 #include "SoGLTextureCoordinateElement.cpp"
 #include "SoGLTextureEnabledElement.cpp"
+#include "SoGLTexture3EnabledElement.cpp"
 #include "SoGLTextureImageElement.cpp"
 #include "SoGLTextureMatrixElement.cpp"
 #include "SoGLUpdateAreaElement.cpp"

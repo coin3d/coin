@@ -54,6 +54,7 @@ RegularSources = \
 	SoGLSpecularColorElement.cpp \
 	SoGLTextureCoordinateElement.cpp \
 	SoGLTextureEnabledElement.cpp \
+	SoGLTexture3EnabledElement.cpp \
 	SoGLTextureImageElement.cpp \
 	SoGLTextureMatrixElement.cpp \
 	SoGLUpdateAreaElement.cpp \
@@ -157,6 +158,7 @@ PublicHeaders = \
 	../../include/Inventor/elements/SoGLSpecularColorElement.h \
 	../../include/Inventor/elements/SoGLTextureCoordinateElement.h \
 	../../include/Inventor/elements/SoGLTextureEnabledElement.h \
+	../../include/Inventor/elements/SoGLTexture3EnabledElement.h \
 	../../include/Inventor/elements/SoGLTextureImageElement.h \
 	../../include/Inventor/elements/SoGLTextureMatrixElement.h \
 	../../include/Inventor/elements/SoGLUpdateAreaElement.h \

@@ -153,6 +153,7 @@ SoElement::initElements(void)
   SoGLDrawStyleElement::initClass();
   SoGLLightIdElement::initClass();
   SoGLTextureEnabledElement::initClass();
+  SoGLTexture3EnabledElement::initClass();
   SoLinePatternElement::initClass();
   SoGLLinePatternElement::initClass();
   SoMaterialBindingElement::initClass();
