@@ -27,11 +27,11 @@
   \ingroup nodekits
 
   Node kits are collections of nodes and other node kits (from here on
-  node kits which is part of some other node kit, will only be referred 
-  to as nodes or parts, see catalogs and parts), organized in a way 
-  that is convenient for its use. A node kit inherits SoNode and can 
+  node kits which is part of some other node kit, will only be referred
+  to as nodes or parts, see catalogs and parts), organized in a way
+  that is convenient for its use. A node kit inherits SoNode and can
   thus be inserted into a scenegraph as any other node.
-  
+
   The organizing of the nodes and node kits of some node kit, is done
   through catalogs. A node kit's catalog describes the nodes that can
   be members of the node kit. These members are called parts. Thus a
@@ -41,43 +41,43 @@
   Each part in the catalog has some values saying something about the
   part itself and about the role the part plays in the scenegraph.
   Those values are:
-  
+
   <dl>
   <dt> Name
   <dd> The name of the part.
   <dt> Type
   <dd> The part's node type.
-  <dt> Default Type  
-  <dd> If the part's type is an abstract superclass, this value will hold 
+  <dt> Default Type
+  <dd> If the part's type is an abstract superclass, this value will hold
   the default subclass used by this part.
-  <dt> Created by Default? 
-  <dd> Holds \c TRUE if the part should be instantiated when the node kit 
-  is instantiated, otherwise the part is kept empty until it is set by some 
+  <dt> Created by Default?
+  <dd> Holds \c TRUE if the part should be instantiated when the node kit
+  is instantiated, otherwise the part is kept empty until it is set by some
   of the means applicable.
-  <dt> Parent Name 
+  <dt> Parent Name
   <dd> The name of the part that is this part's parent.
-  <dt> Right Sibling 
-  <dd> The name of the part that is the part immediately to the right of 
+  <dt> Right Sibling
+  <dd> The name of the part that is the part immediately to the right of
   this part in the node kit scenegraph.
   <dt> Is it a List?
-  <dd> Holds \c TRUE if the part is a list, otherwise it is \c FALSE. See 
+  <dd> Holds \c TRUE if the part is a list, otherwise it is \c FALSE. See
   SoNodeKitListPart for more info on node kit lists.
-  <dt> List Cointainer Type 
+  <dt> List Cointainer Type
   <dd> The type of group node used to hold the items if the part is a list.
-  <dt> List Element Type 
-  <dd> The types of nodes that is allowed to be held by this part if the part 
+  <dt> List Element Type
+  <dd> The types of nodes that is allowed to be held by this part if the part
   is a list.
-  <dt> Is It Public? 
-  <dd> Holds \c TRUE if the part should be publically available, otherwise 
+  <dt> Is It Public?
+  <dd> Holds \c TRUE if the part should be publically available, otherwise
   it holds \c FALSE.
   </dl>
 
   Node kits use lazy instantiation when it creates it's parts. This means
   that the nodes making up the parts of the nodekit only are created when
   they are needed. If the "Created by Default?" holds TRUE, then the part
-  is created when the node kit itself is instantiated. If not, parts are 
+  is created when the node kit itself is instantiated. If not, parts are
   created when they are requested through SoBaseKit::getPart() or the
-  SO_GET_PART() macro, or created with SoBaseKit::set(). Also, if a part is 
+  SO_GET_PART() macro, or created with SoBaseKit::set(). Also, if a part is
   set with SoBaseKit::setPart() or the SO_SET_PART() macro, any previously
   uncreated parts above the set part in the hierarchy, is created
   automatically.
@@ -93,7 +93,7 @@
   \li A part of the node kit doesn't have one spesific setup. A shape part
       can e.g. be swapped with any other shape, since they are of the same
       type. If the node kit of a human has a part called "head" which is of
-      type SoShape, it might default to a sphere. But if the programmer 
+      type SoShape, it might default to a sphere. But if the programmer
       thinks that a cube might fit better, one can set the "head" part to
       a cube instead, or maybe a face set representing a complex model of
       a head.
@@ -107,7 +107,7 @@
       part of it isn't needed at the moment of node kit instantiation,
       they aren't created. Thus parts are only created when needed, either
       by the application or some other part.
-  \li The application code becomes smaller and easier to read, as the node 
+  \li The application code becomes smaller and easier to read, as the node
       kits provides simple routines for creating and setting parts.
   \li New node kits can be created through subclassing to obtain simple
       setups of scenegraphs best fitted to the application.
@@ -122,36 +122,36 @@
   #include <Inventor/nodekits/SoShapeKit.h>
   #include <Inventor/nodes/SoSeparator.h>
   #include <Inventor/nodes/SoCube.h>
-  
+
   int
   main(int argc, char ** argv)
   {
     QWidget * window = SoQt::init(argv[0]);
-  
+
     SoQtExaminerViewer * viewer = new SoQtExaminerViewer(window);
-  
+
     // Instantiating a shape kit, by default creating a simple sphere.
     SoShapeKit * shapekit = new SoShapeKit;
     // Swapping the sphere with a cube.
     shapekit->setPart("shape", new SoCube);
     // Setting the cube to be rendered in the color red. The shape kit
     // has a SoAppearanceKit as one of it's parts. The "material" part
-    // used to set the color of the shape, really belongs the 
+    // used to set the color of the shape, really belongs the
     // appearance kit. If the SoShapeKit::set() is used, it will
     // check if some of its sub kits has a part with the name given,
     // and delegate the setting to the correct kit.
     shapekit->set("material", "diffuseColor 1 0 0");
-    
+
     SoSeparator * newroot = new SoSeparator;
     newroot->ref();
-    
+
     newroot->addChild(shapekit);
-    
+
     viewer->setSceneGraph(newroot);
-    
+
     viewer->show();
     SoQt::show(window);
-    
+
     SoQt::mainLoop();
     delete viewer;
 
@@ -162,7 +162,7 @@
 
   The above code snippet will produce a viewer with a side view to
   the scene shown below:
-  
+
   <center>
   <img src="http://doc.coin3d.org/images/Coin/nodekits/basekitexample.png">
   </center>
@@ -172,11 +172,11 @@
 
   \code
    SoShapeKit * shapekit = new SoShapeKit;
-   
+
    shapekit->setPart("shape", new SoCube);
    shapekit->set("material", "diffuseColor 1 0 0");
   \endcode
-  
+
   ..while doing it without shape kits amounts to this:
 
   \code
@@ -216,16 +216,16 @@
   class SoState;
   class SbColor;
   class SbVec2s;
-  
+
   class ShapeScale : public SoBaseKit {
     typedef SoBaseKit inherited;
-  
+
     SO_KIT_HEADER(ShapeScale);
-    
+
     SO_KIT_CATALOG_ENTRY_HEADER(topSeparator);
     SO_KIT_CATALOG_ENTRY_HEADER(scale);
     SO_KIT_CATALOG_ENTRY_HEADER(shape);
-    
+
    public:
     ShapeScale(void);
     static void initClass(void);
@@ -245,7 +245,7 @@
 
   \code
   // Copyright (C) 1998-2004 by Systems in Motion. All rights reserved.
-  
+
   //  The ShapeScale class is used for scaling a shape based on
   //  projected size.
   //
@@ -256,17 +256,17 @@
   //  can be used, even group nodes with several shapes, but the
   //  marker shape should be approximately of unit size, and with a
   //  center position in (0, 0, 0).
-  
-  
+
+
   //  SoSFFloat ShapeScale::active
   //  Turns the scaling on/off. Default value is TRUE.
-  
+
 
   //  SoSFFloat ShapeScale::projectedSize
   //  The requested projected size of the shape. Default value is 5.0.
 
   #include "ShapeScale.h"
-  
+
   #include <Inventor/actions/SoGLRenderAction.h>
   #include <Inventor/nodes/SoShape.h>
   #include <Inventor/nodes/SoScale.h>
@@ -275,31 +275,31 @@
   #include <Inventor/elements/SoViewVolumeElement.h>
   #include <Inventor/elements/SoViewportRegionElement.h>
   #include <Inventor/elements/SoModelMatrixElement.h>
-  
+
   SO_KIT_SOURCE(ShapeScale);
-  
-  
+
+
   //  Constructor.
-  ShapeScale::ShapeScale(void) 
+  ShapeScale::ShapeScale(void)
   {
     SO_KIT_CONSTRUCTOR(ShapeScale);
-  
+
     SO_KIT_ADD_FIELD(active, (TRUE));
-    SO_KIT_ADD_FIELD(projectedSize, (5.0f));  
+    SO_KIT_ADD_FIELD(projectedSize, (5.0f));
 
     SO_KIT_ADD_CATALOG_ENTRY(topSeparator, SoSeparator, FALSE, this, \x0, FALSE);
     SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(shape, SoNode, SoCube, TRUE, topSeparator, \x0, TRUE);
     SO_KIT_ADD_CATALOG_ENTRY(scale, SoScale, FALSE, topSeparator, shape, FALSE);
-    
+
     SO_KIT_INIT_INSTANCE();
   }
-    
-    
+
+
   // Destructor.
   ShapeScale::~ShapeScale()
   {
   }
-    
+
   // Initializes this class. Call before using it.
 
   void
@@ -308,7 +308,7 @@
     SO_KIT_INIT_CLASS(ShapeScale, SoBaseKit, "BaseKit");
   }
 
-  static void 
+  static void
   update_scale(SoScale * scale, const SbVec3f & v)
   {
     // only write to field when scaling has changed.
@@ -318,7 +318,7 @@
   }
 
   // Overridden to (re)initialize scaling before rendering marker.
-  void 
+  void
   ShapeScale::GLRender(SoGLRenderAction * action)
   {
     SoState * state = action->getState();
@@ -379,28 +379,28 @@
     SoTranslation * t = new SoTranslation;
     t->translation = v;
     markerroot->addChild(t);
-    
+
     ShapeScale * kit = new ShapeScale;
     kit->active = TRUE;
     kit->projectedSize = 5.0f;
-    
+
     // create the marker
     SoSeparator * markersep = new SoSeparator;
-    
+
     SoBaseColor * mat = new SoBaseColor;
     mat->rgb.setValue(normalized_rand(), normalized_rand(), normalized_rand());
     markersep->addChild(mat);
-    
+
     // marker shape should be unit size, with center in (0.0f, 0.0f, 0.0f)
     SoCube * cube = new SoCube;
     cube->width = 1.0f;
     cube->height = 1.0f;
     cube->depth = 1.0f;
-    
+
     markersep->addChild(cube);
     kit->setPart("shape", markersep);
     markerroot->addChild(kit);
-    
+
     return markerroot;
   }
 
@@ -408,16 +408,16 @@
   event_cb(void * ud, SoEventCallback * n)
   {
     const SoMouseButtonEvent * mbe = (SoMouseButtonEvent *)n->getEvent();
-  
+
     if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 &&
       mbe->getState() == SoButtonEvent::DOWN) {
 
       SoQtExaminerViewer * viewer = (SoQtExaminerViewer *)ud;
-    
+
       SoRayPickAction rp(viewer->getViewportRegion());
       rp.setPoint(mbe->getPosition());
       rp.apply(viewer->getSceneManager()->getSceneGraph());
-      
+
       SoPickedPoint * point = rp.getPickedPoint();
       if (point == NULL) {
         (void)fprintf(stderr, "\n** miss! **\n\n");
@@ -442,7 +442,7 @@
   void
   show_instructions(void)
   {
-    (void)fprintf(stdout, 
+    (void)fprintf(stdout,
       "\nThis example program demonstrates the use of the ShapeScale nodekit.\n"
       "\nQuick instructions:\n\n"
       "  * place the marker by clicking on a shape with the left mouse button\n"
@@ -462,7 +462,7 @@
     ShapeScale::initClass(); // init our extension nodekit
 
     SoQtExaminerViewer * ex1 = new SoQtExaminerViewer(window);
-  
+
     SoInput input;
     SbBool ok = input.openFile(argv[1]);
     if (!ok) {
@@ -470,8 +470,8 @@
       return -1;
     }
 
-    SoSeparator * root = SoDB::readAll(&input); 
-  
+    SoSeparator * root = SoDB::readAll(&input);
+
     if (root == NULL) {
       (void) fprintf(stderr, "Unable to read file: %s\n", argv[1]);
       return -1;
@@ -481,21 +481,21 @@
 
     SoSeparator * newroot = new SoSeparator;
     newroot->ref();
-  
+
     newroot->addChild(root);
 
     // create event callback and marker nodes
     SoSeparator * sep = new SoSeparator;
     newroot->addChild(sep);
-  
+
     SoEventCallback * ecb = new SoEventCallback;
     ecb->addEventCallback(SoMouseButtonEvent::getClassTypeId(), event_cb, ex1);
     sep->addChild(ecb);
-  
+
     ex1->setSceneGraph(newroot);
     ex1->setTransparencyType(SoGLRenderAction::SORTED_OBJECT_BLEND);
     ex1->setViewing(FALSE);
-    
+
     ex1->show();
     SoQt::show(window);
 
@@ -613,8 +613,8 @@ SO_KIT_SOURCE(SoBaseKit);
 
   \verbatim
   CLASS SoBaseKit
-  PVT   "this",  SoBaseKit  --- 
-        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
+  PVT   "this",  SoBaseKit  ---
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ]
   \endverbatim
 
   \NODEKIT_POST_TABLE
@@ -645,7 +645,7 @@ SoBaseKit::SoBaseKit(void)
                                     FALSE,
                                     SoType::badType(),
                                     SoType::badType(),
-                                    FALSE); 
+                                    FALSE);
 
   SO_KIT_ADD_CATALOG_LIST_ENTRY(callbackList, SoSeparator, TRUE, this, "", SoCallback, TRUE);
   SO_KIT_ADD_LIST_ITEM_TYPE(callbackList, SoEventCallback);
@@ -674,7 +674,7 @@ SoBaseKit::initClass(void)
   // set rayPick method
   SoType type = SoBaseKit::getClassTypeId();
   SoRayPickAction::addMethod(type, SoNode::rayPickS);
-  SoAudioRenderAction::addMethod(type,        
+  SoAudioRenderAction::addMethod(type,
                                  SoAudioRenderAction::callDoAction);
 }
 
@@ -1013,7 +1013,7 @@ SoBaseKit::getBoundingBox(SoGetBoundingBoxAction * action)
 
   SbVec3f acccenter(0.0f, 0.0f, 0.0f);
   int numacc = 0;
-  
+
   for (int i = 0; i <= last; i++) {
     this->children->traverse(action, i, i);
     if (action->isCenterSet()) {
@@ -1109,6 +1109,23 @@ is_default_node(SoNode * node)
 void
 SoBaseKit::write(SoWriteAction * action)
 {
+  // debugging code start **************************************************
+
+  // if envvar is set, we'll write nodekit's current scene graph
+  // instead of writing as a nodekit:
+  static int dump = -1;
+  if (dump == -1) {
+    const char * env = coin_getenv("COIN_DEBUG_FLATTEN_NODEKITS_ON_WRITE");
+    dump = env && (atoi(env) > 0);
+  }
+  if (dump) {
+    this->children->traverse(action);
+    return;
+  }
+
+  // debugging code end ****************************************************
+
+
   SoOutput * out = action->getOutput();
   if (out->getStage() == SoOutput::COUNT_REFS) {
     this->addWriteReference(out, FALSE);
@@ -1466,17 +1483,17 @@ SoBaseKit::printSubDiagram(const SbName & rootname, int level)
 
   \verbatim
   CLASS SoWrapperKit
-  PVT   "this",  SoWrapperKit  --- 
-        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
-  PVT   "topSeparator",  SoSeparator  --- 
-        "pickStyle",  SoPickStyle  --- 
-        "appearance",  SoAppearanceKit  --- 
-        "units",  SoUnits  --- 
-        "transform",  SoTransform  --- 
-        "texture2Transform",  SoTexture2Transform  --- 
-        "childList",  SoNodeKitListPart [ SoShapeKit, SoSeparatorKit ] 
-        "localTransform",  SoTransform  --- 
-        "contents",  SoSeparator  --- 
+  PVT   "this",  SoWrapperKit  ---
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ]
+  PVT   "topSeparator",  SoSeparator  ---
+        "pickStyle",  SoPickStyle  ---
+        "appearance",  SoAppearanceKit  ---
+        "units",  SoUnits  ---
+        "transform",  SoTransform  ---
+        "texture2Transform",  SoTexture2Transform  ---
+        "childList",  SoNodeKitListPart [ SoShapeKit, SoSeparatorKit ]
+        "localTransform",  SoTransform  ---
+        "contents",  SoSeparator  ---
   \endverbatim
 
   \c PVT denotes that it's a private entry in the catalog, then
@@ -2060,11 +2077,11 @@ SoBaseKit::readInstance(SoInput * in, unsigned short flags)
     PRIVATE(this)->instancelist[i]->setValue(NULL);
     PRIVATE(this)->instancelist[i]->setDefault(TRUE);
   }
-  
+
   // reset the node kit by removing all children. We will restore it
   // by setting the parts again later
   this->getChildren()->truncate(0);
-  
+
   // actually read the nodekit
   SbBool ret = inherited::readInstance(in, flags);
 
@@ -2078,7 +2095,7 @@ SoBaseKit::readInstance(SoInput * in, unsigned short flags)
         PRIVATE(this)->instancelist[i]->setValue(NULL);
       }
     }
-     
+
     // restore the nodekit with all old and read parts
     for (i = 1; i < PRIVATE(this)->instancelist.getLength(); i++) {
       if (!cat->isLeaf(i) && nodelist[i]) {
@@ -2450,7 +2467,7 @@ SoBaseKitP::createWriteData(void)
       int part = catalog->getPartNumber(fielddata->getFieldName(i));
       // NB: earlier (before 2003-03-26) we did not write private
       // parts.  However, several users have reported that SGI/TGS
-      // Inventor do this so we have to write them too. 
+      // Inventor do this so we have to write them too.
       // pederb, 2003-03-26
       if ((pass == 0 && part < 0) ||
           (pass == 1 && part > 0 && catalog->isLeaf(part)) ||
