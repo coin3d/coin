@@ -460,6 +460,9 @@ cc_flww32_get_font_name(void * font, cc_string * str)
   newsize = cc_win32()->GetTextFace(cc_flww32_globals.devctx, size, s);
   cc_string_set_text(str, s);
 
+  /* FIXME: this should be handled better. See FIXME about making an
+     additional wrapper around GetTextFace() to catch string cropping,
+     in win32api.c's coin_GetTextFace(). 20031114 mortene. */
   if (newsize == size) {
     /* The returned fontname length is longer than expected. This
        means that the system has cropped the string. Requested font
