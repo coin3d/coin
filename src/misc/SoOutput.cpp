@@ -426,6 +426,8 @@ SoOutput::write(const char * s)
 void
 SoOutput::write(const SbString & s)
 {
+  // FIXME: share code with SoOutput::write(const SbName &). 19991113 mortene.
+
   if (this->isBinary()) {
     this->write(s.getString());
   }
@@ -449,6 +451,8 @@ SoOutput::write(const SbString & s)
 void
 SoOutput::write(const SbName & n)
 {
+  // FIXME: share code with SoOutput::write(const SbString &). 19991113 mortene.
+
   if (this->isBinary()) {
     this->write(n.getString());
   }

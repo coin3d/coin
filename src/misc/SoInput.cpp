@@ -217,7 +217,7 @@ public:
       // generated files. NB: the line counting is not working 100% if
       // we start putting back and re-reading multiple parts of '\r\n'
       // sequences.
-      if ((c == '\r') || (c == '\n')) this->linenr--;
+      if (!this->isbinary && ((c == '\r') || (c == '\n'))) this->linenr--;
 
       this->lastputback = c;
       this->lastchar = -1;
@@ -234,6 +234,37 @@ public:
 
   void putBack(const char * const str)
     {
+#if 0 // Doesn't work yet. Also not needed at the moment.
+      // Binary format.
+
+      if (this->isbinary) {
+	unsigned int len = strlen(str);
+	char * valarray[sizeof(int)];
+	{ // This code from SoOutput::convertInt32().
+	  // Convert to "network format".
+
+	  // FIXME: ugly hack, probably breaks on 64-bit architectures --
+	  // lame. 19990627 mortene.
+	  assert(sizeof(len) == sizeof(unsigned long int));
+	  *((unsigned long int *)valarray) = htonl(*((unsigned long int *)&len));
+	}
+
+	for (unsigned int i=0; i < sizeof(len); i++)
+	  this->putBack(valarray[i]);
+	for (unsigned int i=0; i < len; i++) this->putBack(str[i]);
+	if (len % 4) {
+	  for (unsigned int i=0; i < (4 - (len%4)); i++) this->putBack('\0');
+	}
+	return;
+      }
+#else
+      if (this->isbinary) {
+	assert(0);
+      }
+#endif
+      
+      // ASCII format.
+
       int n = strlen(str);
       if (!n) return;
 
@@ -1839,7 +1870,7 @@ SoInput::convertFloat(char * from, float * f)
 {
   // Jesus H. Christ -- this unbelievably ugly hack actually kinda
   // works. Probably because the bitpatterns of the parts of float
-  // numbers are standardized according to IEEE <something>.
+  // numbers are standardized according to IEEE 754 (?).
   assert(sizeof(unsigned long int) == sizeof(float));
   unsigned long int fbitval = ntohl(*((unsigned long int *)from));
   memcpy(f, &fbitval, sizeof(float));
