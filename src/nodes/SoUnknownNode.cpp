@@ -24,8 +24,15 @@
 
 #include <Inventor/nodes/SoUnknownNode.h>
 #include <Inventor/SoInput.h>
+#include <Inventor/SoOutput.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/actions/SoPickAction.h>
+#include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/errors/SoReadError.h>
-#include <Inventor/fields/SoField.h>
+#include <Inventor/fields/SoSFNode.h>
+#include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodes/SoGroup.h>
 
 #if COIN_DEBUG
@@ -61,6 +68,8 @@ SoUnknownNode::SoUnknownNode(void)
   this->classfielddata = new SoFieldData;
 
   this->isBuiltIn = FALSE;
+  this->privatechildren = NULL;
+  this->alternate = new SoChildList(this, 1);
 }
 
 SoUnknownNode::~SoUnknownNode()
@@ -69,6 +78,8 @@ SoUnknownNode::~SoUnknownNode()
     delete this->classfielddata->getField(this, i);
   
   delete this->classfielddata;
+  delete this->privatechildren;
+  delete this->alternate;
 }
 
 void
@@ -82,7 +93,7 @@ SoUnknownNode::initClass(void)
   /* Set up entry in the type system. */
   SoUnknownNode::classTypeId =
     SoType::createType(inherited::getClassTypeId(),
-                       "UnknownNode", // FIXME: correct? 20000103 mortene.
+                       "UnknownNode",
                        &SoUnknownNode::createInstance,
                        SoNode::nextActionMethodIndex++);
 }
@@ -94,6 +105,24 @@ SoUnknownNode::readInstance(SoInput * in, unsigned short flags)
   SbBool ok = inherited::readInstance(in, flags);
   if (!ok) return FALSE;
 
+  // Set pointer to alternateRep node, if SoSFNode field with this
+  // name is present.
+  for (int i=0; i < this->classfielddata->getNumFields(); i++) {
+    if (this->classfielddata->getFieldName(i) == "alternateRep") {
+      SoSFNode * f = (SoSFNode *)this->classfielddata->getField(this, i);
+      if (f->isOfType(SoSFNode::getClassTypeId())) {
+#if COIN_DEBUG && 0 // debug
+        SoDebugError::postInfo("SoUnknownNode::readInstance",
+                               "found alternate representation");
+#endif // debug
+        this->alternate->truncate(0);
+        this->alternate->append(f->getValue());
+      }
+      break;
+    }
+  }
+
+  // Read children, if necessary.
   if (!in->isBinary() || (flags & SoBase::IS_GROUP)) {
     SoGroup * g = new SoGroup;
     g->ref();
@@ -108,7 +137,8 @@ SoUnknownNode::readInstance(SoInput * in, unsigned short flags)
                            g->getNumChildren());
 #endif // debug
 
-    // FIXME: "steal" children. 20000103 mortene.
+    delete this->privatechildren;
+    this->privatechildren = new SoChildList(this, * g->getChildren());
     g->unref();
   }
 
@@ -135,11 +165,71 @@ SoUnknownNode::setNodeClassName(const SbName & name)
   this->classname = name;
 }
 
-// Overridden from SoBase.
+// Overloaded from SoBase.
 const char *
 SoUnknownNode::getFileFormatName(void) const
 {
   return this->classname.getString();
 }
 
-// FIXME: handle "SoSFNode alternateRep" field descriptions. 20000103 mortene.
+// Overloaded from SoNode. SoChildList contains either 0 or 1
+// elements, depending on if an alternate representation was
+// specified.
+SoChildList *
+SoUnknownNode::getChildren(void) const
+{
+  return this->alternate;
+}
+
+// Write action method is overloaded from SoNode to handle children.
+void
+SoUnknownNode::write(SoWriteAction * action)
+{
+  SoOutput * out = action->getOutput();
+  if (out->getStage() == SoOutput::COUNT_REFS) {
+    inherited::write(action);
+    // Only increase number of writereferences to the top level node
+    // in a tree which is used multiple times.
+    if (!this->hasMultipleWriteRefs())
+      if (this->privatechildren) this->privatechildren->traverse(action);
+  }
+  else if (out->getStage() == SoOutput::WRITE) {
+    if (this->writeHeader(out, this->privatechildren ? TRUE : FALSE, FALSE))
+      return;
+    this->writeInstance(out);
+    if (out->isBinary())
+      if (this->privatechildren) out->write(this->privatechildren->getLength());
+    if (this->privatechildren) this->privatechildren->traverse(action);
+    this->writeFooter(out);
+  }
+  else assert(0 && "unknown stage");
+}
+
+// Action methods overloaded from SoNode to traverse alternateRep (and
+// below, if alternateRep is a group node).
+
+void
+SoUnknownNode::search(SoSearchAction * action)
+{
+  inherited::search(action);
+  if (action->isFound()) return;
+  this->alternate->traverse(action);
+}
+
+void
+SoUnknownNode::GLRender(SoGLRenderAction * action)
+{
+  this->alternate->traverse(action);
+}
+
+void
+SoUnknownNode::getBoundingBox(SoGetBoundingBoxAction * action)
+{
+  this->alternate->traverse(action);
+}
+
+void
+SoUnknownNode::pick(SoPickAction * action)
+{
+  this->alternate->traverse(action);
+}

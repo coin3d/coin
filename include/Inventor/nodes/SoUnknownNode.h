@@ -23,6 +23,8 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 
+class SoChildList;
+
 
 class SoUnknownNode : public SoNode {
   typedef SoNode inherited;
@@ -44,6 +46,13 @@ public:
   SoUnknownNode(void);
 
   void setNodeClassName(const SbName & name);
+  virtual SoChildList * getChildren(void) const;
+
+  virtual void GLRender(SoGLRenderAction * action);
+  virtual void getBoundingBox(SoGetBoundingBoxAction * action);
+  virtual void pick(SoPickAction * action);
+  virtual void search(SoSearchAction * action);
+  virtual void write(SoWriteAction * action);
 
 protected:
   virtual ~SoUnknownNode();
@@ -53,6 +62,7 @@ protected:
 
 private:
   SbName classname;
+  SoChildList * privatechildren, * alternate;
 };
 
 #endif // !__SOUNKNOWNNODE_H__
