@@ -33,14 +33,21 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Misc operations on the graph with the SoBlinker ;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Copy the scenegraph
+;; Copy the scenegraph.
 (define viewer-copy (new-soxtexaminerviewer))
 (-> viewer-copy 'show)
 (-> viewer-copy 'setscenegraph (-> blinker 'copy 1))
 
-;; Dump the scenegraph
+;; Export scenegraph with SoBlinker.
 (define writeaction (new-sowriteaction))
-(-> writeaction 'apply blinker)
+(-> writeaction 'apply (-> viewer 'getscenegraph))
+
+;; Read scenegraph with SoBlinker in it.
+(let ((buffer "#Inventor V2.1 ascii\n\nSeparator { Blinker { Material { diffuseColor 1 0 0 } Material { diffuseColor 1 1 0 } }  Cube {} }")
+      (input (new-soinput)))
+  (-> input 'setbuffer (void-cast buffer) (string-length buffer))
+  (let ((sceneroot (sodb::readall input)))
+    (-> viewer 'setscenegraph sceneroot)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
