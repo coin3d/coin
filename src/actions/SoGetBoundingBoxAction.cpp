@@ -365,30 +365,7 @@ SoGetBoundingBoxAction::extendBy(const SbBox3f & box)
   }
 
   xfbox.transform(transform);
-
-  float x1,y1,z1,x2,y2,z2;
-  xfbox.getBounds(x1,y1,z1,x2,y2,z2);
-  printf("xfbox: (%f,%f,%f) (%f,%f,%f)\n", x1,y1,z1,x2,y2,z2);
-  
   this->bbox.extendBy(xfbox);
-
-  bbox.getBounds(x1,y1,z1,x2,y2,z2);
-  /*
-  static int cc = 0;
-  if (++cc == 3) {
-      z1 += 0.3f;
-      z2 -= 0.3f;
-      bbox.setBounds(x1,y1,z1,x2,y2,z2);
-  }
-  */
-      
-  printf(" bbox: (%f,%f,%f) (%f,%f,%f)\n", x1,y1,z1,x2,y2,z2);
-  /*
-  z1 -= ;
-  z2 = 1.41f;
-  bbox.setBounds(x1,y1,z1,x2,y2,z2);
-  */
-
 }
 
 /*! \overload */
