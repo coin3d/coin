@@ -102,6 +102,17 @@ public:
   virtual void setPixelImageSize(float w, DimensionUnit u = MM);
   virtual float getPixelImageSize(DimensionUnit u = MM) const;
 
+  enum PointStyle {
+    CIRCLE,
+    SQUARE
+  };
+
+  virtual void setPointStyle(const PointStyle & style);
+  virtual PointStyle getPointStyle(void) const;
+
+  const SbVec2f & getPageStartpos(void) const;
+  const SbVec2f & getPageSize(void) const;
+
 public:
   // for TGS OIV compatibility. Might be implemented in the future
   enum ColorTranslationMethod { REVERSE_ONLY_BLACK_AND_WHITE, AS_IS, REVERSE };
@@ -161,9 +172,6 @@ protected:
   virtual void printBackground(void) const;
   virtual void printItem(const SoVectorizeItem * item) const = 0;
   virtual void printViewport(void) const;
-
-  const SbVec2f & getPageStartpos(void) const;
-  const SbVec2f & getPageSize(void) const;
 
   SbVec2f getRotatedViewportStartpos(void) const;
   SbVec2f getRotatedViewportSize(void) const;

@@ -74,6 +74,7 @@ public:
 
   float nominalwidth;
   float pixelimagesize;
+  SoVectorizeAction::PointStyle pointstyle;
 
   SbBool testInside(SoState * state,
                     const SbVec3f & p0, 

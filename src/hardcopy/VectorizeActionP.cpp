@@ -113,6 +113,7 @@ SoVectorizeActionP::SoVectorizeActionP(SoVectorizeAction * p)
 
   this->nominalwidth = 0.35f;
   this->pixelimagesize = 0.35f;
+  this->pointstyle = SoVectorizeAction::CIRCLE;
   this->annotationidx = 0;
 }
 

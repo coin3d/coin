@@ -201,6 +201,23 @@
   26 x 37 mm.
 */
 
+/*! 
+  \enum SoVectorizeAction::PointStyle
+  Enumerates point rendering styles.
+*/
+
+/*!
+  \var SoVectorizeAction::PointStyle SoVectorizeAction::CIRCLE
+
+  Render points as circles.
+*/
+
+/*!
+  \var SoVectorizeAction::PointStyle SoVectorizeAction::SQUARE
+
+  Render points as squares.
+*/
+
 #include <HardCopy/SoVectorizeAction.h>
 #include "VectorizeActionP.h"
 
@@ -461,11 +478,35 @@ SoVectorizeAction::setPixelImageSize(float w, DimensionUnit u)
   PRIVATE(this)->pixelimagesize = to_mm(w, u);
 }
 
+/*!
+  Returns the pixel image size.
+
+  \sa setPixelImageSize()
+*/
 float
 SoVectorizeAction::getPixelImageSize(DimensionUnit u) const
 {
   return from_mm(PRIVATE(this)->pixelimagesize, u);
 }
+
+/*!
+  Sets the points rendering style. Default style is CIRCLE.
+*/
+void 
+SoVectorizeAction::setPointStyle(const PointStyle & style)
+{
+  PRIVATE(this)->pointstyle = style;
+}
+
+/*!
+  Returns the points rendering style.
+*/
+SoVectorizeAction::PointStyle 
+SoVectorizeAction::getPointStyle(void) const
+{
+  return PRIVATE(this)->pointstyle;
+}
+
 
 /*!
   Should be overloaded by subclasses to print file footer data.
