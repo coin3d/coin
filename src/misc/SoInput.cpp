@@ -82,6 +82,7 @@
 #include <Inventor/SbName.h>
 #include <Inventor/nodes/SoNode.h>
 #include <stdlib.h>
+#include <string.h>
 
 #if HAVE_CONFIG_H
 #include <config.h>

@@ -52,6 +52,7 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <ctype.h>
+#include <string.h>
 #include <coindefs.h> // COIN_OBSOLETED()
 
 #if COIN_DEBUG

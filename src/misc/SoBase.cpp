@@ -49,6 +49,7 @@
 #endif // COIN_DEBUG
 
 #include <assert.h>
+#include <string.h>
 
 /*!
   \fn SoType SoBase::getTypeId(void) const

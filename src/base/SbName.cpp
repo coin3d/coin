@@ -31,8 +31,134 @@
 #include <Inventor/SbName.h>
 #include <Inventor/SbString.h>
 #include <stdio.h>
+#include <string.h>
 #include <ctype.h>
 
+
+// **** The private SbNameEntry class **************************************
+
+static const int CHUNK_SIZE = 65536-32; // leave some room for other data
+static const int NAME_TABLE_SIZE = 1999;
+
+struct SbNameChunk {
+  char mem[CHUNK_SIZE];
+  char * curByte;
+  int bytesLeft;
+  SbNameChunk * next;
+};
+
+class SbNameEntry {
+public:
+  SbBool isEmpty(void) const
+    { return (! *str); }
+  SbBool isEqual(const char * const string) const
+    { return (strcmp(str, string) == 0); }
+
+  static void print_info();
+
+  static void initClass(void);
+  SbNameEntry(const char * const s, const unsigned long h,
+               SbNameEntry * const n)
+    { str = s; hashValue = h; next = n; };
+  static const SbNameEntry * insert(const char * const s);
+
+  static const char * findStringAddress(const char * s);
+
+  const char * str;
+
+private:
+  static int nameTableSize;
+  static SbNameEntry * * nameTable;
+  static struct SbNameChunk * chunk;
+  unsigned long hashValue;
+  SbNameEntry * next;
+};
+
+int SbNameEntry::nameTableSize;
+SbNameEntry * * SbNameEntry::nameTable;
+SbNameChunk * SbNameEntry::chunk;
+
+// This static method initializes static data for the SbNameEntry
+// class.
+void
+SbNameEntry::initClass(void)
+{
+    nameTableSize = NAME_TABLE_SIZE;
+    nameTable = new SbNameEntry * [ nameTableSize ];
+    for (int i = 0; i < nameTableSize; i++)
+        nameTable[i] = NULL;
+    chunk = NULL;
+}
+
+void
+SbNameEntry::print_info(void)
+{
+    for (int i = 0; i < nameTableSize; i++) {
+        SbNameEntry * entry = nameTable[ i ];
+        int cnt = 0;
+        while (entry != NULL) {
+            entry = entry->next;
+            cnt++;
+        }
+        printf("name entry: %d, cnt: %d\n", i, cnt);
+    }
+}
+
+const char *
+SbNameEntry::findStringAddress(const char * s)
+{
+    int len = strlen(s) + 1;
+
+    // names > CHUNK_SIZE characters are truncated.
+    if (len >= CHUNK_SIZE)
+      len=CHUNK_SIZE;
+
+    if (chunk == NULL || chunk->bytesLeft < len) {
+      SbNameChunk * newChunk = new SbNameChunk;
+
+      newChunk->curByte = newChunk->mem;
+      newChunk->bytesLeft = CHUNK_SIZE;
+      newChunk->next = chunk;
+
+      chunk = newChunk;
+    }
+
+    strncpy(chunk->curByte, s, len);
+    s = chunk->curByte;
+
+    chunk->curByte += len;
+    chunk->bytesLeft -= len;
+
+    return s;
+}
+
+const SbNameEntry *
+SbNameEntry::insert(const char * const str)
+{
+    if (nameTableSize == 0)
+        initClass();
+
+    unsigned long h = SbString::hash(str);
+    unsigned long i = h % nameTableSize;
+    SbNameEntry * entry = nameTable[i];
+    SbNameEntry * head = entry;
+
+    while (entry != NULL) {
+        if (entry->hashValue == h && entry->isEqual( str) )
+            break;
+        entry = entry->next;
+    }
+
+    if (entry == NULL) {
+        entry = new SbNameEntry(findStringAddress( str), h, head );
+        nameTable[ i ] = entry;
+    }
+
+    return entry;
+}
+
+
+// *************************************************************************
 
 /*!
   This is the default constructor.
@@ -79,7 +205,7 @@ SbName::~SbName(void)
 /*¡
   no unref?  investigate if SbName can be used for user-settable names.
   (in which case running servers sould get swamped without ref counts)
-  990611 larsa
+  19990611 larsa
 */
 }
 
@@ -138,7 +264,7 @@ SbName::isIdentChar(const char c)
   clash with the special characters reserved as tokens in the syntax
   rules of Open Inventor and VRML files.
 
-  This method is not part of the Open Inventor API.
+  This method is not part of the original Open Inventor API.
 
   \sa isBaseNameChar()
 */
@@ -157,7 +283,7 @@ SbName::isBaseNameStartChar(const char c)
   clash with the special characters reserved as tokens in the syntax
   rules of Open Inventor and VRML files.
 
-  This method is not part of the Open Inventor API.
+  This method is not part of the original Open Inventor API.
 
   \sa isBaseNameStartChar()
 */
@@ -258,128 +384,3 @@ SbName::operator const char * (void) const
 {
   return entry->str;
 }
-
-const int CHUNK_SIZE = 65536-32; // leave some room for other data
-const int NAME_TABLE_SIZE = 1999;
-
-struct SbNameChunk {
-  // FIXME: CHUNK_SIZE places a stupid limitation on something which
-  // should be allowed to grow dynamically unbounded.
-  // 19990608 mortene.
-  // DONTFIXME: Won't new chunks be created in a dynamic unbounded way?
-    char mem[CHUNK_SIZE];
-    char * curByte;
-    int bytesLeft;
-    SbNameChunk * next;
-};
-
-int SbNameEntry::nameTableSize;
-SbNameEntry * * SbNameEntry::nameTable;
-SbNameChunk * SbNameEntry::chunk;
-
-// *************************************************************************
-
-/*!
-  This static method initializes static data for the SbNameEntry class.
-*/
-
-void
-SbNameEntry::initClass(void)
-{
-    nameTableSize = NAME_TABLE_SIZE;
-    nameTable = new SbNameEntry * [ nameTableSize ];
-    for (int i = 0; i < nameTableSize; i++)
-        nameTable[i] = NULL;
-    chunk = NULL;
-}
-
-/*!
-  FIXME: write doc
-*/
-
-void
-SbNameEntry::print_info(void)
-{
-    for (int i = 0; i < nameTableSize; i++) {
-        SbNameEntry * entry = nameTable[ i ];
-        int cnt = 0;
-        while (entry != NULL) {
-            entry = entry->next;
-            cnt++;
-        }
-        printf("name entry: %d, cnt: %d\n", i, cnt);
-    }
-}
-
-/*!
-  FIXME: write doc.
-*/
-
-const char *
-SbNameEntry::findStringAddress(const char * s)
-{
-    int len = strlen(s) + 1;
-
-    // names > CHUNK_SIZE characters are truncated.
-    if (len >= CHUNK_SIZE)
-      len=CHUNK_SIZE;
-
-    if (chunk == NULL || chunk->bytesLeft < len) {
-      SbNameChunk * newChunk = new SbNameChunk;
-
-      newChunk->curByte = newChunk->mem;
-      newChunk->bytesLeft = CHUNK_SIZE;
-      newChunk->next = chunk;
-
-      chunk = newChunk;
-    }
-
-    strncpy(chunk->curByte, s, len);
-    s = chunk->curByte;
-
-    chunk->curByte += len;
-    chunk->bytesLeft -= len;
-
-    return s;
-}
-
-/*!
-  FIXME: write doc.
-*/
-
-const SbNameEntry *
-SbNameEntry::insert(const char * const str)
-{
-    if (nameTableSize == 0)
-        initClass();
-
-    unsigned long h = SbString::hash(str);
-    unsigned long i = h % nameTableSize;
-    SbNameEntry * entry = nameTable[i];
-    SbNameEntry * head = entry;
-
-    while (entry != NULL) {
-        if (entry->hashValue == h && entry->isEqual( str) )
-            break;
-        entry = entry->next;
-    }
-
-    if (entry == NULL) {
-        entry = new SbNameEntry(findStringAddress( str), h, head );
-        nameTable[ i ] = entry;
-    }
-
-    return entry;
-}
-
-/*!
-  \fn SbBool SbNameEntry::isEmpty(void) const
-
-  FIXME: write doc.
-*/
-
-/*!
-  \fn SbBool SbNameEntry::isEqual(const char * const string) const
-
-  FIXME: write doc.
-*/

@@ -39,6 +39,8 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#include <string.h>
+
 /*!
   \var SoMField * SoSelectOne::input
   The multivalue input field which we will select a single value from

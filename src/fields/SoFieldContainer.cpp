@@ -48,6 +48,8 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#include <string.h>
+
 /*!
   \var SbBool SoFieldContainer::isBuiltIn
 

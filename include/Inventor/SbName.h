@@ -22,41 +22,7 @@
 
 #include <Inventor/SbBasic.h>
 
-#include <string.h>
-#ifdef _AIX
-#include <strings.h>
-#endif
-
 class SbString;
-struct SbNameChunk;
-
-class COIN_DLL_API SbNameEntry {
-  friend class SbName;
-public:
-  SbBool isEmpty(void) const
-    { return (! *str); }
-  SbBool isEqual(const char * const string) const
-    { return (strcmp(str, string) == 0); }
-
-private:
-  static int nameTableSize;
-  static SbNameEntry * * nameTable;
-  static struct SbNameChunk * chunk;
-  const char * str;
-  unsigned long hashValue;
-  SbNameEntry * next;
-
-  static void initClass(void);
-  SbNameEntry(const char * const s, const unsigned long h,
-               SbNameEntry * const n)
-    { str = s; hashValue = h; next = n; };
-  static const SbNameEntry * insert(const char * const s);
-
-  static const char * findStringAddress(const char * s);
-
-public:
-  static void print_info();
-};
 
 class COIN_DLL_API SbName {
 public:
@@ -84,7 +50,7 @@ public:
   operator const char * (void) const;
 
 private:
-  const SbNameEntry * entry;
+  const class SbNameEntry * entry;
 };
 COIN_DLL_API int operator == (const SbName & lhs, const char * rhs);
 COIN_DLL_API int operator == (const char * lhs, const SbName & rhs);
