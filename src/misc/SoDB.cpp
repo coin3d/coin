@@ -26,10 +26,11 @@
   All methods on SoDB are static.
 
   Make sure you call SoDB::init() (either directly or indirectly
-  through SoXt::init()) before you use any of the other Coin
-  classes.
+  through the init() method of the GUI glue library) before you use
+  any of the other Coin classes.
 
   FIXME: more doc.
+
 */
 
 #include <Inventor/SoDB.h>
@@ -38,25 +39,24 @@
 #include <Inventor/SbTime.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
-#include <Inventor/errors/SoReadError.h>
-#include <Inventor/misc/SoBase.h>
-#include <Inventor/system/kosher.h>
 #include <Inventor/SoPickedPoint.h>
-
-#include <Inventor/nodekits/SoNodeKit.h>
-
-#include <Inventor/fields/SoField.h>
-#include <Inventor/fields/SoSFTime.h>
-#include <Inventor/events/SoEvent.h>
-#include <Inventor/sensors/SoTimerSensor.h>
-#include <Inventor/nodes/SoNode.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/elements/SoElement.h>
 #include <Inventor/actions/SoAction.h>
+#include <Inventor/details/SoDetail.h>
+#include <Inventor/elements/SoElement.h>
+#include <Inventor/engines/SoConvertAll.h>
 #include <Inventor/engines/SoEngine.h>
 #include <Inventor/engines/SoFieldConverter.h>
-#include <Inventor/engines/SoConvertAll.h>
-#include <Inventor/details/SoDetail.h>
+#include <Inventor/errors/SoReadError.h>
+#include <Inventor/events/SoEvent.h>
+#include <Inventor/fields/SoField.h>
+#include <Inventor/fields/SoGlobalField.h>
+#include <Inventor/fields/SoSFTime.h>
+#include <Inventor/misc/SoBase.h>
+#include <Inventor/nodekits/SoNodeKit.h>
+#include <Inventor/nodes/SoNode.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/sensors/SoTimerSensor.h>
+#include <Inventor/system/kosher.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -64,6 +64,7 @@
 
 #include <assert.h>
 
+// FIXME: use a configure check. 20000130 mortene.
 #ifdef _WIN32
 #include <windows.h>
 #endif
@@ -81,8 +82,8 @@ public:
   SbString headerstring;
   SbBool isBinary;
   float ivVersion;
-  SoDBHeaderCB * preCB;
-  SoDBHeaderCB * postCB;
+  // FIXME: the callbacks aren't used. 20000130 mortene.
+  SoDBHeaderCB * preCB, * postCB;
   void * userdata;
 };
 
@@ -102,12 +103,11 @@ template class SbList<SoField *>;
 SbList<SoDB_HeaderInfo *> * SoDB::headerlist = NULL;
 SoSensorManager * SoDB::sensormanager = NULL;
 SbTime * SoDB::realtimeinterval = NULL;
-SbList<SbName> * SoDB::fieldnamelist = NULL;
-SbList<SoField *> * SoDB::fieldlist = NULL;
 SoTimerSensor * SoDB::globaltimersensor = NULL;
 SbDict * SoDB::converters = NULL;
 int SoDB::notificationcounter = 0;
 SbBool SoDB::isinitialized = FALSE;
+SoBaseList * SoDB::globalfieldcontainers = NULL;
 
 // *************************************************************************
 
@@ -128,45 +128,36 @@ SoDB::init(void)
   assert(sizeof(uint32_t) == 4);
   assert(sizeof(int32_t) == 4);
 
-  // Sanity check: if the int type is less than 32 bits everything
-  // probably goes to hell. Remove this check when we are no longer
-  // dependent on using native C types where we need to have a
+  // Sanity check: if the int type is not equal to 32 bits everything
+  // probably goes to hell. FIXME: remove this check when we are no
+  // longer dependent on using native C types where we need to have a
   // particular bitwidth.
 
   assert(sizeof(int) == 4);
 
   // Sanity check: if this breaks, the binary format import and export
-  // routines will not work correctly. The code should be fixed to use
-  // the int16_t type, then we can remove this stoopid check.
+  // routines will not work correctly. FIXME: the code should be fixed
+  // to use the int16_t type, then we can remove this stoopid check.
 
   assert(sizeof(short) == 2);
 
   // Sanity check: if the int type is unequal to the long type, things
-  // will probably break. NB! This is really terrible and _must_ be
+  // will probably break. FIXME: this is really terrible and _must_ be
   // fixed. Remove this check when we are no longer dependent on using
   // native C types where we need to have a particular bitwidth.
 
   assert(sizeof(int) == sizeof(long));
 
 
-#if COIN_DEBUG
-  // Debugging for memory leaks will be easier if we can clean up the
-  // resource usage.
-  (void)atexit(SoDB::clean);
-#endif // COIN_DEBUG
-
-
   // Allocate our static members.
   SoDB::headerlist = new SbList<SoDB_HeaderInfo *>;
   SoDB::sensormanager = new SoSensorManager;
   SoDB::realtimeinterval = new SbTime;
-  SoDB::fieldnamelist = new SbList<SbName>;
-  SoDB::fieldlist = new SbList<SoField *>;
   SoDB::converters = new SbDict;
 
 
 
-  // NB! There's a few dependencies in the order of initialization of
+  // NB! There are dependencies in the order of initialization of
   // components below.
 
   // This obviously needs to be done first.
@@ -179,6 +170,7 @@ SoDB::init(void)
   // SoPath inherits SoBase, so initialize it after SoBase.
   SoPath::initClass();
   SoFieldContainer::initClass();
+  SoGlobalField::initClass(); // depends on SoFieldContainer init
   SoField::initClass();
   // Elements must be initialized before actions.
   SoElement::initClass();
@@ -187,7 +179,6 @@ SoDB::init(void)
   SoNode::initClass();
   SoEngine::initClass();
   SoEvent::initClass();
-
 
   // Register all valid file format headers.
   SoDB::registerHeader(SbString("#Inventor V2.1 ascii   "), FALSE, 2.1f,
@@ -217,25 +208,37 @@ SoDB::init(void)
 
   SoDB::realtimeinterval->setValue(1.0/12.0);
 
+  // Keep all SoGlobalField instances under this group node.
+  SoDB::globalfieldcontainers = new SoBaseList;
+
   SoDB::createGlobalField("realTime", SoSFTime::getClassTypeId());
+
   SoDB::globaltimersensor = new SoTimerSensor;
   SoDB::globaltimersensor->setFunction(SoDB::updateRealTimeFieldCB);
   SoDB::globaltimersensor->setInterval(*SoDB::realtimeinterval);
   // FIXME: it would be better to not schedule unless something
-  // actually attaches itself to the realtime field, or..? Is this at
-  // all possible? 19990225 mortene.
+  // actually attaches itself to the realtime field, or does this muck
+  // up the code too much? 19990225 mortene.
   SoDB::globaltimersensor->schedule();
 
   // Force correct time on first getValue() from "realTime" field.
   SoDB::updateRealTimeFieldCB(NULL, NULL);
 
   SoDB::isinitialized = TRUE;
+
+#if COIN_DEBUG
+  // Debugging for memory leaks will be easier if we can clean up the
+  // resource usage. This needs to be done last in init(), so we get
+  // called _before_ clean() methods in other classes.
+  (void)atexit(SoDB::clean);
+#endif // COIN_DEBUG
 }
 
-// This will clean up all memory and objects which has been allocated
-// as persistent data. This isn't really necessary in user
-// application, but is used for debugging purposes -- it makes it
-// easier to find memory leaks.
+// This will free all resources which has been allocated by the SoDB
+// class. This isn't really necessary in user applications (the
+// underlying operating system will take care of making the resources
+// available again), but it is useful for debugging purposes -- it
+// makes it easier to find memory leaks.
 void
 SoDB::clean(void)
 {
@@ -243,8 +246,7 @@ SoDB::clean(void)
   delete SoDB::globaltimersensor;
 
   delete SoDB::converters;
-  delete SoDB::fieldlist;
-  delete SoDB::fieldnamelist;
+  delete SoDB::globalfieldcontainers;
   delete SoDB::realtimeinterval;
   delete SoDB::sensormanager;
   delete SoDB::headerlist;
@@ -301,14 +303,14 @@ SoDB::read(SoInput * in, SoBase *& base)
   the file.
  */
 SbBool
-SoDB::read(SoInput * in, SoNode *& rootNode)
+SoDB::read(SoInput * in, SoNode *& rootnode)
 {
-  rootNode = NULL;
+  rootnode = NULL;
   SoBase * baseptr;
   SbBool result = SoDB::read(in, baseptr);
   if (result && baseptr) {
     if (baseptr->isOfType(SoNode::getClassTypeId())) {
-      rootNode = (SoNode *)baseptr;
+      rootnode = (SoNode *)baseptr;
     }
     else {
       SoReadError::post(in, "'%s' not derived from SoNode",
@@ -381,7 +383,7 @@ SoDB::readAll(SoInput * in)
   \sa getHeaderData(), registerHeader()
  */
 SbBool
-SoDB::isValidHeader(const char * testString)
+SoDB::isValidHeader(const char * teststring)
 {
   SbBool isBinary;
   float ivVersion;
@@ -389,14 +391,14 @@ SoDB::isValidHeader(const char * testString)
   void * userdata;
 
 #if COIN_DEBUG
-  if (!testString) {
+  if (!teststring) {
     SoDebugError::postWarning("SoDB::isValidHeader",
                               "Passed a NULL string pointer.");
     return FALSE;
   }
 #endif // COIN_DEBUG
 
-  return SoDB::getHeaderData(SbString(testString), isBinary, ivVersion,
+  return SoDB::getHeaderData(SbString(teststring), isBinary, ivVersion,
                              preCB, postCB, userdata, TRUE);
 }
 
@@ -405,58 +407,59 @@ SoDB::isValidHeader(const char * testString)
   file import. This is a convenient way for library users to register
   their own VRML or Coin derived file formats.
 
-  Set \a isBinary to TRUE if the file should be read as binary data, and
-  set \a ivVersion to indicate which Coin library version is
+  Set \a isbinary to TRUE if the file should be read as binary data, and
+  set \a ivversion to indicate which Coin library version is
   needed to read the file.
 
-  Callbacks \a preCB and \a postCB will be called before and after
-  importing the custom format.
+  Callbacks \a precallback and \a postcallback will be called before
+  and after importing the custom format.
 
-  If \a headerString can not be accepted as a valid file format header
+  If \a headerstring can not be accepted as a valid file format header
   for Coin files, \a FALSE will be returned. A valid header \e must
   start with a '#' character, and not be more than 80 characters long.
 
   \sa getHeaderData()
- */
+*/
 SbBool
-SoDB::registerHeader(const SbString & headerString,
-                     SbBool isBinary, float ivVersion,
-                     SoDBHeaderCB * preCB, SoDBHeaderCB * postCB,
+SoDB::registerHeader(const SbString & headerstring,
+                     SbBool isbinary, float ivversion,
+                     SoDBHeaderCB * precallback, SoDBHeaderCB * postcallback,
                      void * userdata)
 {
   // Must start with '#'.
-  if ((headerString.getLength() == 0) || (headerString.getString()[0] != '#')) {
+  if ((headerstring.getLength() == 0) ||
+      (headerstring.getString()[0] != '#')) {
 #if COIN_DEBUG
     SoDebugError::postWarning("SoDB::registerHeader",
                               "File header string must begin with '#', '%s'"
-                              " invalid.", headerString.getString());
+                              " invalid.", headerstring.getString());
 #endif // COIN_DEBUG
     return FALSE;
   }
 
   // No more than 80 characters.
-  if (headerString.getLength() > 80) {
+  if (headerstring.getLength() > 80) {
 #if COIN_DEBUG
     SoDebugError::postWarning("SoDB::registerHeader",
                               "File header string must be 80 characters "
                               "or less, so '%s' is invalid.",
-                              headerString.getString());
+                              headerstring.getString());
 #endif // COIN_DEBUG
     return FALSE;
   }
 
-  SoDB_HeaderInfo * newheader = new SoDB_HeaderInfo(headerString, isBinary,
-                                                   ivVersion, preCB, postCB,
-                                                   userdata);
+  SoDB_HeaderInfo * newheader =
+    new SoDB_HeaderInfo(headerstring, isbinary, ivversion,
+                        precallback, postcallback, userdata);
   SoDB::headerlist->append(newheader);
   return TRUE;
 }
 
 /*!
-  Returns the settings for the given \a headerString, if \a headerString
+  Returns the settings for the given \a headerstring, if \a headerstring
   is a valid header.
 
-  If \a substringOK is \a TRUE, ignore trailing characters in \a headerString
+  If \a substringok is \a TRUE, ignore trailing characters in \a headerstring
   when checking for validity.
 
   If no valid header string by this name is found, \a FALSE is returned,
@@ -466,21 +469,21 @@ SoDB::registerHeader(const SbString & headerString,
   \sa isValidHeader(), registerHeader()
  */
 SbBool
-SoDB::getHeaderData(const SbString & headerString, SbBool & isBinary,
-                    float & ivVersion, SoDBHeaderCB *& preCB,
-                    SoDBHeaderCB *& postCB, void *& userdata,
-                    SbBool substringOK)
+SoDB::getHeaderData(const SbString & headerstring, SbBool & isbinary,
+                    float & ivversion, SoDBHeaderCB *& precallback,
+                    SoDBHeaderCB *& postcallback, void *& userdata,
+                    SbBool substringok)
 {
-  unsigned int hslen = headerString.getLength();
+  unsigned int hslen = headerstring.getLength();
   if (hslen == 0) return FALSE;
 
   // Disregard whitespace.
-  while ((headerString[hslen-1] == ' ') || (headerString[hslen-1] == '\t')) {
+  while ((headerstring[hslen-1] == ' ') || (headerstring[hslen-1] == '\t')) {
     hslen--;
     if (hslen == 0) return FALSE;
   }
 
-  SbString tryheader = headerString.getSubString(0, hslen-1);
+  SbString tryheader = headerstring.getSubString(0, hslen-1);
 
   SbBool hit = FALSE;
   for (int i=0; (i < SoDB::getNumHeaders()) && !hit; i++) {
@@ -496,16 +499,15 @@ SoDB::getHeaderData(const SbString & headerString, SbBool & isBinary,
 
     if (regheader == tryheader)
       hit = TRUE;
-    else if (substringOK &&
-             (hslen > reglen) &&
+    else if (substringok && (hslen > reglen) &&
              (regheader == tryheader.getSubString(0, reglen - 1)))
       hit = TRUE;
 
     if (hit) {
-      isBinary = hi->isBinary;
-      ivVersion = hi->ivVersion;
-      preCB = hi->preCB;
-      postCB = hi->postCB;
+      isbinary = hi->isBinary;
+      ivversion = hi->ivVersion;
+      precallback = hi->preCB;
+      postcallback = hi->postCB;
       userdata = hi->userdata;
     }
   }
@@ -547,7 +549,7 @@ SoDB::getHeaderString(const int i)
   subsequent accesses to getGlobalField() by \a name. If a global
   field by the name and type already exists, returns a pointer to it.
   If a global field with the same name but a different type exists,
-  returns \a NULL.
+  returns \c NULL.
 
   \sa getGlobalField(), renameGlobalField()
  */
@@ -559,80 +561,89 @@ SoDB::createGlobalField(const SbName & name, SoType type)
     if (f->getTypeId() == type) return f;
     else return NULL;
   }
-  else {
+
 #if COIN_DEBUG
-    if (!type.canCreateInstance()) {
-      SoDebugError::postWarning("SoDB::createGlobalField",
-                                "Can't create instance of given type.");
-      return NULL;
-    }
-#endif // COIN_DEBUG
-    f = (SoField *)type.createInstance();
-    SoDB::fieldlist->append(f);
-    SoDB::fieldnamelist->append(name);
-    return f;
+  if (!type.canCreateInstance()) {
+    SoDebugError::postWarning("SoDB::createGlobalField",
+                              "Can't create instance of field type ``%s''.",
+                              type.getName().getString());
+    return NULL;
   }
+#endif // COIN_DEBUG
+
+  SoField * newfield = (SoField *)type.createInstance();
+  // (Deallocation of the field happens in the SoGlobalField
+  // destructor.)
+
+  SoGlobalField * gf = new SoGlobalField(name, newfield);
+  SoDB::globalfieldcontainers->append(gf);
+
+  return newfield;
+}
+
+// Return index in list of global fields of the global field with the
+// given name. Returns -1 if no global field exists with this name.
+int
+SoDB::getGlobalFieldIndex(const SbName & name)
+{
+  int idx = SoDB::globalfieldcontainers->getLength() - 1;
+  while (idx >= 0 && (*SoDB::globalfieldcontainers)[idx]->getName() != name)
+    idx--;
+  return idx;
 }
 
 /*!
   If there exist a global field with the given \a name, return a
-  pointer to it. If there is no field with this name, return \a NULL.
+  pointer to it. If there is no field with this name, return \c NULL.
 
   \sa createGlobalField(), renameGlobalField()
- */
+*/
 SoField *
 SoDB::getGlobalField(const SbName & name)
 {
-  int i = SoDB::fieldnamelist->find(name);
-  if (i != -1) return (*SoDB::fieldlist)[i];
-  return NULL;
+  int idx = SoDB::getGlobalFieldIndex(name);
+  if (idx == -1) return NULL;
+  SoGlobalField * gf = (SoGlobalField *)(*SoDB::globalfieldcontainers)[idx];
+  return gf->getGlobalField();
 }
 
 /*!
-  Rename a global field. If \a newName is an empty name, the \a oldName
-  field gets deleted. If another global field already goes by the
-  name \a newName, that field will get deleted before the rename
-  operation.
+  Rename a global field. If \a to is an empty name, the \a from field
+  gets deleted. If another global field already goes by the name \a
+  to, that field will get deleted before the rename operation.
 
   \sa getGlobalField(), createGlobalField()
- */
+*/
 void
-SoDB::renameGlobalField(const SbName & oldName, const SbName & newName)
+SoDB::renameGlobalField(const SbName & from, const SbName & to)
 {
-  int idx = SoDB::fieldnamelist->find(oldName);
+  int idx = SoDB::getGlobalFieldIndex(from);
+
 #if COIN_DEBUG
   if (idx == -1) {
     SoDebugError::postWarning("SoDB::renameGlobalField",
                               "Couldn't find global field '%s' to rename.",
-                              oldName.getString());
+                              from.getString());
     return;
   }
 #endif // COIN_DEBUG
 
-  if (newName == "") { // Remove field.
-    delete (*SoDB::fieldlist)[idx];
-    SoDB::fieldlist->remove(idx);
-    SoDB::fieldnamelist->remove(idx);
+  if (to == "") { // Remove field.
+    SoDB::globalfieldcontainers->remove(idx);
   }
   else {
+    SoGlobalField * gf = (SoGlobalField *)(*SoDB::globalfieldcontainers)[idx];
+  
     // Existing entry by same name? If so, remove it.
-    int nidx = SoDB::fieldnamelist->find(newName);
-    if (nidx != -1) {
-      delete (*SoDB::fieldlist)[nidx];
-      SoDB::fieldlist->remove(nidx);
-      SoDB::fieldnamelist->remove(nidx);
-    }
+    int nidx = SoDB::getGlobalFieldIndex(to);
+    if (nidx != -1) SoDB::globalfieldcontainers->remove(nidx);
 
-    ((SbName &)(SoDB::fieldnamelist[idx])) = newName;
+    gf->setName(to);
   }
 }
 
-/*!
-  \internal
-
-  This is the timer sensor callback which updates the realTime global
-  field.
-*/
+// This is the timer sensor callback which updates the realTime global
+// field.
 void
 SoDB::updateRealTimeFieldCB(void * /* data */, SoSensor * /* sensor */)
 {
@@ -643,16 +654,16 @@ SoDB::updateRealTimeFieldCB(void * /* data */, SoSensor * /* sensor */)
 }
 
 /*!
-  Set the time interval between updates to the \a realTime global field.
-  Default value is 1/12 s.
+  Set the time interval between updates for the \c realTime global field
+  to \a interval. Default value is 1/12 s.
 
   \sa getRealTimeInterval(), getGlobalField()
  */
 void
-SoDB::setRealTimeInterval(const SbTime & deltaT)
+SoDB::setRealTimeInterval(const SbTime & interval)
 {
 #if COIN_DEBUG
-  if (deltaT < SbTime(0.0)) {
+  if (interval < SbTime(0.0)) {
     SoDebugError::postWarning("SoDB::setRealTimeInterval",
                               "Tried to set negative interval.");
     return;
@@ -661,12 +672,12 @@ SoDB::setRealTimeInterval(const SbTime & deltaT)
 
   SbBool isscheduled = SoDB::globaltimersensor->isScheduled();
   if (isscheduled) SoDB::globaltimersensor->unschedule();
-  if (deltaT != SbTime(0.0)) {
-    SoDB::globaltimersensor->setInterval(deltaT);
+  if (interval != SbTime(0.0)) {
+    SoDB::globaltimersensor->setInterval(interval);
     if (isscheduled) SoDB::globaltimersensor->schedule();
   }
 
-  (*SoDB::realtimeinterval) = deltaT;
+  (*SoDB::realtimeinterval) = interval;
 }
 
 /*!
@@ -706,8 +717,6 @@ SoDB::getDelaySensorTimeout(void)
 }
 
 /*!
-  \internal
-
   Returns a pointer to the global sensor manager. The sensor manager keeps
   track of the sensor queues.
  */
@@ -725,17 +734,18 @@ SoDB::getSensorManager(void)
  */
 int
 SoDB::doSelect(int nfds, fd_set * readfds, fd_set * writefds,
-               fd_set * exceptfds, struct timeval * userTimeOut)
+               fd_set * exceptfds, struct timeval * usertimeout)
 {
   // FIXME: need to do eventhandling for sensors etc. Check
   // SoSensorManager::doSelect(). Should we just call that method?
   // 19990425 mortene.
 
+  // FIXME: use configure for these checks. 20000130 mortene.
 #ifdef __BEOS__
   COIN_STUB();
   return 0;
 #else // !__BEOS__
-  return select(nfds, readfds, writefds, exceptfds, userTimeOut);
+  return select(nfds, readfds, writefds, exceptfds, usertimeout);
 #endif // __BEOS__
 }
 
@@ -743,10 +753,10 @@ SoDB::doSelect(int nfds, fd_set * readfds, fd_set * writefds,
   FIXME: doc
  */
 void
-SoDB::addConverter(SoType fromType, SoType toType, SoType converterType)
+SoDB::addConverter(SoType from, SoType to, SoType converter)
 {
-  unsigned long val=fromType.getKey() * 65536 + toType.getKey();
-  converters->enter(val, (void *)converterType.getKey());
+  unsigned long val=from.getKey() * 65536 + to.getKey();
+  converters->enter(val, (void *)converter.getKey());
   //FIXME: Check output => warning? kintel
 }
 
@@ -754,15 +764,15 @@ SoDB::addConverter(SoType fromType, SoType toType, SoType converterType)
   FIXME: doc
  */
 SoFieldConverter *
-SoDB::createConverter(SoType fromType, SoType toType)
+SoDB::createConverter(SoType from, SoType to)
 {
   void * type;
-  unsigned long val=fromType.getKey() * 65536 + toType.getKey();
+  unsigned long val=from.getKey() * 65536 + to.getKey();
   if (converters->find(val, type)) {
     uint16_t key = (uint16_t)((uint32_t)type);
     SoFieldConverter * conv;
     if (SoType::fromKey(key)==SoConvertAll::getClassTypeId())
-      conv=new SoConvertAll(fromType, toType);
+      conv=new SoConvertAll(from, to);
     else
       conv=(SoFieldConverter *)SoType::fromKey(key).createInstance();
     return conv;

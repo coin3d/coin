@@ -20,6 +20,7 @@
 #ifndef __SODB_H__
 #define __SODB_H__
 
+// FIXME: use configure to clean up this. 20000130 mortene.
 #ifdef _WIN32
 typedef struct fd_set fd_set;
 #else // ! _WIN32
@@ -34,6 +35,7 @@ typedef struct fd_set fd_set;
 class SbName;
 class SbTime;
 class SoBase;
+class SoBaseList;
 class SoField;
 class SoFieldConverter;
 class SoInput;
@@ -46,10 +48,8 @@ class SoVRMLGroup;
 
 class SoDB_HeaderInfo;
 
-// FIXME: this should really be a callback function typedef. 19981001 mortene.
-class SoDBHeaderCB;
+typedef void SoDBHeaderCB(void * data, SoInput * in);
 
-// *************************************************************************
 
 class SoDB {
 public:
@@ -58,27 +58,32 @@ public:
   static const char * getVersion(void);
   static SbBool read(SoInput * in, SoPath *& path);
   static SbBool read(SoInput * in, SoBase *& base);
-  static SbBool read(SoInput * in, SoNode *& rootNode);
+  static SbBool read(SoInput * in, SoNode *& rootnode);
   static SoSeparator * readAll(SoInput * in);
   static void createRoute(SoNode * fromnode, const char * eventout,
                           SoNode * tonode, const char * eventin);
   static SoVRMLGroup * readAllVRML(SoInput * in);
-  static SbBool isValidHeader(const char * testString);
-  static SbBool registerHeader(const SbString & headerString,
-                               SbBool isBinary, float ivVersion,
-                               SoDBHeaderCB * preCB, SoDBHeaderCB * postCB,
-                               void * userData);
-  static SbBool getHeaderData(const SbString & headerString, SbBool & isBinary,
-                              float & ivVersion, SoDBHeaderCB *& preCB,
-                              SoDBHeaderCB *& postCB, void *& userData,
-                              SbBool substringOK = FALSE);
+  static SbBool isValidHeader(const char * teststring);
+  static SbBool registerHeader(const SbString & headerstring,
+                               SbBool isbinary,
+                               float ivversion,
+                               SoDBHeaderCB * precallback,
+                               SoDBHeaderCB * postcallback,
+                               void * userdata);
+  static SbBool getHeaderData(const SbString & headerstring,
+                              SbBool & isbinary,
+                              float & ivversion,
+                              SoDBHeaderCB *& precallback,
+                              SoDBHeaderCB *& postcallback,
+                              void *& userdata,
+                              SbBool substringok = FALSE);
   static int getNumHeaders(void);
   static SbString getHeaderString(const int i);
   static SoField * createGlobalField(const SbName & name, SoType type);
   static SoField * getGlobalField(const SbName & name);
-  static void renameGlobalField(const SbName & oldName, const SbName & newName);
+  static void renameGlobalField(const SbName & from, const SbName & to);
 
-  static void setRealTimeInterval(const SbTime & deltaT);
+  static void setRealTimeInterval(const SbTime & interval);
   static const SbTime & getRealTimeInterval(void);
   static void enableRealTimeSensor(SbBool on);
 
@@ -86,11 +91,10 @@ public:
   static void setDelaySensorTimeout(const SbTime & t);
   static const SbTime & getDelaySensorTimeout(void);
   static int doSelect(int nfds, fd_set * readfds, fd_set * writefds,
-                      fd_set * exceptfds, struct timeval * userTimeOut);
+                      fd_set * exceptfds, struct timeval * usertimeout);
 
-  static void addConverter(SoType fromType, SoType toType,
-                           SoType converterType);
-  static SoFieldConverter * createConverter(SoType fromType, SoType toType);
+  static void addConverter(SoType from, SoType to, SoType converter);
+  static SoFieldConverter * createConverter(SoType from, SoType to);
 
   static SbBool isInitialized(void);
 
@@ -99,15 +103,15 @@ public:
   static void endNotify(void);
 
 private:
-  static void updateRealTimeFieldCB(void * data, SoSensor * sensor);
   static void clean(void);
+  static void updateRealTimeFieldCB(void * data, SoSensor * sensor);
+  static int getGlobalFieldIndex(const SbName & name);
 
   static SbList<SoDB_HeaderInfo *> * headerlist;
   static SoSensorManager * sensormanager;
   static SoTimerSensor * globaltimersensor;
   static SbTime * realtimeinterval;
-  static SbList<SbName> * fieldnamelist;
-  static SbList<SoField *> * fieldlist;
+  static SoBaseList * globalfieldcontainers;
   static SbDict * converters;
   static int notificationcounter;
   static SbBool isinitialized;
