@@ -32,7 +32,7 @@
 /* private functions */
 
 static unsigned long
-hash_default_hashfunc(unsigned long key)
+hash_default_hashfunc(const unsigned long key)
 {
   return key;
 }
@@ -251,8 +251,8 @@ cc_hash_set_hash_func(cc_hash * ht, cc_hash_func * func)
 
 /*!
   Call \a func for for each element in the hash table.
-*/ 
-void 
+*/
+void
 cc_hash_apply(cc_hash * ht, cc_hash_apply_func * func, void * closure)
 {
   unsigned int i;
