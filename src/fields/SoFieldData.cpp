@@ -236,12 +236,19 @@ SoFieldData::overlay(SoFieldContainer * to, const SoFieldContainer * from,
   assert(fd0 && fd1 && *fd0==*fd1);
 
   int num = fd0->getNumFields();
-  for (int i=0; i < num; i++) {
+  for (int i = 0; i < num; i++) {
     SoField * field0 = fd0->getField(to, i);
     SoField * field1 = fd1->getField(from, i);
+    // copy value
     field0->copyFrom(*field1);
-    if (field1->isDefault()) field0->setDefault(TRUE);
+    // copy flags
+    field0->setDefault(field1->isDefault());
+    field0->setIgnored(field1->isIgnored());
+    field0->enableNotify(field1->isNotifyEnabled());
+    
+    // fix complex fields (node, engine, and path fields)
     field0->fixCopy(copyconnections);
+    // handle connections
     if (copyconnections) field0->copyConnection(field1);
   }
 }
