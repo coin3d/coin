@@ -40,11 +40,13 @@
 #include <Inventor/details/SoLineDetail.h>
 #include <Inventor/details/SoFaceDetail.h>
 #include <stddef.h>
+#include <stdlib.h>
 #include <Inventor/SbDict.h>
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/misc/SoGL.h>
 #include <string.h> // memcmp()
 #include <Inventor/system/gl.h>
+#include <Inventor/C/tidbits.h>
 
 #define MAX_UNITS 16
 
@@ -57,8 +59,9 @@ typedef struct  {
   GLuint multitex[MAX_UNITS];
 } SoPrimitiveVertexCache_vboidx;
 
-// for debugging
 static unsigned long total_vbo_memory = 0;
+static unsigned long COIN_MAX_VBO_MEMORY = 0;
+static int COIN_ENABLE_VBO = -1;
 
 class SoPrimitiveVertexCacheP {
 public:
@@ -127,6 +130,12 @@ public:
                    const SbBool color, const SbBool normal,
                    const SbBool texture, const SbBool * enabled,
                    const int lastenabled);
+
+  unsigned long countVBOSize(const cc_glglue * glue,
+                             const unsigned long contextid,
+                             const SbBool color, const SbBool normal,
+                             const SbBool texture, const SbBool * enabled,
+                             const int lastenabled);
 };
 
 #undef PRIVATE
@@ -189,6 +198,21 @@ SoPrimitiveVertexCache::SoPrimitiveVertexCache(SoState * state)
     // triangle callback. SoTextureCoordinateBundle might push a new
     // element.
   }
+
+  if (COIN_MAX_VBO_MEMORY == 0) { 
+    COIN_MAX_VBO_MEMORY = 0xffffffff;
+    const char * env = coin_getenv("COIN_MAX_VBO_MEMORY");
+    if (env) {
+      COIN_MAX_VBO_MEMORY = (unsigned long) atol(env);
+    }
+  }
+  if (COIN_ENABLE_VBO < 0) {
+    COIN_ENABLE_VBO = 0;
+    const char * env = coin_getenv("COIN_ENABLE_VBO");
+    if (env) {
+      COIN_ENABLE_VBO = atoi(env);
+    }
+  }
 }
 
 /*!
@@ -196,6 +220,8 @@ SoPrimitiveVertexCache::SoPrimitiveVertexCache(SoState * state)
 */
 SoPrimitiveVertexCache::~SoPrimitiveVertexCache()
 {
+  // FIXME: schedule delete for VBOs. Need a new function in
+  // SoGLCacheContextElement.  pederb, 2004-02-24
   if (PRIVATE(this)->lastenabled >= 1) {
     delete[] PRIVATE(this)->multitexcoords;
   }
@@ -216,14 +242,23 @@ SoPrimitiveVertexCache::renderTriangles(SoState * state, const int arrays) const
   if (texture) {
     enabled = SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
   }
-  const cc_glglue * glue = sogl_glue_instance(state);
-  
-  // not enabled yet, needs more testing, pederb 2004-02-24
-  // SbBool renderasvbo = cc_glglue_has_vertex_buffer_object(glue);
-  SbBool renderasvbo = FALSE;
 
+  unsigned long contextid = (unsigned long) SoGLCacheContextElement::get(state);    
+  const cc_glglue * glue = cc_glglue_instance((int) contextid);
+  SbBool renderasvbo = COIN_ENABLE_VBO && cc_glglue_has_vertex_buffer_object(glue);
+  
   if (renderasvbo) {
-    unsigned long contextid = (unsigned long) SoGLCacheContextElement::get(state);    
+    unsigned long size = PRIVATE(this)->countVBOSize(glue, contextid, color, 
+                                                     normal, texture, enabled, lastenabled);
+    if (total_vbo_memory + size > COIN_MAX_VBO_MEMORY) {
+      renderasvbo = FALSE;
+    }
+    else {
+      total_vbo_memory += size;
+    }
+  }
+  
+  if (renderasvbo) {
     PRIVATE(this)->enableVBOs(glue, contextid, color, normal, texture, enabled, lastenabled);
     cc_glglue_glDrawElements(glue, GL_TRIANGLES, n, GL_UNSIGNED_INT, NULL);
     PRIVATE(this)->disableVBOs(glue, color, normal, texture, enabled, lastenabled);
@@ -239,6 +274,7 @@ SoPrimitiveVertexCache::renderTriangles(SoState * state, const int arrays) const
 void 
 SoPrimitiveVertexCache::renderLines(SoState * state, const int arrays) const
 {
+  // FIXME: VBO support for lines, pederb 2004-02-24
   int lastenabled = -1;
   const int n = this->getNumLineIndices();
   if (n == 0) return;
@@ -260,6 +296,7 @@ SoPrimitiveVertexCache::renderLines(SoState * state, const int arrays) const
 void 
 SoPrimitiveVertexCache::renderPoints(SoState * state, const int arrays) const
 {
+  // FIXME: VBO support for points, pederb 2004-02-24
   int lastenabled = -1;
   const int n = this->getNumPointIndices();
   if (n == 0) return;
@@ -735,7 +772,6 @@ SoPrimitiveVertexCacheP::enableVBOs(const cc_glglue * glue,
                            this->vertexlist.getLength()*3*sizeof(float),
                            this->vertexlist.getArrayPtr(),
                            GL_STATIC_DRAW);
-    total_vbo_memory +=  this->vertexlist.getLength()*3*sizeof(float);
   }
   else {
     cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, vbo->vertex);    
@@ -751,7 +787,6 @@ SoPrimitiveVertexCacheP::enableVBOs(const cc_glglue * glue,
                              this->rgbalist.getLength() * sizeof(uint8_t),
                              this->rgbalist.getArrayPtr(),
                              GL_STATIC_DRAW);
-      total_vbo_memory += this->rgbalist.getLength() * sizeof(uint8_t);
     }
     else {
       cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, vbo->rgba);
@@ -767,7 +802,6 @@ SoPrimitiveVertexCacheP::enableVBOs(const cc_glglue * glue,
                              this->texcoordlist.getLength()*4*sizeof(float),
                              this->texcoordlist.getArrayPtr(),
                              GL_STATIC_DRAW);
-      total_vbo_memory += this->texcoordlist.getLength()*4*sizeof(float);
     }
     else {
       cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, vbo->texcoord0);    
@@ -785,7 +819,6 @@ SoPrimitiveVertexCacheP::enableVBOs(const cc_glglue * glue,
                                  this->multitexcoords[i].getLength()*4*sizeof(float),
                                  this->multitexcoords[i].getArrayPtr(),
                                  GL_STATIC_DRAW);
-          total_vbo_memory += this->multitexcoords[i].getLength()*4*sizeof(float);
         }
         else {
           cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, vbo->multitex[i]);    
@@ -805,7 +838,6 @@ SoPrimitiveVertexCacheP::enableVBOs(const cc_glglue * glue,
                              this->normallist.getLength()*3*sizeof(float),
                              this->normallist.getArrayPtr(),
                              GL_STATIC_DRAW);
-      total_vbo_memory += this->normallist.getLength()*3*sizeof(float);
     }
     else {
       cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, vbo->normal);    
@@ -822,7 +854,6 @@ SoPrimitiveVertexCacheP::enableVBOs(const cc_glglue * glue,
                            this->indices.getLength()*sizeof(int32_t),
                            this->indices.getArrayPtr(),
                            GL_STATIC_DRAW);
-
   }
   else {
     cc_glglue_glBindBuffer(glue, GL_ELEMENT_ARRAY_BUFFER, vbo->triangleindex);
@@ -840,6 +871,58 @@ SoPrimitiveVertexCacheP::disableVBOs(const cc_glglue * glue,
   cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0); // Reset VBO binding  
   cc_glglue_glBindBuffer(glue, GL_ELEMENT_ARRAY_BUFFER, 0); // Reset VBO binding  
 }
+
+unsigned long
+SoPrimitiveVertexCacheP::countVBOSize(const cc_glglue * glue,
+                                      unsigned long contextid,
+                                      const SbBool color, const SbBool normal,
+                                      const SbBool texture, const SbBool * enabled,
+                                      const int lastenabled)
+{
+  unsigned long size = 0;
+  void * tmp;
+  SoPrimitiveVertexCache_vboidx * vbo;
+  if (!this->vbodict.find(contextid, tmp)) {
+    vbo = new SoPrimitiveVertexCache_vboidx;
+    memset(vbo, 0, sizeof(SoPrimitiveVertexCache_vboidx));
+    (void) this->vbodict.enter(contextid, (void*) vbo);
+  }
+  else {
+    vbo = (SoPrimitiveVertexCache_vboidx *) tmp;
+  }
+
+  int i;
+  if (vbo->vertex == 0) {
+    size +=  this->vertexlist.getLength()*3*sizeof(float);
+  }
+  if (color) {
+    if (vbo->rgba == 0) {
+      size += this->rgbalist.getLength() * sizeof(uint8_t);
+    }
+  }
+  if (texture) {
+    if (vbo->texcoord0 == 0) {
+      size += this->texcoordlist.getLength()*4*sizeof(float);
+    }    
+    for (i = 1; i <= lastenabled; i++) {
+      if (enabled[i]) {
+        if (vbo->multitex[i] == 0) {
+          size += this->multitexcoords[i].getLength()*4*sizeof(float);
+        }
+      }
+    }
+  }
+  if (normal) {
+    if (vbo->normal == 0) {
+      size += this->normallist.getLength()*3*sizeof(float);
+    }
+  }
+  if (vbo->triangleindex == 0) {
+    size += this->indices.getLength()*sizeof(int32_t);
+  }
+  return size;
+}
+
 
 #undef MAX_UNITS
 
