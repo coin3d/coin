@@ -26,15 +26,17 @@
   polygon) or a rectangle on screen. When objects are selected, you'll
   receive the same callbacks as for the SoSelection node.
 
-  This node is based on TGS' SoExtSelection, and we aim to be API
-  compatible with this node to enable users to switch between using
-  Coin and TGS Inventor.  Please contact us if you find discrepancies
-  between Coin SoExtSelection and TGS SoExtSelection.
+  This node class is an extension versus the original SGI Inventor
+  v2.1 API. It is based on the API of TGS Inventor's SoExtSelection,
+  and we aim to be fully compatible with this node to enable users to
+  switch between using Coin and TGS Inventor.  Please contact us if
+  you find discrepancies between Coin SoExtSelection and TGS
+  SoExtSelection.
 */
 
 #include <Inventor/nodes/SoExtSelection.h>
 #include <Inventor/nodes/SoSubNodeP.h>
-#include <coindefs.h> // COIN_STUB()
+#include <coindefs.h> // COIN_OBSOLETED()
 
 #include <Inventor/events/SoEvent.h>
 #include <Inventor/actions/SoHandleEventAction.h>
@@ -578,13 +580,17 @@ SoExtSelection::initClass(void)
 
 /*!
   Specifies whether the overlay planes should be used to render the
-  lasso.  Not supporte in Coin yet, as overlay planes are
-  hard to come by these days.
+  lasso.
+
+  This method has been obsoleted in Coin, as most graphics cards comes
+  without support for overlay rendering. A better strategy is to just
+  "overlay" the lasso graphics on top of the scene after everything
+  else has been rendered -- and this is the strategy we apply in Coin.
 */
 void
-SoExtSelection::useOverlay(const SbBool /* overlay */)
+SoExtSelection::useOverlay(const SbBool overlay)
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
 }
 
 /*!
@@ -595,45 +601,49 @@ SoExtSelection::useOverlay(const SbBool /* overlay */)
 SbBool
 SoExtSelection::isUsingOverlay(void)
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
   return FALSE;
 }
 
 /*!
-  Returns the scene graph for overlay rendering. Will always return NULL
-  in Coin.
+  Returns the scene graph for overlay rendering. Will always return
+  NULL in Coin, as this method has been obsoleted.
+
+  (It is probably used in TGS Inventor from the SoXt / SoWin
+  libraries' So[Xt|Win]RenderArea class to fetch the overlay graph to
+  draw, and as such should be treated as an internal method.)
 */
 SoSeparator *
 SoExtSelection::getOverlaySceneGraph(void)
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
   return NULL;
 }
 
 /*!
-  Set the color for the overlay lasso. Not supported in Coin.
+  Obsoleted in Coin, use SoExtSelection::setLassoColor() instead.
 */
 void
-SoExtSelection::setOverlayLassoColorIndex(const int /* index */)
+SoExtSelection::setOverlayLassoColorIndex(const int index)
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
 }
 
 /*!
-  Returns the overlay lasso color index.
+  Obsoleted in Coin, use SoExtSelection::getLassoColor() instead.
 
   \sa setOverlayLassoColorIndex().
 */
 int
 SoExtSelection::getOverlayLassoColorIndex(void)
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
   return 0;
 }
 
 /*!
-  Sets the lasso/rectangle line color. Default value
-  is (1.0, 1.0, 1.0).
+  Sets the lasso/rectangle line color. Default value is (1.0, 1.0,
+  1.0).
 */
 void
 SoExtSelection::setLassoColor(const SbColor & color)
