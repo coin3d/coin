@@ -55,11 +55,15 @@ SoGetPrimitiveCountAction::SoGetPrimitiveCountAction(void)
 {
   SO_ACTION_CONSTRUCTOR(SoGetPrimitiveCountAction);
 
-  SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::getPrimitiveCountS);
-
   this->textastris = TRUE;
   this->approx = FALSE;
   this->nonvertexastris = TRUE;
+
+  static int first = 1;
+  if (first) {
+    first = 0;
+    SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::getPrimitiveCountS);
+  }
 }
 
 /*!

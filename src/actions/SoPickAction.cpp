@@ -77,7 +77,11 @@ SoPickAction::SoPickAction(const SbViewportRegion & viewportregion)
 {
   SO_ACTION_CONSTRUCTOR(SoPickAction);
 
-  SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::pickS);
+  static int first = 1;
+  if (first) {
+    first = 0;
+    SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::pickS);
+  }
 }
 
 /*!

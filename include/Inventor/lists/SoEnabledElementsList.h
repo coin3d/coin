@@ -26,6 +26,8 @@
 class COIN_DLL_API SoEnabledElementsList {
 public:
   SoEnabledElementsList(SoEnabledElementsList * const parentlist);
+  ~SoEnabledElementsList();
+
   const SoTypeList & getElements(void) const;
   void enable(const SoType elementtype, const int stackindex);
   void merge(const SoEnabledElementsList & eel);
@@ -33,10 +35,7 @@ public:
   static int getCounter(void);
 
 private:
-  static int counter;
-  int setupcounter;
-  SoTypeList elements;
-  SoEnabledElementsList * parent;
+  class SoEnabledElementsListP * pimpl;
 };
 
 #endif // !COIN_SOENABLEDELEMENTSLIST_H

@@ -29,8 +29,24 @@
 
 #include <Inventor/lists/SoActionMethodList.h>
 #include <Inventor/lists/SoTypeList.h>
+#include <Inventor/lists/SbList.h>
+#include <Inventor/actions/SoAction.h>
 #include <assert.h>
 
+#ifndef DOXYGEN_SKIP_THIS
+
+class SoActionMethodListP {
+public:
+  SoActionMethodList * parent;
+  int setupnumtypes;
+  SbList <SoType> addedtypes;
+  SbList <SoActionMethod> addedmethods;
+};
+
+#endif // DOXYGEN_SKIP_THIS
+
+#undef THIS
+#define THIS this->pimpl
 
 /*!
   The constructor.  The \a parentlist argument is the parent action's
@@ -38,8 +54,18 @@
   are not based on inheriting from a parent action.
 */
 SoActionMethodList::SoActionMethodList(SoActionMethodList * const parentlist)
-  : SbPList(0), parent(parentlist), setupNumTypes(0)
 {
+  THIS = new SoActionMethodListP;
+  THIS->parent = parentlist;
+  THIS->setupnumtypes = 0;
+}
+
+/*!
+  Destructor.
+*/
+SoActionMethodList::~SoActionMethodList()
+{
+  delete THIS;
 }
 
 /*!
@@ -57,15 +83,9 @@ SoActionMethodList::operator[](const int index)
 void
 SoActionMethodList::addMethod(const SoType node, const SoActionMethod method)
 {
-  (*this)[(int)node.getData()] = method;
-  
-  SoTypeList derivedtypes;
-  const int n = SoType::getAllDerivedFrom(node, derivedtypes);
-  for (int i = 0; i < n; i++) {
-    int idx = (int) derivedtypes[i].getData();
-    if (idx >= this->getLength() || (*this)[idx] == NULL) 
-      (*this)[idx] = method;
-  }
+  THIS->addedtypes.append(node);
+  THIS->addedmethods.append(method);
+  THIS->setupnumtypes = 0; // force a new setUp
 }
 
 /*!
@@ -76,14 +96,40 @@ SoActionMethodList::addMethod(const SoType node, const SoActionMethod method)
 void
 SoActionMethodList::setUp(void)
 {
-  if (this->setupNumTypes != SoType::getNumTypes()) {
-    this->setupNumTypes = SoType::getNumTypes();
-    if (this->parent) {
-      this->parent->setUp();
-      const int max = this->parent->getLength();
-      for (int i = 0; i < max; i++) {
-        if ((*this)[i] == NULL) (*this)[i] = (*(this->parent))[i];
+  if (THIS->setupnumtypes != SoType::getNumTypes()) {
+    THIS->setupnumtypes = SoType::getNumTypes();
+    this->truncate(0);
+
+    SoTypeList derivedtypes;
+    int i, n = THIS->addedtypes.getLength();
+    for (i = 0; i < n; i++) {
+      SoType type = THIS->addedtypes[i];
+      const SoActionMethod method = THIS->addedmethods[i];
+      (*this)[(int)type.getData()] = method;
+
+      // also set this method for all nodes that inherits this node
+      derivedtypes.truncate(0);
+      int numderived = SoType::getAllDerivedFrom(THIS->addedtypes[i], derivedtypes);
+      for (int j = 0; j < numderived; j++) {
+        int idx = (int) derivedtypes[j].getData();
+        if (idx >= this->getLength() || (*this)[idx] == NULL) {
+          (*this)[idx] = method;
+        }
+      }
+    }
+
+    // fill in empty slots with parent method
+    if (THIS->parent) {
+      THIS->parent->setUp();
+      n = THIS->parent->getLength();
+      for (i = 0; i < n; i++) {
+        if ((*this)[i] == NULL) (*this)[i] = (*(THIS->parent))[i];
+
+        // just in case, fill in nullAction method if still empty
+        if ((*this)[i] == NULL) (*this)[i] = SoAction::nullAction;
       }
     }
   }
 }
+
+#undef THIS

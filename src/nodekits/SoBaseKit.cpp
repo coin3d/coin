@@ -144,10 +144,7 @@ SoBaseKit::SoBaseKit(void)
                                       SoType::badType(),
                                       SoType::badType(),
                                       FALSE);
-
-    // set rayPick method
-    SoType type = SoBaseKit::getClassTypeId();
-    SoRayPickAction::addMethod(type, SoNode::rayPickS);
+    
   }
 
 
@@ -175,6 +172,9 @@ void
 SoBaseKit::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoBaseKit);
+  // set rayPick method
+  SoType type = SoBaseKit::getClassTypeId();
+  SoRayPickAction::addMethod(type, SoNode::rayPickS);
 }
 
 /*!

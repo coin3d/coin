@@ -152,12 +152,16 @@ SoRayPickAction::SoRayPickAction(const SbViewportRegion & viewportregion)
 
   SO_ACTION_CONSTRUCTOR(SoRayPickAction);
 
-  // most methods are inherited from SoPickAction
-  SO_ACTION_ADD_METHOD_INTERNAL(SoCamera, SoNode::rayPickS);
-  SO_ACTION_ADD_METHOD_INTERNAL(SoSeparator, SoNode::rayPickS);
-  SO_ACTION_ADD_METHOD_INTERNAL(SoLOD, SoNode::rayPickS);
-  SO_ACTION_ADD_METHOD_INTERNAL(SoLevelOfDetail, SoNode::rayPickS);
-  SO_ACTION_ADD_METHOD_INTERNAL(SoShape, SoNode::rayPickS);
+  static int first = 1;
+  if (first) {
+    first = 0;
+    // most methods are inherited from SoPickAction
+    SO_ACTION_ADD_METHOD_INTERNAL(SoCamera, SoNode::rayPickS);
+    SO_ACTION_ADD_METHOD_INTERNAL(SoSeparator, SoNode::rayPickS);
+    SO_ACTION_ADD_METHOD_INTERNAL(SoLOD, SoNode::rayPickS);
+    SO_ACTION_ADD_METHOD_INTERNAL(SoLevelOfDetail, SoNode::rayPickS);
+    SO_ACTION_ADD_METHOD_INTERNAL(SoShape, SoNode::rayPickS);
+  }
 }
 
 /*!

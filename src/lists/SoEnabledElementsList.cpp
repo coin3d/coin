@@ -37,15 +37,39 @@
 #include <assert.h>
 
 
-int SoEnabledElementsList::counter = 0;
+#ifndef DOXYGEN_SKIP_THIS
 
+class SoEnabledElementsListP {
+public:
+  int prevmerge;
+  SoTypeList elements;
+  SoEnabledElementsList * parent;
+};
+
+static int enable_counter = 0;
+
+#endif // DOXYGEN_SKIP_THIS
+
+#undef THIS
+#define THIS this->pimpl
 
 /*!
   Constructor.
 */
 SoEnabledElementsList::SoEnabledElementsList(SoEnabledElementsList * const parentlist)
-  : setupcounter(counter), parent(parentlist)
 {
+  THIS = new SoEnabledElementsListP;
+
+  THIS->prevmerge = 0;
+  THIS->parent = parentlist;
+}
+
+/*!
+  Destructor.
+*/
+SoEnabledElementsList::~SoEnabledElementsList()
+{
+  delete THIS;
 }
 
 /*!
@@ -54,16 +78,19 @@ SoEnabledElementsList::SoEnabledElementsList(SoEnabledElementsList * const paren
 const SoTypeList &
 SoEnabledElementsList::getElements(void) const
 {
-  if (!parent) // already merged. FIXME: can't do it like this
-    return elements;
-
-  // FIXME: use counter and setupcounter to avoid unncessary merges
-  // now we just set this->parent to NULL, but if parent changes,
-  // this will not be correct.
-  SoEnabledElementsList * const eel = (SoEnabledElementsList *)this;
-  eel->merge(*this->parent);
-  eel->parent = NULL;
-  return elements;
+  // check if we need a new merge
+  if (THIS->prevmerge != enable_counter) {
+    int storedcounter = enable_counter;
+    SoEnabledElementsList * plist = (SoEnabledElementsList*) THIS->parent;
+    while (plist) {
+      ((SoEnabledElementsList*)this)->merge(*plist);
+      plist = plist->pimpl->parent;
+    }
+    // use and restore old counter since it might change during merge
+    ((SoEnabledElementsList*)this)->pimpl->prevmerge =
+      enable_counter = storedcounter;
+  }
+  return THIS->elements;
 }
 
 /*!
@@ -73,16 +100,16 @@ SoEnabledElementsList::getElements(void) const
 void
 SoEnabledElementsList::enable(const SoType elementtype, const int stackindex)
 {
-#if 0 // debug
-  SoDebugError::postInfo("SoEnabledElementsList::enable",
-                         "this: %p, elements: %p, typelist length: %d\n",
-                         this, &(this->elements), elements.getLength());
-#endif // debug
+  while (stackindex >= THIS->elements.getLength())
+    THIS->elements.append(SoType::badType());
 
-  while (stackindex >= this->elements.getLength())
-    this->elements.append(SoType::badType());
-
-  this->elements[stackindex] = elementtype;
+  SoType currtype = THIS->elements[stackindex];
+  if (currtype.isBad() ||
+      (elementtype != currtype && elementtype.isDerivedFrom(currtype))) {
+    THIS->elements.set(stackindex, elementtype);
+    // increment to detect when a new merge is needed
+    enable_counter++;
+  }
 }
 
 /*!
@@ -93,9 +120,9 @@ void
 SoEnabledElementsList::merge(const SoEnabledElementsList & eel)
 {
   SoType bad = SoType::badType();
-  const int num = eel.elements.getLength();
+  const int num = eel.pimpl->elements.getLength();
   for (int i = 0; i < num; i++) {
-    if (eel.elements[i] != bad) this->enable(eel.elements[i], i);
+    if (eel.pimpl->elements[i] != bad) this->enable(eel.pimpl->elements[i], i);
   }
 }
 
@@ -107,5 +134,7 @@ SoEnabledElementsList::merge(const SoEnabledElementsList & eel)
 int
 SoEnabledElementsList::getCounter(void)
 {
-  return SoEnabledElementsList::counter;
+  return enable_counter;
 }
+
+#undef THIS

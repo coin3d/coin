@@ -80,10 +80,14 @@ SoWriteAction::commonConstructor(SoOutput * out)
 {
   SO_ACTION_CONSTRUCTOR(SoWriteAction);
 
-  SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::writeS);
-
   this->outobj = out;
   this->continuing = FALSE;
+
+  static int first = 1;
+  if (first) {
+    first = 0;
+    SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::writeS);
+  }
 }
 
 /*!

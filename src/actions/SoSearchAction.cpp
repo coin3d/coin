@@ -78,7 +78,11 @@ SoSearchAction::SoSearchAction(void)
 {
   SO_ACTION_CONSTRUCTOR(SoSearchAction);
 
-  SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::searchS);
+  static int first = 1;
+  if (first) {
+    first = 0;
+    SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::searchS);
+  }
 }
 
 /*!

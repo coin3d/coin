@@ -323,8 +323,6 @@ SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportregion)
 {
   SO_ACTION_CONSTRUCTOR(SoGLRenderAction);
 
-  SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::GLRenderS);
-
   THIS = new SoGLRenderActionP(this);
   // Can't just push this on the SoViewportRegionElement stack, as the
   // state hasn't been made yet.
@@ -347,6 +345,12 @@ SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportregion)
   THIS->abortcallback = NULL;
   THIS->cachecontext = 0;
   THIS->needglinit = TRUE;
+
+  static int first = 1;
+  if (first) {
+    first = 0;
+    SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::GLRenderS);
+  }
 }
 
 /*!
@@ -749,12 +753,12 @@ void
 SoGLRenderAction::addTransPath(SoPath * path)
 {
   THIS->transpobjpaths.append(path);
-  
+
   // if we're not going to sort the paths we don't need to calculate
   // distance
   if (THIS->transparencytype == BLEND ||
       THIS->transparencytype == ADD) return;
-  
+
   SoNode * tail = ((SoFullPath*)path)->getTail();
   float dist;
 
@@ -830,15 +834,15 @@ SoGLRenderAction::doPathSort(void)
   is correctly set), and this callback can be useful to, for instance,
   clear the viewport before rendering, or draw a bitmap in the background
   before rendering etc.
-  
+
   The callback is only invoked once (before the first rendering pass)
   when multi pass rendering is enabled.
 
   This method is an extension versus the Open Inventor API.
 
-  \sa removePreRenderCallback().  
+  \sa removePreRenderCallback().
 */
-void 
+void
 SoGLRenderAction::addPreRenderCallback(SoGLPreRenderCB * func, void * userdata)
 {
   THIS->precblist.addCallback((SoCallbackListCB*) func, userdata);
@@ -851,7 +855,7 @@ SoGLRenderAction::addPreRenderCallback(SoGLPreRenderCB * func, void * userdata)
 
   \sa addPreRenderCallback()
 */
-void 
+void
 SoGLRenderAction::removePreRenderCallback(SoGLPreRenderCB * func, void * userdata)
 {
   THIS->precblist.removeCallback((SoCallbackListCB*) func, userdata);

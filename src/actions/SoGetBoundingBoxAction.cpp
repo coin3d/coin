@@ -80,7 +80,11 @@ SoGetBoundingBoxAction::SoGetBoundingBoxAction(const SbViewportRegion & vp)
 {
   SO_ACTION_CONSTRUCTOR(SoGetBoundingBoxAction);
 
-  SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::getBoundingBoxS);
+  static int first = 1;
+  if (first) {
+    first = 0;
+    SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::getBoundingBoxS);
+  }
 }
 
 /*!
@@ -355,7 +359,7 @@ SoGetBoundingBoxAction::setCenter(const SbVec3f & center,
   else {
     this->center = center;
   }
-  
+
 #if COIN_DEBUG && 0 // debug
   SoDebugError::post("SoGetBoundingBoxAction::setCenter",
                      "center: <%f, %f, %f>, transformcenter: %s, "

@@ -33,6 +33,7 @@ class COIN_DLL_API SoActionMethodList : public SbPList {
 
 public:
   SoActionMethodList(SoActionMethodList * const parentlist);
+  ~SoActionMethodList();
 
   SoActionMethod & operator[](const int index);
 
@@ -40,8 +41,7 @@ public:
   void setUp(void);
 
 private:
-  SoActionMethodList * parent;
-  int setupNumTypes;
+  class SoActionMethodListP * pimpl;
 };
 
 #endif // !COIN_SOACTIONMETHODLIST_H

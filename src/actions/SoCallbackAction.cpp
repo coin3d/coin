@@ -288,22 +288,26 @@ SoCallbackAction::commonConstructor(void)
 {
   SO_ACTION_CONSTRUCTOR(SoCallbackAction);
 
-  SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::callbackS);
-
   THIS = new SoCallbackActionP;
   THIS->pretailcallback = NULL;
   THIS->posttailcallback = NULL;
   THIS->viewportset = FALSE;
+
+  static int first = 1;
+  if (first) {
+    first = 0;
+    SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::callbackS);
+  }
 }
 
-/*!  
+/*!
   Sets the viewport region for this action. When set, the viewport
   element is initialized right before a traversal starts, making it
   the current viewport.
 
-  This method is an extension versus the Open Inventor API.  
+  This method is an extension versus the Open Inventor API.
 */
-void 
+void
 SoCallbackAction::setViewportRegion(const SbViewportRegion & vp)
 {
   THIS->viewport = vp;

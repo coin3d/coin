@@ -114,7 +114,11 @@ SoHandleEventAction::SoHandleEventAction(const SbViewportRegion & viewportregion
 
   SO_ACTION_CONSTRUCTOR(SoHandleEventAction);
 
-  SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::handleEventS);
+  static int first = 1;
+  if (first) {
+    first = 0;
+    SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::handleEventS);
+  }
 }
 
 /*!
@@ -284,7 +288,7 @@ SoHandleEventAction::getPickedPoint(void)
     THIS->doPick(ra);
   }
   return ra->getPickedPoint();
-}  
+}
 
 /*!
   Returns a list of all intersection points below the mouse cursor.
@@ -309,7 +313,7 @@ SoHandleEventAction::beginTraversal(SoNode * node)
 {
   assert(THIS->event);
   this->setPickRoot(node);
-  
+
   this->getState()->push();
   SoViewportRegionElement::set(this->getState(), THIS->viewport);
   if (THIS->grabber) {
@@ -338,7 +342,7 @@ void
 SoHandleEventActionP::doPick(SoRayPickAction * ra)
 {
   if (!this->event || !this->pickroot) return;
-  
+
   SbBool didapply = FALSE;
   ra->setPoint(this->event->getPosition());
   if (this->owner->getWhatAppliedTo() == SoAction::PATH) {
