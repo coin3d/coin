@@ -62,8 +62,10 @@ SoActionMethodList::addMethod(const SoType node, const SoActionMethod method)
   SoTypeList derivedtypes;
   const int n = SoType::getAllDerivedFrom(node, derivedtypes);
   for (int i = 0; i < n; i++) {
-    (*this)[(int)derivedtypes[i].getData()] = method;
-  }    
+    int idx = (int) derivedtypes[i].getData();
+    if (idx >= this->getLength() || (*this)[idx] == NULL) 
+      (*this)[idx] = method;
+  }
 }
 
 /*!
