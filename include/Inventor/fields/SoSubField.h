@@ -22,7 +22,11 @@
 
 #include <Inventor/misc/SoBasic.h> // for SO__QUOTE() definition
 #include <assert.h>
-
+#ifndef COIN_INTERNAL
+// Added for Inventor compliance
+#include <Inventor/SoInput.h>
+#include <Inventor/SoOutput.h>
+#endif // !COIN_INTERNAL
 
 /**************************************************************************
  *

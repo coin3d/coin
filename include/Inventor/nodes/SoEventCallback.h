@@ -24,6 +24,10 @@
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/lists/SbPList.h>
 #include <Inventor/lists/SoTypeList.h>
+#ifndef COIN_INTERNAL
+// Added for Inventor compliance
+#include <Inventor/actions/SoHandleEventAction.h>
+#endif // !COIN_INTERNAL
 
 
 class SoEventCallback;
