@@ -374,6 +374,9 @@ SoText2::GLRender(SoGLRenderAction * action)
     // this function will also modify the z-value of nilpoint
     // according to the view matrix
     vv.projectToScreen(nilpoint, nilpoint);
+    // change z range from [0,1] to [-1,1]
+    nilpoint[2] *= 2.0f;
+    nilpoint[2] -= 1.0f;
 
 #if 0 // debug
     SoDebugError::postInfo("SoText2::GLRender",
@@ -453,6 +456,10 @@ SoText2::GLRender(SoGLRenderAction * action)
     // this function will also modify the z-value of nilpoint
     // according to the view matrix
     vv.projectToScreen(nilpoint, nilpoint);
+    // change z-range from [0,1] to [-1,1]
+    nilpoint[2] *= 2.0f;
+    nilpoint[2] -= 1.0f;
+
     const SbViewportRegion & vp = SoViewportRegionElement::get(state);
     SbVec2s vpsize = vp.getViewportSizePixels();
     nilpoint[0] = nilpoint[0] * float(vpsize[0]);

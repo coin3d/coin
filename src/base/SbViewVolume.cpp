@@ -299,24 +299,24 @@ SbViewVolume::projectPointToLine(const SbVec2f& pt,
   the projection plane and place the result in \a dst.
 
   It is safe to let \a src and \dst be the same SbVec3f instance.
-
+  
   The z-coordinate of \a dst is monotonically increasing for points
   closer to the far plane. Note however that this is not a linear
   relationship, the \a dst z-coordinate is calculated as follows:
+  
+  Orthogonal view:  DSTz = (-2 * SRCz - far - near) / (far - near),
+  Perspective view:  DSTz = (-SRCz * (far - near) - 2*far*near) / (far - near)
 
-   Orthogonal view:  DSTz = (-2 * SRCz - far - near) / (far - near),
-   Perspective view:  DSTz = (-SRCz * (far - near) - 2*far*near) / (far - near)
- */
+  The returned coordinates (\a dst) are normalized to be in range [0, 1].
+*/
 void
 SbViewVolume::projectToScreen(const SbVec3f& src, SbVec3f& dst) const
 {
   this->getMatrix().multVecMatrix(src, dst);
-
-  dst[0] /= 2.0f;
-  dst[1] /= 2.0f;
-
-  dst[0] += 0.5f;
-  dst[1] += 0.5f;
+  
+  // coordinates are in range [-1, 1], normalize to [0,1]
+  dst *= 0.5f;
+  dst += SbVec3f(0.5f, 0.5f, 0.5f);
 }
 
 /*!

@@ -516,6 +516,9 @@ SoImage::getNilpoint(SoState * state)
   SbVec2s vpsize = vp.getViewportSizePixels();
   nilpoint[0] = nilpoint[0] * float(vpsize[0]);
   nilpoint[1] = nilpoint[1] * float(vpsize[1]);
+  // change z range from [0,1] to [-1,1]
+  nilpoint[2] *= 2.0f;
+  nilpoint[2] -= 1.0f;
 
   return nilpoint;
 }

@@ -1191,6 +1191,9 @@ SoMarkerSet::GLRender(SoGLRenderAction * action)
       vv.projectToScreen(point, point); // normalized screen coordinates
       point[0] = point[0] * float(vpsize[0]); // screen pixel position
       point[1] = point[1] * float(vpsize[1]);
+      // change z range from [0,1] to [-1,1]
+      point[2] *= 2.0f;
+      point[2] -= 1.0f;
       
       so_marker * tmp = &(*markerlist)[ this->markerIndex[midx] ];
       
