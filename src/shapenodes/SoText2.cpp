@@ -320,8 +320,6 @@ SoText2::GLRender(SoGLRenderAction * action)
     glPixelStorei(GL_UNPACK_ALIGNMENT,1);
 
     float fontsize = SoFontSizeElement::get(state);
-    float spacesize = fontsize / 3;  
-
     float xpos = nilpoint[0];      // to get rid of compiler warning..
     float ypos = nilpoint[1];
     float rasterx, rastery, rpx, rpy, offsetx, offsety;
