@@ -742,8 +742,22 @@ SoField::connectFrom(SoField * master, SbBool notnotify, SbBool append)
       // detect and avoid multiple connections between the same fields
       // (a common bug in VRML files created by 3ds max).
 #if COIN_DEBUG
-      SoDebugError::postWarning("SoField::connectFrom",
-                                "connection from %p already made", master);
+      SoFieldContainer * fc = master->getContainer();
+      SbName fcname = fc ? fc->getName() : SbName("");
+      if (fcname != SbName("")) {
+        SbName fieldname;
+        (void) fc->getFieldName(master, fieldname);
+        SoDebugError::postWarning("SoField::connectFrom",
+                                  "connection from %p (%s.%s) already made", 
+                                  master, 
+                                  fcname.getString(),
+                                  fieldname.getString());
+        
+      }
+      else {
+        SoDebugError::postWarning("SoField::connectFrom",
+                                  "connection from %p already made", master);
+      }
 #endif // COIN_DEBUG
       return FALSE;
     }
@@ -1631,29 +1645,47 @@ SoField::copyConnection(const SoField * fromfield)
   // Consider most common case first.
   if (!fromfield->isConnected()) return;
 
-  // FIXME: copy _all_ connections (in preparation for VRML2 support)?
-  // 20000116 mortene.
+  // first, disconnect all existing connections (engines often
+  // connect to the realTime global field in the constructor).
+  this->disconnect();
+  
+  assert(fromfield->hasExtendedStorage());
+  int i;
 
-#define COPYCONNECT(_fieldtype_, _getfunc_) \
-  _fieldtype_ * master; \
-  (void)fromfield->_getfunc_(master); \
-  SoFieldContainer * masterfc = master->getContainer(); \
-  int ptroffset = (char *)master - (char *)masterfc; \
-  SoFieldContainer * copyfc = masterfc->copyThroughConnection(); \
-  _fieldtype_ * copyfield = (_fieldtype_ *)((char *)copyfc + ptroffset); \
-  (void)this->connectFrom(copyfield)
-
-
-  // Connections already in place will be automatically removed, as
-  // the append argument to connectFrom() is default FALSE.
-
-  if (fromfield->isConnectedFromField()) {
-    COPYCONNECT(SoField, getConnectedField);
+  for (i = 0; i < fromfield->storage->masterfields.getLength(); i++) {
+    SoField * master = fromfield->storage->masterfields[i];
+    SoFieldContainer * masterfc = master->getContainer();
+    int ptroffset = (char *)master - (char *)masterfc;
+    SoFieldContainer * copyfc = masterfc->copyThroughConnection(); 
+    SoField * copyfield = (SoField*) ((char *)copyfc + ptroffset);
+    
+    SbBool notify = TRUE;
+    switch (master->getFieldType()) {
+    case EVENTIN_FIELD:
+    case EVENTOUT_FIELD:
+      notify = FALSE;
+      break;
+    default:
+      break;
+    }
+    (void) this->connectFrom(copyfield, notify, TRUE);
   }
-  else if (fromfield->isConnectedFromEngine()) {
-    COPYCONNECT(SoEngineOutput, getConnectedEngine);
+  for (i = 0; i < fromfield->storage->masterengineouts.getLength(); i++) {
+    SoEngineOutput * master = fromfield->storage->masterengineouts[i];
+    SoFieldContainer * masterfc;
+    if (master->isNodeEngineOutput()) {
+      masterfc = master->getNodeContainer();
+    }
+    else {
+      masterfc = master->getContainer();
+    }
+    assert(masterfc != NULL);
+    int ptroffset = (char *)master - (char *)masterfc;
+    SoFieldContainer * copyfc = masterfc->copyThroughConnection(); 
+    SoEngineOutput * copyeo = (SoEngineOutput*) ((char *)copyfc + ptroffset);
+
+    (void) this->connectFrom(copyeo, FALSE, TRUE);
   }
-#undef COPYCONNECT
 }
 
 // This templatized inline is just a convenience function for reading
