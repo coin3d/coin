@@ -413,7 +413,7 @@ search_for_image(const char * const orgname, const SbStringList & dirlist)
     TRY_FILE(fullname);
   }
 
-  return fullname; // not found, return org name
+  return SbString("");
 }
 
 #undef TRY_FILE_DEBUG
@@ -432,7 +432,7 @@ SoImageInterface *
 SoImageInterface::findOrCreateImage(const char * const filename,
                                     const SbStringList & dirlist)
 {
- // FIXME: deallocate on exit. 20000406 mortene.
+  // FIXME: deallocate on exit. 20000406 mortene.
   if (!loadedfiles) loadedfiles = new SbList<so_image_data *>;
 
   int n = loadedfiles->getLength();
