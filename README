@@ -1,38 +1,171 @@
-NAME
 
-Coin
+                               Coin 2.0.0
 
+                 Copyright 1998-2001  Systems in Motion
 
-BRIEF DESCRIPTION
-
-An open source retained mode 3D graphics library with an API based on
-Open Inventor[1].
+                         http://www.coin3d.org/
 
 
-HOMEPAGE
+Introduction
+============
 
-<URL:http://www.coin3d.org>
-
-
-LICENSE
-
-Coin is released publicly under the GNU Lesser General Public License
-(LGPL) for developers of free software (see LICENSE.LGPL) and is also
-available for any proprietary use under a Professional Edition
-license. Read the LGPL carefully to decide whether or not your use of
-Coin is compatible with this free, open source license.
-
-There are files in the distribution used in the build process which is
-covered under the GPL (see LICENSE.GPL).
+Coin is a 3D graphics library with an Application Programming Interface
+based on the Open Inventor 2.1 API.  For those who are not familiar with
+Open Inventor, it is a scene-graph based retain-mode rendering and model
+interaction library, written in C++, which has become the de facto
+standard graphics library for 3D visualization and visual simulation
+software in the scientific and engineering community.
 
 
-MAIN DEVELOPERS
+Release 2.0.0
+=============
 
-Morten Eriksen <mortene@sim.no>
-Peder Blekken <pederb@sim.no>
-Marius Kintel <kintel@sim.no>
-Lars J. Aas <larsa@sim.no>
+Release 2.0.0 is a figment of your imagination.  It is the next major
+release and is months (years?) away from a release.  This is the
+experimental development sources that will eventually lead to the next
+major version of Coin.
+
+See the file NEWS for the summary of changes, and the file ChangeLog for
+the detailed list.
+
+The section on source code and binary compatibility is not relevant (very
+likely misinformation) for the development up to Coin 2.0.
+
+
+Source Code and Binary Compatibility
+====================================
+
+Coin is one of three Open Inventor implementations.  All implementations
+are source code compatible across the Open Inventor 2.1 API.  Source
+code compatibility means you can write software for a given API and at
+build time choose to use any implementation of that API.  Which one
+should not matter - the software should function the same way with all
+of them.
+
+The Open Inventor implementations are not Application Binary Interface
+compatible with each other.  This means it will not work to first build
+a piece of software against one implementation of an API and then later
+replace the run-time library with another implementation of the API.
+Some libraries have ABI compatibility in this way (OpenGL and Mesa,
+Motif and Lesstif) but those libraries are C libraries, and do not have
+to worry about different memory footprints for objects and different
+entry orders in the virtual function tables amongst other things.
+
+Coin is binary compatible with itself.  Each release of the Coin library
+has a version number that consists of three digits.  They are called
+"major", "minor", and "micro" version numbers, respectively.  Coin 1.2.3
+has major 1, minor 2 and micro 3.
+
+* All releases with the same major and minor version number have the
+  exact same API and ABI.  Such releases are called patchlevel releases,
+  and only consist of bugfixes, documentation updates and and updates to
+  the packaging.
+
+  Two weeks after Coin 1.0.0 was released, enough bugs had been found
+  and fixed to warrant a new release.  We therefore released Coin 1.0.1,
+  which also goes by the name Coin 1.0 patchlevel 1.
+
+* All releases with the same major number are upwards binary compatible.
+  Such releases are called minor releases, and are releases made to add
+  new extensions to the library API.
+
+  Upwards compatibility means that applications linked with one version
+  of Coin will not have to be rebuilt if you or the end-user of your
+  application install a newer version of Coin with the same major number
+  and a minor number that is greater than the library the software was
+  initially linked with.  Let's say an application you have distributed
+  was based on Coin 1.0.1 and then Coin 1.1.0 is released, your users
+  can safely upgrade their Coin library without needing a new version of
+  your application.
+
+  This also works the other way for most platforms, as long as the
+  software does not actually use any of the extensions that have been
+  introduced after the release of the library you downgrade to.  This
+  can be a bit tricky to get right (sometimes you might reference new
+  functionality in an indirect way), so if you really need to have
+  backwards compatibility like this, the best thing is to link with an
+  old version of Coin (e.g. Coin 1.0.0) and then release the software
+  with the newest version of Coin (e.g. Coin 1.1.2).  Then, the end-user
+  can safely downgrade the Coin-library on his side without any extra
+  hassle.  The Coin API documentation will clearly state for which minor
+  release an extension was introduced, so you can stay away from those
+  functions if it is important, and so you can document with your
+  software what the lowest acceptable Coin library version is.
+
+* Releases with different major numbers are not compatible with each
+  other.  They are called major releases, and break compatibility with
+  the other major releases of the library on purpose.  The purpose of
+  major releases is to clean up the library API (as for any evolving
+  project, this has to be done once in a while) and change the
+  fundamentals where they can be improved upon.
+
+  Run-time libraries with different major versions can safely coexist on
+  a system at once, so installing Coin 2.0.0 does not mean that you must
+  scrap all the Coin 1.*-based applications you may have.  On Windows,
+  the DLLs are named differently for each major release, so there will
+  be no mixups between coin1.dll and coin2.dll.  On UNIX systems, the
+  application will at load-time look for a shared library named
+  libCoin.so.#, where # will be indicative of the library ABI version.
+  Different major releases will have different # numbers, so the files
+  do not conflict.
+
+  However, there can only be one Software Development Kit for Coin
+  available at once.  A Software Development Kit constitutes the header
+  files and static libraries.  The declarations in the Coin 1.0 header
+  files will conflict with the declarations needed for producing code
+  for Coin 2.0.  When you install the Coin 2.0 SDK, it will overwrite
+  the headers for Coin 1.0 unless you take special measures to prevent
+  it.  You can therefore only develop software against the version of
+  Coin you installed most recently.  To circumvent this limitation, you
+  need to do some trickery with include and libdir paths.
+
+
+Historical Notes
+================
+
+Coin started out, back in 1995, as a scene graph rendering library for
+VRML1.0 scenes.  It was originally based on SGI's Qv library for parsing
+files in the VRML1.0 format.  After years of extending this humble
+beginning with new functionality like VRML1 and VRML2 rendering and
+export, the library was in late 1997 in dire need of a fundamental
+redesign.
+
+On the surface, the API looked quite like Open Inventor already.  The
+concepts used by Open Inventor are also often mentioned as good design
+methodologies in many software engineering books, and some of our
+developers had had some experience with the library in advance and found
+it incredibly convenient.  At the same time as we were contemplating a
+rewrite, the Free Software Movement got some great buzz going, and we
+saw the golden opportunity to homestead our library as the Free Software
+alternative to Open Inventor.  We therefore decided to go for the
+rewrite, and after a short period coined the name Coin.
+
+As luck would not have it, as soon as we went to beta status with Coin
+for SIGGRAPH 2000, SGI also decided to release their Open Inventor as
+Free Software.  It soon became apparent though, that SGI Open Inventor
+was released to mainly be kept in maintenance mode.  This made us
+confident that continuing the Coin development would still be well worth
+it.
+
+The development of Coin has been done primarily on Linux and IRIX
+systems, and later with Cygwin systems when we introduced the Windows
+port.  Many people have contributed through the years to the success of
+Coin, be it in the form of patches, problem-reports, or other kinds of
+feedback to the core Coin developer team.  They have been credited in
+the file THANKS.
+
+
+Prophecies
+==========
+
+We have now achieved full Open Inventor V2.1 compatibility, which was a
+feat in itself.  That is not enough, though.  We want more, and we know
+you want more too.  More supported platforms, more features, more
+performance and optimizations, more file formats...  We want it all, but
+it all depends on the available resources and customer interest, which
+varies from moment to moment.  We therefore won't give out any specifics
+and dates beforehand.
 
 
 -- 
-[1] Open Inventor is a trademark of SGI Inc. 
+Open Inventor is a trademark of SGI Inc. 
