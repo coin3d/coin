@@ -210,7 +210,8 @@ SbMatrix
 SoLocalBBoxMatrixElement::pushMatrix(SoState * const state)
 {
   SoLocalBBoxMatrixElement * elem = (SoLocalBBoxMatrixElement*)
-    SoElement::getConstElement(state, classStackIndex);
+    SoElement::getConstElement(state, 
+                               SoLocalBBoxMatrixElement::classStackIndex);
   return elem->localMatrix;
 }
 
@@ -222,7 +223,7 @@ SoLocalBBoxMatrixElement::popMatrix(SoState * const state,
 {
   // Important: use getElementNoPush to avoid a push on element
   SoLocalBBoxMatrixElement *elem = (SoLocalBBoxMatrixElement*)
-    state->getElementNoPush(classStackIndex);
+    state->getElementNoPush(SoLocalBBoxMatrixElement::classStackIndex);
   elem->localMatrix = matrix;
 }
 

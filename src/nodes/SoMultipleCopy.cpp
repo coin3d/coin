@@ -42,7 +42,7 @@
 
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/elements/SoBBoxModelMatrixElement.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoSwitchElement.h>
 #include <Inventor/misc/SoState.h>
 

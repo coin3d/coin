@@ -607,6 +607,12 @@
     
     ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---        
 
+    UPDATE: Decides to use the abowe fix. I'm not able to find a bug
+    in SoLocalBBoxMatrixElement as I thought. This fix uses existing
+    code, and if it don't brake anything else it should be
+    okey-dokey. 20030117 rolvs
+
+
 =====================================================================
 025 Import hangs on invalid scenegraph. This reproduces the problem:
 
