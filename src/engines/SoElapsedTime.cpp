@@ -96,7 +96,6 @@ SoElapsedTime::SoElapsedTime(void)
   this->currtime = SbTime::zero();
   this->lasttime = ((SoSFTime *)realtime)->getValue();
   this->status = SoElapsedTime::RUNNING;
-  this->firsttime = TRUE;
 }
 
 /*!
@@ -110,7 +109,6 @@ SoElapsedTime::~SoElapsedTime()
 void
 SoElapsedTime::evaluate(void)
 {
-  //  if (this->firsttime) return;
   if (this->status == SoElapsedTime::STOPPED) {
     SO_ENGINE_OUTPUT(timeOut, SoSFTime, setValue(this->currtime));
   }
@@ -133,12 +131,7 @@ SoElapsedTime::inputChanged(SoField * which)
 {
   if (which == &this->timeIn) return;
 
-//   if (which == &this->timeIn && this->firsttime) {
-//     this->lasttime = this->timeIn.getValue();
-//     this->firsttime = FALSE;
-//     printf("!!!!!!!\n");
-//   }
-  else if (which == &this->reset) {
+  if (which == &this->reset) {
     this->currtime = SbTime::zero();
     this->lasttime = this->timeIn.getValue();
   }

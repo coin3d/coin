@@ -54,7 +54,6 @@ private:
 
   SbTime pausetime, lasttime, currtime;
   enum {RUNNING, STOPPED, PAUSED} status;
-  SbBool firsttime;
 };
 
 #endif // !COIN_SOELAPSEDTIME_H
