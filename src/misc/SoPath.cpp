@@ -81,7 +81,7 @@
   FIXME: write doc.
 */
 
-SoType SoPath::classTypeId;
+SoType SoPath::classTypeId = SoType::badType();
 
 /*!
   This static method returns the run-time type identifier for the SoPath
@@ -124,8 +124,12 @@ SoPath::createInstance(void)
 void
 SoPath::initClass(void)
 {
+  assert((SoPath::classTypeId == SoType::badType()) &&
+	 "call SoPath::initClass only once!");
+
   SoPath::classTypeId = SoType::createType(SoBase::getClassTypeId(),
-                            SbName("SoPath"), &SoPath::createInstance);
+					   SbName("Path"),
+					   &SoPath::createInstance);
 }
 
 /*!

@@ -175,11 +175,17 @@ SoDB::init(void)
   assert(sizeof(int) == sizeof(long));
 
 
-  // NB! There's a few dependencies here.
+  // NB! There's a few dependencies in the order of initialization of
+  // components below.
+
+  // This obviously needs to be done first.
   SoType::init();
+
   SoError::initErrors();
   SoInput::init();
   SoBase::initClass();
+  // SoPath inherits SoBase, so initialize it after SoBase.
+  SoPath::initClass();
   SoFieldContainer::initClass();
   SoField::initClass();
 #if !defined(COIN_EXCLUDE_SOELEMENT)
@@ -206,7 +212,7 @@ SoDB::init(void)
 
   // Register all valid file format headers.
   SoDB::registerHeader(SbString("#Inventor V2.1 ascii   "), FALSE, 2.1f,
-		       NULL, NULL, NULL);
+                       NULL, NULL, NULL);
   SoDB::registerHeader(SbString("#Inventor V2.1 binary  "), TRUE, 2.1f,
 		       NULL, NULL, NULL);
   SoDB::registerHeader(SbString("#VRML V2.0 utf8"), FALSE, 2.1f,
