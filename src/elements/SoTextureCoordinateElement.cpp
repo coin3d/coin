@@ -30,8 +30,7 @@
 */
 
 #include <Inventor/elements/SoTextureCoordinateElement.h>
-
-
+#include <Inventor/errors/SoDebugError.h>
 #include <assert.h>
 
 /*!
@@ -117,6 +116,7 @@
 
   \since Coin 2.0
 */
+
 
 SO_ELEMENT_SOURCE(SoTextureCoordinateElement);
 
@@ -278,7 +278,7 @@ SoTextureCoordinateElement::get2(const int index) const
   else {
     // need an instance we can write to
     SoTextureCoordinateElement * elem = (SoTextureCoordinateElement*) this;
-    
+
     float tmp = this->coords4[index][3];
     float to2D = tmp == 0.0f ? 1.0f : 1.0f / tmp;
 
@@ -324,14 +324,31 @@ SoTextureCoordinateElement::get3(const int index) const
 const SbVec4f &
 SoTextureCoordinateElement::get4(const int index) const
 {
-  assert(index >= 0 && index < this->numCoords);
   assert(this->whatKind == EXPLICIT);
+  if (index >= this->numCoords) {
+    static SbBool first = TRUE;
+    if (first) {
+      first = FALSE;
+      SoDebugError::post("SoTextureCoordinateElement::get4",
+                         "Index value %d into texture coordinate array "
+                         "of size %d is out of bounds. This is usually an "
+                         "indication that too few texture coordinates "
+                         "were supplied in the scene graph.",
+                         index, this->numCoords);
+      
+    }
+    // need an instance we can write to
+    SoTextureCoordinateElement * elem = (SoTextureCoordinateElement*) this;
+    elem->convert4 = SbVec4f(0.0f, 0.0f, 0.0f, 1.0f);
+    return this->convert4;
+  }
   if (this->coordsDimension==4) {
     return this->coords4[index];
   }
   else {
     // need an instance we can write to
     SoTextureCoordinateElement * elem = (SoTextureCoordinateElement*) this;
+
     if (this->coordsDimension==2) {
       elem->convert4.setValue(this->coords2[index][0],
                               this->coords2[index][1],
