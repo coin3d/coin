@@ -1529,14 +1529,29 @@ SoField::fixCopy(SbBool copyconnections)
 SbBool
 SoField::referencesCopy(void) const
 {
-  SoFieldList masters;
-  int nr = this->getConnections(masters);
-
-  for (int i=0; i < nr; i++) {
-    SoFieldContainer * fc = masters[i]->getContainer();
+  int i, n;
+  if (!this->hasExtendedStorage()) return FALSE;
+ 
+  const SoFieldList & masterfields = this->storage->masterfields;
+  n = masterfields.getLength();
+  for (i = 0; i < n; i++) {
+    SoFieldContainer * fc = masterfields[i]->getContainer();
     if (SoFieldContainer::checkCopy(fc)) return TRUE;
   }
 
+  const SoEngineOutputList & masterengineouts = 
+    this->storage->masterengineouts;
+  n = masterengineouts.getLength();
+  for (i = 0; i < n; i++) {
+    SoEngineOutput * eout = masterengineouts[i];
+    SbBool isengine = ! eout->isNodeEngineOutput();
+    SoFieldContainer * fc = isengine ? 
+      eout->getContainer() : 
+      eout->getNodeContainer();    
+    if (SoFieldContainer::checkCopy(fc)) return TRUE;
+    if (isengine || (fc->isOfType(SoEngine::getClassTypeId()) &&
+                     ((SoEngine*)fc)->shouldCopy())) return TRUE;
+  }
   return FALSE;
 }
 
