@@ -105,8 +105,8 @@ SoSFNode::~SoSFNode(void)
 void
 SoSFNode::setValue(SoNode * newval)
 {
-  // don;t use getValue() to find oldptr, since this might trigger a
-  // field/engine evaluation if the field is connected..
+  // Don't use getValue() to find oldptr, since this might trigger a
+  // recursive evaluation call if the field is connected.
   SoNode * oldptr = this->value;
   if (oldptr == newval) return;
 

@@ -80,7 +80,9 @@ SoSF_Typename_::~SoSF_Typename_(void)
 void
 SoSF_Typename_::setValue(So_Typename_ * newval)
 {
-  So_Typename_ * oldptr = this->getValue();
+  // Don't use getValue() to find oldptr, since this might trigger a
+  // recursive evaluation call if the field is connected.
+  So_Typename_ * oldptr = this->value;
   if (oldptr == newval) return;
 
   if (oldptr) {

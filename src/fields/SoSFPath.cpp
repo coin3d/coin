@@ -107,7 +107,9 @@ SoSFPath::~SoSFPath(void)
 void
 SoSFPath::setValue(SoPath * newval)
 {
-  SoPath * oldptr = this->getValue();
+  // Don't use getValue() to find oldptr, since this might trigger a
+  // recursive evaluation call if the field is connected.
+  SoPath * oldptr = this->value;
   if (oldptr == newval) return;
 
   if (oldptr) {

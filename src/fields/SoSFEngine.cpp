@@ -105,7 +105,9 @@ SoSFEngine::~SoSFEngine(void)
 void
 SoSFEngine::setValue(SoEngine * newval)
 {
-  SoEngine * oldptr = this->getValue();
+  // Don't use getValue() to find oldptr, since this might trigger a
+  // recursive evaluation call if the field is connected.
+  SoEngine * oldptr = this->value;
   if (oldptr == newval) return;
 
   if (oldptr) {
