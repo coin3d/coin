@@ -211,7 +211,7 @@ _class_::createInstance(void) \
 
 #define SO_ENGINE_DEFINE_ENUM_VALUE(_enumname_, _enumval_) \
   do { \
-    if (SO_NODE_IS_FIRST_INSTANCE()) \
+    if (SO_ENGINE_IS_FIRST_INSTANCE()) \
       inputdata->addEnumValue(SO__QUOTE(_enumname_), \
                               SO__QUOTE(_enumval_), _enumval_); \
   } while (0)
