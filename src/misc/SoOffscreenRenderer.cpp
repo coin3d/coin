@@ -43,11 +43,15 @@
   \endcode
 
 
-  Offscreen rendering is internally done with either GLX (i.e. OpenGL
-  on X11) or WGL (i.e. OpenGL on Win32) or AGL (i.e. OpenGL on the Mac
-  OS). The pixeldata is fetched from the OpenGL buffer with
-  glReadPixels(), with the format and type arguments set to GL_RGBA
-  and GL_UNSIGNED_BYTE, respectively. This means that the maximum
+  Offscreen rendering is internally done through either a GLX
+  offscreen context (i.e. OpenGL on X11) or a WGL (i.e. OpenGL on
+  Win32) or AGL (i.e. OpenGL on the Mac OS) ditto. If the OpenGL
+  driver supports the pbuffer extension, it is detected and used to
+  provide hardware-accelerated offscreen rendering.
+
+  The pixeldata is fetched from the OpenGL buffer with glReadPixels(),
+  with the format and type arguments set to GL_RGBA and
+  GL_UNSIGNED_BYTE, respectively. This means that the maximum
   resolution is 32 bits, 8 bits for each of the R/G/B/A components.
 
 
@@ -803,6 +807,12 @@ SoOffscreenRendererP::convertBuffer(const uint8_t * src, unsigned int srcwidth, 
   cause of problems on your end, take a look at SoCamera::pointAt()
   and SoCamera::viewAll() to see how you can make a camera node
   guaranteed to be directed at the scene geometry.
+
+  Yet another common mistake when setting up the camera is to specify
+  values for the SoCamera::nearDistance and SoCamera::farDistance
+  fields which doesn't not enclose the full scene. This will result in
+  either just the background color, or that parts at the front or the
+  back of the scene will not be visible in the rendering.
 
   \sa writeToRGB()
 */
