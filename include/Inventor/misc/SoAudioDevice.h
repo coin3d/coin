@@ -39,14 +39,15 @@ public:
   void setGain(float gain);
   void mute(SbBool mute=TRUE);
   void cleanup();
-  ~SoAudioDevice();
 
 private:
   SoAudioDevice();
+  ~SoAudioDevice();
   SoAudioDevice(const SoAudioDevice &);
   const SoAudioDevice & operator=(const SoAudioDevice &);
 
   class SoAudioDeviceP *pimpl;
+  friend class SoAudioDeviceP;
 };
 
 #endif // !COIN_SOAUDIODEVICE_H
