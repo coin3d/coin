@@ -20,9 +20,15 @@
 #ifndef __SOINTERACTION_H__
 #define __SOINTERACTION_H__
 
+#include <Inventor/SbBasic.h> // for SbBool type
+
+
 class SoInteraction {
 public:
   static void init(void);
+
+private:
+  static SbBool isinitialized;
 };
 
 #endif // !__SOINTERACTION_H__

@@ -56,7 +56,6 @@
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/sensors/SoTimerSensor.h>
-#include <Inventor/system/kosher.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -90,15 +89,18 @@ public:
 // *************************************************************************
 
 
-#if defined(NEED_TEMPLATE_DEFINITION)
+// OBSOLETED: this code was only active for GCC 2.7.x, and I don't
+// think we support that old compiler version anyhow. Do look into if
+// this is what the old SGI MIPSpro CC compiler for IRIX6.2 needs to
+// stop spitting out all those linker warnings, though. 20000208 mortene.
+#if 0 // obsoleted
+// #if defined(NEED_TEMPLATE_DEFINITION)
 template class SbList<SoDB_HeaderInfo *>;
 template class SbList<SbName>;
 template class SbList<SoField *>;
-#else // ! defined(NEED_TEMPLATE_DEFINITION)
-#ifndef DONT_NEED_TEMPLATE_DEFINITION
-#error "kosher.h hasn't been included."
-#endif // ! DONT_NEED_TEMPLATE_DEFINITION
-#endif // ! defined(NEED_TEMPLATE_DEFINITION)
+// [...]
+#endif // obsoleted
+
 
 SbList<SoDB_HeaderInfo *> * SoDB::headerlist = NULL;
 SoSensorManager * SoDB::sensormanager = NULL;
@@ -118,6 +120,8 @@ SbBool SoDB::isinitialized = FALSE;
 void
 SoDB::init(void)
 {
+  if (SoDB::isInitialized()) return;
+
   // Sanity check: if anything here breaks,
   // include/Inventor/system/inttypes.h needs fixing. Keep these
   // asserts around.
@@ -778,7 +782,7 @@ SoDB::createRoute(SoNode * /* fromnode */, const char * /* eventout */,
 }
 
 /*!
-  Returns \a TRUE if init() has been called.
+  Returns \c TRUE if init() has been called.
 
   \sa init()
  */

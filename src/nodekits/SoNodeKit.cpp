@@ -19,30 +19,51 @@
 
 /*!
   \class SoNodeKit SoNodeKit.h Inventor/nodekits/SoNodeKit.h
-  \brief The SoNodeKit class ...
+  \brief The SoNodeKit class is used to initialize the nodekit classes.
   \ingroup nodekits
 
-  FIXME: write class doc
+  The sole function of SoNodeKit is to be just a placeholder for the
+  toplevel initialization code for all nodekit-related classes.
+
+  \sa SoBaseKit
 */
 
 #include <Inventor/nodekits/SoNodeKit.h>
-#include <Inventor/nodekits/SoNodeKitListPart.h>
-#include <Inventor/nodekits/SoBaseKit.h>
+#include <Inventor/SoDB.h>
+#include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/nodekits/SoAppearanceKit.h>
+#include <Inventor/nodekits/SoBaseKit.h>
 #include <Inventor/nodekits/SoCameraKit.h>
 #include <Inventor/nodekits/SoLightKit.h>
+#include <Inventor/nodekits/SoNodeKitListPart.h>
 #include <Inventor/nodekits/SoSceneKit.h>
 #include <Inventor/nodekits/SoSeparatorKit.h>
 #include <Inventor/nodekits/SoShapeKit.h>
 #include <Inventor/nodekits/SoWrapperKit.h>
-#include <Inventor/actions/SoRayPickAction.h>
+
+
+SbBool SoNodeKit::isinitialized = FALSE;
+
 
 /*!
-  FIXME: write function documentation
-*/
+  Initialize the nodekit system.
+
+  Note that this method is \e not called implicitly from SoDB::init().
+  As a matter of fact, this method calls SoDB::init() itself to make
+  sure all the underlying classes for the nodekits classes have
+  been initialized.
+
+  This method is also called from within SoInteraction::init(), as the
+  interaction functionality in Coin depends on the nodekit classes.
+ */
 void
 SoNodeKit::init(void)
 {
+  if (SoNodeKit::isinitialized) return;
+  SoNodeKit::isinitialized = TRUE;
+
+  if (!SoDB::isInitialized()) SoDB::init();
+
   SoNodeKitListPart::initClass();
 
   SoBaseKit::initClass();
@@ -53,8 +74,6 @@ SoNodeKit::init(void)
   SoSeparatorKit::initClass();
   SoShapeKit::initClass();
   SoWrapperKit::initClass();
-
-  // FIXME: stuff missing? 19991106 mortene.
 
   SoType type = SoBaseKit::getClassTypeId();
   SoRayPickAction::addMethod(type, SoNode::rayPickS);

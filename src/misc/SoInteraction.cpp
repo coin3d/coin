@@ -34,37 +34,54 @@
  */
 
 #include <Inventor/SoInteraction.h>
+#include <Inventor/SoDB.h>
 #include <Inventor/draggers/SoDragger.h>
+#include <Inventor/manips/SoCenterballManip.h>
 #include <Inventor/manips/SoClipPlaneManip.h>
 #include <Inventor/manips/SoDirectionalLightManip.h>
-#include <Inventor/manips/SoPointLightManip.h>
-#include <Inventor/manips/SoSpotLightManip.h>
-#include <Inventor/manips/SoTransformManip.h>
-#include <Inventor/manips/SoCenterballManip.h>
 #include <Inventor/manips/SoHandleBoxManip.h>
 #include <Inventor/manips/SoJackManip.h>
+#include <Inventor/manips/SoPointLightManip.h>
+#include <Inventor/manips/SoSpotLightManip.h>
 #include <Inventor/manips/SoTabBoxManip.h>
 #include <Inventor/manips/SoTrackballManip.h>
 #include <Inventor/manips/SoTransformBoxManip.h>
+#include <Inventor/manips/SoTransformManip.h>
 #include <Inventor/manips/SoTransformerManip.h>
 #include <Inventor/nodekits/SoInteractionKit.h>
+#include <Inventor/nodekits/SoNodeKit.h>
 #include <Inventor/nodes/SoAntiSquish.h>
 #include <Inventor/nodes/SoExtSelection.h>
 #include <Inventor/nodes/SoSelection.h>
 #include <Inventor/nodes/SoSurroundScale.h>
 
 
+SbBool SoInteraction::isinitialized = FALSE;
+
+
 /*!
-  Calls the initClass() methods of these classes:
-  SoAntiSquish, SoSelection, SoExtSelection, SoSurroundScale,
-  SoInteractionKit, SoDragger, SoClipPlaneManip, SoDirectionalLightManip,
-  SoPointLightManip, SoSpotLightManip, SoTransformManip, SoCenterballManip,
-  SoHandleBoxManip, SoJackManip, SoTabBoxManip, SoTrackballManip,
-  SoTransformBoxManip, SoTransformerManip.
+  Calls the initClass() method of these classes: SoAntiSquish,
+  SoSelection, SoExtSelection, SoSurroundScale, SoInteractionKit,
+  SoDragger, SoClipPlaneManip, SoDirectionalLightManip,
+  SoPointLightManip, SoSpotLightManip, SoTransformManip,
+  SoCenterballManip, SoHandleBoxManip, SoJackManip, SoTabBoxManip,
+  SoTrackballManip, SoTransformBoxManip, SoTransformerManip.
+
+  Note that this method calls SoDB::init() and SoNodeKit::init() to
+  make sure all classes that the interaction functionality depends on
+  have been initialized.
+
  */
 void
 SoInteraction::init(void)
 {
+  if (SoInteraction::isinitialized) return;
+  SoInteraction::isinitialized = TRUE;
+
+  if (!SoDB::isInitialized()) SoDB::init();
+  SoNodeKit::init();
+
+
   SoAntiSquish::initClass();
   SoSelection::initClass();
   SoExtSelection::initClass();

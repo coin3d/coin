@@ -20,9 +20,15 @@
 #ifndef __SONODEKIT_H__
 #define __SONODEKIT_H__
 
+#include <Inventor/SbBasic.h> // for SbBool type
+
+
 class SoNodeKit {
 public:
   static void init(void);
+
+private:
+  static SbBool isinitialized;
 };
 
 #endif // !__SONODEKIT_H__
