@@ -18,11 +18,11 @@
 # ID      SoComposeVec2f
 # ID      SoComposeVec3f
 # ID      SoComposeVec4f
-# Id      SoDecomposeVec2f
-# Id      SoDecomposeVec3f
-# Id      SoDecomposeVec4f
+# ID      SoDecomposeVec2f
+# ID      SoDecomposeVec3f
+# ID      SoDecomposeVec4f
 # ID      SoComposeRotation
-#         SoComposeRotationFromTo
+# ID      SoComposeRotationFromTo
 # Id      SoDecomposeRotation
 # ID      SoComposeMatrix
 # Id      SoDecomposeMatrix

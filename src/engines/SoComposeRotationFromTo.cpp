@@ -18,8 +18,8 @@
 \**************************************************************************/
 
 /*!
-  \class SoComposerotationFromTo SoComposeRotationFromTo.h Inventor/engines/SoComposerotationFromTo.h
-  \brief The SoComposerotationFromTo class is used to compose rotations based on from and to vectors.
+  \class SoComposeRotationFromTo SoComposeRotationFromTo.h Inventor/engines/SoComposeRotationFromTo.h
+  \brief The SoComposeRotationFromTo class is used to compose rotations based on from and to vectors.
   \ingroup engines
 */
 
@@ -29,6 +29,22 @@
 #include <Inventor/engines/SoSubEngineP.h>
 
 SO_ENGINE_SOURCE(SoComposeRotationFromTo);
+
+/*!
+  \var SoMFVec3f SoComposeRotationFromTo::from
+  Set of input vectors to rotate \e from.
+*/
+/*!
+  \var SoMFVec3f SoComposeRotationFromTo::to
+  Set of input vectors to rotate \e to.
+*/
+/*!
+  \var SoEngineOutput SoComposeRotationFromTo::rotation
+
+  (SoMFRotation) Set of output rotations, where each element is the
+  rotation you need to apply to the \e from vector (of the same index)
+  to make it point in the \e to direction.
+*/
 
 #ifndef DOXYGEN_SKIP_THIS // No need to document these.
 
