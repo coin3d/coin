@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -471,8 +471,8 @@ SoMarkerSet::getNumDefinedMarkers(void)
  */
 void
 SoMarkerSet::addMarker(int /* markerIndex */, const SbVec2s & /* size */,
-		       const unsigned char * /* bytes */, SbBool /* isLSBFirst */,
-		       SbBool /* isUpToDown */)
+                       const unsigned char * /* bytes */, SbBool /* isLSBFirst */,
+                       SbBool /* isUpToDown */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -482,7 +482,7 @@ SoMarkerSet::addMarker(int /* markerIndex */, const SbVec2s & /* size */,
  */
 SbBool
 SoMarkerSet::getMarker(int /* markerIndex */, SbVec2s & /* size */,
-		       const unsigned char *& /* bytes */, SbBool & /* isLSBFirst */)
+                       const unsigned char *& /* bytes */, SbBool & /* isLSBFirst */)
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;
@@ -530,6 +530,3 @@ SoMarkerSet::isMarkerBitSet(int /* markerIndex */, int /* bitNumber */)
 // "xxxxx"
 // "....."
 // "..x.."
-
-
-

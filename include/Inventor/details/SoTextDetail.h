@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -36,7 +36,7 @@ public:
   SoTextDetail();
   virtual ~SoTextDetail();
   virtual SoDetail *copy() const;
-  
+
   int getStringIndex() const;
   int getCharacterIndex() const;
   int getPart() const;
@@ -44,7 +44,7 @@ public:
   void setStringIndex(const int idx);
   void setCharacterIndex(const int idx);
   void setPart(const int idx);
-  
+
 protected:
   int stringIndex;
   int charIndex;
@@ -52,4 +52,3 @@ protected:
 };
 
 #endif // __SOTEXTDETAIL_H__
-

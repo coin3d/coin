@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -70,7 +70,7 @@ SO_NODE_SOURCE(SoTexture2Transform);
 SoTexture2Transform::SoTexture2Transform()
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTexture2Transform);
-  
+
   SO_NODE_ADD_FIELD(translation, (0.0f, 0.0f));
   SO_NODE_ADD_FIELD(rotation, (0.0f));
   SO_NODE_ADD_FIELD(scaleFactor, (1.0f, 1.0f));
@@ -106,7 +106,7 @@ SoTexture2Transform::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTexture2Transform::GLRender(SoGLRenderAction * action)
 {
   SoTexture2Transform::doAction(action);
@@ -123,16 +123,16 @@ void
 SoTexture2Transform::doAction(SoAction *action)
 {
   SbMatrix mat, tmp;
-  SbVec2f c = center.isIgnored() ? 
+  SbVec2f c = center.isIgnored() ?
     SbVec2f(0.0f, 0.0f) :
     center.getValue();
-  
+
   mat.makeIdentity();
   mat[3][0] = -c[0];
   mat[3][1] = -c[1];
 
   SbVec2f scale = scaleFactor.getValue();
-  if (!scaleFactor.isIgnored() && 
+  if (!scaleFactor.isIgnored() &&
       scale != SbVec2f(1.0f, 1.0f)) {
     tmp.makeIdentity();
     tmp[0][0] = scale[0];
@@ -150,16 +150,16 @@ SoTexture2Transform::doAction(SoAction *action)
     mat.multLeft(tmp);
   }
   c += translation.getValue();
-  if (!translation.isIgnored() && 
+  if (!translation.isIgnored() &&
       c != SbVec2f(0.0f, 0.0f)) {
     tmp.makeIdentity();
     tmp[3][0] = c[0];
     tmp[3][1] = c[1];
     mat.multLeft(tmp);
   }
-  
+
   SoTextureMatrixElement::mult(action->getState(), this,
-			       mat);
+                               mat);
 }
 #endif // !COIN_EXCLUDE_SOACTION
 
@@ -195,4 +195,3 @@ SoTexture2Transform::pick(SoPickAction * /* action */)
   assert(0 && "FIXME: not implemented");
 }
 #endif // !COIN_EXCLUDE_SOPICKACTION
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -72,7 +72,7 @@ SoOrthographicCamera::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoOrthographicCamera::scaleHeight(float scaleFactor)
 {
   height.setValue(height.getValue() * scaleFactor);
@@ -81,7 +81,7 @@ SoOrthographicCamera::scaleHeight(float scaleFactor)
 /*!
   FIXME: write function documentation
 */
-SbViewVolume 
+SbViewVolume
 SoOrthographicCamera::getViewVolume(float useAspectRatio) const
 {
   SbViewVolume volume;
@@ -91,20 +91,20 @@ SoOrthographicCamera::getViewVolume(float useAspectRatio) const
   // FIXME: this is pro'ly not correct (?). 19981024 mortene.
   float width = height.getValue() * useAspectRatio;
   volume.ortho(-width/2.0f, width/2.0f,
-	       -height.getValue()/2.0f, height.getValue()/2.0f,
-	       nearDistance.getValue(), farDistance.getValue());
+               -height.getValue()/2.0f, height.getValue()/2.0f,
+               nearDistance.getValue(), farDistance.getValue());
 
   volume.rotateCamera(orientation.getValue());
-  volume.translateCamera(position.getValue()); 
+  volume.translateCamera(position.getValue());
   return volume;
 }
 
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoOrthographicCamera::viewBoundingBox(const SbBox3f & box,
-				      float aspect, float slack)
+                                      float aspect, float slack)
 {
   // First, we want to move the camera in such a way that it is
   // pointing straight at the center of the scene bounding box -- but
@@ -119,7 +119,7 @@ SoOrthographicCamera::viewBoundingBox(const SbBox3f & box,
   SbSphere bs;
   bs.circumscribe(box);
   float radius = bs.getRadius();
-  
+
 
   // Make sure that everything will still be inside the viewing volume
   // even if the aspect ratio "favorizes" width over height.

@@ -410,7 +410,7 @@ public:
         detail->setPoint(1, &this->pointDetails[1]);
         detail->setPoint(2, &this->pointDetails[2]);
         return detail;
-      }      
+      }
     case SoShape::POLYGON:
       {
         SoFaceDetail *detail = (SoFaceDetail*)this->faceDetail->copy();
@@ -430,7 +430,7 @@ public:
         detail->setPoint(2, &this->pointDetails[2]);
         detail->setPoint(3, &this->pointDetails[3]);
         return detail;
-      }      
+      }
     case SoShape::POINTS:
       {
         assert(0 && "should not get here");
@@ -790,11 +790,11 @@ SoShape::computeObjectSpaceRay(SoRayPickAction * const action,
 
 /*!
   Will create triangle detail for a SoPickedPoint. This method will only be
-  called internally, when generatePrimitives() is used for picking 
+  called internally, when generatePrimitives() is used for picking
   (SoShape::rayPick() is not overloaded).
-  
+
   This method returns NULL in OIV, and subclasses will need to overload
-  this method to create details for a SoPickedPoint. 
+  this method to create details for a SoPickedPoint.
 
   This is not necessary with Coin. Of course, if you choose to overload
   it, it will work in the same way as OIV.
@@ -814,17 +814,17 @@ SoShape::createTriangleDetail(SoRayPickAction *action,
   assert(primData->faceDetail);
   assert(primData->shape == this);
   assert(primData->action == (SoAction*) action);
-  
+
   return primData->createPickDetail();
 }
 
 /*!
   Will create line detail for a SoPickedPoint. This method will only be
-  called internally, when generatePrimitives() is used for picking 
+  called internally, when generatePrimitives() is used for picking
   (SoShape::rayPick() is not overloaded).
-  
+
   This method returns NULL in OIV, and OIV shape subclasses will need to overload
-  this method to create details for a SoPickedPoint. 
+  this method to create details for a SoPickedPoint.
 
   This is not necessary with Coin. Of course, if you choose to overload
   it, it will work in the same way as OIV..
@@ -843,17 +843,17 @@ SoShape::createLineSegmentDetail(SoRayPickAction *action,
   assert(primData->lineDetail);
   assert(primData->shape == this);
   assert(primData->action == (SoAction*) action);
-  
+
   return primData->createPickDetail();
 }
 
 /*!
   Will create point detail for a SoPickedPoint. This method will only be
-  called internally, when generatePrimitives() is used for picking 
+  called internally, when generatePrimitives() is used for picking
   (SoShape::rayPick() is not overloaded).
-  
+
   This method returns NULL in OIV, and OIV shape subclasses will need to overload
-  this method to create details for a SoPickedPoint. 
+  this method to create details for a SoPickedPoint.
 
   This is not necessary with Coin. Of course, if you choose to overload
   it, it will work in the same way as OIV.

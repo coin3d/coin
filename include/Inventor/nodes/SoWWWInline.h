@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -37,7 +37,7 @@ class SoGroup;
 
 class SoWWWInline;
 typedef void SoWWWInlineFetchURLCB(const SbString & url, void * userData,
-				   SoWWWInline * node);
+                                   SoWWWInline * node);
 
 // *************************************************************************
 
@@ -120,7 +120,7 @@ protected:
   virtual void addBoundingBoxChild(SbVec3f center, SbVec3f size);
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
   virtual void copyContents(const SoFieldContainer * fromFC,
-			    SbBool copyConnections);
+                            SbBool copyConnections);
 };
 
 #endif // !__SOWWWINLINE_H__

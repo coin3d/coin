@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -34,22 +34,22 @@
 
 SoType SoFaceDetail::classTypeId;
 
-SoType 
+SoType
 SoFaceDetail::getTypeId(void) const
 {
   return SoFaceDetail::classTypeId;
 }
 
-SoType 
+SoType
 SoFaceDetail::getClassTypeId(void)
 {
   return SoFaceDetail::classTypeId;
 }
 
-void 
+void
 SoFaceDetail::initClass(void)
 {
-  SoFaceDetail::classTypeId = 
+  SoFaceDetail::classTypeId =
     SoType::createType(inherited::getClassTypeId(),
                        SbName("SoFaceDetail"));
 }
@@ -84,7 +84,7 @@ SoFaceDetail::copy() const
   return copy;
 }
 
-int 
+int
 SoFaceDetail::getNumPoints() const
 {
   return this->numPoints;
@@ -103,19 +103,19 @@ SoFaceDetail::getPoints()
   return this->pointsArray;
 }
 
-int 
+int
 SoFaceDetail::getFaceIndex() const
 {
   return this->faceIndex;
 }
 
-int 
+int
 SoFaceDetail::getPartIndex() const
 {
   return this->partIndex;
 }
-  
-void 
+
+void
 SoFaceDetail::setNumPoints(const int num)
 {
   if (num > this->numAllocated) {
@@ -126,36 +126,33 @@ SoFaceDetail::setNumPoints(const int num)
   this->numPoints = num;
 }
 
-void 
+void
 SoFaceDetail::setPoint(const int idx, const SoPointDetail * const detail)
 {
   assert(idx >= 0 && idx <= this->numPoints);
   this->pointsArray[idx] = *detail;
 }
 
-void 
+void
 SoFaceDetail::setFaceIndex(const int idx)
 {
   this->faceIndex = idx;
 }
 
-void 
+void
 SoFaceDetail::setPartIndex(const int idx)
 {
   this->partIndex = idx;
 }
 
-void 
+void
 SoFaceDetail::incFaceIndex()
 {
   this->faceIndex++;
 }
 
-void 
+void
 SoFaceDetail::incPartIndex()
 {
   this->partIndex++;
 }
-
-
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -107,7 +107,7 @@ SoNormal::initClass(void)
 //       mNormalizedVectors[i] = *vec++;
 //       mNormalizedVectors[i].normalize();
 //     }
-//   } 
+//   }
 //   return mNormalizedVectors;
 // }
 
@@ -116,7 +116,7 @@ SoNormal::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoNormal::GLRender(SoGLRenderAction * action)
 {
   //
@@ -139,7 +139,7 @@ void
 SoNormal::doAction(SoAction *action)
 {
   SoNormalElement::set(action->getState(), this,
-		       vector.getNum(), vector.getValues(0));
+                       vector.getNum(), vector.getValues(0));
 }
 
 #endif // !COIN_EXCLUDE_SOACTION

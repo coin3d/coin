@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -88,10 +88,10 @@ public:
 
   static int getNumDefinedMarkers(void);
   static void addMarker(int markerIndex, const SbVec2s & size,
-			const unsigned char * bytes, SbBool isLSBFirst = TRUE,
-			SbBool isUpToDown = TRUE);
+                        const unsigned char * bytes, SbBool isLSBFirst = TRUE,
+                        SbBool isUpToDown = TRUE);
   static SbBool getMarker(int markerIndex, SbVec2s & size,
-			  const unsigned char *& bytes, SbBool & isLSBFirst);
+                          const unsigned char *& bytes, SbBool & isLSBFirst);
   static SbBool removeMarker(int markerIndex);
   static SbBool isMarkerBitSet(int markerIndex, int bitNumber);
 

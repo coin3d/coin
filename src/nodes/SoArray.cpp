@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -122,7 +122,7 @@ SoArray::SoArray()
   SO_NODE_ADD_FIELD(separation1, (SbVec3f(1, 0, 0)));
   SO_NODE_ADD_FIELD(separation2, (SbVec3f(0, 1, 0)));
   SO_NODE_ADD_FIELD(separation3, (SbVec3f(0, 0, 1)));
-  
+
 
   SO_NODE_DEFINE_ENUM_VALUE(Origin, FIRST);
   SO_NODE_DEFINE_ENUM_VALUE(Origin, CENTER);
@@ -161,7 +161,7 @@ SoArray::getBoundingBox(SoGetBoundingBoxAction * action)
 
   // get reference to the box
   SbXfBox3f & box = action->getXfBoundingBox();
- 
+
   // store current bbox
   SbXfBox3f incomingbox = box;
 
@@ -174,73 +174,73 @@ SoArray::getBoundingBox(SoGetBoundingBoxAction * action)
     for (int j=0; j < numElements2.getValue(); j++) {
       for (int k=0; k < numElements1.getValue(); k++) {
 
-	float multfactor_i = float(i);
-	float multfactor_j = float(j);
-	float multfactor_k = float(k);
+        float multfactor_i = float(i);
+        float multfactor_j = float(j);
+        float multfactor_k = float(k);
 
-	switch (origin.getValue()) {
-	case SoArray::FIRST:
-	  break;
-	case SoArray::CENTER:
-	  multfactor_i = -float(numElements3.getValue()-1.0f)/2.0f + float(i);
-	  multfactor_j = -float(numElements2.getValue()-1.0f)/2.0f + float(j);
-	  multfactor_k = -float(numElements1.getValue()-1.0f)/2.0f + float(k);
-	  break;
-	case SoArray::LAST:
-	  multfactor_i = -multfactor_i;
-	  multfactor_j = -multfactor_j;
-	  multfactor_k = -multfactor_k;
-	  break;
+        switch (origin.getValue()) {
+        case SoArray::FIRST:
+          break;
+        case SoArray::CENTER:
+          multfactor_i = -float(numElements3.getValue()-1.0f)/2.0f + float(i);
+          multfactor_j = -float(numElements2.getValue()-1.0f)/2.0f + float(j);
+          multfactor_k = -float(numElements1.getValue()-1.0f)/2.0f + float(k);
+          break;
+        case SoArray::LAST:
+          multfactor_i = -multfactor_i;
+          multfactor_j = -multfactor_j;
+          multfactor_k = -multfactor_k;
+          break;
 
-	  // FIXME: catch w/SoDebugError. 19990324 mortene.
-	default: assert(0); break;
-	}
+          // FIXME: catch w/SoDebugError. 19990324 mortene.
+        default: assert(0); break;
+        }
 
-	SbVec3f instance_pos =
-	  separation3.getValue() * multfactor_i +
-	  separation2.getValue() * multfactor_j +
-	  separation1.getValue() * multfactor_k;
+        SbVec3f instance_pos =
+          separation3.getValue() * multfactor_i +
+          separation2.getValue() * multfactor_j +
+          separation1.getValue() * multfactor_k;
 
 #if 0 // debug
-	SoDebugError::postInfo("SoArray::getBoundingBox",
-			       "instance_pos: <%f, %f, %f>",
-			       instance_pos[0],
-			       instance_pos[1],
-			       instance_pos[2]);
+        SoDebugError::postInfo("SoArray::getBoundingBox",
+                               "instance_pos: <%f, %f, %f>",
+                               instance_pos[0],
+                               instance_pos[1],
+                               instance_pos[2]);
 #endif // debug
 
-	SbMatrix mat;
-	mat.setTranslate(instance_pos);
+        SbMatrix mat;
+        mat.setTranslate(instance_pos);
 
-	action->getState()->push();
+        action->getState()->push();
 
-	SoSwitchElement::set(action->getState(),
-			     i * numElements2.getValue() *
-			     numElements1.getValue() +
-			     j * numElements1.getValue() + k);
+        SoSwitchElement::set(action->getState(),
+                             i * numElements2.getValue() *
+                             numElements1.getValue() +
+                             j * numElements1.getValue() + k);
 
-	// make current box empty to calculate bbox of this separator
-	box.makeEmpty();
-	box.setTransform(SbMatrix::identity());
-    
-	// set local matrix to identity
-	SoBBoxModelMatrixElement::set(action->getState(), this, mat);
-    
-	// traverse all children, calculate the local bbox
-	inherited::getBoundingBox(action);
-    
-	// If center point is set, accumulate center.
-	if (action->isCenterSet()) {
-	  acccenter += action->getCenter();
-	  numCenters++;
-	  action->resetCenter();
-	}
+        // make current box empty to calculate bbox of this separator
+        box.makeEmpty();
+        box.setTransform(SbMatrix::identity());
 
-	// expand box by stored bbox
-	if (!totalbox.isEmpty()) box.extendBy(totalbox);
-	totalbox = box;
+        // set local matrix to identity
+        SoBBoxModelMatrixElement::set(action->getState(), this, mat);
 
-	action->getState()->pop();
+        // traverse all children, calculate the local bbox
+        inherited::getBoundingBox(action);
+
+        // If center point is set, accumulate center.
+        if (action->isCenterSet()) {
+          acccenter += action->getCenter();
+          numCenters++;
+          action->resetCenter();
+        }
+
+        // expand box by stored bbox
+        if (!totalbox.isEmpty()) box.extendBy(totalbox);
+        totalbox = box;
+
+        action->getState()->pop();
       }
     }
   }
@@ -265,7 +265,7 @@ SoArray::getBoundingBox(SoGetBoundingBoxAction * action)
   // accumulation variables
   SbVec3f acccenter(0.0f, 0.0f, 0.0f);
   int numCenters = 0;
-  
+
   switch (origin.getValue()) {
   case SoArray::FIRST:
     break;
@@ -278,7 +278,7 @@ SoArray::getBoundingBox(SoGetBoundingBoxAction * action)
     inci = -1.0f;
     incj = -1.0f;
     inck = -1.0f;
-    break; 
+    break;
     // FIXME: catch w/SoDebugError. 19990324 mortene.
   default: assert(0); break;
   }
@@ -293,35 +293,35 @@ SoArray::getBoundingBox(SoGetBoundingBoxAction * action)
       currk = initk;
       for (int k=0; k < numElements1.getValue(); k++) {
 
-	SbVec3f instance_pos =
-	  separation3.getValue() * curri +
-	  separation2.getValue() * currj +
-	  separation1.getValue() * currk;
-	
-	action->getState()->push();
+        SbVec3f instance_pos =
+          separation3.getValue() * curri +
+          separation2.getValue() * currj +
+          separation1.getValue() * currk;
 
-	// translate bbox matrix
-	SoBBoxModelMatrixElement::translateBy(action->getState(), 
-					      this, instance_pos);
-	SoSwitchElement::set(action->getState(),++N);
-        
-	inherited::getBoundingBox(action);
-	
-	// If center point is set, accumulate center.
-	if (action->isCenterSet()) {
-	  acccenter += action->getCenter();
-	  numCenters++;
-	  action->resetCenter();
-	}
-	// pop back to the original bboxmatrix	
-	action->getState()->pop(); 
-	currk += inck;
+        action->getState()->push();
+
+        // translate bbox matrix
+        SoBBoxModelMatrixElement::translateBy(action->getState(),
+                                              this, instance_pos);
+        SoSwitchElement::set(action->getState(),++N);
+
+        inherited::getBoundingBox(action);
+
+        // If center point is set, accumulate center.
+        if (action->isCenterSet()) {
+          acccenter += action->getCenter();
+          numCenters++;
+          action->resetCenter();
+        }
+        // pop back to the original bboxmatrix
+        action->getState()->pop();
+        currk += inck;
       }
       currj += incj;
     }
     curri += inci;
   }
-  
+
   if (numCenters != 0)
     action->setCenter(acccenter / numCenters, FALSE);
 #endif // end of new code by pederb
@@ -360,44 +360,44 @@ SoArray::doAction(SoAction *action)
   for (int i=0; i < numElements3.getValue(); i++) {
     for (int j=0; j < numElements2.getValue(); j++) {
       for (int k=0; k < numElements1.getValue(); k++) {
-	
-	float multfactor_i = float(i);
-	float multfactor_j = float(j);
-	float multfactor_k = float(k);
-	
-	switch (origin.getValue()) {
-	case SoArray::FIRST:
-	  break;
-	case SoArray::CENTER:
-	  multfactor_i = -float(numElements3.getValue()-1.0f)/2.0f + float(i);
-	  multfactor_j = -float(numElements2.getValue()-1.0f)/2.0f + float(j);
-	  multfactor_k = -float(numElements1.getValue()-1.0f)/2.0f + float(k);
-	  break;
-	case SoArray::LAST:
-	  multfactor_i = -multfactor_i;
-	  multfactor_j = -multfactor_j;
-	  multfactor_k = -multfactor_k;
-	  break;
 
-	  // FIXME: catch w/SoDebugError. 19990324 mortene.
-	default: assert(0); break;
-	}
+        float multfactor_i = float(i);
+        float multfactor_j = float(j);
+        float multfactor_k = float(k);
 
-	SbVec3f instance_pos =
-	  separation3.getValue() * multfactor_i +
-	  separation2.getValue() * multfactor_j +
-	  separation1.getValue() * multfactor_k;
-	
-	action->getState()->push();
-	
-	SoSwitchElement::set(action->getState(),
-			     ++N);
+        switch (origin.getValue()) {
+        case SoArray::FIRST:
+          break;
+        case SoArray::CENTER:
+          multfactor_i = -float(numElements3.getValue()-1.0f)/2.0f + float(i);
+          multfactor_j = -float(numElements2.getValue()-1.0f)/2.0f + float(j);
+          multfactor_k = -float(numElements1.getValue()-1.0f)/2.0f + float(k);
+          break;
+        case SoArray::LAST:
+          multfactor_i = -multfactor_i;
+          multfactor_j = -multfactor_j;
+          multfactor_k = -multfactor_k;
+          break;
 
-	SoModelMatrixElement::translateBy(action->getState(), this,
-					  instance_pos);
-	
-	inherited::doAction(action);
-	action->getState()->pop();
+          // FIXME: catch w/SoDebugError. 19990324 mortene.
+        default: assert(0); break;
+        }
+
+        SbVec3f instance_pos =
+          separation3.getValue() * multfactor_i +
+          separation2.getValue() * multfactor_j +
+          separation1.getValue() * multfactor_k;
+
+        action->getState()->push();
+
+        SoSwitchElement::set(action->getState(),
+                             ++N);
+
+        SoModelMatrixElement::translateBy(action->getState(), this,
+                                          instance_pos);
+
+        inherited::doAction(action);
+        action->getState()->pop();
       }
     }
   }
@@ -416,7 +416,7 @@ SoArray::callback(SoCallbackAction *action)
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
 #if !defined(COIN_EXCLUDE_SOPICKACTION)
-/*!  
+/*!
   We came across what we think is a bug in TGS/SGI OIV when
   implementing picking for this node. The SoPickedPoint class can
   return the object space point, normal and texture
@@ -424,7 +424,7 @@ SoArray::callback(SoCallbackAction *action)
   node before returning the object space data from SoPickedPoint,
   since the path in SoPickedPoint does not say anything about on which
   copy the pick occured. We solved this simply by storing both world
-  space and object space data in SoPickedPoint. 
+  space and object space data in SoPickedPoint.
 */
 void
 SoArray::pick(SoPickAction *action)
@@ -476,6 +476,6 @@ SoArray::search(SoSearchAction * action)
 void
 SoArray::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  SoArray::doAction((SoAction*)action);  
+  SoArray::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

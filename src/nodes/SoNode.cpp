@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -161,7 +161,7 @@ SoNode::initClass(void)
 
   SoNode::classTypeId =
     SoType::createType(inherited::getClassTypeId(), "Node", NULL,
-		       SoNode::nextActionMethodIndex++);
+                       SoNode::nextActionMethodIndex++);
 
   SoNode::initClasses();
 }
@@ -515,7 +515,7 @@ SoNode::doAction(SoAction *)
 /*!
   FIXME: write function documentation
 */
-SbBool 
+SbBool
 SoNode::affectsState() const
 {
   return TRUE; // default
@@ -537,7 +537,7 @@ SoNode::getByName(const SbName & /* name */)
   Finds all nodes with name set the \a name. Returns the number
   of nodes with the specified name.
 */
-int 
+int
 SoNode::getByName(const SbName & /* name */, SoNodeList & /* list */)
 {
   // FIXME
@@ -601,13 +601,13 @@ SoNode::getPrimitiveCount(SoGetPrimitiveCountAction *)
 */
 void
 SoNode::GLRenderS(SoAction * const action,
-		  SoNode * const node)
+                  SoNode * const node)
 {
   assert(action && node);
   assert(action->getTypeId() == SoGLRenderAction::getClassTypeId());
   SoGLRenderAction * const renderAction =
     (SoGLRenderAction *)(action);
-  
+
   switch (action->getCurPathCode()) {
   case SoAction::NO_PATH:
     node->GLRender(renderAction);
@@ -673,13 +673,13 @@ SoNode::GLRenderOffPath(SoGLRenderAction * action)
 */
 void
 SoNode::callbackS(SoAction * const action,
-		  SoNode * const node)
+                  SoNode * const node)
 {
   assert(action && node);
   SoCallbackAction * const cbAction =
     (SoCallbackAction *)(action);
   cbAction->setCurrentNode(node);
-  
+
   if (node->getChildren() == NULL) {
     cbAction->invokePreCallbacks(node);
     if (cbAction->getCurrentResponse() == SoCallbackAction::CONTINUE) {
@@ -687,7 +687,7 @@ SoNode::callbackS(SoAction * const action,
       cbAction->invokePostCallbacks(node);
     }
   }
-  else { 
+  else {
     // group node handles callbacks themselves
     // Separator needs to push state before calling the callbacks
     node->callback(cbAction);
@@ -714,8 +714,8 @@ SoNode::getMatrixS(SoAction * const action, SoNode * const node)
 {
 #if 0 // debug
   SoDebugError::postInfo("SoNode::getMatrixS",
-			 "%s",
-			 node->getTypeId().getName().getString());
+                         "%s",
+                         node->getTypeId().getName().getString());
 #endif // debug
 
   assert(action && node);
@@ -802,7 +802,7 @@ SoNode::rayPickS(SoAction * const action, SoNode * const node)
 
 #if 0 // debug
   SoDebugError::postInfo("SoNode::rayPickS",
-			 "%s", node->getTypeId().getName().getString());
+                         "%s", node->getTypeId().getName().getString());
 #endif // debug
 
   SoRayPickAction * const rayPickAction =
@@ -856,7 +856,7 @@ SoNode::search(SoSearchAction * action)
 #if 0 // debug
     SoDebugError::postInfo("SoNode::search", "NODE match found.\n");
 #endif // debug
-  } else if ((lookFor & SoSearchAction::NAME) && 
+  } else if ((lookFor & SoSearchAction::NAME) &&
       (this->getName() == action->getName())) {
     action->addPath(action->getCurPath()->copy());
 #if 0 // debug
@@ -873,11 +873,11 @@ SoNode::search(SoSearchAction * action)
 #if 0 // debug
   else {
     SoDebugError::postInfo("SoNode::search", "no match for %p (type '%s').",
-			   this, this->getTypeId().getName().getString());
+                           this, this->getTypeId().getName().getString());
   }
 #endif // debug
 
-  
+
   //doAction(action);  // this is correct, right? I don't think so: pederb
 }
 
@@ -955,7 +955,7 @@ SoNode::grabEventsCleanup(void)
 /*!
   FIXME: write doc
 */
-void 
+void
 SoNode::startNotify(void)
 {
   inherited::startNotify();
@@ -998,7 +998,7 @@ SoNode::addToCopyDict(void) const
 */
 void
 SoNode::copyContents(const SoFieldContainer * /* fromFC */,
-		     SbBool /* copyConnections */)
+                     SbBool /* copyConnections */)
 {
   assert(0 && "FIXME: not implemented");
 }

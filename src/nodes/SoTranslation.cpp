@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -84,13 +84,13 @@ SoTranslation::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTranslation::doAction(SoAction * action)
 {
 #if !defined(COIN_EXCLUDE_SOMODELMATRIXELEMENT)
   if (this->translation.getValue() != SbVec3f(0.0f, 0.0f, 0.0f)) {
     SoModelMatrixElement::translateBy(action->getState(), this,
-				      this->translation.getValue());
+                                      this->translation.getValue());
   }
 #endif // !COIN_EXCLUDE_SOMODELMATRIXELEMENT
 }
@@ -100,7 +100,7 @@ SoTranslation::doAction(SoAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTranslation::GLRender(SoGLRenderAction * action)
 {
   SoTranslation::doAction((SoAction *)action);
@@ -111,7 +111,7 @@ SoTranslation::GLRender(SoGLRenderAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTranslation::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoTranslation::doAction(action);

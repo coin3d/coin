@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -76,7 +76,7 @@ SoPerspectiveCamera::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoPerspectiveCamera::scaleHeight(float scaleFactor)
 {
   float tmp = heightAngle.getValue();
@@ -86,7 +86,7 @@ SoPerspectiveCamera::scaleHeight(float scaleFactor)
 /*!
   FIXME: write function documentation
 */
-SbViewVolume 
+SbViewVolume
 SoPerspectiveCamera::getViewVolume(float useAspectRatio) const
 {
   if (useAspectRatio == 0.0f) useAspectRatio = aspectRatio.getValue();
@@ -94,24 +94,24 @@ SoPerspectiveCamera::getViewVolume(float useAspectRatio) const
 #if 0 // debug
   // there's still a bug here somewhere. 19981029 mortene.
   SoDebugError::postInfo("SoPerspectiveCamera::getViewVolume",
-			 "useAspectRatio: %f",
-			 useAspectRatio);
-#endif // 0  
+                         "useAspectRatio: %f",
+                         useAspectRatio);
+#endif // 0
 
   SbViewVolume volume;
-  volume.perspective(heightAngle.getValue(), useAspectRatio, 
+  volume.perspective(heightAngle.getValue(), useAspectRatio,
                      nearDistance.getValue(), farDistance.getValue());
   volume.rotateCamera(orientation.getValue());
-  volume.translateCamera(position.getValue()); 
+  volume.translateCamera(position.getValue());
   return volume;
 }
 
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoPerspectiveCamera::viewBoundingBox(const SbBox3f & box, float aspect,
-				     float slack)
+                                     float slack)
 {
   // First, we want to move the camera in such a way that it is
   // pointing straight at the center of the scene bounding box -- but
@@ -126,7 +126,7 @@ SoPerspectiveCamera::viewBoundingBox(const SbBox3f & box, float aspect,
   SbSphere bs;
   bs.circumscribe(box);
   float radius = bs.getRadius();
-  
+
 
   // Make sure that everything will still be inside the viewing volume
   // even if the aspect ratio "favorizes" width over height.

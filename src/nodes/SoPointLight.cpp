@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -91,17 +91,17 @@ SoPointLight::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoPointLight::GLRender(SoGLRenderAction * action)
 {
   if (!on.getValue()) return;
 
   int idx = SoGLLightIdElement::increment(action->getState());
-  
+
   if (idx < 0) {
 #if COIN_DEBUG
     SoDebugError::post("SoPointLight::GLRender()",
-		       "Max # lights exceeded :(\n");
+                       "Max # lights exceeded :(\n");
 #endif // COIN_DEBUG
     return;
   }
@@ -113,7 +113,7 @@ SoPointLight::GLRender(SoGLRenderAction * action)
   SbColor4f lightcolor(0.0f, 0.0f, 0.0f, 1.0f);
   SbVec3f attenuation(0.0f, 0.0f, 1.0f);
 #if !defined(COIN_EXCLUDE_SOENVIRONMENTELEMENT)
-  lightcolor.setRGB(SoEnvironmentElement::getAmbientColor(state));      
+  lightcolor.setRGB(SoEnvironmentElement::getAmbientColor(state));
   lightcolor *= SoEnvironmentElement::getAmbientIntensity(state);
   attenuation = SoEnvironmentElement::getLightAttenuation(state);
 #endif // ! COIN_EXCLUDE_SOENVIRONMENTELEMENT
@@ -122,19 +122,19 @@ SoPointLight::GLRender(SoGLRenderAction * action)
   glLightf(light, GL_QUADRATIC_ATTENUATION, attenuation[0]);
   glLightf(light, GL_LINEAR_ATTENUATION, attenuation[1]);
   glLightf(light, GL_CONSTANT_ATTENUATION, attenuation[2]);
-  
+
   lightcolor.setRGB(color.getValue());
   if (!intensity.isIgnored()) lightcolor *= intensity.getValue();
-  
+
   glLightfv(light, GL_DIFFUSE, lightcolor.getValue());
   glLightfv(light, GL_SPECULAR, lightcolor.getValue());
-  
+
   SbVec3f loc = location.getValue();
 
   // point (or spot) light when w = 1.0
   SbVec4f posvec(loc[0], loc[1], loc[2], 1.0f);
   glLightfv(light, GL_POSITION, posvec.getValue());
-  
+
   // turning off spot light properties for ordinary lights
   glLightf(light, GL_SPOT_EXPONENT, 0.0);
   glLightf(light, GL_SPOT_CUTOFF, 180.0);

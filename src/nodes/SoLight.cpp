@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -88,12 +88,12 @@ void
 SoLight::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoLight);
-  
+
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoLightAttenuationElement);
   SO_ENABLE(SoGLRenderAction, SoGLLightIdElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
-  
+
   SO_ENABLE(SoCallbackAction, SoLightAttenuationElement);
   SO_ENABLE(SoCallbackAction, SoLightElement);
 }
@@ -106,7 +106,7 @@ void
 SoLight::callback(SoCallbackAction *action)
 {
   SoState *state = action->getState();
-  SoLightElement::add(state, this, 
-		      SoModelMatrixElement::get(state));
+  SoLightElement::add(state, this,
+                      SoModelMatrixElement::get(state));
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION

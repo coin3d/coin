@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -52,7 +52,7 @@ public:
     UNKNOWN_SHAPE_TYPE,
     SOLID
   };
-  
+
   // These must match 100% with the enum in SoShapeHintsElement.
   enum FaceType {
     UNKNOWN_FACE_TYPE,

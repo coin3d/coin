@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -68,10 +68,10 @@ public:
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
   virtual void getTrimCurve(SoState * state, int32_t & numPoints,
-			    float *& points, int & floatsPerVec,
-			    int32_t & numKnots, float *& knotVector) = 0;
+                            float *& points, int & floatsPerVec,
+                            int32_t & numKnots, float *& knotVector) = 0;
   virtual void getVertices(SoState * state, int32_t & nVertices,
-			   SbVec2f *& vertices) = 0;
+                           SbVec2f *& vertices) = 0;
 
 protected:
   SoProfile(void);

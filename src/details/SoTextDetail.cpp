@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -32,22 +32,22 @@
 
 SoType SoTextDetail::classTypeId;
 
-SoType 
+SoType
 SoTextDetail::getTypeId(void) const
 {
   return SoTextDetail::classTypeId;
 }
 
-SoType 
+SoType
 SoTextDetail::getClassTypeId(void)
 {
   return SoTextDetail::classTypeId;
 }
 
-void 
+void
 SoTextDetail::initClass(void)
 {
-  SoTextDetail::classTypeId = 
+  SoTextDetail::classTypeId =
     SoType::createType(inherited::getClassTypeId(),
                        SbName("SoTextDetail"));
 }
@@ -72,13 +72,13 @@ SoTextDetail::copy() const
   return copy;
 }
 
-int 
+int
 SoTextDetail::getStringIndex() const
 {
   return this->stringIndex;
 }
 
-int 
+int
 SoTextDetail::getCharacterIndex() const
 {
   return this->charIndex;
@@ -90,21 +90,20 @@ SoTextDetail::getPart() const
   return this->part;
 }
 
-void 
+void
 SoTextDetail::setStringIndex(const int idx)
 {
   this->stringIndex = idx;
 }
 
-void 
+void
 SoTextDetail::setCharacterIndex(const int idx)
 {
   this->charIndex = idx;
 }
 
-void 
+void
 SoTextDetail::setPart(const int part)
 {
   this->part = part;
 }
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -58,7 +58,7 @@ SO_NODE_SOURCE(SoProfileCoordinate3);
 SoProfileCoordinate3::SoProfileCoordinate3()
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoProfileCoordinate3);
-  
+
   SO_NODE_ADD_FIELD(point, (0.0f, 0.0f, 1.0f));
 }
 
@@ -98,7 +98,7 @@ void
 SoProfileCoordinate3::doAction(SoAction *action)
 {
   SoProfileCoordinateElement::set3(action->getState(), this,
-				   point.getNum(), point.getValues(0));
+                                   point.getNum(), point.getValues(0));
 }
 #endif // !COIN_EXCLUDE_SOACTION
 

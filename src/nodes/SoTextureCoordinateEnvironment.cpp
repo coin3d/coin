@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -84,13 +84,13 @@ SoTextureCoordinateEnvironment::initClass(void)
 */
 const SbVec4f &
 SoTextureCoordinateEnvironment::generate(void *userdata,
-					 const SbVec3f & /* p */,
-					 const SbVec3f &n)
+                                         const SbVec3f & /* p */,
+                                         const SbVec3f &n)
 {
   //
   // from formula in the Red Book
   //
-  
+
   SoState *state = (SoState*)userdata;
   SbVec3f wn; // normal in world (eye) coordinates
   SoModelMatrixElement::get(state).multDirMatrix(n, wn);
@@ -98,19 +98,19 @@ SoTextureCoordinateEnvironment::generate(void *userdata,
 
   u.normalize();
   wn.normalize();
-  
+
   // reflection vector
   SbVec3f r = u - SbVec3f(2.0f*wn[0]*wn[0]*u[0],
-			  2.0f*wn[1]*wn[1]*u[1],
-			  2.0f*wn[2]*wn[2]*u[2]);
+                          2.0f*wn[1]*wn[1]*u[1],
+                          2.0f*wn[2]*wn[2]*u[2]);
   r.normalize();
-  
+
   float tmp = 1.0f + r[2];
-  float m = 2.0f * (float)sqrt(r[0]*r[0] + r[1]*r[1] + tmp*tmp); 
+  float m = 2.0f * (float)sqrt(r[0]*r[0] + r[1]*r[1] + tmp*tmp);
 
   // in case an empty normal was supplied
   if (fabs(m) <= FLT_EPSILON) m = 1.0f;
-  
+
   static SbVec4f texcoords(0,0,0,1); // needed to return a reference
   texcoords[0] = r[0] / m + 0.5f;
   texcoords[1] = r[1] / m + 0.5f;
@@ -121,12 +121,12 @@ SoTextureCoordinateEnvironment::generate(void *userdata,
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTextureCoordinateEnvironment::doAction(SoAction * action)
 {
   SoTextureCoordinateElement::setFunction(action->getState(), this,
-					  generate,
-					  action->getState());
+                                          generate,
+                                          action->getState());
 }
 #endif // !COIN_EXCLUDE_SOACTION
 
@@ -134,12 +134,12 @@ SoTextureCoordinateEnvironment::doAction(SoAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTextureCoordinateEnvironment::GLRender(SoGLRenderAction * action)
 {
   SoTextureCoordinateEnvironment::doAction((SoAction *)action);
   SoGLTextureCoordinateElement::setTexGen(action->getState(),
-					  this, handleTexgen);
+                                          this, handleTexgen);
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
@@ -147,7 +147,7 @@ SoTextureCoordinateEnvironment::GLRender(SoGLRenderAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTextureCoordinateEnvironment::callback(SoCallbackAction * action)
 {
   SoTextureCoordinateEnvironment::doAction((SoAction *)action);
@@ -158,7 +158,7 @@ SoTextureCoordinateEnvironment::callback(SoCallbackAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTextureCoordinateEnvironment::pick(SoPickAction * action)
 {
   SoTextureCoordinateEnvironment::doAction((SoAction *)action);
@@ -166,7 +166,7 @@ SoTextureCoordinateEnvironment::pick(SoPickAction * action)
 #endif // !COIN_EXCLUDE_SOPICKACTION
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
-void 
+void
 SoTextureCoordinateEnvironment::handleTexgen(void * /* data */)
 {
 #if 0 // from red book

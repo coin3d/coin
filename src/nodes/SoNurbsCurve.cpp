@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -110,7 +110,7 @@ SoNurbsCurve::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoNurbsCurve::GLRender(SoGLRenderAction * action)
 {
   //
@@ -119,7 +119,7 @@ SoNurbsCurve::GLRender(SoGLRenderAction * action)
 
 
   SoState * state = action->getState();
-  
+
   if (!this->shouldGLRender(action)) {
     return;
   }
@@ -128,9 +128,9 @@ SoNurbsCurve::GLRender(SoGLRenderAction * action)
     this->nurbsRenderer = gluNewNurbsRenderer();
   }
 
-  const SoCoordinateElement * coords = 
+  const SoCoordinateElement * coords =
     SoCoordinateElement::getInstance(state);
-    
+
 //    SoTextureCoordinateBundle tb(action, TRUE, FALSE); //FIXME
 //    doTextures = tb.needCoordinates();
 
@@ -144,15 +144,15 @@ SoNurbsCurve::GLRender(SoGLRenderAction * action)
 
   int dim = coords->is3D() ? 3 : 4;
 
-  GLfloat * ptr = coords->is3D() ? 
+  GLfloat * ptr = coords->is3D() ?
     (GLfloat *)SoCoordinateElement::getArrayPtr3(state) :
     (GLfloat *)SoCoordinateElement::getArrayPtr4(state);
 
   gluNurbsCurve(this->nurbsRenderer, knotVector.getNum(),
-		(GLfloat *)knotVector.getValues(0),
-		dim, ptr, 
-		knotVector.getNum()-numControlPoints.getValue() ,
-		(GLenum)GLU_FILL);
+                (GLfloat *)knotVector.getValues(0),
+                dim, ptr,
+                knotVector.getNum()-numControlPoints.getValue() ,
+                (GLenum)GLU_FILL);
 
   gluEndSurface(this->nurbsRenderer);
   glDisable(GL_AUTO_NORMAL);
@@ -169,7 +169,7 @@ SoNurbsCurve::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
   // FIXME: this is just a quick approximation
   SoState * state = action->getState();
-    
+
   int numCoords = SoCoordinateElement::getInstance(state)->getNum();
   int num = this->numControlPoints.getValue();
 

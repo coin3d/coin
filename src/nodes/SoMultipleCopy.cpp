@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -102,7 +102,7 @@ SoMultipleCopy::getBoundingBox(SoGetBoundingBoxAction * action)
 
   // get reference to the box
   SbXfBox3f & box = action->getXfBoundingBox();
- 
+
   // store current bbox
   SbXfBox3f incomingbox = box;
 
@@ -119,13 +119,13 @@ SoMultipleCopy::getBoundingBox(SoGetBoundingBoxAction * action)
     // make current box empty to calculate bbox of this separator
     box.makeEmpty();
     box.setTransform(SbMatrix::identity());
-    
+
     // set bbox matrix
     SoBBoxModelMatrixElement::set(action->getState(), this, matrix[i]);
-    
+
     // traverse all children, calculate the local bbox
     inherited::getBoundingBox(action);
-    
+
     // If center point is set, accumulate center.
     if (action->isCenterSet()) {
       acccenter += action->getCenter();
@@ -181,7 +181,7 @@ SoMultipleCopy::doAction(SoAction *action)
   for (int i=0; i < matrix.getNum(); i++) {
     action->getState()->push();
     SoSwitchElement::set(action->getState(), i);
-    SoModelMatrixElement::mult(action->getState(), this, matrix[i]);    
+    SoModelMatrixElement::mult(action->getState(), this, matrix[i]);
     inherited::doAction(action);
     action->getState()->pop();
   }
@@ -201,7 +201,7 @@ SoMultipleCopy::callback(SoCallbackAction *action)
 
 #if !defined(COIN_EXCLUDE_SOPICKACTION)
 
-/*!  
+/*!
   We came across what we think is a bug in TGS/SGI OIV when
   implementing picking for this node. The SoPickedPoint class can
   return the object space point, normal and texture
@@ -209,7 +209,7 @@ SoMultipleCopy::callback(SoCallbackAction *action)
   this node before returning the object space data from SoPickedPoint,
   since the path in SoPickedPoint does not say anything about on which
   copy the pick occured. We solved this simply by storing both world
-  space and object space data in SoPickedPoint.  
+  space and object space data in SoPickedPoint.
 */
 void
 SoMultipleCopy::pick(SoPickAction *action)

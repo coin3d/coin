@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -92,8 +92,8 @@ SoTextureCoordinatePlane::initClass(void)
 */
 const SbVec4f &
 SoTextureCoordinatePlane::generate(void * /* userdata */,
-				   const SbVec3f & /* p */,
-				   const SbVec3f & /* n */)
+                                   const SbVec3f & /* p */,
+                                   const SbVec3f & /* n */)
 {
   assert(0 && "FIXME: not implemented yet");
   static SbVec4f s(0,0,0,1);
@@ -104,12 +104,12 @@ SoTextureCoordinatePlane::generate(void * /* userdata */,
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTextureCoordinatePlane::doAction(SoAction * action)
 {
   SoTextureCoordinateElement::setFunction(action->getState(), this,
-					  generate,
-					  this);
+                                          generate,
+                                          this);
 }
 #endif // !COIN_EXCLUDE_SOACTION
 
@@ -117,12 +117,12 @@ SoTextureCoordinatePlane::doAction(SoAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTextureCoordinatePlane::GLRender(SoGLRenderAction * action)
 {
   SoTextureCoordinatePlane::doAction((SoAction *)action);
   SoGLTextureCoordinateElement::setTexGen(action->getState(),
-					  this, handleTexgen, this);
+                                          this, handleTexgen, this);
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
@@ -130,7 +130,7 @@ SoTextureCoordinatePlane::GLRender(SoGLRenderAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTextureCoordinatePlane::callback(SoCallbackAction * action)
 {
   SoTextureCoordinatePlane::doAction((SoAction *)action);
@@ -141,7 +141,7 @@ SoTextureCoordinatePlane::callback(SoCallbackAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTextureCoordinatePlane::pick(SoPickAction * action)
 {
   SoTextureCoordinatePlane::doAction((SoAction *)action);
@@ -149,7 +149,7 @@ SoTextureCoordinatePlane::pick(SoPickAction * action)
 #endif // !COIN_EXCLUDE_SOPICKACTION
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
-void 
+void
 SoTextureCoordinatePlane::handleTexgen(void *data)
 {
   SoTextureCoordinatePlane *thisp = (SoTextureCoordinatePlane*)data;
@@ -173,4 +173,3 @@ SoTextureCoordinatePlane::handleTexgen(void *data)
   glEnable(GL_TEXTURE_GEN_T);
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
-

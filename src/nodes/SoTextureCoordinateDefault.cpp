@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -75,7 +75,7 @@ SoTextureCoordinateDefault::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTextureCoordinateDefault::doAction(SoAction * action)
 {
   SoTextureCoordinateElement::setDefault(action->getState(), this);
@@ -86,12 +86,12 @@ SoTextureCoordinateDefault::doAction(SoAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTextureCoordinateDefault::GLRender(SoGLRenderAction * action)
 {
   SoTextureCoordinateDefault::doAction((SoAction *)action);
   SoGLTextureCoordinateElement::setTexGen(action->getState(),
-					  this, NULL);
+                                          this, NULL);
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
@@ -99,7 +99,7 @@ SoTextureCoordinateDefault::GLRender(SoGLRenderAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTextureCoordinateDefault::callback(SoCallbackAction * action)
 {
   SoTextureCoordinateDefault::doAction((SoAction *)action);
@@ -110,7 +110,7 @@ SoTextureCoordinateDefault::callback(SoCallbackAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTextureCoordinateDefault::pick(SoPickAction * action)
 {
   SoTextureCoordinateDefault::doAction((SoAction *)action);

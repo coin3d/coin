@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -43,10 +43,10 @@ public:
   SoTextureCoordinateBinding(void);
 
   enum Binding {
-    PER_VERTEX = SoTextureCoordinateBindingElement::PER_VERTEX, 
+    PER_VERTEX = SoTextureCoordinateBindingElement::PER_VERTEX,
     PER_VERTEX_INDEXED = SoTextureCoordinateBindingElement::PER_VERTEX_INDEXED
   };
-  
+
   SoSFEnum value;
 
 #if !defined(COIN_EXCLUDE_SOACTION)

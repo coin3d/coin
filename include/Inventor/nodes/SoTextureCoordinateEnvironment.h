@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -58,8 +58,8 @@ protected:
 
 private:
   static const SbVec4f &generate(void * userdata,
-				 const SbVec3f & p,
-				 const SbVec3f & n);
+                                 const SbVec3f & p,
+                                 const SbVec3f & n);
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   static void handleTexgen(void *data);
 #endif // ! COIN_EXCLUDE_SOGLRENDERACTION

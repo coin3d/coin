@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -40,7 +40,7 @@ public:
 
   const SoPointDetail *getPoint0() const;
   const SoPointDetail *getPoint1() const;
-  
+
   int getLineIndex() const;
   int getPartIndex() const;
 
@@ -51,7 +51,7 @@ public:
 
   void incLineIndex();
   void incPartIndex();
-  
+
 private:
   SoPointDetail points[2];
   int lineIndex;

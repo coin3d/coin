@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -106,7 +106,7 @@ SoCoordinate4::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoCoordinate4::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoCoordinate4::doAction(action);
@@ -122,7 +122,7 @@ void
 SoCoordinate4::doAction(SoAction *action)
 {
   SoCoordinateElement::set4(action->getState(), this,
-			    point.getNum(), point.getValues(0));
+                            point.getNum(), point.getValues(0));
 }
 #endif // !COIN_EXCLUDE_SOACTION
 

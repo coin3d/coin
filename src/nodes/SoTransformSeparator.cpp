@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -84,20 +84,20 @@ SoTransformSeparator::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTransformSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
 {
 #if !defined(COIN_EXCLUDE_SOBBOXMODELMATRIXELMENT)
   SbMatrix matrix, localMatrix;
   SoBBoxModelMatrixElement::pushMatrix(action->getState(),
-				       matrix,
-				       localMatrix);
+                                       matrix,
+                                       localMatrix);
 #endif
   inherited::getBoundingBox(action);
 #if !defined(COIN_EXCLUDE_SOBBOXMODELMATRIXELMENT)
-  SoBBoxModelMatrixElement::popMatrix(action->getState(), 
-				      matrix,
-				      localMatrix);
+  SoBBoxModelMatrixElement::popMatrix(action->getState(),
+                                      matrix,
+                                      localMatrix);
 #endif
 }
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
@@ -116,7 +116,7 @@ SoTransformSeparator::SoTransformSeparator(int /* nChildren */)
  */
 void
 SoTransformSeparator::doAction(SoAction *action)
-{  
+{
   SbMatrix matrix = SoModelMatrixElement::pushMatrix(action->getState());
   inherited::doAction(action);
   SoModelMatrixElement::popMatrix(action->getState(), matrix);
@@ -176,8 +176,8 @@ SoTransformSeparator::getMatrix(SoGetMatrixAction *action)
     inherited::getMatrix(action);
 #if _WIN32 // fix for stupid m$ compiler
     action->getMatrix() = matrix;
-	action->getInverse() = invmatrix;
-#else // normal compilers use this code 
+        action->getInverse() = invmatrix;
+#else // normal compilers use this code
     action->getMatrix().setValue(matrix);
     action->getInverse().setValue(invmatrix);
 #endif // fix for vc6 compiler

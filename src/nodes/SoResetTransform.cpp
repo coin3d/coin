@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -106,15 +106,15 @@ SoResetTransform::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoResetTransform::GLRender(SoGLRenderAction * action)
 {
   if (this->whatToReset.getValue() & SoResetTransform::TRANSFORM) {
     SoModelMatrixElement::set(action->getState(), this,
-			      SbMatrix::identity());
+                              SbMatrix::identity());
 #if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
     SoGLNormalizeElement::setMatrixState(action->getState(), TRUE);
-#endif // ! COIN_EXCLUDE_SOGLNORMALIZEELEMENT  
+#endif // ! COIN_EXCLUDE_SOGLNORMALIZEELEMENT
 
   }
 }
@@ -124,7 +124,7 @@ SoResetTransform::GLRender(SoGLRenderAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoResetTransform::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   if (this->whatToReset.getValue() & SoResetTransform::BBOX)
@@ -132,7 +132,7 @@ SoResetTransform::getBoundingBox(SoGetBoundingBoxAction * action)
 
   if (this->whatToReset.getValue() & SoResetTransform::TRANSFORM)
     SoModelMatrixElement::set(action->getState(), this,
-			      SbMatrix::identity());
+                              SbMatrix::identity());
 }
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
@@ -146,7 +146,7 @@ SoResetTransform::doAction(SoAction *action)
 {
   if (this->whatToReset.getValue() & SoResetTransform::TRANSFORM)
     SoModelMatrixElement::set(action->getState(), this,
-			      SbMatrix::identity());
+                              SbMatrix::identity());
 }
 #endif // !COIN_EXCLUDE_SOACTION
 
@@ -167,7 +167,7 @@ SoResetTransform::callback(SoCallbackAction *action)
 */
 void
 SoResetTransform::getMatrix(SoGetMatrixAction *action)
-{  
+{
   if (this->whatToReset.getValue() & SoResetTransform::TRANSFORM) {
     action->getMatrix().makeIdentity();
     action->getInverse().makeIdentity();

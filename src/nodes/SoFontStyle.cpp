@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -164,8 +164,8 @@ SoFontStyle::getFontName(void) const
 #if COIN_DEBUG
     default:
       SoDebugError::postWarning("SoFontStyle::getFontName",
-				"value of family field is invalid, "
-				"setting to SERIF");
+                                "value of family field is invalid, "
+                                "setting to SERIF");
       fontname = "times";
       break;
 #endif // COIN_DEUG
@@ -192,7 +192,7 @@ SoFontStyle::getFontName(void) const
 #if COIN_DEBUG
   default:
     SoDebugError::postWarning("SoFontStyle::getFontName",
-			      "value of style field is invalid");
+                              "value of style field is invalid");
     break;
 #endif // COIN_DEUG
   }

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -161,7 +161,7 @@ SoCamera::SoCamera()
   SO_NODE_DEFINE_ENUM_VALUE(ViewportMapping, CROP_VIEWPORT_NO_FRAME);
   SO_NODE_DEFINE_ENUM_VALUE(ViewportMapping, ADJUST_CAMERA);
   SO_NODE_DEFINE_ENUM_VALUE(ViewportMapping, LEAVE_ALONE);
-  
+
   SO_NODE_SET_SF_ENUM_TYPE(viewportMapping, ViewportMapping);
 }
 
@@ -219,7 +219,7 @@ SoCamera::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoCamera::pointAt(const SbVec3f & targetPoint)
 {
   // FIXME: is this really correct? What if camera is not positioned
@@ -235,19 +235,19 @@ SoCamera::pointAt(const SbVec3f & targetPoint)
 /*!
   FIXME: write function documentation
 */
-void 
-SoCamera::viewAll(SoNode * const sceneRoot, 
-		  const SbViewportRegion & vpRegion,
-		  const float slack)
+void
+SoCamera::viewAll(SoNode * const sceneRoot,
+                  const SbViewportRegion & vpRegion,
+                  const float slack)
 {
   SoGetBoundingBoxAction action(vpRegion);
   action.apply(sceneRoot);
   SbBox3f box = action.getBoundingBox();
 #if 0 // debug
   SoDebugError::postInfo("SoCamera::viewAll",
-			 "bbox: <%f %f %f>, <%f %f %f>\n",
-			 box.getMin()[0], box.getMin()[1], box.getMin()[2],
-			 box.getMax()[0], box.getMax()[1], box.getMax()[2]);
+                         "bbox: <%f %f %f>, <%f %f %f>\n",
+                         box.getMin()[0], box.getMin()[1], box.getMin()[2],
+                         box.getMax()[0], box.getMax()[1], box.getMax()[2]);
 #endif // debug
   this->viewBoundingBox(box, aspectRatio.getValue(), slack);
 }
@@ -255,10 +255,10 @@ SoCamera::viewAll(SoNode * const sceneRoot,
 /*!
   FIXME: write function documentation
 */
-void 
-SoCamera::viewAll(SoPath * const path, 
-		  const SbViewportRegion &vpRegion, 
-		  const float slack)
+void
+SoCamera::viewAll(SoPath * const path,
+                  const SbViewportRegion &vpRegion,
+                  const float slack)
 {
   SoGetBoundingBoxAction action(vpRegion);
   action.apply(path);
@@ -270,7 +270,7 @@ SoCamera::viewAll(SoPath * const path,
 /*!
   FIXME: write function documentation
 */
-SbViewportRegion 
+SbViewportRegion
 SoCamera::getViewportBounds(const SbViewportRegion & /* region */) const
 {
   assert(0 && "FIXME: not implemented yet");
@@ -281,7 +281,7 @@ SoCamera::getViewportBounds(const SbViewportRegion & /* region */) const
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoCamera::GLRender(SoGLRenderAction *action)
 {
 #if 0 // debug
@@ -289,25 +289,25 @@ SoCamera::GLRender(SoGLRenderAction *action)
   float camerarotangle;
   this->orientation.getValue(camerarotaxis, camerarotangle);
   SoDebugError::postInfo("SoCamera::GLRender",
-			 "viewportMapping: %d, "
-			 "position: <%f, %f, %f>, "
-			 "orientation: <%f, %f, %f> %f, "
-			 "aspectRatio: %f, "
-			 "nearDistance: %f, "
-			 "farDistance: %f, "
-			 "focalDistance: %f",
-			 this->viewportMapping.getValue(),
-			 this->position.getValue()[0],
-			 this->position.getValue()[1],
-			 this->position.getValue()[2],
-			 camerarotaxis[0],
-			 camerarotaxis[1],
-			 camerarotaxis[2],
-			 camerarotangle,
-			 this->aspectRatio.getValue(),
-			 this->nearDistance.getValue(),
-			 this->farDistance.getValue(),
-			 this->focalDistance.getValue());
+                         "viewportMapping: %d, "
+                         "position: <%f, %f, %f>, "
+                         "orientation: <%f, %f, %f> %f, "
+                         "aspectRatio: %f, "
+                         "nearDistance: %f, "
+                         "farDistance: %f, "
+                         "focalDistance: %f",
+                         this->viewportMapping.getValue(),
+                         this->position.getValue()[0],
+                         this->position.getValue()[1],
+                         this->position.getValue()[2],
+                         camerarotaxis[0],
+                         camerarotaxis[1],
+                         camerarotaxis[2],
+                         camerarotangle,
+                         this->aspectRatio.getValue(),
+                         this->nearDistance.getValue(),
+                         this->farDistance.getValue(),
+                         this->focalDistance.getValue());
 #endif // debug
 
   float aspectratio =
@@ -320,7 +320,7 @@ SoCamera::GLRender(SoGLRenderAction *action)
 //    if (aspectratio < 1.0f) aspectratio = 1.0f;
 #if 0 // debug
   SoDebugError::postInfo("SoCamera::GLRender", "aspectratio: %f",
-			 aspectratio);
+                         aspectratio);
 #endif // debug
 
   SbViewVolume vv = this->getViewVolume(aspectratio);
@@ -347,7 +347,7 @@ SoCamera::GLRender(SoGLRenderAction *action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoCamera::getBoundingBox(SoGetBoundingBoxAction *action)
 {
   // FIXME: viewportMapping field is not accounted for. 19990315
@@ -373,7 +373,7 @@ SoCamera::getBoundingBox(SoGetBoundingBoxAction *action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoCamera::handleEvent(SoHandleEventAction * /* action */)
 {
   // FIXME: anything to be done here? Perhaps something to get
@@ -385,10 +385,10 @@ SoCamera::handleEvent(SoHandleEventAction * /* action */)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoCamera::jitter(int /* numPasses */, int /* curPass */,
-		 const SbViewportRegion & /* vpReg */,
-		 SbVec3f & /* jitterAmount */) const
+                 const SbViewportRegion & /* vpReg */,
+                 SbVec3f & /* jitterAmount */) const
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -405,7 +405,7 @@ SoCamera::doAction(SoAction *action)
 
   float aspectratio =
     SoViewportRegionElement::get(action->getState()).getViewportAspectRatio();
-  
+
   SbViewVolume vv = this->getViewVolume(aspectratio);
   SoViewVolumeElement::set(action->getState(), this, vv);
 

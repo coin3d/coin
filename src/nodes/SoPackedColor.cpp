@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -59,7 +59,7 @@ SO_NODE_SOURCE(SoPackedColor);
 SoPackedColor::SoPackedColor()
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoPackedColor);
-  
+
   SO_NODE_ADD_FIELD(orderedRGBA, (0xccccccff));
 }
 
@@ -91,7 +91,7 @@ SoPackedColor::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoPackedColor::GLRender(SoGLRenderAction * action)
 {
   SoPackedColor::doAction(action);
@@ -107,12 +107,12 @@ void
 SoPackedColor::doAction(SoAction *action)
 {
   SoState *state = action->getState();
-  if (!orderedRGBA.isIgnored() && 
+  if (!orderedRGBA.isIgnored() &&
       !SoOverrideElement::getDiffuseColorOverride(state)) {
     SoDiffuseColorElement::set(state,
-			       this,
-			       orderedRGBA.getNum(),
-			       orderedRGBA.getValues(0));
+                               this,
+                               orderedRGBA.getNum(),
+                               orderedRGBA.getValues(0));
   }
 }
 #endif // !COIN_EXCLUDE_SOACTION

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -116,7 +116,7 @@ SoLOD::callback(SoCallbackAction *action)
  */
 void
 SoLOD::GLRender(SoGLRenderAction * action)
-{  
+{
   assert(action->getCurPathCode() == SoAction::NO_PATH);
   int idx = this->whichToTraverse(action);;
   if (idx >= 0) this->children->traverse(action, idx);
@@ -139,7 +139,7 @@ void
 SoLOD::GLRenderInPath(SoGLRenderAction * action)
 {
   int numIndices;
-  const int *indices; 
+  const int *indices;
   action->getPathCode(numIndices, indices);
 
   // no need to traverse OFF_PATH children
@@ -197,7 +197,7 @@ SoLOD::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 
 #if !defined(COIN_EXCLUDE_SOACTION)
 /*!
-  Returns the child to traverse based on the ranges in 
+  Returns the child to traverse based on the ranges in
   SoLOD::range. Will clamp to index to the number of children.
   This method will return -1 if no child should be traversed.
   This will only happen if the node has no children though.
@@ -209,18 +209,18 @@ SoLOD::whichToTraverse(SoAction *action)
   const SbMatrix &mat = SoModelMatrixElement::get(state);
   const SbViewVolume &vv = SoViewVolumeElement::get(state);
 
-  SbVec3f worldcenter; 
+  SbVec3f worldcenter;
   mat.multVecMatrix(this->center.getValue(), worldcenter);
-  
+
   float dist = (vv.getProjectionPoint() - worldcenter).length();
 
   int i;
   int n = this->range.getNum();
-  
+
   for (i = 0; i < n; i++) {
     if (dist < this->range[i]) break;
   }
-  if (i >= this->getNumChildren()) i = this->getNumChildren() - 1;  
+  if (i >= this->getNumChildren()) i = this->getNumChildren() - 1;
   return i;
 }
 #endif // !COIN_EXCLUDE_SOACTION

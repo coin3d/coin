@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -149,7 +149,7 @@ SoProfile::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoProfile::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoProfile::doAction(action);

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -103,7 +103,7 @@ SO_NODE_SOURCE(SoComplexity);
 SoComplexity::SoComplexity(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoComplexity);
-  
+
   SO_NODE_ADD_FIELD(type, (SoComplexity::OBJECT_SPACE));
   SO_NODE_ADD_FIELD(value, (0.5f));
   SO_NODE_ADD_FIELD(textureQuality, (0.5f));
@@ -166,7 +166,7 @@ SoComplexity::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoComplexity::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoComplexity::doAction(action);
@@ -177,13 +177,13 @@ SoComplexity::getBoundingBox(SoGetBoundingBoxAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoComplexity::GLRender(SoGLRenderAction * action)
 {
   SoComplexity::doAction(action);
   if (!textureQuality.isIgnored()) {
-    SoTextureQualityElement::set(action->getState(), this, 
-				 textureQuality.getValue());
+    SoTextureQualityElement::set(action->getState(), this,
+                                 textureQuality.getValue());
   }
 }
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
@@ -198,11 +198,11 @@ SoComplexity::doAction(SoAction *action)
 {
   SoState * state = action->getState();
 #if !defined(COIN_EXCLUDE_SOCOMPLEXITYELEMENT)
-  if (!value.isIgnored() 
+  if (!value.isIgnored()
 #if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
       && !SoOverrideElement::getComplexityOverride(state)
 #endif // ! COIN_EXCLUDE_SOOVERRIDEELEMENT
-      ) 
+      )
     SoComplexityElement::set(state, value.getValue());
 #endif // ! COIN_EXCLUDE_SOCOMPLEXITYELEMENT
 
@@ -212,9 +212,9 @@ SoComplexity::doAction(SoAction *action)
       && !SoOverrideElement::getComplexityTypeOverride(state)
 #endif // ! COIN_EXCLUDE_SOOVERRIDEELEMENT
       )
-    SoComplexityTypeElement::set(state, (SoComplexityTypeElement::Type) 
-				 type.getValue());
-#endif // ! COIN_EXCLUDE_SOCOMPLEXITYTYPEELEMENT 
+    SoComplexityTypeElement::set(state, (SoComplexityTypeElement::Type)
+                                 type.getValue());
+#endif // ! COIN_EXCLUDE_SOCOMPLEXITYTYPEELEMENT
 }
 #endif // !COIN_EXCLUDE_DOACTION
 
@@ -227,8 +227,8 @@ SoComplexity::callback(SoCallbackAction *action)
 {
   SoComplexity::doAction((SoAction*)action);
   if (!textureQuality.isIgnored()) {
-    SoTextureQualityElement::set(action->getState(), this, 
-				 textureQuality.getValue());
+    SoTextureQualityElement::set(action->getState(), this,
+                                 textureQuality.getValue());
   }
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
@@ -253,19 +253,18 @@ SoComplexity::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   SoState * state = action->getState();
 #if !defined(COIN_EXCLUDE_SOCOMPLEXITYELEMENT)
-  if (!value.isIgnored() 
+  if (!value.isIgnored()
 #if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
       && !SoOverrideElement::getComplexityOverride(state)
 #endif // ! COIN_EXCLUDE_SOOVERRIDEELEMENT
-      ) 
+      )
     SoComplexityElement::set(state, value.getValue());
 #endif // ! COIN_EXCLUDE_SOCOMPLEXITYELEMENT
-  
+
   // complexity type element is always OBJECT_SPACE for this action.
-  // this is somewhat odd. If it had been possible to supply a 
+  // this is somewhat odd. If it had been possible to supply a
   // viewport in the action constructor, it would be possible
   // to also calculate SCREEN_SPACE complexity.
   // pederb, 1999-11-25
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
-

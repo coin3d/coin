@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -39,22 +39,22 @@
 
 SoType SoNodeKitDetail::classTypeId;
 
-SoType 
+SoType
 SoNodeKitDetail::getTypeId(void) const
 {
   return SoNodeKitDetail::classTypeId;
 }
 
-SoType 
+SoType
 SoNodeKitDetail::getClassTypeId(void)
 {
   return SoNodeKitDetail::classTypeId;
 }
 
-void 
+void
 SoNodeKitDetail::initClass(void)
 {
-  SoNodeKitDetail::classTypeId = 
+  SoNodeKitDetail::classTypeId =
     SoType::createType(inherited::getClassTypeId(),
                        SbName("SoNodeKitDetail"));
 }

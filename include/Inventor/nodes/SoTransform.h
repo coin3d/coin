@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -46,7 +46,7 @@ public:
   SoSFVec3f scaleFactor;
   SoSFRotation scaleOrientation;
   SoSFVec3f center;
- 
+
   void pointAt(const SbVec3f & fromPoint, const SbVec3f & toPoint);
   void getScaleSpaceMatrix(SbMatrix & mat, SbMatrix & inv) const;
   void getRotationSpaceMatrix(SbMatrix & mat, SbMatrix & inv) const;

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -75,13 +75,13 @@ public:
   void removeSelectionCallback(SoSelectionPathCB * f, void * userData = NULL);
   void addDeselectionCallback(SoSelectionPathCB * f, void * userData = NULL);
   void removeDeselectionCallback(SoSelectionPathCB * f,
-				 void * userData = NULL);
+                                 void * userData = NULL);
   void addStartCallback(SoSelectionClassCB * f, void * userData = NULL);
   void removeStartCallback(SoSelectionClassCB * f, void * userData = NULL);
   void addFinishCallback(SoSelectionClassCB * f, void * userData = NULL);
   void removeFinishCallback(SoSelectionClassCB * f, void * userData = NULL);
   void setPickFilterCallback(SoSelectionPickCB * f, void * userData = NULL,
-			     const SbBool callOnlyIfSelectable = TRUE);
+                             const SbBool callOnlyIfSelectable = TRUE);
   void setPickMatching(const SbBool pickMatching);
   SbBool isPickMatching(void) const;
   SbBool getPickMatching(void) const;
@@ -101,7 +101,7 @@ protected:
 
   virtual void handleEvent(SoHandleEventAction * action);
 
-protected: // unfortunately only protected in OIV 
+protected: // unfortunately only protected in OIV
 
   SoPathList selectionList;
 
@@ -109,13 +109,13 @@ protected: // unfortunately only protected in OIV
   SoCallbackList *deselCBList;
   SoCallbackList *startCBList;
   SoCallbackList *finishCBList;
-    
+
   SoSelectionPickCB *pickCBFunc;
   void *pickCBData;
   SbBool callPickCBOnlyIfSelectable;
-    
+
   SoCallbackList *changeCBList;
-  
+
   SoPath *mouseDownPickPath;
   SbBool pickMatching;
 

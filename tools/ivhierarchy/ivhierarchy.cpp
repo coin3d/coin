@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -58,7 +58,7 @@ sort_types(SoTypeList & typelist)
     SbString * s = new SbString(typelist[i].getName().getString());
     int j = 0;
     while ((j < strlist.getLength()) &&
-	   (strcmp(strlist[j]->getString(), s->getString()) < 0)) j++;
+           (strcmp(strlist[j]->getString(), s->getString()) < 0)) j++;
     if (j < strlist.getLength()) strlist.insert(s, j);
     else strlist.append(s);
   }
@@ -121,8 +121,8 @@ main(int argc, char ** argv)
     SoType t = SoType::fromName(argv[i]);
     if (t == SoType::badType()) {
       fprintf(stderr,
-	      "\nCouldn't find a valid type identifier for ``%s''.\n\n",
-	      argv[i]);
+              "\nCouldn't find a valid type identifier for ``%s''.\n\n",
+              argv[i]);
     }
     else {
       print_parent_tree(t.getParent());

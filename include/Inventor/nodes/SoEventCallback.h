@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -53,9 +53,9 @@ public:
   const SoPath * getPath(void);
 
   void addEventCallback(SoType eventType, SoEventCallbackCB * f,
-			void * userData = NULL);
+                        void * userData = NULL);
   void removeEventCallback(SoType eventType, SoEventCallbackCB * f,
-			   void * userData = NULL);
+                           void * userData = NULL);
 
 #if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
   SoHandleEventAction * getAction(void) const;

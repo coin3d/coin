@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -39,10 +39,10 @@ public:
   SoLinearProfile(void);
 
   virtual void getTrimCurve(SoState * state, int32_t & numPoints,
-			    float *& points, int & floatsPerVec,
-			    int32_t & numKnots, float *& knotVector);
+                            float *& points, int & floatsPerVec,
+                            int32_t & numKnots, float *& knotVector);
   virtual void getVertices(SoState * state, int32_t & nVertices,
-			   SbVec2f *& vertices);
+                           SbVec2f *& vertices);
 
 protected:
   virtual ~SoLinearProfile();

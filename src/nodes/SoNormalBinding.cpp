@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -156,7 +156,7 @@ SoNormalBinding::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoNormalBinding::GLRender(SoGLRenderAction * action)
 {
   SoNormalBinding::doAction(action);
@@ -164,8 +164,8 @@ SoNormalBinding::GLRender(SoGLRenderAction * action)
   if (!value.isIgnored()) {
     Binding binding = (Binding)value.getValue();
     SoGLShadeModelElement::setNormal(action->getState(),
-				     binding == PER_VERTEX ||
-				     binding == PER_VERTEX_INDEXED);
+                                     binding == PER_VERTEX ||
+                                     binding == PER_VERTEX_INDEXED);
   }
 #endif
 }
@@ -181,8 +181,8 @@ SoNormalBinding::doAction(SoAction *action)
 {
   if (!value.isIgnored()) {
     SoNormalBindingElement::set(action->getState(), this,
-				(SoNormalBindingElement::Binding)
-				value.getValue());
+                                (SoNormalBindingElement::Binding)
+                                value.getValue());
   }
 }
 #endif // !COIN_EXCLUDE_SOACTION
@@ -216,7 +216,7 @@ SoNormalBinding::pick(SoPickAction *action)
 void
 SoNormalBinding::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  SoNormalBinding::doAction(action);  
+  SoNormalBinding::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -98,7 +98,7 @@ SO_NODE_SOURCE(SoEnvironment);
 SoEnvironment::SoEnvironment()
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoEnvironment);
-  
+
   SO_NODE_ADD_FIELD(ambientIntensity, (0.2f));
   SO_NODE_ADD_FIELD(ambientColor, (1.0f, 1.0f, 1.0f));
   SO_NODE_ADD_FIELD(attenuation, (0.0f, 0.0f, 1.0f));
@@ -145,13 +145,13 @@ void
 SoEnvironment::GLRender(SoGLRenderAction * action)
 {
   SoEnvironmentElement::set(action->getState(),
-			    this,
-			    ambientIntensity.getValue(),
-			    ambientColor.getValue(),
-			    attenuation.getValue(),
-			    (int32_t)fogType.getValue(),
-			    fogColor.getValue(),
-			    fogVisibility.getValue());
+                            this,
+                            ambientIntensity.getValue(),
+                            ambientColor.getValue(),
+                            attenuation.getValue(),
+                            (int32_t)fogType.getValue(),
+                            fogColor.getValue(),
+                            fogVisibility.getValue());
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
@@ -163,12 +163,12 @@ void
 SoEnvironment::callback(SoCallbackAction *action)
 {
   SoEnvironmentElement::set(action->getState(),
-			    this,
-			    ambientIntensity.getValue(),
-			    ambientColor.getValue(),
-			    attenuation.getValue(),
-			    (int32_t)fogType.getValue(),
-			    fogColor.getValue(),
-			    fogVisibility.getValue());
+                            this,
+                            ambientIntensity.getValue(),
+                            ambientColor.getValue(),
+                            attenuation.getValue(),
+                            (int32_t)fogType.getValue(),
+                            fogColor.getValue(),
+                            fogVisibility.getValue());
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION

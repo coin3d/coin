@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -43,8 +43,8 @@ public:
   SoIndexedFaceSet(void);
 
   enum Binding {
-    OVERALL = 0, 
-    PER_FACE, 
+    OVERALL = 0,
+    PER_FACE,
     PER_FACE_INDEXED,
     PER_VERTEX,
     PER_VERTEX_INDEXED,
@@ -76,11 +76,11 @@ private:
   virtual void notify(SoNotList *list);
 
   SbBool countPrimitives();
-  
+
   int numTriangles;
   int numQuads;
   int numPolygons;
-  
+
   SoConvexDataCache *convexCache;
 
 };

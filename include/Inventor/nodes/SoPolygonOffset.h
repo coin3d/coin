@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -36,7 +36,7 @@
 
 class SoPolygonOffset : public SoNode {
   typedef SoNode inherited;
-  
+
   SO_NODE_HEADER(SoPolygonOffset);
 
 public:
@@ -44,11 +44,11 @@ public:
   SoPolygonOffset(void);
 
   enum Style {
-    FILLED = SoPolygonOffsetElement::FILLED, 
-    LINES = SoPolygonOffsetElement::LINES, 
+    FILLED = SoPolygonOffsetElement::FILLED,
+    LINES = SoPolygonOffsetElement::LINES,
     POINTS = SoPolygonOffsetElement::POINTS
   };
-  
+
   SoSFFloat factor;
   SoSFFloat units;
   SoSFBitMask styles;

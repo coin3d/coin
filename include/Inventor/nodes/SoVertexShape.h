@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -35,7 +35,7 @@ class SoTextureCoordinateElement;
 class SoCoordinateElement;
 
 
-class SoVertexShape : public SoShape 
+class SoVertexShape : public SoShape
 {
   typedef SoShape inherited;
 
@@ -48,9 +48,9 @@ public:
 
   virtual void notify(SoNotList * list);
   virtual SbBool generateDefaultNormals(SoState * state,
-	        			SoNormalBundle * bundle);
+                                        SoNormalBundle * bundle);
   virtual SbBool generateDefaultNormals(SoState * state,
-					SoNormalCache * cache);
+                                        SoNormalCache * cache);
   void generateNormals(SoState * const state);
 
 #if !defined(COIN_EXCLUDE_SOWRITEACTION)
@@ -67,13 +67,13 @@ protected:
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
   void setNormalCache(SoState * const state,
-		      const int num, const SbVec3f * normals);
+                      const int num, const SbVec3f * normals);
   SoNormalCache * getNormalCache(void) const;
 
   void getVertexData(SoState * state,
-		     const SoCoordinateElement *& coords,
-		     const SbVec3f *& normals,
-		     const SbBool needNormals);
+                     const SoCoordinateElement *& coords,
+                     const SbVec3f *& normals,
+                     const SbBool needNormals);
 
 private:
   SoNormalCache * normalCache;

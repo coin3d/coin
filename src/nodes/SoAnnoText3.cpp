@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -114,7 +114,7 @@ SoAnnoText3::initClass(void)
 */
 void
 SoAnnoText3::computeBBox(SoAction * /* action */,
-			 SbBox3f & /* box */, SbVec3f & /* center */)
+                         SbBox3f & /* box */, SbVec3f & /* center */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -125,7 +125,7 @@ SoAnnoText3::computeBBox(SoAction * /* action */,
 */
 SbBox3f
 SoAnnoText3::getCharacterBounds(SoState * /* state */,
-				int /* stringIndex */, int /* charIndex */)
+                                int /* stringIndex */, int /* charIndex */)
 {
   assert(0 && "FIXME: not implemented");
   static SbBox3f b;

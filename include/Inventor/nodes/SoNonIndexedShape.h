@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -45,7 +45,7 @@ protected:
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   void computeCoordBBox(SoAction * action, int numVertices,
-			SbBox3f & box, SbVec3f & center);
+                        SbBox3f & box, SbVec3f & center);
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 };
 

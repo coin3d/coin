@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -97,12 +97,12 @@ SoTextureCoordinate2::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTextureCoordinate2::doAction(SoAction * action)
 {
   SoTextureCoordinateElement::set2(action->getState(), this,
-				   point.getNum(),
-				   point.getValues(0));
+                                   point.getNum(),
+                                   point.getValues(0));
 }
 #endif // !COIN_EXCLUDE_SOACTION
 
@@ -110,11 +110,11 @@ SoTextureCoordinate2::doAction(SoAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTextureCoordinate2::GLRender(SoGLRenderAction * action)
 {
   SoGLTextureCoordinateElement::setTexGen(action->getState(),
-					  this, NULL);
+                                          this, NULL);
   SoTextureCoordinate2::doAction((SoAction *)action);
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
@@ -123,7 +123,7 @@ SoTextureCoordinate2::GLRender(SoGLRenderAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTextureCoordinate2::callback(SoCallbackAction * action)
 {
   SoTextureCoordinate2::doAction((SoAction *)action);
@@ -134,7 +134,7 @@ SoTextureCoordinate2::callback(SoCallbackAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTextureCoordinate2::pick(SoPickAction * action)
 {
   SoTextureCoordinate2::doAction((SoAction *)action);

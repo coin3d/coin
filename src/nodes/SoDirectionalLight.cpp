@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -96,18 +96,18 @@ SoDirectionalLight::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoDirectionalLight::GLRender(SoGLRenderAction * action)
 {
   if (!on.getValue()) return;
 
   SoState *state = action->getState();
   int idx = SoGLLightIdElement::increment(state);
-  
+
   if (idx < 0) {
 #if COIN_DEBUG
     SoDebugError::postWarning("SoDirectionalLight::GLRender",
-			      "Max # of OpenGL lights exceeded :(");
+                              "Max # of OpenGL lights exceeded :(");
 #endif // COIN_DEBUG
     return;
   }
@@ -116,25 +116,25 @@ SoDirectionalLight::GLRender(SoGLRenderAction * action)
 
   SbColor4f lightcolor(0.0f, 0.0f, 0.0f, 1.0f);
 #if !defined(COIN_EXCLUDE_SOENVIRONMENTELEMENT)
-  lightcolor.setRGB(SoEnvironmentElement::getAmbientColor(state));  
+  lightcolor.setRGB(SoEnvironmentElement::getAmbientColor(state));
   lightcolor *= SoEnvironmentElement::getAmbientIntensity(state);
 #endif // ! COIN_EXCLUDE_SOENVIRONMENTELEMENT
   glLightfv(light, GL_AMBIENT, lightcolor.getValue());
-  
+
   lightcolor.setRGB(color.getValue());
   if (!intensity.isIgnored()) lightcolor *= intensity.getValue();
-  
+
   glLightfv(light, GL_DIFFUSE, lightcolor.getValue());
   glLightfv(light, GL_SPECULAR, lightcolor.getValue());
-    
+
   // GL directional light is specified towards light source
-  SbVec3f dir = -direction.getValue(); 
+  SbVec3f dir = -direction.getValue();
   dir.normalize();
 
   // directional when w = 0.0
   SbVec4f dirvec(dir[0], dir[1], dir[2], 0.0f);
   glLightfv(light, GL_POSITION, dirvec.getValue());
-  
+
   // FIXME: is this needed for directional lights?
   // turn off spot light properties for ordinary lights
   glLightf(light, GL_SPOT_EXPONENT, 0.0);

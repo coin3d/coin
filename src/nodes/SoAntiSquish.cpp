@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -119,7 +119,7 @@ SoAntiSquish::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoAntiSquish::getBoundingBox(SoGetBoundingBoxAction * /* action */)
 {
   assert(0 && "FIXME: not implemented yet");
@@ -195,8 +195,8 @@ SoAntiSquish::pick(SoPickAction * /* action */)
 */
 SbMatrix
 SoAntiSquish::getUnsquishingMatrix(SbMatrix /* squishedMatrix */,
-				   SbBool /* doInverse */,
-				   SbMatrix & /* inverseAnswer */)
+                                   SbBool /* doInverse */,
+                                   SbMatrix & /* inverseAnswer */)
 {
   assert(0 && "FIXME: not implemented");
   return SbMatrix::identity();

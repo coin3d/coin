@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -41,12 +41,12 @@ public:
   static void initClass(void);
   SoMaterial(void);
 
-  SoMFColor ambientColor; 
-  SoMFColor diffuseColor; 
-  SoMFColor specularColor; 
-  SoMFColor emissiveColor; 
-  SoMFFloat shininess; 
-  SoMFFloat transparency; 
+  SoMFColor ambientColor;
+  SoMFColor diffuseColor;
+  SoMFColor specularColor;
+  SoMFColor emissiveColor;
+  SoMFFloat shininess;
+  SoMFFloat transparency;
 
 #if !defined(COIN_EXCLUDE_SOACTION)
   virtual void doAction(SoAction * action);

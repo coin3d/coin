@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -109,7 +109,7 @@ SO_NODE_SOURCE(SoDrawStyle);
 SoDrawStyle::SoDrawStyle()
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoDrawStyle);
-  
+
   SO_NODE_ADD_FIELD(style, (SoDrawStyle::FILLED));
   SO_NODE_ADD_FIELD(pointSize, (0));
   SO_NODE_ADD_FIELD(lineWidth, (0));
@@ -160,7 +160,7 @@ SoDrawStyle::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoDrawStyle::doAction(SoAction *action)
 {
   SoState * state = action->getState();
@@ -171,10 +171,10 @@ SoDrawStyle::doAction(SoAction *action)
 #else // COIN_EXCLUDE_SOOVERRIDEELEMENT
 #define TEST_OVERRIDE(x,y) FALSE
 #endif // COIN_EXCLUDE_SOOVERRIDEELEMENT
-  
+
   if (!style.isIgnored() && !TEST_OVERRIDE(DRAW_STYLE)) {
-    SoDrawStyleElement::set(state, this, 
-			    (SoDrawStyleElement::Style)style.getValue());
+    SoDrawStyleElement::set(state, this,
+                            (SoDrawStyleElement::Style)style.getValue());
   }
   if (!linePattern.isIgnored() && !TEST_OVERRIDE(LINE_PATTERN)) {
     SoLinePatternElement::set(state, this, linePattern.getValue());
@@ -193,7 +193,7 @@ SoDrawStyle::doAction(SoAction *action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoDrawStyle::GLRender(SoGLRenderAction * action)
 {
   SoDrawStyle::doAction(action);

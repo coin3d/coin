@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -103,7 +103,7 @@ SO_NODE_SOURCE(SoAnnoText3Property);
 SoAnnoText3Property::SoAnnoText3Property()
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoAnnoText3Property);
-  
+
   SO_NODE_ADD_FIELD(fontSizeHint, (FIT_VECTOR_TEXT));
   SO_NODE_ADD_FIELD(renderPrintType, (RENDER3D_PRINT_VECTOR));
   SO_NODE_ADD_FIELD(isCharOrientedRasterPrint, (TRUE));
@@ -160,7 +160,7 @@ SoAnnoText3Property::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoAnnoText3Property::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoAnnoText3Property::doAction(action);

@@ -575,4 +575,3 @@ SoTriangleStripSet::generatePrimitives(SoAction *action)
     state->pop();
 }
 #endif // !COIN_EXCLUDE_SOACTION
-

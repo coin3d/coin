@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -182,7 +182,7 @@ SoSelection::toggle(const SoPath * const path)
  */
 void
 SoSelection::toggle(SoNode * const node)
-{  
+{
   SoPath *path = this->searchNode(node);
   if (path) {
     path->ref();
@@ -337,9 +337,9 @@ SoSelection::removeFinishCallback(SoSelectionClassCB *f, void *userData)
   FIXME: write doc
  */
 void
-SoSelection::setPickFilterCallback(SoSelectionPickCB *f, 
-				   void *userData,
-				   const SbBool callOnlyIfSelectable)
+SoSelection::setPickFilterCallback(SoSelectionPickCB *f,
+                                   void *userData,
+                                   const SbBool callOnlyIfSelectable)
 {
   this->pickCBFunc = f;
   this->pickCBData = userData;
@@ -394,8 +394,8 @@ SoSelection::removeChangeCallback(SoSelectionClassCB *f, void *userData)
   FIXME: write doc
  */
 void
-SoSelection::invokeSelectionPolicy(SoPath * const /* path */, 
-				   const SbBool /* shiftDown */)
+SoSelection::invokeSelectionPolicy(SoPath * const /* path */,
+                                   const SbBool /* shiftDown */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -454,7 +454,7 @@ int
 SoSelection::findPath(const SoPath * const path) const
 {
   int idx = -1;
-  
+
   // make copy only if necessary
   if (path->getHead() != (SoNode*)this) {
     SoPath *newpath = this->copyFromThis(path);
@@ -490,7 +490,5 @@ SoSelection::searchNode(SoNode * const node) const
   }
   searchAction->setNode(node);
   searchAction->apply((SoNode*)this);
-  return searchAction->getPath(); 
+  return searchAction->getPath();
 }
-
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -93,12 +93,12 @@ SoMatrixTransform::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoMatrixTransform::doAction(SoAction * action)
 {
   if (!this->matrix.isIgnored()) {
     SoModelMatrixElement::mult(action->getState(), this,
-			       this->matrix.getValue());
+                               this->matrix.getValue());
   }
 }
 #endif // !COIN_EXCLUDE_SOACTION
@@ -107,14 +107,14 @@ SoMatrixTransform::doAction(SoAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoMatrixTransform::GLRender(SoGLRenderAction * action)
 {
 #if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
   // TODO: code to test if matrix is legal. For now we'll
   // just invalidate the flag in the normalize element (pederb).
   SoGLNormalizeElement::setMatrixState(action->getState(), FALSE);
-#endif // ! COIN_EXCLUDE_SOGLNORMALIZEELEMENT  
+#endif // ! COIN_EXCLUDE_SOGLNORMALIZEELEMENT
 
   SoMatrixTransform::doAction((SoAction *)action);
 }
@@ -124,7 +124,7 @@ SoMatrixTransform::GLRender(SoGLRenderAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoMatrixTransform::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoMatrixTransform::doAction((SoAction *)action);

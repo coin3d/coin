@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -45,9 +45,9 @@ public:
   SoEnvironment(void);
 
   enum FogType {
-    NONE = SoEnvironmentElement::NONE, 
-    HAZE = SoEnvironmentElement::HAZE, 
-    FOG = SoEnvironmentElement::FOG, 
+    NONE = SoEnvironmentElement::NONE,
+    HAZE = SoEnvironmentElement::HAZE,
+    FOG = SoEnvironmentElement::FOG,
     SMOKE = SoEnvironmentElement::SMOKE
   };
 

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -162,7 +162,7 @@ SoMaterialBinding::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoMaterialBinding::GLRender(SoGLRenderAction * action)
 {
   if (!value.isIgnored()
@@ -171,14 +171,14 @@ SoMaterialBinding::GLRender(SoGLRenderAction * action)
 #endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
       ) {
     Binding binding = (Binding)value.getValue();
-    SoMaterialBindingElement::set(action->getState(), 
-				  (SoMaterialBindingElement::Binding)
-				  binding);
+    SoMaterialBindingElement::set(action->getState(),
+                                  (SoMaterialBindingElement::Binding)
+                                  binding);
 #if !defined(COIN_EXCLUDE_SOGLSHADEMODELELEMENT)
     SoGLShadeModelElement::setMaterial(action->getState(),
-				       binding == PER_VERTEX ||
-				       binding == PER_VERTEX_INDEXED);
-#endif 
+                                       binding == PER_VERTEX ||
+                                       binding == PER_VERTEX_INDEXED);
+#endif
   }
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
@@ -196,9 +196,9 @@ SoMaterialBinding::doAction(SoAction *action)
       && !SoOverrideElement::getMaterialBindingOverride(action->getState())
 #endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
       ) {
-    SoMaterialBindingElement::set(action->getState(), 
-				  (SoMaterialBindingElement::Binding)
-				  value.getValue());
+    SoMaterialBindingElement::set(action->getState(),
+                                  (SoMaterialBindingElement::Binding)
+                                  value.getValue());
   }
 }
 #endif // !COIN_EXCLUDE_SOACTION

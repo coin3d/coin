@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -88,12 +88,12 @@ SoRotation::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoRotation::doAction(SoAction * action)
 {
   if (!this->rotation.isIgnored()) {
     SoModelMatrixElement::rotateBy(action->getState(), this,
-				   this->rotation.getValue());
+                                   this->rotation.getValue());
   }
 }
 #endif // !COIN_EXCLUDE_SOACTION
@@ -102,7 +102,7 @@ SoRotation::doAction(SoAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoRotation::callback(SoCallbackAction * action)
 {
   SoRotation::doAction((SoAction *)action);
@@ -113,7 +113,7 @@ SoRotation::callback(SoCallbackAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoRotation::GLRender(SoGLRenderAction * action)
 {
   SoRotation::doAction((SoAction *)action);
@@ -124,7 +124,7 @@ SoRotation::GLRender(SoGLRenderAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoRotation::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoRotation::doAction((SoAction *)action);
@@ -135,7 +135,7 @@ SoRotation::getBoundingBox(SoGetBoundingBoxAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoRotation::getMatrix(SoGetMatrixAction * action)
 {
   action->rotateBy(this->rotation.getValue());
@@ -146,7 +146,7 @@ SoRotation::getMatrix(SoGetMatrixAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoRotation::pick(SoPickAction * action)
 {
   SoRotation::doAction((SoAction *)action);

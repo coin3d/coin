@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -72,8 +72,8 @@ SoNurbsProfile::initClass(void)
  */
 void
 SoNurbsProfile::getTrimCurve(SoState * /* state */, int32_t & /* numPoints */,
-			     float *& /* points */, int & /* floatsPerVec */,
-			     int32_t & /* numKnots */, float *& /* knotVector */)
+                             float *& /* points */, int & /* floatsPerVec */,
+                             int32_t & /* numKnots */, float *& /* knotVector */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -83,7 +83,7 @@ SoNurbsProfile::getTrimCurve(SoState * /* state */, int32_t & /* numPoints */,
  */
 void
 SoNurbsProfile::getVertices(SoState * /* state */, int32_t & /* nVertices */,
-			    SbVec2f *& /* vertices */)
+                            SbVec2f *& /* vertices */)
 {
   assert(0 && "FIXME: not implemented");
 }

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -68,7 +68,7 @@ SoNonIndexedShape::~SoNonIndexedShape()
   SoNonIndexedShape class. This includes setting up the
   type system, among other things.
 */
-void 
+void
 SoNonIndexedShape::initClass()
 {
   SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoNonIndexedShape);
@@ -89,11 +89,11 @@ SoNonIndexedShape::initClass()
  */
 void
 SoNonIndexedShape::computeCoordBBox(SoAction * action, int numVertices,
-				    SbBox3f & box, SbVec3f & center)
+                                    SbBox3f & box, SbVec3f & center)
 {
   SoVertexProperty * vp = (SoVertexProperty *) this->vertexProperty.getValue();
   assert(!vp ||
-	 vp->getTypeId().isDerivedFrom(SoVertexProperty::getClassTypeId()));
+         vp->getTypeId().isDerivedFrom(SoVertexProperty::getClassTypeId()));
   SbBool vpvtx = vp && (vp->vertex.getNum() > 0);
 
   const int numCoords = vpvtx ?
@@ -125,4 +125,3 @@ SoNonIndexedShape::computeCoordBBox(SoAction * action, int numVertices,
   center /= lastidx + 1 - startidx;
 }
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-

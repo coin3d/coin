@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -163,8 +163,8 @@ class SoNode : public SoFieldContainer {
 
 public:
   enum Stage { FIRST_INSTANCE,
-	       PROTO_INSTANCE,
-	       OTHER_INSTANCE
+               PROTO_INSTANCE,
+               OTHER_INSTANCE
   };
 
   void setOverride(const SbBool state);
@@ -218,18 +218,18 @@ public:
 
   uint32_t getNodeId(void) const;
   virtual SoChildList * getChildren(void) const;
-  
+
   virtual void writeInstance(SoOutput * out);
   virtual SoNode * addToCopyDict(void) const;
   virtual void copyContents(const SoFieldContainer * fromFC,
-			    SbBool copyConnections);
+                            SbBool copyConnections);
   virtual SoFieldContainer * copyThroughConnection(void) const;
 
 
   static SoType getClassTypeId(void);
   static SoNode * getByName(const SbName & name);
   static int getByName(const SbName & name, SoNodeList & list);
-  
+
   static void initClass(void);
   static void initClasses(void);
 

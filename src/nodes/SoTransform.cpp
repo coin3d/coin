@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -90,7 +90,7 @@ SoTransform::SoTransform()
   SO_NODE_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
   SO_NODE_ADD_FIELD(scaleFactor, (1.0f, 1.0f, 1.0f));
   SO_NODE_ADD_FIELD(scaleOrientation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f),
-						  0.0f)));
+                                                  0.0f)));
   SO_NODE_ADD_FIELD(center, (0.0f, 0.0f, 0.0f));
 }
 
@@ -115,9 +115,9 @@ SoTransform::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTransform::pointAt(const SbVec3f & /* fromPoint */,
-		     const SbVec3f & /* toPoint */)
+                     const SbVec3f & /* toPoint */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -125,9 +125,9 @@ SoTransform::pointAt(const SbVec3f & /* fromPoint */,
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTransform::getScaleSpaceMatrix(SbMatrix & /* mat */,
-				 SbMatrix & /* inv */) const
+                                 SbMatrix & /* inv */) const
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -135,9 +135,9 @@ SoTransform::getScaleSpaceMatrix(SbMatrix & /* mat */,
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTransform::getRotationSpaceMatrix(SbMatrix & /* mat */,
-				    SbMatrix & /* inv */) const
+                                    SbMatrix & /* inv */) const
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -145,9 +145,9 @@ SoTransform::getRotationSpaceMatrix(SbMatrix & /* mat */,
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTransform::getTranslationSpaceMatrix(SbMatrix & /* mat */,
-				       SbMatrix & /* inv */) const
+                                       SbMatrix & /* inv */) const
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -155,7 +155,7 @@ SoTransform::getTranslationSpaceMatrix(SbMatrix & /* mat */,
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTransform::multLeft(const SbMatrix & /* mat */)
 {
   assert(0 && "FIXME: not implemented yet");
@@ -164,7 +164,7 @@ SoTransform::multLeft(const SbMatrix & /* mat */)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTransform::multRight(const SbMatrix & /* mat */)
 {
   assert(0 && "FIXME: not implemented yet");
@@ -173,7 +173,7 @@ SoTransform::multRight(const SbMatrix & /* mat */)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTransform::combineLeft(SoTransformation * /* nodeOnRight */)
 {
   assert(0 && "FIXME: not implemented yet");
@@ -182,7 +182,7 @@ SoTransform::combineLeft(SoTransformation * /* nodeOnRight */)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTransform::combineRight(SoTransformation * /* nodeOnLeft */)
 {
   assert(0 && "FIXME: not implemented yet");
@@ -191,7 +191,7 @@ SoTransform::combineRight(SoTransformation * /* nodeOnLeft */)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTransform::setMatrix(const SbMatrix & /* mat */)
 {
   assert(0 && "FIXME: not implemented yet");
@@ -200,7 +200,7 @@ SoTransform::setMatrix(const SbMatrix & /* mat */)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTransform::recenter(const SbVec3f & /* newCenter */)
 {
   assert(0 && "FIXME: not implemented yet");
@@ -210,7 +210,7 @@ SoTransform::recenter(const SbVec3f & /* newCenter */)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTransform::doAction(SoAction * action)
 {
 #if 0 // debug
@@ -221,33 +221,33 @@ SoTransform::doAction(SoAction * action)
   float scalerotation;
   scaleOrientation.getValue().getValue(scaleangle, scalerotation);
   SoDebugError::post("SoTransform::doAction",
-		     "\n\ttranslation: <%f, %f, %f>"
-		     "\n\trotation: <%f, %f, %f> %f"
-		     "\n\tscaleFactor: <%f, %f, %f>"
-		     "\n\tscaleOrientation: <%f, %f, %f> %f"
-		     "\n\tcenter: <%f, %f, %f>",
-		     translation.getValue()[0],
-		     translation.getValue()[1],
-		     translation.getValue()[2],
-		     angle[0], angle[1], angle[2], rot,
-		     scaleFactor.getValue()[0],
-		     scaleFactor.getValue()[1],
-		     scaleFactor.getValue()[2],
-		     scaleangle[0], scaleangle[1], scaleangle[2],
-		     scalerotation,
-		     center.getValue()[0],
-		     center.getValue()[1],
-		     center.getValue()[2]);
+                     "\n\ttranslation: <%f, %f, %f>"
+                     "\n\trotation: <%f, %f, %f> %f"
+                     "\n\tscaleFactor: <%f, %f, %f>"
+                     "\n\tscaleOrientation: <%f, %f, %f> %f"
+                     "\n\tcenter: <%f, %f, %f>",
+                     translation.getValue()[0],
+                     translation.getValue()[1],
+                     translation.getValue()[2],
+                     angle[0], angle[1], angle[2], rot,
+                     scaleFactor.getValue()[0],
+                     scaleFactor.getValue()[1],
+                     scaleFactor.getValue()[2],
+                     scaleangle[0], scaleangle[1], scaleangle[2],
+                     scalerotation,
+                     center.getValue()[0],
+                     center.getValue()[1],
+                     center.getValue()[2]);
 #endif // debug
 
 #if !defined(COIN_EXCLUDE_SOMODELMATRIXELEMENT)
   SbMatrix matrix;
   matrix.setTransform(translation.getValue(),
-		      rotation.getValue(),
-		      scaleFactor.getValue(),
-		      scaleOrientation.getValue(),
-		      center.getValue());
-  
+                      rotation.getValue(),
+                      scaleFactor.getValue(),
+                      scaleOrientation.getValue(),
+                      center.getValue());
+
   SoModelMatrixElement::mult(action->getState(), this, matrix);
 #endif // !COIN_EXCLUDE_SOMODELMATRIXELEMENT
 }
@@ -257,7 +257,7 @@ SoTransform::doAction(SoAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTransform::GLRender(SoGLRenderAction * action)
 {
 #if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
@@ -273,7 +273,7 @@ SoTransform::GLRender(SoGLRenderAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTransform::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoTransform::doAction((SoAction *)action);
@@ -284,15 +284,15 @@ SoTransform::getBoundingBox(SoGetBoundingBoxAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTransform::getMatrix(SoGetMatrixAction * action)
 {
   SbMatrix matrix;
   matrix.setTransform(translation.getValue(),
-		      rotation.getValue(),
-		      scaleFactor.getValue(),
-		      scaleOrientation.getValue(),
-		      center.getValue());
+                      rotation.getValue(),
+                      scaleFactor.getValue(),
+                      scaleOrientation.getValue(),
+                      center.getValue());
   action->mult(matrix);
 }
 #endif // !COIN_EXCLUDE_SOGETMATRIXACTION
@@ -301,7 +301,7 @@ SoTransform::getMatrix(SoGetMatrixAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTransform::callback(SoCallbackAction * action)
 {
   SoTransform::doAction((SoAction *)action);
@@ -312,7 +312,7 @@ SoTransform::callback(SoCallbackAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTransform::pick(SoPickAction * action)
 {
   SoTransform::doAction((SoAction *)action);

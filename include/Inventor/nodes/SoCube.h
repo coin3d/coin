@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -69,10 +69,10 @@ protected:
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 #if !defined(COIN_EXCLUDE_SORAYPICKACTION)
   virtual SoDetail * createTriangleDetail(SoRayPickAction * action,
-					  const SoPrimitiveVertex * v1,
-					  const SoPrimitiveVertex * v2,
-					  const SoPrimitiveVertex * v3,
-					  SoPickedPoint * pp);
+                                          const SoPrimitiveVertex * v1,
+                                          const SoPrimitiveVertex * v2,
+                                          const SoPrimitiveVertex * v3,
+                                          SoPickedPoint * pp);
 #endif // !COIN_EXCLUDE_SORAYPICKACTION
 
 private:

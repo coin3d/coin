@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -89,11 +89,11 @@ SoScale::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoScale::doAction(SoAction * action)
 {
   SoModelMatrixElement::scaleBy(action->getState(), this,
-				this->scaleFactor.getValue());
+                                this->scaleFactor.getValue());
 }
 #endif // !COIN_EXCLUDE_SOACTION
 
@@ -101,16 +101,16 @@ SoScale::doAction(SoAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoScale::GLRender(SoGLRenderAction * action)
 {
 #if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
   if (scaleFactor.getValue() != SbVec3f(1.0f, 1.0f, 1.0f)) {
     SoGLNormalizeElement::setMatrixState(action->getState(), FALSE);
   }
-#endif // ! COIN_EXCLUDE_SOGLNORMALIZEELEMENT  
+#endif // ! COIN_EXCLUDE_SOGLNORMALIZEELEMENT
 
-  SoScale::doAction((SoAction *)action);  
+  SoScale::doAction((SoAction *)action);
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
@@ -118,7 +118,7 @@ SoScale::GLRender(SoGLRenderAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoScale::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoScale::doAction((SoAction *)action);
@@ -166,6 +166,6 @@ SoScale::pick(SoPickAction *action)
 void
 SoScale::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  SoScale::doAction((SoAction*)action);  
+  SoScale::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

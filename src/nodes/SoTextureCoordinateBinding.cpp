@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -76,7 +76,7 @@ SO_NODE_SOURCE(SoTextureCoordinateBinding);
 SoTextureCoordinateBinding::SoTextureCoordinateBinding()
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTextureCoordinateBinding);
-  
+
   SO_NODE_ADD_FIELD(value, (SoTextureCoordinateBinding::PER_VERTEX_INDEXED));
 
   SO_NODE_DEFINE_ENUM_VALUE(Binding, PER_VERTEX);
@@ -116,7 +116,7 @@ SoTextureCoordinateBinding::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTextureCoordinateBinding::GLRender(SoGLRenderAction * action)
 {
   SoTextureCoordinateBinding::doAction(action);
@@ -132,7 +132,7 @@ SoTextureCoordinateBinding::GLRender(SoGLRenderAction * action)
 void
 SoTextureCoordinateBinding::doAction(SoAction *action)
 {
-  if (!value.isIgnored()) 
+  if (!value.isIgnored())
     SoTextureCoordinateBindingElement::set(action->getState(), this,
      (SoTextureCoordinateBindingElement::Binding)value.getValue());
 }

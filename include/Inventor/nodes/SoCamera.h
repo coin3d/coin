@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -70,7 +70,7 @@ public:
 
   SoSFEnum viewportMapping;
   SoSFVec3f position;
-  SoSFRotation orientation; 
+  SoSFRotation orientation;
   SoSFFloat aspectRatio;
   SoSFFloat nearDistance;
   SoSFFloat farDistance;
@@ -80,12 +80,12 @@ public:
   virtual void scaleHeight(float scaleFactor) = 0;
   virtual SbViewVolume getViewVolume(float useAspectRatio = 0.0f) const = 0;
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
-  void viewAll(SoNode * const sceneRoot, 
-	       const SbViewportRegion & vpRegion, 
-	       const float slack = 1.0f);
-  void viewAll(SoPath * const path, 
-	       const SbViewportRegion & vpRegion, 
-	       const float slack = 1.0f);
+  void viewAll(SoNode * const sceneRoot,
+               const SbViewportRegion & vpRegion,
+               const float slack = 1.0f);
+  void viewAll(SoPath * const path,
+               const SbViewportRegion & vpRegion,
+               const float slack = 1.0f);
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
   SbViewportRegion getViewportBounds(const SbViewportRegion & region) const;
 
@@ -116,12 +116,12 @@ protected:
   virtual ~SoCamera();
 
   virtual void viewBoundingBox(const SbBox3f & box,
-			       float aspect, float slack) = 0;
+                               float aspect, float slack) = 0;
   virtual void jitter(int numPasses, int curPass,
-		      const SbViewportRegion & vpReg,
-		      SbVec3f & jitterAmount) const;
-  
-  
+                      const SbViewportRegion & vpReg,
+                      SbVec3f & jitterAmount) const;
+
+
 };
 
 #endif // !__SOCAMERA_H__

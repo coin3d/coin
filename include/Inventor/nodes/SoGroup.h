@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -45,7 +45,7 @@ public:
   SoNode * getChild(const int index) const;
   int findChild(const SoNode * const node) const;
   int getNumChildren(void) const;
-  void removeChild(const int childIndex); 
+  void removeChild(const int childIndex);
   void removeChild(SoNode * const child);
   void removeAllChildren(void);
   void replaceChild(const int index, SoNode * const newChild);

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -60,7 +60,7 @@ SO_NODE_SOURCE(SoBaseColor);
 SoBaseColor::SoBaseColor()
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoBaseColor);
-  
+
   SO_NODE_ADD_FIELD(rgb, (SbColor(0.8f, 0.8f, 0.8f)));
 }
 
@@ -94,7 +94,7 @@ SoBaseColor::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoBaseColor::GLRender(SoGLRenderAction * action)
 {
   SoBaseColor::doAction(action);
@@ -110,9 +110,9 @@ SoBaseColor::doAction(SoAction *action)
 {
   if (!rgb.isIgnored()) {
     SoDiffuseColorElement::set(action->getState(),
-			       this,
-			       rgb.getNum(),
-			       rgb.getValues(0));
+                               this,
+                               rgb.getNum(),
+                               rgb.getValues(0));
   }
 }
 #endif // !COIN_EXCLUDE_DOACTION
@@ -133,4 +133,3 @@ SoBaseColor::pick(SoPickAction *action)
 {
   SoBaseColor::doAction(action);
 }
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -27,7 +27,7 @@ public:
   virtual ~SoDetail();
 
   virtual SoDetail *copy() const = 0;
-  
+
   virtual SoType getTypeId() const = 0;
   SbBool isOfType(const SoType type) const;
 
@@ -37,7 +37,7 @@ public: // internal
 
   static void initClass();
   static void initClasses();
-  
+
 protected:
   SoDetail();
 

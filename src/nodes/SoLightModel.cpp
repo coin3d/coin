@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -72,7 +72,7 @@ SO_NODE_SOURCE(SoLightModel);
 SoLightModel::SoLightModel()
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoLightModel);
-  
+
   SO_NODE_ADD_FIELD(model, (SoLightModel::PHONG));
   SO_NODE_DEFINE_ENUM_VALUE(Model, BASE_COLOR);
   SO_NODE_DEFINE_ENUM_VALUE(Model, PHONG);
@@ -107,7 +107,7 @@ SoLightModel::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoLightModel::GLRender(SoGLRenderAction * action)
 {
   SoLightModel::doAction(action);
@@ -128,7 +128,7 @@ SoLightModel::doAction(SoAction *action)
 #endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
       ) {
     SoLightModelElement::set(action->getState(), this,
-			     (SoLightModelElement::Model)model.getValue());
+                             (SoLightModelElement::Model)model.getValue());
   }
 }
 #endif // !COIN_EXCLUDE_SOACTION

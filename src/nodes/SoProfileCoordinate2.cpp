@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -61,7 +61,7 @@ SO_NODE_SOURCE(SoProfileCoordinate2);
 SoProfileCoordinate2::SoProfileCoordinate2()
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoProfileCoordinate2);
-  
+
   SO_NODE_ADD_FIELD(point, (0.0f, 0.0f));
 }
 
@@ -100,7 +100,7 @@ SoProfileCoordinate2::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoProfileCoordinate2::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoProfileCoordinate2::doAction(action);
@@ -116,7 +116,7 @@ void
 SoProfileCoordinate2::doAction(SoAction *action )
 {
   SoProfileCoordinateElement::set2(action->getState(), this,
-				   point.getNum(), point.getValues(0));
+                                   point.getNum(), point.getValues(0));
 }
 #endif // !COIN_EXCLUDE_SOACTION
 

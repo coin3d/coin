@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -32,7 +32,7 @@
 class SoWWWAnchor;
 
 typedef void SoWWWAnchorCB(const SbString & url, void * data,
-			   SoWWWAnchor * node);
+                           SoWWWAnchor * node);
 
 // *************************************************************************
 

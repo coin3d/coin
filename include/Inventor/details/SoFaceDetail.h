@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -37,13 +37,13 @@ public:
   SoFaceDetail();
   virtual ~SoFaceDetail();
   virtual SoDetail *copy() const;
-  
+
   int getNumPoints() const;
   const SoPointDetail *getPoint(const int idx) const;
   SoPointDetail *getPoints();
   int getFaceIndex() const;
   int getPartIndex() const;
-  
+
   void setNumPoints(const int num);
   void setPoint(const int idx, const SoPointDetail * const detail);
   void setFaceIndex(const int idx);
@@ -51,7 +51,7 @@ public:
 
   void incFaceIndex();
   void incPartIndex();
-  
+
 private:
   SoPointDetail *pointsArray;
   int numAllocated;

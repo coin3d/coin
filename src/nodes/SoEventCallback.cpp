@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -96,7 +96,7 @@ SoEventCallback::getPath(void)
 */
 void
 SoEventCallback::addEventCallback(SoType eventType, SoEventCallbackCB * f,
-				  void * userData)
+                                  void * userData)
 {
   this->callbackTypes.append(eventType);
   this->callbacks.append((void *)f);
@@ -108,8 +108,8 @@ SoEventCallback::addEventCallback(SoType eventType, SoEventCallbackCB * f,
 */
 void
 SoEventCallback::removeEventCallback(SoType /* eventType */,
-				     SoEventCallbackCB * f,
-				     void * /* userData */)
+                                     SoEventCallbackCB * f,
+                                     void * /* userData */)
 {
   int idx = this->callbacks.find((void *)f);
   if (idx != -1) {
@@ -121,7 +121,7 @@ SoEventCallback::removeEventCallback(SoType /* eventType */,
 #if COIN_DEBUG
   if (idx == -1) {
     SoDebugError::postWarning("SoEventCallback::removeEventCallback",
-			      "tried to remove non-existant callback");
+                              "tried to remove non-existant callback");
   }
 #endif // COIN_DEBUG
 }
@@ -166,7 +166,7 @@ SoEventCallback::setHandled(void)
 #if COIN_DEBUG
   if (!this->heaction) {
     SoDebugError::postWarning("SoEventCallback::setHandled",
-			      "should only be called from event callbacks");
+                              "should only be called from event callbacks");
     return;
   }
 #endif // COIN_DEBUG
@@ -183,7 +183,7 @@ SoEventCallback::isHandled(void) const
 #if COIN_DEBUG
   if (!this->heaction) {
     SoDebugError::postWarning("SoEventCallback::isHandled",
-			      "should only be called from event callbacks");
+                              "should only be called from event callbacks");
     return TRUE;
   }
 #endif // COIN_DEBUG
@@ -201,11 +201,11 @@ SoEventCallback::grabEvents(void)
 #if COIN_DEBUG
   if (!this->heaction) {
     SoDebugError::postWarning("SoEventCallback::grabEvents",
-			      "should only be called from event callbacks");
+                              "should only be called from event callbacks");
     return;
   }
 #endif // COIN_DEBUG
-  
+
   this->heaction->setGrabber(this);
 }
 
@@ -218,7 +218,7 @@ SoEventCallback::releaseEvents(void)
 #if COIN_DEBUG
   if (!this->heaction) {
     SoDebugError::postWarning("SoEventCallback::releaseEvents",
-			      "should only be called from event callbacks");
+                              "should only be called from event callbacks");
     return;
   }
 #endif // COIN_DEBUG

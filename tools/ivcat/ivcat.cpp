@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -48,14 +48,14 @@ usage(const char * argv_0)
   fprintf(stderr, "\t-o:\twrite to ``filename'' instead of stdout\n");
 
   fprintf(stderr,
-	  "\n  ``%s'' will read all files given on the command line,\n",
-	  argv_0);
+          "\n  ``%s'' will read all files given on the command line,\n",
+          argv_0);
   fprintf(stderr,
-	  "  compile them into a single scene and write them back out\n");
+          "  compile them into a single scene and write them back out\n");
   fprintf(stderr,
-	  "  again on stdout (unless the ``-o'' option is used).\n\n");
+          "  again on stdout (unless the ``-o'' option is used).\n\n");
   fprintf(stderr,
-	  "  Use ``-'' or no input files to read from stdin.\n\n");
+          "  Use ``-'' or no input files to read from stdin.\n\n");
 }
 
 int
@@ -88,8 +88,8 @@ main(int argc, char * argv[])
     case 'o':
       outname = optarg;
       if (!outname) {
-	usage(argv[0]);
-	exit(1);
+        usage(argv[0]);
+        exit(1);
       }
       break;
     case '?':
@@ -127,16 +127,16 @@ main(int argc, char * argv[])
       else fprintf(stderr, "Couldn't open file '%s' -- skipping.\n", argv[i]);
 
       if (inp) {
-	SoSeparator * tmproot = SoDB::readAll(inp);
-	if (tmproot) {
-	  root->addChild(tmproot->getNumChildren() == 1 ?
-			 tmproot->getChild(0) : tmproot);
-	}
-	else {
-	  fprintf(stderr, "Couldn't read file '%s' -- skipping.\n", argv[i]);
-	}
+        SoSeparator * tmproot = SoDB::readAll(inp);
+        if (tmproot) {
+          root->addChild(tmproot->getNumChildren() == 1 ?
+                         tmproot->getChild(0) : tmproot);
+        }
+        else {
+          fprintf(stderr, "Couldn't read file '%s' -- skipping.\n", argv[i]);
+        }
 
-	if (inp == &fileinp) inp->closeFile();
+        if (inp == &fileinp) inp->closeFile();
       }
     }
   }
@@ -155,8 +155,8 @@ main(int argc, char * argv[])
     SoOutput out;
     if (outname) {
       if (!out.openFile(outname)) {
-	fprintf(stderr, "Couldn't write output to '%s'.\n", outname);
-	exit(1);
+        fprintf(stderr, "Couldn't write output to '%s'.\n", outname);
+        exit(1);
       }
     }
     out.setBinary(writeasbinary);

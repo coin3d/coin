@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -103,7 +103,7 @@
 // FIXME: old crust, find a good place to store this code. 19980913 mortene.
 static float
 compareAppearance(SoMFColor * firstColor, int firstIdx,
-		   SoMFColor * otherColor, int otherIdx)
+                   SoMFColor * otherColor, int otherIdx)
 {
   if (firstColor->isDefault() && otherColor->isDefault()) return 0.0f;
   return 0.299 * pow(firstColor->getValues(0)[firstIdx][0]-otherColor->getValues(0)[otherIdx][0],2)
@@ -183,7 +183,7 @@ SoMaterial::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoMaterial::GLRender(SoGLRenderAction * action)
 {
   SoMaterial::doAction(action);
@@ -198,9 +198,9 @@ float
 SoMaterial::compareAppearance(int thisIdx,SoMaterial * otherMaterial,int otherIdx)
 {
   return 0.25 *(::compareAppearance(&(this->ambientColor), thisIdx,&(otherMaterial->ambientColor),otherIdx)+
-	       ::compareAppearance(&(this->diffuseColor), thisIdx,&(otherMaterial->diffuseColor),otherIdx)+
-	       ::compareAppearance(&(this->specularColor), thisIdx,&(otherMaterial->specularColor),otherIdx)+
-	       ::compareAppearance(&(this->emissiveColor), thisIdx,&(otherMaterial->emissiveColor),otherIdx));
+               ::compareAppearance(&(this->diffuseColor), thisIdx,&(otherMaterial->diffuseColor),otherIdx)+
+               ::compareAppearance(&(this->specularColor), thisIdx,&(otherMaterial->specularColor),otherIdx)+
+               ::compareAppearance(&(this->emissiveColor), thisIdx,&(otherMaterial->emissiveColor),otherIdx));
 }
 
 //
@@ -210,8 +210,8 @@ float
 SoMaterial::compareAppearanceVRML2(SoMaterial * otherMaterial)
 {
   return 0.25 *(::compareAppearance(&(this->diffuseColor), 0,&(otherMaterial->diffuseColor),0)+
-	       ::compareAppearance(&(this->specularColor), 0,&(otherMaterial->specularColor),0)+
-	       ::compareAppearance(&(this->emissiveColor), 0,&(otherMaterial->emissiveColor),0));
+               ::compareAppearance(&(this->specularColor), 0,&(otherMaterial->specularColor),0)+
+               ::compareAppearance(&(this->emissiveColor), 0,&(otherMaterial->emissiveColor),0));
 }
 
 
@@ -233,39 +233,39 @@ SoMaterial::doAction(SoAction *action)
 
   if (!ambientColor.isIgnored() && !TEST_OVERRIDE(AMBIENT_COLOR)) {
     SoAmbientColorElement::set(state,
-			       this,
-			       ambientColor.getNum(),
-			       ambientColor.getValues(0));
+                               this,
+                               ambientColor.getNum(),
+                               ambientColor.getValues(0));
   }
   if (!diffuseColor.isIgnored() && !TEST_OVERRIDE(DIFFUSE_COLOR)) {
     SoDiffuseColorElement::set(action->getState(),
-			       this,
-			       diffuseColor.getNum(),
-			       diffuseColor.getValues(0));
+                               this,
+                               diffuseColor.getNum(),
+                               diffuseColor.getValues(0));
   }
   if (!emissiveColor.isIgnored() && !TEST_OVERRIDE(EMISSIVE_COLOR)) {
     SoEmissiveColorElement::set(action->getState(),
-				this,
-				emissiveColor.getNum(),
-				emissiveColor.getValues(0));
+                                this,
+                                emissiveColor.getNum(),
+                                emissiveColor.getValues(0));
   }
   if (!specularColor.isIgnored() && !TEST_OVERRIDE(SPECULAR_COLOR)) {
     SoSpecularColorElement::set(action->getState(),
-				this,
-				specularColor.getNum(),
-				specularColor.getValues(0));
+                                this,
+                                specularColor.getNum(),
+                                specularColor.getValues(0));
   }
   if (!shininess.isIgnored() && !TEST_OVERRIDE(SHININESS)) {
     SoShininessElement::set(action->getState(),
-			    this,
-			    shininess.getNum(),
-			    shininess.getValues(0));
+                            this,
+                            shininess.getNum(),
+                            shininess.getValues(0));
   }
   if (!transparency.isIgnored() && !TEST_OVERRIDE(TRANSPARENCY)) {
     SoTransparencyElement::set(action->getState(),
-			       this,
-			       transparency.getNum(),
-			       transparency.getValues(0));
+                               this,
+                               transparency.getNum(),
+                               transparency.getValues(0));
   }
 #undef TEST_OVERRIDE
 }

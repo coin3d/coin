@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -109,18 +109,18 @@ SoSpotLight::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoSpotLight::GLRender(SoGLRenderAction * action)
 {
   if (!on.getValue()) return;
 
   SoState *state = action->getState();
   int idx = SoGLLightIdElement::increment(state);
-  
+
   if (idx < 0) {
 #if COIN_DEBUG
     SoDebugError::post("SoSpotLight::GLRender()",
-		       "Max # lights exceeded :(\n");
+                       "Max # lights exceeded :(\n");
 #endif // COIN_DEBUG
     return;
   }
@@ -130,7 +130,7 @@ SoSpotLight::GLRender(SoGLRenderAction * action)
   SbColor4f lightcolor(0.0f, 0.0f, 0.0f, 1.0f);
   SbVec3f attenuation(0.0f, 0.0f, 1.0f);
 #if !defined(COIN_EXCLUDE_SOENVIRONMENTELEMENT)
-  lightcolor.setRGB(SoEnvironmentElement::getAmbientColor(state));      
+  lightcolor.setRGB(SoEnvironmentElement::getAmbientColor(state));
   lightcolor *= SoEnvironmentElement::getAmbientIntensity(state);
   attenuation = SoEnvironmentElement::getLightAttenuation(state);
 #endif // ! COIN_EXCLUDE_SOENVIRONMENTELEMENT
@@ -139,13 +139,13 @@ SoSpotLight::GLRender(SoGLRenderAction * action)
   glLightf(light, GL_QUADRATIC_ATTENUATION, attenuation[0]);
   glLightf(light, GL_LINEAR_ATTENUATION, attenuation[1]);
   glLightf(light, GL_CONSTANT_ATTENUATION, attenuation[2]);
-  
+
   lightcolor.setRGB(color.getValue());
   if (!intensity.isIgnored()) lightcolor *= intensity.getValue();
-  
+
   glLightfv(light, GL_DIFFUSE, lightcolor.getValue());
   glLightfv(light, GL_SPECULAR, lightcolor.getValue());
-  
+
   SbVec3f loc = location.getValue();
 
   // point (or spot) light when w = 1.0
@@ -159,9 +159,8 @@ SoSpotLight::GLRender(SoGLRenderAction * action)
   float dropOff = !dropOffRate.isIgnored() ?
     dropOffRate.getValue() * 128.0f :
     0.0f;
-  
+
   glLightf(light, GL_SPOT_EXPONENT, dropOff);
   glLightf(light, GL_SPOT_CUTOFF, cutOff);
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
-

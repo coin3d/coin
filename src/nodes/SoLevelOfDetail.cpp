@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -104,16 +104,16 @@ SoLevelOfDetail::doAction(SoAction *action)
     return;
   }
 
-  // for some strange reason, gcc (egcs-2.91.66) won't accept the code 
-  // below inside a case (yes, I did use brackets). 
+  // for some strange reason, gcc (egcs-2.91.66) won't accept the code
+  // below inside a case (yes, I did use brackets).
   // That's the reason for the strange switch/case above. pederb 19991116
 
   SoState * state = action->getState();
   int n = this->getNumChildren();
   if (n == 0) return;
   float complexity = SoComplexityElement::get(state);
-  
-  if ((SoComplexityTypeElement::get(state) == 
+
+  if ((SoComplexityTypeElement::get(state) ==
        SoComplexityTypeElement::BOUNDING_BOX) ||
       complexity == 0.0f) {
     state->push();
@@ -130,12 +130,12 @@ SoLevelOfDetail::doAction(SoAction *action)
   SbVec2s size;
   SbBox3f bbox = bboxAction->getBoundingBox();
   SoShape::getScreenSize(state, bbox, size);
-  
+
   float area = float(size[0])*float(size[1])*complexity;
-    
+
   // in case there are too few screenArea values
-  n = SbMin(n, this->screenArea.getNum()); 
-  
+  n = SbMin(n, this->screenArea.getNum());
+
   for (int i = 0; i < n; i++) {
     if (area > this->screenArea[i]) {
       state->push();

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -69,7 +69,7 @@ SO_NODE_ABSTRACT_SOURCE(SoVertexShape);
 SoVertexShape::SoVertexShape()
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoVertexShape);
-  
+
   SO_NODE_ADD_FIELD(vertexProperty,(NULL));
 
   this->normalCache = NULL;
@@ -88,7 +88,7 @@ SoVertexShape::~SoVertexShape()
   SoVertexShape class. This includes setting up the
   type system, among other things.
 */
-void 
+void
 SoVertexShape::initClass()
 {
   SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoVertexShape);
@@ -97,7 +97,7 @@ SoVertexShape::initClass()
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoVertexShape::notify(SoNotList * /* list */)
 {
   // FIXME: cache(s) need invalidation. 19990327 mortene.
@@ -108,9 +108,9 @@ SoVertexShape::notify(SoNotList * /* list */)
   normals using the SoNormalBundle class. \e TRUE should
   be returned if normals were generated, \e FALSE otherwise.
 */
-SbBool 
+SbBool
 SoVertexShape::generateDefaultNormals(SoState * ,
-				      SoNormalBundle *)
+                                      SoNormalBundle *)
 {
   // FIXME: create to SoNormalBundle class.
   return FALSE;
@@ -122,13 +122,13 @@ SoVertexShape::generateDefaultNormals(SoState * ,
   normals using the SoNormalCache class. This is more
   effective than using SoNormalGenerator. Return \e TRUE if
   normals were generated, \e FALSE otherwise.
-  
+
   This method is not part of the original OIV API. Do not overload it if
   you intend to create a node that can be used on both Coin and OIV.
 */
 SbBool
 SoVertexShape::generateDefaultNormals(SoState * /* state */,
-				      SoNormalCache * /* nc */)
+                                      SoNormalCache * /* nc */)
 {
   return FALSE;
 }
@@ -137,11 +137,11 @@ SoVertexShape::generateDefaultNormals(SoState * /* state */,
 /*!
   FIXME: write function documentation
 */
-SbBool 
+SbBool
 SoVertexShape::shouldGLRender(SoGLRenderAction * action)
 {
   if (!SoShape::shouldGLRender(action)) return FALSE;
-  
+
   SoState * state = action->getState();
 
 #if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
@@ -151,26 +151,26 @@ SoVertexShape::shouldGLRender(SoGLRenderAction * action)
 #else // COIN_EXCLUDE_SOLIGHTMODELELEMENT
   SbBool needNormals = FALSE;
 #endif // COIN_EXCLUDE_SOLIGHTMODELELEMENT
-  
+
   if (needNormals) {
 #if !defined(COIN_EXCLUDE_SONORMALELEMENT)
     const SoNormalElement * elem = SoNormalElement::getInstance(state);
-    const SoVertexProperty * vp = 
+    const SoVertexProperty * vp =
       (SoVertexProperty *) this->vertexProperty.getValue();
-    if (elem->getNum() == 0 && 
-	(!vp || vp->normal.getNum() <= 0)) {
-      if (this->normalCache == NULL ||  
-	  !this->normalCache->isValid(state)) {
-	generateNormals(state);
+    if (elem->getNum() == 0 &&
+        (!vp || vp->normal.getNum() <= 0)) {
+      if (this->normalCache == NULL ||
+          !this->normalCache->isValid(state)) {
+        generateNormals(state);
       }
-#if !defined(COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT)      
+#if !defined(COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT)
       // if normals are automatically generated, and vertexordering
       // is unknown, force tow-side lighting
       if (SoShapeHintsElement::getVertexOrdering(state) ==
-	  SoShapeHintsElement::UNKNOWN_ORDERING) {
-	const SoGLShapeHintsElement * sh = (SoGLShapeHintsElement *)
-	  state->getConstElement(SoGLShapeHintsElement::getClassStackIndex());
-	sh->forceSend(TRUE);
+          SoShapeHintsElement::UNKNOWN_ORDERING) {
+        const SoGLShapeHintsElement * sh = (SoGLShapeHintsElement *)
+          state->getConstElement(SoGLShapeHintsElement::getClassStackIndex());
+        sh->forceSend(TRUE);
       }
 #endif // ! COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT
     }
@@ -180,11 +180,11 @@ SoVertexShape::shouldGLRender(SoGLRenderAction * action)
     /* will supply unit normals when normal cache is used */
     if (SoVertexShape::willUpdateNormalizeElement(state)) {
       const SoGLNormalizeElement * ne = (SoGLNormalizeElement *)
-	state->getConstElement(SoGLNormalizeElement::getClassStackIndex());
+        state->getConstElement(SoGLNormalizeElement::getClassStackIndex());
       ne->forceSend(TRUE);
-    } 
+    }
 #endif // ! COIN_EXCLUDE_SOGLNORMALIZEELEMENT
-    
+
   }
   return TRUE;
 }
@@ -193,19 +193,19 @@ SoVertexShape::shouldGLRender(SoGLRenderAction * action)
   Will return TRUE if normal cache is used (normals are then known
   to be unit length).
 */
-SbBool 
+SbBool
 SoVertexShape::willUpdateNormalizeElement(SoState *state) const
 {
   const SoNormalElement * elem = SoNormalElement::getInstance(state);
-  const SoVertexProperty * vp = 
+  const SoVertexProperty * vp =
     (SoVertexProperty *) this->vertexProperty.getValue();
-  
+
   // TODO:
   // could perhaps add an areNormalsUnitLength() to the normal
   // cache also...
-  //  
+  //
 
-  if (elem->getNum() <= 0 && (!vp || vp->normal.getNum() <= 0) && 
+  if (elem->getNum() <= 0 && (!vp || vp->normal.getNum() <= 0) &&
       this->normalCache) return TRUE;
   return FALSE;
 }
@@ -215,10 +215,10 @@ SoVertexShape::willUpdateNormalizeElement(SoState *state) const
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoVertexShape::setNormalCache(SoState * const state,
-			      const int num,
-			      const SbVec3f * normals)
+                              const int num,
+                              const SbVec3f * normals)
 {
   if (this->normalCache == NULL) {
     this->normalCache = new SoNormalCache(state);
@@ -238,13 +238,13 @@ SoVertexShape::getNormalCache() const
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoVertexShape::generateNormals(SoState * const state)
 {
   if (this->normalCache == NULL) {
     this->normalCache = new SoNormalCache(state);
   }
-  
+
   //
   // See if the node supports the Coin-way of generating normals
   //
@@ -262,15 +262,15 @@ SoVertexShape::generateNormals(SoState * const state)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoVertexShape::getVertexData(SoState * state,
-			     const SoCoordinateElement *& coords,
-			     const SbVec3f *& normals,
-			     const SbBool needNormals)
-{    
+                             const SoCoordinateElement *& coords,
+                             const SbVec3f *& normals,
+                             const SbBool needNormals)
+{
   coords = SoCoordinateElement::getInstance(state);
   assert(coords);
-  
+
   normals = NULL;
   if (needNormals) {
     normals = SoNormalElement::getArrayPtr(state);

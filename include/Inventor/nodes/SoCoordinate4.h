@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -34,7 +34,7 @@ class SoCoordinate4 : public SoNode {
   typedef SoNode inherited;
 
   SO_NODE_HEADER(SoCoordinate4);
- 
+
 public:
   static void initClass(void);
   SoCoordinate4(void);

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -90,7 +90,7 @@ SO_NODE_SOURCE(SoPolygonOffset);
 SoPolygonOffset::SoPolygonOffset()
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoPolygonOffset);
-  
+
   SO_NODE_ADD_FIELD(factor, (1.0f));
   SO_NODE_ADD_FIELD(units, (1.0f));
   SO_NODE_ADD_FIELD(styles, (SoPolygonOffset::FILLED));
@@ -139,11 +139,11 @@ SoPolygonOffset::doAction(SoAction * action)
 #if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
   if (SoOverrideElement::getPolygonOffsetOverride(state)) return;
 #endif
-  
+
   float _factor, _units;
   SoPolygonOffsetElement::Style _styles;
   SbBool _on;
-  
+
   SoPolygonOffsetElement::get(state, _factor, _units, _styles, _on);
   if (!factor.isIgnored()) _factor = factor.getValue();
   if (!units.isIgnored()) _units = units.getValue();
@@ -151,11 +151,11 @@ SoPolygonOffset::doAction(SoAction * action)
   if (!on.isIgnored()) _on = on.getValue();
 
   SoPolygonOffsetElement::set(action->getState(),
-			      this,
-			      _factor,
-			      _units,
-			      _styles,
-			      _on);
+                              this,
+                              _factor,
+                              _units,
+                              _styles,
+                              _on);
 }
 #endif // !COIN_EXCLUDE_SOACTION
 

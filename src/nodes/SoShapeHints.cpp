@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -130,7 +130,7 @@ SoShapeHints::SoShapeHints()
   SO_NODE_ADD_FIELD(shapeType,(UNKNOWN_SHAPE_TYPE));
   SO_NODE_ADD_FIELD(faceType,(CONVEX));
   SO_NODE_ADD_FIELD(creaseAngle,(0.0f));
-  
+
   SO_NODE_DEFINE_ENUM_VALUE(VertexOrdering, UNKNOWN_ORDERING);
   SO_NODE_DEFINE_ENUM_VALUE(VertexOrdering, CLOCKWISE);
   SO_NODE_DEFINE_ENUM_VALUE(VertexOrdering, COUNTERCLOCKWISE);
@@ -187,7 +187,7 @@ SoShapeHints::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoShapeHints::doAction(SoAction * action)
 {
   SoState *state = action->getState();
@@ -198,26 +198,26 @@ SoShapeHints::doAction(SoAction * action)
 #else // COIN_EXCLUDE_SOOVERRIDEELEMENT
 #define TEST_OVERRIDE(x,y) FALSE // a neat little trick (don't nag, Morten :-)
 #endif // COIN_EXCLUDE_SOOVERRIDEELEMENT
-  
+
   // store current values, in case some are overridden or ignored
   SoShapeHintsElement::VertexOrdering vo;
   SoShapeHintsElement::ShapeType st;
   SoShapeHintsElement::FaceType ft;
   SoShapeHintsElement::get(state, vo, st, ft);
-  
+
   if (!vertexOrdering.isIgnored() && !TEST_OVERRIDE(SHAPE_HINTS))
     vo = (SoShapeHintsElement::VertexOrdering) vertexOrdering.getValue();
   if (!shapeType.isIgnored() && !TEST_OVERRIDE(SHAPE_HINTS))
     st = (SoShapeHintsElement::ShapeType) shapeType.getValue();
-  if (!faceType.isIgnored() && !TEST_OVERRIDE(SHAPE_HINTS)) 
+  if (!faceType.isIgnored() && !TEST_OVERRIDE(SHAPE_HINTS))
     ft = (SoShapeHintsElement::FaceType) faceType.getValue();
 
   SoShapeHintsElement::set(action->getState(), this,
-			   vo, st, ft);
-  
+                           vo, st, ft);
+
   if (!creaseAngle.isIgnored() && !TEST_OVERRIDE(CREASE_ANGLE))
     SoCreaseAngleElement::set(state, this,
-			      creaseAngle.getValue());
+                              creaseAngle.getValue());
 #undef TEST_OVERRIDE
 }
 #endif // !COIN_EXCLUDE_SOACTION
@@ -226,7 +226,7 @@ SoShapeHints::doAction(SoAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoShapeHints::GLRender(SoGLRenderAction * action)
 {
   SoShapeHints::doAction((SoAction *)action);
@@ -237,7 +237,7 @@ SoShapeHints::GLRender(SoGLRenderAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoShapeHints::callback(SoCallbackAction * action)
 {
   SoShapeHints::doAction((SoAction *)action);
@@ -248,7 +248,7 @@ SoShapeHints::callback(SoCallbackAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoShapeHints::pick(SoPickAction * action)
 {
   SoShapeHints::doAction((SoAction *)action);
@@ -259,7 +259,7 @@ SoShapeHints::pick(SoPickAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoShapeHints::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoShapeHints::doAction((SoAction *)action);

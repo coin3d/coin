@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -75,7 +75,7 @@ protected:
 #endif // !COIN_EXCLUDE_SOPICKACTION
 
   SbMatrix getUnsquishingMatrix(SbMatrix squishedMatrix,
-				SbBool doInverse, SbMatrix &inverseAnswer);
+                                SbBool doInverse, SbMatrix &inverseAnswer);
 };
 
 #endif // !__SOANTISQUISH_H__

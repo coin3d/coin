@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -172,7 +172,7 @@ SoSurroundScale::pick(SoPickAction * /* action */)
  */
 void
 SoSurroundScale::updateMySurroundParams(SoAction * /* action */,
-					const SbMatrix & /* inv */)
+                                        const SbMatrix & /* inv */)
 {
   assert(0 && "FIXME: not implemented");
 }

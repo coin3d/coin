@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -133,8 +133,8 @@ SoGroup::readInstance(SoInput * in, unsigned short /* flags */)
   if (in->read(typeString, TRUE)) {
     if (typeString == "fields") {
       if (!fdata->readFieldTypes(in, this)) {
-	SoReadError::post(in, "Bad field specifications for node");
-	return FALSE;
+        SoReadError::post(in, "Bad field specifications for node");
+        return FALSE;
       }
     }
     else {
@@ -163,16 +163,16 @@ SoGroup::readChildren(SoInput * in)
     for (unsigned int i=0; (i < numchildren) && ret; i++) {
       SoBase * child = NULL;
       if ((ret = SoBase::read(in, child, SoNode::getClassTypeId()))) {
-	if (child == NULL) {
-	  if (in->eof())
-	    SoReadError::post(in, "File corrupt, premature end of file");
-	  else
-	    SoReadError::post(in, "``NULL'' keyword misplaced");
-	  ret = FALSE;
-	}
-	else {
-	  this->addChild((SoNode *)child);
-	}
+        if (child == NULL) {
+          if (in->eof())
+            SoReadError::post(in, "File corrupt, premature end of file");
+          else
+            SoReadError::post(in, "``NULL'' keyword misplaced");
+          ret = FALSE;
+        }
+        else {
+          this->addChild((SoNode *)child);
+        }
       }
     }
   }
@@ -182,28 +182,28 @@ SoGroup::readChildren(SoInput * in)
     while (!done) {
       SoBase * child = NULL;
       if ((ret = SoBase::read(in, child, SoNode::getClassTypeId())) && child) {
-	this->addChild((SoNode *)child);
+        this->addChild((SoNode *)child);
       }
       else {
-	if (ret && !child && !in->eof()) {
-	  SoReadError::post(in, "``NULL'' keyword misplaced");
-	  ret = FALSE;
-	}
-	done = TRUE;
+        if (ret && !child && !in->eof()) {
+          SoReadError::post(in, "``NULL'' keyword misplaced");
+          ret = FALSE;
+        }
+        done = TRUE;
       }
     }
 #else // old code
     while (ret) {
       SoBase * child = NULL;
-      
+
       if ((ret = SoBase::read(in, child, SoNode::getClassTypeId()))) {
-	if (child != NULL) this->addChild((SoNode *)child);
-	else break;
+        if (child != NULL) this->addChild((SoNode *)child);
+        else break;
       }
     }
 #endif
   }
- 
+
   return ret;
 }
 
@@ -282,31 +282,31 @@ SoGroup::initClass()
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoGroup::doAction(SoAction * action)
 {
   int numIndices;
   const int * indices;
   switch (action->getPathCode(numIndices, indices)) {
-  case SoAction::IN_PATH:     
+  case SoAction::IN_PATH:
     // FIXME: not necessary to traverse children which do not
     // affect state and is not in indices[] ?
     // But, traversal will stop pretty soon anyway, so it might
     // be slower to include a check here. pederb, 990618
     this->children->traverse(action, 0, indices[numIndices - 1]);
     break;
-      
+
   case SoAction::NO_PATH:
   case SoAction::BELOW_PATH:
     this->children->traverse(action); // traverse all children
     break;
-  
+
   case SoAction::OFF_PATH:
     {
       int n = this->getNumChildren();
       for (int i = 0; i < n; i++) {
-	if (this->getChild(i)->affectsState())
-	  this->children->traverse(action, i);
+        if (this->getChild(i)->affectsState())
+          this->children->traverse(action, i);
       }
       break;
     }
@@ -324,30 +324,30 @@ SoGroup::doAction(SoAction * action)
 void
 SoGroup::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  int numIndices;    
-  const int * indices;     
+  int numIndices;
+  const int * indices;
   int lastChildIndex;
-  
+
   if (action->getPathCode(numIndices, indices) == SoAction::IN_PATH)
     lastChildIndex = indices[numIndices-1];
-  else 
+  else
     lastChildIndex = getNumChildren() - 1;
-  
+
   // Initialize accumulation variables.
   SbVec3f acccenter(0.0f, 0.0f, 0.0f);
   int numCenters = 0;
-  
+
   for (int i = 0; i <= lastChildIndex; i++) {
     this->children->traverse(action, i);
-    
+
     // If center point is set, accumulate.
     if (action->isCenterSet()) {
       acccenter += action->getCenter();
-	numCenters++;
-	action->resetCenter();
+        numCenters++;
+        action->resetCenter();
     }
   }
-  
+
   if (numCenters != 0)
     action->setCenter(acccenter / numCenters, FALSE);
 }
@@ -357,7 +357,7 @@ SoGroup::getBoundingBox(SoGetBoundingBoxAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoGroup::GLRender(SoGLRenderAction * action)
 {
   SoGroup::doAction(action);
@@ -368,7 +368,7 @@ SoGroup::GLRender(SoGLRenderAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoGroup::callback(SoCallbackAction * action)
 {
   action->invokePreCallbacks(this);
@@ -383,7 +383,7 @@ SoGroup::callback(SoCallbackAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoGroup::getMatrix(SoGetMatrixAction * action)
 {
   switch (action->getCurPathCode()) {
@@ -402,7 +402,7 @@ SoGroup::getMatrix(SoGetMatrixAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoGroup::pick(SoPickAction * action)
 {
   SoGroup::doAction((SoAction *)action);
@@ -413,7 +413,7 @@ SoGroup::pick(SoPickAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoGroup::handleEvent(SoHandleEventAction * action)
 {
   SoGroup::doAction((SoAction *)action);
@@ -425,7 +425,7 @@ SoGroup::handleEvent(SoHandleEventAction * action)
   Write action method is overloaded from SoNode to call
   SoBase::addWriteReference() on the children of the group.
 */
-void 
+void
 SoGroup::write(SoWriteAction * action)
 {
   SoOutput * out = action->getOutput();
@@ -455,7 +455,7 @@ SoGroup::write(SoWriteAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoGroup::search(SoSearchAction * action)
 {
   // Include this node in the search.
@@ -479,7 +479,7 @@ SoGroup::getChildren() const
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoGroup::removeChild(SoNode * const child)
 {
   int idx = this->findChild(child);
@@ -494,7 +494,7 @@ SoGroup::removeChild(SoNode * const child)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoGroup::removeAllChildren(void)
 {
   int n = this->getNumChildren();
@@ -507,7 +507,7 @@ SoGroup::removeAllChildren(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoGroup::replaceChild(const int index, SoNode * const newChild)
 {
   this->removeChild(index);
@@ -517,7 +517,7 @@ SoGroup::replaceChild(const int index, SoNode * const newChild)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoGroup::replaceChild(SoNode * const oldChild, SoNode * const newChild)
 {
   this->replaceChild(findChild(oldChild), newChild);

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -39,10 +39,10 @@ public:
   SoIndexedTriangleStripSet(void);
 
   enum Binding {
-    OVERALL = 0, 
+    OVERALL = 0,
     PER_STRIP,
     PER_STRIP_INDEXED,
-    PER_TRIANGLE, 
+    PER_TRIANGLE,
     PER_TRIANGLE_INDEXED,
     PER_VERTEX,
     PER_VERTEX_INDEXED
@@ -63,7 +63,7 @@ protected:
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual SbBool generateDefaultNormals(SoState * state, SoNormalCache * nc);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
-  
+
 #if !defined(COIN_EXCLUDE_SOACTION)
   virtual void generatePrimitives(SoAction * action);
 #endif // !COIN_EXCLUDE_SOACTION

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -48,7 +48,7 @@ SoDetail::~SoDetail()
 /*!
   Returns \e TRUE if \a type is derived from (or \e is) this class.
 */
-SbBool 
+SbBool
 SoDetail::isOfType(const SoType type) const
 {
   return type.isDerivedFrom(SoDetail::classTypeId);
@@ -57,21 +57,21 @@ SoDetail::isOfType(const SoType type) const
 /*!
   Returns the type for this class.
 */
-SoType 
+SoType
 SoDetail::getClassTypeId()
 {
   return SoDetail::classTypeId;
 }
 
-void 
+void
 SoDetail::initClass()
 {
   SoDetail::classTypeId = SoType::createType(SoType::badType(),
-					     SbName("SoDetail"));
+                                             SbName("SoDetail"));
   SoDetail::initClasses();
 }
 
-void 
+void
 SoDetail::initClasses()
 {
   SoConeDetail::initClass();
@@ -82,5 +82,4 @@ SoDetail::initClasses()
   SoNodeKitDetail::initClass();
   SoPointDetail::initClass();
   SoTextDetail::initClass();
-}  
-
+}

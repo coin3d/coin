@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -73,7 +73,7 @@ SO_NODE_SOURCE(SoPickStyle);
 SoPickStyle::SoPickStyle()
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoPickStyle);
-  
+
   SO_NODE_ADD_FIELD(style, (SoPickStyle::SHAPE));
 
   SO_NODE_DEFINE_ENUM_VALUE(Style, SHAPE);
@@ -114,13 +114,13 @@ SoPickStyle::initClass(void)
 void
 SoPickStyle::doAction(SoAction *action)
 {
-  if (!style.isIgnored() 
+  if (!style.isIgnored()
 #if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
       && !SoOverrideElement::getPickStyleOverride(action->getState())
 #endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
       ) {
-    SoPickStyleElement::set(action->getState(), this, 
-			    (int32_t) style.getValue());
+    SoPickStyleElement::set(action->getState(), this,
+                            (int32_t) style.getValue());
   }
 }
 #endif // !COIN_EXCLUDE_SOACTION

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -36,7 +36,7 @@ class SoNormal : public SoNode {
   typedef SoNode inherited;
 
   SO_NODE_HEADER(SoNormal);
- 
+
 public:
   static void initClass(void);
   SoNormal(void);

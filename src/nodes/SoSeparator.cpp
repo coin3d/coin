@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -165,7 +165,7 @@ SoSeparator::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoSeparator::doAction(SoAction * action)
 {
   action->getState()->push();
@@ -178,7 +178,7 @@ SoSeparator::doAction(SoAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoState * state = action->getState();
@@ -220,7 +220,7 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
     if (childrencenterset) childrencenter = action->getCenter();
 
     action->getXfBoundingBox() = abox; // reset action bbox
-    
+
     if (iscaching) {
       // FIXME: continuous new & delete during traversal is probably a
       // performance killer.. fix. 19990422 mortene.
@@ -247,7 +247,7 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoSeparator::callback(SoCallbackAction * action)
 {
   action->getState()->push();
@@ -260,7 +260,7 @@ SoSeparator::callback(SoCallbackAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoSeparator::GLRender(SoGLRenderAction * action)
 {
   action->getState()->push();
@@ -290,7 +290,7 @@ SoSeparator::GLRenderInPath(SoGLRenderAction * action)
   int numIndices;
   const int *indices;
   action->getPathCode(numIndices, indices);
-  
+
   action->getState()->push();
   this->children->traverse(action, 0, indices[numIndices-1]);
   action->getState()->pop();
@@ -311,7 +311,7 @@ SoSeparator::GLRenderOffPath(SoGLRenderAction *)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoSeparator::handleEvent(SoHandleEventAction * action)
 {
   SoSeparator::doAction(action);
@@ -322,12 +322,12 @@ SoSeparator::handleEvent(SoHandleEventAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoSeparator::rayPick(SoRayPickAction * action)
 {
 #if 0 // debug
   SoDebugError::postInfo("SoSeparator::rayPick",
-			 "");
+                         "");
 #endif // debug
 
   SoSeparator::doAction(action);
@@ -338,7 +338,7 @@ SoSeparator::rayPick(SoRayPickAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoSeparator::search(SoSearchAction * action)
 {
   SoSeparator::doAction(action);
@@ -349,7 +349,7 @@ SoSeparator::search(SoSearchAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoSeparator::getMatrix(SoGetMatrixAction * action)
 {
   if (action->getCurPathCode() == SoAction::IN_PATH)
@@ -369,7 +369,7 @@ SoSeparator::SoSeparator(const int /* nChildren */)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoSeparator::setNumRenderCaches(const int /* howMany */)
 {
   assert(0 && "FIXME: not implemented yet");
@@ -378,7 +378,7 @@ SoSeparator::setNumRenderCaches(const int /* howMany */)
 /*!
   FIXME: write function documentation
 */
-int 
+int
 SoSeparator::getNumRenderCaches()
 {
   assert(0 && "FIXME: not implemented yet");
@@ -388,7 +388,7 @@ SoSeparator::getNumRenderCaches()
 /*!
   FIXME: write function documentation
 */
-SbBool 
+SbBool
 SoSeparator::affectsState(void) const
 {
   return FALSE;

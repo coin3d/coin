@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -81,7 +81,7 @@ SoFile::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoFile::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   this->children->traverse((SoAction *)action);
@@ -92,7 +92,7 @@ SoFile::getBoundingBox(SoGetBoundingBoxAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoFile::GLRender(SoGLRenderAction * action)
 {
   SoFile::doAction((SoAction*)action);
@@ -102,19 +102,19 @@ SoFile::GLRender(SoGLRenderAction * action)
 /*!
   FIXME: write function documentation
 */
-SbBool 
+SbBool
 SoFile::readInstance(SoInput * in, unsigned short flags)
 {
   // FIXME: 19990423, pederb
   // not quite sure what to do when an error occurs during
   // subfile read. Should I return with an error, or continue
   // trodding along?
-  
+
   if (!inherited::readInstance(in, flags)) return FALSE;
 
   if (name.getValue().getLength() == 0 ||
       strcmp(name.getValue().getString(), UNDEFINED_FILE) == 0) {
-    SoReadError::post(in, "Undefined file name in SoFile"); 
+    SoReadError::post(in, "Undefined file name in SoFile");
     return TRUE;
   }
 
@@ -126,7 +126,7 @@ SoFile::readInstance(SoInput * in, unsigned short flags)
   if (node) this->children->append((SoNode *)node);
   else {
     SoReadError::post(in, "Unable to open subfile: %s",
-		      this->name.getValue().getString());
+                      this->name.getValue().getString());
   }
   return TRUE;
 }
@@ -226,7 +226,7 @@ SoFile::getPrimitiveCount(SoGetPrimitiveCountAction *action)
  */
 void
 SoFile::copyContents(const SoFieldContainer * /* fromFC */,
-		     SbBool /* copyConnections */)
+                     SbBool /* copyConnections */)
 {
   assert(0 && "FIXME: not implemented");
 }

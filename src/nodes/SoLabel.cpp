@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -44,7 +44,7 @@ SO_NODE_SOURCE(SoLabel);
 SoLabel::SoLabel()
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoLabel);
-  
+
   SO_NODE_ADD_FIELD(label, ("<Undefined label>"));
 }
 

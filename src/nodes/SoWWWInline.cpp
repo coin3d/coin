@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -207,7 +207,7 @@ SoWWWInline::getChildData(void) const
 */
 void
 SoWWWInline::setFetchURLCallBack(SoWWWInlineFetchURLCB * /* f */,
-				 void * /* userData */)
+                                 void * /* userData */)
 {
   assert(0 && "FIXME: not implemented yet");
 }
@@ -275,7 +275,7 @@ SoWWWInline::getReadAsSoFile(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoWWWInline::GLRender(SoGLRenderAction * /* action */)
 {
   // FIXME: quick hack implementation until someone does it 100%
@@ -330,18 +330,18 @@ SoWWWInline::GLRender(SoGLRenderAction * /* action */)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoWWWInline::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SbVec3f halfsize = bboxSize.getValue()/2.0f;
   SbVec3f center = bboxCenter.getValue();
 
   action->extendBy(SbBox3f(-halfsize[0] + center[0],
-			   -halfsize[1] + center[1],
-			   -halfsize[2] + center[2],
-			   halfsize[0] + center[0],
-			   halfsize[1] + center[1],
-			   halfsize[2] + center[2]));
+                           -halfsize[1] + center[1],
+                           -halfsize[2] + center[2],
+                           halfsize[0] + center[0],
+                           halfsize[1] + center[1],
+                           halfsize[2] + center[2]));
 
   assert(! action->isCenterSet());
   action->setCenter(center, TRUE);
@@ -470,7 +470,7 @@ SoWWWInline::readInstance(SoInput * in, unsigned short /* flags */)
  */
 void
 SoWWWInline::copyContents(const SoFieldContainer * /* fromFC */,
-			  SbBool /* copyConnections */)
+                          SbBool /* copyConnections */)
 {
   assert(0 && "FIXME: not implemented");
 }

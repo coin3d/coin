@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -110,11 +110,11 @@ SoCoordinate3::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoCoordinate3::doAction(SoAction * action)
 {
   SoCoordinateElement::set3(action->getState(), this,
-			    point.getNum(), point.getValues(0));
+                            point.getNum(), point.getValues(0));
 }
 #endif // !COIN_EXCLUDE_SOACTION
 
@@ -122,7 +122,7 @@ SoCoordinate3::doAction(SoAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoCoordinate3::GLRender(SoGLRenderAction * action)
 {
   SoCoordinate3::doAction((SoAction *)action);
@@ -133,7 +133,7 @@ SoCoordinate3::GLRender(SoGLRenderAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoCoordinate3::callback(SoCallbackAction * action)
 {
   SoCoordinate3::doAction((SoAction *)action);
@@ -144,7 +144,7 @@ SoCoordinate3::callback(SoCallbackAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoCoordinate3::pick(SoPickAction * action)
 {
   SoCoordinate3::doAction((SoAction *)action);
@@ -155,7 +155,7 @@ SoCoordinate3::pick(SoPickAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoCoordinate3::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoCoordinate3::doAction((SoAction *)action);

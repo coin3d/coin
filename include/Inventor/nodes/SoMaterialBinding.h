@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -54,8 +54,8 @@ public:
     DEFAULT = OVERALL,
     NONE = OVERALL
   };
-  
-  SoSFEnum value; 
+
+  SoSFEnum value;
 
 #if !defined(COIN_EXCLUDE_SOACTION)
   virtual void doAction(SoAction * action);

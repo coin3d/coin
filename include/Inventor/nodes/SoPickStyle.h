@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -42,8 +42,8 @@ public:
   SoPickStyle(void);
 
   enum Style {
-    SHAPE = SoPickStyleElement::SHAPE, 
-    BOUNDING_BOX = SoPickStyleElement::BOUNDING_BOX, 
+    SHAPE = SoPickStyleElement::SHAPE,
+    BOUNDING_BOX = SoPickStyleElement::BOUNDING_BOX,
     UNPICKABLE = SoPickStyleElement::UNPICKABLE
   };
 

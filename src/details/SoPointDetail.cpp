@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -32,22 +32,22 @@
 
 SoType SoPointDetail::classTypeId;
 
-SoType 
+SoType
 SoPointDetail::getTypeId(void) const
 {
   return SoPointDetail::classTypeId;
 }
 
-SoType 
+SoType
 SoPointDetail::getClassTypeId(void)
 {
   return SoPointDetail::classTypeId;
 }
 
-void 
+void
 SoPointDetail::initClass(void)
 {
-  SoPointDetail::classTypeId = 
+  SoPointDetail::classTypeId =
     SoType::createType(inherited::getClassTypeId(),
                        SbName("SoPointDetail"));
 }
@@ -76,43 +76,43 @@ SoPointDetail::copy() const
   return copy;
 }
 
-int 
+int
 SoPointDetail::getCoordinateIndex() const
 {
   return this->coordIndex;
 }
 
-int 
+int
 SoPointDetail::getMaterialIndex() const
 {
   return this->matIndex;
 }
 
-int 
+int
 SoPointDetail::getNormalIndex() const
 {
   return this->normIndex;
 }
 
-int 
+int
 SoPointDetail::getTextureCoordIndex()
 {
   return this->texCoordIndex;
 }
 
-void 
+void
 SoPointDetail::setCoordinateIndex(const int idx)
 {
   this->coordIndex = idx;
 }
 
-void 
+void
 SoPointDetail::setMaterialIndex(const int idx)
 {
   this->matIndex = idx;
 }
 
-void 
+void
 SoPointDetail::setNormalIndex(const int idx)
 {
   this->normIndex = idx;
@@ -123,4 +123,3 @@ SoPointDetail::setTextureCoordIndex(const int idx)
 {
   this->texCoordIndex = idx;
 }
-

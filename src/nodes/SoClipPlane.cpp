@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -103,7 +103,7 @@ SoClipPlane::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoClipPlane::doAction(SoAction *action)
 {
   SbBool ison = on.isIgnored() ? TRUE : on.getValue();
@@ -117,7 +117,7 @@ SoClipPlane::doAction(SoAction *action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoClipPlane::GLRender(SoGLRenderAction * action)
 {
   SoClipPlane::doAction(action);
@@ -145,4 +145,3 @@ SoClipPlane::pick(SoPickAction *action)
   SoClipPlane::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOPICKACTION
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -34,7 +34,7 @@
 
 class SoLight : public SoNode {
   typedef SoNode inherited;
-  
+
   SO_NODE_ABSTRACT_HEADER(SoLight);
 
 public:

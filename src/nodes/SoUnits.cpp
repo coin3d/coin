@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -204,11 +204,11 @@ SoUnits::getBoundingBox(SoGetBoundingBoxAction * action)
 
   if (currentunit != (SoUnitsElement::Units)units.getValue()) {
     SoUnitsElement::set(action->getState(),
-			(SoUnitsElement::Units)units.getValue());
+                        (SoUnitsElement::Units)units.getValue());
 
     float scale = factors[units.getValue()] / factors[currentunit];
     SoBBoxModelMatrixElement::scaleBy(action->getState(), this,
-				      SbVec3f(scale, scale, scale));
+                                      SbVec3f(scale, scale, scale));
   }
 }
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
@@ -224,18 +224,18 @@ SoUnits::GLRender(SoGLRenderAction * action)
 
   if (currentunit != (SoUnitsElement::Units)units.getValue()) {
     SoUnitsElement::set(action->getState(),
-			(SoUnitsElement::Units)units.getValue());
+                        (SoUnitsElement::Units)units.getValue());
 
     float scale = factors[units.getValue()] / factors[currentunit];
     SoModelMatrixElement::scaleBy(action->getState(), this,
-				  SbVec3f(scale, scale, scale));
+                                  SbVec3f(scale, scale, scale));
 
 #if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
     if (scale != 1.0f) {
       SoGLNormalizeElement::setMatrixState(action->getState(), FALSE);
     }
-#endif // ! COIN_EXCLUDE_SOGLNORMALIZEELEMENT  
-    
+#endif // ! COIN_EXCLUDE_SOGLNORMALIZEELEMENT
+
   }
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
@@ -250,14 +250,14 @@ void
 SoUnits::doAction(SoAction *action)
 {
   SoUnitsElement::Units currentunit = SoUnitsElement::get(action->getState());
-  
+
   if (currentunit != (SoUnitsElement::Units)units.getValue()) {
     SoUnitsElement::set(action->getState(),
-			(SoUnitsElement::Units)units.getValue());
-    
+                        (SoUnitsElement::Units)units.getValue());
+
     float scale = factors[units.getValue()] / factors[currentunit];
     SoModelMatrixElement::scaleBy(action->getState(), this,
-				  SbVec3f(scale, scale, scale));    
+                                  SbVec3f(scale, scale, scale));
   }
 }
 #endif // !COIN_EXCLUDE_SOACTION

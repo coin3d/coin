@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -32,22 +32,22 @@
 
 SoType SoLineDetail::classTypeId;
 
-SoType 
+SoType
 SoLineDetail::getTypeId(void) const
 {
   return SoLineDetail::classTypeId;
 }
 
-SoType 
+SoType
 SoLineDetail::getClassTypeId(void)
 {
   return SoLineDetail::classTypeId;
 }
 
-void 
+void
 SoLineDetail::initClass(void)
 {
-  SoLineDetail::classTypeId = 
+  SoLineDetail::classTypeId =
     SoType::createType(inherited::getClassTypeId(),
                        SbName("SoLineDetail"));
 }
@@ -69,7 +69,7 @@ SoLineDetail::copy() const
   SoLineDetail *copy = new SoLineDetail();
   *copy = *this;
   return copy;
-  
+
 }
 
 const SoPointDetail *
@@ -83,52 +83,51 @@ SoLineDetail::getPoint1() const
 {
   return &this->points[1];
 }
-  
-int 
+
+int
 SoLineDetail::getLineIndex() const
 {
   return this->lineIndex;
 }
 
-int 
+int
 SoLineDetail::getPartIndex() const
 {
   return this->partIndex;
 }
 
-void 
+void
 SoLineDetail::setPoint0(const SoPointDetail * const detail)
 {
   this->points[0] = *detail;
 }
 
-void 
+void
 SoLineDetail::setPoint1(const SoPointDetail * const detail)
 {
   this->points[1] = *detail;
 }
 
-void 
+void
 SoLineDetail::setLineIndex(const int idx)
 {
   this->lineIndex = idx;
 }
 
-void 
+void
 SoLineDetail::setPartIndex(const int idx)
 {
   this->partIndex = idx;
 }
 
-void 
+void
 SoLineDetail::incLineIndex()
 {
   this->lineIndex++;
 }
 
-void 
+void
 SoLineDetail::incPartIndex()
 {
   this->partIndex++;
 }
-

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -116,7 +116,7 @@ SoSwitch::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoSwitch::GLRender(SoGLRenderAction * action)
 {
   this->doAction(action);
@@ -127,30 +127,30 @@ SoSwitch::GLRender(SoGLRenderAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoSwitch::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   // FIXME: update this method to use a doAction() kind of
   // traversal. This traversal code is not correct i think.
   // pederb, 990618
-  
-  int numIndices;    
-  const int * indices;     
+
+  int numIndices;
+  const int * indices;
   int idx;
 
   if (action->getPathCode(numIndices, indices) == SoAction::IN_PATH)
     idx = indices[numIndices-1];
-  else 
+  else
     idx = whichChild.getValue();
 
   if (idx == SO_SWITCH_INHERIT) idx = SoSwitchElement::get(action->getState());
   else SoSwitchElement::set(action->getState(), idx);
 
   if (idx == SO_SWITCH_NONE) return;
-  
+
   // FIXME: handle gracefully. 19990324 mortene.
-  assert((idx < this->getNumChildren() && idx >= 0) 
-	 || idx == SO_SWITCH_ALL);
+  assert((idx < this->getNumChildren() && idx >= 0)
+         || idx == SO_SWITCH_ALL);
 
   if (idx == SO_SWITCH_ALL) {
     // Initialize accumulation variables.
@@ -159,12 +159,12 @@ SoSwitch::getBoundingBox(SoGetBoundingBoxAction * action)
 
     for (int i = 0; i < this->getNumChildren(); i++) {
       this->getChildren()->traverse(action, i);
-    
+
       // If center point is set, accumulate.
       if (action->isCenterSet()) {
-	acccenter += action->getCenter();
-	numCenters++;
-	action->resetCenter();
+        acccenter += action->getCenter();
+        numCenters++;
+        action->resetCenter();
       }
     }
 
@@ -201,32 +201,32 @@ SoSwitch::search(SoSearchAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoSwitch::doAction(SoAction * action)
 {
   SoState *state = action->getState();
-  
+
   int numIndices;
   const int *indices;
-  int idx;    
-  
+  int idx;
+
   idx = whichChild.getValue();
   SbBool inheritIdx = FALSE;
   if (idx == SO_SWITCH_INHERIT) {
     inheritIdx = TRUE;
     idx = SoSwitchElement::get(action->getState());
   }
-    
+
   int startIdx, endIdx;
-  
+
   switch (action->getPathCode(numIndices, indices)) {
   case SoAction::IN_PATH:
     startIdx = 0;
-    endIdx = indices[numIndices-1];    
+    endIdx = indices[numIndices-1];
     break;
   case SoAction::OFF_PATH:
   case SoAction::NO_PATH:
-  case SoAction::BELOW_PATH:  
+  case SoAction::BELOW_PATH:
     if (idx == SO_SWITCH_ALL) {
       startIdx = 0;
       endIdx = this->getNumChildren() - 1;

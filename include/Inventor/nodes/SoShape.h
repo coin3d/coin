@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -79,15 +79,15 @@ public:
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 #if !defined(COIN_EXCLUDE_SOACTION)
   virtual void computeBBox(SoAction * action, SbBox3f & box,
-			   SbVec3f & center) =  0;
+                           SbVec3f & center) =  0;
 #endif // !COIN_EXCLUDE_SOACTION
 #if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
-  
-  static void getScreenSize(SoState * const state, 
-			    const SbBox3f & boundingBox,
-			    SbVec2s & rectSize);
+
+  static void getScreenSize(SoState * const state,
+                            const SbBox3f & boundingBox,
+                            SbVec2s & rectSize);
   static float getDecimatedComplexity(SoState * state, float complexity);
 
 protected:
@@ -119,45 +119,45 @@ protected:
   SbBool shouldRayPick(SoRayPickAction * const action);
   void computeObjectSpaceRay(SoRayPickAction * const action);
   void computeObjectSpaceRay(SoRayPickAction * const action,
-			     const SbMatrix & matrix);
+                             const SbMatrix & matrix);
   virtual SoDetail * createTriangleDetail(SoRayPickAction * action,
-					  const SoPrimitiveVertex * v1,
-					  const SoPrimitiveVertex * v2,
-					  const SoPrimitiveVertex * v3,
-					  SoPickedPoint * pp);
+                                          const SoPrimitiveVertex * v1,
+                                          const SoPrimitiveVertex * v2,
+                                          const SoPrimitiveVertex * v3,
+                                          SoPickedPoint * pp);
   virtual SoDetail * createLineSegmentDetail(SoRayPickAction * action,
-					     const SoPrimitiveVertex * v1,
-					     const SoPrimitiveVertex * v2,
-					     SoPickedPoint * pp);
+                                             const SoPrimitiveVertex * v1,
+                                             const SoPrimitiveVertex * v2,
+                                             SoPickedPoint * pp);
   virtual SoDetail * createPointDetail(SoRayPickAction * action,
-				       const SoPrimitiveVertex * v,
-				       SoPickedPoint * pp);
+                                       const SoPrimitiveVertex * v,
+                                       SoPickedPoint * pp);
 #endif // !COIN_EXCLUDE_SORAYPICKACTION
 
 #if !defined(COIN_EXCLUDE_SOACTION)
   void invokeTriangleCallbacks(SoAction * const action,
-			       const SoPrimitiveVertex * const v1,
-			       const SoPrimitiveVertex * const v2,
-			       const SoPrimitiveVertex * const v3);
+                               const SoPrimitiveVertex * const v1,
+                               const SoPrimitiveVertex * const v2,
+                               const SoPrimitiveVertex * const v3);
   void invokeLineSegmentCallbacks(SoAction * const action,
-				  const SoPrimitiveVertex * const v1,
-				  const SoPrimitiveVertex * const v2);
+                                  const SoPrimitiveVertex * const v1,
+                                  const SoPrimitiveVertex * const v2);
   void invokePointCallbacks(SoAction * const action,
-			    const SoPrimitiveVertex * const v);
+                            const SoPrimitiveVertex * const v);
   void beginShape(SoAction * const action, const TriangleShape shapeType,
-		  SoDetail * const detail = NULL);
+                  SoDetail * const detail = NULL);
   void shapeVertex(const SoPrimitiveVertex * const v);
   void endShape();
 #endif // !COIN_EXCLUDE_SOACTION
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   void generateVertex(SoPrimitiveVertex * const pv,
-		      const SbVec3f & point,
-		      const SbBool useTexFunc,
-		      const SoTextureCoordinateElement * const tce,
-		      const float s,
-		      const float t,
-		      const SbVec3f & normal);
+                      const SbVec3f & point,
+                      const SbBool useTexFunc,
+                      const SoTextureCoordinateElement * const tce,
+                      const float s,
+                      const float t,
+                      const SbVec3f & normal);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 };
 

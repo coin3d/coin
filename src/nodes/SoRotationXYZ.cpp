@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -112,13 +112,13 @@ SoRotationXYZ::initClass(void)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoRotationXYZ::doAction(SoAction * action)
 {
   SbVec3f rotvec;
   if (this->getVector(rotvec)) {
     SoModelMatrixElement::rotateBy(action->getState(), this,
-				   SbRotation(rotvec, angle.getValue()));
+                                   SbRotation(rotvec, angle.getValue()));
   }
 }
 #endif // !COIN_EXCLUDE_SOACTION
@@ -127,7 +127,7 @@ SoRotationXYZ::doAction(SoAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoRotationXYZ::callback(SoCallbackAction * action)
 {
   SoRotationXYZ::doAction((SoAction *)action);
@@ -138,7 +138,7 @@ SoRotationXYZ::callback(SoCallbackAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoRotationXYZ::GLRender(SoGLRenderAction * action)
 {
   SoRotationXYZ::doAction((SoAction *)action);
@@ -149,7 +149,7 @@ SoRotationXYZ::GLRender(SoGLRenderAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoRotationXYZ::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoRotationXYZ::doAction((SoAction *)action);
@@ -160,7 +160,7 @@ SoRotationXYZ::getBoundingBox(SoGetBoundingBoxAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoRotationXYZ::getMatrix(SoGetMatrixAction * action)
 {
   SbVec3f rotvec;
@@ -174,7 +174,7 @@ SoRotationXYZ::getMatrix(SoGetMatrixAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoRotationXYZ::pick(SoPickAction * action)
 {
   SoRotationXYZ::doAction((SoAction *)action);
@@ -184,11 +184,11 @@ SoRotationXYZ::pick(SoPickAction * action)
 /*!
   FIXME: write function documentation
 */
-SbBool 
+SbBool
 SoRotationXYZ::getVector(SbVec3f & rotvec) const
-{  
+{
   assert((int)axis.getValue() >= 0 && (int)axis.getValue() <= 2);
-  
+
   rotvec.setValue(0.0f, 0.0f, 0.0f);
   rotvec[(int)axis.getValue()] = 1.0f;
   return TRUE;
@@ -213,6 +213,6 @@ SoRotationXYZ::getRotation(void) const
 void
 SoRotationXYZ::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  SoRotationXYZ::doAction((SoAction *)action);  
+  SoRotationXYZ::doAction((SoAction *)action);
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
