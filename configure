@@ -19216,6 +19216,65 @@ else
 fi
 
 
+echo "$as_me:$LINENO: checking for __builtin_expect()" >&5
+echo $ECHO_N "checking for __builtin_expect()... $ECHO_C" >&6
+sim_ac_builtin_expect=false
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+  #include <assert.h>
+
+int
+main ()
+{
+
+  if ( __builtin_expect(!!(1), 1) ? 1 : 0 ) {
+    /* nada */
+  }
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  sim_ac_builtin_expect=true
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+
+if $sim_ac_builtin_expect; then
+  echo "$as_me:$LINENO: result: found" >&5
+echo "${ECHO_T}found" >&6
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE___BUILTIN_EXPECT 1
+_ACEOF
+
+else
+  echo "$as_me:$LINENO: result: not found" >&5
+echo "${ECHO_T}not found" >&6
+fi
+
+
 
 ## See which way the compiler knows the name of the current function. ####
 

@@ -7455,6 +7455,7 @@ AC_DEFUN([SIM_AC_COMPILER_CPLUSPLUS_FATAL_ERRORS], [
   SIM_AC_COMPILER_INLINE_FOR
   SIM_AC_COMPILER_SWITCH_IN_VIRTUAL_DESTRUCTOR
   SIM_AC_COMPILER_CRAZY_GCC296_BUG
+  SIM_AC_COMPILER_BUILTIN_EXPECT
 ])
 
 
@@ -7597,6 +7598,29 @@ else
   ifelse([$1], , :, [$1])
 fi
 ])
+
+# **************************************************************************
+# SIM_AC_COMPILER_BUILTIN_EXPECT
+
+AC_DEFUN([SIM_AC_COMPILER_BUILTIN_EXPECT], [
+AC_MSG_CHECKING([for __builtin_expect()])
+sim_ac_builtin_expect=false
+AC_TRY_COMPILE([
+  #include <assert.h>
+], [
+  if ( __builtin_expect(!!(1), 1) ? 1 : 0 ) {
+    /* nada */
+  }
+], [sim_ac_builtin_expect=true])
+
+if $sim_ac_builtin_expect; then
+  AC_MSG_RESULT([found])
+  AC_DEFINE([HAVE___BUILTIN_EXPECT], 1, [Define if compiler has __builtin_expect() macro])
+else
+  AC_MSG_RESULT([not found])
+fi
+]) # SIM_AC_COMPILER_BUILTIN_EXPECT
+
 
 # Usage:
 #   SIM_AC_CHECK_VAR_FUNCTIONNAME

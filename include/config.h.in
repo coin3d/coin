@@ -364,6 +364,9 @@
 /* define if _vsnprintf() is available */
 #undef HAVE__VSNPRINTF
 
+/* Define if compiler has __builtin_expect() macro */
+#undef HAVE___BUILTIN_EXPECT
+
 /* define for runtime linking with zlib */
 #undef LIBBZIP2_RUNTIME_LINKING
 

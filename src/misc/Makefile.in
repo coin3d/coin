@@ -295,7 +295,8 @@ PrivateHeaders = \
 	SoOffscreenAGLData.h \
 	SoOffscreenGLXData.h \
 	SoOffscreenWGLData.h \
-	cppmangle.icc
+	cppmangle.icc \
+	systemsanity.icc
 
 ObsoleteHeaders = 
 
@@ -394,13 +395,13 @@ am__EXTRA_misc_lst_SOURCES_DIST = AudioTools.h SoGLFaceSetTemplate.icc \
 	SoGLnonindexedTristripSetTemplate.icc SoGLqmeshTemplate.icc \
 	SoGLqmeshpreciselightingTemplate.icc SoOffscreenInternalData.h \
 	SoOffscreenAGLData.h SoOffscreenGLXData.h SoOffscreenWGLData.h \
-	cppmangle.icc all-misc-cpp.cpp SoBase.cpp SoChildList.cpp \
-	SoContextHandler.cpp SoGL.cpp SoGLImage.cpp SoGLBigImage.cpp \
-	SoGlyph.cpp SoNormalGenerator.cpp SoNotification.cpp \
-	SoNotRec.cpp SoState.cpp SoDB.cpp SoFullPath.cpp SoTempPath.cpp \
-	SoLightPath.cpp SoInteraction.cpp SoPath.cpp SoPick.cpp \
-	SoPickedPoint.cpp SoPrimitiveVertex.cpp SoProto.cpp \
-	SoProtoInstance.cpp SoSceneManager.cpp SoType.cpp \
+	cppmangle.icc systemsanity.icc all-misc-cpp.cpp SoBase.cpp \
+	SoChildList.cpp SoContextHandler.cpp SoGL.cpp SoGLImage.cpp \
+	SoGLBigImage.cpp SoGlyph.cpp SoNormalGenerator.cpp \
+	SoNotification.cpp SoNotRec.cpp SoState.cpp SoDB.cpp \
+	SoFullPath.cpp SoTempPath.cpp SoLightPath.cpp SoInteraction.cpp \
+	SoPath.cpp SoPick.cpp SoPickedPoint.cpp SoPrimitiveVertex.cpp \
+	SoProto.cpp SoProtoInstance.cpp SoSceneManager.cpp SoType.cpp \
 	SoOffscreenRenderer.cpp SoOffscreenAGLData.cpp \
 	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoGenerate.cpp \
 	SoLockManager.cpp SoAudioDevice.cpp AudioTools.cpp
@@ -440,13 +441,13 @@ am__EXTRA_libmisc_la_SOURCES_DIST = AudioTools.h SoGLFaceSetTemplate.icc \
 	SoGLnonindexedTristripSetTemplate.icc SoGLqmeshTemplate.icc \
 	SoGLqmeshpreciselightingTemplate.icc SoOffscreenInternalData.h \
 	SoOffscreenAGLData.h SoOffscreenGLXData.h SoOffscreenWGLData.h \
-	cppmangle.icc all-misc-cpp.cpp SoBase.cpp SoChildList.cpp \
-	SoContextHandler.cpp SoGL.cpp SoGLImage.cpp SoGLBigImage.cpp \
-	SoGlyph.cpp SoNormalGenerator.cpp SoNotification.cpp \
-	SoNotRec.cpp SoState.cpp SoDB.cpp SoFullPath.cpp SoTempPath.cpp \
-	SoLightPath.cpp SoInteraction.cpp SoPath.cpp SoPick.cpp \
-	SoPickedPoint.cpp SoPrimitiveVertex.cpp SoProto.cpp \
-	SoProtoInstance.cpp SoSceneManager.cpp SoType.cpp \
+	cppmangle.icc systemsanity.icc all-misc-cpp.cpp SoBase.cpp \
+	SoChildList.cpp SoContextHandler.cpp SoGL.cpp SoGLImage.cpp \
+	SoGLBigImage.cpp SoGlyph.cpp SoNormalGenerator.cpp \
+	SoNotification.cpp SoNotRec.cpp SoState.cpp SoDB.cpp \
+	SoFullPath.cpp SoTempPath.cpp SoLightPath.cpp SoInteraction.cpp \
+	SoPath.cpp SoPick.cpp SoPickedPoint.cpp SoPrimitiveVertex.cpp \
+	SoProto.cpp SoProtoInstance.cpp SoSceneManager.cpp SoType.cpp \
 	SoOffscreenRenderer.cpp SoOffscreenAGLData.cpp \
 	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoGenerate.cpp \
 	SoLockManager.cpp SoAudioDevice.cpp AudioTools.cpp
@@ -472,13 +473,13 @@ am__EXTRA_libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = AudioTools.h \
 	SoGLnonindexedTristripSetTemplate.icc SoGLqmeshTemplate.icc \
 	SoGLqmeshpreciselightingTemplate.icc SoOffscreenInternalData.h \
 	SoOffscreenAGLData.h SoOffscreenGLXData.h SoOffscreenWGLData.h \
-	cppmangle.icc all-misc-cpp.cpp SoBase.cpp SoChildList.cpp \
-	SoContextHandler.cpp SoGL.cpp SoGLImage.cpp SoGLBigImage.cpp \
-	SoGlyph.cpp SoNormalGenerator.cpp SoNotification.cpp \
-	SoNotRec.cpp SoState.cpp SoDB.cpp SoFullPath.cpp SoTempPath.cpp \
-	SoLightPath.cpp SoInteraction.cpp SoPath.cpp SoPick.cpp \
-	SoPickedPoint.cpp SoPrimitiveVertex.cpp SoProto.cpp \
-	SoProtoInstance.cpp SoSceneManager.cpp SoType.cpp \
+	cppmangle.icc systemsanity.icc all-misc-cpp.cpp SoBase.cpp \
+	SoChildList.cpp SoContextHandler.cpp SoGL.cpp SoGLImage.cpp \
+	SoGLBigImage.cpp SoGlyph.cpp SoNormalGenerator.cpp \
+	SoNotification.cpp SoNotRec.cpp SoState.cpp SoDB.cpp \
+	SoFullPath.cpp SoTempPath.cpp SoLightPath.cpp SoInteraction.cpp \
+	SoPath.cpp SoPick.cpp SoPickedPoint.cpp SoPrimitiveVertex.cpp \
+	SoProto.cpp SoProtoInstance.cpp SoSceneManager.cpp SoType.cpp \
 	SoOffscreenRenderer.cpp SoOffscreenAGLData.cpp \
 	SoOffscreenGLXData.cpp SoOffscreenWGLData.cpp SoGenerate.cpp \
 	SoLockManager.cpp SoAudioDevice.cpp AudioTools.cpp
