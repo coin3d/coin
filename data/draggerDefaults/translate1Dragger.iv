@@ -1,6 +1,12 @@
 #Inventor V2.1 ascii
 
-DEF TRANSLATE1_GEOM Separator {
+# Standard material definitions.
+
+DEF TRANSLATE1_INACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0.5  emissiveColor 0.5 0.5 0.5 }
+DEF TRANSLATE1_ACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0  emissiveColor 0.5 0.5 0 }
+
+
+DEF TRANSLATE1_GEOM Group {
    # "Line" connecting the cones.
    Cube { width 2  height 0.1  depth 0.1 } # Horizontal
 
@@ -20,12 +26,12 @@ DEF TRANSLATE1_GEOM Separator {
 }
 
 DEF translate1Translator Separator {
-   Material { diffuseColor 0 0 0.4  emissiveColor 0 0 0.4 }
+   USE TRANSLATE1_INACTIVE_MATERIAL
    USE TRANSLATE1_GEOM
 }
 
 DEF translate1TranslatorActive Separator {
-   Material { diffuseColor 0 0.4 0  emissiveColor 0 0.4 0 }
+   USE TRANSLATE1_ACTIVE_MATERIAL
    USE TRANSLATE1_GEOM
 }
 

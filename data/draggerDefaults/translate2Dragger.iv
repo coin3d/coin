@@ -1,14 +1,10 @@
 #Inventor V2.1 ascii
 
-DEF TRANSLATE2_INACTIVE_MATERIAL Material {
-  diffuseColor 0 0 0.4
-  emissiveColor 0 0 0.4
-}
+# Standard material definitions.
 
-DEF TRANSLATE2_ACTIVE_MATERIAL Material {
-  diffuseColor 0 0.4 0
-  emissiveColor 0 0.4 0
-}
+DEF TRANSLATE2_INACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0.5  emissiveColor 0.5 0.5 0.5 }
+DEF TRANSLATE2_ACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0  emissiveColor 0.5 0.5 0 }
+
 
 DEF TRANSLATE2_GEOM Separator {
    # "Lines" connecting the cones.

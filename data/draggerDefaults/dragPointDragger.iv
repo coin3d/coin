@@ -1,7 +1,9 @@
 #Inventor V2.1 ascii
 
-DEF DRAGPOINT_INACTIVE_MATERIAL Material { diffuseColor 0 0 0.4  emissiveColor 0 0 0.4 }
-DEF DRAGPOINT_ACTIVE_MATERIAL Material { diffuseColor 0 0.4 0  emissiveColor 0 0.4 0 }
+# Standard material definitions.
+
+DEF DRAGPOINT_INACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0.5  emissiveColor 0.5 0.5 0.5 }
+DEF DRAGPOINT_ACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0  emissiveColor 0.5 0.5 0 }
 
 
 DEF DRAGPOINT_STICK Group {
