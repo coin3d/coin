@@ -1051,6 +1051,9 @@ STUFF TO FIX IN COIN
 
         http://www.cl.cam.ac.uk/~mgk25/unicode.html
 
+    And the full Unicode 4.0 standard is available as PDF files at
+
+        http://www.unicode.org/versions/Unicode4.0.0/
 
 
 
