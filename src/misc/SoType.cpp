@@ -236,6 +236,9 @@ SoType::createType(const SoType parent, const SbName name,
   // already exists to avoid loading extension nodes in this context.
   // You should be able to "override" dynamically loadable nodes in program
   // code.
+  // FIXME: We ought to factor out and expose this functionality - testing
+  // if a class type is already loaded and registered - in the public API.
+  // 20040831 larsa  (ref could-have-been-used-to-fix-upgrader-slowness-bug)
   void * discard;
   if (SoType::typedict->find((unsigned long)name.getString(), discard)) {
     SoDebugError::post("SoType::createType",
