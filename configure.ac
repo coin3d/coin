@@ -925,6 +925,12 @@ if ! $coin_can_do_runtime_linking; then
   ])
 fi
 
+if $coin_can_do_runtime_linking; then
+  AC_DEFINE_UNQUOTED([HAVE_DYNAMIC_LINKING], 1,
+                     [should be defined if there is some way of doing dynamic linking])
+fi
+
+
 # *******************************************************************
 # * Set us up for using the simage library (if wanted, and if
 # * available).
