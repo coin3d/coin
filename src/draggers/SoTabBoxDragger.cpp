@@ -203,7 +203,7 @@ void
 SoTabBoxDragger::invalidateSurroundScaleCB(void * d, SoDragger *)
 {
   SoTabBoxDragger *thisp = (SoTabBoxDragger*)d;
-  SoSurroundScale *ss = SO_CHECK_PART(thisp, "surrounddScale", SoSurroundScale);
+  SoSurroundScale *ss = SO_CHECK_PART(thisp, "surroundScale", SoSurroundScale);
   if (ss) ss->invalidate();
 }
 
