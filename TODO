@@ -20,6 +20,10 @@ TODO:
 
 *** BUILD ITEMS ***
 
+* [mortene:19991218] set up a "make test" target which can do
+  regression testing. Take a look at the functionality offered by
+  DejaGnu to see if it can be useful for our purposes.
+
 * [pederb:19991217] demand at least version 2.8 when trying to compile
   with GCC (g++).
 
