@@ -115,6 +115,7 @@
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbStorage.h>
+#include <Inventor/threads/SbMutex.h>
 #endif // COIN_THREADSAFE
 
 
@@ -557,7 +558,9 @@ public:
   void unrefOldDL(SoState *state, const uint32_t maxage);
   SoGLImage *owner; // for debugging only
   uint32_t glimageid;
-
+#ifdef COIN_THREADSAFE
+  SbMutex mutex;
+#endif // COIN_THREADSAFE
   void init(void);
 };
 
@@ -566,6 +569,25 @@ SoType SoGLImageP::classTypeId;
 uint32_t SoGLImageP::current_glimageid = 1;
 
 #endif // DOXYGEN_SKIP_THIS
+
+// This class is not 100% threadsafe. It is threadsafe for rendering
+// only. It is assumed that setData() is called by only one thread at
+// a time. The reason for this is that all threads should use the same
+// data, and it would be meaningless if two threads set different data
+// for an SoGLImage. The nodes using SoGLImage should use a mutex to
+// ensure that only one thread calls setData(), the other threads
+// should wait for that thread to finish. This is done in Coin now.
+//
+// SoGLImage::getGLDisplayList() use a mutex so that several
+// threads can call this method safely.
+
+#ifdef COIN_THREADSAFE
+#define LOCK_DLISTS(_thisp_)  (_thisp_)->pimpl->mutex.lock()
+#define UNLOCK_DLISTS(_thisp_)  (_thisp_)->pimpl->mutex.unlock()
+#else // COIN_THREADSAFE
+#define LOCK_DLISTS(_thisp_)
+#define UNLOCK_DLISTS(_thisp_)
+#endif // !COIN_THREADSAFE
 
 #undef THIS
 // convenience define to access private data
@@ -940,17 +962,24 @@ SoGLImage::getImage(void) const
 SoGLDisplayList *
 SoGLImage::getGLDisplayList(SoState *state)
 {
+  LOCK_DLISTS(this);
   SoGLDisplayList *dl = THIS->findDL(state);
+  UNLOCK_DLISTS(this);
 
   if (dl == NULL) {
     dl = THIS->createGLDisplayList(state);
-    if (dl) THIS->dlists.append(SoGLImageP::dldata(dl));
+    if (dl) {
+      LOCK_DLISTS(this);
+      THIS->dlists.append(SoGLImageP::dldata(dl));
+      UNLOCK_DLISTS(this);
+    }
   }
   if (dl && !dl->isMipMapTextureObject() && THIS->image) {
     float quality = SoTextureQualityElement::get(state);
     float oldquality = THIS->quality;
     THIS->quality = quality;
     if (THIS->shouldCreateMipmap()) {
+      LOCK_DLISTS(this);
       // recreate DL to get a mipmapped image
       int n = THIS->dlists.getLength();
       for (int i = 0; i < n; i++) {
@@ -961,10 +990,10 @@ SoGLImage::getGLDisplayList(SoState *state)
           break;
         }
       }
+      UNLOCK_DLISTS(this);
     }
     else THIS->quality = oldquality;
   }
-
   return dl;
 }
 
@@ -1770,3 +1799,6 @@ SoGLImage::unregisterImage(SoGLImage *image)
 }
 
 #undef THIS
+#undef LOCK_DLISTS
+#undef UNLOCK_DLISTS
+
