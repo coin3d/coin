@@ -163,7 +163,8 @@ SoGLPolygonOffsetElement::updategl(void)
     // FIXME: I believe the above define is ugly and lousy
     // coding. Shouldn't we runtime-check the OpenGL vendor string
     // instead? 20010821 mortene.
-    const char * env = coin_getenv("COIN_SGI_USE_GLPOLYGONOFFSETEXT");
+    const char * env = 
+      (const char *) coin_getenv("COIN_SGI_USE_GLPOLYGONOFFSETEXT");
     if (env) COIN_SGI_USE_GLPOLYGONOFFSETEXT = atoi(env);
 #endif // __sgi
 #endif // GL_VERSION_1_1
