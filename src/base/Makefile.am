@@ -11,6 +11,7 @@ endif
 RegularSources = \
 	base.c \
 	debug.c \
+	hash.c \
         list.c \
 	memalloc.c \
 	rbptree.c \
