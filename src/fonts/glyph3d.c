@@ -205,16 +205,17 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
       /* treat all these characters as spaces*/
       glyph->vectorglyph->vertices = (float *) glyph3d_spaceglyphvertices;
       glyph->vectorglyph->faceindices = (int *) glyph3d_spaceglyphindices;
-      glyph->vectorglyph->edgeindices = (int *) glyph3d_spaceglyphindices;
+      glyph->vectorglyph->edgeindices = (int *) glyph3d_spaceglyphindices;     
     }
     else {
       glyph->vectorglyph->vertices = (float *) coin_default3dfont_get_coords()[character-33];
       glyph->vectorglyph->faceindices = (int *) coin_default3dfont_get_faceidx()[character-33];
       glyph->vectorglyph->edgeindices = (int *) coin_default3dfont_get_edgeidx()[character-33];
     }
-  }
 
-  glyph3d_calcboundingbox(glyph);
+  } 
+  
+  glyph3d_calcboundingbox(glyph);  
   glyph->width = glyph->bbox[2] - glyph->bbox[0];
 
   /* Store newly created glyph in the list for this character */
@@ -227,19 +228,31 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
 const float *
 cc_glyph3d_getcoords(const cc_glyph3d * g)
 {
-  return cc_flw_get_vector_glyph_coords(g->vectorglyph);
+  const float * ptr = cc_flw_get_vector_glyph_coords(g->vectorglyph);
+  if (ptr == NULL) {    
+    assert(g->vectorglyph->vertices && "Default vertices has not been initialized as expected!");
+    return g->vectorglyph->vertices; /* default vertices shall already have been initialized */
+  } else return ptr;  
 }
 
 const int *
 cc_glyph3d_getfaceindices(const cc_glyph3d * g)
 {
-  return cc_flw_get_vector_glyph_faceidx(g->vectorglyph);
+  const int * ptr = cc_flw_get_vector_glyph_faceidx(g->vectorglyph);
+  if (ptr == NULL) {      
+    assert(g->vectorglyph->faceindices && "Default face indices has not been initialized as expected!");
+    return g->vectorglyph->faceindices; /* default face indices shall already have been initialized */
+  } else return ptr;
 }
 
 const int *
 cc_glyph3d_getedgeindices(const cc_glyph3d * g)
 {
-  return cc_flw_get_vector_glyph_edgeidx(g->vectorglyph);
+  const int * ptr = cc_flw_get_vector_glyph_edgeidx(g->vectorglyph);
+  if (ptr == NULL) {    
+    assert(g->vectorglyph->edgeindices && "Default edge indices has not been initialized as expected!");
+    return g->vectorglyph->edgeindices; /* default edge indices shall already have been initialized */
+  } else return ptr;
 }
 
 const int *
