@@ -232,6 +232,11 @@ AC_CHECK_HEADERS([unistd.h sys/types.h sys/param.h io.h windows.h winsock2.h])
 #
 # FIXME: should we make this into a general macro
 # SIM_AC_CHECK_DEPENDENT_HEADER(HEADER, DEPENDONHEADERS..)? 20001025 mortene.
+#
+# FIXME2: is this really necessary? AC_CHECK_HEADER(S) tests by using the
+# preprocessor, not by doing a compile, so we could probably just
+# include netinet/in.h in the above list to AC_CHECK_HEADERS. We wouldn't
+# catch problems quiet so early on, though. 20001025 mortene.
 
 AC_CACHE_CHECK([netinet/in.h], sim_cv_netinet_in_h, [
   AC_TRY_COMPILE([
