@@ -500,7 +500,7 @@ static int cube_tindices[] =
   3, 2, 1, 0,
   3, 2, 1, 0,
   3, 2, 1, 0,
-  3, 2, 1, 0,
+  3, 2, 1, 0
 };
 
 static float cube_texcoords[] =
@@ -692,7 +692,7 @@ really_create_texture(const int wrapS, const int wrapT,
                   wrapS ? GL_CLAMP : GL_REPEAT);
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,
                   wrapT ? GL_CLAMP : GL_REPEAT);
-  
+
   //
   // for now, if quality >= 0.5, we create mipmaps. The texture quality
   // should probably be based on detected hardware though.
@@ -703,7 +703,7 @@ really_create_texture(const int wrapS, const int wrapT,
   }
   else if (quality < 0.5f) {
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);    
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   }
   else if (quality < 0.8f) {
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -711,7 +711,7 @@ really_create_texture(const int wrapS, const int wrapT,
   }
   else { // max quality
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR); 
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
   }
 
   GLenum glformat;
@@ -737,8 +737,8 @@ really_create_texture(const int wrapS, const int wrapT,
                  0, glformat, GL_UNSIGNED_BYTE, texture);
   }
   else { // mipmaps
-    gluBuild2DMipmaps(GL_TEXTURE_2D, numComponents, w, h, 
-                      glformat, GL_UNSIGNED_BYTE, texture); 
+    gluBuild2DMipmaps(GL_TEXTURE_2D, numComponents, w, h,
+                      glformat, GL_UNSIGNED_BYTE, texture);
   }
 }
 
@@ -782,7 +782,7 @@ sogl_create_texture(const int wrapS, const int wrapT,
 #endif
   }
 
-  really_create_texture(wrapS, wrapT, quality, texture, 
+  really_create_texture(wrapS, wrapT, quality, texture,
                         numComponents, w, h, dlist);
 
   if (dlist)
