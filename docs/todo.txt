@@ -194,10 +194,11 @@ STUFF TO FIX IN COIN
         d) make sure we keep the old API functioning as before for the
            sake of compatibility with external client applications
 
-        e) add support for new image types. Currently only 8 bits per 
+        e) add support for new image types. Currently only 8 bits per
            component is supported, but to save texture memory it is
-           often useful to support other image modes, such as 
-           textures with palettes and/or 16 bits RGB.
+           often useful to support other image modes, such as textures
+           with palettes (as can be done in OpenGL with
+           GL_EXT_paletted_texture) and/or 16 bits RGB.
 
   All this should _absolutely_ be done before we close up on the v2
   release, as after v2 it will likely be a while until we get the
@@ -218,6 +219,8 @@ STUFF TO FIX IN COIN
 
   Also, check out the GL_ARB_texture_compression extension:
   <URL:http://oss.sgi.com/projects/ogl-sample/registry/ARB/texture_compression.txt>.
+
+  Plus (for at least OpenGL 1.3): the glCompressedTexImage*() functions.
 
 
 * Font specification
