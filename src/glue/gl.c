@@ -1121,15 +1121,10 @@ glglue_resolve_symbols(cc_glglue * w)
     
 #endif /* GL_NV_register_combiners */
  
-
-  /* FIXME: Must investigate whether the NV and the EXT version of
-     texture_rectangle is equal. (20031202 handegar) */
-
-  /* GL_NV_texture_rectangle */
-  w->has_nv_texture_rectangle = cc_glglue_glext_supported(w, "GL_NV_texture_rectangle");
   
-  /* GL_EXT_texture_rectangle */
-  w->has_ext_texture_rectangle = cc_glglue_glext_supported(w, "GL_EXT_texture_rectangle"); 
+  /* GL_[NV/EXT]_texture_rectangle */
+  w->has_ext_texture_rectangle = (cc_glglue_glext_supported(w, "GL_EXT_texture_rectangle") ||
+                                  cc_glglue_glext_supported(w, "GL_NV_texture_rectangle")); 
 
   /* GL_NV_texture_shader */
   w->has_nv_texture_shader = cc_glglue_glext_supported(w, "GL_NV_texture_shader");
@@ -1261,11 +1256,12 @@ glglue_resolve_symbols(cc_glglue * w)
      extensions (and thus; a different codepath in
      SoGLRenderAction). (20031124 handegar) */
   w->can_do_sortedlayersblend = FALSE;
-  if(w->has_nv_register_combiners &&
-     w->has_nv_texture_rectangle &&
-     w->has_nv_texture_shader &&
-     w->has_depth_texture &&
-     w->has_shadow)
+  if((w->has_nv_register_combiners &&
+      w->has_ext_texture_rectangle &&
+      w->has_nv_texture_shader &&
+      w->has_depth_texture &&
+      w->has_shadow) ||
+     w->has_arb_fragment_program)
     w->can_do_sortedlayersblend = TRUE;
   
 }
@@ -2734,7 +2730,7 @@ SbBool
 cc_glglue_has_nv_texture_rectangle(const cc_glglue * glue)
 {
   if (!glglue_allow_newer_opengl(glue)) return FALSE;
-  return glue->has_nv_texture_rectangle;
+  return glue->has_nv_texture_rectangle || glue->has_ext_texture_rectangle;
 }
 
 /* GL_EXT_texture_rectangle */
@@ -2742,7 +2738,7 @@ SbBool
 cc_glglue_has_ext_texture_rectangle(const cc_glglue * glue)
 {
   if (!glglue_allow_newer_opengl(glue)) return FALSE;
-  return glue->has_ext_texture_rectangle;
+  return glue->has_ext_texture_rectangle || glue->has_nv_texture_rectangle;
 }
 
 /* GL_NV_texture_shader */
