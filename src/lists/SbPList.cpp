@@ -28,6 +28,8 @@
 
   This class is for most purposes superseded by the Coin-specific
   SbList class.
+
+  \sa SbList
 */
 
 

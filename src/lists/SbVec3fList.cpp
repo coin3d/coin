@@ -33,7 +33,9 @@
   Note also that all calls to append() and insert() will cause the
   list to allocate a new SbVec3f object. These objects are not freed
   automatically, but are the responsibility of the user.
- */
+
+  \sa SbList
+*/
 
 
 

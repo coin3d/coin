@@ -25,6 +25,8 @@
   \class SoDetailList SoDetailList.h Inventor/lists/SoDetailList.h
   \brief The SoDetailList class is a container for pointers to SoDetail objects.
   \ingroup details
+
+  \sa SbList
 */
 
 // SoDetailList was moved from being a subclass of SbPList to being a

@@ -28,7 +28,9 @@
 
   Note that upon using the equality and inequality operators, the
   strings themselves are not compared, only the pointer values.
- */
+
+  \sa SbList
+*/
 
 
 /*!

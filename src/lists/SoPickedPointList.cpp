@@ -25,6 +25,8 @@
   \class SoPickedPointList SoPickedPointList.h Inventor/lists/SoPickedPointList.h
   \brief The SoPickedPointList class is a container for pointers to SoPickedPoint objects.
   \ingroup general
+
+  \sa SbList
 */
 
 // SoPickedPointList was moved from being a subclass of SbPList to

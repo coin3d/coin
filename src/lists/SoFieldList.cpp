@@ -25,6 +25,8 @@
   \class SoFieldList SoFieldList.h Inventor/lists/SoFieldList.h
   \brief The SoFieldList class is a container for pointers to SoField objects.
   \ingroup fields
+
+  \sa SbList
 */
 
 // SoFieldList was moved from being a subclass of SbPList to being a

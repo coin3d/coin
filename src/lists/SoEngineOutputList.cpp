@@ -25,6 +25,8 @@
   \class SoEngineOutputList SoEngineOutputList.h Inventor/lists/SoEngineOutputList.h
   \brief The SoEngineOutputList class is a container for SoEngineOutput objects.
   \ingroup engines
+
+  \sa SbList
 */
 
 // SoEngineOutputList was moved from being a subclass of SbPList to
