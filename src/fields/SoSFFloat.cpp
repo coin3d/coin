@@ -33,14 +33,13 @@
 */
 
 #include <Inventor/fields/SoSFFloat.h>
-#include <Inventor/fields/SoSubFieldP.h>
+
+#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
-#include <Inventor/errors/SoReadError.h>
-
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
+#include <Inventor/errors/SoReadError.h>
+#include <Inventor/fields/SoSubFieldP.h>
 
 
 SO_SFIELD_SOURCE(SoSFFloat, float, float);
@@ -58,16 +57,35 @@ SoSFFloat::initClass(void)
 // parent classes.
 #ifndef DOXYGEN_SKIP_THIS
 
+SbBool
+sofield_read_float_values(SoInput * in, float * val, int numvals)
+{
+  for (int i=0; i < numvals; i++) {
+
+    if (!in->read(val[i])) {
+      SoReadError::post(in, "Premature end of file");
+      return FALSE;
+    }
+
+    if (!coin_finite(val[i])) {
+      SoReadError::post(in,
+                        "Detected non-valid floating point number, replacing "
+                        "with 0.0f");
+      val[i] = 0.0f;
+      // We don't return FALSE, thereby allowing the read process to
+      // continue, as a convenience for the application programmer.
+    }
+  }
+
+  return TRUE;
+}
+
 // Read floating point value from input stream, return TRUE if
 // successful. Also used from SoMFFloat class.
 SbBool
 sosffloat_read_value(SoInput * in, float & val)
 {
-  if (!in->read(val)) {
-    SoReadError::post(in, "Premature end of file");
-    return FALSE;
-  }
-  return TRUE;
+  return sofield_read_float_values(in, &val, 1);
 }
 
 SbBool
