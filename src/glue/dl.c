@@ -288,32 +288,30 @@ cc_build_search_list(const char * libname)
      look for the library in its Resources folder. */
 
   for (i = 0; i < image_count; i++) {
-    if (_dyld_get_image_header(i) == &_mh_dylib_header) {
-      p = _dyld_get_image_name(i);
-      if (strstr(p, "Inventor.framework")) {
-        /* We get /path/to/Foo.framework/Versions/A/Libraries/foo.dylib
-           but want /path/to/Foo.framework/Versions/A/Resources */
-        char * path_to_version_dir = cc_dirname(cc_dirname(p));
-        /* FIXME: it'd be simpler, cleaner and safer to use the
-           cc_string_sprintf() function. 20030804 mortene. */
-        size_t l = strlen(path_to_version_dir) + strlen("/Resources") + 1;
-        res_path = malloc(l);
-        snprintf(res_path, l, "%s%s", path_to_version_dir, "/Resources");
-      }
-      break;
+    p = _dyld_get_image_name(i);
+    if (strstr(p, "Inventor.framework")) {
+      /* We get /path/to/Foo.framework/Versions/A/Libraries/foo.dylib
+         but want /path/to/Foo.framework/Versions/A/Resources */
+      char * path_to_version_dir = cc_dirname(cc_dirname(p));
+      /* FIXME: it'd be simpler, cleaner and safer to use the
+         cc_string_sprintf() function. 20030804 mortene. */
+      size_t l = strlen(path_to_version_dir) + strlen("/Resources") + 1;
+      res_path = malloc(l);
+      snprintf(res_path, l, "%s%s", path_to_version_dir, "/Resources");
     }
+    break;
   }
   
   /* FIXME: it'd be simpler, cleaner and safer to use the
      cc_string_sprintf() function. 20030804 mortene. */
   length = strlen(framework_path) + strlen(dyld_path) + strlen(default_path) + 
-           (res_path ? strlen(res_path) : 0) + 4;
+    (res_path ? strlen(res_path) : 0) + 4;
   path = malloc(length);
   snprintf(path, length, "%s%s%s%s%s%s%s",
            framework_path, ":",
            dyld_path, dyld_path[0] ? ":" : "", default_path, 
            res_path ? ":" : "" , res_path ? res_path : "");
-
+  
   free(framework_path);
   free(res_path);
   return path;
