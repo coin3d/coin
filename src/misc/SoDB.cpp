@@ -520,7 +520,10 @@ SoDBP::clean(void)
   // See notes in SoAudioDevice::SoAudioDevice() and
   // SoAudioDeviceP::clean() for more information.  
   // 2003-02-27 thammer.
+
+#ifdef HAVE_SOUND
   SoAudioDevice::instance()->cleanup();
+#endif // HAVE_SOUND
 
 #if COIN_DEBUG
   // Avoid having the SoSensorManager instance trigging the callback
