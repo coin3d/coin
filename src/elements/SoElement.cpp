@@ -268,6 +268,7 @@
 #include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoGLMultiTextureMatrixElement.h>
 #include <Inventor/elements/SoBumpMapElement.h>
+#include <Inventor/elements/SoBumpMapCoordinateElement.h>
 
 #include <Inventor/elements/SoCullElement.h> // internal element
 #include <Inventor/elements/SoGLLazyElement.h> // internal element
@@ -458,6 +459,7 @@ SoElement::initElements(void)
   SoGLMultiTextureMatrixElement::initClass();
 
   SoBumpMapElement::initClass();
+  SoBumpMapCoordinateElement::initClass();
 }
 
 // Note: the following documentation for initClass() will also be
