@@ -27,7 +27,9 @@
 
 
 #include <Inventor/nodes/SoSelection.h>
-
+#include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/lists/SoCallbackList.h>
+#include <Inventor/SoPath.h>
 
 /*!
   \enum SoSelection::Policy
@@ -52,6 +54,8 @@
   FIXME: write documentation for field
 */
 
+
+static SoSearchAction *searchAction; // used to search for nodes
 
 // *************************************************************************
 
@@ -95,91 +99,120 @@ SoSelection::initClass(void)
 /*!
   FIXME: write doc
  */
-SoSelection::SoSelection(int /* nChildren */)
+SoSelection::SoSelection(const int nChildren)
+  : inherited(nChildren)
 {
-  assert(0 && "FIXME: not implemented");
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoSelection::select(const SoPath * /* path */)
+SoSelection::select(const SoPath * const path)
 {
-  assert(0 && "FIXME: not implemented");
+  SoPath *newpath = this->copyFromThis(path);
+  if (newpath) {
+    newpath->ref();
+    this->addPath(newpath);
+    newpath->unref();
+  }
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoSelection::select(SoNode * /* node */)
+SoSelection::select(SoNode * const node)
 {
-  assert(0 && "FIXME: not implemented");
+  SoPath *path = this->searchNode(node);
+  if (path) {
+    path->ref();
+    this->addPath(path);
+    path->unref();
+  }
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoSelection::deselect(const SoPath * /* path */)
+SoSelection::deselect(const SoPath * const path)
 {
-  assert(0 && "FIXME: not implemented");
+  int idx = this->findPath(path);
+  if (idx >= 0) this->removePath(idx);
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoSelection::deselect(int /* which */)
+SoSelection::deselect(const int which)
 {
-  assert(0 && "FIXME: not implemented");
+  this->removePath(which);
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoSelection::deselect(SoNode * /* node */)
+SoSelection::deselect(SoNode * const node)
 {
-  assert(0 && "FIXME: not implemented");
+  SoPath *path = this->searchNode(node);
+  if (path) {
+    path->ref();
+    this->deselect(path);
+    path->unref();
+  }
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoSelection::toggle(const SoPath * /* path */)
+SoSelection::toggle(const SoPath * const path)
 {
-  assert(0 && "FIXME: not implemented");
+  int idx = this->findPath(path);
+  if (idx >= 0) this->removePath(idx);
+  else this->select(path);
 }
+
 
 /*!
   FIXME: write doc
  */
 void
-SoSelection::toggle(SoNode * /* node */)
-{
-  assert(0 && "FIXME: not implemented");
+SoSelection::toggle(SoNode * const node)
+{  
+  SoPath *path = this->searchNode(node);
+  if (path) {
+    path->ref();
+    this->toggle(path);
+    path->unref();
+  }
 }
 
 /*!
   FIXME: write doc
  */
 SbBool
-SoSelection::isSelected(const SoPath * /* path */) const
+SoSelection::isSelected(const SoPath * const path) const
 {
-  assert(0 && "FIXME: not implemented");
-  return FALSE;
+  return this->findPath(path) >= 0;
 }
 
 /*!
   FIXME: write doc
  */
 SbBool
-SoSelection::isSelected(SoNode * /* node */) const
+SoSelection::isSelected(SoNode * const node) const
 {
-  assert(0 && "FIXME: not implemented");
+  SoPath *path = this->searchNode(node);
+  if (path) {
+    path->ref();
+    SbBool ret = this->isSelected(path);
+    path->unref();
+    return ret;
+  }
   return FALSE;
 }
 
@@ -189,7 +222,7 @@ SoSelection::isSelected(SoNode * /* node */) const
 void
 SoSelection::deselectAll(void)
 {
-  assert(0 && "FIXME: not implemented");
+  this->selectionList.truncate(0);
 }
 
 /*!
@@ -198,8 +231,7 @@ SoSelection::deselectAll(void)
 int
 SoSelection::getNumSelected(void) const
 {
-  assert(0 && "FIXME: not implemented");
-  return 0;
+  return this->selectionList.getLength();
 }
 
 /*!
@@ -208,119 +240,119 @@ SoSelection::getNumSelected(void) const
 const SoPathList *
 SoSelection::getList(void) const
 {
-  assert(0 && "FIXME: not implemented");
-  return NULL;
+  return &this->selectionList;
 }
 
 /*!
   FIXME: write doc
  */
 SoPath *
-SoSelection::getPath(int /* index */) const
+SoSelection::getPath(const int index) const
 {
-  assert(0 && "FIXME: not implemented");
-  return NULL;
+  return this->selectionList[index];
 }
 
 /*!
   FIXME: write doc
  */
 SoPath *
-SoSelection::operator[](int /* i */) const
+SoSelection::operator[](const int i) const
 {
-  assert(0 && "FIXME: not implemented");
-  return NULL;
+  return this->selectionList[i];
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoSelection::addSelectionCallback(SoSelectionPathCB * /* f */, void * /* userData */)
+SoSelection::addSelectionCallback(SoSelectionPathCB *f, void *userData)
 {
-  assert(0 && "FIXME: not implemented");
+  this->selCBList->addCallback((SoCallbackListCB*)f, userData);
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoSelection::removeSelectionCallback(SoSelectionPathCB * /* f */, void * /* userData */)
+SoSelection::removeSelectionCallback(SoSelectionPathCB *f, void *userData)
 {
-  assert(0 && "FIXME: not implemented");
+  this->selCBList->removeCallback((SoCallbackListCB*)f, userData);
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoSelection::addDeselectionCallback(SoSelectionPathCB * /* f */, void * /* userData */)
+SoSelection::addDeselectionCallback(SoSelectionPathCB *f, void *userData)
 {
-  assert(0 && "FIXME: not implemented");
+  this->deselCBList->addCallback((SoCallbackListCB*)f, userData);
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoSelection::removeDeselectionCallback(SoSelectionPathCB * /* f */, void * /* userData */)
+SoSelection::removeDeselectionCallback(SoSelectionPathCB *f, void *userData)
 {
-  assert(0 && "FIXME: not implemented");
+  this->deselCBList->removeCallback((SoCallbackListCB*)f, userData);
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoSelection::addStartCallback(SoSelectionClassCB * /* f */, void * /* userData */)
+SoSelection::addStartCallback(SoSelectionClassCB *f, void *userData)
 {
-  assert(0 && "FIXME: not implemented");
+  this->startCBList->addCallback((SoCallbackListCB*)f, userData);
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoSelection::removeStartCallback(SoSelectionClassCB * /* f */, void * /* userData */)
+SoSelection::removeStartCallback(SoSelectionClassCB *f, void *userData)
 {
-  assert(0 && "FIXME: not implemented");
+  this->startCBList->removeCallback((SoCallbackListCB*)f, userData);
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoSelection::addFinishCallback(SoSelectionClassCB * /* f */, void * /* userData */)
+SoSelection::addFinishCallback(SoSelectionClassCB *f, void *userData)
 {
-  assert(0 && "FIXME: not implemented");
+  this->finishCBList->addCallback((SoCallbackListCB*)f, userData);
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoSelection::removeFinishCallback(SoSelectionClassCB * /* f */, void * /* userData */)
+SoSelection::removeFinishCallback(SoSelectionClassCB *f, void *userData)
 {
-  assert(0 && "FIXME: not implemented");
+  this->finishCBList->removeCallback((SoCallbackListCB*)f, userData);
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoSelection::setPickFilterCallback(SoSelectionPickCB * /* f */, void * /* userData */,
-				   SbBool /* callOnlyIfSelectable */)
+SoSelection::setPickFilterCallback(SoSelectionPickCB *f, 
+				   void *userData,
+				   const SbBool callOnlyIfSelectable)
 {
-  assert(0 && "FIXME: not implemented");
+  this->pickCBFunc = f;
+  this->pickCBData = userData;
+  this->callPickCBOnlyIfSelectable = callOnlyIfSelectable;
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoSelection::setPickMatching(SbBool /* pickTwice */)
+SoSelection::setPickMatching(const SbBool pickMatching)
 {
-  assert(0 && "FIXME: not implemented");
+  this->pickMatching = pickMatching;
 }
 
 /*!
@@ -329,8 +361,7 @@ SoSelection::setPickMatching(SbBool /* pickTwice */)
 SbBool
 SoSelection::isPickMatching(void) const
 {
-  assert(0 && "FIXME: not implemented");
-  return FALSE;
+  return this->pickMatching;
 }
 
 /*!
@@ -339,15 +370,32 @@ SoSelection::isPickMatching(void) const
 SbBool
 SoSelection::getPickMatching(void) const
 {
-  assert(0 && "FIXME: not implemented");
-  return FALSE;
+  return this->pickMatching;
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoSelection::addChangeCallback(SoSelectionClassCB * /* f */, void * /* userData */)
+SoSelection::addChangeCallback(SoSelectionClassCB *f, void *userData)
+{
+  this->changeCBList->addCallback((SoCallbackListCB*)f, userData);
+}
+
+/*!
+  FIXME: write doc
+ */
+void
+SoSelection::removeChangeCallback(SoSelectionClassCB *f, void *userData)
+{
+  this->changeCBList->removeCallback((SoCallbackListCB*)f, userData);
+}
+/*!
+  FIXME: write doc
+ */
+void
+SoSelection::invokeSelectionPolicy(SoPath * const /* path */, 
+				   const SbBool /* shiftDown */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -356,8 +404,7 @@ SoSelection::addChangeCallback(SoSelectionClassCB * /* f */, void * /* userData 
   FIXME: write doc
  */
 void
-SoSelection::removeChangeCallback(SoSelectionClassCB * /* f */,
-				  void * /* userData */)
+SoSelection::performSingleSelection(SoPath * const /* path */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -366,25 +413,7 @@ SoSelection::removeChangeCallback(SoSelectionClassCB * /* f */,
   FIXME: write doc
  */
 void
-SoSelection::invokeSelectionPolicy(SoPath * /* path */, SbBool /* shiftDown */)
-{
-  assert(0 && "FIXME: not implemented");
-}
-
-/*!
-  FIXME: write doc
- */
-void
-SoSelection::performSingleSelection(SoPath * /* path */)
-{
-  assert(0 && "FIXME: not implemented");
-}
-
-/*!
-  FIXME: write doc
- */
-void
-SoSelection::performToggleSelection(SoPath * /* path */)
+SoSelection::performToggleSelection(SoPath * const /* path */)
 {
   assert(0 && "FIXME: not implemented");
 }
@@ -393,9 +422,10 @@ SoSelection::performToggleSelection(SoPath * /* path */)
   FIXME: write doc
  */
 SoPath *
-SoSelection::copyFromThis(const SoPath * /* path */) const
+SoSelection::copyFromThis(const SoPath * const path) const
 {
-  assert(0 && "FIXME: not implemented");
+  int i = path->findNode(this);
+  if (i >= 0) return path->copy(i);
   return NULL;
 }
 
@@ -403,28 +433,40 @@ SoSelection::copyFromThis(const SoPath * /* path */) const
   FIXME: write doc
  */
 void
-SoSelection::addPath(SoPath * /* path */)
+SoSelection::addPath(SoPath * const path)
 {
-  assert(0 && "FIXME: not implemented");
+  this->selectionList.append(path);
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoSelection::removePath(int /* which */)
+SoSelection::removePath(const int which)
 {
-  assert(0 && "FIXME: not implemented");
+  this->selectionList.remove(which);
 }
 
 /*!
   FIXME: write doc
  */
 int
-SoSelection::findPath(const SoPath * /* path */) const
+SoSelection::findPath(const SoPath * const path) const
 {
-  assert(0 && "FIXME: not implemented");
-  return 0;
+  int idx = -1;
+  
+  // make copy only if necessary
+  if (path->getHead() != (SoNode*)this) {
+    SoPath *newpath = this->copyFromThis(path);
+    if (newpath) {
+      newpath->ref();
+      idx = this->selectionList.findPath(*newpath);
+      newpath->unref();
+    }
+    else idx = -1;
+  }
+  else idx = this->selectionList.findPath(*path);
+  return idx;
 }
 
 /*!
@@ -435,3 +477,20 @@ SoSelection::handleEvent(SoHandleEventAction * /* action */)
 {
   assert(0 && "FIXME: not implemented");
 }
+
+//
+// uses search action to find path to node from this
+//
+SoPath *
+SoSelection::searchNode(SoNode * const node) const
+{
+  if (searchAction == NULL) {
+    searchAction = new SoSearchAction;
+    searchAction->setInterest(SoSearchAction::FIRST);
+  }
+  searchAction->setNode(node);
+  searchAction->apply((SoNode*)this);
+  return searchAction->getPath(); 
+}
+
+
