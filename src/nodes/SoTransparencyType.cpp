@@ -31,6 +31,13 @@
   could be inconvenient if different transparency types was wanted for
   different shapes.
 
+  Here is a screenshot of the different transparency modes used in a
+  single scene.
+ 
+  <center>
+  <img src="http://doc.coin3d.org/images/Coin/nodes/transparencytype.png">
+  </center>
+
   \COIN_CLASS_EXTENSION
 
   \sa SoGLRenderAction::TransparencyType
