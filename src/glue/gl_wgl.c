@@ -86,21 +86,29 @@ typedef BOOL (WINAPI * COIN_PFNWGLQUERYPBUFFERPROC)(WGLGLUE_HPBUFFER hPbuffer,
                                                        int iAttribute,
                                                        int * piValue);
 
+typedef BOOL (WINAPI * COIN_PFNWGLBINDTEXIMAGEARBPROC)(WGLGLUE_HPBUFFER hPbuffer, int iBuffer);
+typedef BOOL (WINAPI * COIN_PFNWGLRELEASETEXIMAGEARBPROC)(WGLGLUE_HPBUFFER hPbuffer, int iBuffer);
+/* typedef BOOL (WINAPI * COIN_PFNWGLSETPBUFFERATTRIBARBPROC)(WGLGLUE_HPBUFFER hPbuffer, const int * piAttribList); */
+
 static COIN_PFNWGLCREATEPBUFFERPROC wglglue_wglCreatePbuffer = NULL;
 static COIN_PFNWGLGETPBUFFERDCPROC wglglue_wglGetPbufferDC = NULL;
 static COIN_PFNWGLRELEASEPBUFFERDCPROC wglglue_wglReleasePbufferDC = NULL;
 static COIN_PFNWGLDESTROYPBUFFERPROC wglglue_wglDestroyPbuffer = NULL;
 static COIN_PFNWGLQUERYPBUFFERPROC wglglue_wglQueryPbuffer = NULL;
+static COIN_PFNWGLBINDTEXIMAGEARBPROC wglglue_wglBindTexImageARB = NULL;
+static COIN_PFNWGLBINDTEXIMAGEARBPROC wglglue_wglReleaseTexImageARB = NULL;
+/* static COIN_PFNWGLSETPBUFFERATTRIBARBPROC wglglue_wglSetPBufferAttrib = NULL; */
+
 
 /* The following is from either the WGL_ARB_pixel_format or the
    WGL_EXT_pixel_format extensions: */
 
 typedef BOOL (WINAPI * COIN_PFNWGLCHOOSEPIXELFORMATPROC)(HDC hdc,
-                                                            const int * piAttribIList,
-                                                            const FLOAT * pfAttribFList,
-                                                            UINT nMaxFormats,
-                                                            int * piFormats,
-                                                            UINT * nNumFormats);
+                                                         const int * piAttribIList,
+                                                         const FLOAT * pfAttribFList,
+                                                         UINT nMaxFormats,
+                                                         int * piFormats,
+                                                         UINT * nNumFormats);
 
 static COIN_PFNWGLCHOOSEPIXELFORMATPROC wglglue_wglChoosePixelFormat = NULL;
 
@@ -132,6 +140,7 @@ static COIN_PFNWGLGETEXTENSIONSSTRING wglglue_wglGetExtensionsString = NULL;
 #define WGL_ARB_extensions_string 1
 #define WGL_EXT_extensions_string 1
 
+#define WGL_ARB_render_texture 1
 #else /* static binding */
 
 #define PROC(_func_) (&_func_)
@@ -205,6 +214,7 @@ struct wglglue_contextdata {
 
   WGLGLUE_HPBUFFER hpbuffer;
   SbBool noappglcontextavail;
+  SbBool pbufferisbound;
 };
 
 static SbBool
@@ -297,6 +307,12 @@ wglglue_resolve_symbols(struct wglglue_contextdata * context)
   }
 #endif /* WGL_EXT_pbuffer */
 
+#ifdef WGL_ARB_render_texture
+  if (wglglue_ext_supported(context, "WGL_ARB_render_texture")) {
+    wglglue_wglBindTexImageARB =  (COIN_PFNWGLBINDTEXIMAGEARBPROC) PROC(wglBindTexImageARB);
+    wglglue_wglReleaseTexImageARB = (COIN_PFNWGLBINDTEXIMAGEARBPROC) PROC(wglReleaseTexImageARB);
+  }
+#endif /* WGL_ARB_render_texture */
   wglglue_context_reinstate_previous(context);
 
   return wglglue_pbuffer_symbols_resolved();
@@ -319,6 +335,7 @@ wglglue_contextdata_init(unsigned int width, unsigned int height)
   context->storedcontext = NULL;
   context->storeddc = NULL;
   context->noappglcontextavail = FALSE;
+  context->pbufferisbound = FALSE;
 
   return context;
 }
@@ -782,6 +799,33 @@ wglglue_context_destruct(void * ctx)
   }
   
   wglglue_contextdata_cleanup(context);
+}
+
+void 
+wglglue_context_bind_pbuffer(void * ctx)
+{
+  struct wglglue_contextdata * context = (struct wglglue_contextdata *)ctx;
+  assert(wglglue_wglBindTexImageARB != NULL);
+  
+  /* FIXME: check return value. pederb, 2003--11-27 */
+  (void) wglglue_wglBindTexImageARB(context->hpbuffer, WGL_FRONT_LEFT_ARB);
+}
+
+void 
+wglglue_context_release_pbuffer(void * ctx)
+{
+  struct wglglue_contextdata * context = (struct wglglue_contextdata *)ctx;
+  assert(wglglue_wglReleaseTexImageARB != NULL);
+  
+  /* FIXME: check return value. pederb, 2003--11-27 */
+  (void) wglglue_wglReleaseTexImageARB(context->hpbuffer, WGL_FRONT_LEFT_ARB);
+}
+
+SbBool 
+wglglue_context_pbuffer_is_bound(void * ctx)
+{
+  struct wglglue_contextdata * context = (struct wglglue_contextdata *)ctx;
+  return context->pbufferisbound;
 }
 
 #endif /* HAVE_WGL */
