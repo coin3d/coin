@@ -1145,7 +1145,7 @@ glglue_resolve_symbols(cc_glglue * w)
   /* GL_[ARB/EXT]_texture_env_combine */
   w->has_texture_env_combine = (cc_glglue_glext_supported(w, "GL_ARB_texture_env_combine") ||
                                 cc_glglue_glext_supported(w, "GL_EXT_texture_env_combine") ||
-                                cc_glglue_glversion_matches_at_least(w, 1, 4, 0));
+                                cc_glglue_glversion_matches_at_least(w, 1, 3, 0));
 
   /* GL_ARB_fragment_program */
   w->glProgramStringARB = NULL;
