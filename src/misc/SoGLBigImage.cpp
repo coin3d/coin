@@ -566,7 +566,7 @@ SoGLBigImageP::copySubImage(const int idx,
           }
         }
         else {
-          for (int c = 0; c < nc; c++) *dst++ = 0xff;
+          for (int c = 0; c < nc; c++) *dst++ = 0x00;
         }
       }
     }
