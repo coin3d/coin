@@ -115,7 +115,6 @@ EXTRA_DIST = \
 	packaging/macosx/inst-README-Jaguar.txt.in \
 	packaging/macosx/inst-README-Panther.txt.in \
 	packaging/macosx/inst-README-.txt.in \
-	packaging/macosx/uninstall-coin.pl \
 	packaging/redhat/coin.spec.in \
 	packaging/windows/Makefile.in \
 	packaging/windows/bfheader.nsi.in \
