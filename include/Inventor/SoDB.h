@@ -20,13 +20,6 @@
 #ifndef COIN_SODB_H
 #define COIN_SODB_H
 
-// FIXME: use configure to clean up this. 20000130 mortene.
-#ifdef _WIN32
-typedef struct fd_set fd_set;
-#else // ! _WIN32
-#include <unistd.h> // fd_set
-#endif
-
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbString.h>
 #include <Inventor/SoType.h>
@@ -86,8 +79,8 @@ public:
   static SoSensorManager * getSensorManager(void);
   static void setDelaySensorTimeout(const SbTime & t);
   static const SbTime & getDelaySensorTimeout(void);
-  static int doSelect(int nfds, fd_set * readfds, fd_set * writefds,
-                      fd_set * exceptfds, struct timeval * usertimeout);
+  static int doSelect(int nfds, void * readfds, void * writefds,
+                      void * exceptfds, struct timeval * usertimeout);
 
   static void addConverter(SoType from, SoType to, SoType converter);
   static SoType getConverter(SoType from, SoType to);

@@ -80,6 +80,10 @@
 #if HAVE_WINDOWS_H
 #include <windows.h>
 #endif // HAVE_WINDOWS_H
+#if HAVE_UNISTD_H
+#include <unistd.h> // fd_set (?)
+#endif // HAVE_UNISTD_H
+
 
 static SbString * coin_versionstring = NULL;
 
@@ -817,10 +821,14 @@ SoDB::getSensorManager(void)
   so you can do synchronous I/O while Coin continous to handle sensor
   events, rendering, etc. The parameters are the same as for \c
   select(), so check your system documentation on how to use them.
- */
+
+  The void* arguments must be valid pointers to fd_set
+  structures. We've changed this from the original SGI Inventor API to
+  avoid messing up the header file with system-specific includes.
+*/
 int
-SoDB::doSelect(int nfds, fd_set * readfds, fd_set * writefds,
-               fd_set * exceptfds, struct timeval * usertimeout)
+SoDB::doSelect(int nfds, void * readfds, void * writefds,
+               void * exceptfds, struct timeval * usertimeout)
 {
   // FIXME: need to do eventhandling for sensors etc. Check
   // SoSensorManager::doSelect(). Should we just call that method?
@@ -831,7 +839,10 @@ SoDB::doSelect(int nfds, fd_set * readfds, fd_set * writefds,
   COIN_STUB();
   return 0;
 #else // !__BEOS__
-  return select(nfds, readfds, writefds, exceptfds, usertimeout);
+  fd_set * rds = (fd_set *)readfds;
+  fd_set * wds = (fd_set *)writefds;
+  fd_set * eds = (fd_set *)exceptfds;
+  return select(nfds, rds, wds, eds, usertimeout);
 #endif // __BEOS__
 }
 
