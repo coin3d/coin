@@ -211,16 +211,16 @@ cc_glyph3d_ref(uint32_t character, const cc_font_specification * spec)
   glyph->fontidx = fontidx;
   glyph->didallocvectorglyph = FALSE;
 
-  if (fontidx != 0) 
-    glyph->vectorglyph = cc_flw_get_vector_glyph(fontidx, glyphidx, newspec->complexity);
-  else
-    glyph->vectorglyph = NULL;
+  glyph->vectorglyph = 
+    (fontidx != 0) ? cc_flw_get_vector_glyph(fontidx,
+                                             glyphidx,
+                                             newspec->complexity) : NULL;
 
   /* Setup builtin default font if no character was found */
   if (glyph->vectorglyph == NULL) {
     glyph->vectorglyph = (struct cc_flw_vector_glyph *) malloc(sizeof(struct cc_flw_vector_glyph));
     glyph->didallocvectorglyph = TRUE;
-  
+
     if (character <= 32 || character >= 127) {
 
       /* FIXME: Characters other than space, should be replaced with
@@ -229,16 +229,16 @@ cc_glyph3d_ref(uint32_t character, const cc_font_specification * spec)
       /* treat all these characters as spaces*/
       glyph->vectorglyph->vertices = (float *) glyph3d_spaceglyphvertices;
       glyph->vectorglyph->faceindices = (int *) glyph3d_spaceglyphindices;
-      glyph->vectorglyph->edgeindices = (int *) glyph3d_spaceglyphindices;     
+      glyph->vectorglyph->edgeindices = (int *) glyph3d_spaceglyphindices;
     }
     else {
       glyph->vectorglyph->vertices = (float *) coin_default3dfont_get_coords()[character-33];
       glyph->vectorglyph->faceindices = (int *) coin_default3dfont_get_faceidx()[character-33];
       glyph->vectorglyph->edgeindices = (int *) coin_default3dfont_get_edgeidx()[character-33];
     }
-  } 
+  }
   
-  glyph3d_calcboundingbox(glyph);  
+  glyph3d_calcboundingbox(glyph);
   glyph->width = glyph->bbox[2] - glyph->bbox[0];
 
   /* Store newly created glyph in the list for this character */
