@@ -95,6 +95,7 @@
 #include <Inventor/misc/SoProto.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/tidbitsp.h>
+#include "SoInput_FileInfo.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -129,7 +130,6 @@
 
 SbStringList * SoInput::dirsearchlist = NULL;
 
-#include "SoInput_FileInfo.cpp"
 
 // *************************************************************************
 

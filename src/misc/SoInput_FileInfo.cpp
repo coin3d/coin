@@ -22,6 +22,10 @@
 \**************************************************************************/
 
 #include "SoInput_FileInfo.h"
+#include <Inventor/lists/SbList.h>
+#include <Inventor/errors/SoReadError.h>
+#include <Inventor/nodes/SoNode.h>
+#include <Inventor/misc/SoProto.h>
 
 const unsigned int READBUFSIZE = 65536;
 

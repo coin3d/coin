@@ -25,6 +25,8 @@
 \**************************************************************************/
 
 #include <stdio.h>
+#include <string.h>
+#include <Inventor/SbString.h>
 
 class SoInput_Reader {
 public:

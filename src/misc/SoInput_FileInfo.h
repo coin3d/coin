@@ -24,6 +24,10 @@
  *
 \**************************************************************************/
 
+#include <Inventor/SoInput.h>
+#include <Inventor/SoDB.h>
+#include <Inventor/SbName.h>
+#include <Inventor/C/tidbits.h>
 #include "SoInput_Reader.h"
 
 class SoInput_FileInfo {

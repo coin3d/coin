@@ -163,6 +163,8 @@ RegularSources = \
 	SoTempPath.cpp \
 	SoLightPath.cpp \
 	SoInput.cpp \
+	SoInput_FileInfo.cpp \
+	SoInput_Reader.cpp \
 	SoInteraction.cpp \
 	SoOutput.cpp \
 	SoPath.cpp \
@@ -226,6 +228,8 @@ PrivateHeaders = \
 	SoGLnonindexedTristripSetTemplate.icc \
 	SoGLqmeshTemplate.icc \
 	SoGLqmeshpreciselightingTemplate.icc \
+	SoInput_FileInfo.h \
+	SoInput_Reader.h \
 	SoOffscreenAGLData.icc \
 	SoOffscreenGLXData.icc \
 	SoOffscreenWGLData.icc \
@@ -312,6 +316,8 @@ misc_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoTempPath.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoLightPath.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoInput.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoInput_FileInfo.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoInput_Reader.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoInteraction.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoOutput.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoPath.$(OBJEXT) SoPick.$(OBJEXT) \
@@ -346,7 +352,8 @@ libmisc_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoNotification.lo SoNotRec.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoState.lo SoDB.lo SoFullPath.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTempPath.lo SoLightPath.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoInput.lo SoInteraction.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoInput.lo SoInput_FileInfo.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoInput_Reader.lo SoInteraction.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoOutput.lo SoPath.lo SoPick.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoPickedPoint.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoPrimitiveVertex.lo SoProto.lo \
@@ -371,7 +378,8 @@ libmisc@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoNotification.lo SoNotRec.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoState.lo SoDB.lo SoFullPath.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTempPath.lo SoLightPath.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoInput.lo SoInteraction.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoInput.lo SoInput_FileInfo.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoInput_Reader.lo SoInteraction.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoOutput.lo SoPath.lo SoPick.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoPickedPoint.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoPrimitiveVertex.lo SoProto.lo \
@@ -406,7 +414,11 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoGLImage.Po $(DEPDIR)/SoGenerate.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoGenerate.Po $(DEPDIR)/SoGlyph.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoGlyph.Po $(DEPDIR)/SoInput.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoInput.Po $(DEPDIR)/SoInteraction.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoInput.Po $(DEPDIR)/SoInput_FileInfo.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoInput_FileInfo.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoInput_Reader.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoInput_Reader.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoInteraction.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoInteraction.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoLightPath.Plo $(DEPDIR)/SoLightPath.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoLockManager.Plo \
@@ -556,6 +568,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGlyph.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoInput.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoInput.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoInput_FileInfo.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoInput_FileInfo.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoInput_Reader.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoInput_Reader.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoInteraction.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoInteraction.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoLightPath.Plo@am__quote@

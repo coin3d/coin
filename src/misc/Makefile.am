@@ -18,6 +18,8 @@ RegularSources = \
 	SoTempPath.cpp \
 	SoLightPath.cpp \
 	SoInput.cpp \
+	SoInput_FileInfo.cpp \
+	SoInput_Reader.cpp \
 	SoInteraction.cpp \
 	SoOutput.cpp \
 	SoPath.cpp \
@@ -78,6 +80,8 @@ PrivateHeaders = \
 	SoGLnonindexedTristripSetTemplate.icc \
 	SoGLqmeshTemplate.icc \
 	SoGLqmeshpreciselightingTemplate.icc \
+	SoInput_FileInfo.h \
+	SoInput_Reader.h \
 	SoOffscreenAGLData.icc \
 	SoOffscreenGLXData.icc \
 	SoOffscreenWGLData.icc \
