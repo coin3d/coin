@@ -489,4 +489,5 @@ STUFF TO FIX IN COIN
     be created manually (which is acceptable in the development phase),
     the point would kind of be gone.
 
+    URL: http://www-dev.cso.uiuc.edu/libtar/
 
