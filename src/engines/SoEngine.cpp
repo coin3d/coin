@@ -44,6 +44,7 @@
 
 #include <Inventor/engines/SoEngines.h>
 #include <Inventor/engines/SoOutputData.h>
+#include <Inventor/lists/SoEngineList.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <coindefs.h> // COIN_STUB()
 
@@ -249,8 +250,7 @@ SoEngine::getByName(const SbName & name)
 int
 SoEngine::getByName(const SbName & name, SoEngineList & el)
 {
-  SoBaseList * baselist = (SoBaseList *)&el;
-  return SoBase::getNamedBases(name, *baselist, SoEngine::getClassTypeId());
+  return SoBase::getNamedBases(name, el, SoEngine::getClassTypeId());
 }
 
 /*!
