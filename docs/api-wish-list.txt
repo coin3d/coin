@@ -1,15 +1,17 @@
 WHAT'S THIS?
 ============
 
-Beyond Coin: Gold (v1.0, the Open Inventor compatibility release), we intend
-to extend the original Open Inventor API where we think it lacks needed
-functionality.  This file contains a collection of such API extension ideas
-that we will consider to implement in the future.
+Beyond Coin: Gold (v1.0, the Open Inventor compatibility release), we
+intend to extend the original Open Inventor API where we think it
+lacks needed functionality.  This file contains a collection of such
+API extension ideas that we will consider to implement in the future.
 
-The listing of an API change or API extension in this file does not mean that
-it will be implemented, only that it will be considered to be implemented.
+The listing of an API change or API extension in this file does not
+mean that it will be implemented, only that it will be considered for
+implementation.
 
 Ideas for this wish list can be submitted by anyone.
+
 
 THE WISH LIST
 =============
@@ -52,7 +54,7 @@ THE WISH LIST
   SbVec[16|32|64]Integer[2|3|4] (perhaps also with "unsigned"
   mutations?), and mapping the original Inventor API classes to these?
   (We'd need some code in a sensible language for autogenerating all
-  the code for the class implementations.) 2000-12-07 mortene]
+  the C++ code for the class implementations.) 2000-12-07 mortene]
 
 * SoDepthBuffer, SoGLDepthBufferElement
   2000-12-07  Peder Blekken  <pederb@sim.no>
