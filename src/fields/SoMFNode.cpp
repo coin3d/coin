@@ -57,7 +57,6 @@
 #include <Inventor/SoPath.h>
 #include <Inventor/engines/SoEngine.h>
 #include <Inventor/nodes/SoNode.h>
-#include <Inventor/errors/SoReadError.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -308,9 +307,7 @@ SoMFNode::read1Value(SoInput * in, int index)
 {
   SoSFNode sfnode;
   SbBool result = sfnode.readValue(in);
-  if (result) {
-    this->set1Value(index, sfnode.getValue());
-  }
+  if (result) this->set1Value(index, sfnode.getValue());
   return result;
 }
 
@@ -398,12 +395,18 @@ SoMFNode::fixCopy(SbBool copyconnections)
   for (int i=0; i < this->getNum(); i++) {
     SoNode * n = (*this)[i];
     if (n) {
+#if COIN_DEBUG
+      n->assertAlive();
+#endif // COIN_DEBUG
       // The set1Value() call below will automatically de-audit and
       // un-ref the old pointer value node reference we have in the
       // array, *before* re-inserting a copy.
 
 #if defined(COIN_INTERNAL_SOMFNODE) || defined(COIN_INTERNAL_SOMFENGINE)
       SoFieldContainer * fc = SoFieldContainer::findCopy(n, copyconnections);
+#if COIN_DEBUG
+      fc->assertAlive();  
+#endif // COIN_DEBUG
       this->set1Value(i, (SoNode *)fc);
 #endif // COIN_INTERNAL_SOMFNODE || COIN_INTERNAL_SOMFENGINE
 

@@ -255,12 +255,19 @@ SoSFPath::fixCopy(SbBool copyconnections)
   SoPath * n = this->getValue();
   if (!n) return;
 
+#if COIN_DEBUG
+  n->assertAlive();
+#endif // COIN_DEBUG
+
   // The setValue() call below will automatically de-audit and un-ref
   // the old pointer-value reference we have, *before* re-inserting a
   // copy.
 
 #if defined(COIN_INTERNAL_SOSFNODE) || defined(COIN_INTERNAL_SOSFENGINE)
   SoFieldContainer * fc = SoFieldContainer::findCopy(n, copyconnections);
+#if COIN_DEBUG
+  fc->assertAlive();
+#endif // COIN_DEBUG
   this->setValue((SoPath *)fc);
 #endif // COIN_INTERNAL_SOSFNODE || COIN_INTERNAL_SOSFENGINE
 

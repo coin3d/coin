@@ -342,6 +342,8 @@ SoType SoField::classTypeId;
 
 // *************************************************************************
 
+// used to detect when a field that is already destructed is used
+#define FLAG_ALIVE_PATTERN 0xbeef0000
 
 // private methods. Inlined inside this file only.
 
@@ -400,7 +402,8 @@ SoField::SoField(void)
   this->statusbits = 0;
   this->setStatusBits(FLAG_DONOTIFY |
                       FLAG_ISDEFAULT |
-                      FLAG_ENABLECONNECTS);
+                      FLAG_ENABLECONNECTS|
+                      FLAG_ALIVE_PATTERN);
 }
 
 /*!
@@ -458,10 +461,11 @@ SoField::~SoField()
 
     delete this->storage;
   }
-
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoField::~SoField", "%p done", this);
 #endif // debug
+
+  this->clearStatusBits(FLAG_ALIVE_PATTERN);
 }
 
 // need one static mutex for field_buffer in SoField::get(SbString &)
@@ -1255,6 +1259,13 @@ SoField::startNotify(void)
 void
 SoField::notify(SoNotList * nlist)
 {
+  assert((this->statusbits & FLAG_ALIVE_PATTERN) == FLAG_ALIVE_PATTERN);
+#if COIN_DEBUG
+  if (this->getContainer()) {
+    this->getContainer()->assertAlive();
+  }
+#endif // COIN_DEBUG
+
   // In Inventor it is legal to have circular field connections. This
   // test stops the notification from entering into an infinite
   // recursion because of such connections. The flag is set/cleared
