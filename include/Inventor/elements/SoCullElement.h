@@ -37,16 +37,21 @@ protected:
 public:
 
   virtual void init(SoState * state);
-  virtual void SoCullElement::push(SoState * state);
+  virtual void push(SoState * state);
 
   static void addPlanes(SoState * state, const SbPlane * planes, const int numplanes);
   static SbBool cullBox(SoState * state, const SbBox3f & box, const SbBool transform = TRUE);
+  static SbBool cullTest(SoState * state, const SbBox3f & box, const SbBool transform = TRUE);
   static SbBool completelyInside(SoState * state);
 
   virtual SbBool matches(const SoElement * elt) const;
   virtual SoElement * copyMatchInfo(void) const;
 
 private:
+
+  static SbBool docull(SoState * state, const SbBox3f & box, const SbBool transform,
+                       const SbBool updateelem);
+
   SbPlane plane[32];
   int numplanes;
   unsigned int flags;

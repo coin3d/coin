@@ -31,6 +31,13 @@
   more than enough, since the view frustum is represented by 6 planes,
   and the maximum number of OpenGL clipping planes is typically 6 or
   8.
+
+  This element is designed for fast culling, and will not do optimal
+  view frustum culling; a box might not be culled even though it is
+  outside the view frustum. The assumption is that the view frustum is
+  small compared to the world model. The element simply records all
+  planes to be culled against, and the graph is not culled until it is
+  completely outside one of the planes.  
 */
 
 #include <Inventor/elements/SoCullElement.h>
@@ -76,14 +83,7 @@ SoCullElement::push(SoState * state)
 
   elem->flags = this->flags;
   elem->numplanes = this->numplanes;
-#if 0 // OBSOLETED: insecure wrt to the implementation of the
-      // default SbPlane constructor. 20000517 mortene.
-  if (this->numplanes > 0) {
-    memcpy(elem->plane, this->plane, sizeof(SbPlane) * this->numplanes);
-  }
-#else
-  for (int i=0; i < this->numplanes; i++) elem->plane[i] = this->plane[i];
-#endif
+  for (int i = 0; i < this->numplanes; i++) elem->plane[i] = this->plane[i];
 }
 
 /*!
@@ -101,13 +101,8 @@ SoCullElement::addPlanes(SoState * state, const SbPlane * planes, const int nump
 #endif // COIN_DEBUG
     return;
   }
-
-#if 0 // OBSOLETED: insecure wrt to the implementation of the
-      // default SbPlane constructor. 20000517 mortene.
-  memcpy(&elem->plane[elem->numplanes], planes, sizeof(SbPlane) * numplanes);
-#else
-  for (int i=elem->numplanes; i < numplanes; i++) elem->plane[i] = planes[i];
-#endif
+  
+  for (int i = 0; i < numplanes; i++) elem->plane[i+elem->numplanes] = planes[i];
   elem->numplanes += numplanes;
 }
 
@@ -120,6 +115,64 @@ SoCullElement::addPlanes(SoState * state, const SbPlane * planes, const int nump
 */
 SbBool
 SoCullElement::cullBox(SoState * state, const SbBox3f & box, const SbBool transform)
+{
+  return SoCullElement::docull(state, box, transform, TRUE);
+}
+
+/*!  
+  Cull against \a box. If \a transform is \c TRUE, the box is
+  assumed to be in object space, and will be transformed into world
+  space using the model matrix.  Returns \c TRUE if box is outside one
+  of the planes. This method will not update the element state, just
+  perform a cull test against active planes.
+*/
+SbBool 
+SoCullElement::cullTest(SoState * state, const SbBox3f & box, const SbBool transform)
+{
+  return SoCullElement::docull(state, box, transform, FALSE);
+}
+
+/*!
+  Returns \c TRUE if the current geometry is completely inside all
+  planes. There is no need to do a cull test if this is the case.
+*/
+SbBool
+SoCullElement::completelyInside(SoState * state)
+{
+  const SoCullElement * elem = (const SoCullElement *)
+    SoElement::getConstElement(state, classStackIndex);
+  unsigned int mask = 0x0001 << elem->numplanes;
+  return elem->flags == (mask-1);
+}
+
+/*!
+  Overloaded to assert that this method is not called for this
+  element.
+*/
+SbBool
+SoCullElement::matches(const SoElement *) const
+{
+  assert(0 && "should not get here");
+  return FALSE;
+}
+
+/*!
+  Overloaded to assert that this method is not called for this
+  element.
+*/
+SoElement *
+SoCullElement::copyMatchInfo(void) const
+{
+  assert(0 && "should not get here");
+  return NULL;
+}
+
+//
+// private method which does the actual culling
+//
+SbBool 
+SoCullElement::docull(SoState * state, const SbBox3f & box, const SbBool transform, 
+                      const SbBool updateelem)
 {
   // try to avoid a push if possible, get const element first
   SoCullElement * elem = (SoCullElement *)
@@ -162,46 +215,11 @@ SoCullElement::cullBox(SoState * state, const SbBox3f & box, const SbBool transf
       }
     }
   }
-  if (flags != elem->flags) {
+  if (updateelem && (flags != elem->flags)) {
     // force a push if necessary
     elem = (SoCullElement *)
       SoElement::getElement(state, classStackIndex);
     elem->flags = flags;
   }
   return FALSE;
-}
-
-/*!
-  Returns \c TRUE if the current geometry is completely inside all
-  planes. There is no need to do a cull test if this is the case.
-*/
-SbBool
-SoCullElement::completelyInside(SoState * state)
-{
-  const SoCullElement * elem = (const SoCullElement *)
-    SoElement::getConstElement(state, classStackIndex);
-  unsigned int mask = 0x0001 << elem->numplanes;
-  return elem->flags == (mask-1);
-}
-
-/*!
-  Overloaded to assert that this method is not called for this
-  element.
-*/
-SbBool
-SoCullElement::matches(const SoElement *) const
-{
-  assert(0 && "should not get here");
-  return FALSE;
-}
-
-/*!
-  Overloaded to assert that this method is not called for this
-  element.
-*/
-SoElement *
-SoCullElement::copyMatchInfo(void) const
-{
-  assert(0 && "should not get here");
-  return NULL;
 }
