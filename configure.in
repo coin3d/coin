@@ -299,6 +299,8 @@ AC_OUTPUT([
 	src/actions/Makefile
 	src/bundles/Makefile
 	src/caches/Makefile
+	src/details/Makefile
+	src/draggers/Makefile
 	src/elements/Makefile
 	src/engines/Makefile
 	src/errors/Makefile
@@ -311,7 +313,6 @@ AC_OUTPUT([
 	src/projectors/Makefile
 	src/sensors/Makefile
 	src/system/Makefile
-	src/details/Makefile
 ] \
 	${TOOLMAKEFILES} \
 	${EXAMPLEMAKEFILES} \

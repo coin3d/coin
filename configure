@@ -3890,6 +3890,8 @@ trap 'rm -fr `echo "
 	src/actions/Makefile
 	src/bundles/Makefile
 	src/caches/Makefile
+	src/details/Makefile
+	src/draggers/Makefile
 	src/elements/Makefile
 	src/engines/Makefile
 	src/errors/Makefile
@@ -3902,7 +3904,6 @@ trap 'rm -fr `echo "
 	src/projectors/Makefile
 	src/sensors/Makefile
 	src/system/Makefile
-	src/details/Makefile
  \
 	${TOOLMAKEFILES} \
 	${EXAMPLEMAKEFILES} \
@@ -4042,6 +4043,8 @@ CONFIG_FILES=\${CONFIG_FILES-"Makefile
 	src/actions/Makefile
 	src/bundles/Makefile
 	src/caches/Makefile
+	src/details/Makefile
+	src/draggers/Makefile
 	src/elements/Makefile
 	src/engines/Makefile
 	src/errors/Makefile
@@ -4054,7 +4057,6 @@ CONFIG_FILES=\${CONFIG_FILES-"Makefile
 	src/projectors/Makefile
 	src/sensors/Makefile
 	src/system/Makefile
-	src/details/Makefile
  \
 	${TOOLMAKEFILES} \
 	${EXAMPLEMAKEFILES} \

@@ -1,29 +1,34 @@
 # CONFIG "The Draggers"
-# FLAGS
-# C - Source File Created [0.1]
 #
+# FLAGS
+# I = implementation complete, or nearly so
+# D = fully documented for Doxygen generation of html/man
+#
+# ************************************************************************
+# ID
+# ==
 # HIERARCHY
-#       SoDragger
-#               SoCenterballDragger
-#               SoDirectionalLightDragger
-#               SoDragPointDragger
-#               SoHandleBoxDragger
-#               SoJackDragger
-#               SoPointLightDragger
-#               SoRotateCylindricalDragger
-#               SoRotateDiscDragger
-#               SoRotateSphericalDragger
-#               SoScale1Dragger
-#               SoScale2Dragger
-#               SoScale2UniformDragger
-#               SoScaleUniformDragger
-#               SoSpotLightDragger
-#               SoTabBoxDragger
-#               SoTabPlaneDragger
-#               SoTrackballDragger
-#               SoTransformBoxDragger
-#               SoTransformerDragger
-#               SoTranslate1Dragger
-#               SoTranslate2Dragger
+#     SoDragger
+#         SoCenterballDragger
+#         SoDirectionalLightDragger
+#         SoDragPointDragger
+#         SoHandleBoxDragger
+#         SoJackDragger
+#         SoPointLightDragger
+#         SoRotateCylindricalDragger
+#         SoRotateDiscDragger
+#         SoRotateSphericalDragger
+#         SoScale1Dragger
+#         SoScale2Dragger
+#         SoScale2UniformDragger
+#         SoScaleUniformDragger
+#         SoSpotLightDragger
+#         SoTabBoxDragger
+#         SoTabPlaneDragger
+#         SoTrackballDragger
+#         SoTransformBoxDragger
+#         SoTransformerDragger
+#         SoTranslate1Dragger
+#         SoTranslate2Dragger
 #
 ############################################################################
