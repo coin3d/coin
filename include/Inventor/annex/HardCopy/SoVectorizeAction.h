@@ -179,4 +179,11 @@ private:
 
 // *************************************************************************
 
-#endif //!COIN_SOVECTORIZEACTION_H
+#ifndef COIN_INTERNAL
+// For SGI / TGS Open Inventor compile-time compatibility.
+#include <Inventor/nodes/SoImage.h>
+#endif // COIN_INTERNAL
+
+// *************************************************************************
+
+#endif // !COIN_SOVECTORIZEACTION_H
