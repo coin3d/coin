@@ -66,17 +66,29 @@
 /*!
   \page dynload_overview Dynamic Loading of Extension Nodes
 
-  When Coin tries to instantiate a node based on the name of the
-  node type, it will if no such node type has been initialized,
-  scan the file system for a dynamically loadable extension node
-  with that given name.  On UNIX, extensions nodes are regular
-  .so files.  On Win32, extension nodes are built as DLLs.  On
-  Mac OS X systems, extension nodes are built as .dylib files.
-  Whether the dynamically loadable objects are named with or
-  without the prefix "lib" is optional.
+  When Coin tries to get hold of a node type object (SoType) for
+  a class based on the name string of the node type, it will -
+  if no such node type has been initialized yet - scan the file
+  system for a dynamically loadable extension node with that
+  given name.
+  On UNIX, extensions nodes are regular .so files.
+  On Win32, extension nodes are built as DLLs.
+  On Mac OS X systems, extension nodes are built as .dylib files.
+  Whether the dynamically loadable objects should be named with
+  or without the "lib" prefix is optional.  Both schemes will work.
+  
+  People don't usually program in a way so that they instantiate
+  new nodes through the node class' SoType object, but that is the
+  way nodes are created when model files are loaded.  This means
+  that for all Coin applications that load model files, the
+  custom extension nodes will automatically be supported for the
+  model files without you having to modify their source code and
+  rebuild the applications.
 
   See ftp://ftp.coin3d.org/pub/coin/src/dynloadsample.tar.gz for
-  an example using two dynamically loadable extension nodes.
+  an example using two dynamically loadable extension nodes.  You
+  only use an examiner viewer to view the two extension nodes in
+  action.
 
   Only a limited set of C++ compilers are supported as of yet.
   This is because, to initialize the extension node, it is necessary
