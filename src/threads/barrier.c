@@ -78,6 +78,7 @@ cc_barrier_enter(cc_barrier * barrier)
   }
   else {
     cc_condvar_wait(barrier->condvar, barrier->mutex);
+    cc_mutex_unlock(barrier->mutex);
   }
   return 0;
 }
