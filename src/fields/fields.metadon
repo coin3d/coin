@@ -16,7 +16,7 @@
 # ID     SoSField
 # ID         SoSFBool
 # ID         SoSFColor
-#            SoSFEngine
+# ID         SoSFEngine
 # ID         SoSFEnum
 # ID             SoSFBitMask
 # ID         SoSFFloat
@@ -25,7 +25,7 @@
 # ID         SoSFMatrix
 # ID         SoSFName
 # ID         SoSFNode
-#            SoSFPath
+# ID         SoSFPath
 # ID         SoSFPlane
 # ID         SoSFRotation
 # ID         SoSFShort
@@ -40,7 +40,7 @@
 # ID     SoMField
 # ID         SoMFBool
 # ID         SoMFColor
-#            SoMFEngine
+# ID         SoMFEngine
 # ID         SoMFEnum
 # ID             SoMFBitMask
 # ID         SoMFFloat

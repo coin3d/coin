@@ -1,23 +1,4 @@
-//$ TEMPLATE SFNodeAndEngine(_Typename_, _typename_)
-
-/**************************************************************************\
- *
- *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2000 by Systems in Motion. All rights reserved.
- *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public License
- *  version 2.1 as published by the Free Software Foundation. See the
- *  file LICENSE.LGPL at the root directory of the distribution for
- *  more details.
- *
- *  If you want to use Coin for applications not compatible with the
- *  LGPL, please contact SIM to acquire a Professional Edition license.
- *
- *  Systems in Motion, Prof Brochs gate 6, 7030 Trondheim, NORWAY
- *  http://www.sim.no support@sim.no Voice: +47 22114160 Fax: +47 22207097
- *
-\**************************************************************************/
+//$ TEMPLATE SFNodeEnginePath(_Typename_, _typename_)
 
 /*!
   \class SoSF_Typename_ SoSF_Typename_.h Inventor/fields/SoSF_Typename_.h
@@ -146,6 +127,10 @@ SoSF_Typename_::writeValue(SoOutput * out) const
       SoWriteAction wa(out);
       wa.continueToApply((SoNode *)base);
     }
+    else if (base->isOfType(SoPath::getClassTypeId())) {
+      SoWriteAction wa(out);
+      wa.continueToApply((SoPath *)base);
+    }
     else if (base->isOfType(SoEngine::getClassTypeId())) {
       ((SoEngine *)base)->writeInstance(out);
     }
@@ -184,12 +169,17 @@ SoSF_Typename_::fixCopy(SbBool copyconnections)
 
   // There's only been a bitwise copy of the pointer; no auditing has
   // been set up, no increase in the reference count. So we do that by
-  // hand.
-  n->addAuditor(this, SoNotRec::FIELD);
-  n->ref();
+  // setting the value to NULL and then re-setting with setValue().
+  this->value = NULL;
 
-  // Make sure copyContents() is run.
-  (void)SoFieldContainer::findCopy(n, copyconnections);
+#if defined(COIN_SOSFNODE_H) || defined(COIN_SOSFENGINE_H)
+  SoFieldContainer * fc = SoFieldContainer::findCopy(n, copyconnections);
+  this->setValue((So_Typename_ *)fc);
+#endif // COIN_SOSFNODE_H || COIN_SOSFENGINE_H
+
+#ifdef COIN_SOSFPATH_H
+  this->setValue(n->copy());
+#endif // COIN_SOSFPATH_H
 }
 
 // Override from SoField to check _typename_ pointer.
@@ -198,8 +188,21 @@ SoSF_Typename_::referencesCopy(void) const
 {
   if (inherited::referencesCopy()) return TRUE;
 
-  So_Typename_ * n = this->getValue();
-  if (n && SoFieldContainer::checkCopy(n)) return TRUE;
+  SoBase * n = this->getValue();
+  if (!n) return FALSE;
+
+  if (n->isOfType(SoNode::getClassTypeId()) ||
+      n->isOfType(SoEngine::getClassTypeId())) {
+    if (SoFieldContainer::checkCopy((SoFieldContainer *)n)) return TRUE;
+  }
+  else if (n->isOfType(SoPath::getClassTypeId())) {
+    SoPath * p = (SoPath *)n;
+    if (p->getHead() == NULL) return FALSE;
+    if (SoFieldContainer::checkCopy(p->getHead())) return TRUE;
+  }
+  else {
+    assert(0 && "strange internal error");
+  }
 
   return FALSE;
 }
