@@ -1,18 +1,23 @@
 You should be able to build the Coin library if you have these
 components installed on your system:
 
-        * Cygwin[1], latest release (we've at least tested with net
-          release v1.1.4)
+        * Cygwin[1], latest release
 
-        * Microsoft Visual C++ v6.0
+        * Microsoft Visual C++ v6.x
 
 
 Configure and build the same way as you would on UNIX-based systems,
 i.e.
 
-        $ [srcdir]/configure
+        $ [srcdir]/configure --enable-dependency-tracking
         $ make install
 
+
+(Notice the explicit activation of dependency tracking. Dependency
+tracking is default added to the build process by configure only if it
+can be done as a side effect by the compiler when actually
+compiling. The cl.exe compiler of Microsoft Visual C++ has no public
+way of getting dependencies without using the preprocessor.)
 
 Note that if you encounter any problems when trying to build on
 MSWindows, it is expected that you are able to do a minimum of
