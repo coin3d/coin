@@ -109,9 +109,18 @@ SoGroup::getNumChildren() const
 SbBool
 SoGroup::readInstance(SoInput * in, unsigned short flags)
 {
+  SbBool readfields = TRUE;
+
+  // Make sure we're compatible with binary format Inventor 2.0 files.
+  if (in->isBinary() && (in->getIVVersion() < 2.1f) &&
+      this->getTypeId() == SoGroup::getClassTypeId())
+    readfields = FALSE;
+
   // For nodes with fields inheriting SoGroup, the fields must come
   // before the children, according to the file format specification.
-  return inherited::readInstance(in, flags) && this->readChildren(in);
+  if (readfields && !inherited::readInstance(in, flags)) return FALSE;
+
+  return this->readChildren(in);
 }
 
 /*!
