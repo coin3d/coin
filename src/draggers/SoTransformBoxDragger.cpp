@@ -29,6 +29,8 @@
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <coindefs.h> // COIN_STUB()
 
+#include <data/draggerDefaults/transformBoxDragger.h>
+
 SO_KIT_SOURCE(SoTransformBoxDragger);
 
 
@@ -74,7 +76,9 @@ SoTransformBoxDragger::SoTransformBoxDragger(void)
   SO_KIT_ADD_CATALOG_ENTRY(translator6, SoTranslate2Dragger, TRUE, translator6Sep, "", TRUE);
 
   if (SO_KIT_IS_FIRST_INSTANCE()) {
-    SoInteractionKit::readDefaultParts("transformBoxDragger.iv", NULL, 0);
+    SoInteractionKit::readDefaultParts("transformBoxDragger.iv",
+                                       TRANSFORMBOXDRAGGER_draggergeometry,
+                                       sizeof(TRANSFORMBOXDRAGGER_draggergeometry));
   }
 
   SO_NODE_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));

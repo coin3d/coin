@@ -31,9 +31,9 @@
 #include <Inventor/projectors/SbLineProjector.h>
 #include <Inventor/SoPath.h>
 #include <Inventor/events/SoKeyboardEvent.h>
-
-
 #include <coindefs.h> // COIN_STUB()
+
+#include <data/draggerDefaults/trackballDragger.h>
 
 // don't change these values!
 #define WHATKIND_NONE          0
@@ -82,7 +82,9 @@ SoTrackballDragger::SoTrackballDragger(void)
   SO_KIT_ADD_CATALOG_ENTRY(userRotatorActive, SoSeparator, TRUE, userRotatorSwitch, "", TRUE);
 
   if (SO_KIT_IS_FIRST_INSTANCE()) {
-    SoInteractionKit::readDefaultParts("trackballDragger.iv", NULL, 0);
+    SoInteractionKit::readDefaultParts("trackballDragger.iv",
+                                       TRACKBALLDRAGGER_draggergeometry,
+                                       sizeof(TRACKBALLDRAGGER_draggergeometry));
   }
 
   SO_NODE_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
