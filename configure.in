@@ -223,11 +223,20 @@ AC_DEFINE_UNQUOTED([COIN_VERSION], ["$COIN_VERSION"],
 
 coin_build_dir=`pwd`
 
+# **************************************************************************
+#  Locate C++ compiler and set C++ as the default language to use
+#  in tests. The configure script will automatically terminate if
+#  it doesn't find a C++ compiler.
+AC_PROG_CC
+AC_PROG_CXX
+AC_LANG_CPLUSPLUS
+
 AC_OBJEXT
 AC_EXEEXT
 
-AM_INIT_AUTOMAKE(Coin, $VERSION)
+# **************************************************************************
 
+AM_INIT_AUTOMAKE(Coin, $VERSION)
 
 #  Default to not building a static library.
 #  Can be overridden by the user with --enable-static.
@@ -267,13 +276,6 @@ AC_SUBST(COIN_EXTRA_CPPFLAGS)
 AC_SUBST(COIN_EXTRA_CXXFLAGS)
 AC_SUBST(COIN_EXTRA_LDFLAGS)
 AC_SUBST(COIN_EXTRA_LIBS)
-
-# **************************************************************************
-#  Locate C++ compiler and set C++ as the default language to use
-#  in tests. The configure script will automatically terminate if
-#  it doesn't find a C++ compiler.
-AC_LANG_CPLUSPLUS
-AC_PROG_CXX
 
 ## Smoke out some known defunct compilers. ###############################
 
