@@ -658,4 +658,6 @@ not exactly general purpose.."
 
 (defun doxygen-insert-assert-statement ()
   (interactive)
-  (insert "  assert(0 && \"FIXME: not implemented yet\");\n"))
+  (save-excursion
+    (insert "assert(0 && \"FIXME: not implemented yet\");\n"))
+  (c-indent-command))
