@@ -247,11 +247,15 @@ SoMField::readValue(SoInput * in)
                         numtoread);
       return FALSE;
     }
+#if 0 // tmp disabled until we come up with something better
+    // FIXME: this limit is way too low. Not sure if a limit is a good
+    // thing at all. 20000405 mortene.
     else if (numtoread > 32768) {
       SoReadError::post(in, "%d values in field, file probably corrupt",
                         numtoread);
       return FALSE;
     }
+#endif // disabled
 
     this->makeRoom(numtoread);
     return this->readBinaryValues(in, numtoread);
