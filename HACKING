@@ -28,11 +28,11 @@ library files of >30MB (with debug information), its gonna get painful
 to do rapid incremental bugfixing / testing cycles.
 
 So I'm going to explain now how we at SIM have (more or less
-fundamentally) solved this problem. First of all: use a "UNIX-like"
-system. MSWindows systems are no good for working with the kind of
-setup we have, we do all new development on UNIX systems (mostly Linux
-and SGI IRIX) and so the build process have been tuned for these
-platforms.
+fundamentally) solved this problem for our core Coin library. First of
+all: use a "UNIX-like" system. MSWindows systems are no good for
+working with the kind of setup we have, we do all new development on
+UNIX systems (mostly Linux and SGI IRIX) and so the build process have
+been tuned for these platforms.
 
 A typical set-up session for me for doing Coin development on a virgin
 machine looks like this (I'm using SoXt as the GUI library for
@@ -141,6 +141,14 @@ just the class itself. Or core dumps will happen.
   ... etc. But as long as you're only changing the .cpp files, you
   should be home free.
 
+
+Right after we implemented this scheme, there was an article called
+"Pseudo-Incremental Linking For C/C++" in the Dr Dobb's Journal. The
+article is available at
+
+    <URL:http://www.ddj.com/articles/1999/9910/9910d/9910d.htm>
+
+and explains the principles applied fairly well.
 
 =======================================================================
 XXX FIXME: complete doc. XXX
