@@ -121,3 +121,8 @@ THE LINKS
 
 * An application partly covering the ideas behind our "gl-attack"
   suggested project: <URL:http://glean.sourceforge.net>.
+
+* Troll Tech's Technical FAQ for Qt contains information about what we
+  can _not_ do when we want to keep ABI compatibility in new releases:
+
+    <URL:http://www.trolltech.com/developer/faqs/technical.html>
