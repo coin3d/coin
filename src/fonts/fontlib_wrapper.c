@@ -516,7 +516,8 @@ cc_flw_unref_font(int fontid)
   needing any error checking on behalf of the client code.
 */
 int
-cc_flw_get_font_id(const char * fontname, const unsigned int sizex, const unsigned int sizey, const float angle)
+cc_flw_get_font_id(const char * fontname, const unsigned int sizex, const unsigned int sizey, 
+                   const float angle, const float complexity)
 {
   void * font;
   int idx;

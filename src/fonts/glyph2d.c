@@ -169,7 +169,8 @@ cc_glyph2d_ref(uint32_t character, const cc_font_specification * spec, float ang
     cc_string_append_string(fonttoload, &spec->style);
   }
 
-  fontidx = cc_flw_get_font_id(cc_string_get_text(fonttoload), (int)(newspec->size), (int)(newspec->size), angle);
+  fontidx = cc_flw_get_font_id(cc_string_get_text(fonttoload), (int)(newspec->size), (int)(newspec->size), 
+                               angle, 0.5f);
   cc_string_destruct(fonttoload);
   assert(fontidx >= 0);
 

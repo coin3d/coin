@@ -577,7 +577,7 @@ SoGlyph::getGlyph(SoState * state,
   // FIXME: use font style in addition to font name. preng 2003-03-03
   SbString fontname = state_name.getString();
 
-  const int font = cc_flw_get_font_id(fontname.getString(), fontsize[0], fontsize[1], angle);
+  const int font = cc_flw_get_font_id(fontname.getString(), fontsize[0], fontsize[1], angle, 0.5f);
   // Should _always_ be able to get hold of a font.
   assert(font >= 0);
   cc_flw_ref_font(font);

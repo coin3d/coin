@@ -980,7 +980,7 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
   newfontid = cc_flw_get_font_id(cc_string_get_text(fontname), 
                                  flww32_font3dsize, 
                                  flww32_font3dsize, 
-                                 0.0f);
+                                 0.0f, 0.5f);
   font = cc_flw_get_font_handle(newfontid);
   cc_string_destruct(fontname);
 

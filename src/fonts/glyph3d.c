@@ -176,11 +176,12 @@ cc_glyph3d_ref(uint32_t character, const cc_font_specification * spec)
     cc_string_append_text(fonttoload, " ");
     cc_string_append_string(fonttoload, &spec->style);
   }
-
+  
   fontidx = cc_flw_get_font_id(cc_string_get_text(fonttoload), 
                                glyph3d_standardfontsize,
                                glyph3d_standardfontsize,
-                               0.0f);
+                               0.0f,
+                               newspec->complexity);
 
   /* fprintf(stderr,"new glyph: %c\n", glyph->character); */
 
