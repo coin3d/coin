@@ -77,7 +77,13 @@ extern "C" {
   typedef const char * (APIENTRY *simage_get_saver_fullname_t)(void * handle);
   typedef const char * (APIENTRY *simage_get_saver_description_t)(void * handle);
 
+  /* This define is set up in the simage_wrapper.c file, according to
+     whether or not we link static at compile-time or dynamic at
+     run-time to the simage library. */
 #if !SIMAGEWRAPPER_ASSUME_SIMAGE
+  /* This wrapping of the enum and typedefs is necessary to avoid
+     multiple definitions (they are copy'n'pasted from the simage.h
+     header file). */
   enum {
     S_INTEGER_PARAM_TYPE,
     S_BOOL_PARAM_TYPE = S_INTEGER_PARAM_TYPE,
