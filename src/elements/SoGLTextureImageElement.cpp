@@ -359,12 +359,15 @@ SoGLTextureImageElement::isTextureSizeLegal(int xsize, int ysize, int zsize,
     }
     else {
 #if COIN_DEBUG
-      SbString err("3D textures");
-      if (cc_glglue_has_3d_textures(glw)) err = "3D proxy textures";
-                   
-      SoDebugError::post("SoGLTextureImageElement::isTextureSizeLegal",
-                         "%s not supported with this OpenGL driver",
-                         err.getString());
+      static SbBool first = TRUE;
+      if (first) {
+        SbString err("3D textures");
+        if (cc_glglue_has_3d_textures(glw)) err = "3D proxy textures";
+        SoDebugError::post("SoGLTextureImageElement::isTextureSizeLegal",
+                           "%s not supported with this OpenGL driver",
+                           err.getString());
+        first = FALSE;
+      }
 #endif // COIN_DEBUG
       return FALSE;
     }
