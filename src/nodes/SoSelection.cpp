@@ -774,22 +774,35 @@ SoSelection::handleEvent(SoHandleEventAction * action)
     }
     const SoPickedPoint * pp = action->getPickedPoint();
     if (pp) {
-      this->mouseDownPickPath = pp->getPath();
-      this->mouseDownPickPath->ref();
+      SoPath * selectionpath = pp->getPath();
+      
+      // call pick filter callback also for mouse down events
+      if (this->pickCBFunc && (!this->callPickCBOnlyIfSelectable ||
+                               selectionpath->findNode(this) >= 0)) {
+        selectionpath = this->pickCBFunc(this->pickCBData, pp);
+      }
+      if (selectionpath) {
+        this->mouseDownPickPath = selectionpath;
+        this->mouseDownPickPath->ref();
+      }
     }
   }
   else if (SO_MOUSE_RELEASE_EVENT(event, BUTTON1)) {
-    SbBool ignorepick = FALSE;
-    SoPath * selpath = this->getSelectionPath(action, ignorepick, haltaction);
+    // only process the release event if it has not been handled by a
+    // child node
+    if (!action->isHandled()) {
+      SbBool ignorepick = FALSE;
+      SoPath * selpath = this->getSelectionPath(action, ignorepick, haltaction);
+      
+      if (haltaction) action->setHandled();
 
-    if (haltaction) action->setHandled();
-
-    if (!ignorepick) {
-      if (selpath) selpath->ref();
-      this->startCBList->invokeCallbacks(this);
-      this->invokeSelectionPolicy(selpath, event->wasShiftDown());
-      this->finishCBList->invokeCallbacks(this);
-      if (selpath) selpath->unref();
+      if (!ignorepick) {
+        if (selpath) selpath->ref();
+        this->startCBList->invokeCallbacks(this);
+        this->invokeSelectionPolicy(selpath, event->wasShiftDown());
+        this->finishCBList->invokeCallbacks(this);
+        if (selpath) selpath->unref();
+      }
     }
     if (this->mouseDownPickPath) {
       this->mouseDownPickPath->unref();
@@ -833,16 +846,26 @@ SoSelection::getSelectionPath(SoHandleEventAction * action, SbBool & ignorepick,
   SoPath * selectionpath = NULL;
   if (pp) {
     selectionpath = pp->getPath();
-    if (this->pickMatching) {
-      int forkpos = selectionpath->findFork(this->mouseDownPickPath);
-      if (forkpos < selectionpath->getLength()-1) {
+    // if there's no pickCBFunc we can just test against
+    // mouseDownPickPath and (possibly) return here.
+    if (this->pickMatching && !this->pickCBFunc) {
+      if (*(this->mouseDownPickPath) != *selectionpath) {
         ignorepick = TRUE;
         return NULL;
       }
     }
+    // if we have a pickCBFunc we have to get the pick filter path
+    // before comparing the mouse press and mouse release paths
     if (this->pickCBFunc && (!this->callPickCBOnlyIfSelectable ||
                              selectionpath->findNode(this) >= 0)) {
       selectionpath = this->pickCBFunc(this->pickCBData, pp);
+
+      // From the SoSelection man-pages:
+      // Possible return values from pickCBFunc:
+      // 1) NULL - behave as if nothing was picked, halt action
+      // 2) path through the selection node - select/deselect path
+      // 3) path containing only the selection node - as 1, but do not halt action 
+      // 4) path not through the selection node - ignore event
       if (selectionpath) {
         if (selectionpath->getLength() == 1 &&
             selectionpath->getNode(0) == this) {
@@ -851,7 +874,17 @@ SoSelection::getSelectionPath(SoHandleEventAction * action, SbBool & ignorepick,
           selectionpath = NULL;
         }
         else if (selectionpath->findNode(this) >= 0) {
-          haltaction = TRUE;
+          if (*(this->mouseDownPickPath) == *selectionpath) {
+            // pick matched
+            haltaction = TRUE;
+          }
+          else {
+            // mouse release didn't match mouse down
+            ignorepick = TRUE;
+            selectionpath->ref();
+            selectionpath->unref();
+            ignorepick = TRUE;
+          }
         }
         else { // path with this not in the path (most probably an empty path)
           selectionpath->ref();
@@ -864,7 +897,7 @@ SoSelection::getSelectionPath(SoHandleEventAction * action, SbBool & ignorepick,
         haltaction = TRUE;
       }
     }
-    else { // no pickCBFunc or not valid path
+    else { // no pickCBFunc or not a valid path
       haltaction = FALSE;
     }
   }
