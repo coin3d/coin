@@ -24,7 +24,8 @@ THE WISH LIST
     SbBox2f, SbBox2s, SbBox3f, SbColor4f, SbCylinder, SbLine, SbSphere,
     SbXfBox3f
 
-  Probably not that many are worth implementing...
+  A field for every base class is probably not worth implementing, but
+  some would be...
 
 * SbVec2i
   2000-12-07  Peder Blekken  <pederb@sim.no>
@@ -628,6 +629,11 @@ THE WISH LIST
   switch-type node instead of breaking compatibility in such a severe
   way (which would be bad for file format compatibility, among other
   reasons).
+
+  Update 2002-02-06 larsa:
+
+  * A "Switchboard" node with these properties has been implemented, and
+    is awaiting future inclusion in the Coin library.
 
 
 * SoMouseButtonEvent::isDoubleClick()
