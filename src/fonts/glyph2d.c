@@ -197,7 +197,7 @@ cc_glyph2d_getwidth(const cc_glyph2d * g)
   return (int) g->width;
 }
 
-unsigned char * 
+const unsigned char * 
 cc_glyph2d_getbitmap(const cc_glyph2d * g, int * size, int * offset)
 {
   size[0] = g->bitmapwidth;
@@ -207,5 +207,3 @@ cc_glyph2d_getbitmap(const cc_glyph2d * g, int * size, int * offset)
 
   return g->bitmap;
 }
-
-

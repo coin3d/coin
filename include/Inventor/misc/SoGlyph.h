@@ -65,9 +65,15 @@ protected:
   SoGlyph(void);
   ~SoGlyph();
 
-  void setCoords(SbVec2f * coords, int numcoords = -1);
-  void setFaceIndices(int * indices, int numindices = -1);
-  void setEdgeIndices(int * indices, int numindices = -1);
+#if (COIN_MAJOR_VERSION == 2)
+#error Reminder: when copying this file over to Coin-2, next 3 functions
+#error must be changed back to take a non-const first argument -- to keep
+#error ABI-compatibility. Do not change any other interfaces because of this,
+#error but handle by doing work-around casting internally in SoGlyph.cpp.
+#endif
+  void setCoords(const SbVec2f * coords, int numcoords = -1);
+  void setFaceIndices(const int * indices, int numindices = -1);
+  void setEdgeIndices(const int * indices, int numindices = -1);
 
 private:
   static void unrefGlyph(SoGlyph * glyph);

@@ -190,16 +190,16 @@ cc_glyph3d_getedgeindices(const cc_glyph3d * g)
   return cc_flw_get_vector_glyph_edgeidx(g->vectorglyph);
 }
 
-int *
+const int *
 cc_glyph3d_getnextcwedge(const cc_glyph3d * g, int edgeidx)
 {
 
   int findidx;
-  int * ptr;
-  int * edgeptr;
+  const int * ptr;
+  const int * edgeptr;
   int idx = edgeidx * 2;
 
-  edgeptr = (int *) cc_glyph3d_getedgeindices(g);
+  edgeptr = cc_glyph3d_getedgeindices(g);
 
   /* test for common case */
   if (edgeidx > 0) {
@@ -217,15 +217,15 @@ cc_glyph3d_getnextcwedge(const cc_glyph3d * g, int edgeidx)
   return NULL;
 }
 
-int *
+const int *
 cc_glyph3d_getnextccwedge(const cc_glyph3d * g, int edgeidx)
 {
   int findidx;
-  int * ptr;
-  int * edgeptr;  
+  const int * ptr;
+  const int * edgeptr;  
   int idx = edgeidx * 2;
   
-  edgeptr = (int *) cc_glyph3d_getedgeindices(g);
+  edgeptr = cc_glyph3d_getedgeindices(g);
 
   /* test for common case */
   if (edgeptr[idx+1] == edgeptr[idx+2])
@@ -277,7 +277,7 @@ glyph3d_calcboundingbox(cc_glyph3d * g)
 
 }
 
-float *
+const float *
 cc_glyph3d_getboundingbox(const cc_glyph3d * g)
 {
   return g->bbox;

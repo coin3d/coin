@@ -299,7 +299,7 @@ SoText2::GLRender(SoGLRenderAction * action)
     int charcnt, offvp;
     int thispos[2];
     int thissize[2];
-    unsigned char * buffer = NULL;
+    const unsigned char * buffer = NULL;
     const cc_glyph2d * prevglyph = NULL;
     
     const int nrlines = PRIVATE(this)->laststring.getLength();

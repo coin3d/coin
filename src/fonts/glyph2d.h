@@ -1,4 +1,3 @@
-
 #ifndef COIN_CC_GLYPH2D_H
 #define COIN_CC_GLYPH2D_H
 
@@ -16,14 +15,11 @@ extern "C" {
   void cc_glyph2d_getkerning(const cc_glyph2d * left, const cc_glyph2d * right, int * x, int * y);
   
   unsigned int cc_glyph2d_getwidth(const cc_glyph2d * g);
-  unsigned char * cc_glyph2d_getbitmap(const cc_glyph2d * g, int * size, int * offset);
+  const unsigned char * cc_glyph2d_getbitmap(const cc_glyph2d * g, int * size, int * offset);
   
    
-
 #ifdef __cplusplus
 }
 #endif
-
-
 
 #endif /* !COIN_CC_GLYPH2D_H */

@@ -988,7 +988,7 @@ SoText3P::setUpGlyphs(SoState * state, SoText3 * textnode)
     const unsigned char * ptr = (const unsigned char *)s.getString();
     float stringwidth = 0.0f;
     float glyphwidth;
-    float * maxbbox;
+    const float * maxbbox;
     this->maxglyphbbox.makeEmpty();
 
     for (int j = 0; j < strlen; j++) {

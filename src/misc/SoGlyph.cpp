@@ -82,10 +82,10 @@ public:
   SoGlyph * master;
 
 
-  SbVec2f * coords;
+  const SbVec2f * coords;
   SbBox2f bbox;
-  int * faceidx;
-  int * edgeidx;
+  const int * faceidx;
+  const int * edgeidx;
   int refcount;
   float ymin, ymax;
   
@@ -239,7 +239,7 @@ SoGlyph::getNextCWEdge(const int edgeidx) const
   }
   // do a linear search
   int findidx = PRIVATE(this)->edgeidx[idx];
-  int * ptr = PRIVATE(this)->edgeidx;
+  const int * ptr = PRIVATE(this)->edgeidx;
   while (*ptr >= 0) {
     if (ptr[1] == findidx) return ptr;
     ptr += 2;
@@ -260,7 +260,7 @@ SoGlyph::getNextCCWEdge(const int edgeidx) const
     return &PRIVATE(this)->edgeidx[idx+2];
   // do a linear search
   int findidx = PRIVATE(this)->edgeidx[idx+1];
-  int * ptr = PRIVATE(this)->edgeidx;
+  const int * ptr = PRIVATE(this)->edgeidx;
   while (*ptr >= 0) {
     if (*ptr == findidx) return ptr;
     ptr += 2;
@@ -298,7 +298,7 @@ SoGlyph::getBoundingBox(void) const
     }
 
     PRIVATE(thisp)->bbox.makeEmpty();
-    int *ptr = PRIVATE(this)->edgeidx;
+    const int *ptr = PRIVATE(this)->edgeidx;
     int idx = *ptr++;
 
     while (idx >= 0) {
@@ -325,12 +325,13 @@ SoGlyph::getBoundingBox(void) const
   be used directly.
 */
 void
-SoGlyph::setCoords(SbVec2f *coords, int numcoords)
+SoGlyph::setCoords(const SbVec2f *coords, int numcoords)
 {
   if (PRIVATE(this)->flags.didalloccoords) delete [] PRIVATE(this)->coords;
   if (numcoords > 0) {
-    PRIVATE(this)->coords = new SbVec2f[numcoords];
-    memcpy(PRIVATE(this)->coords, coords, numcoords*sizeof(SbVec2f));
+    SbVec2f * c = new SbVec2f[numcoords];
+    memcpy(c, coords, numcoords*sizeof(SbVec2f));
+    PRIVATE(this)->coords = c;
     PRIVATE(this)->flags.didalloccoords = 1;
   }
   else {
@@ -345,12 +346,13 @@ SoGlyph::setCoords(SbVec2f *coords, int numcoords)
   \a indices will be used directly.
 */
 void
-SoGlyph::setFaceIndices(int *indices, int numindices)
+SoGlyph::setFaceIndices(const int *indices, int numindices)
 {
   if (PRIVATE(this)->flags.didallocfaceidx) delete [] PRIVATE(this)->faceidx;
   if (numindices > 0) {
-    PRIVATE(this)->faceidx = new int[numindices];
-    memcpy(PRIVATE(this)->faceidx, indices, numindices*sizeof(int));
+    int * f = new int[numindices];
+    memcpy(f, indices, numindices*sizeof(int));
+    PRIVATE(this)->faceidx = f;
     PRIVATE(this)->flags.didallocfaceidx = 1;
   }
   else {
@@ -365,12 +367,13 @@ SoGlyph::setFaceIndices(int *indices, int numindices)
   \a indices will be used directly.
 */
 void
-SoGlyph::setEdgeIndices(int *indices, int numindices)
+SoGlyph::setEdgeIndices(const int *indices, int numindices)
 {
   if (PRIVATE(this)->flags.didallocedgeidx) delete [] PRIVATE(this)->edgeidx;
   if (numindices > 0) {
-    PRIVATE(this)->edgeidx = new int[numindices];
-    memcpy(PRIVATE(this)->edgeidx, indices, numindices*sizeof(int));
+    int * e = new int[numindices];
+    memcpy(e, indices, numindices*sizeof(int));
+    PRIVATE(this)->edgeidx = e;
     PRIVATE(this)->flags.didallocedgeidx = 1;
   }
   else {
