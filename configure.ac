@@ -803,24 +803,31 @@ if test x"$sim_ac_gl_avail" = xyes; then
   # ** Check what OpenGL->windowsystem bindings are available.
   # *******************************************************************
 
-  SIM_AC_HAVE_GLX_IFELSE([
-    AC_DEFINE([HAVE_GLX], 1, [define if you have GLX X11 OpenGL bindings])])
+  SIM_AC_HAVE_WGL_IFELSE([
+    AC_DEFINE([HAVE_WGL], 1, [define if you have WGL Win32 OpenGL bindings])
+    LIBS="$LIBS $sim_ac_wgl_libs"
+    COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS $sim_ac_wgl_libs"
+  ], [
+    SIM_AC_HAVE_GLX_IFELSE([
+      AC_DEFINE([HAVE_GLX], 1, [define if you have GLX X11 OpenGL bindings])
+    ], [
+      SIM_AC_HAVE_AGL_IFELSE([
+        AC_DEFINE([HAVE_AGL], 1, [define if you have AGL OpenGL bindings])
+        LDFLAGS="$LDFLAGS $sim_ac_agl_ldflags"
+        COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_agl_ldflags"
+      ], [
+        SIM_AC_CONFIGURATION_WARNING([
+Could not find or compile or link against any usable window-system
+OpenGL binding, neither GLX (OpenGL on X11), nor WGL (OpenGL on Win32)
+nor AGL (OpenGL on Mac OS). The SoOffscreenRenderer functionality
+will be disabled. Note: this might be a configure bug. Check the file
+config.log.])
+      ])])])
 
   if test x"$sim_cv_have_glx" = xtrue; then
     SIM_AC_HAVE_GLXGETPROCADDRESSARB_IFELSE([
       AC_DEFINE([HAVE_GLXGETPROCADDRESSARB],, [define if glXGetProcAddressARB() is available])])
   fi
-
-  SIM_AC_HAVE_WGL_IFELSE([
-    AC_DEFINE([HAVE_WGL], 1, [define if you have WGL Win32 OpenGL bindings])
-    LIBS="$LIBS $sim_ac_wgl_libs"
-    COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS $sim_ac_wgl_libs"])
-
-  SIM_AC_HAVE_AGL_IFELSE([
-    AC_DEFINE([HAVE_AGL], 1, [define if you have AGL OpenGL bindings])
-    LDFLAGS="$LDFLAGS $sim_ac_agl_ldflags"
-    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_agl_ldflags"
-  ])
 
   if $enable_superglu; then
     SIM_AC_CONFIGURATION_SETTING([GLU linkage], [superglu])
