@@ -838,7 +838,22 @@ STUFF TO FIX IN COIN
     So we should add dynamic binding to the relevant DirectX library
     from within Coin, and thereby avoid the simage dependency. (Either
     that, or add DirectX import / export support to simage.)
-    
+
+
+035 Clean up SoBase write code.
+    2003-05-28  Morten Eriksen  <mortene@sim.no>
+
+    Applying several SoWriteAction instances to one or more scene
+    graphs in parallel is not even close to being thread-safe, due to
+    the mess with at least how write reference counts are handled, the
+    "in-graph" detection flag, and problems related to the multi-pass
+    nature of SoWriteAction.
+
+    This would best be solved by keeping track of write-process
+    specific data in the SoWriteAction, not in SoBase. This would take
+    API additions, so it can't be done until at least a minor
+    increment of the version number is done.
+
 
 
 OTHER COIN-RELATED STUFF TO FIX
