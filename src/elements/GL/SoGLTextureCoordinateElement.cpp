@@ -77,7 +77,12 @@ SoGLTextureCoordinateElement::init(SoState * state)
 void
 SoGLTextureCoordinateElement::push(SoState * state)
 {
-  inherited::push(state);
+  SoGLTextureCoordinateElement * prev = (SoGLTextureCoordinateElement*)this->getNextInStack();
+  this->texgenCB = prev->texgenCB;
+  this->texgenData = prev->texgenData;
+  // capture previous element since we might or might not change the
+  // GL state in set/pop
+  prev->capture(state);
 }
 
 //!  FIXME: write doc.
@@ -86,7 +91,21 @@ void
 SoGLTextureCoordinateElement::pop(SoState * state,
                                   const SoElement * prevTopElement)
 {
-  inherited::pop(state, prevTopElement);
+  SoGLTextureCoordinateElement * prev = (SoGLTextureCoordinateElement*) prevTopElement; 
+
+  // only send to GL if something has changed
+  if (this->texgenCB && !prev->texgenCB) {
+    glEnable(GL_TEXTURE_GEN_S);
+    glEnable(GL_TEXTURE_GEN_T);
+    glEnable(GL_TEXTURE_GEN_R);
+    glEnable(GL_TEXTURE_GEN_Q);
+  }
+  else if (!this->texgenCB && prev->texgenCB) {
+    glDisable(GL_TEXTURE_GEN_S);
+    glDisable(GL_TEXTURE_GEN_T);
+    glDisable(GL_TEXTURE_GEN_R);
+    glDisable(GL_TEXTURE_GEN_Q);
+  }
   this->doCallback();
 }
 
@@ -108,7 +127,6 @@ SoGLTextureCoordinateElement::setTexGen(SoState * const state,
     SoReplacedElement::getElement(state, classStackIndex, node);
   if (element) {
     element->setElt(texgenFunc, texgenData);
-    element->doCallback();
   }
 }
 
@@ -181,8 +199,24 @@ void
 SoGLTextureCoordinateElement::setElt(SoTexCoordTexgenCB * func,
                                      void *data)
 {
+  if (func && !this->texgenCB) {
+    glEnable(GL_TEXTURE_GEN_S);
+    glEnable(GL_TEXTURE_GEN_T);
+    glEnable(GL_TEXTURE_GEN_R);
+    glEnable(GL_TEXTURE_GEN_Q);    
+  }
+  else if (!func && this->texgenCB) {
+    glDisable(GL_TEXTURE_GEN_S);
+    glDisable(GL_TEXTURE_GEN_T);
+    glDisable(GL_TEXTURE_GEN_R);
+    glDisable(GL_TEXTURE_GEN_Q);
+  }
+  if (func) {
+    this->whatKind = FUNCTION;
+  }
   this->texgenCB = func;
   this->texgenData = data;
+  this->doCallback();
 }
 
 void
@@ -190,11 +224,5 @@ SoGLTextureCoordinateElement::doCallback() const
 {
   if (this->texgenCB) {
     this->texgenCB(this->texgenData);
-  }
-  else {
-    glDisable(GL_TEXTURE_GEN_S);
-    glDisable(GL_TEXTURE_GEN_T);
-    glDisable(GL_TEXTURE_GEN_R);
-    glDisable(GL_TEXTURE_GEN_Q);
   }
 }
