@@ -19,7 +19,31 @@
 
 /*!
   \class SoGLImage include/Inventor/misc/SoGLImage.h
-  \brief The SoGLImage class is used to handle OpenGL textures.
+  \brief The SoGLImage class is used to handle 2D OpenGL textures.
+
+  A number of environment variables can be set to control how 2D textures
+  are created. This is useful to tune Coin to fit your system. E.g. if you
+  are running on a laptop, it might be a good idea to disable linear
+  filtering and mipmaps.
+
+  \li COIN_TEX2_LINEAR_LIMIT: Linear filtering is enabled if Complexity::textureQuality
+  is greater or equal to this value. Default value is 0.2.
+
+  \li COIN_TEX2_MIPMAP_LIMIT: Mipmaps are created if textureQuality is greater or
+  equal to this value. Default value is 0.5.
+
+  \li COIN_TEX2_LINEAR_MIPMAP_LIMIT: Linear filtering between mipmap levels is enabled if
+  textureQulaity is greater or equal to this value. Default value is 0.8.
+
+  \li COIN_TEX2_SCALEUP_LIMIT: Textures with width or height not equal to a power of two
+  will always be scaled up if textureQuality is greater or equal to this value.
+  Default value is 0.7. If textureQuality is lower than this value, and the width
+  or height is larger than 256 pixels, the texture is only scaled up if it's relatively
+  close to the next power of two size. This could save a lot of texture memory. 
+
+  \li COIN_TEX2_BUILD_MIPMAP_FAST: If this environment variable is set to 1, an
+  internal and optimized function will be used to create mipmaps. Otherwise
+  gluBuild2DMipmap() will be used. Default value is 0.
 */
 
 /*!
@@ -47,18 +71,110 @@
 #include <GLUWrapper.h>
 #include <Inventor/lists/SbList.h>
 
+static float DEFAULT_LINEAR_LIMIT = 0.2f;
+static float DEFAULT_MIPMAP_LIMIT = 0.5f;
+static float DEFAULT_LINEAR_MIPMAP_LIMIT = 0.8f;
+static float DEFAULT_SCALEUP_LIMIT = 0.7f;
 
-// if textureQuality is equal or greater than this, use linear filtering
-#define LINEAR_LIMIT 0.2f
-// if textureQuality is equal or greater than this, create mipmap
-#define MIPMAP_LIMIT 0.5f
-// if textureQulaity is equal or greater than this, always scale up
-#define QUALITY_SCALELIMIT 0.7f
-
+static float COIN_TEX2_LINEAR_LIMIT = -1.0f;
+static float COIN_TEX2_MIPMAP_LIMIT = -1.0f;
+static float COIN_TEX2_LINEAR_MIPMAP_LIMIT = -1.0f;
+static float COIN_TEX2_SCALEUP_LIMIT = -1.0f;
+static int COIN_TEX2_BUILD_MIPMAP_FAST = -1;
 
 #define FLAG_TRANSPARENCY         0x01
 #define FLAG_ALPHATEST            0x02
 #define FLAG_NEEDTRANSPARENCYTEST 0x04
+
+static int
+compute_log(int value)
+{
+  int i = 0;
+  while (value > 1) { value>>=1; i++; }
+  return i;
+}
+
+static void
+halve_image(const int width, const int height, const int nc,
+            const unsigned char * datain, unsigned char * dataout)
+{
+  assert(width > 1 || height > 1);
+
+  int nextrow = width * nc;
+  int newwidth = width >> 1;
+  int newheight = height >> 1;
+  unsigned char * dst = dataout;
+  const unsigned char * src = datain;
+
+  // check for 1D images
+  if (width == 1 || height == 1) {
+    int n = SbMax(newwidth, newheight);
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < nc; j++) {
+        *dst = (src[0] + src[nc]) >> 1;
+        dst++; src++;
+      }
+      src += nc; // skip to next pixel
+    }
+  }
+  else {
+    for (int i = 0; i < newheight; i++) {
+      for (int j = 0; j < newwidth; j++) {
+        for (int c = 0; c < nc; c++) {
+          *dst = (src[0] + src[nc] + src[nextrow] + src[nextrow+nc] + 2) >> 2;
+          dst++; src++;
+        }
+        src += nc; // skip to next pixel
+      }
+      src += nextrow;
+    }
+  }
+}
+
+static unsigned char * mipmap_buffer = NULL;
+static int mipmap_buffer_size = 0;
+
+static void
+fast_mipmap_cleanup(void)
+{
+  delete [] mipmap_buffer;
+}
+
+
+// fast mipmap creation. no repeated memory allocations.
+static void
+fast_mipmap(int width, int height, const int nc,
+            const unsigned char * data, GLenum format)
+{
+  int levels = compute_log(width);
+  int level = compute_log(height);
+  if (level > levels) levels = level;
+
+  int memreq = (SbMax(width>>1,1))*(SbMax(height>>1,1))*nc;
+  if (memreq > mipmap_buffer_size) {
+    if (mipmap_buffer == NULL) {
+      atexit(fast_mipmap_cleanup);
+    }
+    else delete [] mipmap_buffer;
+    mipmap_buffer = new unsigned char[memreq];
+  }
+
+  glTexImage2D(GL_TEXTURE_2D, 0, nc, width, height, 0, format,
+               GL_UNSIGNED_BYTE, data);
+
+  unsigned char * src = (unsigned char *) data;
+  for (level = 1; level <= levels; level++) {
+    halve_image(width, height, nc, src, mipmap_buffer);
+    if (width > 1) width >>= 1;
+    if (height > 1) height >>= 1;
+    src = mipmap_buffer;
+    glTexImage2D(GL_TEXTURE_2D, level, nc, width,
+                 height, 0, format, GL_UNSIGNED_BYTE,
+                 (void *) src);
+
+  }
+}
+
 
 /*!
   Constructor.
@@ -72,6 +188,44 @@ SoGLImage::SoGLImage(void)
     wrapt(CLAMP),
     border(0)
 {
+  // check environment variables
+  if (COIN_TEX2_LINEAR_LIMIT < 0.0f) {
+    char * env = getenv("COIN_TEX2_LINEAR_LIMIT");
+    if (env) COIN_TEX2_LINEAR_LIMIT = atof(env);
+    if (COIN_TEX2_LINEAR_LIMIT < 0.0f || COIN_TEX2_LINEAR_LIMIT > 1.0f) {
+      COIN_TEX2_LINEAR_LIMIT = DEFAULT_LINEAR_LIMIT;
+    }
+  }
+  if (COIN_TEX2_MIPMAP_LIMIT < 0.0f) {
+    char * env = getenv("COIN_TEX2_MIPMAP_LIMIT");
+    if (env) COIN_TEX2_MIPMAP_LIMIT = atof(env);
+    if (COIN_TEX2_MIPMAP_LIMIT < 0.0f || COIN_TEX2_MIPMAP_LIMIT > 1.0f) {
+      COIN_TEX2_MIPMAP_LIMIT = DEFAULT_MIPMAP_LIMIT;
+    }
+  }
+  if (COIN_TEX2_LINEAR_MIPMAP_LIMIT < 0.0f) {
+    char * env = getenv("COIN_TEX2_LINEAR_MIPMAP_LIMIT");
+    if (env) COIN_TEX2_LINEAR_MIPMAP_LIMIT = atof(env);
+    if (COIN_TEX2_LINEAR_MIPMAP_LIMIT < 0.0f || COIN_TEX2_LINEAR_MIPMAP_LIMIT > 1.0f) {
+      COIN_TEX2_LINEAR_MIPMAP_LIMIT = DEFAULT_LINEAR_MIPMAP_LIMIT;
+    }
+  }
+
+  if (COIN_TEX2_SCALEUP_LIMIT < 0.0f) {
+    char * env = getenv("COIN_TEX2_SCALEUP_LIMIT");
+    if (env) COIN_TEX2_SCALEUP_LIMIT = atof(env);
+    if (COIN_TEX2_SCALEUP_LIMIT < 0.0f || COIN_TEX2_SCALEUP_LIMIT > 1.0f) {
+      COIN_TEX2_SCALEUP_LIMIT = DEFAULT_SCALEUP_LIMIT;
+    }
+  }
+
+  if (COIN_TEX2_BUILD_MIPMAP_FAST < 0) {
+    char * env = getenv("COIN_TEX2_BUILD_MIPMAP_FAST");
+    if (env && atoi(env) == 1) {
+      COIN_TEX2_BUILD_MIPMAP_FAST = 1;
+    }
+    else COIN_TEX2_BUILD_MIPMAP_FAST = 0;
+  }
 }
 
 /*!
@@ -215,15 +369,15 @@ SoGLImage::apply(SoState * state, SoGLDisplayList * dl, const float quality)
 {
   SbBool ismipmap = dl->isMipMapTextureObject();
   dl->call(state);
-  if (quality < LINEAR_LIMIT) {
+  if (quality < COIN_TEX2_LINEAR_LIMIT) {
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   }
-  else if ((quality < MIPMAP_LIMIT) || !ismipmap) {
+  else if ((quality < COIN_TEX2_MIPMAP_LIMIT) || !ismipmap) {
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   }
-  else if (quality < 0.8f) {
+  else if (quality < COIN_TEX2_LINEAR_MIPMAP_LIMIT) {
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
   }
@@ -332,7 +486,7 @@ SoGLImage::createGLDisplayList(SoState * state, const float quality)
 
   // if >= 256 and low quality, don't scale up unless size is
   // close to an above power of two. This saves a lot of texture memory
-  if (quality < 0.7f) {
+  if (quality < COIN_TEX2_SCALEUP_LIMIT) {
     if (newx >= 256) {
       if ((newx - (xsize-2*this->border)) > (newx>>3)) newx >>= 1;
     }
@@ -388,12 +542,12 @@ SoGLImage::createGLDisplayList(SoState * state, const float quality)
   SoGLDisplayList * dl =
     new SoGLDisplayList(state,
                         SoGLDisplayList::TEXTURE_OBJECT,
-                        1, quality > MIPMAP_LIMIT);
+                        1, quality >= COIN_TEX2_MIPMAP_LIMIT);
   dl->ref();
   dl->open(state);
   this->reallyCreateTexture(state, imageptr, this->numcomponents,
                             newx, newy, dl->getType() == SoGLDisplayList::DISPLAY_LIST,
-                            quality > MIPMAP_LIMIT,
+                            quality >= COIN_TEX2_MIPMAP_LIMIT,
                             this->border);
   dl->close(state);
   return dl;
@@ -506,9 +660,17 @@ SoGLImage::reallyCreateTexture(SoState * state,
                  border, glformat, GL_UNSIGNED_BYTE, texture);
   }
   else { // mipmaps
-    // FIXME: ignoring the error code. Silly. 20000929 mortene.
-    (void)GLUWrapper()->gluBuild2DMipmaps(GL_TEXTURE_2D, numComponents, w, h,
-                                          glformat, GL_UNSIGNED_BYTE, texture);
+    if (COIN_TEX2_BUILD_MIPMAP_FAST == 1 || !GLUWrapper()->available) {
+      // this should be very fast, but I guess it's possible
+      // that some drivers might have hardware accelerated mipmap
+      // creation.
+      fast_mipmap(w, h, numComponents, texture, glformat);
+    }
+    else {
+      // FIXME: ignoring the error code. Silly. 20000929 mortene.
+      (void)GLUWrapper()->gluBuild2DMipmaps(GL_TEXTURE_2D, numComponents, w, h,
+                                            glformat, GL_UNSIGNED_BYTE, texture);
+    }
   }
   glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
 }
