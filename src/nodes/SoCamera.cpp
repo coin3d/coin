@@ -279,11 +279,11 @@ SoCamera::initClass(void)
   SO_ENABLE(SoGetPrimitiveCountAction, SoViewingMatrixElement);
 }
 
-/*!  
+/*!
   Reorients the camera so that it points towards \a targetpoint.
   The positive y-axis is used as the up vector of the camera, unless
   the new camera direction is parallel to this axis, in which case the
-  positive z-axis will be used instead.  
+  positive z-axis will be used instead.
 */
 void
 SoCamera::pointAt(const SbVec3f & targetpoint)
@@ -293,8 +293,8 @@ SoCamera::pointAt(const SbVec3f & targetpoint)
 
   SbVec3f up(0.0f, 1.0f, 0.0f);
 
-  // use 0,1,0 as the up vector unless direction and up vector are parallel 
-  if (SbAbs(dir.dot(up)) >= (1.0f - FLT_EPSILON)) up.setValue(0.0f, 0.0f, 1.0f);  
+  // use 0,1,0 as the up vector unless direction and up vector are parallel
+  if (SbAbs(dir.dot(up)) >= (1.0f - FLT_EPSILON)) up.setValue(0.0f, 0.0f, 1.0f);
   this->lookAt(dir, up);
 }
 
@@ -304,7 +304,7 @@ SoCamera::pointAt(const SbVec3f & targetpoint)
 
   This method is an extension versus the Open Inventor API.
 */
-void 
+void
 SoCamera::pointAt(const SbVec3f & targetpoint, const SbVec3f & upvector)
 {
   SbVec3f dir = targetpoint - this->position.getValue();
@@ -675,9 +675,9 @@ SoCamera::getView(SoAction * action, SbViewVolume & resultvv, SbViewportRegion &
   // need to test if vp element is enabled. SoGetPrimitiveCountAction
   // does not enable this element, although I think it should (to get
   // correct SCREEN_SPACE complexity handling).  pederb, 2001-10-31
-  SbBool usevpelement = 
+  SbBool usevpelement =
     state->isElementEnabled(SoViewportRegionElement::getClassStackIndex());
-  
+
   if (usevpelement) {
     resultvp = SoViewportRegionElement::get(state);
   }
@@ -909,15 +909,19 @@ SoCamera::getBalanceAdjustment(void) const
 
 // Private method that calculates a new orientation based on camera
 // direction and camera up vector. Vectors must be unit length.
-void 
+void
 SoCamera::lookAt(const SbVec3f & dir, const SbVec3f & up)
 {
   SbVec3f z = -dir;
   SbVec3f y = up;
   SbVec3f x = y.cross(z);
-  
+
   // recompute y to create a valid coordinate system
   y = z.cross(x);
+
+  // normalize x and y to create an orthonormal coord system
+  y.normalize();
+  x.normalize();
 
   // create a rotation matrix
   SbMatrix rot = SbMatrix::identity();
