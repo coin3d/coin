@@ -410,10 +410,15 @@ glxglue_has_pbuffer_support(void)
   const char * env = coin_getenv("COIN_GLXGLUE_NO_PBUFFERS");
   if (env && atoi(env) > 0) { return FALSE; }
 
-  /* Dummy statement to invoke the glxglue_init() function (which
-     attempts to bind the below functions related to pbuffer
-     support). */
-  (void)cc_glglue_instance_from_context_ptr(glxglue_has_pbuffer_support);
+  /* Dummy invocation of the glxglue_init() function, which is
+     necessary to bind the below functions related to pbuffer
+     support. */
+  /* FIXME: this is a hack -- should come up with a better manner of
+     getting non-context-specific functions bound (or perhaps we
+     should treat this methods as context-specific and change code
+     accordingly?). 20030815 mortene. */
+  void * uniquememptr = (void *)glxglue_has_pbuffer_support;
+  (void)cc_glglue_instance_from_context_ptr(uniquememptr);
 
   return
     glxglue_glXChooseFBConfig && glxglue_glXCreateNewContext &&
@@ -599,8 +604,8 @@ glxglue_contextdata_cleanup(struct glxglue_contextdata * c)
 {
   if (c->glxcontext) glXDestroyContext(glxglue_get_display(), c->glxcontext);
   if (c->glxpixmap) {
-    c->pbuffer ? glXDestroyPbuffer(glxglue_get_display(), c->glxpixmap) :
-                 glXDestroyGLXPixmap(glxglue_get_display(), c->glxpixmap);
+    if (c->pbuffer) { glXDestroyPbuffer(glxglue_get_display(), c->glxpixmap); }
+    else { glXDestroyGLXPixmap(glxglue_get_display(), c->glxpixmap); }
   }
   if (c->pixmap) XFreePixmap(glxglue_get_display(), c->pixmap);
   if (c->visinfo) XFree(c->visinfo);
@@ -662,9 +667,9 @@ glxglue_context_create_software(struct glxglue_contextdata * context)
 static COIN_GLXPbuffer
 glxglue_glXCreatePbuffer(Display * dpy, COIN_GLXFBConfig config, int width, int height)
 {
-  const int glx13_attrs[] = {
-    GLX_PBUFFER_WIDTH, width,
-    GLX_PBUFFER_HEIGHT, height,
+  int glx13_attrs[] = {
+    GLX_PBUFFER_WIDTH, -1,
+    GLX_PBUFFER_HEIGHT, -1,
     None
   };
 
@@ -672,6 +677,8 @@ glxglue_glXCreatePbuffer(Display * dpy, COIN_GLXFBConfig config, int width, int 
     None
   };
 
+  glx13_attrs[1] = width;
+  glx13_attrs[3] = height;
 
   if (glxglue_glXCreatePbuffer_GLX_1_3) {
     return glxglue_glXCreatePbuffer_GLX_1_3(dpy, config, glx13_attrs);
