@@ -72,6 +72,10 @@ SoEngineOutput::getForwardConnections(SoFieldList & list) const
 void
 SoEngineOutput::enable(const SbBool flag)
 {
+  if (this->enabled == FALSE && flag == TRUE) {
+    // need to notify fields which are connected to this output
+    this->container->stateflags.dirty = 0;
+  }
   this->enabled = flag;
 }
 
