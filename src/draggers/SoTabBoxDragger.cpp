@@ -196,10 +196,10 @@ SoTabBoxDragger::valueChangedCB(void *, SoDragger *d)
   activated/deactivated using this callback
 */
 void
-SoTabBoxDragger::invalidateSurroundScaleCB(void * f, SoDragger * d)
+SoTabBoxDragger::invalidateSurroundScaleCB(void * d, SoDragger *)
 {
   SoTabBoxDragger *thisp = (SoTabBoxDragger*)d;
-  SoSurroundScale *ss = (SoSurroundScale*)thisp->getPart(SbName("surroundScale"), FALSE);
+  SoSurroundScale *ss = SO_CHECK_PART(thisp, "surrounddScale", SoSurroundScale);
   if (ss) ss->invalidate();
 }
 
