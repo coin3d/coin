@@ -238,7 +238,7 @@ public:
     this->didallocaction = TRUE;
     this->buffer = NULL;
     this->lastnodewasacamera = FALSE;
-
+    
     this->internaldata = NULL;
 #ifdef HAVE_GLX
     this->internaldata = new SoOffscreenGLXData();
@@ -690,6 +690,7 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
     }
 
     // We have to grab cameras using this callback during rendering
+    this->visitedcamera = NULL;
     this->renderaction->setAbortCallback(SoOffscreenRendererP::GLRenderAbortCallback, this);
 
     // Render entire scenegraph for each subscreen.
@@ -771,6 +772,13 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
 
     delete[] subscreen;
     this->renderaction->setAbortCallback(NULL, this);
+
+    if (!this->visitedcamera) {
+      SoDebugError::postWarning("SoOffscreenRenderer::renderFromBase",
+                                "No camera node found in scenegraph while rendering offscreen image. "
+                                "The result will most likely be incorrect.");
+    }
+
   }
   // Regular, non-tiled rendering.
   else {
