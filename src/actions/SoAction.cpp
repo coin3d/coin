@@ -333,7 +333,7 @@ SoAction::apply(SoNode * rootNode)
   this->isTerminated = TRUE;
   // An action should not trigger node (or node tree) destruction.
   rootNode->unrefNoDelete();
-#else // Handles rootNode == NULL gracefully, not sure if that is a Good Thing, though. 19990819 mortene.
+#else // FIXME: Handles rootNode == NULL gracefully, not sure if that is a Good Thing, though. 19990819 mortene.
   if (rootNode) rootNode->ref();
   this->currentPathCode = NO_PATH;
   this->appliedData.node = rootNode;
