@@ -54,13 +54,16 @@ fi
 while test $# -gt 0
 do
   case $1 in
-    --usage | --help)  echo "$usage"    ;;
-    --version)         echo "$version"  ;;
-    --cppflags)        echo "$cppflags" ;;
-    --cxxflags)        echo "$cxxflags" ;;
-    --ldflags)         echo "$ldflags"  ;;
-    --libs)            echo "$libs"     ;;
-    --datadir)         echo "$datadir"  ;;
+    --usage | --help)  echo "$usage"       ;;
+    --version)         echo "$version"     ;;
+    --cppflags)        echo "$cppflags"    ;;
+    --cflags)          echo "$cflags"      ;;
+    --cxxflags)        echo "$cxxflags"    ;;
+    --ldflags)         echo "$ldflags"     ;;
+    --libs)            echo "$libs"        ;;
+    --datadir)         echo "$datadir"     ;;
+    --includedir)      echo "$includedir"  ;;
+    --msvcrt)          echo "$msvcrt"      ;;
     --have-feature)
       exitcode=1
       eval "test x\${have_$2} = x1 && exitcode=0"
