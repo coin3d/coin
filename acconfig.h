@@ -17,6 +17,8 @@
 #undef HAVE_UNISTD_H
 #undef HAVE_IO_H
 #undef HAVE_WINDOWS_H
+#undef HAVE_NETINET_IN_H
+#undef HAVE_CTYPE_H
 #undef HAVE_DLFCN_H
 #undef HAVE_DL_LIB
 

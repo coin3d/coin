@@ -30,7 +30,9 @@
 #error Only for internal use during library build.
 #endif /* !COIN_INTERNAL */
 
+#if HAVE_CONFIG_H
 #include <config.h> /* for HAVE_* defines */
+#endif /* HAVE_CONFIG_H */
 
 
 #ifdef __FILE__

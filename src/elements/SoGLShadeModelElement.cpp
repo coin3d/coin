@@ -27,17 +27,20 @@
   shaded triangles, and is needed to draw triangle strips with normal
   or material binding per face. This element will normally be set to
   smooth shading, but might be changed be some shapes which need flat
-  shading when rendering.  
+  shading when rendering.
 */
 
 #include <Inventor/elements/SoGLShadeModelElement.h>
 #include <Inventor/misc/SoState.h>
 
-#ifdef _WIN32
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+#if HAVE_WINDOWS_H
 #include <windows.h>
-#endif // !_WIN32
-
+#endif // HAVE_WINDOWS_H
 #include <GL/gl.h>
+
 #include <assert.h>
 
 SO_ELEMENT_SOURCE(SoGLShadeModelElement);
@@ -115,7 +118,7 @@ SoGLShadeModelElement::set(SoState * state, const SbBool flat)
 /*!
   Returns current element. Will not cause cache dependencies.
 */
-const SoGLShadeModelElement * 
+const SoGLShadeModelElement *
 SoGLShadeModelElement::getInstance(SoState * state)
 {
   return (const SoGLShadeModelElement*)

@@ -37,13 +37,15 @@
 #include <Inventor/SoPath.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/nodes/SoNode.h>
-#ifdef _WIN32
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+#ifdef HAVE_WINDOWS_H
 #include <windows.h> // Need this to resolve everything for <GL/gl.h>.
-#endif // _WIN32
+#endif // HAVE_WINDOWS_H
 #include <GL/gl.h>
 #include <assert.h>
 #include <string.h> // memset(), memcpy()
-#include <config.h>
 #include <coindefs.h> // COIN_STUB()
 #include <Inventor/errors/SoDebugError.h>
 

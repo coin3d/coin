@@ -184,7 +184,7 @@ CPPFLAGS="$CPPFLAGS -DCOIN_INTERNAL"
 # VisualC++ compiler (the configure script will pick the GCC
 # preprocessor, and AC_CHECK_HEADERS uses AC_TRY_CPP).
 
-SIM_AC_CHECK_HEADERS(unistd.h io.h windows.h)
+SIM_AC_CHECK_HEADERS(unistd.h io.h windows.h netinet/in.h ctype.h)
 
 # Try to find snprintf() and vsnprintf() on the system.
 SIM_CHECK_NPRINTF

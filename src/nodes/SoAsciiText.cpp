@@ -46,9 +46,9 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 
-#ifdef _WIN32
+#ifdef HAVE_WINDOWS_H
 #include <windows.h> // *sigh* needed for gl.h
-#endif // _WIN32
+#endif // HAVE_WINDOWS_H
 #include <GL/gl.h>
 
 /*!

@@ -2440,7 +2440,7 @@ if ${sim_cv_glu_ready}; then
 else
   ifelse([$2], , :, [$2])
 fi
-]) # SIM_AC_glu_READY_IFELSE()
+]) # SIM_AC_GLU_READY_IFELSE()
 
 
 # Usage:

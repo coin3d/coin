@@ -47,9 +47,9 @@
 #include <Inventor/elements/SoEnvironmentElement.h>
 #include <Inventor/elements/SoGLLightIdElement.h>
 
-#ifdef _WIN32
+#ifdef HAVE_WINDOWS_H
 #include <windows.h> // Needed for stuff that GL/gl.h depends on.
-#endif // _WIN32
+#endif // HAVE_WINDOWS_H
 #include <GL/gl.h>
 
 #if COIN_DEBUG

@@ -65,13 +65,23 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#if defined(_WIN32)
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#if HAVE_WINDOWS_H
 #include <windows.h>
-#elif !defined(__BEOS__)
+#endif // HAVE_WINDOWS_H
+
+#if !defined(X_DISPLAY_MISSING)
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
+#endif // !X_DISPLAY_MISSING
+
+#if HAVE_GLX
 #include <GL/glx.h>
-#endif // _WIN32 || __BEOS__
+#endif // HAVE_GLX
+
 #include <GL/gl.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
@@ -163,9 +173,7 @@ SoText2::initClass(void)
 
 // **************************************************************************
 
-#if defined(_WIN32) || defined(__BEOS__)
-
-#else // !_WIN32 && !__BEOS__
+#if !defined(X_DISPLAY_MISSING)
 
 static Display * d = NULL;
 
@@ -278,7 +286,9 @@ getGLList(SoGLRenderAction * action, XFontStruct *& fontstruct)
     unsigned int base = NOT_AVAILABLE;
     if ((fontstruct = setFont(fontname, fontsize))) {
       base = glGenLists(256);
+#if HAVE_GLX
       glXUseXFont(fontstruct->fid, 0, 256, base);
+#endif // HAVE_GLX
     }
 
     void ** ptrs = new void*[2];
@@ -290,7 +300,7 @@ getGLList(SoGLRenderAction * action, XFontStruct *& fontstruct)
   }
 }
 
-#endif // _WIN32 || __BEOS__
+#endif // !X_DISPLAY_MISSING
 
 
 extern unsigned char coin_default2dfont[][12];
@@ -302,9 +312,8 @@ void
 SoText2::GLRender(SoGLRenderAction * action)
 {
   if (!this->shouldGLRender(action)) return;
-#if defined(_WIN32) || defined(__BEOS__)
+#if !defined(X_DISPLAY_MISSING)
 
-#else // !_WIN32 && !__BEOS__
   SoState * state = action->getState();
   XFontStruct * fontstruct;
 
@@ -470,7 +479,7 @@ SoText2::GLRender(SoGLRenderAction * action)
     glPopMatrix();
   }
 
-#endif // _WIN32 || __BEOS__
+#endif // !X_DISPLAY_MISSING
 }
 
 // **************************************************************************

@@ -4445,7 +4445,7 @@ CPPFLAGS="$CPPFLAGS -DCOIN_INTERNAL"
 # VisualC++ compiler (the configure script will pick the GCC
 # preprocessor, and AC_CHECK_HEADERS uses AC_TRY_CPP).
 
-for ac_header in unistd.h io.h windows.h
+for ac_header in unistd.h io.h windows.h netinet/in.h ctype.h
 do
 ac_ac_Header=`echo "ac_cv_header_$ac_header" | $ac_tr_sh`
 

@@ -74,11 +74,13 @@
 #endif // COIN_DEBUG
 
 #include <assert.h>
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
 
-// FIXME: use a configure check. 20000130 mortene.
-#ifdef _WIN32
+#if HAVE_WINDOWS_H
 #include <windows.h>
-#endif
+#endif // HAVE_WINDOWS_H
 
 // *************************************************************************
 

@@ -39,10 +39,9 @@
 #include <Inventor/elements/SoGLColorIndexElement.h>
 #include <Inventor/misc/SoState.h>
 
-#ifdef _WIN32
+#ifdef HAVE_WINDOWS_H
 #include <windows.h> /* needed for gl.h */
-#endif // _WIN32
-
+#endif // HAVE_WINDOWS_H
 #include <GL/gl.h>
 
 /*!

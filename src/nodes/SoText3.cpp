@@ -57,9 +57,9 @@
 #include <Inventor/SbLine.h>
 
 
-#ifdef _WIN32
+#ifdef HAVE_WINDOWS_H
 #include <windows.h> // *sigh* needed for gl.h
-#endif // _WIN32
+#endif // HAVE_WINDOWS_H
 #include <GL/gl.h>
 
 #include <coindefs.h> // COIN_STUB()
@@ -261,7 +261,7 @@ SoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
         int dim;
         int numpts;
         float * points;
-        np->getTrimCurve(state, numpts, points, dim, 
+        np->getTrimCurve(state, numpts, points, dim,
                          numknots, knots);
         for (int j = 0; j < numpts; j++) {
           if (-points[j*dim] > maxz) maxz = -points[j*dim];
@@ -576,7 +576,7 @@ SoText3::render(SoState * state, unsigned int part)
             SbVec3f vc(coords[*(ccw+1)][0], coords[*(ccw+1)][1], nearz);
             SbVec3f vd(coords[*cw][0], coords[*cw][1], nearz);
             ind++;
-            
+
             va[0] = va[0] * size + xpos;
             va[1] = va[1] * size + ypos;
             vb[0] = vb[0] * size + xpos;
@@ -597,7 +597,7 @@ SoText3::render(SoState * state, unsigned int part)
 
             SoProfile *pn = (SoProfile *)profilenodes[firstprofile];
             pn->getVertices(state, profnum, profcoords);
-            
+
             SbVec3f edgea( va[0]+(profcoords[0][1]*tmp2[0]), va[1]+(profcoords[0][1]*tmp2[1]), -profcoords[0][0] );
             SbVec3f edgeb( vb[0]+(profcoords[0][1]*tmp1[0]), vb[1]+(profcoords[0][1]*tmp1[1]), -profcoords[0][0] );
             float edgez = -profcoords[0][0];  // -----
@@ -610,7 +610,7 @@ SoText3::render(SoState * state, unsigned int part)
               glBegin(GL_QUADS);
               for (int k=0; k<profnum; k++) {
                 if (profcoords[k][0] != 0) {
-                  
+
                   vd[0] = va[0] + ((profcoords[k][1] * tmp2[0]));
                   vd[1] = va[1] + ((profcoords[k][1] * tmp2[1]));
                   vd[2] = -profcoords[k][0];
@@ -663,7 +663,7 @@ SoText3::render(SoState * state, unsigned int part)
                   edgea = vd;
                   edgez = -profcoords[k][0];
                 }
-              }  
+              }
               glEnd();
             }
           }

@@ -41,9 +41,9 @@
 #include <Inventor/SoPrimitiveVertex.h>
 #include <coindefs.h> // COIN_STUB()
 #include <Inventor/actions/SoGLRenderAction.h>
-#ifdef _WIN32
+#ifdef HAVE_WINDOWS_H
 #include <windows.h>
-#endif // !_WIN32
+#endif // HAVE_WINDOWS_H
 #include <GL/gl.h>
 
 #include <Inventor/elements/SoGLCoordinateElement.h>
@@ -371,7 +371,7 @@ SoFaceSet::generatePrimitives(SoAction *action)
   SbBool doTextures;
   // FIXME: maybe SoLightModelElement should be enabled for
   // SoPickAction. This would make it possible to test the
-  // element here, instead of always generating normals.        
+  // element here, instead of always generating normals.
   // pederb, 20000927
   SbBool needNormals = TRUE;
 
@@ -392,7 +392,7 @@ SoFaceSet::generatePrimitives(SoAction *action)
     }
     normals = nc->getNormals();
   }
-  
+
   int32_t idx = startIndex.getValue();
   int32_t dummyarray[1];
   const int32_t * ptr = this->numVertices.getValues(0);

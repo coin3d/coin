@@ -37,9 +37,9 @@
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#ifdef _WIN32
+#ifdef HAVE_WINDOWS_H
 #include <windows.h>
-#endif // !_WIN32
+#endif // HAVE_WINDOWS_H
 #include <GL/gl.h>
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>

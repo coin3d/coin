@@ -62,9 +62,9 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#ifdef _WIN32
+#ifdef HAVE_WINDOWS_H
 #include <windows.h> // needed for gl.h
-#endif // WIN32
+#endif // HAVE_WINDOWS_H
 #include <GL/gl.h>
 
 // Maximum number of caches available for allocation for the

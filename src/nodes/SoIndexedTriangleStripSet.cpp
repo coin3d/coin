@@ -56,11 +56,13 @@
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoVertexProperty.h>
-#include <coindefs.h> // COIN_STUB()
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
 #include <assert.h>
-#ifdef _WIN32 // FIXME: use configure detection. 20000519 mortene.
+#ifdef HAVE_WINDOWS_H
 #include <windows.h> // Needed for the GL/gl.h include.
-#endif // !_WIN32
+#endif // HAVE_WINDOWS_H
 #include <GL/gl.h>
 
 

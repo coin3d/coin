@@ -32,12 +32,17 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbDict.h>
 #include <assert.h>
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
 
-#ifdef _WIN32
+#if HAVE_WINDOWS_H
 #include <windows.h>
-#else // !_WIN32
+#endif // HAVE_WINDOWS_H
+
+#if HAVE_NETINET_IN_H
 #include <netinet/in.h> // htons() & htonl() definitions
-#endif // !_WIN32
+#endif // HAVE_NETINET_IN_H
 
 // METADON doc:
 /*¡

@@ -68,21 +68,23 @@
 #include <coindefs.h> // COIN_STUB()
 #include <Inventor/SoDB.h>
 
+#if HAVE_CONFIG_H
 #include <config.h>
+#endif // HAVE_CONFIG_H
 
 #include <sys/stat.h>
 #if HAVE_UNISTD_H
 #include <unistd.h>
 #endif // HAVE_UNISTD_H
-
-// FIXME: use configure to detect the presence of header
-// files. 20000512 mortene.
-#ifdef _WIN32
+#if HAVE_WINDOWS_H
 #include <windows.h>
-#else // ! _WIN32
+#endif // HAVE_WINDOWS_H
+#if HAVE_NETINET_IN_H
 #include <netinet/in.h> // ntohl(), ntohs()
+#endif // HAVE_NETINET_IN_H
+#if HAVE_CTYPE_H
 #include <ctype.h>
-#endif // ! _WIN32
+#endif // HAVE_CTYPE_H
 
 
 // This (POSIX-compliant) macro is missing from the Win32 API header
