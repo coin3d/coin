@@ -63,11 +63,13 @@ public:
     tmpbufsize(0),
     glimagearray(NULL),
     glimagediv(NULL),
-    glimageage(NULL) {}
+    glimageage(NULL),
+    averagebuf(NULL) {}
 
   ~SoGLBigImageP() {
     assert(this->glimagearray == NULL);
     delete[] this->tmpbuf;
+    delete[] this->averagebuf;
   }
 
   static SoType classTypeId;
@@ -84,6 +86,7 @@ public:
   SbVec2f tcmul;
   int changecnt;
   SbImage myimage;
+  unsigned int * averagebuf;
 
   void copySubImage(const int idx,
                     const unsigned char * src,
@@ -111,9 +114,11 @@ public:
     delete[] this->glimagearray;
     delete[] this->glimageage;
     delete[] this->glimagediv;
+    delete[] this->averagebuf;
     this->glimagearray = NULL;
     this->glimageage = NULL;
     this->glimagediv = NULL;
+    this->averagebuf = NULL;
     this->imagesize.setValue(0,0);
     this->glimagesize.setValue(0,0);
     this->remain.setValue(0,0);
@@ -268,6 +273,10 @@ SoGLBigImage::initSubImages(SoState * state,
   const unsigned char * bytes = this->getImage() ?
     this->getImage()->getValue(size, nc) : NULL;
 
+  int numbytes = size[0] * size[1] * nc;
+  THIS->averagebuf = 
+    new unsigned int[numbytes ? numbytes : 1];
+
   THIS->dim[0] = size[0] / subimagesize[0];
   THIS->dim[1] = size[1] / subimagesize[1];
 
@@ -416,38 +425,112 @@ SoGLBigImage::unrefOldDL(SoState * state, const uint32_t maxage)
 void
 SoGLBigImageP::copySubImage(const int idx,
                             const unsigned char * src,
-                            const SbVec2s & fullsize,
+                            const SbVec2s & fsize,
                             const int nc,
                             unsigned char * dst,
                             const int div)
 {
-  SbVec2s pos(idx % this->dim[0], idx / this->dim[0]);
 
-  // FIXME: investigate if it's possible to set the pixel transfer
-  // mode so that we don't have to copy the data into a temporary
-  // image. This is probably fast enough though.
+  if (div == 1) {
+    SbVec2s pos(idx % this->dim[0], idx / this->dim[0]);
+    
+    // FIXME: investigate if it's possible to set the pixel transfer
+    // mode so that we don't have to copy the data into a temporary
+    // image. This is probably fast enough though.
+    
+    int origin[2];
+    origin[0] = pos[0] * this->imagesize[0];
+    origin[1] = pos[1] * this->imagesize[1];
+    
+    int fullsize[2];
+    fullsize[0] = fsize[0];
+    fullsize[1] = fsize[1];
 
-  SbVec2s origin;
-  origin[0] = pos[0] * this->imagesize[0];
-  origin[1] = pos[1] * this->imagesize[1];
-
-  const int w = this->imagesize[0];
-  const int h = this->imagesize[1];
-
-  for (int y = 0; y < h; y += div) {
-    int tmpyadd = fullsize[0] * (origin[1]+y);
-    for (int x = 0; x < w; x += div) {
-      if ((origin[0] + x) < fullsize[0] && (origin[1] + y) < fullsize[1]) {
-        const unsigned char * srcptr =
-          src + nc * (tmpyadd + origin[0]+x);
-        for (int c = 0; c < nc; c++) {
-          *dst++ = srcptr[c];
+    const int w = this->imagesize[0];
+    const int h = this->imagesize[1];
+    
+    for (int y = 0; y < h; y += div) {
+      int tmpyadd = fullsize[0] * (origin[1]+y);
+      for (int x = 0; x < w; x += div) {
+        if ((origin[0] + x) < fullsize[0] && (origin[1] + y) < fullsize[1]) {
+          const unsigned char * srcptr =
+            src + nc * (tmpyadd + origin[0]+x);
+          for (int c = 0; c < nc; c++) {
+            *dst++ = srcptr[c];
+          }
+        }
+        else {
+          for (int c = 0; c < nc; c++) *dst++ = 0xff;
         }
       }
-      else {
-        for (int c = 0; c < nc; c++) *dst++ = 0xff;
+    }
+  }
+  else {
+    SbVec2s pos(idx % this->dim[0], idx / this->dim[0]);
+    
+    int origin[2];
+    origin[0] = pos[0] * this->imagesize[0];
+    origin[1] = pos[1] * this->imagesize[1];
+    
+    int fullsize[2];
+    fullsize[0] = fsize[0];
+    fullsize[1] = fsize[1];
+    
+    int w = this->imagesize[0];
+    int h = this->imagesize[1];
+        
+    unsigned int mask = (unsigned int) div-1;
+
+    if ((origin[0] + w) > fullsize[0]) {
+      w = fullsize[0] - origin[0];
+      if (w & mask) {
+        w = w - (w & mask);
       }
     }
+    if ((origin[1] + h) > fullsize[1]) {
+      h = fullsize[1] - origin[1];
+      if (h & mask) {
+        h = h - (h & mask);
+      }
+    }
+
+    memset(this->averagebuf, 0, w*h*nc*sizeof(int)/div);
+    unsigned int * aptr = this->averagebuf;
+    int y;
+    int ax, ay;
+    for (y = 0; y < h; y++) {
+      unsigned int * tmpaptr = aptr;
+      const unsigned char * srcptr = 
+        src + (fullsize[0] * (origin[1]+y) + origin[0]) * nc;
+      for (int x = 0; x < w; x++) { 
+        for (int c = 0; c < nc; c++) {
+          aptr[c] += srcptr[c];
+        }
+        srcptr += nc;
+        if (!((x+1) & mask)) aptr += nc;
+      }
+      if ((y+1) & mask) aptr = tmpaptr;
+    }
+    
+    aptr = this->averagebuf;    
+    int mydiv = div * div;
+
+    int lineadd = this->imagesize[0] - w;
+    
+    lineadd /= div;
+    w /= div;
+    h /= div;
+
+    for (y = 0; y < h; y++) {
+      for (int x = 0; x < w; x++) {
+        for (int c = 0; c < nc; c++) {
+          dst[c] = (unsigned char) (aptr[c] / mydiv);
+        }
+        dst += nc;
+        aptr += nc;
+      }
+      dst += lineadd;
+    } 
   }
 }
 

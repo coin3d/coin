@@ -58,6 +58,7 @@
 #include <Inventor/elements/SoGLLineWidthElement.h>
 #include <Inventor/elements/SoGLShapeHintsElement.h>
 #include <Inventor/elements/SoGLPolygonStippleElement.h>
+#include <Inventor/elements/SoGLDiffuseColorElement.h>
 #include <Inventor/elements/SoCullElement.h>
 #include <Inventor/elements/SoGLRenderPassElement.h>
 #include <Inventor/misc/SoState.h>
@@ -796,7 +797,10 @@ SoCamera::drawCroppedFrame(SoGLRenderAction *action,
   if (glw->COIN_GL_TEXTURE_3D) glDisable(glw->COIN_GL_TEXTURE_3D);
   glDisable(GL_FOG);
   glDisable(GL_DEPTH_TEST);
-  glColor3f(0.8f, 0.8f, 0.8f);
+  
+  SoGLDiffuseColorElement * elem = (SoGLDiffuseColorElement*)
+    SoDiffuseColorElement::getInstance(state);
+  elem->sendOneColor(SbVec4f(0.8f, 0.8f, 0.8f, 1.0f));
 
   SbVec2s origin = newvp.getViewportOriginPixels();
   SbVec2s size = newvp.getViewportSizePixels();
