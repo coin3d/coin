@@ -45,20 +45,20 @@
   several small (flat-shaded) triangles. The gouraud shading quality
   (the number of sub-triangles) is controlled by an epsilon value. The
   gouraud shading function is written by Frederic Delhoume
-  (delhoume@ilog.fr), and is free (public domain) software.
+  (delhoume (at) ilog.fr), and is free (public domain) software.
 
   Typical use of SoVectorizePSAction is shown in the following piece
   of code:
 
   \code
-  
+
   SoVectorizePSAction * ps = new SoVectorizePSAction;
   SoVectorOutput * out = ps->getOutput();
-  
+
   if (!out->openFile("output.ps")) {
     return -1; // unable to open output file
   }
-  
+
   // to enable gouraud shading. 0.1 is a nice epsilon value
   // ps->setGouraudThreshold(0.1f);
 
@@ -69,9 +69,9 @@
   // select LANDSCAPE or PORTRAIT orientation
   ps->setOrientation(SoVectorizeAction::LANDSCAPE);
 
-  // start creating a new page (A4 page, with 10mm border).  
+  // start creating a new page (A4 page, with 10mm border).
   ps->beginPage(SbVec2f(10.0f, 10.0f), SbVec2f(190.0f, 277.0f));
-  
+
   // There are also enums for A0-A10. Example:
   // ps->beginStandardPage(SoVectorizeAction::A4, 10.0f);
 
@@ -97,7 +97,7 @@
   page. This is useful if your application has several layers of
   geometry, for instance some annotations in 2D on top of a 3D scene
   graph. To create several layers, the beginViewport() and
-  endViewport() functions can be used. 
+  endViewport() functions can be used.
 
   \since Coin 2.1
   \since TGS provides HardCopy support as a separate extension for TGS Inventor.
