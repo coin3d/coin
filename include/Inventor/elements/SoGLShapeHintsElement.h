@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -47,9 +47,9 @@ public:
   virtual SbBool isLazy(void) const;
 
   static void forceSend(SoState * const state, const SbBool twoside);
-  static void forceSend(SoState * const state, 
+  static void forceSend(SoState * const state,
                         const SbBool ccw, const SbBool cull);
-  static void forceSend(SoState * const state, const SbBool ccw, 
+  static void forceSend(SoState * const state, const SbBool ccw,
                         const SbBool cull, const SbBool twoside);
 
 protected:
@@ -57,7 +57,7 @@ protected:
                       ShapeType shapeType, FaceType faceType);
 private:
   unsigned int glflags;
-  void updategl(const unsigned int flags);
+  void updategl(const unsigned int flags) const;
 
 };
 

@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -103,11 +103,10 @@ SoGLLightModelElement::setElt(int32_t val)
 
 // doc in parent
 void
-SoGLLightModelElement::lazyEvaluate() const
+SoGLLightModelElement::lazyEvaluate(void) const
 {
   if (this->data != this->current) {
-    ((SoGLLightModelElement*)this)->current = (Model)this->data;
-    ((SoGLLightModelElement*)this)->updategl();
+    this->updategl((const Model) this->data);
   }
 }
 
@@ -121,23 +120,23 @@ SoGLLightModelElement::isLazy(void) const
 //! FIXME: write doc.
 
 void
-SoGLLightModelElement::forceSend(SoState * const state, 
+SoGLLightModelElement::forceSend(SoState * const state,
                                  const Model model)
 {
-  SoGLLightModelElement * le = 
-    (SoGLLightModelElement *)SoElement::getElement(state, classStackIndex);
+  const SoGLLightModelElement * le = (const SoGLLightModelElement *)
+    SoElement::getConstElement(state, classStackIndex);
   if (model != le->current) {
-    le->current = model;
-    le->updategl();
+    le->updategl(model);
   }
 }
 
 //! FIXME: write doc.
 
 void
-SoGLLightModelElement::updategl()
+SoGLLightModelElement::updategl(const Model model) const
 {
-  if (current == PHONG) glEnable(GL_LIGHTING);
+  ((SoGLLightModelElement*)this)->current = model;
+  if (model == PHONG) glEnable(GL_LIGHTING);
   else glDisable(GL_LIGHTING);
 }
 

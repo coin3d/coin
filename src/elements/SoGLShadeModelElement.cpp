@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -136,7 +136,7 @@ void
 SoGLShadeModelElement::lazyEvaluate(void) const
 {
   if (this->flat != this->glflat) {
-    ((SoGLShadeModelElement*)this)->updategl(this->flat);
+    this->updategl(this->flat);
   }
 }
 
@@ -152,19 +152,21 @@ SoGLShadeModelElement::isLazy(void) const
   state of the element.
 */
 void
-SoGLShadeModelElement::forceSend(SoState * const state, 
+SoGLShadeModelElement::forceSend(SoState * const state,
                                  const SbBool flat)
 {
-  SoGLShadeModelElement * se = (SoGLShadeModelElement *)
-    SoElement::getElement(state, classStackIndex);
+  const SoGLShadeModelElement * se = (const SoGLShadeModelElement *)
+    SoElement::getConstElement(state, classStackIndex);
   if (se->glflat != flat) se->updategl(flat);
 }
 
 // set correct GL state
 void
-SoGLShadeModelElement::updategl(const SbBool flatshade)
+SoGLShadeModelElement::updategl(const SbBool flatshade) const
 {
-  this->glflat = flatshade;
+  // cast away constness, since GL state is not part of the element
+  // value.
+  ((SoGLShadeModelElement*)this)->glflat = flatshade;
   if (flatshade) glShadeModel(GL_FLAT);
   else glShadeModel(GL_SMOOTH);
 }

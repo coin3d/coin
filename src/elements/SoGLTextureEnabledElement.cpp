@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -111,7 +111,7 @@ void
 SoGLTextureEnabledElement::lazyEvaluate(void) const
 {
   if (this->data != this->glstate) {
-    ((SoGLTextureEnabledElement*)this)->updategl();
+    this->updategl(this->data);
   }
 }
 
@@ -127,15 +127,13 @@ SoGLTextureEnabledElement::isLazy(void) const
   state already is the same as \a onoff, nothing will happen.
 */
 void
-SoGLTextureEnabledElement::forceSend(SoState * const state, 
+SoGLTextureEnabledElement::forceSend(SoState * const state,
                                      const SbBool onoff)
 {
-  SoGLTextureEnabledElement * te = (SoGLTextureEnabledElement *)
-    SoElement::getElement(state, classStackIndex);
+  const SoGLTextureEnabledElement * te = (const SoGLTextureEnabledElement *)
+    SoElement::getConstElement(state, classStackIndex);
   if (te->glstate != onoff) {
-    te->glstate = onoff;
-    if (onoff) glEnable(GL_TEXTURE_2D);
-    else glDisable(GL_TEXTURE_2D);
+    te->updategl(onoff);
   }
 }
 
@@ -165,7 +163,7 @@ SoGLTextureEnabledElement::get(SoState * const state)
   Returns default state of this element (FALSE).
 */
 SbBool
-SoGLTextureEnabledElement::getDefault()
+SoGLTextureEnabledElement::getDefault(void)
 {
   return FALSE;
 }
@@ -174,9 +172,11 @@ SoGLTextureEnabledElement::getDefault()
 // updates GL state if needed
 //
 void
-SoGLTextureEnabledElement::updategl(void)
+SoGLTextureEnabledElement::updategl(const int32_t newstate) const
 {
-  this->glstate = this->data;
-  if (this->data) glEnable(GL_TEXTURE_2D);
+  // cast away constness since GL state is not really a part of the
+  // element value.
+  ((SoGLTextureEnabledElement*)this)->glstate = newstate;
+  if (newstate) glEnable(GL_TEXTURE_2D);
   else glDisable(GL_TEXTURE_2D);
 }

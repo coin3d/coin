@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -146,14 +146,14 @@ SoGLShapeHintsElement::lazyEvaluate(void) const
   unsigned int flags = this->glflags & SOSH_CCW;
   if (vertexOrdering == CLOCKWISE) flags = 0;
   else if (vertexOrdering == COUNTERCLOCKWISE) flags = SOSH_CCW;
-
+  
   if (vertexOrdering != UNKNOWN_ORDERING) {
     if (shapeType == SOLID) flags |= SOSH_CULL;
     else flags |= SOSH_TWOSIDE;
   }
-
+  
   if (flags ^ this->glflags) { // xor to see if some bit has changed
-    ((SoGLShapeHintsElement*)this)->updategl(flags);
+    this->updategl(flags);
   }
 }
 
@@ -171,11 +171,11 @@ SoGLShapeHintsElement::isLazy(void) const
 */
 
 void
-SoGLShapeHintsElement::forceSend(SoState * const state, 
+SoGLShapeHintsElement::forceSend(SoState * const state,
                                  const SbBool twoside)
 {
-  SoGLShapeHintsElement * sh = (SoGLShapeHintsElement *)
-    SoElement::getElement(state, classStackIndex);
+  const SoGLShapeHintsElement * sh = (const SoGLShapeHintsElement *)
+    SoElement::getConstElement(state, classStackIndex);
   unsigned int flags = sh->glflags & ~SOSH_TWOSIDE;
   if (twoside) flags |= SOSH_TWOSIDE;
   sh->updategl(flags);
@@ -187,11 +187,11 @@ SoGLShapeHintsElement::forceSend(SoState * const state,
 */
 
 void
-SoGLShapeHintsElement::forceSend(SoState * const state, 
+SoGLShapeHintsElement::forceSend(SoState * const state,
                                  const SbBool ccw, const SbBool cull)
 {
-  SoGLShapeHintsElement * sh = (SoGLShapeHintsElement *)
-    SoElement::getElement(state, classStackIndex);
+  const SoGLShapeHintsElement * sh = (const SoGLShapeHintsElement *)
+    SoElement::getConstElement(state, classStackIndex);
   unsigned int flags = sh->glflags & SOSH_TWOSIDE;
   if (ccw) flags |= SOSH_CCW;
   if (cull) flags |= SOSH_CULL;
@@ -201,12 +201,12 @@ SoGLShapeHintsElement::forceSend(SoState * const state,
 //! FIXME: write doc.
 
 void
-SoGLShapeHintsElement::forceSend(SoState * const state, 
+SoGLShapeHintsElement::forceSend(SoState * const state,
                                  const SbBool ccw, const SbBool cull,
                                  const SbBool twoside)
 {
-  SoGLShapeHintsElement * sh = (SoGLShapeHintsElement *)
-    SoElement::getElement(state, classStackIndex);
+  const SoGLShapeHintsElement * sh = (const SoGLShapeHintsElement *)
+    SoElement::getConstElement(state, classStackIndex);
   unsigned int flags = 0;
   if (ccw) flags |= SOSH_CCW;
   if (cull) flags |= SOSH_CULL;
@@ -217,10 +217,10 @@ SoGLShapeHintsElement::forceSend(SoState * const state,
 //! FIXME: write doc.
 
 void
-SoGLShapeHintsElement::updategl(const unsigned int flags)
+SoGLShapeHintsElement::updategl(const unsigned int flags) const
 {
   unsigned int changed = this->glflags ^ flags;
-  this->glflags = flags;
+  ((SoGLShapeHintsElement*)this)->glflags = flags;
 
   if (changed & SOSH_CCW) {
     flags & SOSH_CCW ? glFrontFace(GL_CCW) : glFrontFace(GL_CW);
