@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -26,7 +26,7 @@ SO_ENGINE_SOURCE(SoElapsedTime);
 SoElapsedTime::SoElapsedTime()
 {
   SO_ENGINE_CONSTRUCTOR(SoElapsedTime);
-  
+
   SO_ENGINE_ADD_INPUT(timeIn,(SbTime::zero()));
   SO_ENGINE_ADD_INPUT(speed,(1));
   SO_ENGINE_ADD_INPUT(on,(TRUE));

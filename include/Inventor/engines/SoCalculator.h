@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -34,7 +34,7 @@ class SoCalculator : public SoEngine {
   typedef SoEngine inherited;
 
   SO_ENGINE_HEADER(SoCalculator);
-  
+
 public:
   // inputs
   SoMFFloat a, b, c, d, e, f, g, h;

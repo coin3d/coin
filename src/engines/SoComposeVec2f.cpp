@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -51,9 +51,9 @@ SoComposeVec2f::evaluate()
 {
   int numX=x.getNum();
   int numY=y.getNum();
-  
+
   int numOut=numX>numY?numX:numY;
-  
+
   SO_ENGINE_OUTPUT(vector,SoMFVec2f,setNum(numOut));
 
   int i;
@@ -61,7 +61,7 @@ SoComposeVec2f::evaluate()
   for (i=0;i<numOut;i++) {
     xVal=i<numX?x[i]:x[numX-1];
     yVal=i<numY?y[i]:y[numY-1];
- 
+
     SO_ENGINE_OUTPUT(vector,SoMFVec2f,set1Value(i,xVal,yVal));
   }
 }

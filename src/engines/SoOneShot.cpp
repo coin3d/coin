@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -29,7 +29,7 @@ SO_ENGINE_SOURCE(SoOneShot);
 SoOneShot::SoOneShot()
 {
   SO_ENGINE_CONSTRUCTOR(SoOneShot);
-  
+
   SO_ENGINE_ADD_INPUT(timeIn,(SbTime::zero()));
   SO_ENGINE_ADD_INPUT(duration,(SbTime(1.0)));
   SO_ENGINE_ADD_INPUT(trigger,());
@@ -65,19 +65,19 @@ SoOneShot::evaluate()
 {
   SbTime elapsed=this->timeIn.getValue()-this->startTime;
   SbTime durationVal=this->duration.getValue();
-  
+
   SO_ENGINE_OUTPUT(isActive,SoSFBool,setValue(this->running));
   if (this->running) {
     if (elapsed<durationVal) {
       SO_ENGINE_OUTPUT(timeOut,SoSFTime,setValue(elapsed));
       SO_ENGINE_OUTPUT(ramp,SoSFFloat,
-		       setValue(elapsed.getValue()/durationVal.getValue()));
+                       setValue(elapsed.getValue()/durationVal.getValue()));
     }
     else {
       SO_ENGINE_OUTPUT(timeOut,SoSFTime,setValue(durationVal));
       SO_ENGINE_OUTPUT(ramp,SoSFFloat,setValue(1.0));
       if (this->flags.getValue()&SoOneShot::HOLD_FINAL)
-	this->holdDuration=durationVal;
+        this->holdDuration=durationVal;
       this->running=FALSE;
     }
   }
@@ -99,12 +99,12 @@ SoOneShot::inputChanged(SoField *which)
 {
   if (which==&this->trigger) {
 #if 0 // FIXME: doesn't compile. 19990620 mortene.
-      cout << "(trigger): " << 
-	this->flags.getValue() << endl;
+      cout << "(trigger): " <<
+        this->flags.getValue() << endl;
 #endif // disabled
-    if ((!this->running || 
-	 this->flags.getValue()&SoOneShot::RETRIGGERABLE) &&
-	!this->disable.getValue()) {
+    if ((!this->running ||
+         this->flags.getValue()&SoOneShot::RETRIGGERABLE) &&
+        !this->disable.getValue()) {
 #if 0 // FIXME: doesn't compile. 19990620 mortene.
       cout << "XXX Retrigger XXX" << endl;
 #endif // disabled

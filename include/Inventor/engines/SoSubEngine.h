@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -87,7 +87,7 @@
   void *_classname_::createInstance() \
   { \
     return new _classname_; \
-  } 
+  }
 
 
 // FIXME: document macro for Doxygen. 19990925 mortene.

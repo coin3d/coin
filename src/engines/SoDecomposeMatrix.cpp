@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -67,12 +67,12 @@ SoDecomposeMatrix::evaluate()
   SbRotation rotationVal,scaleOrientationVal;
   for (i=0;i<num;i++) {
     matrix[i].getTransform(translationVal,rotationVal,scaleFactorVal,
-			   scaleOrientationVal,centerVal);
+                           scaleOrientationVal,centerVal);
     SO_ENGINE_OUTPUT(translation,SoMFVec3f,set1Value(i,translationVal));
     SO_ENGINE_OUTPUT(rotation,SoMFRotation,set1Value(i,rotationVal));
     SO_ENGINE_OUTPUT(scaleFactor,SoMFVec3f,set1Value(i,scaleFactorVal));
     SO_ENGINE_OUTPUT(scaleOrientation,SoMFRotation,
-		     set1Value(i,scaleOrientationVal));
+                     set1Value(i,scaleOrientationVal));
     SO_ENGINE_OUTPUT(center,SoMFVec3f,set1Value(i,centerVal));
   }
 }

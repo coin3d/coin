@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -53,9 +53,9 @@ SoEngine::getOutput(const SbName & /* outputName */) const
   return NULL;
 }
 
-SbBool 
+SbBool
 SoEngine::getOutputName(const SoEngineOutput * /* output */,
-			SbName & /* outputName */) const
+                        SbName & /* outputName */) const
 {
   assert(0 && "FIXME: not implemented yet");
   return FALSE;
@@ -75,7 +75,7 @@ SoEngine::getByName(const SbName & /* name */)
   return NULL;
 }
 
-int 
+int
 SoEngine::getByName(const SbName & /* name */, SoEngineList & /* list */)
 {
   assert(0 && "FIXME: not implemented yet");
@@ -209,11 +209,11 @@ SoEngine::notify(SoNotList *list)
     SoEngineOutputList olist;
     int numOutputs=this->getOutputs(olist);
     if (numOutputs>0) {
-      for (int j=0;j<numOutputs;j++) 
-	if (olist[j]->isEnabled()) olist[j]->getForwardConnections(flist);
+      for (int j=0;j<numOutputs;j++)
+        if (olist[j]->isEnabled()) olist[j]->getForwardConnections(flist);
 
       for (int i=0;i<flist.getLength();i++)
-	flist[i]->notify(list);
+        flist[i]->notify(list);
     }
   }
 }

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -54,7 +54,7 @@ SoEngineOutput::getForwardConnections(SoFieldList & list) const
 /*!
   Set the enabled flag.
   TODO: doc on what the enabled flag does..
-  
+
   \sa isEnabled().
  */
 void
@@ -120,7 +120,7 @@ SoEngineOutput::setContainer(SoEngine * engine)
 /*!
   FIXME
  */
-void 
+void
 SoEngineOutput::addConnection(SoField * f)
 {
   int i=connections.find(f);
@@ -130,7 +130,7 @@ SoEngineOutput::addConnection(SoField * f)
 /*!
   FIXME
  */
-void 
+void
 SoEngineOutput::removeConnection(SoField * f)
 {
   int i=connections.find(f);
@@ -140,7 +140,7 @@ SoEngineOutput::removeConnection(SoField * f)
 /*!
   FIXME
  */
-int 
+int
 SoEngineOutput::getNumConnections() const
 {
   return connections.getLength();

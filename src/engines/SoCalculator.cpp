@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -58,10 +58,10 @@ SoCalculator::SoCalculator(void)
   SO_ENGINE_ADD_INPUT(H, (SbVec3f(0.0f, 0.0f, 0.0f)));
   SO_ENGINE_ADD_INPUT(expression, (""));
 
-  SO_ENGINE_ADD_OUTPUT(oa, SoMFFloat); 
-  SO_ENGINE_ADD_OUTPUT(ob, SoMFFloat); 
-  SO_ENGINE_ADD_OUTPUT(oc, SoMFFloat); 
-  SO_ENGINE_ADD_OUTPUT(od, SoMFFloat); 
+  SO_ENGINE_ADD_OUTPUT(oa, SoMFFloat);
+  SO_ENGINE_ADD_OUTPUT(ob, SoMFFloat);
+  SO_ENGINE_ADD_OUTPUT(oc, SoMFFloat);
+  SO_ENGINE_ADD_OUTPUT(od, SoMFFloat);
   SO_ENGINE_ADD_OUTPUT(oA, SoMFVec3f);
   SO_ENGINE_ADD_OUTPUT(oB, SoMFVec3f);
   SO_ENGINE_ADD_OUTPUT(oC, SoMFVec3f);

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -64,11 +64,11 @@ SoComposeMatrix::evaluate()
     numScaleFactor>numScaleOrientation?numScaleFactor:numScaleOrientation;
   numOut2=numOut2>numCenter?numOut2:numCenter;
   numOut=numOut>numOut2?numOut:numOut2;
-  
+
   SO_ENGINE_OUTPUT(matrix,SoMFMatrix,setNum(numOut));
 
   int i;
-  
+
   for (i=0;i<numOut;i++) {
     const SbVec3f translationVal=
       i<numTranslation?translation[i]:translation[numTranslation-1];
@@ -80,10 +80,10 @@ SoComposeMatrix::evaluate()
     const SbRotation scaleOrientationVal=
       i<numScaleOrientation?
       scaleOrientation[i]:scaleOrientation[numScaleOrientation-1];
-    
+
     SbMatrix mat;
     mat.setTransform(translationVal,rotationVal,scaleFactorVal,
-		     scaleOrientationVal,centerVal);
+                     scaleOrientationVal,centerVal);
     SO_ENGINE_OUTPUT(matrix,SoMFMatrix,set1Value(i,mat));
   }
 }

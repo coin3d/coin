@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -31,7 +31,7 @@ SoBoolOperation::SoBoolOperation()
   SO_ENGINE_ADD_INPUT(b,(FALSE));
   SO_ENGINE_ADD_INPUT(operation,(SoBoolOperation::A));
 
-  SO_ENGINE_ADD_OUTPUT(output,SoMFBool); 
+  SO_ENGINE_ADD_OUTPUT(output,SoMFBool);
   SO_ENGINE_ADD_OUTPUT(inverse,SoMFBool);
 }
 
@@ -62,7 +62,7 @@ SoBoolOperation::evaluate()
     _a=i<numA?this->a[i]:this->a[numA-1];
     _b=i<numB?this->b[i]:this->b[numB-1];
     _op=i<numOp?this->operation[i]:this->operation[numOp-1];
-    
+
     switch (_op) {
     case CLEAR:
       val=FALSE;
@@ -117,7 +117,7 @@ SoBoolOperation::evaluate()
       assert(0);
       break;
     }
-    
+
     SO_ENGINE_OUTPUT(output,SoMFBool,set1Value(i,val));
     SO_ENGINE_OUTPUT(inverse,SoMFBool,set1Value(i,!val));
   }

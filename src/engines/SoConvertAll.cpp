@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -31,17 +31,17 @@ if (firstInstance) \
 SO_ENGINE_ADD_OUTPUT(memberName,outputType) \
 if (firstInstance) \
   outputDict.enter((unsigned long)outputType::getClassTypeId().getKey(), \
-		   &memberName);
+                   &memberName);
 
 #define SO_CONVERTALL_SFMF(sfield,mfield) \
 SoDB::addConverter(sfield::getClassTypeId(),mfield::getClassTypeId(), \
-		   getClassTypeId()); \
+                   getClassTypeId()); \
 SoDB::addConverter(mfield::getClassTypeId(),sfield::getClassTypeId(), \
-		   getClassTypeId())
+                   getClassTypeId())
 
 #define SO_CONVERTALL_OUTPUT_SCALAR(input_,fromType_) \
 else if (this->fromType==fromType_::getClassTypeId()) \
-  SO_ENGINE_OUTPUT(this->output,fromType_,setValue(input_->getValue())); 
+  SO_ENGINE_OUTPUT(this->output,fromType_,setValue(input_->getValue()));
 
 
 // OBSOLETED?? 19990925 mortene.
@@ -74,7 +74,7 @@ if (this->useInput==&input_) { \
 
 #define SO_CONVERTALL_OUTPUT_SCALAR(fromType_,toType_) \
  else if (this->toType==toType::getClassTypeId()) \
- SO_ENGINE_OUTPUT(this->output,fromType_,setValue(((toType_ *)input)->getValue())); 
+ SO_ENGINE_OUTPUT(this->output,fromType_,setValue(((toType_ *)input)->getValue()));
 
 #define SO_CONVERTALL_OUTPUT_MSCALAR(type) \
  if (this->toType.getKey()==type::getClassTypeId().getKey()) { \
@@ -256,27 +256,27 @@ SoConvertAll::initClass()
   };
 
 
- 
+
 #if !defined(COIN_EXCLUDE_SOSFSTRING)
   int i = 0;
   while (SFTypes[i] != SoType::badType()) {
     SoDB::addConverter(SFTypes[i],
-		       SoSFString::getClassTypeId(),
-		       getClassTypeId());
+                       SoSFString::getClassTypeId(),
+                       getClassTypeId());
     SoDB::addConverter(SoSFString::getClassTypeId(),
-		       SFTypes[i],
-		       getClassTypeId());
+                       SFTypes[i],
+                       getClassTypeId());
     i++;
   }
 
   i = 0;
   while (MFTypes[i] != SoType::badType()) {
     SoDB::addConverter(MFTypes[i],
-		       SoSFString::getClassTypeId(),
-		       getClassTypeId());
+                       SoSFString::getClassTypeId(),
+                       getClassTypeId());
     SoDB::addConverter(SoSFString::getClassTypeId(),
-		       MFTypes[i],
-		       getClassTypeId());
+                       MFTypes[i],
+                       getClassTypeId());
     i++;
   }
 #endif // !COIN_EXCLUDE_SOSFSTRING
@@ -286,7 +286,7 @@ SoConvertAll::initClass()
     i = 0;
     while (scalarTypes[i] != SoType::badType()) {
       if (i!=j)
-	SoDB::addConverter(scalarTypes[j],scalarTypes[i],getClassTypeId());
+        SoDB::addConverter(scalarTypes[j],scalarTypes[i],getClassTypeId());
       i++;
     }
     j++;
@@ -295,32 +295,32 @@ SoConvertAll::initClass()
 #if !defined(COIN_EXCLUDE_SOSFVEC3F) &&  !defined(COIN_EXCLUDE_SOSFCOLOR)
   //Color <=> Vec3f
   SoDB::addConverter(SoSFVec3f::getClassTypeId(),
-		     SoSFColor::getClassTypeId(),
-		     getClassTypeId());
+                     SoSFColor::getClassTypeId(),
+                     getClassTypeId());
   SoDB::addConverter(SoSFColor::getClassTypeId(),
-		     SoSFVec3f::getClassTypeId(),
-		     getClassTypeId());
+                     SoSFVec3f::getClassTypeId(),
+                     getClassTypeId());
 #endif // !COIN_EXCLUDE_SOSFVEC3F &&  !COIN_EXCLUDE_SOSFCOLOR
 
 
 #if !defined(COIN_EXCLUDE_SOSFFLOAT) &&  !defined(COIN_EXCLUDE_SOSFTIME)
   //Float <=> Time
   SoDB::addConverter(SoSFFloat::getClassTypeId(),
-		     SoSFTime::getClassTypeId(),
-		     getClassTypeId());
+                     SoSFTime::getClassTypeId(),
+                     getClassTypeId());
   SoDB::addConverter(SoSFTime::getClassTypeId(),
-		     SoSFFloat::getClassTypeId(),
-		     getClassTypeId());
+                     SoSFFloat::getClassTypeId(),
+                     getClassTypeId());
 #endif // !COIN_EXCLUDE_SOSFFLOAT &&  !COIN_EXCLUDE_SOSFTIME
 
 #if !defined(COIN_EXCLUDE_SOSFMATRIX) &&  !defined(COIN_EXCLUDE_SOSFROTATION)
   //Matrix <=> Rotation
   SoDB::addConverter(SoSFMatrix::getClassTypeId(),
-		     SoSFRotation::getClassTypeId(),
-		     getClassTypeId());
+                     SoSFRotation::getClassTypeId(),
+                     getClassTypeId());
   SoDB::addConverter(SoSFRotation::getClassTypeId(),
-		     SoSFMatrix::getClassTypeId(),
-		     getClassTypeId());
+                     SoSFMatrix::getClassTypeId(),
+                     getClassTypeId());
 #endif // !COIN_EXCLUDE_SOSFMATRIX &&  !COIN_EXCLUDE_SOSFROTATION
 
   //SF <-> MF
@@ -430,10 +430,10 @@ SoConvertAll::evaluate()
 
 
 
-//   if (this->output.getConnectionType()==SoSFString::getClassTypeId()) 
+//   if (this->output.getConnectionType()==SoSFString::getClassTypeId())
 //     this->convert2String();
 
-//   if (this->input->getTypeId()==SoSFString::getClassTypeId()) 
+//   if (this->input->getTypeId()==SoSFString::getClassTypeId())
 //     this->convertFromString();
 }
 

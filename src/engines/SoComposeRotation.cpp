@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -52,18 +52,18 @@ SoComposeRotation::evaluate()
 {
   int numAxis=axis.getNum();
   int numAngle=angle.getNum();
-  
+
   int numOut=numAxis>numAngle?numAxis:numAngle;
-  
+
   SO_ENGINE_OUTPUT(rotation,SoMFRotation,setNum(numOut));
 
   int i;
-  
+
   float angleVal;
   for (i=0;i<numOut;i++) {
     const SbVec3f axisVal=i<numAxis?axis[i]:axis[numAxis-1];
     angleVal=i<numAngle?angle[i]:angle[numAngle-1];
- 
+
     SO_ENGINE_OUTPUT(rotation,SoMFRotation,set1Value(i,axisVal,angleVal));
   }
 }

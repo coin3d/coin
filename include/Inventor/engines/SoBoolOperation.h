@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -33,7 +33,7 @@ class SoBoolOperation : public SoEngine {
   typedef SoEngine inherited;
 
   SO_ENGINE_HEADER(SoBoolOperation);
-  
+
 public:
   enum Operation {
     CLEAR, SET,

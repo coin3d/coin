@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -65,5 +65,5 @@ SoConcatenate::evaluate()
     for (j=0;j<this->input[i]->getNum();j++) {
       this->input[i]->get1(j,value);
       SO_ENGINE_OUTPUT((*output),SoMField,set1(n++,value.getString()));
-    }      
+    }
 }
