@@ -48,7 +48,7 @@
 // Type-specific define to be able to do #ifdef tests on type.  (Note:
 // used to check the header file wrapper define, but that doesn't work
 // with --enable-compact build.)
-#define COIN_INTERNAL_NODE
+#define COIN_INTERNAL_SOSFNODE
 
 #include <Inventor/fields/SoSFNode.h>
 #include <Inventor/fields/SoSubFieldP.h>
@@ -85,9 +85,9 @@ SoSFNode::initClass(void)
 SoSFNode::SoSFNode(void)
 {
   this->value = NULL;
-#ifdef COIN_INTERNAL_PATH
+#ifdef COIN_INTERNAL_SOSFPATH
   this->head = NULL;
-#endif // COIN_INTERNAL_PATH
+#endif // COIN_INTERNAL_SOSFPATH
 }
 
 /* Destructor, dereferences the current node pointer if necessary. */
@@ -118,7 +118,7 @@ SoSFNode::setValue(SoNode * newval)
   if (oldptr) {
     oldptr->removeAuditor(this, SoNotRec::FIELD);
     oldptr->unref();
-#ifdef COIN_INTERNAL_PATH
+#ifdef COIN_INTERNAL_SOSFPATH
     SoNode * h = oldptr->getHead();
     // The path should be audited by us at all times. So don't use
     // SoSFPath to wrap SoTempPath or SoLightPath, for instance.
@@ -127,19 +127,19 @@ SoSFNode::setValue(SoNode * newval)
       h->removeAuditor(this, SoNotRec::FIELD);
       h->unref();
     }
-#endif // COIN_INTERNAL_PATH
+#endif // COIN_INTERNAL_SOSFPATH
   }
 
   if (newval) {
     newval->addAuditor(this, SoNotRec::FIELD);
     newval->ref();
-#ifdef COIN_INTERNAL_PATH
+#ifdef COIN_INTERNAL_SOSFPATH
     this->head = newval->getHead();
     if (this->head) {
       this->head->addAuditor(this, SoNotRec::FIELD);
       this->head->ref();
     }
-#endif // COIN_INTERNAL_PATH
+#endif // COIN_INTERNAL_SOSFPATH
   }
 
   this->value = newval;
@@ -230,26 +230,41 @@ SoSFNode::countWriteRefs(SoOutput * out) const
   }
 }
 
-// Override from parent to update our node pointer reference.
+// Override from parent to update our node pointer
+// reference. This is necessary so we do the Right Thing with regard
+// to the copyconnections flag.
+//
+// Note that we have to unplug auditing and the reference counter
+// addition we made during the copy process.
+//
+// For reference for future debugging sessions, copying of this field
+// goes like this:
+//
+//    - copyFrom() is called (typically from SoFieldData::overlay())
+//    - copyFrom() calls operator=()
+//    - operator=() calls setValue()
+//    - we have a local copy (ie not from SoSubField.h) of setValue()
+//      that sets up auditing and references the item
+//
+// <mortene@sim.no>
 void
 SoSFNode::fixCopy(SbBool copyconnections)
 {
   SoNode * n = this->getValue();
   if (!n) return;
 
-  // There's only been a bitwise copy of the pointer; no auditing has
-  // been set up, no increase in the reference count. So we do that by
-  // setting the value to NULL and then re-setting with setValue().
-  this->value = NULL;
+  // The setValue() call below will automatically de-audit and un-ref
+  // the old pointer-value reference we have, *before* re-inserting a
+  // copy.
 
-#if defined(COIN_INTERNAL_NODE) || defined(COIN_INTERNAL_ENGINE)
+#if defined(COIN_INTERNAL_SOSFNODE) || defined(COIN_INTERNAL_SOSFENGINE)
   SoFieldContainer * fc = SoFieldContainer::findCopy(n, copyconnections);
   this->setValue((SoNode *)fc);
-#endif // COIN_INTERNAL_NODE || COIN_INTERNAL_ENGINE
+#endif // COIN_INTERNAL_SOSFNODE || COIN_INTERNAL_SOSFENGINE
 
-#ifdef COIN_INTERNAL_PATH
+#ifdef COIN_INTERNAL_SOSFPATH
   this->setValue(n->copy());
-#endif // COIN_INTERNAL_PATH
+#endif // COIN_INTERNAL_SOSFPATH
 }
 
 // Override from SoField to check node pointer.
@@ -278,5 +293,5 @@ SoSFNode::referencesCopy(void) const
 }
 
 // Kill the type-specific define.
-#undef COIN_INTERNAL_NODE
+#undef COIN_INTERNAL_SOSFNODE
 //$ END TEMPLATE SFNodeEnginePath
