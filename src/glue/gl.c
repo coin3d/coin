@@ -3881,8 +3881,6 @@ cc_glglue_context_pbuffer_is_bound(void * ctx)
 
 /*** <PROXY texture handling> ***********************************************/
 
-#define SBMAX(x,y) ((x)>=(y)?(x):(y))
-
 static int
 compute_log(int value)
 {
@@ -3897,7 +3895,7 @@ proxy_mipmap_2d(int width, int height, const int nc, GLenum format, SbBool mipma
 {
   GLint w;
   int level;
-  int levels = compute_log(SBMAX(width, height));
+  int levels = compute_log(cc_max(width, height));
   
   glTexImage2D(GL_PROXY_TEXTURE_2D, 0, nc, width, height, 0, format, GL_UNSIGNED_BYTE, NULL);
   glGetTexLevelParameteriv(GL_PROXY_TEXTURE_2D, 0,
@@ -3925,7 +3923,7 @@ proxy_mipmap_3d(const cc_glglue * glw, int width, int height, int depth, const i
 {
   GLint w;
   int level;
-  int levels = compute_log(SBMAX(SBMAX(width, height), depth));
+  int levels = compute_log(cc_max(cc_max(width, height), depth));
 
   cc_glglue_glTexImage3D(glw, GL_PROXY_TEXTURE_3D, 0, (GLenum) nc, width, height, depth,
                          0, format, GL_UNSIGNED_BYTE, NULL);
@@ -4008,8 +4006,6 @@ cc_glglue_is_texture_size_legal(const cc_glglue * glw, int xsize, int ysize, int
     }
   }
 }
-
-#undef SBMAX
 
 /*** </PROXY texture handling> ***********************************************/
 
