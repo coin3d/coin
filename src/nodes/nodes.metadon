@@ -1,6 +1,8 @@
 # CONFIG "The Node Hierarchy"
 # factors: [work in progress / no work done]
 # FLAGS [1]
+# I = Full implementation of all non-actionmethods [0.1]
+# D = Documented [0.1]
 # T = Compliance test file available under Coin/tests/models/oiv_compliance
 # B = SoGetBoundingBoxAction
 # G = SoGLRenderAction [2]
@@ -8,127 +10,132 @@
 # P = SoPickAction
 # R = SoRayPickAction
 # C = SoCallbackAction
+# S = SoSearchAction [0.1]
 # 
 # VALUES
 # - = not applicable
 # ! = method inherited from parent
 # 
 # ************************************************************************
-# TBGMPRC
-# =======
+# IDTBGMPRCS
+# ==========
 # HIERARCHY
-# -B-   C  SoNode
-# TbG--RC      SoCamera
-# -!!----              SoPerspectiveCamera
-# -!!----              SoOrthographicCamera
-# -B---RC      SoShape
-#    -- -              SoAnnoText3
-#    -- -              SoAsciiText
-# TBG--R-              SoCone
-# TBG--R-              SoCube
-# TBG--R-              SoCylinder
-# -------              SoVertexShape
-# -B-----                      SoNonIndexedShape
-# TBG----                              SoFaceSet
-# TBG----                              SoLineSet
-# TBG----                              SoPointSet
-# T! ----                                      SoMarkerSet
-# tBG----                              SoQuadMesh
-# TBG----                              SoTriangleStripSet
-# -B-----                      SoIndexedShape
-# T!G----                              SoIndexedFaceSet
-# T!G----                              SoIndexedLineSet
-# T!G----                              SoIndexedTriangleStripSet
-# T  -- -              SoImage
-#    -- -              SoIndexedNurbsCurve
-#    -- -              SoIndexedNurbsSurface
-#  Bg-- -              SoNurbsCurve
-#  Bg-- -              SoNurbsSurface
-# TBG--R-              SoSphere
-# TbG-- -              SoText2
-#    -- -              SoText3
-#  B -P--      SoAnnoText3Property
-# -BGMP-C      SoGroup
-# -BGM--C              SoSeparator
-# T!G! --                      SoAnnotation
-# -!   --                      SoSelection
-# -!   --                              SoExtSelection
-# T!   --                      SoLocateHighlight
-#  !   --                              SoWWWAnchor
-#      --                      SoRenderList
-#      --                              SoOctreeOrdering
-#      --                              SoValueOrdering
-# Tbgmp-c              SoArray
-# TBGMP-C              SoSwitch
-# T !!!-!                      SoBlinker
-# TbG!-RC              SoLOD
-#  ! !-!!                      SoLevelOfSimplification
-# T! !-RC              SoLevelOfDetail
-# Tbg p-c              SoMultipleCopy
-#      -               SoPathSwitch
-# TBGMP-C              SoTransformSeparator
-# -B-----      SoTransformation
-# T    -               SoAntiSquish
-# TBGMP-C              SoMatrixTransform
-# TBGMP-C              SoRotation
-# T!!!!-!                      SoPendulum
-# T!!!!-!                      SoRotor
-# TbGMP-C              SoResetTransform
-# TBGMP-C              SoRotationXYZ
-# TBGMP-C              SoScale
-# TBGMP-C              SoTranslation
-# T!!!!-!                      SoShuttle
-#      -               SoSurroundScale
-# TBGMP-C              SoTransform
-# TBGMP-C              SoUnits
-# T-G-P-C      SoBaseColor
-# -BGMP-C      SoCallback
-# T-G-P-C      SoClipPlane
-#      -       SoColorIndex
-# -BG-P-C      SoComplexity
-# -BG-P-C      SoCoordinate3
-# -BG-P-C      SoCoordinate4
-# ------C      SoLight
-# T-G---!              SoDirectionalLight
-# T-G---!              SoSpotLight
-# T-G---!              SoPointLight
-# T-G---C      SoDrawStyle
-# T- ---C      SoEnvironment
-# -------      SoEventCallback
-# TBGMP-C      SoFile
-# tBG-P-C      SoFont
-# tBG-P-C              SoFontStyle
-# -------      SoInfo
-# -------      SoLabel
-# T-G---C      SoLightModel
-#  B -P-C      SoProfile
-#  ! -!-!              SoLinearProfile
-#  ! -!-!              SoNurbsProfile
-# T-G---C      SoMaterial
-# T-G-P-C      SoMaterialBinding
-# --G-P-C      SoNormal
-# T-G-P-C      SoNormalBinding
-# T-G---C      SoPackedColor
-#  - -P-C      SoPickStyle
-# T-G---C      SoPolygonOffset
-# -B -P-C      SoProfileCoordinate2
-# -B -P-C      SoProfileCoordinate3
-# TBG-P-C      SoShapeHints
-# T-G---C      SoTexture2
-# T-GMP-C      SoTexture2Transform
-# --G-P-C      SoTextureCoordinate2
-# T-G-P-C      SoTextureCoordinateBinding
-# ----P-C      SoTextureCoordinateFunction
-# T-g-p-C              SoTextureCoordinateDefault
-# T-G-p-c              SoTextureCoordinateEnvironment
-# T-G-p-c              SoTextureCoordinatePlane
-#  BG-P-C      SoVertexProperty
-#  B   -       SoWWWInline
-#              SoUnknownNode
+#   -B-   C   SoNode
+#   TbG--RC       SoCamera
+#   -!!----               SoPerspectiveCamera
+#   -!!----               SoOrthographicCamera
+#   -B---RC       SoShape
+#      -- -               SoAnnoText3
+#      -- -               SoAsciiText
+#   TBG--R-               SoCone
+#   TBG--R-               SoCube
+#   TBG--R-               SoCylinder
+#   -------               SoVertexShape
+#   -B-----                       SoNonIndexedShape
+#   TBG----                               SoFaceSet
+#   TBG----                               SoLineSet
+#   TBG----                               SoPointSet
+#   T! ----                                       SoMarkerSet
+#   tBG----                               SoQuadMesh
+#   TBG----                               SoTriangleStripSet
+#   -B-----                       SoIndexedShape
+#   T!G----                               SoIndexedFaceSet
+#   T!G----                               SoIndexedLineSet
+#   T!G----                               SoIndexedTriangleStripSet
+#   T  -- -               SoImage
+#      -- -               SoIndexedNurbsCurve
+#      -- -               SoIndexedNurbsSurface
+#    Bg-- -               SoNurbsCurve
+#    Bg-- -               SoNurbsSurface
+#   TBG--R-               SoSphere
+#   TbG-- -               SoText2
+#      -- -               SoText3
+#    B -P--       SoAnnoText3Property
+#   -BGMP-C       SoGroup
+#   -BGM--C               SoSeparator
+#   T!G! --                       SoAnnotation
+#   -!   --                       SoSelection
+#   -!   --                               SoExtSelection
+#   T!   --                       SoLocateHighlight
+#    !   --                               SoWWWAnchor
+#        --                       SoRenderList
+#        --                               SoOctreeOrdering
+#        --                               SoValueOrdering
+#   Tbgmp-c               SoArray
+#   TBGMP-C               SoSwitch
+#   T !!!-!                       SoBlinker
+#   TbG!-RC               SoLOD
+#    ! !-!!                       SoLevelOfSimplification
+#   T! !-RC               SoLevelOfDetail
+#   Tbg p-c               SoMultipleCopy
+#        -                SoPathSwitch
+#   TBGMP-C               SoTransformSeparator
+#   -B-----       SoTransformation
+#   T    -                SoAntiSquish
+#   TBGMP-C               SoMatrixTransform
+#   TBGMP-C               SoRotation
+#   T!!!!-!                       SoPendulum
+#   T!!!!-!                       SoRotor
+#   TbGMP-C               SoResetTransform
+#   TBGMP-C               SoRotationXYZ
+#   TBGMP-C               SoScale
+#   TBGMP-C               SoTranslation
+#   T!!!!-!                       SoShuttle
+#        -                SoSurroundScale
+#   TBGMP-C               SoTransform
+#   TBGMP-C               SoUnits
+#   T-G-P-C       SoBaseColor
+#   -BGMP-C       SoCallback
+#   T-G-P-C       SoClipPlane
+#        -        SoColorIndex
+#   -BG-P-C       SoComplexity
+#   -BG-P-C       SoCoordinate3
+#   -BG-P-C       SoCoordinate4
+#   ------C       SoLight
+#   T-G---!               SoDirectionalLight
+#   T-G---!               SoSpotLight
+#   T-G---!               SoPointLight
+#   T-G---C       SoDrawStyle
+#   T- ---C       SoEnvironment
+#   -------       SoEventCallback
+#   TBGMP-C       SoFile
+#   tBG-P-C       SoFont
+#   tBG-P-C               SoFontStyle
+#   -------       SoInfo
+#   -------       SoLabel
+#   T-G---C       SoLightModel
+#    B -P-C       SoProfile
+#    ! -!-!               SoLinearProfile
+#    ! -!-!               SoNurbsProfile
+#   T-G---C       SoMaterial
+#   T-G-P-C       SoMaterialBinding
+#   --G-P-C       SoNormal
+#   T-G-P-C       SoNormalBinding
+#   T-G---C       SoPackedColor
+#    - -P-C       SoPickStyle
+#   T-G---C       SoPolygonOffset
+#   -B -P-C       SoProfileCoordinate2
+#   -B -P-C       SoProfileCoordinate3
+#   TBG-P-C       SoShapeHints
+#   T-G---C       SoTexture2
+#   T-GMP-C       SoTexture2Transform
+#   --G-P-C       SoTextureCoordinate2
+#   T-G-P-C       SoTextureCoordinateBinding
+#   ----P-C       SoTextureCoordinateFunction
+#   T-g-p-C               SoTextureCoordinateDefault
+#   T-G-p-c               SoTextureCoordinateEnvironment
+#   T-G-p-c               SoTextureCoordinatePlane
+#    BG-P-C       SoVertexProperty
+#    B   -        SoWWWInline
+# I- BG-P--S      SoUnknownNode
 #
 # ************************************************************************
 #
 # COMMENTS
+#
+# FIXME: The weight for I, D and S is way too low, I just set them to 0.1
+# for now because the status for these flags have not been made
+# up-to-date. 20000105 mortene.
 #
 # Status "yellow" for the .iv compliance testfile column means the tests
 # contained in the file(s) are not very extensive, and should be improved
