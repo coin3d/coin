@@ -18,9 +18,6 @@
 \**************************************************************************/
 
 #include <stdio.h>
-#ifndef _WIN32
-#include <unistd.h>
-#endif // !_WIN32
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInteraction.h>
 #include <Inventor/nodekits/SoNodeKit.h>
@@ -29,13 +26,21 @@
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/nodes/SoSeparator.h>
 
-/* These two externs are for interfacing against getopt(). */
-
+// FIXME: do a proper check for this through configure.
+// 19991206 mortene.
 #ifndef _WIN32
+#define HAVE_GETOPT 1
+#endif // !_WIN32
+
+#if HAVE_GETOPT
+#include <unistd.h>
+/* These two externs are for interfacing against getopt(). */
 extern int optind;
 extern char * optarg;
-#endif // _WIN32
+#endif // HAVE_GETOPT
 
+
+#if HAVE_GETOPT
 void
 usage(const char * argv_0)
 {
@@ -57,6 +62,8 @@ usage(const char * argv_0)
   fprintf(stderr,
           "  Use ``-'' or no input files to read from stdin.\n\n");
 }
+#endif // !HAVE_GETOPT
+
 
 int
 main(int argc, char * argv[])
@@ -66,8 +73,8 @@ main(int argc, char * argv[])
   int flattentextures = 0;
   const char * outname = NULL;
 
+#if HAVE_GETOPT
   /* Parse command line. */
-#ifndef _WIN32
   int getoptchar;
   while ((getoptchar = getopt(argc, argv, "bftho:")) != EOF) {
     char c = (char)getoptchar;
@@ -98,16 +105,15 @@ main(int argc, char * argv[])
       break;
     }
   }
-#endif // _WIN32
+  int i = optind;
+#else // !HAVE_GETOPT
+  int i = 1;
+#endif // !HAVE_GETOPT
+
   SoDB::init();
   SoNodeKit::init();
   SoInteraction::init();
 
-#ifndef _WIN32
-  int i = optind;
-#else
-  int i = 1;
-#endif
   SoInput stdinp;
   SoSeparator * root = new SoSeparator;
 
