@@ -121,10 +121,18 @@ SoTextureUnit::GLRender(SoGLRenderAction * action)
   int maxunits = cc_glglue_max_texture_units(glue);
   
   if (this->unit.getValue() >= maxunits) {
-    SoDebugError::postWarning("SoTextureUnit::GLRender",
-                              "Texture unit %d (counting from 0) requested. "
-                              "Your system only supports %d texture units.", 
-                              this->unit.getValue(), maxunits);
+    static SbBool first = TRUE;
+    if (first) {
+      SoDebugError::postWarning("SoTextureUnit::GLRender",
+                                "Texture unit %d (counting from 0) requested. "
+                                "Your system only supports %d texture unit%s. "
+                                "(This warning message only shown once, but "
+                                "there could be more cases of this in the "
+                                "scene graph.)",
+                                this->unit.getValue(), maxunits,
+                                maxunits == 1 ? "" : "s");
+      first = FALSE;
+    }
   }
 }
 
