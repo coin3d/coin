@@ -52,14 +52,6 @@
 #include <assert.h>
 
 
-// Metadon doc:
-/*¡
-  FIXME, this is missing from the implementation:
-  <ul>
-  <li>reinitialize()</li>
-  </ul>
- */
-
 /*!
   \typedef SoSceneManagerRenderCB(void * userdata, SoSceneManager * mgr)
 
@@ -123,12 +115,6 @@ SoSceneManager::~SoSceneManager()
 void
 SoSceneManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
 {
-  // FIXME: this should not be necessary to do here, the call should
-  // probably be done from either a bunch of the
-  // SoSceneManager::set*() methods or from So*RenderArea.
-  // 20000612 mortene.
-  this->reinitialize();
-
   glClearColor(this->backgroundcolor[0],
                this->backgroundcolor[1],
                this->backgroundcolor[2],
@@ -212,20 +198,11 @@ SoSceneManager::processEvent(const SoEvent * const event)
 /*!
   Reinitialize after parameters affecting the OpenGL context has
   changed.
- */
+*/
 void
 SoSceneManager::reinitialize(void)
 {
-  // FIXME: The division of initialization work between
-  // SoSceneManager::render(), SoSceneManager::reinitialize(),
-  // SoGLRenderAction::beginTraversal() and various init code in the
-  // element classes is a bit of a mess right now, and need to be
-  // sorted out. 19990215 mortene.
-
-  SbViewportRegion vp = this->glaction->getViewportRegion();
-  SbVec2s origin = vp.getViewportOriginPixels();
-  SbVec2s size = vp.getViewportSizePixels();
-  glViewport(origin[0], origin[1], size[0], size[1]);
+  this->glaction->invalidateState();
 }
 
 /*!
@@ -233,7 +210,7 @@ SoSceneManager::reinitialize(void)
 
   Multiple calls to this method before an actual redraw has taken
   place will only result in a single redraw of the scene.
- */
+*/
 void
 SoSceneManager::scheduleRedraw(void)
 {
