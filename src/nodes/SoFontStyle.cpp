@@ -30,10 +30,13 @@
   settings of this node, if a font with the given settings can be
   found and loaded from the system.
 
-  If the specified font style can not be found on the client system, a
+  If the specified font style cannot be found on the client system, a
   default fallback will be used. So the application programmer must
   consider SoFontStyle nodes as nodes giving \e hints about font
   settings, as you are \e not guaranteed to get exactly what you want.
+
+  Currently the SERIF family is mapped to "Times New Roman", SANS is
+  mapped to "Arial" and TYPEWRITER is mapped to "Courier New".
 
   Please note that this node is inheriting \e SoFont. Previous font
   settings in a branch will therefore be overwritten with the default
@@ -48,11 +51,6 @@
   \sa SoFont, SoText2, SoText3, SoAsciiText, SoGlyph
 */
 
-// FIXME: this node will just be ignored yet due to capabilities
-// missing in the SoText2 and SoText3 node implementations (they use
-// hardcoded font data). 20000326 mortene.
-
-
 #include <Inventor/nodes/SoFontStyle.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 
@@ -60,6 +58,7 @@
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/elements/SoFontNameElement.h>
 #include <Inventor/elements/SoFontSizeElement.h>
+#include <Inventor/elements/SoOverrideElement.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -88,6 +87,8 @@
 // *************************************************************************
 
 SO_NODE_SOURCE(SoFontStyle);
+
+static SbBool fontstyle_messageflag = true;
 
 /*!
   Constructor.
@@ -131,30 +132,38 @@ SoFontStyle::initClass(void)
 SbString
 SoFontStyle::getFontName(void) const
 {
-  // FIXME: this is valid only under X11! 19990418 mortene.
 
   SbString fontname(this->name.getValue().getString());
-  if (fontname == "defaultFont") {
-    switch (this->family.getValue()) {
-    case SoFontStyle::SERIF:
-      fontname = "Times New Roman";
-      break;
-    case SoFontStyle::SANS:
-      fontname = "Arial";
-      break;
-    case SoFontStyle::TYPEWRITER:
-      fontname = "Courier New";
-      break;
+
 #if COIN_DEBUG
-    default:
-      SoDebugError::postWarning("SoFontStyle::getFontName",
-                                "value of family field is invalid, "
-                                "setting to SERIF");
-      fontname = "Times New Roman";
-      break;
-#endif // COIN_DEBUG
-    }
+  if((fontstyle_messageflag) && (fontname.getString() != NULL)) {
+    SoDebugError::postWarning("SoFontStyle::getFontName",
+                              "Font name ('%s') is ignored when using FontStyle nodes. "
+                              "Use the 'family' and 'style' fields instead.", 
+                              fontname.getString());    
+    fontstyle_messageflag = false; // Only display this message once.
   }
+#endif
+
+  switch (this->family.getValue()) {
+  case SoFontStyle::SERIF:
+    fontname = "Times New Roman";
+    break;
+  case SoFontStyle::SANS:
+    fontname = "Arial";
+    break;
+  case SoFontStyle::TYPEWRITER:
+    fontname = "Courier New";
+    break;
+#if COIN_DEBUG
+  default:
+    SoDebugError::postWarning("SoFontStyle::getFontName",
+                              "value of family field is invalid, setting to SERIF");
+    fontname = "Times New Roman";
+    break;
+#endif // COIN_DEBUG
+  }
+  
 
   // If this doesn't hold up, we need to include a few more cases in
   // the switch block.
@@ -180,6 +189,8 @@ SoFontStyle::getFontName(void) const
 #endif // COIN_DEUG
   }
 
+
+
   return fontname;
 }
 
@@ -187,8 +198,27 @@ SoFontStyle::getFontName(void) const
 void
 SoFontStyle::doAction(SoAction * action)
 {
-  SoFontNameElement::set(action->getState(), this, this->getFontName());
-  SoFontSizeElement::set(action->getState(), this, this->size.getValue());
+  
+  SoState * state = action->getState();
+  uint32_t flags = SoOverrideElement::getFlags(state);
+  
+#define TEST_OVERRIDE(bit) ((SoOverrideElement::bit & flags) != 0)
+  
+  if (!name.isIgnored() && !TEST_OVERRIDE(FONT_NAME)) {
+    SoFontNameElement::set(action->getState(), this, this->getFontName());
+    if (this->isOverride()) {
+      SoOverrideElement::setFontNameOverride(state, this, TRUE);
+    }
+  }
+  if (!size.isIgnored() && !TEST_OVERRIDE(FONT_SIZE)) {
+    SoFontSizeElement::set(action->getState(), this, this->size.getValue());
+    if (this->isOverride()) {
+      SoOverrideElement::setFontSizeOverride(state, this, TRUE);
+    }
+  }
+
+#undef TEST_OVERRIDE
+
 }
 
 // Doc from superclass.
