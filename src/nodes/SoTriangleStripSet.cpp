@@ -147,6 +147,8 @@ SoTriangleStripSet::findMaterialBinding(SoState * const state) const
     break;
   case SoMaterialBindingElement::PER_PART:
   case SoMaterialBindingElement::PER_PART_INDEXED:
+    binding = PER_STRIP;
+    break;
   case SoMaterialBindingElement::PER_FACE:
   case SoMaterialBindingElement::PER_FACE_INDEXED:
     binding = PER_FACE;
