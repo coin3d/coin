@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGLUPDATEAREAELEMENT_H__
-#define __SOGLUPDATEAREAELEMENT_H__
+#ifndef COIN_SOGLUPDATEAREAELEMENT_H
+#define COIN_SOGLUPDATEAREAELEMENT_H
 
 #include <Inventor/elements/SoElement.h>
 #include <Inventor/SbVec2f.h>
@@ -57,4 +57,4 @@ protected:
   SbVec2f size;
 };
 
-#endif // !__SOGLUPDATEAREAELEMENT_H__
+#endif // !COIN_SOGLUPDATEAREAELEMENT_H

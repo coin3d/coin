@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SODECOMPOSEMATRIX_H__
-#define __SODECOMPOSEMATRIX_H__
+#ifndef COIN_SODECOMPOSEMATRIX_H
+#define COIN_SODECOMPOSEMATRIX_H
 
 #include <Inventor/engines/SoSubEngine.h>
 #include <Inventor/engines/SoEngineOutput.h>
@@ -38,4 +38,4 @@ public:
   SoEngineOutput center; // SoMFVec3f
 };
 
-#endif // !__SODECOMPOSEMATRIX_H__
+#endif // !COIN_SODECOMPOSEMATRIX_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOMFMATRIX_H__
-#define __SOMFMATRIX_H__
+#ifndef COIN_SOMFMATRIX_H
+#define COIN_SOMFMATRIX_H
 
 #include <Inventor/fields/SoMField.h>
 #include <Inventor/fields/SoSubField.h>
@@ -49,4 +49,4 @@ private:
   virtual void convertTo(SoField * dest) const;
 };
 
-#endif // !__SOMFMATRIX_H__
+#endif // !COIN_SOMFMATRIX_H

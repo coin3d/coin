@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOBASECOLOR_H__
-#define __SOBASECOLOR_H__
+#ifndef COIN_SOBASECOLOR_H
+#define COIN_SOBASECOLOR_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -44,4 +44,4 @@ protected:
   virtual ~SoBaseColor();
 };
 
-#endif // !__SOBASECOLOR_H__
+#endif // !COIN_SOBASECOLOR_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOINT32ELEMENT_H__
-#define __SOINT32ELEMENT_H__
+#ifndef COIN_SOINT32ELEMENT_H
+#define COIN_SOINT32ELEMENT_H
 
 #include <Inventor/elements/SoElement.h>
 #include <Inventor/system/inttypes.h>
@@ -53,4 +53,4 @@ protected:
 
 };
 
-#endif // !__SOINT32ELEMENT_H__
+#endif // !COIN_SOINT32ELEMENT_H

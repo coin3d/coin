@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOLIGHTPATH_H__
-#define __SOLIGHTPATH_H__
+#ifndef COIN_SOLIGHTPATH_H
+#define COIN_SOLIGHTPATH_H
 
 #include <Inventor/lists/SbList.h>
 
@@ -49,4 +49,4 @@ private:
   SbList <int> indices;
 };
 
-#endif // __SOLIGHTPATH_H__
+#endif // COIN_SOLIGHTPATH_H

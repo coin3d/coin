@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOROTATIONXYZ_H__
-#define __SOROTATIONXYZ_H__
+#ifndef COIN_SOROTATIONXYZ_H
+#define COIN_SOROTATIONXYZ_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoTransformation.h>
@@ -61,4 +61,4 @@ private:
   SbBool getVector(SbVec3f & rotvec) const;
 };
 
-#endif // !__SOROTATIONXYZ_H__
+#endif // !COIN_SOROTATIONXYZ_H

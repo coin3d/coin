@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOREADERROR_H__
-#define __SOREADERROR_H__
+#ifndef COIN_SOREADERROR_H
+#define COIN_SOREADERROR_H
 
 #include <Inventor/errors/SoError.h>
 
@@ -54,4 +54,4 @@ private:
   static size_t strbuffersize;
 };
 
-#endif // !__SOREADERROR_H__
+#endif // !COIN_SOREADERROR_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOELEMENTS_H__
-#define __SOELEMENTS_H__
+#ifndef COIN_SOELEMENTS_H
+#define COIN_SOELEMENTS_H
 
 #include <Inventor/elements/SoElement.h>
 #include <Inventor/elements/SoAccumulatedElement.h>
@@ -114,4 +114,4 @@
 #include <Inventor/elements/SoGLShadeModelElement.h>
 #include <Inventor/elements/SoGLNormalizeElement.h>
 
-#endif // !__SOELEMENTS_H__
+#endif // !COIN_SOELEMENTS_H

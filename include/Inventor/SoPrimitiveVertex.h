@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOPRIMITIVEVERTEX_H__
-#define __SOPRIMITIVEVERTEX_H__
+#ifndef COIN_SOPRIMITIVEVERTEX_H
+#define COIN_SOPRIMITIVEVERTEX_H
 
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbVec3f.h>
@@ -57,4 +57,4 @@ private:
   SoDetail * detail;
 };
 
-#endif // !__SOPRIMITIVEVERTEX_H__
+#endif // !COIN_SOPRIMITIVEVERTEX_H

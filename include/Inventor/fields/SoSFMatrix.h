@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSFMATRIX_H__
-#define __SOSFMATRIX_H__
+#ifndef COIN_SOSFMATRIX_H
+#define COIN_SOSFMATRIX_H
 
 #include <Inventor/fields/SoSField.h>
 #include <Inventor/fields/SoSubField.h>
@@ -46,4 +46,4 @@ private:
   virtual void convertTo(SoField * dest) const;
 };
 
-#endif // !__SOSFMATRIX_H__
+#endif // !COIN_SOSFMATRIX_H

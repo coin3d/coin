@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOTEXTUREQUALITYELEMENT_H__
-#define __SOTEXTUREQUALITYELEMENT_H__
+#ifndef COIN_SOTEXTUREQUALITYELEMENT_H
+#define COIN_SOTEXTUREQUALITYELEMENT_H
 
 #include <Inventor/elements/SoFloatElement.h>
 
@@ -46,4 +46,4 @@ public:
 
 };
 
-#endif // !__SOTEXTUREQUALITYELEMENT_H__
+#endif // !COIN_SOTEXTUREQUALITYELEMENT_H

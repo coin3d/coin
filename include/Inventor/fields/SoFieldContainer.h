@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOFIELDCONTAINER_H__
-#define __SOFIELDCONTAINER_H__
+#ifndef COIN_SOFIELDCONTAINER_H
+#define COIN_SOFIELDCONTAINER_H
 
 #include <Inventor/misc/SoBase.h>
 
@@ -92,4 +92,4 @@ private:
   SbBool donotify;
 };
 
-#endif // !__SOFIELDCONTAINER_H__
+#endif // !COIN_SOFIELDCONTAINER_H

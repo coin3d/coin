@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOCONCATENATE_H__
-#define __SOCONCATENATE_H__
+#ifndef COIN_SOCONCATENATE_H
+#define COIN_SOCONCATENATE_H
 
 #include <Inventor/engines/SoSubEngine.h>
 #include <Inventor/engines/SoEngineOutput.h>
@@ -47,4 +47,4 @@ private:
   friend class dummy;
 };
 
-#endif // !__SOCONCATENATE_H__
+#endif // !COIN_SOCONCATENATE_H

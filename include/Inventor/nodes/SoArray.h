@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOARRAY_H__
-#define __SOARRAY_H__
+#ifndef COIN_SOARRAY_H
+#define COIN_SOARRAY_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoGroup.h>
@@ -64,4 +64,4 @@ protected:
   virtual ~SoArray();
 };
 
-#endif // !__SOARRAY_H__
+#endif // !COIN_SOARRAY_H

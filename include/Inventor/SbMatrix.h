@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBMATRIX_H__
-#define __SBMATRIX_H__
+#ifndef COIN_SBMATRIX_H
+#define COIN_SBMATRIX_H
 
 #include <stdio.h>
 #include <Inventor/SbBasic.h>
@@ -104,4 +104,4 @@ private:
   void operator *=(const float v);
 };
 
-#endif // !__SBMATRIX_H__
+#endif // !COIN_SBMATRIX_H

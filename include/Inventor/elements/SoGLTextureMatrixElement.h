@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGLTEXTUREMATRIXELEMENT_H__
-#define __SOGLTEXTUREMATRIXELEMENT_H__
+#ifndef COIN_SOGLTEXTUREMATRIXELEMENT_H
+#define COIN_SOGLTEXTUREMATRIXELEMENT_H
 
 #include <Inventor/elements/SoTextureMatrixElement.h>
 
@@ -53,4 +53,4 @@ private:
 
 };
 
-#endif // !__SOGLTEXTUREMATRIXELEMENT_H__
+#endif // !COIN_SOGLTEXTUREMATRIXELEMENT_H

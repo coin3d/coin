@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGLLINEPATTERNELEMENT_H__
-#define __SOGLLINEPATTERNELEMENT_H__
+#ifndef COIN_SOGLLINEPATTERNELEMENT_H
+#define COIN_SOGLLINEPATTERNELEMENT_H
 
 #include <Inventor/elements/SoLinePatternElement.h>
 
@@ -47,4 +47,4 @@ private:
 
 };
 
-#endif // !__SOGLLINEPATTERNELEMENT_H__
+#endif // !COIN_SOGLLINEPATTERNELEMENT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOVERTEXPROPERTY_H__
-#define __SOVERTEXPROPERTY_H__
+#ifndef COIN_SOVERTEXPROPERTY_H
+#define COIN_SOVERTEXPROPERTY_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -66,4 +66,4 @@ protected:
   virtual ~SoVertexProperty();
 };
 
-#endif // !__SOVERTEXPROPERTY_H__
+#endif // !COIN_SOVERTEXPROPERTY_H

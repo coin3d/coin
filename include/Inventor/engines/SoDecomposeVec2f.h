@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SODECOMPOSEVEC2F_H__
-#define __SODECOMPOSEVEC2F_H__
+#ifndef COIN_SODECOMPOSEVEC2F_H
+#define COIN_SODECOMPOSEVEC2F_H
 
 #include <Inventor/engines/SoSubEngine.h>
 #include <Inventor/engines/SoEngineOutput.h>
@@ -36,4 +36,4 @@ public:
   SoEngineOutput y; // SoMFFloat
 };
 
-#endif // !__SODECOMPOSEVEC2F_H__
+#endif // !COIN_SODECOMPOSEVEC2F_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOLIGHTELEMENT_H__
-#define __SOLIGHTELEMENT_H__
+#ifndef COIN_SOLIGHTELEMENT_H
+#define COIN_SOLIGHTELEMENT_H
 
 #include <Inventor/elements/SoAccumulatedElement.h>
 #include <Inventor/lists/SbPList.h>
@@ -59,4 +59,4 @@ protected:
 
 };
 
-#endif // !__SOLIGHTELEMENT_H__
+#endif // !COIN_SOLIGHTELEMENT_H

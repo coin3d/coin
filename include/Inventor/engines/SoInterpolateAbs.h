@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOINTERPOLATEABS_H__
-#define __SOINTERPOLATEABS_H__
+#ifndef COIN_SOINTERPOLATEABS_H
+#define COIN_SOINTERPOLATEABS_H
 
 #include <Inventor/engines/SoSubEngine.h>
 #include <Inventor/engines/SoEngineOutput.h>
@@ -43,4 +43,4 @@ private:
   virtual void evaluate() = 0;
 };
 
-#endif // !__SOINTERPOLATEABS_H__
+#endif // !COIN_SOINTERPOLATEABS_H

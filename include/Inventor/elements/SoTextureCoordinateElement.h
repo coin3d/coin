@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOTEXTURECOORDINATEELEMENT_H__
-#define __SOTEXTURECOORDINATEELEMENT_H__
+#ifndef COIN_SOTEXTURECOORDINATEELEMENT_H
+#define COIN_SOTEXTURECOORDINATEELEMENT_H
 
 #include <Inventor/elements/SoReplacedElement.h>
 #include <Inventor/SbVec2f.h>
@@ -93,4 +93,4 @@ protected:
 
 };
 
-#endif // !__SOTEXTURECOORDINATEELEMENT_H__
+#endif // !COIN_SOTEXTURECOORDINATEELEMENT_H

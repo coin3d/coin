@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOLISTS_H__
-#define __SOLISTS_H__
+#ifndef COIN_SOLISTS_H
+#define COIN_SOLISTS_H
 
 #if defined(COIN_INTERNAL)
 #error "Do not include SoLists.h internally."
@@ -32,4 +32,4 @@
 #include <Inventor/lists/SoTypeList.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
 
-#endif // !__SOLISTS_H__
+#endif // !COIN_SOLISTS_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SODATASENSOR_H__
-#define __SODATASENSOR_H__
+#ifndef COIN_SODATASENSOR_H
+#define COIN_SODATASENSOR_H
 
 #include <Inventor/sensors/SoDelayQueueSensor.h>
 #include <stdlib.h> // for NULL definition
@@ -56,4 +56,4 @@ private:
   SbBool findpath;
 };
 
-#endif // !__SODATASENSOR_H__
+#endif // !COIN_SODATASENSOR_H

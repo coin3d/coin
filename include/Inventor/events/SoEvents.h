@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOEVENTS_H__
-#define __SOEVENTS_H__
+#ifndef COIN_SOEVENTS_H
+#define COIN_SOEVENTS_H
 
 // Includes th definitions of all event classes. This includefile is
 // provided for convenience. Try to use it as little as possible,
@@ -34,4 +34,4 @@
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/events/SoSpaceballButtonEvent.h>
 
-#endif // !__SOEVENTS_H__
+#endif // !COIN_SOEVENTS_H

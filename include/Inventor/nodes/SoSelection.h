@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSELECTION_H__
-#define __SOSELECTION_H__
+#ifndef COIN_SOSELECTION_H
+#define COIN_SOSELECTION_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoSeparator.h>
@@ -119,4 +119,4 @@ private:
   SoPath *searchNode(SoNode * const node) const;
 };
 
-#endif // !__SOSELECTION_H__
+#endif // !COIN_SOSELECTION_H

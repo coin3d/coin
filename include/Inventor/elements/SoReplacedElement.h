@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOREPLACEDELEMENT_H__
-#define __SOREPLACEDELEMENT_H__
+#ifndef COIN_SOREPLACEDELEMENT_H
+#define COIN_SOREPLACEDELEMENT_H
 
 #include <Inventor/elements/SoElement.h>
 #include <Inventor/system/inttypes.h>
@@ -50,4 +50,4 @@ protected:
   uint32_t nodeId;
 };
 
-#endif // !__SOREPLACEDELEMENT_H__
+#endif // !COIN_SOREPLACEDELEMENT_H

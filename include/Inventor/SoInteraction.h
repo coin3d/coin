@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOINTERACTION_H__
-#define __SOINTERACTION_H__
+#ifndef COIN_SOINTERACTION_H
+#define COIN_SOINTERACTION_H
 
 #include <Inventor/SbBasic.h> // for SbBool type
 
@@ -31,4 +31,4 @@ private:
   static SbBool isinitialized;
 };
 
-#endif // !__SOINTERACTION_H__
+#endif // !COIN_SOINTERACTION_H

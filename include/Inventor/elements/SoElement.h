@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOELEMENT_H__
-#define __SOELEMENT_H__
+#ifndef COIN_SOELEMENT_H
+#define COIN_SOELEMENT_H
 
 #include <Inventor/SbBasic.h>
 
@@ -87,4 +87,4 @@ protected:
   friend class SoState; // FIXME: bad design. 19990629 mortene.
 };
 
-#endif // !__SOELEMENT_H__
+#endif // !COIN_SOELEMENT_H

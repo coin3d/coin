@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGLOBALSIMPLIFYACTION_H__
-#define __SOGLOBALSIMPLIFYACTION_H__
+#ifndef COIN_SOGLOBALSIMPLIFYACTION_H
+#define COIN_SOGLOBALSIMPLIFYACTION_H
 
 #include <Inventor/actions/SoSimplifyAction.h>
 
@@ -56,4 +56,4 @@ protected:
 
 };
 
-#endif // !__SOGLOBALSIMPLIFYACTION_H__
+#endif // !COIN_SOGLOBALSIMPLIFYACTION_H

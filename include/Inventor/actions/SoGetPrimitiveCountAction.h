@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGETPRIMITIVECOUNTACTION_H__
-#define __SOGETPRIMITIVECOUNTACTION_H__
+#ifndef COIN_SOGETPRIMITIVECOUNTACTION_H
+#define COIN_SOGETPRIMITIVECOUNTACTION_H
 
 #include <Inventor/actions/SoAction.h>
 
@@ -117,4 +117,4 @@ private:
   SbBool nonVertexAsTris;
 };
 
-#endif // !__SOGETPRIMITIVECOUNTACTION_H__
+#endif // !COIN_SOGETPRIMITIVECOUNTACTION_H

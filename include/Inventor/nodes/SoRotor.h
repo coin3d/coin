@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOROTOR_H__
-#define __SOROTOR_H__
+#ifndef COIN_SOROTOR_H
+#define COIN_SOROTOR_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoRotation.h>
@@ -42,4 +42,4 @@ protected:
   virtual ~SoRotor();
 };
 
-#endif // !__SOROTOR_H__
+#endif // !COIN_SOROTOR_H

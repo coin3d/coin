@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSUBENGINE_H__
-#define __SOSUBENGINE_H__
+#ifndef COIN_SOSUBENGINE_H
+#define COIN_SOSUBENGINE_H
 
 #include <Inventor/engines/SoEngine.h>
 #include <Inventor/misc/SoBasic.h>
@@ -183,4 +183,4 @@
 
 //FIXME: check read-only
 
-#endif // !__SOSUBENGINE_H__
+#endif // !COIN_SOSUBENGINE_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SORESETTRANSFORM_H__
-#define __SORESETTRANSFORM_H__
+#ifndef COIN_SORESETTRANSFORM_H
+#define COIN_SORESETTRANSFORM_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoTransformation.h>
@@ -54,4 +54,4 @@ protected:
   virtual ~SoResetTransform();
 };
 
-#endif // !__SORESETTRANSFORM_H__
+#endif // !COIN_SORESETTRANSFORM_H

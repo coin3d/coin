@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOPOLYGONOFFSET_H__
-#define __SOPOLYGONOFFSET_H__
+#ifndef COIN_SOPOLYGONOFFSET_H
+#define COIN_SOPOLYGONOFFSET_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -56,4 +56,4 @@ protected:
   virtual ~SoPolygonOffset();
 };
 
-#endif // !__SOPOLYGONOFFSET_H__
+#endif // !COIN_SOPOLYGONOFFSET_H

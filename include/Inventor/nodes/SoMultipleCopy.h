@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOMULTIPLECOPY_H__
-#define __SOMULTIPLECOPY_H__
+#ifndef COIN_SOMULTIPLECOPY_H
+#define COIN_SOMULTIPLECOPY_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoGroup.h>
@@ -52,4 +52,4 @@ protected:
   virtual ~SoMultipleCopy();
 };
 
-#endif // !__SOMULTIPLECOPY_H__
+#endif // !COIN_SOMULTIPLECOPY_H

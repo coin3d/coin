@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSUBELEMENT_H__
-#define __SOSUBELEMENT_H__
+#ifndef COIN_SOSUBELEMENT_H
+#define COIN_SOSUBELEMENT_H
 
 #include <Inventor/misc/SoBasic.h> // for SO__QUOTE() definition
 
@@ -78,4 +78,4 @@ void * _class_::createInstance(void) { return (void *) new _class_; }
   } while(0)
 
 
-#endif // !__SOSUBELEMENT_H__
+#endif // !COIN_SOSUBELEMENT_H

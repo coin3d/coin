@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSFNODE_H__
-#define __SOSFNODE_H__
+#ifndef COIN_SOSFNODE_H
+#define COIN_SOSFNODE_H
 
 #include <Inventor/fields/SoSField.h>
 #include <Inventor/fields/SoSubField.h>
@@ -44,4 +44,4 @@ private:
   friend class SoMFNode; // For readValue() & writeValue().
 };
 
-#endif // !__SOSFNODE_H__
+#endif // !COIN_SOSFNODE_H

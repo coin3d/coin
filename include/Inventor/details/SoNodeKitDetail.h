@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SONODEKITDETAIL_H__
-#define __SONODEKITDETAIL_H__
+#ifndef COIN_SONODEKITDETAIL_H
+#define COIN_SONODEKITDETAIL_H
 
 #include <Inventor/details/SoDetail.h>
 #include <Inventor/SbName.h>
@@ -60,4 +60,4 @@ protected:
   SbName myPartName;
 };
 
-#endif // __SONODEKITDETAIL_H__
+#endif // COIN_SONODEKITDETAIL_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOELAPSEDTIME_H__
-#define __SOELAPSEDTIME_H__
+#ifndef COIN_SOELAPSEDTIME_H
+#define COIN_SOELAPSEDTIME_H
 
 #include <Inventor/engines/SoSubEngine.h>
 #include <Inventor/engines/SoEngineOutput.h>
@@ -59,4 +59,4 @@ private:
   SbBool firstTime;
 };
 
-#endif // !__SOELAPSEDTIME_H__
+#endif // !COIN_SOELAPSEDTIME_H

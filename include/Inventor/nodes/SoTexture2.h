@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOTEXTURE2_H__
-#define __SOTEXTURE2_H__
+#ifndef COIN_SOTEXTURE2_H
+#define COIN_SOTEXTURE2_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -79,4 +79,4 @@ private:
   class SoGLImage * glImage;
 };
 
-#endif // !__SOTEXTURE2_H__
+#endif // !COIN_SOTEXTURE2_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOACTION_H__
-#define __SOACTION_H__
+#ifndef COIN_SOACTION_H
+#define COIN_SOACTION_H
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/SoType.h>
@@ -160,4 +160,4 @@ private:
 #undef SOACTION_STORE_INPATH_DEF
 #endif /* SOACTION_STORE_INPATH_DEF */
 
-#endif // !__SOACTION_H__
+#endif // !COIN_SOACTION_H

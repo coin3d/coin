@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOTRANSFORM_H__
-#define __SOTRANSFORM_H__
+#ifndef COIN_SOTRANSFORM_H
+#define COIN_SOTRANSFORM_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFRotation.h>
@@ -66,4 +66,4 @@ protected:
   virtual ~SoTransform();
 };
 
-#endif // !__SOTRANSFORM_H__
+#endif // !COIN_SOTRANSFORM_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOPOLYGONOFFSETELEMENT_H__
-#define __SOPOLYGONOFFSETELEMENT_H__
+#ifndef COIN_SOPOLYGONOFFSETELEMENT_H
+#define COIN_SOPOLYGONOFFSETELEMENT_H
 
 #include <Inventor/elements/SoReplacedElement.h>
 
@@ -59,4 +59,4 @@ protected:
   virtual void setElt(float factor, float units, Style styles, SbBool on);
 };
 
-#endif // !__SOPOLYGONOFFSETELEMENT_H__
+#endif // !COIN_SOPOLYGONOFFSETELEMENT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGLLIGHTMODELELEMENT_H__
-#define __SOGLLIGHTMODELELEMENT_H__
+#ifndef COIN_SOGLLIGHTMODELELEMENT_H
+#define COIN_SOGLLIGHTMODELELEMENT_H
 
 #include <Inventor/elements/SoLightModelElement.h>
 
@@ -54,4 +54,4 @@ private:
 
 };
 
-#endif // !__SOGLLIGHTMODELELEMENT_H__
+#endif // !COIN_SOGLLIGHTMODELELEMENT_H

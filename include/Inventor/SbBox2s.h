@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBBOX2S_H__
-#define __SBBOX2S_H__
+#ifndef COIN_SBBOX2S_H
+#define COIN_SBBOX2S_H
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbVec2s.h>
@@ -55,4 +55,4 @@ private:
   SbBool hasArea(void) const;
 };
 
-#endif // !__SBBOX2S_H__
+#endif // !COIN_SBBOX2S_H

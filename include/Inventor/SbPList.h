@@ -17,15 +17,15 @@
  *
 \**************************************************************************/
 
-#ifndef __SBPLIST_H__
-#define __SBPLIST_H__
+#ifndef COIN_SBPLIST_H
+#define COIN_SBPLIST_H
 
 #if defined(COIN_INTERNAL)
 #error "Do not include Inventor/SbPList.h internally (use Inventor/lists/SbPList.h)."
 #endif // COIN_INTERNAL
 
-#define __INCLUDED_FROM_SBPLIST_H__
+#define COIN_INCLUDED_FROM_SBPLIST_H
 #include <Inventor/lists/SbPList.h>
-#undef  __INCLUDED_FROM_SBPLIST_H__
+#undef  COIN_INCLUDED_FROM_SBPLIST_H
 
-#endif // !__SBPLIST_H__
+#endif // !COIN_SBPLIST_H

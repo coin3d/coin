@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SODETAIL_H__
-#define __SODETAIL_H__
+#ifndef COIN_SODETAIL_H
+#define COIN_SODETAIL_H
 
 #include <Inventor/SoType.h>
 
@@ -46,4 +46,4 @@ private:
 };
 
 
-#endif // __SODETAIL_H__
+#endif // COIN_SODETAIL_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOHANDLEEVENTACTION_H__
-#define __SOHANDLEEVENTACTION_H__
+#ifndef COIN_SOHANDLEEVENTACTION_H
+#define COIN_SOHANDLEEVENTACTION_H
 
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/SbViewportRegion.h>
@@ -88,4 +88,4 @@ private:
   SoNode *applyNode;
 };
 
-#endif // !__SOHANDLEEVENTACTION_H__
+#endif // !COIN_SOHANDLEEVENTACTION_H

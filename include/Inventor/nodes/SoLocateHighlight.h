@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOLOCATEHIGHLIGHT_H__
-#define __SOLOCATEHIGHLIGHT_H__
+#ifndef COIN_SOLOCATEHIGHLIGHT_H
+#define COIN_SOLOCATEHIGHLIGHT_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoSeparator.h>
@@ -58,4 +58,4 @@ protected:
   virtual void redrawHighlighted(SoAction *act, SbBool  flag);
 };
 
-#endif // !__SOLOCATEHIGHLIGHT_H__
+#endif // !COIN_SOLOCATEHIGHLIGHT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOTRANSPARENCYELEMENT_H__
-#define __SOTRANSPARENCYELEMENT_H__
+#ifndef COIN_SOTRANSPARENCYELEMENT_H
+#define COIN_SOTRANSPARENCYELEMENT_H
 
 #include <Inventor/elements/SoReplacedElement.h>
 
@@ -50,4 +50,4 @@ protected:
 
 };
 
-#endif // !__SOTRANSPARENCYELEMENT_H__
+#endif // !COIN_SOTRANSPARENCYELEMENT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOCALLBACKLIST_H__
-#define __SOCALLBACKLIST_H__
+#ifndef COIN_SOCALLBACKLIST_H
+#define COIN_SOCALLBACKLIST_H
 
 #if defined(COIN_INTERNAL)
 #error "Do not include Inventor/misc/SoCallbackList.h internally (use Inventor/lists/SoCallbackList.h)."
@@ -26,4 +26,4 @@
 
 #include <Inventor/lists/SoCallbackList.h>
 
-#endif // !__SOCALLBACKLIST_H__
+#endif // !COIN_SOCALLBACKLIST_H

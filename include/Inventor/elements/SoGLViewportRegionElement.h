@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGLVIEWPORTREGIONELEMENT_H__
-#define __SOGLVIEWPORTREGIONELEMENT_H__
+#ifndef COIN_SOGLVIEWPORTREGIONELEMENT_H
+#define COIN_SOGLVIEWPORTREGIONELEMENT_H
 
 #include <Inventor/elements/SoViewportRegionElement.h>
 
@@ -46,4 +46,4 @@ private:
   void updategl() const;
 };
 
-#endif // !__SOGLVIEWPORTREGIONELEMENT_H__
+#endif // !COIN_SOGLVIEWPORTREGIONELEMENT_H

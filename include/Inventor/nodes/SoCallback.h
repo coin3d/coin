@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOCALLBACK_H__
-#define __SOCALLBACK_H__
+#ifndef COIN_SOCALLBACK_H
+#define COIN_SOCALLBACK_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -59,4 +59,4 @@ private:
   void * cbdata;
 };
 
-#endif // !__SOCALLBACK_H__
+#endif // !COIN_SOCALLBACK_H

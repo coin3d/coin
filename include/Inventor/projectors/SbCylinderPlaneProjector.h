@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBCYLINDERPLANEPROJECTOR_H__
-#define __SBCYLINDERPLANEPROJECTOR_H__
+#ifndef COIN_SBCYLINDERPLANEPROJECTOR_H
+#define COIN_SBCYLINDERPLANEPROJECTOR_H
 
 #include <Inventor/projectors/SbCylinderSectionProjector.h>
 
@@ -43,4 +43,4 @@ protected:
                          const SbVec3f & point2, const SbBool tol2);
 };
 
-#endif // !__SBCYLINDERPLANEPROJECTOR_H__
+#endif // !COIN_SBCYLINDERPLANEPROJECTOR_H

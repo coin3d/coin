@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOPROFILEELEMENT_H__
-#define __SOPROFILEELEMENT_H__
+#ifndef COIN_SOPROFILEELEMENT_H
+#define COIN_SOPROFILEELEMENT_H
 
 #include <Inventor/elements/SoAccumulatedElement.h>
 #include <Inventor/lists/SoNodeList.h>
@@ -58,4 +58,4 @@ protected:
 
 };
 
-#endif // !__SOPROFILEELEMENT_H__
+#endif // !COIN_SOPROFILEELEMENT_H

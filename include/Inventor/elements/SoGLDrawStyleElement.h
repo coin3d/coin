@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGLDRAWSTYLEELEMENT_H__
-#define __SOGLDRAWSTYLEELEMENT_H__
+#ifndef COIN_SOGLDRAWSTYLEELEMENT_H
+#define COIN_SOGLDRAWSTYLEELEMENT_H
 
 #include <Inventor/elements/SoDrawStyleElement.h>
 
@@ -47,4 +47,4 @@ private:
 
 };
 
-#endif // !__SOGLDRAWSTYLEELEMENT_H__
+#endif // !COIN_SOGLDRAWSTYLEELEMENT_H

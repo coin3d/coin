@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOVRMLINTERPOUTPUTLIST_H__
-#define __SOVRMLINTERPOUTPUTLIST_H__
+#ifndef COIN_SOVRMLINTERPOUTPUTLIST_H
+#define COIN_SOVRMLINTERPOUTPUTLIST_H
 
 #include <Inventor/lists/SbPList.h>
 
@@ -39,4 +39,4 @@ public:
   SoVRMLInterpOutput * operator [](const int i) const;
 };
 
-#endif // !__SOVRMLINTERPOUTPUTLIST_H__
+#endif // !COIN_SOVRMLINTERPOUTPUTLIST_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOFILE_H__
-#define __SOFILE_H__
+#ifndef COIN_SOFILE_H
+#define COIN_SOFILE_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -63,4 +63,4 @@ private:
   SbBool readState;
 };
 
-#endif // !__SOFILE_H__
+#endif // !COIN_SOFILE_H

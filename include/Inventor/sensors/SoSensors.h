@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSENSORS_H__
-#define __SOSENSORS_H__
+#ifndef COIN_SOSENSORS_H
+#define COIN_SOSENSORS_H
 
 // Includes all sensor class hierarchy "leaf classes" (which again
 // includes the sensor superclasses).  This includefile is provided
@@ -36,4 +36,4 @@
 #include <Inventor/sensors/SoPathSensor.h>
 #include <Inventor/sensors/SoTimerSensor.h>
 
-#endif // !__SOSENSORS_H__
+#endif // !COIN_SOSENSORS_H

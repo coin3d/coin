@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOFONTNAMEELEMENT_H__
-#define __SOFONTNAMEELEMENT_H__
+#ifndef COIN_SOFONTNAMEELEMENT_H
+#define COIN_SOFONTNAMEELEMENT_H
 
 #include <Inventor/SbName.h>
 #include <Inventor/elements/SoReplacedElement.h>
@@ -54,4 +54,4 @@ private:
   static SbName * defaultfontname;
 };
 
-#endif // !__SOFONTNAMEELEMENT_H__
+#endif // !COIN_SOFONTNAMEELEMENT_H

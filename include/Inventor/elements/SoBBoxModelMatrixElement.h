@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOBBOXMODELMATRIXELEMENT_H__
-#define __SOBBOXMODELMATRIXELEMENT_H__
+#ifndef COIN_SOBBOXMODELMATRIXELEMENT_H
+#define COIN_SOBBOXMODELMATRIXELEMENT_H
 
 #include <Inventor/elements/SoModelMatrixElement.h>
 
@@ -63,4 +63,4 @@ private:
   SoState *state;
 };
 
-#endif // !__SOBBOXMODELMATRIXELEMENT_H__
+#endif // !COIN_SOBBOXMODELMATRIXELEMENT_H

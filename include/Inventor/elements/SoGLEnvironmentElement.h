@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGLENVIRONMENTELEMENT_H__
-#define __SOGLENVIRONMENTELEMENT_H__
+#ifndef COIN_SOGLENVIRONMENTELEMENT_H
+#define COIN_SOGLENVIRONMENTELEMENT_H
 
 #include <Inventor/elements/SoEnvironmentElement.h>
 
@@ -53,4 +53,4 @@ private:
   void updategl(SoState * const state);
 };
 
-#endif // !__SOGLENVIRONMENTELEMENT_H__
+#endif // !COIN_SOGLENVIRONMENTELEMENT_H

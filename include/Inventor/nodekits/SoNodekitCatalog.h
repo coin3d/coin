@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SONODEKITCATALOG_H__
-#define __SONODEKITCATALOG_H__
+#ifndef COIN_SONODEKITCATALOG_H
+#define COIN_SONODEKITCATALOG_H
 
 #include <Inventor/SoType.h>
 #include <Inventor/lists/SbList.h>
@@ -101,4 +101,4 @@ private:
   SbList<class CatalogItem *> delayeditems;
 };
 
-#endif // !__SONODEKITCATALOG_H__
+#endif // !COIN_SONODEKITCATALOG_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SONODESENSOR_H__
-#define __SONODESENSOR_H__
+#ifndef COIN_SONODESENSOR_H
+#define COIN_SONODESENSOR_H
 
 #include <Inventor/sensors/SoDataSensor.h>
 
@@ -40,4 +40,4 @@ private:
   SoNode * convict;
 };
 
-#endif // !__SONODESENSOR_H__
+#endif // !COIN_SONODESENSOR_H

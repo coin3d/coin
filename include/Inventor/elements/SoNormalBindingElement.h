@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SONORMALBINDINGELEMENT_H__
-#define __SONORMALBINDINGELEMENT_H__
+#ifndef COIN_SONORMALBINDINGELEMENT_H
+#define COIN_SONORMALBINDINGELEMENT_H
 
 #include <Inventor/elements/SoInt32Element.h>
 
@@ -55,4 +55,4 @@ public:
 
 };
 
-#endif // !__SONORMALBINDINGELEMENT_H__
+#endif // !COIN_SONORMALBINDINGELEMENT_H

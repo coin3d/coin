@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSUBFIELD_H__
-#define __SOSUBFIELD_H__
+#ifndef COIN_SOSUBFIELD_H
+#define COIN_SOSUBFIELD_H
 
 #include <Inventor/misc/SoBasic.h> // for SO__QUOTE() definition
 #include <assert.h>
@@ -452,4 +452,4 @@ _class_::allocValues(int number) \
 
 
 
-#endif // !__SOSUBFIELD_H__
+#endif // !COIN_SOSUBFIELD_H

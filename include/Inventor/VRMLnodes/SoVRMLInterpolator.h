@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOVRMLINTERPOLATOR_H__
-#define __SOVRMLINTERPOLATOR_H__
+#ifndef COIN_SOVRMLINTERPOLATOR_H
+#define COIN_SOVRMLINTERPOLATOR_H
 
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoSubNode.h>
@@ -40,4 +40,4 @@ protected:
   virtual ~SoVRMLInterpolator();
 };
 
-#endif // !__SOVRMLINTERPOLATOR_H__
+#endif // !COIN_SOVRMLINTERPOLATOR_H

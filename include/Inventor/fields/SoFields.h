@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOFIELDS_H__
-#define __SOFIELDS_H__
+#ifndef COIN_SOFIELDS_H
+#define COIN_SOFIELDS_H
 
 #include <Inventor/fields/SoField.h>
 #include <Inventor/fields/SoSField.h>
@@ -69,4 +69,4 @@
 #include <Inventor/fields/SoMFVec3f.h>
 #include <Inventor/fields/SoMFVec4f.h>
 
-#endif // !__SOFIELDS_H__
+#endif // !COIN_SOFIELDS_H

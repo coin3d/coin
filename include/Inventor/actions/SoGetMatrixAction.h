@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGETMATRIXACTION_H__
-#define __SOGETMATRIXACTION_H__
+#ifndef COIN_SOGETMATRIXACTION_H
+#define COIN_SOGETMATRIXACTION_H
 
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/SbViewportRegion.h>
@@ -82,4 +82,4 @@ private:
   SbViewportRegion viewportRegion;
 };
 
-#endif // !__SOGETMATRIXACTION_H__
+#endif // !COIN_SOGETMATRIXACTION_H

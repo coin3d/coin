@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOCAMERA_H__
-#define __SOCAMERA_H__
+#ifndef COIN_SOCAMERA_H
+#define COIN_SOCAMERA_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -103,4 +103,4 @@ protected:
 
 };
 
-#endif // !__SOCAMERA_H__
+#endif // !COIN_SOCAMERA_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOCLIPPLANE_H__
-#define __SOCLIPPLANE_H__
+#ifndef COIN_SOCLIPPLANE_H
+#define COIN_SOCLIPPLANE_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -47,4 +47,4 @@ protected:
   virtual ~SoClipPlane();
 };
 
-#endif // !__SOCLIPPLANE_H__
+#endif // !COIN_SOCLIPPLANE_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOPATHSENSOR_H__
-#define __SOPATHSENSOR_H__
+#ifndef COIN_SOPATHSENSOR_H
+#define COIN_SOPATHSENSOR_H
 
 #include <Inventor/sensors/SoDataSensor.h>
 
@@ -43,4 +43,4 @@ private:
   SoPath * convict;
 };
 
-#endif // !__SOPATHSENSOR_H__
+#endif // !COIN_SOPATHSENSOR_H

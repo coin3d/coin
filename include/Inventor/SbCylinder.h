@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBCYLINDER_H__
-#define __SBCYLINDER_H__
+#ifndef COIN_SBCYLINDER_H
+#define COIN_SBCYLINDER_H
 
 #include <stdio.h>
 
@@ -44,4 +44,4 @@ private:
   float radius;
 };
 
-#endif // !__SBCYLINDER_H__
+#endif // !COIN_SBCYLINDER_H

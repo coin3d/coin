@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBVEC3F_H__
-#define __SBVEC3F_H__
+#ifndef COIN_SBVEC3F_H
+#define COIN_SBVEC3F_H
 
 #include <stdio.h>
 
@@ -70,4 +70,4 @@ private:
   float vec[3];
 };
 
-#endif // !__SBVEC3F_H__
+#endif // !COIN_SBVEC3F_H

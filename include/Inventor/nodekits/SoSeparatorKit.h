@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSEPARATORKIT_H__
-#define __SOSEPARATORKIT_H__
+#ifndef COIN_SOSEPARATORKIT_H
+#define COIN_SOSEPARATORKIT_H
 
 #include <Inventor/nodekits/SoSubKit.h>
 #include <Inventor/nodekits/SoBaseKit.h>
@@ -60,4 +60,4 @@ protected:
   virtual ~SoSeparatorKit();
 };
 
-#endif // !__SOSEPARATORKIT_H__
+#endif // !COIN_SOSEPARATORKIT_H

@@ -17,14 +17,14 @@
  *
 \**************************************************************************/
 
-#ifndef __SBLINEAR_H__
-#define __SBLINEAR_H__
+#ifndef COIN_SBLINEAR_H
+#define COIN_SBLINEAR_H
 
 #if defined(COIN_INTERNAL)
 #error "Do not include SbLinear.h internally."
 #endif // COIN_INTERNAL
 
-#define __INCLUDED_FROM_SBLINEAR_H__
+#define COIN_INCLUDED_FROM_SBLINEAR_H
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbVec2s.h>
 #include <Inventor/SbVec3f.h>
@@ -38,6 +38,6 @@
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbPlane.h>
 #include <Inventor/SbViewVolume.h>
-#undef  __INCLUDED_FROM_SBLINEAR_H__
+#undef  COIN_INCLUDED_FROM_SBLINEAR_H
 
-#endif // !__SBLINEAR_H__
+#endif // !COIN_SBLINEAR_H

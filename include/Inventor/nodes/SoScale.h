@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSCALE_H__
-#define __SOSCALE_H__
+#ifndef COIN_SOSCALE_H
+#define COIN_SOSCALE_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFVec3f.h>
@@ -48,4 +48,4 @@ protected:
   virtual ~SoScale();
 };
 
-#endif // !__SOSCALE_H__
+#endif // !COIN_SOSCALE_H

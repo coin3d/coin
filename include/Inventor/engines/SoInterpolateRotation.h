@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOINTERPOLATEROTATION_H__
-#define __SOINTERPOLATEROTATION_H__
+#ifndef COIN_SOINTERPOLATEROTATION_H
+#define COIN_SOINTERPOLATEROTATION_H
 
 //$ BEGIN TEMPLATE InterpolateHeader(SoInterpolateRotation, SoMFRotation)
 #include <Inventor/engines/SoInterpolateAbs.h>
@@ -33,4 +33,4 @@ public:
 };
 //$ END TEMPLATE InterpolateHeader
 
-#endif // !__SOINTERPOLATEROTATION_H__
+#endif // !COIN_SOINTERPOLATEROTATION_H

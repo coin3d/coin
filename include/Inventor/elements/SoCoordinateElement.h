@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOCOORDINATEELEMENT_H__
-#define __SOCOORDINATEELEMENT_H__
+#ifndef COIN_SOCOORDINATEELEMENT_H
+#define COIN_SOCOORDINATEELEMENT_H
 
 #include <Inventor/elements/SoReplacedElement.h>
 #include <Inventor/SbVec3f.h>
@@ -69,4 +69,4 @@ private:
   static SbVec3f * initialdefaultcoords;
 };
 
-#endif // !__SOCOORDINATEELEMENT_H__
+#endif // !COIN_SOCOORDINATEELEMENT_H

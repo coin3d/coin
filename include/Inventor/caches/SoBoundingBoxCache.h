@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOBOUNDINGBOXCACHE_H__
-#define __SOBOUNDINGBOXCACHE_H__
+#ifndef COIN_SOBOUNDINGBOXCACHE_H
+#define COIN_SOBOUNDINGBOXCACHE_H
 
 #include <Inventor/caches/SoCache.h>
 #include <Inventor/SbXfBox3f.h>
@@ -50,4 +50,4 @@ private:
   unsigned int linesOrPoints : 1;
 };
 
-#endif // !__SOBOUNDINGBOXCACHE_H__
+#endif // !COIN_SOBOUNDINGBOXCACHE_H

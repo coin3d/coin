@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOPICKRAYELEMENT_H__
-#define __SOPICKRAYELEMENT_H__
+#ifndef COIN_SOPICKRAYELEMENT_H
+#define COIN_SOPICKRAYELEMENT_H
 
 #include <Inventor/elements/SoElement.h>
 #include <Inventor/SbViewVolume.h>
@@ -48,4 +48,4 @@ protected:
   SbViewVolume volume;
 };
 
-#endif // !__SOPICKRAYELEMENT_H__
+#endif // !COIN_SOPICKRAYELEMENT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBBOX2F_H__
-#define __SBBOX2F_H__
+#ifndef COIN_SBBOX2F_H
+#define COIN_SBBOX2F_H
 
 #include <float.h>
 #include <Inventor/SbBasic.h>
@@ -57,4 +57,4 @@ private:
   float height(void) const;
 };
 
-#endif // !__SBBOX2F_H__
+#endif // !COIN_SBBOX2F_H

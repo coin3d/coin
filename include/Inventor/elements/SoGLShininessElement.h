@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGLSHININESSELEMENT_H__
-#define __SOGLSHININESSELEMENT_H__
+#ifndef COIN_SOGLSHININESSELEMENT_H
+#define COIN_SOGLSHININESSELEMENT_H
 
 #include <Inventor/elements/SoShininessElement.h>
 
@@ -48,4 +48,4 @@ private:
 
 };
 
-#endif // !__SOGLSHININESSELEMENT_H__
+#endif // !COIN_SOGLSHININESSELEMENT_H

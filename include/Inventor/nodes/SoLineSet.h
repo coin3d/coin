@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOLINESET_H__
-#define __SOLINESET_H__
+#ifndef COIN_SOLINESET_H
+#define COIN_SOLINESET_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNonIndexedShape.h>
@@ -61,4 +61,4 @@ private:
   Binding findMaterialBinding(SoState * const state) const;
 };
 
-#endif // !__SOLINESET_H__
+#endif // !COIN_SOLINESET_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOMATERIALBINDING_H__
-#define __SOMATERIALBINDING_H__
+#ifndef COIN_SOMATERIALBINDING_H
+#define COIN_SOMATERIALBINDING_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFEnum.h>
@@ -64,4 +64,4 @@ protected:
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
 };
 
-#endif // !__SOMATERIALBINDING_H__
+#endif // !COIN_SOMATERIALBINDING_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOBASIC_H__
-#define __SOBASIC_H__
+#ifndef COIN_SOBASIC_H
+#define COIN_SOBASIC_H
 
 #include <Inventor/SbBasic.h>
 
@@ -43,4 +43,4 @@ extern void coin_stub(const char *, unsigned int, const char *);
 // FIXME: __FILE__ and __LINE__ are ANSI C, I believe, but we should
 // probably do an autoconf check for them anyway. 19991213 mortene.
 
-#endif // !__SOBASIC_H__
+#endif // !COIN_SOBASIC_H

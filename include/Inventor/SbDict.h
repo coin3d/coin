@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBDICT_H__
-#define __SBDICT_H__
+#ifndef COIN_SBDICT_H
+#define COIN_SBDICT_H
 
 #include <Inventor/SbBasic.h>
 #include <stddef.h>
@@ -58,4 +58,4 @@ private:
 
 };
 
-#endif // !__SBDICT_H__
+#endif // !COIN_SBDICT_H

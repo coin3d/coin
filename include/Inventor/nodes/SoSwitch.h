@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSWITCH_H__
-#define __SOSWITCH_H__
+#ifndef COIN_SOSWITCH_H
+#define COIN_SOSWITCH_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFInt32.h>
@@ -60,4 +60,4 @@ protected:
   void traverseChildren(SoAction * action);
 };
 
-#endif // !__SOSWITCH_H__
+#endif // !COIN_SOSWITCH_H

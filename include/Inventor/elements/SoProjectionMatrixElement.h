@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOPROJECTIONMATRIXELEMENT_H__
-#define __SOPROJECTIONMATRIXELEMENT_H__
+#ifndef COIN_SOPROJECTIONMATRIXELEMENT_H
+#define COIN_SOPROJECTIONMATRIXELEMENT_H
 
 #include <Inventor/elements/SoReplacedElement.h>
 #include <Inventor/SbMatrix.h>
@@ -46,4 +46,4 @@ protected:
 
 };
 
-#endif // !__SOPROJECTIONMATRIXELEMENT_H__
+#endif // !COIN_SOPROJECTIONMATRIXELEMENT_H

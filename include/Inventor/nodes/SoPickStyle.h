@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOPICKSTYLE_H__
-#define __SOPICKSTYLE_H__
+#ifndef COIN_SOPICKSTYLE_H
+#define COIN_SOPICKSTYLE_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -51,4 +51,4 @@ protected:
   virtual ~SoPickStyle();
 };
 
-#endif // !__SOPICKSTYLE_H__
+#endif // !COIN_SOPICKSTYLE_H

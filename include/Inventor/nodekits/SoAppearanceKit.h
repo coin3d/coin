@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOAPPEARANCEKIT_H__
-#define __SOAPPEARANCEKIT_H__
+#ifndef COIN_SOAPPEARANCEKIT_H
+#define COIN_SOAPPEARANCEKIT_H
 
 #include <Inventor/nodekits/SoSubKit.h>
 #include <Inventor/nodekits/SoBaseKit.h>
@@ -47,4 +47,4 @@ protected:
   virtual ~SoAppearanceKit();
 };
 
-#endif // !__SOAPPEARANCEKIT_H__
+#endif // !COIN_SOAPPEARANCEKIT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOTRIGGERANY_H__
-#define __SOTRIGGERANY_H__
+#ifndef COIN_SOTRIGGERANY_H
+#define COIN_SOTRIGGERANY_H
 
 #include <Inventor/engines/SoSubEngine.h>
 #include <Inventor/engines/SoEngineOutput.h>
@@ -54,4 +54,4 @@ private:
   virtual void evaluate();
 };
 
-#endif // !__SOTRIGGERANY_H__
+#endif // !COIN_SOTRIGGERANY_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSCENEMANAGER_H__
-#define __SOSCENEMANAGER_H__
+#ifndef COIN_SOSCENEMANAGER_H
+#define COIN_SOSCENEMANAGER_H
 
 #include <stdio.h> // For NULL definition
 #include <Inventor/SbColor.h>
@@ -111,4 +111,4 @@ private:
   uint32_t redrawPri;
 };
 
-#endif // !__SOSCENEMANAGER_H__
+#endif // !COIN_SOSCENEMANAGER_H

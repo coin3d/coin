@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOLIGHTMODELELEMENT_H__
-#define __SOLIGHTMODELELEMENT_H__
+#ifndef COIN_SOLIGHTMODELELEMENT_H
+#define COIN_SOLIGHTMODELELEMENT_H
 
 #include <Inventor/elements/SoInt32Element.h>
 
@@ -48,4 +48,4 @@ public:
   static const SoLightModelElement *getInstance(SoState *state);
 };
 
-#endif // !__SOLIGHTMODELELEMENT_H__
+#endif // !COIN_SOLIGHTMODELELEMENT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOTRANSFORMSEPARATOR_H__
-#define __SOTRANSFORMSEPARATOR_H__
+#ifndef COIN_SOTRANSFORMSEPARATOR_H
+#define COIN_SOTRANSFORMSEPARATOR_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoGroup.h>
@@ -47,4 +47,4 @@ protected:
   virtual ~SoTransformSeparator();
 };
 
-#endif // !__SOTRANSFORMSEPARATOR_H__
+#endif // !COIN_SOTRANSFORMSEPARATOR_H

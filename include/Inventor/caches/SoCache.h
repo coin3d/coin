@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOCACHE_H__
-#define __SOCACHE_H__
+#ifndef COIN_SOCACHE_H
+#define COIN_SOCACHE_H
 
 class SoState;
 class SoElement;
@@ -53,4 +53,4 @@ private:
   int stateDepth;
 };
 
-#endif // !__SOCACHE_H__
+#endif // !COIN_SOCACHE_H

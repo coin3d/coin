@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOWRITEACTION_H__
-#define __SOWRITEACTION_H__
+#ifndef COIN_SOWRITEACTION_H
+#define COIN_SOWRITEACTION_H
 
 #include <Inventor/actions/SoAction.h>
 
@@ -76,4 +76,4 @@ private:
   SbBool localoutputalloc;
 };
 
-#endif // !__SOWRITEACTION_H__
+#endif // !COIN_SOWRITEACTION_H

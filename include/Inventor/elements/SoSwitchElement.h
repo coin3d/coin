@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSWITCHELEMENT_H__
-#define __SOSWITCHELEMENT_H__
+#ifndef COIN_SOSWITCHELEMENT_H
+#define COIN_SOSWITCHELEMENT_H
 
 #include <Inventor/elements/SoInt32Element.h>
 
@@ -42,4 +42,4 @@ public:
   static int32_t getDefault();
 };
 
-#endif // !__SOSWITCHELEMENT_H__
+#endif // !COIN_SOSWITCHELEMENT_H

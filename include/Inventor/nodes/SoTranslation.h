@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOTRANSLATION_H__
-#define __SOTRANSLATION_H__
+#ifndef COIN_SOTRANSLATION_H
+#define COIN_SOTRANSLATION_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFVec3f.h>
@@ -48,4 +48,4 @@ protected:
   virtual ~SoTranslation();
 };
 
-#endif // !__SOTRANSLATION_H__
+#endif // !COIN_SOTRANSLATION_H

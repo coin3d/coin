@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBSPHERE_H__
-#define __SBSPHERE_H__
+#ifndef COIN_SBSPHERE_H
+#define COIN_SBSPHERE_H
 
 #include <stdio.h>
 #include <Inventor/SbVec3f.h>
@@ -47,4 +47,4 @@ private:
   float radius;
 };
 
-#endif // !__SBSPHERE_H__
+#endif // !COIN_SBSPHERE_H

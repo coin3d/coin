@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOCOMPOSEROTATION_H__
-#define __SOCOMPOSEROTATION_H__
+#ifndef COIN_SOCOMPOSEROTATION_H
+#define COIN_SOCOMPOSEROTATION_H
 
 #include <Inventor/engines/SoSubEngine.h>
 #include <Inventor/engines/SoEngineOutput.h>
@@ -36,4 +36,4 @@ public:
   SoEngineOutput rotation; // SoMFRotation
 };
 
-#endif // !__SOCOMPOSEROTATION_H__
+#endif // !COIN_SOCOMPOSEROTATION_H

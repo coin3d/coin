@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBCOLOR_H__
-#define __SBCOLOR_H__
+#ifndef COIN_SBCOLOR_H
+#define COIN_SBCOLOR_H
 
 #include <Inventor/system/inttypes.h>
 #include <Inventor/SbVec3f.h>
@@ -44,4 +44,4 @@ private:
   uint32_t convertToUInt(const float val) { return (uint32_t)(val*255.0f);}
 };
 
-#endif // !__SBCOLOR_H__
+#endif // !COIN_SBCOLOR_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SONODEKIT_H__
-#define __SONODEKIT_H__
+#ifndef COIN_SONODEKIT_H
+#define COIN_SONODEKIT_H
 
 #include <Inventor/SbBasic.h> // for SbBool type
 
@@ -31,4 +31,4 @@ private:
   static SbBool isinitialized;
 };
 
-#endif // !__SONODEKIT_H__
+#endif // !COIN_SONODEKIT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOFIELDCONVERTER_H__
-#define __SOFIELDCONVERTER_H__
+#ifndef COIN_SOFIELDCONVERTER_H
+#define COIN_SOFIELDCONVERTER_H
 
 #include <Inventor/engines/SoSubEngine.h>
 
@@ -49,4 +49,4 @@ private:
   SoField * connectedInput;
 };
 
-#endif // !__SOFIELDCONVERTER_H__
+#endif // !COIN_SOFIELDCONVERTER_H

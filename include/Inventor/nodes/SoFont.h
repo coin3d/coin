@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOFONT_H__
-#define __SOFONT_H__
+#ifndef COIN_SOFONT_H
+#define COIN_SOFONT_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -49,4 +49,4 @@ protected:
   virtual ~SoFont();
 };
 
-#endif // !__SOFONT_H__
+#endif // !COIN_SOFONT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOCHILDLIST_H__
-#define __SOCHILDLIST_H__
+#ifndef COIN_SOCHILDLIST_H
+#define COIN_SOCHILDLIST_H
 
 #include <Inventor/lists/SoNodeList.h>
 
@@ -55,4 +55,4 @@ private:
 
 //$ IMPORT INLINE ../../../src/misc/SoChildList.cpp
 
-#endif // !__SOCHILDLIST_H__
+#endif // !COIN_SOCHILDLIST_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SODIFFUSECOLORELEMENT_H__
-#define __SODIFFUSECOLORELEMENT_H__
+#ifndef COIN_SODIFFUSECOLORELEMENT_H
+#define COIN_SODIFFUSECOLORELEMENT_H
 
 #include <Inventor/elements/SoReplacedElement.h>
 
@@ -64,4 +64,4 @@ protected:
 
 };
 
-#endif // !__SODIFFUSECOLORELEMENT_H__
+#endif // !COIN_SODIFFUSECOLORELEMENT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGETBOUNDINGBOXACTION_H__
-#define __SOGETBOUNDINGBOXACTION_H__
+#ifndef COIN_SOGETBOUNDINGBOXACTION_H
+#define COIN_SOGETBOUNDINGBOXACTION_H
 
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/SbViewportRegion.h>
@@ -97,4 +97,4 @@ private:
   unsigned int flags;
 };
 
-#endif // !__SOGETBOUNDINGBOXACTION_H__
+#endif // !COIN_SOGETBOUNDINGBOXACTION_H

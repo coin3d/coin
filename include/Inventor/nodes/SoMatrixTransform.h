@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOMATRIXTRANSFORM_H__
-#define __SOMATRIXTRANSFORM_H__
+#ifndef COIN_SOMATRIXTRANSFORM_H
+#define COIN_SOMATRIXTRANSFORM_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFMatrix.h>
@@ -48,4 +48,4 @@ protected:
   virtual ~SoMatrixTransform();
 };
 
-#endif // !__SOMATRIXTRANSFORM_H__
+#endif // !COIN_SOMATRIXTRANSFORM_H

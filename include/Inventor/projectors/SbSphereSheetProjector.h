@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBSPHERESHEETPROJECTOR_H__
-#define __SBSPHERESHEETPROJECTOR_H__
+#ifndef COIN_SBSPHERESHEETPROJECTOR_H
+#define COIN_SBSPHERESHEETPROJECTOR_H
 
 #include <Inventor/projectors/SbSphereProjector.h>
 #include <Inventor/SbPlane.h>
@@ -45,4 +45,4 @@ protected:
   SbPlane tolPlane;
 };
 
-#endif // !__SBSPHERESHEETPROJECTOR_H__
+#endif // !COIN_SBSPHERESHEETPROJECTOR_H

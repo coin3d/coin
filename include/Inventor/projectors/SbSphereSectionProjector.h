@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBSPHERESECTIONPROJECTOR_H__
-#define __SBSPHERESECTIONPROJECTOR_H__
+#ifndef COIN_SBSPHERESECTIONPROJECTOR_H
+#define COIN_SBSPHERESECTIONPROJECTOR_H
 
 #include <Inventor/projectors/SbSphereProjector.h>
 #include <Inventor/SbPlane.h>
@@ -57,4 +57,4 @@ protected:
   float sqrTolDist;
 };
 
-#endif // !__SBSPHERESECTIONPROJECTOR_H__
+#endif // !COIN_SBSPHERESECTIONPROJECTOR_H

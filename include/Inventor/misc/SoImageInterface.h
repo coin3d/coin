@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOIMAGEINTERFACE_H__
-#define __SOIMAGEINTERFACE_H__
+#ifndef COIN_SOIMAGEINTERFACE_H
+#define COIN_SOIMAGEINTERFACE_H
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbString.h>
@@ -75,4 +75,4 @@ private:
   SbBool isReuseable;
 };
 
-#endif // !__SOIMAGEINTERFACE_H__
+#endif // !COIN_SOIMAGEINTERFACE_H

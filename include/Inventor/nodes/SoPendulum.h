@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOPENDULUM_H__
-#define __SOPENDULUM_H__
+#ifndef COIN_SOPENDULUM_H
+#define COIN_SOPENDULUM_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoRotation.h>
@@ -45,4 +45,4 @@ protected:
   virtual ~SoPendulum();
 };
 
-#endif // !__SOPENDULUM_H__
+#endif // !COIN_SOPENDULUM_H

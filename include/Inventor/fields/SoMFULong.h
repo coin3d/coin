@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOMFULONG_H__
-#define __SOMFULONG_H__
+#ifndef COIN_SOMFULONG_H
+#define COIN_SOMFULONG_H
 
 #if defined(IV_STRICT)
 #error "SoMFULong has been obsoleted. Use SoMFUInt32 instead."
@@ -27,4 +27,4 @@
 #include <Inventor/fields/SoMFUInt32.h>
 typedef SoMFUInt32 SoMFULong;
 
-#endif // !__SOMFULONG_H__
+#endif // !COIN_SOMFULONG_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOERROR_H__
-#define __SOERROR_H__
+#ifndef COIN_SOERROR_H
+#define COIN_SOERROR_H
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbString.h>
@@ -76,4 +76,4 @@ private:
   static size_t strbuffersize;
 };
 
-#endif // !__SOERROR_H__
+#endif // !COIN_SOERROR_H

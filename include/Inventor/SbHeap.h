@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBHEAP_H__
-#define __SBHEAP_H__
+#ifndef COIN_SBHEAP_H
+#define COIN_SBHEAP_H
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/lists/SbList.h>
@@ -62,4 +62,4 @@ private:
   void heapify(const int idx);
 };
 
-#endif // __SBHEAP_H__
+#endif // COIN_SBHEAP_H

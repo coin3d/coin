@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SORAYPICKACTION_H__
-#define __SORAYPICKACTION_H__
+#ifndef COIN_SORAYPICKACTION_H
+#define COIN_SORAYPICKACTION_H
 
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/SbViewVolume.h>
@@ -132,4 +132,4 @@ private:
   unsigned int flags;
 };
 
-#endif // !__SORAYPICKACTION_H__
+#endif // !COIN_SORAYPICKACTION_H

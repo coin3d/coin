@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGLEMISSIVECOLORELEMENT_H__
-#define __SOGLEMISSIVECOLORELEMENT_H__
+#ifndef COIN_SOGLEMISSIVECOLORELEMENT_H
+#define COIN_SOGLEMISSIVECOLORELEMENT_H
 
 #include <Inventor/elements/SoEmissiveColorElement.h>
 #include <Inventor/SbColor.h>
@@ -49,4 +49,4 @@ private:
 
 };
 
-#endif // !__SOGLEMISSIVECOLORELEMENT_H__
+#endif // !COIN_SOGLEMISSIVECOLORELEMENT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOONOFF_H__
-#define __SOONOFF_H__
+#ifndef COIN_SOONOFF_H
+#define COIN_SOONOFF_H
 
 #include <Inventor/engines/SoSubEngine.h>
 #include <Inventor/engines/SoEngineOutput.h>
@@ -51,4 +51,4 @@ private:
   SbBool state;
 };
 
-#endif // !__SOONOFF_H__
+#endif // !COIN_SOONOFF_H

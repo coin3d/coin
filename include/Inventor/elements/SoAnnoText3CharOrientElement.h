@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOANNOTEXT3CHARORIENTELEMENT_H__
-#define __SOANNOTEXT3CHARORIENTELEMENT_H__
+#ifndef COIN_SOANNOTEXT3CHARORIENTELEMENT_H
+#define COIN_SOANNOTEXT3CHARORIENTELEMENT_H
 
 #include <Inventor/elements/SoInt32Element.h>
 
@@ -39,4 +39,4 @@ public:
   static SbBool getDefault(void);
 };
 
-#endif // !__SOANNOTEXT3CHARORIENTELEMENT_H__
+#endif // !COIN_SOANNOTEXT3CHARORIENTELEMENT_H

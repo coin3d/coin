@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSFENUM_H__
-#define __SOSFENUM_H__
+#ifndef COIN_SOSFENUM_H
+#define COIN_SOSFENUM_H
 
 #include <Inventor/fields/SoSField.h>
 #include <Inventor/fields/SoSubField.h>
@@ -67,4 +67,4 @@ private:
     this->_fieldname_.setEnums(enum_num, enum_vals, enum_names); \
   } while (FALSE)
 
-#endif // !__SOSFENUM_H__
+#endif // !COIN_SOSFENUM_H

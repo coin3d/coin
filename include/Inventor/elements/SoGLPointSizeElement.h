@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGLPOINTSIZEELEMENT_H__
-#define __SOGLPOINTSIZEELEMENT_H__
+#ifndef COIN_SOGLPOINTSIZEELEMENT_H
+#define COIN_SOGLPOINTSIZEELEMENT_H
 
 #include <Inventor/elements/SoPointSizeElement.h>
 
@@ -51,4 +51,4 @@ private:
 
 };
 
-#endif // !__SOGLPOINTSIZEELEMENT_H__
+#endif // !COIN_SOGLPOINTSIZEELEMENT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOCONVEXDATACACHE_H__
-#define __SOCONVEXDATACACHE_H__
+#ifndef COIN_SOCONVEXDATACACHE_H
+#define COIN_SOCONVEXDATACACHE_H
 
 #include <Inventor/caches/SoCache.h>
 #include <Inventor/system/inttypes.h>
@@ -66,4 +66,4 @@ private:
   SbList <int32_t> texIndices;
 };
 
-#endif // !__SOCONVEXDATACACHE_H__
+#endif // !COIN_SOCONVEXDATACACHE_H

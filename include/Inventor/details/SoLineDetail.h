@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOLINEDETAIL_H__
-#define __SOLINEDETAIL_H__
+#ifndef COIN_SOLINEDETAIL_H
+#define COIN_SOLINEDETAIL_H
 
 #include <Inventor/details/SoDetail.h>
 #include <Inventor/details/SoPointDetail.h>
@@ -58,4 +58,4 @@ private:
   int partIndex;
 };
 
-#endif // __SOLINEDETAIL_H__
+#endif // COIN_SOLINEDETAIL_H

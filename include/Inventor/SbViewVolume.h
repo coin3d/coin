@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBVIEWVOLUME_H__
-#define __SBVIEWVOLUME_H__
+#ifndef COIN_SBVIEWVOLUME_H
+#define COIN_SBVIEWVOLUME_H
 
 #include <stdio.h>
 
@@ -98,4 +98,4 @@ private:
                                            const float nearval, const float farval);
 };
 
-#endif // !__SBVIEWVOLUME_H__
+#endif // !COIN_SBVIEWVOLUME_H

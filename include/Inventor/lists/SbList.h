@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBLIST_H__
-#define __SBLIST_H__
+#ifndef COIN_SBLIST_H
+#define COIN_SBLIST_H
 
 #include <Inventor/SbBasic.h>
 #include <stddef.h>
@@ -357,4 +357,4 @@ SbList<Type>::setBufferSize(const int newsize)
   this->itembuffersize = newsize;
 }
 
-#endif // !__SBLIST_H__
+#endif // !COIN_SBLIST_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGLLINEWIDTHELEMENT_H__
-#define __SOGLLINEWIDTHELEMENT_H__
+#ifndef COIN_SOGLLINEWIDTHELEMENT_H
+#define COIN_SOGLLINEWIDTHELEMENT_H
 
 #include <Inventor/elements/SoLineWidthElement.h>
 
@@ -50,4 +50,4 @@ private:
 
 };
 
-#endif // !__SOGLLINEWIDTHELEMENT_H__
+#endif // !COIN_SOGLLINEWIDTHELEMENT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SODEBUGERROR_H__
-#define __SODEBUGERROR_H__
+#ifndef COIN_SODEBUGERROR_H
+#define COIN_SODEBUGERROR_H
 
 #include <Inventor/errors/SoError.h>
 
@@ -72,4 +72,4 @@ private:
 #undef SODEBUGERROR_STORE_ERROR_DEF
 #endif /* SODEBUGERROR_STORE_ERROR_DEF */
 
-#endif // !__SODEBUGERROR_H__
+#endif // !COIN_SODEBUGERROR_H

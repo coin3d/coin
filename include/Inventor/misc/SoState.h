@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSTATE_H__
-#define __SOSTATE_H__
+#ifndef COIN_SOSTATE_H
+#define COIN_SOSTATE_H
 
 #include <Inventor/SbBasic.h>
 #include <stdio.h>
@@ -61,4 +61,4 @@ private:
   int depth;
 };
 
-#endif // !__SOSTATE_H__
+#endif // !COIN_SOSTATE_H

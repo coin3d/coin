@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGLNORMALELEMENT_H__
-#define __SOGLNORMALELEMENT_H__
+#ifndef COIN_SOGLNORMALELEMENT_H
+#define COIN_SOGLNORMALELEMENT_H
 
 #include <Inventor/elements/SoNormalElement.h>
 
@@ -38,4 +38,4 @@ public:
 
 };
 
-#endif // !__SOGLNORMALELEMENT_H__
+#endif // !COIN_SOGLNORMALELEMENT_H

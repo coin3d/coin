@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOCOMPLEXITYELEMENT_H__
-#define __SOCOMPLEXITYELEMENT_H__
+#ifndef COIN_SOCOMPLEXITYELEMENT_H
+#define COIN_SOCOMPLEXITYELEMENT_H
 
 #include <Inventor/elements/SoFloatElement.h>
 
@@ -45,4 +45,4 @@ public:
 
 };
 
-#endif // !__SOCOMPLEXITYELEMENT_H__
+#endif // !COIN_SOCOMPLEXITYELEMENT_H

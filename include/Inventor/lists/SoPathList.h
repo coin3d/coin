@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOPATHLIST_H__
-#define __SOPATHLIST_H__
+#ifndef COIN_SOPATHLIST_H
+#define COIN_SOPATHLIST_H
 
 #include <Inventor/lists/SoBaseList.h>
 
@@ -44,4 +44,4 @@ private:
   void set(const int index, SoPath * const path);
 };
 
-#endif // !__SOPATHLIST_H__
+#endif // !COIN_SOPATHLIST_H

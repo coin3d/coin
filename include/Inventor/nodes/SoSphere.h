@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSPHERE_H__
-#define __SOSPHERE_H__
+#ifndef COIN_SOSPHERE_H
+#define COIN_SOSPHERE_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoShape.h>
@@ -50,4 +50,4 @@ protected:
   virtual void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
 };
 
-#endif // !__SOSPHERE_H__
+#endif // !COIN_SOSPHERE_H

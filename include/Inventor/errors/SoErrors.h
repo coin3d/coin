@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOERRORS_H__
-#define __SOERRORS_H__
+#ifndef COIN_SOERRORS_H
+#define COIN_SOERRORS_H
 
 #include <Inventor/errors/SoError.h>
 
@@ -26,4 +26,4 @@
 #include <Inventor/errors/SoMemoryError.h>
 #include <Inventor/errors/SoReadError.h>
 
-#endif // !__SOERRORS_H__
+#endif // !COIN_SOERRORS_H

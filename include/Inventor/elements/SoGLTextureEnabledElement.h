@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGLTEXTUREENABLEDELEMENT_H__
-#define __SOGLTEXTUREENABLEDELEMENT_H__
+#ifndef COIN_SOGLTEXTUREENABLEDELEMENT_H
+#define COIN_SOGLTEXTUREENABLEDELEMENT_H
 
 #include <Inventor/elements/SoInt32Element.h>
 
@@ -55,4 +55,4 @@ private:
 
 };
 
-#endif // !__SOGLTEXTUREENABLEDELEMENT_H__
+#endif // !COIN_SOGLTEXTUREENABLEDELEMENT_H

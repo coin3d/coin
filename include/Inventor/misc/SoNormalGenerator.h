@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SONORMALGENERATOR_H__
-#define __SONORMALGENERATOR_H__
+#ifndef COIN_SONORMALGENERATOR_H
+#define COIN_SONORMALGENERATOR_H
 
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbBSPTree.h>
@@ -70,4 +70,4 @@ private:
   SbVec3f calcFaceNormal();
 };
 
-#endif // !__SONORMALGENERATOR_H__
+#endif // !COIN_SONORMALGENERATOR_H

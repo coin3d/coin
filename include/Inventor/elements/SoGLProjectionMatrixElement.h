@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGLPROJECTIONMATRIXELEMENT_H__
-#define __SOGLPROJECTIONMATRIXELEMENT_H__
+#ifndef COIN_SOGLPROJECTIONMATRIXELEMENT_H
+#define COIN_SOGLPROJECTIONMATRIXELEMENT_H
 
 #include <Inventor/elements/SoProjectionMatrixElement.h>
 
@@ -43,4 +43,4 @@ private:
   void updategl();
 };
 
-#endif // !__SOGLPROJECTIONMATRIXELEMENT_H__
+#endif // !COIN_SOGLPROJECTIONMATRIXELEMENT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBSPHEREPROJECTOR_H__
-#define __SBSPHEREPROJECTOR_H__
+#ifndef COIN_SBSPHEREPROJECTOR_H
+#define COIN_SBSPHEREPROJECTOR_H
 
 #include <Inventor/projectors/SbProjector.h>
 #include <Inventor/SbSphere.h>
@@ -55,4 +55,4 @@ protected:
   SbVec3f lastPoint;
 };
 
-#endif // !__SBSPHEREPROJECTOR_H__
+#endif // !COIN_SBSPHEREPROJECTOR_H

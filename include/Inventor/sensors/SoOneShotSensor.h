@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOONESHOTSENSOR_H__
-#define __SOONESHOTSENSOR_H__
+#ifndef COIN_SOONESHOTSENSOR_H
+#define COIN_SOONESHOTSENSOR_H
 
 #include <Inventor/sensors/SoDelayQueueSensor.h>
 
@@ -32,4 +32,4 @@ public:
   virtual ~SoOneShotSensor(void);
 };
 
-#endif // !__SOONESHOTSENSOR_H__
+#endif // !COIN_SOONESHOTSENSOR_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGLSPECULARCOLORELEMENT_H__
-#define __SOGLSPECULARCOLORELEMENT_H__
+#ifndef COIN_SOGLSPECULARCOLORELEMENT_H
+#define COIN_SOGLSPECULARCOLORELEMENT_H
 
 #include <Inventor/elements/SoSpecularColorElement.h>
 #include <Inventor/SbColor.h>
@@ -49,4 +49,4 @@ private:
 
 };
 
-#endif // !__SOGLSPECULARCOLORELEMENT_H__
+#endif // !COIN_SOGLSPECULARCOLORELEMENT_H

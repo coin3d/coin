@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __LISTS_SOCALLBACKLIST_H__
-#define __LISTS_SOCALLBACKLIST_H__
+#ifndef COIN_LISTS_SOCALLBACKLIST_H
+#define COIN_LISTS_SOCALLBACKLIST_H
 
 // NB: make sure the ifdef-test above wrapping this includefile is
 // _not_ checking on and setting the same define-string as the other
@@ -47,4 +47,4 @@ private:
   SbPList datalist;
 };
 
-#endif // !__LISTS_SOCALLBACKLIST_H__
+#endif // !COIN_LISTS_SOCALLBACKLIST_H

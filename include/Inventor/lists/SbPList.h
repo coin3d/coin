@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __LISTS_SBPLIST_H__
-#define __LISTS_SBPLIST_H__
+#ifndef COIN_LISTS_SBPLIST_H
+#define COIN_LISTS_SBPLIST_H
 
 // NB: make sure the ifdef-test above wrapping this includefile is
 // _not_ checking on and setting the same define-string as the other
@@ -83,9 +83,9 @@ protected:
 };
 
 #ifndef COIN_INTERNAL
-#define __INCLUDED_FROM_SBPLIST_H__
+#define COIN_INCLUDED_FROM_SBPLIST_H
 #include <Inventor/lists/SbStringList.h>
-#undef __INCLUDED_FROM_SBPLIST_H__
+#undef COIN_INCLUDED_FROM_SBPLIST_H
 #endif // COIN_INTERNAL
 
-#endif // !__LISTS_SBPLIST_H__
+#endif // !COIN_LISTS_SBPLIST_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOPOINTSIZEELEMENT_H__
-#define __SOPOINTSIZEELEMENT_H__
+#ifndef COIN_SOPOINTSIZEELEMENT_H
+#define COIN_SOPOINTSIZEELEMENT_H
 
 #include <Inventor/elements/SoFloatElement.h>
 
@@ -42,4 +42,4 @@ public:
   static  float getDefault();
 };
 
-#endif // !__SOPOINTSIZEELEMENT_H__
+#endif // !COIN_SOPOINTSIZEELEMENT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOTRIANGLESTRIPSET_H__
-#define __SOTRIANGLESTRIPSET_H__
+#ifndef COIN_SOTRIANGLESTRIPSET_H
+#define COIN_SOTRIANGLESTRIPSET_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNonIndexedShape.h>
@@ -61,4 +61,4 @@ private:
   Binding findNormalBinding(SoState * const state) const;
 };
 
-#endif // !__SOTRIANGLESTRIPSET_H__
+#endif // !COIN_SOTRIANGLESTRIPSET_H

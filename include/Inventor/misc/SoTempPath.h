@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOTEMPPATH_H__
-#define __SOTEMPPATH_H__
+#ifndef COIN_SOTEMPPATH_H
+#define COIN_SOTEMPPATH_H
 
 #include <Inventor/SoPath.h>
 
@@ -27,4 +27,4 @@ public:
   SoTempPath(const int approxlength);
 };
 
-#endif // __SOTEMPPATH_H__
+#endif // COIN_SOTEMPPATH_H

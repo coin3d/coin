@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOLIGHTKIT_H__
-#define __SOLIGHTKIT_H__
+#ifndef COIN_SOLIGHTKIT_H
+#define COIN_SOLIGHTKIT_H
 
 #include <Inventor/nodekits/SoSubKit.h>
 #include <Inventor/nodekits/SoBaseKit.h>
@@ -45,4 +45,4 @@ protected:
   virtual ~SoLightKit();
 };
 
-#endif // !__SOLIGHTKIT_H__
+#endif // !COIN_SOLIGHTKIT_H

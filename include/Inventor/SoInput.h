@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOINPUT_H__
-#define __SOINPUT_H__
+#ifndef COIN_SOINPUT_H
+#define COIN_SOINPUT_H
 
 #include <Inventor/system/inttypes.h>
 #include <Inventor/SbBasic.h>
@@ -153,4 +153,4 @@ private:
   SbDict refdict;
 };
 
-#endif // !__SOINPUT_H__
+#endif // !COIN_SOINPUT_H

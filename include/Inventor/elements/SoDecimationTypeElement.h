@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SODECIMATIONTYPEELEMENT_H__
-#define __SODECIMATIONTYPEELEMENT_H__
+#ifndef COIN_SODECIMATIONTYPEELEMENT_H
+#define COIN_SODECIMATIONTYPEELEMENT_H
 
 #include <Inventor/elements/SoInt32Element.h>
 
@@ -47,4 +47,4 @@ public:
 
 };
 
-#endif // !__SODECIMATIONTYPEELEMENT_H__
+#endif // !COIN_SODECIMATIONTYPEELEMENT_H

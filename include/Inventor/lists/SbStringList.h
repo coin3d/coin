@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBSTRINGLIST_H__
-#define __SBSTRINGLIST_H__
+#ifndef COIN_SBSTRINGLIST_H
+#define COIN_SBSTRINGLIST_H
 
 class SbString;
 
@@ -35,4 +35,4 @@ public:
   SbString * & operator [] (const int i) const;
 };
 
-#endif // !__SBSTRINGLIST_H__
+#endif // !COIN_SBSTRINGLIST_H

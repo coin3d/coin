@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSFIELD_H__
-#define __SOSFIELD_H__
+#ifndef COIN_SOSFIELD_H
+#define COIN_SOSFIELD_H
 
 #include <Inventor/fields/SoField.h>
 
@@ -41,4 +41,4 @@ private:
   static SoType classTypeId;
 };
 
-#endif // !__SOSFIELD_H__
+#endif // !COIN_SOSFIELD_H

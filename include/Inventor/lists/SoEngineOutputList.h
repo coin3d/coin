@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOENGINEOUTPUTLIST_H__
-#define __SOENGINEOUTPUTLIST_H__
+#ifndef COIN_SOENGINEOUTPUTLIST_H
+#define COIN_SOENGINEOUTPUTLIST_H
 
 #include <Inventor/lists/SbPList.h>
 
@@ -40,4 +40,4 @@ public:
   SoEngineOutput * operator [](const int i) const;
 };
 
-#endif // !__SOENGINEOUTPUTLIST_H__
+#endif // !COIN_SOENGINEOUTPUTLIST_H

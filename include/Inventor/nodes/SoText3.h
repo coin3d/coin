@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOTEXT3_H__
-#define __SOTEXT3_H__
+#ifndef COIN_SOTEXT3_H
+#define COIN_SOTEXT3_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoShape.h>
@@ -68,4 +68,4 @@ protected:
   virtual void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
 };
 
-#endif // !__SOTEXT3_H__
+#endif // !COIN_SOTEXT3_H

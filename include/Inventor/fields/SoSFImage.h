@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSFIMAGE_H__
-#define __SOSFIMAGE_H__
+#ifndef COIN_SOSFIMAGE_H
+#define COIN_SOSFIMAGE_H
 
 #include <Inventor/fields/SoSField.h>
 #include <Inventor/fields/SoSubField.h>
@@ -53,4 +53,4 @@ private:
   int bytedepth;
 };
 
-#endif // !__SOSFIMAGE_H__
+#endif // !COIN_SOSFIMAGE_H

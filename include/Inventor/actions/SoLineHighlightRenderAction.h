@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOLINEHIGHLIGHTRENDERACTION_H__
-#define __SOLINEHIGHLIGHTRENDERACTION_H__
+#ifndef COIN_SOLINEHIGHLIGHTRENDERACTION_H
+#define COIN_SOLINEHIGHLIGHTRENDERACTION_H
 
 #include <Inventor/actions/SoGLRenderAction.h>
 
@@ -54,4 +54,4 @@ public:
 
 };
 
-#endif // !__SOLINEHIGHLIGHTRENDERACTION_H__
+#endif // !COIN_SOLINEHIGHLIGHTRENDERACTION_H

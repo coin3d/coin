@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOINDEXEDTRIANGLESTRIPSET_H__
-#define __SOINDEXEDTRIANGLESTRIPSET_H__
+#ifndef COIN_SOINDEXEDTRIANGLESTRIPSET_H
+#define COIN_SOINDEXEDTRIANGLESTRIPSET_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoIndexedShape.h>
@@ -66,4 +66,4 @@ private:
   int numStrips;
 };
 
-#endif // !__SOINDEXEDTRIANGLESTRIPSET_H__
+#endif // !COIN_SOINDEXEDTRIANGLESTRIPSET_H

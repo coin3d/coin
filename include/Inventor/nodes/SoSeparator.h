@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSEPARATOR_H__
-#define __SOSEPARATOR_H__
+#ifndef COIN_SOSEPARATOR_H
+#define COIN_SOSEPARATOR_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFEnum.h>
@@ -75,4 +75,4 @@ private:
   class SoBoundingBoxCache * bboxCache;
 };
 
-#endif // !__SOSEPARATOR_H__
+#endif // !COIN_SOSEPARATOR_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBSTRING_H__
-#define __SBSTRING_H__
+#ifndef COIN_SBSTRING_H
+#define COIN_SBSTRING_H
 
 #include <Inventor/system/inttypes.h>
 #include <Inventor/SbBasic.h>
@@ -70,4 +70,4 @@ private:
   void expand(int bySize);
 };
 
-#endif // !__SBSTRING_H__
+#endif // !COIN_SBSTRING_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOCALCULATOR_H__
-#define __SOCALCULATOR_H__
+#ifndef COIN_SOCALCULATOR_H
+#define COIN_SOCALCULATOR_H
 
 #include <Inventor/engines/SoSubEngine.h>
 #include <Inventor/engines/SoEngineOutput.h>
@@ -55,4 +55,4 @@ private:
   virtual void evaluate(void);
 };
 
-#endif // !__SOCALCULATOR_H__
+#endif // !COIN_SOCALCULATOR_H

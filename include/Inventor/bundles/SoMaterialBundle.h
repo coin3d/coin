@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOMATERIALBUNDLE_H__
-#define __SOMATERIALBUNDLE_H__
+#ifndef COIN_SOMATERIALBUNDLE_H
+#define COIN_SOMATERIALBUNDLE_H
 
 #include <Inventor/bundles/SoBundle.h>
 #include <Inventor/SbBasic.h>
@@ -72,4 +72,4 @@ private:
   int currPacked;
 };
 
-#endif // !__SOMATERIALBUNDLE_H__
+#endif // !COIN_SOMATERIALBUNDLE_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBVEC2S_H__
-#define __SBVEC2S_H__
+#ifndef COIN_SBVEC2S_H
+#define COIN_SBVEC2S_H
 
 #include <stdio.h>
 
@@ -61,4 +61,4 @@ private:
   short vec[2];
 };
 
-#endif // !__SBVEC2S_H__
+#endif // !COIN_SBVEC2S_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOBOOLOPERATION_H__
-#define __SOBOOLOPERATION_H__
+#ifndef COIN_SOBOOLOPERATION_H
+#define COIN_SOBOOLOPERATION_H
 
 #include <Inventor/engines/SoSubEngine.h>
 #include <Inventor/engines/SoEngineOutput.h>
@@ -59,4 +59,4 @@ private:
   virtual void evaluate();
 };
 
-#endif // !__SOBOOLOPERATION_H__
+#endif // !COIN_SOBOOLOPERATION_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOTEXTURECOORDINATEBUNDLE_H__
-#define __SOTEXTURECOORDINATEBUNDLE_H__
+#ifndef COIN_SOTEXTURECOORDINATEBUNDLE_H
+#define COIN_SOTEXTURECOORDINATEBUNDLE_H
 
 #include <Inventor/bundles/SoBundle.h>
 #include <Inventor/SbBasic.h>
@@ -60,4 +60,4 @@ private:
   unsigned int flags;
 };
 
-#endif // !__SOTEXTURECOORDINATEBUNDLE_H__
+#endif // !COIN_SOTEXTURECOORDINATEBUNDLE_H

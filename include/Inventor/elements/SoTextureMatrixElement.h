@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOTEXTUREMATRIXELEMENT_H__
-#define __SOTEXTUREMATRIXELEMENT_H__
+#ifndef COIN_SOTEXTUREMATRIXELEMENT_H
+#define COIN_SOTEXTUREMATRIXELEMENT_H
 
 #include <Inventor/elements/SoAccumulatedElement.h>
 #include <Inventor/SbMatrix.h>
@@ -68,4 +68,4 @@ protected:
 
 };
 
-#endif // !__SOTEXTUREMATRIXELEMENT_H__
+#endif // !COIN_SOTEXTUREMATRIXELEMENT_H

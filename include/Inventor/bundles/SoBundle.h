@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOBUNDLE_H__
-#define __SOBUNDLE_H__
+#ifndef COIN_SOBUNDLE_H
+#define COIN_SOBUNDLE_H
 
 class SoAction;
 class SoState;
@@ -32,4 +32,4 @@ protected:
   SoState *state;
 };
 
-#endif // !__SOBUNDLE_H__
+#endif // !COIN_SOBUNDLE_H

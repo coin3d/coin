@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSEARCHACTION_H__
-#define __SOSEARCHACTION_H__
+#ifndef COIN_SOSEARCHACTION_H
+#define COIN_SOSEARCHACTION_H
 
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/SbName.h>
@@ -97,4 +97,4 @@ private:
 
 };
 
-#endif // !__SOSEARCHACTION_H__
+#endif // !COIN_SOSEARCHACTION_H

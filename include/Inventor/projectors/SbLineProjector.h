@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBLINEPROJECTOR_H__
-#define __SBLINEPROJECTOR_H__
+#ifndef COIN_SBLINEPROJECTOR_H
+#define COIN_SBLINEPROJECTOR_H
 
 #include <Inventor/projectors/SbProjector.h>
 
@@ -47,4 +47,4 @@ protected:
   SbVec3f lastPoint;
 };
 
-#endif // !__SBLINEPROJECTOR_H__
+#endif // !COIN_SBLINEPROJECTOR_H

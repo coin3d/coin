@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOOVERRIDEELEMENT_H__
-#define __SOOVERRIDEELEMENT_H__
+#ifndef COIN_SOOVERRIDEELEMENT_H
+#define COIN_SOOVERRIDEELEMENT_H
 
 #include <Inventor/elements/SoElement.h>
 #include <Inventor/system/inttypes.h>
@@ -164,4 +164,4 @@ private:
   uint32_t flags;
 };
 
-#endif // !__SOOVERRIDEELEMENT_H__
+#endif // !COIN_SOOVERRIDEELEMENT_H

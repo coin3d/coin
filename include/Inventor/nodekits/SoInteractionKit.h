@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOINTERACTIONKIT_H__
-#define __SOINTERACTIONKIT_H__
+#ifndef COIN_SOINTERACTIONKIT_H
+#define COIN_SOINTERACTIONKIT_H
 
 #include <Inventor/nodekits/SoSubKit.h>
 #include <Inventor/nodekits/SoBaseKit.h>
@@ -117,4 +117,4 @@ private:
   void connectSeparator(SoSeparator *sep, const SbBool onOff);
 };
 
-#endif // !__SOINTERACTIONKIT_H__
+#endif // !COIN_SOINTERACTIONKIT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOFONTSIZEELEMENT_H__
-#define __SOFONTSIZEELEMENT_H__
+#ifndef COIN_SOFONTSIZEELEMENT_H
+#define COIN_SOFONTSIZEELEMENT_H
 
 #include <Inventor/elements/SoFloatElement.h>
 
@@ -43,4 +43,4 @@ public:
 
 };
 
-#endif // !__SOFONTSIZEELEMENT_H__
+#endif // !COIN_SOFONTSIZEELEMENT_H

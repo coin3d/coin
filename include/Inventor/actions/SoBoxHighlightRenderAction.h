@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOBOXHIGHLIGHTRENDERACTION_H__
-#define __SOBOXHIGHLIGHTRENDERACTION_H__
+#ifndef COIN_SOBOXHIGHLIGHTRENDERACTION_H
+#define COIN_SOBOXHIGHLIGHTRENDERACTION_H
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/SbColor.h>
@@ -87,4 +87,4 @@ private:
   void init();
 };
 
-#endif // !__SOBOXHIGHLIGHTRENDERACTION_H__
+#endif // !COIN_SOBOXHIGHLIGHTRENDERACTION_H

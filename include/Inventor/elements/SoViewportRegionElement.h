@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOVIEWPORTREGIONELEMENT_H__
-#define __SOVIEWPORTREGIONELEMENT_H__
+#ifndef COIN_SOVIEWPORTREGIONELEMENT_H
+#define COIN_SOVIEWPORTREGIONELEMENT_H
 
 #include <Inventor/elements/SoElement.h>
 #include <Inventor/SbViewportRegion.h>
@@ -53,4 +53,4 @@ private:
 
 };
 
-#endif // !__SOVIEWPORTREGIONELEMENT_H__
+#endif // !COIN_SOVIEWPORTREGIONELEMENT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOCYLINDER_H__
-#define __SOCYLINDER_H__
+#ifndef COIN_SOCYLINDER_H
+#define COIN_SOCYLINDER_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoShape.h>
@@ -64,4 +64,4 @@ protected:
   virtual void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
 };
 
-#endif // !__SOCYLINDER_H__
+#endif // !COIN_SOCYLINDER_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOTYPELIST_H__
-#define __SOTYPELIST_H__
+#ifndef COIN_SOTYPELIST_H
+#define COIN_SOTYPELIST_H
 
 #include <Inventor/lists/SbList.h>
 
@@ -27,4 +27,4 @@ class SoType;
 class SoTypeList : public SbList <SoType> {
 };
 
-#endif // !__SOTYPELIST_H__
+#endif // !COIN_SOTYPELIST_H

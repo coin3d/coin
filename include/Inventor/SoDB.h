@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SODB_H__
-#define __SODB_H__
+#ifndef COIN_SODB_H
+#define COIN_SODB_H
 
 // FIXME: use configure to clean up this. 20000130 mortene.
 #ifdef _WIN32
@@ -114,4 +114,4 @@ private:
   static SbBool isinitialized;
 };
 
-#endif // !__SODB_H__
+#endif // !COIN_SODB_H

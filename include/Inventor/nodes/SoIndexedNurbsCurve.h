@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOINDEXEDNURBSCURVE_H__
-#define __SOINDEXEDNURBSCURVE_H__
+#ifndef COIN_SOINDEXEDNURBSCURVE_H
+#define COIN_SOINDEXEDNURBSCURVE_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoShape.h>
@@ -53,4 +53,4 @@ protected:
   virtual void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
 };
 
-#endif // !__SOINDEXEDNURBSCURVE_H__
+#endif // !COIN_SOINDEXEDNURBSCURVE_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOFLOATELEMENT_H__
-#define __SOFLOATELEMENT_H__
+#ifndef COIN_SOFLOATELEMENT_H
+#define COIN_SOFLOATELEMENT_H
 
 #include <Inventor/elements/SoElement.h>
 
@@ -54,4 +54,4 @@ protected:
 
 };
 
-#endif // !__SOFLOATELEMENT_H__
+#endif // !COIN_SOFLOATELEMENT_H

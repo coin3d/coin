@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGLSHADEMODELELEMENT_H__
-#define __SOGLSHADEMODELELEMENT_H__
+#ifndef COIN_SOGLSHADEMODELELEMENT_H
+#define COIN_SOGLSHADEMODELELEMENT_H
 
 #include <Inventor/elements/SoElement.h>
 
@@ -58,4 +58,4 @@ private:
   void updategl(const SbBool flat);
 };
 
-#endif // !__SOGLSHADEMODELELEMENT_H__
+#endif // !COIN_SOGLSHADEMODELELEMENT_H

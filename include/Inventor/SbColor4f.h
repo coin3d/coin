@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBCOLOR4F_H__
-#define __SBCOLOR4F_H__
+#ifndef COIN_SBCOLOR4F_H
+#define COIN_SBCOLOR4F_H
 
 #include <Inventor/system/inttypes.h>
 #include <Inventor/SbColor.h>
@@ -73,4 +73,4 @@ private:
   float alpha() const { return this->vec[3]; }
 };
 
-#endif // !__SBCOLOR4F_H__
+#endif // !COIN_SBCOLOR4F_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOANNOTEXT3RENDERPRINTELEMENT_H__
-#define __SOANNOTEXT3RENDERPRINTELEMENT_H__
+#ifndef COIN_SOANNOTEXT3RENDERPRINTELEMENT_H
+#define COIN_SOANNOTEXT3RENDERPRINTELEMENT_H
 
 #include <Inventor/elements/SoInt32Element.h>
 
@@ -46,4 +46,4 @@ public:
                   const RenderPrintType type);
 };
 
-#endif // !__SOANNOTEXT3RENDERPRINTELEMENT_H__
+#endif // !COIN_SOANNOTEXT3RENDERPRINTELEMENT_H

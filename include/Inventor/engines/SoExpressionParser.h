@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOEXPRESSIONPARSER_H__
-#define __SOEXPRESSIONPARSER_H__
+#ifndef COIN_SOEXPRESSIONPARSER_H
+#define COIN_SOEXPRESSIONPARSER_H
 
 #include <Inventor/SbBasic.h>
 
@@ -41,4 +41,4 @@ private:
 
 };
 
-#endif // !__SOEXPRESSIONPARSER_H__
+#endif // !COIN_SOEXPRESSIONPARSER_H

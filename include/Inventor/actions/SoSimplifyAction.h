@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSIMPLIFYACTION_H__
-#define __SOSIMPLIFYACTION_H__
+#ifndef COIN_SOSIMPLIFYACTION_H
+#define COIN_SOSIMPLIFYACTION_H
 
 #include <Inventor/actions/SoAction.h>
 
@@ -55,4 +55,4 @@ protected:
   virtual void beginTraversal(SoNode * node);
 };
 
-#endif // !__SOSIMPLIFYACTION_H__
+#endif // !COIN_SOSIMPLIFYACTION_H

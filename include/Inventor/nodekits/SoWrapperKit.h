@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOWRAPPERKIT_H__
-#define __SOWRAPPERKIT_H__
+#ifndef COIN_SOWRAPPERKIT_H
+#define COIN_SOWRAPPERKIT_H
 
 #include <Inventor/nodekits/SoSeparatorKit.h>
 
@@ -41,4 +41,4 @@ protected:
   virtual ~SoWrapperKit();
 };
 
-#endif // !__SOWRAPPERKIT_H__
+#endif // !COIN_SOWRAPPERKIT_H

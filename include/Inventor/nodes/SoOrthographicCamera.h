@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOORTHOGRAPHICCAMERA_H__
-#define __SOORTHOGRAPHICCAMERA_H__
+#ifndef COIN_SOORTHOGRAPHICCAMERA_H
+#define COIN_SOORTHOGRAPHICCAMERA_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoCamera.h>
@@ -44,4 +44,4 @@ protected:
   virtual void viewBoundingBox(const SbBox3f &box, float aspect, float slack);
 };
 
-#endif // !__SOORTHOGRAPHICCAMERA_H__
+#endif // !COIN_SOORTHOGRAPHICCAMERA_H

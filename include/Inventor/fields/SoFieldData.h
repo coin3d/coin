@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOFIELDDATA_H__
-#define __SOFIELDDATA_H__
+#ifndef COIN_SOFIELDDATA_H
+#define COIN_SOFIELDDATA_H
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/lists/SbList.h>
@@ -86,4 +86,4 @@ private:
   SbList<SoEnumEntry *> enums;
 };
 
-#endif // !__SOFIELDDATA_H__
+#endif // !COIN_SOFIELDDATA_H

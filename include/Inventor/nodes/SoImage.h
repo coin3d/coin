@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOIMAGE_H__
-#define __SOIMAGE_H__
+#ifndef COIN_SOIMAGE_H
+#define COIN_SOIMAGE_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoShape.h>
@@ -80,4 +80,4 @@ protected:
                SbVec3f &v2, SbVec3f &v3);
 };
 
-#endif // !__SOIMAGE_H__
+#endif // !COIN_SOIMAGE_H

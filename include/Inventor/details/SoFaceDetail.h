@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOFACEDETAIL_H__
-#define __SOFACEDETAIL_H__
+#ifndef COIN_SOFACEDETAIL_H
+#define COIN_SOFACEDETAIL_H
 
 #include <Inventor/details/SoDetail.h>
 #include <Inventor/details/SoPointDetail.h>
@@ -60,4 +60,4 @@ private:
   int partIndex;
 };
 
-#endif // __SOFACEDETAIL_H__
+#endif // COIN_SOFACEDETAIL_H

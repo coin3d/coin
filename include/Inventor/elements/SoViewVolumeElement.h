@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOVIEWVOLUMEELEMENT_H__
-#define __SOVIEWVOLUMEELEMENT_H__
+#ifndef COIN_SOVIEWVOLUMEELEMENT_H
+#define COIN_SOVIEWVOLUMEELEMENT_H
 
 #include <Inventor/elements/SoReplacedElement.h>
 #include <Inventor/SbViewVolume.h>
@@ -45,4 +45,4 @@ protected:
 
 };
 
-#endif // !__SOVIEWVOLUMEELEMENT_H__
+#endif // !COIN_SOVIEWVOLUMEELEMENT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOPATHSWITCH_H__
-#define __SOPATHSWITCH_H__
+#ifndef COIN_SOPATHSWITCH_H
+#define COIN_SOPATHSWITCH_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoGroup.h>
@@ -49,4 +49,4 @@ protected:
   virtual ~SoPathSwitch();
 };
 
-#endif // !__SOPATHSWITCH_H__
+#endif // !COIN_SOPATHSWITCH_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSUBNODE_H__
-#define __SOSUBNODE_H__
+#ifndef COIN_SOSUBNODE_H
+#define COIN_SOSUBNODE_H
 
 #include <Inventor/SbName.h>
 #include <Inventor/SoType.h>
@@ -212,4 +212,4 @@ _class_::createInstance(void) \
   } while (0)
 
 
-#endif // !__SOSUBNODE_H__
+#endif // !COIN_SOSUBNODE_H

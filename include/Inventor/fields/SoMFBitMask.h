@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOMFBITMASK_H__
-#define __SOMFBITMASK_H__
+#ifndef COIN_SOMFBITMASK_H
+#define COIN_SOMFBITMASK_H
 
 #include <Inventor/fields/SoMFEnum.h>
 
@@ -35,4 +35,4 @@ private:
   virtual void convertTo(SoField * dest) const;
 };
 
-#endif // !__SOMFBITMASK_H__
+#endif // !COIN_SOMFBITMASK_H

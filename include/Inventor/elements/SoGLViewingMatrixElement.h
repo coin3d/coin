@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGLVIEWINGMATRIXELEMENT_H__
-#define __SOGLVIEWINGMATRIXELEMENT_H__
+#ifndef COIN_SOGLVIEWINGMATRIXELEMENT_H
+#define COIN_SOGLVIEWINGMATRIXELEMENT_H
 
 #include <Inventor/elements/SoViewingMatrixElement.h>
 
@@ -50,4 +50,4 @@ private:
 
 };
 
-#endif // !__SOGLVIEWINGMATRIXELEMENT_H__
+#endif // !COIN_SOGLVIEWINGMATRIXELEMENT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSHAPESTYLEELEMENT_H__
-#define __SOSHAPESTYLEELEMENT_H__
+#ifndef COIN_SOSHAPESTYLEELEMENT_H
+#define COIN_SOSHAPESTYLEELEMENT_H
 
 #include <Inventor/elements/SoElement.h>
 
@@ -73,4 +73,4 @@ private:
   unsigned int flags;
 };
 
-#endif // !__SOSHAPESTYLEELEMENT_H__
+#endif // !COIN_SOSHAPESTYLEELEMENT_H

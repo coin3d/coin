@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOCUBE_H__
-#define __SOCUBE_H__
+#ifndef COIN_SOCUBE_H
+#define COIN_SOCUBE_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFFloat.h>
@@ -57,4 +57,4 @@ private:
   void getHalfSize(float & w, float & h, float & d);
 };
 
-#endif // !__SOCUBE_H__
+#endif // !COIN_SOCUBE_H

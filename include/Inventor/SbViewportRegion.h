@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBVIEWPORTREGION_H__
-#define __SBVIEWPORTREGION_H__
+#ifndef COIN_SBVIEWPORTREGION_H
+#define COIN_SBVIEWPORTREGION_H
 
 #include <stdio.h>
 #include <Inventor/SbVec2s.h>
@@ -64,4 +64,4 @@ private:
   float pixperinch;
 };
 
-#endif // !__SBVIEWPORTREGION_H__
+#endif // !COIN_SBVIEWPORTREGION_H

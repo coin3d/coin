@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SODRAWSTYLEELEMENT_H__
-#define __SODRAWSTYLEELEMENT_H__
+#ifndef COIN_SODRAWSTYLEELEMENT_H
+#define COIN_SODRAWSTYLEELEMENT_H
 
 #include <Inventor/elements/SoInt32Element.h>
 
@@ -50,4 +50,4 @@ public:
 
 };
 
-#endif // !__SODRAWSTYLEELEMENT_H__
+#endif // !COIN_SODRAWSTYLEELEMENT_H

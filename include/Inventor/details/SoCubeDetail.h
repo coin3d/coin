@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOCUBEDETAIL_H__
-#define __SOCUBEDETAIL_H__
+#ifndef COIN_SOCUBEDETAIL_H
+#define COIN_SOCUBEDETAIL_H
 
 #include <Inventor/details/SoDetail.h>
 
@@ -44,4 +44,4 @@ protected:
   int part;
 };
 
-#endif // __SOCUBEDETAIL_H__
+#endif // COIN_SOCUBEDETAIL_H

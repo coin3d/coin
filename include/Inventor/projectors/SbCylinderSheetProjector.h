@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBCYLINDERSHEETPROJECTOR_H__
-#define __SBCYLINDERSHEETPROJECTOR_H__
+#ifndef COIN_SBCYLINDERSHEETPROJECTOR_H
+#define COIN_SBCYLINDERSHEETPROJECTOR_H
 
 #include <Inventor/projectors/SbCylinderProjector.h>
 #include <Inventor/SbPlane.h>
@@ -47,4 +47,4 @@ protected:
   SbPlane tolPlane;
 };
 
-#endif // !__SBCYLINDERSHEETPROJECTOR_H__
+#endif // !COIN_SBCYLINDERSHEETPROJECTOR_H

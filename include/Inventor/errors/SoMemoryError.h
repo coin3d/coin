@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOMEMORYERROR_H__
-#define __SOMEMORYERROR_H__
+#ifndef COIN_SOMEMORYERROR_H
+#define COIN_SOMEMORYERROR_H
 
 #include <Inventor/errors/SoError.h>
 
@@ -48,4 +48,4 @@ private:
   static void * callbackData;
 };
 
-#endif // !__SOMEMORYERROR_H__
+#endif // !COIN_SOMEMORYERROR_H

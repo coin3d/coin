@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SONODEKITLISTPART_H__
-#define __SONODEKITLISTPART_H__
+#ifndef COIN_SONODEKITLISTPART_H
+#define COIN_SONODEKITLISTPART_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -92,4 +92,4 @@ private:
   friend class SoBaseKit;
 };
 
-#endif // !__SONODEKITLISTPART_H__
+#endif // !COIN_SONODEKITLISTPART_H

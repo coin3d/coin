@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SONODELIST_H__
-#define __SONODELIST_H__
+#ifndef COIN_SONODELIST_H
+#define COIN_SONODELIST_H
 
 #include <Inventor/lists/SoBaseList.h>
 
@@ -39,4 +39,4 @@ public:
   void insert(SoNode * const node, const int addBefore);
 };
 
-#endif // !__SONODELIST_H__
+#endif // !COIN_SONODELIST_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOTEXTUREIMAGEELEMENT_H__
-#define __SOTEXTUREIMAGEELEMENT_H__
+#ifndef COIN_SOTEXTUREIMAGEELEMENT_H
+#define COIN_SOTEXTUREIMAGEELEMENT_H
 
 #include <Inventor/elements/SoReplacedElement.h>
 #include <Inventor/SbVec2s.h>
@@ -109,4 +109,4 @@ private:
   void setDefaultValues();
 };
 
-#endif // !__SOTEXTUREIMAGEELEMENT_H__
+#endif // !COIN_SOTEXTUREIMAGEELEMENT_H

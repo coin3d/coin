@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSFTRIGGER_H__
-#define __SOSFTRIGGER_H__
+#ifndef COIN_SOSFTRIGGER_H
+#define COIN_SOSFTRIGGER_H
 
 #include <Inventor/fields/SoSField.h>
 #include <Inventor/fields/SoSubField.h>
@@ -50,4 +50,4 @@ private:
   virtual void writeValue(SoOutput * out) const;
 };
 
-#endif // !__SOSFTRIGGER_H__
+#endif // !COIN_SOSFTRIGGER_H

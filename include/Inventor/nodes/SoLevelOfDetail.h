@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOLEVELOFDETAIL_H__
-#define __SOLEVELOFDETAIL_H__
+#ifndef COIN_SOLEVELOFDETAIL_H
+#define COIN_SOLEVELOFDETAIL_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoGroup.h>
@@ -45,4 +45,4 @@ protected:
   virtual ~SoLevelOfDetail();
 };
 
-#endif // !__SOLEVELOFDETAIL_H__
+#endif // !COIN_SOLEVELOFDETAIL_H

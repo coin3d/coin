@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOEXTSELECTION_H__
-#define __SOEXTSELECTION_H__
+#ifndef COIN_SOEXTSELECTION_H
+#define COIN_SOEXTSELECTION_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoSelection.h>
@@ -64,4 +64,4 @@ protected:
   virtual ~SoExtSelection();
 };
 
-#endif // !__SOEXTSELECTION_H__
+#endif // !COIN_SOEXTSELECTION_H

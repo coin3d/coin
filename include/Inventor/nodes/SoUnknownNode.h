@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOUNKNOWNNODE_H__
-#define __SOUNKNOWNNODE_H__
+#ifndef COIN_SOUNKNOWNNODE_H
+#define COIN_SOUNKNOWNNODE_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -65,4 +65,4 @@ private:
   SoChildList * privatechildren, * alternate;
 };
 
-#endif // !__SOUNKNOWNNODE_H__
+#endif // !COIN_SOUNKNOWNNODE_H

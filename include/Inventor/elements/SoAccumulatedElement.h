@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOACCUMULATEDELEMENT_H__
-#define __SOACCUMULATEDELEMENT_H__
+#ifndef COIN_SOACCUMULATEDELEMENT_H
+#define COIN_SOACCUMULATEDELEMENT_H
 
 #include <Inventor/elements/SoElement.h>
 #include <Inventor/lists/SbPList.h>
@@ -48,4 +48,4 @@ protected:
 
 };
 
-#endif // !__SOACCUMULATEDELEMENT_H__
+#endif // !COIN_SOACCUMULATEDELEMENT_H

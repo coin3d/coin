@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOONESHOT_H__
-#define __SOONESHOT_H__
+#ifndef COIN_SOONESHOT_H
+#define COIN_SOONESHOT_H
 
 #include <Inventor/engines/SoSubEngine.h>
 #include <Inventor/engines/SoEngineOutput.h>
@@ -61,4 +61,4 @@ private:
   SbBool running;
 };
 
-#endif // !__SOONESHOT_H__
+#endif // !COIN_SOONESHOT_H

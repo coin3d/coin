@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOINDEXEDNURBSSURFACE_H__
-#define __SOINDEXEDNURBSSURFACE_H__
+#ifndef COIN_SOINDEXEDNURBSSURFACE_H
+#define COIN_SOINDEXEDNURBSSURFACE_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoShape.h>
@@ -59,4 +59,4 @@ protected:
   virtual void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
 };
 
-#endif // !__SOINDEXEDNURBSSURFACE_H__
+#endif // !COIN_SOINDEXEDNURBSSURFACE_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOPICKSTYLEELEMENT_H__
-#define __SOPICKSTYLEELEMENT_H__
+#ifndef COIN_SOPICKSTYLEELEMENT_H
+#define COIN_SOPICKSTYLEELEMENT_H
 
 #include <Inventor/elements/SoInt32Element.h>
 
@@ -47,4 +47,4 @@ public:
   static Style getDefault();
 };
 
-#endif // !__SOPICKSTYLEELEMENT_H__
+#endif // !COIN_SOPICKSTYLEELEMENT_H

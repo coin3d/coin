@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOTEXTURECOORDINATEBINDINGELEMENT_H__
-#define __SOTEXTURECOORDINATEBINDINGELEMENT_H__
+#ifndef COIN_SOTEXTURECOORDINATEBINDINGELEMENT_H
+#define COIN_SOTEXTURECOORDINATEBINDINGELEMENT_H
 
 #include <Inventor/elements/SoInt32Element.h>
 
@@ -50,4 +50,4 @@ public:
   static Binding getDefault(void);
 };
 
-#endif // !__SOTEXTURECOORDINATEBINDINGELEMENT_H__
+#endif // !COIN_SOTEXTURECOORDINATEBINDINGELEMENT_H

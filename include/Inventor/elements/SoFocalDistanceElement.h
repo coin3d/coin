@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOFOCALDISTANCEELEMENT_H__
-#define __SOFOCALDISTANCEELEMENT_H__
+#ifndef COIN_SOFOCALDISTANCEELEMENT_H
+#define COIN_SOFOCALDISTANCEELEMENT_H
 
 #include <Inventor/elements/SoFloatElement.h>
 
@@ -43,4 +43,4 @@ public:
 
 };
 
-#endif // !__SOFOCALDISTANCEELEMENT_H__
+#endif // !COIN_SOFOCALDISTANCEELEMENT_H

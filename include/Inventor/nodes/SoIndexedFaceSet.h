@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOINDEXEDFACESET_H__
-#define __SOINDEXEDFACESET_H__
+#ifndef COIN_SOINDEXEDFACESET_H
+#define COIN_SOINDEXEDFACESET_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoIndexedShape.h>
@@ -72,4 +72,4 @@ private:
 
 };
 
-#endif // !__SOINDEXEDFACESET_H__
+#endif // !COIN_SOINDEXEDFACESET_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOINTERPOLATEFLOAT_H__
-#define __SOINTERPOLATEFLOAT_H__
+#ifndef COIN_SOINTERPOLATEFLOAT_H
+#define COIN_SOINTERPOLATEFLOAT_H
 
 //$ BEGIN TEMPLATE InterpolateHeader(SoInterpolateFloat, SoMFFloat)
 #include <Inventor/engines/SoInterpolateAbs.h>
@@ -33,4 +33,4 @@ public:
 };
 //$ END TEMPLATE InterpolateHeader
 
-#endif // !__SOINTERPOLATEFLOAT_H__
+#endif // !COIN_SOINTERPOLATEFLOAT_H

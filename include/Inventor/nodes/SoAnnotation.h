@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOANNOTATION_H__
-#define __SOANNOTATION_H__
+#ifndef COIN_SOANNOTATION_H
+#define COIN_SOANNOTATION_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoSeparator.h>
@@ -42,4 +42,4 @@ protected:
   virtual ~SoAnnotation();
 };
 
-#endif // !__SOANNOTATION_H__
+#endif // !COIN_SOANNOTATION_H

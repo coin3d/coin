@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBTESSELATOR_H__
-#define __SBTESSELATOR_H__
+#ifndef COIN_SBTESSELATOR_H
+#define COIN_SBTESSELATOR_H
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/lists/SbList.h>
@@ -78,4 +78,4 @@ private:
   static float heap_evaluate(void *v);
 };
 
-#endif // __SBTESSELATOR_H_
+#endif // COIN_SBTESSELATOR_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOTIMERSENSOR_H__
-#define __SOTIMERSENSOR_H__
+#ifndef COIN_SOTIMERSENSOR_H
+#define COIN_SOTIMERSENSOR_H
 
 #include <Inventor/sensors/SoTimerQueueSensor.h>
 
@@ -49,4 +49,4 @@ private:
   SbBool istriggering, wasunscheduled;
 };
 
-#endif // !__SOTIMERSENSOR_H__
+#endif // !COIN_SOTIMERSENSOR_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOCONE_H__
-#define __SOCONE_H__
+#ifndef COIN_SOCONE_H
+#define COIN_SOCONE_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFBitMask.h>
@@ -63,4 +63,4 @@ protected:
   virtual void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
 };
 
-#endif // !__SOCONE_H__
+#endif // !COIN_SOCONE_H

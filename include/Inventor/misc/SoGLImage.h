@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGLIMAGE_H__
-#define __SOGLIMAGE_H__
+#ifndef COIN_SOGLIMAGE_H
+#define COIN_SOGLIMAGE_H
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbString.h>
@@ -73,4 +73,4 @@ private:
   float quality;
 };
 
-#endif // !__SOGLIMAGE_H__
+#endif // !COIN_SOGLIMAGE_H

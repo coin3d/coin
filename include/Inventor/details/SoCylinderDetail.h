@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOCYLINDERDETAIL_H__
-#define __SOCYLINDERDETAIL_H__
+#ifndef COIN_SOCYLINDERDETAIL_H
+#define COIN_SOCYLINDERDETAIL_H
 
 #include <Inventor/details/SoDetail.h>
 
@@ -44,4 +44,4 @@ protected:
   int part;
 };
 
-#endif // __SOCYLINDERDETAIL_H__
+#endif // COIN_SOCYLINDERDETAIL_H

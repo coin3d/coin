@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSENSOR_H__
-#define __SOSENSOR_H__
+#ifndef COIN_SOSENSOR_H
+#define COIN_SOSENSOR_H
 
 #include <Inventor/SbBasic.h>
 
@@ -54,4 +54,4 @@ protected:
   void * funcData;
 };
 
-#endif // !__SOSENSOR_H__
+#endif // !COIN_SOSENSOR_H

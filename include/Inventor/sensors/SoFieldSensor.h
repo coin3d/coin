@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOFIELDSENSOR_H__
-#define __SOFIELDSENSOR_H__
+#ifndef COIN_SOFIELDSENSOR_H
+#define COIN_SOFIELDSENSOR_H
 
 #include <Inventor/sensors/SoDataSensor.h>
 
@@ -42,4 +42,4 @@ private:
   SoField * convict;
 };
 
-#endif // !__SOFIELDSENSOR_H__
+#endif // !COIN_SOFIELDSENSOR_H

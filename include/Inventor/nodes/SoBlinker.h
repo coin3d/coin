@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOBLINKER_H__
-#define __SOBLINKER_H__
+#ifndef COIN_SOBLINKER_H
+#define COIN_SOBLINKER_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoSwitch.h>
@@ -45,4 +45,4 @@ protected:
   virtual ~SoBlinker();
 };
 
-#endif // !__SOBLINKER_H__
+#endif // !COIN_SOBLINKER_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SODRAWSTYLE_H__
-#define __SODRAWSTYLE_H__
+#ifndef COIN_SODRAWSTYLE_H
+#define COIN_SODRAWSTYLE_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -59,4 +59,4 @@ protected:
   virtual ~SoDrawStyle();
 };
 
-#endif // !__SODRAWSTYLE_H__
+#endif // !COIN_SODRAWSTYLE_H

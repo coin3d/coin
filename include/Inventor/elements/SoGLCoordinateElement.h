@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGLCOORDINATEELEMENT_H__
-#define __SOGLCOORDINATEELEMENT_H__
+#ifndef COIN_SOGLCOORDINATEELEMENT_H
+#define COIN_SOGLCOORDINATEELEMENT_H
 
 #include <Inventor/elements/SoCoordinateElement.h>
 
@@ -39,4 +39,4 @@ public:
 
 };
 
-#endif // !__SOGLCOORDINATEELEMENT_H__
+#endif // !COIN_SOGLCOORDINATEELEMENT_H

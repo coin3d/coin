@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOFIELD_H__
-#define __SOFIELD_H__
+#ifndef COIN_SOFIELD_H
+#define COIN_SOFIELD_H
 
 #include <Inventor/SoType.h>
 #include <Inventor/misc/SoNotification.h>
@@ -193,4 +193,4 @@ private:
 #include <Inventor/fields/SoMField.h>
 #endif // !COIN_INTERNAL
 
-#endif // !__SOFIELD_H__
+#endif // !COIN_SOFIELD_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOMFCOLOR_H__
-#define __SOMFCOLOR_H__
+#ifndef COIN_SOMFCOLOR_H
+#define COIN_SOMFCOLOR_H
 
 #include <Inventor/fields/SoMField.h>
 #include <Inventor/fields/SoSubField.h>
@@ -54,4 +54,4 @@ private:
   virtual void convertTo(SoField * dest) const;
 };
 
-#endif // !__SOMFCOLOR_H__
+#endif // !COIN_SOMFCOLOR_H

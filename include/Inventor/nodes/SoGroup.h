@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGROUP_H__
-#define __SOGROUP_H__
+#ifndef COIN_SOGROUP_H
+#define COIN_SOGROUP_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -72,4 +72,4 @@ protected:
   friend class SoUnknownNode; // Let SoUnknownNode access readChildren().
 };
 
-#endif // !__SOGROUP_H__
+#endif // !COIN_SOGROUP_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SONODE_H__
-#define __SONODE_H__
+#ifndef COIN_SONODE_H
+#define COIN_SONODE_H
 
 #include <Inventor/fields/SoFieldContainer.h>
 
@@ -123,4 +123,4 @@ private:
   } stateflags;
 };
 
-#endif // !__SONODE_H__
+#endif // !COIN_SONODE_H

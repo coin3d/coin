@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOANNOTEXT3FONTSIZEHINTELEMENT_H__
-#define __SOANNOTEXT3FONTSIZEHINTELEMENT_H__
+#ifndef COIN_SOANNOTEXT3FONTSIZEHINTELEMENT_H
+#define COIN_SOANNOTEXT3FONTSIZEHINTELEMENT_H
 
 #include <Inventor/elements/SoInt32Element.h>
 
@@ -46,4 +46,4 @@ public:
                   const FontSizeHint hint);
 };
 
-#endif // !__SOANNOTEXT3FONTSIZEHINTELEMENT_H__
+#endif // !COIN_SOANNOTEXT3FONTSIZEHINTELEMENT_H

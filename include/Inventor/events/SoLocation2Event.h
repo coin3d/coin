@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOLOCATION2EVENT_H__
-#define __SOLOCATION2EVENT_H__
+#ifndef COIN_SOLOCATION2EVENT_H
+#define COIN_SOLOCATION2EVENT_H
 
 #include <Inventor/events/SoEvent.h>
 
@@ -41,4 +41,4 @@ public:
   static void initClass(void);
 };
 
-#endif // !__SOLOCATION2EVENT_H__
+#endif // !COIN_SOLOCATION2EVENT_H

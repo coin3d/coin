@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOTIMERQUEUESENSOR_H__
-#define __SOTIMERQUEUESENSOR_H__
+#ifndef COIN_SOTIMERQUEUESENSOR_H
+#define COIN_SOTIMERQUEUESENSOR_H
 
 #include <Inventor/sensors/SoSensor.h>
 #include <Inventor/SbTime.h>
@@ -46,4 +46,4 @@ private:
   SbTime triggertime;
 };
 
-#endif // !__SOTIMERQUEUESENSOR_H__
+#endif // !COIN_SOTIMERQUEUESENSOR_H

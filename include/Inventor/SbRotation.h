@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBROTATION_H__
-#define __SBROTATION_H__
+#ifndef COIN_SBROTATION_H
+#define COIN_SBROTATION_H
 
 #include <stdio.h>
 #include <Inventor/SbVec4f.h>
@@ -64,4 +64,4 @@ private:
   SbVec4f quat;
 };
 
-#endif // !__SBROTATION_H__
+#endif // !COIN_SBROTATION_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBPROJECTOR_H__
-#define __SBPROJECTOR_H__
+#ifndef COIN_SBPROJECTOR_H
+#define COIN_SBPROJECTOR_H
 
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbLine.h>
@@ -47,4 +47,4 @@ protected:
   SbMatrix worldToWorking, workingToWorld;
 };
 
-#endif // !__SBPROJECTOR_H__
+#endif // !COIN_SBPROJECTOR_H

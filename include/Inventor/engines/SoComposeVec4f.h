@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOCOMPOSEVEC4F_H__
-#define __SOCOMPOSEVEC4F_H__
+#ifndef COIN_SOCOMPOSEVEC4F_H
+#define COIN_SOCOMPOSEVEC4F_H
 
 #include <Inventor/engines/SoSubEngine.h>
 #include <Inventor/engines/SoEngineOutput.h>
@@ -38,4 +38,4 @@ public:
   SoEngineOutput vector; // SoMFVec4f
 };
 
-#endif // !__SOCOMPOSEVEC4F_H__
+#endif // !COIN_SOCOMPOSEVEC4F_H

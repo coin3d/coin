@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOEVENT_H__
-#define __SOEVENT_H__
+#ifndef COIN_SOEVENT_H
+#define COIN_SOEVENT_H
 
 #include <Inventor/SoType.h>
 #include <Inventor/SbVec2s.h>
@@ -73,4 +73,4 @@ private:
   } modifiers;
 };
 
-#endif // !__SOEVENT_H__
+#endif // !COIN_SOEVENT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOLOD_H__
-#define __SOLOD_H__
+#ifndef COIN_SOLOD_H
+#define COIN_SOLOD_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoGroup.h>
@@ -54,4 +54,4 @@ protected:
   virtual int whichToTraverse(SoAction *);
 };
 
-#endif // !__SOLOD_H__
+#endif // !COIN_SOLOD_H

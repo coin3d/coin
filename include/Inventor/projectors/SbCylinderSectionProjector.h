@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBCYLINDERSECTIONPROJECTOR_H__
-#define __SBCYLINDERSECTIONPROJECTOR_H__
+#ifndef COIN_SBCYLINDERSECTIONPROJECTOR_H
+#define COIN_SBCYLINDERSECTIONPROJECTOR_H
 
 #include <Inventor/projectors/SbCylinderProjector.h>
 #include <Inventor/SbPlane.h>
@@ -57,4 +57,4 @@ private:
   float sqrTolDist;
 };
 
-#endif // !__SBCYLINDERSECTIONPROJECTOR_H__
+#endif // !COIN_SBCYLINDERSECTIONPROJECTOR_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOKEYBOARDEVENT_H__
-#define __SOKEYBOARDEVENT_H__
+#ifndef COIN_SOKEYBOARDEVENT_H
+#define COIN_SOKEYBOARDEVENT_H
 
 #include <Inventor/events/SoButtonEvent.h>
 
@@ -91,4 +91,4 @@ private:
   Key key;
 };
 
-#endif // !__SOKEYBOARDEVENT_H__
+#endif // !COIN_SOKEYBOARDEVENT_H

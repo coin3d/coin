@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSHAPEHINTSELEMENT_H__
-#define __SOSHAPEHINTSELEMENT_H__
+#ifndef COIN_SOSHAPEHINTSELEMENT_H
+#define COIN_SOSHAPEHINTSELEMENT_H
 
 #include <Inventor/elements/SoElement.h>
 
@@ -87,4 +87,4 @@ protected:
 
 };
 
-#endif // !__SOSHAPEHINTSELEMENT_H__
+#endif // !COIN_SOSHAPEHINTSELEMENT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBINTLIST_H__
-#define __SBINTLIST_H__
+#ifndef COIN_SBINTLIST_H
+#define COIN_SBINTLIST_H
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/lists/SbPList.h>
@@ -44,4 +44,4 @@ public:
   operator const int * (void) const;
 };
 
-#endif // !__SBINTLIST_H__
+#endif // !COIN_SBINTLIST_H

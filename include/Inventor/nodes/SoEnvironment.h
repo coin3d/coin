@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOENVIRONMENT_H__
-#define __SOENVIRONMENT_H__
+#ifndef COIN_SOENVIRONMENT_H
+#define COIN_SOENVIRONMENT_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -59,4 +59,4 @@ protected:
   virtual ~SoEnvironment();
 };
 
-#endif // !__SOENVIRONMENT_H__
+#endif // !COIN_SOENVIRONMENT_H

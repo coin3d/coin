@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOTEXTURECOORDINATEPLANE_H__
-#define __SOTEXTURECOORDINATEPLANE_H__
+#ifndef COIN_SOTEXTURECOORDINATEPLANE_H
+#define COIN_SOTEXTURECOORDINATEPLANE_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoTextureCoordinateFunction.h>
@@ -53,4 +53,4 @@ private:
   static void handleTexgen(void *data);
 };
 
-#endif // !__SOTEXTURECOORDINATEPLANE_H__
+#endif // !COIN_SOTEXTURECOORDINATEPLANE_H

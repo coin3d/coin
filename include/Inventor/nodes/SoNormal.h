@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SONORMAL_H__
-#define __SONORMAL_H__
+#ifndef COIN_SONORMAL_H
+#define COIN_SONORMAL_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoMFVec3f.h>
@@ -61,4 +61,4 @@ private:
 //  VectorType vectorType;         // unit or notunit ?
 };
 
-#endif // !__SONORMAL_H__
+#endif // !COIN_SONORMAL_H

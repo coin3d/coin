@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOACTIONMETHODLIST_H__
-#define __SOACTIONMETHODLIST_H__
+#ifndef COIN_SOACTIONMETHODLIST_H
+#define COIN_SOACTIONMETHODLIST_H
 
 #include <Inventor/lists/SbPList.h>
 #include <Inventor/SoType.h>
@@ -46,4 +46,4 @@ private:
   SoActionMethodList * parent;
 };
 
-#endif // !__SOACTIONMETHODLIST_H__
+#endif // !COIN_SOACTIONMETHODLIST_H

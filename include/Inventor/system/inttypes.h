@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __COIN_INTTYPES_H__
-#define __COIN_INTTYPES_H__
+#ifndef COIN_INTTYPES_H
+#define COIN_INTTYPES_H
 
 #include <sys/types.h>
 
@@ -44,4 +44,4 @@
 #endif // ! __GLIBC__
 
 
-#endif // ! __COIN_INTTYPES_H__
+#endif // ! COIN_INTTYPES_H

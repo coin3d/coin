@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOENGINE_H__
-#define __SOENGINE_H__
+#ifndef COIN_SOENGINE_H
+#define COIN_SOENGINE_H
 
 #include <Inventor/fields/SoFieldContainer.h>
 
@@ -55,4 +55,4 @@ private:
 
 };
 
-#endif // !__SOENGINE_H__
+#endif // !COIN_SOENGINE_H

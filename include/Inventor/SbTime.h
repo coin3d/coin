@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBTIME_H__
-#define __SBTIME_H__
+#ifndef COIN_SBTIME_H
+#define COIN_SBTIME_H
 
 // Usually you get all you need from time.h
 #include <time.h>
@@ -91,4 +91,4 @@ private:
   void addToString(SbString& str, const double val) const;
 };
 
-#endif // !__SBTIME_H__
+#endif // !COIN_SBTIME_H

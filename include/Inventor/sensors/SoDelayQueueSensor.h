@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SODELAYQUEUESENSOR_H__
-#define __SODELAYQUEUESENSOR_H__
+#ifndef COIN_SODELAYQUEUESENSOR_H
+#define COIN_SODELAYQUEUESENSOR_H
 
 #include <Inventor/sensors/SoSensor.h>
 #include <Inventor/SbBasic.h>
@@ -48,4 +48,4 @@ private:
   uint32_t priority;
 };
 
-#endif // !__SODELAYQUEUESENSOR_H__
+#endif // !COIN_SODELAYQUEUESENSOR_H

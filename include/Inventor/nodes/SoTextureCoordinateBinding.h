@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOTEXTURECOORDINATEBINDING_H__
-#define __SOTEXTURECOORDINATEBINDING_H__
+#ifndef COIN_SOTEXTURECOORDINATEBINDING_H
+#define COIN_SOTEXTURECOORDINATEBINDING_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -53,4 +53,4 @@ protected:
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
 };
 
-#endif // !__SOTEXTURECOORDINATEBINDING_H__
+#endif // !COIN_SOTEXTURECOORDINATEBINDING_H

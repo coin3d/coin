@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOLEVELOFSIMPLIFICATION_H__
-#define __SOLEVELOFSIMPLIFICATION_H__
+#ifndef COIN_SOLEVELOFSIMPLIFICATION_H
+#define COIN_SOLEVELOFSIMPLIFICATION_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoLOD.h>
@@ -46,4 +46,4 @@ protected:
   virtual int whichToTraverse(SoAction *);
 };
 
-#endif // !__SOLEVELOFSIMPLIFICATION_H__
+#endif // !COIN_SOLEVELOFSIMPLIFICATION_H

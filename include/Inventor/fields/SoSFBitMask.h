@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSFBITMASK_H__
-#define __SOSFBITMASK_H__
+#ifndef COIN_SOSFBITMASK_H
+#define COIN_SOSFBITMASK_H
 
 #include <Inventor/fields/SoSFEnum.h>
 
@@ -37,4 +37,4 @@ private:
   friend class SoMFBitMask; // For readValue() & writeValue().
 };
 
-#endif // !__SOSFBITMASK_H__
+#endif // !COIN_SOSFBITMASK_H

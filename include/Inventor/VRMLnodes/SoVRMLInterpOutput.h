@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOVRMLINTERPOUTPUT_H__
-#define __SOVRMLINTERPOUTPUT_H__
+#ifndef COIN_SOVRMLINTERPOUTPUT_H
+#define COIN_SOVRMLINTERPOUTPUT_H
 
 #include <Inventor/SoType.h>
 #include <Inventor/lists/SoFieldList.h>
@@ -53,4 +53,4 @@ private:
   SoVRMLInterpolator * owner;
 };
 
-#endif // !__SOVRMLINTERPOUTPUT_H__
+#endif // !COIN_SOVRMLINTERPOUTPUT_H

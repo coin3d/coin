@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOALARMSENSOR_H__
-#define __SOALARMSENSOR_H__
+#ifndef COIN_SOALARMSENSOR_H
+#define COIN_SOALARMSENSOR_H
 
 #include <Inventor/sensors/SoTimerQueueSensor.h>
 
@@ -39,4 +39,4 @@ private:
   SbTime alarm;
 };
 
-#endif // !__SOALARMSENSOR_H__
+#endif // !COIN_SOALARMSENSOR_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOMATERIAL_H__
-#define __SOMATERIAL_H__
+#ifndef COIN_SOMATERIAL_H
+#define COIN_SOMATERIAL_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoMFColor.h>
@@ -58,4 +58,4 @@ private:
 #endif // OBSOLETED
 };
 
-#endif // !__SOMATERIAL_H__
+#endif // !COIN_SOMATERIAL_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOFULLPATH_H__
-#define __SOFULLPATH_H__
+#ifndef COIN_SOFULLPATH_H
+#define COIN_SOFULLPATH_H
 
 #include <Inventor/SoPath.h>
 
@@ -39,4 +39,4 @@ public:
   int getLength(void) const;
 };
 
-#endif // !__SOFULLPATH_H__
+#endif // !COIN_SOFULLPATH_H

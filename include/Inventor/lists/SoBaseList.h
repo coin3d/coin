@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOBASELIST_H__
-#define __SOBASELIST_H__
+#ifndef COIN_SOBASELIST_H
+#define COIN_SOBASELIST_H
 
 class SoBase;
 
@@ -48,4 +48,4 @@ private:
 
 };
 
-#endif // !__SOBASELIST_H__
+#endif // !COIN_SOBASELIST_H

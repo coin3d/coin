@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SONORMALELEMENT_H__
-#define __SONORMALELEMENT_H__
+#ifndef COIN_SONORMALELEMENT_H
+#define COIN_SONORMALELEMENT_H
 
 #include <Inventor/elements/SoReplacedElement.h>
 #include <Inventor/SbVec3f.h>
@@ -58,4 +58,4 @@ protected:
 
 };
 
-#endif // !__SONORMALELEMENT_H__
+#endif // !COIN_SONORMALELEMENT_H

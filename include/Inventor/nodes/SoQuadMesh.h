@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOQUADMESH_H__
-#define __SOQUADMESH_H__
+#ifndef COIN_SOQUADMESH_H
+#define COIN_SOQUADMESH_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNonIndexedShape.h>
@@ -63,4 +63,4 @@ private:
   Binding findNormalBinding(SoState * const state) const;
 };
 
-#endif // !__SOQUADMESH_H__
+#endif // !COIN_SOQUADMESH_H

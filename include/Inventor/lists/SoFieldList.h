@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOFIELDLIST_H__
-#define __SOFIELDLIST_H__
+#ifndef COIN_SOFIELDLIST_H
+#define COIN_SOFIELDLIST_H
 
 #include <Inventor/lists/SbPList.h>
 
@@ -41,4 +41,4 @@ public:
   SoFieldList & operator=(const SoFieldList & source);
 };
 
-#endif // !__SOFIELDLIST_H__
+#endif // !COIN_SOFIELDLIST_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SODETAILS_H__
-#define __SODETAILS_H__
+#ifndef COIN_SODETAILS_H
+#define COIN_SODETAILS_H
 
 #include <Inventor/details/SoConeDetail.h>
 #include <Inventor/details/SoCubeDetail.h>
@@ -29,4 +29,4 @@
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/details/SoTextDetail.h>
 
-#endif // __SODETAILS_H__
+#endif // COIN_SODETAILS_H

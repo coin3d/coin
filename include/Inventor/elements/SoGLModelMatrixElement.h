@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGLMODELMATRIXELEMENT_H__
-#define __SOGLMODELMATRIXELEMENT_H__
+#ifndef COIN_SOGLMODELMATRIXELEMENT_H
+#define COIN_SOGLMODELMATRIXELEMENT_H
 
 #include <Inventor/elements/SoModelMatrixElement.h>
 
@@ -56,4 +56,4 @@ private:
 
 };
 
-#endif // !__SOGLMODELMATRIXELEMENT_H__
+#endif // !COIN_SOGLMODELMATRIXELEMENT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSHUTTLE_H__
-#define __SOSHUTTLE_H__
+#ifndef COIN_SOSHUTTLE_H
+#define COIN_SOSHUTTLE_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoTranslation.h>
@@ -45,4 +45,4 @@ protected:
   virtual ~SoShuttle();
 };
 
-#endif // !__SOSHUTTLE_H__
+#endif // !COIN_SOSHUTTLE_H

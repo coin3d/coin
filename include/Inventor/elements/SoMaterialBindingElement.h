@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOMATERIALBINDINGELEMENT_H__
-#define __SOMATERIALBINDINGELEMENT_H__
+#ifndef COIN_SOMATERIALBINDINGELEMENT_H
+#define COIN_SOMATERIALBINDINGELEMENT_H
 
 #include <Inventor/elements/SoInt32Element.h>
 
@@ -56,4 +56,4 @@ public:
 
 };
 
-#endif // !__SOMATERIALBINDINGELEMENT_H__
+#endif // !COIN_SOMATERIALBINDINGELEMENT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SB_H__
-#define __SB_H__
+#ifndef COIN_SB_H
+#define COIN_SB_H
 
 #if defined(COIN_INTERNAL)
 #error "Do not include Sb.h internally."
@@ -62,4 +62,4 @@
 #include <Inventor/projectors/SbSphereProjector.h>
 #include <Inventor/projectors/SbSphereSheetProjector.h>
 
-#endif // !__SB_H__
+#endif // !COIN_SB_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOREORGANIZEACTION_H__
-#define __SOREORGANIZEACTION_H__
+#ifndef COIN_SOREORGANIZEACTION_H
+#define COIN_SOREORGANIZEACTION_H
 
 #include <Inventor/actions/SoSimplifyAction.h>
 
@@ -56,4 +56,4 @@ protected:
 
 };
 
-#endif // !__SOREORGANIZEACTION_H__
+#endif // !COIN_SOREORGANIZEACTION_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBVEC4F_H__
-#define __SBVEC4F_H__
+#ifndef COIN_SBVEC4F_H
+#define COIN_SBVEC4F_H
 
 #include <stdio.h>
 
@@ -63,4 +63,4 @@ private:
   float vec[4];
 };
 
-#endif // !__SBVEC4F_H__
+#endif // !COIN_SBVEC4F_H

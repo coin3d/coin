@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSHAPEKIT_H__
-#define __SOSHAPEKIT_H__
+#ifndef COIN_SOSHAPEKIT_H
+#define COIN_SOSHAPEKIT_H
 
 #include <Inventor/nodekits/SoSeparatorKit.h>
 
@@ -56,4 +56,4 @@ protected:
   virtual void setDefaultOnNonWritingFields(void);
 };
 
-#endif // !__SOSHAPEKIT_H__
+#endif // !COIN_SOSHAPEKIT_H

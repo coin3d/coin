@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOTEXTURECOORDINATEDEFAULT_H__
-#define __SOTEXTURECOORDINATEDEFAULT_H__
+#ifndef COIN_SOTEXTURECOORDINATEDEFAULT_H
+#define COIN_SOTEXTURECOORDINATEDEFAULT_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoTextureCoordinateFunction.h>
@@ -43,4 +43,4 @@ protected:
   virtual ~SoTextureCoordinateDefault();
 };
 
-#endif // !__SOTEXTURECOORDINATEDEFAULT_H__
+#endif // !COIN_SOTEXTURECOORDINATEDEFAULT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSHAPEHINTS_H__
-#define __SOSHAPEHINTS_H__
+#ifndef COIN_SOSHAPEHINTS_H
+#define COIN_SOSHAPEHINTS_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFEnum.h>
@@ -70,4 +70,4 @@ protected:
   virtual ~SoShapeHints();
 };
 
-#endif // !__SOSHAPEHINTS_H__
+#endif // !COIN_SOSHAPEHINTS_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOCOORDINATE4_H__
-#define __SOCOORDINATE4_H__
+#ifndef COIN_SOCOORDINATE4_H
+#define COIN_SOCOORDINATE4_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -47,4 +47,4 @@ protected:
   virtual ~SoCoordinate4();
 };
 
-#endif // !__SOCOORDINATE4_H__
+#endif // !COIN_SOCOORDINATE4_H

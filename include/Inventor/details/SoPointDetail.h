@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOPOINTDETAIL_H__
-#define __SOPOINTDETAIL_H__
+#ifndef COIN_SOPOINTDETAIL_H
+#define COIN_SOPOINTDETAIL_H
 
 #include <Inventor/details/SoDetail.h>
 
@@ -54,4 +54,4 @@ private:
   int texCoordIndex;
 };
 
-#endif // __SOPOINTDETAIL_H__
+#endif // COIN_SOPOINTDETAIL_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOLAZYELEMENT_H__
-#define __SOLAZYELEMENT_H__
+#ifndef COIN_SOLAZYELEMENT_H
+#define COIN_SOLAZYELEMENT_H
 
 #include <Inventor/elements/SoElement.h>
 #include <Inventor/elements/SoSubElement.h>
@@ -183,5 +183,5 @@ public:
 };
     
 
-#endif // __SOLAZYELEMENT_H__
+#endif // COIN_SOLAZYELEMENT_H
 

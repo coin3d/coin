@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOTYPE_H__
-#define __SOTYPE_H__
+#ifndef COIN_SOTYPE_H
+#define COIN_SOTYPE_H
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbDict.h>
@@ -134,4 +134,4 @@ SoType::isBad(void) const
   return (this->index == 0);
 }
 
-#endif // !__SOTYPE_H__
+#endif // !COIN_SOTYPE_H

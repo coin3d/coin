@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOCREASEANGLEELEMENT_H__
-#define __SOCREASEANGLEELEMENT_H__
+#ifndef COIN_SOCREASEANGLEELEMENT_H
+#define COIN_SOCREASEANGLEELEMENT_H
 
 #include <Inventor/elements/SoFloatElement.h>
 
@@ -43,4 +43,4 @@ public:
 
 };
 
-#endif // !__SOCREASEANGLEELEMENT_H__
+#endif // !COIN_SOCREASEANGLEELEMENT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOCOLORINDEX_H__
-#define __SOCOLORINDEX_H__
+#ifndef COIN_SOCOLORINDEX_H
+#define COIN_SOCOLORINDEX_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -42,4 +42,4 @@ protected:
   virtual ~SoColorIndex();
 };
 
-#endif // !__SOCOLORINDEX_H__
+#endif // !COIN_SOCOLORINDEX_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGLCLIPPLANEELEMENT_H__
-#define __SOGLCLIPPLANEELEMENT_H__
+#ifndef COIN_SOGLCLIPPLANEELEMENT_H
+#define COIN_SOGLCLIPPLANEELEMENT_H
 
 #include <Inventor/elements/SoClipPlaneElement.h>
 
@@ -47,4 +47,4 @@ private:
 
 };
 
-#endif // !__SOGLCLIPPLANEELEMENT_H__
+#endif // !COIN_SOGLCLIPPLANEELEMENT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBXFBOX3F_H__
-#define __SBXFBOX3F_H__
+#ifndef COIN_SBXFBOX3F_H
+#define COIN_SBXFBOX3F_H
 
 #include <stdio.h>
 #include <Inventor/SbBox3f.h>
@@ -67,4 +67,4 @@ private:
   SbMatrix matrix, invertedmatrix;
 };
 
-#endif // !__SBXFBOX3F_H__
+#endif // !COIN_SBXFBOX3F_H

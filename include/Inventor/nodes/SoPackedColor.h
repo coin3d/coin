@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOPACKEDCOLOR_H__
-#define __SOPACKEDCOLOR_H__
+#ifndef COIN_SOPACKEDCOLOR_H
+#define COIN_SOPACKEDCOLOR_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -46,4 +46,4 @@ protected:
   virtual ~SoPackedColor();
 };
 
-#endif // !__SOPACKEDCOLOR_H__
+#endif // !COIN_SOPACKEDCOLOR_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSUBKIT_H__
-#define __SOSUBKIT_H__
+#ifndef COIN_SOSUBKIT_H
+#define COIN_SOSUBKIT_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFNode.h>
@@ -191,4 +191,4 @@ _class_::getClassNodekitCatalogPtr(void) \
     createDefaultParts()
 
 
-#endif // !__SOSUBKIT_H__
+#endif // !COIN_SOSUBKIT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOENABLEDELEMENTSLIST_H__
-#define __SOENABLEDELEMENTSLIST_H__
+#ifndef COIN_SOENABLEDELEMENTSLIST_H
+#define COIN_SOENABLEDELEMENTSLIST_H
 
 #include <Inventor/lists/SoTypeList.h>
 
@@ -38,4 +38,4 @@ private:
   SoEnabledElementsList * parent;
 };
 
-#endif // !__SOENABLEDELEMENTSLIST_H__
+#endif // !COIN_SOENABLEDELEMENTSLIST_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSCENEKIT_H__
-#define __SOSCENEKIT_H__
+#ifndef COIN_SOSCENEKIT_H
+#define COIN_SOSCENEKIT_H
 
 #include <Inventor/nodekits/SoSubKit.h>
 #include <Inventor/nodekits/SoBaseKit.h>
@@ -47,4 +47,4 @@ protected:
   virtual ~SoSceneKit();
 };
 
-#endif // !__SOSCENEKIT_H__
+#endif // !COIN_SOSCENEKIT_H

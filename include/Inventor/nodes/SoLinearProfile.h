@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOLINEARPROFILE_H__
-#define __SOLINEARPROFILE_H__
+#ifndef COIN_SOLINEARPROFILE_H
+#define COIN_SOLINEARPROFILE_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoProfile.h>
@@ -43,4 +43,4 @@ protected:
   virtual ~SoLinearProfile();
 };
 
-#endif // !__SOLINEARPROFILE_H__
+#endif // !COIN_SOLINEARPROFILE_H

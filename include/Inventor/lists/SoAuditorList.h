@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOAUDITORLIST_H__
-#define __SOAUDITORLIST_H__
+#ifndef COIN_SOAUDITORLIST_H
+#define COIN_SOAUDITORLIST_H
 
 #include <Inventor/lists/SbPList.h>
 #include <Inventor/misc/SoNotification.h>
@@ -45,4 +45,4 @@ public:
   void notify(SoNotList * list);
 };
 
-#endif // !__SOAUDITORLIST_H__
+#endif // !COIN_SOAUDITORLIST_H

@@ -17,14 +17,14 @@
  *
 \**************************************************************************/
 
-#ifndef __SOCOMPOSE_H__
-#define __SOCOMPOSE_H__
+#ifndef COIN_SOCOMPOSE_H
+#define COIN_SOCOMPOSE_H
 
 #if defined(COIN_INTERNAL)
 #error "Do not include SbCompose.h internally."
 #endif // COIN_INTERNAL
 
-#define __INCLUDED_FROM_SOCOMPOSE_H__
+#define COIN_INCLUDED_FROM_SOCOMPOSE_H
 #include <Inventor/engines/SoComposeVec2f.h>
 #include <Inventor/engines/SoComposeVec3f.h>
 #include <Inventor/engines/SoComposeVec4f.h>
@@ -35,6 +35,6 @@
 #include <Inventor/engines/SoDecomposeRotation.h>
 #include <Inventor/engines/SoComposeMatrix.h>
 #include <Inventor/engines/SoDecomposeMatrix.h>
-#undef  __INCLUDED_FROM_SOCOMPOSE_H__
+#undef  COIN_INCLUDED_FROM_SOCOMPOSE_H
 
-#endif // !__SOCOMPOSE_H__
+#endif // !COIN_SOCOMPOSE_H

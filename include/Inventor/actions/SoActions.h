@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOACTIONS_H__
-#define __SOACTIONS_H__
+#ifndef COIN_SOACTIONS_H
+#define COIN_SOACTIONS_H
 
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoCallbackAction.h>
@@ -40,4 +40,4 @@
 #include <Inventor/actions/SoToVRML2Action.h>
 #include <Inventor/actions/SoWriteAction.h>
 
-#endif // !__SOACTIONS_H__
+#endif // !COIN_SOACTIONS_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBNAME_H__
-#define __SBNAME_H__
+#ifndef COIN_SBNAME_H
+#define COIN_SBNAME_H
 
 #include <Inventor/SbBasic.h>
 
@@ -87,4 +87,4 @@ private:
   const SbNameEntry * entry;
 };
 
-#endif // !__SBNAME_H__
+#endif // !COIN_SBNAME_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SO_H__
-#define __SO_H__
+#ifndef COIN_SO_H
+#define COIN_SO_H
 
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
@@ -29,4 +29,4 @@
 #include <Inventor/fields/SoFields.h>
 #include <Inventor/nodes/SoNodes.h>
 
-#endif // !__SO_H__
+#endif // !COIN_SO_H

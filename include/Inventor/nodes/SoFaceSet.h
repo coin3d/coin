@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOFACESET_H__
-#define __SOFACESET_H__
+#ifndef COIN_SOFACESET_H
+#define COIN_SOFACESET_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNonIndexedShape.h>
@@ -58,4 +58,4 @@ private:
   Binding findNormalBinding(SoState * const state) const;
 };
 
-#endif // !__SOFACESET_H__
+#endif // !COIN_SOFACESET_H

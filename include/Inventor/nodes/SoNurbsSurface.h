@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SONURBSSURFACE_H__
-#define __SONURBSSURFACE_H__
+#ifndef COIN_SONURBSSURFACE_H
+#define COIN_SONURBSSURFACE_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoShape.h>
@@ -67,4 +67,4 @@ private:
 #endif // ! _WIN32
 };
 
-#endif // !__SONURBSSURFACE_H__
+#endif // !COIN_SONURBSSURFACE_H

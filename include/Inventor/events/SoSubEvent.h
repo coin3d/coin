@@ -17,9 +17,9 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSUBEVENT_H__
-#define __SOSUBEVENT_H__
+#ifndef COIN_SOSUBEVENT_H
+#define COIN_SOSUBEVENT_H
 
 #error "Macros for SoSubEvent.h has not been written yet."
 
-#endif // !__SOSUBEVENT_H__
+#endif // !COIN_SOSUBEVENT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOROTATION_H__
-#define __SOROTATION_H__
+#ifndef COIN_SOROTATION_H
+#define COIN_SOROTATION_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFRotation.h>
@@ -48,4 +48,4 @@ protected:
   virtual ~SoRotation();
 };
 
-#endif // !__SOROTATION_H__
+#endif // !COIN_SOROTATION_H

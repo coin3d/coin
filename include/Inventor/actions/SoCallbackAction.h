@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOCALLBACKACTION_H__
-#define __SOCALLBACKACTION_H__
+#ifndef COIN_SOCALLBACKACTION_H
+#define COIN_SOCALLBACKACTION_H
 
 #include <Inventor/actions/SoAction.h>
 
@@ -213,4 +213,4 @@ private:
 
 
 
-#endif // !__SOCALLBACKACTION_H__
+#endif // !COIN_SOCALLBACKACTION_H

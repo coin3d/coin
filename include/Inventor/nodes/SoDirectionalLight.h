@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SODIRECTIONALLIGHT_H__
-#define __SODIRECTIONALLIGHT_H__
+#ifndef COIN_SODIRECTIONALLIGHT_H
+#define COIN_SODIRECTIONALLIGHT_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoLight.h>
@@ -42,4 +42,4 @@ protected:
   virtual ~SoDirectionalLight();
 };
 
-#endif // !__SODIRECTIONALLIGHT_H__
+#endif // !COIN_SODIRECTIONALLIGHT_H

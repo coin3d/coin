@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGLSHAPEHINTSELEMENT_H__
-#define __SOGLSHAPEHINTSELEMENT_H__
+#ifndef COIN_SOGLSHAPEHINTSELEMENT_H
+#define COIN_SOGLSHAPEHINTSELEMENT_H
 
 #include <Inventor/elements/SoShapeHintsElement.h>
 
@@ -56,4 +56,4 @@ private:
 
 };
 
-#endif // !__SOGLSHAPEHINTSELEMENT_H__
+#endif // !COIN_SOGLSHAPEHINTSELEMENT_H

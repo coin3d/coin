@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOTEXTURE2TRANSFORM_H__
-#define __SOTEXTURE2TRANSFORM_H__
+#ifndef COIN_SOTEXTURE2TRANSFORM_H
+#define COIN_SOTEXTURE2TRANSFORM_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -54,4 +54,4 @@ protected:
 
 
 
-#endif // !__SOTEXTURE2TRANSFORM_H__
+#endif // !COIN_SOTEXTURE2TRANSFORM_H

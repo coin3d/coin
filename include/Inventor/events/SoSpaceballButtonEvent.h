@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSPACEBALLBUTTONEVENT_H__
-#define __SOSPACEBALLBUTTONEVENT_H__
+#ifndef COIN_SOSPACEBALLBUTTONEVENT_H
+#define COIN_SOSPACEBALLBUTTONEVENT_H
 
 #include <Inventor/events/SoButtonEvent.h>
 
@@ -67,4 +67,4 @@ private:
   Button button;
 };
 
-#endif // !__SOSPACEBALLBUTTONEVENT_H__
+#endif // !COIN_SOSPACEBALLBUTTONEVENT_H

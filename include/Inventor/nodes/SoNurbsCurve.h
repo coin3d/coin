@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SONURBSCURVE_H__
-#define __SONURBSCURVE_H__
+#ifndef COIN_SONURBSCURVE_H
+#define COIN_SONURBSCURVE_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoShape.h>
@@ -62,4 +62,4 @@ private:
 #endif // !_WIN32
 };
 
-#endif // !__SONURBSCURVE_H__
+#endif // !COIN_SONURBSCURVE_H

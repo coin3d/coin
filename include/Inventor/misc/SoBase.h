@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOBASE_H__
-#define __SOBASE_H__
+#ifndef COIN_SOBASE_H
+#define COIN_SOBASE_H
 
 #include <Inventor/SoType.h>
 #include <Inventor/lists/SoAuditorList.h>
@@ -140,4 +140,4 @@ private:
   static uint32_t writecounter;
 };
 
-#endif // !__SOBASE_H__
+#endif // !COIN_SOBASE_H

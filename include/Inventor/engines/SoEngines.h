@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOENGINES_H__
-#define __SOENGINES_H__
+#ifndef COIN_SOENGINES_H
+#define COIN_SOENGINES_H
 
 #include <Inventor/engines/SoBoolOperation.h>
 // FIXME: not made yet. 19990406 mortene.
@@ -59,4 +59,4 @@
 //  #include <Inventor/engines/SoTransformVec3f.h>
 #include <Inventor/engines/SoTriggerAny.h>
 
-#endif // !__SOENGINES_H__
+#endif // !COIN_SOENGINES_H

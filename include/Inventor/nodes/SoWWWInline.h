@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOWWWINLINE_H__
-#define __SOWWWINLINE_H__
+#ifndef COIN_SOWWWINLINE_H
+#define COIN_SOWWWINLINE_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -102,4 +102,4 @@ protected:
                             SbBool copyConnections);
 };
 
-#endif // !__SOWWWINLINE_H__
+#endif // !COIN_SOWWWINLINE_H

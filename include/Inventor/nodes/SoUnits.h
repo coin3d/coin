@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOUNITS_H__
-#define __SOUNITS_H__
+#ifndef COIN_SOUNITS_H
+#define COIN_SOUNITS_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoTransformation.h>
@@ -67,4 +67,4 @@ protected:
   virtual ~SoUnits();
 };
 
-#endif // !__SOUNITS_H__
+#endif // !COIN_SOUNITS_H

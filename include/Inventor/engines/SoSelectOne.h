@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSELECTONE_H__
-#define __SOSELECTONE_H__
+#ifndef COIN_SOSELECTONE_H
+#define COIN_SOSELECTONE_H
 
 #include <Inventor/engines/SoSubEngine.h>
 #include <Inventor/fields/SoMField.h>
@@ -50,4 +50,4 @@ private:
   friend class dummy;
 };
 
-#endif // !__SOSELECTONE_H__
+#endif // !COIN_SOSELECTONE_H

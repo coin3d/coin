@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOCOMPLEXITY_H__
-#define __SOCOMPLEXITY_H__
+#ifndef COIN_SOCOMPLEXITY_H
+#define COIN_SOCOMPLEXITY_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -57,4 +57,4 @@ protected:
   virtual ~SoComplexity();
 };
 
-#endif // !__SOCOMPLEXITY_H__
+#endif // !COIN_SOCOMPLEXITY_H

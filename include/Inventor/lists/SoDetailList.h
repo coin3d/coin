@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SODETAILLIST_H__
-#define __SODETAILLIST_H__
+#ifndef COIN_SODETAILLIST_H
+#define COIN_SODETAILLIST_H
 
 #include <Inventor/lists/SbPList.h>
 
@@ -40,4 +40,4 @@ public:
   void set(const int i, SoDetail * const ptr);
 };
 
-#endif // !__SODETAILLIST_H__
+#endif // !COIN_SODETAILLIST_H

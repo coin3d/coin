@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOCLIPPLANEELEMENT_H__
-#define __SOCLIPPLANEELEMENT_H__
+#ifndef COIN_SOCLIPPLANEELEMENT_H
+#define COIN_SOCLIPPLANEELEMENT_H
 
 #include <Inventor/elements/SoAccumulatedElement.h>
 #include <Inventor/lists/SbList.h>
@@ -72,4 +72,4 @@ protected:
   virtual void addToElt(const SbPlane & plane, const SbMatrix & modelMatrix);
 };
 
-#endif // !__SOCLIPPLANEELEMENT_H__
+#endif // !COIN_SOCLIPPLANEELEMENT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOCACHEELEMENT_H__
-#define __SOCACHEELEMENT_H__
+#ifndef COIN_SOCACHEELEMENT_H
+#define COIN_SOCACHEELEMENT_H
 
 #include <Inventor/elements/SoElement.h>
 
@@ -60,4 +60,4 @@ private:
   static SbBool invalidated;
 };
 
-#endif // !__SOCACHEELEMENT_H__
+#endif // !COIN_SOCACHEELEMENT_H

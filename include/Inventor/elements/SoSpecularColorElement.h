@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSPECULARCOLORELEMENT_H__
-#define __SOSPECULARCOLORELEMENT_H__
+#ifndef COIN_SOSPECULARCOLORELEMENT_H
+#define COIN_SOSPECULARCOLORELEMENT_H
 
 #include <Inventor/elements/SoReplacedElement.h>
 
@@ -52,4 +52,4 @@ protected:
 
 };
 
-#endif // !__SOSPECULARCOLORELEMENT_H__
+#endif // !COIN_SOSPECULARCOLORELEMENT_H

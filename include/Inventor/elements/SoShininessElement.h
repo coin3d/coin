@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSHININESSELEMENT_H__
-#define __SOSHININESSELEMENT_H__
+#ifndef COIN_SOSHININESSELEMENT_H
+#define COIN_SOSHININESSELEMENT_H
 
 #include <Inventor/elements/SoReplacedElement.h>
 
@@ -50,4 +50,4 @@ protected:
 
 };
 
-#endif // !__SOSHININESSELEMENT_H__
+#endif // !COIN_SOSHININESSELEMENT_H

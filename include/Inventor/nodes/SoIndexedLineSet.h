@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOINDEXEDLINESET_H__
-#define __SOINDEXEDLINESET_H__
+#ifndef COIN_SOINDEXEDLINESET_H
+#define COIN_SOINDEXEDLINESET_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoIndexedShape.h>
@@ -66,4 +66,4 @@ private:
   int numLineSegments() const;
 };
 
-#endif // !__SOINDEXEDLINESET_H__
+#endif // !COIN_SOINDEXEDLINESET_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOLIGHT_H__
-#define __SOLIGHT_H__
+#ifndef COIN_SOLIGHT_H
+#define COIN_SOLIGHT_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -46,4 +46,4 @@ protected:
   virtual ~SoLight();
 };
 
-#endif // !__SOLIGHT_H__
+#endif // !COIN_SOLIGHT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOMOTION3EVENT_H__
-#define __SOMOTION3EVENT_H__
+#ifndef COIN_SOMOTION3EVENT_H
+#define COIN_SOMOTION3EVENT_H
 
 #include <Inventor/events/SoEvent.h>
 #include <Inventor/SbVec3f.h>
@@ -54,4 +54,4 @@ private:
   SbRotation rotation;
 };
 
-#endif // !__SOMOTION3EVENT_H__
+#endif // !COIN_SOMOTION3EVENT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBPLANE_H__
-#define __SBPLANE_H__
+#ifndef COIN_SBPLANE_H
+#define COIN_SBPLANE_H
 
 #include <stdio.h>
 
@@ -51,4 +51,4 @@ private:
   float distance;
 };
 
-#endif // !__SBPLANE_H__
+#endif // !COIN_SBPLANE_H

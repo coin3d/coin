@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOOUTPUT_H__
-#define __SOOUTPUT_H__
+#ifndef COIN_SOOUTPUT_H
+#define COIN_SOOUTPUT_H
 
 #include <Inventor/system/inttypes.h>
 #include <Inventor/SbBasic.h>
@@ -130,4 +130,4 @@ private:
   void writeBytesWithPadding(const char * const p, const size_t nr);
 };
 
-#endif // !__SOOUTPUT_H__
+#endif // !COIN_SOOUTPUT_H

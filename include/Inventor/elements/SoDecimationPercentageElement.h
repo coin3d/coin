@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SODECIMATIONPERCENTAGEELEMENT_H__
-#define __SODECIMATIONPERCENTAGEELEMENT_H__
+#ifndef COIN_SODECIMATIONPERCENTAGEELEMENT_H
+#define COIN_SODECIMATIONPERCENTAGEELEMENT_H
 
 #include <Inventor/elements/SoFloatElement.h>
 
@@ -42,4 +42,4 @@ public:
 
 };
 
-#endif // !__SODECIMATIONPERCENTAGEELEMENT_H__
+#endif // !COIN_SODECIMATIONPERCENTAGEELEMENT_H

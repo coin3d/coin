@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOPROFILECOORDINATE3_H__
-#define __SOPROFILECOORDINATE3_H__
+#ifndef COIN_SOPROFILECOORDINATE3_H
+#define COIN_SOPROFILECOORDINATE3_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -46,4 +46,4 @@ protected:
   virtual ~SoProfileCoordinate3();
 };
 
-#endif // !__SOPROFILECOORDINATE3_H__
+#endif // !COIN_SOPROFILECOORDINATE3_H

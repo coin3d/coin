@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOIDLESENSOR_H__
-#define __SOIDLESENSOR_H__
+#ifndef COIN_SOIDLESENSOR_H
+#define COIN_SOIDLESENSOR_H
 
 #include <Inventor/sensors/SoDelayQueueSensor.h>
 
@@ -32,4 +32,4 @@ public:
   virtual ~SoIdleSensor(void);
 };
 
-#endif // !__SOIDLESENSOR_H__
+#endif // !COIN_SOIDLESENSOR_H

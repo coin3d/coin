@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOLABEL_H__
-#define __SOLABEL_H__
+#ifndef COIN_SOLABEL_H
+#define COIN_SOLABEL_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -40,4 +40,4 @@ protected:
   virtual ~SoLabel();
 };
 
-#endif // !__SOLABEL_H__
+#endif // !COIN_SOLABEL_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOPICKACTION_H__
-#define __SOPICKACTION_H__
+#ifndef COIN_SOPICKACTION_H
+#define COIN_SOPICKACTION_H
 
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/SbViewportRegion.h>
@@ -64,4 +64,4 @@ private:
   SbBool cullingEnabled;
 };
 
-#endif // !__SOPICKACTION_H__
+#endif // !COIN_SOPICKACTION_H

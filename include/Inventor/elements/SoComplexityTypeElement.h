@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOCOMPLEXITYTYPEELEMENT_H__
-#define __SOCOMPLEXITYTYPEELEMENT_H__
+#ifndef COIN_SOCOMPLEXITYTYPEELEMENT_H
+#define COIN_SOCOMPLEXITYTYPEELEMENT_H
 
 #include <Inventor/elements/SoInt32Element.h>
 
@@ -50,4 +50,4 @@ public:
 
 };
 
-#endif // !__SOCOMPLEXITYTYPEELEMENT_H__
+#endif // !COIN_SOCOMPLEXITYTYPEELEMENT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOMFROTATION_H__
-#define __SOMFROTATION_H__
+#ifndef COIN_SOMFROTATION_H
+#define COIN_SOMFROTATION_H
 
 #include <Inventor/fields/SoMField.h>
 #include <Inventor/fields/SoSubField.h>
@@ -45,4 +45,4 @@ private:
   virtual void convertTo(SoField * dest) const;
 };
 
-#endif // !__SOMFROTATION_H__
+#endif // !COIN_SOMFROTATION_H

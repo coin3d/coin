@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOTEXTURECOORDINATE2_H__
-#define __SOTEXTURECOORDINATE2_H__
+#ifndef COIN_SOTEXTURECOORDINATE2_H
+#define COIN_SOTEXTURECOORDINATE2_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoMFVec2f.h>
@@ -45,4 +45,4 @@ protected:
   virtual ~SoTextureCoordinate2();
 };
 
-#endif // !__SOTEXTURECOORDINATE2_H__
+#endif // !COIN_SOTEXTURECOORDINATE2_H

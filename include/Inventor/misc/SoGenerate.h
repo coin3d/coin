@@ -21,8 +21,8 @@
 // reuseable code for generatePrimitives (OpenInventor, VRML and VRML2)
 //
 
-#ifndef __SOGENERATE__
-#define __SOGENERATE__
+#ifndef COIN_SOGENERATE_H
+#define COIN_SOGENERATE_H
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/system/inttypes.h>
@@ -66,4 +66,4 @@ void sogen_generate_cube(const float width,
                          SoAction * const action);
 
 
-#endif // __SOGENERATE__
+#endif // COIN_SOGENERATE_H

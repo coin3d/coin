@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGLNORMALIZEELEMENT_H__
-#define __SOGLNORMALIZEELEMENT_H__
+#ifndef COIN_SOGLNORMALIZEELEMENT_H
+#define COIN_SOGLNORMALIZEELEMENT_H
 
 #include <Inventor/elements/SoElement.h>
 
@@ -58,4 +58,4 @@ private:
   void updategl(const SbBool normalize);
 };
 
-#endif // !__SOGLNORMALIZEELEMENT_H__
+#endif // !COIN_SOGLNORMALIZEELEMENT_H

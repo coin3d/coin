@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SONORMALBINDING_H__
-#define __SONORMALBINDING_H__
+#ifndef COIN_SONORMALBINDING_H
+#define COIN_SONORMALBINDING_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFEnum.h>
@@ -63,4 +63,4 @@ protected:
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
 };
 
-#endif // !__SONORMALBINDING_H__
+#endif // !COIN_SONORMALBINDING_H

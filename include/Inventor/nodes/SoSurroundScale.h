@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSURROUNDSCALE_H__
-#define __SOSURROUNDSCALE_H__
+#ifndef COIN_SOSURROUNDSCALE_H
+#define COIN_SOSURROUNDSCALE_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoTransformation.h>
@@ -57,4 +57,4 @@ protected:
   SbBool isIgnoreInBbox(void);
 };
 
-#endif // !__SOSURROUNDSCALE_H__
+#endif // !COIN_SOSURROUNDSCALE_H

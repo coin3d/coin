@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOPICKEDPOINTLIST_H__
-#define __SOPICKEDPOINTLIST_H__
+#ifndef COIN_SOPICKEDPOINTLIST_H
+#define COIN_SOPICKEDPOINTLIST_H
 
 #include <Inventor/lists/SbPList.h>
 
@@ -38,4 +38,4 @@ public:
   void set(const int i, SoPickedPoint * const ptr);
 };
 
-#endif // !__SOPICKEDPOINTLIST_H__
+#endif // !COIN_SOPICKEDPOINTLIST_H

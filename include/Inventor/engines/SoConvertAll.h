@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOCONVERTALL_H__
-#define __SOCONVERTALL_H__
+#ifndef COIN_SOCONVERTALL_H
+#define COIN_SOCONVERTALL_H
 
 #include <Inventor/engines/SoFieldConverter.h>
 #include <Inventor/SbDict.h>
@@ -51,4 +51,4 @@ private:
 
 };
 
-#endif // !__SOCONVERTALL_H__
+#endif // !COIN_SOCONVERTALL_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOENGINEOUTPUT_H__
-#define __SOENGINEOUTPUT_H__
+#ifndef COIN_SOENGINEOUTPUT_H
+#define COIN_SOENGINEOUTPUT_H
 
 #include <Inventor/SoType.h>
 #include <Inventor/lists/SoFieldList.h>
@@ -51,4 +51,4 @@ private:
   SoFieldList connections;
 };
 
-#endif // !__SOENGINEOUTPUT_H__
+#endif // !COIN_SOENGINEOUTPUT_H

@@ -24,8 +24,8 @@
   19990913 mortene.
 */
 
-#ifndef __SBBASIC_H__
-#define __SBBASIC_H__
+#ifndef COIN_SBBASIC_H
+#define COIN_SBBASIC_H
 
 // *************************************************************************
 
@@ -183,4 +183,4 @@ inline Type SbSqr(const Type val) {
 #undef COIN_VERSION
 #endif // !COIN_VERSION
 
-#endif // !__SBBASIC_H__
+#endif // !COIN_SBBASIC_H

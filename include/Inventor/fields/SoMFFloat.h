@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOMFFLOAT_H__
-#define __SOMFFLOAT_H__
+#ifndef COIN_SOMFFLOAT_H
+#define COIN_SOMFFLOAT_H
 
 #include <Inventor/fields/SoMField.h>
 #include <Inventor/fields/SoSubField.h>
@@ -37,4 +37,4 @@ private:
   virtual void convertTo(SoField * dest) const;
 };
 
-#endif // !__SOMFFLOAT_H__
+#endif // !COIN_SOMFFLOAT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOINTERPOLATEVEC4F_H__
-#define __SOINTERPOLATEVEC4F_H__
+#ifndef COIN_SOINTERPOLATEVEC4F_H
+#define COIN_SOINTERPOLATEVEC4F_H
 
 //$ BEGIN TEMPLATE InterpolateHeader(SoInterpolateVec4f, SoMFVec4f)
 #include <Inventor/engines/SoInterpolateAbs.h>
@@ -33,4 +33,4 @@ public:
 };
 //$ END TEMPLATE InterpolateHeader
 
-#endif // !__SOINTERPOLATEVEC4F_H__
+#endif // !COIN_SOINTERPOLATEVEC4F_H

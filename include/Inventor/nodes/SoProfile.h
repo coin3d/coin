@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOPROFILE_H__
-#define __SOPROFILE_H__
+#ifndef COIN_SOPROFILE_H
+#define COIN_SOPROFILE_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -62,4 +62,4 @@ protected:
   virtual ~SoProfile();
 };
 
-#endif // !__SOPROFILE_H__
+#endif // !COIN_SOPROFILE_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBBSPTREE_H__
-#define __SBBSPTREE_H__
+#ifndef COIN_SBBSPTREE_H
+#define COIN_SBBSPTREE_H
 
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SbVec3f.h>
@@ -62,4 +62,4 @@ private:
   SbBox3f boundingBox;
 };
 
-#endif // !__SBBSPTREE_H__
+#endif // !COIN_SBBSPTREE_H

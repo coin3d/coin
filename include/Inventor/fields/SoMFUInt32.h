@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOMFUINT32_H__
-#define __SOMFUINT32_H__
+#ifndef COIN_SOMFUINT32_H
+#define COIN_SOMFUINT32_H
 
 #include <Inventor/fields/SoMField.h>
 #include <Inventor/fields/SoSubField.h>
@@ -37,4 +37,4 @@ private:
   virtual void convertTo(SoField * dest) const;
 };
 
-#endif // !__SOMFUINT32_H__
+#endif // !COIN_SOMFUINT32_H

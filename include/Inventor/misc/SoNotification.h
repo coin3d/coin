@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SONOTIFICATION_H__
-#define __SONOTIFICATION_H__
+#ifndef COIN_SONOTIFICATION_H
+#define COIN_SONOTIFICATION_H
 
 #include <Inventor/system/inttypes.h>
 
@@ -85,4 +85,4 @@ private:
   uint32_t stamp;
 };
 
-#endif // !__SONOTIFICATION_H__
+#endif // !COIN_SONOTIFICATION_H

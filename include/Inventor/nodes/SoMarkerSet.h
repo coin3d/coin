@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOMARKERSET_H__
-#define __SOMARKERSET_H__
+#ifndef COIN_SOMARKERSET_H
+#define COIN_SOMARKERSET_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoPointSet.h>
@@ -90,4 +90,4 @@ protected:
   virtual ~SoMarkerSet();
 };
 
-#endif // !__SOMARKERSET_H__
+#endif // !COIN_SOMARKERSET_H

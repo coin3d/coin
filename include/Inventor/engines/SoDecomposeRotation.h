@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SODECOMPOSEROTATION_H__
-#define __SODECOMPOSEROTATION_H__
+#ifndef COIN_SODECOMPOSEROTATION_H
+#define COIN_SODECOMPOSEROTATION_H
 
 #include <Inventor/engines/SoSubEngine.h>
 #include <Inventor/engines/SoEngineOutput.h>
@@ -35,4 +35,4 @@ public:
   SoEngineOutput angle; // SoMFFloat
 };
 
-#endif // !__SODECOMPOSEROTATION_H__
+#endif // !COIN_SODECOMPOSEROTATION_H

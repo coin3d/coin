@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOLINEWIDTHELEMENT_H__
-#define __SOLINEWIDTHELEMENT_H__
+#ifndef COIN_SOLINEWIDTHELEMENT_H
+#define COIN_SOLINEWIDTHELEMENT_H
 
 #include <Inventor/elements/SoFloatElement.h>
 
@@ -42,4 +42,4 @@ public:
   static float getDefault();
 };
 
-#endif // !__SOLINEWIDTHELEMENT_H__
+#endif // !COIN_SOLINEWIDTHELEMENT_H

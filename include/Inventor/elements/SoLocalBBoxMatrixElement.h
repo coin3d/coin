@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOLOCALBBOXMATRIXELEMENT_H__
-#define __SOLOCALBBOXMATRIXELEMENT_H__
+#ifndef COIN_SOLOCALBBOXMATRIXELEMENT_H
+#define COIN_SOLOCALBBOXMATRIXELEMENT_H
 
 #include <Inventor/elements/SoModelMatrixElement.h>
 
@@ -67,4 +67,4 @@ private:
 
 };
 
-#endif // !__SOLOCALBBOXMATRIXELEMENT_H__
+#endif // !COIN_SOLOCALBBOXMATRIXELEMENT_H

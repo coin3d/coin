@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGLAMBIENTCOLORELEMENT_H__
-#define __SOGLAMBIENTCOLORELEMENT_H__
+#ifndef COIN_SOGLAMBIENTCOLORELEMENT_H
+#define COIN_SOGLAMBIENTCOLORELEMENT_H
 
 #include <Inventor/elements/SoAmbientColorElement.h>
 #include <Inventor/SbColor.h>
@@ -49,4 +49,4 @@ private:
 
 };
 
-#endif // !__SOGLAMBIENTCOLORELEMENT_H__
+#endif // !COIN_SOGLAMBIENTCOLORELEMENT_H

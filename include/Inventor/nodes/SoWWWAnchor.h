@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOWWWANCHOR_H__
-#define __SOWWWANCHOR_H__
+#ifndef COIN_SOWWWANCHOR_H
+#define COIN_SOWWWANCHOR_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoLocateHighlight.h>
@@ -64,4 +64,4 @@ protected:
   virtual void redrawHighlighted(SoAction * act, SbBool isNowHighlighting);
 };
 
-#endif // !__SOWWWANCHOR_H__
+#endif // !COIN_SOWWWANCHOR_H

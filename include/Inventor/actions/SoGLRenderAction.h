@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGLRENDERACTION_H__
-#define __SOGLRENDERACTION_H__
+#ifndef COIN_SOGLRENDERACTION_H
+#define COIN_SOGLRENDERACTION_H
 
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/SbBasic.h>
@@ -137,4 +137,4 @@ private:
   void doPathSort();
 };
 
-#endif // !__SOGLRENDERACTION_H__
+#endif // !COIN_SOGLRENDERACTION_H

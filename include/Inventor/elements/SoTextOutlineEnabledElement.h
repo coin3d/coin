@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOTEXTOUTLINEENABLEDELEMENT_H__
-#define __SOTEXTOUTLINEENABLEDELEMENT_H__
+#ifndef COIN_SOTEXTOUTLINEENABLEDELEMENT_H
+#define COIN_SOTEXTOUTLINEENABLEDELEMENT_H
 
 #include <Inventor/elements/SoInt32Element.h>
 
@@ -45,4 +45,4 @@ public:
   static SbBool getDefault(void);
 };
 
-#endif // !__SOTEXTOUTLINEENABLEDELEMENT_H__
+#endif // !COIN_SOTEXTOUTLINEENABLEDELEMENT_H

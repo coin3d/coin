@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGLTEXTURECOORDINATEELEMENT_H__
-#define __SOGLTEXTURECOORDINATEELEMENT_H__
+#ifndef COIN_SOGLTEXTURECOORDINATEELEMENT_H
+#define COIN_SOGLTEXTURECOORDINATEELEMENT_H
 
 #include <Inventor/elements/SoTextureCoordinateElement.h>
 
@@ -65,4 +65,4 @@ private:
   void doCallback() const;
 };
 
-#endif // !__SOGLTEXTURECOORDINATEELEMENT_H__
+#endif // !COIN_SOGLTEXTURECOORDINATEELEMENT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOTOVRMLACTION_H__
-#define __SOTOVRMLACTION_H__
+#ifndef COIN_SOTOVRMLACTION_H
+#define COIN_SOTOVRMLACTION_H
 
 #include <Inventor/actions/SoAction.h>
 
@@ -56,4 +56,4 @@ protected:
 
 };
 
-#endif // !__SOTOVRMLACTION_H__
+#endif // !COIN_SOTOVRMLACTION_H

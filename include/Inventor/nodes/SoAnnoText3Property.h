@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOANNOTEXT3PROPERTY_H__
-#define __SOANNOTEXT3PROPERTY_H__
+#ifndef COIN_SOANNOTEXT3PROPERTY_H
+#define COIN_SOANNOTEXT3PROPERTY_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -58,4 +58,4 @@ protected:
   virtual ~SoAnnoText3Property();
 };
 
-#endif // !__SOANNOTEXT3PROPERTY_H__
+#endif // !COIN_SOANNOTEXT3PROPERTY_H

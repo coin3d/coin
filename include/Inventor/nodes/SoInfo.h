@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOINFO_H__
-#define __SOINFO_H__
+#ifndef COIN_SOINFO_H
+#define COIN_SOINFO_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFString.h>
@@ -40,4 +40,4 @@ protected:
   virtual ~SoInfo();
 };
 
-#endif // !__SOINFO_H__
+#endif // !COIN_SOINFO_H

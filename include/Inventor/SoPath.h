@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOPATH_H__
-#define __SOPATH_H__
+#ifndef COIN_SOPATH_H
+#define COIN_SOPATH_H
 
 #include <Inventor/misc/SoBase.h>
 #include <Inventor/lists/SbIntList.h>
@@ -121,4 +121,4 @@ private:
 #include <Inventor/misc/SoLightPath.h>
 #endif // COIN_INTERNAL
 
-#endif // !__SOPATH_H__
+#endif // !COIN_SOPATH_H

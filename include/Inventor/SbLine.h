@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBLINE_H__
-#define __SBLINE_H__
+#ifndef COIN_SBLINE_H
+#define COIN_SBLINE_H
 
 #include <stdio.h>
 
@@ -42,4 +42,4 @@ private:
   SbVec3f pos, dir;
 };
 
-#endif // !__SBLINE_H__
+#endif // !COIN_SBLINE_H

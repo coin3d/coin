@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGLTEXTUREIMAGEELEMENT_H__
-#define __SOGLTEXTUREIMAGEELEMENT_H__
+#ifndef COIN_SOGLTEXTUREIMAGEELEMENT_H
+#define COIN_SOGLTEXTUREIMAGEELEMENT_H
 
 #include <Inventor/elements/SoTextureImageElement.h>
 
@@ -48,4 +48,4 @@ private:
 
 };
 
-#endif // !__SOGLTEXTUREIMAGEELEMENT_H__
+#endif // !COIN_SOGLTEXTUREIMAGEELEMENT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOCOUNTER_H__
-#define __SOCOUNTER_H__
+#ifndef COIN_SOCOUNTER_H
+#define COIN_SOCOUNTER_H
 
 #include <Inventor/engines/SoSubEngine.h>
 #include <Inventor/engines/SoEngineOutput.h>
@@ -55,4 +55,4 @@ private:
   short value;
 };
 
-#endif // !__SOCOUNTER_H__
+#endif // !COIN_SOCOUNTER_H

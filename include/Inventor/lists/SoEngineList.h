@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOENGINELIST_H__
-#define __SOENGINELIST_H__
+#ifndef COIN_SOENGINELIST_H
+#define COIN_SOENGINELIST_H
 
 #include <Inventor/lists/SoBaseList.h>
 
@@ -37,4 +37,4 @@ public:
   SoEngineList &operator =(const SoEngineList &l);
 };
 
-#endif // !__SOENGINELIST_H__
+#endif // !COIN_SOENGINELIST_H

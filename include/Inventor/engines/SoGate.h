@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGATE_H__
-#define __SOGATE_H__
+#ifndef COIN_SOGATE_H
+#define COIN_SOGATE_H
 
 #include <Inventor/engines/SoSubEngine.h>
 #include <Inventor/fields/SoMField.h>
@@ -52,4 +52,4 @@ private:
   virtual void inputChanged(SoField * which);
 };
 
-#endif // !__SOGATE_H__
+#endif // !COIN_SOGATE_H

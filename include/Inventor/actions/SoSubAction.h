@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSUBACTION_H__
-#define __SOSUBACTION_H__
+#ifndef COIN_SOSUBACTION_H
+#define COIN_SOSUBACTION_H
 
 #define SO_ACTION_ADD_METHOD(nodeClass, method)                               \
     addMethod(nodeClass::getClassTypeId(), (SoActionMethod)method)
@@ -26,4 +26,4 @@
 #define SO_ACTION_CONSTRUCTOR(className)                                      \
     traversalMethods = methods
 
-#endif // !__SOSUBACTION_H__
+#endif // !COIN_SOSUBACTION_H

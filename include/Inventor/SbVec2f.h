@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBVEC2F_H__
-#define __SBVEC2F_H__
+#ifndef COIN_SBVEC2F_H
+#define COIN_SBVEC2F_H
 
 #include <stdio.h>
 
@@ -66,4 +66,4 @@ private:
 
 // *************************************************************************
 
-#endif // !__SBVEC2F_H__
+#endif // !COIN_SBVEC2F_H

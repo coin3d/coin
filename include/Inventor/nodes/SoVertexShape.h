@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOVERTEXSHAPE_H__
-#define __SOVERTEXSHAPE_H__
+#ifndef COIN_SOVERTEXSHAPE_H
+#define COIN_SOVERTEXSHAPE_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoShape.h>
@@ -74,4 +74,4 @@ private:
 
 
 
-#endif // !__SOVERTEXSHAPE_H__
+#endif // !COIN_SOVERTEXSHAPE_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGLPOLYGONOFFSETELEMENT_H__
-#define __SOGLPOLYGONOFFSETELEMENT_H__
+#ifndef COIN_SOGLPOLYGONOFFSETELEMENT_H
+#define COIN_SOGLPOLYGONOFFSETELEMENT_H
 
 #include <Inventor/elements/SoPolygonOffsetElement.h>
 
@@ -53,4 +53,4 @@ private:
 
 };
 
-#endif // !__SOGLPOLYGONOFFSETELEMENT_H__
+#endif // !COIN_SOGLPOLYGONOFFSETELEMENT_H

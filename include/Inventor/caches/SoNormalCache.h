@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SONORMALCACHE_H__
-#define __SONORMALCACHE_H__
+#ifndef COIN_SONORMALCACHE_H
+#define COIN_SONORMALCACHE_H
 
 #include <Inventor/caches/SoCache.h>
 #include <Inventor/system/inttypes.h>
@@ -98,4 +98,4 @@ private:
   void clearGenerator();
 };
 
-#endif // !__SONORMALCACHE_H__
+#endif // !COIN_SONORMALCACHE_H

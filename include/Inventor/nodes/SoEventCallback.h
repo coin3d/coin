@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOEVENTCALLBACK_H__
-#define __SOEVENTCALLBACK_H__
+#ifndef COIN_SOEVENTCALLBACK_H
+#define COIN_SOEVENTCALLBACK_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -73,4 +73,4 @@ private:
   SoTypeList callbackTypes;
 };
 
-#endif // !__SOEVENTCALLBACK_H__
+#endif // !COIN_SOEVENTCALLBACK_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBPROJECTORS_H__
-#define __SBPROJECTORS_H__
+#ifndef COIN_SBPROJECTORS_H
+#define COIN_SBPROJECTORS_H
 
 #include <Inventor/projectors/SbLineProjector.h>
 #include <Inventor/projectors/SbPlaneProjector.h>
@@ -30,4 +30,4 @@
 #include <Inventor/projectors/SbCylinderSectionProjector.h>
 #include <Inventor/projectors/SbCylinderPlaneProjector.h>
 #endif // 0
-#endif // __SBPROJECTORS_H__
+#endif // COIN_SBPROJECTORS_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOASCIITEXT_H__
-#define __SOASCIITEXT_H__
+#ifndef COIN_SOASCIITEXT_H
+#define COIN_SOASCIITEXT_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoShape.h>
@@ -59,4 +59,4 @@ protected:
   virtual void generatePrimitives(SoAction *);
 };
 
-#endif // !__SOASCIITEXT_H__
+#endif // !COIN_SOASCIITEXT_H

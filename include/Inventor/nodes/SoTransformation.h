@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOTRANSFORMATION_H__
-#define __SOTRANSFORMATION_H__
+#ifndef COIN_SOTRANSFORMATION_H
+#define COIN_SOTRANSFORMATION_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -37,4 +37,4 @@ protected:
   virtual ~SoTransformation();
 };
 
-#endif // !__SOTRANSFORMATION_H__
+#endif // !COIN_SOTRANSFORMATION_H

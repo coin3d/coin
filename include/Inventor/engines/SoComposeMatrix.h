@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOCOMPOSEMATRIX_H__
-#define __SOCOMPOSEMATRIX_H__
+#ifndef COIN_SOCOMPOSEMATRIX_H
+#define COIN_SOCOMPOSEMATRIX_H
 
 #include <Inventor/engines/SoSubEngine.h>
 #include <Inventor/engines/SoEngineOutput.h>
@@ -40,4 +40,4 @@ public:
   SoEngineOutput matrix; // SoMFMatrix
 };
 
-#endif // !__SOCOMPOSEMATRIX_H__
+#endif // !COIN_SOCOMPOSEMATRIX_H

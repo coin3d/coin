@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SONODEKITPATH_H__
-#define __SONODEKITPATH_H__
+#ifndef COIN_SONODEKITPATH_H
+#define COIN_SONODEKITPATH_H
 
 #include <Inventor/SoPath.h>
 
@@ -66,4 +66,4 @@ private:
   void replaceIndex(SoNode *parent,const int index,SoNode *newChild);
 };
 
-#endif // !__SONODEKITPATH_H__
+#endif // !COIN_SONODEKITPATH_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBSPHEREPLANEPROJECTOR_H__
-#define __SBSPHEREPLANEPROJECTOR_H__
+#ifndef COIN_SBSPHEREPLANEPROJECTOR_H
+#define COIN_SBSPHEREPLANEPROJECTOR_H
 
 #include <Inventor/projectors/SbSphereSectionProjector.h>
 
@@ -43,4 +43,4 @@ protected:
                          const SbVec3f & point2, const SbBool tol2);
 };
 
-#endif // !__SBSPHEREPLANEPROJECTOR_H__
+#endif // !COIN_SBSPHEREPLANEPROJECTOR_H

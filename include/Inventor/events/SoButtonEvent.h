@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOBUTTONEVENT_H__
-#define __SOBUTTONEVENT_H__
+#ifndef COIN_SOBUTTONEVENT_H
+#define COIN_SOBUTTONEVENT_H
 
 #include <Inventor/events/SoEvent.h>
 
@@ -52,4 +52,4 @@ private:
   State buttonstate;
 };
 
-#endif // !__SOBUTTONEVENT_H__
+#endif // !COIN_SOBUTTONEVENT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGLDIFFUSECOLORELEMENT_H__
-#define __SOGLDIFFUSECOLORELEMENT_H__
+#ifndef COIN_SOGLDIFFUSECOLORELEMENT_H
+#define COIN_SOGLDIFFUSECOLORELEMENT_H
 
 #include <Inventor/elements/SoDiffuseColorElement.h>
 #include <Inventor/SbVec4f.h>
@@ -50,4 +50,4 @@ private:
 
 };
 
-#endif // !__SOGLDIFFUSECOLORELEMENT_H__
+#endif // !COIN_SOGLDIFFUSECOLORELEMENT_H

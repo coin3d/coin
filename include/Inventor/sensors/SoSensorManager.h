@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSENSORMANAGER_H__
-#define __SOSENSORMANAGER_H__
+#ifndef COIN_SOSENSORMANAGER_H
+#define COIN_SOSENSORMANAGER_H
 
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SbTime.h>
@@ -80,4 +80,4 @@ private:
   SbTime delaysensortimeout;
 };
 
-#endif // !__SOSENSORMANAGER_H__
+#endif // !COIN_SOSENSORMANAGER_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSPOTLIGHT_H__
-#define __SOSPOTLIGHT_H__
+#ifndef COIN_SOSPOTLIGHT_H
+#define COIN_SOSPOTLIGHT_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoLight.h>
@@ -46,4 +46,4 @@ protected:
   virtual ~SoSpotLight();
 };
 
-#endif // !__SOSPOTLIGHT_H__
+#endif // !COIN_SOSPOTLIGHT_H

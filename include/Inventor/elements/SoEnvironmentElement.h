@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOENVIRONMENTELEMENT_H__
-#define __SOENVIRONMENTELEMENT_H__
+#ifndef COIN_SOENVIRONMENTELEMENT_H
+#define COIN_SOENVIRONMENTELEMENT_H
 
 #include <Inventor/elements/SoReplacedElement.h>
 #include <Inventor/SbColor.h>
@@ -86,4 +86,4 @@ protected:
 
 };
 
-#endif // !__SOENVIRONMENTELEMENT_H__
+#endif // !COIN_SOENVIRONMENTELEMENT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOTEXTURECOORDINATECACHE_H__
-#define __SOTEXTURECOORDINATECACHE_H__
+#ifndef COIN_SOTEXTURECOORDINATECACHE_H
+#define COIN_SOTEXTURECOORDINATECACHE_H
 
 #include <Inventor/caches/SoCache.h>
 #include <Inventor/system/inttypes.h>
@@ -43,4 +43,4 @@ private:
   SbList <SbVec2f> texCoords;
 };
 
-#endif // !__SOTEXTURECOORDINATECACHE_H__
+#endif // !COIN_SOTEXTURECOORDINATECACHE_H

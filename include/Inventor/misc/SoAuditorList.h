@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __MISC_SOAUDITORLIST_H__
-#define __MISC_SOAUDITORLIST_H__
+#ifndef COIN_MISC_SOAUDITORLIST_H
+#define COIN_MISC_SOAUDITORLIST_H
 
 // NB: make sure the ifdef-test above wrapping this includefile is
 // _not_ checking on and setting the same define-string as the other
@@ -31,4 +31,4 @@
 // directory.
 #include <Inventor/lists/SoAuditorList.h>
 
-#endif // !__MISC_SOAUDITORLIST_H__
+#endif // !COIN_MISC_SOAUDITORLIST_H

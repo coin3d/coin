@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSHAPE_H__
-#define __SOSHAPE_H__
+#ifndef COIN_SOSHAPE_H
+#define COIN_SOSHAPE_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
@@ -130,4 +130,4 @@ protected:
                       const SbVec3f & normal);
 };
 
-#endif // !__SOSHAPE_H__
+#endif // !COIN_SOSHAPE_H

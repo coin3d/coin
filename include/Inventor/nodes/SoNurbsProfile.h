@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SONURBSPROFILE_H__
-#define __SONURBSPROFILE_H__
+#ifndef COIN_SONURBSPROFILE_H
+#define COIN_SONURBSPROFILE_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoProfile.h>
@@ -46,4 +46,4 @@ protected:
   virtual ~SoNurbsProfile();
 };
 
-#endif // !__SONURBSPROFILE_H__
+#endif // !COIN_SONURBSPROFILE_H

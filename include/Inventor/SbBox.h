@@ -17,18 +17,18 @@
  *
 \**************************************************************************/
 
-#ifndef __SBBOX_H__
-#define __SBBOX_H__
+#ifndef COIN_SBBOX_H
+#define COIN_SBBOX_H
 
 #if defined(COIN_INTERNAL)
 #error "Do not include SbBox.h internally."
 #endif // COIN_INTERNAL
 
-#define __INCLUDED_FROM_SBBOX_H__
+#define COIN_INCLUDED_FROM_SBBOX_H
 #include <Inventor/SbBox2f.h>
 #include <Inventor/SbBox2s.h>
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SbXfBox3f.h>
-#undef  __INCLUDED_FROM_SBBOX_H__
+#undef  COIN_INCLUDED_FROM_SBBOX_H
 
-#endif // !__SBBOX_H__
+#endif // !COIN_SBBOX_H

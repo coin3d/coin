@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOLINEPATTERNELEMENT_H__
-#define __SOLINEPATTERNELEMENT_H__
+#ifndef COIN_SOLINEPATTERNELEMENT_H
+#define COIN_SOLINEPATTERNELEMENT_H
 
 #include <Inventor/elements/SoInt32Element.h>
 
@@ -48,4 +48,4 @@ public:
 
 };
 
-#endif // !__SOLINEPATTERNELEMENT_H__
+#endif // !COIN_SOLINEPATTERNELEMENT_H

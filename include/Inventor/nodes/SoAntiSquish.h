@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOANTISQUISH_H__
-#define __SOANTISQUISH_H__
+#ifndef COIN_SOANTISQUISH_H
+#define COIN_SOANTISQUISH_H
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoTransformation.h>
@@ -64,4 +64,4 @@ private:
   SbBool inverseValid;
 };
 
-#endif // !__SOANTISQUISH_H__
+#endif // !COIN_SOANTISQUISH_H

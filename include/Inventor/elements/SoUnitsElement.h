@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOUNITSELEMENT_H__
-#define __SOUNITSELEMENT_H__
+#ifndef COIN_SOUNITSELEMENT_H
+#define COIN_SOUNITSELEMENT_H
 
 #include <Inventor/elements/SoInt32Element.h>
 
@@ -63,4 +63,4 @@ public:
 
 };
 
-#endif // !__SOUNITSELEMENT_H__
+#endif // !COIN_SOUNITSELEMENT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGLLIGHTIDELEMENT_H__
-#define __SOGLLIGHTIDELEMENT_H__
+#ifndef COIN_SOGLLIGHTIDELEMENT_H
+#define COIN_SOGLLIGHTIDELEMENT_H
 
 #include <Inventor/elements/SoInt32Element.h>
 
@@ -51,4 +51,4 @@ protected:
 
 };
 
-#endif // !__SOGLLIGHTIDELEMENT_H__
+#endif // !COIN_SOGLLIGHTIDELEMENT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOBASEKIT_H__
-#define __SOBASEKIT_H__
+#ifndef COIN_SOBASEKIT_H
+#define COIN_SOBASEKIT_H
 
 #include <Inventor/nodekits/SoSubKit.h>
 #include <Inventor/nodes/SoNode.h>
@@ -149,4 +149,4 @@ private:
   SoSFNode ** fieldList;
 };
 
-#endif // !__SOBASEKIT_H__
+#endif // !COIN_SOBASEKIT_H

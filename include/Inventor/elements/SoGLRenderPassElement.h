@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGLRENDERPASSELEMENT_H__
-#define __SOGLRENDERPASSELEMENT_H__
+#ifndef COIN_SOGLRENDERPASSELEMENT_H
+#define COIN_SOGLRENDERPASSELEMENT_H
 
 #include <Inventor/elements/SoElement.h>
 
@@ -52,4 +52,4 @@ protected:
 
 };
 
-#endif // !__SOGLRENDERPASSELEMENT_H__
+#endif // !COIN_SOGLRENDERPASSELEMENT_H

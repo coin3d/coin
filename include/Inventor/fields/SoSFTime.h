@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOSFTIME_H__
-#define __SOSFTIME_H__
+#ifndef COIN_SOSFTIME_H
+#define COIN_SOSFTIME_H
 
 #include <Inventor/fields/SoSField.h>
 #include <Inventor/fields/SoSubField.h>
@@ -37,4 +37,4 @@ private:
   virtual void convertTo(SoField * dest) const;
 };
 
-#endif // !__SOSFTIME_H__
+#endif // !COIN_SOSFTIME_H

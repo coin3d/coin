@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOCAMERAKIT_H__
-#define __SOCAMERAKIT_H__
+#ifndef COIN_SOCAMERAKIT_H
+#define COIN_SOCAMERAKIT_H
 
 #include <Inventor/nodekits/SoSubKit.h>
 #include <Inventor/nodekits/SoBaseKit.h>
@@ -43,4 +43,4 @@ protected:
   virtual ~SoCameraKit();
 };
 
-#endif // !__SOCAMERAKIT_H__
+#endif // !COIN_SOCAMERAKIT_H

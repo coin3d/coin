@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOLIGHTATTENUATIONELEMENT_H__
-#define __SOLIGHTATTENUATIONELEMENT_H__
+#ifndef COIN_SOLIGHTATTENUATIONELEMENT_H
+#define COIN_SOLIGHTATTENUATIONELEMENT_H
 
 #include <Inventor/elements/SoReplacedElement.h>
 #include <Inventor/SbVec3f.h>
@@ -50,4 +50,4 @@ protected:
   SbVec3f lightAttenuation;
 };
 
-#endif // !__SOLIGHTATTENUATIONELEMENT_H__
+#endif // !COIN_SOLIGHTATTENUATIONELEMENT_H

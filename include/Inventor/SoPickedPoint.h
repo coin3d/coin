@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SO_PICKED_POINT_H__
-#define __SO_PICKED_POINT_H__
+#ifndef COIN_SO_PICKED_POINT_H
+#define COIN_SO_PICKED_POINT_H
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbMatrix.h>
@@ -76,4 +76,4 @@ private:
   void applyMatrixAction(const SoNode * const node) const;
 };
 
-#endif // !__SOPICKEDPOINT_H__
+#endif // !COIN_SOPICKEDPOINT_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SBBOX3F_H__
-#define __SBBOX3F_H__
+#ifndef COIN_SBBOX3F_H
+#define COIN_SBBOX3F_H
 
 #include <float.h>
 #include <stdio.h>
@@ -70,4 +70,4 @@ private:
   SbVec3f min, max;
 };
 
-#endif // !__SBBOX3F_H__
+#endif // !COIN_SBBOX3F_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOMFSTRING_H__
-#define __SOMFSTRING_H__
+#ifndef COIN_SOMFSTRING_H
+#define COIN_SOMFSTRING_H
 
 #include <Inventor/fields/SoMField.h>
 #include <Inventor/fields/SoSubField.h>
@@ -42,4 +42,4 @@ private:
   virtual void convertTo(SoField * dest) const;
 };
 
-#endif // !__SOMFSTRING_H__
+#endif // !COIN_SOMFSTRING_H

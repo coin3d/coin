@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGLOBALFIELD_H__
-#define __SOGLOBALFIELD_H__
+#ifndef COIN_SOGLOBALFIELD_H
+#define COIN_SOGLOBALFIELD_H
 
 #include <Inventor/fields/SoFieldContainer.h>
 
@@ -60,4 +60,4 @@ private:
   static SoBaseList * allcontainers;
 };
 
-#endif // !__SOGLOBALFIELD_H__
+#endif // !COIN_SOGLOBALFIELD_H

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SONODES_H__
-#define __SONODES_H__
+#ifndef COIN_SONODES_H
+#define COIN_SONODES_H
 
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoCamera.h>
@@ -125,4 +125,4 @@
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/nodes/SoWWWInline.h>
 
-#endif // !__SONODES_H__
+#endif // !COIN_SONODES_H

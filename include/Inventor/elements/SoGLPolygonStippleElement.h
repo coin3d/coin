@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef __SOGLPOLYGONSTIPPLEELEMENT_H__
-#define __SOGLPOLYGONSTIPPLEELEMENT_H__
+#ifndef COIN_SOGLPOLYGONSTIPPLEELEMENT_H
+#define COIN_SOGLPOLYGONSTIPPLEELEMENT_H
 
 #include <Inventor/elements/SoElement.h>
 
@@ -64,4 +64,4 @@ private:
 
 };
 
-#endif // !__SOGLPOLYGONSTIPPLEELEMENT_H__
+#endif // !COIN_SOGLPOLYGONSTIPPLEELEMENT_H
