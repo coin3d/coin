@@ -452,8 +452,6 @@ INPUT                = \
 #	$(COINDIR)/include/Inventor/elements/SoGLAmbientColorElement.h \
 #	$(COINDIR)/src/elements/SoGLClipPlaneElement.cpp \
 #	$(COINDIR)/include/Inventor/elements/SoGLClipPlaneElement.h \
-#	$(COINDIR)/src/elements/SoGLColorIndexElement.cpp \
-#	$(COINDIR)/include/Inventor/elements/SoGLColorIndexElement.h \
 #	$(COINDIR)/src/elements/SoGLCoordinateElement.cpp \
 #	$(COINDIR)/include/Inventor/elements/SoGLCoordinateElement.h \
 #	$(COINDIR)/src/elements/SoGLDiffuseColorElement.cpp \

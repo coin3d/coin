@@ -20,13 +20,6 @@
 #ifndef __SOELEMENTS_H__
 #define __SOELEMENTS_H__
 
-/*
- * OBSOLETED ELEMENT FILES (inclusion will abort compilation):
- *
- * - SoGLColorIndexElement.h
- *
- */
-
 #if !defined(COIN_EXCLUDE_SOELEMENT)
 #include <Inventor/elements/SoElement.h>
 #endif // !COIN_EXCLUDE_SOELEMENT

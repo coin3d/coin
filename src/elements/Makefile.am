@@ -238,7 +238,6 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/elements/SoFontSizeElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoGLAmbientColorElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoGLClipPlaneElement.h \
-	$(top_srcdir)/include/Inventor/elements/SoGLColorIndexElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoGLCoordinateElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoGLDiffuseColorElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoGLDrawStyleElement.h \

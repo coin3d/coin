@@ -112,7 +112,6 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/engines/SoExpressionParser.h \
 	$(top_srcdir)/include/Inventor/engines/SoFieldConverter.h \
 	$(top_srcdir)/include/Inventor/engines/SoGate.h \
-	$(top_srcdir)/include/Inventor/engines/SoInterpolate.h \
 	$(top_srcdir)/include/Inventor/engines/SoInterpolateAbs.h \
 	$(top_srcdir)/include/Inventor/engines/SoInterpolateFloat.h \
 	$(top_srcdir)/include/Inventor/engines/SoInterpolateRotation.h \
