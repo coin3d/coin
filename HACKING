@@ -628,6 +628,34 @@ First, the larger issues:
       usage at run-time, so we want to keep them as slim as possible.
 
 
+ III. Don't you ever dare pollute the global namespace unnecessary!
+
+      That goes for: defines, macros, enums, typedefs, function names,
+      etc etc. If you *have* to make something global, you should at
+      least prefix it with "COIN_" (or some such) that minimizes the
+      chances of clashes with client code, system / compiler symbols,
+      or symbols from Coin's dependencies.
+
+      One common mistake you should in particular be careful to avoid
+      is to specify stand-alone functions in source code
+      implementations like this:
+
+        void
+        myhelperfunc(int a, int b)
+        {
+           // ...
+        }
+
+      Use the "static" keyword to make sure the function symbol is
+      *truly* local, to exclude such functions from the global
+      namespace!:
+
+        static void
+        myhelperfunc(int a, int b)
+        {
+           // ...
+        }
+
 
 Enough about the larger issues, now for the mucky details that has
 been written down to guide the Coin programmers in being consistent
