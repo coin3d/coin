@@ -47,6 +47,8 @@ extern int vsnprintf(char * target, size_t n, const char * formatstr, va_list ar
 #endif /* !HAVE__VSNPRINTF */
 #endif /* !HAVE_VSNPRINTF */
 
+  extern const char * coin_getenv(const char *);
+
 #ifdef __cplusplus
 }
 #endif

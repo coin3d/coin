@@ -49,6 +49,7 @@
 #include <coindefs.h>
 
 #include <stdlib.h>
+#include "../snprintf.h" // coin_getenv()
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -347,7 +348,7 @@ SoInteractionKit::readDefaultParts(const char * fileName,
   SbBool foundsrc = FALSE;
   SoInput input;
 
-  char * draggerdir = getenv("SO_DRAGGER_DIR");
+  const char * draggerdir = coin_getenv("SO_DRAGGER_DIR");
 
   if (fileName) {
     if (draggerdir) {

@@ -50,7 +50,7 @@
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoLocalBBoxMatrixElement.h>
 #include <Inventor/elements/SoCullElement.h>
-#include <stdlib.h> // for getenv()
+#include "../snprintf.h" // coin_getenv()
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -373,7 +373,7 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
   // for auto-caching later.  pederb, 20001005
 
   if (COIN_RENDER_CACHING < 0) {
-    char * env = getenv("COIN_RENDER_CACHING");
+    const char * env = coin_getenv("COIN_RENDER_CACHING");
     if (env) COIN_RENDER_CACHING = atoi(env);
     else COIN_RENDER_CACHING = 0;
   }

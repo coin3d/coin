@@ -132,15 +132,15 @@ void
 SoGLPolygonOffsetElement::updategl(void)
 {
   // To make the code below a bit more readable, we always use the
-  // COIN_SGI_USE_GLPOLYGONOFFSETEXT varaible, even on non-sgi systems.
+  // COIN_SGI_USE_GLPOLYGONOFFSETEXT variable, even on non-sgi systems.
   // It's then just set to the correct value, based on OpenGL 1.1
   // detection.
 
   // The reason for all this mess is that some SGI OpenGL
   // implementations report OpenGL 1.1 without supporting
-  // glPolygonOffset 100%. And, we generally don't want to link agains
-  // glPolygonOffsetEXT if OpenGL 1.1 is detected, since this method
-  // does not exist on most OpenGL 1.1 drivers (e.g. NVidia).
+  // glPolygonOffset 100%. And, we generally don't want to link
+  // against glPolygonOffsetEXT if OpenGL 1.1 is detected, since this
+  // method does not exist on most OpenGL 1.1 drivers (e.g. NVidia).
 
   // Therefore, we only compile in glPolygonOffsetEXT code if OpenGL
   // 1.1 is not detected, or if we're compiling on the SGI
@@ -156,7 +156,10 @@ SoGLPolygonOffsetElement::updategl(void)
     COIN_SGI_USE_GLPOLYGONOFFSETEXT = 0; // normally, use OpenGL 1.1
     // only test environment variable on the sgi platform
 #ifdef __sgi
-    char * env = getenv("COIN_SGI_USE_GLPOLYGONOFFSETEXT");
+    // FIXME: I believe the above define is ugly and lousy
+    // coding. Shouldn't we runtime-check the OpenGL vendor string
+    // instead? 20010821 mortene.
+    char * env = coin_getenv("COIN_SGI_USE_GLPOLYGONOFFSETEXT");
     if (env) COIN_SGI_USE_GLPOLYGONOFFSETEXT = atoi(env);
 #endif // __sgi
 #endif // GL_VERSION_1_1

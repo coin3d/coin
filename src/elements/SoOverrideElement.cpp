@@ -35,6 +35,7 @@
 
 #include <stdlib.h>
 #include <assert.h>
+#include "../snprintf.h" // coin_getenv()
 
 #define SO_GET_OVERRIDE(flag) \
 const SoOverrideElement * const element = \
@@ -58,8 +59,8 @@ use_separate_transp_diffuse(void)
   if (COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE < 0) {
     COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE = 0;
 
-    char * env = (char*)
-      getenv("COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE");
+    const char * env =
+      coin_getenv("COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE");
     if (env) {
       COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE = atoi(env);
     }

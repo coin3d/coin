@@ -56,6 +56,7 @@
 #include <Inventor/SoType.h>
 #include <Inventor/SbName.h>
 #include <Inventor/lists/SbList.h>
+#include "../snprintf.h" // coin_getenv()
 
 #include <stdarg.h>
 #include <stdio.h>
@@ -105,10 +106,10 @@ SoDebugError::initClass(void)
   // parse breakpoints only the first time we get here.
   if (num_breakpoints < 0) {
     num_breakpoints = 0;
-    char * env = getenv("COIN_DEBUG_BREAK");
+    const char * env = coin_getenv("COIN_DEBUG_BREAK");
     if (env) {
       num_breakpoints = 1;
-      char * ptr = env;
+      const char * ptr = env;
       while (*ptr) {
         if (*ptr == ' ' || *ptr == ',') num_breakpoints++;
         ptr++;
@@ -116,7 +117,7 @@ SoDebugError::initClass(void)
       breakpoints = new char*[num_breakpoints];
       atexit(debug_break_cleanup);
       char * cpy = new char[strlen(env)+1];
-      strcpy(cpy, env);
+      (void)strcpy(cpy, env);
       ptr = cpy;
       char * end = strchr(ptr, ' ');
       char * tst = strchr(ptr, ',');
@@ -126,7 +127,7 @@ SoDebugError::initClass(void)
       while (end && i < num_breakpoints) {
         *end = 0;
         breakpoints[i] = new char[strlen(ptr)+1];
-        strcpy(breakpoints[i], ptr);
+        (void)strcpy(breakpoints[i], ptr);
         i++;
         ptr = end+1;
         end = strchr(ptr, ' ');

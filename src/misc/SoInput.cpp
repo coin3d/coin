@@ -111,7 +111,7 @@
 #include <sys/param.h> // ntohl(), ntohs() etc on FreeBSD
 #endif // HAVE_SYS_PARAM_H
 #include <ctype.h>
-
+#include "../snprintf.h" // coin_getenv()
 
 // This (POSIX-compliant) macro is missing from the Win32 API header
 // files for MSVC++ 6.0.
@@ -1072,7 +1072,7 @@ SoInput::findReference(const SbName & name) const
 
   static int COIN_SOINPUT_SEARCH_GLOBAL_DICT = -1;
   if (COIN_SOINPUT_SEARCH_GLOBAL_DICT < 0) {
-    char * env = getenv("COIN_SOINPUT_SEARCH_GLOBAL_DICT");
+    const char * env = coin_getenv("COIN_SOINPUT_SEARCH_GLOBAL_DICT");
     if (env) COIN_SOINPUT_SEARCH_GLOBAL_DICT = atoi(env);
     else COIN_SOINPUT_SEARCH_GLOBAL_DICT = 0;
   }
@@ -1178,7 +1178,7 @@ SoInput::addEnvDirectoriesIdx(int startidx,
                               const char * envVarName,
                               const char * separator)
 {
-  const char * p = getenv(envVarName);
+  const char * p = coin_getenv(envVarName);
   if (!p) {
 #if COIN_DEBUG
     SoDebugError::postWarning("SoInput::addEnvDirectoriesFirst",

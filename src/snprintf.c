@@ -22,13 +22,19 @@
   on systems where these extension functions are not available.
 */
 
+/* FIXME: now also with portable abstraction coin_getenv() for reading
+   system environment variables. Should therefore rename this
+   file accordingly. 20010821 mortene. */
 
 #if HAVE_CONFIG_H
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
 #include <stdio.h>
-
+#include <stdlib.h>
+#ifdef HAVE_WINDOWS_H
+#include <windows.h> /* GetEnvironmentVariable() */
+#endif /* HAVE_WINDOWS_H */
 
 #ifndef HAVE_VSNPRINTF
 
@@ -75,6 +81,12 @@
 
   19991221 mortene. Thanks to larsa for the idea.
 
+ */
+
+/*
+  FIXME: could perhaps grab a decent snprintf() implementation (with a
+  liberal enough license for our use) from one of the BSD-Unixen?
+  Investigate.  20010821 mortene.
  */
 
 /* First a helper function to find a valid file pointer which is
@@ -150,6 +162,128 @@ snprintf(char * target, size_t n, const char * formatstr, ...)
 #endif /* !HAVE__SNPRINTF */
 
 #endif /* !HAVE_SNPRINTF */
+
+/**************************************************************************/
+
+#ifdef _WIN32 /* FIXME: use configure check to test for GetEnvironmentVariable(). 20010821 mortene. */
+#define HAVE_GETENVIRONMENTVARIABLE 1
+#endif /* _WIN32 */
+
+/**************************************************************************/
+
+/*** Singlelinked list for the environment variables. *********************/
+
+/* FIXME: should implement a generic (macro-based) singlelinked list
+   abstraction in C (the following code could be a good starting
+   point). Then axe this code. Then move the various listhandling
+   stuff in the Coin library from the SbList<> template to the C-based
+   one to aid any future transition to pure C. 20010821 mortene. */
+
+static struct envvar_data * envlist_head = NULL;
+static struct envvar_data * envlist_tail = NULL;
+
+struct envvar_data {
+  char * name;
+  char * val;
+  struct envvar_data * next;
+};
+
+static void
+envlist_cleanup(void)
+{
+  struct envvar_data * ptr = envlist_head;
+  while (ptr != NULL) {
+    struct envvar_data * tmp = ptr;
+    free(ptr->name);
+    free(ptr->val);
+    ptr = ptr->next;
+    free(tmp);
+  }
+}
+
+static void
+envlist_append(struct envvar_data * item)
+{
+  item->next = NULL;
+  if (envlist_head == NULL) {
+    envlist_head = item;
+    envlist_tail = item;
+    (void)atexit(envlist_cleanup);
+  }
+  else {
+    envlist_tail->next = item;
+    envlist_tail = item;
+  }
+}
+
+/**************************************************************************/
+
+/*
+  When working with MSWindows applications using Coin as a DLL,
+  setenv() / getenv() will not work as expected, as the application
+  and the DLL has different instances of the C library with different
+  datastructures on different heaps. That's why we need this
+  abstraction around the C-libs getenv() vs the Win32 API
+  GetEnvironmentVariable() function.
+*/
+const char *
+coin_getenv(const char * envname)
+{
+#ifdef HAVE_GETENVIRONMENTVARIABLE
+  int neededsize;
+
+  /* Try to find envvar among those requested earlier on. */
+  struct envvar_data * ptr = envlist_head;
+  while (ptr != NULL) {
+    if (strcmp(ptr->name, envname) == 0) { return ptr->val; }
+    ptr = ptr->next;
+  }
+
+  neededsize = GetEnvironmentVariable(envname, NULL, 0);
+  if (neededsize > 1) {
+    int resultsize;
+    struct envvar_data * item;
+    char * tmpbuf = (char *)malloc(neededsize + 1);
+    /* Augh. Could we handle this any better? */
+    if (tmpbuf == NULL) { return NULL; }
+    resultsize = GetEnvironmentVariable(envname, tmpbuf, neededsize);
+    /* Augh. Could we handle this any better? */
+    if (resultsize != neededsize-1) {
+      free(tmpbuf);
+      return NULL;
+    }
+
+    item = (struct envvar_data *)malloc(sizeof(struct envvar_data));
+    /* Augh. Could we handle this any better? */
+    if (item == NULL) {
+      free(tmpbuf);
+      return NULL;
+    }
+    item->name = strdup(envname);
+    /* FIXME: won't work with environment variables that are changed
+       "mid-execution". Rather nasty flaw if this is to be considered
+       a general replacement for getenv(). 20010821 mortene.*/
+    item->val = strdup(tmpbuf);
+    /* Augh. Could we handle this any better? */
+    if ((item->name == NULL) || (item->val == NULL)) {
+      free(tmpbuf);
+      if (item->name != NULL) { free(item->name); }
+      if (item->val != NULL) { free(item->val); }
+      free(item);
+      return NULL;
+    }
+    envlist_append(item);
+    return item->val;
+  }
+  /* FIXME: fall through to the standard C-lib's getenv() if
+     GetEnvironmentVariable() fails? If this can cause a crash, it's
+     obviously a bad idea, but if not -- it should be
+     done. Investigate. 20010821 mortene. */
+  return NULL;
+#else /* !HAVE_GETENVIRONMENTVARIABLE */
+  return getenv(envname);
+#endif /* !HAVE_GETENVIRONMENTVARIABLE */
+}
 
 /**************************************************************************/
 

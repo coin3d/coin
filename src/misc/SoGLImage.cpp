@@ -100,6 +100,7 @@
 #include <GL/gl.h>
 #include <GLUWrapper.h>
 #include <Inventor/lists/SbList.h>
+#include "../snprintf.h" // coin_getenv()
 
 // MS Windows often has very old gl.h files, so we just define these
 // value here if not defined. Run-time checks are used to determine
@@ -311,21 +312,21 @@ SoGLImage::SoGLImage(void)
 
   // check environment variables
   if (COIN_TEX2_LINEAR_LIMIT < 0.0f) {
-    char * env = getenv("COIN_TEX2_LINEAR_LIMIT");
+    const char * env = coin_getenv("COIN_TEX2_LINEAR_LIMIT");
     if (env) COIN_TEX2_LINEAR_LIMIT = atof(env);
     if (COIN_TEX2_LINEAR_LIMIT < 0.0f || COIN_TEX2_LINEAR_LIMIT > 1.0f) {
       COIN_TEX2_LINEAR_LIMIT = DEFAULT_LINEAR_LIMIT;
     }
   }
   if (COIN_TEX2_MIPMAP_LIMIT < 0.0f) {
-    char * env = getenv("COIN_TEX2_MIPMAP_LIMIT");
+    const char * env = coin_getenv("COIN_TEX2_MIPMAP_LIMIT");
     if (env) COIN_TEX2_MIPMAP_LIMIT = atof(env);
     if (COIN_TEX2_MIPMAP_LIMIT < 0.0f || COIN_TEX2_MIPMAP_LIMIT > 1.0f) {
       COIN_TEX2_MIPMAP_LIMIT = DEFAULT_MIPMAP_LIMIT;
     }
   }
   if (COIN_TEX2_LINEAR_MIPMAP_LIMIT < 0.0f) {
-    char * env = getenv("COIN_TEX2_LINEAR_MIPMAP_LIMIT");
+    const char * env = coin_getenv("COIN_TEX2_LINEAR_MIPMAP_LIMIT");
     if (env) COIN_TEX2_LINEAR_MIPMAP_LIMIT = atof(env);
     if (COIN_TEX2_LINEAR_MIPMAP_LIMIT < 0.0f || COIN_TEX2_LINEAR_MIPMAP_LIMIT > 1.0f) {
       COIN_TEX2_LINEAR_MIPMAP_LIMIT = DEFAULT_LINEAR_MIPMAP_LIMIT;
@@ -333,7 +334,7 @@ SoGLImage::SoGLImage(void)
   }
 
   if (COIN_TEX2_SCALEUP_LIMIT < 0.0f) {
-    char * env = getenv("COIN_TEX2_SCALEUP_LIMIT");
+    const char * env = coin_getenv("COIN_TEX2_SCALEUP_LIMIT");
     if (env) COIN_TEX2_SCALEUP_LIMIT = atof(env);
     if (COIN_TEX2_SCALEUP_LIMIT < 0.0f || COIN_TEX2_SCALEUP_LIMIT > 1.0f) {
       COIN_TEX2_SCALEUP_LIMIT = DEFAULT_SCALEUP_LIMIT;
@@ -341,14 +342,14 @@ SoGLImage::SoGLImage(void)
   }
 
   if (COIN_TEX2_BUILD_MIPMAP_FAST < 0) {
-    char * env = getenv("COIN_TEX2_BUILD_MIPMAP_FAST");
+    const char * env = coin_getenv("COIN_TEX2_BUILD_MIPMAP_FAST");
     if (env && atoi(env) == 1) {
       COIN_TEX2_BUILD_MIPMAP_FAST = 1;
     }
     else COIN_TEX2_BUILD_MIPMAP_FAST = 0;
   }
   if (COIN_TEX2_USE_GLTEXSUBIMAGE < 0) {
-    char * env = getenv("COIN_TEX2_USE_GLTEXSUBIMAGE");
+    const char * env = coin_getenv("COIN_TEX2_USE_GLTEXSUBIMAGE");
     if (env && atoi(env) == 1) {
       COIN_TEX2_USE_GLTEXSUBIMAGE = 1;
     }
