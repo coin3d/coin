@@ -489,6 +489,11 @@ SoMField::setNum(const int num)
 void
 SoMField::deleteValues(int start, int num)
 {
+  // Note: this function is overridden in SoMFNode, SoMFEngine and
+  // SoMFPath, so if you do any changes here, take a look at those
+  // methods aswell (they are collected in the common template
+  // MFNodeEnginePath.tpl).
+
   // Don't use getNum(), so we avoid recursive evaluate() calls.
   int oldnum = this->num;
 

@@ -204,7 +204,10 @@ SoMF_Typename_::deleteAllValues(void)
 void
 SoMF_Typename_::deleteValues(int start, int num)
 {
-  if (num == -1) num = this->num - 1 - start;
+  // Note: this function overrides the one in SoMField, so if you do
+  // any changes here, take a look at that method aswell.
+
+  if (num == -1) num = this->num - start;
   for (int i=start; i < start+num; i++) {
     So_Typename_ * n = this->values[i];
     if (n) {
