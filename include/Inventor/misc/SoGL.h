@@ -96,6 +96,7 @@ void sogl_render_cube(const float width,
 // convenience functions
 void sogl_polygon_offset(const int onoff, const float numpixels = 1.0f);
 unsigned int sogl_create_texture(const int wrapS, const int wrapT,
+                                 const float quality,
                                  const unsigned char * const texture,
                                  const int numComponents,
                                  const int w, const int h);

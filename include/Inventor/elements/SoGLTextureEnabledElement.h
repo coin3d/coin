@@ -52,6 +52,7 @@ public:
   virtual void push(SoState * state);
   virtual void pop(SoState * state,
                    const SoElement * prevTopElement);
+  virtual void evaluate() const;
 
   static  void set(SoState * const state, SoNode * const node,
                    const SbBool enabled);
@@ -63,6 +64,7 @@ public:
   virtual void setElt(int32_t value);
 
 private:
+  int32_t glstate;
   void updategl();
 
 };

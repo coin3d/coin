@@ -26,6 +26,7 @@
 #include <Inventor/fields/SoSFImage.h>
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/fields/SoSFColor.h>
+#include <Inventor/elements/SoTextureImageElement.h>
 
 #if defined(COIN_EXCLUDE_SOTEXTURE2)
 #error Configuration settings disrespected -- do not include this file!
@@ -45,19 +46,17 @@ public:
 
   SbBool readImage();
 
-  // Definition must match 100% with the enum in SoTextureImageElement.
   enum Model {
-    MODULATE,
-    DECAL,
-    BLEND
+    MODULATE = SoTextureImageElement::MODULATE,
+    DECAL = SoTextureImageElement::DECAL,
+    BLEND = SoTextureImageElement::BLEND
   };
 
-  // Definition must match 100% with the enum in SoTextureImageElement.
   enum Wrap {
-    REPEAT,
-    CLAMP
+    REPEAT = SoTextureImageElement::REPEAT,
+    CLAMP = SoTextureImageElement::CLAMP
   };
-
+  
   SoSFString filename;
   SoSFImage image;
   SoSFEnum wrapS;

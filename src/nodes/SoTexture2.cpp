@@ -46,6 +46,7 @@
 
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/elements/SoTextureImageElement.h>
+#include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/SoImageInterface.h>
 
 #include <assert.h>
@@ -203,23 +204,34 @@ SoTexture2::readImage(void)
 void
 SoTexture2::GLRender(SoGLRenderAction * action)
 {
-  // FIXME: context check, pederb
-
-  if (this->glImage == NULL && this->imageData) {
-    this->glImage =
-      SoGLImage::findOrCreateGLImage(this->imageData, NULL);
-
+  // FIXME: consider context, pederb
+  SoState *state = action->getState();
+  this->getImage();
+  
+  if (this->imageData) {
+    float quality = SoTextureQualityElement::get(state);
+    SbBool clamps = this->wrapS.getValue() == SoTexture2::CLAMP;
+    SbBool clampt = this->wrapT.getValue() == SoTexture2::CLAMP;
+    
+    if (this->glImage && !this->glImage->matches(clamps, clampt, quality)) {
+      this->imageData->ref();
+      this->glImage->unref();
+      this->glImage = NULL;
+    }
+    
+    if (this->glImage == NULL) {
+      this->glImage =
+        SoGLImage::findOrCreateGLImage(this->imageData, 
+                                       clamps, clampt, quality, NULL);
+      
+    }
   }
-
-  if (this->glImage && !this->glImage->isInitialized()) {
-    this->glImage->init(this->wrapS.getValue() == CLAMP,
-                        this->wrapT.getValue() == CLAMP);
-  }
-  SoGLTextureImageElement::set(action->getState(), this,
+  
+  SoGLTextureImageElement::set(state, this,
                                this->glImage,
                                (SoTextureImageElement::Model) model.getValue(),
                                this->blendColor.getValue());
-  SoGLTextureEnabledElement::set(action->getState(),
+  SoGLTextureEnabledElement::set(state,
                                  this, this->glImage != NULL);
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
@@ -232,6 +244,7 @@ SoTexture2::GLRender(SoGLRenderAction * action)
 void
 SoTexture2::doAction(SoAction *action)
 {
+  this->getImage();
   if (this->imageData) {
     SoTextureImageElement::set(action->getState(), this,
                                imageData->getSize(),
@@ -297,6 +310,11 @@ SoTexture2::setReadStatus(int /* s */)
   assert(0 && "FIXME: not implemented");
 }
 
+//
+// private method that creates a SoImageInterface object. This creates
+// a common interface, whether the file is loaded from a file or the
+// image data is supplied inside the node.
+//
 void
 SoTexture2::getImage()
 {
@@ -308,6 +326,7 @@ SoTexture2::getImage()
 
   if (bytes && size[0] > 0 && size[1] > 0 && nc > 0) {
     this->imageData = new SoImageInterface(size, nc, bytes);
+    this->imageData->ref();
   }
   else {
     if (this->filename.getValue().getLength()) {

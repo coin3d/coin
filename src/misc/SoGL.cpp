@@ -37,6 +37,7 @@
 #include <windows.h>
 #endif // _WIN32
 #include <GL/gl.h>
+#include <GL/glu.h>
 #include <string.h>
 #include <math.h>
 
@@ -680,6 +681,7 @@ sogl_free_texture(unsigned int index)
 //
 static void
 really_create_texture(const int wrapS, const int wrapT,
+                      const float quality,
                       const unsigned char * const texture,
                       const int numComponents,
                       const int w, const int h,
@@ -690,12 +692,26 @@ really_create_texture(const int wrapS, const int wrapT,
                   wrapS ? GL_CLAMP : GL_REPEAT);
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,
                   wrapT ? GL_CLAMP : GL_REPEAT);
-
-  // these lines _must_ be here for some reason
-  if (!dlist) {
-    // FIXME, base LINEAR/NEAREST on some quality parameter
+  
+  //
+  // for now, if quality >= 0.5, we create mipmaps. The texture quality
+  // should probably be based on detected hardware though.
+  //
+  if (quality < 0.1f) {
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+  }
+  else if (quality < 0.5f) {
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);    
+  }
+  else if (quality < 0.8f) {
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+  }
+  else { // max quality
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR); 
   }
 
   GLenum glformat;
@@ -715,13 +731,21 @@ really_create_texture(const int wrapS, const int wrapT,
   default:
     assert(0);
   }
-  glTexImage2D(GL_TEXTURE_2D, 0, numComponents, w, h,
-               0, glformat, GL_UNSIGNED_BYTE, texture);
+
+  if (quality < 0.5f) {
+    glTexImage2D(GL_TEXTURE_2D, 0, numComponents, w, h,
+                 0, glformat, GL_UNSIGNED_BYTE, texture);
+  }
+  else { // mipmaps
+    gluBuild2DMipmaps(GL_TEXTURE_2D, numComponents, w, h, 
+                      glformat, GL_UNSIGNED_BYTE, texture); 
+  }
 }
 
 
 unsigned int
 sogl_create_texture(const int wrapS, const int wrapT,
+                    const float quality,
                     const unsigned char * const texture,
                     const int numComponents,
                     const int w, const int h)
@@ -758,7 +782,8 @@ sogl_create_texture(const int wrapS, const int wrapT,
 #endif
   }
 
-  really_create_texture(wrapS, wrapT, texture, numComponents, w, h, dlist);
+  really_create_texture(wrapS, wrapT, quality, texture, 
+                        numComponents, w, h, dlist);
 
   if (dlist)
     glEndList();

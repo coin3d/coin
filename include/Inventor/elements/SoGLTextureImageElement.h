@@ -50,7 +50,6 @@ protected:
 
 public:
   virtual void init(SoState * state);
-  virtual void push(SoState * state);
   virtual void pop(SoState * state,
                    const SoElement * prevTopElement);
 

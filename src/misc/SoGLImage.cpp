@@ -38,13 +38,16 @@
 // private constructor
 //
 SoGLImage::SoGLImage(SoImageInterface * const img,
+                     const SbBool clamps,
+                     const SbBool clampt,
+                     const float quality,
                      void * const context)
 {
   this->image = img;
   this->handle = 0;
-  this->alpha = 0;
-  this->clampS = 0;
-  this->clampT = 0;
+  this->clampS = FALSE;
+  this->clampT = FALSE;
+  this->quality = quality;
   this->refCount = 0;
   this->context = context;
   if (this->image) this->image->ref();
@@ -60,39 +63,124 @@ SoGLImage::~SoGLImage()
 }
 
 /*!
-  Initializes the GL image. \a clamps and \a clampt specifies
-  whether texture coordininates should be clamped outside
-  0 and 1. Returns \e TRUE on success.
+  Checks whether the GL object matches the parameters. If not, you'll
+  have to unref this GLImage and create a new one.
+  
+  This will rarely happen, since this is the kind of variables
+  that should not change very often.
+*/  
+SbBool 
+SoGLImage::matches(const SbBool clamps, const SbBool clampt,
+                   const float quality) const
+{
+  return 
+    this->clampS == clamps &&
+    this->clampT == clampt &&
+    this->quality == quality;
+}
 
-  The OpenGL context that is going to use this texture must
-  be the current GL context.
+/*!
+  Unreferences the texture. Make sure the OpenGL context using
+  this texture is the current GL context.
+
+  An object using a GL image should call this method when the
+  object is not going to use the texture ant more. The reference
+  counting will make sure a GL image is not freed until all
+  objects using the image has called this method.
+*/
+void
+SoGLImage::unref()
+{
+  SoGLImage::unrefGLImage(this);
+}
+
+/*!
+  Makes this texture the current OpenGL texture.
+*/
+void
+SoGLImage::apply() const
+{
+  //  assert(this->handle);
+  sogl_apply_texture(this->handle);
+}
+
+/*!
+  Returns the OpenGL handle for this texture. An OpenGL handle
+  will either be an OpenGL texture object or a displat list
+  for old OpenGL implementations.
+*/
+int
+SoGLImage::getHandle() const
+{
+  return this->handle;
+}
+
+/*!
+  Returns \e TRUE if this texture has some pixels with alpha != 255
 */
 SbBool
-SoGLImage::init(const SbBool clamps, const SbBool clampt)
+SoGLImage::hasTransparency() const
+{
+  assert(this->image);
+  return this->image->hasTransparency();
+}
+
+/*!
+  Returns \e TRUE if texture coordinates should be clamped in
+  the s-direction.
+*/
+SbBool
+SoGLImage::shouldClampS() const
+{
+  return this->clampS;
+}
+
+/*!
+  Returns \e TRUE if texture coordinates should be clamped in
+  the t-direction.
+*/
+SbBool
+SoGLImage::shouldClampT() const
+{
+  return this->clampT;
+}
+
+/*!
+  Returns the image data for this OpenGL texture.
+*/
+const SoImageInterface *
+SoGLImage::getImage() const
+{
+  return this->image;
+}
+
+/*!
+  Returns texture quality for this GL image.
+*/
+float 
+SoGLImage::getQuality() const
+{
+  return this->quality;
+}
+
+//
+// private method that initializes the GL texture object/display list.
+//
+SbBool
+SoGLImage::GLinit()
 {
   if (this->handle) return TRUE;
   if (this->image && this->image->load()) {
     checkResize(); // resize if necessary
     SbVec2s size = image->getSize();
     int format = image->getNumComponents();
-
-    this->handle = sogl_create_texture(clamps, clampt,
+    this->handle = sogl_create_texture(this->clampS, this->clampT,
+                                       this->quality,
                                        this->image->getDataPtr(),
-                                       format, size[0], size[1]);
-    if (format == 2 || format == 4) this->alpha = TRUE;
-    else this->alpha = FALSE;
-    return TRUE;
+                                       format, size[0], size[1]);    
+    return this->handle != 0;
   }
   return FALSE;
-}
-
-/*!
-  Returns \e TRUE if the GL image has been initialized.
-*/
-SbBool
-SoGLImage::isInitialized() const
-{
-  return this->handle != 0;
 }
 
 //
@@ -155,107 +243,51 @@ SoGLImage::checkResize()
   }
 }
 
-/*!
-  Unreferences the texture. Make sure the OpenGL context using
-  this texture is the current GL context.
-
-  An object using a GL image should call this method when the
-  object is not going to use the texture ant more. The reference
-  counting will make sure a GL image is not freed until all
-  objects using the image has called this method.
-*/
-void
-SoGLImage::unref()
-{
-  SoGLImage::unrefGLImage(this);
-}
-
-/*!
-  Makes this texture the current OpenGL texture.
-*/
-void
-SoGLImage::apply() const
-{
-  //  assert(this->handle);
-  sogl_apply_texture(this->handle);
-}
-
-/*!
-  Returns the OpenGL handle for this texture. An OpenGL handle
-  will either be an OpenGL texture object or a displat list
-  for old OpenGL implementations.
-*/
-int
-SoGLImage::getHandle() const
-{
-  return this->handle;
-}
-
-/*!
-  Returns \e TRUE if this texture has an alpha component.
-*/
-SbBool
-SoGLImage::hasAlphaComponent() const
-{
-  return this->alpha == 1;
-}
-
-/*!
-  Returns \e TRUE if texture coordinates should be clamped in
-  the s-direction.
-*/
-SbBool
-SoGLImage::shouldClampS() const
-{
-  return this->clampS == 1;
-}
-
-/*!
-  Returns \e TRUE if texture coordinates should be clamped in
-  the t-direction.
-*/
-SbBool
-SoGLImage::shouldClampT() const
-{
-  return this->clampT == 1;
-}
-
-/*!
-  Returns the image data for this OpenGL texture.
-*/
-const SoImageInterface *
-SoGLImage::getImage() const
-{
-  return this->image;
-}
-
 /**** some static methods needed to reuse GL images *********/
 
 static SbList <SoGLImage *> storedImages;
 
-/*!
-  Searches the texture database and returns a texture object
-  that matches \a texname and \a context. If no such texture
-  is found, a new texture object is created and returned.
+/*!  
+  Searches the texture database and returns a texture object that
+  matches all parameters. If no such texture is found, a new texture 
+  object is created and returned.
+  
+  It is currently not possible to share textures between contexts, but
+  this will be implemented at a later stage.
 
-  It is currently not possible to share textures between
-  contexts, but this will be implemented at a later stage.
+  \a clamps and \a clampt specifies whether texture coordininates
+  should be clamped outside 0 and 1. \a qualiy specifies the
+  texture quality. A value of 0 means use lowest quality texture, a
+  value of 1 means use maximum quality possible. Exactly what this
+  means might vary from platform to platform. Returns \e TRUE on
+  success.
+
+  The OpenGL context that is going to use this texture must
+  be the current GL context when calling this method.
 */
 SoGLImage *
 SoGLImage::findOrCreateGLImage(SoImageInterface * const image,
+                               const SbBool clamps,
+                               const SbBool clampt,
+                               const float quality,
                                void * const context)
 {
   int i, n = storedImages.getLength();
   for (i = 0; i < n; i++) {
     SoGLImage *glimage = storedImages[i];
-    if (glimage->image == image && glimage->context == context) break;
+    if (glimage->image == image && 
+        glimage->context == context &&
+        glimage->clampS == clamps &&
+        glimage->clampT == clampt &&
+        glimage->quality == quality) break;
   }
   if (i < n) {
     storedImages[i]->refCount++;
     return storedImages[i];
   }
   else {
-    SoGLImage *glimage = new SoGLImage(image, context);
+    SoGLImage *glimage = new SoGLImage(image, clamps, clampt, quality, context);
+    glimage->GLinit();
     glimage->refCount++;
     storedImages.append(glimage);
     return glimage;

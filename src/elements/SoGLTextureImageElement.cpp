@@ -37,6 +37,10 @@
 #include <GL/gl.h>
 #include <assert.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 //$ BEGIN TEMPLATE ElementSource(SoGLTextureImageElement)
 
 /*!
@@ -141,18 +145,6 @@ SoGLTextureImageElement::init(SoState * state)
   this->glimage = NULL;
 }
 
-//! FIXME: write doc
-void
-SoGLTextureImageElement::push(SoState * state)
-{
-  inherited::push(state);
-  SoGLTextureImageElement * const element =
-    (SoGLTextureImageElement *)this->next;
-
-  // remember previous glimage
-  element->glimage = this->glimage;
-}
-
 //! FIXME: write doc.
 
 void
@@ -162,9 +154,20 @@ SoGLTextureImageElement::pop(SoState * state,
   inherited::pop(state, prevTopElement);
   SoGLTextureImageElement *prev = (SoGLTextureImageElement*)
     prevTopElement;
-
-  if (prev->glimage != NULL)
+  
+  if (prev->glimage != NULL) {
     prev->glimage->apply();
+    if (prev->model == DECAL) {
+      glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+    }
+    else if (prev->model == MODULATE) {
+      glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    }
+    else {
+      glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
+      glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, prev->blendColor.getValue());      
+    }                
+  }
 }
 
 //! FIXME: write doc.
@@ -191,12 +194,19 @@ SoGLTextureImageElement::set(SoState * const state, SoNode * const node,
                    SoTextureImageElement::REPEAT,
                    model,
                    blendColor);
-
-    // test if glimage already is current glimage
-    if (elem->glimage != glimage) {
-      elem->glimage = glimage;
-      glimage->apply();
+    
+    elem->glimage = glimage;
+    glimage->apply();
+    if (model == DECAL) {
+      glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
     }
+    else if (model == MODULATE) {
+      glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    }
+    else {
+      glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
+      glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, blendColor.getValue());      
+    }                
   }
   else {
     elem->glimage = NULL;

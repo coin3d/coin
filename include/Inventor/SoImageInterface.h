@@ -39,6 +39,7 @@ public:
   const char *getFilename() const;
   int getOrgNumComponents() const;
   SbVec2s getOriginalSize() const;
+  SbBool hasTransparency() const;
 
   void ref();
   void unref(); // use this to delete
@@ -53,6 +54,8 @@ private:
   SoImageInterface(const char * const filename);
   ~SoImageInterface();
 
+  void checkTransparency();
+
   SbString filename;
   SbVec2s orgSize;
   int orgNumComponents;
@@ -61,8 +64,10 @@ private:
   int numComponents;
   unsigned char *dataPtr;
   int refCount;
-  unsigned int hasTried : 1;
-  unsigned int didAlloc : 1;
+  SbBool hasTried;
+  SbBool didAlloc;
+  SbBool transparency;
+  SbBool isReuseable;
 };
 
 #endif // !__SOIMAGEINTERFACE_H__

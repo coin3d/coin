@@ -36,6 +36,10 @@
 #include <windows.h>
 #endif // _WIN32
 
+#ifndef NDEBUG
+#include <GL/gl.h> // assert glGetError
+#endif
+
 #include <Inventor/nodes/SoNodes.h>
 
 #include <Inventor/actions/SoActions.h>
@@ -624,6 +628,15 @@ SoNode::GLRenderS(SoAction * const action,
   default:
     assert(0 && "Unknown path code");
     break;
+  }
+#if COIN_DEBUG
+  int err = glGetError();
+  if (err != GL_NO_ERROR) {
+    SoDebugError::postInfo("SoNode::GLRenderS",
+                           "error: 0x%x, node: %s",
+                           err, node->getTypeId().getName().getString());
+#endif // COIN_DEBUG
+    
   }
 }
 

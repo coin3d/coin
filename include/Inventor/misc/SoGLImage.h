@@ -38,38 +38,46 @@ class SoGLImage {
 public:
 
   static SoGLImage *findOrCreateGLImage(SoImageInterface * const image,
+                                        const SbBool clamps,
+                                        const SbBool clampt,
+                                        const float quality,
                                         void * const context);
 
   void unref(); // use this to delete
 
-  SbBool init(const SbBool clamps, const SbBool clampt);
-  SbBool isInitialized() const;
+  SbBool matches(const SbBool clamps, const SbBool clampt,
+                 const float quality) const;
+  
   void apply() const;
   int getHandle() const;
-  SbBool hasAlphaComponent() const;
+  SbBool hasTransparency() const;
   const SoImageInterface *getImage() const;
   SbBool shouldClampS() const;
   SbBool shouldClampT() const;
+  float getQuality() const;
 
 private:
   friend class dummyClass; // avoid warnings on stupid compilers
 
   SoGLImage(SoImageInterface * const img,
+            const SbBool clamps,
+            const SbBool clampt,
+            const float quality,
             void * const context);
   ~SoGLImage();
 
   static void unrefGLImage(SoGLImage * const image);
   void checkResize();
+  SbBool GLinit();
 
   SoImageInterface *image;
-
-  unsigned int alpha : 1;
-  unsigned int clampS : 1;
-  unsigned int clampT : 1;
-
+  
+  SbBool clampS;
+  SbBool clampT;
   void *context;
   int refCount;
   int handle;
+  float quality;
 };
 
 #endif // !__SOGLIMAGE_H__

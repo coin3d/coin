@@ -101,6 +101,8 @@
 #include <Inventor/details/SoLineDetail.h>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
+
 
 #ifdef _WIN32
 #include <windows.h>
@@ -674,6 +676,14 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
     lm->evaluate();
   }
 #endif // !COIN_EXCLUDE_SOGLLIGHTMODELELEMENT
+
+#if !defined(COIN_EXCLUDE_SOGLTEXTUREENABLESELEMENT)
+  {
+    const SoGLTextureEnabledElement * te = (SoGLTextureEnabledElement *)
+      state->getConstElement(SoGLTextureEnabledElement::getClassStackIndex());
+    te->evaluate();
+  }
+#endif // !COIN_EXCLUDE_SOGLTEXTUREENABLEDELEMENT
 
 #if !defined(COIN_EXCLUDE_SOCOMPLEXITYTYPEELEMENT)
 

@@ -159,7 +159,8 @@ SoGLTextureEnabledElement::init(SoState * state)
 {
   inherited::init(state);
   this->data = getDefault();
-  updategl();
+  this->glstate = 0;
+  glDisable(GL_TEXTURE_2D);
 }
 
 //! FIXME: write doc.
@@ -169,6 +170,7 @@ SoGLTextureEnabledElement::push(SoState * state)
 {
   inherited::push(state);
   ((SoGLTextureEnabledElement*)this->next)->data = this->data;
+  ((SoGLTextureEnabledElement*)this->next)->glstate = this->glstate;
 }
 
 //! FIXME: write doc.
@@ -177,9 +179,14 @@ void
 SoGLTextureEnabledElement::pop(SoState * state,
                                const SoElement * prevTopElement)
 {
-  if (this->data != ((SoGLTextureEnabledElement*)prevTopElement)->data)
-    ((SoGLTextureEnabledElement*)prevTopElement)->updategl();
+  ((SoGLTextureEnabledElement*)prevTopElement)->glstate = this->glstate;
   inherited::pop(state, prevTopElement);
+}
+
+void
+SoGLTextureEnabledElement::evaluate() const
+{
+  ((SoGLTextureEnabledElement*)this)->updategl();
 }
 
 //! FIXME: write doc.
@@ -226,6 +233,9 @@ SoGLTextureEnabledElement::setElt(int32_t value)
 void
 SoGLTextureEnabledElement::updategl()
 {
-  if (this->data) glEnable(GL_TEXTURE_2D);
-  else glDisable(GL_TEXTURE_2D);
+  if (this->data != this->glstate) {
+    this->glstate = this->data;
+    if (this->data) glEnable(GL_TEXTURE_2D);
+    else glDisable(GL_TEXTURE_2D);
+  }
 }

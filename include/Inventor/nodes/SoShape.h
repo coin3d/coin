@@ -91,7 +91,8 @@ public:
   static float getDecimatedComplexity(SoState * state, float complexity);
 
 protected:
-  friend class shapePrimitiveData; // internal class
+  friend class shapePrimitiveData;         // internal class
+  friend class so_generate_prim_private;   // a very private class
   SoShape(void);
   virtual ~SoShape();
 

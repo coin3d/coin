@@ -65,8 +65,10 @@ SoImageInterface::SoImageInterface(const char * const file_name)
     numComponents(0),
     dataPtr(NULL),
     refCount(0),
-    hasTried(0),
-    didAlloc(0)
+    hasTried(FALSE),
+    didAlloc(FALSE),
+    transparency(FALSE),
+    isReuseable(TRUE)
 {
 }
 
@@ -84,9 +86,11 @@ SoImageInterface::SoImageInterface(const SbVec2s size,
   this->orgSize = this->size = size;
   this->orgNumComponents = this->numComponents = numComponents;
   this->dataPtr = (unsigned char*)data;
-  this->didAlloc = 0;  // do not delete this data!
-  this->refCount = -1; // image cannot be reused
-  this->hasTried = 1;  // data is loaded, kind of...
+  this->didAlloc = FALSE;  // do not delete this data!
+  this->hasTried = TRUE;   // data is loaded, kind of...
+  this->checkTransparency();
+  this->refCount = 0;
+  this->isReuseable = FALSE;
 }
 
 /*!
@@ -99,14 +103,14 @@ SoImageInterface::~SoImageInterface()
 }
 
 /*!
-  Increases the reference count for this image.
+  Increases the reference count for this image. 
+
   \sa SoImageInterface::unref()
 */
 void
 SoImageInterface::ref()
 {
-  // nonreusable images have negative refcount
-  if (refCount >= 0) refCount++;
+  refCount++;
 }
 
 /*!
@@ -117,10 +121,11 @@ SoImageInterface::ref()
 void
 SoImageInterface::unref()
 {
-  // nonreusable images have negative refcount, and it is
-  // safe to delete these.
-  if (this->refCount < 0) delete this;
-  else SoImageInterface::unrefImage(this);
+  if (this->isReuseable)
+    SoImageInterface::unrefImage(this);
+  else {
+    if (--refCount == 0) delete this;
+  }
 }
 
 /*!
@@ -161,13 +166,13 @@ SoImageInterface::resize(const SbVec2s newsize)
       }
       sy += dy;
     }
-
+    
     this->size = newsize;
     if (this->didAlloc && this->dataPtr) free(this->dataPtr);
     this->dataPtr = dest;
-    this->didAlloc = 1; // we did alloc this data
+    this->didAlloc = TRUE; // we did alloc this data
   }
-
+  
   return TRUE;
 }
 
@@ -201,6 +206,7 @@ SoImageInterface::load(const SbBool forceTry)
     if (this->dataPtr) {
       this->orgSize = this->size = SbVec2s(w, h);
       this->orgNumComponents = this->numComponents = nc;
+      this->checkTransparency();
       return TRUE;
     }
 #endif // HAVE_LIBSIMAGE
@@ -272,6 +278,36 @@ SbVec2s
 SoImageInterface::getOriginalSize() const
 {
   return this->orgSize;
+}
+
+/*!
+  Returns TRUE if at least one pixel has alpha != 255. This value
+  is cached, of course.
+*/
+SbBool 
+SoImageInterface::hasTransparency() const
+{
+  return this->transparency;
+}
+
+//
+// private method that checks data for transparency
+//
+void 
+SoImageInterface::checkTransparency()
+{
+  if (this->numComponents == 2 || this->numComponents == 4) {
+    int n = this->size[0] * this->size[1];
+    int nc = this->numComponents;
+    unsigned char *ptr = (unsigned char *) this->dataPtr + nc - 1;
+    
+    while (n--) {
+      if (*ptr != 255) break;
+      ptr += nc;
+    }
+    this->transparency = n > 0;
+  }
+  else this->transparency = FALSE;
 }
 
 class so_image_data {
@@ -355,8 +391,9 @@ static SbList <so_image_data*> loadedFiles;
 
 /*!
   Should be called by a image holder to enable reusage of images.
-
- */
+  The image will be ref'ed before returned so you should not
+  call ref() after you have received an image from this method.
+*/
 SoImageInterface *
 SoImageInterface::findOrCreateImage(const char * const filename)
 {
@@ -379,12 +416,6 @@ SoImageInterface::findOrCreateImage(const char * const filename)
   return NULL;
 }
 
-/*!
-  Should be called by image holder when the image is no longer
-  needed (typically in destructor).
-
-  \sa SoImageInterface::findOrCreateImage()
-*/
 void
 SoImageInterface::unrefImage(SoImageInterface * const image)
 {
