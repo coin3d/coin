@@ -13446,7 +13446,7 @@ coin_default3dfont_get_edgeidx(void)
   return coin_defaultfont_edgeidx; 
 }
 
-const float
+float
 coin_default3dfont_get_advance(int charidx)
 {
   charidx -= 33;
