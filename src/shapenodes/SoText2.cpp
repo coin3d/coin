@@ -622,7 +622,9 @@ SoText2P::shouldBuildGlyphCache(SoState * state)
 
   if (this->linecnt != this->textnode->string.getNum()) { return TRUE; }
 
+  assert(this->laststring != NULL);
   for (int i=0; i<this->linecnt; i++) {
+    assert(this->laststring[i] != NULL);
     if (*(this->laststring[i]) != this->textnode->string[i]) return TRUE;
   }
 
@@ -634,6 +636,9 @@ SoText2P::buildGlyphCache(SoState * state)
 {
   if (this->shouldBuildGlyphCache(state)) {
     SoText2 * t = this->textnode;
+
+    // FIXME: pre-declaring all variables at the top is C-code, no
+    // need for this when writing C++. 20030408 mortene.
     const char * s;
     int len;
     SbVec2s penpos, advance, kerning, thissize, thispos;
@@ -649,19 +654,22 @@ SoText2P::buildGlyphCache(SoState * state)
     this->hasbuiltglyphcache = TRUE;
     this->linecnt = t->string.getNum();
     this->validarraydims = 0;
+    // FIXME: this is buggy as hell -- linecnt can be 0. And another
+    // thing: use new and delete, not malloc and free. 20030408 mortene.
     this->glyphs = (SoGlyph ***)malloc(this->linecnt*sizeof(SoGlyph*));
     this->positions = (SbVec2s **)malloc(this->linecnt*sizeof(SbVec2s*));
     this->laststring = (SbString **)malloc(this->linecnt*sizeof(SbString*));
     this->stringwidth = (int *)malloc(this->linecnt*sizeof(int));
-    if (!this->glyphs || !this->positions || !this->laststring || !this->stringwidth) {
-      flushGlyphCache(FALSE);
-      return -1;
-    }
+
     // Avoid confusing flushGlyphCache with halfway init'l'ed arrays
+    //
+    // FIXME: this is ugly as fuck; it's bad portability to equate a
+    // null bit pattern with NULL. 20030408 mortene.
     memset(this->glyphs, 0, this->linecnt*sizeof(SoGlyph*));
     memset(this->positions, 0, this->linecnt*sizeof(SbVec2s*));
     memset(this->laststring, 0, this->linecnt*sizeof(SbString*));
     memset(this->stringwidth, 0, this->linecnt*sizeof(int));
+
     this->validarraydims = 1;
     penpos[0] = 0;
     penpos[1] = 0;
@@ -669,16 +677,21 @@ SoText2P::buildGlyphCache(SoState * state)
     kerning = penpos;
     for (int i=0; i<this->linecnt; i++) {
       s = t->string[i].getString();
+      // FIXME: use the SbString interface instead of working directly
+      // on char*. 20030408 mortene.
+      //
+      // FIXME: also, this is buggy. Why check string length? Strings
+      // can be empty, while still present. 20030408 mortene.
       if ((len = strlen(s)) > 0) {
+        // FIXME: don't malloc, see FIXME note above. 20030408 mortene.
         this->glyphs[i] = (SoGlyph **)malloc(len*sizeof(SoGlyph*));
         this->positions[i] = (SbVec2s *)malloc(len*sizeof(SbVec2s));
-        if (!this->glyphs[i] || !this->positions[i]) {
-          flushGlyphCache(FALSE);
-          return -1;
-        }
+
         // Avoid confusing flushGlyphCache with halfway init'l'ed arrays
+        // FIXME: ugly, see FIXME note above. 20030408 mortene.
         memset(this->glyphs[i], 0, len*sizeof(SoGlyph*));
         memset(this->positions[i], 0, len*sizeof(SbVec2s));
+
         this->validarraydims = 2;
         this->laststring[i] = new SbString(s);
         for (int j=0; j<len; j++) {
