@@ -59,6 +59,9 @@ public:
       (this->getReader()->getType() == SoInput_Reader::GZMEMBUFFER);
   }
   
+  void setDeleteBuffer(SbBool enable) {
+    this->deletebuffer = enable;
+  }
   SbBool isBinary(void) {
     return this->isbinary;
   }
@@ -178,6 +181,7 @@ private:
   SbList <SoProto*> protostack;
 
   SbString stdinname; // needed for ivFilename()
+  SbBool deletebuffer;
 };
 
 #endif // COIN_SOINPUT_FILEINFO_H

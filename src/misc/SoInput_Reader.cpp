@@ -209,6 +209,7 @@ SoInput_MemBufferReader::readBuffer(char * buf, const size_t readlen)
 SoInput_GZMemBufferReader::SoInput_GZMemBufferReader(void * bufPointer, size_t bufSize)
 {
   this->gzmfile = cc_gzm_open((uint8_t *)bufPointer, bufSize);
+  this->buf = bufPointer;
 }
 
 SoInput_GZMemBufferReader::~SoInput_GZMemBufferReader()

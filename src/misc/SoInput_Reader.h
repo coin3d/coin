@@ -117,6 +117,7 @@ public:
 
 public:
   void * gzmfile;
+  void * buf;
 };
 
 

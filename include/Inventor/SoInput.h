@@ -71,6 +71,7 @@ public:
   virtual FILE * getCurFile(void) const;
   virtual const char * getCurFileName(void) const;
   virtual void setBuffer(void * bufpointer, size_t bufsize);
+          void setStringArray(const char * strings[]);
   virtual size_t getNumBytesRead(void) const;
   virtual SbString getHeader(void);
   virtual float getIVVersion(void);

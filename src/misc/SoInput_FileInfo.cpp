@@ -21,13 +21,19 @@
  *
 \**************************************************************************/
 
-#include "SoInput_FileInfo.h"
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#include <string.h>
+
 #include <Inventor/lists/SbList.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/misc/SoProto.h>
 #include <Inventor/C/tidbitsp.h>
-#include <string.h>
+
+#include "SoInput_FileInfo.h"
 
 const unsigned int READBUFSIZE = 65536;
 
@@ -52,12 +58,22 @@ SoInput_FileInfo::SoInput_FileInfo(SoInput_Reader * reader)
   this->prefunc = NULL;
   this->postfunc = NULL;
   this->stdinname = "<stdin>";
+  this->deletebuffer = FALSE;
 }
 
 SoInput_FileInfo::~SoInput_FileInfo()
 {
   delete[] this->readbuf;
+  const char * buffer = NULL;
+  if ( this->deletebuffer ) {
+#ifdef HAVE_ZLIB
+    buffer = (const char *) ((SoInput_GZMemBufferReader *) this->reader)->buf;
+#else // !HAVE_ZLIB
+    buffer = (const char *) ((SoInput_MemBufferReader *) this->reader)->buf;
+#endif // ! HAVE_ZLIB
+  }
   delete this->reader;
+  if ( buffer ) delete [] buffer;
 }
 
 SbBool

@@ -545,6 +545,37 @@ SoInput::getCurFileName(void) const
 }
 
 /*!
+  Sets up the input stream for reading from the strings pointed to by a
+  NULL-terminated array of string pointers.
+
+  This method was added to solve the compiler portability problem of 
+  compiling large, static string buffers.  Some compilers have fixed max-
+  lengths on this feature, just over 1KB, which obviously becomes a problem
+  real fast.  This method lets you specify the buffer as an array of
+  smaller string buffers, typically one string for each line in the
+  Inventor file.
+
+  \since 2002-02-10
+*/
+void
+SoInput::setStringArray(const char * strings[])
+{
+  size_t bufsize = 0;
+  int i, j;
+  for (i = bufsize = 0; strings[i] != NULL; i++ )
+    bufsize += strlen(strings[i]);
+  char * buf = new char [bufsize + 1];
+  for (i = bufsize = 0; strings[i] != NULL; i++ ) {
+    const int len = strlen(strings[i]);
+    memcpy(buf+bufsize, strings[i], len);
+    bufsize += len;
+  }
+  this->setBuffer(buf, bufsize);
+  SoInput_FileInfo * info = this->getTopOfStack();
+  info->setDeleteBuffer(TRUE);
+}
+
+/*!
   Sets up the input stream for reading from a memory buffer. Closes all
   open files in the file stack first.
 
