@@ -441,7 +441,6 @@ SoOffscreenRenderer::getScreenPixelsPerInch(void)
 static void
 getMaxCB(void * ptr, SoAction * action)
 {
-
   GLint * size = (GLint *)ptr;
   glGetIntegerv(GL_MAX_VIEWPORT_DIMS, size);
 
@@ -1696,28 +1695,38 @@ SoOffscreenRendererP::pasteSubscreen(int renderpass)
 SbVec2s
 SoOffscreenRendererP::getMaxTileSize(void)
 {
-  static SbBool isvisited = FALSE;
+  static SbBool wasvisited = FALSE;
   static short dims[2] = {128, 128};
 
-  if (!isvisited){
-    isvisited = TRUE;
-    // FIXME: should refactor this code out into a general "call a
-    // function in an OpenGL context" utility function common for the
-    // library. 20030213 mortene.
-    SoOffscreenRenderer * osr = new SoOffscreenRenderer(SbViewportRegion(128,128));
-    SoCallback *cb = new SoCallback();
-    cb->ref();
+  if (wasvisited) { return SbVec2s(dims[0], dims[1]); }
+  wasvisited = TRUE;
 
-    GLint temp[2];
-    cb->setCallback(getMaxCB, temp);
+  GLint temp[2] = {128, 128};
 
-    osr->render(cb);
-
-    delete osr;
-    cb->unref();
-
-    dims[0] = SbMin((short)temp[0], (short)SHRT_MAX);
-    dims[1] = SbMin((short)temp[1], (short)SHRT_MAX);
+#if HAVE_GLX
+  void * ctx = cc_glglue_context_create_offscreen(128, 128);
+  if (ctx) {
+    SbBool ok = cc_glglue_context_make_current(ctx);
+    if (ok) {
+      getMaxCB(temp, NULL);
+      cc_glglue_context_reinstate_previous(ctx);
+    }
+    cc_glglue_context_destruct(ctx);
   }
+#else // !HAVE_GLX
+  // FIXME: remove this when the cc_glglue_context_*() functions are
+  // implemented for WGL and AGL aswell. 20030213 mortene.
+  SoOffscreenRenderer * osr = new SoOffscreenRenderer(SbViewportRegion(128,128));
+  SoCallback *cb = new SoCallback();
+  cb->ref();
+  cb->setCallback(getMaxCB, temp);
+  osr->render(cb);
+  delete osr;
+  cb->unref();
+#endif // !HAVE_GLX
+
+  dims[0] = SbMin((short)temp[0], (short)SHRT_MAX);
+  dims[1] = SbMin((short)temp[1], (short)SHRT_MAX);
+
   return SbVec2s(dims[0], dims[1]);
 }
