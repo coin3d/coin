@@ -819,6 +819,7 @@ THE WISH LIST
     void SoWriteAction::setTarBundlingEnabled(SbBool bundling);
     SbBool SoWriteAction::isTarBundlingEnabled(void) const;
 
+
 * Prettier SoWriteAction .iv-formatting
   2002-09-22  Lars J. Aas  <larsa@sim.no>
 
@@ -840,4 +841,17 @@ THE WISH LIST
 
     void SoWriteAction::setCoinFormattingEnabled(SbBool bundling);
     SbBool SoWriteAction::isCoinFormattingEnabled(void) const;
+
+
+* Output .iv-files with CR/LF on Win32 systems
+  2002-11-15  Lars J. Aas  <larsa@sim.no>
+  [upwards compatible extension]
+
+  On Windows systems, it would be better to write scene graph files with
+  \r\n instead of just \n.  This should be configurable through a function
+  call somewhere, and the default should be decided by what kind of system
+  Coin was configured on.
+
+  This should hopefully go in before the 2.0 release.
+
 
