@@ -913,7 +913,6 @@ dnl  Author: Morten Eriksen, <mortene@sim.no>.
 dnl
 dnl  TODO:
 dnl    * [mortene:19991114] make this work with compilers other than gcc/g++
-dnl    * [mortene:19991114] handle g++ versions < 2.8 (see FIXME below)
 dnl
 
 AC_DEFUN(SIM_EXCEPTION_HANDLING,
@@ -931,15 +930,48 @@ AC_ARG_ENABLE(exceptions,
 
 if test "x$enable_exceptions" = "xno"; then
   if test "x$GXX" = "xyes"; then
-    dnl FIXME: this option was called "-fno-handle-exceptions" before g++ 2.8.
-    dnl Should check for that. 19990924 mortene.
-    CXXFLAGS="$CXXFLAGS -fno-exceptions"
+    unset _exception_flag
+    dnl This is for GCC >= 2.8
+    SIM_COMPILER_OPTION(-Wno-exceptions, _exception_flag=-Wno-exceptions)
+    if test "x$_exception_flag" = "x"; then
+      dnl For GCC versions < 2.8
+      SIM_COMPILER_OPTION(-Wno-handle-exceptions, _exception_flag=-Wno-handle-exceptions)
+    fi
+    if test "x$_exception_flag" = "x"; then
+      AC_MSG_WARN(couldn't find a valid option for avoiding exception handling)
+    else
+      CXXFLAGS="$CXXFLAGS $_exception_flag"
+    fi
   fi
 else
   if test "x$GXX" != "xyes"; then
     AC_MSG_WARN(--enable-exceptions only has effect when using GNU g++)
   fi
 fi
+])
+
+dnl  Use this file to store miscellaneous macros related to compiler
+dnl  queries.
+dnl
+dnl  Author: Morten Eriksen, <mortene@sim.no>.
+dnl
+dnl  TODO:
+dnl    * [mortene:19991125] make SIM_COMPILER_OPTION work with C compilers.
+dnl
+
+
+dnl SIM_COMPILER_OPTION(OPTION-TO-TEST, ACTION-IF-TRUE [, ACTION-IF-FALSE])
+AC_DEFUN(SIM_COMPILER_OPTION,
+[
+dnl Autoconf is a developer tool, so don't bother to support older versions.
+AC_PREREQ([2.13])
+AC_MSG_CHECKING(whether $CXX accepts [$1])
+_save_cxxflags=$CXXFLAGS
+CXXFLAGS="$CXXFLAGS [$1]"
+AC_TRY_COMPILE( , , _accept_result=yes [$2], _accept_result=no [$3])
+AC_MSG_RESULT($_accept_result)
+CXXFLAGS=$_save_cxxflags
+unset _accept_result _save_cxxflags
 ])
 
 dnl  Let the user decide if profiling code should be compiled
@@ -1028,29 +1060,5 @@ else
     AC_MSG_WARN(--enable-warnings only has effect when using GNU gcc or g++)
   fi
 fi
-])
-
-dnl  Use this file to store miscellaneous macros related to compiler
-dnl  queries.
-dnl
-dnl  Author: Morten Eriksen, <mortene@sim.no>.
-dnl
-dnl  TODO:
-dnl    * [mortene:19991125] make SIM_COMPILER_OPTION work with C compilers.
-dnl
-
-
-dnl SIM_COMPILER_OPTION(OPTION-TO-TEST, ACTION-IF-TRUE [, ACTION-IF-FALSE])
-AC_DEFUN(SIM_COMPILER_OPTION,
-[
-dnl Autoconf is a developer tool, so don't bother to support older versions.
-AC_PREREQ([2.13])
-AC_MSG_CHECKING(whether $CXX accepts [$1])
-_save_cxxflags=$CXXFLAGS
-CXXFLAGS="$CXXFLAGS [$1]"
-AC_TRY_COMPILE( , , _accept_result=yes [$2], _accept_result=no [$3])
-AC_MSG_RESULT($_accept_result)
-CXXFLAGS=$_save_cxxflags
-unset _accept_result _save_cxxflags
 ])
 
