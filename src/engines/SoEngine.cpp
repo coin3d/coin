@@ -73,6 +73,42 @@ SoEngine::SoEngine(void)
 */
 SoEngine::~SoEngine()
 {
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoEngine::~SoEngine", "%p", this);
+#endif // debug
+}
+
+// Overrides SoBase::destroy().
+void
+SoEngine::destroy(void)
+{
+#if COIN_DEBUG && 0 // debug
+  SbName n = this->getName();
+  SoType t = this->getTypeId();
+  SoDebugError::postInfo("SoEngine::destroy", "start -- '%s' (%s)",
+                         n.getString(),
+                         t.getName().getString());
+#endif // debug
+
+  // evaluate() before we actually destruct. It would be too late
+  // during the destructor, as the SoEngine::evaluate() method is pure
+  // virtual.
+  //
+  // The explicit call here is done so attached fields will get the
+  // chance to update before we die. SoField::disconnect() will
+  // normally call SoEngine::evaluate(), but we disable that feature
+  // by setting SoEngineOutput::isEnabled() to FALSE before
+  // decoupling.
+  this->evaluateWrapper();
+
+  // SoBase destroy().
+  inherited::destroy();
+
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoEngine::destroy", "done -- '%s' (%s)",
+                         n.getString(),
+                         t.getName().getString());
+#endif // debug
 }
 
 // Doc from superclass.

@@ -453,7 +453,8 @@ SoField::connectFrom(SoField * master, SbBool notnotify, SbBool append)
     converterinput->connectFrom(master, notnotify);
 
     // Connect from the SoFieldConverter output to the slave field.
-    SoEngineOutput * converteroutput = conv->getOutput(thistype);
+    SoEngineOutput * converteroutput =
+      conv->getOutput(SoType::badType()); // dummy type
     converteroutput->addConnection(this);
 
     // Remember the connection from the slave field to the
@@ -532,7 +533,8 @@ SoField::connectFrom(SoEngineOutput * master, SbBool notnotify, SbBool append)
     converterinput->connectFrom(master, notnotify);
 
     // Connect from the SoFieldConverter output to the slave field.
-    SoEngineOutput * converteroutput = conv->getOutput(thistype);
+    SoEngineOutput * converteroutput =
+      conv->getOutput(SoType::badType()); // dummy type
     converteroutput->addConnection(this);
 
     // Remember the connection from the slave field to the
@@ -614,14 +616,12 @@ SoField::disconnect(SoField * master)
   SoFieldConverter * converter = this->storage->findConverter(master);
   if (converter) { // There's a converter engine between the fields.
 
-    // Can't use getTypeId() as it will lead to pure virtual calls
-    // when this method is called from SoField::~SoField().
-    SoType mastertype = master->storage->fieldtype;
-
-    SoField * converterinput = converter->getInput(mastertype);
+    SoField * converterinput =
+      converter->getInput(SoType::badType()); // dummy type
     converterinput->disconnect(master);
 
-    SoEngineOutput * converteroutput = converter->getOutput(this->getTypeId());
+    SoEngineOutput * converteroutput =
+      converter->getOutput(SoType::badType()); // dummy type
     converteroutput->removeConnection(this);
 
     this->storage->removeConverter(master);
@@ -637,14 +637,39 @@ SoField::disconnect(SoField * master)
 void
 SoField::disconnect(SoEngineOutput * master)
 {
+  // First check to see we're the input field of an
+  // SoFieldConverter. If so, recursively call disconnect() with the
+  // field on "the other side" of the converter.
+
+  SoType containertype = this->getContainer()->getTypeId();
+  SbBool containerisconverter =
+    containertype.isDerivedFrom(SoFieldConverter::getClassTypeId());
+  if (containerisconverter) {
+    SoFieldConverter * converter = (SoFieldConverter *)this->getContainer();
+    SoEngineOutput * converterout =
+      converter->getOutput(SoType::badType()); // dummy type
+    SoFieldList fl;
+    converterout->getForwardConnections(fl);
+    fl[0]->disconnect(master);
+    return;
+  }
+
+
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoField::disconnect",
-                         "removing slave field %p from master engineout %p",
-                         this, master);
+                         "removing slave field %p (%s.%s) from master "
+                         "engineout %p",
+                         this,
+                         this->storage->container->getTypeId().getName().getString(),
+                         this->storage->fieldtype.getName().getString(),
+                         master);
 #endif // debug
 
-  this->evaluate();
 
+  // Check the enabled flag to avoid evaluating from engines which are
+  // being destructed. This is a bit of a hack, but I don't think it
+  // matters.   -- mortene.
+  if (master->isEnabled()) this->evaluate();
 
   // Decouple links. ///////////////////////////////////////////////////
 
@@ -653,10 +678,13 @@ SoField::disconnect(SoEngineOutput * master)
 
   SoFieldConverter * converter = this->storage->findConverter(master);
   if (converter) { // There's a converter engine between the fields.
-    SoField * converterinput = converter->getInput(master->getConnectionType());
-    converterinput->disconnect(master);
+    SoField * converterinput =
+      converter->getInput(SoType::badType()); // dummy type
+    converterinput->storage->masterengineouts.removeItem(master);
+    master->removeConnection(converterinput);
 
-    SoEngineOutput * converteroutput = converter->getOutput(this->getTypeId());
+    SoEngineOutput * converteroutput =
+      converter->getOutput(SoType::badType()); // dummy type
     converteroutput->removeConnection(this);
 
     this->storage->removeConverter(master);

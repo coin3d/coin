@@ -33,6 +33,10 @@
 #include <Inventor/engines/SoOutputData.h>
 #include <Inventor/fields/SoField.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 /*!
   Returns the type of the engine output.
 */
@@ -119,6 +123,24 @@ SoEngineOutput::SoEngineOutput(void)
 */
 SoEngineOutput::~SoEngineOutput()
 {
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoEngineOutput::~SoEngineOutput", "start %p", this);
+#endif // debug
+
+  // Avoids evaluation from the fields in SoField::disconnect() (which
+  // would again lead to problems with the pure virtual
+  // SoEngine::evaluate() function during destruction of our
+  // container).
+  this->enabled = FALSE;
+
+  // Disconnect all fields.
+  SoFieldList fl;
+  int nr = this->getForwardConnections(fl);
+  for (int i=0; i < nr; i++) fl[0]->disconnect(this);
+
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoEngineOutput::~SoEngineOutput", "done %p", this);
+#endif // debug
 }
 
 /*!

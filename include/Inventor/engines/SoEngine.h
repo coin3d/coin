@@ -68,6 +68,8 @@ protected:
   void writeOutputTypes(SoOutput * out);
 
 private:
+  virtual void destroy(void); // overloads SoBase::destroy()
+
   static SoType classTypeId;
   // FIXME: the ifndef wrapper is a workaround for a bug in Doxygen
   // 1.0.0, where private members in a structure doesn't "inherit" the
