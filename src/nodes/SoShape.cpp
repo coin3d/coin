@@ -533,7 +533,10 @@ SoShape::getComplexityValue(SoAction *action)
       // FIXME: needs calibration.
 
 #if 1 // testing new complexity code
-      return float(sqrt(SbMax(size[0], size[1]))) * 0.4f *
+      // The cast within the sqrt() is done to avoid ambigouity error
+      // from HPUX aCC, as sqrt() can be either "long double sqrt(long
+      // double)" or "float sqrt(float)". mortene.
+      return float(sqrt((float)SbMax(size[0], size[1]))) * 0.4f *
         SoComplexityElement::get(state);
 #else // first version
       float numPixels = float(size[0])*float(size[1]);
