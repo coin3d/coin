@@ -374,7 +374,7 @@ void SoShaderParameterArray2f::updateParameter(SoGLShaderObject *shader)
   this->parameter->set2fv(shader, num, buffer,
 			  this->name.getValue().getString(),
 			  this->identifier.getValue());
-  if (buffer) delete (buffer);
+  if (buffer) delete[] buffer;
 }
 
 /* **************************************************************************
@@ -418,7 +418,7 @@ void SoShaderParameterArray3f::updateParameter(SoGLShaderObject *shader)
   this->parameter->set3fv(shader, num, buffer,
 			  this->name.getValue().getString(),
 			  this->identifier.getValue());
-  if (buffer) delete (buffer);
+  if (buffer) delete[] buffer;
 }
 
 /* **************************************************************************
@@ -463,7 +463,7 @@ void SoShaderParameterArray4f::updateParameter(SoGLShaderObject *shader)
   this->parameter->set4fv(shader, num, buffer,
 			  this->name.getValue().getString(),
 			  this->identifier.getValue());
-  if (buffer) delete (buffer);
+  if (buffer) delete[] buffer;
 }
 
 /* **************************************************************************
@@ -545,5 +545,5 @@ void SoShaderParameterMatrixArray::updateParameter(SoGLShaderObject *shader)
 				  this->name.getValue().getString(),
 				  this->identifier.getValue());
 
-  if (buffer) delete buffer;
+  if (buffer) delete[] buffer;
 }
