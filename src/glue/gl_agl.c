@@ -231,28 +231,28 @@ aglglue_context_create_software(struct aglglue_contextdata * ctx)
   };
 
   if (coin_glglue_debug()) {
-    cc_debugerror_postinfo("aglglue_context_create_offscreen",
+    cc_debugerror_postinfo("aglglue_context_create_software",
                            "Creating software buffer.");
   }
     
   ctx->pixformat = aglChoosePixelFormat( NULL, 0, attrib );
   if (!ctx->pixformat) {
-    cc_debugerror_postwarning("aglglue_context_create_offscreen",
+    cc_debugerror_postwarning("aglglue_context_create_software",
                               "Couldn't get RGBA AGL pixelformat.");
     return FALSE;
   }
   
   ctx->aglcontext = aglCreateContext(ctx->pixformat, NULL );
   if (!ctx->aglcontext) {
-    cc_debugerror_postwarning("aglglue_context_create_offscreen",
+    cc_debugerror_postwarning("aglglue_context_create_software",
                               "Couldn't create AGL context.");
     aglglue_contextdata_cleanup(ctx);
     return FALSE;
   } 
   
   if (coin_glglue_debug()) {
-    cc_debugerror_postinfo("aglglue_create_offscreen_context",
-                           "created new offscreen context == %p",
+    cc_debugerror_postinfo("aglglue_context_create_software",
+                           "created new software offscreen context == %p",
                            ctx->aglcontext);
   } 
   
@@ -266,14 +266,14 @@ aglglue_context_create_software(struct aglglue_contextdata * ctx)
   {
     QDErr e = NewGWorld(&ctx->drawable, 32, &ctx->bounds, NULL, NULL, 0);
     if (e != noErr) {
-      cc_debugerror_postwarning("aglglue_create_offscreen_context",
+      cc_debugerror_postwarning("aglglue_context_create_software",
                                 "Error creating GWorld: %d", e);
       return FALSE;
     }
   }
   
   if (!ctx->drawable) {
-    cc_debugerror_postwarning("aglglue_create_offscreen_context",
+    cc_debugerror_postwarning("aglglue_context_create_software",
                               "Couldn't create AGL drawable.");
     return FALSE;
   }
@@ -327,7 +327,7 @@ aglglue_context_create_pbuffer(struct aglglue_contextdata * ctx)
   ctx->pixformat = aglChoosePixelFormat (NULL, 0, attribs);
   error = aglGetError();
   if (error != AGL_NO_ERROR) {
-    cc_debugerror_post("aglglue_create_offscreen_context",
+    cc_debugerror_post("aglglue_context_create_pbuffer",
                        "Couldn't create AGL Pixelformat: %s", 
                        (char *)aglErrorString(error));
     return FALSE;
@@ -337,7 +337,7 @@ aglglue_context_create_pbuffer(struct aglglue_contextdata * ctx)
     ctx->aglcontext = aglCreateContext (ctx->pixformat, NULL);
     error = aglGetError();
     if (error != AGL_NO_ERROR) {
-      cc_debugerror_post("aglglue_context_create_offscreen",
+      cc_debugerror_post("aglglue_context_create_pbuffer",
                          "Couldn't create AGL context: %s", 
                          (char *)aglErrorString(error));
       aglglue_contextdata_cleanup(ctx);
@@ -350,7 +350,7 @@ aglglue_context_create_pbuffer(struct aglglue_contextdata * ctx)
                                    GL_RGBA, 0, &ctx->aglpbuffer)) {
       GLenum error = aglGetError();
       if (error != AGL_NO_ERROR) {
-        cc_debugerror_post("aglglue_context_create_offscreen",
+        cc_debugerror_post("aglglue_context_create_pbuffer",
                            "Couldn't create AGL pBuffer: %s", 
                            (char *)aglErrorString(error));
         return FALSE;
@@ -381,7 +381,7 @@ aglglue_context_create_offscreen(unsigned int width, unsigned int height)
 
     if (ispbuffer) { 
       if (coin_glglue_debug()) {     
-        cc_debugerror_postinfo("wglglue_context_create_offscreen",     
+        cc_debugerror_postinfo("aglglue_context_create_offscreen",     
                               "pBuffer failed. Trying software ");
       }
       ctx = aglglue_contextdata_init(width, height);
