@@ -69,7 +69,8 @@ public:
     COIN_2_0     = 0x0100,
     EXTENSION    = 0x0200,
     COIN_2_2     = 0x0400,
-    COIN_2_3     = 0x0800
+    COIN_2_3     = 0x0800,
+    COIN_2_4     = 0x1000
   };
 
   static uint32_t getCompatibilityTypes(const SoType & nodetype);
