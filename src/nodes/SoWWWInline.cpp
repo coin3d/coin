@@ -35,13 +35,29 @@
   expect to fetch from the URL.  The application is naturally also
   responsible for specifying the expected dimensions of the geometry.
 
-  \since Inventor 2.1
+  \since SGI Inventor 2.1
+  \since Coin 1.0
 */
+
+// *************************************************************************
 
 // FIXME: as far as I can tell, SoWWWInline does not automatically
 // trigger a (re-)load when the "SoWWWInline::name" field
 // changes. Shouldn't it? Test what SGI/TGS Inventor does and mimic
 // its behaviour. 20020522 mortene.
+
+// FIXME: setting up the alternateRep field doesn't seem to work as
+// expected (or at all, actually). This simple scene graph shown in an
+// examiner viewer will not display the alternateRep for Coin, while
+// SGI Inventor ivview will correctly show the Cone:
+// ----8<-------------- [snip] -------8<-------------- [snip] -------------
+// #Inventor V2.1 ascii
+//
+// WWWInline { alternateRep Group { BaseColor { rgb .2 .4 .6 } Cone { } } }
+// ----8<-------------- [snip] -------8<-------------- [snip] -------------
+// 20050315 mortene.
+
+// *************************************************************************
 
 #include <Inventor/nodes/SoWWWInline.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -73,6 +89,8 @@
 #endif /* HAVE_CONFIG_H */
 
 #include <Inventor/system/gl.h>
+
+// *************************************************************************
 
 /*!
   \enum SoWWWInline::BboxVisibility
@@ -109,6 +127,8 @@
   Alternate representation. Used when children can't be read from name.
 */
 
+// *************************************************************************
+
 // static members
 SoWWWInlineFetchURLCB * SoWWWInline::fetchurlcb;
 void * SoWWWInline::fetchurlcbdata;
@@ -127,8 +147,6 @@ SoWWWInline::cleanup(void)
 
 // *************************************************************************
 
-#ifndef DOXYGEN_SKIP_THIS
-
 class SoWWWInlineP {
  public:
   SoWWWInlineP(SoWWWInline * ownerptr) {
@@ -146,13 +164,14 @@ class SoWWWInlineP {
 
 const char SoWWWInlineP::UNDEFINED_FILE[] = "<Undefined file>";
 
-#endif // DOXYGEN_SKIP_THIS
+#undef THIS
+#define THIS this->pimpl
+
+// *************************************************************************
 
 SO_NODE_SOURCE(SoWWWInline);
 
-
-#undef THIS
-#define THIS this->pimpl
+// *************************************************************************
 
 /*!
   Constructor.
@@ -632,7 +651,7 @@ SoWWWInline::copyContents(const SoFieldContainer * fromfc,
 
 #undef THIS
 
-#ifndef DOXYGEN_SKIP_THIS
+// *************************************************************************
 
 // Read the file named in the name field. Based on SoFile::readNamedFile
 SbBool
@@ -708,4 +727,4 @@ SoWWWInlineP::readChildren(SoInput * in)
   return TRUE; // always return TRUE
 }
 
-#endif // DOXYGEN_SKIP_THIS
+// *************************************************************************
