@@ -32,15 +32,21 @@
 #include <string.h>
 #include <stdio.h>
 
+#include <Inventor/C/glue/GLUWrapper.h>
+
 #include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/glue/dl.h>
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/tidbitsp.h>
+
+/* need this before superglu.h, since that file includes GL/gl.h
+   without any windows.h, which may fail on MS Windows dev systems */
+#include <Inventor/system/gl.h>
+
 #ifdef HAVE_SUPERGLU
 #include <superglu.h>
 #endif /* HAVE_SUPERGLU */
-#include <Inventor/C/glue/GLUWrapper.h>
 
 /* ********************************************************************** */
 
