@@ -5,8 +5,8 @@ RegularSources = \
 	mutex.c \
 	rwmutex.c \
 	storage.c \
-	condvar.c \
-	barrier.c
+	condvar.c
+#	barrier.c
 LinkHackSources = \
 	all.c
 PublicHeaders = \
@@ -15,8 +15,8 @@ PublicHeaders = \
 	../../include/Inventor/threads/SbRWMutex.h \
 	../../include/Inventor/threads/SbCondVar.h \
 	../../include/Inventor/threads/SbStorage.h \
-	../../include/Inventor/threads/SbTypedStorage.h \
-	../../include/Inventor/threads/SbBarrier.h
+	../../include/Inventor/threads/SbTypedStorage.h
+#	../../include/Inventor/threads/SbBarrier.h
 PrivateHeaders = \
 	wrappers.cpp # for checking validity of inline C++ wrapper headers
 

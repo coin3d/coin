@@ -4,4 +4,4 @@
 #include "condvar.c"
 #include "rwmutex.c"
 #include "storage.c"
-#include "barrier.c"
+/* #include "barrier.c" */

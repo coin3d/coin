@@ -130,9 +130,9 @@ RegularSources = \
 	mutex.c \
 	rwmutex.c \
 	storage.c \
-	condvar.c \
-	barrier.c
+	condvar.c
 
+#	barrier.c
 LinkHackSources = \
 	all.c
 
@@ -142,9 +142,9 @@ PublicHeaders = \
 	../../include/Inventor/threads/SbRWMutex.h \
 	../../include/Inventor/threads/SbCondVar.h \
 	../../include/Inventor/threads/SbStorage.h \
-	../../include/Inventor/threads/SbTypedStorage.h \
-	../../include/Inventor/threads/SbBarrier.h
+	../../include/Inventor/threads/SbTypedStorage.h
 
+#	../../include/Inventor/threads/SbBarrier.h
 PrivateHeaders = \
 	wrappers.cpp # for checking validity of inline C++ wrapper headers
 
@@ -198,8 +198,7 @@ threads_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	thread.$(OBJEXT) mutex.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	rwmutex.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	storage.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	condvar.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	barrier.$(OBJEXT)
+@HACKING_COMPACT_BUILD_FALSE@	condvar.$(OBJEXT)
 threads_lst_OBJECTS = $(am_threads_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -208,7 +207,7 @@ libthreads_la_LIBADD =
 @HACKING_COMPACT_BUILD_TRUE@am_libthreads_la_OBJECTS = all.lo
 @HACKING_COMPACT_BUILD_FALSE@am_libthreads_la_OBJECTS = common.lo \
 @HACKING_COMPACT_BUILD_FALSE@	thread.lo mutex.lo rwmutex.lo \
-@HACKING_COMPACT_BUILD_FALSE@	storage.lo condvar.lo barrier.lo
+@HACKING_COMPACT_BUILD_FALSE@	storage.lo condvar.lo
 libthreads_la_OBJECTS = $(am_libthreads_la_OBJECTS)
 libthreads@SUFFIX@LINKHACK_la_LDFLAGS =
 libthreads@SUFFIX@LINKHACK_la_LIBADD =
@@ -216,8 +215,7 @@ libthreads@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_TRUE@	all.lo
 @HACKING_COMPACT_BUILD_FALSE@am_libthreads@SUFFIX@LINKHACK_la_OBJECTS = \
 @HACKING_COMPACT_BUILD_FALSE@	common.lo thread.lo mutex.lo \
-@HACKING_COMPACT_BUILD_FALSE@	rwmutex.lo storage.lo condvar.lo \
-@HACKING_COMPACT_BUILD_FALSE@	barrier.lo
+@HACKING_COMPACT_BUILD_FALSE@	rwmutex.lo storage.lo condvar.lo
 libthreads@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libthreads@SUFFIX@LINKHACK_la_OBJECTS)
 
@@ -227,7 +225,6 @@ CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@DEP_FILES = $(DEPDIR)/all.Plo $(DEPDIR)/all.Po \
-@AMDEP_TRUE@	$(DEPDIR)/barrier.Plo $(DEPDIR)/barrier.Po \
 @AMDEP_TRUE@	$(DEPDIR)/common.Plo $(DEPDIR)/common.Po \
 @AMDEP_TRUE@	$(DEPDIR)/condvar.Plo $(DEPDIR)/condvar.Po \
 @AMDEP_TRUE@	$(DEPDIR)/mutex.Plo $(DEPDIR)/mutex.Po \
@@ -321,8 +318,6 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/all.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/all.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/barrier.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/barrier.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/common.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/common.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/condvar.Plo@am__quote@
