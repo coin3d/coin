@@ -53,6 +53,7 @@ public:
   };
 
   virtual SbBool affectsState(void) const;
+  virtual void notify(SoNotList * nl);
 
   virtual void getBoundingBox(SoGetBoundingBoxAction * action);
   virtual void GLRender(SoGLRenderAction * action);
@@ -126,6 +127,9 @@ protected:
                       const SbVec3f & normal);
 
 private:
+  class SoShapeP * pimpl;
+
+  void getBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
   void rayPickBoundingBox(SoRayPickAction * action);
   friend class shapePrimitiveData;         // internal class
   friend class so_generate_prim_private;   // a very private class

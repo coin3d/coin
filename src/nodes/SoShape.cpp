@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -40,10 +40,13 @@
 #endif // COIN_DEBUG
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/nodes/SoShape.h>
+#include <Inventor/nodes/SoVertexShape.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/caches/SoBoundingBoxCache.h>
+#include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoTextureCoordinateElement.h>
 #include <Inventor/elements/SoTransparencyElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
@@ -105,6 +108,32 @@
 
 // *************************************************************************
 
+#ifndef DOXYGEN_SKIP_THIS
+
+class SoShapeP {
+public:
+  SoShapeP() {
+    this->bboxcache = NULL;
+    this->invalidcounter = 0;
+    this->readcounter = 0;
+  }
+  
+  ~SoShapeP() {
+    if (this->bboxcache) { this->bboxcache->unref(); }
+  }
+  SoBoundingBoxCache * bboxcache;
+  int invalidcounter;
+  int readcounter;
+};
+
+#endif // DOXYGEN_SKIP_THIS
+
+#undef THIS
+#define THIS this->pimpl
+
+// *************************************************************************
+
+
 static shapePrimitiveData * primData = NULL;
 
 SO_NODE_ABSTRACT_SOURCE(SoShape);
@@ -116,6 +145,9 @@ SO_NODE_ABSTRACT_SOURCE(SoShape);
 SoShape::SoShape(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoShape);
+  
+  // don't allocate private data until we need it
+  THIS = NULL;
 }
 
 /*!
@@ -123,6 +155,7 @@ SoShape::SoShape(void)
 */
 SoShape::~SoShape()
 {
+  delete THIS;
 }
 
 // Doc in parent.
@@ -138,8 +171,7 @@ SoShape::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SbBox3f box;
   SbVec3f center;
-  this->computeBBox(action, box, center);
-
+  this->getBBox(action, box, center);
   if (!box.isEmpty()) {
     action->extendBy(box);
     action->setCenter(center, TRUE);
@@ -244,7 +276,7 @@ SoShape::getComplexityValue(SoAction * action)
     {
       SbBox3f box;
       SbVec3f center;
-      this->computeBBox(action, box, center);
+      this->getBBox(action, box, center);
       SbVec2s size;
       SoShape::getScreenSize(state, box, size);
       // FIXME: probably needs calibration.
@@ -274,6 +306,7 @@ SoShape::getComplexityValue(SoAction * action)
 
 static SbBool is_doing_sorted_rendering;     // need this in invokeTriangleCallbacks()
 static SbBool is_doing_bigtexture_rendering;
+
 
 /*!
   \internal
@@ -347,24 +380,8 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
   if (SoComplexityTypeElement::get(state) ==
       SoComplexityTypeElement::BOUNDING_BOX) {
 
-    SbBox3f box;
-    SbVec3f center;
-    this->computeBBox(action, box, center);
-    center = (box.getMin() + box.getMax()) * 0.5f;
-    SbVec3f size = box.getMax()  - box.getMin();
 
-    SoMaterialBundle mb(action);
-    mb.sendFirst();
-
-    {
-      SoGLShapeHintsElement::forceSend(state, TRUE, FALSE, FALSE);
-    }
-
-    glPushMatrix();
-    glTranslatef(center[0], center[1], center[2]);
-    sogl_render_cube(size[0], size[1], size[2], &mb,
-                     SOGL_NEED_NORMALS | SOGL_NEED_TEXCOORDS);
-    glPopMatrix();
+    this->GLRenderBoundingBox(action);
     return FALSE;
   }
 
@@ -388,7 +405,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
     is_doing_sorted_rendering = TRUE;
     this->generatePrimitives(action);
     is_doing_sorted_rendering = FALSE;
-    
+
     trisort_end_shape(state, mb); // this will render the triangles
     return FALSE; // tell shape _not_ to render
   }
@@ -396,7 +413,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
   SoGLTextureImageElement::Model model;
   SbColor blendcolor;
   SoGLImage * glimage = SoGLTextureImageElement::get(state, model, blendcolor);
-  if (glimage && 
+  if (glimage &&
       glimage->isOfType(SoGLBigImage::getClassTypeId()) &&
       SoGLTextureEnabledElement::get(state)) {
     // do this before generating triangles to get correct
@@ -409,8 +426,8 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
 
     is_doing_bigtexture_rendering = TRUE;
 
-    
-    bigtexture_begin_shape(state, big, SoTextureQualityElement::get(state));    
+
+    bigtexture_begin_shape(state, big, SoTextureQualityElement::get(state));
     this->generatePrimitives(action);
     bigtexture_end_shape(state, this, mb);
     is_doing_bigtexture_rendering = FALSE;
@@ -683,7 +700,7 @@ SoShape::invokeLineSegmentCallbacks(SoAction * const action,
           float total = (v2->getPoint()-v1->getPoint()).length();
           float len1 = 1.0f;
           float len2 = 0.0f;
-          if (total >= 0.0f) {            
+          if (total >= 0.0f) {
             len1 = (intersection-v1->getPoint()).length();
             len2 = (intersection-v2->getPoint()).length();
             len1 /= total;
@@ -702,7 +719,7 @@ SoShape::invokeLineSegmentCallbacks(SoAction * const action,
           pp->setMaterialIndex(len1 >= len2 ?
                                v1->getMaterialIndex() :
                                v2->getMaterialIndex());
-          
+
         }
       }
     }
@@ -888,13 +905,29 @@ SoShape::getDecimatedComplexity(SoState * state, float complexity)
 }
 
 /*!
-  Not implemented in Coin. Should probably have been private in Open
-  Inventor API.
+  Render a bounding box.
 */
 void
 SoShape::GLRenderBoundingBox(SoGLRenderAction * action)
 {
-  COIN_OBSOLETED();
+  SbBox3f box;
+  SbVec3f center;
+  this->getBBox(action, box, center);
+  center = (box.getMin() + box.getMax()) * 0.5f;
+  SbVec3f size = box.getMax()  - box.getMin();
+  
+  SoMaterialBundle mb(action);
+  mb.sendFirst();
+  
+  {
+    SoGLShapeHintsElement::forceSend(action->getState(), TRUE, FALSE, FALSE);
+  }
+  
+  glPushMatrix();
+  glTranslatef(center[0], center[1], center[2]);
+  sogl_render_cube(size[0], size[1], size[2], &mb,
+                   SOGL_NEED_NORMALS | SOGL_NEED_TEXCOORDS);
+  glPopMatrix();
 }
 
 /*!
@@ -914,7 +947,7 @@ SoShape::rayPickBoundingBox(SoRayPickAction * action)
 {
   SbBox3f box;
   SbVec3f center;
-  this->computeBBox(action, box, center);
+  this->getBBox(action, box, center);
   if (box.isEmpty()) return;
   this->computeObjectSpaceRay(action);
   SbVec3f isect;
@@ -924,3 +957,61 @@ SoShape::rayPickBoundingBox(SoRayPickAction * action)
     }
   }
 }
+
+// Doc from superclass.
+void
+SoShape::notify(SoNotList * nl)
+{
+  inherited::notify(nl);
+  if (THIS && THIS->bboxcache) { 
+    THIS->bboxcache->invalidate(); 
+  }
+}
+
+// return the bbox for this shape, using the cache if valid,
+// calculating it if not.
+void 
+SoShape::getBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
+{
+  SbBool isvalid = FALSE;
+  SbBool shouldcache = FALSE;
+
+  if (this->isOfType(SoVertexShape::getClassTypeId())) {
+    if (THIS && THIS->bboxcache && THIS->bboxcache->isValid(action->getState())) {
+      isvalid = TRUE;
+    }
+    else {
+      if (!THIS) THIS = new SoShapeP;
+      shouldcache = TRUE;
+    }
+  }
+
+  if (isvalid) {
+    box = THIS->bboxcache->getProjectedBox();
+    // we know center will be set, so just fetch it from the cache
+    center = THIS->bboxcache->getCenter();
+  }
+  else {
+    SoState * state = action->getState();
+    SbBool storedinvalid = FALSE;
+    if (shouldcache) {
+      // must push state to make cache dependencies work
+      state->push();
+      storedinvalid = SoCacheElement::setInvalid(FALSE);
+      if (THIS->bboxcache) THIS->bboxcache->unref();
+      THIS->bboxcache = new SoBoundingBoxCache(state);
+      THIS->bboxcache->ref();
+      SoCacheElement::set(state, THIS->bboxcache);
+    }
+    this->computeBBox(action, box, center);
+    if (shouldcache) {
+      THIS->bboxcache->set(box, TRUE, center);
+      // pop state since we pushed it
+      state->pop();
+      SoCacheElement::setInvalid(storedinvalid);
+    }
+  }
+}
+
+
+#undef THIS
