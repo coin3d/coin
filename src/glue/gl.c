@@ -2895,8 +2895,11 @@ cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height)
   }
 
 
-  /* There is no known reason why the below calls should fail, so we
-     don't try to be robust, and just assert upon failure. */
+  /* FIXME: the below calls *can* fail, due to e.g. lack of resources,
+     or no usable visual for the GL context. Should handle
+     gracefully. (Which is straightforward to do here, simply return
+     dimensions of [0,0], but we also need to handle the exception in
+     the callers.) 20031202 mortene. */
 
   ctx = cc_glglue_context_create_offscreen(32, 32);
   assert(ctx);
