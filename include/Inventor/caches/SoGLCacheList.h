@@ -44,6 +44,7 @@ private:
   unsigned int flags;
   SoGLRenderCache * opencache;
   SbBool savedinvalid;
+  int autocachebits;
 };
 
 #endif // COIN_SOGLCACHELIST_H

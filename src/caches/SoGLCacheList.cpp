@@ -45,13 +45,18 @@
 #endif // HAVE_WINDOWS_H
 #include <GL/gl.h>
 
+// if we render once without any child nodes invalidating the cache,
+// this flag is set and we will try to create a cache.
+#define FLAG_SHOULD_TRY 0x1
+
 /*!
   Constructor. Currently the \a numcaches argument is not used.
 */
 SoGLCacheList::SoGLCacheList(int numcaches)
   : numcaches(numcaches),
     flags(0),
-    opencache(NULL)
+    opencache(NULL),
+    autocachebits(SoGLCacheContextElement::DO_AUTO_CACHE)
 {
 }
 
@@ -70,7 +75,7 @@ SoGLCacheList::~SoGLCacheList()
   Test for valid cache and execute. Returns TRUE if a valid cache
   could be found, FALSE otherwise. Note that when a valid cache is
   found, it is executed before returning from this method.
-  If \a pushattribbits != 0, these bits will be pushed using a 
+  If \a pushattribbits != 0, these bits will be pushed using a
   glPushAttrib() call before calling the cache, and popped off
   the GL state stack again after calling the cache.
 */
@@ -101,9 +106,8 @@ SoGLCacheList::call(SoGLRenderAction * action, const uint32_t pushattribbits)
 }
 
 /*!
-  Start recording a new cache. The \a autocache element is currently
-  ignored. Remember to call close() when you've finished recoring the
-  cache.
+  Start recording a new cache. Remember to call close() when you've finished 
+  recoring the cache.
 
   \sa close()
 */
@@ -112,11 +116,23 @@ SoGLCacheList::open(SoGLRenderAction * action, SbBool autocache)
 {
   assert(this->opencache == NULL);
   SoState * state = action->getState();
+  if (SoCacheElement::anyOpen(state)) return;
+  if (autocache && !(this->flags & FLAG_SHOULD_TRY)) return;
+  
+  // will be restored in close()
   this->savedinvalid = SoCacheElement::setInvalid(FALSE);
-  this->opencache = new SoGLRenderCache(state);
-  this->opencache->ref();
-  SoCacheElement::set(state, this->opencache);
-  this->opencache->open(state);
+  
+  SbBool shouldcreate = TRUE;
+  if (autocache && this->autocachebits == SoGLCacheContextElement::DO_AUTO_CACHE) {
+    shouldcreate = FALSE;
+  }
+  
+  if (shouldcreate) {
+    this->opencache = new SoGLRenderCache(state);
+    this->opencache->ref();
+    SoCacheElement::set(state, this->opencache);
+    this->opencache->open(state);
+  }
 }
 
 /*!
@@ -126,11 +142,23 @@ SoGLCacheList::open(SoGLRenderAction * action, SbBool autocache)
 void
 SoGLCacheList::close(SoGLRenderAction * action)
 {
-  assert(this->opencache);
-  this->opencache->close();
-  this->itemlist.append(this->opencache);
-  this->opencache = NULL;
-  SoCacheElement::setInvalid(this->savedinvalid);
+  if (this->opencache) {
+    this->opencache->close();
+    this->itemlist.append(this->opencache);
+    this->opencache = NULL;
+  }
+  if (SoCacheElement::setInvalid(this->savedinvalid)) {
+    // notify parent caches
+    SoCacheElement::setInvalid(TRUE);
+    this->flags &= ~FLAG_SHOULD_TRY;
+  }
+  else {
+    this->flags |= FLAG_SHOULD_TRY;
+  }
+  SoState * state = action->getState();
+  int bits = SoGLCacheContextElement::resetAutoCacheBits(state);
+  SoGLCacheContextElement::setAutoCacheBits(state, bits|this->autocachebits);
+  this->autocachebits = bits;
 }
 
 /*!
@@ -144,4 +172,5 @@ SoGLCacheList::invalidateAll(void)
   for (int i = 0; i < n; i++) {
     this->itemlist[i]->invalidate();
   }
+  this->flags &= ~FLAG_SHOULD_TRY;
 }

@@ -45,7 +45,7 @@ public:
   static SbBool extSupported(SoState * state, int extid);
   static SbBool areMipMapsFast(SoState * state);
   enum {
-    DO_AUTO_CACHE,
+    DO_AUTO_CACHE = 1,
     DONT_AUTO_CACHE
   };
   static void shouldAutoCache(SoState * state, int bits);
@@ -61,6 +61,7 @@ private:
   int context;
   SbBool twopass;
   SbBool remote;
+  int autocachebits;
 };
 
 // implementation in Coin/src/elements/SoGLDisplayList.cpp

@@ -26,6 +26,7 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SbName.h>
+#include <Inventor/misc/SoState.h>
 #include <coindefs.h> // COIN_STUB
 #include <string.h>
 #include <stdlib.h>
@@ -134,6 +135,7 @@ SoGLCacheContextElement::init(SoState * state)
   this->context = 0;
   this->twopass = FALSE;
   this->remote = FALSE;
+  this->autocachebits = 0;
 }
 
 // doc from parent
@@ -172,6 +174,8 @@ SoGLCacheContextElement::set(SoState * state, int context,
     state->getElementNoPush(classStackIndex);
   elem->twopass = twopasstransparency;
   elem->remote = remoterendering;
+  elem->autocachebits = 0;
+  if (remoterendering) elem->autocachebits = DO_AUTO_CACHE;
 
   int i = 0;
   while (i < scheduledeletelist->getLength()) {
@@ -307,34 +311,36 @@ SoGLCacheContextElement::areMipMapsFast(SoState * state)
 }
 
 /*!
-  This method is not supported in Coin. We will use our own
-  auto caching strategy.
+  Not properly supported yet.
 */
 void
 SoGLCacheContextElement::shouldAutoCache(SoState * state, int bits)
 {
-  COIN_STUB();
 }
 
 /*!
-  This method is not supported in Coin. We will use our own
-  auto caching strategy.
+  Not properly supported yet.
 */
 void
 SoGLCacheContextElement::setAutoCacheBits(SoState * state, int bits)
 {
-  COIN_STUB();
+  SoGLCacheContextElement * elem = (SoGLCacheContextElement*) 
+    state->getElementNoPush(classStackIndex);
+
+  elem->autocachebits = bits;
 }
 
 /*!
-  This method is not supported in Coin. We will use our own
-  auto caching strategy.
+  Not properly supported yet.
 */
 int
 SoGLCacheContextElement::resetAutoCacheBits(SoState * state)
 {
-  COIN_STUB();
-  return 0;
+  SoGLCacheContextElement *elem = (SoGLCacheContextElement *)
+    state->getElementNoPush(classStackIndex);
+  int ret = elem->autocachebits;
+  elem->autocachebits = elem->remote ? DO_AUTO_CACHE : 0;
+  return ret;
 }
 
 /*!
