@@ -115,63 +115,51 @@ SoGroup::readInstance(SoInput * in, unsigned short flags)
 }
 
 /*!
-  Read all children of this node from \a in and attach them below this group.
-  Returns \a FALSE upon read error.
+  Read all children of this node from \a in and attach them below this
+  group in left-to-right order. Returns \c FALSE upon read error.
 */
 SbBool
 SoGroup::readChildren(SoInput * in)
 {
-  SbBool ret = TRUE;
+  unsigned int numchildren = 0; // used by binary format import
+  if (in->isBinary() && !in->read(numchildren)) {
+    SoReadError::post(in, "Premature end of file");
+    return FALSE;
+  }
 
-  if (in->isBinary()) {
-    unsigned int numchildren;
-    ret = in->read(numchildren);
-
-    for (unsigned int i=0; (i < numchildren) && ret; i++) {
-      SoBase * child = NULL;
-      if ((ret = SoBase::read(in, child, SoNode::getClassTypeId()))) {
-        if (child == NULL) {
-          if (in->eof())
-            SoReadError::post(in, "File corrupt, premature end of file");
-          else
-            SoReadError::post(in, "``NULL'' keyword misplaced");
-          ret = FALSE;
+  for (unsigned int i=0; !in->isBinary() || (i < numchildren); i++) {
+    SoBase * child;
+    if (SoBase::read(in, child, SoNode::getClassTypeId())) {
+      if (child == NULL) {
+        if (in->eof()) {
+          SoReadError::post(in, "Premature end of file");
+          return FALSE;
         }
         else {
-          this->addChild((SoNode *)child);
+          if (in->isBinary()) {
+            SoReadError::post(in, "Couldn't read valid identifier name");
+            return FALSE;
+          }
+
+          // Completed reading of children for ASCII format import.
+          return TRUE;
         }
-      }
-    }
-  }
-  else {
-#if 0 // new code -- not working yet. 19991231 mortene.
-    SbBool done = FALSE;
-    while (!done) {
-      SoBase * child = NULL;
-      if ((ret = SoBase::read(in, child, SoNode::getClassTypeId())) && child) {
-        this->addChild((SoNode *)child);
       }
       else {
-        if (ret && !child && !in->eof()) {
-          SoReadError::post(in, "``NULL'' keyword misplaced");
-          ret = FALSE;
-        }
-        done = TRUE;
+        this->addChild((SoNode *)child);
       }
     }
-#else // old code
-    while (ret) {
-      SoBase * child = NULL;
-
-      if ((ret = SoBase::read(in, child, SoNode::getClassTypeId()))) {
-        if (child != NULL) this->addChild((SoNode *)child);
-        else break;
-      }
+    else {
+      // SoReadError::post() is called within the SoBase::read()
+      // frame upon error conditions, so don't duplicate with
+      // another error message here.  mortene.
+      return FALSE;
     }
-#endif
   }
 
-  return ret;
+  // A successful import operation for binary format reading of child
+  // nodes will exit here.
+  return TRUE;
 }
 
 /*!
@@ -252,7 +240,7 @@ SoGroup::doAction(SoAction * action)
     // FIXME: not necessary to traverse children which do not
     // affect state and is not in indices[] ?
     // But, traversal will stop pretty soon anyway, so it might
-    // be slower to include a check here. pederb, 990618
+    // be slower to include a check here. pederb, 19990618
     this->children->traverse(action, 0, indices[numIndices - 1]);
     break;
 
@@ -376,11 +364,6 @@ SoGroup::write(SoWriteAction * action)
 {
   SoOutput * out = action->getOutput();
   if (out->getStage() == SoOutput::COUNT_REFS) {
-#if 0 // OBSOLETED: this code is plain wrong, I believe. 19991112 mortene.
-    int n = this->getNumChildren();
-    for (int i = 0; i < n; i++)
-      this->getChild(i)->addWriteReference(out, FALSE);
-#endif // OBSOLETED
     inherited::write(action);
     // Only increase number of writereferences to the top level node
     // in a tree which is used multiple times.
