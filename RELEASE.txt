@@ -165,6 +165,7 @@ anything.
 
   Move updated ChangeLog file to docs/ChangeLog.vN.N.N.
   Put "See docs/ChangeLog.vN.N.N" as the only content of root ChangeLog file.
+  Strip the information header from the moved ChangeLog file.
   Commit changes.
 
 * Tag Source Repository
