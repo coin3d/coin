@@ -52,11 +52,15 @@ private:
                                  const SbVec3f &n);
   static void handleTexgen(void *data);
 
-  struct {
+  // Note: Microsoft Visual C++ 6.0 needs to have a type definition
+  // and an explicit variable declaration, just using
+  // "struct { ... } gencache;" won't do.
+  typedef struct {
     SbVec3f s, t;
     float mul_s, mul_t;
     SbVec4f ret;
-  } gencache;
+  } gencache_t;
+  gencache_t gencache;
 };
 
 #endif // !COIN_SOTEXTURECOORDINATEPLANE_H
