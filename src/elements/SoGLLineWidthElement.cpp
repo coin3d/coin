@@ -68,9 +68,17 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-static const float RANGE_NOT_CHECKED = FLT_MAX;
+// Also used in other element .cpp files, so wrap to handle
+// --enable-compact build mode.
+#ifndef RANGE_NOT_CHECKED
+// Important note: do _not_ use a "static const" variable instead, as
+// it is then not given that it will be initialized before the static
+// "sizerange" class variable array below.
+#define RANGE_NOT_CHECKED FLT_MAX
+#endif // RANGE_NOT_CHECKED
 
 float SoGLLineWidthElement::sizerange[2] = { RANGE_NOT_CHECKED, -1.0f};
+
 
 SO_ELEMENT_SOURCE(SoGLLineWidthElement);
 
@@ -198,32 +206,32 @@ SoGLLineWidthElement::updategl()
   }
 
 
-#if COIN_DEBUG
-  // Detect invalid values and warn the application programmer.  (0.0f
-  // is used as a "dummy" default value by our superclass and by
-  // SoDrawStyle::lineWidth, so ignore that case.)
-  if ((useval != this->current) && (this->current != 0.0f)) {
-    // Only warn once for each case.
-    static SbBool warn_below = TRUE;
-    static SbBool warn_above = TRUE;
-    if ((warn_below && (useval > this->current)) ||
-        (warn_above && (useval < this->current))) {
-      if (useval > this->current) { warn_below = FALSE; }
-      if (useval < this->current) { warn_above = FALSE; }
-      SoDebugError::postWarning("SoGLLineWidthElement::updategl",
-                                "%f is outside the legal range of [%f, %f] "
-                                "for this OpenGL implementation's "
-                                "glLineWidth() settings. It was now clamped.\n\n"
-                                "See the documentation of SoGLLineWidthElement for "
-                                "information on how to the application programmer may "
-                                "acquire the boundary values for the legal "
-                                "range.",
-                                this->current,
-                                SoGLLineWidthElement::sizerange[0],
-                                SoGLLineWidthElement::sizerange[1]);
+  if (COIN_DEBUG) {
+    // Detect invalid values and warn the application programmer.
+    // (0.0f is used as a "dummy" default value by our superclass and
+    // by SoDrawStyle::lineWidth, so ignore that case.)
+    if ((useval != this->current) && (this->current != 0.0f)) {
+      // Only warn once for each case.
+      static SbBool warn_below = TRUE;
+      static SbBool warn_above = TRUE;
+      if ((warn_below && (useval > this->current)) ||
+          (warn_above && (useval < this->current))) {
+        if (useval > this->current) { warn_below = FALSE; }
+        if (useval < this->current) { warn_above = FALSE; }
+        SoDebugError::postWarning("SoGLLineWidthElement::updategl",
+                                  "%f is outside the legal range of [%f, %f] "
+                                  "for this OpenGL implementation's "
+                                  "glLineWidth() settings. It was now clamped.\n\n"
+                                  "See the documentation of SoGLLineWidthElement for "
+                                  "information on how to the application programmer may "
+                                  "acquire the boundary values for the legal "
+                                  "range.",
+                                  this->current,
+                                  SoGLLineWidthElement::sizerange[0],
+                                  SoGLLineWidthElement::sizerange[1]);
+      }
     }
   }
-#endif // COIN_DEBUG
 
   // Forward to OpenGL state.
 
