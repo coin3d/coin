@@ -243,10 +243,8 @@ SoText2::GLRender(SoGLRenderAction * action)
     // Render only if bbox not outside cull planes.
     SbBox3f box;
     SbVec3f center;
-    // FIXME: Culling sometimes too agressive, disable until fixed. preng 2003-03-11.
-    // this->computeBBox(action, box, center);
-    // if (!SoCullElement::cullTest(state, box, SbBool(FALSE))) {
-    if (1) {
+    this->computeBBox(action, box, center);
+    if (!SoCullElement::cullTest(state, box, SbBool(TRUE))) {
       SoMaterialBundle mb(action);
       mb.sendFirst();
       SbVec3f nilpoint(0.0f, 0.0f, 0.0f);
