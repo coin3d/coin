@@ -51,7 +51,7 @@
   The SphereSensor node generates events when the pointing device is activated
   while the pointer is indicating any descendent geometry nodes of the sensor's
   parent group. See 4.6.7.5, Activating and manipulating sensors
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.7.5),
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.7.5>),
   for details on using the pointing device to activate the SphereSensor.
 
   Upon activation of the pointing device (e.g., mouse button down)
@@ -72,7 +72,7 @@
   deactivated and autoOffset is TRUE, offset is set to the last
   rotation_changed value and an offset_changed event is generated. See
   4.6.7.4, Drag sensors
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.7.4),
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.7.4>),
   for more details.
 
   When the sensor generates an \e isActive TRUE event, it grabs all
@@ -98,11 +98,11 @@
   Each movement of the pointing device while \e isActive is TRUE
   generates \e trackPoint_changed and \e rotation_changed events.  Further
   information about this behaviour can be found in 4.6.7.3
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.7.3),
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.7.3>),
   Pointing-device sensors, 4.6.7.4, Drag sensors
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.7.4),
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.7.4>),
   and 4.6.7.5, Activating and manipulating sensors
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.7.5).
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.7.5>).
   
 */
 

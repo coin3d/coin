@@ -64,7 +64,7 @@
   event, and pops to the next entry in the stack which shall be
   re-parented to the current Viewpoint node. 4.6.10, Bindable children
   nodes, has more details on binding stacks
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.10).
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.10>).
 
   The type field specifies an ordered list of navigation paradigms
   that specify a combination of navigation types and the initial
@@ -96,7 +96,7 @@
   SoVRMLViewpoint) are triggered by the Anchor node (see SoVRMLAnchor)
   or the loadURL()scripting method (see 4.12.10, Browser script
   interface: 
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.10).
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.10>).
 
   WALK navigation is used for exploring a virtual world
   on foot or in a vehicle that rests on or hovers above the ground. It

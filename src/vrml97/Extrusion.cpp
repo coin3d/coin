@@ -243,14 +243,14 @@
 
   in that order. By default, normals for the sides are generated as
   described in 4.6.3, Shapes and geometry
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.3).
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.3>).
 
   For instance, a circular crossSection with counter-clockwise
   ordering and the default spine form a cylinder. With solid TRUE and
   ccw TRUE, the cylinder is visible from the outside. Changing ccw to
   FALSE makes it visible from the inside.  The ccw, solid, convex, and
   creaseAngle fields are described in 4.6.3, Shapes and geometry
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.3).
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.3>).
 
 */
 

@@ -70,7 +70,7 @@
   sounds to play when there are more active Sound nodes than can be
   played at once due to either limited system resources or system
   load. 7.3.4, Sound priority, attenuation, and spatialization
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#7.3.4),
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#7.3.4>),
   describes a recommended algorithm for determining which sounds to
   play under such circumstances. The priority field ranges from 0.0 to
   1.0, with 1.0 being the highest priority and 0.0 the lowest
@@ -135,7 +135,7 @@
   playback. Details outlining the minimum required spatialization
   functionality can be found in 7.3.4, Sound priority, attenuation,
   and spatialization
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#7.3.4),
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#7.3.4>),
   If the spatialize field is FALSE, then directional effects are
   ignored, but the ellipsoid dimensions and intensity will still
   affect the loudness of the sound.  If the sound source is

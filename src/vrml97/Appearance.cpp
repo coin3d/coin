@@ -41,7 +41,7 @@
   (all lights are ignored during rendering of the object that
   references this Appearance) and the unlit object colour is (1, 1,
   1). Details of the VRML lighting model are in 4.14, Lighting model
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.14).
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.14>).
 
   The texture field, if specified, shall contain one of the various
   types of texture nodes (VRMLImageTexture, VRMLMovieTexture, or

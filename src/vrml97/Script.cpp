@@ -49,11 +49,11 @@
   Script node's function. That code is referred to as the "script" in
   the rest of this description. Details on the url field can be found
   in 4.5, VRML and the World Wide Web
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.5).
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.5>).
 
   Browsers are not required to support any specific language. Detailed
   information on scripting languages is described in 4.12, Scripting
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.12).
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.12>).
 
   Browsers supporting a scripting language for which a language
   binding is specified shall adhere to that language binding.

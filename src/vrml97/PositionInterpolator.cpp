@@ -36,7 +36,7 @@
   The PositionInterpolator node linearly interpolates among a list of
   3D vectors. The keyValue field shall contain exactly as many values
   as in the key field.  4.6.8, Interpolator nodes
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.8),
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.8>),
   contains a more detailed discussion of interpolators.
 
 */

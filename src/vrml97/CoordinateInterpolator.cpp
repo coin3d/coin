@@ -38,7 +38,7 @@
   multiple of the number of keyframes in the key field. That integer
   multiple defines how many coordinates will be contained in the
   value_changed events.  4.6.8, Interpolator nodes
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.8),
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.8>),
   contains a more detailed discussion of interpolators.
 
 */

@@ -72,7 +72,7 @@
   The e\ loop, \e startTime, and \e stopTime exposedFields and the
   isActive eventOut and their effects on the TimeSensor node are discussed
   in detail in 4.6.9, Time-dependent nodes
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.9).
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.9>).
   The "cycle" of a TimeSensor node lasts for cycleInterval
   seconds. The value of cycleInterval shall be greater than zero.  
 

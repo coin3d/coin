@@ -57,7 +57,7 @@
   viewpoint stack, the user's view is re-parented to the next entry in
   the stack. More details on binding stacks can be found in 4.6.10,
   Bindable children nodes
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.10).
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.10>).
   When a Viewpoint node is moved to the top
   of the stack, the existing top of stack Viewpoint node sends an
   isBound FALSE event and is pushed down the stack.

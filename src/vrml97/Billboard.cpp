@@ -78,7 +78,7 @@
   undefined.  Multiple instances of Billboard nodes (DEF/USE) operate
   as expected: each instance rotates in its unique coordinate system
   to face the viewer.  Subclause 4.6.5, Grouping and children nodes
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.5),
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.5>),
   provides a description of the children, addChildren, and
   removeChildren fields and eventIns.  The bboxCenter and bboxSize
   fields specify a bounding box that encloses the Billboard node's
@@ -89,7 +89,7 @@
   is not specified and if needed shall be calculated by the browser. A
   description of the bboxCenter and bboxSize fields is contained in
   4.6.4, Bounding boxes
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.4),
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.4>),
 */
 
 /*!

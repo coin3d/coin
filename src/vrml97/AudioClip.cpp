@@ -50,14 +50,14 @@
   (see http://www.web3d.org/technicalinfo/specifications/vrml97/part1/references.html#[MIDI]); 
   MIDI files are presumed to use the
   General MIDI patch set. Subclause 4.5, VRML and the World Wide Web
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.5),
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.5>),
   contains details on the url field. The results are undefined when no
   URLs refer to supported data types.
   
   The loop, startTime, and stopTime exposedFields and the isActive
   eventOut, and their effects on the AudioClip node, are discussed in
   detail in 4.6.9, Time-dependent nodes
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.9).
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.9>).
   The "cycle" of an AudioClip is the length of time in seconds for one
   playing of the audio at the specified pitch.  The pitch field
   specifies a multiplier for the rate at which sampled sound is

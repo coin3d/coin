@@ -169,7 +169,7 @@
   </center>
 
   Subclause 4.6.3, Shapes and geometry
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.5),
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.5>),
   provides a description of the ccw, solid, convex, and creaseAngle
   fields.
 

@@ -52,7 +52,7 @@
   to obtain, the higher preference VRML file. Details on the url field
   and preference order can be found in 4.5, VRML and the World Wide
   Web
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.5).  
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.5>).  
 
   The results are undefined if the contents of the URL change after it
   has been loaded.  
@@ -65,7 +65,7 @@
   implies that the bounding box is not specified and if needed shall
   be calculated by the browser. A description of the bboxCenter and
   bboxSize fields is in 4.6.4, Bounding boxes
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.4).  
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.4>).  
 
 */
 

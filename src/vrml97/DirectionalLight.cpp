@@ -38,7 +38,7 @@
   illuminates along rays parallel to a given 3-dimensional vector. A
   description of the ambientIntensity, color, intensity, and on fields
   is in 4.6.6, Light sources
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.6).
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.6>).
 
   The direction field specifies the direction vector of the
   illumination emanating from the light source in the local coordinate
@@ -50,7 +50,7 @@
   the parent nodes affect the light.  DirectionalLight nodes do not
   attenuate with distance. A precise description of VRML's lighting
   equations is contained in 4.14, Lighting model
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.14).
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.14>).
   
 */
 

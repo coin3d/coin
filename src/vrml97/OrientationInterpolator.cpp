@@ -50,7 +50,7 @@
   5.0) is equivalent to the rotation between the orientations (0, 1,
   0, 2) and (0, 1, 0, 5.0).  A more detailed discussion of
   interpolators is contained in 4.6.8, Interpolator nodes
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.8).
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.8>).
 
 */
 

@@ -46,7 +46,7 @@
   The TouchSensor generates events when the pointing device points toward
   any geometry nodes that are descendants of the TouchSensor's parent group.
   See 4.6.7.5, Activating and manipulating sensors
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.7.5),
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.7.5>),
   for more details on using the pointing device to activate the TouchSensor.
 
   The \e isOver eventOut reflects the state of the pointing device
@@ -104,11 +104,11 @@
 
   More information about this behaviour is described in 4.6.7.3,
   Pointing-device sensors
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.7.3),
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.7.3>),
   4.6.7.4, Drag sensors
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.7.4),
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.7.4>),
   and 4.6.7.5, Activating and manipulating sensors
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.7.5).
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.7.5>).
 
 */
 

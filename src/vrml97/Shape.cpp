@@ -38,11 +38,11 @@
   geometry. The geometry field contains a geometry node. The specified
   geometry node is rendered with the specified appearance nodes
   applied. See 4.6.3, Shapes and geometry
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.3),
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.3>),
   and SoVRMLAppearance, for more information.
 
   4.14, Lighting model
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.14),
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.14>),
   contains details of the VRML lighting model and the interaction
   between Appearance nodes and geometry nodes.  If the geometry field
   is NULL, the object is not drawn.

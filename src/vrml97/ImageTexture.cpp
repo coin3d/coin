@@ -58,11 +58,11 @@
   Wide Web.
 
   See 4.6.11, Texture maps
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.11),
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.11>),
   for a general description of texture maps.
 
   See 4.14, Lighting model
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.14),
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.14>),
   for a description of lighting equations and the interaction between
   textures, materials, and geometry appearance.
 

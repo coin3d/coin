@@ -45,7 +45,7 @@
   hues.  
 
   4.6.8, Interpolator nodes
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.8), 
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.8>), 
   contains a detailed discussion of interpolators.
 
 */

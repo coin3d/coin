@@ -38,7 +38,7 @@
   The Material node specifies surface material properties for
   associated geometry nodes and is used by the VRML lighting equations
   during rendering.  Subclause 4.14, Lighting model
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.14),
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.14>),
   contains a detailed description of the VRML lighting model
   equations.  All of the fields in the Material node range from 0.0 to
   1.0.  The fields in the Material node determine how light reflects

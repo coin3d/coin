@@ -50,7 +50,7 @@
   this PointSet node, the emissiveColor of the Material node shall be
   used to draw the points. More details on lighting equations can be
   found in 4.14, Lighting model
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.14).
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.14>).
 
 */
 

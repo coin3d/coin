@@ -39,7 +39,7 @@
   identity transform.  More details on the children, addChildren, and
   removeChildren fields and eventIns can be found in 4.6.5, Grouping
   and children nodes
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.5).
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.5>).
 
   The bboxCenter and bboxSize fields specify a bounding box that
   encloses the Group node's children. This is a hint that may be used
@@ -49,7 +49,7 @@
   implies that the bounding box is not specified and, if needed, is
   calculated by the browser. A description of the bboxCenter and
   bboxSize fields is contained in 4.6.4, Bounding boxes
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.4).
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.4>).
 
 
 */

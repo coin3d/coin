@@ -89,7 +89,7 @@
   Material shall be used to draw the lines. Details on lighting
   equations as they affect IndexedLineSet nodes are described in 4.14,
   Lighting model
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.14).  
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.14>).  
 
 */
 

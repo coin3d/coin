@@ -53,11 +53,11 @@
   children are chosen. A description of how multiple Anchors and
   pointing-device sensors are resolved on activation is contained in
   4.6.7, Sensor nodes
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.7).
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.7>).
 
   More details on the children, addChildren, and removeChildren fields
   and eventIns can be found in 4.6.5, Grouping and children nodes
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.5).
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.5>).
 
   The description field in the Anchor node specifies a textual
   description of the Anchor node. This may be used by browser-specific
@@ -120,7 +120,7 @@
   the Viewpoint is not found, no action occurs on activation.  More
   details on the url field are contained in 4.5, VRML and the World
   Wide Web
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.5).
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.5>).
   The bboxCenter and bboxSize fields specify a bounding box
   that encloses the Anchor's children. This is a hint that may be used
   for optimization purposes. The results are undefined if the
@@ -129,7 +129,7 @@
   implies that the bounding box is not specified and if needed shall
   be calculated by the browser. More details on the bboxCenter and
   bboxSize fields can be found in 4.6.4, Bounding boxes
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.4).
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.4>).
 
 */
 

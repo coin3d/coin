@@ -42,13 +42,13 @@
   The Transform node is a grouping node that defines a coordinate
   system for its children that is relative to the coordinate systems
   of its ancestors.  See 4.4.4, Transformation hierarchy
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.4.4),
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.4.4>),
   and 4.4.5, Standard units and coordinate system
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.4.5),
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.4.5>),
   for a description of coordinate systems and transformations.
 
   4.6.5, Grouping and children nodes
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.5),
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.5>),
   provides a description of the children, addChildren, and removeChildren
   fields and eventIns.
 
@@ -66,7 +66,7 @@
   specified bounding box is smaller than the true bounding box of the
   group. A description of the bboxCenter and bboxSize fields is
   provided in 4.6.4, Bounding boxes
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.4).
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.4>).
 
   The translation, rotation, scale, scaleOrientation and center fields
   define a geometric 3D transformation consisting of (in order):

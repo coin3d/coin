@@ -61,13 +61,13 @@
   MPEG1-Systems (audio and video) or MPEG1-Video (video-only) movie
   file formats 2 Details on the url field can be found in 4.5, VRML
   and the World Wide Web
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.5).
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.5>).
   MovieTexture nodes can be referenced by an Appearance node's texture
   field (as a movie texture) and by a Sound node's source field (as an
   audio source only).  See 4.6.11, Texture maps
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.11),
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.11>),
   for a general description of texture maps.  4.14, Lighting model
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.14),
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.14>),
   contains details on lighting equations and the interaction between
   textures, materials, and geometries.  
 
@@ -80,7 +80,7 @@
   The loop, startTime, and stopTime exposedFields and the isActive
   eventOut, and their effects on the MovieTexture node, are discussed
   in detail in the 4.6.9, Time-dependent nodes, section
-  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.9).
+  (<http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.9>).
 
   The cycle of a MovieTexture node is the length of time in seconds
   for one playing of the movie at the specified speed.  The speed
