@@ -206,7 +206,7 @@ SoTranslate1Dragger::drag(void)
   this->lineProj->setViewVolume(this->getViewVolume());
   this->lineProj->setWorkingSpace(this->getLocalToWorldMatrix());
 
-  SbVec3f projPt = lineProj->project(this->getNormalizedLocaterPosition());
+  SbVec3f projPt = this->lineProj->project(this->getNormalizedLocaterPosition());
   SbVec3f startPt = this->getLocalStartingPoint();
   SbVec3f motion = projPt - startPt;
   this->setMotionMatrix(this->appendTranslation(this->getStartMotionMatrix(), motion));
