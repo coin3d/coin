@@ -18,7 +18,8 @@
 \**************************************************************************/
 
 #include <Inventor/manips/SoTransformBoxManip.h>
-#include <coindefs.h> // COIN_STUB()
+#include <Inventor/nodes/SoSurroundScale.h>
+#include <Inventor/draggers/SoTransformBoxDragger.h>
 
 SO_NODE_SOURCE(SoTransformBoxManip);
 
@@ -33,13 +34,15 @@ SoTransformBoxManip::SoTransformBoxManip(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTransformBoxManip);
 
-  // FIXME: stuff missing? 20000108 mortene.
+  SoTransformBoxDragger *dragger = new SoTransformBoxDragger;
+  this->setDragger(dragger);
 
-  COIN_STUB();
+  SoSurroundScale *ss = (SoSurroundScale*) dragger->getPart("surroundScale", TRUE);
+  ss->numNodesUpToContainer = 4;
+  ss->numNodesUpToReset = 3;
 }
 
 
 SoTransformBoxManip::~SoTransformBoxManip()
 {
-  COIN_STUB();
 }

@@ -18,7 +18,8 @@
 \**************************************************************************/
 
 #include <Inventor/manips/SoTrackballManip.h>
-#include <coindefs.h> // COIN_STUB()
+#include <Inventor/nodes/SoSurroundScale.h>
+#include <Inventor/draggers/SoTrackballDragger.h>
 
 SO_NODE_SOURCE(SoTrackballManip);
 
@@ -33,13 +34,15 @@ SoTrackballManip::SoTrackballManip(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTrackballManip);
 
-  // FIXME: stuff missing? 20000108 mortene.
+  SoTrackballDragger *dragger = new SoTrackballDragger;
+  this->setDragger(dragger);
 
-  COIN_STUB();
+  SoSurroundScale *ss = (SoSurroundScale*) dragger->getPart("surroundScale", TRUE);
+  ss->numNodesUpToContainer = 4;
+  ss->numNodesUpToReset = 3;
 }
 
 
 SoTrackballManip::~SoTrackballManip()
 {
-  COIN_STUB();
 }

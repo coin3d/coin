@@ -18,7 +18,8 @@
 \**************************************************************************/
 
 #include <Inventor/manips/SoJackManip.h>
-#include <coindefs.h> // COIN_STUB()
+#include <Inventor/nodes/SoSurroundScale.h>
+#include <Inventor/draggers/SoJackDragger.h>
 
 SO_NODE_SOURCE(SoJackManip);
 
@@ -33,13 +34,16 @@ SoJackManip::SoJackManip(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoJackManip);
 
-  // FIXME: stuff missing? 20000108 mortene.
+  SoJackDragger *dragger = new SoJackDragger;
+  this->setDragger(dragger);
 
-  COIN_STUB();
+  SoSurroundScale *ss = (SoSurroundScale*) dragger->getPart("surroundScale", TRUE);
+  assert(ss);
+  ss->numNodesUpToContainer = 4;
+  ss->numNodesUpToReset = 3;
 }
 
 
 SoJackManip::~SoJackManip()
 {
-  COIN_STUB();
 }

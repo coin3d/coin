@@ -18,7 +18,9 @@
 \**************************************************************************/
 
 #include <Inventor/manips/SoCenterballManip.h>
-#include <coindefs.h> // COIN_STUB()
+#include <Inventor/draggers/SoCenterballDragger.h>
+#include <Inventor/nodes/SoSurroundScale.h>
+#include <coindefs.h>
 
 SO_NODE_SOURCE(SoCenterballManip);
 
@@ -33,21 +35,26 @@ SoCenterballManip::SoCenterballManip(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoCenterballManip);
 
-  // FIXME: stuff missing? 20000108 mortene.
+  SoCenterballDragger *dragger = new SoCenterballDragger;
+  this->setDragger(dragger);
 
-  COIN_STUB();
+  SoSurroundScale *ss = (SoSurroundScale*) dragger->getPart("surroundScale", TRUE);
+  ss->numNodesUpToContainer = 4;
+  ss->numNodesUpToReset = 3;
 }
 
 
 SoCenterballManip::~SoCenterballManip()
 {
-  COIN_STUB();
 }
 
 void
 SoCenterballManip::setDragger(SoDragger * newDragger)
 {
+  // FIXME: should probably unregister and register callbacks here
+  // pederb, 20000220
   COIN_STUB();
+  inherited::setDragger(newDragger);
 }
 
 void
@@ -61,3 +68,4 @@ SoCenterballManip::valueChangedCB(void * f, SoDragger * d)
 {
   COIN_STUB();
 }
+

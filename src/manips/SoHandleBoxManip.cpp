@@ -18,7 +18,8 @@
 \**************************************************************************/
 
 #include <Inventor/manips/SoHandleBoxManip.h>
-#include <coindefs.h> // COIN_STUB()
+#include <Inventor/nodes/SoSurroundScale.h>
+#include <Inventor/draggers/SoHandleBoxDragger.h>
 
 SO_NODE_SOURCE(SoHandleBoxManip);
 
@@ -33,13 +34,15 @@ SoHandleBoxManip::SoHandleBoxManip(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoHandleBoxManip);
 
-  // FIXME: stuff missing? 20000108 mortene.
+  SoHandleBoxDragger *dragger = new SoHandleBoxDragger;
+  this->setDragger(dragger);
 
-  COIN_STUB();
+  SoSurroundScale *ss = (SoSurroundScale*) dragger->getPart("surroundScale", TRUE);
+  ss->numNodesUpToContainer = 4;
+  ss->numNodesUpToReset = 3;
 }
 
 
 SoHandleBoxManip::~SoHandleBoxManip()
 {
-  COIN_STUB();
 }

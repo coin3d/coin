@@ -18,10 +18,10 @@
 \**************************************************************************/
 
 #include <Inventor/manips/SoTabBoxManip.h>
-#include <coindefs.h> // COIN_STUB()
+#include <Inventor/nodes/SoSurroundScale.h>
+#include <Inventor/draggers/SoTabBoxDragger.h>
 
 SO_NODE_SOURCE(SoTabBoxManip);
-
 
 void
 SoTabBoxManip::initClass(void)
@@ -33,13 +33,15 @@ SoTabBoxManip::SoTabBoxManip(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTabBoxManip);
 
-  // FIXME: stuff missing? 20000108 mortene.
+  SoTabBoxDragger *dragger = new SoTabBoxDragger;
+  this->setDragger(dragger);
 
-  COIN_STUB();
+  SoSurroundScale *ss = (SoSurroundScale*) dragger->getPart("surroundScale", TRUE);
+  ss->numNodesUpToContainer = 4;
+  ss->numNodesUpToReset = 3;
 }
 
 
 SoTabBoxManip::~SoTabBoxManip()
 {
-  COIN_STUB();
 }

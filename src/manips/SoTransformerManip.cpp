@@ -18,7 +18,8 @@
 \**************************************************************************/
 
 #include <Inventor/manips/SoTransformerManip.h>
-#include <coindefs.h> // COIN_STUB()
+#include <Inventor/nodes/SoSurroundScale.h>
+#include <Inventor/draggers/SoTransformerDragger.h>
 
 SO_NODE_SOURCE(SoTransformerManip);
 
@@ -33,32 +34,44 @@ SoTransformerManip::SoTransformerManip(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTransformerManip);
 
-  // FIXME: stuff missing? 20000108 mortene.
-
-  COIN_STUB();
+  SoTransformerDragger *dragger = new SoTransformerDragger;
+  this->setDragger(dragger);
+  
+  SoSurroundScale *ss = (SoSurroundScale*) dragger->getPart("surroundScale", TRUE);
+  ss->numNodesUpToContainer = 4;
+  ss->numNodesUpToReset = 3;
 }
 
 
 SoTransformerManip::~SoTransformerManip()
 {
-  COIN_STUB();
 }
 
 SbBool
 SoTransformerManip::isLocateHighlighting(void)
 {
-  COIN_STUB();
-  return FALSE;
+  SoDragger *dragger = this->getDragger();
+  if (dragger->isOfType(SoTransformerDragger::getClassTypeId())) {
+    return ((SoTransformerDragger*)dragger)->isLocateHighlighting();
+  }
 }
 
 void
 SoTransformerManip::setLocateHighlighting(SbBool onoff)
 {
-  COIN_STUB();
+  SoDragger *dragger = this->getDragger();
+  if (dragger->isOfType(SoTransformerDragger::getClassTypeId())) {
+    return ((SoTransformerDragger*)dragger)->setLocateHighlighting(onoff);
+  }
 }
 
 void
 SoTransformerManip::unsquishKnobs(void)
 {
-  COIN_STUB();
+  SoDragger *dragger = this->getDragger();
+  if (dragger->isOfType(SoTransformerDragger::getClassTypeId())) {
+    return ((SoTransformerDragger*)dragger)->unsquishKnobs();
+  }
 }
+
+

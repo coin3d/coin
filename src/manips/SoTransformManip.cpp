@@ -18,7 +18,7 @@
 \**************************************************************************/
 
 #include <Inventor/manips/SoTransformManip.h>
-#include <Inventor/draggers/SoTransformerDragger.h>
+#include <Inventor/draggers/SoDragger.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
@@ -70,7 +70,8 @@ SoTransformManip::SoTransformManip(void)
   this->scaleOrientFieldSensor->setPriority(0);
 
   this->attachSensors(TRUE);
-  this->setDragger(new SoTransformerDragger);
+
+  // should I set a dragger here? probably not, pederb
 }
 
 /*!
