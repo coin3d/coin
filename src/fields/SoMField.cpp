@@ -542,6 +542,10 @@ SoMField::allocValues(int newnum)
 
   SbBool valchanged = newnum < this->num ? TRUE : FALSE;
   this->num = newnum;
+  // FIXME: it seems bogus to 1) call valueChanged() from this method
+  // (I think it would be better to do that from the callers), 2) not
+  // call valueChanged() when setNum() expands the number of
+  // values. 20000915 mortene.
   if (valchanged) this->valueChanged();
 }
 #endif // DOXYGEN_SKIP_THIS
