@@ -38,8 +38,69 @@
   different from the SoText3 node in that it renders the text "flat",
   i.e. does not extrude the fonts to have depth.
 
+  To get an intuitive feeling for how SoAsciiText works, take a look
+  at this sample Inventor file in examinerviewer:
+
+  \verbatim
+  #VRML V1.0 ascii
+
+  Separator {
+    Font {
+      size 10
+      name "Arial:Bold Italic"
+    }
+
+    BaseColor {
+      rgb 1 0 0 #red
+    }
+    AsciiText {
+      width [ 0 3 20 ]
+      justification LEFT #Standard alignment
+      string [ "LEFT" "LEFT" "LEFT" "LEFT" "LEFT LEFT" ]
+    }
+    BaseColor { 
+      rgb 1 1 0
+    }
+    Sphere { radius 1.5 }
+
+    Translation {
+      translation 0 -50 0
+    }
+    BaseColor {
+      rgb 0 1 0 #green
+    }
+    AsciiText {
+      width [ 0 3 20 ]
+      justification RIGHT
+      string [ "RIGHT" "RIGHT" "RIGHT" "RIGHT" "RIGHT RIGHT" ]
+    }
+    BaseColor { 
+      rgb 0 1 1
+    }
+    Sphere { radius 1.5 }
+
+    Translation {
+      translation 0 -50 0
+    }
+    BaseColor {
+      rgb 0 0 1 #blue
+    }
+    AsciiText {
+      width [ 0 3 20 ]
+      justification CENTER
+      string [ "CENTER" "CENTER" "CENTER" "CENTER" "CENTER CENTER" ]
+    }
+    BaseColor { 
+      rgb 1 0 1
+    }
+    Sphere { radius 1.5 }
+  }
+  \endverbatim
+
   \since Inventor 2.1
 */
+
+// FIXME: Write doc about how text is textured. jornskaa 20040716
 
 #include <Inventor/nodes/SoAsciiText.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -74,15 +135,33 @@
 #include "../fonts/glyph3d.h"
 
 
-/*!
-  \enum SoAsciiText::Justification
-  Font justification values.
+/*!  \enum SoAsciiText::Justification The font justification values
+  control the text alignment. Justification can have three distinct
+  values.  The default value is SoAsciiText::LEFT, and the strings are
+  rendered with a common left border. The second value is
+  SoAsciiText::RIGHT, and renders the strings with a common right
+  border. The last value is SoAsciiText::CENTER, in which the strings
+  are rendered with their centers aligned. The origo of the three
+  alignments are respectively left, right and center, located at the
+  baseline of the first line of text.
 */
 
+/*!  \var SoAsciiText::Justification SoAsciiText::LEFT The strings are
+  left-aligned; rendered with a common left border. This is the
+  default alignment.
+*/
 
-/*!
-  \var SoMFString SoAsciiText::string
-  Lines of text to render. Default value is empty.
+/*!  \var SoAsciiText::Justification SoAsciiText::RIGHT The strings are
+  right-aligned; rendered with a common right border.
+*/
+
+/*!  \var SoAsciiText::Justification SoAsciiText::CENTER The text is
+  center-aligned; all strings are centered.
+*/
+
+/*!  \var SoMFString SoAsciiText::string Lines of text to
+  render. Several strings can be specified for this multifield, where
+  each string represents a line. Default value is empty.
 */
 /*!
   \var SoSFFloat SoAsciiText::spacing
@@ -93,9 +172,16 @@
   Horizontal alignment. Default SoAsciiText::LEFT.
 */
 
-/*!
-  \var SoMFFloat SoAsciiText::width
-  Defines the width of each line.
+/*!  \var SoMFFloat SoAsciiText::width Defines the width of each
+  line. The text is scaled to be within the specified width. The size
+  of the text will remain the same; only the advance in the
+  x-direction is scaled. Width equal to the number of characters in
+  your text will not alter the text at all. When a width is set to 0,
+  the width field is ignored and the text rendered as normal. The
+  exact width of the rendered text depends in every case on the font
+  being used. If fewer widths are specified than the number of
+  strings, the strings without matching widths are rendered with
+  default width.
 */
 
 #ifndef DOXYGEN_SKIP_THIS
@@ -207,13 +293,6 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
 
   SoMaterialBundle mb(action);
   mb.sendFirst();
-
-  int i, n = this->string.getNum();
-
-  float longeststring = FLT_MIN;
-  for (i = 0;i<PRIVATE(this)->stringwidths.getLength();++i)
-    longeststring = SbMax(longeststring, PRIVATE(this)->stringwidths[i]);
- 
   
   glBegin(GL_TRIANGLES);
   glNormal3f(0.0f, 0.0f, 1.0f);
@@ -221,15 +300,16 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
   int glyphidx = 0;
   float ypos = 0.0f;
 
+  int i, n = this->string.getNum();
   for (i = 0; i < n; i++) {
 
-    const float currwidth = PRIVATE(this)->stringwidths[i];
-    float stretchlength = 0.0f;
-    if (i < this->width.getNum()) 
-      stretchlength = this->width[i];
-    float stretchfactor =  (stretchlength) / strlen(this->string[i].getString());
+    float stretchfactor = 1.0f;
+    if (i < this->width.getNum() && this->width[i] != 0) {
+      stretchfactor = this->width[i] / strlen(this->string[i].getString());
+    }
 
     float xpos = 0.0f;
+    const float currwidth = PRIVATE(this)->stringwidths[i];
     switch (this->justification.getValue()) {
     case SoAsciiText::RIGHT:
       xpos = -currwidth;
@@ -254,8 +334,9 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
       if (strcharidx > 0) {
         float kerningx, kerningy;
         cc_glyph3d_getkerning(prevglyph, glyph, &kerningx, &kerningy);
-        xpos += kerningx* fontspec->size;
+        xpos += kerningx * fontspec->size;
       }
+
       if (prevglyph) {
         cc_glyph3d_unref(prevglyph);
       }
@@ -270,6 +351,9 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
         v1 = coords[*ptr++];
         v0 = coords[*ptr++];
 
+        // FIXME: Is the text textured correctly when stretching is
+        // applied (when width values have been given that are
+        // not the same as the length of the string)? jornskaa 20040716
         if (do2Dtextures) {
           glTexCoord2f(v0[0] + xpos/fontspec->size, v0[1] + ypos/fontspec->size);
         }
@@ -289,7 +373,7 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
 
       float advancex, advancey;
       cc_glyph3d_getadvance(glyph, &advancex, &advancey);
-      xpos += (advancex + stretchfactor) * fontspec->size;
+      xpos += (advancex * stretchfactor * fontspec->size);
     }
     if (prevglyph) {
       cc_glyph3d_unref(prevglyph);
@@ -364,11 +448,8 @@ SoAsciiText::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   const cc_font_specification * fontspec = PRIVATE(this)->cache->getCachedFontspec();
 
   int i;
-  const int n = this->string.getNum();
-  const float linespacing = this->spacing.getValue();
-
   float maxw = FLT_MIN;
-  for (i = 0;i<PRIVATE(this)->stringwidths.getLength();++i) 
+  for (i = 0;i<PRIVATE(this)->stringwidths.getLength();++i)
     maxw = SbMax(maxw, PRIVATE(this)->stringwidths[i]);
   
   if (maxw == FLT_MIN) { // There is no text to bound. Returning.
@@ -376,26 +457,21 @@ SoAsciiText::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
     return; 
   }
 
-  float longeststring = FLT_MIN;
-  float maxwidth = 0.0f;
-  for (i = 0;i<PRIVATE(this)->stringwidths.getLength();++i) 
-    longeststring = SbMax(longeststring, PRIVATE(this)->stringwidths[i]);
-  for (i = 0;(i<this->width.getNum()) && (i < n);++i)  
-    maxwidth = SbMax(maxwidth, this->width[i]);
-  
   float maxy, miny;
   float minx, maxx;
   
   minx = 0;
-  maxx = maxw + maxwidth*fontspec->size;
+  maxx = maxw;
 
-  miny = -fontspec->size * this->spacing.getValue() * (n-1);
+  miny = -fontspec->size * this->spacing.getValue() * (this->string.getNum() - 1);
   maxy = fontspec->size;
 
   switch (this->justification.getValue()) {
   case SoAsciiText::LEFT:
     break;
   case SoAsciiText::RIGHT:
+    maxx -= maxw;
+    minx -= maxw;
     break;
   case SoAsciiText::CENTER:
     maxx -= maxw * 0.5f;
@@ -410,7 +486,7 @@ SoAsciiText::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   box.setBounds(SbVec3f(minx, miny, 0.0f), SbVec3f(maxx, maxy, 0.0f));
 
   // Expanding bbox so that glyphs like 'j's and 'q's are completely inside.
-  box.extendBy(SbVec3f(0,PRIVATE(this)->maxglyphbbox.getMin()[1] - (n-1)*fontspec->size, 0));  
+  box.extendBy(SbVec3f(0, PRIVATE(this)->maxglyphbbox.getMin()[1] - (this->string.getNum() - 1) * fontspec->size, 0));  
   box.extendBy(PRIVATE(this)->maxglyphbbox);
   center = box.getCenter();
   PRIVATE(this)->unlock();
@@ -421,13 +497,10 @@ void
 SoAsciiText::generatePrimitives(SoAction * action)
 {
   PRIVATE(this)->lock();
-
   SoState * state = action->getState();
   PRIVATE(this)->setUpGlyphs(state, this);
 
   const cc_font_specification * fontspec = PRIVATE(this)->cache->getCachedFontspec();
-
-  int i, n = this->string.getNum();
 
   SbBool do2Dtextures = FALSE;
   SbBool do3Dtextures = FALSE;
@@ -451,26 +524,23 @@ SoAsciiText::generatePrimitives(SoAction * action)
   vertex.setDetail(&detail);
   vertex.setMaterialIndex(0);
 
-  float longeststring = FLT_MIN;
-  for (i = 0;i<PRIVATE(this)->stringwidths.getLength();++i)
-    longeststring = SbMax(longeststring, PRIVATE(this)->stringwidths[i]);
-
   this->beginShape(action, SoShape::TRIANGLES, NULL);
   vertex.setNormal(SbVec3f(0.0f, 0.0f, 1.0f));
 
   int glyphidx = 0;
   float ypos = 0.0f;
 
+  int i, n = this->string.getNum();
   for (i = 0; i < n; i++) {
 
-    const float currwidth = PRIVATE(this)->stringwidths[i];
-    float stretchlength = 0.0f;
-    if (i < this->width.getNum()) 
-      stretchlength = this->width[i];
-    float stretchfactor =  stretchlength / strlen(this->string[i].getString());
+    float stretchfactor = 1.0f;
+    if (i < this->width.getNum() && this->width[i] != 0) {
+      stretchfactor = this->width[i] / strlen(this->string[i].getString());
+    }
 
     detail.setStringIndex(i);
     float xpos = 0.0f;
+    const float currwidth = PRIVATE(this)->stringwidths[i];
     switch (this->justification.getValue()) {
     case SoAsciiText::RIGHT:
       xpos = -currwidth;
@@ -513,6 +583,9 @@ SoAsciiText::generatePrimitives(SoAction * action)
         v1 = coords[*ptr++];
         v0 = coords[*ptr++];
 
+        // FIXME: Is the text textured correctly when stretching is
+        // applied (when width values have been given that are
+        // not the same as the length of the string)? jornskaa 20040716
         if(do2Dtextures) {
           vertex.setTextureCoords(SbVec2f(v0[0] + xpos/fontspec->size, v0[1] + ypos/fontspec->size));
         }
@@ -533,7 +606,7 @@ SoAsciiText::generatePrimitives(SoAction * action)
       }
       float advancex, advancey;
       cc_glyph3d_getadvance(glyph, &advancex, &advancey);
-      xpos += (advancex + stretchfactor) * fontspec->size;
+      xpos += (advancex * stretchfactor * fontspec->size);
     }
     ypos -= fontspec->size * this->spacing.getValue();
     if (prevglyph) {
@@ -618,6 +691,11 @@ SoAsciiTextP::setUpGlyphs(SoState * state, SoAsciiText * textnode)
     const float * maxbbox;
     this->maxglyphbbox.makeEmpty();
 
+    float stretchfactor = 1.0f;
+    if (i < this->master->width.getNum() && this->master->width[i] != 0) { 
+      stretchfactor = this->master->width[i] / strlen(this->master->string[i].getString());
+    }
+
     for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
 
       // Note that the "unsigned char" cast is needed to avoid 8-bit
@@ -642,14 +720,13 @@ SoAsciiTextP::setUpGlyphs(SoState * state, SoAsciiText * textnode)
         cc_glyph3d_getkerning(prevglyph, glyph, &kerningx, &kerningy);          
       cc_glyph3d_getadvance(glyph, &advancex, &advancey);
 
-      stringwidth += (advancex + kerningx) * fontspecptr->size;
+      stringwidth += (advancex * stretchfactor + kerningx) * fontspecptr->size;
       prevglyph = glyph;
     }
     
     if (prevglyph != NULL) {
-      // Italic font might cause last letter to be outside bbox. Add width if needed.
-      if (advancex < cc_glyph3d_getwidth(prevglyph)) 
-        stringwidth += (cc_glyph3d_getwidth(prevglyph) - advancex) * fontspecptr->size;
+      // Have to remove the appended advance and add the last character to the calculated with
+      stringwidth += (cc_glyph3d_getwidth(prevglyph) - advancex * stretchfactor) * fontspecptr->size;
     }
 
     this->stringwidths.append(stringwidth);
