@@ -1111,17 +1111,10 @@ SbViewVolume::transform(const SbMatrix & matrix)
   }
   // SbViewVolume::PERSPECTIVE
   else {
-    matrix.multVecMatrix(this->llf - this->projPoint,
-                         this->llf);
-    matrix.multVecMatrix(this->lrf - this->projPoint,
-                         this->lrf);
-    matrix.multVecMatrix(this->ulf - this->projPoint,
-                         this->ulf);
-
+    matrix.multVecMatrix(this->llf, this->llf);
+    matrix.multVecMatrix(this->lrf, this->lrf);
+    matrix.multVecMatrix(this->ulf, this->ulf);
     matrix.multVecMatrix(this->projPoint, this->projPoint);
-    this->llf += this->projPoint;
-    this->lrf += this->projPoint;
-    this->ulf += this->projPoint;
   }
 }
 
