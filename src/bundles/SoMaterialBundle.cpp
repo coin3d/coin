@@ -142,7 +142,9 @@ SoMaterialBundle::reallySend(const int index, const SbBool isBetweenBeginEnd)
   }
   else {
     if (this->doStipple) {
-      this->diffuseElt->send(index);
+      // make sure alpha value is 1.0, since blending might be
+      // enabled if we are doing point and line smoothing
+      this->diffuseElt->send(index, 1.0f);
     }
     else if (!this->diffusePacked) {
       float alpha = 
