@@ -381,7 +381,7 @@ GLWrapper(int contextid)
 
 #ifdef COIN_INTERNAL
 #if COIN_DEBUG
-    SoDebugError::post("GLWrapper()",
+    SoDebugError::post("GLWrapper",
                        "Using %s for dynamic binding.\n", 
                        GLWrapper_getProcAddressMethod(gi));
 #endif // COIN_DEBUG
@@ -406,6 +406,7 @@ GLWrapper(int contextid)
     gi->glBindTexture = NULL;
     gi->glDeleteTextures = NULL;
     gi->glGenTextures = NULL;
+    gi->glTexSubImage2D = NULL;
     
     gi->COIN_GL_CLAMP_TO_EDGE = 0;
     
@@ -509,6 +510,15 @@ GLWrapper(int contextid)
                               COIN_PFNGLDELETETEXTURESPROC);
       GLWRAPPER_REGISTER_FUNC(glGenTextures, glGenTexturesEXT,
                               COIN_PFNGLGENTEXTURESPROC);
+    }
+
+    if (GLWrapper_glVersionMatchesAtLeast(gi,1,1,0)) {
+      GLWRAPPER_REGISTER_FUNC(glTexSubImage2D, glTexSubImage2D,
+                              COIN_PFNGLTEXSUBIMAGE2DPROC);
+    }
+    else if (GLWrapper_glEXTSupported(gi, "GL_EXT_subtexture")) {
+      GLWRAPPER_REGISTER_FUNC(glTexSubImage2D, glTexSubImage2DEXT,
+                              COIN_PFNGLTEXSUBIMAGE2DPROC);
     }
 
 #else // Static binding

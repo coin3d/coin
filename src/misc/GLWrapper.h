@@ -92,6 +92,8 @@ typedef void (APIENTRY * COIN_PFNGLPOLYGONOFFSETPROC) (GLfloat factor, GLfloat b
 typedef void (APIENTRY * COIN_PFNGLBINDTEXTUREPROC) (GLenum target, GLuint texture);
 typedef void (APIENTRY * COIN_PFNGLDELETETEXTURESPROC) (GLsizei n, const GLuint *textures);
 typedef void (APIENTRY * COIN_PFNGLGENTEXTURESPROC) (GLsizei n, GLuint *textures);
+typedef void (APIENTRY * COIN_PFNGLTEXSUBIMAGE2DPROC) (GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid *pixels);
+
 
 #ifdef HAVE_GLX
 /* GLX functions */
@@ -137,6 +139,7 @@ typedef struct {
   COIN_PFNGLBINDTEXTUREPROC glBindTexture;
   COIN_PFNGLDELETETEXTURESPROC glDeleteTextures;
   COIN_PFNGLGENTEXTURESPROC glGenTextures;
+  COIN_PFNGLTEXSUBIMAGE2DPROC glTexSubImage2D; 
 
 #ifdef HAVE_GLX
   COIN_PFNGLXGETPROCADDRESSARB glXGetProcAddressARB;
