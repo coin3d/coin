@@ -683,7 +683,20 @@ just one rule which is an absolute must:
           "\since", to make it possible for application programmers to
           know when the API was extended -- in case they want to
           support a range of older versions of the library, for
-          instance.
+          instance. Valid parameters to "\since" are:
+          * COIN-x.y     - What Coin version it first occured in.
+          * TGS-x.y[.z]  - What TGS OIV version it first occured in.
+          * SGI-x.y[.z]  - What SGI OIV version it first occured in.
+          * YYYY-MM-DD   - What date it was added to Coin. Will be 
+                           converted to the correct COIN-x.y for each 
+                           Coin release.
+          Use ',' as a separator if more than one implementation supports
+          the extension. If an extension is introduced in two branches of 
+          Coin, tag both in cases as (COIN-1.1, COIN-2.1) but only once if 
+          you mean COIN-1.1 and later (e.g. all 2.x releases support the 
+          extension). The z release numbers should normally never be used
+          as adding features between patchlevel releases would break binary
+          compatibility, but at least TGS is known to break this "rule".
 
 Other than this, use your common sense and look at the already
 existing documentation that is available.
