@@ -19,7 +19,7 @@
 
 /*!
   \class SoWriteAction Inventor/actions/SoWriteAction.h
-  \brief The SoWriteAction class dumps the scene graph to a file.
+  \brief The SoWriteAction class writes the scene graph to a file.
 
   FIXME: more doc
 
@@ -214,16 +214,13 @@ SoWriteAction::writeAllPROTO(void)
 }
 
 /*!
-  Applies the write method at \a node with the current SoOutput
-  instance.
+  Applies the write method at \a node (and its children) with the
+  current SoOutput instance.
 */
 void
 SoWriteAction::continueToApply(SoNode * node)
 {
-  this->setTerminated(FALSE);
-  inherited::beginTraversal(node);
-  this->endTraversal(node);
-  this->setTerminated(TRUE);
+  this->traverse(node);
 }
 
 /*!

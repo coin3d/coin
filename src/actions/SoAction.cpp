@@ -218,7 +218,7 @@ SoAction::SoAction()
   : state(NULL),
     traversalMethods(NULL),
     appliedCode(NODE),
-    isTerminated(TRUE),
+    isTerminated(FALSE),
     currentPathCode(NO_PATH)
 {
   appliedData.node = NULL;
@@ -242,6 +242,8 @@ SoAction::~SoAction(void)
 void
 SoAction::apply(SoNode * rootNode)
 {
+  this->isTerminated = FALSE;
+
 #if 0 // FIXME: doesn't work with a rootNode == NULL. 19990819 mortene.
   assert(rootNode);
   rootNode->ref();
@@ -250,14 +252,13 @@ SoAction::apply(SoNode * rootNode)
   this->appliedCode = NODE;
   if (this->state == NULL)
     this->state = new SoState(this, getEnabledElements().getElements());
-  this->isTerminated = FALSE;
   this->beginTraversal(rootNode);
   this->endTraversal(rootNode);
-  this->isTerminated = TRUE;
   this->appliedData.node = NULL;
   // An action should not trigger node (or node tree) destruction.
   rootNode->unrefNoDelete();
 #else // FIXME: Handles rootNode == NULL gracefully, not sure if that is a Good Thing, though. 19990819 mortene.
+
   if (rootNode) rootNode->ref();
   this->currentPathCode = NO_PATH;
   this->appliedData.node = rootNode;
@@ -265,10 +266,8 @@ SoAction::apply(SoNode * rootNode)
   if (rootNode) {
     if (this->state == NULL)
       this->state = new SoState(this, getEnabledElements().getElements());
-    this->isTerminated = FALSE;
     this->beginTraversal(rootNode);
     this->endTraversal(rootNode);
-    this->isTerminated = TRUE;
     this->appliedData.node = NULL;
   }
   // An action should not trigger node (or node tree) destruction.
@@ -283,6 +282,8 @@ SoAction::apply(SoNode * rootNode)
 void
 SoAction::apply(SoPath * path)
 {
+  this->isTerminated = FALSE;
+
   // ref path's root node?
   assert(path->getLength() > 0);
   assert(path->getNode(0));
@@ -291,10 +292,8 @@ SoAction::apply(SoPath * path)
   this->appliedCode = PATH;
   if (this->state == NULL)
     this->state = new SoState(this, getEnabledElements().getElements());
-  this->isTerminated = FALSE;
   this->beginTraversal(path->getNode(0));
   this->endTraversal(path->getNode(0));
-  this->isTerminated = TRUE;
 }
 
 /*!
@@ -312,6 +311,8 @@ SoAction::apply(SoPath * path)
 void
 SoAction::apply(const SoPathList & pathList, SbBool /* obeysRules */)
 {
+  this->isTerminated = FALSE;
+
   // FIXME: temporary code until proper pathlist traversal is implemented
   assert(pathList.getLength() > 0);
   assert(pathList[0]->getNode(0));
@@ -320,7 +321,6 @@ SoAction::apply(const SoPathList & pathList, SbBool /* obeysRules */)
   if (this->state == NULL)
     this->state = new SoState(this, getEnabledElements().getElements());
 
-  this->isTerminated = FALSE;
   for (int i = 0; i < n; i++) {
     SoPath * path = pathList[i];
     this->currentPathCode = IN_PATH;
@@ -335,7 +335,6 @@ SoAction::apply(const SoPathList & pathList, SbBool /* obeysRules */)
     this->appliedData.node = NULL;
   }
   this->endTraversal(pathList[0]->getNode(0));
-  this->isTerminated = TRUE;
 }
 
 /*!
@@ -525,6 +524,7 @@ SoAction::traverse(SoNode * const node)
     const char * mname = NULL;
     if (m == SoNode::pickS) mname = "pickS";
     else if (m == SoNode::rayPickS) mname = "rayPickS";
+    else if (m == SoNode::handleEventS) mname = "handleEventS";
     else {
       mname = buffer;
       sprintf(buffer, "%p", m);
@@ -555,9 +555,14 @@ SoAction::traverse(SoNode * const node)
 }
 
 /*!
-  This method returns TRUE if the action has terminated.
-*/
+  This method returns TRUE if the action was prematurely terminated.
 
+  Note that the termination flag will be FALSE if the action simply
+  completed its run over the scene graph in the "ordinary" fashion,
+  i.e. was not explicitly aborted from any of the nodes in the graph.
+
+  \sa setTerminated()
+*/
 SbBool
 SoAction::hasTerminated() const
 {
@@ -713,9 +718,15 @@ SoAction::endTraversal(SoNode * /* node */)
 }
 
 /*!
-  FIXME: write doc.
-*/
+  Set the termination flag.
 
+  Typically set to TRUE from nodes upon special
+  conditions being met during scene graph traversal -- like the
+  correct node being found when doing SoSearchAction traversal or
+  when grabbing the event from an SoHandleEventAction.
+
+  \sa hasTerminated()
+*/
 void
 SoAction::setTerminated(const SbBool flag)
 {

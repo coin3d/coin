@@ -65,6 +65,10 @@ SoHandleEventAction::getTypeId(void) const
 
 #include <assert.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 // static variables
 SoEnabledElementsList * SoHandleEventAction::enabledElements;
 SoActionMethodList * SoHandleEventAction::methods;
@@ -209,6 +213,12 @@ SoHandleEventAction::getEvent(void) const
 /*!
   This method marks the action instance as handled, hence terminates the
   action.
+
+  The action is only marked as handled when a node in the graph "grabs"
+  the event this action is carrying, so the handled flag will be
+  FALSE after traversal if no nodes wanted the event.
+
+  \sa isHandled()
 */
 void
 SoHandleEventAction::setHandled(void)
@@ -217,7 +227,10 @@ SoHandleEventAction::setHandled(void)
 }
 
 /*!
-  This method returns wether the event has been handled or not.
+  This method returns whether or not the event has been handled by
+  a node during scene graph traversal.
+
+  \sa setHandled()
 */
 SbBool
 SoHandleEventAction::isHandled(void) const
