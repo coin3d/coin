@@ -1880,3 +1880,18 @@
     20030922 mortene.
 
 =====================================================================
+
+077 Buggy reference counting upon scene graph export.
+
+    Yet more of the embarrassing writeref counting errors. Trigger the
+    bug by running the IvExamples/Mentor/14.1.FrolickingWords example,
+    then type in 'dumpiv' to trigger a scene graph export
+    operation. Application will exit with the following assert:
+
+        Coin/src/misc/SoBase.cpp:251: void set_current_writeref(const
+        SoBase *, int): Assertion `rc >= 0 && "buggy writerefcounter"'
+        failed.
+
+    20030930 mortene.
+
+=====================================================================
