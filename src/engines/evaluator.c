@@ -194,9 +194,9 @@ so_eval_traverse(so_eval_node *node, so_eval_param *result, const so_eval_cbdata
     result->value = param1.value - param2.value;
     break;
   case ID_SUB_VEC:
-    result->vec[0] = param1.vec[0] + param2.vec[0];
-    result->vec[1] = param1.vec[1] + param2.vec[1];
-    result->vec[2] = param1.vec[2] + param2.vec[2];
+    result->vec[0] = param1.vec[0] - param2.vec[0];
+    result->vec[1] = param1.vec[1] - param2.vec[1];
+    result->vec[2] = param1.vec[2] - param2.vec[2];
     break;
   case ID_MUL:
     result->value = param1.value * param2.value;
@@ -210,7 +210,10 @@ so_eval_traverse(so_eval_node *node, so_eval_param *result, const so_eval_cbdata
     }
     break;
   case ID_FMOD:
-    result->value = (float) fmod(param1.value, param2.value);
+    if (param2.value != 0.0f) {
+      result->value = (float) fmod(param1.value, param2.value);
+    }
+    else result->value = 0.0f;
     break;
   case ID_NEG:
     result->value = - param1.value;
@@ -224,7 +227,7 @@ so_eval_traverse(so_eval_node *node, so_eval_param *result, const so_eval_cbdata
     result->trueorfalse = param1.trueorfalse && param2.trueorfalse;
     break;
   case ID_OR:
-    result->trueorfalse = param1.trueorfalse && param2.trueorfalse;
+    result->trueorfalse = param1.trueorfalse || param2.trueorfalse;
     break;
   case ID_LEQ:
     result->trueorfalse = param1.value <= param2.value;
@@ -274,7 +277,7 @@ so_eval_traverse(so_eval_node *node, so_eval_param *result, const so_eval_cbdata
     result->value = (float) tanh(param1.value);
     break;
   case ID_SQRT:
-    result->value = param1.value >= 0.0f ? (float) sqrt(param1.value) : 0.0f;
+    result->value = param1.value > 0.0f ? (float) sqrt(param1.value) : 0.0f;
     break;
   case ID_EXP:
     result->value = (float) exp(param1.value);
@@ -389,7 +392,13 @@ so_eval_traverse(so_eval_node *node, so_eval_param *result, const so_eval_cbdata
     result->trueorfalse = param1.value > param2.value;
     break;
   case ID_POW:
-    result->value = (float) pow(param1.value, param2.value);
+    if (param1.value == 0.0f) result->value = 0.0f;
+    else if (param1.value > 0.0f) {
+      result->value = (float) pow(param1.value, param2.value);
+    }
+    else { // param1.value < 0.0, param2.value must be an integral value
+      result->value = (float) pow(param1.value, floor(param2.value + 0.5));
+    }
     break;
   case ID_MUL_VEC_FLT:
     result->vec[0] = param1.vec[0] * param2.value;
