@@ -33,8 +33,8 @@ class SoVRMLImageTexture;
 class SoSensor;
 class SbImage;
 
-typedef SbBool VRMLPrequalifyFileCallback( const SbString &, void *,
-                                           SoVRMLImageTexture * );
+typedef SbBool VRMLPrequalifyFileCallback(const SbString &, void *,
+                                          SoVRMLImageTexture *);
 
 class COIN_DLL_API SoVRMLImageTexture : public SoVRMLTexture
 {
@@ -47,6 +47,7 @@ public:
 
   SoMFString url;
 
+  static void setDelayFetchURL(const SbBool onoff);
   static void setPrequalifyFileCallBack(VRMLPrequalifyFileCallback * cb,
                                         void * closure);
   void allowPrequalifyFile(SbBool enable);
@@ -56,6 +57,7 @@ public:
   virtual void callback(SoCallbackAction * action);
   virtual void rayPick(SoRayPickAction * action);
 
+  void setImage(const SbImage & image);
   const SbImage * getImage(void) const;
 
   static void setImageDataMaxAge(const uint32_t maxage);
@@ -69,12 +71,17 @@ protected:
 
 private:
 
+  SbBool readImage(const SbString & filename);
   SbBool loadUrl(void);
   class SoVRMLImageTextureP * pimpl;
   static void urlSensorCB(void *, SoSensor *);
   static void glimage_callback(void * closure);
   static SbBool image_read_cb(const SbString &, SbImage *, void *);
   static void read_thread(void * closure);
+  static SbBool default_prequalify_cb(const SbString & url,  void * closure, 
+                                      SoVRMLImageTexture * node);
+  static void oneshot_readimage_cb(void *, SoSensor *);
+
 }; // class SoVRMLImageTexture
 
 #endif // ! COIN_SOVRMLIMAGETEXTURE_H

@@ -104,6 +104,7 @@
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/lists/SbStringList.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/sensors/SoOneShotSensor.h>
 #include <Inventor/SbImage.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/C/tidbits.h>
@@ -114,7 +115,11 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-static int imagedata_maxage;
+static int imagedata_maxage = 0;
+static VRMLPrequalifyFileCallback * imagetexture_prequalify_cb = NULL;
+static void * imagetexture_prequalify_closure = NULL;
+static SbBool imagetexture_delay_fetch = TRUE;
+static SbBool imagetexture_is_exiting = FALSE;
 
 #ifdef HAVE_THREADS
 
@@ -122,7 +127,6 @@ static int imagedata_maxage;
 #include <Inventor/threads/SbMutex.h>
 
 static cc_sched * imagetexture_scheduler = NULL;
-static SbBool imagetexture_is_exiting = FALSE;
 
 #endif // HAVE_THREADS
 
@@ -135,13 +139,10 @@ public:
   SbBool glimagevalid;
   SbImage image;
   SoFieldSensor * urlsensor;
+  SbBool allowprequalifycb;
 
   void readimage_cleanup(void);
-#ifdef HAVE_THREADS
-  SbString scheduledfilename;
-  SbMutex readimagemutex;
   SbBool isdestructing;
-#endif // HAVE_THREADS
 #ifdef COIN_THREADSAFE
   SbMutex glimagemutex;
 #endif // COIN_THREADSAFE
@@ -184,7 +185,7 @@ SoVRMLImageTexture::initClass(void) // static
 }
 
 #undef PRIVATE
-#define PRIVATE(x) x->pimpl
+#define PRIVATE(x) (x)->pimpl
 
 /*!
   Constructor.
@@ -199,6 +200,7 @@ SoVRMLImageTexture::SoVRMLImageTexture(void)
   PRIVATE(this)->glimage = NULL;
   PRIVATE(this)->glimagevalid = FALSE;
   PRIVATE(this)->readstatus = 1;
+  PRIVATE(this)->allowprequalifycb = TRUE;
   
   // use field sensor for url since we will load an image if
   // filename changes. This is a time-consuming task which should
@@ -206,10 +208,7 @@ SoVRMLImageTexture::SoVRMLImageTexture(void)
   PRIVATE(this)->urlsensor = new SoFieldSensor(urlSensorCB, this);
   PRIVATE(this)->urlsensor->setPriority(0);
   PRIVATE(this)->urlsensor->attach(&this->url);
-
-#ifdef HAVE_THREADS
   PRIVATE(this)->isdestructing = FALSE;
-#endif // HAVE_THREADS
 }
 
 /*!
@@ -231,12 +230,26 @@ SoVRMLImageTexture::~SoVRMLImageTexture()
 }
 
 /*!
-  Sets the prequalify callback for ImageTexture nodes.
+  Sets the prequalify callback for ImageTexture nodes. This is a callback
+  that will be called when an image is about to be read.
 */
 void
 SoVRMLImageTexture::setPrequalifyFileCallBack(VRMLPrequalifyFileCallback * cb,
                                               void * closure)
 {
+  imagetexture_prequalify_cb = cb;
+  imagetexture_prequalify_closure = closure;
+}
+
+/*!
+  Sets whether the image loading is delayed until the first time the
+  image is needed, or if the image is loaded immediately when the
+  url field is changed/set. Default value is \e TRUE.
+*/
+void 
+SoVRMLImageTexture::setDelayFetchURL(const SbBool onoff)
+{
+  imagetexture_delay_fetch = onoff;
 }
 
 /*!
@@ -245,6 +258,7 @@ SoVRMLImageTexture::setPrequalifyFileCallBack(VRMLPrequalifyFileCallback * cb,
 void
 SoVRMLImageTexture::allowPrequalifyFile(SbBool enable)
 {
+  PRIVATE(this)->allowprequalifycb = enable;
 }
 
 static SoGLImage::Wrap
@@ -418,25 +432,24 @@ SoVRMLImageTexture::loadUrl(void)
 {
   PRIVATE(this)->glimagevalid = FALSE; // recreate GL image in next GLRender()
 
-  SbBool retval = FALSE;
+  SbBool retval = TRUE;
   if (this->url.getNum() && this->url[0].getLength()) {
     const SbStringList & sl = SoInput::getDirectories();
-#ifdef HAVE_THREADS
-    // instruct SbImage to call image_read_cb the first time the image
-    // data is requested (typically when some shape using the texture
-    // is inside the view frustum).
-    if (PRIVATE(this)->image.scheduleReadFile(image_read_cb, this,
-                                              this->url[0],
-                                              sl.getArrayPtr(), sl.getLength())) {
-      retval = TRUE;
+
+    if (imagetexture_delay_fetch) {
+      // instruct SbImage to call image_read_cb the first time the image
+      // data is requested (typically when some shape using the texture
+      // is inside the view frustum).
+      retval = PRIVATE(this)->image.scheduleReadFile(image_read_cb, this,
+                                                     this->url[0],
+                                                     sl.getArrayPtr(), sl.getLength());
+      
     }
-#else // HAVE_THREADS
-    // if we don't have threads, read the image file immedidately
-    if (PRIVATE(this)->image.readFile(this->url[0],
-                                      sl.getArrayPtr(), sl.getLength())) {
-      retval = TRUE;
+    else {
+      SbString filename = SbImage::searchForFile(this->url[0],
+                                                 sl.getArrayPtr(), sl.getLength());
+      retval = this->readImage(filename);
     }
-#endif // ! HAVE_THREADS
   }
   else {
     retval = TRUE;
@@ -465,27 +478,53 @@ SoVRMLImageTexture::glimage_callback(void * closure)
 #endif // HAVE_THREADS
 }
 
+SbBool
+SoVRMLImageTexture::default_prequalify_cb(const SbString & url,  void * closure, 
+                                          SoVRMLImageTexture * thisp)
+{
+  SbBool ret = TRUE;
+  if (!imagetexture_is_exiting && !PRIVATE(thisp)->isdestructing) {
+    ret = PRIVATE(thisp)->image.readFile(url);
+    if (PRIVATE(thisp)->glimage) {
+      PRIVATE(thisp)->glimage->setEndFrameCallback(glimage_callback, thisp);
+      PRIVATE(thisp)->glimagevalid = FALSE;
+    }
+#ifdef COIN_THREADSAFE
+    thisp->touch(); // schedule redraw
+#endif // COIN_THREADSAFE
+  }
+  return ret;
+}
+
+// needed to pass data to a new thread
+class imagetexture_thread_data {
+public:
+  SoVRMLImageTexture * thisp;
+  SbString filename;
+};
+
 //
-// multithread loading thread
+// multithread loading thread.
 //
 void
 SoVRMLImageTexture::read_thread(void * closure)
 {
-#ifdef HAVE_THREADS
-  SoVRMLImageTexture * thisp = (SoVRMLImageTexture*) closure;
-  
-  if (!imagetexture_is_exiting && !PRIVATE(thisp)->isdestructing) {
-    (void) PRIVATE(thisp)->image.readFile(PRIVATE(thisp)->scheduledfilename);
-    
-    assert(PRIVATE(thisp)->glimage);
-    PRIVATE(thisp)->glimage->setEndFrameCallback(glimage_callback, thisp);
-    PRIVATE(thisp)->glimagevalid = FALSE;
-#ifdef COIN_THREADSAFE
-    thisp->touch(); // schedule redraw
-#endif // COIN_THREADSAFE
-  }  
-  PRIVATE(thisp)->readimagemutex.unlock(); // unlock to enable new images to be read
-#endif // HAVE_THREADS
+  imagetexture_thread_data * data = (imagetexture_thread_data*) closure;
+  data->thisp->readImage(data->filename);
+  // we allocated this before staring the thread
+  delete data;
+}
+
+// callback for SoOneShotSensor which is used to read image when
+// Coin is compiled without the threads module.
+void
+SoVRMLImageTexture::oneshot_readimage_cb(void * closure, SoSensor * sensor)
+{
+  imagetexture_thread_data * data = (imagetexture_thread_data*) closure;
+  data->thisp->readImage(data->filename);
+  // delete both the sensor and the data
+  delete sensor;
+  delete data;
 }
 
 //
@@ -494,23 +533,28 @@ SoVRMLImageTexture::read_thread(void * closure)
 SbBool
 SoVRMLImageTexture::image_read_cb(const SbString & filename, SbImage * image, void * closure)
 {
-#ifdef HAVE_THREADS
   SoVRMLImageTexture * thisp = (SoVRMLImageTexture*) closure;
   assert(&PRIVATE(thisp)->image == image);
   assert(PRIVATE(thisp)->glimage);
   if (!PRIVATE(thisp)->glimage) {
     return FALSE;
   }
-  // lock mutex to avoid another thread overwriting our data.
-  (void) PRIVATE(thisp)->readimagemutex.lock();
 
-  PRIVATE(thisp)->scheduledfilename = filename;
+  imagetexture_thread_data * data = new imagetexture_thread_data;
+  data->thisp = thisp;
+  data->filename = filename;
 
+#if defined(HAVE_THREADS)
+  // use a separate thread to load the image  
   cc_sched_schedule(imagetexture_scheduler,
-                    read_thread, thisp, 0);
+                    read_thread, data, 0);
   return TRUE;
-#endif // HAVE_THREADS
+#else // HAVE_THREADS
+  // trigger a sensor to read the image
+  SoOneShotSensor * sensor = new SoOneShotSensor(oneshot_readimage_cb, data);
+  sensor->schedule();
   return TRUE;
+#endif // ! HAVE_THREADS
 }
 
 //
@@ -531,22 +575,46 @@ SoVRMLImageTexture::urlSensorCB(void * data, SoSensor *)
   }
   else { // empty image?
     if (thisp->url.getNum() == 0 || thisp->url[0].getLength() == 0) {
-      // lock/unlock mutex in case a thread has been started to load
-      // the previous image
+      // wait for threads to finish in case a new thread is used to
+      // load the previous image, and the thread has not finished yet.
 #ifdef HAVE_THREADS
-      PRIVATE(thisp)->readimagemutex.lock();
+      cc_sched_wait_all(imagetexture_scheduler);
 #endif // HAVE_THREADS
-      
       thisp->pimpl->image.setValue(SbVec2s(0,0), 0, NULL);
       thisp->pimpl->glimagevalid = FALSE;
       if (PRIVATE(thisp)->glimage) {
         PRIVATE(thisp)->glimage->setEndFrameCallback(NULL, NULL);
       }
-#ifdef HAVE_THREADS
-      PRIVATE(thisp)->readimagemutex.unlock();
-#endif // HAVE_THREADS
     }
   }
+}
+
+// helper function that either loads the image using the default
+// loader, or calls the prequalify callback
+SbBool 
+SoVRMLImageTexture::readImage(const SbString & filename)
+{
+  SbBool retval = TRUE;
+  if (PRIVATE(this)->allowprequalifycb && imagetexture_prequalify_cb) {
+    retval = imagetexture_prequalify_cb(filename, imagetexture_prequalify_closure,
+                                        this);
+  }
+  else {
+    retval = default_prequalify_cb(filename, NULL, this); 
+  }
+  return retval;
+}
+
+/*!  
+  Set the image data for this node. Can be used by the prequalify
+  callback to set the data in the node.  
+*/
+void 
+SoVRMLImageTexture::setImage(const SbImage & image)
+{
+  PRIVATE(this)->image = image;
+  PRIVATE(this)->glimagevalid = FALSE;
+  this->touch(); // destroy caches using this node
 }
 
 /*!
