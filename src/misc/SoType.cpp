@@ -475,6 +475,8 @@ SoType::isDerivedFrom(const SoType parent) const
 int
 SoType::getAllDerivedFrom(const SoType type, SoTypeList & list)
 {
+  assert(type != SoType::badType() && "argument is badType()");
+
   int counter = 0;
   int n = SoType::typelist->getLength();
   for (int i = 0; i < n; i++) {
