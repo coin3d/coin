@@ -116,6 +116,10 @@
 
 /* color table extension defines */
 
+#ifndef GL_COLOR_TABLE
+#define GL_COLOR_TABLE                    0x80D0
+#endif /* !GL_COLOR_TABLE */
+
 #ifndef GL_COLOR_INDEX1_EXT
 #define GL_COLOR_INDEX1_EXT               0x80E2
 #endif /* !GL_COLOR_INDEX1_EXT */
