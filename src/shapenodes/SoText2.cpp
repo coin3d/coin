@@ -312,7 +312,7 @@ SoText2::GLRender(SoGLRenderAction * action)
       for (int i2 = 0; i2 < charcnt; i2++) {
 
         const cc_glyph2d * glyph = cc_glyph2d_getglyph((int) PRIVATE(this)->laststring[i][i2], 
-                                                       PRIVATE(this)->fontspec);
+                                                       PRIVATE(this)->fontspec, 0.0f);
 
         buffer = cc_glyph2d_getbitmap(glyph, thissize, thispos);
 
@@ -689,7 +689,6 @@ SoText2P::buildGlyphCache(SoState * state)
   this->fontspec->family = NULL;
   this->fontspec->style = NULL;
   this->fontspec->size = SoFontSizeElement::get(state);
-  this->fontspec->angle = 0;
  
   SbVec2s penpos(0, 0);
 
@@ -719,7 +718,7 @@ SoText2P::buildGlyphCache(SoState * state)
       // negative when casted to integer size.
       const unsigned int idx = (unsigned char)this->laststring[i][j];
 
-      cc_glyph2d * glyph = cc_glyph2d_getglyph(idx, this->fontspec);
+      cc_glyph2d * glyph = cc_glyph2d_getglyph(idx, this->fontspec, 0.0f);
 
       // Should _always_ be able to get hold of a glyph -- if no
       // glyph is available for a specific character, a default
