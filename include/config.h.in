@@ -58,8 +58,17 @@
 /* define for runtime linking with GLU */
 #undef GLU_RUNTIME_LINKING
 
+/* define if you have AGL OpenGL bindings */
+#undef HAVE_AGL
+
+/* Define to 1 if you have the <AGL/agl.h> header file. */
+#undef HAVE_AGL_AGL_H
+
 /* define if preprocessor can quote arguments with apostophes */
 #undef HAVE_APOSTROPHES_QUOTING
+
+/* Define to 1 if you have the <Carbon/Carbon.h> header file. */
+#undef HAVE_CARBON_CARBON_H
 
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #undef HAVE_DLFCN_H
@@ -81,6 +90,9 @@
 
 /* define if glXGetProcAddressARB() is available */
 #undef HAVE_GLXGETPROCADDRESSARB
+
+/* define if the GLEXT header should be included as GL/glext.h */
+#undef HAVE_GL_GLEXT_H
 
 /* define if the GLU header should be included as GL/glu.h */
 #undef HAVE_GL_GLU_H
@@ -120,6 +132,9 @@
 
 /* define if you have OpenGL */
 #undef HAVE_OPENGL
+
+/* define if the GLEXT header should be included as OpenGL/glext.h */
+#undef HAVE_OPENGL_GLEXT_H
 
 /* define if the GLU header should be included as OpenGL/glu.h */
 #undef HAVE_OPENGL_GLU_H
