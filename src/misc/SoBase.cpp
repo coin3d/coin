@@ -1164,8 +1164,8 @@ SoBase::createInstance(SoInput * in, const SbName & classname)
       SoDebugError::postInfo("SoBase::createInstance",
                              "Created VRML V2.0 type: %s",
                              type.getName().getString());
-#endif // debug
     }
+#endif // debug
   }
   if (type == SoType::badType())
     type = SoType::fromName(classname);
