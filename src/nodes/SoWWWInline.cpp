@@ -59,7 +59,6 @@
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/SbColor.h>
-#include <Inventor/SbDict.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoDB.h>
@@ -146,45 +145,13 @@ class SoWWWInlineP {
 
 const char SoWWWInlineP::UNDEFINED_FILE[] = "<Undefined file>";
 
-
-// FIXME: this is temporary code. We forgot about this class before
-// locking the Coin 1.0 ABI, so we had to use an SbDict to store
-// per-instance data members for this class. This should be
-// reimplemented when it's ok to break ABI-compatibility again
-// (probably at Coin 2.0).  pederb 2001-08-03
-
-static SbDict * private_data_dict = NULL;
-
-static void
-private_data_cleanup(void)
-{
-  delete private_data_dict;
-  private_data_dict = NULL;
-}
-
-static SoWWWInlineP *
-get_private_data(const SoWWWInline * thisp)
-{
-  if (private_data_dict == NULL) {
-    private_data_dict = new SbDict;
-    coin_atexit((coin_atexit_f *)private_data_cleanup);
-  }
-  void * pimpl;
-  if (!private_data_dict->find((unsigned long) thisp, pimpl)) {
-    pimpl = (void*) new SoWWWInlineP((SoWWWInline*) thisp);
-    (void) private_data_dict->enter((unsigned long) thisp, pimpl);
-  }
-  return (SoWWWInlineP*) pimpl;
-}
-
 #endif // DOXYGEN_SKIP_THIS
 
 SO_NODE_SOURCE(SoWWWInline);
 
-#undef THIS
-// WARNING: Slow! Don't use this macro if you need speed
-#define THIS (get_private_data(this))
 
+#undef THIS
+#define THIS this->pimpl
 
 /*!
   Constructor.
@@ -193,7 +160,7 @@ SoWWWInline::SoWWWInline()
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoWWWInline);
 
-  //  THIS = new SoWWWInlineP;
+  THIS = new SoWWWInlineP(this);
   THIS->children = new SoChildList(this);
   THIS->didrequest = FALSE;
 
@@ -216,9 +183,7 @@ SoWWWInline::SoWWWInline()
 SoWWWInline::~SoWWWInline()
 {
   delete THIS->children;
-
-  //  delete THIS;
-  private_data_dict->remove((unsigned long) this);
+  delete THIS;
 }
 
 // doc in super

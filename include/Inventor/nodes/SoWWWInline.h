@@ -5,7 +5,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -31,6 +31,7 @@
 
 class SbColor;
 class SoGroup;
+class SoWWWInlineP;
 
 // *************************************************************************
 
@@ -55,8 +56,8 @@ public:
   SoSFNode alternateRep;
 
   enum BboxVisibility {
-    NEVER, 
-    UNTIL_LOADED, 
+    NEVER,
+    UNTIL_LOADED,
     ALWAYS
   };
 
@@ -112,8 +113,10 @@ private:
   static SbBool readassofile;
   static SbColor * bboxcolor;
   static BboxVisibility bboxvisibility;
-  
+
   static void cleanup(void);
+
+  SoWWWInlineP * pimpl;
 };
 
 #endif // !COIN_SOWWWINLINE_H
