@@ -240,10 +240,7 @@ SbName::operator!(void) const
 int
 operator==(const SbName & lhs, const char * rhs)
 {
-  // Due to the nature of permanent unique mappings of same strings to
-  // same address in the name hash, we can simple compare pointer
-  // addresses.
-  return lhs.permaaddress == rhs;
+  return (strcmp(lhs.permaaddress, rhs) == 0);
 }
 
 /*!
@@ -253,10 +250,7 @@ operator==(const SbName & lhs, const char * rhs)
 int
 operator==(const char * lhs, const SbName & rhs)
 {
-  // Due to the nature of permanent unique mappings of same strings to
-  // same address in the name hash, we can simple compare pointer
-  // addresses.
-  return rhs.permaaddress == lhs;
+  return (strcmp(rhs.permaaddress, lhs) == 0);
 }
 
 /*!
