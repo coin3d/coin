@@ -38,14 +38,12 @@
 
 // *************************************************************************
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
-
 #include <assert.h>
 
-#include <Inventor/SoDB.h>
 #include <Inventor/SoSceneManager.h>
+
+#include <Inventor/C/tidbits.h>
+#include <Inventor/SoDB.h>
 #include <Inventor/actions/SoAudioRenderAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoHandleEventAction.h>
@@ -55,6 +53,11 @@
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <Inventor/sensors/SoOneShotSensor.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
 #include <Inventor/system/gl.h>
 
 #ifdef COIN_THREADSAFE
@@ -113,6 +116,53 @@ public:
 SbBool SoSceneManagerP::touchtimer = TRUE;
 
 #define PRIVATE(p) (p->pimpl)
+
+// *************************************************************************
+
+// This class inherits SoNodeSensor and overrides its notify() method
+// to provide a means of debugging notifications on the root node.
+//
+// Good for debugging cases when there are continuous redraws due to
+// scene graph changes we have no clue as to the source of.
+//
+// A sensor of this class is only made if the below debugging envvar
+// is set. Otherwise, and ordinary SoNodeSensor is used instead.
+
+class SoSceneManagerRootSensor : public SoNodeSensor {
+  typedef SoNodeSensor inherited;
+
+public:
+  SoSceneManagerRootSensor(SoSensorCB * func, void * data) : inherited(func, data) { }
+  virtual ~SoSceneManagerRootSensor() { }
+
+  virtual void notify(SoNotList * l);
+
+  static SbBool debug(void);
+
+private:
+  static int debugrootnotifications;
+};
+
+int SoSceneManagerRootSensor::debugrootnotifications = -1;
+
+void
+SoSceneManagerRootSensor::notify(SoNotList * l)
+{
+  l->print();
+  (void)fprintf(stdout, "end\n");
+
+  inherited::notify(l);
+}
+
+SbBool
+SoSceneManagerRootSensor::debug(void)
+{
+  if (SoSceneManagerRootSensor::debugrootnotifications == -1) {
+    const char * env = coin_getenv("COIN_DEBUG_ROOT_NOTIFICATIONS");
+    SoSceneManagerRootSensor::debugrootnotifications = env && (atoi(env) > 0);
+  }
+  return SoSceneManagerRootSensor::debugrootnotifications ? TRUE : FALSE;
+}
 
 // *************************************************************************
 
@@ -379,8 +429,16 @@ SoSceneManager::setSceneGraph(SoNode * const sceneroot)
   if (PRIVATE(this)->scene) {
     PRIVATE(this)->scene->ref();
 
-    if (!PRIVATE(this)->rootsensor)
-      PRIVATE(this)->rootsensor = new SoNodeSensor(SoSceneManagerP::nodesensorCB, this);
+    if (!PRIVATE(this)->rootsensor) {
+      SoNodeSensor * n;
+      if (SoSceneManagerRootSensor::debug()) {
+        n = new SoSceneManagerRootSensor(SoSceneManagerP::nodesensorCB, this);
+      }
+      else {
+        n = new SoNodeSensor(SoSceneManagerP::nodesensorCB, this);
+      }
+      PRIVATE(this)->rootsensor = n;
+    }
 
     PRIVATE(this)->rootsensor->attach(sceneroot);
   }
