@@ -158,7 +158,7 @@ void
 SoVRMLImageTexture::initClass(void) // static
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoVRMLImageTexture, SO_VRML97_NODE_TYPE);
-  imagedata_maxage = 30;
+  imagedata_maxage = 500;
 
 #ifdef HAVE_THREADS
   imagetexture_scheduler = cc_sched_construct(2);
