@@ -79,21 +79,7 @@ SIM_AC_MSVC_DSP_ENABLE_OPTION
 # If the Microsoft Visual C++ cl.exe compiler is available, set us up for
 # compiling with it and to generate an MSWindows .dll file.
 
-AC_ARG_ENABLE([msvc],
-  [AC_HELP_STRING([--disable-msvc], [don't require MS Visual C++ on Cygwin])],
-  [case $enableval in
-  no | false) sim_ac_try_msvc=false ;;
-  *)          sim_ac_try_msvc=true ;;
-  esac],
-  [sim_ac_try_msvc=true])
-
-if $sim_ac_try_msvc; then
-  SIM_AC_SETUP_MSVC_IFELSE([], [
-    case $host in
-    *-cygwin) SIM_AC_ERROR([no-msvc++]) ;;
-    esac
-  ])
-fi
+SIM_AC_SETUP_MSVCPP_IFELSE
 
 # **************************************************************************
 # Mac OS X: gcc
