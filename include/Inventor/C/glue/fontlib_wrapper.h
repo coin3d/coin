@@ -59,8 +59,6 @@ extern "C" {
     unsigned char * buffer; /* bitmap data */
   } cc_FLWbitmap;
   
-  SbBool cc_fontlib_debug(void);
-  
   void cc_flw_initialize(void);
   void cc_flw_exit(void);
   

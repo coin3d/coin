@@ -71,19 +71,6 @@ static SbBool wrapper_initialized = FALSE;
   BEGIN Internal functions
 */
 
-/* This method, with the same environment variable check, is
-   replicated in glue/fontlib_wrapper.c. */
-static SbBool
-cc_flw_debug(void)
-{
-  static int dbg = -1;
-  if (dbg == -1) {
-    const char * env = coin_getenv("COIN_DEBUG_FONTSUPPORT");
-    dbg = env && (atoi(env) > 0);
-  }
-  return dbg;
-}
-
 
 static cc_FLWbitmap *
 get_default_bitmap(unsigned int character)
@@ -302,6 +289,17 @@ fontstruct_insert_glyph(int font, cc_FLWglyph glyph, int defaultglyph)
   END Internal functions
 */
 
+
+SbBool
+cc_flw_debug(void)
+{
+  static int dbg = -1;
+  if (dbg == -1) {
+    const char * env = coin_getenv("COIN_DEBUG_FONTSUPPORT");
+    dbg = env && (atoi(env) > 0);
+  }
+  return dbg;
+}
 
 void
 cc_flw_initialize(void)
