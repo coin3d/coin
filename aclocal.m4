@@ -1141,105 +1141,6 @@ fi
 ])
 
 
-
-dnl ************************************************************************
-
-dnl Usage:
-dnl  SIM_CHECK_MOTIF([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
-dnl
-dnl  Try to compile and link against the Motif library. Sets these
-dnl  shell variables:
-dnl
-dnl    $sim_ac_motif_cppflags (extra flags the compiler needs for Motif)
-dnl    $sim_ac_motif_ldflags  (extra flags the linker needs for Motif)
-dnl    $sim_ac_motif_libs     (link libraries the linker needs for Motif)
-dnl
-dnl  The CPPFLAGS, LDFLAGS and LIBS flags will also be modified accordingly.
-dnl  In addition, the variable $sim_ac_motif_avail is set to "yes" if
-dnl  the Motif library development installation is ok.
-dnl
-dnl
-dnl Author: Morten Eriksen, <mortene@sim.no>.
-dnl
-
-AC_DEFUN(SIM_CHECK_MOTIF,[
-dnl Autoconf is a developer tool, so don't bother to support older versions.
-AC_PREREQ([2.14.1])
-
-AC_ARG_WITH(motif, AC_HELP_STRING([--with-motif=DIR], [use the Motif library [default=yes]]), , [with_motif=yes])
-
-sim_ac_motif_avail=no
-
-if test x"$with_motif" != xno; then
-  if test x"$with_motif" != xyes; then
-    sim_ac_motif_cppflags="-I${with_motif}/include"
-    sim_ac_motif_ldflags="-L${with_motif}/lib"
-  fi
-
-  sim_ac_motif_libs="-lXm"
-
-  sim_ac_save_cppflags=$CPPFLAGS
-  sim_ac_save_ldflags=$LDFLAGS
-  sim_ac_save_libs=$LIBS
-
-  CPPFLAGS="$sim_ac_motif_cppflags $CPPFLAGS"
-  LDFLAGS="$sim_ac_motif_ldflags $LDFLAGS"
-  LIBS="$sim_ac_motif_libs $LIBS"
-
-  AC_CACHE_CHECK([for Motif development kit],
-    sim_cv_lib_motif_avail,
-    [AC_TRY_LINK([#include <Xm/Xm.h>],
-                 [XmUpdateDisplay(0L);],
-                 sim_cv_lib_motif_avail=yes,
-                 sim_cv_lib_motif_avail=no)])
-
-  if test x"$sim_cv_lib_motif_avail" = xyes; then
-    sim_ac_motif_avail=yes
-    ifelse($1, , :, $1)
-  else
-    CPPFLAGS=$sim_ac_save_cppflags
-    LDFLAGS=$sim_ac_save_ldflags
-    LIBS=$sim_ac_save_libs
-    ifelse($2, , :, $2)
-  fi
-fi
-])
-
-
-dnl ************************************************************************
-
-dnl Usage:
-dnl  SIM_CHECK_XMEDRAWSHADOWS([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
-dnl
-dnl  Try to compile and link code with the XmeDrawShadows() function
-dnl  from Motif 2.0 (which is used by the InventorXt library). Sets the
-dnl  variable $sim_ac_xmedrawshadows_avail to either "yes" or "no".
-dnl
-dnl
-dnl Author: Morten Eriksen, <mortene@sim.no>.
-dnl
-
-AC_DEFUN(SIM_CHECK_XMEDRAWSHADOWS,[
-dnl Autoconf is a developer tool, so don't bother to support older versions.
-AC_PREREQ([2.14.1])
-
-sim_ac_xmedrawshadows_avail=no
-
-AC_CACHE_CHECK([for XmeDrawShadows() function in Motif library],
-  sim_cv_lib_xmedrawshadows_avail,
-  [AC_TRY_LINK([#include <Xm/Xm.h>],
-               [XmeDrawShadows(0L, 0L, 0L, 0L, 0, 0, 0, 0, 0, 0);],
-               sim_cv_lib_xmedrawshadows_avail=yes,
-               sim_cv_lib_xmedrawshadows_avail=no)])
-
-if test x"$sim_cv_lib_xmedrawshadows_avail" = xyes; then
-  sim_ac_xmedrawshadows_avail=yes
-  ifelse($1, , :, $1)
-else
-  ifelse($2, , :, $2)
-fi
-])
-
 dnl Usage:
 dnl  SIM_CHECK_OPENGL([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 dnl
@@ -1294,50 +1195,38 @@ if test x"$with_opengl" != xno; then
   LDFLAGS="$LDFLAGS $sim_ac_gl_ldflags"
 
   sim_ac_save_libs=$LIBS
-  sim_ac_gl_libs="-lMesaGLU -lMesaGL"
-  LIBS="$sim_ac_gl_libs $LIBS"
 
-  AC_CACHE_CHECK([whether OpenGL libraries with the Mesa prefix are available],
-    sim_cv_lib_mesa_avail,
-    [AC_TRY_LINK([#include <GL/gl.h>
-                  #include <GL/glu.h>],
-                 [glPointSize(1.0f); gluSphere(0L, 1.0, 1, 1);],
-                 sim_cv_lib_mesa_avail=yes,
-                 sim_cv_lib_mesa_avail=no)])
-
-  if test x"$sim_cv_lib_mesa_avail" = xyes; then
-    sim_ac_gl_is_mesa=yes
-    sim_ac_gl_avail=yes
-  else
-    sim_ac_gl_libs="-lGLU -lGL"
-    LIBS="$sim_ac_gl_libs $sim_ac_save_libs"
-
-    AC_CACHE_CHECK([whether OpenGL libraries are available],
-      sim_cv_lib_gl_avail,
-      [AC_TRY_LINK([#include <GL/gl.h>
-                    #include <GL/glu.h>],
-                   [glPointSize(1.0f); gluSphere(0L, 1.0, 1, 1);],
-                   sim_cv_lib_gl_avail=yes,
-                   sim_cv_lib_gl_avail=no)])
-
-    if test x"$sim_cv_lib_gl_avail" = xyes; then
-      sim_ac_gl_avail=yes
-      AC_CACHE_CHECK([whether OpenGL libraries actually are the Mesa libraries],
-        sim_cv_lib_gl_ismesa,
-        [AC_TRY_LINK([#include <GL/gl.h>
-                      #include <GL/glu.h>],
-                     [#ifndef MESA
-                      #error not mesa
-                      #endif],
-                     sim_cv_lib_gl_ismesa=yes,
-                     sim_cv_lib_gl_ismesa=no)])
-      if test x"$sim_cv_lib_gl_ismesa" = xyes; then
-        sim_ac_gl_is_mesa=yes
+  AC_CACHE_CHECK([whether OpenGL libraries are available], sim_cv_lib_gl, [
+    sim_cv_lib_gl=UNRESOLVED
+    # Some platforms (like BeOS) have the GLU functionality in the GL library.
+    for i in -lMesaGL -lGL "-lMesaGLU -lMesaGL" "-lGLU -lGL"; do
+      if test "x$sim_cv_lib_gl" = "xUNRESOLVED"; then
+        LIBS="$i $sim_ac_save_libs"
+        AC_TRY_LINK([#include <GL/gl.h>
+                     #include <GL/glu.h>],
+                    [glPointSize(1.0f); gluSphere(0L, 1.0, 1, 1);],
+                    sim_cv_lib_gl="$i")
       fi
-    fi
-  fi
+    done
+  ])
 
-  if test x"$sim_ac_gl_avail" = xyes; then
+
+  if test "x$sim_cv_lib_gl" != "xUNRESOLVED"; then
+    sim_ac_gl_libs="$sim_cv_lib_gl"
+    LIBS="$sim_ac_gl_libs $sim_ac_save_libs"
+    sim_ac_gl_avail=yes
+    AC_CACHE_CHECK([whether OpenGL libraries are the Mesa libraries],
+      sim_cv_lib_gl_ismesa,
+      [AC_TRY_LINK([#include <GL/gl.h>],
+                   [#ifndef MESA
+                    #error not mesa
+                    #endif],
+                   sim_cv_lib_gl_ismesa=yes,
+                   sim_cv_lib_gl_ismesa=no)])
+    if test x"$sim_cv_lib_gl_ismesa" = xyes; then
+      sim_ac_gl_is_mesa=yes
+    fi
+
     ifelse($1, , :, $1)
   else
     CPPFLAGS=$sim_ac_save_cppflags
