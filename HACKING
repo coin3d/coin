@@ -576,6 +576,22 @@ versus the code "layout" (to make it more easily readable):
         ...
       }
 
+  - Pointer types: use a space on each side of the '*', like this
+
+        SoNode * mynode = NULL;
+
+    not like this
+
+        SoNode *mynode = NULL;
+
+    because it makes it look like the '*' "belongs" to the variable
+    name, and not like this either
+
+        SoNode* mynode = NULL;
+
+    because it's ugly and unusual. So for consistency, _please_ stick
+    with the space-on-both-sides convention in Coin code.
+
 ==============================================================================
 
 Footnotes
