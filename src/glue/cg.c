@@ -209,9 +209,9 @@ cgglue_init(void)
       CGGLUE_REGISTER_FUNC(glue_cgGLSetParameter4f_t, cgGLSetParameter4f);
       CGGLUE_REGISTER_FUNC(glue_cgGLSetStateMatrixParameter_t, cgGLSetStateMatrixParameter);
 
-      /* Do this late, so we can detect recursive calls to this function. */
-      cg_instance = zi;
     }
+    /* Do this late, so we can detect recursive calls to this function. */
+    cg_instance = zi;
   }
   CC_SYNC_END(cgglue_init);
   return cg_instance;
