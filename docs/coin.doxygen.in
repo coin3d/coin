@@ -1772,6 +1772,7 @@ INCLUDE_FILE_PATTERNS  = *.h \
 # omitted =1 is assumed.
 
 PREDEFINED             = DOXYGEN_SKIP_THIS=1 \
+                         HAVE_CONFIG_H= \
                          COIN_DLL_API=
 
 # If the MACRO_EXPANSION and EXPAND_PREDEF_ONLY tags are set to YES then 
