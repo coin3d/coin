@@ -1051,13 +1051,26 @@ SoOutput::indent(void)
   }
 #endif // COIN_DEBUG
 
-  int i = PRIVATE(this)->indentlevel;
-  while (i > 1) {
-    this->write('\t');
-    i -= 2;
+  static int oldstyle = -1;
+  if (oldstyle == -1) {
+    oldstyle = coin_getenv("COIN_OLDSTYLE_FORMATTING") ? 1 : 0;
   }
 
-  if (i == 1) this->write("  ");
+  // Keep the old ugly-bugly formatting style around, in case someone,
+  // for some obscure reason, needs it.
+  if (oldstyle) {
+    int i = PRIVATE(this)->indentlevel;
+    while (i > 1) {
+      this->write('\t');
+      i -= 2;
+    }
+
+    if (i == 1) this->write("  ");
+  }
+  // More sensible formatting.
+  else {
+    for (int i=0; i < PRIVATE(this)->indentlevel; i++) { this->write("  "); }
+  }
 }
 
 /*!

@@ -1525,9 +1525,22 @@ void
 SoBase::writeFooter(SoOutput * out) const
 {
   if (!out->isBinary()) {
+
+    // Keep the old ugly-bugly formatting style around, in case
+    // someone, for some obscure reason, needs it.
+    static int oldstyle = -1;
+    if (oldstyle == -1) {
+      oldstyle = coin_getenv("COIN_OLDSTYLE_FORMATTING") ? 1 : 0;
+    }
+
+    // FIXME: if we last wrote a field, this EOF is superfluous -- so
+    // we are getting a lot of empty lines in the files. Should
+    // improve output formatting further. 20031223 mortene.
+    if (!oldstyle) { out->write(END_OF_LINE); }
+
     out->decrementIndent();
     out->indent();
-    out->write('}');
+    out->write(CLOSE_BRACE);
   }
 }
 
