@@ -519,8 +519,7 @@ SoInput::pushFile(const char * filename)
     return TRUE;
   }
 
-  SoDebugError::post("SoInput::pushFile",
-                     "Couldn't open file '%s' for reading.", filename);
+  SoReadError::post(this, "Couldn't open file '%s' for reading.", filename);
   return FALSE;
 }
 
