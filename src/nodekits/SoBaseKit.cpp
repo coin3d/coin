@@ -285,7 +285,7 @@ SoBaseKit::set(const char *namevaluepairliststring)
     int partNum;
     SbBool isList;
     int listIdx;
-    if (!SoBaseKit::findPart(partname, kit, partNum, isList, listIdx, TRUE)) {
+    if (!SoBaseKit::findPart(partname, kit, partNum, isList, listIdx, TRUE, NULL, TRUE)) {
 #if COIN_DEBUG && 1 // debug
       SoDebugError::postInfo("SoBaseKit::set",
                              "part ``%s'' not found",
@@ -336,7 +336,7 @@ SoBaseKit::set(const char *partnamestring, const char * parameterstring)
   SbBool isList;
   int listIdx;
   SoBaseKit *kit = this;
-  if (SoBaseKit::findPart(partname, kit, partNum, isList, listIdx, TRUE)) {
+  if (SoBaseKit::findPart(partname, kit, partNum, isList, listIdx, TRUE, NULL, TRUE)) {
     SoNode *node = kit->fieldList[partNum]->getValue();
     assert(node != NULL); // makeifneeded was TRUE in findPart call
     if (isList) {
@@ -806,7 +806,7 @@ SoBaseKit::setAnyPart(const SbName &partname, SoNode *from, SbBool anypart)
 
   SbString partstring(partname.getString());
 
-  if (SoBaseKit::findPart(partstring, kit, partNum, isList, listIdx, TRUE)) {
+  if (SoBaseKit::findPart(partstring, kit, partNum, isList, listIdx, TRUE, NULL, TRUE)) {
     if (anypart || kit->getNodekitCatalog()->isPublic(partNum)) {
       if (isList) {
         SoNode *partnode = kit->fieldList[partNum]->getValue();
