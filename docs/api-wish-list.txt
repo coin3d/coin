@@ -490,7 +490,7 @@ THE WISH LIST
   depending on what precision the developer decided upon at configure time.
   Lots of the API and internals should then be changed to use SbReals instead
   of the fixed float-precision types.  Default would be float, since double
-  will break ABI-compatibiliy.
+  will break ABI-compatibility.
 
   Similarly, SbVec2f and SbVec2d would both be fixed to float and double,
   while SbVec2r could change, depending on the definition of SbReal.
@@ -504,3 +504,5 @@ THE WISH LIST
   C++ compilers?  Since they're not ABI-compatible in the first place, this
   change won't hinder anything, will it?
 
+  Update 2001-09-05 mortene: See also FIXME comment near the top of
+  include/Inventor/SbBasic.h.in.
