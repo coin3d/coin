@@ -333,8 +333,8 @@ SoGetPrimitiveCountAction::beginTraversal(SoNode * node)
   this->numtexts = 0;
   this->numimages = 0;
 
-  SoDecimationTypeElement::set(this->getState(), this->decimationtype);
-  SoDecimationPercentageElement::set(this->getState(), this->decimationpercentage);
+//  SoDecimationTypeElement::set(this->getState(), this->decimationtype);
+//  SoDecimationPercentageElement::set(this->getState(), this->decimationpercentage);
 
   this->traverse(node);
 }
