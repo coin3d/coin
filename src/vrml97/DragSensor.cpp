@@ -21,6 +21,11 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoVRMLDragSensor SoVRMLDragSensor.h Inventor/VRMLnodes/SoVRMLDragSensor.h
+  \brief The SoVRMLDragSensor class is a superclass for VRML drag sensors.
+*/
+
 #include <Inventor/VRMLnodes/SoVRMLDragSensor.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -32,11 +37,6 @@
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/SbMatrix.h>
-
-/*!
-  \class SoVRMLDragSensor SoVRMLDragSensor.h Inventor/VRMLnodes/SoVRMLDragSensor.h
-  \brief The SoVRMLDragSensor class is a superclass for VRML drag sensors.
-*/
 
 /*!
   \var SoSFVec3f SoVRMLDragSensor::trackPoint_changed

@@ -339,23 +339,6 @@ SoType::overrideType(const SoType originalType,
 // far-reaching consequences for the whole SoType class implementation.
 // 2002-01-24 larsa
 
-/*!
-  This static function returns the SoType object associated with name \a name.
-
-  Type objects for builtin types can be retreived by name both with and
-  without the "So" prefix.  For dynamically loadable extension nodes, the
-  name given to this function must match exactly.
-
-  If no node type with the given name has been initialized, a dynamically
-  loadable extension node with the given name is searched for.  If one is
-  if found, it is loaded and initialized, and the SoType object for the
-  newly initialized class type returned.  If no module is found, or the
-  initialization of the module fails, SoType::badType() is returned.
-
-  Support for dynamically loadable extension nodes varies from platform
-  to platform, and from compiler suite to compiler suite.
-*/
-
 // FIXME: investigate how So-prefix stripping works for non-builtin
 // extension nodes.  It probably works as for builtins, given that the
 // class in question isn't named with an "So" prefix.  20030223 larsa
@@ -366,6 +349,42 @@ typedef void __cdecl initClassFunction(void);
 typedef void initClassFunction(void);
 #endif
 
+/*!
+  This static function returns the SoType object associated with name \a name.
+
+  Type objects for builtin types can be retreived by name both with and
+  without the "So" prefix.  For dynamically loadable extension nodes, the
+  name given to this function must match exactly.
+
+  If no node type with the given name has been initialized, a dynamically
+  loadable extension node with the given name is searched for.  If one is
+  found, it is loaded and initialized, and the SoType object for the
+  newly initialized class type returned.  If no module is found, or the
+  initialization of the module fails, SoType::badType() is returned.
+
+  Support for dynamically loadable extension nodes varies from
+  platform to platform, and from compiler suite to compiler suite.
+
+  So far code built with the following compilers are supported: GNU
+  GCC v2, GNU GCC v3, Microsoft Visual C++ v6 (and probably v7, not
+  tested), SGI MIPSPro v7.
+
+  Extensions built with compilers that are known to be binary
+  compatible with the above compilers are also supported, such as
+  e.g. the Intel x86 compiler compatible with MSVC++.
+
+  To support dynamic loading for other compilers, we need to know how
+  the compiler mangles the "static void classname::initClass(void)"
+  symbol.  If your compiler is not supported, tell us at \c
+  coin-support@coin3d.org which it is and send us the output of a
+  symbol-dump on the shared object.  Typically you can do
+
+  \code
+  $ nm <Node>.so | grep initClass
+  \endcode
+
+  to find the relevant mangled symbol.
+*/
 SoType
 SoType::fromName(const SbName name)
 {

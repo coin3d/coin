@@ -153,9 +153,11 @@ cc_condvar_wake_all(cc_condvar * condvar)
 
 /*!
   \class SbCondVar Inventor/threads/SbCondVar.h
+  \brief A class for synchronizing access to global variables.
   \ingroup threads
 
-  FIXME: write doc
+  Condition variables are used to protect global variables in an
+  environment where multiple threads are running concurrently.
 */
 
 /*!
@@ -184,8 +186,8 @@ cc_condvar_wake_all(cc_condvar * condvar)
   wakeOne() or wakeAll() on the object, but if this does not happen
   within \c period, the thread is woken again anyways.
 
-  TRUE is returned when the thread wakes because either wakeOne()
-  or wakeAll() was called, FALSE is returned if the wait times out.
+  \c TRUE is returned when the thread wakes because either wakeOne()
+  or wakeAll() was called, \c FALSE is returned if the wait times out.
 */
 
 /*!

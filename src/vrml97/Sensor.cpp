@@ -21,6 +21,11 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoVRMLSensor SoVRMLSensor.h Inventor/VRMLnodes/SoVRMLSensor.h
+  \brief The SoVRMLSensor class is an abstract superclass for VRML sensors.
+*/
+
 #include <Inventor/VRMLnodes/SoVRMLSensor.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -44,4 +49,3 @@ SoVRMLSensor::SoVRMLSensor(void)
 SoVRMLSensor::~SoVRMLSensor()
 {
 }
-

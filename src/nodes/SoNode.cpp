@@ -155,6 +155,9 @@
   superclass.
 
   \TOOLMAKER_REF
+
+  For information about dynamic loading of extension nodes, see the
+  documentation of SoType::fromName().
 */
 
 #include <Inventor/nodes/SoNodes.h>
