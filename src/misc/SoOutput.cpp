@@ -354,6 +354,7 @@ SoOutput::setBuffer(void * bufPointer, size_t initSize,
 
   THIS->memorybuffer = TRUE;
   THIS->buffer = bufPointer;
+  assert(initSize > 0 && "invalid argument");
   THIS->buffersize = initSize;
   THIS->reallocfunc = reallocFunc;
   THIS->bufferoffset = offset;
@@ -954,7 +955,7 @@ SoOutput::makeRoomInBuf(size_t bytes)
 {
   if ((THIS->bufferoffset + bytes) > THIS->buffersize) {
     if (THIS->reallocfunc) {
-      THIS->buffersize =  THIS->bufferoffset + bytes;
+      THIS->buffersize = SbMax(THIS->bufferoffset + bytes, 2 * THIS->buffersize);
       THIS->buffer = THIS->reallocfunc(THIS->buffer, THIS->buffersize);
       if (THIS->buffer) return TRUE;
     }
