@@ -442,8 +442,9 @@ static void SoMFRotation_SoMFMatrix(SoField * from, SoField * to)
 // below.
 static void time2string(const SbTime & t, SbString & s)
 {
-  // Value is less than a year, assume we're counting seconds.
-  if (t.getValue() < (60.0*60.0*24.0*365.0)) s.sprintf("%f", t.getValue());
+  // Value is less than a year, assume we're counting seconds. Use
+  // resolution at millisecond accuracy.
+  if (t.getValue() < (60.0*60.0*24.0*365.0)) s.sprintf("%.3f", t.getValue());
   // Value is more than a year, assume we're interested in the date
   // and time.
 #if 0 // Don't default to ISO 8601 conformant string, ...
