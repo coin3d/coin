@@ -863,12 +863,9 @@ SoInput::read(char & c, SbBool skip)
 SbBool
 SoInput::read(SbString & s)
 {
-  if (this->eof()) return FALSE;
-
+  if (!this->checkHeader()) return FALSE;
   SoInput_FileInfo * fi = this->getTopOfStack();
   assert(fi);
-
-  if (!this->checkHeader()) return FALSE;
 
   ////////////////////
   // Binary read
