@@ -78,12 +78,12 @@ SoMatrixTransform::initClass(void)
 void
 SoMatrixTransform::doAction(SoAction * action)
 {
-  if (!this->matrix.isIgnored()) {
-    const SbMatrix & mat = this->matrix.getValue();
-    if (mat != SbMatrix::identity()) {
-      SoModelMatrixElement::mult(action->getState(), this,
-                                 mat);
-    }
+  if (this->matrix.isIgnored()) { return; }
+
+  const SbMatrix & mat = this->matrix.getValue();
+  if (mat != SbMatrix::identity()) {
+    SoModelMatrixElement::mult(action->getState(), this,
+                               mat);
   }
 }
 
@@ -112,8 +112,7 @@ SoMatrixTransform::callback(SoCallbackAction * action)
 void
 SoMatrixTransform::getMatrix(SoGetMatrixAction * action)
 {
-  // FIXME: shouldn't we check for the isIgnored flag, like in
-  // doAction()? 20040217 mortene.
+  if (this->matrix.isIgnored()) { return; }
 
   SbMatrix m = this->matrix.getValue();
   action->getMatrix().multLeft(m);
