@@ -571,7 +571,7 @@ rbptree_debug(const cc_rbptree_node * x, const int idx)
   else if (x->parent->left == x) { cc_string_append_text(&str, "(left)"); }
   else { cc_string_append_text(&str, "(right)"); }
 
-  cc_debugerror_postinfo("rbptree_debug", ": %d ==> %s\n", (int)x->pointer,
+  cc_debugerror_postinfo("rbptree_debug", ": %p ==> %s\n", x->pointer,
                          x->color == RBPTREE_BLACK ? "black" : "red");
 
   if (x->left != &rbptree_sentinel) rbptree_debug(x->left, idx + 2);
