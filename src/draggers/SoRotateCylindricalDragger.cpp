@@ -19,10 +19,15 @@
 
 /*!
   \class SoRotateCylindricalDragger SoRotateCylindricalDragger.h Inventor/draggers/SoRotateCylindricalDragger.h
-  \brief The SoRotateCylindricalDragger class is (FIXME: doc)
+  \brief The SoRotateCylindricalDragger class is for rotating geometry around a single axis.
   \ingroup draggers
 
-  FIXME: document class
+  Use an instance of this dragger class in your scenegraph to let the
+  end-users of your application rotate geometry around any axis vector
+  in 3D.
+
+  For the dragger orientation and positiing itself, use some kind of
+  transformation node in your scenegraph, as usual.
 */
 
 #include <Inventor/draggers/SoRotateCylindricalDragger.h>
@@ -35,6 +40,30 @@
 #include <data/draggerDefaults/rotateCylindricalDragger.h>
 
 SO_KIT_SOURCE(SoRotateCylindricalDragger);
+
+/*!
+  \var SoSFRotation SoRotateCylindricalDragger::rotation
+
+  This field is continuously updated to contain the rotation of the
+  current direction vector of the dragger.
+
+  The application programmer using this dragger in his scenegraph
+  should connect the relevant node fields in the scene to this field
+  to make them follow the dragger orientation.
+*/
+
+/*!
+  \var SoFieldSensor * SoRotateCylindricalDragger::fieldSensor
+  \internal
+*/
+/*!
+  \var SbCylinderProjector * SoRotateCylindricalDragger::cylinderProj
+  \internal
+*/
+/*!
+  \var SbBool SoRotateCylindricalDragger::userProj
+  \internal
+*/
 
 
 // doc in superclass
@@ -171,6 +200,12 @@ SoRotateCylindricalDragger::valueChangedCB(void *, SoDragger * d)
   thisp->fieldSensor->attach(&thisp->rotation);
 }
 
+/*!
+  Replace the default cylinder projection. You may want to do this if
+  you change the dragger geometry.
+
+  The default cylinder projection is an SbCylinderPlaneProjector.
+*/
 void
 SoRotateCylindricalDragger::setProjector(SbCylinderProjector * p)
 {
@@ -178,14 +213,22 @@ SoRotateCylindricalDragger::setProjector(SbCylinderProjector * p)
   this->cylinderProj = p;
 }
 
+/*!
+  Returns projector instance used for converting from user interaction
+  dragger movements to 3D dragger re-orientation.
+
+  \sa setProjector()
+ */
 const SbCylinderProjector *
 SoRotateCylindricalDragger::getProjector(void) const
 {
   return this->cylinderProj;
 }
 
+// Doc in superclass.
 void
-SoRotateCylindricalDragger::copyContents(const SoFieldContainer * fromfc, SbBool copyconnections)
+SoRotateCylindricalDragger::copyContents(const SoFieldContainer * fromfc,
+                                         SbBool copyconnections)
 {
   inherited::copyContents(fromfc, copyconnections);
   
