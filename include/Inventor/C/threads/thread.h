@@ -1,5 +1,5 @@
-#ifndef CC_STORAGEP_H
-#define CC_STORAGEP_H
+#ifndef CC_THREAD_H
+#define CC_THREAD_H
 
 /**************************************************************************\
  *
@@ -22,15 +22,8 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_INTERNAL
-#error You have tried to use one of the private Coin header files
-#endif /* ! COIN_INTERNAL */
-
-#include <Coin/threads/common.h>  /* cc_storage */
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif /* HAVE_CONFIG_H */
+#include <Inventor/SbBasic.h>  /* COIN_DLL_API */
+#include <Inventor/C/threads/common.h>  /* cc_thread */
 
 #ifdef __cplusplus
 extern "C" {
@@ -38,40 +31,18 @@ extern "C" {
 
 /* ********************************************************************** */
 
-#define NO_IMPLEMENTATION
+COIN_DLL_API cc_thread * cc_thread_construct(void * (*func)(void *), void * closure);
+COIN_DLL_API void cc_thread_destruct(cc_thread * thread);
 
-#ifdef USE_PTHREAD
-#include <pthread.h>
-#endif /* USE_PTHREAD */
+COIN_DLL_API int cc_thread_join(cc_thread * thread, void ** retvalptr);
 
-struct cc_storage {
-  unsigned int type;
-  unsigned int size;
-  void (*constructor)(void *);
-  void (*destructor)(void *);
+COIN_DLL_API void cc_sleep(float seconds);
 
-#ifdef USE_PTHREAD
-  struct cc_pthread_storage_data {
-    pthread_key_t key;
-  } pthread;
-#undef NO_IMPLEMENTATION
-#endif /* USE_PTHREAD */
-
-#ifdef USE_W32THREAD
-#undef NO_IMPLEMENTATION
-#endif /* USE_W32THREAD */
-
-};
-
-#ifdef NO_IMPLEMENTATION
-#error missing threads implementation support
-#endif /* NO_IMPLEMENTATION */
-
-/* ********************************************************************** */
-
-void cc_storage_struct_init(cc_storage * storage_struct, unsigned int size,
-                            void (*constr)(void *), void (*destr)(void *));
-void cc_storage_struct_clean(cc_storage * storage_struct);
+/*
+COIN_DLL_API int cc_thread_priority_set(cc_thread * thread, int value);
+COIN_DLL_API int cc_thread_priority_change(cc_thread * thread, int change);
+COIN_DLL_API int cc_thread_priority_get(cc_thread * thread);
+*/
 
 /* ********************************************************************** */
 
@@ -79,4 +50,4 @@ void cc_storage_struct_clean(cc_storage * storage_struct);
 } /* extern "C" */
 #endif /* __cplusplus */
 
-#endif /* ! CC_STORAGEP_H */
+#endif /* ! CC_THREAD_H */

@@ -22,10 +22,10 @@
 // define to use the Win32 mutex object, undefine to use critical_sections (which has a trylock bug)
 #define USE_W32_MUTEX 1
 
-#include <Coin/threads/mutex.h>
-#include <Coin/threads/mutexp.h>
+#include <Inventor/C/threads/mutex.h>
+#include <Inventor/C/threads/mutexp.h>
 
-#include <Coin/base/debug.h>
+#include <Inventor/C/base/debug.h>
 
 #include <stdlib.h>
 #include <assert.h>
@@ -33,7 +33,7 @@
 
 #ifdef _WIN32
 
-#include <Coin/base/basep.h>
+#include <Inventor/C/base/basep.h>
 
 #endif /* WIN32 */
 

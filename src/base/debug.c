@@ -19,8 +19,8 @@
  *
 \**************************************************************************/
 
-#include <Coin/base/debug.h>
-#include <Coin/threads/mutex.h>
+#include <Inventor/C/base/debug.h>
+#include <Inventor/C/threads/mutex.h>
 #include <stdarg.h>
 #include <assert.h>
 

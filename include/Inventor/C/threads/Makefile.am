@@ -1,5 +1,5 @@
 
-threadsincdir = $(includedir)/Coin/threads
+threadsincdir = $(includedir)/Inventor/C/threads
 threadsinc_HEADERS = \
 	common.h \
 	thread.h \

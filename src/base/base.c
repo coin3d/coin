@@ -34,7 +34,7 @@
 #if HAVE_WINDOWS_H
 #include <windows.h>
 #endif /* HAVE_WINDOWS_H */
-#include <Coin/base/basep.h>
+#include <Inventor/C/base/basep.h>
 
 char *
 cc_internal_w32_getlasterrorstring(int32_t lasterror)

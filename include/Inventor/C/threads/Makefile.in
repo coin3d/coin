@@ -36,7 +36,7 @@ oldincludedir = /usr/include
 pkgdatadir = $(datadir)/@PACKAGE@
 pkglibdir = $(libdir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
-top_builddir = ../../..
+top_builddir = ../../../..
 
 ACLOCAL = @ACLOCAL@
 AUTOCONF = @AUTOCONF@
@@ -124,26 +124,32 @@ sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 
-baseincdir = $(includedir)/Coin/base
-baseinc_HEADERS = \
-	dict.h \
-	debug.h
+threadsincdir = $(includedir)/Inventor/C/threads
+threadsinc_HEADERS = \
+	common.h \
+	thread.h \
+	mutex.h \
+	condvar.h \
+	rwmutex.h \
+	storage.h
 
 
+#	barrier.h
 EXTRA_DIST = \
-	basep.h \
-	list.h \
-	name.h \
-	string.h
+	threadp.h \
+	mutexp.h \
+	condvarp.h \
+	rwmutexp.h \
+	storagep.h
 
-subdir = include/Coin/base
+subdir = include/Inventor/C/threads
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/include/config.h
 CONFIG_CLEAN_FILES =
 DIST_SOURCES =
-HEADERS = $(baseinc_HEADERS)
+HEADERS = $(threadsinc_HEADERS)
 
-DIST_COMMON = $(baseinc_HEADERS) Makefile.am Makefile.in
+DIST_COMMON = $(threadsinc_HEADERS) Makefile.am Makefile.in
 all: all-am
 
 .SUFFIXES:
@@ -158,28 +164,28 @@ distclean-libtool:
 	-rm -f libtool
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.in $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu  include/Coin/base/Makefile
+	  $(AUTOMAKE) --gnu  include/Inventor/C/threads/Makefile
 Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) && \
 	  CONFIG_HEADERS= CONFIG_LINKS= \
 	  CONFIG_FILES=$(subdir)/$@ $(SHELL) ./config.status
 uninstall-info-am:
-install-baseincHEADERS: $(baseinc_HEADERS)
+install-threadsincHEADERS: $(threadsinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(baseincdir)
-	@list='$(baseinc_HEADERS)'; for p in $$list; do \
+	$(mkinstalldirs) $(DESTDIR)$(threadsincdir)
+	@list='$(threadsinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(baseincdir)/$$f"; \
-	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(baseincdir)/$$f; \
+	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(threadsincdir)/$$f"; \
+	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(threadsincdir)/$$f; \
 	done
 
-uninstall-baseincHEADERS:
+uninstall-threadsincHEADERS:
 	@$(NORMAL_UNINSTALL)
-	@list='$(baseinc_HEADERS)'; for p in $$list; do \
+	@list='$(threadsinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(baseincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(baseincdir)/$$f; \
+	  echo " rm -f $(DESTDIR)$(threadsincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(threadsincdir)/$$f; \
 	done
 
 tags: TAGS
@@ -216,7 +222,7 @@ distclean-tags:
 
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 
-top_distdir = ../../..
+top_distdir = ../../../..
 distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
 
 distdir: $(DISTFILES)
@@ -240,7 +246,7 @@ check: check-am
 all-am: Makefile $(HEADERS)
 
 installdirs:
-	$(mkinstalldirs) $(DESTDIR)$(baseincdir)
+	$(mkinstalldirs) $(DESTDIR)$(threadsincdir)
 
 install: install-am
 install-exec: install-exec-am
@@ -282,7 +288,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-baseincHEADERS
+install-data-am: install-threadsincHEADERS
 
 install-exec-am:
 
@@ -300,20 +306,20 @@ mostlyclean: mostlyclean-am
 
 mostlyclean-am: mostlyclean-generic mostlyclean-libtool
 
-uninstall-am: uninstall-baseincHEADERS uninstall-info-am
+uninstall-am: uninstall-info-am uninstall-threadsincHEADERS
 
 .PHONY: GTAGS all all-am check check-am clean clean-generic \
 	clean-libtool distclean distclean-generic distclean-libtool \
 	distclean-tags distdir dvi dvi-am info info-am install \
-	install-am install-baseincHEADERS install-data install-data-am \
-	install-exec install-exec-am install-info install-info-am \
-	install-man install-strip installcheck installcheck-am \
-	installdirs maintainer-clean maintainer-clean-generic \
-	mostlyclean mostlyclean-generic mostlyclean-libtool tags \
-	uninstall uninstall-am uninstall-baseincHEADERS \
-	uninstall-info-am
+	install-am install-data install-data-am install-exec \
+	install-exec-am install-info install-info-am install-man \
+	install-strip install-threadsincHEADERS installcheck \
+	installcheck-am installdirs maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-generic \
+	mostlyclean-libtool tags uninstall uninstall-am \
+	uninstall-info-am uninstall-threadsincHEADERS
 
-	time.h
+#	barrierp.h
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

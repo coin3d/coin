@@ -1,3 +1,6 @@
+#ifndef CC_MUTEX_H
+#define CC_MUTEX_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -19,14 +22,26 @@
  *
 \**************************************************************************/
 
-#include <Inventor/C/base/time.h>
+#include <Inventor/SbBasic.h>  /* COIN_DLL_API */
+#include <Inventor/C/threads/common.h>  /* cc_mutex */
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 /* ********************************************************************** */
 
-cc_time
-cc_time_interval(int secs, int msecs)
-{
-  return (cc_time) secs + ((cc_time) msecs / (cc_time) 1000000);
-} /* cc_time_interval() */
+COIN_DLL_API cc_mutex * cc_mutex_construct(void);
+COIN_DLL_API void cc_mutex_destruct(cc_mutex * mutex);
+
+COIN_DLL_API int cc_mutex_lock(cc_mutex * mutex);
+COIN_DLL_API int cc_mutex_try_lock(cc_mutex * mutex);
+COIN_DLL_API int cc_mutex_unlock(cc_mutex * mutex);
 
 /* ********************************************************************** */
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif /* __cplusplus */
+
+#endif /* ! CC_MUTEX_H */

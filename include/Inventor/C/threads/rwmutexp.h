@@ -1,5 +1,5 @@
-#ifndef CC_THREAD_H
-#define CC_THREAD_H
+#ifndef CC_RWMUTEXP_H
+#define CC_RWMUTEXP_H
 
 /**************************************************************************\
  *
@@ -22,8 +22,17 @@
  *
 \**************************************************************************/
 
-#include <Inventor/SbBasic.h>  /* COIN_DLL_API */
-#include <Coin/threads/common.h>  /* cc_thread */
+#ifndef COIN_INTERNAL
+#error You have tried to use one of the private Coin header files
+#endif /* ! COIN_INTERNAL */
+
+#include <Inventor/C/threads/common.h>
+#include <Inventor/C/threads/mutexp.h>
+#include <Inventor/C/threads/condvarp.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif /* HAVE_CONFIG_H */
 
 #ifdef __cplusplus
 extern "C" {
@@ -31,18 +40,22 @@ extern "C" {
 
 /* ********************************************************************** */
 
-COIN_DLL_API cc_thread * cc_thread_construct(void * (*func)(void *), void * closure);
-COIN_DLL_API void cc_thread_destruct(cc_thread * thread);
+struct cc_rwmutex {
+  unsigned int type;
+  cc_precedence policy;
+  int readers;
+  int writers;
+  int readwaiters;
+  int writewaiters;
+  cc_mutex mutex;
+  cc_condvar read;
+  cc_condvar write;
+};
 
-COIN_DLL_API int cc_thread_join(cc_thread * thread, void ** retvalptr);
+/* ********************************************************************** */
 
-COIN_DLL_API void cc_sleep(float seconds);
-
-/*
-COIN_DLL_API int cc_thread_priority_set(cc_thread * thread, int value);
-COIN_DLL_API int cc_thread_priority_change(cc_thread * thread, int change);
-COIN_DLL_API int cc_thread_priority_get(cc_thread * thread);
-*/
+void cc_rwmutex_struct_init(cc_rwmutex * rwmutex);
+void cc_rwmutex_struct_clean(cc_rwmutex * rwmutex);
 
 /* ********************************************************************** */
 
@@ -50,4 +63,4 @@ COIN_DLL_API int cc_thread_priority_get(cc_thread * thread);
 } /* extern "C" */
 #endif /* __cplusplus */
 
-#endif /* ! CC_THREAD_H */
+#endif /* ! CC_RWMUTEXP_H */

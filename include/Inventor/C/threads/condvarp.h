@@ -52,7 +52,7 @@ extern "C" {
 
 #ifdef USE_W32THREAD
 #include <windows.h>
-#include <Coin/threads/threadp.h>
+#include <Inventor/C/threads/threadp.h>
 #undef CC_W32THREAD
 #define CC_W32THREAD(copy) copy
 #endif /* USE_W32THREAD */

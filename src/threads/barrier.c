@@ -19,10 +19,10 @@
  *
 \**************************************************************************/
 
-#include <Coin/base/debug.h>
+#include <Inventor/C/base/debug.h>
 
-#include <Coin/threads/barrier.h>
-#include <Coin/threads/barrierp.h>
+#include <Inventor/C/threads/barrier.h>
+#include <Inventor/C/threads/barrierp.h>
 
 #include <stdlib.h>
 #include <stdio.h>

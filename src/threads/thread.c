@@ -19,10 +19,10 @@
  *
 \**************************************************************************/
 
-#include <Coin/threads/thread.h>
-#include <Coin/threads/threadp.h>
+#include <Inventor/C/threads/thread.h>
+#include <Inventor/C/threads/threadp.h>
 
-#include <Coin/base/debug.h>
+#include <Inventor/C/base/debug.h>
 
 #include <stdlib.h>
 #include <assert.h>

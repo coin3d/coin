@@ -19,10 +19,10 @@
  *
 \**************************************************************************/
 
-#include <Coin/threads/condvar.h>
-#include <Coin/threads/condvarp.h>
+#include <Inventor/C/threads/condvar.h>
+#include <Inventor/C/threads/condvarp.h>
 
-#include <Coin/base/debug.h>
+#include <Inventor/C/base/debug.h>
 
 #include <stdlib.h>
 #include <assert.h>

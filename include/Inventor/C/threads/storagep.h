@@ -1,5 +1,5 @@
-#ifndef CC_RWMUTEX_H
-#define CC_RWMUTEX_H
+#ifndef CC_STORAGEP_H
+#define CC_STORAGEP_H
 
 /**************************************************************************\
  *
@@ -22,8 +22,15 @@
  *
 \**************************************************************************/
 
-#include <Inventor/SbBasic.h>  /* COIN_DLL_API */
-#include <Coin/threads/common.h>  /* cc_rwmutex, cc_precedence */
+#ifndef COIN_INTERNAL
+#error You have tried to use one of the private Coin header files
+#endif /* ! COIN_INTERNAL */
+
+#include <Inventor/C/threads/common.h>  /* cc_storage */
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif /* HAVE_CONFIG_H */
 
 #ifdef __cplusplus
 extern "C" {
@@ -31,17 +38,40 @@ extern "C" {
 
 /* ********************************************************************** */
 
-COIN_DLL_API cc_rwmutex * cc_rwmutex_construct(void);
-COIN_DLL_API cc_rwmutex * cc_rwmutex_construct_etc(cc_precedence policy);
-COIN_DLL_API void cc_rwmutex_destruct(cc_rwmutex * rwmutex);
+#define NO_IMPLEMENTATION
 
-COIN_DLL_API int cc_rwmutex_write_lock(cc_rwmutex * rwmutex);
-COIN_DLL_API int cc_rwmutex_write_try_lock(cc_rwmutex * rwmutex);
-COIN_DLL_API int cc_rwmutex_write_unlock(cc_rwmutex * rwmutex);
+#ifdef USE_PTHREAD
+#include <pthread.h>
+#endif /* USE_PTHREAD */
 
-COIN_DLL_API int cc_rwmutex_read_lock(cc_rwmutex * rwmutex);
-COIN_DLL_API int cc_rwmutex_read_try_lock(cc_rwmutex * rwmutex);
-COIN_DLL_API int cc_rwmutex_read_unlock(cc_rwmutex * rwmutex);
+struct cc_storage {
+  unsigned int type;
+  unsigned int size;
+  void (*constructor)(void *);
+  void (*destructor)(void *);
+
+#ifdef USE_PTHREAD
+  struct cc_pthread_storage_data {
+    pthread_key_t key;
+  } pthread;
+#undef NO_IMPLEMENTATION
+#endif /* USE_PTHREAD */
+
+#ifdef USE_W32THREAD
+#undef NO_IMPLEMENTATION
+#endif /* USE_W32THREAD */
+
+};
+
+#ifdef NO_IMPLEMENTATION
+#error missing threads implementation support
+#endif /* NO_IMPLEMENTATION */
+
+/* ********************************************************************** */
+
+void cc_storage_struct_init(cc_storage * storage_struct, unsigned int size,
+                            void (*constr)(void *), void (*destr)(void *));
+void cc_storage_struct_clean(cc_storage * storage_struct);
 
 /* ********************************************************************** */
 
@@ -49,4 +79,4 @@ COIN_DLL_API int cc_rwmutex_read_unlock(cc_rwmutex * rwmutex);
 } /* extern "C" */
 #endif /* __cplusplus */
 
-#endif /* ! CC_RWMUTEX_H */
+#endif /* ! CC_STORAGEP_H */

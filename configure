@@ -16459,7 +16459,7 @@ fi
 # for superglu.
 # 20011023 larsa
 
-ac_config_files="$ac_config_files Makefile include/Makefile include/Coin/Makefile include/Coin/base/Makefile include/Coin/threads/Makefile include/Inventor/Makefile include/Inventor/lock/Makefile include/Inventor/system/Makefile data/Makefile data/draggerDefaults/Makefile man/Makefile man/man1/Makefile man/man3/Makefile html/Makefile src/Makefile src/base/Makefile src/actions/Makefile src/bundles/Makefile src/caches/Makefile src/details/Makefile src/draggers/Makefile src/elements/Makefile src/engines/Makefile src/errors/Makefile src/events/Makefile src/fields/Makefile src/manips/Makefile src/misc/Makefile src/lists/Makefile src/nodekits/Makefile src/nodes/Makefile src/projectors/Makefile src/sensors/Makefile src/threads/Makefile src/extensions/Makefile docs/coin.doxygen"
+ac_config_files="$ac_config_files Makefile include/Makefile include/Inventor/Makefile include/Inventor/C/Makefile include/Inventor/C/base/Makefile include/Inventor/C/threads/Makefile include/Inventor/lock/Makefile include/Inventor/system/Makefile data/Makefile data/draggerDefaults/Makefile man/Makefile man/man1/Makefile man/man3/Makefile html/Makefile src/Makefile src/base/Makefile src/actions/Makefile src/bundles/Makefile src/caches/Makefile src/details/Makefile src/draggers/Makefile src/elements/Makefile src/engines/Makefile src/errors/Makefile src/events/Makefile src/fields/Makefile src/manips/Makefile src/misc/Makefile src/lists/Makefile src/nodekits/Makefile src/nodes/Makefile src/projectors/Makefile src/sensors/Makefile src/threads/Makefile src/extensions/Makefile docs/coin.doxygen"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -16782,10 +16782,10 @@ do
   # Handling of arguments.
   "Makefile" ) CONFIG_FILES="$CONFIG_FILES Makefile" ;;
   "include/Makefile" ) CONFIG_FILES="$CONFIG_FILES include/Makefile" ;;
-  "include/Coin/Makefile" ) CONFIG_FILES="$CONFIG_FILES include/Coin/Makefile" ;;
-  "include/Coin/base/Makefile" ) CONFIG_FILES="$CONFIG_FILES include/Coin/base/Makefile" ;;
-  "include/Coin/threads/Makefile" ) CONFIG_FILES="$CONFIG_FILES include/Coin/threads/Makefile" ;;
   "include/Inventor/Makefile" ) CONFIG_FILES="$CONFIG_FILES include/Inventor/Makefile" ;;
+  "include/Inventor/C/Makefile" ) CONFIG_FILES="$CONFIG_FILES include/Inventor/C/Makefile" ;;
+  "include/Inventor/C/base/Makefile" ) CONFIG_FILES="$CONFIG_FILES include/Inventor/C/base/Makefile" ;;
+  "include/Inventor/C/threads/Makefile" ) CONFIG_FILES="$CONFIG_FILES include/Inventor/C/threads/Makefile" ;;
   "include/Inventor/lock/Makefile" ) CONFIG_FILES="$CONFIG_FILES include/Inventor/lock/Makefile" ;;
   "include/Inventor/system/Makefile" ) CONFIG_FILES="$CONFIG_FILES include/Inventor/system/Makefile" ;;
   "data/Makefile" ) CONFIG_FILES="$CONFIG_FILES data/Makefile" ;;
@@ -17610,55 +17610,83 @@ fi
 # *******************************************************************
 
 if $sim_ac_build_library; then
-  ac_coin_unknown_platform=yes
+  ac_coin_untested_platform=true
+  ac_coin_not_sim_platform=true
 else
-  ac_coin_unknown_platform=no
+  ac_coin_untested_platform=false
+  ac_coin_not_sim_platform=false
 fi
 
 case "$host_os" in
   irix6.2)
-    if test "$CXX" = CC; then ac_coin_unknown_platform=no; fi
+    case $CXX in
+    CC | */CC ) ac_coin_untested_platform=false ;;
+    esac
     ;;
   irix6.5)
-    if test "$CXX" = CC; then ac_coin_unknown_platform=no; fi
+    case $CXX in
+    CC | */CC )
+      ac_coin_untested_platform=false
+      ac_coin_not_sim_platform=false
+      ;;
+    esac
     ;;
   aix*)
-    if test "$CXX" = xlC; then ac_coin_unknown_platform=no; fi
+    case $CXX in
+    xlC | */xlC ) ac_coin_untested_platform=false ;;
+    esac
     ;;
   hpux10.20)
-    if test "$CXX" = aCC; then ac_coin_unknown_platform=no; fi
+    case $CXX in
+    aCC | */aCC ) ac_coin_untested_platform=false ;;
+    esac
     ;;
   linux-gnu)
     case "$host_cpu" in
-      i?86)
-        ac_coin_unknown_platform=no ;;
+    i?86)
+      ac_coin_untested_platform=false
+      ac_coin_not_sim_platform=false
+    ;;
     esac
     ;;
   cygwin*)
     case "$CXX" in
-      *msvccc) ac_coin_unknown_platform=no ;;
-      *wrapmsvc*) ac_coin_unknown_platform=no ;;
+    *wrapmsvc*)
+      ac_coin_untested_platform=false
+      ac_coin_not_sim_platform=false
+    ;;
     esac
+    ;;
+  darwin*)
+    if test "$CXX" = c++; then ac_coin_unknown_platform=false; fi
     ;;
   beos)
     case "$host_cpu" in
       i?86)
-        if test "$CXX" = c++; then ac_coin_unknown_platform=no; fi
+        if test "$CXX" = c++; then ac_coin_untested_platform=false; fi
         ;;
     esac
     ;;
 esac
 
-if test $ac_coin_unknown_platform = yes; then
+if $ac_coin_untested_platform; then
   echo
   echo "************************* WARNING ****************************"
   echo "*"
   echo "* We have not tested Coin on the $host_os $host_cpu"
   echo "* platform with the $CXX C++ compiler. Please report"
-  echo "* back to us at <coin-support@sim.no> how it works out."
+  echo "* back to us at <coin-support@coin3d.org> how it works out."
   echo "*"
   echo "**************************************************************"
   echo
+else
+  if $ac_coin_not_sim_platform; then
+    echo
+    echo "NOTE: This platform ($host_os $host_cpu with the $CXX C++ compiler)"
+    echo "      is not among our internal development systems. Please let us"
+    echo "      know at <coin-support@coin3d.org> if you run into any problems."
+    echo
+  fi
 fi
 
 if $sim_ac_build_library; then

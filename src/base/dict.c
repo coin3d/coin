@@ -21,8 +21,8 @@
 
 #include <Inventor/SbBasic.h>
 
-#include <Coin/base/dict.h>
-#include <Coin/base/list.h>
+#include <Inventor/C/base/dict.h>
+#include <Inventor/C/base/list.h>
 
 #include <stdlib.h>
 #include <assert.h>

@@ -1,6 +1,6 @@
 ## Process this file with automake to generate Makefile.in.
 
-SUBDIRS = lock system
+SUBDIRS = C lock system
 
 BUILT_SOURCES = \
 	SbBasic.h

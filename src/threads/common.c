@@ -19,7 +19,7 @@
  *
 \**************************************************************************/
 
-#include <Coin/threads/common.h>
+#include <Inventor/C/threads/common.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

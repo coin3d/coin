@@ -1,5 +1,5 @@
-#ifndef CC_BARRIERP_H
-#define CC_BARRIERP_H
+#ifndef CC_THREADP_H
+#define CC_THREADP_H
 
 /**************************************************************************\
  *
@@ -26,9 +26,7 @@
 #error You have tried to use one of the private Coin header files
 #endif /* ! COIN_INTERNAL */
 
-#include <Coin/threads/common.h>
-#include <Coin/threads/mutexp.h>
-#include <Coin/threads/condvarp.h>
+#include <Inventor/C/threads/common.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -38,24 +36,63 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/* ********************************************************************** */
+/* macro to wrap one-line thread-implementation-specific statements in */
+#define CC_PTHREAD(stmt)   /* nop */
+#define CC_W32THREAD(stmt) /* nop */
 
-/* #define CC_BARRIER_VALID 0xdbcafe */
+#ifdef USE_PTHREAD
+#include <pthread.h>
+#ifdef HAVE_SCHED_H
+#include <sched.h>
+#endif /* HAVE_SCHED_H */
+#undef CC_PTHREAD
+#define CC_PTHREAD(stmt) stmt
+#endif /* USE_PTHREAD */
 
-struct cc_barrier {
+#ifdef USE_W32THREAD
+#include <windows.h>
+#undef CC_W32THREAD
+#define CC_W32THREAD(stmt) stmt
+#endif /* USE_W32THREAD */
+
+#ifdef _WIN32
+
+/* error reporting for Win32 */
+char * cc_internal_w32_getlasterrorstring(DWORD lasterror);
+void cc_internal_w32_freelasterrorstring(char *str);
+
+#endif /* WIN32 */
+
+
+struct cc_thread {
   unsigned int type;
-/*  int valid; */
-  int threshold;
-  int counter;
-  int cycle;
-  cc_mutex mutex;
-  cc_condvar condvar;
+  void * (*func)(void *);
+  void * closure;
+
+#ifdef USE_PTHREAD
+  struct cc_pthread_data {
+    pthread_t threadid;
+    pthread_attr_t threadattrs;
+  } pthread;
+#undef NO_IMPLEMENTATION
+#endif /* USE_PTHREAD */
+
+#ifdef USE_W32THREAD
+  struct cc_w32thread_data {
+    HANDLE threadhandle;
+  } w32thread;
+#undef NO_IMPLEMENTATION
+#endif /* USE_W32THREAD */
 };
 
+#ifdef NO_IMPLEMENTATION
+#error missing threads implementation support
+#endif /* NO_IMPLEMENTATION */
+
 /* ********************************************************************** */
 
-void cc_barrier_struct_init(cc_barrier * barrier_struct, unsigned int count);
-void cc_barrier_struct_clean(cc_barrier * barrier_struct);
+void cc_thread_struct_init(cc_thread * thread_struct);
+void cc_thread_struct_clean(cc_thread * thread_struct);
 
 /* ********************************************************************** */
 
@@ -63,4 +100,4 @@ void cc_barrier_struct_clean(cc_barrier * barrier_struct);
 } /* extern "C" */
 #endif /* __cplusplus */
 
-#endif /* ! CC_BARRIERP_H */
+#endif /* ! CC_THREADP_H */

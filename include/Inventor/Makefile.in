@@ -124,7 +124,7 @@ sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 
-SUBDIRS = lock system
+SUBDIRS = C lock system
 
 BUILT_SOURCES = \
 	SbBasic.h

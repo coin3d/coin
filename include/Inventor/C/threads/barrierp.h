@@ -1,5 +1,5 @@
-#ifndef CC_DICT_H
-#define CC_DICT_H
+#ifndef CC_BARRIERP_H
+#define CC_BARRIERP_H
 
 /**************************************************************************\
  *
@@ -22,34 +22,40 @@
  *
 \**************************************************************************/
 
-#include <Inventor/SbBasic.h>  /* COIN_DLL_API */
-/* #include <Coin/base/list.h>  - cc_list */
+#ifndef COIN_INTERNAL
+#error You have tried to use one of the private Coin header files
+#endif /* ! COIN_INTERNAL */
+
+#include <Inventor/C/threads/common.h>
+#include <Inventor/C/threads/mutexp.h>
+#include <Inventor/C/threads/condvarp.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif /* HAVE_CONFIG_H */
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-typedef  struct cc_dict  cc_dict;
+/* ********************************************************************** */
+
+/* #define CC_BARRIER_VALID 0xdbcafe */
+
+struct cc_barrier {
+  unsigned int type;
+/*  int valid; */
+  int threshold;
+  int counter;
+  int cycle;
+  cc_mutex mutex;
+  cc_condvar condvar;
+};
 
 /* ********************************************************************** */
 
-COIN_DLL_API cc_dict * cc_dict_construct(void);
-COIN_DLL_API cc_dict * cc_dict_construct_sized(unsigned int entries);
-COIN_DLL_API void cc_dict_destruct(cc_dict * dict);
-
-COIN_DLL_API void cc_dict_clear(cc_dict * dict);
-
-/* void cc_dict_copy(cc_dict * to, cc_dict * from); */
-
-COIN_DLL_API SbBool cc_dict_enter(cc_dict * dict, unsigned long key, void * value);
-COIN_DLL_API SbBool cc_dict_find(cc_dict * dict, unsigned long key, void ** value);
-COIN_DLL_API SbBool cc_dict_remove(cc_dict * dict, unsigned long key);
-/* void cc_dict_make_lists(cc_dict * dict, cc_list * keys, cc_list * values); */
-
-COIN_DLL_API void cc_dict_set_hash(cc_dict * dict, unsigned long (*func)(unsigned long key));
-
-COIN_DLL_API void cc_dict_apply(cc_dict * dict, void (*func)(unsigned long key, void * val));
-COIN_DLL_API void cc_dict_apply_with_closure(cc_dict * dict, void (*func)(unsigned long key, void * val, void * closure), void * closure);
+void cc_barrier_struct_init(cc_barrier * barrier_struct, unsigned int count);
+void cc_barrier_struct_clean(cc_barrier * barrier_struct);
 
 /* ********************************************************************** */
 
@@ -57,4 +63,4 @@ COIN_DLL_API void cc_dict_apply_with_closure(cc_dict * dict, void (*func)(unsign
 } /* extern "C" */
 #endif /* __cplusplus */
 
-#endif /* ! CC_DICT_H */
+#endif /* ! CC_BARRIERP_H */

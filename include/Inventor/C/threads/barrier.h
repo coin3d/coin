@@ -1,5 +1,5 @@
-#ifndef CC_RWMUTEXP_H
-#define CC_RWMUTEXP_H
+#ifndef CC_BARRIER_H
+#define CC_BARRIER_H
 
 /**************************************************************************\
  *
@@ -22,17 +22,8 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_INTERNAL
-#error You have tried to use one of the private Coin header files
-#endif /* ! COIN_INTERNAL */
-
-#include <Coin/threads/common.h>
-#include <Coin/threads/mutexp.h>
-#include <Coin/threads/condvarp.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif /* HAVE_CONFIG_H */
+#include <Inventor/SbBasic.h>  /* COIN_DLL_API */
+#include <Inventor/C/threads/common.h>  /* cc_barrier */
 
 #ifdef __cplusplus
 extern "C" {
@@ -40,22 +31,10 @@ extern "C" {
 
 /* ********************************************************************** */
 
-struct cc_rwmutex {
-  unsigned int type;
-  cc_precedence policy;
-  int readers;
-  int writers;
-  int readwaiters;
-  int writewaiters;
-  cc_mutex mutex;
-  cc_condvar read;
-  cc_condvar write;
-};
+COIN_DLL_API cc_barrier * cc_barrier_construct(unsigned int count);
+COIN_DLL_API void cc_barrier_destruct(cc_barrier * barrier);
 
-/* ********************************************************************** */
-
-void cc_rwmutex_struct_init(cc_rwmutex * rwmutex);
-void cc_rwmutex_struct_clean(cc_rwmutex * rwmutex);
+COIN_DLL_API int cc_barrier_enter(cc_barrier * barrier);
 
 /* ********************************************************************** */
 
@@ -63,4 +42,4 @@ void cc_rwmutex_struct_clean(cc_rwmutex * rwmutex);
 } /* extern "C" */
 #endif /* __cplusplus */
 
-#endif /* ! CC_RWMUTEXP_H */
+#endif /* ! CC_BARRIER_H */

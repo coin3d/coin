@@ -23,7 +23,7 @@
 \**************************************************************************/
 
 #include <Inventor/SbBasic.h>  /* COIN_DLL_API */
-#include <Coin/threads/common.h>  /* cc_storage */
+#include <Inventor/C/threads/common.h>  /* cc_storage */
 
 #ifdef __cplusplus
 extern "C" {

@@ -1,5 +1,5 @@
-#ifndef CC_BARRIER_H
-#define CC_BARRIER_H
+#ifndef CC_DICT_H
+#define CC_DICT_H
 
 /**************************************************************************\
  *
@@ -23,18 +23,33 @@
 \**************************************************************************/
 
 #include <Inventor/SbBasic.h>  /* COIN_DLL_API */
-#include <Coin/threads/common.h>  /* cc_barrier */
+/* #include <Inventor/C/base/list.h>  - cc_list */
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
+typedef  struct cc_dict  cc_dict;
+
 /* ********************************************************************** */
 
-COIN_DLL_API cc_barrier * cc_barrier_construct(unsigned int count);
-COIN_DLL_API void cc_barrier_destruct(cc_barrier * barrier);
+COIN_DLL_API cc_dict * cc_dict_construct(void);
+COIN_DLL_API cc_dict * cc_dict_construct_sized(unsigned int entries);
+COIN_DLL_API void cc_dict_destruct(cc_dict * dict);
 
-COIN_DLL_API int cc_barrier_enter(cc_barrier * barrier);
+COIN_DLL_API void cc_dict_clear(cc_dict * dict);
+
+/* void cc_dict_copy(cc_dict * to, cc_dict * from); */
+
+COIN_DLL_API SbBool cc_dict_enter(cc_dict * dict, unsigned long key, void * value);
+COIN_DLL_API SbBool cc_dict_find(cc_dict * dict, unsigned long key, void ** value);
+COIN_DLL_API SbBool cc_dict_remove(cc_dict * dict, unsigned long key);
+/* void cc_dict_make_lists(cc_dict * dict, cc_list * keys, cc_list * values); */
+
+COIN_DLL_API void cc_dict_set_hash(cc_dict * dict, unsigned long (*func)(unsigned long key));
+
+COIN_DLL_API void cc_dict_apply(cc_dict * dict, void (*func)(unsigned long key, void * val));
+COIN_DLL_API void cc_dict_apply_with_closure(cc_dict * dict, void (*func)(unsigned long key, void * val, void * closure), void * closure);
 
 /* ********************************************************************** */
 
@@ -42,4 +57,4 @@ COIN_DLL_API int cc_barrier_enter(cc_barrier * barrier);
 } /* extern "C" */
 #endif /* __cplusplus */
 
-#endif /* ! CC_BARRIER_H */
+#endif /* ! CC_DICT_H */

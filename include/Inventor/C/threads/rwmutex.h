@@ -1,5 +1,5 @@
-#ifndef CC_CONDVAR_H
-#define CC_CONDVAR_H
+#ifndef CC_RWMUTEX_H
+#define CC_RWMUTEX_H
 
 /**************************************************************************\
  *
@@ -23,8 +23,7 @@
 \**************************************************************************/
 
 #include <Inventor/SbBasic.h>  /* COIN_DLL_API */
-#include <Coin/base/time.h>  /* cc_time */
-#include <Coin/threads/common.h>  /* cc_condvar */
+#include <Inventor/C/threads/common.h>  /* cc_rwmutex, cc_precedence */
 
 #ifdef __cplusplus
 extern "C" {
@@ -32,14 +31,17 @@ extern "C" {
 
 /* ********************************************************************** */
 
-COIN_DLL_API cc_condvar * cc_condvar_construct(void);
-COIN_DLL_API void cc_condvar_destruct(cc_condvar * condvar);
+COIN_DLL_API cc_rwmutex * cc_rwmutex_construct(void);
+COIN_DLL_API cc_rwmutex * cc_rwmutex_construct_etc(cc_precedence policy);
+COIN_DLL_API void cc_rwmutex_destruct(cc_rwmutex * rwmutex);
 
-COIN_DLL_API int cc_condvar_wait(cc_condvar * condvar);
-COIN_DLL_API int cc_condvar_timed_wait(cc_condvar * condvar, cc_time period);
+COIN_DLL_API int cc_rwmutex_write_lock(cc_rwmutex * rwmutex);
+COIN_DLL_API int cc_rwmutex_write_try_lock(cc_rwmutex * rwmutex);
+COIN_DLL_API int cc_rwmutex_write_unlock(cc_rwmutex * rwmutex);
 
-COIN_DLL_API void cc_condvar_wake_one(cc_condvar * condvar);
-COIN_DLL_API void cc_condvar_wake_all(cc_condvar * condvar);
+COIN_DLL_API int cc_rwmutex_read_lock(cc_rwmutex * rwmutex);
+COIN_DLL_API int cc_rwmutex_read_try_lock(cc_rwmutex * rwmutex);
+COIN_DLL_API int cc_rwmutex_read_unlock(cc_rwmutex * rwmutex);
 
 /* ********************************************************************** */
 
@@ -47,4 +49,4 @@ COIN_DLL_API void cc_condvar_wake_all(cc_condvar * condvar);
 } /* extern "C" */
 #endif /* __cplusplus */
 
-#endif /* ! CC_CONDVAR_H */
+#endif /* ! CC_RWMUTEX_H */

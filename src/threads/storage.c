@@ -19,8 +19,8 @@
  *
 \**************************************************************************/
 
-#include <Coin/threads/storage.h>
-#include <Coin/threads/storagep.h>
+#include <Inventor/C/threads/storage.h>
+#include <Inventor/C/threads/storagep.h>
 
 #include <stdlib.h>
 #include <assert.h>

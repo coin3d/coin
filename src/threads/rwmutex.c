@@ -19,12 +19,12 @@
  *
 \**************************************************************************/
 
-#include <Coin/threads/rwmutex.h>
-#include <Coin/threads/rwmutexp.h>
+#include <Inventor/C/threads/rwmutex.h>
+#include <Inventor/C/threads/rwmutexp.h>
 
-#include <Coin/base/debug.h>
-#include <Coin/threads/mutex.h>
-#include <Coin/threads/condvar.h>
+#include <Inventor/C/base/debug.h>
+#include <Inventor/C/threads/mutex.h>
+#include <Inventor/C/threads/condvar.h>
 
 #include <stdlib.h>
 #include <assert.h>

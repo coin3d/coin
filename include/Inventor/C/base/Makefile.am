@@ -1,5 +1,5 @@
 
-baseincdir = $(includedir)/Coin/base
+baseincdir = $(includedir)/Inventor/C/base
 baseinc_HEADERS = \
 	dict.h \
 	debug.h
