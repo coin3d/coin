@@ -1525,6 +1525,80 @@ else
 fi
 ])
 
+dnl Usage:
+dnl  SIM_CHECK_SNPRINTF
+dnl
+dnl Find out which of these "safe" and non-standard functions are
+dnl available on the system: snprintf(), vsnprintf(), _snprintf()
+dnl and _vsnprintf().
+dnl
+dnl The variables sim_ac_snprintf_avail, sim_ac_vsnprintf_avail,
+dnl sim_ac__snprintf_avail and sim_ac__vsnprintf_avail are set to either
+dnl "yes" or "no" according to their availability, and HAVE_SNPRINTF
+dnl etc will be defined properly.
+dnl
+dnl
+dnl Author: Morten Eriksen, <mortene@sim.no>.
+dnl
+
+AC_DEFUN(SIM_CHECK_NPRINTF,[
+dnl Autoconf is a developer tool, so don't bother to support older versions.
+AC_PREREQ([2.14])
+
+sim_ac_snprintf_avail=no
+sim_ac__snprintf_avail=no
+sim_ac_vsnprintf_avail=no
+sim_ac__vsnprintf_avail=no
+
+AC_CACHE_CHECK([whether snprintf() is available],
+  sim_cv_func_snprintf,
+  [AC_TRY_LINK([#include <stdio.h>],
+               [(void)snprintf(0L, 0, 0L);],
+               sim_cv_func_snprintf=yes,
+               sim_cv_func_snprintf=no)])
+
+sim_ac_snprintf_avail=$sim_cv_func_snprintf
+
+
+AC_CACHE_CHECK([whether vsnprintf() is available],
+  sim_cv_func_vsnprintf,
+  [AC_TRY_LINK([#include <stdio.h>],
+               [(void)vsnprintf(0L, 0, 0L, 0L);],
+               sim_cv_func_vsnprintf=yes,
+               sim_cv_func_vsnprintf=no)])
+
+sim_ac_vsnprintf_avail=$sim_cv_func_vsnprintf
+
+# We're not interested in _snprintf() unless snprintf() is unavailable.
+if test x"$sim_ac_snprintf_avail" = xno; then
+  AC_CACHE_CHECK([whether _snprintf() is available],
+    sim_cv_func__snprintf,
+    [AC_TRY_LINK([#include <stdio.h>],
+                 [(void)_snprintf(0L, 0, 0L);],
+                 sim_cv_func__snprintf=yes,
+                 sim_cv_func__snprintf=no)])
+
+  sim_ac__snprintf_avail=$sim_cv_func__snprintf
+fi
+
+# We're not interested in _vsnprintf() unless vsnprintf() is unavailable.
+if test x"$sim_ac_vsnprintf_avail" = xno; then
+  AC_CACHE_CHECK([whether _vsnprintf() is available],
+    sim_cv_func__vsnprintf,
+    [AC_TRY_LINK([#include <stdio.h>],
+                 [(void)_vsnprintf(0L, 0, 0L);],
+                 sim_cv_func__vsnprintf=yes,
+                 sim_cv_func__vsnprintf=no)])
+
+  sim_ac__vsnprintf_avail=$sim_cv_func__vsnprintf
+fi
+
+test x"$sim_ac_snprintf_avail" = xyes && AC_DEFINE(HAVE_SNPRINTF)
+test x"$sim_ac_vsnprintf_avail" = xyes && AC_DEFINE(HAVE_VSNPRINTF)
+test x"$sim_ac__snprintf_avail" = xyes && AC_DEFINE(HAVE__SNPRINTF)
+test x"$sim_ac__vsnprintf_avail" = xyes && AC_DEFINE(HAVE__VSNPRINTF)
+])
+
 dnl  Expand these variables into their correct full directory paths:
 dnl   $prefix  $exec_prefix  $includedir  $libdir
 dnl

@@ -3806,61 +3806,149 @@ EOF
 fi
 done
 
-for ac_func in vsnprintf _vsnprintf snprintf _snprintf
-do
-ac_ac_var=`echo "ac_cv_func_$ac_func" | $ac_tr_sh`
-echo $ac_n "checking for $ac_func... $ac_c" 1>&6
-echo "configure:3814: checking for $ac_func" 1>&5
-if eval "test \"\${$ac_ac_var+set}\" = set"; then
+
+
+
+sim_ac_snprintf_avail=no
+sim_ac__snprintf_avail=no
+sim_ac_vsnprintf_avail=no
+sim_ac__vsnprintf_avail=no
+
+echo $ac_n "checking whether snprintf() is available... $ac_c" 1>&6
+echo "configure:3819: checking whether snprintf() is available" 1>&5
+if test "${sim_cv_func_snprintf+set}" = set; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat >conftest.$ac_ext <<EOF
-#line 3819 "configure"
+#line 3824 "configure"
 #include "confdefs.h"
-/* System header to define __stub macros and hopefully few prototypes,
-    which can conflict with char $ac_func(); below.  */
-#include <assert.h>
-/* Override any gcc2 internal prototype to avoid an error.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-/* We use char because int might match the return type of a gcc2
-    builtin and then its argument prototype would still apply.  */
-char $ac_func();
-char (*f)();
-
+#include <stdio.h>
 int main() {
-
-/* The GNU C library defines this for functions which it implements
-    to always fail with ENOSYS.  Some functions are actually named
-    something starting with __ and the normal name is an alias.  */
-#if defined (__stub_$ac_func) || defined (__stub___$ac_func)
-choke me
-#else
-f = $ac_func;
-#endif
-
+(void)snprintf(0L, 0, 0L);
 ; return 0; }
 EOF
-if { (eval echo configure:3846: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:3831: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
-  eval "$ac_ac_var=yes"
+  sim_cv_func_snprintf=yes
 else
   echo "configure: failed program was:" >&5
   cat conftest.$ac_ext >&5
   rm -rf conftest*
-  eval "$ac_ac_var=no"
+  sim_cv_func_snprintf=no
 fi
 rm -f conftest*
 fi
-echo "$ac_t""`eval echo '${'$ac_ac_var'}'`" 1>&6
-if test `eval echo '${'$ac_ac_var'}'` = yes; then
-  cat >>confdefs.h <<EOF
-#define `echo "HAVE_$ac_func" | $ac_tr_cpp` 1
+echo "$ac_t""$sim_cv_func_snprintf" 1>&6
+
+sim_ac_snprintf_avail=$sim_cv_func_snprintf
+
+
+echo $ac_n "checking whether vsnprintf() is available... $ac_c" 1>&6
+echo "configure:3848: checking whether vsnprintf() is available" 1>&5
+if test "${sim_cv_func_vsnprintf+set}" = set; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  cat >conftest.$ac_ext <<EOF
+#line 3853 "configure"
+#include "confdefs.h"
+#include <stdio.h>
+int main() {
+(void)vsnprintf(0L, 0, 0L, 0L);
+; return 0; }
 EOF
- 
+if { (eval echo configure:3860: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+  rm -rf conftest*
+  sim_cv_func_vsnprintf=yes
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  rm -rf conftest*
+  sim_cv_func_vsnprintf=no
 fi
-done
+rm -f conftest*
+fi
+echo "$ac_t""$sim_cv_func_vsnprintf" 1>&6
+
+sim_ac_vsnprintf_avail=$sim_cv_func_vsnprintf
+
+# We're not interested in _snprintf() unless snprintf() is unavailable.
+if test x"$sim_ac_snprintf_avail" = xno; then
+  echo $ac_n "checking whether _snprintf() is available... $ac_c" 1>&6
+echo "configure:3878: checking whether _snprintf() is available" 1>&5
+if test "${sim_cv_func__snprintf+set}" = set; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  cat >conftest.$ac_ext <<EOF
+#line 3883 "configure"
+#include "confdefs.h"
+#include <stdio.h>
+int main() {
+(void)_snprintf(0L, 0, 0L);
+; return 0; }
+EOF
+if { (eval echo configure:3890: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+  rm -rf conftest*
+  sim_cv_func__snprintf=yes
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  rm -rf conftest*
+  sim_cv_func__snprintf=no
+fi
+rm -f conftest*
+fi
+echo "$ac_t""$sim_cv_func__snprintf" 1>&6
+
+  sim_ac__snprintf_avail=$sim_cv_func__snprintf
+fi
+
+# We're not interested in _vsnprintf() unless vsnprintf() is unavailable.
+if test x"$sim_ac_vsnprintf_avail" = xno; then
+  echo $ac_n "checking whether _vsnprintf() is available... $ac_c" 1>&6
+echo "configure:3909: checking whether _vsnprintf() is available" 1>&5
+if test "${sim_cv_func__vsnprintf+set}" = set; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  cat >conftest.$ac_ext <<EOF
+#line 3914 "configure"
+#include "confdefs.h"
+#include <stdio.h>
+int main() {
+(void)_vsnprintf(0L, 0, 0L);
+; return 0; }
+EOF
+if { (eval echo configure:3921: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+  rm -rf conftest*
+  sim_cv_func__vsnprintf=yes
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  rm -rf conftest*
+  sim_cv_func__vsnprintf=no
+fi
+rm -f conftest*
+fi
+echo "$ac_t""$sim_cv_func__vsnprintf" 1>&6
+
+  sim_ac__vsnprintf_avail=$sim_cv_func__vsnprintf
+fi
+
+test x"$sim_ac_snprintf_avail" = xyes && cat >>confdefs.h <<\EOF
+#define HAVE_SNPRINTF 1
+EOF
+
+test x"$sim_ac_vsnprintf_avail" = xyes && cat >>confdefs.h <<\EOF
+#define HAVE_VSNPRINTF 1
+EOF
+
+test x"$sim_ac__snprintf_avail" = xyes && cat >>confdefs.h <<\EOF
+#define HAVE__SNPRINTF 1
+EOF
+
+test x"$sim_ac__vsnprintf_avail" = xyes && cat >>confdefs.h <<\EOF
+#define HAVE__VSNPRINTF 1
+EOF
+
 
 
 

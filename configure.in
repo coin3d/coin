@@ -174,7 +174,8 @@ CPPFLAGS="$CPPFLAGS -D__SOLIB_INTERNAL__"
 
 
 AC_CHECK_HEADERS(unistd.h io.h)
-AC_CHECK_FUNCS(vsnprintf _vsnprintf snprintf _snprintf)
+SIM_CHECK_NPRINTF
+dnl **obsoleted**  AC_CHECK_FUNCS(vsnprintf _vsnprintf snprintf _snprintf)
 
 
 dnl *******************************************************************

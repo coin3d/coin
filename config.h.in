@@ -8,6 +8,10 @@
 #undef HAVE_LIBSIMAGE
 #undef HAVE_OPENGL
 #undef HAVE_OSMESACREATECONTEXT
+#undef HAVE_SNPRINTF
+#undef HAVE_VSNPRINTF
+#undef HAVE__SNPRINTF
+#undef HAVE__VSNPRINTF
 
 /* Define if you have the <io.h> header file. */
 #undef HAVE_IO_H
@@ -39,20 +43,8 @@
 /* Define if you have the `socket' library (-lsocket). */
 #undef HAVE_LIBSOCKET
 
-/* Define if you have the `snprintf' function. */
-#undef HAVE_SNPRINTF
-
 /* Define if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
-
-/* Define if you have the `vsnprintf' function. */
-#undef HAVE_VSNPRINTF
-
-/* Define if you have the `_snprintf' function. */
-#undef HAVE__SNPRINTF
-
-/* Define if you have the `_vsnprintf' function. */
-#undef HAVE__VSNPRINTF
 
 /* Name of package */
 #undef PACKAGE
