@@ -424,3 +424,31 @@ THE WISH LIST
   stuff) we should perhaps make available a function
   registerImporter() for generally supporting any file format for
   import to Coin scenegraphs.
+
+* New node TextureAttribute
+  2001-06-07  Peder Blekken <pederb@sim.no>, Morten Eriksen <mortene@sim.no>
+
+  Complexity's textureQuality is kind of outdated, since most OpenGL
+  drivers now support linear filtering and mipmapping at no additional 
+  performance cost when enabled. It would be more useful to be able to
+  specify when you want to enable linear filtering and/or mipmapping.
+
+  A TextureAttribute node might contain these fields:
+
+    SoSFBool linearFiltering;
+    SoSFBool mipmapping;
+
+    enum ScalePolicy {
+      SCALE_DOWN,
+      SCALE_UP,        // default
+      DONT_SCALE
+    };
+    SoSFEnum scalePolicy;
+    
+    enum LoadPolicy {
+      IMMEDIATELY,    // default
+      DELAY_LOAD,
+      DELAY_LOAD_AND_UNLOAD
+    };
+    SoSFEnum loadPolicy;
+
