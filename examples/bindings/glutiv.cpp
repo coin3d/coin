@@ -1,22 +1,29 @@
-// glutiv.cpp -- example demonstrating Coin (or Open Inventor) with GLUT
+/**************************************************************************\
+ *
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 1998-2003 by Systems in Motion.  All rights reserved.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  ("GPL") version 2 as published by the Free Software Foundation.
+ *  See the file LICENSE.GPL at the root directory of this source
+ *  distribution for additional information about the GNU GPL.
+ *
+ *  For using Coin with software that can not be combined with the GNU
+ *  GPL, and for taking advantage of the additional benefits of our
+ *  support services, please contact Systems in Motion about acquiring
+ *  a Coin Professional Edition License.
+ *
+ *  See <URL:http://www.coin3d.org> for  more information.
+ *
+ *  Systems in Motion, Teknobyen, Abels Gate 5, 7030 Trondheim, NORWAY.
+ *  <URL:http://www.sim.no>.
+ *
+\**************************************************************************/
+
+// glutiv.cpp -- example demonstrating Coin (or Open Inventor) bound
+// to the GLUT user interface abstraction.
 //
-// Copyright 2000-2003 by Systems in Motion.  All rights reserved.
-//
-// This software is provided "as is" WITHOUT WARRANTY OF ANY KIND, either
-// express or implied, including, without limitation, any warranty of
-// merchantability and fitness for a particular purpose. The entire risk
-// as to the results and performance of the software is assumed by you,
-// and Systems in Motion assume no responsibility for the accuracy or
-// application of or errors or omissions in the software. In no event
-// shall Systems in Motion be liable for any direct, indirect, special,
-// incidental or consequential damages arising out of the use or inability
-// to use the software, even if Systems in Motion have been advised of
-// the likelihood of such damages occurring.  Systems in Motion shall
-// not be liable for any loss, damages or costs, arising out of, but
-// not limited to, lost profits or revenue, loss of use of the software,
-// loss of data or equipment, the costs of recovering software, data or
-// equipment, the cost of substitute software or data, claims by third
-// parties, or other similar costs.
 
 // If you have Coin and the GLUT library properly installed, you should
 // be able to build by simply doing:
@@ -32,15 +39,27 @@
 //  $ coin-config --build glutiv glutiv.cpp 
 
 
-// Note that there are some limitations to this example:
+// *************************************************************************
+
+// FIXME: note that there are some limitations to this example:
 //
 //  * The most important one is that events are not translated from
-//    the GLUT system to native Coin events. This means that for
-//    instance draggers and manipulators in the scene graph will not
-//    respond to attempts at interaction.
+//    native X11 events to Coin events (to be sent to the scene
+//    graph). This means that for instance draggers and manipulators in
+//    the scene graph will not respond to attempts at interaction.
 //
-//  * The sensor queue processing is a bit "hack-ish". Don't use this
+//  * The sensor queue processing is just a hack. Don't use this
 //    in production code.
+//
+// 20031113 mortene.
+
+// *************************************************************************
+
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif 
 
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInteraction.h>
@@ -56,20 +75,15 @@
 #include <Inventor/nodes/SoShuttle.h>
 #include <Inventor/nodes/SoSphere.h>
 #include <Inventor/nodes/SoTransform.h>
-#ifdef __APPLE__
-#include <GLUT/glut.h>
-#else
-#include <GL/glut.h>
-#endif 
 
-// ----------------------------------------------------------------------
+// *************************************************************************
 
 const int SCENEWINDOWS = 3;
 
 SoSceneManager * scenemanager[SCENEWINDOWS];
 int glutwin[SCENEWINDOWS];
 
-// ----------------------------------------------------------------------
+// *************************************************************************
 
 int
 winid2idx(const int winid)
@@ -126,7 +140,7 @@ idle_cb(void)
   SoDB::getSensorManager()->processDelayQueue(TRUE);
 }
 
-// ----------------------------------------------------------------------
+// *************************************************************************
 
 // Make the common scenegraph. Just a little silly something to show
 // off some geometry nodes and simple animation.
@@ -179,7 +193,7 @@ commongraph(void)
   return root;
 }
 
-// ----------------------------------------------------------------------
+// *************************************************************************
 
 #ifdef _WIN32
 
@@ -249,6 +263,8 @@ main(int argc, char ** argv)
     glutReshapeFunc(reshape_cb);
   }
 
+  SoDB::setRealTimeInterval(1/120.0);
+
   // start main loop processing (with an idle callback)
 
   glutIdleFunc(idle_cb);
@@ -264,3 +280,4 @@ main(int argc, char ** argv)
   return 0;
 }
 
+// *************************************************************************
