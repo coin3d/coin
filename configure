@@ -1786,8 +1786,8 @@ if test "${with_framework+set}" = set; then
   withval="$with_framework"
   sim_ac_framework_name="Inventor"
   case $withval in
-  yes ) sim_ac_framework=true ;;
-  no ) sim_ac_framework=false ;;
+  yes | true ) sim_ac_framework=true ;;
+  no | false ) sim_ac_framework=false ;;
   * ) sim_ac_framework=true; sim_ac_framework_name="$withval" ;;
   esac
 else
@@ -8938,16 +8938,6 @@ if $sim_ac_enable_vrml97; then
 else
   BUILD_VRML97_TRUE='#'
   BUILD_VRML97_FALSE=
-fi
-
-
-
-if false; then
-  MAC_FRAMEWORK_TRUE=
-  MAC_FRAMEWORK_FALSE='#'
-else
-  MAC_FRAMEWORK_TRUE='#'
-  MAC_FRAMEWORK_FALSE=
 fi
 
 # *******************************************************************
@@ -20949,13 +20939,14 @@ fi
     LIBS="$LIBS -lgcc"
   fi
 
-
-  if test x${sim_ac_configuration_settings+set} != xset; then
+  if $sim_ac_framework; then :; else
+    if test x${sim_ac_configuration_settings+set} != xset; then
   sim_ac_configuration_settings="Install prefix:$prefix"
 else
   sim_ac_configuration_settings="$sim_ac_configuration_settings|Install prefix:$prefix"
 fi
 
+  fi
 else
   if test x${sim_ac_configuration_settings+set} != xset; then
   sim_ac_configuration_settings="Coin build type:build disabled"
@@ -22587,6 +22578,8 @@ while test $sim_ac_num_warnings -ge 0; do
 done
 fi
 
+
+echo "sim_ac_framework: $sim_ac_framework"
 
 if $sim_ac_build_library; then
   cat <<EOF

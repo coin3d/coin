@@ -106,8 +106,8 @@ AC_ARG_WITH([framework],
   --without-framework  Do regular installation on Mac OS X],
   [sim_ac_framework_name="MAC_FRAMEWORK_NAME_DEFAULT"
   case $withval in
-  yes ) sim_ac_framework=true ;;
-  no ) sim_ac_framework=false ;;
+  yes | true ) sim_ac_framework=true ;;
+  no | false ) sim_ac_framework=false ;;
   * ) sim_ac_framework=true; sim_ac_framework_name="$withval" ;;
   esac],
   [sim_ac_framework_name="MAC_FRAMEWORK_NAME_DEFAULT"
@@ -340,8 +340,6 @@ fi
 AC_SUBST(HAVE_VRML97)
 
 AM_CONDITIONAL([BUILD_VRML97], [$sim_ac_enable_vrml97])
-
-AM_CONDITIONAL([MAC_FRAMEWORK], [false])
 
 # *******************************************************************
 # Search for the "local GLU" extension
@@ -1440,8 +1438,9 @@ elif $sim_ac_build_library; then
     LIBS="$LIBS -lgcc"
   fi
 
-
-  SIM_AC_CONFIGURATION_SETTING([Install prefix], [$prefix])
+  if $sim_ac_framework; then :; else
+    SIM_AC_CONFIGURATION_SETTING([Install prefix], [$prefix])
+  fi
 else
   SIM_AC_CONFIGURATION_SETTING([Coin build type], [build disabled])
 fi
@@ -1623,6 +1622,8 @@ if $sim_ac_build_library; then
 fi
 
 SIM_AC_CONFIGURATION_SUMMARY
+
+echo "sim_ac_framework: $sim_ac_framework"
 
 if $sim_ac_build_library; then
   cat <<EOF
