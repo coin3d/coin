@@ -68,6 +68,15 @@
 #include <coindefs.h> // COIN_STUB()
 #include <Inventor/SoDB.h>
 
+#include <config.h>
+
+#include <sys/stat.h>
+#if HAVE_UNISTD_H
+#include <unistd.h>
+#endif // HAVE_UNISTD_H
+
+// FIXME: use configure to detect the presence of header
+// files. 20000512 mortene.
 #ifdef _WIN32
 #include <windows.h>
 #else // ! _WIN32
@@ -2101,20 +2110,42 @@ SoInput::getTopOfStack(void) const
 FILE *
 SoInput::findFile(const char * basename, SbString & fullname)
 {
-  // Try as absolute name first.
-  FILE * fp = fopen(basename, "r");
-  if (fp) fullname = basename;
+#define DEBUG_FILE_SEARCHING 0
+
+  int baselen = strlen(basename);
+  if (!baselen) return NULL;
+
+  SbStringList sl = SoInput::getDirectories();
+  SbString relativepath("");
+  sl.insert(&relativepath, 0); // So we'll try relative path from cwd first.
 
   int diridx = 0;
-  const SbStringList & sl = SoInput::getDirectories();
-
+  FILE * fp = NULL;
   while (!fp && (diridx < sl.getLength())) {
     fullname = * sl[diridx++];
-    fullname += "/";
+    int namelen = fullname.getLength();
+    if ((namelen && fullname[namelen - 1] != '/') && (basename[0] != '/'))
+      fullname += "/";
     fullname += basename;
 
-    fp = fopen(fullname.getString(), "r");
+#if COIN_DEBUG && DEBUG_FILE_SEARCHING // debug
+    SoDebugError::postInfo("SoInput::findFile",
+                           "%s", fullname.getString());
+#endif // debug
+
+    struct stat buf;
+    if ((stat(fullname.getString(), &buf) == 0) && !S_ISDIR(buf.st_mode)) {
+      fp = fopen(fullname.getString(), "r");
+#if COIN_DEBUG && DEBUG_FILE_SEARCHING // debug
+      SoDebugError::postInfo("SoInput::findFile",
+                             "fopen(%s)", fullname.getString());
+#endif // debug
+    }
   }
+
+#if COIN_DEBUG && DEBUG_FILE_SEARCHING // debug
+  SoDebugError::postInfo("SoInput::findFile", "done");
+#endif // debug
 
   return fp;
 }
