@@ -236,19 +236,19 @@ SoInputP::isNameStartChar(unsigned char c, SbBool validIdent)
 {
   // Cannot be unsigned when using strchr, but since all values are
   // below 128, it does not matter if they are signed or unsigned.
-  const char invalid_vrml1[9] = { 0x22, 0x23, 0x27, 0x2b, 0x2e, 
-                                  0x5c, 0x7b, 0x7d, 0x00 }; // 0x7d = 125
+  const char invalid_vrml1[] = { 0x22, 0x23, 0x27, 0x2b, 0x2e, 
+                                 0x5c, 0x7b, 0x7d, 0x00 }; // 0x7d = 125
                                 // '"',  '#',  ''',  '+',  '.',
                                 // '\',  '{',  '}'
 
-  const char invalid_vrml2[14] = { 0x22, 0x23, 0x27, 0x2b, 0x2c, 0x2d, 0x2e, 
-                                   0x5b, 0x5c, 0x5d, 0x7b, 0x7d, 0x7f, 0x00 }; // 0x7f = 127
+  const char invalid_vrml2[] = { 0x22, 0x23, 0x27, 0x2b, 0x2c, 0x2d, 0x2e, 
+                                 0x5b, 0x5c, 0x5d, 0x7b, 0x7d, 0x7f, 0x00 }; // 0x7f = 127
                                  // '"',  '#',  ''',  '+',  ',',  '-',  '.',
                                  // '[',  '\',  ']',  '{',  '}',   ''
 
   // Differences from invalid_vrml1: '&' , '[', and ']' are now invalid
-  const char valid_ident_invalid_vrml1[12] = { 0x22, 0x23, 0x26, 0x27, 0x2b, 0x2e, 
-                                               0x5b, 0x5c, 0x5d, 0x7b, 0x7d, 0x00 }; // 0x7d = 125
+  const char valid_ident_invalid_vrml1[] = { 0x22, 0x23, 0x26, 0x27, 0x2b, 0x2e, 
+                                             0x5b, 0x5c, 0x5d, 0x7b, 0x7d, 0x00 }; // 0x7d = 125
                                              // '"',  '#',   '&', ''',  '+',  '.',
                                              // '[',  '\',   ']',  '{',  '}'
 
@@ -298,21 +298,21 @@ SoInputP::isNameChar(unsigned char c, SbBool validIdent)
 {
   // Cannot be unsigned when using strchr, but since all values are
   // below 128, it does not matter if they are signed or unsigned.
-  const char invalid_vrml1[12] = { 0x22, 0x23, 0x27, 0x2b, 0x2e, 
-                                   0x5c, 0x7b, 0x7d, 0x00 }; // 0x7d = 125
+  const char invalid_vrml1[] = { 0x22, 0x23, 0x27, 0x2b, 0x2e, 
+                                 0x5c, 0x7b, 0x7d, 0x00 }; // 0x7d = 125
                                 // '"',  '#',  ''',  '+',  '.',
                                 // '\',  '{',  '}'
 
   // Compared to isIdentStartChar, '+' and '-' have now become valid
   // characters.
-  const char invalid_vrml2[12] = { 0x22, 0x23, 0x27, 0x2c, 0x2e, 0x5b, 
-                                   0x5c, 0x5d, 0x7b, 0x7d, 0x7f, 0x00 }; // 0x7f = 127
+  const char invalid_vrml2[] = { 0x22, 0x23, 0x27, 0x2c, 0x2e, 0x5b, 
+                                 0x5c, 0x5d, 0x7b, 0x7d, 0x7f, 0x00 }; // 0x7f = 127
                                  // '"',  '#',  ''',  ',',  '.',  '[',
                                  // '\',  ']',  '{',  '}',   ''
 
   // Differences from invalid_vrml1: '&' , '[', and ']' are now invalid
-  const char valid_ident_invalid_vrml1[12] = { 0x22, 0x23, 0x26, 0x27, 0x2b, 0x2e, 
-                                               0x5b, 0x5c, 0x5d, 0x7b, 0x7d, 0x00 }; // 0x7d = 125
+  const char valid_ident_invalid_vrml1[] = { 0x22, 0x23, 0x26, 0x27, 0x2b, 0x2e, 
+                                             0x5b, 0x5c, 0x5d, 0x7b, 0x7d, 0x00 }; // 0x7d = 125
                                              // '"',  '#',   '&', ''',  '+',  '.',
                                              // '[',  '\',   ']',  '{',  '}'
 
