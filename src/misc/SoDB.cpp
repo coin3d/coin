@@ -157,6 +157,9 @@
 #include <Inventor/VRMLnodes/SoVRML.h>
 #endif // HAVE_VRML97
 
+#ifdef HAVE_THREADS
+#include <Inventor/C/threads/syncp.h>
+#endif // HAVE_THREADS
 
 static SbString * coin_versionstring = NULL;
 
@@ -306,7 +309,11 @@ SoDB::init(void)
   SoDB::realtimeinterval = new SbTime;
   SoDB::converters = new SbDict;
 
-
+#ifdef HAVE_THREADS
+  // initialize synchronizer first in case some other init function
+  // use it.
+  cc_sync_init();
+#endif // HAVE_THREADS
 
   // NB! There are dependencies in the order of initialization of
   // components below.
