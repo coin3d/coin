@@ -59,10 +59,10 @@ SbBool
 SoFragmentShader::isSupported(SourceType sourceType)
 {
   // FIXME: return correct values, based on checking the actual
-  // capabilities of the GL driver. (But first investigate whether
-  // this is part of the TGS Inventor API -- the function signature is
-  // not very well designed, as we really need a guaranteed GL context
-  // for this.)  20050120 mortene.
+  // capabilities of the GL driver. (Yes, this is part of the TGS
+  // Inventor API -- the function signature is not very well designed,
+  // as we really need a guaranteed GL context for this.)  20050120 mortene.
+
   if (sourceType == ARB_PROGRAM) return TRUE;
   if (sourceType == GLSL_PROGRAM) return TRUE;
   if (sourceType == CG_PROGRAM) return TRUE;

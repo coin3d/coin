@@ -61,6 +61,7 @@ private:
 };
 
 #define PRIVATE(p) ((p)->pimpl)
+#define PUBLIC(p) ((p)->owner)
 
 // *************************************************************************
 
@@ -114,7 +115,7 @@ SoShaderProgram::containStateMatrixParameters(void) const
 
 SoShaderProgramP::SoShaderProgramP(SoShaderProgram * ownerptr)
 {
-  this->owner = ownerptr;
+  PUBLIC(this) = ownerptr;
   this->sensor = new SoNodeSensor(SoShaderProgramP::sensorCB, this);
   this->sensor->attach(ownerptr);
 
@@ -127,7 +128,8 @@ SoShaderProgramP::~SoShaderProgramP()
   delete this->sensor;
 }
 
-void SoShaderProgramP::GLRender(SoGLRenderAction *action)
+void
+SoShaderProgramP::GLRender(SoGLRenderAction * action)
 {
   SoState *state = action->getState();
 
@@ -140,29 +142,29 @@ void SoShaderProgramP::GLRender(SoGLRenderAction *action)
   SoGLShaderProgram* oldProgram = SoGLShaderProgramElement::get(state);
   if (oldProgram) oldProgram->disable(glctx);
 
-  SoGLShaderProgramElement::set(state, this->owner, &this->glShaderProgram);
+  SoGLShaderProgramElement::set(state, PUBLIC(this), &this->glShaderProgram);
 
-  int cnt1 = this->owner->shaderObject.getNum();
-  int cnt2 = this->owner->getNumChildren();
+  int cnt1 = PUBLIC(this)->shaderObject.getNum();
+  int cnt2 = PUBLIC(this)->getNumChildren();
   int i;
 
   // load shader objects
   if (this->shouldTraverseShaderObjects) {
     for (i=0; i<cnt1; i++) {
-      SoNode *node = this->owner->shaderObject[i];
+      SoNode *node = PUBLIC(this)->shaderObject[i];
       if (node->isOfType(SoShaderObject::getClassTypeId())) {
-        removeFromPreviousChildren(node);
+        this->removeFromPreviousChildren(node);
         ((SoShaderObject *)node)->GLRender(action);
       }
     }
     for (i=0; i<cnt2; i++) {
-      SoNode *node = this->owner->getChild(i);
+      SoNode *node = PUBLIC(this)->getChild(i);
       if (node->isOfType(SoShaderObject::getClassTypeId())) {
-        removeFromPreviousChildren(node);
+        this->removeFromPreviousChildren(node);
         ((SoShaderObject *)node)->GLRender(action);
       }
     }
-    updateProgramAndPreviousChildren();
+    this->updateProgramAndPreviousChildren();
   }
 
   // enable shader
@@ -173,14 +175,14 @@ void SoShaderProgramP::GLRender(SoGLRenderAction *action)
     SbBool flag = FALSE;
 
     for (i=0; i<cnt1; i++) {
-      SoShaderObject *node = (SoShaderObject *)this->owner->shaderObject[i];
+      SoShaderObject *node = (SoShaderObject *)PUBLIC(this)->shaderObject[i];
       if (node->isOfType(SoShaderObject::getClassTypeId())) {
         node->updateAllParameters();
         if (node->containStateMatrixParameters()) flag = TRUE;
       }
     }
     for (i=0; i<cnt2; i++) {
-      SoShaderObject *node = (SoShaderObject *)this->owner->getChild(i);
+      SoShaderObject *node = (SoShaderObject *)PUBLIC(this)->getChild(i);
       if (node->isOfType(SoShaderObject::getClassTypeId())) {
         node->updateAllParameters();
         if (node->containStateMatrixParameters()) flag = TRUE;
@@ -198,18 +200,18 @@ void SoShaderProgramP::GLRender(SoGLRenderAction *action)
 void
 SoShaderProgramP::updateStateMatrixParameters(void)
 {
-  int cnt1 = this->owner->shaderObject.getNum();
-  int cnt2 = this->owner->getNumChildren();
+  int cnt1 = PUBLIC(this)->shaderObject.getNum();
+  int cnt2 = PUBLIC(this)->getNumChildren();
   int i;
 
   for (i=0; i<cnt1; i++) {
-    SoNode *node = this->owner->shaderObject[i];
+    SoNode *node = PUBLIC(this)->shaderObject[i];
     if (node->isOfType(SoShaderObject::getClassTypeId())) {
       ((SoShaderObject*)node)->updateStateMatrixParameters();
     }
   }
   for (i=0; i<cnt2; i++) {
-    SoNode *node = this->owner->getChild(i);
+    SoNode *node = PUBLIC(this)->getChild(i);
     if (node->isOfType(SoShaderObject::getClassTypeId())) {
       ((SoShaderObject*)node)->updateStateMatrixParameters();
     }
@@ -227,12 +229,12 @@ SoShaderProgramP::updateProgramAndPreviousChildren(void)
     this->previousChildren.remove(i);
   }
   assert(this->previousChildren.getLength() == 0);
-  cnt1 = this->owner->shaderObject.getNum();
-  cnt2 = this->owner->getNumChildren();
+  cnt1 = PUBLIC(this)->shaderObject.getNum();
+  cnt2 = PUBLIC(this)->getNumChildren();
   for (i=0; i<cnt1; i++)
-    this->previousChildren.append(this->owner->shaderObject[i]);
+    this->previousChildren.append(PUBLIC(this)->shaderObject[i]);
   for (i=0; i<cnt2; i++)
-    this->previousChildren.append(this->owner->getChild(i));
+    this->previousChildren.append(PUBLIC(this)->getChild(i));
   this->previousChildren.truncate(this->previousChildren.getLength());
 }
 

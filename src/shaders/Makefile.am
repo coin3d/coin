@@ -32,7 +32,7 @@ Private = \
 	SoGLShaderParameter.h \
 	SoGLShaderObject.h \
 	SoGLShaderProgram.h \
-	SoGLShaderTypes.h
+	SoShaders.h
 
 RegularSources = $(Regular)
 LinkHackSources = $(Regular)

@@ -53,10 +53,6 @@
 #include <Inventor/fields/SoMFVec4i32.h>
 #endif
 
-// FIXME: check to see if we can get rid of this as a public header..?
-// 20050124 mortene.
-#include <Inventor/nodes/SoGLShaderTypes.h>
-
 class SoGLShaderParameter;
 class SoGLShaderObject;
 
@@ -107,8 +103,7 @@ protected:
   SbBool isRegularBehaviorFlag; 
   SoGLShaderParameter * parameter;
 
-protected:
-  SbBool ensureParameter(SoGLShaderObject *shader, SoGLShader::ValueType type);
+  SbBool ensureParameter(SoGLShaderObject * shader, int type);
 };
 
 /* **************************************************************************

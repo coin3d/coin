@@ -41,9 +41,8 @@ class SoGLSLShaderParameter : public SoGLShaderParameter
 {
 public:
   SoGLSLShaderParameter(const cc_glglue * g,
-                        COIN_GLhandle program, 
-                        const char* name, 
-                        SoGLShader::ValueType type);
+                        COIN_GLhandle program,
+                        const char* name);
   virtual ~SoGLSLShaderParameter();
 
   virtual inline SbBool isTexture(void) { return FALSE; }
@@ -54,13 +53,13 @@ public:
   virtual void set3f(const cc_glglue * g, const float * value, const char * name, const int id);
   virtual void set4f(const cc_glglue * g, const float * value, const char * name, const int id);
 
-  virtual SoGLShader::ShaderType shaderType(void) const;
+  virtual SoShaders::ShaderType shaderType(void) const;
 
 private:
   GLint location;
   SbString name;
 
-  static SoGLShader::ValueType getParameterTypeFor(GLenum type);
+  static SoShaders::ValueType getParameterTypeFor(GLenum type);
 };
 
 #endif /* ! COIN_SOGLSLSHADERPARAMETER_H */

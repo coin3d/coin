@@ -39,10 +39,10 @@ SoGLARBShaderParameter::~SoGLARBShaderParameter()
 {
 }
 
-SoGLShader::ShaderType
+SoShaders::ShaderType
 SoGLARBShaderParameter::shaderType(void) const
 {
-  return SoGLShader::ARB_SHADER;
+  return SoShaders::ARB_SHADER;
 }
 
 void

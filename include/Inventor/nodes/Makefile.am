@@ -128,9 +128,7 @@ PublicHeaders = \
 	SoShaderObject.h \
 	SoShaderParameter.h \
 	SoShaderProgram.h \
-	SoShaders.h \
-	SoVertexShader.h \
-	SoGLShaderTypes.h
+	SoVertexShader.h
 
 PrivateHeaders = \
 	SoSubNodeP.h \

@@ -43,7 +43,7 @@ class SoGLCgShaderParameter : public SoGLShaderParameter
 public:
   SoGLCgShaderParameter(SoGLCgShaderObject * shader, 
                         const char * name,
-                        SoGLShader::ValueType type);
+                        SoShaders::ValueType type);
   virtual ~SoGLCgShaderParameter();
 
   virtual inline SbBool isReferenced();
@@ -53,7 +53,7 @@ public:
   virtual void set3f(const cc_glglue * g, const float * value, const char * name, const int id);
   virtual void set4f(const cc_glglue * g, const float * value, const char * name, const int id);
 
-  virtual SoGLShader::ShaderType shaderType() const;
+  virtual SoShaders::ShaderType shaderType() const;
 
 public:
   void setState(CGGLenum matrix, CGGLenum transform, const char* name);
@@ -62,9 +62,9 @@ private:
   CGprogram* cgProgram;
   CGparameter cgParameter;
 
-  SbBool isCorrectType(SoGLShader::ValueType theType);
-  static SoGLShader::ValueType getParameterTypeFor(CGtype type);
-  SbBool ensureParameter(const char* name, SoGLShader::ValueType theType);
+  SbBool isCorrectType(SoShaders::ValueType theType);
+  static SoShaders::ValueType getParameterTypeFor(CGtype type);
+  SbBool ensureParameter(const char* name, SoShaders::ValueType theType);
 };
 
 #endif /* ! COIN_SOGLCGSHADER_H */

@@ -46,8 +46,8 @@ public:
   virtual SbBool isLoaded(void) const;
   virtual void load(const char * sourceString);
   virtual void unload(void);
-  virtual SoGLShader::ShaderType shaderType(void) const;
-  virtual SoGLShaderParameter * getParameter(int index, const char* name, SoGLShader::ValueType type);
+  virtual SoShaders::ShaderType shaderType(void) const;
+  virtual SoGLShaderParameter * getParameter(int index, const char* name, SoShaders::ValueType type);
  
 private:
   CGprofile getProfile(void) const;

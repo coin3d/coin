@@ -50,13 +50,13 @@ void
 SoGLShaderProgram::addShaderObject(SoGLShaderObject *shader)
 {
   switch (shader->shaderType()) {
-  case SoGLShader::ARB_SHADER:
+  case SoShaders::ARB_SHADER:
     this->arbShaderProgram->addShaderObject((SoGLARBShaderObject*)shader);
     break;
-  case SoGLShader::CG_SHADER:
+  case SoShaders::CG_SHADER:
     this->cgShaderProgram->addShaderObject((SoGLCgShaderObject*)shader);
     break;
-  case SoGLShader::GLSL_SHADER:
+  case SoShaders::GLSL_SHADER:
     this->glslShaderProgram->addShaderObject((SoGLSLShaderObject*)shader);
     break;
   default:
@@ -68,13 +68,13 @@ void
 SoGLShaderProgram::removeShaderObject(SoGLShaderObject *shader)
 {
   switch (shader->shaderType()) {
-  case SoGLShader::ARB_SHADER:
+  case SoShaders::ARB_SHADER:
     this->arbShaderProgram->removeShaderObject((SoGLARBShaderObject*)shader);
     break;
-  case SoGLShader::CG_SHADER:
+  case SoShaders::CG_SHADER:
     this->cgShaderProgram->removeShaderObject((SoGLCgShaderObject*)shader);
     break;
-  case SoGLShader::GLSL_SHADER:
+  case SoShaders::GLSL_SHADER:
     this->glslShaderProgram->removeShaderObject((SoGLSLShaderObject*)shader);
     break;
   default:

@@ -55,6 +55,8 @@ public:
   SoSFBool isActive;
   SoSFEnum sourceType;
   SoSFString sourceProgram;
+  // FIXME: this field is an SoMFUniformShaderParameter in TGS
+  // Inventor. We should also implement that field. 20050125 mortene.
   SoMFNode parameter;
 
   static void initClass(void);

@@ -48,9 +48,9 @@ void
 SoGLShaderObject::operator delete(void * obj)
 {
   switch (((SoGLShaderObject *)obj)->shaderType()) {
-  case SoGLShader::ARB_SHADER: ::delete (SoGLARBShaderObject *)obj; break;
-  case SoGLShader::GLSL_SHADER: ::delete (SoGLSLShaderObject*)obj; break;
-  case SoGLShader::CG_SHADER: ::delete (SoGLCgShaderObject *)obj; break;
+  case SoShaders::ARB_SHADER: ::delete (SoGLARBShaderObject *)obj; break;
+  case SoShaders::GLSL_SHADER: ::delete (SoGLSLShaderObject*)obj; break;
+  case SoShaders::CG_SHADER: ::delete (SoGLCgShaderObject *)obj; break;
   default: assert(FALSE && "shaderType unknown!");
   }
 }
@@ -59,9 +59,9 @@ void
 SoGLShaderObject::operator delete[](void * obj)
 {
   switch (((SoGLShaderObject *)obj)->shaderType()) {
-  case SoGLShader::ARB_SHADER: ::delete [](SoGLARBShaderObject *)obj; break;
-  case SoGLShader::GLSL_SHADER: ::delete [](SoGLSLShaderObject*)obj; break;
-  case SoGLShader::CG_SHADER: ::delete [](SoGLCgShaderObject *)obj; break;
+  case SoShaders::ARB_SHADER: ::delete [](SoGLARBShaderObject *)obj; break;
+  case SoShaders::GLSL_SHADER: ::delete [](SoGLSLShaderObject*)obj; break;
+  case SoShaders::CG_SHADER: ::delete [](SoGLCgShaderObject *)obj; break;
   default: assert(FALSE && "shaderType unknown!");
   }
 }

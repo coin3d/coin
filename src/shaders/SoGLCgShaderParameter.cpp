@@ -32,23 +32,24 @@
 
 SoGLCgShaderParameter::SoGLCgShaderParameter(SoGLCgShaderObject* shader,
                                              const char* name,
-                                             SoGLShader::ValueType type)
+                                             SoShaders::ValueType type)
   : SoGLShaderParameter()
 {
   this->cgParameter = glue_cgGetNamedParameter(shader->cgProgram, name);
-  this->type = SoGLShader::UNKNOWN_TYPE;
+  this->type = SoShaders::UNKNOWN_TYPE;
   this->cgProgram = &shader->cgProgram;
 
-  ensureParameter(name, type);
+  this->ensureParameter(name, type);
 }
 
 SoGLCgShaderParameter::~SoGLCgShaderParameter()
 {
 }
 
-SoGLShader::ShaderType SoGLCgShaderParameter::shaderType() const
+SoShaders::ShaderType
+SoGLCgShaderParameter::shaderType() const
 {
-  return SoGLShader::CG_SHADER;
+  return SoShaders::CG_SHADER;
 }
 
 SbBool SoGLCgShaderParameter::isReferenced()
@@ -56,48 +57,54 @@ SbBool SoGLCgShaderParameter::isReferenced()
   return (glue_cgIsParameter(this->cgParameter));
 }
 
-void SoGLCgShaderParameter::
-setState(CGGLenum matrix, CGGLenum transform, const char* name)
+void
+SoGLCgShaderParameter::setState(CGGLenum matrix, CGGLenum transform,
+                                const char* name)
 {
-  if (this->ensureParameter(name, SoGLShader::FLOAT_MATRIX4))
+  if (this->ensureParameter(name, SoShaders::FLOAT_MATRIX4))
     glue_cgGLSetStateMatrixParameter(this->cgParameter, matrix, transform);
 }
 
-void SoGLCgShaderParameter::set1f(const cc_glglue * g, const float v,
-                                  const char* name, const int)
+void
+SoGLCgShaderParameter::set1f(const cc_glglue * g, const float v,
+                             const char* name, const int)
 {
-  if (this->ensureParameter(name, SoGLShader::FLOAT))
+  if (this->ensureParameter(name, SoShaders::FLOAT))
     glue_cgGLSetParameter1f(this->cgParameter, v);
 }
 
-void SoGLCgShaderParameter::set2f(const cc_glglue * g, const float * v,
-                                  const char* name, const int)
+void
+SoGLCgShaderParameter::set2f(const cc_glglue * g, const float * v,
+                             const char* name, const int)
 {
-  if (this->ensureParameter(name, SoGLShader::FLOAT2))
+  if (this->ensureParameter(name, SoShaders::FLOAT2))
     glue_cgGLSetParameter2f(this->cgParameter, v[0], v[1]);
 }
 
-void SoGLCgShaderParameter::set3f(const cc_glglue * g, const float * v,
-                                  const char* name, const int)
+void
+SoGLCgShaderParameter::set3f(const cc_glglue * g, const float * v,
+                             const char* name, const int)
 {
-  if (this->ensureParameter(name, SoGLShader::FLOAT3))
+  if (this->ensureParameter(name, SoShaders::FLOAT3))
     glue_cgGLSetParameter3f(this->cgParameter, v[0], v[1], v[2]);
 }
 
-void SoGLCgShaderParameter::set4f(const cc_glglue * g, const float * v,
-                                  const char* name, const int)
+void
+SoGLCgShaderParameter::set4f(const cc_glglue * g, const float * v,
+                             const char* name, const int)
 {
-  if (this->ensureParameter(name, SoGLShader::FLOAT4))
+  if (this->ensureParameter(name, SoShaders::FLOAT4))
     glue_cgGLSetParameter4f(this->cgParameter, v[0], v[1], v[2],v[3]); 
 }
 
-SbBool SoGLCgShaderParameter::isCorrectType(SoGLShader::ValueType theType) 
+SbBool
+SoGLCgShaderParameter::isCorrectType(SoShaders::ValueType theType) 
 {
-  return (this->type == theType || theType == SoGLShader::UNKNOWN_TYPE);
+  return (this->type == theType || theType == SoShaders::UNKNOWN_TYPE);
 }
 
 SbBool
-SoGLCgShaderParameter::ensureParameter(const char* name, SoGLShader::ValueType theType)
+SoGLCgShaderParameter::ensureParameter(const char* name, SoShaders::ValueType theType)
 {
   if (this->isCorrectType(theType) && this->isReferenced()) {
     // std::cerr << "cgParam is cached!" << std::endl;
@@ -105,7 +112,7 @@ SoGLCgShaderParameter::ensureParameter(const char* name, SoGLShader::ValueType t
   }
 
   this->cgParameter = glue_cgGetNamedParameter(*this->cgProgram, name);
-  this->type = SoGLShader::UNKNOWN_TYPE;
+  this->type = SoShaders::UNKNOWN_TYPE;
 
   if (!this->isReferenced()) return FALSE;
 
@@ -125,27 +132,27 @@ SoGLCgShaderParameter::ensureParameter(const char* name, SoGLShader::ValueType t
 
 // --- static methods -------------------------------------------------------
 
-SoGLShader::ValueType
+SoShaders::ValueType
 SoGLCgShaderParameter::getParameterTypeFor(CGtype type)
 {
   switch (type) {
   case CG_FLOAT:
-  case CG_FLOAT1: return SoGLShader::FLOAT;
-  case CG_FLOAT2: return SoGLShader::FLOAT2;
-  case CG_FLOAT3: return SoGLShader::FLOAT3;
-  case CG_FLOAT4: return SoGLShader::FLOAT4;
-  case CG_SAMPLER1D: return SoGLShader::TEXTURE1D;
-  case CG_SAMPLER2D: return SoGLShader::TEXTURE2D;
-  case CG_SAMPLER3D: return SoGLShader::TEXTURE3D;
-  case CG_SAMPLERCUBE: return SoGLShader::TEXTURE_CUBE;
-  case CG_SAMPLERRECT: return SoGLShader::TEXTURE_RECT;
-  case CG_FLOAT2x2: return SoGLShader::FLOAT_MATRIX2;
-  case CG_FLOAT3x3: return SoGLShader::FLOAT_MATRIX3;
-  case CG_FLOAT4x4: return SoGLShader::FLOAT_MATRIX4;
-  case CG_UNKNOWN_TYPE: return SoGLShader::UNKNOWN_TYPE;
+  case CG_FLOAT1: return SoShaders::FLOAT;
+  case CG_FLOAT2: return SoShaders::FLOAT2;
+  case CG_FLOAT3: return SoShaders::FLOAT3;
+  case CG_FLOAT4: return SoShaders::FLOAT4;
+  case CG_SAMPLER1D: return SoShaders::TEXTURE1D;
+  case CG_SAMPLER2D: return SoShaders::TEXTURE2D;
+  case CG_SAMPLER3D: return SoShaders::TEXTURE3D;
+  case CG_SAMPLERCUBE: return SoShaders::TEXTURE_CUBE;
+  case CG_SAMPLERRECT: return SoShaders::TEXTURE_RECT;
+  case CG_FLOAT2x2: return SoShaders::FLOAT_MATRIX2;
+  case CG_FLOAT3x3: return SoShaders::FLOAT_MATRIX3;
+  case CG_FLOAT4x4: return SoShaders::FLOAT_MATRIX4;
+  case CG_UNKNOWN_TYPE: return SoShaders::UNKNOWN_TYPE;
   default: 
     SoDebugError::post("SoGLCgShaderParameter::getParameterTypeFor",
                        "cannot map CGtype to ParameterType");
-    return SoGLShader::UNKNOWN_TYPE;
+    return SoShaders::UNKNOWN_TYPE;
   }
 }
