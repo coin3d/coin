@@ -356,6 +356,7 @@ SoGroup::GLRender(SoGLRenderAction * action)
           SoCacheElement::invalidate(state);
         }
       }
+      action->popCurPath(pathcode);
     }
   }
   else {
