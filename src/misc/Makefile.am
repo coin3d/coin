@@ -39,6 +39,7 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/misc/SoBasic.h \
 	$(top_srcdir)/include/Inventor/misc/SoCallbackList.h \
 	$(top_srcdir)/include/Inventor/misc/SoChildList.h \
+	$(top_srcdir)/include/Inventor/misc/SoNormalGenerator.h \
 	$(top_srcdir)/include/Inventor/misc/SoNotification.h \
 	$(top_srcdir)/include/Inventor/misc/SoState.h \
 	$(top_srcdir)/include/Inventor/misc/SoLightPath.h \
