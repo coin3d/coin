@@ -72,15 +72,17 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#include <math.h> // sqrt()
+
 
 #ifndef DOXYGEN_SKIP_THIS // Don't document internal classes.
 
 class SoDraggerCache {
 public:
   SoDraggerCache(SoDragger *parent) : path(4), dragger(parent) {
-    
+
   }
-    
+
   void checkUpdate(const SoFullPath *newpath, const int draggeridx) {
     if (path.getHead() != newpath->getHead()) this->update(newpath, draggeridx);
     else {
@@ -92,12 +94,12 @@ public:
       if (i <= draggeridx) this->update(newpath, draggeridx);
     }
   }
-  
+
   SoTempPath path;
   SoDragger *dragger;
   SbMatrix draggerToWorld;
   SbMatrix worldToDragger;
-  
+
   //
   // FIXME: cache more matrices here, pederb
   //
@@ -315,7 +317,7 @@ SoDragger::enableValueChangedCallbacks(SbBool val)
 const SbMatrix &
 SoDragger::getMotionMatrix(void)
 {
-  SoMatrixTransform *node = SO_GET_ANY_PART(this, "motionMatrix", SoMatrixTransform); 
+  SoMatrixTransform *node = SO_GET_ANY_PART(this, "motionMatrix", SoMatrixTransform);
   assert(node);
   return node->matrix.getValue();
 }
@@ -361,7 +363,7 @@ SoDragger::unregisterChildDragger(SoDragger * child)
 }
 
 /*!
-  Should be called by compund draggers to register child draggers that 
+  Should be called by compund draggers to register child draggers that
   should move independently of their parent.
 */
 void
@@ -462,18 +464,18 @@ SoDragger::transformMatrixToLocalSpace(const SbMatrix & frommatrix, SbMatrix & t
 {
   tomatrix = frommatrix;
   SbMatrix frompart, topart;
-  this->getPartToLocalMatrix(fromspacepartname, frompart, topart); 
+  this->getPartToLocalMatrix(fromspacepartname, frompart, topart);
   tomatrix.multLeft(frompart);
 }
 
 /*!
-  Sets the motion matrix. Triggers value changes callbacks if 
+  Sets the motion matrix. Triggers value changes callbacks if
   \a matrix != oldmatrix.
 */
 void
 SoDragger::setMotionMatrix(const SbMatrix & matrix)
 {
-  SoMatrixTransform *node = SO_GET_ANY_PART(this, "motionMatrix", SoMatrixTransform); 
+  SoMatrixTransform *node = SO_GET_ANY_PART(this, "motionMatrix", SoMatrixTransform);
   if (matrix != node->matrix.getValue()) {
     node->matrix = matrix;
     this->valueChanged();
@@ -502,7 +504,7 @@ SoDragger::getStartMotionMatrix(void)
 }
 
 /*!
-  Is called to save start parameters to enable draggers to calculate 
+  Is called to save start parameters to enable draggers to calculate
   relative motion. Default method just saves the motion matrix, but
   subclasses should overload this method if other data needs to be
   saved.
@@ -557,7 +559,7 @@ SoDragger::getSurrogatePartPickedOwner(void) const
 }
 
 /*!
-  Returns the name of the path in the SoInteractionKit that holds the current 
+  Returns the name of the path in the SoInteractionKit that holds the current
   surrogate path.
 */
 const SbName &
@@ -661,7 +663,7 @@ SoDragger::setTempPathToThis(const SoPath *)
 }
 
 /*!
-  Called when dragger starts grabbing events (mouse button down). 
+  Called when dragger starts grabbing events (mouse button down).
   Overload if toy need to do something extra in your dragger.
   \sa grabEventCleanup()
 */
@@ -671,7 +673,7 @@ SoDragger::grabEventsSetup(void)
   assert(this->eventAction);
   this->eventAction->setGrabber(this);
   this->isGrabbing = TRUE;
-  
+
   this->updateDraggerCache(this->eventAction->getCurPath());
 }
 
@@ -692,7 +694,7 @@ SoDragger::grabEventsCleanup(void)
   to those fields and leaves the rest of the matrix as it was.
   The following field names  are supported: translation, scaleFactor,
   rotation and scaleOrientation.
-  
+
   Not implemented.
 */
 void
@@ -720,8 +722,8 @@ SoDragger::workFieldsIntoTransform(SbMatrix & matrix)
 
   rotfield = (SoSFRotation*)this->getField("scaleOrientation");
   if (rotfield) scaleOrientation = &rotfield->getValue();
-  
-  this->workValuesIntoTransform(matrix, translation, rotation, 
+
+  this->workValuesIntoTransform(matrix, translation, rotation,
                                 scaleFactor, scaleOrientation, center);
 }
 
@@ -766,7 +768,7 @@ SoDragger::getMinScale(void)
 /*!
   Same as above, but pointers to values are supplied. If a pointer is NULL, the
   matrix value for that argument is used when reconstructing the matrix.
-  
+
   Not implemented.
 */
 void
@@ -781,7 +783,7 @@ SoDragger::workValuesIntoTransform(SbMatrix & matrix, const SbVec3f * translatio
   if (rotationptr) r = *rotationptr;
   if (scalefactorptr) s = *scalefactorptr;
   if (scaleorientationptr) so = *scaleorientationptr;
-  
+
   if (centerptr) matrix.setTransform(t, r, s, so, *centerptr);
   else matrix.setTransform(t, r, s, so);
 }
@@ -805,8 +807,8 @@ SoDragger::getTransformFast(SbMatrix & matrix, SbVec3f & translation, SbRotation
 }
 
 /*!
-  Returns \a matrix after \a translation has been appended. 
-  If \a conversion != NULL it is used to transform \a translation into 
+  Returns \a matrix after \a translation has been appended.
+  If \a conversion != NULL it is used to transform \a translation into
   the space \matrix is defined.
 */
 SbMatrix
@@ -821,9 +823,9 @@ SoDragger::appendTranslation(const SbMatrix & matrix, const SbVec3f & translatio
 
 /*!
   Returns \a matrix after \a scale and \a scalecenter has been appended.
-  If \a conversion != NULL it is used to transform scale into 
+  If \a conversion != NULL it is used to transform scale into
   the space \matrix is defined.
-*/ 
+*/
 
 SbMatrix
 SoDragger::appendScale(const SbMatrix & matrix, const SbVec3f & scale, const SbVec3f & scalecenter, const SbMatrix * conversion)
@@ -842,7 +844,7 @@ SoDragger::appendScale(const SbMatrix & matrix, const SbVec3f & scale, const SbV
 
   if (conversion) transform.multRight(*conversion);
   SbMatrix res = matrix;
-  return res.multLeft(transform);  
+  return res.multLeft(transform);
 }
 
 SbMatrix
@@ -857,7 +859,7 @@ SoDragger::appendRotation(const SbMatrix & matrix, const SbRotation & rot, const
 
   if (conversion) transform.multRight(*conversion);
   SbMatrix res = matrix;
-  return res.multLeft(transform);  
+  return res.multLeft(transform);
 }
 
 /*!
@@ -902,7 +904,7 @@ SoDragger::getStartLocaterPosition(void) const
 }
 
 /*!
-  The start locater position is automatically set when mouse button 1 goes 
+  The start locater position is automatically set when mouse button 1 goes
   down, but subclasses can use this method to reset the value.
 */
 void
@@ -917,12 +919,12 @@ SoDragger::setStartLocaterPosition(SbVec2s pos)
 SbBool
 SoDragger::isAdequateConstraintMotion(void)
 {
-  SbVec2s delta = 
-    this->getStartLocaterPosition() - 
+  SbVec2s delta =
+    this->getStartLocaterPosition() -
     this->getLocaterPosition();
 
   double len = sqrt(delta[0]*delta[0] + delta[1]*delta[1]);
-  
+
   if (len >= (double) this->minGesture) return TRUE;
   return FALSE;
 }
@@ -957,7 +959,7 @@ SoDragger::handleEvent(SoHandleEventAction * action)
 
   if (SO_MOUSE_PRESS_EVENT(event, BUTTON1)) {
     const SoPickedPoint *pp = action->getPickedPoint();
-    
+
     if (pp && this->isPicked(pp->getPath())) {
       this->setCameraInfo(action);
       this->setStartingPoint(pp);
@@ -965,7 +967,7 @@ SoDragger::handleEvent(SoHandleEventAction * action)
       if (this->pickedPath) this->pickedPath->unref();
       this->pickedPath = pp->getPath();
       this->pickedPath->ref();
-      
+
       this->startLocaterPos = event->getPosition();
       this->grabEventsSetup();
       this->saveStartParameters();
@@ -980,7 +982,7 @@ SoDragger::handleEvent(SoHandleEventAction * action)
       this->pickedPath = NULL;
     }
     this->finishCB.invokeCallbacks(this);
-  }    
+  }
   else if (this->isGrabbing && event->isOfType(SoLocation2Event::getClassTypeId())) {
     this->eventHandled(event, action);
     this->motionCB.invokeCallbacks(this);
@@ -1009,7 +1011,7 @@ SoDragger::setIgnoreInBbox(SbBool val)
 
 /*!
   Returns whether dragger geometry should be ignored when calculating bbox.
-*/ 
+*/
 SbBool
 SoDragger::isIgnoreInBbox(void)
 {
@@ -1020,7 +1022,7 @@ void
 SoDragger::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   if (!this->ignoreInBBox) inherited::getBoundingBox(action);
-  
+
 }
 
 /*!
@@ -1091,7 +1093,7 @@ SoDragger::isPicked(SoPath *path)
   return idx >= 0;
 }
 
-void 
+void
 SoDragger::eventHandled(const SoEvent *event, SoHandleEventAction *action)
 {
   action->setHandled();
@@ -1099,9 +1101,9 @@ SoDragger::eventHandled(const SoEvent *event, SoHandleEventAction *action)
   this->eventAction = action;
 }
 
-void 
+void
 SoDragger::updateDraggerCache(const SoPath *path)
 {
   if (this->draggerCache == NULL) this->draggerCache = new SoDraggerCache(this);
-  this->draggerCache->checkUpdate((const SoFullPath*)path, path->findNode(this));  
+  this->draggerCache->checkUpdate((const SoFullPath*)path, path->findNode(this));
 }
