@@ -61,14 +61,13 @@ STUFF TO FIX IN COIN
   measure the process/CPU-time for just the current thread to get
   proper data for this type of profiling.
 
-  On MSWin we could use "GetProcessTimes()" and there's a POSIX
-  function for doing it on UNIX-style platforms; "times()" (plus we
-  need to use the POSIX "sysconf(_SC_CLK_TCK)" to find the clocktick
-  value to multiply with).
+  There's an ANSI C function "clock()" which gives us the CPU time.
 
-  On Mac it looks like there's a function "clock()" which does
-  something similar. Also, I expect Mac OS X to have the POSIX times()
-  and sysconf() methods.
+  If that doesn't do what we want, on MSWin we could use
+  "GetProcessTimes()" and there's a POSIX function for doing it on
+  UNIX-style platforms; "times()" (plus we need to use the POSIX
+  "sysconf(_SC_CLK_TCK)" to find the clocktick value to multiply
+  with).
 
   Interface suggestion:
 
@@ -94,7 +93,11 @@ STUFF TO FIX IN COIN
 
   One possible "gotcha": the OS-specific cpu-time functions must have
   a resolution high enough to time even very short intervals for this
-  to be useful, I would assume.
+  to be useful, I would assume. Perhaps a
+
+        cc_time cc_time_get_cpu_time_resolution(void)
+
+  would be a good idea.
 
 
 * Heed the SoBoundingBoxCache::hasLinesOrPoints() settings
