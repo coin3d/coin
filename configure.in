@@ -224,7 +224,7 @@ fi
 AC_PROG_LIBTOOL
 
 case "$host_os" in
-  irix-*)
+  irix*)
     if test x"${AR+set}" != x"set"; then
       if test x"$CXX" = xCC; then
         echo "modifying libtool"
