@@ -129,28 +129,25 @@ void
 SoPolygonOffset::doAction(SoAction * action)
 {
   SoState * state = action->getState();
-
+  
   if (SoOverrideElement::getPolygonOffsetOverride(state)) return;
-
+  
   float factorval, units_val;
   SoPolygonOffsetElement::Style styles_val;
   SbBool offset_on;
-
-  SoPolygonOffsetElement::get(state, factorval, units_val, styles_val,
-                              offset_on);
-  if (!this->factor.isIgnored()) factorval = this->factor.getValue();
-  if (!this->units.isIgnored()) units_val = this->units.getValue();
-  if (!this->styles.isIgnored())
-    styles_val = (SoPolygonOffsetElement::Style)this->styles.getValue();
-  if (!this->on.isIgnored()) offset_on = this->on.getValue();
-
+  
+  factorval = this->factor.getValue();
+  units_val = this->units.getValue();
+  styles_val = (SoPolygonOffsetElement::Style)this->styles.getValue();
+  offset_on = this->on.getValue();
+  
   SoPolygonOffsetElement::set(action->getState(),
                               this,
                               factorval,
                               units_val,
                               styles_val,
                               offset_on);
-
+  
   if (this->isOverride()) {
     SoOverrideElement::setPolygonOffsetOverride(state, this, TRUE);
   }
