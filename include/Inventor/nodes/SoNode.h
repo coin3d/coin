@@ -112,6 +112,14 @@ protected:
 
   static const SoFieldData ** getFieldDataPtr(void);
 
+  // These are necessary to avoid problems with us not exporting the
+  // nextActionMethodIndex member into Win32 DLLs (we'll get
+  // unresolved symbol for extension node classes if the SoSubNode
+  // macros accesses the nextActionMethodIndex directly).
+  static void setNextActionMethodIndex(int index);
+  static int getNextActionMethodIndex(void);
+  static void incNextActionMethodIndex(void);
+
   uint32_t uniqueId;
   static uint32_t nextUniqueId;
   static int nextActionMethodIndex;

@@ -112,7 +112,7 @@ _class_::createInstance(void) \
   do { \
     _class_::classinstances++; \
     /* Catch attempts to use a node class which has not been initialized. */ \
-    assert(_class_::classTypeId != SoType::badType()); \
+    assert(_class_::classTypeId != SoType::badType() && "you forgot init()!"); \
     /* Initialize a fielddata container for the class only once. */ \
     if (!_class_::fieldData) { \
       _class_::fieldData = \
@@ -130,16 +130,17 @@ _class_::createInstance(void) \
 #define PRIVATE_COMMON_INIT_CODE(_class_, _classname_, _createfunc_, _parentclass_) \
   do { \
     /* Make sure we only initialize once. */ \
-    assert(_class_::classTypeId == SoType::badType()); \
+    assert(_class_::classTypeId == SoType::badType() && "don't init() twice!"); \
     /* Make sure superclass gets initialized before subclass. */ \
-    assert(_parentclass_::getClassTypeId() != SoType::badType()); \
+    assert(_parentclass_::getClassTypeId() != SoType::badType() && "you forgot init() on parentclass!"); \
  \
     /* Set up entry in the type system. */ \
     _class_::classTypeId = \
       SoType::createType(_parentclass_::getClassTypeId(), \
                          _classname_, \
                          _createfunc_, \
-                         SoNode::nextActionMethodIndex++); \
+                         SoNode::getNextActionMethodIndex()); \
+    SoNode::incNextActionMethodIndex(); \
  \
     /* Store parent's fielddata pointer for later use in the constructor. */ \
     _class_::parentFieldData = _parentclass_::getFieldDataPtr(); \

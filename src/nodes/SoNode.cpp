@@ -158,6 +158,42 @@ SoNode::getActionMethodIndex(const SoType type)
   return type.getData();
 }
 
+/*!
+  \internal
+
+  Only in TGS Inventor on Win32 -- to avoid needing to export the
+  nextActionMethodIndex member, see SoNode.h for more info.
+ */
+void
+SoNode::setNextActionMethodIndex(int index)
+{
+  SoNode::nextActionMethodIndex = index;
+}
+
+/*!
+  \internal
+
+  Only in TGS Inventor on Win32 -- to avoid needing to export the
+  nextActionMethodIndex member, see SoNode.h for more info.
+*/
+int
+SoNode::getNextActionMethodIndex(void)
+{
+  return SoNode::nextActionMethodIndex;
+}
+
+/*!
+  \internal
+
+  Only in TGS Inventor on Win32 -- to avoid needing to export the
+  nextActionMethodIndex member, see SoNode.h for more info.
+ */
+void
+SoNode::incNextActionMethodIndex(void)
+{
+  SoNode::nextActionMethodIndex++;
+}
+
 // Overridden from parent class.
 void
 SoNode::initClass(void)
@@ -445,7 +481,7 @@ SoNode::GLRenderS(SoAction * action, SoNode * node)
   if ((action->getCurPathCode() != SoAction::OFF_PATH) ||
       node->affectsState()) {
     node->GLRender((SoGLRenderAction*)action);
-  }    
+  }
 #if COIN_DEBUG
   int err = glGetError();
   if (err != GL_NO_ERROR) {
