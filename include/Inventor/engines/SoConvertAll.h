@@ -26,6 +26,9 @@
 
 class SoConvertAll : public SoFieldConverter {
   typedef SoFieldConverter inherited;
+
+  // SoConvertAll doesn't have a createInstance() method (because it
+  // doesn't have a default constructor), so use the ABSTRACT macros.
   SO_ENGINE_ABSTRACT_HEADER(SoConvertAll);
 
 public:

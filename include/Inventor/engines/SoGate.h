@@ -30,7 +30,8 @@ class SoEngineOutput;
 
 class SoGate : public SoEngine {
   typedef SoEngine inherited;
-  SO_ENGINE_ABSTRACT_HEADER(SoGate);
+
+  SO_ENGINE_HEADER(SoGate);
 
 public:
   SoSFBool enable;

@@ -30,7 +30,7 @@
 #include <Inventor/engines/SoEngineOutput.h>
 #include <Inventor/fields/SoFields.h>
 
-SO_ENGINE_ABSTRACT_SOURCE(SoSelectOne);
+SO_ENGINE_SOURCE(SoSelectOne);
 
 /*!
   Constructor. Sets the type of values to be selected.
@@ -92,7 +92,7 @@ SoSelectOne::SoSelectOne(SoType inputType)
 void
 SoSelectOne::initClass()
 {
-  SO_ENGINE_INTERNAL_INIT_ABSTRACT_CLASS(SoSelectOne);
+  SO_ENGINE_INTERNAL_INIT_CLASS(SoSelectOne);
 }
 
 //

@@ -27,7 +27,8 @@
 
 class SoConcatenate : public SoEngine {
   typedef SoEngine inherited;
-  SO_ENGINE_ABSTRACT_HEADER(SoConcatenate);
+
+  SO_ENGINE_HEADER(SoConcatenate);
 
 public:
   SoMField * input[10];

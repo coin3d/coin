@@ -29,7 +29,8 @@ class SoEngineOutput;
 
 class SoSelectOne : public SoEngine {
   typedef SoEngine inherited;
-  SO_ENGINE_ABSTRACT_HEADER(SoSelectOne);
+
+  SO_ENGINE_HEADER(SoSelectOne);
 
 public:
   SoSFInt32 index;

@@ -29,7 +29,7 @@
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/SbString.h>
 
-SO_ENGINE_ABSTRACT_SOURCE(SoConcatenate);
+SO_ENGINE_SOURCE(SoConcatenate);
 
 /*!
   Default constructor.
@@ -58,7 +58,7 @@ SoConcatenate::SoConcatenate(SoType inputType)
 void
 SoConcatenate::initClass()
 {
-  SO_ENGINE_INTERNAL_INIT_ABSTRACT_CLASS(SoConcatenate);
+  SO_ENGINE_INTERNAL_INIT_CLASS(SoConcatenate);
 }
 
 //

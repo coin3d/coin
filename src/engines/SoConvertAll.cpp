@@ -34,9 +34,9 @@
 SbDict * SoConvertAll::converter_dict = NULL;
 
 
-// FIXME: "ABSTRACT"? 20000311 mortene.
+// SoConvertAll doesn't have a createInstance() method (because it
+// doesn't have a default constructor), so use the ABSTRACT macros.
 SO_ENGINE_ABSTRACT_SOURCE(SoConvertAll);
-
 
 
 // Defines function for converting SoSFXXX -> SoMFXXX.
@@ -409,6 +409,8 @@ SoConvertAll::initClass(void)
   // FIXME: deallocate at final exit(). 20000311 mortene.
   SoConvertAll::converter_dict = new SbDict;
 
+  // SoConvertAll doesn't have a createInstance() method (because it
+  // doesn't have a default constructor), so use the ABSTRACT macros.
   SO_ENGINE_INTERNAL_INIT_ABSTRACT_CLASS(SoConvertAll);
 
 #define SOCONVERTALL_ADDCONVERTER(_fromto_, _from_, _to_) \

@@ -31,7 +31,7 @@
 #include <Inventor/SbString.h>
 
 
-SO_ENGINE_ABSTRACT_SOURCE(SoGate);
+SO_ENGINE_SOURCE(SoGate);
 
 /*!
   Default constructor.
@@ -59,7 +59,7 @@ SoGate::SoGate(SoType inputType)
 void
 SoGate::initClass()
 {
-  SO_ENGINE_INTERNAL_INIT_ABSTRACT_CLASS(SoGate);
+  SO_ENGINE_INTERNAL_INIT_CLASS(SoGate);
 }
 
 //
