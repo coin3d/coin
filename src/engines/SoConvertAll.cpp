@@ -433,7 +433,11 @@ static void time2string(const SbTime & t, SbString & s)
   if (t.getValue() < (60.0*60.0*24.0*365.0)) s.sprintf("%f", t.getValue());
   // Value is more than a year, assume we're interested in the date
   // and time.
+#if 0 // Don't default to ISO 8601 conformant string, ...
   else s = t.formatDate("%A %Y-%m-%d %H:%M:%S");
+#else // .. follow Open Inventor instead.
+  else s = t.formatDate();
+#endif
 }
 
 // Function for converting SoSFTime -> SoSFString.
