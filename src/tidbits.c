@@ -1156,4 +1156,87 @@ coin_atof(const char * ptr)
   return v;
 }
 
+/* helper function for ascii85 handling */
+static int
+coin_encode_ascii85(const unsigned char * in, unsigned char * out)
+{
+  uint32_t data =
+    ((uint32_t)(in[0])<<24) |
+    ((uint32_t)(in[1])<<16) |
+    ((uint32_t)(in[2])<< 8) |
+    ((uint32_t)(in[3]));
+  
+  if (data == 0) {
+    out[0] = 'z';
+    return 1;
+  }
+  out[4] = (unsigned char) (data%85 + '!');
+  data /= 85;
+  out[3] = (unsigned char) (data%85 + '!');
+  data /= 85;
+  out[2] = (unsigned char) (data%85 + '!');
+  data /= 85;
+  out[1] = (unsigned char) (data%85 + '!');
+  data /= 85;
+  out[0] = (unsigned char) (data%85 + '!');
+  return 5;
+}
+
+void
+coin_output_ascii85(FILE * fp,
+                    const unsigned char val,
+                    unsigned char * tuple,
+                    unsigned char * linebuf,
+                    int * tuplecnt, int * linecnt,
+                    const int rowlen,
+                    const SbBool flush)
+{
+  int i;
+  if (flush) {
+    // fill up tuple
+    for (i = *tuplecnt; i < 4; i++) tuple[i] = 0;
+  }
+  else {
+    tuple[(*tuplecnt)++] = val;
+  }
+  if (flush || *tuplecnt == 4) {
+    if (*tuplecnt) {
+      int add = coin_encode_ascii85(tuple, linebuf + *linecnt);
+      if (flush) {
+        if (add == 1) {
+          for (i = 0; i < 5; i++) linebuf[*linecnt + i] = '!';
+        }
+        *linecnt += *tuplecnt + 1;
+      }
+      else *linecnt += add;
+      *tuplecnt = 0;
+    }
+    if (*linecnt >= rowlen) {
+      unsigned char store = linebuf[rowlen];
+      linebuf[rowlen] = 0;
+      fprintf(fp, "%s\n", linebuf);
+      linebuf[rowlen] = store;
+      for (i = rowlen; i < *linecnt; i++) {
+        linebuf[i-rowlen] = linebuf[i];
+      }
+      *linecnt -= rowlen;
+    }
+    if (flush && *linecnt) {
+      linebuf[*linecnt] = 0;
+      fprintf(fp, "%s\n", linebuf);
+    }
+  }
+}
+
+void
+coin_flush_ascii85(FILE * fp,
+                   unsigned char * tuple,
+                   unsigned char * linebuf,
+                   int * tuplecnt, int * linecnt,
+                   const int rowlen)
+{
+  coin_output_ascii85(fp, 0, tuple, linebuf, tuplecnt, linecnt, rowlen, TRUE);
+}
+
+
 /**************************************************************************/

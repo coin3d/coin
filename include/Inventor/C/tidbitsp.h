@@ -85,6 +85,24 @@ void coin_locale_reset(cc_string * storedold);
 */
 double coin_atof(const char * ptr);
 
+/*
+  Functions to output ascii85 encoded data. Used for instance for Postscript
+  image rendering.
+*/
+void coin_output_ascii85(FILE * fp,
+                         const unsigned char val,
+                         unsigned char * tuple,
+                         unsigned char * linebuf,
+                         int * tuplecnt, int * linecnt,
+                         const int rowlen,
+                         const SbBool flush);
+
+void coin_flush_ascii85(FILE * fp,
+                        unsigned char * tuple,
+                        unsigned char * linebuf,
+                        int * tuplecnt, int * linecnt,
+                        const int rowlen);
+
 /* ********************************************************************** */
 
 #ifdef __cplusplus
