@@ -325,3 +325,19 @@ STUFF TO FIX IN COIN
   Investigate if all static writable data can be avoided so Coin can be run
   from ROM (important for embedded systems).  This is just an idea - didn't
   find a more appropriate place to put it.
+
+* Rethink handling of camera properties and display configuration.
+  2002-02-01  Morten Eriksen  <mortene@sim.no>
+
+  I have a nagging feeling that the camera model is not as good as it
+  should be, we are for instance mixing up display-dependent
+  configuration settings (like stereo mode stuff) with actual
+  view-matrix pr-camera configuration stuff (like orthographic vs
+  perspective matrix settings, field-of-view, etc).  I can't see why
+  the former should belong within the SoCamera node, as I don't think
+  it gives any meaning to change stereo settings during traversal, for
+  instance.
+
+  Java3D probably has a better design here than the original Inventor
+  API provides, so anyone taking on this task should at least
+  investigate their model.
