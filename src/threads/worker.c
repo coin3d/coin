@@ -38,21 +38,15 @@ worker_thread_loop(cc_worker * worker)
   cc_mutex_lock(worker->mutex);
   /* signal master that we've got into the scheduling loop */
   cc_condvar_wake_one(worker->begincond);
-  worker->idle = 1;
 
   while (!worker->shutdown) {
     /* wait for job */
     cc_condvar_wait(worker->cond, worker->mutex);
     /* check if there are more jobs */
     if (!worker->shutdown) {
-      worker->idle = 0;
-      cc_mutex_unlock(worker->mutex);
       /* do the scheduled job */
       worker->workfunc(worker->workclosure);
-
-      /* lock and check for idle callback */
-      cc_mutex_lock(worker->mutex);
-      worker->idle = 1;
+      /* call the idle cb */
       if (worker->idlecb) {
         worker->idlecb(worker, worker->idleclosure);
       }
@@ -126,7 +120,6 @@ cc_worker_construct(void)
   worker->thread = NULL; /* delay creating thread */
   worker->threadisrunning = FALSE;
   worker->shutdown = FALSE;
-  worker->idle = TRUE;
   worker->workfunc = NULL;
   worker->workclosure = NULL;
   worker->idlecb = NULL;
@@ -152,7 +145,6 @@ SbBool
 cc_worker_start(cc_worker * worker, void (*workfunc)(void *), void * closure)
 {
   assert(workfunc);
-  if (cc_worker_is_busy(worker)) return FALSE;
   
   /* no need to lock, thread is idle or not running */
   worker->workfunc = workfunc;
@@ -172,12 +164,13 @@ cc_worker_start(cc_worker * worker, void (*workfunc)(void *), void * closure)
 SbBool 
 cc_worker_is_busy(cc_worker * worker)
 {
-  SbBool idle;
+  SbBool busy = TRUE;
   
-  cc_mutex_lock(worker->mutex);
-  idle = worker->idle;
-  cc_mutex_unlock(worker->mutex);
-  return !idle;
+  if (cc_mutex_try_lock(worker->mutex)) {
+    busy = FALSE;
+    cc_mutex_unlock(worker->mutex);
+  }
+  return busy;
 }
 
 void 

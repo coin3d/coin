@@ -48,7 +48,6 @@ struct cc_worker {
   void (*workfunc)(void *);
   void * workclosure;
 
-  SbBool idle;
   void (*idlecb)(cc_worker *, void *);
   void * idleclosure;
 };
