@@ -35,17 +35,6 @@ public:
   static void initClass(void);
   SoIndexedLineSet(void);
 
-  enum Binding {
-    OVERALL = 0,
-    PER_SEGMENT,
-    PER_SEGMENT_INDEXED,
-    PER_LINE,
-    PER_LINE_INDEXED,
-    PER_VERTEX,
-    PER_VERTEX_INDEXED
-  };
-
-
   virtual void GLRender(SoGLRenderAction * action);
   virtual SbBool willSetShapeHints() const;
   virtual void getBoundingBox(SoGetBoundingBoxAction * action);
@@ -59,6 +48,16 @@ private:
 
   virtual SbBool generateDefaultNormals(SoState * state, SoNormalBundle * bundle);
   virtual SbBool generateDefaultNormals(SoState * state, SoNormalCache * nc);
+
+  enum Binding {
+    OVERALL = 0,
+    PER_SEGMENT,
+    PER_SEGMENT_INDEXED,
+    PER_LINE,
+    PER_LINE_INDEXED,
+    PER_VERTEX,
+    PER_VERTEX_INDEXED
+  };
 
   Binding findNormalBinding(SoState * state);
   Binding findMaterialBinding(SoState * state);

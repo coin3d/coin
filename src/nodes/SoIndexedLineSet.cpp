@@ -30,7 +30,7 @@
 
   For more information about line sets, see documentation in
   SoLineSet.  For more information about indexed shapes, see
-  documentation in SoIndexedShape and SoIndexedFaceSet.  
+  documentation in SoIndexedShape and SoIndexedFaceSet.
 */
 
 #include <Inventor/nodes/SoIndexedLineSet.h>
