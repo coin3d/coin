@@ -26,6 +26,11 @@
 //
 
 #include <GL/glx.h>
+#include <Inventor/errors/SoDebugError.h>
+
+// Flip this flag to get lots of debugging info on what happens with
+// GLX context construction, activation, deactivation and destruction.
+#define DEBUG_GLXCONTEXT_HANDLING 0
 
 // FIXME: on SGI boxes with p-buffer support, that should be used
 // instead of a standard offscreen GLX context, as it would render
@@ -65,14 +70,14 @@ SoOffscreenGLXData::SoOffscreenGLXData(void)
     storedcontext(NULL)
 {
   this->buffer = NULL;
-  
+
   this->display = XOpenDisplay(NULL);
   if (!this->display) {
     SoDebugError::postWarning("SoOffscreenGLXData::SoOffscreenGLXData",
                               "Couldn't connect to X11 DISPLAY.");
     return;
   }
-  
+
   int trynum = 0;
   const int ARRAYSIZE = 32;
   int attrs[ARRAYSIZE];
@@ -84,23 +89,33 @@ SoOffscreenGLXData::SoOffscreenGLXData(void)
                                     attrs);
     trynum++;
   }
-  
+
   if (!this->visinfo) {
     SoDebugError::postWarning("SoOffscreenGLXData::SoOffscreenGLXData",
                               "Couldn't get RGBA X11 visual.");
     return;
   }
-  
+
   this->context = glXCreateContext(this->display, this->visinfo,
                                    0, GL_FALSE);
   if (!this->context) {
     SoDebugError::postWarning("SoOffscreenGLXData::SoOffscreenGLXData",
                               "Couldn't create GLX context.");
   }
+
+#if DEBUG_GLXCONTEXT_HANDLING // debug
+  SoDebugError::postInfo("SoOffscreenGLXData::SoOffscreenGLXData",
+                         "made new offscreen context == %p", this->context);
+#endif // debug
 }
 
-SoOffscreenGLXData::~SoOffscreenGLXData() 
+SoOffscreenGLXData::~SoOffscreenGLXData()
 {
+#if DEBUG_GLXCONTEXT_HANDLING // debug
+  SoDebugError::postInfo("SoOffscreenGLXData::~SoOffscreenGLXData",
+                         "destroy context %p", this->context);
+#endif // debug
+
   if (this->context) glXDestroyContext(this->display, this->context);
   if (this->glxpixmap) glXDestroyGLXPixmap(this->display, this->glxpixmap);
   if (this->pixmap) XFreePixmap(this->display, this->pixmap);
@@ -147,8 +162,8 @@ SoOffscreenGLXData::getResolution(void)
 // canvas settings is exactly the same as the one applied in
 // SoXt/src/Inventor/Xt/SoXtGLWidget.cpp. So if you make any fixes
 // or other improvements here, migrate your changes.
-int 
-SoOffscreenGLXData::buildGLAttrs(int * attrs, int trynum) 
+int
+SoOffscreenGLXData::buildGLAttrs(int * attrs, int trynum)
 {
   int pos = 0;
   attrs[pos++] = GLX_RGBA;
@@ -175,21 +190,21 @@ SoOffscreenGLXData::buildGLAttrs(int * attrs, int trynum)
   return pos;
 }
 
-void 
-SoOffscreenGLXData::setBufferSize(const SbVec2s & size) 
+void
+SoOffscreenGLXData::setBufferSize(const SbVec2s & size)
 {
   // Avoid costly operations below if not really necessary.
   if (this->buffersize == size) { return; }
 
   SoOffscreenInternalData::setBufferSize(size);
-  
+
   delete[] this->buffer;
   this->buffer =
     new unsigned char[this->buffersize[0] * this->buffersize[1] * 4];
-  
+
   if (this->glxpixmap) glXDestroyGLXPixmap(this->display, this->glxpixmap);
   if (this->pixmap) XFreePixmap(this->display, this->pixmap);
-  
+
   if (this->context) {
     this->pixmap = XCreatePixmap(this->display,
                                  DefaultRootWindow(this->display),
@@ -207,12 +222,12 @@ SoOffscreenGLXData::setBufferSize(const SbVec2s & size)
                                   "Couldn't create GLX Pixmap.");
       }
     }
-    
+
   }
 }
 
-SbBool 
-SoOffscreenGLXData::makeContextCurrent(uint32_t contextid) 
+SbBool
+SoOffscreenGLXData::makeContextCurrent(uint32_t contextid)
 {
   assert(this->buffer);
   if (this->context && this->glxpixmap) {
@@ -220,62 +235,94 @@ SoOffscreenGLXData::makeContextCurrent(uint32_t contextid)
     if (this->storedcontext) {
       // Must know for sure that there's a current context before
       // instantiating a GLWrapper, or we'll get a crash due to the
-        // OpenGL calls within GLWrapper().
+      // OpenGL calls within GLWrapper().
       const GLWrapper_t * glw = GLWrapper(contextid);
-      if (glw->glXGetCurrentDisplay) { this->storeddisplay = glw->glXGetCurrentDisplay(); }
+      this->storeddisplay =
+        glw->glXGetCurrentDisplay ? glw->glXGetCurrentDisplay() : NULL;
       this->storeddrawable = glXGetCurrentDrawable();
     }
-    
+
+#if DEBUG_GLXCONTEXT_HANDLING // debug
+    SoDebugError::postInfo("SoOffscreenGLXData::makeContextCurrent",
+                           "store current status first => context==%p, "
+                           "drawable==%p, display==%p",
+                           this->storedcontext,
+                           this->storeddrawable,
+                           this->storeddisplay);
+#endif // debug
+
     Bool r = glXMakeCurrent(this->display, this->glxpixmap, this->context);
+
+#if DEBUG_GLXCONTEXT_HANDLING // debug
+    SoDebugError::postInfo("SoOffscreenGLXData::makeContextCurrent",
+                           "made context %p current", this->context);
+#endif // debug
+
     return (r == True) ? TRUE : FALSE;
   }
   return FALSE;
 }
 
-unsigned char * 
-SoOffscreenGLXData::getBuffer(void) 
+unsigned char *
+SoOffscreenGLXData::getBuffer(void)
 {
   return this->buffer;
 }
 
-void 
-SoOffscreenGLXData::postRender(void) 
+void
+SoOffscreenGLXData::postRender(void)
 {
   SbVec2s size = this->getSize();
-  
+
   if (this->context && this->buffer) {
     glPixelStorei(GL_PACK_ALIGNMENT, 1);
     glReadPixels(0, 0, size[0], size[1], GL_RGBA, GL_UNSIGNED_BYTE,
                  this->buffer);
     glPixelStorei(GL_PACK_ALIGNMENT, 4);
+
+#if DEBUG_GLXCONTEXT_HANDLING // debug
+    SoDebugError::postInfo("SoOffscreenGLXData::postRender",
+                           "releasing context (glxMakeCurrent(d, None, NULL))");
+#endif // debug
     (void) glXMakeCurrent(this->display, None, NULL); // release
-    
+
     // The previous context is stored and reset to make it possible
     // to use an SoOffscreenRenderer from for instance an SoCallback
     // node callback during SoGLRenderAction traversal, without the
     // need for any extra book-keeping on the application side.
-    
+
     if (this->storedcontext && this->storeddrawable && this->storeddisplay) {
-      // FIXME: this causes a crash for X11 Mesa version 4.1.0, on the
-      // third invocation after two successful runs first. This is
-      // _bad_. 20020729 mortene.
+#if DEBUG_GLXCONTEXT_HANDLING // debug
+      SoDebugError::postInfo("SoOffscreenGLXData::postRender",
+                             "restoring context %p to be current "
+                             "(drawable==%p, display==%p)",
+                             this->storedcontext,
+                             this->storeddrawable,
+                             this->storeddisplay);
+#endif // debug
+
+      // FIXME: this causes a crash for the Mesa version 3.4.2 that
+      // comes with XFree86 v4, on the third invocation after two
+      // successful runs first. This is _bad_. 20020729 mortene.
+      //
+      // UPDATE: this might be our bug, and could be fixed
+      // now -- test. 20020802 mortene.
       (void) glXMakeCurrent(this->storeddisplay, this->storeddrawable,
                             this->storedcontext);
     }
   }
 }
 
-SbVec2s 
-SoOffscreenGLXData::getMaxDimensions(void) 
+SbVec2s
+SoOffscreenGLXData::getMaxDimensions(void)
 {
   // FIXME: where can we get hold of the _real_ max values for
   // Pixmap and/or GLXPixmap? 20000417 mortene.
   return SbVec2s(32767, 32767);
 }
 
-SbVec2s 
-SoOffscreenGLXData::getMax(void) 
+SbVec2s
+SoOffscreenGLXData::getMax(void)
 {
   return SoOffscreenGLXData::getMaxDimensions();
 }
-
