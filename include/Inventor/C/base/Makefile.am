@@ -3,7 +3,8 @@ baseincdir = $(includedir)/Inventor/C/base
 baseinc_HEADERS = \
 	dict.h \
 	debug.h \
-	time.h
+	time.h \
+	string.h
 
 EXTRA_DIST = \
 	basep.h \
