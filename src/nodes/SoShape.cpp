@@ -160,6 +160,8 @@ soshape_construct_staticdata(void * closure)
   data->primdata = new soshape_primdata();
   data->bigtexture = new soshape_bigtexture();
   data->trianglesort = new soshape_trianglesort();
+  data->is_doing_sorted_rendering = FALSE;
+  data->is_doing_bigtexture_rendering = FALSE;
 }
 
 static void
@@ -527,7 +529,16 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
 
     return FALSE;
   }
-  return TRUE;
+
+#if COIN_DEBUG && 0 // enable this to test generatePrimitives() rendering
+  SoMaterialBundle mb(action);
+  mb.sendFirst();
+  soshape_get_staticdata()->currentbundle = &mb;  // needed in the primitive callbacks
+  this->generatePrimitives(action);
+  return FALSE;
+#else // generatePrimitives() rendering
+  return TRUE; // let the shape node render the geometry using OpenGL
+#endif // ! generatePrimitives() rendering
 }
 
 /*!
