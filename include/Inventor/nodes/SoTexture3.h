@@ -75,7 +75,7 @@ protected:
   void setReadStatus(int s);
 
 private:
-  SbBool loadFilenames();
+  SbBool loadFilenames(SoInput * in = NULL);
   int readstatus;
   class SoGLImage *glimage;
   SbBool glimagevalid;

@@ -32,8 +32,12 @@
   type's individual characteristics.  See the documentation of the
   various shape types (SoFaceSet, SoCube, SoSphere, etc etc) for
   information about the specifics of how the textures will be applied.
+  An SoTexture3 node will override any previous encountered SoTexture2 nodes
+  and vice versa. Mixing of SoTexture3 and SoTextureCoordinate2 (or the other
+  way around) is legal, but the third texture coordinate component will
+  be ignored (set to 0.0).
 
-  \since 2001-MM-DD
+  \since 2002-01-10
 */
 
 #include <Inventor/SoInput.h>
@@ -91,6 +95,10 @@
   Texture filename(s). Specify either this or use SoTexture3::images, not both.
   The depth of the volume is specifies by the number of filenames specified.
   All images must have the same dimensions and number of components.
+  NB! A field sensor is attached to this field internally and reloads all
+  images when this field changes. You must therefore be careful when
+  setting this field and either use startEditing()/finishEditing() or set
+  all values with one function call; setValues().
 */
 /*!
   \var SoMFImage SoTexture3::images
@@ -99,8 +107,6 @@
 /*!
   \var SoSFEnum SoTexture3::wrapR
   Wrapping strategy for the R coordinate (depth).
-
-  \since 2001-MM-DD
 */
 /*!
   \var SoSFEnum SoTexture3::wrapS
@@ -195,12 +201,11 @@ SoTexture3::readInstance(SoInput * in, unsigned short flags)
   SbBool readOK = inherited::readInstance(in, flags);
   this->setReadStatus((int) readOK);
   if (readOK && !filenames.isDefault() && filenames.getNum()>0) {
-    if (!this->loadFilenames()) {
+    if (!this->loadFilenames(in)) {
       this->setReadStatus(FALSE);
     }
   }
-  //FIXME: Sensor for all filenames (kintel 20011203)
-//    this->filenamesensor->attach(&this->filename);
+  this->filenamesensor->attach(&this->filenames);
   return readOK;
 }
 
@@ -256,7 +261,6 @@ SoTexture3::GLRender(SoGLRenderAction * action)
     }
   }
 
-  // FIXME: We had to switch these lines. If not, TEXTURE_2D was bound. Is that correct? (kintel 20011116)
   SoGLTexture3EnabledElement::set(state,
                                   this, this->glimagevalid &&
                                   quality > 0.0f);
@@ -361,14 +365,14 @@ SoTexture3::notify(SoNotList *list)
 
 //
 // Called from readInstance() or when user changes the
-// filenames field.
+// filenames field. \e in is set if this function is called
+// while reading a scene graph.
 //
 //FIXME: Recalc so all images have same w, h and nc (kintel 20011201)
-//FIXME: Rescale depth to be n^2 ? (kintel 20011201)
-//FIXME: This function is called each time a filename is added to the
-//       'filenames' field. That is far from optimal (20011201)
+//FIXME: Rescale depth to be n^2 ? This might not work very well though
+//       if someone decides to add one layer at the time (kintel 20011201)
 SbBool
-SoTexture3::loadFilenames()
+SoTexture3::loadFilenames(SoInput * in)
 {
   SbBool retval = FALSE;
   SbVec3s volumeSize(0,0,0);
@@ -377,8 +381,9 @@ SoTexture3::loadFilenames()
   bool sizeError = FALSE;
   int i;
 
-  for (i=0;i<numImages;i++)
-    if (this->filenames[i].getLength()==0) break;
+  // Fail on empty filenames
+  for (i=0;i<numImages;i++) if (this->filenames[i].getLength()==0) break;
+
   if (i==numImages) { // All filenames valid
     for (int n=0 ; n<numImages && !sizeError ; n++) {
       SbString filename = this->filenames[n];
@@ -399,18 +404,21 @@ SoTexture3::loadFilenames()
         else { // Verify size & components
           if (size[0] != volumeSize[0] || 
               size[1] != volumeSize[1] || 
-              size[2] != (volumeSize[2]/numImages) || 
+              size[2] != (volumeSize[2]/numImages) || //FIXME: always 1 or what? (kintel 20020110)
               nc != volumenc) {
             sizeError = TRUE;
             retval = FALSE;
-            //FIXME: Move error to some place "in" is defined (kintel 2001113)
-//              SoReadError::post(in, 
-//                                "Texture file #%d (%s) has wrong size:"
-//                                "Expected (%d,%d,%d,%d) got (%d,%d,%d,%d)\n",
-//                                n, filename.getString(), 
-//                                volumeSize[0],volumeSize[1],volumeSize[2],
-//                                volumeNc,
-//                                size[0],size[1],size[2],nc);
+            
+            SbString errstr;
+            errstr.sprintf("Texture file #%d (%s) has wrong size:"
+                           "Expected (%d,%d,%d,%d) got (%d,%d,%d,%d)\n",
+                           n, filename.getString(), 
+                           volumeSize[0],volumeSize[1],volumeSize[2],
+                           volumenc,
+                           size[0],size[1],size[2],nc);
+            if (in) SoReadError::post(in, errstr.getString());
+            else SoDebugError::postWarning("SoTexture3::loadFilenames()",
+                                           errstr.getString());
           }
         }
         if (!sizeError) {
@@ -428,9 +436,12 @@ SoTexture3::loadFilenames()
         }
       }
       else {
-            //FIXME: Move error to some place "in" is defined (kintel 20011113)
-//          SoReadError::post(in, "Could not read texture file #%d: %s",
-//                            n, filename.getString());
+        SbString errstr;
+        errstr.sprintf("Could not read texture file #%d: %s",
+                       n, filename.getString());
+        if (in) SoReadError::post(in, errstr.getString());
+        else SoDebugError::postWarning("SoTexture3::loadFilenames()",
+                                       errstr.getString());
         retval = FALSE;
       }
     }
@@ -452,8 +463,6 @@ SoTexture3::filenameSensorCB(void * data, SoSensor *)
   if (thisp->filenames.getNum()<0 ||
       thisp->filenames[0].getLength() &&
       !thisp->loadFilenames()) {
-    SoDebugError::postWarning("SoTexture3::filenameSensorCB",
-                              "Image volume could not be read");
     thisp->setReadStatus(FALSE);
   }
 }
