@@ -23,6 +23,7 @@
 
 #include <simage_wrapper.h>
 #include <Inventor/C/basic.h>
+#include <Inventor/C/threads/threadsutilp.h>
 
 #include <assert.h>
 #include <stdlib.h>
@@ -179,11 +180,14 @@ simage_wrapper_resize3d(unsigned char * imagedata,
 const simage_wrapper_t *
 simage_wrapper(void)
 {
+  CC_SYNC_BEGIN(simage_wrapper);
+  
   /* FIXME: we're not thread-safe, due to the "get_last_error" design
      of simage. Should keep a single entry-lock here to work around
      this. 20020628 mortene. */
 
   if (!simage_instance && !simage_failed_to_load) {
+
     /* First invocation, do initializations. */
     simage_wrapper_t * si = (simage_wrapper_t *)malloc(sizeof(simage_wrapper_t));
     (void)atexit(simage_wrapper_cleanup);
@@ -262,53 +266,54 @@ simage_wrapper(void)
       simage_failed_to_load = 1;
 
       simage_instance = si;
-      return simage_instance;
-    }
-
-    /* get version */
-    if (si->available) {
-      si->simage_version(&si->version.major,
-                         &si->version.minor,
-                         &si->version.micro);
-    }
-
-    SIMAGEWRAPPER_REGISTER_FUNC(simage_check_supported, simage_check_supported_t);
-    SIMAGEWRAPPER_REGISTER_FUNC(simage_read_image, simage_read_image_t);
-    SIMAGEWRAPPER_REGISTER_FUNC(simage_get_last_error, simage_get_last_error_t);
-    SIMAGEWRAPPER_REGISTER_FUNC(simage_resize, simage_resize_t);
-    SIMAGEWRAPPER_REGISTER_FUNC(simage_free_image, simage_free_image_t);
-    SIMAGEWRAPPER_REGISTER_FUNC(simage_next_power_of_two, simage_next_power_of_two_t);
-
-    /* Do this late, so we can detect recursive calls to this function. */
-    simage_instance = si;
-
-    if (simage_wrapper_versionMatchesAtLeast(1,1,0)) {
-#if !defined(HAVE_LIBSIMAGE) || defined(SIMAGE_VERSION_1_1)
-      SIMAGEWRAPPER_REGISTER_FUNC(simage_get_num_savers, simage_get_num_savers_t);
-      SIMAGEWRAPPER_REGISTER_FUNC(simage_get_saver_handle, simage_get_saver_handle_t);
-      SIMAGEWRAPPER_REGISTER_FUNC(simage_check_save_supported, simage_check_save_supported_t);
-      SIMAGEWRAPPER_REGISTER_FUNC(simage_save_image, simage_save_image_t);
-      SIMAGEWRAPPER_REGISTER_FUNC(simage_get_saver_extensions, simage_get_saver_extensions_t);
-      SIMAGEWRAPPER_REGISTER_FUNC(simage_get_saver_fullname, simage_get_saver_fullname_t);
-      SIMAGEWRAPPER_REGISTER_FUNC(simage_get_saver_description, simage_get_saver_description_t);
-#endif /* !HAVE_LIBSIMAGE || SIMAGE_VERSION_1_1 */
     }
     else {
-      si->simage_get_saver_handle = simage_wrapper_get_saver_handle;
-      si->simage_get_num_savers = simage_wrapper_get_num_savers;
-      si->simage_check_save_supported = simage_wrapper_check_save_supported;
-      si->simage_save_image = simage_wrapper_save_image;
-      si->simage_get_saver_extensions = simage_wrapper_get_saver_extensions;
-      si->simage_get_saver_fullname = simage_wrapper_get_saver_fullname;
-      si->simage_get_saver_description = simage_wrapper_get_saver_description;
-    }
+      /* get version */
+      if (si->available) {
+        si->simage_version(&si->version.major,
+                           &si->version.minor,
+                           &si->version.micro);
+      }
 
-    if (simage_wrapper_versionMatchesAtLeast(1,3,0)) {
+      SIMAGEWRAPPER_REGISTER_FUNC(simage_check_supported, simage_check_supported_t);
+      SIMAGEWRAPPER_REGISTER_FUNC(simage_read_image, simage_read_image_t);
+      SIMAGEWRAPPER_REGISTER_FUNC(simage_get_last_error, simage_get_last_error_t);
+      SIMAGEWRAPPER_REGISTER_FUNC(simage_resize, simage_resize_t);
+      SIMAGEWRAPPER_REGISTER_FUNC(simage_free_image, simage_free_image_t);
+      SIMAGEWRAPPER_REGISTER_FUNC(simage_next_power_of_two, simage_next_power_of_two_t);
+      
+      /* Do this late, so we can detect recursive calls to this function. */
+      simage_instance = si;
+      
+      if (simage_wrapper_versionMatchesAtLeast(1,1,0)) {
+#if !defined(HAVE_LIBSIMAGE) || defined(SIMAGE_VERSION_1_1)
+        SIMAGEWRAPPER_REGISTER_FUNC(simage_get_num_savers, simage_get_num_savers_t);
+        SIMAGEWRAPPER_REGISTER_FUNC(simage_get_saver_handle, simage_get_saver_handle_t);
+        SIMAGEWRAPPER_REGISTER_FUNC(simage_check_save_supported, simage_check_save_supported_t);
+        SIMAGEWRAPPER_REGISTER_FUNC(simage_save_image, simage_save_image_t);
+        SIMAGEWRAPPER_REGISTER_FUNC(simage_get_saver_extensions, simage_get_saver_extensions_t);
+        SIMAGEWRAPPER_REGISTER_FUNC(simage_get_saver_fullname, simage_get_saver_fullname_t);
+        SIMAGEWRAPPER_REGISTER_FUNC(simage_get_saver_description, simage_get_saver_description_t);
+#endif /* !HAVE_LIBSIMAGE || SIMAGE_VERSION_1_1 */
+      }
+      else {
+        si->simage_get_saver_handle = simage_wrapper_get_saver_handle;
+        si->simage_get_num_savers = simage_wrapper_get_num_savers;
+        si->simage_check_save_supported = simage_wrapper_check_save_supported;
+        si->simage_save_image = simage_wrapper_save_image;
+        si->simage_get_saver_extensions = simage_wrapper_get_saver_extensions;
+        si->simage_get_saver_fullname = simage_wrapper_get_saver_fullname;
+        si->simage_get_saver_description = simage_wrapper_get_saver_description;
+      }
+      
+      if (simage_wrapper_versionMatchesAtLeast(1,3,0)) {
 #if !defined(HAVE_LIBSIMAGE) || defined(SIMAGE_VERSION_1_3)
-      SIMAGEWRAPPER_REGISTER_FUNC(simage_resize3d, simage_resize3d_t);
+        SIMAGEWRAPPER_REGISTER_FUNC(simage_resize3d, simage_resize3d_t);
 #endif
+      }
+      else si->simage_resize3d = NULL;
     }
-    else si->simage_resize3d = NULL;
   }
+  CC_SYNC_END(simage_wrapper);
   return simage_instance;
 }
