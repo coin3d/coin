@@ -126,7 +126,8 @@ SoCache::addCacheDependency(const SoState * state, SoCache * cache)
   int n = cache->elements.getLength();
   const SoElement * const * ptr = cache->elements.getArrayPtr();
   for (int i = 0; i < n; i++) {
-    this->addElement(ptr[i]);
+    // use elements in state to get correct element depth
+    this->addElement(state->getConstElement(ptr[i]->getStackIndex()));
   }
 }
 

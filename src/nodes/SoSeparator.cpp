@@ -251,9 +251,24 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
   // AUTO. 19990513 mortene.
   SbBool iscaching = this->boundingBoxCaching.getValue() != OFF;
 
-  // only update and use cache when we're traversing all children
-  if (action->getCurPathCode() == SoAction::IN_PATH) iscaching = FALSE;
-
+  switch (action->getCurPathCode()) {
+  case SoAction::IN_PATH:
+    // can't cache if we're not not traversing all children
+    iscaching = FALSE;
+    break;
+  case SoAction::OFF_PATH:
+    return; // no need to do any more work
+  case SoAction::BELOW_PATH:
+  case SoAction::NO_PATH:
+    // check if this is a normal traversal
+    if (action->isInCameraSpace() || action->isResetPath()) iscaching = FALSE;
+    break;
+  default:
+    iscaching = FALSE;
+    assert(0 && "unknown path code");
+    break;
+  }
+  
   SbBool validcache = this->bboxcache && this->bboxcache->isValid(state);
 
   // FIXME: there needs to be some extra magic here to make caching
@@ -264,9 +279,13 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
   //  assert (!action->isInCameraSpace());
 
   if (iscaching && validcache) {
+    SoCacheElement::addCacheDependency(state, this->bboxcache);
     childrenbbox = this->bboxcache->getBox();
     childrencenterset = this->bboxcache->isCenterSet();
     childrencenter = this->bboxcache->getCenter();
+    if (bboxcache->hasLinesOrPoints()) {
+      SoBoundingBoxCache::setHasLinesOrPoints(state);
+    }
   }
   else {
     SbXfBox3f abox = action->getXfBoundingBox();
