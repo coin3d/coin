@@ -258,13 +258,16 @@ SoTransform::getBoundingBox(SoGetBoundingBoxAction * action)
 void
 SoTransform::getMatrix(SoGetMatrixAction * action)
 {
-  SbMatrix matrix;
-  matrix.setTransform(translation.getValue(),
-                      rotation.getValue(),
-                      scaleFactor.getValue(),
-                      scaleOrientation.getValue(),
-                      center.getValue());
-  action->mult(matrix);
+  SbMatrix m;
+  m.setTransform(translation.getValue(),
+                 rotation.getValue(),
+                 scaleFactor.getValue(),
+                 scaleOrientation.getValue(),
+                 center.getValue());
+  action->getMatrix().multLeft(m);
+
+  SbMatrix mi = m.inverse();
+  action->getInverse().multRight(mi);
 }
 
 /*!

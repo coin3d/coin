@@ -113,7 +113,15 @@ SoRotation::getBoundingBox(SoGetBoundingBoxAction * action)
 void
 SoRotation::getMatrix(SoGetMatrixAction * action)
 {
-  action->rotateBy(this->rotation.getValue());
+  SbMatrix m;
+
+  SbRotation r = this->rotation.getValue();
+  r.getValue(m);
+  action->getMatrix().multLeft(m);
+
+  SbRotation ri = r.inverse();
+  ri.getValue(m);
+  action->getInverse().multRight(m);
 }
 
 /*!

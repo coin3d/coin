@@ -23,9 +23,20 @@
   \ingroup actions
 
   This action makes it easy to calculate and convert back and from the
-  global coordinate system and local coordinates in a hierarchical
-  model.
+  global coordinate system of your scene and local coordinates of
+  parts in a hierarchical model.
+
+  As opposed to most other action types, the SoGetMatrixAction does
+  not traverse children of the node it is applied to -- just the node
+  itself. When applied to paths, it stops at the last node and does
+  not continue further with the children of the tail node.
 */
+
+
+// Implementation note: nodes with special behavior on this action
+// must set both the matrix and the inverse matrix explicitly, as no
+// tracking is done to see when the matrices have been modified.
+
 
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoSubActionP.h>
@@ -53,6 +64,9 @@ SoGetMatrixAction::initClass(void)
 
 /*!
   Constructor.
+
+  The \a region viewport specification is not used by this action, and
+  is passed along in case it is needed by any nodes.
 */
 SoGetMatrixAction::SoGetMatrixAction(const SbViewportRegion & region)
   : viewportregion(region)
@@ -61,21 +75,21 @@ SoGetMatrixAction::SoGetMatrixAction(const SbViewportRegion & region)
 
   SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::getMatrixS);
 
-  methods->setUp();
+  SoGetMatrixAction::methods->setUp();
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
-
 SoGetMatrixAction::~SoGetMatrixAction()
 {
 }
 
 /*!
-  This method sets the viewport region.
-*/
+  Set the viewport \a region.
 
+  \sa SoGetMatrixAction::SoGetMatrixAction()
+*/
 void
 SoGetMatrixAction::setViewportRegion(const SbViewportRegion & region)
 {
@@ -83,9 +97,8 @@ SoGetMatrixAction::setViewportRegion(const SbViewportRegion & region)
 }
 
 /*!
-  This method returns the viewport region.
+  Returns the viewport region for the action instance.
 */
-
 const SbViewportRegion &
 SoGetMatrixAction::getViewportRegion(void) const
 {
@@ -93,7 +106,12 @@ SoGetMatrixAction::getViewportRegion(void) const
 }
 
 /*!
-  This method returns the transformation matrix.
+  Returns the accumulated transformation matrix.
+  
+  Note: don't modify the returned matrix. This should only be done if
+  you are implementing your own transformation type node
+  extensions. This advice is also valid for the other matrix access
+  methods documented below.
 */
 SbMatrix &
 SoGetMatrixAction::getMatrix(void)
@@ -102,7 +120,7 @@ SoGetMatrixAction::getMatrix(void)
 }
 
 /*!
-  This method returns the inverse matrix.
+  Returns the inverse of the accumulated transformation matrix.
 */
 SbMatrix &
 SoGetMatrixAction::getInverse(void)
@@ -111,7 +129,7 @@ SoGetMatrixAction::getInverse(void)
 }
 
 /*!
-  This method returns the texture matrix.
+  Returns the accumulated texture matrix.
 */
 SbMatrix &
 SoGetMatrixAction::getTextureMatrix(void)
@@ -120,7 +138,7 @@ SoGetMatrixAction::getTextureMatrix(void)
 }
 
 /*!
-  This method returns the inverse texture matrix.
+  Returns the inverse of the accumulated texture matrix.
 */
 SbMatrix &
 SoGetMatrixAction::getTextureInverse(void)
@@ -129,7 +147,8 @@ SoGetMatrixAction::getTextureInverse(void)
 }
 
 /*!
-  This method makes sure the graph is not traversed like it normally would.
+  Overloaded from parent class to initialize the matrices before
+  traversal starts.
  */
 void
 SoGetMatrixAction::beginTraversal(SoNode * node)
@@ -142,69 +161,4 @@ SoGetMatrixAction::beginTraversal(SoNode * node)
   this->invtexmatrix.makeIdentity();
 
   this->traverse(node);
-}
-
-// the following functions are not in the original Inventor API
-
-/*!
-  FIXME: write doc.
-*/
-
-void
-SoGetMatrixAction::mult(const SbMatrix &matrix)
-{
-  this->matrix.multLeft(matrix);
-  this->invmatrix = this->matrix.inverse();
-}
-
-/*!
-  FIXME: write doc.
-*/
-
-void
-SoGetMatrixAction::translateBy(const SbVec3f &vec)
-{
-  SbMatrix mat;
-  mat.setTranslate(vec);
-  this->matrix.multLeft(mat);
-  mat.setTranslate(-vec);
-  this->invmatrix.multRight(mat);
-}
-
-/*!
-  FIXME: write doc.
-*/
-
-void
-SoGetMatrixAction::rotateBy(const SbRotation &rot)
-{
-  SbMatrix mat;
-  mat.setRotate(rot);
-  this->matrix.multLeft(mat);
-  mat.setRotate(rot.inverse());
-  this->invmatrix.multRight(mat);
-}
-
-/*!
-  FIXME: write doc.
-*/
-
-void
-SoGetMatrixAction::scaleBy(const SbVec3f &scaleFactor)
-{
-  SbMatrix mat;
-  mat.setScale(scaleFactor);
-  this->matrix.multLeft(mat);
-#if COIN_DEBUG && 1 // debug
-  if (scaleFactor[0] == 0.0f || scaleFactor[1] == 0.0f || scaleFactor[2] == 0.0f) {
-    SoDebugError::postInfo("SoGetMatrixAction::scaleBy",
-                           "Zero scale detected!");
-  }
-#endif // debug
-  SbVec3f invScale;
-  invScale[0] = 1.0f / scaleFactor[0];
-  invScale[1] = 1.0f / scaleFactor[1];
-  invScale[2] = 1.0f / scaleFactor[2];
-  mat.setScale(invScale);
-  this->invmatrix.multRight(mat);
 }

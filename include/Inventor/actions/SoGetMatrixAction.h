@@ -47,21 +47,12 @@ public:
   SbMatrix & getTextureMatrix(void);
   SbMatrix & getTextureInverse(void);
 
-  // these four functions are not in the original Inventor API
-  //FIXME: Remove og tag them as non-standard in some way? (kintel 19990615)
-  void mult(const SbMatrix & matrix);
-  void translateBy(const SbVec3f & vec);
-  void rotateBy(const SbRotation & rot);
-  void scaleBy(const SbVec3f & scaleFactor);
-
 protected:
   virtual void beginTraversal(SoNode * node);
 
 private:
-  SbMatrix matrix;
-  SbMatrix invmatrix;
-  SbMatrix texmatrix;
-  SbMatrix invtexmatrix;
+  SbMatrix matrix, invmatrix;
+  SbMatrix texmatrix, invtexmatrix;
   SbViewportRegion viewportregion;
 };
 

@@ -144,10 +144,15 @@ SoRotationXYZ::getBoundingBox(SoGetBoundingBoxAction * action)
 void
 SoRotationXYZ::getMatrix(SoGetMatrixAction * action)
 {
-  SbVec3f rotvec;
-  if (getVector(rotvec)) {
-    action->rotateBy(SbRotation(rotvec, angle.getValue()));
-  }
+  SbMatrix m;
+
+  SbRotation r = this->getRotation();
+  r.getValue(m);
+  action->getMatrix().multLeft(m);
+
+  SbRotation ri = r.inverse();
+  ri.getValue(m);
+  action->getInverse().multRight(m);
 }
 
 /*!

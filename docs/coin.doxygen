@@ -183,6 +183,8 @@ INPUT                = \
 	$(top_srcdir)/include/Inventor/actions/SoSubAction.h \
 	$(top_srcdir)/src/actions/SoAction.cpp \
 	$(top_srcdir)/include/Inventor/actions/SoAction.h \
+	$(top_srcdir)/src/actions/SoGetMatrixAction.cpp \
+	$(top_srcdir)/include/Inventor/actions/SoGetMatrixAction.h \
 
 #	$(top_srcdir)/src/lists/SbList.cpp \
 #	$(top_srcdir)/include/Inventor/lists/SbList.h \
@@ -519,8 +521,6 @@ INPUT                = \
 #	$(top_srcdir)/include/Inventor/actions/SoGLRenderAction.h \
 #	$(top_srcdir)/src/actions/SoGetBoundingBoxAction.cpp \
 #	$(top_srcdir)/include/Inventor/actions/SoGetBoundingBoxAction.h \
-#	$(top_srcdir)/src/actions/SoGetMatrixAction.cpp \
-#	$(top_srcdir)/include/Inventor/actions/SoGetMatrixAction.h \
 #	$(top_srcdir)/src/actions/SoGetPrimitiveCountAction.cpp \
 #	$(top_srcdir)/include/Inventor/actions/SoGetPrimitiveCountAction.h \
 #	$(top_srcdir)/src/actions/SoGlobalSimplifyAction.cpp \

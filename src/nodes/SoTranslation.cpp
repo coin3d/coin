@@ -113,7 +113,12 @@ SoTranslation::callback(SoCallbackAction *action)
 void
 SoTranslation::getMatrix(SoGetMatrixAction *action)
 {
-  action->translateBy(translation.getValue());
+  SbVec3f v = this->translation.getValue();
+  SbMatrix m;
+  m.setTranslate(v);
+  action->getMatrix().multLeft(m);
+  m.setTranslate(-v);
+  action->getInverse().multRight(m);
 }
 
 /*!

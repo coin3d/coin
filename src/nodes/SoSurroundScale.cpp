@@ -35,7 +35,7 @@
 
   This node is (so far) only used by draggers to make it possible for
   manipulators to have the dragger surround the geometry it is
-  modifying.  
+  modifying.
 */
 
 #include <Inventor/nodes/SoSurroundScale.h>
@@ -118,11 +118,11 @@ SoSurroundScale::doAction(SoAction *action)
     SbMatrix dummy;
     this->updateMySurroundParams(action, dummy);
   }
-  if (this->doTranslations && 
+  if (this->doTranslations &&
       this->cachedTranslation != SbVec3f(0.0f, 0.0f, 0.0f)) {
     SoModelMatrixElement::translateBy(state, this, this->cachedTranslation);
   }
-  if (this->cachedScale != SbVec3f(1.0f, 1.0f, 1.0f)) 
+  if (this->cachedScale != SbVec3f(1.0f, 1.0f, 1.0f))
     SoModelMatrixElement::scaleBy(state, this, this->cachedScale);
 }
 
@@ -183,12 +183,25 @@ SoSurroundScale::getMatrix(SoGetMatrixAction *action)
   if (!this->cacheOK) {
     this->updateMySurroundParams(action, action->getInverse());
   }
-  if (this->doTranslations && 
+
+  if (this->doTranslations &&
       this->cachedTranslation != SbVec3f(0.0f, 0.0f, 0.0f)) {
-    action->translateBy(this->cachedTranslation);
+    SbMatrix m;
+    m.setTranslate(this->cachedTranslation);
+    action->getMatrix().multLeft(m);
+    m.setTranslate(- this->cachedTranslation);
+    action->getInverse().multRight(m);
   }
-  if (this->cachedScale != SbVec3f(1.0f, 1.0f, 1.0f))
-    action->scaleBy(this->cachedScale);
+
+  if (this->cachedScale != SbVec3f(1.0f, 1.0f, 1.0f)) {
+    SbMatrix m;
+    m.setScale(this->cachedScale);
+    action->getMatrix().multLeft(m);
+    m.setScale(SbVec3f(1.0f / this->cachedScale[0], 
+                       1.0f / this->cachedScale[1],
+                       1.0f / this->cachedScale[2]));
+    action->getInverse().multRight(m);
+  }
 }
 
 /*!
@@ -201,7 +214,7 @@ SoSurroundScale::pick(SoPickAction *action)
 }
 
 /*!
-  Calculates the translation and scale needed to make a 
+  Calculates the translation and scale needed to make a
   default cube surround geometry to the right of the
   branch this node is on.
 */
@@ -232,44 +245,44 @@ SoSurroundScale::updateMySurroundParams(SoAction *action,
   SbBool storedignore = this->isIgnoreInBbox();
   this->setIgnoreInBbox(TRUE);
 
-  const SoFullPath *curpath = (const SoFullPath*) action->getCurPath(); 
-  
+  const SoFullPath *curpath = (const SoFullPath*) action->getCurPath();
+
   SoNode *applynode = curpath->getNodeFromTail(numtocontainer);
-  
+
   int start = curpath->getLength() - 1 - numtocontainer;
-  int end = curpath->getLength() - 1 - numtoreset;  
+  int end = curpath->getLength() - 1 - numtoreset;
   assert(start >= 0);
   assert(end >= 0);
-  
+
   SoTempPath temppath(end-start+1);
   for (int i = start; i <= end; i++) {
     temppath.append(curpath->getNode(i));
-  } 
+  }
   SoGetBoundingBoxAction bboxaction(SoViewportRegionElement::get(action->getState()));
-  
+
   // reset bbox when returning from surroundscale branch,
   // meaning we'll calculate the bbox of only the geometry
   // to the right of this branch, getting the wanted result.
   bboxaction.setResetPath(&temppath, FALSE, SoGetBoundingBoxAction::ALL);
   bboxaction.apply(applynode);
-  
+
   SbBox3f box = bboxaction.getBoundingBox();
   box.getSize(this->cachedScale[0], this->cachedScale[1],
               this->cachedScale[2]);
-  
+
   this->cachedScale *= 0.5f;
   this->cachedInvScale[0] = 1.0f / this->cachedScale[0];
   this->cachedInvScale[1] = 1.0f / this->cachedScale[1];
   this->cachedInvScale[2] = 1.0f / this->cachedScale[2];
-  
+
   this->cachedTranslation = box.getCenter();
-  
+
   this->setIgnoreInBbox(storedignore);
   this->cacheOK = TRUE;
 }
 
 /*!
-  Sets whether bounding box calculations in SoGetBoundingBoxAction 
+  Sets whether bounding box calculations in SoGetBoundingBoxAction
   should be affected by this node.
 */
 void
@@ -279,7 +292,7 @@ SoSurroundScale::setIgnoreInBbox(const SbBool val)
 }
 
 /*!
-  Returns whether bounding box calculations in SoGetBoundingBoxAction 
+  Returns whether bounding box calculations in SoGetBoundingBoxAction
   should be affected by this node.
 */
 SbBool

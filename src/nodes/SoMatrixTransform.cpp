@@ -119,7 +119,11 @@ SoMatrixTransform::callback(SoCallbackAction *action)
 void
 SoMatrixTransform::getMatrix(SoGetMatrixAction *action)
 {
-  action->mult(this->matrix.getValue());
+  SbMatrix m = this->matrix.getValue();
+  action->getMatrix().multLeft(m);
+  
+  SbMatrix mi = m.inverse();
+  action->getInverse().multRight(m);
 }
 
 /*!

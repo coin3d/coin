@@ -116,7 +116,14 @@ SoScale::callback(SoCallbackAction *action)
 void
 SoScale::getMatrix(SoGetMatrixAction * action)
 {
-  action->scaleBy(scaleFactor.getValue());
+  SbVec3f scalevec = this->scaleFactor.getValue();
+  SbMatrix m;
+
+  m.setScale(scalevec);
+  action->getMatrix().multLeft(m);
+  
+  m.setScale(SbVec3f(1.0f / scalevec[0], 1.0f / scalevec[1], 1.0f / scalevec[2]));
+  action->getInverse().multRight(m);
 }
 
 /*!

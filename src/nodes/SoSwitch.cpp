@@ -272,6 +272,8 @@ SoSwitch::handleEvent(SoHandleEventAction *action)
 void
 SoSwitch::getMatrix(SoGetMatrixAction *action)
 {
+  // FIXME: is this correct? SoGetMatrixAction should normally not
+  // traverse below the node it has been applied to. 20000302 mortene.
   SoSwitch::doAction((SoAction*)action);
 }
 

@@ -317,6 +317,7 @@ SoSeparator::getMatrix(SoGetMatrixAction * action)
   if (action->getCurPathCode() == SoAction::IN_PATH)
     inherited::getMatrix(action);
 
+  // FIXME: ..and? Is this all? 20000302 mortene.
 }
 
 /*!
