@@ -397,7 +397,7 @@ SoGetBoundingBoxAction::resetCenter(void)
   starts.
 */
 void
-SoGetBoundingBoxAction::beginTraversal(SoNode * const node)
+SoGetBoundingBoxAction::beginTraversal(SoNode * node)
 {
   this->resetCenter();
   this->bbox.makeEmpty();
