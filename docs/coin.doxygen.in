@@ -232,8 +232,8 @@ GENERATE_BUGLIST       = YES
 # You can put \n's in the value part of an alias to insert newlines.
 
 ALIASES                = \
-  WEB3DCOPYRIGHT="The following documentation is copyright The Web3D Consortium, and is used by permission of the Consortium:\n\n" \
-  COININTERNAL="This API member is considered internal to the library and is not documented, as it is not likely to be of interest to the application programmer."
+  WEB3DCOPYRIGHT="<b>The detailed class documentation is taken verbatim from the VRML97 standard (ISO/IEC 14772-1:1997). It is copyright The Web3D Consortium, and is used by permission of the Consortium:</b>\n\n" \
+  COININTERNAL="<em>This API member is considered internal to the library and is not documented, as it is not likely to be of interest to the application programmer.</em>"
 
 # The ENABLED_SECTIONS tag can be used to enable conditional 
 # documentation sections, marked by \if sectionname ... \endif.
@@ -1619,7 +1619,9 @@ INCLUDE_FILE_PATTERNS  = *.h \
 # or name=definition (no spaces). If the definition and the = are 
 # omitted =1 is assumed.
 
-PREDEFINED             = DOXYGEN_SKIP_THIS
+PREDEFINED             = \
+  DOXYGEN_SKIP_THIS=1 \
+  COIN_DLL_API=""
 
 # If the MACRO_EXPANSION and EXPAND_PREDEF_ONLY tags are set to YES then 
 # this tag can be used to specify a list of macro names that should be expanded. 
