@@ -346,6 +346,16 @@ SoVectorizeAction::beginViewport(const SbVec2f & start, const SbVec2f & size,
 
   // this will set up clipping (for postscript, at least)
   this->printViewport();
+
+  // set up a SbViewportRegion (used by SoCallbackAction) so that the
+  // aspect ratio will match the page
+  SbVec2f s = this->getRotatedViewportSize();
+  float m = SbMax(s[0], s[1]);
+  
+  SbVec2s ss;  
+  ss[0] = (short) ((s[0] / m) * 32767.0f);
+  ss[1] = (short) ((s[1] / m) * 32767.0f);
+  this->setViewportRegion(SbViewportRegion(ss));
 }
 
 /*!
