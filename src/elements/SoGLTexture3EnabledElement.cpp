@@ -38,7 +38,7 @@
 
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
-#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/actions/SoGLRenderAction.h>
 
 #if HAVE_CONFIG_H
 #include <config.h>
@@ -83,8 +83,8 @@ SoGLTexture3EnabledElement::init(SoState * state)
   this->state = state;
   this->data = SoGLTexture3EnabledElement::getDefault();
   this->glstate = 0;
-//    const GLWrapper_t * glw = GLWrapper(SoGLCacheContextElement::get(state));
-//    if (glw->COIN_GL_TEXTURE_3D) glDisable(glw->COIN_GL_TEXTURE_3D);
+  const GLWrapper_t * glw = GLWRAPPER_FROM_STATE(state);
+  if (glw->COIN_GL_TEXTURE_3D) glDisable(glw->COIN_GL_TEXTURE_3D);
 }
 
 /*!
@@ -141,7 +141,7 @@ SoGLTexture3EnabledElement::forceSend(SoState * const state,
     SoElement::getConstElement(state, classStackIndex);
   if (te->glstate != onoff) {
     te->glstate = onoff;
-    const GLWrapper_t * glw = GLWrapper(SoGLCacheContextElement::get(state));
+    const GLWrapper_t * glw = GLWRAPPER_FROM_STATE(state);
     if (glw->COIN_GL_TEXTURE_3D) {
       if (onoff) glEnable(glw->COIN_GL_TEXTURE_3D);
       else glDisable(glw->COIN_GL_TEXTURE_3D);
@@ -187,7 +187,7 @@ void
 SoGLTexture3EnabledElement::updategl(void)
 {
   this->glstate = this->data;
-  const GLWrapper_t * glw = GLWrapper(SoGLCacheContextElement::get(this->state));
+  const GLWrapper_t * glw = GLWRAPPER_FROM_STATE(this->state);
   if (glw->COIN_GL_TEXTURE_3D) {
     if (this->data) glEnable(glw->COIN_GL_TEXTURE_3D);
     else glDisable(glw->COIN_GL_TEXTURE_3D);
