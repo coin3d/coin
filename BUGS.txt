@@ -2750,6 +2750,28 @@ diff -u -r1.6 SoGLnonindexedTristripSetTemplate.icc
 
     20031211 mortene, reported by pederb.
 
+    UPDATE 20040909 mortene: the above suggestion for a fix may not be
+    such a good idea:
+
+      On Wed, Sep 08, 2004 at 04:27:55PM +0200, Karin Kosina wrote:
+      : 
+      : [...]
+      : 
+      : And: why don't we implement pederb's suggestion (applying a
+      : GetBoundingBoxAction before rendering)?
+      
+      [pederb:]
+
+      I feel it should be possible to toggle this feature on/off.
+      Other applications might apply an SoGetBoundingBoxAction before
+      they call SoSceneManager::render() (or render the scene using an
+      SoGLRenderAction directly). If you have a scene with lots of
+      animations, SoGetBoundingBoxAction can be pretty slow.
+      
+      If you have an application that does multipass rendering, and we
+      apply an SoGetBoundingBoxAction every time
+      SoGLRenderAction::apply() is called, that would be pretty bad.
+
 =====================================================================
 
 100 Wrong use of glGetError().
@@ -3279,6 +3301,14 @@ main(void)
         > the gfx-card is nNVidia, and the material binding !=
         > OVERALL.  This can be done in MaterialBinding::GLRender()
         > and/or IndexedFaceSet::GLRender()....
+
+
+    UPDATE 20040908 mortene: pederb found a usable work-around (not
+    the one mentioned above, BTW), so we should be ok now. To do on
+    this item: 1) check new driver releases from NVIDIA, and when it
+    has been fixed, make sure the work-around only applies to older
+    versions, and 2) check with pederb that his work-around is 100%
+    "in place" for all relevant shape types.
 
 =====================================================================
 
