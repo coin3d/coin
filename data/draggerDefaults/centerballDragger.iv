@@ -23,6 +23,14 @@ DEF CENTERBALL_SCALE Scale { scaleFactor 1.02 1.02 1.02 }
 
 DEF CENTERBALL_STRIPE Separator {
    USE CENTERBALL_SCALE
+
+   # This is needed because SoDragger::GLRender() sets up default
+   # rendering for dragger geometry to be backface culled.
+   ShapeHints {
+      shapeType UNKNOWN_SHAPE_TYPE
+      vertexOrdering UNKNOWN_ORDERING
+   }
+
    DrawStyle { style LINES  lineWidth 2 }
    Cylinder { parts SIDES  height 0.0 }
 }
