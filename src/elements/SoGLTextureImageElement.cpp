@@ -330,12 +330,12 @@ SoGLTextureImageElement::isTextureSizeLegal(int xsize, int ysize, int zsize,
     }
   }
   else { // 3D textures
-    if (glw->COIN_GL_PROXY_TEXTURE_3D) {
+    if (glw->COIN_GL_PROXY_TEXTURE_3D && glw->glTexImage3D) {
       GLint w;
-      glTexImage3D(glw->COIN_GL_PROXY_TEXTURE_3D, 0, bytespertexel,
-                   xsize, ysize, zsize, 0,
-                   GL_RGBA, GL_UNSIGNED_BYTE,
-                   NULL);
+      glw->glTexImage3D(glw->COIN_GL_PROXY_TEXTURE_3D, 0, bytespertexel,
+                        xsize, ysize, zsize, 0,
+                        GL_RGBA, GL_UNSIGNED_BYTE,
+                        NULL);
       glGetTexLevelParameteriv(glw->COIN_GL_PROXY_TEXTURE_3D, 0, 
                                GL_TEXTURE_WIDTH, &w);
       if (w==0) return FALSE;
