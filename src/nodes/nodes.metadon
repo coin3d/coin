@@ -93,17 +93,17 @@
 # ID-BG-P-C!      SoCoordinate4
 # ID------C!      SoLight
 # IDT-G---!!              SoDirectionalLight
-#   T-G---!!              SoSpotLight
-#   T-G---!!              SoPointLight
-#   T-G---C!      SoDrawStyle
-#   T- ---C!      SoEnvironment
-#   -------!      SoEventCallback
-#   TBGMP-C       SoFile
-#   tBG-P-C!      SoFont
-#   tBG-P-C!              SoFontStyle
-#   -------!      SoInfo
-#   -------!      SoLabel
-#   T-G---C!      SoLightModel
+# IDT-G---!!              SoSpotLight
+# IDT-G---!!              SoPointLight
+# IDT-G---C!      SoDrawStyle
+# IDT-G---C!      SoEnvironment
+# id-------!      SoEventCallback
+# idTBGMP-C       SoFile
+# IDTBG-P-C!      SoFont
+# IDTBG-P-C!              SoFontStyle
+# ID-------!      SoInfo
+# ID-------!      SoLabel
+# IDT-G---C!      SoLightModel
 #    B -P-C!      SoProfile
 #    ! -!-!!              SoLinearProfile
 #    ! -!-!!              SoNurbsProfile

@@ -19,35 +19,40 @@
 
 /*!
   \class SoLightModel SoLightModel.h Inventor/nodes/SoLightModel.h
-  \brief The SoLightModel class ...
+  \brief The SoLightModel class is a node for specifying the model for geometry lighting.
   \ingroup nodes
 
-  FIXME: write class doc
+  Use nodes of this type to set up how lighting should affect
+  subsequent geometry in the scene.
 */
 
-
+#include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLLightModelElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
-#include <Inventor/actions/SoCallbackAction.h>
 
 /*!
   \enum SoLightModel::Model
-  FIXME: write documentation for enum
+  Enumerates available light models.
 */
 /*!
   \var SoLightModel::Model SoLightModel::BASE_COLOR
-  FIXME: write documentation for enum definition
+
+  Use the current diffuse material color for subsequent geometry, and
+  do not let any lightsources influence the appearance of the
+  rendering primitives.
 */
 /*!
   \var SoLightModel::Model SoLightModel::PHONG
-  FIXME: write documentation for enum definition
+
+  Use Phong-style shading for the geometry.
 */
 
 
 /*!
   \var SoSFEnum SoLightModel::model
-  FIXME: write documentation for field
+
+  Lightmodel to use. Defaults to SoLightModel::PHONG.
 */
 
 // *************************************************************************
@@ -57,7 +62,7 @@ SO_NODE_SOURCE(SoLightModel);
 /*!
   Constructor.
 */
-SoLightModel::SoLightModel()
+SoLightModel::SoLightModel(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoLightModel);
 
@@ -74,35 +79,26 @@ SoLightModel::~SoLightModel()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoLightModel class. This includes setting up the
-  type system, among other things.
-*/
+// Doc from superclass.
 void
 SoLightModel::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoLightModel);
 
-  SO_ENABLE(SoGLRenderAction, SoGLLightModelElement);
-
   SO_ENABLE(SoCallbackAction, SoLightModelElement);
+  SO_ENABLE(SoGLRenderAction, SoGLLightModelElement);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoLightModel::GLRender(SoGLRenderAction * action)
 {
   SoLightModel::doAction(action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoLightModel::doAction(SoAction *action)
+SoLightModel::doAction(SoAction * action)
 {
   if (!model.isIgnored()
       && !SoOverrideElement::getLightModelOverride(action->getState())) {
@@ -114,11 +110,9 @@ SoLightModel::doAction(SoAction *action)
   }
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoLightModel::callback(SoCallbackAction *action)
+SoLightModel::callback(SoCallbackAction * action)
 {
   SoLightModel::doAction(action);
 }

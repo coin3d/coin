@@ -19,31 +19,36 @@
 
 /*!
   \class SoPointLight SoPointLight.h Inventor/nodes/SoPointLight.h
-  \brief The SoPointLight class ...
+  \brief The SoPointLight class is a node type modelling pointlights.
   \ingroup nodes
 
-  FIXME: write class doc
+  Pointlights emits light equally in all directions from a specified
+  3D location.
+
+  See also documentation of parent class for important information
+  regarding light sources in general.
 */
 
 #include <Inventor/nodes/SoPointLight.h>
 
-#include <Inventor/SbVec4f.h>
 #include <Inventor/SbColor4f.h>
-#include <Inventor/elements/SoEnvironmentElement.h>
+#include <Inventor/SbVec4f.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#ifdef _WIN32
-#include <windows.h>
-#endif // _WIN32
-#include <GL/gl.h>
+#include <Inventor/elements/SoEnvironmentElement.h>
 #include <Inventor/elements/SoGLLightIdElement.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#ifdef _WIN32
+#include <windows.h> // Needed to include gl.h.
+#endif // _WIN32
+#include <GL/gl.h>
+
 /*!
   \var SoSFVec3f SoPointLight::location
-  FIXME: write documentation for field
+  3D position of lightsource. Default value is <0, 0, 1>.
 */
 
 // *************************************************************************
@@ -53,7 +58,7 @@ SO_NODE_SOURCE(SoPointLight);
 /*!
   Constructor.
 */
-SoPointLight::SoPointLight()
+SoPointLight::SoPointLight(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoPointLight);
 
@@ -67,20 +72,14 @@ SoPointLight::~SoPointLight()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoPointLight class. This includes setting up the
-  type system, among other things.
-*/
+// Doc from superclass.
 void
 SoPointLight::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoPointLight);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoPointLight::GLRender(SoGLRenderAction * action)
 {
@@ -96,7 +95,7 @@ SoPointLight::GLRender(SoGLRenderAction * action)
     return;
   }
 
-  SoState *state = action->getState();
+  SoState * state = action->getState();
 
   GLenum light = (GLenum) (idx + GL_LIGHT0);
 

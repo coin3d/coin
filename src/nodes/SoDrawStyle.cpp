@@ -26,53 +26,67 @@
 */
 
 
-#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLDrawStyleElement.h>
-#include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoGLLinePatternElement.h>
 #include <Inventor/elements/SoGLLineWidthElement.h>
 #include <Inventor/elements/SoGLPointSizeElement.h>
 #include <Inventor/elements/SoGLPolygonStippleElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
 
 /*!
   \enum SoDrawStyle::Style
-  FIXME: write documentation for enum
+  Enumeration for the various ways to render geometry.
 */
 /*!
   \var SoDrawStyle::Style SoDrawStyle::FILLED
-  FIXME: write documentation for enum definition
+  Render all geometry as-is.
 */
 /*!
   \var SoDrawStyle::Style SoDrawStyle::LINES
-  FIXME: write documentation for enum definition
+  Render all geometry as border lines.
 */
 /*!
   \var SoDrawStyle::Style SoDrawStyle::POINTS
-  FIXME: write documentation for enum definition
+  Render all geometry as vertex points.
 */
 /*!
   \var SoDrawStyle::Style SoDrawStyle::INVISIBLE
-  FIXME: write documentation for enum definition
+  Don't render geometry.
 */
 
 
 /*!
   \var SoSFEnum SoDrawStyle::style
-  FIXME: write documentation for field
+
+  How to render the geometry following a drawstyle node in the scene
+  graph. Default SoDrawStyle::FILLED.
 */
 /*!
   \var SoSFFloat SoDrawStyle::pointSize
-  FIXME: write documentation for field
+
+  Size in screen pixels of SoPointSet points, and also of geometry
+  vertex points if setting the SoDrawStyle::style to
+  SoDrawStyle::POINTS.
+
+  Default value is 0.
 */
 /*!
   \var SoSFFloat SoDrawStyle::lineWidth
-  FIXME: write documentation for field
+
+  Width in screen pixels of SoLineSet and SoIndexedLineSet lines, and
+  also of geometry border lines if setting the SoDrawStyle::style to
+  SoDrawStyle::LINES.
+
+  Default value is 0.
 */
 /*!
   \var SoSFUShort SoDrawStyle::linePattern
-  FIXME: write documentation for field
+
+  Pattern as a bitmask used when drawing lines. Default is 0xffff (no
+  "holes").
 */
 
 
@@ -83,7 +97,7 @@ SO_NODE_SOURCE(SoDrawStyle);
 /*!
   Constructor.
 */
-SoDrawStyle::SoDrawStyle()
+SoDrawStyle::SoDrawStyle(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoDrawStyle);
 
@@ -106,11 +120,7 @@ SoDrawStyle::~SoDrawStyle()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoDrawStyle class. This includes setting up the
-  type system, among other things.
-*/
+// Doc from superclass.
 void
 SoDrawStyle::initClass(void)
 {
@@ -130,11 +140,9 @@ SoDrawStyle::initClass(void)
   SO_ENABLE(SoCallbackAction, SoPointSizeElement);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
-SoDrawStyle::doAction(SoAction *action)
+SoDrawStyle::doAction(SoAction * action)
 {
   SoState * state = action->getState();
 
@@ -170,21 +178,16 @@ SoDrawStyle::doAction(SoAction *action)
 
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoDrawStyle::GLRender(SoGLRenderAction * action)
 {
   SoDrawStyle::doAction(action);
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc from superclass.
 void
-SoDrawStyle::callback(SoCallbackAction *action)
+SoDrawStyle::callback(SoCallbackAction * action)
 {
   SoDrawStyle::doAction(action);
 }
-

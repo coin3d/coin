@@ -19,30 +19,54 @@
 
 /*!
   \class SoFont SoFont.h Inventor/nodes/SoFont.h
-  \brief The SoFont class ...
+  \brief The SoFont class is an appearance node for setting fonts.
   \ingroup nodes
 
-  FIXME: write class doc
+  Successive text rendering nodes (like SoText2, SoText3, SoAsciiText,
+  etc) will use the font specified from an SoFont node when
+  visualizing text.
+
+  \sa SoFontStyle, SoText2, SoText3
 */
 
 #include <Inventor/nodes/SoFont.h>
 
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/actions/SoPickAction.h>
 #include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
+#include <Inventor/actions/SoPickAction.h>
 #include <Inventor/elements/SoFontNameElement.h>
 #include <Inventor/elements/SoFontSizeElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 
 /*!
   \var SoSFName SoFont::name
-  FIXME: write documentation for field
+
+  Name of font.
+
+  Which fontnames are available is rather systemdependent, not only on
+  whether or not you are running on a UNIX/Linux system, Microsoft
+  Windows or whatever, but also on which fonts and font \e types (like
+  TrueType) are installed on a particular user's system.
+
+  All font rendering nodes have a built-in fallback font to use,
+  though, so even though Coin can not find a font on the system of the
+  specified type, the text should be rendered somehow.
+
+  In summation, consider this node type and this particular field as a
+  \e hint to the font rendering engines of Coin, and do \e not base
+  your models on a particular font being available.
 */
 /*!
   \var SoSFFloat SoFont::size
-  FIXME: write documentation for field
+
+  Size of font. Defaults to 10.0.
+
+  For 2D rendered bitmap fonts (like for SoText2), this value is the
+  height of a character in screen pixels. For 3D text, this value is
+  the world-space coordinates height of a character in the current
+  units setting (see documentation for SoUnits node).
 */
 
 // *************************************************************************
@@ -52,7 +76,7 @@ SO_NODE_SOURCE(SoFont);
 /*!
   Constructor.
 */
-SoFont::SoFont()
+SoFont::SoFont(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoFont);
 
@@ -67,40 +91,31 @@ SoFont::~SoFont()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoFont class. This includes setting up the
-  type system, among other things.
-*/
+// Doc from superclass.
 void
 SoFont::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoFont);
 
-  SO_ENABLE(SoGetBoundingBoxAction, SoFontNameElement);
-  SO_ENABLE(SoGetBoundingBoxAction, SoFontSizeElement);
-
-  SO_ENABLE(SoGLRenderAction, SoFontNameElement);
-  SO_ENABLE(SoGLRenderAction, SoFontSizeElement);
-
   SO_ENABLE(SoCallbackAction, SoFontNameElement);
   SO_ENABLE(SoCallbackAction, SoFontSizeElement);
-
-  SO_ENABLE(SoPickAction, SoFontNameElement);
-  SO_ENABLE(SoPickAction, SoFontSizeElement);
-
+  SO_ENABLE(SoGLRenderAction, SoFontNameElement);
+  SO_ENABLE(SoGLRenderAction, SoFontSizeElement);
+  SO_ENABLE(SoGetBoundingBoxAction, SoFontNameElement);
+  SO_ENABLE(SoGetBoundingBoxAction, SoFontSizeElement);
   SO_ENABLE(SoGetPrimitiveCountAction, SoFontNameElement);
   SO_ENABLE(SoGetPrimitiveCountAction, SoFontSizeElement);
+  SO_ENABLE(SoPickAction, SoFontNameElement);
+  SO_ENABLE(SoPickAction, SoFontSizeElement);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoFont::doAction(SoAction * action)
 {
-  SoState *state = action->getState();
+  SoState * state = action->getState();
   uint32_t flags = SoOverrideElement::getFlags(state);
+
 #define TEST_OVERRIDE(bit) ((SoOverrideElement::bit & flags) != 0)
 
   if (!name.isIgnored() && !TEST_OVERRIDE(FONT_NAME)) {
@@ -115,50 +130,41 @@ SoFont::doAction(SoAction * action)
       SoOverrideElement::setFontSizeOverride(state, this, TRUE);
     }
   }
+
 #undef TEST_OVERRIDE
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoFont::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoFont::doAction(action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoFont::GLRender(SoGLRenderAction * action)
 {
   SoFont::doAction(action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoFont::callback(SoCallbackAction *action)
+SoFont::callback(SoCallbackAction * action)
 {
-  SoFont::doAction((SoAction*)action);
+  SoFont::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoFont::pick(SoPickAction *action)
+SoFont::pick(SoPickAction * action)
 {
   SoFont::doAction(action);
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc from superclass.
 void
-SoFont::getPrimitiveCount(SoGetPrimitiveCountAction *action)
+SoFont::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   SoFont::doAction(action);
 }

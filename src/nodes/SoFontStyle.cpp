@@ -19,65 +19,52 @@
 
 /*!
   \class SoFontStyle SoFontStyle.h Inventor/nodes/SoFontStyle.h
-  \brief The SoFontStyle class ...
+  \brief The SoFontStyle class changes the appearance of fonts for text rendering nodes.
   \ingroup nodes
 
-  FIXME: write class doc
+  Successive text rendering nodes will use fonts with the style
+  settings of this node, if a font with the given settings can be
+  found and loaded from the system. (And if not, a default fallback
+  will be used. So consider SoFontStyle nodes as nodes giving \e hints
+  about font settings, as you are \e not guaranteed to get exactly
+  what you want.)
+
+  \sa SoFont, SoText2, SoText3
 */
 
+// Metadon doc:
+/*¡
+  FIXME: only works properly with X11 yet. 20000326 mortene.
+ */
+
 #include <Inventor/nodes/SoFontStyle.h>
+
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/elements/SoFontNameElement.h>
+#include <Inventor/elements/SoFontSizeElement.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
-#include <coindefs.h> // COIN_STUB()
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/elements/SoFontNameElement.h>
-#include <Inventor/elements/SoFontSizeElement.h>
 
 /*!
   \enum SoFontStyle::Family
-  FIXME: write documentation for enum
-*/
-/*!
-  \var SoFontStyle::Family SoFontStyle::SERIF
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoFontStyle::Family SoFontStyle::SANS
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoFontStyle::Family SoFontStyle::TYPEWRITER
-  FIXME: write documentation for enum definition
+  Enumeration of the font family to use.
 */
 
 /*!
   \enum SoFontStyle::Style
-  FIXME: write documentation for enum
+  Enumeration of font style characteristics.
 */
-/*!
-  \var SoFontStyle::Style SoFontStyle::NONE
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoFontStyle::Style SoFontStyle::BOLD
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoFontStyle::Style SoFontStyle::ITALIC
-  FIXME: write documentation for enum definition
-*/
-
 
 /*!
   \var SoSFEnum SoFontStyle::family
-  FIXME: write documentation for field
+  Font family hint.
 */
 /*!
   \var SoSFBitMask SoFontStyle::style
-  FIXME: write documentation for field
+  Font style hint.
 */
 
 
@@ -88,7 +75,7 @@ SO_NODE_SOURCE(SoFontStyle);
 /*!
   Constructor.
 */
-SoFontStyle::SoFontStyle()
+SoFontStyle::SoFontStyle(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoFontStyle);
 
@@ -113,11 +100,7 @@ SoFontStyle::~SoFontStyle()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoFontStyle class. This includes setting up the
-  type system, among other things.
-*/
+// Doc from superclass.
 void
 SoFontStyle::initClass(void)
 {
@@ -125,7 +108,8 @@ SoFontStyle::initClass(void)
 }
 
 /*!
-  FIXME: write function documentation
+  Returns a system-specific text string to use for font loading, based
+  on the style settings of this node.
 */
 SbString
 SoFontStyle::getFontName(void) const
@@ -151,7 +135,7 @@ SoFontStyle::getFontName(void) const
                                 "setting to SERIF");
       fontname = "times";
       break;
-#endif // COIN_DEUG
+#endif // COIN_DEBUG
     }
   }
 
@@ -183,9 +167,7 @@ SoFontStyle::getFontName(void) const
   return fontname;
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoFontStyle::doAction(SoAction * action)
 {
@@ -193,47 +175,37 @@ SoFontStyle::doAction(SoAction * action)
   SoFontSizeElement::set(action->getState(), this, this->size.getValue());
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoFontStyle::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   this->doAction(action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoFontStyle::GLRender(SoGLRenderAction * action)
 {
   this->doAction(action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoFontStyle::callback(SoCallbackAction *action)
+SoFontStyle::callback(SoCallbackAction * action)
 {
-  SoFontStyle::doAction((SoAction*)action);
+  SoFontStyle::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoFontStyle::pick(SoPickAction *action)
+SoFontStyle::pick(SoPickAction * action)
 {
-  SoFontStyle::doAction((SoAction*)action);
+  SoFontStyle::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoFontStyle::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoFontStyle::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-  COIN_STUB();
+  SoFontStyle::doAction((SoAction *)action);
 }

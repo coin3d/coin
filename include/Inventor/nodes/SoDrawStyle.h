@@ -20,12 +20,12 @@
 #ifndef COIN_SODRAWSTYLE_H
 #define COIN_SODRAWSTYLE_H
 
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoNode.h>
+#include <Inventor/elements/SoDrawStyleElement.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFUShort.h>
-#include <Inventor/elements/SoDrawStyleElement.h>
+#include <Inventor/nodes/SoNode.h>
+#include <Inventor/nodes/SoSubNode.h>
 
 
 class SoDrawStyle : public SoNode {
@@ -49,11 +49,9 @@ public:
   SoSFFloat lineWidth;
   SoSFUShort linePattern;
 
-public:
-  virtual void doAction(SoAction *action);
-
-  virtual void GLRender(SoGLRenderAction *action);
-  virtual void callback(SoCallbackAction *action);
+  virtual void doAction(SoAction * action);
+  virtual void GLRender(SoGLRenderAction * action);
+  virtual void callback(SoCallbackAction * action);
 
 protected:
   virtual ~SoDrawStyle();

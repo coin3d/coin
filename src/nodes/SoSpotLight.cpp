@@ -19,10 +19,16 @@
 
 /*!
   \class SoSpotLight SoSpotLight.h Inventor/nodes/SoSpotLight.h
-  \brief The SoSpotLight class ...
+  \brief The SoSpotLight class is a node type for light sources with a cone shaped lightvolume.
   \ingroup nodes
 
-  FIXME: write class doc
+  Spotlights are light sources with a position and a direction. They
+  can be thought of as a pointlight with a lampshade.
+
+  See also documentation of parent class for important information
+  regarding light sources in general.
+
+  \sa SoSpotLight
 */
 
 
@@ -30,36 +36,47 @@
 
 #include <Inventor/SbColor4f.h>
 #include <Inventor/SbVec4f.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/elements/SoEnvironmentElement.h>
+#include <Inventor/elements/SoGLLightIdElement.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#include <Inventor/actions/SoGLRenderAction.h>
 #ifdef _WIN32
-#include <windows.h>
+#include <windows.h> // Needed on Win32 to include gl.h.
 #endif // _WIN32
 #include <GL/gl.h>
 
-#include <Inventor/elements/SoGLLightIdElement.h>
-#include <Inventor/elements/SoEnvironmentElement.h>
 
 
 /*!
   \var SoSFVec3f SoSpotLight::location
-  FIXME: write documentation for field
+
+  3D position of light source. Default position is <0, 0, 1>.
 */
 /*!
   \var SoSFVec3f SoSpotLight::direction
-  FIXME: write documentation for field
+
+  Direction vector, where the light is pointing. Default is to point
+  along the negative z-axis.
 */
 /*!
   \var SoSFFloat SoSpotLight::dropOffRate
-  FIXME: write documentation for field
+
+  The rate of intensity drop-off from the ray along the direction
+  vector. Value must be between 0.0 (equal intensity for the whole
+  cone of light), to 1.0 (a narrow intensity ray).
+
+  Default value is 0.0.
 */
 /*!
   \var SoSFFloat SoSpotLight::cutOffAngle
-  FIXME: write documentation for field
+
+  The angle in radians from the direction vector where there will be
+  no light outside (i.e. the angle of the "lampshade"). Default value
+  is PI/4.0 (i.e. 45°).
 */
 
 
@@ -70,7 +87,7 @@ SO_NODE_SOURCE(SoSpotLight);
 /*!
   Constructor.
 */
-SoSpotLight::SoSpotLight()
+SoSpotLight::SoSpotLight(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoSpotLight);
 
@@ -87,26 +104,20 @@ SoSpotLight::~SoSpotLight()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoSpotLight class. This includes setting up the
-  type system, among other things.
-*/
+// Doc in superclass.
 void
 SoSpotLight::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoSpotLight);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc in superclass.
 void
 SoSpotLight::GLRender(SoGLRenderAction * action)
 {
   if (!on.getValue()) return;
 
-  SoState *state = action->getState();
+  SoState * state = action->getState();
   int idx = SoGLLightIdElement::increment(state);
 
   if (idx < 0) {

@@ -216,6 +216,16 @@ INPUT                = \
 	$(top_srcdir)/src/nodes/SoCoordinate4.cpp $(top_srcdir)/include/Inventor/nodes/SoCoordinate4.h \
 	$(top_srcdir)/src/nodes/SoLight.cpp $(top_srcdir)/include/Inventor/nodes/SoLight.h \
 	$(top_srcdir)/src/nodes/SoDirectionalLight.cpp $(top_srcdir)/include/Inventor/nodes/SoDirectionalLight.h \
+	$(top_srcdir)/src/nodes/SoSpotLight.cpp $(top_srcdir)/include/Inventor/nodes/SoSpotLight.h \
+	$(top_srcdir)/src/nodes/SoPointLight.cpp $(top_srcdir)/include/Inventor/nodes/SoPointLight.h \
+	$(top_srcdir)/src/nodes/SoDrawStyle.cpp $(top_srcdir)/include/Inventor/nodes/SoDrawStyle.h \
+	$(top_srcdir)/src/nodes/SoEnvironment.cpp $(top_srcdir)/include/Inventor/nodes/SoEnvironment.h \
+	$(top_srcdir)/src/nodes/SoFile.cpp $(top_srcdir)/include/Inventor/nodes/SoFile.h \
+	$(top_srcdir)/src/nodes/SoFont.cpp $(top_srcdir)/include/Inventor/nodes/SoFont.h \
+	$(top_srcdir)/src/nodes/SoFontStyle.cpp $(top_srcdir)/include/Inventor/nodes/SoFontStyle.h \
+	$(top_srcdir)/src/nodes/SoInfo.cpp $(top_srcdir)/include/Inventor/nodes/SoInfo.h \
+	$(top_srcdir)/src/nodes/SoLabel.cpp $(top_srcdir)/include/Inventor/nodes/SoLabel.h \
+	$(top_srcdir)/src/nodes/SoLightModel.cpp $(top_srcdir)/include/Inventor/nodes/SoLightModel.h \
 
 #	$(top_srcdir)/src/nodes/SoAnnoText3.cpp $(top_srcdir)/include/Inventor/nodes/SoAnnoText3.h \
 #	$(top_srcdir)/src/nodes/SoAnnoText3Property.cpp $(top_srcdir)/include/Inventor/nodes/SoAnnoText3Property.h \
@@ -223,14 +233,9 @@ INPUT                = \
 #	$(top_srcdir)/src/nodes/SoArray.cpp $(top_srcdir)/include/Inventor/nodes/SoArray.h \
 #	$(top_srcdir)/src/nodes/SoBlinker.cpp $(top_srcdir)/include/Inventor/nodes/SoBlinker.h \
 #	$(top_srcdir)/src/nodes/SoColorIndex.cpp $(top_srcdir)/include/Inventor/nodes/SoColorIndex.h \
-#	$(top_srcdir)/src/nodes/SoDrawStyle.cpp $(top_srcdir)/include/Inventor/nodes/SoDrawStyle.h \
-#	$(top_srcdir)/src/nodes/SoEnvironment.cpp $(top_srcdir)/include/Inventor/nodes/SoEnvironment.h \
 #	$(top_srcdir)/src/nodes/SoEventCallback.cpp $(top_srcdir)/include/Inventor/nodes/SoEventCallback.h \
 #	$(top_srcdir)/src/nodes/SoExtSelection.cpp $(top_srcdir)/include/Inventor/nodes/SoExtSelection.h \
 #	$(top_srcdir)/src/nodes/SoFaceSet.cpp $(top_srcdir)/include/Inventor/nodes/SoFaceSet.h \
-#	$(top_srcdir)/src/nodes/SoFile.cpp $(top_srcdir)/include/Inventor/nodes/SoFile.h \
-#	$(top_srcdir)/src/nodes/SoFont.cpp $(top_srcdir)/include/Inventor/nodes/SoFont.h \
-#	$(top_srcdir)/src/nodes/SoFontStyle.cpp $(top_srcdir)/include/Inventor/nodes/SoFontStyle.h \
 #	$(top_srcdir)/src/nodes/SoGroup.cpp $(top_srcdir)/include/Inventor/nodes/SoGroup.h \
 #	$(top_srcdir)/src/nodes/SoImage.cpp $(top_srcdir)/include/Inventor/nodes/SoImage.h \
 #	$(top_srcdir)/src/nodes/SoIndexedFaceSet.cpp $(top_srcdir)/include/Inventor/nodes/SoIndexedFaceSet.h \
@@ -239,12 +244,9 @@ INPUT                = \
 #	$(top_srcdir)/src/nodes/SoIndexedNurbsSurface.cpp $(top_srcdir)/include/Inventor/nodes/SoIndexedNurbsSurface.h \
 #	$(top_srcdir)/src/nodes/SoIndexedShape.cpp $(top_srcdir)/include/Inventor/nodes/SoIndexedShape.h \
 #	$(top_srcdir)/src/nodes/SoIndexedTriangleStripSet.cpp $(top_srcdir)/include/Inventor/nodes/SoIndexedTriangleStripSet.h \
-#	$(top_srcdir)/src/nodes/SoInfo.cpp $(top_srcdir)/include/Inventor/nodes/SoInfo.h \
 #	$(top_srcdir)/src/nodes/SoLOD.cpp $(top_srcdir)/include/Inventor/nodes/SoLOD.h \
-#	$(top_srcdir)/src/nodes/SoLabel.cpp $(top_srcdir)/include/Inventor/nodes/SoLabel.h \
 #	$(top_srcdir)/src/nodes/SoLevelOfDetail.cpp $(top_srcdir)/include/Inventor/nodes/SoLevelOfDetail.h \
 #	$(top_srcdir)/src/nodes/SoLevelOfSimplification.cpp $(top_srcdir)/include/Inventor/nodes/SoLevelOfSimplification.h \
-#	$(top_srcdir)/src/nodes/SoLightModel.cpp $(top_srcdir)/include/Inventor/nodes/SoLightModel.h \
 #	$(top_srcdir)/src/nodes/SoLineSet.cpp $(top_srcdir)/include/Inventor/nodes/SoLineSet.h \
 #	$(top_srcdir)/src/nodes/SoLinearProfile.cpp $(top_srcdir)/include/Inventor/nodes/SoLinearProfile.h \
 #	$(top_srcdir)/src/nodes/SoLocateHighlight.cpp $(top_srcdir)/include/Inventor/nodes/SoLocateHighlight.h \
@@ -261,7 +263,6 @@ INPUT                = \
 #	$(top_srcdir)/src/nodes/SoPackedColor.cpp $(top_srcdir)/include/Inventor/nodes/SoPackedColor.h \
 #	$(top_srcdir)/src/nodes/SoPathSwitch.cpp $(top_srcdir)/include/Inventor/nodes/SoPathSwitch.h \
 #	$(top_srcdir)/src/nodes/SoPickStyle.cpp $(top_srcdir)/include/Inventor/nodes/SoPickStyle.h \
-#	$(top_srcdir)/src/nodes/SoPointLight.cpp $(top_srcdir)/include/Inventor/nodes/SoPointLight.h \
 #	$(top_srcdir)/src/nodes/SoPointSet.cpp $(top_srcdir)/include/Inventor/nodes/SoPointSet.h \
 #	$(top_srcdir)/src/nodes/SoPolygonOffset.cpp $(top_srcdir)/include/Inventor/nodes/SoPolygonOffset.h \
 #	$(top_srcdir)/src/nodes/SoProfile.cpp $(top_srcdir)/include/Inventor/nodes/SoProfile.h \
@@ -272,7 +273,6 @@ INPUT                = \
 #	$(top_srcdir)/src/nodes/SoSeparator.cpp $(top_srcdir)/include/Inventor/nodes/SoSeparator.h \
 #	$(top_srcdir)/src/nodes/SoShapeHints.cpp $(top_srcdir)/include/Inventor/nodes/SoShapeHints.h \
 #	$(top_srcdir)/src/nodes/SoSphere.cpp $(top_srcdir)/include/Inventor/nodes/SoSphere.h \
-#	$(top_srcdir)/src/nodes/SoSpotLight.cpp $(top_srcdir)/include/Inventor/nodes/SoSpotLight.h \
 #	$(top_srcdir)/src/nodes/SoSwitch.cpp $(top_srcdir)/include/Inventor/nodes/SoSwitch.h \
 #	$(top_srcdir)/src/nodes/SoText2.cpp $(top_srcdir)/include/Inventor/nodes/SoText2.h \
 #	$(top_srcdir)/src/nodes/SoText3.cpp $(top_srcdir)/include/Inventor/nodes/SoText3.h \

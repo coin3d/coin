@@ -49,8 +49,8 @@ public:
 
   SoGroup * copyChildren(void) const;
   virtual SoChildList * getChildren(void) const;
-  virtual void copyContents(const SoFieldContainer * fromFC,
-                            SbBool copyConnections);
+  virtual void copyContents(const SoFieldContainer * from,
+                            SbBool copyconnections);
 
 protected:
   virtual ~SoFile();
@@ -58,9 +58,7 @@ protected:
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
 
 private:
-  SbString path;
   class SoChildList * children;
-  SbBool readState;
 };
 
 #endif // !COIN_SOFILE_H

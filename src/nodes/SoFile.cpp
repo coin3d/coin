@@ -19,23 +19,30 @@
 
 /*!
   \class SoFile SoFile.h Inventor/nodes/SoFile.h
-  \brief The SoFile class ...
+  \brief The SoFile class is node container for another model file.
   \ingroup nodes
 
-  FIXME: write class doc
+  This node provides a way to split your models into a set of
+  "component" models to include into larger "master" files.
+
+  Just provide the name of the model file to include in the
+  SoFile::name field, and it will automatically be loaded and have its
+  nodes inserted into the scenegraph at the point of the SoFile node.
 */
 
 #include <Inventor/nodes/SoFile.h>
-#include <coindefs.h> // COIN_STUB()
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
+#include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/misc/SoChildList.h>
-#include <Inventor/actions/SoCallbackAction.h>
+#include <coindefs.h> // COIN_STUB()
 
 /*!
   \var SoSFString SoFile::name
-  FIXME: write documentation for field
+
+  Filename for model file to insert in the scenegraph at the location
+  of the SoFile node.
 */
 
 static const char UNDEFINED_FILE[] = "<Undefined file>";
@@ -47,7 +54,7 @@ SO_NODE_SOURCE(SoFile);
 /*!
   Constructor.
 */
-SoFile::SoFile()
+SoFile::SoFile(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoFile);
 
@@ -64,38 +71,28 @@ SoFile::~SoFile()
   delete this->children;
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoFile class. This includes setting up the
-  type system, among other things.
-*/
+// Doc from superclass.
 void
 SoFile::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoFile);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoFile::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  this->children->traverse((SoAction *)action);
+  SoFile::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoFile::GLRender(SoGLRenderAction * action)
 {
-  SoFile::doAction((SoAction*)action);
+  SoFile::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 SbBool
 SoFile::readInstance(SoInput * in, unsigned short flags)
 {
@@ -126,39 +123,32 @@ SoFile::readInstance(SoInput * in, unsigned short flags)
 }
 
 /*!
-  FIXME: write function documentation
-*/
+  Returns a group node with a deep copy of the children of this node.
+ */
 SoGroup *
 SoFile::copyChildren(void) const
 {
-  COIN_STUB();
+  COIN_STUB(); // FIXME
   return NULL;
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 SoChildList *
-SoFile::getChildren() const
+SoFile::getChildren(void) const
 {
   return this->children;
 }
 
-
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoFile::doAction(SoAction *action)
+SoFile::doAction(SoAction * action)
 {
   this->children->traverse((SoAction *)action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoFile::callback(SoCallbackAction *action)
+SoFile::callback(SoCallbackAction * action)
 {
   action->invokePreCallbacks(this);
   if (action->getCurrentResponse() == SoCallbackAction::CONTINUE) {
@@ -167,48 +157,37 @@ SoFile::callback(SoCallbackAction *action)
   }
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoFile::getMatrix(SoGetMatrixAction *action)
+SoFile::getMatrix(SoGetMatrixAction * action)
 {
-  SoFile::doAction((SoAction*)action);
+  SoFile::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoFile::handleEvent(SoHandleEventAction *action)
+SoFile::handleEvent(SoHandleEventAction * action)
 {
-  SoFile::doAction((SoAction*)action);
+  SoFile::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoFile::pick(SoPickAction *action)
+SoFile::pick(SoPickAction * action)
 {
-  SoFile::doAction((SoAction*)action);
+  SoFile::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoFile::getPrimitiveCount(SoGetPrimitiveCountAction *action)
+SoFile::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-  SoFile::doAction((SoAction*)action);
+  SoFile::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoFile::copyContents(const SoFieldContainer * /* fromFC */,
-                     SbBool /* copyConnections */)
+SoFile::copyContents(const SoFieldContainer * from, SbBool copyconnections)
 {
-  COIN_STUB();
+  COIN_STUB(); // FIXME
 }

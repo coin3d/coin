@@ -19,19 +19,23 @@
 
 /*!
   \class SoInfo SoInfo.h Inventor/nodes/SoInfo.h
-  \brief The SoInfo class ...
+  \brief The SoInfo class is a node for holding text information.
   \ingroup nodes
 
-  FIXME: write class doc
+  This is simply a placeholder for textual information about a
+  scene. Typically used for specifying author and copyright
+  information in Inventor format files, but can also be used for other
+  purposes, of course.
+
+  SoInfo nodes does not influence traversal in any way for any of the
+  builtin actions.
 */
 
 #include <Inventor/nodes/SoInfo.h>
 
-
-
 /*!
   \var SoSFString SoInfo::string
-  FIXME: write documentation for field
+  Text information.
 */
 
 // *************************************************************************
@@ -41,7 +45,7 @@ SO_NODE_SOURCE(SoInfo);
 /*!
   Constructor.
 */
-SoInfo::SoInfo()
+SoInfo::SoInfo(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoInfo);
 
@@ -55,11 +59,7 @@ SoInfo::~SoInfo()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoInfo class. This includes setting up the
-  type system, among other things.
-*/
+// Doc from superclass.
 void
 SoInfo::initClass(void)
 {

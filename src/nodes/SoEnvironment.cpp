@@ -19,63 +19,87 @@
 
 /*!
   \class SoEnvironment SoEnvironment.h Inventor/nodes/SoEnvironment.h
-  \brief The SoEnvironment class ...
+  \brief The SoEnvironment class is a node for specifying global rendering parameters.
   \ingroup nodes
 
-  FIXME: write class doc
+  This node type provides the application programmer with the ability
+  to set global parameters influencing lighting and fog.
 */
 
 #include <Inventor/nodes/SoEnvironment.h>
 
+#include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLEnvironmentElement.h>
-#include <Inventor/actions/SoCallbackAction.h>
 
 /*!
   \enum SoEnvironment::FogType
-  FIXME: write documentation for enum
+  Enumeration of available types of fog.
 */
 /*!
   \var SoEnvironment::FogType SoEnvironment::NONE
-  FIXME: write documentation for enum definition
+
+  No fog. Visibility will be equal for all objects, independent of
+  distance to camera.
 */
 /*!
   \var SoEnvironment::FogType SoEnvironment::HAZE
-  FIXME: write documentation for enum definition
+
+  Fog where visibility will decrease linearly with distance to camera.
 */
 /*!
   \var SoEnvironment::FogType SoEnvironment::FOG
-  FIXME: write documentation for enum definition
+
+  Fog where visibility will decrease exponentially with distance to
+  camera.
 */
 /*!
   \var SoEnvironment::FogType SoEnvironment::SMOKE
-  FIXME: write documentation for enum definition
+
+  Fog where visibility will decrease exponentially with the square of
+  the distance to camera (simulating really thick fog).
 */
 
 
 /*!
   \var SoSFFloat SoEnvironment::ambientIntensity
-  FIXME: write documentation for field
+
+  A global ambient value for the light intensity for the complete
+  scene. This will provide some light even when there are no light
+  sources defined for the scene.
+
+  Valid values is from 0.0 (no ambient light) to 1.0 (full ambient
+  light intensity). Default value is 0.2.
 */
 /*!
   \var SoSFColor SoEnvironment::ambientColor
-  FIXME: write documentation for field
+
+  The color of the global ambient light. Defaults to full intensity
+  white.
 */
 /*!
   \var SoSFVec3f SoEnvironment::attenuation
-  FIXME: write documentation for field
+
+  Light attenuation coefficients.
 */
 /*!
   \var SoSFEnum SoEnvironment::fogType
-  FIXME: write documentation for field
+
+  The fog model. See SoEnvironment::FoType.
 */
 /*!
   \var SoSFColor SoEnvironment::fogColor
-  FIXME: write documentation for field
+
+  Color of fog. Defaults to full intensity white.
 */
 /*!
   \var SoSFFloat SoEnvironment::fogVisibility
-  FIXME: write documentation for field
+
+  The "cut-off" distance from the camera where objects will be totally
+  obscured by fog. If set to 0.0, the far plane distance will be used
+  instead.
+
+  Default value is 0.0.
 */
 
 
@@ -111,24 +135,17 @@ SoEnvironment::~SoEnvironment()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoEnvironment class. This includes setting up the
-  type system, among other things.
-*/
+// Doc from superclass.
 void
 SoEnvironment::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoEnvironment);
 
   SO_ENABLE(SoGLRenderAction, SoGLEnvironmentElement);
-
   SO_ENABLE(SoCallbackAction, SoEnvironmentElement);
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc from superclass.
 void
 SoEnvironment::GLRender(SoGLRenderAction * action)
 {
@@ -142,9 +159,7 @@ SoEnvironment::GLRender(SoGLRenderAction * action)
                             fogVisibility.getValue());
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc from superclass.
 void
 SoEnvironment::callback(SoCallbackAction *action)
 {
@@ -157,4 +172,3 @@ SoEnvironment::callback(SoCallbackAction *action)
                             fogColor.getValue(),
                             fogVisibility.getValue());
 }
-
