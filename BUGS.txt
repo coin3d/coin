@@ -352,3 +352,33 @@
     mortene 20020813.
 
 =====================================================================
+
+017 If you drag one of the interaction tabs on an SoTabPlaneDragger
+    past the one on the opposite side (that is: so the scaleFactor in
+    that direction is close to 0.0), I can see 2 problems which are
+    both probably related to the same bug:
+
+        - the geometry "oscillates" around origo as long as the drag
+          operation is held
+
+        - if one releases the drag in this position, it's impossible
+          to grab one of the tabs again (and the geometry is placed
+          wrongly, use "View All" in an examiner viewer to see this)
+
+    For convenience, here's the (trivial) scenegraph one can use to
+    reproduce the problem in any viewer component:
+
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+    #Inventor V2.1 ascii
+
+    TabPlaneDragger { }
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+
+    I *guess* this should be fixed by placing some lower bound on the
+    scalevector values, that somehow matches the lower reaches of
+    floating point accuracy that we can still safely use without
+    getting the artifacts mentioned above.
+
+    mortene 20020813.
+
+=====================================================================
