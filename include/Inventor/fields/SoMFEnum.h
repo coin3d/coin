@@ -47,4 +47,16 @@ protected:
   SbName * enumNames;
 };
 
+
+// Macro definitions. See comment in SoSFEnum.h.
+
+#include <Inventor/fields/SoSFEnum.h> // PRIVATE_SOENUM_SET_TYPE()
+
+#define SO_ENGINE_SET_MF_ENUM_TYPE(_fieldname_, _enumtype_) \
+  PRIVATE_SOENUM_SET_TYPE(_fieldname_, _enumtype_, inputdata)
+
+#define SO_NODE_SET_MF_ENUM_TYPE(_fieldname_, _enumtype_) \
+  PRIVATE_SOENUM_SET_TYPE(_fieldname_, _enumtype_, classfielddata)
+
+
 #endif // !COIN_SOMFENUM_H

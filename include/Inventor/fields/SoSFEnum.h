@@ -47,21 +47,27 @@ protected:
 };
 
 
-// This macro is only called from node classes which uses SoSFEnum
-// instances. By putting this macro in this headerfile instead of
-// nodes/SoSubNode.h, we avoid making node classes including
-// SoSubNode.h (which is basically all of them) dependent on
-// SoSFEnum.h.
+// These macros are called from both node and engine classes which
+// uses SoSFEnum instances, so we put them here instead of in
+// SoSub[Node|Engine].h.
 
-#define SO_NODE_SET_SF_ENUM_TYPE(_fieldname_, _enumtype_) \
+#define PRIVATE_SOENUM_SET_TYPE(_fieldname_, _enumtype_, _fieldstorage_) \
   do { \
     /* Don't need to worry about name clashes, as we're inside our own scope. */ \
-    int enum_num; \
-    const int * enum_vals; \
-    const SbName * enum_names; \
-    classfielddata->getEnumData(SO__QUOTE(_enumtype_), \
-                                enum_num, enum_vals, enum_names); \
-    this->_fieldname_.setEnums(enum_num, enum_vals, enum_names); \
+    int num; \
+    const int * values; \
+    const SbName * names; \
+    _fieldstorage_->getEnumData(SO__QUOTE(_enumtype_), num, values, names); \
+    this->_fieldname_.setEnums(num, values, names); \
   } while (FALSE)
+
+
+#define SO_ENGINE_SET_SF_ENUM_TYPE(_fieldname_, _enumtype_) \
+  PRIVATE_SOENUM_SET_TYPE(_fieldname_, _enumtype_, inputdata)
+
+#define SO_NODE_SET_SF_ENUM_TYPE(_fieldname_, _enumtype_) \
+  PRIVATE_SOENUM_SET_TYPE(_fieldname_, _enumtype_, classfielddata)
+
+
 
 #endif // !COIN_SOSFENUM_H
