@@ -34,6 +34,15 @@
   de \e facto standard 3D graphics API for complex visualization
   applications.
 
+  For an excellently written, detailed, tutorial-style introduction to
+  the Open Inventor API used by the Coin library, we highly recommend
+  the book «The Inventor Mentor» (subtitle: «Programming
+  Object-Oriented 3D Graphics with Open Inventor»), ISBN
+  0-201-62495-8. It walks the Coin application programmer through all
+  the principles applied in the API, richly illustrated and with
+  numerous, well documented code examples.
+
+
   Systems in Motion is working on providing libraries for interfacing
   Coin with a wide range of windowing systems and GUI toolkits.
   <ol>
@@ -48,11 +57,11 @@
   See <http://www.coin3d.org/> for more information about Coin and the
   GUI toolkit libraries.
 
-  <b>IMPORTANT NOTE: the documentation for the Coin library is still a
-  work-in-progress.</b> Although most classes have been documented
-  properly, there are still "holes" in the documentation for certain
-  classes.  Complete documentation for the Inventor API can be found
-  on the web-pages of Template Graphics Systems at <a
+  <b>IMPORTANT NOTE: the online documentation for the Coin library is
+  still a work-in-progress.</b> Although most classes have been
+  documented properly, there are still "holes" in the documentation
+  for certain classes.  Complete documentation for the Inventor API
+  can be found on the web-pages of Template Graphics Systems at <a
   href="http://www.tgs.com/">http://www.tgs.com/</a>, just follow the
   links to the "Open Inventor C++" classes documentation.
 */
