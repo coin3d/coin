@@ -217,12 +217,18 @@ cvs-update:
 # **************************************************************************
 # misc rules for automatic debian packaging.  main: `debian-packages'
 
-libcoin$(COIN_MAJOR_VERSION)-$(VERSION):
-	if test -d libcoin$(COIN_MAJOR_VERSION)-$(VERSION); then \
-	  rm -rf libcoin$(COIN_MAJOR_VERSION)-$(VERSION); \
+if DEB_PACKAGEABLE
+
+coin-$(VERSION):
+	if test -d coin-$(VERSION); then \
+	  rm -rf coin-$(VERSION); \
 	else :; fi;
 	$(MAKE) distdir;
-	mv Coin-$(VERSION) libcoin$(COIN_MAJOR_VERSION)-$(VERSION)
+	mv Coin-$(VERSION) coin-$(VERSION)
+
+coin_$(VERSION).orig.tar.gz:
+	$(MAKE) dist
+	mv Coin-$(VERSION).tar.gz coin_$(VERSION).orig.tar.gz
 
 debian-files: $(DEBIAN_DIST_DIR)
 	test -d $(DEBIAN_DIST_DIR)/debian || mkdir $(DEBIAN_DIST_DIR)/debian;
@@ -238,16 +244,15 @@ debian-files: $(DEBIAN_DIST_DIR)
 	done;
 
 debian-control:
-	distdir=libcoin$(COIN_MAJOR_VERSION)-$(VERSION); \
+	distdir=coin-$(VERSION); \
 	$(MAKE) DEBIAN_DIST_DIR=$$distdir debian-files;
 
-debian-setup: libcoin$(COIN_MAJOR_VERSION)-$(VERSION) debian-control
+debian-setup: coin-$(VERSION) debian-control
 
-debian-packages: debian-setup
-	cd libcoin$(COIN_MAJOR_VERSION)-$(VERSION); \
-	./debian/rules source;
-	cd libcoin$(COIN_MAJOR_VERSION)-$(VERSION); \
-	./debian/rules binary;
+debian-packages: debian-setup coin_$(VERSION).orig.tar.gz
+	@( cd coin-$(VERSION); dpkg-buildpackage )
+
+endif
 
 # **************************************************************************
 # misc rules for automatic Microsoft Windows packaging.
