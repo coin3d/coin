@@ -510,35 +510,34 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
 
-  if (SoDrawStyleElement::get(state) == SoDrawStyleElement::INVISIBLE)
-    return FALSE;
+  const SoShapeStyleElement * shapestyle = SoShapeStyleElement::get(state);
+  unsigned int shapestyleflags = shapestyle->getFlags();
 
-  if (!state->isCacheOpen() && !SoCullElement::completelyInside(state)) {
-    if (PRIVATE(this)->bboxcache && PRIVATE(this)->bboxcache->isValid(state)) {
+  if (shapestyleflags & SoShapeStyleElement::INVISIBLE)
+    return FALSE;
+  
+  if (PRIVATE(this)->bboxcache && !state->isCacheOpen() && !SoCullElement::completelyInside(state)) {
+    if (PRIVATE(this)->bboxcache->isValid(state)) {
       if (SoCullElement::cullTest(state, PRIVATE(this)->bboxcache->getProjectedBox())) {
         return FALSE;
       }
     }
   }
-
-  SbBool transparent = SoTextureImageElement::containsTransparency(state);
-  if (!transparent) {
-    transparent = SoLazyElement::getInstance(state)->isTransparent();
-  }
-
+  
+  SbBool transparent = (shapestyleflags & (SoShapeStyleElement::TRANSP_TEXTURE|
+                                           SoShapeStyleElement::TRANSP_MATERIAL)) != 0;
+                        
   if (action->handleTransparency(transparent))
     return FALSE;
-
-  if (SoComplexityTypeElement::get(state) ==
-      SoComplexityTypeElement::BOUNDING_BOX) {
-
-
+  
+  if (shapestyleflags & SoShapeStyleElement::BBOXCMPLX) {
     this->GLRenderBoundingBox(action);
     return FALSE;
   }
 
   // test if we should sort triangles before rendering
   if (transparent &&
+      // FIXME: test transparency type in SoShapeStyleElement instead? pederb, 2004-01-10
       ((action->getTransparencyType() ==
         SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND) ||
        (action->getTransparencyType() ==
@@ -563,50 +562,52 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
     shapedata->trianglesort->endShape(state, mb); // this will render the triangles
     return FALSE; // tell shape _not_ to render
   }
-
-  SoGLTextureImageElement::Model model;
-  SbColor blendcolor;
-  SoGLImage * glimage = SoGLTextureImageElement::get(state, model, blendcolor);
-  if (glimage &&
-      glimage->isOfType(SoGLBigImage::getClassTypeId()) &&
-      SoGLTextureEnabledElement::get(state)) {
-    
-    // don't attempt to cache bigimage shapes
-    if (state->isCacheOpen()) {
-      SoCacheElement::invalidate(state);
+  
+  if (shapestyleflags & SoShapeStyleElement::BIGIMAGE) {
+    SoGLTextureImageElement::Model model;
+    SbColor blendcolor;
+    SoGLImage * glimage = SoGLTextureImageElement::get(state, model, blendcolor);
+    if (glimage &&
+        glimage->isOfType(SoGLBigImage::getClassTypeId()) &&
+        SoGLTextureEnabledElement::get(state)) {
+      
+      // don't attempt to cache bigimage shapes
+      if (state->isCacheOpen()) {
+        SoCacheElement::invalidate(state);
+      }
+      SoGLCacheContextElement::shouldAutoCache(state, 
+                                               SoGLCacheContextElement::DONT_AUTO_CACHE);
+      
+      soshape_staticdata * shapedata = soshape_get_staticdata();
+      
+      // do this before generating triangles to get correct
+      // material for lines and point (only triangles are handled for now).
+      SoMaterialBundle mb(action);
+      mb.sendFirst();
+      shapedata->currentbundle = &mb;
+      
+      SoGLBigImage * big = (SoGLBigImage*) glimage;
+      
+      shapedata->rendermode = BIGTEXTURE;
+      
+      soshape_bigtexture * bigtex = soshape_get_bigtexture(shapedata, action->getCacheContext());
+      shapedata->currentbigtexture = bigtex;
+      bigtex->beginShape(big, SoTextureQualityElement::get(state));
+      this->generatePrimitives(action);
+      // endShape() returns whether more/less detailed textures need to be
+      // fetched. We force a redraw if this is needed.
+      if (bigtex->endShape(state, this, mb) == FALSE) {
+        action->getCurPath()->getHead()->touch();
+      }
+      shapedata->rendermode = NORMAL;
+      
+      return FALSE;
     }
-    SoGLCacheContextElement::shouldAutoCache(state, 
-                                             SoGLCacheContextElement::DONT_AUTO_CACHE);
-    
-    soshape_staticdata * shapedata = soshape_get_staticdata();
-
-    // do this before generating triangles to get correct
-    // material for lines and point (only triangles are handled for now).
-    SoMaterialBundle mb(action);
-    mb.sendFirst();
-    shapedata->currentbundle = &mb;
-
-    SoGLBigImage * big = (SoGLBigImage*) glimage;
-
-    shapedata->rendermode = BIGTEXTURE;
-
-    soshape_bigtexture * bigtex = soshape_get_bigtexture(shapedata, action->getCacheContext());
-    shapedata->currentbigtexture = bigtex;
-    bigtex->beginShape(big, SoTextureQualityElement::get(state));
-    this->generatePrimitives(action);
-    // endShape() returns whether more/less detailed textures need to be
-    // fetched. We force a redraw if this is needed.
-    if (bigtex->endShape(state, this, mb) == FALSE) {
-      action->getCurPath()->getHead()->touch();
-    }
-    shapedata->rendermode = NORMAL;
-
-    return FALSE;
   }
 
   const cc_glglue * glue = sogl_glue_instance(state);
 
-  if (SoBumpMapElement::get(state)) {
+  if (shapestyleflags & SoShapeStyleElement::BUMPMAP) {
     const SoNodeList & lights = SoLightElement::getLights(state);
     if (lights.getLength()) {
 
@@ -796,6 +797,9 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
     SoGLCacheContextElement::shouldAutoCache(state, 
                                              SoGLCacheContextElement::DONT_AUTO_CACHE);
     int arrays = SoPrimitiveVertexCache::NORMAL|SoPrimitiveVertexCache::COLOR;
+    SoGLTextureImageElement::Model model;
+    SbColor blendcolor;
+    SoGLImage * glimage = SoGLTextureImageElement::get(state, model, blendcolor);
     if (glimage) arrays |= SoPrimitiveVertexCache::TEXCOORD;
     SoMaterialBundle mb(action);
     mb.sendFirst();

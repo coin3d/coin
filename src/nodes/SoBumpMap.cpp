@@ -76,6 +76,7 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/elements/SoBumpMapElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/lists/SbStringList.h>
@@ -329,9 +330,11 @@ SoBumpMap::GLRender(SoGLRenderAction * action)
         PRIVATE(this)->glimagevalid = TRUE;
       }
       SoBumpMapElement::set(state, this, PRIVATE(this)->glimage);
+      SoShapeStyleElement::setBumpmapEnabled(state, TRUE);
     }
     else {
       SoBumpMapElement::set(state, this, NULL);
+      SoShapeStyleElement::setBumpmapEnabled(state, FALSE);
     }
   }
   else {

@@ -39,18 +39,16 @@
 #include <coindefs.h> // COIN_OBSOLETED()
 #include <assert.h>
 
-#define FLAG_TRANSPARENCYTYPE_MASK 0x000f
-#define FLAG_LIGHTING              0x0010
-#define FLAG_TEXENABLED            0x0020
-#define FLAG_TEXFUNC               0x0040
-#define FLAG_BBOXCMPLX             0x0080
-#define FLAG_INVISIBLE             0x0100
-#define FLAG_ABORTCB               0x0200
-#define FLAG_SCREENDOOR            0x0400
-#define FLAG_OVERRIDE              0x0800
-#define FLAG_TEX3ENABLED           0x1000
 
-#define FLAG_DELAYMASK (FLAG_BBOXCMPLX|FLAG_INVISIBLE|FLAG_ABORTCB)
+#define DELAYRENDER_MASK \
+  (SoShapeStyleElement::BBOXCMPLX| \
+   SoShapeStyleElement::INVISIBLE| \
+   SoShapeStyleElement::ABORTCB|   \
+   SoShapeStyleElement::BIGIMAGE|  \
+   SoShapeStyleElement::BUMPMAP|   \
+   SoShapeStyleElement::VERTEXARRAY)
+
+#define TRANSPTYPE_MASK 0x000ff
 
 SO_ELEMENT_SOURCE(SoShapeStyleElement);
 
@@ -78,7 +76,7 @@ void
 SoShapeStyleElement::init(SoState * state)
 {
   inherited::init(state);
-  this->flags = FLAG_LIGHTING;
+  this->flags = LIGHTING;
 }
 
 //! FIXME: write doc.
@@ -136,13 +134,11 @@ SoShapeStyleElement::setDrawStyle(SoState * const state,
                                   const int32_t value)
 {
   SoShapeStyleElement * elem = getElement(state);
-  if (elem) {
-    if (value == (int32_t)SoDrawStyleElement::INVISIBLE) {
-      elem->flags |= FLAG_INVISIBLE;
-    }
-    else {
-      elem->flags &= ~FLAG_INVISIBLE;
-    }
+  if (value == (int32_t)SoDrawStyleElement::INVISIBLE) {
+    elem->flags |= INVISIBLE;
+  }
+  else {
+    elem->flags &= ~INVISIBLE;
   }
 }
 
@@ -153,13 +149,11 @@ SoShapeStyleElement::setComplexityType(SoState * const state,
                                        const int32_t value)
 {
   SoShapeStyleElement * elem = getElement(state);
-  if (elem) {
-    if (value == (int32_t) SoComplexityTypeElement::BOUNDING_BOX) {
-      elem->flags |= FLAG_BBOXCMPLX;
-    }
-    else {
-      elem->flags &= ~FLAG_BBOXCMPLX;
-    }
+  if (value == (int32_t) SoComplexityTypeElement::BOUNDING_BOX) {
+    elem->flags |= BBOXCMPLX;
+  }
+  else {
+    elem->flags &= ~BBOXCMPLX;
   }
 }
 
@@ -169,12 +163,11 @@ void
 SoShapeStyleElement::setTransparencyType(SoState * const state,
                                          const int32_t value)
 {
-  assert(value >= 0 && value < FLAG_TRANSPARENCYTYPE_MASK);
   SoShapeStyleElement * elem = getElement(state);
-  if (elem) {
-    elem->flags &= ~FLAG_TRANSPARENCYTYPE_MASK;
-    elem->flags |= value;
-  }
+
+  elem->flags &= ~TRANSPTYPE_MASK;
+  assert(value <= TRANSPTYPE_MASK);
+  elem->flags |= (value & TRANSPTYPE_MASK);
 }
 
 //! FIXME: write doc.
@@ -184,13 +177,11 @@ SoShapeStyleElement::setTextureEnabled(SoState * const state,
                                        const SbBool value)
 {
   SoShapeStyleElement * elem = getElement(state);
-  if (elem) {
-    if (value) {
-      elem->flags |= FLAG_TEXENABLED;
-    }
-    else {
-      elem->flags &= ~FLAG_TEXENABLED;
-    }
+  if (value) {
+    elem->flags |= TEXENABLED;
+  }
+  else {
+    elem->flags &= ~TEXENABLED;
   }
 }
 
@@ -206,13 +197,11 @@ SoShapeStyleElement::setTexture3Enabled(SoState * const state,
                                        const SbBool value)
 {
   SoShapeStyleElement * elem = getElement(state);
-  if (elem) {
-    if (value) {
-      elem->flags |= FLAG_TEX3ENABLED;
-    }
-    else {
-      elem->flags &= ~FLAG_TEX3ENABLED;
-    }
+  if (value) {
+    elem->flags |= TEX3ENABLED;
+  }
+  else {
+    elem->flags &= ~TEX3ENABLED;
   }
 }
 
@@ -223,13 +212,11 @@ SoShapeStyleElement::setTextureFunction(SoState * const state,
                                         const SbBool value)
 {
   SoShapeStyleElement * elem = getElement(state);
-  if (elem) {
-    if (value) {
-      elem->flags |= FLAG_TEXFUNC;
-    }
-    else {
-      elem->flags &= ~FLAG_TEXFUNC;
-    }
+  if (value) {
+    elem->flags |= TEXFUNC;
+  }
+  else {
+    elem->flags &= ~TEXFUNC;
   }
 }
 
@@ -240,13 +227,11 @@ SoShapeStyleElement::setLightModel(SoState * const state,
                                    const int32_t value)
 {
   SoShapeStyleElement * elem = getElement(state);
-  if (elem) {
-    if (value != (int32_t) SoLazyElement::BASE_COLOR) {
-      elem->flags |= FLAG_LIGHTING;
-    }
-    else {
-      elem->flags &= ~FLAG_LIGHTING;
-    }
+  if (value != (int32_t) SoLazyElement::BASE_COLOR) {
+    elem->flags |= LIGHTING;
+  }
+  else {
+    elem->flags &= ~LIGHTING;
   }
 }
 
@@ -257,13 +242,11 @@ SoShapeStyleElement::setOverrides(SoState * const state,
                                   const SbBool value)
 {
   SoShapeStyleElement * elem = getElement(state);
-  if (elem) {
-    if (value) {
-      elem->flags |= FLAG_OVERRIDE;
-    }
-    else {
-      elem->flags &= ~FLAG_OVERRIDE;
-    }
+  if (value) {
+    elem->flags |= OVERRIDE;
+  }
+  else {
+    elem->flags &= ~OVERRIDE;
   }
 }
 
@@ -273,8 +256,7 @@ SbBool
 SoShapeStyleElement::isScreenDoor(SoState * const state)
 {
   const SoShapeStyleElement * elem = getConstElement(state);
-  int val = elem->flags & FLAG_TRANSPARENCYTYPE_MASK;
-  return val == (int) SoGLRenderAction::SCREEN_DOOR;
+  return ((elem->flags & TRANSPTYPE_MASK) == SoGLRenderAction::SCREEN_DOOR);
 }
 
 /*!
@@ -288,7 +270,7 @@ int
 SoShapeStyleElement::getTransparencyType(SoState * const state)
 {
   const SoShapeStyleElement * elem = getConstElement(state);
-  return (elem->flags & FLAG_TRANSPARENCYTYPE_MASK);
+  return (int) (elem->flags & TRANSPTYPE_MASK);
 }
 
 /*!
@@ -298,7 +280,8 @@ SoShapeStyleElement::getTransparencyType(SoState * const state)
 SbBool
 SoShapeStyleElement::mightNotRender() const
 {
-  return (this->flags & FLAG_DELAYMASK) != 0;
+  if ((this->flags & DELAYRENDER_MASK) != 0) return TRUE;
+  return FALSE;
 }
 
 /*!
@@ -308,7 +291,7 @@ SoShapeStyleElement::mightNotRender() const
 SbBool
 SoShapeStyleElement::needNormals() const
 {
-  return (this->flags & FLAG_LIGHTING) != 0;
+  return (this->flags & LIGHTING) != 0;
 }
 
 /*!
@@ -318,7 +301,7 @@ SoShapeStyleElement::needNormals() const
 SbBool
 SoShapeStyleElement::needTexCoords(void) const
 {
-  return (this->flags&(FLAG_TEXENABLED|FLAG_TEX3ENABLED)) != 0;
+  return (this->flags&(TEXENABLED|TEX3ENABLED)) != 0;
 }
 
 /*!
@@ -337,7 +320,7 @@ SoShapeStyleElement::getRenderCaseMask(void) const
 SbBool 
 SoShapeStyleElement::isTextureFunction(void) const
 {
-  return (this->flags&FLAG_TEXFUNC) != 0;
+  return (this->flags&TEXFUNC) != 0;
 }
 
 /*!
@@ -359,14 +342,103 @@ SoShapeStyleElement::getConstElement(SoState * const state)
     SoElement::getConstElement(state, classStackIndex);
 }
 
-#undef FLAG_LIGHTING
-#undef FLAG_TEXENABLED
-#undef FLAG_TEXFUNC
-#undef FLAG_BBOXCMPLX
-#undef FLAG_INVISIBLE
-#undef FLAG_ABORTCB
-#undef FLAG_SCREENDOOR
-#undef FLAG_OVERRIDE
-#undef FLAG_TEX3ENABLED
-#undef FLAG_TEXMASK
-#undef FLAG_DELAYMASK
+/*!
+  Sets bumpmap enabled.
+  
+  \since Coin 2.4
+*/
+void 
+SoShapeStyleElement::setBumpmapEnabled(SoState * state, const SbBool value)
+{
+  SoShapeStyleElement * elem = getElement(state);
+  if (value) {
+    elem->flags |= BUMPMAP;
+  }
+  else {
+    elem->flags &= ~BUMPMAP;
+  }
+}
+
+/*!
+  Sets bigimage enabled.
+  
+  \since Coin 2.4
+*/
+void 
+SoShapeStyleElement::setBigImageEnabled(SoState * state, const SbBool value)
+{
+  SoShapeStyleElement * elem = getElement(state);
+  if (value) {
+    elem->flags |= BIGIMAGE;
+  }
+  else {
+    elem->flags &= ~BIGIMAGE;
+  }
+}
+
+/*!
+  Sets if vertex array rendering might be used.
+  
+  \since Coin 2.4
+*/
+void 
+SoShapeStyleElement::setVertexArrayRendering(SoState * state, const SbBool value)
+{
+  SoShapeStyleElement * elem = getElement(state);
+  if (value) {
+    elem->flags |= VERTEXARRAY;
+  }
+  else {
+    elem->flags &= ~VERTEXARRAY;
+  }
+}
+
+/*!
+  Sets material transparency.
+  
+  \since Coin 2.4
+*/
+void 
+SoShapeStyleElement::setTransparentMaterial(SoState * state, const SbBool value)
+{
+  SoShapeStyleElement * elem = getElement(state);
+  if (value) {
+    elem->flags |= TRANSP_TEXTURE;
+  }
+  else {
+    elem->flags &= ~TRANSP_TEXTURE;
+  }
+}
+
+/*!
+  Sets texture transparency.
+  
+  \since Coin 2.4
+*/
+void 
+SoShapeStyleElement::setTransparentTexture(SoState * state, const SbBool value)
+{
+  SoShapeStyleElement * elem = getElement(state);
+  if (value) {
+    elem->flags |= TRANSP_MATERIAL;
+  }
+  else {
+    elem->flags &= ~TRANSP_MATERIAL;
+  }
+}
+
+/*!
+  Returns the state flags. Used internally to optimize rendering.
+
+  \ since Coin 2.4
+*/
+unsigned int 
+SoShapeStyleElement::getFlags(void) const
+{
+  return this->flags;
+}
+
+
+#undef DELAYRENDER_MASK
+#undef TRANSPTYPE_MASK
+

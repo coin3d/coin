@@ -208,6 +208,7 @@ SoLazyElement::setTransparency(SoState *state, SoNode *node, int32_t numvalues,
   else if (state->isCacheOpen()) {
     elem->lazyDidntSet(TRANSPARENCY_MASK);
   }
+  SoShapeStyleElement::setTransparentMaterial(state, elem->coinstate.istransparent);
   SoLazyElement::setAlphaTest(state, 
                               !elem->coinstate.istransparent && 
                               elem->coinstate.glimageusealphatest);
@@ -229,6 +230,7 @@ SoLazyElement::setPacked(SoState * state, SoNode * node,
   else if (state->isCacheOpen()) {
     elem->lazyDidntSet(TRANSPARENCY_MASK|DIFFUSE_MASK);
   }
+  SoShapeStyleElement::setTransparentMaterial(state, elem->coinstate.istransparent);
   SoLazyElement::setAlphaTest(state, 
                               !elem->coinstate.istransparent && 
                               elem->coinstate.glimageusealphatest);
@@ -698,6 +700,7 @@ SoLazyElement::setMaterials(SoState * state, SoNode *node, uint32_t bitmask,
     if (welem) elem = welem;
     elem->lazyDidntSet((~eltbitmask) & bitmask);
   }
+  SoShapeStyleElement::setTransparentMaterial(state, elem->coinstate.istransparent);
   SoLazyElement::setAlphaTest(state, 
                               !elem->coinstate.istransparent && 
                               elem->coinstate.glimageusealphatest);

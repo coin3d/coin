@@ -32,10 +32,12 @@
 #include <Inventor/elements/SoGLTextureImageElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/misc/SoGL.h> // GL wrapper.
 #include <Inventor/misc/SoGLImage.h>
+#include <Inventor/misc/SoGLBigImage.h>
 #include <Inventor/SbImage.h>
 #include <Inventor/C/tidbits.h>
 #include <stdlib.h>
@@ -141,7 +143,6 @@ SoGLTextureImageElement::set(SoState * const stateptr, SoNode * const node,
 {
   SoGLTextureImageElement * elem = (SoGLTextureImageElement*)
     stateptr->getElement(classStackIndex);
-  if (!elem) return;
 
   if (elem->glimage && elem->glimage->getImage()) elem->glimage->getImage()->readUnlock();
   if (image) {
@@ -163,6 +164,10 @@ SoGLTextureImageElement::set(SoState * const stateptr, SoNode * const node,
     elem->glimage = NULL;
     inherited::setDefault(stateptr, node);
   }
+  SoShapeStyleElement::setBigImageEnabled(stateptr,
+                                          image && image->isOfType(SoGLBigImage::getClassTypeId()));
+  SoShapeStyleElement::setTransparentTexture(stateptr, elem->hasTransparency());
+  
   elem->updateLazyElement();
 }
 

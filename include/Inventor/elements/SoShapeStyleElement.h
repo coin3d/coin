@@ -36,6 +36,24 @@ protected:
   virtual ~SoShapeStyleElement();
 
 public:
+
+  // flags used for optimized testing of features
+  enum Flags {
+    LIGHTING            = 0x000100,
+    TEXENABLED          = 0x000200,
+    TEXFUNC             = 0x000400,
+    BBOXCMPLX           = 0x000800,
+    INVISIBLE           = 0x001000,
+    ABORTCB             = 0x002000,
+    OVERRIDE            = 0x004000,
+    TEX3ENABLED         = 0x008000,
+    BIGIMAGE            = 0x010000,
+    BUMPMAP             = 0x020000,
+    VERTEXARRAY         = 0x040000,
+    TRANSP_TEXTURE      = 0x080000,
+    TRANSP_MATERIAL     = 0x100000
+  };
+
   virtual void init(SoState * state);
 
   virtual void push(SoState * state);
@@ -46,6 +64,7 @@ public:
 
   static const SoShapeStyleElement * get(SoState * const state);
 
+  unsigned int getFlags(void) const;
   SbBool mightNotRender(void) const;
   SbBool needNormals(void) const;
   SbBool needTexCoords(void) const;
@@ -66,6 +85,13 @@ public:
   static SbBool isScreenDoor(SoState * const state);
   static int getTransparencyType(SoState * const state);
   SbBool isTextureFunction(void) const;
+
+  static void setBumpmapEnabled(SoState * state, const SbBool value);
+  static void setBigImageEnabled(SoState * state, const SbBool value);
+  static void setVertexArrayRendering(SoState * state, const SbBool value);
+
+  static void setTransparentMaterial(SoState * state, const SbBool value);
+  static void setTransparentTexture(SoState * state, const SbBool value);
 
 private:
 
