@@ -80,12 +80,36 @@
 
 class SoIndexedNurbsCurveP {
 public:
+  SoIndexedNurbsCurveP(SoIndexedNurbsCurve * m)
+  {
+    this->owner = m;
+    this->nurbsrenderer = NULL;
+  }
+
+  ~SoIndexedNurbsCurveP()
+  {
+    if (this->nurbsrenderer) {
+      GLUWrapper()->gluDeleteNurbsRenderer(this->nurbsrenderer);
+    }
+  }
+
+  void * nurbsrenderer;
+  void doNurbs(SoAction * action, const SbBool glrender, const SbBool drawaspoints);
+
   static void APIENTRY tessBegin(int , void * data);
   static void APIENTRY tessTexCoord(float * texcoord, void * data);
   static void APIENTRY tessNormal(float * normal, void * data);
   static void APIENTRY tessVertex(float * vertex, void * data);
   static void APIENTRY tessEnd(void * data);
+
+private:
+  SoIndexedNurbsCurve * owner;
 };
+
+#undef PRIVATE
+#define PRIVATE(p) (p->pimpl)
+#undef PUBLIC
+#define PUBLIC(p) (p->owner)
 
 // *************************************************************************
 
@@ -102,7 +126,7 @@ SoIndexedNurbsCurve::SoIndexedNurbsCurve()
   SO_NODE_ADD_FIELD(coordIndex, (0));
   SO_NODE_ADD_FIELD(knotVector, (0));
 
-  this->nurbsrenderer = NULL;
+  PRIVATE(this) = new SoIndexedNurbsCurveP(this);
 }
 
 /*!
@@ -110,9 +134,7 @@ SoIndexedNurbsCurve::SoIndexedNurbsCurve()
 */
 SoIndexedNurbsCurve::~SoIndexedNurbsCurve()
 {
-  if (this->nurbsrenderer) {
-    GLUWrapper()->gluDeleteNurbsRenderer(this->nurbsrenderer);
-  }
+  delete PRIVATE(this);
 }
 
 // doc from parent
@@ -185,7 +207,7 @@ SoIndexedNurbsCurve::GLRender(SoGLRenderAction * action)
 
   // Create lazy element for GL_AUTO_NORMAL ?
   glEnable(GL_AUTO_NORMAL);
-  this->doNurbs(action, TRUE, SoDrawStyleElement::get(action->getState()) == SoDrawStyleElement::POINTS);
+  PRIVATE(this)->doNurbs(action, TRUE, SoDrawStyleElement::get(action->getState()) == SoDrawStyleElement::POINTS);
   glDisable(GL_AUTO_NORMAL);
 
   state->pop();
@@ -252,7 +274,7 @@ SoIndexedNurbsCurve::sendPrimitive(SoAction * ,  SoPrimitiveVertex *)
 void
 SoIndexedNurbsCurve::generatePrimitives(SoAction * action)
 {
-  this->doNurbs(action, FALSE, FALSE);
+  PRIVATE(this)->doNurbs(action, FALSE, FALSE);
 }
 
 // Documented in superclass.
@@ -275,7 +297,8 @@ typedef struct {
 } coin_inc_cbdata;
 
 void
-SoIndexedNurbsCurve::doNurbs(SoAction * action, const SbBool glrender, const SbBool drawaspoints)
+SoIndexedNurbsCurveP::doNurbs(SoAction * action,
+                              const SbBool glrender, const SbBool drawaspoints)
 {
   if (GLUWrapper()->available == 0 || !GLUWrapper()->gluNewNurbsRenderer) {
 #if COIN_DEBUG
@@ -311,7 +334,7 @@ SoIndexedNurbsCurve::doNurbs(SoAction * action, const SbBool glrender, const SbB
     if (!glrender) {
       GLUWrapper()->gluNurbsCallbackData(this->nurbsrenderer, &cbdata);
       cbdata.action = action;
-      cbdata.thisp = this;
+      cbdata.thisp = PUBLIC(this);
       cbdata.vertex.setNormal(SbVec3f(0.0f, 0.0f, 1.0f));
       cbdata.vertex.setMaterialIndex(0);
       cbdata.vertex.setTextureCoords(SbVec4f(0.0f, 0.0f, 0.0f, 1.0f));
@@ -320,13 +343,14 @@ SoIndexedNurbsCurve::doNurbs(SoAction * action, const SbBool glrender, const SbB
     }
   }
 
-  sogl_render_nurbs_curve(action, this, this->nurbsrenderer,
-                          this->numControlPoints.getValue(),
-                          this->knotVector.getValues(0),
-                          this->knotVector.getNum(),
+  sogl_render_nurbs_curve(action, PUBLIC(this), this->nurbsrenderer,
+                          PUBLIC(this)->numControlPoints.getValue(),
+                          PUBLIC(this)->knotVector.getValues(0),
+                          PUBLIC(this)->knotVector.getNum(),
                           glrender,
                           drawaspoints,
-                          this->coordIndex.getNum(), this->coordIndex.getValues(0));
+                          PUBLIC(this)->coordIndex.getNum(),
+                          PUBLIC(this)->coordIndex.getValues(0));
 }
 
 void APIENTRY
@@ -392,11 +416,3 @@ SoIndexedNurbsCurveP::tessEnd(void * data)
   coin_inc_cbdata * cbdata = (coin_inc_cbdata*) data;
   cbdata->thisp->endShape();
 }
-
-
-// These have been obsoleted, and removed in Coin-2.
-void SoIndexedNurbsCurve::tessBegin(int type, void * data) { assert(FALSE); }
-void SoIndexedNurbsCurve::tessTexCoord(float * texcoord, void * data) { assert(FALSE); }
-void SoIndexedNurbsCurve::tessNormal(float * normal, void * data) { assert(FALSE); }
-void SoIndexedNurbsCurve::tessVertex(float * vertex, void * data) { assert(FALSE); }
-void SoIndexedNurbsCurve::tessEnd(void * data) { assert(FALSE); }

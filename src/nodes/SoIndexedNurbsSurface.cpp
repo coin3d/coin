@@ -100,13 +100,37 @@
 // *************************************************************************
 
 class SoIndexedNurbsSurfaceP {
-public:
+public: 
+  SoIndexedNurbsSurfaceP(SoIndexedNurbsSurface * m)
+  {
+    this->owner = m;
+    this->nurbsrenderer = NULL;
+  }
+
+  ~SoIndexedNurbsSurfaceP()
+  {
+    if (this->nurbsrenderer) {
+      GLUWrapper()->gluDeleteNurbsRenderer(this->nurbsrenderer);
+    }
+  }
+
+  void * nurbsrenderer;
+  void doNurbs(SoAction * action, const SbBool glrender);
+
   static void APIENTRY tessBegin(int , void * data);
   static void APIENTRY tessTexCoord(float * texcoord, void * data);
   static void APIENTRY tessNormal(float * normal, void * data);
   static void APIENTRY tessVertex(float * vertex, void * data);
   static void APIENTRY tessEnd(void * data);
+
+private:
+  SoIndexedNurbsSurface * owner;
 };
+
+#undef PRIVATE
+#define PRIVATE(p) (p->pimpl)
+#undef PUBLIC
+#define PUBLIC(p) (p->owner)
 
 // *************************************************************************
 
@@ -130,7 +154,7 @@ SoIndexedNurbsSurface::SoIndexedNurbsSurface()
   SO_NODE_ADD_FIELD(sKnotVector, (0));
   SO_NODE_ADD_FIELD(tKnotVector, (0));
 
-  this->nurbsrenderer = NULL;
+  PRIVATE(this) = new SoIndexedNurbsSurfaceP(this);
 }
 
 /*!
@@ -138,9 +162,7 @@ SoIndexedNurbsSurface::SoIndexedNurbsSurface()
 */
 SoIndexedNurbsSurface::~SoIndexedNurbsSurface()
 {
-  if (this->nurbsrenderer) {
-    GLUWrapper()->gluDeleteNurbsRenderer(this->nurbsrenderer);
-  }
+  delete PRIVATE(this);
 }
 
 // doc from parent
@@ -201,7 +223,7 @@ SoIndexedNurbsSurface::GLRender(SoGLRenderAction * action)
   mb.sendFirst();
 
   glEnable(GL_AUTO_NORMAL);
-  this->doNurbs(action, TRUE);
+  PRIVATE(this)->doNurbs(action, TRUE);
   glDisable(GL_AUTO_NORMAL);
 
   SoState * state = action->getState();
@@ -268,7 +290,7 @@ SoIndexedNurbsSurface::sendPrimitive(SoAction * ,  SoPrimitiveVertex *)
 void
 SoIndexedNurbsSurface::generatePrimitives(SoAction * action)
 {
-  this->doNurbs(action, FALSE);
+  PRIVATE(this)->doNurbs(action, FALSE);
 }
 
 // Documented in superclass.
@@ -284,13 +306,13 @@ SoIndexedNurbsSurface::createTriangleDetail(SoRayPickAction * /* action */,
 
 
 void
-SoIndexedNurbsSurface::doNurbs(SoAction * action, const SbBool glrender)
+SoIndexedNurbsSurfaceP::doNurbs(SoAction * action, const SbBool glrender)
 {
   if (GLUWrapper()->available == 0 || !GLUWrapper()->gluNewNurbsRenderer) {
 #if COIN_DEBUG
     static int first = 1;
     if (first) {
-      SoDebugError::postInfo("SoIndexedNurbsCurve::doNurbs",
+      SoDebugError::postInfo("SoIndexedNurbsCurveP::doNurbs",
                              "Looks like your GLU library doesn't have NURBS "
                              "functionality");
       first = 0;
@@ -299,7 +321,7 @@ SoIndexedNurbsSurface::doNurbs(SoAction * action, const SbBool glrender)
     return;
   }
 
-  if (!this->coordIndex.getNum()) return;
+  if (!PUBLIC(this)->coordIndex.getNum()) return;
 
   if (this->nurbsrenderer == NULL) {
     this->nurbsrenderer = GLUWrapper()->gluNewNurbsRenderer();
@@ -322,7 +344,7 @@ SoIndexedNurbsSurface::doNurbs(SoAction * action, const SbBool glrender)
     if (!glrender) {
       GLUWrapper()->gluNurbsCallbackData(this->nurbsrenderer, &cbdata);
       cbdata.action = action;
-      cbdata.thisp = this;
+      cbdata.thisp = PUBLIC(this);
       cbdata.vertex.setNormal(SbVec3f(0.0f, 0.0f, 1.0f));
       cbdata.vertex.setMaterialIndex(0);
       cbdata.vertex.setTextureCoords(SbVec4f(0.0f, 0.0f, 0.0f, 1.0f));
@@ -332,8 +354,8 @@ SoIndexedNurbsSurface::doNurbs(SoAction * action, const SbBool glrender)
   }
 
   SbBool texindex =
-    this->textureCoordIndex.getNum() &&
-    this->textureCoordIndex[0] >= 0;
+    PUBLIC(this)->textureCoordIndex.getNum() &&
+    PUBLIC(this)->textureCoordIndex[0] >= 0;
 
   int displaymode = (int) GLU_FILL;
   if (glrender) {
@@ -351,24 +373,24 @@ SoIndexedNurbsSurface::doNurbs(SoAction * action, const SbBool glrender)
   }
   GLUWrapper()->gluNurbsProperty(this->nurbsrenderer, (GLenum) GLU_DISPLAY_MODE, displaymode);
 
-  sogl_render_nurbs_surface(action, this, this->nurbsrenderer,
-                            this->numUControlPoints.getValue(),
-                            this->numVControlPoints.getValue(),
-                            this->uKnotVector.getValues(0),
-                            this->vKnotVector.getValues(0),
-                            this->uKnotVector.getNum(),
-                            this->vKnotVector.getNum(),
-                            this->numSControlPoints.getValue(),
-                            this->numTControlPoints.getValue(),
-                            this->sKnotVector.getValues(0),
-                            this->tKnotVector.getValues(0),
-                            this->sKnotVector.getNum(),
-                            this->tKnotVector.getNum(),
+  sogl_render_nurbs_surface(action, PUBLIC(this), this->nurbsrenderer,
+                            PUBLIC(this)->numUControlPoints.getValue(),
+                            PUBLIC(this)->numVControlPoints.getValue(),
+                            PUBLIC(this)->uKnotVector.getValues(0),
+                            PUBLIC(this)->vKnotVector.getValues(0),
+                            PUBLIC(this)->uKnotVector.getNum(),
+                            PUBLIC(this)->vKnotVector.getNum(),
+                            PUBLIC(this)->numSControlPoints.getValue(),
+                            PUBLIC(this)->numTControlPoints.getValue(),
+                            PUBLIC(this)->sKnotVector.getValues(0),
+                            PUBLIC(this)->tKnotVector.getValues(0),
+                            PUBLIC(this)->sKnotVector.getNum(),
+                            PUBLIC(this)->tKnotVector.getNum(),
                             glrender,
-                            this->coordIndex.getNum(),
-                            this->coordIndex.getValues(0),
-                            texindex ? this->textureCoordIndex.getNum() : 0,
-                            texindex ? this->textureCoordIndex.getValues(0) : NULL);
+                            PUBLIC(this)->coordIndex.getNum(),
+                            PUBLIC(this)->coordIndex.getValues(0),
+                            texindex ? PUBLIC(this)->textureCoordIndex.getNum() : 0,
+                            texindex ? PUBLIC(this)->textureCoordIndex.getValues(0) : NULL);
 }
 
 void APIENTRY
@@ -436,10 +458,3 @@ SoIndexedNurbsSurfaceP::tessEnd(void * data)
   coin_ins_cbdata * cbdata = (coin_ins_cbdata*) data;
   cbdata->thisp->endShape();
 }
-
-// These have been obsoleted, and removed in Coin-2.
-void SoIndexedNurbsSurface::tessBegin(int type, void * data) { assert(FALSE); }
-void SoIndexedNurbsSurface::tessTexCoord(float * texcoord, void * data) { assert(FALSE); }
-void SoIndexedNurbsSurface::tessNormal(float * normal, void * data) { assert(FALSE); }
-void SoIndexedNurbsSurface::tessVertex(float * vertex, void * data) { assert(FALSE); }
-void SoIndexedNurbsSurface::tessEnd(void * data) { assert(FALSE); }
