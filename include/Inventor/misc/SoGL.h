@@ -80,6 +80,9 @@ void sogl_render_cube(const float width,
                       SoMaterialBundle * const material,
                       const unsigned int flags);
 
+void sogl_offscreencontext_callback(void (*cb)(void *, SoAction*),
+                                    void * closure);
+
 // nurbs rendering and tessellation
 void sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
                                void * nurbsrenderer,

@@ -46,6 +46,9 @@
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/nodes/SoProfile.h>
 #include <Inventor/nodes/SoShape.h>
+#include <Inventor/SoOffscreenRenderer.h>
+#include <Inventor/nodes/SoCallback.h>
+#include <Inventor/C/tidbits.h>
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
@@ -1725,6 +1728,72 @@ sogl_get_tmptexcoordlist(void)
 #endif // ! COIN_THREADSAFE
 }
 
+
+static void
+sogl_set_nurbs_complexity(SoAction * action, SoShape * shape, void * nurbsrenderer)
+{
+  SoState * state = action->getState();
+
+  switch (SoComplexityTypeElement::get(state)) {
+  case SoComplexityTypeElement::SCREEN_SPACE:
+    {
+      SbBox3f box;
+      SbVec3f center;
+      shape->computeBBox(action, box, center);
+      float diag;
+      { 
+        float dx, dy, dz;
+        box.getSize(dx, dy, dz);
+        diag = (float) sqrt(dx*dx+dy*dy+dz*dz);
+        if (diag == 0.0f) diag = 1.0f;
+      }
+      SbVec2s size;
+      SoShape::getScreenSize(state, box, size);
+      float maxpix = (float) SbMax(size[0], size[1]);
+      if (maxpix < 1.0f) maxpix = 1.0f;
+      float complexity = SoComplexityElement::get(state);
+      if (complexity < 0.0001f) complexity = 0.0001f;
+      complexity *= maxpix;
+      complexity = diag * 0.5f / complexity;
+
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_SAMPLING_METHOD,
+                                     GLU_OBJECT_PARAMETRIC_ERROR);
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_PARAMETRIC_TOLERANCE, 
+                                     complexity);
+      break;
+    }
+  case SoComplexityTypeElement::OBJECT_SPACE:
+    {
+      float diag;
+      {
+        SbBox3f box;
+        SbVec3f center;
+        shape->computeBBox(action, box, center);
+        float dx, dy, dz;
+        box.getSize(dx, dy, dz);
+        diag = (float) sqrt(dx*dx+dy*dy+dz*dz);
+        if (diag == 0.0f) diag = 1.0f;
+      }
+      float complexity = SoComplexityElement::get(state);
+      complexity *= complexity;
+      if (complexity < 0.0001f) complexity = 0.0001f;
+      complexity = diag * 0.01f / complexity;
+
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_SAMPLING_METHOD,
+                                     GLU_OBJECT_PARAMETRIC_ERROR);
+      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_PARAMETRIC_TOLERANCE, 
+                                     complexity);
+      break;
+    }
+  case SoComplexityTypeElement::BOUNDING_BOX:
+    assert(0 && "should never get here");
+    break;
+  default:
+    assert(0 && "unknown complexity type");
+    break;
+  }
+}
+
 void
 sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
                           void * nurbsrenderer,
@@ -1811,64 +1880,7 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
     ptr = (float*) tmpcoordlist->getArrayPtr();
   }
 
-  switch (SoComplexityTypeElement::get(state)) {
-  case SoComplexityTypeElement::SCREEN_SPACE:
-    {
-      SbBox3f box;
-      SbVec3f center;
-      shape->computeBBox(action, box, center);
-      float diag;
-      { 
-        float dx, dy, dz;
-        box.getSize(dx, dy, dz);
-        diag = (float) sqrt(dx*dx+dy*dy+dz*dz);
-        if (diag == 0.0f) diag = 1.0f;
-      }
-      SbVec2s size;
-      SoShape::getScreenSize(state, box, size);
-      float maxpix = (float) SbMax(size[0], size[1]);
-      if (maxpix < 1.0f) maxpix = 1.0f;
-      float complexity = SoComplexityElement::get(state);
-      if (complexity < 0.0001f) complexity = 0.0001f;
-      complexity *= maxpix;
-      complexity = diag * 0.5f / complexity;
-
-      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_SAMPLING_METHOD,
-                                     GLU_OBJECT_PARAMETRIC_ERROR);
-      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_PARAMETRIC_TOLERANCE, 
-                                     complexity);
-      break;
-    }
-  case SoComplexityTypeElement::OBJECT_SPACE:
-    {
-      float diag;
-      {
-        SbBox3f box;
-        SbVec3f center;
-        shape->computeBBox(action, box, center);
-        float dx, dy, dz;
-        box.getSize(dx, dy, dz);
-        diag = (float) sqrt(dx*dx+dy*dy+dz*dz);
-        if (diag == 0.0f) diag = 1.0f;
-      }
-      float complexity = SoComplexityElement::get(state);
-      complexity *= complexity;
-      if (complexity < 0.0001f) complexity = 0.0001f;
-      complexity = diag * 0.01f / complexity;
-
-      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_SAMPLING_METHOD,
-                                     GLU_OBJECT_PARAMETRIC_ERROR);
-      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_PARAMETRIC_TOLERANCE, 
-                                     complexity);
-      break;
-    }
-  case SoComplexityTypeElement::BOUNDING_BOX:
-    assert(0 && "should never get here");
-    break;
-  default:
-    assert(0 && "unknown complexity type");
-    break;
-  }
+  sogl_set_nurbs_complexity(action, shape, nurbsrenderer);
 
   GLUWrapper()->gluBeginSurface(nurbsrenderer);
   GLUWrapper()->gluNurbsSurface(nurbsrenderer,
@@ -1877,9 +1889,13 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
                                 dim, dim * numuctrlpts, ptr,
                                 numuknot - numuctrlpts, numvknot - numvctrlpts,
                                 (dim == 3) ? GL_MAP2_VERTEX_3 : GL_MAP2_VERTEX_4);
+  SbBool okcheckelem = 
+    state->isElementEnabled(SoTextureEnabledElement::getClassStackIndex()) &&
+    state->isElementEnabled(SoTexture3EnabledElement::getClassStackIndex());
 
-  if (!glrender || SoGLTextureEnabledElement::get(state) || 
-      SoGLTexture3EnabledElement::get(state)) {
+
+  if (!okcheckelem || (SoTextureEnabledElement::get(state) || 
+      SoTexture3EnabledElement::get(state))) {
     const SoTextureCoordinateElement * tc =
       SoTextureCoordinateElement::getInstance(state);
     if (numsctrlpts && numtctrlpts && numsknot && numtknot &&
@@ -2076,64 +2092,7 @@ sogl_render_nurbs_curve(SoAction * action, SoShape * shape,
     ptr = (float*) tmpcoordlist->getArrayPtr();
   }
 
-  switch (SoComplexityTypeElement::get(state)) {
-  case SoComplexityTypeElement::SCREEN_SPACE:
-    {
-      SbBox3f box;
-      SbVec3f center;
-      shape->computeBBox(action, box, center);
-      float diag;
-      { 
-        float dx, dy, dz;
-        box.getSize(dx, dy, dz);
-        diag = (float) sqrt(dx*dx+dy*dy+dz*dz);
-        if (diag == 0.0f) diag = 1.0f;
-      }
-      SbVec2s size;
-      SoShape::getScreenSize(state, box, size);
-      float maxpix = (float) SbMax(size[0], size[1]);
-      if (maxpix < 1.0f) maxpix = 1.0f;
-      float complexity = SoComplexityElement::get(state);
-      if (complexity < 0.0001f) complexity = 0.0001f;
-      complexity *= maxpix;
-      complexity = diag * 0.5f / complexity;
-
-      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_SAMPLING_METHOD,
-                                     GLU_OBJECT_PARAMETRIC_ERROR);
-      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_PARAMETRIC_TOLERANCE, 
-                                     complexity);
-      break;
-    }
-  case SoComplexityTypeElement::OBJECT_SPACE:
-    {
-      float diag;
-      {
-        SbBox3f box;
-        SbVec3f center;
-        shape->computeBBox(action, box, center);
-        float dx, dy, dz;
-        box.getSize(dx, dy, dz);
-        diag = (float) sqrt(dx*dx+dy*dy+dz*dz);
-        if (diag == 0.0f) diag = 1.0f;
-      }
-      float complexity = SoComplexityElement::get(state);
-      complexity *= complexity;
-      if (complexity < 0.0001f) complexity = 0.0001f;
-      complexity = diag * 0.01f / complexity;
-
-      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_SAMPLING_METHOD,
-                                     GLU_OBJECT_PARAMETRIC_ERROR);
-      GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_PARAMETRIC_TOLERANCE, 
-                                     complexity);
-      break;
-    }
-  case SoComplexityTypeElement::BOUNDING_BOX:
-    assert(0 && "should never get here");
-    break;
-  default:
-    assert(0 && "unknown complexity type");
-    break;
-  }
+  sogl_set_nurbs_complexity(action, shape, nurbsrenderer);
 
   GLUWrapper()->gluBeginCurve(nurbsrenderer);
   GLUWrapper()->gluNurbsCurve(nurbsrenderer,
@@ -4100,3 +4059,28 @@ sogl_autocache_update(SoState * state, const int numprimitives)
 }
 
 // **************************************************************************
+
+static SoOffscreenRenderer * offscreenrenderer = NULL;
+static SoCallback * offscreencallback = NULL;
+
+static void offscreenrenderer_cleanup(void) 
+{
+  offscreencallback->unref();
+  delete offscreenrenderer;
+  offscreenrenderer = NULL;
+  offscreencallback = NULL;
+}
+
+void 
+sogl_offscreencontext_callback(void (*cb)(void *, SoAction*),
+                               void * closure)
+{
+  if (offscreenrenderer == NULL) {
+    offscreenrenderer = new SoOffscreenRenderer(SbViewportRegion(32, 32));
+    offscreencallback = new SoCallback;
+    offscreencallback->ref();
+    coin_atexit((coin_atexit_f*) offscreenrenderer_cleanup);
+  }
+  offscreencallback->setCallback(cb, closure);
+  offscreenrenderer->render(offscreencallback);
+}
