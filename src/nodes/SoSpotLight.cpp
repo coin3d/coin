@@ -91,8 +91,8 @@ SoSpotLight::SoSpotLight(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoSpotLight);
 
-  SO_NODE_ADD_FIELD(location, (SbVec3f(0.0f, 0.0f, 1.0f)));
-  SO_NODE_ADD_FIELD(direction, (SbVec3f(0.0f, 0.0f, -1.0f)));
+  SO_NODE_ADD_FIELD(location, (0.0f, 0.0f, 1.0f));
+  SO_NODE_ADD_FIELD(direction, (0.0f, 0.0f, -1.0f));
   SO_NODE_ADD_FIELD(dropOffRate, (0.0f));
   SO_NODE_ADD_FIELD(cutOffAngle, (float(M_PI)/4.0f));
 }
