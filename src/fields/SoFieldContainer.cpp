@@ -981,30 +981,6 @@ SoFieldContainer::getUserData(void) const
   return NULL;  
 }
 
-/*!
-  \internal
-  \since Coin 2.3
-*/
-void 
-SoFieldContainer::setFirstInstance(const SbBool val)
-{
-  int & flags = this->donotify;
-  flags &= ~FLAG_FIRSTINSTANCE;
-  if (val) flags |= FLAG_FIRSTINSTANCE;
-}
-
-/*!
-  \internal
-  \since Coin 2.3
-*/
-SbBool 
-SoFieldContainer::isFirstInstance(void) const
-{
-  const int flags = this->donotify;
-  return (flags & FLAG_FIRSTINSTANCE) != 0;
-}
-
-
 #undef FLAG_DONOTIFY
 #undef FLAG_FIRSTINSTANCE 
 

@@ -94,9 +94,6 @@ protected:
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
   SbBool isBuiltIn;
 
-  void setFirstInstance(const SbBool val);
-  SbBool isFirstInstance(void) const;
-
 private:
   static SoType classTypeId;
   SbBool donotify;
