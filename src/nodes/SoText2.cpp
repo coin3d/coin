@@ -594,13 +594,14 @@ SoText2::rayPick(SoRayPickAction * action)
 
     if (charidx >= 0 && charidx < strlength) { // we have a hit!
       SoPickedPoint * pp = action->addIntersection(isect);
-      SoTextDetail * detail = new SoTextDetail;
-
-      detail->setStringIndex(stringidx);
-      detail->setCharacterIndex(charidx);
-      pp->setDetail(detail, this);
-      pp->setMaterialIndex(0);
-      pp->setObjectNormal(SbVec3f(0.0f, 0.0f, 1.0f));
+      if (pp) {
+        SoTextDetail * detail = new SoTextDetail;
+        detail->setStringIndex(stringidx);
+        detail->setCharacterIndex(charidx);
+        pp->setDetail(detail, this);
+        pp->setMaterialIndex(0);
+        pp->setObjectNormal(SbVec3f(0.0f, 0.0f, 1.0f));
+      }
     }
   }
 }
