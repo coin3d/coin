@@ -301,16 +301,12 @@ SoImage::computeBBox(SoAction * action,
 void
 SoImage::GLRender(SoGLRenderAction * action)
 {
-  SbVec2s size;
+  SbVec2s size, orgsize;
   int nc;
+  size = this->getSize();
+  if (size == SbVec2s(0,0)) return;
 
-  if (this->getSize() == SbVec2s(0,0)) {
-    size = SbVec2s(0,0);
-    nc = 0;
-    return;
-  }
-
-  const unsigned char * dataptr = this->image.getValue(size, nc);
+  const unsigned char * dataptr = this->image.getValue(orgsize, nc);
   if (dataptr == NULL) return; // no image
 
   if (!this->shouldGLRender(action)) return;
@@ -419,23 +415,45 @@ SoImage::GLRender(SoGLRenderAction * action)
   glLoadIdentity();
   glOrtho(0, vpsize[0], 0, vpsize[1], -1.0f, 1.0f);
 
-  glRasterPos3f((float)xpos, (float)ypos, -nilpoint[2]);
-  glPixelStorei(GL_UNPACK_ROW_LENGTH, size[0]);
+  float oldzx, oldzy;
+  
+  if (orgsize != size) { // use glPixelZoom to scale image
+    glGetFloatv(GL_ZOOM_X, &oldzx);
+    glGetFloatv(GL_ZOOM_Y, &oldzy);
+
+    // calculate pixel zoom value
+    float zx, zy;
+    zx = float(size[0]) / float(orgsize[0]);
+    zy = float(size[1]) / float(orgsize[1]);
+
+    // update GL
+    glPixelZoom(zx, zy);
+
+    // adjust glDrawImage and glPixelStorage parameters to account for zoom
+    srcw = (int) (srcw / zx); 
+    srch = (int) (srch / zy);
+    skipx = (int) (skipx / zx);
+    skipy = (int) (skipy / zy);
+
+    // in case of rounding errors
+    if (skipx + srcw > orgsize[0]) {
+      assert(0); 
+     srcw = orgsize[0] - skipx;
+    }
+    if (skipy + srch > orgsize[1]) { 
+      assert(0);
+      srch = orgsize[1] - skipy;
+    }
+  }
+
+  glPixelStorei(GL_UNPACK_ROW_LENGTH, orgsize[0]);
   glPixelStorei(GL_UNPACK_SKIP_PIXELS, skipx);
   glPixelStorei(GL_UNPACK_SKIP_ROWS, skipy);
   glPixelStorei(GL_PACK_ROW_LENGTH, vpsize[0]);
   glPixelStorei(GL_PACK_ALIGNMENT, 1);
   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-  float zx, zy;
-  glGetFloatv(GL_ZOOM_X, &zx);
-  glGetFloatv(GL_ZOOM_Y, &zy);
-  SbVec2s newsize = this->getSize();
-
-  if (newsize[0] >= 0 || newsize[1] >= 0) {
-    glPixelZoom(float(newsize[0]) / size[0], float(newsize[1]) / size[1]);
-  }
-
+  glRasterPos3f((float)xpos, (float)ypos, -nilpoint[2]);
   glDrawPixels(srcw, srch, format, GL_UNSIGNED_BYTE,
                (const GLvoid*) dataptr);
 
@@ -444,9 +462,12 @@ SoImage::GLRender(SoGLRenderAction * action)
   glMatrixMode(GL_MODELVIEW);
   glPopMatrix();
 
-  // we always restore pixel store values to default after use
-  glPixelZoom(zx, zy);
+  if (orgsize != size) {
+    // restore zoom
+    glPixelZoom(oldzx, oldzy);
+  }
 
+  // restore to default values
   glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
   glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
   glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
