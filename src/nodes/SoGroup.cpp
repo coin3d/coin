@@ -157,27 +157,36 @@ SoGroup::readChildren(SoInput * in)
   if (in->isBinary()) {
     unsigned int numchildren;
     ret = in->read(numchildren);
-    // FIXME: insert real limit after debugging is done. 19990711 mortene.
-    if (ret && numchildren > 1000) {
-      SoReadError::post(in, "File corrupt, found group node with %d children",
-			numchildren);
-      ret = FALSE;
-    }
 
     for (unsigned int i=0; (i < numchildren) && ret; i++) {
       SoBase * child = NULL;
       if ((ret = SoBase::read(in, child, SoNode::getClassTypeId()))) {
-	assert(child);
-	this->addChild((SoNode *)child);
+	if (child == NULL) {
+	  if (in->eof())
+	    SoReadError::post(in, "File corrupt, premature end of file");
+	  else
+	    SoReadError::post(in, "``NULL'' keyword misplaced");
+	  ret = FALSE;
+	}
+	else {
+	  this->addChild((SoNode *)child);
+	}
       }
     }
   }
   else {
+    SbBool done = FALSE;
     while (ret) {
       SoBase * child = NULL;
       if ((ret = SoBase::read(in, child, SoNode::getClassTypeId()))) {
 	if (child != NULL) this->addChild((SoNode *)child);
-	else break;
+	else {
+	  if (!in->eof()) {
+	    SoReadError::post(in, "``NULL'' keyword misplaced");
+	    ret = FALSE;
+	  }
+	  done = TRUE;
+	}
       }
     }
   }

@@ -25,6 +25,12 @@
   FIXME: write class doc
 */
 
+// FIXME:
+/*¡
+  SoMFNode::setValue() and SoMFNode::set1Value() should ref() and unref()
+  nodes. I think. 19991113 mortene.
+ */
+
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoMFNode.h>
 #if !defined(COIN_EXCLUDE_SOSFNODE)
@@ -282,25 +288,9 @@ SoMFNode::initClass(void)
 SbBool
 SoMFNode::read1Value(SoInput * in, int index)
 {
-  assert(!in->isBinary() && "FIXME: not implemented");
-
-  char c;
-  if(!in->read(c)) return FALSE;
-  else if(!SbName::isIdentStartChar(c)) return FALSE;
-  in->putBack(c);
-
-  SoBase * baseptr;
-  SbBool result = SoBase::read(in, baseptr, SoNode::getClassTypeId());
-  if (result) this->values[index] = (SoNode *)baseptr;
-
-  if(values[index] == (SoNode *)-1) values[index] = NULL; // ROUTE
-  
-  if (result && values[index]) values[index]->ref();
-
-#if 0 // FIXME: rewrite progress handling. 19981006 mortene.
-  if(!SoDB::progress(in)) result = FALSE;
-#endif // 0
-
+  SoSFNode sfnode;
+  SbBool result = sfnode.readValue(in);
+  if (result) this->set1Value(index, sfnode.getValue());
   return result;
 }
 
@@ -308,9 +298,11 @@ SoMFNode::read1Value(SoInput * in, int index)
   FIXME: write function documentation
 */
 void
-SoMFNode::write1Value(SoOutput * /* out */, int /* idx */) const
+SoMFNode::write1Value(SoOutput * out, int idx) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  SoSFNode sfnode;
+  sfnode.setValue((*this)[idx]);
+  sfnode.writeValue(out);
 }
 
 /*!

@@ -76,6 +76,8 @@ public:
 
 private:
   virtual void convertTo(SoField * dest) const;
+
+  friend class SoMFNode; // For readValue() & writeValue().
 };
 
 #endif // !__SOSFNODE_H__

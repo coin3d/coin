@@ -34,6 +34,7 @@
 #include <Inventor/SbName.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
+#include <Inventor/errors/SoReadError.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -125,13 +126,13 @@ SoSFNode::operator = (const SoSFNode & field)
   FIXME: write function documentation
 */
 void
-SoSFNode::setValue(SoNode * value)
+SoSFNode::setValue(SoNode * newval)
 {
   // FIXME: should we really ref/unref here? 19990630 mortene.
 
-  if(!value && this->value) this->value->unref();
-  this->value = value;
-  if(this->value) this->value->ref();
+  if (this->value) this->value->unref();
+  this->value = newval;
+  if (this->value) this->value->ref();
   this->valueChanged();
 }
 
@@ -186,9 +187,18 @@ SoSFNode::~SoSFNode(void)
 SbBool
 SoSFNode::readValue(SoInput * in)
 {
-  SoBase * baseptr;
+  SoBase * baseptr = NULL;
   SbBool result = SoBase::read(in, baseptr, SoNode::getClassTypeId());
-  if (result) this->setValue((SoNode *)baseptr);
+
+  if (result) {
+    if (in->eof()) {
+      SoReadError::post(in, "Premature end of file");
+      result = FALSE;
+    }
+    else {
+      this->setValue((SoNode *)baseptr);
+    }
+  }
   return result;
 }
 
@@ -249,7 +259,8 @@ SoSFNode::writeValue(SoOutput * out) const
     wa.continueToApply(node);
   }
   else {
-    assert(0 && "FIXME: handling NULL value in SoSFNode is not implemented yet");
+    // Yep, this'll work for both ASCII and binary formats.
+    out->write("NULL");
   }
 #endif // new code
 }

@@ -556,7 +556,10 @@ SoBase::getNamedBases(const SbName & name, SoBaseList & baselist, SoType type)
 /*!
   ...returns FALSE on error (syntax error, type mismatch, undefined
   reference, ...)...
-  ...base == NULL on end of file...
+
+  ...result==TRUE and base==NULL on end of file...
+  ...result==TRUE and base==NULL on So[S|M]FNode with NULL values...
+  (use in->eof() to check for EOF condition)
 
   FIXME: write complete doc
  */
@@ -569,8 +572,9 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedType)
   SbName name;
   SbBool result = in->read(name, TRUE);
   if (!result) return TRUE; // EOF, return TRUE with base==NULL
+  if (name == "NULL") return TRUE; // happens with So[S|M]FNode field values
 
-#if COIN_DEBUG // debug
+#if COIN_DEBUG && 1 // debug
   SoDebugError::postInfo("SoBase::read", "name: '%s'",
 			 name.getString());
 #endif // debug
