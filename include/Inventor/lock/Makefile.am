@@ -9,7 +9,7 @@ lockinc_HEADERS = \
 
 install-lockincHEADERS: $(lockinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(lockincincdir)
+	$(mkinstalldirs) $(DESTDIR)$(lockincdir)
 	@list='$(lockinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
