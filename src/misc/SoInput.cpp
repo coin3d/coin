@@ -1506,7 +1506,7 @@ SoInput::getPathname(const char * const filename)
 
 #else // UNIX systems
 
-  char * ptr = strrchr(filename, '/');
+  const char * ptr = strrchr(filename, '/');
   if (ptr == NULL) return SbString("");
 
   SbString s = filename;
@@ -1545,7 +1545,7 @@ SoInput::getBasename(const char * const filename)
 
 #else // UNIX systems
 
-  char * ptr = strrchr(filename, '/');
+  const char * ptr = strrchr(filename, '/');
   if (ptr == NULL) return SbString(filename);
 
   SbString s = filename;
