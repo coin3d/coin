@@ -21,14 +21,12 @@
 #define __SOACTIONMETHODLIST_H__
 
 #include <Inventor/lists/SbPList.h>
-#include <Inventor/lists/SoTypeList.h>
 #include <Inventor/SoType.h>
 
 class SoAction;
 class SoNode;
 
-typedef void SoActionMethodFunc(SoAction *, SoNode *);
-typedef SoActionMethodFunc * SoActionMethod;
+typedef void (* SoActionMethod)(SoAction *, SoNode *);
 
 class SoActionMethodList : public SbPList {
   typedef SbPList inherited;
@@ -45,10 +43,7 @@ public:
   void dump_list(void);
 
 private:
-  SoActionMethodList *parent;
-  SoTypeList dummyList;
-
-  static void dummyAction(SoAction *action, SoNode *node);
+  SoActionMethodList * parent;
 };
 
 #endif // !__SOACTIONMETHODLIST_H__

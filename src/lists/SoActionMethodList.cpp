@@ -28,6 +28,7 @@
 #include <Inventor/lists/SoActionMethodList.h>
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/nodes/SoNode.h>
+#include <Inventor/lists/SoTypeList.h>
 #include <Inventor/SbName.h>
 #include <assert.h>
 
@@ -44,7 +45,7 @@
 SoActionMethodList::SoActionMethodList(SoActionMethodList * const parentList)
   : SbPList(0), parent(parentList)
 {
-  this->setDefault((void *)dummyAction);
+  this->setDefault(NULL);
 }
 
 /*!
@@ -81,16 +82,16 @@ SoActionMethodList::addMethod(const SoType nodeType,
   // I'm a bit unsure about this one. Should I really find all
   // nodes derived from a node when adding methods, and should
   // perhaps the method for the children be overwritten even
-  // though method != dummyAction?  pederb 19991029 
+  // though method != NULL?  pederb 19991029 
 
   const int index = nodeType.getData();
   (*this)[ index ] = method;
   
-  dummyList.truncate(0);
-  int n = SoType::getAllDerivedFrom(nodeType, dummyList);
+  SoTypeList derivedtypes;
+  int n = SoType::getAllDerivedFrom(nodeType, derivedtypes);
   for (int i = 0; i < n; i++) {
-    SoType type = dummyList[i];
-    if ((*this)[(int)type.getData()] == dummyAction) {
+    SoType type = derivedtypes[i];
+    if ((*this)[(int)type.getData()] == NULL) {
 #if 0 // debug
       {
 	char buffer[256];
@@ -121,33 +122,13 @@ SoActionMethodList::addMethod(const SoType nodeType,
 void
 SoActionMethodList::setUp(void)
 {
-  this->dummyList.clear(); // free memory
-  
-  if (parent) {
-    parent->setUp();
-    const int max = parent->getLength();
+  if (this->parent) {
+    this->parent->setUp();
+    const int max = this->parent->getLength();
     for (int i = 0; i < max; i++) {
-      if ((*this)[i] == dummyAction) {
-	(*this)[i] = (*parent)[i];
-      }
+      if ((*this)[i] == NULL) (*this)[i] = (*(this->parent))[i];
     }
   }
-}
-
-/*!
-  This method is just a static dummy method that does nothing.
-*/
-
-void
-SoActionMethodList::dummyAction(SoAction *action,
-				SoNode *node)
-{
-#if COIN_DEBUG // debug
-  SoDebugError::postInfo("SoActionMethodList::dummyAction",
-			 "action: %s, node: %s",
-			 action->getTypeId().getName().getString(),
-			 node->getTypeId().getName().getString());
-#endif // debug
 }
 
 /*!
@@ -169,7 +150,6 @@ SoActionMethodList::dump_list(void)
       const char * methodname = NULL;
       if (method == SoNode::pickS) methodname = "pickS";
       else if (method == SoNode::rayPickS) methodname = "rayPickS";
-      else if (method == SoActionMethodList::dummyAction) methodname = "dummy";
       else {
 	methodname = buffer;
 	sprintf(buffer, "%p", method);
