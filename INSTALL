@@ -76,12 +76,6 @@ fully possible but has not been tested yet, and disabling the VC++
 requirement needs special user intervention at configure time (see list
 of configure options below).
 
-On Mac OS X / Darwin systems, there are currently some problems with the
-configure script that occurs if you run configure inside the source
-directory.  Until those problems are fixed, do as the cookbook procedure
-outlines above which sets up a separate hierarchy for building the
-object files.  This is nevertheless the recommended build technique.
-
 The file INSTALL.GNU contains the standard, generic, installation
 instructions for the GNU build environment.
 
