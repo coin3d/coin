@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -51,7 +51,7 @@
 */
 // FIXME: include the following in documentation about how to use the
 // SoOffscreenRenderer to write movies:
-// 
+//
 //    You should write your application to control the global
 //    "realTime" field, then you will be able to "step" with
 //    appropriate time units for each render operation (eg first
@@ -391,7 +391,7 @@ SbBool
 SoOffscreenRenderer::renderFromBase(SoBase * base)
 {
   uint32_t oldcontext = this->renderaction->getCacheContext();
-  if (this->internaldata && 
+  if (this->internaldata &&
       this->internaldata->makeContextCurrent(oldcontext)) {
 
 #if COIN_DEBUG && 0 // debug, enable to check offscreen canvas properties
@@ -772,21 +772,21 @@ SoOffscreenRenderer::writeToPostScript(FILE * fp,
   if (this->internaldata) {
     const SbVec2s size = this->internaldata->getSize();
     const int nc = this->getComponents();
-    const float defaultdpi = 72.0f; // we scale against this value 
+    const float defaultdpi = 72.0f; // we scale against this value
     const float dpi = this->getScreenPixelsPerInch();
     const SbVec2s pixelsize((short)(printsize[0]*defaultdpi),
                             (short)(printsize[1]*defaultdpi));
-    
+
     const unsigned char * src = this->buffer;
     const int chan = nc <= 2 ? 1 : 3;
     const SbVec2s scaledsize((short) ceil(size[0]*defaultdpi/dpi),
                              (short) ceil(size[1]*defaultdpi/dpi));
-    
+
     fprintf(fp, "%%!PS-Adobe-2.0 EPSF-1.2\n");
     fprintf(fp, "%%%%Pages: 1\n");
     fprintf(fp, "%%%%PageOrder: Ascend\n");
-    fprintf(fp, "%%%%BoundingBox: 0 %d %d %d\n", 
-            pixelsize[1]-scaledsize[1], 
+    fprintf(fp, "%%%%BoundingBox: 0 %d %d %d\n",
+            pixelsize[1]-scaledsize[1],
             scaledsize[0],
             pixelsize[1]);
     fprintf(fp, "%%%%Creator: Coin <http://www.coin3d.org\n");
@@ -795,8 +795,8 @@ SoOffscreenRenderer::writeToPostScript(FILE * fp,
     fprintf(fp, "\n");
     fprintf(fp, "/origstate save def\n");
     fprintf(fp, "\n");
-    fprintf(fp, "%% workaround for bug in some PS interpreters\n"); 
-    fprintf(fp, "%% which doesn't skip the ASCII85 EOD marker.\n");     
+    fprintf(fp, "%% workaround for bug in some PS interpreters\n");
+    fprintf(fp, "%% which doesn't skip the ASCII85 EOD marker.\n");
     fprintf(fp, "/~ {currentfile read pop pop} def\n\n");
     fprintf(fp, "/image_wd %d def\n", size[0]);
     fprintf(fp, "/image_ht %d def\n", size[1]);
@@ -927,7 +927,7 @@ SoOffscreenRenderer::writeToPostScript(const char * filename,
   mentioned method for writing SGI RGB or Adobe Postscript directly,
   or make sure the Coin library has been built and is running on top
   of a version of the simage library (that you have preferably built
-  yourself) with the file format you want known to have been included.
+  yourself) with the file format(s) you want support for.
 
 
   This method is an extension versus the original SGI Open Inventor
@@ -989,6 +989,45 @@ SoOffscreenRenderer::getNumWriteFiletypes(void) const
 
   This method is an extension versus the original SGI Open Inventor
   API.
+
+  Here is a stand-alone, complete code example that shows how you can
+  check exactly which output formats are supported:
+
+  \code
+  #include <Inventor/SoDB.h>
+  #include <Inventor/SoOffscreenRenderer.h>
+
+  int
+  main(int argc, char **argv)
+  {
+    SoDB::init();
+    SoOffscreenRenderer * r = new SoOffscreenRenderer(*(new SbViewportRegion));
+    int num = r->getNumWriteFiletypes();
+
+    if (num == 0) {
+      (void)fprintf(stdout,
+                    "No image formats supported by the "
+                    "SoOffscreenRenderer except SGI RGB and Postscript.\n");
+    }
+    else {
+      for (int i=0; i < num; i++) {
+        SbList<SbName> extlist;
+        SbString fullname, description;
+        r->getWriteFiletypeInfo(i, extlist, fullname, description);
+        (void)fprintf(stdout, "%s: %s (extension%s: ",
+                      fullname.getString(), description.getString(),
+                      extlist.getLength() > 1 ? "s" : "");
+        for (int j=0; j < extlist.getLength(); j++) {
+          (void)fprintf(stdout, "%s%s", j>0 ? ", " : "", extlist[j].getString());
+        }
+        (void)fprintf(stdout, ")\n");
+      }
+    }
+
+    delete r;
+    return 0;
+  }
+  \endcode
 
   \sa getNumWriteFiletypes(), writeToFile()
 */
