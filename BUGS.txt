@@ -2731,12 +2731,12 @@ diff -u -r1.6 SoGLnonindexedTristripSetTemplate.icc
     such a good idea:
 
       On Wed, Sep 08, 2004 at 04:27:55PM +0200, Karin Kosina wrote:
-      : 
+      :
       : [...]
-      : 
+      :
       : And: why don't we implement pederb's suggestion (applying a
       : GetBoundingBoxAction before rendering)?
-      
+
       [pederb:]
 
       I feel it should be possible to toggle this feature on/off.
@@ -2744,7 +2744,7 @@ diff -u -r1.6 SoGLnonindexedTristripSetTemplate.icc
       they call SoSceneManager::render() (or render the scene using an
       SoGLRenderAction directly). If you have a scene with lots of
       animations, SoGetBoundingBoxAction can be pretty slow.
-      
+
       If you have an application that does multipass rendering, and we
       apply an SoGetBoundingBoxAction every time
       SoGLRenderAction::apply() is called, that would be pretty bad.
@@ -3140,50 +3140,6 @@ Separator {
 
 =====================================================================
 
-125 Dragger writing is incorrect.
-
-    When writing the SoCenterballDragger, all its parts are written,
-    even though they default values. Compare with SGI Inventor, which
-    just writes as "CenterballDragger { }", as expected.
-
-    This little test example demonstrates the bug:
-
---------8<------------- [snip] --------------8<------------- [snip]
-#include <Inventor/SoDB.h>
-#include <Inventor/SoInteraction.h>
-#include <Inventor/nodekits/SoNodeKit.h>
-#include <Inventor/draggers/SoCenterballDragger.h>
-#include <Inventor/actions/SoWriteAction.h>
-
-int
-main(void)
-{
-  SoDB::init();
-  SoNodeKit::init();
-  SoInteraction::init();
-
-  SoCenterballDragger * d = new SoCenterballDragger;
-  d->ref();
-
-  SoWriteAction w;
-  w.apply(d);
-
-  d->unref();
-  return 0;
-}
---------8<------------- [snip] --------------8<------------- [snip]
-
-    I only tested this for the SoCenterballDragger, but I would expect
-    the same problem to at least be present for other draggers, and it
-    is most likely a fundamental problem with write actions for
-    nodekits.
-
-    This is a medium priority bug.
-
-    20040724 mortene.
-
-=====================================================================
-
 126 Coin will crash latest NVIDIA drivers with certain valid scene
     graphs.
 
@@ -3318,15 +3274,15 @@ main(void)
 
     SoTransformerDragger: Geometry does not look correct when having
     non-uniform scale in the scenegraph. Load the following file into
-    examinerviewer and click on the rotation tab on one of the sides, 
+    examinerviewer and click on the rotation tab on one of the sides,
     and you should see the problem.
 
     --------8<------------- [snip] --------------8<------------- [snip]
     #Inventor V2.1 ascii
     TransformerManip {}
-    Text3 { 
+    Text3 {
       string "b"
-      parts ALL 
+      parts ALL
     }
     --------8<------------- [snip] --------------8<------------- [snip]
 
@@ -3336,7 +3292,7 @@ main(void)
     rotate the center tab, and you will see the problem. This problem
     happens when having non-uniform scale.
 
-    
+
     SoTransformBoxDragger: Unable to grab hold of the dragger tabs
     when scale is small. This is probably also realted to the lack of
     minimum scale restriction when using child draggers.
@@ -3365,7 +3321,7 @@ main(void)
     Scale2Dragger {}
     --------8<------------- [snip] --------------8<------------- [snip]
 
-    
+
     Scale2UniformDragger: viewAll does not work as expected when scaling
     down alot. Also the geometry of the dragger gets strange when having
     low scale.
@@ -3374,7 +3330,7 @@ main(void)
     #Inventor V2.1 ascii
     Scale2UniformDragger {}
     --------8<------------- [snip] --------------8<------------- [snip]
-    
+
 
     General observations:
      A general problem is that it is difficult to separate and click on
@@ -3390,14 +3346,14 @@ main(void)
      viewAll does not always work as expected, not zooming in enough on
      some draggers under certain circumstances. This should be checked.
 
-   
+
     Priorities:
      1) Fix minimum scale restriction when using child draggers
-     2) Fix scaling/positioning of dragger geometries so that 
+     2) Fix scaling/positioning of dragger geometries so that
         they are intuitive and easy to use at any scale
-     3) See if the viewAll works after these bugs have been fixed. 
+     3) See if the viewAll works after these bugs have been fixed.
         If not, find out what's wrong and fix it.
-     4) Roam all the draggers, have fun with them and look for 
+     4) Roam all the draggers, have fun with them and look for
         problems to fix
      5) Fix all other dragger bugs in this list :)
      6) Fix the rest of the bugs in this list (:
@@ -3410,8 +3366,8 @@ main(void)
 131 Writing fails for nodes that have a pointer to the parent node
     in an SFNode field. Works ok with SGI Inventor.
 
-    Reported on coin-discuss by Matthias Sattler 
-    <Matthias.Sattler@t-online.de> 
+    Reported on coin-discuss by Matthias Sattler
+    <Matthias.Sattler@t-online.de>
 
     Use program below to reproduce. pederb, 2004-08-27
 
@@ -3425,12 +3381,12 @@ class TestNode : public SoLevelOfDetail {
   SO_NODE_HEADER(TestNode);
 public:
   TestNode();
-  
+
   SoSFNode cChildren;
   SoSFNode cParent;
-  
+
   static void initClass();
-  
+
   void populate(void);
 protected:
   ~TestNode() {};
@@ -3449,18 +3405,18 @@ TestNode::TestNode()
   SO_NODE_CONSTRUCTOR(TestNode);
   SO_NODE_ADD_FIELD(cParent, (NULL));
   SO_NODE_ADD_FIELD(cChildren, (NULL));
-  
+
   SoGroup* lTmpGroup;
-  
+
   lTmpGroup = new SoGroup;
   lTmpGroup->ref();
   cChildren.setValue(lTmpGroup);
-  
+
   SoSeparator* lFirstSeparator;
   lFirstSeparator = new SoSeparator;
   lFirstSeparator->ref();
   addChild(lFirstSeparator);
-  
+
   lFirstSeparator->addChild(cChildren.getValue());
 }
 
@@ -3468,14 +3424,14 @@ TestNode::TestNode()
 void TestNode::populate(void)
 {
   TestNode* lTest2 = new TestNode;
-  
+
   addChild(lTest2);
   lTest2->cParent = this; // It doesn't crash with 0 instead of this
-  
+
   ((SoGroup*)cChildren.getValue())->addChild(lTest2);
 }
 
-int 
+int
 main(int argc, char* argv[])
 {
   SoDB::init();
@@ -3483,22 +3439,22 @@ main(int argc, char* argv[])
 
   SoSeparator* lRoot = new SoSeparator;
   lRoot->ref();
-  
+
   TestNode* lTest1 = new TestNode;
-  
+
   lRoot->addChild(lTest1);
-  
+
   lTest1->populate();
-  
+
   SoOutput lOutput;
-  
+
   lOutput.openFile("test.iv");
   SoWriteAction lWriteAction(&lOutput);
-  
+
   lWriteAction.apply(lRoot);
-  
+
   lOutput.closeFile();
-  
+
   return 0;
 }
 
@@ -3512,7 +3468,7 @@ main(int argc, char* argv[])
 
       // get selected node
       SoNode *pNode = pViewer->getSceneManager()->getSceneGraph();
-   
+
       // m_pSel is a local SoExtSelection node
       m_pSel->enableNotify( false );
       m_pSel->addChild( pNode );
@@ -3933,7 +3889,7 @@ static _Ty __cdecl cos(_Ty _Left)
 // *************************************************************************
 
 static SoPath *
-myPickFilterCB(void* userData, const SoPickedPoint* pick) 
+myPickFilterCB(void* userData, const SoPickedPoint* pick)
 {
   return pick->getPath();
 }
@@ -3956,7 +3912,7 @@ main(int argc, char ** argv)
 
   SoInput * in = new SoInput;
   in->setBuffer((void *)ivfile, strlen(ivfile));
-  
+
   SoNode * root = SoDB::readAll(in);
   assert(root);
   root->ref();
@@ -4073,7 +4029,7 @@ Transform {
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodekits/SoNodeKit.h>
 
-const char * text[] = { 
+const char * text[] = {
 "#Inventor V2.1 ascii\n",
 "Separator {\n",
 "    DEF KIT SeparatorKit {\n",
@@ -4082,25 +4038,25 @@ const char * text[] = {
 "    DEF SEP Separator {\n",
 "           renderCaching = USE KIT.renderCaching\n",
 "    }\n",
-"}", 
-NULL 
+"}",
+NULL
 };
 
 int main(int argc, char ** argv)
 {
   SoDB::init();
   SoNodeKit::init();
-  
-  SoInput in; 
+
+  SoInput in;
   in.setStringArray(text);
   SoSeparator * root = SoDB::readAll(&in);
   root->ref();
-   
+
   SoNode * sep = SoNode::getByName("SEP");
   SoNode * kit = SoNode::getByName("KIT");
 
   SoOutput out;
-   
+
   SoWriteAction wa(&out);
 
   // first print out the node kit, just to see how it looks like
@@ -4113,13 +4069,13 @@ int main(int argc, char ** argv)
   out.reset();
 
   // write out the nodekit again. a test in the write implementation will
-  // keep it from building the necessary fielddata structure to write out 
+  // keep it from building the necessary fielddata structure to write out
   // its parts and fields !
   wa.apply( kit );
   out.reset();
-   
+
   root->unref();
-  
+
   return 0;
 }
     ----8<----- [snip] --------------------8<----- [snip] ----------------
@@ -4434,7 +4390,7 @@ a { }
 ==31646==    by 0x40954FD6: SoVRMLSwitch::~SoVRMLSwitch(void) (/home/sigma/mortene/code/coin-head/src/vrml97/Switch.cpp:179)
 ==31646==    by 0x406FD43D: SoBase::destroy(void) (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:447)
 ==31646==    by 0x406FD99F: SoBase::unref(void) const (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:634)
-==31646== 
+==31646==
 
 and
 
@@ -4480,7 +4436,7 @@ and
 ==31646==    by 0x40954FD6: SoVRMLSwitch::~SoVRMLSwitch(void) (/home/sigma/mortene/code/coin-head/src/vrml97/Switch.cpp:179)
 ==31646==    by 0x406FD43D: SoBase::destroy(void) (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:447)
 ==31646==    by 0x406FD99F: SoBase::unref(void) const (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:634)
-==31646== 
+==31646==
 ----8<----- [snip] --------------------8<----- [snip] ----------------
 
     20041105 mortene.
@@ -4503,7 +4459,7 @@ diff -u -b -r1.18 SoDataSensor.h
 @@ -40,12 +40,27 @@
    SoDataSensor(SoSensorCB * func, void * data);
    virtual ~SoDataSensor(void);
- 
+
 +  enum ChangeType {
 +    UNSPECIFIED,
 +    GROUP_ADD_CHILD,
@@ -4525,7 +4481,7 @@ diff -u -b -r1.18 SoDataSensor.h
 +  int getTriggerChildIndex(void) const;
 +  int getTriggerMFieldStartIndex(void) const;
 +  int getTriggerMFieldNumValues(void) const;
- 
+
    virtual void trigger(void);
    virtual void notify(SoNotList * l);
     ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
@@ -4554,13 +4510,13 @@ diff -u -b -r1.27 SoIndexedFaceSet.h
 +++ include/Inventor/nodes/SoIndexedFaceSet.h	16 Nov 2004 17:17:08 -0000
 @@ -28,6 +28,8 @@
  #include <Inventor/nodes/SoIndexedShape.h>
- 
+
  #define SO_END_FACE_INDEX (-1)
 +#define SO_END_CONTOUR_INDEX (-1)
 +#define SO_END_POLYGON_INDEX (-2)
- 
+
  class SoIndexedFaceSetP;
- 
+
     ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
 
     20041116 larsa.
@@ -4618,14 +4574,14 @@ diff -u -b -r1.27 SoIndexedFaceSet.h
 
     Using both an SoText2 and SoText3 node triggers an assert when
     using the Win32 API for font support:
-    
-    Assertion failed: unused, file win32.c, line 1131 
+
+    Assertion failed: unused, file win32.c, line 1131
 
 ----8<----- [snip] --------------------8<----- [snip] ----------------
 #Inventor V2.1 ascii
 
 Separator {
-   SoFont { 
+   SoFont {
       name "Times New Roman"
       size 50.0
    }
@@ -4638,7 +4594,7 @@ Separator {
     access violation in cc_flww32_get_bitmap_advance() in win32.c:577
 
     This only happens with certain font sizes (e.g. the using a size
-    of 120 is ok). 
+    of 120 is ok).
 
     20041201 kyrah
 
