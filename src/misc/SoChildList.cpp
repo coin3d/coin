@@ -202,17 +202,12 @@ SoChildList::copy(const SoChildList & cl)
   this->truncate(0);
   SoBaseList::copy(cl);
 
-  // Note: we are not copying the path auditor list. This is the
-  // correct behavior, so don't try to "fix" it.
-
-  // FIXME: actually I think we _should_ copy the auditor list, but it
-  // seems like this method is never used. We should copy it in case
-  // it is used in the future though. pederb, 2002-10-02
-  //
-  // UPDATE 20031217 mortene: just for information; this method is at
-  // least used from SoFile::readNamedFile().
-
+  // it's important to add parent as auditor for all nodes (this is
+  // usually done in SoChildList::append/insert)
   if (this->parent) {
+    for (int i = 0; i < this->getLength(); i++) {
+      (*this)[i]->addAuditor(this->parent, SoNotRec::PARENT);
+    }
     this->parent->startNotify();
   }
 }
