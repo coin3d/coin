@@ -217,3 +217,8 @@ THE LINKS
 
   - An OpenGL ActiveX Control Developed with MFC:
     <URL:http://www.codeproject.com/opengl/opengl_activex.asp>
+
+* An OpenGL extension loading library (like our GLWrapper):
+  <URL:http://www.uni-karlsruhe.de/~uli2/>. Available under a
+  BSD-style license. Check it out to see if it's better designed than
+  GLWrapper.
