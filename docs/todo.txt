@@ -560,11 +560,33 @@ STUFF TO FIX IN COIN
     has. Shouldn't take more than ~ 1 man-week to fix properly,
     including full configure/build integration.
 
-026 
-    an idea in the "wild, crazy and cool"
-    department; it would have been really nifty if would provide a
-    www-interface 
 
+026 WWW-interface on Coin / SoWin / SoQt builds.
+    2002-12-18  Morten Eriksen  <mortene@sim.no>
+
+    An idea in the "wild, crazy and cool" department; it would have
+    been really nifty if would provide MSWindows Coin-users a
+    www-interface where they could
+
+      a) set up the parameters for how they wanted their MSWindows
+         Coin / SoQt / SoWin DLL / LIB to be (static vs dynamic,
+         release vs debug, which C run-time library to use, with or
+         without exception support, with or without RTTI, at what
+         optimization level, eventually which compiler to use, etc
+         etc), and then;
+
+      b) the wanted configuration would be found and a link to
+         downloading it would be presented
+
+      c) if the configuration was not present, a build of that config
+         was triggered, with a message to the user to check back in 15
+         minutes (this config would of course then be stored, so
+         future attempts to download it from other users would be
+         immediately gratified)
+
+    This should of course all run on a Linux www server, so we would
+    need to be able to run all necessary dependencies under Wine
+    (Cygwin?, MSVC's command-line tools, SuperPIMP, ...).
 
 
 
