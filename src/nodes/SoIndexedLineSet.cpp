@@ -188,18 +188,6 @@ SoIndexedLineSet::findMaterialBinding(SoState * state)
 }
 
 
-typedef void sogl_render_ils_func ( const SoGLCoordinateElement * /*const*/ coords,
-                                    const int32_t *indices,
-                                    int num_vertexindices,
-                                    const SbVec3f *normals,
-                                    const int32_t *normindices,
-                                    SoMaterialBundle *const materials,
-                                    const int32_t *matindices,
-                                    const SoTextureCoordinateBundle * const texcoords,
-                                    const int32_t *texindices,
-                                    const int drawAsPoints);
-
-
 // doc from parent
 void
 SoIndexedLineSet::GLRender(SoGLRenderAction * action)
