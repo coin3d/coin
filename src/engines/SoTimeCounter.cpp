@@ -176,26 +176,29 @@ SoTimeCounter::writeInstance(SoOutput * out)
 void
 SoTimeCounter::evaluate(void)
 {
-  // FIXME: check this->ispaused flag. 20000919 mortene.
+  if (!this->ispaused) {
+    // FIXME: the code calculating the output value is a
+    // mess. 20000919 mortene.
 
-  double currtime = this->timeIn.getValue().getValue();
-  double difftime = currtime - this->starttime;
-  if (difftime > this->cyclelen) {
-    double num = difftime / this->cyclelen;
-    this->starttime += this->cyclelen * floor(num);
-    difftime = currtime - this->starttime;
-  }
-  short value = this->findOutputValue(difftime);
+    double currtime = this->timeIn.getValue().getValue();
+    double difftime = currtime - this->starttime;
+    if (difftime > this->cyclelen) {
+      double num = difftime / this->cyclelen;
+      this->starttime += this->cyclelen * floor(num);
+      difftime = currtime - this->starttime;
+    }
+    short value = this->findOutputValue(difftime);
 
-  if (value == this->outputvalue + this->step.getValue()) { // common case
-    this->stepnum++;
+    if (value == this->outputvalue + this->step.getValue()) { // common case
+      this->stepnum++;
+    }
+    else { // either reset, wrap-around or a delay somewhere
+      short offset = value - this->min.getValue();
+      this->stepnum = offset / this->step.getValue();
+    }
+    this->outputvalue = value;
   }
-  else { // either reset, wrap-around or a delay somewhere
-    short offset = value - this->min.getValue();
-    this->stepnum = offset / this->step.getValue();
-  }
-  this->outputvalue = value;
-    
+
   // Force update on slave fields (SO_ENGINE_OUTPUT checks
   // isEnabled()-value, and we want the setValue() to happen anyway).
   this->output.enable(TRUE);
@@ -215,6 +218,17 @@ SoTimeCounter::inputChanged(SoField * which)
   this->output.enable(FALSE);
   this->syncOut.enable(FALSE);
 
+  // Enable outputs on first call.
+  if (this->firstoutputenable) {
+    this->firstoutputenable = FALSE;
+    this->output.enable(TRUE);
+    this->syncOut.enable(TRUE);
+  }
+
+  // First handle the case where the timeIn field has been changed, as
+  // we need to optimize that to avoid too many notifications on the
+  // slave fields (we only want to be notified when the output counter
+  // value actually changes).
   if (which == &this->timeIn) {
     if (this->ispaused) return;
 
@@ -229,18 +243,20 @@ SoTimeCounter::inputChanged(SoField * which)
       this->starttime += this->cyclelen * floor(num);
       difftime = currtime - this->starttime;
     }
-    if (this->firstoutputenable ||
-        this->findOutputValue(difftime) != this->outputvalue) {
-      this->firstoutputenable = FALSE;
-      this->output.enable(TRUE);
-    }
+
+    // Optimize for the common case. This prevents a notification on
+    // each and every trigger for timeIn.
+    if (this->findOutputValue(difftime) == this->outputvalue) return;
   }
-  else if (which == &this->on) {
+
+  // FIXME: the code handling the other fields is a horrible
+  // mess. 20000919 mortene.
+
+  if (which == &this->on) {
     if (this->on.getValue() && this->ispaused) {
       this->starttime =
         this->timeIn.getValue().getValue() - this->pausetimeincycle;
       this->ispaused = FALSE;
-      this->output.enable(TRUE);
     }
     else if (!this->on.getValue() && !this->ispaused) {
       this->ispaused = TRUE;
@@ -251,11 +267,9 @@ SoTimeCounter::inputChanged(SoField * which)
   else if (which == &this->frequency) {
     this->cyclelen = 1.0 / this->frequency.getValue();
     this->calcDutySteps();
-    this->output.enable(TRUE);
   }
   else if (which == &this->duty) {
     this->calcDutySteps();
-    this->output.enable(TRUE);
   }
   else if (which == &this->reset) {
     short minval = this->min.getValue();
@@ -268,13 +282,9 @@ SoTimeCounter::inputChanged(SoField * which)
       val = minval + (offset / stepval) * stepval;
     }
     this->calcStarttime(val);
-    if (val != this->outputvalue)
-      this->output.enable(TRUE);
   }
   else if (which == &this->syncIn) {
     this->starttime = this->timeIn.getValue().getValue();
-    if (this->min.getValue() != this->outputvalue)
-      this->output.enable(TRUE);
   }
   else if (which == &this->max) {
     if (this->max.getValue() < this->min.getValue())
@@ -283,8 +293,6 @@ SoTimeCounter::inputChanged(SoField * which)
     this->calcDutySteps();
     if (this->max.getValue() < this->outputvalue) {
       this->starttime = this->timeIn.getValue().getValue();
-      if (this->min.getValue() != this->outputvalue) // FIXME: should be max?
-        this->output.enable(TRUE);
     }
   }
   else if (which == &this->min) {
@@ -295,10 +303,7 @@ SoTimeCounter::inputChanged(SoField * which)
     short value = this->min.getValue() + this->step.getValue() * this->stepnum;
     if (value > this->max.getValue()) {
       this->starttime = this->timeIn.getValue().getValue();
-      value = this->min.getValue();
     }
-    if (value != this->outputvalue)
-      this->output.enable(TRUE);
   }
   else if (which == &this->step) {
     this->calcNumSteps();
@@ -306,14 +311,19 @@ SoTimeCounter::inputChanged(SoField * which)
     short value = this->min.getValue() + this->step.getValue() * this->stepnum;
     if (value > this->max.getValue()) {
       this->starttime = this->timeIn.getValue().getValue();
-      value = this->min.getValue();
     }
-    if (value != this->outputvalue)
-      this->output.enable(TRUE);
   }
   else {
     assert(0 && "unknown field");
   }
+
+  // Either the timeIn field changed enough to reach a new step, or
+  // some of the control fields changed -- so lets notify the slaves.
+  //
+  // Could also optimize for the case where changes to the control
+  // fields doesn't yield an immediate change to the output value, but
+  // that doesn't seem worthwhile.
+  this->output.enable(TRUE);
 }
 
 
@@ -332,12 +342,12 @@ SoTimeCounter::calcDutySteps(void)
   if (this->duty.getNum() == this->numsteps) {
     int i;
     double dutysum = 0.0;
-    for (i = 0; i < numsteps; i++) {
+    for (i = 0; i < this->numsteps; i++) {
       dutysum += (double)this->duty[i];
     }
     double currsum = 0.0;
     this->dutylimits.truncate(0);
-    for (i = 0; i < numsteps; i++) {
+    for (i = 0; i < this->numsteps; i++) {
       currsum += (double) this->duty[i];
       this->dutylimits.append(currsum/dutysum * this->cyclelen);
     }
