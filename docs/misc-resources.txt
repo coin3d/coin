@@ -169,3 +169,9 @@ THE LINKS
 
   "Why the FSF gets copyright assignments from contributors":
     <URL:http://www.gnu.org/licenses/why-assign.html>
+
+* "Programming in C++, Rules and Recommendations":
+  <URL:http://www.cs.umd.edu/users/cml/cstyle/Ellemtel-rules-mm.html>
+
+  Read through this doc and see if it is something we should link to
+  from the HACKING file.
