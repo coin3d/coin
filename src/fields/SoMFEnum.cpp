@@ -36,6 +36,7 @@
 
 */
 
+#include <assert.h>
 #include <Inventor/fields/SoMFEnum.h>
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/fields/SoFieldContainer.h>
@@ -133,8 +134,8 @@ SoMFEnum::read1Value(SoInput * in, int idx)
     SoReadError::post(in, "Unknown enumeration value \"%s\"", n.getString());
     return FALSE;
   }
-
-  this->set1Value(idx, val);
+  assert(idx < this->maxNum);
+  this->values[idx] = val;
   return TRUE;
 }
 

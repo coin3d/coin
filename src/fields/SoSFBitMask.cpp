@@ -99,7 +99,7 @@ SoSFBitMask::readValue(SoInput * in)
       bitmask |= v;
     }
 
-    this->setValue(bitmask);
+    this->value = bitmask;
     return TRUE;
   }
 
@@ -142,8 +142,7 @@ SoSFBitMask::readValue(SoInput * in)
         return FALSE;
       }
     }
-
-    this->setValue(bitmask);
+    this->value = bitmask;
   }
   else {
     in->putBack(c);
@@ -162,7 +161,7 @@ SoSFBitMask::readValue(SoInput * in)
       return FALSE;
     }
 
-    this->setValue(v);
+    this->value = v;
   }
 
   return TRUE;

@@ -61,25 +61,12 @@ SoSFVec2s::initClass(void)
 // parent classes.
 #ifndef DOXYGEN_SKIP_THIS
 
-// Read integer value from input stream, return TRUE if
-// successful. Also used from SoMFVec2s class.
-SbBool
-sosfvec2s_read_value(SoInput * in, SbVec2s & v)
-{
-  if (!in->read(v[0]) || !in->read(v[1])) {
-    SoReadError::post(in, "Couldn't read vector");
-    return FALSE;
-  }
-  return TRUE;
-}
-
 SbBool
 SoSFVec2s::readValue(SoInput * in)
 {
-  SbVec2s v;
-  if (!sosfvec2s_read_value(in, v)) return FALSE;
-  this->setValue(v);
-  return TRUE;
+  return 
+    in->read(this->value[0]) &&
+    in->read(this->value[1]);
 }
 
 // Write integer value to output stream. Also used from SoMFVec2s

@@ -65,10 +65,7 @@
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoSubFieldP.h>
 
-extern SbBool sofield_read_float_values(SoInput * in, float * val, int numvals);
-
 SO_SFIELD_SOURCE(SoSFRotation, SbRotation, const SbRotation &);
-
 
 // Override from parent.
 void
@@ -88,8 +85,9 @@ SbBool
 sosfrotation_read_value(SoInput * in, SbRotation & r)
 {
   float f[4];
-  if (!sofield_read_float_values(in, f, 4)) { return FALSE; }
-
+  for (int i = 0; i < 4; i++) {
+    if (!in->read(f[i])) return FALSE;
+  }
   SbVec3f axis(f[0], f[1], f[2]);
   const float angle = f[3];
 

@@ -33,6 +33,7 @@
 
 */
 
+#include <assert.h>
 #include <Inventor/fields/SoMFBitMask.h>
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/fields/SoSFBitMask.h>
@@ -58,11 +59,13 @@ SoMFBitMask::initClass(void)
 SbBool
 SoMFBitMask::read1Value(SoInput * in, int idx)
 {
+  assert(idx < this->maxNum);
   SoSFBitMask sfbitmask;
   sfbitmask.setEnums(this->numEnums, this->enumValues, this->enumNames);
   SbBool result;
-  if ((result = sfbitmask.readValue(in)))
-    this->set1Value(idx, sfbitmask.getValue());
+  if ((result = sfbitmask.readValue(in))) {
+    this->values[idx] = sfbitmask.getValue();
+  }
   return result;
 }
 

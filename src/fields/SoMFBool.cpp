@@ -36,6 +36,7 @@
   \sa SoSFBool 
 */
 
+#include <assert.h>
 #include <Inventor/fields/SoMFBool.h>
 #include <Inventor/fields/SoSubFieldP.h>
 #if COIN_DEBUG
@@ -66,9 +67,10 @@ extern void sosfbool_write_value(SoOutput * out, SbBool val);
 SbBool
 SoMFBool::read1Value(SoInput * in, int idx)
 {
+  assert(idx < this->maxNum);
   SbBool val;
   if (!sosfbool_read_value(in, val)) return FALSE;
-  this->set1Value(idx, val);
+  this->values[idx] = val;
   return TRUE;
 }
 

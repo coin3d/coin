@@ -61,23 +61,10 @@ SoSFString::initClass(void)
 // parent classes.
 #ifndef DOXYGEN_SKIP_THIS
 
-// Read SbString value from input stream, return TRUE if
-// successful. Also used from SoMFString class.
-SbBool
-sosfstring_read_value(SoInput * in, SbString & val)
-{
-  if (in->read(val)) return TRUE;
-  SoReadError::post(in, "Couldn't read string");
-  return FALSE;
-}
-
 SbBool
 SoSFString::readValue(SoInput * in)
 {
-  SbString n;
-  if (!sosfstring_read_value(in, n)) return FALSE;
-  this->setValue(n);
-  return TRUE;
+  return in->read(this->value);
 }
 
 // Write SbString value to output stream. Also used from SoMFString class.

@@ -184,7 +184,6 @@ SoSFImage3::readValue(SoInput * in)
 
   if (!buffersize) {
     this->image->setValue(SbVec3s(0,0,0), 0, NULL);
-    this->valueChanged();
     return TRUE;
   }
 
@@ -215,8 +214,6 @@ SoSFImage3::readValue(SoInput * in)
       }
     }
   }
-
-  this->valueChanged();
   return TRUE;
 }
 

@@ -33,9 +33,11 @@
 
 */
 
+#include <assert.h>
 #include <Inventor/fields/SoMFMatrix.h>
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/SoOutput.h>
+#include <Inventor/SoInput.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -56,16 +58,18 @@ SoMFMatrix::initClass(void)
 // parent classes.
 #ifndef DOXYGEN_SKIP_THIS
 
-// These are implemented in the SoSFMatrix class.
-extern SbBool sosfmatrix_read_value(SoInput * in, SbMatrix & val);
+// This is implemented in the SoSFMatrix class.
 extern void sosfmatrix_write_value(SoOutput * out, const SbMatrix & val);
 
 SbBool
 SoMFMatrix::read1Value(SoInput * in, int idx)
 {
-  SbMatrix m;
-  if (!sosfmatrix_read_value(in, m)) return FALSE;
-  this->set1Value(idx, m);
+  assert(idx < this->maxNum);
+
+  float * ptr = this->values[idx][0];
+  for (int i = 0; i < 16; i++) {
+    if (!in->read(ptr[i])) return FALSE;
+  }
   return TRUE;
 }
 

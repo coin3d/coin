@@ -109,7 +109,7 @@ SoSFBool::readValue(SoInput * in)
 {
   SbBool val;
   if (!sosfbool_read_value(in, val)) return FALSE;
-  this->setValue(val);
+  this->value = val;
   return TRUE;
 }
 

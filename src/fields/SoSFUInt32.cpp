@@ -58,27 +58,10 @@ SoSFUInt32::initClass(void)
 // parent classes.
 #ifndef DOXYGEN_SKIP_THIS
 
-// Read integer value from input stream, return TRUE if
-// successful. Also used from SoMFUInt32 class.
-SbBool
-sosfuint32_read_value(SoInput * in, uint32_t & val)
-{
-  unsigned int tmp;
-  if (!in->read(tmp)) {
-    SoReadError::post(in, "Premature end of file");
-    return FALSE;
-  }
-  val = (uint32_t) tmp;
-  return TRUE;
-}
-
 SbBool
 SoSFUInt32::readValue(SoInput * in)
 {
-  uint32_t val;
-  if (!sosfuint32_read_value(in, val)) return FALSE;
-  this->setValue(val);
-  return TRUE;
+  return in->read(this->value);
 }
 
 // Write integer value to output stream. Also used from SoMFUInt32

@@ -33,6 +33,7 @@
 
 */
 
+#include <assert.h>
 #include <Inventor/fields/SoMFTime.h>
 #include <Inventor/fields/SoSubFieldP.h>
 #if COIN_DEBUG
@@ -62,9 +63,10 @@ extern void sosftime_write_value(SoOutput * out, const SbTime & val);
 SbBool
 SoMFTime::read1Value(SoInput * in, int idx)
 {
+  assert(idx < this->maxNum);
   SbTime p;
   if (!sosftime_read_value(in, p)) return FALSE;
-  this->set1Value(idx, p);
+  this->values[idx] = p;
   return TRUE;
 }
 

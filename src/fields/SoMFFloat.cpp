@@ -36,8 +36,10 @@
   \sa SoSFFloat
 */
 
+#include <assert.h>
 #include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/fields/SoSubFieldP.h>
+#include <Inventor/SoInput.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -60,17 +62,14 @@ SoMFFloat::initClass(void)
 // parent classes.
 #ifndef DOXYGEN_SKIP_THIS
 
-// These are implemented in the SoSFFloat class.
-extern SbBool sosffloat_read_value(SoInput * in, float & val);
+// This is implemented in the SoSFFloat class.
 extern void sosffloat_write_value(SoOutput * out, float val);
 
 SbBool
 SoMFFloat::read1Value(SoInput * in, int idx)
 {
-  float val;
-  if (!sosffloat_read_value(in, val)) return FALSE;
-  this->set1Value(idx, val);
-  return TRUE;
+  assert(idx < this->maxNum);
+  return in->read(this->values[idx]);
 }
 
 void

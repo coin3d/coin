@@ -41,8 +41,6 @@
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoSubFieldP.h>
 
-extern SbBool sofield_read_float_values(SoInput * in, float * val, int numvals);
-
 SO_SFIELD_SOURCE(SoSFVec3f, SbVec3f, const SbVec3f &);
 
 // Override from parent class.
@@ -57,24 +55,13 @@ SoSFVec3f::initClass(void)
 // parent classes.
 #ifndef DOXYGEN_SKIP_THIS
 
-// Read integer value from input stream, return TRUE if
-// successful. Also used from SoMFVec3f class.
-SbBool
-sosfvec3f_read_value(SoInput * in, SbVec3f & v)
-{
-  float f[3];
-  if (!sofield_read_float_values(in, f, 3)) { return FALSE; }
-  v.setValue(f[0], f[1], f[2]);
-  return TRUE;
-}
-
 SbBool
 SoSFVec3f::readValue(SoInput * in)
 {
-  SbVec3f v;
-  if (!sosfvec3f_read_value(in, v)) return FALSE;
-  this->setValue(v);
-  return TRUE;
+  return 
+    in->read(this->value[0]) &&
+    in->read(this->value[1]) &&
+    in->read(this->value[2]);
 }
 
 // Write integer value to output stream. Also used from SoMFVec3f

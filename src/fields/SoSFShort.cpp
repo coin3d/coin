@@ -57,25 +57,11 @@ SoSFShort::initClass(void)
 // parent classes.
 #ifndef DOXYGEN_SKIP_THIS
 
-// Read integer value from input stream, return TRUE if
-// successful. Also used from SoMFShort class.
-SbBool
-sosfshort_read_value(SoInput * in, short & val)
-{
-  if (!in->read(val)) {
-    SoReadError::post(in, "Couldn't read short value");
-    return FALSE;
-  }
-  return TRUE;
-}
 
 SbBool
 SoSFShort::readValue(SoInput * in)
 {
-  short val;
-  if (!sosfshort_read_value(in, val)) return FALSE;
-  this->setValue(val);
-  return TRUE;
+  return in->read(this->value);
 }
 
 // Write integer value to output stream. Also used from SoMFShort

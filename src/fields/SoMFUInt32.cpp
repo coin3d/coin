@@ -36,8 +36,10 @@
   \sa SoSFUInt32
 */
 
+#include <assert.h>
 #include <Inventor/fields/SoMFUInt32.h>
 #include <Inventor/fields/SoSubFieldP.h>
+#include <Inventor/SoInput.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -59,17 +61,14 @@ SoMFUInt32::initClass(void)
 // parent classes.
 #ifndef DOXYGEN_SKIP_THIS
 
-// These are implemented in the SoSFUInt32 class.
-extern SbBool sosfuint32_read_value(SoInput * in, uint32_t & val);
+// This is implemented in the SoSFUInt32 class.
 extern void sosfuint32_write_value(SoOutput * out, uint32_t val);
 
 SbBool
 SoMFUInt32::read1Value(SoInput * in, int idx)
 {
-  uint32_t val;
-  if (!sosfuint32_read_value(in, val)) return FALSE;
-  this->set1Value(idx, val);
-  return TRUE;
+  assert(idx < this->maxNum);
+  return in->read(this->values[idx]);
 }
 
 void

@@ -44,8 +44,6 @@
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoSubFieldP.h>
 
-extern SbBool sofield_read_float_values(SoInput * in, float * val, int numvals);
-
 SO_SFIELD_SOURCE(SoSFPlane, SbPlane, const SbPlane &);
 
 
@@ -67,7 +65,9 @@ SbBool
 sosfplane_read_value(SoInput * in, SbPlane & p)
 {
   float f[4];
-  if (!sofield_read_float_values(in, f, 4)) { return FALSE; }
+  for (int i = 0; i < 4; i++) {
+    if (!in->read(f[i])) return FALSE;
+  }
   p = SbPlane(SbVec3f(f[0], f[1], f[2]), f[3]);
   return TRUE;
 }
@@ -77,7 +77,7 @@ SoSFPlane::readValue(SoInput * in)
 {
   SbPlane p;
   if (!sosfplane_read_value(in, p)) return FALSE;
-  this->setValue(p);
+  this->value = p;
   return TRUE;
 }
 

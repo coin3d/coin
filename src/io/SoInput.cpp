@@ -1075,8 +1075,7 @@ SoInput::read(SbName & n, SbBool validIdent)
   if (!fi->skipWhiteSpace()) return FALSE; \
   readType _tmp; \
   if (!this->reader(_tmp)) return FALSE; \
-  num = (type) _tmp; \
-  return TRUE;
+  num = (type) _tmp;
 
 #define READ_INTEGER(num, type) \
 READ_NUM(readInteger, int32_t, num, type)
@@ -1103,6 +1102,7 @@ SoInput::read(int & i)
   else {
     READ_INTEGER(i, int);
   }
+  return TRUE;
 }
 
 /*!
@@ -1121,6 +1121,7 @@ SoInput::read(unsigned int & i)
   else {
     READ_UNSIGNED_INTEGER(i, unsigned int);
   }
+  return TRUE;
 }
 
 /*!
@@ -1139,6 +1140,7 @@ SoInput::read(short & s)
   else {
     READ_INTEGER(s, short);
   }
+  return TRUE;
 }
 
 /*!
@@ -1157,6 +1159,7 @@ SoInput::read(unsigned short & s)
   else {
     READ_UNSIGNED_INTEGER(s, unsigned short);
   }
+  return TRUE;
 }
 
 /*!
@@ -1168,11 +1171,19 @@ SoInput::read(float & f)
 {
   if (this->isBinary()) {
     if (!this->readBinaryArray(&f, 1)) { return FALSE; }
-    return TRUE;
   }
   else {
     READ_REAL(f, float);
   }
+  if (!coin_finite((double)f)) {
+    SoReadError::post(this,
+                      "Detected non-valid floating point number, replacing "
+                      "with 0.0f");
+    f = 0.0f;
+    // We don't return FALSE, thereby allowing the read process to
+    // continue, as a convenience for the application programmer.
+  }
+  return TRUE;
 }
 
 /*!
@@ -1184,11 +1195,19 @@ SoInput::read(double & d)
 {
   if (this->isBinary()) {
     if (!this->readBinaryArray(&d, 1)) { return FALSE; }
-    return TRUE;
   }
   else {
     READ_REAL(d, double);
   }
+  if (!coin_finite(d)) {
+    SoReadError::post(this,
+                      "Detected non-valid floating point number, replacing "
+                      "with 0.0");
+    d = 0.0;
+    // We don't return FALSE, thereby allowing the read process to
+    // continue, as a convenience for the application programmer.
+  }
+  return TRUE;
 }
 
 /*!

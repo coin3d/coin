@@ -59,26 +59,10 @@ SoSFInt32::initClass(void)
 // parent classes.
 #ifndef DOXYGEN_SKIP_THIS
 
-// Read integer value from input stream, return TRUE if
-// successful. Also used from SoMFInt32 class.
-SbBool
-sosfint32_read_value(SoInput * in, int32_t & val)
-{
-  int tmp;
-  if (!in->read(tmp)) {
-    return FALSE;
-  }
-  val = (int32_t) tmp;
-  return TRUE;
-}
-
 SbBool
 SoSFInt32::readValue(SoInput * in)
 {
-  int32_t val;
-  if (!sosfint32_read_value(in, val)) return FALSE;
-  this->setValue(val);
-  return TRUE;
+  return in->read(this->value);
 }
 
 // Write integer value to output stream. Also used from SoMFInt32

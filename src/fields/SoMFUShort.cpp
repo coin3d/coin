@@ -36,8 +36,10 @@
   \sa SoSFUShort
 */
 
+#include <assert.h>
 #include <Inventor/fields/SoMFUShort.h>
 #include <Inventor/fields/SoSubFieldP.h>
+#include <Inventor/SoInput.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -60,17 +62,14 @@ SoMFUShort::initClass(void)
 // parent classes.
 #ifndef DOXYGEN_SKIP_THIS
 
-// These are implemented in the SoSFUShort class.
-extern SbBool sosfushort_read_value(SoInput * in, unsigned short & val);
+// These is implemented in the SoSFUShort class.
 extern void sosfushort_write_value(SoOutput * out, unsigned short val);
 
 SbBool
 SoMFUShort::read1Value(SoInput * in, int idx)
 {
-  unsigned short val;
-  if (!sosfushort_read_value(in, val)) return FALSE;
-  this->set1Value(idx, val);
-  return TRUE;
+  assert(idx < this->maxNum);
+  return in->read(this->values[idx]);
 }
 
 void

@@ -90,7 +90,7 @@ SoSFTime::readValue(SoInput * in)
 {
   SbTime t;
   if (!sosftime_read_value(in, t)) return FALSE;
-  this->setValue(t);
+  this->value = t;
   return TRUE;
 }
 

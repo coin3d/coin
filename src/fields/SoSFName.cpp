@@ -63,23 +63,10 @@ SoSFName::initClass(void)
 // parent classes.
 #ifndef DOXYGEN_SKIP_THIS
 
-// Read SbName value from input stream, return TRUE if
-// successful. Also used from SoMFName class.
-SbBool
-sosfname_read_value(SoInput * in, SbName & val)
-{
-  if (in->read(val)) return TRUE;
-  SoReadError::post(in, "Couldn't read name");
-  return FALSE;
-}
-
 SbBool
 SoSFName::readValue(SoInput * in)
 {
-  SbName n;
-  if (!sosfname_read_value(in, n)) return FALSE;
-  this->setValue(n);
-  return TRUE;
+  return in->read(this->value);
 }
 
 // Write SbName value to output stream. Also used from SoMFName class.

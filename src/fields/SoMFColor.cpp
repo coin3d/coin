@@ -38,8 +38,10 @@
 
 */
 
+#include <assert.h>
 #include <Inventor/fields/SoMFColor.h>
 #include <Inventor/fields/SoSubFieldP.h>
+#include <Inventor/SoInput.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -64,17 +66,17 @@ SoMFColor::initClass(void)
 // parent classes.
 #ifndef DOXYGEN_SKIP_THIS
 
-// These are implemented in the SoSFColor class.
-extern SbBool sosfcolor_read_value(SoInput * in, SbColor & val);
+// This is implemented in the SoSFColor class.
 extern void sosfcolor_write_value(SoOutput * out, const SbColor & val);
 
 SbBool
 SoMFColor::read1Value(SoInput * in, int idx)
 {
-  SbColor val;
-  if (!sosfcolor_read_value(in, val)) return FALSE;
-  this->set1Value(idx, val);
-  return TRUE;
+  assert(idx < this->maxNum);
+  return 
+    in->read(this->values[idx][0]) &&
+    in->read(this->values[idx][1]) &&
+    in->read(this->values[idx][2]);
 }
 
 void

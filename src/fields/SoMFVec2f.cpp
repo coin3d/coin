@@ -37,8 +37,10 @@
 
 */
 
+#include <assert.h>
 #include <Inventor/fields/SoMFVec2f.h>
 #include <Inventor/fields/SoSubFieldP.h>
+#include <Inventor/SoInput.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -61,17 +63,16 @@ SoMFVec2f::initClass(void)
 // parent classes.
 #ifndef DOXYGEN_SKIP_THIS
 
-// These are implemented in the SoSFVec2f class.
-extern SbBool sosfvec2f_read_value(SoInput * in, SbVec2f & v);
+// This is implemented in the SoSFVec2f class.
 extern void sosfvec2f_write_value(SoOutput * out, const SbVec2f & v);
 
 SbBool
 SoMFVec2f::read1Value(SoInput * in, int idx)
 {
-  SbVec2f v;
-  if (!sosfvec2f_read_value(in, v)) return FALSE;
-  this->set1Value(idx, v);
-  return TRUE;
+  assert(idx < this->maxNum);
+  return
+    in->read(this->values[idx][0]) &&
+    in->read(this->values[idx][1]);
 }
 
 void

@@ -44,8 +44,6 @@
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoSubFieldP.h>
 
-extern SbBool sofield_read_float_values(SoInput * in, float * val, int numvals);
-
 SO_SFIELD_SOURCE(SoSFColor, SbColor, const SbColor &);
 
 // Override from parent.
@@ -60,25 +58,13 @@ SoSFColor::initClass(void)
 // parent classes.
 #ifndef DOXYGEN_SKIP_THIS
 
-// Read SbColor value from input stream, return TRUE if
-// successful. Also used from SoMFColor class.
-SbBool
-sosfcolor_read_value(SoInput * in, SbColor & val)
-{
-  float v[3];
-  if (!sofield_read_float_values(in, v, 3)) { return FALSE; }
-  for (int i=0; i < 3; i++) { val[i] = v[i]; }
-  return TRUE;
-}
-
 SbBool
 SoSFColor::readValue(SoInput * in)
 {
-  SbColor val;
-  if (!sosfcolor_read_value(in, val)) return FALSE;
-  this->value = val;
-  this->valueChanged();
-  return TRUE;
+  return 
+    in->read(this->value[0]) &&
+    in->read(this->value[1]) &&
+    in->read(this->value[2]);
 }
 
 // Write SbColor value to output stream. Also used from SoMFColor

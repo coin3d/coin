@@ -33,8 +33,10 @@
 
 */
 
+#include <assert.h>
 #include <Inventor/fields/SoMFString.h>
 #include <Inventor/fields/SoSubFieldP.h>
+#include <Inventor/SoInput.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -55,17 +57,14 @@ SoMFString::initClass(void)
 // parent classes.
 #ifndef DOXYGEN_SKIP_THIS
 
-// These are implemented in the SoSFString class.
-extern SbBool sosfstring_read_value(SoInput * in, SbString & val);
+// This is implemented in the SoSFString class.
 extern void sosfstring_write_value(SoOutput * out, const SbString & val);
 
 SbBool
 SoMFString::read1Value(SoInput * in, int idx)
 {
-  SbString n;
-  if (!sosfstring_read_value(in, n)) return FALSE;
-  this->set1Value(idx, n);
-  return TRUE;
+  assert(idx < this->maxNum);
+  return in->read(this->values[idx]);
 }
 
 void

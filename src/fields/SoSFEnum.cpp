@@ -200,8 +200,7 @@ SoSFEnum::readValue(SoInput * in)
     SoReadError::post(in, "Unknown enumeration value \"%s\"", n.getString());
     return FALSE;
   }
-
-  this->setValue(val);
+  this->value = val;
   return TRUE;
 }
 
@@ -226,7 +225,7 @@ SoSFEnum::writeValue(SoOutput * out) const
   const SbBool fname = thecontainer && thecontainer->getFieldName(this, name);
   SbString s("");
   if (fname) { s.sprintf(" \"%s\"", name.getString()); }
-  
+
   SoDebugError::post("SoSFEnum::writeValue",
                      "Illegal enumeration value %d in field%s",
                      val, s.getString());
@@ -320,4 +319,3 @@ SoSFEnum::getEnum(const int idx, SbName & name) const
   name = this->enumNames[idx];
   return this->enumValues[idx];
 }
-

@@ -58,43 +58,9 @@ SoSFFloat::initClass(void)
 #ifndef DOXYGEN_SKIP_THIS
 
 SbBool
-sofield_read_float_values(SoInput * in, float * val, int numvals)
-{
-  for (int i=0; i < numvals; i++) {
-
-    if (!in->read(val[i])) {
-      SoReadError::post(in, "unable to read floating point value");
-      return FALSE;
-    }
-
-    if (!coin_finite(val[i])) {
-      SoReadError::post(in,
-                        "Detected non-valid floating point number, replacing "
-                        "with 0.0f");
-      val[i] = 0.0f;
-      // We don't return FALSE, thereby allowing the read process to
-      // continue, as a convenience for the application programmer.
-    }
-  }
-
-  return TRUE;
-}
-
-// Read floating point value from input stream, return TRUE if
-// successful. Also used from SoMFFloat class.
-SbBool
-sosffloat_read_value(SoInput * in, float & val)
-{
-  return sofield_read_float_values(in, &val, 1);
-}
-
-SbBool
 SoSFFloat::readValue(SoInput * in)
 {
-  float val;
-  if (!sosffloat_read_value(in, val)) return FALSE;
-  this->setValue(val);
-  return TRUE;
+  return in->read(this->value);
 }
 
 // Write floating point value to output stream. Also used from

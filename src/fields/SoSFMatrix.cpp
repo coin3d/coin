@@ -43,8 +43,6 @@
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoSubFieldP.h>
 
-extern SbBool sofield_read_float_values(SoInput * in, float * val, int numvals);
-
 SO_SFIELD_SOURCE(SoSFMatrix, SbMatrix, const SbMatrix &);
 
 
@@ -60,21 +58,13 @@ SoSFMatrix::initClass(void)
 // parent classes.
 #ifndef DOXYGEN_SKIP_THIS
 
-// Read matrix from input stream, return TRUE if successful. Also used
-// from SoMFMatrix class.
-SbBool
-sosfmatrix_read_value(SoInput * in, SbMatrix & m)
-{
-  if (!sofield_read_float_values(in, m.operator[](0), 16)) { return FALSE; }
-  return TRUE;
-}
-
 SbBool
 SoSFMatrix::readValue(SoInput * in)
 {
-  SbMatrix m;
-  if (!sosfmatrix_read_value(in, m)) return FALSE;
-  this->setValue(m);
+  float * ptr = this->value[0];
+  for (int i = 0; i < 16; i++) {
+    if (!in->read(ptr[i])) return FALSE;
+  }
   return TRUE;
 }
 
