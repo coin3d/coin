@@ -145,6 +145,66 @@ SbDPViewVolume::~SbDPViewVolume(void)
 {
 }
 
+// Orthographic projection matrix. From the "OpenGL Programming Guide,
+// release 1", Appendix G (but with row-major mode).
+static SbDPMatrix
+get_perspective_projection(const double rightminusleft, const double rightplusleft,
+                           const double topminusbottom, const double topplusbottom,
+                           const double nearval, const double farval)
+{
+  SbDPMatrix proj;
+
+  proj[0][0] = 2.0*nearval/rightminusleft;
+  proj[0][1] = 0.0;
+  proj[0][2] = 0.0;
+  proj[0][3] = 0.0;
+  proj[1][0] = 0.0;
+  proj[1][1] = 2.0*nearval/topminusbottom;
+  proj[1][2] = 0.0;
+  proj[1][3] = 0.0;
+  proj[2][0] = rightplusleft/rightminusleft;
+  proj[2][1] = topplusbottom/topminusbottom;
+  proj[2][2] = -(farval+nearval)/(farval-nearval);
+  proj[2][3] = -1.0;
+  proj[3][0] = 0.0;
+  proj[3][1] = 0.0;
+  proj[3][2] = -2.0*farval*nearval/(farval-nearval);
+  proj[3][3] = 0.0;
+
+  return proj;
+}
+
+
+// Perspective projection matrix. From the "OpenGL Programming Guide,
+// release 1", Appendix G (but with row-major mode).
+static SbDPMatrix
+get_ortho_projection(const double rightminusleft, const double rightplusleft,
+                     const double topminusbottom, const double topplusbottom,
+                     const double nearval, const double farval)
+{
+  SbDPMatrix proj;
+  proj[0][0] = 2.0/rightminusleft;
+  proj[0][1] = 0.0;
+  proj[0][2] = 0.0;
+  proj[0][3] = 0.0;
+  proj[1][0] = 0.0;
+  proj[1][1] = 2.0/topminusbottom;
+  proj[1][2] = 0.0;
+  proj[1][3] = 0.0;
+  proj[2][0] = 0.0;
+  proj[2][1] = 0.0;
+  proj[2][2] = -2.0/(farval-nearval);
+  proj[2][3] = 0.0;
+  proj[3][0] = -rightplusleft/rightminusleft;
+  proj[3][1] = -topplusbottom/topminusbottom;
+  proj[3][2] = -(farval+nearval)/(farval-nearval);
+  proj[3][3] = 1.0;
+
+  return proj;
+
+}
+
+
 /*!
   Returns the view volume's affine matrix and projection matrix.
 
@@ -155,7 +215,7 @@ SbDPViewVolume::getMatrices(SbDPMatrix& affine, SbDPMatrix& proj) const
 {
   SbVec3d upvec = this->ulf - this->llf;
 #if COIN_DEBUG
-  if (upvec == SbVec3d(0.0f, 0.0f, 0.0f)) {
+  if (upvec == SbVec3d(0.0, 0.0, 0.0)) {
     SoDebugError::postWarning("SbDPViewVolume::getMatrices",
                               "empty frustum!");
     affine = SbDPMatrix::identity();
@@ -165,9 +225,8 @@ SbDPViewVolume::getMatrices(SbDPMatrix& affine, SbDPMatrix& proj) const
 #endif // COIN_DEBUG
   SbVec3d rightvec = this->lrf - this->llf;
 
-  // store width and height (needed to generate projection matrix)
-  double height = upvec.normalize();
-  double width = rightvec.normalize();
+  (void) upvec.normalize();
+  (void) rightvec.normalize();
 
   // build matrix that will transform into camera coordinate system
   SbDPMatrix mat;
@@ -193,18 +252,35 @@ SbDPViewVolume::getMatrices(SbDPMatrix& affine, SbDPMatrix& proj) const
 
   // the affine matrix is the inverse of the camera coordinate system
   affine = mat.inverse();
+  
+  // rotate frustum points back to an axis-aligned view volume to
+  // calculate parameters for the projection matrix
+  SbVec3d nlrf, nllf, nulf;
+  affine.multVecMatrix(this->lrf, nlrf);
+  affine.multVecMatrix(this->llf, nllf);
+  affine.multVecMatrix(this->ulf, nulf);
 
-  double l = -width * 0.5f;
-  double r = width * 0.5f;
-  double t = height * 0.5f;
-  double b = - height * 0.5f;
+  double rml = nlrf[0] - nllf[0];
+  double rpl = nlrf[0] + nllf[0];
+  double tmb = nulf[1] - nllf[1];
+  double tpb = nulf[1] + nllf[1];
   double n = this->getNearDist();
   double f = n + this->getDepth();
 
+#if COIN_DEBUG
+  if (rml <= 0.0f || tmb <= 0.0f || n >= f) {
+    SoDebugError::postWarning("SbDPViewVolume::getMatrices",
+                              "invalid frustum");
+    proj = SbDPMatrix::identity();
+    return;
+  }
+#endif // COIN_DEBUG
+
+
   if(this->type == SbDPViewVolume::ORTHOGRAPHIC)
-    proj = SbDPViewVolume::getOrthoProjection(l, r, b, t, n, f);
+    proj = get_ortho_projection(rml, rpl, tmb, tpb, n, f);
   else
-    proj = SbDPViewVolume::getPerspectiveProjection(l, r, b, t, n, f);
+    proj = get_perspective_projection(rml, rpl, tmb, tpb, n, f);
 }
 
 /*!
@@ -973,91 +1049,6 @@ double
 SbDPViewVolume::getDepth(void) const
 {
   return this->nearToFar;
-}
-
-/*!
-  Private method to make a matrix for orthogonal parallel projection.
- */
-SbDPMatrix
-SbDPViewVolume::getOrthoProjection(const double left, const double right,
-                                 const double bottom, const double top,
-                                 const double nearval, const double farval)
-{
-#if COIN_DEBUG
-  if (left == right || bottom == top || nearval == farval) {
-    SoDebugError::postWarning("SbDPViewVolume::getOrthoProjection",
-                              "invalid frustum: <%f, %f> <%f, %f> <%f, %f>",
-                              left, right, bottom, top, nearval, farval);
-    return SbDPMatrix::identity();
-  }
-#endif // COIN_DEBUG
-
-  SbDPMatrix proj;
-
-  // Projection matrix. From the "OpenGL Programming Guide, release 1",
-  // Appendix G (but with row-major mode).
-
-  proj[0][0] = 2.0f/(right-left);
-  proj[0][1] = 0.0f;
-  proj[0][2] = 0.0f;
-  proj[0][3] = 0.0f;
-  proj[1][0] = 0.0f;
-  proj[1][1] = 2.0f/(top-bottom);
-  proj[1][2] = 0.0f;
-  proj[1][3] = 0.0f;
-  proj[2][0] = 0.0f;
-  proj[2][1] = 0.0f;
-  proj[2][2] = -2.0f/(farval-nearval);
-  proj[2][3] = 0.0f;
-  proj[3][0] = -(right+left)/(right-left);
-  proj[3][1] = -(top+bottom)/(top-bottom);
-  proj[3][2] = -(farval+nearval)/(farval-nearval);
-  proj[3][3] = 1.0f;
-
-  return proj;
-}
-
-
-/*!
-  Private method to make a matrix for perspective projection.
- */
-SbDPMatrix
-SbDPViewVolume::getPerspectiveProjection(const double left, const double right,
-                                       const double bottom, const double top,
-                                       const double nearval, const double farval)
-{
-#if COIN_DEBUG
-  if (left == right || bottom == top || nearval == farval) {
-    SoDebugError::postWarning("SbDPViewVolume::getPerspectiveProjection",
-                              "invalid frustum: <%f, %f> <%f, %f> <%f, %f>",
-                              left, right, bottom, top, nearval, farval);
-    return SbDPMatrix::identity();
-  }
-#endif // COIN_DEBUG
-
-  SbDPMatrix proj;
-
-  // Projection matrix. From the "OpenGL Programming Guide, release 1",
-  // Appendix G (but with row-major mode).
-
-  proj[0][0] = 2.0f*nearval/(right-left);
-  proj[0][1] = 0.0f;
-  proj[0][2] = 0.0f;
-  proj[0][3] = 0.0f;
-  proj[1][0] = 0.0f;
-  proj[1][1] = 2.0f*nearval/(top-bottom);
-  proj[1][2] = 0.0f;
-  proj[1][3] = 0.0f;
-  proj[2][0] = (right+left)/(right-left);
-  proj[2][1] = (top+bottom)/(top-bottom);
-  proj[2][2] = -(farval+nearval)/(farval-nearval);
-  proj[2][3] = -1.0f;
-  proj[3][0] = 0.0f;
-  proj[3][1] = 0.0f;
-  proj[3][2] = -2.0f*farval*nearval/(farval-nearval);
-  proj[3][3] = 0.0f;
-
-  return proj;
 }
 
 /*!
