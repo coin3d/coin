@@ -55,6 +55,9 @@ public:
   virtual ReaderType getType(void) const;
   virtual int readBuffer(char * buf, const size_t readlen);
 
+  virtual const SbString & getFilename(void);
+  virtual FILE * getFilePointer(void);
+
 public:
   SbString filename;
   FILE * fp;
@@ -82,6 +85,8 @@ public:
 
   virtual ReaderType getType(void) const;
   virtual int readBuffer(char * buf, const size_t readlen);
+
+  virtual const SbString & getFilename(void);
 
 public:
   void * gzfp;
