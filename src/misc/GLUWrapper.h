@@ -145,10 +145,13 @@ typedef struct {
                                unsigned int minor,
                                unsigned int release);
 
-  /* GLU calls which might be used. */
+  /* GLU calls which might be used. Note that any of these can be NULL
+     pointers if the function is not available, unless marked as being
+     always available. (That is, as long as GLU itself is available.)
+     */
   gluGetString_t gluGetString;
-  gluBuild2DMipmaps_t gluBuild2DMipmaps;
-  gluScaleImage_t gluScaleImage;
+  gluBuild2DMipmaps_t gluBuild2DMipmaps; /* always present */
+  gluScaleImage_t gluScaleImage; /* always present */
   gluNewNurbsRenderer_t gluNewNurbsRenderer;
   gluDeleteNurbsRenderer_t gluDeleteNurbsRenderer;
   gluNurbsProperty_t gluNurbsProperty;

@@ -660,8 +660,7 @@ SoImage::getImage(SbVec2s & size, int & nc)
         simage_wrapper()->simage_free_image(result);
         this->resizedimagevalid = TRUE;
       }
-      else if (GLUWrapper()->available &&
-               GLUWrapper()->gluScaleImage) {
+      else if (GLUWrapper()->available) {
         this->resizedimage->setValue(newsize, nc, NULL);
         const unsigned char * rezdata = this->resizedimage->getValue(newsize, nc);
         GLenum format;

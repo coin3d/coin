@@ -811,8 +811,7 @@ SoGLImageP::resizeImage(unsigned char *& imageptr, int & xsize, int & ysize)
       (void)memcpy(glimage_tmpimagebuffer, result, numbytes);
       simage_wrapper()->simage_free_image(result);
     }
-    else if (GLUWrapper()->available &&
-             GLUWrapper()->gluScaleImage) {
+    else if (GLUWrapper()->available) {
       GLenum format;
       switch (numcomponents) {
       default: // avoid compiler warnings

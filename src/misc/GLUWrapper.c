@@ -188,8 +188,14 @@ GLUWrapper_gluGetString(GLenum name)
 static GLint APIENTRY
 GLUWrapper_gluScaleImage(GLenum a, GLsizei b, GLsizei c, GLenum d, const void * e, GLsizei f, GLsizei g, GLenum h, GLvoid * i)
 {
-  /* Just a void function (gluScaleImage() should normally be
-     present). */
+  /* Just a void function. */
+
+  /* gluScaleImage() should _always_ be present, as it has been
+     present in GLU from version 1.0. This is just here as a paranoid
+     measure to avoid a crash if we happen to stumble into a faulty
+     GLU library. */
+
+  /* FIXME: memset() to a pattern? 20011129 mortene. */
 
   /* 0 indicates success. */
   return 0;
@@ -197,10 +203,16 @@ GLUWrapper_gluScaleImage(GLenum a, GLsizei b, GLsizei c, GLenum d, const void * 
 
 /* Replacement function for gluBuild2DMipmaps(). */
 static GLint APIENTRY
-GLUWrapper_gluBuild2DMipmaps(GLenum a, GLint b, GLsizei c, GLsizei d, GLenum e, GLenum f, const void * g)
+GLUWrapper_gluBuild2DMipmaps(GLenum a, GLint c, GLsizei w, GLsizei h, GLenum e, GLenum f, const void * g)
 {
-  /* Just a void function (gluBuild2DMipmaps() should normally be
-     present). */
+  /* Just a void function. */
+
+  /* gluBuild2DMipmaps() should _always_ be present, as it has been
+     present in GLU from version 1.0. This is just here as a paranoid
+     measure to avoid a crash if we happen to stumble into a faulty
+     GLU library. */
+
+  /* FIXME: memset() to a pattern? 20011129 mortene. */
 
   /* 0 indicates success. */
   return 0;
