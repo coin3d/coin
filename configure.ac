@@ -1174,6 +1174,46 @@ AC_SUBST(HAVE_SOUND)
 
 AM_CONDITIONAL([BUILD_WITH_SOUND], [$sim_ac_enable_sound])
 
+# ********************************************************************
+# * Set us up for using the Fontconfig font library (if wanted, and if
+# * available).
+# ********************************************************************
+
+AC_ARG_ENABLE([dl-fontconfig],
+  AC_HELP_STRING([--disable-dl-fontconfig],
+                 [disable runtime dynamic linking for fontconfig if possible [[default=--enable-dl-fontconfig]]]),
+  [case "${enableval}" in
+    yes | true) enable_dl_fontconfig=true ;;
+    no | false) enable_dl_fontconfig=false ;;
+    *) SIM_AC_ENABLE_ERROR([--enable-dl-fontconfig]) ;;
+  esac],
+  [enable_dl_fontconfig=true])
+
+sim_ac_have_fontconfig=false
+if $enable_dl_fontconfig && $coin_can_do_runtime_linking; then
+  AC_DEFINE_UNQUOTED([FONTCONFIG_RUNTIME_LINKING], 1,
+    [define for runtime linking with fontconfig])
+  SIM_AC_CONFIGURATION_SETTING([Fontconfig support], [Yes, run-time binding])
+else
+  SIM_AC_HAVE_FONTCONFIG_IFELSE([
+    AC_DEFINE(HAVE_FONTCONFIG, 1,
+      [define if you have the fontconfig library])
+    CPPFLAGS="$CPPFLAGS $sim_ac_fontconfig_cppflags"
+    LDFLAGS="$LDFLAGS $sim_ac_fontconfig_ldflags"
+    LIBS="$sim_ac_fontconfig_libs $LIBS"
+    COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_fontconfig_cppflags"
+    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_fontconfig_ldflags"
+    COIN_EXTRA_LIBS="$sim_ac_fontconfig_libs $COIN_EXTRA_LIBS"
+    SIM_AC_CONFIGURATION_SETTING([Fontconfig support], [Yes, link-time binding])
+  ], [
+    if $sim_ac_fontconfig_desired; then
+      SIM_AC_CONFIGURATION_SETTING([Fontconfig support], [No])
+    fi
+  ])
+fi
+
+AM_CONDITIONAL(HAVE_FONTCONFIG, $sim_ac_have_fontconfig)
+
 # **************************************************************************
 # Set us up for using TrueType fonts. Through the FreeType library (if
 # wanted, and if available), and / or the Win32 API.
@@ -1197,7 +1237,7 @@ sim_ac_have_freetype=false
 if $enable_dl_freetype && $coin_can_do_runtime_linking; then
   AC_DEFINE_UNQUOTED([FREETYPE_RUNTIME_LINKING], 1,
     [define for runtime linking with freetype])
-  SIM_AC_CONFIGURATION_SETTING([FreeType library], [If available, run-time linking])
+  SIM_AC_CONFIGURATION_SETTING([FreeType library], [Yes, run-time binding])
 else
   SIM_AC_HAVE_FREETYPE_IFELSE([
     AC_DEFINE(HAVE_FREETYPE, 1,
