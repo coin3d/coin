@@ -204,7 +204,7 @@ SoType::fromName(const SbName name)
 }
 
 /*!
-  FIXME: write doc.
+  Find and return a type from the given key ID.
 */
 
 SoType
