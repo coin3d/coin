@@ -485,7 +485,7 @@ cc_flww32_get_bitmap(void * font, int glyph)
   /* "size" can be equal to zero, it is for instance known to happen
      for at least the space char glyph for some charsets. */
   if (size > 0) {
-    w32bitmap = (uint8_t *)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, ret);
+    w32bitmap = (uint8_t *)malloc(ret);
     assert(w32bitmap != NULL); /* FIXME: be robust. 20030530 mortene. */
 
     ret = GetGlyphOutline(cc_flww32_globals.devctx,
@@ -538,8 +538,7 @@ cc_flww32_get_bitmap(void * font, int glyph)
   assert(unused);
 
  done:  
-  /* FIXME: catch error return. 20030530 mortene. */
-  (void)HeapFree(GetProcessHeap(), 0, w32bitmap);
+  free(w32bitmap);
 
   /* Reconnect device context to default font. */
   if (SelectObject(cc_flww32_globals.devctx, previousfont) != (HFONT)font) {
