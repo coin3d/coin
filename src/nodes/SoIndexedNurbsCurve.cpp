@@ -45,7 +45,7 @@
 #include <Inventor/elements/SoPickStyleElement.h>
 #include <Inventor/elements/SoDrawStyleElement.h>
 #include <Inventor/SoPrimitiveVertex.h>
-#include <Inventor/elements/SoGLLightModelElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoState.h>
@@ -156,13 +156,14 @@ SoIndexedNurbsCurve::GLRender(SoGLRenderAction * action)
   if (!this->shouldGLRender(action)) return;
 
   SoState * state = action->getState();
+  state->push();
+
+  // disable lighting
+  SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
 
   // initialize current material
   SoMaterialBundle mb(action);
   mb.sendFirst();
-
-  // disable lighting
-  SoGLLightModelElement::forceSend(state, SoLightModelElement::BASE_COLOR);
 
   // disable texturing
   SoGLTextureEnabledElement::forceSend(state, FALSE);
@@ -171,6 +172,8 @@ SoIndexedNurbsCurve::GLRender(SoGLRenderAction * action)
   glEnable(GL_AUTO_NORMAL);
   this->doNurbs(action, TRUE, SoDrawStyleElement::get(action->getState()) == SoDrawStyleElement::POINTS);
   glDisable(GL_AUTO_NORMAL);
+
+  state->pop();
 }
 
 // doc from parent

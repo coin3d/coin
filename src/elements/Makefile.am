@@ -15,7 +15,6 @@ RegularSources = \
 	SoCoordinateElement.cpp \
 	SoCreaseAngleElement.cpp \
 	SoCullElement.cpp \
-	SoGLColorIndexElement.cpp \
 	SoDecimationPercentageElement.cpp \
 	SoDecimationTypeElement.cpp \
 	SoDiffuseColorElement.cpp \
@@ -27,17 +26,14 @@ RegularSources = \
 	SoFocalDistanceElement.cpp \
 	SoFontNameElement.cpp \
 	SoFontSizeElement.cpp \
-	SoGLAmbientColorElement.cpp \
 	SoGLCacheContextElement.cpp \
 	SoGLClipPlaneElement.cpp \
+	SoGLColorIndexElement.cpp \
 	SoGLCoordinateElement.cpp \
-	SoGLDiffuseColorElement.cpp \
 	SoGLDrawStyleElement.cpp \
-	SoGLEmissiveColorElement.cpp \
 	SoGLEnvironmentElement.cpp \
 	SoGLLazyElement.cpp \
 	SoGLLightIdElement.cpp \
-	SoGLLightModelElement.cpp \
 	SoGLLinePatternElement.cpp \
 	SoGLLineWidthElement.cpp \
 	SoGLModelMatrixElement.cpp \
@@ -45,13 +41,10 @@ RegularSources = \
 	SoGLNormalizeElement.cpp \
 	SoGLPointSizeElement.cpp \
 	SoGLPolygonOffsetElement.cpp \
-	SoGLPolygonStippleElement.cpp \
 	SoGLProjectionMatrixElement.cpp \
 	SoGLRenderPassElement.cpp \
 	SoGLShadeModelElement.cpp \
 	SoGLShapeHintsElement.cpp \
-	SoGLShininessElement.cpp \
-	SoGLSpecularColorElement.cpp \
 	SoGLTextureCoordinateElement.cpp \
 	SoGLTextureEnabledElement.cpp \
 	SoGLTexture3EnabledElement.cpp \
@@ -119,7 +112,6 @@ PublicHeaders = \
 	../../include/Inventor/elements/SoCoordinateElement.h \
 	../../include/Inventor/elements/SoCreaseAngleElement.h \
 	../../include/Inventor/elements/SoCullElement.h \
-	../../include/Inventor/elements/SoGLColorIndexElement.h \
 	../../include/Inventor/elements/SoDecimationPercentageElement.h \
 	../../include/Inventor/elements/SoDecimationTypeElement.h \
 	../../include/Inventor/elements/SoDiffuseColorElement.h \
@@ -131,17 +123,13 @@ PublicHeaders = \
 	../../include/Inventor/elements/SoFocalDistanceElement.h \
 	../../include/Inventor/elements/SoFontNameElement.h \
 	../../include/Inventor/elements/SoFontSizeElement.h \
-	../../include/Inventor/elements/SoGLAmbientColorElement.h \
 	../../include/Inventor/elements/SoGLCacheContextElement.h \
 	../../include/Inventor/elements/SoGLClipPlaneElement.h \
+	../../include/Inventor/elements/SoGLColorIndexElement.h \
 	../../include/Inventor/elements/SoGLCoordinateElement.h \
-	../../include/Inventor/elements/SoGLDiffuseColorElement.h \
-	../../include/Inventor/elements/SoGLDrawStyleElement.h \
-	../../include/Inventor/elements/SoGLEmissiveColorElement.h \
 	../../include/Inventor/elements/SoGLEnvironmentElement.h \
 	../../include/Inventor/elements/SoGLLazyElement.h \
 	../../include/Inventor/elements/SoGLLightIdElement.h \
-	../../include/Inventor/elements/SoGLLightModelElement.h \
 	../../include/Inventor/elements/SoGLLinePatternElement.h \
 	../../include/Inventor/elements/SoGLLineWidthElement.h \
 	../../include/Inventor/elements/SoGLModelMatrixElement.h \
@@ -149,13 +137,10 @@ PublicHeaders = \
 	../../include/Inventor/elements/SoGLNormalizeElement.h \
 	../../include/Inventor/elements/SoGLPointSizeElement.h \
 	../../include/Inventor/elements/SoGLPolygonOffsetElement.h \
-	../../include/Inventor/elements/SoGLPolygonStippleElement.h \
 	../../include/Inventor/elements/SoGLProjectionMatrixElement.h \
 	../../include/Inventor/elements/SoGLRenderPassElement.h \
 	../../include/Inventor/elements/SoGLShadeModelElement.h \
 	../../include/Inventor/elements/SoGLShapeHintsElement.h \
-	../../include/Inventor/elements/SoGLShininessElement.h \
-	../../include/Inventor/elements/SoGLSpecularColorElement.h \
 	../../include/Inventor/elements/SoGLTextureCoordinateElement.h \
 	../../include/Inventor/elements/SoGLTextureEnabledElement.h \
 	../../include/Inventor/elements/SoGLTexture3EnabledElement.h \

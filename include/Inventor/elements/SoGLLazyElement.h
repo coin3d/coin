@@ -5,7 +5,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -32,54 +32,80 @@ class COIN_DLL_API SoGLLazyElement : public SoLazyElement {
   typedef SoLazyElement inherited;
 
   SO_ELEMENT_HEADER(SoGLLazyElement);
-
+  
 public:
   static void initClass();
 protected:
   ~SoGLLazyElement();
 public:
+  
+  virtual void init(SoState *state);
+  virtual void push(SoState *state);
+  virtual void pop(SoState *state, const SoElement * prevtopelement);
 
-//    virtual void init(SoState *state);
-//    virtual void push(SoState *state);
-//    virtual void pop(SoState *state, const SoElement *prevTopElement);
+  static void sendAllMaterial(SoState * state);
+  static void sendNoMaterial(SoState * state);
+  static void sendOnlyDiffuseColor(SoState * state);
+  static void sendLightModel(SoState * state, const int32_t model);
+  static void sendPackedDiffuse(SoState * state, const uint32_t diffuse);
 
-  static void sendAllMaterial(SoState *state);
-  static void sendNoMaterial(SoState *state);
-  static void sendOnlyDiffuseColor(SoState *state);
-  void sendDiffuseByIndex(int index) const;
+  void sendDiffuseByIndex(const int index) const;
   static SbBool isColorIndex(SoState *state);
-  static SoGLLazyElement *getInstance(const SoState *state);
+  static SoGLLazyElement * getInstance(const SoState *state);
   void send(const SoState *state, uint32_t mask) const;
 
   void sendVPPacked(SoState* state, const unsigned char* pcolor);
 
-  // These are just stubs. SoGLRenderCache is not supported yet.
   void reset(SoState* state,  uint32_t bitmask) const;
-  SbBool lazyMatches(uint32_t checkGLFlag, uint32_t checkIVFlag,
-                     const SoGLLazyElement* eltInState);
-  SoGLLazyElement* copyLazyMatchInfo(SoState* state);
 
   typedef struct {
-    uint32_t        GLDiffuseNodeId;
-    uint32_t        GLTranspNodeId;
-    float           GLAmbient[4];
-    float           GLEmissive[4];
-    float           GLSpecular[4];
-    float           GLShininess;
-    SbBool          GLColorMaterial;
-    int32_t         GLLightModel;
-    SbBool          GLblending;
-    int32_t         GLStippleNum;
-  } GLLazyState;
+    uint32_t diffuse;
+    SbColor ambient;
+    SbColor emissive;
+    SbColor specular;
+    float shininess;
+    int32_t lightmodel;
+    int32_t blending;
+    int32_t stipplenum;
+  } GLState;
 
-  void getCopyGL(SoGLLazyElement* cacheLazyElement,
-                 SoGLLazyElement::GLLazyState& cacheGLState);
+  GLState glstate;
+  SbBool colorindex;
+  SoColorPacker * colorpacker;
+  const uint32_t * packedpointer;
+  uint32_t transpmask;
 
-  void copyBackGL(SoGLLazyElement* cacheLazyElement,
-                  SoGLLazyElement::GLLazyState& cacheGLState);
-  void mergeCacheInfo(SoGLRenderCache* childCache, SoGLRenderCache*
-                      parentCache, uint32_t doSendFlag, uint32_t checkIVFlag,
-                      uint32_t checkGLFlag);
+  virtual void setDiffuseElt(SoNode*,  int32_t numcolors, 
+                             const SbColor * colors, SoColorPacker * packer);   
+  virtual void setPackedElt(SoNode * node, int32_t numcolors, 
+                            const uint32_t * colors, const SbBool packedtransparency);
+  virtual void setColorIndexElt(SoNode * node, int32_t numindices, 
+                                const int32_t * indices);	
+  virtual void setTranspElt(SoNode * node, int32_t numtransp, 
+                            const float * transp, SoColorPacker * packer);
+  
+  virtual void setTranspTypeElt(int32_t type);
+  virtual void setAmbientElt(const SbColor* color);
+  virtual void setEmissiveElt(const SbColor* color);
+  virtual void setSpecularElt(const SbColor* color);
+  virtual void setShininessElt(float value);
+  virtual void setColorMaterialElt(SbBool value);
+  virtual void setBlendingElt(SbBool value);
+  virtual void setLightModelElt(SoState *state, int32_t model);
+  virtual void setMaterialElt(SoNode * node, uint32_t bitmask, 
+                              SoColorPacker * packer, 
+                              const SbColor * diffuse, const int numdiffuse,
+                              const float * transp, const int numtransp,
+                              const SbColor & ambient,
+                              const SbColor & emissive,
+                              const SbColor & specular,
+                              const float shininess);
+
+private:
+  void sendPackedDiffuse(const uint32_t diffuse) const;
+  void sendLightModel(const int32_t model) const;
+  void initGL(void);
+  void packColors(SoColorPacker * packer) const;
 };
 
 #endif // !COIN_SOGLLAZYELEMENT_H

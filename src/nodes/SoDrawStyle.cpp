@@ -60,7 +60,6 @@
 #include <Inventor/elements/SoGLLinePatternElement.h>
 #include <Inventor/elements/SoGLLineWidthElement.h>
 #include <Inventor/elements/SoGLPointSizeElement.h>
-#include <Inventor/elements/SoGLPolygonStippleElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 
@@ -176,7 +175,6 @@ SoDrawStyle::initClass(void)
   SO_ENABLE(SoGLRenderAction, SoGLLinePatternElement);
   SO_ENABLE(SoGLRenderAction, SoGLLineWidthElement);
   SO_ENABLE(SoGLRenderAction, SoGLPointSizeElement);
-  SO_ENABLE(SoGLRenderAction, SoGLPolygonStippleElement);
 
   SO_ENABLE(SoCallbackAction, SoDrawStyleElement);
   SO_ENABLE(SoCallbackAction, SoShapeStyleElement);

@@ -61,8 +61,8 @@
 #include <Inventor/elements/SoGLShapeHintsElement.h>
 #include <Inventor/elements/SoTextureCoordinateBindingElement.h>
 #include <Inventor/elements/SoDrawStyleElement.h>
-#include <Inventor/elements/SoGLLightModelElement.h>
 #include <Inventor/elements/SoGLCoordinateElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 
 #include <assert.h>
 
@@ -237,9 +237,7 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
   const int32_t * mindices;
   SbBool normalCacheUsed;
 
-  SbBool sendNormals =
-    (SoLightModelElement::get(state) !=
-     SoLightModelElement::BASE_COLOR);
+  SbBool sendNormals = SoLazyElement::getLightModel(state) != SoLazyElement::BASE_COLOR;
 
   getVertexData(state, coords, normals, cindices,
                 nindices, tindices, mindices, numindices,
@@ -251,7 +249,7 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
       didpush = TRUE;
     }
     sendNormals = FALSE;
-    SoLightModelElement::set(state, SoLightModelElement::BASE_COLOR);
+    SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
   }
 
   if (!this->shouldGLRender(action)) {
@@ -280,6 +278,7 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
   else if (nbind == OVERALL) {
     glNormal3fv((const GLfloat *)normals);
   }
+
   SoMaterialBundle mb(action);
   mb.sendFirst(); // make sure we have the correct material
 

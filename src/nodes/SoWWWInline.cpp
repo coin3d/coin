@@ -54,8 +54,7 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
-#include <Inventor/elements/SoLightModelElement.h>
-#include <Inventor/elements/SoDiffuseColorElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/SbColor.h>
@@ -113,6 +112,7 @@
 SoWWWInlineFetchURLCB * SoWWWInline::fetchurlcb;
 void * SoWWWInline::fetchurlcbdata;
 SbColor * SoWWWInline::bboxcolor;
+SoColorPacker * wwwinline_colorpacker = NULL;
 SoWWWInline::BboxVisibility SoWWWInline::bboxvisibility = SoWWWInline::UNTIL_LOADED;
 
 SbBool SoWWWInline::readassofile = TRUE;
@@ -121,6 +121,7 @@ void
 SoWWWInline::cleanup(void)
 {
   delete SoWWWInline::bboxcolor;
+  delete wwwinline_colorpacker;
 }
 
 // *************************************************************************
@@ -172,6 +173,7 @@ SoWWWInline::SoWWWInline()
   // systemloaders that hate static constructors in C++ libraries.
   if (SoWWWInline::bboxcolor == NULL) {
     SoWWWInline::bboxcolor = new SbColor(0.8f, 0.8f, 0.8f);
+    wwwinline_colorpacker = new SoColorPacker;
     coin_atexit((coin_atexit_f *)SoWWWInline::cleanup);
   }
 }
@@ -387,10 +389,10 @@ SoWWWInline::GLRender(SoGLRenderAction * action)
   SoState * state = action->getState();
   state->push();
 
-  SoDiffuseColorElement::set(state, this, 1, SoWWWInline::bboxcolor);
+  SoLazyElement::setDiffuse(state, this, 1, SoWWWInline::bboxcolor, wwwinline_colorpacker);
 
   // disable lighting
-  SoLightModelElement::set(state, this, SoLightModelElement::BASE_COLOR);
+  SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
   // disable texture mapping
   SoGLTextureEnabledElement::set(state, this, FALSE);
   SoGLTexture3EnabledElement::set(state, this, FALSE);

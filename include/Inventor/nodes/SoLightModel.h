@@ -5,7 +5,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -26,7 +26,7 @@
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFEnum.h>
-#include <Inventor/elements/SoLightModelElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 
 class COIN_DLL_API SoLightModel : public SoNode {
   typedef SoNode inherited;
@@ -38,8 +38,8 @@ public:
   SoLightModel(void);
 
   enum Model {
-    BASE_COLOR = SoLightModelElement::BASE_COLOR,
-    PHONG = SoLightModelElement::PHONG
+    BASE_COLOR = SoLazyElement::BASE_COLOR,
+    PHONG = SoLazyElement::PHONG
   };
 
   SoSFEnum model;

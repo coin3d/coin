@@ -35,8 +35,7 @@
 #include <Inventor/nodes/SoLocateHighlight.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/elements/SoOverrideElement.h>
-#include <Inventor/elements/SoEmissiveColorElement.h>
-#include <Inventor/elements/SoDiffuseColorElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/SoFullPath.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoHandleEventAction.h>
@@ -90,6 +89,20 @@
 
 SoFullPath * SoLocateHighlight::currenthighlight = NULL;
 
+#ifndef DOXYGEN_SKIP_THIS
+
+class SoLocateHighlightP {
+public:
+  SbBool highlighted;
+  SoColorPacker colorpacker;
+};
+
+#endif // DOXYGEN_SKIP_THIS
+
+
+#undef THIS
+#define THIS this->pimpl
+
 // *************************************************************************
 
 SO_NODE_SOURCE(SoLocateHighlight);
@@ -99,6 +112,7 @@ SO_NODE_SOURCE(SoLocateHighlight);
 */
 SoLocateHighlight::SoLocateHighlight()
 {
+  THIS = new SoLocateHighlightP;
   SO_NODE_INTERNAL_CONSTRUCTOR(SoLocateHighlight);
 
   SO_NODE_ADD_FIELD(color, (SbColor(0.3f, 0.3f, 0.3f)));
@@ -114,7 +128,7 @@ SoLocateHighlight::SoLocateHighlight()
   SO_NODE_DEFINE_ENUM_VALUE(Modes, OFF);
   SO_NODE_SET_SF_ENUM_TYPE(mode, Modes);
 
-  this->highlighted = FALSE;
+  THIS->highlighted = FALSE;
 }
 
 /*!
@@ -122,6 +136,7 @@ SoLocateHighlight::SoLocateHighlight()
 */
 SoLocateHighlight::~SoLocateHighlight()
 {
+  delete THIS;
 }
 
 // doc from parent
@@ -150,18 +165,18 @@ SoLocateHighlight::handleEvent(SoHandleEventAction * action)
     if (event->isOfType(SoLocation2Event::getClassTypeId())) {
       const SoPickedPoint * pp = action->getPickedPoint();
       if (pp && pp->getPath()->containsPath(action->getCurPath())) {
-        if (!this->highlighted) {
+        if (!THIS->highlighted) {
           SoLocateHighlight::turnoffcurrent(action);
           SoLocateHighlight::currenthighlight = (SoFullPath*)
             action->getCurPath()->copy();
           SoLocateHighlight::currenthighlight->ref();
-          this->highlighted = TRUE;
+          THIS->highlighted = TRUE;
           this->touch(); // force scene redraw
           this->redrawHighlighted(action, TRUE);
         }
       }
       else {
-        if (this->highlighted) {
+        if (THIS->highlighted) {
           SoLocateHighlight::turnoffcurrent(action);
         }
       }
@@ -176,7 +191,7 @@ SoLocateHighlight::GLRenderBelowPath(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
   state->push();
-  if (this->highlighted || this->mode.getValue() == ON) {
+  if (THIS->highlighted || this->mode.getValue() == ON) {
     this->setOverride(action);
   }
   inherited::GLRenderBelowPath(action);
@@ -189,7 +204,7 @@ SoLocateHighlight::GLRenderInPath(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
   state->push();
-  if (this->highlighted || this->mode.getValue() == ON) {
+  if (THIS->highlighted || this->mode.getValue() == ON) {
     this->setOverride(action);
   }
   inherited::GLRenderInPath(action);
@@ -212,14 +227,14 @@ void
 SoLocateHighlight::setOverride(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
-  SoEmissiveColorElement::set(state, this,
-                              1, &this->color.getValue());
+  SoLazyElement::setEmissive(state, &this->color.getValue());
   SoOverrideElement::setEmissiveColorOverride(state, this, TRUE);
 
   Styles mystyle = (Styles) this->style.getValue();
   if (mystyle == SoLocateHighlight::EMISSIVE_DIFFUSE) {
-    SoDiffuseColorElement::set(state, this,
-                               1, &this->color.getValue());
+    SoLazyElement::setDiffuse(state, this,
+                               1, &this->color.getValue(),
+                              &THIS->colorpacker);
     SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
   }
 }
@@ -232,7 +247,7 @@ SoLocateHighlight::turnoffcurrent(SoAction * action)
       SoLocateHighlight::currenthighlight->getLength()) {
     SoNode * tail = SoLocateHighlight::currenthighlight->getTail();
     if (tail->isOfType(SoLocateHighlight::getClassTypeId())) {
-      ((SoLocateHighlight*)tail)->highlighted = FALSE;
+      ((SoLocateHighlight*)tail)->pimpl->highlighted = FALSE;
       ((SoLocateHighlight*)tail)->touch(); // force scene redraw
       if (action) ((SoLocateHighlight*)tail)->redrawHighlighted(action, FALSE);
     }
@@ -242,3 +257,5 @@ SoLocateHighlight::turnoffcurrent(SoAction * action)
     SoLocateHighlight::currenthighlight = NULL;
   }
 }
+
+#undef THIS

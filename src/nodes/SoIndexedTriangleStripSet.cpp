@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -49,7 +49,6 @@
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoCreaseAngleElement.h>
-#include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
@@ -219,9 +218,9 @@ SoIndexedTriangleStripSet::GLRender(SoGLRenderAction * action)
   const int32_t * mindices;
   SbBool dotextures;
   SbBool normalcacheused;
+  SoMaterialBundle mb(action);
 
-  SbBool sendnormals =
-    (SoLightModelElement::get(state) != SoLightModelElement::BASE_COLOR);
+  SbBool sendnormals = !mb.isColorOnly();
 
   this->getVertexData(state, coords, normals, cindices,
                       nindices, tindices, mindices, numindices,
@@ -257,8 +256,6 @@ SoIndexedTriangleStripSet::GLRender(SoGLRenderAction * action)
   else if (normalcacheused && nbind == PER_STRIP_INDEXED) {
     nbind = PER_STRIP;
   }
-
-  SoMaterialBundle mb(action);
 
   mb.sendFirst(); // make sure we have the correct material
 

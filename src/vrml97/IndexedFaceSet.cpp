@@ -204,7 +204,6 @@
 #include <Inventor/caches/SoConvexDataCache.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
-#include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoCoordinateElement.h>
@@ -378,10 +377,9 @@ SoVRMLIndexedFaceSet::GLRender(SoGLRenderAction * action)
   const int32_t * mindices;
   SbBool doTextures;
   SbBool normalCacheUsed;
+  SoMaterialBundle mb(action);
 
-  SbBool sendNormals =
-    (SoLightModelElement::get(state) !=
-     SoLightModelElement::BASE_COLOR);
+  SbBool sendNormals = !mb.isColorOnly();
 
   this->getVertexData(state, coords, normals, cindices,
                       nindices, tindices, mindices, numindices,
@@ -437,8 +435,6 @@ SoVRMLIndexedFaceSet::GLRender(SoGLRenderAction * action)
 
     if (tbind != NONE) tbind = PER_VERTEX_INDEXED;
   }
-
-  SoMaterialBundle mb(action);
 
   mb.sendFirst(); // make sure we have the correct material
 

@@ -103,6 +103,8 @@
 #include <Inventor/misc/SoPick.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/elements/SoGLShapeHintsElement.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLTexture3EnabledElement.h>
 
 SO_NODE_SOURCE(SoVRMLCone);
 
@@ -143,13 +145,21 @@ SoVRMLCone::GLRender(SoGLRenderAction * action)
   if (!shouldGLRender(action)) return;
 
   SoState * state = action->getState();
-
-  unsigned int flags = SOGL_NEED_NORMALS | SOGL_NEED_TEXCOORDS;
-  if (this->side.getValue()) flags |= SOGL_RENDER_SIDE;
-  if (this->bottom.getValue()) flags |= SOGL_RENDER_BOTTOM;
+  
+  SbBool doTextures = SoGLTextureEnabledElement::get(state) ||
+    SoGLTexture3EnabledElement::get(state);
 
   SoMaterialBundle mb(action);
   mb.sendFirst();
+
+  SbBool sendNormals = !mb.isColorOnly();
+
+  unsigned int flags = 0;
+  if (doTextures) flags |= SOGL_NEED_TEXCOORDS;
+  if (sendNormals) flags |= SOGL_NEED_NORMALS;
+
+  if (this->side.getValue()) flags |= SOGL_RENDER_SIDE;
+  if (this->bottom.getValue()) flags |= SOGL_RENDER_BOTTOM;
 
   float complexity = this->getComplexityValue(action);
 

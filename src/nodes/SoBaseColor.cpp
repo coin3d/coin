@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -38,7 +38,8 @@
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoPickAction.h>
-#include <Inventor/elements/SoGLDiffuseColorElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
+#include <Inventor/elements/SoDiffuseColorElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 
 
@@ -47,6 +48,18 @@
 
   Color values. Default value of field is to have a single grey color.
 */
+
+#ifndef DOXYGEN_SKIP_THIS
+
+class SoBaseColorP {
+public:
+  SoColorPacker colorpacker;
+};
+
+#endif // DOXYGEN_SKIP_THIS
+
+#undef THIS
+#define THIS this->pimpl
 
 // *************************************************************************
 
@@ -57,6 +70,7 @@ SO_NODE_SOURCE(SoBaseColor);
 */
 SoBaseColor::SoBaseColor()
 {
+  THIS = new SoBaseColorP;
   SO_NODE_INTERNAL_CONSTRUCTOR(SoBaseColor);
 
   SO_NODE_ADD_FIELD(rgb, (SbColor(0.8f, 0.8f, 0.8f)));
@@ -67,6 +81,7 @@ SoBaseColor::SoBaseColor()
 */
 SoBaseColor::~SoBaseColor()
 {
+  delete THIS;
 }
 
 // Doc from superclass.
@@ -75,11 +90,11 @@ SoBaseColor::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoBaseColor, SO_FROM_INVENTOR_1);
 
-  SO_ENABLE(SoGLRenderAction, SoGLDiffuseColorElement);
+  SO_ENABLE(SoGLRenderAction, SoGLLazyElement);
+  SO_ENABLE(SoCallbackAction, SoLazyElement);
 
   SO_ENABLE(SoCallbackAction, SoDiffuseColorElement);
-  SO_ENABLE(SoPickAction, SoDiffuseColorElement);
-  SO_ENABLE(SoCallbackAction, SoDiffuseColorElement);
+  SO_ENABLE(SoGLRenderAction, SoDiffuseColorElement);
 }
 
 // Doc from superclass.
@@ -95,11 +110,10 @@ SoBaseColor::doAction(SoAction * action)
 {
   SoState * state = action->getState();
 
-  if (!rgb.isIgnored() && !SoOverrideElement::getDiffuseColorOverride(state)) {
-    SoDiffuseColorElement::set(state,
-                               this,
-                               rgb.getNum(),
-                               rgb.getValues(0));
+  if (!this->rgb.isIgnored() && this->rgb.getNum() &&
+      !SoOverrideElement::getDiffuseColorOverride(state)) {
+    SoLazyElement::setDiffuse(state, this, this->rgb.getNum(),
+                              this->rgb.getValues(0), &THIS->colorpacker);
     if (this->isOverride()) {
       SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
     }
@@ -113,9 +127,4 @@ SoBaseColor::callback(SoCallbackAction * action)
   SoBaseColor::doAction(action);
 }
 
-// Doc from superclass.
-void
-SoBaseColor::pick(SoPickAction * action)
-{
-  SoBaseColor::doAction(action);
-}
+#undef THIS

@@ -74,12 +74,11 @@
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/elements/SoGLCoordinateElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLDiffuseColorElement.h>
-#include <Inventor/elements/SoEmissiveColorElement.h>
+#include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
-#include <Inventor/elements/SoGLLightModelElement.h>
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
@@ -120,8 +119,10 @@ void
 SoVRMLPointSet::GLRender(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
-  SoLightModelElement::set(state, SoLightModelElement::BASE_COLOR);
+
+  SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
   SoGLTextureEnabledElement::set(state, this, FALSE);
+  SoGLTexture3EnabledElement::set(state, this, FALSE);
 
   if (!this->shouldGLRender(action)) return;
 
@@ -131,11 +132,12 @@ SoVRMLPointSet::GLRender(SoGLRenderAction * action)
   coords = SoCoordinateElement::getInstance(state);
 
   SoMaterialBundle mb(action);
+
   SbBool matpervertex = this->color.getValue() != NULL;
   if (!matpervertex) {
-    const SbColor & col = SoEmissiveColorElement::getInstance(state)->get(0);
+    const SbColor & col = SoLazyElement::getEmissive(state);
     SbColor4f c(col[0], col[1], col[2], 1.0f);
-    ((SoGLDiffuseColorElement*)SoDiffuseColorElement::getInstance(state))->sendOnePacked(c.getPackedValue());
+    SoGLLazyElement::sendPackedDiffuse(state, c.getPackedValue());
   }
   else {
     mb.sendFirst();

@@ -40,9 +40,8 @@
 #include <Inventor/SbName.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoSubAction.h>
-#include <Inventor/elements/SoDiffuseColorElement.h>
 #include <Inventor/elements/SoDrawStyleElement.h>
-#include <Inventor/elements/SoLightModelElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoLinePatternElement.h>
 #include <Inventor/elements/SoLineWidthElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
@@ -94,6 +93,7 @@ public:
   uint16_t linepattern;
   float linewidth;
   SoTempPath * postprocpath;
+  SoColorPacker colorpacker;
 
 private:
   SoLineHighlightRenderAction * owner;
@@ -283,9 +283,9 @@ SoLineHighlightRenderActionP::drawBoxes(SoPath * pathtothis,
 
   SoState * state = PUBLIC(this)->getState();
   state->push();
-  
-  SoLightModelElement::set(state, SoLightModelElement::BASE_COLOR);
-  SoDiffuseColorElement::set(state, NULL, 1, &this->color);
+
+  SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
+  SoLazyElement::setDiffuse(state, pathtothis->getHead(), 1, &this->color, &this->colorpacker);
   SoLineWidthElement::set(state, this->linewidth);
   SoLinePatternElement::set(state, this->linepattern);
   SoTextureQualityElement::set(state, 0.0f);

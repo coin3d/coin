@@ -105,8 +105,8 @@
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/elements/SoComplexityTypeElement.h>
-#include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoTextureCoordinateElement.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoGenerate.h>
@@ -159,9 +159,10 @@ SoVRMLCylinder::GLRender(SoGLRenderAction * action)
   mb.sendFirst();
 
   unsigned int flags = 0;
-  if (SoLightModelElement::get(state) != SoLightModelElement::BASE_COLOR)
+  
+  if (!mb.isColorOnly())
     flags |= SOGL_NEED_NORMALS;
-  if (SoGLTextureEnabledElement::get(state) &&
+  if ((SoGLTextureEnabledElement::get(state) || SoGLTexture3EnabledElement::get(state)) &&
       SoTextureCoordinateElement::getType(state) != SoTextureCoordinateElement::TEXGEN)
     flags |= SOGL_NEED_TEXCOORDS;
   if (this->side.getValue()) flags |= SOGL_RENDER_SIDE;

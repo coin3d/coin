@@ -5,7 +5,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -40,18 +40,16 @@ protected:
 public:
   virtual void init(SoState * state);
   static void set(SoState * const state, SoNode * const node,
-                  const int32_t numColors, const SbColor * const colors);
+                  const int32_t numcolors, const SbColor * const colors);
 
   static const SoEmissiveColorElement * getInstance(SoState *state);
 
-  int32_t getNum() const;
-  const SbColor &get(const int index) const;
-  const SbColor *getArrayPtr() const;
+  int32_t getNum(void) const;
+  const SbColor & get(const int index) const;
+  const SbColor * getArrayPtr(void) const;
 
-protected:
-  virtual void setElt(const int32_t numColors, const SbColor * const colors);
-  int numColors;
-  const SbColor *colors;
+private:
+  SoState * state;
 
 };
 

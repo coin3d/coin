@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -30,22 +30,9 @@
 */
 
 #include <Inventor/elements/SoTransparencyElement.h>
-
+#include <Inventor/elements/SoLazyElement.h>
 #include <assert.h>
 
-static const float defaulttransparencyval = 0.0f;
-
-/*!
-  \fn SoTransparencyElement::numValues
-
-  FIXME: write doc.
-*/
-
-/*!
-  \fn SoTransparencyElement::values
-
-  FIXME: write doc.
-*/
 
 SO_ELEMENT_SOURCE(SoTransparencyElement);
 
@@ -71,36 +58,32 @@ SoTransparencyElement::~SoTransparencyElement()
 //! FIXME: write doc.
 
 void
-SoTransparencyElement::init(SoState * /* state */)
+SoTransparencyElement::init(SoState * state)
 {
-  this->values = &defaulttransparencyval;
-  this->numValues = 1;
+  this->state = state;
 }
 
 //! FIXME: write doc.
 
 void
 SoTransparencyElement::set(SoState * const state, SoNode * const node,
-                           const int32_t numValues,
+                           const int32_t numvalues,
                            const float * const values)
 {
   SoTransparencyElement * elem = (SoTransparencyElement*)
-    SoReplacedElement::getElement(state, classStackIndex, node);
-  if (elem) {
-    if (numValues)
-      elem->setElt(numValues, values);
-    else
-      elem->setElt(1, &defaulttransparencyval);
-  }
+    SoTransparencyElement::getInstance(state);
+
+  SoLazyElement::setTransparency(state, node, numvalues, values, &elem->colorpacker); 
 }
 
 //! FIXME: write doc.
 
 //$ EXPORT INLINE
 int32_t
-SoTransparencyElement::getNum() const
+SoTransparencyElement::getNum(void) const
 {
-  return this->numValues;
+  SoLazyElement * lazy = SoLazyElement::getInstance(this->state);
+  return lazy->getNumTransparencies();
 }
 
 //! FIXME: write doc.
@@ -108,34 +91,24 @@ SoTransparencyElement::getNum() const
 float
 SoTransparencyElement::get(const int index) const
 {
-  return this->values[SbClamp(index, 0, this->numValues-1)];
+  return SoLazyElement::getTransparency(this->state, index);
 }
 
 /*!
   Returns a pointer to the transparency values. This method is not part of the OIV API.
 */
 const float *
-SoTransparencyElement::getArrayPtr() const
+SoTransparencyElement::getArrayPtr(void) const
 {
-  return this->values;
+  SoLazyElement * lazy = SoLazyElement::getInstance(this->state);
+  return lazy->getTransparencyPointer();
 }
 
 //! FIXME: write doc.
 
-//$ EXPORT INLINE
 const SoTransparencyElement *
 SoTransparencyElement::getInstance(SoState *state)
 {
   return (const SoTransparencyElement *)
-    SoElement::getConstElement(state, classStackIndex);
-}
-
-/*!
-  Sets the value of this element. Can be overridden by subclasses.
-*/
-void
-SoTransparencyElement::setElt(const int numValues, const float * const values)
-{
-  this->numValues = numValues;
-  this->values = values;
+    state->getElementNoPush(classStackIndex);
 }

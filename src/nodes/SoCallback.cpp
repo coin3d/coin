@@ -42,8 +42,6 @@
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
-#include <Inventor/elements/SoDiffuseColorElement.h>
-#include <Inventor/elements/SoTransparencyElement.h>
 
 /*!
   \typedef void SoCallbackCB(void * userdata, SoAction * action)
@@ -124,18 +122,10 @@ SoCallback::GLRender(SoGLRenderAction * action)
   if (this->cbfunc) {
     SoState * state = action->getState();
     state->lazyEvaluate();
-
+    
     SbBool transparent = SoTextureImageElement::containsTransparency(state);
     if (!transparent) {
-      const SoDiffuseColorElement * diffelt =
-        SoDiffuseColorElement::getInstance(state);
-      if (diffelt->isPacked()) transparent = diffelt->hasPackedTransparency();
-      else {
-        const SoTransparencyElement * trans =
-          SoTransparencyElement::getInstance(state);
-        transparent = trans->getNum() > 1 ||
-          trans->get(0) > 0.0f;
-      }
+      transparent = SoLazyElement::getInstance(state)->isTransparent();
     }
     // SoGLTextureImageElement is lazy, but needs some arguments.
     // Update manually

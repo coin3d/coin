@@ -58,8 +58,18 @@
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoPickAction.h>
-#include <Inventor/elements/SoGLDiffuseColorElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
+
+#ifndef DOXYGEN_SKIP_THIS
+class SoVRMLColorP {
+public:
+  SoColorPacker colorpacker;
+};
+#endif // DOXYGEN_SKIP_THIS
+
+#undef THIS
+#define THIS this->pimpl
 
 SO_NODE_SOURCE(SoVRMLColor);
 
@@ -75,6 +85,7 @@ SoVRMLColor::initClass(void) // static
 */
 SoVRMLColor::SoVRMLColor(void)
 {
+  THIS = new SoVRMLColorP;
   SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLColor);
 
   SO_VRMLNODE_ADD_EMPTY_EXPOSED_MFIELD(color);
@@ -85,6 +96,7 @@ SoVRMLColor::SoVRMLColor(void)
 */
 SoVRMLColor::~SoVRMLColor() // virtual, protected
 {
+  delete THIS;
 }
 
 // Doc in parent
@@ -95,10 +107,11 @@ SoVRMLColor::doAction(SoAction * action)
   if (this->color.getNum() &&
       !this->color.isIgnored() &&
       !SoOverrideElement::getDiffuseColorOverride(state)) {
-    SoDiffuseColorElement::set(state,
-                               this,
-                               this->color.getNum(),
-                               this->color.getValues(0));
+    SoLazyElement::setDiffuse(state,
+                              this,
+                              this->color.getNum(),
+                              this->color.getValues(0),
+                              &THIS->colorpacker);
     if (this->isOverride()) {
       SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
     }
@@ -118,3 +131,5 @@ SoVRMLColor::callback(SoCallbackAction * action)
 {
   SoVRMLColor::doAction((SoAction*) action);
 }
+
+#undef THIS

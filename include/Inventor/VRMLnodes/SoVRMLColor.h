@@ -24,6 +24,8 @@
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoMFColor.h>
 
+class SoVRMLColorP;
+
 class COIN_DLL_API SoVRMLColor : public SoNode
 {
   typedef SoNode inherited;
@@ -41,6 +43,9 @@ public:
 
 protected:
   virtual ~SoVRMLColor();
+
+private:
+  SoVRMLColorP * pimpl;
 }; // class SoVRMLColor
 
 #endif // ! COIN_SOVRMLCOLOR_H

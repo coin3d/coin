@@ -81,10 +81,10 @@
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoFontNameElement.h>
 #include <Inventor/elements/SoFontSizeElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
-#include <Inventor/elements/SoGLLightModelElement.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/details/SoTextDetail.h>
 #include <Inventor/SoPickedPoint.h>
@@ -355,6 +355,10 @@ SoText2::GLRender(SoGLRenderAction * action)
   if (!this->shouldGLRender(action)) return;
 
   SoState * state = action->getState();
+
+  state->push();
+  SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
+
   // Default to no available GL displaylist with font bitmaps.
   unsigned int fontlistbase = NOT_AVAILABLE;
   void * fontdata = NULL;
@@ -367,10 +371,6 @@ SoText2::GLRender(SoGLRenderAction * action)
   if (fontlistbase != NOT_AVAILABLE) {
     SoMaterialBundle mb(action);
     mb.sendFirst();
-
-    // SoGLLightModelElement is lazy,
-    // changing GL state without affecting state of element
-    SoGLLightModelElement::forceSend(state, SoLightModelElement::BASE_COLOR);
 
     glListBase(fontlistbase);
 
@@ -457,7 +457,6 @@ SoText2::GLRender(SoGLRenderAction * action)
   else {
     SoMaterialBundle mb(action);
     mb.sendFirst();
-    SoGLLightModelElement::forceSend(state, SoLightModelElement::BASE_COLOR);
     SbVec3f nilpoint(0.0f, 0.0f, 0.0f);
     const SbMatrix & mat = SoModelMatrixElement::get(state);
     mat.multVecMatrix(nilpoint, nilpoint);
@@ -521,6 +520,8 @@ SoText2::GLRender(SoGLRenderAction * action)
     glMatrixMode(GL_MODELVIEW);
     glPopMatrix();
   }
+  
+  state->pop();
 }
 
 // **************************************************************************

@@ -25,6 +25,8 @@
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFFloat.h>
 
+class SoVRMLMaterialP;
+
 class COIN_DLL_API SoVRMLMaterial : public SoNode
 {
   typedef SoNode inherited;
@@ -41,17 +43,15 @@ public:
   SoSFFloat shininess;
   SoSFFloat transparency;
 
-  virtual void doAction( SoAction * action );
-  virtual void GLRender( SoGLRenderAction * action );
-  virtual void callback( SoCallbackAction * action );
+  virtual void doAction(SoAction * action);
+  virtual void GLRender(SoGLRenderAction * action);
+  virtual void callback(SoCallbackAction * action);
 
 protected:
   virtual ~SoVRMLMaterial();
 
 private:
-  SbColor tmpambient;
-  float tmpshininess;
-  float tmptransparency;
+  SoVRMLMaterialP * pimpl;
 }; // class SoVRMLMaterial
 
 #endif // ! COIN_SOVRMLMATERIAL_H

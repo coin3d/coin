@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -30,39 +30,12 @@
 */
 
 #include <Inventor/elements/SoDiffuseColorElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/SbColor.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <../tidbits.h> // coin_atexit()
 #include <assert.h>
 #include <stdlib.h>
 
-// Dynamically allocated to avoid problems on systems which doesn't
-// handle static constructors.
-static SbColor * defaultdiffusecolor = NULL;
-
-static void 
-SoDiffuseColorElement_cleanup_func(void)
-{
-  delete defaultdiffusecolor;
-}
-
-/*!
-  \fn SoDiffuseColorElement::numColors
-
-  FIXME: write doc.
-*/
-
-/*!
-  \fn SoDiffuseColorElement::colors
-
-  FIXME: write doc.
-*/
-
-/*!
-  \fn SoDiffuseColorElement::packedColors
-
-  FIXME: write doc.
-*/
 
 SO_ELEMENT_SOURCE(SoDiffuseColorElement);
 
@@ -75,9 +48,6 @@ void
 SoDiffuseColorElement::initClass(void)
 {
   SO_ELEMENT_INIT_CLASS(SoDiffuseColorElement, inherited);
-  defaultdiffusecolor = new SbColor;
-  defaultdiffusecolor->setValue(0.8f, 0.8f, 0.8f);
-  coin_atexit((coin_atexit_f *)SoDiffuseColorElement_cleanup_func);
 }
 
 //! FIXME: write doc.
@@ -86,9 +56,7 @@ void
 SoDiffuseColorElement::init(SoState * state)
 {
   inherited::init(state);
-  this->colors = defaultdiffusecolor;
-  this->packedColors = NULL;
-  this->numColors = 1;
+  this->state = state;
 }
 
 /*!
@@ -103,74 +71,40 @@ SoDiffuseColorElement::~SoDiffuseColorElement()
 
 void
 SoDiffuseColorElement::set(SoState * const state, SoNode * const node,
-                           const int32_t numColors,
+                           const int32_t numcolors,
                            const SbColor * const colors)
 {
-  SoDiffuseColorElement *elem = (SoDiffuseColorElement*)
-    SoReplacedElement::getElement(state, classStackIndex, node);
-  if (elem) {
-    if (numColors > 0)
-      elem->setElt(numColors, colors);
-    else
-      elem->setElt(1, defaultdiffusecolor);
-  }
+  SoDiffuseColorElement * elem = (SoDiffuseColorElement*)
+    SoDiffuseColorElement::getInstance(state);
+
+  SoLazyElement::setDiffuse(state, node, numcolors, colors, &elem->colorpacker);
 }
 
 //! FIXME: write doc.
 
 void
 SoDiffuseColorElement::set(SoState * const state, SoNode * const node,
-                           const int32_t numColors,
+                           const int32_t numcolors,
                            const uint32_t * const colors,
                            const SbBool packedtransparency)
 {
-  SoDiffuseColorElement *elem = (SoDiffuseColorElement*)
-    SoReplacedElement::getElement(state, classStackIndex, node);
-  if (elem) {
-    elem->setElt(numColors, colors, packedtransparency);
-  }
+  SoLazyElement::setPacked(state, node, numcolors, colors, packedtransparency);
 }
 
-//! FIXME: write doc.
-
-void
-SoDiffuseColorElement::setElt(const int32_t numColors,
-                              const SbColor * const colors)
-{
-  this->packedColors = NULL;
-  this->colors = colors;
-  this->numColors = numColors;
-}
-
-//! FIXME: write doc.
-
-void
-SoDiffuseColorElement::setElt(const int32_t numColors,
-                              const uint32_t * const packedcolors,
-                              const SbBool packedtransparency)
-{
-  this->packedColors = packedcolors;
-  this->numColors = numColors;
-  this->colors = NULL;
-  this->packedTransparency = packedtransparency;
-}
-
-//! FIXME: write doc.
-
-//$ EXPORT INLINE
 SbBool
 SoDiffuseColorElement::isPacked() const
 {
-  return this->packedColors != NULL;
+  SoLazyElement * lazy = SoLazyElement::getInstance(this->state);
+  return lazy->isPacked();
 }
 
 //! FIXME: write doc.
 
-//$ EXPORT INLINE
 int32_t
-SoDiffuseColorElement::getNum() const
+SoDiffuseColorElement::getNum(void) const
 {
-  return this->numColors;
+  SoLazyElement * lazy = SoLazyElement::getInstance(this->state);
+  return lazy->getNumDiffuse();
 }
 
 /*!
@@ -182,16 +116,18 @@ SoDiffuseColorElement::getNum() const
   \since Coin 1.0
 */
 const SbColor *
-SoDiffuseColorElement::getColorArrayPtr() const
+SoDiffuseColorElement::getColorArrayPtr(void) const
 {
+  SoLazyElement * lazy = SoLazyElement::getInstance(this->state);
+
 #if COIN_DEBUG
-  if (this->isPacked()) {
+  if (lazy->isPacked()) {
     SoDebugError::postWarning("SoDiffuseColorElement::getColorArrayPtr",
                               "colors are packed -- use getPackedArrayPtr() "
                               "instead");
   }
 #endif // COIN_DEBUG
-  return this->colors;
+  return lazy->getDiffusePointer();
 }
 
 /*!
@@ -203,16 +139,18 @@ SoDiffuseColorElement::getColorArrayPtr() const
   \since Coin 1.0
 */
 const uint32_t *
-SoDiffuseColorElement::getPackedArrayPtr() const
+SoDiffuseColorElement::getPackedArrayPtr(void) const
 {
+  SoLazyElement * lazy = SoLazyElement::getInstance(this->state);
+
 #if COIN_DEBUG
-  if (!this->isPacked()) {
+  if (!lazy->isPacked()) {
     SoDebugError::postWarning("SoDiffuseColorElement::getPackedArrayPtr",
                               "colors are *not* packed -- use "
                               "getColorArrayPtr() instead");
   }
 #endif // COIN_DEBUG
-  return this->packedColors;
+  return lazy->getPackedPointer();
 }
 
 //! FIXME: write doc.
@@ -220,23 +158,20 @@ SoDiffuseColorElement::getPackedArrayPtr() const
 const SbColor &
 SoDiffuseColorElement::get(const int index) const
 {
-  assert(index >= 0 && index <= this->numColors);
-  assert(this->colors != NULL);
-  return this->colors[index];
+  return SoLazyElement::getDiffuse(this->state, index);
 }
 
 SbBool
 SoDiffuseColorElement::hasPackedTransparency(void) const
 {
-  return this->packedTransparency;
+  return SoLazyElement::getInstance(this->state)->isTransparent();
 }
 
 //! FIXME: write doc.
 
-//$ EXPORT INLINE
 const SoDiffuseColorElement *
 SoDiffuseColorElement::getInstance(SoState *state)
 {
   return (const SoDiffuseColorElement *)
-    SoElement::getConstElement(state, classStackIndex);
+    state->getElementNoPush(classStackIndex);
 }

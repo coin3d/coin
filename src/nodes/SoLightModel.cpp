@@ -33,8 +33,9 @@
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/elements/SoGLLightModelElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
+#include <Inventor/elements/SoLightModelElement.h>
 
 /*!
   \enum SoLightModel::Model
@@ -90,8 +91,11 @@ SoLightModel::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoLightModel, SO_FROM_INVENTOR_1);
 
+  SO_ENABLE(SoCallbackAction, SoLazyElement);
+  SO_ENABLE(SoGLRenderAction, SoGLLazyElement);
+
   SO_ENABLE(SoCallbackAction, SoLightModelElement);
-  SO_ENABLE(SoGLRenderAction, SoGLLightModelElement);
+  SO_ENABLE(SoGLRenderAction, SoLightModelElement);
 }
 
 // Doc from superclass.
@@ -107,8 +111,8 @@ SoLightModel::doAction(SoAction * action)
 {
   if (!model.isIgnored()
       && !SoOverrideElement::getLightModelOverride(action->getState())) {
-    SoLightModelElement::set(action->getState(), this,
-                             (SoLightModelElement::Model)model.getValue());
+    SoLazyElement::setLightModel(action->getState(),
+                                 (int32_t) this->model.getValue());
     if (this->isOverride()) {
       SoOverrideElement::setLightModelOverride(action->getState(), this, TRUE);
     }

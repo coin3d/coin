@@ -61,7 +61,6 @@
 #include <Inventor/elements/SoGLNormalizeElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
-#include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoTextureCoordinateElement.h>
 #include <Inventor/misc/SoGL.h>
@@ -132,12 +131,9 @@ SoCube::GLRender(SoGLRenderAction * action)
   if (SoGLTextureEnabledElement::get(state)) doTextures = TRUE;
   else if (SoGLTexture3EnabledElement::get(state)) do3DTextures = TRUE;
 
-  SbBool sendNormals =
-    (SoLightModelElement::get(state) !=
-     SoLightModelElement::BASE_COLOR);
-
   SoMaterialBundle mb(action);
   mb.sendFirst();
+  SbBool sendNormals = ! mb.isColorOnly();
 
   if (sendNormals) SoGLNormalizeElement::forceSend(state, TRUE);
 

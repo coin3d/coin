@@ -42,10 +42,8 @@
 
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/elements/SoGLDiffuseColorElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
-#include <Inventor/elements/SoShapeStyleElement.h>
-#include <Inventor/elements/SoGLPolygonStippleElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
 
 /*!
   \var SoMFUInt32 SoPackedColor::orderedRGBA
@@ -89,23 +87,14 @@ SoPackedColor::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoPackedColor, SO_FROM_INVENTOR_2_1);
 
-  SO_ENABLE(SoCallbackAction, SoDiffuseColorElement);
-  SO_ENABLE(SoGLRenderAction, SoGLDiffuseColorElement);
+  SO_ENABLE(SoCallbackAction, SoLazyElement);
+  SO_ENABLE(SoGLRenderAction, SoGLLazyElement);
 }
 
 // Doc from superclass.
 void
 SoPackedColor::GLRender(SoGLRenderAction * action)
 {
-  SoState * state = action->getState();
-  if (SoShapeStyleElement::isScreenDoor(state) &&
-      ! this->orderedRGBA.isIgnored() &&
-      ! SoOverrideElement::getTransparencyOverride(state)) {
-    float t = (255 - (this->orderedRGBA[0] & 0xff)) / 255.0f;
-    SoGLPolygonStippleElement::setTransparency(state, t);
-    SoGLPolygonStippleElement::set(state, t >= 1.0f/255.0f);
-  }
-
   SoPackedColor::doAction(action);
 }
 
@@ -113,16 +102,16 @@ SoPackedColor::GLRender(SoGLRenderAction * action)
 void
 SoPackedColor::doAction(SoAction * action)
 {
-  this->isTransparent(); // update cached value
+  (void) this->isTransparent(); // update cached value for transparent
 
   SoState * state = action->getState();
   if (!this->orderedRGBA.isIgnored() &&
+      this->orderedRGBA.getNum() > 0 &&
       !SoOverrideElement::getDiffuseColorOverride(state)) {
-    SoDiffuseColorElement::set(state,
-                               this,
-                               this->orderedRGBA.getNum(),
-                               this->orderedRGBA.getValues(0),
-                               this->transparent);
+    SoLazyElement::setPacked(state, this,
+                             this->orderedRGBA.getNum(),
+                             this->orderedRGBA.getValues(0),
+                             this->transparent);
     if (this->isOverride()) {
       SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
     }

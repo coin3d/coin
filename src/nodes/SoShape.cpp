@@ -48,19 +48,18 @@
 #include <Inventor/caches/SoBoundingBoxCache.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoTextureCoordinateElement.h>
-#include <Inventor/elements/SoTransparencyElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoProjectionMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
-#include <Inventor/elements/SoDiffuseColorElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoGLShapeHintsElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoCullElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoGLBigImage.h>
@@ -429,57 +428,28 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
     return FALSE;
 
   // if we have a valid bbox cache, do a view volume cull test here.
+  // FIXME: enable again when we have better logic for when to create
+  // the bbox cache (based on the number of primitives in the shape)
+  // pederb, 2002-09-11
 
-  if (THIS) {
-    LOCK_BBOX(this);
-    if (THIS->bboxcache && THIS->bboxcache->isValid(state)) {
-      if (!SoCullElement::completelyInside(state)) {
-        if (SoCullElement::cullTest(state, THIS->bboxcache->getProjectedBox())) {
-          UNLOCK_BBOX(this);
-          return FALSE;
-        }
-      }
-    }
-    UNLOCK_BBOX(this);
-  }
+//    if (THIS) {
+//      LOCK_BBOX(this);
+//      if (THIS->bboxcache && THIS->bboxcache->isValid(state)) {
+//        if (!SoCullElement::completelyInside(state)) {
+//          if (SoCullElement::cullTest(state, THIS->bboxcache->getProjectedBox())) {
+//            UNLOCK_BBOX(this);
+//            return FALSE;
+//          }
+//        }
+//      }
+//      UNLOCK_BBOX(this);
+//    }
   
   SbBool transparent = SoTextureImageElement::containsTransparency(state);
   if (!transparent) {
-    const SoDiffuseColorElement * diffelt =
-      SoDiffuseColorElement::getInstance(state);
-    if (diffelt->isPacked()) transparent = diffelt->hasPackedTransparency();
-    else {
-      const SoTransparencyElement * trans =
-        SoTransparencyElement::getInstance(state);
-      // Earlier we had the following code here, which might have been
-      // a bit faster than the current version:
-      //
-      //   transparent = trans->getNum() > 1 || trans->get(0) > 0.0f;
-      //
-      // The assumption was that if more than one transparency value
-      // was supplied, at least one of them should be != 0.0,
-      // otherwise there wouldn't be any point in having more than one
-      // value. But, since we'll break out of the loop below when the
-      // first transparent value is found, it should be just as fast
-      // in most cases.               pederb, 2001-10-23
-
-      // NB: this transparency test is not guaranteed to be correct,
-      // since there's no way that we can figure out if the
-      // transparent values are actually used by the shape. Maybe a
-      // new virtual function SoShape::hasTransparency(SoState*) would
-      // be a good idea?             pederb, 2001-10-23
-
-      const int n = trans->getNum();
-      const float * tarr = trans->getArrayPtr();
-      for (int i = 0; i < n; i++) {
-        if (tarr[i] > 0.0f) {
-          transparent = TRUE;
-          break;
-        }
-      }
-    }
+    transparent = SoLazyElement::getInstance(state)->isTransparent();
   }
-
+  
   if (action->handleTransparency(transparent))
     return FALSE;
 

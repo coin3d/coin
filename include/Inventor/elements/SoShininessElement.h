@@ -5,7 +5,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -38,19 +38,17 @@ protected:
 public:
   virtual void init(SoState * state);
   static void set(SoState * const state, SoNode * const node,
-                  const int32_t numValues, const float* const values);
+                  const int32_t numvalues, const float* const values);
 
   static const SoShininessElement * getInstance(SoState *state);
 
-  int32_t getNum() const;
+  int32_t getNum(void) const;
   float get(const int index) const;
-  const float *getArrayPtr() const;
+  const float *getArrayPtr(void) const;
 
-protected:
-  virtual void setElt(const int32_t numValues, const float * const values);
-  int numValues;
-  const float *values;
-
+private:
+  SoState * state;
+  float dummyvalue;
 };
 
 #endif // !COIN_SOSHININESSELEMENT_H

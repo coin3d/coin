@@ -70,7 +70,6 @@
 #include <Inventor/details/SoCylinderDetail.h>
 #include <Inventor/elements/SoComplexityTypeElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
-#include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoTextureCoordinateElement.h>
@@ -190,7 +189,7 @@ SoCylinder::GLRender(SoGLRenderAction * action)
   mb.sendFirst();
 
   unsigned int flags = 0;
-  if (SoLightModelElement::get(state) != SoLightModelElement::BASE_COLOR)
+  if (!mb.isColorOnly())
     flags |= SOGL_NEED_NORMALS;
   if (SoGLTextureEnabledElement::get(state))
     flags |= SOGL_NEED_TEXCOORDS;

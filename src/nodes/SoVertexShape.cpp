@@ -38,7 +38,6 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoNormalElement.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoGLShapeHintsElement.h>

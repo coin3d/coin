@@ -116,13 +116,12 @@
 #include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoCoordinateElement.h>
-#include <Inventor/elements/SoGLDiffuseColorElement.h>
 #include <Inventor/elements/SoTextureCoordinateBindingElement.h>
 #include <Inventor/elements/SoDrawStyleElement.h>
-#include <Inventor/elements/SoGLLightModelElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoGLCoordinateElement.h>
-#include <Inventor/elements/SoEmissiveColorElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 #include <assert.h>
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 #include <Inventor/details/SoLineDetail.h>
@@ -172,12 +171,15 @@ void
 SoVRMLIndexedLineSet::GLRender(SoGLRenderAction * action)
 {
   if (this->coordIndex.getNum() < 2) return;
+  
   SoState * state = action->getState();
-
-  SoLightModelElement::set(state, SoLightModelElement::BASE_COLOR);
+  
+  SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
   SoGLTextureEnabledElement::set(state, this, FALSE);
+  SoGLTexture3EnabledElement::set(state, this, FALSE);
 
-  if (!this->shouldGLRender(action)) return;
+  if (!this->shouldGLRender(action)) 
+    return;
 
   SoVRMLVertexLine::GLRender(action);
 
@@ -210,11 +212,11 @@ SoVRMLIndexedLineSet::GLRender(SoGLRenderAction * action)
     mindices = cindices;
   }
 
-  SoMaterialBundle mb(action);
-  mb.sendFirst(); // make sure we have the correct material
-
   SbBool drawPoints =
     SoDrawStyleElement::get(state) == SoDrawStyleElement::POINTS;
+
+  // place it here so that it will stay in stack scope
+  uint32_t packedcolor;
 
   if (this->color.getValue() == NULL) {
     // FIXME: the vrml97 spec states that the emissiveColor should be
@@ -223,17 +225,21 @@ SoVRMLIndexedLineSet::GLRender(SoGLRenderAction * action)
     // of lines. It might be a bug in the VRML2 exporter, but for now
     // I just add emissive and diffuse to support this. pederb,
     // 2001-11-21
-    SbColor col = SoEmissiveColorElement::getInstance(state)->get(0);
-    const SbColor & col2 = SoDiffuseColorElement::getInstance(state)->get(0);
-
+    SbColor col = SoLazyElement::getEmissive(state);
+    const SbColor & col2 = SoLazyElement::getDiffuse(state, 0);
+    
     col += col2;
-
+    
     SbColor4f c(SbClamp(col[0], 0.0f, 1.0f), 
                 SbClamp(col[1], 0.0f, 1.0f),
                 SbClamp(col[2], 0.0f, 1.0f),
                 1.0f);
-    ((SoGLDiffuseColorElement*)SoDiffuseColorElement::getInstance(state))->sendOnePacked(c.getPackedValue());
+    packedcolor = col.getPackedValue();
+    SoLazyElement::setPacked(state, this, 1, &packedcolor);
   }
+
+  SoMaterialBundle mb(action);
+  mb.sendFirst(); // make sure we have the correct material
 
   sogl_render_lineset((SoGLCoordinateElement*)coords,
                       cindices,

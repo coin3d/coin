@@ -29,11 +29,17 @@
   FIXME: write doc.
 */
 
+#ifdef COIN_INTERNAL
+#define COIN_STOREDINTERNAL COIN_INTERNAL
+#undef COIN_INTERNAL
+#endif // COIN_INTERNAL
 #include <Inventor/elements/SoLightModelElement.h>
+#ifdef COIN_STOREDINTERNAL
+#define COIN_INTERNAL COIN_STOREDINTERNAL
+#undef COIN_STOREDINTERNAL
+#endif // COIN_STOREDINTERNAL
 
-#include <Inventor/elements/SoShapeStyleElement.h>
-
-
+#include <Inventor/elements/SoLazyElement.h>
 #include <assert.h>
 
 /*!
@@ -68,7 +74,6 @@ SoLightModelElement::~SoLightModelElement()
 void
 SoLightModelElement::init(SoState * /* state */)
 {
-  data = PHONG;
 }
 
 //! FIXME: write doc.
@@ -76,8 +81,7 @@ SoLightModelElement::init(SoState * /* state */)
 void
 SoLightModelElement::set(SoState * const state, const Model model)
 {
-  SoInt32Element::set(classStackIndex, state, model);
-  SoShapeStyleElement::setLightModel(state, (int32_t)model);
+  SoLazyElement::setLightModel(state, (int32_t) model);
 }
 
 //! FIXME: write doc.
@@ -86,8 +90,7 @@ void
 SoLightModelElement::set(SoState * const state, SoNode * const node,
                          const Model model)
 {
-  SoInt32Element::set(classStackIndex, state, node, model);
-  SoShapeStyleElement::setLightModel(state, (int32_t)model);
+  SoLazyElement::setLightModel(state, (int32_t) model);
 }
 
 //! FIXME: write doc.
@@ -95,7 +98,7 @@ SoLightModelElement::set(SoState * const state, SoNode * const node,
 SoLightModelElement::Model
 SoLightModelElement::get(SoState * const state)
 {
-  return (Model) SoInt32Element::get(classStackIndex, state);
+  return (SoLightModelElement::Model) SoLazyElement::getLightModel(state);
 }
 
 //! FIXME: write doc.
@@ -103,7 +106,7 @@ SoLightModelElement::get(SoState * const state)
 SoLightModelElement::Model
 SoLightModelElement::getDefault()
 {
-  return PHONG;
+  return (SoLightModelElement::Model) SoLazyElement::getDefaultLightModel();
 }
 
 //! FIXME: write doc
@@ -112,5 +115,5 @@ const SoLightModelElement *
 SoLightModelElement::getInstance(SoState *state)
 {
   return (const SoLightModelElement *)
-    SoElement::getConstElement(state, classStackIndex);
+    state->getElementNoPush(classStackIndex);
 }

@@ -73,7 +73,6 @@
 #include <Inventor/elements/SoGLNormalizeElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
-#include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoGenerate.h>
 #include <Inventor/misc/SoPick.h>
@@ -132,9 +131,7 @@ SoSphere::GLRender(SoGLRenderAction * action)
   if (SoGLTextureEnabledElement::get(state)) doTextures = TRUE;
   else if (SoGLTexture3EnabledElement::get(state)) do3DTextures = TRUE;
 
-  SbBool sendNormals =
-    (SoLightModelElement::get(state) !=
-     SoLightModelElement::BASE_COLOR);
+  SbBool sendNormals = !mb.isColorOnly();
 
   float complexity = SbClamp(this->getComplexityValue(action), 0.0f, 1.0f);
 

@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -30,32 +30,12 @@
 */
 
 #include <Inventor/elements/SoEmissiveColorElement.h>
+#include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbColor.h>
-#include <../tidbits.h> // coin_atexit()
 #include <assert.h>
 #include <stdlib.h>
 
-// Dynamically allocated to avoid problems on systems which doesn't
-// handle static constructors.
-static SbColor * defaultemissivecolor = NULL;
-
-static void
-SoEmissiveColorElement_cleanup_func(void)
-{
-  delete defaultemissivecolor;
-}
-
-/*!
-  \fn SoEmissiveColorElement::numColors
-
-  FIXME: write doc.
-*/
-
-/*!
-  \fn SoEmissiveColorElement::colors
-
-  FIXME: write doc.
-*/
 
 SO_ELEMENT_SOURCE(SoEmissiveColorElement);
 
@@ -68,9 +48,6 @@ void
 SoEmissiveColorElement::initClass()
 {
   SO_ELEMENT_INIT_CLASS(SoEmissiveColorElement, inherited);
-  defaultemissivecolor = new SbColor;
-  defaultemissivecolor->setValue(0.0f, 0.0f, 0.0f);
-  coin_atexit((coin_atexit_f *)SoEmissiveColorElement_cleanup_func);
 }
 
 /*!
@@ -87,44 +64,33 @@ void
 SoEmissiveColorElement::init(SoState * state)
 {
   inherited::init(state);
-  this->colors = defaultemissivecolor;
-  this->numColors = 1;
+  this->state = state;
 }
 
 //! FIXME: write doc.
 
 void
 SoEmissiveColorElement::set(SoState * const state, SoNode * const node,
-                           const int32_t numColors,
-                           const SbColor * const colors)
+                            const int32_t numcolors,
+                            const SbColor * const colors)
 {
-  SoEmissiveColorElement * elem = (SoEmissiveColorElement*)
-    SoReplacedElement::getElement(state, classStackIndex, node);
-  if (elem) {
-    if (numColors > 0)
-      elem->setElt(numColors, colors);
-    else
-      elem->setElt(1, defaultemissivecolor);
+  SoLazyElement::setEmissive(state, colors);
+#if COIN_DEBUG
+  if (numcolors > 1) {
+    SoDebugError::postWarning("SoEmissiveColorElement::set",
+                              "Multiple emissive colors not supported. "
+                              "All color except the first will be ignored.");
   }
+#endif // COIN_DEBIG
 }
+
 
 //! FIXME: write doc.
 
-void
-SoEmissiveColorElement::setElt(const int32_t numColors,
-                              const SbColor * const colors)
-{
-  this->colors = colors;
-  this->numColors = numColors;
-}
-
-//! FIXME: write doc.
-
-//$ EXPORT INLINE
 int32_t
-SoEmissiveColorElement::getNum() const
+SoEmissiveColorElement::getNum(void) const
 {
-  return this->numColors;
+  return 1;
 }
 
 //! FIXME: write doc.
@@ -132,25 +98,24 @@ SoEmissiveColorElement::getNum() const
 const SbColor &
 SoEmissiveColorElement::get(const int index) const
 {
-  assert(index >= 0 && index <= this->numColors);
-  return this->colors[index];
+  assert(index == 0);
+  return SoLazyElement::getEmissive(this->state);
 }
 
 /*!
-  Returns a pointer to the colora array. This method is not part of the OIV API.
+  Returns a pointer to the color array. This method is not part of the OIV API.
 */
 const SbColor *
-SoEmissiveColorElement::getArrayPtr() const
+SoEmissiveColorElement::getArrayPtr(void) const
 {
-  return this->colors;
+  return & SoLazyElement::getEmissive(this->state);
 }
 
 //! FIXME: write doc.
 
-//$ EXPORT INLINE
 const SoEmissiveColorElement *
 SoEmissiveColorElement::getInstance(SoState *state)
 {
   return (const SoEmissiveColorElement *)
-    SoElement::getConstElement(state, classStackIndex);
+    state->getElementNoPush(classStackIndex);
 }

@@ -31,21 +31,100 @@
 */
 
 #include <Inventor/elements/SoGLLazyElement.h>
-#include <Inventor/elements/SoGLDiffuseColorElement.h>
-#include <Inventor/elements/SoGLAmbientColorElement.h>
-#include <Inventor/elements/SoGLEmissiveColorElement.h>
-#include <Inventor/elements/SoGLSpecularColorElement.h>
-#include <Inventor/elements/SoGLShininessElement.h>
-#include <Inventor/elements/SoGLPolygonStippleElement.h>
-#include <Inventor/elements/SoTransparencyElement.h>
-#include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
-#include <Inventor/elements/SoGLColorIndexElement.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/C/glue/gl.h>
 
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <coindefs.h> // COIN_OBSOLETED
 #include <assert.h>
+#include <Inventor/errors/SoDebugError.h>
+
+// Some data and functions to create Bayer dither matrices (used for
+// screen door transparency)
+static unsigned char stipple_patterns[64 + 1][32 * 4];
+static unsigned int two_by_two[] = {0, 2, 3, 1};
+
+//
+// Used to generate a matrix twice the size of the input
+//
+static void 
+generate_next_matrix(unsigned int * old, int oldsize,
+                     unsigned int * matrix)
+{
+  int i,j;
+  int newsize = oldsize << 1;
+  for (i = 0; i <  newsize; i++) {
+    for (j = 0; j < newsize; j++) {
+      matrix[i*newsize+j] = 4 * old[(i%oldsize)*oldsize + (j%oldsize)];
+      matrix[i*newsize+j] += two_by_two[(i/oldsize)*2 + (j/oldsize)];
+    }
+  }
+}
+
+//
+// Creates a matrix by starting with a 2x2 and doubling until size
+//
+static void 
+make_dither_matrix(uint32_t * ptr, int size)
+{
+  int currsize = 2;
+
+  unsigned int * currmatrix = two_by_two;
+  unsigned int * nextmatrix = NULL;
+  int nextsize;
+
+  while (currsize < size) {
+    nextsize = currsize << 1;
+    nextmatrix = new unsigned int[nextsize*nextsize];
+    generate_next_matrix(currmatrix, currsize, nextmatrix);
+    if (currmatrix != two_by_two) delete[] currmatrix;
+    currmatrix = nextmatrix;
+    currsize = nextsize;
+  }
+  // copy matrix
+  int i;
+  for (i = 0; i < size*size; i++)
+    ptr[i] = currmatrix[i];
+
+  if (currmatrix != two_by_two) delete[] currmatrix;
+}
+
+//
+// Sets a bit bitnr bits from ptr
+//
+static void 
+set_bit(int bitnr, unsigned char * ptr)
+{
+  int byte = bitnr / 8;
+  int bit = bitnr % 8;
+  
+  unsigned char mask = (unsigned char) (0x80 >> bit);
+
+  ptr[byte] |= mask;
+}
+
+//
+// Create a bitmap from a 32x32 matrix
+//
+static void 
+create_matrix_bitmap(int intensity, unsigned char * bitmap,
+                     uint32_t *matrix, int size)
+{
+  int cnt = 0;
+  int i,j;
+  for (i = 0; i < 32*4; i++) bitmap[i] = 0;
+  for (i = 0; i < size; i++) {
+    for (j = 0; j < size; j++) {
+      if (matrix[i*size+j] > (unsigned int) intensity) {
+        set_bit(i*32+j, bitmap);
+        cnt++;
+      }
+    }
+  }
+}
+
 
 SO_ELEMENT_SOURCE(SoGLLazyElement);
 
@@ -58,6 +137,16 @@ void
 SoGLLazyElement::initClass()
 {
   SO_ELEMENT_INIT_CLASS(SoGLLazyElement, inherited);
+
+  // create stipple patterns
+  int i;
+  unsigned int matrix[32*32];
+  make_dither_matrix(matrix, 32); 
+  for (i = 0; i <= 64; i++) {
+    int intensity = (32 * 32 * i) / 64 - 1;
+    create_matrix_bitmap((intensity >= 0) ? intensity : 0,
+                         stipple_patterns[i], matrix, 32);
+  }
 }
 
 // ! FIXME: write doc
@@ -67,61 +156,87 @@ SoGLLazyElement::~SoGLLazyElement()
 }
 
 //! FIXME: write doc
-
-void
-SoGLLazyElement::sendAllMaterial(SoState *state)
+inline SoGLLazyElement *
+SoGLLazyElement::getInstance(const SoState *state)
 {
-  // code adapted from SoMaterialBundle::reallySend
+  return (SoGLLazyElement*)
+    state->getConstElement(classStackIndex);
+}
 
-  SoGLDiffuseColorElement * diffuseElt =
-    (SoGLDiffuseColorElement*) SoDiffuseColorElement::getInstance(state);
-  if (SoShapeStyleElement::isScreenDoor(state)) {
-    diffuseElt->send(0);
-  }
+inline void 
+SoGLLazyElement::sendPackedDiffuse(const uint32_t col) const
+{
+  glColor4ub((col>>24)&0xff, (col>>16)&0xff, (col>>8)&0xff, col&0xff);
+  ((SoGLLazyElement*)this)->glstate.diffuse = col;
+}
+
+inline void
+SoGLLazyElement::sendLightModel(const int32_t model) const
+{
+  ((SoGLLazyElement*)this)->glstate.lightmodel = model;
+  if (model == PHONG) glEnable(GL_LIGHTING);
+  else glDisable(GL_LIGHTING);
+}
+
+void 
+SoGLLazyElement::init(SoState * state)
+{
+  inherited::init(state);
+  this->colorindex = FALSE;
+  this->glstate.ambient.setValue(-1.0f, -1.0f, -1.0f);
+  this->glstate.emissive.setValue(-1.0f, -1.0f, -1.0f); 
+  this->glstate.specular.setValue(-1.0f, -1.0f, -1.0f);
+  this->glstate.shininess = -1.0f;
+  this->glstate.lightmodel = -1;
+  this->glstate.blending = -1;
+  this->glstate.stipplenum = 0;
+  this->packedpointer = NULL;
+  this->transpmask = 0xff;
+  this->colorpacker = NULL;
+  glDisable(GL_POLYGON_STIPPLE);
+
+  GLboolean rgba;
+  glGetBooleanv(GL_RGBA_MODE, &rgba);
+  if (!rgba) this->colorindex = TRUE;
   else {
-    SoTransparencyElement *transparencyElt = (SoTransparencyElement*)
-      SoTransparencyElement::getInstance(state);
-    if (!diffuseElt->isPacked()) {
-      float trans = transparencyElt->get(0);
-      diffuseElt->send(0, 1.0f - trans);
-    }
-    else {
-      diffuseElt->send(0);
-    }
+    this->sendPackedDiffuse(0xccccccff);
   }
+}
 
-  if (SoLightModelElement::get(state) !=
-      SoLightModelElement::BASE_COLOR) {
+void 
+SoGLLazyElement::push(SoState * state)
+{
+  inherited::push(state);
+  SoGLLazyElement * prev = (SoGLLazyElement*) this->getNextInStack();
+  this->glstate = prev->glstate;
+  this->colorindex = prev->colorindex;
+  this->transpmask = prev->transpmask;
+  this->colorpacker = prev->colorpacker;
+}
 
-    SoGLAmbientColorElement *ambientElt = (SoGLAmbientColorElement*)
-      SoAmbientColorElement::getInstance(state);
-    ambientElt->send(0);
-
-    SoGLSpecularColorElement *specularElt = (SoGLSpecularColorElement*)
-      SoSpecularColorElement::getInstance(state);
-    specularElt->send(0);
-
-    SoGLEmissiveColorElement *emissiveElt = (SoGLEmissiveColorElement*)
-      SoEmissiveColorElement::getInstance(state);
-    emissiveElt->send(0);
-
-    SoGLShininessElement *shininessElt = (SoGLShininessElement*)
-      SoShininessElement::getInstance(state);
-    shininessElt->send(0);
-  }
-
-  // just to make sure polygon stipple is up-to-date
-  const SoGLPolygonStippleElement *stippleElt = (const SoGLPolygonStippleElement*)
-    SoElement::getConstElement(state, SoGLPolygonStippleElement::getClassStackIndex());
-  stippleElt->lazyEvaluate();
+void 
+SoGLLazyElement::pop(SoState *state, const SoElement * prevtopelement)
+{
+  inherited::pop(state, prevtopelement);
+  SoGLLazyElement * prev = (SoGLLazyElement*) prevtopelement;
+  this->glstate = prev->glstate;
+  this->colorindex = prev->colorindex;
 }
 
 //! FIXME: write doc
 
 void
-SoGLLazyElement::sendNoMaterial(SoState *state)
+SoGLLazyElement::sendAllMaterial(SoState * state)
 {
-  // elements should be up-to-date. Do nothing.
+  assert(0 && "Not implemented yet. Provided for API compatibility.");
+}
+
+//! FIXME: write doc
+
+void
+SoGLLazyElement::sendNoMaterial(SoState * state)
+{
+  assert(0 && "Not implemented yet. Provided for API compatibility.");
 }
 
 //! FIXME: write doc
@@ -129,9 +244,7 @@ SoGLLazyElement::sendNoMaterial(SoState *state)
 void
 SoGLLazyElement::sendOnlyDiffuseColor(SoState * state)
 {
-  SoGLDiffuseColorElement * diffuseElt =
-    (SoGLDiffuseColorElement*) SoDiffuseColorElement::getInstance(state);
-  diffuseElt->send(0);
+  assert(0 && "Not implemented yet. Provided for API compatibility.");
 }
 
 //! FIXME: write doc
@@ -139,46 +252,128 @@ SoGLLazyElement::sendOnlyDiffuseColor(SoState * state)
 void
 SoGLLazyElement::sendDiffuseByIndex(int index) const
 {
-  SoGLDiffuseColorElement * elem = (SoGLDiffuseColorElement*)
-    SoDiffuseColorElement::getInstance(this->state);
-  elem->send(index);
+#if COIN_DEBUG
+  if (index < 0 || index >= this->coinstate.numdiffuse) {
+    static int first = 1;
+    if (first) {
+      SoDebugError::postWarning("SoGLLazyElement::sendDiffuseByIndex",
+                                "index %d out of bounds [0, %d] "
+                                "(this warning will only be printed once, but there "
+                                "might be more errors)",
+                                this->coinstate.numdiffuse-1);
+      first = 0;
+    }
+    
+    index = SbClamp(index, 0, this->coinstate.numdiffuse-1);
+  }
+#endif // COIN_DEBUG
+
+  if (this->colorindex) {
+    glIndexi((GLint)this->coinstate.colorindexarray[index]);
+  }
+  else {
+    uint32_t col = this->packedpointer[index] | this->transpmask;
+    if (col != this->glstate.diffuse) this->sendPackedDiffuse(col);
+  }
 }
 
 //! FIXME: write doc
 
 SbBool
-SoGLLazyElement::isColorIndex(SoState *state)
+SoGLLazyElement::isColorIndex(SoState * state)
 {
-  return SoGLColorIndexElement::isColorIndexMode(state);
+  SoGLLazyElement * elem = getInstance(state);
+  return elem->colorindex;
 }
 
-//! FIXME: write doc
-
-SoGLLazyElement *
-SoGLLazyElement::getInstance(const SoState *state)
+inline void
+send_gl_material(GLenum pname, const SbColor & color)
 {
-  // don't use SoElement::getConstElement() as this will cause
-  // cache dependencies.
-  return (SoGLLazyElement*) state->getConstElement(classStackIndex);
-}
+  GLfloat col[4];
+  color.getValue(col[0], col[1], col[2]);
+  col[3] = 1.0f;
+  glMaterialfv(GL_FRONT_AND_BACK, pname, col);
+} 
+
 
 //! FIXME: write doc
 
 void
 SoGLLazyElement::send(const SoState * state, uint32_t mask) const
 {
-  // only test material flags, as other elements should be
-  // updated in SoShaphe::shouldGLRender()
-  if (mask == DIFFUSE_MASK) {
-    SoGLLazyElement::sendOnlyDiffuseColor((SoState*)state);
+  if (this->colorpacker) {    
+    if (!this->colorpacker->diffuseMatch(this->coinstate.diffusenodeid) ||
+        !this->colorpacker->transpMatch(this->coinstate.transpnodeid)) {
+      this->packColors(this->colorpacker);
+    }
+    ((SoGLLazyElement*)this)->packedpointer = this->colorpacker->getPackedColors();
   }
-  else if (mask & (DIFFUSE_MASK |
-                   AMBIENT_MASK |
-                   EMISSIVE_MASK |
-                   SPECULAR_MASK |
-                   SHININESS_MASK |
-                   TRANSPARENCY_MASK)) {
-    SoGLLazyElement::sendAllMaterial((SoState*)state);
+  else ((SoGLLazyElement*)this)->packedpointer = this->coinstate.packedarray; 
+    
+  assert(this->packedpointer);
+  
+  if (mask & LIGHT_MODEL_MASK) {
+    int32_t model = this->coinstate.lightmodel;
+    if (model != this->glstate.lightmodel) {
+      this->sendLightModel(model);
+    }
+  }
+  if (mask & DIFFUSE_MASK) {
+    this->sendDiffuseByIndex(0);
+  }
+  if (mask & AMBIENT_MASK) {
+    const SbColor & color = this->coinstate.ambient;
+    if (color != this->glstate.ambient) {
+      send_gl_material(GL_AMBIENT, color);
+      ((SoGLLazyElement*)this)->glstate.ambient = color;
+    }
+  }
+  if (mask & SPECULAR_MASK) {
+    const SbColor & color = this->coinstate.specular;
+    if (color != this->glstate.specular) {
+      send_gl_material(GL_SPECULAR, color);
+      ((SoGLLazyElement*)this)->glstate.specular = color;
+    }
+  }
+  if (mask & EMISSIVE_MASK) {
+    const SbColor & color = this->coinstate.emissive;
+    if (color != this->glstate.emissive) {
+      send_gl_material(GL_EMISSION, color);
+      ((SoGLLazyElement*)this)->glstate.emissive = color;
+    }
+  }
+  if (mask & SHININESS_MASK) {
+    float shine = this->coinstate.shininess;
+    if (shine != this->glstate.shininess) {
+      glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shine*128.0f);
+      ((SoGLLazyElement*)this)->glstate.shininess = shine;
+    }
+  }
+  if (mask & BLENDING_MASK) {
+    int blend = (int) this->coinstate.blending;
+    if (blend != this->glstate.blending) {
+      ((SoGLLazyElement*)this)->glstate.blending = blend;
+      if (blend) glEnable(GL_BLEND);
+      else glDisable(GL_BLEND);
+    }
+    // FIXME: move from SoGLRenderAction
+  }
+  if (mask & TRANSPARENCY_MASK) {
+    int stipplenum = 
+      this->coinstate.transptype == SoGLRenderAction::SCREEN_DOOR ? 
+      this->coinstate.stipplenum : 0;
+
+    if (stipplenum != this->glstate.stipplenum) {
+      if (stipplenum == 0) {
+        glDisable(GL_POLYGON_STIPPLE);
+      }
+      else {
+        if (this->glstate.stipplenum == 0) glEnable(GL_POLYGON_STIPPLE);
+        glPolygonStipple(stipple_patterns[stipplenum]);
+        
+      }
+      ((SoGLLazyElement*)this)->glstate.stipplenum = stipplenum;
+    }
   }
 }
 
@@ -187,65 +382,154 @@ SoGLLazyElement::send(const SoState * state, uint32_t mask) const
 void
 SoGLLazyElement::sendVPPacked(SoState* state, const unsigned char* pcolor)
 {
-  SoGLDiffuseColorElement * elem = (SoGLDiffuseColorElement*)
-    SoDiffuseColorElement::getInstance(state);
-  const uint32_t rgba =
-    (pcolor[0] << 24) | (pcolor[1] << 16) | (pcolor[2] << 8) | pcolor[3];
-  elem->sendOnePacked(rgba);
+  assert(0 && "Not implemented yet. Provided for API compatibility.");
 }
 
 //! FIXME: write doc
 
 void
-SoGLLazyElement::reset(SoState * /*state*/,  uint32_t /*mask*/) const
+SoGLLazyElement::reset(SoState * state,  uint32_t mask) const
 {
+  assert(0 && "Not implemented yet. Provided for API compatibility.");
 }
 
-//! FIXME: write doc
 
-SbBool
-SoGLLazyElement::lazyMatches(uint32_t /*checkGLFlag*/, uint32_t /*checkIVFlag*/,
-                             const SoGLLazyElement * /*eltInState*/)
+void 
+SoGLLazyElement::sendLightModel(SoState * state, const int32_t model)
 {
-  COIN_OBSOLETED();
-  return TRUE;
+  SoGLLazyElement * elem = getInstance(state);
+  if (elem->glstate.lightmodel != model) {
+    elem->sendLightModel(model);
+  }
 }
 
-//! FIXME: write doc
-
-SoGLLazyElement *
-SoGLLazyElement::copyLazyMatchInfo(SoState* /*state*/)
+void 
+SoGLLazyElement::sendPackedDiffuse(SoState * state, const uint32_t diffuse)
 {
-  COIN_OBSOLETED();
-  return NULL;
+  SoGLLazyElement * elem = getInstance(state);
+  if (elem->glstate.diffuse != diffuse) {
+    elem->sendPackedDiffuse(diffuse);
+  }
 }
 
-//! FIXME: write doc
-
-void
-SoGLLazyElement::getCopyGL(SoGLLazyElement * /*cacheLazyElement*/,
-                           SoGLLazyElement::GLLazyState & /*cacheGLState*/)
+void 
+SoGLLazyElement::setDiffuseElt(SoNode * node,  int32_t numcolors, 
+                               const SbColor * colors, SoColorPacker * packer)
 {
-  COIN_OBSOLETED();
+  inherited::setDiffuseElt(node, numcolors, colors, packer);
+  this->colorpacker = packer;
 }
 
-//! FIXME: write doc
-
-void
-SoGLLazyElement::copyBackGL(SoGLLazyElement * /*cacheLazyElement*/,
-                            SoGLLazyElement::GLLazyState & /*cacheGLState*/)
+void 
+SoGLLazyElement::setPackedElt(SoNode * node, int32_t numcolors, 
+                              const uint32_t * colors, const SbBool packedtransparency)
 {
-  COIN_OBSOLETED();
+  inherited::setPackedElt(node, numcolors, colors, packedtransparency);
+  this->colorpacker = NULL;
+  this->packedpointer = colors;
 }
 
-//! FIXME: write doc
-
-void
-SoGLLazyElement::mergeCacheInfo(SoGLRenderCache * /*childCache*/,
-                                SoGLRenderCache* /*parentCache*/,
-                                uint32_t /*doSendFlag*/,
-                                uint32_t /*checkIVFlag*/,
-                                uint32_t /*checkGLFlag*/)
+void 
+SoGLLazyElement::setColorIndexElt(SoNode * node, int32_t numindices, 
+                                  const int32_t * indices)
 {
-  COIN_OBSOLETED();
+  inherited::setColorIndexElt(node, numindices, indices);
 }
+
+void 
+SoGLLazyElement::setTranspElt(SoNode * node, int32_t numtransp, 
+                              const float * transp, SoColorPacker * packer)
+{
+  inherited::setTranspElt(node, numtransp, transp, packer);
+  this->colorpacker = packer;
+}
+
+
+void 
+SoGLLazyElement::setTranspTypeElt(int32_t type)
+{ 
+  inherited::setTranspTypeElt(type);
+  this->transpmask = type == SoGLRenderAction::SCREEN_DOOR ? 0xff : 0x00;
+}
+
+void 
+SoGLLazyElement::setAmbientElt(const SbColor* color)
+{
+  inherited::setAmbientElt(color);
+}
+
+void 
+SoGLLazyElement::setEmissiveElt(const SbColor* color)
+{ 
+  inherited::setEmissiveElt(color);
+}
+
+void 
+SoGLLazyElement::setSpecularElt(const SbColor* color)
+{ 
+  inherited::setSpecularElt(color);
+}
+
+void 
+SoGLLazyElement::setShininessElt(float value)
+{ 
+  inherited::setShininessElt(value);
+}
+
+void 
+SoGLLazyElement::setColorMaterialElt(SbBool value)
+{ 
+  inherited::setColorMaterialElt(value);
+}
+
+void 
+SoGLLazyElement::setBlendingElt(SbBool value)
+{ 
+  inherited::setBlendingElt(value);
+}
+
+void 
+SoGLLazyElement::setLightModelElt(SoState * state, int32_t model)
+{ 
+  inherited::setLightModelElt(state, model);
+}
+
+void 
+SoGLLazyElement::setMaterialElt(SoNode * node, uint32_t bitmask, 
+                                SoColorPacker * packer, 
+                                const SbColor * diffuse, const int numdiffuse,
+                                const float * transp, const int numtransp,
+                                const SbColor & ambient,
+                                const SbColor & emissive,
+                                const SbColor & specular,
+                                const float shininess)
+{
+  inherited::setMaterialElt(node, bitmask,
+                            packer, diffuse, numdiffuse,
+                            transp, numtransp, ambient,
+                            emissive, specular, shininess);
+  this->colorpacker = packer;
+}
+
+void 
+SoGLLazyElement::packColors(SoColorPacker * packer) const
+{
+  const int n = this->coinstate.numdiffuse;
+  const SbColor * diffuse = this->coinstate.diffusearray;
+  const int numtransp = this->coinstate.numtransp;
+  const float * transp = this->coinstate.transparray;
+
+  if (packer->getSize() < n) packer->reallocate(n);
+  uint32_t * ptr = packer->getPackedColors();
+
+  int ti = 0;
+
+  for (int i = 0; i < n; i++) {
+    ptr[i] = diffuse[i].getPackedValue(transp[ti]);
+    if (ti < numtransp) ti++;
+  }
+
+  packer->setNodeIds(this->coinstate.diffusenodeid,
+                     this->coinstate.transpnodeid);
+}
+

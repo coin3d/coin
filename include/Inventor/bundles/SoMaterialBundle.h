@@ -28,15 +28,7 @@
 #include <Inventor/SbBasic.h>
 #include <Inventor/system/inttypes.h>
 
-class SoGLAmbientColorElement;
-class SoGLDiffuseColorElement;
-class SoGLEmissiveColorElement;
-class SoGLMaterialIndexElement;
-class SoGLPolygonStippleElement;
-class SoGLShininessElement;
-class SoGLSpecularColorElement;
-class SoTransparencyElement;
-class SoGLColorIndexElement;
+class SoGLLazyElement;
 
 class COIN_DLL_API SoMaterialBundle : public SoBundle {
   typedef SoBundle inherited;
@@ -46,32 +38,20 @@ public:
 
   void setUpMultiple(void);
   void sendFirst(void);
-  void send(const int index, const SbBool betweenBeginEnd);
   void forceSend(const int index);
   SbBool isColorOnly(void) const;
-
+  
+  void send(const int index, const SbBool betweenbeginend);
+  
 private:
 
-  void reallySend(const int index, const SbBool isBetweenBeginEnd);
-  void setupElements(const SbBool betweenBeginEnd);
+  void reallySend(const int index);
+  void setupElements(const SbBool isbetweenbeginend);
 
-  SbBool doStipple;
-  SbBool firstTime;
-  SbBool colorOnly;
-  SbBool diffuseOnly;
-  SbBool multiTrans;
-  SbBool diffusePacked;
-  float firstAlpha;
-  int currIndex;
-
-  SoGLAmbientColorElement * ambientElt;
-  SoGLDiffuseColorElement * diffuseElt;
-  SoGLSpecularColorElement * specularElt;
-  SoGLEmissiveColorElement * emissiveElt;
-  SoGLShininessElement * shininessElt;
-  SoTransparencyElement * transparencyElt;
-  SoGLPolygonStippleElement * stippleElt;
-  SoGLColorIndexElement * indexElt;
+  SbBool firsttime;
+  SbBool coloronly;
+  int currindex;
+  const SoGLLazyElement * lazyelem;
 };
 
 #endif // !COIN_SOMATERIALBUNDLE_H

@@ -65,6 +65,7 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoWindowElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/misc/SoGL.h>
@@ -329,7 +330,7 @@ public:
   void * abortcallbackdata;
   uint32_t cachecontext;
   int currentpass;
-  SbBool isblendenabled;
+  SbBool depthmaskenabled;
   SoPathList delayedpaths;
   SbBool delayedpathrender;
   SbBool transparencyrender;
@@ -347,8 +348,8 @@ public:
 public:
   void setupTransparency(const SoGLRenderAction::TransparencyType newtype);
 
-  void disableBlend(const SbBool force = FALSE);
-  void enableBlend(const SbBool force = FALSE);
+  void disableBlend(void);
+  void enableBlend(void);
 
   void render(SoNode * node);
   void renderMulti(SoNode * node);
@@ -406,7 +407,7 @@ SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportregion)
   THIS->delayedpathrender = FALSE;
   THIS->transparencyrender = FALSE;
   THIS->isrendering = FALSE;
-  THIS->isblendenabled = FALSE;
+  THIS->depthmaskenabled = TRUE;
   THIS->passupdate = FALSE;
   THIS->bboxaction = NULL;
   THIS->updateorigin.setValue(0.0f, 0.0f);
@@ -665,8 +666,7 @@ SoGLRenderAction::beginTraversal(SoNode * node)
     glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
     glEnable(GL_COLOR_MATERIAL);
 
-    // force blending to off in case GL state is invalid
-    THIS->disableBlend(TRUE);
+    THIS->disableBlend();
     THIS->gltransptype = SoGLRenderAction::NONE;
 
     if (THIS->smoothing) {
@@ -728,10 +728,11 @@ SoGLRenderAction::handleTransparency(SbBool istransparent)
     if (THIS->smoothing) {
       // needed for line/point smoothing to work
       THIS->setupTransparency(BLEND);
-      if (!THIS->isblendenabled) {
-        // enable blending but don't disable depth mask
-        glEnable(GL_BLEND);
-        THIS->isblendenabled = TRUE;
+      // enable blending but don't disable depth mask
+      SoLazyElement::setBlending(this->getState(), TRUE);
+      if (!THIS->depthmaskenabled) {
+        glDepthMask(GL_TRUE);
+        THIS->depthmaskenabled = TRUE;
       }
     }
     else THIS->disableBlend();
@@ -1012,29 +1013,29 @@ SoGLRenderAction::removePreRenderCallback(SoGLPreRenderCB * func, void * userdat
 
 // Enable OpenGL blending.
 void
-SoGLRenderActionP::enableBlend(const SbBool force)
+SoGLRenderActionP::enableBlend(void)
 {
-  if (force || !this->isblendenabled) {
-    glEnable(GL_BLEND);
-    if (!this->delayedpathrender &&
-        this->transparencytype != SoGLRenderAction::SCREEN_DOOR) {
+  SoLazyElement::setBlending(this->action->getState(), TRUE);
+  if (!this->delayedpathrender &&
+      this->transparencytype != SoGLRenderAction::SCREEN_DOOR) {
+    if (this->depthmaskenabled) {
       glDepthMask(GL_FALSE);
+      this->depthmaskenabled = FALSE;
     }
-    this->isblendenabled = TRUE;
   }
 }
 
 // Disable OpenGL blending.
 void
-SoGLRenderActionP::disableBlend(const SbBool force)
+SoGLRenderActionP::disableBlend(void)
 {
-  if (force || this->isblendenabled) {
-    glDisable(GL_BLEND);
-    if (!this->delayedpathrender &&
-        this->transparencytype != SoGLRenderAction::SCREEN_DOOR) {
+  SoLazyElement::setBlending(this->action->getState(), FALSE);
+  if (!this->delayedpathrender &&
+      this->transparencytype != SoGLRenderAction::SCREEN_DOOR) {
+    if (!this->depthmaskenabled) {
       glDepthMask(GL_TRUE);
+      this->depthmaskenabled = TRUE;
     }
-    this->isblendenabled = FALSE;
   }
 }
 

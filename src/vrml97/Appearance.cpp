@@ -76,7 +76,7 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/actions/SoActions.h>
 #include <Inventor/elements/SoCacheElement.h>
-#include <Inventor/elements/SoDiffuseColorElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <stddef.h>
 
@@ -176,10 +176,8 @@ SoVRMLAppearance::GLRender(SoGLRenderAction * action)
   }
 
   if (this->texture.getValue() && SoTextureQualityElement::get(state) > 0.0f) {
-    static SbColor white;
-    white.setValue(1.0f, 1.0f, 1.0f);
-    SoDiffuseColorElement::set(state, this,
-                               1, &white);
+    static uint32_t white = 0xffffffff;
+    SoLazyElement::setPacked(state, this, 1, &white);
   }
 }
 

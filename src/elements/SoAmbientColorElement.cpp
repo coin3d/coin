@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -27,33 +27,13 @@
   \ingroup elements
 */
 
+
 #include <Inventor/elements/SoAmbientColorElement.h>
+#include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbColor.h>
 #include <assert.h>
 #include <stdlib.h>
-#include <../tidbits.h> // coin_atexit()
-
-// Dynamically allocated to avoid problems on systems which doesn't
-// handle static constructors.
-static SbColor * defaultambientcolor = NULL;
-
-static void
-SoAmbientColorElement_cleanup_func(void)
-{
-  delete defaultambientcolor;
-}
-
-/*!
-  \fn SoAmbientColorElement::numColors
-
-  This is the number of ambient colors.
-*/
-
-/*!
-  \fn SoAmbientColorElement::colors
-
-  This is an array of ambient colors.
-*/
 
 SO_ELEMENT_SOURCE(SoAmbientColorElement);
 
@@ -66,9 +46,6 @@ void
 SoAmbientColorElement::initClass(void)
 {
   SO_ELEMENT_INIT_CLASS(SoAmbientColorElement, inherited);
-  defaultambientcolor = new SbColor;
-  defaultambientcolor->setValue(0.2f, 0.2f, 0.2f);
-  coin_atexit((coin_atexit_f *)SoAmbientColorElement_cleanup_func);
 }
 
 //! FIXME: write doc.
@@ -77,8 +54,7 @@ void
 SoAmbientColorElement::init(SoState * state)
 {
   inherited::init(state);
-  this->colors = defaultambientcolor;
-  this->numColors = 1;
+  this->state = state;
 }
 
 /*!
@@ -93,36 +69,25 @@ SoAmbientColorElement::~SoAmbientColorElement()
 
 void
 SoAmbientColorElement::set(SoState * const state, SoNode * const node,
-                           const int32_t numColors,
+                           const int32_t numcolors,
                            const SbColor * const colors)
 {
-  SoAmbientColorElement *elem = (SoAmbientColorElement*)
-    SoReplacedElement::getElement(state, classStackIndex, node);
-  if (elem) {
-    if (numColors > 0)
-      elem->setElt(numColors, colors);
-    else
-      elem->setElt(1, defaultambientcolor);
+  SoLazyElement::setAmbient(state, colors);
+#if COIN_DEBUG
+  if (numcolors > 1) {
+    SoDebugError::postWarning("SoAmbientColorElement::set",
+                              "Multiple ambient colors not supported. "
+                              "All color except the first will be ignored.");
   }
+#endif // COIN_DEBIG
 }
 
 //! FIXME: write doc.
 
-void
-SoAmbientColorElement::setElt(const int32_t numColors,
-                              const SbColor * const colors)
-{
-  this->colors = colors;
-  this->numColors = numColors;
-}
-
-//! FIXME: write doc.
-
-//$ EXPORT INLINE
 int32_t
-SoAmbientColorElement::getNum() const
+SoAmbientColorElement::getNum(void) const
 {
-  return this->numColors;
+  return 1;
 }
 
 //! FIXME: write doc.
@@ -130,25 +95,24 @@ SoAmbientColorElement::getNum() const
 const SbColor &
 SoAmbientColorElement::get(const int index) const
 {
-  assert(index >= 0 && index <= this->numColors);
-  return this->colors[index];
+  assert(index == 0);
+  return SoLazyElement::getAmbient(this->state);
 }
 
 /*!
   Return a pointer to the color array. This method is not part of the OIV API.
 */
 const SbColor *
-SoAmbientColorElement::getArrayPtr() const
+SoAmbientColorElement::getArrayPtr(void) const
 {
-  return this->colors;
+  return &SoLazyElement::getAmbient(this->state);
 }
 
 //! FIXME: write doc.
 
-//$ EXPORT INLINE
 const SoAmbientColorElement *
 SoAmbientColorElement::getInstance(SoState *state)
 {
   return (const SoAmbientColorElement *)
-    SoElement::getConstElement(state, classStackIndex);
+    state->getElementNoPush(classStackIndex);
 }

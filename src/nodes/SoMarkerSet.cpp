@@ -57,10 +57,9 @@
 #include <Inventor/elements/SoGLCoordinateElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
-#include <Inventor/elements/SoGLLightModelElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
-#include <Inventor/elements/SoGLLightModelElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
@@ -1124,7 +1123,7 @@ SoMarkerSet::GLRender(SoGLRenderAction * action)
   // can't see any reason this should ever be enabled.  send an angry
   // email to <pederb@coin3d.org> if you disagree.
 
-  SoLightModelElement::set(state, this, SoLightModelElement::BASE_COLOR);
+  SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
   SoGLTextureEnabledElement::set(state, this, FALSE);
   SoGLTexture3EnabledElement::set(state, this, FALSE);
 

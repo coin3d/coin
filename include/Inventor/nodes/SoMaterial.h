@@ -5,7 +5,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -28,6 +28,8 @@
 #include <Inventor/fields/SoMFColor.h>
 #include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/fields/SoSFFloat.h>
+
+class SoMaterialP;
 
 class COIN_DLL_API SoMaterial : public SoNode {
   typedef SoNode inherited;
@@ -53,10 +55,10 @@ protected:
   virtual ~SoMaterial();
 
   virtual void notify(SoNotList * list);
-  
+
 private:
+  SoMaterialP * pimpl;
   int getMaterialType(void);
-  int materialtype;
 };
 
 #endif // !COIN_SOMATERIAL_H

@@ -26,7 +26,6 @@
 
 #include <Inventor/elements/SoElement.h>
 #include <Inventor/elements/SoAccumulatedElement.h>
-#include <Inventor/elements/SoGLColorIndexElement.h>
 #include <Inventor/elements/SoClipPlaneElement.h>
 #include <Inventor/elements/SoGLClipPlaneElement.h>
 #include <Inventor/elements/SoLightElement.h>
@@ -101,22 +100,18 @@
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoGLViewportRegionElement.h>
 #include <Inventor/elements/SoWindowElement.h>
-#include <Inventor/elements/SoAmbientColorElement.h>
-#include <Inventor/elements/SoEmissiveColorElement.h>
-#include <Inventor/elements/SoLightModelElement.h>
-#include <Inventor/elements/SoGLLightModelElement.h>
-#include <Inventor/elements/SoShininessElement.h>
-#include <Inventor/elements/SoSpecularColorElement.h>
-#include <Inventor/elements/SoTransparencyElement.h>
-#include <Inventor/elements/SoDiffuseColorElement.h>
-#include <Inventor/elements/SoGLSpecularColorElement.h>
-#include <Inventor/elements/SoGLAmbientColorElement.h>
-#include <Inventor/elements/SoGLDiffuseColorElement.h>
-#include <Inventor/elements/SoGLEmissiveColorElement.h>
-#include <Inventor/elements/SoGLShininessElement.h>
-#include <Inventor/elements/SoGLPolygonStippleElement.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoGLColorIndexElement.h>
+
+// elements still supported by Coin that are not in SGI Inventor >= 2.1
+#include <Inventor/elements/SoAmbientColorElement.h>
+#include <Inventor/elements/SoDiffuseColorElement.h>
+#include <Inventor/elements/SoSpecularColorElement.h>
+#include <Inventor/elements/SoEmissiveColorElement.h>
+#include <Inventor/elements/SoShininessElement.h>
+#include <Inventor/elements/SoTransparencyElement.h>
+#include <Inventor/elements/SoLightModelElement.h>
 
 // elements not found in OIV. Added to optimize rendering
 #include <Inventor/elements/SoGLShadeModelElement.h>

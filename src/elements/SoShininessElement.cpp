@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -32,23 +32,10 @@
 */
 
 #include <Inventor/elements/SoShininessElement.h>
-
+#include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/errors/SoDebugError.h>
 
 #include <assert.h>
-
-static const float defaultshininessval = 0.2f;
-
-/*!
-  \fn SoShininessElement::numValues
-
-  FIXME: write doc.
-*/
-
-/*!
-  \fn SoShininessElement::values
-
-  FIXME: write doc.
-*/
 
 SO_ELEMENT_SOURCE(SoShininessElement);
 
@@ -73,46 +60,34 @@ SoShininessElement::~SoShininessElement()
 //! FIXME: write doc.
 
 void
-SoShininessElement::init(SoState * /* state */)
+SoShininessElement::init(SoState * state)
 {
-  this->values = &defaultshininessval;
-  this->numValues = 1;
+  this->state = state;
 }
 
 //! FIXME: write doc.
 
 void
 SoShininessElement::set(SoState * const state, SoNode * const node,
-                           const int32_t numValues,
+                           const int32_t numvalues,
                            const float * const values)
 {
-  SoShininessElement *elem = (SoShininessElement*)
-    SoReplacedElement::getElement(state, classStackIndex, node);
-  if (elem) {
-    if (numValues > 0)
-      elem->setElt(numValues, values);
-    else
-      elem->setElt(1, &defaultshininessval);
+  SoLazyElement::setShininess(state, values[0]);
+#if COIN_DEBUG
+  if (numvalues > 1) {
+    SoDebugError::postWarning("SoShininessElement::set",
+                              "Multiple shininess values not supported. "
+                              "All values except the first will be ignored.");
   }
+#endif // COIN_DEBIG
+
 }
 
 //! FIXME: write doc.
-
-void
-SoShininessElement::setElt(const int32_t numValues,
-                           const float * const values)
-{
-  this->values = values;
-  this->numValues = numValues;
-}
-
-//! FIXME: write doc.
-
-//$ EXPORT INLINE
 int32_t
-SoShininessElement::getNum() const
+SoShininessElement::getNum(void) const
 {
-  return this->numValues;
+  return 1;
 }
 
 //! FIXME: write doc.
@@ -120,25 +95,25 @@ SoShininessElement::getNum() const
 float
 SoShininessElement::get(const int index) const
 {
-  assert(index >= 0 && index <= this->numValues);
-  return this->values[index];
+  assert(index == 0);
+  return SoLazyElement::getShininess(this->state);
 }
 
 /*!
   Returns a pointer to the shininess values. This method is not part of the OIV API.
 */
 const float *
-SoShininessElement::getArrayPtr() const
+SoShininessElement::getArrayPtr(void) const
 {
-  return this->values;
+  ((SoShininessElement*)this)->dummyvalue = SoLazyElement::getShininess(this->state);
+  return &this->dummyvalue;
 }
 
 //! FIXME: write doc.
 
-//$ EXPORT INLINE
 const SoShininessElement *
 SoShininessElement::getInstance(SoState *state)
 {
   return (const SoShininessElement *)
-    SoElement::getConstElement(state, classStackIndex);
+    state->getElementNoPush(classStackIndex);
 }

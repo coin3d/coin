@@ -30,11 +30,11 @@
 */
 
 #include <Inventor/elements/SoShapeStyleElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoDrawStyleElement.h>
 #include <Inventor/elements/SoComplexityTypeElement.h>
-#include <Inventor/elements/SoLightModelElement.h>
 
 #include <coindefs.h> // COIN_OBSOLETED()
 #include <assert.h>
@@ -239,7 +239,7 @@ SoShapeStyleElement::setLightModel(SoState * const state,
 {
   SoShapeStyleElement * elem = getElement(state);
   if (elem) {
-    if (value != (int32_t) SoLightModelElement::BASE_COLOR) {
+    if (value != (int32_t) SoLazyElement::BASE_COLOR) {
       elem->flags |= FLAG_LIGHTING;
     }
     else {

@@ -78,10 +78,9 @@
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoPickAction.h>
-#include <Inventor/elements/SoDiffuseColorElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoGLCoordinateElement.h>
 #include <Inventor/elements/SoGLNormalElement.h>
-#include <Inventor/elements/SoGLPolygonStippleElement.h>
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
@@ -277,14 +276,6 @@ SoVertexProperty::doAction(SoAction *action)
 #define TEST_OVERRIDE(bit) ((SoOverrideElement::bit & overrideflags) != 0)
 
   SbBool glrender = action->isOfType(SoGLRenderAction::getClassTypeId());
-  if (glrender &&
-      SoShapeStyleElement::isScreenDoor(state) &&
-      this->orderedRGBA.getNum() &&
-      ! TEST_OVERRIDE(TRANSPARENCY)) {
-    float t = (255 - (this->orderedRGBA[0] & 0xff)) / 255.0f;
-    SoGLPolygonStippleElement::setTransparency(state, t);
-    SoGLPolygonStippleElement::set(state, t >= 1.0f/255.0f);
-  }
 
   if (this->checktransparent) {
     this->checktransparent = FALSE;
@@ -338,10 +329,12 @@ SoVertexProperty::doAction(SoAction *action)
       SoOverrideElement::setNormalBindingOverride(state, this, TRUE);
     }
   }
-  if (this->orderedRGBA.getNum() > 0 && !TEST_OVERRIDE(DIFFUSE_COLOR)) {
-    SoDiffuseColorElement::set(state, this, this->orderedRGBA.getNum(),
-                               this->orderedRGBA.getValues(0),
-                               this->transparent);
+  if (this->orderedRGBA.getNum() > 0 && 
+      !TEST_OVERRIDE(DIFFUSE_COLOR)) {
+    
+    SoLazyElement::setPacked(state, this, this->orderedRGBA.getNum(),
+                             this->orderedRGBA.getValues(0),
+                             this->transparent);
     if (this->isOverride()) {
       SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
     }

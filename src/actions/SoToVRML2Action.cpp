@@ -62,7 +62,6 @@
 #include <Inventor/nodes/SoNodes.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoNormalElement.h>
-#include <Inventor/elements/SoDiffuseColorElement.h>
 #include <Inventor/elements/SoTextureCoordinateElement.h>
 
 #include <Inventor/errors/SoDebugError.h>
@@ -1004,14 +1003,15 @@ SoToVRML2ActionP::soifs_cb(void * closure, SoCallbackAction * action, const SoNo
   }
 
   if (action->getMaterialBinding() != SoMaterialBinding::OVERALL) {
-    const SoDiffuseColorElement * colorElem = SoDiffuseColorElement::getInstance(action->getState());
-    if (colorElem->getNum() > 1) {
-      if (colorElem->isPacked()) {
-        ifs->color = thisp->get_or_create_color(colorElem->getPackedArrayPtr(),
-                                                colorElem->getNum());
-      } else {
-        ifs->color = thisp->get_or_create_color(colorElem->getColorArrayPtr(),
-                                                colorElem->getNum());
+    SoLazyElement * lazy = SoLazyElement::getInstance(action->getState());
+    if (lazy->getNumDiffuse() > 1) {
+      if (lazy->isPacked()) {
+        ifs->color = thisp->get_or_create_color(lazy->getPackedPointer(),
+                                                lazy->getNumDiffuse());
+      } 
+      else {
+        ifs->color = thisp->get_or_create_color(lazy->getDiffusePointer(),
+                                                lazy->getNumDiffuse());
       }
       if (action->getMaterialBinding() != SoMaterialBinding::PER_VERTEX_INDEXED &&
           action->getMaterialBinding() != SoMaterialBinding::PER_VERTEX) {
@@ -1092,15 +1092,15 @@ SoToVRML2ActionP::soils_cb(void * closure, SoCallbackAction * action, const SoNo
   }
 
   if (action->getMaterialBinding() != SoMaterialBinding::OVERALL) {
-    const SoDiffuseColorElement * colorElem =
-      SoDiffuseColorElement::getInstance(action->getState());
-    if (colorElem->getNum() > 0) {
+    const SoLazyElement * colorElem =
+      SoLazyElement::getInstance(action->getState());
+    if (colorElem->getNumDiffuse() > 0) {
       if (colorElem->isPacked()) {
-        ils->color = thisp->get_or_create_color(colorElem->getPackedArrayPtr(),
-                                                colorElem->getNum());
+        ils->color = thisp->get_or_create_color(colorElem->getPackedPointer(),
+                                                colorElem->getNumDiffuse());
       } else {
-        ils->color = thisp->get_or_create_color(colorElem->getColorArrayPtr(),
-                                                colorElem->getNum());
+        ils->color = thisp->get_or_create_color(colorElem->getDiffusePointer(),
+                                                colorElem->getNumDiffuse());
       }
       if (action->getMaterialBinding() != SoMaterialBinding::PER_VERTEX_INDEXED &&
           action->getMaterialBinding() != SoMaterialBinding::PER_VERTEX) {
@@ -1242,15 +1242,15 @@ SoToVRML2ActionP::solineset_cb(void * closure, SoCallbackAction * action, const 
   }
 
   if (action->getMaterialBinding() != SoMaterialBinding::OVERALL) {
-    const SoDiffuseColorElement * colorElem =
-      SoDiffuseColorElement::getInstance(action->getState());
-    if (colorElem->getNum() > 0) {
+    const SoLazyElement * colorElem =
+      SoLazyElement::getInstance(action->getState());
+    if (colorElem->getNumDiffuse() > 0) {
       if (colorElem->isPacked()) {
-        ils->color = thisp->get_or_create_color(colorElem->getPackedArrayPtr(),
-                                                colorElem->getNum());
+        ils->color = thisp->get_or_create_color(colorElem->getPackedPointer(),
+                                                colorElem->getNumDiffuse());
       } else {
-        ils->color = thisp->get_or_create_color(colorElem->getColorArrayPtr(),
-                                                colorElem->getNum());
+        ils->color = thisp->get_or_create_color(colorElem->getDiffusePointer(),
+                                                colorElem->getNumDiffuse());
       }
       if (action->getMaterialBinding() != SoMaterialBinding::PER_VERTEX) {
         ils->colorPerVertex = FALSE;
@@ -1352,14 +1352,14 @@ SoToVRML2ActionP::sopointset_cb(void * closure, SoCallbackAction * action, const
   }
 
   if (action->getMaterialBinding() != SoMaterialBinding::OVERALL) {
-    const SoDiffuseColorElement * colorElem = SoDiffuseColorElement::getInstance(action->getState());
+    const SoLazyElement * colorElem = SoLazyElement::getInstance(action->getState());
     int n = ((SoVRMLCoordinate*)ps->coord.getValue())->point.getNum();
-    if (colorElem->getNum() >= n) {
+    if (colorElem->getNumDiffuse() >= n) {
       if (colorElem->isPacked()) {
-        ps->color = thisp->get_or_create_color(colorElem->getPackedArrayPtr(),
+        ps->color = thisp->get_or_create_color(colorElem->getPackedPointer(),
                                                n);
       } else {
-        ps->color = thisp->get_or_create_color(colorElem->getColorArrayPtr(),
+        ps->color = thisp->get_or_create_color(colorElem->getDiffusePointer(),
                                                n);
       }
     }
@@ -1529,8 +1529,8 @@ SoToVRML2ActionP::sotoifs_cb(void * closure, SoCallbackAction * action, const So
   thisp->normalidx = new SbList <int>;
 
   if (action->getMaterialBinding() != SoMaterialBinding::OVERALL) {
-    const SoDiffuseColorElement * colorElem = SoDiffuseColorElement::getInstance(action->getState());
-    if (colorElem->getNum() > 1) {
+    const SoLazyElement * colorElem = SoLazyElement::getInstance(action->getState());
+    if (colorElem->getNumDiffuse() > 1) {
       thisp->coloridx = new SbList <int>;
     }
   }
@@ -1592,14 +1592,15 @@ SoToVRML2ActionP::post_primitives_cb(void * closure, SoCallbackAction * action, 
       
     if (thisp->coloridx) {
       // Copy the colors from the state
-      const SoDiffuseColorElement * colorElem = SoDiffuseColorElement::getInstance(action->getState());
-      if (colorElem->getNum() == thisp->bsptree->numPoints()) {
+      SoLazyElement * colorElem = SoLazyElement::getInstance(action->getState());
+      if (colorElem->getNumDiffuse() == thisp->bsptree->numPoints()) {
         if (colorElem->isPacked()) {
-          ps->color = thisp->get_or_create_color(colorElem->getPackedArrayPtr(),
-                                                 colorElem->getNum());
-        } else {
-          ps->color = thisp->get_or_create_color(colorElem->getColorArrayPtr(),
-                                                 colorElem->getNum());
+          ps->color = thisp->get_or_create_color(colorElem->getPackedPointer(),
+                                                 colorElem->getNumDiffuse());
+        } 
+        else {
+          ps->color = thisp->get_or_create_color(colorElem->getDiffusePointer(),
+                                                 colorElem->getNumDiffuse());
         }
       }
     }
@@ -1614,13 +1615,13 @@ SoToVRML2ActionP::post_primitives_cb(void * closure, SoCallbackAction * action, 
 
     if (thisp->coloridx) {
       // Copy the colors from the state
-      const SoDiffuseColorElement * colorElem = SoDiffuseColorElement::getInstance(action->getState());
+      const SoLazyElement * colorElem = SoLazyElement::getInstance(action->getState());
       if (colorElem->isPacked()) {
-        ils->color = thisp->get_or_create_color(colorElem->getPackedArrayPtr(),
-                                                colorElem->getNum());
+        ils->color = thisp->get_or_create_color(colorElem->getPackedPointer(),
+                                                colorElem->getNumDiffuse());
       } else {
-        ils->color = thisp->get_or_create_color(colorElem->getColorArrayPtr(),
-                                                colorElem->getNum());
+        ils->color = thisp->get_or_create_color(colorElem->getDiffusePointer(),
+                                                colorElem->getNumDiffuse());
       }
       
       // Index
@@ -1664,18 +1665,18 @@ SoToVRML2ActionP::post_primitives_cb(void * closure, SoCallbackAction * action, 
 
     if (thisp->coloridx) {
       // Copy the colors from the state
-      const SoDiffuseColorElement * colorElem = SoDiffuseColorElement::getInstance(action->getState());
+      const SoLazyElement * colorElem = SoLazyElement::getInstance(action->getState());
       if (colorElem->isPacked()) {
-        ifs->color = thisp->get_or_create_color(colorElem->getPackedArrayPtr(),
-                                                colorElem->getNum());
+        ifs->color = thisp->get_or_create_color(colorElem->getPackedPointer(),
+                                                colorElem->getNumDiffuse());
       } else {
-        ifs->color = thisp->get_or_create_color(colorElem->getColorArrayPtr(),
-                                                colorElem->getNum());
+        ifs->color = thisp->get_or_create_color(colorElem->getDiffusePointer(),
+                                                colorElem->getNumDiffuse());
       }
-
+      
       // Index
       ifs->colorIndex.setValues(0, thisp->coloridx->getLength(),
-                               thisp->coloridx->getArrayPtr());
+                                thisp->coloridx->getArrayPtr());
 
     }
 

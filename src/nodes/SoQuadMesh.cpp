@@ -106,7 +106,6 @@
 #include <Inventor/system/gl.h>
 
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
-#include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoGLCoordinateElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
@@ -659,9 +658,9 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
   const SoCoordinateElement * tmp;
   const SbVec3f * normals;
   SbBool doTextures;
-  SbBool needNormals =
-    (SoLightModelElement::get(state) !=
-     SoLightModelElement::BASE_COLOR);
+  SoMaterialBundle mb(action);
+
+  SbBool needNormals = !mb.isColorOnly();
 
   SoVertexShape::getVertexData(action->getState(), tmp, normals,
                                needNormals);
@@ -687,7 +686,6 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
     normals = nc->getNormals();
   }
 
-  SoMaterialBundle mb(action);
   mb.sendFirst(); // make sure we have the correct material
 
   soquadmesh_ni_render_funcs[ (mbind << 3) | (nbind << 1) | doTextures ]

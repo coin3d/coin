@@ -46,14 +46,13 @@
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoSubAction.h>
 #include <Inventor/elements/SoComplexityTypeElement.h>
-#include <Inventor/elements/SoDiffuseColorElement.h>
 #include <Inventor/elements/SoDrawStyleElement.h>
-#include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoLinePatternElement.h>
 #include <Inventor/elements/SoLineWidthElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoTextureOverrideElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoSelection.h>
@@ -96,6 +95,7 @@ public:
   SoSeparator * bboxseparator;
   SoMatrixTransform * bboxtransform;
   SoCube * bboxcube;
+  SoColorPacker colorpacker;
 
   void drawNoShapeBox(const SoPath * path);
 };
@@ -411,8 +411,10 @@ SoBoxHighlightRenderAction::drawBoxes(SoPath * pathtothis, const SoPathList * pa
   SoState * state = this->getState();
   state->push();
 
-  SoLightModelElement::set(state, SoLightModelElement::BASE_COLOR);
-  SoDiffuseColorElement::set(state, NULL, 1, &PRIVATE(this)->color);
+  SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
+  SoLazyElement::setDiffuse(state, pathtothis->getHead(), 1, &PRIVATE(this)->color, 
+                            &PRIVATE(this)->colorpacker);
+
   SoLineWidthElement::set(state, PRIVATE(this)->linewidth);
   SoLinePatternElement::set(state, PRIVATE(this)->linepattern);
   SoTextureQualityElement::set(state, 0.0f);

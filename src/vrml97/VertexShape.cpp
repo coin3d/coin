@@ -59,7 +59,7 @@
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoCoordinateElement.h>
-#include <Inventor/elements/SoLightModelElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/misc/SoState.h>
 #include <stddef.h>

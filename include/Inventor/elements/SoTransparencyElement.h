@@ -5,7 +5,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -25,6 +25,7 @@
 \**************************************************************************/
 
 #include <Inventor/elements/SoReplacedElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 
 class COIN_DLL_API SoTransparencyElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
@@ -38,19 +39,17 @@ protected:
 public:
   virtual void init(SoState * state);
   static void set(SoState * const state, SoNode * const node,
-                  const int32_t numValues, const float* const values);
-
+                  const int32_t numvalues, const float * const values);
+  
   static const SoTransparencyElement * getInstance(SoState *state);
 
-  int32_t getNum() const;
+  int32_t getNum(void) const;
   float get(const int index) const;
-  const float *getArrayPtr() const;
+  const float *getArrayPtr(void) const;
 
-protected:
-  virtual void setElt(const int numValues, const float * const values);
-  int numValues;
-  const float *values;
-
+private:
+  SoState * state;
+  SoColorPacker colorpacker;
 };
 
 #endif // !COIN_SOTRANSPARENCYELEMENT_H

@@ -110,14 +110,12 @@
 #include <Inventor/elements/SoComplexityTypeElement.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
 #include <Inventor/caches/SoGLCacheList.h>
-#include <Inventor/elements/SoLightModelElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
 #include <Inventor/caches/SoGLCacheList.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/elements/SoGLShapeHintsElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLLightModelElement.h>
-#include <Inventor/elements/SoGLDiffuseColorElement.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -230,10 +228,10 @@ SoVRMLShape::doAction(SoAction * action)
 {
   SoState * state = action->getState();
 
-  if (state->isElementEnabled(SoLightModelElement::getClassStackIndex())) {
+  if (state->isElementEnabled(SoLazyElement::getClassStackIndex())) {
     if ((this->appearance.getValue() == NULL) ||
         (((SoVRMLAppearance*)this->appearance.getValue())->material.getValue() == NULL)) {
-      SoLightModelElement::set(state, SoLightModelElement::BASE_COLOR);
+      SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
     }
   }
 
@@ -275,7 +273,7 @@ SoVRMLShape::GLRender(SoGLRenderAction * action)
 
       SoGLTextureEnabledElement::forceSend(state, FALSE);
       SoGLShapeHintsElement::forceSend(state, TRUE, FALSE, FALSE);
-      SoGLLightModelElement::forceSend(state, SoLightModelElement::BASE_COLOR);
+      SoGLLazyElement::sendLightModel(state, SoLazyElement::BASE_COLOR);
   
       SoVRMLAppearance * app = (SoVRMLAppearance*) this->appearance.getValue();
       
@@ -285,9 +283,7 @@ SoVRMLShape::GLRender(SoGLRenderAction * action)
         SoVRMLMaterial * mat = (SoVRMLMaterial*) app->material.getValue();
         color = mat->diffuseColor.getValue();
       }
-      SoGLDiffuseColorElement * elem = (SoGLDiffuseColorElement*)
-        SoDiffuseColorElement::getInstance(state);
-      elem->sendOnePacked(color.getPackedValue());
+      SoGLLazyElement::sendPackedDiffuse(state, color.getPackedValue());
 
       glPushMatrix();
       glTranslatef(center[0], center[1], center[2]);
@@ -315,7 +311,7 @@ SoVRMLShape::GLRender(SoGLRenderAction * action)
 
   if ((this->appearance.getValue() == NULL) ||
       (((SoVRMLAppearance*)this->appearance.getValue())->material.getValue() == NULL)) {
-    SoLightModelElement::set(state, SoLightModelElement::BASE_COLOR);
+    SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
   }
 
   int numindices;

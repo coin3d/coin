@@ -58,7 +58,6 @@
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/elements/SoCreaseAngleElement.h>
-#include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/misc/SoNormalGenerator.h>
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
@@ -474,9 +473,10 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
     const SoCoordinateElement * tmp;
     const SbVec3f * normals;
     SbBool doTextures;
-    SbBool needNormals =
-      (SoLightModelElement::get(state) !=
-       SoLightModelElement::BASE_COLOR);
+
+    SoMaterialBundle mb(action);
+
+    SbBool needNormals = !mb.isColorOnly();
 
     SoVertexShape::getVertexData(state, tmp, normals,
                                  needNormals);
@@ -498,7 +498,6 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
       normals = nc->getNormals();
     }
 
-    SoMaterialBundle mb(action);
     mb.sendFirst(); // make sure we have the correct material
 
     int32_t idx = this->startIndex.getValue();
@@ -625,10 +624,6 @@ SoFaceSet::generatePrimitives(SoAction *action)
   const SbVec3f * normals;
   SbBool doTextures;
 
-  // FIXME: maybe SoLightModelElement should be enabled for
-  // SoPickAction. This would make it possible to test the
-  // element here, instead of always generating normals.
-  // pederb, 20000927
   SbBool needNormals = TRUE;
 
   SoVertexShape::getVertexData(state, coords, normals,
@@ -807,9 +802,10 @@ SoFaceSet::useConvexCache(SoAction * action)
   const SoCoordinateElement * tmp;
   const SbVec3f * normals;
   SbBool doTextures;
-  SbBool needNormals =
-    (SoLightModelElement::get(state) !=
-     SoLightModelElement::BASE_COLOR);
+
+  SoMaterialBundle mb(action);
+
+  SbBool needNormals = !mb.isColorOnly();
 
   SoVertexShape::getVertexData(state, tmp, normals,
                                needNormals);
@@ -891,8 +887,6 @@ SoFaceSet::useConvexCache(SoAction * action)
     THIS->writeUnlockConvexCache();
     THIS->readLockConvexCache();
   }
-
-  SoMaterialBundle mb(action);
 
   mb.sendFirst(); // make sure we have the correct material
 

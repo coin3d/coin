@@ -82,16 +82,15 @@
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoPickAction.h>
-#include <Inventor/elements/SoGLAmbientColorElement.h>
-#include <Inventor/elements/SoGLDiffuseColorElement.h>
-#include <Inventor/elements/SoGLEmissiveColorElement.h>
-#include <Inventor/elements/SoGLPolygonStippleElement.h>
-#include <Inventor/elements/SoGLShininessElement.h>
-#include <Inventor/elements/SoGLSpecularColorElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
-#include <Inventor/elements/SoTransparencyElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
-#include <Inventor/elements/SoLightModelElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
+#include <Inventor/elements/SoAmbientColorElement.h>
+#include <Inventor/elements/SoDiffuseColorElement.h>
+#include <Inventor/elements/SoSpecularColorElement.h>
+#include <Inventor/elements/SoEmissiveColorElement.h>
+#include <Inventor/elements/SoShininessElement.h>
+#include <Inventor/elements/SoTransparencyElement.h>
 #include <../tidbits.h> // coin_atexit()
 #include <stdlib.h>
 
@@ -159,15 +158,20 @@
 #define TYPE_NORMAL             1
 #define TYPE_VRML1_ONLYEMISSIVE 2 // special case in vrml1
 
-static SbColor * one_black_color = NULL;
-
-static void
-material_cleanup(void)
-{
-  delete one_black_color;
-}
-
 // *************************************************************************
+
+#ifndef DOXYGEN_SKIP_THIS
+
+class SoMaterialP {
+public:
+  int materialtype;
+  SoColorPacker colorpacker;
+};
+
+#endif // DOXYGEN_SKIP_THIS
+
+#undef THIS
+#define THIS this->pimpl
 
 SO_NODE_SOURCE(SoMaterial);
 
@@ -176,6 +180,8 @@ SO_NODE_SOURCE(SoMaterial);
 */
 SoMaterial::SoMaterial(void)
 {
+  THIS = new SoMaterialP;
+
   SO_NODE_INTERNAL_CONSTRUCTOR(SoMaterial);
 
   SO_NODE_ADD_FIELD(ambientColor, (0.2f, 0.2f, 0.2f));
@@ -185,7 +191,7 @@ SoMaterial::SoMaterial(void)
   SO_NODE_ADD_FIELD(shininess, (0.2f));
   SO_NODE_ADD_FIELD(transparency, (0.0f));
   
-  this->materialtype = TYPE_NORMAL;
+  THIS->materialtype = TYPE_NORMAL;
 }
 
 /*!
@@ -193,6 +199,7 @@ SoMaterial::SoMaterial(void)
 */
 SoMaterial::~SoMaterial()
 {
+  delete THIS;
 }
 
 // Doc from superclass.
@@ -201,20 +208,8 @@ SoMaterial::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoMaterial, SO_FROM_INVENTOR_1|SoNode::VRML1);
 
-  SO_ENABLE(SoGLRenderAction, SoGLAmbientColorElement);
-  SO_ENABLE(SoGLRenderAction, SoGLDiffuseColorElement);
-  SO_ENABLE(SoGLRenderAction, SoGLEmissiveColorElement);
-  SO_ENABLE(SoGLRenderAction, SoGLSpecularColorElement);
-  SO_ENABLE(SoGLRenderAction, SoGLShininessElement);
-  SO_ENABLE(SoGLRenderAction, SoTransparencyElement);
-  SO_ENABLE(SoGLRenderAction, SoGLPolygonStippleElement);
-
-  SO_ENABLE(SoPickAction, SoAmbientColorElement);
-  SO_ENABLE(SoPickAction, SoDiffuseColorElement);
-  SO_ENABLE(SoPickAction, SoEmissiveColorElement);
-  SO_ENABLE(SoPickAction, SoSpecularColorElement);
-  SO_ENABLE(SoPickAction, SoShininessElement);
-  SO_ENABLE(SoPickAction, SoTransparencyElement);
+  SO_ENABLE(SoGLRenderAction, SoGLLazyElement);
+  SO_ENABLE(SoCallbackAction, SoLazyElement);
 
   SO_ENABLE(SoCallbackAction, SoAmbientColorElement);
   SO_ENABLE(SoCallbackAction, SoDiffuseColorElement);
@@ -222,61 +217,20 @@ SoMaterial::initClass(void)
   SO_ENABLE(SoCallbackAction, SoSpecularColorElement);
   SO_ENABLE(SoCallbackAction, SoShininessElement);
   SO_ENABLE(SoCallbackAction, SoTransparencyElement);
+
+  SO_ENABLE(SoGLRenderAction, SoAmbientColorElement);
+  SO_ENABLE(SoGLRenderAction, SoDiffuseColorElement);
+  SO_ENABLE(SoGLRenderAction, SoEmissiveColorElement);
+  SO_ENABLE(SoGLRenderAction, SoSpecularColorElement);
+  SO_ENABLE(SoGLRenderAction, SoShininessElement);
+  SO_ENABLE(SoGLRenderAction, SoTransparencyElement);
 }
 
 // Doc from superclass.
 void
 SoMaterial::GLRender(SoGLRenderAction * action)
 {
-  SoState * state = action->getState();
-  if (SoShapeStyleElement::isScreenDoor(state) &&
-      ! this->transparency.isIgnored() &&
-      ! SoOverrideElement::getTransparencyOverride(state)) {
-    float t = this->transparency[0];
-    SoGLPolygonStippleElement::setTransparency(state, t);
-    SoGLPolygonStippleElement::set(state, t >= 1.0f/255.0f);
-  }
-
-  // vrml1 has a special feature when only emissiveColor contains
-  // values. The emissiveColor values should then be treated as
-  // precalculated lighting. We emulate this by disabling lighting,
-  // and setting the diffuseColor element to the emissiveColor values.
-  // This is much faster than using the emissive color element.
-  //                                             pederb, 2000-02-19
-  if (this->getMaterialType() == TYPE_VRML1_ONLYEMISSIVE) {
-    uint32_t flags = SoOverrideElement::getFlags(state);
-#define TEST_OVERRIDE(bit) ((SoOverrideElement::bit & flags) != 0)
-    // disable lighting
-    if (!TEST_OVERRIDE(LIGHT_MODEL)) { 
-      SoLightModelElement::set(state, this, SoLightModelElement::BASE_COLOR);
-      if (this->isOverride()) {
-        SoOverrideElement::setLightModelOverride(state, this, TRUE);
-      }
-    }
-    // the transparency element should be treated normally
-    if (!this->transparency.isIgnored() && !TEST_OVERRIDE(TRANSPARENCY)) {
-      SoTransparencyElement::set(action->getState(),
-                                 this,
-                                 this->transparency.getNum(),
-                                 this->transparency.getValues(0));
-      if (this->isOverride()) {
-        SoOverrideElement::setTransparencyOverride(state, this, TRUE);
-      }
-    }
-    if (!TEST_OVERRIDE(DIFFUSE_COLOR)) {
-      // set diffuse element to the emissive values for fast rendering.
-      SoDiffuseColorElement::set(state, this, this->emissiveColor.getNum(),
-                                 this->emissiveColor.getValues(0));
-      if (this->isOverride()) {
-        SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
-      }
-    }
-#undef TEST_OVERRIDE
-  }
-  else {
-    // set material elements the normal way
-    SoMaterial::doAction(action);
-  }
+  SoMaterial::doAction(action);
 }
 
 // Doc from superclass.
@@ -285,15 +239,13 @@ SoMaterial::doAction(SoAction * action)
 {
   SoState * state = action->getState();
 
+  uint32_t bitmask = 0;
   uint32_t flags = SoOverrideElement::getFlags(state);
 #define TEST_OVERRIDE(bit) ((SoOverrideElement::bit & flags) != 0)
 
   if (!this->ambientColor.isIgnored() && this->ambientColor.getNum() &&
       !TEST_OVERRIDE(AMBIENT_COLOR)) {
-    SoAmbientColorElement::set(state,
-                               this,
-                               this->ambientColor.getNum(),
-                               this->ambientColor.getValues(0));
+    bitmask |= SoLazyElement::AMBIENT_MASK;
     if (this->isOverride()) {
       SoOverrideElement::setAmbientColorOverride(state, this, TRUE);
     }
@@ -304,41 +256,28 @@ SoMaterial::doAction(SoAction * action)
     // transparency are equal (done like that to match SGI/TGS
     // Inventor behavior), so overriding one will also override the
     // other.
-    SoDiffuseColorElement::set(action->getState(),
-                               this,
-                               this->diffuseColor.getNum(),
-                               this->diffuseColor.getValues(0));
+    bitmask |= SoLazyElement::DIFFUSE_MASK;
     if (this->isOverride()) {
       SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
     }
   }
   if (!this->emissiveColor.isIgnored() && this->emissiveColor.getNum() &&
       !TEST_OVERRIDE(EMISSIVE_COLOR)) {
-    SoEmissiveColorElement::set(action->getState(),
-                                this,
-                                this->emissiveColor.getNum(),
-                                this->emissiveColor.getValues(0));
+    bitmask |= SoLazyElement::EMISSIVE_MASK;
     if (this->isOverride()) {
       SoOverrideElement::setEmissiveColorOverride(state, this, TRUE);
     }
-
   }
   if (!this->specularColor.isIgnored() && this->specularColor.getNum() &&
       !TEST_OVERRIDE(SPECULAR_COLOR)) {
-    SoSpecularColorElement::set(action->getState(),
-                                this,
-                                this->specularColor.getNum(),
-                                this->specularColor.getValues(0));
+    bitmask |= SoLazyElement::SPECULAR_MASK;
     if (this->isOverride()) {
       SoOverrideElement::setSpecularColorOverride(state, this, TRUE);
     }
   }
   if (!this->shininess.isIgnored() && this->shininess.getNum() &&
       !TEST_OVERRIDE(SHININESS)) {
-    SoShininessElement::set(action->getState(),
-                            this,
-                            this->shininess.getNum(),
-                            this->shininess.getValues(0));
+    bitmask |= SoLazyElement::SHININESS_MASK;
     if (this->isOverride()) {
       SoOverrideElement::setShininessOverride(state, this, TRUE);
     }
@@ -349,130 +288,71 @@ SoMaterial::doAction(SoAction * action)
     // transparency are equal (done like that to match SGI/TGS
     // Inventor behavior), so overriding one will also override the
     // other.
-    SoTransparencyElement::set(action->getState(),
-                               this,
-                               this->transparency.getNum(),
-                               this->transparency.getValues(0));
+    bitmask |= SoLazyElement::TRANSPARENCY_MASK;
     if (this->isOverride()) {
       SoOverrideElement::setTransparencyOverride(state, this, TRUE);
     }
   }
 #undef TEST_OVERRIDE
+
+  if (bitmask) {
+    SbColor dummycolor(0.8f, 0.8f, 0.0f);
+    float dummyval = 0.2f;
+    SoLazyElement::setMaterials(state, this, bitmask, 
+                                &THIS->colorpacker,
+                                this->diffuseColor.getValues(0), this->diffuseColor.getNum(), 
+                                this->transparency.getValues(0), this->transparency.getNum(),
+                                bitmask & SoLazyElement::AMBIENT_MASK ? 
+                                this->ambientColor[0] : dummycolor,
+                                bitmask & SoLazyElement::EMISSIVE_MASK ?
+                                this->emissiveColor[0] : dummycolor,
+                                bitmask & SoLazyElement::SPECULAR_MASK ?
+                                this->specularColor[0] : dummycolor,
+                                bitmask & SoLazyElement::SHININESS_MASK ?
+                                this->shininess[0] : dummyval);
+  }
 }
 
 // Doc from superclass.
 void
 SoMaterial::callback(SoCallbackAction * action)
 {
-  // If file is a vrml1 file, and only the emissiveColor field
-  // contains values, set ambient, diffuse and specular to (0,0,0) to
-  // enable users to detect this special case. If somebody use their
-  // own rendering code, based on SoCallbackAction, the geometry will
-  // be rendered correctly, since only the emissiveColor will
-  // contribute to the final calculated color. The GLRender() method
-  // has a special (faster) way of dealing with this special case.
-  //
-  if (this->getMaterialType() == TYPE_VRML1_ONLYEMISSIVE) {
-    SoState * state = action->getState();
-    if (one_black_color == NULL) {
-      one_black_color = new SbColor(0.0f, 0.0f, 0.0f);
-      coin_atexit((coin_atexit_f *)material_cleanup);
-    }
-    static float one_shininess[1] = {0.0f};
-
-    uint32_t flags = SoOverrideElement::getFlags(state);
-#define TEST_OVERRIDE(bit) ((SoOverrideElement::bit & flags) != 0)
-    
-    if (!TEST_OVERRIDE(AMBIENT_COLOR)) {
-      SoAmbientColorElement::set(state,
-                                 this,
-                                 1, one_black_color);
-      if (this->isOverride()) {
-        SoOverrideElement::setAmbientColorOverride(state, this, TRUE);
-      }
-    }
-    if (!TEST_OVERRIDE(DIFFUSE_COLOR)) {
-      SoDiffuseColorElement::set(action->getState(),
-                                 this,
-                                 1, one_black_color);
-    if (this->isOverride()) {
-      SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
-    }
-    }
-    if (!TEST_OVERRIDE(EMISSIVE_COLOR)) {
-      SoEmissiveColorElement::set(action->getState(),
-                                  this,
-                                  this->emissiveColor.getNum(),
-                                  this->emissiveColor.getValues(0));
-      if (this->isOverride()) {
-        SoOverrideElement::setEmissiveColorOverride(state, this, TRUE);
-      } 
-    }
-    if (!TEST_OVERRIDE(SPECULAR_COLOR)) {
-      SoSpecularColorElement::set(action->getState(),
-                                  this,
-                                  1, one_black_color);
-      if (this->isOverride()) {
-        SoOverrideElement::setSpecularColorOverride(state, this, TRUE);
-      }
-    }
-    if (!TEST_OVERRIDE(SHININESS)) {
-      SoShininessElement::set(action->getState(),
-                              this,
-                              1, one_shininess);
-      if (this->isOverride()) {
-        SoOverrideElement::setShininessOverride(state, this, TRUE);
-      }
-    }
-    if (!this->transparency.isIgnored() && this->transparency.getNum() &&
-        !TEST_OVERRIDE(TRANSPARENCY)) {
-      SoTransparencyElement::set(action->getState(),
-                                 this,
-                                 this->transparency.getNum(),
-                                 this->transparency.getValues(0));
-      if (this->isOverride()) {
-        SoOverrideElement::setTransparencyOverride(state, this, TRUE);
-      }
-    }
-#undef TEST_OVERRIDE
-  }
-  else {
-    // set material elements the normal way
-    SoMaterial::doAction(action);
-  }
+  SoMaterial::doAction(action);
 }
 
 void
 SoMaterial::notify(SoNotList *list)
 {
   SoField * f = list->getLastField();
-  if (f) this->materialtype = TYPE_UNKNOWN;
+  if (f) THIS->materialtype = TYPE_UNKNOWN;
   inherited::notify(list);
 }
 
 //
-// used to test for special vrml1 case
+// to test for special vrml1 case. It's not used right now,
+// but it might be enabled again later. pederb, 2002-09-11
 //
 int 
 SoMaterial::getMaterialType(void)
 {
   if (this->getNodeType() != SoNode::VRML1) return TYPE_NORMAL;
   else {
-    if (this->materialtype == TYPE_UNKNOWN) {
+    if (THIS->materialtype == TYPE_UNKNOWN) {
       if (!this->diffuseColor.isIgnored() && this->diffuseColor.getNum() == 0 &&
           !this->ambientColor.isIgnored() && this->ambientColor.getNum() == 0 &&
           !this->specularColor.isIgnored() && this->specularColor.getNum() == 0 &&
           !this->emissiveColor.isIgnored() && this->emissiveColor.getNum()) {
-        this->materialtype = TYPE_VRML1_ONLYEMISSIVE;
+        THIS->materialtype = TYPE_VRML1_ONLYEMISSIVE;
       }
       else {
-        this->materialtype = TYPE_NORMAL;
+        THIS->materialtype = TYPE_NORMAL;
       }
     }
-    return this->materialtype;
+    return THIS->materialtype;
   }
 }
 
+#undef THIS
 #undef TYPE_UNKNOWN
 #undef TYPE_NORMAL
 #undef TYPE_ONLYEMISSIVE

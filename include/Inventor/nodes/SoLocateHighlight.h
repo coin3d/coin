@@ -30,6 +30,7 @@
 #include <Inventor/fields/SoSFEnum.h>
 
 class SoFullPath;
+class SoLocateHighlightP;
 
 class COIN_DLL_API SoLocateHighlight : public SoSeparator {
   typedef SoSeparator inherited;
@@ -66,7 +67,8 @@ private:
   static void turnoffcurrent(SoAction * action);
   void setOverride(SoGLRenderAction * action);
   static SoFullPath * currenthighlight;
-  SbBool highlighted;
+
+  SoLocateHighlightP * pimpl;
 };
 
 #endif // !COIN_SOLOCATEHIGHLIGHT_H

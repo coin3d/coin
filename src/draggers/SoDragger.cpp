@@ -183,7 +183,7 @@
 #include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
-#include <Inventor/elements/SoLightModelElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoNormalElement.h>
 #include <Inventor/elements/SoLineWidthElement.h>
 #include <Inventor/elements/SoLinePatternElement.h>
@@ -402,9 +402,9 @@ SoDragger::updateElements(SoState * state)
     // make default
     SoMaterialBindingElement::set(state, SoMaterialBindingElement::DEFAULT);
   }
-  if (state->isElementEnabled(SoLightModelElement::getClassStackIndex())) {
+  if (state->isElementEnabled(SoLazyElement::getClassStackIndex())) {
     // we need phong shading for our geometry
-    SoLightModelElement::set(state, this, SoLightModelElement::PHONG);
+    SoLazyElement::setLightModel(state, SoLazyElement::PHONG);
   }
 
   if (state->isElementEnabled(SoNormalElement::getClassStackIndex())) {

@@ -131,13 +131,10 @@
 #include <Inventor/actions/SoSubActionP.h>
 
 #include <Inventor/SoPath.h>
-#include <Inventor/elements/SoAmbientColorElement.h>
 #include <Inventor/elements/SoComplexityElement.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoCreaseAngleElement.h>
 #include <Inventor/elements/SoDecimationPercentageElement.h>
-#include <Inventor/elements/SoDiffuseColorElement.h>
-#include <Inventor/elements/SoEmissiveColorElement.h>
 #include <Inventor/elements/SoFocalDistanceElement.h>
 #include <Inventor/elements/SoFontNameElement.h>
 #include <Inventor/elements/SoFontSizeElement.h>
@@ -156,13 +153,10 @@
 #include <Inventor/elements/SoProfileElement.h>
 #include <Inventor/elements/SoProjectionMatrixElement.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
-#include <Inventor/elements/SoShininessElement.h>
-#include <Inventor/elements/SoSpecularColorElement.h>
 #include <Inventor/elements/SoSwitchElement.h>
 #include <Inventor/elements/SoTextureCoordinateElement.h>
 #include <Inventor/elements/SoTextureMatrixElement.h>
 #include <Inventor/elements/SoTextureOverrideElement.h>
-#include <Inventor/elements/SoTransparencyElement.h>
 #include <Inventor/elements/SoUnitsElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
@@ -670,7 +664,7 @@ SoCallbackAction::getFontSize(void) const
 SoLightModel::Model
 SoCallbackAction::getLightModel(void) const
 {
-  return (SoLightModel::Model) SoLightModelElement::get(this->state);
+  return (SoLightModel::Model) SoLazyElement::getLightModel(this->state);
 }
 
 /*!
@@ -692,12 +686,12 @@ SoCallbackAction::getMaterial(SbColor & ambient, SbColor & diffuse,
                               float & shininess, float & transparency,
                               const int index) const
 {
-  ambient = SoAmbientColorElement::getInstance(this->state)->get(index);
-  diffuse = SoDiffuseColorElement::getInstance(this->state)->get(index);
-  emission = SoEmissiveColorElement::getInstance(this->state)->get(index);
-  specular = SoSpecularColorElement::getInstance(this->state)->get(index);
-  shininess = SoShininessElement::getInstance(this->state)->get(index);
-  transparency = SoTransparencyElement::getInstance(this->state)->get(index);
+  ambient = SoLazyElement::getAmbient(this->state);
+  diffuse = SoLazyElement::getDiffuse(this->state, index);
+  emission = SoLazyElement::getEmissive(this->state);
+  specular = SoLazyElement::getSpecular(this->state);
+  shininess = SoLazyElement::getShininess(this->state);
+  transparency = SoLazyElement::getTransparency(this->state, index);
 }
 
 /*!

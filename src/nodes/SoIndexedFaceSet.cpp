@@ -66,7 +66,6 @@
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
-#include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/elements/SoTextureCoordinateBindingElement.h>
@@ -283,9 +282,9 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
   SbBool doTextures;
   SbBool normalCacheUsed;
 
-  SbBool sendNormals =
-    (SoLightModelElement::get(state) !=
-     SoLightModelElement::BASE_COLOR);
+  SoMaterialBundle mb(action);
+
+  SbBool sendNormals = !mb.isColorOnly();
 
   this->getVertexData(state, coords, normals, cindices,
                       nindices, tindices, mindices, numindices,
@@ -341,8 +340,6 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
     if (tbind != NONE) tbind = PER_VERTEX_INDEXED;
     convexcacheused = TRUE;
   }
-
-  SoMaterialBundle mb(action);
 
   mb.sendFirst(); // make sure we have the correct material
 

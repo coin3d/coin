@@ -5,7 +5,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -27,6 +27,8 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoMFColor.h>
 
+class SoBaseColorP;
+
 class COIN_DLL_API SoBaseColor : public SoNode {
   typedef SoNode inherited;
 
@@ -41,10 +43,12 @@ public:
   virtual void doAction(SoAction * action);
   virtual void GLRender(SoGLRenderAction * action);
   virtual void callback(SoCallbackAction * action);
-  virtual void pick(SoPickAction * action);
 
 protected:
   virtual ~SoBaseColor();
+
+private:
+  SoBaseColorP * pimpl;
 };
 
 #endif // !COIN_SOBASECOLOR_H

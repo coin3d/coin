@@ -263,13 +263,13 @@
 
 #include <Inventor/elements/SoElements.h>
 #include <Inventor/elements/SoCullElement.h> // internal element
+#include <Inventor/elements/SoGLLazyElement.h> // internal element
 #include <Inventor/elements/SoTextureScalePolicyElement.h> // future element
 #include <Inventor/misc/SoState.h>
 #include <Inventor/lists/SoTypeList.h>
 #include <../tidbits.h>
 #include <stdlib.h>
 #include <assert.h>
-
 
 /*!
   \fn SoElement * SoElement::getElement(SoState * const state, const int stackIndex)
@@ -415,22 +415,16 @@ SoElement::initElements(void)
 
   SoTransparencyElement::initClass();
   SoAmbientColorElement::initClass();
-  SoGLAmbientColorElement::initClass();
   SoDiffuseColorElement::initClass();
-  SoGLDiffuseColorElement::initClass();
   SoEmissiveColorElement::initClass();
-  SoGLEmissiveColorElement::initClass();
   SoLightModelElement::initClass();
-  SoGLLightModelElement::initClass();
   SoShininessElement::initClass();
-  SoGLShininessElement::initClass();
   SoSpecularColorElement::initClass();
-  SoGLSpecularColorElement::initClass();
-  SoGLPolygonStippleElement::initClass();
 
   SoGLShadeModelElement::initClass();
   SoGLNormalizeElement::initClass();
   SoLazyElement::initClass();
+  SoGLLazyElement::initClass();
   SoCullElement::initClass();
   SoGLCacheContextElement::initClass();
 

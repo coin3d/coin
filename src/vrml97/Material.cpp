@@ -109,17 +109,25 @@
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoPickAction.h>
-#include <Inventor/elements/SoGLAmbientColorElement.h>
-#include <Inventor/elements/SoGLDiffuseColorElement.h>
-#include <Inventor/elements/SoGLEmissiveColorElement.h>
-#include <Inventor/elements/SoGLPolygonStippleElement.h>
-#include <Inventor/elements/SoGLShininessElement.h>
-#include <Inventor/elements/SoGLSpecularColorElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
-#include <Inventor/elements/SoTransparencyElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
-#include <Inventor/elements/SoLightModelElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
+
 #include <stdlib.h>
+
+#ifndef DOXYGEN_SKIP_THIS
+
+class SoVRMLMaterialP {
+public:
+  SbColor tmpambient;
+  float tmptransparency;
+  SoColorPacker colorpacker;
+};
+
+#endif // DOXYGEN_SKIP_THIS
+
+#undef THIS
+#define THIS this->pimpl
 
 SO_NODE_SOURCE(SoVRMLMaterial);
 
@@ -135,6 +143,8 @@ SoVRMLMaterial::initClass(void)
 */
 SoVRMLMaterial::SoVRMLMaterial(void)
 {
+  THIS = new SoVRMLMaterialP;
+
   SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLMaterial);
 
   SO_VRMLNODE_ADD_EXPOSED_FIELD(diffuseColor, (0.8f, 0.8f, 0.8f));
@@ -150,6 +160,7 @@ SoVRMLMaterial::SoVRMLMaterial(void)
 */
 SoVRMLMaterial::~SoVRMLMaterial()
 {
+  delete THIS;
 }
 
 // Doc in parent
@@ -158,19 +169,16 @@ SoVRMLMaterial::doAction(SoAction * action)
 {
   SoState * state = action->getState();
 
+  uint32_t bitmask = 0;
   uint32_t flags = SoOverrideElement::getFlags(state);
 #define TEST_OVERRIDE(bit) ((SoOverrideElement::bit & flags) != 0)
 
   if (!this->diffuseColor.isIgnored() &&
       !TEST_OVERRIDE(AMBIENT_COLOR)) {
-    this->tmpambient = this->diffuseColor.getValue();
+    THIS->tmpambient = this->diffuseColor.getValue();
     if (!this->ambientIntensity.isIgnored())
-      this->tmpambient *= this->ambientIntensity.getValue();
-
-    SoAmbientColorElement::set(state,
-                               this,
-                               1,
-                               &this->tmpambient);
+      THIS->tmpambient *= this->ambientIntensity.getValue();
+    bitmask |= SoLazyElement::AMBIENT_MASK;
     if (this->isOverride()) {
       SoOverrideElement::setAmbientColorOverride(state, this, TRUE);
     }
@@ -181,20 +189,15 @@ SoVRMLMaterial::doAction(SoAction * action)
     // transparency are equal (done like that to match SGI/TGS
     // Inventor behavior), so overriding one will also override the
     // other.
-    SoDiffuseColorElement::set(action->getState(),
-                               this,
-                               1,
-                               &this->diffuseColor.getValue());
+    bitmask |= SoLazyElement::DIFFUSE_MASK;
     if (this->isOverride()) {
       SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
     }
   }
   if (!this->emissiveColor.isIgnored() &&
       !TEST_OVERRIDE(EMISSIVE_COLOR)) {
-    SoEmissiveColorElement::set(action->getState(),
-                                this,
-                                1,
-                                &this->emissiveColor.getValue());
+
+    bitmask |= SoLazyElement::EMISSIVE_MASK;
     if (this->isOverride()) {
       SoOverrideElement::setEmissiveColorOverride(state, this, TRUE);
     }
@@ -202,55 +205,49 @@ SoVRMLMaterial::doAction(SoAction * action)
   }
   if (!this->specularColor.isIgnored() &&
       !TEST_OVERRIDE(SPECULAR_COLOR)) {
-    SoSpecularColorElement::set(action->getState(),
-                                this,
-                                1,
-                                &this->specularColor.getValue());
+    bitmask |= SoLazyElement::SPECULAR_MASK;
     if (this->isOverride()) {
       SoOverrideElement::setSpecularColorOverride(state, this, TRUE);
     }
   }
   if (!this->shininess.isIgnored() &&
       !TEST_OVERRIDE(SHININESS)) {
-    this->tmpshininess = this->shininess.getValue();
-    SoShininessElement::set(action->getState(),
-                            this,
-                            1,
-                            &this->tmpshininess);
+    bitmask |= SoLazyElement::SHININESS_MASK;
     if (this->isOverride()) {
       SoOverrideElement::setShininessOverride(state, this, TRUE);
     }
   }
   if (!this->transparency.isIgnored() &&
       !TEST_OVERRIDE(TRANSPARENCY)) {
-    this->tmptransparency = this->transparency.getValue();
+    THIS->tmptransparency = this->transparency.getValue();
+    bitmask |= SoLazyElement::TRANSPARENCY_MASK;
     // Note: the override flag bit values for diffuseColor and
     // transparency are equal (done like that to match SGI/TGS
     // Inventor behavior), so overriding one will also override the
     // other.
-    SoTransparencyElement::set(action->getState(),
-                               this,
-                               1,
-                               &this->tmptransparency);
     if (this->isOverride()) {
       SoOverrideElement::setTransparencyOverride(state, this, TRUE);
     }
   }
 #undef TEST_OVERRIDE
+
+  if (bitmask) {
+    SoLazyElement::setMaterials(state, this, bitmask,
+                                &THIS->colorpacker,
+                                &this->diffuseColor.getValue(), 1,
+                                &THIS->tmptransparency, 1,
+                                THIS->tmpambient,
+                                this->emissiveColor.getValue(),
+                                this->specularColor.getValue(),
+                                this->shininess.getValue());
+    
+  }
 }
 
 // Doc in parent
 void
 SoVRMLMaterial::GLRender(SoGLRenderAction * action)
 {
-  SoState * state = action->getState();
-  if (SoShapeStyleElement::isScreenDoor(state) &&
-      ! this->transparency.isIgnored() &&
-      ! SoOverrideElement::getTransparencyOverride(state)) {
-    float t = this->transparency.getValue();
-    SoGLPolygonStippleElement::setTransparency(state, t);
-    SoGLPolygonStippleElement::set(state, t >= 1.0f/255.0f);
-  }
   SoVRMLMaterial::doAction(action);
 }
 
@@ -260,3 +257,5 @@ SoVRMLMaterial::callback(SoCallbackAction * action)
 {
   SoVRMLMaterial::doAction(action);
 }
+
+#undef THIS

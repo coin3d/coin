@@ -57,8 +57,6 @@
 #include <Inventor/elements/SoDrawStyleElement.h>
 #include <Inventor/elements/SoGLLineWidthElement.h>
 #include <Inventor/elements/SoGLShapeHintsElement.h>
-#include <Inventor/elements/SoGLPolygonStippleElement.h>
-#include <Inventor/elements/SoGLDiffuseColorElement.h>
 #include <Inventor/elements/SoCullElement.h>
 #include <Inventor/elements/SoGLRenderPassElement.h>
 #include <Inventor/misc/SoState.h>
@@ -802,10 +800,6 @@ SoCamera::drawCroppedFrame(SoGLRenderAction *action,
     SoDrawStyleElement::set(state, this, SoDrawStyleElement::FILLED);
     // turn off backface culling
     SoGLShapeHintsElement::forceSend(state, TRUE, FALSE);
-    SoGLPolygonStippleElement::set(state, FALSE);
-    const SoGLPolygonStippleElement * ps = (SoGLPolygonStippleElement *)
-      state->getConstElement(SoGLPolygonStippleElement::getClassStackIndex());
-    ps->lazyEvaluate(); // lazy element, force evaluate
   }
 
   SbVec2s oldorigin = oldvp.getViewportOriginPixels();
@@ -819,7 +813,8 @@ SoCamera::drawCroppedFrame(SoGLRenderAction *action,
   glPushAttrib(GL_LIGHTING_BIT|
                GL_FOG_BIT|
                GL_DEPTH_BUFFER_BIT|
-               GL_TEXTURE_BIT);
+               GL_TEXTURE_BIT|
+               GL_CURRENT_BIT);
 
   glMatrixMode(GL_MODELVIEW);
   glPushMatrix();
@@ -830,9 +825,7 @@ SoCamera::drawCroppedFrame(SoGLRenderAction *action,
   glDisable(GL_FOG);
   glDisable(GL_DEPTH_TEST);
   
-  SoGLDiffuseColorElement * elem = (SoGLDiffuseColorElement*)
-    SoDiffuseColorElement::getInstance(state);
-  elem->sendOnePacked(SbColor4f(0.8f, 0.8f, 0.8f, 1.0f).getPackedValue());
+  glColor3f(0.8f, 0.8f, 0.8f);
 
   SbVec2s origin = newvp.getViewportOriginPixels();
   SbVec2s size = newvp.getViewportSizePixels();

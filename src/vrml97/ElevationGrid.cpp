@@ -256,9 +256,9 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
-#include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoGLShadeModelElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/VRMLnodes/SoVRMLColor.h>
 #include <Inventor/VRMLnodes/SoVRMLNormal.h>
@@ -382,12 +382,12 @@ SoVRMLElevationGrid::GLRender(SoGLRenderAction * action)
   if (!this->shouldGLRender(action)) return;
 
   SoState * state = action->getState();
+  SoMaterialBundle mb(action);
 
   this->setupShapeHints(state, this->ccw.getValue(), this->solid.getValue());
 
   SbBool dotex = SoGLTextureEnabledElement::get(state);
-  SbBool donorm = SoLightModelElement::get(state) !=
-    SoLightModelElement::BASE_COLOR;
+  SbBool donorm = !mb.isColorOnly();
 
   Binding nbind = this->findNormalBinding();
   Binding mbind = this->findMaterialBinding();
@@ -400,7 +400,6 @@ SoVRMLElevationGrid::GLRender(SoGLRenderAction * action)
 
   if (tnode) tcoords = tnode->point.getValues(0);
 
-  SoMaterialBundle mb(action);
   mb.sendFirst();
 
   SbBool normalcache = FALSE;
@@ -670,8 +669,8 @@ SoVRMLElevationGrid::generatePrimitives(SoAction * action)
 
   SoState * state = action->getState();
 
-  SbBool donorm = SoLightModelElement::get(state) !=
-    SoLightModelElement::BASE_COLOR;
+  SbBool donorm = SoLazyElement::getLightModel(state) !=
+    SoLazyElement::BASE_COLOR;
 
   Binding nbind = this->findNormalBinding();
   Binding mbind = this->findMaterialBinding();

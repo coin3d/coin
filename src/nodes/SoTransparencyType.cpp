@@ -46,7 +46,7 @@
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
-#include <Inventor/elements/SoGLPolygonStippleElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 
 /*!
   \enum SoTransparencyType::Type
@@ -109,9 +109,6 @@ void
 SoTransparencyType::GLRender(SoGLRenderAction * action)
 {
   SoTransparencyType::doAction(action);
-  if (this->value.getValue() != (int) SoGLRenderAction::SCREEN_DOOR) {
-    SoGLPolygonStippleElement::set(action->getState(), FALSE);
-  }
 }
 
 // Doc from superclass.
@@ -122,6 +119,8 @@ SoTransparencyType::doAction(SoAction * action)
       && !SoOverrideElement::getTransparencyTypeOverride(action->getState())) {
     SoShapeStyleElement::setTransparencyType(action->getState(),
                                              this->value.getValue());
+    SoLazyElement::setTransparencyType(action->getState(),
+                                       this->value.getValue());
     if (this->isOverride()) {
       SoOverrideElement::setTransparencyTypeOverride(action->getState(), this, TRUE);
     }

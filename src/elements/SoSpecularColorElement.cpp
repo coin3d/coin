@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -30,32 +30,12 @@
 */
 
 #include <Inventor/elements/SoSpecularColorElement.h>
+#include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbColor.h>
-#include <../tidbits.h> // coin_atexit()
 #include <assert.h>
 #include <stdlib.h>
 
-// Dynamically allocated to avoid problems on systems which doesn't
-// handle static constructors.
-static SbColor * defaultspecularcolor = NULL;
-
-static void
-SoSpecularColorElement_cleanup_func(void)
-{
-  delete defaultspecularcolor;
-}
-
-/*!
-  \fn SoSpecularColorElement::numColors
-
-  FIXME: write doc.
-*/
-
-/*!
-  \fn SoSpecularColorElement::colors
-
-  FIXME: write doc.
-*/
 
 SO_ELEMENT_SOURCE(SoSpecularColorElement);
 
@@ -68,9 +48,6 @@ void
 SoSpecularColorElement::initClass()
 {
   SO_ELEMENT_INIT_CLASS(SoSpecularColorElement, inherited);
-  defaultspecularcolor = new SbColor;
-  defaultspecularcolor->setValue(0.0f, 0.0f, 0.0f);
-  coin_atexit((coin_atexit_f *)SoSpecularColorElement_cleanup_func);
 }
 
 /*!
@@ -87,35 +64,24 @@ void
 SoSpecularColorElement::init(SoState * state)
 {
   inherited::init(state);
-  this->colors = defaultspecularcolor;
-  this->numColors = 1;
+  this->state = state;
 }
 
 //! FIXME: write doc.
 
 void
 SoSpecularColorElement::set(SoState * const state, SoNode * const node,
-                           const int32_t numColors,
-                           const SbColor * const colors)
+                            const int32_t numcolors,
+                            const SbColor * const colors)
 {
-  SoSpecularColorElement *elem = (SoSpecularColorElement*)
-    SoReplacedElement::getElement(state, classStackIndex, node);
-  if (elem) {
-    if (numColors > 0)
-      elem->setElt(numColors, colors);
-    else
-      elem->setElt(1, defaultspecularcolor);
+  SoLazyElement::setSpecular(state, colors);
+#if COIN_DEBUG
+  if (numcolors > 1) {
+    SoDebugError::postWarning("SoSpecularColorElement::set",
+                              "Multiple specular colors not supported. "
+                              "All color except the first will be ignored.");
   }
-}
-
-//! FIXME: write doc.
-
-void
-SoSpecularColorElement::setElt(const int32_t numColors,
-                              const SbColor * const colors)
-{
-  this->colors = colors;
-  this->numColors = numColors;
+#endif // COIN_DEBIG
 }
 
 //! FIXME: write doc.
@@ -124,7 +90,7 @@ SoSpecularColorElement::setElt(const int32_t numColors,
 int32_t
 SoSpecularColorElement::getNum() const
 {
-  return this->numColors;
+  return 1;
 }
 
 //! FIXME: write doc.
@@ -132,25 +98,24 @@ SoSpecularColorElement::getNum() const
 const SbColor &
 SoSpecularColorElement::get(const int index) const
 {
-  assert(index >= 0 && index <= this->numColors);
-  return this->colors[index];
+  assert(index == 0);
+  return SoLazyElement::getSpecular(this->state);
 }
 
 /*!
   Returns a pointer to the color array. This method is not part of the OIV API.
 */
 const SbColor *
-SoSpecularColorElement::getArrayPtr() const
+SoSpecularColorElement::getArrayPtr(void) const
 {
-  return this->colors;
+  return & SoLazyElement::getSpecular(this->state);
 }
 
 //! FIXME: write doc.
 
-//$ EXPORT INLINE
 const SoSpecularColorElement *
 SoSpecularColorElement::getInstance(SoState *state)
 {
   return (const SoSpecularColorElement *)
-    SoElement::getConstElement(state, classStackIndex);
+    state->getElementNoPush(classStackIndex);
 }

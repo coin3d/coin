@@ -149,7 +149,6 @@ RegularSources = \
 	SoCoordinateElement.cpp \
 	SoCreaseAngleElement.cpp \
 	SoCullElement.cpp \
-	SoGLColorIndexElement.cpp \
 	SoDecimationPercentageElement.cpp \
 	SoDecimationTypeElement.cpp \
 	SoDiffuseColorElement.cpp \
@@ -161,17 +160,14 @@ RegularSources = \
 	SoFocalDistanceElement.cpp \
 	SoFontNameElement.cpp \
 	SoFontSizeElement.cpp \
-	SoGLAmbientColorElement.cpp \
 	SoGLCacheContextElement.cpp \
 	SoGLClipPlaneElement.cpp \
+	SoGLColorIndexElement.cpp \
 	SoGLCoordinateElement.cpp \
-	SoGLDiffuseColorElement.cpp \
 	SoGLDrawStyleElement.cpp \
-	SoGLEmissiveColorElement.cpp \
 	SoGLEnvironmentElement.cpp \
 	SoGLLazyElement.cpp \
 	SoGLLightIdElement.cpp \
-	SoGLLightModelElement.cpp \
 	SoGLLinePatternElement.cpp \
 	SoGLLineWidthElement.cpp \
 	SoGLModelMatrixElement.cpp \
@@ -179,13 +175,10 @@ RegularSources = \
 	SoGLNormalizeElement.cpp \
 	SoGLPointSizeElement.cpp \
 	SoGLPolygonOffsetElement.cpp \
-	SoGLPolygonStippleElement.cpp \
 	SoGLProjectionMatrixElement.cpp \
 	SoGLRenderPassElement.cpp \
 	SoGLShadeModelElement.cpp \
 	SoGLShapeHintsElement.cpp \
-	SoGLShininessElement.cpp \
-	SoGLSpecularColorElement.cpp \
 	SoGLTextureCoordinateElement.cpp \
 	SoGLTextureEnabledElement.cpp \
 	SoGLTexture3EnabledElement.cpp \
@@ -255,7 +248,6 @@ PublicHeaders = \
 	../../include/Inventor/elements/SoCoordinateElement.h \
 	../../include/Inventor/elements/SoCreaseAngleElement.h \
 	../../include/Inventor/elements/SoCullElement.h \
-	../../include/Inventor/elements/SoGLColorIndexElement.h \
 	../../include/Inventor/elements/SoDecimationPercentageElement.h \
 	../../include/Inventor/elements/SoDecimationTypeElement.h \
 	../../include/Inventor/elements/SoDiffuseColorElement.h \
@@ -267,17 +259,13 @@ PublicHeaders = \
 	../../include/Inventor/elements/SoFocalDistanceElement.h \
 	../../include/Inventor/elements/SoFontNameElement.h \
 	../../include/Inventor/elements/SoFontSizeElement.h \
-	../../include/Inventor/elements/SoGLAmbientColorElement.h \
 	../../include/Inventor/elements/SoGLCacheContextElement.h \
 	../../include/Inventor/elements/SoGLClipPlaneElement.h \
+	../../include/Inventor/elements/SoGLColorIndexElement.h \
 	../../include/Inventor/elements/SoGLCoordinateElement.h \
-	../../include/Inventor/elements/SoGLDiffuseColorElement.h \
-	../../include/Inventor/elements/SoGLDrawStyleElement.h \
-	../../include/Inventor/elements/SoGLEmissiveColorElement.h \
 	../../include/Inventor/elements/SoGLEnvironmentElement.h \
 	../../include/Inventor/elements/SoGLLazyElement.h \
 	../../include/Inventor/elements/SoGLLightIdElement.h \
-	../../include/Inventor/elements/SoGLLightModelElement.h \
 	../../include/Inventor/elements/SoGLLinePatternElement.h \
 	../../include/Inventor/elements/SoGLLineWidthElement.h \
 	../../include/Inventor/elements/SoGLModelMatrixElement.h \
@@ -285,13 +273,10 @@ PublicHeaders = \
 	../../include/Inventor/elements/SoGLNormalizeElement.h \
 	../../include/Inventor/elements/SoGLPointSizeElement.h \
 	../../include/Inventor/elements/SoGLPolygonOffsetElement.h \
-	../../include/Inventor/elements/SoGLPolygonStippleElement.h \
 	../../include/Inventor/elements/SoGLProjectionMatrixElement.h \
 	../../include/Inventor/elements/SoGLRenderPassElement.h \
 	../../include/Inventor/elements/SoGLShadeModelElement.h \
 	../../include/Inventor/elements/SoGLShapeHintsElement.h \
-	../../include/Inventor/elements/SoGLShininessElement.h \
-	../../include/Inventor/elements/SoGLSpecularColorElement.h \
 	../../include/Inventor/elements/SoGLTextureCoordinateElement.h \
 	../../include/Inventor/elements/SoGLTextureEnabledElement.h \
 	../../include/Inventor/elements/SoGLTexture3EnabledElement.h \
@@ -401,7 +386,6 @@ elements_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoCoordinateElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoCreaseAngleElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoCullElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLColorIndexElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoDecimationPercentageElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoDecimationTypeElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoDiffuseColorElement.$(OBJEXT) \
@@ -413,17 +397,14 @@ elements_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoFocalDistanceElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoFontNameElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoFontSizeElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLAmbientColorElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLCacheContextElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLClipPlaneElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLColorIndexElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLCoordinateElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLDiffuseColorElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLDrawStyleElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLEmissiveColorElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLEnvironmentElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLLazyElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLLightIdElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLLightModelElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLLinePatternElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLLineWidthElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLModelMatrixElement.$(OBJEXT) \
@@ -431,13 +412,10 @@ elements_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoGLNormalizeElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLPointSizeElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLPolygonOffsetElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLPolygonStippleElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLProjectionMatrixElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLRenderPassElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLShadeModelElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLShapeHintsElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLShininessElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLSpecularColorElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLTextureCoordinateElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLTextureEnabledElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLTexture3EnabledElement.$(OBJEXT) \
@@ -507,7 +485,6 @@ libelements_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoCoordinateElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoCreaseAngleElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoCullElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLColorIndexElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoDecimationPercentageElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoDecimationTypeElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoDiffuseColorElement.lo \
@@ -518,17 +495,14 @@ libelements_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoFocalDistanceElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoFontNameElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoFontSizeElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLAmbientColorElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLCacheContextElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLClipPlaneElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLColorIndexElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLCoordinateElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLDiffuseColorElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLDrawStyleElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLEmissiveColorElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLEnvironmentElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLLazyElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLLightIdElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLLightModelElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLLinePatternElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLLineWidthElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLModelMatrixElement.lo \
@@ -536,13 +510,10 @@ libelements_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoGLNormalizeElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLPointSizeElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLPolygonOffsetElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLPolygonStippleElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLProjectionMatrixElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLRenderPassElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLShadeModelElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLShapeHintsElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLShininessElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLSpecularColorElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLTextureCoordinateElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLTextureEnabledElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLTexture3EnabledElement.lo \
@@ -610,7 +581,6 @@ libelements@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoCoordinateElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoCreaseAngleElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoCullElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLColorIndexElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoDecimationPercentageElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoDecimationTypeElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoDiffuseColorElement.lo \
@@ -621,17 +591,14 @@ libelements@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoFocalDistanceElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoFontNameElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoFontSizeElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLAmbientColorElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLCacheContextElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLClipPlaneElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLColorIndexElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLCoordinateElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLDiffuseColorElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLDrawStyleElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLEmissiveColorElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLEnvironmentElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLLazyElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLLightIdElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLLightModelElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLLinePatternElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLLineWidthElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLModelMatrixElement.lo \
@@ -639,13 +606,10 @@ libelements@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoGLNormalizeElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLPointSizeElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLPolygonOffsetElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLPolygonStippleElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLProjectionMatrixElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLRenderPassElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLShadeModelElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLShapeHintsElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLShininessElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLSpecularColorElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLTextureCoordinateElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLTextureEnabledElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLTexture3EnabledElement.lo \
@@ -749,8 +713,6 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoFontNameElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoFontSizeElement.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoFontSizeElement.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLAmbientColorElement.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLAmbientColorElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLCacheContextElement.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLCacheContextElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLClipPlaneElement.Plo \
@@ -759,22 +721,16 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoGLColorIndexElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLCoordinateElement.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLCoordinateElement.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLDiffuseColorElement.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLDiffuseColorElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLDisplayList.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLDisplayList.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLDrawStyleElement.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLDrawStyleElement.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLEmissiveColorElement.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLEmissiveColorElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLEnvironmentElement.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLEnvironmentElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLLazyElement.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLLazyElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLLightIdElement.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLLightIdElement.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLLightModelElement.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLLightModelElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLLinePatternElement.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLLinePatternElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLLineWidthElement.Plo \
@@ -789,8 +745,6 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoGLPointSizeElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLPolygonOffsetElement.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLPolygonOffsetElement.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLPolygonStippleElement.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLPolygonStippleElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLProjectionMatrixElement.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLProjectionMatrixElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLRenderPassElement.Plo \
@@ -799,10 +753,6 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoGLShadeModelElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLShapeHintsElement.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLShapeHintsElement.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLShininessElement.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLShininessElement.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLSpecularColorElement.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLSpecularColorElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLTexture3EnabledElement.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLTexture3EnabledElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLTextureCoordinateElement.Plo \
@@ -1032,8 +982,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoFontNameElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoFontSizeElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoFontSizeElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLAmbientColorElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLAmbientColorElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLCacheContextElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLCacheContextElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLClipPlaneElement.Plo@am__quote@
@@ -1042,22 +990,16 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLColorIndexElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLCoordinateElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLCoordinateElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLDiffuseColorElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLDiffuseColorElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLDisplayList.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLDisplayList.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLDrawStyleElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLDrawStyleElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLEmissiveColorElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLEmissiveColorElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLEnvironmentElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLEnvironmentElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLLazyElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLLazyElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLLightIdElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLLightIdElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLLightModelElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLLightModelElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLLinePatternElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLLinePatternElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLLineWidthElement.Plo@am__quote@
@@ -1072,8 +1014,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLPointSizeElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLPolygonOffsetElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLPolygonOffsetElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLPolygonStippleElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLPolygonStippleElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLProjectionMatrixElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLProjectionMatrixElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLRenderPassElement.Plo@am__quote@
@@ -1082,10 +1022,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLShadeModelElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLShapeHintsElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLShapeHintsElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLShininessElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLShininessElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLSpecularColorElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLSpecularColorElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLTexture3EnabledElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLTexture3EnabledElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLTextureCoordinateElement.Plo@am__quote@

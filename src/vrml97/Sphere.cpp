@@ -65,7 +65,7 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoGLNormalizeElement.h>
-#include <Inventor/elements/SoLightModelElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
@@ -117,9 +117,7 @@ SoVRMLSphere::GLRender(SoGLRenderAction * action)
 
   SbBool doTextures = SoGLTextureEnabledElement::get(state);
 
-  SbBool sendNormals =
-    (SoLightModelElement::get(state) !=
-     SoLightModelElement::BASE_COLOR);
+  SbBool sendNormals = !mb.isColorOnly();
 
   float complexity = this->getComplexityValue(action);
 

@@ -65,7 +65,6 @@
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/elements/SoCreaseAngleElement.h>
-#include <Inventor/elements/SoLightModelElement.h>
 
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/misc/SoNormalGenerator.h>
@@ -573,9 +572,8 @@ SoTriangleStripSet::GLRender(SoGLRenderAction * action)
   const SoCoordinateElement * tmp;
   const SbVec3f * normals;
   SbBool doTextures;
-  SbBool needNormals =
-    (SoLightModelElement::get(state) !=
-     SoLightModelElement::BASE_COLOR);
+  SoMaterialBundle mb(action);
+  SbBool needNormals = !mb.isColorOnly();
 
   SoVertexShape::getVertexData(action->getState(), tmp, normals,
                                needNormals);
@@ -594,7 +592,6 @@ SoTriangleStripSet::GLRender(SoGLRenderAction * action)
     normals = nc->getNormals();
   }
 
-  SoMaterialBundle mb(action);
   mb.sendFirst(); // make sure we have the correct material
 
   int32_t idx = this->startIndex.getValue();

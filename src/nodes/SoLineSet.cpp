@@ -68,7 +68,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/elements/SoDrawStyleElement.h>
-#include <Inventor/elements/SoGLLightModelElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/details/SoLineDetail.h>
 
 /*!
@@ -557,9 +557,7 @@ SoLineSet::GLRender(SoGLRenderAction * action)
 
   const SoCoordinateElement * tmp;
   const SbVec3f * normals;
-  SbBool needNormals =
-    (SoLightModelElement::get(state) !=
-     SoLightModelElement::BASE_COLOR);
+  SbBool needNormals = SoLazyElement::getLightModel(state) != SoLazyElement::BASE_COLOR;
   SoVertexShape::getVertexData(state, tmp, normals,
                                needNormals);
   if (normals == NULL && needNormals) {
@@ -568,7 +566,7 @@ SoLineSet::GLRender(SoGLRenderAction * action)
       state->push();
       didpush = TRUE;
     }
-    SoLightModelElement::set(state, SoLightModelElement::BASE_COLOR);
+    SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
   }
 
   if (!this->shouldGLRender(action)) {

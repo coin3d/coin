@@ -55,7 +55,7 @@
 #include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
-#include <Inventor/elements/SoGLLightModelElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/misc/SoGL.h>
@@ -164,9 +164,7 @@ SoPointSet::GLRender(SoGLRenderAction * action)
 
   const SoCoordinateElement * tmp;
   const SbVec3f * normals;
-  SbBool needNormals =
-    (SoLightModelElement::get(state) !=
-     SoLightModelElement::BASE_COLOR);
+  SbBool needNormals = SoLazyElement::getLightModel(state) != SoLazyElement::BASE_COLOR;
 
   SoVertexShape::getVertexData(state, tmp, normals,
                                needNormals);
@@ -177,7 +175,7 @@ SoPointSet::GLRender(SoGLRenderAction * action)
       state->push();
       didpush = TRUE;
     }
-    SoLightModelElement::set(state, SoLightModelElement::BASE_COLOR);
+    SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
   }
 
   if (!this->shouldGLRender(action)) {

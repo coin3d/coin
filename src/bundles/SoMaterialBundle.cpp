@@ -32,16 +32,7 @@
 */
 
 #include <Inventor/bundles/SoMaterialBundle.h>
-#include <Inventor/elements/SoGLAmbientColorElement.h>
-#include <Inventor/elements/SoGLDiffuseColorElement.h>
-#include <Inventor/elements/SoGLEmissiveColorElement.h>
-#include <Inventor/elements/SoGLPolygonStippleElement.h>
-#include <Inventor/elements/SoGLShininessElement.h>
-#include <Inventor/elements/SoGLSpecularColorElement.h>
-#include <Inventor/elements/SoTransparencyElement.h>
-#include <Inventor/elements/SoLightModelElement.h>
-#include <Inventor/elements/SoShapeStyleElement.h>
-#include <Inventor/elements/SoGLColorIndexElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/misc/SoState.h>
 
 #if HAVE_CONFIG_H
@@ -57,7 +48,9 @@
 SoMaterialBundle::SoMaterialBundle(SoAction *action)
   : SoBundle(action)
 {
-  this->firstTime = TRUE; // other members will be set in setUpElements
+  this->firsttime = TRUE; // other members will be set in setUpElements
+  this->coloronly = 
+    SoLazyElement::getLightModel(this->state) == SoLazyElement::BASE_COLOR;
 }
 
 /*!
@@ -73,8 +66,7 @@ SoMaterialBundle::~SoMaterialBundle()
 void
 SoMaterialBundle::setUpMultiple(void)
 {
-  // FIXME: does this represent an unimplemented feature, or is it an
-  // obsoleted method? Mark it properly.  20010903 mortene.
+  this->setupElements(FALSE);
 }
 
 /*!
@@ -85,18 +77,6 @@ void
 SoMaterialBundle::sendFirst(void)
 {
   this->setupElements(FALSE);
-  this->reallySend(0, FALSE);
-  if (this->stippleElt) this->stippleElt->lazyEvaluate();
-
-  // a small optimization to avoid unnecessary material
-  // testing (it is most common to only have multiple diffuse values)
-  if (!this->diffuseOnly) { // diffuseOnly is TRUE when lightModel == BASE_COLOR
-    if (this->ambientElt->getNum() <= 1 &&
-        this->specularElt->getNum() <= 1 &&
-        this->emissiveElt->getNum() <= 1 &&
-        this->shininessElt->getNum() <= 1)
-      this->diffuseOnly = TRUE;
-  }
 }
 
 /*!
@@ -108,11 +88,12 @@ SoMaterialBundle::sendFirst(void)
   polygon stipple between a glBegin() and glEnd()).
 */
 void
-SoMaterialBundle::send(const int index, const SbBool betweenBeginEnd)
+SoMaterialBundle::send(const int index, const SbBool betweenbeginend)
 {
-  if (this->firstTime) this->setupElements(FALSE);
-  if (index != this->currIndex) {
-    this->reallySend(index, betweenBeginEnd);
+  if (this->firsttime) this->setupElements(betweenbeginend);
+  if (index != this->currindex) {
+    this->reallySend(index);
+    this->currindex = index;
   }
 }
 
@@ -125,8 +106,9 @@ SoMaterialBundle::send(const int index, const SbBool betweenBeginEnd)
 void
 SoMaterialBundle::forceSend(const int index)
 {
-  if (this->firstTime) this->setupElements(FALSE);
-  this->reallySend(index, FALSE);
+  if (this->firsttime) this->setupElements(FALSE);
+  this->reallySend(index);
+  this->currindex = index;
 }
 
 /*!
@@ -135,94 +117,30 @@ SoMaterialBundle::forceSend(const int index)
 SbBool
 SoMaterialBundle::isColorOnly(void) const
 {
-  return this->colorOnly;
+  return this->coloronly;
 }
 
 //
 // private method. Will send needed material values to GL.
 //
 void
-SoMaterialBundle::reallySend(const int index, const SbBool isBetweenBeginEnd)
+SoMaterialBundle::reallySend(const int index)
 {
-  if (this->indexElt) {
-    this->indexElt->send(index);
-  }
-  else {
-    if (this->doStipple) {
-      // make sure alpha value is 1.0, since blending might be
-      // enabled if we are doing point and line smoothing
-      this->diffuseElt->send(index, 1.0f);
-    }
-    else if (!this->diffusePacked) {
-      float alpha = 
-        this->multiTrans ? 1.0f -  this->transparencyElt->get(index) : 
-        this->firstAlpha;
-      
-      this->diffuseElt->send(index, alpha);
-    }
-    else { // packed or stipple
-      this->diffuseElt->send(index);
-    }
-
-    if (!this->diffuseOnly) {
-      this->ambientElt->send(index);
-      this->emissiveElt->send(index);
-      this->specularElt->send(index);
-      this->shininessElt->send(index);
-    }
-  }
-  // store current index
-  this->currIndex = index;
+  this->lazyelem->sendDiffuseByIndex(index);
 }
 //
 // private method. Stores info and element pointers.
 //
 void
-SoMaterialBundle::setupElements(const SbBool /* betweenBeginEnd */)
+SoMaterialBundle::setupElements(const SbBool isbetweenbeginend)
 {
-  this->currIndex = -1; // set to an impossible value
-  this->firstTime = FALSE;
-  if (SoGLColorIndexElement::isColorIndexMode(this->state)) {
-    this->indexElt = (SoGLColorIndexElement*) SoGLColorIndexElement::getInstance(this->state);
-    // need to set these as they are read in sendFirst()
-    this->stippleElt = NULL;
-    this->diffuseOnly = TRUE;
-    return;
+  this->lazyelem = (const SoGLLazyElement*) SoLazyElement::getInstance(this->state);
+  this->currindex = 0;
+  
+  if (isbetweenbeginend || this->coloronly) {
+    this->lazyelem->send(this->state, SoLazyElement::DIFFUSE_ONLY_MASK); 
   }
-  this->indexElt = NULL;
-
-  this->diffuseOnly = this->colorOnly =
-    SoLightModelElement::get(this->state) ==
-    SoLightModelElement::BASE_COLOR;
-
-  this->diffuseElt = (SoGLDiffuseColorElement*)
-    state->getConstElement(SoGLDiffuseColorElement::getClassStackIndex());
-  this->diffusePacked = this->diffuseElt->isPacked();
-
-  if (!this->diffusePacked) {
-    this->transparencyElt = (SoTransparencyElement*)
-      state->getConstElement(SoTransparencyElement::getClassStackIndex());
-    // if there are fewer transparency values than diffuse, use only
-    // the first transparency value
-    this->multiTrans =
-      (this->transparencyElt->getNum() >= this->diffuseElt->getNum());
-    if (!this->multiTrans) {
-      this->firstAlpha = 1.0f - this->transparencyElt->get(0);
-    }
-  }
-
-  this->doStipple = SoShapeStyleElement::isScreenDoor(this->state);
-  this->stippleElt = (SoGLPolygonStippleElement*)
-    state->getConstElement(SoGLPolygonStippleElement::getClassStackIndex());
-
-  if (!this->colorOnly) {
-    this->ambientElt = (SoGLAmbientColorElement*)
-      state->getConstElement(SoGLAmbientColorElement::getClassStackIndex());
-    this->emissiveElt = (SoGLEmissiveColorElement*)
-      state->getConstElement(SoGLEmissiveColorElement::getClassStackIndex());
-    this->specularElt = (SoGLSpecularColorElement*)
-      state->getConstElement(SoGLSpecularColorElement::getClassStackIndex());
-    this->shininessElt = (SoGLShininessElement*)
-      state->getConstElement(SoGLShininessElement::getClassStackIndex());
+  else {
+    this->lazyelem->send(this->state, SoLazyElement::ALL_MASK); 
   }
 }
