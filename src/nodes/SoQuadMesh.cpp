@@ -138,6 +138,7 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/system/gl.h>
+#include <math.h> // ilogb
 
 
 /*!
