@@ -158,6 +158,7 @@ SoDB::init(void)
   SoError::initErrors();
   SoInput::init();
   SoBase::initClass();
+  SoDetail::initClass();
   // SoPath inherits SoBase, so initialize it after SoBase.
   SoPath::initClass();
   SoFieldContainer::initClass();
