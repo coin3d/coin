@@ -92,7 +92,7 @@
   cross-section out of the SCP.
 
   <center>
-  <img src="http://www.web3d.org/x3d/specifications/vrml/ISO_IEC_14772-All/Images/Extrusion.gif">
+  <img src="http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/Images/Extrusion.gif">
   Figure 6.6
   </center>
 
@@ -247,14 +247,14 @@
 
   in that order. By default, normals for the sides are generated as
   described in 4.6.3, Shapes and geometry
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO_IEC_14772-All/part1/concepts.html#4.6.3>).
+  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/part1/concepts.html#4.6.3>).
 
   For instance, a circular crossSection with counter-clockwise
   ordering and the default spine form a cylinder. With solid TRUE and
   ccw TRUE, the cylinder is visible from the outside. Changing ccw to
   FALSE makes it visible from the inside.  The ccw, solid, convex, and
   creaseAngle fields are described in 4.6.3, Shapes and geometry
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO_IEC_14772-All/part1/concepts.html#4.6.3>).
+  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/part1/concepts.html#4.6.3>).
 
 */
 

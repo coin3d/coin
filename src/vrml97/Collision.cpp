@@ -52,7 +52,7 @@
   (see SoVRMLNavigationInfo) and the scene's geometry and prevent the
   avatar from 'entering' the geometry. See 4.13.4, Collision detection
   and terrain following
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO_IEC_14772-All/part1/concepts.html#4.13.4>),
+  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/part1/concepts.html#4.13.4>),
   for general information on collision detection.
 
   If there are no Collision nodes specified in a VRML file, browsers
@@ -60,7 +60,7 @@
   navigation.
 
   Subclause 4.6.5, Grouping and children nodes
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO_IEC_14772-All/part1/concepts.html#4.6.5>),
+  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/part1/concepts.html#4.6.5>),
   contains a description of the children, addChildren, and
   removeChildren fields and eventIns.
 
@@ -90,11 +90,11 @@
   implies that the bounding box is not specified and if needed shall
   be calculated by the browser. More details on the bboxCenter and
   bboxSize fields can be found in 4.6.4, Bounding boxes.
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO_IEC_14772-All/part1/concepts.html#4.6.4>),
+  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/part1/concepts.html#4.6.4>),
 
   The collision proxy, defined in the proxy field, is any legal
   children node as described in 4.6.5, Grouping and children nodes,
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO_IEC_14772-All/part1/concepts.html#4.6.5>),
+  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/part1/concepts.html#4.6.5>),
   that is used as a substitute for the Collision node's children
   during collision detection. The proxy is used strictly for collision
   detection; it is not drawn.  If the value of the collide field is

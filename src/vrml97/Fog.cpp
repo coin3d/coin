@@ -56,7 +56,7 @@
 
   Since Fog nodes are bindable children nodes (see 4.6.10, Bindable
   children nodes
-  http://www.web3d.org/x3d/specifications/vrml/ISO_IEC_14772-All/part1/concepts.html#4.6.10),
+  http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/part1/concepts.html#4.6.10),
   a Fog node stack exists, in which the top- most Fog node on the
   stack is currently active. To push a Fog node onto the top of the
   stack, a TRUE value is sent to the set_bind eventIn. Once active,
@@ -64,7 +64,7 @@
   set_bind, pops the Fog node from the stack and unbinds it from the
   browser viewer.  More details on the Fog node stack can be found in
   4.6.10, Bindable children nodes
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO_IEC_14772-All/part1/concepts.html#4.6.10>).
+  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/part1/concepts.html#4.6.10>).
 
   The fogType field controls how much of the fog colour is blended
   with the object as a function of distance. If fogType is "LINEAR",
@@ -73,7 +73,7 @@
   exponential increase in blending is used, resulting in a more
   natural fog appearance.  The effect of fog on lighting calculations
   is described in 4.14, Lighting model
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO_IEC_14772-All/part1/concepts.html#4.6.14>).
+  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/part1/concepts.html#4.6.14>).
   
 
 */

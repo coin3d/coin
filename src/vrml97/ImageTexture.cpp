@@ -47,7 +47,7 @@
   Figure 6.9.
 
   <center>
-  <img src="http://www.web3d.org/x3d/specifications/vrml/ISO_IEC_14772-All/Images/ImageTexture.gif">
+  <img src="http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/Images/ImageTexture.gif">
   Figure 6.9
   </center>
 
@@ -62,11 +62,11 @@
   Wide Web.
 
   See 4.6.11, Texture maps
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO_IEC_14772-All/part1/concepts.html#4.6.11>),
+  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/part1/concepts.html#4.6.11>),
   for a general description of texture maps.
 
   See 4.14, Lighting model
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO_IEC_14772-All/part1/concepts.html#4.14>),
+  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/part1/concepts.html#4.14>),
   for a description of lighting equations and the interaction between
   textures, materials, and geometry appearance.
 

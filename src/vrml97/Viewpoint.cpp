@@ -45,7 +45,7 @@
   coordinate system from which the user may view the scene. Viewpoint
   nodes are bindable children nodes (see 4.6.10, Bindable children
   nodes:
-  http://www.web3d.org/x3d/specifications/vrml/ISO_IEC_14772-All/part1/concepts.html#4.6.10)
+  http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/part1/concepts.html#4.6.10)
   and thus there exists a Viewpoint node stack in the browser in which
   the top-most Viewpoint node on the stack is the currently active
   Viewpoint node.  If a TRUE value is sent to the set_bind eventIn of
@@ -61,7 +61,7 @@
   viewpoint stack, the user's view is re-parented to the next entry in
   the stack. More details on binding stacks can be found in 4.6.10,
   Bindable children nodes
-  (<http://www.web3d.org/x3d/specifications/vrml/ISO_IEC_14772-All/part1/concepts.html#4.6.10>).
+  (<http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/part1/concepts.html#4.6.10>).
   When a Viewpoint node is moved to the top
   of the stack, the existing top of stack Viewpoint node sends an
   isBound FALSE event and is pushed down the stack.
@@ -117,7 +117,7 @@
   binding stack from a Viewpoint node with jump TRUE). The following
   summarizes the bind stack rules (see 4.6.10, Bindable children
   nodes:
-  http://www.web3d.org/x3d/specifications/vrml/ISO_IEC_14772-All/part1/concepts.html#4.6.10)
+  http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/part1/concepts.html#4.6.10)
   with additional rules regarding Viewpoint nodes (displayed in
   boldface type):
 
@@ -129,7 +129,7 @@
     strings passed to the Browser.createVrmlFromString() method, or
     within files passed to the Browser.createVrmlFromURL() method (see
     4.12.10, Browser script interface:
-    http://www.web3d.org/x3d/specifications/vrml/ISO_IEC_14772-All/part1/concepts.html#4.12.10)
+    http://www.web3d.org/x3d/specifications/vrml/ISO-IEC-14772-IS-VRML97WithAmendment1/part1/concepts.html#4.12.10)
     are not candidates for the first encountered Viewpoint node. The
     first node within a prototype instance is a valid candidate for
     the first encountered Viewpoint node. The first encountered
