@@ -101,5 +101,6 @@ SoShapeKit::initClass(void)
 void
 SoShapeKit::setDefaultOnNonWritingFields(void)
 {
-  COIN_STUB();
+  this->shapeSeparator.setDefault(TRUE);
+  inherited::setDefaultOnNonWritingFields();
 }

@@ -92,5 +92,9 @@ SoSeparatorKit::initClass(void)
   SO_KIT_INTERNAL_INIT_CLASS(SoSeparatorKit);
 }
 
-
-// FIXME: lots of code missing in this class. 19991120 mortene.
+void 
+SoSeparatorKit::setDefaultOnNonWritingFields(void)
+{
+  this->topSeparator.setDefault(TRUE);
+  inherited::setDefaultOnNonWritingFields();
+}

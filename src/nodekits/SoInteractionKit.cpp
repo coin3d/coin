@@ -554,6 +554,14 @@ SoInteractionKit::setPart(const int partNum, SoNode * node)
   return inherited::setPart(partNum, node);
 }
 
+// test if ok to set default and then do it if test succeeds
+static void
+test_set_default(SoSFEnum * field, int value)
+{
+  if (!(field->isConnected() && field->isConnectionEnabled()) &&
+      field->getValue() == value) field->setDefault(TRUE);
+}
+
 /*!
   FIXME: doc
 */
@@ -563,18 +571,10 @@ SoInteractionKit::setDefaultOnNonWritingFields(void)
   this->topSeparator.setDefault(TRUE);
   this->geomSeparator.setDefault(TRUE);
 
-  if (!this->renderCaching.isConnected() &&
-      this->renderCaching.getValue() == SoInteractionKit::AUTO)
-    this->renderCaching.setDefault(TRUE);
-  if (!this->boundingBoxCaching.isConnected() &&
-      this->boundingBoxCaching.getValue() == SoInteractionKit::AUTO)
-    this->boundingBoxCaching.setDefault(TRUE);
-  if (!this->pickCulling.isConnected() &&
-      this->pickCulling.getValue() == SoInteractionKit::AUTO)
-    this->pickCulling.setDefault(TRUE);
-  if (!this->renderCulling.isConnected() &&
-      this->renderCulling.getValue() == SoInteractionKit::AUTO)
-    this->renderCulling.setDefault(TRUE);
+  test_set_default(&this->renderCaching, SoInteractionKit::AUTO);
+  test_set_default(&this->boundingBoxCaching, SoInteractionKit::AUTO);
+  test_set_default(&this->pickCulling, SoInteractionKit::AUTO);
+  test_set_default(&this->renderCulling, SoInteractionKit::AUTO);
 
   const SoNodekitCatalog * catalog = this->getNodekitCatalog();
 

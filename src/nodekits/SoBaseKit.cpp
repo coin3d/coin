@@ -42,7 +42,9 @@
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
+#include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/SoInput.h>
+#include <Inventor/SoOutput.h>
 #include <stdlib.h>
 #include <limits.h>
 #include <ctype.h>
@@ -52,6 +54,23 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#ifndef DOXYGEN_SKIP_THIS
+
+class SoBaseKitP {
+public:
+  SoBaseKitP(SoBaseKit * kit) : kit(kit) { }
+public:
+  SoBaseKit * kit;
+  SoFieldData * writedata;
+  SbList<SoSFNode*> instancelist;
+  SbBool didcount;
+
+public:
+  void createWriteData(void);
+  void testParentWrite(void);
+};
+
+#endif // DOXYGEN_SKIP_THIS
 
 SbBool SoBaseKit::searchchildren = FALSE;
 
@@ -85,12 +104,17 @@ SO_KIT_SOURCE(SoBaseKit);
   \internal
 */
 
+// macro for accessing private data
+#define THIS this->pimpl
 
 /*!
   Constructor.
 */
 SoBaseKit::SoBaseKit(void)
 {
+  THIS = new SoBaseKitP(this);
+  THIS->writedata = NULL;
+
   SO_KIT_INTERNAL_CONSTRUCTOR(SoBaseKit);
 
   // Can't use ADD_CATALOG_ENTRY macro for the toplevel "this" entry,
@@ -133,6 +157,7 @@ SoBaseKit::SoBaseKit(void)
 SoBaseKit::~SoBaseKit()
 {
   delete this->children;
+  delete THIS;
 }
 
 // Doc in superclass
@@ -301,7 +326,7 @@ SoBaseKit::set(const char * namevaluepairliststring)
       return FALSE;
     }
 
-    SoNode * node = kit->instancelist[partNum]->getValue();
+    SoNode * node = kit->pimpl->instancelist[partNum]->getValue();
     if (isList) {
       SoNodeKitListPart * list = (SoNodeKitListPart *)node;
       if (listIdx < 0 || listIdx > list->getNumChildren()) {
@@ -357,7 +382,7 @@ SoBaseKit::set(const char * partnamestring, const char * parameterstring)
   int listIdx;
   SoBaseKit * kit = this;
   if (SoBaseKit::findPart(partname, kit, partNum, isList, listIdx, TRUE, NULL, TRUE)) {
-    SoNode * node = kit->instancelist[partNum]->getValue();
+    SoNode * node = kit->pimpl->instancelist[partNum]->getValue();
     assert(node != NULL); // makeifneeded was TRUE in findPart call
     if (isList) {
       assert(node->isOfType(SoNodeKitListPart::getClassTypeId()));
@@ -497,40 +522,93 @@ SoBaseKit::search(SoSearchAction * action)
   SoBaseKit::doAction((SoAction *)action);
 }
 
+//
+// test if node has all fields set to default and if the
+// fields contains the default values. If so, we don't
+// need to write it.
+//
+static SbBool
+is_default_node(SoNode * node, const SoType & typecheck)
+{
+  if (node->getTypeId() != typecheck) return FALSE;
+
+  SoNode * definstance = NULL;
+  const SoFieldData * fielddata = node->getFieldData();
+  int i, n = fielddata->getNumFields();
+  for (i = 0; i < n; i++) {
+    SoField * field = fielddata->getField(node, i);
+    if (!field->isDefault()) break;
+    if (definstance == NULL) {
+      definstance = (SoNode*) typecheck.createInstance();
+      definstance->ref();
+    }
+    if (!field->isSame(*fielddata->getField(definstance, i))) break;
+  }
+  if (definstance) definstance->unref();
+  // if all fields were tested, it is a default node.
+  return i == n;
+}
+
 // documented in superclass
 void
 SoBaseKit::write(SoWriteAction * action)
 {
-#if 0
   SoOutput * out = action->getOutput();
   if (out->getStage() == SoOutput::COUNT_REFS) {
     this->addWriteReference(out, FALSE);
   }
   else if (out->getStage() == SoOutput::WRITE) {
-    if (this->writeHeader(out, FALSE, FALSE)) return;
+    if (this->writeHeader(out, FALSE, FALSE)) return; // no more to write
+    // if THIS->writedata != NULL, we must found that some parts or
+    // fields need to be written.
+    if (THIS->writedata) {
+      const SoNodekitCatalog * catalog = this->getNodekitCatalog();
+      
+      // loop through parts and see if we need to call setDefault(FALSE)
+      // on some of the fields.
+      int n = THIS->instancelist.getLength();
+      for (int i = 1; i < n; i++) {
+        SoSFNode * field = THIS->instancelist[i];
+        if (field->isDefault()) {
+          SoNode * node = field->getValue();
+          if (node) {
+            if (node->shouldWrite()) {
+              field->setDefault(FALSE);
+            }
+            else if (node->isOfType(SoBaseKit::getClassTypeId())) {
+              SoBaseKit * kit = (SoBaseKit*) node;
+              if (kit->forceChildDrivenWriteRefs(out)) {
+                field->setDefault(FALSE);
+              }
+            }
+          }
+        }
+      }
 
-    // XXX
+      // use THIS->writedata to get correct order of fields
+      THIS->writedata->write(out, this);
 
+      // we don't need it any more
+      delete THIS->writedata;
+      THIS->writedata = NULL;
+    }
     this->writeFooter(out);
   }
   else assert(0 && "unknown stage");
-#else
-  COIN_STUB();
-#endif
 }
 
 // documented in superclass
 void
 SoBaseKit::addWriteReference(SoOutput * out, SbBool isfromfield)
 {
-  // Handles reference counting for the nodekit instance itself (in
-  // SoBase::addWriteReference()) and for the "ordinary" fields (in
-  // SoFieldContainer::addWriteReference()).
-  inherited::addWriteReference(out, isfromfield);
+  // don't call inherited::addWriteReference(), as we will handle
+  // the fields ourselves, using a new fielddata. This is needed to
+  // write fields in the correct order.
+  SoBase::addWriteReference(out, isfromfield);
 
   // If first invocation during the reference counting pass, check
   // nodes in our catalog.
-  if (this->hasMultipleWriteRefs()==FALSE && isfromfield==FALSE) {
+  if (!isfromfield && !this->hasMultipleWriteRefs()) {
     this->countMyFields(out);
   }
 }
@@ -541,26 +619,170 @@ SoBaseKit::addWriteReference(SoOutput * out, SbBool isfromfield)
 void
 SoBaseKit::countMyFields(SoOutput * out)
 {
-  COIN_STUB();
+  if (out->getStage() != SoOutput::COUNT_REFS)
+    return;
+
+  // already created?
+  if (THIS->writedata) return;
+
+  // create THIS->writedata, which contains a sorted list of fields.
+  THIS->createWriteData();
+
+  // sets fields that should not be written to default, this
+  // is a virtual methods, so subkits can do some work when needed.
+  this->setDefaultOnNonWritingFields();
+
+  // test if parent of parts is writing. Then we must write part.
+  THIS->testParentWrite();
+
+  const SoNodekitCatalog * catalog = this->getNodekitCatalog();
+
+  int n = THIS->writedata->getNumFields();
+  for (int i = 0; i < n; i++) {
+    const SbName name = THIS->writedata->getFieldName(i);
+    SoField * field = THIS->writedata->getField(this, i);
+    int partnum = catalog->getPartNumber(name);
+    if (partnum < 0) {
+      // field is not a part. Do normal field write.
+      if (field->shouldWrite()) {
+        field->write(out, name);
+      }
+    }
+    else {
+      if (field->isDefault()) { // do a couple of tests to see if we should write anyway
+        SoNode * node = ((SoSFNode*)field)->getValue();
+        if (node == NULL && ! catalog->isNullByDefault(partnum)) 
+          field->setDefault(FALSE);
+        if (node && !is_default_node(node, catalog->getDefaultType(partnum))) 
+          field->setDefault(FALSE);
+      }      
+      if (!field->isDefault()) field->write(out, name);
+      else {
+        SoSFNode * part = (SoSFNode*) field;
+        // don't use SoSFNode::countWriteRefs() as we are trying
+        // to avoid writing this field/part.
+        part->SoField::countWriteRefs(out);
+        SoNode * node = part->getValue();
+        if (node && node->isOfType(SoBaseKit::getClassTypeId())) {
+          // recurse
+          ((SoBaseKit*)node)->countMyFields(out);
+        }
+      }
+    }
+  }
 }
 
 /*!
-  FIXME: write function documentation
+  A virtual method that should call setDefault(TRUE) on
+  part fields that should not be written.
+
+  This can be done when:
+  1) field value is NULL and part is NULL by default
+  2) leaf SoGroup or SoSeparator node with no children
+  3) leaf listpart with no children and a SoGroup or SoSeparator container
+  4) non-leaf and isOfType(SoGroup) && is_default_node (all fields default
+  and with default values).
+
+  Subkits can overload this to do additional tests.
 */
 void
 SoBaseKit::setDefaultOnNonWritingFields(void)
 {
-  COIN_STUB();
+  const SoNodekitCatalog * catalog = this->getNodekitCatalog();
+  int n = THIS->instancelist.getLength();
+  for (int i = 1; i < n; i++) {
+    SoSFNode * field = THIS->instancelist[i];
+    if (!field->isDefault()) {
+      SoNode * node = field->getValue();
+      // first test
+      if (node == NULL && catalog->isNullByDefault(i)) {
+        field->setDefault(TRUE);
+      }
+      else if (node) {
+        SbBool leaf = catalog->isLeaf(i);
+        SoType type = node->getTypeId();
+
+        if (leaf) {
+          // second test
+          if ((type == SoGroup::getClassTypeId() ||
+               type == SoSeparator::getClassTypeId()) &&
+              ((SoGroup*)node)->getNumChildren() == 0) {
+            field->setDefault(TRUE);
+          }
+          // third test
+          else if (type == SoNodeKitListPart::getClassTypeId()) {
+            SoNodeKitListPart * list = (SoNodeKitListPart*) node;
+            SoNode * container = list->getContainerNode();
+            if (list->getNumChildren() == 0 && container &&
+                (container->getTypeId() == SoSeparator::getClassTypeId() ||
+                 container->getTypeId() == SoGroup::getClassTypeId())) {
+              field->setDefault(TRUE);
+            }
+          }
+        }
+        else { // not leaf
+          // fourth test
+          if (node->isOfType(SoGroup::getClassTypeId()) &&
+              is_default_node(node, node->getTypeId())) {
+            field->setDefault(TRUE);
+          }
+        }
+      }
+    }
+  }
 }
 
 /*!
-  FIXME: write function documentation
+  Returns TRUE if kit should write. This happens if shouldWrite() returns
+  TRUE, or if any of the children (recursively) should write.
 */
 SbBool
 SoBaseKit::forceChildDrivenWriteRefs(SoOutput * out)
 {
-  COIN_STUB();
-  return FALSE;
+  if (this->shouldWrite()) return TRUE;
+
+  // if NULL we already did this test, found that we shouldn't write,
+  // deleted writedata and set writedata to NULL.
+  if (!THIS->writedata) return FALSE;
+
+  const SoNodekitCatalog * catalog = this->getNodekitCatalog();
+  int i, n = THIS->writedata->getNumFields();
+
+  // loop through fields and break as soon as we find a reason
+  // to write
+  for (i = 0; i < n; i++) {
+    SoField * field = THIS->writedata->getField(this, i);
+    int partnum = catalog->getPartNumber(THIS->writedata->getFieldName(i));
+    if (!field->isDefault()) break;
+    else if (partnum < 0 && field->isIgnored()) break;
+    else if (partnum > 0) {
+      SoSFNode * part = (SoSFNode*) field;
+      SoNode * node = part->getValue();
+      if (node) {
+        if (node->shouldWrite()) break;
+        else if (node->isOfType(SoBaseKit::getClassTypeId())) {
+          SoBaseKit * kit = (SoBaseKit*) node;
+          // recurse
+          if (kit->forceChildDrivenWriteRefs(out)) break;
+        }
+      }
+    }
+  }
+
+  if (i < n) { // did we find a reason to write?
+    SoBase::addWriteReference(out);
+    return TRUE;
+  }
+  else {
+#if COIN_DEBUG && 1 // debug
+    SoDebugError::postInfo("SoBaseKit::forceChildDrivenWriteRefs",
+                           "no need to write");
+#endif // debug
+
+    delete THIS->writedata;
+    THIS->writedata = NULL;
+    return FALSE;
+  }
 }
 
 
@@ -735,7 +957,7 @@ SoBaseKit::getContainerNode(const SbName & listname, SbBool makeifneeded)
   int listIdx;
   if (SoBaseKit::findPart(SbString(listname.getString()), kit, partNum,
                           isList, listIdx, makeifneeded, NULL, TRUE)) {
-    SoNode * node = kit->instancelist[partNum]->getValue();
+    SoNode * node = kit->pimpl->instancelist[partNum]->getValue();
     if (node == NULL) return NULL;
     assert(node->isOfType(SoNodeKitListPart::getClassTypeId()));
     SoNodeKitListPart * list = (SoNodeKitListPart *)node;
@@ -763,7 +985,7 @@ SoBaseKit::getAnyPart(const SbName & partname, SbBool makeifneeded, SbBool leafc
     if (!publiccheck || kit->getNodekitCatalog()->isPublic(partNum)) {
       if (!leafcheck || kit->getNodekitCatalog()->isLeaf(partNum)) {
         if (isList) {
-          SoNode * partnode = kit->instancelist[partNum]->getValue();
+          SoNode * partnode = kit->pimpl->instancelist[partNum]->getValue();
           if (partnode == NULL) return NULL;
           assert(partnode->isOfType(SoNodeKitListPart::getClassTypeId()));
           SoNodeKitListPart * list = (SoNodeKitListPart *) partnode;
@@ -789,7 +1011,7 @@ SoBaseKit::getAnyPart(const SbName & partname, SbBool makeifneeded, SbBool leafc
           }
         }
         else {
-          return kit->instancelist[partNum]->getValue();
+          return kit->pimpl->instancelist[partNum]->getValue();
         }
       }
     }
@@ -866,7 +1088,7 @@ SoBaseKit::createPathToAnyPart(const SbName & partname, SbBool makeifneeded,
 
   if (SoBaseKit::findPart(SbString(partname.getString()), kit, partNum,
                           isList, listIdx, makeifneeded, path)) {
-    SoNode * node = kit->instancelist[partNum]->getValue();
+    SoNode * node = kit->pimpl->instancelist[partNum]->getValue();
     if (node) {
       path->append(node);
       if (isList) {
@@ -925,7 +1147,7 @@ SoBaseKit::setAnyPart(const SbName & partname, SoNode * from, SbBool anypart)
   if (SoBaseKit::findPart(partstring, kit, partNum, isList, listIdx, TRUE, NULL, TRUE)) {
     if (anypart || kit->getNodekitCatalog()->isPublic(partNum)) {
       if (isList) {
-        SoNode * partnode = kit->instancelist[partNum]->getValue();
+        SoNode * partnode = kit->pimpl->instancelist[partNum]->getValue();
         if (partnode) {
           assert(partnode->isOfType(SoNodeKitListPart::getClassTypeId()));
           SoNodeKitListPart * list = (SoNodeKitListPart *) partnode;
@@ -988,11 +1210,11 @@ SoBaseKit::createFieldList(void)
   const SoNodekitCatalog * catalog = this->getNodekitCatalog();
   // only do this if the catalog has been created
   if (catalog) {
-    this->instancelist.truncate(0);
-    this->instancelist.append(NULL); // first catalog entry is "this"
+    THIS->instancelist.truncate(0);
+    THIS->instancelist.append(NULL); // first catalog entry is "this"
     for (int i = 1; i < catalog->getNumEntries(); i++) {
-      this->instancelist.append((SoSFNode *)this->getField(catalog->getName(i)));
-      assert(this->instancelist[i] != NULL);
+      THIS->instancelist.append((SoSFNode *)this->getField(catalog->getName(i)));
+      assert(THIS->instancelist[i] != NULL);
     }
   }
 }
@@ -1010,10 +1232,10 @@ SoBaseKit::createDefaultParts(void)
   const SoNodekitCatalog * catalog = this->getNodekitCatalog();
   // only do this if the catalog has been created
   if (catalog) {
-    for (int i = 1; i < this->instancelist.getLength(); i++) {
-      if (this->instancelist[i]->getValue() == NULL && !catalog->isNullByDefault(i)) {
+    for (int i = 1; i < THIS->instancelist.getLength(); i++) {
+      if (THIS->instancelist[i]->getValue() == NULL && !catalog->isNullByDefault(i)) {
         this->makePart(i);
-        this->instancelist[i]->setDefault(TRUE);
+        THIS->instancelist[i]->setDefault(TRUE);
       }
     }
   }
@@ -1040,7 +1262,7 @@ const SbList<SoSFNode*> &
 SoBaseKit::getCatalogInstances(void) const
 {
 //    return this->fieldList;
-  return this->instancelist;
+  return THIS->instancelist;
 }
 
 /*!
@@ -1074,22 +1296,22 @@ SoBaseKit::readInstance(SoInput * in, unsigned short flags)
   // Dummy first element to get indices to match instancelist (where
   // the dummy "this" catalog entry is first).
   nodelist.append(NULL);
-  for (i = 1; i < this->instancelist.getLength(); i++) {
-    nodelist.append(this->instancelist[i]->getValue());
+  for (i = 1; i < THIS->instancelist.getLength(); i++) {
+    nodelist.append(THIS->instancelist[i]->getValue());
   }
 
   SbBool ret = inherited::readInstance(in, flags);
   if (ret) {
-    for (i = 1; i < this->instancelist.getLength(); i++) {
-      SoNode * partnode = this->instancelist[i]->getValue();
+    for (i = 1; i < THIS->instancelist.getLength(); i++) {
+      SoNode * partnode = THIS->instancelist[i]->getValue();
       if (partnode != nodelist[i]) {
         partnode->ref(); // ref to make sure node is not deleted
-        this->instancelist[i]->setValue(nodelist[i]); // restore old value
+        THIS->instancelist[i]->setValue(nodelist[i]); // restore old value
         nodelist[i] = partnode; // set value for second iteration
       }
       else nodelist[i] = NULL;
     }
-    for (i = 1; i < this->instancelist.getLength(); i++) {
+    for (i = 1; i < THIS->instancelist.getLength(); i++) {
       if (nodelist[i]) { // part has changed
         this->setPart(i, nodelist[i]);
         nodelist[i]->unrefNoDelete(); // should be safe to unref now
@@ -1168,14 +1390,14 @@ SoBaseKit::findPart(const SbString & partname, SoBaseKit *& kit, int & partnum,
       SoBaseKit * orgkit = kit;
       assert(path == NULL); // should not do recsearch when creating path
       const SoNodekitCatalog * catalog = orgkit->getNodekitCatalog();
-      for (int i = 1; i < orgkit->instancelist.getLength(); i++) {
+      for (int i = 1; i < orgkit->pimpl->instancelist.getLength(); i++) {
         if (catalog->isLeaf(i) &&
             catalog->getType(i).isDerivedFrom(SoBaseKit::getClassTypeId())) {
-          kit = (SoBaseKit *) orgkit->instancelist[i]->getValue();
+          kit = (SoBaseKit *) orgkit->pimpl->instancelist[i]->getValue();
           SbBool didexist = kit != NULL;
           if (!didexist) {
             orgkit->makePart(i);
-            kit = (SoBaseKit *) orgkit->instancelist[i]->getValue();
+            kit = (SoBaseKit *) orgkit->pimpl->instancelist[i]->getValue();
           }
           if (SoBaseKit::findPart(partname, kit, partnum, islist, listidx,
                                   makeifneeded, path, recsearch)) {
@@ -1193,8 +1415,8 @@ SoBaseKit::findPart(const SbString & partname, SoBaseKit *& kit, int & partnum,
     return FALSE;
   }
 
-  assert(partnum < kit->instancelist.getLength());
-  SoSFNode * nodefield = kit->instancelist[partnum];
+  assert(partnum < kit->pimpl->instancelist.getLength());
+  SoSFNode * nodefield = kit->pimpl->instancelist[partnum];
   assert(nodefield);
 
   if (makeifneeded && nodefield->getValue() == NULL) {
@@ -1206,7 +1428,7 @@ SoBaseKit::findPart(const SbString & partname, SoBaseKit *& kit, int & partnum,
     SbList <SoNode*> nodestopart;
     int parent = catalog->getParentPartNumber(partnum);
     while (parent > 0) {
-      SoNode * node = kit->instancelist[parent]->getValue();
+      SoNode * node = kit->pimpl->instancelist[parent]->getValue();
       if (node == NULL) {
         assert(makeifneeded == FALSE);
         break;
@@ -1270,10 +1492,10 @@ SoBaseKit::findPart(const SbString & partname, SoBaseKit *& kit, int & partnum,
 SbBool
 SoBaseKit::makePart(const int partnum)
 {
-  assert(partnum > 0 && partnum < this->instancelist.getLength());
+  assert(partnum > 0 && partnum < THIS->instancelist.getLength());
   const SoNodekitCatalog * catalog = this->getNodekitCatalog();
   assert(catalog);
-  assert(this->instancelist[partnum]->getValue() == NULL);
+  assert(THIS->instancelist[partnum]->getValue() == NULL);
 
   SoNode * node = (SoNode *)catalog->getDefaultType(partnum).createInstance();
   if (catalog->isList(partnum)) {
@@ -1301,24 +1523,24 @@ SoBaseKit::makePart(const int partnum)
 SbBool
 SoBaseKit::setPart(const int partnum, SoNode * node)
 {
-  assert(partnum > 0 && partnum < this->instancelist.getLength());
+  assert(partnum > 0 && partnum < THIS->instancelist.getLength());
   const SoNodekitCatalog * catalog = this->getNodekitCatalog();
   assert(catalog);
 
   int parentIdx = catalog->getParentPartNumber(partnum);
-  assert(parentIdx >= 0 && parentIdx < this->instancelist.getLength());
+  assert(parentIdx >= 0 && parentIdx < THIS->instancelist.getLength());
   SoNode * parent = NULL;
   if (parentIdx == 0) parent = this;
-  else parent = this->instancelist[parentIdx]->getValue();
+  else parent = THIS->instancelist[parentIdx]->getValue();
   if (parent == NULL) {
     this->makePart(parentIdx);
-    parent = this->instancelist[parentIdx]->getValue();
+    parent = THIS->instancelist[parentIdx]->getValue();
   }
   assert(parent != NULL);
   SoChildList * childlist = parent->getChildren();
   assert(childlist != NULL);
 
-  SoNode * oldnode = this->instancelist[partnum]->getValue();
+  SoNode * oldnode = THIS->instancelist[partnum]->getValue();
 
   if (oldnode != NULL) { // part exists, replace
     int oldIdx = childlist->find(oldnode);
@@ -1329,7 +1551,7 @@ SoBaseKit::setPart(const int partnum, SoNode * node)
   else if (node) { // find where to insert in parent childlist
     int rightSibling = this->getRightSiblingIndex(partnum);
     if (rightSibling >= 0) { // part has right sibling, insert before
-      int idx = childlist->find(this->instancelist[rightSibling]->getValue());
+      int idx = childlist->find(THIS->instancelist[rightSibling]->getValue());
       assert(idx >= 0);
       childlist->insert(node, idx);
     }
@@ -1337,7 +1559,7 @@ SoBaseKit::setPart(const int partnum, SoNode * node)
   }
 
   // set part field value
-  this->instancelist[partnum]->setValue(node);
+  THIS->instancelist[partnum]->setValue(node);
   return TRUE;
 }
 
@@ -1347,13 +1569,13 @@ SoBaseKit::setPart(const int partnum, SoNode * node)
 int
 SoBaseKit::getRightSiblingIndex(const int partnum)
 {
-  assert(partnum > 0 && partnum < this->instancelist.getLength());
+  assert(partnum > 0 && partnum < THIS->instancelist.getLength());
   const SoNodekitCatalog * catalog = this->getNodekitCatalog();
 
   int sibling = catalog->getRightSiblingPartNumber(partnum);
 
   // iterate until no more siblings or until we find an existing one
-  while (sibling >= 0 && this->instancelist[sibling]->getValue() == NULL) {
+  while (sibling >= 0 && THIS->instancelist[sibling]->getValue() == NULL) {
     sibling = catalog->getRightSiblingPartNumber(sibling);
   }
   return sibling;
@@ -1370,11 +1592,70 @@ SoBaseKit::findNodeInThisKit(SoNode * node, const int parentnum) const
 {
   const SoNodekitCatalog * catalog = this->getNodekitCatalog();
   if (node == (SoNode *)this) return 0;
-  int n = this->instancelist.getLength();
+  int n = THIS->instancelist.getLength();
   for (int i = 1; i < n; i++) {
-    if (this->instancelist[i]->getValue() == node &&
+    if (THIS->instancelist[i]->getValue() == node &&
         (parentnum < 0 || catalog->getParentPartNumber(i) == parentnum))
       return i;
   }
   return -1;
 }
+
+//
+// copy the fields in kit into a new fielddata. This is done to get
+// the correct write order: non-part fields first, then leaf parts,
+// then non-leaf parts.
+//
+void
+SoBaseKitP::createWriteData(void)
+{
+  this->writedata = new SoFieldData;
+  const SoNodekitCatalog * catalog = this->kit->getNodekitCatalog();
+  const SoFieldData * fielddata = kit->getFieldData();
+
+  int n = fielddata->getNumFields();
+  for (int pass = 0; pass < 3; pass++) {
+    for (int i = 0; i < n; i++) {
+      int part = catalog->getPartNumber(fielddata->getFieldName(i));
+      if ((pass == 0 && part < 0) ||
+          (pass == 1 && part > 0 && catalog->isLeaf(part)) ||
+          (pass == 2 && part > 0 && !catalog->isLeaf(part))) {
+#if COIN_DEBUG && 1 // debug
+        SoDebugError::postInfo("SoBaseKitP::createWriteData",
+                               "add field: %s, %d", fielddata->getFieldName(i).getString(),
+                               fielddata->getField(this->kit, i)->isDefault());
+#endif // debug
+        this->writedata->addField(this->kit,
+                                  fielddata->getFieldName(i).getString(),
+                                  fielddata->getField(this->kit, i));
+      }
+    }
+  }
+}
+  
+//
+// test if parent part of a part is going to write, and if so
+// write part even if isDefault()
+//
+void
+SoBaseKitP::testParentWrite(void)
+{
+  const SoNodekitCatalog * catalog = this->kit->getNodekitCatalog();
+  int n = this->instancelist.getLength();
+  for (int i = 1; i < n; i++) {
+    SoSFNode * field = this->instancelist[i];
+    if (field->isDefault()) { // we might not write
+      SoNode * node = field->getValue();
+      // don't write if NULL, of course
+      if (node) {
+        int parent = catalog->getParentPartNumber(i);
+        if (parent > 0 && !this->instancelist[parent]->isDefault()) {
+          // we must write if parent is going to write
+          field->setDefault(FALSE);
+        }
+      }
+    }
+  }
+}
+
+#undef THIS

@@ -151,7 +151,8 @@ private:
   static const SoNodekitCatalog ** parentcatalogptr;
   static SbBool searchchildren;
 
-  SbList<SoSFNode*> instancelist;
+  class SoBaseKitP * pimpl;
+  friend class SoBaseKitP;
 };
 
 #endif // !COIN_SOBASEKIT_H

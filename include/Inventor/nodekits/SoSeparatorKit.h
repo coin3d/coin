@@ -57,6 +57,8 @@ public:
 
 protected:
   virtual ~SoSeparatorKit();
+  virtual void setDefaultOnNonWritingFields(void);
+
 };
 
 #endif // !COIN_SOSEPARATORKIT_H
