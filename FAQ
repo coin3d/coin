@@ -245,7 +245,9 @@ A:      They are not installed.  The programs are just examples, and do not
 
 Q2.6:   Why can't any of the transparency modes be perfect?
 
-A:      See the documentation on SoGLRenderAction::TransparencyMode.
+A:      See the documentation on SoGLRenderAction::TransparencyType, at
+
+          http://doc.coin3d.org/Coin/classSoGLRenderAction.html
 
         For Coin 2.3, a new transparency mode called SORTED_LAYERS_BLEND
         has been implemented for SoGLRenderAction which uses a technique
