@@ -260,8 +260,31 @@ dnl * Check if libsimage development system is installed (if necessary).
 dnl *******************************************************************
 
 if test "x$want_simage" = "xyes"; then
-  AC_CHECK_HEADER(simage.h, simage_dev=yes, simage_dev=no)
-  if test "$simage_dev" = yes; then
+  AC_MSG_CHECKING(for simage header file)
+
+  dnl First try standard system locations.
+  AC_TRY_CPP([#include <simage.h>], simage_dev=yes, simage_dev=no)
+
+  dnl Not found in any of the standard system locations, try libCoin
+  dnl installation directory.
+  if test "x$simage_dev" = "xno"; then
+    _COINPREFIX=$prefix
+    test "x$_COINPREFIX" = xNONE && _COINPREFIX=$ac_default_prefix
+    _COINEPREFIX=$exec_prefix
+    test "x$_COINEPREFIX" = xNONE && _COINEPREFIX=$_COINPREFIX
+    _SAVECPPFLAGS=$CPPFLAGS
+    CPPFLAGS="-I$_COINPREFIX/include $CPPFLAGS"
+    AC_TRY_CPP([#include <simage.h>], simage_dev=yes, simage_dev=no)
+    CPPFLAGS=$_SAVECPPFLAGS
+    if test "x$simage_dev" = "xyes"; then
+      CPPFLAGS="-I$_COINPREFIX/include $CPPFLAGS"
+      LDFLAGS="-L$_COINEPREFIX/lib $LDFLAGS"
+    fi
+  fi
+
+  AC_MSG_RESULT($simage_dev)
+
+  if test "x$simage_dev" = "xyes"; then
     AC_CHECK_LIB(simage, simage_read_image, , simage_dev=no, -lz -lm)
   fi
   if test "$simage_dev" = no; then

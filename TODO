@@ -4,9 +4,6 @@ Todo
 
 (format is: "* [author:conceived-date] item", listed in no particular order)
 
-* [mortene:19990924] check for simage in the --prefix installation
-  directory.
-
 * [mortene:19990926] add configure option for specifying location of
   simage.
 
@@ -59,6 +56,9 @@ Done
 ====
 
 (format is: "* [author:conceived-date][implementer:finished-date] item")
+
+* [mortene:19990924][mortene:19990926] check for simage in the
+  --prefix installation directory.
 
 * [mortene:19990914][mortene:19990926] check possibility of making all
   .o/.lo files (or only the .la files?) into .so shared libraries to
