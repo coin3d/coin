@@ -62,8 +62,8 @@ static int glyph3d_spaceglyphindices[] = { -1, -1 };
 static float glyph3d_spaceglyphvertices[] = { 0, 0 };
 static SbBool glyph3d_initialized = FALSE;
 
-#define MAX(x, y) (((x) > (y)) ? (x) : (y))
-#define MIN(x, y) (((x) < (y)) ? (x) : (y))
+#define MYMAX(x, y) (((x) > (y)) ? (x) : (y))
+#define MYMIN(x, y) (((x) < (y)) ? (x) : (y))
 
 /* Mutex lock for the static ang global font hash */
 static void * glyph3d_fonthash_lock = NULL;
@@ -317,10 +317,10 @@ glyph3d_calcboundingbox(cc_glyph3d * g)
 
   while ((*edgeptr >= 0) && (*edgeptr != -1)) {
 
-    g->bbox[0] = MIN(coordptr[(*edgeptr)*2], g->bbox[0]);
-    g->bbox[1] = MIN(coordptr[(*edgeptr)*2 + 1], g->bbox[1]);
-    g->bbox[2] = MAX(coordptr[(*edgeptr)*2], g->bbox[2]);
-    g->bbox[3] = MAX(coordptr[(*edgeptr)*2 + 1], g->bbox[3]);
+    g->bbox[0] = MYMIN(coordptr[(*edgeptr)*2], g->bbox[0]);
+    g->bbox[1] = MYMIN(coordptr[(*edgeptr)*2 + 1], g->bbox[1]);
+    g->bbox[2] = MYMAX(coordptr[(*edgeptr)*2], g->bbox[2]);
+    g->bbox[3] = MYMAX(coordptr[(*edgeptr)*2 + 1], g->bbox[3]);
 
     *edgeptr++;
   }
@@ -371,3 +371,7 @@ glyph3d_specmatch(const cc_font_specification * spec1,
   else return FALSE;
 
 }
+
+#undef MYMAX
+#undef MYMIN
+

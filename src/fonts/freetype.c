@@ -918,14 +918,14 @@ flwft_addTessVertex(double * vertex)
 
   int * counter;
   float * point;
-  point = malloc(sizeof(float)*2);
+  point = (float*) malloc(sizeof(float)*2);
   point[0] = flwft_tessellator.vertex_scale * ((float) vertex[0]) / 64.0f;
   point[1] = flwft_tessellator.vertex_scale * ((float) vertex[1]) / 64.0f;
   cc_list_append(flwft_tessellator.vertexlist, point);
 
   cc_list_append(flwft_tessellator.edgeindexlist, (void *) (flwft_tessellator.vertex_counter));
 
-  counter = malloc(sizeof(int));
+  counter = (int*) malloc(sizeof(int));
   counter[0] = flwft_tessellator.vertex_counter++;
   GLUWrapper()->gluTessVertex(flwft_tessellator.tessellator_object, vertex, counter);
   
@@ -958,8 +958,7 @@ flwft_moveToCallback(FT_Vector * to, void * user)
 static int
 flwft_lineToCallback(FT_Vector * to, void * user)
 {
-
-  double * vertex = malloc(sizeof(double)*3);
+  double * vertex = (double*) malloc(sizeof(double)*3);
 
   flwft_tessellator.last_vertex.x = to->x;
   flwft_tessellator.last_vertex.y = to->y;
@@ -1007,7 +1006,7 @@ flwft_conicToCallback(FT_Vector * control, FT_Vector * to, void * user)
     f[0] += df[0];
     f[1] += df[1];
     
-    vertex = malloc(sizeof(double)*3);
+    vertex = (double*) malloc(sizeof(double)*3);
     vertex[0] = f[0];
     vertex[1] = f[1];
     vertex[2] = 0;
@@ -1019,7 +1018,7 @@ flwft_conicToCallback(FT_Vector * control, FT_Vector * to, void * user)
 
   }
     
-  vertex = malloc(sizeof(double)*3);
+  vertex = (double*) malloc(sizeof(double)*3);
   vertex[0] = to->x;
   vertex[1] = to->y;
   vertex[2] = 0;
@@ -1081,7 +1080,7 @@ flwft_cubicToCallback(FT_Vector * control1, FT_Vector * control2, FT_Vector * to
     f[0] += df[0];
     f[1] += df[1];
     
-    vertex = malloc(sizeof(double)*3);
+    vertex = (double*) malloc(sizeof(double)*3);
     vertex[0] = f[0];
     vertex[1] = f[1];
     vertex[2] = 0;
@@ -1094,7 +1093,7 @@ flwft_cubicToCallback(FT_Vector * control1, FT_Vector * control2, FT_Vector * to
     df2[1] += df3[1];
   }
 
-  vertex = malloc(sizeof(double)*3);
+  vertex = (double*) malloc(sizeof(double)*3);
   vertex[0] = to->x;
   vertex[1] = to->y;
   vertex[2] = 0;
@@ -1206,14 +1205,14 @@ flwft_combineCallback(GLdouble coords[3], GLvoid * vertex_data, GLfloat weight[4
   int * ret;  
   float * point;
 
-  point = malloc(sizeof(float)*2);
+  point = (float*) malloc(sizeof(float)*2);
   point[0] = flwft_tessellator.vertex_scale * ((float) coords[0]) / 64.0f;
   point[1] = flwft_tessellator.vertex_scale * ((float) coords[1]) / 64.0f;
 
 
   cc_list_append(flwft_tessellator.vertexlist, point);
 
-  ret = malloc(sizeof(int));
+  ret = (int*) malloc(sizeof(int));
   ret[0] = flwft_tessellator.vertex_counter++;
 
   
