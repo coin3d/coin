@@ -220,13 +220,14 @@ SoVertexProperty::GLRender(SoGLRenderAction * action)
   }
 
   SoVertexProperty::doAction(action);
-  if (!this->normalBinding.isIgnored()) {
+  if (this->normal.getNum() && !this->normalBinding.isIgnored()) {
     Binding binding = (Binding)this->normalBinding.getValue();
     SoGLShadeModelElement::setNormal(state,
                                      binding == PER_VERTEX ||
                                      binding == PER_VERTEX_INDEXED);
   }
-  if (!materialbindoverride && !this->materialBinding.isIgnored()) {
+  if (this->orderedRGBA.getNum() && 
+      !materialbindoverride && !this->materialBinding.isIgnored()) {
     Binding binding = (Binding) this->materialBinding.getValue();  
     SoGLShadeModelElement::setMaterial(state,
                                        binding == PER_VERTEX ||
@@ -265,7 +266,7 @@ SoVertexProperty::doAction(SoAction *action)
     SoNormalElement::set(state, this, this->normal.getNum(),
                          this->normal.getValues(0));
   }
-  if (!this->normalBinding.isIgnored()) {
+  if (this->normal.getNum() && !this->normalBinding.isIgnored()) {
     SoNormalBindingElement::set(state, this,
                                 (SoNormalBindingElement::Binding)
                                 this->normalBinding.getValue());
@@ -279,7 +280,7 @@ SoVertexProperty::doAction(SoAction *action)
       SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
     }
   }
-  if (!this->materialBinding.isIgnored()
+  if (this->orderedRGBA.getNum() && !this->materialBinding.isIgnored()
       && !SoOverrideElement::getMaterialBindingOverride(state)) {
     SoMaterialBindingElement::set(state, this,
                                   (SoMaterialBindingElement::Binding)
