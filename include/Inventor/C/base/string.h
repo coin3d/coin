@@ -74,6 +74,7 @@ COIN_DLL_API void cc_string_remove_substring(cc_string * string, int start, int 
 
 COIN_DLL_API int cc_string_compare(cc_string * lhs, const cc_string * rhs);
 COIN_DLL_API int cc_string_compare_text(const char * lhs, const char * rhs);
+COIN_DLL_API int cc_string_compare_subtext(cc_string * string, const char * text, int offset);
 
 COIN_DLL_API void cc_string_sprintf(cc_string * string, const char * formatstr, ...);
 COIN_DLL_API void cc_string_vsprintf(cc_string * string, const char * formatstr, va_list args);

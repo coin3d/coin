@@ -111,8 +111,7 @@ cc_string *
 cc_string_construct(const char * text)
 {
   cc_string * me;
-  me = (cc_string *) malloc(sizeof(cc_string));
-  assert(me != NULL);
+  me = cc_string_struct_malloc();
   cc_string_struct_init(me);
   cc_string_set_text(me, text);
   return me;
@@ -122,8 +121,7 @@ cc_string *
 cc_string_construct_new(void)
 {
   cc_string * me;
-  me = (cc_string *) malloc(sizeof(cc_string));
-  assert(me != NULL);
+  me = cc_string_struct_malloc();
   cc_string_struct_init(me);
   return me;
 } /* cc_string_construct_new() */
@@ -132,8 +130,7 @@ cc_string *
 cc_string_construct_subtext(const char * text, int start, int end)
 {
   cc_string * me;
-  me = (cc_string *) malloc(sizeof(cc_string));
-  assert(me != NULL);
+  me = cc_string_struct_malloc();
   cc_string_struct_init(me);
   cc_string_set_subtext(me, text, start, end);
   return me;
@@ -143,8 +140,7 @@ cc_string *
 cc_string_clone(cc_string * string)
 {
   cc_string * me;
-  me = (cc_string *) malloc(sizeof(cc_string));
-  assert(me != NULL);
+  me = cc_string_struct_malloc();
   cc_string_struct_init(me);
   cc_string_set_text(me, string->pointer);
   return me;
@@ -154,7 +150,7 @@ void
 cc_string_destruct(cc_string * me)
 {
   cc_string_struct_clean(me);
-  free(me);
+  cc_string_struct_free(me);
 } /* cc_string_destruct() */
 
 /* ********************************************************************** */
@@ -184,34 +180,40 @@ cc_string_set_subtext(cc_string * me, const char * text, int start, int end)
   int len, size;
   if ( text == NULL ) text = emptystring;
   len = strlen(text);
+  if ( end == -1 ) end = len - 1;
 
 #if COIN_DEBUG && 0 /* FIXME */
   if (start<0) {
-    SoDebugError::postWarning("SbString::SbString",
+    // SoDebugError::postWarning("SbString::SbString",
+    fprintf(stderr, 
                               "start index (%d) should be >= 0. Clamped to 0.",
                               start);
     start=0;
   }
   else if (start>len) {
-    SoDebugError::postWarning("SbString::SbString",
+    // SoDebugError::postWarning("SbString::SbString",
+    fprintf(stderr, 
                               "start index (%d) is out of bounds [0, %d>. "
                               "Clamped to %d.", start, len, len-1);
     start=len;
   }
   if (end<0) {
-    SoDebugError::postWarning("SbString::SbString",
+    // SoDebugError::postWarning("SbString::SbString",
+    fprintf(stderr, 
                               "end index (%d) should be >= 0. Clamped to 0.",
                               end);
     end=0;
   }
   else if (end>len) {
-    SoDebugError::postWarning("SbString::SbString",
+    // SoDebugError::postWarning("SbString::SbString",
+    fprintf(stderr, 
                               "end index (%d) is out of bounds [0, %d>. "
                               "Clamped to %d.", end, len, len-1);
     end=len;
   }
   if (start>end+1) {
-    SoDebugError::postWarning("SbString::SbString",
+    // SoDebugError::postWarning("SbString::SbString",
+    fprintf(stderr, 
                               "start index (%d) is greater than end index "
                               "(%d). Empty string created.", start, end);
     start=0;
@@ -382,8 +384,15 @@ cc_string_compare(cc_string * lhs, const cc_string * rhs)
 int
 cc_string_compare_text(const char * lhs, const char * rhs)
 {
-  return lhs && rhs && (*lhs++ == *rhs++) && strcmp(lhs, rhs);
+  return lhs && rhs && strcmp(lhs, rhs);
 } /* cc_string_compare_text() */
+
+int
+cc_string_compare_subtext(cc_string * me, const char * text, int offset)
+{
+  /* FIXME: assert on invalid offset */
+  return strncmp(me->pointer + offset, text, strlen(text));
+} /* cc_string_compare_prefix() */
 
 /* ********************************************************************** */
 
