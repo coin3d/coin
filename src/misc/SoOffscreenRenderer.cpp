@@ -251,6 +251,7 @@ public:
   static SbVec2s getMaxTileSize(void);
 
   static SbBool debug(void);
+  static const char * debugTileOutputPrefix(void);
 
   SoOffscreenRenderer * master;
 
@@ -263,7 +264,7 @@ public:
   void pasteSubscreen(const SbVec2s & subscreenidx, const uint8_t * srcbuf);
 
   static SbBool writeToRGB(FILE * fp, unsigned int w, unsigned int h,
-                           unsigned int nrcomponents, uint8_t * imgbuf);
+                           unsigned int nrcomponents, const uint8_t * imgbuf);
 
   SbViewportRegion viewport;
   SbColor backgroundcolor;
@@ -297,6 +298,22 @@ SoOffscreenRendererP::debug(void)
     flag = env && (atoi(env) > 0);
   }
   return flag;
+}
+
+// Set the environment variable below to get the individual tiles
+// written out for debugging purposes. E.g.
+//
+//   $ export COIN_SOOFFSCREENRENDERER_TILEPREFIX="/tmp/offscreentile_"
+//
+// Tile X and Y position, plus the ".rgb" suffix, will be added when
+// writing.
+//
+// Note that the COIN_DEBUG_SOOFFSCREENRENDERER envvar must also be
+// set for this to be active.
+const char *
+SoOffscreenRendererP::debugTileOutputPrefix(void)
+{
+  return coin_getenv("COIN_SOOFFSCREENRENDERER_TILEPREFIX");
 }
 
 // *************************************************************************
@@ -541,7 +558,7 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
   if (forcetiled == -1) {
     const char * env = coin_getenv("COIN_FORCE_TILED_OFFSCREENRENDERING");
     forcetiled = (env && (atoi(env) > 0)) ? 1 : 0;
-    if (SoOffscreenRendererP::debug() && forcetiled) {
+    if (forcetiled) {
       SoDebugError::postInfo("SoOffscreenRendererP::renderFromBase",
                              "Forcing tiled rendering.");
     }
@@ -564,17 +581,17 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
     return FALSE;
   }
 
-#if COIN_DEBUG && 0 // debug, enable to check offscreen canvas properties
-  GLint colbits[4];
-  glGetIntegerv(GL_RED_BITS, &colbits[0]);
-  glGetIntegerv(GL_GREEN_BITS, &colbits[1]);
-  glGetIntegerv(GL_BLUE_BITS, &colbits[2]);
-  glGetIntegerv(GL_ALPHA_BITS, &colbits[3]);
-  SoDebugError::postInfo("SoOffscreenRenderer::renderFromBase",
-                         "GL context GL_[RED|GREEN|BLUE|ALPHA]_BITS=="
-                         "[%d, %d, %d, %d]",
-                         colbits[0], colbits[1], colbits[2], colbits[3]);
-#endif // debug
+  if (SoOffscreenRendererP::debug()) {
+    GLint colbits[4];
+    glGetIntegerv(GL_RED_BITS, &colbits[0]);
+    glGetIntegerv(GL_GREEN_BITS, &colbits[1]);
+    glGetIntegerv(GL_BLUE_BITS, &colbits[2]);
+    glGetIntegerv(GL_ALPHA_BITS, &colbits[3]);
+    SoDebugError::postInfo("SoOffscreenRenderer::renderFromBase",
+                           "GL context GL_[RED|GREEN|BLUE|ALPHA]_BITS=="
+                           "[%d, %d, %d, %d]",
+                           colbits[0], colbits[1], colbits[2], colbits[3]);
+  }
 
   glEnable(GL_DEPTH_TEST);
   glClearColor(this->backgroundcolor[0],
@@ -660,14 +677,31 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
 
         this->internaldata->postRender();
 
-        SbVec2s idsize = this->internaldata->getBufferSize();
+        const SbVec2s idsize = this->internaldata->getBufferSize();
+        const unsigned char * renderbuffer = this->internaldata->getBuffer();
+
+        if (SoOffscreenRendererP::debug() &&
+            SoOffscreenRendererP::debugTileOutputPrefix()) {
+          SbString s;
+          s.sprintf("%s_%03d_%03d.rgb",
+                    SoOffscreenRendererP::debugTileOutputPrefix(), x, y);
+
+          FILE * f = fopen(s.getString(), "wb");
+          assert(f);
+          SbBool w = SoOffscreenRendererP::writeToRGB(f, idsize[0], idsize[1],
+                                                      4, renderbuffer);
+          assert(w);
+          const int r = fclose(f);
+          assert(r == 0);
+        }
+
 	/* FIXME: in case of pbuffer we don't need the convertBuffer routine
 	 * as everything gets rendered the exact way as on the screen. 
 	 * this should do the trick and is slightly more efficient:
 	 * this->pasteSubscreen(SbVec2s(x, y), this->internaldata->getBuffer());
 	 * 20031106 tamer.
 	 */
-        this->convertBuffer(this->internaldata->getBuffer(), idsize[0], idsize[1],
+        this->convertBuffer(renderbuffer, idsize[0], idsize[1],
                             subscreen, this->subsize[0], this->subsize[1]);
         this->pasteSubscreen(SbVec2s(x, y), subscreen);
       }
@@ -854,7 +888,8 @@ write_short(FILE * fp, unsigned short val)
 
 SbBool
 SoOffscreenRendererP::writeToRGB(FILE * fp, unsigned int w, unsigned int h,
-                                 unsigned int nrcomponents, uint8_t * imgbuf)
+                                 unsigned int nrcomponents,
+                                 const uint8_t * imgbuf)
 {
   // FIXME: add code to rle rows, pederb 2000-01-10
 
@@ -1439,6 +1474,10 @@ SoOffscreenRendererP::getMaxTileSize(void)
   unsigned int width = 128;
   unsigned int height = 128;
   cc_glglue_context_max_dimensions(&width, &height);
+  if (SoOffscreenRendererP::debug()) {
+    SoDebugError::postInfo("SoOffscreenRendererP::getMaxTileSize",
+                           "maxtilesize==[%u, %u]", width, height);
+  }
   
   static int forcedtilewidth = -1;
   static int forcedtileheight = -1;
