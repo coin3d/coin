@@ -252,26 +252,6 @@ SoTextureCoordinateElement::set4(SoState * const state,
 
 //! FIXME: write doc.
 
-const SbVec2f *
-SoTextureCoordinateElement::getArrayPtr2(SoState * const state)
-{
-  const SoTextureCoordinateElement *elem = getInstance(state);
-  if (elem->coordsAre2D) return elem->coords2;
-  return NULL;
-}
-
-//! FIXME: write doc.
-
-const SbVec4f *
-SoTextureCoordinateElement::getArrayPtr4(SoState * const state)
-{
-  const SoTextureCoordinateElement *elem = getInstance(state);
-  if (!elem->coordsAre2D) return elem->coords4;
-  return NULL;
-}
-
-//! FIXME: write doc.
-
 const SoTextureCoordinateElement *
 SoTextureCoordinateElement::getInstance(SoState * const state)
 {
@@ -392,4 +372,24 @@ SbBool
 SoTextureCoordinateElement::is2D() const
 {
   return this->coordsAre2D;
+}
+
+/*!
+  Returns a pointer to the 2D texture coordinate array. This method is not
+  part of the OIV API.
+*/
+const SbVec2f *
+SoTextureCoordinateElement::getArrayPtr2() const 
+{
+  return this->coords2;
+}
+
+/*!
+  Returns a pointer to the 4D texture coordinate array. This method is not
+  part of the OIV API.
+*/
+const SbVec4f *
+SoTextureCoordinateElement::getArrayPtr4() const 
+{
+  return this->coords4;
 }

@@ -57,6 +57,7 @@ public:
 
   int32_t getNum() const;
   const SbColor &get(const int index) const;
+  const SbColor *getArrayPtr() const;
 
 protected:
   virtual void setElt(const int32_t numColors, const SbColor * const colors);

@@ -80,9 +80,6 @@ public:
   static void set4(SoState * const state, SoNode * const node,
                    const int32_t numCoords, const SbVec4f * const coords);
 
-  static const SbVec2f *getArrayPtr2(SoState * const state);
-  static const SbVec4f *getArrayPtr4(SoState * const state);
-
   static CoordType getType(SoState * const state);
   virtual CoordType getType() const;
 
@@ -96,6 +93,9 @@ public:
   const SbVec2f &get2(const int index) const;
   const SbVec4f &get4(const int index) const;
 
+  const SbVec2f *getArrayPtr2() const;
+  const SbVec4f *getArrayPtr4() const;
+  
 protected:
   CoordType whatKind;
   SoTextureCoordinateFunctionCB *funcCB;

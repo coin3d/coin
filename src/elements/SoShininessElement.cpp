@@ -190,6 +190,15 @@ SoShininessElement::get(const int index) const
   return this->values[index];
 }
 
+/*!
+  Returns a pointer to the shininess values. This method is not part of the OIV API.
+*/
+const float *
+SoShininessElement::getArrayPtr() const 
+{
+  return this->values;
+}
+
 //! FIXME: write doc.
 
 //$ EXPORT INLINE

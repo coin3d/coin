@@ -144,9 +144,12 @@ SoNurbsCurve::GLRender(SoGLRenderAction * action)
 
   int dim = coords->is3D() ? 3 : 4;
 
+  const SoCoordinateElement *coordelem = 
+    SoCoordinateElement::getInstance(state);
+
   GLfloat * ptr = coords->is3D() ?
-    (GLfloat *)SoCoordinateElement::getArrayPtr3(state) :
-    (GLfloat *)SoCoordinateElement::getArrayPtr4(state);
+    (GLfloat *)coordelem->getArrayPtr3() :
+    (GLfloat *)coordelem->getArrayPtr4();
 
   gluNurbsCurve(this->nurbsRenderer, knotVector.getNum(),
                 (GLfloat *)knotVector.getValues(0),
@@ -169,20 +172,23 @@ SoNurbsCurve::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
   // FIXME: this is just a quick approximation
   SoState * state = action->getState();
+  const SoCoordinateElement *coordelem = 
+    SoCoordinateElement::getInstance(state);
+  
 
-  int numCoords = SoCoordinateElement::getInstance(state)->getNum();
+  int numCoords = coordelem->getNum();
   int num = this->numControlPoints.getValue();
 
   assert(num <= numCoords);
 
-  if (SoCoordinateElement::getInstance(state)->is3D()) {
-    const SbVec3f * coords = SoCoordinateElement::getArrayPtr3(state);
+  if (coordelem->is3D()) {
+    const SbVec3f * coords = coordelem->getArrayPtr3();
     assert(coords);
     box.makeEmpty();
     for (int i = 0; i < num; i++) box.extendBy(coords[i]);
   }
   else {
-    const SbVec4f * coords = SoCoordinateElement::getArrayPtr4(state);
+    const SbVec4f * coords = coordelem->getArrayPtr4();
     assert(coords);
     for (int i = 0; i< num; i++) {
       SbVec4f tmp = coords[i];

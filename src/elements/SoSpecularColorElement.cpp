@@ -189,6 +189,15 @@ SoSpecularColorElement::get(const int index) const
   return this->colors[index];
 }
 
+/*!
+  Returns a pointer to the color array. This method is not part of the OIV API.
+*/
+const SbColor *
+SoSpecularColorElement::getArrayPtr() const 
+{
+  return this->colors;
+}
+
 //! FIXME: write doc.
 
 //$ EXPORT INLINE

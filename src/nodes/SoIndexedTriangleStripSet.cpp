@@ -343,6 +343,8 @@ SoIndexedTriangleStripSet::generateDefaultNormals(SoState * state,
                                                   SoNormalCache * nc)
 {
   SbBool ccw = TRUE;
+  const SoCoordinateElement *coordelem = SoCoordinateElement::getInstance(state);
+
   if (SoShapeHintsElement::getVertexOrdering(state) ==
       SoShapeHintsElement::CLOCKWISE) ccw = FALSE;
 
@@ -354,7 +356,7 @@ SoIndexedTriangleStripSet::generateDefaultNormals(SoState * state,
 
   const SbVec3f * coords = vpvtx ?
     vp->vertex.getValues(0) :
-    SoCoordinateElement::getArrayPtr3(state);
+    coordelem->getArrayPtr3();
   assert(coords);
 
 #if !defined(COIN_EXCLUDE_SONORMALBINDINGELEMENT)

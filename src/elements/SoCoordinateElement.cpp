@@ -204,26 +204,6 @@ SoCoordinateElement::set4(SoState * const state,
 
 //! FIXME: write doc.
 
-const SbVec3f *
-SoCoordinateElement::getArrayPtr3(SoState * const state)
-{
-  const SoCoordinateElement *elem = getInstance(state);
-  if (elem->areCoords3D) return elem->coords3D;
-  return NULL;
-}
-
-//! FIXME: write doc.
-
-const SbVec4f *
-SoCoordinateElement::getArrayPtr4(SoState * const state)
-{
-  const SoCoordinateElement *elem = getInstance(state);
-  if (!elem->areCoords3D) return elem->coords4D;
-  return NULL;
-}
-
-//! FIXME: write doc.
-
 const SbVec3f &
 SoCoordinateElement::get3(const int index) const
 {
@@ -286,6 +266,26 @@ SbBool
 SoCoordinateElement::is3D() const
 {
   return this->areCoords3D;
+}
+
+/*!
+  Returns a pointer to the 3D coordinate array. This method is not part of the 
+  OIV API.
+*/
+const SbVec3f *
+SoCoordinateElement::getArrayPtr3() const 
+{
+  return this->coords3D;
+}
+
+/*!
+  Returns a pointer to the 4D coordinate array. This method is not part of the 
+  OIV API.
+*/
+const SbVec4f *
+SoCoordinateElement::getArrayPtr4() const 
+{
+  return this->coords4D;
 }
 
 //! FIXME: write doc.

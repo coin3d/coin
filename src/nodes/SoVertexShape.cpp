@@ -273,7 +273,7 @@ SoVertexShape::getVertexData(SoState * state,
 
   normals = NULL;
   if (needNormals) {
-    normals = SoNormalElement::getArrayPtr(state);
+    normals = SoNormalElement::getInstance(state)->getArrayPtr();
   }
 }
 

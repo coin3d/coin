@@ -131,6 +131,7 @@ SoIndexedShape::computeBBox(SoAction * action, SbBox3f & box,
 {
   SoState * state = action->getState();
 
+  const SoCoordinateElement *coordelem = SoCoordinateElement::getInstance(state);
   SoVertexProperty * vp = (SoVertexProperty *) this->vertexProperty.getValue();
   assert(!vp ||
          vp->getTypeId().isDerivedFrom(SoVertexProperty::getClassTypeId()));
@@ -138,12 +139,12 @@ SoIndexedShape::computeBBox(SoAction * action, SbBox3f & box,
 
   int numCoords = vpvtx ?
     vp->vertex.getNum() :
-    SoCoordinateElement::getInstance(state)->getNum();
-
-  if (vpvtx || SoCoordinateElement::getInstance(state)->is3D()) {
+    coordelem->getNum();
+  
+  if (vpvtx || coordelem->is3D()) {
     const SbVec3f * coords = vpvtx ?
       vp->vertex.getValues(0) :
-      SoCoordinateElement::getArrayPtr3(state);
+      coordelem->getArrayPtr3();
     assert(coords);
     box.makeEmpty();
     const int32_t * ptr = coordIndex.getValues(0);
@@ -156,7 +157,7 @@ SoIndexedShape::computeBBox(SoAction * action, SbBox3f & box,
   }
   else {
     const SbVec4f * coords =
-      SoCoordinateElement::getArrayPtr4(state);
+      coordelem->getArrayPtr4();
     assert(coords);
     const int32_t * ptr = coordIndex.getValues(0);
     const int32_t * endptr = ptr + coordIndex.getNum();
@@ -252,8 +253,8 @@ SoIndexedShape::generateDefaultNormals(SoState * state,
   SbBool ccw = TRUE;
   if (SoShapeHintsElement::getVertexOrdering(state) ==
       SoShapeHintsElement::CLOCKWISE) ccw = FALSE;
-
-  const SbVec3f * coords = SoCoordinateElement::getArrayPtr3(state);
+  
+  const SbVec3f * coords = SoCoordinateElement::getInstance(state)->getArrayPtr3();
   assert(coords);
 
 #if !defined(COIN_EXCLUDE_SONORMALBINDINGELEMENT)

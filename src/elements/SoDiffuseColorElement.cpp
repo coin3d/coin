@@ -220,6 +220,24 @@ SoDiffuseColorElement::getNum() const
   return this->numColors;
 }
 
+/*!
+  Returns the color array. This method is not part of the OIV API.
+*/ 
+const SbColor *
+SoDiffuseColorElement::getColorArrayPtr() const 
+{
+  return this->colors;
+}
+
+/*!
+  Returns the packed color array. This method is not part of the OIV API.
+*/ 
+const uint32_t *
+SoDiffuseColorElement::getPackedArrayPtr() const 
+{
+  return this->packedColors;
+}
+
 //! FIXME: write doc.
 
 const SbColor &

@@ -63,6 +63,9 @@ public:
   const SbColor &get(const int index) const;
   SbBool isPacked() const;
 
+  const SbColor *getColorArrayPtr() const;
+  const uint32_t *getPackedArrayPtr() const;
+
 protected:
   friend class SoMaterialBundle;
   virtual void setElt(const int32_t numColors, const SbColor * const colors);

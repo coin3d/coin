@@ -55,6 +55,7 @@ public:
 
   int32_t getNum() const;
   float get(const int index) const;
+  const float *getArrayPtr() const;
 
 protected:
   virtual void setElt(const int32_t numValues, const float * const values);

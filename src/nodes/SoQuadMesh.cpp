@@ -368,7 +368,7 @@ SoQuadMesh::generateDefaultNormals(SoState * state, SoNormalCache * nc)
   if (SoShapeHintsElement::getVertexOrdering(state) ==
       SoShapeHintsElement::CLOCKWISE) ccw = FALSE;
 
-  const SbVec3f * coords = SoCoordinateElement::getArrayPtr3(state);
+  const SbVec3f * coords = SoCoordinateElement::getInstance(state)->getArrayPtr3();
   assert(coords);
 
   Binding binding = findNormalBinding(state);

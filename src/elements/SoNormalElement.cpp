@@ -156,16 +156,6 @@ SoNormalElement::set(SoState * const state,
 
 //! FIXME: write doc.
 
-const SbVec3f *
-SoNormalElement::getArrayPtr(SoState * const state)
-{
-  const SoNormalElement *elem =
-    SoNormalElement::getInstance(state);
-  return elem->normals;
-}
-
-//! FIXME: write doc.
-
 void
 SoNormalElement::print(FILE * /* file */) const
 {
@@ -211,9 +201,18 @@ SoNormalElement::get(const int index) const
   return this->normals[index];
 }
 
+/*!
+  Returns a pointer to the normal array. This method is not part of the OIV API.
+*/
+const SbVec3f *
+SoNormalElement::getArrayPtr() const 
+{
+  return this->normals;
+}
+
 //$ EXPORT INLINE
 SbBool
-SoNormalElement::normalsAreUnitLength() const
+SoNormalElement::areNormalsUnitLength() const
 {
   return unitLength;
 }

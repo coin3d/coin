@@ -187,6 +187,15 @@ SoAmbientColorElement::get(const int index) const
   return this->colors[index];
 }
 
+/*!
+  Return a pointer to the color array. This method is not part of the OIV API.
+*/
+const SbColor *
+SoAmbientColorElement::getArrayPtr() const 
+{
+  return this->colors;
+}
+
 //! FIXME: write doc.
 
 //$ EXPORT INLINE

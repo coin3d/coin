@@ -91,6 +91,9 @@ void
 SoNonIndexedShape::computeCoordBBox(SoAction * action, int numVertices,
                                     SbBox3f & box, SbVec3f & center)
 {
+  const SoCoordinateElement *coordelem = 
+    SoCoordinateElement::getInstance(action->getState());
+
   SoVertexProperty * vp = (SoVertexProperty *) this->vertexProperty.getValue();
   assert(!vp ||
          vp->getTypeId().isDerivedFrom(SoVertexProperty::getClassTypeId()));
@@ -98,7 +101,7 @@ SoNonIndexedShape::computeCoordBBox(SoAction * action, int numVertices,
 
   const int numCoords = vpvtx ?
     vp->vertex.getNum() :
-    SoCoordinateElement::getInstance(action->getState())->getNum();
+    coordelem->getNum();
 
   // FIXME: handle assertion more gracefully. 19990327 mortene.
   assert(numCoords > 0);
@@ -114,7 +117,7 @@ SoNonIndexedShape::computeCoordBBox(SoAction * action, int numVertices,
 
   const SbVec3f * coords = vpvtx ?
     vp->vertex.getValues(0) :
-    SoCoordinateElement::getArrayPtr3(action->getState());
+    coordelem->getArrayPtr3();
 
   center.setValue(0.0f, 0.0f, 0.0f);
   for (int i = startidx; i <= lastidx; i++) {

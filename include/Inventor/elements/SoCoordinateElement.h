@@ -55,17 +55,17 @@ public:
   static void set4(SoState * const state, SoNode * const node,
                    const int32_t numCoords, const SbVec4f * const coords);
 
-  static const SbVec3f *getArrayPtr3(SoState * const state);
-  static const SbVec4f *getArrayPtr4(SoState * const state);
-
   static const SoCoordinateElement *getInstance(SoState * const state);
   int32_t getNum() const;
   SbBool is3D() const;
   const SbVec3f & get3(const int index) const;
   const SbVec4f & get4(const int index) const;
+  const SbVec3f *getArrayPtr3() const;
+  const SbVec4f *getArrayPtr4() const;
 
   static SbVec3f getDefault3();
   static SbVec4f getDefault4();
+
 
   virtual void print(FILE * file) const;
 
