@@ -246,15 +246,10 @@ fi
 # * Mathlib stuff.
 # *******************************************************************
 
-# We need to check for the math library on our own if its not
-# "inherited" from the simage library. FIXME: this could better
-# be done with a "SIM_AC_MATHLIB_READY" test, in the same vein
-# as the X11 "readiness-test" in SoXt configure.in. 20000609 mortene.
-
-$sim_ac_simage_avail || {
+SIM_AC_MATHLIB_READY_IFELSE(,[
   SIM_AC_CHECK_MATHLIB(COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS $sim_ac_libm",
                        AC_MSG_ERROR(could not find a way to use math library))
-}
+])
 
 AC_CACHE_CHECK([whether single-precision math functions are available],
   sim_cv_func_singleprec_avail,
@@ -272,7 +267,6 @@ AC_CACHE_CHECK([whether single-precision math functions are available],
                sim_cv_func_singleprec_avail=false)])
 
 $sim_cv_func_singleprec_avail && AC_DEFINE(HAVE_SINGLEPRECISION_MATH)
-
 
 # *******************************************************************
 # * Handle the detection and inclusion of X11 libraries.

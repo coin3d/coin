@@ -24,30 +24,6 @@
 #undef SIMAGE_RUNTIME_LINKING
 #undef GLU_RUNTIME_LINKING
 
-/* Define if you have the `bsd' library (-lbsd). */
-#undef HAVE_LIBBSD
-
-/* Define if you have the `dnet' library (-ldnet). */
-#undef HAVE_LIBDNET
-
-/* Define if you have the `dnet_stub' library (-ldnet_stub). */
-#undef HAVE_LIBDNET_STUB
-
-/* Define if you have the `ICE' library (-lICE). */
-#undef HAVE_LIBICE
-
-/* Define if you have the `ipc' library (-lipc). */
-#undef HAVE_LIBIPC
-
-/* Define if you have the `nsl' library (-lnsl). */
-#undef HAVE_LIBNSL
-
-/* Define if you have the `posix' library (-lposix). */
-#undef HAVE_LIBPOSIX
-
-/* Define if you have the `socket' library (-lsocket). */
-#undef HAVE_LIBSOCKET
-
 /* Define this to true if the __FUNCTION__ variable contains the current
    function name */
 #undef HAVE_VAR___FUNCTION__
