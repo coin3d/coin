@@ -355,6 +355,7 @@ SoSceneManager::redraw(void)
 {
   if (PRIVATE(this)->rendercb) {
     PRIVATE(this)->rendercb(PRIVATE(this)->rendercbdata, this);
+  }
 }
 
 /*!
