@@ -112,7 +112,7 @@ main(int argc, char * argv[])
   SoSeparator * root = NULL;
 
   if (i >= argc) {
-    /* No files specified, read from stdin. */
+    /* No files specified, read from stdin only. */
     root = SoDB::readAll(&stdinp);
   }
   else {
@@ -120,29 +120,29 @@ main(int argc, char * argv[])
     root = new SoSeparator;
 
     for (; i < argc; i++) {
-      if (strcmp("-", argv[i]) == 0) {
-	SoSeparator * tmproot = SoDB::readAll(&stdinp);
-	if (tmproot)
+      SoInput * inp = NULL;
+
+      if (strcmp("-", argv[i]) == 0) inp = &stdinp;
+      else if (fileinp.openFile(argv[i])) inp = &fileinp;
+      else fprintf(stderr, "Couldn't open file '%s' -- skipping.\n", argv[i]);
+
+      if (inp) {
+	SoSeparator * tmproot = SoDB::readAll(inp);
+	if (tmproot) {
 	  root->addChild(tmproot->getNumChildren() == 1 ?
 			 tmproot->getChild(0) : tmproot);
-      }
-      else {
-	if (fileinp.openFile(argv[i])) {
-		SoSeparator * tmproot = SoDB::readAll(&fileinp);
-		if (tmproot)
-	    root->addChild(tmproot->getNumChildren() == 1 ?
-			   tmproot->getChild(0) : tmproot);
 	}
 	else {
-	  fprintf(stderr, "Couldn't open file '%s' -- skipping.\n", argv[i]);
+	  fprintf(stderr, "Couldn't read file '%s' -- skipping.\n", argv[i]);
 	}
+
+	if (inp == &fileinp) inp->closeFile();
       }
     }
   }
 
   if (flattenfiles) {
     // FIXME: flatten SoFile nodes. 19991009 mortene.
-
     fprintf(stderr, "Warning: SoFile flattening not supported yet!\n");
   }
 
@@ -151,7 +151,7 @@ main(int argc, char * argv[])
     fprintf(stderr, "Warning: texture inlining not supported yet!\n");
   }
 
-  if (root) {
+  if (root && (root->getNumChildren() > 0)) {
     SoOutput out;
     if (outname) {
       if (!out.openFile(outname)) {
