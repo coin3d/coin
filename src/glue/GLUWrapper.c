@@ -310,6 +310,7 @@ GLUWrapper(void)
   GLUWRAPPER_REGISTER_FUNC(gluTessEndContour, gluTessEndContour_t);
   GLUWRAPPER_REGISTER_FUNC(gluTessVertex, gluTessVertex_t);
   GLUWRAPPER_REGISTER_FUNC(gluDeleteTess, gluDeleteTess_t);
+  GLUWRAPPER_REGISTER_FUNC(gluTessNormal, gluTessNormal_t);
 
   /* "Backup" functions, makes it easier to be robust even when no GLU
      library can be loaded. */
