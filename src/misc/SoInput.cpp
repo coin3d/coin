@@ -118,6 +118,7 @@ public:
       this->lastputback = -1;
       this->lastchar = -1;
       this->eof = FALSE;
+      this->isbinary = FALSE;
     }
 
   ~SoInput_FileInfo()
