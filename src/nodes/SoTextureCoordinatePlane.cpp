@@ -26,10 +26,67 @@
   \brief The SoTextureCoordinatePlane class generates texture coordinates by projecting onto a plane.
   \ingroup nodes
 
-  The plane is specified using two direction vectors: directionS
-  and directionT. The S and T texture coordinates are computed as the
-  distance from the origin to the projected point, in the respective
-  directions.
+  SoTextureCoordinatePlane is used for generating texture coordinates
+  by projecting the object onto a texture plane.  The s and t texture
+  coordinates are computed as the distance from the origin to the
+  projected point, in the respective directions. The texture plane is
+  specified using two direction vectors, given as
+  SoTextureCoordinatePlane::directionS and
+  SoTextureCoordinatePlane::directionT in object space coordinates.
+  The length of the vector determines the repeat interval of the
+  texture per unit length. 
+
+  A simple usage example:
+
+  \code
+  SoSeparator *root = new SoSeparator;
+  root->ref();
+  
+  // the texture image
+  SoTexture2 *tex = new SoTexture2;
+  tex->filename.setValue("foo.png");
+  root->addChild(tex);
+  
+  // the texture plane
+  SoTextureCoordinatePlane *texPlane = new SoTextureCoordinatePlane;
+  texPlane->directionS.setValue(SbVec3f(1,0,0));
+  texPlane->directionT.setValue(SbVec3f(0,1,0));
+  root->addChild(texPlane);
+  
+  // add a simple cube
+  SoCube * c = new SoCube;
+  c->width.setValue(1.0);
+  c->height.setValue(1.0)
+  c->depth.setValue(1.0);
+  root->addChild(new SoCube);
+  \endcode
+
+  Here, we are projecting a texture onto a cube. The texture
+  coordinate plane is specified by directionS = (1,0,0) and directionT
+  = (0,1,0), meaning that it is parallel to the front face of the
+  cube. Setting e.g. directionS = (0,1,0) and directionT = (-1,0,0)
+  would rotate the texture counterclockwise by 90 degrees. Setting
+  them to ((2,0,0), (0,2,0)) results to the texture being repeated twice 
+  per unit, so the texture appears four times on the 1x1 face.
+
+  Note that when you transform the cube, the transformation will also
+  affect the texture - it will be transformed vs. the rest of the
+  world, but appear "fixed" on the object. If you want to change the
+  placement of the texture on the object, you have to insert a
+  SoTexture2Transform node before the texture coordinate plane. For
+  instance in the example above, since the cube is centered in its
+  coordinate system, the lower left corner of the texture appears to
+  be in the middle of the face. To move the texture's origin to
+  coincide with the lower left corner of the face, insert
+
+  \code
+  SoTexture2Transform * tf = new SoTexture2Transform;
+  tf->translation.setValue(-0.5,-0.5);
+  root->addChild(tf);
+  \endcode
+
+  before adding the texture coordinate plane.
+
 */
 
 #include <Inventor/nodes/SoTextureCoordinatePlane.h>
@@ -45,10 +102,15 @@
 /*!
   \var SoSFVec3f SoTextureCoordinatePlane::directionS
   The S texture coordinate plane direction.
+  The length of the vector determines the repeat interval of the
+  texture per unit length. 
+
 */
 /*!
   \var SoSFVec3f SoTextureCoordinatePlane::directionT
   The T texture coordinate plane direction.
+  The length of the vector determines the repeat interval of the
+  texture per unit length. 
 */
 
 // *************************************************************************
