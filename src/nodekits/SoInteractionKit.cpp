@@ -452,7 +452,7 @@ SoInteractionKit::setAnySurrogatePath(const SbName &partname,
   FIXME: doc
 */
 SbBool
-SoInteractionKit::setUpConnections(SbBool onoff, SbBool doitalways = FALSE)
+SoInteractionKit::setUpConnections(SbBool onoff, SbBool doitalways)
 {
   if (!doitalways && this->connectionsSetUp == onoff)
     return onoff;
