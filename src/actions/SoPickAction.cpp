@@ -40,6 +40,7 @@
 #include <Inventor/elements/SoDecimationPercentageElement.h>
 #include <Inventor/elements/SoDecimationTypeElement.h>
 #include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/misc/SoState.h>
@@ -64,6 +65,7 @@ SoPickAction::initClass(void)
   SO_ENABLE(SoPickAction, SoDecimationTypeElement);
   SO_ENABLE(SoPickAction, SoDecimationPercentageElement);
   SO_ENABLE(SoPickAction, SoLazyElement);
+  SO_ENABLE(SoPickAction, SoCacheElement);
 }
 
 
