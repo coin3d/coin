@@ -77,11 +77,6 @@ SoReadError::getTypeId(void) const
 void
 SoReadError::setHandlerCallback(SoErrorCB * const function, void * const data)
 {
-  /* FIXME: Overriding the error handler for subclasses of SoError
-     doesn't work yet. Use SoError::setHandlerCallback() instead as a
-     workaround, but note that this will stop working when callback
-     override is implemented properly. 2003-01-22 thammer.  
-  */
   SoReadError::callback = function;
   SoReadError::callbackData = data;
 }
@@ -123,7 +118,13 @@ SoReadError::post(const SoInput * const in, const char * const format, ...)
   SbString s;
   in->getLocationString(s);
   error.appendToDebugString(s.getString());
-  error.handleError();
+
+  if (SoReadError::callback != SoError::defaultHandlerCB) {
+    SoReadError::callback(&error, SoReadError::callbackData);
+  }
+  else {
+    error.handleError();
+  }
 }
 
 // Documented for parent class.
