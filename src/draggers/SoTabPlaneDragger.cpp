@@ -762,6 +762,7 @@ SoTabPlaneDragger::createPrivateParts(void)
   // change very often.
   SoSeparator *sep = SO_GET_ANY_PART(this, "scaleTabs", SoSeparator);
   sep->renderCaching = SoSeparator::OFF;
+  sep->renderCaching.setDefault(TRUE);
   // this is the default, so don't write it
   this->scaleTabs.setDefault(TRUE);
 }
