@@ -18,8 +18,9 @@ build: build-stamp
 build-stamp:
 	dh_testdir
 	./configure --prefix=/usr \
-	  --with-html=`pwd`/debian/tmp/usr/share/doc/libcoin@COIN_MAJOR_VERSION@/html \
-	  --with-man=`pwd`/debian/tmp/usr/share/man \
+	  --disable-dependency-tracking \
+	  --enable-man --mandir=/usr/share/man \
+	  --enable-html htmldir=share/doc/libcoin@COIN_SO_VERSION@-doc/html \
 	  --enable-static --without-mesa
 	$(MAKE)
 	touch build-stamp
@@ -31,6 +32,7 @@ clean:
 	-$(MAKE) distclean
 	-dh_clean
 
+# didn't see any debhelper script for this one...  larsa 20010829
 source: clean
 	dpkg-buildpackage -S -us
 
@@ -40,9 +42,9 @@ install: build
 	dh_testroot
 	dh_clean -k
 	dh_installdirs
-	# Add here commands to install the package into debian/tmp.
-	-$(MAKE) doxygen-docs
 	$(MAKE) DESTDIR=`pwd`/debian/tmp install
+	-mkdir debian/tmp/usr/share/doc/libcoin@COIN_SO_VERSION@-dev
+	-ln -sf ../libcoin@COIN_SO_VERSION@-doc/html debian/tmp/usr/share/doc/libcoin@COIN_SO_VERSION@-dev/html
 	dh_movefiles
 
 # This single target is used to build all the packages, all at once, or

@@ -1,6 +1,6 @@
-coin1 (@VERSION@-1) unstable; urgency=low
+coin (@VERSION@-1) unstable; urgency=low
 
-  * Initial Debian packaging.
+  * Initial Debian packaging.  Closes: #109046.
 
  -- Lars J. Aas <larsa@coin3d.org>  @RFC822_DATE@
 
