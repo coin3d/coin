@@ -150,15 +150,20 @@ SoTimerSensor::reschedule(const SbTime & schedtime)
 #endif // debug
   }
   else {
-    int intervals = (int)((schedtime - this->base)/this->interval);
-    if ( intervals < 0 ) intervals = 0;
-    this->setTriggerTime(this->base + (intervals+1) * this->interval);
-#if DEBUG_TIMERSENSOR_TRACE // debug
+    int intervals = (int)((schedtime - this->base)/this->interval) + 1;
+
+    if ( intervals < 0 ) 
+      intervals = 0;
+    
+    this->setTriggerTime(this->base + intervals * this->interval);
+
+#if DEBUG_TIMERSENSOR_TRACE
     SoDebugError::postInfo("SoTimerSensor::reschedule",
                            "base: %lf, new trigger time: %lf",
                            this->base.getValue(), this->getTriggerTime());
-#endif // debug
+#endif
   }
+
   // don't call this node's schedule as it calls this method
   inherited::schedule();
 }
