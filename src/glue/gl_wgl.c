@@ -622,6 +622,7 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx)
     
     const int attrs[] = {
       WGL_DRAW_TO_PBUFFER_ARB, 1,
+      WGL_BIND_TO_TEXTURE_RGBA_ARB, 1,
       WGL_COLOR_BITS_ARB, 32,
       WGL_ALPHA_BITS_ARB, 8,
       WGL_DEPTH_BITS_ARB, 24
@@ -634,12 +635,18 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx)
                                 "wglChoosePixelFormat() failed");
       return FALSE;
     }
+
+    int pbufferflags[]={ 
+      WGL_TEXTURE_FORMAT_ARB, WGL_TEXTURE_RGBA_ARB,
+      WGL_TEXTURE_TARGET_ARB, WGL_TEXTURE_2D_ARB,
+      0};
         
     /* create the pbuffer */
     context->hpbuffer = wglglue_wglCreatePbuffer(context->memorydc, 
                                                  pixformat,
-                                                 context->width,
-                                                 context->height, NULL);
+                                                 context->width,                   
+                                                 context->height, 
+                                                 pbufferflags);
     if (!context->hpbuffer) {
       cc_debugerror_postwarning("wglglue_context_create_pbuffer",
                                 "wglCreatePbuffer(..., %d, %d, %d, ...) failed",
