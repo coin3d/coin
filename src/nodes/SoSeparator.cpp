@@ -346,6 +346,7 @@ SoSeparator::handleEvent(SoHandleEventAction * action)
 static SbBool
 ray_intersect(SoRayPickAction * action, const SbBox3f &box)
 {
+  if (box.isEmpty()) return FALSE;
   SoState * state = action->getState();
   SbBox3f worldbox = box;
   worldbox.transform(SoModelMatrixElement::get(state));
@@ -475,7 +476,9 @@ SbBool
 SoSeparator::cullTest(SoState * state)
 {
   if (this->renderCulling.getValue() == SoSeparator::OFF) return FALSE;
-  if (!this->bboxcache || !this->bboxcache->isValid(state)) return FALSE;
+  if (!this->bboxcache || 
+      !this->bboxcache->isValid(state) ||
+      this->bboxcache->getProjectedBox().isEmpty()) return FALSE;
   if (SoCullElement::completelyInside(state)) return FALSE;
   return SoCullElement::cullBox(state, this->bboxcache->getProjectedBox());
 }
