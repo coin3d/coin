@@ -70,11 +70,6 @@ SoType SoFieldContainer::classTypeId = SoType::badType();
 SoFieldContainer::SoFieldContainer(void)
   : isBuiltIn(TRUE), donotify(TRUE)
 {
-#if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoFieldContainer::SoFieldContainer",
-                         "new instance of ``%s''",
-                         this->getTypeId().getName().getString());
-#endif // debug
 }
 
 /*!
@@ -111,155 +106,181 @@ SoFieldContainer::getClassTypeId(void)
 void
 SoFieldContainer::setToDefaults(void)
 {
-  const SoFieldData * const fields = this->getFieldData();
-  assert(fields);
-  COIN_STUB();
+  const SoFieldData * fd = this->getFieldData();
+  if (!fd) return;
+
+  // Allocate a fresh template to retrieve values from.
+  const SoFieldContainer * from = (const SoFieldContainer *)
+    this->getTypeId().createInstance();
+
+  fd->overlay(this, from, FALSE);
+
+  SoFieldList l;
+  int n = this->getFields(l);
+  for (int i=0; i < n; i++) l[i]->setDefault(TRUE);
 }
 
 /*!
-  This method checks to see if the fields have their default values, and
-  returns \a TRUE if that is the case.
+  This method checks to see if the fields of this container have their
+  default values, and returns \c TRUE if that is the case.
 */
 SbBool
 SoFieldContainer::hasDefaultValues(void) const
 {
-  const SoFieldData * const fields = this->getFieldData();
-  assert(fields);
-  COIN_STUB();
-  return FALSE;
+  const SoFieldData * fd = this->getFieldData();
+  if (!fd) return TRUE;
+
+  // Allocate a fresh template to compare with.
+  const SoFieldContainer * fc = (const SoFieldContainer *)
+    this->getTypeId().createInstance();
+
+  return fd->isSame(this, fc);
 }
 
 /*!
-  This method returns TRUE if the values of the fields of this and container
-  are equal. Fields are assumed to be of the same type.
+  This method returns \c TRUE if the values of the fields of this and
+  \a container are equal.
 */
 SbBool
-SoFieldContainer::fieldsAreEqual(const SoFieldContainer * const container) const
+SoFieldContainer::fieldsAreEqual(const SoFieldContainer * container) const
 {
-  const SoFieldData * const myfielddata = getFieldData();
-  assert(myfielddata);
+  const SoFieldData * fd0 = this->getFieldData();
 
-  const SoFieldData * const otherfielddata = container->getFieldData();
-  assert(otherfielddata);
-
-  COIN_STUB();
-  return FALSE;
+  if (fd0 == NULL) {
+    if (container->getFieldData() == NULL) return TRUE;
+    return FALSE;
+  }
+  
+  return fd0->isSame(this, container);
 }
 
 
 /*!
   This method copies the field values from container into this. The fields
-  are assumed to be of the same type. The copyConnections flag decides
+  are assumed to be of the same type. The \a copyconnections flag decides
   whether the field connections are to be copied aswell.
 */
 void
-SoFieldContainer::copyFieldValues(const SoFieldContainer * const container,
-                                  SbBool copyConnections)
+SoFieldContainer::copyFieldValues(const SoFieldContainer * container,
+                                  SbBool copyconnections)
 {
-  // FIXME: handle copyConnections flag. 19990403 mortene.
-  assert(!copyConnections);
+  const SoFieldData * fd0 = this->getFieldData();
 
-  assert(container);
-  const SoFieldData * const myfielddata = this->getFieldData();
-  assert(myfielddata);
-  const SoFieldData * const otherfielddata = container->getFieldData();
-  assert(otherfielddata);
+  if (fd0 == NULL) {
+    if (container->getFieldData() == NULL) return;
+#if COIN_DEBUG
+    SoDebugError::postInfo("SoFieldContainer::copyFieldValues",
+                           "tried to copy from fieldcontainer of wrong type");
+    return;
+#endif // COIN_DEBUG
+  }
 
-  const int numFields = myfielddata->getNumFields();
-
-  assert(numFields == otherfielddata->getNumFields()); // or just return?
-
-  for (int i = 0; i < numFields; i++)
-    myfielddata->getField(this, i)->copyFrom(*(otherfielddata->getField(container, i)));
+  fd0->overlay(this, container, copyconnections);
 }
 
 
 /*!
   This method parses the values of one or more fields from the
-  \a fieldDataString argument.
+  \a fielddata string.
 
-  The fields must be in the same format as inside Inventor files.
-  \a TRUE is returned upon success, and \a FALSE otherwise.
+  The fields must be in the same format as the Open Inventor file
+  format.  \c TRUE is returned upon success, and \c FALSE otherwise.
 
   \sa get()
-*/
+ */
 SbBool
-SoFieldContainer::set(const char * const fieldDataString)
+SoFieldContainer::set(const char * const fielddata)
 {
-  return set(fieldDataString, NULL);
+  return this->set(fielddata, NULL);
 }
 
 /*!
-  This methods stores the field data in the given fieldDataString argument.
-  The format is the same as SoFieldContainer::set() expects.
+  This methods stores the field data in the given \a fielddata string.
+  The format of the returned string follows the Open Inventor file
+  format.
 
   \sa set()
 */
 void
-SoFieldContainer::get(SbString & fieldDataString)
+SoFieldContainer::get(SbString & fielddata)
 {
-  get(fieldDataString, NULL);
+  this->get(fielddata, NULL);
 }
 
 
 /*!
-  This method adds the fields in this field container to the list argument,
+  This method adds the fields in this container to the \a l argument,
   and returns the number of fields added.
 
   The virtual nature of this function means that it can be overridden to
   e.g. hide private fields.
 */
 int
-SoFieldContainer::getFields(SoFieldList & /* list */) const
+SoFieldContainer::getFields(SoFieldList & l) const
 {
-  COIN_STUB();
-  return 0;
+  const SoFieldData * fd = this->getFieldData();
+  if (!fd) return 0;
+  int numfields = fd->getNumFields();
+  for (int i=0; i < numfields; i++) l.append(fd->getField(this, i));
+  return numfields;
 }
 
 /*!
-  FIXME: write doc
+  Returns VRML eventIn and eventOut fields in addition to the
+  "ordinary" fields.
+
+  \sa getFields()
  */
 int
-SoFieldContainer::getAllFields(SoFieldList & /* list */) const
+SoFieldContainer::getAllFields(SoFieldList & l) const
 {
+  // No VRML support yet. Add eventIn and eventOut fields when it is
+  // implemented.
   COIN_STUB();
-  return 0;
+  return this->getFields(l);
 }
 
 /*!
-  This method returns a pointer to the field with name \a fieldName, or
-  \a NULL if no such field exists.
+  This method returns a pointer to the field with \a name, or
+  \c NULL if no such field exists.
 */
 SoField *
-SoFieldContainer::getField(const SbName & fieldName) const
+SoFieldContainer::getField(const SbName & name) const
 {
-  const SoFieldData * const fields = this->getFieldData();
-  assert(fields);
-  const int numFields = fields->getNumFields();
-  for (int i = 0; i < numFields; i++)
-    if (fieldName == fields->getFieldName(i))
+  const SoFieldData * fields = this->getFieldData();
+  if (!fields) return NULL;
+
+  const int numfields = fields->getNumFields();
+  for (int i = 0; i < numfields; i++) {
+    if (name == fields->getFieldName(i))
       return fields->getField(this, i);
-  return (SoField *) NULL;
+  }
+
+  return (SoField *)NULL;
 }
 
 /*!
-  This method returns a pointer to the eventIn with name \a fieldName,
-  or \a NULL if no such eventIn exists.
+  This method returns a pointer to the eventIn with name \a name,
+  or \c NULL if no such eventIn exists.
 */
 SoField *
-SoFieldContainer::getEventIn(const SbName & /* fieldName */) const
+SoFieldContainer::getEventIn(const SbName & name) const
 {
+  // No VRML support yet. Add eventIn and eventOut fields when it is
+  // implemented.
   COIN_STUB();
   return NULL;
 }
 
 /*!
-  This method returns a pointer to the eventOut with name \a fieldName,
-  or \a NULL if no such eventOut exists.
+  This method returns a pointer to the eventOut with name \a name,
+  or \c NULL if no such eventOut exists.
 */
 SoField *
-SoFieldContainer::getEventOut(const SbName & /* fieldName */) const
+SoFieldContainer::getEventOut(const SbName & name) const
 {
+  // No VRML support yet. Add eventIn and eventOut fields when it is
+  // implemented.
   COIN_STUB();
   return NULL;
 }
@@ -267,20 +288,20 @@ SoFieldContainer::getEventOut(const SbName & /* fieldName */) const
 
 /*!
   Finds the name of the given \a field and returns the value in the
-  \a fieldName argument.
+  \a name argument.
 
-  \a TRUE is returned if the field is contained within this instance,
-  and \a FALSE otherwise.
+  \c TRUE is returned if the field is contained within this instance,
+  and \c FALSE otherwise.
 */
 SbBool
 SoFieldContainer::getFieldName(const SoField * const field,
-                               SbName & fieldName) const
+                               SbName & name) const
 {
-  const SoFieldData * const fields = this->getFieldData();
+  const SoFieldData * fields = this->getFieldData();
   if (!fields) return FALSE;
   int idx = fields->getIndex(this, field);
   if (idx == -1) return FALSE;
-  fieldName = fields->getFieldName(idx);
+  name = fields->getFieldName(idx);
   return TRUE;
 }
 
@@ -289,8 +310,23 @@ SoFieldContainer::getFieldName(const SoField * const field,
   This method sets whether notification will be propagated on changing the
   values of the contained fields.  The old value of the setting is returned.
 
+  Notification is default \e on. Turning off automatic notification
+  can be useful for optimizing performance. During series of updates
+  you may want to avoid the propagation of notifications upon every
+  field value change if you make a lot of them. This is how you should
+  handle those cases:
+
+  \code
+  node->enableNotify(FALSE);
+  // ...
+  // Make modifications to fields of "node" here.
+  // ...
+  node->enableNotify(TRUE);
+  node->touch();
+  \endcode
+
   \sa isNotifyEnabled()
-*/
+ */
 SbBool
 SoFieldContainer::enableNotify(const SbBool enable)
 {
@@ -313,13 +349,21 @@ SoFieldContainer::isNotifyEnabled(void) const
 
 
 /*!
-  FIXME: write doc
- */
+  This method parses the values of one or more fields from the
+  \a fielddata string.
+
+  The fields must be in the same format as the Open Inventor file
+  format.  \c TRUE is returned upon success, and \c FALSE otherwise.
+
+  If \a in is specified, we use the reference dictionary provided
+  within that object.
+
+  \sa get()
+*/
 SbBool
-SoFieldContainer::set(const char * const /* fieldDataString */,
-                      SoInput * const /* dictIn */)
+SoFieldContainer::set(const char * fielddata, SoInput * in)
 {
-  const SoFieldData * const fields = this->getFieldData();
+  const SoFieldData * fields = this->getFieldData();
   assert(fields);
 
   COIN_STUB();
@@ -330,10 +374,9 @@ SoFieldContainer::set(const char * const /* fieldDataString */,
   FIXME: write doc
  */
 void
-SoFieldContainer::get(SbString & /* fieldDataString */,
-                      SoOutput * const /* dictOut */)
+SoFieldContainer::get(SbString & fielddata, SoOutput * out)
 {
-  const SoFieldData * const fields = this->getFieldData();
+  const SoFieldData * fields = this->getFieldData();
   assert(fields);
 
   COIN_STUB();
@@ -344,17 +387,17 @@ SoFieldContainer::get(SbString & /* fieldDataString */,
   FIXME: write doc
  */
 void
-SoFieldContainer::notify(SoNotList * list)
+SoFieldContainer::notify(SoNotList * l)
 {
-  if (this->donotify) inherited::notify(list);
+  if (this->donotify) inherited::notify(l);
 }
 
 /*!
   FIXME: write doc
  */
 SbBool
-SoFieldContainer::validateNewFieldValue(SoField * /* pField */,
-                                        void * /* newValue */)
+SoFieldContainer::validateNewFieldValue(SoField * /* field */,
+                                        void * /* newval */)
 {
   COIN_STUB();
   return FALSE;
@@ -365,10 +408,10 @@ SoFieldContainer::validateNewFieldValue(SoField * /* pField */,
   field containers are also accounted for.
  */
 void
-SoFieldContainer::addWriteReference(SoOutput * out, SbBool isFromField)
+SoFieldContainer::addWriteReference(SoOutput * out, SbBool isfromfield)
 {
-  inherited::addWriteReference(out, isFromField);
-  if (isFromField) return;
+  inherited::addWriteReference(out, isfromfield);
+  if (isfromfield) return;
 
   // FIXME: move this into SoField::write(), and generally fix up the
   // write reference counting, so the program flow is about the same
@@ -395,12 +438,13 @@ SoFieldContainer::addWriteReference(SoOutput * out, SbBool isFromField)
 void
 SoFieldContainer::writeInstance(SoOutput * out)
 {
-  this->getFieldData()->write(out, this);
+  const SoFieldData * fd = this->getFieldData();
+  if (fd) fd->write(out, this);
 }
 
 /*!
-  Returns \a TRUE if this object is instantiated from one of the native
-  Coin classes, \a FALSE if the object's class is outside the standard
+  Returns \c TRUE if this object is instantiated from one of the native
+  Coin classes, \c FALSE if the object's class is outside the standard
   Coin library.
  */
 SbBool
@@ -425,8 +469,8 @@ SoFieldContainer::getFieldData(void) const
   FIXME: write doc
  */
 void
-SoFieldContainer::copyContents(const SoFieldContainer * /* fromFC */,
-                               SbBool /* copyConnections */)
+SoFieldContainer::copyContents(const SoFieldContainer * /* from */,
+                               SbBool /* copyconnections */)
 {
   COIN_STUB();
 }
@@ -480,7 +524,7 @@ SoFieldContainer::checkCopy(const SoFieldContainer * const /* orig */)
  */
 SoFieldContainer *
 SoFieldContainer::findCopy(const SoFieldContainer * const /* orig */,
-                           const SbBool /* copyConnections */)
+                           const SbBool /* copyconnections */)
 {
   COIN_STUB();
   return NULL;
