@@ -64,11 +64,11 @@ SoComposeMatrix::SoComposeMatrix()
 {
   SO_ENGINE_INTERNAL_CONSTRUCTOR(SoComposeMatrix);
 
-  SO_ENGINE_ADD_INPUT(translation,(0,0,0));
-  SO_ENGINE_ADD_INPUT(rotation,(0,0,0,0));
-  SO_ENGINE_ADD_INPUT(scaleFactor,(0,0,0));
-  SO_ENGINE_ADD_INPUT(scaleOrientation,(0,0,0,0));
-  SO_ENGINE_ADD_INPUT(center,(0,0,0));
+  SO_ENGINE_ADD_INPUT(translation, (0.0f, 0.0f, 0.0f));
+  SO_ENGINE_ADD_INPUT(rotation, (0.0f, 0.0f, 0.0f, 1.0f));
+  SO_ENGINE_ADD_INPUT(scaleFactor, (1.0f, 1.0f, 1.0f));
+  SO_ENGINE_ADD_INPUT(scaleOrientation, (0.0f, 0.0f, 0.0f, 1.0f));
+  SO_ENGINE_ADD_INPUT(center, (0.0f, 0.0f, 0.0f));
 
   SO_ENGINE_ADD_OUTPUT(matrix,SoMFMatrix);
 }
