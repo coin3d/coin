@@ -56,6 +56,7 @@ public:
 
   static  SoType getClassTypeId(void);
   virtual SoType getTypeId(void) const;
+  virtual SbBool isOfType(SoType type) const;
   virtual ~SoAction();
 
 protected:

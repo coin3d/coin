@@ -114,6 +114,16 @@ SoAction::getTypeId() const
 }
 
 /*!
+    Returns \c TRUE if the type of this object is either of the same
+    type or inherited from \a type.
+*/
+SbBool
+SoAction::isOfType(SoType type) const
+{
+  return this->getTypeId().isDerivedFrom(type);
+}
+
+/*!
   This static method initializes the run-time type system for the SoAction
   class, and sets up / prepares the enabled elements and action method list.
 */
