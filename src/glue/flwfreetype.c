@@ -31,6 +31,15 @@
 
 /* ************************************************************************* */
 
+/*
+  Implementation note: no part of the code has to be reentrant, as the
+  complete interface is protected from multiple threads accessing it
+  at the same time by locking in the cc_flw_* functions (which should
+  be the only callers).
+*/
+
+/* ************************************************************************* */
+
 #ifndef HAVE_FREETYPE
 
 /* Dummy versions of all functions. Only cc_flwft_initialize() will be
