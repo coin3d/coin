@@ -52,6 +52,8 @@
 #include <Inventor/misc/SoGlyph.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/sensors/SoFieldSensor.h>
+#include <Inventor/nodes/SoProfile.h>
+
 
 #ifdef _WIN32
 #include <windows.h> // *sigh* needed for gl.h
@@ -233,13 +235,40 @@ SoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
     break;
   }
 
+  // check profiles and extend bounding box if necessary
+  float profsize = 0;
   float minz = -1.0f, maxz = 0.0f;
-  if (this->parts.getValue() == SoText3::BACK) {
-    maxz = -1.0f;
+  SoState *state = action->getState();
+  const SoNodeList profilenodes = SoProfileElement::get(state);
+  int numprofiles = profilenodes.getLength();
+  if ( numprofiles > 0) {
+    assert(profilenodes[0]->getTypeId().isDerivedFrom(SoProfile::getClassTypeId()));
+    for (int i=numprofiles-1; i>=0; i--) {
+      SoProfile *pn = (SoProfile *)profilenodes[i];
+      int num;
+      SbVec2f *coords;
+      pn->getVertices(state, num, coords);
+      // find largest profile 'y' (positive y = negatice z...
+      for (int j=0; j<num; j++) {
+        if (-coords[j][0] > maxz) maxz = -coords[j][0];
+        if (-coords[j][0] < minz) minz = -coords[j][0];
+        if (coords[j][1] > profsize) profsize = coords[j][1];
+      }
+    }    
   }
-  else if (this->parts.getValue() == SoText3::FRONT) {
-    minz = 0.0f;
+  else {
+    // extrude only
+    if (this->parts.getValue() == SoText3::BACK) {
+      maxz = -1.0f;
+    }
+    else if (this->parts.getValue() == SoText3::FRONT) {
+      minz = 0.0f;
+    }
   }
+  minx -= profsize;
+  maxx += profsize;
+  miny -= profsize;
+  maxy += profsize;
   box.setBounds(SbVec3f(minx, miny, minz), SbVec3f(maxx, maxy, maxz));
   center = box.getCenter();
 }
@@ -405,12 +434,36 @@ SoText3::render(SoState * state, unsigned int part)
 {
   float size = SoFontSizeElement::get(state);
   // FIXME: not in use (yet?). 20000525 mortene.
-//    SbBool doTextures = SoGLTextureEnabledElement::get(state);
-
+  // SbBool doTextures = SoGLTextureEnabledElement::get(state);
   int i, n = this->widths.getLength();
 
-  if (part == SoText3::SIDES) glBegin(GL_QUADS);
-  else {
+  int      firstprofile = 0;
+  int      profnum;
+  SbVec2f *profcoords;
+  float    nearz = 0.0f;
+  float    farz  = -1.0f;
+
+  const SoNodeList profilenodes = SoProfileElement::get(state);
+  int numprofiles = profilenodes.getLength();
+  if ( numprofiles > 0) {
+    assert(profilenodes[0]->getTypeId().isDerivedFrom(SoProfile::getClassTypeId()));
+    // Find near/far z (for modifying position of front/back
+    for (int i=numprofiles-1; i>=0; i--) {
+      SoProfile *pn = (SoProfile *)profilenodes[i];
+      pn->getVertices(state, profnum, profcoords);
+      
+      if (pn->linkage.getValue() == SoProfile::START_FIRST) {
+        nearz =  profcoords[0][0];
+        firstprofile = i;
+        break;
+      }
+      else {  // START_NEW & ADD_TO_CURRENT
+        farz  = -profcoords[profnum-1][0];
+      }
+    }    
+  }
+  
+  if (part != SoText3::SIDES) {
     glBegin(GL_TRIANGLES);
     if (part == SoText3::FRONT)
       glNormal3f(0.0f, 0.0f, 1.0f);
@@ -437,7 +490,7 @@ SoText3::render(SoState * state, unsigned int part)
       assert((glyphidx < this->glyphs.getLength()) && "glyph-list not in sync");
       const SoGlyph * glyph = this->glyphs[glyphidx++];
       const SbVec2f * coords = glyph->getCoords();
-      if (part != SoText3::SIDES) {
+      if (part != SoText3::SIDES) {  // FRONT & BACK
         const int * ptr = glyph->getFaceIndices();
         while (*ptr >= 0) {
           SbVec2f v0, v1, v2;
@@ -446,13 +499,13 @@ SoText3::render(SoState * state, unsigned int part)
             v0 = coords[*ptr++];
             v1 = coords[*ptr++];
             v2 = coords[*ptr++];
-            zval = 0.0f;
+            zval = nearz;
           }
-          else {
+          else {  // BACK
             v2 = coords[*ptr++];
             v1 = coords[*ptr++];
             v0 = coords[*ptr++];
-            zval = -1.0f;
+            zval = farz;
           }
           glVertex3f(v0[0] * size + xpos, v0[1] * size + ypos, zval);
           glVertex3f(v1[0] * size + xpos, v1[1] * size + ypos, zval);
@@ -460,30 +513,100 @@ SoText3::render(SoState * state, unsigned int part)
         }
       }
       else { // SIDES
-        const int * ptr = glyph->getEdgeIndices();
-        SbVec2f v0, v1;
-        while (*ptr >= 0) {
-          v0 = coords[*ptr++];
-          v1 = coords[*ptr++];
-          SbVec3f tmp(v1[0]-v0[0], v1[1] - v0[1], 0.0f);
-          SbVec3f normal = tmp.cross(SbVec3f(0.0f, 0.0f, 1.0f));
-          normal.normalize();
-          v0[0] = v0[0] * size + xpos;
-          v0[1] = v0[1] * size + ypos;
-          v1[0] = v1[0] * size + xpos;
-          v1[1] = v1[1] * size + ypos;
-          glNormal3fv(normal.getValue());
-          glVertex3f(v1[0], v1[1], 0.0f);
-          glVertex3f(v0[0], v0[1], 0.0f);
-          glVertex3f(v0[0], v0[1], -1.0f);
-          glVertex3f(v1[0], v1[1], -1.0f);
+        if (profilenodes.getLength() == 0) {  // no profile - extrude
+          const int * ptr = glyph->getEdgeIndices();
+          SbVec2f v0, v1;
+          glBegin(GL_QUADS);
+          while (*ptr >= 0) {
+            v0 = coords[*ptr++];
+            v1 = coords[*ptr++];
+            SbVec3f tmp(v1[0]-v0[0], v1[1] - v0[1], 0.0f);
+            SbVec3f normal = tmp.cross(SbVec3f(0.0f, 0.0f, 1.0f));
+            normal.normalize();
+            v0[0] = v0[0] * size + xpos;
+            v0[1] = v0[1] * size + ypos;
+            v1[0] = v1[0] * size + xpos;
+            v1[1] = v1[1] * size + ypos;
+            glNormal3fv(normal.getValue());
+            glVertex3f(v1[0], v1[1], 0.0f);
+            glVertex3f(v0[0], v0[1], 0.0f);
+            glVertex3f(v0[0], v0[1], -1.0f);
+            glVertex3f(v1[0], v1[1], -1.0f);
+          }
+          glEnd();
+        }
+        else {  // profile
+          const int *indices = glyph->getEdgeIndices();
+          int ind = 0;
+          while (*indices >= 0) {
+            int i0 = *indices++;
+            int i1 = *indices++;
+            SbVec2f va = coords[i0];
+            SbVec2f vb = coords[i1];
+            int *ccw = (int *)glyph->getNextCCWEdge(ind);
+            int *cw  = (int *)glyph->getNextCWEdge(ind);
+            SbVec2f vc = coords[*(ccw+1)];
+            SbVec2f vd = coords[*cw];
+            ind++;
+            va[0] = va[0] * size + xpos;
+            va[1] = va[1] * size + ypos;
+            vb[0] = vb[0] * size + xpos;
+            vb[1] = vb[1] * size + ypos;
+            vc[0] = vc[0] * size + xpos;
+            vc[1] = vc[1] * size + ypos;
+            vd[0] = vd[0] * size + xpos;
+            vd[1] = vd[1] * size + ypos;
+
+            // create two 'normal' vectors pointing out from the edges, for aligning the profile
+            SbVec3f tmp1(va[0]-vc[0], va[1]-vc[1], 0.0f);
+            tmp1 = tmp1.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
+            tmp1.normalize();
+        
+            SbVec3f tmp2(vd[0]-vb[0], vd[1]-vb[1], 0.0f);
+            tmp2 = tmp2.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
+            tmp2.normalize();
+          
+            SbVec2f edgea( va[0]+(profcoords[0][1]*tmp2[0]), va[1]+(profcoords[0][1]*tmp2[1]) );
+            SbVec2f edgeb( vb[0]+(profcoords[0][1]*tmp1[0]), vb[1]+(profcoords[0][1]*tmp1[1]) );
+            float edgez = profcoords[0][0];
+          
+              // look through all profiles.
+            for (int j=firstprofile; j<numprofiles; j++) {
+              SoProfile *pn = (SoProfile *)profilenodes[j];
+              pn->getVertices(state, profnum, profcoords);
+              // iterate through all profile coords, drawing quads (and calculating normals)
+              glBegin(GL_QUADS);
+              for (int i=0; i<profnum; i++) {
+                vd[0] = va[0] + ((profcoords[i][1] * tmp2[0]));
+                vd[1] = va[1] + ((profcoords[i][1] * tmp2[1]));
+                vc[0] = vb[0] + ((profcoords[i][1] * tmp1[0]));
+                vc[1] = vb[1] + ((profcoords[i][1] * tmp1[1]));
+                // normal
+                SbVec3f normal( vd[0]-edgea[0], vd[1]-edgea[1], -profcoords[i][0] - edgez );
+                normal = normal.cross( SbVec3f( edgeb[0]-edgea[0], edgeb[1]-edgea[1], 0 ) );
+                if (normal.length() > 0) {
+                  normal.normalize();
+                  glNormal3f( normal[0], normal[1], normal[2] );
+                  // vertices
+                  glVertex3f(edgeb[0], edgeb[1], edgez);
+                  glVertex3f(edgea[0], edgea[1], edgez);
+                  glVertex3f(vd[0], vd[1], -profcoords[i][0] );
+                  glVertex3f(vc[0], vc[1], -profcoords[i][0] );
+                }  
+                edgeb = vc;
+                edgea = vd;
+                edgez = -profcoords[i][0];
+              }
+              glEnd();
+            }
+          }
         }
       }
       xpos += glyph->getWidth() * size;
     }
     ypos -= size * this->spacing.getValue();
   }
-  glEnd();
+  if (part != SoText3::SIDES) glEnd();
 }
 
 // generate text geometry
