@@ -232,6 +232,10 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
   // "behavior" in the children subgraphs if the value is set to
   // AUTO. 19990513 mortene.
   SbBool iscaching = this->boundingBoxCaching.getValue() != OFF;
+
+  // only update and use cache when we're traversing all children
+  if (action->getCurPathCode() == SoAction::IN_PATH) iscaching = FALSE;
+
   SbBool validcache = this->bboxcache && this->bboxcache->isValid(state);
 
   // FIXME: there needs to be some extra magic here to make caching
@@ -339,7 +343,7 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
       // enable this code to see exactly which node caused the error.
       //  pederb, 20000916
 
-#if 0 // enable to debug GL errors 
+#if 0 // enable to debug GL errors
       int err = glGetError();
       if (err != GL_NO_ERROR) {
         const char * errorstring;
