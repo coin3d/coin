@@ -26,6 +26,17 @@
 
     <mortene@sim.no> 20020205.
 
+    UPDATE: A probable cause-effect relationship is found: When a
+    Switch field and one or all of it's children is specified in the
+    iv-file, the assert is hit. Any other combination of specification
+    in the IV file misses the assert.(e.g. Specify just the switch, or
+    any or all of the children without specifying the parent
+    switch). This behaviour is documented thorougly in
+    Flip/src/Inventor/input.cpp. Needs further investigation to find
+    exact cause and fix. (When I say 'probable' it's because I have
+    not implemented a do-nothing NodeKit with a Switch with children
+    as 'proof' yet) 20021031 rolvs
+
 =====================================================================
 
 003 There are seams in texturemaps on SGI Octane with "IMPACTSR"
