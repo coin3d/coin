@@ -351,7 +351,10 @@ SbMatrix::det4(void) const
 SbMatrix
 SbMatrix::inverse(void) const
 {
-#if 0 // new optimized version
+#if 1 // new optimized version
+
+  // check for identity matrix
+  if (*this == SbMatrix::identity()) return SbMatrix::identity();
 
   SbMatrix result;
 
@@ -364,17 +367,6 @@ SbMatrix::inverse(void) const
   // check for affine matrix (common case)
   if (src[0][3] == 0.0f && src[1][3] == 0.0f &&
       src[2][3] == 0.0f && src[3][3] == 1.0f) {
-
-    // check for identity matrix (we already checked last row)
-    if (src[0][0] == 1.0f && 
-        src[0][1] == 0.0f && 
-        src[0][2] == 0.0f &&
-        src[1][0] == 0.0f &&
-        src[1][1] == 1.0f &&
-        src[1][2] == 0.0f &&
-        src[2][0] == 0.0f &&
-        src[2][1] == 0.0f &&
-        src[2][2] == 1.0f) return SbMatrix::identity();
     
     // More or less directly from:
     // Kevin Wu, "Fast Matrix Inversion",  Graphics Gems II
@@ -419,41 +411,41 @@ SbMatrix::inverse(void) const
       return *this;
     }
     else {
-        /* Calculate inverse(A) = adj(A) / det(A) */
-        det_1 = 1.0f / det_1;
-        dst[0][0] = (src[1][1] * src[2][2] -
-                     src[1][2] * src[2][1]) * det_1;
-        dst[1][0] = - (src[1][0] * src[2][2] -
-                       src[1][2] * src[2][0]) * det_1;
-        dst[2][0] = (src[1][0] * src[2][1] -
-                     src[1][1] * src[2][0]) * det_1;
-        dst[0][1] = - (src[0][1] * src[2][2] -
-                       src[0][2] * src[2][1]) * det_1;
-        dst[1][1] = (src[0][0] * src[2][2] -
-                     src[0][2] * src[2][0]) * det_1;
-        dst[2][1] = - (src[0][0] * src[2][1] -
-                       src[0][1] * src[2][0]) * det_1;
-        dst[0][2] =  (src[0][1] * src[1][2] -
-                      src[0][2] * src[1][1]) * det_1;
-        dst[1][2] = - (src[0][0] * src[1][2] -
-                       src[0][2] * src[1][0]) * det_1;
-        dst[2][2] =  (src[0][0] * src[1][1] -
-                      src[0][1] * src[1][0]) * det_1;
-
-        /* Calculate -C * inverse(A) */
-        dst[3][0] = - (src[3][0] * dst[0][0] +
-                       src[3][1] * dst[1][0] +
-                       src[3][2] * dst[2][0]);
-        dst[3][1] = - (src[3][0] * dst[0][1] +
-                       src[3][1] * dst[1][1] +
-                       src[3][2] * dst[2][1]);
-        dst[3][2] = - (src[3][0] * dst[0][2] +
-                       src[3][1] * dst[1][2] +
-                       src[3][2] * dst[2][2]);
-
-        /* Fill in last column */
-        dst[0][3] = dst[1][3] = dst[2][3] = 0.0f;
-        dst[3][3] = 1.0f;
+      /* Calculate inverse(A) = adj(A) / det(A) */
+      det_1 = 1.0f / det_1;
+      dst[0][0] = (src[1][1] * src[2][2] -
+                   src[1][2] * src[2][1]) * det_1;
+      dst[1][0] = - (src[1][0] * src[2][2] -
+                     src[1][2] * src[2][0]) * det_1;
+      dst[2][0] = (src[1][0] * src[2][1] -
+                   src[1][1] * src[2][0]) * det_1;
+      dst[0][1] = - (src[0][1] * src[2][2] -
+                     src[0][2] * src[2][1]) * det_1;
+      dst[1][1] = (src[0][0] * src[2][2] -
+                   src[0][2] * src[2][0]) * det_1;
+      dst[2][1] = - (src[0][0] * src[2][1] -
+                     src[0][1] * src[2][0]) * det_1;
+      dst[0][2] =  (src[0][1] * src[1][2] -
+                    src[0][2] * src[1][1]) * det_1;
+      dst[1][2] = - (src[0][0] * src[1][2] -
+                     src[0][2] * src[1][0]) * det_1;
+      dst[2][2] =  (src[0][0] * src[1][1] -
+                    src[0][1] * src[1][0]) * det_1;
+      
+      /* Calculate -C * inverse(A) */
+      dst[3][0] = - (src[3][0] * dst[0][0] +
+                     src[3][1] * dst[1][0] +
+                     src[3][2] * dst[2][0]);
+      dst[3][1] = - (src[3][0] * dst[0][1] +
+                     src[3][1] * dst[1][1] +
+                     src[3][2] * dst[2][1]);
+      dst[3][2] = - (src[3][0] * dst[0][2] +
+                     src[3][1] * dst[1][2] +
+                     src[3][2] * dst[2][2]);
+      
+      /* Fill in last column */
+      dst[0][3] = dst[1][3] = dst[2][3] = 0.0f;
+      dst[3][3] = 1.0f;
     }
   }
   else { // non-affine matrix
@@ -463,7 +455,7 @@ SbMatrix::inverse(void) const
 
     // algorithm from: Schwarz, "Numerische Mathematik"
     result = *this;
-
+    
     for (k = 0; k < 4; k++) { 
       max = 0.0f;
       p[k] = 0;
