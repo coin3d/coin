@@ -1466,11 +1466,11 @@ SoMarkerSet::GLRender(SoGLRenderAction * action)
 
   SoLightModelElement::set(state, this, SoLightModelElement::BASE_COLOR);
   SoGLTextureEnabledElement::set(state, this, FALSE);
-  
+
   if (this->vertexProperty.getValue()) {
     this->vertexProperty.getValue()->GLRender(action);
   }
-  
+
   const SoCoordinateElement * tmpcoord;
   const SbVec3f * dummy;
   SbBool needNormals = FALSE;
@@ -1509,29 +1509,30 @@ SoMarkerSet::GLRender(SoGLRenderAction * action)
   glOrtho(0, vpsize[0], 0, vpsize[1], -1.0f, 1.0f);
 
   for (int i = 0; i < numpts; i++) {
-      if (mbind == PER_VERTEX) mb.send(matnr++, TRUE);
-      SbVec3f point = coords->get3(idx++);
-      mat.multVecMatrix(point, point);  // wcs
-      vv.projectToScreen(point, point); // normalized screen coordinates   
-      point[0] = point[0] * float(vpsize[0]); // screen pixel position
-      point[1] = point[1] * float(vpsize[1]);
-
-      if (markerIndex[i] < markerlist->getLength()) {
-        so_marker * tmp = &(*markerlist)[ markerIndex[i] ];
-        glPixelStorei(GL_UNPACK_ALIGNMENT, tmp->align);
-        glRasterPos3f(point[0], point[1], -point[2]);
-        glBitmap(tmp->width, tmp->height, 0, 0, 0, 0, tmp->data);
-      }
+    if (mbind == PER_VERTEX) mb.send(matnr++, TRUE);
+    SbVec3f point = coords->get3(idx++);
+    mat.multVecMatrix(point, point);  // wcs
+    vv.projectToScreen(point, point); // normalized screen coordinates
+    point[0] = point[0] * float(vpsize[0]); // screen pixel position
+    point[1] = point[1] * float(vpsize[1]);
+    
+    int midx = SbMin(i, this->markerIndex.getNum()-1);
+    if (this->markerIndex[midx] < markerlist->getLength()) {
+      so_marker * tmp = &(*markerlist)[ this->markerIndex[midx] ];
+      glPixelStorei(GL_UNPACK_ALIGNMENT, tmp->align);
+      glRasterPos3f(point[0], point[1], -point[2]);
+      glBitmap(tmp->width, tmp->height, 0, 0, 0, 0, tmp->data);
+    }
 #if COIN_DEBUG
-      else {
-        static int firsterror = 1;
-        if (firsterror) {
-          SoDebugError::postWarning("SoMarkerSet::GLRender.",
-                                    "markerIndex %d out of bound",
-                                    markerIndex[i]);
-          firsterror = 0;
-        }
+    else {
+      static int firsterror = 1;
+      if (firsterror) {
+        SoDebugError::postWarning("SoMarkerSet::GLRender.",
+                                  "markerIndex %d out of bound",
+                                  markerIndex[i]);
+        firsterror = 0;
       }
+    }
 #endif // COIN_DEBUG
   }
   glPixelStorei(GL_UNPACK_ALIGNMENT, 4); // restore default value
@@ -1557,11 +1558,11 @@ SoMarkerSet::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   SoState * state = action->getState();
 
   state->push(); // in case we have a vertexProperty node
-  
+
   if (this->vertexProperty.getValue()) {
     this->vertexProperty.getValue()->getPrimitiveCount(action);
   }
-  
+
   const SoCoordinateElement * coord;
   const SbVec3f * dummy;
   SbBool needNormals = FALSE;
@@ -1587,7 +1588,7 @@ SoMarkerSet::getNumDefinedMarkers(void)
   return markerlist->getLength();
 }
 
-static void 
+static void
 swap_leftright(unsigned char *data, int width, int height)
 {
   // FIXME: sloppy code... 20000906. skei
@@ -1618,7 +1619,7 @@ swap_leftright(unsigned char *data, int width, int height)
   }
 }
 
-static void 
+static void
 swap_updown(unsigned char *data, int width, int height)
 {
   int linewidth = (int)ceil(width / 8);
