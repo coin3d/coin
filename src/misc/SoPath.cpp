@@ -205,7 +205,7 @@ SoPath::append(SoNode * const node)
     this->nodes[this->nodes.getLength()-1]->getChildren();
   assert(children);
 
-  const int idx = children->find((void*)node);
+  const int idx = children->find((void *)node);
 #if COIN_DEBUG && 1 // debug
   if (idx < 0) {
     SoDebugError::post("SoPath::append", "node not found as child of tail");
@@ -265,7 +265,7 @@ SoPath::append(const SoPath * const frompath)
       this->append(head, kid);
       const int length = frompath->nodes.getLength();
       for (int i = 1; i < length; i++) {
-        this->append((SoNode*)frompath->nodes[i], frompath->indices[i]);
+        this->append((SoNode *)frompath->nodes[i], frompath->indices[i]);
       }
       if (this->firsthidden == -1 && frompath->firsthidden >= 0) {
         this->setFirstHidden();
@@ -913,7 +913,7 @@ SoPath::readInstance(SoInput * in, unsigned short flags)
 // SoNode.
 //
 SbBool
-SoPath::hasHiddenChildren(SoNode *node) const
+SoPath::hasHiddenChildren(SoNode * node) const
 {
   return (node->getChildren() != NULL) &&
     !node->isOfType(SoGroup::getClassTypeId());
