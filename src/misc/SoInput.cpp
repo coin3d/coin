@@ -491,12 +491,9 @@ SoInput::openFile(const char * fileName, SbBool okIfNotFound)
     SoInput::addDirectoryFirst(SoInput::getPathname(fullname).getString());
     return TRUE;
   }
-  else {
-    if (!okIfNotFound) {
-      SoReadError::post(this, "Couldn't open file '%s' for reading.",
-                        fileName);
-    }
-  }
+
+  if (!okIfNotFound)
+    SoReadError::post(this, "Couldn't open file '%s' for reading.", fileName);
 
   return FALSE;
 }
@@ -563,6 +560,7 @@ SoInput::closeFile(void)
 SbBool
 SoInput::isValidFile(void)
 {
+  if (this->getTopOfStack() == NULL) return FALSE;
   float ver = this->getIVVersion();
   if (ver != 0.0f) return TRUE;
   return FALSE;
@@ -582,25 +580,31 @@ SoInput::isValidBuffer(void)
 }
 
 /*!
-  Returns file pointer of the file on top of the input stack.
+  Returns file pointer of the file on top of the input stack. If the
+  "file" is actually a memory buffer, returns \c NULL.
 
   \sa getCurFileName()
  */
 FILE *
 SoInput::getCurFile(void) const
 {
-  return this->getTopOfStack()->ivFilePointer();
+  SoInput_FileInfo * fi = this->getTopOfStack();
+  assert(fi);
+  return fi->isMemBuffer() ? NULL : fi->ivFilePointer();
 }
 
 /*!
-  Returns the name of the file on top of the input stack.
+  Returns the name of the file on top of the input stack. \c NULL will
+  be returned if the toplevel "file" is a memory buffer.
 
   \sa getCurFile()
 */
 const char *
 SoInput::getCurFileName(void) const
 {
-  return this->getTopOfStack()->ivFilename().getString();
+  SoInput_FileInfo * fi = this->getTopOfStack();
+  assert(fi);
+  return fi->isMemBuffer() ? NULL : fi->ivFilename().getString();
 }
 
 /*!
@@ -1173,16 +1177,18 @@ SoInput::getLocationString(SbString & str) const
     return;
   }
 
+  const char * filename = this->getCurFileName();
+
   // FIXME: hack to cast away constness. Ugly. 19990713 mortene.
   if (((SoInput *)this)->isBinary()) {
     str.sprintf("\tOccurred at position %d in binary file %s",
                 this->getTopOfStack()->getNumBytesParsedSoFar(),
-                this->getCurFileName());
+                filename ? filename : "<memory>");
   }
   else {
     str.sprintf("\tOccurred at line %3d in %s",
                 this->getTopOfStack()->lineNr(),
-                this->getCurFileName());
+                filename ? filename : "<memory>");
   }
 }
 
