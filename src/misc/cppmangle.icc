@@ -1,0 +1,34 @@
+
+typedef SbString mangleFunc(const char *);
+
+/*
+  This function mangles the classname::initClass() signature
+  a certain way.
+*/
+
+SbString
+gcc_initClassMangling(const char * classname)
+{
+  assert(classname != NULL);
+  int len = strlen(classname);
+  SbString mangling;
+  mangling.sprintf("initClass__%d%s", len, classname);
+  return mangling;
+}
+
+/*
+  return the correct name mangling function, or NULL in case none seem
+  appropriate
+*/
+
+mangleFunc *
+getManglingFunction(void)
+{
+  static mangleFunc * manglefunc = NULL;
+  if ( !manglefunc ) {
+    // FIXME: successful lookup of "initClass__6SoBase" => gcc mangling
+    manglefunc = gcc_initClassMangling;
+  }
+  return manglefunc;
+}
+
