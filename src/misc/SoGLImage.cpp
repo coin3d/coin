@@ -99,22 +99,6 @@
 #include <Inventor/lists/SbList.h>
 #include "../snprintf.h" // coin_getenv()
 
-// MS Windows often has very old gl.h files, so we just define these
-// value here if not defined. Run-time checks are used to determine
-// which feature to use.
-
-#ifndef GL_CLAMP_TO_EDGE
-#define GL_CLAMP_TO_EDGE 0x812F
-#endif // GL_CLAMP_TO_EDGE
-
-#ifndef GL_CLAMP_TO_EDGE_EXT
-#define GL_CLAMP_TO_EDGE_EXT 0x812F
-#endif // GL_CLAMP_TO_EDGE_EXT
-
-#ifndef GL_CLAMP_TO_EDGE_SGIS
-#define GL_CLAMP_TO_EDGE_SGIS 0x812F
-#endif // GL_CLAMP_TO_EDGE_SGIS 
-
 #include <simage_wrapper.h>
 
 #if COIN_DEBUG
