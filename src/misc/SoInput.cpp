@@ -507,6 +507,10 @@ SoInput::openFile(const char * fileName, SbBool okIfNotFound)
 SbBool
 SoInput::pushFile(const char * filename)
 {
+  // Get rid of default stdin filepointer.
+  if (this->filestack.getLength() == 1 &&
+      this->filestack[0]->ivFilePointer() == stdin) this->closeFile();
+
   SbString fullname;
   FILE * fp = this->findFile(filename, fullname);
   if (fp) {
