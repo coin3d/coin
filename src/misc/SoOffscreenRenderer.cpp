@@ -717,7 +717,6 @@ SoOffscreenRendererP::convertSubscreenBuffer(int renderpass)
 
   case SoOffscreenRenderer::RGB:
     {
-      int counter = 0;
       for (int i=0; i < pixels; i++) {
         *local++ = *native++;
         *local++ = *native++;
