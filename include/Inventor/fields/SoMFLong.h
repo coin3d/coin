@@ -25,7 +25,9 @@
 #define COIN_SOMFLONG_H
 
 #if defined(IV_STRICT)
-#error "SoMFLong has been obsoleted. Use SoMFInt32 instead."
+#error SoMFLong has been obsoleted. Use SoMFInt32 instead.
+#else
+#warning SoMFLong has been obsoleted. Use SoMFInt32 instead.
 #endif // IV_STRICT
 
 #include <Inventor/fields/SoMFInt32.h>

@@ -25,8 +25,10 @@
 \**************************************************************************/
 
 #if defined(IV_STRICT)
-#error "SoMFULong has been obsoleted. Use SoMFUInt32 instead."
-#endif // IV_STRICT
+#error SoMFULong has been obsoleted. Use SoMFUInt32 instead.
+#else // !IV_STRICT
+#warning SoMFULong has been obsoleted. Use SoMFUInt32 instead.
+#endif // !IV_STRICT
 
 #include <Inventor/fields/SoMFUInt32.h>
 typedef SoMFUInt32 SoMFULong;
