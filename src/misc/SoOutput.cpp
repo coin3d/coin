@@ -36,6 +36,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbDict.h>
 #include <Inventor/SbName.h>
+#include <Inventor/SbString.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/lists/SoFieldList.h>
 #include <Inventor/fields/SoFieldContainer.h>
@@ -111,7 +112,8 @@ public:
 
 class SoOutputP {
 public:
-  int precision;
+  SbString fltprecision;
+  SbString dblprecision;
   int indentlevel;
   SbBool usersetfp, binarystream, writecompact;
   SbBool disabledwriting, memorybuffer;
@@ -128,7 +130,7 @@ public:
   SbList <SoProto*> protostack;
   SbList <SbDict*> defstack;
   SbList <SoOutputROUTEList *> routestack; 
-
+  
   void pushRoutes(const SbBool copyprev) {
     const int oldidx = this->routestack.getLength() - 1;
     assert(oldidx >= 0);
@@ -225,6 +227,8 @@ SoOutput::constructorCommon(void)
 {
   THIS = new SoOutputP;
 
+  THIS->fltprecision = "%.8g";
+  THIS->dblprecision = "%.16lg";
   THIS->usersetfp = FALSE;
   THIS->binarystream = FALSE;
   THIS->disabledwriting = FALSE;
@@ -234,7 +238,6 @@ SoOutput::constructorCommon(void)
   THIS->filep = stdout;
   THIS->buffer = NULL;
   THIS->headerstring = NULL;
-  THIS->precision = 3;
   THIS->indentlevel = 0;
   THIS->nextreferenceid = 0;
   THIS->annotationbits = 0x00;
@@ -470,13 +473,18 @@ SoOutput::getDefaultBinaryHeader(void)
 }
 
 /*!
-  Set the precision used when writing floating point numbers to
-  ASCII files.
+  Set the precision used when writing floating point numbers to ASCII
+  files. \a precision should be between 0 and 8.  The double precision
+  will be set to \a precision * 2.
 */
 void
 SoOutput::setFloatPrecision(const int precision)
 {
-  THIS->precision = precision;
+  int fltnum = SbClamp(precision, 0, 8);
+  int dblnum = precision * 2;
+  
+  THIS->fltprecision.sprintf("%%.%dg", fltnum);
+  THIS->dblprecision.sprintf("%%.%dlg", dblnum);
 }
 
 /*!
@@ -670,9 +678,8 @@ void
 SoOutput::write(const float f)
 {
   if (!this->isBinary()) {
-    // FIXME: precision stuff doesn't work. 19980910 mortene.
     SbString s;
-    s.sprintf("%g", f);
+    s.sprintf(THIS->fltprecision.getString(), f);
     this->writeBytesWithPadding(s.getString(), s.getLength());
   }
   else {
@@ -691,7 +698,7 @@ SoOutput::write(const double d)
   if (!this->isBinary()) {
     // FIXME: precision stuff not implemented. 19980910 mortene.
     SbString s;
-    s.sprintf("%f", d);
+    s.sprintf(THIS->dblprecision.getString(), d);
     this->writeBytesWithPadding(s.getString(), s.getLength());
   }
   else {
