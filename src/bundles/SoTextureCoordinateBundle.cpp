@@ -91,7 +91,7 @@ SoTextureCoordinateBundle(SoAction * const action,
   this->shapenode = (SoVertexShape*) action->getCurPathTail();
 
   this->coordElt = SoTextureCoordinateElement::getInstance(this->state);
-  switch (coordElt->getType()) {
+  switch (this->coordElt->getType()) {
   case SoTextureCoordinateElement::DEFAULT:
     this->initDefault(action, forRendering);
     break;
@@ -113,6 +113,9 @@ SoTextureCoordinateBundle(SoAction * const action,
     // when GL generates texture coorinates. Therefore, we will not set
     // the FLAG_NEEDCOORDS here.
     this->flags |= FLAG_FUNCTION;
+    if (!forRendering) {
+      this->flags |= FLAG_NEEDCOORDS;
+    }
     break;
   default:
     assert(0 && "unknown CoordType");
@@ -121,7 +124,7 @@ SoTextureCoordinateBundle(SoAction * const action,
 
   this->glElt = NULL;
   if (forRendering) {
-    this->glElt = (SoGLTextureCoordinateElement*) coordElt;
+    this->glElt = (SoGLTextureCoordinateElement*) this->coordElt;
   }
   if ((this->flags & FLAG_DEFAULT) && !setUpDefault) {
     // FIXME: I couldn't be bothered to support this yet. It is for picking
@@ -162,7 +165,7 @@ SoTextureCoordinateBundle::isFunction() const
 const SbVec4f &
 SoTextureCoordinateBundle::get(const SbVec3f &point, const SbVec3f &normal)
 {
-  assert(coordElt != NULL && (this->flags & FLAG_FUNCTION));
+  assert(this->coordElt != NULL && (this->flags & FLAG_FUNCTION));
   if (this->flags & FLAG_DEFAULT) {
     SbVec2f pt(point[this->defaultdim0]-this->defaultorigo[0],
                point[this->defaultdim1]-this->defaultorigo[1]);
@@ -213,18 +216,16 @@ SoTextureCoordinateBundle::initDefault(SoAction * const action,
   this->flags |= FLAG_DEFAULT;
   this->flags |= FLAG_FUNCTION;
 
-  if (forRendering) {
-    if (!(this->flags & FLAG_DIDPUSH)) {
-      this->state->push();
-      this->flags |= FLAG_DIDPUSH;
-    }
-    // have glElt generate the default texture coordinates using a
-    // callback to this instance.
-    SoTextureCoordinateElement::setFunction(this->state, this->shapenode,
-                                            SoTextureCoordinateBundle::defaultCB,
-                                            this);
-    this->coordElt = SoTextureCoordinateElement::getInstance(this->state);
+  if (!(this->flags & FLAG_DIDPUSH)) {
+    this->state->push();
+    this->flags |= FLAG_DIDPUSH;
   }
+  // have coordelt generate the default texture coordinates using a
+  // callback to this instance.
+  SoTextureCoordinateElement::setFunction(this->state, this->shapenode,
+                                          SoTextureCoordinateBundle::defaultCB,
+                                          this);
+  this->coordElt = SoTextureCoordinateElement::getInstance(this->state);
 
   //
   // calculate needed stuff for default mapping
