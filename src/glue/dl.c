@@ -21,9 +21,6 @@
  *
 \**************************************************************************/
 
-/* FIXME: support HP-UX 10.x? (Doesn't have dlopen().) 20010626 mortene. */
-
-
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
@@ -37,31 +34,88 @@
 #endif /* HAVE_WINDOWS_H */
 
 #include <stddef.h> /* NULL definition. */
+#include <stdlib.h> /* atoi() */
 #include <malloc.h>
 #include <Inventor/C/glue/dl.h>
+#include <Inventor/C/errors/debugerror.h>
+#include <../tidbits.h>
 
 struct cc_libhandle_struct {
   void * nativehnd;
 };
 
+/* Return value of COIN_DEBUG_DL environment variable. */
+static int
+cc_dl_debugging(void)
+{
+  static int d = -1;
+  if (d == -1) {
+    const char * val = coin_getenv("COIN_DEBUG_DL");
+    d = val ? atoi(val) : 0;
+  }
+  return (d > 0) ? 1 : 0;
+}
+
+
 cc_libhandle
 cc_dl_open(const char * filename)
 {
+  cc_libhandle h = (cc_libhandle) malloc(sizeof(struct cc_libhandle_struct));
+  /* if (!h), FIXME: exception handling. 20020906 mortene. */
+  h->nativehnd = NULL;
+
+  /* FIXME: support HP-UX shn_load()?
+
+     Some versions of HP-UX have dlopen() (at least 10.x and
+     older). Although according to a discussion on the libtool
+     mailinglist it has been buggy in an official release, needing a
+     patch to function properly. This is of course a good reason to
+     try to use shn_load() *first*, then dlopen() on HP-UX.
+
+     Note also that it looks like dlopen() might reside in a library
+     "svld" instead of "dl".
+
+     20010626 mortene. */
+
 #ifdef HAVE_DL_LIB
-  cc_libhandle h = (cc_libhandle) malloc(sizeof(struct cc_libhandle_struct));
-  /* if (!h), FIXME: error handling. 20020906 mortene. */
+
   h->nativehnd = dlopen(filename, RTLD_LAZY);
-  /* FIXME: Error handling (kintel 20011121) */
-  return h;
+  /*
+    If dlopen() fails for any reason than not being able to find the
+    dynamic link-library given by "filename" on disk, we should really
+    detect it and report an error, whether we're running in debug mode
+    or release mode.
+
+    The libdl interface doesn't provide any means to do that, though,
+    so we'll just /assume/ that a NULL return means the library
+    couldn't be found.
+
+    But if a special debugging environment variable is found, we'll
+    spit out the error message, which could prove useful for remote
+    debugging:
+  */
+
+  if (cc_dl_debugging() && (h->nativehnd == NULL)) {
+    const char * e = dlerror();
+    if (e) {
+      cc_debugerror_post("cc_dl_open", "dlopen(\"%s\") failed with: '%s'", filename, e);
+    }
+  }
+
 #elif defined (HAVE_WINDLL_RUNTIME_BINDING)
-  cc_libhandle h = (cc_libhandle) malloc(sizeof(struct cc_libhandle_struct));
-  /* if (!h), FIXME: error handling. 20020906 mortene. */
+
   h->nativehnd = LoadLibrary(filename);
   /* FIXME: If the return value is NULL, we should call GetLastError() to 
      get extended error information and report this error. 20021015 thammer. */
-  return h;
+
 #endif
-  return NULL;
+
+  if (h->nativehnd == NULL) {
+    free(h);
+    h = NULL;
+  }
+
+  return h;
 }
 
 void *
@@ -71,7 +125,14 @@ cc_dl_sym(cc_libhandle handle, const char * symbolname)
   if ((handle == NULL) || (handle->nativehnd == NULL)) return NULL;
 
 #ifdef HAVE_DL_LIB
+
   ptr = dlsym(handle->nativehnd, symbolname);
+
+  if (cc_dl_debugging()) {
+    const char * e = dlerror();
+    if (e) { cc_debugerror_post("cc_dl_sym", "dlsym() failed with: '%s'", e); }
+  }
+
 #elif defined (HAVE_WINDLL_RUNTIME_BINDING)
   ptr = GetProcAddress(handle->nativehnd, symbolname);
   /* FIXME: If the return value is NULL, we should call GetLastError() to 
@@ -85,7 +146,14 @@ void
 cc_dl_close(cc_libhandle handle)
 {
 #ifdef HAVE_DL_LIB
-  (void)dlclose(handle->nativehnd);
+
+  int result = dlclose(handle->nativehnd);
+
+  if (cc_dl_debugging() && (result != 0)) {
+    const char * e = dlerror();
+    if (e) { cc_debugerror_post("cc_dl_close", "dlclose() failed with: '%s'", e); }
+  }
+
 #elif defined (HAVE_WINDLL_RUNTIME_BINDING)
   (void)FreeLibrary(handle->nativehnd);
   /* FIXME: If the return value is NULL, we should call GetLastError() to 
