@@ -509,7 +509,7 @@ SoMField::readValue(SoInput * in)
   // scene graph import operations (probably best done from somewhere
   // in SoBase::readInstance() or some such). Should investigate.
   // 20031203 mortene.
-  this->touch();
+  this->valueChanged();
 
   return TRUE;
 }
