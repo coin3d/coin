@@ -99,7 +99,7 @@
     root->unref();
     return 0;
   }
-  \encode
+  \endcode
 */
 
 #include <Inventor/nodes/SoCamera.h>
