@@ -50,6 +50,9 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoEnvironmentElement.h>
 #include <Inventor/elements/SoGLLightIdElement.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoViewingMatrixElement.h>
+#include <Inventor/elements/SoLightElement.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -112,7 +115,10 @@ SoDirectionalLight::GLRender(SoGLRenderAction * action)
 #endif // COIN_DEBUG
     return;
   }
-
+  
+  SoLightElement::add(state, this, SoModelMatrixElement::get(state) * 
+                      SoViewingMatrixElement::get(state));
+  
   GLenum light = (GLenum) (idx + GL_LIGHT0);
   
   SbColor4f lightcolor(0.0f, 0.0f, 0.0f, 1.0f);
