@@ -31,12 +31,34 @@
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/caches/SoCache.h>
 #include <assert.h>
+#include <stdlib.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_THREADS
+#include <Inventor/threads/SbTypedStorage.h>
+#endif // HAVE_THREADS
+
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
 SbBool SoCacheElement::invalidated = FALSE;
+
+
+#ifdef HAVE_THREADS
+SbTypedStorage <SbBool*> * invalidated_storage = NULL;
+
+static void
+cacheelement_cleanup(void)
+{
+  delete invalidated_storage;
+}
+
+#endif // HAVE_THREADS
 
 SO_ELEMENT_SOURCE(SoCacheElement);
 
@@ -48,6 +70,12 @@ void
 SoCacheElement::initClass(void)
 {
   SO_ELEMENT_INIT_CLASS(SoCacheElement, inherited);
+
+#ifdef HAVE_THREADS
+  invalidated_storage = new SbTypedStorage <SbBool*> (sizeof(SbBool));
+  *(invalidated_storage->get()) = FALSE;
+  atexit(cacheelement_cleanup);
+#endif // HAVE_THREADS
 }
 
 /*!
@@ -148,7 +176,13 @@ SoCacheElement::invalidate(SoState * const state)
   SoDebugError::postInfo("SoCacheElement::invalidate",
                          "Invalidate all caches");
 #endif // debug
+
+#ifdef HAVE_THREADS
+  *(invalidated_storage->get()) = TRUE;
+#else // HAVE_THREADS
   SoCacheElement::invalidated = TRUE;
+#endif // !HAVE_THREADS
+
   SoCacheElement * elem = (SoCacheElement*)
     state->getElementNoPush(classStackIndex);
   while (elem) {
@@ -245,8 +279,14 @@ SoCacheElement::addCacheDependency(SoState * const state,
 SbBool
 SoCacheElement::setInvalid(const SbBool newvalue)
 {
+#ifdef HAVE_THREADS
+  SbBool * ptr = invalidated_storage->get();
+  SbBool oldval = *ptr;
+  *ptr = newvalue;
+#else // HAVE_THREADS
   SbBool oldval = SoCacheElement::invalidated;
   SoCacheElement::invalidated = newvalue;
+#endif // ! HAVE_THREADS
   return oldval;
 }
 

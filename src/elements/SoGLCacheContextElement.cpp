@@ -41,8 +41,11 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#include <Inventor/system/gl.h>
+#ifdef HAVE_THREADS
+#include <Inventor/threads/SbMutex.h>
+#endif // HAVE_THREADS
 
+#include <Inventor/system/gl.h>
 
 static int biggest_cache_context_id = 0;
 
@@ -61,6 +64,8 @@ typedef struct {
 
 static SbList <so_glext_info *> *extsupportlist;
 static SbList <SoGLDisplayList*> *scheduledeletelist;
+static SbMutex * glcache_mutex;
+
 
 static void soglcachecontext_cleanup(void)
 {
@@ -70,6 +75,9 @@ static void soglcachecontext_cleanup(void)
   }
   delete extsupportlist;
   delete scheduledeletelist;
+#ifdef HAVE_THREADS
+  delete glcache_mutex;
+#endif // HAVE_THREADS
 }
 
 //
@@ -114,6 +122,9 @@ SoGLCacheContextElement::initClass(void)
 
   extsupportlist = new SbList <so_glext_info *>;
   scheduledeletelist = new SbList <SoGLDisplayList*>;
+#ifdef HAVE_THREADS
+  glcache_mutex = new SbMutex;
+#endif // HAVE_THREADS
   coin_atexit((coin_atexit_f *)soglcachecontext_cleanup);
 }
 
@@ -209,6 +220,10 @@ SoGLCacheContextElement::get(SoState * state)
 int
 SoGLCacheContextElement::getExtID(const char * str)
 {
+#ifdef HAVE_THREADS
+  glcache_mutex->lock();
+#endif // HAVE_THREADS
+
   SbName extname(str);
   int i, n = extsupportlist->getLength();
   for (i = 0; i < n; i++) {
@@ -219,6 +234,11 @@ SoGLCacheContextElement::getExtID(const char * str)
     info->extname = extname;
     extsupportlist->append(info);
   }
+
+#ifdef HAVE_THREADS
+  glcache_mutex->unlock();
+#endif // HAVE_THREADS
+
   return i;
 }
 
@@ -230,6 +250,10 @@ SoGLCacheContextElement::getExtID(const char * str)
 SbBool
 SoGLCacheContextElement::extSupported(SoState * state, int extid)
 {
+#ifdef HAVE_THREADS
+  glcache_mutex->lock();
+#endif // HAVE_THREADS
+
   assert(extid >= 0 && extid < extsupportlist->getLength());
 
   so_glext_info * info = (*extsupportlist)[extid];
@@ -242,6 +266,11 @@ SoGLCacheContextElement::extSupported(SoState * state, int extid)
   SbBool supported = extension_supported(info->extname.getString());
   info->context.append(currcontext);
   info->supported.append(supported);
+
+#ifdef HAVE_THREADS
+  glcache_mutex->unlock();
+#endif // HAVE_THREADS
+
   return supported;
 }
 
@@ -324,7 +353,13 @@ SoGLCacheContextElement::scheduleDelete(SoState * state, class SoGLDisplayList *
     delete dl;
   }
   else {
+#ifdef HAVE_THREADS
+    glcache_mutex->lock();
+#endif // HAVE_THREADS
     scheduledeletelist->append(dl);
+#ifdef HAVE_THREADS
+    glcache_mutex->unlock();
+#endif // HAVE_THREADS
   }
 }
 
@@ -341,5 +376,15 @@ SoGLCacheContextElement::scheduleDelete(SoState * state, class SoGLDisplayList *
 uint32_t
 SoGLCacheContextElement::getUniqueCacheContext(void)
 {
+#ifdef HAVE_THREADS
+  glcache_mutex->lock();
+  uint32_t id = ++biggest_cache_context_id;
+  glcache_mutex->unlock();
+  return id;
+#else // HAVE_THREADS
   return (uint32_t) ++biggest_cache_context_id;
+#endif // ! HAVE_THREADS
 }
+
+
+
