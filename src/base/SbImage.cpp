@@ -60,9 +60,15 @@
 
 class SbImageP {
 public:
+  enum DataType {
+    INTERNAL_DATA,
+    SIMAGE_DATA,
+    SETVALUEPTR_DATA
+  };
+
   SbImageP(void)
     : bytes(NULL),
-      didalloc(FALSE),
+      datatype(SETVALUEPTR_DATA),
       size(0,0,0),
       bpp(0),
       schedulecb(NULL)
@@ -70,8 +76,30 @@ public:
     , rwmutex(SbRWMutex::READ_PRECEDENCE)
 #endif // HAVE_THREADS
   { }
+  void freeData(void) {
+    if (this->bytes) {
+      switch (this->datatype) {
+      default:
+        assert(0 && "unknown data type");
+        break;
+      case INTERNAL_DATA:
+        delete[] this->bytes;
+        this->bytes = NULL;
+        break;
+      case SIMAGE_DATA:
+        simage_wrapper()->simage_free_image(this->bytes);
+        this->bytes = NULL;
+        break;
+      case SETVALUEPTR_DATA:
+        this->bytes = NULL;
+        break;
+      }
+    }
+    this->datatype = SETVALUEPTR_DATA;
+  }
+
   unsigned char * bytes;
-  SbBool didalloc;
+  DataType datatype;
   SbVec3s size;
   int bpp;
   SbString schedulename;
@@ -151,9 +179,7 @@ SbImage::SbImage(const unsigned char * bytes,
 */
 SbImage::~SbImage(void)
 {
-  if (THIS->didalloc) {
-    delete[] THIS->bytes;
-  }
+  THIS->freeData();
   delete THIS;
 }
 
@@ -223,9 +249,9 @@ SbImage::setValuePtr(const SbVec3s & size, const int bytesperpixel,
   THIS->writeLock();
   THIS->schedulename = "";
   THIS->schedulecb = NULL;
-  if (THIS->bytes && THIS->didalloc) delete[] THIS->bytes;
+  THIS->freeData();
   THIS->bytes = (unsigned char *) bytes;
-  THIS->didalloc = FALSE;
+  THIS->datatype = SbImageP::SETVALUEPTR_DATA;
   THIS->size = size;
   THIS->bpp = bytesperpixel;
   THIS->writeUnlock();
@@ -265,7 +291,7 @@ SbImage::setValue(const SbVec3s & size, const int bytesperpixel,
   THIS->writeLock();
   THIS->schedulename = "";
   THIS->schedulecb = NULL;
-  if (THIS->bytes && THIS->didalloc) {
+  if (THIS->bytes && THIS->datatype == SbImageP::INTERNAL_DATA) {
     // check for special case where we don't have to reallocate
     if (bytes && (size == THIS->size) && (bytesperpixel == THIS->bpp)) {
       memcpy(THIS->bytes, bytes, 
@@ -274,9 +300,8 @@ SbImage::setValue(const SbVec3s & size, const int bytesperpixel,
       THIS->writeUnlock();
       return;
     }
-    delete[] THIS->bytes;
   }
-  THIS->bytes = NULL;
+  THIS->freeData();
   THIS->size = size;
   THIS->bpp = bytesperpixel;
   int buffersize = int(size[0]) * int(size[1]) * int(size[2]==0?1:size[2]) * 
@@ -286,7 +311,7 @@ SbImage::setValue(const SbVec3s & size, const int bytesperpixel,
     // (simplifies export code in SoSFImage).
     buffersize = ((buffersize + 3) / 4) * 4;
     THIS->bytes = new unsigned char[buffersize];
-    THIS->didalloc = TRUE;
+    THIS->datatype = SbImageP::INTERNAL_DATA;
 
     if (bytes) {
       // Important: don't copy buffersize num bytes here!
@@ -408,19 +433,14 @@ SbImage::readFile(const SbString & filename,
       }
 #endif // COIN_DEBUG
     }
-
+    
     if (simagedata) {
       //FIXME: Add 3'rd dimension (kintel 20011110)
-      this->setValue(SbVec3s((short)w, (short)h, (short)0), nc, simagedata);
-      if (simage_wrapper()->simage_free_image) {
-        simage_wrapper()->simage_free_image(simagedata);
-      }
-#if COIN_DEBUG && 1 // debug
-      else {
-        SoDebugError::postInfo("SbImage::readFile",
-                               "Couldn't free image.");
-      }
-#endif // debug
+      this->setValuePtr(SbVec3s((short)w, (short)h, (short)0), nc, simagedata);
+      // NB, this is a trick. We use setValuePtr() to set the size
+      // and data pointer, and then we change the data type to simage
+      // peder, 2002-03-22
+      THIS->datatype = SbImageP::SIMAGE_DATA;
       return TRUE;
     }
   }
