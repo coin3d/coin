@@ -36,17 +36,22 @@
   \sa SoSFBool 
 */
 
+// *************************************************************************
+
 #include <assert.h>
 #include <Inventor/fields/SoMFBool.h>
 #include <Inventor/fields/SoSubFieldP.h>
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
+#include "shared.h"
+
+// *************************************************************************
 
 SO_MFIELD_SOURCE_MALLOC(SoMFBool, SbBool, SbBool);
 
 SO_MFIELD_SETVALUESPOINTER_SOURCE(SoMFBool, SbBool, SbBool);
+
+// *************************************************************************
 
 // Override from parent.
 void
@@ -59,10 +64,6 @@ SoMFBool::initClass(void)
 // necessary information is provided by the documentation of the
 // parent classes.
 #ifndef DOXYGEN_SKIP_THIS
-
-// These are implemented in the SoSFBool class.
-extern SbBool sosfbool_read_value(SoInput * in, SbBool & val);
-extern void sosfbool_write_value(SoOutput * out, SbBool val);
 
 SbBool
 SoMFBool::read1Value(SoInput * in, int idx)
@@ -90,3 +91,5 @@ SoMFBool::getNumValuesPerLine(void) const
 {
   return 8;
 }
+
+// *************************************************************************

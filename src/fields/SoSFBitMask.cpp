@@ -36,8 +36,9 @@
   this: "(BITNAME|BITNAME|BITNAME|...)".
 
   \sa SoMFBitMask
-
 */
+
+// *************************************************************************
 
 #include <Inventor/fields/SoSFBitMask.h>
 #include <Inventor/fields/SoSubFieldP.h>
@@ -47,9 +48,11 @@
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 
-
+// *************************************************************************
 
 SO_SFIELD_DERIVED_SOURCE(SoSFBitMask, not_used, not_used);
+
+// *************************************************************************
 
 // Override from parent class.
 void

@@ -103,6 +103,9 @@
   \sa SoTexture2, SoSFImage3
 */
 
+// *************************************************************************
+
+#include <stdlib.h> // free()
 #include <Inventor/fields/SoSFImage.h>
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/SoInput.h>
@@ -110,7 +113,8 @@
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/SbImage.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <stdlib.h> // free()
+
+// *************************************************************************
 
 class SoSFImageP {
 public:
@@ -132,8 +136,12 @@ public:
 #undef PRIVATE
 #define PRIVATE(p) ((p)->pimpl)
 
+// *************************************************************************
+
 PRIVATE_TYPEID_SOURCE(SoSFImage);
 PRIVATE_EQUALITY_SOURCE(SoSFImage);
+
+// *************************************************************************
 
 // (Declarations hidden in macro in SoSFImage.h, so don't use Doxygen
 // commenting.)

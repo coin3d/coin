@@ -34,20 +34,25 @@
   information on how to use this function.
 
   \sa SoSFShort
-
 */
+
+// *************************************************************************
 
 #include <assert.h>
 #include <Inventor/fields/SoMFShort.h>
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/SoInput.h>
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
+
+#include "shared.h"
+
+// *************************************************************************
 
 SO_MFIELD_SOURCE_MALLOC(SoMFShort, short, short);
 
 SO_MFIELD_SETVALUESPOINTER_SOURCE(SoMFShort, short, short);
+
+// *************************************************************************
 
 // Override from parent class.
 void
@@ -60,9 +65,6 @@ SoMFShort::initClass(void)
 // necessary information is provided by the documentation of the
 // parent classes.
 #ifndef DOXYGEN_SKIP_THIS
-
-// This is implemented in the SoSFShort class.
-extern void sosfshort_write_value(SoOutput * out, short val);
 
 SbBool
 SoMFShort::read1Value(SoInput * in, int idx)
@@ -79,6 +81,7 @@ SoMFShort::write1Value(SoOutput * out, int idx) const
 
 #endif // DOXYGEN_SKIP_THIS
 
+// *************************************************************************
 
 // Store more than the default single value on each line for ASCII
 // format export.
@@ -87,3 +90,5 @@ SoMFShort::getNumValuesPerLine(void) const
 {
   return 8;
 }
+
+// *************************************************************************

@@ -30,22 +30,21 @@
   needs to store arrays of names.
 
   \sa SoSFName
-
 */
+
+// *************************************************************************
 
 #include <assert.h>
 #include <Inventor/fields/SoMFName.h>
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/SoInput.h>
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
-#include <Inventor/fields/SoSFString.h>
-
+// *************************************************************************
 
 SO_MFIELD_SOURCE(SoMFName, SbName, const SbName &);
 
+// *************************************************************************
 
 // Override from parent class.
 void
@@ -53,6 +52,8 @@ SoMFName::initClass(void)
 {
   SO_MFIELD_INTERNAL_INIT_CLASS(SoMFName);
 }
+
+// *************************************************************************
 
 // No need to document readValue() and writeValue() here, as the
 // necessary information is provided by the documentation of the
@@ -77,6 +78,7 @@ SoMFName::write1Value(SoOutput * out, int idx) const
 
 #endif // DOXYGEN_SKIP_THIS
 
+// *************************************************************************
 
 /*!
   Set \a num \a strings from index \a start in this multiple-value
@@ -100,3 +102,5 @@ SoMFName::setValue(const char * str)
 {
   this->setValue(SbName(str));
 }
+
+// *************************************************************************

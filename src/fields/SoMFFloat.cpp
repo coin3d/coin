@@ -36,19 +36,23 @@
   \sa SoSFFloat
 */
 
+// *************************************************************************
+
 #include <assert.h>
 #include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/SoInput.h>
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
+#include "shared.h"
+
+// *************************************************************************
 
 SO_MFIELD_SOURCE_MALLOC(SoMFFloat, float, float);
 
 SO_MFIELD_SETVALUESPOINTER_SOURCE(SoMFFloat, float, float);
 
+// *************************************************************************
 
 // Override from parent.
 void
@@ -61,9 +65,6 @@ SoMFFloat::initClass(void)
 // necessary information is provided by the documentation of the
 // parent classes.
 #ifndef DOXYGEN_SKIP_THIS
-
-// This is implemented in the SoSFFloat class.
-extern void sosffloat_write_value(SoOutput * out, float val);
 
 SbBool
 SoMFFloat::read1Value(SoInput * in, int idx)
@@ -88,3 +89,5 @@ SoMFFloat::getNumValuesPerLine(void) const
 {
   return 4;
 }
+
+// *************************************************************************

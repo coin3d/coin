@@ -36,18 +36,23 @@
   \sa SoSFUInt32
 */
 
+// *************************************************************************
+
 #include <assert.h>
 #include <Inventor/fields/SoMFUInt32.h>
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/SoInput.h>
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
+
+#include "shared.h"
+
+// *************************************************************************
 
 SO_MFIELD_SOURCE_MALLOC(SoMFUInt32, uint32_t, uint32_t);
 
 SO_MFIELD_SETVALUESPOINTER_SOURCE(SoMFUInt32, uint32_t, uint32_t);
 
+// *************************************************************************
 
 // Override from parent class.
 void
@@ -56,13 +61,12 @@ SoMFUInt32::initClass(void)
   SO_MFIELD_INTERNAL_INIT_CLASS(SoMFUInt32);
 }
 
+// *************************************************************************
+
 // No need to document readValue() and writeValue() here, as the
 // necessary information is provided by the documentation of the
 // parent classes.
 #ifndef DOXYGEN_SKIP_THIS
-
-// This is implemented in the SoSFUInt32 class.
-extern void sosfuint32_write_value(SoOutput * out, uint32_t val);
 
 SbBool
 SoMFUInt32::read1Value(SoInput * in, int idx)
@@ -82,6 +86,7 @@ SoMFUInt32::write1Value(SoOutput * out, int idx) const
 
 #endif // DOXYGEN_SKIP_THIS
 
+// *************************************************************************
 
 // Store more than the default single value on each line for ASCII
 // format export.
@@ -90,3 +95,5 @@ SoMFUInt32::getNumValuesPerLine(void) const
 {
   return 8;
 }
+
+// *************************************************************************

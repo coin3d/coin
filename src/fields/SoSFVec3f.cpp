@@ -30,8 +30,9 @@
   needs to store a single vector with three elements.
 
   \sa SoMFVec3f
-
 */
+
+// *************************************************************************
 
 #include <Inventor/fields/SoSFVec3f.h>
 
@@ -41,7 +42,13 @@
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoSubFieldP.h>
 
+#include "shared.h"
+
+// *************************************************************************
+
 SO_SFIELD_SOURCE(SoSFVec3f, SbVec3f, const SbVec3f &);
+
+// *************************************************************************
 
 // Override from parent class.
 void
@@ -49,6 +56,8 @@ SoSFVec3f::initClass(void)
 {
   SO_SFIELD_INTERNAL_INIT_CLASS(SoSFVec3f);
 }
+
+// *************************************************************************
 
 // No need to document readValue() and writeValue() here, as the
 // necessary information is provided by the documentation of the
@@ -64,18 +73,6 @@ SoSFVec3f::readValue(SoInput * in)
     in->read(this->value[2]);
 }
 
-// Write integer value to output stream. Also used from SoMFVec3f
-// class.
-void
-sosfvec3f_write_value(SoOutput * out, const SbVec3f & v)
-{
-  out->write(v[0]);
-  if (!out->isBinary()) out->write(' ');
-  out->write(v[1]);
-  if (!out->isBinary()) out->write(' ');
-  out->write(v[2]);
-}
-
 void
 SoSFVec3f::writeValue(SoOutput * out) const
 {
@@ -83,6 +80,8 @@ SoSFVec3f::writeValue(SoOutput * out) const
 }
 
 #endif // DOXYGEN_SKIP_THIS
+
+// *************************************************************************
 
 /*!
   Set value of vector.
@@ -101,3 +100,5 @@ SoSFVec3f::setValue(const float xyz[3])
 {
   this->setValue(SbVec3f(xyz));
 }
+
+// *************************************************************************

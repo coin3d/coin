@@ -33,8 +33,9 @@
   component, where each color component value is between 0.0 and 1.0.
 
   \sa SoMFColor
-
 */
+
+// *************************************************************************
 
 #include <Inventor/fields/SoSFColor.h>
 
@@ -44,7 +45,13 @@
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoSubFieldP.h>
 
+#include "shared.h"
+
+// *************************************************************************
+
 SO_SFIELD_SOURCE(SoSFColor, SbColor, const SbColor &);
+
+// *************************************************************************
 
 // Override from parent.
 void
@@ -67,22 +74,10 @@ SoSFColor::readValue(SoInput * in)
     in->read(this->value[2]);
 }
 
-// Write SbColor value to output stream. Also used from SoMFColor
-// class.
-void
-sosfcolor_write_value(SoOutput * out, const SbColor & val)
-{
-  out->write(val[0]);
-  if(!out->isBinary()) out->write(' ');
-  out->write(val[1]);
-  if(!out->isBinary()) out->write(' ');
-  out->write(val[2]);
-}
-
 void
 SoSFColor::writeValue(SoOutput * out) const
 {
-  sosfcolor_write_value(out, this->getValue());
+  sosfvec3f_write_value(out, this->getValue());
 }
 
 #endif // DOXYGEN_SKIP_THIS
@@ -144,3 +139,5 @@ SoSFColor::setHSVValue(const float hsv[3])
   this->value.setHSVValue(hsv);
   this->valueChanged();
 }
+
+// *************************************************************************

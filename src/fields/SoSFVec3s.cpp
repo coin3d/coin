@@ -30,20 +30,22 @@
   needs to store a single vector with three elements.
 
   \sa SoMFVec3s
-
 */
+
+// *************************************************************************
 
 #include <Inventor/fields/SoSFVec3s.h>
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoReadError.h>
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
+// *************************************************************************
 
 SO_SFIELD_SOURCE(SoSFVec3s, SbVec3s, const SbVec3s &);
+
+// *************************************************************************
 
 // Override from parent class.
 void
@@ -51,6 +53,8 @@ SoSFVec3s::initClass(void)
 {
   SO_SFIELD_INTERNAL_INIT_CLASS(SoSFVec3s);
 }
+
+// *************************************************************************
 
 // No need to document readValue() and writeValue() here, as the
 // necessary information is provided by the documentation of the
@@ -66,11 +70,10 @@ SoSFVec3s::readValue(SoInput * in)
     in->read(this->value[2]);
 }
 
-// Write integer value to output stream. Also used from SoMFVec3s
-// class.
 void
-sosfvec3s_write_value(SoOutput * out, const SbVec3s & v)
+SoSFVec3s::writeValue(SoOutput * out) const
 {
+  const SbVec3s v(this->getValue());
   out->write(v[0]);
   if (!out->isBinary()) out->write(' ');
   out->write(v[1]);
@@ -78,13 +81,9 @@ sosfvec3s_write_value(SoOutput * out, const SbVec3s & v)
   out->write(v[2]);
 }
 
-void
-SoSFVec3s::writeValue(SoOutput * out) const
-{
-  sosfvec3s_write_value(out, this->getValue());
-}
-
 #endif // DOXYGEN_SKIP_THIS
+
+// *************************************************************************
 
 /*!
   Set value of vector.
@@ -103,3 +102,5 @@ SoSFVec3s::setValue(const short xyz[3])
 {
   this->setValue(SbVec3s(xyz));
 }
+
+// *************************************************************************

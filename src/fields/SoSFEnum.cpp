@@ -32,9 +32,10 @@
   A field of this type stores its value to file as the symbolic
   name, rather than the actual integer value.
 
-  \sa SoMFEnum
-
+  \sa SoMFEnum, SoSFBitMask
 */
+
+// *************************************************************************
 
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSubFieldP.h>
@@ -44,6 +45,7 @@
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoDebugError.h>
 
+// *************************************************************************
 
 /*!
   \var int SoSFEnum::numEnums
@@ -62,11 +64,12 @@
   Is \c TRUE if a set of enum name-to-value mappings has been set.
 */
 
-
+// *************************************************************************
 
 PRIVATE_TYPEID_SOURCE(SoSFEnum);
 PRIVATE_EQUALITY_SOURCE(SoSFEnum);
 
+// *************************************************************************
 
 // (Declarations hidden in SO_[S|M]FIELD_HEADER macro in header file,
 // so don't use Doxygen commenting.)
@@ -87,6 +90,8 @@ SoSFEnum::~SoSFEnum()
   delete[] this->enumValues;
   delete[] this->enumNames;
 }
+
+// *************************************************************************
 
 /* Copy enumeration mappings and \a field value. */
 const SoSFEnum &

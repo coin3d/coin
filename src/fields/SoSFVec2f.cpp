@@ -33,15 +33,22 @@
 
 */
 
+// *************************************************************************
+
 #include <Inventor/fields/SoSFVec2f.h>
 
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoSubFieldP.h>
 
+#include "shared.h"
+
+// *************************************************************************
+
 SO_SFIELD_SOURCE(SoSFVec2f, SbVec2f, const SbVec2f &);
+
+// *************************************************************************
 
 // Override from parent class.
 void
@@ -49,6 +56,8 @@ SoSFVec2f::initClass(void)
 {
   SO_SFIELD_INTERNAL_INIT_CLASS(SoSFVec2f);
 }
+
+// *************************************************************************
 
 // No need to document readValue() and writeValue() here, as the
 // necessary information is provided by the documentation of the
@@ -63,16 +72,6 @@ SoSFVec2f::readValue(SoInput * in)
     in->read(this->value[1]);
 }
 
-// Write integer value to output stream. Also used from SoMFVec2f
-// class.
-void
-sosfvec2f_write_value(SoOutput * out, const SbVec2f & v)
-{
-  out->write(v[0]);
-  if (!out->isBinary()) out->write(' ');
-  out->write(v[1]);
-}
-
 void
 SoSFVec2f::writeValue(SoOutput * out) const
 {
@@ -81,6 +80,7 @@ SoSFVec2f::writeValue(SoOutput * out) const
 
 #endif // DOXYGEN_SKIP_THIS
 
+// *************************************************************************
 
 /*!
   Set value of vector.
@@ -99,3 +99,5 @@ SoSFVec2f::setValue(const float xy[2])
 {
   this->setValue(SbVec2f(xy));
 }
+
+// *************************************************************************

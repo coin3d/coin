@@ -34,22 +34,26 @@
   information on how to use this function.
 
   \sa SoSFVec3f
-
 */
+
+// *************************************************************************
 
 #include <assert.h>
 #include <Inventor/fields/SoMFVec3f.h>
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/SoInput.h>
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
+#include "shared.h"
+
+// *************************************************************************
 
 SO_MFIELD_SOURCE(SoMFVec3f, SbVec3f, const SbVec3f &);
 
 SO_MFIELD_SETVALUESPOINTER_SOURCE(SoMFVec3f, SbVec3f, SbVec3f);
 SO_MFIELD_SETVALUESPOINTER_SOURCE(SoMFVec3f, SbVec3f, float);
+
+// *************************************************************************
 
 // Override from parent class.
 void
@@ -62,10 +66,6 @@ SoMFVec3f::initClass(void)
 // necessary information is provided by the documentation of the
 // parent classes.
 #ifndef DOXYGEN_SKIP_THIS
-
-// These are implemented in the SoSFVec3f class.
-extern SbBool sosfvec3f_read_value(SoInput * in, SbVec3f & v);
-extern void sosfvec3f_write_value(SoOutput * out, const SbVec3f & v);
 
 SbBool
 SoMFVec3f::read1Value(SoInput * in, int idx)
@@ -92,6 +92,7 @@ SoMFVec3f::write1Value(SoOutput * out, int idx) const
 
 #endif // DOXYGEN_SKIP_THIS
 
+// *************************************************************************
 
 /*!
   Set \a num vector array elements from the \a xyz array, reading from
@@ -151,3 +152,5 @@ SoMFVec3f::setValue(const float xyz[3])
   if (xyz == NULL) this->setNum(0);
   else this->setValue(SbVec3f(xyz));
 }
+
+// *************************************************************************

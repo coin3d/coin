@@ -32,19 +32,21 @@
   \sa SoMFUInt32
 */
 
+// *************************************************************************
+
 #include <Inventor/fields/SoSFUInt32.h>
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
-#include <Inventor/errors/SoReadError.h>
-
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
+#include "shared.h"
+
+// *************************************************************************
 
 SO_SFIELD_SOURCE(SoSFUInt32, uint32_t, uint32_t);
 
+// *************************************************************************
 
 // Override from parent class.
 void
@@ -52,6 +54,8 @@ SoSFUInt32::initClass(void)
 {
   SO_SFIELD_INTERNAL_INIT_CLASS(SoSFUInt32);
 }
+
+// *************************************************************************
 
 // No need to document readValue() and writeValue() here, as the
 // necessary information is provided by the documentation of the
@@ -67,15 +71,6 @@ SoSFUInt32::readValue(SoInput * in)
   return TRUE;
 }
 
-// Write integer value to output stream. Also used from SoMFUInt32
-// class.
-void
-sosfuint32_write_value(SoOutput * out, uint32_t val)
-{
-  unsigned int tmp = (unsigned int) val;
-  out->write(tmp);
-}
-
 void
 SoSFUInt32::writeValue(SoOutput * out) const
 {
@@ -83,3 +78,5 @@ SoSFUInt32::writeValue(SoOutput * out) const
 }
 
 #endif // DOXYGEN_SKIP_THIS
+
+// *************************************************************************

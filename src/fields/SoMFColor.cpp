@@ -38,15 +38,17 @@
 
 */
 
+// *************************************************************************
+
 #include <assert.h>
 #include <Inventor/fields/SoMFColor.h>
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/SoInput.h>
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
+#include "shared.h"
 
+// *************************************************************************
 
 SO_MFIELD_SOURCE(SoMFColor, SbColor, const SbColor &);
 
@@ -66,9 +68,6 @@ SoMFColor::initClass(void)
 // parent classes.
 #ifndef DOXYGEN_SKIP_THIS
 
-// This is implemented in the SoSFColor class.
-extern void sosfcolor_write_value(SoOutput * out, const SbColor & val);
-
 SbBool
 SoMFColor::read1Value(SoInput * in, int idx)
 {
@@ -82,7 +81,7 @@ SoMFColor::read1Value(SoInput * in, int idx)
 void
 SoMFColor::write1Value(SoOutput * out, int idx) const
 {
-  sosfcolor_write_value(out, (*this)[idx]);
+  sosfvec3f_write_value(out, (*this)[idx]);
 }
 
 #endif // DOXYGEN_SKIP_THIS
@@ -219,3 +218,5 @@ SoMFColor::set1HSVValue(const int idx, const float hsv[3])
 {
   this->set1HSVValue(idx, hsv[0], hsv[1], hsv[2]);
 }
+
+// *************************************************************************

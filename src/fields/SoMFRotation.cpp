@@ -30,18 +30,21 @@
   needs to store multiple rotation definitions.
 
   \sa SoSFRotation
-
 */
+
+// *************************************************************************
 
 #include <Inventor/fields/SoMFRotation.h>
 #include <Inventor/fields/SoSubFieldP.h>
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
+#include "shared.h"
+
+// *************************************************************************
 
 SO_MFIELD_SOURCE(SoMFRotation, SbRotation, const SbRotation &);
 
+// *************************************************************************
 
 // Override parent class.
 void
@@ -50,14 +53,12 @@ SoMFRotation::initClass(void)
   SO_MFIELD_INTERNAL_INIT_CLASS(SoMFRotation);
 }
 
+// *************************************************************************
+
 // No need to document readValue() and writeValue() here, as the
 // necessary information is provided by the documentation of the
 // parent classes.
 #ifndef DOXYGEN_SKIP_THIS
-
-// These are implemented in the SoSFRotation class.
-extern SbBool sosfrotation_read_value(SoInput * in, SbRotation & val);
-extern void sosfrotation_write_value(SoOutput * out, const SbRotation & val);
 
 SbBool
 SoMFRotation::read1Value(SoInput * in, int idx)
@@ -76,6 +77,7 @@ SoMFRotation::write1Value(SoOutput * out, int idx) const
 
 #endif // DOXYGEN_SKIP_THIS
 
+// *************************************************************************
 
 /*!
   Set the values of \a num rotations, starting from index \a start,
@@ -146,3 +148,5 @@ SoMFRotation::setValue(const SbVec3f & axis, const float angle)
 {
   this->setValue(SbRotation(axis, angle));
 }
+
+// *************************************************************************

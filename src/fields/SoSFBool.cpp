@@ -35,17 +35,22 @@
   \sa SoMFBool
 */
 
+// *************************************************************************
+
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
-#include <Inventor/errors/SoReadError.h>
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
+#include <Inventor/errors/SoReadError.h>
 
+#include "shared.h"
+
+// *************************************************************************
 
 SO_SFIELD_SOURCE(SoSFBool, SbBool, SbBool);
+
+// *************************************************************************
 
 // Override from parent.
 void
@@ -60,50 +65,6 @@ SoSFBool::initClass(void)
 // parent classes.
 #ifndef DOXYGEN_SKIP_THIS
 
-// Read boolean value from input stream, return TRUE if
-// successful. Also used from SoMFBool class.
-SbBool
-sosfbool_read_value(SoInput * in, SbBool & val)
-{
-  // accept 0 or 1
-  if (in->read(val)) {
-    if (val != 0 && val != 1) {
-      SoReadError::post(in, "Illegal value for field: %d (must be 0 or 1)",
-                        val);
-      return FALSE;
-    }
-    return TRUE;
-  }
-
-  if (in->isBinary()) {
-    SoReadError::post(in, "Premature end of file");
-    return FALSE;
-  }
-
-  // read TRUE/FALSE keyword
-
-  SbName n;
-  if (!in->read(n, TRUE)) {
-    SoReadError::post(in, "Couldn't read field value");
-    return FALSE;
-  }
-
-  if (n == "TRUE") {
-    val = TRUE;
-    return TRUE;
-  }
-
-  if (n == "FALSE") {
-    val = FALSE;
-    return TRUE;
-  }
-
-  SoReadError::post(in,
-                    "Invalid value \"%s\" for field (must be TRUE or FALSE)",
-                    n.getString());
-  return FALSE;
-}
-
 SbBool
 SoSFBool::readValue(SoInput * in)
 {
@@ -113,15 +74,6 @@ SoSFBool::readValue(SoInput * in)
   return TRUE;
 }
 
-// Write boolean value to output stream. Also used from SoMFBool
-// class.
-void
-sosfbool_write_value(SoOutput * out, SbBool val)
-{
-  if (out->isBinary()) out->write((unsigned int)(val ? 1 : 0));
-  else out->write(val ? "TRUE" : "FALSE");
-}
-
 void
 SoSFBool::writeValue(SoOutput * out) const
 {
@@ -129,3 +81,5 @@ SoSFBool::writeValue(SoOutput * out) const
 }
 
 #endif // DOXYGEN_SKIP_THIS
+
+// *************************************************************************

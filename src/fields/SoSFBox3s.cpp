@@ -35,17 +35,20 @@
   \since TGS Inventor ?.?
 */
 
+// *************************************************************************
+
 #include <Inventor/fields/SoSFBox3s.h>
 #include <Inventor/fields/SoSubField.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
-#include <Inventor/errors/SoReadError.h>
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
+#include <Inventor/errors/SoReadError.h>
 
+// *************************************************************************
 
 SO_SFIELD_SOURCE(SoSFBox3s, SbBox3s, SbBox3s);
+
+// *************************************************************************
 
 // Override from parent class.
 void
@@ -95,6 +98,7 @@ SoSFBox3s::writeValue(SoOutput * out) const
 
 #endif // DOXYGEN_SKIP_THIS
 
+// *************************************************************************
 
 /*!
   Set value of vector.
@@ -130,3 +134,4 @@ SoSFBox3s::getValue(SbBox3s &box)
   box = value;
 }
 
+// *************************************************************************

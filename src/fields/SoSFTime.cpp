@@ -33,8 +33,9 @@
   point number.
 
   \sa SoMFTime
-
 */
+
+// *************************************************************************
 
 #include <Inventor/fields/SoSFTime.h>
 
@@ -45,9 +46,13 @@
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoSubFieldP.h>
 
+#include "shared.h"
+
+// *************************************************************************
 
 SO_SFIELD_SOURCE(SoSFTime, SbTime, const SbTime &);
 
+// *************************************************************************
 
 // Override from parent class.
 void
@@ -56,34 +61,12 @@ SoSFTime::initClass(void)
   SO_SFIELD_INTERNAL_INIT_CLASS(SoSFTime);
 }
 
+// *************************************************************************
+
 // No need to document readValue() and writeValue() here, as the
 // necessary information is provided by the documentation of the
 // parent classes.
 #ifndef DOXYGEN_SKIP_THIS
-
-// Read SbTime from input stream, return TRUE if successful. Also
-// used from SoMFTime class.
-SbBool
-sosftime_read_value(SoInput * in, SbTime & t)
-{
-  double val;
-  if (!in->read(val)) {
-    SoReadError::post(in, "unable to read floating point value");
-    return FALSE;
-  }
-
-  if (!coin_finite(val)) {
-    SoReadError::post(in,
-                      "Detected non-valid floating point number, replacing "
-                      "with 0.0f");
-    val = 0.0;
-    // We don't return FALSE, thereby allowing the read process to
-    // continue, as a convenience for the application programmer.
-  }
-
-  t.setValue(val);
-  return TRUE;
-}
 
 SbBool
 SoSFTime::readValue(SoInput * in)
@@ -94,13 +77,6 @@ SoSFTime::readValue(SoInput * in)
   return TRUE;
 }
 
-// Write SbTime value to output stream. Also used from SoMFTime class.
-void
-sosftime_write_value(SoOutput * out, const SbTime & p)
-{
-  out->write(p.getValue());
-}
-
 void
 SoSFTime::writeValue(SoOutput * out) const
 {
@@ -108,3 +84,5 @@ SoSFTime::writeValue(SoOutput * out) const
 }
 
 #endif // DOXYGEN_SKIP_THIS
+
+// *************************************************************************

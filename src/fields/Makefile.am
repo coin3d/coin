@@ -57,11 +57,16 @@ RegularSources = \
 	SoSFVec3f.cpp \
 	SoSFVec4f.cpp \
 	SoSField.cpp \
-	SoGlobalField.cpp
+	SoGlobalField.cpp \
+	shared.cpp
+
 LinkHackSources = \
 	all-fields-cpp.cpp
+
 PublicHeaders =
-PrivateHeaders =
+
+PrivateHeaders = shared.h
+
 ObsolateHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(fields, fields)

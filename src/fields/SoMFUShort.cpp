@@ -36,19 +36,23 @@
   \sa SoSFUShort
 */
 
+// *************************************************************************
+
 #include <assert.h>
 #include <Inventor/fields/SoMFUShort.h>
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/SoInput.h>
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
+#include "shared.h"
 
+// *************************************************************************
 
 SO_MFIELD_SOURCE_MALLOC(SoMFUShort, unsigned short, unsigned short);
 
 SO_MFIELD_SETVALUESPOINTER_SOURCE(SoMFUShort, unsigned short, unsigned short);
+
+// *************************************************************************
 
 // Override from parent class.
 void
@@ -57,13 +61,12 @@ SoMFUShort::initClass(void)
   SO_MFIELD_INTERNAL_INIT_CLASS(SoMFUShort);
 }
 
+// *************************************************************************
+
 // No need to document readValue() and writeValue() here, as the
 // necessary information is provided by the documentation of the
 // parent classes.
 #ifndef DOXYGEN_SKIP_THIS
-
-// These is implemented in the SoSFUShort class.
-extern void sosfushort_write_value(SoOutput * out, unsigned short val);
 
 SbBool
 SoMFUShort::read1Value(SoInput * in, int idx)
@@ -80,6 +83,7 @@ SoMFUShort::write1Value(SoOutput * out, int idx) const
 
 #endif // DOXYGEN_SKIP_THIS
 
+// *************************************************************************
 
 // Store more than the default single value on each line for ASCII
 // format export.
@@ -88,3 +92,5 @@ SoMFUShort::getNumValuesPerLine(void) const
 {
   return 8;
 }
+
+// *************************************************************************

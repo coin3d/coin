@@ -30,18 +30,21 @@
   needs to store multiple 3D plane definitions.
 
   \sa SoSFPlane
-
 */
+
+// *************************************************************************
 
 #include <Inventor/fields/SoMFPlane.h>
 #include <Inventor/fields/SoSubFieldP.h>
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
+#include "shared.h"
+
+// *************************************************************************
 
 SO_MFIELD_SOURCE(SoMFPlane, SbPlane, const SbPlane &);
 
+// *************************************************************************
 
 // Override from parent class.
 void
@@ -50,14 +53,12 @@ SoMFPlane::initClass(void)
   SO_MFIELD_INTERNAL_INIT_CLASS(SoMFPlane);
 }
 
+// *************************************************************************
+
 // No need to document readValue() and writeValue() here, as the
 // necessary information is provided by the documentation of the
 // parent classes.
 #ifndef DOXYGEN_SKIP_THIS
-
-// These are implemented in the SoSFPlane class.
-extern SbBool sosfplane_read_value(SoInput * in, SbPlane & val);
-extern void sosfplane_write_value(SoOutput * out, const SbPlane & val);
 
 SbBool
 SoMFPlane::read1Value(SoInput * in, int idx)
@@ -76,6 +77,7 @@ SoMFPlane::write1Value(SoOutput * out, int idx) const
 
 #endif // DOXYGEN_SKIP_THIS
 
+// *************************************************************************
 
 // Store more than the default single value on each line for ASCII
 // format export.
@@ -84,3 +86,5 @@ SoMFPlane::getNumValuesPerLine(void) const
 {
   return 8;
 }
+
+// *************************************************************************

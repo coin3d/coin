@@ -77,3 +77,4 @@
 #include "SoSFBox3s.cpp"
 #include "SoSField.cpp"
 #include "SoGlobalField.cpp"
+#include "shared.cpp"

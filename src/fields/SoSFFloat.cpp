@@ -32,18 +32,23 @@
   \sa SoMFFloat
 */
 
+// *************************************************************************
+
 #include <Inventor/fields/SoSFFloat.h>
 
 #include <Inventor/C/tidbitsp.h>
 #include <Inventor/SoInput.h>
-#include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoSubFieldP.h>
 
+#include "shared.h"
+
+// *************************************************************************
 
 SO_SFIELD_SOURCE(SoSFFloat, float, float);
 
+// *************************************************************************
 
 // Override from parent.
 void
@@ -63,14 +68,6 @@ SoSFFloat::readValue(SoInput * in)
   return in->read(this->value);
 }
 
-// Write floating point value to output stream. Also used from
-// SoMFFloat class.
-void
-sosffloat_write_value(SoOutput * out, float val)
-{
-  out->write(val);
-}
-
 void
 SoSFFloat::writeValue(SoOutput * out) const
 {
@@ -78,3 +75,5 @@ SoSFFloat::writeValue(SoOutput * out) const
 }
 
 #endif // DOXYGEN_SKIP_THIS
+
+// *************************************************************************

@@ -30,8 +30,9 @@
   needs to store a single vector with four elements.
 
   \sa SoMFVec4f
-
 */
+
+// *************************************************************************
 
 #include <Inventor/fields/SoSFVec4f.h>
 
@@ -41,8 +42,13 @@
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoSubFieldP.h>
 
+#include "shared.h"
+
+// *************************************************************************
+
 SO_SFIELD_SOURCE(SoSFVec4f, SbVec4f, const SbVec4f &);
 
+// *************************************************************************
 
 // Override from parent class.
 void
@@ -50,6 +56,8 @@ SoSFVec4f::initClass(void)
 {
   SO_SFIELD_INTERNAL_INIT_CLASS(SoSFVec4f);
 }
+
+// *************************************************************************
 
 // No need to document readValue() and writeValue() here, as the
 // necessary information is provided by the documentation of the
@@ -64,20 +72,6 @@ SoSFVec4f::readValue(SoInput * in)
     in->read(this->value[1]) &&
     in->read(this->value[2]) &&
     in->read(this->value[3]);
-}
-
-// Write integer value to output stream. Also used from SoMFVec4f
-// class.
-void
-sosfvec4f_write_value(SoOutput * out, const SbVec4f & v)
-{
-  out->write(v[0]);
-  if (!out->isBinary()) out->write(' ');
-  out->write(v[1]);
-  if (!out->isBinary()) out->write(' ');
-  out->write(v[2]);
-  if (!out->isBinary()) out->write(' ');
-  out->write(v[3]);
 }
 
 void

@@ -35,16 +35,20 @@
   \sa SoMFMatrix
 */
 
+// *************************************************************************
+
 #include <Inventor/fields/SoSFMatrix.h>
+#include <Inventor/fields/SoSubFieldP.h>
 
 #include <Inventor/SoInput.h>
-#include <Inventor/SoOutput.h>
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/errors/SoReadError.h>
-#include <Inventor/fields/SoSubFieldP.h>
+
+#include "shared.h"
+
+// *************************************************************************
 
 SO_SFIELD_SOURCE(SoSFMatrix, SbMatrix, const SbMatrix &);
 
+// *************************************************************************
 
 // Override from parent.
 void
@@ -68,40 +72,6 @@ SoSFMatrix::readValue(SoInput * in)
   return TRUE;
 }
 
-// Write matrix to output stream. Also used from SoMFMatrix class.
-void
-sosfmatrix_write_value(SoOutput * out, const SbMatrix & m)
-{
-  if (out->isBinary()) {
-    for(int i = 0; i < 4; i++) {
-      for(int j = 0; j < 4; j++) {
-        out->write(m[i][j]);
-      }
-    }
-    return;
-  }
-
-
-  for(int k=0; k < 4; k++) {
-    out->write(m[0][k]);
-    if(k != 3) out->write(' ');
-  }
-
-  out->write('\n');
-  out->incrementIndent();
-
-  for(int i=1; i < 4; i++) {
-    out->indent();
-    for(int j=0; j < 4; j++) {
-      out->write(m[i][j]);
-      if(j != 3) out->write(' ');
-    }
-    if(i != 3) out->write('\n');
-  }
-
-  out->decrementIndent();
-}
-
 void
 SoSFMatrix::writeValue(SoOutput * out) const
 {
@@ -110,6 +80,7 @@ SoSFMatrix::writeValue(SoOutput * out) const
 
 #endif // DOXYGEN_SKIP_THIS
 
+// *************************************************************************
 
 /*!
   Set matrix elements.
@@ -127,3 +98,5 @@ SoSFMatrix::setValue(const float a11, const float a12,
   this->setValue(SbMatrix(a11,a12,a13,a14,a21,a22,a23,a24,
                           a31,a32,a33,a34,a41,a42,a43,a44));
 }
+
+// *************************************************************************

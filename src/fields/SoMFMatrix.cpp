@@ -30,21 +30,25 @@
   needs to store matrices.
 
   \sa SoSFMatrix
-
 */
+
+// *************************************************************************
 
 #include <assert.h>
 #include <Inventor/fields/SoMFMatrix.h>
 #include <Inventor/fields/SoSubFieldP.h>
+
 #include <Inventor/SoOutput.h>
 #include <Inventor/SoInput.h>
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
+#include "shared.h"
+
+// *************************************************************************
 
 SO_MFIELD_SOURCE(SoMFMatrix, SbMatrix, const SbMatrix &);
 
+// *************************************************************************
 
 // Override from parent.
 void
@@ -57,9 +61,6 @@ SoMFMatrix::initClass(void)
 // necessary information is provided by the documentation of the
 // parent classes.
 #ifndef DOXYGEN_SKIP_THIS
-
-// This is implemented in the SoSFMatrix class.
-extern void sosfmatrix_write_value(SoOutput * out, const SbMatrix & val);
 
 SbBool
 SoMFMatrix::read1Value(SoInput * in, int idx)
@@ -85,6 +86,7 @@ SoMFMatrix::write1Value(SoOutput * out, int idx) const
 
 #endif // DOXYGEN_SKIP_THIS
 
+// *************************************************************************
 
 /*!
   Set field value array to a single matrix with the given components.
@@ -102,3 +104,5 @@ SoMFMatrix::setValue(const float a11, const float a12,
   this->setValue(SbMatrix(a11,a12,a13,a14, a21,a22,a23,a24,
                           a31,a32,a33,a34, a41,a42,a43,a44));
 }
+
+// *************************************************************************

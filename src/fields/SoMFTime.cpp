@@ -30,19 +30,22 @@
   needs to store multiple time representations.
 
   \sa SoSFTime
-
 */
+
+// *************************************************************************
 
 #include <assert.h>
 #include <Inventor/fields/SoMFTime.h>
 #include <Inventor/fields/SoSubFieldP.h>
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
+#include "shared.h"
 
+// *************************************************************************
 
 SO_MFIELD_SOURCE(SoMFTime, SbTime, const SbTime &);
+
+// *************************************************************************
 
 // Override from parent class.
 void
@@ -51,14 +54,12 @@ SoMFTime::initClass(void)
   SO_MFIELD_INTERNAL_INIT_CLASS(SoMFTime);
 }
 
+// *************************************************************************
+
 // No need to document readValue() and writeValue() here, as the
 // necessary information is provided by the documentation of the
 // parent classes.
 #ifndef DOXYGEN_SKIP_THIS
-
-// These are implemented in the SoSFTime class.
-extern SbBool sosftime_read_value(SoInput * in, SbTime & val);
-extern void sosftime_write_value(SoOutput * out, const SbTime & val);
 
 SbBool
 SoMFTime::read1Value(SoInput * in, int idx)
@@ -77,3 +78,5 @@ SoMFTime::write1Value(SoOutput * out, int idx) const
 }
 
 #endif // DOXYGEN_SKIP_THIS
+
+// *************************************************************************

@@ -33,7 +33,6 @@
   within quotes.
 
   \sa SoMFString
-
 */
 
 // *************************************************************************
@@ -42,13 +41,10 @@
 #include <Inventor/fields/SoSubFieldP.h>
 
 #include <Inventor/SoInput.h>
-#include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoReadError.h>
 
-// FIXME: to support a hack below, should not really be
-// necessary. 20040614 mortene.
-#include <Inventor/nodes/SoNode.h>
+#include "shared.h"
 
 // *************************************************************************
 
@@ -72,32 +68,6 @@ SbBool
 SoSFString::readValue(SoInput * in)
 {
   return in->read(this->value);
-}
-
-// Write SbString value to output stream. Also used from SoMFString class.
-void
-sosfstring_write_value(const SoField * f, SoOutput * out, const SbString & val)
-{
-  // VRML97 needs backslashes themselves to be backslash-quoted (like
-  // in e.g. C strings), which is taken care of here instead of
-  // downstream, as this is the last place we can find out whether or
-  // not we're writing a VRML97 node.
-  const SoFieldContainer * fc = f->getContainer();
-  if (fc && fc->isOfType(SoNode::getClassTypeId()) &&
-      (((SoNode *)fc)->getNodeType() & SoNode::VRML2)) {
-    // FIXME: SbString should have had a replaceAll() method, so we
-    // wouldn't have to spell out the iteration loop below. 20040614 mortene.
-    SbString ws;
-    for (int i = 0; i < val.getLength(); i++) {
-      if (val[i] == '\\') { ws += '\\'; }
-      ws += val[i];
-    }
-    out->write(ws);
-  }
-  else { // *Not* a VRML97 node, so write backslashes verbatim, as
-         // dictated by the Inventor file format:
-    out->write(val);
-  }
 }
 
 void

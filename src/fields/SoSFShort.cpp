@@ -32,18 +32,20 @@
   \sa SoMFShort
 */
 
+// *************************************************************************
+
 #include <Inventor/fields/SoSFShort.h>
 #include <Inventor/fields/SoSubFieldP.h>
-#include <Inventor/errors/SoReadError.h>
 #include <Inventor/SoInput.h>
-#include <Inventor/SoOutput.h>
-
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
+
+#include "shared.h"
+
+// *************************************************************************
 
 SO_SFIELD_SOURCE(SoSFShort, short, short);
 
+// *************************************************************************
 
 // Override parent class.
 void
@@ -52,24 +54,17 @@ SoSFShort::initClass(void)
   SO_SFIELD_INTERNAL_INIT_CLASS(SoSFShort);
 }
 
+// *************************************************************************
+
 // No need to document readValue() and writeValue() here, as the
 // necessary information is provided by the documentation of the
 // parent classes.
 #ifndef DOXYGEN_SKIP_THIS
 
-
 SbBool
 SoSFShort::readValue(SoInput * in)
 {
   return in->read(this->value);
-}
-
-// Write integer value to output stream. Also used from SoMFShort
-// class.
-void
-sosfshort_write_value(SoOutput * out, short val)
-{
-  out->write(val);
 }
 
 void
@@ -79,3 +74,5 @@ SoSFShort::writeValue(SoOutput * out) const
 }
 
 #endif // DOXYGEN_SKIP_THIS
+
+// *************************************************************************

@@ -100,6 +100,8 @@
   \since TGS Inventor 2.6
 */
 
+// *************************************************************************
+
 #include <Inventor/fields/SoSFImage3.h>
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/SoInput.h>
@@ -107,8 +109,12 @@
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/SbImage.h>
 
+// *************************************************************************
+
 PRIVATE_TYPEID_SOURCE(SoSFImage3);
 PRIVATE_EQUALITY_SOURCE(SoSFImage3);
+
+// *************************************************************************
 
 // (Declarations hidden in macro in SoSFImage3.h, so don't use Doxygen
 // commenting.)

@@ -33,8 +33,9 @@
   within quotes.
 
   \sa SoMFName
-
 */
+
+// *************************************************************************
 
 #include <Inventor/fields/SoSFName.h>
 #include <Inventor/fields/SoSubFieldP.h>
@@ -42,14 +43,13 @@
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoReadError.h>
-
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
+// *************************************************************************
 
 SO_SFIELD_SOURCE(SoSFName, SbName, const SbName &);
 
+// *************************************************************************
 
 // Override from parent class.
 void
@@ -57,6 +57,8 @@ SoSFName::initClass(void)
 {
   SO_SFIELD_INTERNAL_INIT_CLASS(SoSFName);
 }
+
+// *************************************************************************
 
 // No need to document readValue() and writeValue() here, as the
 // necessary information is provided by the documentation of the
@@ -84,6 +86,7 @@ SoSFName::writeValue(SoOutput * out) const
 
 #endif // DOXYGEN_SKIP_THIS
 
+// *************************************************************************
 
 /*!
   Set value of field.
@@ -93,3 +96,5 @@ SoSFName::setValue(const char * const name)
 {
   this->setValue(SbName(name));
 }
+
+// *************************************************************************

@@ -34,21 +34,26 @@
   information on how to use this function.
 
   \sa SoSFVec4f
-
 */
+
+// *************************************************************************
 
 #include <assert.h>
 #include <Inventor/fields/SoMFVec4f.h>
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/SoInput.h>
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
+
+#include "shared.h"
+
+// *************************************************************************
 
 SO_MFIELD_SOURCE(SoMFVec4f, SbVec4f, const SbVec4f &);
 
 SO_MFIELD_SETVALUESPOINTER_SOURCE(SoMFVec4f, SbVec4f, SbVec4f);
 SO_MFIELD_SETVALUESPOINTER_SOURCE(SoMFVec4f, SbVec4f, float);
+
+// *************************************************************************
 
 // Override from parent class.
 void
@@ -57,13 +62,12 @@ SoMFVec4f::initClass(void)
   SO_MFIELD_INTERNAL_INIT_CLASS(SoMFVec4f);
 }
 
+// *************************************************************************
+
 // No need to document readValue() and writeValue() here, as the
 // necessary information is provided by the documentation of the
 // parent classes.
 #ifndef DOXYGEN_SKIP_THIS
-
-// This is implemented in the SoSFVec4f class.
-extern void sosfvec4f_write_value(SoOutput * out, const SbVec4f & v);
 
 SbBool
 SoMFVec4f::read1Value(SoInput * in, int idx)
@@ -84,6 +88,7 @@ SoMFVec4f::write1Value(SoOutput * out, int idx) const
 
 #endif // DOXYGEN_SKIP_THIS
 
+// *************************************************************************
 
 /*!
   Set \a num vector array elements from \a xyzw, starting at index
@@ -139,3 +144,5 @@ SoMFVec4f::setValue(const float xyzw[4])
   if (xyzw == NULL) this->setNum(0);
   else this->setValue(SbVec4f(xyzw));
 }
+
+// *************************************************************************

@@ -35,19 +35,20 @@
   \since Coin 2.0
 */
 
+// *************************************************************************
+
 #include <Inventor/fields/SoSFVec2s.h>
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoReadError.h>
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
-
+// *************************************************************************
 
 SO_SFIELD_SOURCE(SoSFVec2s, SbVec2s, const SbVec2s &);
 
+// *************************************************************************
 
 // Override from parent class.
 void
@@ -55,6 +56,8 @@ SoSFVec2s::initClass(void)
 {
   SO_SFIELD_INTERNAL_INIT_CLASS(SoSFVec2s);
 }
+
+// *************************************************************************
 
 // No need to document readValue() and writeValue() here, as the
 // necessary information is provided by the documentation of the
@@ -69,24 +72,19 @@ SoSFVec2s::readValue(SoInput * in)
     in->read(this->value[1]);
 }
 
-// Write integer value to output stream. Also used from SoMFVec2s
-// class.
 void
-sosfvec2s_write_value(SoOutput * out, const SbVec2s & v)
+SoSFVec2s::writeValue(SoOutput * out) const
 {
+  const SbVec2s v(this->getValue());
+
   out->write(v[0]);
   if (!out->isBinary()) out->write(' ');
   out->write(v[1]);
 }
 
-void
-SoSFVec2s::writeValue(SoOutput * out) const
-{
-  sosfvec2s_write_value(out, this->getValue());
-}
-
 #endif // DOXYGEN_SKIP_THIS
 
+// *************************************************************************
 
 /*!
   Set value of vector.
@@ -105,3 +103,5 @@ SoSFVec2s::setValue(const short xy[2])
 {
   this->setValue(SbVec2s(xy));
 }
+
+// *************************************************************************

@@ -2002,7 +2002,8 @@ SoField::getDirty(void) const
 }
 
 /*!
-  Mark field for re-evaluation, but do not trigger it.
+  Mark field for re-evaluation (upon next read operation), but do not
+  trigger a notification.
 */
 void
 SoField::setDirty(SbBool dirty)

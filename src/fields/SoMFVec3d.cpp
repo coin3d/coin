@@ -30,19 +30,21 @@
   needs to store an array of vectors with three elements.
 
   \sa SoSFVec3d, SoMFVec3f
-
 */
+
+// *************************************************************************
 
 #include <Inventor/fields/SoMFVec3d.h>
 #include <Inventor/fields/SoSubFieldP.h>
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
+#include "shared.h"
 
+// *************************************************************************
 
 SO_MFIELD_SOURCE(SoMFVec3d, SbVec3d, const SbVec3d &);
 
+// *************************************************************************
 
 // Override from parent class.
 void
@@ -51,14 +53,12 @@ SoMFVec3d::initClass(void)
   SO_MFIELD_INTERNAL_INIT_CLASS(SoMFVec3d);
 }
 
+// *************************************************************************
+
 // No need to document readValue() and writeValue() here, as the
 // necessary information is provided by the documentation of the
 // parent classes.
 #ifndef DOXYGEN_SKIP_THIS
-
-// These are implemented in the SoSFVec3d class.
-extern SbBool sosfvec3d_read_value(SoInput * in, SbVec3d & v);
-extern void sosfvec3d_write_value(SoOutput * out, const SbVec3d & v);
 
 SbBool
 SoMFVec3d::read1Value(SoInput * in, int idx)
@@ -77,6 +77,7 @@ SoMFVec3d::write1Value(SoOutput * out, int idx) const
 
 #endif // DOXYGEN_SKIP_THIS
 
+// *************************************************************************
 
 /*!
   Set \a num vector array elements from the \a xyz array, reading from
@@ -136,3 +137,5 @@ SoMFVec3d::setValue(const double xyz[3])
   if (xyz == NULL) this->setNum(0);
   else this->setValue(SbVec3d(xyz));
 }
+
+// *************************************************************************

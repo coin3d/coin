@@ -33,17 +33,21 @@
 
 */
 
+// *************************************************************************
+
 #include <assert.h>
 #include <Inventor/fields/SoMFString.h>
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/SoInput.h>
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
+#include "shared.h"
 
+// *************************************************************************
 
 SO_MFIELD_SOURCE(SoMFString, SbString, const SbString &);
+
+// *************************************************************************
 
 // Override from parent class.
 void
@@ -56,9 +60,6 @@ SoMFString::initClass(void)
 // necessary information is provided by the documentation of the
 // parent classes.
 #ifndef DOXYGEN_SKIP_THIS
-
-// This is implemented in the SoSFString class.
-extern void sosfstring_write_value(const SoField * f, SoOutput * out, const SbString & val);
 
 SbBool
 SoMFString::read1Value(SoInput * in, int idx)
@@ -131,3 +132,5 @@ SoMFString::deleteText(const int fromline, const int fromchar,
     this->deleteValues(fromline + 1, toline - fromline);
   }
 }
+
+// *************************************************************************
