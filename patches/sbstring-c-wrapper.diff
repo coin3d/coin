@@ -37,25 +37,33 @@ SbString.cpp file.
 Index: include/Inventor/SbString.h
 ===================================================================
 RCS file: /export/cvsroot/Coin/include/Inventor/SbString.h,v
-retrieving revision 1.19
-diff -u -r1.19 SbString.h
---- include/Inventor/SbString.h	23 Nov 2001 14:25:46 -0000	1.19
-+++ include/Inventor/SbString.h	22 May 2002 07:09:50 -0000
-@@ -25,65 +25,113 @@
+retrieving revision 1.20
+diff -u -r1.20 SbString.h
+--- include/Inventor/SbString.h	22 May 2002 07:14:17 -0000	1.20
++++ include/Inventor/SbString.h	24 May 2002 21:20:46 -0000
+@@ -5,7 +5,7 @@
+  *
+  *  This file is part of the Coin 3D visualization library.
+  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
+- *  
++ *
+  *  This library is free software; you can redistribute it and/or
+  *  modify it under the terms of the GNU General Public License
+  *  version 2 as published by the Free Software Foundation.  See the
+@@ -25,69 +25,112 @@
  \**************************************************************************/
  
  #include <Inventor/system/inttypes.h>
 -#include <Inventor/SbBasic.h>
 +#include <Inventor/C/base/string.h>
-+#include <Inventor/lists/SbIntList.h>
+ #include <Inventor/lists/SbIntList.h>
  
 -#include <stdio.h>
  #include <stdarg.h>
--
+ 
 -#define SB_STRING_STATIC_STORAGE_SIZE 128
 -
-+#include <stdlib.h>
- 
+-
  class COIN_DLL_API SbString {
  public:
 -  SbString(void);
@@ -71,26 +79,6 @@ diff -u -r1.19 SbString.h
 -  const char * getString(void) const;
 -  SbString getSubString(int startidx, int endidx = -1) const;
 -  void deleteSubString(int startidx, int endidx = -1);
--
--  void addIntString(const int value);
--
--  char operator [](int index) const;
--  SbString & operator = (const char * str);
--  SbString & operator = (const SbString & str);
--  SbString & operator += (const char * str);
--  SbString & operator += (const SbString & str);
--  int operator ! (void) const;
--  friend COIN_DLL_API int operator == (const SbString & str, const char * s);
--  friend COIN_DLL_API int operator == (const char * s, const SbString & str);
--  friend COIN_DLL_API int operator == (const SbString & str1, const SbString & str2);
--  friend COIN_DLL_API int operator != (const SbString & str, const char * s);
--  friend COIN_DLL_API int operator != (const char * s, const SbString & str);
--  friend COIN_DLL_API int operator != (const SbString & str1, const SbString & str2);
--  static uint32_t hash(const char * s);
--
--  SbString & operator += (const char c);
--  SbString & sprintf(const char * formatstr, ...);
--  SbString & vsprintf(const char * formatstr, va_list args);
 +  SbString(void) { cc_string_construct(&this->str); }
 +
 +  SbString(const char * str)
@@ -98,8 +86,7 @@ diff -u -r1.19 SbString.h
 +
 +  SbString(const char * str, int start, int end)
 +  { cc_string_construct(&this->str); cc_string_set_subtext(&this->str, str, start, end); }
- 
--  void print(FILE * file = stdout) const;
++
 +  SbString(const SbString & str)
 +  { cc_string_construct(&this->str); cc_string_set_string(&this->str, &str.str); }
 +
@@ -118,7 +105,8 @@ diff -u -r1.19 SbString.h
 +    if ( freeold ) cc_string_clear(&this->str);
 +    else cc_string_clear_no_free(&this->str);
 +  }
-+
+ 
+-  void addIntString(const int value);
 +  const char * getString(void) const { return cc_string_get_text(&this->str); }
 +
 +  SbString getSubString(int startidx, int endidx = -1) const
@@ -163,10 +151,29 @@ diff -u -r1.19 SbString.h
 +  { cc_string_vsprintf(&this->str, formatstr, args); return *this; }
 +
 +  void apply(char (*func)(char input)) { cc_string_apply(&this->str, func); }
-+
-+  int find(const SbString & str) const;
-+  SbBool findAll(const SbString & str, SbIntList & found) const;
-+
+ 
+   int find(const SbString & str) const;
+   SbBool findAll(const SbString & str, SbIntList & found) const;
+ 
+-  char operator [](int index) const;
+-  SbString & operator = (const char * str);
+-  SbString & operator = (const SbString & str);
+-  SbString & operator += (const char * str);
+-  SbString & operator += (const SbString & str);
+-  int operator ! (void) const;
+-  friend COIN_DLL_API int operator == (const SbString & str, const char * s);
+-  friend COIN_DLL_API int operator == (const char * s, const SbString & str);
+-  friend COIN_DLL_API int operator == (const SbString & str1, const SbString & str2);
+-  friend COIN_DLL_API int operator != (const SbString & str, const char * s);
+-  friend COIN_DLL_API int operator != (const char * s, const SbString & str);
+-  friend COIN_DLL_API int operator != (const SbString & str1, const SbString & str2);
+-  static uint32_t hash(const char * s);
+-
+-  SbString & operator += (const char c);
+-  SbString & sprintf(const char * formatstr, ...);
+-  SbString & vsprintf(const char * formatstr, va_list args);
+-
+-  void print(FILE * file = stdout) const;
 +  friend int operator==(const SbString & str, const char * s);
 +  friend int operator==(const char * s, const SbString & str);
 +  friend int operator==(const SbString & str1, const SbString & str2);
@@ -207,10 +214,19 @@ diff -u -r1.19 SbString.h
 Index: src/base/SbString.cpp
 ===================================================================
 RCS file: /export/cvsroot/Coin/src/base/SbString.cpp,v
-retrieving revision 1.20
-diff -u -r1.20 SbString.cpp
---- src/base/SbString.cpp	26 Feb 2002 11:13:02 -0000	1.20
-+++ src/base/SbString.cpp	22 May 2002 07:09:50 -0000
+retrieving revision 1.21
+diff -u -r1.21 SbString.cpp
+--- src/base/SbString.cpp	22 May 2002 07:14:17 -0000	1.21
++++ src/base/SbString.cpp	24 May 2002 21:20:46 -0000
+@@ -2,7 +2,7 @@
+  *
+  *  This file is part of the Coin 3D visualization library.
+  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
+- *  
++ *
+  *  This library is free software; you can redistribute it and/or
+  *  modify it under the terms of the GNU General Public License
+  *  version 2 as published by the Free Software Foundation.  See the
 @@ -26,11 +26,10 @@
    \brief The SbString class is a string class with convenience functions for string operations.
    \ingroup base
@@ -227,7 +243,7 @@ diff -u -r1.20 SbString.cpp
  
    This class should also be well suited for use by the application
    programmer throughout the application using the Coin library.
-@@ -39,133 +38,148 @@
+@@ -39,131 +38,10 @@
  */
  
  #include <Inventor/SbString.h>
@@ -238,132 +254,46 @@ diff -u -r1.20 SbString.cpp
 -#include "../tidbits.h" // coin_vsnprintf()
 -#include <assert.h>
 -#include <string.h>
- 
-+// FIXME: translate the find() and findAll() methods to C (will first
-+// need a growable array in C to handle the second argument to
-+// findAll()). 20020522 mortene.
- 
+-
+-
 -/*!
 -  This is the default constructor.  It initializes the string to be empty.
 -*/
 -
 -SbString::SbString(void)
-+// Helper function for find() and findAll().
-+static void
-+compute_prefix_function(SbIntList & pi, const SbString & str)
- {
+-{
 -  this->sstring = this->staticstorage;
 -  this->storagesize = SB_STRING_STATIC_STORAGE_SIZE;
 -  this->sstring[0] = '\0';
-+  int len = str.getLength();
-+  pi.append(0);
-+  int k = 0;
-+  
-+  for (int q = 1; q < len; q++){
-+    while(k > 0 && (str.operator[](k) != str.operator[](q)))
-+      k = pi.get(k);
-+    if (str.operator[](k) == str.operator[](q))
-+      k++;
-+    pi.append(k);
-+  }
- }
- 
- /*!
+-}
+-
+-/*!
 -  This is the copy constructor.
-+  If \a s is found, the method returns the first index where \a s
-+  starts. Otherwise it returns -1.
-+
-+  Note: SbString::find() is a Coin specific extension to the original
-+  Open Inventor API.
-+
-+  \sa SbString::findAll()
-+  \since 2002-02-19
- */
- 
+-*/
+-
 -SbString::SbString(const SbString & str)
-+int
-+SbString::find(const SbString & str) const
- {
+-{
 -  this->sstring = this->staticstorage;
 -  this->storagesize = SB_STRING_STATIC_STORAGE_SIZE;
 -  *this = str.sstring;
-+  int lenthis = this->getLength();
-+  int lenstr = str.getLength();
-+  
-+  if (!lenthis) return -1;
-+  if (lenstr > lenthis) return -1;
-+
-+  SbIntList pi;
-+  compute_prefix_function(pi, str);
-+  int q = 0;
-+
-+  for (int i = 0; i < lenthis; i ++){
-+    while (q > 0 && (str.operator[](q) != this->operator[](i)))
-+      q = pi.operator[](q - 1);
-+    if (str.operator[](q) == this->operator[](i))
-+      q++;
-+    if (q == lenstr){
-+      return (i - (lenstr - 1));
-+    }
-+  }
-+  return -1;
- }
- 
- /*!
+-}
+-
+-/*!
 -  This constructor assigns from the given string.
-+  All occurences of \a str is represented in \a found as indices to
-+  the characters where \a str starts. If 1 or more is found, \c TRUE
-+  is returned, else \c FALSE is returned.
-+
-+  Note: SbString::findAll() is an extension to the original Open
-+  Inventor API.
-+
-+  \sa SbString::find()
-+  \since 2002-02-19
- */
- 
+-*/
+-
 -SbString::SbString(const char * str)
-+SbBool
-+SbString::findAll(const SbString & str, SbIntList & found) const
- {
+-{
 -  this->sstring = this->staticstorage;
 -  this->storagesize = SB_STRING_STATIC_STORAGE_SIZE;
 -  *this = str;
-+  // The KMP string matching algorithm is used for this method
-+  int lenthis = this->getLength();
-+  int lenstr = str.getLength();
-+  found.truncate(0);
-+
-+  if (!lenthis) return FALSE;
-+  if (lenstr > lenthis) return FALSE;
-+
-+  SbIntList pi;
-+  compute_prefix_function(pi, str);
-+  int q = 0;
-+
-+  for (int i = 0; i < lenthis; i ++){
-+    while (q > 0 && (str.operator[](q) != this->operator[](i)))
-+      q = pi.operator[](q - 1);
-+    if (str.operator[](q) == this->operator[](i))
-+      q++;
-+    if (q == lenstr){
-+      found.append(i - (lenstr - 1));
-+      q = pi.operator[](q - 1);
-+    }
-+  }
-+  if (!found.getLength()) return FALSE;
-+  return TRUE;
- }
- 
-+
-+
- /*!
+-}
+-
+-/*!
 -  This constructor constructs a string from the given substring from
 -  \a start to \a end indices inclusive. If \a end is -1, the substring
 -  from \a start until the end of the string is used.
-+  \fn SbString::SbString(void)
-+  This is the default constructor.  It initializes the string to be empty.
- */
+-*/
  
 -SbString::SbString(const char * str, int start, int end)
 -{
@@ -401,17 +331,9 @@ diff -u -r1.20 SbString.cpp
 -    end=-1;
 -  }
 -#endif // COIN_DEBUG
-+/*!
-+  \fn SbString::SbString(const SbString & str)
-+  This is the copy constructor.
-+*/
- 
+-
 -  int size = end - start + 1;
-+/*!
-+  \fn SbString::SbString(const char * str)
-+  This constructor assigns from the given string.
-+*/
- 
+-
 -  if (size < SB_STRING_STATIC_STORAGE_SIZE) {
 -    this->sstring = this->staticstorage;
 -    this->storagesize = SB_STRING_STATIC_STORAGE_SIZE;
@@ -420,23 +342,15 @@ diff -u -r1.20 SbString.cpp
 -    this->sstring = new char[size+1];
 -    this->storagesize = size+1;
 -  }
-+/*!
-+  \fn SbString::SbString(const char * str, int start, int end)
- 
+-
 -  (void)strncpy(this->sstring, str + start, size);
 -  this->sstring[size]='\0';
 -}
-+  This constructor constructs a string from the given substring from
-+  \a start to \a end indices inclusive. If \a end is -1, the substring
-+  from \a start until the end of the string is used.
-+*/
- 
- /*!
-+  \fn SbString::SbString(const int digits)
-+
-   Construct an SbString instance containing the \a digits of the
-   integer argument.
-  */
+-
+-/*!
+-  Construct an SbString instance containing the \a digits of the
+-  integer argument.
+- */
 -SbString::SbString(const int digits)
 -{
 -  this->sstring = this->staticstorage;
@@ -445,14 +359,12 @@ diff -u -r1.20 SbString.cpp
 -
 -  this->addIntString(digits);
 -}
- 
- /*!
-+  \fn void SbString::addIntString(const int value)
-+
-   Constructs a string from the given integer (e.g. intToString(42)
-   creates the string "42"), and adds this to the contents of the
-   string.
- */
+-
+-/*!
+-  Constructs a string from the given integer (e.g. intToString(42)
+-  creates the string "42"), and adds this to the contents of the
+-  string.
+-*/
 -void
 -SbString::addIntString(const int value)
 -{
@@ -460,14 +372,114 @@ diff -u -r1.20 SbString.cpp
 -  (void)s.sprintf("%d", value);
 -  *this += s;
 -}
++// FIXME: translate the find() and findAll() methods to C (will first
++// need a growable array in C to handle the second argument to
++// findAll()). 20020522 mortene.
  
+ // Helper function for find() and findAll().
+ static void
+@@ -172,7 +50,7 @@
+   int len = str.getLength();
+   pi.append(0);
+   int k = 0;
+-  
++
+   for (int q = 1; q < len; q++){
+     while(k > 0 && (str.operator[](k) != str.operator[](q)))
+       k = pi.get(k);
+@@ -181,8 +59,8 @@
+     pi.append(k);
+   }
+ }
+- 
+- /*!
++
++/*!
+   If \a s is found, the method returns the first index where \a s
+   starts. Otherwise it returns -1.
+ 
+@@ -197,7 +75,7 @@
+ {
+   int lenthis = this->getLength();
+   int lenstr = str.getLength();
+-  
++
+   if (!lenthis) return -1;
+   if (lenstr > lenthis) return -1;
+ 
+@@ -216,8 +94,8 @@
+   }
+   return -1;
+ }
+- 
+- /*!
++
++/*!
+   All occurences of \a str is represented in \a found as indices to
+   the characters where \a str starts. If 1 or more is found, \c TRUE
+   is returned, else \c FALSE is returned.
+@@ -227,7 +105,8 @@
+ 
+   \sa SbString::find()
+   \since 2002-02-19
+- */
++*/
++
+ SbBool
+ SbString::findAll(const SbString & str, SbIntList & found) const
+ {
+@@ -257,7 +136,50 @@
+   return TRUE;
+ }
+ 
++
++
++/*!
++  \fn SbString::SbString(void)
++  This is the default constructor.  It initializes the string to be empty.
++*/
++
  /*!
++  \fn SbString::SbString(const SbString & str)
++  This is the copy constructor.
++*/
++
++/*!
++  \fn SbString::SbString(const char * str)
++  This constructor assigns from the given string.
++*/
++
++/*!
++  \fn SbString::SbString(const char * str, int start, int end)
++
++  This constructor constructs a string from the given substring from
++  \a start to \a end indices inclusive. If \a end is -1, the substring
++  from \a start until the end of the string is used.
++*/
++
++
++/*!
++  \fn SbString::SbString(const int digits)
++
++  Construct an SbString instance containing the \a digits of the
++  integer argument.
++ */
++
++/*!
++  \fn void SbString::addIntString(const int value)
++
++  Constructs a string from the given integer (e.g. intToString(42)
++  creates the string "42"), and adds this to the contents of the
++  string.
++*/
++
++/*!
 +  \fn SbString SbString::getSubString(int startidx, int endidx) const
 +
    This method returns a new string which contains a substring defined by the
    given indices \a startidx and \a endChar (inclusive).
    If \a endChar is -1, the substring from \a startidx to the end of the
-@@ -176,320 +190,142 @@
+@@ -268,320 +190,142 @@
    SbString::getSubString(0, 3), the returned string will be "foo/".
  */
  
@@ -835,7 +847,7 @@ diff -u -r1.20 SbString.cpp
    Set SbString instance to the formatted string \a formatstr,
    replacing the current contents.  The control characters within \a
    formatstr and the remaining arguments should follow the conventions
-@@ -498,24 +334,10 @@
+@@ -590,24 +334,10 @@
    Note that this function is not part of the original Open Inventor
    API.
  */
@@ -862,7 +874,7 @@ diff -u -r1.20 SbString.cpp
    Set SbString instance to the formatted string \a formatstr,
    replacing the current contents.  The control characters within \a
    formatstr and the arguments of the \a args argument list should
-@@ -524,29 +346,10 @@
+@@ -616,29 +346,10 @@
    Note that this function is not part of the original Open Inventor
    API.
  */
