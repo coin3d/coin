@@ -3328,7 +3328,7 @@ fi
 
 if test "x$enable_warnings" = "xyes"; then
   if test "x$GXX" = "xyes"; then
-    CXXFLAGS="$CXXFLAGS -W -Wall"
+    CXXFLAGS="$CXXFLAGS -W -Wall -Werror-implicit-function-declaration"
   fi
 else
   if test "x$GXX" != "xyes"; then
