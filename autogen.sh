@@ -6,6 +6,7 @@
 DIE=0
 
 PROJECT=Coin
+MACRODIR=conf-macros
 
 echo "Checking the installed configuration tools..."
 
@@ -36,27 +37,32 @@ echo "Checking the installed configuration tools..."
         DIE=1
 }
 
-# FIXME: check for more tools? 19990822 mortene.
+# The separate $MACRODIR module was added late in the project, and
+# since we need to do a cvs checkout to obtain it (cvs update won't do
+# with modules), we run this check.
+if ! test -d $MACRODIR
+then
+    cvs -z3 checkout $MACRODIR
+    if ! test -d $MACRODIR
+    then
+	echo "Couldn't fetch $MACRODIR module!"
+        echo
+        echo "Directory ``$MACRODIR'' (a separate CVS module) seems to be missing."
+        echo "You probably checked out $PROJECT before ``$MACRODIR'' was added."
+        echo "Run 'cvs -d :pserver:cvs@cvs.sim.no:/export/cvsroot co $MACRODIR'"
+        echo "to try again."
+	DIE=1
+	exit 1
+    fi
+fi
 
 if test "$DIE" -eq 1; then
         exit 1
 fi
 
-# The separate conf-macros module was added late in the project, and
-# since we need to do a cvs checkout to obtain it (cvs update won't do
-# with modules), we run this check.
-if ! test -d conf-macros
-then
-    cvs -z3 checkout conf-macros
-    if ! test -d conf-macros
-    then
-	echo "Couldn't fetch conf-macros module!"
-	exit 1
-    fi
-fi
 
 echo "Running aclocal (generating aclocal.m4)..."
-aclocal -I conf-macros
+aclocal -I $MACRODIR
 
 echo "Running autoheader (generating config.h.in)..."
 autoheader
