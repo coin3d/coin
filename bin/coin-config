@@ -7,6 +7,12 @@
 #   Lars J. Aas <larsa@coin3d.org>
 #   Morten Eriksen <mortene@coin3d.org>
 #
+# Ideas for Improvements:
+# - obsolete src/data/draggerDefaults/iv2h.sh by integration
+# - make builds with subdir-based source files work properly
+# - enable builds with source<->object file timestamp comparisons
+#   (--make instead of --build?)
+#
 
 program="$0"
 me=`echo "$0" | sed 's,^.*[/\\],,g'`
