@@ -98,9 +98,14 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
+#ifdef HAVE_MACH_O_DYLD_H
+#include <mach-o/dyld.h>
+#include <mach-o/ldsyms.h>
+#else
 #ifdef HAVE_DLFCN_H
 #include <dlfcn.h> /* Programming interface to libdl. */
 #endif /* HAVE_DLFCN_H */
+#endif /* HAVE_MACH_O_DYLD_H */
 
 #ifdef HAVE_DLD_LIB
 #include <dl.h> /* Programming interface to libdld on HP-UX 10 & 11. */
@@ -109,11 +114,6 @@
 #ifdef HAVE_WINDOWS_H
 #include <windows.h>
 #endif /* HAVE_WINDOWS_H */
-
-#ifdef HAVE_MACH_O_DYLD_H
-#include <mach-o/dyld.h>
-#include <mach-o/ldsyms.h>
-#endif /* HAVE_MACH_O_DYLD_H */
 
 #ifdef HAVE_WIN32_API
 /* Conditional inclusion, as the functions in win32api.h will not be
