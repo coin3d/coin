@@ -24,6 +24,7 @@
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/events/SoKeyboardEvent.h>
 
+#include <data/draggerDefaults/translate2Dragger.h>
 
 #define CONSTRAINT_OFF  0
 #define CONSTRAINT_WAIT 1
@@ -53,7 +54,9 @@ SoTranslate2Dragger::SoTranslate2Dragger(void)
   SO_KIT_ADD_CATALOG_ENTRY(yAxisFeedback, SoSeparator, TRUE, axisFeedbackSwitch, "", TRUE);
 
   if (SO_KIT_IS_FIRST_INSTANCE()) {
-    SoInteractionKit::readDefaultParts("translate2Dragger.iv", NULL, 0);
+    SoInteractionKit::readDefaultParts("translate2Dragger.iv",
+                                       draggergeometry,
+                                       sizeof(draggergeometry));
   }
   SO_NODE_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
   SO_KIT_INIT_INSTANCE();
@@ -181,12 +184,12 @@ SoTranslate2Dragger::metaKeyChangeCB(void *, SoDragger *d)
 {
   SoTranslate2Dragger *thisp = (SoTranslate2Dragger*)d;
   if (!thisp->isActive.getValue()) return;
-
+  
   const SoEvent *event = thisp->getEvent();
-  if (SO_KEY_RELEASE_EVENT(event, LEFT_SHIFT) ||
-      SO_KEY_RELEASE_EVENT(event, RIGHT_SHIFT)) {
-    if (thisp->constraintState != CONSTRAINT_OFF) thisp->drag();
-  }
+  if (thisp->constraintState == CONSTRAINT_OFF &&
+      event->wasShiftDown()) thisp->drag();
+  else if (thisp->constraintState != CONSTRAINT_OFF &&
+           !event->wasShiftDown()) thisp->drag();
 }
 
 void
@@ -197,6 +200,8 @@ SoTranslate2Dragger::dragStart(void)
   SoInteractionKit::setSwitchValue(sw, 1);
   sw = SO_GET_ANY_PART(this, "feedbackSwitch", SoSwitch);
   SoInteractionKit::setSwitchValue(sw, 1);
+  sw = SO_GET_ANY_PART(this, "axisFeedbackSwitch", SoSwitch);
+  SoInteractionKit::setSwitchValue(sw, SO_SWITCH_ALL);
 
   SbVec3f hitPt = this->getLocalStartingPoint();
   this->planeProj->setPlane(SbPlane(SbVec3f(0.0f, 0.0f, 1.0f), hitPt));
@@ -222,11 +227,11 @@ SoTranslate2Dragger::drag(void)
   }
   else if (!event->wasShiftDown() && this->constraintState != CONSTRAINT_OFF) {
     SoSwitch *sw = SO_GET_ANY_PART(this, "axisFeedbackSwitch", SoSwitch);
-    SoInteractionKit::setSwitchValue(sw, SO_SWITCH_NONE);
+    SoInteractionKit::setSwitchValue(sw, SO_SWITCH_ALL);
     this->constraintState = CONSTRAINT_OFF;
   }
 
-  SbVec3f startPt = this->getLocalStartingPoint();
+  SbVec3f startPt = this->getLocalStartingPoint();    
   SbVec3f motion;
   SbVec3f localrestartpt;
 

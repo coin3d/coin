@@ -98,14 +98,18 @@ sim_ac_conf_cmd = @sim_ac_conf_cmd@
 
 
 EXTRA_DIST = \
-             data/draggerDefaults/translate1Dragger.iv
+             data/draggerDefaults/translate1Dragger.iv \
+             data/draggerDefaults/translate2Dragger.iv
 
 
 draggerdefdatadir = $(datadir)/Coin/draggerDefaults
-draggerdefdata_DATA = translate1Dragger.iv
+draggerdefdata_DATA = translate1Dragger.iv \
+			translate2Dragger.iv
+
 
 BUILT_SOURCES = \
-	translate1Dragger.h
+	translate1Dragger.h \
+	translate2Dragger.h
 
 subdir = data/draggerDefaults
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -233,6 +237,9 @@ maintainer-clean
 
 translate1Dragger.h: $(top_srcdir)/data/draggerDefaults/translate1Dragger.iv
 	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/translate1Dragger.iv > translate1Dragger.h
+
+translate2Dragger.h: $(top_srcdir)/data/draggerDefaults/translate2Dragger.iv
+	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/translate2Dragger.iv > translate2Dragger.h
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
