@@ -543,6 +543,13 @@ cc_flw_get_glyph(int font, int charidx)
          least scale the defaultfont glyph to the correct size.
          20030317 mortene. */
       
+      /* Correct fix is to make an empty rectangle. Using a char from 
+         the default font only gives a blank since most fonts contain a superset 
+         of the chars in the default font. (The default font characters being
+         rendered was due to a bug in the character mapping, causing failure
+         to find special chars such as 'ØÆÅ'. The bug has since been fixed).
+         20030327 preng */
+      
       if (cc_flw_debug()) {
         cc_debugerror_postwarning("cc_flw_get_glyph",
                                   "no character 0x%x was found in font '%s'",

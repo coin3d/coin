@@ -83,8 +83,10 @@ extern "C" {
 
   cc_FLWbitmap * cc_flw_get_bitmap(int font, int glyph);
   void cc_flw_done_bitmap(cc_FLWbitmap * bitmap);
-
+  
   int cc_flw_get_outline(int font, int glyph);
+  
+  SbBool cc_flw_debug(void);       
 
 #ifdef __cplusplus
 }
