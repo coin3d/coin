@@ -196,7 +196,8 @@ SoFile::readNamedFile(SoInput * in)
       strcmp(this->name.getValue().getString(), SoFileP::UNDEFINED_FILE) == 0) {
     // We handle this different than Inventor, where the read process
     // fails upon an unspecified filename.
-    SoReadError::post(in, "Undefined filename in SoFile");
+    SoDebugError::postWarning("SoFile::readNamedFile", 
+                              "Undefined filename in SoFile");
     return TRUE;
   }
 

@@ -4089,28 +4089,3 @@ Separator {
     descriptor.
 
 =====================================================================
-
-118 SoFile::name set to empty string causes app to hang.
-
-    The following program causes a hang:
-
--------------8<---------------- [snip] --------------------------
-#include <Inventor/SoDB.h>
-#include <Inventor/nodes/SoFile.h>
-
-int main()
-{
-  SoDB::init();
-  SoFile *file = new SoFile();
-  file->name = "";
-  return 0;
-}
--------------8<---------------- [snip] --------------------------
-
-    The hang is due to this code causing attempted reading from
-    stdin. Suggested fix: short-cut attempts at reading from an empty
-    file name, perhaps in SoFile::readNamedFile()?
-
-    20040616 mortene, reported by thammer.
-
-=====================================================================
