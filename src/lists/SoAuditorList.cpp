@@ -117,7 +117,11 @@ SoAuditorList::getObject(const int index) const
 SoNotRec::Type
 SoAuditorList::getType(const int index) const
 {
-  return (SoNotRec::Type)(SbPList::operator[](index * 2 + 1));
+  // the temporary int is necessary since gcc 2.95.2
+  // does not allow a direct cast from void * to SoNotRec::Type
+  // pederb, 20000219
+  int tmp = (int)SbPList::operator[](index*2+1);
+  return (SoNotRec::Type)tmp;
 }
 
 /*!
