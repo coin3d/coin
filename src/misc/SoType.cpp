@@ -387,9 +387,11 @@ SoType::fromName(const SbName name)
       // dynamic loading is not yet supported for this compiler suite
       static long first = 1;
       if ( first ) {
-#if COIN_DEBUG
-        SoDebugError::post("SoType::fromName", "unable to figure out the C++ name mangling scheme");
-#endif
+        const char * env = coin_getenv("COIN_DEBUG_DL");
+        if (env && (atoi(env) > 0)) {
+          SoDebugError::post("SoType::fromName",
+                             "unable to figure out the C++ name mangling scheme");
+        }
         first = 0;
       }
       return SoType::badType();
