@@ -767,6 +767,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/SbBasic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/engines/SoBoolOperation.h \
                          @path_tag@@coin_src_dir@/src/engines/SoCalculator.cpp \
                          @path_tag@@coin_src_dir@/include/Inventor/engines/SoCalculator.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/engines/SoCompose.h \
                          @path_tag@@coin_src_dir@/src/engines/SoComposeVec2f.cpp \
                          @path_tag@@coin_src_dir@/include/Inventor/engines/SoComposeVec2f.h \
                          @path_tag@@coin_src_dir@/src/engines/SoComposeVec3f.cpp \
