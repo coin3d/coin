@@ -19,7 +19,7 @@
 
 /*!
   \class SoTexture2 SoTexture2.h Inventor/nodes/SoTexture2.h
-  \brief The SoTexture2 class is used to map a 2D texture onto geometry. 
+  \brief The SoTexture2 class is used to map a 2D texture onto geometry.
   \ingroup nodes
 
 */
@@ -49,7 +49,7 @@
 */
 /*!
   \var SoTexture2::Model SoTexture2::MODULATE
-  Texture image is modulated with polygon. 
+  Texture image is modulated with polygon.
 */
 /*!
   \var SoTexture2::Model SoTexture2::DECAL
@@ -158,7 +158,7 @@ SoTexture2::initClass(void)
 
 
 /*!
-  Overloaded to check if texture file (if any) can be found 
+  Overloaded to check if texture file (if any) can be found
   and loaded.
 */
 SbBool
@@ -186,19 +186,19 @@ SoTexture2::GLRender(SoGLRenderAction * action)
     return;
 
   if (!this->getImage()) return;
-  
+
   float quality = SoTextureQualityElement::get(state);
-  
+
   if (this->imagedata && this->imagedata->load()) {
     SbBool clamps = this->wrapS.getValue() == SoTexture2::CLAMP;
     SbBool clampt = this->wrapT.getValue() == SoTexture2::CLAMP;
-    
-    if (this->glimage && (!this->glimagevalid || 
+
+    if (this->glimage && (!this->glimagevalid ||
                           !this->glimage->matches(clamps, clampt))) {
       this->glimage->unref();
       this->glimage = NULL;
     }
-    
+
     if (this->glimage == NULL) {
       this->glimage =
         SoGLImage::findOrCreateGLImage(this->imagedata,
@@ -212,7 +212,7 @@ SoTexture2::GLRender(SoGLRenderAction * action)
                                this->blendColor.getValue());
   SoGLTextureEnabledElement::set(state,
                                  this, this->glimage != NULL && quality > 0.0f);
-  
+
   if (this->isOverride()) {
     SoTextureOverrideElement::setImageOverride(state, TRUE);
   }
@@ -299,7 +299,7 @@ SoTexture2::getImage(void)
 {
   if (this->filename.isIgnored() && this->image.isIgnored())
     return FALSE;
-  
+
   if (this->imagedatavalid) return TRUE; // common case
 
   SbVec2s size;
@@ -313,7 +313,7 @@ SoTexture2::getImage(void)
     (nc > 0 && nc <= 4);
 
   if (this->filename.isIgnored() && !validinline) return FALSE;
-  
+
   if (this->imagedata) {
     // if we get here, we'll have to "reload" image
     this->imagedata->unref();
@@ -329,10 +329,12 @@ SoTexture2::getImage(void)
       const SbStringList & dirlist = SoInput::getDirectories();
       const char * texname = this->filename.getValue().getString();
       this->imagedata = SoImageInterface::findOrCreateImage(texname, dirlist);
-#if COIN_DEBUG && 1 // debug
-      SoDebugError::postInfo("SoTexture2::getImage",
-                             "image not found: %s", texname);
-#endif // debug
+      if (this->imagedata == NULL) {
+#if COIN_DEBUG
+        SoDebugError::postWarning("SoTexture2::getImage",
+                                  "Image not found: %s", texname);
+#endif
+      }
     }
   }
   this->imagedatavalid = TRUE; // imagedata should be valid (or NULL) now
@@ -353,7 +355,7 @@ SoTexture2::readImage(void)
 /*!
   Overloaded to detect when filename or image changes.
 */
-void 
+void
 SoTexture2::notify(SoNotList *list)
 {
   SoField *f = list->getLastField();
@@ -363,4 +365,3 @@ SoTexture2::notify(SoNotList *list)
   }
   SoNode::notify(list);
 }
-
