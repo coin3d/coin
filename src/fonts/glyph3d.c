@@ -365,40 +365,41 @@ cc_glyph3d_getkerning(const cc_glyph3d * left, const cc_glyph3d * right,
   cc_flw_get_vector_kerning(right->fontidx, left->glyphidx, right->glyphidx, x, y);
 }
 
+
 static SbBool
-glyph3d_specmatch(const cc_font_specification * spec1, 
+glyph3d_specmatch(const cc_font_specification * spec1,
                   const cc_font_specification * spec2)
 {
-
+  
   float c1, c2;
-  int temp;
-
+  int temp1,temp2;
+  
   assert(spec1);
   assert(spec2);
-
+  
   /* Reducing precision of the complexity variable. This is done to
      prevent the user from flooding the memory with generated glyphs
      which might be more or less identical */
   c1 = spec1->complexity;
   c2 = spec2->complexity;
-
+  
   /* Clamp values to [0...1] */
   if (c1 > 1.0f) c1 = 1.0f;
   if (c1 < 0.0f) c1 = 0.0f;
   if (c2 > 1.0f) c2 = 1.0f;
   if (c2 < 0.0f) c2 = 0.0f;
-
-  temp = (int) (c1 * 10.0f);
-  c1 = ((float) temp / 10.0f);
-  temp = (int) (c2 * 10.0f);
-  c2 = ((float) temp / 10.0f);
-
+  
+  temp1 = (int) (c1 * 10.0f);
+  temp2 = (int) (c2 * 10.0f);
+  
   if ((!cc_string_compare(&spec1->name, &spec2->name)) &&
       (!cc_string_compare(&spec1->style, &spec2->style)) &&
-      (c1 == c2)) {
+      (temp1 == temp2)) {
     /* No need to compare size for 3D fonts */
     return TRUE;
   }
   else return FALSE;
-
+  
 }
+
+
