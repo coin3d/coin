@@ -119,31 +119,20 @@ SoSceneManager::~SoSceneManager()
 void
 SoSceneManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
 {
-  // FIXME: this probably only needs to be done at the first
-  // invocation, since the viewport will later always be
-  // up-to-date. (?)  The division of initialization work between
-  // SoSceneManager::render() and SoGLRenderAction::beginTraversal()
-  // is a mess right now, and need to be sorted out. Should the init
-  // code be moved to elements? 19990215 mortene.
-
-  SbViewportRegion vp = this->glaction->getViewportRegion();
-  SbVec2s origin = vp.getViewportOriginPixels();
-  SbVec2s size = vp.getViewportSizePixels();
-#if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoSceneManager::render",
-                         "glViewport(%d, %d, %d, %d)",
-                         origin[0], origin[1], size[0], size[1]);
-#endif // debug
-  glViewport(origin[0], origin[1], size[0], size[1]);
-
-  GLbitfield mask = 0;
-  if (clearwindow) mask |= GL_COLOR_BUFFER_BIT;
-  if (clearzbuffer) mask |= GL_DEPTH_BUFFER_BIT;
+  // FIXME: this should not be necessary to do here, the call should
+  // probably be done from either a bunch of the
+  // SoSceneManager::set*() methods or from So*RenderArea.
+  // 20000612 mortene.
+  this->reinitialize();
 
   glClearColor(this->backgroundcolor[0],
                this->backgroundcolor[1],
                this->backgroundcolor[2],
                0.0f);
+
+  GLbitfield mask = 0;
+  if (clearwindow) mask |= GL_COLOR_BUFFER_BIT;
+  if (clearzbuffer) mask |= GL_DEPTH_BUFFER_BIT;
   glClear(mask);
 
   glMatrixMode(GL_PROJECTION);
@@ -217,12 +206,22 @@ SoSceneManager::processEvent(const SoEvent * const event)
 }
 
 /*!
-  Reinitialize after the GL context has changed.
+  Reinitialize after parameters affecting the OpenGL context has
+  changed.
  */
 void
 SoSceneManager::reinitialize(void)
 {
-  COIN_STUB(); // FIXME: implement
+  // FIXME: The division of initialization work between
+  // SoSceneManager::render(), SoSceneManager::reinitialize(),
+  // SoGLRenderAction::beginTraversal() and various init code in the
+  // element classes is a bit of a mess right now, and need to be
+  // sorted out. 19990215 mortene.
+
+  SbViewportRegion vp = this->glaction->getViewportRegion();
+  SbVec2s origin = vp.getViewportOriginPixels();
+  SbVec2s size = vp.getViewportSizePixels();
+  glViewport(origin[0], origin[1], size[0], size[1]);
 }
 
 /*!
