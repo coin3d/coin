@@ -1434,7 +1434,12 @@ SoTransformerDragger::isColinear(SbVec2f a1[2], SbVec2f a2[2], int pixels)
 void
 SoTransformerDragger::getSurroundScaleMatrices(SbMatrix & mat, SbMatrix & inv)
 {
-  this->getPartToLocalMatrix("surroundScale", mat, inv);
+  if (this->surroundScale.getValue()) {
+    this->getPartToLocalMatrix("surroundScale", mat, inv);
+  }
+  else {
+    mat = inv = SbMatrix::identity();
+  }
 }
 
 SoNode *
