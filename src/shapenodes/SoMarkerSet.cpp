@@ -1331,7 +1331,9 @@ swap_updown(unsigned char *data, int width, int height)
   data is ordered. Does nothing if \a markerIndex is NONE.
 
   Here's a complete usage example which demonstrates how to set up a
-  user-specified marker from a char-map:
+  user-specified marker from a char-map.  Note that the "multi-colored"
+  pixmap data is converted to a monochrome bitmap before being passed to
+  addMarker() because addMarker() supports only bitmaps.
 
   \code
   const int WIDTH = 18;
