@@ -1,6 +1,14 @@
-#  This can be any file in the package.
-AC_INIT(src/misc/SoDB.cpp)
-AC_CONFIG_AUX_DIR(cfg)
+# **************************************************************************
+
+m4_define([COIN_MAJOR], [0])
+m4_define([COIN_MINOR], [9])
+m4_define([COIN_MICRO], [99])
+
+AC_INIT([Coin], [v[]COIN_MAJOR.COIN_MINOR.COIN_MICRO])
+AC_REVISION([$Revision$])
+
+AC_CONFIG_AUX_DIR([cfg])
+AC_CONFIG_SRCDIR([src/misc/SoDB.cpp])
 
 SIM_AC_CVS_CHANGES([
   # the moving of "conf-macros" to "cfg/m4"
@@ -178,9 +186,9 @@ SIM_AC_SETUP_MSVC_IFELSE([], [
 #
 # **************************************************************************
 
-COIN_MAJOR_VERSION=0
-COIN_MINOR_VERSION=9
-COIN_MICRO_VERSION=99
+COIN_MAJOR_VERSION=COIN_MAJOR
+COIN_MINOR_VERSION=COIN_MINOR
+COIN_MICRO_VERSION=COIN_MICRO
 COIN_VERSION=$COIN_MAJOR_VERSION.$COIN_MINOR_VERSION.$COIN_MICRO_VERSION
 VERSION=$COIN_VERSION
 
@@ -216,8 +224,6 @@ coin_build_dir=`pwd`
 
 AM_INIT_AUTOMAKE(Coin, $VERSION)
 
-#  Files to cram results from the configure tests into.
-AM_CONFIG_HEADER(config.h include/Inventor/SbBasic.h include/Inventor/system/inttypes.h)
 
 #  Default to not building a static library.
 #  Can be overridden by the user with --enable-static.
@@ -766,7 +772,9 @@ fi
 
 # **************************************************************************
 
-AC_OUTPUT([
+AM_CONFIG_HEADER([config.h include/Inventor/SbBasic.h include/Inventor/system/inttypes.h])
+
+AC_CONFIG_FILES([
         Makefile
         include/Makefile
         include/Inventor/Makefile
@@ -798,6 +806,8 @@ AC_OUTPUT([
         build/coin.spec
         docs/coin.doxygen
 ])
+
+AC_OUTPUT
 
 # *******************************************************************
 # * Platform-specific stuff.
