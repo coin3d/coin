@@ -30,6 +30,7 @@ extern "C" {
   
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/base/string.h>
+#include <Inventor/C/base/list.h>
   
   /*
     FLW is a Font Library Wrapper designed to allow any number of
@@ -56,6 +57,13 @@ extern "C" {
     unsigned char * buffer; /* bitmap data */
   };
   
+  struct cc_flw_vector_glyph {
+    cc_list * vertexlist;
+    cc_list * indexlist;
+    cc_list * edgeindexlist;
+  };
+
+
   int cc_flw_get_font(const char * fontname, const unsigned int sizex, const unsigned int sizey);
   int cc_flw_find_font(const char * fontname, const unsigned int sizex, const unsigned int ysizey);
   void cc_flw_done_font(unsigned int font);
@@ -74,6 +82,13 @@ extern "C" {
   void cc_flw_done_glyph(unsigned int font, unsigned int glyph);
 
   struct cc_flw_bitmap * cc_flw_get_bitmap(unsigned int font, unsigned int glyph);
+  struct cc_flw_vector_glyph * cc_flw_get_vector_glyph(unsigned int font, unsigned int glyph);
+
+  float * cc_flw_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph);
+  int * cc_flw_get_vector_glyph_faceidx(struct cc_flw_vector_glyph * vecglyph);
+  int * cc_flw_get_vector_glyph_edgeidx(struct cc_flw_vector_glyph * vecglyph);
+
+
   
   SbBool cc_flw_debug(void);       
 
