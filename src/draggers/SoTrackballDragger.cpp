@@ -288,7 +288,18 @@ SoTrackballDragger::dragStart(void)
     else {
       this->sphereProj->setViewVolume(this->getViewVolume());
       this->sphereProj->setWorkingSpace(this->getLocalToWorldMatrix());
-
+      switch (this->getFrontOnProjector()) {
+      case FRONT:
+        this->sphereProj->setFront(TRUE);
+        break;
+      case BACK:
+        this->sphereProj->setFront(TRUE);
+        break;
+      default: // avoid warnings
+      case USE_PICK:
+        this->sphereProj->setFront(this->sphereProj->isPointInFront(hitPt));
+        break;
+      }
       SbVec3f projPt = this->sphereProj->project(this->getNormalizedLocaterPosition());
       this->getLocalToWorldMatrix().multVecMatrix(projPt, this->prevWorldHitPt);
       this->prevMotionMatrix = this->getMotionMatrix();

@@ -178,23 +178,24 @@ SbSphereProjector::isFront(void) const
 SbBool
 SbSphereProjector::isPointInFront(const SbVec3f & point) const
 {
-  SbVec3f dir;
-  if (this->orientToEye) {
-    dir = -this->viewVol.getProjectionDirection();
-    this->worldToWorking.multDirMatrix(dir, dir);
+  const SbViewVolume & vv = this->getViewVolume();
+  SbVec3f camdir;
+  if (vv.getProjectionType() == SbViewVolume::PERSPECTIVE) {
+    SbVec3f campos;
+    this->worldToWorking.multVecMatrix(vv.getProjectionPoint(), campos);
+    camdir = campos - this->sphere.getCenter();
   }
-  else dir = SbVec3f(0.0f, 0.0f, 1.0f);
-
-  SbVec3f vec = point - this->sphere.getCenter();;
-
-  float dot = vec.dot(dir);
-  if (this->intersectFront) return dot >= 0.0f;
-  else return dot < 0.0f;
+  else {
+    this->worldToWorking.multDirMatrix( vv.zVector(), camdir);
+  }
+  SbVec3f ptdir = point - this->sphere.getCenter();
+  return ptdir.dot(camdir) >= 0.0f; 
 }
 
 /*!
   Intersect \a line with the SbSphereProjector::sphere and place the
-  intersection point (if any) in \a result.
+  intersection point (if any) in \a result. Considers setFront()
+  settings.
 
   Returns \c TRUE if \a line actually hits the sphere, \c FALSE if it
   doesn't intersect with it.
@@ -204,7 +205,7 @@ SbSphereProjector::intersectSphereFront(const SbLine & l, SbVec3f & result)
 {
   SbVec3f i0, i1;
   if (this->sphere.intersect(l, i0, i1)) {
-    if (this->isPointInFront(i0)) result = i0;
+    if (this->isFront()) result = i0;
     else result = i1;
     return TRUE;
   }

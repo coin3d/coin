@@ -27,7 +27,6 @@
 
 #include <data/draggerDefaults/rotateSphericalDragger.h>
 
-
 //
 // FIXME: investigate what to do with prevMotionMatrix and
 // prevWorldHitPoint, pederb 2000-01-27
@@ -209,12 +208,25 @@ SoRotateSphericalDragger::dragStart(void)
   SoInteractionKit::setSwitchValue(sw, 1);
 
   SbVec3f hitPt = this->getLocalStartingPoint();
+
   float radius = hitPt.length();
   this->sphereProj->setSphere(SbSphere(SbVec3f(0.0f, 0.0f, 0.0f), radius));
 
   this->sphereProj->setViewVolume(this->getViewVolume());
   this->sphereProj->setWorkingSpace(this->getLocalToWorldMatrix());
 
+  switch (this->getFrontOnProjector()) {
+  case FRONT:
+    this->sphereProj->setFront(TRUE);
+    break;
+  case BACK:
+    this->sphereProj->setFront(TRUE);
+    break;
+  default: // avoid warnings
+  case USE_PICK:
+    this->sphereProj->setFront(this->sphereProj->isPointInFront(hitPt));
+    break;
+  }
   SbVec3f projPt = this->sphereProj->project(this->getNormalizedLocaterPosition());
   this->getLocalToWorldMatrix().multVecMatrix(projPt, this->prevWorldHitPt);
   this->prevMotionMatrix = this->getMotionMatrix();

@@ -693,6 +693,19 @@ SoTransformerDragger::dragStart(void)
       this->sphereProj->setViewVolume(this->getViewVolume());
       this->sphereProj->setWorkingSpace(this->getWorkingToWorldMatrix());
 
+      switch (this->getFrontOnProjector()) {
+      case FRONT:
+        this->sphereProj->setFront(TRUE);
+        break;
+      case BACK:
+        this->sphereProj->setFront(TRUE);
+        break;
+      default: // avoid warnings
+      case USE_PICK:
+        this->sphereProj->setFront(this->sphereProj->isPointInFront(startpt));
+        break;
+      }
+
       SbVec3f projpt = this->sphereProj->project(this->getNormalizedLocaterPosition());
       this->getWorkingToWorldMatrix().multVecMatrix(projpt, this->prevWorldHitPt);
       this->prevMotionMatrix = this->getMotionMatrix();

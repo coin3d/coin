@@ -164,7 +164,7 @@ SoDragger::SoDragger(void)
 
   THIS->mingesture = 8;
   THIS->eventaction = NULL;
-  THIS->frontonprojector = FRONT; // FIXME: ??
+  THIS->frontonprojector = USE_PICK;
   THIS->valuechangedcbenabled = TRUE;
   THIS->ignoreinbbox = FALSE;
   THIS->currentevent = NULL;
@@ -850,7 +850,7 @@ SoDragger::workValuesIntoTransform(SbMatrix & matrix, const SbVec3f * translatio
 void
 SoDragger::getTransformFast(SbMatrix & matrix, SbVec3f & translation, SbRotation & rotation, SbVec3f & scalefactor, SbRotation & scaleorientation, const SbVec3f & center)
 {
-  SoDragger::workValuesIntoTransform(matrix, &translation, &rotation, &scalefactor, 
+  SoDragger::workValuesIntoTransform(matrix, &translation, &rotation, &scalefactor,
                                      &scaleorientation, &center);
 }
 
@@ -861,7 +861,7 @@ SoDragger::getTransformFast(SbMatrix & matrix, SbVec3f & translation, SbRotation
 void
 SoDragger::getTransformFast(SbMatrix & matrix, SbVec3f & translation, SbRotation & rotation, SbVec3f & scalefactor, SbRotation & scaleorientation)
 {
-  SoDragger::workValuesIntoTransform(matrix, &translation, &rotation, &scalefactor, 
+  SoDragger::workValuesIntoTransform(matrix, &translation, &rotation, &scalefactor,
                                      &scaleorientation, NULL);
 }
 
@@ -1011,7 +1011,7 @@ SoDragger::isAdequateConstraintMotion(void)
 
 /*!
   Checks if \a pickpath contains \a surrogatepath and returns TRUE if
-  the tail of \a surrogatepath is before any dragger in \a pickpath.  
+  the tail of \a surrogatepath is before any dragger in \a pickpath.
 */
 SbBool
 SoDragger::shouldGrabBasedOnSurrogate(const SoPath * pickpath, const SoPath * surrogatepath)
@@ -1020,7 +1020,7 @@ SoDragger::shouldGrabBasedOnSurrogate(const SoPath * pickpath, const SoPath * su
 
   SoFullPath * pick = (SoFullPath*) pickpath;
   SoFullPath * surr = (SoFullPath*) surrogatepath;
-  
+
   SoNode * tail = surr->getTail();
   SoType draggertype = SoDragger::getClassTypeId();
 

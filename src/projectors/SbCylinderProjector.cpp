@@ -32,7 +32,6 @@
 #include <Inventor/SbRotation.h>
 #include <assert.h>
 
-
 /*!
   \var SbCylinderProjector::intersectFront
 
@@ -182,37 +181,24 @@ SbCylinderProjector::isFront(void) const
 SbBool
 SbCylinderProjector::isPointInFront(const SbVec3f & point) const
 {
-  // FIXME: not quite sure about this one.
-  // 19991207, pederb
-
-  SbVec3f refdir;
-  if (this->orientToEye) {
-    refdir = -this->viewVol.getProjectionDirection();
-    this->worldToWorking.multDirMatrix(refdir, refdir);
+  const SbViewVolume & vv = this->getViewVolume();
+  SbVec3f camdir;
+  if (vv.getProjectionType() == SbViewVolume::PERSPECTIVE) {
+    SbVec3f campos;
+    this->worldToWorking.multVecMatrix(vv.getProjectionPoint(), campos);
+    camdir = campos - this->cylinder.getAxis().getClosestPoint(point);
   }
   else {
-    refdir = SbVec3f(0.0f, 0.0f, 1.0f);
+    this->worldToWorking.multDirMatrix( vv.zVector(), camdir);
   }
-  const SbLine & axis = this->cylinder.getAxis();
-  SbVec3f somept = axis.getPosition() + refdir;
-  SbVec3f ptonaxis = axis.getClosestPoint(somept);
-
-  // find plane direction perpendicular to line
-  SbVec3f planeDir = somept - ptonaxis;
-  planeDir.normalize();
-
-  ptonaxis = axis.getClosestPoint(point);
-  SbVec3f ptDir = point - ptonaxis;
-  ptDir.normalize();
-
-  float dot = ptDir.dot(planeDir);
-  if (intersectFront) return dot >= 0.0f;
-  else return dot < 0.0f;
+  SbVec3f ptdir = point - this->cylinder.getAxis().getClosestPoint(point);
+  return camdir.dot(ptdir) >= 0.0f;
 }
 
 /*!
   Intersect \a line with the SbCylinderProjector::cylinder and place
-  the intersection point (if any) in \a result.
+  the intersection point (if any) in \a result. Considers setFront()
+  settings.
 
   Returns \c TRUE if \a line actually hits the cylinder, \c FALSE if
   it doesn't intersect with it.
@@ -224,7 +210,7 @@ SbCylinderProjector::intersectCylinderFront(const SbLine & line,
   SbVec3f i0, i1;
   SbBool isect = this->cylinder.intersect(line, i0, i1);
   if (isect) {
-    if (this->isPointInFront(i0)) result = i0;
+    if (this->isFront()) result = i0;
     else result = i1;
   }
   return isect;

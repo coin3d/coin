@@ -27,7 +27,6 @@
 
 #include <data/draggerDefaults/rotateCylindricalDragger.h>
 
-
 SO_KIT_SOURCE(SoRotateCylindricalDragger);
 
 
@@ -208,6 +207,23 @@ SoRotateCylindricalDragger::dragStart(void)
   SbLine line(SbVec3f(0.0f, 0.0f, 0.0f), SbVec3f(0.0f, 1.0f, 0.0f));
   SbVec3f ptOnLine = line.getClosestPoint(hitPt);
   this->cylinderProj->setCylinder(SbCylinder(line, (ptOnLine-hitPt).length()));
+
+  this->cylinderProj->setViewVolume(this->getViewVolume());
+  this->cylinderProj->setWorkingSpace(this->getLocalToWorldMatrix());
+  
+  switch (this->getFrontOnProjector()) {
+  case FRONT:
+    this->cylinderProj->setFront(TRUE);
+    break;
+  case BACK:
+    this->cylinderProj->setFront(TRUE);
+    break;
+  default: // avoid warnings
+  case USE_PICK:
+    this->cylinderProj->setFront(this->cylinderProj->isPointInFront(hitPt));
+    break;
+  }
+
 }
 
 void
