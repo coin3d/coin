@@ -213,7 +213,21 @@ public:
       return;
     }
 
-    int attribs[] = { GLX_RGBA, None };
+    // FIXME: should fallback to less and less restrictive attribs
+    // settings if the glXChooseVisual() below fails. 20000622 mortene.
+    static int attribs[] = {
+      GLX_RGBA,
+      GLX_DEPTH_SIZE, 1,
+      GLX_STENCIL_SIZE, 1,
+      None
+    };
+
+    // FIXME: using glXChooseVisual() like this picks a 8-bit
+    // PseudoColor visual on SGI IRIX X11 servers with default
+    // configuration settings. Should instead use some logic based on
+    // XMatchVisualInfo() to find the best (i.e. deepest)
+    // visual. This is Bugzilla #129. 20000622 mortene.
+
     this->visinfo = glXChooseVisual(this->display,
                                     DefaultScreen(this->display),
                                     attribs);
