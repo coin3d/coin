@@ -244,7 +244,7 @@ SoText2::GLRender(SoGLRenderAction * action)
     SbBox3f box;
     SbVec3f center;
     this->computeBBox(action, box, center);
-    if (!SoCullElement::cullTest(state, box, SbBool(TRUE))) {
+    if (!SoCullElement::cullTest(state, box, TRUE)) {
       SoMaterialBundle mb(action);
       mb.sendFirst();
       SbVec3f nilpoint(0.0f, 0.0f, 0.0f);
