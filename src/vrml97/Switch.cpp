@@ -430,7 +430,9 @@ SoVRMLSwitch::search(SoSearchAction * action)
 void
 SoVRMLSwitch::write(SoWriteAction * action)
 {
-  inherited::write(action);
+  // use SoNode::write, not SoGroup::write() as we only want to write
+  // the children in the choice field, not as Group children.
+  SoNode::write(action);
 }
 
 // Doc in parent
