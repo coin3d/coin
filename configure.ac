@@ -101,12 +101,35 @@ fi
 # **************************************************************************
 # Mac OS X: gcc
 
-sim_ac_framework=false
-sim_ac_framework_name="MAC_FRAMEWORK_NAME_DEFAULT"
-sim_ac_framework_prefix="MAC_FRAMEWORK_PREFIX_DEFAULT"
-sim_ac_framework_version="MAC_FRAMEWORK_VERSION_DEFAULT"
+AC_ARG_WITH([framework],
+  [  --with-framework  Do Mac OS X-like framework installation
+  --without-framework  Do regular installation on Mac OS X],
+  [sim_ac_framework_name="MAC_FRAMEWORK_NAME_DEFAULT"
+  case $withval in
+  yes ) sim_ac_framework=true ;;
+  no ) sim_ac_framework=false ;;
+  * ) sim_ac_framework=true; sim_ac_framework_name="$withval" ;;
+  esac],
+  [sim_ac_framework_name="MAC_FRAMEWORK_NAME_DEFAULT"
+  case $host_os in
+  darwin* ) sim_ac_framework=true ;;
+  * ) sim_ac_framework=false ;;
+  esac])
 
-AM_CONDITIONAL([MAC_FRAMEWORK], [$sim_ac_framework])
+# don't allow name to be overrided - just toggled on/off
+sim_ac_framework_name="MAC_FRAMEWORK_NAME_DEFAULT"
+
+AC_ARG_WITH([framework-prefix],
+  [  --with-framework-prefix=<path>  (default: "MAC_FRAMEWORK_PREFIX_DEFAULT")],
+  [sim_ac_framework_prefix="$withval"],
+  [sim_ac_framework_prefix="MAC_FRAMEWORK_PREFIX_DEFAULT"])
+
+# don't allow version to be overrided
+# AC_ARG_WITH([framework-version],
+#   [  --with-framework-version=<version>  (default: "MAC_FRAMEWORK_VERSION_DEFAULT")],
+#   [sim_ac_framework_version="$withval"],
+#   [sim_ac_framework_version="MAC_FRAMEWORK_VERSION_DEFAULT"])
+sim_ac_framework_version="MAC_FRAMEWORK_VERSION_DEFAULT"
 
 AC_SUBST([MAC_FRAMEWORK], [$sim_ac_framework])
 AC_SUBST([MAC_FRAMEWORK_NAME], [$sim_ac_framework_name])
@@ -114,6 +137,16 @@ AC_SUBST([MAC_FRAMEWORK_PREFIX], [$sim_ac_framework_prefix])
 AC_SUBST([MAC_FRAMEWORK_VERSION], [$sim_ac_framework_version])
 
 AC_SUBST([nop], [])
+
+ivincludedir=$includedir
+frameworkdir=
+if $sim_ac_framework; then
+  ivincludedir=
+  frameworkdir=${sim_ac_framework_prefix}/${sim_ac_framework_name}.framework
+fi
+
+AC_SUBST([ivincludedir])
+AC_SUBST([frameworkdir])
 
 # **************************************************************************
 
@@ -217,6 +250,9 @@ fi
 #  Initialize libtool
 AC_PROG_LIBTOOL
 
+AM_CONDITIONAL([MAC_FRAMEWORK], [$sim_ac_framework])
+AM_CONDITIONAL([MACOSX_10_2], [$sim_ac_macosx_10_2])
+
 #  These are used for constructing the coin-config file.
 AC_SUBST([COIN_EXTRA_CPPFLAGS], [$CPPFLAGS])
 AC_SUBST([COIN_EXTRA_CFLAGS], [])
@@ -238,6 +274,10 @@ SIM_AC_COMPILER_CPLUSPLUS_FATAL_ERRORS
 SIM_AC_CHECK_VAR_FUNCTIONNAME
 
 SIM_AC_MAC_CPP_ADJUSTMENTS
+
+if test x"$prefix" = x"NONE"; then
+  prefix=/usr/local
+fi
 
 # *******************************************************************
 # Enable/disable separate Coin modules

@@ -1057,6 +1057,9 @@ Optional Features:
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
+  --with-framework  Do Mac OS X-like framework installation
+  --without-framework  Do regular installation on Mac OS X
+  --with-framework-prefix=<path>  (default: "/Library/Frameworks")
   --with-msvcrt=<crt>     set which C run-time library to build against
   --with-gnu-ld           assume the C compiler uses GNU ld default=no
   --with-pic              try to use only PIC/non-PIC objects default=use both
@@ -1777,20 +1780,42 @@ fi
 # **************************************************************************
 # Mac OS X: gcc
 
-sim_ac_framework=false
-sim_ac_framework_name="Inventor"
-sim_ac_framework_prefix="/Library/Frameworks"
-sim_ac_framework_version="B"
 
-
-
-if $sim_ac_framework; then
-  MAC_FRAMEWORK_TRUE=
-  MAC_FRAMEWORK_FALSE='#'
+# Check whether --with-framework or --without-framework was given.
+if test "${with_framework+set}" = set; then
+  withval="$with_framework"
+  sim_ac_framework_name="Inventor"
+  case $withval in
+  yes ) sim_ac_framework=true ;;
+  no ) sim_ac_framework=false ;;
+  * ) sim_ac_framework=true; sim_ac_framework_name="$withval" ;;
+  esac
 else
-  MAC_FRAMEWORK_TRUE='#'
-  MAC_FRAMEWORK_FALSE=
-fi
+  sim_ac_framework_name="Inventor"
+  case $host_os in
+  darwin* ) sim_ac_framework=true ;;
+  * ) sim_ac_framework=false ;;
+  esac
+fi;
+
+# don't allow name to be overrided - just toggled on/off
+sim_ac_framework_name="Inventor"
+
+
+# Check whether --with-framework-prefix or --without-framework-prefix was given.
+if test "${with_framework_prefix+set}" = set; then
+  withval="$with_framework_prefix"
+  sim_ac_framework_prefix="$withval"
+else
+  sim_ac_framework_prefix="/Library/Frameworks"
+fi;
+
+# don't allow version to be overrided
+# AC_ARG_WITH([framework-version],
+#   [  --with-framework-version=<version>  (default: "MAC_FRAMEWORK_VERSION_DEFAULT")],
+#   [sim_ac_framework_version="$withval"],
+#   [sim_ac_framework_version="MAC_FRAMEWORK_VERSION_DEFAULT"])
+sim_ac_framework_version="B"
 
 MAC_FRAMEWORK=$sim_ac_framework
 
@@ -1799,6 +1824,16 @@ MAC_FRAMEWORK_NAME=$sim_ac_framework_name
 MAC_FRAMEWORK_PREFIX=$sim_ac_framework_prefix
 
 MAC_FRAMEWORK_VERSION=$sim_ac_framework_version
+
+
+
+
+ivincludedir=$includedir
+frameworkdir=
+if $sim_ac_framework; then
+  ivincludedir=
+  frameworkdir=${sim_ac_framework_prefix}/${sim_ac_framework_name}.framework
+fi
 
 
 
@@ -5061,7 +5096,7 @@ test "x$enable_libtool_lock" != xno && enable_libtool_lock=yes
 case $host in
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 5064 "configure"' > conftest.$ac_ext
+  echo '#line 5099 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -5597,7 +5632,7 @@ chmod -w .
 save_CFLAGS="$CFLAGS"
 CFLAGS="$CFLAGS -o out/conftest2.$ac_objext"
 compiler_c_o=no
-if { (eval echo configure:5600: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$ac_objext; then
+if { (eval echo configure:5635: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$ac_objext; then
   # The compiler can only warn and ignore the option if not recognized
   # So say no if there are warnings
   if test -s out/conftest.err; then
@@ -7390,7 +7425,7 @@ else
     lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 7393 "configure"
+#line 7428 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -7488,7 +7523,7 @@ else
     lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 7491 "configure"
+#line 7526 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -8213,6 +8248,25 @@ LIBTOOL='$(SHELL) $(top_builddir)/libtool'
 
 
 
+
+
+if $sim_ac_framework; then
+  MAC_FRAMEWORK_TRUE=
+  MAC_FRAMEWORK_FALSE='#'
+else
+  MAC_FRAMEWORK_TRUE='#'
+  MAC_FRAMEWORK_FALSE=
+fi
+
+
+if $sim_ac_macosx_10_2; then
+  MACOSX_10_2_TRUE=
+  MACOSX_10_2_FALSE='#'
+else
+  MACOSX_10_2_TRUE='#'
+  MACOSX_10_2_FALSE=
+fi
+
 #  These are used for constructing the coin-config file.
 COIN_EXTRA_CPPFLAGS=$CPPFLAGS
 
@@ -8771,6 +8825,10 @@ ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
   ;;
 esac
 
+
+if test x"$prefix" = x"NONE"; then
+  prefix=/usr/local
+fi
 
 # *******************************************************************
 # Enable/disable separate Coin modules
@@ -21487,13 +21545,13 @@ s,@target_os@,$target_os,;t t
 s,@RFC822_DATE@,$RFC822_DATE,;t t
 s,@coin_configure_date@,$coin_configure_date,;t t
 s,@BUILD_WITH_MSVC@,$BUILD_WITH_MSVC,;t t
-s,@MAC_FRAMEWORK_TRUE@,$MAC_FRAMEWORK_TRUE,;t t
-s,@MAC_FRAMEWORK_FALSE@,$MAC_FRAMEWORK_FALSE,;t t
 s,@MAC_FRAMEWORK@,$MAC_FRAMEWORK,;t t
 s,@MAC_FRAMEWORK_NAME@,$MAC_FRAMEWORK_NAME,;t t
 s,@MAC_FRAMEWORK_PREFIX@,$MAC_FRAMEWORK_PREFIX,;t t
 s,@MAC_FRAMEWORK_VERSION@,$MAC_FRAMEWORK_VERSION,;t t
 s,@nop@,$nop,;t t
+s,@ivincludedir@,$ivincludedir,;t t
+s,@frameworkdir@,$frameworkdir,;t t
 s,@COIN_MAJOR_VERSION@,$COIN_MAJOR_VERSION,;t t
 s,@COIN_MINOR_VERSION@,$COIN_MINOR_VERSION,;t t
 s,@COIN_MICRO_VERSION@,$COIN_MICRO_VERSION,;t t
@@ -21547,6 +21605,10 @@ s,@STRIP@,$STRIP,;t t
 s,@ac_ct_STRIP@,$ac_ct_STRIP,;t t
 s,@CXXCPP@,$CXXCPP,;t t
 s,@LIBTOOL@,$LIBTOOL,;t t
+s,@MAC_FRAMEWORK_TRUE@,$MAC_FRAMEWORK_TRUE,;t t
+s,@MAC_FRAMEWORK_FALSE@,$MAC_FRAMEWORK_FALSE,;t t
+s,@MACOSX_10_2_TRUE@,$MACOSX_10_2_TRUE,;t t
+s,@MACOSX_10_2_FALSE@,$MACOSX_10_2_FALSE,;t t
 s,@COIN_EXTRA_CPPFLAGS@,$COIN_EXTRA_CPPFLAGS,;t t
 s,@COIN_EXTRA_CFLAGS@,$COIN_EXTRA_CFLAGS,;t t
 s,@COIN_EXTRA_CXXFLAGS@,$COIN_EXTRA_CXXFLAGS,;t t
