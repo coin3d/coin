@@ -141,8 +141,9 @@ SoFontLib::exit()
   // Clean up openfonts dict
   SbPList keys, values;
   SoFontLibP::openfonts.makePList(keys, values);
-  for (i=0; i<values.getLength(); i++)
-    delete values[i];
+  for (i = 0; i < values.getLength(); i++) {
+    delete (SbString*) values[i];
+  }
   CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
   if (SoFontLibP::apimutex != NULL)
     CC_MUTEX_DESTRUCT(SoFontLibP::apimutex);
@@ -158,12 +159,13 @@ SoFontLib::createFont(const SbName &fontname, const SbName &stylename, const SbV
   fileidx = -1;
   int font = -1;
   // Check if we already know the requestname for this fontname
-  if ( SoFontLibP::openfonts.find((unsigned long)fontname.getString(), (void *&)strptr) ) {
+  if (SoFontLibP::openfonts.find((unsigned long)fontname.getString(), (void *&)strptr)) {
     path = *strptr;
     font = cc_flw_create_font( path.getString(), size[0], size[1] );
-  } else {
+  } 
+  else {
     // Check if we know the font file for this font name
-    for (i=0; i<SoFontLibP::fontfiles->getLength(); i+=2) {
+    for (i = 0; i < SoFontLibP::fontfiles->getLength(); i+=2) {
       if (!strcmp((*SoFontLibP::fontfiles)[i]->getString(), fontname.getString())) {
         fileidx = i;
         i = SoFontLibP::fontfiles->getLength();
@@ -171,15 +173,18 @@ SoFontLib::createFont(const SbName &fontname, const SbName &stylename, const SbV
     }
     if (fileidx >= 0) {  // Known font name, look for the font file
       path = SoInput::searchForFile(*(*SoFontLibP::fontfiles)[fileidx+1], SoInput::getDirectories(), emptylist);
-    } else {  // Unknown font name, treat it as a font file name
+    } 
+    else {  // Unknown font name, treat it as a font file name
       path = SoInput::searchForFile(fontname.getString(), SoInput::getDirectories(), emptylist);
     }
     font = cc_flw_create_font( path.getString(), size[0], size[1] );
     // Add font to openfonts dict
     if (font >= 0) {
-      SbString * newfont = new SbString;
-      *newfont = path;
-      SoFontLibP::openfonts.enter((unsigned long)fontname.getString(), (void *)newfont);
+      // use SbName to store fontname in dict. SbName creates a safe,
+      // global pointer to the string.
+      SbName fname(fontname.getString());
+      SbString * newfont = new SbString(path);
+      SoFontLibP::openfonts.enter((unsigned long)fname.getString(), (void *)newfont);
     }
   }
   CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
