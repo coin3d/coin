@@ -1,5 +1,8 @@
 This file contains information about building and using Coin on Mac OS X.
 
+For more information on getting started using Coin, see
+http://www.coin3d.org/mac/
+
 Building Coin
 =============
 
@@ -16,27 +19,26 @@ Using Coin
 ==========
 
 If you want to use Coin on the Mac, you need a user interface binding. 
-At the moment you have three basic options for this:
-                                                                                
-  1. Use Qt/Mac. This requires Trolltech's Qt toolkit. You can get a            
-     free evaluation version of Qt/Mac from [0]. After downloading and 
-     installing Qt, you can download and build SoQt.
-     Note that using Qt/X11 on Mac OS X is not yet supported, but we are
-     planning to add this in the near future.
-
+At the moment you have four basic options for this:
+                                    
+  0. Use the native Cocoa binding, SC21. See
+     http://www.coin3d.org/mac/SC21 for more information.
+                                            
+  1. Use Qt/Mac. This requires Trolltech's Qt toolkit, which you can
+     get from [1]. After downloading and installing Qt, you can
+     download and build SoQt.
+                           
   2. Use X11 for Mac OS X, and Qt/X11. See the README.MAC file in
      the SoQt source code repository for instructions.
-                           
-  3. Create your own OpenGL canvas, and use this for rendering. This            
+
+  3. Create your own OpenGL canvas, and use this for rendering. This
      is not the easiest way to do, since it involves quite some
      programmatic overhead. The "Coin in a Cocoanut Shell" application 
      (distributed with the Coin/Mac binary SDK, and available from our 
-     ftp server[1]) is an example of how to do this using Objective-C. You 
+     ftp server[2]) is an example of how to do this using Objective-C. You 
      can also use e.g. the GL utility toolkit ("GLUT"), like is done in 
-     the glutiv.cpp example (see [2]).
+     the glutiv.cpp example (see [3]).
                                          
-We are currently working on a Mac native user interface binding based on 
-Cocoa ("SoMac"), but that is still at an early stage.  
 
 
 Mac OS X version specific notes
@@ -56,7 +58,7 @@ to use the library on 10.0.x, you will have to use the -flat_namespace
 linker switch. (Modify the LDFLAGS environment variable to do that.)
 Do not do this unless you are sure you what you are doing and have
 read (and fully understood) Apple's Release Note concerning two-level
-namespace executables[3].
+namespace executables[4].
 
 
 Switching from Mac OS 10.1 to Mac OS 10.2
@@ -71,9 +73,6 @@ rebuild _all_ your C++ libraries.
 Note that there are several bugs in the developer tools that came with
 the original Mac OS 10.2 CDs, so you should install the most current
 version of the developer tools (available on the ADC website).
-
-A precompiled binary for the Coin framework on Mac OS 10.2 can be found
-on our ftp server[4].
 
 
 The Inventor framework
@@ -128,8 +127,33 @@ Carbon/Cocoa/GLUT.
 Common problems (and solutions)
 ===============================
 
+o HardCopy includes
+  -----------------
+
+In the documentation, the include paths for the HardCopy classes for
+vectorized printing (http://doc.coin3d.org/Coin/group__hardcopy.html)
+are #include <HardCopy/XXX> instead of #include
+<Inventor/annex/HardCopy/XXX>. This is intentional: It's the path that
+TGS Inventor uses, and we want Coin and Inventor to be as compatible
+as possible.
+
+You options are:
+
+- Add "-I/Library/Frameworks/Inventor.framework/Headers/annex" to your
+  compiler flags. (This is how we do it on Windows and GNU/Linux.) 
+
+- Create a symbolic link /usr/local/include/HardCopy, which points to
+  /Library/Frameworks/Inventor.framework/Headers/annex/HardCopy.
+
+- If you write the code yourself: It is perfectly possible to write
+  <Inventor/annex/HardCopy/XXX>, which will make your code more
+  portable between Coin on different platforms, but not portable
+  between Coin and TGS. (TGS doesn't support Mac OS X at all, so if
+  you want Mac OS X support, that's probably your best option.)
+
+
 o Is there anything I can do to increase performance?
-  ---------------------------------------------------
+---------------------------------------------------
 
 Yes. There are two things that you should consider when you want to
 increase the performance of your application.
@@ -256,11 +280,11 @@ on Mac OS X, please let us know.
 
 References:
 
-[0] http://www.trolltech.com/forms/noncommevalform.html 
-[1] ftp://ftp.sim.no/pub/coin/bin/macosx/coin-in-a-cocoa-nutshell.sit
-[2] http://source.coin3d.org/Coin/examples/bindings/glutiv.cpp
-[3] http://developer.apple.com/techpubs/macosx/ReleaseNotes/TwoLevelNamespaces.html
-[4] ftp://ftp.coin3d.org/pub/coin/bin/macosx/Coin-2.0.0.dmg.gz
+[0] ftp://ftp.coin3d.org/pub/coin/bin/macosx/Coin-2.0.0.dmg.gz
+[1] http://www.trolltech.com/forms/noncommevalform.html 
+[2] ftp://ftp.sim.no/pub/coin/bin/macosx/coin-in-a-cocoa-nutshell.sit
+[3] http://source.coin3d.org/Coin/examples/bindings/glutiv.cpp
+[4] http://developer.apple.com/techpubs/macosx/ReleaseNotes/TwoLevelNamespaces.html
 [5] http://developer.apple.com/techpubs/macosx/Essentials/SystemOverview/Frameworks 
 [6] http://developer.apple.com/technotes/tn2002/tn2064.html
 
