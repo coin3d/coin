@@ -1341,4 +1341,7 @@
 
     20021018 mortene.
 
+    UPDATE: Minimal code, and a NoOp dragger that isolates the error
+    to SoDragger is added to Flip. 20021025 rolvs
+
 =====================================================================
