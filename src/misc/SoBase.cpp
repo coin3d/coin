@@ -255,8 +255,8 @@ set_current_writeref(const SoBase * base, const int rc)
 #else // disabled code
   if (rc < 0) {
     SoDebugError::post("set_current_writeref",
-                       "buggy writerefcounter: %p (%s)\n",
-                       base, base->getTypeId().getName().getString());
+                       "buggy writerefcounter (%d): %p (%s)\n",
+                       rc, base, base->getTypeId().getName().getString());
   }
 #endif // new debug code
   (void)writerefs->enter((unsigned long)base, (void *) ((uintptr_t) rc));
