@@ -3238,137 +3238,16 @@ main(void)
 126 Coin will crash latest NVIDIA drivers with certain valid scene
     graphs.
 
-    The following scene graph will crash in the OpenGL NVIDIA driver
-    version 61.76 and 61.77 (which is the most recent, as of this
-    writing, released just a few hours ago), when run in the
-    SoGuiExamples/components/examinerviewer, with the
-    viewer->setFeedbackVisibility() code-line commented out:
+    We've discovered a really nasty NVIDIA driver bug with using
+    glColor() calls in particular ways inside display lists.
 
---------8<------------- [snip] --------------8<------------- [snip]
-begin 755 5664.iv.bz2
-M0EIH.3%!62936=I5+L\`F:1?@%@P2`=_(#\C74JOY]]*0`+=E*$4",``-``&
-M30``!H!$DTB4WJCPD9``]0```T,``-``&30``!H`I423-3TJ'ZF:IM0]1ID?
-MJC1Z3RAIHV4[.,Q<*@#."?OA&L2!J6*DY[))O/]?)Z%557`'K(,(/9G&:<$L
-MIHBTG<,OB@ZZ8)[+-9`UADGTQ4B<H::.=W#-C'*H(7*E`:!A,&4R(;^'+C@4
-MQ"4XH*Z[,7<A=464P')@P$'&4@7`(%O%=>G+HYUFZ6&(MF,!-V-PM,?Q;[-3
-M/?HQCF`"JVG?W]VVY:KL4A^NP_I42DJI1O#,U2)54UIS"5'5_#O=B,^X[&;+
-MNPT$-8SJVV";E25`""P9%6*EB.,#0L@_R"K0]4'IJ/`Q:=<9'T0D6$1A!A)Z
-M8%1&"',8J>6%MH8<7<XE``=0`*KK`!Q-#!Z[UW6=+$<+VY/?,Z.GA/SGZ'8?
-M"O)I,/"V/YOB8G+*P^@^$'YI%T4X-'FY!]0PW&1DZ`T0H!+>.EC)]9\CRCTK
-MV+7_B^*WWO7R//?[F.PZEK+=9+->!Z5I>-C$:V4^9T.7S7F<(R>R7M-&!XSZ
-MO'KTQW6;U5S.9NY1QN6SJQH7G6*]!K&+%:F_>R7NEA3NS]PZ7&PQ@NWI87%'
-M4<%US;&,FY.*PC[5:1IF]0T-)-[3*[5;5LKMMYMAPUCF)`A!;`#WP',7F,8>
--JO^+N2*<*$AM*I=G@```
-`
-end
---------8<------------- [snip] --------------8<------------- [snip]
-
-    It first comes up ok, but click and drag, and it will crash on
-    WinXP with the above mentioned driver versions. The same bug has
-    also been confirmed to be present for driver version 56.64,
-    although the particular variant of the scene graph given above
-    might need a bit of massaging to cause a crash.
-
-    This iv-file has 3 Texture2 nodes, 4 IndexedFaceSet nodes, and a
-    few additional appearance nodes. Any attempt to reduce the file to
-    anything less causes the bug to go away.
-
-    A trace of the GL commands shows that the crash happens when the
-    first attempt at running a GL display list (with textures etc in
-    it, I presume) is done. Here is the full GL command trace (from
-    the GLIntercept tool):
-
---------8<------------- [snip] --------------8<------------- [snip]
-begin 755 nvidia-crash-bug-log.txt.bz2
-M0EIH.3%!629363A'F-L`-_+?@'`24&?_\S____J_[__D8!.?'SK?3::Z[MLZ
-M`80[8[JJK('.+M%"0H"I`3T:#S#>P`&E"19A%"9/4>D>DT&AIDT:,@#1D:9&
-MFC3(&C($D1&(TR-*331,"```&3``@T:!QDR:,0Q-,!`P)I@C!,3330`802"E
-M$R`1Y30&AHT:`:&AD`T```B4(`@J?B"9,@:4WZB-3TU/)I#U/*&@`T]0*4D@
-MF@:3)J-I/4PC%&F4R9D3(Q/4#TC0:=B3J&)!'`JB?#OSDZ\L9@K+%88#%F9$
-MR8LQAA9,F91,Q1F1&63+!*F3IQ-99`21`"04#BX2WXC]]M!VC4)6%*SC<-$^
-M6.%Y4(241$)+!\0?Z=O;^?QP?/GNGU3Z>3D"^%@7HC[O`CI%WS$?=5OJ!SU?
-MXH"@$B5/[1$FJ1K"?FPR/HN0^T"`,42$90/UH>I4CHJ1W!_8ZL6%TA_N-3XK
-M1BVBAE!B&V#P@-DPAAL(B)I=W7-,B!S4R9,F3)B:U_331E69#Q-593AK;AD&
-MXR89,R9DR;PU@>($`O6\`5<$8"JQ(!S[_#V]UNU[;-G"[(:C!L&P?;B"<`;8
-M<LKHB\>MXLN?XAZ<W)/;3R@'\*<$NK`VD`EH`4H;[TQT3?FDNJ'%737W@EB^
-M+($@2!4/HD&!JQ-W".9VS)RF&3K-%AA+PT9H2>'CT8[0RXX`JNS,OC(R$CQF
-M]3W!DIP"@;`<*`DDJ/D6!65E537`LM"X+\4D(,OWMCT:SL"Z_$`J')/$F7[=
-MVA<@(7$)))$OZ><&J:0(!JI#3;15H-;:UK;;AM-8F,8Q;MQJ\)Z9US4P3MF(
-M<9DJ5KHZ<;`"#JK4T+X$AH5/?`D,3$U-AMZD<F#YVUM#FS0H4*&X)EDUQO-G
-ME27,1E"K(<AN'8.F>A)V[_X:[]PI,<&S'\9T3IO0--PXQX)W9<#N,-,M+,6!
-MR<"2()B9`=%PBI$")('+H8B1)(@5&(.X.B>>3NR:R8[S4PQ.L[32K<RK[@Y#
-M56#]*K]XOP'\*OWF54?L2/\.[\_C^E]K\'@XL8^\X&,;S[^'W=\^>9!8(RK)
-M@9,5B&*C`F'K,J(PT-",*,&%&!,,,$88,2T8-&$#!3(R8&&3#!*PJK`F&%&"
-M,&&&&>OS6:UNGUMZW4W^S+'A&\'5R_!@A($&?8SR0@QMZ[D');9;6Z..6.R5
-MJ0<@[:6E*4A1VV6P;=MM5*4I2E'82VRV6$DL))8Y'91R4E;MEJ-S@VUO.[P9
-MME:FR&$0+9F#=SX'YI:TG(V6BPPL63BJQ5E65;ID7T",H;IE$T8AA562IA)B
-M6#$4G;^'L3HV4HCPPE$=DO[9D/1VI[$@(5%;A7?;X",,"'*F%2\5A+U:U'LM
-MUJ<DAL313(!$0SB"1;>YK4%KY8N/0DD,+)5XHU4C56<UHMF(PP>&M3Q$9/&9
-M-2P,$:,-#0C#!&&@IDJ3]*U.TW>,N]U>A`Q4<Z.8!'4)`DN$0)H=R),@YAXK
-M**&HS@\*XB$>B33,UL6D<A+HDBD.";PJ#`R*!&O3QU:[RU[#;6WF3'OVL##9
-MPI>FVUKW1GD#.OJ3@)EL39A73.G7+YG,;T:41<@@$"`F!@?>KE7!S1HH`_@0
-M);&(K=CH*S@95<A$NM00LBJU=VH&%R;JF8K\\C"%@VEJ3YKH8QR41Q2[!N5R
-M?3K@"/`"228$A*NN_>%=6@%=.FUI&]6%#JH%"^W%+YXZFNT6?/(!+C9ET`&N
-M5TL:/#P@R$P[@./78B4W&2QNT-VS8R5E]$[93T6!AVKSYYDM)RBS)'/;2F['
-MDW^&^!SY\?1QG)D8[.N.1[;2EOLS08W&BQ$M#&^M):=;?'8O'>ID/O>0Y7G7
-M3:][9Z7ISG"D,U@)0;$$5TOJ0S3+:M<IE'FQ2#DY\0Q5&]%E6M`C,I8`LB8;
-MK"=9MB+02WC2G#-A#%X#DX6Q,=#41&Z)L"E&8!;KI(04GP^M461-%G!%=N+A
-ML31KK7+$M-64.0W5'D18&C6X2M"=?"U/$@.EDD"/H;J!@#+`?$!R]7MAY?""
-MX`/HC?^09LP$:2\)0#O(P%`[X'K%NG0/8?D]P<PI2XR22224YWJGKCMS0-=4
-MWJV5J\/W^SW^Q40IJ3[S;]2BB:BC]!74&:K0!:X")GCP_0S2ZXD\/"X,OC\H
-M"4!Y`DD3^W<F:.1UI1`-%@QL8-B8*<U``%[#,F0%W.)=V22,*9_/1%T_T@[*
-M;MM+7.;!I<U6=OD[$4^4&3_?AR]-#H^=5;)WE]K*P`MH@<P/\JQ?ELJWAW]7
-MN_'IX3PKZAM5Q!P'13-AK-@XK[DY!RWW$Y*XKW9N)3=17#!.><6!F#\?J]N>
-M)3[2^H/B^H&]-L$\B>H3@-@"P^&>$@36"X[MRK#)*P.+^?\E^.AM,V6%E9F`
-M9&$PS[PPU,*9,Q1C,P,D653!8JRN"C^KY3CU`'J1[/=[TK8O9SAJ;O9^0?JK
-M2N"]J5O58.7SH41Y1R]O2><*BXC!)!)0*,].HEDF,#&IW"=Y]I)%6$G'F/>!
-MA4-@O=W&P$N\O<O3<_(//W)7`8&;;<.I;MA]BMF\:R)RPH6LE/?WU<ZIX9]?
-MRT5\"\.9[N\T=U>0T.W(/*]'2]6`[4=SM[BM>IO7&)TW77I'69/!5OFIN1GC
-MN"Y`H!=!6^B0$@WI>55_`]WW:.IS+P/C@=!TOY<\R55D]T'OGU^3UJ]RTSE$
-MU,U-EXN-H/AY^Y?3RG;8G!5O#Y>?LNK<.\<ET]?3=IYGVS)P3:T4XT\R\E\P
-M\S#%Z\<WL#;3=5F\VLPV&[VZW[?'6;.%2-[];8;#$PXO2ZY\X=8[-:6AAL^8
-M>J;5+:-VCWDIM5;>8<?%7FOH#2K>IT3$WU\/<V#SY5XM$U&E"PKH-:9)9*P`
-MP^'84;TLT#D<C!D?$\GK6;CHGGU:F=XSJ)U'YU+:-_K%<>"OE`RQ5%.#UJ]0
-MDEDT\XM!-J1-CL3(`L-]RNH(I;:IH)B%Y4W^27Q=Y56,A[K*K/FJT&LSUZT]
-MK">W6'YB_K.JK[$\:]%1Y$I[ULNKA2WUGK5@;2JO^\(ZV<S%[3HQ.@.G!V=6
-MXJGS*O5=CM5>I5Y7P+^Y0+I+\E`NFBNC\A@[5MKXSNFZ;+WK<GLFV34V5;*W
-M3$<`=P;MTW7Z#U&E5W8^HPN@Y:M'$\/U!N5LRJ.NZ@"8!#6MQ*H$S+@QRQO0
-M#P8R16)&,@R#(,DDDD@BZ$`3&(I`"K5Y,H889%><;$?9QX"^,!E$#(H-$A`+
-M!X:`'U31$(,]`1!&FXU@ZZT#N?M/9)$@PD"*P`D)*$IZRWZ`LZ]-"OP03]W[
-M*`JN3U@TJ'J[`$?0_9C?^05$[A`*@^M\A;3+%)]2@J<"ZPOHC=*\AZD=R\O#
-M1>O$<M^SZ??RX,&,]7J<H6F=!\PA.2,S$`\V7.9X^;=NU;MAN>*HA;&B/#89
-M95V>0>9<=X!8+B.S84J*JR0DUUH;6:P-;6KGFWB2"&-"JQ$F%S='140V(NNI
-M==9_`3W9VP5$(9;-E>K@/9O#^?O>XEI(&D!@L""P0+@2>(N#7/LX5/U=7C^S
-MIXMU4'^:#\?!88EMMIUI;7K>^=3H&C%X(`9D,KU=%&XY/]E]\2?,3,[?(LSR
-M#1,^36"1U,Z\F<J)1XXUT8X#[@V'5_D7*K!\C9UGR=\:>CZ>7QPL<4VOHUV3
-MNC(?PU[RS,LVA:7/\$D;=0SJ1S6*H]/6YBO\<JJ:.XQ*^RK[.^=,2/[Z),[]
-M+2LB>K&J#TB':(;?$$+WTU.[RTLC(DF#2C#3OL%,`-@F&2;USWJ=*8:$WJ`2
-M)FKFAD!&?(G[=N'3O[KN)FQ1-Q)A48288286YT;;;=W9^CV2[XF7[^8\:I@?
-MR_5G_`883#-8FL58&M:-+0-63&18R&-:UF63*:+0:8FJ4:+0LC*1K6@8LE59
-MD91K6&%5:Q4S`RPJK*C)];DH]O?[?V?55/'N#X!V#7%F&*6Z^$]]4XA^%^87
-MS2XR[1V]-\D.1I-X?%Y>WXYT[^#"OV$Q'GOSOPJKN53+%2[\;%BE&L038MJM
-M#6*:&4E'0@Y^E.C]IWN)T&-]T[??Z77TQ-ZVTW@^^)U2JO;A;I;G28@QJM&7
-ML#-LS&5V4MK`S36JG'(:Q&Y^=ALK?"@%PPA5&J-UX+T@O6Y5(T6ON!K91X#H
-M[HFF$Z;WYZ7#=+PR`?NS8.J)_MX=4`^<>J4K4'"Y.POX#EZ$LO(ZM(PAAT%D
-M*(D3&8&I6:F#6#,LG1W`W(,6[=YIOK6UD`\A=G;L-\MR/NJ1SKB5V1/M65:A
-MBIG&(/GE4Y<@V\QTRYAQK=,21T+$TQ];9F<3RJB$"E@XASY\_1YF\'O$"#KH
-MOJW;+A5"\----,/'.C'MU^X'5/&%+4`L7%8#`8#9A>UT1H2;,*WWYV-3&6;2
-MT&,BU,AJZ$D9+]W&4Z?>N-O3S<ATWSTFI;U3\5PNSZ*3FDWO%/[/"+QS0I3@
-M/@"5K_7S\QWB)1'C??R0]KXW;J-`%GB=26C`(22,;Y#!IEDDD[]Q),8QC$DN
-M(WE!,T=-)=W`!4%>D.'A/\#(P4#)4;Y^ND,*JRI&!4Y%8+%&JM5+FG0YL>C/
-/2R[)_^+N2*<*$@<(\QM@
-`
-end
---------8<------------- [snip] --------------8<------------- [snip]
+    The bug has been confirmed for the most recent Windows (61.77) and
+    Linux drivers (61.11), aswell as all older drivers tested back to
+    at least 52.16 (Windows).
 
     This is really, really, ugly, and need to be fixed ASAP. It should
     have high priority. NVIDIA cards are widespread, and many users of
     Coin (and users' users) can be hit by this.
-
-    (It seems a complete mystery to me how this bug can have survived
-    over several driver releases from NVIDIA, at least since 56.64
-    (released 2004-03-??) to 61.77 (released 2004-07-27). What is so
-    special about what we do with GL to render the above scene graph?)
 
     The best solution would be to find a decent work-around, but I
     have failed to come up with something we could do in that regard
@@ -3377,13 +3256,6 @@ end
     to no avail). Setting the envvar IV_SEPARATOR_MAX_CACHES=0 to turn
     off GL display list generation seems to mostly work, although I
     believe I have seen a case where the bug still came up.
-
-    We should anyway also provide NVIDIA with a minimal example
-    (preferably in solely Win32+wgl+gl or GLUT+gl) for them to use for
-    reproduction and fixing the bug. Reproducing the bug in such an
-    environment should hopefully be doable given the above GL command
-    trace (which seems to be quite straightforward to convert to
-    working C code).
 
     20040728 mortene, bug reported by Eivind Rovik.
 
@@ -3394,6 +3266,12 @@ end
 
     Not yet sent to NVIDIA, awaiting confirmation from more systems
     than just our own niord.trh.sim.no
+
+    UPDATE 20040831 mortene: provided NVIDIA with the above
+    stand-alone example for them to use for reproduction and fixing
+    the bug, at the <linux-bugs@nvidia.com> email address. (Couldn't
+    find a proper support address for general bugs or for Windows
+    bugs.)
 
 =====================================================================
 
