@@ -319,43 +319,17 @@ public:
       return;
     }
 
-    static int single_attribs[] = {
-      GLX_RGBA,
-      // Need this to make sure we get a visual with a depth buffer.
-      GLX_DEPTH_SIZE, 1,
-      GLX_STENCIL_SIZE, 1,
-      None
-    };
-
-    static int double_attribs[] = {
-      GLX_RGBA,
-      // Need this to make sure we get a visual with a depth buffer.
-      GLX_DEPTH_SIZE, 1,
-      GLX_STENCIL_SIZE, 1,
-      // Yes, I've actually seen displays which lack singlebuffer
-      // visuals.
-      GLX_DOUBLEBUFFER,
-      None
-    };
-
-    static int * attribsettings[] = { single_attribs, double_attribs, NULL };
-
-    // FIXME: using glXChooseVisual() like this picks a 8-bit
-    // PseudoColor visual on SGI IRIX X11 servers with default
-    // configuration settings. Should instead use some logic based on
-    // XMatchVisualInfo() to find the best (i.e. deepest)
-    // visual. This is Bugzilla #129. 20000622 mortene.
-
-    int attribidx = 0;
-    do {
+    int trynum = 0;
+    const int ARRAYSIZE = 32;
+    int attrs[ARRAYSIZE];
+    while (this->visinfo == NULL && trynum < 8) {
+      int arraysize = SoOffscreenGLXData::buildGLAttrs(attrs, trynum);
+      assert(arraysize < ARRAYSIZE);
       this->visinfo = glXChooseVisual(this->display,
                                       DefaultScreen(this->display),
-                                      attribsettings[attribidx++]);
-    } while (this->visinfo == NULL && attribsettings[attribidx] != NULL);
-
-    // FIXME: should fallback to even less restrictive attribs
-    // settings if all glXChooseVisual() attempts fails.
-    // 20001003 mortene.
+                                      attrs);
+      trynum++;
+    }
 
     if (!this->visinfo) {
       SoDebugError::postWarning("SoOffscreenGLXData::SoOffscreenGLXData",
@@ -392,6 +366,34 @@ public:
     if (this->display) XCloseDisplay(this->display);
 
     delete[] this->buffer;
+  }
+
+  // NOTE: the strategy applied here for iterating through OpenGL
+  // canvas settings is exactly the same as the one applied in
+  // SoXt/src/Inventor/Xt/SoXtGLWidget.cpp. So if you make any fixes
+  // or other improvements here, migrate your changes.
+  static int buildGLAttrs(int * attrs, int trynum) {
+    int pos = 0;
+    attrs[pos++] = GLX_RGBA;
+    attrs[pos++] = GLX_DEPTH_SIZE;
+    attrs[pos++] = 1;
+    if (! (trynum & 0x04)) {
+      attrs[pos++] = GLX_STENCIL_SIZE;
+      attrs[pos++] = 1;
+    }
+    if (! (trynum & 0x02)) {
+      attrs[pos++] = GLX_DOUBLEBUFFER;
+    }
+    if (! (trynum & 0x01)) {
+      attrs[pos++] = GLX_RED_SIZE;
+      attrs[pos++] = 4;
+      attrs[pos++] = GLX_GREEN_SIZE;
+      attrs[pos++] = 4;
+      attrs[pos++] = GLX_BLUE_SIZE;
+      attrs[pos++] = 4;
+    }
+    attrs[pos++] = None;
+    return pos;
   }
 
   virtual void setBufferSize(const SbVec2s & size) {
@@ -923,6 +925,19 @@ SoOffscreenRenderer::renderFromBase(SoBase * base)
   uint32_t oldcontext = this->renderaction->getCacheContext();
   if (this->internaldata && 
       this->internaldata->makeContextCurrent(oldcontext)) {
+
+#if COIN_DEBUG && 0 // debug, enable to check offscreen canvas properties
+    GLint colbits[4];
+    glGetIntegerv(GL_RED_BITS, &colbits[0]);
+    glGetIntegerv(GL_GREEN_BITS, &colbits[1]);
+    glGetIntegerv(GL_BLUE_BITS, &colbits[2]);
+    glGetIntegerv(GL_ALPHA_BITS, &colbits[3]);
+    SoDebugError::postInfo("SoOffscreenRenderer::renderFromBase",
+                           "GL context GL_[RED|GREEN|BLUE|ALPHA]_BITS=="
+                           "[%d, %d, %d, %d]",
+                           colbits[0], colbits[1], colbits[2], colbits[3]);
+#endif // debug
+
     glEnable(GL_DEPTH_TEST);
     glClearColor(this->backgroundcolor[0],
                  this->backgroundcolor[1],
