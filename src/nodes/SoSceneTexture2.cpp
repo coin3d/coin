@@ -76,7 +76,7 @@
 
   \since Coin 2.2
   \since TGS Inventor 4.0
-*/ 
+*/
 
 /*!
   \enum SoSceneTexture2::Wrap
@@ -127,7 +127,7 @@
 
 /*!
   \var SoSFVec2s SoSceneTexture2::size
-  
+
   The size of the texture. This node currently only supports power of
   two textures.  If the size is not a power of two, the value will be
   rounded upwards to the next power of two.
@@ -135,7 +135,7 @@
 
 /*!
   \var SoSFNode SoSceneTexture2::scene
-  
+
   The scene graph that is rendered into the texture.
 */
 
@@ -298,10 +298,10 @@ SoSceneTexture2::GLRender(SoGLRenderAction * action)
   SoNode * root = this->scene.getValue();
 
   LOCK_GLIMAGE(this);
-  
+
   if (root && (!PRIVATE(this)->pbuffervalid || !PRIVATE(this)->glimagevalid)) {
     PRIVATE(this)->updatePBuffer(state, quality);
-    
+
     // don't cache when we change the glimage
     SoCacheElement::setInvalid(TRUE);
     if (state->isCacheOpen()) {
@@ -309,7 +309,7 @@ SoSceneTexture2::GLRender(SoGLRenderAction * action)
     }
   }
   UNLOCK_GLIMAGE(this);
-  
+
   SoTextureImageElement::Model glmodel = (SoTextureImageElement::Model)
     this->model.getValue();
 
@@ -355,7 +355,7 @@ SoSceneTexture2::GLRender(SoGLRenderAction * action)
                                       PRIVATE(this)->glimage,
                                       glmodel,
                                       this->blendColor.getValue());
-    
+
     SoGLMultiTextureEnabledElement::set(state, this, unit,
                                         PRIVATE(this)->glimage != NULL &&
                                         quality > 0.0f);
@@ -418,13 +418,13 @@ void
 SoSceneTexture2::notify(SoNotList * list)
 {
   SoField * f = list->getLastField();
-  if (f == &this->scene || 
+  if (f == &this->scene ||
       f == &this->size) {
     // rerender scene
     PRIVATE(this)->pbuffervalid = FALSE;
   }
-  else if (f == &this->wrapS || 
-           f == &this->wrapT || 
+  else if (f == &this->wrapS ||
+           f == &this->wrapT ||
            f == &this->model) {
     // no need to render scene again, but update the texture object
     PRIVATE(this)->glimagevalid = FALSE;
@@ -490,7 +490,12 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
     this->glaction = NULL;
     this->glimagevalid = FALSE;
   }
-  if (size == SbVec2s(0,0)) return; 
+  if (size == SbVec2s(0,0)) return;
+
+  // FIXME: temporary until non power of two textures are supported,
+  // pederb 2003-12-05
+  size[0] = (short) coin_geq_power_of_two(size[0]);
+  size[1] = (short) coin_geq_power_of_two(size[1]);
 
   if (this->glcontext == NULL) {
     this->glcontextsize = size;
@@ -498,14 +503,14 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
     // disabled until an pbuffer extension is available to create a
     // render-to-texture pbuffer that has a non power of two size.
     // pederb, 2003-12-05
-#if 0 
+#if 0
     if (!glue->has_ext_texture_rectangle) {
 #else
     if (1) {
 #endif
       this->glcontextsize[0] = (short) coin_geq_power_of_two(size[0]);
       this->glcontextsize[1] = (short) coin_geq_power_of_two(size[1]);
-      
+
       if (this->glcontextsize != size) {
         static int didwarn = 0;
         if (!didwarn) {
@@ -526,25 +531,25 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
 
     // FIXME: make it possible to specify what kind of context you want
     // (RGB or RGBA, I guess). pederb, 2003-11-27
-    this->glcontext = cc_glglue_context_create_offscreen(this->glcontextsize[0], 
+    this->glcontext = cc_glglue_context_create_offscreen(this->glcontextsize[0],
                                                          this->glcontextsize[1]);
     // FIXME: test if we actually got a pbuffer. pederb, 2003-11-27
-    
+
     if (this->glaction) delete this->glaction;
     this->glaction = new SoGLRenderAction(SbViewportRegion(this->glcontextsize));
     this->glaction->addPreRenderCallback(SoSceneTexture2P::prerendercb, (void*) this);
     this->glimagevalid = FALSE;
   }
-  
+
   if (!this->pbuffervalid) {
     assert(this->glaction != NULL);
     assert(this->glcontext != NULL);
     this->glaction->setTransparencyType((SoGLRenderAction::TransparencyType)
                                         SoShapeStyleElement::getTransparencyType(state));
-    
-    cc_glglue_context_make_current(this->glcontext);  
+
+    cc_glglue_context_make_current(this->glcontext);
     this->glaction->apply(scene);
-    // Make sure that rendering to pBuffer is completed to avoid 
+    // Make sure that rendering to pBuffer is completed to avoid
     // flickering. DON'T REMOVE THIS. You have been warned.
     glFlush();
     cc_glglue_context_reinstate_previous(this->glcontext);
