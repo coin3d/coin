@@ -24,12 +24,12 @@
 #error this is a private header file
 #endif
 
+#include <stdio.h>
+#include <Inventor/C/basic.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include <stdio.h>
-#include <Inventor/C/basic.h>
 
 /* ********************************************************************** */
 
