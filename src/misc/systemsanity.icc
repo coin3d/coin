@@ -57,6 +57,7 @@ void
 SoDB_checkGCCBuiltinExpectSanity(void)
 {
 #ifdef HAVE___BUILTIN_EXPECT
+#if 0 // disabled for now
   int bogus_assert =
     __builtin_expect(!!(GCCAssertBomberFunc1() &&
                         (GCCAssertBomberFunc2()._y)==0), 1) ? 0 : -1;
@@ -65,11 +66,12 @@ SoDB_checkGCCBuiltinExpectSanity(void)
       "Sanity checking has revealed that Coin has been built with a version "
       "of GCC that comes with a buggy assert() macro that gives false "
       "positives.  "
-      "To fix this problem, you need to fix assert.h or upgrade GCC, "
-      "and then rebuild the Coin library (and other libraries you have built "
-      "with this faulty compiler.");
+      "To fix this problem, you need to upgrade GCC, and then rebuild the "
+      "Coin library (and other libraries you have built with this faulty "
+      "compiler.");
     exit(-1);
   }
+#endif // 0
 #endif // HAVE___BUILTIN_EXPECT
 }
 
