@@ -586,8 +586,10 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
 
   // work around a bug in the ATI drivers.
 
-  // FIXME: What bug? What version of the drivers? What platform(s)?
-  // Under what circumstances? This is just ridiculous. kyrah 20040409
+  // FIXME: this code (which probably was just hiding a bug in our
+  // pbuffer allocation) can probably be removed now, as the
+  // underlying bug has been fixed, but check on freya that it will
+  // indeed give us non-power-of-two pbuffers first. 20040715 mortene.
 
   if (!tiledrendering && (!coin_is_power_of_two(fullsize[0]) || !coin_is_power_of_two(fullsize[1]))) {
     if (this->forcepoweroftwo < 0) {
