@@ -42,7 +42,7 @@ public:
   virtual void apply(SoPath * path);
   virtual void apply(const SoPathList & pathlist, SbBool obeysrules = FALSE);
   
-  SoNode * getVRML2SceneGraph(void) const;
+  class SoVRMLGroup * getVRML2SceneGraph(void) const;
 
   void reuseAppearanceNodes(SbBool appearance);
   SbBool doReuseAppearanceNodes(void) const;

@@ -107,7 +107,7 @@ SoToVRML2Action::initClass(void)
 */
 
 /*!
-  \fn SoNode * SoToVRML2Action::getVRML2SceneGraph(void) const
+  \fn SoVRMLGroup * SoToVRML2Action::getVRML2SceneGraph(void) const
 
   Return a pointer to the root node of the generated scenegraph of
   only VRML2 / VRML97 nodes.
@@ -171,7 +171,7 @@ SoToVRML2Action::~SoToVRML2Action() { }
 void SoToVRML2Action::apply(SoNode * node) { }
 void SoToVRML2Action::apply(SoPath * path) { }
 void SoToVRML2Action::apply(const SoPathList & pathlist, SbBool obeysrules) { }
-SoNode * SoToVRML2Action::getVRML2SceneGraph(void) const { return NULL; }
+SoVRMLGroup * SoToVRML2Action::getVRML2SceneGraph(void) const { return NULL; }
 void SoToVRML2Action::beginTraversal(SoNode * node) { }
 void SoToVRML2Action::reuseAppearanceNodes(SbBool appearance) { }
 SbBool SoToVRML2Action::doReuseAppearanceNodes(void) const { return FALSE; }
@@ -439,7 +439,7 @@ SoToVRML2Action::beginTraversal(SoNode * node)
   assert(0 && "should never get here");
 }
 
-SoNode *
+SoVRMLGroup *
 SoToVRML2Action::getVRML2SceneGraph(void) const
 {
   return PRIVATE(this)->vrml2root;
