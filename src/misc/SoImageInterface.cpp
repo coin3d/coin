@@ -433,7 +433,7 @@ SoImageInterface::findOrCreateImage(const char * const filename,
                                     const SbStringList & dirlist)
 {
  // FIXME: deallocate on exit. 20000406 mortene.
-  if (loadedfiles) loadedfiles = new SbList<so_image_data *>;
+  if (!loadedfiles) loadedfiles = new SbList<so_image_data *>;
 
   int n = loadedfiles->getLength();
   for (int i = 0; i < n; i++) {
