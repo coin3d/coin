@@ -1,109 +1,86 @@
 #!/usr/bin/make -f
-############################################################################
-# rules -- debian package make rules
+# Sample debian/rules that uses debhelper.
+# This file is public domain software, originally written by Joey Hess.
 #
-# Authors:
-#   Lars J. Aas <larsa@coin3d.org>
+# This version is for a multibinary package. It also allows you to build any
+# of the binary packages independantly, via binary-<package> targets.
+
+# Uncomment this to turn on verbose mode. 
+#export DH_VERBOSE=1
+
+# This is the debhelper compatibility version to use.
+export DH_COMPAT=3
+
+# This has to be exported to make some magic below work.
+export DH_OPTIONS
+
+build: build-stamp
+build-stamp:
+	dh_testdir
+	./configure --prefix=/usr \
+	  --with-html=`pwd`/debian/tmp/usr/doc/coin1/html \
+	  --with-man=`pwd`/debian/tmp/usr/man \
+	  --enable-static --without-mesa
+	$(MAKE)
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp
+	-$(MAKE) distclean
+	-dh_clean
 
 source: clean
-	@echo "> make debian/$@";
+	dpkg-buildpackage -S -us
 
-build: build-indep build-arch
-	@echo "> make debian/$@";
+install: DH_OPTIONS=
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+	# Add here commands to install the package into debian/tmp.
+	-$(MAKE) doxygen-docs
+	$(MAKE) DESTDIR=`pwd`/debian/tmp install
+	dh_movefiles
 
-# optional
-build-arch:
-	@echo "> make debian/$@"; \
-	case "`pwd`" in \
-	  *-doc_*) \
-	    ;; \
-	  *) \
-	    $(SHELL) configure --prefix=/usr; \
-	    $(MAKE); \
-	    ;; \
-	esac;
+# This single target is used to build all the packages, all at once, or
+# one at a time. So keep in mind: any options passed to commands here will
+# affect _all_ packages. Anything you want to only affect one package
+# should be put in another target, such as the install target.
+binary-common:
+	dh_testdir
+	dh_testroot
+#	dh_installdebconf
+	dh_installdocs
+	dh_installexamples
+	dh_installmenu
+	dh_installman
+#	dh_installinfo
+	dh_installchangelogs
+	dh_link
+	dh_compress
+	dh_strip
+	dh_fixperms
+	dh_makeshlibs
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
 
-# optional
-build-indep:
-	@echo "> make debian/$@";
-	case "`pwd`" in \
-	  *-doc_*) \
-	    ./configure --disable-build --with-html --with-man --prefix=`pwd`/debian/tmp/usr; \
-	    ;; \
-	esac;
+# Build architecture independant packages using the common target.
+binary-indep: build install
+	$(MAKE) -f debian/rules binary-common DH_OPTIONS=-i
+
+# Build architecture dependant packages using the common target.
+binary-arch: build install
+	$(MAKE) -f debian/rules binary-common DH_OPTIONS=-a
+
+# Any other binary targets build just one binary package at a time.
+binary-%: build install
+	$(MAKE) -f debian/rules binary-common DH_OPTIONS=-p$*
 
 binary: binary-indep binary-arch
-	@echo "> make debian/$@";
-
-binary-arch:
-	@echo "> make debian/$@";
-	@installdir=debian/tmp; \
-	test -f $$installdir || mkdir $$installdir; \
-	if test ! -d $$installdir/DEBIAN; then \
-	  mkdir $$installdir/DEBIAN; \
-	  cp debian/* $$installdir/DEBIAN/; \
-	fi; \
-	case "`pwd`" in \
-	  *-doc_*) \
-	    ;; \
-	  *-lib_*) \
-	    $(MAKE) DESTDIR=`pwd`/$$installdir install; \
-	    ( cd $$installdir/usr; rm -rf include share bin ); \
-	    dpkg-gencontrol -pcoin@COIN_MAJOR_VERSION@-lib \
-	    dpkg-deb -b $$installdir; \
-	    mv $$installdir.deb ../coin@COIN_MAJOR_VERSION@-lib_@VERSION@-1_$(DEB_BUILD_ARCH).deb; \
-	    ;; \
-	  *-dev_*) \
-	    $(MAKE) DESTDIR=`pwd`/$$installdir install; \
-	    ( cd $$installdir/usr; rm -rf lib ); \
-	    dpkg-gencontrol -pcoin@COIN_MAJOR_VERSION@-dev; \
-	    dpkg-deb -b $$installdir; \
-	    mv $$installdir.deb ../coin@COIN_MAJOR_VERSION@-dev_@VERSION@-1_$(DEB_BUILD_ARCH).deb; \
-	    ;; \
-	  *) \
-	    ;; \
-	esac;
-
-binary-indep:
-	@echo "> make debian/$@";
-	installdir=debian/tmp; \
-	test -f $$installdir || mkdir $$installdir; \
-	if test -d $$installdir/DEBIAN; then :; else \
-	  mkdir $$installdir/DEBIAN; \
-	  cp debian/* $$installdir/DEBIAN/; \
-	  :; \
-	fi; \
-	case "`pwd`" in \
-	  *-doc_*) \
-	    test -d $$installdir/usr/share/Coin/html || \
-	      mkdir -p $$installdir/usr/share/Coin/html; \
-	    test -d $$installdir/usr/man/man3 || \
-	      mkdir -p $$installdir/usr/man/man3; \
-	    $(MAKE) built-sources; \
-	    $(MAKE) doxygen-docs; \
-	    test -d $$installdir/usr/doc/coin@COIN_MAJOR_VERSION@ || \
-	      mkdir -p $$installdir/usr/doc/coin@COIN_MAJOR_VERSION@; \
-	    test -d $$installdir/usr/doc/coin@COIN_MAJOR_VERSION@/html && \
-	      rm -rf $$installdir/usr/doc/coin@COIN_MAJOR_VERSION@/html; \
-	    mv $$installdir/usr/share/Coin/html debian/tmp/usr/doc/coin@COIN_MAJOR_VERSION@/html; \
-	    dpkg-gencontrol -pcoin@COIN_MAJOR_VERSION@-doc; \
-	    dpkg-deb -b $$installdir; \
-	    mv $$installdir.deb ../coin@COIN_MAJOR_VERSION@-doc_@VERSION@-1_all.deb; \
-	    ;; \
-	esac;
-
-# optional
-# get-orig-source:
-# 	@echo "> make debian/$@";
-
-clean::
-	@echo "> make debian/$@";
-	@if test -f Makefile; then \
-	  echo " $(MAKE) distclean"; \
-	  $(MAKE) distclean; \
-	else \
-	  :; \
-	fi;
-	rm -rf debian/tmp debian/files
-
-.PHONY: build
+.PHONY: build clean binary-indep binary-arch binary install source
