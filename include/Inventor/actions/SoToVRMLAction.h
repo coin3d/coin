@@ -27,8 +27,6 @@
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoSubAction.h>
 
-// FIXME: the API does not match the one in TGS Inventor, which it
-// should. 20020705 mortene.
 
 class COIN_DLL_API SoToVRMLAction : public SoAction {
   typedef SoAction inherited;
