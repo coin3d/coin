@@ -111,8 +111,8 @@ uninstall.nsi: Makefile
 	  echo "RMDir \$$INSTDIR\\$$dir"; \
 	done ) >uninstall.nsi
 
-coin.nsi: heading.nsi headerlist.nsi middle.nsi sourcelist.nsi bfheader.nsi buildfiles.nsi post.nsi uninstall.nsi footer.nsi unix2dos.sed Makefile
-	cat heading.nsi headerlist.nsi middle.nsi sourcelist.nsi bfheader.nsi buildfiles.nsi post.nsi uninstall.nsi footer.nsi >coin.tmp
+coin.nsi: heading.nsi headerlist.nsi middle.nsi sourcelist.nsi bfheader.nsi buildfileslist.nsi post.nsi uninstall.nsi footer.nsi unix2dos.sed Makefile
+	cat heading.nsi headerlist.nsi middle.nsi sourcelist.nsi bfheader.nsi buildfileslist.nsi post.nsi uninstall.nsi footer.nsi >coin.tmp
 	winpath=`CYGWIN= cygpath -w "$(sdk_prefix)"`; \
 	winpath=`echo $$winpath | sed -e 's/\\\\/\\\\\\\\/g'`; \
 	sed -e 's/@win_prefix@/'$$winpath'/g' \
