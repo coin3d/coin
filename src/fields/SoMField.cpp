@@ -486,10 +486,10 @@ SoMField::writeValue(SoOutput * out) const
     return;
   }
 
-  SbBool indented = FALSE;
-
   const int num = this->getNum();
   if ((num > 1) || (num == 0)) out->write("[ ");
+
+  out->incrementIndent();
 
   for (int i=0; i < num; i++) {
     this->write1Value(out, i);
@@ -497,10 +497,6 @@ SoMField::writeValue(SoOutput * out) const
     if (i != num-1) {
       if (((i+1) % this->getNumValuesPerLine()) == 0) {
         out->write(",\n");
-        if (!indented) {
-          out->incrementIndent();
-          indented = TRUE;
-        }
         out->indent();
         // for alignment
         out->write("  ");
@@ -512,7 +508,7 @@ SoMField::writeValue(SoOutput * out) const
   }
   if ((num > 1) || (num == 0)) out->write(" ]");
 
-  if (indented) out->decrementIndent();
+  out->decrementIndent();
 }
 
 /*!
