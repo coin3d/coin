@@ -126,7 +126,7 @@ BUILT_SOURCES = \
 
 systemincdir = $(includedir)/Inventor/system
 systeminc_HEADERS = \
-        $(top_builddir)/include/Inventor/system/inttypes.h
+	inttypes.h
 
 subdir = include/Inventor/system
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -206,7 +206,6 @@ top_distdir = ../../..
 distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
 
 distdir: $(DISTFILES)
-	$(mkinstalldirs) $(distdir)/$(top_builddir)/include/Inventor/system
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
@@ -299,7 +298,7 @@ uninstall-am: uninstall-systemincHEADERS
 
 
 inttypes.h: $(srcdir)/inttypes.h.in
-	@( cd $top_builddir; $(MAKE) include/Inventor/system/inttypes.h )
+	( cd $(top_builddir); $(MAKE) include/Inventor/system/inttypes.h )
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

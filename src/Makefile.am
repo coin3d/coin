@@ -54,7 +54,6 @@ libCoin@SUFFIX@_la_LDFLAGS = \
 
 libCoin@SUFFIX@incdir = $(includedir)/Inventor
 libCoin@SUFFIX@inc_HEADERS = \
-	$(top_builddir)/include/Inventor/SbBasic.h \
 	$(top_srcdir)/include/Inventor/SbPList.h \
 	$(top_srcdir)/include/Inventor/So.h \
 	$(top_srcdir)/include/Inventor/SoDB.h \

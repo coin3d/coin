@@ -123,12 +123,19 @@ BUILT_SOURCES = \
 
 
 SUBDIRS = lock system
+
+libCoinincdir = $(includedir)/Inventor
+libCoininc_HEADERS = \
+	SbBasic.h
+
 subdir = include/Inventor
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/include/config.h
 CONFIG_CLEAN_FILES =
 DIST_SOURCES =
-DIST_COMMON = Makefile.am Makefile.in
+HEADERS = $(libCoininc_HEADERS)
+
+DIST_COMMON = $(libCoininc_HEADERS) Makefile.am Makefile.in
 
 DIST_SUBDIRS = $(SUBDIRS)
 all: $(BUILT_SOURCES)
@@ -144,6 +151,23 @@ Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.s
 	cd $(top_builddir) && \
 	  CONFIG_HEADERS= CONFIG_LINKS= \
 	  CONFIG_FILES=$(subdir)/$@ $(SHELL) ./config.status
+install-libCoinincHEADERS: $(libCoininc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libCoinincdir)
+	@list='$(libCoininc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libCoinincdir)/$$f"; \
+	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libCoinincdir)/$$f; \
+	done
+
+uninstall-libCoinincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libCoininc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libCoinincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libCoinincdir)/$$f; \
+	done
 
 # This directory's subdirectories are mostly independent; you can cd
 # into them and run `make' without going through this Makefile.
@@ -272,10 +296,11 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-recursive
-all-am: Makefile
+all-am: Makefile $(HEADERS)
 
 installdirs: installdirs-recursive
 installdirs-am:
+	$(mkinstalldirs) $(DESTDIR)$(libCoinincdir)
 
 install: install-recursive
 install-exec: install-exec-recursive
@@ -320,7 +345,7 @@ info:
 
 info-am:
 
-install-data-am:
+install-data-am: install-libCoinincHEADERS
 
 install-exec-am:
 
@@ -338,23 +363,26 @@ mostlyclean: mostlyclean-recursive
 
 mostlyclean-am: mostlyclean-generic
 
+uninstall-am: uninstall-libCoinincHEADERS
+
 .PHONY: all all-am all-recursive check check-am check-recursive clean \
 	clean-generic clean-recursive distclean distclean-generic \
 	distclean-recursive distclean-tags distdir dvi dvi-am \
 	dvi-recursive info info-am info-recursive install install-am \
 	install-data install-data-am install-data-recursive \
 	install-exec install-exec-am install-exec-recursive \
-	install-info install-info-recursive install-man \
-	install-recursive install-strip installcheck installcheck-am \
-	installcheck-recursive installdirs installdirs-am \
-	installdirs-recursive maintainer-clean maintainer-clean-generic \
-	maintainer-clean-recursive mostlyclean mostlyclean-generic \
-	mostlyclean-recursive tags tags-recursive uninstall \
-	uninstall-am uninstall-info-recursive uninstall-recursive
+	install-info install-info-recursive install-libCoinincHEADERS \
+	install-man install-recursive install-strip installcheck \
+	installcheck-am installcheck-recursive installdirs \
+	installdirs-am installdirs-recursive maintainer-clean \
+	maintainer-clean-generic maintainer-clean-recursive mostlyclean \
+	mostlyclean-generic mostlyclean-recursive tags tags-recursive \
+	uninstall uninstall-am uninstall-info-recursive \
+	uninstall-libCoinincHEADERS uninstall-recursive
 
 
 SbBasic.h: $(srcdir)/SbBasic.h.in
-	@( cd $top_builddir; $(MAKE) include/Inventor/SbBasic.h )
+	@( cd $(top_builddir); $(MAKE) include/Inventor/SbBasic.h )
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

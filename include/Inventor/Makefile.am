@@ -6,5 +6,9 @@ BUILT_SOURCES = \
 SUBDIRS = lock system
 
 SbBasic.h: $(srcdir)/SbBasic.h.in
-	@( cd $top_builddir; $(MAKE) include/Inventor/SbBasic.h )
+	@( cd $(top_builddir); $(MAKE) include/Inventor/SbBasic.h )
+
+libCoinincdir = $(includedir)/Inventor
+libCoininc_HEADERS = \
+	SbBasic.h
 
