@@ -125,7 +125,7 @@ inline void SbSwap( Type & A, Type & B ) {
 
 template <class Type>
 inline Type SbSqr(const Type val) {
-  return (val) * (val);
+  return val * val;
 }
 
 // *************************************************************************
