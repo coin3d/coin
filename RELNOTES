@@ -1,0 +1,22 @@
+RELEASE NOTES
+=============
+
+This file describes notable changes in the Coin library in a more
+elaborate way than can be fit into to the compact NEWS summary file.
+
+Coin 2.0.0
+==========
+
+Removed obsoleted methods in SoField:
+
+  SbBool connectFrom(SoVRMLInterpOutput * master,
+                     SbBool notnotify = FALSE, SbBool append = FALSE);
+  SbBool appendConnection(SoVRMLInterpOutput * master,
+                          SbBool notnotify = FALSE);
+  void disconnect(SoVRMLInterpOutput * interpoutput);
+  SbBool isConnectedFromVRMLInterp(void) const;
+  SbBool getConnectedVRMLInterp(SoVRMLInterpOutput *& master) const;
+
+These methods were obsoleted in Coin-1, and we chose to remove them
+in Coin-2.
+

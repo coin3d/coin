@@ -2089,57 +2089,6 @@ SoField::initClasses(void)
                      &SoMFUInt32::createInstance);
 }
 
-/*!
-  Obsoleted 2001-10-18
-*/
-SbBool
-SoField::connectFrom(SoVRMLInterpOutput * master,
-                     SbBool notnotify, SbBool append)
-{
-  COIN_OBSOLETED();
-  return FALSE;
-}
-
-/*!
-  Obsoleted 2001-10-18
-*/
-SbBool
-SoField::appendConnection(SoVRMLInterpOutput * master,
-                          SbBool notnotify)
-{
-  COIN_OBSOLETED();
-  return FALSE;
-}
-
-/*!
-  Obsoleted 2001-10-18
-*/
-void
-SoField::disconnect(SoVRMLInterpOutput * interpoutput)
-{
-  COIN_OBSOLETED();
-}
-
-/*!
-  Obsoleted 2001-10-18
-*/
-SbBool
-SoField::isConnectedFromVRMLInterp(void) const
-{
-  COIN_OBSOLETED();
-  return FALSE;
-}
-
-/*!
-  Obsoleted 2001-10-18
-*/
-SbBool
-SoField::getConnectedVRMLInterp(SoVRMLInterpOutput *& master) const
-{
-  COIN_OBSOLETED();
-  return FALSE;
-}
-
 #undef FLAG_TYPEMASK
 #undef FLAG_ISDEFAULT
 #undef FLAG_IGNORE
