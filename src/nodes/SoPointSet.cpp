@@ -55,19 +55,6 @@
 #endif // COIN_DEBUG
 
 /*!
-  \enum SoPointSet::Binding
-  Enum used internally to specify material and normal binding.
-*/
-/*!
-  \var SoPointSet::Binding SoPointSet::OVERALL
-  Specifies overall binding.
-*/
-/*!
-  \var SoPointSet::Binding SoPointSet::PER_VERTEX
-  Specifies binding per vertex.
-*/
-
-/*!
   \var SoSFInt32 SoPointSet::numPoints
   Used to specify number of points in the point set. If this field is set
   to -1 (the default value) all coordinates currently on the state will be
@@ -78,7 +65,6 @@
   set will start handling coordinates from that index on.
 */
 
-// *************************************************************************
 SO_NODE_SOURCE(SoPointSet);
 
 /*!
@@ -112,14 +98,12 @@ SoPointSet::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   inherited::computeCoordBBox(action, this->numPoints.getValue(), box, center);
 }
 
-/*!
-  Internal method which translates the current material binding
-  found on the state to a material binding for this node.
-  PER_PART, PER_FACE, PER_VERTEX and their indexed counterparts
-  are translated to PER_VERTEX binding. OVERALL means overall
-  binding for point set also, of course. The default material
-  binding is OVERALL.
-*/
+// Internal method which translates the current material binding
+// found on the state to a material binding for this node.
+// PER_PART, PER_FACE, PER_VERTEX and their indexed counterparts
+// are translated to PER_VERTEX binding. OVERALL means overall
+// binding for point set also, of course. The default material
+// binding is OVERALL.
 SoPointSet::Binding
 SoPointSet::findMaterialBinding(SoState * const state) const
 {
@@ -129,14 +113,12 @@ SoPointSet::findMaterialBinding(SoState * const state) const
   return binding;
 }
 
-/*!
-  Internal method which translates the current normal binding
-  found on the state to a normal binding for this node.
-  PER_PART, PER_FACE, PER_VERTEX and their indexed counterparts
-  are translated to PER_VERTEX binding. OVERALL means overall
-  binding for point set also, of course. The default normal
-  binding is PER_VERTEX.
-*/
+//  Internal method which translates the current normal binding
+//  found on the state to a normal binding for this node.
+//  PER_PART, PER_FACE, PER_VERTEX and their indexed counterparts
+//  are translated to PER_VERTEX binding. OVERALL means overall
+//  binding for point set also, of course. The default normal
+//  binding is PER_VERTEX.
 SoPointSet::Binding
 SoPointSet::findNormalBinding(SoState * const state) const
 
@@ -152,6 +134,7 @@ SoPointSet::findNormalBinding(SoState * const state) const
 void
 SoPointSet::GLRender(SoGLRenderAction * action)
 {
+  // FIXME: optimize rendering, pederb 20000809
   SoState * state = action->getState();
 
   if (this->vertexProperty.getValue()) {
@@ -224,7 +207,9 @@ SoPointSet::GLRender(SoGLRenderAction * action)
     state->pop();
 }
 
-// doc from parent
+/*!
+  Overloaded to clear normal cache.
+*/
 SbBool
 SoPointSet::generateDefaultNormals(SoState *, SoNormalCache * nc)
 {

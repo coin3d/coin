@@ -34,11 +34,6 @@ public:
   static void initClass(void);
   SoPointSet(void);
 
-  enum Binding {
-    OVERALL = 0,
-    PER_VERTEX
-  };
-
   SoSFInt32 numPoints;
 
   virtual void GLRender(SoGLRenderAction * action);
@@ -54,6 +49,11 @@ protected:
   SbBool generateDefaultNormals(SoState *, SoNormalCache * nc);
 
 private:
+  enum Binding {
+    OVERALL = 0,
+    PER_VERTEX
+  };
+
   Binding findNormalBinding(SoState * const state) const;
   Binding findMaterialBinding(SoState * const state) const;
 };
