@@ -57,8 +57,6 @@ static SbBool SIMAGE_failed_to_load = FALSE;
 static void * SIMAGE_libhandle = NULL;
 typedef unsigned char * (*SIMAGE_read_image_t)(const char *, int *, int *, int *);
 static SIMAGE_read_image_t SIMAGE_read_image;
-typedef void (*SIMAGE_clear_error_t)(void);
-static SIMAGE_clear_error_t SIMAGE_clear_error;
 typedef char * (*SIMAGE_get_last_error_t)(char *, int);
 static SIMAGE_get_last_error_t SIMAGE_get_last_error;
 
@@ -300,7 +298,6 @@ SbImage::readFile(const SbString & filename,
     // loaded.
     if (!SIMAGE_read_image) {
       SIMAGE_read_image = simage_read_image;
-      SIMAGE_clear_error = simage_clear_error;
       SIMAGE_get_last_error = simage_get_last_error;
     }
 #endif // HAVE_LIBSIMAGE
@@ -321,8 +318,6 @@ SbImage::readFile(const SbString & filename,
 
         SIMAGE_read_image =
           (SIMAGE_read_image_t)dlsym(SIMAGE_libhandle, "simage_read_image");
-        SIMAGE_clear_error =
-          (SIMAGE_clear_error_t)dlsym(SIMAGE_libhandle, "simage_clear_error");
         SIMAGE_get_last_error =
           (SIMAGE_get_last_error_t)dlsym(SIMAGE_libhandle, "simage_get_last_error");
 
@@ -340,7 +335,6 @@ SbImage::readFile(const SbString & filename,
 #endif // SIMAGE_RUNTIME_LINKING
 
     if (SIMAGE_read_image) {
-      SIMAGE_clear_error();
       simagedata = SIMAGE_read_image(finalname.getString(), &w, &h, &nc);
     }
     if (simagedata) {
