@@ -284,6 +284,11 @@ SoLineHighlightRenderActionP::drawBoxes(SoPath * pathtothis,
   SoState * state = PUBLIC(this)->getState();
   state->push();
 
+  // we need to disable accumulation buffer antialiasing while
+  // rendering selected objects
+  int oldnumpasses = PUBLIC(this)->getNumPasses();
+  PUBLIC(this)->setNumPasses(1);
+
   SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
   SoLazyElement::setDiffuse(state, pathtothis->getHead(), 1, &this->color, &this->colorpacker);
   SoLineWidthElement::set(state, this->linewidth);
@@ -306,5 +311,7 @@ SoLineHighlightRenderActionP::drawBoxes(SoPath * pathtothis,
     PUBLIC(this)->SoGLRenderAction::apply(this->postprocpath);
     this->postprocpath->truncate(thispos);
   }
+
+  PUBLIC(this)->setNumPasses(oldnumpasses);
   state->pop();
 }

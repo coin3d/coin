@@ -406,6 +406,11 @@ SoBoxHighlightRenderAction::drawBoxes(SoPath * pathtothis, const SoPathList * pa
   
   for (i = 0; i < thispos; i++)
     PRIVATE(this)->postprocpath->append(pathtothis->getNode(i));
+
+  // we need to disable accumulation buffer antialiasing while
+  // rendering selected objects
+  int oldnumpasses = this->getNumPasses();
+  this->setNumPasses(1);
   
   SoState * state = this->getState();
   state->push();
@@ -442,6 +447,7 @@ SoBoxHighlightRenderAction::drawBoxes(SoPath * pathtothis, const SoPathList * pa
     }
     PRIVATE(this)->postprocpath->truncate(thispos);
   }
+  this->setNumPasses(oldnumpasses);
   state->pop();
 }
 
