@@ -165,7 +165,7 @@
 */
 
 /*!
-  \var SoSFVec4f SoSceneTexture2::clearColor
+  \var SoSFVec4f SoSceneTexture2::backgroundColor
 
   The color the color buffer is cleared to before rendering the scene.
   Default value is (0.0f, 0.0f, 0.0f, 0.0f).
@@ -302,7 +302,7 @@ SoSceneTexture2::SoSceneTexture2(void)
   SO_NODE_INTERNAL_CONSTRUCTOR(SoSceneTexture2);
   SO_NODE_ADD_FIELD(size, (256, 256));
   SO_NODE_ADD_FIELD(scene, (NULL));
-  SO_NODE_ADD_FIELD(clearColor, (0.0f, 0.0f, 0.0f, 0.0f));
+  SO_NODE_ADD_FIELD(backgroundColor, (0.0f, 0.0f, 0.0f, 0.0f));
   SO_NODE_ADD_FIELD(transparencyFunction, (NONE));
 
   SO_NODE_ADD_FIELD(wrapS, (REPEAT));
@@ -685,7 +685,7 @@ void
 SoSceneTexture2P::prerendercb(void * userdata, SoGLRenderAction * action)
 {
   SoSceneTexture2 * thisp = (SoSceneTexture2*) userdata;
-  SbVec4f col = thisp->clearColor.getValue();
+  SbVec4f col = thisp->backgroundColor.getValue();
   glClearColor(col[0], col[1], col[2], col[3]);
   glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
 }

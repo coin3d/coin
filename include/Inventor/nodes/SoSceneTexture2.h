@@ -67,7 +67,7 @@ public:
   SoSFEnum model;
   SoSFColor blendColor;
 
-  SoSFVec4f clearColor;
+  SoSFVec4f backgroundColor;
   SoSFVec2s size;
   SoSFNode scene;
   SoSFEnum transparencyFunction;
