@@ -285,6 +285,18 @@ SoSurroundScale::updateMySurroundParams(SoAction * action,
     box.getSize(this->cachedScale[0], this->cachedScale[1],
                 this->cachedScale[2]);
 
+#if COIN_DEBUG
+    if (this->cachedScale[0] <= 0.0f ||
+        this->cachedScale[1] <= 0.0f ||
+        this->cachedScale[2] <= 0.0f) {
+      SoDebugError::postWarning("SoSurroundScale::updateMySurroundParams",
+                                "invalid scale vector: <%f, %f, %f>",
+                                this->cachedScale[0],
+                                this->cachedScale[1],
+                                this->cachedScale[2]);
+    }
+#endif // COIN_DEBUG
+
     this->cachedScale *= 0.5f;
     this->cachedInvScale[0] = 1.0f / this->cachedScale[0];
     this->cachedInvScale[1] = 1.0f / this->cachedScale[1];
