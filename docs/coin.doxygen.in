@@ -834,7 +834,7 @@ INPUT                  = @coin_build_dir@/include/Inventor/SbBasic.h \
                          @coin_src_dir@/src/nodekits/SoNodeKit.cpp \
                          @coin_src_dir@/include/Inventor/nodekits/SoNodeKit.h \
                          @coin_src_dir@/src/nodekits/SoNodeKitPath.cpp \
-                         @coin_src_dir@/include/Inventor/nodekits/SoNodeKitPath.h \
+                         @coin_src_dir@/include/Inventor/SoNodeKitPath.h \
                          @coin_src_dir@/src/nodekits/SoNodeKitListPart.cpp \
                          @coin_src_dir@/include/Inventor/nodekits/SoNodeKitListPart.h \
                          @coin_src_dir@/src/nodekits/SoNodekitCatalog.cpp \
