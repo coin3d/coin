@@ -303,7 +303,7 @@ SbTesselator::endPolygon()
     // find epsilon based on bbox
     SbVec3f d;
     PRIVATE(this)->bbox.getSize(d[0],d[1],d[2]);
-    PRIVATE(this)->epsilon = SbMin(d[this->X], d[this->Y]) * FLT_EPSILON;
+    PRIVATE(this)->epsilon = SbMin(d[X], d[Y]) * FLT_EPSILON * FLT_EPSILON;
 
     //Make loop
     this->tailV->next = this->headV;
@@ -315,19 +315,24 @@ SbTesselator::endPolygon()
     
     int cnt = 1;
     cc_heap_add(PRIVATE(this)->heap, this->headV);
-    PRIVATE(this)->bsptree.addPoint(this->headV->v, this->headV);
+    PRIVATE(this)->bsptree.addPoint(SbVec3f(this->headV->v[X],
+                                            this->headV->v[Y],
+                                            0.0f), this->headV);
     v = this->headV->next;
     while (v != this->headV) {
       cc_heap_add(PRIVATE(this)->heap, v);
-      PRIVATE(this)->bsptree.addPoint(v->v, v);
+      PRIVATE(this)->bsptree.addPoint(SbVec3f(v->v[X],
+                                              v->v[Y],
+                                              0.0f), v);
       v = v->next;
     }
     while (this->numVerts > 4) {
       v = (SbTVertex*) cc_heap_get_top(PRIVATE(this)->heap);
-
       if (heap_evaluate(v) == FLT_MAX) break;
       cc_heap_remove(PRIVATE(this)->heap, v->next);
-      PRIVATE(this)->bsptree.removePoint(v->next->v);
+      PRIVATE(this)->bsptree.removePoint(SbVec3f(v->next->v[X],
+                                                 v->next->v[Y],
+                                                 0.0f));
 
       this->emitTriangle(v); // will remove v->next
       this->numVerts--;
@@ -492,10 +497,10 @@ SbTesselator::clippable(SbTVertex *v)
 {
   SbBox3f bbox;
   bbox.makeEmpty();
-  bbox.extendBy(v->v);
-  bbox.extendBy(v->next->v);
-  bbox.extendBy(v->next->next->v);
-
+  bbox.extendBy(SbVec3f(v->v[X], v->v[Y], 0.0f));
+  bbox.extendBy(SbVec3f(v->next->v[X], v->next->v[Y], 0.0f));
+  bbox.extendBy(SbVec3f(v->next->next->v[X], v->next->next->v[Y], 1.0f));
+  
   SbSphere sphere;
   sphere.circumscribe(bbox);
   
@@ -591,8 +596,8 @@ SbTesselator::circleCenter(const SbVec3f &a, const SbVec3f &b,
   float div = 2.0f*(c1+c2+c3);
   if (div != 0.0f) {
     float val = 1.0f / div;
-    cx = tmp4[this->X] * val;
-    cy = tmp4[this->Y] * val;
+    cx = tmp4[X] * val;
+    cy = tmp4[Y] * val;
     return TRUE;
   }
   return FALSE;
@@ -607,8 +612,8 @@ SbTesselator::circleSize(const SbVec3f &a, const SbVec3f &b, const SbVec3f &c)
   float cx, cy;
   if (circleCenter(a, b, c, cx, cy)) {
     float t1, t2;
-    t1 = a[this->X] - cx;
-    t2 = a[this->Y] - cy;
+    t1 = a[X] - cx;
+    t2 = a[Y] - cy;
     return t1*t1+t2*t2;
   }
   return FLT_MAX;
@@ -623,7 +628,7 @@ SbTesselator::circleSize(SbTVertex *v)
 float
 SbTesselator::dot2D(const SbVec3f &v1, const SbVec3f &v2)
 {
-  return v1[this->X] * v2[this->X] + v1[this->Y] * v2[this->Y];
+  return v1[X] * v2[X] + v1[Y] * v2[Y];
 }
 
 void
