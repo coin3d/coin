@@ -168,12 +168,7 @@ dnl *******************************************************************
 dnl * Compiler control.
 dnl *******************************************************************
 
-SIM_COMPILE_DEBUG
-if test "x$enable_debug" = "xyes"; then
-  CXXFLAGS="$CXXFLAGS -DCOIN_DEBUG=1"
-else
-  CXXFLAGS="$CXXFLAGS -DCOIN_DEBUG=0"
-fi
+SIM_COMPILE_DEBUG(CXXFLAGS="$CXXFLAGS -DCOIN_DEBUG=1", CXXFLAGS="$CXXFLAGS -DCOIN_DEBUG=0")
 
 SIM_DEBUGSYMBOLS
 SIM_RTTI_SUPPORT

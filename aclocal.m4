@@ -1278,25 +1278,39 @@ if test x"$with_opengl" != xno; then
 fi
 ])
 
-dnl  Let the user decide if compilation should be done in "debug mode".
-dnl  If compilation is not done in debug mode, all assert()'s in the code
-dnl  will be disabled.
+dnl ************************************************************************
+dnl Usage:
+dnl   SIM_COMPILE_DEBUG( ACTION-IF-DEBUG, ACTION-IF-NOT-DEBUG )
 dnl
-dnl  Also sets enable_debug variable to either "yes" or "no", so the
-dnl  configure.in writer can add package-specific actions. Default is "yes".
+dnl Description:
+dnl   Let the user decide if compilation should be done in "debug mode".
+dnl   If compilation is not done in debug mode, all assert()'s in the code
+dnl   will be disabled.
 dnl
-dnl  Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
-dnl  in the configure.in script.
+dnl   Also sets enable_debug variable to either "yes" or "no", so the
+dnl   configure.in writer can add package-specific actions. Default is "yes".
+dnl   This was also extended to enable the developer to set up the two first
+dnl   macro arguments following the well-known ACTION-IF / ACTION-IF-NOT
+dnl   concept.
 dnl
-dnl  Author: Morten Eriksen, <mortene@sim.no>.
+dnl   Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
+dnl   in the configure.in script.
+dnl
+dnl Authors:
+dnl   Morten Eriksen, <mortene@sim.no>
+dnl   Lars J. Aas, <larsa@sim.no>
+dnl
+dnl TODO:
+dnl * [larsa:20000220] Set up ATTRIBUTE-LIST for developer-configurable
+dnl   default-value.
 dnl
 
-AC_DEFUN(SIM_COMPILE_DEBUG,
-[
+AC_DEFUN(SIM_COMPILE_DEBUG,[
 dnl Autoconf is a developer tool, so don't bother to support older versions.
 AC_PREREQ([2.13])
+
 AC_ARG_ENABLE(debug,
-  [  --enable-debug          compile in debug mode [default=yes]],
+  AC_HELP_STRING([--enable-debug], [compile in debug mode [default=yes]]),
   [case "${enableval}" in
     yes) enable_debug=yes ;;
     no)  enable_debug=no ;;
@@ -1304,11 +1318,15 @@ AC_ARG_ENABLE(debug,
   esac],
   enable_debug=yes)
 
-if test "x$enable_debug" = "xno"; then
+if test "x$enable_debug" = "xyes"; then
+  ifelse($1, , :, $1)
+else
   CFLAGS="$CFLAGS -DNDEBUG"
   CXXFLAGS="$CXXFLAGS -DNDEBUG"
+  ifelse($2, , :, $2)
 fi
 ])
+
 
 dnl  Let the user decide if debug symbol information should be compiled
 dnl  in. The compiled libraries/executables will use a lot less space
