@@ -31,13 +31,6 @@
      <URL:http://www.mesa3d.org/brianp/sig97/exten.htm>
 */
 
-/* FIXME: should check if we're rendering to a remote context, and if
-   so disable all extension..? Perhaps provide an envvar to enable
-   them again? 20020917 mortene. */
-
-/* FIXME: demand at least OpenGL 1.1 to get around the glGenTexture()
-   problems Tingdahl is seeing? 20020917 mortene. */
-
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
@@ -522,7 +515,11 @@ cc_glglue_instance(int contextid)
     coin_glx_version(&(gi->glxVersion.major), &(gi->glxVersion.minor));
 
     gi->isdirect = coin_glx_isdirect();
-    gi->vendor_is_SGI = strcmp((const char *) glGetString(GL_VENDOR), "SGI") == 0;
+
+    {
+      const GLubyte * vendor = glGetString(GL_VENDOR);
+      gi->vendor_is_SGI = strcmp((const char *)vendor, "SGI") == 0;
+    }
 
     if (coin_glglue_debug()) {
       cc_debugerror_postinfo("cc_glglue_instance",
@@ -552,6 +549,29 @@ cc_glglue_instance(int contextid)
   return gi;
 }
 
+/* Returns a flag which indicates whether or not to allow the use of
+   OpenGL 1.1+ features and extensions.
+
+   We default to *not* allowing this if rendering is indirect, as
+   we've seen major problems with at least NVidia GLX when using
+   OpenGL 1.1+ features. It can be forced on by an environment
+   variable, though.
+
+   (A better strategy *might* be to default to allow it, but to smoke
+   out and warn if we detect NVidia GLX, and in addition to provide an
+   environment variable that disables it.)
+*/
+static SbBool
+glglue_allow_newer_opengl(const cc_glglue * w)
+{
+  static int v = -1;
+  if (v == -1) {
+    v = (glglue_resolve_envvar("COIN_FULL_INDIRECT_RENDERING") > 0) ? 1 : 0;
+  }
+
+  return (w->isdirect || v);
+}
+
 /*!
   Whether glPolygonOffset() is availble or not: either we're on OpenGL
   1.1 or the GL_EXT_polygon_offset extension is available.
@@ -562,6 +582,8 @@ cc_glglue_instance(int contextid)
 SbBool
 cc_glglue_has_polygon_offset(const cc_glglue * w)
 {
+  if (!glglue_allow_newer_opengl(w)) return FALSE;
+
   return (w->glPolygonOffset || w->glPolygonOffsetEXT) ? TRUE : FALSE;
 }
 
@@ -688,6 +710,8 @@ cc_glglue_glPolygonOffset(const cc_glglue * w,
 SbBool
 cc_glglue_has_texture_objects(const cc_glglue * w)
 {
+  if (!glglue_allow_newer_opengl(w)) return FALSE;
+
   return w->glGenTextures && w->glBindTexture && w->glDeleteTextures;
 }
 
@@ -725,6 +749,8 @@ cc_glglue_glDeleteTextures(const cc_glglue * w, GLsizei n, const GLuint * textur
 SbBool
 cc_glglue_has_texsubimage(const cc_glglue * w)
 {
+  if (!glglue_allow_newer_opengl(w)) return FALSE;
+
   return w->glTexSubImage2D ? TRUE : FALSE;
 }
 
@@ -758,6 +784,8 @@ cc_glglue_glTexSubImage2D(const cc_glglue * w,
 SbBool
 cc_glglue_has_3d_textures(const cc_glglue * w)
 {
+  if (!glglue_allow_newer_opengl(w)) return FALSE;
+
   return
     w->glTexImage3D &&
     w->glCopyTexSubImage3D &&
@@ -767,6 +795,8 @@ cc_glglue_has_3d_textures(const cc_glglue * w)
 SbBool
 cc_glglue_has_2d_proxy_textures(const cc_glglue * w)
 {
+  if (!glglue_allow_newer_opengl(w)) return FALSE;
+
   return
     cc_glglue_glversion_matches_at_least(w, 1, 1, 0) ||
     cc_glglue_glext_supported(w, "GL_EXT_texture");
@@ -775,6 +805,8 @@ cc_glglue_has_2d_proxy_textures(const cc_glglue * w)
 SbBool
 cc_glglue_has_texture_edge_clamp(const cc_glglue * w)
 {
+  if (!glglue_allow_newer_opengl(w)) return FALSE;
+
   return
     cc_glglue_glversion_matches_at_least(w, 1, 2, 0) ||
     cc_glglue_glext_supported(w, "GL_EXT_texture_edge_clamp") ||
@@ -784,6 +816,8 @@ cc_glglue_has_texture_edge_clamp(const cc_glglue * w)
 SbBool
 cc_glglue_has_multitexture(const cc_glglue * w)
 {
+  if (!glglue_allow_newer_opengl(w)) return FALSE;
+
   return w->glMultiTexCoord2f && w->glActiveTexture;
 }
 
