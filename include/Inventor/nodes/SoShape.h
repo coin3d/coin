@@ -75,10 +75,6 @@ protected:
   void GLRenderBoundingBox(SoGLRenderAction * action);
   SbBool shouldPrimitiveCount(SoGetPrimitiveCountAction * action);
 
-  virtual SbBool willSetShadeModel(void) const;
-  virtual SbBool willSetShapeHints(void) const;
-  virtual SbBool willUpdateNormalizeElement(SoState * state) const;
-
   SbBool shouldRayPick(SoRayPickAction * const action);
   void computeObjectSpaceRay(SoRayPickAction * const action);
   void computeObjectSpaceRay(SoRayPickAction * const action,

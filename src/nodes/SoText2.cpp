@@ -325,7 +325,7 @@ SoText2::GLRender(SoGLRenderAction * action)
 
 #if !defined(X_DISPLAY_MISSING)
   // FIXME: crashes on freya.sim.no? 20000905 mortene.
-//    fontlistbase = getGLList(action, (XFontStruct *)fontdata);
+// fontlistbase = getGLList(action, (XFontStruct *)fontdata);
 #endif // !X_DISPLAY_MISSING
 
   if (fontlistbase != NOT_AVAILABLE) {

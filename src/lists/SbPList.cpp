@@ -76,7 +76,9 @@
 void *
 SbPList::operator[](const int index) const
 {
+#ifdef COIN_EXTRA_DEBUG
   assert(index >= 0);
+#endif // COIN_EXTRA_DEBUG
   if (index >= this->getLength()) ((SbPList *)this)->expandlist(index + 1);
   return SbList<void *>::operator[](index);
 }

@@ -36,7 +36,6 @@ public:
 
   SoSFFloat radius;
 
-  virtual SbBool willUpdateNormalizeElement(SoState *) const;
   virtual void GLRender(SoGLRenderAction * action);
   virtual void rayPick(SoRayPickAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);

@@ -348,20 +348,6 @@ SoAsciiText::generatePrimitives(SoAction * action)
 }
 
 // doc in parent
-SbBool
-SoAsciiText::willSetShapeHints(void) const
-{
-  return TRUE;
-}
-
-// doc in parent
-SbBool
-SoAsciiText::willUpdateNormalizeElement(SoState *) const
-{
-  return TRUE;
-}
-
-// doc in parent
 SoDetail *
 SoAsciiText::createTriangleDetail(SoRayPickAction * action,
                               const SoPrimitiveVertex * v1,

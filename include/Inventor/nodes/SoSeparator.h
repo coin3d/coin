@@ -76,7 +76,8 @@ protected:
 
 private:
   void commonConstructor(void);
-
+  SbBool cullTestNoPush(SoState * state);
+  
   class SoBoundingBoxCache * bboxcache;
   class SoGLCacheList * glcachelist;
   static int numrendercaches;

@@ -153,13 +153,6 @@ SoCube::generatePrimitives(SoAction * action)
 }
 
 // Doc in parent.
-SbBool
-SoCube::willUpdateNormalizeElement(SoState *) const
-{
-  return TRUE;
-}
-
-// Doc in parent.
 void
 SoCube::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {

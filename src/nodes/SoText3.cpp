@@ -395,20 +395,6 @@ SoText3::generatePrimitives(SoAction * action)
 }
 
 // doc in parent
-SbBool
-SoText3::willSetShapeHints(void) const
-{
-  return TRUE;
-}
-
-// doc in parent
-SbBool
-SoText3::willUpdateNormalizeElement(SoState *) const
-{
-  return TRUE;
-}
-
-// doc in parent
 SoDetail *
 SoText3::createTriangleDetail(SoRayPickAction * action,
                               const SoPrimitiveVertex * v1,

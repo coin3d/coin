@@ -54,6 +54,7 @@
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/bundles/SoMaterialBundle.h>
 
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoLocalBBoxMatrixElement.h>
@@ -121,7 +122,7 @@ int SoSeparator::numrendercaches = 2;
   beneficial to set this field to SoSeparator::OFF for the top-level
   separator node of this (sub)graph.
 
-  For now, render caching is in the beta stage. You can enable 
+  For now, render caching is in the beta stage. You can enable
   render caching by setting the environment variable COIN_RENDER_CACHING to 1.
   Separators will then be cached if the renderCaching field is set to ON.
 */
@@ -334,82 +335,6 @@ SoSeparator::GLRender(SoGLRenderAction * action)
   }
 }
 
-//
-// temporary code that will evaluate all lazy elements before
-// creating or executing a render cache.
-//
-
-#include <Inventor/elements/SoGLPointSizeElement.h>
-#include <Inventor/elements/SoGLLineWidthElement.h>
-#include <Inventor/elements/SoGLPolygonOffsetElement.h>
-#include <Inventor/elements/SoGLShadeModelElement.h>
-#include <Inventor/elements/SoGLLightModelElement.h>
-#include <Inventor/elements/SoGLTextureImageElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLShapeHintsElement.h>
-#include <Inventor/elements/SoGLNormalizeElement.h>
-#include <Inventor/bundles/SoMaterialBundle.h>
-
-static void
-evaluateLazyElements(SoState * state)
-{
-  {
-    const SoGLPointSizeElement * ps = (SoGLPointSizeElement *)
-      state->getConstElement(SoGLPointSizeElement::getClassStackIndex());
-    ps->evaluate();
-  }
-
-  {
-    const SoGLLineWidthElement * lw = (SoGLLineWidthElement *)
-      state->getConstElement(SoGLLineWidthElement::getClassStackIndex());
-    lw->evaluate();
-  }
-
-  {
-    const SoGLPolygonOffsetElement * off = (SoGLPolygonOffsetElement *)
-      state->getConstElement(SoGLPolygonOffsetElement::getClassStackIndex());
-    off->evaluate();
-  }
-
-  {
-    const SoGLShadeModelElement * sm = (SoGLShadeModelElement *)
-      state->getConstElement(SoGLShadeModelElement::getClassStackIndex());
-    sm->evaluate();
-  }
-
-  {
-    const SoGLLightModelElement * lm = (SoGLLightModelElement *)
-      state->getConstElement(SoGLLightModelElement::getClassStackIndex());
-    lm->evaluate();
-  }
-
-  {
-    const SoGLTextureImageElement * ti = (SoGLTextureImageElement *)
-      state->getConstElement(SoGLTextureImageElement::getClassStackIndex());
-    // alpha test not possible in display list...
-    ti->evaluate(SoGLTextureEnabledElement::get(state), TRUE);
-  }
-
-  {
-    const SoGLTextureEnabledElement * te = (SoGLTextureEnabledElement *)
-      state->getConstElement(SoGLTextureEnabledElement::getClassStackIndex());
-    te->evaluate();
-  }
-
-
-  {
-    const SoGLShapeHintsElement * sh = (SoGLShapeHintsElement *)
-      state->getConstElement(SoGLShapeHintsElement::getClassStackIndex());
-    sh->evaluate();
-  }
-
-  {
-    const SoGLNormalizeElement * ne = (SoGLNormalizeElement *)
-      state->getConstElement(SoGLNormalizeElement::getClassStackIndex());
-    ne->evaluate();
-  }
-}
-
 /*!
   OIV 2.1 obsoleted support SoGLRenderAction::addMethod().
   Instead, GLRender() might be called directly, and to optimize
@@ -437,13 +362,19 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
   SoState * state = action->getState();
   SoGLCacheList * createcache = NULL;
   if ((this->renderCaching.getValue() == ON) && COIN_RENDER_CACHING) {
+    // test if bbox is outside view-volume
+    if (this->cullTestNoPush(state)) return;
+
     if (!this->glcachelist) {
       this->glcachelist = new SoGLCacheList(SoSeparator::getNumRenderCaches());
     }
     else {
       SoMaterialBundle mb(action);
       mb.sendFirst();
-      evaluateLazyElements(state); didlazyeval = TRUE;
+
+      // update lazy elements
+      state->lazyEvaluate();
+
       if (this->glcachelist->call(action, GL_ALL_ATTRIB_BITS)) {
 #if GLCACHE_DEBUG && 1 // debug
         SoDebugError::postInfo("SoSeparator::GLRenderBelowPath",
@@ -464,20 +395,25 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
   state->push();
   if (createcache) {
     if (!didlazyeval) {
-      evaluateLazyElements(state);
+      state->lazyEvaluate();
       SoMaterialBundle mb(action);
       mb.sendFirst();
     }
     createcache->open(action);
   }
-  
-  if (createcache || !this->cullTest(state)) {
+
+  if (1 || createcache || !this->cullTest(state)) {
     int n = this->children->getLength();
     SoAction::PathCode pathcode = action->getCurPathCode();
+    SoNode ** childarray = (SoNode**) this->children->getArrayPtr();
     for (int i = 0; i < n; i++) {
-      action->pushCurPath(i);
-      (*this->children)[i]->GLRenderBelowPath(action);
-
+      if (action->abortNow()) {
+        // only cache if we do a full traversal
+        SoCacheElement::invalidate(state);
+        break;
+      }
+      action->pushCurPath(i, childarray[i]);
+      childarray[i]->GLRenderBelowPath(action);
       // The GL error test is disabled for this optimized path.
       // If you get a GL error reporting an error in the Separator node,
       // enable this code to see exactly which node caused the error.
@@ -689,6 +625,22 @@ SoSeparator::readInstance(SoInput * in, unsigned short flags)
 */
 SbBool
 SoSeparator::cullTest(SoState * state)
+{
+  if (this->renderCulling.getValue() == SoSeparator::OFF) return FALSE;
+  if (!this->bboxcache ||
+      !this->bboxcache->isValid(state) ||
+      this->bboxcache->getProjectedBox().isEmpty()) return FALSE;
+  if (SoCullElement::completelyInside(state)) return FALSE;
+  return SoCullElement::cullBox(state, this->bboxcache->getProjectedBox());
+}
+
+//
+//  Performs a cull test on this node. This call will not update
+//  the SoCullElement, so it can be called without calling
+//  state->push() first.
+//
+SbBool
+SoSeparator::cullTestNoPush(SoState * state)
 {
   if (this->renderCulling.getValue() == SoSeparator::OFF) return FALSE;
   if (!this->bboxcache ||

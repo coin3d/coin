@@ -36,7 +36,6 @@ public:
   SoIndexedLineSet(void);
 
   virtual void GLRender(SoGLRenderAction * action);
-  virtual SbBool willSetShapeHints() const;
   virtual void getBoundingBox(SoGetBoundingBoxAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 

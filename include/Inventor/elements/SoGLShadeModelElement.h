@@ -40,14 +40,15 @@ public:
 
   virtual SbBool matches(const SoElement * element) const;
   virtual SoElement * copyMatchInfo() const;
-  
+
   static void set(SoState * state, const SbBool flat);
-  
-  void evaluate(void) const;
+
+  virtual void lazyEvaluate(void) const;
+  virtual SbBool isLazy(void) const;
   void forceSend(const SbBool flat) const;
-  
+
   static const SoGLShadeModelElement * getInstance(SoState * state);
-  
+
 private:
   SbBool flat;
   SbBool glflat;

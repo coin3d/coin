@@ -180,23 +180,34 @@ SoIndexedTriangleStripSet::GLRender(SoGLRenderAction * action)
   // absolutely necessary.
   if (this->coordIndex.getNum() < 3) return;
 
+  SbBool didpush = FALSE;
   SoState * state = action->getState();
 
   if (this->vertexProperty.getValue()) {
     state->push();
+    didpush = TRUE;
     this->vertexProperty.getValue()->GLRender(action);
-  }
-
-
-  if (!this->shouldGLRender(action)) {
-    if (this->vertexProperty.getValue()) {
-      state->pop();
-    }
-    return;
   }
 
   Binding mbind = this->findMaterialBinding(state);
   Binding nbind = this->findNormalBinding(state);
+
+  if ((nbind == PER_TRIANGLE) || (nbind == PER_TRIANGLE_INDEXED) ||
+      (mbind == PER_TRIANGLE) || (mbind == PER_TRIANGLE_INDEXED)) {
+    if (!didpush) {
+      state->push();
+      didpush = TRUE;
+    }
+    // enable flat shading before calling shouldGLRender()
+    SoGLShadeModelElement::set(state, TRUE);
+  }
+  
+  if (!this->shouldGLRender(action)) {
+    if (didpush) {
+      state->pop();
+    }
+    return;
+  }
 
   const SoCoordinateElement * coords;
   const SbVec3f * normals;
@@ -249,13 +260,6 @@ SoIndexedTriangleStripSet::GLRender(SoGLRenderAction * action)
     nbind = PER_STRIP;
   }
 
-  const SoGLShadeModelElement * sm = SoGLShadeModelElement::getInstance(state);
-  if ((nbind == PER_TRIANGLE) || (nbind == PER_TRIANGLE_INDEXED) ||
-      (mbind == PER_TRIANGLE) || (mbind == PER_TRIANGLE_INDEXED))
-    sm->forceSend(TRUE);
-  else
-    sm->evaluate();
-
   SoMaterialBundle mb(action);
 
   mb.sendFirst(); // make sure we have the correct material
@@ -273,7 +277,7 @@ SoIndexedTriangleStripSet::GLRender(SoGLRenderAction * action)
                        (int)mbind,
                        dotextures?1:0);
 
-  if (this->vertexProperty.getValue()) {
+  if (didpush) {
     state->pop();
   }
 }

@@ -212,7 +212,6 @@ SoVertexProperty::GLRender(SoGLRenderAction * action)
   SoState *state = action->getState();
 
   if (SoShapeStyleElement::isScreenDoor(state) &&
-      ! this->orderedRGBA.isIgnored() &&
       this->orderedRGBA.getNum() &&
       ! SoOverrideElement::getTransparencyOverride(state)) {
     float t = (255 - (this->orderedRGBA[0] & 0xff)) / 255.0f;
@@ -258,7 +257,7 @@ SoVertexProperty::doAction(SoAction *action)
     SoNormalElement::set(state, this, this->normal.getNum(),
                          this->normal.getValues(0));
   }
-  if (this->normal.getNum() && !this->normalBinding.isIgnored()) {
+  if (this->normal.getNum()) {
     SoNormalBindingElement::set(state, this,
                                 (SoNormalBindingElement::Binding)
                                 this->normalBinding.getValue());
@@ -272,8 +271,8 @@ SoVertexProperty::doAction(SoAction *action)
       SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
     }
   }
-  if (this->orderedRGBA.getNum() && !this->materialBinding.isIgnored()
-      && !SoOverrideElement::getMaterialBindingOverride(state)) {
+  if (this->orderedRGBA.getNum() && 
+      !SoOverrideElement::getMaterialBindingOverride(state)) {
     SoMaterialBindingElement::set(state, this,
                                   (SoMaterialBindingElement::Binding)
                                   this->materialBinding.getValue());

@@ -103,10 +103,10 @@ SoGLPointSizeElement::setElt(float val)
   // this is a lazy element, do nothing
 }
 
-//! FIXME: write doc.
 
+// doc in parent
 void
-SoGLPointSizeElement::evaluate() const
+SoGLPointSizeElement::lazyEvaluate(void) const
 {
   if (this->data != current) {
     // cast away constness
@@ -116,8 +116,15 @@ SoGLPointSizeElement::evaluate() const
   }
 }
 
-//! FIXME: write doc.
+// doc in parent
+SbBool
+SoGLPointSizeElement::isLazy(void) const
+{
+  return TRUE;
+}
 
+
+// update GL state
 void
 SoGLPointSizeElement::updategl()
 {

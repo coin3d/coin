@@ -76,7 +76,7 @@ SoGLShadeModelElement::push(SoState * state)
   inherited::push(state);
   SoGLShadeModelElement * prev = (SoGLShadeModelElement*)
     this->getNextInStack();
-  
+
   this->glflat = prev->glflat;
   this->flat = prev->flat;
 }
@@ -128,13 +128,20 @@ SoGLShadeModelElement::getInstance(SoState * state)
     state->getConstElement(classStackIndex);
 }
 
-/*!
-  Updates the GL state.
-*/
+// doc in parent
 void
-SoGLShadeModelElement::evaluate(void) const
+SoGLShadeModelElement::lazyEvaluate(void) const
 {
-  ((SoGLShadeModelElement*)this)->updategl(this->flat);
+  if (this->flat != this->glflat) {
+    ((SoGLShadeModelElement*)this)->updategl(this->flat);
+  }
+}
+
+// doc in parent
+SbBool
+SoGLShadeModelElement::isLazy(void) const
+{
+  return TRUE;
 }
 
 /*!
@@ -144,16 +151,16 @@ SoGLShadeModelElement::evaluate(void) const
 void
 SoGLShadeModelElement::forceSend(const SbBool flat) const
 {
-  ((SoGLShadeModelElement*)this)->updategl(flat);
+  if (this->glflat != flat) {
+    ((SoGLShadeModelElement*)this)->updategl(flat);
+  }
 }
 
 // set correct GL state
 void
 SoGLShadeModelElement::updategl(const SbBool flatshade)
 {
-  if (flatshade != this->glflat) {
-    this->glflat = flatshade;
-    if (flatshade) glShadeModel(GL_FLAT);
-    else glShadeModel(GL_SMOOTH);
-  }
+  this->glflat = flatshade;
+  if (flatshade) glShadeModel(GL_FLAT);
+  else glShadeModel(GL_SMOOTH);
 }

@@ -35,7 +35,6 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoNormalElement.h>
-#include <Inventor/elements/SoGLNormalizeElement.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoGLShapeHintsElement.h>
 #include <Inventor/elements/SoCacheElement.h>
@@ -164,33 +163,9 @@ SoVertexShape::shouldGLRender(SoGLRenderAction * action)
       }
 #endif // disabled code
     }
-
-    /* will supply unit normals when normal cache is used */
-    if (SoVertexShape::willUpdateNormalizeElement(state)) {
-      const SoGLNormalizeElement * ne = (SoGLNormalizeElement *)
-        state->getConstElement(SoGLNormalizeElement::getClassStackIndex());
-      ne->forceSend(TRUE);
-    }
   }
   return TRUE;
 }
-
-/*!
-  Will return TRUE if normal cache is used (normals are then known
-  to be unit length).
-*/
-SbBool
-SoVertexShape::willUpdateNormalizeElement(SoState * state) const
-{
-  const SoNormalElement * elem = SoNormalElement::getInstance(state);
-  const SoVertexProperty * vp =
-    (SoVertexProperty *) this->vertexProperty.getValue();
-
-  if (elem->getNum() <= 0 && (!vp || vp->normal.getNum() <= 0) &&
-      this->normalcache) return TRUE;
-  return FALSE;
-}
-
 
 /*!
   Sets normal cache to contain the normals specified by \a normals and \a num,

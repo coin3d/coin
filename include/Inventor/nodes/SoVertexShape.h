@@ -57,7 +57,6 @@ protected:
   SoVertexShape(void);
   virtual ~SoVertexShape();
 
-  virtual SbBool willUpdateNormalizeElement(SoState *) const;
   virtual SbBool shouldGLRender(SoGLRenderAction * action);
 
   void setNormalCache(SoState * const state,

@@ -105,9 +105,18 @@ SoGLTextureEnabledElement::pop(SoState * state,
   as the state of the element.
 */
 void
-SoGLTextureEnabledElement::evaluate() const
+SoGLTextureEnabledElement::lazyEvaluate(void) const
 {
-  ((SoGLTextureEnabledElement*)this)->updategl();
+  if (this->data != this->glstate) {
+    ((SoGLTextureEnabledElement*)this)->updategl();
+  }
+}
+
+// doc in parent
+SbBool
+SoGLTextureEnabledElement::isLazy(void) const
+{
+  return TRUE;
 }
 
 /*!
@@ -161,9 +170,7 @@ SoGLTextureEnabledElement::getDefault()
 void
 SoGLTextureEnabledElement::updategl(void)
 {
-  if (this->data != this->glstate) {
-    this->glstate = this->data;
-    if (this->data) glEnable(GL_TEXTURE_2D);
-    else glDisable(GL_TEXTURE_2D);
-  }
+  this->glstate = this->data;
+  if (this->data) glEnable(GL_TEXTURE_2D);
+  else glDisable(GL_TEXTURE_2D);
 }

@@ -197,14 +197,26 @@ SoTriangleStripSet::GLRender(SoGLRenderAction * action)
   // TODO: make several optimized functions to render this Shape, pederb 20000809
 
   SoState * state = action->getState();
+  SbBool didpush = FALSE;
 
   if (this->vertexProperty.getValue()) {
     state->push();
+    didpush = TRUE;
     this->vertexProperty.getValue()->GLRender(action);
   }
 
+  Binding mbind = this->findMaterialBinding(action->getState());
+  Binding nbind = this->findNormalBinding(action->getState());
+
+  if ((nbind == PER_FACE) || (mbind == PER_FACE)) {
+    if (!didpush) {
+      state->push();
+    }
+    SoGLShadeModelElement::set(state, TRUE);
+  }
+
   if (!this->shouldGLRender(action)) {
-    if (this->vertexProperty.getValue())
+    if (didpush)
       state->pop();
     return;
   }
@@ -224,21 +236,12 @@ SoTriangleStripSet::GLRender(SoGLRenderAction * action)
   SoTextureCoordinateBundle tb(action, TRUE, FALSE);
   doTextures = tb.needCoordinates();
 
-  Binding mbind = this->findMaterialBinding(action->getState());
-  Binding nbind = this->findNormalBinding(action->getState());
-
   if (!needNormals) nbind = OVERALL;
 
   if (needNormals && normals == NULL) {
     normals = getNormalCache()->getNormals();
     assert(normals);
   }
-
-  const SoGLShadeModelElement * sm = SoGLShadeModelElement::getInstance(state);
-  if ((nbind == PER_FACE) || (mbind == PER_FACE))
-    sm->forceSend(TRUE);
-  else
-    sm->evaluate();
 
   SoMaterialBundle mb(action);
   mb.sendFirst(); // make sure we have the correct material
@@ -292,7 +295,7 @@ SoTriangleStripSet::GLRender(SoGLRenderAction * action)
     }
     glEnd();
   }
-  if (this->vertexProperty.getValue())
+  if (didpush)
     state->pop();
 }
 
@@ -376,18 +379,6 @@ SoTriangleStripSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
     }
     action->addNumTriangles(cnt);
   }
-}
-
-/*!
-  Overloaded to set shade model to flat if normals or materials are
-  bound PER_FACE.  Please note that binding normals or materials
-  PER_FACE might lead to incorrect rendering for point or spot light
-  sources (since all vertices will be evaluated to the same color).
-*/
-SbBool
-SoTriangleStripSet::willSetShadeModel(void) const
-{
-  return TRUE;
 }
 
 /*!

@@ -21,6 +21,7 @@
 #define COIN_SOSTATE_H
 
 #include <Inventor/SbBasic.h>
+#include <Inventor/lists/SbList.h>
 #include <stdio.h>
 
 class SoAction;
@@ -51,6 +52,8 @@ public:
   void setCacheOpen(const SbBool flag);
   SbBool isCacheOpen(void) const;
 
+  void lazyEvaluate(void) const;
+
   SoElement * getElementNoPush(const int stackIndex) const;
 
 private:
@@ -61,6 +64,15 @@ private:
   int depth;
   SbBool cacheopen;
   class sostate_pushstore * pushstore;
+  SbList <int> lazylist;
 };
+
+// inlined methods
+
+inline const SoElement *
+SoState::getConstElement(const int stackIndex) const
+{
+  return stack[stackIndex];
+}
 
 #endif // !COIN_SOSTATE_H

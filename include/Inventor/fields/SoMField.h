@@ -73,4 +73,14 @@ private:
   static SoType classTypeId;
 };
 
+// inline methods
+
+inline int
+SoMField::getNum(void) const
+{
+  this->evaluate();
+  return this->num;
+}
+
+
 #endif // !COIN_SOMFIELD_H

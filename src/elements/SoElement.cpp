@@ -31,6 +31,19 @@
 
 #include <assert.h>
 
+
+/*!
+  \fn SoElement * SoElement::getElement(SoState * const state, const int stackIndex)
+
+  This method returns the top instance (in the state stack) of the element
+  class with stack index \a stackIndex.  This instance is writable.  To make
+  this instance, some lazy evaluation may have to be perfomed, so use
+  getConstElement() instead if the instance shouldn't be modified.
+  If no instance can be returned, NULL is returned.
+
+  \sa const SoElement * SoElement::getConstElement(SoState * const state, const int stackIndex)
+*/
+
 /*!
   \fn SoElement::typeId
 
@@ -344,23 +357,6 @@ SoElement::getDepth() const
 }
 
 /*!
-  This method returns the top instance (in the state stack) of the element
-  class with stack index \a stackIndex.  This instance is writable.  To make
-  this instance, some lazy evaluation may have to be perfomed, so use
-  getConstElement() instead if the instance shouldn't be modified.
-  If no instance can be returned, NULL is returned.
-
-  \sa const SoElement * SoElement::getConstElement(SoState * const state, const int stackIndex)
-*/
-
-SoElement *
-SoElement::getElement(SoState * const state,
-                      const int stackIndex)
-{
-  return state->getElement(stackIndex);
-}
-
-/*!
   This function does whatever is necessary in the state for caching purposes.
   If should be called by subclasses of SoElement whenever any value in the
   element is accessed.
@@ -481,4 +477,22 @@ SoElement *
 SoElement::getNextFree(void) const
 {
   return this->nextup;
+}
+
+/*!
+  Should return \e TRUE if this element needs lazy GL evaluation.
+  Default method returns \e FALSE.
+*/
+SbBool
+SoElement::isLazy(void) const
+{
+  return FALSE;
+}
+
+/*!
+  Evaluates lazy GL element. Default method does nothing.
+*/
+void
+SoElement::lazyEvaluate(void) const
+{
 }

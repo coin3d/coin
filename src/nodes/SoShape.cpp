@@ -53,15 +53,8 @@
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoDiffuseColorElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
-
-// Lazy GL-elements not handled by SoMaterialBundle
-#include <Inventor/elements/SoGLPointSizeElement.h>
-#include <Inventor/elements/SoGLLineWidthElement.h>
-#include <Inventor/elements/SoGLPolygonOffsetElement.h>
 #include <Inventor/elements/SoGLShapeHintsElement.h>
-#include <Inventor/elements/SoGLShadeModelElement.h>
-#include <Inventor/elements/SoGLLightModelElement.h>
-#include <Inventor/elements/SoGLNormalizeElement.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
 
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
@@ -70,7 +63,6 @@
 #include <Inventor/details/SoLineDetail.h>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoGLTextureImageElement.h>
 
 #ifdef HAVE_WINDOWS_H
@@ -552,9 +544,6 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
   if (action->getCurPathCode() == SoAction::OFF_PATH &&
       !this->affectsState()) return FALSE;
 
-  // make sure lazy elements are up to date
-  // all material lazy elements are handled by SoMaterialBundle
-
   SoState * state = action->getState();
 
   SbBool needNormals =
@@ -579,48 +568,16 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
   if (SoDrawStyleElement::get(state) == SoDrawStyleElement::INVISIBLE)
     return FALSE;
 
-  {
-    const SoGLPointSizeElement * ps = (SoGLPointSizeElement *)
-      state->getConstElement(SoGLPointSizeElement::getClassStackIndex());
-    ps->evaluate();
-  }
+  // make sure lazy elements are up to date
+  // all material lazy elements are handled by SoMaterialBundle
+  state->lazyEvaluate();
 
-  {
-    const SoGLLineWidthElement * lw = (SoGLLineWidthElement *)
-      state->getConstElement(SoGLLineWidthElement::getClassStackIndex());
-    lw->evaluate();
-  }
-
-  {
-    const SoGLPolygonOffsetElement * off = (SoGLPolygonOffsetElement *)
-      state->getConstElement(SoGLPolygonOffsetElement::getClassStackIndex());
-    off->evaluate();
-  }
-
-  if (!this->willSetShadeModel()) {
-    const SoGLShadeModelElement * sm = (SoGLShadeModelElement *)
-      state->getConstElement(SoGLShadeModelElement::getClassStackIndex());
-    sm->evaluate();
-  }
-
-  {
-    const SoGLLightModelElement * lm = (SoGLLightModelElement *)
-      state->getConstElement(SoGLLightModelElement::getClassStackIndex());
-    lm->evaluate();
-  }
-
-  {
-    const SoGLTextureImageElement * ti = (SoGLTextureImageElement *)
-      state->getConstElement(SoGLTextureImageElement::getClassStackIndex());
-    ti->evaluate(SoGLTextureEnabledElement::get(state),
-                 transparent && !SoShapeStyleElement::isScreenDoor(state));
-  }
-
-  {
-    const SoGLTextureEnabledElement * te = (SoGLTextureEnabledElement *)
-      state->getConstElement(SoGLTextureEnabledElement::getClassStackIndex());
-    te->evaluate();
-  }
+  // SoGLTextureImageElement is lazy, but needs some arguments
+  // update manually
+  const SoGLTextureImageElement * ti = (SoGLTextureImageElement *)
+    state->getConstElement(SoGLTextureImageElement::getClassStackIndex());
+  ti->evaluate(SoGLTextureEnabledElement::get(state),
+               transparent && !SoShapeStyleElement::isScreenDoor(state));
 
   if (SoComplexityTypeElement::get(state) ==
       SoComplexityTypeElement::BOUNDING_BOX) {
@@ -640,12 +597,6 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
       sh->forceSend(TRUE, FALSE, FALSE);
     }
 
-    if (needNormals) {
-      const SoGLNormalizeElement * ne = (SoGLNormalizeElement *)
-        state->getConstElement(SoGLNormalizeElement::getClassStackIndex());
-      ne->forceSend(TRUE); // cube will provide unit normals
-    }
-
     glPushMatrix();
     glTranslatef(center[0], center[1], center[2]);
     sogl_render_cube(size[0], size[1], size[2], &mb,
@@ -653,19 +604,6 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
     glPopMatrix();
     return FALSE;
   }
-
-  if (!willSetShapeHints()) {
-    const SoGLShapeHintsElement * sh = (SoGLShapeHintsElement *)
-      state->getConstElement(SoGLShapeHintsElement::getClassStackIndex());
-    sh->evaluate();
-  }
-
-  if (needNormals && !this->willUpdateNormalizeElement(state)) {
-    const SoGLNormalizeElement * ne = (SoGLNormalizeElement *)
-      state->getConstElement(SoGLNormalizeElement::getClassStackIndex());
-    ne->evaluate();
-  }
-
   return TRUE;
 }
 
@@ -1064,57 +1002,6 @@ SoShape::generateVertex(SoPrimitiveVertex * const pv,
   pv->setTextureCoords(texCoord);
   shapeVertex(pv);
 }
-
-
-/*!
-  Should be overloaded by shapes that will set the ShadeModel before
-  rendering. SoGLShadeModelElement is a lazy GL element, and it helps
-  performance if nodes that will set the shade model before rendering
-  returns \c TRUE here.  Ordinary shape nodes will not have worry
-  about this method as the default method returns \c FALSE.
-
-  This method is not a part of the original Open Inventor API.  Don't
-  overload it if you intend to make a node that will work with both
-  Coin and Open Inventor.
-*/
-SbBool
-SoShape::willSetShadeModel(void) const
-{
-  return FALSE;
-}
-
-/*!
-  Should be overloaded by subclasses that will set shape hints before
-  rendering. The SoGLShapeHintsElement is a lazy element, and it will
-  help performance if all nodes which will set the shape hints before
-  rendering returns \c TRUE here.
-
-  This method is not a part of the original Open Inventor API. Don't
-  overload it if you intend to make a shape node that will work with
-  both Coin and Open Inventor.
-*/
-SbBool
-SoShape::willSetShapeHints(void) const
-{
-  return FALSE;
-}
-
-/*!
-  Should be overloaded by subclasses that handles normals in a
-  non-default way (not using the SoNormal node). The node is then
-  responsible of handling this element before rendering.  Default
-  method returns \c FALSE.
-
-  This method is not a part of the original Open Inventor API. Don't
-  overload it if you intend to make a shape node that will work with
-  both Coin and Open Inventor.
-*/
-SbBool
-SoShape::willUpdateNormalizeElement(SoState *) const
-{
-  return FALSE;
-}
-
 
 /*!
   Overloaded from default setting in SoNode, as we know for certain

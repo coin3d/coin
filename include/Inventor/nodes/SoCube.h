@@ -41,7 +41,6 @@ public:
   SoSFFloat depth;
 
   virtual void GLRender(SoGLRenderAction * action);
-  virtual SbBool willUpdateNormalizeElement(SoState *) const;
   virtual void rayPick(SoRayPickAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 

@@ -83,7 +83,7 @@ SoCullElement::push(SoState * state)
 {
   SoCullElement * prev = (SoCullElement *)
     this->getNextInStack();
-  
+
   this->flags = prev->flags;
   this->numplanes = prev->numplanes;
   this->vvindex = prev->vvindex;
@@ -213,14 +213,16 @@ SoCullElement::docull(SoState * state, const SbBox3f & box, const SbBool transfo
     state->getElementNoPush(classStackIndex);
 
   int i, j;
-  SbBool identity;
   SbVec3f min, max;
   min = box.getMin();
   max = box.getMax();
   SbVec3f pts[8];
 
-  const SbMatrix & mm = SoModelMatrixElement::get(state, identity);
-  if (!transform) identity = TRUE;
+  SbMatrix mm;
+  SbBool identity = ! transform;
+  if (transform) {
+    mm = SoModelMatrixElement::get(state, identity);
+  }
 
   // create the 8 box corner points
   for (i = 0; i < 8; i++) {

@@ -224,7 +224,7 @@ SoPointSet::generateDefaultNormals(SoState *, SoNormalCache * nc)
 /*!
   Overloaded to avoid compiler warnings.
 */
-SbBool 
+SbBool
 SoPointSet::generateDefaultNormals(SoState * state,
                                    SoNormalBundle * bundle)
 {

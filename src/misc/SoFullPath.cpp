@@ -29,6 +29,13 @@
   will allow you to examine hidden children.
 */
 
+/*!
+  \fn void SoFullPath::pop(void)
+
+  This method overrides SoPath::pop() to allow clients to get at all
+  the nodes in the path.
+*/
+
 #include <Inventor/SoFullPath.h>
 #include <assert.h>
 
@@ -48,16 +55,6 @@ SoFullPath::SoFullPath(const int approxLength)
 
 SoFullPath::~SoFullPath(void)
 {
-}
-
-/*!
-  This method overrides SoPath::pop() to allow clients to get at all
-  the nodes in the path.
-*/
-void
-SoFullPath::pop(void)
-{
-  this->truncate(this->nodes.getLength() - 1);
 }
 
 /*!

@@ -39,7 +39,8 @@ public:
   virtual void pop(SoState * state,
                    const SoElement * prevTopElement);
 
-  void evaluate() const;
+  virtual void lazyEvaluate(void) const;
+  virtual SbBool isLazy(void) const;
 
   void forceSend(const SbBool twoside) const;
   void forceSend(const SbBool ccw, const SbBool cull) const;

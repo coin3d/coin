@@ -134,10 +134,9 @@ SoGLShapeHintsElement::setElt(VertexOrdering vertexOrdering,
   // do nothing since this is a lazy element
 }
 
-//! FIXME: write doc.
-
+// doc in parent
 void
-SoGLShapeHintsElement::evaluate() const
+SoGLShapeHintsElement::lazyEvaluate(void) const
 {
   unsigned int flags = this->glflags & SOSH_CCW;
   if (vertexOrdering == CLOCKWISE) flags = 0;
@@ -148,8 +147,18 @@ SoGLShapeHintsElement::evaluate() const
     else flags |= SOSH_TWOSIDE;
   }
 
-  ((SoGLShapeHintsElement*)this)->updategl(flags);
+  if (flags ^ this->glflags) { // xor to see if some bit has changed
+    ((SoGLShapeHintsElement*)this)->updategl(flags);
+  }
 }
+
+// doc in parent
+SbBool
+SoGLShapeHintsElement::isLazy(void) const
+{
+  return TRUE;
+}
+
 
 /*!
   Update gl state. Use this is you only want to modify the
@@ -199,9 +208,7 @@ SoGLShapeHintsElement::forceSend(const SbBool ccw, const SbBool cull,
 void
 SoGLShapeHintsElement::updategl(const unsigned int flags)
 {
-  unsigned int changed = flags ^ this->glflags;
-  if (changed == 0) return; // quick return if equal
-
+  unsigned int changed = this->glflags ^ flags;
   this->glflags = flags;
 
   if (changed & SOSH_CCW) {

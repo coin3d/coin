@@ -50,7 +50,8 @@ public:
 
   virtual void print(FILE *fp) const;
 
-  void evaluate() const;
+  virtual void lazyEvaluate(void) const;
+  virtual SbBool isLazy(void) const;
 
 private:
   static unsigned char patterns[64 + 1][32 * 4];

@@ -38,7 +38,8 @@ public:
   virtual void pop(SoState * state,
                    const SoElement * prevTopElement);
 
-  void evaluate() const; // lazy update
+  virtual void lazyEvaluate() const;
+  virtual SbBool isLazy(void) const;
 
   // force this value without changing state
   void forceSend(const Model model) const;

@@ -61,8 +61,6 @@ protected:
   virtual void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
   virtual void generatePrimitives(SoAction *);
 
-  virtual SbBool willSetShapeHints(void) const;
-  virtual SbBool willUpdateNormalizeElement(SoState *) const;
   virtual SoDetail * createTriangleDetail(SoRayPickAction * action,
                                           const SoPrimitiveVertex * v1,
                                           const SoPrimitiveVertex * v2,

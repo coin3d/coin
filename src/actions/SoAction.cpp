@@ -534,36 +534,6 @@ SoAction::getCurPath(void)
 
 /*!
   \internal
-
-  Returns the current path code for path traversal.
-*/
-SoAction::PathCode
-SoAction::getCurPathCode(void) const
-{
-  return this->currentpathcode;
-}
-
-/*!
-  \internal
-*/
-void
-SoAction::pushCurPath(const int childindex)
-{
-  this->currentpath.push(childindex);
-}
-
-/*!
-  internal
-*/
-void
-SoAction::popCurPath(const PathCode prevpathcode)
-{
-  this->currentpath.pop();
-  this->currentpathcode = prevpathcode;
-}
-
-/*!
-  \internal
 */
 SoNode *
 SoAction::getCurPathTail(void)

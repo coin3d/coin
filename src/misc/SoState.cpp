@@ -26,6 +26,14 @@
   manages the state data as stacks of elements derived from SoElement.
 */
 
+/*!
+  \fn const SoElement * SoState::getConstElement(const int stackIndex) const
+
+  This method returns a pointer to the top element of the given element
+  stack.  The element is read-only and must not be changed under any
+  circumstances or strange side-effect will occur.
+*/
+
 #include <Inventor/SbName.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/lists/SoTypeList.h>
@@ -85,6 +93,10 @@ SoState::SoState(SoAction * const theAction,
       this->stack[ stackIndex ] = element;
       this->initial[ stackIndex ] = element;
       element->init(this); // called for first element in state stack
+
+      if (element->isLazy()) {
+        this->lazylist.append(stackIndex);
+      }
     }
   }
   this->pushstore = new sostate_pushstore;
@@ -143,7 +155,9 @@ SoElement *
 SoState::getElement(const int stackIndex)
 {
   SoElement * element = this->stack[ stackIndex ];
+#ifdef COIN_EXTRA_DEBUG
   assert(element);
+#endif // COIN_EXTRA_DEBUG
 
 #if 0 // debug
   SoDebugError::postInfo("SoState::getElement",
@@ -171,19 +185,6 @@ SoState::getElement(const int stackIndex)
   }
   assert(element != NULL);
   return element;
-}
-
-/*!
-  This method returns a pointer to the top element of the given element
-  stack.  The element is read-only and must not be changed under any
-  circumstances or strange side-effect will occur.
-*/
-
-const SoElement *
-SoState::getConstElement(const int stackIndex) const
-{
-  assert(stack[stackIndex]);
-  return stack[stackIndex];
 }
 
 /*!
@@ -302,4 +303,17 @@ SoElement *
 SoState::getElementNoPush(const int stackIndex) const
 {
   return this->stack[ stackIndex ];
+}
+
+/*!
+  Evaluates (calls the virtual function lazyEvaluate()) for all
+  lazy elements (isLazy() returns TRUE).
+*/
+void 
+SoState::lazyEvaluate(void) const
+{
+  int n = this->lazylist.getLength();
+  for (int i = 0; i < n; i++) {
+    this->stack[this->lazylist[i]]->lazyEvaluate();
+  }
 }

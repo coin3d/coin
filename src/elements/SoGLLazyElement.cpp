@@ -107,7 +107,7 @@ SoGLLazyElement::sendAllMaterial(SoState *state)
   // just to make sure polygon stipple is up-to-date
   const SoGLPolygonStippleElement *stippleElt = (const SoGLPolygonStippleElement*)
     SoElement::getConstElement(state, SoGLPolygonStippleElement::getClassStackIndex());
-  stippleElt->evaluate();
+  stippleElt->lazyEvaluate();
 }
 
 //! FIXME: write doc

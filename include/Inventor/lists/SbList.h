@@ -189,7 +189,9 @@ SbList<Type>::find(const Type item) const
 template <class Type> inline void
 SbList<Type>::insert(const Type item, const int insertbefore)
 {
+#ifdef COIN_EXTRA_DEBUG
   assert(insertbefore >= 0 && insertbefore <= this->numitems);
+#endif // COIN_EXTRA_DEBUG
   if (this->numitems == this->itembuffersize) this->grow();
 
   for (int i = this->numitems; i > insertbefore; i--)
@@ -202,14 +204,18 @@ template <class Type> inline void
 SbList<Type>::removeItem(const Type item)
 {
   int idx = this->find(item);
+#ifdef COIN_EXTRA_DEBUG
   assert(idx != -1);
+#endif // COIN_EXTRA_DEBUG
   this->remove(idx);
 }
 
 template <class Type> inline void
 SbList<Type>::remove(const int index)
 {
+#ifdef COIN_EXTRA_DEBUG 
   assert(index >= 0 && index < this->numitems);
+#endif // COIN_EXTRA_DEBUG
   this->numitems--;
   for (int i = index; i < this->numitems; i++)
     this->itembuffer[i] = this->itembuffer[i + 1];
@@ -218,7 +224,9 @@ SbList<Type>::remove(const int index)
 template <class Type> inline void
 SbList<Type>::removeFast(const int index)
 {
+#ifdef COIN_EXTRA_DEBUG
   assert(index >= 0 && index < this->numitems);
+#endif // COIN_EXTRA_DEBUG
   this->itembuffer[index] = this->itembuffer[--this->numitems];
 }
 
@@ -231,7 +239,9 @@ SbList<Type>::getLength(void) const
 template <class Type> inline void
 SbList<Type>::truncate(const int length, const int fit)
 {
+#ifdef COIN_EXTRA_DEBUG
   assert(length <= this->numitems);
+#endif // COIN_EXTRA_DEBUG
   this->numitems = length;
   if (fit) this->fit();
 }
@@ -245,7 +255,9 @@ SbList<Type>::push(const Type item)
 template <class Type> inline Type
 SbList<Type>::pop(void)
 {
+#ifdef COIN_EXTRA_DEBUG
   assert(this->numitems > 0);
+#endif // COIN_EXTRA_DEBUG
   return this->itembuffer[--this->numitems];
 }
 
@@ -258,14 +270,18 @@ SbList<Type>::getArrayPtr(const int start) const
 template <class Type> inline Type
 SbList<Type>::operator[](const int index) const
 {
+#ifdef COIN_EXTRA_DEBUG
   assert(index >= 0 && index < this->numitems);
+#endif // COIN_EXTRA_DEBUG
   return this->itembuffer[index];
 }
 
 template <class Type> inline Type &
 SbList<Type>::operator[](const int index)
 {
+#ifdef COIN_EXTRA_DEBUG
   assert(index >= 0 && index < this->numitems);
+#endif // COIN_EXTRA_DEBUG
   return this->itembuffer[index];
 }
 

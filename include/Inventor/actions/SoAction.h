@@ -99,7 +99,7 @@ public:
 
   PathCode getCurPathCode(void) const;
 
-  void pushCurPath(const int childindex);
+  void pushCurPath(const int childindex, SoNode * node = NULL);
   void popCurPath(const PathCode prevpathcode);
   virtual SoNode * getCurPathTail(void);
   void usePathCode(int & numindices, const int * & indices);
@@ -162,5 +162,28 @@ private:
 #define IN_PATH SOACTION_STORE_INPATH_DEF
 #undef SOACTION_STORE_INPATH_DEF
 #endif // SOACTION_STORE_INPATH_DEF
+
+// inline methods
+
+inline SoAction::PathCode
+SoAction::getCurPathCode(void) const
+{
+  return this->currentpathcode;
+}
+
+inline void
+SoAction::pushCurPath(const int childindex, SoNode * node)
+{
+  if (node) this->currentpath.append(node, childindex);
+  else this->currentpath.append(childindex);
+}
+
+inline void
+SoAction::popCurPath(const PathCode prevpathcode)
+{
+  this->currentpath.pop();
+  this->currentpathcode = prevpathcode;
+}
+
 
 #endif // !COIN_SOACTION_H

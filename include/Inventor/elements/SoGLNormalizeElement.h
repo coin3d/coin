@@ -46,7 +46,9 @@ public:
   static void setUnitNormals(SoState * const state,
                              const SbBool unitNormals);
 
-  void evaluate() const;
+  virtual void lazyEvaluate(void) const;
+  virtual SbBool isLazy(void) const;
+
   void forceSend(const SbBool normalsAreUnitLength) const;
 
 private:

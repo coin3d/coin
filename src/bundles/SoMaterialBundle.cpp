@@ -80,7 +80,7 @@ SoMaterialBundle::sendFirst(void)
 {
   this->setupElements(FALSE);
   this->reallySend(0, FALSE);
-  if (this->stippleElt) this->stippleElt->evaluate();
+  if (this->stippleElt) this->stippleElt->lazyEvaluate();
 
   // a small optimization to avoid unnecessary material
   // testing (it is most common to only have multiple diffuse values)

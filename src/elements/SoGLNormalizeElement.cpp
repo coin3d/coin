@@ -110,7 +110,7 @@ SbBool
 SoGLNormalizeElement::matches(const SoElement * element) const
 {
   const SoGLNormalizeElement * elem = (SoGLNormalizeElement*) element;
-  return 
+  return
     this->unitNormals == elem->unitNormals &&
     this->okMatrix == elem->okMatrix;
 }
@@ -169,21 +169,27 @@ SoGLNormalizeElement::setUnitNormals(SoState * const state,
 }
 
 
-/*
-  Lazy update
-*/
+// doc in parent
 void
-SoGLNormalizeElement::evaluate() const
+SoGLNormalizeElement::lazyEvaluate(void) const
 {
   SbBool normalize = !(this->unitNormals && this->okMatrix);
 
 #if 0 // debug
-  SoDebugError::postInfo("SoGLNormalizeElement::evaluate",
+  SoDebugError::postInfo("SoGLNormalizeElement::lazyEvaluate",
                          "%d %d %d", unitNormals, okMatrix, normalize);
 #endif // debug
 
   ((SoGLNormalizeElement*)this)->updategl(normalize);
 }
+
+// doc in parent
+SbBool
+SoGLNormalizeElement::isLazy(void) const
+{
+  return TRUE;
+}
+
 
 /*!
   Turns on/off normalizing without affecting the state. This

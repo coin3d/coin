@@ -113,10 +113,10 @@ SoGLPolygonOffsetElement::setElt(float factor, float units,
   // this is a lazy element. Do nothing.
 }
 
-//! FIXME: write doc.
 
+// doc in parent
 void
-SoGLPolygonOffsetElement::evaluate() const
+SoGLPolygonOffsetElement::lazyEvaluate(void) const
 {
   if (this->currentActive != this->active ||
       this->currentStyle != this->style ||
@@ -131,6 +131,14 @@ SoGLPolygonOffsetElement::evaluate() const
     elem->updategl();
   }
 }
+
+// doc in parent
+SbBool
+SoGLPolygonOffsetElement::isLazy(void) const
+{
+  return TRUE;
+}
+
 
 //! FIXME: write doc.
 

@@ -118,13 +118,6 @@ SoSphere::GLRender(SoGLRenderAction * action)
 }
 
 // doc from parent
-SbBool
-SoSphere::willUpdateNormalizeElement(SoState *) const
-{
-  return TRUE;
-}
-
-// doc from parent
 void
 SoSphere::computeBBox(SoAction * /* action */, SbBox3f & box, SbVec3f & center)
 {

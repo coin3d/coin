@@ -38,7 +38,10 @@ public:
   virtual void push(SoState * state);
   virtual void pop(SoState * state,
                    const SoElement * prevTopElement);
-  virtual void evaluate(void) const;
+
+  virtual void lazyEvaluate(void) const;
+  virtual SbBool isLazy(void) const;
+
   virtual void forceSend(const SbBool onoff) const;
   static  void set(SoState * const state, SoNode * const node,
                    const SbBool enabled);

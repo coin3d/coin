@@ -104,10 +104,10 @@ SoGLLineWidthElement::setElt(float width)
   // this is a lazy element. Do nothing
 }
 
-//! FIXME: write doc.
 
+// doc in parent
 void
-SoGLLineWidthElement::evaluate() const
+SoGLLineWidthElement::lazyEvaluate(void) const
 {
   if (this->data != this->current) {
     // cast away constness
@@ -115,6 +115,13 @@ SoGLLineWidthElement::evaluate() const
     elem->current = elem->data;
     elem->updategl();
   }
+}
+
+// doc in parent
+SbBool
+SoGLLineWidthElement::isLazy(void) const
+{
+  return TRUE;
 }
 
 //! FIXME: write doc.

@@ -22,18 +22,10 @@
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/SoType.h>
+#include <Inventor/misc/SoState.h>
 #include <stdio.h>
 
-#ifdef COIN_INTERNAL
-class SoState;
-#else // !COIN_INTERNAL
-// For compatibility with applications originally developed on top of
-// Open Inventor.
-#include <Inventor/misc/SoState.h>
-#endif // !COIN_INTERNAL
-
 class SoNode;
-
 
 class COIN_DLL_API SoElement {
 public:
@@ -48,6 +40,9 @@ public:
 
   virtual void push(SoState * state);
   virtual void pop(SoState * state, const SoElement * prevTopElement);
+
+  virtual SbBool isLazy(void) const;
+  virtual void lazyEvaluate(void) const;
 
   virtual SbBool matches(const SoElement * element) const = 0;
   virtual SoElement * copyMatchInfo(void) const = 0;
@@ -98,5 +93,14 @@ private:
   SoElement * nextup;
   SoElement * nextdown;
 };
+
+// inlined methods
+
+inline SoElement *
+SoElement::getElement(SoState * const state,
+                      const int stackIndex)
+{
+  return state->getElement(stackIndex);
+}
 
 #endif // !COIN_SOELEMENT_H

@@ -558,7 +558,7 @@ SoCamera::drawCroppedFrame(SoGLRenderAction *action,
     SoLineWidthElement::set(state, this, 1.0f);
     const SoGLLineWidthElement * lw = (SoGLLineWidthElement *)
       state->getConstElement(SoGLLineWidthElement::getClassStackIndex());
-    lw->evaluate();
+    lw->lazyEvaluate();
   }
   else { // FILL
     SoDrawStyleElement::set(state, this, SoDrawStyleElement::FILLED);
@@ -568,7 +568,7 @@ SoCamera::drawCroppedFrame(SoGLRenderAction *action,
     SoGLPolygonStippleElement::set(state, FALSE);
     const SoGLPolygonStippleElement * ps = (SoGLPolygonStippleElement *)
       state->getConstElement(SoGLPolygonStippleElement::getClassStackIndex());
-    ps->evaluate(); // lazy element, force evaluate
+    ps->lazyEvaluate(); // lazy element, force evaluate
   }
 
   SbVec2s oldorigin = oldvp.getViewportOriginPixels();
@@ -657,7 +657,7 @@ SoCamera::drawCroppedFrame(SoGLRenderAction *action,
 /*!
   Sets the stereo mode.
 */
-void 
+void
 SoCamera::setStereoMode(StereoMode mode)
 {
   this->stereomode = mode;
@@ -666,7 +666,7 @@ SoCamera::setStereoMode(StereoMode mode)
 /*!
   Returns the stereo mode.
 */
-SoCamera::StereoMode 
+SoCamera::StereoMode
 SoCamera::getStereoMode(void) const
 {
   return this->stereomode;
@@ -675,7 +675,7 @@ SoCamera::getStereoMode(void) const
 /*!
   Sets the stereo adjustment.
 */
-void 
+void
 SoCamera::setStereoAdjustment(float adjustment)
 {
   this->stereoadjustment = adjustment;
@@ -684,7 +684,7 @@ SoCamera::setStereoAdjustment(float adjustment)
 /*!
   Returns the stereo adjustment.
 */
-float 
+float
 SoCamera::getStereoAdjustment(void) const
 {
   return this->stereoadjustment;
@@ -693,7 +693,7 @@ SoCamera::getStereoAdjustment(void) const
 /*!
   Sets the stereo balance adjustment.
 */
-void 
+void
 SoCamera::setBalanceAdjustment(float adjustment)
 {
   this->balanceadjustment = adjustment;
@@ -702,9 +702,8 @@ SoCamera::setBalanceAdjustment(float adjustment)
 /*!
   Returns the stereo balance adjustment.
 */
-float 
+float
 SoCamera::getBalanceAdjustment(void) const
 {
   return this->balanceadjustment;
 }
-

@@ -119,6 +119,12 @@
 
  */
 
+/*!
+  \fn int SoMField::getNum(void) const
+
+  Returns number of values in this field.
+*/
+
 #include <Inventor/fields/SoMField.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
@@ -396,16 +402,6 @@ SoMField::getNumValuesPerLine(void) const
 }
 
 /*!
-  Returns number of values in this field.
-*/
-int
-SoMField::getNum(void) const
-{
-  this->evaluate();
-  return this->num;
-}
-
-/*!
   Set number of values to \a num.
 
   If the current number of values is less than \a num, the array of
@@ -500,7 +496,7 @@ SoMField::insertSpace(int start, int num)
   this->allocValues(oldnum + num);
 
   // Copy values upward.
-  for (int i = oldnum - start - 1; i >= 0; i--) { 
+  for (int i = oldnum - start - 1; i >= 0; i--) {
     this->copyValue(start+num+i, start+i);
   }
 

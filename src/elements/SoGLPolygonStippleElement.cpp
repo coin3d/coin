@@ -258,7 +258,7 @@ SoGLPolygonStippleElement::print(FILE *fp) const
 //! FIXME: write doc.
 
 void
-SoGLPolygonStippleElement::evaluate() const
+SoGLPolygonStippleElement::lazyEvaluate(void) const
 {
   if (this->currentEnabled != this->isEnabled ||
       this->currentPattern != this->pattern) {
@@ -269,6 +269,13 @@ SoGLPolygonStippleElement::evaluate() const
     elem->currentPattern = this->pattern;
     elem->updategl();
   }
+}
+
+// doc in parent
+SbBool
+SoGLPolygonStippleElement::isLazy(void) const
+{
+  return TRUE;
 }
 
 //! FIXME: write doc.

@@ -39,4 +39,12 @@ public:
   int getLength(void) const;
 };
 
+// inline methods
+
+inline void
+SoFullPath::pop(void)
+{
+  this->truncate(this->nodes.getLength() - 1);
+}
+
 #endif // !COIN_SOFULLPATH_H

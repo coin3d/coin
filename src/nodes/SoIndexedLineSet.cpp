@@ -289,16 +289,6 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
 }
 
 /*!
-  Overloaded to return TRUE. Two side lighting is enabled for lines.
-*/
-SbBool
-SoIndexedLineSet::willSetShapeHints(void) const
-{
-  //  FIXME: should I really do this? pederb, 20000809
-  return TRUE;
-}
-
-/*!
   Overloaded to return FALSE.
 */
 SbBool

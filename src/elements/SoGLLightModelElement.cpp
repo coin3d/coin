@@ -98,15 +98,21 @@ SoGLLightModelElement::setElt(int32_t val)
   this->data = val;
 }
 
-//! FIXME: write doc.
-
+// doc in parent
 void
-SoGLLightModelElement::evaluate() const
+SoGLLightModelElement::lazyEvaluate() const
 {
   if (this->data != this->current) {
     ((SoGLLightModelElement*)this)->current = (Model)this->data;
     ((SoGLLightModelElement*)this)->updategl();
   }
+}
+
+// doc in parent
+SbBool
+SoGLLightModelElement::isLazy(void) const
+{
+  return TRUE;
 }
 
 //! FIXME: write doc.
