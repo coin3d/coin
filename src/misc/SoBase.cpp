@@ -248,7 +248,17 @@ get_current_writeref(const SoBase * base)
 static inline void
 set_current_writeref(const SoBase * base, const int rc)
 {
+  // don't be so strict. The exported scene-graph will usually be
+  // correct, and it's easier to debug without the assert.
+#if 0  // disabled for now
   assert(rc >= 0 && "buggy writerefcounter");
+#else // disabled code
+  if (rc < 0) {
+    SoDebugError::post("set_current_writeref",
+                       "buggy writerefcounter: %p (%s)\n",
+                       base, base->getTypeId().getName().getString());
+  }
+#endif // new debug code
   (void)writerefs->enter((unsigned long)base, (void *) ((uintptr_t) rc));
 }
 
