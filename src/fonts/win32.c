@@ -87,7 +87,7 @@ static void CALLBACK flww32_combineCallback(GLdouble coords[3], GLvoid * data, G
 static void CALLBACK flww32_errorCallback(GLenum error_code);
 static void flww32_addTessVertex(double x, double y);
 
-static void flww32_buildVertexList(struct cc_flw_vector_glyph * newglyph);
+static void flww32_buildVertexList(struct cc_flw_vector_glyph * newglyph, int size);
 static void flww32_buildFaceIndexList(struct cc_flw_vector_glyph * newglyph);
 static void flww32_buildEdgeIndexList(struct cc_flw_vector_glyph * newglyph);
 
@@ -134,7 +134,6 @@ typedef struct flww32_tessellator_t {
 } flww32_tessellator_t;
 
 static flww32_tessellator_t flww32_tessellator;
-static int flww32_font3dsize = 200;
 /* A static flag indicating whether we are running an old version of
    windows or not. This is important when tessellating the glyphs due
    to different behaviour between 95/98/Me and newer versions. */
@@ -154,7 +153,7 @@ struct cc_flww32_globals_s {
      contains hashes for each glyph which contain a hash for its 
      pairing glyphs. This again contains the kerning value for that pair. */
   cc_hash * font2kerninghash;
-
+  cc_hash * fontsizehash;
 };
 
 static struct cc_flww32_globals_s cc_flww32_globals = {
@@ -261,7 +260,8 @@ cc_flww32_initialize(void)
   }
 
   cc_flww32_globals.font2glyphhash = cc_hash_construct(17, 0.75);
-  cc_flww32_globals.font2kerninghash = cc_hash_construct(17,0.75);
+  cc_flww32_globals.font2kerninghash = cc_hash_construct(17, 0.75);
+  cc_flww32_globals.fontsizehash = cc_hash_construct(17, 0.75f);
 
   /* Setup temporary glyph-struct used during for tessellation */
   flww32_tessellator.vertexlist = NULL;
@@ -290,6 +290,7 @@ cc_flww32_exit(void)
   /* UPDATE: Ditto for the kerning hash. (20030930 handegar) */
   cc_hash_destruct(cc_flww32_globals.font2glyphhash);
   cc_hash_destruct(cc_flww32_globals.font2kerninghash);	
+  cc_hash_destruct(cc_flww32_globals.fontsizehash);
 
   ok = DeleteDC(cc_flww32_globals.devctx);
   if (!ok) {
@@ -338,6 +339,7 @@ cc_flww32_get_font(const char * fontname, int sizex, int sizey, float angle, flo
   cc_hash * fontkerninghash;
   float * kerningvalue;
   HFONT previousfont;
+  unsigned long tmp;
 
   /* FIXME: an idea about sizex / width specification for fonts: let
      sizex==0 indicate "don't care". Should update API and API doc
@@ -346,7 +348,7 @@ cc_flww32_get_font(const char * fontname, int sizex, int sizey, float angle, flo
   cc_hash * glyphhash;
 
   if (complexity >= 0.0f) {
-    sizey = flww32_font3dsize = flww32_calcfontsize(complexity);
+    sizey = flww32_calcfontsize(complexity);
   }
 
   HFONT wfont = CreateFont(-sizey, /* Using a negative
@@ -447,9 +449,11 @@ cc_flww32_get_font(const char * fontname, int sizex, int sizey, float angle, flo
     }
 
     free(kpairs);
-
   } 
- 
+  
+  tmp = (unsigned long) sizey;
+  (void) cc_hash_put(cc_flww32_globals.fontsizehash, (unsigned long) wfont, (void*) tmp);
+  
   return (void *)wfont;
 }
 
@@ -510,6 +514,10 @@ cc_flww32_done_font(void * font)
   assert(glyphs && "called with non-existent font");
 
   found = cc_hash_remove(cc_flww32_globals.font2glyphhash,
+                         (unsigned long)font);
+  assert(found && "huh?");
+
+  found = cc_hash_remove(cc_flww32_globals.fontsizehash,
                          (unsigned long)font);
   assert(found && "huh?");
 
@@ -940,6 +948,8 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
   HDC screendc;
   TCHAR string[1];
   struct cc_flw_vector_glyph * new_vector_glyph;
+  void * tmp;
+  unsigned int size;
   
   if (!GLUWrapper()->available) {
     cc_debugerror_post("cc_flww32_get_vector_glyph",
@@ -1068,7 +1078,12 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
      tessellation callback solution needs a static working struct. */
   new_vector_glyph = (struct cc_flw_vector_glyph *) malloc(sizeof(struct cc_flw_vector_glyph));
 
-  flww32_buildVertexList(new_vector_glyph);
+  size = 200;
+  if (cc_hash_get(cc_flww32_globals.fontsizehash, &tmp)) {
+    size = (int) tmp;
+  }
+
+  flww32_buildVertexList(new_vector_glyph, size);
   flww32_buildFaceIndexList(new_vector_glyph);
   flww32_buildEdgeIndexList(new_vector_glyph);
 
@@ -1225,7 +1240,7 @@ flww32_errorCallback(GLenum error_code)
 }
 
 static void
-flww32_buildVertexList(struct cc_flw_vector_glyph * newglyph)
+flww32_buildVertexList(struct cc_flw_vector_glyph * newglyph, int size)
 {
 
   int numcoords,i;
@@ -1241,8 +1256,8 @@ flww32_buildVertexList(struct cc_flw_vector_glyph * newglyph)
 
     /* Must flip and translate glyph due to the W32 coord system 
        which has a y-axis pointing downwards */
-    newglyph->vertices[i*2 + 0] = coord[0] / flww32_font3dsize;
-    newglyph->vertices[i*2 + 1] = (-coord[1] / flww32_font3dsize) + 1; 
+    newglyph->vertices[i*2 + 0] = coord[0] / size;
+    newglyph->vertices[i*2 + 1] = (-coord[1] / size) + 1; 
     free(coord);
   }
 
