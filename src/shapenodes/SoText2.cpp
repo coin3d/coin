@@ -159,8 +159,6 @@ public:
   void dumpGlyphCache();
   void dumpBuffer(unsigned char * buffer, SbVec2s size, SbVec2s pos);
 
-  // FIXME: use notify() to handle changes, not comparison with last value.
-
   SbList< SbList<const SoGlyph *> > glyphs;
   SbList< SbList<SbVec2s> > positions;
   SbList< SbString > laststring;
@@ -586,6 +584,12 @@ SoText2P::dumpBuffer(unsigned char * buffer, SbVec2s size, SbVec2s pos)
   }
 }
 
+// FIXME: Use notify() mechanism to detect field changes. For
+// Coin3. preng, 2003-03-10.
+//
+// UPDATE 20030408 mortene: that wouldn't be sufficient, as
+// e.g. changes to SoFont and SoFontStyle nodes in the scene graph can
+// also have an influence on which glyphs to render.
 SbBool
 SoText2P::shouldBuildGlyphCache(SoState * state)
 {
@@ -594,9 +598,6 @@ SoText2P::shouldBuildGlyphCache(SoState * state)
 
   if (this->prevfontname != curfontname ||
       this->prevfontsize != curfontsize) { return TRUE; }
-
-  // FIXME: Use notify() mechanism to detect field changes. For
-  // Coin3. preng, 2003-03-10.
 
   const int nrlines = this->glyphs.getLength();
   if (nrlines != PUBLIC(this)->string.getNum()) { return TRUE; }
