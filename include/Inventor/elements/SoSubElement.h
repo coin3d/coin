@@ -78,6 +78,7 @@ _class_::_class_(void) { }
 PRIVATE_SOELEMENT_VARIABLES(_class_) \
 _class_::_class_(void) { this->setTypeId(_class_::classTypeId); \
                          this->setStackIndex(_class_::classStackIndex); } \
+/*! \COININTERNAL */ \
 void * _class_::createInstance(void) { return (void *) new _class_; }
 
 
