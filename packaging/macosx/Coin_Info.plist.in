@@ -20,8 +20,6 @@
         <string>proportional</string>
 	<key>IFPkgFlagAuthorizationAction</key>
 	<string>RootAuthorization</string>
-	<key>IFPkgFlagDefaultLocation</key>
-	<string>/Library/Frameworks</string>
 	<key>IFPkgFormatVersion</key>
 	<real>0.10000000149011612</real>
 </dict>
