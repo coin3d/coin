@@ -14,6 +14,9 @@ Todo
   versions of Coin (--without-coin-engines etc). Or perhaps make a
   single --compile-basesystem option instead?
 
+* [mortene:19990924] default to compile without RTTI and exceptions
+  for G++/egcs?
+
 * [mortene:19990913] move tasklist from docs/todo.txt into this file.
 
 * [mortene:19990913] write non-generic instructions in the INSTALL
@@ -27,7 +30,8 @@ Todo
 
 * [mortene:19990916] improve the autoconf macro which checks for
   Mesa/OpenGL (read the FIXME's in configure.in just above where it's
-  in use).
+  in use). NB: this macro is _completely_ and _utterly_ foobar! We're
+  probably better off writing our own macro(s).
 
 * [mortene:19990916] make ``install'' avoid re-installing header files
   which has not been modified (and other untouched files, for that
