@@ -84,7 +84,12 @@ SoGetBoundingBoxAction::initClass(void)
   Constructor.
 
   Some node types need to know the viewport region to calculate their
-  bounding box.
+  3D bounding box. There are several different cases where this is
+  applicable, for instance for complex shapes (like
+  e.g. SoNurbsSurface, SoSphere) that are influenced by
+  SoComplexity::SCREEN_SPACE, or for "flat" geometry that is
+  continuously projected from 2D into the 3D scene (like SoText2, for
+  instance).
 */
 SoGetBoundingBoxAction::SoGetBoundingBoxAction(const SbViewportRegion & vp)
   : center(0, 0, 0),

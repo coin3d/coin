@@ -32,22 +32,34 @@
   etc.
 
   The basic operation is to instantiate an action, set it up with
-  miscellaneous parameters if necessary, then "apply it" to the root
-  node of the scenegraph (or sub-graph of a scenegraph).  The action
-  then traverses the scenegraph from the root node, depth-first and
-  left-to-right, applying it's specific processing at the nodes where
-  it is applicable.
+  miscellaneous parameters if necessary, then call it's apply() method
+  on the root node of the scenegraph (or sub-graph of a scenegraph).
+  The action then traverses the scenegraph from the root node,
+  depth-first and left-to-right, applying it's specific processing at
+  the nodes where it is applicable.
+
+  Here's a simple example that shows how to use the SoWriteAction to
+  dump a scenegraph in the Inventor format to a file:
 
   \code
    int write_scenegraph(const char * filename, SoNode * root)
    {
      SoOutput output;
      if (output.openFile(filename)) return 0;
+
+     // This is where the action is.  ;-)
      SoWriteAction wa(&output);
      wa.apply(root);
+
      return 1;
    }
   \endcode
+
+  After traversal, some action types have stored information about the
+  (sub-)scenegraph that was traversed, which you can then inquire
+  about through methods like SoGetBoundingBoxAction::getBoundingBox(),
+  SoRayPickAction::getPickedPoint(),
+  SoGetPrimitiveCountAction::getTriangleCount(), etc etc.
 
   See the various built-in actions for further information (ie the
   subclasses of this class), or look at the example code applications
