@@ -171,6 +171,7 @@
 #include <Inventor/nodes/SoNodes.h>
 #include <Inventor/nodes/SoTextureUnit.h>
 #include <Inventor/nodes/SoBumpMap.h>
+#include <Inventor/nodes/SoBumpMapCoordinate.h>
 
 #include <Inventor/C/tidbitsp.h>
 #include <Inventor/SoInput.h>
@@ -601,6 +602,7 @@ SoNode::initClasses(void)
   SoTextureUnit::initClass();
 
   SoBumpMap::initClass();
+  SoBumpMapCoordinate::initClass();
 }
 
 /*!
