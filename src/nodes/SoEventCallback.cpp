@@ -19,21 +19,22 @@
 
 /*!
   \class SoEventCallback SoEventCallback.h Inventor/nodes/SoEventCallback.h
-  \brief The SoEventCallback class ...
+  \brief The SoEventCallback class provides a method for handling events.
   \ingroup nodes
 
-  FIXME: write class doc
+  Use SoEventCallback nodes for grabbing events during
+  SoHandleEventAction traversal.
 */
 
 #include <Inventor/nodes/SoEventCallback.h>
-#include <coindefs.h> // COIN_STUB()
+#include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/events/SoEvent.h>
+#include <coindefs.h> // COIN_STUB()
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#include <Inventor/actions/SoHandleEventAction.h>
 
 SO_NODE_SOURCE(SoEventCallback);
 
@@ -41,7 +42,7 @@ SO_NODE_SOURCE(SoEventCallback);
 /*!
   Constructor.
 */
-SoEventCallback::SoEventCallback()
+SoEventCallback::SoEventCallback(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoEventCallback);
 
@@ -55,11 +56,7 @@ SoEventCallback::~SoEventCallback()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoEventCallback class. This includes setting up the
-  type system, among other things.
-*/
+// Doc from superclass.
 void
 SoEventCallback::initClass(void)
 {
@@ -87,43 +84,48 @@ SoEventCallback::getPath(void)
 
 
 /*!
-  FIXME: write function documentation
+  Set up a callback function \a f which will be invoked for the given
+  \a eventtype. \a userdata will be given as the first argument to the
+  function.
 */
 void
-SoEventCallback::addEventCallback(SoType eventType, SoEventCallbackCB * f,
-                                  void * userData)
+SoEventCallback::addEventCallback(SoType eventtype, SoEventCallbackCB * f,
+                                  void * userdata)
 {
-  this->callbackTypes.append(eventType);
-  this->callbacks.append((void *)f);
-  this->callbacks.append(userData);
+  struct CallbackInfo cb;
+  cb.func = f;
+  cb.event = eventtype;
+  cb.userdata = userdata;
+
+  this->callbacks.append(cb);
 }
 
 /*!
-  FIXME: write function documentation
+  Unregister the given callback function \a f.
 */
 void
-SoEventCallback::removeEventCallback(SoType /* eventType */,
-                                     SoEventCallbackCB * f,
-                                     void * /* userData */)
+SoEventCallback::removeEventCallback(SoType eventtype, SoEventCallbackCB * f,
+                                     void * userdata)
 {
-  int idx = this->callbacks.find((void *)f);
-  if (idx != -1) {
-    this->callbackTypes.remove(idx/2);
-    this->callbacks.remove(idx);
-    this->callbacks.remove(idx);
+  for (int i = 0; i < this->callbacks.getLength(); i++) {
+    if (this->callbacks[i].func == f &&
+        this->callbacks[i].event == eventtype &&
+        this->callbacks[i].userdata == userdata) {
+      this->callbacks.remove(i);
+      return;
+    }
   }
 
 #if COIN_DEBUG
-  if (idx == -1) {
-    SoDebugError::postWarning("SoEventCallback::removeEventCallback",
-                              "tried to remove non-existant callback");
-  }
+  SoDebugError::postWarning("SoEventCallback::removeEventCallback",
+                            "tried to remove non-existent callback function");
 #endif // COIN_DEBUG
 }
 
 
 /*!
-  FIXME: write function documentation
+  Returns the SoHandleEventAction instance currently traversing the
+  scene graph.
 */
 SoHandleEventAction *
 SoEventCallback::getAction(void) const
@@ -132,7 +134,8 @@ SoEventCallback::getAction(void) const
 }
 
 /*!
-  FIXME: write function documentation
+  Returns a pointer to the event object which is currently being
+  processed.
 */
 const SoEvent *
 SoEventCallback::getEvent(void) const
@@ -152,7 +155,17 @@ SoEventCallback::getPickedPoint(void) const
 
 
 /*!
-  FIXME: write function documentation
+  Use this method from a callback function to notify the node that the
+  event has been handled.
+
+  The rest of the callbacks registered with the node will still be
+  called, but further SoEventCallback nodes in the scene will not be
+  used.
+
+  Since callbacks registered within the same SoEventCallback node will
+  still be invoked after the event has been handled, it is likely that
+  you should use isHandled() to check for this condition from your
+  callback functions.
 */
 void
 SoEventCallback::setHandled(void)
@@ -169,7 +182,8 @@ SoEventCallback::setHandled(void)
 }
 
 /*!
-  FIXME: write function documentation
+  Check whether or not the event from the SoHandleEventAction has been
+  handled.
 */
 SbBool
 SoEventCallback::isHandled(void) const
@@ -187,7 +201,8 @@ SoEventCallback::isHandled(void) const
 
 
 /*!
-  FIXME: write function documentation
+  Set up the node so all future events (until releaseEvents() is
+  called) in Coin will be directly forwarded to this node.
 */
 void
 SoEventCallback::grabEvents(void)
@@ -204,7 +219,9 @@ SoEventCallback::grabEvents(void)
 }
 
 /*!
-  FIXME: write function documentation
+  Do not grab event handling any more.
+
+  \sa grabEvents()
 */
 void
 SoEventCallback::releaseEvents(void)
@@ -221,8 +238,8 @@ SoEventCallback::releaseEvents(void)
 }
 
 /*!
-  FIXME: write function documentation
-*/
+  Invokes the registered callback functions.
+ */
 void
 SoEventCallback::handleEvent(SoHandleEventAction * action)
 {
@@ -231,12 +248,10 @@ SoEventCallback::handleEvent(SoHandleEventAction * action)
   this->heaction = action;
 
   // Invoke callbacks.
-  for(int i=0; i < this->callbackTypes.getLength(); i++) {
-    SoType type = this->callbackTypes[i];
-    if (this->heaction->getEvent()->isOfType(type)) {
-      SoEventCallbackCB * cb = (SoEventCallbackCB *)(this->callbacks[i*2+0]);
-      void * userdata = this->callbacks[i*2+1];
-      cb(userdata, this);
+  for(int i=0; i < this->callbacks.getLength(); i++) {
+    if (this->heaction->getEvent()->isOfType(this->callbacks[i].event)) {
+      SoEventCallbackCB * cb = this->callbacks[i].func;
+      cb(this->callbacks[i].userdata, this);
     }
   }
 

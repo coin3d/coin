@@ -22,8 +22,8 @@
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
-#include <Inventor/lists/SbPList.h>
-#include <Inventor/lists/SoTypeList.h>
+#include <Inventor/lists/SbList.h>
+
 #ifndef COIN_INTERNAL
 // Added for Inventor compliance
 #include <Inventor/actions/SoHandleEventAction.h>
@@ -36,7 +36,7 @@ class SoEvent;
 class SoPickedPoint;
 class SoHandleEventAction;
 
-typedef void SoEventCallbackCB(void * userData, SoEventCallback * node);
+typedef void SoEventCallbackCB(void * userdata, SoEventCallback * node);
 
 
 class SoEventCallback : public SoNode {
@@ -51,10 +51,10 @@ public:
   void setPath(SoPath * path);
   const SoPath * getPath(void);
 
-  void addEventCallback(SoType eventType, SoEventCallbackCB * f,
-                        void * userData = NULL);
-  void removeEventCallback(SoType eventType, SoEventCallbackCB * f,
-                           void * userData = NULL);
+  void addEventCallback(SoType eventtype, SoEventCallbackCB * f,
+                        void * userdata = NULL);
+  void removeEventCallback(SoType eventtype, SoEventCallbackCB * f,
+                           void * userdata = NULL);
 
   SoHandleEventAction * getAction(void) const;
   const SoEvent * getEvent(void) const;
@@ -72,9 +72,15 @@ protected:
   virtual void handleEvent(SoHandleEventAction * action);
 
 private:
+  struct CallbackInfo {
+    SoEventCallbackCB * func;
+    SoType event;
+    void * userdata;
+  };
+
+  SbList<CallbackInfo> callbacks;
+
   SoHandleEventAction * heaction;
-  SbPList callbacks;
-  SoTypeList callbackTypes;
 };
 
 #endif // !COIN_SOEVENTCALLBACK_H
