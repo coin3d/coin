@@ -1,0 +1,15 @@
+#VRML V1.0 ascii
+
+# Check all aspects of Info usage
+#
+# 20030514 kintel
+
+Separator {
+  Info {}
+  Info { string "" }
+  Info { string "\"" }
+  Info { string "Test information" }
+  Info { string "\"quotes\"" }
+  Info { string "\\backslashes\\" }
+  Info { string "Test information\nsplit over\multiple\lines." }
+}
