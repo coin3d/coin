@@ -382,8 +382,11 @@ SoSFImage::setValue(const SbVec2s & size, const int nc,
 }
 
 /*!
-  Return pixel buffer, set \a size to contain the image dimensions and
-  \a nc to the number of components in the image.
+  Return pixel buffer. Return the image size and components in
+  \a size and \a nc.
+  
+  You can not use this method to set a new image size. Use setValue()
+  to change the size of the image buffer.
 
   The field's container will not be notified about the changes
   until you call finishEditing().
