@@ -98,12 +98,12 @@ make_dither_matrix(uint32_t * ptr, int size)
 // Sets a bit bitnr bits from ptr
 //
 static void 
-set_bit(int bitnr, uint32_t * ptr)
+set_bit(int bitnr, unsigned char * ptr)
 {
-  int byte = bitnr / 32;
-  int bit = bitnr % 32;
-
-  int mask = 0x80000000 >> bit;
+  int byte = bitnr / 8;
+  int bit = bitnr % 8;
+  
+  unsigned char mask = (unsigned char) (0x80 >> bit);
 
   ptr[byte] |= mask;
 }
@@ -112,12 +112,12 @@ set_bit(int bitnr, uint32_t * ptr)
 // Create a bitmap from a 32x32 matrix
 //
 static void 
-create_matrix_bitmap(int intensity, uint32_t *bitmap,
+create_matrix_bitmap(int intensity, unsigned char * bitmap,
                      uint32_t *matrix, int size)
 {
   int cnt = 0;
   int i,j;
-  for (i = 0; i < 32; i++) bitmap[i] = 0;
+  for (i = 0; i < 32*4; i++) bitmap[i] = 0;
   for (i = 0; i < size; i++) {
     for (j = 0; j < size; j++) {
       if (matrix[i*size+j] > (unsigned int) intensity) {
@@ -145,7 +145,7 @@ SoGLPolygonStippleElement::initClass()
   for (i = 0; i <= 64; i++) {
     int intensity = (32 * 32 * i) / 64 - 1;
     create_matrix_bitmap((intensity >= 0) ? intensity : 0,
-                         (uint32_t*)&patterns[i][0], matrix, 32);
+                         patterns[i], matrix, 32);
   }
 }
 
