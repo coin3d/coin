@@ -177,10 +177,6 @@ SoVRMLImageTexture::initClass(void) // static
 */
 SoVRMLImageTexture::SoVRMLImageTexture(void)
 {
-  // call this here to avoid race conditions when multiple threads are
-  // used to load images.
-  (void) simage_wrapper();
-
   THIS = new SoVRMLImageTextureP;
 
   SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLImageTexture);
