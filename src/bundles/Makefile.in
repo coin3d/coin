@@ -288,15 +288,6 @@ libbundles.la: $(libbundles_la_OBJECTS) $(libbundles_la_DEPENDENCIES)
 
 libbundles@SUFFIX@LINKHACK.la: $(libbundles@SUFFIX@LINKHACK_la_OBJECTS) $(libbundles@SUFFIX@LINKHACK_la_DEPENDENCIES)
 	$(CXXLINK) -rpath $(libdir) $(libbundles@SUFFIX@LINKHACK_la_LDFLAGS) $(libbundles@SUFFIX@LINKHACK_la_OBJECTS) $(libbundles@SUFFIX@LINKHACK_la_LIBADD) $(LIBS)
-install-libbundlesincHEADERS: $(libbundlesinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libbundlesincdir)
-	@list='$(libbundlesinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libbundlesincdir)/$$f"; \
-	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libbundlesincdir)/$$f; \
-	done
 
 uninstall-libbundlesincHEADERS:
 	@$(NORMAL_UNINSTALL)
@@ -483,6 +474,19 @@ bundles.lst: Makefile $(bundles_lst_OBJECTS)
 	  $(bundles_lst_OBJECTS); \
 	$(CC) /LST:bundles.lst \
 	  $(bundles_lst_OBJECTS);
+
+install-libbundlesincHEADERS: $(libbundlesinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libbundlesincdir)
+	@list='$(libbundlesinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libbundlesincdir)/$$f"; \
+	  if cmp -s "$$src" "$$dst"; then :; else \
+	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+	  fi \
+	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

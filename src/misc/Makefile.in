@@ -421,15 +421,6 @@ libmisc.la: $(libmisc_la_OBJECTS) $(libmisc_la_DEPENDENCIES)
 
 libmisc@SUFFIX@LINKHACK.la: $(libmisc@SUFFIX@LINKHACK_la_OBJECTS) $(libmisc@SUFFIX@LINKHACK_la_DEPENDENCIES)
 	$(CXXLINK) -rpath $(libdir) $(libmisc@SUFFIX@LINKHACK_la_LDFLAGS) $(libmisc@SUFFIX@LINKHACK_la_OBJECTS) $(libmisc@SUFFIX@LINKHACK_la_LIBADD) $(LIBS)
-install-libmiscincHEADERS: $(libmiscinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libmiscincdir)
-	@list='$(libmiscinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libmiscincdir)/$$f"; \
-	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libmiscincdir)/$$f; \
-	done
 
 uninstall-libmiscincHEADERS:
 	@$(NORMAL_UNINSTALL)
@@ -707,6 +698,19 @@ misc.lst: Makefile $(misc_lst_OBJECTS)
 	  $(misc_lst_OBJECTS); \
 	$(CC) /LST:misc.lst \
 	  $(misc_lst_OBJECTS);
+
+install-libmiscincHEADERS: $(libmiscinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libmiscincdir)
+	@list='$(libmiscinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libmiscincdir)/$$f"; \
+	  if cmp -s "$$src" "$$dst"; then :; else \
+	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+	  fi \
+	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -318,15 +318,6 @@ libdetails.la: $(libdetails_la_OBJECTS) $(libdetails_la_DEPENDENCIES)
 
 libdetails@SUFFIX@LINKHACK.la: $(libdetails@SUFFIX@LINKHACK_la_OBJECTS) $(libdetails@SUFFIX@LINKHACK_la_DEPENDENCIES)
 	$(CXXLINK) -rpath $(libdir) $(libdetails@SUFFIX@LINKHACK_la_LDFLAGS) $(libdetails@SUFFIX@LINKHACK_la_OBJECTS) $(libdetails@SUFFIX@LINKHACK_la_LIBADD) $(LIBS)
-install-libdetailsincHEADERS: $(libdetailsinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libdetailsincdir)
-	@list='$(libdetailsinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libdetailsincdir)/$$f"; \
-	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libdetailsincdir)/$$f; \
-	done
 
 uninstall-libdetailsincHEADERS:
 	@$(NORMAL_UNINSTALL)
@@ -525,6 +516,19 @@ details.lst: Makefile $(details_lst_OBJECTS)
 	  $(details_lst_OBJECTS); \
 	$(CC) /LST:details.lst \
 	  $(details_lst_OBJECTS);
+
+install-libdetailsincHEADERS: $(libdetailsinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libdetailsincdir)
+	@list='$(libdetailsinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libdetailsincdir)/$$f"; \
+	  if cmp -s "$$src" "$$dst"; then :; else \
+	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+	  fi \
+	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

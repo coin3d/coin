@@ -467,15 +467,6 @@ libengines.la: $(libengines_la_OBJECTS) $(libengines_la_DEPENDENCIES)
 
 libengines@SUFFIX@LINKHACK.la: $(libengines@SUFFIX@LINKHACK_la_OBJECTS) $(libengines@SUFFIX@LINKHACK_la_DEPENDENCIES)
 	$(CXXLINK) -rpath $(libdir) $(libengines@SUFFIX@LINKHACK_la_LDFLAGS) $(libengines@SUFFIX@LINKHACK_la_OBJECTS) $(libengines@SUFFIX@LINKHACK_la_LIBADD) $(LIBS)
-install-libenginesincHEADERS: $(libenginesinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libenginesincdir)
-	@list='$(libenginesinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libenginesincdir)/$$f"; \
-	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libenginesincdir)/$$f; \
-	done
 
 uninstall-libenginesincHEADERS:
 	@$(NORMAL_UNINSTALL)
@@ -753,6 +744,19 @@ engines.lst: Makefile $(engines_lst_OBJECTS)
 	  $(engines_lst_OBJECTS); \
 	$(CC) /LST:engines.lst \
 	  $(engines_lst_OBJECTS);
+
+install-libenginesincHEADERS: $(libenginesinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libenginesincdir)
+	@list='$(libenginesinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libenginesincdir)/$$f"; \
+	  if cmp -s "$$src" "$$dst"; then :; else \
+	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+	  fi \
+	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

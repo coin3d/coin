@@ -117,29 +117,9 @@ sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 
+# **************************************************************************
+# Process this file with automake to generate Makefile.in.
 
-@BUILD_WITH_MSVC_TRUE@lib_LIBRARIES = coin@COIN_MAJOR_VERSION@@SUFFIX@.lib
-@BUILD_WITH_MSVC_FALSE@lib_LTLIBRARIES = libCoin@SUFFIX@.la
-@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@libCoin@SUFFIX@_la_LIBADD = \
-@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	VRMLnodes/libVRMLnodes.la actions/libactions.la base/libbase.la \
-@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	bundles/libbundles.la caches/libcaches.la elements/libelements.la \
-@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	engines/libengines.la errors/liberrors.la events/libevents.la \
-@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	fields/libfields.la misc/libmisc.la lists/liblists.la \
-@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	nodekits/libnodekits.la nodes/libnodes.la projectors/libprojectors.la \
-@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	sensors/libsensors.la details/libdetails.la draggers/libdraggers.la \
-@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@	manips/libmanips.la
-
-@HACKING_DYNAMIC_MODULES_TRUE@libCoin@SUFFIX@_la_LIBADD = 
-@BUILD_WITH_MSVC_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
-@BUILD_WITH_MSVC_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	VRMLnodes/VRMLnodes.lst actions/actions.lst base/base.lst \
-@BUILD_WITH_MSVC_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	bundles/bundles.lst caches/caches.lst elements/elements.lst \
-@BUILD_WITH_MSVC_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	engines/engines.lst errors/errors.lst events/events.lst \
-@BUILD_WITH_MSVC_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	fields/fields.lst misc/misc.lst lists/lists.lst \
-@BUILD_WITH_MSVC_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	nodekits/nodekits.lst nodes/nodes.lst projectors/projectors.lst \
-@BUILD_WITH_MSVC_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	sensors/sensors.lst details/details.lst draggers/draggers.lst \
-@BUILD_WITH_MSVC_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	manips/manips.lst
-
-@HACKING_DYNAMIC_MODULES_TRUE@coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = 
 
 SUBDIRS = \
 	VRMLnodes actions base bundles caches details draggers elements \
@@ -147,11 +127,35 @@ SUBDIRS = \
 	projectors sensors .
 
 
-@BUILD_WITH_MSVC_TRUE@coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = \
-@BUILD_WITH_MSVC_TRUE@	snprintf.c snprintf.h
+@BUILD_WITH_MSVC_TRUE@lib_LIBRARIES = coin@COIN_MAJOR_VERSION@@SUFFIX@.lib
+@BUILD_WITH_MSVC_FALSE@lib_LTLIBRARIES = libCoin@SUFFIX@.la
+@HACKING_DYNAMIC_MODULES_TRUE@libCoin@SUFFIX@_la_LIBADD = 
+@HACKING_DYNAMIC_MODULES_FALSE@libCoin@SUFFIX@_la_LIBADD = \
+@HACKING_DYNAMIC_MODULES_FALSE@	VRMLnodes/libVRMLnodes.la actions/libactions.la base/libbase.la \
+@HACKING_DYNAMIC_MODULES_FALSE@	bundles/libbundles.la caches/libcaches.la elements/libelements.la \
+@HACKING_DYNAMIC_MODULES_FALSE@	engines/libengines.la errors/liberrors.la events/libevents.la \
+@HACKING_DYNAMIC_MODULES_FALSE@	fields/libfields.la misc/libmisc.la lists/liblists.la \
+@HACKING_DYNAMIC_MODULES_FALSE@	nodekits/libnodekits.la nodes/libnodes.la projectors/libprojectors.la \
+@HACKING_DYNAMIC_MODULES_FALSE@	sensors/libsensors.la details/libdetails.la draggers/libdraggers.la \
+@HACKING_DYNAMIC_MODULES_FALSE@	manips/libmanips.la
 
-@BUILD_WITH_MSVC_FALSE@libCoin@SUFFIX@_la_SOURCES = \
-@BUILD_WITH_MSVC_FALSE@	snprintf.c snprintf.h
+
+libCoin@SUFFIX@_la_SOURCES = \
+	snprintf.c snprintf.h
+
+
+coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
+	VRMLnodes/VRMLnodes.lst actions/actions.lst base/base.lst \
+	bundles/bundles.lst caches/caches.lst elements/elements.lst \
+	engines/engines.lst errors/errors.lst events/events.lst \
+	fields/fields.lst misc/misc.lst lists/lists.lst \
+	nodekits/nodekits.lst nodes/nodes.lst projectors/projectors.lst \
+	sensors/sensors.lst details/details.lst draggers/draggers.lst \
+	manips/manips.lst
+
+
+coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = \
+	snprintf.c snprintf.h
 
 
 libCoin@SUFFIX@_la_LDFLAGS = \
@@ -159,10 +163,9 @@ libCoin@SUFFIX@_la_LDFLAGS = \
         -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
 
 
-# coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LDFLAGS =
-
-libCoin@SUFFIX@incdir = $(includedir)/Inventor
-libCoin@SUFFIX@inc_HEADERS = \
+# header installation
+libCoinincdir = $(includedir)/Inventor
+libCoininc_HEADERS = \
 	$(top_srcdir)/include/Inventor/SbPList.h \
 	$(top_srcdir)/include/Inventor/So.h \
 	$(top_srcdir)/include/Inventor/SoDB.h \
@@ -225,56 +228,38 @@ X_LIBS = @X_LIBS@
 X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_AR = $(AR) cru
-@BUILD_WITH_MSVC_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_DEPENDENCIES = \
-@BUILD_WITH_MSVC_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@ VRMLnodes/VRMLnodes.lst \
-@BUILD_WITH_MSVC_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@ actions/actions.lst \
-@BUILD_WITH_MSVC_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@ base/base.lst \
-@BUILD_WITH_MSVC_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@ bundles/bundles.lst \
-@BUILD_WITH_MSVC_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@ caches/caches.lst \
-@BUILD_WITH_MSVC_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@ elements/elements.lst \
-@BUILD_WITH_MSVC_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@ engines/engines.lst \
-@BUILD_WITH_MSVC_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@ errors/errors.lst \
-@BUILD_WITH_MSVC_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@ events/events.lst \
-@BUILD_WITH_MSVC_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@ fields/fields.lst \
-@BUILD_WITH_MSVC_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@ misc/misc.lst \
-@BUILD_WITH_MSVC_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@ lists/lists.lst \
-@BUILD_WITH_MSVC_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@ nodekits/nodekits.lst \
-@BUILD_WITH_MSVC_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@ nodes/nodes.lst \
-@BUILD_WITH_MSVC_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@ projectors/projectors.lst \
-@BUILD_WITH_MSVC_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@ sensors/sensors.lst \
-@BUILD_WITH_MSVC_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@ details/details.lst \
-@BUILD_WITH_MSVC_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@ draggers/draggers.lst \
-@BUILD_WITH_MSVC_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@ manips/manips.lst
-@HACKING_DYNAMIC_MODULES_TRUE@coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_DEPENDENCIES =
-@BUILD_WITH_MSVC_TRUE@am_coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS = \
-@BUILD_WITH_MSVC_TRUE@ snprintf.$(OBJEXT)
+coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_DEPENDENCIES = \
+VRMLnodes/VRMLnodes.lst actions/actions.lst base/base.lst \
+bundles/bundles.lst caches/caches.lst elements/elements.lst \
+engines/engines.lst errors/errors.lst events/events.lst \
+fields/fields.lst misc/misc.lst lists/lists.lst nodekits/nodekits.lst \
+nodes/nodes.lst projectors/projectors.lst sensors/sensors.lst \
+details/details.lst draggers/draggers.lst manips/manips.lst
+am_coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS = snprintf.$(OBJEXT)
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS = \
 $(am_coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS)
 AR = ar
 LTLIBRARIES = $(lib_LTLIBRARIES)
 
-@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@libCoin@SUFFIX@_la_DEPENDENCIES = \
-@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@ VRMLnodes/libVRMLnodes.la \
-@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@ actions/libactions.la \
-@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@ base/libbase.la \
-@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@ bundles/libbundles.la \
-@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@ caches/libcaches.la \
-@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@ elements/libelements.la \
-@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@ engines/libengines.la \
-@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@ errors/liberrors.la \
-@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@ events/libevents.la \
-@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@ fields/libfields.la \
-@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@ misc/libmisc.la \
-@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@ lists/liblists.la \
-@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@ nodekits/libnodekits.la \
-@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@ nodes/libnodes.la \
-@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@ projectors/libprojectors.la \
-@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@ sensors/libsensors.la \
-@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@ details/libdetails.la \
-@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@ draggers/libdraggers.la \
-@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@ manips/libmanips.la
 @HACKING_DYNAMIC_MODULES_TRUE@libCoin@SUFFIX@_la_DEPENDENCIES =
-@BUILD_WITH_MSVC_FALSE@am_libCoin@SUFFIX@_la_OBJECTS = snprintf.lo
+@HACKING_DYNAMIC_MODULES_FALSE@libCoin@SUFFIX@_la_DEPENDENCIES = \
+@HACKING_DYNAMIC_MODULES_FALSE@ VRMLnodes/libVRMLnodes.la \
+@HACKING_DYNAMIC_MODULES_FALSE@ actions/libactions.la base/libbase.la \
+@HACKING_DYNAMIC_MODULES_FALSE@ bundles/libbundles.la \
+@HACKING_DYNAMIC_MODULES_FALSE@ caches/libcaches.la \
+@HACKING_DYNAMIC_MODULES_FALSE@ elements/libelements.la \
+@HACKING_DYNAMIC_MODULES_FALSE@ engines/libengines.la \
+@HACKING_DYNAMIC_MODULES_FALSE@ errors/liberrors.la events/libevents.la \
+@HACKING_DYNAMIC_MODULES_FALSE@ fields/libfields.la misc/libmisc.la \
+@HACKING_DYNAMIC_MODULES_FALSE@ lists/liblists.la \
+@HACKING_DYNAMIC_MODULES_FALSE@ nodekits/libnodekits.la \
+@HACKING_DYNAMIC_MODULES_FALSE@ nodes/libnodes.la \
+@HACKING_DYNAMIC_MODULES_FALSE@ projectors/libprojectors.la \
+@HACKING_DYNAMIC_MODULES_FALSE@ sensors/libsensors.la \
+@HACKING_DYNAMIC_MODULES_FALSE@ details/libdetails.la \
+@HACKING_DYNAMIC_MODULES_FALSE@ draggers/libdraggers.la \
+@HACKING_DYNAMIC_MODULES_FALSE@ manips/libmanips.la
+am_libCoin@SUFFIX@_la_OBJECTS = snprintf.lo
 libCoin@SUFFIX@_la_OBJECTS = $(am_libCoin@SUFFIX@_la_OBJECTS)
 COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -283,11 +268,11 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES = $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES) \
 $(libCoin@SUFFIX@_la_SOURCES)
-HEADERS = $(libCoin@SUFFIX@inc_HEADERS)
+HEADERS = $(libCoininc_HEADERS)
 
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP@DEP_FILES = $(DEPDIR)/snprintf.Plo $(DEPDIR)/snprintf.Po
-DIST_COMMON = $(libCoin@SUFFIX@inc_HEADERS) Makefile.am Makefile.in
+DIST_COMMON = $(libCoininc_HEADERS) Makefile.am Makefile.in
 
 DIST_SUBDIRS = $(SUBDIRS)
 SOURCES = $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES) $(libCoin@SUFFIX@_la_SOURCES)
@@ -374,22 +359,13 @@ clean-libLTLIBRARIES:
 
 libCoin@SUFFIX@.la: $(libCoin@SUFFIX@_la_OBJECTS) $(libCoin@SUFFIX@_la_DEPENDENCIES)
 	$(LINK) -rpath $(libdir) $(libCoin@SUFFIX@_la_LDFLAGS) $(libCoin@SUFFIX@_la_OBJECTS) $(libCoin@SUFFIX@_la_LIBADD) $(LIBS)
-install-libCoin@SUFFIX@incHEADERS: $(libCoin@SUFFIX@inc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libCoin@SUFFIX@incdir)
-	@list='$(libCoin@SUFFIX@inc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libCoin@SUFFIX@incdir)/$$f"; \
-	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libCoin@SUFFIX@incdir)/$$f; \
-	done
 
-uninstall-libCoin@SUFFIX@incHEADERS:
+uninstall-libCoinincHEADERS:
 	@$(NORMAL_UNINSTALL)
-	@list='$(libCoin@SUFFIX@inc_HEADERS)'; for p in $$list; do \
+	@list='$(libCoininc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libCoin@SUFFIX@incdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libCoin@SUFFIX@incdir)/$$f; \
+	  echo " rm -f $(DESTDIR)$(libCoinincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libCoinincdir)/$$f; \
 	done
 
 # This directory's subdirectories are mostly independent; you can cd
@@ -520,6 +496,7 @@ top_distdir = ..
 distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
 
 distdir: $(DISTFILES)
+	$(mkinstalldirs) $(distdir)/$(top_srcdir)/include/Inventor
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
@@ -550,7 +527,7 @@ all-am: Makefile $(LIBRARIES) $(LTLIBRARIES) $(HEADERS)
 
 installdirs: installdirs-recursive
 installdirs-am:
-	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(libdir) $(DESTDIR)$(libCoin@SUFFIX@incdir)
+	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(libdir) $(DESTDIR)$(libCoinincdir)
 
 install: install-recursive
 install-exec: install-exec-recursive
@@ -596,7 +573,7 @@ info:
 
 info-am:
 
-install-data-am: install-data-local install-libCoin@SUFFIX@incHEADERS
+install-data-am: install-data-local install-libCoinincHEADERS
 
 install-exec-am: install-exec-local install-libLIBRARIES \
 	install-libLTLIBRARIES
@@ -616,7 +593,7 @@ mostlyclean: mostlyclean-recursive
 mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 	mostlyclean-libtool
 
-uninstall-am: uninstall-libCoin@SUFFIX@incHEADERS uninstall-libLIBRARIES \
+uninstall-am: uninstall-libCoinincHEADERS uninstall-libLIBRARIES \
 	uninstall-libLTLIBRARIES uninstall-local
 
 .PHONY: all all-am all-recursive check check-am check-recursive clean \
@@ -628,7 +605,7 @@ uninstall-am: uninstall-libCoin@SUFFIX@incHEADERS uninstall-libLIBRARIES \
 	install-data install-data-am install-data-local \
 	install-data-recursive install-exec install-exec-am \
 	install-exec-local install-exec-recursive install-info \
-	install-info-recursive install-libCoin@SUFFIX@incHEADERS \
+	install-info-recursive install-libCoinincHEADERS \
 	install-libLIBRARIES install-libLTLIBRARIES install-man \
 	install-recursive install-strip installcheck installcheck-am \
 	installcheck-recursive installdirs installdirs-am \
@@ -636,29 +613,42 @@ uninstall-am: uninstall-libCoin@SUFFIX@incHEADERS uninstall-libLIBRARIES \
 	maintainer-clean-recursive mostlyclean mostlyclean-compile \
 	mostlyclean-generic mostlyclean-libtool mostlyclean-recursive \
 	tags tags-recursive uninstall uninstall-am \
-	uninstall-info-recursive uninstall-libCoin@SUFFIX@incHEADERS \
+	uninstall-info-recursive uninstall-libCoinincHEADERS \
 	uninstall-libLIBRARIES uninstall-libLTLIBRARIES uninstall-local \
 	uninstall-recursive
 
 
-#### Additional "native" Make rules #########################################
+# **************************************************************************
 
-# this rule causes an "override" warning, so we remove the rule when it is
-# not needed
-@BUILD_WITH_MSVC_TRUE@coin@COIN_MAJOR_VERSION@@SUFFIX@.lib: Makefile \
-@BUILD_WITH_MSVC_TRUE@  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS) \
-@BUILD_WITH_MSVC_TRUE@  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_DEPENDENCIES)
-@BUILD_WITH_MSVC_TRUE@	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
-@BUILD_WITH_MSVC_TRUE@	rm -f "$$basename.dll" "$$basename.lib"; \
-@BUILD_WITH_MSVC_TRUE@	echo "Linking $$basename.lib..."; \
-@BUILD_WITH_MSVC_TRUE@	echo $(CC) $(LDFLAGS) $(LIBFLAGS) \
-@BUILD_WITH_MSVC_TRUE@	  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS) \
-@BUILD_WITH_MSVC_TRUE@	  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD) $(LIBS); \
-@BUILD_WITH_MSVC_TRUE@	$(CC) $(LDFLAGS) $(LIBFLAGS) \
-@BUILD_WITH_MSVC_TRUE@	  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS) \
-@BUILD_WITH_MSVC_TRUE@	  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD) $(LIBS);
+# Custom rule for linking a Visual C++ (MS Windows) library.
+
+coin@COIN_MAJOR_VERSION@@SUFFIX@.lib: Makefile \
+  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS) \
+  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_DEPENDENCIES)
+	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
+	rm -f "$$basename.dll" "$$basename.lib"; \
+	echo "Linking $$basename.lib..."; \
+	echo $(CC) $(LDFLAGS) $(LIBFLAGS) \
+	  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS) \
+	  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD) $(LIBS); \
+	$(CC) $(LDFLAGS) $(LIBFLAGS) \
+	  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS) \
+	  $(coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD) $(LIBS);
 
 # **************************************************************************
+
+install-libCoinincHEADERS: $(libCoininc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libCoinincdir)
+	@list='$(libCoininc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libCoinincdir)/$$f"; \
+	  if cmp -s "$$src" "$$dst"; then :; else \
+	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+	  fi \
+	done
 
 install-exec-local:
 	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \

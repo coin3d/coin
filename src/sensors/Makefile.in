@@ -332,15 +332,6 @@ libsensors.la: $(libsensors_la_OBJECTS) $(libsensors_la_DEPENDENCIES)
 
 libsensors@SUFFIX@LINKHACK.la: $(libsensors@SUFFIX@LINKHACK_la_OBJECTS) $(libsensors@SUFFIX@LINKHACK_la_DEPENDENCIES)
 	$(CXXLINK) -rpath $(libdir) $(libsensors@SUFFIX@LINKHACK_la_LDFLAGS) $(libsensors@SUFFIX@LINKHACK_la_OBJECTS) $(libsensors@SUFFIX@LINKHACK_la_LIBADD) $(LIBS)
-install-libsensorsincHEADERS: $(libsensorsinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libsensorsincdir)
-	@list='$(libsensorsinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libsensorsincdir)/$$f"; \
-	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libsensorsincdir)/$$f; \
-	done
 
 uninstall-libsensorsincHEADERS:
 	@$(NORMAL_UNINSTALL)
@@ -545,6 +536,19 @@ sensors.lst: Makefile $(sensors_lst_OBJECTS)
 	  $(sensors_lst_OBJECTS); \
 	$(CC) /LST:sensors.lst \
 	  $(sensors_lst_OBJECTS);
+
+install-libsensorsincHEADERS: $(libsensorsinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libsensorsincdir)
+	@list='$(libsensorsinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libsensorsincdir)/$$f"; \
+	  if cmp -s "$$src" "$$dst"; then :; else \
+	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+	  fi \
+	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

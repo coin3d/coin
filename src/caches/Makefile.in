@@ -310,15 +310,6 @@ libcaches.la: $(libcaches_la_OBJECTS) $(libcaches_la_DEPENDENCIES)
 
 libcaches@SUFFIX@LINKHACK.la: $(libcaches@SUFFIX@LINKHACK_la_OBJECTS) $(libcaches@SUFFIX@LINKHACK_la_DEPENDENCIES)
 	$(CXXLINK) -rpath $(libdir) $(libcaches@SUFFIX@LINKHACK_la_LDFLAGS) $(libcaches@SUFFIX@LINKHACK_la_OBJECTS) $(libcaches@SUFFIX@LINKHACK_la_LIBADD) $(LIBS)
-install-libcachesincHEADERS: $(libcachesinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libcachesincdir)
-	@list='$(libcachesinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libcachesincdir)/$$f"; \
-	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libcachesincdir)/$$f; \
-	done
 
 uninstall-libcachesincHEADERS:
 	@$(NORMAL_UNINSTALL)
@@ -513,6 +504,19 @@ caches.lst: Makefile $(caches_lst_OBJECTS)
 	  $(caches_lst_OBJECTS); \
 	$(CC) /LST:caches.lst \
 	  $(caches_lst_OBJECTS);
+
+install-libcachesincHEADERS: $(libcachesinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libcachesincdir)
+	@list='$(libcachesinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libcachesincdir)/$$f"; \
+	  if cmp -s "$$src" "$$dst"; then :; else \
+	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+	  fi \
+	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -385,15 +385,6 @@ libbase.la: $(libbase_la_OBJECTS) $(libbase_la_DEPENDENCIES)
 
 libbase@SUFFIX@LINKHACK.la: $(libbase@SUFFIX@LINKHACK_la_OBJECTS) $(libbase@SUFFIX@LINKHACK_la_DEPENDENCIES)
 	$(CXXLINK) -rpath $(libdir) $(libbase@SUFFIX@LINKHACK_la_LDFLAGS) $(libbase@SUFFIX@LINKHACK_la_OBJECTS) $(libbase@SUFFIX@LINKHACK_la_LIBADD) $(LIBS)
-install-libbaseincHEADERS: $(libbaseinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libbaseincdir)
-	@list='$(libbaseinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libbaseincdir)/$$f"; \
-	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libbaseincdir)/$$f; \
-	done
 
 uninstall-libbaseincHEADERS:
 	@$(NORMAL_UNINSTALL)
@@ -629,6 +620,19 @@ base.lst: Makefile $(base_lst_OBJECTS)
 	  $(base_lst_OBJECTS); \
 	$(CC) /LST:base.lst \
 	  $(base_lst_OBJECTS);
+
+install-libbaseincHEADERS: $(libbaseinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libbaseincdir)
+	@list='$(libbaseinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libbaseincdir)/$$f"; \
+	  if cmp -s "$$src" "$$dst"; then :; else \
+	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+	  fi \
+	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

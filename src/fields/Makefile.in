@@ -490,15 +490,6 @@ libfields.la: $(libfields_la_OBJECTS) $(libfields_la_DEPENDENCIES)
 
 libfields@SUFFIX@LINKHACK.la: $(libfields@SUFFIX@LINKHACK_la_OBJECTS) $(libfields@SUFFIX@LINKHACK_la_DEPENDENCIES)
 	$(CXXLINK) -rpath $(libdir) $(libfields@SUFFIX@LINKHACK_la_LDFLAGS) $(libfields@SUFFIX@LINKHACK_la_OBJECTS) $(libfields@SUFFIX@LINKHACK_la_LIBADD) $(LIBS)
-install-libfieldsincHEADERS: $(libfieldsinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libfieldsincdir)
-	@list='$(libfieldsinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libfieldsincdir)/$$f"; \
-	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libfieldsincdir)/$$f; \
-	done
 
 uninstall-libfieldsincHEADERS:
 	@$(NORMAL_UNINSTALL)
@@ -779,6 +770,19 @@ fields.lst: Makefile $(fields_lst_OBJECTS)
 	  $(fields_lst_OBJECTS); \
 	$(CC) /LST:fields.lst \
 	  $(fields_lst_OBJECTS);
+
+install-libfieldsincHEADERS: $(libfieldsinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libfieldsincdir)
+	@list='$(libfieldsinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libfieldsincdir)/$$f"; \
+	  if cmp -s "$$src" "$$dst"; then :; else \
+	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+	  fi \
+	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -338,15 +338,6 @@ libnodekits.la: $(libnodekits_la_OBJECTS) $(libnodekits_la_DEPENDENCIES)
 
 libnodekits@SUFFIX@LINKHACK.la: $(libnodekits@SUFFIX@LINKHACK_la_OBJECTS) $(libnodekits@SUFFIX@LINKHACK_la_DEPENDENCIES)
 	$(CXXLINK) -rpath $(libdir) $(libnodekits@SUFFIX@LINKHACK_la_LDFLAGS) $(libnodekits@SUFFIX@LINKHACK_la_OBJECTS) $(libnodekits@SUFFIX@LINKHACK_la_LIBADD) $(LIBS)
-install-libnodekitsincHEADERS: $(libnodekitsinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libnodekitsincdir)
-	@list='$(libnodekitsinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libnodekitsincdir)/$$f"; \
-	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libnodekitsincdir)/$$f; \
-	done
 
 uninstall-libnodekitsincHEADERS:
 	@$(NORMAL_UNINSTALL)
@@ -553,6 +544,19 @@ nodekits.lst: Makefile $(nodekits_lst_OBJECTS)
 	  $(nodekits_lst_OBJECTS); \
 	$(CC) /LST:nodekits.lst \
 	  $(nodekits_lst_OBJECTS);
+
+install-libnodekitsincHEADERS: $(libnodekitsinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libnodekitsincdir)
+	@list='$(libnodekitsinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libnodekitsincdir)/$$f"; \
+	  if cmp -s "$$src" "$$dst"; then :; else \
+	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+	  fi \
+	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

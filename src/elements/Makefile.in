@@ -908,15 +908,6 @@ libelements.la: $(libelements_la_OBJECTS) $(libelements_la_DEPENDENCIES)
 
 libelements@SUFFIX@LINKHACK.la: $(libelements@SUFFIX@LINKHACK_la_OBJECTS) $(libelements@SUFFIX@LINKHACK_la_DEPENDENCIES)
 	$(CXXLINK) -rpath $(libdir) $(libelements@SUFFIX@LINKHACK_la_LDFLAGS) $(libelements@SUFFIX@LINKHACK_la_OBJECTS) $(libelements@SUFFIX@LINKHACK_la_LIBADD) $(LIBS)
-install-libelementsincHEADERS: $(libelementsinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libelementsincdir)
-	@list='$(libelementsinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libelementsincdir)/$$f"; \
-	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libelementsincdir)/$$f; \
-	done
 
 uninstall-libelementsincHEADERS:
 	@$(NORMAL_UNINSTALL)
@@ -1293,6 +1284,19 @@ elements.lst: Makefile $(elements_lst_OBJECTS)
 	  $(elements_lst_OBJECTS); \
 	$(CC) /LST:elements.lst \
 	  $(elements_lst_OBJECTS);
+
+install-libelementsincHEADERS: $(libelementsinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libelementsincdir)
+	@list='$(libelementsinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libelementsincdir)/$$f"; \
+	  if cmp -s "$$src" "$$dst"; then :; else \
+	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+	  fi \
+	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

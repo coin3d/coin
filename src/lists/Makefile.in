@@ -363,15 +363,6 @@ liblists.la: $(liblists_la_OBJECTS) $(liblists_la_DEPENDENCIES)
 
 liblists@SUFFIX@LINKHACK.la: $(liblists@SUFFIX@LINKHACK_la_OBJECTS) $(liblists@SUFFIX@LINKHACK_la_DEPENDENCIES)
 	$(CXXLINK) -rpath $(libdir) $(liblists@SUFFIX@LINKHACK_la_LDFLAGS) $(liblists@SUFFIX@LINKHACK_la_OBJECTS) $(liblists@SUFFIX@LINKHACK_la_LIBADD) $(LIBS)
-install-liblistsincHEADERS: $(liblistsinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(liblistsincdir)
-	@list='$(liblistsinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(liblistsincdir)/$$f"; \
-	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(liblistsincdir)/$$f; \
-	done
 
 uninstall-liblistsincHEADERS:
 	@$(NORMAL_UNINSTALL)
@@ -590,6 +581,19 @@ lists.lst: Makefile $(lists_lst_OBJECTS)
 	  $(lists_lst_OBJECTS); \
 	$(CC) /LST:lists.lst \
 	  $(lists_lst_OBJECTS);
+
+install-liblistsincHEADERS: $(liblistsinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(liblistsincdir)
+	@list='$(liblistsinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(liblistsincdir)/$$f"; \
+	  if cmp -s "$$src" "$$dst"; then :; else \
+	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+	  fi \
+	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

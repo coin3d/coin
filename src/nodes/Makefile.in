@@ -792,15 +792,6 @@ libnodes.la: $(libnodes_la_OBJECTS) $(libnodes_la_DEPENDENCIES)
 
 libnodes@SUFFIX@LINKHACK.la: $(libnodes@SUFFIX@LINKHACK_la_OBJECTS) $(libnodes@SUFFIX@LINKHACK_la_DEPENDENCIES)
 	$(CXXLINK) -rpath $(libdir) $(libnodes@SUFFIX@LINKHACK_la_LDFLAGS) $(libnodes@SUFFIX@LINKHACK_la_OBJECTS) $(libnodes@SUFFIX@LINKHACK_la_LIBADD) $(LIBS)
-install-libnodesincHEADERS: $(libnodesinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libnodesincdir)
-	@list='$(libnodesinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libnodesincdir)/$$f"; \
-	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libnodesincdir)/$$f; \
-	done
 
 uninstall-libnodesincHEADERS:
 	@$(NORMAL_UNINSTALL)
@@ -1193,6 +1184,19 @@ nodes.lst: Makefile $(nodes_lst_OBJECTS)
 	  $(nodes_lst_OBJECTS); \
 	$(CC) /LST:nodes.lst \
 	  $(nodes_lst_OBJECTS);
+
+install-libnodesincHEADERS: $(libnodesinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libnodesincdir)
+	@list='$(libnodesinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libnodesincdir)/$$f"; \
+	  if cmp -s "$$src" "$$dst"; then :; else \
+	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+	  fi \
+	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
