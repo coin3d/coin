@@ -226,6 +226,14 @@ INPUT                = \
 	$(top_srcdir)/src/nodes/SoInfo.cpp $(top_srcdir)/include/Inventor/nodes/SoInfo.h \
 	$(top_srcdir)/src/nodes/SoLabel.cpp $(top_srcdir)/include/Inventor/nodes/SoLabel.h \
 	$(top_srcdir)/src/nodes/SoLightModel.cpp $(top_srcdir)/include/Inventor/nodes/SoLightModel.h \
+	$(top_srcdir)/src/nodes/SoProfile.cpp $(top_srcdir)/include/Inventor/nodes/SoProfile.h \
+	$(top_srcdir)/src/nodes/SoLinearProfile.cpp $(top_srcdir)/include/Inventor/nodes/SoLinearProfile.h \
+	$(top_srcdir)/src/nodes/SoNurbsProfile.cpp $(top_srcdir)/include/Inventor/nodes/SoNurbsProfile.h \
+	$(top_srcdir)/src/nodes/SoMaterial.cpp $(top_srcdir)/include/Inventor/nodes/SoMaterial.h \
+	$(top_srcdir)/src/nodes/SoMaterialBinding.cpp $(top_srcdir)/include/Inventor/nodes/SoMaterialBinding.h \
+	$(top_srcdir)/src/nodes/SoNormal.cpp $(top_srcdir)/include/Inventor/nodes/SoNormal.h \
+	$(top_srcdir)/src/nodes/SoNormalBinding.cpp $(top_srcdir)/include/Inventor/nodes/SoNormalBinding.h \
+	$(top_srcdir)/src/nodes/SoPackedColor.cpp $(top_srcdir)/include/Inventor/nodes/SoPackedColor.h \
 
 #	$(top_srcdir)/src/nodes/SoAnnoText3.cpp $(top_srcdir)/include/Inventor/nodes/SoAnnoText3.h \
 #	$(top_srcdir)/src/nodes/SoAnnoText3Property.cpp $(top_srcdir)/include/Inventor/nodes/SoAnnoText3Property.h \
@@ -248,24 +256,16 @@ INPUT                = \
 #	$(top_srcdir)/src/nodes/SoLevelOfDetail.cpp $(top_srcdir)/include/Inventor/nodes/SoLevelOfDetail.h \
 #	$(top_srcdir)/src/nodes/SoLevelOfSimplification.cpp $(top_srcdir)/include/Inventor/nodes/SoLevelOfSimplification.h \
 #	$(top_srcdir)/src/nodes/SoLineSet.cpp $(top_srcdir)/include/Inventor/nodes/SoLineSet.h \
-#	$(top_srcdir)/src/nodes/SoLinearProfile.cpp $(top_srcdir)/include/Inventor/nodes/SoLinearProfile.h \
 #	$(top_srcdir)/src/nodes/SoLocateHighlight.cpp $(top_srcdir)/include/Inventor/nodes/SoLocateHighlight.h \
 #	$(top_srcdir)/src/nodes/SoMarkerSet.cpp $(top_srcdir)/include/Inventor/nodes/SoMarkerSet.h \
-#	$(top_srcdir)/src/nodes/SoMaterial.cpp $(top_srcdir)/include/Inventor/nodes/SoMaterial.h \
-#	$(top_srcdir)/src/nodes/SoMaterialBinding.cpp $(top_srcdir)/include/Inventor/nodes/SoMaterialBinding.h \
 #	$(top_srcdir)/src/nodes/SoMultipleCopy.cpp $(top_srcdir)/include/Inventor/nodes/SoMultipleCopy.h \
 #	$(top_srcdir)/src/nodes/SoNonIndexedShape.cpp $(top_srcdir)/include/Inventor/nodes/SoNonIndexedShape.h \
-#	$(top_srcdir)/src/nodes/SoNormal.cpp $(top_srcdir)/include/Inventor/nodes/SoNormal.h \
-#	$(top_srcdir)/src/nodes/SoNormalBinding.cpp $(top_srcdir)/include/Inventor/nodes/SoNormalBinding.h \
 #	$(top_srcdir)/src/nodes/SoNurbsCurve.cpp $(top_srcdir)/include/Inventor/nodes/SoNurbsCurve.h \
-#	$(top_srcdir)/src/nodes/SoNurbsProfile.cpp $(top_srcdir)/include/Inventor/nodes/SoNurbsProfile.h \
 #	$(top_srcdir)/src/nodes/SoNurbsSurface.cpp $(top_srcdir)/include/Inventor/nodes/SoNurbsSurface.h \
-#	$(top_srcdir)/src/nodes/SoPackedColor.cpp $(top_srcdir)/include/Inventor/nodes/SoPackedColor.h \
 #	$(top_srcdir)/src/nodes/SoPathSwitch.cpp $(top_srcdir)/include/Inventor/nodes/SoPathSwitch.h \
 #	$(top_srcdir)/src/nodes/SoPickStyle.cpp $(top_srcdir)/include/Inventor/nodes/SoPickStyle.h \
 #	$(top_srcdir)/src/nodes/SoPointSet.cpp $(top_srcdir)/include/Inventor/nodes/SoPointSet.h \
 #	$(top_srcdir)/src/nodes/SoPolygonOffset.cpp $(top_srcdir)/include/Inventor/nodes/SoPolygonOffset.h \
-#	$(top_srcdir)/src/nodes/SoProfile.cpp $(top_srcdir)/include/Inventor/nodes/SoProfile.h \
 #	$(top_srcdir)/src/nodes/SoProfileCoordinate2.cpp $(top_srcdir)/include/Inventor/nodes/SoProfileCoordinate2.h \
 #	$(top_srcdir)/src/nodes/SoProfileCoordinate3.cpp $(top_srcdir)/include/Inventor/nodes/SoProfileCoordinate3.h \
 #	$(top_srcdir)/src/nodes/SoQuadMesh.cpp $(top_srcdir)/include/Inventor/nodes/SoQuadMesh.h \

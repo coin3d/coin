@@ -36,14 +36,6 @@ public:
   static void initClass(void);
   SoNormal(void);
 
-  // old stuff from VRMLView, but pretty smart, I think
-//   enum VectorType {
-//     UNKNOWN,
-//     UNITVECTORS,
-//     NOT_UNITVECTORS
-//   };
-//   SbVec3f *getNormalizedVectors();
-
   SoMFVec3f vector;
 
   virtual void doAction(SoAction * action);
@@ -54,11 +46,6 @@ public:
 
 protected:
   virtual ~SoNormal();
-
-private:
-// VRMLView stuff, temporaryly disabled
-//  SbVec3f *normalizedVectors;
-//  VectorType vectorType;         // unit or notunit ?
 };
 
 #endif // !COIN_SONORMAL_H

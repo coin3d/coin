@@ -105,13 +105,13 @@
 # ID-------!      SoLabel
 # IDT-G---C!      SoLightModel
 # ID-BG-P-C!      SoProfile
-#  D !!-!-!!              SoLinearProfile
-#  D !!-!-!!              SoNurbsProfile
+# iD !!-!-!!              SoLinearProfile
+# iD !!-!-!!              SoNurbsProfile
 # IDT-G---C!      SoMaterial
 # IDT-G-P-C!      SoMaterialBinding
-#   --G-P-C!      SoNormal
-#   T-G-P-C!      SoNormalBinding
-#   T-G---C!      SoPackedColor
+# ID--G-P-C!      SoNormal
+# IDT-G-P-C!      SoNormalBinding
+# IDT-G---C!      SoPackedColor
 #    - -P-C!      SoPickStyle
 #   T-G---C!      SoPolygonOffset
 #   -B -P-C!      SoProfileCoordinate2

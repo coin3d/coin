@@ -20,9 +20,9 @@
 #ifndef COIN_SOPACKEDCOLOR_H
 #define COIN_SOPACKEDCOLOR_H
 
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoMFUInt32.h>
+#include <Inventor/nodes/SoNode.h>
+#include <Inventor/nodes/SoSubNode.h>
 
 
 class SoPackedColor : public SoNode {

@@ -19,23 +19,28 @@
 
 /*!
   \class SoNormal SoNormal.h Inventor/nodes/SoNormal.h
-  \brief The SoNormal class ...
+  \brief The SoNormal class is a node for providing normals to the state.
   \ingroup nodes
 
-  FIXME: write class doc
+  Coin will automatically calculate normals for you if no SoNormal
+  nodes are present in the scene graph, but explicitly setting normals
+  is useful for at least two purposes: 1) a potential increase in
+  performance, 2) you can calculate and use "incorrect" normals to do
+  various special effects.
+
+  \sa SoNormalBinding
 */
 
 #include <Inventor/nodes/SoNormal.h>
-#include <coindefs.h> // COIN_STUB()
+#include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/elements/SoNormalElement.h>
-#include <Inventor/actions/SoCallbackAction.h>
-#include <Inventor/actions/SoGetPrimitiveCountAction.h>
 
 /*!
   \var SoMFVec3f SoNormal::vector
-  FIXME: write documentation for field
+  Sets a pool of normal vectors in the traversal state.
 */
 
 // *************************************************************************
@@ -45,7 +50,7 @@ SO_NODE_SOURCE(SoNormal);
 /*!
   Constructor.
 */
-SoNormal::SoNormal()
+SoNormal::SoNormal(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoNormal);
 
@@ -59,94 +64,55 @@ SoNormal::~SoNormal()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoNormal class. This includes setting up the
-  type system, among other things.
-*/
+// Doc in superclass.
 void
 SoNormal::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoNormal);
 
-  SO_ENABLE(SoGLRenderAction, SoNormalElement);
-
-  SO_ENABLE(SoPickAction, SoNormalElement);
-
   SO_ENABLE(SoCallbackAction, SoNormalElement);
+  SO_ENABLE(SoGLRenderAction, SoNormalElement);
   SO_ENABLE(SoGetPrimitiveCountAction, SoNormalElement);
+  SO_ENABLE(SoPickAction, SoNormalElement);
 }
 
-// FIXME: enable this for 10%++ performance gain (no need to enable
-//        GL_NORMALIZE).
-// SbVec3f*
-// SoNormal::getNormalizedVectors()
-// {
-//   if (mVectorType == UNITVECTORS) return (SbVec3f*)vector.getValues(0); // FIXME: temp cast hack to compile. 19980909 mortene.
-//   if(mNormalizedVectors == NULL) {
-//     int i,n;
-//     const SbVec3f *vec;
-//     n = vector.getNum();
-//     mNormalizedVectors = new SbVec3f[n];
-//     vec = vector.getValues(0);
-//     for (i = 0; i < n; i++) {
-//       mNormalizedVectors[i] = *vec++;
-//       mNormalizedVectors[i].normalize();
-//     }
-//   }
-//   return mNormalizedVectors;
-// }
-
-
-/*!
-  FIXME: write function documentation
-*/
+// Doc in superclass.
 void
 SoNormal::GLRender(SoGLRenderAction * action)
 {
   //
-  // TODO: code to test if all normals are unit length,
-  //       and store this in some cached variable.
-  //       should be passed on to SoGLNormalizeElement
-  //       to optimize rendering (pederb)
+  // FIXME: code to test if all normals are unit length, and store
+  // this in some cached variable.  should be passed on to
+  // SoGLNormalizeElement to optimize rendering (pederb)
   //
   SoNormal::doAction(action);
-
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc in superclass.
 void
-SoNormal::doAction(SoAction *action)
+SoNormal::doAction(SoAction * action)
 {
   SoNormalElement::set(action->getState(), this,
-                       vector.getNum(), vector.getValues(0));
+                       this->vector.getNum(), this->vector.getValues(0));
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc in superclass.
 void
-SoNormal::callback(SoCallbackAction *action)
+SoNormal::callback(SoCallbackAction * action)
 {
   SoNormal::doAction(action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc in superclass.
 void
-SoNormal::pick(SoPickAction *action)
+SoNormal::pick(SoPickAction * action)
 {
   SoNormal::doAction(action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc in superclass.
 void
-SoNormal::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoNormal::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-  COIN_STUB();
+  SoNormal::doAction(action);
 }

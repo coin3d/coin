@@ -19,23 +19,32 @@
 
 /*!
   \class SoPackedColor SoPackedColor.h Inventor/nodes/SoPackedColor.h
-  \brief The SoPackedColor class ...
+  \brief The SoPackedColor class is a node for setting diffuse and transparency material values.
   \ingroup nodes
 
-  FIXME: write class doc
+  This node provides a convenient way of setting diffuse colors and
+  transparency values with packed 32-bit RGBA vectors.
+
+  \sa SoBaseColor
 */
 
 #include <Inventor/nodes/SoPackedColor.h>
-#include <coindefs.h> // COIN_STUB()
 
+#include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLDiffuseColorElement.h>
-#include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/elements/SoOverrideElement.h>
 
 /*!
   \var SoMFUInt32 SoPackedColor::orderedRGBA
-  FIXME: write documentation for field
+
+  Set of packed 32-bit RGBA vectors.
+
+  The most significant 24 bits specifies 8 bits each for the red,
+  green and blue components.
+
+  The least significant 8 bits specifies the transparency value, where
+  0x00 means completely transparent, and 0xff completely opaque.
 */
 
 // *************************************************************************
@@ -59,64 +68,56 @@ SoPackedColor::~SoPackedColor()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoPackedColor class. This includes setting up the
-  type system, among other things.
-*/
+// Doc from superclass.
 void
 SoPackedColor::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoPackedColor);
 
-  SO_ENABLE(SoGLRenderAction, SoGLDiffuseColorElement);
-
   SO_ENABLE(SoCallbackAction, SoDiffuseColorElement);
+  SO_ENABLE(SoGLRenderAction, SoGLDiffuseColorElement);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoPackedColor::GLRender(SoGLRenderAction * action)
 {
   SoPackedColor::doAction(action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoPackedColor::doAction(SoAction *action)
+SoPackedColor::doAction(SoAction * action)
 {
-  SoState *state = action->getState();
-  if (!orderedRGBA.isIgnored() &&
+  SoState * state = action->getState();
+  if (!this->orderedRGBA.isIgnored() &&
       !SoOverrideElement::getDiffuseColorOverride(state)) {
     SoDiffuseColorElement::set(state,
                                this,
-                               orderedRGBA.getNum(),
-                               orderedRGBA.getValues(0));
+                               this->orderedRGBA.getNum(),
+                               this->orderedRGBA.getValues(0));
     if (this->isOverride()) {
       SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
     }
   }
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoPackedColor::callback(SoCallbackAction *action)
+SoPackedColor::callback(SoCallbackAction * action)
 {
   SoPackedColor::doAction(action);
 }
 
 /*!
-  FIXME: write doc
+  Returns \c TRUE if there is at least one RGBA vector in the set
+  which is not completely opaque.
  */
 SbBool
 SoPackedColor::isTransparent(void)
 {
-  COIN_STUB();
+  for (int i=0; i < this->orderedRGBA.getNum(); i++) {
+    if ((this->orderedRGBA[i] & 0x000000ff) != 0x000000ff) return TRUE;
+  }
   return FALSE;
 }
