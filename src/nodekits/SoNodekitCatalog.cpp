@@ -29,6 +29,7 @@
 */
 
 #include <Inventor/nodekits/SoNodekitCatalog.h>
+#include <Inventor/nodekits/SoBaseKit.h>
 #include <Inventor/lists/SoTypeList.h>
 #include <Inventor/SbName.h>
 #include <assert.h>
@@ -820,13 +821,47 @@ SoNodekitCatalog::setNullByDefault(const SbName & name, SbBool nullbydefault)
 }
 
 /*!
-  FIXME: write function documentation
+  Recursively search \a part number in catalog for the \a name part.
+
+  The \a checked SoTypeList is just used as a placeholder to remember which
+  nodekit class catalogs have already been scanned (or are being scanned)
+  during the recursion. You should normally just pass in an empty list.
 */
 SbBool
-SoNodekitCatalog::recursiveSearch(int /*part*/, const SbName & /*name*/,
-                                  SoTypeList * /*checked*/) const
+SoNodekitCatalog::recursiveSearch(int part, const SbName & name,
+                                  SoTypeList * checked) const
 {
-  assert(0 && "FIXME: not implemented yet");
+#if COIN_DEBUG
+  if ((part < 0) || (part >= this->getNumEntries())) {
+    SoDebugError::postInfo("SoNodekitCatalog::recursiveSearch",
+                           "part number %d out of bounds", part);
+    return FALSE;
+  }
+#endif // COIN_DEBUG
+
+  if ((part == 0) && (checked->find(this->getType(0)) == -1))
+    checked->append(this->getType(0));
+
+  int start = (part == 0) ? 1 : part;
+  int end = (part == 0) ? this->getNumEntries()-1 : part;
+
+  for (int i = start; i <= end; i++) {
+    if (name == this->getName(i)) return TRUE;
+
+    SoType parttype = this->getType(i);
+    if (parttype.isDerivedFrom(SoBaseKit::getClassTypeId())) {
+      if (checked->find(parttype) == -1) {
+        checked->append(parttype);
+        SoBaseKit * kit = (SoBaseKit *)parttype.createInstance();
+        kit->ref();
+        const SoNodekitCatalog * cat = kit->getNodekitCatalog();
+        SbBool result = cat->recursiveSearch(0, name, checked);
+        kit->unref();
+        if (result) return TRUE;
+      }
+    }
+  }
+
   return FALSE;
 }
 
