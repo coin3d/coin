@@ -57,15 +57,14 @@ SoGLCoordinateElement::~SoGLCoordinateElement(void)
 {
 }
 
-//! FIXME: write doc.
-
-//$ EXPORT INLINE
+/*!
+  Send coordinates \a index to GL. Handles both 3D and 4D coordinates.
+*/
 void
 SoGLCoordinateElement::send(const int index) const
 {
-  assert(index < this->numCoords);
-  if (is3D()) glVertex3fv((const GLfloat*)(this->getPtr3() + index));
-  else glVertex4fv((const GLfloat*)(this->getPtr4() + index));
+  if (this->areCoords3D) glVertex3fv((const GLfloat*)(this->coords3D + index));
+  else glVertex4fv((const GLfloat*)(this->coords4D + index));
 }
 
 //! FIXME: write doc.
