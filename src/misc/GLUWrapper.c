@@ -208,175 +208,120 @@ GLUWrapper_gluScaleImage(GLenum a, GLsizei b, GLsizei c, GLenum d, const void * 
   return 0;
 }
 
-/* Replacement function for gluBuild2DMipmaps(). */
-static GLint APIENTRY
-GLUWrapper_gluBuild2DMipmaps(GLenum a, GLint c, GLsizei w, GLsizei h, GLenum e, GLenum f, const void * g)
-{
-  /* Just a void function. */
-
-  /* gluBuild2DMipmaps() should _always_ be present, as it has been
-     present in GLU from version 1.0. This is just here as a paranoid
-     measure to avoid a crash if we happen to stumble into a faulty
-     GLU library. */
-
-  /* FIXME: memset() to a pattern? 20011129 mortene. */
-
-  /* 0 indicates success. */
-  return 0;
-}
-
 /* Implemented by using the singleton pattern. */
 const GLUWrapper_t *
 GLUWrapper(void)
 {
+  GLUWrapper_t * gi;
+
   CC_SYNC_BEGIN(GLUWrapper);
 
-  if (!GLU_instance && !GLU_failed_to_load) {
-    /* First invocation, do initializations. */
-    GLUWrapper_t * gi = (GLUWrapper_t *)malloc(sizeof(GLUWrapper_t));
-    /* FIXME: handle out-of-memory on malloc(). 20000928 mortene. */
-    (void)coin_atexit((coin_atexit_f*) GLUWrapper_cleanup);
+  if (GLU_instance || GLU_failed_to_load) { goto wrapperexit; }
 
-    /* Detect recursive calls. */
-    {
-      static int is_initializing = 0;
-      assert(is_initializing == 0);
-      is_initializing = 1;
-    }
+  /* Detect recursive calls. */
+  {
+    static int is_initializing = 0;
+    assert(is_initializing == 0);
+    is_initializing = 1;
+  }
 
 
-    gi->versionMatchesAtLeast = GLUWrapper_versionMatchesAtLeast;
+  /* First invocation, do initializations. */
+  GLU_instance = gi = (GLUWrapper_t *)malloc(sizeof(GLUWrapper_t));
+  /* FIXME: handle out-of-memory on malloc(). 20000928 mortene. */
+  (void)coin_atexit((coin_atexit_f*) GLUWrapper_cleanup);
+
+  gi->versionMatchesAtLeast = GLUWrapper_versionMatchesAtLeast;
 
     /* The common case is that GLU is either available from the
        linking process or we're successfully going to link it in. */
-    gi->available = 1;
+  gi->available = 1;
 
 #ifdef GLU_RUNTIME_LINKING
-    {
-      /* FIXME: should we get the system shared library name from an
-         Autoconf check? 20000930 mortene. */
-      const char * possiblelibnames[] = {
-        /* MSWindows DLL name for the GLU library */
-        "glu32",
+  {
+    /* FIXME: should we get the system shared library name from an
+       Autoconf check? 20000930 mortene. */
+    const char * possiblelibnames[] = {
+      /* MSWindows DLL name for the GLU library */
+      "glu32",
 
-        /* UNIX-style names */
-        "GLU", "MesaGLU",
-        "libGLU", "libMesaGLU",
-        "libGLU.so", "libMesaGLU.so",
-        NULL
-      };
+      /* UNIX-style names */
+      "GLU", "MesaGLU",
+      "libGLU", "libMesaGLU",
+      "libGLU.so", "libMesaGLU.so",
+      NULL
+    };
 
-      int idx = 0;
-      while (!GLU_libhandle && possiblelibnames[idx]) {
-        /*
-         * FIXME: Purify complains about Bad Function Parameter here.
-         * Everything seems to work ok though?  pederb, 2001-02-07
-         */
-        GLU_libhandle = OPEN_RUNTIME_BINDING(possiblelibnames[idx]);
-        idx++;
-      }
-
-      if (!GLU_libhandle) {
-        gi->available = 0;
-        GLU_failed_to_load = 1;
-
-        GLU_instance = gi;
-      }
+    int idx = 0;
+    while (!GLU_libhandle && possiblelibnames[idx]) {
+      /*
+       * FIXME: Purify complains about Bad Function Parameter here.
+       * Everything seems to work ok though?  pederb, 2001-02-07
+       */
+      GLU_libhandle = OPEN_RUNTIME_BINDING(possiblelibnames[idx]);
+      idx++;
     }
-    if (!GLU_failed_to_load) {
-      /* Define GLUWRAPPER_REGISTER_FUNC macro. Casting the type is
-         necessary for this file to be compatible with C++ compilers. */
+
+    if (!GLU_libhandle) {
+      gi->available = 0;
+      GLU_failed_to_load = 1;
+      goto wrapperexit;
+    }
+  }
+
+  /* Define GLUWRAPPER_REGISTER_FUNC macro. Casting the type is
+     necessary for this file to be compatible with C++ compilers. */
 #define GLUWRAPPER_REGISTER_FUNC(_funcname_, _funcsig_) \
       gi->_funcname_ = (_funcsig_)GET_RUNTIME_SYMBOL(GLU_libhandle, SO__QUOTE(_funcname_))
       
 #elif defined(GLUWRAPPER_ASSUME_GLU) /* !GLU_RUNTIME_LINKING */
       
-      /* Define GLUWRAPPER_REGISTER_FUNC macro. */
+    /* Define GLUWRAPPER_REGISTER_FUNC macro. */
 #define GLUWRAPPER_REGISTER_FUNC(_funcname_, _funcsig_) \
       gi->_funcname_ = (_funcsig_)_funcname_
 
 #else /* !GLUWRAPPER_ASSUME_GLU */
-      gi->available = 0;
+  gi->available = 0;
     /* Define GLUWRAPPER_REGISTER_FUNC macro. */
 #define GLUWRAPPER_REGISTER_FUNC(_funcname_, _funcsig_) \
       gi->_funcname_ = NULL
 
 #endif /* !GLUWRAPPER_ASSUME_GLU */
       
-      GLUWRAPPER_REGISTER_FUNC(gluBuild2DMipmaps, gluBuild2DMipmaps_t);
-      GLUWRAPPER_REGISTER_FUNC(gluScaleImage, gluScaleImage_t);
-      GLUWRAPPER_REGISTER_FUNC(gluGetString, gluGetString_t);
-      GLUWRAPPER_REGISTER_FUNC(gluNewNurbsRenderer, gluNewNurbsRenderer_t);
-      GLUWRAPPER_REGISTER_FUNC(gluDeleteNurbsRenderer, gluDeleteNurbsRenderer_t);
-      GLUWRAPPER_REGISTER_FUNC(gluNurbsProperty, gluNurbsProperty_t);
-      GLUWRAPPER_REGISTER_FUNC(gluLoadSamplingMatrices, gluLoadSamplingMatrices_t);
-      GLUWRAPPER_REGISTER_FUNC(gluBeginSurface, gluBeginSurface_t);
-      GLUWRAPPER_REGISTER_FUNC(gluEndSurface, gluEndSurface_t);
-      GLUWRAPPER_REGISTER_FUNC(gluNurbsSurface, gluNurbsSurface_t);
-      GLUWRAPPER_REGISTER_FUNC(gluBeginTrim, gluBeginTrim_t);
-      GLUWRAPPER_REGISTER_FUNC(gluEndTrim, gluEndTrim_t);
-      GLUWRAPPER_REGISTER_FUNC(gluBeginCurve, gluBeginCurve_t);
-      GLUWRAPPER_REGISTER_FUNC(gluEndCurve, gluEndCurve_t);
-      GLUWRAPPER_REGISTER_FUNC(gluNurbsCurve, gluNurbsCurve_t);
-      GLUWRAPPER_REGISTER_FUNC(gluPwlCurve, gluPwlCurve_t);
-      GLUWRAPPER_REGISTER_FUNC(gluNurbsCallback, gluNurbsCallback_t);
+  GLUWRAPPER_REGISTER_FUNC(gluScaleImage, gluScaleImage_t);
+  GLUWRAPPER_REGISTER_FUNC(gluGetString, gluGetString_t);
+  GLUWRAPPER_REGISTER_FUNC(gluNewNurbsRenderer, gluNewNurbsRenderer_t);
+  GLUWRAPPER_REGISTER_FUNC(gluDeleteNurbsRenderer, gluDeleteNurbsRenderer_t);
+  GLUWRAPPER_REGISTER_FUNC(gluNurbsProperty, gluNurbsProperty_t);
+  GLUWRAPPER_REGISTER_FUNC(gluLoadSamplingMatrices, gluLoadSamplingMatrices_t);
+  GLUWRAPPER_REGISTER_FUNC(gluBeginSurface, gluBeginSurface_t);
+  GLUWRAPPER_REGISTER_FUNC(gluEndSurface, gluEndSurface_t);
+  GLUWRAPPER_REGISTER_FUNC(gluNurbsSurface, gluNurbsSurface_t);
+  GLUWRAPPER_REGISTER_FUNC(gluBeginTrim, gluBeginTrim_t);
+  GLUWRAPPER_REGISTER_FUNC(gluEndTrim, gluEndTrim_t);
+  GLUWRAPPER_REGISTER_FUNC(gluBeginCurve, gluBeginCurve_t);
+  GLUWRAPPER_REGISTER_FUNC(gluEndCurve, gluEndCurve_t);
+  GLUWRAPPER_REGISTER_FUNC(gluNurbsCurve, gluNurbsCurve_t);
+  GLUWRAPPER_REGISTER_FUNC(gluPwlCurve, gluPwlCurve_t);
+  GLUWRAPPER_REGISTER_FUNC(gluNurbsCallback, gluNurbsCallback_t);
 #if defined(GLU_VERSION_1_3) || defined(GLU_RUNTIME_LINKING)
-      GLUWRAPPER_REGISTER_FUNC(gluNurbsCallbackData, gluNurbsCallbackData_t);
-      GLUWRAPPER_REGISTER_FUNC(gluBuild3DMipmaps, gluBuild3DMipmaps_t);
+  GLUWRAPPER_REGISTER_FUNC(gluNurbsCallbackData, gluNurbsCallbackData_t);
 #else /* !gluNurbsCallbackData */
-      gi->gluNurbsCallbackData = NULL;
-      gi->gluBuild3DMipmaps = NULL;
+  gi->gluNurbsCallbackData = NULL;
 #endif /* !gluNurbsCallbackData */
       
-      /* "Backup" functions, makes it easier to be robust even when no
-         GLU library can be loaded. */
-      if (gi->gluScaleImage == NULL)
-        gi->gluScaleImage = GLUWrapper_gluScaleImage;
-      if (gi->gluBuild2DMipmaps == NULL)
-        gi->gluBuild2DMipmaps = GLUWrapper_gluBuild2DMipmaps;
-      if (gi->gluGetString == NULL) /* Was missing in GLU v1.0. */
-        gi->gluGetString = GLUWrapper_gluGetString;
+  /* "Backup" functions, makes it easier to be robust even when no GLU
+     library can be loaded. */
+  if (gi->gluScaleImage == NULL)
+    gi->gluScaleImage = GLUWrapper_gluScaleImage;
+  if (gi->gluGetString == NULL) /* Was missing in GLU v1.0. */
+    gi->gluGetString = GLUWrapper_gluGetString;
       
-#if 0 /* debug */
-      /* Test code for the GLUWrapper_set_version() parsing. */
-      GLUWrapper_set_version("1.2");
-      (void)fprintf(stdout, "%d.%d.%d\n",
-                    gi->version.major,
-                    gi->version.minor,
-                    gi->version.release);
-      GLUWrapper_set_version("1.2 ");
-      (void)fprintf(stdout, "%d.%d.%d\n",
-                    gi->version.major,
-                    gi->version.minor,
-                    gi->version.release);
-      GLUWrapper_set_version("1.2.3");
-      (void)fprintf(stdout, "%d.%d.%d\n",
-                    gi->version.major,
-                    gi->version.minor,
-                    gi->version.release);
-      GLUWrapper_set_version("1.2.3 ");
-      (void)fprintf(stdout, "%d.%d.%d\n",
-                    gi->version.major,
-                    gi->version.minor,
-                    gi->version.release);
-      GLUWrapper_set_version("1.2.3 hepp");
-      (void)fprintf(stdout, "%d.%d.%d\n",
-                    gi->version.major,
-                    gi->version.minor,
-                    gi->version.release);
-      (void)fflush(stdout);
-#endif /* debug */
-      
-      /* Do this late, so we can detect recursive calls to this function. */
-      GLU_instance = gi;
-      
-      /* Parse the version string once and expose the version numbers
-         through the GLUWrapper API. */
-      GLUWrapper_set_version(gi->gluGetString(GLU_VERSION));
-    }
-  }
+  /* Parse the version string once and expose the version numbers
+     through the GLUWrapper API. */
+  GLUWrapper_set_version(gi->gluGetString(GLU_VERSION));
 
+wrapperexit:
   CC_SYNC_END(GLUWrapper);
-
   return GLU_instance;
 }

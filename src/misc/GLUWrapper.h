@@ -48,8 +48,6 @@ typedef void (*gluNurbsCallback_cb_t)(void *, ...);
 /* Typedefinitions of function signatures for GLU calls we use. We
    need these for casting from the void-pointer return of dlsym().*/
 typedef const GLubyte * (APIENTRY *gluGetString_t)(GLenum);
-typedef GLint (APIENTRY *gluBuild2DMipmaps_t)(GLenum, GLint, GLsizei, GLsizei, GLenum, GLenum, const void *);
-typedef GLint (APIENTRY *gluBuild3DMipmaps_t)(GLenum, GLint, GLsizei, GLsizei, GLsizei, GLenum, GLenum, const void *);
 typedef GLint (APIENTRY *gluScaleImage_t)(GLenum, GLsizei, GLsizei, GLenum, const void *, GLsizei, GLsizei, GLenum, GLvoid *);
 /* The first argument for these methods is actually either GLUnurbs or
    GLUnurbsObj, depending on the GLU version (yes, they managed to
@@ -89,8 +87,6 @@ typedef struct {
      always available. (That is, as long as GLU itself is available.)
      */
   gluGetString_t gluGetString;
-  gluBuild2DMipmaps_t gluBuild2DMipmaps; /* always present */
-  gluBuild3DMipmaps_t gluBuild3DMipmaps;
   gluScaleImage_t gluScaleImage; /* always present */
   gluNewNurbsRenderer_t gluNewNurbsRenderer;
   gluDeleteNurbsRenderer_t gluDeleteNurbsRenderer;
