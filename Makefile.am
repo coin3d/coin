@@ -36,3 +36,6 @@ EXTRA_DIST = \
 doxygen-doc:
 	@@sim_ac_doxygen_exe@ $(top_builddir)/docs/coin.doxygen
 
+# sources needed to generate docs must be created by this rule
+built-sources:
+
