@@ -198,6 +198,12 @@ SoCube::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   center.setValue(0.0f, 0.0f, 0.0f);
   float w, h, d;
   this->getHalfSize(w, h, d);
+
+  // Allow negative values.
+  if (w < 0.0f) w = -w;
+  if (h < 0.0f) h = -h;
+  if (d < 0.0f) d = -d;
+
   box.setBounds(-w, -h, -d, w, h, d);
 }
 
