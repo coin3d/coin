@@ -1196,9 +1196,9 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
     // the same SoOutput to write "USE ..." when it should write a
     // full node/subgraph specification on the second run.  -mortene.
     //
-    // FIXME: accessing out->sobase2id directly takes a "friend
-    // SoBase" in the SoOutput class definition. Should fix with
-    // proper design for Coin-2. 20020426 mortene
+    // FIXME: accessing out->removeSoBase2IdRef() directly takes a
+    // "friend SoBase" in the SoOutput class definition. Should fix
+    // with proper design for Coin-2. 20020426 mortene
     if (out->findReference(this) != REFID_FIRSTWRITE)
       out->removeSoBase2IdRef(this);
   }
