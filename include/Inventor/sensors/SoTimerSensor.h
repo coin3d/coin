@@ -38,7 +38,7 @@ public:
 
   virtual void schedule(void);
   virtual void unschedule(void);
-  virtual SbBool isScheduled(void);
+  virtual SbBool isScheduled(void) const;
   void reschedule(const SbTime & schedtime);
 
 private:

@@ -236,7 +236,7 @@ SoTimerSensor::trigger(void)
   return the correct schedule status during triggering.
  */
 SbBool
-SoTimerSensor::isScheduled(void)
+SoTimerSensor::isScheduled(void) const
 {
   if (this->istriggering) return this->wasunscheduled ? FALSE : TRUE;
   return inherited::isScheduled();
