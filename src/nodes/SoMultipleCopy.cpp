@@ -92,26 +92,6 @@ SoMultipleCopy::initClass(void)
 void
 SoMultipleCopy::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  // FIXME: this code is buggy, as can be seen by loading this
-  // scenegraph into one of the So* viewer components with automatic
-  // near and far plane setup:
-  //
-  //  MultipleCopy {
-  //     matrix [
-  //      1 0 0 0   0 1 0 0   0 0 1 0   0 0 0 1,
-  //      1 0 0 0   0 1 0 0   0 0 1 0   4 0 0 1
-  //     ]
-  //
-  //     Sphere { }
-  //  }
-  //
-  // (Note: SoArray::getBoundingBox() might give a clue to how it
-  // _should_ be done.)
-  //
-  // 20011218 mortene.
-  //
-  // 20020808 The code should now work properly. kristian.
-
   // get reference to the box
   SbXfBox3f & box = action->getXfBoundingBox();
 
