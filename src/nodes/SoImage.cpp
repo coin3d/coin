@@ -100,27 +100,35 @@
 
 /*!
   \var SoSFInt32 SoImage::width
+
   If bigger than 0, resize image to this width before rendering.
+  Default value is -1 (ie "don't resize").
 */
 /*!
   \var SoSFInt32 SoImage::height
-  if bigger than 0, resize image to this height before rendering.
+
+  If bigger than 0, resize image to this height before rendering.
+  Default value is -1 (ie "don't resize").
 */
 /*!
   \var SoSFEnum SoImage::vertAlignment
-  Vertical alignment.
+
+  Vertical alignment. Default value is SoImage::BOTTOM.
 */
 /*!
   \var SoSFEnum SoImage::horAlignment
-  Horizontal alignment.
+
+  Horizontal alignment.  Default value is SoImage::LEFT.
 */
 /*!
   \var SoSFImage SoImage::image
-  Inline image data.
+
+  Inline image data. Default empty.
 */
 /*!
   \var SoSFString SoImage::filename
-  Image filename.
+
+  Image filename. Default empty.
 */
 
 
