@@ -1597,15 +1597,33 @@ SoField::read(SoInput * in, const SbName & name)
       // Check if there's a field-to-field connection here as the
       // default value following the field can be omitted.
       if (in->read(c)) { // if-check in case EOF on an SoField::set() invocation
-        // FIXME: I believe there's the potential for an obscure bug
-        // to happen here; if the field is an SoSFString where the
-        // string is unquoted and starts with a CONNECTIONCHAR
-        // (i.e. '='), it could perhaps lead to a false positive for
-        // the check below. Should investigate by making a test case
-        // to try to trigger such a bug. 20030811 mortene.
+        // There's potential for an obscure bug to happen here: if the
+        // field is an SoSFString where the string is unquoted and
+        // starts with a CONNECTIONCHAR (i.e. '='), it will lead to a
+        // false positive for the if()-check below, which again causes a
+        // rather obtuse error message:
+        //
+        // Coin read error: Expected '{'; got '}'
+        //     Occurred at line   3 in hepp.iv
+        //
+        // For the following test file:
+        //
+        // ----8<---- [snip] -------8<----
+        // #Inventor V2.1 ascii
+        //
+        // Info { string =moo }
+        // ----8<---- [snip] -------8<----
+        //
+        // Tamer Fahmy investigated and found this behavior to also
+        // happen for SGI Inventor. Since that is the case, we won't
+        // try to handle this as a valid file construct.
+        //
+        // FIXME: it would be nice if we could improve the error
+        // message, to let the app programmer actually stand a chance
+        // of debugging this when it happens. 20030811 mortene.
         if (c == CONNECTIONCHAR) { 
-           if (!this->readConnection(in)) return FALSE;
-           else return TRUE;
+          if (!this->readConnection(in)) return FALSE;
+          else return TRUE;
         }
         else in->putBack(c);
       }
