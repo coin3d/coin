@@ -27,6 +27,7 @@
 
 #define SO_NODE_ABSTRACT_HEADER(_class_) \
 private: \
+  static unsigned int classinstances; \
   static SoType classTypeId; \
 public: \
   static SoType getClassTypeId(void); \
@@ -39,6 +40,7 @@ public: \
 
 
 #define SO_NODE_ABSTRACT_SOURCE(_class_) \
+unsigned int _class_::classinstances = 0; \
 SoType _class_::classTypeId = SoType::badType(); \
  \
 SoType \
@@ -65,9 +67,13 @@ _class_::createInstance(void) \
 }
 
 
+#define SO_NODE_IS_FIRST_INSTANCE() \
+  (classinstances == 1)
+
 
 #define SO_NODE_CONSTRUCTOR(_class_) \
   do { \
+    _class_::classinstances++; \
     /* Catch attempts to use a node class which has not been initialized. */ \
     assert(_class_::classTypeId != SoType::badType()); \
     /* Extensions classes from the application programmers should not be \
@@ -80,6 +86,7 @@ _class_::createInstance(void) \
 #if defined(__SOLIB_INTERNAL__)
 #define SO_NODE_INTERNAL_CONSTRUCTOR(_class_) \
   do { \
+    _class_::classinstances++; \
     /* Catch attempts to use a node class which has not been initialized. */ \
     assert(_class_::classTypeId != SoType::badType()); \
   } while (0)
