@@ -21,15 +21,16 @@
 
 #VERBOSE = -v
 
-sdk_prefix = $(PWD)/install
-framework_prefix = $(PWD)/framework
+install_prefix = $(PWD)/install
+cointools_prefix = $(install_prefix)/usr/local
+framework_prefix = $(install_prefix)/Library/Frameworks
 top_srcdir = @top_srcdir@
 builddir = build-shared-release
 
 COINDIST = Coin-$(VERSION).tar.gz
 COIN = Coin-$(VERSION)
 COINLIB = $(builddir)/src/libCoin.la
-BUILDOPTIONS = --prefix=$(sdk_prefix) --with-framework-prefix=$(framework_prefix) --enable-threadsafe --disable-3ds-import --enable-optimization --disable-debug --disable-symbols
+BUILDOPTIONS = --enable-threadsafe --disable-3ds-import --enable-optimization --disable-debug --disable-symbols
 
 # **************************************************************************
 
@@ -49,21 +50,16 @@ Coin.pkg: $(COINLIB)
 	@sh makecoinpkg.sh $(VERBOSE) -f $(framework_prefix)/Inventor.framework
 
 CoinTools.pkg: $(COINLIB)
-	@sh makecointoolspkg.sh $(VERBOSE) -r $(sdk_prefix)
+	@sh makecointoolspkg.sh $(VERBOSE) -r $(cointools_prefix)
 
 # Configure, build and install Coin
-# Includes a fix for changing the install name of the library
-# to /Library/Framework/... and copying of libsimage and libfreetype
-# to the correct location
+# Includes copying of libsimage and libfreetype to the correct location
 $(COINLIB): ../$(COIN) supportlibs/lib/libsimage.dylib supportlibs/lib/libfreetype.dylib
 	@if test -d $(builddir); then :; else mkdir $(builddir); fi
 	@cd $(builddir); \
 	../../$(COIN)/configure $(BUILDOPTIONS)
-	@cd $(builddir); $(MAKE)
-	@cd $(builddir); $(MAKE) install
-	@touch $(COINLIB)
-	@cd $(framework_prefix); \
-	dylib=`find Inventor.framework -name "libCoin.dylib"`; \
-	install_name_tool -id /Library/Frameworks/$$dylib $$dylib
-	@cp supportlibs/lib/libsimage.dylib $(framework_prefix)/Inventor.framework/Versions/Current/Resources
-	@cp supportlibs/lib/libfreetype.dylib $(framework_prefix)/Inventor.framework/Versions/Current/Resources
+	cd $(builddir); $(MAKE)
+	cd $(builddir); $(MAKE) DESTDIR=$(install_prefix) install
+	touch $(COINLIB)
+	cp supportlibs/lib/libsimage.dylib $(framework_prefix)/Inventor.framework/Versions/Current/Resources
+	cp supportlibs/lib/libfreetype.dylib $(framework_prefix)/Inventor.framework/Versions/Current/Resources
