@@ -53,4 +53,4 @@ COIN_DLL_API SbBool cc_fifo_reclaim(cc_fifo * fifo, void * item);
 } /* extern "C" */
 #endif /* __cplusplus */
 
-#endif /* ! CC_PFIFO_H */
+#endif /* ! CC_FIFO_H */
