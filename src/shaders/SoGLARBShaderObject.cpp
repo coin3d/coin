@@ -30,7 +30,8 @@
 
 // *************************************************************************
 
-SoGLARBShaderObject::SoGLARBShaderObject(void)
+SoGLARBShaderObject::SoGLARBShaderObject(const cc_glglue * g)
+  : SoGLShaderObject(g)
 {
   this->arbProgramID = 0;
 }
@@ -40,27 +41,27 @@ SoGLARBShaderObject::~SoGLARBShaderObject()
 }
 
 SbBool
-SoGLARBShaderObject::isLoaded(const cc_glglue * g) const
+SoGLARBShaderObject::isLoaded(void) const
 {
-  return cc_glglue_glIsProgram(g, this->arbProgramID);
+  return cc_glglue_glIsProgram(this->glctx, this->arbProgramID);
 }
 
 void
-SoGLARBShaderObject::load(const cc_glglue * g, const char * srcStr)
+SoGLARBShaderObject::load(const char * srcStr)
 {
   int len = strlen(srcStr);
 
   this->target = isVertexShader() 
     ? GL_VERTEX_PROGRAM_ARB : GL_FRAGMENT_PROGRAM_ARB;
 
-  this->unload(g);
+  this->unload();
 
   if (len == 0) return;
 
   glEnable(this->target);
-  cc_glglue_glGenPrograms(g, 1, &this->arbProgramID);
-  cc_glglue_glBindProgram(g, this->target, this->arbProgramID);
-  cc_glglue_glProgramString(g, this->target, GL_PROGRAM_FORMAT_ASCII_ARB, len, srcStr);
+  cc_glglue_glGenPrograms(this->glctx, 1, &this->arbProgramID);
+  cc_glglue_glBindProgram(this->glctx, this->target, this->arbProgramID);
+  cc_glglue_glProgramString(this->glctx, this->target, GL_PROGRAM_FORMAT_ASCII_ARB, len, srcStr);
 
   if (glGetError() == GL_INVALID_OPERATION) {
     GLint errorPos;
@@ -77,16 +78,16 @@ SoGLARBShaderObject::load(const cc_glglue * g, const char * srcStr)
 }
 
 void
-SoGLARBShaderObject::unload(const cc_glglue * g)
+SoGLARBShaderObject::unload(void)
 {
-  if (cc_glglue_glIsProgram(g, this->arbProgramID)) {
-    cc_glglue_glDeletePrograms(g, 1, &this->arbProgramID);
+  if (cc_glglue_glIsProgram(this->glctx, this->arbProgramID)) {
+    cc_glglue_glDeletePrograms(this->glctx, 1, &this->arbProgramID);
     this->arbProgramID = 0;
   }
 }
 
 SoGLShader::ShaderType
-SoGLARBShaderObject::shaderType() const
+SoGLARBShaderObject::shaderType(void) const
 {
   return SoGLShader::ARB_SHADER;
 }
@@ -98,16 +99,16 @@ SoGLARBShaderObject::getParameter(int index, const char*, SoGLShader::ValueType)
 }
 
 void
-SoGLARBShaderObject::enable(const cc_glglue * g)
+SoGLARBShaderObject::enable(void)
 {
-  if (this->isActive(g)) {
-    cc_glglue_glBindProgram(g, this->target, this->arbProgramID);
+  if (this->isActive()) {
+    cc_glglue_glBindProgram(this->glctx, this->target, this->arbProgramID);
     glEnable(this->target);
   }
 }
 
 void
-SoGLARBShaderObject::disable(const cc_glglue * g)
+SoGLARBShaderObject::disable(void)
 {
-  if (this->isActive(g)) glDisable(this->target);
+  if (this->isActive()) glDisable(this->target);
 }

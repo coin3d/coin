@@ -26,6 +26,7 @@
 #include <assert.h>
 
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLShaderProgramElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoFragmentShader.h>
@@ -34,20 +35,20 @@
 #include <Inventor/nodes/SoVertexShader.h>
 #include <Inventor/sensors/SoNodeSensor.h>
 
-#include "SoGLARBShader.h"
+#include "SoGLARBShaderObject.h"
 #include "SoGLCgShader.h"
 #include "SoGLSLShader.h"
 #include "SoGLShaderObject.h"
 
 // *************************************************************************
 
-class SoShaderObjectP 
+class SoShaderObjectP
 {
 public:
-  SoShaderObjectP(SoShaderObject *ownerptr); 
+  SoShaderObjectP(SoShaderObject *ownerptr);
   ~SoShaderObjectP();
 
-  void GLRender(SoGLRenderAction *action); 
+  void GLRender(SoGLRenderAction *action);
 
   SoShaderObject * owner;
   SoGLShaderObject * glShaderObject;
@@ -57,7 +58,7 @@ public:
   SbString cachedSourceProgram;
 
   void updateParameters(int start, int num);
-  void updateAllParameters(); 
+  void updateAllParameters(void);
   void updateStateMatrixParameters();
   SbBool containStateMatrixParameters() const;
   void removeGLShaderFromGLProgram(SoGLShaderProgram *glProgram);
@@ -114,25 +115,26 @@ SoShaderObject::~SoShaderObject()
   delete SELF;
 }
 
-void SoShaderObject::GLRender(SoGLRenderAction * action)
+void
+SoShaderObject::GLRender(SoGLRenderAction * action)
 {
   SELF->GLRender(action);
 }
 
-// Really send the parameters from start to start + num to the shaders. 
-void SoShaderObject::updateParameters(int start, int num)
+void
+SoShaderObject::updateParameters(int start, int num)
 {
   SELF->updateParameters(start, num);
 }
 
-// Really send all the parameters to the shaders. 
-void SoShaderObject::updateAllParameters()
+void
+SoShaderObject::updateAllParameters(void)
 {
   SELF->updateAllParameters();
 }
 
-// Update state matrix paramaters
-void SoShaderObject::updateStateMatrixParameters()
+void
+SoShaderObject::updateStateMatrixParameters(void)
 {
   SELF->updateStateMatrixParameters();
 }
@@ -192,9 +194,12 @@ void
 SoShaderObjectP::GLRender(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
-  SoGLShaderProgram * shaderProgram = SoGLShaderProgramElement::get(state);
 
+  SoGLShaderProgram * shaderProgram = SoGLShaderProgramElement::get(state);
   assert(shaderProgram);
+
+  const cc_glglue * glue =
+    cc_glglue_instance(SoGLCacheContextElement::get(state));
 
   SbBool flag = this->owner->isActive.getValue();
 
@@ -232,13 +237,13 @@ SoShaderObjectP::GLRender(SoGLRenderAction * action)
       SbBool flag = FALSE;
 
       switch (this->glShaderObject->shaderType()) {
-      case SoGLShader::ARB_SHADER: 
+      case SoGLShader::ARB_SHADER:
         if (this->cachedSourceType != SoShaderObject::ARB_PROGRAM) flag=TRUE;
         break;
-      case SoGLShader::CG_SHADER: 
+      case SoGLShader::CG_SHADER:
         if (this->cachedSourceType != SoShaderObject::CG_PROGRAM) flag=TRUE;
         break;
-      case SoGLShader::GLSL_SHADER: 
+      case SoGLShader::GLSL_SHADER:
         if (this->cachedSourceType != SoShaderObject::GLSL_PROGRAM)flag=TRUE;
         break;
       default:
@@ -259,7 +264,7 @@ SoShaderObjectP::GLRender(SoGLRenderAction * action)
     if (!this->glShaderObject) {
       switch (this->cachedSourceType) {
       case SoShaderObject::ARB_PROGRAM:
-        this->glShaderObject = (SoGLShaderObject*) new SoGLARBShaderObject;
+        this->glShaderObject = (SoGLShaderObject *)new SoGLARBShaderObject(glue);
         break;
 #if defined(SO_CG_SHADER_SUPPORT)
       case SoShaderObject::CG_PROGRAM:
@@ -299,7 +304,7 @@ SoShaderObjectP::GLRender(SoGLRenderAction * action)
 void
 SoShaderObjectP::checkType()
 {
-  this->cachedSourceType = 
+  this->cachedSourceType =
     (SoShaderObject::SourceType)this->owner->sourceType.getValue();
 
   if (this->cachedSourceType != SoShaderObject::FILENAME) return;
@@ -321,12 +326,12 @@ SoShaderObjectP::checkType()
       return;
     }
     if (subStr == ".fp") {
-      this->cachedSourceType = this->owner->isVertexShader() 
+      this->cachedSourceType = this->owner->isVertexShader()
         ? SoShaderObject::FILENAME : SoShaderObject::ARB_PROGRAM;
       return;
     }
     if (subStr==".vp") {
-      this->cachedSourceType = this->owner->isVertexShader() 
+      this->cachedSourceType = this->owner->isVertexShader()
         ? SoShaderObject::ARB_PROGRAM : SoShaderObject::FILENAME;
       return;
     }
@@ -347,7 +352,7 @@ SoShaderObjectP::checkType()
 void
 SoShaderObjectP::readSource(void)
 {
-  SoShaderObject::SourceType srcType = 
+  SoShaderObject::SourceType srcType =
     (SoShaderObject::SourceType)this->owner->sourceType.getValue();
 
   this->cachedSourceProgram.makeEmpty();
@@ -362,21 +367,21 @@ SoShaderObjectP::readSource(void)
 
       // FIXME: should really look for the file in all paths that
       // SoInput::getDirectories() had when .iv-file was
-      // read. 20050120 mortene. 
+      // read. 20050120 mortene.
       FILE * f = fopen(fileName.getString(), "rb");
       if (f) {
         int ok = fseek(f, 0L, SEEK_END);
-        assert(ok); // FIXME: be more robust. 20050120 mortene. 
+        assert(ok); // FIXME: be more robust. 20050120 mortene.
         const long length = ftell(f);
-        assert(length != -1); // FIXME: be more robust. 20050120 mortene. 
-        assert(length != 0); // FIXME: be more robust. 20050120 mortene. 
+        assert(length != -1); // FIXME: be more robust. 20050120 mortene.
+        assert(length != 0); // FIXME: be more robust. 20050120 mortene.
 
         ok = fseek(f, 0L, SEEK_SET);
-        assert(ok); // FIXME: be more robust. 20050120 mortene. 
+        assert(ok); // FIXME: be more robust. 20050120 mortene.
 
         char * srcstr = new char[length+1];
         size_t readlen = fread(srcstr, 1, length, f);
-        assert(readlen == (size_t)length); // FIXME: be more robust. 20050120 mortene. 
+        assert(readlen == (size_t)length); // FIXME: be more robust. 20050120 mortene.
 
         srcstr[length] = '\0';
         this->cachedSourceProgram = srcstr;
@@ -412,26 +417,27 @@ void SoShaderObjectP::updateParameters(int start, int num)
 
   end = (end > cnt) ? cnt : end;
   for (int i=start; i<end; i++) {
-    SoUniformShaderParameter * param = 
+    SoUniformShaderParameter * param =
       (SoUniformShaderParameter*)this->owner->parameter[i];
     param->updateParameter(this->glShaderObject);
   }
 }
 
-void SoShaderObjectP::updateAllParameters()
+void
+SoShaderObjectP::updateAllParameters(void)
 {
   if (this->glShaderObject==NULL || !this->glShaderObject->isActive()) return;
 
   int i, cnt = this->owner->parameter.getNum();
 
   for (i=0; i<cnt; i++) {
-    SoUniformShaderParameter *param = 
+    SoUniformShaderParameter *param =
       (SoUniformShaderParameter*)this->owner->parameter[i];
     param->updateParameter(this->glShaderObject);
   }
   cnt = this->owner->getNumChildren();
   for (i=0; i<cnt; i++) {
-    SoUniformShaderParameter *param = 
+    SoUniformShaderParameter *param =
       (SoUniformShaderParameter*)this->owner->getChild(i);
     param->updateParameter(this->glShaderObject);
   }
@@ -441,7 +447,7 @@ void SoShaderObjectP::updateAllParameters()
 void SoShaderObjectP::updateStateMatrixParameters()
 {
 #if defined(SO_CG_SHADER_SUPPORT)
-#define STATE_PARAM SoShaderStateMatrixParameter 
+#define STATE_PARAM SoShaderStateMatrixParameter
   if (this->glShaderObject==NULL || !this->glShaderObject->isActive()) return;
 
   int i, cnt = this->owner->parameter.getNum();
@@ -463,7 +469,7 @@ void SoShaderObjectP::updateStateMatrixParameters()
 SbBool SoShaderObjectP::containStateMatrixParameters() const
 {
 #if defined(SO_CG_SHADER_SUPPORT)
-#define STATE_PARAM SoShaderStateMatrixParameter 
+#define STATE_PARAM SoShaderStateMatrixParameter
   int i, cnt = this->owner->parameter.getNum();
   for (i=0; i<cnt; i++) {
     if (this->owner->parameter[i]->isOfType(STATE_PARAM::getClassTypeId()))
@@ -480,7 +486,7 @@ SbBool SoShaderObjectP::containStateMatrixParameters() const
 }
 
 void SoShaderObjectP::removeGLShaderFromGLProgram(SoGLShaderProgram *glProgram)
-{ 
+{
   if (glProgram == NULL) return;
 
   if (this->glShaderObject != NULL) {

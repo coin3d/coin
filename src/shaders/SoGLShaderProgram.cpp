@@ -97,9 +97,9 @@ void SoGLShaderProgram::removeShaderObject(SoGLShaderObject *shader)
 }
 
 void
-SoGLShaderProgram::enable(const cc_glglue * g)
+SoGLShaderProgram::enable(void)
 {
-  this->arbShaderProgram->enable(g);
+  this->arbShaderProgram->enable();
 #if defined(SO_CG_SHADER_SUPPORT)
   this->cgShaderProgram->enable();
 #endif
@@ -108,9 +108,9 @@ SoGLShaderProgram::enable(const cc_glglue * g)
 #endif
 }
 
-void SoGLShaderProgram::disable(const cc_glglue * g)
+void SoGLShaderProgram::disable(void)
 {
-  this->arbShaderProgram->disable(g);
+  this->arbShaderProgram->disable();
 #if defined(SO_CG_SHADER_SUPPORT)
   this->cgShaderProgram->disable();
 #endif

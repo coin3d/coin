@@ -31,10 +31,17 @@
 
 // *************************************************************************
 
-SoGLShaderObject::SoGLShaderObject()
+SoGLShaderObject::SoGLShaderObject(const cc_glglue * g)
 {
   this->isActiveFlag = TRUE;
   this->isVertexShaderFlag = TRUE;
+  this->glctx = g;
+}
+
+const cc_glglue *
+SoGLShaderObject::GLContext(void) const
+{
+  return this->glctx;
 }
 
 void
@@ -68,10 +75,10 @@ SoGLShaderObject::operator delete[](void * obj)
 }
 
 void
-SoGLShaderObject::setIsVertexShader(const cc_glglue * g, SbBool flag)
+SoGLShaderObject::setIsVertexShader(SbBool flag)
 {
   if (this->isVertexShaderFlag != flag) {
-    this->unload(g);
+    this->unload();
     this->isVertexShaderFlag = flag;
   }
 }
@@ -88,7 +95,7 @@ void SoGLShaderObject::setIsActive(SbBool flag)
 }
 
 SbBool
-SoGLShaderObject::isActive(const cc_glglue * g) const
+SoGLShaderObject::isActive(void) const
 {
-  return (!this->isLoaded(g)) ? FALSE : this->isActiveFlag;
+  return (!this->isLoaded()) ? FALSE : this->isActiveFlag;
 }

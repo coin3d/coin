@@ -30,7 +30,6 @@
 
 // *************************************************************************
 
-#include <Inventor/C/glue/gl.h>
 #include <Inventor/SbString.h>
 
 class SoGLShaderObject;
@@ -44,8 +43,8 @@ public:
   ~SoGLShaderProgram();
   void addShaderObject(SoGLShaderObject * shaderObject);
   void removeShaderObject(SoGLShaderObject * shaderObject);
-  void enable(const cc_glglue * g);
-  void disable(const cc_glglue * g);
+  void enable(void);
+  void disable(void);
   void postShouldLink(void);
 
 #if defined(SOURCE_HINT) // FIXME: what's this? 20050120 mortene.

@@ -73,12 +73,12 @@ class COIN_DLL_API SoShaderParameter : public SoNode {
   
 public:
   SoSFString name;
-  SoSFInt32  identifier;
+  SoSFInt32 identifier;
 
 SoINTERNAL public:
   static void initClass();  
 
-public: // protected:
+protected:
   SoShaderParameter();
   virtual ~SoShaderParameter();  
 };
@@ -95,9 +95,10 @@ SoINTERNAL public:
   static void initClass();
   virtual void updateParameter(SoGLShaderObject *shaderObject) = 0;
   SbBool isRegularBehavior() const { return isRegularBehaviorFlag; }
-  virtual void reset();
 
-public: // protected:
+  virtual void reset(); // FIXME: Coin extension vs TGS Inventor? Investigate. 20050120 mortene.
+
+protected:
   SoUniformShaderParameter();
   virtual ~SoUniformShaderParameter();
 

@@ -57,17 +57,17 @@ SoGLARBShaderProgram::removeShaderObject(SoGLARBShaderObject *shader)
 }
 
 void
-SoGLARBShaderProgram::enable(const cc_glglue * g)
+SoGLARBShaderProgram::enable(void)
 {
-  if (this->fragmentShader) this->fragmentShader->enable(g);
-  if (this->vertexShader) this->vertexShader->enable(g);
+  if (this->fragmentShader) this->fragmentShader->enable();
+  if (this->vertexShader) this->vertexShader->enable();
 }
 
 void
-SoGLARBShaderProgram::disable(const cc_glglue * g)
+SoGLARBShaderProgram::disable(void)
 {
-  if (this->fragmentShader) this->fragmentShader->disable(g);
-  if (this->vertexShader) this->vertexShader->disable(g);
+  if (this->fragmentShader) this->fragmentShader->disable();
+  if (this->vertexShader) this->vertexShader->disable();
 }
 
 #if defined(SOURCE_HINT)

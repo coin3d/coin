@@ -38,18 +38,18 @@
 class SoGLARBShaderObject : public SoGLShaderObject
 {
 public:
-  virtual SbBool isLoaded(const cc_glglue * g) const;
-  virtual void load(const cc_glglue * g, const char *sourceString);
-  virtual void unload(const cc_glglue * g);
+  virtual SbBool isLoaded(void) const;
+  virtual void load(const char *sourceString);
+  virtual void unload(void);
   virtual SoGLShader::ShaderType shaderType(void) const;
   virtual SoGLShaderParameter * getParameter(int index, const char * name,
                                              SoGLShader::ValueType type);
 
 public:
-  SoGLARBShaderObject(void);
+  SoGLARBShaderObject(const cc_glglue * g);
   virtual ~SoGLARBShaderObject();
-  void enable(const cc_glglue * g);
-  void disable(const cc_glglue * g);
+  void enable(void);
+  void disable(void);
 
 private:
   GLuint arbProgramID;

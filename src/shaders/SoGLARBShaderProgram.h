@@ -45,8 +45,8 @@ public:
   virtual void addShaderObject(SoGLARBShaderObject * shaderObject);
   virtual void removeShaderObject(SoGLARBShaderObject * shaderObject);
 
-  virtual void enable(const cc_glglue * g);
-  virtual void disable(const cc_glglue * g);
+  virtual void enable(void);
+  virtual void disable(void);
 
 #if defined(SOURCE_HINT)
   virtual SbString getSourceHint(void) const;

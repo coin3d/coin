@@ -35,9 +35,13 @@ class SoGLShaderParameter;
 class SoGLShaderObject
 {
 public:
-  virtual SbBool isLoaded(const cc_glglue * g) const = 0;
-  virtual void load(const cc_glglue * g, const char * sourceString) = 0;
-  virtual void unload(const cc_glglue * g) = 0;
+  SoGLShaderObject(const cc_glglue * g);
+
+  const cc_glglue * GLContext(void) const;
+
+  virtual SbBool isLoaded(void) const = 0;
+  virtual void load(const char * sourceString) = 0;
+  virtual void unload(void) = 0;
   virtual SoGLShader::ShaderType shaderType(void) const = 0;
   virtual SoGLShaderParameter * getParameter(int index, const char * name,
                                              SoGLShader::ValueType type) = 0;
@@ -46,18 +50,18 @@ public:
   void operator delete(void * obj);
   void operator delete[](void * obj);
 
-  void setIsVertexShader(const cc_glglue * g, SbBool flag);
+  void setIsVertexShader(SbBool flag);
   SbBool isVertexShader(void) const;
 
   void setIsActive(SbBool flag);
-  SbBool isActive(const cc_glglue * g) const;
-
-public:
-  SoGLShaderObject(void);
+  SbBool isActive(void) const;
 
 #if defined(SOURCE_HINT)
   SbString sourceHint; // either the file name or the first line of source code
 #endif
+
+protected:
+  const cc_glglue * glctx;
 
 private:
   SbBool isVertexShaderFlag;
