@@ -409,6 +409,7 @@ SoVRMLBackground::SoVRMLBackground(void)
 
   PRIVATE(this)->geometrybuilt = FALSE;  
   PRIVATE(this)->camera = NULL;
+  PRIVATE(this)->rootnode = NULL;
 }
 
 /*!
@@ -937,7 +938,6 @@ background_geometrychangeCB(void * data, SoSensor * sensor)
     pimpl->rootnode->unref();
     pimpl->rootnode = NULL;
   }
-
   pimpl->buildGeometry();
 }
 
