@@ -524,6 +524,11 @@ SoFieldData::write(SoOutput * out, const SoFieldContainer * object) const
   }
   // Ok, we've passed the first write stage and is _really_ writing.
 
+#if 0 
+  // OBSOLETED 2002-02-07 pederb. We shouldn't do this. Only fields
+  // that are written (shouldWrite() == TRUE) or referenced needs to
+  // have a description. This is now handled in
+  // writeFieldDescription().
 
   // Make sure all fields get written on user extension nodes (or
   // SoUnknownNode), even if they have their default flags set to
@@ -536,6 +541,7 @@ SoFieldData::write(SoOutput * out, const SoFieldContainer * object) const
       f->setDefault(FALSE);
     }
   }
+#endif // OBSOLETED
 
   // FIXME: is this really the best place to write the flags +
   // numfields value? 20000102 mortene.
@@ -575,6 +581,7 @@ SoFieldData::write(SoOutput * out, const SoFieldContainer * object) const
   for (i=0; i < this->getNumFields(); i++)
     this->getField(object, i)->write(out, this->getFieldName(i));
 
+#if 0 // OBSOLETED, 2002-02-07 pederb. See obsoleted block above.
   // Reset the default flags if we're writing a user extension node
   // (or SoUnknownNode).
   if (!object->getIsBuiltIn()) {
@@ -582,7 +589,9 @@ SoFieldData::write(SoOutput * out, const SoFieldContainer * object) const
       this->getField(object, i)->setDefault(defaultflags[i]);
     }
   }
+#endif // OBSOLETED
 }
+
 
 /*!
   Copy contents of \a src into this instance.
