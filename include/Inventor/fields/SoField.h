@@ -115,12 +115,9 @@ public:
 
   // enums for setFieldType()/getFieldType()
   enum FieldType {
-    // FIXME: we might not need all these. Investigate before the next
-    // Coin version.  pederb, 2001-10-12
     NORMAL_FIELD = 0,
     EVENTIN_FIELD,
     EVENTOUT_FIELD,
-    INTERNAL_FIELD,
     EXPOSED_FIELD
   };
 

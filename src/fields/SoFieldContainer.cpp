@@ -237,7 +237,6 @@ SoFieldContainer::getFields(SoFieldList & fields) const
     // these field types are ignored
     case SoField::EVENTIN_FIELD:
     case SoField::EVENTOUT_FIELD:
-    case SoField::INTERNAL_FIELD:
       numfields--;
       break;
     default:
