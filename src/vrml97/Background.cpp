@@ -148,6 +148,44 @@
 
 */
 
+// *************************************************************************
+
+#include <Inventor/VRMLnodes/SoVRMLBackground.h>
+
+#include <assert.h>
+#include <string.h>
+
+#include <Inventor/SbRotation.h>
+#include <Inventor/SoDB.h>
+#include <Inventor/SoInput.h>
+#include <Inventor/VRMLnodes/SoVRMLImageTexture.h>
+#include <Inventor/VRMLnodes/SoVRMLMacros.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoProjectionMatrixElement.h>
+#include <Inventor/elements/SoViewVolumeElement.h>
+#include <Inventor/elements/SoViewVolumeElement.h>
+#include <Inventor/elements/SoViewingMatrixElement.h>
+#include <Inventor/elements/SoViewportRegionElement.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/misc/SoChildList.h>
+#include <Inventor/nodes/SoIndexedFaceSet.h>
+#include <Inventor/nodes/SoIndexedTriangleStripSet.h>
+#include <Inventor/nodes/SoLightModel.h>
+#include <Inventor/nodes/SoMaterialBinding.h>
+#include <Inventor/nodes/SoPerspectiveCamera.h>
+#include <Inventor/nodes/SoScale.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoShapeHints.h>
+#include <Inventor/nodes/SoSubNodeP.h>
+#include <Inventor/nodes/SoVertexProperty.h>
+#include <Inventor/sensors/SoFieldSensor.h>
+#include <Inventor/system/gl.h>
+
+// *************************************************************************
+
 /*!
   SoMFFloat SoVRMLBackground::groundAngle
 
@@ -218,42 +256,11 @@
   An eventOut that is sent after the node has been bound/unbound.
 */
 
-
-#include <Inventor/nodes/SoSubNodeP.h>
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/nodes/SoIndexedTriangleStripSet.h>
-#include <Inventor/nodes/SoVertexProperty.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/misc/SoChildList.h>
-#include <Inventor/nodes/SoMaterialBinding.h>
-#include <Inventor/nodes/SoShapeHints.h>
-#include <Inventor/SoDB.h>
-#include <Inventor/SoInput.h>
-#include <Inventor/nodes/SoIndexedFaceSet.h>
-#include <Inventor/nodes/SoScale.h>
-#include <Inventor/nodes/SoLightModel.h>
-#include <Inventor/nodes/SoPerspectiveCamera.h>
-#include <Inventor/sensors/SoFieldSensor.h>
-#include <Inventor/VRMLnodes/SoVRMLImageTexture.h>
-#include <Inventor/VRMLnodes/SoVRMLMacros.h>
-#include <Inventor/VRMLnodes/SoVRMLBackground.h>
-#include <Inventor/elements/SoViewVolumeElement.h>
-#include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/system/gl.h>
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/elements/SoCacheElement.h>
-#include <Inventor/elements/SoProjectionMatrixElement.h>
-#include <Inventor/elements/SoViewingMatrixElement.h>
-#include <Inventor/elements/SoViewVolumeElement.h>
-#include <Inventor/elements/SoViewportRegionElement.h>
-#include <Inventor/SbRotation.h>
-#include <assert.h>
-
-#define PRIVATE(p) (p->pimpl)
-#define PUBLIC(p) (p->master)
+// *************************************************************************
 
 SO_NODE_SOURCE(SoVRMLBackground);
+
+// *************************************************************************
 
 static char background_scenery_data[] = {
   "#Inventor 2.1 ascii\n\n"
@@ -263,9 +270,13 @@ static char background_scenery_data[] = {
   "  TextureCoordinateBinding { value PER_VERTEX_INDEXED }\n"
 };
 
+// *************************************************************************
+
 static void background_geometrychangeCB(void * data, SoSensor * sensor);
 static void background_vrmltexturechangeCB(void * data, SoSensor * sensor);
 static void background_bindingchangeCB(void * data, SoSensor * sensor);
+
+// *************************************************************************
 
 class SoVRMLBackgroundP {
 
@@ -316,6 +327,11 @@ public:
   void buildIndexList(SoIndexedTriangleStripSet * sphere, int len, int slices, int matlength);
 
 };
+
+#define PRIVATE(p) (p->pimpl)
+#define PUBLIC(p) (p->master)
+
+// *************************************************************************
 
 // dummy callback for SoGetBoundingBoxAction. A background node has no
 // boundingbox, so we just invalidate the bbox cache so stop the node
