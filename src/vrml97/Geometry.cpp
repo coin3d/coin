@@ -64,6 +64,7 @@ public:
 };
 #endif // DOXYGEN_SKIP_THIS
 
+#undef PRIVATE
 #define PRIVATE(thisp) ((thisp)->pimpl)
 
 SO_NODE_ABSTRACT_SOURCE(SoVRMLGeometry);

@@ -210,6 +210,7 @@ private:
   SoRayPickAction * owner;
 };
 
+#undef PRIVATE
 #define PRIVATE(obj) ((obj)->pimpl)
 
 // *************************************************************************

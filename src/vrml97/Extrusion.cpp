@@ -404,6 +404,7 @@ public:
   }
 };
 
+#undef PRIVATE
 #define PRIVATE(obj) (obj)->pimpl
 
 SO_NODE_SOURCE(SoVRMLExtrusion);
