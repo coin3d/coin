@@ -848,7 +848,7 @@ SoToVRML2ActionP::push_switch_cb(void * closure, SoCallbackAction * action, cons
 
   /* Traverse all children separately, that is, save and restore state
    * between each.  If there is a selected child, traverse it normally
-   * afterwards.  This is needed so that traversing the not selected
+   * This is needed so that traversing the not selected
    * children won't influence the selected child.
    */
   if (wc != SO_SWITCH_ALL) {
@@ -865,9 +865,9 @@ SoToVRML2ActionP::push_switch_cb(void * closure, SoCallbackAction * action, cons
         action->switchToNodeTraversal(oldswitch->getChild(i));
         state->pop();
       }
-    }
-    if (wc >= 0 && wc < oldswitch->getNumChildren()) {
-      action->switchToNodeTraversal(oldswitch->getChild(wc));
+      else {
+        action->switchToNodeTraversal(oldswitch->getChild(i));
+      }
     }
     // so that the children will not be traversed
     return SoCallbackAction::PRUNE;
@@ -905,15 +905,6 @@ SoToVRML2ActionP::pop_switch_cb(void * closure, SoCallbackAction * action, const
     allfix->unrefNoDelete();
     // set whichChoice to point to the new group node
     sw->whichChoice = 0;
-  }
-  else if (wc >= 0 && wc < sw->getNumChoices()) {
-    // Move the last child (which is the selected child) to its correct position
-    SoNode * n = sw->getChoice(sw->getNumChildren()-1);
-    // ref before removing the child
-    n->ref();
-    sw->removeChoice(sw->getNumChildren()-1);
-    sw->insertChoice(n, wc);
-    n->unrefNoDelete();
   }
     
   THISP(closure)->dict.enter((unsigned long)node, grp);  
