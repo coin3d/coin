@@ -683,10 +683,6 @@ SoVRMLText::computeBBox(SoAction * action,
   if (PRIVATE(this)->toptobottomtext) 
     box.extendBy(SbVec3f(0,PRIVATE(this)->maxglyphbbox.getMin()[1] - (n-1)*PRIVATE(this)->textsize*PRIVATE(this)->textspacing, 0));
 
-  // FIXME: Here one must handle special cases for bottom-to-top text
-  // and its minor-alignment modes (center/end) for glyphs like 'q'
-  // and 'j' (20030916 handegar)
-
   center = box.getCenter();
 }
 
@@ -936,8 +932,8 @@ SoVRMLTextP::setUpGlyphs(SoState * state, SoVRMLText * textnode)
       assert(glyph);
 
       maxbbox = cc_glyph3d_getboundingbox(glyph); // Get max height
-      this->maxglyphbbox.extendBy(SbVec3f(0, maxbbox[0], 0));
-      this->maxglyphbbox.extendBy(SbVec3f(0, maxbbox[1], 0));
+      this->maxglyphbbox.extendBy(SbVec3f(0, maxbbox[0] * this->fontspec->size, 0));
+      this->maxglyphbbox.extendBy(SbVec3f(0, maxbbox[1] * this->fontspec->size, 0));
 
       glyphwidth = cc_glyph3d_getwidth(glyph);
       if (glyphwidth == 0)
