@@ -97,6 +97,12 @@
 /* Define to use bzip2 */
 #undef HAVE_BZIP2
 
+/* The CPP compiler has a variable containing the current function name */
+#undef HAVE_CPP_COMPILER_FUNCTION_NAME_VAR
+
+/* The C compiler has a variable containing the current function name */
+#undef HAVE_C_COMPILER_FUNCTION_NAME_VAR
+
 /* Define to 1 if you have the <direct.h> header file. */
 #undef HAVE_DIRECT_H
 
@@ -309,18 +315,6 @@
 
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
-
-/* Define this to true if the __FUNCTION__ variable contains the current
-   function name */
-#undef HAVE_VAR___FUNCTION__
-
-/* Define this to true if the __PRETTY_FUNCTION__ variable contains the
-   current function name */
-#undef HAVE_VAR___PRETTY_FUNCTION__
-
-/* Define this to true if the __func__ variable contains the current function
-   name */
-#undef HAVE_VAR___func__
 
 /* define to use the VRML97 extension */
 #undef HAVE_VRML97
