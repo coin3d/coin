@@ -535,7 +535,7 @@ cc_flw_get_font_id(const char * fontname, const unsigned int sizex, const unsign
   FLW_MUTEX_LOCK(flw_global_lock);
 
   if (win32api) { 
-    font = cc_flww32_get_font(fontname, sizex, sizey, angle);
+    font = cc_flww32_get_font(fontname, sizex, sizey, angle, complexity);
   } else if (freetypelib) { 
     font = cc_flwft_get_font(fontname);    
   }

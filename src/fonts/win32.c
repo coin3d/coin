@@ -346,12 +346,13 @@ cc_flww32_get_font(const char * fontname, int sizex, int sizey, float angle, flo
      upstream to that effect. 20030911 mortene.
   */
   cc_hash * glyphhash;
+  HFONT wfont;
 
   if (complexity >= 0.0f) {
     sizey = flww32_calcfontsize(complexity);
   }
 
-  HFONT wfont = CreateFont(-sizey, /* Using a negative
+  wfont = CreateFont(-sizey, /* Using a negative
                                       'sizey'. Otherwise leads to less
                                       details as it seems like the Win32
                                       systems tries to 'quantize' the
