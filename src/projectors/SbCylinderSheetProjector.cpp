@@ -71,14 +71,14 @@ SbCylinderSheetProjector::SbCylinderSheetProjector(const SbCylinder & cyl,
 {
 }
 
-// Overloaded from parent.
+// Documented in superclass.
 SbProjector *
 SbCylinderSheetProjector::copy(void) const
 {
   return new SbCylinderSheetProjector(*this);
 }
 
-// Overloaded from parent.
+// Documented in superclass.
 SbVec3f
 SbCylinderSheetProjector::project(const SbVec2f & point)
 {
@@ -107,7 +107,7 @@ SbCylinderSheetProjector::project(const SbVec2f & point)
   return projpt;
 }
 
-// Overloaded from parent.
+// Documented in superclass.
 SbRotation
 SbCylinderSheetProjector::getRotation(const SbVec3f & point1,
                                       const SbVec3f & point2)

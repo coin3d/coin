@@ -108,9 +108,8 @@ SoGLRenderCache::getCacheContext(void) const
   return -1;
 }
 
-/*!
-  Overloaded to test and update lazy GL elements.
-*/
+// Documented in superclass. Overridden to test and update lazy GL
+// elements.
 SbBool
 SoGLRenderCache::isValid(const SoState * state) const
 {
@@ -132,9 +131,7 @@ SoGLRenderCache::addNestedCache(SoGLDisplayList * child)
   this->nestedcachelist.append(child);
 }
 
-/*!
-  Overloaded to unref display lists.
-*/
+// Documented in superclass. Overridden to unref display lists.
 void
 SoGLRenderCache::destroy(SoState * state)
 {

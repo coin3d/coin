@@ -415,9 +415,7 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
   dl->call(state);
 }
 
-/*!
-  Overloaded to handle age on subimages.
-*/
+// Documented in superclass. Overridden to handle age on subimages.
 void
 SoGLBigImage::unrefOldDL(SoState * state, const uint32_t maxage)
 {

@@ -88,14 +88,14 @@ SbSphereSheetProjector::SbSphereSheetProjector(const SbSphere & sph,
 {
 }
 
-// Overloaded from parent.
+// Documented in superclass.
 SbProjector *
 SbSphereSheetProjector::copy(void) const
 {
   return new SbSphereSheetProjector(*this);
 }
 
-// Overloaded from parent.
+// Documented in superclass.
 SbVec3f
 SbSphereSheetProjector::project(const SbVec2f & point)
 {
@@ -131,7 +131,7 @@ SbSphereSheetProjector::project(const SbVec2f & point)
   return projpt;
 }
 
-// Overloaded from parent.
+// Documented in superclass.
 SbRotation
 SbSphereSheetProjector::getRotation(const SbVec3f & point1,
                                     const SbVec3f & point2)

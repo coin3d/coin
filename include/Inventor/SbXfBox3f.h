@@ -50,11 +50,11 @@ public:
   SbBox3f project() const;
   friend COIN_DLL_API int operator ==(const SbXfBox3f &b1, const SbXfBox3f &b2);
   friend COIN_DLL_API int operator !=(const SbXfBox3f &b1, const SbXfBox3f &b2);
-  // Must overload the transform() method from SbBox3f, as the box and
+  // Must override the transform() method from SbBox3f, as the box and
   // the transform matrix are supposed to be kept separate in
   // SbXfBox3f. --mortene
   void transform(const SbMatrix & m);
-  // Overloaded from SbBox3f
+  // Overridden from SbBox3f
   float getVolume(void) const;
 
   void print(FILE * file) const;

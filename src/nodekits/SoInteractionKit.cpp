@@ -329,13 +329,11 @@ SoInteractionKit::setSwitchValue(SoNode * node, const int newVal)
   }
 }
 
-// Doc in superclass.
+// Doc in superclass. Overridden to copy the surrogate lists.
 void
 SoInteractionKit::copyContents(const SoFieldContainer * fromFC,
                                SbBool copyConnections)
 {
-  // Overloaded to copy the surrogate lists.
-
   int i;
   inherited::copyContents(fromFC, copyConnections);
 
@@ -352,12 +350,11 @@ SoInteractionKit::copyContents(const SoFieldContainer * fromFC,
   }
 }
 
-// Doc in superclass.
+// Doc in superclass. Overridden to check topSeperator and fields
+// after reading.
 SbBool
 SoInteractionKit::readInstance(SoInput * in, unsigned short flags)
 {
-  // Overloaded to check topSeperator and fields after reading.
-
   SbBool ret = inherited::readInstance(in, flags); // will handle fields
   if (ret) {
     // remove surrogate paths where part != NULL and not an empty
@@ -673,7 +670,7 @@ SoInteractionKit::setDefaultOnNonWritingFields(void)
 SbBool
 SoInteractionKit::setPart(const SbName & partname, SoNode * from)
 {
-  // Overloaded only to fool some incredibly stupid behaviour in the
+  // Overridden only to fool some incredibly stupid behaviour in the
   // gcc 2.95.2 compiler, who couldn't figure out I wanted to call
   // this function in SoBaseKit, but instead insisted that I tried to
   // call SoInteractionKit::setPart(int, SoNode *). Cheeessssh.

@@ -28,7 +28,7 @@
 
   Instances of this class are used for storing information about hit
   points on cylinder geometry after pick operations, and for storing
-  information returned to tesselation callbacks.
+  information returned to tessellation callbacks.
 
   \sa SoCylinder, SoRayPickAction, SoCallbackAction
 */

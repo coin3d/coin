@@ -28,7 +28,7 @@
 
   Instances of this class are used for storing information about hit
   points on cone geometry after pick operations, and for storing
-  information returned to tesselation callbacks.
+  information returned to tessellation callbacks.
 
   The part indices are ordered from 0 to 5 as [ front, back, left,
   right, top, bottom ].

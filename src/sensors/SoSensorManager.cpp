@@ -227,7 +227,7 @@ SoSensorManager::insertTimerSensor(SoTimerQueueSensor * newentry)
 }
 
 /*!
-  Remove an entry from the sensor queue.
+  Remove an entry from the queue of prioritized sensors.
 
   \sa addToQueue()
  */
@@ -261,7 +261,7 @@ SoSensorManager::removeDelaySensor(SoDelayQueueSensor * entry)
 }
 
 /*!
-  \overload
+  Remove an entry from the queue of timer sensors.
  */
 void
 SoSensorManager::removeTimerSensor(SoTimerQueueSensor * entry)

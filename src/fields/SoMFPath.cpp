@@ -227,7 +227,7 @@ SoMFPath::deleteAllValues(void)
   if (this->num) this->deleteValues(0);
 }
 
-// Overloaded to handle unref() and removeAuditor().
+// Overridden to handle unref() and removeAuditor().
 void
 SoMFPath::deleteValues(int start, int num)
 {
@@ -254,7 +254,7 @@ SoMFPath::deleteValues(int start, int num)
   inherited::deleteValues(start, num);
 }
 
-// Overloaded to insert NULL pointers in new array slots.
+// Overridden to insert NULL pointers in new array slots.
 void
 SoMFPath::insertSpace(int start, int num)
 {
@@ -379,7 +379,7 @@ SoMFPath::referencesCopy(void) const
 //$ END TEMPLATE MFNodeEnginePath
 
 
-// Overloaded from superclass to handle changes in paths.
+// Overridden from superclass to handle changes in paths.
 void
 SoMFPath::notify(SoNotList * l)
 {

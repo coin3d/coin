@@ -453,7 +453,7 @@ SoFieldContainer::get(SbString & fielddata, SoOutput * out)
   free(buffer);
 }
 
-// Overloaded from parent class.
+// Overridden from parent class.
 void
 SoFieldContainer::notify(SoNotList * l)
 {
@@ -485,10 +485,8 @@ SoFieldContainer::validateNewFieldValue(SoField * field, void * newval)
   return TRUE;
 }
 
-/*!
-  Overloaded from SoBase to make sure field connections into other
-  field containers are also accounted for.
- */
+// Documented in superclass. Overridden from SoBase to make sure field
+// connections into other field containers are also accounted for.
 void
 SoFieldContainer::addWriteReference(SoOutput * out, SbBool isfromfield)
 {
@@ -581,9 +579,9 @@ SoFieldContainer::copyContents(const SoFieldContainer * from,
 /*!
   Return copy of this instance.
 
-  Note: default implementation just returns \c this pointer,
-  SoNode and SoEngine overloads this method to return the pointer
-  to the actual copy.
+  Note: default implementation just returns \c this pointer, SoNode
+  and SoEngine overrides this method to return the pointer to the
+  actual copy.
  */
 SoFieldContainer *
 SoFieldContainer::copyThroughConnection(void) const
@@ -750,7 +748,7 @@ SoFieldContainer::copyDone(void)
   contentscopiedstack->remove(0);
 }
 
-// Overloaded from parent.
+// Documented in superclass.
 SbBool
 SoFieldContainer::readInstance(SoInput * in, unsigned short flags)
 {

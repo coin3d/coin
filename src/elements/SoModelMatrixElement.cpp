@@ -381,9 +381,8 @@ SoModelMatrixElement::init(SoState * state)
   this->clearNodeIds();
 }
 
-/*!
-  Overloaded to copy matrices and accumulate node ids.
-*/
+// Documented in superclass. Overridden to copy matrices and
+// accumulate node ids.
 void
 SoModelMatrixElement::push(SoState * state)
 {

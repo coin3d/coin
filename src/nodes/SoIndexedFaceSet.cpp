@@ -189,12 +189,12 @@ SoIndexedFaceSet::findNormalBinding(SoState * const state) const
   return binding;
 }
 
-/*!
-  Overloaded to invalidate convex cache.
-*/
+// Documented in superclass.
 void
 SoIndexedFaceSet::notify(SoNotList * list)
 {
+  // Overridden to invalidate convex cache.
+
   if (this->convexCache) this->convexCache->invalidate();
   SoField *f = list->getLastField();
   if (f == &this->coordIndex) this->concavestatus = STATUS_UNKNOWN;
@@ -665,18 +665,15 @@ SoIndexedFaceSet::useConvexCache(SoAction * action)
   return TRUE;
 }
 
-/*!
-  Overloaded to return FALSE. Normals are generated in normal cache.
-*/
+// Documented in superclass.
 SbBool
 SoIndexedFaceSet::generateDefaultNormals(SoState *, SoNormalBundle *)
 {
+  // Normals are generated in normal cache.
   return FALSE;
 }
 
-/*!
-  Overloaded to create default normals for this shape.
-*/
+// Documented in superclass.
 SbBool
 SoIndexedFaceSet::generateDefaultNormals(SoState * state,
                                        SoNormalCache * nc)

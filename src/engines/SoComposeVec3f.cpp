@@ -63,7 +63,7 @@ SoComposeVec3f::SoComposeVec3f()
   SO_ENGINE_ADD_OUTPUT(vector,SoMFVec3f);
 }
 
-// overloaded from parent
+// Documented in superclass.
 void
 SoComposeVec3f::initClass()
 {
@@ -77,7 +77,7 @@ SoComposeVec3f::~SoComposeVec3f()
 {
 }
 
-// overloaded from parent
+// Documented in superclass.
 void
 SoComposeVec3f::evaluate()
 {

@@ -37,15 +37,15 @@
 
   The SoCylinder node class is provided as a convenient abstraction
   for the application programmer to use "complex" shapes of this type
-  without having to do the tesselation to polygons and other low-level
+  without having to do the tessellation to polygons and other low-level
   programming herself.
 
   A cylinder is visualized by the underlying rendering system by first
-  tesselating the conceptual cylinder into a set of polygons. To
+  tessellating the conceptual cylinder into a set of polygons. To
   control the trade-off between an as much as possible correct visual
   appearance of the cylinder versus fast rendering, use an
   SoComplexity node to influence the number of polygons generated from
-  the tesselation process. (The higher the complexity value, the more
+  the tessellation process. (The higher the complexity value, the more
   polygons will be generated, the more \e rounded the sides of the
   cylinder will look.) Set the SoComplexity::value field to what you
   believe would be a good trade-off between correctness and speed for

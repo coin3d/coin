@@ -128,7 +128,7 @@ SoType SoAction::classTypeId;
 
 
   For application programmers wanting to extend the library with new
-  actions: this method needs to be overloaded in \e all
+  actions: this method needs to be overridden in \e all
   subclasses. This is typically done as part of setting up the full
   type system for extension classes, which is usually accomplished by
   using the pre-defined macros available through
@@ -141,8 +141,9 @@ SoType SoAction::classTypeId;
 
 /*!
   \fn SoType SoAction::getTypeId(void) const
+
   Returns the actual type id of an object derived from a class
-  inheriting SoAction. Needs to be overloaded in \e all subclasses.
+  inheriting SoAction. Needs to be overridden in \e all subclasses.
 */
 
 /*!
@@ -904,7 +905,7 @@ SoAction::beginTraversal(SoNode * node)
 }
 
 /*!
-  This virtual method can be overloaded to execute code after the
+  This virtual method can be overridden to execute code after the
   scene graph traversal.  Default method does nothing.
 */
 void
@@ -951,7 +952,7 @@ SoAction::switchToPathTraversal(SoPath * path)
   SoTempPath storedpath = this->currentpath;
 
   // Start path traversal. Don't use beginTraversal() (the user might
-  // have overloaded it).
+  // have overridden it).
   this->appliedcode = SoAction::PATH;
   this->applieddata.path = path;
   this->currentpathcode = SoAction::IN_PATH;

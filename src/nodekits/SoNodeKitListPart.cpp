@@ -528,10 +528,9 @@ SoNodeKitListPart::getContainerNode(void)
   return (SoGroup *) this->containerNode.getValue();
 }
 
-/*!
-  Overload this method to set up internal data according to what
-  is contained within the imported field values.
-*/
+// Documented in superclass. Overrides this method to set up internal
+// data according to what is contained within the imported field
+// values.
 SbBool
 SoNodeKitListPart::readInstance(SoInput * in, unsigned short flags)
 {
@@ -542,7 +541,7 @@ SoNodeKitListPart::readInstance(SoInput * in, unsigned short flags)
   return FALSE;
 }
 
-// Documented in superclass. Overrode this method to set up internal
+// Documented in superclass. Overrides this method to set up internal
 // data according to what is contained within the copied field values.
 void
 SoNodeKitListPart::copyContents(const SoFieldContainer * fromFC,

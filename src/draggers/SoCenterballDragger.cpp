@@ -176,7 +176,7 @@ SoCenterballDragger::~SoCenterballDragger()
   delete this->centerFieldSensor;
 }
 
-// Doc in superclass. Overloaded to save some information necessary to
+// Doc in superclass. Overridden to save some information necessary to
 // move center correctly.
 void
 SoCenterballDragger::saveStartParameters(void)

@@ -86,7 +86,7 @@ SoInterpolate::SoInterpolate(void)
   SO_ENGINE_ADD_INPUT(alpha, (0.0f));
 }
 
-// overloaded from parent
+// Documented in superclass.
 void
 SoInterpolate::initClass(void)
 {

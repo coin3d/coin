@@ -137,7 +137,7 @@ SoTimeCounter::SoTimeCounter(void)
   this->timeIn.connectFrom(realtime);
 }
 
-// overloaded from parent
+// Documented in superclass.
 void
 SoTimeCounter::initClass(void)
 {
@@ -152,7 +152,8 @@ SoTimeCounter::~SoTimeCounter()
 {
 }
 
-// Overloaded to not write connection to realTime global field.
+// Documented in superclass. Overridden to not write connection to
+// realTime global field.
 void
 SoTimeCounter::writeInstance(SoOutput * out)
 {

@@ -970,9 +970,8 @@ SoBaseKit::typeCheck(const SbName & /*partname*/, const SoType & parttype, SoNod
   return node;
 }
 
-/*!
-  Overloaded to also recurse on non-null part nodes.
-*/
+// Documented in superclass. Overridden to also recurse on non-null
+// part nodes.
 SoNode *
 SoBaseKit::addToCopyDict(void) const
 {
@@ -993,7 +992,7 @@ SoBaseKit::addToCopyDict(void) const
   return cp;
 }
 
-// (Doc in superclass.) Overloaded to copy parts correctly.
+// (Doc in superclass.) Overridden to copy parts correctly.
 void
 SoBaseKit::copyContents(const SoFieldContainer * fromfc,
                         SbBool copyconnections)

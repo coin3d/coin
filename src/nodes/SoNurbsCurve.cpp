@@ -229,9 +229,7 @@ SoNurbsCurve::generatePrimitives(SoAction * action)
   this->doNurbs(action, FALSE, FALSE);
 }
 
-/*!
-  Overloaded to return NULL.
-*/
+// Documented in superclass.
 SoDetail *
 SoNurbsCurve::createLineSegmentDetail(SoRayPickAction * action,
                                       const SoPrimitiveVertex * v1,
@@ -336,7 +334,7 @@ SoNurbsCurve::tessBegin(int type, void * data)
     shapetype = SoShape::POLYGON; // illegal value
     // FIXME: should this be an assert, or does it represent
     // something which is out of our control, like a possible future
-    // feature of the GLU tesselator?  20010909 mortene.
+    // feature of the GLU tessellator?  20010909 mortene.
 #if COIN_DEBUG && 1 // debug
     SoDebugError::postWarning("SoNurbsCurve::tessBegin",
                               "unsupported GL enum: 0x%x", type);

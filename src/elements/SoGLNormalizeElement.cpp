@@ -26,15 +26,15 @@
   \brief The SoGLNormalizeElement class is for GL optimization only.
   \ingroup elements
 
-  It keeps track of the GL_NORMALIZE flag and enables/disables this
-  GL feature depending on the GL matrix and supplied normals.
-  It is very important that all transformation nodes calls
-  SoGLNormalizeElement::setMatrixState(state, FALSE) if it contains
-  a scale operation. Also, geometry nodes should let this
-  element know if it is going to use unit-length normals
-  (by overloading SoShape::willSendUnitLengthNormals()).
-  When the GL matrix does not contain any scale operations, and the normals
-  are unit length, GL_NORMALIZE can be disabled.
+  It keeps track of the GL_NORMALIZE flag and enables/disables this GL
+  feature depending on the GL matrix and supplied normals.  It is very
+  important that all transformation nodes calls
+  SoGLNormalizeElement::setMatrixState(state, FALSE) if it contains a
+  scale operation. Also, geometry nodes should let this element know
+  if it is going to use unit-length normals (by overriding
+  SoShape::willSendUnitLengthNormals()).  When the GL matrix does not
+  contain any scale operations, and the normals are unit length,
+  GL_NORMALIZE can be disabled.
 
   This is a lazy element which is evaluated by SoShape.
 */

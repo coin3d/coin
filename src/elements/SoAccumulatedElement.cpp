@@ -79,9 +79,7 @@ SoAccumulatedElement::push(SoState * state)
   this->recursecapture = FALSE;
 }
 
-/*!
-  Overloaded to compare node ids.
-*/
+// Documented in superclass. Overridden to compare node ids.
 SbBool
 SoAccumulatedElement::matches(const SoElement * element) const
 {
@@ -133,9 +131,7 @@ SoAccumulatedElement::setNodeId(const SoNode * const node)
   this->recursecapture = FALSE;
 }
 
-/*!
-  Overloaded to copy node ids.
-*/
+// Documented in superclass. Overridden to copy node ids.
 SoElement *
 SoAccumulatedElement::copyMatchInfo(void) const
 {
@@ -170,9 +166,7 @@ SoAccumulatedElement::copyNodeIds(const SoAccumulatedElement * copyfrom)
   this->recursecapture = TRUE;
 }
 
-/*!
-  Overloaded to capture more elements.
-*/
+// Documented in superclass. Overridden to capture more elements.
 void
 SoAccumulatedElement::captureThis(SoState * state) const
 {

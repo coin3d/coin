@@ -194,7 +194,7 @@ SoGroup::readChildren(SoInput * in)
   return TRUE;
 }
 
-// Overloaded from parent.
+// Overridden from parent.
 void
 SoGroup::copyContents(const SoFieldContainer * from, SbBool copyconnections)
 {

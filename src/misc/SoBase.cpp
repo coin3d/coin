@@ -92,7 +92,7 @@
 
   For application programmers wanting to extend the library with new
   nodes, engines, nodekits, draggers or others: this method needs to
-  be overloaded in \e all subclasses. This is typically done as part
+  be overridden in \e all subclasses. This is typically done as part
   of setting up the full type system for extension classes, which is
   usually accomplished by using the pre-defined macros available
   through for instance Inventor/nodes/SoSubNode.h (SO_NODE_INIT_CLASS

@@ -171,10 +171,8 @@ SoBaseList::operator=(const SoBaseList & l)
   return *this;
 }
 
-/*!
-  Returns item pointer at index \a i. Overloaded from parent class to
-  cast from the \c void pointer actually stored.
-*/
+// Documented in superclass. Overridden from parent class to cast from
+// the \c void pointer actually stored.
 SoBase *
 SoBaseList::operator[](const int i) const
 {
@@ -220,10 +218,8 @@ SoBaseList::addReferences(const SbBool flag)
   this->referencing = flag;
 }
 
-/*!
-  Set item pointer at index \a i to \a ptr. Overloaded from parent
-  class to provide referencing on the SoBase object.
-*/
+// Documented in superclass. Overridden from parent class to provide
+// referencing on the SoBase object.
 void
 SoBaseList::set(const int i, SoBase * const ptr)
 {

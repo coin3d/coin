@@ -175,7 +175,7 @@ SoSensor::getData(void) const
 }
 
 /*!
-  Trigger the callback function.
+  Trigger the sensor's callback function.
  */
 void
 SoSensor::trigger(void)

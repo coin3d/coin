@@ -77,7 +77,7 @@ SoComposeMatrix::SoComposeMatrix()
   SO_ENGINE_ADD_OUTPUT(matrix,SoMFMatrix);
 }
 
-// overloaded from parent
+// Documented in superclass.
 void
 SoComposeMatrix::initClass()
 {
@@ -91,7 +91,7 @@ SoComposeMatrix::~SoComposeMatrix()
 {
 }
 
-// overloaded from parent
+// Documented in superclass.
 void
 SoComposeMatrix::evaluate()
 {

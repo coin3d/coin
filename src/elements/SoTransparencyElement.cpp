@@ -131,7 +131,7 @@ SoTransparencyElement::getInstance(SoState *state)
 }
 
 /*!
-  Sets the value of this element. Can be overloaded by subclasses.
+  Sets the value of this element. Can be overridden by subclasses.
 */
 void
 SoTransparencyElement::setElt(const int numValues, const float * const values)

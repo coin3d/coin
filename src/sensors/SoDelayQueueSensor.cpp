@@ -119,12 +119,12 @@ SoDelayQueueSensor::getDefaultPriority(void)
   return 100;
 }
 
-/*!
-  Overloaded to clear scheduled flag before triggering.
-*/
-void 
+// Documented in superclass.
+void
 SoDelayQueueSensor::trigger(void)
 {
+  // Overridden to clear scheduled flag before triggering.
+
   this->scheduled = FALSE;
   inherited::trigger();
 }

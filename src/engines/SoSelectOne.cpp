@@ -155,7 +155,7 @@ SoSelectOne::initialize(const SoType inputfieldtype)
   return TRUE;
 }
 
-// overloaded from parent
+// Documented in superclass.
 void
 SoSelectOne::initClass(void)
 {
@@ -171,7 +171,7 @@ SoSelectOne::~SoSelectOne()
   delete this->output;
 }
 
-// overloaded from parent
+// Documented in superclass.
 void
 SoSelectOne::evaluate(void)
 {
@@ -195,7 +195,7 @@ SoSelectOne::evaluate(void)
 #endif // COIN_DEBUG
 }
 
-// overloaded from parent
+// Documented in superclass.
 SbBool
 SoSelectOne::readInstance(SoInput * in, unsigned short flags)
 {
@@ -222,7 +222,7 @@ SoSelectOne::readInstance(SoInput * in, unsigned short flags)
   return SoEngine::readInstance(in, flags);
 }
 
-// overloaded from parent
+// Documented in superclass.
 void
 SoSelectOne::writeInstance(SoOutput * out)
 {
@@ -244,7 +244,7 @@ SoSelectOne::writeInstance(SoOutput * out)
   this->writeFooter(out);
 }
 
-// overloaded from parent
+// Documented in superclass.
 void
 SoSelectOne::copyContents(const SoFieldContainer * from,
                           SbBool copyconnections)

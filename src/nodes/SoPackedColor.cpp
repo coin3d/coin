@@ -157,12 +157,12 @@ SoPackedColor::isTransparent(void)
   return this->transparent;
 }
 
-/*!
-  Overloaded to check for transparency when orderedRGBA changes
-*/
+// Documented in superclass.
 void
 SoPackedColor::notify(SoNotList *list)
 {
+  // Overridden to check for transparency when orderedRGBA changes.
+
   SoField *f = list->getLastField();
   if (f == &this->orderedRGBA) {
     this->checktransparent = TRUE;

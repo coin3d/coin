@@ -23,18 +23,18 @@
 
 /*!
   \class SbTesselator SbTesselator.h Inventor/SbTesselator.h
-  \brief The SbTesselator class is used to tesselate polygons into triangles.
+  \brief The SbTesselator class is used to tessellate polygons into triangles.
   \ingroup base
 
   SbTesselator is used within Coin to split polygons into
   triangles. It handles concave polygons, does Delaunay triangulation
   and avoids generating self-intersecting triangles.
 
-  Here's a simple example which shows how to tesselate a quad polygon
+  Here's a simple example which shows how to tessellate a quad polygon
   with corners in <0, 0, 0>, <1, 0, 0>, <1, 1, 0> and <0, 1, 0>.
 
   \code
-// Callback function for the tesselator. Called once for each
+// Callback function for the tessellator. Called once for each
 // generated triangle with the vertices.
 static void
 tess_cb(void * v0, void * v1, void * v2, void * cbdata)
@@ -57,11 +57,11 @@ static SbVec3f vertices[] = {
   SbVec3f(0, 1, 0), SbVec3f(0, 0, 0)
 };
 
-SbTesselator mytesselator(tess_cb, NULL);
-mytesselator.beginPolygon();
+SbTesselator mytessellator(tess_cb, NULL);
+mytessellator.beginPolygon();
 for (int i=0; i < 4; i++)
-  mytesselator.addVertex(vertices[i], &vertices[i]);
-mytesselator.endPolygon();
+  mytessellator.addVertex(vertices[i], &vertices[i]);
+mytessellator.endPolygon();
   \endcode
 
   The call to SbTesselator::endPolygon() triggers the SbTesselator to
@@ -76,7 +76,7 @@ mytesselator.endPolygon();
 
   This class is not part of the original Open Inventor API.
 
-  (Another option for tesselating polygons is the tesselator of the
+  (Another option for tessellating polygons is the tessellator of the
   GLU library. It has some features not part of SbTesselator (like
   handling hulls), but the GLU library is known to have bugs in various
   implementations and doesn't do Delaunay triangulation.)
@@ -147,9 +147,9 @@ heap_set_index(void *v, int idx)
 enum {OXY,OXZ,OYZ};
 
 /*!
-  Initializes a tesselator. The \a callback argument specifies a
+  Initializes a tessellator. The \a callback argument specifies a
   function which will be called for each triangle returned by the
-  tesselator. The callback function will get three pointers to each
+  tessellator. The callback function will get three pointers to each
   vertex and the \a userdata pointer. The vertex pointers are
   specified in the SbTesselator::addVertex() method.
 */
@@ -229,7 +229,7 @@ SbTesselator::addVertex(const SbVec3f &v,void *data)
 }
 
 /*!
-  Signals the tesselator to begin tesselating. The callback function
+  Signals the tessellator to begin tessellating. The callback function
   specified in the constructor (or set using the
   SbTesselator::setCallback() method) will be called for each triangle
   before returning.
@@ -338,7 +338,7 @@ SbTesselator::endPolygon()
 }
 
 /*!
-  Sets the callback function for this tesselator.
+  Sets the callback function for this tessellator.
 */
 void
 SbTesselator::setCallback(void (*callback)(void *v0,
@@ -607,7 +607,7 @@ SbTesselator::calcPolygonNormal()
 //
 // makes sure SbTVertexes are not allocated and deallocated
 // all the time, by storing them in a growable array. This
-// way, the SbTVertexes will not be deleted until the tesselator
+// way, the SbTVertexes will not be deleted until the tessellator
 // is destructed, and SbTVertexes can be reused.
 //
 struct SbTVertex *

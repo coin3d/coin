@@ -120,9 +120,8 @@ SoLineHighlightRenderAction::init(void)
   this->postprocpath->ref();
 }
 
-/*!
-  Overloaded to add highlighting after the "ordinary" rendering.
-*/
+// Documented in superclass. Overridden to add highlighting after the
+// "ordinary" rendering.
 void
 SoLineHighlightRenderAction::apply(SoNode * node)
 {
@@ -148,28 +147,24 @@ SoLineHighlightRenderAction::apply(SoNode * node)
   }
 }
 
-/*!
-  This method will just call the SoGLRenderAction::apply() method (so
-  no highlighting will be done).
-
-  It has been overloaded to avoid confusing the compiler, which
-  typically want to see either all or none of the apply() methods
-  overloaded.
- */
+// Documented in superclass.  This method will just call the
+// SoGLRenderAction::apply() method (so no highlighting will be done).
+//
+// It has been overridden to avoid confusing the compiler, which
+// typically want to see either all or none of the apply() methods
+// overridden.
 void
 SoLineHighlightRenderAction::apply(SoPath * path)
 {
   SoGLRenderAction::apply(path);
 }
 
-/*!
-  This method will just call the SoGLRenderAction::apply() method (so
-  no highlighting will be done).
-
-  It has been overloaded to avoid confusing the compiler, which
-  typically want to see either all or none of the apply() methods
-  overloaded.
- */
+// Documented in superclass.  This method will just call the
+// SoGLRenderAction::apply() method (so no highlighting will be done).
+//
+// It has been overridden to avoid confusing the compiler, which
+// typically want to see either all or none of the apply() methods
+// overridden.
 void
 SoLineHighlightRenderAction::apply(const SoPathList & pathlist,
                                    SbBool obeysrules)

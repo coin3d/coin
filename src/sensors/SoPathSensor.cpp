@@ -108,7 +108,7 @@ SoPathSensor::notify(SoNotList * l)
   inherited::notify(l);
 
   // FIXME: I don't know what the heck we're supposed to do here, but
-  // I included the overloading in case we find out after 1.0 release,
+  // I included the overriding in case we find out after 1.0 release,
   // and need to fix the behavior without changing the class signature
   // (which would break binary compatibility). 20000402 mortene.
 }

@@ -199,7 +199,7 @@ SoCallback::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   SoCallback::doAction(action);
 }
 
-// Doc from superclass. Overloaded from parent class to also copy the
+// Doc from superclass. Overridden from parent class to also copy the
 // callback function pointer and userdata.
 void
 SoCallback::copyContents(const SoFieldContainer * from, SbBool copyconnections)

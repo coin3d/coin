@@ -252,9 +252,7 @@ SoIndexedNurbsSurface::generatePrimitives(SoAction * action)
   this->doNurbs(action, FALSE);
 }
 
-/*!
-  Overloaded to return NULL.
-*/
+// Documented in superclass.
 SoDetail *
 SoIndexedNurbsSurface::createTriangleDetail(SoRayPickAction * /* action */,
                                             const SoPrimitiveVertex * /*v1*/,

@@ -93,9 +93,8 @@ SoBlinker::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoBlinker);
 }
 
-/*!
-  Overloaded to calculate bbox of all children.
-*/
+// Documented in superclass. Overridden to calculate bbox of all
+// children.
 void
 SoBlinker::getBoundingBox(SoGetBoundingBoxAction * action)
 {
@@ -103,9 +102,8 @@ SoBlinker::getBoundingBox(SoGetBoundingBoxAction * action)
   SoGroup::getBoundingBox(action);
 }
 
-/*!
-  Overloaded not to write internal engine connections.
-*/
+// Documented in superclass. Overridden to not write internal engine
+// connections.
 void
 SoBlinker::write(SoWriteAction * action)
 {
@@ -124,10 +122,8 @@ SoBlinker::write(SoWriteAction * action)
     this->reconnectInternalEngine();
 }
 
-/*!
-  Overloaded to detect "external" changes (i.e. not caused by the
-  internal timer engine).
-*/
+// Documented in superclass. Overridden to detect "external" changes
+// (i.e. not caused by the internal timer engine).
 void
 SoBlinker::notify(SoNotList * nl)
 {

@@ -135,10 +135,9 @@ SoClipPlaneElement::init(SoState * state)
   this->startIndex = 0;
 }
 
-/*!
-  Overloaded to copy planes into the new top of stack, since
-  planes are accumulated. Also copies accumulated node ids.
-*/
+// Documented in superclass. Overridden to copy planes into the new
+// top of stack, since planes are accumulated. Also copies accumulated
+// node ids.
 void
 SoClipPlaneElement::push(SoState * state)
 {

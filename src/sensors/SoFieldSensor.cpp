@@ -112,13 +112,12 @@ SoFieldSensor::trigger(void)
   inherited::trigger();
 }
 
-/*!
-  Overloaded to only propagate if the field that caused
-  the notification is the one this sensor is attached to.
-*/
+// Doc from superclass.
 void
 SoFieldSensor::notify(SoNotList * l)
 {
+  // Overridden to only propagate if the field that caused the
+  // notification is the one this sensor is attached to.
   if (l->getLastField() == this->convict) {
     inherited::notify(l);
   }

@@ -573,14 +573,12 @@ SoFaceSet::generateDefaultNormals(SoState * state, SoNormalCache * nc)
   return TRUE;
 }
 
-/*!
-  Overloaded to return FALSE. Normals are genereted directly in normal
-  cache for this shape.
-*/
+// Documented in superclass.
 SbBool
 SoFaceSet::generateDefaultNormals(SoState * /* state */,
                                   SoNormalBundle * /* nb */)
 {
+  // Normals are genereted directly in normal cache for this shape.
   return FALSE;
 }
 
@@ -731,16 +729,16 @@ SoFaceSet::generatePrimitives(SoAction *action)
     state->pop();
 }
 
-/*!
-  Overloaded to invalidate convex cache.
-*/
+// Documented in superclass.
 void
-SoFaceSet::notify(SoNotList * list)
+SoFaceSet::notify(SoNotList * l)
 {
+  // Overridden to invalidate convex cache.
+
   if (this->convexCache) this->convexCache->invalidate();
-  SoField *f = list->getLastField();
+  SoField *f = l->getLastField();
   if (f == &this->numVertices) this->concavestatus = STATUS_UNKNOWN;
-  SoNode::notify(list);
+  SoNode::notify(l);
 }
 
 //

@@ -1223,13 +1223,13 @@ SoMarkerSet::GLRender(SoGLRenderAction * action)
 
 // ----------------------------------------------------------------------------------------------------
 
-/*!
-  Overloaded to add the number of markers to the number of
-  images in \a action.
-*/
+// Documented in superclass.
 void
 SoMarkerSet::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
+  // Overridden to add the number of markers to the number of images
+  // in \a action.
+
   if (!this->shouldPrimitiveCount(action)) return;
 
   SoState * state = action->getState();

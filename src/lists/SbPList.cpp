@@ -75,7 +75,7 @@
 /*!
   Returns element at \a index.
 
-  Overloaded from parent class to automatically expand the size of the
+  Overridden from parent class to automatically expand the size of the
   internal array if \a index is outside the current bounds of the
   list. The values of any additional pointers are then set to \c NULL.
  */
@@ -92,7 +92,7 @@ SbPList::operator[](const int index) const
 /*!
   Index operator to set element at \a index.
 
-  Overloaded from parent class to automatically expand the size of the
+  Overridden from parent class to automatically expand the size of the
   internal array if \a index is outside the current bounds of the
   list. The values of any additional pointers are then set to \c NULL.
  */

@@ -109,7 +109,7 @@ SoCounter::~SoCounter()
 {
 }
 
-// overloaded from parent
+// Documented in superclass.
 void
 SoCounter::initClass()
 {

@@ -301,7 +301,7 @@ SoElement::init(SoState * state)
   SoState::getElement() or indirectly SoElement::getElement(), and the
   depth of the current element is less than the state depth.
 
-  Overload this method if your element needs to copy data from the
+  Override this method if your element needs to copy data from the
   previous top of stack. The push() method is called on the new
   element, and the previous element can be found using
   SoElement::getNextInStack().
@@ -318,7 +318,7 @@ SoElement::push(SoState * state)
   on the new top of stack, and a pointer to the previous top of stack
   is passed in \a prevTopElement.
 
-  Overload this method if you need to copy some state information from
+  Override this method if you need to copy some state information from
   the previous top of stack.
 */
 void

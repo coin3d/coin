@@ -62,7 +62,7 @@ public:
 
   enum ProjectorFrontSetting { FRONT, BACK, USE_PICK };
 
-  // overload these in case we decide to do some extra work later
+  // override these in case we decide to do some extra work later
   virtual void callback(SoCallbackAction * action);
   virtual void GLRender(SoGLRenderAction * action);
   virtual void getMatrix(SoGetMatrixAction * action);

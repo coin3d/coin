@@ -597,10 +597,8 @@ SoGLRenderAction::beginTraversal(SoNode * node)
   THIS->render(node);
 }
 
-/*!
-  Overloaded from parent class to clean up the lists of objects which
-  were included in the delayed rendering.
- */
+// Documented in superclass. Overridden from parent class to clean up
+// the lists of objects which were included in the delayed rendering.
 void
 SoGLRenderAction::endTraversal(SoNode * node)
 {
@@ -807,9 +805,8 @@ SoGLRenderAction::addTransPath(SoPath * path)
   THIS->transpobjdistances.append(dist);
 }
 
-/*!
-  Overloaded to reinitialize GL state on next apply.
-*/
+// Documented in superclass. Overridden to reinitialize GL state on
+// next apply.
 void
 SoGLRenderAction::invalidateState(void)
 {

@@ -72,7 +72,7 @@ protected:
   void writeOutputTypes(SoOutput * out);
 
 private:
-  virtual void destroy(void); // overloads SoBase::destroy()
+  virtual void destroy(void); // overrides SoBase::destroy()
 
   static SoType classTypeId;
   unsigned int flags;

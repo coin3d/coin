@@ -1243,7 +1243,7 @@ SoField::shouldWrite(void) const
   (i.e. if stuff is \e disconnected, \a numconnections will be a
   negative number).
 
-  The default method is empty. Overload in subclasses if you want do
+  The default method is empty. Override in subclasses if you want do
   something special on connections/deconnections.
 */
 void
@@ -1275,7 +1275,7 @@ SoField::isReadOnly(void) const
   The application programmer should normally not need to consider this
   method, unless he constructs a complex field type which contains new
   references to container instances (i.e. nodes or
-  engines). Overloading this method is then necessary to update the
+  engines). Overriding this method is then necessary to update the
   reference pointers, as they could have been duplicated during the
   copy operation.
 */

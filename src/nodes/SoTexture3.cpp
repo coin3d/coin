@@ -190,13 +190,13 @@ SoTexture3::initClass(void)
 }
 
 
-/*!
-  Overloaded to check if texture files (if any) can be found
-  and loaded.
-*/
+// Documented in superclass.
 SbBool
 SoTexture3::readInstance(SoInput * in, unsigned short flags)
 {
+  // Overridden to check if texture files (if any) can be found and
+  // loaded.
+
   this->filenamesensor->detach();
   SbBool readOK = inherited::readInstance(in, flags);
   this->setReadStatus((int) readOK);
@@ -346,13 +346,13 @@ SoTexture3::setReadStatus(int s)
   this->readstatus = s;
 }
 
-/*!
-  Overloaded to detect when fields change.
-*/
+// Documented in superclass.
 void
-SoTexture3::notify(SoNotList *list)
+SoTexture3::notify(SoNotList * l)
 {
-  SoField *f = list->getLastField();
+  // Overridden to detect when fields change.
+
+  SoField *f = l->getLastField();
   if (f == &this->images) {
     this->glimagevalid = FALSE;
     this->filenames.setDefault(TRUE); // write image, not filename
@@ -360,7 +360,7 @@ SoTexture3::notify(SoNotList *list)
   else if (f == &this->wrapS || f == &this->wrapT || f == &this->wrapR) {
     this->glimagevalid = FALSE;
   }
-  SoNode::notify(list);
+  SoNode::notify(l);
 }
 
 //

@@ -76,7 +76,7 @@ void sogl_render_cube(const float width,
                       SoMaterialBundle * const material,
                       const unsigned int flags);
 
-// nurbs rendering and tesselation
+// nurbs rendering and tessellation
 void sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
                                void * nurbsrenderer,
                                const int numuctrlpts, const int numvctrlpts,

@@ -126,7 +126,7 @@ SoNodeEngine::initClass(void)
     SoType::createType(SoNode::getClassTypeId(), SbName("NodeEngine"));
 }
 
-// overloaded from parent
+// Documented in superclass.
 SoType
 SoNodeEngine::getClassTypeId(void)
 {
@@ -190,7 +190,7 @@ SoNodeEngine::getOutputName(const SoEngineOutput * output,
 
 /*!
   Called when an input is changed. The default method does nothing,
-  but subclasses may overload this method to do the The Right Thing
+  but subclasses may override this method to do the The Right Thing
   when a specific field is changed.
 */
 void
@@ -271,7 +271,7 @@ SoNodeEngine::getOutputDataPtr(void)
   return NULL; // base class has no output
 }
 
-// overloaded from parent
+// Documented in superclass.
 SbBool
 SoNodeEngine::readInstance(SoInput * in, unsigned short flags)
 {
@@ -280,7 +280,7 @@ SoNodeEngine::readInstance(SoInput * in, unsigned short flags)
   return inherited::readInstance(in, flags);
 }
 
-// overloaded from parent
+// Documented in superclass.
 void
 SoNodeEngine::writeInstance(SoOutput * out)
 {

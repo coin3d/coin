@@ -28,7 +28,7 @@
 
   Instances of this class are used for storing information about hit
   points on textual 2D or 3D geometry after pick operations, and for
-  storing information returned to tesselation callbacks.
+  storing information returned to tessellation callbacks.
 
   \sa SoRayPickAction, SoCallbackAction
   \sa SoText3, SoText2, SoAsciiText

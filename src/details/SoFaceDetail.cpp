@@ -28,7 +28,7 @@
 
   Instances of this class are used among other things for storing
   information about polygons after pick operations, and for storing
-  information returned to tesselation callbacks.
+  information returned to tessellation callbacks.
 
   Note that a SoFaceDetail instance consists of a set of SoPointDetail
   instances, one for each vertex of the polygon it represents.
@@ -131,9 +131,9 @@ SoFaceDetail::getFaceIndex(void) const
 }
 
 /*!
-  If this SoFaceDetail represents a triangle tesselated from a complex
+  If this SoFaceDetail represents a triangle tessellated from a complex
   shape, this method returns the index of the part of the complex
-  shape it was tesselated from.
+  shape it was tessellated from.
  */
 int
 SoFaceDetail::getPartIndex(void) const

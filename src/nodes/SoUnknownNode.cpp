@@ -28,7 +28,7 @@
 
 // FIXME: copy operations doesn't work as expected on this node. I
 // think both the copyContents() and addToCopyDict() methods needs to
-// be overloaded.  20000404 mortene.
+// be overridden.  20000404 mortene.
 
 #include <Inventor/nodes/SoUnknownNode.h>
 #include <Inventor/SoInput.h>
@@ -179,14 +179,14 @@ SoUnknownNode::setNodeClassName(const SbName & name)
   this->classname = name;
 }
 
-// Overloaded from SoBase.
+// Overridden from SoBase.
 const char *
 SoUnknownNode::getFileFormatName(void) const
 {
   return this->classname.getString();
 }
 
-// Overloaded from SoNode. SoChildList contains either 0 or 1
+// Overridden from SoNode. SoChildList contains either 0 or 1
 // elements, depending on if an alternate representation was
 // specified.
 SoChildList *
@@ -195,7 +195,7 @@ SoUnknownNode::getChildren(void) const
   return this->alternate;
 }
 
-// Write action method is overloaded from SoNode to handle children.
+// Write action method is overridden from SoNode to handle children.
 void
 SoUnknownNode::write(SoWriteAction * action)
 {
@@ -219,7 +219,7 @@ SoUnknownNode::write(SoWriteAction * action)
   else assert(0 && "unknown stage");
 }
 
-// Action methods overloaded from SoNode to traverse alternateRep (and
+// Action methods overridden from SoNode to traverse alternateRep (and
 // below, if alternateRep is a group node).
 
 void

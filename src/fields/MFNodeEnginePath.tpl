@@ -200,7 +200,7 @@ SoMF_Typename_::deleteAllValues(void)
   if (this->num) this->deleteValues(0);
 }
 
-// Overloaded to handle unref() and removeAuditor().
+// Overridden to handle unref() and removeAuditor().
 void
 SoMF_Typename_::deleteValues(int start, int num)
 {
@@ -227,7 +227,7 @@ SoMF_Typename_::deleteValues(int start, int num)
   inherited::deleteValues(start, num);
 }
 
-// Overloaded to insert NULL pointers in new array slots.
+// Overridden to insert NULL pointers in new array slots.
 void
 SoMF_Typename_::insertSpace(int start, int num)
 {

@@ -166,7 +166,7 @@ public:
 protected:
   SbVec2s buffersize;
 
-  // Note: should _really_ be overloaded by subclasses.
+  // Note: should _really_ be overridden by subclasses.
   virtual SbVec2s getMax(void) { return SbVec2s(32767, 32767); }
 };
 

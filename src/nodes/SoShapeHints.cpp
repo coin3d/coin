@@ -134,7 +134,7 @@
   \var SoShapeHints::FaceType SoShapeHints::CONVEX
 
   Subsequent faces are all convex, so turn off the check for and
-  tesselation of inconvex faces.
+  tessellation of inconvex faces.
 */
 
 

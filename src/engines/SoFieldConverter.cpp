@@ -66,13 +66,13 @@
 /*!
   \fn SoField * SoFieldConverter::getInput(SoType type)
 
-  Returns input field for the converter engine. Must be overloaded in
+  Returns input field for the converter engine. Must be overridden in
   non-abstract converter engine classes.
 */
 /*!
   \fn SoEngineOutput * SoFieldConverter::getOutput(SoType type)
 
-  Returns output for the converter engine. Must be overloaded in
+  Returns output for the converter engine. Must be overridden in
   non-abstract converter engine classes.
 */
 

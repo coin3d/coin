@@ -185,7 +185,7 @@ SoCache::invalidate(void)
 }
 
 /*!
-  Can be overloaded by subclasses to clean up before they are
+  Can be overridden by subclasses to clean up before they are
   deleted. Default method does nothing.
 */
 void

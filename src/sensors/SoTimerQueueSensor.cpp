@@ -109,9 +109,7 @@ SoTimerQueueSensor::setTriggerTime(const SbTime & time)
   }
 }
 
-/*!
-  Overloaded to clear scheduled flag before triggering.
-*/
+// Documented in superclass.
 void
 SoTimerQueueSensor::trigger(void)
 {

@@ -91,9 +91,7 @@ SoVertexShape::initClass(void)
   SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoVertexShape);
 }
 
-/*!
-  Overloaded to invalidate caches.
-*/
+// Documented in superclass.
 void
 SoVertexShape::notify(SoNotList * nl)
 {
@@ -102,28 +100,25 @@ SoVertexShape::notify(SoNotList * nl)
 }
 
 /*!
-  Subclasses should overload this method to generate default
-  normals using the SoNormalBundle class. \e TRUE should
-  be returned if normals were generated, \e FALSE otherwise.
-  Default method returns FALSE.
+  Subclasses should override this method to generate default normals
+  using the SoNormalBundle class. \c TRUE should be returned if
+  normals were generated, \c FALSE otherwise.  Default method returns
+  \c FALSE.
 */
 SbBool
-SoVertexShape::generateDefaultNormals(SoState * ,
-                                      SoNormalBundle *)
+SoVertexShape::generateDefaultNormals(SoState *, SoNormalBundle *)
 {
   return FALSE;
 }
 
 
 /*!
-  Subclasses should overload this method to generate default
-  normals using the SoNormalCache class. This is more
-  effective than using SoNormalGenerator. Return \e TRUE if
-  normals were generated, \e FALSE otherwise. Default method
-  just returns FALSE.
+  Subclasses should override this method to generate default normals
+  using the SoNormalCache class. This is more effective than using
+  SoNormalGenerator. Return \c TRUE if normals were generated, \c
+  FALSE otherwise. Default method just returns \c FALSE.
 
-  This method is not part of the original OIV API. Do not overload it if
-  you intend to create a node that can be used on both Coin and OIV.
+  This method is not part of the original SGI Open Inventor API.
 */
 SbBool
 SoVertexShape::generateDefaultNormals(SoState * /* state */,

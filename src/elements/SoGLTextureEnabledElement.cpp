@@ -84,9 +84,7 @@ SoGLTextureEnabledElement::init(SoState * state)
   glDisable(GL_TEXTURE_2D);
 }
 
-/*!
-  Overloaded to track GL state.
-*/
+// Documented in superclass. Overridden to track GL state.
 void
 SoGLTextureEnabledElement::push(SoState * state)
 {
@@ -94,9 +92,7 @@ SoGLTextureEnabledElement::push(SoState * state)
   this->glstate = ((SoGLTextureEnabledElement*)this->getNextInStack())->glstate;
 }
 
-/*!
-  Overloaded to track GL state.
-*/
+// Documented in superclass. Overridden to track GL state.
 void
 SoGLTextureEnabledElement::pop(SoState * state,
                                const SoElement * prevTopElement)

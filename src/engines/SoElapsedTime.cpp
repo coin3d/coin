@@ -79,7 +79,7 @@
 
 SO_ENGINE_SOURCE(SoElapsedTime);
 
-// overloaded from parent
+// Documented in superclass.
 void
 SoElapsedTime::initClass(void)
 {
@@ -116,7 +116,7 @@ SoElapsedTime::~SoElapsedTime()
 {
 }
 
-// overloaded from parent
+// Documented in superclass.
 void
 SoElapsedTime::evaluate(void)
 {
@@ -136,7 +136,7 @@ SoElapsedTime::evaluate(void)
   }
 }
 
-// overloaded from parent
+// Documented in superclass.
 void
 SoElapsedTime::inputChanged(SoField * which)
 {
@@ -172,7 +172,8 @@ SoElapsedTime::inputChanged(SoField * which)
   this->timeOut.enable(this->status == SoElapsedTime::RUNNING);
 }
 
-// Overloaded to not write connection to realTime global field.
+// Documented in superclass. Overridden to not write connection to
+// realTime global field.
 void
 SoElapsedTime::writeInstance(SoOutput * out)
 {

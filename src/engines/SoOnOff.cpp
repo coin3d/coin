@@ -79,7 +79,7 @@ SoOnOff::SoOnOff(void)
   this->state = FALSE;
 }
 
-// overloaded from parent.
+// Documented in superclass.
 void
 SoOnOff::initClass(void)
 {
@@ -93,7 +93,7 @@ SoOnOff::~SoOnOff()
 {
 }
 
-// overloaded from parent.
+// Documented in superclass.
 void
 SoOnOff::evaluate(void)
 {
@@ -101,7 +101,7 @@ SoOnOff::evaluate(void)
   SO_ENGINE_OUTPUT(isOff, SoSFBool, setValue(!this->state));
 }
 
-// overloaded from parent
+// Documented in superclass.
 void
 SoOnOff::inputChanged(SoField * which)
 {

@@ -215,9 +215,7 @@ SbSphereProjector::intersectSphereFront(const SbLine & l, SbVec3f & result)
   return FALSE;
 }
 
-/*!
-  Overloaded from parent to set \a needSetup to \c TRUE.
-*/
+// Documented in superclass.
 void
 SbSphereProjector::setWorkingSpace(const SbMatrix & space)
 {

@@ -619,9 +619,7 @@ SoLineSet::GLRender(SoGLRenderAction * action)
     state->pop();
 }
 
-/*!
-  Overloaded to clear normal cache.
-*/
+// Documented in superclass.
 SbBool
 SoLineSet::generateDefaultNormals(SoState * , SoNormalCache * nc)
 {
@@ -630,12 +628,9 @@ SoLineSet::generateDefaultNormals(SoState * , SoNormalCache * nc)
   return TRUE;
 }
 
-/*!
-  Overloader to return FALSE.
-*/
+// Documented in superclass.
 SbBool
-SoLineSet::generateDefaultNormals(SoState *,
-                                  SoNormalBundle *)
+SoLineSet::generateDefaultNormals(SoState *, SoNormalBundle *)
 {
   return FALSE;
 }

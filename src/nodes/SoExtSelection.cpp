@@ -715,12 +715,12 @@ SoExtSelection::isOverlayLassoAnimated(void)
   return THIS->lassopatternanimate;
 }
 
-/*!
-  Overloaded to handle lasso selection.
-*/
+// Documented in superclass.
 void
 SoExtSelection::handleEvent(SoHandleEventAction * action)
 {
+  // Overridden to handle lasso selection.
+
   if (this->lassoType.getValue() == NOLASSO) {
     inherited::handleEvent(action);
     return;
@@ -897,12 +897,12 @@ SoExtSelection::draw(SoGLRenderAction *action)
   glPopAttrib();
 }
 
-/*!
-  Overloaded to render lasso.
-*/
+// Documented in superclass.
 void
 SoExtSelection::GLRenderBelowPath(SoGLRenderAction * action)
 {
+  // Overridden to render lasso.
+
   inherited::GLRenderBelowPath(action);
   SoState *state = action->getState();
   state->push();

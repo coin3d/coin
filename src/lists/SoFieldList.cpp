@@ -31,7 +31,7 @@
 
 // SoFieldList was moved from being a subclass of SbPList to being a
 // subclass of SbList. This removed the need to do lots of ugly casts
-// in overloaded methods, with the subsequent removal of most of the
+// in overridden methods, with the subsequent removal of most of the
 // code in this file. 20000228 mortene.
 
 /*!

@@ -93,14 +93,14 @@ SbSphereSectionProjector::SbSphereSectionProjector(const SbSphere & sph,
   // needSetup will be TRUE, and other members will be initialized later
 }
 
-// Overloaded from parent.
+// Documented in superclass.
 SbProjector *
 SbSphereSectionProjector::copy(void) const
 {
   return new SbSphereSectionProjector(*this);
 }
 
-// Overloaded from parent.
+// Documented in superclass.
 SbVec3f
 SbSphereSectionProjector::project(const SbVec2f & point)
 {
@@ -132,7 +132,7 @@ SbSphereSectionProjector::project(const SbVec2f & point)
   return projpt;
 }
 
-// Overloaded from parent.
+// Documented in superclass.
 SbRotation
 SbSphereSectionProjector::getRotation(const SbVec3f & point1,
                                       const SbVec3f & point2)

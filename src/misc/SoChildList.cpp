@@ -139,9 +139,7 @@ SoChildList::remove(const int index)
     this->auditors[i]->removeIndex(this->parent, index);
 }
 
-/*!
-  Overloaded from superclass to handle notification.
-*/
+// Documented in superclass. Overridden to handle notification.
 void
 SoChildList::truncate(const int length)
 {
@@ -163,12 +161,8 @@ SoChildList::truncate(const int length)
   }
 }
 
-/*!
-  Copy contents of \a cl into this list. Overloaded from superclass to
-  handle notification.
-
-  \sa SoBaseList::copy(const SoBaseList &)
-*/
+// Documented in superclass. Copy contents of \a cl into this
+// list. Overridden from superclass to handle notification.
 void
 SoChildList::copy(const SoChildList & cl)
 {
@@ -184,10 +178,8 @@ SoChildList::copy(const SoChildList & cl)
   this->parent->startNotify();
 }
 
-/*!
-  Set the child \a node pointer at \a index in the list. Overloaded
-  from superclass to handle notification.
-*/
+// Documented in superclass. Overridden from superclass to handle
+// notification.
 void
 SoChildList::set(const int index, SoNode * const node)
 {

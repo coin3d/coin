@@ -725,12 +725,12 @@ SoSelection::findPath(const SoPath * path) const
   return idx;
 }
 
-/*!
-  Overloaded to do selection picking.
-*/
+// Documented in superclass.
 void
 SoSelection::handleEvent(SoHandleEventAction * action)
 {
+  // Overridden to do selection picking.
+
   inherited::handleEvent(action);
   if (action->isHandled()) return;
 

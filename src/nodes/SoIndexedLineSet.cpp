@@ -306,18 +306,14 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
   }
 }
 
-/*!
-  Overloaded to return FALSE.
-*/
+// Documented in superclass.
 SbBool
 SoIndexedLineSet::generateDefaultNormals(SoState *, SoNormalBundle *)
 {
   return FALSE;
 }
 
-/*!
-  Overloaded to clear normal cache.
-*/
+// Documented in superclass.
 SbBool
 SoIndexedLineSet::generateDefaultNormals(SoState * state, SoNormalCache * nc)
 {

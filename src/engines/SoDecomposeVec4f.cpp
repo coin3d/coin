@@ -70,7 +70,7 @@ SoDecomposeVec4f::SoDecomposeVec4f()
   SO_ENGINE_ADD_OUTPUT(w,SoMFFloat);
 }
 
-// overloaded from parent
+// Documented in superclass.
 void
 SoDecomposeVec4f::initClass()
 {
@@ -84,7 +84,7 @@ SoDecomposeVec4f::~SoDecomposeVec4f()
 {
 }
 
-// overloaded from parent
+// Documented in superclass.
 void
 SoDecomposeVec4f::evaluate()
 {

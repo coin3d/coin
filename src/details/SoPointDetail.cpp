@@ -28,7 +28,7 @@
 
   Instances of this class are used among other things for storing
   information about the vertices of lines and polygons after pick
-  operations, and for storing information returned to tesselation
+  operations, and for storing information returned to tessellation
   callbacks.
 
   It contains indices into the vertex coordinate sets, along with

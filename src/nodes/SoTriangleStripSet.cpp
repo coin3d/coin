@@ -753,17 +753,16 @@ SoTriangleStripSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
   }
 }
 
-/*!
-  Overloaded to return FALSE. Normals are generated in normal cache,
-*/
+// Documented in superclass.
 SbBool
 SoTriangleStripSet::generateDefaultNormals(SoState * /* state */,
                                            SoNormalBundle * /* nb */)
 {
+  // Normals are generated in normal cache.
   return FALSE;
 }
 
-// doc from parent
+// Documented in superclass.
 void
 SoTriangleStripSet::generatePrimitives(SoAction *action)
 {

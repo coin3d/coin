@@ -78,7 +78,7 @@ SoDecomposeMatrix::SoDecomposeMatrix()
   SO_ENGINE_ADD_OUTPUT(scaleOrientation,SoMFRotation);
 }
 
-// overloaded from parent
+// Documented in superclass.
 void
 SoDecomposeMatrix::initClass()
 {
@@ -92,7 +92,7 @@ SoDecomposeMatrix::~SoDecomposeMatrix()
 {
 }
 
-// overloaded from parent
+// Documented in superclass.
 void
 SoDecomposeMatrix::evaluate()
 {

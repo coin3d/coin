@@ -82,7 +82,7 @@
 /*!
   \fn void SbVec3fList::append(const SbVec3f * item)
 
-  Overloaded from parent to allocate a new SbVec3f instance when
+  Overridden from parent to allocate a new SbVec3f instance when
   called.
 
   \sa SbList::append()
@@ -91,7 +91,7 @@
 /*!
   \fn void SbVec3fList::insert(const SbVec3f * item, const int insertbefore)
 
-  Overloaded from parent to allocate a new SbVec3f instance when
+  Overridden from parent to allocate a new SbVec3f instance when
   called.
 
   \sa SbList::insert()

@@ -141,9 +141,7 @@ SoProto::getProtoName(void) const
   return THIS->name;
 }
 
-/*!
-  Overloaded to read Proto definition.
-*/
+// Documented in superclass. Overridden to read Proto definition.
 SbBool
 SoProto::readInstance(SoInput * in, unsigned short flags)
 {

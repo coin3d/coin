@@ -83,9 +83,9 @@
   index into the material pool by 1 for each new face of the shape
   node.
 
-  Note that individual faces after tesselation of complex shapes (like
-  SoCylinder nodes) are \e not considered to be separate entities, and
-  so this binding will be treated in the same manner as
+  Note that individual faces after tessellation of complex shapes
+  (like SoCylinder nodes) are \e not considered to be separate
+  entities, and so this binding will be treated in the same manner as
   SoMaterialBinding::PER_PART for those.
 */
 /*!
@@ -96,9 +96,9 @@
 
   Materials are fetched by the index value settings of the shape.
 
-  Note that individual faces after tesselation of complex shapes (like
-  SoCylinder nodes) are \e not considered to be separate entities, and
-  so this binding will be treated in the same manner as
+  Note that individual faces after tessellation of complex shapes
+  (like SoCylinder nodes) are \e not considered to be separate
+  entities, and so this binding will be treated in the same manner as
   SoMaterialBinding::PER_PART_INDEXED for those.
 */
 /*!

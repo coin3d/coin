@@ -62,7 +62,7 @@ SbLineProjector::SbLineProjector(void)
 {
 }
 
-// Overloaded from parent class.
+// Documented in superclass.
 SbVec3f
 SbLineProjector::project(const SbVec2f & point)
 {
@@ -186,7 +186,7 @@ SbLineProjector::setStartPosition(const SbVec3f & point)
   this->lastPoint = point;
 }
 
-// Overloaded from parent.
+// Documented in superclass.
 SbProjector *
 SbLineProjector::copy(void) const
 {

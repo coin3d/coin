@@ -363,10 +363,10 @@ SoDragger::updateElements(SoState * state)
   // hopefully we didn't forget something...
 }
 
-// The action methods are overloaded in case we decide to do some
+// The action methods are overridden in case we decide to do some
 // extra work before passing the control on the SoBaseKit.
 
-// Doc in superclass. Overloaded to initialize some elements before
+// Doc in superclass. Overridden to initialize some elements before
 // traversing children.
 void
 SoDragger::callback(SoCallbackAction * action)
@@ -377,7 +377,7 @@ SoDragger::callback(SoCallbackAction * action)
   state->pop();
 }
 
-// Doc in superclass. Overloaded to initialize some elements before
+// Doc in superclass. Overridden to initialize some elements before
 // traversing children.
 void 
 SoDragger::GLRender(SoGLRenderAction * action)
@@ -389,7 +389,7 @@ SoDragger::GLRender(SoGLRenderAction * action)
   state->pop();
 }
 
-// Doc in superclass. Overloaded to initialize some elements before
+// Doc in superclass. Overridden to initialize some elements before
 // traversing children.
 void 
 SoDragger::getMatrix(SoGetMatrixAction * action)
@@ -398,7 +398,7 @@ SoDragger::getMatrix(SoGetMatrixAction * action)
   inherited::getMatrix(action);
 }
 
-// Doc in superclass. Overloaded to initialize some elements before
+// Doc in superclass. Overridden to initialize some elements before
 // traversing children.
 void 
 SoDragger::rayPick(SoRayPickAction * action)
@@ -410,7 +410,7 @@ SoDragger::rayPick(SoRayPickAction * action)
   state->pop();
 }
 
-// Doc in superclass. Overloaded to initialize some elements before
+// Doc in superclass. Overridden to initialize some elements before
 // traversing children.
 void 
 SoDragger::search(SoSearchAction * action)
@@ -419,7 +419,7 @@ SoDragger::search(SoSearchAction * action)
   inherited::search(action);
 }
 
-// Doc in superclass. Overloaded to initialize some elements before
+// Doc in superclass. Overridden to initialize some elements before
 // traversing children.
 void 
 SoDragger::write(SoWriteAction * action)
@@ -428,7 +428,7 @@ SoDragger::write(SoWriteAction * action)
   inherited::write(action);
 }
 
-// Doc in superclass. Overloaded to initialize some elements before
+// Doc in superclass. Overridden to initialize some elements before
 // traversing children.
 void 
 SoDragger::getPrimitiveCount(SoGetPrimitiveCountAction * action)
@@ -1297,9 +1297,7 @@ SoDragger::setCameraInfo(SoAction * action)
   THIS->viewport = SoViewportRegionElement::get(state);;
 }
 
-/*!
-  Overloaded to detect picks on dragger.
-*/
+// Documented in superclass. Overridden to detect picks on dragger.
 void
 SoDragger::handleEvent(SoHandleEventAction * action)
 {
@@ -1434,10 +1432,8 @@ SoDragger::isIgnoreInBbox(void)
   return THIS->ignoreinbbox;
 }
 
-/*!  
-  Overloaded to ignore dragger bounding box if
-  SoDragger::isIgnoreInBbox() is \c TRUE.
-*/
+// Documented in superclass. Overridden to ignore dragger bounding box
+// if SoDragger::isIgnoreInBbox() is \c TRUE.
 void
 SoDragger::getBoundingBox(SoGetBoundingBoxAction * action)
 {
@@ -1463,14 +1459,12 @@ SoDragger::getActiveChildDragger(void) const
   return THIS->activechilddragger;
 }
 
-// doc in super
+// Documented in superclass. Overridden to set default on
+// SoDragger::isActive, SoDragger::motionMatrix and on common
+// subdragger fields: translation, center, scaleFactor and rotation.
 void
 SoDragger::setDefaultOnNonWritingFields(void)
 {
-  // Overloaded to set default on SoDragger::isActive,
-  // SoDragger::motionMatrix and on common subdragger fields:
-  // translation, center, scaleFactor and rotation.
-
 #define CHECK_DEFAULT(name, type, val) \
   f = (SoField*) this->getField(name); \
   if (f && !(f->isConnectionEnabled() && f->isConnected())) { \

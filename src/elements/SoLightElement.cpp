@@ -121,10 +121,8 @@ SoLightElement::init(SoState * state)
   this->didalloc.state = TRUE;
 }
 
-/*!
-  Overloaded to copy lights to the new top of stack. Also
-  copies node ids.
-*/
+// Documented in superclass. Overridden to copy lights to the new top
+// of stack. Also copies node ids.
 void
 SoLightElement::push(SoState * state)
 {

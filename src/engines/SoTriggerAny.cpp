@@ -85,7 +85,7 @@
 
 SO_ENGINE_SOURCE(SoTriggerAny);
 
-// overloaded from parent
+// Documented in superclass.
 void
 SoTriggerAny::initClass(void)
 {
@@ -121,7 +121,7 @@ SoTriggerAny::~SoTriggerAny()
 {
 }
 
-// overloaded from parent
+// Documented in superclass.
 void
 SoTriggerAny::evaluate(void)
 {

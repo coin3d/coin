@@ -215,24 +215,22 @@ SoPointSet::GLRender(SoGLRenderAction * action)
     state->pop();
 }
 
-/*!
-  Overloaded to clear normal cache.
-*/
+// Documented in superclass.
 SbBool
 SoPointSet::generateDefaultNormals(SoState *, SoNormalCache * nc)
 {
-  // not possible to generate normals for PointSet
+  // Overridden to clear normal cache, as it's not possible to
+  // generate a normal for a point.
   nc->set(0, NULL);
   return TRUE;
 }
 
-/*!
-  Overloaded to avoid compiler warnings.
-*/
+// Documented in superclass.
 SbBool
-SoPointSet::generateDefaultNormals(SoState * state,
-                                   SoNormalBundle * bundle)
+SoPointSet::generateDefaultNormals(SoState * state, SoNormalBundle * bundle)
 {
+  // Overridden to avoid (faulty) compiler warnings with some version
+  // of g++.
   return FALSE;
 }
 

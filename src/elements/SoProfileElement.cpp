@@ -109,9 +109,7 @@ SoProfileElement::init(SoState * state)
   this->clearNodeIds();
 }
 
-/*!
-  Overloaded to copy profiles and node ids.
-*/
+// Documented in superclass. Overridden to copy profiles and node ids.
 void
 SoProfileElement::push(SoState * state)
 {

@@ -595,9 +595,8 @@ SoCamera::jitter(int numpasses, int curpass, const SbViewportRegion & vpreg,
   jitteramount[2] = 0.0f;
 }
 
-/*!
-  Overloaded to set up the viewing and projection matrices.
- */
+// Documented in superclass. Overridden to set up the viewing and
+// projection matrices.
 void
 SoCamera::doAction(SoAction * action)
 {
@@ -635,13 +634,13 @@ SoCamera::callback(SoCallbackAction * action)
   SoCamera::doAction(action);
 }
 
-/*!
-  Overloaded to calculate the coordinates of the ray within the
-  current camera settings.
- */
+// Documented in superclass.
 void
 SoCamera::rayPick(SoRayPickAction * action)
 {
+  // Overridden to calculate the coordinates of the ray within the
+  // current camera settings.
+
   SoCamera::doAction(action);
 
   // We need to check for a non-empty view volume, as caused by scene
@@ -654,15 +653,15 @@ SoCamera::rayPick(SoRayPickAction * action)
   }
 }
 
-/*!
-  The number of primitives used to render a shape can change according
-  to the shape's distance to the camera, so we need to overload this
-  method from the superclass to modify the traversal state settings
-  for the camera view.
- */
+// Documented in superclass.
 void
 SoCamera::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
+  // The number of primitives used to render a shape can change
+  // according to the shape's distance to the camera, so we need to
+  // override this method from the superclass to modify the traversal
+  // state settings for the camera view.
+
   SoCamera::doAction(action);
 }
 

@@ -443,12 +443,12 @@ SoImage::generatePrimitives(SoAction * action)
   state->pop();
 }
 
-/*!
-  Overloaded to load image file.
-*/
+// Documented in superclass.
 SbBool
 SoImage::readInstance(SoInput * in, unsigned short flags)
 {
+  // Overridden to load image file.
+
   this->filenamesensor->detach();
   SbBool readOK = inherited::readInstance(in, flags);
   this->setReadStatus(readOK);
@@ -463,9 +463,7 @@ SoImage::readInstance(SoInput * in, unsigned short flags)
   return readOK;
 }
 
-/*!
-  Overloaded to detect when fields change.
-*/
+// Documented in superclass.
 void
 SoImage::notify(SoNotList * list)
 {

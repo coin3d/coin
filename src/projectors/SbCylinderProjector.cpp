@@ -219,9 +219,7 @@ SbCylinderProjector::intersectCylinderFront(const SbLine & line,
   return isect;
 }
 
-/*!
-  Overloaded from parent to set \a needSetup to \c TRUE.
-*/
+// Documented in superclass.
 void
 SbCylinderProjector::setWorkingSpace(const SbMatrix & space)
 {

@@ -95,7 +95,7 @@
 
 SO_ENGINE_SOURCE(SoOneShot);
 
-// overloaded from parent
+// Documented in superclass.
 void
 SoOneShot::initClass(void)
 {
@@ -140,7 +140,7 @@ SoOneShot::~SoOneShot()
 {
 }
 
-// overloaded from parent
+// Documented in superclass.
 void
 SoOneShot::evaluate(void)
 {
@@ -192,7 +192,7 @@ SoOneShot::evaluate(void)
   SO_ENGINE_OUTPUT(ramp, SoSFFloat, setValue(rampval));
 }
 
-// overloaded from parent
+// Documented in superclass.
 void
 SoOneShot::inputChanged(SoField * which)
 {
@@ -224,7 +224,8 @@ SoOneShot::inputChanged(SoField * which)
   this->isActive.enable(this->running || do_evaluate);
 }
 
-// Overloaded to not write connection to realTime global field.
+// Documented in superclass. Overridden to not write connection to
+// realTime global field.
 void
 SoOneShot::writeInstance(SoOutput * out)
 {

@@ -233,9 +233,7 @@ SoIndexedNurbsCurve::generatePrimitives(SoAction * action)
   this->doNurbs(action, FALSE, FALSE);
 }
 
-/*!
-  Overloaded to return NULL.
-*/
+// Documented in superclass.
 SoDetail *
 SoIndexedNurbsCurve::createLineSegmentDetail(SoRayPickAction * /* action */,
                                              const SoPrimitiveVertex * /* v1 */,

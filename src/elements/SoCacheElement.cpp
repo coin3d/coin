@@ -69,9 +69,7 @@ SoCacheElement::init(SoState * state)
   this->cache = NULL;
 }
 
-/*!
-  Overloaded to initialize element.
-*/
+// Documented in superclass. Overridden to initialize element.
 void
 SoCacheElement::push(SoState * state)
 {
@@ -79,9 +77,8 @@ SoCacheElement::push(SoState * state)
   this->cache = NULL;
 }
 
-/*!
-  Overloaded to unref the cache, since the cache is ref'ed in set().
-*/
+// Documented in superclass. Overridden to unref the cache, since the
+// cache is ref'ed in set().
 void
 SoCacheElement::pop(SoState * state, const SoElement * prevTopElement)
 {

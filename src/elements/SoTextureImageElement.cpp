@@ -325,11 +325,11 @@ SoTextureImageElement::containsTransparency(SoState * const state)
 }
 
 /*!
-  Called by containsTransparency(). Returns \e TRUE if image data
-  has transparency. Default method does a very poor job of detecting
-  this, since it returns \e TRUE when the number of components are 2
-  or 4. Overload whenever it is important to know this
-  (SoGLTextureImageElement overloads it to avoid transparency handling
+  Called by containsTransparency(). Returns \e TRUE if image data has
+  transparency. Default method does a very poor job of detecting this,
+  since it returns \e TRUE when the number of components are 2 or
+  4. Override whenever it is important to know this
+  (SoGLTextureImageElement overrides it to avoid transparency handling
   where possible).
 */
 SbBool

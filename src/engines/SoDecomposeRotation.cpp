@@ -61,7 +61,7 @@ SoDecomposeRotation::SoDecomposeRotation()
   SO_ENGINE_ADD_OUTPUT(angle, SoMFFloat);
 }
 
-// overloaded from parent
+// Documented in superclass.
 void
 SoDecomposeRotation::initClass()
 {
@@ -75,7 +75,7 @@ SoDecomposeRotation::~SoDecomposeRotation()
 {
 }
 
-// overloaded from parent
+// Documented in superclass.
 void
 SoDecomposeRotation::evaluate()
 {

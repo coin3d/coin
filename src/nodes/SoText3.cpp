@@ -879,12 +879,12 @@ SoText3::generate(SoAction * action, unsigned int part)
 
 }
 
-/*!
-  Overloaded to detect when the string field changes.
-*/
+// Documented in superclass.
 void 
 SoText3::notify(SoNotList * list)
 {
+  // Overridden to detect when the string field changes.
+
   SoField * f = list->getLastField();
   if (f == &this->string) THIS->needsetup = TRUE;
   inherited::notify(list);

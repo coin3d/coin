@@ -239,7 +239,7 @@ SbPlaneProjector::setStartPosition(const SbVec3f & point)
   this->lastPoint = point;
 }
 
-// Overloaded from parent.
+// Documented in superclass.
 SbProjector *
 SbPlaneProjector::copy(void) const
 {

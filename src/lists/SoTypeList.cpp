@@ -31,7 +31,7 @@
 
 // SoTypeList was moved from being a subclass of SbPList to being a
 // subclass of SbList. This removed the need to do lots of ugly casts
-// in overloaded methods, with the subsequent removal of all code in
+// in overridden methods, with the subsequent removal of all code in
 // this file. 19991025 mortene.
 
 /*!

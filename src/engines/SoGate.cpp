@@ -200,9 +200,8 @@ SoGate::inputChanged(SoField * which)
   // the value of the SoGate::enable field.
 }
 
-/*!
-  Overloaded to initialize type of gate before reading.
-*/
+// Documented in superclass. Overridden to initialize type of gate
+// before reading.
 SbBool
 SoGate::readInstance(SoInput * in, unsigned short flags)
 {
@@ -229,9 +228,7 @@ SoGate::readInstance(SoInput * in, unsigned short flags)
   return SoEngine::readInstance(in, flags);
 }
 
-/*!
-  Overloaded to write type of gate.
-*/
+// Documented in superclass. Overridden to write type of gate.
 void
 SoGate::writeInstance(SoOutput * out)
 {
@@ -253,7 +250,7 @@ SoGate::writeInstance(SoOutput * out)
   this->writeFooter(out);
 }
 
-// overloaded from parent
+// Documented in superclass.
 void
 SoGate::copyContents(const SoFieldContainer * from, SbBool copyconnections)
 {

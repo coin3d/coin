@@ -87,9 +87,7 @@ SoGLTexture3EnabledElement::init(SoState * state)
   if (glw->has3DTextures) glDisable(GL_TEXTURE_3D);
 }
 
-/*!
-  Overloaded to track GL state.
-*/
+// Documented in superclass. Overridden to track GL state.
 void
 SoGLTexture3EnabledElement::push(SoState * state)
 {
@@ -99,9 +97,7 @@ SoGLTexture3EnabledElement::push(SoState * state)
   this->state = state;
 }
 
-/*!
-  Overloaded to track GL state.
-*/
+// Documented in superclass. Overridden to track GL state.
 void
 SoGLTexture3EnabledElement::pop(SoState * state,
                                const SoElement * prevTopElement)

@@ -176,7 +176,7 @@ SoEngine::initClasses(void)
   SoTriggerAny::initClass();
 }
 
-// overloaded from parent
+// Documented in superclass.
 SoType
 SoEngine::getClassTypeId(void)
 {
@@ -261,7 +261,7 @@ SoEngine::getByName(const SbName & name, SoEngineList & el)
 
 /*!
   Called when an input is changed. The default method does nothing,
-  but subclasses may overload this method to do the The Right Thing
+  but subclasses may override this method to do the The Right Thing
   when a specific field is changed.
 */
 void
@@ -342,7 +342,7 @@ SoEngine::getOutputDataPtr(void)
   return NULL; // base class has no input
 }
 
-// overloaded from parent
+// Documented in superclass.
 SbBool
 SoEngine::readInstance(SoInput * in, unsigned short flags)
 {
@@ -351,7 +351,7 @@ SoEngine::readInstance(SoInput * in, unsigned short flags)
   return inherited::readInstance(in, flags);
 }
 
-// overloaded from parent
+// Documented in superclass.
 void
 SoEngine::writeInstance(SoOutput * out)
 {
@@ -412,7 +412,7 @@ SoEngine::copy(void) const
   return cp;
 }
 
-// Overloaded from parent class.
+// Documented in superclass.
 SoFieldContainer *
 SoEngine::copyThroughConnection(void) const
 {

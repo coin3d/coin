@@ -189,10 +189,8 @@ SoCullElement::completelyInside(SoState * state)
   return elem->flags == (mask-1);
 }
 
-/*!
-  Overloaded to assert that this method is not called for this
-  element.
-*/
+// Documented in superclass. Overridden to assert that this method is
+// not called for this element.
 SbBool
 SoCullElement::matches(const SoElement *) const
 {
@@ -200,10 +198,8 @@ SoCullElement::matches(const SoElement *) const
   return FALSE;
 }
 
-/*!
-  Overloaded to assert that this method is not called for this
-  element.
-*/
+// Documented in superclass. Overridden to assert that this method is
+// not called for this element.
 SoElement *
 SoCullElement::copyMatchInfo(void) const
 {

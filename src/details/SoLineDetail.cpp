@@ -28,7 +28,7 @@
 
   Instances of this class are used among other things for storing
   information about lines after pick operations, and for storing
-  information returned to tesselation callbacks.
+  information returned to tessellation callbacks.
 
   \sa SoRayPickAction, SoPickedPoint, SoCallbackAction
 */

@@ -199,14 +199,14 @@ SoCalculator::~SoCalculator(void)
   }
 }
 
-// overloaded from parent
+// Documented in superclass.
 void
 SoCalculator::initClass(void)
 {
   SO_ENGINE_INTERNAL_INIT_CLASS(SoCalculator);
 }
 
-// overloaded from parent
+// Documented in superclass.
 void
 SoCalculator::evaluate(void)
 {
@@ -406,7 +406,7 @@ SoCalculator::findUsed(struct so_eval_node *node, char *inused, char *outused)
   }
 }
 
-// overloaded from parent
+// Documented in superclass.
 void
 SoCalculator::inputChanged(SoField *which)
 {

@@ -62,7 +62,7 @@ SoComposeRotation::SoComposeRotation()
   SO_ENGINE_ADD_OUTPUT(rotation,SoMFRotation);
 }
 
-// overloaded from parent
+// Documented in superclass.
 void
 SoComposeRotation::initClass()
 {
@@ -76,7 +76,7 @@ SoComposeRotation::~SoComposeRotation()
 {
 }
 
-// overloaded from parent
+// Documented in superclass.
 void
 SoComposeRotation::evaluate()
 {

@@ -191,7 +191,7 @@ SoGlobalField::getGlobalField(void) const
   return this->classfielddata ? this->classfielddata->getField(this, 0) : NULL;
 }
 
-// Overloaded to also set field name.
+// Overridden to also set field name.
 void
 SoGlobalField::setName(const SbName & newname)
 {
@@ -279,7 +279,7 @@ SoGlobalField::readInstance(SoInput * in, unsigned short flags)
   return TRUE;
 }
 
-// Overloaded from SoBase to make sure we're accounted for, even
+// Overridden from SoBase to make sure we're accounted for, even
 // though we -- as a container for a global field -- only exists
 // through a field-to-field connection.
 void
@@ -290,7 +290,7 @@ SoGlobalField::addWriteReference(SoOutput * out, SbBool isfromfield)
 }
 
 
-// Overloaded from parent class to have the field type written.
+// Overridden from parent class to have the field type written.
 void
 SoGlobalField::writeInstance(SoOutput * out)
 {

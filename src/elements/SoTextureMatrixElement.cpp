@@ -251,9 +251,8 @@ SoTextureMatrixElement::init(SoState * state)
   this->clearNodeIds();
 }
 
-/*!
-  Overloaded to copy current matrix and update accumulated node ids.
-*/
+// Documented in superclass. Overridden to copy current matrix and
+// update accumulated node ids.
 void
 SoTextureMatrixElement::push(SoState * state)
 {

@@ -110,12 +110,12 @@ SoShuttle::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoShuttle);
 }
 
-/*!
-  Overloaded to not write out internal engine connections.
-*/
+// Documented in superclass.
 void
 SoShuttle::write(SoWriteAction * action)
 {
+  // Overridden to not write out internal engine connections.
+
   SoOutput * out = action->getOutput();
 
   // Decouple connections to/from internal engines to avoid them being

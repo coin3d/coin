@@ -42,7 +42,7 @@ shapePrimitiveData::shapePrimitiveData(void)
   this->pointDetails = new SoPointDetail[this->arraySize];
   this->tess = new SbTesselator();
   this->faceDetail = NULL;
-    this->lineDetail = NULL;
+  this->lineDetail = NULL;
 }
 
 shapePrimitiveData::~shapePrimitiveData() 

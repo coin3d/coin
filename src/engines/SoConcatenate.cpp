@@ -158,9 +158,8 @@ SoConcatenate::~SoConcatenate()
   delete this->output;
 }
 
-/*!
-  Overloaded to initialize type of input before reading.
-*/
+// Documented in superclass. Overridden to initialize type of input
+// before reading.
 SbBool
 SoConcatenate::readInstance(SoInput * in, unsigned short flags)
 {
@@ -187,9 +186,7 @@ SoConcatenate::readInstance(SoInput * in, unsigned short flags)
   return SoEngine::readInstance(in, flags);
 }
 
-/*!
-  Overloaded to write type of inputs.
-*/
+// Documented in superclass. Overridden to write type of inputs.
 void
 SoConcatenate::writeInstance(SoOutput * out)
 {
@@ -211,7 +208,7 @@ SoConcatenate::writeInstance(SoOutput * out)
   this->writeFooter(out);
 }
 
-// overloaded from parent
+// Documented in superclass.
 void
 SoConcatenate::copyContents(const SoFieldContainer * from,
                             SbBool copyconnections)

@@ -86,9 +86,8 @@ SoGLTextureImageElement::init(SoState * state)
 }
 
 
-/*!
-  Overloaded to pass GL state to the next element.
-*/
+// Documented in superclass. Overridden to pass GL state to the next
+// element.
 void
 SoGLTextureImageElement::push(SoState * state)
 {
@@ -105,9 +104,8 @@ SoGLTextureImageElement::push(SoState * state)
 }
 
 
-/*!
-  Overloaded to pass GL state to the previous element.
-*/
+// Documented in superclass. Overridden to pass GL state to the
+// previous element.
 void
 SoGLTextureImageElement::pop(SoState * state,
                              const SoElement * prevTopElement)

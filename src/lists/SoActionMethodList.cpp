@@ -73,9 +73,8 @@ SoActionMethodList::~SoActionMethodList()
   delete THIS;
 }
 
-/*!
-  Overloaded from parent to cast from \c void pointer.
-*/
+// Documented in superclass. Overridden from parent to cast from \c
+// void pointer.
 SoActionMethod &
 SoActionMethodList::operator[](const int index)
 {

@@ -27,7 +27,7 @@
   \ingroup caches
 
   SoConvexDataCache is used to speed up rendering of concave polygons
-  by tesselating all polygons into triangles and storing the newly
+  by tessellating all polygons into triangles and storing the newly
   generated primitives in an internal cache.
 
   This class is not part of the original SGI Open Inventor v2.1

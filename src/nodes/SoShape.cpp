@@ -62,7 +62,6 @@
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoGLBigImage.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
-#include <Inventor/SbTesselator.h>
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/details/SoLineDetail.h>
 #include <Inventor/SoPickedPoint.h>
