@@ -145,8 +145,11 @@ SoMaterialBundle::reallySend(const int index, const SbBool isBetweenBeginEnd)
       this->diffuseElt->send(index);
     }
     else if (!this->diffusePacked) {
-    float trans = this->transparencyElt->get(this->multiTrans ? index : 0);
-    this->diffuseElt->send(index, 1.0f - trans);
+      float alpha = 
+        this->multiTrans ? 1.0f -  this->transparencyElt->get(index) : 
+        this->firstAlpha;
+      
+      this->diffuseElt->send(index, alpha);
     }
     else { // packed or stipple
       this->diffuseElt->send(index);
@@ -194,6 +197,9 @@ SoMaterialBundle::setupElements(const SbBool /* betweenBeginEnd */)
     // the first transparency value
     this->multiTrans =
       (this->transparencyElt->getNum() >= this->diffuseElt->getNum());
+    if (!this->multiTrans) {
+      this->firstAlpha = 1.0f - this->transparencyElt->get(0);
+    }
   }
 
   this->doStipple = SoShapeStyleElement::isScreenDoor(this->state);

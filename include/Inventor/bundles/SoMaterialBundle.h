@@ -57,6 +57,7 @@ private:
   SbBool diffuseOnly;
   SbBool multiTrans;
   SbBool diffusePacked;
+  float firstAlpha;
   int currIndex;
 
   SoGLAmbientColorElement * ambientElt;
