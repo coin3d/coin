@@ -518,9 +518,6 @@ SoVRMLInline::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   SoVRMLInline::doAction((SoAction*)action);
 }
 
-/*!
-  FIXME: doc
-*/
 void
 SoVRMLInline::addBoundingBoxChild(SbVec3f center,
                                   SbVec3f size)

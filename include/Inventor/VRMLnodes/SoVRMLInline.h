@@ -83,7 +83,7 @@ public:
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
   virtual SoChildList * getChildren(void) const;
 
-protected:
+private:
   virtual ~SoVRMLInline();
 
   virtual void addBoundingBoxChild(SbVec3f center, SbVec3f size);
@@ -91,7 +91,6 @@ protected:
   virtual void copyContents(const SoFieldContainer * from, SbBool copyconn);
   virtual SbBool readLocalFile(SoInput * in);
 
-private:
   static void urlFieldModified(void * userdata, SoSensor * sensor);
 
   SoVRMLInlineP * pimpl;
