@@ -166,4 +166,9 @@ private:
   static void cleanupClass(void);
 };
 
+#ifndef COIN_INTERNAL
+// For SGI / TGS Open Inventor compile-time compatibility.
+#include <Inventor/SoLists.h>
+#endif // COIN_INTERNAL
+
 #endif // !COIN_SONODE_H
