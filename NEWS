@@ -10,7 +10,7 @@ New in Coin 1.0 final beta (2001-07-22):
   - SbImage class
   - SoImage node
   - SoExtSelection node
-  - SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANLE_* transparency modes
+  - SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_* transparency modes
   - SoGLRenderAction::addPreRenderCallback()/removePreRenderCallback()
   - SoCallbackAction::setViewportRegion()/getViewportRegion().
   - SoInput::searchForFile()

@@ -29,7 +29,7 @@
   every character of the text contributes a lot of polygon primitives
   to the rendering system.
 
-  Due to the aove mentioned fact, SoText3 nodes are better used in
+  Due to the above mentioned fact, SoText3 nodes are best used in
   situations where you need just one or a few characters to be placed
   in your scene, than to visualize e.g. complete sentences.
 

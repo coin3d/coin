@@ -26,31 +26,37 @@
   are running on a laptop, it might be a good idea to disable linear
   filtering and mipmaps.
 
-  \li COIN_TEX2_LINEAR_LIMIT: Linear filtering is enabled if Complexity::textureQuality
-  is greater or equal to this value. Default value is 0.2.
+  \li COIN_TEX2_LINEAR_LIMIT: Linear filtering is enabled if
+  Complexity::textureQuality is greater or equal to this
+  value. Default value is 0.2.
 
-  \li COIN_TEX2_MIPMAP_LIMIT: Mipmaps are created if textureQuality is greater or
-  equal to this value. Default value is 0.5.
+  \li COIN_TEX2_MIPMAP_LIMIT: Mipmaps are created if textureQuality is
+  greater or equal to this value. Default value is 0.5.
 
-  \li COIN_TEX2_LINEAR_MIPMAP_LIMIT: Linear filtering between mipmap levels is enabled if
-  textureQulaity is greater or equal to this value. Default value is 0.8.
+  \li COIN_TEX2_LINEAR_MIPMAP_LIMIT: Linear filtering between mipmap
+  levels is enabled if textureQuality is greater or equal to this
+  value. Default value is 0.8.
 
-  \li COIN_TEX2_SCALEUP_LIMIT: Textures with width or height not equal to a power of two
-  will always be scaled up if textureQuality is greater or equal to this value.
-  Default value is 0.7. If textureQuality is lower than this value, and the width
-  or height is larger than 256 pixels, the texture is only scaled up if it's relatively
-  close to the next power of two size. This could save a lot of texture memory.
+  \li COIN_TEX2_SCALEUP_LIMIT: Textures with width or height not equal
+  to a power of two will always be scaled up if textureQuality is
+  greater or equal to this value.  Default value is 0.7. If
+  textureQuality is lower than this value, and the width or height is
+  larger than 256 pixels, the texture is only scaled up if it's
+  relatively close to the next power of two size. This could save a
+  lot of texture memory.
 
-  \li COIN_TEX2_BUILD_MIPMAP_FAST: If this environment variable is set to 1, an
-  internal and optimized function will be used to create mipmaps. Otherwise
-  gluBuild2DMipmap() will be used. Default value is 0.
+  \li COIN_TEX2_BUILD_MIPMAP_FAST: If this environment variable is set
+  to 1, an internal and optimized function will be used to create
+  mipmaps. Otherwise gluBuild2DMipmap() will be used. Default value is
+  0.
 
-  \li COIN_TEX2_USE_GLTEXSUBIMAGE: When set, and when the new texture data
-  has the same attributes as the old data, glTexSubImage() will be used
-  to copy new data into the texture instead of recreating the texture.
-  This is not enabled by default, since it seems to trigger a bug
-  in the Linux nVidia drivers. It just happens in some unreproducable cases.
-  It could be a bug in our glTexSubImage() code, of course :)
+  \li COIN_TEX2_USE_GLTEXSUBIMAGE: When set, and when the new texture
+  data has the same attributes as the old data, glTexSubImage() will
+  be used to copy new data into the texture instead of recreating the
+  texture.  This is not enabled by default, since it seems to trigger
+  a bug in the Linux nVidia drivers. It just happens in some
+  unreproducable cases.  It could be a bug in our glTexSubImage()
+  code, of course. :)
 */
 
 /*!
@@ -261,7 +267,7 @@ public:
     SoGLDisplayList * dlist;
     uint32_t age;
   };
-  
+
   SbList <dldata> dlists;
   SoGLDisplayList * findDL(SoState * state);
   void tagDL(SoState * state);
@@ -405,10 +411,10 @@ SoGLImage::isOfType(SoType type) const
   contexts when \a createinstate is != NULL.
 
   Also if \a createinstate is supplied, and all the attributes are the
-  same as the current data in the image, glTexSubImage will be used
+  same as the current data in the image, glTexSubImage() will be used
   to insert the image data instead of creating a new texture object.
-  This is much faster on most OpenGL drivers, and is very useful,
-  for instance when doing animated textures.
+  This is much faster on most OpenGL drivers, and is very useful, for
+  instance when doing animated textures.
 */
 void
 SoGLImage::setData(const unsigned char * bytes,
@@ -485,7 +491,7 @@ SoGLImage::setData(const unsigned char * bytes,
     }
   }
 
-  if (THIS->bytes && !THIS->isregistered) { 
+  if (THIS->bytes && !THIS->isregistered) {
     THIS->isregistered = TRUE;
     SoGLImage::registerImage(this);
   }
@@ -724,7 +730,7 @@ SoGLImageP::resizeImage(unsigned char *& imageptr, int & xsize, int & ysize)
         simage_wrapper()->simage_resize((unsigned char*) this->bytes,
                                         xsize, ysize, this->numcomponents,
                                         newx, newy);
-      memcpy(glimage_tmpimagebuffer, result, numbytes);
+      (void)memcpy(glimage_tmpimagebuffer, result, numbytes);
       simage_wrapper()->simage_free_image(result);
     }
     else if (GLUWrapper()->available &&
@@ -901,7 +907,7 @@ SoGLImageP::reallyCreateTexture(SoState * state,
     glformat = GL_RGBA;
     break;
   default:
-    assert(0 && "illegal numComonents");
+    assert(0 && "illegal numComponents");
     glformat = GL_RGB; // Unnecessary, but kills a compiler warning.
   }
 
@@ -952,7 +958,7 @@ SoGLImageP::findDL(SoState * state)
   return NULL;
 }
 
-void 
+void
 SoGLImageP::tagDL(SoState * state)
 {
   int currcontext = SoGLCacheContextElement::get(state);
@@ -967,7 +973,7 @@ SoGLImageP::tagDL(SoState * state)
   }
 }
 
-void 
+void
 SoGLImageP::unrefOldDL(SoState * state, const uint32_t maxage)
 {
   int n = this->dlists.getLength();
@@ -1066,26 +1072,26 @@ SoGLImageP::applyFilter(const SbBool ismipmap)
 static SbList <SoGLImage*> * glimage_reglist;
 static uint32_t glimage_maxage = 5;
 
-static void 
+static void
 regimage_cleanup(void)
 {
 
 }
 
-/*!  
+/*!
   When doing texture resource control, call this method before
-  rendering the scene, typically in the viewer's actualRedraw().  
+  rendering the scene, typically in the viewer's actualRedraw().
   \a state should be your SoGLRenderAction state.
 
   \sa endFrame(), tagImage(), setDisplayListMaxAge()
 */
-void 
+void
 SoGLImage::beginFrame(SoState * /* state */)
 {
   // nothing is done for now
 }
 
-/*! 
+/*!
   Should be called when a texture image is used. In Coin this is
   handled by SoGLTextureImageElement, but if you use an SoGLImage on
   your own, you should call this method to avoid that the display list
@@ -1108,7 +1114,7 @@ SoGLImage::tagImage(SoState * state, SoGLImage * image)
 
   \sa beginFrame(), tagImage(), setDisplayListMaxAge()
 */
-void 
+void
 SoGLImage::endFrame(SoState * state)
 {
   if (glimage_reglist) {
@@ -1120,19 +1126,19 @@ SoGLImage::endFrame(SoState * state)
   }
 }
 
-/*!  
+/*!
   Set the maximum age for a texture object/display list.  The age
-  of an image is the number of frames since it has been used.  
+  of an image is the number of frames since it has been used.
   Default maximum age is 5.
 */
-void 
+void
 SoGLImage::setDisplayListMaxAge(const uint32_t maxage)
 {
   glimage_maxage = maxage;
 }
 
 // used internally to keep track of the SoGLImages
-void 
+void
 SoGLImage::registerImage(SoGLImage * image)
 {
   if (glimage_reglist == NULL) {
@@ -1144,7 +1150,7 @@ SoGLImage::registerImage(SoGLImage * image)
 }
 
 // used internally to keep track of the SoGLImages
-void 
+void
 SoGLImage::unregisterImage(SoGLImage * image)
 {
   assert(glimage_reglist);
