@@ -65,27 +65,11 @@ PRIVATE_TYPEID_SOURCE(SoSFEnum);
 PRIVATE_EQUALITY_SOURCE(SoSFEnum);
 
 
-/*!
-  Copy enumeration mappings and \a field value.
-*/
-const SoSFEnum &
-SoSFEnum::operator=(const SoSFEnum & field)
-{
-  this->setEnums(field.numEnums, field.enumValues, field.enumNames);
-  this->setValue(field.getValue());
-  return *this;
-}
+// (Declarations hidden in SO_[S|M]FIELD_HEADER macro in header file,
+// so don't use Doxygen commenting.)
+#ifndef DOXYGEN_SKIP_THIS
 
-// Override from parent class.
-void
-SoSFEnum::initClass(void)
-{
-  SO_SFIELD_INTERNAL_INIT_CLASS(SoSFEnum);
-}
-
-/*!
-  Constructor.
-*/
+/* Constructor. */
 SoSFEnum::SoSFEnum(void)
 {
   this->enumValues = NULL;
@@ -94,13 +78,30 @@ SoSFEnum::SoSFEnum(void)
   this->legalValuesSet = FALSE;
 }
 
-/*!
-  Destructor.
-*/
+/* Destructor. */
 SoSFEnum::~SoSFEnum()
 {
   delete[] this->enumValues;
   delete[] this->enumNames;
+}
+
+/* Copy enumeration mappings and \a field value. */
+const SoSFEnum &
+SoSFEnum::operator=(const SoSFEnum & field)
+{
+  this->setEnums(field.numEnums, field.enumValues, field.enumNames);
+  this->setValue(field.getValue());
+  return *this;
+}
+
+#endif // DOXYGEN_SKIP_THIS
+
+
+// Override from parent class.
+void
+SoSFEnum::initClass(void)
+{
+  SO_SFIELD_INTERNAL_INIT_CLASS(SoSFEnum);
 }
 
 /*!

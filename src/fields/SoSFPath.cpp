@@ -48,21 +48,6 @@ SoSFPath::initClass(void)
   SO_SFIELD_INTERNAL_INIT_CLASS(SoSFPath);
 }
 
-SbBool
-SoSFPath::readValue(SoInput * in)
-{
-  SoBase * baseptr;
-  if (!SoBase::read(in, baseptr, SoPath::getClassTypeId())) return FALSE;
-
-  if (in->eof()) {
-    SoReadError::post(in, "Premature end of file");
-    return FALSE;
-  }
-
-  this->setValue((SoPath *)baseptr);
-  return TRUE;
-}
-
 void
 SoSFPath::notify(SoNotList * l)
 {
@@ -83,6 +68,21 @@ SoSFPath::referencesCopy(void) const
 }
 
 #ifndef DOXYGEN_SKIP_THIS
+
+SbBool
+SoSFPath::readValue(SoInput * in)
+{
+  SoBase * baseptr;
+  if (!SoBase::read(in, baseptr, SoPath::getClassTypeId())) return FALSE;
+
+  if (in->eof()) {
+    SoReadError::post(in, "Premature end of file");
+    return FALSE;
+  }
+
+  this->setValue((SoPath *)baseptr);
+  return TRUE;
+}
 
 void
 SoSFPath::writeValue(SoOutput * out) const

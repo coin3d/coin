@@ -37,20 +37,17 @@
 SO_MFIELD_SOURCE_MALLOC(SoMFEngine, SoEngine *, SoEngine *);
 
 
-/*!
-  Does initialization common for all objects of the
-  SoMFEngine class. This includes setting up the
-  type system, among other things.
-*/
+// Doc from superclass
 void
 SoMFEngine::initClass(void)
 {
   SO_MFIELD_INTERNAL_INIT_CLASS(SoMFEngine);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+
+#ifndef DOXYGEN_SKIP_THIS
+
+/* FIXME: write function documentation */
 SbBool
 SoMFEngine::read1Value(SoInput * /* in */, int /* idx */)
 {
@@ -58,14 +55,15 @@ SoMFEngine::read1Value(SoInput * /* in */, int /* idx */)
   return FALSE;
 }
 
-/*!
-  FIXME: write function documentation
-*/
+/* FIXME: write function documentation */
 void
 SoMFEngine::write1Value(SoOutput * /* out */, int /* idx */) const
 {
   COIN_STUB();
 }
+
+#endif // DOXYGEN_SKIP_THIS
+
 
 /*!
   FIXME: write function documentation

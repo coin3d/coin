@@ -43,12 +43,16 @@ SO_SFIELD_CONSTRUCTOR_SOURCE(SoSFTrigger);
 // (setValue() takes a void argument).
 PRIVATE_TYPEID_SOURCE(SoSFTrigger);
 PRIVATE_EQUALITY_SOURCE(SoSFTrigger);
+// (Declarations hidden in SO_[S|M]FIELD_HEADER macro in header file,
+// so don't use Doxygen commenting.)
+#ifndef DOXYGEN_SKIP_THIS
 const SoSFTrigger &
 SoSFTrigger::operator=(const SoSFTrigger & field)
 {
   this->setValue();
   return *this;
 }
+#endif // DOXYGEN_SKIP_THIS
 
 /*!
   This field class does not actually contain any value, so we

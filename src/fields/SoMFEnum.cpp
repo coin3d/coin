@@ -65,16 +65,11 @@ SO_MFIELD_MALLOC_SOURCE(SoMFEnum, int);
 SO_MFIELD_VALUE_SOURCE(SoMFEnum, int, int);
 
 
-// Override from parent class.
-void
-SoMFEnum::initClass(void)
-{
-  SO_MFIELD_INTERNAL_INIT_CLASS(SoMFEnum);
-}
+// (Declarations hidden in SO_[S|M]FIELD_HEADER macro in header file,
+// so don't use Doxygen commenting.)
+#ifndef DOXYGEN_SKIP_THIS
 
-/*!
-  Constructor.
-*/
+/* Constructor. */
 SoMFEnum::SoMFEnum(void)
 {
   this->values = NULL;
@@ -84,14 +79,22 @@ SoMFEnum::SoMFEnum(void)
   this->enumNames = NULL;
 }
 
-/*!
-  Destructor.
-*/
+/* Destructor. */
 SoMFEnum::~SoMFEnum()
 {
   this->deleteAllValues();
   delete[] this->enumValues;
   delete[] this->enumNames;
+}
+
+#endif // DOXYGEN_SKIP_THIS
+
+
+// Override from parent class.
+void
+SoMFEnum::initClass(void)
+{
+  SO_MFIELD_INTERNAL_INIT_CLASS(SoMFEnum);
 }
 
 

@@ -54,34 +54,23 @@ PRIVATE_TYPEID_SOURCE(SoSFImage);
 PRIVATE_EQUALITY_SOURCE(SoSFImage);
 
 
-/*
-  (Constructor declaration hidden in macro in SoSFImage.h, so don't
-  use Doxygen commenting.)
+// (Declarations hidden in macro in SoSFImage.h, so don't use Doxygen
+// commenting.)
+#ifndef DOXYGEN_SKIP_THIS
 
-  Constructor, initializes fields to represent an empty image.
-*/
+/* Constructor, initializes fields to represent an empty image. */
 SoSFImage::SoSFImage(void)
   : image(new SbImage)
 {
 }
 
-/*
-  (Destructor declaration hidden in macro in SoSFImage.h, so don't use
-  Doxygen commenting.)
-
-  Free all resources associated with the image.
-*/
+/* Free all resources associated with the image. */
 SoSFImage::~SoSFImage()
 {
   delete this->image;
 }
 
-/*
-  (Declaration hidden in macro in SoSFImage.h, so don't use Doxygen
-  commenting.)
-
-  Copy the image of \a field into this field.
-*/
+/* Copy the image of \a field into this field. */
 const SoSFImage &
 SoSFImage::operator=(const SoSFImage & field)
 {
@@ -92,6 +81,9 @@ SoSFImage::operator=(const SoSFImage & field)
   this->setValue(size, nc, bytes);
   return *this;
 }
+
+#endif // DOXYGEN_SKIP_THIS
+
 
 // Override from parent class.
 void

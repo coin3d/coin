@@ -39,9 +39,46 @@
 SO_SFIELD_REQUIRED_SOURCE(SoSFEngine);
 
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass
+void
+SoSFEngine::initClass(void)
+{
+  SO_SFIELD_INTERNAL_INIT_CLASS(SoSFEngine);
+}
+
+// (Declarations hidden in SO_[S|M]FIELD_HEADER macro in header file,
+// so don't use Doxygen commenting.)
+#ifndef DOXYGEN_SKIP_THIS
+
+/* Constructor. */
+SoSFEngine::SoSFEngine(void)
+{
+  this->value = NULL;
+}
+
+/* Destructor. */
+SoSFEngine::~SoSFEngine(void)
+{
+  this->enableNotify(FALSE);
+  this->setValue(NULL);
+}
+
+/* FIXME: write function documentation */
+SbBool
+SoSFEngine::readValue(SoInput * /* in */)
+{
+  COIN_STUB();
+  return FALSE;
+}
+
+/* FIXME: write function documentation */
+void
+SoSFEngine::writeValue(SoOutput * /* out */) const
+{
+  COIN_STUB();
+}
+
+/* FIXME: write function documentation */
 void
 SoSFEngine::setValue(SoEngine * value)
 {
@@ -53,52 +90,14 @@ SoSFEngine::setValue(SoEngine * value)
   this->valueChanged();
 }
 
-/*!
-  FIXME: write function documentation
-*/
+/* FIXME: write function documentation */
 SbBool
 SoSFEngine::operator == (const SoSFEngine & field) const
 {
   return (this->getValue() == field.getValue());
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoSFEngine class. This includes setting up the
-  type system, among other things.
-*/
-void
-SoSFEngine::initClass(void)
-{
-  SO_SFIELD_INTERNAL_INIT_CLASS(SoSFEngine);
-}
-
-/*!
-  Constructor.
-*/
-SoSFEngine::SoSFEngine(void)
-{
-  this->value = NULL;
-}
-
-/*!
-  Destructor.
-*/
-SoSFEngine::~SoSFEngine(void)
-{
-  this->enableNotify(FALSE);
-  this->setValue(NULL);
-}
-
-/*!
-  FIXME: write function documentation
-*/
-SbBool
-SoSFEngine::readValue(SoInput * /* in */)
-{
-  COIN_STUB();
-  return FALSE;
-}
+#endif // DOXYGEN_SKIP_THIS
 
 /*!
   FIXME: write function documentation
@@ -117,15 +116,6 @@ SoSFEngine::referencesCopy(void) const
 {
   COIN_STUB();
   return FALSE;
-}
-
-/*!
-  FIXME: write function documentation
-*/
-void
-SoSFEngine::writeValue(SoOutput * /* out */) const
-{
-  COIN_STUB();
 }
 
 // Overridden from parent to propagate write reference counting to

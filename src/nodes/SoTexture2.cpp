@@ -74,7 +74,7 @@
 
 /*!
   \var SoSFString SoTexture2::filename
-  Texture filename. Specify either this or use image, not both.
+  Texture filename. Specify either this or use SoTeture2::image, not both.
 */
 /*!
   \var SoSFImage SoTexture2::image
@@ -197,7 +197,7 @@ SoTexture2::GLRender(SoGLRenderAction * action)
     SbBool clampt = this->wrapT.getValue() == SoTexture2::CLAMP;
     int nc;
     SbVec2s size;
-  
+
     const unsigned char * bytes =
       this->image.getValue(size, nc);
     if (bytes && size != SbVec2s(0,0)) {

@@ -61,8 +61,9 @@
   \a userdata is a void pointer to any data the application need to
   know of in the callback function (like for instance a \e this
   pointer).
- */
 
+  \sa setPassCallback()
+ */
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/SbColor.h>
@@ -135,13 +136,6 @@
   Abort callbacks should be of this type.
   \sa setAbortCallback()
 */
-
-/*!
-  \typedef typedef SoGLRenderAction::SoGLRenderPassCB(void * userdata)
-  Renderpass callbacks should be of this type.
-  \sa setPassCallback()
-*/
-
 
 SO_ACTION_SOURCE(SoGLRenderAction);
 

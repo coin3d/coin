@@ -37,20 +37,16 @@
 SO_MFIELD_SOURCE_MALLOC(SoMFPath, SoPath *, SoPath *);
 
 
-/*!
-  Does initialization common for all objects of the
-  SoMFPath class. This includes setting up the
-  type system, among other things.
-*/
+// Doc from superclass
 void
 SoMFPath::initClass(void)
 {
   SO_MFIELD_INTERNAL_INIT_CLASS(SoMFPath);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+#ifndef DOXYGEN_SKIP_THIS
+
+/* FIXME: write function documentation */
 SbBool
 SoMFPath::read1Value(SoInput * /* in */, int /* idx */)
 {
@@ -58,14 +54,14 @@ SoMFPath::read1Value(SoInput * /* in */, int /* idx */)
   return FALSE;
 }
 
-/*!
-  FIXME: write function documentation
-*/
+/* FIXME: write function documentation */
 void
 SoMFPath::write1Value(SoOutput * /* out */, int /* idx */) const
 {
   COIN_STUB();
 }
+
+#endif // DOXYGEN_SKIP_THIS
 
 /*!
   FIXME: write function documentation

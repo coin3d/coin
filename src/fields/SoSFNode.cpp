@@ -58,22 +58,24 @@ SoSFNode::initClass(void)
   SO_SFIELD_INTERNAL_INIT_CLASS(SoSFNode);
 }
 
-/*!
-  Constructor, sets initial node pointer to a \c NULL pointer.
-*/
+// (Declarations hidden in SO_[S|M]FIELD_HEADER macro in header file,
+// so don't use Doxygen commenting.)
+#ifndef DOXYGEN_SKIP_THIS
+
+/* Constructor, sets initial node pointer to a \c NULL pointer. */
 SoSFNode::SoSFNode(void)
 {
   this->value = NULL;
 }
 
-/*!
-  Destructor, dereferences the current node pointer if necessary.
-*/
+/* Destructor, dereferences the current node pointer if necessary. */
 SoSFNode::~SoSFNode(void)
 {
   this->enableNotify(FALSE);
   this->setValue(NULL);
 }
+
+#endif // DOXYGEN_SKIP_THIS
 
 
 // No need to document readValue() and writeValue() here, as the
