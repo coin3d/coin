@@ -259,3 +259,19 @@ THE WISH LIST
 
   Examples of useful components: PushButton, ScrollBar, ComboBox,
   RadioButton, LineEdit, Menu?...
+
+
+  Update, mortene@sim.no 2001-05-01:
+
+    I think we also need to write a "panel" class aswell as layout
+    handling to do this properly.
+
+  Update, mortene@sim.no 2001-05-01:
+
+    Or how about "tuning" these common 2D components to better (?) fit
+    a 3D environment? I.e. instead of a pushbutton, we could make a
+    "pushball", a set of radiobuttons would be a set of "radioballs",
+    etc etc.
+
+    Many components are inherently 2D and would be hard to re-make in
+    3D, though.
