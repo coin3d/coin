@@ -35,8 +35,8 @@ public:
   ~SbBSPTree();
 
   int numPoints() const;
-  SbVec3f getPoint(const int idx);
-  void getPoint(const int idx, SbVec3f & pt);
+  SbVec3f getPoint(const int idx) const;
+  void getPoint(const int idx, SbVec3f & pt) const;
   void * getUserData(const int idx) const;
   void setUserData(const int idx, void * const data);
 

@@ -347,7 +347,7 @@ SbBSPTree::numPoints() const
   \sa SbBSPTree::numPoints()
 */
 SbVec3f
-SbBSPTree::getPoint(const int idx)
+SbBSPTree::getPoint(const int idx) const
 {
   assert(idx < this->pointsArray.getLength());
   return this->pointsArray[idx];
@@ -357,7 +357,7 @@ SbBSPTree::getPoint(const int idx)
   \overload
 */
 void
-SbBSPTree::getPoint(const int idx, SbVec3f &pt)
+SbBSPTree::getPoint(const int idx, SbVec3f &pt) const
 {
   assert(idx < this->pointsArray.getLength());
   pt = this->pointsArray[idx];
