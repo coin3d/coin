@@ -32,6 +32,10 @@ Todo
 
 * [mortene:19990913] integrate the doxygen man- and html-generation
 
+* [mortene:19990914] check possibility of making all .o/.lo files into
+  .so shared libraries to avoid long linking times (could be a
+  brilliant hack if it is possible)
+
 ===============================================================================
 Done
 ====
