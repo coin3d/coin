@@ -279,7 +279,9 @@ CLEANFILES = \
 DISTCLEANFILES = \
 	coin-@CONFIG@.cfg \
 	Info.plist \
-	version.plist
+	version.plist \
+	docs/coin.doxygen \
+	docs/coin.doxygen.bak
 
 
 @BUILD_LIBRARY_TRUE@m4datadir = $(datadir)/aclocal
@@ -831,8 +833,6 @@ uninstall-info: uninstall-info-recursive
 	uninstall-dist_m4dataDATA uninstall-frameworkdataDATA \
 	uninstall-info-am uninstall-info-recursive uninstall-recursive
 
-	docs/coin.doxygen \
-	docs/coin.doxygen.bak
 
 # FIXME: These files should really be added instead of the ones
 #        containing '_' instead of ' '. If this is fixed, also
