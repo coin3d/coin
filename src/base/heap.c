@@ -48,11 +48,11 @@ heap_resize(cc_heap * h, unsigned int newsize)
 }
 
 static void
-heap_heapify(cc_heap * h, unsigned int i)
+heap_heapify(cc_heap * h, uintptr_t i)
 {
-  unsigned int left = HEAP_LEFT(i);
-  unsigned int right = HEAP_RIGHT(i);
-  unsigned int largest;
+  uintptr_t left = HEAP_LEFT(i);
+  uintptr_t right = HEAP_RIGHT(i);
+  uintptr_t largest;
 
   /* Check which node is larger of i and its two children; if any
    * of them is larger swap it with i and recurse down on the child
@@ -71,8 +71,8 @@ heap_heapify(cc_heap * h, unsigned int i)
     h->array[i] = tmp;
 
     if (h->support_remove) {
-      cc_hash_put(h->hash, (unsigned long)h->array[i], (void*)i);
-      cc_hash_put(h->hash, (unsigned long)h->array[largest], (void*)largest);
+      cc_hash_put(h->hash, (unsigned long) h->array[i], (void *) i);
+      cc_hash_put(h->hash, (unsigned long) h->array[largest], (void *) largest);
     }
 
     heap_heapify(h, largest);
@@ -146,7 +146,7 @@ void cc_heap_clear(cc_heap * h)
 void
 cc_heap_add(cc_heap * h, void * o)
 {
-  unsigned int i;
+  uintptr_t i;
 
   /* Resize the heap if it is full or the threshold is exceeded */
   if (h->elements == h->size) {
@@ -160,7 +160,7 @@ cc_heap_add(cc_heap * h, void * o)
     h->array[i] = h->array[HEAP_PARENT(i)];
 
     if (h->support_remove) {
-      cc_hash_put(h->hash, (unsigned long)h->array[i], (void*)i);
+      cc_hash_put(h->hash, (unsigned long) h->array[i], (void *) i);
     }
 
     i = HEAP_PARENT(i);
@@ -168,7 +168,7 @@ cc_heap_add(cc_heap * h, void * o)
   h->array[i] = o;
 
   if (h->support_remove) {
-    cc_hash_put(h->hash, (unsigned long)o, (void*)i);
+    cc_hash_put(h->hash, (unsigned long) o, (void *) i);
   }
 }
 
@@ -197,8 +197,8 @@ cc_heap_extract_top(cc_heap * h)
   h->array[0] = h->array[--h->elements];
 
   if (h->support_remove) {
-    cc_hash_put(h->hash, (unsigned long)h->array[0], (void*)0);
-    cc_hash_remove(h->hash, (unsigned long)top);
+    cc_hash_put(h->hash, (unsigned long) h->array[0], (void *) 0);
+    cc_hash_remove(h->hash, (unsigned long) top);
   }
 
   heap_heapify(h, 0);
@@ -216,12 +216,12 @@ cc_heap_extract_top(cc_heap * h)
 int
 cc_heap_remove(cc_heap * h, void * o)
 {
-  unsigned int i;
+  uintptr_t i;
   void * tmp;
 
   if (!h->support_remove) return FALSE;
 
-  if (!cc_hash_get(h->hash, (unsigned long)o, &tmp))
+  if (!cc_hash_get(h->hash, (unsigned long) o, &tmp))
     return FALSE;
 
   i = (unsigned int) tmp;
@@ -230,11 +230,11 @@ cc_heap_remove(cc_heap * h, void * o)
 
   h->array[i] = h->array[--h->elements];
   if (h->support_remove) {
-    cc_hash_put(h->hash, (unsigned long) h->array[i], (void*) i);
+    cc_hash_put(h->hash, (unsigned long) h->array[i], (void *) i);
   }
   heap_heapify(h, i);
 
-  cc_hash_remove(h->hash, (unsigned long)o);
+  cc_hash_remove(h->hash, (unsigned long) o);
 
   return TRUE;
 }
