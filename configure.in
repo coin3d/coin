@@ -227,19 +227,19 @@ fi
 
 dnl *******************************************************************
 dnl * Enable/disable compilation with the "incremental linking through
-dnl * the use of dynamic libraries" hack.
+dnl * the use of dynamic libraries" and other assorted hacks.
 dnl *******************************************************************
 
-AC_ARG_ENABLE(inclink,
-  [  --enable-inclink        turn on the dynalink hack [default=no]],
+AC_ARG_ENABLE(hacking,
+  [  --enable-hacking        enable hacks for quick turn-around [default=no]],
   [case "${enableval}" in
-    yes) enable_inclink=yes ;;
-    no)  enable_inclink=no ;;
-    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-inclink) ;;
+    yes) enable_hacking=yes ;;
+    no)  enable_hacking=no ;;
+    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-hacking) ;;
   esac],
-  enable_inclink=no)
+  enable_hacking=no)
 
-AM_CONDITIONAL(HACKING_DYNAMIC_MODULES, test "x$enable_inclink" = "xyes")
+AM_CONDITIONAL(HACKING_DYNAMIC_MODULES, test "x$enable_hacking" = "xyes")
 
 
 dnl *******************************************************************
@@ -300,6 +300,7 @@ dnl *******************************************************************
 
 AC_OUTPUT(include/Makefile include/Inventor/Makefile \
 	Makefile src/Makefile \
+	src/coindev/Makefile \
 	src/VRMLnodes/Makefile src/actions/Makefile src/bundles/Makefile \
 	src/caches/Makefile src/elements/Makefile src/engines/Makefile \
 	src/errors/Makefile src/events/Makefile src/fields/Makefile \

@@ -4,11 +4,12 @@ Todo
 
 (format is: "* [author:conceived-date] item", listed in no particular order)
 
+* [mortene:19990926] add configure option to enable crash (and
+  subsequent core dump, of course) on SoDebugError::postWarning() and
+  SoDebugError::post().
+
 * [mortene:19990926] add configure option for specifying location of
   simage.
-
-* [mortene:19990926] add "testlib" idea from DDJ to increase
-  turnaround time when doing compile & link.
 
 * [mortene:19990912] get rid of Inventor/system/inttypes.h.
 
@@ -56,6 +57,9 @@ Done
 ====
 
 (format is: "* [author:conceived-date][implementer:finished-date] item")
+
+* [mortene:19990926][mortene:19990926] add "testlib" idea from DDJ to
+  increase turnaround time when doing compile & link.
 
 * [mortene:19990924][mortene:19990926] check for simage in the
   --prefix installation directory.

@@ -41,7 +41,7 @@ ac_help="$ac_help
 ac_help="$ac_help
   --enable-warnings       turn on warnings when compiling [default=yes]"
 ac_help="$ac_help
-  --enable-inclink        turn on the dynalink hack [default=no]"
+  --enable-hacking        enable hacks for quick turn-around [default=no]"
 ac_help="$ac_help
   --with-simage           use simage (if found) for texture import [default=yes]"
 
@@ -3445,22 +3445,22 @@ fi
 
 
 
-# Check whether --enable-inclink or --disable-inclink was given.
-if test "${enable_inclink+set}" = set; then
-  enableval="$enable_inclink"
+# Check whether --enable-hacking or --disable-hacking was given.
+if test "${enable_hacking+set}" = set; then
+  enableval="$enable_hacking"
   case "${enableval}" in
-    yes) enable_inclink=yes ;;
-    no)  enable_inclink=no ;;
-    *) { echo "configure: error: bad value \"${enableval}\" for --enable-inclink" 1>&2; exit 1; } ;;
+    yes) enable_hacking=yes ;;
+    no)  enable_hacking=no ;;
+    *) { echo "configure: error: bad value \"${enableval}\" for --enable-hacking" 1>&2; exit 1; } ;;
   esac
 else
-  enable_inclink=no
+  enable_hacking=no
 fi
 
 
 
 
-if test "x$enable_inclink" = "xyes"; then
+if test "x$enable_hacking" = "xyes"; then
   HACKING_DYNAMIC_MODULES_TRUE=
   HACKING_DYNAMIC_MODULES_FALSE='#'
 else
@@ -3707,6 +3707,7 @@ ac_given_INSTALL="$INSTALL"
 
 trap 'rm -fr `echo "include/Makefile include/Inventor/Makefile \
 	Makefile src/Makefile \
+	src/coindev/Makefile \
 	src/VRMLnodes/Makefile src/actions/Makefile src/bundles/Makefile \
 	src/caches/Makefile src/elements/Makefile src/engines/Makefile \
 	src/errors/Makefile src/events/Makefile src/fields/Makefile \
@@ -3840,6 +3841,7 @@ cat >> $CONFIG_STATUS <<EOF
 
 CONFIG_FILES=\${CONFIG_FILES-"include/Makefile include/Inventor/Makefile \
 	Makefile src/Makefile \
+	src/coindev/Makefile \
 	src/VRMLnodes/Makefile src/actions/Makefile src/bundles/Makefile \
 	src/caches/Makefile src/elements/Makefile src/engines/Makefile \
 	src/errors/Makefile src/events/Makefile src/fields/Makefile \

@@ -1,19 +1,17 @@
 ## Process this file with automake to generate Makefile.in.
 
-SUBDIRS = \
-	VRMLnodes actions bundles caches elements engines errors events \
-	fields misc lists nodekits nodes projectors sensors system .
-
 lib_LTLIBRARIES = libCoin.la
 
 if HACKING_DYNAMIC_MODULES
-libCoin_la_LIBADD = \
+TESTLIBDIR = coindev
+libCoin_la_LIBADD = -lcoindevLINKHACK \
 	-lVRMLnodesLINKHACK -lactionsLINKHACK -lbundlesLINKHACK \
 	-lcachesLINKHACK -lelementsLINKHACK -lenginesLINKHACK \
 	-lerrorsLINKHACK -leventsLINKHACK -lfieldsLINKHACK -lmiscLINKHACK \
 	-llistsLINKHACK -lnodekitsLINKHACK -lnodesLINKHACK \
 	-lprojectorsLINKHACK -lsensorsLINKHACK
 else
+TESTLIBDIR = 
 libCoin_la_LIBADD = \
 	VRMLnodes/libVRMLnodes.la actions/libactions.la \
 	bundles/libbundles.la caches/libcaches.la elements/libelements.la \
@@ -23,6 +21,10 @@ libCoin_la_LIBADD = \
 	sensors/libsensors.la
 endif
 
+
+SUBDIRS = $(TESTLIBDIR) \
+	VRMLnodes actions bundles caches elements engines errors events \
+	fields misc lists nodekits nodes projectors sensors system .
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 

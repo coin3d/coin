@@ -85,12 +85,14 @@ RANLIB = @RANLIB@
 USE_SYMBOL_UNDERSCORE = @USE_SYMBOL_UNDERSCORE@
 VERSION = @VERSION@
 
-SUBDIRS =  	VRMLnodes actions bundles caches elements engines errors events 	fields misc lists nodekits nodes projectors sensors system .
-
-
 lib_LTLIBRARIES = libCoin.la
-@HACKING_DYNAMIC_MODULES_TRUE@libCoin_la_LIBADD = 	-lVRMLnodesLINKHACK -lactionsLINKHACK -lbundlesLINKHACK 	-lcachesLINKHACK -lelementsLINKHACK -lenginesLINKHACK 	-lerrorsLINKHACK -leventsLINKHACK -lfieldsLINKHACK -lmiscLINKHACK 	-llistsLINKHACK -lnodekitsLINKHACK -lnodesLINKHACK 	-lprojectorsLINKHACK -lsensorsLINKHACK
+@HACKING_DYNAMIC_MODULES_TRUE@TESTLIBDIR = coindev
+@HACKING_DYNAMIC_MODULES_FALSE@TESTLIBDIR = 
+@HACKING_DYNAMIC_MODULES_TRUE@libCoin_la_LIBADD = -lcoindevLINKHACK 	-lVRMLnodesLINKHACK -lactionsLINKHACK -lbundlesLINKHACK 	-lcachesLINKHACK -lelementsLINKHACK -lenginesLINKHACK 	-lerrorsLINKHACK -leventsLINKHACK -lfieldsLINKHACK -lmiscLINKHACK 	-llistsLINKHACK -lnodekitsLINKHACK -lnodesLINKHACK 	-lprojectorsLINKHACK -lsensorsLINKHACK
 @HACKING_DYNAMIC_MODULES_FALSE@libCoin_la_LIBADD = 	VRMLnodes/libVRMLnodes.la actions/libactions.la 	bundles/libbundles.la caches/libcaches.la elements/libelements.la 	engines/libengines.la errors/liberrors.la events/libevents.la 	fields/libfields.la misc/libmisc.la lists/liblists.la 	nodekits/libnodekits.la nodes/libnodes.la projectors/libprojectors.la 	sensors/libsensors.la
+
+SUBDIRS = $(TESTLIBDIR) 	VRMLnodes actions bundles caches elements engines errors events 	fields misc lists nodekits nodes projectors sensors system .
+
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 
@@ -155,6 +157,9 @@ DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 
 TAR = gtar
 GZIP_ENV = --best
+DIST_SUBDIRS =  coindev VRMLnodes actions bundles caches elements \
+engines errors events fields misc lists nodekits nodes projectors \
+sensors system .
 DEP_FILES =  .deps/SbBSPTree.P .deps/SbBox2f.P .deps/SbBox2s.P \
 .deps/SbBox3f.P .deps/SbColor.P .deps/SbColor4f.P .deps/SbCylinder.P \
 .deps/SbDict.P .deps/SbLine.P .deps/SbMatrix.P .deps/SbName.P \
@@ -352,7 +357,7 @@ distdir: $(DISTFILES)
 	    || cp -p $$d/$$file $(distdir)/$$file || :; \
 	  fi; \
 	done
-	for subdir in $(SUBDIRS); do \
+	for subdir in $(DIST_SUBDIRS); do \
 	  if test "$$subdir" = .; then :; else \
 	    test -d $(distdir)/$$subdir \
 	    || mkdir $(distdir)/$$subdir \
