@@ -1145,6 +1145,11 @@ SoBase::hasMultipleWriteRefs(void) const
   return get_current_writeref(this) > 1;
 }
 
+// FIXME: temporary bug-workaround needed to test if we are exporting
+// a VRML97 or an Inventor file. Implementation in SoOutput.cpp.
+// pederb, 2003-03-18
+extern const SbString & SoOutput_getHeaderString(const SoOutputP * out);
+
 /*!
   Write out the header of any SoBase derived object. The header consists
   of the \c DEF keyword and the object name (if the object has a name,
@@ -1347,12 +1352,13 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
 
     if (this->isOfType(SoNode::getClassTypeId()) &&
         ((SoNode*)this)->getNodeType() == SoNode::VRML2) {
-      // FIXME: temporary code to test VRML2 export.
-      // pederb, 20020521
       SbString nodename(this->getFileFormatName());
       if (nodename.getLength() > 4) {
         SbString vrml = nodename.getSubString(0, 3);
-        if (vrml == "VRML") {
+        // FIXME: using a temporary workaround to test if we're
+        // exporting a VRML97 file. pederb, 2003-03-18
+        if ((vrml == "VRML") && 
+            (SoOutput_getHeaderString(out->pimpl) == "#VRML V2.0 utf8")) {
           SbString substring = nodename.getSubString(4);
           out->write(substring.getString());
         }
