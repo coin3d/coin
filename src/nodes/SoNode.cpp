@@ -1205,10 +1205,15 @@ void
 SoNode::writeInstance(SoOutput * out)
 {
   SoNode * node = this;
+
   SoProtoInstance * proto = SoProtoInstance::findProtoInstance(this);
-  if (proto) {
-    node = proto;
-  }
+  if (proto) { node = proto; }
+
+  // Catch common misuse of SoOutput (a single pass instead of two,
+  // lacking the setStage() initialization).
+  assert(((out->getStage() == SoOutput::COUNT_REFS) ||
+          (out->getStage() == SoOutput::WRITE)) &&
+         "unknown write stage");
   SoWriteAction wa(out);
   wa.continueToApply(node);
 }
