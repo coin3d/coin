@@ -32,6 +32,7 @@
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLEnvironmentElement.h>
+#include <Inventor/elements/SoLightAttenuationElement.h>
 
 /*!
   \enum SoEnvironment::FogType
@@ -103,7 +104,6 @@
   Default value is 0.0.
 */
 
-
 // *************************************************************************
 
 SO_NODE_SOURCE(SoEnvironment);
@@ -144,32 +144,38 @@ SoEnvironment::initClass(void)
 
   SO_ENABLE(SoGLRenderAction, SoGLEnvironmentElement);
   SO_ENABLE(SoCallbackAction, SoEnvironmentElement);
+  SO_ENABLE(SoGLRenderAction, SoLightAttenuationElement);
+  SO_ENABLE(SoCallbackAction, SoLightAttenuationElement);
 }
 
 // Doc from superclass.
 void
 SoEnvironment::GLRender(SoGLRenderAction * action)
 {
+  SoLightAttenuationElement::set(action->getState(), this,
+                                 this->attenuation.getValue());
   SoEnvironmentElement::set(action->getState(),
                             this,
-                            ambientIntensity.getValue(),
-                            ambientColor.getValue(),
-                            attenuation.getValue(),
+                            this->ambientIntensity.getValue(),
+                            this->ambientColor.getValue(),
+                            this->attenuation.getValue(),
                             (int32_t)fogType.getValue(),
-                            fogColor.getValue(),
-                            fogVisibility.getValue());
+                            this->fogColor.getValue(),
+                            this->fogVisibility.getValue());
 }
 
 // Doc from superclass.
 void
 SoEnvironment::callback(SoCallbackAction *action)
 {
+  SoLightAttenuationElement::set(action->getState(), this,
+                                 this->attenuation.getValue());
   SoEnvironmentElement::set(action->getState(),
                             this,
-                            ambientIntensity.getValue(),
-                            ambientColor.getValue(),
-                            attenuation.getValue(),
+                            this->ambientIntensity.getValue(),
+                            this->ambientColor.getValue(),
+                            this->attenuation.getValue(),
                             (int32_t)fogType.getValue(),
-                            fogColor.getValue(),
-                            fogVisibility.getValue());
+                            this->fogColor.getValue(),
+                            this->fogVisibility.getValue());
 }
