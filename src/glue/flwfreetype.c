@@ -91,7 +91,7 @@ int cc_flwft_get_outline(void * font, int glyph) { assert(FALSE); return 0; }
 #include <Inventor/C/base/string.h>
 #include <Inventor/C/base/hash.h>
 #include <Inventor/C/base/dynarray.h>
-#include <Inventor/C/base/name.h>
+#include <Inventor/C/base/namemap.h>
 
 /* ************************************************************************* */
 
@@ -274,8 +274,7 @@ cc_flwft_initialize(void)
       void * val;
       SbBool found, unused;
       cc_dynarray * array;
-      cc_name * namemapping = cc_name_new(fontfilenames[i]);
-      unsigned long key = (unsigned long)cc_name_get_string(namemapping);
+      unsigned long key = (unsigned long)cc_namemap_get_address(fontfilenames[i]);
 
       found = cc_hash_get(fontname2filename, key, &val);
       if (found) {
@@ -286,8 +285,6 @@ cc_flwft_initialize(void)
         unused = cc_hash_put(fontname2filename, key, array);
         assert(unused);
       }
-
-      cc_name_destruct(namemapping);
 
       while (fontfilenames[++i] != NULL) {
         cc_dynarray_append(array, (void *)fontfilenames[i]);
@@ -370,12 +367,9 @@ find_font_file(const char * fontname)
   void * val;
   const char * foundfile = NULL;
   SbBool found;
-  cc_name * namemapping;
   unsigned long key;
 
-  namemapping = cc_name_new(fontname);
-  key = (unsigned long)cc_name_get_string(namemapping);
-  cc_name_destruct(namemapping);
+  key = (unsigned long)cc_namemap_get_address(fontname);
   found = cc_hash_get(fontname2filename, key, &val);
   if (!found) {
     if (cc_freetype_debug()) {
@@ -412,9 +406,7 @@ find_font_file(const char * fontname)
 
       if (found) {
         /* Stor permanent in global name hash. */
-        cc_name * name = cc_name_new(cc_string_get_text(&str));
-        foundfile = cc_name_get_string(name);
-        cc_name_destruct(name);
+        foundfile = cc_namemap_get_address(cc_string_get_text(&str));
         goto done;
       }
     }
