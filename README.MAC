@@ -128,6 +128,33 @@ Carbon/Cocoa/GLUT.
 Common problems (and solutions)
 ===============================
 
+o Is there anything I can do to increase performance?
+  ---------------------------------------------------
+
+Yes. There are two things that you should consider when you want to
+increase the performance of your application.
+
+First, take a look at your scene graph. Remove empty (unused)
+nodes. Keep in mind that OpenGL state changes are expensive, so
+position objects in a way that they can share textures and materials
+whenever possible. Try to optimize your scene graph for render
+caching. And so on... This is not Mac-specific advice, but I'm
+repeating it here since it's so important.
+
+Secondly, you might want to change the settings for automatic render
+caching (storing rendering instructions for faster execution, usually
+by using display lists). Display lists take up precious graphics card
+memory, so we are rather conservative about when we enable caching.
+(See http://doc.coin3d.org/Coin/classSoSeparator.html#m0/ for more
+information about render caching.)
+
+If you have enough graphics memory, you'll probably want to override
+Coin's all-too-cautious behaviour - try e.g. setting the
+COIN_AUTOCACHE_LOCAL_MAX variable to 10000 instead of the default,
+1000. Your mileage may vary, but I get up to a 100% FPS speedup on my
+Powerbook (ATI Radeon 9000) by doing this.
+
+
 o Conflicting installations of Inventor framework and library
   -----------------------------------------------------------
 
