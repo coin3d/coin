@@ -858,9 +858,17 @@ SoGLRenderAction::doPathSort(void)
   The callback is only invoked once (before the first rendering pass)
   when multi pass rendering is enabled.
 
+  Please note that SoSceneManager usually adds a callback to clear the
+  GL buffers in SoSceneManager::render(). So, if you plan to for
+  instance draw an image in the color buffer using this callback, you
+  should make sure that the scene manager doesn't clear the buffer.
+  This can be done either by calling SoSceneManager::render() with
+  both arguments FALSE, or, if you're using one of our GUI toolkits
+  (SoXt/SoQt/SoGtk/SoWin), call setClearBeforeRender() on the viewer.
+
   This method is an extension versus the Open Inventor API.
 
-  \sa removePreRenderCallback().
+  \sa removePreRenderCallback().  
 */
 void
 SoGLRenderAction::addPreRenderCallback(SoGLPreRenderCB * func, void * userdata)
