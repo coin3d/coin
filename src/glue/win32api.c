@@ -110,17 +110,25 @@ exitfunc:
   }
 }
 
-static BOOL WINAPI
+/* ********************************************************************** */
+
+static void WINAPI
 coin_GetVersionEx(LPOSVERSIONINFO osvi) 
 {
+  BOOL r;
 
-  /* Because one might want to fetch extended version-info using the
-     extended version of the OSVERSIONINFO struct (service pack info
-     etc.), errorhandeling will not be taken care of at this point. See
-     <URL:http://msdn.microsoft.com/library/default.asp?url=/library/en-us/sysinfo/base/getting_the_system_version.asp>
-     for an example of use. */
+  /* Disallow attempts at using the extended OSVERSIONINFOEX struct
+     (with service pack info etc.), to simplify errorhandling.
 
-  return GetVersionEx(osvi);
+     If we later want to use GetVersionEx() with OSVERSIONINFOEX, make
+     a new, separate wrapper function ("GetVersionExEx()"?). */
+  assert(osvi->dwOSVersionInfoSize == sizeof(OSVERSIONINFO));
+
+  r = GetVersionEx(osvi);
+  if (!r) {
+    cc_win32_print_error("coin_GetVersionEx", "GetVersionEx()", GetLastError());
+    assert(FALSE && "unexpected GetVersionEx() failure");
+  }
 }
 
 /* ********************************************************************** */
@@ -130,40 +138,44 @@ coin_GetTextFace(HDC hdc, /* handle to device context */
                  int nCount, /* length of buffer receiving typeface name */
                  LPTSTR lpFaceName) /* pointer to buffer receiving typeface name */
 {
-
-  OSVERSIONINFO osvi;
-  
-  /* FIXME: Due to a bug in WIN95/98/ME, the GetTextFace(-,-,NULL)
-     will allways return size=0. A workaround is to specify the
-     expected size of the font name (in this case; 1024 chars). The
-     fontname will be zero terminated, so name-lengths below 1024 will
-     be OK. If size >= 1024, the system will crop the
-     string. (20031011 handegar).*/
-  
   int copied = GetTextFace(hdc, nCount, lpFaceName);
+
   if (copied == 0 && lpFaceName == NULL) {    
-    /* NOTE: We could have used the 'VerifyVersionInfo()'
-       function, but this is not supported on Win95/98/ME. */
+    /* Due to a well known bug in Win95/98/ME, GetTextFace(-,-,NULL)
+       will return size=0. Our workaround is to just return a number
+       assumed large enough for the length of the font name string. */
+
+    OSVERSIONINFO osvi;
 
     ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
     osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);  
 
-    if (!coin_GetVersionEx(&osvi)) {      
-      cc_win32_print_error("coin_GetTextFace", "GetVersionEx()", GetLastError());
-      assert(FALSE && "unexpected error");      
-    }
+    /* NOTE: We could have used the 'VerifyVersionInfo()' function,
+       but this is not supported on Win95/98/ME. */
+    coin_GetVersionEx(&osvi);
+
     if (osvi.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS) {          
-      /* This is a wellknown WIN95/98/Me bug. Return a default, large number. */
+      /* Return a number assumed large enough to hold any font name
+         string. The string will be zero terminated, so name-lengths
+         below 1024 will be OK. If size >= 1024, the system will crop
+         the string. */
+
+      /* FIXME: this could be handled a little better: we should
+         provide an additional wrapper around coin_GetTextFace() which
+         checks whether or not the return value indicates if the
+         string was cropped -- and if so, call again with a larger
+         buffer until the string is not cropped.  20031114 mortene. */
+
       copied = 1024;
     }
   }
 
+  /* If 0 is returned, and we're *not* on a platform with a known
+     buggy GetTextFace() implementation, there is an unexpected
+     error. */
   if (copied == 0) {
     cc_string apicall;
     DWORD err = GetLastError();
-
-    /* This case has been seen to hit, so we try to provide more
-       information to aid future debugging. */
     cc_string_construct(&apicall);
     cc_string_sprintf(&apicall,
                       "GetTextFace(hdc==%p, nCount==%d, lpFaceName==%p)",
@@ -175,6 +187,8 @@ coin_GetTextFace(HDC hdc, /* handle to device context */
 
   return copied;
 }
+
+/* ********************************************************************** */
 
 static void WINAPI
 coin_LocalFree(HLOCAL hMem) /* handle to local memory object */
