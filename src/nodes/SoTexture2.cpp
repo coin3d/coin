@@ -167,6 +167,20 @@
 
 // *************************************************************************
 
+#ifndef DOXYGEN_SKIP_THIS
+class SoTexture2P {
+public:
+  int readstatus;
+  SoGLImage * glimage;
+  SbBool glimagevalid;
+  SoFieldSensor * filenamesensor;
+};
+#endif // DOXYGEN_SKIP_THIS
+
+
+#undef THIS
+#define THIS this->pimpl
+
 SO_NODE_SOURCE(SoTexture2);
 
 /*!
@@ -174,6 +188,8 @@ SO_NODE_SOURCE(SoTexture2);
 */
 SoTexture2::SoTexture2(void)
 {
+  THIS = new SoTexture2P;
+
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTexture2);
 
   SO_NODE_ADD_FIELD(filename, (""));
@@ -194,16 +210,16 @@ SoTexture2::SoTexture2(void)
   SO_NODE_DEFINE_ENUM_VALUE(Model, BLEND);
   SO_NODE_SET_SF_ENUM_TYPE(model, Model);
 
-  this->glimage = NULL;
-  this->glimagevalid = FALSE;
-  this->readstatus = 1;
+  THIS->glimage = NULL;
+  THIS->glimagevalid = FALSE;
+  THIS->readstatus = 1;
 
   // use field sensor for filename since we will load an image if
   // filename changes. This is a time-consuming task which should
   // not be done in notify().
-  this->filenamesensor = new SoFieldSensor(filenameSensorCB, this);
-  this->filenamesensor->setPriority(0);
-  this->filenamesensor->attach(&this->filename);
+  THIS->filenamesensor = new SoFieldSensor(filenameSensorCB, this);
+  THIS->filenamesensor->setPriority(0);
+  THIS->filenamesensor->attach(&this->filename);
 }
 
 /*!
@@ -212,8 +228,9 @@ SoTexture2::SoTexture2(void)
 */
 SoTexture2::~SoTexture2()
 {
-  if (this->glimage) this->glimage->unref(NULL);
-  delete this->filenamesensor;
+  if (THIS->glimage) THIS->glimage->unref(NULL);
+  delete THIS->filenamesensor;
+  delete THIS;
 }
 
 // Documented in superclass.
@@ -235,7 +252,7 @@ SoTexture2::initClass(void)
 SbBool
 SoTexture2::readInstance(SoInput * in, unsigned short flags)
 {
-  this->filenamesensor->detach();
+  THIS->filenamesensor->detach();
   SbBool readOK = inherited::readInstance(in, flags);
   this->setReadStatus((int) readOK);
   if (readOK && !filename.isDefault() && filename.getValue() != "") {
@@ -245,7 +262,7 @@ SoTexture2::readInstance(SoInput * in, unsigned short flags)
       this->setReadStatus(FALSE);
     }
   }
-  this->filenamesensor->attach(&this->filename);
+  THIS->filenamesensor->attach(&this->filename);
   return readOK;
 }
 
@@ -267,7 +284,7 @@ SoTexture2::GLRender(SoGLRenderAction * action)
     return;
 
   float quality = SoTextureQualityElement::get(state);
-  if (!this->glimagevalid) {
+  if (!THIS->glimagevalid) {
     int nc;
     SbVec2s size;
     const unsigned char * bytes =
@@ -277,35 +294,35 @@ SoTexture2::GLRender(SoGLRenderAction * action)
       SoTextureScalePolicyElement::DONT_SCALE;
 
     if (needbig &&
-        (this->glimage == NULL ||
-         this->glimage->getTypeId() != SoGLBigImage::getClassTypeId())) {
-      if (this->glimage) this->glimage->unref(state);
-      this->glimage = new SoGLBigImage();
+        (THIS->glimage == NULL ||
+         THIS->glimage->getTypeId() != SoGLBigImage::getClassTypeId())) {
+      if (THIS->glimage) THIS->glimage->unref(state);
+      THIS->glimage = new SoGLBigImage();
     }
     else if (!needbig &&
-             (this->glimage == NULL ||
-              this->glimage->getTypeId() != SoGLImage::getClassTypeId())) {
-      if (this->glimage) this->glimage->unref(state);
-      this->glimage = new SoGLImage();
+             (THIS->glimage == NULL ||
+              THIS->glimage->getTypeId() != SoGLImage::getClassTypeId())) {
+      if (THIS->glimage) THIS->glimage->unref(state);
+      THIS->glimage = new SoGLImage();
     }
 
     if (bytes && size != SbVec2s(0,0)) {
-      this->glimage->setData(bytes, size, nc,
+      THIS->glimage->setData(bytes, size, nc,
                              translateWrap((Wrap)this->wrapS.getValue()),
                              translateWrap((Wrap)this->wrapT.getValue()),
                              quality);
-      this->glimagevalid = TRUE;
+      THIS->glimagevalid = TRUE;
     }
   }
 
   SoGLTextureImageElement::set(state, this,
-                               this->glimagevalid ? this->glimage : NULL,
+                               THIS->glimagevalid ? THIS->glimage : NULL,
                                (SoTextureImageElement::Model) model.getValue(),
                                this->blendColor.getValue());
 
   SoGLTexture3EnabledElement::set(state, this, FALSE);
   SoGLTextureEnabledElement::set(state,
-                                 this, this->glimagevalid &&
+                                 this, THIS->glimagevalid &&
                                  quality > 0.0f);
 
   if (this->isOverride()) {
@@ -379,7 +396,7 @@ SoTexture2::readImage(const SbString & fname, int & w, int & h, int & nc,
 int
 SoTexture2::getReadStatus(void)
 {
-  return this->readstatus;
+  return THIS->readstatus;
 }
 
 /*!
@@ -389,7 +406,7 @@ SoTexture2::getReadStatus(void)
 void
 SoTexture2::setReadStatus(int s)
 {
-  this->readstatus = s;
+  THIS->readstatus = s;
 }
 
 // Documented in superclass. Overridden to detect when fields change.
@@ -398,11 +415,11 @@ SoTexture2::notify(SoNotList * l)
 {
   SoField * f = l->getLastField();
   if (f == &this->image) {
-    this->glimagevalid = FALSE;
+    THIS->glimagevalid = FALSE;
     this->filename.setDefault(TRUE); // write image, not filename
   }
   else if (f == &this->wrapS || f == &this->wrapT) {
-    this->glimagevalid = FALSE;
+    THIS->glimagevalid = FALSE;
   }
   SoNode::notify(l);
 }
@@ -428,7 +445,7 @@ SoTexture2::loadFilename(void)
       SbBool oldnotify = this->image.enableNotify(FALSE);
       this->image.setValue(size, nc, bytes);
       this->image.enableNotify(oldnotify);
-      this->glimagevalid = FALSE; // recreate GL image in next GLRender()
+      THIS->glimagevalid = FALSE; // recreate GL image in next GLRender()
       retval = TRUE;
     }
   }

@@ -33,6 +33,7 @@
 
 class SoFieldSensor;
 class SoSensor;
+class SoTexture2P;
 
 class COIN_DLL_API SoTexture2 : public SoNode {
   typedef SoNode inherited;
@@ -77,12 +78,9 @@ protected:
 
 private:
   SbBool loadFilename(void);
-  int readstatus;
-  class SoGLImage * glimage;
-  SbBool glimagevalid;
-
-  class SoFieldSensor * filenamesensor;
   static void filenameSensorCB(void *, SoSensor *);
+
+  SoTexture2P * pimpl;
 };
 
 #endif // !COIN_SOTEXTURE2_H
