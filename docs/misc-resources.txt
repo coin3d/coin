@@ -8,6 +8,13 @@ techniques for optimizing Coin.
 THE LINKS
 =========
 
+* com.graphics.algorithms FAQ:
+  <URL:http://www.faqs.org/faqs/graphics/algorithms-faq/>
+
+  Somebody should read through it meticulously to see if there are any
+  hints which can be used for optimizations or API extensions in Coin,
+  or even completely new features.
+
 * UNC Collide Research Group
   2000-12-14 Peder Blekken <pederb@sim.no>
   http://www.cs.unc.edu/~geom/collide/index.shtml
@@ -20,6 +27,9 @@ THE LINKS
 
   Claims to be much faster than other implementations. Is free to use
   in any commercail or non-commercial program.
+
+* ColDet - Free 3D Collision Detection Library  (under the LGPL)
+  <URL:http://photoneffect.com/coldet/>
 
 * nVIDIA GL_vertex_array_range and GL_NV_fence
   2000-12-14 Peder Blekken <pederb@sim.no>
