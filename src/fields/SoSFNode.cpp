@@ -76,7 +76,7 @@ SoSFNode::operator == (const SoSFNode & field) const
 void
 SoSFNode::initClass(void)
 {
-  SO_SFIELD_INIT_CLASS(SoSFNode, inherited);
+  SO_SFIELD_INTERNAL_INIT_CLASS(SoSFNode);
 }
 
 /*!

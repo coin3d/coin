@@ -57,7 +57,7 @@ SO_SFIELD_SOURCE(SoSFMatrix, SbMatrix, const SbMatrix &);
 void
 SoSFMatrix::initClass(void)
 {
-  SO_SFIELD_INIT_CLASS(SoSFMatrix, inherited);
+  SO_SFIELD_INTERNAL_INIT_CLASS(SoSFMatrix);
 }
 
 SbBool

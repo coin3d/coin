@@ -46,7 +46,7 @@ SO_MFIELD_DERIVED_SOURCE(SoMFBitMask, not_used, not_used);
 void
 SoMFBitMask::initClass(void)
 {
-  SO_MFIELD_INIT_CLASS(SoMFBitMask, inherited);
+  SO_MFIELD_INTERNAL_INIT_CLASS(SoMFBitMask);
 }
 
 SbBool

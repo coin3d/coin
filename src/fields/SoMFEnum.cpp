@@ -67,7 +67,7 @@ SO_MFIELD_VALUE_SOURCE(SoMFEnum, int, int);
 void
 SoMFEnum::initClass(void)
 {
-  SO_MFIELD_INIT_CLASS(SoMFEnum, inherited);
+  SO_MFIELD_INTERNAL_INIT_CLASS(SoMFEnum);
 }
 
 /*!

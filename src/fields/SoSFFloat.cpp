@@ -62,7 +62,7 @@ SO_SFIELD_SOURCE(SoSFFloat, float, const float);
 void
 SoSFFloat::initClass(void)
 {
-  SO_SFIELD_INIT_CLASS(SoSFFloat, inherited);
+  SO_SFIELD_INTERNAL_INIT_CLASS(SoSFFloat);
 }
 
 SbBool

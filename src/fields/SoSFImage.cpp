@@ -103,7 +103,7 @@ SoSFImage::operator = (const SoSFImage & field)
 void
 SoSFImage::initClass(void)
 {
-  SO_SFIELD_INIT_CLASS(SoSFImage, inherited);
+  SO_SFIELD_INTERNAL_INIT_CLASS(SoSFImage);
 }
 
 SbBool

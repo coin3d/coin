@@ -57,7 +57,7 @@ SO_MFIELD_SOURCE_MALLOC(SoMFNode, SoNode *, SoNode *);
 void
 SoMFNode::initClass(void)
 {
-  SO_MFIELD_INIT_CLASS(SoMFNode, inherited);
+  SO_MFIELD_INTERNAL_INIT_CLASS(SoMFNode);
 }
 
 /*!

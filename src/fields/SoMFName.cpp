@@ -56,7 +56,7 @@ SO_MFIELD_SOURCE_MALLOC(SoMFName, SbName, SbName);
 void
 SoMFName::initClass(void)
 {
-  SO_MFIELD_INIT_CLASS(SoMFName, inherited);
+  SO_MFIELD_INTERNAL_INIT_CLASS(SoMFName);
 }
 
 SbBool

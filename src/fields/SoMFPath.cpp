@@ -47,7 +47,7 @@ SO_MFIELD_SOURCE_MALLOC(SoMFPath, SoPath *, SoPath *);
 void
 SoMFPath::initClass(void)
 {
-  SO_MFIELD_INIT_CLASS(SoMFPath, inherited);
+  SO_MFIELD_INTERNAL_INIT_CLASS(SoMFPath);
 }
 
 /*!

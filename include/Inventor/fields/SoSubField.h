@@ -96,13 +96,30 @@ public: \
  *
  **************************************************************************/
 
+#define PRIVATE_FIELD_INIT_CLASS(_class_, _classname_, _parent_, _createfunc_) \
+  do { \
+    /* Make sure superclass get initialized before subclass. */ \
+    assert(_parent_::getClassTypeId() != SoType::badType()); \
+    /* Make sure we only initialize once. */ \
+    assert(_class_::classTypeId == SoType::badType()); \
+    _class_::classTypeId = \
+      SoType::createType(_parent_::getClassTypeId(), _classname_, _createfunc_); \
+  } while (0)
+
+
+
 #define SO_SFIELD_INIT_CLASS(_class_, _parent_) \
   do { \
-    assert(_class_::classTypeId == SoType::badType()); \
-    assert(_parent_::getClassTypeId() != SoType::badType()); \
-    _class_::classTypeId = \
-      SoType::createType(_parent_::getClassTypeId(), \
-                         SO__QUOTE(_class_), &_class_::createInstance); \
+    const char * classname = SO__QUOTE(_class_); \
+    PRIVATE_FIELD_INIT_CLASS(_class_, classname, _parent_, &_class_::createInstance); \
+  } while (0)
+
+
+
+#define SO_SFIELD_INTERNAL_INIT_CLASS(_class_) \
+  do { \
+    const char * classname = SO__QUOTE(_class_); \
+    PRIVATE_FIELD_INIT_CLASS(_class_, &classname[2], inherited, &_class_::createInstance); \
   } while (0)
 
 
@@ -246,6 +263,11 @@ public: \
 
 #define SO_MFIELD_INIT_CLASS(_class_, _parent_) \
   SO_SFIELD_INIT_CLASS(_class_, _parent_)
+
+
+
+#define SO_MFIELD_INTERNAL_INIT_CLASS(_class_) \
+  SO_SFIELD_INTERNAL_INIT_CLASS(_class_)
 
 
 

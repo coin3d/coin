@@ -48,7 +48,7 @@ SO_MFIELD_SOURCE_MALLOC(SoMFTime, SbTime, const SbTime &);
 void
 SoMFTime::initClass(void)
 {
-  SO_MFIELD_INIT_CLASS(SoMFTime, inherited);
+  SO_MFIELD_INTERNAL_INIT_CLASS(SoMFTime);
 }
 
 SbBool

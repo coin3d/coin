@@ -56,7 +56,7 @@ SO_MFIELD_SOURCE_MALLOC(SoMFMatrix, SbMatrix, const SbMatrix &);
 void
 SoMFMatrix::initClass(void)
 {
-  SO_MFIELD_INIT_CLASS(SoMFMatrix, inherited);
+  SO_MFIELD_INTERNAL_INIT_CLASS(SoMFMatrix);
 }
 
 SbBool

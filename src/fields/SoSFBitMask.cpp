@@ -50,7 +50,7 @@ SO_SFIELD_DERIVED_SOURCE(SoSFBitMask, not_used, not_used);
 void
 SoSFBitMask::initClass(void)
 {
-  SO_SFIELD_INIT_CLASS(SoSFBitMask, inherited);
+  SO_SFIELD_INTERNAL_INIT_CLASS(SoSFBitMask);
 }
 
 /*!

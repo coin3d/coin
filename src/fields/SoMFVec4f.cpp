@@ -48,7 +48,7 @@ SO_MFIELD_SOURCE_MALLOC(SoMFVec4f, SbVec4f, const SbVec4f &);
 void
 SoMFVec4f::initClass(void)
 {
-  SO_MFIELD_INIT_CLASS(SoMFVec4f, inherited);
+  SO_MFIELD_INTERNAL_INIT_CLASS(SoMFVec4f);
 }
 
 SbBool

@@ -61,7 +61,7 @@ SO_SFIELD_SOURCE(SoSFInt32, int32_t, const int32_t);
 void
 SoSFInt32::initClass(void)
 {
-  SO_SFIELD_INIT_CLASS(SoSFInt32, inherited);
+  SO_SFIELD_INTERNAL_INIT_CLASS(SoSFInt32);
 }
 
 SbBool

@@ -80,7 +80,7 @@ SoSFEnum::operator = (const SoSFEnum & field)
 void
 SoSFEnum::initClass(void)
 {
-  SO_SFIELD_INIT_CLASS(SoSFEnum, inherited);
+  SO_SFIELD_INTERNAL_INIT_CLASS(SoSFEnum);
 }
 
 /*!

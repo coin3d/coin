@@ -56,7 +56,7 @@ SO_MFIELD_SOURCE_MALLOC(SoMFFloat, float, float);
 void
 SoMFFloat::initClass(void)
 {
-  SO_MFIELD_INIT_CLASS(SoMFFloat, inherited);
+  SO_MFIELD_INTERNAL_INIT_CLASS(SoMFFloat);
 }
 
 SbBool

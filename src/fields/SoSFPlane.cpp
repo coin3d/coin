@@ -55,7 +55,7 @@ SO_SFIELD_SOURCE(SoSFPlane, SbPlane, const SbPlane &);
 void
 SoSFPlane::initClass(void)
 {
-  SO_SFIELD_INIT_CLASS(SoSFPlane, inherited);
+  SO_SFIELD_INTERNAL_INIT_CLASS(SoSFPlane);
 }
 
 SbBool

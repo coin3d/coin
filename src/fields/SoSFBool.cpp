@@ -54,7 +54,7 @@ SO_SFIELD_SOURCE(SoSFBool, SbBool, const SbBool);
 void
 SoSFBool::initClass(void)
 {
-  SO_SFIELD_INIT_CLASS(SoSFBool, inherited);
+  SO_SFIELD_INTERNAL_INIT_CLASS(SoSFBool);
 }
 
 SbBool

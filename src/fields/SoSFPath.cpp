@@ -48,7 +48,7 @@ SO_SFIELD_SOURCE(SoSFPath, SoPath *, SoPath *);
 void
 SoSFPath::initClass(void)
 {
-  SO_SFIELD_INIT_CLASS(SoSFPath, inherited);
+  SO_SFIELD_INTERNAL_INIT_CLASS(SoSFPath);
 }
 
 /*!

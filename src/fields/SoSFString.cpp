@@ -47,7 +47,7 @@ SO_SFIELD_SOURCE(SoSFString, SbString, const SbString &);
 void
 SoSFString::initClass(void)
 {
-  SO_SFIELD_INIT_CLASS(SoSFString, inherited);
+  SO_SFIELD_INTERNAL_INIT_CLASS(SoSFString);
 }
 
 SbBool

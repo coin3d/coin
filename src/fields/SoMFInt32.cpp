@@ -55,7 +55,7 @@ SO_MFIELD_SOURCE_MALLOC(SoMFInt32, int32_t, int32_t);
 void
 SoMFInt32::initClass(void)
 {
-  SO_MFIELD_INIT_CLASS(SoMFInt32, inherited);
+  SO_MFIELD_INTERNAL_INIT_CLASS(SoMFInt32);
 }
 
 SbBool

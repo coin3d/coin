@@ -26,14 +26,14 @@
 */
 
 #include <Inventor/fields/SoMField.h>
-#include <Inventor/errors/SoReadError.h>
+#include <Inventor/SbName.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
-#include <Inventor/SbName.h>
+#include <Inventor/errors/SoReadError.h>
+#include <Inventor/fields/SoSubField.h>
 #include <Inventor/misc/SoBasic.h> // COIN_STUB()
-
-#include <malloc.h>
 #include <assert.h>
+#include <malloc.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -67,7 +67,7 @@ SoMField::fieldSizeof(void) const
 void *
 SoMField::valuesPtr(void)
 {
-  assert(0);
+  COIN_STUB();
   return NULL;
 }
 
@@ -77,7 +77,7 @@ SoMField::valuesPtr(void)
 void
 SoMField::setValuesPtr(void *)
 {
-  assert(0);
+  COIN_STUB();
 }
 
 /*!
@@ -97,13 +97,7 @@ SoMField::getClassTypeId(void)
 void
 SoMField::initClass(void)
 {
-  // Make sure we only initialize once.
-  assert(SoMField::classTypeId == SoType::badType());
-  // Make sure superclass has been initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoMField::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "MField", NULL);
+  PRIVATE_FIELD_INIT_CLASS(SoMField, "MField", inherited, NULL);
 }
 
 /*!

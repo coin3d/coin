@@ -63,7 +63,7 @@ SO_SFIELD_SOURCE(SoSFShort, short, const short);
 void
 SoSFShort::initClass(void)
 {
-  SO_SFIELD_INIT_CLASS(SoSFShort, inherited);
+  SO_SFIELD_INTERNAL_INIT_CLASS(SoSFShort);
 }
 
 SbBool

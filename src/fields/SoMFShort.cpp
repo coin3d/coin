@@ -55,7 +55,7 @@ SO_MFIELD_SOURCE_MALLOC(SoMFShort, short, short);
 void
 SoMFShort::initClass(void)
 {
-  SO_MFIELD_INIT_CLASS(SoMFShort, inherited);
+  SO_MFIELD_INTERNAL_INIT_CLASS(SoMFShort);
 }
 
 SbBool

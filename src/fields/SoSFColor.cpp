@@ -56,7 +56,7 @@ SO_SFIELD_SOURCE(SoSFColor, SbColor, const SbColor &);
 void
 SoSFColor::initClass(void)
 {
-  SO_SFIELD_INIT_CLASS(SoSFColor, inherited);
+  SO_SFIELD_INTERNAL_INIT_CLASS(SoSFColor);
 }
 
 SbBool

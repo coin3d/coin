@@ -57,7 +57,7 @@ SO_MFIELD_SOURCE_MALLOC(SoMFRotation, SbRotation, const SbRotation &);
 void
 SoMFRotation::initClass(void)
 {
-  SO_MFIELD_INIT_CLASS(SoMFRotation, inherited);
+  SO_MFIELD_INTERNAL_INIT_CLASS(SoMFRotation);
 }
 
 SbBool

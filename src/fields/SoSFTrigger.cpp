@@ -53,7 +53,7 @@ SoSFTrigger::operator=(const SoSFTrigger & field)
 void
 SoSFTrigger::initClass(void)
 {
-  SO_SFIELD_INIT_CLASS(SoSFTrigger, inherited);
+  SO_SFIELD_INTERNAL_INIT_CLASS(SoSFTrigger);
 }
 
 /*!

@@ -47,7 +47,7 @@ SO_MFIELD_SOURCE_MALLOC(SoMFEngine, SoEngine *, SoEngine *);
 void
 SoMFEngine::initClass(void)
 {
-  SO_MFIELD_INIT_CLASS(SoMFEngine, inherited);
+  SO_MFIELD_INTERNAL_INIT_CLASS(SoMFEngine);
 }
 
 /*!

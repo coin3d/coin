@@ -28,8 +28,9 @@
 */
 
 #include <Inventor/fields/SoSField.h>
-#include <Inventor/SoOutput.h>
 #include <Inventor/SbName.h>
+#include <Inventor/SoOutput.h>
+#include <Inventor/fields/SoSubField.h>
 #include <assert.h>
 
 
@@ -67,13 +68,7 @@ SoSField::~SoSField()
 void
 SoSField::initClass(void)
 {
-  // Make sure we only initialize once.
-  assert(SoSField::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoSField::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "SoSField", NULL);
+  PRIVATE_FIELD_INIT_CLASS(SoSField, "SField", inherited, NULL);
 }
 
 /*!

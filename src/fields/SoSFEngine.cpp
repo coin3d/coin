@@ -73,7 +73,7 @@ SoSFEngine::operator == (const SoSFEngine & field) const
 void
 SoSFEngine::initClass(void)
 {
-  SO_SFIELD_INIT_CLASS(SoSFEngine, inherited);
+  SO_SFIELD_INTERNAL_INIT_CLASS(SoSFEngine);
 }
 
 /*!

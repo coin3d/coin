@@ -57,7 +57,7 @@ SO_SFIELD_SOURCE(SoSFTime, SbTime, const SbTime &);
 void
 SoSFTime::initClass(void)
 {
-  SO_SFIELD_INIT_CLASS(SoSFTime, inherited);
+  SO_SFIELD_INTERNAL_INIT_CLASS(SoSFTime);
 }
 
 SbBool

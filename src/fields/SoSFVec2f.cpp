@@ -47,7 +47,7 @@ SO_SFIELD_SOURCE(SoSFVec2f, SbVec2f, const SbVec2f &);
 void
 SoSFVec2f::initClass(void)
 {
-  SO_SFIELD_INIT_CLASS(SoSFVec2f, inherited);
+  SO_SFIELD_INTERNAL_INIT_CLASS(SoSFVec2f);
 }
 
 SbBool

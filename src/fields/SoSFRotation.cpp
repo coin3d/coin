@@ -58,7 +58,7 @@ SO_SFIELD_SOURCE(SoSFRotation, SbRotation, const SbRotation &);
 void
 SoSFRotation::initClass(void)
 {
-  SO_SFIELD_INIT_CLASS(SoSFRotation, inherited);
+  SO_SFIELD_INTERNAL_INIT_CLASS(SoSFRotation);
 }
 
 SbBool

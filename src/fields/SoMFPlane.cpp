@@ -57,7 +57,7 @@ SO_MFIELD_SOURCE_MALLOC(SoMFPlane, SbPlane, const SbPlane &);
 void
 SoMFPlane::initClass(void)
 {
-  SO_MFIELD_INIT_CLASS(SoMFPlane, inherited);
+  SO_MFIELD_INTERNAL_INIT_CLASS(SoMFPlane);
 }
 
 SbBool

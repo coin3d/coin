@@ -50,7 +50,7 @@ SO_MFIELD_SOURCE_MALLOC(SoMFColor, SbColor, const SbColor &);
 void
 SoMFColor::initClass(void)
 {
-  SO_MFIELD_INIT_CLASS(SoMFColor, inherited);
+  SO_MFIELD_INTERNAL_INIT_CLASS(SoMFColor);
 }
 
 SbBool
