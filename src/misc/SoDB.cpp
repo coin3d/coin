@@ -441,7 +441,15 @@ SoDB::init(void)
     (void) audioDevice->init("OpenAL", env ? env : "DirectSound3D");
     if (audioDevice->haveSound()) {
       env = coin_getenv("COIN_SOUND_BUFFER_LENGTH");
-      int bufferlength = env ? atoi(env) : 44100;
+      /* Note: The default buffersize is currently set to 4096 *
+         10. This is because the Linux version of OpenAL currently in
+         CVS at www.openal.org is slightly buggy when it comes to
+         buffer handling, and for mysterious reasons, if the buffer
+         size is a multiple of 4096, everything works allmost as it
+         should.  The problem (and this quick-fix) has been
+         aknowledged by the guy in charge of the Linux version of
+         OpenAL, and it is being worked at. 2003-03-10 thammer */
+      int bufferlength = env ? atoi(env) : 40960;
       env = coin_getenv("COIN_SOUND_NUM_BUFFERS");
       int numbuffers = env ? atoi(env) : 5;
       env = coin_getenv("COIN_SOUND_THREAD_SLEEP_TIME");
