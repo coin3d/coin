@@ -27,6 +27,8 @@
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/elements/SoTextureImageElement.h>
 
+class SoFieldSensor;
+class SoSensor;
 
 class COIN_DLL_EXPORT SoTexture2 : public SoNode {
   typedef SoNode inherited;
@@ -61,23 +63,22 @@ public:
 
   static SbBool readImage(const SbString & fname, int & w, int & h, int & nc,
                           unsigned char *& bytes);
-
 protected:
   virtual ~SoTexture2();
 
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
-  virtual void notify(SoNotList *list);
+  virtual void notify(SoNotList * list);
   int getReadStatus(void);
   void setReadStatus(int s);
 
 private:
+  SbBool loadFilename(void);
   int readstatus;
-  SbBool imagedatavalid;
-  SbBool glimagevalid;
-  SbBool getImage(void);
-  SbBool readImage(void);
-  class SoImageInterface * imagedata;
   class SoGLImage * glimage;
+  SbBool glimagevalid;
+
+  class SoFieldSensor * filenamesensor;
+  static void filenameSensorCB(void *, SoSensor *);
 };
 
 #endif // !COIN_SOTEXTURE2_H

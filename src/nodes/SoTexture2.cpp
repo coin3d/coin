@@ -35,13 +35,11 @@
 #include <Inventor/elements/SoTextureOverrideElement.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/misc/SoGLImage.h>
-#include <Inventor/misc/SoImageInterface.h>
-
-#include <assert.h>
-
-#if COIN_DEBUG
+#include <Inventor/sensors/SoFieldSensor.h>
+#include <Inventor/lists/SbStringList.h>
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
+#include <Inventor/SbImage.h>
+#include <assert.h>
 
 /*!
   \enum SoTexture2::Model
@@ -106,7 +104,7 @@ SO_NODE_SOURCE(SoTexture2);
 /*!
   Constructor.
 */
-SoTexture2::SoTexture2()
+SoTexture2::SoTexture2(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTexture2);
 
@@ -128,11 +126,16 @@ SoTexture2::SoTexture2()
   SO_NODE_DEFINE_ENUM_VALUE(Model, BLEND);
   SO_NODE_SET_SF_ENUM_TYPE(model, Model);
 
-  this->imagedata = NULL;
-  this->glimage = NULL;
-  this->imagedatavalid = FALSE;
+  this->glimage = new SoGLImage();
   this->glimagevalid = FALSE;
   this->readstatus = 1;
+
+  // use field sensor for filename since we will load an image if
+  // filename changes. This is a time-consuming task which should
+  // not be done in notify().
+  this->filenamesensor = new SoFieldSensor(filenameSensorCB, this);
+  this->filenamesensor->setPriority(0);
+  this->filenamesensor->attach(&this->filename);
 }
 
 /*!
@@ -140,8 +143,8 @@ SoTexture2::SoTexture2()
 */
 SoTexture2::~SoTexture2()
 {
-  if (this->imagedata) this->imagedata->unref();
-  if (this->glimage) this->glimage->unref();
+  delete this->glimage;
+  delete this->filenamesensor;
 }
 
 // doc from parent
@@ -164,14 +167,17 @@ SoTexture2::initClass(void)
 SbBool
 SoTexture2::readInstance(SoInput * in, unsigned short flags)
 {
+  this->filenamesensor->detach();
   SbBool readOK = inherited::readInstance(in, flags);
-
+  this->setReadStatus((int) readOK);
   if (readOK && !filename.isDefault()) {
-    if (!this->readImage()) {
+    if (!this->loadFilename()) {
       SoReadError::post(in, "Could not read texture file %s",
                         filename.getValue().getString());
+      this->setReadStatus(FALSE);
     }
   }
+  this->filenamesensor->attach(&this->filename);
   return readOK;
 }
 
@@ -185,33 +191,30 @@ SoTexture2::GLRender(SoGLRenderAction * action)
   if (SoTextureOverrideElement::getImageOverride(state))
     return;
 
-  if (!this->getImage()) return;
-
   float quality = SoTextureQualityElement::get(state);
-
-  if (this->imagedata && this->imagedata->load()) {
+  if (!this->glimagevalid) {
     SbBool clamps = this->wrapS.getValue() == SoTexture2::CLAMP;
     SbBool clampt = this->wrapT.getValue() == SoTexture2::CLAMP;
-
-    if (this->glimage && (!this->glimagevalid ||
-                          !this->glimage->matches(clamps, clampt))) {
-      this->glimage->unref();
-      this->glimage = NULL;
-    }
-
-    if (this->glimage == NULL) {
-      this->glimage =
-        SoGLImage::findOrCreateGLImage(this->imagedata,
-                                       clamps, clampt, quality, NULL);
+    int nc;
+    SbVec2s size;
+  
+    const unsigned char * bytes =
+      this->image.getValue(size, nc);
+    if (bytes && size != SbVec2s(0,0)) {
+      this->glimage->setData(bytes, size, nc, clamps, clampt,
+                             quality, NULL);
       this->glimagevalid = TRUE;
     }
   }
+
   SoGLTextureImageElement::set(state, this,
-                               this->glimage,
+                               this->glimagevalid ? this->glimage : NULL,
                                (SoTextureImageElement::Model) model.getValue(),
                                this->blendColor.getValue());
+
   SoGLTextureEnabledElement::set(state,
-                                 this, this->glimage != NULL && quality > 0.0f);
+                                 this, this->glimagevalid &&
+                                 quality > 0.0f);
 
   if (this->isOverride()) {
     SoTextureOverrideElement::setImageOverride(state, TRUE);
@@ -227,13 +230,13 @@ SoTexture2::doAction(SoAction * action)
   if (SoTextureOverrideElement::getImageOverride(state))
     return;
 
-  if (!this->getImage()) return;
+  int nc;
+  SbVec2s size;
+  const unsigned char * bytes = this->image.getValue(size, nc);
 
-  if (this->imagedata) {
+  if (size != SbVec2s(0,0)) {
     SoTextureImageElement::set(state, this,
-                               this->imagedata->getSize(),
-                               this->imagedata->getNumComponents(),
-                               this->imagedata->getDataPtr(),
+                               size, nc, bytes,
                                (int)this->wrapT.getValue(),
                                (int)this->wrapS.getValue(),
                                (SoTextureImageElement::Model) model.getValue(),
@@ -255,8 +258,8 @@ SoTexture2::callback(SoCallbackAction * action)
 }
 
 /*!
-  Not implemented. We have a different strategy for loading images,
-  using SoImageInterface. Let us know if anybody needs this function.
+  Not implemented in Coin; should probably have been private in OIV.
+  Let us know if you need this method and we'll implement it.
 */
 SbBool
 SoTexture2::readImage(const SbString & /* fname */,
@@ -286,89 +289,59 @@ SoTexture2::setReadStatus(int s)
   this->readstatus = s;
 }
 
-//
-// Private method that creates an SoImageInterface object. This
-// provides a common interface, whether the texture is loaded from a
-// file or the image data is supplied inside the node.
-//
-// returns TRUE if texture image element should be updated,
-// FALSE if not.
-//
-SbBool
-SoTexture2::getImage(void)
-{
-  if (this->filename.isIgnored() && this->image.isIgnored())
-    return FALSE;
-
-  if (this->imagedatavalid) return TRUE; // common case
-
-  SbVec2s size;
-  int nc;
-  const unsigned char * bytes = this->image.getValue(size, nc);
-  SbBool validinline =
-    (!this->image.isIgnored()) &&
-    (bytes != NULL) &&
-    (size[0] > 0) &&
-    (size[1] > 0) &&
-    (nc > 0 && nc <= 4);
-
-  if (this->filename.isIgnored() && !validinline) return FALSE;
-
-  if (this->imagedata) {
-    // if we get here, we'll have to "reload" image
-    this->imagedata->unref();
-    this->imagedata = NULL;
-  }
-
-  if (validinline) {
-    this->imagedata = new SoImageInterface(size, nc, bytes);
-    this->imagedata->ref();
-  }
-  else {
-    if (this->filename.getValue().getLength()) {
-      const SbStringList & dirlist = SoInput::getDirectories();
-      const char * texname = this->filename.getValue().getString();
-      this->imagedata = SoImageInterface::findOrCreateImage(texname, dirlist);
-      if (this->imagedata == NULL) {
-#if COIN_DEBUG
-        SoDebugError::postWarning("SoTexture2::getImage",
-                                  "Image not found: %s", texname);
-#endif
-      }
-      else {
-        size = this->imagedata->getSize();
-        nc = this->imagedata->getNumComponents();
-        this->image.setValue(size, nc, this->imagedata->getDataPtr());
-        this->filename = "";
-        this->filename.setDefault(TRUE);
-      }
-    }
-  }
-  this->imagedatavalid = TRUE; // imagedata should be valid (or NULL) now
-  return TRUE;
-}
-
-//
-// read image
-//
-SbBool
-SoTexture2::readImage(void)
-{
-  this->getImage();
-  this->readstatus = this->imagedata && this->imagedata->load();
-  return this->readstatus;
-}
-
 /*!
-  Overloaded to detect when filename or image changes.
+  Overloaded to detect when fields change.
 */
 void
 SoTexture2::notify(SoNotList *list)
 {
   SoField *f = list->getLastField();
-  if (f == &this->image || f == &this->filename) {
-    this->imagedatavalid = FALSE;
+  if (f == &this->image) {
+    this->glimagevalid = FALSE;
+    this->filename.setDefault(TRUE); // write image, not filename
+  }
+  else if (f == &this->wrapS || f == &this->wrapT) {
     this->glimagevalid = FALSE;
   }
   SoNode::notify(list);
+}
+
+//
+// Called from readInstance() or when user changes the
+// filename field.
+//
+SbBool
+SoTexture2::loadFilename(void)
+{
+  SbBool retval = FALSE;
+  if (this->filename.getValue().getLength()) {
+    SbImage tmpimage;
+    const SbStringList & sl = SoInput::getDirectories();
+    if (tmpimage.readFile(this->filename.getValue(),
+                          sl.getArrayPtr(), sl.getLength())) {
+      int nc;
+      SbVec2s size;
+      unsigned char * bytes = tmpimage.getValue(size, nc);
+      this->image.setValue(size, nc, bytes);
+      retval = TRUE;
+    }
+  }
+  this->image.setDefault(TRUE); // write filename, not image
+  return retval;
+}
+
+//
+// called when filename changes
+//
+void
+SoTexture2::filenameSensorCB(void * data, SoSensor *)
+{
+  SoTexture2 * thisp = (SoTexture2*) data;
+  thisp->setReadStatus(1);
+  if (!thisp->loadFilename()) {
+    SoDebugError::postWarning("SoTexture2::filenameSensorCB",
+                              "Image file could not be read: %s",
+                              thisp->filename.getValue().getString());
+    thisp->setReadStatus(0);
+  }
 }
