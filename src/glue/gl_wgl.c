@@ -98,6 +98,13 @@ typedef BOOL (WINAPI * COIN_PFNWGLCHOOSEPIXELFORMATPROC)(HDC hdc,
 
 static COIN_PFNWGLCHOOSEPIXELFORMATPROC wglglue_wglChoosePixelFormat = NULL;
 
+/* The function for finding extension strings is itself an extension
+   string. */
+
+typedef const char * (WINAPI * COIN_PFNWGLGETEXTENSIONSSTRING)(HDC hDC);
+
+static COIN_PFNWGLGETEXTENSIONSSTRING wglglue_wglGetExtensionsString = NULL;
+
 /* ********************************************************************** */
 
 #ifdef HAVE_DYNAMIC_LINKING
@@ -115,6 +122,9 @@ static COIN_PFNWGLCHOOSEPIXELFORMATPROC wglglue_wglChoosePixelFormat = NULL;
 
 #define WGL_ARB_pbuffer 1
 #define WGL_EXT_pbuffer 1
+
+#define WGL_ARB_extensions_string 1
+#define WGL_EXT_extensions_string 1
 
 #else /* static binding */
 
@@ -200,35 +210,67 @@ wglglue_pbuffer_symbols_resolved(void)
 }
 
 static SbBool
+wglglue_ext_supported(struct wglglue_contextdata * context, const char * reqext)
+{
+  /*
+   * wgl extensions are not necessarily listed in the string returned
+   * by glGetString(GL_EXTENSIONS), see e.g.
+   *
+   *   http://www.gamedev.net/reference/articles/article1929.asp
+   *
+   * ..so we try to get hold of wglGetExtensionsString[ARB|EXT]() and
+   * use that aswell.
+   */
+  static SbBool attemptedresolved = FALSE;
+
+  if (!attemptedresolved) {
+    attemptedresolved = TRUE;
+#ifdef WGL_ARB_extensions_string
+    wglglue_wglGetExtensionsString = (COIN_PFNWGLGETEXTENSIONSSTRING)PROC(wglGetExtensionsStringARB);
+#endif /* WGL_ARB_extensions_string */
+#ifdef WGL_EXT_extensions_string
+    if (!wglglue_wglGetExtensionsString) {
+      wglglue_wglGetExtensionsString = (COIN_PFNWGLGETEXTENSIONSSTRING)PROC(wglGetExtensionsStringEXT);
+    }
+#endif /* WGL_EXT_extensions_string */
+  }
+  
+  if (wglglue_wglGetExtensionsString) {
+    const char * wglext = wglglue_wglGetExtensionsString(context->memorydc);
+    if (coin_glglue_extension_available(wglext, reqext)) { return TRUE; }
+  }
+
+  if (coin_glglue_extension_available(glGetString(GL_EXTENSIONS), reqext)) { return TRUE; }
+
+  return FALSE;
+}
+
+static SbBool
 wglglue_resolve_symbols(struct wglglue_contextdata * context)
 {
-  const char * exts;
-
   /* short circuit out if symbols have already been resolved */
   if (wglglue_pbuffer_symbols_resolved()) { return TRUE; }
 
   /* we need a(ny) current context to resolve symbols */
   if (!wglglue_context_make_current(context)) { return FALSE; }
 
-  exts = glGetString(GL_EXTENSIONS);
-
   /* attempt to resolve the symbols */
 
 #ifdef WGL_ARB_pixel_format
-  if (coin_glglue_extension_available(exts, "WGL_ARB_pixel_format")) {
+  if (wglglue_ext_supported(context, "WGL_ARB_pixel_format")) {
     wglglue_wglChoosePixelFormat = (COIN_PFNWGLCHOOSEPIXELFORMATPROC)PROC(wglChoosePixelFormatARB);
   }
 #endif /* WGL_ARB_pixel_format */
 
 #ifdef WGL_EXT_pixel_format
-  if (coin_glglue_extension_available(exts, "WGL_EXT_pixel_format")) {
+  if (wglglue_ext_supported(context, "WGL_EXT_pixel_format")) {
     wglglue_wglChoosePixelFormat = (COIN_PFNWGLCHOOSEPIXELFORMATPROC)PROC(wglChoosePixelFormatEXT);
   }
 #endif /* WGL_EXT_pixel_format */
 
 #ifdef WGL_ARB_pbuffer
   if (wglglue_wglChoosePixelFormat && /* <- WGL_*_pbuffer depends on WGL_*_pixel_format */
-      coin_glglue_extension_available(exts, "WGL_ARB_pbuffer")) {
+      wglglue_ext_supported(context, "WGL_ARB_pbuffer")) {
     wglglue_wglCreatePbuffer = (COIN_PFNWGLCREATEPBUFFERPROC)PROC(wglCreatePbufferARB);
     wglglue_wglGetPbufferDC = (COIN_PFNWGLGETPBUFFERDCPROC)PROC(wglGetPbufferDCARB);
     wglglue_wglReleasePbufferDC = (COIN_PFNWGLRELEASEPBUFFERDCPROC)PROC(wglReleasePbufferDCARB);
@@ -240,7 +282,7 @@ wglglue_resolve_symbols(struct wglglue_contextdata * context)
 #ifdef WGL_EXT_pbuffer
   if (!wglglue_pbuffer_symbols_resolved() &&
       wglglue_wglChoosePixelFormat && /* <- WGL_*_pbuffer depends on WGL_*_pixel_format */
-      coin_glglue_extension_available(exts, "WGL_EXT_pbuffer")) {
+      wglglue_ext_supported(context, "WGL_EXT_pbuffer")) {
     wglglue_wglCreatePbuffer = (COIN_PFNWGLCREATEPBUFFERPROC)PROC(wglCreatePbufferEXT);
     wglglue_wglGetPbufferDC = (COIN_PFNWGLGETPBUFFERDCPROC)PROC(wglGetPbufferDCEXT);
     wglglue_wglReleasePbufferDC = (COIN_PFNWGLRELEASEPBUFFERDCPROC)PROC(wglReleasePbufferDCEXT);
@@ -248,7 +290,6 @@ wglglue_resolve_symbols(struct wglglue_contextdata * context)
     wglglue_wglQueryPbuffer = (COIN_PFNWGLQUERYPBUFFERPROC)PROC(wglQueryPbufferEXT);
   }
 #endif /* WGL_EXT_pbuffer */
-
 
   wglglue_context_reinstate_previous(context);
 
@@ -297,6 +338,72 @@ wglglue_contextdata_cleanup(struct wglglue_contextdata * ctx)
   free(ctx);
 }
 
+static SbBool 
+wglglue_context_create_context(struct wglglue_contextdata * ctx, DWORD bitWin)
+{
+  struct wglglue_contextdata * context = (struct wglglue_contextdata *)ctx;
+  int pixelformat;
+
+  PIXELFORMATDESCRIPTOR pfd = {
+    sizeof(PIXELFORMATDESCRIPTOR),   /* size of this pfd */
+    1,                     /* version number */
+    bitWin |               /* support bitmap or window */
+    PFD_SUPPORT_OPENGL,    /* support OpenGL */
+    PFD_TYPE_RGBA,         /* RGBA type */
+    24,                    /* 24-bit color depth */
+    0, 0, 0, 0, 0, 0,      /* color bits ignored */
+    0,                     /* no alpha buffer */
+    0,                     /* shift bit ignored */
+    0,                     /* no accumulation buffer */
+    0, 0, 0, 0,            /* accum bits ignored */
+    32,                    /* 32-bit z-buffer */
+    0,                     /* no stencil buffer */
+    0,                     /* no auxiliary buffer */
+    PFD_MAIN_PLANE,        /* main layer */
+    0,                     /* reserved */
+    0, 0, 0                /* layer masks ignored */
+  };
+  
+  /* get the best available match of pixel format for the device context */
+  pixelformat = ChoosePixelFormat(context->memorydc, &pfd);
+  if (pixelformat == 0) {
+    DWORD dwError = GetLastError();
+    cc_debugerror_postwarning("wglglue_context_create_pbuffer",
+                              "ChoosePixelFormat() failed with "
+                              "error code %d.", dwError);
+    return FALSE;
+  }
+  
+  /* make that the pixel format of the device context */
+  if (!SetPixelFormat(context->memorydc, pixelformat, &pfd)) {
+    DWORD dwError = GetLastError();
+    cc_debugerror_postwarning("wglglue_context_create_pbuffer",
+                              "SetPixelFormat() failed with error code %d.",
+                              dwError);
+    return FALSE;
+  }
+
+  context->wglcontext = wglCreateContext(context->memorydc);
+  if (context->wglcontext == NULL) {
+    DWORD dwError = GetLastError();
+    cc_debugerror_postwarning("wglglue_context_create_pbuffer",
+                              "wglCreateContext() failed with error code %d.",
+                              dwError);
+    return FALSE;
+  }
+
+  context->wglcontext = wglCreateContext(context->memorydc);
+  if (context->wglcontext == NULL) {
+    DWORD dwError = GetLastError();
+    cc_debugerror_postwarning("wglglue_context_create_pbuffer",
+                              "wglCreateContext() failed with error code %d.",
+                              dwError);
+    return FALSE;
+  }
+
+  return TRUE;
+}
+
 static SbBool
 wglglue_context_create_software(struct wglglue_contextdata * ctx)
 {
@@ -339,7 +446,6 @@ wglglue_context_create_software(struct wglglue_contextdata * ctx)
       cc_debugerror_postwarning("wglglue_context_create_software",
                                 "CreateDIBSection() failed with error "
                                 "code %d.", dwError);
-      wglglue_contextdata_cleanup(context);
       return FALSE;
     }
   }
@@ -351,71 +457,21 @@ wglglue_context_create_software(struct wglglue_contextdata * ctx)
     cc_debugerror_postwarning("wglglue_context_create_software",
                               "SelectObject() failed with error code %d.",
                               dwError);
-    wglglue_contextdata_cleanup(context);
     return FALSE;
   }
   
-  {
-    int pixformat;
-    PIXELFORMATDESCRIPTOR pfd = {
-      sizeof(PIXELFORMATDESCRIPTOR),   /* size of this pfd */
-      1,                     /* version number */
-      PFD_DRAW_TO_BITMAP |   /* support bitmap */
-      PFD_SUPPORT_OPENGL,    /* support OpenGL */
-      PFD_TYPE_RGBA,         /* RGBA type */
-      24,                    /* 24-bit color depth */
-      0, 0, 0, 0, 0, 0,      /* color bits ignored */
-      0,                     /* no alpha buffer */
-      0,                     /* shift bit ignored */
-      0,                     /* no accumulation buffer */
-      0, 0, 0, 0,            /* accum bits ignored */
-      32,                    /* 32-bit z-buffer */
-      0,                     /* no stencil buffer */
-      0,                     /* no auxiliary buffer */
-      PFD_MAIN_PLANE,        /* main layer */
-      0,                     /* reserved */
-      0, 0, 0                /* layer masks ignored */
-    };
-  
- 
-    /* get the best available match of pixel format for the device context */
-    pixformat = ChoosePixelFormat(context->memorydc, &pfd);
-    if (pixformat == 0) {
-      DWORD dwError = GetLastError();
-      cc_debugerror_postwarning("wglglue_context_create_software",
-                                "ChoosePixelFormat() failed with "
-                                "error code %d.", dwError);
-      wglglue_contextdata_cleanup(context);
-      return FALSE;
-    }
-  
-    /* make that the pixel format of the device context */
-    if (!SetPixelFormat(context->memorydc, pixformat, &pfd)) {
-      DWORD dwError = GetLastError();
-      cc_debugerror_postwarning("wglglue_context_create_software",
-                                "SetPixelFormat() failed with error code %d.",
-                                dwError);
-      wglglue_contextdata_cleanup(context);
-      return FALSE;
-    }
-  }
-  
-  context->wglcontext = wglCreateContext(context->memorydc);
-  if (context->wglcontext == NULL) {
-    DWORD dwError = GetLastError();
-    cc_debugerror_postwarning("wglglue_context_create_software",
-                              "wglCreateContext() failed with error code %d.",
-                              dwError);
-    wglglue_contextdata_cleanup(context);
+  if (!(wglglue_context_create_context(context, PFD_DRAW_TO_BITMAP))) {
     return FALSE;
   }
-
+  
   return TRUE;
 }
 
 static SbBool 
-wglglue_context_create_pbuffer(struct wglglue_contextdata * context)
+wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx)
 {
+  struct wglglue_contextdata * context = (struct wglglue_contextdata *)ctx;
+
   if ((context->memorydc = wglGetCurrentDC())) { 
     context->wglcontext = wglGetCurrentContext();
   }
@@ -451,7 +507,7 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * context)
       HWND hWnd;
       HINSTANCE hInstance = GetModuleHandle(NULL);
       
-      if (!(hWnd = CreateWindowEx(0,  /* extended style for the window */
+      if (!(hWnd = CreateWindow(
                      "coin_gl_wgl",   /* class name */
                      "coin_gl_wgl",   /* window title */
                      0,               /* selected window style */
@@ -465,7 +521,7 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * context)
       {
         DWORD dwError = GetLastError();
         cc_debugerror_postwarning("wglglue_context_create_pbuffer",
-                                  "CreateWindowEx(...) failed with "
+                                  "CreateWindow(...) failed with "
                                   "error code %d.", dwError);
         return FALSE;
       }
@@ -480,58 +536,7 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * context)
       }
     }
 
-    {
-      int pixformat;
-      PIXELFORMATDESCRIPTOR pfd = {
-        sizeof(PIXELFORMATDESCRIPTOR),   /* size of this pfd */
-        1,                     /* version number */
-        PFD_DRAW_TO_WINDOW |   /* support window */
-        PFD_SUPPORT_OPENGL,    /* support OpenGL */
-        PFD_TYPE_RGBA,         /* RGBA type */
-        24,                    /* 24-bit color depth */
-        0, 0, 0, 0, 0, 0,      /* color bits ignored */
-        0,                     /* no alpha buffer */
-        0,                     /* shift bit ignored */
-        0,                     /* no accumulation buffer */
-        0, 0, 0, 0,            /* accum bits ignored */
-        32,                    /* 32-bit z-buffer */
-        0,                     /* no stencil buffer */
-        0,                     /* no auxiliary buffer */
-        PFD_MAIN_PLANE,        /* main layer */
-        0,                     /* reserved */
-        0, 0, 0                /* layer masks ignored */
-      };
-  
- 
-      /* get the best available match of pixel format for the device context */
-      pixformat = ChoosePixelFormat(context->memorydc, &pfd);
-      if (pixformat == 0) {
-        DWORD dwError = GetLastError();
-        cc_debugerror_postwarning("wglglue_context_create_pbuffer",
-                                  "ChoosePixelFormat() failed with "
-                                  "error code %d.", dwError);
-        wglglue_contextdata_cleanup(context);
-        return FALSE;
-      }
-      
-      /* make that the pixel format of the device context */
-      if (!SetPixelFormat(context->memorydc, pixformat, &pfd)) {
-        DWORD dwError = GetLastError();
-        cc_debugerror_postwarning("wglglue_context_create_pbuffer",
-                                  "SetPixelFormat() failed with error code %d.",
-                                  dwError);
-        wglglue_contextdata_cleanup(context);
-        return FALSE;
-      }
-    }
-  
-    context->wglcontext = wglCreateContext(context->memorydc);
-    if (context->wglcontext == NULL) {
-      DWORD dwError = GetLastError();
-      cc_debugerror_postwarning("wglglue_context_create_pbuffer",
-                                "wglCreateContext() failed with error code %d.",
-                                dwError);
-      wglglue_contextdata_cleanup(context);
+    if (!(wglglue_context_create_context(context, PFD_DRAW_TO_WINDOW))) {
       return FALSE;
     }
   }    
@@ -546,7 +551,6 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * context)
     }
     
     if (!pbuffer) {
-      wglglue_contextdata_cleanup(context);
       return FALSE;
     }
   }
@@ -573,12 +577,14 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * context)
     }
         
     /* create the pbuffer */
-    context->hpbuffer = wglglue_wglCreatePbuffer(context->memorydc, pixformat, context->width, context->height, NULL);
+    context->hpbuffer = wglglue_wglCreatePbuffer(context->memorydc, 
+                                                 pixformat,
+                                                 context->width,
+                                                 context->height, NULL);
     if (!context->hpbuffer) {
       cc_debugerror_postwarning("wglglue_context_create_pbuffer",
                                 "wglCreatePbuffer(..., %d, %d, %d, ...) failed",
                                 pixformat, context->width, context->height);
-      wglglue_contextdata_cleanup(context);
       return FALSE;
     }
 
@@ -588,7 +594,6 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * context)
     if (!context->memorydc) {
       cc_debugerror_postwarning("wglglue_context_create_pbuffer",
                                 "Couldn't create pbuffer's device context.");
-      wglglue_contextdata_cleanup(context);
       return FALSE;
     }
 
@@ -598,7 +603,6 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * context)
     if (!context->wglcontext) {
       cc_debugerror_postwarning("wglglue_context_create_pbuffer",
                                 "Couldn't create rendering context for the pbuffer.");
-      wglglue_contextdata_cleanup(context);
       return FALSE;
     }
     
@@ -608,7 +612,6 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * context)
                                     &(context->width))) {
       cc_debugerror_postwarning("wglglue_context_create_pbuffer",
                                 "Couldn't query the pbuffer width.");
-      wglglue_contextdata_cleanup(context);
       return FALSE;
     }
 
@@ -617,7 +620,6 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * context)
                                     &(context->height))) {
       cc_debugerror_postwarning("wglglue_context_create_pbuffer",
                                 "Couldn't query the pbuffer height.");
-      wglglue_contextdata_cleanup(context);
       return FALSE;
     }
   }
