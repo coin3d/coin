@@ -235,9 +235,23 @@ SoSwitch::doAction(SoAction * action)
       // be robust for index out of range
       if (idx >= this->getNumChildren()) {
 #if COIN_DEBUG
-        SoDebugError::post("SoSwitch::doAction",
-                           "whichChild %d out of range (0-%d).",
-                           idx, this->getNumChildren()-1);
+        static SbBool first = TRUE;
+        if (first) {
+          first = FALSE;
+          SbString s("(warning will be printed once, but there might be more cases of this problem).");
+          int lastidx = this->getNumChildren()-1;
+          if (lastidx >= 0) {
+            SoDebugError::post("SoSwitch::doAction",
+                               "whichChild %d out of range [0, %d] %s",
+                               idx, lastidx, s.getString());
+          }
+          else {
+            SoDebugError::post("SoSwitch::doAction",
+                               "whichChild %d out of range -- "
+                               "switch node has no children! %s",
+                               idx, s.getString());
+          }
+        }
 #endif // COIN_DEBUG
       }
       else {
