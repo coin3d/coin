@@ -31,6 +31,7 @@
 #if HAVE_DLFCN_H
 #include <dlfcn.h>
 #endif // HAVE_DLFCN_H
+#include <assert.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -50,12 +51,22 @@
   This class is an extension to the OIV API.
 */
 
-// Data for libsimage interface.
+/// Data for libsimage interface. ////////////////////////////////////////
+
 static SbBool SIMAGE_failed_to_load = FALSE;
 static void * SIMAGE_libhandle = NULL;
 //  typedef SIMAGE_read_image_t unsigned char * (*)(const char *, int *, int *, int *);
 static unsigned char * (*SIMAGE_read_image)(const char *, int *, int *, int *) = NULL;
 
+static void SIMAGE_cleanup(void)
+{
+#if SIMAGE_RUNTIME_LINKING
+  assert(SIMAGE_libhandle);
+  (void)dlclose(SIMAGE_libhandle);
+#endif // SIMAGE_RUNTIME_LINKING
+}
+
+//////////////////////////////////////////////////////////////////////////
 
 
 /*!
@@ -298,7 +309,8 @@ SbImage::readFile(const SbString & filename,
 #endif // COIN_DEBUG
       }
       else {
-        // FIXME: setup atexit() with dlclose. 20000927 mortene.
+        (void)atexit(SIMAGE_cleanup);
+
         SIMAGE_read_image = (unsigned char *(*)(const char *, int *, int *, int *))
           dlsym(SIMAGE_libhandle, "simage_read_image");
         if (!SIMAGE_read_image) {
