@@ -151,13 +151,14 @@ SoSensorManager::insertTimerSensor(SoTimerQueueSensor * newentry)
     i++;
   activequeue->insert(newentry, i);
 
-#if DEBUG_TIMER_SENSORHANDLING // debug
+#if DEBUG_TIMER_SENSORHANDLING || 0 // debug
     SoDebugError::postInfo("SoSensorManager::insertTimerSensor",
-                           "inserted timer sensor #%d -- %p -- "
+                           "inserted timer sensor #%d -- %p "
+                           "(triggertime %f) -- "
                            "%sprocessing queue",
                            this->timerqueue.getLength() +
                            this->timerwaitqueue.getLength() - 1,
-                           newentry,
+                           newentry, newentry->getTriggerTime().getValue(),
                            this->processingtimerqueue ? "" : "not ");
 #endif // debug
 
@@ -443,7 +444,11 @@ SoSensorManager::isDelaySensorPending(void)
 }
 
 /*!
-  FIXME: write doc
+  Returns \c TRUE if at least one timer sensor is present in the
+  queue, otherwise \c FALSE.
+
+  If sensors are pending, the time interval until the next one should
+  be triggered will be put in the \a tm variable.
 */
 SbBool
 SoSensorManager::isTimerSensorPending(SbTime & tm)
