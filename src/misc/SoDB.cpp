@@ -203,7 +203,6 @@ public:
   static SbList<SoDB_HeaderInfo *> * headerlist;
   static SoSensorManager * sensormanager;
   static SoTimerSensor * globaltimersensor;
-  static SbTime * realtimeinterval;
   static SbDict * converters;
   static int notificationcounter;
   static SbBool isinitialized;
@@ -211,7 +210,6 @@ public:
 
 SbList<SoDB_HeaderInfo *> * SoDBP::headerlist = NULL;
 SoSensorManager * SoDBP::sensormanager = NULL;
-SbTime * SoDBP::realtimeinterval = NULL;
 SoTimerSensor * SoDBP::globaltimersensor = NULL;
 SbDict * SoDBP::converters = NULL;
 SbBool SoDBP::isinitialized = FALSE;
@@ -344,7 +342,6 @@ SoDB::init(void)
   // Allocate our static members.
   SoDBP::headerlist = new SbList<SoDB_HeaderInfo *>;
   SoDBP::sensormanager = new SoSensorManager;
-  SoDBP::realtimeinterval = new SbTime;
   SoDBP::converters = new SbDict;
 
   // NB! There are dependencies in the order of initialization of
@@ -429,13 +426,12 @@ SoDB::init(void)
   // and read it anyway if we detect it's a close match. 20020920 mortene.
 
 
-  SoDBP::realtimeinterval->setValue(1.0/12.0);
 
   SoDB::createGlobalField("realTime", SoSFTime::getClassTypeId());
 
   SoDBP::globaltimersensor = new SoTimerSensor;
   SoDBP::globaltimersensor->setFunction(SoDBP::updateRealTimeFieldCB);
-  SoDBP::globaltimersensor->setInterval(*SoDBP::realtimeinterval);
+  SoDBP::globaltimersensor->setInterval(SbTime(1.0/12.0));
   // FIXME: it would be better to not schedule unless something
   // actually attaches itself to the realtime field, or does this muck
   // up the code too much? 19990225 mortene.
@@ -484,7 +480,6 @@ SoDBP::clean(void)
   delete SoDBP::globaltimersensor;
 
   delete SoDBP::converters;
-  delete SoDBP::realtimeinterval;
   delete SoDBP::sensormanager;
 
   for (int i = 0; i < SoDBP::headerlist->getLength(); i++)
@@ -974,8 +969,6 @@ SoDB::setRealTimeInterval(const SbTime & interval)
     SoDBP::globaltimersensor->setInterval(interval);
     if (isscheduled) SoDBP::globaltimersensor->schedule();
   }
-
-  (*SoDBP::realtimeinterval) = interval;
 }
 
 /*!
@@ -987,7 +980,7 @@ SoDB::setRealTimeInterval(const SbTime & interval)
 const SbTime &
 SoDB::getRealTimeInterval(void)
 {
-  return *SoDBP::realtimeinterval;
+  return SoDBP::globaltimersensor->getInterval();
 }
 
 /*!
