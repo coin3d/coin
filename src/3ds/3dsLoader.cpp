@@ -345,8 +345,8 @@ typedef struct tagMaterial {
   SbColor ambient;
   SbColor diffuse;
   SbColor specular;
-  int16_t shininess;
-  int16_t transparency;
+  float shininess;
+  float transparency;
   SbString textureName;
   float uscale;
   float vscale;
@@ -405,7 +405,7 @@ typedef struct tagContext {
   Material defaultMat;
   Material *cMat;
   SbColor cColor;
-  int16_t cColorInt;
+  float cColorFloat;
   SbBool textureCoordsFound;
 
   // geometry stuff
@@ -479,6 +479,7 @@ CHUNK_DECL(LoadMatTwoSide);
 CHUNK_DECL(LoadColor24);
 CHUNK_DECL(LoadLinColor24);
 CHUNK_DECL(LoadIntPercentage);
+CHUNK_DECL(LoadFloatPercentage);
 CHUNK_DECL(LoadM3DMagic);
 CHUNK_DECL(LoadM3DVersion);
 CHUNK_DECL(LoadMData);
@@ -577,8 +578,8 @@ SbBool read3dsFile(SoStream *in, SoSeparator *&root,
   con.defaultMat.ambient = SbColor(0.6f, 0.6f, 0.6f);
   con.defaultMat.diffuse = SbColor(0.8f, 0.8f, 0.8f);
   con.defaultMat.specular = SbColor(0.f, 0.f, 0.f);
-  con.defaultMat.shininess = 20;
-  con.defaultMat.transparency = 0;
+  con.defaultMat.shininess = 0.f;
+  con.defaultMat.transparency = 0.f;
   con.defaultMat.twoSided = TRUE;  // FIXME: is default material double sided?
   con.defaultMat.matCache = new SoMaterial;
   con.defaultMat.matCache->ref();
@@ -589,11 +590,6 @@ SbBool read3dsFile(SoStream *in, SoSeparator *&root,
 
 #if 0 // OBSOLETE: single x double sided information is now read from the
       // 3ds file, and we need no longer to set double facing globally
-  // shape hints
-  // we need to switch backface culling off and
-  // turn double side lighting on
-  // FIXME: optimization: double sided geometry is probably
-  // specified by materials with MAT_TWO_SIDE chunk
   SoShapeHints *sh = new SoShapeHints;
   sh->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
   sh->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
@@ -641,7 +637,7 @@ SbBool read3dsFile(SoStream *in, SoSeparator *&root,
   if (con.s.isBad()) {
     con.root->unref();
     con.root = NULL;
-    
+
     if (coin_debug_3ds())
       SoDebugError::postInfo("read3dsFile",
                              "3ds loading failed.");
@@ -1222,6 +1218,14 @@ CHUNK(LoadMatEntry)
   con->cMat = new Material;
   con->matList.append(con->cMat);
 
+  // default values
+  con->cMat->name = "";
+  con->cMat->ambient = SbColor(0.f, 0.f, 0.f);
+  con->cMat->diffuse = SbColor(0.f, 0.f, 0.f);
+  con->cMat->specular = SbColor(0.f, 0.f, 0.f);
+  con->cMat->shininess = 0.f;
+  con->cMat->transparency = 0.f;
+
   READ_SUBCHUNKS(
     case MAT_NAME:     LoadMatName(con); break;
     case MAT_AMBIENT:  LoadMatAmbient(con); break;
@@ -1298,12 +1302,13 @@ CHUNK(LoadShininess)
 {
   HEADER;
 
+  con->cColorFloat = 0.f;
+
   READ_SUBCHUNKS(
     case INT_PERCENTAGE: LoadIntPercentage(con); break;
+    case FLOAT_PERCENTAGE: LoadFloatPercentage(con); break;
   )
-  // FIXME: should we combine shininess chunk with shin2pct
-  // to get right shininess value?
-  con->cMat->shininess = con->cColorInt;
+  con->cMat->shininess = con->cColorFloat;
 }
 
 
@@ -1321,10 +1326,13 @@ CHUNK(LoadTransparency)
 {
   HEADER;
 
+  con->cColorFloat = 0.f;
+
   READ_SUBCHUNKS(
     case INT_PERCENTAGE: LoadIntPercentage(con); break;
+    case FLOAT_PERCENTAGE: LoadFloatPercentage(con); break;
   )
-  con->cMat->transparency = con->cColorInt;
+  con->cMat->transparency = con->cColorFloat;
 }
 
 
@@ -1344,6 +1352,7 @@ CHUNK(LoadTexMap)
 
   READ_SUBCHUNKS(
     case INT_PERCENTAGE: LoadIntPercentage(con); break;
+    case FLOAT_PERCENTAGE: LoadFloatPercentage(con); break;
     case MAT_MAPNAME:    LoadMapName(con); break;
     case MAT_MAP_USCALE:  LoadMapUScale(con); break;
     case MAT_MAP_VSCALE:  LoadMapVScale(con); break;
@@ -1450,7 +1459,16 @@ CHUNK(LoadIntPercentage)
   int16_t i;
   con->s >> i;
 
-  con->cColorInt = i;
+  con->cColorFloat = float(i)/100.f;
+}
+
+
+
+CHUNK(LoadFloatPercentage)
+{
+  HEADER;
+
+  con->s >> (con->cColorFloat);
 }
 
 
@@ -1866,8 +1884,8 @@ void Material::updateSoMaterial(int index, SoMaterial *m)
   m->diffuseColor.set1Value(index, diffuse);
   m->specularColor.set1Value(index, specular);
   m->emissiveColor.set1Value(index, SbColor(0.f,0.f,0.f));
-  m->shininess.set1Value(index, float(shininess)/100.f);
-  m->transparency.set1Value(index, float(transparency)/100.f);
+  m->shininess.set1Value(index, shininess);
+  m->transparency.set1Value(index, transparency);
 }
 
 
