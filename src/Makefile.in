@@ -246,6 +246,7 @@ libCoininc_HEADERS = \
 	../include/Inventor/SbVec2s.h \
 	../include/Inventor/SbVec3d.h \
 	../include/Inventor/SbVec3f.h \
+	../include/Inventor/SbVec3s.h \
 	../include/Inventor/SbVec4f.h \
 	../include/Inventor/SbViewVolume.h \
 	../include/Inventor/SbViewportRegion.h \
