@@ -115,7 +115,7 @@
   make sure all wanted formats are supported, you should build the
   simage library yourself.
 
-  The set of image formats guaranteed to be suppored by simage is
+  The set of image formats guaranteed to be supported by simage is
   Targa (.tga), PIC (.pic), SGI RGB (.rgb, .bw) and XWD (.xwd).
 
   For more information about the simage library, including download
