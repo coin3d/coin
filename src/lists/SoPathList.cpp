@@ -29,6 +29,7 @@
 
 #include <Inventor/lists/SoPathList.h>
 #include <Inventor/SoPath.h>
+#include <Inventor/SoFullPath.h>
 #include <assert.h>
 
 
@@ -159,30 +160,16 @@ SoPathList::sort(void)
 void
 SoPathList::uniquify(void)
 {
-  int i, n = this->getLength();
-
-  // remove identical paths
-  for (i = 0; i < n-1; i++) {
-    int j = i+1;
-    while (compare_paths((*this)[i], (*this)[j]) == 0 && j < n) {
-      this->remove(j);
-      n--;
-    }
-  }
-
-  // remove paths that go through the tail of another path
-  for (i = 0; i < n; i++) {
-    // got to store path to make sure the path itself is not checked
-    SoPath * path = (*this)[i];
-    SoNode * tail = path->getTail();
-    int j = 0;
-    while (j < n) {
-      SoPath * testpath = (*this)[j];
-      if (path != testpath && testpath->findNode(tail) >= 0) {
-        this->remove(j);
-        n--;
-      }
-      else j++;
+  SoFullPath ** array = (SoFullPath**) this->getArrayPtr();
+  
+  for (int i = this->getLength()-2; i >= 0; i--) {
+    SoFullPath * p = array[i];
+    // if fork is at tail of first path, remove next path
+    if (p->findFork(array[i+1]) == p->getLength()-1) {
+      this->remove(i + 1);
+      // get array pointer again even though it shouldn't change, but
+      // it might do in the future so...
+      array = (SoFullPath**) this->getArrayPtr();
     }
   }
 }
