@@ -225,6 +225,22 @@ if $BUILD_WITH_MSVC; then
   export RANLIB
 fi
 
+# Detect Mac OS 10.2 "Jaguar"
+
+case $host_os in
+darwin6.* ) sim_ac_macosx_10_2=true ;;
+* )         sim_ac_macosx_10_2=false ;;
+esac
+
+AM_CONDITIONAL([MAC_FRAMEWORK], [$sim_ac_framework])
+AM_CONDITIONAL([MACOSX_10_2], [$sim_ac_macosx_10_2])
+
+if test x"$sim_ac_macosx_10_2" = x"true"; then
+  # In libtool.m4, undefined symbols are handled depending on 
+  # this envvar. We are building as two-level namespace lib, so...
+  LD_TWOLEVEL_NAMESPACE=1
+fi
+
 #  Initialize libtool
 #
 # FIXME: this must be done even when we're not using libtool (as when
@@ -250,14 +266,6 @@ AC_PROG_CXX
 AC_LANG_CPLUSPLUS
 
 # **************************************************************************
-
-case $host_os in
-darwin6.* ) sim_ac_macosx_10_2=true ;;
-* )         sim_ac_macosx_10_2=false ;;
-esac
-
-AM_CONDITIONAL([MAC_FRAMEWORK], [$sim_ac_framework])
-AM_CONDITIONAL([MACOSX_10_2], [$sim_ac_macosx_10_2])
 
 #  These are used for constructing the coin-config file.
 AC_SUBST([COIN_EXTRA_CPPFLAGS], [$CPPFLAGS])
