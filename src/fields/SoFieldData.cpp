@@ -804,7 +804,9 @@ SoFieldData::writeFieldDescriptions(SoOutput * out,
     out->indent();
     out->write("fields [ ");
   }
-  
+
+  SbBool extnode = !this->getIsBuiltIn();
+
   SbBool atleastonewritten = FALSE;
   for (int i = 0; i < this->getNumFields(); i++) {
     const SoField * f = this->getField(object, i);
@@ -814,7 +816,7 @@ SoFieldData::writeFieldDescriptions(SoOutput * out,
     // we can't determine if 'object' is a built in node or not. We
     // just have to assume that it is.  pederb, 2002-02-07
     forwardlist.truncate(0);
-    if (f->shouldWrite() || f->getForwardConnections(forwardlist) > 0) {
+    if (f->shouldWrite() || (extnode && f->getForwardConnections(forwardlist) > 0)) {
       if (!out->isBinary() && atleastonewritten) out->write(", ");
       out->write((const char *)(f->getTypeId().getName()));
       if (!out->isBinary()) out->write(' ');
