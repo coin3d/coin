@@ -663,8 +663,10 @@ STUFF TO FIX IN COIN
        distribution easier and more "fail-safe", both for us, other
        Coin users and for the end-users of Coin-based application
        software. On the other hand, this would give us more work with
-       regard to keeping in sync with the FreeType projects bug-fixes
-       and other upgrades.
+       regard to keeping in sync with the FreeType project's bug-fixes
+       and other upgrades. (And that could quickly get messy, as we
+       probably need to make some changes to at least the
+       configure/build setup of the FreeType library.)
 
        If we don't embed the FreeType library, we should let it be
        dynamically loaded through a run-time binding, like we do for
@@ -677,12 +679,20 @@ STUFF TO FIX IN COIN
 
        SGI Inventor does this through their "libFL" library.
 
-     * Handle Unicode charactersets -- just ASCII or iso-8859-[1|15]
+     * Localization / internationalization: should probably be done by
+       handling Unicode charactersets -- just ASCII or iso-8859-[1|15]
        is not enough.
 
        (<URL:http://www.wikipedia.org> is a great place to go and read
        oneself up on Unicode, UTF-8, UTF-16, iso-8859-*, and character
        encodings in general.)
+
+       Note that even if the rest of Coin is still not fixed up to
+       handle localization issues, it is important to not introduce
+       even more limitations with the font handling -- it should
+       rather "be ready", so rendering all sorts of character sets
+       clicks nicely into place when SbString, SbName, et al is fixed
+       up.
 
      * One important aspect of the implementation is to get the
        internal class abstraction for handling glyphs correctly. The
