@@ -134,7 +134,7 @@ private_data_cleanup(void)
   private_data_dict = NULL;
 }
 
-SoWWWInlineP *
+static SoWWWInlineP *
 get_private_data(const SoWWWInline * thisp)
 {
   if (private_data_dict == NULL) {
