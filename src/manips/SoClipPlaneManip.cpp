@@ -26,6 +26,10 @@
   \brief The SoClipPlaneManip class is used to manipulate clip planes.
   \ingroup manips
 
+  <center>
+  <img src="http://doc.coin3d.org/images/Coin/draggers/jack.png">
+  </center>
+
   A manipulator is used by replacing the node you want to edit in the
   graph with the manipulator. Draggers are used to manipulate the
   node. When manipulation is finished, the node is put back into the

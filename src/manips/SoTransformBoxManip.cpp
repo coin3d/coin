@@ -26,6 +26,10 @@
   \brief The SoTransformBoxManip wraps an SoTransformBoxDragger for convenience.
   \ingroup manips
 
+  <center>
+  <img src="http://doc.coin3d.org/images/Coin/draggers/transformbox.png">
+  </center>
+
   The manipulator class takes care of wrapping up the
   SoTransformBoxDragger in a simple and convenient API for the
   application programmer, making it automatically surround the

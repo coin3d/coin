@@ -35,7 +35,7 @@
   Translation is done with this dragger by picking the flat
   transparent box ("x-z" translation) or the solid middle part of the
   axis ("y"-axis translation). Press a SHIFT-key while translating in
-  x-z to contrain to one of the principal axes.
+  x-z to constrain to one of the principal axes.
 
   Uniform scale operations can be done by dragging any of the 6
   cubes. Non-uniform scale operations can not be done with this
@@ -50,7 +50,8 @@
   model way back in the Inventor history.
 
   For programmer convenience, this dragger comes fully wrapped within
-  instances of the SoClipPlaneManip class.
+  instances of the SoJackManip class. The SoClipPlaneManip manipulator
+  also uses this dragger, for controlling an SoClipPlane node.
 */
 
 #include <Inventor/draggers/SoJackDragger.h>

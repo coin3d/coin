@@ -26,6 +26,10 @@
   \brief The SoSpotLightManip class is used to manipulate spot light nodes.
   \ingroup manips
 
+  <center>
+  <img src="http://doc.coin3d.org/images/Coin/draggers/spotlight.png">
+  </center>
+
   A manipulator is used by replacing the node you want to edit in the
   graph with the manipulator. Draggers are used to to manipulate the
   node. When manipulation is finished, the node is put back into the

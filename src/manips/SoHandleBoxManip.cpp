@@ -25,6 +25,12 @@
   \class SoHandleBoxManip SoHandleBoxManip.h Inventor/manips/SoHandleBoxManip.h
   \brief The SoHandleBoxManip class wraps an SoHandleBoxDragger for manipulating a transformation.
   \ingroup manips
+
+  <center>
+  <img src="http://doc.coin3d.org/images/Coin/draggers/handlebox.png">
+  </center>
+
+  \sa SoHandleBoxDragger, SoDragger
 */
 // FIXME: more class documentation? 20010909 mortene.
 
