@@ -168,44 +168,116 @@ SoGLLazyElement::sendPackedDiffuse(const uint32_t col) const
 {
   glColor4ub((col>>24)&0xff, (col>>16)&0xff, (col>>8)&0xff, col&0xff);
   ((SoGLLazyElement*)this)->glstate.diffuse = col;
+  ((SoGLLazyElement*)this)->cachebitmask |= DIFFUSE_MASK;
 }
 
 inline void
 SoGLLazyElement::sendLightModel(const int32_t model) const
 {
-  ((SoGLLazyElement*)this)->glstate.lightmodel = model;
   if (model == PHONG) glEnable(GL_LIGHTING);
   else glDisable(GL_LIGHTING);
+  ((SoGLLazyElement*)this)->glstate.lightmodel = model;
+  ((SoGLLazyElement*)this)->cachebitmask |= LIGHT_MODEL_MASK;
 }
 
 inline void 
 SoGLLazyElement::sendFlatshading(const SbBool onoff) const
 {
-  ((SoGLLazyElement*)this)->glstate.flatshading = (int32_t) onoff;
   if (onoff) glShadeModel(GL_FLAT);
   else glShadeModel(GL_SMOOTH);
+  ((SoGLLazyElement*)this)->glstate.flatshading = (int32_t) onoff;
+  ((SoGLLazyElement*)this)->cachebitmask |= SHADE_MODEL_MASK;
 }
 
 inline void 
 SoGLLazyElement::sendVertexOrdering(const VertexOrdering ordering) const
 {
-  ((SoGLLazyElement*)this)->glstate.vertexordering = (int32_t) ordering;
   glFrontFace(ordering == CW ? GL_CW : GL_CCW);
+  ((SoGLLazyElement*)this)->glstate.vertexordering = (int32_t) ordering;
+  ((SoGLLazyElement*)this)->cachebitmask |= VERTEXORDERING_MASK;
 }
 
 inline void 
 SoGLLazyElement::sendTwosideLighting(const SbBool onoff) const
 {
-  ((SoGLLazyElement*)this)->glstate.twoside = (int32_t) onoff;
   glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, onoff ? GL_TRUE : GL_FALSE);
+  ((SoGLLazyElement*)this)->glstate.twoside = (int32_t) onoff;
+  ((SoGLLazyElement*)this)->cachebitmask |= TWOSIDE_MASK;
 }
 
 inline void 
 SoGLLazyElement::sendBackfaceCulling(const SbBool onoff) const
 {
-  ((SoGLLazyElement*)this)->glstate.flatshading = onoff;
   if (onoff) glEnable(GL_CULL_FACE);
   else glDisable(GL_CULL_FACE);
+  ((SoGLLazyElement*)this)->glstate.flatshading = onoff;
+  ((SoGLLazyElement*)this)->cachebitmask |= CULLING_MASK;
+}
+
+inline void
+send_gl_material(GLenum pname, const SbColor & color)
+{
+  GLfloat col[4];
+  color.getValue(col[0], col[1], col[2]);
+  col[3] = 1.0f;
+  glMaterialfv(GL_FRONT_AND_BACK, pname, col);
+} 
+
+
+inline void 
+SoGLLazyElement::sendAmbient(const SbColor & color) const
+{
+  send_gl_material(GL_AMBIENT, color);
+  ((SoGLLazyElement*)this)->glstate.ambient = color;
+  ((SoGLLazyElement*)this)->cachebitmask |= AMBIENT_MASK;
+}
+
+inline void 
+SoGLLazyElement::sendEmissive(const SbColor & color) const
+{
+  send_gl_material(GL_EMISSION, color);
+  ((SoGLLazyElement*)this)->glstate.emissive = color;
+  ((SoGLLazyElement*)this)->cachebitmask |= EMISSIVE_MASK;
+}
+
+inline void 
+SoGLLazyElement::sendSpecular(const SbColor & color) const
+{
+  send_gl_material(GL_SPECULAR, color);
+  ((SoGLLazyElement*)this)->glstate.specular = color;
+  ((SoGLLazyElement*)this)->cachebitmask |= SPECULAR_MASK;
+}
+
+inline void 
+SoGLLazyElement::sendShininess(const float shine) const
+{
+  glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shine*128.0f);
+  ((SoGLLazyElement*)this)->glstate.shininess = shine;
+  ((SoGLLazyElement*)this)->cachebitmask |= SHININESS_MASK;
+}
+
+inline void 
+SoGLLazyElement::sendTransparency(const int stipplenum) const
+{
+  if (stipplenum == 0) {
+    glDisable(GL_POLYGON_STIPPLE);
+  }
+  else {
+    if (this->glstate.stipplenum == 0) glEnable(GL_POLYGON_STIPPLE);
+    glPolygonStipple(stipple_patterns[stipplenum]);
+    
+  }
+  ((SoGLLazyElement*)this)->glstate.stipplenum = stipplenum;
+  ((SoGLLazyElement*)this)->cachebitmask |= TRANSPARENCY_MASK;
+}
+
+inline void 
+SoGLLazyElement::sendBlending(const SbBool blend) const
+{
+  if (blend) glEnable(GL_BLEND);
+  else glDisable(GL_BLEND);
+  ((SoGLLazyElement*)this)->glstate.blending = blend;
+  ((SoGLLazyElement*)this)->cachebitmask |= BLENDING_MASK;
 }
 
 void 
@@ -227,6 +299,8 @@ SoGLLazyElement::init(SoState * state)
   this->packedpointer = NULL;
   this->transpmask = 0xff;
   this->colorpacker = NULL;
+  this->precachestate = NULL;
+  this->postcachestate = NULL;
   glDisable(GL_POLYGON_STIPPLE);
 
   GLboolean rgba;
@@ -246,6 +320,11 @@ SoGLLazyElement::push(SoState * state)
   this->colorindex = prev->colorindex;
   this->transpmask = prev->transpmask;
   this->colorpacker = prev->colorpacker;
+  this->precachestate = prev->precachestate;
+  this->postcachestate = prev->postcachestate;
+  this->didsetbitmask = prev->didsetbitmask;
+  this->didntsetbitmask = prev->didntsetbitmask;
+  this->cachebitmask = prev->cachebitmask;
 }
 
 void 
@@ -255,6 +334,9 @@ SoGLLazyElement::pop(SoState *state, const SoElement * prevtopelement)
   SoGLLazyElement * prev = (SoGLLazyElement*) prevtopelement;
   this->glstate = prev->glstate;
   this->colorindex = prev->colorindex;
+  this->didsetbitmask = prev->didsetbitmask;
+  this->didntsetbitmask = prev->didntsetbitmask;
+  this->cachebitmask = prev->cachebitmask;
 }
 
 //! FIXME: write doc
@@ -320,16 +402,6 @@ SoGLLazyElement::isColorIndex(SoState * state)
   return elem->colorindex;
 }
 
-inline void
-send_gl_material(GLenum pname, const SbColor & color)
-{
-  GLfloat col[4];
-  color.getValue(col[0], col[1], col[2]);
-  col[3] = 1.0f;
-  glMaterialfv(GL_FRONT_AND_BACK, pname, col);
-} 
-
-
 //! FIXME: write doc
 
 void
@@ -345,88 +417,73 @@ SoGLLazyElement::send(const SoState * state, uint32_t mask) const
   else ((SoGLLazyElement*)this)->packedpointer = this->coinstate.packedarray; 
     
   assert(this->packedpointer);
-  
-  if (mask & LIGHT_MODEL_MASK) {
-    int32_t model = this->coinstate.lightmodel;
-    if (model != this->glstate.lightmodel) {
-      this->sendLightModel(model);
-    }
-  }
-  if (mask & DIFFUSE_MASK) {
-    this->sendDiffuseByIndex(0);
-  }
-  if (mask & AMBIENT_MASK) {
-    const SbColor & color = this->coinstate.ambient;
-    if (color != this->glstate.ambient) {
-      send_gl_material(GL_AMBIENT, color);
-      ((SoGLLazyElement*)this)->glstate.ambient = color;
-    }
-  }
-  if (mask & SPECULAR_MASK) {
-    const SbColor & color = this->coinstate.specular;
-    if (color != this->glstate.specular) {
-      send_gl_material(GL_SPECULAR, color);
-      ((SoGLLazyElement*)this)->glstate.specular = color;
-    }
-  }
-  if (mask & EMISSIVE_MASK) {
-    const SbColor & color = this->coinstate.emissive;
-    if (color != this->glstate.emissive) {
-      send_gl_material(GL_EMISSION, color);
-      ((SoGLLazyElement*)this)->glstate.emissive = color;
-    }
-  }
-  if (mask & SHININESS_MASK) {
-    float shine = this->coinstate.shininess;
-    if (shine != this->glstate.shininess) {
-      glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shine*128.0f);
-      ((SoGLLazyElement*)this)->glstate.shininess = shine;
-    }
-  }
-  if (mask & BLENDING_MASK) {
-    int blend = (int) this->coinstate.blending;
-    if (blend != this->glstate.blending) {
-      ((SoGLLazyElement*)this)->glstate.blending = blend;
-      if (blend) glEnable(GL_BLEND);
-      else glDisable(GL_BLEND);
-    }
-    // FIXME: move from SoGLRenderAction
-  }
-  if (mask & TRANSPARENCY_MASK) {
-    int stipplenum = 
-      this->coinstate.transptype == SoGLRenderAction::SCREEN_DOOR ? 
-      this->coinstate.stipplenum : 0;
 
-    if (stipplenum != this->glstate.stipplenum) {
-      if (stipplenum == 0) {
-        glDisable(GL_POLYGON_STIPPLE);
+  int stipplenum;
+  
+  for (int i = 0; (i < LAZYCASES_LAST)&&mask; i++, mask>>=1) {
+    if (mask&1) {
+      switch (i) {
+      case LIGHT_MODEL_CASE:
+        if (this->coinstate.lightmodel != this->glstate.lightmodel) {
+          this->sendLightModel(this->coinstate.lightmodel);
+        }
+        break;
+      case DIFFUSE_CASE:
+        this->sendDiffuseByIndex(0);
+        break;
+      case AMBIENT_CASE:
+        if (this->coinstate.ambient != this->glstate.ambient) {
+          this->sendAmbient(this->coinstate.ambient);
+        }
+        break;
+      case SPECULAR_CASE:
+        if (this->coinstate.specular != this->glstate.specular) {
+          this->sendSpecular(this->coinstate.specular);
+        }
+        break;
+      case EMISSIVE_CASE:
+        if (this->coinstate.emissive != this->glstate.emissive) {
+          this->sendEmissive(this->coinstate.emissive);
+        }
+        break;
+      case SHININESS_CASE:
+        if (this->coinstate.shininess != this->glstate.shininess) {
+          this->sendShininess(this->coinstate.shininess);
+        }
+        break;
+      case BLENDING_CASE:
+        if (this->coinstate.blending != this->glstate.blending) {
+          this->sendBlending(this->coinstate.blending);
+        }
+      case TRANSPARENCY_CASE:
+        stipplenum = 
+          this->coinstate.transptype == SoGLRenderAction::SCREEN_DOOR ? 
+          this->coinstate.stipplenum : 0;
+
+        if (stipplenum != this->glstate.stipplenum) {
+          this->sendTransparency(stipplenum);
+        }
+        break;
+      case VERTEXORDERING_CASE:
+        if (this->glstate.vertexordering != this->coinstate.vertexordering) {
+          this->sendVertexOrdering(this->coinstate.vertexordering);
+        }
+        break;
+      case CULLING_CASE:
+        if (this->glstate.culling != this->coinstate.culling) {
+          this->sendBackfaceCulling(this->coinstate.culling);
+        }
+        break;
+      case TWOSIDE_CASE:
+        if (this->glstate.twoside != this->coinstate.twoside) {
+          this->sendTwosideLighting(this->coinstate.twoside);
+        }
+        break;
+      case SHADE_MODEL_CASE:
+        if (this->glstate.flatshading != this->coinstate.flatshading) {
+          this->sendFlatshading(this->coinstate.flatshading);
+        }
       }
-      else {
-        if (this->glstate.stipplenum == 0) glEnable(GL_POLYGON_STIPPLE);
-        glPolygonStipple(stipple_patterns[stipplenum]);
-        
-      }
-      ((SoGLLazyElement*)this)->glstate.stipplenum = stipplenum;
-    }
-  }
-  if (mask & VERTEXORDERING_MASK) {
-    if (this->glstate.vertexordering != this->coinstate.vertexordering) {
-      this->sendVertexOrdering(this->coinstate.vertexordering);
-    }
-  }
-  if (mask & CULLING_MASK) {
-    if (this->glstate.culling != this->coinstate.culling) {
-      this->sendBackfaceCulling(this->coinstate.culling);
-    }
-  }
-  if (mask & TWOSIDE_MASK) {
-    if (this->glstate.twoside != this->coinstate.twoside) {
-      this->sendTwosideLighting(this->coinstate.twoside);
-    }
-  }
-  if (mask & SHADE_MODEL_MASK) {
-    if (this->glstate.flatshading != this->coinstate.flatshading) {
-      this->sendFlatshading(this->coinstate.flatshading);
     }
   }
 }
@@ -592,12 +649,13 @@ SoGLLazyElement::setMaterialElt(SoNode * node, uint32_t bitmask,
                                 const SbColor & ambient,
                                 const SbColor & emissive,
                                 const SbColor & specular,
-                                const float shininess)
+                                const float shininess,
+                                const SbBool istransparent)
 {
   inherited::setMaterialElt(node, bitmask,
                             packer, diffuse, numdiffuse,
                             transp, numtransp, ambient,
-                            emissive, specular, shininess);
+                            emissive, specular, shininess, istransparent);
   this->colorpacker = packer;
 }
 
@@ -646,5 +704,135 @@ SoGLLazyElement::packColors(SoColorPacker * packer) const
 
   packer->setNodeIds(this->coinstate.diffusenodeid,
                      this->coinstate.transpnodeid);
+}
+
+void 
+SoGLLazyElement::beginCaching(SoState * state, GLState * prestate,
+                              GLState * poststate)
+{
+  SoGLLazyElement * elem = getInstance(state);
+  *prestate = elem->glstate; // copy current GL state
+  elem->precachestate = prestate;
+  elem->postcachestate = poststate;
+  elem->precachestate->cachebitmask = 0;
+  elem->postcachestate->cachebitmask = 0;
+  elem->didsetbitmask = 0;
+  elem->didntsetbitmask = 0;
+  elem->cachebitmask = 0;
+}
+
+void 
+SoGLLazyElement::endCaching(SoState * state)
+{  
+  SoGLLazyElement * elem = getInstance(state);
+  *elem->postcachestate = elem->glstate;
+  elem->postcachestate->cachebitmask = elem->cachebitmask;
+  elem->precachestate->cachebitmask = elem->didntsetbitmask;
+  elem->precachestate = NULL;
+  elem->postcachestate = NULL;
+}
+
+void 
+SoGLLazyElement::postCacheCall(SoState * state, GLState * poststate)
+{
+  SoGLLazyElement * elem = getInstance(state);
+  uint32_t mask = poststate->cachebitmask;
+
+  for (int i = 0; (i < LAZYCASES_LAST)&&mask; i++, mask>>=1) {
+    if (mask&1) {
+      switch (i) {
+      case LIGHT_MODEL_CASE:
+        elem->glstate.lightmodel = poststate->lightmodel;
+        break;
+      case DIFFUSE_CASE:
+        elem->glstate.diffuse = poststate->diffuse;
+        break;
+      case AMBIENT_CASE:
+        elem->glstate.ambient = poststate->ambient;
+        break;
+      case SPECULAR_CASE:
+        elem->glstate.specular = poststate->specular;
+        break;
+      case EMISSIVE_CASE:
+        elem->glstate.emissive = poststate->emissive;
+        break;
+      case SHININESS_CASE:
+        elem->glstate.shininess = poststate->shininess;
+        break;
+      case BLENDING_CASE:
+        elem->glstate.blending = poststate->blending;
+        break;
+      case TRANSPARENCY_CASE:
+        elem->glstate.stipplenum = poststate->stipplenum;
+        break;
+      case VERTEXORDERING_CASE:
+        elem->glstate.vertexordering = poststate->vertexordering;
+        break;
+      case CULLING_CASE:
+        elem->glstate.culling = poststate->culling;
+        break;
+      case TWOSIDE_CASE:
+        elem->glstate.twoside = poststate->twoside;
+        break;
+      case SHADE_MODEL_MASK:
+        elem->glstate.flatshading = poststate->flatshading;
+        break;
+      }
+    }
+  }
+}
+  
+SbBool
+SoGLLazyElement::preCacheCall(SoState * state, GLState * prestate)
+{
+  SoGLLazyElement * elem = getInstance(state);
+  const GLState & curr = elem->glstate;
+  uint32_t mask = prestate->cachebitmask;
+
+  for (int i = 0; (i < LAZYCASES_LAST)&&mask; i++, mask>>=1) {
+    if (mask&1) {
+      switch (i) {
+      case LIGHT_MODEL_CASE:
+        if (curr.lightmodel != prestate->lightmodel) return FALSE;
+      case DIFFUSE_CASE:
+        if (curr.diffuse != prestate->diffuse) return FALSE;
+      case AMBIENT_CASE:
+        if (curr.ambient != prestate->ambient) return FALSE;
+      case SPECULAR_CASE:
+        if (curr.specular != prestate->specular) return FALSE;
+      case EMISSIVE_CASE:
+        if (curr.emissive != prestate->emissive) return FALSE;
+      case SHININESS_CASE:
+        if (curr.shininess != prestate->shininess) return FALSE;
+      case BLENDING_CASE:
+        if (curr.blending != prestate->blending) return FALSE;
+      case TRANSPARENCY_CASE:
+        if (curr.stipplenum != prestate->stipplenum) return FALSE;
+      case VERTEXORDERING_CASE:
+        if (curr.vertexordering != prestate->vertexordering) return FALSE;
+      case CULLING_CASE:
+        if (curr.culling != prestate->culling) return FALSE;
+      case TWOSIDE_CASE:
+        if (curr.twoside != prestate->twoside) return FALSE;
+      case SHADE_MODEL_CASE:
+        if (curr.flatshading != prestate->flatshading) return FALSE;
+      }
+    }
+  }
+  return TRUE;
+}
+
+
+void 
+SoGLLazyElement::lazyDidSet(uint32_t mask)
+{
+  this->didsetbitmask |= mask;
+}
+
+void 
+SoGLLazyElement::lazyDidntSet(uint32_t mask)
+{
+  uint32_t pre = this->didntsetbitmask;
+  this->didntsetbitmask |= mask&(~this->didsetbitmask);
 }
 

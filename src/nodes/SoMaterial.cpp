@@ -165,6 +165,7 @@
 class SoMaterialP {
 public:
   int materialtype;
+  int transparencyflag;
   SoColorPacker colorpacker;
 };
 
@@ -192,6 +193,7 @@ SoMaterial::SoMaterial(void)
   SO_NODE_ADD_FIELD(transparency, (0.0f));
   
   THIS->materialtype = TYPE_NORMAL;
+  THIS->transparencyflag = FALSE; // we know it's not transparent
 }
 
 /*!
@@ -237,6 +239,8 @@ SoMaterial::GLRender(SoGLRenderAction * action)
 void
 SoMaterial::doAction(SoAction * action)
 {
+  SbBool istransparent = FALSE;
+
   SoState * state = action->getState();
 
   uint32_t bitmask = 0;
@@ -292,6 +296,19 @@ SoMaterial::doAction(SoAction * action)
     if (this->isOverride()) {
       SoOverrideElement::setTransparencyOverride(state, this, TRUE);
     }
+    // if we don't know if material is transparent, run through all values and test
+    if (THIS->transparencyflag < 0) {
+      int i, n = this->transparency.getNum();
+      const float * p = this->transparency.getValues(0);
+      for (int i = 0; i < n; i++) {
+        if (p[i] > 0.0f) {
+          istransparent = TRUE;
+          break;
+        }
+      }
+      // we now know whether material is transparent or not
+      THIS->transparencyflag = (int) istransparent;
+    }
   }
 #undef TEST_OVERRIDE
 
@@ -309,7 +326,8 @@ SoMaterial::doAction(SoAction * action)
                                 bitmask & SoLazyElement::SPECULAR_MASK ?
                                 this->specularColor[0] : dummycolor,
                                 bitmask & SoLazyElement::SHININESS_MASK ?
-                                this->shininess[0] : dummyval);
+                                this->shininess[0] : dummyval,
+                                istransparent);
   }
 }
 
@@ -325,6 +343,9 @@ SoMaterial::notify(SoNotList *list)
 {
   SoField * f = list->getLastField();
   if (f) THIS->materialtype = TYPE_UNKNOWN;
+  if (f == &this->transparency) {
+    THIS->transparencyflag = -1; // unknown
+  }
   inherited::notify(list);
 }
 

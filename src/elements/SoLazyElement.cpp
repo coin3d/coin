@@ -56,6 +56,23 @@ lazyelement_cleanup(void)
   delete lazy_unpacked;
 }
 
+// helper functions to handle default diffuse/transp values
+static uint32_t 
+get_diffuse_node_id(SoNode * node, const int numdiffuse,
+                    const SbColor * color)
+{
+  if (numdiffuse == 1 && color[0] == SbColor(0.8f, 0.8f, 0.8f)) return 0;
+  return node->getNodeId();
+}
+
+static uint32_t 
+get_transp_node_id(SoNode * node, const int numtransp,
+                   const float * transp)
+{
+  if (numtransp == 1 && transp[0] == 0.0f) return 0;
+  return node->getNodeId();
+}
+
 
 SO_ELEMENT_SOURCE(SoLazyElement);
 
@@ -109,7 +126,7 @@ SoLazyElement::init(SoState * state)
   this->coinstate.packedarray = lazy_defaultpacked;
   this->coinstate.transparray = lazy_defaulttransp;
   this->coinstate.colorindexarray = lazy_defaultindex;
-  this->coinstate.packedtransparency = FALSE;  
+  this->coinstate.istransparent = FALSE;  
   this->coinstate.transptype= (int32_t) SoGLRenderAction::SCREEN_DOOR;
   this->coinstate.diffusenodeid = 0;
   this->coinstate.transpnodeid = 0;
@@ -158,8 +175,14 @@ SoLazyElement::setDiffuse(SoState * state, SoNode * node, int32_t numcolors,
                           const SbColor * colors, SoColorPacker * packer)
 {
   SoLazyElement * elem = SoLazyElement::getInstance(state);
-  if (numcolors && elem->coinstate.diffusenodeid != node->getNodeId()) {
-    getWInstance(state)->setDiffuseElt(node, numcolors, colors, packer);
+  if (numcolors && (elem->coinstate.diffusenodeid != 
+                    get_diffuse_node_id(node, numcolors, colors))) {
+    elem = getWInstance(state);
+    elem->setDiffuseElt(node, numcolors, colors, packer);
+    if (state->isCacheOpen()) elem->lazyDidSet(DIFFUSE_MASK);
+  }
+  else if (state->isCacheOpen()) {
+    elem->lazyDidntSet(DIFFUSE_MASK);
   }
 }
 
@@ -170,8 +193,14 @@ SoLazyElement::setTransparency(SoState *state, SoNode *node, int32_t numvalues,
                                const float * transparency, SoColorPacker * packer)
 {
   SoLazyElement * elem = SoLazyElement::getInstance(state);
-  if (numvalues && elem->coinstate.transpnodeid != node->getNodeId()) {
-    getWInstance(state)->setTranspElt(node, numvalues, transparency, packer);
+  if (numvalues && (elem->coinstate.transpnodeid != 
+                    get_transp_node_id(node, numvalues, transparency))) {
+    elem = getWInstance(state);
+    elem->setTranspElt(node, numvalues, transparency, packer);
+    if (state->isCacheOpen()) elem->lazyDidSet(TRANSPARENCY_MASK);
+  }
+  else if (state->isCacheOpen()) {
+    elem->lazyDidntSet(TRANSPARENCY_MASK);
   }
 }
 
@@ -184,7 +213,12 @@ SoLazyElement::setPacked(SoState * state, SoNode * node,
 {
   SoLazyElement * elem = SoLazyElement::getInstance(state);
   if (numcolors && elem->coinstate.diffusenodeid != node->getNodeId()) {
-    getWInstance(state)->setPackedElt(node, numcolors, colors, packedtransparency);
+    elem = getWInstance(state);
+    elem->setPackedElt(node, numcolors, colors, packedtransparency);
+    if (state->isCacheOpen()) elem->lazyDidSet(TRANSPARENCY_MASK|DIFFUSE_MASK);
+  }
+  else if (state->isCacheOpen()) {
+    elem->lazyDidntSet(TRANSPARENCY_MASK|DIFFUSE_MASK);
   }
 }
 
@@ -196,7 +230,12 @@ SoLazyElement::setColorIndices(SoState *state, SoNode *node,
 {
   SoLazyElement * elem = SoLazyElement::getInstance(state);
   if (numindices && elem->coinstate.diffusenodeid != node->getNodeId()) {
-    getWInstance(state)->setColorIndexElt(node, numindices, indices);
+    elem = getWInstance(state);
+    elem->setColorIndexElt(node, numindices, indices);
+    if (state->isCacheOpen()) elem->lazyDidSet(DIFFUSE_MASK);
+  }
+  else if (state->isCacheOpen()) {
+    elem->lazyDidntSet(DIFFUSE_MASK);
   }
 }
 
@@ -207,7 +246,12 @@ SoLazyElement::setAmbient(SoState *state, const SbColor* color)
 {
   SoLazyElement * elem = SoLazyElement::getInstance(state);
   if (elem->coinstate.ambient != *color) {
-    getWInstance(state)->setAmbientElt(color);
+    elem = getWInstance(state);
+    elem->setAmbientElt(color);
+    if (state->isCacheOpen()) elem->lazyDidSet(AMBIENT_MASK);
+  }
+  else if (state->isCacheOpen()) {
+    elem->lazyDidntSet(AMBIENT_MASK);
   }
 }
 
@@ -218,7 +262,12 @@ SoLazyElement::setEmissive(SoState *state, const SbColor* color)
 {
   SoLazyElement * elem = SoLazyElement::getInstance(state);
   if (elem->coinstate.emissive != *color) {
-    getWInstance(state)->setEmissiveElt(color);
+    elem = getWInstance(state);
+    elem->setEmissiveElt(color);
+    if (state->isCacheOpen()) elem->lazyDidSet(EMISSIVE_MASK);
+  }
+  else if (state->isCacheOpen()) {
+    elem->lazyDidntSet(EMISSIVE_MASK);
   }
 }
 
@@ -229,7 +278,12 @@ SoLazyElement::setSpecular(SoState *state, const SbColor* color)
 {
   SoLazyElement * elem = SoLazyElement::getInstance(state);
   if (elem->coinstate.specular != *color) {
-    getWInstance(state)->setSpecularElt(color);
+    elem = getWInstance(state);
+    elem->setSpecularElt(color);
+    if (state->isCacheOpen()) elem->lazyDidSet(SPECULAR_MASK);
+  }
+  else if (state->isCacheOpen()) {
+    elem->lazyDidntSet(SPECULAR_MASK);
   }
 }
 
@@ -240,7 +294,12 @@ SoLazyElement::setShininess(SoState *state, float value)
 {
   SoLazyElement * elem = SoLazyElement::getInstance(state);
   if (SbAbs(elem->coinstate.shininess - value) > SO_LAZY_SHINY_THRESHOLD) {
-    getWInstance(state)->setShininessElt(value);
+    elem = getWInstance(state);
+    elem->setShininessElt(value);
+    if (state->isCacheOpen()) elem->lazyDidSet(SHININESS_MASK);
+  }
+  else if (state->isCacheOpen()) {
+    elem->lazyDidntSet(SHININESS_MASK);
   }
 }
 
@@ -258,7 +317,12 @@ SoLazyElement::setBlending(SoState *state,  SbBool value)
 {
   SoLazyElement * elem = SoLazyElement::getInstance(state);
   if (elem->coinstate.blending != value) {
-    getWInstance(state)->setBlendingElt(value);
+    elem = getWInstance(state);
+    elem->setBlendingElt(value);
+    if (state->isCacheOpen()) elem->lazyDidSet(BLENDING_MASK);
+  }
+  else if (state->isCacheOpen()) {
+    elem->lazyDidntSet(BLENDING_MASK);
   }
 }
 
@@ -269,7 +333,12 @@ SoLazyElement::setLightModel(SoState * state, const int32_t model)
 {
   SoLazyElement * elem = SoLazyElement::getInstance(state);
   if (elem->coinstate.lightmodel != model) {
-    getWInstance(state)->setLightModelElt(state, model);
+    elem = getWInstance(state);
+    elem->setLightModelElt(state, model);
+    if (state->isCacheOpen()) elem->lazyDidSet(LIGHT_MODEL_MASK);
+  }
+  else if (state->isCacheOpen()) {
+    elem->lazyDidntSet(LIGHT_MODEL_MASK);
   }
 }
 
@@ -430,17 +499,7 @@ SoLazyElement::isPacked(void) const
 SbBool
 SoLazyElement::isTransparent(void) const
 {
-  if (this->coinstate.packeddiffuse) {
-    return this->coinstate.packedtransparency;
-  }
-  const float * t = this->coinstate.transparray;
-  const int n = this->coinstate.numtransp;
-  for (int i = 0; i < n; i++) {
-    if (t[i] != 0.0f) {
-      return TRUE;
-    }
-  }
-  return FALSE;
+  return this->coinstate.istransparent;
 }
 
 // ! FIXME: write doc
@@ -543,18 +602,20 @@ SoLazyElement::setMaterials(SoState * state, SoNode *node, uint32_t bitmask,
                             const SbColor & ambient,
                             const SbColor & emissive,
                             const SbColor & specular,
-                            const float shininess)
+                            const float shininess,
+                            const SbBool istransparent)
 {
   SoLazyElement * elem = SoLazyElement::getInstance(state);
 
   uint32_t eltbitmask = 0;
   if (bitmask & DIFFUSE_MASK) {
-    if (elem->coinstate.diffusenodeid != node->getNodeId()) {
+    if (elem->coinstate.diffusenodeid != 
+        get_diffuse_node_id(node, numdiffuse, diffuse)) {
       eltbitmask |= DIFFUSE_MASK;
     }
   }
   if (bitmask & TRANSPARENCY_MASK) {
-    if (elem->coinstate.transpnodeid != node->getNodeId()) {
+    if (elem->coinstate.transpnodeid != get_transp_node_id(node, numtransp, transp)) {
       eltbitmask |= TRANSPARENCY_MASK;
     }
   }
@@ -578,10 +639,21 @@ SoLazyElement::setMaterials(SoState * state, SoNode *node, uint32_t bitmask,
       eltbitmask |= SHININESS_MASK;
     }
   }
+
+  SoLazyElement * welem = NULL;
+
   if (eltbitmask) {
-    getWInstance(state)->setMaterialElt(node, eltbitmask, packer, diffuse,
-                                        numdiffuse, transp, numtransp,
-                                        ambient, emissive, specular, shininess);
+    welem = getWInstance(state);
+    welem->setMaterialElt(node, eltbitmask, packer, diffuse,
+                          numdiffuse, transp, numtransp,
+                          ambient, emissive, specular, shininess,
+                          istransparent);
+    if (state->isCacheOpen()) welem->lazyDidSet(eltbitmask);
+  }
+  
+  if ((eltbitmask != bitmask) && state->isCacheOpen()) {
+    if (welem) elem = welem;
+    elem->lazyDidntSet((~eltbitmask) & bitmask);
   }
 }
 
@@ -590,7 +662,12 @@ SoLazyElement::setVertexOrdering(SoState * state, VertexOrdering ordering)
 {
   SoLazyElement * elem = SoLazyElement::getInstance(state);
   if (elem->coinstate.vertexordering != ordering) {
-    getWInstance(state)->setVertexOrderingElt(ordering);
+    elem = getWInstance(state);
+    elem->setVertexOrderingElt(ordering);
+    if (state->isCacheOpen()) elem->lazyDidSet(VERTEXORDERING_MASK);
+  }
+  else if (state->isCacheOpen()) {
+    elem->lazyDidntSet(VERTEXORDERING_MASK);
   }
 }
 
@@ -599,7 +676,12 @@ SoLazyElement::setBackfaceCulling(SoState * state, SbBool onoff)
 {
   SoLazyElement * elem = SoLazyElement::getInstance(state);
   if (elem->coinstate.culling != onoff) {
-    getWInstance(state)->setBackfaceCullingElt(onoff);
+    elem = getWInstance(state);
+    elem->setBackfaceCullingElt(onoff);
+    if (state->isCacheOpen()) elem->lazyDidSet(CULLING_MASK);
+  }
+  else if (state->isCacheOpen()) {
+    elem->lazyDidntSet(CULLING_MASK);
   }
 }
 
@@ -608,7 +690,12 @@ SoLazyElement::setTwosideLighting(SoState * state, SbBool onoff)
 {
   SoLazyElement * elem = SoLazyElement::getInstance(state);
   if (elem->coinstate.twoside != onoff) {
-    getWInstance(state)->setTwosideLightingElt(onoff);
+    elem = getWInstance(state);
+    elem->setTwosideLightingElt(onoff);
+    if (state->isCacheOpen()) elem->lazyDidSet(TWOSIDE_MASK);
+  }
+  else if (state->isCacheOpen()) {
+    elem->lazyDidntSet(TWOSIDE_MASK);
   }
 }
 
@@ -618,7 +705,12 @@ SoLazyElement::setShadeModel(SoState * state, SbBool flatshading)
   SoLazyElement * elem = SoLazyElement::getInstance(state);
   
   if (elem->coinstate.flatshading != flatshading) {
-    getWInstance(state)->setShadeModelElt(flatshading);
+    elem = getWInstance(state);
+    elem->setShadeModelElt(flatshading);
+    if (state->isCacheOpen()) elem->lazyDidSet(SHADE_MODEL_MASK);
+  }
+  else if (state->isCacheOpen()) {
+    elem->lazyDidntSet(SHADE_MODEL_MASK);
   }
 }
 
@@ -681,7 +773,7 @@ void
 SoLazyElement::setDiffuseElt(SoNode * node,  int32_t numcolors, 
                              const SbColor * colors, SoColorPacker * packer)
 {
-  this->coinstate.diffusenodeid = node->getNodeId();
+  this->coinstate.diffusenodeid = get_diffuse_node_id(node, numcolors, colors);
   this->coinstate.diffusearray = colors;
   this->coinstate.numdiffuse = numcolors;
   this->coinstate.packeddiffuse = FALSE;
@@ -696,7 +788,7 @@ SoLazyElement::setPackedElt(SoNode * node, int32_t numcolors,
   this->coinstate.numdiffuse = numcolors;
   this->coinstate.packedarray = colors;
   this->coinstate.packeddiffuse = TRUE;
-  this->coinstate.packedtransparency = packedtransparency;
+  this->coinstate.istransparent = packedtransparency;
 
   int alpha = colors[0] & 0xff;
   float transp = float(255-alpha)/255.0f;
@@ -716,14 +808,17 @@ void
 SoLazyElement::setTranspElt(SoNode * node, int32_t numtransp, 
                             const float * transp, SoColorPacker * packer)
 {
-  this->coinstate.transpnodeid = node->getNodeId();
+  this->coinstate.transpnodeid = get_transp_node_id(node, numtransp, transp);
   this->coinstate.transparray = transp;
   this->coinstate.numtransp = numtransp;
   this->coinstate.stipplenum = SbClamp((int) (transp[0] * 64.0f), 0, 64);
 
-  // check for common case
-  if (numtransp == 1 && transp[0] == 0.0f) {
-    this->coinstate.transpnodeid = 0;
+  this->coinstate.istransparent = FALSE;
+  for (int i = 0; i < numtransp; i++) {
+    if (transp[i] > 0.0f) {
+      this->coinstate.istransparent = TRUE;
+      break;
+    } 
   }
 }
 
@@ -784,22 +879,27 @@ SoLazyElement::setMaterialElt(SoNode * node, uint32_t bitmask,
                               const SbColor & ambient,
                               const SbColor & emissive,
                               const SbColor & specular,
-                              const float shininess)
+                              const float shininess,
+                              const SbBool istransparent)
 {
   if (bitmask & DIFFUSE_MASK) {
-    this->coinstate.diffusenodeid = node->getNodeId();
+    this->coinstate.diffusenodeid = get_diffuse_node_id(node, numdiffuse, diffuse);
     this->coinstate.diffusearray = diffuse;
     this->coinstate.numdiffuse = numdiffuse;
     this->coinstate.packeddiffuse = FALSE;
   }
   if (bitmask & TRANSPARENCY_MASK) {
-    this->coinstate.transpnodeid = node->getNodeId();
+    this->coinstate.transpnodeid = get_transp_node_id(node, numtransp, transp);
     this->coinstate.transparray = transp;
     this->coinstate.numtransp = numtransp;
     this->coinstate.stipplenum = SbClamp((int) (transp[0] * 64.0f), 0, 64);
     // check for common case
     if (numtransp == 1 && transp[0] == 0.0f) {
       this->coinstate.transpnodeid = 0;
+      this->coinstate.istransparent = FALSE;
+    }
+    else {
+      this->coinstate.istransparent = istransparent;
     }
   }
   if (bitmask & AMBIENT_MASK) {
@@ -863,6 +963,16 @@ SoColorPacker::reallocate(const int32_t size)
   delete[] this->array;
   this->array = newarray;
   this->arraysize = size;
+}
+
+void 
+SoLazyElement::lazyDidSet(uint32_t mask)
+{
+}
+
+void 
+SoLazyElement::lazyDidntSet(uint32_t mask)
+{
 }
 
 

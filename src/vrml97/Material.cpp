@@ -171,6 +171,7 @@ SoVRMLMaterial::doAction(SoAction * action)
 
   uint32_t bitmask = 0;
   uint32_t flags = SoOverrideElement::getFlags(state);
+
 #define TEST_OVERRIDE(bit) ((SoOverrideElement::bit & flags) != 0)
 
   if (!this->diffuseColor.isIgnored() &&
@@ -239,7 +240,8 @@ SoVRMLMaterial::doAction(SoAction * action)
                                 THIS->tmpambient,
                                 this->emissiveColor.getValue(),
                                 this->specularColor.getValue(),
-                                this->shininess.getValue());
+                                this->shininess.getValue(),
+                                THIS->tmptransparency > 0.0f);
     
   }
 }

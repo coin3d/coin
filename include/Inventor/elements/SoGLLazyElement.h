@@ -60,9 +60,10 @@ public:
 
   void sendVPPacked(SoState* state, const unsigned char* pcolor);
 
-  void reset(SoState* state,  uint32_t bitmask) const;
+  void reset(SoState* state, uint32_t bitmask) const;
 
   typedef struct {
+    uint32_t cachebitmask;
     uint32_t diffuse;
     SbColor ambient;
     SbColor emissive;
@@ -77,7 +78,13 @@ public:
     int32_t flatshading;
   } GLState;
 
+  uint32_t didsetbitmask;
+  uint32_t didntsetbitmask;
+  uint32_t cachebitmask;
+
   GLState glstate;
+  GLState * postcachestate;
+  GLState * precachestate;
   SbBool colorindex;
   SoColorPacker * colorpacker;
   const uint32_t * packedpointer;
@@ -107,14 +114,33 @@ public:
                               const SbColor & ambient,
                               const SbColor & emissive,
                               const SbColor & specular,
-                              const float shininess);
+                              const float shininess,
+                              const SbBool istransparent);
   virtual void setVertexOrderingElt(VertexOrdering ordering);
   virtual void setBackfaceCullingElt(SbBool onoff);
   virtual void setTwosideLightingElt(SbBool onoff);
   virtual void setShadeModelElt(SbBool flatshading);
 
+  static void beginCaching(SoState * state, GLState * prestate,
+                           GLState * poststate);
+  static void endCaching(SoState * state);
+
+  static SbBool preCacheCall(SoState * state, GLState * prestate);
+  static void postCacheCall(SoState * state, GLState * poststate);
+
+protected:
+  virtual void lazyDidSet(uint32_t mask);
+  virtual void lazyDidntSet(uint32_t mask);
+
 private:
   void sendPackedDiffuse(const uint32_t diffuse) const;
+  void sendAmbient(const SbColor & color) const;
+  void sendEmissive(const SbColor & color) const;
+  void sendSpecular(const SbColor & specular) const;
+  void sendShininess(const float shininess) const;
+  void sendTransparency(const int stipplenum) const;
+  void sendBlending(const SbBool blend) const;
+
   void sendLightModel(const int32_t model) const;
   void sendFlatshading(const SbBool onoff) const;
   void sendVertexOrdering(const VertexOrdering ordering) const;
@@ -123,7 +149,6 @@ private:
 
   void initGL(void);
   void packColors(SoColorPacker * packer) const;
-
 };
 
 #endif // !COIN_SOGLLAZYELEMENT_H

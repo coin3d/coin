@@ -42,6 +42,7 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
 #if HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
@@ -69,6 +70,8 @@ public:
 #ifdef COIN_THREADSAFE
   SbMutex mutex;
 #endif // COIN_THREADSAFE
+  SoGLLazyElement::GLState prelazystate;
+  SoGLLazyElement::GLState postlazystate;
 };
 
 #endif // DOXYGEN_SKIP_THIS
@@ -118,9 +121,6 @@ SoGLCacheList::~SoGLCacheList()
   Test for valid cache and execute. Returns TRUE if a valid cache
   could be found, FALSE otherwise. Note that when a valid cache is
   found, it is executed before returning from this method.
-  If \a pushattribbits != 0, these bits will be pushed using a
-  glPushAttrib() call before calling the cache, and popped off
-  the GL state stack again after calling the cache.
 */
 SbBool
 SoGLCacheList::call(SoGLRenderAction * action)
@@ -135,10 +135,12 @@ SoGLCacheList::call(SoGLRenderAction * action)
   for (i = 0; i < n; i++) {
     SoGLRenderCache * cache = THIS->itemlist[i];
     if (cache->getCacheContext() == context) {
-      if (cache->isValid(state)) {
+      if (cache->isValid(state) && 
+          SoGLLazyElement::preCacheCall(state, &THIS->prelazystate)) {
         cache->ref();
         GLCACHE_UNLOCK(this); // allow other threads to access cache list
         cache->call(state);
+        SoGLLazyElement::postCacheCall(state, &THIS->postlazystate);
         cache->unref(state);
         return TRUE;
       }
@@ -183,6 +185,8 @@ SoGLCacheList::open(SoGLRenderAction * action, SbBool autocache)
     THIS->opencache->ref();
     SoCacheElement::set(state, THIS->opencache);
     THIS->opencache->open(state);
+    SoGLLazyElement::beginCaching(state, &THIS->prelazystate,
+                                  &THIS->postlazystate);
   }
 }
 
@@ -193,10 +197,13 @@ SoGLCacheList::open(SoGLRenderAction * action, SbBool autocache)
 void
 SoGLCacheList::close(SoGLRenderAction * action)
 {
+  SoState * state = action->getState();
+
   if (THIS->opencache) {
     THIS->opencache->close();
     THIS->itemlist.append(THIS->opencache);
     THIS->opencache = NULL;
+    SoGLLazyElement::endCaching(state);
   }
   if (SoCacheElement::setInvalid(THIS->savedinvalid)) {
     // notify parent caches
@@ -206,11 +213,10 @@ SoGLCacheList::close(SoGLRenderAction * action)
   else {
     THIS->flags |= FLAG_SHOULD_TRY;
   }
-  SoState * state = action->getState();
   int bits = SoGLCacheContextElement::resetAutoCacheBits(state);
   SoGLCacheContextElement::setAutoCacheBits(state, bits|THIS->autocachebits);
   THIS->autocachebits = bits;
-
+  
   GLCACHE_UNLOCK(this);
 }
 

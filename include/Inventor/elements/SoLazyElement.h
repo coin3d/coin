@@ -64,20 +64,20 @@ public:
     LAZYCASES_LAST // must be last
   };
   enum masks{
-    LIGHT_MODEL_MASK = 1 << LIGHT_MODEL_CASE,
-    COLOR_MATERIAL_MASK = 1 << COLOR_MATERIAL_CASE,
-    DIFFUSE_MASK = 1 << DIFFUSE_CASE,
-    AMBIENT_MASK = 1 << AMBIENT_CASE,
-    EMISSIVE_MASK = 1<<EMISSIVE_CASE,
-    SPECULAR_MASK = 1 << SPECULAR_CASE,
-    SHININESS_MASK = 1 << SHININESS_CASE,
-    TRANSPARENCY_MASK = 1 << TRANSPARENCY_CASE,
-    BLENDING_MASK = 1 << BLENDING_CASE,
-    VERTEXORDERING_MASK = 1 << VERTEXORDERING_CASE,
-    TWOSIDE_MASK = 1 << TWOSIDE_CASE,
-    CULLING_MASK = 1 << CULLING_CASE,
-    SHADE_MODEL_MASK = 1 << SHADE_MODEL_CASE,
-    ALL_MASK = (1 << LAZYCASES_LAST)-1
+    LIGHT_MODEL_MASK = 1 << LIGHT_MODEL_CASE,           // 0x0001
+    COLOR_MATERIAL_MASK = 1 << COLOR_MATERIAL_CASE,     // 0x0002
+    DIFFUSE_MASK = 1 << DIFFUSE_CASE,                   // 0x0004
+    AMBIENT_MASK = 1 << AMBIENT_CASE,                   // 0x0008
+    EMISSIVE_MASK = 1<<EMISSIVE_CASE,                   // 0x0010
+    SPECULAR_MASK = 1 << SPECULAR_CASE,                 // 0x0020
+    SHININESS_MASK = 1 << SHININESS_CASE,               // 0x0040
+    TRANSPARENCY_MASK = 1 << TRANSPARENCY_CASE,         // 0x0080
+    BLENDING_MASK = 1 << BLENDING_CASE,                 // 0x0100
+    VERTEXORDERING_MASK = 1 << VERTEXORDERING_CASE,     // 0x0200
+    TWOSIDE_MASK = 1 << TWOSIDE_CASE,                   // 0x0400
+    CULLING_MASK = 1 << CULLING_CASE,                   // 0x0800
+    SHADE_MODEL_MASK = 1 << SHADE_MODEL_CASE,           // 0x1000
+    ALL_MASK = (1 << LAZYCASES_LAST)-1            
   };
   
   enum internalMasks{
@@ -163,7 +163,8 @@ public:
                            const SbColor & ambient,
                            const SbColor & emissive,
                            const SbColor & specular,
-                           const float shininess);
+                           const float shininess,
+                           const SbBool istransparent);
 
   static SoLazyElement * getWInstance(SoState *state);
 
@@ -191,7 +192,7 @@ protected:
     const float * transparray;
     const int32_t * colorindexarray;
     int32_t transptype;
-    SbBool packedtransparency;
+    SbBool istransparent;
     uint32_t diffusenodeid;
     uint32_t transpnodeid;
     int32_t stipplenum;
@@ -202,6 +203,9 @@ protected:
   } coinstate;
 
 protected:
+  virtual void lazyDidSet(uint32_t mask);
+  virtual void lazyDidntSet(uint32_t mask);
+
   virtual void setDiffuseElt(SoNode*,  int32_t numcolors, 
                              const SbColor * colors, SoColorPacker * packer);   
   virtual void setPackedElt(SoNode * node, int32_t numcolors, 
@@ -226,7 +230,8 @@ protected:
                               const SbColor & ambient,
                               const SbColor & emissive,
                               const SbColor & specular,
-                              const float shininess);
+                              const float shininess,
+                              const SbBool istransparent);
   virtual void setVertexOrderingElt(VertexOrdering ordering);
   virtual void setBackfaceCullingElt(SbBool onoff);
   virtual void setTwosideLightingElt(SbBool onoff);
