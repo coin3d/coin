@@ -84,7 +84,6 @@ SoShapeStyleElement::init(SoState * state)
 void
 SoShapeStyleElement::push(SoState * state)
 {
-  inherited::push(state);
   SoShapeStyleElement * prev = (SoShapeStyleElement *) this->getNextInStack();
   this->flags = prev->flags;
 }
@@ -403,10 +402,10 @@ SoShapeStyleElement::setTransparentMaterial(SoState * state, const SbBool value)
 {
   SoShapeStyleElement * elem = getElement(state);
   if (value) {
-    elem->flags |= TRANSP_TEXTURE;
+    elem->flags |= TRANSP_MATERIAL;
   }
   else {
-    elem->flags &= ~TRANSP_TEXTURE;
+    elem->flags &= ~TRANSP_MATERIAL;
   }
 }
 
@@ -420,10 +419,10 @@ SoShapeStyleElement::setTransparentTexture(SoState * state, const SbBool value)
 {
   SoShapeStyleElement * elem = getElement(state);
   if (value) {
-    elem->flags |= TRANSP_MATERIAL;
+    elem->flags |= TRANSP_TEXTURE;
   }
   else {
-    elem->flags &= ~TRANSP_MATERIAL;
+    elem->flags &= ~TRANSP_TEXTURE;
   }
 }
 
