@@ -154,6 +154,8 @@ SoVRMLTouchSensor::handleEvent(SoHandleEventAction * action)
   SbBool buttonup = SO_MOUSE_RELEASE_EVENT(event, BUTTON1);
   SbBool mousemove = event->isOfType(SoLocation2Event::getClassTypeId());
   
+  SbBool wasover = this->isOver.getValue();
+
   if (mousemove || buttondown || buttonup) {
     SbBool isover = FALSE;
     const SoPickedPoint * pp = action->getPickedPoint();
@@ -176,8 +178,10 @@ SoVRMLTouchSensor::handleEvent(SoHandleEventAction * action)
       this->isactive = TRUE;
       active = TRUE;
     }
+    if (wasover != isover) {
+      this->isOver.setValue(isover);
+    }
     if (isover) {
-      this->isOver.setValue(TRUE);
       if (active) {
           this->touchTime.setValue(touchsensor_get_current_time());
       }
