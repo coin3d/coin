@@ -22,15 +22,14 @@
 /* this file should only be included from mutex.c */
 
 static int
-internal_struct_init(cc_mutex * mutex)
+win32_cs_struct_init(cc_mutex * mutex)
 {
-  mutex->w32thread.lock_count = -1;
   InitializeCriticalSection(&mutex->w32thread.critical_section);
   return CC_OK;
 }
 
 static int
-internal_struct_clean(cc_mutex * mutex)
+win32_cs_struct_clean(cc_mutex * mutex)
 {
   DeleteCriticalSection(&mutex->w32thread.critical_section);
   /* this function does not have a return value, always return OK */
@@ -38,57 +37,23 @@ internal_struct_clean(cc_mutex * mutex)
 }
 
 static int
-internal_lock(cc_mutex * mutex)
+win32_cs_lock(cc_mutex * mutex)
 {
- if (InterlockedIncrement(&mutex->w32thread.lock_count) == 0) {
-    /* we were the first to lock */
-
-    /* FIXME: What to we need this if-statement for when we're not
-       going to do anything? pederb, 2001-12-10 */
-
-  }
   EnterCriticalSection(&mutex->w32thread.critical_section);
   return CC_OK;
 }
 
 static int
-internal_try_lock(cc_mutex * mutex)
+win32_cs_try_lock(cc_mutex * mutex)
 {
-#if 1 /* TryCriticalSection enable/disable*/
   BOOL status;
-  /* 20011106 thammer, this function is unsupported in Win95/98/Me and
-   * NT<=3.51 to enable support, #define _WIN32_WINNT>=0x0400, before
-   * including winbase.h we might want to add a test for this in
-   * configure, or at runtime ... investigate further. */
-  status = TryEnterCriticalSection(&(mutex->w32thread.critical_section));
+  status = cc_mutex_try_enter_critical_section(&mutex->w32thread.critical_section);
   return status == TRUE ? CC_OK : CC_BUSY;
-  /* 20011108 thammer, decided to rewrite to avoid using this function */
-#else /* TryCriticalSection */
-  if (InterlockedIncrement(&(mutex->w32thread.lock_count)) == 0) {
-    /* we were the first to lock fixme: 20011108 thammer: potential
-     * problem, allthough unlikely to happen very often: if this
-     * thread looses control here, and some other thread performs a
-     * lock before this thread enters the critical section, then this
-     * try_lock function can risk actually locking a locked mutex -
-     * and it will then be waiting for the mutex. */
-    EnterCriticalSection(&(mutex->w32thread.critical_section));
-    return CC_OK;
-  }
-  /* we didn't lock. Decrement the count again */
-  InterlockedDecrement(&(mutex->w32thread.lock_count));
-  return CC_BUSY;
-#endif /* !TryCriticalSection */
 }
 
 static int
-internal_unlock(cc_mutex * mutex)
+win32_cs_unlock(cc_mutex * mutex)
 {
   LeaveCriticalSection(&(mutex->w32thread.critical_section));
-  if (InterlockedDecrement(&(mutex->w32thread.lock_count)) >= 0) {
-    /* some other thread is waiting */
-
-    /* FIXME: What to we need this if-statement for when we're not
-       going to do anything? pederb, 2001-12-10 */
-  }
   return CC_OK;
 }

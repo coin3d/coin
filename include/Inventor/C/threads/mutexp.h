@@ -43,8 +43,9 @@ extern "C" {
 #endif /* USE_PTHREAD */
 
 #ifdef USE_W32THREAD
-#define _WIN32_WINNT 0x0400 /* FIXME: testing TryCriticalSection */
 #include <windows.h>
+typedef BOOL cc_mutex_try_enter_critical_section_func(LPCRITICAL_SECTION);
+cc_mutex_try_enter_critical_section_func * cc_mutex_try_enter_critical_section;
 #undef NO_IMPLEMENTATION
 #endif /* USE_W32THREAD */
 
@@ -53,23 +54,13 @@ struct cc_mutex {
   struct cc_pthread_mutex_data {
     pthread_mutex_t mutexid;
   } pthread;
-#undef NO_IMPLEMENTATION
 #endif /* USE_PTHREAD */
-
 #ifdef USE_W32THREAD
-#ifdef USE_W32_MUTEX
-  struct cc_w32thread_mutex_data {
+  union cc_w32thread_mutex_data {
     HANDLE mutexhandle;
-  } w32thread;
-#else
-  struct cc_w32thread_mutex_data {
     CRITICAL_SECTION critical_section;
-    LONG lock_count; /* used for try_lock */
-  } w32thread;
-#endif /* USE_W32_MUTEX */
-#undef NO_IMPLEMENTATION
+  }
 #endif /* USE_W32THREAD */
-
 };
 
 #ifdef NO_IMPLEMENTATION

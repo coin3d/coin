@@ -22,7 +22,7 @@
 /* this file should only be included from mutex.c */
 
 static int
-internal_struct_init(cc_mutex * mutex_struct)
+win32_mutex_struct_init(cc_mutex * mutex_struct)
 {
   mutex_struct->w32thread.mutexhandle = CreateMutex(NULL, FALSE, NULL);
   if (mutex_struct->w32thread.mutexhandle == NULL) {
@@ -41,7 +41,7 @@ internal_struct_init(cc_mutex * mutex_struct)
 }
 
 static int
-internal_struct_clean(cc_mutex * mutex_struct)
+win32_mutex_struct_clean(cc_mutex * mutex_struct)
 {
   BOOL status = CloseHandle(mutex_struct->w32thread.mutexhandle);
   if (status == FALSE) {
@@ -60,7 +60,7 @@ internal_struct_clean(cc_mutex * mutex_struct)
 }
 
 static int
-internal_lock(cc_mutex * mutex)
+win32_mutex_lock(cc_mutex * mutex)
 {
   DWORD status;
   status = WaitForSingleObject(mutex->w32thread.mutexhandle, INFINITE);
@@ -80,7 +80,7 @@ internal_lock(cc_mutex * mutex)
 }
 
 static int
-internal_try_lock(cc_mutex * mutex)
+win32_mutex_try_lock(cc_mutex * mutex)
 {
   DWORD status;
   status = WaitForSingleObject(mutex->w32thread.mutexhandle, 0);
@@ -103,7 +103,7 @@ internal_try_lock(cc_mutex * mutex)
 }
 
 static int
-internal_unlock(cc_mutex * mutex)
+win32_mutex_unlock(cc_mutex * mutex)
 {
   BOOL status = ReleaseMutex(mutex->w32thread.mutexhandle);
   if (status == FALSE) {

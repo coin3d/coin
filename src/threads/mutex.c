@@ -19,10 +19,6 @@
  *
 \**************************************************************************/
 
-/* define to use the Win32 mutex object, undefine to use
-   critical_sections (which has a trylock bug) */
-#define USE_W32_MUTEX 1
-
 #include <Inventor/C/threads/mutex.h>
 #include <Inventor/C/threads/mutexp.h>
 
@@ -40,13 +36,12 @@
 #endif /* USE_PTHREAD */
 
 #ifdef USE_W32THREAD
-#ifdef USE_W32_MUTEX
-#include "mutex_win32mutex.ic"
-#else /* USE_W32_MUTEX */
-#include "mutex_win32cs.ic"
-#endif /* ! USE_W32_MUTEX */
+/* we test if Win32 TryEnterCriticalSection exists, and use Win32
+   critical section if it does, and Win32 mutex if it doesn't */
+cc_mutex_try_enter_critical_section_func * cc_mutex_try_enter_critical_section = NULL; 
+#include "mutex_win32mutex.ic" 
+#include "mutex_win32cs.ic" 
 #endif /* USE_W32THREAD */
-
 
 /**************************************************************************/
 
@@ -58,7 +53,14 @@ void
 cc_mutex_struct_init(cc_mutex * mutex_struct)
 {
   int ok;
+#ifdef USE_W32THREAD
+  if (cc_mutex_try_enter_critical_section)
+    ok = win32_cs_struct_init(mutex_struct);
+  else 
+    ok = win32_mutex_struct_init(mutex_struct);
+#else /* USE_W32THREAD */
   ok = internal_struct_init(mutex_struct);
+#endif /* ! USE_W32THREAD */
   assert(ok);
 }
 
@@ -71,7 +73,14 @@ cc_mutex_struct_clean(cc_mutex * mutex_struct)
 {
   int ok;
   assert(mutex_struct);
+#ifdef USE_W32THREAD
+  if (cc_mutex_try_enter_critical_section)
+    ok = win32_cs_struct_clean(mutex_struct);
+  else 
+    ok = win32_mutex_struct_clean(mutex_struct);
+#else /* USE_W32THREAD */  
   ok = internal_struct_clean(mutex_struct);
+#endif /* ! USE_W32THREAD */
   assert(ok == CC_OK);
 }
 
@@ -113,7 +122,14 @@ cc_mutex_lock(cc_mutex * mutex)
   int ok;
   assert(mutex != NULL);
 
+#ifdef USE_W32THREAD
+  if (cc_mutex_try_enter_critical_section)
+    ok = win32_cs_lock(mutex_struct);
+  else 
+    ok = win32_mutex_lock(mutex_struct);
+#else /* USE_W32THREAD */  
   ok = internal_lock(mutex);
+#endif /* USE_W32THREAD */
   assert(ok == CC_OK);
   return ok;
 }
@@ -126,8 +142,14 @@ cc_mutex_try_lock(cc_mutex * mutex)
 {
   int ok;
   assert(mutex != NULL);
-
+#ifdef USE_W32THREAD
+  if (cc_mutex_try_enter_critical_section)
+    ok = win32_cs_try_lock(mutex_struct);
+  else 
+    ok = win32_mutex_try_lock(mutex_struct);
+#else /* USE_W32THREAD */  
   ok = internal_try_lock(mutex);
+#endif /* ! USE_W32THREAD */
   assert(ok == CC_OK || ok == CC_BUSY);
   return ok;
 }
@@ -140,8 +162,14 @@ cc_mutex_unlock(cc_mutex * mutex)
 {
   int ok;
   assert(mutex != NULL);
-
+#ifdef USE_W32THREAD
+  if (cc_mutex_try_enter_critical_section)
+    ok = win32_cs_unlock(mutex_struct);
+  else 
+    ok = win32_mutex_unlock(mutex_struct);
+#else /* USE_W32THREAD */  
   ok = internal_unlock(mutex);
+#endif /* USE_W32THREAD */
   assert(ok == CC_OK);
   return ok;
 }
@@ -158,6 +186,16 @@ cc_mutex_cleanup(void)
 void
 cc_mutex_init(void)
 {
+#ifdef USE_W32THREAD
+  /* TryEnterCriticalSection test. */
+  HINSTANCE h = GetModuleHandle("kernel32.dll");
+  if (h) {
+    /* this function is unsupported in Win95/98/Me and NT <=3.51 */
+    cc_mutex_try_enter_critical_section = (TryEnterFunc*)
+      GetProcAddress(h, "TryEnterCriticalSection");
+  }
+#endif /* USE_W32THREAD */
+
   if (cc_global_mutex == NULL) {
     cc_global_mutex = cc_mutex_construct();
     coin_atexit((coin_atexit_f*) cc_mutex_cleanup);
