@@ -117,8 +117,8 @@ public:
   virtual void setBackfaceCullingElt(SbBool onoff);
   virtual void setTwosideLightingElt(SbBool onoff);
   virtual void setShadeModelElt(SbBool flatshading);
-  virtual void setGLImageIdElt(uint32_t glimageid, const SbBool alphatest);
-  virtual void setAlphaTestElt(const SbBool onoff);
+  virtual void setGLImageIdElt(uint32_t glimageid, SbBool alphatest);
+  virtual void setAlphaTestElt(SbBool onoff);
 
   static void beginCaching(SoState * state, GLState * prestate,
                            GLState * poststate);
