@@ -106,6 +106,7 @@
 #include "SoTextureCoordinateEnvironment.cpp"
 #include "SoTextureCoordinateFunction.cpp"
 #include "SoTextureCoordinatePlane.cpp"
+#include "SoTextureCubeMap.cpp"
 #include "SoTextureScalePolicy.cpp"
 #include "SoTextureUnit.cpp"
 #include "SoTransform.cpp"
