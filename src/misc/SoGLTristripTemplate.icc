@@ -21,17 +21,6 @@
  *
 \**************************************************************************/
 
-#if NBINDING==PER_VERTEX_INDEXED || NBINDING==PER_TRIANGLE_INDEXED || NBINDING==PER_STRIP_INDEXED
-#define NINDEX TRUE
-#else
-#define NINDEX FALSE
-#endif
-
-#if MBINDING==PER_VERTEX_INDEXED || MBINDING==PER_TRIANGLE_INDEXED || MBINDING==PER_STRIP_INDEXED
-#define MINDEX TRUE
-#else
-#define MINDEX FALSE
-#endif
 (const SoGLCoordinateElement * const vertexlist,
  const int32_t *vertexindices,
  int numindices,
@@ -42,24 +31,7 @@
  const SoTextureCoordinateBundle * const texcoords,
  const int32_t *texindices)
 {
-  // FIXME: checking for system instead of feature is bad coding
-  // style.  Use a configure check instead of the _WIN32 below. (It
-  // looks bogus anyway -- it's a compiler problem we're trying to
-  // avoid, so checking for the OS instead is of course silly.)  There
-  // are more of these further down this file.  20011021 mortene.
-
-  // to avoid compiler warnings
-#if NINDEX==FALSE && !defined(_WIN32)
-  if (normalindices);
-#endif
-#if MINDEX==FALSE && !defined(_WIN32)
-  if (matindices);
-#endif
-#if TEXTURES==FALSE && !defined(_WIN32)
-  if (texcoords && texindices);
-#else
   int texidx = 0;
-#endif
   const int32_t *viptr = vertexindices;
   const int32_t *viendptr = viptr + numindices;
   int32_t v1, v2, v3;
@@ -86,16 +58,7 @@
   if (normals) currnormal = normals;
 #endif // currnormal wrapper
 
-#if MBINDING==PER_TRIANGLE || MBINDING==PER_STRIP || MBINDING==PER_VERTEX
   int matnr = 0;
-#endif
-
-#if NBINDING==OVERALL && !defined(_WIN32)
-  if (normals);
-#endif
-#if MBINDING==OVERALL && !defined(_WIN32)
-  if (materials);
-#endif
 
   while (viptr < viendptr) {
     v1 = *viptr++;
@@ -203,5 +166,3 @@
 }
 
 #undef SEND_VERTEX
-#undef MINDEX
-#undef NINDEX
