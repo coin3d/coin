@@ -252,12 +252,15 @@ Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
 
 mostlyclean-libLTLIBRARIES:
 
+
 clean-libLTLIBRARIES:
 	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
 
 distclean-libLTLIBRARIES:
 
+
 maintainer-clean-libLTLIBRARIES:
+
 
 install-libLTLIBRARIES: $(lib_LTLIBRARIES)
 	@$(NORMAL_INSTALL)
@@ -278,22 +281,21 @@ uninstall-libLTLIBRARIES:
 
 mostlyclean-noinstLTLIBRARIES:
 
+
 clean-noinstLTLIBRARIES:
 	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
 
 distclean-noinstLTLIBRARIES:
 
+
 maintainer-clean-noinstLTLIBRARIES:
+
 
 mostlyclean-compile:
 	-rm -f *.o core *.core
 
-clean-compile:
-
 distclean-compile:
 	-rm -f *.tab.c
-
-maintainer-clean-compile:
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -302,8 +304,7 @@ clean-libtool:
 	-rm -rf .libs _libs
 
 distclean-libtool:
-
-maintainer-clean-libtool:
+	-rm -f libtool
 
 libbase.la: $(libbase_la_OBJECTS) $(libbase_la_DEPENDENCIES)
 	$(CXXLINK)  $(libbase_la_LDFLAGS) $(libbase_la_OBJECTS) $(libbase_la_LIBADD) $(LIBS)
@@ -333,6 +334,7 @@ uninstall-libbaseincHEADERS:
 
 tags: TAGS
 
+
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(TAGS_FILES)'; \
 	unique=`for i in $$list; do \
@@ -342,7 +344,7 @@ ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	       END { for (i in files) print i; }'`; \
 	mkid -fID $$unique $(LISP)
 
-TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
+TAGS: $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
 		$(TAGS_FILES) $(LISP)
 	tags=; \
 	here=`pwd`; \
@@ -360,14 +362,8 @@ GTAGS:
 	  && cd $(top_srcdir) \
 	  && gtags -i $$here
 
-mostlyclean-tags:
-
-clean-tags:
-
 distclean-tags:
 	-rm -f TAGS ID
-
-maintainer-clean-tags:
 
 @AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbBSPTree.Plo
 @AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbBox2f.Plo
@@ -398,24 +394,20 @@ maintainer-clean-tags:
 @AMDEP@@AM_INCLUDE@ $(DEPDIR)/SbXfBox3f.Plo
 @AMDEP@@AM_INCLUDE@ $(DEPDIR)/all.Plo
 
-mostlyclean-depend:
-
-clean-depend:
-
 distclean-depend:
 	-rm -rf $(DEPDIR)
-
-maintainer-clean-depend:
 
 @AMDEP@CXXDEPMODE = @CXXDEPMODE@
 
 .cpp.o:
+
 @AMDEP@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
 @AMDEP@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 	$(CXXCOMPILE) -c -o $@ `test -f $< || echo '$(srcdir)/'`$<
 
 .cpp.lo:
+
 @AMDEP@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
 @AMDEP@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
@@ -466,62 +458,59 @@ installdirs:
 
 mostlyclean-generic:
 
+
 clean-generic:
+
 
 distclean-generic:
 	-rm -f Makefile $(CONFIG_CLEAN_FILES)
 	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
 
 maintainer-clean-generic:
+	@echo "This command is intended for maintainers to use"
+	@echo "it deletes files that may require special tools to rebuild."
 	-rm -f Makefile.in
-mostlyclean-am:  mostlyclean-libLTLIBRARIES \
-		mostlyclean-noinstLTLIBRARIES mostlyclean-compile \
-		mostlyclean-libtool mostlyclean-tags mostlyclean-depend \
-		mostlyclean-generic
-
-mostlyclean: mostlyclean-am
-
-clean-am:  clean-libLTLIBRARIES clean-noinstLTLIBRARIES clean-compile \
-		clean-libtool clean-tags clean-depend clean-generic \
-		mostlyclean-am
-
 clean: clean-am
 
-distclean-am:  distclean-libLTLIBRARIES distclean-noinstLTLIBRARIES \
-		distclean-compile distclean-libtool distclean-tags \
-		distclean-depend distclean-generic clean-am
-	-rm -f libtool
+clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
+	clean-noinstLTLIBRARIES mostlyclean-am
 
 distclean: distclean-am
 
-maintainer-clean-am:  maintainer-clean-libLTLIBRARIES \
-		maintainer-clean-noinstLTLIBRARIES \
-		maintainer-clean-compile maintainer-clean-libtool \
-		maintainer-clean-tags maintainer-clean-depend \
-		maintainer-clean-generic distclean-am
-	@echo "This command is intended for maintainers to use;"
-	@echo "it deletes files that may require special tools to rebuild."
+distclean-am: clean-am distclean-compile distclean-depend \
+	distclean-generic distclean-libLTLIBRARIES distclean-libtool \
+	distclean-noinstLTLIBRARIES distclean-tags
 
 maintainer-clean: maintainer-clean-am
 
-.PHONY: all all-am all-redirect check check-am clean clean-compile \
-clean-depend clean-generic clean-libLTLIBRARIES clean-libtool \
-clean-noinstLTLIBRARIES clean-tags distclean distclean-compile \
-distclean-depend distclean-generic distclean-libLTLIBRARIES \
-distclean-libtool distclean-noinstLTLIBRARIES distclean-tags distdir \
-dvi dvi-am info info-am install install-am install-data install-data-am \
-install-exec install-exec-am install-libLTLIBRARIES \
-install-libbaseincHEADERS install-strip installcheck installcheck-am \
-installdirs maintainer-clean maintainer-clean-compile \
-maintainer-clean-depend maintainer-clean-generic \
-maintainer-clean-libLTLIBRARIES maintainer-clean-libtool \
-maintainer-clean-noinstLTLIBRARIES maintainer-clean-tags mostlyclean \
-mostlyclean-compile mostlyclean-depend mostlyclean-generic \
-mostlyclean-libLTLIBRARIES mostlyclean-libtool \
-mostlyclean-noinstLTLIBRARIES mostlyclean-tags tags uninstall \
-uninstall-am uninstall-libLTLIBRARIES uninstall-libbaseincHEADERS
+maintainer-clean-am: distclean-am maintainer-clean-generic \
+	maintainer-clean-libLTLIBRARIES \
+	maintainer-clean-noinstLTLIBRARIES
+
+mostlyclean: mostlyclean-am
+
+mostlyclean-am: mostlyclean-compile mostlyclean-generic \
+	mostlyclean-libLTLIBRARIES mostlyclean-libtool \
+	mostlyclean-noinstLTLIBRARIES
+
+.PHONY: all all-am all-redirect check check-am clean clean-generic \
+	clean-libLTLIBRARIES clean-libtool clean-noinstLTLIBRARIES \
+	distclean distclean-compile distclean-depend distclean-generic \
+	distclean-libLTLIBRARIES distclean-libtool \
+	distclean-noinstLTLIBRARIES distclean-tags distdir dvi dvi-am \
+	info info-am install install-am install-data install-data-am \
+	install-exec install-exec-am install-libLTLIBRARIES \
+	install-libbaseincHEADERS install-strip installcheck \
+	installcheck-am installdirs maintainer-clean \
+	maintainer-clean-generic maintainer-clean-libLTLIBRARIES \
+	maintainer-clean-noinstLTLIBRARIES mostlyclean \
+	mostlyclean-compile mostlyclean-generic \
+	mostlyclean-libLTLIBRARIES mostlyclean-libtool \
+	mostlyclean-noinstLTLIBRARIES tags uninstall uninstall-am \
+	uninstall-libLTLIBRARIES uninstall-libbaseincHEADERS
 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
+

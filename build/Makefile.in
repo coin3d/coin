@@ -178,39 +178,40 @@ installdirs:
 
 mostlyclean-generic:
 
+
 clean-generic:
+
 
 distclean-generic:
 	-rm -f Makefile $(CONFIG_CLEAN_FILES)
 	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
 
 maintainer-clean-generic:
+	@echo "This command is intended for maintainers to use"
+	@echo "it deletes files that may require special tools to rebuild."
 	-rm -f Makefile.in
-mostlyclean-am:  mostlyclean-generic
-
-mostlyclean: mostlyclean-am
-
-clean-am:  clean-generic mostlyclean-am
-
 clean: clean-am
 
-distclean-am:  distclean-generic clean-am
-	-rm -f libtool
+clean-am: clean-generic mostlyclean-am
 
 distclean: distclean-am
 
-maintainer-clean-am:  maintainer-clean-generic distclean-am
-	@echo "This command is intended for maintainers to use;"
-	@echo "it deletes files that may require special tools to rebuild."
+distclean-am: clean-am distclean-generic
 
 maintainer-clean: maintainer-clean-am
 
+maintainer-clean-am: distclean-am maintainer-clean-generic
+
+mostlyclean: mostlyclean-am
+
+mostlyclean-am: mostlyclean-generic
+
 .PHONY: all all-am all-redirect check check-am clean clean-generic \
-distclean distclean-generic distdir dvi dvi-am info info-am install \
-install-am install-data install-data-am install-exec install-exec-am \
-install-strip installcheck installcheck-am installdirs maintainer-clean \
-maintainer-clean-generic mostlyclean mostlyclean-generic uninstall \
-uninstall-am
+	distclean distclean-generic distdir dvi dvi-am info info-am \
+	install install-am install-data install-data-am install-exec \
+	install-exec-am install-strip installcheck installcheck-am \
+	installdirs maintainer-clean maintainer-clean-generic \
+	mostlyclean mostlyclean-generic uninstall uninstall-am
 
 
 coin.iwz:
@@ -226,3 +227,4 @@ ispkg: coin.iwz
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
+

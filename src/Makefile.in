@@ -255,12 +255,15 @@ Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
 
 mostlyclean-libLTLIBRARIES:
 
+
 clean-libLTLIBRARIES:
 	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
 
 distclean-libLTLIBRARIES:
 
+
 maintainer-clean-libLTLIBRARIES:
+
 
 install-libLTLIBRARIES: $(lib_LTLIBRARIES)
 	@$(NORMAL_INSTALL)
@@ -282,12 +285,8 @@ uninstall-libLTLIBRARIES:
 mostlyclean-compile:
 	-rm -f *.o core *.core
 
-clean-compile:
-
 distclean-compile:
 	-rm -f *.tab.c
-
-maintainer-clean-compile:
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -296,8 +295,7 @@ clean-libtool:
 	-rm -rf .libs _libs
 
 distclean-libtool:
-
-maintainer-clean-libtool:
+	-rm -f libtool
 
 libCoin@SUFFIX@.la: $(libCoin@SUFFIX@_la_OBJECTS) $(libCoin@SUFFIX@_la_DEPENDENCIES)
 	$(LINK) -rpath $(libdir) $(libCoin@SUFFIX@_la_LDFLAGS) $(libCoin@SUFFIX@_la_OBJECTS) $(libCoin@SUFFIX@_la_LIBADD) $(LIBS)
@@ -381,6 +379,7 @@ tags-recursive:
 
 tags: TAGS
 
+
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(TAGS_FILES)'; \
 	unique=`for i in $$list; do \
@@ -413,35 +412,25 @@ GTAGS:
 	  && cd $(top_srcdir) \
 	  && gtags -i $$here
 
-mostlyclean-tags:
-
-clean-tags:
-
 distclean-tags:
 	-rm -f TAGS ID
 
-maintainer-clean-tags:
-
 @AMDEP@@AM_INCLUDE@ $(DEPDIR)/snprintf.Plo
-
-mostlyclean-depend:
-
-clean-depend:
 
 distclean-depend:
 	-rm -rf $(DEPDIR)
 
-maintainer-clean-depend:
-
 @AMDEP@CCDEPMODE = @CCDEPMODE@
 
 .c.o:
+
 @AMDEP@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
 @AMDEP@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 	$(COMPILE) -c -o $@ `test -f $< || echo '$(srcdir)/'`$<
 
 .c.lo:
+
 @AMDEP@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
 @AMDEP@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
@@ -507,61 +496,57 @@ installdirs-am:
 
 mostlyclean-generic:
 
+
 clean-generic:
+
 
 distclean-generic:
 	-rm -f Makefile $(CONFIG_CLEAN_FILES)
 	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
 
 maintainer-clean-generic:
+	@echo "This command is intended for maintainers to use"
+	@echo "it deletes files that may require special tools to rebuild."
 	-rm -f Makefile.in
-mostlyclean-am:  mostlyclean-libLTLIBRARIES mostlyclean-compile \
-		mostlyclean-libtool mostlyclean-tags mostlyclean-depend \
-		mostlyclean-generic
-
-mostlyclean: mostlyclean-recursive
-
-clean-am:  clean-libLTLIBRARIES clean-compile clean-libtool clean-tags \
-		clean-depend clean-generic mostlyclean-am
-
 clean: clean-recursive
 
-distclean-am:  distclean-libLTLIBRARIES distclean-compile \
-		distclean-libtool distclean-tags distclean-depend \
-		distclean-generic clean-am
-	-rm -f libtool
+clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
+	mostlyclean-am
 
 distclean: distclean-recursive
 
-maintainer-clean-am:  maintainer-clean-libLTLIBRARIES \
-		maintainer-clean-compile maintainer-clean-libtool \
-		maintainer-clean-tags maintainer-clean-depend \
-		maintainer-clean-generic distclean-am
-	@echo "This command is intended for maintainers to use;"
-	@echo "it deletes files that may require special tools to rebuild."
+distclean-am: clean-am distclean-compile distclean-depend \
+	distclean-generic distclean-libLTLIBRARIES distclean-libtool \
+	distclean-tags
 
 maintainer-clean: maintainer-clean-recursive
 
-.PHONY:  all all-am all-recursive all-redirect check check-am \
-check-recursive clean clean-compile clean-depend clean-generic \
-clean-libLTLIBRARIES clean-libtool clean-recursive clean-tags distclean \
-distclean-compile distclean-depend distclean-generic \
-distclean-libLTLIBRARIES distclean-libtool distclean-recursive \
-distclean-tags distdir dvi dvi-am dvi-recursive info info-am \
-info-recursive install install-am install-data install-data-am \
-install-data-recursive install-exec install-exec-am \
-install-exec-recursive install-libCoin@SUFFIX@incHEADERS \
-install-libLTLIBRARIES install-recursive install-strip installcheck \
-installcheck-am installcheck-recursive installdirs installdirs-am \
-installdirs-recursive maintainer-clean maintainer-clean-compile \
-maintainer-clean-depend maintainer-clean-generic \
-maintainer-clean-libLTLIBRARIES maintainer-clean-libtool \
-maintainer-clean-recursive maintainer-clean-tags mostlyclean \
-mostlyclean-compile mostlyclean-depend mostlyclean-generic \
-mostlyclean-libLTLIBRARIES mostlyclean-libtool mostlyclean-recursive \
-mostlyclean-tags tags tags-recursive uninstall uninstall-am \
-uninstall-libCoin@SUFFIX@incHEADERS uninstall-libLTLIBRARIES \
-uninstall-recursive
+maintainer-clean-am: distclean-am maintainer-clean-generic \
+	maintainer-clean-libLTLIBRARIES
+
+mostlyclean: mostlyclean-recursive
+
+mostlyclean-am: mostlyclean-compile mostlyclean-generic \
+	mostlyclean-libLTLIBRARIES mostlyclean-libtool
+
+.PHONY: all all-am all-recursive all-redirect check check-am \
+	check-recursive clean clean-generic clean-libLTLIBRARIES \
+	clean-libtool clean-recursive distclean distclean-compile \
+	distclean-depend distclean-generic distclean-libLTLIBRARIES \
+	distclean-libtool distclean-recursive distclean-tags distdir \
+	dvi dvi-am dvi-recursive info info-am info-recursive install \
+	install-am install-data install-data-am install-data-recursive \
+	install-exec install-exec-am install-exec-recursive \
+	install-libCoin@SUFFIX@incHEADERS install-libLTLIBRARIES \
+	install-recursive install-strip installcheck installcheck-am \
+	installcheck-recursive installdirs installdirs-am \
+	installdirs-recursive maintainer-clean maintainer-clean-generic \
+	maintainer-clean-libLTLIBRARIES maintainer-clean-recursive \
+	mostlyclean mostlyclean-compile mostlyclean-generic \
+	mostlyclean-libLTLIBRARIES mostlyclean-libtool \
+	mostlyclean-recursive tags tags-recursive uninstall \
+	uninstall-am uninstall-libCoin@SUFFIX@incHEADERS \
+	uninstall-libLTLIBRARIES uninstall-recursive
 
 
 #### Additional "native" Make rules #########################################
@@ -601,3 +586,4 @@ uninstall: uninstall-am
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
+

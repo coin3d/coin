@@ -156,14 +156,8 @@ $(srcdir)/./stamp-h2.in: $(top_srcdir)/configure.in $(ACLOCAL_M4) $(top_srcdir)/
 	cd $(top_srcdir) && $(AUTOHEADER)
 	@mv $(srcdir)/./stamp-h2.inT $(srcdir)/./stamp-h2.in
 
-mostlyclean-hdr:
-
-clean-hdr:
-
 distclean-hdr:
 	-rm -f SbBasic.h
-
-maintainer-clean-hdr:
 
 # This directory's subdirectories are mostly independent; you can cd
 # into them and run `make' without going through this Makefile.
@@ -224,6 +218,7 @@ tags-recursive:
 
 tags: TAGS
 
+
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(TAGS_FILES)'; \
 	unique=`for i in $$list; do \
@@ -256,14 +251,8 @@ GTAGS:
 	  && cd $(top_srcdir) \
 	  && gtags -i $$here
 
-mostlyclean-tags:
-
-clean-tags:
-
 distclean-tags:
 	-rm -f TAGS ID
-
-maintainer-clean-tags:
 
 distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
 
@@ -322,49 +311,49 @@ installdirs-am:
 
 mostlyclean-generic:
 
+
 clean-generic:
+
 
 distclean-generic:
 	-rm -f Makefile $(CONFIG_CLEAN_FILES)
 	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
 
 maintainer-clean-generic:
+	@echo "This command is intended for maintainers to use"
+	@echo "it deletes files that may require special tools to rebuild."
 	-rm -f Makefile.in
-mostlyclean-am:  mostlyclean-hdr mostlyclean-tags mostlyclean-generic
-
-mostlyclean: mostlyclean-recursive
-
-clean-am:  clean-hdr clean-tags clean-generic mostlyclean-am
-
 clean: clean-recursive
 
-distclean-am:  distclean-hdr distclean-tags distclean-generic clean-am
-	-rm -f libtool
+clean-am: clean-generic mostlyclean-am
 
 distclean: distclean-recursive
 
-maintainer-clean-am:  maintainer-clean-hdr maintainer-clean-tags \
-		maintainer-clean-generic distclean-am
-	@echo "This command is intended for maintainers to use;"
-	@echo "it deletes files that may require special tools to rebuild."
+distclean-am: clean-am distclean-generic distclean-hdr distclean-tags
 
 maintainer-clean: maintainer-clean-recursive
 
-.PHONY:  all all-am all-recursive all-recursive-am all-redirect check \
-check-am check-recursive clean clean-generic clean-hdr clean-recursive \
-clean-tags distclean distclean-generic distclean-hdr \
-distclean-recursive distclean-tags distdir dvi dvi-am dvi-recursive \
-info info-am info-recursive install install-am install-data \
-install-data-am install-data-recursive install-exec install-exec-am \
-install-exec-recursive install-recursive install-strip installcheck \
-installcheck-am installcheck-recursive installdirs installdirs-am \
-installdirs-recursive maintainer-clean maintainer-clean-generic \
-maintainer-clean-hdr maintainer-clean-recursive maintainer-clean-tags \
-mostlyclean mostlyclean-generic mostlyclean-hdr mostlyclean-recursive \
-mostlyclean-tags tags tags-recursive uninstall uninstall-am \
-uninstall-recursive
+maintainer-clean-am: distclean-am maintainer-clean-generic
+
+mostlyclean: mostlyclean-recursive
+
+mostlyclean-am: mostlyclean-generic
+
+.PHONY: all all-am all-recursive all-recursive-am all-redirect check \
+	check-am check-recursive clean clean-generic clean-recursive \
+	distclean distclean-generic distclean-hdr distclean-recursive \
+	distclean-tags distdir dvi dvi-am dvi-recursive info info-am \
+	info-recursive install install-am install-data install-data-am \
+	install-data-recursive install-exec install-exec-am \
+	install-exec-recursive install-recursive install-strip \
+	installcheck installcheck-am installcheck-recursive installdirs \
+	installdirs-am installdirs-recursive maintainer-clean \
+	maintainer-clean-generic maintainer-clean-recursive mostlyclean \
+	mostlyclean-generic mostlyclean-recursive tags tags-recursive \
+	uninstall uninstall-am uninstall-recursive
 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
+
