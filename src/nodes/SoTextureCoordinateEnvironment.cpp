@@ -23,10 +23,31 @@
 
 /*!
   \class SoTextureCoordinateEnvironment SoTextureCoordinateEnvironment.h Inventor/nodes/SoTextureCoordinateEnvironment.h
-  \brief The SoTextureCoordinateEnvironment class ...
+  \brief The SoTextureCoordinateEnvironment class generates texture coordinates by projecting onto a surrounding texture.
   \ingroup nodes
 
-  FIXME: write class doc
+  The texture specifying the enviroment will be mapped around the 
+  scenegraph below this node using a sphere. The texture will be mapped
+  onto the scenegraph taking camera position into account. This will
+  lead to an object reflecting its enviroment.
+
+  Here is a scenegraph example showing how enviroment mapping can be
+  applied to an object:
+
+  <code>
+  #Inventor V2.1 ascii
+
+  Separator {
+
+    Texture2 {
+      filename "ocean.jpg" # the enviroment, in this case ocean
+    }
+    TextureCoordinateEnvironment {}
+
+    Cube {} # the enviromentally mapped object
+  }
+  <\code>
+
 */
 
 // FIXME: Can this somehow relate to 3D textures? (kintel 20020203)
@@ -91,9 +112,7 @@ SoTextureCoordinateEnvironment::initClass(void)
   coin_atexit((coin_atexit_f *)SoTextureCoordinateEnvironmentP::cleanup_func);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// generates texture coordinates for GLRender, callback and pick actions
 const SbVec4f &
 SoTextureCoordinateEnvironment::generate(void *userdata,
                                          const SbVec3f & /* p */,
@@ -128,9 +147,7 @@ SoTextureCoordinateEnvironment::generate(void *userdata,
   return *SoTextureCoordinateEnvironmentP::dummy_texcoords;
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// doc from parent
 void
 SoTextureCoordinateEnvironment::doAction(SoAction * action)
 {
@@ -139,9 +156,7 @@ SoTextureCoordinateEnvironment::doAction(SoAction * action)
                                           action->getState());
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// doc from parent
 void
 SoTextureCoordinateEnvironment::GLRender(SoGLRenderAction * action)
 {
@@ -150,18 +165,14 @@ SoTextureCoordinateEnvironment::GLRender(SoGLRenderAction * action)
                                           this, handleTexgen);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// doc from parent
 void
 SoTextureCoordinateEnvironment::callback(SoCallbackAction * action)
 {
   SoTextureCoordinateEnvironment::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// doc from parent
 void
 SoTextureCoordinateEnvironment::pick(SoPickAction * action)
 {
