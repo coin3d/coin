@@ -230,7 +230,8 @@ PrivateHeaders = \
 	../../include/Inventor/nodes/SoTextureScalePolicy.h \
 	soshape_primdata.h \
 	soshape_trianglesort.h \
-	soshape_bigtexture.h 
+	soshape_bigtexture.h \
+	SoSoundElementHelper.h
 
 
 ##$ BEGIN TEMPLATE Make-Common(nodes)
