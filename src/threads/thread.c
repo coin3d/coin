@@ -27,6 +27,14 @@
 #include <stdlib.h>
 #include <assert.h>
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif /* HAVE_CONFIG_H */
+
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif /* HAVE_UNISTD_H */
+
 /* ********************************************************************** */
 
 #ifdef USE_W32THREAD
