@@ -261,7 +261,7 @@ SoGetMatrixAction::translateBy(const SbVec3f &vec)
   mat.setTranslate(vec);
   this->matrix.multLeft(mat);
   mat.setTranslate(-vec);
-  this->invMatrix.multLeft(mat);
+  this->invMatrix.multRight(mat);
 }
 
 /*!
@@ -275,7 +275,7 @@ SoGetMatrixAction::rotateBy(const SbRotation &rot)
   mat.setRotate(rot);
   this->matrix.multLeft(mat);
   mat.setRotate(rot.inverse());
-  this->invMatrix.multLeft(mat);
+  this->invMatrix.multRight(mat);
 }
 
 /*!
@@ -289,5 +289,5 @@ SoGetMatrixAction::scaleBy(const SbVec3f &scaleFactor)
   mat.setScale(scaleFactor);
   this->matrix.multLeft(mat);
   mat.setScale(-scaleFactor);
-  this->invMatrix.multLeft(mat);
+  this->invMatrix.multRight(mat);
 }
