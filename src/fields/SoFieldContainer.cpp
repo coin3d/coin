@@ -688,6 +688,14 @@ SoFieldContainer::addCopy(const SoFieldContainer * orig,
   assert(copiedinstancestack);
   assert(contentscopiedstack);
 
+  // ref() so that we can guarantee that the copy is not destructed
+  // while we're copying. This fixes a nodekit/dragger copy problem
+  // (for instance when copying SoDragPointDragger).  FIXME: figure
+  // out exactly _why_ it is necessary to ref/unref the copied
+  // instances. We need to track down exactly what happens in the
+  // draggers that triggers an assert when copied. pederb, 2003-06-30
+  copy->ref();
+
   SbDict * copiedinstances = (*copiedinstancestack)[0];
   SbDict * contentscopied  = (*contentscopiedstack)[0];
   
@@ -807,6 +815,16 @@ SoFieldContainer::findCopy(const SoFieldContainer * orig,
   return cp;
 }
 
+//
+// Used to unref() copied instances (we ref() in addCopy()).
+//
+static void
+fieldcontainer_unref_node(unsigned long key, void * value)
+{
+  SoFieldContainer * fc = (SoFieldContainer*) value;
+  fc->unrefNoDelete();
+} 
+
 /*!
   \COININTERNAL
 
@@ -825,6 +843,9 @@ SoFieldContainer::copyDone(void)
   
   assert(copiedinstances);
   assert(contentscopied);
+
+  // unref all copied instances. See comment in addCopy().
+  copiedinstances->applyToAll(fieldcontainer_unref_node);
 
   delete copiedinstances;
   delete contentscopied;
