@@ -1,0 +1,8 @@
+This document contains a list of ideas for student's projects or
+summer interns:
+
+
+* A regression test system for the classes under Coin/src/base.
+
+* Profiling and optimalization of the base classes. Should depend on a
+  good regression test suite having been implemented first.
