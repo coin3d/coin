@@ -40,7 +40,9 @@
 
 #include <Inventor/C/tidbitsp.h>
 
+#ifdef HAVE_THREADS
 static cc_mutex * cc_error_mutex = NULL;
+#endif /* HAVE_THREADS */
 
 
 
