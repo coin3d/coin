@@ -252,11 +252,17 @@ public:
   virtual SbBool makeContextCurrent(void) {
     assert(this->buffer);
     if (this->context && this->glxpixmap) {
+#if GLX_VERSION_1_2
+      // glXGetCurrenDisplay() is a GLX 1.2 feature 
+      // FIXME: we should probably dlopen() libGLX.so, to avoid
+      // problems when compiling with GLX 1.2 and running on 
+      // GLX < 1.2.  pederb, 2001-05-25
       this->storedcontext = glXGetCurrentContext();
       if (this->storedcontext) {
         this->storeddrawable = glXGetCurrentDrawable();
         this->storeddisplay = glXGetCurrentDisplay();
       }
+#endif // GLX_VERSION_1_2
       glXMakeCurrent(this->display, this->glxpixmap, this->context);
       return TRUE;
     }
