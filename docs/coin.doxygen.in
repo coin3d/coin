@@ -847,7 +847,25 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/SbBasic.h \
                          @path_tag@@coin_src_dir@/src/manips/SoTransformManip.cpp \
                          @path_tag@@coin_src_dir@/include/Inventor/manips/SoTransformManip.h \
                          @path_tag@@coin_src_dir@/src/manips/SoClipPlaneManip.cpp \
-                         @path_tag@@coin_src_dir@/include/Inventor/manips/SoClipPlaneManip.h
+                         @path_tag@@coin_src_dir@/include/Inventor/manips/SoClipPlaneManip.h \
+                         @path_tag@@coin_src_dir@/src/details/SoDetail.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/details/SoDetail.h \
+                         @path_tag@@coin_src_dir@/src/details/SoConeDetail.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/details/SoConeDetail.h \
+                         @path_tag@@coin_src_dir@/src/details/SoCubeDetail.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/details/SoCubeDetail.h \
+                         @path_tag@@coin_src_dir@/src/details/SoCylinderDetail.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/details/SoCylinderDetail.h \
+                         @path_tag@@coin_src_dir@/src/details/SoFaceDetail.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/details/SoFaceDetail.h \
+                         @path_tag@@coin_src_dir@/src/details/SoLineDetail.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/details/SoLineDetail.h \
+                         @path_tag@@coin_src_dir@/src/details/SoNodeKitDetail.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/details/SoNodeKitDetail.h \
+                         @path_tag@@coin_src_dir@/src/details/SoPointDetail.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/details/SoPointDetail.h \
+                         @path_tag@@coin_src_dir@/src/details/SoTextDetail.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/details/SoTextDetail.h
 
 # If the value of the INPUT tag contains directories, you can use the 
 # FILE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp 
