@@ -27,8 +27,8 @@
 
 #ifndef HAVE_FREETYPE
 
-// Dummy versions of all functions. Only cc_flwft_initialize() will be
-// used from generic wrapper.
+/* Dummy versions of all functions. Only cc_flwft_initialize() will be
+   used from generic wrapper. */
 
 SbBool cc_flwft_initialize(void) { return FALSE; }
 void cc_flwft_exit(void) { }
@@ -53,7 +53,7 @@ void cc_flwft_done_glyph(void * font, int glyph) { assert(FALSE); }
 struct cc_FLWbitmap * cc_flwft_get_bitmap(void * font, int glyph) { assert(FALSE); return NULL; }
 int cc_flwft_get_outline(void * font, int glyph) { assert(FALSE); return 0; }
 
-#else // HAVE_FREETYPE
+#else /* HAVE_FREETYPE */
 
 #include <string.h>
 #include <math.h>
@@ -280,6 +280,8 @@ cc_flwft_set_char_size(void * font, int width, int height)
   FT_Face face;
   assert (font);
   face = (FT_Face)font;
+  /* FIXME: the input arguments for width and height looks
+     bogus. Check against the FreeType API doc. 20030515 mortene. */
   error = FT_Set_Char_Size(face, width << 6, height << 6, 72, 72);
   if (error) {
     if (cc_freetype_debug()) cc_debugerror_postwarning("cc_flwft_set_char_size" ,"ERROR %d\n", error);
@@ -428,4 +430,4 @@ cc_flwft_get_outline(void * font, int glyph)
   return 0;
 }
 
-#endif // HAVE_FREETYPE
+#endif /* HAVE_FREETYPE */
