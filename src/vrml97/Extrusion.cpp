@@ -600,7 +600,6 @@ SoVRMLExtrusion::generatePrimitives(SoAction * action)
 
   SoTextureCoordinateBundle tb(action, FALSE, FALSE); 
   SbBool istexfunc = tb.isFunction();
-  istexfunc = FALSE;
   SoPrimitiveVertex vertex;
 
   int idx;
