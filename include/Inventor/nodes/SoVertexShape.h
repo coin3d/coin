@@ -51,8 +51,6 @@ public:
                                         SoNormalBundle * bundle);
   virtual SbBool generateDefaultNormals(SoState * state,
                                         SoNormalCache * cache);
-  void generateNormals(SoState * const state);
-
   virtual void write(SoWriteAction * action);
 
 protected:
@@ -66,6 +64,7 @@ protected:
                       const int num, const SbVec3f * normals);
   SoNormalCache * getNormalCache(void) const;
 
+  void generateNormals(SoState * const state);
   void getVertexData(SoState * state,
                      const SoCoordinateElement *& coords,
                      const SbVec3f *& normals,

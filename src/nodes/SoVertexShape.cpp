@@ -19,10 +19,12 @@
 
 /*!
   \class SoVertexShape SoVertexShape.h Inventor/nodes/SoVertexShape.h
-  \brief The SoVertexShape class ...
+  \brief The SoVertexShape class is the superclass for all vertex based shapes.
   \ingroup nodes
 
-  FIXME: write class doc
+  Basically, every polygon, line or point based shape will inherit this class.
+  It contains methods for organizing the normal cache, and also holds the
+  vertexProperty field which can be used to set vertex data inside the node.
 */
 
 #include <Inventor/nodes/SoVertexShape.h>
@@ -37,12 +39,7 @@
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoGLShapeHintsElement.h>
 #include <Inventor/elements/SoCacheElement.h>
-
-#include <coindefs.h> // COIN_STUB()
-
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
+#include <Inventor/elements/SoCreaseAngleElement.h>
 
 /*!
   \var SoSFNode SoVertexShape::vertexProperty
@@ -103,13 +100,12 @@ SoVertexShape::notify(SoNotList * nl)
   Subclasses should overload this method to generate default
   normals using the SoNormalBundle class. \e TRUE should
   be returned if normals were generated, \e FALSE otherwise.
+  Default method returns FALSE.
 */
 SbBool
 SoVertexShape::generateDefaultNormals(SoState * ,
                                       SoNormalBundle *)
 {
-  // FIXME: create to SoNormalBundle class.
-  COIN_STUB();
   return FALSE;
 }
 
@@ -118,7 +114,8 @@ SoVertexShape::generateDefaultNormals(SoState * ,
   Subclasses should overload this method to generate default
   normals using the SoNormalCache class. This is more
   effective than using SoNormalGenerator. Return \e TRUE if
-  normals were generated, \e FALSE otherwise.
+  normals were generated, \e FALSE otherwise. Default method
+  just returns FALSE.
 
   This method is not part of the original OIV API. Do not overload it if
   you intend to create a node that can be used on both Coin and OIV.
@@ -189,11 +186,6 @@ SoVertexShape::willUpdateNormalizeElement(SoState * state) const
   const SoVertexProperty * vp =
     (SoVertexProperty *) this->vertexProperty.getValue();
 
-  // TODO:
-  // could perhaps add an areNormalsUnitLength() to the normal
-  // cache also...
-  //
-
   if (elem->getNum() <= 0 && (!vp || vp->normal.getNum() <= 0) &&
       this->normalcache) return TRUE;
   return FALSE;
@@ -201,7 +193,8 @@ SoVertexShape::willUpdateNormalizeElement(SoState * state) const
 
 
 /*!
-  FIXME: write function documentation
+  Sets normal cache to contain the normals specified by \a normals and \a num,
+  and forces cache dependencies on coordinates, shape hints and crease angle.
 */
 void
 SoVertexShape::setNormalCache(SoState * const state,
@@ -210,13 +203,19 @@ SoVertexShape::setNormalCache(SoState * const state,
 {
   if (this->normalcache) this->normalcache->unref();
   // create new normal cache with no dependencies
+  state->push();
   this->normalcache = new SoNormalCache(state);
   this->normalcache->ref();
   this->normalcache->set(num, normals);
+  // force element dependencies
+  (void) SoCoordinateElement::getInstance(state);
+  (void) SoShapeHintsElement::getVertexOrdering(state);
+  (void) SoCreaseAngleElement::get(state);
+  state->pop();
 }
 
 /*!
-  FIXME: write function documentation
+  Returns the current normal cache, or NULL if there is none.
 */
 SoNormalCache *
 SoVertexShape::getNormalCache(void) const
@@ -225,7 +224,10 @@ SoVertexShape::getNormalCache(void) const
 }
 
 /*!
-  FIXME: write function documentation
+  Convenience method that can be used by subclasses to create a new
+  normal cache. It takes care of unrefing the old cache and pushing
+  and popping the state to create element dependencies. This method is
+  not part of the OIV API.
 */
 void
 SoVertexShape::generateNormals(SoState * const state)
@@ -259,7 +261,8 @@ SoVertexShape::generateNormals(SoState * const state)
 }
 
 /*!
-  FIXME: write function documentation
+  Convenience method that returns the current coordinate and normal
+  element. This method is not part of the OIV API.
 */
 void
 SoVertexShape::getVertexData(SoState * state,
