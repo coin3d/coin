@@ -240,7 +240,7 @@ public:
       // sequences.
       if (!this->isbinary && ((c == '\r') || (c == '\n'))) this->linenr--;
 
-      this->lastputback = c;
+      this->lastputback = (int)c;
       this->lastchar = -1;
 
       if (this->readbufidx > 0 && this->backbuffer.getLength() == 0) {
@@ -267,9 +267,9 @@ public:
       // MacOS-style generated files. What a mess.
       for (int i=0; i < n; i++) {
         if ((str[i] == '\r') || ((str[i] == '\n') &&
-                                 (this->lastputback != '\r')))
+                                 (this->lastputback != (int)'\r')))
           this->linenr--;
-        this->lastputback = str[i];
+        this->lastputback = (int)str[i];
       }
 
       this->lastchar = -1;
@@ -404,7 +404,7 @@ private:
   int readbuflen;
   size_t totalread;
   SbList<char> backbuffer; // Used as a stack (SbList provides push() and pop()).
-  char lastputback; // The last character put back into the stream.
+  int lastputback; // The last character put back into the stream.
   char lastchar; // Last read character.
   SbBool ismembuffer;
   SbBool headerisread, eof;
