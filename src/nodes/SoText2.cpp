@@ -56,7 +56,7 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#if HAVE_X11_AVAILABLE
+#ifdef HAVE_X11_AVAILABLE
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 #endif // HAVE_X11_AVAILABLE
@@ -181,7 +181,7 @@ SoText2::initClass(void)
 
 // **************************************************************************
 
-#if HAVE_X11_AVAILABLE
+#ifdef HAVE_X11_AVAILABLE
 
 static Display * d = NULL;
 
@@ -314,7 +314,7 @@ static void
 string_dimensions(void * fontdata, const char * s,
                   float & strwidth, float & strheight)
 {
-#if HAVE_X11_AVAILABLE
+#ifdef HAVE_X11_AVAILABLE
   int direction, ascent, descent;
   XCharStruct cs;
   XTextExtents((XFontStruct *)fontdata, s, strlen(s),
@@ -341,7 +341,7 @@ SoText2::GLRender(SoGLRenderAction * action)
   unsigned int fontlistbase = NOT_AVAILABLE;
   void * fontdata = NULL;
 
-#if HAVE_X11_AVAILABLE
+#ifdef HAVE_X11_AVAILABLE
   // FIXME: crashes on freya.sim.no? 20000905 mortene.
 // fontlistbase = getGLList(action, (XFontStruct *)fontdata);
 #endif // HAVE_X11_AVAILABLE
