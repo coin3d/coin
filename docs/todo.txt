@@ -1,4 +1,3 @@
-
 FIXME: obsolete this file.
 
 This file contains a list of semi-large tasks which needs to be done
@@ -50,13 +49,3 @@ with Coin. The items are roughly categorized in these categories:
 
 028. (Network) [1999????] Interface relevant parts of Coin to Curl
      (SoWWWAnchor, SoWWWInline, texture import, misc VRML support).
-
-
-
-
-
-
-
-
-
-
