@@ -482,8 +482,8 @@ SoType::getAllDerivedFrom(const SoType type, SoTypeList & list)
 }
 
 /*!
-  This method returns FALSE for abstract base classes, and TRUE for class
-  types that can be instanciated.
+  This method returns \c FALSE for abstract base classes, and \c TRUE
+  for class types that can be instantiated.
 */
 
 SbBool
@@ -495,9 +495,14 @@ SoType::canCreateInstance(void) const
 /*!
   This method instantiates an object of the current type.
 
-  For types that can not be instanciated, NULL is returned.
-*/
+  For types that can not be instantiated, \c NULL is returned.
 
+  \DANGEROUS_ALLOC_RETURN
+
+  This is not harmful if you only call SoType::createInstance() on
+  types for reference counted class-types, though. These include all
+  nodes, engines, paths, nodekits, dragger and manipulators.
+*/
 void *
 SoType::createInstance(void) const
 {

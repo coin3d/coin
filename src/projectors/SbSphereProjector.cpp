@@ -135,7 +135,7 @@ SbSphereProjector::getSphere(void) const
 
 /*!
   Sets whether or not the projection surface should be oriented
-  towards the eye of the viewer.
+  towards the eye of the viewer. Default is \c TRUE.
 */
 void
 SbSphereProjector::setOrientToEye(const SbBool orienttoeye)

@@ -27,9 +27,6 @@
   \ingroup projectors
  */
 
-// FIXME: Outside the sphere, points will map to a plane -- not a
-// hyperbolical sheet, as they are supposed to be.  pederb.
-
 #include <Inventor/projectors/SbSphereSheetProjector.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -52,8 +49,7 @@
 
   Normal vector of the plane defining the orientation of the sheet.
 */
-//   FIXME: planeDist is not used, probably not needed until sheet
-//   code is in place. 20000308 mortene.
+//   FIXME: planeDist is not used, what is it for? 20000308 mortene.
 /*!
   \var SbSphereSheetProjector::planeDist
   \COININTERNAL

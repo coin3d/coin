@@ -87,10 +87,58 @@ SbCylinderSheetProjector::project(const SbVec2f & point)
   SbLine projline = this->getWorkingLine(point);
   SbVec3f projpt;
 
-  //
-  // FIXME: add code to intersect hyperbolic sheet (see comments in
+  // FIXME: add code to intersect hyperbolic sheet (see code in
   // SbSphereSheetProjector).
   //
+  // Here's a complete, stand-alone example that can be used while
+  // testing projection. It projects a grid on top of the
+  // SbCylinderSheetProjector and spits out an iv-file with an
+  // SoPointSet that shows off how the sheet will look:
+  //
+  //
+  // -----8<--- [snip] -----8<--- [snip] -----8<--- [snip] ---
+  // #include <stdio.h>
+  // #include <Inventor/SbLinear.h>
+  // #include <Inventor/projectors/SbCylinderSheetProjector.h>
+  // #include <Inventor/SoDB.h>
+  //
+  // int
+  // main(void)
+  // {
+  //   SoDB::init();
+  //
+  //   const float START = 0.0f;
+  //   const float END = 1.0f;
+  //   const float STEPS = 50.0f;
+  //   const float STEPSIZE = ((END - START) / STEPS);
+  //
+  //   SbCylinderSheetProjector ssp;
+  //
+  //   SbViewVolume volume;
+  //   volume.ortho(-1, 1, -1, 1, -1, 1);
+  //   ssp.setViewVolume(volume);
+  //
+  //   (void)fprintf(stdout, "#Inventor V2.1 ascii\n\n"
+  //                 "Separator {\n"
+  //                 "  Coordinate3 {\n"
+  //                 "    point [\n");
+  //
+  //   for (float i=START; i <= END; i += STEPSIZE) {
+  //     for (float j=START; j <= END; j += STEPSIZE) {
+  //       SbVec3f v = ssp.project(SbVec2f(j, i));
+  //       (void)fprintf(stdout, "\t%f %f %f,\n", v[0], v[1], v[2]);
+  //     }
+  //   }
+  //
+  //   (void)fprintf(stdout, "      ]\n"
+  //                 "    }\n"
+  //                 "  DrawStyle { pointSize 2 }\n"
+  //                 "  PointSet { }\n"
+  //                 "}\n");
+  //
+  //   return 0;
+  // }
+  // -----8<--- [snip] -----8<--- [snip] -----8<--- [snip] ---
 
   SbBool tst = this->intersectCylinderFront(projline, projpt);
   if (!tst) {

@@ -910,8 +910,8 @@ SoDragger::getEvent(void) const
 }
 
 /*!
-  Creates a new path to this dragger. Don't forget to ref() and unref() since this
-  method creates a fresh copy for you.
+  Creates a new path to this dragger. Don't forget to ref() and
+  unref() since this method creates a fresh copy for you.
 */
 SoPath *
 SoDragger::createPathToThis(void)

@@ -67,6 +67,8 @@
 
   Construct and return a copy of this projector. The caller is
   responsible for destructing the new instance.
+
+  \DANGEROUS_ALLOC_RETURN
  */
 
 /*!

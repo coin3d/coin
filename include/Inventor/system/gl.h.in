@@ -25,9 +25,7 @@
 \**************************************************************************/
 
 /* This header file is supposed to take care of all operating system
- * dependent anomalies connected to the gl.h include file.  It is only
- * for use while building the Coin library, and should not be installed
- * with the rest of the header files (at least not yet).  20010913 larsa */
+ * dependent anomalies connected to the gl.h include file. */
 
 @SIM_INCLUDE_WINDOWS_H@
 @SIM_INCLUDE_GL_H@

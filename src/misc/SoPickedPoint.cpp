@@ -128,6 +128,8 @@ SoPickedPoint::~SoPickedPoint()
 
 /*!
   Returns a copy of this picked point.
+
+  \DANGEROUS_ALLOC_RETURN
 */
 SoPickedPoint *
 SoPickedPoint::copy() const
@@ -252,9 +254,12 @@ SoPickedPoint::getImageToObject(const SoNode * const node) const
 }
 
 /*!
-  Returns the object space (specified by \a node) point. If
-  \a node equals NULL, the picked point object space will
-  be used.
+  Returns the object space point, in the object space specified by \a
+  node. If \a node equals \c NULL, the object space of the node where
+  the point was actually picked will be used (this is what one would
+  usually be interested in).
+
+  \a node can be any node in the scenegraph.
 */
 SbVec3f
 SoPickedPoint::getObjectPoint(const SoNode * const node) const

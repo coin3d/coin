@@ -30,6 +30,26 @@
   the scenegraph will be rendered.  This node type have fields to help
   decide how certain aspects of point-based shapes, line-based shapes
   and filled shape primitives are rendered.
+
+  Simple scenegraph structure usage example:
+
+  \code
+  #Inventor V2.1 ascii
+  
+  Separator {
+     Sphere { }
+     Translation { translation 4 0 0 }
+     DrawStyle { style LINES  lineWidth 2 }
+     Sphere { }
+     Translation { translation 4 0 0 }
+     DrawStyle { style POINTS  pointSize 2 }
+     Sphere { }
+  }
+  \endcode
+
+  <center>
+  <img src="http://doc.coin3d.org/images/Coin/nodes/drawstyle.png">
+  </center>
 */
 
 

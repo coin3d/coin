@@ -670,6 +670,11 @@ SoInput::getCurFileName(void) const
 /*!
   Sets up the input stream for reading from a memory buffer. Closes all
   open files in the file stack first.
+
+  The type of the first argument of this method would have been better
+  designed as "const char *", but this his how the original SGI
+  Inventor API is, and we duplicate the method signature for
+  compatibility reasons.
  */
 void
 SoInput::setBuffer(void * bufpointer, size_t bufsize)

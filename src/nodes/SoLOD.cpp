@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -41,19 +41,19 @@
   converted to code) that shows how to use this node:
 
   \code
-LOD {
-   range [ 10, 20, 30, 40 ]
+  LOD {
+     range [ 10, 20, 30, 40 ]
 
-   Sphere { }
-   Cylinder { }
-   Cone { }
-   Cube { }
-   Info { }
-}
+     Sphere { }
+     Cylinder { }
+     Cone { }
+     Cube { }
+     Info { }
+  }
   \endcode
 
   For the sub-scenegraph above, when the LOD-object is less than 10
-  units away from the viewer / camera, an SoSphere will be shown. For
+  units away from the viewpoint camera, an SoSphere will be shown. For
   distances 10 - 20 units away, this will be changed to the
   SoCylinder, and so on. For distances of \e more than 40 units from
   the camera, an SoInfo node will be traversed / rendered -- ie,

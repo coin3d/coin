@@ -711,9 +711,15 @@ SbDPViewVolume::ortho(double left, double right,
 {
 #if defined(COIN_DEBUG) && 0 // disabled 2002-08-30 pederb
 
-  // these parameter tests are probably incorrect. It is possible to
+  // These parameter tests are probably incorrect. It is possible to
   // set left > right etc. in SGI/TGS Inventor, and it should be
-  // possible to do this in Coin also.
+  // possible to do this in Coin also.  pederb.
+
+  // (Yes, we've actually had user requests for making this possible
+  // after first disallowing it. I don't know what kind of effects
+  // they are using this for, and I'm not sure I want to know.. :-})
+  // mortene.
+
 
   if (left>right) {
     SoDebugError::postWarning("SbDPViewVolume::ortho",

@@ -203,7 +203,7 @@ SoGLPointSizeElement::updategl(void)
                                   "for this OpenGL implementation's "
                                   "glPointSize() settings. It was now clamped.\n\n"
                                   "See the documentation of SoGLPointSizeElement for "
-                                  "information on how to the application programmer may "
+                                  "information on how the application programmer should "
                                   "acquire the boundary values for the legal "
                                   "range.",
                                   this->current,

@@ -83,13 +83,13 @@ public:
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 
   static int getNumDefinedMarkers(void);
-  static void addMarker(int markerIndex, const SbVec2s & size,
+  static void addMarker(int idx, const SbVec2s & size,
                         const unsigned char * bytes, SbBool isLSBFirst = TRUE,
                         SbBool isUpToDown = TRUE);
-  static SbBool getMarker(int markerIndex, SbVec2s & size,
+  static SbBool getMarker(int idx, SbVec2s & size,
                           const unsigned char *& bytes, SbBool & isLSBFirst);
-  static SbBool removeMarker(int markerIndex);
-  static SbBool isMarkerBitSet(int markerIndex, int bitNumber);
+  static SbBool removeMarker(int idx);
+  static SbBool isMarkerBitSet(int idx, int bitNumber);
 
 protected:
   virtual ~SoMarkerSet();

@@ -276,10 +276,10 @@ SoSearchAction::isSearchingAll(void) const
   "why am I not getting the complete path as expected?"
 
   Well, then you probably have to cast the path to a SoFullPath, since
-  certain nodes (like nodekits aswell as VRML97 nodes) have hidden
-  children. SoPath->getTail() will return the first node that has
+  certain nodes (nodekits, many VRML97 nodes) have hidden
+  children. SoPath::getTail() will return the first node that has
   hidden children, or the tail if none of the nodes have hidden
-  children. SoFullPath->getTail() will always return the actual
+  children. SoFullPath::getTail() will always return the actual
   tail. Just do like this:
  
   \code

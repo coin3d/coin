@@ -448,7 +448,7 @@ SoAction::isOfType(SoType type) const
 void
 SoAction::apply(SoNode * root)
 {
-  // need to store these in case action in reapplied
+  // need to store these in case action is re-applied
   AppliedCode storedcode = THIS->appliedcode;
   SoActionP::AppliedData storeddata = THIS->applieddata;
   PathCode storedcurr = this->currentpathcode;

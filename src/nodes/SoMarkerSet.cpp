@@ -1313,7 +1313,7 @@ swap_updown(unsigned char *data, int width, int height)
 }
 
 /*!
-  Replace the bitmap for the marker at \a markerIndex with the
+  Replace the bitmap for the marker at \a idx with the
   representation given by \a size dimensions with the bitmap data at
   \a bytes. \a isLSBFirst and \a isUpToDown indicates how the bitmap
   data is ordered. Does nothing if \a markerIndex is NONE.
@@ -1369,13 +1369,13 @@ swap_updown(unsigned char *data, int width, int height)
   can be used in SoMarkerSet::markerIndex to display the new marker.
 */
 void
-SoMarkerSet::addMarker(int markerIndex, const SbVec2s & size,
+SoMarkerSet::addMarker(int idx, const SbVec2s & size,
                        const unsigned char * bytes, SbBool isLSBFirst,
                        SbBool isUpToDown)
 {
-  if (markerIndex == NONE) return;
+  if (idx == NONE) return;
 
-  SbBool appendnew = markerIndex >= markerlist->getLength() ? TRUE : FALSE;
+  SbBool appendnew = idx >= markerlist->getLength() ? TRUE : FALSE;
   so_marker tempmarker;
   so_marker * temp = &tempmarker;
   if (appendnew) {
@@ -1384,9 +1384,9 @@ SoMarkerSet::addMarker(int markerIndex, const SbVec2s & size,
     tempmarker.align  = 0;
     tempmarker.data   = 0;
     tempmarker.deletedata = FALSE;
-    while (markerIndex > markerlist->getLength()) markerlist->append(tempmarker);
+    while (idx > markerlist->getLength()) markerlist->append(tempmarker);
   }
-  else temp = &(*markerlist)[markerIndex];
+  else temp = &(*markerlist)[idx];
   temp->width = size[0];
   temp->height = size[1];
   temp->align = 1;
@@ -1404,21 +1404,21 @@ SoMarkerSet::addMarker(int markerIndex, const SbVec2s & size,
 }
 
 /*!
-  Returns data for marker at \a markerIndex in the \a size, \a bytes and
+  Returns data for marker at \a idx in the \a size, \a bytes and
   \a isLSBFirst parameters.
 
-  \retval FALSE No marker defined for given \a markerIndex, or markerIndex is 
-  NONE (not removable).
-  \retval TRUE  OK.
+  If no marker is defined for given \a idx, or SoMarkerSet::markerIndex
+  is NONE (not removable), \c FALSE is returned. If everything is OK,
+  \c TRUE is returned.
 */
 SbBool
-SoMarkerSet::getMarker(int markerIndex, SbVec2s & size,
+SoMarkerSet::getMarker(int idx, SbVec2s & size,
                        const unsigned char *& bytes, SbBool & isLSBFirst)
 {
   // FIXME: handle isLSBFirst. skei 20000905
-  if (markerIndex == NONE ||
-      markerIndex >= markerlist->getLength()) return FALSE;
-  so_marker * temp = &(*markerlist)[markerIndex];
+  if (idx == NONE ||
+      idx >= markerlist->getLength()) return FALSE;
+  so_marker * temp = &(*markerlist)[idx];
   size[0] = temp->width;
   size[1] = temp->height;
   bytes = temp->data;
@@ -1427,20 +1427,20 @@ SoMarkerSet::getMarker(int markerIndex, SbVec2s & size,
 }
 
 /*!
-  Removes marker at \a markerIndex.
+  Removes marker at \a idx.
 
-  \retval FALSE No marker defined for given \a markerIndex, or markerIndex is 
-  NONE (not removable).
-  \retval TRUE  OK.
+  If no marker is defined for given \a idx, or SoMarkerSet::markerIndex
+  is NONE (not removable), \c FALSE is returned. If everything is OK,
+  \c TRUE is returned.
 */
 SbBool
-SoMarkerSet::removeMarker(int markerIndex)
+SoMarkerSet::removeMarker(int idx)
 {
-  if (markerIndex == NONE ||
-      markerIndex >= markerlist->getLength()) return FALSE;
-  so_marker * tmp = &(*markerlist)[markerIndex];
+  if (idx == NONE ||
+      idx >= markerlist->getLength()) return FALSE;
+  so_marker * tmp = &(*markerlist)[idx];
   if (tmp->deletedata) delete tmp->data;
-  markerlist->remove(markerIndex);
+  markerlist->remove(idx);
   return TRUE;
 }
 
@@ -1449,7 +1449,7 @@ SoMarkerSet::removeMarker(int markerIndex)
   public Open Inventor API.
 */
 SbBool
-SoMarkerSet::isMarkerBitSet(int markerIndex, int bitNumber)
+SoMarkerSet::isMarkerBitSet(int idx, int bitNumber)
 {
   // FIXME: seems simple enough to support.. 20010815 mortene.
   COIN_OBSOLETED();
