@@ -467,6 +467,11 @@ cc_dl_sym(cc_libhandle handle, const char * symbolname)
   const char * file;
   const char * errstr;
 
+  if (cc_dl_debugging()) {
+    cc_debugerror_postinfo("cc_dl_sym", "Looking up symbol %s", 
+                       symbolname);
+  }
+
   mangledname = malloc(strlen(symbolname) + 2);
   strcpy(mangledname + 1, symbolname);
   mangledname[0] = '_';
