@@ -189,11 +189,402 @@ SoQuadMesh::findNormalBinding(SoState * const state) const
   return binding;
 }
 
+typedef void sogl_render_qmesh_func( const SoGLCoordinateElement * coords,
+    const SbVec3f *normals,
+    SoMaterialBundle * mb,
+    const SoTextureCoordinateBundle * tb,
+    SbBool needNormals,
+    int rowsize,
+    int colsize,
+    int start );
+
+static sogl_render_qmesh_func *ni_render_funcs[ 32 ];
+
+#define OVERALL       0
+#define PER_ROW       1
+#define PER_FACE      2
+#define PER_VERTEX    3
+
+#define IDX(r,c) ((r)*rowsize+(c))
+
+// -----
+
+// n0
+
+#define MBINDING OVERALL
+#define NBINDING OVERALL
+#define TEXTURES FALSE
+static void sogl_qmesh_m0_n0_t0
+#include "../misc/SoGLqmeshTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_ROW
+#define NBINDING OVERALL
+#define TEXTURES FALSE
+static void sogl_qmesh_m1_n0_t0
+#include "../misc/SoGLqmeshTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_FACE
+#define NBINDING OVERALL
+#define TEXTURES FALSE
+static void sogl_qmesh_m2_n0_t0
+#include "../misc/SoGLqmeshTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_VERTEX
+#define NBINDING OVERALL
+#define TEXTURES FALSE
+static void sogl_qmesh_m3_n0_t0
+#include "../misc/SoGLqmeshTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+// -----
+
+// n1
+
+#define MBINDING OVERALL
+#define NBINDING PER_ROW
+#define TEXTURES FALSE
+static void sogl_qmesh_m0_n1_t0
+#include "../misc/SoGLqmeshTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_ROW
+#define NBINDING PER_ROW
+#define TEXTURES FALSE
+static void sogl_qmesh_m1_n1_t0
+#include "../misc/SoGLqmeshTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_FACE
+#define NBINDING PER_ROW
+#define TEXTURES FALSE
+static void sogl_qmesh_m2_n1_t0
+#include "../misc/SoGLqmeshTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_VERTEX
+#define NBINDING PER_ROW
+#define TEXTURES FALSE
+static void sogl_qmesh_m3_n1_t0
+#include "../misc/SoGLqmeshTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+// -----
+
+// n2
+
+#define MBINDING OVERALL
+#define NBINDING PER_FACE
+#define TEXTURES FALSE
+static void sogl_qmesh_m0_n2_t0
+#include "../misc/SoGLqmeshTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_ROW
+#define NBINDING PER_FACE
+#define TEXTURES FALSE
+static void sogl_qmesh_m1_n2_t0
+#include "../misc/SoGLqmeshTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_FACE
+#define NBINDING PER_FACE
+#define TEXTURES FALSE
+static void sogl_qmesh_m2_n2_t0
+#include "../misc/SoGLqmeshTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_VERTEX
+#define NBINDING PER_FACE
+#define TEXTURES FALSE
+static void sogl_qmesh_m3_n2_t0
+#include "../misc/SoGLqmeshTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+// -----
+
+// n3
+
+#define MBINDING OVERALL
+#define NBINDING PER_VERTEX
+#define TEXTURES FALSE
+static void sogl_qmesh_m0_n3_t0
+#include "../misc/SoGLqmeshTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_ROW
+#define NBINDING PER_VERTEX
+#define TEXTURES FALSE
+static void sogl_qmesh_m1_n3_t0
+#include "../misc/SoGLqmeshTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_FACE
+#define NBINDING PER_VERTEX
+#define TEXTURES FALSE
+static void sogl_qmesh_m2_n3_t0
+#include "../misc/SoGLqmeshTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_VERTEX
+#define NBINDING PER_VERTEX
+#define TEXTURES FALSE
+static void sogl_qmesh_m3_n3_t0
+#include "../misc/SoGLqmeshTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+// og de samme, med tekstur
+
+// -----
+
+// n0
+
+#define MBINDING OVERALL
+#define NBINDING OVERALL
+#define TEXTURES TRUE
+static void sogl_qmesh_m0_n0_t1
+#include "../misc/SoGLqmeshTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_ROW
+#define NBINDING OVERALL
+#define TEXTURES TRUE
+static void sogl_qmesh_m1_n0_t1
+#include "../misc/SoGLqmeshTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_FACE
+#define NBINDING OVERALL
+#define TEXTURES TRUE
+static void sogl_qmesh_m2_n0_t1
+#include "../misc/SoGLqmeshTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_VERTEX
+#define NBINDING OVERALL
+#define TEXTURES TRUE
+static void sogl_qmesh_m3_n0_t1
+#include "../misc/SoGLqmeshTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+// -----
+
+// n1
+
+#define MBINDING OVERALL
+#define NBINDING PER_ROW
+#define TEXTURES TRUE
+static void sogl_qmesh_m0_n1_t1
+#include "../misc/SoGLqmeshTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_ROW
+#define NBINDING PER_ROW
+#define TEXTURES TRUE
+static void sogl_qmesh_m1_n1_t1
+#include "../misc/SoGLqmeshTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_FACE
+#define NBINDING PER_ROW
+#define TEXTURES TRUE
+static void sogl_qmesh_m2_n1_t1
+#include "../misc/SoGLqmeshTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_VERTEX
+#define NBINDING PER_ROW
+#define TEXTURES TRUE
+static void sogl_qmesh_m3_n1_t1
+#include "../misc/SoGLqmeshTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+// -----
+
+// n2
+
+#define MBINDING OVERALL
+#define NBINDING PER_FACE
+#define TEXTURES TRUE
+static void sogl_qmesh_m0_n2_t1
+#include "../misc/SoGLqmeshTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_ROW
+#define NBINDING PER_FACE
+#define TEXTURES TRUE
+static void sogl_qmesh_m1_n2_t1
+#include "../misc/SoGLqmeshTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_FACE
+#define NBINDING PER_FACE
+#define TEXTURES TRUE
+static void sogl_qmesh_m2_n2_t1
+#include "../misc/SoGLqmeshTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_VERTEX
+#define NBINDING PER_FACE
+#define TEXTURES TRUE
+static void sogl_qmesh_m3_n2_t1
+#include "../misc/SoGLqmeshTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+// -----
+
+// n3
+
+#define MBINDING OVERALL
+#define NBINDING PER_VERTEX
+#define TEXTURES TRUE
+static void sogl_qmesh_m0_n3_t1
+#include "../misc/SoGLqmeshTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_ROW
+#define NBINDING PER_VERTEX
+#define TEXTURES TRUE
+static void sogl_qmesh_m1_n3_t1
+#include "../misc/SoGLqmeshTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_FACE
+#define NBINDING PER_VERTEX
+#define TEXTURES TRUE
+static void sogl_qmesh_m2_n3_t1
+#include "../misc/SoGLqmeshTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_VERTEX
+#define NBINDING PER_VERTEX
+#define TEXTURES TRUE
+static void sogl_qmesh_m3_n3_t1
+#include "../misc/SoGLqmeshTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+// -----
+
+#undef IDX
+
+#undef OVERALL
+#undef PER_ROW
+#undef PER_FACE
+#undef PER_VERTEX
+
+// -----
+
 // doc from parent
 void
 SoQuadMesh::GLRender(SoGLRenderAction * action)
 {
-  // FIXME: optimize rendering, pederb 20000809
+  static int first = 1;
+  if (first) {
+    first = 0;
+    ni_render_funcs[ 0] = sogl_qmesh_m0_n0_t0;
+    ni_render_funcs[ 1] = sogl_qmesh_m0_n0_t1;
+    ni_render_funcs[ 2] = sogl_qmesh_m0_n1_t0;
+    ni_render_funcs[ 3] = sogl_qmesh_m0_n1_t1;
+    ni_render_funcs[ 4] = sogl_qmesh_m0_n2_t0;
+    ni_render_funcs[ 5] = sogl_qmesh_m0_n2_t1;
+    ni_render_funcs[ 6] = sogl_qmesh_m0_n3_t0;
+    ni_render_funcs[ 7] = sogl_qmesh_m0_n3_t1;
+
+    ni_render_funcs[ 8] = sogl_qmesh_m1_n0_t0;
+    ni_render_funcs[ 9] = sogl_qmesh_m1_n0_t1;
+    ni_render_funcs[10] = sogl_qmesh_m1_n1_t0;
+    ni_render_funcs[11] = sogl_qmesh_m1_n1_t1;
+    ni_render_funcs[12] = sogl_qmesh_m1_n2_t0;
+    ni_render_funcs[13] = sogl_qmesh_m1_n2_t1;
+    ni_render_funcs[14] = sogl_qmesh_m1_n3_t0;
+    ni_render_funcs[15] = sogl_qmesh_m1_n3_t1;
+
+    ni_render_funcs[16] = sogl_qmesh_m2_n0_t0;
+    ni_render_funcs[17] = sogl_qmesh_m2_n0_t1;
+    ni_render_funcs[18] = sogl_qmesh_m2_n1_t0;
+    ni_render_funcs[19] = sogl_qmesh_m2_n1_t1;
+    ni_render_funcs[20] = sogl_qmesh_m2_n2_t0;
+    ni_render_funcs[21] = sogl_qmesh_m2_n2_t1;
+    ni_render_funcs[22] = sogl_qmesh_m2_n3_t0;
+    ni_render_funcs[23] = sogl_qmesh_m2_n3_t1;
+
+    ni_render_funcs[24] = sogl_qmesh_m3_n0_t0;
+    ni_render_funcs[25] = sogl_qmesh_m3_n0_t1;
+    ni_render_funcs[26] = sogl_qmesh_m3_n1_t0;
+    ni_render_funcs[27] = sogl_qmesh_m3_n1_t1;
+    ni_render_funcs[28] = sogl_qmesh_m3_n2_t0;
+    ni_render_funcs[29] = sogl_qmesh_m3_n2_t1;
+    ni_render_funcs[30] = sogl_qmesh_m3_n3_t0;
+    ni_render_funcs[31] = sogl_qmesh_m3_n3_t1;
+
+  }
+
   SoState * state = action->getState();
 
   if (this->vertexProperty.getValue()) {
@@ -247,18 +638,21 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
     normals = getNormalCache()->getNormals();
   }
 
-  SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
-  const SbVec3f * currnormal = &dummynormal;
-  if (normals) currnormal = normals;
-
-  if (nbind == OVERALL && needNormals) {
-    glNormal3fv((const GLfloat *)currnormal);
-  }
-
-  int curridx; // for optimization only
-
   SoMaterialBundle mb(action);
   mb.sendFirst(); // make sure we have the correct material
+
+  ni_render_funcs[ (mbind << 3) | (nbind << 1) | doTextures ]
+    ( coords,
+      normals,
+      &mb,
+      &tb,
+      needNormals,
+      rowsize,
+      colsize,
+      start);
+
+
+#if 0 // obsoleted 2001-01-08, skei
 
 #define IDX(r,c) ((r)*rowsize+(c))
 
@@ -305,6 +699,8 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
     glEnd(); // end of strip/row
   }
 #undef IDX
+
+#endif // obsoleted
 
   if (this->vertexProperty.getValue())
     state->pop();

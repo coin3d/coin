@@ -60,6 +60,7 @@
 #include <Inventor/elements/SoTextureCoordinateBindingElement.h>
 #include <Inventor/elements/SoDrawStyleElement.h>
 #include <Inventor/elements/SoGLLightModelElement.h>
+#include <Inventor/elements/SoGLCoordinateElement.h>
 
 #include <assert.h>
 
@@ -184,6 +185,18 @@ SoIndexedLineSet::findMaterialBinding(SoState * state)
 }
 
 
+typedef void sogl_render_ils_func ( const SoGLCoordinateElement */*const*/ coords,
+				    const int32_t *indices,
+				    int num_vertexindices,
+				    const SbVec3f *normals,
+				    const int32_t *normindices,
+				    SoMaterialBundle *const materials,
+				    const int32_t *matindices,
+				    const SoTextureCoordinateBundle * const texcoords,
+				    const int32_t *texindices,
+				    const int drawAsPoints);
+
+
 // doc from parent
 void
 SoIndexedLineSet::GLRender(SoGLRenderAction * action)
@@ -270,11 +283,8 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
   SbBool drawPoints =
     SoDrawStyleElement::get(state) == SoDrawStyleElement::POINTS;
 
-  const SoGLShapeHintsElement * sh = (SoGLShapeHintsElement *)
-    action->getState()->getConstElement(SoGLShapeHintsElement::getClassStackIndex());
-  sh->forceSend(TRUE, FALSE, TRUE); // enable twoside lighting
 
-  sogl_render_lineset((SoGLCoordinateElement *)coords,
+  sogl_render_lineset((SoGLCoordinateElement*)coords,
                       cindices,
                       numindices,
                       normals,
@@ -285,8 +295,8 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
                       tindices,
                       (int)nbind,
                       (int)mbind,
-                      doTextures?1:0,
-                      drawPoints?1:0);
+                      doTextures ? 0 : 1,
+                      drawPoints ? 0 : 1);
 
   if (didpush) {
     state->pop();

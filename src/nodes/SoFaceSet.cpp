@@ -175,6 +175,190 @@ SoFaceSet::findNormalBinding(SoState * const state) const
   return binding;
 }
 
+typedef void sogl_render_ni_faceset_func( const SoGLCoordinateElement * coords,
+    const SbVec3f *normals,
+    SoMaterialBundle * mb,
+    const SoTextureCoordinateBundle * tb,
+    int nbind,
+    int mbind,
+    int doTextures,
+    int32_t idx,
+    const int32_t *ptr,
+    const int32_t *end,
+    SbBool needNormals);
+
+static sogl_render_ni_faceset_func *ni_render_funcs[22];
+
+#define OVERALL             0
+#define PER_FACE            1
+#define PER_VERTEX          2
+
+#define MBINDING OVERALL
+#define NBINDING OVERALL
+#define TEXTURES FALSE
+static void sogl_nifs_m0_n0_t0
+#include "../misc/SoGLnonindexedFaceSetTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_FACE
+#define NBINDING OVERALL
+#define TEXTURES FALSE
+static void sogl_nifs_m1_n0_t0
+#include "../misc/SoGLnonindexedFaceSetTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_VERTEX
+#define NBINDING OVERALL
+#define TEXTURES FALSE
+static void sogl_nifs_m2_n0_t0
+#include "../misc/SoGLnonindexedFaceSetTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING OVERALL
+#define NBINDING PER_FACE
+#define TEXTURES FALSE
+static void sogl_nifs_m0_n1_t0
+#include "../misc/SoGLnonindexedFaceSetTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_FACE
+#define NBINDING PER_FACE
+#define TEXTURES FALSE
+static void sogl_nifs_m1_n1_t0
+#include "../misc/SoGLnonindexedFaceSetTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_VERTEX
+#define NBINDING PER_FACE
+#define TEXTURES FALSE
+static void sogl_nifs_m2_n1_t0
+#include "../misc/SoGLnonindexedFaceSetTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING OVERALL
+#define NBINDING PER_VERTEX
+#define TEXTURES FALSE
+static void sogl_nifs_m0_n2_t0
+#include "../misc/SoGLnonindexedFaceSetTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_FACE
+#define NBINDING PER_VERTEX
+#define TEXTURES FALSE
+static void sogl_nifs_m1_n2_t0
+#include "../misc/SoGLnonindexedFaceSetTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_VERTEX
+#define NBINDING PER_VERTEX
+#define TEXTURES FALSE
+static void sogl_nifs_m2_n2_t0
+#include "../misc/SoGLnonindexedFaceSetTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING OVERALL
+#define NBINDING OVERALL
+#define TEXTURES TRUE
+static void sogl_nifs_m0_n0_t1
+#include "../misc/SoGLnonindexedFaceSetTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_FACE
+#define NBINDING OVERALL
+#define TEXTURES TRUE
+static void sogl_nifs_m1_n0_t1
+#include "../misc/SoGLnonindexedFaceSetTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_VERTEX
+#define NBINDING OVERALL
+#define TEXTURES TRUE
+static void sogl_nifs_m2_n0_t1
+#include "../misc/SoGLnonindexedFaceSetTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING OVERALL
+#define NBINDING PER_FACE
+#define TEXTURES TRUE
+static void sogl_nifs_m0_n1_t1
+#include "../misc/SoGLnonindexedFaceSetTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_FACE
+#define NBINDING PER_FACE
+#define TEXTURES TRUE
+static void sogl_nifs_m1_n1_t1
+#include "../misc/SoGLnonindexedFaceSetTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_VERTEX
+#define NBINDING PER_FACE
+#define TEXTURES TRUE
+static void sogl_nifs_m2_n1_t1
+#include "../misc/SoGLnonindexedFaceSetTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING OVERALL
+#define NBINDING PER_VERTEX
+#define TEXTURES TRUE
+static void sogl_nifs_m0_n2_t1
+#include "../misc/SoGLnonindexedFaceSetTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_FACE
+#define NBINDING PER_VERTEX
+#define TEXTURES TRUE
+static void sogl_nifs_m1_n2_t1
+#include "../misc/SoGLnonindexedFaceSetTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#define MBINDING PER_VERTEX
+#define NBINDING PER_VERTEX
+#define TEXTURES TRUE
+static void sogl_nifs_m2_n2_t1
+#include "../misc/SoGLnonindexedFaceSetTemplate.cpp"
+#undef MBINDING
+#undef NBINDING
+#undef TEXTURES
+
+#undef OVERALL
+#undef PER_FACE
+#undef PER_VERTEX
+
 // doc from parent
 void
 SoFaceSet::GLRender(SoGLRenderAction * action)
@@ -182,8 +366,32 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
   // FIXME:
   // 1) check for concave polygons, and use SbTesselator to draw triangles.
   //    Or use SoConvexDataCache (much faster).
-  // 2) optimize rendering for this shape.
-  //                                                      pederb, 20000809
+
+  static int first = 1;
+  if (first) {
+    first = 0;
+    ni_render_funcs[ 0] = sogl_nifs_m0_n0_t0;
+    ni_render_funcs[ 1] = sogl_nifs_m0_n0_t1;
+    ni_render_funcs[ 2] = sogl_nifs_m0_n1_t0;
+    ni_render_funcs[ 3] = sogl_nifs_m0_n1_t1;
+    ni_render_funcs[ 4] = sogl_nifs_m0_n2_t0;
+    ni_render_funcs[ 5] = sogl_nifs_m0_n2_t1;
+
+    ni_render_funcs[ 8] = sogl_nifs_m1_n0_t0;
+    ni_render_funcs[ 9] = sogl_nifs_m1_n0_t1;
+    ni_render_funcs[10] = sogl_nifs_m1_n1_t0;
+    ni_render_funcs[11] = sogl_nifs_m1_n1_t1;
+    ni_render_funcs[12] = sogl_nifs_m1_n2_t0;
+    ni_render_funcs[13] = sogl_nifs_m1_n2_t1;
+
+    ni_render_funcs[16] = sogl_nifs_m2_n0_t0;
+    ni_render_funcs[17] = sogl_nifs_m2_n0_t1;
+    ni_render_funcs[18] = sogl_nifs_m2_n1_t0;
+    ni_render_funcs[19] = sogl_nifs_m2_n1_t1;
+    ni_render_funcs[20] = sogl_nifs_m2_n2_t0;
+    ni_render_funcs[21] = sogl_nifs_m2_n2_t1;
+  }
+
   SoState * state = action->getState();
 
   if (this->vertexProperty.getValue()) {
@@ -230,6 +438,21 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
   const int32_t *end = ptr + this->numVertices.getNum();
   this->fixNumVerticesPointers(state, ptr, end, dummyarray);
 
+  ni_render_funcs[ (mbind << 3) | (nbind << 1) | doTextures ]
+    ( coords,
+      normals,
+      &mb,
+      &tb,
+      nbind,
+      mbind,
+      doTextures,
+      idx,
+      ptr,
+      end,
+      needNormals);
+
+#if 0 // obsoleted 2000-12-18, skei
+
   int matnr = 0;
   int texnr = 0;
   int mode = GL_POLYGON;
@@ -272,6 +495,9 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
     if (mode == GL_POLYGON) glEnd();
   }
   if (mode != GL_POLYGON) glEnd();
+
+#endif // obsoleted
+
   if (this->vertexProperty.getValue())
     state->pop();
 }
