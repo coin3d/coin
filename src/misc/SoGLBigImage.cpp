@@ -25,9 +25,8 @@
   \class SoGLBigImage include/Inventor/misc/SoGLBigImage.h
   \brief The SoGLBigImage class is used to handle 2D OpenGL textures of any size.
 
-  (This class is currently under heavy development, and is probably
-  somewhat buggy.  Don't use it unless you really know what you're
-  doing!)
+  This class is internal. To enable/disable big-image texture handling
+  you should use the SoTextureScalePolicy node.
 
   The technique used is the following: split the texture into x*y
   equal size blocks. All these subtextures are of size 2^n, and are
@@ -76,8 +75,6 @@
 // By keeping this number small, we avoid slow updates when zooming in
 // on an image, as only few textures are changed each frame.
 #define CHANGELIMIT 4
-
-#ifndef DOXYGEN_SKIP_THIS
 
 typedef struct {
   SbVec2s imagesize;
@@ -187,9 +184,6 @@ soglbigimagetls_destruct(void * closure)
   delete[] tls->averagebuf;
 }
 
-#endif // DOXYGEN_SKIP_THIS
-
-#undef THIS
 #define THIS this->pimpl
 
 /*!
