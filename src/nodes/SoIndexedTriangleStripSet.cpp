@@ -514,7 +514,7 @@ SoIndexedTriangleStripSet::generatePrimitives(SoAction *action)
 		nindices, tindices, mindices, numindices, 
 		sendNormals, normalCacheUsed);
   
-  SoTextureCoordinateBundle tb(action, TRUE, FALSE);
+  SoTextureCoordinateBundle tb(action, FALSE, FALSE);
   doTextures = tb.needCoordinates();
   
   Binding tbind = PER_VERTEX_INDEXED; // most common

@@ -475,7 +475,7 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
     nbind = OVERALL;
   }
 
-  SoTextureCoordinateBundle tb(action, TRUE, FALSE);
+  SoTextureCoordinateBundle tb(action, FALSE, FALSE);
   doTextures = tb.needCoordinates();
 
   Binding tbind = PER_VERTEX_INDEXED; // most common
