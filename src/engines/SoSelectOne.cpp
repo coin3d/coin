@@ -108,6 +108,8 @@ SoSelectOne::SoSelectOne(void)
 void
 SoSelectOne::initialize(const SoType inputfieldtype)
 {
+  // FIXME: be robust wrt invalid types. 20000919 mortene.
+
   SO_ENGINE_INTERNAL_CONSTRUCTOR(SoSelectOne);
   SO_ENGINE_ADD_INPUT(index, (0));
 
@@ -244,4 +246,13 @@ SoSelectOne::writeInstance(SoOutput * out)
 
   this->getFieldData()->write(out, this);
   this->writeFooter(out);
+}
+
+// overloaded from parent
+void
+SoSelectOne::copyContents(const SoFieldContainer * from,
+                          SbBool copyconnections)
+{
+  this->initialize(((SoSelectOne *)from)->input->getTypeId());
+  inherited::copyContents(from, copyconnections);
 }

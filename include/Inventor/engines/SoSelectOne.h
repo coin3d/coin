@@ -52,6 +52,9 @@ private:
 
   void initialize(const SoType inputfieldtype);
 
+  virtual void copyContents(const SoFieldContainer * from,
+                            SbBool copyconnections);
+
   // SoSelectOne instances uses a dynamic set of inputs and outputs,
   // as they are not common for all instances of the class (like for
   // most of the other engines).
