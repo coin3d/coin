@@ -545,8 +545,8 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
     return FALSE;
   }
 
-  const SbVec2s fullsize = this->viewport.getViewportSizePixels();
   const SbVec2s tilesize = SoOffscreenRendererP::getMaxTileSize();
+  const SbVec2s fullsize = this->viewport.getViewportSizePixels();
   const SbVec2s regionsize = SbVec2s(SbMin(tilesize[0], fullsize[0]), SbMin(tilesize[1], fullsize[1]));
 
   this->internaldata->setBufferSize(regionsize);
@@ -609,6 +609,7 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
   SoDebugError::postInfo("SoOffscreenRendererP::renderFromBase",
                          "fullsize==<%d, %d>", fullsize[0], fullsize[1]);
 #endif // debug
+
   delete[] this->buffer;
   this->buffer = new unsigned char[fullsize[0] * fullsize[1] * PUBLIC(this)->getComponents()];
 
@@ -722,11 +723,11 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
     else assert(FALSE && "impossible");
 
     this->internaldata->postRender();
-
+    
     SbVec2s dims = PUBLIC(this)->getViewportRegion().getViewportSizePixels();
     assert(dims[0] == this->internaldata->getBufferSize()[0]);
     assert(dims[1] == this->internaldata->getBufferSize()[1]);
-
+    
     /* FIXME: see FIXME above:
      * memcpy(this->buffer, this->internaldata->getBuffer(), 
      *        dims[0] * dims[1] * PUBLIC(this)->getComponents());
@@ -1469,7 +1470,12 @@ SoOffscreenRendererP::pasteSubscreen(const SbVec2s & subscreenidx,
 SbVec2s
 SoOffscreenRendererP::getMaxTileSize(void)
 {
-
+  // cache the values in static variables so that a new context is not
+  // created every time render() is called in SoOffscreenRenderer
+  static unsigned int maxtilex = 0;
+  static unsigned int maxtiley = 0;  
+  if (maxtilex > 0) return SbVec2s((short)maxtilex, (short)maxtiley);
+  
   SbVec2s dims;
   unsigned int width = 128;
   unsigned int height = 128;
@@ -1494,17 +1500,18 @@ SoOffscreenRendererP::getMaxTileSize(void)
   if (forcedtilewidth != 0) { width = forcedtilewidth; }
   if (forcedtileheight != 0) { height = forcedtileheight; }
 
-
-  if(width < SHRT_MAX) dims[0] = width;
+  if (width < SHRT_MAX) dims[0] = width;
   else dims[0] = SHRT_MAX;
-
-  if(height < SHRT_MAX) dims[1] = height;
+  
+  if (height < SHRT_MAX) dims[1] = height;
   else dims[1] = SHRT_MAX;
+  
+  // cache result for later calls
+  maxtilex = width;
+  maxtiley = height;
 
   return dims;
-
 }
-
 
 #undef PRIVATE
 #undef PUBLIC
