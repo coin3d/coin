@@ -1874,7 +1874,7 @@ SoBaseKit::setAnyPart(const SbName & partname, SoNode * from, SbBool anypart)
 
   SbString partstring(partname.getString());
 
-  if (SoBaseKit::findPart(partstring, kit, partNum, isList, listIdx, TRUE, NULL, TRUE)) {
+  if (SoBaseKit::findPart(partstring, kit, partNum, isList, listIdx, FALSE, NULL, TRUE)) {
     if (anypart || kit->getNodekitCatalog()->isPublic(partNum)) {
       if (isList) {
         SoNode * partnode = PRIVATE(kit)->instancelist[partNum]->getValue();
