@@ -70,6 +70,7 @@
 #include <Inventor/sensors/SoSensorManager.h>
 #include <Inventor/sensors/SoDelayQueueSensor.h>
 #include <Inventor/sensors/SoTimerSensor.h>
+#include <Inventor/sensors/SoAlarmSensor.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SbTime.h>
 #include <Inventor/SbDict.h>
@@ -150,6 +151,13 @@ public:
   SbMutex immediatemutex;
   SbMutex reschedulemutex;
 #endif // COIN_THREADSAFE
+
+  SbTime prevprocessdelay;
+  SoAlarmSensor * alarmsensor;
+  static void alarm_sensor_cb(void * userdata, SoSensor * sensor) {
+    SoSensorManager * thisp = (SoSensorManager*) userdata;
+    thisp->processDelayQueue(FALSE);
+  }
 };
 
 void
@@ -223,6 +231,8 @@ SoSensorManager::SoSensorManager(void)
   THIS->processingimmediatequeue = FALSE;
 
   THIS->delaysensortimeout.setValue(1.0/12.0);
+  THIS->prevprocessdelay = SbTime::zero();
+  THIS->alarmsensor = new SoAlarmSensor(SoSensorManagerP::alarm_sensor_cb, this);
 }
 
 /*!
@@ -233,7 +243,7 @@ SoSensorManager::~SoSensorManager()
   // FIXME: remove entries. 19990225 mortene.
   if(THIS->delayqueue.getLength() != 0) {}
   if(THIS->timerqueue.getLength() != 0) {}
-
+  delete THIS->alarmsensor;
   delete THIS;
 }
 
@@ -395,7 +405,7 @@ SoSensorManager::processTimerQueue(void)
 
   if (THIS->processingtimerqueue || THIS->timerqueue.getLength() == 0)
     return;
-
+  
 #if DEBUG_TIMER_SENSORHANDLING // debug
   SoDebugError::postInfo("SoSensorManager::processTimerQueue",
                          "start: %d elements", THIS->timerqueue.getLength());
@@ -487,6 +497,18 @@ SoSensorManager::processDelayQueue(SbBool isidle)
   if (THIS->processingdelayqueue || THIS->delayqueue.getLength() == 0)
     return;
 
+  // avoid that the delay queue is processed too often when we're idle
+  SbTime currtime = SbTime::getTimeOfDay();
+  if (isidle && (currtime < (THIS->prevprocessdelay + THIS->delaysensortimeout))) {
+    // trigger an alarm sensor so that the delay queue is processed
+    // again pretty soon
+    if (!THIS->alarmsensor->isScheduled()) {
+      THIS->alarmsensor->setTimeFromNow(THIS->delaysensortimeout);
+      THIS->alarmsensor->schedule();
+    }
+    return;
+  }
+
 #if DEBUG_DELAY_SENSORHANDLING // debug
   SoDebugError::postInfo("SoSensorManager::processDelayQueue",
                          "start: %d elements", THIS->delayqueue.getLength());
@@ -545,6 +567,7 @@ SoSensorManager::processDelayQueue(SbBool isidle)
   THIS->reinsertdict.applyToAll(reinsert_dict_cb, (void*) this);
   THIS->reinsertdict.clear();
   THIS->processingdelayqueue = FALSE;
+  THIS->prevprocessdelay = currtime;
 }
 
 /*!
