@@ -37,7 +37,7 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/fields/SoField.h>
+#include <Inventor/fields/SoSFTime.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <Inventor/sensors/SoOneShotSensor.h>
@@ -269,8 +269,14 @@ SoSceneManager::redraw(void)
     // Automatically re-triggers rendering if any animation stuff is
     // connected to the realTime field.
     if (this->touchtimer) {
+      // FIXME: it would be more elegant to use a private field class
+      // inheriting SoSFTime ("SFRealTime") which could just be
+      // touch()'ed, and which would do lazy reading of time-of-day on
+      // demand. 20000316 mortene.
       SoField * realtime = SoDB::getGlobalField("realTime");
-      realtime->touch();
+      if (realtime && (realtime->getTypeId() == SoSFTime::getClassTypeId())) {
+        ((SoSFTime *)realtime)->setValue(SbTime::getTimeOfDay());
+      }
     }
   }
 }
