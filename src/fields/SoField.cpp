@@ -81,6 +81,7 @@
 #define FLAG_DONOTIFY       0x0200
 #define FLAG_ISDESTRUCTING  0x0400
 #define FLAG_ISEVALUATING   0x0800
+#define FLAG_ISNOTIFIED     0x1000
 
 static const char IGNOREDCHAR = '~';
 static const char CONNECTIONCHAR = '=';
@@ -1017,7 +1018,7 @@ SoField::set(const char * valuestring)
 static void * field_buffer = NULL;
 static size_t field_buffer_size = 0;
 
-static void 
+static void
 field_buffer_cleanup(void)
 {
   if (field_buffer) {
@@ -1027,7 +1028,7 @@ field_buffer_cleanup(void)
   }
 }
 
-static void * 
+static void *
 field_buffer_realloc(void * bufptr, size_t size)
 {
   void * newbuf = realloc(bufptr, size);
@@ -1055,14 +1056,14 @@ SoField::get(SbString & valuestring)
   // at end of method. Otherwise, just keep using the allocated
   // memory the next time this method is called.
   const size_t MAXSIZE = 1024;
-  
+
   if (field_buffer_size < STARTSIZE) {
     field_buffer = malloc(STARTSIZE);
     field_buffer_size = STARTSIZE;
     atexit(field_buffer_cleanup);
   }
 
-  out.setBuffer(field_buffer, field_buffer_size, 
+  out.setBuffer(field_buffer, field_buffer_size,
                 field_buffer_realloc);
 
   // Record offset to skip header.
@@ -1113,7 +1114,7 @@ SoField::startNotify(void)
   SoDebugError::postInfo("SoField::startNotify", "field %p (%s), list %p",
                          this, this->getTypeId().getName().getString(), &l);
 #endif // debug
-  
+
   SoDB::startNotify();
   this->notify(&l);
   SoDB::endNotify();
@@ -1129,6 +1130,12 @@ SoField::startNotify(void)
 void
 SoField::notify(SoNotList * nlist)
 {
+  // In Inventor it is legal to have circular field connections. This
+  // test stops the notification from entering into an infinite
+  // recursion because of such connections. The flag is set/cleared
+  // before/after progagating the notification.
+  if (this->getStatus(FLAG_ISNOTIFIED)) return;
+
 #if COIN_DEBUG && 0 // debug
   if (this != SoDB::getGlobalField("realTime")) {
     SoDebugError::postInfo("SoField::notify", "%p (%s (%s '%s')) -- start",
@@ -1150,6 +1157,7 @@ SoField::notify(SoNotList * nlist)
   if (nlist->getFirstRec()) this->setDirty(TRUE);
 
   if (this->isNotifyEnabled()) {
+    this->setStatusBits(FLAG_ISNOTIFIED);
     SoNotRec rec(this->getContainer());
     nlist->append(&rec, this);
     nlist->setLastType(SoNotRec::CONTAINER); // FIXME: Not sure about this. 20000304 mortene.
@@ -1160,6 +1168,7 @@ SoField::notify(SoNotList * nlist)
 #endif // debug
     if (this->getContainer()) this->getContainer()->notify(nlist);
     this->notifyAuditors(nlist);
+    this->clearStatusBits(FLAG_ISNOTIFIED);
   }
 
 #if COIN_DEBUG && 0 // debug
@@ -1829,7 +1838,11 @@ SoField::evaluateConnection(void) const
   if (this->isConnectedFromField()) {
     int idx = this->storage->masterfields.getLength() - 1;
     SoField * master = this->storage->masterfields[idx];
-    if (!master->isDestructing()) {
+    // don't copy if master is destructing, or if master is currently
+    // evaluating. The master might be evaluating if we have circular
+    // field connections. If this is the case, the field will already
+    // contain the correct value, and we should not copy again.
+    if (!master->isDestructing() && !master->getStatus(FLAG_ISEVALUATING)) {
       SoFieldConverter * converter = this->storage->findConverter(master);
       if (converter) converter->evaluateWrapper();
       else {
@@ -1928,7 +1941,7 @@ SoField::getFieldType(void) const
 /*!
   Can be used to check if a field is being destructed.
 */
-SbBool 
+SbBool
 SoField::isDestructing(void) const
 {
   return this->getStatus(FLAG_ISDESTRUCTING);
@@ -2006,3 +2019,15 @@ SoField::initClasses(void)
   SoType::createType(SoMField::getClassTypeId(), "MFULong",
                      &SoMFUInt32::createInstance);
 }
+
+#undef FLAG_TYPEMASK
+#undef FLAG_ISDEFAULT
+#undef FLAG_IGNORE
+#undef FLAG_EXTSTORAGE
+#undef FLAG_ENABLECONNECTS
+#undef FLAG_NEEDEVALUATION
+#undef FLAG_READONLY
+#undef FLAG_DONOTIFY
+#undef FLAG_ISDESTRUCTING
+#undef FLAG_ISEVALUATING
+#undef FLAG_ISNOTIFIED
