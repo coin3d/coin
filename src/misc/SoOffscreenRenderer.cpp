@@ -1157,6 +1157,8 @@ SoOffscreenRenderer::writeToPostScript(FILE * fp) const
     fprintf(fp, "%%%%Trailer\n");
     fprintf(fp, "\n");
     fprintf(fp, "%%%%EOF\n");
+
+    return TRUE;
   }
   return FALSE;
 }
