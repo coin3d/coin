@@ -3338,4 +3338,54 @@ Separator {
 
     20040707 kintel
 
+    UPDATE 20040718 mortene: consider this a low priority item.
+
+=====================================================================
+
+124 SoAsciiText bounding box calculations fails with trailing blank
+    line(s).
+
+    The following bug was reported on coin-discuss by Nikolai Ruhe: if
+    SoAsciiText::string contains either just blank line(s) or text
+    with trailing blank line(s), bbox calculations fail, with Coin
+    spewing out lots of warning messages.
+
+    To reproduce:
+
+--------8<------------- [snip] --------------8<------------- [snip]
+#include <Inventor/Qt/SoQt.h>
+#include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoAsciiText.h>
+
+int
+main(int argc, char** argv)
+{
+  QWidget* mainwin = SoQt::init(argc, argv, argv[0]);
+
+  SoSeparator* root = new SoSeparator;
+  root->ref();
+
+  SoAsciiText* text = new SoAsciiText;
+  text->string.set1Value(0, "a Line");
+  text->string.set1Value(1, "");       // Comment this line out and it works
+  root->addChild(text);
+
+  SoQtExaminerViewer* eviewer = new SoQtExaminerViewer(mainwin);
+  eviewer->setSceneGraph(root);
+  eviewer->show();
+  SoQt::show(mainwin);
+  SoQt::mainLoop();
+
+  delete eviewer;
+  root->unref();
+
+  return 0;
+}
+--------8<------------- [snip] --------------8<------------- [snip]
+
+    Ugly and silly bug, medium-to-high priority.
+
+    20040718 mortene.
+
 =====================================================================
