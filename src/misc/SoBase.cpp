@@ -903,10 +903,12 @@ SoBase::readBaseInstance(SoInput * in, const SbName & className,
       SbString instancename = refName.getString();
       const char * strp = instancename.getString();
       const char * occ = strstr(strp, SoBase::refwriteprefix.getString());
-      if (occ) instancename = instancename.getSubString(0, occ - strp - 1);
 
-      // Set name identifier for newly created SoBase instance.
-      base->setName(instancename);
+      if (occ != strp) { // They will be equal if the name is only a refcount.
+        if (occ) instancename = instancename.getSubString(0, occ - strp - 1);
+        // Set name identifier for newly created SoBase instance.
+        base->setName(instancename);
+      }
     }
 
     unsigned short flags = 0;
