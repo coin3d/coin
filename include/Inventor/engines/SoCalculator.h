@@ -60,10 +60,8 @@ private:
   static void readfieldcb(const char *name, float *data, void *cbdata);
   static void writefieldcb(const char *name, float *data, int comp, void *cbdata);
 
-  void evaluateExpression(struct so_eval_node *node);
+  void evaluateExpression(struct so_eval_node *node, const int fieldidx);
   void findUsed(struct so_eval_node *node, char *inused, char *outused);
-
-  SoField *getFieldFake(const char *fieldname);
 
   float ta_th[8];
   SbVec3f tA_tH[8];

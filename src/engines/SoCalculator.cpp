@@ -93,11 +93,13 @@ SoCalculator::initClass(void)
 void
 SoCalculator::evaluate(void)
 {
+  int i, j;
+
   if (this->expression.getNum() == 0 ||
       this->expression[0].getLength() == 0) return;
 
   if (this->evaluatorList.getLength() == 0) {
-    for (int i = 0; i < this->expression.getNum(); i++) {
+    for (i = 0; i < this->expression.getNum(); i++) {
       const SbString &s = this->expression[i];
       if (s.getLength()) {
         this->evaluatorList.append(so_eval_parse(s.getString()));
@@ -112,40 +114,19 @@ SoCalculator::evaluate(void)
     }
   }
 
-  int i;
 
-  // initialize output fields to default values.
-  for (i = 0; i < 4; i++) {
-    oA_oD[i] = SbVec3f(0.0f, 0.0f, 0.0f);
-    oa_od[i] = 0.0f;
-  }
-
-  for (i = 0; i < this->evaluatorList.getLength(); i++) {
-    if (this->evaluatorList[i])
-      this->evaluateExpression(this->evaluatorList[i]);
-  }
-}
-
-// evaluates a single expression
-void
-SoCalculator::evaluateExpression(struct so_eval_node *node)
-{
-  int i;
+  // find all fields used in all expressions
+  int maxnum = 0;
   char inused[16]; /* a-h and A-H */
-  char outused[8]; /* oa-od and oA-oD */
-
-  so_eval_cbdata cbdata;
-  cbdata.readfieldcb = SoCalculator::readfieldcb;
-  cbdata.writefieldcb = SoCalculator::writefieldcb;
-  cbdata.userdata = this;
-
+  char outused[8]; /* a-d and A-D */
   for (i = 0; i < 16; i++) inused[i] = 0;
   for (i = 0; i < 8; i++) outused[i] = 0;
 
-  this->findUsed(node, inused, outused);
-
+  for (i = 0; i < this->evaluatorList.getLength(); i++) {
+    this->findUsed(this->evaluatorList[i], inused, outused);
+  }
+  
   // find max number of values in used input fields
-  int maxnum = 0;
   char fieldname[2];
   fieldname[1] = 0;
   for (i = 0; i < 16; i++) {
@@ -160,51 +141,98 @@ SoCalculator::evaluateExpression(struct so_eval_node *node)
       maxnum = SbMax(maxnum, field->getNum());
     }
   }
+  if (maxnum == 0) {
+#if COIN_DEBUG && 1 // debug
+    SoDebugError::postInfo("SoCalculator::evaluate",
+                           "There were no values in any of the input fields!");
+#endif // debug
+    return;
+  }
 
   if (outused[0]) { SO_ENGINE_OUTPUT(oa, SoMFFloat, setNum(maxnum)); }
   if (outused[1]) { SO_ENGINE_OUTPUT(ob, SoMFFloat, setNum(maxnum)); }
   if (outused[2]) { SO_ENGINE_OUTPUT(oc, SoMFFloat, setNum(maxnum)); }
   if (outused[3]) { SO_ENGINE_OUTPUT(od, SoMFFloat, setNum(maxnum)); }
-
+  
   if (outused[4]) { SO_ENGINE_OUTPUT(oA, SoMFVec3f, setNum(maxnum)); }
   if (outused[5]) { SO_ENGINE_OUTPUT(oB, SoMFVec3f, setNum(maxnum)); }
   if (outused[6]) { SO_ENGINE_OUTPUT(oC, SoMFVec3f, setNum(maxnum)); }
   if (outused[7]) { SO_ENGINE_OUTPUT(oD, SoMFVec3f, setNum(maxnum)); }
 
+  // loop through all fieldindices and evaluate
   for (i = 0; i < maxnum; i++) {
-    // copy values from fields to temporary "registers" while evaluating
-    int j;
-    for (j = 0; j < 8; j++) {
-      if (inused[j]) {
-        fieldname[0] = 'a' + j;
-        SoMFFloat *field = (SoMFFloat*) this->getField(fieldname);
-        int num = field->getNum();
-        if (num) a_h[j] = field->getValues(0)[SbMin(i, num-1)];
-        else a_h[j] = 0.0f;
+    // just initialize output registers to default values
+    // (in case an expression reads from an output before setting its value)
+    oA_oD[0] = SbVec3f(0.0f, 0.0f, 0.0f);
+    oA_oD[1] = SbVec3f(0.0f, 0.0f, 0.0f);
+    oA_oD[2] = SbVec3f(0.0f, 0.0f, 0.0f);
+    oA_oD[3] = SbVec3f(0.0f, 0.0f, 0.0f);
+    oa_od[0] = 0.0f;
+    oa_od[1] = 0.0f;
+    oa_od[2] = 0.0f;
+    oa_od[3] = 0.0f;
+
+    // evaluate all expressions for this fieldidx
+    for (j = 0; j < this->evaluatorList.getLength(); j++) {
+      if (this->evaluatorList[j]) {
+        this->evaluateExpression(this->evaluatorList[j], i);
       }
     }
-    for (j = 0; j < 8; j++) {
-      if (inused[j+8]) {
-        fieldname[0] = 'A' + j;
-        SoMFVec3f *field = (SoMFVec3f*) this->getField(fieldname);
-        int num = field->getNum();
-        if (num) A_H[j] = field->getValues(0)[SbMin(i, num-1)];
-        else A_H[j] = SbVec3f(0.0f, 0.0f, 0.0f);
-      }
-    }
-    so_eval_evaluate(node, &cbdata);
-
-    // copy the output values from "registers" to engine output
-    if (outused[0]) { SO_ENGINE_OUTPUT(oa, SoMFFloat, set1Value(i, oa_od[0])); }
-    if (outused[1]) { SO_ENGINE_OUTPUT(ob, SoMFFloat, set1Value(i, oa_od[1])); }
-    if (outused[2]) { SO_ENGINE_OUTPUT(oc, SoMFFloat, set1Value(i, oa_od[2])); }
-    if (outused[3]) { SO_ENGINE_OUTPUT(od, SoMFFloat, set1Value(i, oa_od[3])); }
-
-    if (outused[4]) { SO_ENGINE_OUTPUT(oA, SoMFVec3f, set1Value(i, oA_oD[0])); }
-    if (outused[5]) { SO_ENGINE_OUTPUT(oB, SoMFVec3f, set1Value(i, oA_oD[1])); }
-    if (outused[6]) { SO_ENGINE_OUTPUT(oC, SoMFVec3f, set1Value(i, oA_oD[2])); }
-    if (outused[7]) { SO_ENGINE_OUTPUT(oD, SoMFVec3f, set1Value(i, oA_oD[3])); }
   }
+}
+
+// evaluates a single expression from/into fieldidx
+void
+SoCalculator::evaluateExpression(struct so_eval_node *node, const int fieldidx)
+{
+  int i;
+
+  char fieldname[2];
+  fieldname[1] = 0;
+  char inused[16]; /* a-h and A-H */
+  char outused[8]; /* oa-od and oA-oD */
+  
+  so_eval_cbdata cbdata;
+  cbdata.readfieldcb = SoCalculator::readfieldcb;
+  cbdata.writefieldcb = SoCalculator::writefieldcb;
+  cbdata.userdata = this;
+  
+  for (i = 0; i < 16; i++) inused[i] = 0;
+  for (i = 0; i < 8; i++) outused[i] = 0;
+
+  this->findUsed(node, inused, outused);
+  
+  // copy values from fields to temporary "registers" while evaluating
+  for (i = 0; i < 8; i++) {
+    if (inused[i]) {
+      fieldname[0] = 'a' + i;
+      SoMFFloat *field = (SoMFFloat*) this->getField(fieldname);
+      int num = field->getNum();
+      if (num) a_h[i] = field->getValues(0)[SbMin(fieldidx, num-1)];
+      else a_h[i] = 0.0f;
+    }
+  }
+  for (i = 0; i < 8; i++) {
+    if (inused[i+8]) {
+      fieldname[0] = 'A' + i;
+      SoMFVec3f *field = (SoMFVec3f*) this->getField(fieldname);
+      int num = field->getNum();
+      if (num) A_H[i] = field->getValues(0)[SbMin(fieldidx, num-1)];
+      else A_H[i] = SbVec3f(0.0f, 0.0f, 0.0f);
+    }
+  }
+  so_eval_evaluate(node, &cbdata);
+
+  // copy the output values from "registers" to engine output
+  if (outused[0]) { SO_ENGINE_OUTPUT(oa, SoMFFloat, set1Value(fieldidx, oa_od[0])); }
+  if (outused[1]) { SO_ENGINE_OUTPUT(ob, SoMFFloat, set1Value(fieldidx, oa_od[1])); }
+  if (outused[2]) { SO_ENGINE_OUTPUT(oc, SoMFFloat, set1Value(fieldidx, oa_od[2])); }
+  if (outused[3]) { SO_ENGINE_OUTPUT(od, SoMFFloat, set1Value(fieldidx, oa_od[3])); }
+  
+  if (outused[4]) { SO_ENGINE_OUTPUT(oA, SoMFVec3f, set1Value(fieldidx, oA_oD[0])); }
+  if (outused[5]) { SO_ENGINE_OUTPUT(oB, SoMFVec3f, set1Value(fieldidx, oA_oD[1])); }
+  if (outused[6]) { SO_ENGINE_OUTPUT(oC, SoMFVec3f, set1Value(fieldidx, oA_oD[2])); }
+  if (outused[7]) { SO_ENGINE_OUTPUT(oD, SoMFVec3f, set1Value(fieldidx, oA_oD[3])); }
 }
 
 
@@ -221,7 +249,7 @@ SoCalculator::evaluateExpression(struct so_eval_node *node)
 void
 SoCalculator::findUsed(struct so_eval_node *node, char *inused, char *outused)
 {
-  assert(node);
+  if (node == NULL) return;
 
   if (node->id == ID_ASSIGN_FLT || node->id == ID_ASSIGN_VEC) {
     this->findUsed(node->child2, inused, outused); // traverse rhs
@@ -362,37 +390,4 @@ SoCalculator::writefieldcb(const char *fieldname, float *data,
   else {
     assert(0 && "should not happen");
   }
-}
-
-//
-// temporary until getField() works for engines
-//
-SoField *
-SoCalculator::getFieldFake(const char *fieldname)
-{
-  char realname[3];
-  realname[0] = fieldname[0];
-  realname[1] = fieldname[1];
-  realname[2] = 0;
-
-  if (!strcmp(realname, "a")) return &a;
-  if (!strcmp(realname, "b")) return &b;
-  if (!strcmp(realname, "c")) return &c;
-  if (!strcmp(realname, "d")) return &d;
-  if (!strcmp(realname, "e")) return &e;
-  if (!strcmp(realname, "f")) return &f;
-  if (!strcmp(realname, "g")) return &g;
-  if (!strcmp(realname, "h")) return &h;
-
-  if (!strcmp(realname, "A")) return &A;
-  if (!strcmp(realname, "B")) return &B;
-  if (!strcmp(realname, "C")) return &C;
-  if (!strcmp(realname, "D")) return &D;
-  if (!strcmp(realname, "E")) return &E;
-  if (!strcmp(realname, "F")) return &F;
-  if (!strcmp(realname, "G")) return &G;
-  if (!strcmp(realname, "H")) return &H;
-
-  assert(0);
-  return NULL;
 }
