@@ -138,6 +138,8 @@ protected:
   virtual SbBool readConnection(SoInput * in);
   virtual void writeConnection(SoOutput * out) const;
 
+  SbBool isDestructing(void) const;
+
 private:
   void extendStorageIfNecessary(void);
   SoFieldConverter * createConverter(SoType from) const;
@@ -155,32 +157,17 @@ private:
     ALLFILEFLAGS = IGNORED|CONNECTED|DEFAULT
   };
 
-  // FIXME: the ifndef wrapper is a workaround for a bug in Doxygen
-  // 1.0.0, where private members in a structure doesn't "inherit" the
-  // private status of their "parent". (This has been confirmed to be
-  // a bug by Dimitri.) Remove the workaround when a fixed Doxygen
-  // appears. 20000201 mortene.
-#ifndef DOXYGEN_SKIP_THIS
-  struct {
-    unsigned int isdefault      : 1;
-    unsigned int ignore         : 1;
-    unsigned int extstorage     : 1;
-    unsigned int enableconnects : 1;
-    unsigned int needevaluation : 1;
-    unsigned int isevaluating   : 1;
-    unsigned int type           : 3; // Needs to hold values in range [0-5]
-    unsigned int readonly       : 1;
-    unsigned int donotify       : 1;
-  } statusflags;
-
+  SbBool changeStatusBits(const unsigned int bits, const SbBool onoff);
+  void clearStatusBits(const unsigned int bits);
+  void setStatusBits(const unsigned int bits);
+  SbBool getStatus(const unsigned int bits) const;
+  unsigned int statusbits;
   union {
     SoFieldContainer * container;
     class SoConnectStorage * storage;
   };
-#endif // DOXYGEN_SKIP_THIS
 
-  SbBool hasExtendedStorage(void) const
-    { return this->statusflags.extstorage; }
+  SbBool hasExtendedStorage(void) const;
 };
 
 

@@ -70,6 +70,18 @@
 #include <Inventor/lists/SoVRMLInterpOutputList.h>
 #include <Inventor/sensors/SoDataSensor.h>
 
+// flags for this->statusbits
+#define FLAG_TYPEMASK       0x0007  // need 3 bits for values [0-5]
+#define FLAG_ISDEFAULT      0x0008
+#define FLAG_IGNORE         0x0010
+#define FLAG_EXTSTORAGE     0x0020
+#define FLAG_ENABLECONNECTS 0x0040
+#define FLAG_NEEDEVALUATION 0x0080
+#define FLAG_READONLY       0x0100
+#define FLAG_DONOTIFY       0x0200
+#define FLAG_ISDESTRUCTING  0x0400
+#define FLAG_ISEVALUATING   0x0800
+
 static const char IGNOREDCHAR = '~';
 static const char CONNECTIONCHAR = '=';
 
@@ -199,6 +211,54 @@ SoType SoField::classTypeId;
 
 // *************************************************************************
 
+
+// private methods. Inlined inside this file only.
+
+// clear bits in statusbits
+inline void
+SoField::clearStatusBits(const unsigned int bits)
+{
+  this->statusbits &= ~bits;
+}
+
+// sets bits in statusbits
+inline void
+SoField::setStatusBits(const unsigned int bits)
+{
+  this->statusbits |= bits;
+}
+
+// return TRUE if any of bits is set
+inline SbBool
+SoField::getStatus(const unsigned int bits) const
+{
+  return (this->statusbits & bits) != 0;
+}
+
+// convenience method for clearing or setting based on boolean value
+// returns TRUE if any bitflag changed value
+inline SbBool
+SoField::changeStatusBits(const unsigned int bits, const SbBool onoff)
+{
+  unsigned int oldval = this->statusbits;
+  unsigned int newval = oldval;
+  if (onoff) newval |= bits;
+  else newval &= ~bits;
+  if (oldval != newval) {
+    this->statusbits = newval;
+    return TRUE;
+  }
+  return FALSE;
+}
+
+// returns TRUE if this field has ext storage
+inline SbBool
+SoField::hasExtendedStorage(void) const
+{
+  return this->getStatus(FLAG_EXTSTORAGE);
+}
+
+
 /*!
   This is the base constructor for field classes. It takes care of
   doing the common parts of data initialization in fields.
@@ -206,16 +266,10 @@ SoType SoField::classTypeId;
 SoField::SoField(void)
   : container(NULL)
 {
-  this->statusflags.donotify = TRUE;
-
-  this->statusflags.ignore = FALSE;
-  this->statusflags.isdefault = TRUE;
-  this->statusflags.extstorage = FALSE;
-  this->statusflags.enableconnects = TRUE;
-  this->statusflags.needevaluation = FALSE;
-  this->statusflags.isevaluating = FALSE;
-  this->statusflags.type = 0;
-  this->statusflags.readonly = 0;
+  this->statusbits = 0;
+  this->setStatusBits(FLAG_DONOTIFY |
+                      FLAG_ISDEFAULT |
+                      FLAG_ENABLECONNECTS);
 }
 
 /*!
@@ -224,6 +278,10 @@ SoField::SoField(void)
 */
 SoField::~SoField()
 {
+  // set status bit to avoid evaluating this field while
+  // disconnecting connections.
+  this->setStatusBits(FLAG_ISDESTRUCTING);
+
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoField::~SoField", "destructing %p", this);
 #endif // debug
@@ -305,10 +363,8 @@ SoField::initClass(void)
 void
 SoField::setIgnored(SbBool ignore)
 {
-  if ((this->statusflags.ignore && !ignore) ||
-      (!this->statusflags.ignore && ignore)) {
-    this->statusflags.ignore = ignore;
-    this->touch();
+  if (this->changeStatusBits(FLAG_IGNORE, ignore)) {
+    this->valueChanged(FALSE);
   }
 }
 
@@ -320,7 +376,7 @@ SoField::setIgnored(SbBool ignore)
 SbBool
 SoField::isIgnored(void) const
 {
-  return this->statusflags.ignore;
+  return this->getStatus(FLAG_IGNORE);
 }
 
 /*!
@@ -332,7 +388,7 @@ SoField::isIgnored(void) const
 void
 SoField::setDefault(SbBool def)
 {
-  this->statusflags.isdefault = def;
+  (void) this->changeStatusBits(FLAG_ISDEFAULT, def);
 }
 
 /*!
@@ -345,7 +401,7 @@ SoField::setDefault(SbBool def)
 SbBool
 SoField::isDefault(void) const
 {
-  return this->statusflags.isdefault;
+  return this->getStatus(FLAG_ISDEFAULT);
 }
 
 /*!
@@ -384,8 +440,8 @@ SoField::isOfType(const SoType type) const
 void
 SoField::enableConnection(SbBool flag)
 {
-  SbBool oldval = this->statusflags.enableconnects;
-  this->statusflags.enableconnects = flag;
+  SbBool oldval = this->getStatus(FLAG_ENABLECONNECTS);
+  (void) this->changeStatusBits(FLAG_ENABLECONNECTS, flag);
   if (!oldval && flag) this->setDirty(TRUE);
 }
 
@@ -397,7 +453,7 @@ SoField::enableConnection(SbBool flag)
 SbBool
 SoField::isConnectionEnabled(void) const
 {
-  return this->statusflags.enableconnects;
+  return this->getStatus(FLAG_ENABLECONNECTS);
 }
 
 /*!
@@ -1094,8 +1150,8 @@ SoField::notify(SoNotList * nlist)
 SbBool
 SoField::enableNotify(SbBool on)
 {
-  const SbBool old = this->statusflags.donotify;
-  this->statusflags.donotify = on;
+  const SbBool old = this->getStatus(FLAG_DONOTIFY);
+  (void) this->changeStatusBits(FLAG_DONOTIFY, on);
   return old;
 }
 
@@ -1108,7 +1164,7 @@ SoField::enableNotify(SbBool on)
 SbBool
 SoField::isNotifyEnabled(void) const
 {
-  return this->statusflags.donotify;
+  return this->getStatus(FLAG_DONOTIFY);
 }
 
 // Makes an extended storage block on first connection.
@@ -1117,7 +1173,7 @@ SoField::extendStorageIfNecessary(void)
 {
   if (!this->hasExtendedStorage()) {
     this->storage = new SoConnectStorage(this->container, this->getTypeId());
-    this->statusflags.extstorage = TRUE;
+    this->setStatusBits(FLAG_EXTSTORAGE);
   }
 }
 
@@ -1206,7 +1262,7 @@ SoField::connectionStatusChanged(int numconnections)
 SbBool
 SoField::isReadOnly(void) const
 {
-  return this->statusflags.readonly;
+  return this->getStatus(FLAG_READONLY);
 }
 
 /*!
@@ -1461,22 +1517,31 @@ SoField::countWriteRefs(SoOutput * out) const
 void
 SoField::evaluate(void) const
 {
+  // if we're destructing, don't continue as this would cause
+  // a call to the virtual evaluateConnection()
+  if (this->getStatus(FLAG_ISDESTRUCTING)) {
+#if COIN_DEBUG && 0 // debug
+    SoDebugError::postInfo("SoField::evaluate",
+                           "Stopped evaluate while destructing.");
+#endif // debug
+    return;
+  }
+  // do some simple tests to optimize evaluations
   if (this->getDirty() == FALSE) return;
   if (this->isConnected() == FALSE) return;
 
   // Recursive calls to SoField::evalute() shouldn't happen, as the
   // state of the field variables might not be consistent while
   // evaluating.
-  assert(this->statusflags.isevaluating == 0);
+  assert(!this->getStatus(FLAG_ISEVALUATING));
 
   // Cast away the const. (evaluate() must be const, since we're using
   // evaluate() from getValue().)
   SoField * that = (SoField *)this;
 
-  that->statusflags.isevaluating = 1;
+  that->setStatusBits(FLAG_ISEVALUATING);
   this->evaluateConnection();
-  that->statusflags.isevaluating = 0;
-
+  that->clearStatusBits(FLAG_ISEVALUATING);
   that->setDirty(FALSE);
 }
 
@@ -1486,7 +1551,7 @@ SoField::evaluate(void) const
 SbBool
 SoField::getDirty(void) const
 {
-  return this->statusflags.needevaluation;
+  return this->getStatus(FLAG_NEEDEVALUATION);
 }
 
 /*!
@@ -1495,7 +1560,7 @@ SoField::getDirty(void) const
 void
 SoField::setDirty(SbBool dirty)
 {
-  this->statusflags.needevaluation = dirty ? 1 : 0;
+  (void) this->changeStatusBits(FLAG_NEEDEVALUATION, dirty);
 }
 
 /*!
@@ -1733,12 +1798,14 @@ SoField::evaluateConnection(void) const
   if (this->isConnectedFromField()) {
     int idx = this->storage->masterfields.getLength() - 1;
     SoField * master = this->storage->masterfields[idx];
-    SoFieldConverter * converter = this->storage->findConverter(master);
-    if (converter) converter->evaluateWrapper();
-    else {
-      SoField * that = (SoField *)this; // cast away const
-      // Copy data.
-      that->copyFrom(*master);
+    if (!master->isDestructing()) {
+      SoFieldConverter * converter = this->storage->findConverter(master);
+      if (converter) converter->evaluateWrapper();
+      else {
+        SoField * that = (SoField *)this; // cast away const
+        // Copy data.
+        that->copyFrom(*master);
+      }
     }
   }
   else if (this->isConnectedFromEngine()) {
@@ -1772,14 +1839,12 @@ SoField::evaluateConnection(void) const
 void
 SoField::valueChanged(SbBool resetdefault)
 {
-  if (this->statusflags.readonly) return;
-  this->statusflags.readonly = 1;
-
-  this->setDirty(FALSE);
-  if (resetdefault) this->setDefault(FALSE);
-  if (this->container) this->startNotify();
-
-  this->statusflags.readonly = 0;
+  if (this->changeStatusBits(FLAG_READONLY, TRUE)) {
+    this->setDirty(FALSE);
+    if (resetdefault) this->setDefault(FALSE);
+    if (this->container) this->startNotify();
+    this->clearStatusBits(FLAG_READONLY);
+  }
 }
 
 // Notify any auditors by marking them dirty - i.e. ready for
@@ -1810,7 +1875,9 @@ SoField::notifyAuditors(SoNotList * l)
 void
 SoField::setFieldType(int type)
 {
-  this->statusflags.type = type;
+  this->clearStatusBits(FLAG_TYPEMASK);
+  assert(type >=0 && type <= FLAG_TYPEMASK);
+  this->setStatusBits((unsigned int)type);
 }
 
 /*!
@@ -1821,7 +1888,16 @@ SoField::setFieldType(int type)
 int
 SoField::getFieldType(void) const
 {
-  return this->statusflags.type;
+  return this->statusbits & FLAG_TYPEMASK;
+}
+
+/*!
+  Can be used to check if a field is being destructed.
+*/
+SbBool 
+SoField::isDestructing(void) const
+{
+  return this->getStatus(FLAG_ISDESTRUCTING);
 }
 
 /*!
