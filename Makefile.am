@@ -124,7 +124,14 @@ EXTRA_DIST = \
 	packaging/debian/libcoin40-doc.README.Debian.in \
 	packaging/debian/libcoin40-runtime.files.in \
 	packaging/debian/libcoin40-runtime.README.Debian.in \
-	packaging/redhat/coin.spec.in
+	packaging/redhat/coin.spec.in \
+	packaging/windows/Makefile.in \
+	packaging/windows/bfheader.nsi.in \
+	packaging/windows/coin-sdk.html.in \
+	packaging/windows/footer.nsi.in \
+	packaging/windows/heading.nsi.in \
+	packaging/windows/middle.nsi.in \
+	packaging/windows/post.nsi.in
 
 coin-@CONFIG@.cfg: config.status $(srcdir)/coin.cfg.in
 	@$(SHELL) config.status --file=$@:coin.cfg.in

@@ -264,7 +264,14 @@ EXTRA_DIST = \
 	packaging/debian/libcoin40-doc.README.Debian.in \
 	packaging/debian/libcoin40-runtime.files.in \
 	packaging/debian/libcoin40-runtime.README.Debian.in \
-	packaging/redhat/coin.spec.in
+	packaging/redhat/coin.spec.in \
+	packaging/windows/Makefile.in \
+	packaging/windows/bfheader.nsi.in \
+	packaging/windows/coin-sdk.html.in \
+	packaging/windows/footer.nsi.in \
+	packaging/windows/heading.nsi.in \
+	packaging/windows/middle.nsi.in \
+	packaging/windows/post.nsi.in
 
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -452,7 +459,7 @@ GZIP_ENV = --best
 distdir: $(DISTFILES)
 	-chmod -R a+w $(distdir) >/dev/null 2>&1; rm -rf $(distdir)
 	mkdir $(distdir)
-	$(mkinstalldirs) $(distdir)/cfg $(distdir)/cfg/m4 $(distdir)/docs $(distdir)/packaging/debian $(distdir)/packaging/redhat
+	$(mkinstalldirs) $(distdir)/cfg $(distdir)/cfg/m4 $(distdir)/docs $(distdir)/packaging/debian $(distdir)/packaging/redhat $(distdir)/packaging/windows
 	@for file in $(DISTFILES); do \
 	  if test -f $$file; then d=.; else d=$(srcdir); fi; \
 	  dir=`echo "$$file" | sed -e 's,/[^/]*$$,,'`; \
