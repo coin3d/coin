@@ -540,7 +540,7 @@ SbTime::parsedate(const char * const date)
     dateptr++; // we don't care if it's wednesday
   if (*dateptr == '\0') return FALSE;
   dateptr -= 2; // step back
-  if ( dataptr < date ) return FALSE;
+  if ( dateptr < date ) return FALSE;
   if (dateptr[0] != 'y' && dateptr[1] == ',') { // RFC 822 / RFC 1123 format
     // FORMAT: Wkd, DD Mnth YYYY HH:MM:SS GMT
 #if COIN_DEBUG && 0 // debug
@@ -991,7 +991,7 @@ SbTime::print(FILE * fp) const
   this->getValue(&tm);
   SbString str = this->formatDate();
   (void)fprintf(fp, "%s", str.getString());
-  (void)fprintf(fp, ", secs: %ld, msecs: %ld\n", (long int)tm.tv_sec, 
+  (void)fprintf(fp, ", secs: %ld, msecs: %ld\n", (long int)tm.tv_sec,
                (long int)tm.tv_usec);
 #endif // COIN_DEBUG
 }
