@@ -891,7 +891,7 @@ fi
 
 
 # Usage:
-#   SIM_CHECK_SIMAGE( ACTION-IF-FOUND, ACTION-IF-NOT-FOUND, ATTRIBUTE-LIST )
+#   SIM_AC_CHECK_SIMAGE( ACTION-IF-FOUND, ACTION-IF-NOT-FOUND, ATTRIBUTE-LIST )
 #
 # Description:
 #   This macro locates the simage development system.  If it is found, the
@@ -928,8 +928,7 @@ fi
 # * [mortene:20000122] make sure this work on MSWin (with Cygwin)
 # * [larsa:20000220] find a less strict AC_PREREQ setting
 
-AC_DEFUN([SIM_CHECK_SIMAGE], [
-AC_PREREQ([2.14.1])
+AC_DEFUN([SIM_AC_CHECK_SIMAGE], [
 
 SIM_PARSE_MODIFIER_LIST([$3],[
   sim4_simage_with          yes
@@ -955,14 +954,14 @@ if test "x$with_simage" != "xno"; then
     fi], :)
   fi
 
-  AC_PATH_PROG(sim_ac_conf_cmd, simage-config, false, $sim_ac_path)
-  if test "x$sim_ac_conf_cmd" = "xfalse"; then
+  AC_PATH_PROG(sim_ac_simage_conf_cmd, simage-config, false, $sim_ac_path)
+  if test "x$sim_ac_simage_conf_cmd" = "xfalse"; then
     AC_MSG_WARN(could not find 'simage-config' in $sim_ac_path)
   fi
 
-  sim_ac_simage_cppflags=`$sim_ac_conf_cmd --cppflags`
-  sim_ac_simage_ldflags=`$sim_ac_conf_cmd --ldflags`
-  sim_ac_simage_libs=`$sim_ac_conf_cmd --libs`
+  sim_ac_simage_cppflags=`$sim_ac_simage_conf_cmd --cppflags`
+  sim_ac_simage_ldflags=`$sim_ac_simage_conf_cmd --ldflags`
+  sim_ac_simage_libs=`$sim_ac_simage_conf_cmd --libs`
 
   AC_CACHE_CHECK([whether the simage library is available],
     sim_cv_lib_simage_avail, [
@@ -1439,7 +1438,7 @@ fi
 
 
 # Usage:
-#  SIM_CHECK_OPENGL([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#  SIM_AC_CHECK_OPENGL([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 #
 #  Try to find an OpenGL development system, either a native
 #  implementation or the OpenGL-compatible Mesa libraries. If
@@ -1455,13 +1454,8 @@ fi
 #
 #
 # Author: Morten Eriksen, <mortene@sim.no>.
-#
-# TODO:
-#    * [mortene:20000122] make sure this work on MSWin (with
-#      Cygwin installation)
-#
 
-AC_DEFUN(SIM_CHECK_OPENGL, [
+AC_DEFUN(SIM_AC_CHECK_OPENGL, [
 
 AC_ARG_WITH(
   [opengl],
@@ -1470,6 +1464,9 @@ AC_ARG_WITH(
   [],
   [with_opengl=yes])
 
+unset sim_ac_gl_cppflags
+unset sim_ac_gl_ldflags
+unset sim_ac_gl_libs
 sim_ac_gl_avail=no
 
 if test x"$with_opengl" != xno; then
@@ -1487,11 +1484,10 @@ if test x"$with_opengl" != xno; then
 
   sim_ac_save_cppflags=$CPPFLAGS
   sim_ac_save_ldflags=$LDFLAGS
+  sim_ac_save_libs=$LIBS
 
   CPPFLAGS="$CPPFLAGS $sim_ac_gl_cppflags"
   LDFLAGS="$LDFLAGS $sim_ac_gl_ldflags"
-
-  sim_ac_save_libs=$LIBS
 
   AC_CACHE_CHECK(
     [whether OpenGL libraries are available],
@@ -1510,11 +1506,110 @@ if test x"$with_opengl" != xno; then
     done
   ])
 
-
   if test "x$sim_cv_lib_gl" != "xUNRESOLVED"; then
     sim_ac_gl_libs="$sim_cv_lib_gl"
+  else
+    AC_MSG_WARN([couldn't compile or link with OpenGL libraries -- trying with pthread library in place...])
+
+    SIM_AC_CHECK_PTHREAD([
+      sim_ac_gl_cppflags="$sim_ac_gl_cppflags $sim_ac_pthread_cppflags"
+      sim_ac_gl_ldflags="$sim_ac_gl_ldflags $sim_ac_pthread_ldflags"
+      CPPFLAGS="$CPPFLAGS $sim_ac_pthread_cppflags"
+      LDFLAGS="$LDFLAGS $sim_ac_pthread_ldflags"
+      LIBS="$sim_ac_pthread_libs $LIBS"],
+      AC_MSG_WARN(couldn't compile or link with pthread library))
+
+    if test "x$sim_ac_pthread_avail" = "xyes"; then
+      AC_CACHE_CHECK(
+        [whether OpenGL libraries can be linked with pthread library],
+        sim_cv_lib_gl_pthread,
+        [sim_cv_lib_gl_pthread=UNRESOLVED
+        # Some platforms (like BeOS) have the GLU functionality in the GL library.
+        for sim_ac_gl_libcheck in -lMesaGL -lGL "-lMesaGLU -lMesaGL" "-lGLU -lGL"; do
+          if test "x$sim_cv_lib_gl_pthread" = "xUNRESOLVED"; then
+            LIBS="$sim_ac_gl_libcheck $sim_ac_save_libs"
+            AC_TRY_LINK([#include <GL/gl.h>
+                        #include <GL/glu.h>],
+                        [glPointSize(1.0f);
+                        gluSphere(0L, 1.0, 1, 1);],
+                        [sim_cv_lib_gl_pthread="$sim_ac_gl_libcheck"])
+          fi
+        done
+      ])
+
+      if test "x$sim_cv_lib_gl_pthread" != "xUNRESOLVED"; then
+        sim_ac_gl_libs="$sim_cv_lib_gl_pthread $sim_ac_pthread_libs"
+      fi
+    fi
+  fi
+
+
+  if test "x$sim_ac_gl_libs" != "x"; then
     LIBS="$sim_ac_gl_libs $sim_ac_save_libs"
     sim_ac_gl_avail=yes
+    $1
+  else
+    CPPFLAGS=$sim_ac_save_cppflags
+    LDFLAGS=$sim_ac_save_ldflags
+    LIBS=$sim_ac_save_libs
+    $2
+  fi
+fi
+])
+
+# Usage:
+#  SIM_AC_CHECK_PTHREAD([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#
+#  Try to find the PTHREAD development system. If it is found, these
+#  shell variables are set:
+#
+#    $sim_ac_pthread_cppflags (extra flags the compiler needs for pthread)
+#    $sim_ac_pthread_ldflags  (extra flags the linker needs for pthread)
+#    $sim_ac_pthread_libs     (link libraries the linker needs for pthread)
+#
+#  The CPPFLAGS, LDFLAGS and LIBS flags will also be modified accordingly.
+#  In addition, the variable $sim_ac_pthread_avail is set to "yes" if the
+#  pthread development system is found.
+#
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+
+AC_DEFUN([SIM_AC_CHECK_PTHREAD], [
+
+AC_ARG_WITH(
+  [pthread],
+  AC_HELP_STRING([--with-pthread=DIR],
+                 [pthread installation directory]),
+  [],
+  [with_pthread=yes])
+
+sim_ac_pthread_avail=no
+
+if test x"$with_pthread" != xno; then
+  if test x"$with_pthread" != xyes; then
+    sim_ac_pthread_cppflags="-I${with_pthread}/include"
+    sim_ac_pthread_ldflags="-L${with_pthread}/lib"
+  fi
+  sim_ac_pthread_libs="-lpthread"
+
+  sim_ac_save_cppflags=$CPPFLAGS
+  sim_ac_save_ldflags=$LDFLAGS
+  sim_ac_save_libs=$LIBS
+
+  CPPFLAGS="$CPPFLAGS $sim_ac_pthread_cppflags"
+  LDFLAGS="$LDFLAGS $sim_ac_pthread_ldflags"
+  LIBS="$sim_ac_pthread_libs $LIBS"
+
+  AC_CACHE_CHECK(
+    [whether the pthread development system is available],
+    sim_cv_lib_pthread_avail,
+    [AC_TRY_LINK([#include <pthread.h>],
+                 [(void)pthread_create(0L, 0L, 0L);],
+                 [sim_cv_lib_pthread_avail=yes],
+                 [sim_cv_lib_pthread_avail=no])])
+
+  if test x"$sim_cv_lib_pthread_avail" = xyes; then
+    sim_ac_pthread_avail=yes
     $1
   else
     CPPFLAGS=$sim_ac_save_cppflags

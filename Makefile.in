@@ -94,7 +94,7 @@ PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 VERSION = @VERSION@
 install_sh = @install_sh@
-sim_ac_conf_cmd = @sim_ac_conf_cmd@
+sim_ac_simage_conf_cmd = @sim_ac_simage_conf_cmd@
 
 @BUILD_EXAMPLES_TRUE@EXAMPLEDIR = @BUILD_EXAMPLES_TRUE@examples
 @BUILD_EXAMPLES_FALSE@EXAMPLEDIR = 
