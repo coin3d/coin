@@ -783,7 +783,7 @@ glglue_resolve_symbols(cc_glglue * w)
                                 "multitexture functions were not found");
     }
   }
-  w->maxtextureunits = 1; // when multitexturing is not available
+  w->maxtextureunits = 1; /* when multitexturing is not available */
   if (w->glActiveTexture) {
     GLint tmp;
     glGetIntegerv(GL_MAX_TEXTURE_UNITS, &tmp);
@@ -2914,22 +2914,42 @@ cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height)
            versions (even if we're under MSWin). 20030812 mortene.
          */
 
-        size[0] = 512;
-        size[1] = 512;
+        size[0] = cc_min(size[0], 512);
+        size[1] = cc_min(size[1], 512);
       }
       cc_glglue_context_reinstate_previous(ctx);
     }
     cc_glglue_context_destruct(ctx);
   }
 
-  /* FIXME: if we're on GLX and are going to use pbuffers, we should
-     check the GLX_MAX_PBUFFER_WIDTH, GLX_MAX_PBUFFER_HEIGHT and
-     GLX_MAX_PBUFFER_PIXELS values to see if they limit us
-     further. 20030812 mortene. */
+  /* FIXME: if we're on e.g. GLX and are going to use pbuffers, we
+     should check the GLX_MAX_PBUFFER_WIDTH, GLX_MAX_PBUFFER_HEIGHT
+     and GLX_MAX_PBUFFER_PIXELS values to see if they limit us
+     further.
+
+     Similar limits probably also exists for WGL and AGL pbuffers.
+
+     20030812 mortene.
+  */
 
 
   *width = (unsigned int) size[0];
   *height = (unsigned int) size[1];
+
+  /* Limit the maximum tilesize to 2048x2048 pixels.
+  
+     This is done to work around a problem with some OpenGL drivers: a
+     huge value is returned for the maximum offscreen OpenGL canvas,
+     where the driver obviously does not take into account the amount
+     of memory needed to actually allocate such a large buffer.
+  
+     This problem has at least been observed with the MS Windows XP
+     software OpenGL renderer, which reports a maximum viewport size
+     of 16k x 16k pixels.
+  */
+  *width = cc_min(*width, 2048);
+  *height = cc_min(*height, 2048);
+
 
   if (coin_glglue_debug()) {
     cc_debugerror_postinfo("cc_glglue_context_max_dimensions",
@@ -2941,7 +2961,7 @@ cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height)
 void
 cc_glglue_context_bind_pbuffer(void * ctx)
 {
-  // FIXME: Implement for GLX. kyrah 20031123.
+/* FIXME: Implement for GLX. kyrah 20031123. */
 #if defined(HAVE_AGL)
   aglglue_context_bind_pbuffer(ctx);
 #elif defined(HAVE_WGL)
@@ -2954,7 +2974,7 @@ cc_glglue_context_bind_pbuffer(void * ctx)
 void
 cc_glglue_context_release_pbuffer(void * ctx)
 {
-  // FIXME: Implement for GLX. kyrah 20031123.
+  /* FIXME: Implement for GLX. kyrah 20031123. */
 #if defined(HAVE_AGL)
   aglglue_context_release_pbuffer(ctx);
 #elif defined(HAVE_WGL)
@@ -2967,7 +2987,7 @@ cc_glglue_context_release_pbuffer(void * ctx)
 SbBool
 cc_glglue_context_pbuffer_is_bound(void * ctx)
 {
-  // FIXME: Implement for GLX. kyrah 20031123.
+  /* FIXME: Implement for GLX. kyrah 20031123. */
 #if defined(HAVE_AGL)
   return aglglue_context_pbuffer_is_bound(ctx);
 #elif defined(HAVE_WGL)
