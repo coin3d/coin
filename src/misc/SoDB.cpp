@@ -245,11 +245,6 @@ SoDB::init(void)
 {
   if (SoDB::isInitialized()) return;
 
-  // This should prove helpful for debugging the pervasive problem
-  // under Win32 with loading multiple instances of the same library.
-  const char * env = coin_getenv("COIN_DEBUG_LISTMODULES");
-  if (env && (atoi(env) > 0)) { SoDBP::listWin32ProcessModules(); }
-
   // Sanity check: if anything here breaks, either
   // include/Inventor/system/inttypes.h.in or the bitwidth define
   // configure tests need fixing. Keep these tests around.
@@ -447,6 +442,15 @@ SoDB::init(void)
 
   // Force correct time on first getValue() from "realTime" field.
   SoDBP::updateRealTimeFieldCB(NULL, NULL);
+
+  // This should prove helpful for debugging the pervasive problem
+  // under Win32 with loading multiple instances of the same library.
+  //
+  // Note that this is done late in the init()-process, to make sure
+  // all Coin-features used in SoDB::listWin32ProcessModules() have
+  // been initialized.
+  const char * env = coin_getenv("COIN_DEBUG_LISTMODULES");
+  if (env && (atoi(env) > 0)) { SoDBP::listWin32ProcessModules(); }
 
   SoDBP::isinitialized = TRUE;
 
@@ -1233,37 +1237,34 @@ SoDBP::listWin32ProcessModules(void)
   funModule32Next = (Module32Next_t)
     GetProcAddress(kernel32dll, "Module32Next");
 
-
-  do {
   if (!funCreateToolhelp32Snapshot || !funModule32First || !funModule32Next) {
     SoDebugError::postWarning("SoDBP::listWin32ProcessModules",
                               "Tool Help Library not available (NT4?)");
-      break; // goto end of do-while loop
   }
+  else {
+    HANDLE tool32snap = funCreateToolhelp32Snapshot(TH32CS_SNAPALL, 0);
+    assert((tool32snap != (void *)-1) && "CreateToolhelp32Snapshot() failed");
 
-  HANDLE tool32snap = funCreateToolhelp32Snapshot(TH32CS_SNAPALL, 0);
-  assert((tool32snap != (void *)-1) && "CreateToolhelp32Snapshot() failed");
+    MODULEENTRY32 moduleentry;
+    moduleentry.dwSize = sizeof(MODULEENTRY32);
+    ok = funModule32First(tool32snap, &moduleentry);
+    assert(ok && "Module32First() failed"); 
 
-  MODULEENTRY32 moduleentry;
-  moduleentry.dwSize = sizeof(MODULEENTRY32);
-  ok = funModule32First(tool32snap, &moduleentry);
-  assert(ok && "Module32First() failed"); 
-
-  SoDebugError::postInfo("SoDBP::listWin32ProcessModules",
-                         "MODULEENTRY32.szModule=='%s', .szExePath=='%s'",
-                         moduleentry.szModule, moduleentry.szExePath);
-
-  while (funModule32Next(tool32snap, &moduleentry)) {
     SoDebugError::postInfo("SoDBP::listWin32ProcessModules",
                            "MODULEENTRY32.szModule=='%s', .szExePath=='%s'",
                            moduleentry.szModule, moduleentry.szExePath);
+
+    while (funModule32Next(tool32snap, &moduleentry)) {
+      SoDebugError::postInfo("SoDBP::listWin32ProcessModules",
+                             "MODULEENTRY32.szModule=='%s', .szExePath=='%s'",
+                             moduleentry.szModule, moduleentry.szExePath);
+    }
+
+    assert(GetLastError()==ERROR_NO_MORE_FILES && "Module32Next() failed"); 
+
+    ok = CloseHandle(tool32snap);
+    assert(ok && "CloseHandle() failed");
   }
-
-  assert(GetLastError()==ERROR_NO_MORE_FILES && "Module32Next() failed"); 
-
-  ok = CloseHandle(tool32snap);
-  assert(ok && "CloseHandle() failed");
-  } while (0);
 
   ok = FreeLibrary(kernel32dll);
   assert(ok && "FreeLibrary() failed");
