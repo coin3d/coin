@@ -849,14 +849,14 @@ SoInput::read(SbString & s)
 /*!
   Read a name from the current stream and place it in \a n.
 
-  If \a validIdent is \a TRUE the name needs to be a valid identifier
-  (no reserved characters etc), while \a validIdent equal to \a FALSE
+  If \a validIdent is \c TRUE the name needs to be a valid identifier
+  (no reserved characters etc), while \a validIdent equal to \c FALSE
   means we'll just read characters for the next word until we hit
   whitespace or one of the "{"/"}" delimiters.
 
-  Returns \a FALSE on encountering end of file before a full name has
-  been read -- if \a validIdent is also \a FALSE. If \a validIdent is
-  passed as \a TRUE, the return value will be \a FALSE if no valid name
+  Returns \c FALSE on encountering end of file before a full name has
+  been read -- if \a validIdent is also \c FALSE. If \a validIdent is
+  passed as \c TRUE, the return value will be \c FALSE if no valid name
   was found, but \e not necessarily on end of file.
 
 */
@@ -870,17 +870,16 @@ SoInput::read(SbName & n, SbBool validIdent)
   // Binary format.
   if (this->isBinary()) {
     SbString s;
-    SbBool result = this->read(s);
-    if (s.getLength() < 1) result = FALSE;
+    if (!this->read(s)) return FALSE;
+    n = s;
 
-    if (result && validIdent) {
-      if (!SbName::isIdentStartChar(s[0])) result = FALSE;
-      for (int i = 1; (i < s.getLength()) && result; i++)
-        if (!SbName::isIdentChar(s[i])) result = FALSE;
+    if (validIdent && s.getLength() > 0) {
+      if (!SbName::isIdentStartChar(s[0])) return FALSE;
+      for (int i = 1; i < s.getLength(); i++)
+        if (!SbName::isIdentChar(s[i])) return FALSE;
     }
 
-    if (!result) return FALSE;
-    else n = s;
+    return TRUE;
   }
   // ASCII format.
   else {
