@@ -5,11 +5,15 @@ AC_INIT(src/misc/SoDB.cpp)
 # If the Microsoft Visual C++ cl.exe compiler is available, set us up for
 # compiling with it and to generate an MSWindows .dll file.
 
+# FIXME: replace with the SIM_AC_MSVC_SUPPORT macro as soon as we
+# have converted auxconfig-dir to cfg/m4/. 20001123 mortene.
+
 BUILD_WITH_MSVC=false
-sim_ac_msvccc=$srcdir/conf-macros/msvccc
+sim_ac_msvccc=`cd $srcdir; pwd`/conf-macros/msvccc
 if test -z "$CC" && test -z "$CXX" && $sim_ac_msvccc >/dev/null 2>&1; then
   CC=$sim_ac_msvccc
   CXX=$sim_ac_msvccc
+  export CC CXX
   BUILD_WITH_MSVC=true
 fi
 AC_SUBST(BUILD_WITH_MSVC)
