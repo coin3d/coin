@@ -1304,11 +1304,13 @@ void
 SoDragger::handleEvent(SoHandleEventAction * action)
 {
   const SoEvent * event = action->getEvent();
-
-  if (!action->getGrabber())
-    this->updateDraggerCache(action->getCurPath());
-  else
-    this->updateDraggerCache(NULL);
+  
+  if (this->isActive.getValue() || this->getActiveChildDragger()) {
+    if (!action->getGrabber())
+      this->updateDraggerCache(action->getCurPath());
+    else
+      this->updateDraggerCache(NULL);
+  }
 
   // this is a special case, to be able to detect when somebody
   // clicks ctrl over a dragger. This has a special meaning for
@@ -1351,6 +1353,11 @@ SoDragger::handleEvent(SoHandleEventAction * action)
       }
     }
     if (didpick) {
+      if (!action->getGrabber())
+        this->updateDraggerCache(action->getCurPath());
+      else
+        this->updateDraggerCache(NULL);
+
       this->isActive = TRUE;
       this->setCameraInfo(action);
       this->setStartingPoint(pp);
