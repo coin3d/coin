@@ -515,3 +515,25 @@ THE WISH LIST
   others and yet again "on" in others, use a consistent single name
   (but provide backward compatibility).
 
+* SoInput::setStrings(char **)
+  2001-09-16  Lars J. Aas  <larsa@sim.no>
+  [ABI-incompatible change (all things in SoInput is virtual, so this should
+   probably be virtual too]
+
+  Writing out scene graphs in strings and creating scene graphs of them by
+  reading them with SoInput::setBuffer() is very convenient, but very long
+  strings is not portable, meaning you have to implement buffer allocation
+  and string concatenation before using SoInput::setBuffer().
+  The idea behind setStrings() is that you create a NULL-terminated string
+  array of shorter strings, and read from that array as if it was a buffer
+  of concatenated strings.
+
+* SoInput/SoOutput alternative
+  2001-09-16  Lars J. Aas  <larsa@sim.no>
+
+  The SoInput / SoOutput classes are very messy.  Although they have lots of
+  virtual methods, they are almost impossible to derive to change their
+  behaviour (like I/O throught network connections and compression libraries).
+  A simpler, cleaner, more flexible/extendible alternative should be created
+  and allowed to be used as an alternative to these classes.
+
