@@ -185,6 +185,7 @@
 #include <Inventor/nodes/SoCamera.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/system/gl.h>
+#include <Inventor/C/tidbitsp.h>
 #include <coindefs.h> // COIN_STUB()
 
 // *************************************************************************
@@ -908,87 +909,6 @@ SoOffscreenRenderer::writeToRGB(const char * filename) const
   return result;
 }
 
-static int
-encode_ascii85(const unsigned char * in, unsigned char * out)
-{
-  uint32_t data =
-    (uint32_t(in[0])<<24) |
-    (uint32_t(in[1])<<16) |
-    (uint32_t(in[2])<< 8) |
-    (uint32_t(in[3]));
-
-  if (data == 0) {
-    out[0] = 'z';
-    return 1;
-  }
-  out[4] = (unsigned char) (data%85 + '!');
-  data /= 85;
-  out[3] = (unsigned char) (data%85 + '!');
-  data /= 85;
-  out[2] = (unsigned char) (data%85 + '!');
-  data /= 85;
-  out[1] = (unsigned char) (data%85 + '!');
-  data /= 85;
-  out[0] = (unsigned char) (data%85 + '!');
-  return 5;
-}
-
-static void
-output_ascii85(FILE * fp,
-               const unsigned char val,
-               unsigned char * tuple,
-               unsigned char * linebuf,
-               int & tuplecnt, int & linecnt,
-               const int rowlen,
-               const SbBool flush = FALSE)
-{
-  int i;
-  if (flush) {
-    // fill up tuple
-    for (i = tuplecnt; i < 4; i++) tuple[i] = 0;
-  }
-  else {
-    tuple[tuplecnt++] = val;
-  }
-  if (flush || tuplecnt == 4) {
-    if (tuplecnt) {
-      int add = encode_ascii85(tuple, linebuf + linecnt);
-      if (flush) {
-        if (add == 1) {
-          for (i = 0; i < 5; i++) linebuf[linecnt+i] = '!';
-        }
-        linecnt += tuplecnt + 1;
-      }
-      else linecnt += add;
-      tuplecnt = 0;
-    }
-    if (linecnt >= rowlen) {
-      unsigned char store = linebuf[rowlen];
-      linebuf[rowlen] = 0;
-      fprintf(fp, "%s\n", linebuf);
-      linebuf[rowlen] = store;
-      for (i = rowlen; i < linecnt; i++) {
-        linebuf[i-rowlen] = linebuf[i];
-      }
-      linecnt -= rowlen;
-    }
-    if (flush && linecnt) {
-      linebuf[linecnt] = 0;
-      fprintf(fp, "%s\n", linebuf);
-    }
-  }
-}
-
-static void
-flush_ascii85(FILE * fp,
-              unsigned char * tuple,
-              unsigned char * linebuf,
-              int & tuplecnt, int & linecnt,
-              const int rowlen)
-{
-  output_ascii85(fp, 0, tuple, linebuf, tuplecnt, linecnt, rowlen, TRUE);
-}
-
 /*!
   Writes the buffer in Postscript format by appending it to the
   already open file. Returns \c FALSE if writing fails.
@@ -1110,27 +1030,27 @@ SoOffscreenRenderer::writeToPostScript(FILE * fp,
     switch (nc) {
     default: // avoid warning
     case 1:
-      output_ascii85(fp, src[cnt], tuple, linebuf, tuplecnt, linecnt, rowlen);
+      coin_output_ascii85(fp, src[cnt], tuple, linebuf, &tuplecnt, &linecnt, rowlen, FALSE);
       break;
     case 2:
-      output_ascii85(fp, src[cnt*2], tuple, linebuf, tuplecnt, linecnt, rowlen);
+      coin_output_ascii85(fp, src[cnt*2], tuple, linebuf, &tuplecnt, &linecnt, rowlen, FALSE);
       break;
     case 3:
-      output_ascii85(fp, src[cnt*3], tuple, linebuf, tuplecnt, linecnt, rowlen);
-      output_ascii85(fp, src[cnt*3+1], tuple, linebuf, tuplecnt, linecnt, rowlen);
-      output_ascii85(fp, src[cnt*3+2], tuple, linebuf, tuplecnt, linecnt, rowlen);
+      coin_output_ascii85(fp, src[cnt*3], tuple, linebuf, &tuplecnt, &linecnt, rowlen, FALSE);
+      coin_output_ascii85(fp, src[cnt*3+1], tuple, linebuf, &tuplecnt, &linecnt, rowlen, FALSE);
+      coin_output_ascii85(fp, src[cnt*3+2], tuple, linebuf, &tuplecnt, &linecnt, rowlen, FALSE);
       break;
     case 4:
-      output_ascii85(fp, src[cnt*4], tuple, linebuf, tuplecnt, linecnt, rowlen);
-      output_ascii85(fp, src[cnt*4+1], tuple, linebuf, tuplecnt, linecnt,rowlen);
-      output_ascii85(fp, src[cnt*4+2], tuple, linebuf, tuplecnt, linecnt, rowlen);
+      coin_output_ascii85(fp, src[cnt*4], tuple, linebuf, &tuplecnt, &linecnt, rowlen, FALSE);
+      coin_output_ascii85(fp, src[cnt*4+1], tuple, linebuf, &tuplecnt, &linecnt,rowlen, FALSE);
+      coin_output_ascii85(fp, src[cnt*4+2], tuple, linebuf, &tuplecnt, &linecnt, rowlen, FALSE);
       break;
     }
     cnt++;
   }
 
   // flush data in ascii85 encoder
-  flush_ascii85(fp, tuple, linebuf, tuplecnt, linecnt, rowlen);
+  coin_flush_ascii85(fp, tuple, linebuf, &tuplecnt, &linecnt, rowlen);
 
   fprintf(fp, "~>\n\n"); // ASCII85 EOD marker
   fprintf(fp, "origstate restore\n");
