@@ -37,9 +37,6 @@ COIN_DLL_API void cc_storage_destruct(cc_storage * storage);
 
 COIN_DLL_API void * cc_storage_get(cc_storage * storage);
 
-COIN_DLL_API void cc_storage_set_constructor(cc_storage * storage, void (*constr)(void *));
-COIN_DLL_API void cc_storage_set_destructor(cc_storage * storage, void (*destr)(void *));
-
 /* ********************************************************************** */
 
 #ifdef __cplusplus

@@ -27,6 +27,7 @@
 #endif /* ! COIN_INTERNAL */
 
 #include <Inventor/C/threads/common.h>  /* cc_storage */
+#include <Inventor/C/base/hash.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -38,39 +39,15 @@ extern "C" {
 
 /* ********************************************************************** */
 
-#define NO_IMPLEMENTATION
-
-#ifdef USE_PTHREAD
-#include <pthread.h>
-#endif /* USE_PTHREAD */
-
-struct cc_storage {
-  unsigned int size;
-  void (*constructor)(void *);
-  void (*destructor)(void *);
-
-#ifdef USE_PTHREAD
-  struct cc_pthread_storage_data {
-    pthread_key_t key;
-  } pthread;
-#undef NO_IMPLEMENTATION
-#endif /* USE_PTHREAD */
-
-#ifdef USE_W32THREAD
-#undef NO_IMPLEMENTATION
-#endif /* USE_W32THREAD */
-
-};
-
-#ifdef NO_IMPLEMENTATION
-#error missing threads implementation support
-#endif /* NO_IMPLEMENTATION */
-
-/* ********************************************************************** */
-
-void cc_storage_struct_init(cc_storage * storage_struct, unsigned int size,
-                            void (*constr)(void *), void (*destr)(void *));
-void cc_storage_struct_clean(cc_storage * storage_struct);
+  struct cc_storage {
+    unsigned int size;
+    void (*constructor)(void *);
+    void (*destructor)(void *);
+    cc_hash * dict;
+    cc_mutex * mutex;
+  };
+  
+  void cc_storage_thread_cleanup(unsigned long threadid);
 
 /* ********************************************************************** */
 

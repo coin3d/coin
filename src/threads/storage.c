@@ -21,71 +21,48 @@
 
 #include <Inventor/C/threads/storage.h>
 #include <Inventor/C/threads/storagep.h>
+#include <Inventor/C/threads/thread.h>
+#include <Inventor/C/threads/mutex.h>
 
 #include <stdlib.h>
 #include <assert.h>
 
-/* ********************************************************************** */
-
-/* the header - used for internal destructor management - can't be sure
-   the cc_storage object still exists... */
-
-typedef
-struct cc_storage_env {
-  void (*destructor)(void *);
-  /* userdata follows here */
-} cc_storage_env;
-
-static void cc_storage_internal_destructor(void * env);
-
-/*
- * implement user-settable constructor and destructor if possible on
- * non-pthread platforms (must be)
- */
 
 /* ********************************************************************** */
+/* private functions */
 
-/*
-*/
-
-void
-cc_storage_struct_init(cc_storage * storage_struct, unsigned int size,
-                        void (*constr)(void *), void (*destr)(void *))
+static cc_storage *
+cc_storage_init(unsigned int size, void (*constructor)(void *), 
+                void (*destructor)(void *)) 
 {
-  assert(storage_struct != NULL);
+  cc_storage * storage = (cc_storage *) malloc(sizeof(cc_storage));
+  storage->size = size;
+  storage->constructor = constructor;
+  storage->destructor = destructor;
+  storage->dict = cc_hash_construct(8, 0.75f);
+  storage->mutex = cc_mutex_construct();
 
-  storage_struct->size = size;
-  storage_struct->constructor = constr;
-  storage_struct->destructor = destr;
-#ifdef USE_PTHREAD
-  if (pthread_key_create(&storage_struct->pthread.key,
-                         cc_storage_internal_destructor) != 0 ) {
-    assert(0 && "unable to create key");
+  return storage;
+}
+
+static void
+cc_storage_hash_destruct_cb(unsigned long key, void * val, void * closure)
+{
+  cc_storage * storage = (cc_storage*) closure;
+  
+  if (storage->destructor) {
+    storage->destructor(val);
   }
-#endif /* USE_PTHREAD */
-}
-
-/*
-*/
-
-void
-cc_storage_struct_clean(cc_storage * storage_struct)
-{
-  assert(storage_struct != NULL);
+  free(val);
 }
 
 /* ********************************************************************** */
-
-/*
-*/
+/* public api */
 
 cc_storage *
 cc_storage_construct(unsigned int size)
 {
-  cc_storage * storage = (cc_storage *) malloc(sizeof(cc_storage));
-  assert(storage != NULL);
-  cc_storage_struct_init(storage, size, NULL, NULL);
-  return storage;
+  return cc_storage_init(size, NULL, NULL);
 }
 
 cc_storage *
@@ -93,10 +70,7 @@ cc_storage_construct_etc(unsigned int size,
                          void (*constructor)(void *),
                          void (*destructor)(void *))
 {
-  cc_storage * storage = (cc_storage *) malloc(sizeof(cc_storage));
-  assert(storage != NULL);
-  cc_storage_struct_init(storage, size, constructor, destructor);
-  return storage;
+  return cc_storage_init(size, constructor, destructor);
 }
 
 /*
@@ -106,11 +80,11 @@ cc_storage_destruct(cc_storage * storage)
 {
   assert(storage != NULL);
 
-#ifdef USE_PTHREAD
-  if (pthread_key_delete(storage->pthread.key) != 0) {
-    assert(0 && "error while deleting key");
-  }
-#endif /* USE_PTHREAD */
+  cc_hash_apply(storage->dict, cc_storage_hash_destruct_cb, storage);
+  cc_hash_destruct(storage->dict);
+
+  cc_mutex_destruct(storage->mutex);
+
   free(storage);
 }
 
@@ -122,70 +96,33 @@ cc_storage_destruct(cc_storage * storage)
 void *
 cc_storage_get(cc_storage * storage)
 {
-  cc_storage_env * envelope;
-  void * user;
-  assert(storage != NULL);
+  void * val;
+  unsigned long threadid = cc_thread_id();
 
-#ifdef USE_PTHREAD
-  envelope = (cc_storage_env *) pthread_getspecific(storage->pthread.key);
-  if (envelope == NULL) {
-    envelope =
-      (cc_storage_env *) malloc(sizeof(cc_storage_env)+storage->size);
-    assert( envelope != NULL );
-    envelope->destructor = storage->destructor;
-    pthread_setspecific(storage->pthread.key, envelope);
-    user = (void *) (((char *) envelope) + sizeof(cc_storage_env));
-    if (storage->constructor != NULL)
-      (*storage->constructor)(user);
+  cc_mutex_lock(storage->mutex);
+
+  if (!cc_hash_get(storage->dict, threadid, &val)) {
+    val = malloc(storage->size);
+    if (storage->constructor) {
+      storage->constructor(val);
+    }
+    (void) cc_hash_put(storage->dict, threadid, val);
   }
-#endif /* USE_PTHREAD */
-  
-  return (void *) (((char *) envelope) + sizeof(cc_storage_env));
+  cc_mutex_unlock(storage->mutex);
+
+  return val;
 }
 
 /* ********************************************************************** */
 
-/*
-*/
-
-void
-cc_storage_set_constructor(cc_storage * storage, void (*constructor)(void *))
+void 
+cc_storage_thread_cleanup(unsigned long threadid)
 {
-  assert(storage != NULL);
-  storage->constructor = constructor;
-}
-
-/*
-*/
-
-void
-cc_storage_set_destructor(cc_storage * storage,
-                          void (*destructor)(void *))
-{
-  assert(storage != NULL);
-  storage->destructor = destructor;
+  /* FIXME: remove and destruct all data for this thread for all storages */
 }
 
 /* ********************************************************************** */
 
-/*
-*/
-
-void
-cc_storage_internal_destructor(void * env)
-{
-  cc_storage_env * envelope;
-  void * user;
-  envelope = (cc_storage_env *) env;
-  assert(envelope != NULL);
-  if (envelope->destructor != NULL) {
-    user = (void *) (((char *) envelope) + sizeof(cc_storage_env));
-    (*envelope->destructor)(user);
-  }
-  free(env);
-}
-
-/* ********************************************************************** */
 
 /*!
   \class SbStorage Inventor/threads/SbStorage.h
