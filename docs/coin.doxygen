@@ -195,13 +195,13 @@ INPUT                = \
 	$(top_srcdir)/src/nodes/SoCube.cpp $(top_srcdir)/include/Inventor/nodes/SoCube.h \
 	$(top_srcdir)/src/nodes/SoCylinder.cpp $(top_srcdir)/include/Inventor/nodes/SoCylinder.h \
 	$(top_srcdir)/src/nodes/SoTransformation.cpp $(top_srcdir)/include/Inventor/nodes/SoTransformation.h \
+	$(top_srcdir)/src/nodes/SoAntiSquish.cpp $(top_srcdir)/include/Inventor/nodes/SoAntiSquish.h \
 	$(top_srcdir)/src/nodes/SoRotation.cpp $(top_srcdir)/include/Inventor/nodes/SoRotation.h \
 	$(top_srcdir)/src/nodes/SoRotor.cpp $(top_srcdir)/include/Inventor/nodes/SoRotor.h \
 
 #	$(top_srcdir)/src/nodes/SoAnnoText3.cpp $(top_srcdir)/include/Inventor/nodes/SoAnnoText3.h \
 #	$(top_srcdir)/src/nodes/SoAnnoText3Property.cpp $(top_srcdir)/include/Inventor/nodes/SoAnnoText3Property.h \
 #	$(top_srcdir)/src/nodes/SoAnnotation.cpp $(top_srcdir)/include/Inventor/nodes/SoAnnotation.h \
-#	$(top_srcdir)/src/nodes/SoAntiSquish.cpp $(top_srcdir)/include/Inventor/nodes/SoAntiSquish.h \
 #	$(top_srcdir)/src/nodes/SoArray.cpp $(top_srcdir)/include/Inventor/nodes/SoArray.h \
 #	$(top_srcdir)/src/nodes/SoBaseColor.cpp $(top_srcdir)/include/Inventor/nodes/SoBaseColor.h \
 #	$(top_srcdir)/src/nodes/SoBlinker.cpp $(top_srcdir)/include/Inventor/nodes/SoBlinker.h \

@@ -56,12 +56,12 @@ protected:
   virtual void getMatrix(SoGetMatrixAction * action);
   virtual void pick(SoPickAction * action);
 
-  SbMatrix getUnsquishingMatrix(const SbMatrix &squishedMatrix,
-                                const SbBool calcinverse, SbMatrix &inversematrix);
+  SbMatrix getUnsquishingMatrix(const SbMatrix & squishedmatrix,
+                                const SbBool calcinverse,
+                                SbMatrix & getinverse);
 private:
-  SbMatrix unsquishedMatrix, inverseMatrix;
-  SbBool matrixValid;
-  SbBool inverseValid;
+  SbMatrix unsquishedmatrix, inversematrix;
+  SbBool matrixvalid, inversevalid;
 };
 
 #endif // !COIN_SOANTISQUISH_H

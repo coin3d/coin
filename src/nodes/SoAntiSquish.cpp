@@ -22,10 +22,11 @@
   \brief The SoAntiSquish class is used to make scaling uniform.
   \ingroup nodes
 
-  It is used by draggers and manipulators to retain the shape of their
-  geometry, even if the current transformation matrix contains a nonuniform
-  scale. When traversed, this node replaces the scale vector of the matrix
-  with uniform values, bases on one of the Sizing strategies.
+  This is used by draggers and manipulators to retain the shape of
+  their geometry, even if the current transformation matrix contains a
+  nonuniform scale. When traversed, this node replaces the scale
+  vector of the matrix with uniform values, bases on one of the Sizing
+  strategies.
 */
 
 #include <Inventor/nodes/SoAntiSquish.h>
@@ -34,45 +35,22 @@
 
 /*!
   \enum SoAntiSquish::Sizing
-  FIXME: write documentation for enum
-*/
-/*!
-  \var SoAntiSquish::Sizing SoAntiSquish::X
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoAntiSquish::Sizing SoAntiSquish::Y
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoAntiSquish::Sizing SoAntiSquish::Z
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoAntiSquish::Sizing SoAntiSquish::AVERAGE_DIMENSION
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoAntiSquish::Sizing SoAntiSquish::BIGGEST_DIMENSION
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoAntiSquish::Sizing SoAntiSquish::SMALLEST_DIMENSION
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoAntiSquish::Sizing SoAntiSquish::LONGEST_DIAGONAL
-  FIXME: write documentation for enum definition
+  Different strategies for "unsquishing" a scale.
 */
 
 
 /*!
   \var SoSFEnum SoAntiSquish::sizing
-  FIXME: write documentation for field
+
+  The current "unsquish" strategy. Default value is
+  SoAntiSquish::AVERAGE_DIMENSION.
 */
 /*!
   \var SoSFBool SoAntiSquish::recalcAlways
-  FIXME: write documentation for field
+
+  Whether to recalculate the unsquishing parameters for every
+  traversal. Set this to \c FALSE and use SoAntiSquish::recalc() if
+  you need to optimize.
 */
 
 
@@ -83,7 +61,7 @@ SO_NODE_SOURCE(SoAntiSquish);
 /*!
   Constructor.
 */
-SoAntiSquish::SoAntiSquish()
+SoAntiSquish::SoAntiSquish(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoAntiSquish);
 
@@ -99,8 +77,8 @@ SoAntiSquish::SoAntiSquish()
   SO_NODE_DEFINE_ENUM_VALUE(Sizing, LONGEST_DIAGONAL);
   SO_NODE_SET_SF_ENUM_TYPE(sizing, Sizing);
 
-  this->matrixValid = FALSE;
-  this->inverseValid = FALSE;
+  this->matrixvalid = FALSE;
+  this->inversevalid = FALSE;
 }
 
 /*!
@@ -110,106 +88,103 @@ SoAntiSquish::~SoAntiSquish()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoAntiSquish class. This includes setting up the
-  type system, among other things.
-*/
+// Doc from superclass.
 void
 SoAntiSquish::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoAntiSquish);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
-SoAntiSquish::getBoundingBox(SoGetBoundingBoxAction *action)
+SoAntiSquish::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  SoAntiSquish::doAction((SoAction*) action);
+  SoAntiSquish::doAction((SoAction *) action);
 }
 
 /*!
-  FIXME: write doc
+  If SoAntiSquish::recalcAlways has been set to \c FALSE, you must
+  call this method whenever the transformations before this node in
+  the graph has changed.
+
+  \sa SoAntiSquish::recalcAlways
 */
 void
 SoAntiSquish::recalc(void)
 {
-  this->matrixValid = FALSE;
+  this->matrixvalid = FALSE;
 }
 
 /*!
-  FIXME: write doc
-*/
+  Accumulates an "unsquishing" matrix on top of the current model
+  matrix.
+ */
 void
-SoAntiSquish::doAction(SoAction *action)
+SoAntiSquish::doAction(SoAction * action)
 {
-  SoState *state = action->getState();
-  if (!this->matrixValid || this->recalcAlways.getValue()) {
-    this->matrixValid = TRUE;
-    this->inverseValid = FALSE;
-    this->unsquishedMatrix =
+  SoState * state = action->getState();
+  if (!this->matrixvalid || this->recalcAlways.getValue()) {
+    this->matrixvalid = TRUE;
+    this->inversevalid = FALSE;
+    this->unsquishedmatrix =
       this->getUnsquishingMatrix(SoModelMatrixElement::get(state),
-                                 FALSE, this->inverseMatrix);
+                                 FALSE, this->inversematrix);
   }
-  SoModelMatrixElement::set(action->getState(), this, this->unsquishedMatrix);
-}
-/*!
-  FIXME: write doc
-*/
-void
-SoAntiSquish::callback(SoCallbackAction *action)
-{
-  SoAntiSquish::doAction((SoAction*)action);
-}
-/*!
-  FIXME: write doc
-*/
-void
-SoAntiSquish::GLRender(SoGLRenderAction *action)
-{
-  SoAntiSquish::doAction((SoAction*) action);
+  SoModelMatrixElement::set(action->getState(), this, this->unsquishedmatrix);
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc from superclass.
 void
-SoAntiSquish::getMatrix(SoGetMatrixAction *action)
+SoAntiSquish::callback(SoCallbackAction * action)
 {
-  if (!this->matrixValid || !this->inverseValid ||
+  SoAntiSquish::doAction((SoAction *)action);
+}
+
+// Doc from superclass.
+void
+SoAntiSquish::GLRender(SoGLRenderAction * action)
+{
+  SoAntiSquish::doAction((SoAction *) action);
+}
+
+// Doc from superclass.
+void
+SoAntiSquish::getMatrix(SoGetMatrixAction * action)
+{
+  if (!this->matrixvalid || !this->inversevalid ||
       this->recalcAlways.getValue()) {
-    this->matrixValid = TRUE;
-    this->inverseValid = TRUE;
-    this->unsquishedMatrix = this->getUnsquishingMatrix(action->getMatrix(),
+    this->matrixvalid = TRUE;
+    this->inversevalid = TRUE;
+    this->unsquishedmatrix = this->getUnsquishingMatrix(action->getMatrix(),
                                                         TRUE,
-                                                        this->inverseMatrix);
+                                                        this->inversematrix);
   }
 
   // Note: don't use ..->getMatrix().setValue(...) here, as that won't
   // work (for some weird reason) with certain compilers (like MSVC++
   // 6.0 and AIX xlc).
-  action->getMatrix() = this->unsquishedMatrix;
-  action->getInverse() = this->inverseMatrix;
+  action->getMatrix() = this->unsquishedmatrix;
+  action->getInverse() = this->inversematrix;
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc from superclass.
 void
-SoAntiSquish::pick(SoPickAction *action)
+SoAntiSquish::pick(SoPickAction * action)
 {
-  SoAntiSquish::doAction((SoAction*) action);
+  SoAntiSquish::doAction((SoAction *) action);
 }
 
 /*!
-  FIXME: write doc
+  Calculate and return the matrix needed to "unsquish" the \a
+  squishedmatrix.
+
+  If \a calcinverse is \c TRUE, store the inverse of the
+  unsquishmatrix in \a getinverse.
 */
 SbMatrix
-SoAntiSquish::getUnsquishingMatrix(const SbMatrix &squishedmatrix,
+SoAntiSquish::getUnsquishingMatrix(const SbMatrix & squishedmatrix,
                                    const SbBool calcinverse,
-                                   SbMatrix &inversematrix)
+                                   SbMatrix & getinverse)
 {
   SbRotation r, so;
   SbVec3f t, scale;
@@ -270,6 +245,6 @@ SoAntiSquish::getUnsquishingMatrix(const SbMatrix &squishedmatrix,
   scale[0] = scale[1] = scale[2] = val;
   SbMatrix matrix;
   matrix.setTransform(t, r, scale, so);
-  if (calcinverse) inversematrix = matrix.inverse();
+  if (calcinverse) getinverse = matrix.inverse();
   return matrix;
 }
