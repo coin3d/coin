@@ -3888,16 +3888,15 @@ else
   HACKING_DYNAMIC_MODULES_FALSE=
 fi
 
+COIN_HACKING_LIBDIRS=
 if test x"$enable_hacking" = x"yes"; then
-  COIN_EXTRA_LIBS=" \
-        -lcoindevLINKHACK -lbaseLINKHACK -lVRMLnodesLINKHACK \
-        -lactionsLINKHACK -lbundlesLINKHACK -lcachesLINKHACK \
-        -ldetailsLINKHACK -ldraggersLINKHACK -lelementsLINKHACK \
-        -lenginesLINKHACK -lerrorsLINKHACK -leventsLINKHACK \
-        -lfieldsLINKHACK -lmanipsLINKHACK -lmiscLINKHACK \
-        -llistsLINKHACK -lnodekitsLINKHACK -lnodesLINKHACK \
-        -lprojectorsLINKHACK -lsensorsLINKHACK $COIN_EXTRA_LIBS"
+  coin_build_dir=`pwd`
+  COIN_HACKING_LIBDIRS="-L${coin_build_dir}/src/coindev/.libs -L${coin_build_dir}/src/base/.libs -L${coin_build_dir}/src/VRMLnodes/.libs -L${coin_build_dir}/src/actions/.libs -L${coin_build_dir}/src/bundles/.libs -L${coin_build_dir}/src/caches/.libs -L${coin_build_dir}/src/details/.libs -L${coin_build_dir}/src/draggers/.libs -L${coin_build_dir}/src/elements/.libs -L${coin_build_dir}/src/engines/.libs -L${coin_build_dir}/src/errors/.libs -L${coin_build_dir}/src/events/.libs -L${coin_build_dir}/src/fields/.libs -L${coin_build_dir}/src/manips/.libs -L${coin_build_dir}/src/misc/.libs -L${coin_build_dir}/src/lists/.libs -L${coin_build_dir}/src/nodekits/.libs -L${coin_build_dir}/src/nodes/.libs -L${coin_build_dir}/src/projectors/.libs -L${coin_build_dir}/src/sensors/.libs"
+  unset coin_build_dir
+  COIN_EXTRA_LIBS="-lcoindevLINKHACK -lbaseLINKHACK -lVRMLnodesLINKHACK -lactionsLINKHACK -lbundlesLINKHACK -lcachesLINKHACK -ldetailsLINKHACK -ldraggersLINKHACK -lelementsLINKHACK -lenginesLINKHACK -lerrorsLINKHACK -leventsLINKHACK -lfieldsLINKHACK -lmanipsLINKHACK -lmiscLINKHACK -llistsLINKHACK -lnodekitsLINKHACK -lnodesLINKHACK -lprojectorsLINKHACK -lsensorsLINKHACK $COIN_EXTRA_LIBS"
 fi
+
+
 
 
 
@@ -4250,6 +4249,7 @@ s%@X_LIBS@%$X_LIBS%;t t
 s%@X_EXTRA_LIBS@%$X_EXTRA_LIBS%;t t
 s%@HACKING_DYNAMIC_MODULES_TRUE@%$HACKING_DYNAMIC_MODULES_TRUE%;t t
 s%@HACKING_DYNAMIC_MODULES_FALSE@%$HACKING_DYNAMIC_MODULES_FALSE%;t t
+s%@COIN_HACKING_LIBDIRS@%$COIN_HACKING_LIBDIRS%;t t
 s%@BUILD_TOOLS_TRUE@%$BUILD_TOOLS_TRUE%;t t
 s%@BUILD_TOOLS_FALSE@%$BUILD_TOOLS_FALSE%;t t
 s%@BUILD_EXAMPLES_TRUE@%$BUILD_EXAMPLES_TRUE%;t t

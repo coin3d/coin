@@ -193,16 +193,15 @@ AC_ARG_ENABLE(hacking,
 
 AM_CONDITIONAL(HACKING_DYNAMIC_MODULES, test x"$enable_hacking" = x"yes")
 
+COIN_HACKING_LIBDIRS=
 if test x"$enable_hacking" = x"yes"; then
-  COIN_EXTRA_LIBS=" \
-        -lcoindevLINKHACK -lbaseLINKHACK -lVRMLnodesLINKHACK \
-        -lactionsLINKHACK -lbundlesLINKHACK -lcachesLINKHACK \
-        -ldetailsLINKHACK -ldraggersLINKHACK -lelementsLINKHACK \
-        -lenginesLINKHACK -lerrorsLINKHACK -leventsLINKHACK \
-        -lfieldsLINKHACK -lmanipsLINKHACK -lmiscLINKHACK \
-        -llistsLINKHACK -lnodekitsLINKHACK -lnodesLINKHACK \
-        -lprojectorsLINKHACK -lsensorsLINKHACK $COIN_EXTRA_LIBS"
+  coin_build_dir=`pwd`
+  COIN_HACKING_LIBDIRS="-L${coin_build_dir}/src/coindev/.libs -L${coin_build_dir}/src/base/.libs -L${coin_build_dir}/src/VRMLnodes/.libs -L${coin_build_dir}/src/actions/.libs -L${coin_build_dir}/src/bundles/.libs -L${coin_build_dir}/src/caches/.libs -L${coin_build_dir}/src/details/.libs -L${coin_build_dir}/src/draggers/.libs -L${coin_build_dir}/src/elements/.libs -L${coin_build_dir}/src/engines/.libs -L${coin_build_dir}/src/errors/.libs -L${coin_build_dir}/src/events/.libs -L${coin_build_dir}/src/fields/.libs -L${coin_build_dir}/src/manips/.libs -L${coin_build_dir}/src/misc/.libs -L${coin_build_dir}/src/lists/.libs -L${coin_build_dir}/src/nodekits/.libs -L${coin_build_dir}/src/nodes/.libs -L${coin_build_dir}/src/projectors/.libs -L${coin_build_dir}/src/sensors/.libs"
+  unset coin_build_dir
+  COIN_EXTRA_LIBS="-lcoindevLINKHACK -lbaseLINKHACK -lVRMLnodesLINKHACK -lactionsLINKHACK -lbundlesLINKHACK -lcachesLINKHACK -ldetailsLINKHACK -ldraggersLINKHACK -lelementsLINKHACK -lenginesLINKHACK -lerrorsLINKHACK -leventsLINKHACK -lfieldsLINKHACK -lmanipsLINKHACK -lmiscLINKHACK -llistsLINKHACK -lnodekitsLINKHACK -lnodesLINKHACK -lprojectorsLINKHACK -lsensorsLINKHACK $COIN_EXTRA_LIBS"
 fi
+
+AC_SUBST(COIN_HACKING_LIBDIRS)
 
 
 dnl *******************************************************************

@@ -4,13 +4,14 @@ lib_LTLIBRARIES = libCoin.la
 
 if HACKING_DYNAMIC_MODULES
 TESTLIBDIR = coindev
-libCoin_la_LIBADD = -lcoindevLINKHACK \
-	-lVRMLnodesLINKHACK -lactionsLINKHACK -lbaseLINKHACK \
-	-lbundlesLINKHACK -lcachesLINKHACK -ldetailsLINKHACK \
-	-ldraggersLINKHACK -lelementsLINKHACK -lenginesLINKHACK \
-	-lerrorsLINKHACK -leventsLINKHACK -lfieldsLINKHACK -llistsLINKHACK \
-	-lmanipsLINKHACK -lmiscLINKHACK -lnodekitsLINKHACK -lnodesLINKHACK \
-	-lprojectorsLINKHACK -lsensorsLINKHACK
+libCoin_la_LIBADD = 
+#libCoin_la_LIBADD = -lcoindevLINKHACK \
+#	-lVRMLnodesLINKHACK -lactionsLINKHACK -lbaseLINKHACK \
+#	-lbundlesLINKHACK -lcachesLINKHACK -ldetailsLINKHACK \
+#	-ldraggersLINKHACK -lelementsLINKHACK -lenginesLINKHACK \
+#	-lerrorsLINKHACK -leventsLINKHACK -lfieldsLINKHACK -llistsLINKHACK \
+#	-lmanipsLINKHACK -lmiscLINKHACK -lnodekitsLINKHACK -lnodesLINKHACK \
+#	-lprojectorsLINKHACK -lsensorsLINKHACK
 else
 TESTLIBDIR = 
 libCoin_la_LIBADD = \
