@@ -26,9 +26,30 @@
   \brief The SoSceneTexture2 class is used to create a 2D texture from a Coin scene graph.
   \ingroup nodes
 
+  Lets the rendering of a scene graph be specified as a texture image
+  to be used in another scene graph. Set up the scene graph used for a
+  texture in the SoSceneTexture2::scene field.
+
   This node behaves exactly like SoTexture2 when it comes mapping the
-  actual texture onto subsequent geometry. Please read the SoTexture2 documentation
-  for more information about how textures are mapped onto shapes.
+  actual texture onto subsequent geometry. Please read the SoTexture2
+  documentation for more information about how textures are mapped
+  onto shapes.
+
+  A notable feature of this node is that it will use offscreen
+  pbuffers for hardware accelerated rendering, if they are available
+  from the OpenGL driver. WGL, GLX and AGL, for OpenGL drivers on
+  Microsoft Windows, X11 and Mac OS X, respectively, all support the
+  OpenGL Architecture Review Board (ARB) pbuffer extension in later
+  incarnations from most OpenGL vendors.
+
+  Note also that the offscreen pbuffer will be used directly on the
+  card as a texture, with no costly round trip back and forth from CPU
+  memory, if the OpenGL driver supports the recent ARB_render_texture
+  extension.
+
+  An important limitation is that textures should have dimensions that
+  are equal to a whole power-of-two, see documentation for
+  SoSceneTexture::size.
 
   \since Coin 2.2
 */
@@ -67,14 +88,6 @@
   be Phong shaded. Supports grayscale and grayscale alpha
   textures. This feature requires OpenGL 1.1. MODULATE will be used if
   OpenGL version < 1.1 is detected.
-
-  Please note that using this texture model will make your Inventor
-  files incompatible with older versions of Coin and Inventor. You
-  need Coin >= 2.2 or TGS Inventor 4.0 to load Inventor files that
-  uses the REPLACE texture model.
-
-  \since Coin 2.2
-  \since TGS Inventor 4.0
 */
 
 /*!
@@ -152,9 +165,11 @@
 /*!
   \var SoSFVec2s SoSceneTexture2::size
 
-  The size of the texture. This node currently only supports power of
-  two textures.  If the size is not a power of two, the value will be
-  rounded upwards to the next power of two.
+  The size of the texture.
+
+  This node currently only supports power of two textures.  If the
+  size is not a power of two, the value will be rounded upwards to the
+  next power of two.
 */
 
 /*!
