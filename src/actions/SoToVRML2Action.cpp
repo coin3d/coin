@@ -909,8 +909,11 @@ SoToVRML2ActionP::pop_switch_cb(void * closure, SoCallbackAction * action, const
   else if (wc >= 0 && wc < sw->getNumChoices()) {
     // Move the last child (which is the selected child) to its correct position
     SoNode * n = sw->getChoice(sw->getNumChildren()-1);
+    // ref before removing the child
+    n->ref();
     sw->removeChoice(sw->getNumChildren()-1);
     sw->insertChoice(n, wc);
+    n->unrefNoDelete();
   }
     
   THISP(closure)->dict.enter((unsigned long)node, grp);  
