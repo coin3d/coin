@@ -259,7 +259,7 @@ Keywords which should be sent to this method:
     (beginning-of-line)
     (search-forward-regexp "^[^(]+" nil t)
     (goto-char startpos)
-    (insert "#if 1 // debug\n"
+    (insert "#if COIN_DEBUG && 1 // debug\n"
 	    "SoDebugError::postInfo(\"" (match-string 0) "\",\n"
 	    "\"\");\n"
 	    "#endif // debug\n")
