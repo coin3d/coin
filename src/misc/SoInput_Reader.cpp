@@ -33,6 +33,10 @@
 #include <zlib.h>
 #endif // HAVE_ZLIB
 
+#ifdef HAVE_BZIP2
+#include <bzlib.h>
+#endif // HAVE_BZIP2
+
 //
 // abstract class
 //
@@ -169,6 +173,7 @@ SoInput_GZFileReader::readBuffer(char * buf, const size_t readlen)
 #ifdef HAVE_ZLIB
   return gzread((gzFile)this->gzfp, (void*) buf, readlen);
 #else // HAVE_ZLIB
+  assert(0 && "should never get here");
   return 0;
 #endif // ! HAVE_ZLIB
 }
@@ -178,3 +183,59 @@ SoInput_GZFileReader::getFilename(void)
 {
   return this->filename;
 }
+
+
+//
+// bzFile class
+//
+
+SoInput_BZFileReader::SoInput_BZFileReader(const char * const filename, void * fp)
+{
+  this->bzfp = fp;
+  this->filename = filename;
+}
+
+SoInput_BZFileReader::~SoInput_BZFileReader()
+{
+#ifdef HAVE_BZIP2
+  if (this->bzfp) {
+    int bzerror = BZ_OK;
+    BZ2_bzReadClose(&bzerror, this->bzfp);
+  }
+#endif // HAVE_BZIP2
+}
+
+SoInput_Reader::ReaderType
+SoInput_BZFileReader::getType(void) const
+{
+  return BZFILE;
+}
+
+int
+SoInput_BZFileReader::readBuffer(char * buf, const size_t readlen)
+{
+#ifdef HAVE_BZIP2
+  if (this->bzfp == NULL) return -1;
+
+  int bzerror = BZ_OK;
+  int ret = BZ2_bzRead(&bzerror, this->bzfp, 
+                       buf, readlen);
+  if ((bzerror != BZ_OK) && (bzerror != BZ_STREAM_END)) {
+    ret = -1;
+    BZ2_bzReadClose(&bzerror, this->bzfp);
+    this->bzfp = NULL;
+  }
+  return ret;
+#else // HAVE_BZIP2
+  assert(0 && "should never get here");
+  return 0;
+#endif // ! HAVE_BZIP2
+}
+
+const SbString & 
+SoInput_BZFileReader::getFilename(void)
+{
+  return this->filename;
+}
+
+

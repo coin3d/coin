@@ -36,7 +36,8 @@ public:
   enum ReaderType {
     REGULAR_FILE,
     MEMBUFFER,
-    GZFILE
+    GZFILE,
+    BZFILE
   };
 
   // must be overloaded to return type
@@ -101,6 +102,21 @@ public:
 
 public:
   void * gzfp;
+  SbString filename;
+};
+
+class SoInput_BZFileReader : public SoInput_Reader {
+public:
+  SoInput_BZFileReader(const char * const filename, void * fp);
+  virtual ~SoInput_BZFileReader();
+
+  virtual ReaderType getType(void) const;
+  virtual int readBuffer(char * buf, const size_t readlen);
+
+  virtual const SbString & getFilename(void);
+
+public:
+  void * bzfp;
   SbString filename;
 };
 
