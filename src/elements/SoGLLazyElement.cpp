@@ -247,7 +247,7 @@ SoGLLazyElement::sendGLImage(const uint32_t glimageid) const
     }
   }
   ((SoGLLazyElement*)this)->cachebitmask |= GLIMAGE_MASK;
-  ((SoGLLazyElement*)this)->glstate.glimageid = glimageid;
+  ((SoGLLazyElement*)this)->glstate.glimageid = (int32_t) glimageid;
 }
 
 inline void 
@@ -339,9 +339,8 @@ SoGLLazyElement::sendTransparency(const int stipplenum) const
     glDisable(GL_POLYGON_STIPPLE);
   }
   else {
-    if (this->glstate.stipplenum == 0) glEnable(GL_POLYGON_STIPPLE);
+    if (this->glstate.stipplenum <= 0) glEnable(GL_POLYGON_STIPPLE);
     glPolygonStipple(stipple_patterns[stipplenum]);
-    
   }
   ((SoGLLazyElement*)this)->glstate.stipplenum = stipplenum;
   ((SoGLLazyElement*)this)->cachebitmask |= TRANSPARENCY_MASK;
@@ -368,12 +367,12 @@ SoGLLazyElement::init(SoState * state)
   this->glstate.shininess = -1.0f;
   this->glstate.lightmodel = -1;
   this->glstate.blending = -1;
-  this->glstate.stipplenum = 0;
+  this->glstate.stipplenum = -1;
   this->glstate.vertexordering = -1;
   this->glstate.twoside = -1;
   this->glstate.culling = -1;
   this->glstate.flatshading = -1;
-  this->glstate.glimageid = 0;
+  this->glstate.glimageid = -1;
   this->glstate.alphatest = -1;
   this->packedpointer = NULL;
   this->transpmask = 0xff;
@@ -566,7 +565,7 @@ SoGLLazyElement::send(const SoState * state, uint32_t mask) const
         }
         break;
       case GLIMAGE_CASE:
-        if (this->glstate.glimageid != this->coinstate.glimageid) {
+        if (this->glstate.glimageid != (int32_t) this->coinstate.glimageid) {
           this->sendGLImage(this->coinstate.glimageid);
         }
         break;
@@ -589,21 +588,67 @@ SoGLLazyElement::sendVPPacked(SoState* state, const unsigned char* pcolor)
   assert(0 && "Not implemented yet. Provided for API compatibility.");
 }
 
-//! FIXME: write doc
-
+/*!  
+  Reset element GL state (set state to invalid). Use this method to
+  notify this element when you use your own GL code that changes the
+  OpenGL state.  
+*/
 void
 SoGLLazyElement::reset(SoState * state,  uint32_t mask) const
 {
-  assert(0 && "Not implemented yet. Provided for API compatibility.");
-}
-
-
-void 
-SoGLLazyElement::sendLightModel(SoState * state, const int32_t model)
-{
   SoGLLazyElement * elem = getInstance(state);
-  if (elem->glstate.lightmodel != model) {
-    elem->sendLightModel(model);
+
+  if (state->isCacheOpen()) {
+    elem->cachebitmask |= mask;
+  }
+
+  for (int i = 0; (i < LAZYCASES_LAST)&&mask; i++, mask>>=1) {
+    if (mask&1) {
+      switch (i) {
+      case LIGHT_MODEL_CASE:
+        elem->glstate.lightmodel = -1;
+        break;
+      case DIFFUSE_CASE:
+        elem->sendPackedDiffuse(0xccccccff);
+        break;
+      case AMBIENT_CASE:
+        elem->glstate.ambient = SbColor(-1.f, -1.0f, -1.0f);
+        break;
+      case SPECULAR_CASE:
+        elem->glstate.specular = SbColor(-1.0f, -1.0f, -1.0f);
+        break;
+      case EMISSIVE_CASE:
+        elem->glstate.emissive = SbColor(-1.0f, -1.0f, -1.0f);
+        break;
+      case SHININESS_CASE:
+        elem->glstate.shininess = -1.0f;
+        break;
+      case BLENDING_CASE:
+        elem->glstate.blending = -1;
+        break;
+      case TRANSPARENCY_CASE:
+        elem->glstate.stipplenum = -1;
+        break;
+      case VERTEXORDERING_CASE:
+        elem->glstate.vertexordering = -1;
+        break;
+      case CULLING_CASE:
+        elem->glstate.culling = -1;
+        break;
+      case TWOSIDE_CASE:
+        elem->glstate.twoside = -1;
+        break;
+      case SHADE_MODEL_CASE:
+        elem->glstate.flatshading = -1;
+        break;
+      case GLIMAGE_CASE:
+        elem->glstate.glimageid = -1;
+        break;
+      case ALPHATEST_CASE:
+        elem->glstate.alphatest = -1;
+        break;
+      }
+    }
   }
 }
 
@@ -613,6 +658,15 @@ SoGLLazyElement::sendPackedDiffuse(SoState * state, const uint32_t diffuse)
   SoGLLazyElement * elem = getInstance(state);
   if (elem->glstate.diffuse != diffuse) {
     elem->sendPackedDiffuse(diffuse);
+  }
+}
+
+void 
+SoGLLazyElement::sendLightModel(SoState * state, const int32_t model)
+{
+  SoGLLazyElement * elem = getInstance(state);
+  if (elem->glstate.lightmodel != model) {
+    elem->sendLightModel(model);
   }
 }
 

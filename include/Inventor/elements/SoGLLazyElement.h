@@ -77,7 +77,7 @@ public:
     int32_t culling;
     int32_t twoside;
     int32_t flatshading;
-    uint32_t glimageid;
+    int32_t glimageid;
     int32_t alphatest;
   } GLState;
 
