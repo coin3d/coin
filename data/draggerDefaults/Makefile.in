@@ -193,20 +193,13 @@ dist_draggerdefdata_DATA = \
 	transformBoxDragger.iv
 
 
-# FIXME: use dist_noinst_SCRIPTS when it works
-noinst_SCRIPTS = \
-	$(srcdir)/iv2h.sh
-
-
 EXTRA_DIST = \
-	iv2h.sh
+	iv2h.sh.in
 
 subdir = data/draggerDefaults
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/include/config.h
 CONFIG_CLEAN_FILES =
-SCRIPTS = $(noinst_SCRIPTS)
-
 DIST_SOURCES =
 DATA = $(dist_draggerdefdata_DATA)
 
@@ -268,7 +261,7 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(SCRIPTS) $(DATA) all-local
+all-am: Makefile $(DATA) all-local
 
 installdirs:
 	$(mkinstalldirs) $(DESTDIR)$(draggerdefdatadir)
@@ -350,68 +343,76 @@ all-local: $(BUILT_SOURCES)
 
 # **************************************************************************
 
-translate1Dragger.h: $(srcdir)/translate1Dragger.iv $(srcdir)/iv2h.sh
-	$(srcdir)/iv2h.sh $(srcdir)/translate1Dragger.iv > translate1Dragger.h
+# I experienced some problems with script permission, so I changed the rules
+# around to generate the script and explicitly set the permission first.
+# 20030217 larsa
+iv2h.sh: $(srcdir)/iv2h.sh.in
+	@( cd $(top_builddir); ./config.status --file=data/draggerDefaults/iv2h.sh )
+	@chmod 755 iv2h.sh
 
-translate2Dragger.h: $(srcdir)/translate2Dragger.iv $(srcdir)/iv2h.sh
-	$(srcdir)/iv2h.sh $(srcdir)/translate2Dragger.iv > translate2Dragger.h
+# if iv2h fails, we don't want the empty file lying around - 20030217 larsa
+translate1Dragger.h: $(srcdir)/translate1Dragger.iv iv2h.sh
+	if ./iv2h.sh $(srcdir)/translate1Dragger.iv > $@; then :; else rm -f $@; exit 1; fi
 
-centerballDragger.h: $(srcdir)/centerballDragger.iv $(srcdir)/iv2h.sh
-	$(srcdir)/iv2h.sh $(srcdir)/centerballDragger.iv > centerballDragger.h
+translate2Dragger.h: $(srcdir)/translate2Dragger.iv iv2h.sh
+	if ./iv2h.sh $(srcdir)/translate2Dragger.iv > $@; then :; else rm -f $@; exit 1; fi
 
-tabPlaneDragger.h: $(srcdir)/tabPlaneDragger.iv $(srcdir)/iv2h.sh
-	$(srcdir)/iv2h.sh $(srcdir)/tabPlaneDragger.iv > tabPlaneDragger.h
+centerballDragger.h: $(srcdir)/centerballDragger.iv iv2h.sh
+	if ./iv2h.sh $(srcdir)/centerballDragger.iv > $@; then :; else rm -f $@; exit 1; fi
 
-tabBoxDragger.h: $(srcdir)/tabBoxDragger.iv $(srcdir)/iv2h.sh
-	$(srcdir)/iv2h.sh $(srcdir)/tabBoxDragger.iv > tabBoxDragger.h
+tabPlaneDragger.h: $(srcdir)/tabPlaneDragger.iv iv2h.sh
+	if ./iv2h.sh $(srcdir)/tabPlaneDragger.iv > $@; then :; else rm -f $@; exit 1; fi
 
-dragPointDragger.h: $(srcdir)/dragPointDragger.iv $(srcdir)/iv2h.sh
-	$(srcdir)/iv2h.sh $(srcdir)/dragPointDragger.iv > dragPointDragger.h
+tabBoxDragger.h: $(srcdir)/tabBoxDragger.iv iv2h.sh
+	if ./iv2h.sh $(srcdir)/tabBoxDragger.iv > $@; then :; else rm -f $@; exit 1; fi
 
-pointLightDragger.h: $(srcdir)/pointLightDragger.iv $(srcdir)/iv2h.sh
-	$(srcdir)/iv2h.sh $(srcdir)/pointLightDragger.iv > pointLightDragger.h
+dragPointDragger.h: $(srcdir)/dragPointDragger.iv iv2h.sh
+	if ./iv2h.sh $(srcdir)/dragPointDragger.iv > $@; then :; else rm -f $@; exit 1; fi
 
-directionalLightDragger.h: $(srcdir)/directionalLightDragger.iv $(srcdir)/iv2h.sh
-	$(srcdir)/iv2h.sh $(srcdir)/directionalLightDragger.iv > directionalLightDragger.h
+pointLightDragger.h: $(srcdir)/pointLightDragger.iv iv2h.sh
+	if ./iv2h.sh $(srcdir)/pointLightDragger.iv > $@; then :; else rm -f $@; exit 1; fi
 
-spotLightDragger.h: $(srcdir)/spotLightDragger.iv $(srcdir)/iv2h.sh
-	$(srcdir)/iv2h.sh $(srcdir)/spotLightDragger.iv > spotLightDragger.h
+directionalLightDragger.h: $(srcdir)/directionalLightDragger.iv iv2h.sh
+	if ./iv2h.sh $(srcdir)/directionalLightDragger.iv > $@; then :; else rm -f $@; exit 1; fi
 
-handleBoxDragger.h: $(srcdir)/handleBoxDragger.iv $(srcdir)/iv2h.sh
-	$(srcdir)/iv2h.sh $(srcdir)/handleBoxDragger.iv > handleBoxDragger.h
+spotLightDragger.h: $(srcdir)/spotLightDragger.iv iv2h.sh
+	if ./iv2h.sh $(srcdir)/spotLightDragger.iv > $@; then :; else rm -f $@; exit 1; fi
 
-jackDragger.h: $(srcdir)/jackDragger.iv $(srcdir)/iv2h.sh
-	$(srcdir)/iv2h.sh $(srcdir)/jackDragger.iv > jackDragger.h
+handleBoxDragger.h: $(srcdir)/handleBoxDragger.iv iv2h.sh
+	if ./iv2h.sh $(srcdir)/handleBoxDragger.iv > $@; then :; else rm -f $@; exit 1; fi
 
-trackballDragger.h: $(srcdir)/trackballDragger.iv $(srcdir)/iv2h.sh
-	$(srcdir)/iv2h.sh $(srcdir)/trackballDragger.iv > trackballDragger.h
+jackDragger.h: $(srcdir)/jackDragger.iv iv2h.sh
+	if ./iv2h.sh $(srcdir)/jackDragger.iv > $@; then :; else rm -f $@; exit 1; fi
 
-scaleUniformDragger.h: $(srcdir)/scaleUniformDragger.iv $(srcdir)/iv2h.sh
-	$(srcdir)/iv2h.sh $(srcdir)/scaleUniformDragger.iv > scaleUniformDragger.h
+trackballDragger.h: $(srcdir)/trackballDragger.iv iv2h.sh
+	if ./iv2h.sh $(srcdir)/trackballDragger.iv > $@; then :; else rm -f $@; exit 1; fi
 
-scale2UniformDragger.h: $(srcdir)/scale2UniformDragger.iv $(srcdir)/iv2h.sh
-	$(srcdir)/iv2h.sh $(srcdir)/scale2UniformDragger.iv > scale2UniformDragger.h
+scaleUniformDragger.h: $(srcdir)/scaleUniformDragger.iv iv2h.sh
+	if ./iv2h.sh $(srcdir)/scaleUniformDragger.iv > $@; then :; else rm -f $@; exit 1; fi
 
-scale1Dragger.h: $(srcdir)/scale1Dragger.iv $(srcdir)/iv2h.sh
-	$(srcdir)/iv2h.sh $(srcdir)/scale1Dragger.iv > scale1Dragger.h
+scale2UniformDragger.h: $(srcdir)/scale2UniformDragger.iv iv2h.sh
+	if ./iv2h.sh $(srcdir)/scale2UniformDragger.iv > $@; then :; else rm -f $@; exit 1; fi
 
-scale2Dragger.h: $(srcdir)/scale2Dragger.iv $(srcdir)/iv2h.sh
-	$(srcdir)/iv2h.sh $(srcdir)/scale2Dragger.iv > scale2Dragger.h
+scale1Dragger.h: $(srcdir)/scale1Dragger.iv iv2h.sh
+	if ./iv2h.sh $(srcdir)/scale1Dragger.iv > $@; then :; else rm -f $@; exit 1; fi
 
-rotateCylindricalDragger.h: $(srcdir)/rotateCylindricalDragger.iv $(srcdir)/iv2h.sh
-	$(srcdir)/iv2h.sh $(srcdir)/rotateCylindricalDragger.iv > rotateCylindricalDragger.h
+scale2Dragger.h: $(srcdir)/scale2Dragger.iv iv2h.sh
+	if ./iv2h.sh $(srcdir)/scale2Dragger.iv > $@; then :; else rm -f $@; exit 1; fi
 
-rotateSphericalDragger.h: $(srcdir)/rotateSphericalDragger.iv $(srcdir)/iv2h.sh
-	$(srcdir)/iv2h.sh $(srcdir)/rotateSphericalDragger.iv > rotateSphericalDragger.h
+rotateCylindricalDragger.h: $(srcdir)/rotateCylindricalDragger.iv iv2h.sh
+	if ./iv2h.sh $(srcdir)/rotateCylindricalDragger.iv > $@; then :; else rm -f $@; exit 1; fi
 
-rotateDiscDragger.h: $(srcdir)/rotateDiscDragger.iv $(srcdir)/iv2h.sh
-	$(srcdir)/iv2h.sh $(srcdir)/rotateDiscDragger.iv > rotateDiscDragger.h
+rotateSphericalDragger.h: $(srcdir)/rotateSphericalDragger.iv iv2h.sh
+	if ./iv2h.sh $(srcdir)/rotateSphericalDragger.iv > $@; then :; else rm -f $@; exit 1; fi
 
-transformerDragger.h: $(srcdir)/transformerDragger.iv $(srcdir)/iv2h.sh
-	$(srcdir)/iv2h.sh $(srcdir)/transformerDragger.iv > transformerDragger.h
+rotateDiscDragger.h: $(srcdir)/rotateDiscDragger.iv iv2h.sh
+	if ./iv2h.sh $(srcdir)/rotateDiscDragger.iv > $@; then :; else rm -f $@; exit 1; fi
 
-transformBoxDragger.h: $(srcdir)/transformBoxDragger.iv $(srcdir)/iv2h.sh
-	$(srcdir)/iv2h.sh $(srcdir)/transformBoxDragger.iv > transformBoxDragger.h
+transformerDragger.h: $(srcdir)/transformerDragger.iv iv2h.sh
+	if ./iv2h.sh $(srcdir)/transformerDragger.iv > $@; then :; else rm -f $@; exit 1; fi
+
+transformBoxDragger.h: $(srcdir)/transformBoxDragger.iv iv2h.sh
+	if ./iv2h.sh $(srcdir)/transformBoxDragger.iv > $@; then :; else rm -f $@; exit 1; fi
 
 # **************************************************************************
 
