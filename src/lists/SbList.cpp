@@ -89,7 +89,8 @@
 /*!
   \fn int SbList::find(const Type item) const
 
-  FIXME: write doc.
+  Return index of \a item in the list, or -1 if \item is
+  not present.
 */
 
 /*!
