@@ -363,7 +363,7 @@ cc_rbptree_clean(cc_rbptree * t)
 {
   if (t->root != &rbptree_sentinel) {
     rbptree_recursive_clean(t->root);
-    t->root = &rbptree_sentinel;
+    cc_rbptree_init(t);
   }
 }
 
