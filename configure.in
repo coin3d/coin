@@ -795,6 +795,7 @@ case "$host_os" in
   cygwin*)
     case "$CXX" in
       *msvccc) ac_coin_unknown_platform=no ;;
+      *wrapmsvc*) ac_coin_unknown_platform=no ;;
     esac
     ;;
   beos)
