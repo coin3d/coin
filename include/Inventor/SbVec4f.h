@@ -63,7 +63,7 @@ public:
 
   void print(FILE * fp) const;
 
-private:
+protected:
   float vec[4];
 };
 

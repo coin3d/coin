@@ -62,7 +62,7 @@ public:
 
   void print(FILE * fp) const;
 
-private:
+protected:
   short vec[2];
 };
 
