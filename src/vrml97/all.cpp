@@ -74,7 +74,6 @@
 #include "Sphere.cpp"
 #include "SphereSensor.cpp"
 #include "SpotLight.cpp"
-#include "SubInterpolator.cpp"
 #include "Switch.cpp"
 #include "Text.cpp"
 #include "Texture.cpp"

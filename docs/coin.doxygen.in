@@ -1213,7 +1213,6 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/vrml97/Sphere.cpp \
                          @path_tag@@coin_src_dir@/src/vrml97/SphereSensor.cpp \
                          @path_tag@@coin_src_dir@/src/vrml97/SpotLight.cpp \
-                         @path_tag@@coin_src_dir@/src/vrml97/SubInterpolator.cpp \
                          @path_tag@@coin_src_dir@/src/vrml97/Switch.cpp \
                          @path_tag@@coin_src_dir@/src/vrml97/Text.cpp \
                          @path_tag@@coin_src_dir@/src/vrml97/Texture.cpp \
