@@ -689,6 +689,18 @@ SoVRMLText::generatePrimitives(SoAction * action)
   if (SoGLTextureEnabledElement::get(action->getState())) do2Dtextures = TRUE;
   else if (SoGLTexture3EnabledElement::get(action->getState())) do3Dtextures = TRUE;
 
+  // FIXME: implement proper support for 3D-texturing, and get rid of
+  // this. 20020120 mortene.
+  if (do3Dtextures) {
+    static SbBool first = TRUE;
+    if (first) {
+      first = FALSE;
+      SoDebugError::postWarning("SoVRMLText::generatePrimitives",
+                                "3D-textures not properly supported for this node type yet.");
+    }
+  }
+
+
   SoPrimitiveVertex vertex;
   SoTextDetail detail;
   detail.setPart(0);
