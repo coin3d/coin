@@ -470,10 +470,7 @@ cc_flwft_get_font(const char * fontname)
   const char * fontfilename = find_font_file(fontname);
   FT_Error error;
 
-  cc_debugerror_postinfo("cc_flwt_get_font", "laster: %s",fontname);
   error = cc_ftglue_FT_New_Face(library, fontfilename ? fontfilename : fontname, 0, &face);
-
-
 
   if (error) {
     if (cc_flw_debug()) {
