@@ -166,6 +166,7 @@
 #include <Inventor/misc/SoAudioDevice.h>
 #include <Inventor/VRMLnodes/SoVRMLSound.h>
 #include <Inventor/VRMLnodes/SoVRMLAudioClip.h>
+#include "AudioTools.h"
 #endif // HAVE_SOUND
 
 #endif // HAVE_VRML97
@@ -393,21 +394,42 @@ SoDB::init(void)
   const char * env;
 
 #if defined(HAVE_SOUND) && defined(HAVE_VRML97) && 1 // disabled 2002-01-29 pederb. Crashes under Linux
-  SoAudioDevice * audioDevice;
-  audioDevice = SoAudioDevice::instance();
-  env = coin_getenv("COIN_SOUND_DRIVER_NAME");
-  (void) audioDevice->init("OpenAL", env ? env : "DirectSound3D");
-  if (audioDevice->haveSound()) {
-    env = coin_getenv("COIN_SOUND_BUFFER_LENGTH");
-    int bufferlength = env ? atoi(env) : 44100;
-    env = coin_getenv("COIN_SOUND_NUM_BUFFERS");
-    int numbuffers = env ? atoi(env) : 5;
-    env = coin_getenv("COIN_SOUND_THREAD_SLEEP_TIME");
-    float threadsleeptime = env ? (float) atof(env) : 0.250f;
-    SoVRMLSound::setDefaultBufferingProperties(bufferlength, numbuffers, threadsleeptime);
-    env = coin_getenv("COIN_SOUND_INTRO_PAUSE");
-    float intropause = env ? (float) atof(env) : 0.0f;
-    SoVRMLAudioClip::setDefaultIntroPause(intropause);
+
+  SbBool initaudio = FALSE;
+
+#ifdef _WIN32
+  initaudio = TRUE;
+#endif // _WIN32
+
+  if (!initaudio) {
+    env = coin_getenv("COIN_SOUND_ENABLE");
+    if (env && atoi(env)) {
+      SoDebugError::postInfo("SoDB::init", 
+        "Sound has been enabled because the environment variable "
+        "COIN_SOUND_ENABLE=1. Sound support on this platform is considered "
+        "experimental, and is therefore not enabled by default. "
+         SOUND_NOT_ENABLED_BY_DEFAULT_STRING );
+      initaudio = TRUE;
+    }
+  }
+
+  if (initaudio) {
+    SoAudioDevice * audioDevice;
+    audioDevice = SoAudioDevice::instance();
+    env = coin_getenv("COIN_SOUND_DRIVER_NAME");
+    (void) audioDevice->init("OpenAL", env ? env : "DirectSound3D");
+    if (audioDevice->haveSound()) {
+      env = coin_getenv("COIN_SOUND_BUFFER_LENGTH");
+      int bufferlength = env ? atoi(env) : 44100;
+      env = coin_getenv("COIN_SOUND_NUM_BUFFERS");
+      int numbuffers = env ? atoi(env) : 5;
+      env = coin_getenv("COIN_SOUND_THREAD_SLEEP_TIME");
+      float threadsleeptime = env ? (float) atof(env) : 0.250f;
+      SoVRMLSound::setDefaultBufferingProperties(bufferlength, numbuffers, threadsleeptime);
+      env = coin_getenv("COIN_SOUND_INTRO_PAUSE");
+      float intropause = env ? (float) atof(env) : 0.0f;
+      SoVRMLAudioClip::setDefaultIntroPause(intropause);
+    }
   }
 #endif // HAVE_SOUND
 

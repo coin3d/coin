@@ -237,37 +237,41 @@ SbBool SoAudioDevice::init(const SbString &devicetype,
 
   openal_wrapper()->alListenerfv(AL_POSITION, alfloat3);
   if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
-    SoDebugError::postWarning("SoAudioDevice::init",
-                              "alListenerfv(AL_POSITION,) failed. %s."
-                              "Sound will not be available.",
-                              coin_get_openal_error(error));
+    if (coin_debug_audio())
+      SoDebugError::postWarning("SoAudioDevice::init",
+                                "alListenerfv(AL_POSITION,) failed. %s."
+                                "Sound will not be available.",
+                                coin_get_openal_error(error));
     return FALSE;
   }
 
   openal_wrapper()->alListenerfv(AL_VELOCITY, alfloat3);
   if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
-    SoDebugError::postWarning("SoAudioDevice::init",
-                              "alListenerfv(AL_VELOCITY,) failed. %s."
-                              "Sound will not be available.",
-                              coin_get_openal_error(error));
+    if (coin_debug_audio())
+      SoDebugError::postWarning("SoAudioDevice::init",
+                                "alListenerfv(AL_VELOCITY,) failed. %s."
+                                "Sound will not be available.",
+                                coin_get_openal_error(error));
     return FALSE;
   }
   
   openal_wrapper()->alListenerfv(AL_ORIENTATION, alfloat6);
   if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
-    SoDebugError::postWarning("SoAudioDevice::init",
-                              "alListenerfv(AL_ORIENTATION,) failed. %s."
-                              "Sound will not be available.",
-                              coin_get_openal_error(error));
+    if (coin_debug_audio())
+      SoDebugError::postWarning("SoAudioDevice::init",
+                                "alListenerfv(AL_ORIENTATION,) failed. %s."
+                                "Sound will not be available.",
+                                coin_get_openal_error(error));
     return FALSE;
   }
 
   openal_wrapper()->alListenerf(AL_GAIN, gain);
   if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
-    SoDebugError::postWarning("SoAudioDevice::init",
-                              "alListenerf(AL_GAIN,) failed. %s."
-                              "Sound will not be available.",
-                              coin_get_openal_error(error));
+    if (coin_debug_audio())
+      SoDebugError::postWarning("SoAudioDevice::init",
+                                "alListenerf(AL_GAIN,) failed. %s."
+                                "Sound will not be available.",
+                                coin_get_openal_error(error));
     return FALSE;
   }
 

@@ -216,6 +216,7 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/threads/SbMutex.h>
 #include <Inventor/threads/SbCondVar.h>
+#include <Inventor/C/tidbits.h>
 #include <Inventor/SbTime.h>
 #include <stddef.h>
 
@@ -382,31 +383,65 @@ SoVRMLSound::SoVRMLSound(void)
 
 #ifdef HAVE_SOUND
   static SbBool warningprintedonce = FALSE;
-  if ( (!openal_wrapper()->available) && (!warningprintedonce)) {
-    SoDebugError::postWarning("SoVRMLSound::SoVRMLSound", 
-     "OpenAL linking failed. Attempted to use %s linking.\n"
-     "Sound will not be available.\n"
-     "The probable reason for this is that the OpenAL library,\n"
-     "needed for rendering 3D audio, is not installed correctly on your\n"
-     "system. If you'd like to use sounds in Coin, download the latest \n"
-     "version of OpenAL from www.openal.org [all platforms],\n" 
-     "ftp://opensource.creative.com/pub/sdk/ (OpenALWEAX.exe or \n"
-     "OpenALWEAX2.exe) [Windows platform only], or ask the manufacturer of\n"
-     "your soundcard for a native OpenAL driver (several soundcard\n"
-     "manufacturers offer this).", 
-                              openal_wrapper()->runtime ? "run-time" : 
-                              "link-time");
-    if (openal_wrapper()->runtime) {
-      SoDebugError::postInfo("SoVRMLSound::SoVRMLSound",
-                             "To get more debug information, "
-                             "set the environment variable "
-                             "COIN_DEBUG_DL=1 and run the "
-                             "application again");
+
+  if (!warningprintedonce) {
+    if (!SoAudioDevice::instance()->haveSound()) {
+      warningprintedonce = TRUE;
+      SbBool unsupportedplatform = TRUE;
+#ifdef _WIN32  
+      unsupportedplatform = FALSE;
+#endif // _WIN32
+      SbBool forceenable = FALSE;
+      if (unsupportedplatform) {
+        const char * env;
+        env = coin_getenv("COIN_SOUND_ENABLE");
+        if (env && atoi(env)) 
+          forceenable = TRUE;
+      }
+
+      if (unsupportedplatform && (!forceenable)) {
+        SoDebugError::postWarning("SoVRMLSound::SoVRMLSound", 
+          "You are using a SoVRMLSound node, but sound support on this "
+          "platform is considered experimental and is not enabled by default. "
+          "If you'd like to enable sound, set the environment variable "
+          "COIN_SOUND_ENABLE=1. "
+          SOUND_NOT_ENABLED_BY_DEFAULT_STRING );
+      }
+      else {
+        if (!openal_wrapper()->available) {
+          SoDebugError::postWarning("SoVRMLSound::SoVRMLSound", 
+            "You are using a SoVRMLSound node, but Coin was "
+            "unable to link with the OpenAL library. Attempted to use %s "
+            "linking. Sound will not be available. "
+            "The probable reason for this is that the OpenAL library, "
+            "needed for rendering 3D audio, is not installed correctly on "
+            "your system. If you'd like to use sounds in Coin, "
+            "download the latest "
+            "version of OpenAL from www.openal.org [all platforms], " 
+            "ftp://opensource.creative.com/pub/sdk/ (OpenALWEAX.exe or "
+            "OpenALWEAX2.exe) [Windows platform only], or ask the "
+            "manufacturer of "
+            "your soundcard for a native OpenAL driver (several soundcard"
+            "manufacturers offer this).", 
+            openal_wrapper()->runtime ? "run-time" : "link-time");
+          if (openal_wrapper()->runtime) {
+            SoDebugError::postInfo("SoVRMLSound::SoVRMLSound",
+                                   "To get more debug information, "
+                                   "set the environment variable "
+                                   "COIN_DEBUG_DL=1 and run the "
+                                   "application again");
+          }
+        }
+        else {
+          SoDebugError::postWarning("SoVRMLSound::SoVRMLSound",
+            "Initialization of the audio device failed. To get more debug "
+            "information, set the environment variable COIN_DEBUG_AUDIO=1 "
+            "and run the application again.");
+        }
+      }
     }
-    warningprintedonce = TRUE;
   }
 #endif // HAVE_SOUND
-
 }
 
 /*!
@@ -1413,7 +1448,7 @@ void SoVRMLSoundP::fillBuffers()
 #if COIN_DEBUG && DEBUG_AUDIO // debug
           SoDebugError::postWarning("SoVRMLSound::fillBuffers",
                                     "state == %s. Don't know what "
-                                    "to do about it...\n", statestr);
+                                    "to do about it...", statestr);
 #endif
         }
       }
