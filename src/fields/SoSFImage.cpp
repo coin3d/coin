@@ -250,6 +250,10 @@ SoSFImage::getValue(SbVec2s & size, int & nc) const
   by setting all bytes to 0 (note that the behavior on passing a \c
   NULL pointer is specific for Coin, Open Inventor will crash if you
   try it).
+
+  The image dimensions is given by the \a size argument, and the \a nc
+  argument specifies the number of bytes-pr-pixel. A 24-bit RGB image
+  would for instance have an \a nc equal to 3.
 */
 void
 SoSFImage::setValue(const SbVec2s & size, const int nc,
