@@ -228,7 +228,7 @@ cc_flww32_get_font(const char * fontname, int sizex, int sizey)
                            /* FIXME: should we let width==0 instead of
                               sizex for better chance of getting a
                               match? 20030610 mortene. */
-                           sizex,
+                           0, /* really sizex, but let Win32 choose to get correct aspect ratio */
                            0, 0, /* escapement, orientation */
                            FW_DONTCARE, /* weight */
                            FALSE, FALSE, FALSE, /* italic, underline, strikeout */
