@@ -102,10 +102,13 @@ Separator {
   The set of 2D texture coordinates. Default value of field is an
   empty set.
 
-  Texture coordinates should be specified on normalized coordinates,
-  ie in the range [0, 1]. Origo is defined to be in the top-most,
-  left-most corner (so note that Y coordinates is "flipped" versus the
-  ordinary way of specifying data from bottom to top in bitmaps.)
+  Texture coordinates are usually specified in normalized coordinates,
+  ie in the range [0, 1]. (0, 0) is the lower left corner, while 
+  (1, 1) is the upper right corner of the texture image. Coordinates
+  outside the [0, 1] range can be used to repeat the texture across a
+  surface.
+
+  \sa SoTexure2::wrapS, SoTexture2::wrapT 
 */
 
 // *************************************************************************
