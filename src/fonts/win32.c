@@ -135,6 +135,10 @@ typedef struct flww32_tessellator_t {
 
 static flww32_tessellator_t flww32_tessellator;
 static int flww32_font3dsize = 200;
+/* A static flag indicating whether we are running an old version of
+   windows or not. This is important when tessellating the glyphs due
+   to different behaviour between 95/98/Me and newer versions. */
+static SbBool flww32_win9598Me = FALSE;
 
 struct cc_flww32_globals_s {
   /* Offscreen device context for connecting to fonts. */
@@ -228,6 +232,8 @@ get_glyph_struct(void * font, int glyph)
 SbBool
 cc_flww32_initialize(void)
 {
+  OSVERSIONINFO osvi;
+
   if (cc_flw_debug()) { /* list all fonts on system */
     LOGFONT logfont; /* logical font information */
 
@@ -260,6 +266,17 @@ cc_flww32_initialize(void)
   flww32_tessellator.vertexlist = NULL;
   flww32_tessellator.faceindexlist = NULL;
   flww32_tessellator.edgeindexlist = NULL;
+
+  /* Are we running Windows 95/98/Me? */
+  ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
+  osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);    
+  if (!cc_win32()->GetVersionEx(&osvi)) {      
+    cc_win32_print_error("flww32_initialize", "GetVersionEx()", GetLastError());
+    assert(FALSE && "unexpected error");      
+  }
+  if (osvi.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS) {          
+    flww32_win9598Me = TRUE;
+  } 
 
   return TRUE;
 }
@@ -862,10 +879,25 @@ flww32_getVerticesFromPath(HDC hdc)
       /* Close the conture? */
       if (p_types[i] & PT_CLOSEFIGURE) {				
         vertex = (double *) malloc(3*sizeof(double));
+	
+	if (flww32_win9598Me) {
+	  /* If the current OS is Windows95/98/Me, the last vertex
+	    must be added before closing the figure-path. If the OS is
+	    a newer version (ie. XP/2000/NT), adding the last vertex
+	    will lead to a 'gap' which looks quite ugly when
+	    extruded. The 'flww32_win9598Me' is a static SbBool
+	    initialized once in 'flww32_initialize()'. */
+	  vertex [0] = p_points[i].x;
+	  vertex [1] = p_points[i].y;
+	  vertex [2] = 0;
+	  flww32_addTessVertex(vertex);
+	}
+
         vertex [0] = p_points[lastmoveto].x;
         vertex [1] = p_points[lastmoveto].y;
         vertex [2] = 0;
         flww32_addTessVertex(vertex);
+
         free(vertex);
       } else {
         vertex = (double *) malloc(3*sizeof(double));
@@ -1008,6 +1040,7 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
   GLUWrapper()->gluTessCallback(flww32_tessellator.tessellator_object, GLU_TESS_ERROR, (gluTessCallback_cb_t)flww32_errorCallback);
 
   GLUWrapper()->gluTessBeginPolygon(flww32_tessellator.tessellator_object, NULL);
+
   flww32_getVerticesFromPath(memdc);
  
   if (flww32_tessellator.contour_open) {
