@@ -1,34 +1,24 @@
-#!/bin/sh
-
-
-###### SUBROUTINES ########################################################
+#! /bin/sh
 
 usage()
 {
 cat <<EOF
-    Usage: coin-config [OPTIONS]
-    Options:
-            [--version]
-            [--cppflags]
-            [--ldflags]
-            [--datadir]
-            [--libs]
+Usage: coin-config [OPTIONS]
+Options:
+  --cppflags
+  --ldflags
+  --libs
+  --datadir
+  --version
+  --usage | --help
 EOF
   exit $1
 }
 
-
 ###### MAIN ###############################################################
-
-if test $# -eq 0; then
-  usage 1 1>&2
-fi
 
 while test $# -gt 0; do
   case $1 in
-    --version)
-      echo @COIN_VERSION@
-      ;;
     --cppflags)
       echo -I@includedir@ @COIN_EXTRA_CPPFLAGS@
       ;;
@@ -41,6 +31,12 @@ while test $# -gt 0; do
     --datadir)
       echo @datadir@
       ;;
+    --version)
+      echo @COIN_VERSION@
+      ;;
+    --help | --usage)
+      usage 0
+      ;;
     *)
       echo "Unknown option: \"$1\""
       usage 1 1>&2
@@ -50,3 +46,4 @@ while test $# -gt 0; do
 done
 
 exit 0
+

@@ -1,5 +1,4 @@
 /* config.h.in.  Generated automatically from configure.in by autoheader.  */
-
 #undef COIN_MAJOR_VERSION
 #undef COIN_MINOR_VERSION
 #undef COIN_MICRO_VERSION
@@ -20,6 +19,9 @@
 #undef HAVE_WINDOWS_H
 
 #undef HAVE_GLU_NURBSOBJECT
+
+/* Define if you have the `bsd' library (-lbsd). */
+#undef HAVE_LIBBSD
 
 /* Define if you have the `dnet' library (-ldnet). */
 #undef HAVE_LIBDNET
