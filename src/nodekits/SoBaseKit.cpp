@@ -797,6 +797,15 @@ SoBaseKit::getAnyPart(const SbName & partname, SbBool makeifneeded, SbBool leafc
   // FIXME:
   // run cleanup?, in case some node has been temporarily created while
   // searching for the part?? pederb, 2000-01-05
+
+#if COIN_DEBUG
+  if (makeifneeded) { // user probably expected part to be found, post a warning
+    SoDebugError::postWarning("SoBaseKit::findPart",
+                              "part ``%s'' not found in %s",
+                              partname.getString(),
+                              this->getTypeId().getName().getString());
+  }
+#endif // COIN_DEBUG
   return NULL;
 }
 
@@ -1180,14 +1189,7 @@ SoBaseKit::findPart(const SbString & partname, SoBaseKit *& kit, int & partnum,
       }
       kit = orgkit; // return with an error in this kit
     }
-#if COIN_DEBUG
-    if (makeifneeded) { // user probably expected part to be found, post a warning
-      SoDebugError::postWarning("SoBaseKit::findPart",
-                                "part ``%s'' not found in %s",
-                                firstpartname.getString(),
-                                kit->getTypeId().getName().getString());
-    }
-#endif // COIN_DEBUG
+    // nope, not found
     return FALSE;
   }
 
