@@ -6,7 +6,7 @@
 
 # Author: Morten Eriksen, <mortene@sim.no>.
 
-# Makes it possible to run autogen.sh from any location.
+# Makes it possible to run bootstrapping from any location.
 directory=`echo "$0" | sed 's/[^\/]*$//g'`;
 me=`echo "$0" | sed 's/^.*\///g'`;
 cd $directory
