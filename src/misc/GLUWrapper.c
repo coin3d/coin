@@ -76,6 +76,7 @@ GLUWrapper_set_version(void)
   (void)fflush(stderr);
 #endif /* debug */
   (void)strncpy(buffer, (const char *)versionstr, 255);
+  buffer[255] = '\0'; /* strncpy() will not null-terminate if strlen > 255 */
   dotptr = strchr(buffer, '.');
   if (dotptr) {
     char * start = buffer;
