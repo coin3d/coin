@@ -326,22 +326,21 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
     
     SbName fieldname = THIS->isfieldlist[i];
     SoField * dstfield = node->getField(fieldname);
+    SoEngineOutput * eventout = NULL;
+    
     if (!dstfield) {
-      if (node->isOfType(SoNodeEngine::getClassTypeId()) &&
-          ((SoNodeEngine*)node)->getOutput(fieldname)) {
-#if COIN_DEBUG && 1 // debug
-        SoDebugError::postInfo("SoProto::connectISRefs",
-                               "FIXME: implement eventOut (SoEngineOutput) alias support");
-#endif // debug
-        continue;
+      if (node->isOfType(SoNodeEngine::getClassTypeId())) {
+        eventout = ((SoNodeEngine*)node)->getOutput(fieldname);
       }
+      if (!eventout) {
 #if COIN_DEBUG
-      SoDebugError::postWarning("SoProto::connectISRefs",
-                                "Destionation field '%s' is not found in node type '%s'. "
-                                "Unable to resolve IS reference.",
-                                fieldname.getString(), node->getTypeId().getName().getString());
+        SoDebugError::postWarning("SoProto::connectISRefs",
+                                  "Destionation field '%s' is not found in node type '%s'. "
+                                  "Unable to resolve IS reference.",
+                                  fieldname.getString(), node->getTypeId().getName().getString());
 #endif // COIN_DEBUG
-      continue; // try next field
+        continue; // skip to next field
+      }
     }
 
     SbName iname = THIS->isnamelist[i];
@@ -363,13 +362,29 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
       int idx = path->getIndex(k);
       node = (*(node->getChildren()))[idx];
     }
-    dstfield = node->getField(fieldname);
-    assert(dstfield);
+    if (dstfield) dstfield = node->getField(fieldname);
+    else {
+      assert(node->isOfType(SoNodeEngine::getClassTypeId()));
+      eventout = ((SoNodeEngine*)node)->getOutput(fieldname);
+    }
+    assert(dstfield || eventout);
     SoField * srcfield = inst->getField(iname);
     if (srcfield) {
-      dstfield->connectFrom(srcfield);
+      // if destination field is an eventOut field, or an EngineOutput,
+      // reverse the connection, since we then just need to route the
+      // events to the srcfield.
+      if (eventout) {
+        srcfield->connectFrom(eventout);
+      }
+      else if (dstfield->getFieldType() == SoField::EVENTOUT_FIELD) {
+        srcfield->connectFrom(dstfield);
+      }
+      else {
+        dstfield->connectFrom(srcfield);
+      }
     }
     else {
+      assert(dstfield);
       SoEngineOutput * output = NULL;
       if (inst->isOfType(SoNodeEngine::getClassTypeId())) {
         output = ((SoNodeEngine*) inst)->getOutput(iname);
