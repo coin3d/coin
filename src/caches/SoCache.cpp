@@ -40,6 +40,7 @@
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/SbName.h>
 #endif // COIN_DEBUG
 
 /*!
@@ -110,7 +111,7 @@ SoCache::addElement(const SoElement * const elem)
     if (!(this->elementflags[idx] & flag)) {
 #if COIN_DEBUG && 0 // debug
       SoDebugError::postInfo("SoCache::addElement",
-                             "elem: %s",
+                             "cache: %p, elem: %s", this,
                              elem->getTypeId().getName().getString());
 #endif // debug
       SoElement * copy = elem->copyMatchInfo();
@@ -166,7 +167,7 @@ SoCache::getInvalidElement(const SoState * const state) const
     if (!elem->matches(state->getConstElement(elem->getStackIndex()))) {
 #if COIN_DEBUG && 0 // debug
       SoDebugError::postInfo("SoCache::getInvalidElement",
-                             "invalid element: %s",
+                             "cache: %p, invalid element: %s", this,
                              elem->getTypeId().getName().getString());
 #endif // debug
       return elem;
