@@ -436,11 +436,7 @@ SoGroup::removeChild(SoNode * const child)
 void
 SoGroup::removeAllChildren(void)
 {
-  int n = this->getNumChildren();
-  while (n) {
-    n--;
-    this->removeChild(n);
-  }
+  this->children->truncate(0);
 }
 
 /*!
