@@ -4675,3 +4675,17 @@ Separator {
     20041214 mortene.
 
 =====================================================================
+
+181 SoSFEnum::operator=() not implemented, and not blocked.
+
+    Leads to trouble, as the default operator will _not_ do the right
+    thing (it will just make a bit-wise copy).
+
+    This is very likely a problem for all SoField-derived classes, and
+    should be fixed for all of them. The best solution is probably to
+    write an empty, private operator=(), so faulty client code is
+    caught be the compiler.
+
+    20041217 mortene.
+
+=====================================================================
