@@ -4524,3 +4524,130 @@ and
     20041105 mortene.
 
 =====================================================================
+
+169 SoDataSensor extension
+
+    To comply with the latest TGS SoDataSensor, we'd need to implement
+    the following:
+
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+Index: include/Inventor/sensors/SoDataSensor.h
+===================================================================
+RCS file: /export/cvsroot/Coin/include/Inventor/sensors/SoDataSensor.h,v
+retrieving revision 1.18
+diff -u -b -r1.18 SoDataSensor.h
+--- include/Inventor/sensors/SoDataSensor.h	9 Mar 2004 14:38:42 -0000	1.18
++++ include/Inventor/sensors/SoDataSensor.h	16 Nov 2004 17:12:39 -0000
+@@ -40,12 +40,27 @@
+   SoDataSensor(SoSensorCB * func, void * data);
+   virtual ~SoDataSensor(void);
+ 
++  enum ChangeType {
++    UNSPECIFIED,
++    GROUP_ADD_CHILD,
++    GROUP_INSERT_CHILD,
++    GROUP_REPLACE_CHILD,
++    GROUP_REMOVE_CHILD,
++    GROUP_REMOVE_ALL_CHILDREN,
++    FIELD_MULTIVALUE
++  };
++
+   void setDeleteCallback(SoSensorCB * function, void * data = NULL);
+   SoNode * getTriggerNode(void) const;
+   SoField * getTriggerField(void) const;
+   SoPath * getTriggerPath(void) const;
+   void setTriggerPathFlag(SbBool flag);
+   SbBool getTriggerPathFlag(void) const;
++  ChangeType getTriggerType(void) const;
++  SoNode * getTriggerChild(void) const;
++  int getTriggerChildIndex(void) const;
++  int getTriggerMFieldStartIndex(void) const;
++  int getTriggerMFieldNumValues(void) const;
+ 
+   virtual void trigger(void);
+   virtual void notify(SoNotList * l);
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+
+    TGS has also a virtual unschedule()-implementation at the SoDataSensor
+    level which we don't - don't know if that is needed to implement these
+    changes.
+
+    20041116 larsa.
+
+=====================================================================
+
+170 SoIndexedFaceSet defines
+
+    The following defines are not defined in Coin, but exists in TGS,
+    so we're not compatible on that.
+
+
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+Index: include/Inventor/nodes/SoIndexedFaceSet.h
+===================================================================
+RCS file: /export/cvsroot/Coin/include/Inventor/nodes/SoIndexedFaceSet.h,v
+retrieving revision 1.27
+diff -u -b -r1.27 SoIndexedFaceSet.h
+--- include/Inventor/nodes/SoIndexedFaceSet.h	9 Mar 2004 14:38:41 -0000	1.27
++++ include/Inventor/nodes/SoIndexedFaceSet.h	16 Nov 2004 17:17:08 -0000
+@@ -28,6 +28,8 @@
+ #include <Inventor/nodes/SoIndexedShape.h>
+ 
+ #define SO_END_FACE_INDEX (-1)
++#define SO_END_CONTOUR_INDEX (-1)
++#define SO_END_POLYGON_INDEX (-2)
+ 
+ class SoIndexedFaceSetP;
+ 
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+
+    20041116 larsa.
+
+=====================================================================
+
+171 SoShapeHints winding type
+
+    TGS extension.
+
+    20041116 larsa.
+
+=====================================================================
+
+172 SoFieldContainer and private fields
+
+    TGS has support for private fields, Coin doesn't.
+    Something like this:
+
+#define SO_NODE_ADD_PRIVATEFIELD(fieldname, defvalue) \
+{ \
+  classMutex->writelock(); \
+  SO__NODE_CHECK_CONSTRUCT(__FILE__); \
+  if ( firstInstance ) \
+    fieldData->addField(this, SO__QUOTE(fieldName), &this->fieldName); \
+  this->fieldName.setValue(defValue); \
+  this->fieldName.setContainer(this); \
+  this->fieldName.setFieldType(0); \
+  classMutix->writeunlock(); \
+}
+
+    20041116 larsa.
+
+=====================================================================
+
+173 SbIntList implementation
+
+    Being based on SbPList, it stores ints in pointers, which is a waste
+    of space on platforms where pointers are larger than ints/longs.
+
+    20041116 larsa.
+
+=====================================================================
+
+174 SoTrackerEvent missing
+
+    We're missing the SoTrackerEvent event class, and the accompanying
+    SbTrackerInfo class.
+
+    20041116 larsa.
+
+=====================================================================
