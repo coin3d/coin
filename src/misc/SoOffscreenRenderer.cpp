@@ -1500,11 +1500,19 @@ SoOffscreenRendererP::getMaxTileSize(void)
   if (forcedtilewidth != 0) { width = forcedtilewidth; }
   if (forcedtileheight != 0) { height = forcedtileheight; }
 
-  if (width < SHRT_MAX) dims[0] = width;
-  else dims[0] = SHRT_MAX;
+  static unsigned int maxtilesize = 0;
+  if (maxtilesize == 0) {
+    env = coin_getenv("COIN_OFFSCREENRENDERER_MAX_TILESIZE");
+    maxtilesize = env ? atoi(env) : 1024;    
+    // just in case
+    if (maxtilesize > SHRT_MAX) maxtilesize = SHRT_MAX;
+  }
   
-  if (height < SHRT_MAX) dims[1] = height;
-  else dims[1] = SHRT_MAX;
+  if (width < maxtilesize) dims[0] = width;
+  else dims[0] = maxtilesize;
+  
+  if (height < maxtilesize) dims[1] = height;
+  else dims[1] = maxtilesize;
   
   // cache result for later calls
   maxtilex = width;
