@@ -49,6 +49,19 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoState.h>
 
+class SoGLDisplayListP {
+ public:
+  SoGLDisplayList::Type type;
+  int numalloc;
+  unsigned int firstindex;
+  int context;
+  int refcount;
+  SbBool mipmap;
+  GLenum texturetarget;
+};
+
+#define PRIVATE(obj) obj->pimpl
+
 // *************************************************************************
 
 /*!
@@ -56,12 +69,15 @@
 */
 SoGLDisplayList::SoGLDisplayList(SoState * state, Type type, int allocnum,
                                  SbBool mipmaptexobj)
-  : type(type),
-    numalloc(allocnum),
-    context(SoGLCacheContextElement::get(state)),
-    refcount(0),
-    mipmap(mipmaptexobj)
 {
+  PRIVATE(this)= new SoGLDisplayListP;
+  PRIVATE(this)->type = type;
+  PRIVATE(this)->numalloc = allocnum;
+  PRIVATE(this)->context = SoGLCacheContextElement::get(state);
+  PRIVATE(this)->refcount = 0;
+  PRIVATE(this)->mipmap = mipmaptexobj;
+  PRIVATE(this)->texturetarget = 0;
+ 
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoGLDisplayList::SoGLDisplayList", "%p", this);
 #endif // debug
@@ -121,24 +137,24 @@ SoGLDisplayList::SoGLDisplayList(SoState * state, Type type, int allocnum,
 
   // Reserve displaylist IDs.
 
-  if (this->type == TEXTURE_OBJECT) {
+  if (PRIVATE(this)->type == TEXTURE_OBJECT) {
     assert(allocnum == 1 && "it is only possible to create one texture object at a time");
-    const cc_glglue * glw = cc_glglue_instance(this->context);
+    const cc_glglue * glw = cc_glglue_instance(PRIVATE(this)->context);
     if (cc_glglue_has_texture_objects(glw)) {
       // use temporary variable, in case GLuint is typedef'ed to
       // something other than unsigned int
       GLuint tmpindex;
       cc_glglue_glGenTextures(glw, 1, &tmpindex);
-      this->firstindex = (unsigned int )tmpindex;
+      PRIVATE(this)->firstindex = (unsigned int )tmpindex;
     }
     else { // Fall back to display list, allocation happens further down below.
-      this->type = DISPLAY_LIST;
+      PRIVATE(this)->type = DISPLAY_LIST;
     }
   }
 
-  if (this->type == DISPLAY_LIST) {
-    this->firstindex = (unsigned int) glGenLists(allocnum);
-    if (this->firstindex == 0) {
+  if (PRIVATE(this)->type == DISPLAY_LIST) {
+    PRIVATE(this)->firstindex = (unsigned int) glGenLists(allocnum);
+    if (PRIVATE(this)->firstindex == 0) {
       SoDebugError::post("SoGLDisplayList::SoGLDisplayList",
                          "Could not reserve %d displaylist%s. "
                          "Expect flawed rendering.",
@@ -148,7 +164,7 @@ SoGLDisplayList::SoGLDisplayList(SoState * state, Type type, int allocnum,
     }
 #if COIN_DEBUG && 0 // debug
     SoDebugError::postInfo("SoGLDisplayList::SoGLDisplayList",
-                           "firstindex==%d", this->firstindex);
+                           "firstindex==%d", PRIVATE(this)->firstindex);
 #endif // debug
   }
 }
@@ -160,21 +176,22 @@ SoGLDisplayList::~SoGLDisplayList()
   SoDebugError::postInfo("SoGLDisplayList::~SoGLDisplayList", "%p", this);
 #endif // debug
 
-  if (this->type == DISPLAY_LIST) {
-    glDeleteLists((GLuint) this->firstindex, this->numalloc);
+  if (PRIVATE(this)->type == DISPLAY_LIST) {
+    glDeleteLists((GLuint) PRIVATE(this)->firstindex, PRIVATE(this)->numalloc);
   }
   else {
-    assert(this->type == TEXTURE_OBJECT);
+    assert(PRIVATE(this)->type == TEXTURE_OBJECT);
 
-    const cc_glglue * glw = cc_glglue_instance(this->context);
+    const cc_glglue * glw = cc_glglue_instance(PRIVATE(this)->context);
     assert(cc_glglue_has_texture_objects(glw));
 
     // Use temporary variable in case GLUint != unsigned int.
-    GLuint tmpindex = (GLuint) this->firstindex;
+    GLuint tmpindex = (GLuint) PRIVATE(this)->firstindex;
     // It is only possible to create one texture object at a time, so
     // there's only one index to delete.
     cc_glglue_glDeleteTextures(glw, 1, &tmpindex);
   }
+  delete PRIVATE(this);
 }
 
 /*!
@@ -183,7 +200,7 @@ SoGLDisplayList::~SoGLDisplayList()
 void
 SoGLDisplayList::ref(void)
 {
-  this->refcount++;
+  PRIVATE(this)->refcount++;
 }
 
 /*!
@@ -193,8 +210,8 @@ SoGLDisplayList::ref(void)
 void
 SoGLDisplayList::unref(SoState * state)
 {
-  assert(this->refcount > 0);
-  if (--this->refcount == 0) {
+  assert(PRIVATE(this)->refcount > 0);
+  if (--PRIVATE(this)->refcount == 0) {
     // Let SoGLCacheContext delete this instance the next time context is current.
     SoGLCacheContextElement::scheduleDelete(state, this);
   }
@@ -206,11 +223,11 @@ SoGLDisplayList::unref(SoState * state)
 void
 SoGLDisplayList::open(SoState * state, int index)
 {
-  if (type == DISPLAY_LIST) {
-    glNewList((GLuint) (this->firstindex+index), GL_COMPILE_AND_EXECUTE);
+  if (PRIVATE(this)->type == DISPLAY_LIST) {
+    glNewList((GLuint) (PRIVATE(this)->firstindex+index), GL_COMPILE_AND_EXECUTE);
   }
   else {
-    assert(type == TEXTURE_OBJECT);
+    assert(PRIVATE(this)->type == TEXTURE_OBJECT);
     assert(index == 0);
     this->bindTexture(state);
   }
@@ -222,7 +239,7 @@ SoGLDisplayList::open(SoState * state, int index)
 void
 SoGLDisplayList::close(SoState * state)
 {
-  if (this->type == DISPLAY_LIST) {
+  if (PRIVATE(this)->type == DISPLAY_LIST) {
     glEndList();
     if (glGetError() == GL_OUT_OF_MEMORY) {
       SoDebugError::post("SoGLDisplayList::close",
@@ -239,11 +256,11 @@ SoGLDisplayList::close(SoState * state)
 void
 SoGLDisplayList::call(SoState * state, int index)
 {
-  if (this->type == DISPLAY_LIST) {
-    glCallList((GLuint) (this->firstindex + index));
+  if (PRIVATE(this)->type == DISPLAY_LIST) {
+    glCallList((GLuint) (PRIVATE(this)->firstindex + index));
   }
   else {
-    assert(type == TEXTURE_OBJECT);
+    assert(PRIVATE(this)->type == TEXTURE_OBJECT);
     assert(index == 0);
     this->bindTexture(state);
   }
@@ -271,7 +288,7 @@ SoGLDisplayList::addDependency(SoState * state)
 SbBool
 SoGLDisplayList::isMipMapTextureObject(void) const
 {
-  return this->mipmap;
+  return PRIVATE(this)->mipmap;
 }
 
 /*!
@@ -280,7 +297,7 @@ SoGLDisplayList::isMipMapTextureObject(void) const
 SoGLDisplayList::Type
 SoGLDisplayList::getType(void) const
 {
-  return this->type;
+  return PRIVATE(this)->type;
 }
 
 /*!
@@ -289,7 +306,7 @@ SoGLDisplayList::getType(void) const
 int
 SoGLDisplayList::getNumAllocated(void) const
 {
-  return this->numalloc;
+  return PRIVATE(this)->numalloc;
 }
 
 /*!
@@ -298,7 +315,7 @@ SoGLDisplayList::getNumAllocated(void) const
 unsigned int
 SoGLDisplayList::getFirstIndex(void) const
 {
-  return this->firstindex;
+  return PRIVATE(this)->firstindex;
 }
 
 /*!
@@ -307,7 +324,29 @@ SoGLDisplayList::getFirstIndex(void) const
 int
 SoGLDisplayList::getContext(void) const
 {
-  return this->context;
+  return PRIVATE(this)->context;
+}
+
+/*!
+  Sets the texture object target
+  \since 2005-02-17
+*/
+void 
+SoGLDisplayList::setTextureTarget(int target)
+{
+  PRIVATE(this)->texturetarget = (GLenum) target;
+}
+
+/*!
+  Returns the texture target
+  \since 2005-02-17
+*/
+int 
+SoGLDisplayList::getTextureTarget(void) const
+{
+  if (PRIVATE(this)->texturetarget)
+    return (int) PRIVATE(this)->texturetarget;
+  return GL_TEXTURE_2D;
 }
 
 /*!
@@ -320,15 +359,22 @@ SoGLDisplayList::getContext(void) const
 void
 SoGLDisplayList::bindTexture(SoState *state)
 {
-  const cc_glglue * glw = cc_glglue_instance(this->context);
+  const cc_glglue * glw = cc_glglue_instance(PRIVATE(this)->context);
   assert(cc_glglue_has_texture_objects(glw));
 
-  GLenum target = GL_TEXTURE_2D;
+  GLenum target = PRIVATE(this)->texturetarget;
 
-  if (SoGLTexture3EnabledElement::get(state)) {
-    assert(cc_glglue_has_3d_textures(glw));
-    target = GL_TEXTURE_3D;
+  if (target == 0) {
+    target = GL_TEXTURE_2D;
+    // FIXME: this is ugly. Will not work properly for multiple texture units
+    // pederb, 2005-02-17
+    if (SoGLTexture3EnabledElement::get(state)) {
+      assert(cc_glglue_has_3d_textures(glw));
+      target = GL_TEXTURE_3D;
+    }
   }
-
-  cc_glglue_glBindTexture(glw, GL_TEXTURE_2D, (GLuint)this->firstindex);
+  cc_glglue_glBindTexture(glw, target, (GLuint)PRIVATE(this)->firstindex);
 }
+
+#undef PRIVATE
+

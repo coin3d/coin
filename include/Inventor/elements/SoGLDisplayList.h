@@ -27,6 +27,7 @@
 #include <Inventor/SbBasic.h>
 
 class SoState;
+class SoGLDisplayListP;
 
 // *************************************************************************
 
@@ -55,16 +56,12 @@ public:
   unsigned int getFirstIndex(void) const;
   int getContext(void) const;
 
+  void setTextureTarget(int target);
+  int getTextureTarget(void) const;
+
 private:
   ~SoGLDisplayList();
-
-  Type type;
-  int numalloc;
-  unsigned int firstindex;
-  int context;
-  int refcount;
-  SbBool mipmap;
-
+  SoGLDisplayListP * pimpl;
   void bindTexture(SoState *state);
 
   friend class SoGLCacheContextElement;
