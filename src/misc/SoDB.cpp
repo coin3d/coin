@@ -359,25 +359,31 @@ SoDB::readAll(SoInput * in)
 {
 #if 1 // New code, designed to work better with binary files. 19990711 mortene.
 
-  SoSeparator * root = NULL;
+  SoSeparator * root = new SoSeparator;
+  root->ref();
+
   SoNode * topnode = NULL;
-
   while (SoDB::read(in, topnode) && topnode) {
-    if (!root) {
-      if (topnode->getTypeId() == SoSeparator::getClassTypeId())
-	root = (SoSeparator *)topnode;
-      else
-	root = new SoSeparator;
-    }
-
-    if (root != topnode) root->addChild(topnode);
-
+    root->addChild(topnode);
     topnode = NULL;
   }
 
   // FIXME: check that we are at EOF. 19990711 mortene.
 
-  return root;
+  SoSeparator * retnode;
+  if ((root->getNumChildren() == 1) &&
+      (root->getChild(0)->isOfType(SoSeparator::getClassTypeId()))) {
+    retnode = (SoSeparator *)root->getChild(0);
+    retnode->ref();
+    root->unref();
+    retnode->unrefNoDelete();
+  }
+  else {
+    retnode = root;
+    root->unrefNoDelete();
+  }
+
+  return retnode;
 
 #else // Old code
   if (!in->isValidFile()) return NULL;
