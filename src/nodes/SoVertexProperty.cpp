@@ -100,6 +100,12 @@
   FIXME: write documentation for field
 */
 /*!
+  \var SoMFVec2f SoVertexProperty::texCoord3
+  FIXME: write documentation for field
+
+  \since 2001-12-05
+*/
+/*!
   \var SoMFVec3f SoVertexProperty::normal
   FIXME: write documentation for field
 */
@@ -129,11 +135,13 @@ SoVertexProperty::SoVertexProperty()
   SO_NODE_ADD_FIELD(vertex, (0));
   SO_NODE_ADD_FIELD(normal, (0));
   SO_NODE_ADD_FIELD(texCoord, (0));
+  SO_NODE_ADD_FIELD(texCoord3, (0));
   SO_NODE_ADD_FIELD(orderedRGBA, (0));
 
   // Make multivalue fields empty.
   this->vertex.setNum(0);
   this->texCoord.setNum(0);
+  this->texCoord3.setNum(0);
   this->normal.setNum(0);
   this->orderedRGBA.setNum(0);
 
@@ -250,14 +258,27 @@ SoVertexProperty::doAction(SoAction *action)
     SoCoordinateElement::set3(state, this, this->vertex.getNum(),
                               this->vertex.getValues(0));
 
-  if (this->texCoord.getNum() > 0) {
-    if (glrender) {
-      SoGLTextureCoordinateElement::setTexGen(state,
-                                              this, NULL);
+  if (SoGLTexture3EnabledElement::get(state)) {
+    if (this->texCoord3.getNum() > 0) {
+      if (glrender) {
+        SoGLTextureCoordinateElement::setTexGen(state,
+                                                this, NULL);
+      }
+      SoTextureCoordinateElement::set3(state, this, this->texCoord3.getNum(),
+                                       this->texCoord3.getValues(0));
     }
-    SoTextureCoordinateElement::set2(state, this, this->texCoord.getNum(),
-                                     this->texCoord.getValues(0));
   }
+  else {
+    if (this->texCoord.getNum() > 0) {
+      if (glrender) {
+        SoGLTextureCoordinateElement::setTexGen(state,
+                                                this, NULL);
+      }
+      SoTextureCoordinateElement::set2(state, this, this->texCoord.getNum(),
+                                       this->texCoord.getValues(0));
+    }
+  }
+
   if (this->normal.getNum() > 0) {
     SoNormalElement::set(state, this, this->normal.getNum(),
                          this->normal.getValues(0));

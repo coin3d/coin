@@ -52,6 +52,7 @@ public:
 
   SoMFVec3f vertex;
   SoMFVec2f texCoord;
+  SoMFVec3f texCoord3;
   SoMFVec3f normal;
   SoSFEnum normalBinding;
   SoMFUInt32 orderedRGBA;
