@@ -285,6 +285,13 @@ SoGLCacheList::close(SoGLRenderAction * action)
     if (THIS->opencache) {
       THIS->opencache->unref();
       THIS->opencache = NULL;
+
+#if COIN_DEBUG
+      if (COIN_DEBUG_CACHING) {
+        SoDebugError::postInfo("SoGLCacheList::close",
+                               "failed to create cache: %p", this);
+      }
+#endif // debug
     }
   }
   else {
