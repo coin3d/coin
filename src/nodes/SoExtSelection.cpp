@@ -169,11 +169,6 @@
   KNOWN BUGS:
   ===========
 
-  2002-08-02  Offscreen renderer is not affected by PerspectiveCamera nodes (possibly other
-              camera nodes as well) in the scenegraph, leading to incorrect selections in 
-              VISIBLE_SHAPE mode. Is this a bug in the offscreen renderer or SoExtSelection?? 
-              (handegar)
-
   2002-08-02  Sometimes my GTK-lib (i think) gets corrupt (most likely because of a bug in Gimp 1.2).
               This causes the 'glGetInteger' to fail causing incorrect 'maximumcolorcounter'
               value. This often leads to infinite loop and crash when in VISIBLE_SHAPE mode. 
@@ -345,6 +340,7 @@ public:
   int colorbitsblue;
   int colorbitsalpha;
   int maximumcolorcounter;
+  SbBool has3DTextures;
 
   unsigned char *visibletrianglesbitarray;
 
@@ -670,11 +666,11 @@ SoExtSelection::SoExtSelection(void)
   PRIVATE(this)->cbaction->addPointCallback(SoShape::getClassTypeId(), 
 				   SoExtSelectionP::pointCB,
                                    (void*) this);
-
+  
   PRIVATE(this)->cbaction->addPostCallback(SoCamera::getClassTypeId(), 
-				  SoExtSelectionP::cameraCB,
-                                  (void *) this);
-
+                                           SoExtSelectionP::cameraCB,
+                                           (void *) this);
+  
 
   // some init (just to be sure?)
   PRIVATE(this)->lassocolor = SbColor(1.0f, 1.0f, 1.0f);
@@ -697,7 +693,9 @@ SoExtSelection::SoExtSelection(void)
   PRIVATE(this)->visitedshapepaths = new SoPathList();
   PRIVATE(this)->somefacesvisible = FALSE;
 
-  
+  PRIVATE(this)->renderer = NULL;
+  PRIVATE(this)->lassorenderer = NULL;
+
 }
 
 /*!
@@ -708,6 +706,7 @@ SoExtSelection::~SoExtSelection()
   if (PRIVATE(this)->timersensor->isScheduled()) PRIVATE(this)->timersensor->unschedule();
   delete PRIVATE(this)->timersensor;
   delete PRIVATE(this)->cbaction;
+
 }
 
 // doc in parent
@@ -974,6 +973,8 @@ SoExtSelection::draw(SoGLRenderAction *action)
 {
   const GLWrapper_t * glw = GLWrapper(action->getCacheContext());
 
+  pimpl->has3DTextures = glw->has3DTextures;
+
   SbViewportRegion vp = SoViewportRegionElement::get(action->getState());
   SbVec2s vpo = vp.getViewportOriginPixels();
   SbVec2s vps = vp.getViewportSizePixels();
@@ -1004,7 +1005,10 @@ SoExtSelection::draw(SoGLRenderAction *action)
 	       GL_CURRENT_BIT);
   glDisable(GL_LIGHTING);
   glDisable(GL_TEXTURE_2D);
-  if (glw->has3DTextures) glDisable(GL_TEXTURE_3D);
+
+  
+
+  if(pimpl->has3DTextures) glDisable(GL_TEXTURE_3D);
   glDisable(GL_FOG);
   glDisable(GL_DEPTH_TEST);
 
@@ -1242,11 +1246,14 @@ SoExtSelectionP::cameraCB(void * data,
                           const SoNode * node)
 {
   SoExtSelection * thisp = (SoExtSelection*) data;
-
+ 
   SoState * state = action->getState();
   SbViewVolume vv = SoViewVolumeElement::get(state);
   const SbViewportRegion & vp = SoViewportRegionElement::get(state);
 
+  // Save viewvolume for later use.
+  thisp->pimpl->offscreenviewvolume = vv;
+  
   SbBox2s rectbbox;
   for (int i = 0; i < PRIVATE(thisp)->coords.getLength(); i++) {
     rectbbox.extendBy(PRIVATE(thisp)->coords[i]);
@@ -1576,7 +1583,7 @@ SoExtSelectionP::addTriangleToOffscreenBuffer(SoCallbackAction * action,
 
   if(primcbdata.allshapes)
     return;
-
+  
   SoState * state = action->getState();
   SbMatrix proj, affine;
   const SbMatrix & mm = SoModelMatrixElement::get(state);
@@ -1587,6 +1594,8 @@ SoExtSelectionP::addTriangleToOffscreenBuffer(SoCallbackAction * action,
   glLoadMatrixf((float *)proj);
   glMatrixMode(GL_MODELVIEW);
   glLoadMatrixf((float *)affine);
+
+  //affine.print(stdout);
 
   glDepthFunc(GL_LEQUAL);
 
@@ -1998,7 +2007,6 @@ SoExtSelectionP::offscreenRenderLassoCallback(void * userdata, SoAction * action
   
   // Setup optimal screen-aspect according to lasso-size
   SoHandleEventAction * eventAction = pimpl->offscreenaction;
-  pimpl->offscreenviewvolume = SoViewVolumeElement::get(eventAction->getState());
   const SbViewportRegion & vp = SoViewportRegionElement::get(eventAction->getState());
   
   SbVec2s vpo = vp.getViewportOriginPixels();
@@ -2018,6 +2026,8 @@ SoExtSelectionP::offscreenRenderLassoCallback(void * userdata, SoAction * action
 
   glDisable(GL_LIGHTING);
   glDisable(GL_TEXTURE_2D);
+  if(pimpl->has3DTextures)
+    glDisable(GL_TEXTURE_3D);
   glDisable(GL_FOG);
   glDisable(GL_BLEND);
   glDisable(GL_DEPTH_TEST);
@@ -2059,8 +2069,11 @@ SoExtSelectionP::offscreenRenderCallback(void * userdata, SoAction * action)
 
   */
 
-  GLint depthFunc;
-  glGetIntegerv(GL_DEPTH_FUNC,&depthFunc);
+  // Because Mesa 3.4.2 cant properly push & pop GL_CURRENT_BIT, we have to
+  // save the current color for later. 
+  GLfloat currentColor[4];
+  glGetFloatv(GL_CURRENT_COLOR,currentColor);
+
 
   glPushAttrib(GL_LIGHTING_BIT|
 	       GL_FOG_BIT|
@@ -2072,7 +2085,8 @@ SoExtSelectionP::offscreenRenderCallback(void * userdata, SoAction * action)
   // Setup GL-state for offscreen context
   glDisable(GL_LIGHTING);
   glDisable(GL_TEXTURE_2D);
-  glDisable(GL_TEXTURE_3D);
+  if(pimpl->has3DTextures)
+    glDisable(GL_TEXTURE_3D);
   glDisable(GL_FOG);
   glDisable(GL_BLEND);
   glEnable(GL_DEPTH_TEST);
@@ -2081,10 +2095,12 @@ SoExtSelectionP::offscreenRenderCallback(void * userdata, SoAction * action)
   pimpl->cbaction->apply(pimpl->offscreenheadnode);
   pimpl->master->touch();
 
+
+  // Due to a Mesa 3.4.2 bug
+  glColor3fv(currentColor);
+
   // Restore all OpenGL States
   glPopAttrib();
-
-  glDepthFunc(depthFunc);
 
 }
 
@@ -2283,6 +2299,8 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
  
     // --- Do this procedure several times if colorcounter overflows
     this->offscreencolorcounterpasses = 0;
+
+    // Create offscreen renderer
     this->renderer = new SoOffscreenRenderer(action->getViewportRegion());
     this->lassorenderer = new SoOffscreenRenderer(action->getViewportRegion());
 
@@ -2353,10 +2371,12 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
 
     // Send signal to client that we are finished searching for tris
     PUBLIC(this)->finishCBList->invokeCallbacks(PUBLIC(this));    
+
+    // Release allocated stuff
+    cbnode->unref();
     delete [] this->visibletrianglesbitarray;
     delete this->renderer;
     delete this->lassorenderer;
-    cbnode->unref();
 
     selectPaths(); // Execute a 'doSelect' on all stored paths.
    
