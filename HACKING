@@ -656,13 +656,18 @@ versus the code "layout" (to make it more easily readable):
     next of kin don't have to painstakingly re-do all the thought-work
     you already have laid down.  Example:
 
-    // FIXME: should be possible to simplify cylinder test, since this
-    // cylinder is aligned with the y-axis. 19991110 pederb.
+      // FIXME: should be possible to simplify cylinder test, since this
+      // cylinder is aligned with the y-axis. 19991110 pederb.
 
     or
 
-     // FIXME: this looks wrong, shouldn't we rather reset the
-     // alignment value to what it was previously?  20010824 mortene.
+      // FIXME: this action seems completely bogus, as if something fails,
+      // all bets are off and we should simply terminate the import
+      // operation. (flushInput() continues to read and scans for a
+      // closing brace). Run with this code disabled for a while and axe
+      // it if nothing bad seems to come frome it. 20020531 mortene.
+      //
+      // if (!ret && flush) SoBase::flushInput(in);
 
     This goes also for other keywords in comments (see below).  It
     makes it much easier when others try to fix code that doesn't
