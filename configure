@@ -3672,6 +3672,7 @@ trap 'rm -fr `echo "
 	tools/Makefile
 	tools/ivcat/Makefile
 	tools/ivhierarchy/Makefile
+	tools/ivNodeKitStructure/Makefile
  config.h include/Inventor/SbBasic.h" | sed "s/:[^ ]*//g"` conftest*; exit 1' 1 2 15
 EOF
 cat >> $CONFIG_STATUS <<EOF
@@ -3821,6 +3822,7 @@ CONFIG_FILES=\${CONFIG_FILES-"Makefile
 	tools/Makefile
 	tools/ivcat/Makefile
 	tools/ivhierarchy/Makefile
+	tools/ivNodeKitStructure/Makefile
 "}
 EOF
 cat >> $CONFIG_STATUS <<\EOF

@@ -262,6 +262,7 @@ AC_OUTPUT([
 	tools/Makefile
 	tools/ivcat/Makefile
 	tools/ivhierarchy/Makefile
+	tools/ivNodeKitStructure/Makefile
 ])
 
 echo "Now, run 'make install' to build and install Coin."
