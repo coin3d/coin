@@ -153,11 +153,18 @@
  * The patch is explained at the top of the diff file.
  */
 
-#include <Inventor/C/basic.h>
-#include "evaluator.h"
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif /* HAVE_CONFIG_H */
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
+#ifdef HAVE_IO_H
+/* isatty() on windows */
+#include <io.h>
+#endif /* HAVE_IO_H */
+#include <Inventor/C/basic.h>
+#include "evaluator.h"
 
 
 /* Enabling traces.  */
@@ -396,12 +403,12 @@ static const yysigned_char yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const unsigned char yyrline[] =
 {
-       0,    98,    98,   100,   103,   104,   105,   108,   109,   110,
-     112,   116,   117,   120,   122,   124,   127,   128,   129,   130,
-     131,   132,   134,   137,   138,   139,   140,   141,   143,   144,
-     145,   146,   148,   150,   152,   156,   158,   160,   163,   164,
-     165,   166,   167,   168,   171,   172,   173,   176,   177,   178,
-     179,   183,   184,   185,   186,   187,   188,   189,   190,   191
+       0,   105,   105,   107,   110,   111,   112,   115,   116,   117,
+     119,   123,   124,   127,   129,   131,   134,   135,   136,   137,
+     138,   139,   141,   144,   145,   146,   147,   148,   150,   151,
+     152,   153,   155,   157,   159,   163,   165,   167,   170,   171,
+     172,   173,   174,   175,   178,   179,   180,   183,   184,   185,
+     186,   190,   191,   192,   193,   194,   195,   196,   197,   198
 };
 #endif
 

@@ -39,14 +39,14 @@
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif // HAVE_CONFIG_H
+#endif /* HAVE_CONFIG_H */
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 #ifdef HAVE_IO_H
 /* isatty() on windows */
 #include <io.h>
-#endif // HAVE_IO_H
+#endif /* HAVE_IO_H */
 #include <Inventor/C/basic.h>
 #include "evaluator.h"
 %}
