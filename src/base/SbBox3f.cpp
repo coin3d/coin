@@ -35,14 +35,11 @@
 */
 
 
-#include <Inventor/SbBox3f.h>
-#include <Inventor/SbMatrix.h>
-#include <assert.h>
 #include <float.h> // FLT_MAX
 
-#if COIN_DEBUG
+#include <Inventor/SbBox3f.h>
+#include <Inventor/SbMatrix.h>
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 
 /*!
@@ -63,8 +60,7 @@ SbBox3f::SbBox3f(void)
 SbBox3f::SbBox3f(const float minx, const float miny, const float minz,
                  const float maxx, const float maxy, const float maxz)
 {
-  this->min.setValue(minx, miny, minz);
-  this->max.setValue(maxx, maxy, maxz);
+  this->setBounds(minx, miny, minz, maxx, maxy, maxz);
 }
 
 /*!
@@ -234,15 +230,15 @@ void
 SbBox3f::setBounds(const float minx, const float miny, const float minz,
                    const float maxx, const float maxy, const float maxz)
 {
-  if (!(minx<=maxx && miny<=maxy && minz<= maxz)) {
 #if COIN_DEBUG
+  if (minx>maxx || miny>maxy || minz>maxz) {
     SoDebugError::postWarning("SbBox3f::setBounds",
-                              "The box is not valid.");
-#endif // COIN_DEBUG
-    assert(0);
-    this->makeEmpty();
-    return;
+                              "invalid box specification: "
+                              "min==<%f, %f, %f> max==<%f, %f, %f>",
+                              minx, miny, minz, maxx, maxy, maxz);
   }
+#endif // COIN_DEBUG
+
   this->min.setValue(minx, miny, minz);
   this->max.setValue(maxx, maxy, maxz);
 }
@@ -258,15 +254,14 @@ SbBox3f::setBounds(const float minx, const float miny, const float minz,
 void
 SbBox3f::setBounds(const SbVec3f & min, const SbVec3f & max)
 {
-  if (!(min[0]<=max[0] && min[1]<=max[1] && min[2]<=max[2])) {
 #if COIN_DEBUG
+  if (min[0]>max[0] || min[1]>max[1] || min[2]>max[2]) {
     SoDebugError::postWarning("SbBox3f::setBounds",
-                              "The box is not valid.");
-#endif // COIN_DEBUG
-    assert(0);
-    this->makeEmpty();
-    return;
+                              "invalid box specification: "
+                              "min==<%f, %f, %f> max==<%f, %f, %f>",
+                              min[0], min[1], min[2], max[0], max[1], max[2]);
   }
+#endif // COIN_DEBUG
 
   this->min = min;
   this->max = max;
@@ -315,8 +310,9 @@ void
 SbBox3f::getSize(float & dx, float & dy, float & dz) const
 {
 #if COIN_DEBUG
-  if (this->isEmpty()) SoDebugError::postWarning("SbBox3f::getSize",
-                                                "The box is not valid.");
+  if (this->isEmpty()) {
+    SoDebugError::postWarning("SbBox3f::getSize", "The box is empty.");
+  }
 #endif // COIN_DEBUG
 
   dx = this->max[0] - this->min[0];
