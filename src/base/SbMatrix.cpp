@@ -596,15 +596,41 @@ SbMatrix::setTranslate(const SbVec3f & t)
 void
 SbMatrix::setTransform(const SbVec3f & t, const SbRotation & r, const SbVec3f & s)
 {
+  // Unoptimized version:
+  //
+  //  this->setScale(s);
+  //  tmp.setRotate(r);
+  //  this->multRight(tmp);
+  //  tmp.setTranslate(t);
+  //  this->multRight(tmp);
+
+  // Optimized version
   SbMatrix tmp;
+  const SbRotation identity = SbRotation::identity();
 
-  this->setScale(s);
-
-  tmp.setRotate(r);
-  this->multRight(tmp);
-
-  tmp.setTranslate(t);
-  this->multRight(tmp);
+  if (s != SbVec3f(1.0f, 1.0f, 1.0f)) {
+    this->setScale(s);
+    if (r != identity) {
+      tmp.setRotate(r);
+      this->multRight(tmp);
+    }
+    if (t != SbVec3f(0.0f, 0.0f, 0.0f)) {
+      tmp.setTranslate(t);
+      this->multRight(tmp);
+    }
+  }
+  else {
+    if (r != identity) {
+      this->setRotate(r);
+      if (t != SbVec3f(0.f, 0.0f, 0.0f)) {
+        tmp.setTranslate(t);
+        this->multRight(tmp);
+      }
+    }
+    else {
+      this->setTranslate(t);
+    }
+  }
 }
 
 /*!
@@ -624,21 +650,56 @@ void
 SbMatrix::setTransform(const SbVec3f & t, const SbRotation & r,
                        const SbVec3f & s, const SbRotation & so)
 {
+
+  //  Unoptimized version:
+  //
+  //  this->setRotate(so.inverse());
+  //  tmp.setScale(s);
+  //  this->multRight(tmp);
+  //  tmp.setRotate(so);
+  //  this->multRight(tmp);
+  //  tmp.setRotate(r);
+  //  this->multRight(tmp);
+  //  tmp.setTranslate(t);
+  //  this->multRight(tmp);
+
+  // Optimized version. Much faster for the common case where only
+  // zero or one of the parameters are set.
   SbMatrix tmp;
+  const SbRotation identity = SbRotation::identity();
 
-  this->setRotate(so.inverse());
-
-  tmp.setScale(s);
-  this->multRight(tmp);
-
-  tmp.setRotate(so);
-  this->multRight(tmp);
-
-  tmp.setRotate(r);
-  this->multRight(tmp);
-
-  tmp.setTranslate(t);
-  this->multRight(tmp);
+  if (s != SbVec3f(1.0f, 1.0f, 1.0f)) {
+    if (so != identity) {
+      this->setRotate(so.inverse());
+      tmp.setScale(s);
+      this->multRight(tmp);
+      tmp.setRotate(so);
+      this->multRight(tmp);
+    }
+    else {
+      this->setScale(s);
+    }
+    if (r != identity) {
+      tmp.setRotate(r);
+      this->multRight(tmp);
+    }
+    if (t != SbVec3f(0.0f, 0.0f, 0.0f)) {
+      tmp.setTranslate(t);
+      this->multRight(tmp);
+    }
+  }
+  else {
+    if (r != identity) {
+      this->setRotate(r);
+      if (t != SbVec3f(0.0f, 0.0f, 0.0f)) {
+        tmp.setTranslate(t);
+        this->multRight(tmp);
+      }
+    }
+    else {
+      this->setTranslate(t);
+    }
+  }
 }
 
 /*!
@@ -662,27 +723,53 @@ SbMatrix::setTransform(const SbVec3f & translation,
                        const SbRotation & scaleOrientation,
                        const SbVec3f & center)
 {
+  //  Unoptimized version:
+  //
+  //  this->setTranslate(-center);
+  //  tmp.setRotate(scaleOrientation.inverse());
+  //  this->multRight(tmp);
+  //  tmp.setScale(scaleFactor);
+  //  this->multRight(tmp);
+  //  tmp.setRotate(scaleOrientation);
+  //  this->multRight(tmp);
+  //  tmp.setRotate(rotation);
+  //  this->multRight(tmp);
+  //  tmp.setTranslate(translation);
+  //  this->multRight(tmp);
+  //  tmp.setTranslate(center);
+  //  this->multRight(tmp);
+
+  // Optimized version. Much faster for the common case where only
+  // zero or one of the parameters are set.
   SbMatrix tmp;
+  const SbRotation identity = SbRotation::identity();
 
   this->setTranslate(-center);
 
-  tmp.setRotate(scaleOrientation.inverse());
-  this->multRight(tmp);
+  if (scaleFactor != SbVec3f(1.0f, 1.0f, 1.0f)) {
+    if (scaleOrientation != identity ) {
+      tmp.setRotate(scaleOrientation.inverse());
+      this->multRight(tmp);
+    }
+    tmp.setScale(scaleFactor);
+    this->multRight(tmp);
+    
+    if (scaleOrientation != identity) {
+      tmp.setRotate(scaleOrientation);
+      this->multRight(tmp);
+    }
+  }
 
-  tmp.setScale(scaleFactor);
-  this->multRight(tmp);
+  if (rotation != identity) {
+    tmp.setRotate(rotation);
+    this->multRight(tmp);
+  }
 
-  tmp.setRotate(scaleOrientation);
-  this->multRight(tmp);
-
-  tmp.setRotate(rotation);
-  this->multRight(tmp);
-
-  tmp.setTranslate(translation);
-  this->multRight(tmp);
-
-  tmp.setTranslate(center);
-  this->multRight(tmp);
+  const SbVec3f sum = center + translation;
+  if (sum != SbVec3f(0.f, 0.0f, 0.0f)) {
+    tmp.setTranslate(sum);
+    this->multRight(tmp);
+  }
 }
 
 /*!
